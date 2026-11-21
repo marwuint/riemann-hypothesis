@@ -20,7 +20,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.Xc.AwayInd
 
-set_option maxHeartbeats 4000000 in
 
 theorem away_of_pos_pair : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     KIn t → S.Pos → S.Pair → S.Away) := by

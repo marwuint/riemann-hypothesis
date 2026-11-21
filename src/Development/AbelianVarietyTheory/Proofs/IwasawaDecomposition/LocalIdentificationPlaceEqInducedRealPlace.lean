@@ -139,7 +139,6 @@ theorem int_map_eq_zero_iff {F E L : Type} [Field F] [Field E] [Field L] (g : F 
   rw [map_eq_zero_iff f f.injective, map_eq_zero_iff g g.injective]
   exact RingOfIntegers.coe_eq_zero_iff
 
-set_option maxHeartbeats 4000000 in
 
 theorem place_of_tie : ∀ (D : D7) (sc : Scale) (Ce : ℝ)
     (Lc : ∀ u, ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u))

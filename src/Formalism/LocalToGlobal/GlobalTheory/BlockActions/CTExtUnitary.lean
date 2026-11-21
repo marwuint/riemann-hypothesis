@@ -117,7 +117,6 @@ theorem isExt_prV {z0 : Fin (D.R.N D.R.m) → D.host.E} (v : HeightOneSpectrum (
     simp only at this
     exact (RingHom.map_mulVec _ _ _ _).symm.trans this
 
-set_option maxHeartbeats 4000000 in
 
 theorem lev_lat (Tf : FormsTiedSym D u Ch chOf)
     (k : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))

@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.NormOrderStatement
-import Mathlib
 
 namespace ReciprocityTheory.ChartRestriction.G.AR.Up.NOrd
 

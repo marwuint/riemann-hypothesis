@@ -1,5 +1,4 @@
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Assembly
-import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.OfLeaves
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAdmissibleAE
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAdmissibleAENrm

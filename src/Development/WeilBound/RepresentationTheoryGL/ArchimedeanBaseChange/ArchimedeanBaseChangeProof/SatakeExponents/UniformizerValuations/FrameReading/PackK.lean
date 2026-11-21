@@ -17,7 +17,6 @@ namespace PositivityTheory.Rg.BcB.F.Rd.B
 
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.Rd
 
-set_option maxHeartbeats 4000000 in
 
 theorem packK (hBO : BlockOperatorsProductAdjoint) {E : Type} [Field E] [NumberField E] [IsCMField E] (B : Block E)
     (W₁ : Submodule ℂ (Kinf E B.a → ℂ)) (W₂ : Submodule ℂ (Kinf E B.b → ℂ))

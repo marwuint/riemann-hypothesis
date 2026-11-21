@@ -1,6 +1,5 @@
 import Formalism.FockGram.StatementFock
 import Formalism.FockGram.FockGramProofs.SubIndexNorm
-import Mathlib
 import Formalism.FockGram.FockGramProofs.CovolGram
 import Formalism.FockGram.FockGramProofs.HermDualOf
 import Formalism.FockGram.StatementLat

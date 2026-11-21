@@ -109,7 +109,6 @@ theorem limitCohomologyFun_eq (p : GLevel K) (y : cohomology (ideleRep K.1 p.1.1
     limitCohomologyFun D T hn x = levelSum D T hn p y :=
   levelSum_eq_of_levelInfl_eq D T hn (pick x).2 y ((levelInfl_pick x).trans h.symm)
 
-set_option maxHeartbeats 4000000 in
 theorem limitCohomologyFun_add (x₁ x₂ : cohomology (limitRep K) n) :
     limitCohomologyFun D T hn (x₁ + x₂) = limitCohomologyFun D T hn x₁ + limitCohomologyFun D T hn x₂ := by
   obtain ⟨p₁, y₁, rfl⟩ := exists_levelInfl_eq n x₁

@@ -17,7 +17,6 @@ def conjPt (S : StepLevel F E σ J T f bad) (δ : UPts σ J (FiniteAdeleRing (�
 theorem conjPt_coe (S : StepLevel F E σ J T f bad) (δ : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (κ : S.U) :
     (conjPt S δ κ).1 = κ.1⁻¹ * δ.1 * κ.1 := rfl
 
-set_option maxHeartbeats 4000000 in
 
 theorem isDia_conj (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
     (hv : (T : 𝓞 F) ∈ v.asIdeal) {k : ℤ} {δ : UPts σ J (FiniteAdeleRing (𝓞 F) F)}

@@ -153,7 +153,6 @@ theorem exists_ratioU (hch : IsChartG t x0 d F act tg uvec x) (e : ∀ m, FrTyG 
   rw [hU]
   exact (val_pull hJ _ _ _).symm.trans (hu Z r z J hJ)
 
-set_option maxHeartbeats 4000000 in
 theorem frRatioG (hch : IsChartG t x0 d F act tg uvec x) {ph1 ph2 sy ad} {e : ∀ m, FrTyG t x0 d x m}
     (hfr : IsFrameG t x0 d x F act ph1 ph2 sy ad e) (m : ℕ) :
     ∃ U : (Jet S (Fin 2 × Fin d) m)ˣ,

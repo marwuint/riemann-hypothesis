@@ -498,7 +498,6 @@ end Main
 
 section Proof
 
-set_option maxHeartbeats 4000000 in
 theorem descent_estimate_up_down : MUD := by
   intro O _ _ _ ϖ hϖ ℓ ell r p H b kind V hℓ hPS hsat hub s₀ s₁ h01 h1ell hk1 hk0 hthin c α β
     hαβ hnot y

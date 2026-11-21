@@ -14,7 +14,6 @@ open Formalism.MainNotions.G Formalism.L2.G Formalism.MainNotions.G.CmpJ Formali
 
 namespace GlobalTheory.Mem.Top.KerTwLv
 
-set_option maxHeartbeats 4000000 in
 
 theorem hyp_charts_tw : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (n : NchT w Z Wt nch) (Y : DivX (w.D Z)),

@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.GoodPathWeightOfParts
 import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.ReflectionMemGlevCastSucc
-import Mathlib
 
 noncomputable section
 

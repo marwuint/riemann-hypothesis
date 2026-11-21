@@ -375,7 +375,6 @@ theorem sum_add_ite {V : ℕ} (f : Fin V → ℕ) (t : Fin V) (K : ℕ) :
 
   simp [Finset.sum_add_distrib]
 
-set_option maxHeartbeats 4000000 in
 theorem main : WalkSharp := by
 
   intro R X _ _ _ V π L y m β c₀ S a b c Sv g G hm hc hbb hdb ha hb hcb hy hG hS

@@ -1,6 +1,5 @@
 import Development.WeilBound.CoreStatements.MultihomogeneousSquares.AntisymmetryOfSingularStatement
 import Development.WeilBound.CoreStatements.JacobiBlockDeterminants.StSing
-import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpPair
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExistsX

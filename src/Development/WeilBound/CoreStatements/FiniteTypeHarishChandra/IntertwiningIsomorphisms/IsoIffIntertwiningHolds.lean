@@ -1,5 +1,4 @@
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll
-import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IrreducibleCharacterSeries.ConjugateCharacterFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SeparableIrreducibleStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralIdempotentPropertiesStatement

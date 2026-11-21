@@ -26,7 +26,6 @@ open GlobalTheory.RowEx
 
 namespace GlobalTheory
 
-set_option maxHeartbeats 4000000 in
 open GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTheory.BigTop.Fun in
 
 theorem Mem.LiteralAutomorphy.trSq_holds : GlobalTheory.Mem.LiteralAutomorphy.TrSq := by

@@ -9,7 +9,6 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.CdLocal
 import Development.WeilBound.CoreStatements.HodgeTatePoints.CdUniv
 import Development.WeilBound.CoreStatements.HodgeTatePoints.CbFrob
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLieLieModel
-import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.GtPtsVal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.TangentLinearity.FnOfComp
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsUniqueCharacterOfMul

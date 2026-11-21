@@ -87,7 +87,6 @@ theorem perT_comb {c : Comm D} (t : Tup c) (n : ℕ) (h : n = D.R.m) {Y : Type} 
 
 end GlobalTheory.SeeSaw.LastStepsX
 
-set_option maxHeartbeats 4000000 in
 open GlobalTheory.SeeSaw.LastStepsX in
 
 theorem GlobalTheory.SeeSaw.lastX_of_laws : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), RapidVal D → c.Is → (∀ s, (t s).Is) → ValLastX t → TwoX t → PerX t → RdX t → LastX t := by

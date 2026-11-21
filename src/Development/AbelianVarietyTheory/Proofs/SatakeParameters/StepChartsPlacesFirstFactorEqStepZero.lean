@@ -5,7 +5,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.Xc
 
-set_option maxHeartbeats 4000000 in
 
 theorem chart_places_firstFactor_eq_zero :
     Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>

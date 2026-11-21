@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.SeparableMatrixStability.SecondSelmerSpanBoundAtAllLevels
-import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.LimKer
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.LimElt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.FiniteHomOfTopFG

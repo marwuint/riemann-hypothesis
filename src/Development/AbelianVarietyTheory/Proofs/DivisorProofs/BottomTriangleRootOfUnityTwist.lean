@@ -28,7 +28,6 @@ theorem isFrame_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
     exact ⟨fun H i _ => H i, fun H i => H i trivial⟩
   exact e ▸ Formalism.L2.DIV.frame_standard F E n
 
-set_option maxHeartbeats 4000000 in
 
 theorem frame_change {D : D7} {T : Type} {A A' WW : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → Formalism.L2.Host.HChar D.host.E) (S : T → Finset (Formalism.L2.DIV.Pl D.host.E))

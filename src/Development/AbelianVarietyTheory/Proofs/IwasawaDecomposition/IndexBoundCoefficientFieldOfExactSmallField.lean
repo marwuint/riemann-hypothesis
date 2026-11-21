@@ -26,7 +26,6 @@ theorem odd_of_mem_levelPrimes (P : Pre) {p : ℕ} (hp : p ∈ P.host.levelPrime
   have h2 : (2 : ℕ) ∣ P.host.QS * P.host.q * P.host.d := ((((dvd_pow_self 2 (Nat.succ_ne_zero _)).trans P.host.tower_dvd).mul_right _).mul_right _)
   rw [Nat.odd_iff, ← Nat.mod_mod_of_dvd p h2, h]
 
-set_option maxHeartbeats 4000000 in
 
 theorem fieldTies_of_ksExact : GlobalTheory.NT.RayField → ∀ (X : Stages) (f : Fr X.B.toPre) (δ : Fld.FieldDat X.B.toPre),
     X.B.KsExact δ f → FieldTies X.toD7 (Fr.at X f) := by

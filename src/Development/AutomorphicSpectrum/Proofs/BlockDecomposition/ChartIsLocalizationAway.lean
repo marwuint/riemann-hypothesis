@@ -351,7 +351,6 @@ theorem chart_exists (K : Type) [Field K] (W Z Y : Scheme.{0}) (q : Z ⟶ Spec (
     exact he ▸ chart_loc c S k hk
 
 section Main
-set_option maxHeartbeats 4000000 in
 
 theorem chartBij_of : ChartFormsCechExact → SiteLaws → OneLow → OneRes → CovDesc → ZarRel → AffOm → OmNat → OmRes → AffRel → FormLaws →
     ChartLaws → ChartBij := by

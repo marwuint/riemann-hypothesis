@@ -6,7 +6,6 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Top.Bl.WitTr
 
-set_option maxHeartbeats 4000000 in
 
 theorem goodO_setDiv : ∀ (D : D7) (nch : NChoice D) (xd : ThData D) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ), GoodO D nch xd → GoodO (setDiv D N h) (nchTr N h nch) (xdTr N h xd) := by
   intro D nch xd N h hg

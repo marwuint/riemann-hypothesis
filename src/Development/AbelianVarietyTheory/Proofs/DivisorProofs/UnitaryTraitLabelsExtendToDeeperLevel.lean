@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyUWit
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabRange
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisedModelTorsionLabelsExist
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UTorsClosed

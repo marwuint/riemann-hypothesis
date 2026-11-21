@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsHTLatOf
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsKitWithKitWith
-import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JEvExists
 import Formalism.LocalToGlobal.ProjectiveLattices.RecCond
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordProportionality

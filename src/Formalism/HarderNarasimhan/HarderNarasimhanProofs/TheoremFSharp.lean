@@ -163,7 +163,6 @@ theorem hilbert_schmidt_zero_map {E F : Type*} [NormedAddCommGroup E] [InnerProd
     (c : ℝ) : hs2 (frK c (0 : E →ₗ[ℂ] F) - LinearMap.id) = finrank ℂ E := by
   simp [hs2, frK, LinearMap.trace_id]
 
-set_option maxHeartbeats 4000000 in
 
 theorem theoremFSharp_of (hLA : FrameLA1) : TheoremFSharp := by
   intro K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ

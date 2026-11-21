@@ -41,7 +41,6 @@ theorem hI {W : Type} [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ G
     (f : ρ.IntertwiningMap σ) (g : G) (y : V) : f (ρ g y) = σ g (f y) :=
   Representation.IntertwiningMap.isIntertwining _ _ f g y
 
-set_option maxHeartbeats 4000000 in
 theorem satLink : SatLink := by
   intro E _ _ w c n N h σ P ξ hq hsph ⟨f, hf⟩
   have hKO : ∀ m, KGL w m = KO (w.adicCompletion E) (Fin m) := fun m => (SphCompletion.KO_completion w m).symm

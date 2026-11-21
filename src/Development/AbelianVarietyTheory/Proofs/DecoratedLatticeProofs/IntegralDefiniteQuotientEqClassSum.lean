@@ -94,7 +94,6 @@ theorem finM_eq_one_of_mem_GinfC {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n
   rw [h3, h2]
   rfl
 
-set_option maxHeartbeats 4000000 in
 
 theorem ncard_stab {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) {J : Matrix (Fin n) (Fin n) D.host.E} {T f : ℕ}
     {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} (S : StepLevel D.host.F D.host.E (sigD D) J T f bad) (a : GA D V)

@@ -1,5 +1,4 @@
 import Formalism.HyperbolicPlaceProducts.Statement
-import Mathlib
 
 namespace Formalism.SLP.P
 

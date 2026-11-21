@@ -57,7 +57,6 @@ theorem qbK_mono {v : HeightOneSpectrum (𝓞 F)} {c w : v.adicCompletion F} (hw
   obtain ⟨z, hz, e⟩ := hx.2.2 i j
   exact ⟨w * z, Subring.mul_mem _ hw hz, by rw [e, mul_assoc]⟩
 
-set_option maxHeartbeats 4000000 in
 
 theorem qbU_dense (P : Q) (k : GL (Fin n) ((qv F P.1).adicCompletion F))
     (hk : qbInt (k : Matrix (Fin n) (Fin n) ((qv F P.1).adicCompletion F)))

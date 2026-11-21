@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.RangeShape
-import Mathlib
 
 section
 

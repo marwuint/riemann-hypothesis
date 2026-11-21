@@ -39,7 +39,6 @@ def DUPt0F (T : Forms0 D u) : Prop :=
           ∀ δ, IsDia T.cls0.lev (T.atT.eV v).1 (T.atT.eV v).2 k δ →
           G (T.cls0.y c * hcomp T (η q.1.1) (κ q.1.1) (Mu q.1.1 q.2)) = G (T.cls0.y c * δ))
 
-set_option maxHeartbeats 4000000 in
 theorem duFib_of_pt (T : Forms0 D u) (h : DUPt0F T) : DUFib0F T := by
   intro v c
   obtain ⟨γ, η, κ, Mu, hmv, hMu, ι, τ, hι, hu, hval⟩ := h v c

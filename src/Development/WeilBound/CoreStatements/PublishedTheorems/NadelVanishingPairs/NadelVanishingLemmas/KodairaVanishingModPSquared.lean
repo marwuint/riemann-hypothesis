@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.KawamataVi
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanonicalMultipleCanonical
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimageOfIsPullback
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
-import Mathlib
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.FrobeniusDecompositionAtlasModP
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits

@@ -16,7 +16,6 @@ namespace PositivityTheory.PfSWUS.SwFockk
 
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC NumberField IsDedekindDomain
 
-set_option maxHeartbeats 4000000 in
 
 theorem heightWN_of (hF : HWFin) (hI : HWInf) (hL : LstdStd) : PositivityTheory.PfSWUS.SwMatch.HeightWN := by
   intro D n H hH θ hθ nb hnb w hw

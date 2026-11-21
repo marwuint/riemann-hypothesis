@@ -60,7 +60,6 @@ private lemma coord_sum {P : LocPrime l} {L : FinExt l} {a d : ℕ}
 
 end UpperTheory.Gal.ClosedPhiFromClosedTrace
 
-set_option maxHeartbeats 4000000 in
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.tieRep_holds :
     TrLin → CoordEx → CoordWD → ColInv → WeilPhi2 → TestTr → TieRep2 := by
   intro hTr hCE hCW hCI hWP hTT l _ ι P AI T E Ω _ _ _ _ _ w A h O _ _ _ Bw hj g n₁ n₂ hα L a d R _

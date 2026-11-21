@@ -154,7 +154,6 @@ end Gen
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.BasicNotions.factResChar
 
-set_option maxHeartbeats 4000000 in
 
 theorem exists_psi : ∀ (D : D7) (L0 : LevelData D) (T : ∀ u : D.what₂.Word, Forms0 D u), (∀ u, Joint0 L0 u (T u)) → (∀ u, LevelZeroCharacterRational T u) →
     ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),

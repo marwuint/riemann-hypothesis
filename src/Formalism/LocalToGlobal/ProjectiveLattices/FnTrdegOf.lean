@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
-import Mathlib
 
 noncomputable section
 

@@ -158,7 +158,6 @@ theorem resG_smul {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   unfold resG
   rw [Pi.smul_apply, smul_comm]
 
-set_option maxHeartbeats 4000000 in
 theorem lev_ind_her {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
     (T : D.LevTower P.k P.r Wp Wq) (hT : D.TowerNormalised T) (hP : IsPlace P T.base.z T.base.z' T.base.π T.base.π')

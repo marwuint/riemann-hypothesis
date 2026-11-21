@@ -41,7 +41,6 @@ def chartAll {D : D7} {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} 
 
 variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : Later B (I.cols l))
 
-set_option maxHeartbeats 4000000 in
 
 structure TwLevJ {Ch0 : B.Word → ℕ → Type} {chOf0 : ∀ u i, ((I.rec7 l Z).mem u).C.cls i → Ch0 u i}
     (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch0 u) (chOf0 u)) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)))

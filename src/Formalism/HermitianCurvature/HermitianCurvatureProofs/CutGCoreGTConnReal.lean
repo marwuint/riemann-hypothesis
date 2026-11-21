@@ -261,7 +261,6 @@ theorem dZb_cont {F : ℂ → ℂ} (hF : ContDiff ℝ 1 F) : Continuous (NF.dZb 
   exact continuous_const.mul ((c.clm_apply continuous_const).add
     (continuous_const.mul (c.clm_apply continuous_const)))
 
-set_option maxHeartbeats 4000000 in
 theorem gauge_reality_holds : GTCReal := by
   intro Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk A Bf hAB hC ρ ζ0 hζ0
   classical

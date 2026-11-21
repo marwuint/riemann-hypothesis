@@ -16,7 +16,6 @@ variable (D : D7) (sc : Scale) (Ce : ℝ)
   (hd : ∀ u w h, ((X u w h).gat (rSc sc D.R.k (D.what₂.places.resChar w)) (epSc D.R sc Ce (D.what₂.places.resChar w))).d =
     Module.finrank ℂ (D.mem u).A.Mu0)
 
-set_option maxHeartbeats 4000000 in
 
 theorem gatIs_recG (H : LevelData (recG D sc Ce Lc X hd)) (hL : ∀ u, H u = Lc u)
     (hH : ∀ u w h, Cmp.HypAtP (X u w h).I) (u : D.what₂.Word) (w : D.what₂.places.Pl)

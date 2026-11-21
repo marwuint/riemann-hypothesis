@@ -33,7 +33,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.QPl.FinOneProof
 
-set_option maxHeartbeats 4000000 in
 
 theorem finOne : ∀ D : D7, FinOne D := by
   intro D ψ hstd σ S Q a

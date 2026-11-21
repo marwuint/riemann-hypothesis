@@ -143,7 +143,6 @@ variable (N : ∀ j ka, (B.KO →+* ℂ) → B.Cusp j ka → ℝ)
     (h3 : ∀ j ka σ F G, N j ka σ (F + G) ≤ N j ka σ F + N j ka σ G)
     (h4 : ∀ j ka σ F, N j ka σ F ≤ B.supN j ka σ F)
 
-set_option maxHeartbeats 4000000 in
 
 theorem concl_xplusN (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j)
     (T : ℕ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (β : ℝ) :

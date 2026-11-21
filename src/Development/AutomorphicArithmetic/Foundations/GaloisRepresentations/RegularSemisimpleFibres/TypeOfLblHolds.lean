@@ -74,7 +74,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShintaniLiftHarishC
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedHarishChandraIsotypicPartStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraProductCuspidalGLListPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EveryElementIsNorm
-import Mathlib
 
 namespace UpperTheory.Gal.InertialTypesAlt
 

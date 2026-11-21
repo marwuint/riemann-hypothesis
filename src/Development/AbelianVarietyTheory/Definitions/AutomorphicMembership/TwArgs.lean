@@ -21,7 +21,6 @@ abbrev famT {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0) := famR (w.s
 
 set_option genInjectivity false in
 set_option genSizeOfSpec false in
-set_option maxHeartbeats 4000000 in
 
 structure TwArgs (t : RowsT K w Z Wt ex.p0) : Type 1 where
   Dc : ∀ Zs : DefSub (famT t).fam3.amb3, DefCols ((famT t).side3 t.r.z.F.P1 t.r.z.F.ψ1 Zs)

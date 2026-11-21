@@ -1,7 +1,6 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.InfinitesimalCharacterGL.NatDegreeDefectGelf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CasimirSignatureMemCenter
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MapSingleAtEmb
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterThetaInvariantExponent
 
 noncomputable section

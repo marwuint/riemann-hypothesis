@@ -3,7 +3,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.UnitaryL
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.IdxGroup
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.IdxTop
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.OpenCompact
-import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.ClassCount
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.Transfer
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.Unfold

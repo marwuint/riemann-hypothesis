@@ -21,7 +21,6 @@ theorem kh1 : KH.LocGr := @loc_gr
 
 theorem kh2 : KH.GlobSerreSt := @glob_serre_st
 
-set_option maxHeartbeats 4000000 in
 theorem finO' : True ∧ FinO := ⟨trivial, fin_o kh1 @poly_tf kh2 kh3.2⟩
 
 theorem afgA : AfgA := afg_a bcOn_false finO'.2

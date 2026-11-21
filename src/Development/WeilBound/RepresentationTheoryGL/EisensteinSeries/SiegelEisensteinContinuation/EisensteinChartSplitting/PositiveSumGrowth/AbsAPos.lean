@@ -58,7 +58,6 @@ theorem absA_pos (D : D7) (x : (AE D)ˣ) : 0 < absA D x := by
   rw [mul_inv_cancel, map_one, h0, zero_mul] at h1
   exact one_ne_zero h1
 
-set_option maxHeartbeats 4000000 in
 theorem tTop : TTop := by
   intro hG hT hB hE hP hS hC hSc hDv D V hV a ha hI μ b hμ hb s₁ φ hφ
   have hCM := isCMExt_host D

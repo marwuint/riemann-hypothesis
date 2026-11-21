@@ -50,7 +50,6 @@ def crdN (D : D7) (i : ℕ) (hi : i ≤ D.R.m) : (D.sp.X i).V ≃ₗ[D.host.E] (
 def crdP (D : D7) : D.sp.X'.V ≃ₗ[D.host.E] (Fin (D.R.N D.R.m - 1) → D.host.E) :=
   D.sp.X'.frame.equivFun.trans (LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr (rankP D)).symm)
 
-set_option maxHeartbeats 4000000 in
 
 structure Joint {D : D7} (X : Formalism.L2.Herm.ColsHerm D) (u : D.what₂.Word) (T : FormsTied D u) : Prop where
 

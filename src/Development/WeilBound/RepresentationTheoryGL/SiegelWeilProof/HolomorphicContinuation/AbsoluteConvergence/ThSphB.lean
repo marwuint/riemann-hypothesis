@@ -49,7 +49,6 @@ theorem finInt {K : Type*} [TopologicalSpace K] [MeasurableSpace K] [BorelSpace 
         refine integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)
         simp only [hv' k, Finset.mul_sum, mul_assoc]
 
-set_option maxHeartbeats 4000000 in
 
 theorem thSph_of' (hA : HelpA) (hC : HelpC) (hKAK : KAK) (hMult : Mult) (hD : DerivativeVacuumDilations) (hSph : Sph)
     (hSZ : SecZero) (hHP : HolParam) (hLC : LC) : ThSph := by

@@ -103,7 +103,6 @@ theorem det_eq_of_blk {N : ℕ} (hN : 1 ≤ N) (G : Sp E N ≃ₗ[E] Sp E N) (J 
 
 end Det
 
-set_option maxHeartbeats 4000000 in
 
 theorem topLawQ_midTop : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)

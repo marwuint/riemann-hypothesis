@@ -1,6 +1,5 @@
 import Mathlib
-import GroundTheory.AutomorphicForms.MultiplicityOne.ContinuousWhittakerOneRconvIntertwiner
-import GroundTheory.AutomorphicForms.UnitaryRepresentations.IsInvariantIffCommuteStarProjection
+import GroundTheory.AutomorphicForms.MultiplicityOne.FiniteLevel
 import GroundTheory.AutomorphicForms.MultiplicityOne.FiniteLevelGroups
 import GroundTheory.AutomorphicForms.MultiplicityOne.OpenSubgroupRep
 
@@ -26,6 +25,9 @@ def finComp : normOneGL K n →* AdelicGLn.FiniteAdelicGL K n :=
 
 theorem finComp_apply (x : normOneGL K n) :
     finComp K n x = (AdelicGLn.prodEquiv K n (x : AdelicGLn.AdelicGL K n)).2 := rfl
+
+theorem continuous_finComp : Continuous (finComp K n) :=
+  continuous_snd.comp ((AdelicGLn.prodEquiv K n).continuous.comp continuous_subtype_val)
 
 theorem finComp_archProj (A : ArchUnits K n) : finComp K n (archProj K n A) = 1 := by
   rw [finComp_apply, coe_archProj, map_mul, map_inv]
@@ -58,6 +60,21 @@ def levelSubgroup (U : Subgroup (AdelicGLn.FiniteAdelicGL K n)) : Subgroup (norm
 
 theorem mem_levelSubgroup {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)} {x : normOneGL K n} :
     x ∈ levelSubgroup K n U ↔ finComp K n x ∈ U := Iff.rfl
+
+theorem isOpen_levelSubgroup {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)}
+    (hU : IsOpen (U : Set (AdelicGLn.FiniteAdelicGL K n))) :
+    IsOpen (levelSubgroup K n U : Set (normOneGL K n)) :=
+  hU.preimage continuous_finComp
+
+theorem archProj_mem_levelSubgroup (U : Subgroup (AdelicGLn.FiniteAdelicGL K n)) (A : ArchUnits K n) :
+    archProj K n A ∈ levelSubgroup K n U := by
+  rw [mem_levelSubgroup, finComp_archProj]
+  exact U.one_mem
+
+theorem finProj_mem_levelSubgroup {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)}
+    {u : AdelicGLn.FiniteAdelicGL K n} (hu : u ∈ U) : finProj K n u ∈ levelSubgroup K n U := by
+  rw [mem_levelSubgroup, finComp_finProj]
+  exact hu
 
 theorem exists_of_mem_levelSubgroup {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)}
     {x : normOneGL K n} (hx : x ∈ levelSubgroup K n U) :
@@ -117,6 +134,19 @@ def levelRep : UnitaryRep (levelSubgroup K n U) (fixedSubspace σ U) :=
     ((levelRep σ U x v : fixedSubspace σ U) : H) = σ x v := rfl
 
 variable {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
+
+
+theorem isCompactOperator_levelRep (hσ : σ.IsIrreducible) (T : cuspIntertwiners μ σ) (hT0 : T ≠ 0)
+    (hU : IsOpen (U : Set (AdelicGLn.FiniteAdelicGL K n)))
+    (f : CompactlySupportedContinuousMap (levelSubgroup K n U) ℂ) :
+    haveI := UnitaryRep.isFiniteMeasureOnCompacts_comap μ (isOpen_levelSubgroup (K := K) (n := n) hU)
+    IsCompactOperator ((levelRep σ U).integrated (μ.comap ((↑) : levelSubgroup K n U → normOneGL K n))
+      (UnitaryRep.ccToL1 (μ.comap ((↑) : levelSubgroup K n U → normOneGL K n)) f)) := by
+  have := UnitaryRep.isFiniteMeasureOnCompacts_comap μ (isOpen_levelSubgroup (K := K) (n := n) hU)
+  refine UnitaryRep.isCompactOperator_restrict_integrated _ _ (isClosed_fixedSubspace σ U)
+    (isInvariant_fixedSubspace σ U) _ ?_
+  exact UnitaryRep.isCompactOperator_compHom_subtype σ μ (isOpen_levelSubgroup hU)
+    (isCompactOperator_integrated_of_irreducible hσ T hT0) f
 
 end MultiplicityOne
 

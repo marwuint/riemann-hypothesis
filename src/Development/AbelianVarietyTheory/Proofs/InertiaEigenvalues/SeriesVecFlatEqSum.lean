@@ -192,7 +192,6 @@ theorem series_vecFlat_eq_sum {F : Face D A} (hC : GlobalTheory.Hk3.Core R F) {B
 
 end Sum
 
-set_option maxHeartbeats 4000000 in
 
 theorem conj_gen : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type)
     (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)

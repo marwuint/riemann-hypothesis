@@ -71,7 +71,6 @@ theorem ontoUni_of_reindex {ι K : Type} [Group K] [TopologicalSpace K] {a b : �
 end GlobalTheory.SeeSaw.PerXCls
 
 open GlobalTheory.SeeSaw.PerXCls in
-set_option maxHeartbeats 4000000 in
 
 theorem GlobalTheory.SeeSaw.perX_of_clsPinD : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), c.Is → (∀ s, (t s).Is) →
     ClsPinD t → PerX t := by

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetNumberWeightSet
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PhiAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.PolyBetween
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField

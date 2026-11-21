@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.ThetaSquareIntegrable
-import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.PHeisFC
 
 noncomputable section

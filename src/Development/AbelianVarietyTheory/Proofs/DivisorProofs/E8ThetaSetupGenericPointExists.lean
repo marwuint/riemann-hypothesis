@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.ThetaSetupStructureMapComp
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothProjectiveStalkFactorial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsChartSiegelLevelCoverSharpTheta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalModelNormalisationDedekind

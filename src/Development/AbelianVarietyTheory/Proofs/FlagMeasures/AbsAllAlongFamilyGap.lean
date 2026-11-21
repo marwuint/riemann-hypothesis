@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.UniqGapOfUniq
-import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.AbsoluteAmplitudeSecondOfSource
 import Formalism.SharpRestriction.CuspSpanNormBounds.PExtra
 import Formalism.SharpRestriction.CuspSpanNormBounds.AmplitudeAndVolumeBounds

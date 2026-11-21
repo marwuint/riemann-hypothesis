@@ -35,7 +35,6 @@ variable {K E : FiniteSubfield} [Fact (K ≤ E)]
 
 section Finite
 
-set_option maxHeartbeats 4000000 in
 
 theorem brauerInvZOfIsSepClosure_idelesLocalRes_idelesResField (v : HeightOneSpectrum (𝓞 K.1))
     (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1))

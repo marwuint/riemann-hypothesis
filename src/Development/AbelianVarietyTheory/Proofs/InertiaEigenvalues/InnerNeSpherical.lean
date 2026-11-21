@@ -58,7 +58,6 @@ theorem scalar_of_eigen {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ
     refine ⟨1, one_ne_zero, fun x hx => ?_⟩
     rw [h x hx, map_zero, smul_zero]
 
-set_option maxHeartbeats 4000000 in
 theorem innerNe_main {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
     (hL : Laws R F) (i : Fin D.R.m) (t : T) (hFS : FinSum R i t) (hFM : FinMult R i t) (hLF : LevFix R i t)

@@ -25,7 +25,6 @@ theorem wG_succ_eq_shift (R : Ranks) (z : ℤ) (j : ℕ) :
   push_cast
   ring
 
-set_option maxHeartbeats 4000000 in
 
 theorem fillAt_of_comp : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     ∀ j (hj : j < D.R.m), (sysS H X std).Lv.comp (j + 1) → FillAt (hT := hT) (H := H) (X := X) std j hj) := by

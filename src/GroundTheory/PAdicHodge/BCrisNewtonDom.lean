@@ -39,7 +39,6 @@ theorem algebraMap_acrisZero_algebraMap (w : AInf K p) :
       algebraMap (AInf K p) (ACris K p) w :=
   rfl
 
-set_option maxHeartbeats 4000000 in
 
 theorem false_of_dominant (hp0 : ‖(p : K)‖ ≤ ρ) (hρ1 : ρ < 1) {a b : ACris K p} {Na Nb : ℕ}
     {Fa Fb : ℝ}

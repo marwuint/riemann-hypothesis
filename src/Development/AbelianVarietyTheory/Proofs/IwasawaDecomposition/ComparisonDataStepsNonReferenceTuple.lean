@@ -71,7 +71,6 @@ theorem fin_of : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : Co
     (fun x hx => ((tt.ch.lev u _ (j + 1) (Formalism.MainNotions.G.CmpJ.AgreeLv.one_le j) hj β).U_eq x).1 hx)
     (tt.ch.finite_cls u _ hμ (j + 1) (Formalism.MainNotions.G.CmpJ.AgreeLv.one_le j) hj β)
 
-set_option maxHeartbeats 4000000 in
 
 theorem cmpJ_data_ne : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (_ : NchT w Z Wt nch) (Y : DivX (w.D Z)),

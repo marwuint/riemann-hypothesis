@@ -49,7 +49,6 @@ theorem latAt_N : LatAt (withNorm B N n0 n1 n2 n3 n4) j ka ↔ LatAt B j ka := I
 theorem lamwAt_N (large₂ : SizeData₂ D) (C A : ℝ) : LAMwAt large₂ (withNorm B N n0 n1 n2 n3 n4) j ka C A ↔ LAMwAt large₂ B j ka C A :=
   Iff.rfl
 
-set_option maxHeartbeats 4000000 in
 theorem qAt_N (large₂ : SizeData₂ D) (CR Ck Ch Ah Cc Ac T c : ℝ) :
     QAt large₂ (withNorm B N n0 n1 n2 n3 n4) j ka CR Ck Ch Ah Cc Ac T c ↔ QAt large₂ B j ka CR Ck Ch Ah Cc Ac T c := Iff.rfl
 

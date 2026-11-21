@@ -330,7 +330,6 @@ open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.BaseOf Formalism.L2.SG.Pf.Bui
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CarrierGap
-set_option maxHeartbeats 4000000 in
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 theorem xLeafAt_of_pinsG {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ) (hB : WuBessel C)
     (hJ : CompanionTheory.Lime.BM.UniqGap) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}

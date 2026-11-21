@@ -40,7 +40,6 @@ theorem exists_hom_of_range {K K' : Type} [Field K] [Field K'] (σ : K →+* ℂ
            map_zero' := σ'.injective (by rw [hg, map_zero, map_zero])
            map_add' := fun a b => σ'.injective (by rw [map_add σ', hg, hg, hg, map_add]) }, hg⟩
 
-set_option maxHeartbeats 4000000 in
 
 theorem extendedData_nonzero_index_places_correspond : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

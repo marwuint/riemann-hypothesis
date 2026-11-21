@@ -11,7 +11,6 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 
 namespace CrystallineSemistableComparison.Pb
 
-set_option maxHeartbeats 4000000 in
 theorem gr_cech_fin_pf : KH.GrCechFin :=
   @GlobalTheory.T.graded_cech_cohomology_finite locGr_h polyTf_h globSerreSt_h globVanSt_h
 

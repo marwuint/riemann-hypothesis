@@ -159,7 +159,6 @@ theorem pair_trunc (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) :
       𝟙 _ ≫ (lift (jptG t x0 d x m (0 : Fin 2)) (jptG t x0 d x m (1 : Fin 2))).left := by
   rw [← Over.comp_left, Category.id_comp, comp_lift, jpt_trunc' hch, jpt_trunc' hch]
 
-set_option maxHeartbeats 4000000 in
 theorem exists_ad_one (hch : IsChartG t x0 d F act tg uvec x) (e : ∀ m, FrTyG t x0 d x m)
     (heg : ∀ m, (e m).IsGen) (htr : FrTrunc t x0 d x e) (a : 𝓞 E)
     (wL : LB.Gen (LB.LinComb t.PP.L

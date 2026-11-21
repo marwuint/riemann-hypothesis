@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL4.ThirdLinkOfArchimedean
 import Formalism.LocalToGlobal.GlobalTheory.GL4.BcBasisApply
-import Mathlib
 import Formalism.LocalToGlobal.Columns.FockNormSubstitutionBound
 import Formalism.LocalToGlobal.Columns.TwistedLocalisationComparable
 

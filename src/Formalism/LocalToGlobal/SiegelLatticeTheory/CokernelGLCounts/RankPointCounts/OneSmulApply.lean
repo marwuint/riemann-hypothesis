@@ -41,7 +41,6 @@ theorem sgn_mem_O (p : PlF D) (k : ℕ) :
   haveI := (D.s.atP p).lf
   exact Subring.pow_mem _ (Subring.neg_mem _ (Subring.one_mem _)) k
 
-set_option maxHeartbeats 4000000 in
 
 theorem locReal_typed (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word) (p : PlF D) (hMp : (M p).split ≠ none) :
     LocRealAt M δ u u' p := by

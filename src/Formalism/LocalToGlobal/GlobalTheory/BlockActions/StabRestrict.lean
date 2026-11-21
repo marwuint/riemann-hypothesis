@@ -11,7 +11,6 @@ open IsDedekindDomain
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
-set_option maxHeartbeats 4000000 in
 theorem stab_restrict (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP)
     (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl))
     (hγ : γ ∈ ((Tf.cls D.R.m le_rfl (Or.inr rfl)).stabI ((D.fm u).til c)).range)

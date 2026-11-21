@@ -38,7 +38,6 @@ theorem kTypes_insert {E : Type} [Field E] [NumberField E] [IsCMField E] {Ω : �
   · infer_instance
   · exact (h M).2 W hW
 
-set_option maxHeartbeats 4000000 in
 theorem readLimit_main (hPack : Pack) (hEF : EFinal) (hAV : ActVal) (hFH : FinHecke) (hVC : ValCont) (hIC : InfConv)
     (hIL : InfLim) (hRE : ReproEx) (hBO : BlockOperatorsProductAdjoint) (hCM : ConvMulSt) (hFin : FinSt) (hReal : RealiseSt) : ReadLimit := by
   intro E _ _ _

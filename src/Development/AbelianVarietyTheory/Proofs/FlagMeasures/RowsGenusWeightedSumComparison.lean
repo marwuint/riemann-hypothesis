@@ -32,7 +32,6 @@ theorem cardE (α : Type) [Nonempty α] :
   · rw [Nat.card_eq_zero_of_infinite, ENat.card_eq_top_of_infinite]
     simp
 
-set_option maxHeartbeats 4000000 in
 theorem rowsOrbC : GlobalTheory.TypeAsm.RowsOrbC := by
   intro D large₂ X Y u hS W HW hEmb φ hφ Λ₀ hΛ₀
   obtain ⟨e, he, heX⟩ := _root_.GlobalTheory.RowsOrb.ub_equiv_model D X u W HW hEmb

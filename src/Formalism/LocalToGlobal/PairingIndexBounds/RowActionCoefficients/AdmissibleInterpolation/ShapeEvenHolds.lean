@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.PairingIndexBounds.RowActionCoefficients.CoefProd
-import Mathlib
 
 open MvPolynomial
 

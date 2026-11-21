@@ -81,7 +81,6 @@ theorem ptRes_eq_zero_iff (v : S) (x : cohomology (gsRoots S ℓ) 2) :
 
 variable {ℓ} (hℓ : ℓ.Prime)
 
-set_option maxHeartbeats 4000000 in
 omit [NeZero ℓ] in
 include hℓS hℓ in
 

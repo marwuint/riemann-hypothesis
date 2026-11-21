@@ -166,7 +166,6 @@ namespace GlobalTheory.TypeAsm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open FramePf
 
-set_option maxHeartbeats 4000000 in
 
 theorem frameC_holds : FrameC := by
   intro D large₂ X Y u C hStd t N hAd

@@ -15,7 +15,6 @@ noncomputable section
 
 variable {K E : FiniteSubfield} [Fact (K ≤ E)]
 
-set_option maxHeartbeats 4000000 in
 
 theorem quadraticInv_infIdelesLocalRes_idelesResField_of_finrank_eq_one {v : InfinitePlace K.1}
     (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)

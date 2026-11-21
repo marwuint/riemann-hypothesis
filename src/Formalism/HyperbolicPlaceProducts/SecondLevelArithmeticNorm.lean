@@ -1,7 +1,6 @@
 import Formalism.HyperbolicPlaceProducts.Statement
 import Formalism.HyperbolicPlaceProducts.SubgroupIndexCounts.CardEqCardRangeNsmulMulCardKer
 import Formalism.HyperbolicPlaceProducts.SubgroupIndexCounts.SesquilinearDeterminantHolds
-import Mathlib
 import Formalism.HyperbolicPlaceProducts.SubgroupIndexCounts.SubgroupCount
 import Formalism.HyperbolicPlaceProducts.SubgroupIndexCounts.OmegaPow
 import Formalism.HyperbolicPlaceProducts.SubgroupIndexCounts.CountO

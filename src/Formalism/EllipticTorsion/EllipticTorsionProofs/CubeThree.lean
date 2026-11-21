@@ -378,7 +378,6 @@ namespace Formalism.ELL
 
 open CubeThreeAlt WeierstrassChordSeries
 
-set_option maxHeartbeats 4000000 in
 theorem chordDeterminantFactor_holds : CubeThree.{u} := by
   intro K _ W w F hw hF0 hch
   have hU := wSeriesSubstUnique_holds.{u}

@@ -171,7 +171,6 @@ namespace GlobalTheory.RowEx
 
 open GlobalTheory.Mem GlobalTheory.RowEx.CarryTr
 
-set_option maxHeartbeats 4000000 in
 
 theorem carryS : CarryS := by
   intro X X' T T' L L' μ₀ μ₀' ι hL sc G G' hG W W' hW S

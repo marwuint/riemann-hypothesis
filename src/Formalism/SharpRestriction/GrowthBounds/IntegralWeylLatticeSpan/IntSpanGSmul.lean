@@ -147,7 +147,6 @@ def RestLatO (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (I : CmpI
         colSpan (D.gat u w hg).O ((nAt (D.gat u w hg).P (locAt X u w hg I.B).rk (Gt.gat_pos u w hg)
           (fun τ => bc (tEL D τ) ((locAt X u w hg I.B).B⁻¹ * γ * B')) v s).map (I.embW u w hg))
 
-set_option maxHeartbeats 4000000 in
 
 theorem valIntRec_of {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : CmpIn D X} (hcore : WeylLatticeDescent)
     (hex : ∀ u w hg, ValEx ((T u).cls0).lev (embT D) D.what₂.embLL (D.gat u w hg)

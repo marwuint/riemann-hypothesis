@@ -1,5 +1,4 @@
 import Formalism.SatakeDualWeyl.Statement
-import Mathlib
 import Formalism.GL3MeanSquares.HookFormulaTorsion.InvariantKernelTraceVanishes
 
 noncomputable section

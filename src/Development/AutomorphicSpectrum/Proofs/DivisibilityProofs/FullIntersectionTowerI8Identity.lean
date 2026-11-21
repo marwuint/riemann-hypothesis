@@ -17,7 +17,6 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothContinuous
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentSwapSquareSystem
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCSqsys
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFlagXdegStatement
-import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpPair
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExistsX

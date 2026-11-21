@@ -1,5 +1,4 @@
 import Development.WeilBound.CoreStatements.HodgeTatePoints.RomNonunit
-import Mathlib
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TeichmullerCharacterExists
 import Development.WeilBound.CoreStatements.HodgeTatePoints.ProdDigits
 

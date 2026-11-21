@@ -167,7 +167,6 @@ private theorem exists_end_coe_eq_of_linear_on_submodule {X : Type*} (M : Submod
      map_add' := fun g h => Subtype.ext (hadd g g.2 h h.2)
      map_smul' := fun c g => Subtype.ext (hsmul c g g.2) }, fun _ => rfl⟩
 
-set_option maxHeartbeats 4000000 in
 private theorem laws_lemma_7 {D : D7} {V W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (τ : D.what₂.Tau) {s B : Mn V.rank} {s' B' : Mn W.rank} {ε : Fin V.rank → ℝ} {ε' : Fin W.rank → ℝ}
     (hε : ∀ a, ε a = 1 ∨ ε a = -1) (hε' : ∀ a, ε' a = 1 ∨ ε' a = -1) (hB : IsUnit B.det)

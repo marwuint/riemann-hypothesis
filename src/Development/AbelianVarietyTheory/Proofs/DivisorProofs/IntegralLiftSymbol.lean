@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
 import Formalism.HarderNarasimhan.StatementPl
-import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDataOfPositivity
 open CategoryTheory AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory

@@ -14,7 +14,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (Z : New D)
 
-set_option maxHeartbeats 4000000 in
 
 def hermRe (H : Formalism.L2.Herm.ColsHermS D) : Formalism.L2.Herm.ColsHermS (reD D Z) := by kcopy H
 

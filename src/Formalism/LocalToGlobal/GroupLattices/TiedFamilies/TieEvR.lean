@@ -94,7 +94,6 @@ def BlockRationalityAtPlace (X : Formalism.L2.Herm.Herm0 D) (Gt : GatTies D) (u 
   BlockRational (D.gat u w hg).P (locAt X u w hg B).rk (Gt.gat_pos u w hg) (gramC (gramN D 0 (Nat.zero_le _)) (embT D))
     (crdB (embT D) (locAt X u w hg B).B) D.what₂.embLL ((D.fm u).lam 0)
 
-set_option maxHeartbeats 4000000 in
 
 theorem evRatRep_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B : GL (Fin D.R.k) D.host.E)

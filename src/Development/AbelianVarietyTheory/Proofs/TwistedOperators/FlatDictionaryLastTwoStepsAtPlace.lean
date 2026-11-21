@@ -69,7 +69,6 @@ theorem combAt_renumber {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
 end GlobalTheory.LastPlace
 
 open GlobalTheory.LastPlace in
-set_option maxHeartbeats 4000000 in
 
 theorem GlobalTheory.FlatPlace.lastStep_eventually : Big fun ch => ChrP ch → ArrP ch → LocP ch → BesP ch → JacP ch → LastP ch := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩

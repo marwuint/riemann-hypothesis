@@ -18,7 +18,6 @@ def SameOrb {k n : Type} [Field k] [ValuativeRel k] [Fintype n] [DecidableEq n] 
     (M : Submodule 𝒪[k] (n → k)) (yb yb' : (n → k) ⧸ M) : Prop :=
   ∃ g ∈ J, ∃ y, Submodule.Quotient.mk y = yb ∧ Submodule.Quotient.mk (g.val.toBlocks₁₁ *ᵥ y) = yb'
 
-set_option maxHeartbeats 4000000 in
 
 structure QAt (v : VCom c) (χ : ℕ → (AE D)ˣ →* Circle) where
   k : Type

@@ -47,7 +47,6 @@ theorem ksForm_baseChange_crd {LL LL' Ks : Type} [Field LL] [Field LL'] [Field K
 
 end GlobalTheory
 
-set_option maxHeartbeats 4000000 in
 
 theorem GlobalTheory.ksForm_moved : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

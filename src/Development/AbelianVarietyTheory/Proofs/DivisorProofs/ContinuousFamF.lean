@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StExpDeriv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjTransposeSignFormDiagEqSignedSumCol
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivScale
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StConstHolds
-import Mathlib
 
 section
 

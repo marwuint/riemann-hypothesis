@@ -30,7 +30,6 @@ theorem isUnit_of_extE (Tf : FormsTiedSym D u Ch chOf) (δ : Matrix (Fin (D.R.N 
     rw [Matrix.mul_assoc, hQ, hP1]
   exact Matrix.isUnit_det_of_left_inverse hl
 
-set_option maxHeartbeats 4000000 in
 
 theorem til_injective (Tf : FormsTiedSym D u Ch chOf)
     (hSD : ∀ c, dualSet (sigD D : D.host.E →+* D.host.E) (gramP D) (Tf.clsP.lat c) = (Tf.clsP.lat c : Set (Fin (D.R.N D.R.m - 1) → D.host.E)))

@@ -58,7 +58,6 @@ lemma transMap_reesDeg_smul {V : X.Opens} (hV : IsAffineOpen V) (n d : ℕ) (r :
 variable {ι : Type u} (𝔘 : ι → X.Opens)
   (hU : ∀ (m : ℕ) (t : Fin (m + 1) → ι), IsAffineOpen (⨅ a, 𝔘 (t a))) [Finite ι] (p : ℕ)
 
-set_option maxHeartbeats 4000000 in
 include hF hU in
 
 theorem exists_transMap_eq_zero [IsProper (X ↘ Spec (.of A))] (hUtop : iSup 𝔘 = ⊤) :

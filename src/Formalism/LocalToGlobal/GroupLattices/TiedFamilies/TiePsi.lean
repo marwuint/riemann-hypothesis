@@ -30,7 +30,6 @@ end Gen
 
 variable {D : D7} (X : Formalism.L2.Herm.Herm0 D)
 
-set_option maxHeartbeats 4000000 in
 
 theorem chi_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B : GL (Fin D.R.k) D.host.E)

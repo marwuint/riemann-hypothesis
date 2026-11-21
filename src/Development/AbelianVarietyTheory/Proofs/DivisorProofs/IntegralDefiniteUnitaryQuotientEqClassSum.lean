@@ -101,7 +101,6 @@ theorem exists_compact_def (V : HSp D) (hs : V.SigOK) (hd : V.IsDefinite) :
 
 end Compact
 
-set_option maxHeartbeats 4000000 in
 
 theorem integral_eq_classSum : ∀ {D : D7} (V : HSp D) (n : ℕ) (ι : Formalism.MainNotions.StandardLatticesGL3.GA D n →* GA D V) (J : Subgroup (Formalism.MainNotions.StandardLatticesGL3.GA D n))
   (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)),

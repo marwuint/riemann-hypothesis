@@ -52,7 +52,6 @@ theorem coe_sum_sub {G X : Type} [AddCommGroup X] [Module ℂ X] {A : Submodule 
     (((e.sum fun b a => a • v b : A)) : X) = e.sum fun b a => a • (v b : X) := by
   simp only [Finsupp.sum, Submodule.coe_sum, Submodule.coe_smul]
 
-set_option maxHeartbeats 4000000 in
 
 theorem valOne_all : ∀ D : D7, ValOne D := by
   intro D ψ hψ σ S Q G₁ G₂ hG₁ hG₂ hK₁ hK₂ c₁ c₂ hc₁ hc₂ f₁ f₂ hvac φ f hφ hf hTy g hg h₁ hh₁ h₂ hh₂

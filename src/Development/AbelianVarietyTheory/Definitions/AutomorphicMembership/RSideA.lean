@@ -17,7 +17,6 @@ variable {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : T
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (w'.st Z').toD7.what₂.LL]
   {Xg : Finset (Gc B' w'.px → B'.LL)} {tr : TrI B' w'.px}
 
-set_option maxHeartbeats 4000000 in
 
 def RSideA (z : Dat (w.st Z) w.I hX T Wt) (Wt' : Set B'.places.Pl)
     (R' : RealDat3 (w'.st Z').toD7 (famR (w'.st Z') w'.I hX' (usedOf w'.I T' Wt') Xg tr) Ks) : Prop :=

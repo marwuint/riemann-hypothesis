@@ -33,7 +33,6 @@ theorem pinOm_cancel {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] {a
   simp only [← hv, smul_smul, Units.inv_mul, one_smul] at this
   exact this
 
-set_option maxHeartbeats 4000000 in
 
 theorem pinOm_holds : PinOm Zd u u' F0 what₂ := by
   intro γ Z F'₂ φ φ' Λ₂ hB β₀ hβ hfr hW hO p hm hm₂

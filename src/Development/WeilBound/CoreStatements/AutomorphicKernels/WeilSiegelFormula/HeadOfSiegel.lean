@@ -1,5 +1,4 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.WeilSiegelFormula.WeilSiegelSchwartz.EcHeisSch
-import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisCells
 import Development.WeilBound.CoreStatements.AutomorphicKernels.WeilSiegelFormula.WeilSiegelSchwartz.HermitianIntegrability.SiegelND
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PoissonHermMain

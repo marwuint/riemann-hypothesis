@@ -1,5 +1,4 @@
 import Formalism.PadicSubsetSums.CentralIdempotents.PrimitiveRootFifteenSubOneUnit
-import Mathlib
 import Formalism.GaloisIrreducibility.NoSolvableTransitive
 import Formalism.ResultantValuation.ResultantAdjugateProofs.Window
 import Formalism.ResultantValuation.ResultantAdjugateProofs.Parabolic

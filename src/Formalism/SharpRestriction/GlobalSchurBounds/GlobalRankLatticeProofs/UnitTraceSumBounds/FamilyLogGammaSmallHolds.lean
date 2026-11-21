@@ -10,6 +10,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalBasisAtPrime.MemPr
 
 namespace Formalism.MainNotions.GL3Theta
 
+open Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric
 end Formalism.MainNotions.GL3Theta
 
 namespace Formalism.MainNotions.GL3Theta

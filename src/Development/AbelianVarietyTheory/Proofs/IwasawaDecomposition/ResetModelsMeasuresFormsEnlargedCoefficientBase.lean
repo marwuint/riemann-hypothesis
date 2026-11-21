@@ -99,7 +99,6 @@ theorem forms_crdOver {L L' Ks : Type} [Field L] [NumberField L] [Field L'] [Num
     obtain rfl := eq_of_heq e
     exact h6 lp' y' y ey φ' φ ((hc _ _).1 hx)
 
-set_option maxHeartbeats 4000000 in
 
 theorem resetW : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl} {Wt' : Set B'.places.Pl}

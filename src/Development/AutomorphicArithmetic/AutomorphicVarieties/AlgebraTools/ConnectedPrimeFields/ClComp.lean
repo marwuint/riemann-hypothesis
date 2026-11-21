@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.IsLocalHom
-import Mathlib
 import ReciprocityTheory.CommutativeAlgebra.ChainConnInDim
 import ReciprocityTheory.CommutativeAlgebra.SaturatedChains.IsSaturatedChain
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.ConnectedPrimeFields.IsWeaklyRegularPairModOneLeft

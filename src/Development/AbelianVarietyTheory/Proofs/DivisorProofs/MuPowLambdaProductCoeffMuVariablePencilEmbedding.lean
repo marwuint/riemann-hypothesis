@@ -9,7 +9,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LambdaMonomialCoeff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DMuEqExtDerivation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MuCoeffPartialDerivMuEqSuccMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefMPencil
-import Mathlib
 
 section
 

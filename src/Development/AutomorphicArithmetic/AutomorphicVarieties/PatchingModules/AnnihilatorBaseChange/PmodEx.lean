@@ -5,7 +5,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.An
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.AnnihilatorBaseChange.YCplMemOf
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.AnnihilatorBaseChange.FibEquiv
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Patched
-import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.QRegScal
 
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core

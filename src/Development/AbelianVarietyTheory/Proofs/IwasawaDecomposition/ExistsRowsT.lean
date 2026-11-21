@@ -23,7 +23,6 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.Rw.St
 
-set_option maxHeartbeats 4000000 in
 
 theorem exists_rowsT : StepW (pinAnd HasPk) fun K B f T w => ∀ (P : Pre2 K w) (x : St P), (∀ j v, 1 ≤ j → j ≤ B.R.m → x.o.η j v = P.q.eta j v) → ∃ t : RowsT K w x.o.Z P.Wt x.s.p0, Nonempty (RXs t) ∧ t.hX = P.hX ∧ HEq t.r.z x.m.z ∧ HEq t.r.Y x.r.Y ∧ HEq t.r.Z.jW x.r.Z.jW := by
   refine StepW.of_all fun K B f T w hK hF hw P x hη => ?_

@@ -126,7 +126,6 @@ theorem entry_cong {D : D7} {r : ℕ} (g : GL (Fin r) (Lev.EAf D)) (w : Matrix (
   rw [← this]
   split_ifs <;> simp
 
-set_option maxHeartbeats 4000000 in
 
 theorem exists_level : ∀ {D : D7} (V : HSp D) (n : ℕ) (ι : Formalism.MainNotions.StandardLatticesGL3.GA D n →* GA D V) (J : Subgroup (Formalism.MainNotions.StandardLatticesGL3.GA D n)), V.gram = 1 →
   (∀ x, IsFinPt V (ι x) x) → Function.Injective ι → ι.range = GfC V → J ≤ intG D n → IsCongLevel J →

@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRigidifiedCub
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGrpPullbackPasteFactorisation
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSharpGen
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsSquareUnique
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveModel

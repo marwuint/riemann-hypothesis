@@ -117,7 +117,6 @@ end Gen
 end GlobalTheory.Mem.R3.Rw.LevExt
 
 open GlobalTheory.Mem.R3.Rw.LevExt in
-set_option maxHeartbeats 4000000 in
 
 theorem GlobalTheory.Mem.R3.Rw.LevExt.levSame_of_levOf : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}

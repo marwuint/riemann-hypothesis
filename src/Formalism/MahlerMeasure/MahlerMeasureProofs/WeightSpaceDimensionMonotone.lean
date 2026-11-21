@@ -2,7 +2,6 @@ import Formalism.MahlerMeasure.StatementTM
 import Formalism.MahlerMeasure.MahlerMeasureProofs.FreezeY
 import Formalism.MahlerMeasure.MahlerMeasureProofs.FreezeBij
 import Formalism.MahlerMeasure.MahlerMeasureProofs.FreezeInto
-import Mathlib
 
 namespace Formalism.GM.DimensionMonotonicity
 

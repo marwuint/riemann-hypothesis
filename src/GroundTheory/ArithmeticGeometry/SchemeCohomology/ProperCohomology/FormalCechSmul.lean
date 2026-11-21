@@ -48,7 +48,6 @@ lemma reesCoef_reesInr_smul {V : X.Opens} (hV : IsAffineOpen V) (r : reesAlgebra
 variable {ι : Type u} (𝔘 : ι → X.Opens)
   (hU : ∀ (m : ℕ) (t : Fin (m + 1) → ι), IsAffineOpen (⨅ a, 𝔘 (t a))) (p : ℕ)
 
-set_option maxHeartbeats 4000000 in
 
 lemma reesCoefFam_reesMul (r : reesAlgebra I) (N : ℕ) (x : cechH (reesPre I F) 𝔘 p) :
     (reesCoefFam I hF 𝔘 hU N).cechH p (cechHMap 𝔘 (modulesAbMap (reesMul I F r)).hom p x) =

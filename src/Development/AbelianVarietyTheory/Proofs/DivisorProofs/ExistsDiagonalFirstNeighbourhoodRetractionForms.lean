@@ -18,7 +18,6 @@ open GlobalTheory.SmoothLift
 
 attribute [local instance] opK isCentral_K isTower_K
 
-set_option maxHeartbeats 4000000 in
 
 theorem exists_retraction : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I) (X : Scheme.{0})
     (t : X ⟶ Sp R), ∃ (S : Thick κ t ⥤ Thick κ t) (u v : 𝟭 _ ⟶ S)
