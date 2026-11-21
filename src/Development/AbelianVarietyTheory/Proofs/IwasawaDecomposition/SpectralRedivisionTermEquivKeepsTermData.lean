@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowDict
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.PairVal
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.FourParts
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Saturated
-import Formalism.LocalToGlobal.IndefiniteReal.HeckeNonvanishing.Imports
 
 open scoped Classical
 open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.PackageTie2 Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.ColDict Formalism.L2.SG.RowDict Formalism.L2.Forms Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.L2.SG.ConcreteSettingExists GlobalTheory.Mem GlobalTheory.Mem.SRe
@@ -45,7 +44,7 @@ theorem re_massTerm : Formalism.L2.SG.PairVal.massTerm t = Formalism.L2.SG.PairV
 
 set_option maxHeartbeats 4000000 in
 theorem re_cTerm : Formalism.L2.SG.PairVal.cTerm (Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M) t = Formalism.L2.SG.PairVal.cTerm (Formalism.L2.SG.PairVal.vRdef (reD D Z) (wd Z u) (wd Z u') ((reX Z X).Fu (wd Z u)) ((reY Z Y).what₂ (wd Z u)) (reY Z Y).δ (reY Z Y).M) (eRT Z Y u u' t) := by
-  kexactB Eq.refl (Formalism.L2.SG.PairVal.cTerm (Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M) t)
+  with_unfolding_all exact (Eq.refl (Formalism.L2.SG.PairVal.cTerm (Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M) t) :)
 
 omit t in
 set_option maxHeartbeats 4000000 in

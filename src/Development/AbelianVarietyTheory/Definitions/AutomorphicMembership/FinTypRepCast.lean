@@ -80,7 +80,11 @@ section Chain
 variable {A : FamIn a.D.what₂.LL G Pl0 T a.D.R.m} {R : RealDat a.D A Ks}
 
 theorem topMult_tr (h : TopMultH R) : letI := alg b iK; TopMultH (real b R) := by
-  tr_via (fun m : type_of% (@MultT a.D) => topW (@m) R) (multT_eq b a) h
+  with_unfolding_all
+    have e := congrArg
+      (fun m : type_of% (@MultT a.D) => topW (@m) R)
+      (multT_eq b a)
+    exact (cast e (by exact (h :)) :)
 
 variable (F : Face a.D A) (tupT : a.D.what₂.Tup → T) (hm : 0 < a.D.R.m) (hTop : TopMultH R)
 
