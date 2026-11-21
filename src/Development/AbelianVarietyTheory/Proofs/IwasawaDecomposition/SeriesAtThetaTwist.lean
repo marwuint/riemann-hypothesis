@@ -318,16 +318,16 @@ variable {B : Base} {C : Cols B} {c : Late B C} {a : NStage B C c.W} (b : NStage
 private theorem norm_to (h : IsNorm Rl v₀ X ν) :
     @IsNorm (lt c b).D Γ i1 i2 Pl0 I0 T (famInThreeCoefficientChange (a := lt c a) (lt c b) A3) Ks i3 i4 (alg (a := lt c a) (lt c b) iK)
       (real3 (a := lt c a) (lt c b) Rl) ((by with_unfolding_all exact (v₀ :))) ((by with_unfolding_all exact (j :))) ((by with_unfolding_all exact ((base (a := lt c a) (lt c b) X) :))) ν := by
-  delta IsNorm IsScale
+  delta IsNorm IsScale at h ⊢
   rewrite [famTie_eq (lt c a) (lt c b)]
-  kexactB h
+  with_unfolding_all exact h
 
 private theorem norm_from
     (h : @IsNorm (lt c b).D Γ i1 i2 Pl0 I0 T (famInThreeCoefficientChange (a := lt c a) (lt c b) A3) Ks i3 i4 (alg (a := lt c a) (lt c b) iK)
       (real3 (a := lt c a) (lt c b) Rl) ((by with_unfolding_all exact (v₀ :))) ((by with_unfolding_all exact (j :))) ((by with_unfolding_all exact ((base (a := lt c a) (lt c b) X) :))) ν) : IsNorm Rl v₀ X ν := by
-  delta IsNorm IsScale at h
+  delta IsNorm IsScale at h ⊢
   rewrite [famTie_eq (lt c a) (lt c b)] at h
-  kexactB h
+  with_unfolding_all exact h
 
 end L3
 

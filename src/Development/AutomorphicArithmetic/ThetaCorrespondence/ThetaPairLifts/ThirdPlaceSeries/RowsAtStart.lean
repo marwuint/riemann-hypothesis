@@ -88,7 +88,14 @@ def normalizedRowDatum : _root_.GlobalTheory.Mem.Top.Bl.NormRealisationData (D :
   nexp := _root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l
   hecke := _root_.GlobalTheory.HeightCounting.Fin3.localHeckeHeightData L l
   grp := _root_.GlobalTheory.HeightCounting.Fin3.grpTie_famR l L
-  rowLoc := (by with_unfolding_all exact ((al.loc ((by with_unfolding_all exact ((frameY Y) :))) ((by with_unfolding_all exact ((eq_of_heq (kc% hY.rep : HEq (repOf Y) (kc% (repOf x.r.Y) : type_of% (repOf Y)))) :)))) :))
+  rowLoc := by
+    let frame : Formalism.L2.RowFrame (withLoc L) := by
+      with_unfolding_all exact (frameY Y :)
+    have frameRep : frame.rep = repOf x.r.Y := by
+      apply eq_of_heq
+      with_unfolding_all exact hY.rep
+    have tied := al.loc frame frameRep
+    with_unfolding_all exact tied
   S_eq := (by with_unfolding_all exact ((SL_heq L l.rat) :))
   hL_eq := (by with_unfolding_all exact ((HEq.refl l.rat.In.hL) :))
   rep_eq := (by with_unfolding_all exact (hY.rep.symm :))
