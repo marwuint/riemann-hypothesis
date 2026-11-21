@@ -309,10 +309,9 @@ theorem smoothOrderOneCentersIsolated_of_principalizationCertificate {V : Vanish
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W}
     {Z : W.IdealSheafData} (h : PrincipalizationCertificate W p I m Mem Z) :
     SmoothOrderOneCentersIsolated V W p I m Mem Z := by
-  refine PrincipalizationCertificate.rec
-    (motive_1 := fun W p I m Mem Z _ => SmoothOrderOneCentersIsolated V W p I m Mem Z)
-    (motive_2 := fun W p N μ Mem Z _ => SmoothOrderOneCentersIsolated V W p N μ Mem Z)
-    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ h
+  refine @Certificate.rec k ‹Field k›
+    (fun _ W p I m Mem Z _ => SmoothOrderOneCentersIsolated V W p I m Mem Z)
+    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ .principalization W p I m Mem Z h
   · intro W p I m Mem Z hZM C hp hm hsm hcomp hxi hdisj hagree hpt
     exact (Set.disjoint_left.mp hdisj C.memPt) (hZM hpt)
   · intro W p I m Mem Z hm2 C hp hm hsm hcomp hxi hdisj hagree hpt

@@ -530,10 +530,9 @@ theorem orderOneCentersIsolated_of_principalizationCertificate {V : VanishingAss
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
     {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W} {Z : W.IdealSheafData}
     (h : PrincipalizationCertificate W p I m Mem Z) : OrderOneCentersIsolated V W p I m Mem Z := by
-  refine PrincipalizationCertificate.rec
-    (motive_1 := fun W' p' I' m' Mem' Z' _ => OrderOneCentersIsolated V W' p' I' m' Mem' Z')
-    (motive_2 := fun W' p' N' μ' Mem' Z' _ => OrderOneCentersIsolated V W' p' N' μ' Mem' Z')
-    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ h
+  refine @Certificate.rec k ‹Field k›
+    (fun _ W' p' I' m' Mem' Z' _ => OrderOneCentersIsolated V W' p' I' m' Mem' Z')
+    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ .principalization W p I m Mem Z h
   · intro W' p' I' m' Mem' Z' hmem
     exact orderOneCentersIsolated_of_support_subset I' m' hmem
   · intro W' p' I' m' Mem' Z' hm

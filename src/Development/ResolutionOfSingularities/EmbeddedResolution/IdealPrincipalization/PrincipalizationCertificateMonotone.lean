@@ -11,12 +11,13 @@ private theorem forall_principalizationCertificate_of_subset {k : Type u} [Field
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
     {Mem : Set ↥W} {Z : W.IdealSheafData} (h : PrincipalizationCertificate W p I m Mem Z) :
     ∀ Mem' : Set ↥W, Mem ⊆ Mem' → PrincipalizationCertificate W p I m Mem' Z := by
-  refine PrincipalizationCertificate.rec
-    (motive_1 := fun W p I m Mem Z _ =>
-      ∀ Mem' : Set ↥W, Mem ⊆ Mem' → PrincipalizationCertificate W p I m Mem' Z)
-    (motive_2 := fun W p N μ Mem Z _ =>
-      ∀ Mem' : Set ↥W, Mem ⊆ Mem' → OrderCertificate W p N μ Mem' Z)
-    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ h
+  refine @Certificate.rec k ‹Field k›
+    (fun tag W p I m Mem Z _ =>
+      ∀ Mem' : Set ↥W, Mem ⊆ Mem' →
+        match tag with
+        | .principalization => PrincipalizationCertificate W p I m Mem' Z
+        | .order => OrderCertificate W p I m Mem' Z)
+    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ .principalization W p I m Mem Z h
   · intro W p I m Mem Z hmem Mem' hsub
     exact PrincipalizationCertificate.memory (Set.Subset.trans hmem hsub)
   · intro W p I m Mem Z hm Mem' _
@@ -54,10 +55,13 @@ private theorem forall_orderCertificate_of_subset {k : Type u} [Field k] {W : Sc
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
     {Mem : Set ↥W} {Z : W.IdealSheafData} (h : OrderCertificate W p N μ Mem Z) :
     ∀ Mem' : Set ↥W, Mem ⊆ Mem' → OrderCertificate W p N μ Mem' Z := by
-  refine @OrderCertificate.rec k ‹Field k›
-    (fun W p I m Mem Z _ => ∀ Mem' : Set ↥W, Mem ⊆ Mem' → PrincipalizationCertificate W p I m Mem' Z)
-    (fun W p N μ Mem Z _ => ∀ Mem' : Set ↥W, Mem ⊆ Mem' → OrderCertificate W p N μ Mem' Z)
-    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ W p N μ Mem Z h
+  refine @Certificate.rec k ‹Field k›
+    (fun tag W p I m Mem Z _ =>
+      ∀ Mem' : Set ↥W, Mem ⊆ Mem' →
+        match tag with
+        | .principalization => PrincipalizationCertificate W p I m Mem' Z
+        | .order => OrderCertificate W p I m Mem' Z)
+    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ .order W p N μ Mem Z h
   · intro W p I m Mem Z hmem Mem' hs
     exact PrincipalizationCertificate.memory (Set.Subset.trans hmem hs)
   · intro W p I m Mem Z hm Mem' _

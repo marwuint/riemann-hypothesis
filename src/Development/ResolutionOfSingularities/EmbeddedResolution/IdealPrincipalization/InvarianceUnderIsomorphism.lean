@@ -260,11 +260,16 @@ private theorem principalizationCertificate_comap_iso (hT : OrderCertificateIsoI
     (Mem : Set ↥W) (Z : W.IdealSheafData) (h : PrincipalizationCertificate W p I m Mem Z) :
     ∀ (W' : Scheme.{u}) (e : W' ≅ W),
       PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
-  @PrincipalizationCertificate.rec k _
-    (fun W p I m Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W),
-      PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom))
-    (fun W p N μ Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W),
-      OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom))
+  @Certificate.rec k ‹Field k›
+    (fun tag W p I m Mem Z _ =>
+      ∀ (W' : Scheme.{u}) (e : W' ≅ W),
+        match tag with
+        | .principalization =>
+          PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m
+            (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom)
+        | .order =>
+          OrderCertificate W' (e.hom ≫ p) (I.comap e.hom) m
+            (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom))
     (fun {W p I m Mem Z} h => principalizationCertificate_comap_iso_of_support_subset W p I m Mem Z h)
     (fun {W p I m Mem Z} hm => principalizationCertificate_comap_iso_of_two_le W p I m Mem Z hm)
     (fun {W p I m Mem Z} M N μ hI hM hmu hZ hcert ihc =>
@@ -278,18 +283,23 @@ private theorem principalizationCertificate_comap_iso (hT : OrderCertificateIsoI
     (fun {W p N μ Mem Z} U hU H hH hNsubH hZH J hJnone hJcomp hJloc hJcert ihc =>
       orderCertificate_comap_iso_of_smoothDivisor_cover hT W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc
         hJcert ihc)
-    W p I m Mem Z h
+    .principalization W p I m Mem Z h
 
 private theorem orderCertificate_comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ)
     (Mem : Set ↥W) (Z : W.IdealSheafData) (h : OrderCertificate W p N μ Mem Z) :
     ∀ (W' : Scheme.{u}) (e : W' ≅ W),
       OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
-  @OrderCertificate.rec k _
-    (fun W p I m Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W),
-      PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom))
-    (fun W p N μ Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W),
-      OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom))
+  @Certificate.rec k ‹Field k›
+    (fun tag W p I m Mem Z _ =>
+      ∀ (W' : Scheme.{u}) (e : W' ≅ W),
+        match tag with
+        | .principalization =>
+          PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m
+            (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom)
+        | .order =>
+          OrderCertificate W' (e.hom ≫ p) (I.comap e.hom) m
+            (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom))
     (fun {W p I m Mem Z} h => principalizationCertificate_comap_iso_of_support_subset W p I m Mem Z h)
     (fun {W p I m Mem Z} hm => principalizationCertificate_comap_iso_of_two_le W p I m Mem Z hm)
     (fun {W p I m Mem Z} M N μ hI hM hmu hZ hcert ihc =>
@@ -303,7 +313,7 @@ private theorem orderCertificate_comap_iso (hT : OrderCertificateIsoInvariantOfM
     (fun {W p N μ Mem Z} U hU H hH hNsubH hZH J hJnone hJcomp hJloc hJcert ihc =>
       orderCertificate_comap_iso_of_smoothDivisor_cover hT W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc
         hJcert ihc)
-    W p N μ Mem Z h
+    .order W p N μ Mem Z h
 
 theorem PrincipalizationCertificate.comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     {W W' : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}

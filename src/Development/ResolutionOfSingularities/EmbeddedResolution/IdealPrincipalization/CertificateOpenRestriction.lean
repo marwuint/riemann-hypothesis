@@ -391,8 +391,11 @@ private theorem comapPrincipalizationCertificate_of_principalizationCertificate 
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
     {Mem : Set ↥W} {Z : W.IdealSheafData} (h : PrincipalizationCertificate W p I m Mem Z) :
     IsPrincipalizationCertificateOnOpens W p I m Mem Z :=
-  PrincipalizationCertificate.rec (motive_1 := fun W p I m Mem Z _ => IsPrincipalizationCertificateOnOpens W p I m Mem Z)
-    (motive_2 := fun W p N μ Mem Z _ => IsOrderCertificateOnOpens W p N μ Mem Z)
+  @Certificate.rec k ‹Field k›
+    (fun tag W p I m Mem Z _ =>
+      match tag with
+      | .principalization => IsPrincipalizationCertificateOnOpens W p I m Mem Z
+      | .order => IsOrderCertificateOnOpens W p I m Mem Z)
     (fun h => comapPrincipalizationCertificate_of_support_subset h)
     (fun hm => comapPrincipalizationCertificate_of_two_le hm)
     (fun M N μ hI hM hmu hZ _ ih => comapPrincipalizationCertificate_of_mul_of_order M N μ hI hM hmu hZ ih)
@@ -402,14 +405,17 @@ private theorem comapPrincipalizationCertificate_of_principalizationCertificate 
     (fun U hU _ ih => comapOrderCertificate_of_open_cover U hU ih)
     (fun U hU H hH hNsubH hZH J hJnone hJcomp hJloc _ ih =>
       comapOrderCertificate_of_smoothDivisor_cover hin U hU H hH hNsubH hZH J hJnone hJcomp hJloc ih)
-    h
+    .principalization W p I m Mem Z h
 
 private theorem comapOrderCertificate_of_orderCertificate {k : Type u} [Field k] (hin : OpenImmersionStability k)
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
     {Mem : Set ↥W} {Z : W.IdealSheafData} (h : OrderCertificate W p N μ Mem Z) :
     IsOrderCertificateOnOpens W p N μ Mem Z :=
-  OrderCertificate.rec (motive_1 := fun W p I m Mem Z _ => IsPrincipalizationCertificateOnOpens W p I m Mem Z)
-    (motive_2 := fun W p N μ Mem Z _ => IsOrderCertificateOnOpens W p N μ Mem Z)
+  @Certificate.rec k ‹Field k›
+    (fun tag W p I m Mem Z _ =>
+      match tag with
+      | .principalization => IsPrincipalizationCertificateOnOpens W p I m Mem Z
+      | .order => IsOrderCertificateOnOpens W p I m Mem Z)
     (fun h => comapPrincipalizationCertificate_of_support_subset h)
     (fun hm => comapPrincipalizationCertificate_of_two_le hm)
     (fun M N μ hI hM hmu hZ _ ih => comapPrincipalizationCertificate_of_mul_of_order M N μ hI hM hmu hZ ih)
@@ -419,7 +425,7 @@ private theorem comapOrderCertificate_of_orderCertificate {k : Type u} [Field k]
     (fun U hU _ ih => comapOrderCertificate_of_open_cover U hU ih)
     (fun U hU H hH hNsubH hZH J hJnone hJcomp hJloc _ ih =>
       comapOrderCertificate_of_smoothDivisor_cover hin U hU H hH hNsubH hZH J hJnone hJcomp hJloc ih)
-    h
+    .order W p N μ Mem Z h
 
 theorem PrincipalizationCertificate.comap_of_openImmersionStability {k : Type u} [Field k]
     (hin : OpenImmersionStability k) {W : Scheme.{u}}
