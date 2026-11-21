@@ -29,11 +29,11 @@ theorem mvSee : MvSee := by
   letI := alg (reL a Z) iK
   refine ⟨?_, ?_, ?_⟩
   · exact (by with_unfolding_all exact (h1 :))
-  · kexactB h2
+  · with_unfolding_all exact (h2 :)
   · refine ⟨(by with_unfolding_all exact (σ :)), (by with_unfolding_all exact (red :)), ?_, ⟨?_, ?_⟩, ?_⟩
     · exact (by with_unfolding_all exact (hA :))
     · exact (by with_unfolding_all exact (hr :))
-    · kexactB hB'
+    · with_unfolding_all exact (hB' :)
     · exact (by with_unfolding_all exact (hC :))
 
 end GlobalTheory.Mem.SRe
