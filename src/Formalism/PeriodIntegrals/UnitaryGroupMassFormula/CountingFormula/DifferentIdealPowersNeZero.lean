@@ -1,5 +1,6 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.DifferentIdealPowers
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarPairOrthogonal.ExistsNeZeroMem
 
 open NumberField Module Formalism.MainNotions.S
 
@@ -79,10 +80,8 @@ theorem sStable_ddS (D : Formalism.BasicNotions.D7) : SStable (ddS D) := by
   rw [← hc, ← Ideal.map_map]
   exact Ideal.mem_map_of_mem _ hy
 
-theorem ddS_ne_zero' (D : Formalism.BasicNotions.D7) : ddS D ≠ 0 := by
-  unfold ddS
-  rw [ne_eq, FractionalIdeal.coeIdeal_eq_zero]
-  exact Ideal.map_ne_bot_of_ne_bot (differentIdeal_ne_bot)
+theorem ddS_ne_zero' (D : Formalism.BasicNotions.D7) : ddS D ≠ 0 :=
+  PI.ScalarPairDr.W.ddS_ne_zero D
 
 theorem stable_differentIdealPowers (D : Formalism.BasicNotions.D7) (i : Fin (D.R.rS + 1)) : SStable (differentIdealPowers D i) := by
   induction i using Fin.lastCases with

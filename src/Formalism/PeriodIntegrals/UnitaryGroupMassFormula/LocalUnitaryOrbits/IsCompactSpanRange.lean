@@ -1,6 +1,7 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbits.MemUniformizerHermitianIdeal
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FirstStatementA
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassOrder.ContinuousHRRight
 
 noncomputable section
 
@@ -51,9 +52,8 @@ theorem oEv_eq_span : OEv (E := E) v = ((Submodule.span (v.adicCompletionInteger
     rintro _ ⟨i, rfl⟩
     exact ⟨_, Set.mem_univ _, rfl⟩
 
-theorem isCompact_oEv : IsCompact (OEv (E := E) v) := by
-  rw [oEv_eq_span]
-  exact isCompact_span_range v _
+theorem isCompact_oEv : IsCompact (OEv (E := E) v) :=
+  LocMassOrdKv.isCompact_oev v
 
 theorem isOpen_oEv : IsOpen (OEv (E := E) v) := by
   classical

@@ -1,6 +1,7 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SesquilinearRowSplitting.CoreStep
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CMTraceSurjective.IsTrMulConjOfMem
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarPairOrthogonal.ExistsNeZeroMem
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S
 
@@ -85,9 +86,8 @@ theorem alg_inj (D : D7) : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 
   ext
   simpa using h'
 
-theorem ddS_ne (D : D7) : ddS D ≠ 0 := by
-  rw [ddS, Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective (alg_inj D)]
-  exact differentIdeal_ne_bot
+theorem ddS_ne (D : D7) : ddS D ≠ 0 :=
+  PI.ScalarPairDr.W.ddS_ne_zero D
 
 theorem ddS_cstab (D : D7) : CStab (ddS D) := by
   have hfix : PI.CMT.conj.comp (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) =

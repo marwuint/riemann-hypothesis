@@ -1,6 +1,7 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbits.SdVolWOfTop
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.AdeleLC
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassOrder.ContinuousHRRight
 
 noncomputable section
 
@@ -52,50 +53,8 @@ theorem isOpen_oev : IsOpen (OEv (E := E) v) := by
   rw [← coe_oevS]
   exact AddSubgroup.isOpen_mono (latA_le_oevS v b hb) (isOpen_latA v b)
 
-theorem isCompact_oev : IsCompact (OEv (E := E) v) := by
-  haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
-  obtain ⟨m, s, hs⟩ := Module.Finite.exists_fin (R := ℤ) (M := 𝓞 E)
-  set g : Fin m → Fv F v ⊗[F] E := fun i => inclR (F := F) (Fv F v) ((s i : 𝓞 E) : E) with hg
-  have e : OEv (E := E) v = (fun c : Fin m → Fv F v => ∑ i, c i • g i) ''
-      Set.pi Set.univ (fun _ => (v.adicCompletionIntegers F : Set (Fv F v))) := by
-    ext z
-    constructor
-    · intro hz
-      have h1 : z ∈ Submodule.span (v.adicCompletionIntegers F) (Set.range g) := by
-        refine (Submodule.span_le.2 ?_) hz
-        rintro _ ⟨x, _, rfl⟩
-        have hx : x ∈ Submodule.span ℤ (Set.range s) := by rw [hs]; exact Submodule.mem_top
-        induction hx using Submodule.span_induction with
-        | mem y hy =>
-          obtain ⟨i, rfl⟩ := hy
-          exact Submodule.subset_span ⟨i, rfl⟩
-        | zero => simpa using Submodule.zero_mem _
-        | add p q _ _ hp hq =>
-          have e1 : inclR (F := F) (Fv F v) (((p + q : 𝓞 E)) : E) =
-              inclR (F := F) (Fv F v) (p : E) + inclR (F := F) (Fv F v) (q : E) := by
-            rw [← map_add]
-            rfl
-          show inclR (F := F) (Fv F v) (((p + q : 𝓞 E)) : E) ∈ _
-          rw [e1]
-          exact Submodule.add_mem _ (hp trivial) (hq trivial)
-        | smul r p _ hp =>
-          have e1 : inclR (F := F) (Fv F v) (((r • p : 𝓞 E)) : E) =
-              r • inclR (F := F) (Fv F v) (p : E) := by
-            rw [show ((r • p : 𝓞 E) : E) = r • (p : E) from map_zsmul (algebraMap (𝓞 E) E) r p,
-              map_zsmul]
-          show inclR (F := F) (Fv F v) (((r • p : 𝓞 E)) : E) ∈ _
-          rw [e1]
-          exact zsmul_mem (hp trivial) r
-      rw [Submodule.mem_span_range_iff_exists_fun] at h1
-      obtain ⟨c, rfl⟩ := h1
-      exact ⟨fun i => (c i : Fv F v), fun i _ => (c i).2, rfl⟩
-    · rintro ⟨c, hc, rfl⟩
-      exact Submodule.sum_mem _ fun i _ =>
-        Submodule.smul_mem _ (⟨c i, hc i (Set.mem_univ _)⟩ : v.adicCompletionIntegers F)
-          (inclR_mem_oev v (s i))
-  rw [e]
-  exact (isCompact_univ_pi fun _ => PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v).image
-    (continuous_finsetSum _ fun i _ => by fun_prop)
+theorem isCompact_oev : IsCompact (OEv (E := E) v) :=
+  LocMassOrdKv.isCompact_oev v
 
 variable (σ : E →ₐ[F] E)
 

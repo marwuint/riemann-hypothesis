@@ -3,6 +3,7 @@ import Formalism.PeriodIntegrals.PairValDefs
 import Formalism.PeriodIntegrals.NormRepChange
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.NormRepresentationChange.Development
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.NormRepresentationChange.NlamFrameMem
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarPairOrthogonal.ExistsNeZeroMem
 
 noncomputable section
 
@@ -116,14 +117,8 @@ theorem coefX_of_mem_XS (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) {v 
     rw [e, coefX_smul F0 hy.1]
     exact fi_smul _ o (hy.2 a)
 
-theorem ddS_ne_zero (D : D7) : ddS D ≠ 0 := by
-  unfold ddS
-  have hinj : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) := by
-    first
-    | exact FaithfulSMul.algebraMap_injective _ _
-    | exact NoZeroSMulDivisors.algebraMap_injective _ _
-  rw [Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective hinj]
-  exact differentIdeal_ne_bot
+theorem ddS_ne_zero (D : D7) : ddS D ≠ 0 :=
+  PI.ScalarPairDr.W.ddS_ne_zero D
 
 theorem frac_lemma (D : D7) (c : D.host.E) (m : ℤ) (h : ∀ x ∈ ddS D ^ m, x * c ∈ ddS D ^ (m - 1)) :
     ∀ δ ∈ ddS D, ∃ o : 𝓞 D.host.E, (o : D.host.E) = c * δ := by

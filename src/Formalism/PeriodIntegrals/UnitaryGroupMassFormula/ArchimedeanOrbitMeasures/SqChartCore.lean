@@ -61,10 +61,10 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 theorem sq_sig_inv (hσ : ∀ x, σ (σ x) = x) (x : R ⊗[F] E) : sigR R σ (sigR R σ x) = x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul r e => simp [sigR, hσ]
-  | add x y hx hy => rw [map_add, map_add, hx, hy]
+  change ((Algebra.TensorProduct.map (AlgHom.id F R) σ).comp
+    (Algebra.TensorProduct.map (AlgHom.id F R) σ)) x = x
+  rw [← Algebra.TensorProduct.map_id_comp, show σ.comp σ = AlgHom.id F E from AlgHom.ext hσ,
+    Algebra.TensorProduct.map_id, AlgHom.id_apply]
 
 theorem sq_gramR_mat {m : ℕ} (Y : Matrix (Fin m) (Fin M) (R ⊗[F] E)) (K : Matrix (Fin M) (Fin M) (R ⊗[F] E))
     (hK : K = JR R J) : gramR R σ J Y = Y.map (sigR R σ) * K * Yᵀ := by

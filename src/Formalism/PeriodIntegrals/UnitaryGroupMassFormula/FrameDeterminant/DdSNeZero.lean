@@ -1,6 +1,7 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FrameDeterminant.FrameB
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FrameDeterminant.DetOfFrame
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarPairOrthogonal.ExistsNeZeroMem
 
 noncomputable section
 
@@ -12,10 +13,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem ddS_ne_zero (D : D7) : ddS D ≠ 0 := by
-  unfold ddS
-  rw [Ne, FractionalIdeal.coeIdeal_eq_zero]
-  rw [Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]
-  exact differentIdeal_ne_bot
+theorem ddS_ne_zero (D : D7) : ddS D ≠ 0 :=
+  PI.ScalarPairDr.W.ddS_ne_zero D
 
 end PI.TripleFrameDeterminant.W

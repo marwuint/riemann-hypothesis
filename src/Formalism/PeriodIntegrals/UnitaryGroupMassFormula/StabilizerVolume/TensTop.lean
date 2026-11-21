@@ -171,10 +171,10 @@ variable (R : Type) [CommRing R] [Algebra F R]
 
 theorem sigR_invol (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (x : R ⊗[F] E) :
     sigR R σ (sigR R σ x) = x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a e => simp [sigR, hσ]
-  | add x y hx hy => rw [map_add, map_add, hx, hy]
+  change ((Algebra.TensorProduct.map (AlgHom.id F R) σ).comp
+    (Algebra.TensorProduct.map (AlgHom.id F R) σ)) x = x
+  rw [← Algebra.TensorProduct.map_id_comp, show σ.comp σ = AlgHom.id F E from AlgHom.ext hσ,
+    Algebra.TensorProduct.map_id, AlgHom.id_apply]
 
 theorem gramR_mem (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, σ (J j i) = J i j)

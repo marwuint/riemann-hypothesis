@@ -1,6 +1,7 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.VolStabFromSWS
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TensTop
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.TopoAF
 
 noncomputable section
 
@@ -23,11 +24,8 @@ theorem countable_ideal : Countable (Ideal (𝓞 F)) := by
     exact ⟨s, hs⟩
   exact hs.countable
 
-instance countable_spectrum : Countable (HeightOneSpectrum (𝓞 F)) := by
-  have := countable_ideal F
-  have hi : Function.Injective (fun v : HeightOneSpectrum (𝓞 F) => v.asIdeal) :=
-    fun v w h => HeightOneSpectrum.ext h
-  exact hi.countable
+instance countable_spectrum : Countable (HeightOneSpectrum (𝓞 F)) :=
+  PI.VolStabSW.TopoAF.countable_spectrum F
 
 variable {F} in
 instance separable_adicCompletion (v : HeightOneSpectrum (𝓞 F)) :
@@ -44,7 +42,7 @@ instance secondCountable_adicCompletion (v : HeightOneSpectrum (𝓞 F)) :
 
 theorem isOpen_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (v.adicCompletionIntegers F : Set (v.adicCompletion F)) :=
-  Valued.isOpen_valuationSubring _
+  PI.VolStabSW.TopoAF.isOpen_integers F v
 
 instance secondCountable_finiteAdeleRing : SecondCountableTopology (FiniteAdeleRing (𝓞 F) F) := by
   let R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F
