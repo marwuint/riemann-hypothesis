@@ -1,4 +1,5 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.RootMeasBig
+import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 
 open Matrix
 
@@ -37,21 +38,8 @@ theorem hs_sq (i : ℕ) : hs k r i * hs k r i = 1 := by
   unfold hs
   split_ifs <;> norm_num
 
-theorem Hpk_mul_self : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  have hi := i.isLt
-  rw [Matrix.mul_apply, Finset.sum_eq_single (⟨hτ k r i.val, hτ_lt i.val hi⟩ : Fin (2 * r + k + 1))]
-  · rw [Hpk_apply, Hpk_apply, Matrix.one_apply]
-    show (if hτ k r i.val = hτ k r i.val then hs k r i.val else 0) *
-      (if j.val = hτ k r (hτ k r i.val) then hs k r (hτ k r i.val) else 0) = if i = j then 1 else 0
-    rw [if_pos rfl, hτ_hτ i.val hi, hs_hτ i.val hi]
-    by_cases hij : i = j
-    · rw [if_pos (congrArg Fin.val hij).symm, if_pos hij, hs_sq]
-    · rw [if_neg (fun h => hij (Fin.ext h.symm)), if_neg hij, mul_zero]
-  · intro l _ hl
-    rw [Hpk_apply, if_neg (fun h => hl (Fin.ext h)), zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+theorem Hpk_mul_self : Hpk k r * Hpk k r = 1 :=
+  Formalism.QuantumDeterminants.GBasic.Hpk_sq k r
 
 theorem uh_left {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r)) :
     (Hpk k r * gᴴ * Hpk k r) * g = 1 := by

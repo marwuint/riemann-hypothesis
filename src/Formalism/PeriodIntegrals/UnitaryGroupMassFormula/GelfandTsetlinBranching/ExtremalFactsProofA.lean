@@ -18,11 +18,8 @@ theorem natW_add_A {N : ℕ} (lam : DomWeight N) (i : Fin N) :
   rw [dif_pos hN, Int.toNat_of_nonneg (by omega)]
   ring
 
-theorem natW_anti_A {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
-  intro i j hij
-  have := lam.anti hij
-  unfold DomWeight.natW
-  exact Int.toNat_le_toNat (by omega)
+theorem natW_anti_A {N : ℕ} (lam : DomWeight N) : Antitone lam.natW :=
+  fun _ _ hij => Int.toNat_le_toNat (sub_le_sub_right (lam.anti hij) _)
 
 theorem sqAct_mem_nabla_A (n : ℕ) (mu : DomWeight n) (g : GL (Fin n) ℂ)
     (s : MvPolynomial (Fin n × Fin n) ℂ) (hs : s ∈ nablaSq ℂ n mu) :
