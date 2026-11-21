@@ -41,8 +41,8 @@ theorem Mn.mul [IsDomain R] {M B : Matrix (Fin N) (Fin N) R} (h : Mn M) (hB : B.
     rfl
   rw [e, det_mul]
   refine mul_ne_zero (h P i hP) ?_
-  rw [det_of_upperTriangular hB, Finset.prod_ne_zero_iff] at hd
-  rw [det_of_upperTriangular (M := B.submatrix (Subtype.val : {a // P a} → Fin N) Subtype.val) fun a b e => hB e,
+  rw [Matrix.det_of_isUpperTriangular hB, Finset.prod_ne_zero_iff] at hd
+  rw [Matrix.det_of_isUpperTriangular (M := B.submatrix (Subtype.val : {a // P a} → Fin N) Subtype.val) fun a b e => hB e,
     Finset.prod_ne_zero_iff]
   exact fun a _ => hd _ (Finset.mem_univ _)
 

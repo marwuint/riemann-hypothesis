@@ -227,7 +227,7 @@ theorem dict_early (hV : F.Valid L₁ N₁) (i : Fin (segN F j)) :
   have hr := r_le_segN hV j
   obtain ⟨k, hk⟩ := segE_surj_lemma_9 j (frj_mem hV j 0 hr0)
   have hkv := (dict_tau hV k ⟨0, hr0⟩).mp hk
-  rw [← hk, segE_lt_lemma_7, Fin.lt_iff_val_lt_val, hkv]
+  rw [← hk, segE_lt_lemma_7, Fin.lt_def, hkv]
   show i.val < segN F j - r + 0 ↔ i.val < segN F j - r
   omega
 

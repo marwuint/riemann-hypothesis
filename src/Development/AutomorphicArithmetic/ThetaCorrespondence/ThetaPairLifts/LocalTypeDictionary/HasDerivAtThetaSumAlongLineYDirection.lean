@@ -72,7 +72,7 @@ theorem hasDerivAt_thetaSum_along_line_y_direction : _root_.GlobalTheory.FunPr.T
       refine ((((ev _).tendsto g).comp hlim).mul_const (r x)).congr' (Filter.Eventually.of_forall fun t => ?_)
       simp only [Function.comp_apply, tens]
       rw [slope_def_module]
-      simp only [SchwartzMap.smul_apply, SchwartzMap.sub_apply, sub_zero, Complex.real_smul]
+      simp only [_root_.smul_apply, _root_.sub_apply, sub_zero, Complex.real_smul]
       ring
     have h3 : (fun t : ℝ => tens (evI F) (⇑(c t)) r x) =
         fun t => om (γ (Multiplicative.ofAdd t), 1) (tens (evI F) (⇑f) r) x := by

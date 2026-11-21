@@ -30,7 +30,7 @@ theorem finite_over (p : ℕ) (hp : p ≠ 0) :
     rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
     exact_mod_cast hp
   refine ⟨(Ideal.finite_factors h0).toFinset, fun w => ?_⟩
-  rw [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_span_singleton]
+  rw [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Ideal.dvd_span_singleton]
 
 end GlobalTheory.HilbertThetaSeries.DelGen
 

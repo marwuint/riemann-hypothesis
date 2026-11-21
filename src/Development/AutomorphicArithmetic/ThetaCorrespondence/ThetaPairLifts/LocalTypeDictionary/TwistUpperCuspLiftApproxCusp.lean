@@ -59,7 +59,7 @@ theorem upperCusp_lift_approx_cusp : GlobalTheory.IndefiniteRowSideFullHecke.Cus
     rw [e']
     exact GlobalTheory.UpArrowConv.conj_thetaKO_mul_integrableOn hP.cuspRapidDecay hR.inf hω hΦ hm.1.1 hm.2 hv.1 hv.2 _
   refine ⟨n, F, v, hF, hI, fun h hh => ?_⟩
-  rw [← integral_finset_sum _ (fun l _ => hI l h), ← integral_sub (hI0 h) (integrable_finset_sum _ fun l _ => hI l h)]
+  rw [← MeasureTheory.integral_finsetSum _ (fun l _ => hI l h), ← integral_sub (hI0 h) (MeasureTheory.integrable_finsetSum _ fun l _ => hI l h)]
   have hpt : ∀ g ∈ (G.mP i).fd, ‖starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * φ g -
       ∑ l, starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F l (v l) g‖ ≤ |B| * δ := by
     intro g _

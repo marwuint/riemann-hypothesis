@@ -109,7 +109,7 @@ theorem exists_log_pole_along_boundary (hP : _root_.GlobalTheory.CovTop.Hypothes
   have hwU : ∀ b, ⊤ ≤ (frX (w b) ≫ TF.Y.j) ⁻¹ᵁ U.1 := fun b =>
     eb b ▸ FlagMod.le_preimage_map _ hc.2.1 (hzO b W hzW)
   have hdet : ∀ σ, ((N σ).map (ev z W hzW)).det = 1 := fun σ => by
-    rw [Matrix.det_of_upperTriangular fun i j hij => by rw [Matrix.map_apply, hc.2.2.2.2.2.1 σ i j hij, map_zero]]
+    rw [Matrix.det_of_isUpperTriangular fun i j hij => by rw [Matrix.map_apply, hc.2.2.2.2.2.1 σ i j hij, map_zero]]
     simp [hc.2.2.2.2.2.2.1]
   have hh := hhor x K P₀ P hU _ hdet hP₀ hB (fun b => w (.inl b)) (fun b => hwU _) hw.1
   have eP : z ≫ toBase TF Z = frX P₀ ≫ TF.Y.j := by

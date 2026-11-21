@@ -123,7 +123,7 @@ theorem datExS_evLg (h1 : GlobalTheory.Published.DiscreteSeriesCover) (h2 : Glob
   have hsel : SelHalf I := selHalf_of_pin pin
   have hfin : Wt.Finite := GlobalTheory.Mem.Top.TwFin.finite_pl B T.pl
   have hconj : ∀ v ∈ Wt, B.places.conj v ∈ Wt :=
-    fun v hv => by simpa only [hWt, Set.mem_setOf_eq, GlobalTheory.Mem.Top.TwFin.resChar_conj] using hv
+    fun v hv => by simpa only [hWt, Set.mem_ofPred_eq, GlobalTheory.Mem.Top.TwFin.resChar_conj] using hv
   have hch : Fld.charField f ≤ B.KsC := (GlobalTheory.Mem.Base.KsExact.lower w.exact).2.2.1
   have hval : Formalism.L2.Host.ValLL0 X.toD7 (Fr.at X f) := w.val _ _ _ _ _ _
   obtain ⟨C, alg, hPin, hCe, hCL, hCK, hCE, hLJ, hAT, hVal, hmu⟩ := _root_.GlobalTheory.CoreExact.exists_core_exact X f hch hval hVol

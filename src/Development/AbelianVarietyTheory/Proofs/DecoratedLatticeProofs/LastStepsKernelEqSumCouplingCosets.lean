@@ -78,7 +78,7 @@ theorem kernel_eq_sum : ∀ (D : D7) (c : Comm D) (v : VCom c) χ (Q : QAt v χ)
       rcases q with q | q
       · exact hx r q
       · exact q.elim0
-    simp only [O₂, O₂', Set.indicator_apply, Set.mem_setOf_eq, hx]
+    simp only [O₂, O₂', Set.indicator_apply, Set.mem_ofPred_eq, hx]
   rw [a₁, a₂, a₃, ← hX₁ O₁ rfl, ← hX₂ O₂ rfl]
   unfold Comm.lst
   rw [b₁, b₁', b₂, b₂']

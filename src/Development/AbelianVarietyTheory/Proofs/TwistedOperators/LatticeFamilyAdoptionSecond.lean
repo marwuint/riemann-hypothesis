@@ -743,7 +743,7 @@ theorem lattice_of_lifts : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi
         have h8 := Bs.sum_equivFun ⟨y, hy⟩
         have h9 : ((∑ k, Bs.equivFun ⟨y, hy⟩ k • Bs k : B.Q.Rl.toRealDat.WL B.Q.F.lv2 false i) : Fin (B.Q.Rl.nW i) → D.what₂.LL) = y :=
           congrArg Subtype.val h8
-        rw [AddSubmonoidClass.coe_finset_sum] at h9
+        rw [AddSubmonoidClass.coe_finsetSum] at h9
         exact h9
       refine ⟨x, ?_⟩
       rw [heM]

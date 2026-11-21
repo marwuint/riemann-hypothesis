@@ -156,7 +156,7 @@ theorem mem_rel_of_isKFinVec : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A 
     rw [integral_congr_ae (ae_of_all _ e1),
       integral_mul_left_eq_self (μ := νK) (fun k' : Khat A a => e (k₀⁻¹ * k') * swSec A B om ν 𝓨 h k') k₀]
     simp_rw [hker, Finset.sum_mul]
-    rw [integral_finset_sum _ fun i _ => hint _ (by
+    rw [MeasureTheory.integral_finsetSum _ fun i _ => hint _ (by
       have := hβ i; have := swCont h hh; fun_prop)]
     refine Finset.sum_congr rfl fun i _ => ?_
     simp_rw [mul_assoc]

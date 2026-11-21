@@ -166,7 +166,7 @@ private theorem amgm_lemma_3 (w : (E →+* ℂ) → ℝ) (hw : ∀ σ, 0 ≤ w �
   have h : ∏ σ, w σ ^ ((1 : ℝ) / finrank ℚ E) ≤ ∑ σ, (1 : ℝ) / finrank ℚ E * w σ :=
     Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ => (1 : ℝ) / finrank ℚ E) w
       (fun _ _ => by positivity) hsum (fun σ _ => hw σ)
-  rw [Real.finset_prod_rpow _ _ (fun σ _ => hw σ), ← Finset.mul_sum] at h
+  rw [Real.finsetProd_rpow _ _ (fun σ _ => hw σ), ← Finset.mul_sum] at h
   calc (finrank ℚ E : ℝ) * (∏ σ, w σ) ^ ((1 : ℝ) / finrank ℚ E)
       ≤ (finrank ℚ E : ℝ) * ((1 : ℝ) / finrank ℚ E * ∑ σ, w σ) :=
         mul_le_mul_of_nonneg_left h hn.le

@@ -321,7 +321,7 @@ theorem local_scalar_reduction : LocScalarStep := by
       apply (lintegral_eq_zero_iff (mf.pow_const 2)).2
       have : ∀ᵐ y ∂ν', y ∉ E := measure_eq_zero_iff_ae_notMem.1 h0
       filter_upwards [this] with y hy
-      simp only [hE, Set.mem_setOf_eq, not_not] at hy
+      simp only [hE, Set.mem_ofPred_eq, not_not] at hy
       simp [hy]
     have hle : ∀ y, E.indicator (fun _ => (⊤ : ℝ≥0∞)) y ≤ ‖f y‖ₑ * A y := by
       intro y

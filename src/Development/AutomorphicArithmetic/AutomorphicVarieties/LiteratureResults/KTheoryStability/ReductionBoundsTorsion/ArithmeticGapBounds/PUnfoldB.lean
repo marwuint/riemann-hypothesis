@@ -147,14 +147,14 @@ theorem unfold_fd (Λ S : Type) [Group Λ] [Countable Λ] [Group S] [MeasurableS
             = fun x => ((B.subgroupOf K).index : ℝ)⁻¹ * ∑ c, |u (rep j B K c * x)| :=
           funext fun x => havg _ x
         rw [e]
-        exact (integrable_finset_sum _ fun c _ => (h c).abs).const_mul _
+        exact (MeasureTheory.integrable_finsetSum _ fun c _ => (h c).abs).const_mul _
     refine ⟨hI.trans (hIc.trans hAbs.symm), fun hint => ?_⟩
     have hcs := hIc.1 (hI.1 hint)
     have havgInt : IntegrableOn (avg j B K u) D μ := by
       have e : avg j B K u = fun x => ((B.subgroupOf K).index : ℝ)⁻¹ * ∑ c, u (rep j B K c * x) :=
         funext fun x => havg _ x
       rw [e]
-      exact (integrable_finset_sum _ fun c _ => hcs c).const_mul _
+      exact (MeasureTheory.integrable_finsetSum _ fun c _ => hcs c).const_mul _
     refine ⟨havgInt, ?_⟩
     have hint0 : IntegrableOn u (⋃ c, rep j B K c • D) μ := by
       rw [← hD0def]
@@ -162,7 +162,7 @@ theorem unfold_fd (Λ S : Type) [Group Λ] [Countable Λ] [Group S] [MeasurableS
     rw [hD'.setIntegral_eq hD0 hinvΔ, hD0def, integral_iUnion_ae hmeasc hdisj hint0, tsum_fintype]
     have hterm : ∀ c, ∫ x in rep j B K c • D, u x ∂μ = ∫ x in D, u (rep j B K c * x) ∂μ :=
       fun c => (hmp _).setIntegral_image_emb (hemb _) u D
-    rw [Finset.sum_congr rfl fun c _ => hterm c, ← integral_finset_sum _ fun c _ => hcs c,
+    rw [Finset.sum_congr rfl fun c _ => hterm c, ← MeasureTheory.integral_finsetSum _ fun c _ => hcs c,
       ← integral_const_mul]
     congr 1
     ext x

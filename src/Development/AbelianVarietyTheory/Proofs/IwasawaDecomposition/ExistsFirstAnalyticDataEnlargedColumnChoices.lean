@@ -82,7 +82,7 @@ theorem seed_at_enl : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheor
     exact congrArg HeightOneSpectrum.asIdeal this
   have hfin : Wt'.Finite := GlobalTheory.Mem.Top.TwFin.finite_pl B' T'.pl
   have hconj : ∀ v ∈ Wt', B'.places.conj v ∈ Wt' :=
-    fun v hv => by simpa only [hWt, Set.mem_setOf_eq, GlobalTheory.Mem.Top.TwFin.resChar_conj] using hv
+    fun v hv => by simpa only [hWt, Set.mem_ofPred_eq, GlobalTheory.Mem.Top.TwFin.resChar_conj] using hv
   have hch : Fld.charField f' ≤ B'.KsC := (GlobalTheory.Mem.Base.KsExact.lower w'.exact).2.2.1
   obtain ⟨hVals, -⟩ := hOB w'.px w'.I hX' hok hC hrange
   have hrange' : Set.range w'.I.xi = T'.set w'.I.C := by rw [hC]; exact hrange

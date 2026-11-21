@@ -54,7 +54,7 @@ theorem placeDecomposition_translate : ∀ (D : D7) (θ : InfFam D), IsInfFam θ
     fun τ' hne h hh => GlobalTheory.PointAtPlaceComm.atTau_comm D θ hθ N.V τ τ' (Ne.symm hne) _ hk h hh
   refine ⟨rTr N.V (atTau θ N.V τ ((N.M.fr τ)⁻¹ * g * N.M.fr τ)), ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩
   · intro f hf
-    exact hf.comp (continuous_mul_right _)
+    exact hf.comp (continuous_mul_const _)
   · intro f f' _ _
     rfl
   · intro c f _

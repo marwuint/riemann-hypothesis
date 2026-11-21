@@ -91,7 +91,7 @@ theorem hkF_eq_sum {D : D7} (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ 
   funext h
   simp only [hkF, Finsupp.sum, Finset.sum_apply, Pi.smul_apply]
   refine Finset.sum_congr rfl fun e _ => ?_
-  rw [Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]
+  rw [Finsupp.support_single _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]
 
 theorem ops_decomp {D : D7} (V : HSp D) {W H : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup H] [Module ℂ H]
     (e : H →ₗ[ℂ] (Bridge.Gf V → W)) (he : Function.Injective e) (P : Pl D.host.E) (h : (List ℤ →₀ ℂ) → Module.End ℂ H)

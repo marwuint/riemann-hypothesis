@@ -55,7 +55,7 @@ theorem exists_archimedean_component : _root_.GlobalTheory.FunPr.ThetaLocalInput
         rw [map_one]
         exact hVE f
       map_mul' := fun g h => ContinuousLinearMap.ext fun f => by
-        simp only [map_mul, ContinuousLinearMap.mul_apply, ContinuousLinearMap.comp_apply, hEV] }
+        simp only [map_mul, mul_apply_eq_comp, ContinuousLinearMap.comp_apply, hEV] }
   have hρ' : ∀ g f, ρ' g f = toV (ρ g (toE f)) := fun _ _ => rfl
   clear_value ρ'
   refine ⟨ρ', fun w => kk w / 2, fun g _ => ⟨fun u hu f f₁ hf h => ?_, fun ν hν f₁ f₂ => ?_⟩, fun L f => ?_,

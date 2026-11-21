@@ -67,7 +67,7 @@ theorem exists_away_mem (S : StepLevel F E σ J T f bad) (p : ℕ) (hp : p ≠ 0
     ∃ κ : S.U, (∀ v : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ v.asIdeal → bc (prV (E := E) v) κ.1 = 1) ∧
       ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∉ w.asIdeal → bc (prV (E := E) w) κ.1 = bc (prV (E := E) w) g := by
   obtain ⟨k, hk, h1, h2⟩ := exists_trivial_on σ J (finite_over (F := F) p hp).toFinset g hg
-  simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at h1 h2
+  simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq] at h1 h2
   refine ⟨⟨k, (S.U_eq k).2 ⟨hk, fun v => ?_⟩⟩, h1, h2⟩
   by_cases hv : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal
   · rw [h1 v hv]; exact one_mem _

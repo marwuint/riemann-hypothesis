@@ -65,7 +65,7 @@ theorem valOne_all : ∀ D : D7, ValOne D := by
   have hT₁' := _root_.GlobalTheory.LocModMove.isModel_weil_off D Q.k Q.q ψ hψ S.B.V S.J.W S.s₁.χV S.s₁.χW S.s₁.om S.s₁.weil _ _ Q.F.G₀ Q.F.G₁ T₁ hT₁ g hg h₁ hh₁
   have hT₂' := _root_.GlobalTheory.LocModMove.isModel_weil_off D Q.k Q.q ψ hψ S.J.W S.B'.V S.s₂.χV S.s₂.χW S.s₂.om S.s₂.weil _ _ Q.F.G₁ Q.F.G₂ T₂ hT₂ h₁ hh₁ h₂ hh₂
   have hf' : IsContAut S.B'.V (rTrans h₂ f) :=
-    ⟨fun γ hγ x => by simp only [rTrans, mul_assoc]; exact hf.1 γ hγ _, hf.2.comp (continuous_mul_right h₂)⟩
+    ⟨fun γ hγ x => by simp only [rTrans, mul_assoc]; exact hf.1 γ hγ _, hf.2.comp (continuous_mul_const h₂)⟩
   have hTy' : Q.Typed (rTrans h₂ f) := fun j => by
     funext x
     have := congrFun (hTy j) (x * h₂)

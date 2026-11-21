@@ -27,7 +27,7 @@ theorem vacuum_fixed_at_cofinitely_many_places : _root_.GlobalTheory.FunPr.Theta
   intro _ F E _ _ _ _ _ σ B a a' G X om om' hT
   classical
   refine ⟨(bad_finite F).toFinset ∪ X.T, fun v hv k hk => ?_⟩
-  simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or] at hv
+  simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_or] at hv
   obtain ⟨⟨hd, h6⟩, hvT⟩ := hv
   have hψ := GlobalTheory.StdCharUnrF.psiUnr_of_not_le F B.ψ hT.base.std v hd
   obtain ⟨h2, h3⟩ := two_three_of_six v h6

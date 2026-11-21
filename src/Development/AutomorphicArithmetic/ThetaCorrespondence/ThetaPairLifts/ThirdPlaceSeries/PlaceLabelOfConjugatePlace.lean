@@ -27,7 +27,7 @@ theorem GlobalTheory.LabConjPlace.locComp_of_isRc_classMapD_cenLoc : ∀ (hPr : 
   obtain ⟨γ, hγ1, hγ2, hγ3⟩ := hLab
   have hw'over : w' ∈ placesOver D.host.E (D.host.g k) := by
     have h0 := D.naut.plGw_over k v
-    simp only [placesOver, Set.mem_setOf_eq] at h0 ⊢
+    simp only [placesOver, Set.mem_ofPred_eq] at h0 ⊢
     exact (hc _ _ (by simp)).1 h0
   rw [hγ3 k w' hw'over, P.T.tw, WD.lab_lpTw]
   obtain ⟨jj, hjj⟩ : ∃ jj : Fin D.R.m, jj.1 + 1 = D.nd.j i :=

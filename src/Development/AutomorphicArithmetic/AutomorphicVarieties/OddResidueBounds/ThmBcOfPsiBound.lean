@@ -19,9 +19,9 @@ private theorem stick_of (hK : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E Ω : Type) [Field
   have h1 : minusLen D e ≤ ((r * g : ℕ) : ℕ∞) := by
     push_cast
     exact (hL _ _ (ShaMinus D e) _ r hk).trans (by gcongr)
-  have h2 : minusLen D e ≠ ⊤ := ne_top_of_le_ne_top (ENat.coe_ne_top _) h1
+  have h2 : minusLen D e ≠ ⊤ := ne_top_of_le_ne_top (ENat.natCast_ne_top _) h1
   refine ⟨h2, ?_⟩
-  have h3 : ((minusLen D e).toNat : ℝ) ≤ r * g := by exact_mod_cast ENat.toNat_le_of_le_coe h1
+  have h3 : ((minusLen D e).toNat : ℝ) ≤ r * g := by exact_mod_cast ENat.toNat_le_of_le_natCast h1
   have hl : (1 : ℝ) ≤ l := by exact_mod_cast (Fact.out : l.Prime).one_le
   have hN' : (1 : ℝ) ≤ N := by exact_mod_cast hN
   have he' : (1 : ℝ) ≤ e := by exact_mod_cast he
@@ -42,7 +42,7 @@ private theorem ncard_charSet_le_ker_index {E : Type} [Field E] [NumberField E] 
   classical
   have hS : ∀ χ ∈ charSet ℂ (parE ρ k), ρ.ker ≤ (MulChar.toUnitHom χ).ker := by
     intro χ hχ
-    simp only [charSet, Set.mem_setOf_eq, parE] at hχ
+    simp only [charSet, Set.mem_ofPred_eq, parE] at hχ
     exact hχ.1
   let f : charSet ℂ (parE ρ k) → ((ZMod N)ˣ ⧸ ρ.ker →* ℂˣ) :=
     fun χ => QuotientGroup.lift ρ.ker (MulChar.toUnitHom χ.1) (hS χ.1 χ.2)

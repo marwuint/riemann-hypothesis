@@ -395,7 +395,7 @@ theorem clause_bdd (hI : GlobalTheory.Grid.IsIntw θ M' M ω' pt It) (hA : AdjRe
     obtain ⟨c, hc⟩ := hI.bdd φ x
     refine ⟨|c|, fun u => ?_⟩
     have h1 := hc u
-    rw [ContinuousMultilinearMap.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, norm_inv, hT, RCLike.norm_conj,
+    rw [_root_.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, norm_inv, hT, RCLike.norm_conj,
       Real.norm_of_nonneg (hN0 u)]
     rcases (hN0 u).eq_or_lt with e | e
     · rw [← e]; simp
@@ -416,7 +416,7 @@ theorem clause_bdd (hI : GlobalTheory.Grid.IsIntw θ M' M ω' pt It) (hA : AdjRe
       simp only [map_zero, norm_zero]
       positivity
     · have h1 := hC u fun τ => (v τ : M'.H τ)
-      rw [ContinuousMultilinearMap.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, norm_inv, hT, RCLike.norm_conj,
+      rw [_root_.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, norm_inv, hT, RCLike.norm_conj,
         Real.norm_of_nonneg (hN0 u)] at h1
       set N := ∏ ρ, ‖(u ρ : M.H ρ)‖
       calc _ = N * (N⁻¹ * ‖ellT M' (fun τ => v τ) (inclT M' (It φ (PiTensorProduct.tprod ℂ u)))‖) := by field_simp
@@ -426,7 +426,7 @@ theorem clause_bdd (hI : GlobalTheory.Grid.IsIntw θ M' M ω' pt It) (hA : AdjRe
   have hcl : IsClosed {x : ∀ τ, M.H τ | ‖ellT M x (inclT M (Tp φ (PiTensorProduct.tprod ℂ v)))‖ ≤
       (C * ∏ τ, ‖(v τ : M'.H τ)‖) * ∏ τ, ‖x τ‖} :=
     isClosed_le (ellT_continuous M _).norm
-      (continuous_const.mul (continuous_finset_prod _ fun τ _ => (continuous_apply τ).norm))
+      (continuous_const.mul (continuous_finsetProd _ fun τ _ => (continuous_apply τ).norm))
   have h1 : ‖ellT M w (inclT M (Tp φ (PiTensorProduct.tprod ℂ v)))‖ ≤ (C * ∏ τ, ‖(v τ : M'.H τ)‖) * ∏ τ, ‖w τ‖ :=
     forall_of_vec M hcl (fun u => hb2 u v) w
   calc _ ≤ _ := h1

@@ -100,7 +100,7 @@ theorem upperArrow_approx : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmo
         Fm v g ∂(G.mP (i + 1)).ν =
       ∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g h
         (Φ - ∑ l, ptF R.ψ R.θ (negFr (G.P (i + 1))) (Fr.ofModel (G.P i).M) (f l) (p l)) * Fm v g ∂(G.mP (i + 1)).ν := by
-    rw [← integral_finset_sum _ fun l _ => hint l, ← integral_sub (hMb Φ hΦU h hh).1 (integrable_finset_sum _ fun l _ => hint l)]
+    rw [← MeasureTheory.integral_finsetSum _ fun l _ => hint l, ← integral_sub (hMb Φ hΦU h hh).1 (MeasureTheory.integrable_finsetSum _ fun l _ => hint l)]
     refine integral_congr_ae (.of_forall fun g => ?_)
     simp only [thetaKO, map_sub, map_sum, Pi.sub_apply, Finset.sum_apply, sub_mul, Finset.sum_mul, hpt]
   rw [e]

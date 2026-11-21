@@ -46,7 +46,7 @@ theorem smooth_of_equiv [TopologicalSpace G] {π : Representation ℂ G V} {σ :
   intro w
   have e : {g : G | σ g w = w} = {g : G | π g (E.toLinearEquiv.symm w) = E.toLinearEquiv.symm w} := by
     ext g
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     rw [← intw_symm E]
     exact ⟨fun h => by rw [h], fun h => E.toLinearEquiv.symm.injective h⟩
   rw [e]

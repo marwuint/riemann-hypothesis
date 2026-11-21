@@ -196,7 +196,7 @@ theorem offDiagonalBlockSqNorm_eq_sum_ite (g : Matrix (Fin n) (Fin n) ℂ) :
 theorem continuous_rM : Continuous fun g : UJ ε => rM ε (toM g) := by
   have h : Continuous fun g : UJ ε => toM g := Units.continuous_val.comp continuous_subtype_val
   unfold GlobalTheory.PsCo.Pc1.rM
-  exact continuous_finset_sum _ fun x _ => (h.matrix_elem x.1.1 x.1.2).norm.pow 2
+  exact continuous_finsetSum _ fun x _ => (h.matrix_elem x.1.1 x.1.2).norm.pow 2
 
 theorem mul_signMatrix_apply (g : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     (g * Jm ε) a b = g a b * (if ε b then 1 else -1) := by
@@ -489,7 +489,7 @@ lemma entry_le (g : Matrix (Fin n) (Fin n) ℂ) (hg : Formalism.REAL.inUJ ε g) 
 
 lemma continuous_rM_mat : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => rM ε g := by
   unfold GlobalTheory.PsCo.Pc1.rM
-  exact continuous_finset_sum _ fun x _ => (continuous_id.matrix_elem x.1.1 x.1.2).norm.pow 2
+  exact continuous_finsetSum _ fun x _ => (continuous_id.matrix_elem x.1.1 x.1.2).norm.pow 2
 
 end C3
 

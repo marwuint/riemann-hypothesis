@@ -13,7 +13,7 @@ theorem exists_finset_mod_sq {G : Type} [CommGroup G] [Group.FG G] :
   classical
   let H : Subgroup G := (powMonoidHom 2 : G →* G).range
   have hfin : Finite (G ⧸ H) := by
-    apply CommGroup.finite_of_fg_torsion
+    apply CommGroup.finite_of_fg_isMulTorsion
     intro q
     obtain ⟨g, rfl⟩ := QuotientGroup.mk_surjective q
     refine (isOfFinOrder_iff_pow_eq_one).2 ⟨2, by norm_num, ?_⟩

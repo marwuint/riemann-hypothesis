@@ -161,7 +161,7 @@ theorem cop_QSq_d : Nat.Coprime (H.QS * H.q) H.d := by
     rw [h] at h1
     omega
   have hq : Nat.Coprime H.q H.d := (Nat.coprime_primes H.hyp.1 H.hyp.2.1).mpr hqd
-  exact Nat.Coprime.mul (Nat.Coprime.coprime_mul_left_right H.QS_coprime) hq
+  exact Nat.Coprime.mul_left (Nat.Coprime.coprime_mul_left_right H.QS_coprime) hq
 
 theorem split_QSq (l : ℕ) (hl : l.Prime) (hl2 : l ≠ 2) (h : l ∣ H.QS * H.q) : jacobiSym (-(H.d : ℤ)) l = 1 := by
   rcases (Nat.Prime.dvd_mul hl).mp h with h1 | h1

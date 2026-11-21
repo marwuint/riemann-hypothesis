@@ -76,7 +76,7 @@ theorem dZb_mul_gg (G : ℂ → ℂ) (TT : ℝ) (ζ : ℂ) (hG : DifferentiableA
         (ζ * star ζ - (TT : ℂ)) • fderiv ℝ G ζ) ζ := hG.hasFDerivAt.mul hp
   unfold NF.dZb
   rw [hq.fderiv]
-  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply,
+  simp only [add_apply, smul_apply, ContinuousLinearMap.id_apply,
     ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, smul_eq_mul, Complex.star_def, map_one, Complex.conj_I]
   ring_nf
   rw [Complex.I_sq]

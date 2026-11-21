@@ -126,7 +126,7 @@ theorem GlobalTheory.SeeSaw.perX_of_clsPinD : ∀ (D : D7) (c : Comm D) (𝒯 : 
       have : trc ((t s).eT n h β) (F.1 v) = fun x => ∑ g ∈ ((t s).eT n h β).support, (t s).eT n h β g * F.1 v (x * g) :=
         funext fun x => trc_apply _ _ x
       rw [this]
-      exact continuous_finset_sum _ fun g _ => continuous_const.mul (hF.2.comp (continuous_mul_right g))
+      exact continuous_finsetSum _ fun g _ => continuous_const.mul (hF.2.comp (continuous_mul_const g))
     · intro γ hγ g
       rw [trc_apply, trc_apply]
       congr 1

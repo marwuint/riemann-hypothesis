@@ -29,7 +29,7 @@ theorem choose_zero (hd : PhiData q Z Z' φ e) (hN : 0 < N) :
     have hc : Fintype.card k - 1 ≠ 0 := by
       have := Fintype.one_lt_card (α := k)
       omega
-    exact (pow_lt_one₀ zero_le' hr1 hc).ne h2
+    exact (pow_lt_one₀ zero_le hr1 hc).ne h2
   haveI : Nontrivial (Matrix (Fin N) (Fin N) k) := by
     haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩
     infer_instance

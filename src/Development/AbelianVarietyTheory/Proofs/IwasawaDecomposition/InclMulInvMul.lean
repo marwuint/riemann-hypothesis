@@ -18,7 +18,7 @@ theorem kill_or {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {T : ℕ
     (p q : A) (hpq : p * q = (T : A)) : (∀ m : M, p • m = 0) ∨ ∀ m : M, q • m = 0 := by
   haveI : Fact (Nat.card M).Prime := ⟨hM ▸ hT⟩
   haveI : Finite M := Nat.finite_of_card_ne_zero (hM ▸ hT.ne_zero)
-  let φ : M →+ M := DistribMulAction.toAddMonoidHom M p
+  let φ : M →+ M := DistribSMul.toAddMonoidHom M p
   rcases AddSubgroup.eq_bot_or_eq_top_of_prime_card φ.range with h | h
   · left
     intro m

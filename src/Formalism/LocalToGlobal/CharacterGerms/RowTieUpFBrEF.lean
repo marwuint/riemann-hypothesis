@@ -33,7 +33,7 @@ theorem echelon {C : Type} [Field C] (vm : Valuation C NNReal) (n : ℕ) :
     intro h
     have h1 : vm (v x₀) ≤ vm (v j) := hjmax x₀ (Finset.mem_univ _)
     rw [h, map_zero] at h1
-    exact hx₀ ((Valuation.zero_iff vm).1 (le_antisymm h1 zero_le'))
+    exact hx₀ ((Valuation.zero_iff vm).1 (le_antisymm h1 zero_le))
 
   set v₀ : Fin n → C := (v j)⁻¹ • v with hv₀
   have hv₀j : v₀ j = 1 := by simp [hv₀, hvj]
@@ -108,14 +108,14 @@ theorem eigFreeSt_holds : EigFreeSt := by
     { carrier := {w | ∀ a, ((L a).map f).mulVec w = f (χ a) • w}
       add_mem' := by
         intro w w' hw hw' a
-        simp only [Set.mem_setOf_eq] at hw hw' ⊢
+        simp only [Set.mem_ofPred_eq] at hw hw' ⊢
         rw [Matrix.mulVec_add, hw a, hw' a, smul_add]
       zero_mem' := by
         intro a
         simp
       smul_mem' := by
         intro c w hw a
-        simp only [Set.mem_setOf_eq] at hw ⊢
+        simp only [Set.mem_ofPred_eq] at hw ⊢
         rw [Matrix.mulVec_smul, hw a, smul_comm] }
   obtain ⟨s, J, B, hBM, hBle, hBδ, hspan⟩ := echelon vm n _ M rfl
   have hlift : ∀ i x, ∃ r : R, f r = B i x := fun i x => hI.exists_of_le_one (hBle i x)

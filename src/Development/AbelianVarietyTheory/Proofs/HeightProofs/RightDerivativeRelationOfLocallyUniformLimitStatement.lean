@@ -26,7 +26,7 @@ theorem _root_.GlobalTheory.T.rightDerivativeRelation_of_locallyUniformLimit : �
   intro n ε F hF m c u hlim y hy
   have hmem : ∀ g : UJ ε, umat g ∈ UJset ε := fun g => g.2
   have hcont : Continuous fun g : UJ ε => ∑ i, c i * wordF (u i) F (umat g) := by
-    refine continuous_finset_sum _ (fun i _ => ?_)
+    refine continuous_finsetSum _ (fun i _ => ?_)
     exact continuous_const.mul (CSm.continuous (CSm.wordF hF (u i)))
   have key : ∀ φ, IsTest ε φ →
       ∫ g : UJ ε, φ (umat g) * ∑ i, c i * wordF (u i) F (umat g) ∂(muG ε) = 0 := by
@@ -42,7 +42,7 @@ theorem _root_.GlobalTheory.T.rightDerivativeRelation_of_locallyUniformLimit : �
         funext g
         rw [Finset.mul_sum]
         exact Finset.sum_congr rfl (fun i _ => by ring)
-      rw [hfun, MeasureTheory.integral_finset_sum]
+      rw [hfun, MeasureTheory.integral_finsetSum]
       · refine Finset.sum_congr rfl (fun i _ => ?_)
         rw [MeasureTheory.integral_const_mul, hadj i G hG]
       · intro i _

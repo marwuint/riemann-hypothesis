@@ -17,7 +17,7 @@ theorem continuousOn_of_dual {X F : Type} [TopologicalSpace X] [NormedAddCommGro
     funext x
     exact (b.sum_repr (f x)).symm
   rw [e]
-  exact continuousOn_finset_sum _ fun i _ => (h (b.coord i)).smul continuousOn_const
+  exact continuousOn_finsetSum _ fun i _ => (h (b.coord i)).smul continuousOn_const
 
 theorem exists_invariant_core_of_equiv {G W E : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]

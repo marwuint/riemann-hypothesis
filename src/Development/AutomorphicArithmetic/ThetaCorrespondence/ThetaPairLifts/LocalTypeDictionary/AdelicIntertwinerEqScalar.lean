@@ -35,13 +35,13 @@ theorem adelic_schur_lemma : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ 
       rw [ofReal_integral_eq_lintegral_ofReal (hint g hg) (Filter.Eventually.of_forall fun x => by positivity)]
       congr 1
       funext x
-      rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
+      rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
     rw [e _ (hpres φ hφ), e φ hφ] at h
     exact (ENNReal.ofReal_eq_ofReal_iff (integral_nonneg fun x => by positivity)
       (integral_nonneg fun x => by positivity)).1 h
   have hψn : ∀ a, ‖ψ a‖ = 1 := GlobalTheory.HeisLineTheta.norm_psi hψ
   have hcy : ∀ y : κ → AF F, Continuous fun x : κ → AF F => ψ (x ⬝ᵥ y) := fun y =>
-    hψ.1.comp (continuous_finset_sum _ fun i _ => (continuous_apply i).mul continuous_const)
+    hψ.1.comp (continuous_finsetSum _ fun i _ => (continuous_apply i).mul continuous_const)
   have hschr0 : ∀ (y : κ → AF F) (f : (κ → AF F) → ℂ) x, schr ψ (0, y) f x = ψ (x ⬝ᵥ y) * f x := by
     intro y f x
     simp [schr]

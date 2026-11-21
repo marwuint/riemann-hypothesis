@@ -61,7 +61,7 @@ theorem depthZero_tame_alt : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → �
   obtain ⟨c, hc1, hc2, hc3⟩ := hγ2 k v w' hc
   have hw'g : w' ∈ placesOver D.host.E (D.host.g k) := by
     have h0 := D.naut.plGw_over k v
-    simp only [placesOver, Set.mem_setOf_eq] at h0 ⊢
+    simp only [placesOver, Set.mem_ofPred_eq] at h0 ⊢
     exact (hc _ _ (by simp)).1 h0
   rw [hγ3 k w' hw'g, hγ3 k _ (D.naut.plGw_over k v), hγ1 k v]
   obtain ⟨s, hs⟩ := GlobalTheory.SplitPlaceOfFixed.exists_splitPlace_plGw D ⟨k, v⟩

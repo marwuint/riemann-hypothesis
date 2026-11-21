@@ -108,7 +108,7 @@ theorem deriv_characterTrace_realLift : _root_.GlobalTheory.FunPr.ThetaLocalInpu
       rw [χG ⟨g, hg⟩, χG ⟨h, hh⟩, χG ⟨g * h, memU g h hg hh⟩, Gmul ⟨g, hg⟩ ⟨h, hh⟩]
       exact hmul _ _ (LevelValuationRings _) (LevelValuationRings _))
     (by
-      rw [continuousOn_iff_continuous_restrict]
+      rw [continuousOn_iff_continuous_domRestrict]
       convert hcont.comp_continuous Gc LevelValuationRings using 1
       funext h
       exact χG h)

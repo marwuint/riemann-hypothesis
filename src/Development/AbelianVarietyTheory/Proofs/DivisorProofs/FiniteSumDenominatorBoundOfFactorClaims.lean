@@ -333,7 +333,7 @@ theorem core_loss (ch : Choice R) {t : T} {w : PlL D} {Φ : ch.G.Datum} (hS : ch
       exact hR β d hO c ⟨i, hi⟩ a u hu) aF _ (hF (ch.S.ptRow c 0)) D.R.m le_rfl
   have e' : ch.S.ptTop c D.R.m = finEmb ch.G.sp.topDec (ch.S.ptRow c D.R.m) := by
     simp [GridChoice.ptTop]
-  simp only [Set.mem_setOf_eq] at hcol hrow
+  simp only [Set.mem_ofPred_eq] at hcol hrow
   rw [e'] at hcol
   exact hP _ _ _ _ _ hcol hrow
 
@@ -475,7 +475,7 @@ theorem loss_comb {dS dC dD dG dT dR dF dP : PlL D → ℝ} {B m : ℝ} (hm : 1 
   · refine ((((((((hS.2.1.union hC.2.1).union hD.2.1).union hG.2.1).union hT.2.1).union hR.2.1).union hF.2.1).union hP.2.1)).subset ?_
     intro w hw
     by_contra hn
-    simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hn
+    simp only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hn
     obtain ⟨⟨⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩, h7⟩, h8⟩ := hn
     exact hw (by simp [h1, h2, h3, h4, h5, h6, h7, h8])
   · have e : ∑ w ∈ s, lw w * (dS w + dC w + dD w + dG w + m * dT w + m * dR w + dF w + dP w) =

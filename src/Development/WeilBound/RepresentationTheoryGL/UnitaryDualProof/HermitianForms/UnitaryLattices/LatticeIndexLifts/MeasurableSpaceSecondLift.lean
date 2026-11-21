@@ -408,7 +408,7 @@ theorem locB {ζ : Fin (m + 1) → k} (hζ : ζ ≠ 0) (v : V) :
   have hU : (fun η => ζ + η) ⁻¹' (N ∩ f ⁻¹' ({h : GL (Fin (m + 1)) k | gl h v = v} ∩ {h | md h = 1})) ∈
       𝓝 (0 : Fin (m + 1) → k) := by
     have : Filter.Tendsto (fun η : Fin (m + 1) → k => ζ + η) (𝓝 0) (𝓝 ζ) := by
-      simpa using (continuous_add_left ζ).tendsto (0 : Fin (m + 1) → k)
+      simpa using (continuous_const_add ζ).tendsto (0 : Fin (m + 1) → k)
     exact this hW
   obtain ⟨M₁, hM₁, hM₁U⟩ := lat_shrink ψ hψ hψ1 hU
   have hSc : IsCompact ((fun η => ζ + η) '' (perp ψ M₁ : Set (Fin (m + 1) → k))) :=

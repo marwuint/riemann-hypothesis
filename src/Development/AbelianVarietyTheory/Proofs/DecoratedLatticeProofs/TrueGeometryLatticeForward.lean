@@ -89,7 +89,7 @@ theorem lattice_forward_preserves_base : ∀ {B : GlobalTheory.Mem.Base} {X : Gl
   have hL : (a.g.x 0).L = GlobalTheory.AdelicU.stdLattice (I.rec7 l Z).host.E ((I.rec7 l Z).sp.X 0).rank := by
     ext z
     rw [(hat.pinX.xs 0 (Nat.zero_le _)).2.2 z]
-    simp only [GlobalTheory.AdForm.intVec, Set.mem_setOf_eq, GlobalTheory.AdelicU.stdLattice, Formalism.UG.stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, LinearMap.mem_range, Algebra.linearMap_apply]
+    simp only [GlobalTheory.AdForm.intVec, Set.mem_ofPred_eq, GlobalTheory.AdelicU.stdLattice, Formalism.UG.stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, LinearMap.mem_range, Algebra.linearMap_apply]
     exact forall_congr' fun k => ⟨fun hk => ⟨⟨_, hk⟩, rfl⟩, fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe⟩
   rw [GlobalTheory.AdelicU.levelOpen, Subgroup.mem_iInf]
   intro v

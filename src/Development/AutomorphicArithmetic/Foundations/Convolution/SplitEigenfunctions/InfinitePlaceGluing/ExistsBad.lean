@@ -78,7 +78,7 @@ theorem UpperTheory.ConvolutionTheory.RankTwoDescent.asai_of :
     by_contra hcon
     refine hw (bad_of_dvd ((Dvd.intro_left _ rfl : m ∣ n₁ * n₂ * m).trans (hL.trans hLN)) (hbad _ ⟨w, ?_, rfl⟩))
     by_contra hn
-    rw [Set.mem_union, not_or, Set.mem_setOf_eq, Set.mem_setOf_eq, not_not, not_not] at hn
+    rw [Set.mem_union, not_or, Set.mem_ofPred_eq, Set.mem_ofPred_eq, not_not, not_not] at hn
     exact hcon hn
   have e₁ : ChOk ω⁻¹ L := hc₁ L ((Dvd.intro _ rfl : n₁ ∣ n₁ * n₂).trans ((Dvd.intro _ rfl : n₁ * n₂ ∣ n₁ * n₂ * m).trans hL))
   have e₂ : ChOk (ω * η)⁻¹ L := hc₂ L ((Dvd.intro_left _ rfl : n₂ ∣ n₁ * n₂).trans ((Dvd.intro _ rfl : n₁ * n₂ ∣ n₁ * n₂ * m).trans hL))

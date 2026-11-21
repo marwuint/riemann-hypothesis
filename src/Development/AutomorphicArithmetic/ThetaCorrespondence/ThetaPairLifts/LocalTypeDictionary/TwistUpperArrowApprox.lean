@@ -64,7 +64,7 @@ theorem upperArrow_approx : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmo
     intro g
     rw [hsum]
     simp only [thetaKO, map_sub, map_sum, Pi.sub_apply, Finset.sum_apply, sub_mul, Finset.sum_mul]
-  rw [← integral_finset_sum _ fun l _ => hint' l, ← integral_sub (hint h) (integrable_finset_sum _ fun l _ => hint' l)]
+  rw [← MeasureTheory.integral_finsetSum _ fun l _ => hint' l, ← integral_sub (hint h) (MeasureTheory.integrable_finsetSum _ fun l _ => hint' l)]
   have e0 : (∫ g in (G.mP i).fd, (starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F v g -
       ∑ l, starRingEnd ℂ (thetaKO (G.dn i).ω h g
         (GlobalTheory.Grid.fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f₀ l) (c l • P l))) * F v g) ∂(G.mP i).ν) =

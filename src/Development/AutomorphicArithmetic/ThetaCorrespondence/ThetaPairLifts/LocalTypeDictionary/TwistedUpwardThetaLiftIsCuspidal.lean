@@ -31,7 +31,7 @@ theorem upward_theta_lift_isCuspidal : GlobalTheory.IndefiniteRowSideFullHecke.C
   have hval := fun l => GlobalTheory.LowVanishObj.multT_apply_cusp R.θ _ _ _ (F' l) (hF' l) (G.ItU i (p l) (v l))
   have hc : Continuous (∑ l, F' l (G.ItU i (p l) (v l))) := by
     rw [Finset.sum_fn]
-    exact continuous_finset_sum _ fun l _ => (hval l).1.cont
+    exact continuous_finsetSum _ fun l _ => (hval l).1.cont
   have hl : ∀ γ ∈ GQ (G.P (i + 1)).V, ∀ g, (∑ l, F' l (G.ItU i (p l) (v l))) (γ * g) = (∑ l, F' l (G.ItU i (p l) (v l))) g := by
     intro γ hγ g
     simp only [Finset.sum_apply]

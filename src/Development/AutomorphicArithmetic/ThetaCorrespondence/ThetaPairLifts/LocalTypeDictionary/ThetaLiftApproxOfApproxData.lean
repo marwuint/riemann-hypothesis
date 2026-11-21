@@ -87,8 +87,8 @@ theorem theta_lift_approx_of_approx_data (hL1 : ∀ (D : D7) (θ : InfFam D), Is
     intro l
     obtain ⟨_, _, hall⟩ := hLCa _ (hf (e.symm l).2) _ (hF (e.symm l).1)
     exact (hall _ _ h).1
-  rw [← integral_finset_sum _ (fun l _ => hintl l),
-    ← integral_sub (hint h) (integrable_finset_sum _ fun l _ => hintl l)]
+  rw [← MeasureTheory.integral_finsetSum _ (fun l _ => hintl l),
+    ← integral_sub (hint h) (MeasureTheory.integrable_finsetSum _ fun l _ => hintl l)]
   set Φ' := ∑ l, GlobalTheory.Grid.fock R.ψ R.θ false (G.V i j) (G.V i (j + 1)) (f l) (p l) with hΦ'
   have hsum : ∀ g, ∑ l : Fin (n1 * n2), thetaKO (G.th t i j).ω h g
       (GlobalTheory.Grid.fock R.ψ R.θ false (G.V i j) (G.V i (j + 1)) (f (e.symm l).2) (p (e.symm l).2)) *

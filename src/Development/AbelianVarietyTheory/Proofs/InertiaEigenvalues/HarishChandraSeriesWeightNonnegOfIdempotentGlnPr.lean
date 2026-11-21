@@ -20,7 +20,7 @@ theorem eq_sum_single (a : MonoidAlgebra ℂ G) : a = ∑ x, MonoidAlgebra.singl
 theorem coeff_mul_zOf (a : MonoidAlgebra ℂ G) (χ : G → ℂ) :
     (a * zOf χ).coeff 1 = χ 1 / (Fintype.card G : ℂ) * ∑ x, a.coeff x * χ x := by
   conv_lhs => rw [eq_sum_single a]
-  rw [Finset.sum_mul, MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, Finset.mul_sum]
+  rw [Finset.sum_mul, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply, Finset.mul_sum]
   refine Finset.sum_congr rfl fun x _ => ?_
   rw [MonoidAlgebra.coeff_single_mul_apply, coeff_zOf, mul_one, inv_inv]
   ring

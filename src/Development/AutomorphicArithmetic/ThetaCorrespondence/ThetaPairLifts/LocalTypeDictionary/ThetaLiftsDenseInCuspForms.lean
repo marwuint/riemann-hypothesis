@@ -90,8 +90,8 @@ theorem upperArrow_approx : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmo
       ∑ l, ∫ g in (G.meas t i j).fd, thetaKO (G.X i j).ω h g
         (GlobalTheory.Grid.fock R.ψ R.θ true (G.V (i + 1) j) (G.V i j) (f₀ l) (c l • P l)) * F v g ∂(G.meas t i j).ν =
       ∫ g in (G.meas t i j).fd, thetaKO (G.X i j).ω h g (Φ - g0) * F v g ∂(G.meas t i j).ν := by
-    rw [← integral_finset_sum _ (fun l _ => hintl l),
-      ← integral_sub (hint h) (integrable_finset_sum _ fun l _ => hintl l)]
+    rw [← MeasureTheory.integral_finsetSum _ (fun l _ => hintl l),
+      ← integral_sub (hint h) (MeasureTheory.integrable_finsetSum _ fun l _ => hintl l)]
     refine integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)
     simp only [thetaKO, hg0eq, map_sub, map_sum, Pi.sub_apply, Finset.sum_apply, sub_mul, Finset.sum_mul]
   rw [hdiff]

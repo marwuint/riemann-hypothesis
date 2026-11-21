@@ -56,7 +56,7 @@ theorem PositivityTheory.Xgn.integral_over_place_density : PtsIntegrableStatemen
         ∑ σ, t σ * ∑ᶠ (w) (_ : w ∈ fibre W hΨ.choose y'), sheetDensity W hΨ.choose (pot L) (χ σ) y' w :=
       fun y' => finsum_mem_sum (hfin y') t (fun σ w => sheetDensity W hΨ.choose (pot L) (χ σ) y' w)
     simp_rw [sheetDensity_sum W _ (pot L) t u χ hsum, hpt]
-    rw [MeasureTheory.integral_finset_sum]
+    rw [MeasureTheory.integral_finsetSum]
     · exact Finset.sum_congr rfl fun σ _ => MeasureTheory.integral_const_mul (t σ) _
     · intro σ _
       refine MeasureTheory.Integrable.const_mul ?_ (t σ)

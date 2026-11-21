@@ -307,7 +307,7 @@ theorem ker_Q' (ψ : AddChar k Circle) {n t N : ℕ} (h : n + t = N) {V : Type} 
         · rfl
         · rfl
         · simp only [fromBlocks_apply₂₂]
-          exact hw1 a b (by rw [Fin.lt_iff_val_lt_val] at hli ⊢; simp at hli; omega)
+          exact hw1 a b (by rw [Fin.lt_def] at hli ⊢; simp at hli; omega)
       · obtain ⟨a, rfl⟩ := (stdSum h).surjective i
         rw [hent]
         rcases a with a | a
@@ -356,10 +356,10 @@ theorem ker_Q' (ψ : AddChar k Circle) {n t N : ℕ} (h : n + t = N) {V : Type} 
     let D : Matrix (Fin t) (Fin t) k := fun x y =>
       ((u : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (stdSum h (Sum.inr x)) (stdSum h (Sum.inr y))
     have hDl : ∀ x y, y < x → D x y = 0 := fun x y hxy =>
-      hu1 _ _ (by rw [Fin.lt_iff_val_lt_val]; simp; exact hxy)
+      hu1 _ _ (by rw [Fin.lt_def]; simp; exact hxy)
     have hDd : ∀ x, D x x = 1 := fun x => hu2 _
     have hdet : D.det = 1 := by
-      rw [Matrix.det_of_upperTriangular (fun x y hxy => hDl x y hxy)]
+      rw [Matrix.det_of_isUpperTriangular (fun x y hxy => hDl x y hxy)]
       simp [hDd]
     have hD : IsUnit D := (Matrix.isUnit_iff_isUnit_det D).2 (by rw [hdet]; exact isUnit_one)
     let Dg : GL (Fin t) k := hD.unit

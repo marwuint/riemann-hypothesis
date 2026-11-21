@@ -1240,7 +1240,7 @@ theorem supp_of_supported {K σ : Type} [CommSemiring K] {s : Set σ} {q : MvPol
   intro m hm v hv
   rw [mem_supported] at hq
   apply hq
-  rw [Finset.mem_coe, mem_vars]
+  rw [Finset.mem_coe, MvPolynomial.mem_vars_iff_mem_support]
   exact ⟨m, hm, Finsupp.mem_support_iff.mpr hv⟩
 
 theorem pderiv_eq_zero_of {K σ : Type} [CommRing K] {q : MvPolynomial σ K} {v : σ}
@@ -2044,7 +2044,7 @@ theorem ycond_top [NeZero r] (LL : Letters N) (j : ℕ) : YCond p (r := r) LL j 
   unfold YCond
   apply eq_top_iff.mpr
   apply le_sSup
-  simp only [Set.mem_setOf_eq]
+  simp only [Set.mem_ofPred_eq]
   constructor
   · intro x _
     rw [MvPolynomial.mem_restrictSupport_iff]
@@ -2338,7 +2338,7 @@ theorem gSpan_eq (LL : Letters N) (T : TieData) (n : Fin T.t → ℕ) (j : ℕ) 
   unfold gSpan GlW.gS
   congr 1
   ext S
-  simp only [Set.mem_setOf_eq, Set.singleton_subset_iff, SetLike.mem_coe]
+  simp only [Set.mem_ofPred_eq, Set.singleton_subset_iff, SetLike.mem_coe]
   rfl
 
 theorem rep_span (VF : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p])) (j0 : ℕ)
@@ -2356,7 +2356,7 @@ theorem rep_span (VF : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p])
     · intro b hb v hv
       by_contra hne
       have := supp_of_supported hq b hb v hne
-      simp only [Set.mem_setOf_eq] at this
+      simp only [Set.mem_ofPred_eq] at this
       omega
     · conv_lhs => rw [q.as_sum]
       rw [Finset.mul_sum]
@@ -2754,7 +2754,7 @@ theorem highest_weight_dim_monotone : WeightSpaceDimMonotone := by
     intro q hq m hm v hv
     by_contra hne
     have := supp_of_supported hq m hm v hne
-    simp only [Set.mem_setOf_eq] at this
+    simp only [Set.mem_ofPred_eq] at this
     omega
   have hspan : ∀ z ∈ Submodule.span ℚ_[p] {x | ∃ g ∈ gSpan p (LL.setTies T n) (T.pos i + 2) F,
         ∃ q ∈ MvPolynomial.supported ℚ_[p] {v : Fin N × Fin r | T.pos i + 2 ≤ (v.1 : ℕ)}, x = g * q},

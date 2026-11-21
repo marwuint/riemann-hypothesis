@@ -44,7 +44,7 @@ theorem exists_gen : ∀ {G F : Type} [Group G] [Field F] (I : Subgroup G) (c : 
     rw [mem_rootsOfUnity]
     exact hc g
   haveI : Finite c.range := Finite.of_injective (Subgroup.inclusion hle) (Subgroup.inclusion_injective hle)
-  haveI : IsCyclic c.range := isCyclic_of_subgroup_isDomain ((Units.coeHom F).comp c.range.subtype)
+  haveI : IsCyclic c.range := isCyclic_of_injective_ringHom ((Units.coeHom F).comp c.range.subtype)
     (fun x y hxy => Subtype.ext (Units.ext hxy))
   obtain ⟨x, hx⟩ := IsCyclic.exists_monoid_generator (α := c.range)
   obtain ⟨γ, hγ⟩ := x.2

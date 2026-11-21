@@ -58,13 +58,13 @@ theorem growthSize_lift_le_decayIntegral : _root_.GlobalTheory.FunPr.ThetaLocalI
     exact (GlobalTheory.Grow.norm_le_quotHeight_pow (hinv h) h1 g).trans_eq (by ring)
   refine ⟨(K * 2 ^ N).toNNReal, fun f => iSup_le fun h => ?_⟩
   have hg := pow_pos (GlobalTheory.Grow.height_pos (G.P i).V h) N
-  rw [ENNReal.ofReal_div_of_pos hg, ofReal_norm_eq_enorm]
+  rw [ENNReal.ofReal_div_of_pos hg, ofReal_norm]
   refine ENNReal.div_le_of_le_mul ((enorm_integral_le_lintegral_enorm _).trans ?_)
   rw [mul_right_comm, GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.decayInt]
   refine (lintegral_mono fun g => ?_).trans_eq
     (lintegral_const_mul' _ _ (ENNReal.mul_ne_top ENNReal.coe_ne_top ENNReal.ofReal_ne_top))
   have hq := (pow_pos (GlobalTheory.Grow.quotHeight_pos (G.P (i + 1)).V g) N).le
-  rw [← ofReal_norm_eq_enorm]
+  rw [← ofReal_norm]
   change ENNReal.ofReal _ ≤ ENNReal.ofReal (K * 2 ^ N) * _ * _
   rw [← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]
   refine ENNReal.ofReal_le_ofReal ?_

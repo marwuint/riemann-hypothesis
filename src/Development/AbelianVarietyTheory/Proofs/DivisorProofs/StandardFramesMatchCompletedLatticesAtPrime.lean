@@ -36,7 +36,7 @@ variable {R : Type} [CommRing R] [Nontrivial R]
 
 theorem card_eq_of_inv {a b : ℕ} (A : Matrix (Fin a) (Fin b) R) (B : Matrix (Fin b) (Fin a) R)
     (h1 : A * B = 1) (h2 : B * A = 1) : a = b := by
-  let e : (Fin b → R) ≃ₗ[R] (Fin a → R) := LinearEquiv.ofLinear (Matrix.toLin' A) (Matrix.toLin' B)
+  let e : (Fin b → R) ≃ₗ[R] (Fin a → R) := LinearEquiv.ofLinearMap (Matrix.toLin' A) (Matrix.toLin' B)
     (by rw [← Matrix.toLin'_mul, h1, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, h2, Matrix.toLin'_one])
   have := e.finrank_eq
   simpa using this.symm
@@ -88,7 +88,7 @@ theorem frames_match_lattices : ∀ {D : D7} {V V' : HSp D} {n : ℕ} (hF : D.ho
   obtain ⟨N1, hN1, hB1⟩ := _root_.GlobalTheory.LatMatch.mulVec_lamHat_bound V V' X
   obtain ⟨N2, hN2, hB2⟩ := _root_.GlobalTheory.LatMatch.mulVec_lamHat_bound V' V X'
   let hom : (Fin V.rank → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) →+ (Fin V'.rank → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) :=
-    (DistribMulAction.toAddMonoidHom _ φ).comp (Matrix.mulVecLin X).toAddMonoidHom
+    (DistribSMul.toAddMonoidHom _ φ).comp (Matrix.mulVecLin X).toAddMonoidHom
   have hhom : ∀ y, hom y = φ • X.mulVec y := fun y => rfl
   let M : AddSubgroup (Fin V'.rank → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) := (Formalism.L2.NTheta.LamHat V).map hom
   have hM : ∀ z, z ∈ M ↔ ∃ y ∈ Formalism.L2.NTheta.LamHat V, φ • X.mulVec y = z := fun z => by

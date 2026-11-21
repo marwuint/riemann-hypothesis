@@ -50,7 +50,7 @@ theorem twisted_iterate_eventually_large : _root_.GlobalTheory.FunPr.ThetaLocalI
         fun j => (hρ' j t M hM).2)
   have e1 : liftT ch.W M (oppPath t D.R.m) (oppTens ch.W t (Finsupp.single P 1) τ) (formTop ch t y) =
       ∑ d ∈ τ.support, τ d • liftP ch.W M (oppPath t D.R.m) (oppPure ch.W t P d) (formTop ch t y) := by
-    rw [GlobalTheory.RowVal.liftT_oppTens, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same,
+    rw [GlobalTheory.RowVal.liftT_oppTens, Finsupp.support_single _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same,
       one_smul]
   have e2 : lhs ch t M (Finsupp.single P 1) τ a y = ∑ d ∈ τ.support,
       τ d * Bplus ch.W ch.M (colFn ch a) (liftP ch.W M (oppPath t D.R.m) (oppPure ch.W t P d) (formTop ch t y)) := by

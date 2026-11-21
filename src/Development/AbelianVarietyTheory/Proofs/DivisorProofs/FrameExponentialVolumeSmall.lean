@@ -84,7 +84,7 @@ theorem orth_transfer : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   unfold bchar
   refine Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ ?_
   have h := (hb τ).1
-  rw [Matrix.det_of_upperTriangular ((ExtFPf.upper_iff X b τ).mp (hb τ).2)] at h
+  rw [Matrix.det_of_isUpperTriangular ((ExtFPf.upper_iff X b τ).mp (hb τ).2)] at h
   exact Finset.prod_ne_zero_iff.1 h i (Finset.mem_univ i)
 
 theorem nums (a l C0 PP T D b uE : ℝ) (ha : 1 ≤ a) (hl : 10 ≤ l) (hlC : C0 ≤ l) (hPP : (a * l) ^ 12 ≤ PP)

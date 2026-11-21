@@ -71,7 +71,7 @@ lemma sum_primesLE_log_div_le (n : ℕ) (hn : 1 ≤ n) :
     ∑ p ∈ Nat.primesLE n, Real.log p / p ≤ Real.log n + Real.log 4 := by
   have hnpos : (0 : ℝ) < n := by exact_mod_cast hn
   have hprim : ∑ p ∈ Nat.primesLE n, Real.log p ≤ n * Real.log 4 := by
-    have h4 : ((primorial n : ℕ) : ℝ) ≤ (4 : ℝ) ^ n := by exact_mod_cast primorial_le_4_pow n
+    have h4 : ((primorial n : ℕ) : ℝ) ≤ (4 : ℝ) ^ n := by exact_mod_cast primorial_le_four_pow n
     have hpos : (0 : ℝ) < (primorial n : ℕ) := by exact_mod_cast primorial_pos n
     have hlog : Real.log ((primorial n : ℕ) : ℝ) = ∑ p ∈ Nat.primesLE n, Real.log p := by
       unfold primorial

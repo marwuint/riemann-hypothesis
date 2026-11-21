@@ -49,7 +49,7 @@ theorem lift_Mj_base : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheo
       Submodule.restrictScalars_mem, and_assoc]
   · congr 1
     ext x'
-    simp only [Set.mem_setOf_eq, Arith.FormsL.Mj, Arith.FormsL.Mall, RealDat.WL, Arith.FormsL.Wgood, Submodule.mem_inf,
+    simp only [Set.mem_ofPred_eq, Arith.FormsL.Mj, Arith.FormsL.Mall, RealDat.WL, Arith.FormsL.Wgood, Submodule.mem_inf,
       Submodule.restrictScalars_mem, and_assoc]
 
 end GlobalTheory.Mem.R3.LiftForms

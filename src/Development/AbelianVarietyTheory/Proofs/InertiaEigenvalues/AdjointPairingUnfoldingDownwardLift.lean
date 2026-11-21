@@ -93,7 +93,7 @@ theorem integral_val_thF_eq : GlobalTheory.Published.CuspRapidDecay → ∀ (D :
       simp only [hΦ, inner_conj_symm, Complex.star_def]
       ring
     rw [integral_congr_ae (Filter.Eventually.of_forall e)]
-    exact integral_finset_sum _ fun k _ => hg k
+    exact MeasureTheory.integral_finsetSum _ fun k _ => hg k
   have hR : ∀ h, ⟪upVec R i t v b y h, R.extV i t u h⟫_ℂ = ∑ k, ∫ g in R.fdW i, Φ k g h ∂(R.νW i) := by
     intro h
     simp only [upVec, sum_inner, inner_smul_left]
@@ -106,11 +106,11 @@ theorem integral_val_thF_eq : GlobalTheory.Published.CuspRapidDecay → ∀ (D :
   calc ∫ g in R.fdW i, star (val R i v y g) * R.thF i t u (fun ρ => v ρ) g ∂(R.νW i)
       = ∫ g in R.fdW i, ∑ k, ∫ h in R.fdV i t, Φ k g h ∂(R.νV i t) ∂(R.νW i) := integral_congr_ae hL1
     _ = ∑ k, ∫ g in R.fdW i, ∫ h in R.fdV i t, Φ k g h ∂(R.νV i t) ∂(R.νW i) :=
-        integral_finset_sum _ fun k _ => (hint k).integral_prod_left
+        MeasureTheory.integral_finsetSum _ fun k _ => (hint k).integral_prod_left
     _ = ∑ k, ∫ h in R.fdV i t, ∫ g in R.fdW i, Φ k g h ∂(R.νW i) ∂(R.νV i t) :=
         Finset.sum_congr rfl fun k _ => integral_integral_swap (hint k)
     _ = ∫ h in R.fdV i t, ∑ k, ∫ g in R.fdW i, Φ k g h ∂(R.νW i) ∂(R.νV i t) :=
-        (integral_finset_sum _ fun k _ => (hint k).integral_prod_right).symm
+        (MeasureTheory.integral_finsetSum _ fun k _ => (hint k).integral_prod_right).symm
     _ = _ := integral_congr_ae (Filter.Eventually.of_forall fun h => (hR h).symm)
 
 end GlobalTheory.AdjUnfold

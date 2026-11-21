@@ -61,7 +61,7 @@ theorem continuous_rM (ε : Fin n → Bool) : Continuous fun M : Mat n => rM ε 
 theorem continuous_famF (ε : Fin n → Bool) {G : ℝ → ℝ} (hG : ContDiff ℝ ∞ G) (p : ℕ → Poly n) (t : ℝ) :
     Continuous fun M : Mat n => famF ε G p t M := by
   unfold famF bas
-  refine continuous_finset_sum _ fun k _ => ?_
+  refine continuous_finsetSum _ fun k _ => ?_
   exact (Complex.continuous_ofReal.comp ((iter_cont hG t k).comp (continuous_rM ε))).mul (continuous_ev _)
 
 theorem famF_eq_zero (ε : Fin n → Bool) {G : ℝ → ℝ} (h1 : ∀ x, 1 ≤ x → G x = 0) (p : ℕ → Poly n) {t : ℝ}
@@ -109,7 +109,7 @@ theorem fam_cs (hR : StR) (ε : Fin n → Bool) {G : ℝ → ℝ} (hG : IsProfil
   refine ⟨((continuous_famF ε hG.1 p t).comp (continuous_toM ε)).mul hw, ?_⟩
   refine HasCompactSupport.intro ((hR n ε).2.2.2 (1 / t)) fun g hg => ?_
   have hg' : 1 < t * rM ε (toM g) := by
-    simp only [Set.mem_setOf_eq, not_le] at hg
+    simp only [Set.mem_ofPred_eq, not_le] at hg
     rwa [div_lt_iff₀' ht] at hg
   simp [famF_eq_zero ε hG.2.1 p ht hg']
 

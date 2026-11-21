@@ -33,7 +33,7 @@ theorem theta_lift_finite_sum_smooth : GlobalTheory.IndefiniteRowSideFullHecke.C
     simp only [Finset.sum_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => hχ (F i) (w i) z hz hc h
   have hψa : GlobalTheory.Unf.IsContAut (G.Xp j).V (∑ i, (F i).1 (w i)) := by
-    refine ⟨fun γ hγ g => ?_, by rw [Finset.sum_fn]; exact continuous_finset_sum _ fun i _ => (isContAut_cusp (F i) (w i)).2⟩
+    refine ⟨fun γ hγ g => ?_, by rw [Finset.sum_fn]; exact continuous_finsetSum _ fun i _ => (isContAut_cusp (F i) (w i)).2⟩
     simp only [Finset.sum_apply]
     exact Finset.sum_congr rfl fun i _ => (isContAut_cusp (F i) (w i)).1 γ hγ g
   obtain ⟨hν, hfd⟩ := measX_haar_fd hG j hj.le
@@ -52,8 +52,8 @@ theorem theta_lift_finite_sum_smooth : GlobalTheory.IndefiniteRowSideFullHecke.C
         (F i).1 (w i) g := fun g => by
     simp only [thetaKO, map_sum, Finset.sum_apply, Finset.sum_mul_sum]
   rw [integral_congr_ae (Filter.Eventually.of_forall key)]
-  rw [integral_finset_sum _ fun l _ => integrable_finset_sum _ fun i _ => (hI l i (p l) (w i) h).1]
-  simp_rw [integral_finset_sum _ fun i _ => (hI _ i _ (w i) h).1]
+  rw [MeasureTheory.integral_finsetSum _ fun l _ => MeasureTheory.integrable_finsetSum _ fun i _ => (hI l i (p l) (w i) h).1]
+  simp_rw [MeasureTheory.integral_finsetSum _ fun i _ => (hI _ i _ (w i) h).1]
   have e2 : ∀ l i, ∫ g in (G.measX j).fd, thetaKO (G.col t j).ω g h (fock R.ψ R.θ false (G.Xp j) (G.Xp (j + 1)) (f l) (p l)) *
       (F i).1 (w i) g ∂(G.measX j).ν = F' l i ((G.col t j).It (p l) (w i)) h := fun l i => (hI l i (p l) (w i) h).2
   simp_rw [e2]

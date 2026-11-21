@@ -108,7 +108,7 @@ theorem val_sub_lt_of_hasRes {P : HeightOneSpectrum (𝓞 E)} {z : P.adicComplet
 theorem le_exp_neg_one {P : HeightOneSpectrum (𝓞 E)} {z : P.adicCompletion E} (h : Valued.v z < 1) :
     Valued.v z ≤ WithZero.exp (-1 : ℤ) := by
   by_cases h0 : Valued.v z = 0
-  · rw [h0]; exact zero_le'
+  · rw [h0]; exact zero_le
   rw [← WithZero.exp_log h0] at h ⊢
   rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at h
   rw [WithZero.exp_le_exp]
@@ -216,7 +216,7 @@ theorem core {g m : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} {h : GLG E n S
       have := congrArg (fun x : GL (Fin n) (P.adicCompletion E) => (x : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) e2
       exact this.trans (congrArg (fun M : Matrix (Fin n) (Fin n) (P.adicCompletion E) => M r s) Units.val_one)
     rw [e3, sub_self, map_zero]
-    exact zero_le'
+    exact zero_le
 
 end Gen3
 

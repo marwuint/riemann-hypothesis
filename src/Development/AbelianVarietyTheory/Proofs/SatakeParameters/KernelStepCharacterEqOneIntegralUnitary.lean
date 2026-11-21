@@ -93,7 +93,7 @@ theorem mt_eq_one_of_intUnit : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St}
       have h2 := hvG P hg
       show Valued.v (GlobalTheory.Mem.Col2.afIso t.X.F t.X.E ((x : AfE t.X.F t.X.E) - 1) P) ≤ _
       rw [map_sub, map_one, hsub, h2, sub_self, map_zero]
-      exact zero_le'
+      exact zero_le
   have hxi : (t.tup μ : Chr t.X.F t.X.E t.X.K) x = 1 := by
     have hmem := (t.tup μ).2
     simp only [tupGrp, finChar, Subgroup.mem_inf] at hmem

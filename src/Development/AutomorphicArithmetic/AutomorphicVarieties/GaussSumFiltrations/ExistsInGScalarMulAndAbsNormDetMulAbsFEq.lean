@@ -66,7 +66,7 @@ theorem inG_mul {p : ℕ} {δ : F} (hδ0 : δ ≠ 0) {γ γ' : GL (Fin 2) F} (h 
 
 theorem inG_one (p : ℕ) (δ : F) : InG p δ 1 := by
   have h1 : PInt p (1 : F) := fun w _ => by rw [map_one]
-  have h0 : PInt p (0 : F) := fun w _ => by rw [map_zero]; exact zero_le'
+  have h0 : PInt p (0 : F) := fun w _ => by rw [map_zero]; exact zero_le
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> simp [h1, h0]
   · intro w _; simp
   · exact tp_one

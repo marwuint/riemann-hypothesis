@@ -67,7 +67,7 @@ theorem im_pos' {a b c d : ℝ} (h : 0 < a * d - b * c) :
   positivity
 
 theorem isOpen_up {ι : Type} [Fintype ι] : IsOpen {z : ι → ℂ | ∀ v, 0 < (z v).im} := by
-  rw [Set.setOf_forall]
+  rw [Set.ofPred_forall]
   exact isOpen_iInter_of_finite fun v => isOpen_lt continuous_const (by fun_prop)
 
 theorem arch_smooth {ι : Type} [Fintype ι] (k : ℕ) (g : (ι → ℂ) → ℂ)

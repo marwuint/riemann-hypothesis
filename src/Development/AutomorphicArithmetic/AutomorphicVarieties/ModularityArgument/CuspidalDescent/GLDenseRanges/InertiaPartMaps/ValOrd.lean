@@ -145,7 +145,7 @@ private theorem el_bd {a b : Fin n} (h : a ≠ b) {y : k} (hy : valuation k y �
   split_ifs
   · exact hy
   · rw [map_zero]
-    exact zero_le'
+    exact zero_le
 
 private theorem el_Kc {a b : Fin n} (h : a ≠ b) {y : k} (hy : valuation k y ≤ uniformizer k ^ ((1 : ℕ) : ℤ)) :
     el a b h y ∈ Kc k n 1 := by

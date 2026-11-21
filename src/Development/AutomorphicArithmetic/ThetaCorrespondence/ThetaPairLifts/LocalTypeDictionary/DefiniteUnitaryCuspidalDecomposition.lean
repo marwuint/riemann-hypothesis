@@ -84,7 +84,7 @@ theorem cusp_forms_decompose_definite_unitary : _root_.GlobalTheory.FunPr.ThetaL
       (fun τ => ℓ a τ (J τ))).smulRight (fun x => F x (fun τ => k τ (J τ)))
   have hT : ∀ a v x, T a v x = ∑ J : (∀ τ, Fin (m τ)), (∏ τ, ℓ a τ (J τ) (v τ)) * F x (fun τ => k τ (J τ)) := by
     intro a v x
-    simp only [T, MultilinearMap.sum_apply, Finset.sum_apply, MultilinearMap.smulRight_apply,
+    simp only [T, _root_.sum_apply, Finset.sum_apply, MultilinearMap.smulRight_apply,
       MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, Pi.smul_apply, smul_eq_mul]
   have hMult : ∀ a, IsMultMap θ N.M ∅ 1 (T a) := by
     intro a

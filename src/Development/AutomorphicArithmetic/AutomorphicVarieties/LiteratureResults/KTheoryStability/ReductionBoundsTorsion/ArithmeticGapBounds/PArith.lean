@@ -135,7 +135,7 @@ private theorem mem_Kg_zero_inf_Kg_one_iff_col_dvd_pi {L : Type} [Field L] [Numb
   have hik : ∀ i : Fin N, (i : ℕ) < 1 ↔ i = k := fun i => by
     rw [Nat.lt_one_iff, ← hk, Fin.val_inj]
   rw [Subgroup.mem_inf, scaled_integral_entry_eq_swap_scales π hπ 0 1 g γ h]
-  simp only [Nat.not_lt_zero, if_false, mul_one, hik, Set.mem_setOf_eq]
+  simp only [Nat.not_lt_zero, if_false, mul_one, hik, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨-, H⟩ i hi
     obtain ⟨z, hz⟩ := H i k
@@ -526,7 +526,7 @@ private theorem arith_holds_lemma_3 {L : Type} [Field L] [NumberField L] {N : �
         ∀ i, i ≠ k → π ∣ (x : Matrix (Fin N) (Fin N) (NumberField.RingOfIntegers L)) i k} ↔
       ∀ i, i ≠ k → q ((x : Matrix (Fin N) (Fin N) (NumberField.RingOfIntegers L)) i k) = 0 := by
     intro x
-    simp only [Set.mem_setOf_eq, hdvd]
+    simp only [Set.mem_ofPred_eq, hdvd]
   have step : ∀ γ : Matrix.SpecialLinearGroup (Fin N) (NumberField.RingOfIntegers L),
       γ ∉ {x : Matrix.SpecialLinearGroup (Fin N) (NumberField.RingOfIntegers L) |
         ∀ i, i ≠ k → π ∣ (x : Matrix (Fin N) (Fin N) (NumberField.RingOfIntegers L)) i k} →

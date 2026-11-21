@@ -70,7 +70,7 @@ theorem downward_form_approximation_of_decay (s1 : _root_.GlobalTheory.FunPr.The
     funext h
     have hk : ∀ k ∈ K, IntegrableOn (fun g => thetaKO (G.dn i).ω g h Φ * (F k (v k)) g) (G.mP (i + 1)).fd (G.mP (i + 1)).ν :=
       fun k hk => hint _ (autSm_cusp_of_mem_cusp _ _ (hF k hk) (v k)).1 (autSm_cusp_of_mem_cusp _ _ (hF k hk) (v k)).2 h
-    rw [← integral_finset_sum _ hk, ← integral_sub (hint φ hφ.1 hφ.2.1 h) (integrable_finset_sum _ hk)]
+    rw [← MeasureTheory.integral_finsetSum _ hk, ← integral_sub (hint φ hφ.1 hφ.2.1 h) (MeasureTheory.integrable_finsetSum _ hk)]
     congr 1
     funext g
     simp only [Pi.sub_apply, Finset.sum_apply, mul_sub, Finset.mul_sum]

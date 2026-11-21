@@ -27,11 +27,11 @@ private theorem deltaHalf_and_torusChar_eq_one_of_mem_KO (n : ℕ) (ξ : Fin n �
     torusChar (fun i => unrChar k (ξ i)) ((leviTorus k (Fin n)).symm (leviProj k (points (Fin n)) b)) = 1 := by
   have hL := (GlobalTheory.SmGL.LeviInt.levi_integral_facts k (Fin n) (Fin n) (fun _ => Unit) (points (Fin n))).2.1 b hb
   constructor
-  · rw [deltaHalf, MonoidHom.finset_prod_apply]
+  · rw [deltaHalf, MonoidHom.finsetProd_apply]
     refine Finset.prod_eq_one (fun a _ => ?_)
     rw [MonoidHom.comp_apply, detChar_apply]
     exact isUnram_absPow k _ _ (valuation_det_KO (hL a))
-  · rw [torusChar, MonoidHom.finset_prod_apply]
+  · rw [torusChar, MonoidHom.finsetProd_apply]
     refine Finset.prod_eq_one (fun i _ => ?_)
     have h0 : ord k (GeneralLinearGroup.det (leviProj k (points (Fin n)) b i)) = 0 :=
       ord_eq_zero_iff.mpr (valuation_det_KO (hL i))
@@ -112,7 +112,7 @@ theorem sphConst (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
   obtain ⟨s, rfl⟩ := hF y
   have ho : IsOpen {g : GL (Fin n) k | (iP ξ g) (s : _) = s} := hsm s
   have h1 : (1 : GL (Fin n) k) ∈ {g : GL (Fin n) k | (iP ξ g) (s : _) = s} := by
-    rw [Set.mem_setOf_eq, map_one]
+    rw [Set.mem_ofPred_eq, map_one]
     rfl
   refine Filter.mem_of_superset (ho.mem_nhds h1) ?_
   intro g hg

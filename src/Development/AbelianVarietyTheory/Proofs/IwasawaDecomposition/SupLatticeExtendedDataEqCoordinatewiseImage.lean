@@ -113,7 +113,7 @@ theorem mk_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Pub
     (congrFun (eq_of_heq hN.nW) j').trans (congrArg z.R.nW (Fin.ext hj.symm))
   have hinj : Function.Injective (w'.st Z').toD7.what₂.embLL := RingHom.injective _
   ext x'
-  simp only [SetLike.mem_coe, Set.mem_setOf_eq]
+  simp only [SetLike.mem_coe, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨h1, h2⟩
     obtain ⟨f', he'⟩ : ∃ f', z'.geo.fw.e j' f' = ⟨x', h1⟩ := ⟨_, LinearEquiv.apply_symm_apply _ _⟩

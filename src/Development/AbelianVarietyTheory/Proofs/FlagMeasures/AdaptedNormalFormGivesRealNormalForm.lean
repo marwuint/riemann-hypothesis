@@ -514,7 +514,7 @@ theorem frameC_holds : FrameC := by
       rw [hEb, hEa, Matrix.mulVec_smul, herm_smul_l, herm_smul_r, herm_uh hgU, hΦ, hΦ, GramPf.phiV_herm, hm2I,
         show (HV D).B (N.F.e (Fin.castLE N.j_le b).castSucc) (N.F'.e (Fin.castLE N.j_le a).castSucc) =
           N.w.mat b a * ((N.sgn a : ℤ) : D.host.E) from N.pair b a]
-      simp only [Fin.coe_castLE, ← Complex.ofReal_inv, Complex.star_def, Complex.conj_ofReal]
+      simp only [Fin.val_castLE, ← Complex.ofReal_inv, Complex.star_def, Complex.conj_ofReal]
       push_cast
       ring
     rw [hM]

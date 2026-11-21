@@ -86,7 +86,7 @@ theorem moved_vacuum_isVacuumIntegral : _root_.GlobalTheory.FunPr.ThetaLocalInpu
         (Filter.Eventually.of_forall fun w => sq_nonneg ‖F w‖) hc.aestronglyMeasurable]
       congr 1
       refine MeasureTheory.lintegral_congr fun w => ?_
-      rw [← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _)]
+      rw [← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]
     rw [key _ hth'.cont, hU, ← key _ hv.theta.cont]
     exact hv.norm.2 q hq
 end GlobalTheory.MovedDict

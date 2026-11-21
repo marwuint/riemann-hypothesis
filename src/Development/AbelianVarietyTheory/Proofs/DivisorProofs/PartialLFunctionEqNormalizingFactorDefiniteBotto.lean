@@ -158,7 +158,7 @@ theorem _root_.GlobalTheory.T.partialLFunction_eq_normalizingFactor_definiteBott
       (not_not.1 (mt (GlobalTheory.BottomLVal.nuH_not_unrAt_iff hL G t i j w).1 hw))).inv
   obtain ⟨σ, hσ⟩ := GlobalTheory.RallisEuler.trivPar_euler _ _ A.rank hU
   have hH : Differentiable ℂ fun s : ℂ => ∏ k ∈ range A.rank, Λ (s + (A.rank : ℂ) / 2 - k) :=
-    Differentiable.fun_finset_prod fun k _ => hΛ.1.comp (by fun_prop)
+    Differentiable.fun_finsetProd fun k _ => hΛ.1.comp (by fun_prop)
   refine ⟨fun s : ℂ => ∏ k ∈ range A.rank, Λ (s + (A.rank : ℂ) / 2 - k),
     ⟨Set.univ, trivial, isRightDomain_univ, fun s _ => (hH.analyticAt s).meromorphicAt,
       max σ ((A.rank : ℝ) / 2 + 1), fun s hs => ?_⟩, hH.analyticAt _, ?_⟩

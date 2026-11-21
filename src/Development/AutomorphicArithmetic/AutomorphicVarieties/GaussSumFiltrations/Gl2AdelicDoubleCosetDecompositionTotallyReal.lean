@@ -36,7 +36,7 @@ theorem exists_sl_aff (K : Subgroup (GL (Fin 2) (Af F)))
   have ho : IsOpen {s : GL (Fin 2) (Af F) | (aff y 0)⁻¹ * s⁻¹ * g ∈ K} :=
     hK.preimage (f := fun s : GL (Fin 2) (Af F) => (aff y 0)⁻¹ * s⁻¹ * g) ((continuous_const.mul continuous_inv).mul continuous_const)
   obtain ⟨_, hu, σ, hσ, rfl⟩ := mem_closure_iff.1 hcl _ ho (by
-    rw [Set.mem_setOf_eq, _root_.mul_inv_rev, inv_inv, inv_mul_cancel_left, inv_mul_cancel]; exact one_mem K)
+    rw [Set.mem_ofPred_eq, _root_.mul_inv_rev, inv_inv, inv_mul_cancel_left, inv_mul_cancel]; exact one_mem K)
   refine ⟨σ, y, _, hu, hσ, ?_⟩
   rw [mul_assoc, mul_inv_cancel_left]
   exact (mul_inv_cancel_left _ g).symm

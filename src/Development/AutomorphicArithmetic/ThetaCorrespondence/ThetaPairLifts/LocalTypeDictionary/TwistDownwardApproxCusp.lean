@@ -38,8 +38,8 @@ theorem downward_approx_cusp : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlong
     exact GlobalTheory.DownConv.integrableOn_thetaKO_mul_cusp hP.cuspRapidDecay hB.inf true ((hG.arrows.dn i hi).weil) hΦ
       hν h𝓕 ha hc h
   refine ⟨n, F, v, hF, hI, fun h hh => ?_⟩
-  rw [← integral_finset_sum Finset.univ fun l _ => hI l h,
-    ← integral_sub (hint h) (integrable_finset_sum _ fun l _ => hI l h)]
+  rw [← MeasureTheory.integral_finsetSum Finset.univ fun l _ => hI l h,
+    ← integral_sub (hint h) (MeasureTheory.integrable_finsetSum _ fun l _ => hI l h)]
   have : IsFiniteMeasure ((G.mP (i + 1)).ν.restrict (G.mP (i + 1)).fd) := isFiniteMeasure_restrict.2 hfin.ne
   have hpt : ∀ g, ‖thetaKO (G.dn i).ω g h Φ * φ g - ∑ l, thetaKO (G.dn i).ω g h Φ * F l (v l) g‖ ≤ C1 * δ :=
     fun g => by

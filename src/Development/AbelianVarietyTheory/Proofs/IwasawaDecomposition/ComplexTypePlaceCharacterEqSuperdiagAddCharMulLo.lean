@@ -163,7 +163,7 @@ theorem _root_.GlobalTheory.T.complex_typePlaceCharacter_eq_superdiag_addChar_mu
   generalize hM : NX.redMat s.v red (NX.topR (Nat.le_add_right D.R.r D.R.t : D.R.r ≤ D.R.nV) x.val) = M
   erw [hM] at h1 hry
   have hdet : IsUnit M.det := by
-    rw [Matrix.det_of_upperTriangular h1.1, Finset.prod_eq_one fun a _ => h1.2 a]
+    rw [Matrix.det_of_isUpperTriangular h1.1, Finset.prod_eq_one fun a _ => h1.2 a]
     exact isUnit_one
   have hval := NX.glOf_val M hdet
   generalize hu : (Pi.mulSingle kv0 (NX.glOf M) : G0g D.nd) = u

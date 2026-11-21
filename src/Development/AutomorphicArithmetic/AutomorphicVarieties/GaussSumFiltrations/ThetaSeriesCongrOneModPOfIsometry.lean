@@ -31,7 +31,7 @@ theorem th_congr_one : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F
   · subst hξ
     have hz : hfs.toFinset = {0} := by
       ext x
-      simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Finset.mem_singleton]
+      simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Finset.mem_singleton]
       constructor
       · rintro ⟨-, hx⟩
         by_contra hne
@@ -47,12 +47,12 @@ theorem th_congr_one : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F
   · rw [if_neg hξ, sub_zero]
     apply _root_.GlobalTheory.T.norm_sum_free_orbits_le_inv_prime p ι (κ → F) (fun x => S.map Int.cast *ᵥ x) hfs.toFinset Φ
     · intro x hx
-      simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hx ⊢
+      simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq] at hx ⊢
       exact ⟨((hact x).2.2.2 _).2 hx.1, ((hQ x x).2).trans hx.2⟩
     · intro x _
       exact (hact x).1
     · intro x hx h
-      simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hx
+      simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq] at hx
       apply hξ
       rw [← hx.2, (hact x).2.1 h]
       simp [QF, BF]

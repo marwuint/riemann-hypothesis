@@ -82,7 +82,7 @@ theorem valuation_multiplicity_of_consecutive_run : _root_.GlobalTheory.CovTop.P
   have bw := hwm _ ew
   by_cases h0 : ν (H0.germ j y (memTop y) hj θ) = 0
   · rw [h0, zero_pow three_ne_zero]
-    exact zero_le'
+    exact zero_le
   · obtain ⟨zt, hzt⟩ := WithZero.ne_zero_iff_exists.1 h0
     have et : ν (H0.germ j y (memTop y) hj θ) =
         ((Multiplicative.ofAdd (-(-Multiplicative.toAdd zt)) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by

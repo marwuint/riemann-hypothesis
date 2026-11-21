@@ -305,7 +305,7 @@ theorem of_ext (θ : InfFam D) (hθ : IsInfFam θ) (M : DSModel W S') (hLS : Low
     have h11 : ω ((1 : GA D V), (1 : GA D W)) = 1 := map_one ω
     rw [h11, Module.End.one_apply] at P1
     rw [P1]
-    simp only [hrep1, ContinuousLinearMap.one_apply, inner_self_eq_norm_sq_to_K, hv]
+    simp only [hrep1, one_apply_eq_self, inner_self_eq_norm_sq_to_K, hv]
     simp
   rw [st2 v v u hu, hn]
 

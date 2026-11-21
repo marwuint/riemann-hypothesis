@@ -41,7 +41,7 @@ theorem weil_schwartz_schur_lemma : _root_.GlobalTheory.FunPr.ThetaLocalInputs �
       rw [hc (trPt (y0 - x)) g (trS (y0 - x) g) (coe_trS _ _), coe_trS, rhoFun_trPt, rhoFun_trPt, hxy] at e1
       have e2 := congrArg conj e1
       simp only [map_mul, Complex.conj_conj] at e2
-      rw [SchwartzMap.smul_apply, smul_eq_mul, map_div₀, div_mul_eq_mul_div, eq_div_iff hcb, e2, mul_comm]
+      rw [smul_apply, smul_eq_mul, map_div₀, div_mul_eq_mul_div, eq_div_iff hcb, e2, mul_comm]
   · push_neg at h0
     refine ⟨1, by simp, fun h => ?_⟩
     ext x

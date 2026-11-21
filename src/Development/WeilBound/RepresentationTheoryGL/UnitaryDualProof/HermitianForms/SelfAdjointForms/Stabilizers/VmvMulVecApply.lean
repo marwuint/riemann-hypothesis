@@ -92,7 +92,7 @@ theorem good_nbhd_pf {m : ℕ} (K : Subgroup (GL (Fin (m + 1)) k)) (hK : IsOpen 
   have hv : {x : k | valuation k x < 1} ∈ nhds (0 : k) :=
     (IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨1, fun x hx => by simpa using hx⟩
   have hS : {η : Fin (m + 1) → k | ∀ i, valuation k (η i) < 1} ∈ nhds (0 : Fin (m + 1) → k) := by
-    simp only [Set.setOf_forall]
+    simp only [Set.ofPred_forall]
     refine Filter.iInter_mem.2 fun i => ?_
     have h1 : (fun η : Fin (m + 1) → k => η i) ⁻¹' {x : k | valuation k x < 1} ∈
         nhds (0 : Fin (m + 1) → k) :=

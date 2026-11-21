@@ -69,7 +69,7 @@ def dirSize (θ : InfFam D) (S T : HSp D) (x : GA D S × GA D T) : ℝ :=
 
 theorem continuous_dirSize {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) : Continuous (dirSize θ S T) := by
   unfold dirSize
-  refine continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_
+  refine continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_
   have h1 : Continuous fun x : GA D S × GA D T => compAt θ a.1 (Formalism.L2.Theta.mt T x.2⁻¹) :=
     (GlobalTheory.RealWeil.continuous_compAt hθ a.1 _ _).comp ((continuous_mt_eq T).comp continuous_snd.inv)
   have h2 : Continuous fun x : GA D S × GA D T => compAt θ a.1 (Formalism.L2.Theta.mt S x.1) :=
@@ -148,7 +148,7 @@ theorem UpperTheory.Lit.Rallis.ThetaDens.om_compact_sobCont : ∀ (D : D7) (ψ :
   let U' : AddSubgroup (WO S T) :=
     { carrier := {u | ∀ x ∈ K, Formalism.IndefR.Datum.actO S T x.1⁻¹ x.2⁻¹ u ∈ U}
       add_mem' := fun {a b} ha hb x hx => by
-        rw [Set.mem_setOf_eq] at ha hb
+        rw [Set.mem_ofPred_eq] at ha hb
         show Formalism.IndefR.Datum.actO S T x.1⁻¹ x.2⁻¹ (a + b) ∈ U
         rw [actO_add']; exact U.add_mem (ha x hx) (hb x hx)
       zero_mem' := fun x _ => by
@@ -416,8 +416,8 @@ theorem sobO_sub_tendsto_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), I
     intro l
     simp only [wordAct_heisDer_sub hψ hθ (hu _) hf l, GlobalTheory.Size.l2O]
     exact eLpNorm_sub_tendsto_of_unif _ (by rw [Measure.restrict_apply_univ]; exact hμ.2.2) _ _ (hl l)
-  have := tendsto_finset_sum (Finset.range (d + 1)) fun k _ =>
-    tendsto_finset_sum (Finset.univ : Finset (Fin k → D.what₂.Tau × Fin T.rank × Fin S.rank × Bool))
+  have := tendsto_finsetSum (Finset.range (d + 1)) fun k _ =>
+    tendsto_finsetSum (Finset.univ : Finset (Fin k → D.what₂.Tau × Fin T.rank × Fin S.rank × Bool))
       fun a _ => key (List.ofFn a)
   simp only [Finset.sum_const_zero] at this
   exact this
@@ -600,8 +600,8 @@ theorem contDiff_of_class_tendstoLocallyUniformly : ∀ {E : Type} [NormedAddCom
     funext y
     ext x
     conv_lhs => rw [← hc x]
-    simp only [map_sum, map_smul, (h y).2, ContinuousLinearMap.sum_apply,
-      ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply]
+    simp only [map_sum, map_smul, (h y).2, sum_apply,
+      smul_apply, ContinuousLinearMap.smulRight_apply]
     refine Finset.sum_congr rfl fun a _ => ?_
     simp only [Complex.real_smul, smul_eq_mul]
     ring
@@ -892,7 +892,7 @@ theorem exists_bound_of_complete {E : Type} [AddCommGroup E] [Module ℂ E] (p :
     | refl => exact le_rfl
     | step _ ih => exact ih.trans (hmono _ x)
   refine ⟨s.sup id, C, fun x => (hle x).trans ?_⟩
-  rw [Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul]
+  rw [smul_apply, NNReal.smul_def, smul_eq_mul]
   refine mul_le_mul_of_nonneg_left ?_ C.2
   exact Seminorm.finset_sup_apply_le (apply_nonneg _ _) fun i hi => hmono' _ _ _ (Finset.le_sup (f := id) hi)
 
