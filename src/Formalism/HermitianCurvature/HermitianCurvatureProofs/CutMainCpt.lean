@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutCptManual
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutCptCopy
 
 namespace Formalism.FourierDecayAlt.P.TBBx3
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filter Topology MeasureTheory
@@ -941,5 +940,62 @@ theorem _root_.Formalism.FourierDecayAlt.P.CutBP.block_growth_bound_of_compact_c
 
 end Formalism.FourierDecayAlt.P.CutBP
 
-set_option maxHeartbeats 0 in
-cpt_copy_thms
+namespace Formalism.FourierDecayAlt.P.CutBP
+
+open Formalism.FourierDecayAlt MeasureTheory
+open scoped ComplexConjugate
+
+noncomputable section
+open Classical
+
+private theorem compactLowLevelFibre : GLFibreCpt := by
+  intro hA Wp Wq _ _ _ _ _ _ P p nn F Y N Cb hCb hF hnn j hj w hw hN a b ha hb
+  have hPS : KB.PStdCpt := Formalism.FourierDecayAlt.P.standard_pairing_of_headsCpt Formalism.FourierDecayAlt.P.radial_head Formalism.FourierDecayAlt.P.head_top
+  have hjr : j ≤ P.r := by omega
+  obtain ⟨φ, -, hφi, hφ, hφs⟩ := hPS hA Wp Wq P p F j hjr w a b ha hb Cb hCb hF hw.1
+  set K : ℝ := Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) a) * Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) b) /
+    TBB.normC nn w with hK
+  have hae : (fun c => TBB.NP p nn F (j + 1) w (a ++ [(1, c)]) (b ++ [(1, c)])) =ᵐ[volume]
+      fun c => (K : ℂ) * φ c := by
+    filter_upwards [Formalism.FourierDecayAlt.P.TBBx1.ae_ne_zero] with c hc
+    rw [hφ c hc]
+    unfold TBB.NP
+    rw [nPt_append_one P _ a j ha hj c, nPt_append_one P _ b j hb hj c,
+      Real.sqrt_mul (nPt_nonneg_loc P _ a j ha hjr), Real.sqrt_mul (nPt_nonneg_loc P _ b j hb hjr)]
+    have hl := Real.mul_self_sqrt (levW_nonneg_low P j hj c)
+    rw [hK]
+    have : Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) a) * Real.sqrt (KB.levW P (j + 1) c) *
+        (Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) b) * Real.sqrt (KB.levW P (j + 1) c)) / TBB.normC nn w =
+        Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) a) * Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) b) / TBB.normC nn w *
+          KB.levW P (j + 1) c := by
+      calc _ = Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) a) * Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) b) /
+              TBB.normC nn w * (Real.sqrt (KB.levW P (j + 1) c) * Real.sqrt (KB.levW P (j + 1) c)) := by ring
+        _ = _ := by rw [hl]
+    rw [this]
+    push_cast
+    ring
+  refine ⟨(hφi.const_mul (K : ℂ)).congr hae.symm, ?_⟩
+  rw [integral_congr_ae hae, integral_const_mul]
+  have h0 := hφs 0
+  simp only [P5.fsv, zero_mul, map_zero, sub_zero, Complex.exp_zero, one_mul,
+    Formalism.FourierDecayAlt.P.PBASM.waveG_zero_eq_self] at h0
+  rw [h0]
+  unfold TBB.NP
+  congr 1
+  unfold KB.Pl.RR D.RRplace
+  rw [dif_pos ⟨ha, hb⟩, dif_pos hjr]
+  rfl
+
+theorem block_growth_bound_of_compact_coefCpt (hA : P5.ThmPActualCpt)
+    {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
+    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
+    [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
+    (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
+    (Y : Finset ℝ) (K N : ℕ) (Cb : ℝ) (hCb : KB.InDDplus2 P p.l0 p.T.base Cb p.Θ)
+    (hG : KB.CptCoef p.T.base G) (hnn : ∀ y, 0 < nn y) : TBB.BlockGrowthBound p nn G Y K N :=
+  block_growth_bound_of_compact_coef_of_germ_dataCpt hA p nn G Y K N Cb hCb hG hnn
+    (germDataLowAll_of_partsCpt glGramCpt compactLowLevelFibre low_level_continuityCpt low_level_germCpt)
+    germ_data_top_levelCpt
+
+end
+end Formalism.FourierDecayAlt.P.CutBP
