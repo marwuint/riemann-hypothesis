@@ -56,8 +56,8 @@ def setupL (ρ : GlobalTheory.SeriesTie.Setup (Dof x).ntw) : GlobalTheory.Series
   ek := (by with_unfolding_all exact (ρ.ek :))
   B := fun i j b => (by with_unfolding_all exact ((baseL L (ρ.B ((i)) ((j)) b)) : _))
   om := fun i j b χ => (by with_unfolding_all exact ((ρ.om ((i)) ((j)) b ((χ))) : _))
-  Cl := fun i j b t => ρ.Cl ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) b (twB L t)
-  finCl := fun i j b t => ρ.finCl ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) b (twB L t)
+  Cl := fun i j b t => ρ.Cl i j b (twB L t)
+  finCl := fun i j b t => ρ.finCl i j b (twB L t)
   rep := fun i j b t c => (by with_unfolding_all exact ((ρ.rep ((i)) ((j)) b (twB L t) c) : _))
   β := (by with_unfolding_all exact (ρ.β :))
   eG := (by with_unfolding_all exact (ρ.eG :))
@@ -117,13 +117,13 @@ theorem setupL_good {ρ : GlobalTheory.SeriesTie.Setup (Dof x).ntw} (h : ρ.Good
     latS := (by with_unfolding_all exact (h.latS :))
     latT := (by with_unfolding_all exact (h.latT :))
     Pg := (by with_unfolding_all exact (h.Pg :))
-    delta := fun i j b => kc% (congrArg (twL L) (h.delta (kc% i) (kc% j) b))
+    delta := fun i j b => (by with_unfolding_all exact (congrArg (twL L) (h.delta i j b) :))
     weil := fun i j b t ht => by
       delta GlobalTheory.ExportSeries.Base.IsWeil
       tr_leaves x.o.Z (oL x L).Z
       exact (by with_unfolding_all exact ((h.weil ((i)) ((j)) b (twB L t) (twB_good L ht)) : _))
     classes := fun i j b t ht hA =>
-      have h' := h.classes ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) b (twB L t) (twB_good L ht) ⟨(by with_unfolding_all exact ((placesOK_B L hA.1) :)), (by with_unfolding_all exact (hA.2 :))⟩
+      have h' := h.classes i j b (twB L t) (twB_good L ht) ⟨(by with_unfolding_all exact ((placesOK_B L hA.1) :)), (by with_unfolding_all exact (hA.2 :))⟩
       ⟨(by with_unfolding_all exact (h'.fin :)), (by with_unfolding_all exact (h'.reps :)), (by with_unfolding_all exact (h'.stab :))⟩ }
 
 theorem pinL (l : LC hL x) : GlobalTheory.SeriesTie.RealPin (datL x L).R (datL x L).cG (setupL L l.b.ser.ex.ρ) :=
@@ -141,7 +141,7 @@ theorem theta_eq (ρ : Setup (Dof x).ntw) :
   delta GlobalTheory.SeriesTie.Setup.theta GlobalTheory.ExportSeries.Base.theta GlobalTheory.ExportSeries.Base.vecBase GlobalTheory.ExportSeries.Base.vecAt
     GlobalTheory.ExportSeries.Frame.vec GlobalTheory.ExportSeries.Frame.placeMap
   tr_leaves x.o.Z (oL x L).Z
-  kexactB (Eq.refl (ρ.theta (kc% i) (kc% j) b (kc% h) (kc% P)))
+  with_unfolding_all exact (Eq.refl (ρ.theta i j b h P) :)
 
 open GlobalTheory.SeriesTie in
 
