@@ -1,13 +1,7 @@
 import Mathlib
 import Formalism.WeaklyAdmissibleFiltrations.Statement
 
-theorem UpperTheory.Reformulated.B.Qh15.aux1 :
-    ∀ {A : Type} [inst : CommRing A],
-      @SMulCommClass A A A
-        (@Algebra.toSMul A A (@CommRing.toCommSemiring A inst)
-          (@CommSemiring.toSemiring A (@CommRing.toCommSemiring A inst)) (@Algebra.id A (@CommRing.toCommSemiring A inst)))
-        (@instSMulOfMul A
-          (@Distrib.toMul A (@instDistribOfSemiring A (@CommSemiring.toSemiring A (@CommRing.toCommSemiring A inst))))) := by
+theorem UpperTheory.Reformulated.B.Qh15.aux1 : ∀ {A : Type} [inst : CommRing A], SMulCommClass A A A := by
   intro A _
   infer_instance
 
@@ -452,21 +446,7 @@ theorem UpperTheory.Reformulated.B.Qh15.aux3 :
   ext
   simp [mul_comm]
 
-noncomputable def UpperTheory.Reformulated.B.Qh15.chRep :
-    {G A : Type} →
-      [inst : Group G] →
-        [inst_1 : CommRing A] →
-          @MonoidHom G (@Units A (@Semiring.toMonoid A (@CommSemiring.toSemiring A (@CommRing.toCommSemiring A inst_1))))
-              (@MulOneClass.toMulOne G (@Monoid.toMulOneClass G (@DivInvMonoid.toMonoid G (@Group.toDivInvMonoid G inst))))
-              (@MulOneClass.toMulOne
-                (@Units A (@Semiring.toMonoid A (@CommSemiring.toSemiring A (@CommRing.toCommSemiring A inst_1))))
-                (@Units.instMulOneClass A
-                  (@Semiring.toMonoid A (@CommSemiring.toSemiring A (@CommRing.toCommSemiring A inst_1))))) →
-            @Representation A G A (@CommSemiring.toSemiring A (@CommRing.toCommSemiring A inst_1))
-              (@DivInvMonoid.toMonoid G (@Group.toDivInvMonoid G inst))
-              (@Semiring.toAddCommMonoid A (@CommSemiring.toSemiring A (@CommRing.toCommSemiring A inst_1)))
-              (@Semiring.toModule A (@CommSemiring.toSemiring A (@CommRing.toCommSemiring A inst_1))) :=
-    fun {G A : Type} [inst : Group G] [inst_1 : CommRing A]
+noncomputable def UpperTheory.Reformulated.B.Qh15.chRep : {G A : Type} → [inst : Group G] → [inst_1 : CommRing A] → (G →* Aˣ) → Representation A G A := fun {G A : Type} [inst : Group G] [inst_1 : CommRing A]
         (κ :
           @MonoidHom G (@Units A (@Semiring.toMonoid A (@CommSemiring.toSemiring A (@CommRing.toCommSemiring A inst_1))))
             (@MulOneClass.toMulOne G (@Monoid.toMulOneClass G (@DivInvMonoid.toMonoid G (@Group.toDivInvMonoid G inst))))
