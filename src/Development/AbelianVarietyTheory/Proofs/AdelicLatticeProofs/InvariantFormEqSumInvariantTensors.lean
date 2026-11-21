@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CompletelyReducibleKroneckerPowerTransposeStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CompletelyReducibleKroneckerPowerTranspose
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.LeftTranslateMatrixPolyTensorFormPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.LeftTranslateMatrixPolyCompletelyReducibleStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.LeftTranslateMatrixPolyCompletelyReducible
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsReynoldsOfCompletelyReducibleStatement
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
@@ -17,7 +17,7 @@ theorem invariant_form_eq_sum_invariant_tensors : ∀ (ι : Type) [Fintype ι] [
   obtain ⟨R₁, h1a, -, -, h1d, -, -⟩ := GlobalTheory.T.exists_reynolds_of_completelyReducible' ((Fin n → ι) → ℂ)
     ((fun g => Matrix.toLin' (tpow n g)ᵀ) '' Γ) (by
       intro U hU
-      obtain ⟨U', hU', hc⟩ := GlobalTheory.T.completelyReducible_kroneckerPower_transpose ι Γ hP hS n U (by
+      obtain ⟨U', hU', hc⟩ := _root_.GlobalTheory.ClassFin.ss_tpow_transpose ι Γ hP hS n U (by
         rintro _ ⟨g, hg, rfl⟩ v hv
         simpa [Matrix.toLin'_apply] using hU _ ⟨g, hg, rfl⟩ v hv)
       refine ⟨U', ?_, hc⟩
@@ -26,7 +26,7 @@ theorem invariant_form_eq_sum_invariant_tensors : ∀ (ι : Type) [Fintype ι] [
   obtain ⟨R₂, -, h2b, h2c, -, -, -⟩ := GlobalTheory.T.exists_reynolds_of_completelyReducible' (MvPolynomial (ι × ι) ℂ)
     ((fun g => (ltr g).toLinearMap) '' Γ) (by
       intro U hU
-      obtain ⟨U', hU', hc⟩ := GlobalTheory.T.leftTranslateMatrixPoly_completelyReducible ι Γ hP hS U (fun g hg f hf => hU _ ⟨g, hg, rfl⟩ f hf)
+      obtain ⟨U', hU', hc⟩ := _root_.GlobalTheory.ClassFin.ltr_completely_reducible ι Γ hP hS U (fun g hg f hf => hU _ ⟨g, hg, rfl⟩ f hf)
       refine ⟨U', ?_, hc⟩
       rintro _ ⟨g, hg, rfl⟩ v hv
       exact hU' g hg v hv)

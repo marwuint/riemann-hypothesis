@@ -48,10 +48,6 @@ theorem Bas.glob [Quiver.IsThin C] (h : Bas s G) :
   _root_.GlobalTheory.restrict_glob1_bijective _ _ (_root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s G h.1)
     (_root_.GlobalTheory.CechDR.FormExt.glue_one_forms s G h.1 h.2)
 
-theorem Bas.hyp [Quiver.IsThin C] (h : Bas s G) :
-    Function.Bijective (pullHyp1 (CoefMap.restrict (OAff s) G)) :=
-  restrict_bijective_one_of_basis s G h.1 h.2
-
 theorem Bas.extend [Quiver.IsThin C] (h : Bas s G) (g' : ∀ t, (OAff s).obj (G.obj t))
     (hg' : ∀ ⦃t t' : C⦄ (a : t ⟶ t'), g' t' = mp (OAff s) (G.map a) (g' t)) :
     ∃ g : C0 (OAff s), (∀ ⦃T T' : AffOp X⦄ (φ : T ⟶ T'), g T' = mp (OAff s) φ (g T)) ∧

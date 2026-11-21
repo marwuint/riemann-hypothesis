@@ -8,11 +8,11 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPowVan
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteCohOfForallModification
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverCompOfIsClosedImmersion
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistConeVanishing
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedPowerHigherCohomVanishingPullbackIffPushfStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedPowerVanishingInductionBySectionSqTensorStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotMemSupportKerMulSectionOfNonvanishingStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSubsingletonCohTwistTensLbPowStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SupportPushforwardSubsetImageOfIsClosedImmersionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedPowerHigherCohomVanishingPullbackIffPushf
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedPowerVanishingInductionBySectionSqTensor
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotMemSupportKerMulSectionOfNonvanishing
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSubsingletonCohTwistTensLbPow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SupportPushforwardSubsetImageOfIsClosedImmersion
 
 set_option autoImplicit false
 noncomputable section
@@ -47,15 +47,15 @@ theorem TwistConeVanishing.of_generic (k : Type) [Field k] {V : Scheme.{0}} [IsI
   have hM : (lbPow (tens (lbPow N 2) A) r).IsLB :=
     isLB_lbPow (isLB_tens (isLB_lbPow hN.isLB 2) hA.isLB) r
   have hgen : genericPoint V ∈ Out.nonzeroLocus s := (sec_ne_zero_iff s).1 hs
-  obtain ⟨j₁, hj₁⟩ := GlobalTheory.T.exists_subsingleton_coh_twist_tens_lbPow' k f hf A N hA hN.isLB G (2 * r)
+  obtain ⟨j₁, hj₁⟩ := _root_.GlobalTheory.exists_subsingleton_coh_twist_tens_lbPow k f hf A N hA hN.isLB G (2 * r)
   have hCf : IsFiniteQC (cokernel (cutHom G hM s)) := ((cut_by_regular_section.{0} G hM).1 s).2.2.1
   have hCs : support (cokernel (cutHom G hM s)) = support G \ ↑(Out.nonzeroLocus s) :=
     ((cut_by_regular_section.{0} G hM).1 s).2.2.2.1
   haveI : IsFiniteQC (twistZ G (lbPow (tens (lbPow N 2) A) r) (-1)) :=
     isFiniteQC_twist (isLB_lbZPow hM (-1))
-  refine GlobalTheory.T.twistedPowerVanishing_induction_by_section_sq_tensor A N hA.isLB hN.isLB r hr hM s G ⟨j₁, hj₁⟩ (h _ inferInstance ?_)
+  refine _root_.GlobalTheory.twistConeVanishing_of_cut A N hA.isLB hN.isLB r hr hM s G ⟨j₁, hj₁⟩ (h _ inferInstance ?_)
     (h _ hCf ?_)
-  · exact GlobalTheory.T.notMem_support_ker_mulSection_of_nonvanishing hM s G _ hgen
+  · exact _root_.GlobalTheory.KernelCut.notMem_support_kernel_cutHom hM s G _ hgen
   · rw [hCs]
     exact fun h' => h'.2 hgen
 
@@ -72,15 +72,15 @@ theorem eventually_subsingleton_coh_ample_psEff : ∀ (k : Type) [Field k] (X : 
   haveI := hG
   haveI := isIntegral_red hZ
   have hAV : IsAmpleLB (A.pull (redι Z)) := hA.pull_of_isClosedImmersion _
-  refine (GlobalTheory.T.twistedPowerHigherCohomVanishing_pullback_iff_pushforward (redι Z) A N hA.isLB hN G).1 ?_
+  refine (_root_.GlobalTheory.twistConeVanishing_pull_iff_pushforward (redι Z) A N hA.isLB hN G).1 ?_
   refine TwistConeVanishing.of_generic k (redι Z ≫ f)
     (ProjSpace.isProjOver_comp_of_isClosedImmersion _ hf) _ _ hAV (hpe Z hZ) G ?_
   intro E hE hη
   haveI := hE
   have hE' : IsFiniteQC ((Scheme.Modules.pushforward (redι Z)).obj E) :=
     ProperFinite.isFiniteQC_pushforward (redι Z) hAV E
-  refine (GlobalTheory.T.twistedPowerHigherCohomVanishing_pullback_iff_pushforward (redι Z) A N hA.isLB hN E).2 (hsmall _ hE' ?_)
-  have hsub := GlobalTheory.T.support_pushforward_subset_image (redι Z) E
+  refine (_root_.GlobalTheory.twistConeVanishing_pull_iff_pushforward (redι Z) A N hA.isLB hN E).2 (hsmall _ hE' ?_)
+  have hsub := _root_.GlobalTheory.support_pushforward_subset_image_of_isClosedImmersion (redι Z) E
   refine ⟨hsub.trans ((Set.image_subset_range _ _).trans (range_redι Z).le), fun hle => hη ?_⟩
   have hηZ : (redι Z) (genericPoint (Scheme.IdealSheafData.vanishingIdeal Z).subscheme) ∈ (Z : Set X) :=
     (range_redι Z).le ⟨_, rfl⟩

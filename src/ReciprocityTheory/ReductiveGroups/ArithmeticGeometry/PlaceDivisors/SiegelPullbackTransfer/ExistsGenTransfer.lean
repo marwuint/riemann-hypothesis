@@ -169,61 +169,6 @@ theorem germ_div (M N : LB X) (p p' : (LB.div M N).ι) (y : X)
     (congrArg₂ (· * ·) (gU_res h1 y hy _)
       ((map_inv (gU y hy) _).trans (congrArg (·⁻¹) (gU_res h2 y hy _)))))
 
-theorem germ_pullU_div (M N : LB X) (a : Y ⟶ X) (p p' : (LB.div M N).ι) (y : Y)
-    (hy : y ∈ a ⁻¹ᵁ ((LB.div M N).U p ⊓ (LB.div M N).U p'))
-    (h1 : y ∈ a ⁻¹ᵁ (M.U p.1 ⊓ M.U p'.1)) (h2 : y ∈ a ⁻¹ᵁ (N.U p.2 ⊓ N.U p'.2)) :
-    gU y hy (pullU a _ ((LB.div M N).g p p')) =
-      gU y h1 (pullU a _ (M.g p.1 p'.1)) * (gU y h2 (pullU a _ (N.g p.2 p'.2)))⁻¹ := by
-  have k1 : ((LB.div M N).U p ⊓ (LB.div M N).U p') ≤ M.U p.1 ⊓ M.U p'.1 := fun z hz => ⟨hz.1.1, hz.2.1⟩
-  have k2 : ((LB.div M N).U p ⊓ (LB.div M N).U p') ≤ N.U p.2 ⊓ N.U p'.2 := fun z hz => ⟨hz.1.2, hz.2.2⟩
-  have e : (LB.div M N).g p p' = res k1 (M.g p.1 p'.1) * (res k2 (N.g p.2 p'.2))⁻¹ := rfl
-  exact (congrArg (fun z => gU y hy (pullU a ((LB.div M N).U p ⊓ (LB.div M N).U p') z)) e).trans
-    (((congrArg (gU y hy) (map_mul (pullU a ((LB.div M N).U p ⊓ (LB.div M N).U p')) _ _)).trans (map_mul (gU y hy) _ _)).trans
-      (congrArg₂ (· * ·) (gU_pullU_res a k1 (M.g p.1 p'.1) y hy h1)
-        ((congrArg (gU y hy) (map_inv (pullU a ((LB.div M N).U p ⊓ (LB.div M N).U p')) _)).trans ((map_inv (gU y hy) _).trans
-          (congrArg (·⁻¹) (gU_pullU_res a k2 (N.g p.2 p'.2) y hy h2))))))
-
-theorem gen_div_pull (L : LB X) (sG : X ⟶ X) (φ₂ : Y ⟶ X) (sA : Y ⟶ Y) (h : sA ≫ φ₂ = φ₂ ≫ sG)
-    (hw : ∃ t : LB.Gen ((LB.div (L.pull sG) L).pull φ₂), t.IsGen) :
-    ∃ t : LB.Gen (LB.div ((L.pull φ₂).pull sA) (L.pull φ₂)), t.IsGen := by
-  have hU : ∀ p : (LB.div ((L.pull φ₂).pull sA) (L.pull φ₂)).ι,
-      (LB.div ((L.pull φ₂).pull sA) (L.pull φ₂)).U p ≤
-        ((LB.div (L.pull sG) L).pull φ₂).U (fun _ => ((fun _ => p.1 PUnit.unit PUnit.unit), p.2 PUnit.unit)) := by
-    intro p y hy
-    have hy1 := (mem_pull_pull_lemma_2 L φ₂ sA p.1 y).1 hy.1
-    have hy2 := (mem_wchart_pu L φ₂ p.2 y).1 hy.2
-    refine (mem_wchart_pu (LB.div (L.pull sG) L) φ₂ (fun _ => ((fun _ => p.1 PUnit.unit PUnit.unit), p.2 PUnit.unit)) y).2 ⟨?_, hy2⟩
-    refine (mem_wchart_pu L sG (fun _ => p.1 PUnit.unit PUnit.unit) (φ₂.base y)).2 ?_
-    exact (congrArg (· ∈ L.U (p.1 PUnit.unit PUnit.unit)) (base_eq h y)).mp hy1
-  refine exists_gen_transfer (L := (LB.div (L.pull sG) L).pull φ₂)
-    (L' := LB.div ((L.pull φ₂).pull sA) (L.pull φ₂))
-    (fun p _ => ((fun _ => p.1 PUnit.unit PUnit.unit), p.2 PUnit.unit)) hU ?_ hw
-  intro p p' y hy
-  have hA : y ∈ (sA ≫ φ₂) ⁻¹ᵁ (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit)) :=
-    ⟨(mem_pull_pull_lemma_2 L φ₂ sA p.1 y).1 hy.1.1, (mem_pull_pull_lemma_2 L φ₂ sA p'.1 y).1 hy.2.1⟩
-  have hB : y ∈ φ₂ ⁻¹ᵁ (L.U (p.2 PUnit.unit) ⊓ L.U (p'.2 PUnit.unit)) :=
-    ⟨(mem_wchart_pu L φ₂ p.2 y).1 hy.1.2, (mem_wchart_pu L φ₂ p'.2 y).1 hy.2.2⟩
-  have hS : y ∈ (φ₂ ≫ sG) ⁻¹ᵁ (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit)) := by
-    exact (congrArg (fun φ => y ∈ φ ⁻¹ᵁ (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit))) h).mp hA
-  have hF : y ∈ φ₂ ⁻¹ᵁ (sG ⁻¹ᵁ (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit))) := hS
-  have hD : y ∈ φ₂ ⁻¹ᵁ ((L.pull sG).U (fun _ => p.1 PUnit.unit PUnit.unit) ⊓
-      (L.pull sG).U (fun _ => p'.1 PUnit.unit PUnit.unit)) :=
-    ⟨(mem_wchart_pu L sG (fun _ => p.1 PUnit.unit PUnit.unit) (φ₂.base y)).2 hF.1,
-      (mem_wchart_pu L sG (fun _ => p'.1 PUnit.unit PUnit.unit) (φ₂.base y)).2 hF.2⟩
-  have hC : y ∈ φ₂ ⁻¹ᵁ ((LB.div (L.pull sG) L).U ((fun _ => p.1 PUnit.unit PUnit.unit), p.2 PUnit.unit) ⊓
-      (LB.div (L.pull sG) L).U ((fun _ => p'.1 PUnit.unit PUnit.unit), p'.2 PUnit.unit)) :=
-    ⟨⟨hD.1, hB.1⟩, ⟨hD.2, hB.2⟩⟩
-  have hL := (germ_div ((L.pull φ₂).pull sA) (L.pull φ₂) p p' y hy).trans
-    (congrArg₂ (· * ·) ((germ_pull_pull L φ₂ sA p.1 p'.1 y ⟨hy.1.1, hy.2.1⟩ hA).trans
-      (gU_pullU_congr h (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit)) (L.g (p.1 PUnit.unit PUnit.unit) (p'.1 PUnit.unit PUnit.unit)) y hA hS))
-      (congrArg (·⁻¹) (germ_pull L φ₂ p.2 p'.2 y ⟨hy.1.2, hy.2.2⟩ hB)))
-  have hc := ((congrArg (fun z => gU y hD (pullU φ₂ ((L.pull sG).U (fun _ => p.1 PUnit.unit PUnit.unit) ⊓ (L.pull sG).U (fun _ => p'.1 PUnit.unit PUnit.unit)) z))
-      (pull_g_eq L sG (fun _ => p.1 PUnit.unit PUnit.unit) (fun _ => p'.1 PUnit.unit PUnit.unit))).trans
-    (gU_pullU_res φ₂ (pull_inf_le L sG (fun _ => p.1 PUnit.unit PUnit.unit) (fun _ => p'.1 PUnit.unit PUnit.unit)) (pullU sG (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit)) (L.g (p.1 PUnit.unit PUnit.unit) (p'.1 PUnit.unit PUnit.unit))) y hD hF)).trans (gU_pullU_comp_lemma φ₂ sG (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit)) (L.g (p.1 PUnit.unit PUnit.unit) (p'.1 PUnit.unit PUnit.unit)) y hS).symm
-  have hR := (germ_pull (LB.div (L.pull sG) L) φ₂ (fun _ => ((fun _ => p.1 PUnit.unit PUnit.unit), p.2 PUnit.unit)) (fun _ => ((fun _ => p'.1 PUnit.unit PUnit.unit), p'.2 PUnit.unit)) y ⟨hU p hy.1, hU p' hy.2⟩ hC).trans
-    ((germ_pullU_div (L.pull sG) L φ₂ ((fun _ => p.1 PUnit.unit PUnit.unit), p.2 PUnit.unit) ((fun _ => p'.1 PUnit.unit PUnit.unit), p'.2 PUnit.unit) y hC hD hB).trans (congrArg₂ (· * ·) hc rfl))
-  exact hL.trans hR.symm
-
 private theorem germ_cocycle_lemma_3 {L : LB X} (hL : L.IsLB) (i j k : L.ι) (y : X)
     (hij : y ∈ L.U i ⊓ L.U j) (hjk : y ∈ L.U j ⊓ L.U k) (hik : y ∈ L.U i ⊓ L.U k) :
     gU y hij (L.g i j) * gU y hjk (L.g j k) = gU y hik (L.g i k) := by

@@ -13,7 +13,4 @@ theorem isTotallyComplex_of_algebra (E K : Type) [Field E] [NumberField E] [Fiel
   have h := InfinitePlace.IsReal.comap (algebraMap E K) hw
   exact InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex _) h
 
-example : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K] [IsTotallyComplex E], IsTotallyComplex K :=
-  fun E K _ _ _ _ _ _ => isTotallyComplex_of_algebra E K
-
 end GlobalTheory

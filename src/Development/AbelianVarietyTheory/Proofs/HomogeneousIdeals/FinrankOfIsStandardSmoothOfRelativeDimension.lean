@@ -145,10 +145,6 @@ def derivationEquiv [Module A N] [IsScalarTower R A N] (h : ∀ (a : A) (n : N),
     (h : ∀ (a : A) (n : N), a • n = ε a • n) (f : AugCot ε →ₗ[R] N) (a : A) :
     (derivationEquiv ε h).symm f a = f (d ε a) := rfl
 
-lemma isScalarTower_of_smul_eq [Module A N] (h : ∀ (a : A) (n : N), a • n = ε a • n) :
-    IsScalarTower R A N :=
-  ⟨fun r a n => by rw [h, h, map_smul, smul_assoc]⟩
-
 def derivation : Derivation R A (AugCot ε) :=
   Derivation.mk' (d ε) (fun a b => by rw [d_mul, smul_eq, smul_eq])
 
@@ -212,12 +208,6 @@ def kaehlerEquiv : AugCot ε ≃ₗ[R] R ⊗[A] Ω[A⁄R] :=
   rw [LinearEquiv.symm_apply_eq, map_smul]
   change _ = r • toKaehler ε h _
   rw [toKaehler_ofKaehler, smul_tmul', smul_eq_mul, mul_one]
-
-lemma isBaseChange_ofKaehler :
-    haveI := isScalarTower_of_algebraMap_eq ε h
-    IsBaseChange R (ofKaehler ε) :=
-  haveI := isScalarTower_of_algebraMap_eq ε h
-  IsBaseChange.of_equiv (kaehlerEquiv ε h).symm (fun m => by simp)
 
 end Kaehler
 
@@ -314,19 +304,6 @@ def congr (e : A ≃ₐ[R] B) (h : εB.comp e = εA) : AugCot εA ≃ₗ[R] AugC
 @[simp] lemma congr_symm_d (e : A ≃ₐ[R] B) (h : εB.comp e = εA) (b : B) :
     (congr e h).symm (d εB b) = d εA (e.symm b) := by
   rw [LinearEquiv.symm_apply_eq, congr_d, e.apply_symm_apply]
-
-lemma map_ofKaehler [Algebra A B] [IsScalarTower R A B]
-    (h : εB.comp (IsScalarTower.toAlgHom R A B) = εA) (m : Ω[A⁄R]) :
-    map _ h (ofKaehler εA m) = ofKaehler εB (KaehlerDifferential.map R R A B m) := by
-  have hm : m ∈ Submodule.span A (Set.range (KaehlerDifferential.D R A)) := by
-    rw [KaehlerDifferential.span_range_derivation]; trivial
-  induction hm using Submodule.span_induction with
-  | mem x hx => obtain ⟨a, rfl⟩ := hx; simp [KaehlerDifferential.map_D]
-  | zero => simp
-  | add x y _ _ hx hy => simp only [map_add, hx, hy]
-  | smul a x _ hx =>
-    rw [map_smul, smul_eq, map_smul, hx, map_smul, ← algebraMap_smul B a, map_smul, smul_eq, ← h]
-    rfl
 
 lemma map_surjective (φ : A →ₐ[R] B) (h : εB.comp φ = εA) (hφ : Function.Surjective φ) :
     Function.Surjective (map φ h) := by
@@ -453,12 +430,6 @@ lemma map_bijective_of_formallyEtale (φ : A →ₐ[R] B) (h : εB.comp φ = εA
   exact ⟨map_injective_of_formallySmooth φ h (inferInstanceAs (Algebra.FormallySmooth A B)),
     map_surjective_of_formallyUnramified φ h
       (inferInstanceAs (Algebra.FormallyUnramified A B))⟩
-
-lemma map_bijective_of_etale (φ : A →ₐ[R] B) (h : εB.comp φ = εA)
-    (hφ : (φ : A →+* B).Etale) : Function.Bijective (map φ h) := by
-  letI : Algebra A B := (φ : A →+* B).toAlgebra
-  haveI : Algebra.Etale A B := hφ
-  exact map_bijective_of_formallyEtale φ h (inferInstanceAs (Algebra.FormallyEtale A B))
 
 section Tower
 
@@ -798,83 +769,5 @@ def mvPolynomialBasis : Module.Basis σ R (AugCot (aeval x : MvPolynomial σ R �
 end Affine
 
 end AugCot
-
-open AugCot in
-
-theorem augCot_properties.{u} {R A : Type u} [CommRing R] [CommRing A] [Algebra R A]
-    (ε : A →ₐ[R] R) :
-
-    (∀ a : A, d ε a = (RingHom.ker ε).toCotangent
-      ⟨a - algebraMap R A (ε a), by simp [RingHom.mem_ker]⟩) ∧
-
-    (letI : Algebra A R := (ε : A →+* R).toAlgebra
-     ∃ e : AugCot ε ≃ₗ[R] R ⊗[A] Ω[A⁄R],
-      ∀ a, e (d ε a) = 1 ⊗ₜ KaehlerDifferential.D R A a) ∧
-
-    (∀ (N : Type u) [AddCommGroup N] [Module R N],
-      letI : Module A N := Module.compHom N (ε : A →+* R)
-      haveI : IsScalarTower R A N := isScalarTower_of_smul_eq ε fun _ _ => rfl
-      ∃ e : Derivation R A N ≃ₗ[R] (AugCot ε →ₗ[R] N), ∀ D a, e D (d ε a) = D a) ∧
-
-    (∀ (N : Type u) [AddCommGroup N] [Module R N] [Module Rᵐᵒᵖ N] [IsCentralScalar R N],
-      ∃ e : {φ : A →ₐ[R] TrivSqZeroExt R N // (TrivSqZeroExt.fstHom R R N).comp φ = ε} ≃
-        (AugCot ε →ₗ[R] N), ∀ φ a, e φ (d ε a) = (φ.1 a).snd) ∧
-
-    (∀ (R' : Type u) [CommRing R'] [Algebra R R'],
-      (∀ r a, baseChangeAug R' ε (r ⊗ₜ a) = r * algebraMap R R' (ε a)) ∧
-      ∃ e : R' ⊗[R] AugCot ε ≃ₗ[R'] AugCot (baseChangeAug R' ε),
-        ∀ r a, e (r ⊗ₜ d ε a) = r • d _ (1 ⊗ₜ a)) ∧
-
-    (map (AlgHom.id R A) (AlgHom.comp_id ε) = LinearMap.id) ∧
-    (∀ (B : Type u) [CommRing B] [Algebra R B] (εB : B →ₐ[R] R) (φ : A →ₐ[R] B)
-      (h : εB.comp φ = ε),
-      (∀ a, map φ h (d ε a) = d εB (φ a)) ∧
-      (∀ (C : Type u) [CommRing C] [Algebra R C] (εC : C →ₐ[R] R) (ψ : B →ₐ[R] C)
-        (h' : εC.comp ψ = εB) (h'' : εC.comp (ψ.comp φ) = ε),
-        map (ψ.comp φ) h'' = map ψ h' ∘ₗ map φ h) ∧
-
-      ((φ : A →+* B).Etale → Function.Bijective (map φ h)) ∧
-
-      (Function.Surjective φ →
-        (∀ x : RingHom.ker φ, kerMap φ h x = (RingHom.ker ε).toCotangent ⟨x, ker_le φ h x.2⟩) ∧
-        Function.Exact (kerMap φ h) (map φ h) ∧ Function.Surjective (map φ h))) ∧
-
-    (∀ (f : A) (B : Type u) [CommRing B] [Algebra R B] [Algebra A B] [IsScalarTower R A B]
-      [IsLocalization.Away f B],
-      (IsUnit (ε f) → ∃ εB : B →ₐ[R] R, εB.comp (IsScalarTower.toAlgHom R A B) = ε) ∧
-      ∀ (εB : B →ₐ[R] R) (h : εB.comp (IsScalarTower.toAlgHom R A B) = ε),
-        Function.Bijective (map _ h)) ∧
-
-    (∀ (B : Type u) [CommRing B] [Algebra R B] (εB : B →ₐ[R] R),
-      ∃ e : AugCot (Algebra.TensorProduct.productMap ε εB) ≃ₗ[R] AugCot ε × AugCot εB,
-        ∀ a b, e (d _ (a ⊗ₜ b)) = (εB b • d ε a, ε a • d εB b)) ∧
-
-    (Algebra.Smooth R A → Module.Finite R (AugCot ε) ∧ Module.Projective R (AugCot ε) ∧
-      (IsLocalRing R → Module.Free R (AugCot ε))) ∧
-    (Algebra.IsStandardSmooth R A → Module.Free R (AugCot ε)) ∧
-    (∀ n : ℕ, Algebra.IsStandardSmoothOfRelativeDimension n R A →
-      Nonempty (Module.Basis (Fin n) R (AugCot ε))) ∧
-    (∀ n : ℕ, AlgebraicGeometry.SmoothOfRelativeDimension n
-        (AlgebraicGeometry.Spec.map (CommRingCat.ofHom (algebraMap R A))) →
-      Algebra.Smooth R A ∧ (∀ p : PrimeSpectrum R, Module.rankAtStalk (AugCot ε) p = n) ∧
-      (IsLocalRing R → Nonempty (Module.Basis (Fin n) R (AugCot ε)))) := by
-  refine ⟨fun a => rfl, ?_, fun N _ _ => ?_, fun N _ _ _ _ => ⟨sqZeroEquiv ε N, sqZeroEquiv_d ε⟩,
-    fun R' _ _ => ⟨baseChangeAug_tmul, baseChangeEquiv R' ε, baseChangeEquiv_tmul_d⟩, map_id,
-    fun B _ _ εB φ h => ⟨map_d φ h, fun C _ _ εC ψ h' h'' => map_comp φ ψ h h' h'',
-      map_bijective_of_etale φ h,
-      fun hφ => ⟨fun _ => rfl, exact_kerMap_map φ h hφ, map_surjective φ h hφ⟩⟩,
-    fun f B _ _ _ _ _ => ⟨fun hf => ⟨awayAug B ε f hf, awayAug_comp f hf⟩,
-      fun εB h => map_bijective_of_isLocalization (Submonoid.powers f) h⟩,
-    fun B _ _ εB => ⟨tensorEquiv ε εB, tensorEquiv_d_tmul⟩,
-    fun _ => ⟨inferInstance, inferInstance, fun _ => inferInstance⟩, fun _ => inferInstance,
-    fun n _ => nonempty_basis_of_isStandardSmoothOfRelativeDimension ε n, fun n hn => ?_⟩
-  · letI : Algebra A R := (ε : A →+* R).toAlgebra
-    exact ⟨kaehlerEquiv ε fun _ => rfl, kaehlerEquiv_d ε _⟩
-  · letI : Module A N := Module.compHom N (ε : A →+* R)
-    haveI : IsScalarTower R A N := isScalarTower_of_smul_eq ε fun _ _ => rfl
-    exact ⟨derivationEquiv ε fun _ _ => rfl, derivationEquiv_d ε _⟩
-  · have h := locally_iff_smoothOfRelativeDimension.2 hn
-    exact ⟨smooth_of_locally h, rankAtStalk_of_locally ε h,
-      fun _ => nonempty_basis_of_locally ε h⟩
 
 end GlobalTheory

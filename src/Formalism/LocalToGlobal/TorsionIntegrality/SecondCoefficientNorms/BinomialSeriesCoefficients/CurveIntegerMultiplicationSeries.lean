@@ -103,8 +103,6 @@ theorem curve_second_log_derivative_holds : CurveSecondLogDerivative := by
   intro K _ _ W xP yP hP
   exact Formalism.L2.Th1.A.plusZCleared.{0} K W xP yP hP
 
-theorem curve_integer_multiplication_series : CurveEndoZ := curveEndoZ_of curve_second_log_derivative_holds
-
 theorem curve_real_multiplication_series : CurveEndoR := curveEndoR_of curve_second_log_derivative_holds
 
 theorem curve_all_endomorphism_series : CurveEndoAll := curveEndoAll_of curve_second_log_derivative_holds

@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibInfEx
+import Formalism.PeriodIntegrals.VolFromSW
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DensVNA
 
 noncomputable section
@@ -31,11 +31,5 @@ def hermO {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : �
     intro i j k
     simp only [NegMemClass.coe_neg, Matrix.neg_apply, map_neg, Finsupp.neg_apply]
     exact neg_mem (hx i j k)
-
-def VolAA : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
-  ∀ ψ, IsCharAF F ψ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E),
-    ∀ᶠ v in cofinite,
-      (∀ μv, SdW F E σ M J (Fv F v) (psiV F ψ v) a μv → μv (latV b v) = 1) ∧
-      (∀ νv, SdHerm F E σ (Fv F v) (psiV F ψ v) a νv → νv (hermO b v σ a) = 1)
 
 end PI.VolStabSW

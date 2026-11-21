@@ -1,8 +1,8 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleNhdOfStalkBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleIsoNhdOfStalkBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleNhdOfStalkBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleIsoNhdOfStalkBaseChange
 open AlgebraicGeometry CategoryTheory Limits
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
@@ -14,7 +14,7 @@ open GlobalTheory.CechPic in
 theorem exists_spread : ∀ {S Y U YU : Scheme.{0}} [IsLocallyNoetherian S] (f : Y ⟶ S) [QuasiCompact f] [QuasiSeparated f] (j : U ⟶ S) [IsOpenImmersion j] (e : YU ⟶ Y) (fU : YU ⟶ U), IsPullback e fU f j → ∀ (L : LB YU), L.IsLB → ∀ (x : S) (N : LB (pullback f (S.fromSpecStalk x))), N.IsLB → (∀ (T : Scheme.{0}) (a : T ⟶ pullback f (S.fromSpecStalk x)) (b : T ⟶ YU), a ≫ pullback.fst f (S.fromSpecStalk x) = b ≫ e → LBIso (N.pull a) (L.pull b)) → ∃ W : S.Opens, x ∈ W ∧ ∃ N' : LB ↑(f ⁻¹ᵁ W), N'.IsLB ∧ ∀ (T : Scheme.{0}) (a : T ⟶ ↑(f ⁻¹ᵁ W)) (b : T ⟶ YU), a ≫ (f ⁻¹ᵁ W).ι = b ≫ e → LBIso (N'.pull a) (L.pull b) := by
 
   intro S Y U YU _ f _ _ j _ e fU hpb L hL x N hN hag
-  obtain ⟨W₁, hx₁, N₁, hN₁, hq⟩ := GlobalTheory.T.exists_lineBundle_nhd_of_stalk_baseChange f x N hN
+  obtain ⟨W₁, hx₁, N₁, hN₁, hq⟩ := _root_.GlobalTheory.StalkLB.exists_lb_nhd f x N hN
   have hr1 : Set.range (pullback.fst f (S.fromSpecStalk x)) ⊆ Set.range (f ⁻¹ᵁ W₁).ι := by
     rintro _ ⟨y, rfl⟩
     rw [Scheme.Opens.range_ι]
@@ -32,7 +32,7 @@ theorem exists_spread : ∀ {S Y U YU : Scheme.{0}} [IsLocallyNoetherian S] (f :
   haveI : QuasiCompact (f ⁻¹ᵁ W₁).ι := MorphismProperty.of_isPullback (P := @QuasiCompact) (isPullback_morphismRestrict f W₁) inferInstance
   let h : pullback (f ⁻¹ᵁ W₁).ι e ⟶ S := pullback.fst (f ⁻¹ᵁ W₁).ι e ≫ (f ⁻¹ᵁ W₁).ι ≫ f
 
-  obtain ⟨W₂, hx₂, iso2⟩ := GlobalTheory.T.exists_lineBundleIso_nhd_of_stalk_baseChange h x (N₁.pull (pullback.fst (f ⁻¹ᵁ W₁).ι e))
+  obtain ⟨W₂, hx₂, iso2⟩ := _root_.GlobalTheory.StalkLBIso.exists_lbIso_nhd h x (N₁.pull (pullback.fst (f ⁻¹ᵁ W₁).ι e))
     (L.pull (pullback.snd (f ⁻¹ᵁ W₁).ι e)) (pull_isLB hN₁ _) (pull_isLB hL _) (by
       set r := pullback.fst h (S.fromSpecStalk x)
       have hs : (r ≫ pullback.fst (f ⁻¹ᵁ W₁).ι e ≫ (f ⁻¹ᵁ W₁).ι) ≫ f = pullback.snd h (S.fromSpecStalk x) ≫ S.fromSpecStalk x := by

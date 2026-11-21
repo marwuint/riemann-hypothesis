@@ -6,10 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLat
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CongruenceLatticeFractionalMultipleAgree
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsAdeleRingTensorEquivInfiniteProdFinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitDeterminantCongruentElement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalVectorMemIdealCompletedLatticeIffStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalVectorMemIdealCompletedLatticeIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelGroupLatticeCongruence
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeAutomorphismModHalfLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteUnitChineseRemainder
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeAutomorphismModHalfLevel
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsTwistCharacterUnitsModSpecialIdeal
 
 set_option autoImplicit false
 
@@ -197,7 +197,7 @@ theorem map_smul_top (hι : LatEmb V ι) (I : Ideal (𝓞 D.host.E)) :
 
 theorem iota_mem_idl (hι : LatEmb V ι) {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) (a : Dw.La) :
     finVec V (ι a) ∈ idl V I ↔ a ∈ I • (⊤ : Submodule (𝓞 D.host.E) Dw.La) := by
-  refine (GlobalTheory.T.rationalVector_mem_ideal_completedLattice_iff D V I hI (ι a)).trans ?_
+  refine (_root_.GlobalTheory.IdealCap.finVec_mem_closure_iff D V I hI (ι a)).trans ?_
   rw [← map_smul_top hι]
   exact ⟨fun ⟨b, hb, e⟩ => hι.1 e ▸ hb, fun h => ⟨a, h, rfl⟩⟩
 
@@ -286,19 +286,5 @@ theorem ind_one_iff (hι : LatEmb V ι) {Kf : Subgroup (GA D V)} (hK : IsLevelK 
       exact e ▸ nsmul_mem_idl hw
 
 end Lev
-
-section Char
-
-theorem ext_AE {z z' : AE D} (h1 : infPart D z = infPart D z') (h2 : finPart D z = finPart D z') : z = z' := by
-  obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
-  exact e.injective (Prod.ext ((he z).1.trans (h1.trans (he z').1.symm)) ((he z).2.trans (h2.trans (he z').2.symm)))
-
-variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
-
-variable {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)}
-
-variable {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ}
-
-end Char
 
 end GlobalTheory.UnifEvery

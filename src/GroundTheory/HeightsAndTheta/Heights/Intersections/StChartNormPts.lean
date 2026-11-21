@@ -21,10 +21,4 @@ def ChartNormPts.Statement : Prop :=
           (fun q => G.x' ⟨q.1.1, q.2⟩ / G.x' ⟨q.1.1, j q.1⟩) F = 0 →
         eval₂ (eval₂Hom (Int.castRingHom ℂ) fun p => z' (v p)) (fun q => z' ⟨q.1.1, q.2⟩) F = 0)
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

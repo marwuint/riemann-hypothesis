@@ -246,8 +246,6 @@ end Laurent
 
 namespace Robba
 
-variable [CompleteSpace K]
-
 end Robba
 
 end GroundTheory.PAdicHodge

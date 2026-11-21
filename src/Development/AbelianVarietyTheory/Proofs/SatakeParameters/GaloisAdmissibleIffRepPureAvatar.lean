@@ -1,12 +1,12 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
-import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.GaloisRepresentations
+import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 
 noncomputable section
 
 namespace GlobalTheory.GaloisInputCompare
 
-open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Formalism.MainNotions.SumRepresentations.At GlobalTheory.IndefiniteRowSideFullHecke.GaloisRepresentations
+open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Formalism.MainNotions.SumRepresentations.At
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
@@ -48,82 +48,5 @@ theorem exists_inducesW (i : N.Loc) (τ : H.E →+* Qbar (N.l i)) :
   refine ⟨⟨I, hP, fun h => ?_⟩, hl, fun x => (hI x).symm⟩
   rw [h, Ideal.mem_bot] at hl
   exact (N.lPrime i).out.ne_zero (by exact_mod_cast hl)
-
-def ClauseRep (i : N.Loc) : Prop :=
-  ∀ a, 1 ≤ a → ∀ π : A.CG a, A.csd π → A.ralg π →
-      ∃ ρ : G H.E N.Om →* GL (Fin a) (Qbar (N.l i)),
-        Continuous (fun g => ((ρ g : GL _ _) : Matrix (Fin a) (Fin a) (Qbar (N.l i)))) ∧
-        IsSSRep ρ ∧
-        (∀ w, w ∉ placesOver H.E (N.l i) →
-          A.wdOf i ρ w = A.lpTw (A.locG π w) ((1 - (a : ℝ)) / 2) ∧ A.tempered (A.locG π w)) ∧
-        (∀ w ∈ placesOver H.E (N.l i), A.IsdRW i ρ w ∧
-          (∀ τ, InducesW N i τ w → A.jumpsW i ρ τ = A.jumpsInf i π τ) ∧
-          A.wdOf i ρ w = A.lpTw (A.locG π w) ((1 - (a : ℝ)) / 2))
-
-def ClausePure : Prop :=
-  ∀ a (π : A.CG a), A.ralg π → ∃ w₀ : ℂ, ∀ τ : H.E →+* ℂ,
-      A.infG π (τ.comp (H.conj : H.E ≃ₐ[ℚ] H.E).toRingEquiv.toRingHom) = (A.infG π τ).map (w₀ - ·)
-
-def ClauseChar (i : N.Loc) : Prop :=
-  ∀ (χ : A.CG 1) (s : ℝ), (∀ τ : H.E →+* ℂ, ∀ z ∈ A.infG χ τ, ∃ k : ℤ, z + (s : ℂ) = (k : ℂ)) →
-      ∃ ρ : G H.E N.Om →* GL (Fin 1) (Qbar (N.l i)), ContQ N i ρ ∧
-        (∀ w, w ∉ placesOver H.E (N.l i) → A.wdOf i ρ w = A.lpTw (A.locG χ w) s) ∧
-        ∀ w ∈ placesOver H.E (N.l i), A.IsdRW i ρ w ∧ A.wdOf i ρ w = A.lpTw (A.locG χ w) s ∧
-          ∀ τ, InducesW N i τ w → (A.jumpsW i ρ τ).map (fun n : ℤ => (n : ℂ)) =
-            (A.infG χ ((A.iotaQC i).toRingHom.comp τ)).map (fun z => -(z + (s : ℂ)))
-
-def PureRegular : Prop :=
-  ∀ (a : ℕ) (π : A.CG a), 1 ≤ a → A.ralg π →
-    ∃ u : ℤ, ∀ τ : H.E →+* ℂ, A.infG π ((starRingEnd ℂ).comp τ) = (A.infG π τ).map (fun z => (u : ℂ) - z)
-
-def PureSingular : Prop :=
-  ∀ (a : ℕ) (π : A.CG a), 1 ≤ a → IsAlg N A π → ¬ A.ralg π →
-    ∃ u : ℤ, ∀ τ : H.E →+* ℂ, A.infG π ((starRingEnd ℂ).comp τ) = (A.infG π τ).map (fun z => (u : ℂ) - z)
-
-def SelfDualWeightZero : Prop :=
-  ∀ (a : ℕ) (π : A.CG a), 1 ≤ a → IsAlg N A π → A.csd π →
-    ∀ τ : H.E →+* ℂ, A.infG π ((starRingEnd ℂ).comp τ) = (A.infG π τ).map (fun z => -z)
-
-open Classical in
-
-def padded : NAut N :=
-  { A with
-    CG := fun a => A.CG a × Option ((H.E →+* ℂ) → ℂ)
-    csd := fun p => A.csd p.1
-    ralg := fun {a} p => A.ralg p.1 ∧ (2 ≤ a → p.2 = none)
-    locG := fun p => A.locG p.1
-    locG_dim := fun p => A.locG_dim p.1
-    locG_unr_ae := fun p => A.locG_unr_ae p.1
-    tw := fun p χ => (A.tw p.1 χ.1, p.2.map fun g τ => g τ + (A.infG χ.1 τ).sum)
-    locG_tw := fun p χ => A.locG_tw p.1 χ.1
-    infG := fun {a} p τ => if 2 ≤ a then p.2.elim (A.infG p.1 τ) fun g => Multiset.replicate a (g τ) else A.infG p.1 τ
-    infG_card := fun {a} p τ => by
-      obtain ⟨π, _ | g⟩ := p <;> by_cases h : 2 ≤ a <;> simp [h, A.infG_card]
-    ralg_def := fun {a} p => by
-      obtain ⟨π, _ | g⟩ := p
-      · simpa using A.ralg_def π
-      · by_cases h : 2 ≤ a
-        · simp only [h, if_true, Option.elim, forall_true_left, reduceCtorEq, and_false, false_iff]
-          intro hh
-          obtain ⟨τ⟩ : Nonempty (H.E →+* ℂ) := inferInstance
-          have := Multiset.nodup_iff_count_le_one.1 (hh τ).1 (g τ)
-          rw [Multiset.count_replicate_self] at this
-          omega
-        · simpa [h] using A.ralg_def π
-    infG_tw := fun {a} p χ τ s hs => by
-      have hs' : A.infG χ.1 τ = {s} := by simpa using hs
-      obtain ⟨π, _ | g⟩ := p <;> by_cases h : 2 ≤ a <;> simp [h, hs', A.infG_tw _ _ _ _ hs']
-    csd_tw := fun p χ => A.csd_tw p.1 χ.1
-    csd_unr := fun p => A.csd_unr p.1
-    muC := fun i => (A.muC i, none)
-    etaT := (A.etaT, none)
-    etaTinv := (A.etaTinv, none)
-    jumpsInf := fun i _ p => A.jumpsInf i p.1
-    jumpsInf_def := fun i a p τ hr => by
-      obtain ⟨π, o⟩ := p
-      by_cases h : 2 ≤ a
-      · obtain rfl : o = none := hr.2 h
-        simpa using A.jumpsInf_def i π τ hr.1
-      · simpa [h] using A.jumpsInf_def i π τ hr.1 }
 
 end GlobalTheory.GaloisInputCompare

@@ -1,9 +1,13 @@
 import Development.WeilBound.CoreStatements.SesquilinearFractions.SesqSesquilinearSkewHermitian
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDeterminantLogDifferentStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofiniteStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UltrametricDetNormLeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicIntegralIffDenominatorStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicLogIdealMaxElementStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDeterminantLogDifferent
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofinite
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UltrametricDetNormLe
+import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicIntegralIffDenominator
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicLogIdealMaxElement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -62,7 +66,7 @@ theorem local_basis_gram_det_log (D : Datum H) (p q : ℕ) (x : Fin p ⊕ Fin q 
   set emb : 𝓞 E →+* ℂ_[ℓ] := j.comp (algebraMap (𝓞 E) E) with hemb_def
   have hemb : Function.Injective emb := j.injective.comp (FaithfulSMul.algebraMap_injective (𝓞 E) E)
   have hne : differentIdeal ℤ (𝓞 E) ≠ ⊥ := differentIdeal_ne_bot
-  obtain ⟨a, ha, ha0, -, hL⟩ := GlobalTheory.T.padic_logIdeal_max_element E ℓ emb _ hemb hne
+  obtain ⟨a, ha, ha0, -, hL⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.exists_logIdeal_attained E ℓ emb _ hemb hne
   have hemba : emb a = j (a : E) := rfl
   have hja : 0 < ‖j (a : E)‖ := by
     rw [← hemba]
@@ -73,7 +77,7 @@ theorem local_basis_gram_det_log (D : Datum H) (p q : ℕ) (x : Fin p ⊕ Fin q 
     intro y z
     obtain ⟨b, hb⟩ := hdiff a ha y z
     have hb1 : ‖j (b : E)‖ ≤ 1 :=
-      (GlobalTheory.T.padic_integral_iff_denominator E ℓ (b : E)).mpr ⟨1, b, Nat.Prime.not_dvd_one ℓ.prop, by simp⟩ j
+      (_root_.GlobalTheory.CompanionTheory.Relay.padic_integral_iff_denominator E ℓ (b : E)).mpr ⟨1, b, Nat.Prime.not_dvd_one ℓ.prop, by simp⟩ j
     have hm : ‖j (a : E)‖ * ‖j (sesq D y z)‖ ≤ 1 := by
       rw [← norm_mul, ← map_mul, hb]
       exact hb1
@@ -85,12 +89,12 @@ theorem local_basis_gram_det_log (D : Datum H) (p q : ℕ) (x : Fin p ⊕ Fin q 
       ‖j (gramE D y).det‖ ≤ R ^ Fintype.card I := by
     intro I _ _ y
     rw [RingHom.map_det]
-    exact GlobalTheory.T.ultrametric_det_norm_le ℂ_[ℓ] I _ R hR0.le (fun a b => by
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Fl.norm_det_le_pow_card_of_ultrametric ℂ_[ℓ] I _ R hR0.le (fun a b => by
       simpa [RingHom.mapMatrix_apply, gramE] using hent (y a) (y b))
   have hu := hbound (x ∘ Sum.inl)
   have hv := hbound (x ∘ Sum.inr)
   simp only [Fintype.card_fin] at hu hv
-  have hfull := GlobalTheory.T.gram_determinant_log_different E H D _ x ℓ hx j
+  have hfull := _root_.GlobalTheory.CompanionTheory.Ar.Fl.GramDet.log_norm_det_gramE E H D _ x ℓ hx j
   rw [← hemb_def, hL, hemba] at hfull
   have hu0 : 0 < ‖j (gramE D (x ∘ Sum.inl)).det‖ := norm_pos_iff.mpr ((map_ne_zero j).mpr h1ne)
   have hv0 : 0 < ‖j (gramE D (x ∘ Sum.inr)).det‖ := norm_pos_iff.mpr ((map_ne_zero j).mpr h2ne)

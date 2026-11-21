@@ -112,16 +112,6 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR
 
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor IsLocalRing QForm
 
-def PullReflStatement : Prop :=
-  ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ →
-    ∀ (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F]
-      (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v →
-    ∀ (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (oa : D.toPre.OAct O) (a : O) (N : ℕ),
-      1 ≤ N → a * star a = (N : O) → star a * a = (N : O) →
-      ∀ k : ℕ, 1 ≤ k → ∀ (s : Fam D.toPre F k) (s' : Fam D.toPre F (k * N)),
-        PullAl D F oa a k N s s' → ∀ (χ : D.toPre.X) (q : ℚ),
-          VGe D F v (k * N) (star a • χ) (s'.s (star a • χ)) q → VGe D F v k χ (s.s χ) q
-
 def PullGenStatement : Prop :=
   ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ →
     ∀ (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F]
@@ -199,23 +189,6 @@ private theorem fwd_lemma (hG : PullGenStatement) (hQ : QAlStatement) :
     refine ⟨0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun j => ?_⟩
     rw [hzero β hβ j]
     simp
-
-theorem pullback_valuation_invariance_of (hR : PullReflStatement) (hG : PullGenStatement) (hQ : QAlStatement) : PullbackValuationInvariance := by
-  intro V _ _ _ ϖ hϖ D Q hQD F _ _ v hv O _ _ _ oa w0 hw0 a N hN ha1 ha2 k hk s s' hpull r
-  refine ⟨fwd_lemma hG hQ V ϖ hϖ D Q hQD F v hv O oa w0 hw0 a N hN ha1 ha2 k hk s s' hpull r, fun hs' => ?_⟩
-  unfold NuGe at hs' ⊢
-  intro χ
-  have hQa := hQ V ϖ hϖ D Q hQD O oa a N ha1 ha2 χ
-  have hk0 : (k : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  have hN0 : (N : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  have h1 := hs' (star a • χ)
-  have heq : r + (Q (star a • χ) : ℚ) / ((k * N : ℕ) : ℚ) = r + (Q χ : ℚ) / (k : ℚ) := by
-    rw [hQa]
-    push_cast
-    field_simp
-    try ring
-  rw [heq] at h1
-  exact hR V ϖ hϖ D F v hv O oa a N hN ha1 ha2 k hk s s' hpull χ _ h1
 
 def PullbackValuationForwardBound : Prop :=
   ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ →

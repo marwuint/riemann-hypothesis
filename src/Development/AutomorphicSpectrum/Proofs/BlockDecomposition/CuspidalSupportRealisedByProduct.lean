@@ -1,6 +1,6 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.GenericUnlinkedGL.UnlinkedRealize
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiProdEquivStandardBlocksStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiProdEquivStandardBlocks
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSubquotientOfEquiv
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.RgGu
 open scoped TensorProduct
@@ -13,7 +13,7 @@ theorem hasSupport_std : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalS
   have hd : ∑ a, (x a).1 = N := by
     have := Fintype.card_congr e
     simpa [Fintype.card_sigma] using this
-  obtain ⟨φ⟩ := GlobalTheory.T.multiProd_equiv_standard_blocks k (fun a => (x a).1) hd e _ (fun a => (x a).rep)
+  obtain ⟨φ⟩ := _root_.GlobalTheory.CompanionTheory.GenMultiProd.multiProd_equiv_stdBlocks k (fun a => (x a).1) hd e _ (fun a => (x a).rep)
   exact ⟨h, x, hd, hs, fun a => ⟨(hc a).1, (hc a).2.2⟩, hsq.trans (GlobalTheory.JacStages.isSubquotient_of_equiv φ)⟩
 
 end GlobalTheory.CompanionTheory.GenSupp

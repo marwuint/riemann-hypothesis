@@ -1,6 +1,15 @@
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.FinrankOfLieMult
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ExistsGram
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUniqueStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SlopeBoundSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicEmbeddingDiscreteValuationRingStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExtendedArcUAdicUniformisationOfArcData
 import GroundTheory.HeightsAndTheta.Heights.ArithDegree
@@ -29,7 +38,7 @@ theorem hodgeInnerProduct_pushforward_iff {S S' : Scheme.{0}} {t : SAB H S} {t' 
     (hv : v'.left ≫ m.φ = v.left) (hw : w'.left ≫ m.φ = w.left) (c : ℂ) :
     HodgeIP t'.G t'.PP.L x' v' w' c ↔ HodgeIP t.G t.PP.L x v w c := by
   subst hx
-  exact (GlobalTheory.T.hodge_inner_product_pullback_unique E H S' S t' t f m x' v' w' v w hv hw).1 c
+  exact (_root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.main E H S' S t' t f m x' v' w' v w hv hw).1 c
 
 theorem exists_smul_mem_span {L : Type} [Field L] [NumberField L] (B : HermitianBundle.{0} L)
     (F : Submodule (𝓞 L) B.carrier) {n : ℕ} (hn : B.rank F = n) :
@@ -73,7 +82,7 @@ theorem exists_vec (hρ : MB.IsActOf t'.act.act ρM) {S S₀ : Scheme.{0}} {tK :
         u • z = ∑ k, T k • y k → IsComb (fun k => (g u)⁻¹ * g (T k)) (fun k => vec (y k)) (vec z) := by
   obtain ⟨W, _, _, MW, ρW, j, h1, h2, h3, h4⟩ := exists_model MB hρ n g hg x hx
   obtain ⟨M₀, h5, h6⟩ := push_model mf hx₀ MW ρW h1
-  have hb := GlobalTheory.T.lie_model_eigenvectors_action S₀ K t₀.G x₀ W M₀
+  have hb := _root_.GlobalTheory.CompanionTheory.Ar.Fl.Bridge.comb_eig_frame S₀ K t₀.G x₀ W M₀
   refine ⟨fun z => MW.pt (j z), fun z => M₀.pt (j z), h2, fun z => h6 _, fun z => M₀.tan _,
     fun s r y hy hli hsp => ?_, fun r y z u T hu h => ?_⟩
   · exact ((hb.2 _ t₀.act ρW _ h5).2 r fun k => j (y k)).2 (h4 s r y hy hli fun z hz => (hsp z hz).imp fun u hu =>
@@ -169,7 +178,7 @@ theorem int_frame (hρ : MB.IsActOf t'.act.act ρM) (n : SABMap tK t' (spMap (e.
   obtain ⟨W, _, _, MW, ρW, j, k1, k2, -, k4⟩ := exists_model MB hρ mT gV hg (𝟙 _) (Category.id_comp _)
   refine ⟨gV.comp s, fun k => MW.pt (j (x k)), ?_, ?_, fun k => ⟨(vK (x k)).left, h2 _, ?_⟩⟩
   · rw [← RingHom.comp_assoc, hgV]
-  · exact (((GlobalTheory.T.lie_model_eigenvectors_action _ V T.G _ W MW).2 _ T.act ρW _ k1).2 r fun k => j (x k)).2 (k4 s r x hx hli hsp)
+  · exact (((_root_.GlobalTheory.CompanionTheory.Ar.Fl.Bridge.comb_eig_frame _ V T.G _ W MW).2 _ T.act ρW _ k1).2 r fun k => j (x k)).2 (k4 s r x hx hli hsp)
   · obtain ⟨v, hv⟩ := exists_push m'' (x := spMap (algebraMap V F) ≫ 𝟙 _)
       ((Category.comp_id _).trans (Category.id_comp _).symm) (vK (x k))
     rw [hv]

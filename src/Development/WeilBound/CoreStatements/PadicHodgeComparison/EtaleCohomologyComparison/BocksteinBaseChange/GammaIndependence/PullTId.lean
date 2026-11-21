@@ -23,9 +23,4 @@ theorem pullT_id (M : Model l K) (h : 𝟙 M.X ≫ M.p = M.p) (n : ℕ) : Model.
   rw [geomMap_eq_id _ _ _ (genMap_id M h), CategoryTheory.Functor.map_id]
   exact GlobalTheory.EtC.pullHl_id l _ _ _
 
-theorem pullV_id (M : Model l K) (h : 𝟙 M.X ≫ M.p = M.p) (n : ℕ) : Model.pullV (𝟙 M.X) h n = LinearMap.id := by
-  unfold Model.pullV GlobalTheory.EtC.pullHQ
-  rw [geomMap_eq_id _ _ _ (genMap_id M h), CategoryTheory.Functor.map_id, GlobalTheory.EtC.pullHl_id]
-  exact LinearMap.baseChange_id
-
 end CrystallineSemistableComparison

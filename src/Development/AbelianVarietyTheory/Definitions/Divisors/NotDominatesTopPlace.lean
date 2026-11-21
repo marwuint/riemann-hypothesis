@@ -33,24 +33,6 @@ structure IsEtTower (cK : k →+* K) (R : Subring K) (cL : k →+* L) (T : Subri
 
   etale : (MvPolynomial.eval₂Hom ι τ).FormallyEtale
 
-theorem IsEtTower.refl {c : k →+* K} {R : Subring K} (h : IsLocModel c R)
-    (h' : IsIntegrallyClosed R) :
-    IsEtTower c R c R (RingHom.id R) (RingHom.id R) (Fin.elim0 : Fin 0 → R) where
-  base := h
-  normal := h'
-  top := h
-  const _ := rfl
-  retr _ := rfl
-  zero i := i.elim0
-  etale := by
-    have hb : Function.Bijective (MvPolynomial.eval₂Hom (RingHom.id R) (Fin.elim0 : Fin 0 → R)) := by
-      refine ⟨fun P Q e => ?_, fun a => ⟨MvPolynomial.C a, by simp⟩⟩
-      rw [MvPolynomial.eq_C_of_isEmpty P, MvPolynomial.eq_C_of_isEmpty Q] at e ⊢
-      simpa using e
-    letI := (MvPolynomial.eval₂Hom (RingHom.id R) (Fin.elim0 : Fin 0 → R)).toAlgebra
-    exact Algebra.FormallyEtale.of_equiv
-      (AlgEquiv.ofBijective (Algebra.ofId (MvPolynomial (Fin 0) R) R) hb)
-
 set_option autoImplicit false in
 variable {k K L : Type} [Field k] [Field K] [Field L] in
 

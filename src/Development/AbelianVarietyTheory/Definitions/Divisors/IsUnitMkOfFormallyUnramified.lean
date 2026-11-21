@@ -228,10 +228,6 @@ theorem coeff_eq_of_eq_smul (hω : IsFrame ω) (h : V ≤ U) {η : FormsOn p D V
   subst e
   exact (hω.coeff_eq_iff h).2 fun W hW e' => by rw [resForm_smul, resForm_resForm]
 
-theorem bijective_coeff (hω : IsFrame ω) (hV : IsAffineOpen V) (h : V ≤ U) :
-    Function.Bijective (hω.coeff h) := ⟨fun η η' e => by rw [← hω.coeff_smul_resForm hV h η, ← hω.coeff_smul_resForm hV h η', e],
-    fun c => ⟨c • resForm h ω, hω.coeff_eq_of_eq_smul h rfl⟩⟩
-
 theorem coeff_change (hω : IsFrame ω) (hω' : IsFrame ω') (h : V ≤ U) (h' : V ≤ U')
     (η : FormsOn p D V) : hω.coeff h η = hω.coeff h (resForm h' ω') * hω'.coeff h' η := by
   refine (hω.coeff_eq_iff h).2 fun W hW e => ?_
@@ -345,10 +341,6 @@ theorem g_eq_ratio (i j : K.bundle.ι) : K.bundle.g i j = (K.isFrame i).ratio (K
 def coeff (i : K.bundle.ι) (h : V ≤ K.bundle.U i) : FormsOn p D V →ₗ[Γ(Y, V)] Γ(Y, V) :=
   (K.isFrame i).coeff h
 
-theorem coeff_eq_iff (i : K.bundle.ι) (h : V ≤ K.bundle.U i) {η : FormsOn p D V} {c : Γ(Y, V)} :
-    K.coeff i h η = c ↔ ∀ W : Y.Opens, IsAffineOpen W → ∀ hW : W ≤ V,
-      resForm hW η = resG Y hW c • resForm (hW.trans h) (K.om i) := (K.isFrame i).coeff_eq_iff h
-
 theorem coeff_smul_om (i : K.bundle.ι) (hV : IsAffineOpen V) (h : V ≤ K.bundle.U i)
     (η : FormsOn p D V) : K.coeff i h η • resForm h (K.om i) = η := (K.isFrame i).coeff_smul_resForm hV h η
 
@@ -378,32 +370,6 @@ def toSec (V : Y.Opens) : FormsOn p D V →ₗ[Γ(Y, V)] Γ(toMod K.bundle, V) w
 
 @[simp] theorem coord_toSec (η : FormsOn p D V) (i : K.bundle.ι) :
     coord (K.toSec V η) i = K.coeff i inf_le_right (resForm inf_le_left η) := rfl
-
-theorem chartEquiv_toSec (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (η : FormsOn p D V) :
-    chartEquiv K.isLB i h (K.toSec V η) = K.coeff i h η := by rw [chartEquiv_apply, coord_toSec, K.resG_coeff, resForm_resForm, resForm_self]
-
-theorem map_toSec (e : W ≤ V) (η : FormsOn p D V) :
-    (toMod K.bundle).presheaf.map (homOfLE e).op (K.toSec V η) = K.toSec W (resForm e η) := by
-  refine sec_ext fun j => ?_
-  simp [coord_toSec]
-
-theorem bijective_toSec (i : K.bundle.ι) (hV : IsAffineOpen V) (h : V ≤ K.bundle.U i) :
-    Function.Bijective (K.toSec V) := by
-  have hc : ⇑(chartEquiv K.isLB i h) ∘ ⇑(K.toSec V) = ⇑(K.coeff i h) := funext fun η => K.chartEquiv_toSec i h η
-  have hb : Function.Bijective (⇑(chartEquiv K.isLB i h) ∘ ⇑(K.toSec V)) := by
-    rw [hc]
-    exact (K.isFrame i).bijective_coeff hV h
-  exact ((chartEquiv K.isLB i h).bijective.of_comp_iff' _).1 hb
-
-theorem toSec_om (i : K.bundle.ι) : K.toSec _ (K.om i) = chartSec K.isLB i := by
-  unfold chartSec
-  refine sec_ext fun j => ?_
-  simp only [coord_toSec]
-  refine (K.coeff_eq_iff j _).2 fun W hW e => ?_
-  rw [resForm_resForm, K.trans j i W hW (e.trans inf_le_right) (e.trans inf_le_left)]
-  congr 1
-  erw [congrFun (coord_mkSec _ _) j]
-  exact (resG_resG _ _ _).symm
 
 def iso : LB.Iso K.bundle K'.bundle := ⟨fun a => (K'.isFrame a.1).ratio (K.isFrame a.2)⟩
 
@@ -440,30 +406,6 @@ theorem coeff_eq_iso_mul (a : K'.bundle.ι) (b : K.bundle.ι) (ha : V ≤ K'.bun
   change (K'.isFrame a).coeff ha η = _ * (K.isFrame b).coeff hb η
   rw [(K'.isFrame a).coeff_change (K.isFrame b) ha hb η, (K'.isFrame a).resG_ratio (K.isFrame b) (le_inf ha hb)]
 
-private theorem eq_of_resG_eq_on_affine_cover {ι : Type} (U : ι → Y.Opens) (hU : ⨆ i, U i = ⊤) {V : Y.Opens}
-    {a b : Γ(Y, V)}
-    (h : ∀ (W : Y.Opens) (i : ι), IsAffineOpen W → ∀ (hW : W ≤ V), W ≤ U i → resG Y hW a = resG Y hW b) :
-    a = b := by
-  refine Y.sheaf.eq_of_locally_eq' (fun W : {W : Y.Opens // IsAffineOpen W ∧ W ≤ V ∧ ∃ i, W ≤ U i} => W.1) V
-    (fun W => homOfLE W.2.2.1) ?_ a b fun W => h W.1 W.2.2.2.choose W.2.1 W.2.2.1 W.2.2.2.choose_spec
-  intro x hx
-  have hxU : x ∈ ⨆ i, U i := by rw [hU]; trivial
-  obtain ⟨i, hi⟩ := Opens.mem_iSup.1 hxU
-  obtain ⟨_, ⟨W, hW, rfl⟩, hxW, hWV⟩ :=
-    Y.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ V ⊓ U i from ⟨hx, hi⟩) (V ⊓ U i).2
-  have hWV' : W ≤ V ⊓ U i := hWV
-  exact Opens.mem_iSup.2 ⟨⟨W, hW, hWV'.trans inf_le_left, i, hWV'.trans inf_le_right⟩, hxW⟩
-
-theorem isoOfGen_toSec (η : FormsOn p D V) :
-    (isoOfGen K.isLB K'.isLB (K.iso K') (K.iso_isGen K')).hom.app V (K.toSec V η) =
-      K'.toSec V η := by
-  refine sec_ext fun a => ?_
-  refine eq_of_resG_eq_on_affine_cover K.bundle.U K.isLB.1 fun W b hW e hb => ?_
-  rw [coord_isoOfGen_hom_app K.isLB K'.isLB (K.iso K') (K.iso_isGen K') _ a b e
-    (le_inf (e.trans inf_le_left) hb) (le_inf (e.trans inf_le_right) hb)]
-  rw [coord_toSec, coord_toSec, K.resG_coeff, K'.resG_coeff, resForm_resForm, resForm_resForm]
-  exact (K.coeff_eq_iso_mul K' a b _ _ _).symm
-
 def jacobian (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (f : Fin D → Γ(Y, V)) : Γ(Y, V) :=
   K.coeff i h (dOn p f)
 
@@ -484,13 +426,6 @@ theorem jacobian_change (i j : K.bundle.ι) (hi : V ≤ K.bundle.U i) (hj : V �
 theorem jacobian_mul_sub_mem (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (I : Ideal Γ(Y, V))
     (u : Γ(Y, V)) (f : Fin D → Γ(Y, V)) (hf : ∀ a, f a ∈ I) :
     K.jacobian i h (fun a => u * f a) - u ^ D * K.jacobian i h f ∈ I := map_dForm_mul_sub_mem (K.coeff i h) I u f hf
-
-theorem map_jacobian_mul {R : Type*} [CommRing R] (i : K.bundle.ι) (h : V ≤ K.bundle.U i)
-    (ψ : Γ(Y, V) →+* R) (u : Γ(Y, V)) (f : Fin D → Γ(Y, V)) (hf : ∀ a, ψ (f a) = 0) :
-    ψ (K.jacobian i h fun a => u * f a) = ψ u ^ D * ψ (K.jacobian i h f) := by
-  have := K.jacobian_mul_sub_mem i h (RingHom.ker ψ) u f hf
-  rw [RingHom.mem_ker, map_sub, map_mul, map_pow, sub_eq_zero] at this
-  exact this
 
 theorem jacobian_eq_det_mul (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (f x : Fin D → Γ(Y, V))
     (m : Matrix (Fin D) (Fin D) Γ(Y, V))
@@ -591,8 +526,6 @@ theorem isUnit_map_jacobian {R : Type*} [CommRing R] (i : K.bundle.ι) (hV : IsA
 
 abbrev adj (L : LB Y) (n : ℕ) : LB Y := tens K.bundle (lbPow L n)
 
-theorem isLB_adj (hL : L.IsLB) (n : ℕ) : (K.adj L n).IsLB := isLB_tens K.isLB (LB.isLB_linComb hL _ _)
-
 def jacFun (s : Fin D → LB.Sec L) (i : K.bundle.ι) (j : L.ι) : Γ(Y, K.bundle.U i ⊓ L.U j) :=
   K.jacobian i inf_le_left fun a => resG Y inf_le_right ((s a).f j)
 
@@ -675,65 +608,6 @@ theorem jacVal_eq (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (i : K.bundle.ι) (j
   unfold jacVal
   rw [← evalPt_res y (le_inf h₁ h₂) _ hy, K.resG_jacFun]
 
-theorem jacVal_change (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (hs : ∀ a, VanishesAlong (s a) y)
-    (i i' : K.bundle.ι) (j j' : L.ι) (hi : ⊤ ≤ y ⁻¹ᵁ K.bundle.U i) (hi' : ⊤ ≤ y ⁻¹ᵁ K.bundle.U i')
-    (hj : ⊤ ≤ y ⁻¹ᵁ L.U j) (hj' : ⊤ ≤ y ⁻¹ᵁ L.U j') :
-    K.jacVal s y i j hi hj =
-      evalPt y _ (le_preimage_inf hi hi') (K.bundle.g i i').val *
-        evalPt y _ (le_preimage_inf hj hj') (L.g j j').val ^ D * K.jacVal s y i' j' hi' hj' := by
-  have hV : ⊤ ≤ y ⁻¹ᵁ (K.bundle.U i ⊓ L.U j ⊓ (K.bundle.U i' ⊓ L.U j')) :=
-    le_preimage_inf (le_preimage_inf hi hj) (le_preimage_inf hi' hj')
-  have := K.map_jacFun_change s i i' j j' inf_le_left inf_le_right
-    (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left))
-    (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)) (evalPt y _ hV) fun a => by
-      rw [evalPt_res y _ hj' hV]
-      exact (vanishesAlong_iff_evalPt (s a) y j' hj').1 (hs a)
-  rw [evalPt_res y _ (le_preimage_inf hi hj) hV, evalPt_res y _ (le_preimage_inf hi hi') hV,
-    evalPt_res y _ (le_preimage_inf hj hj') hV, evalPt_res y _ (le_preimage_inf hi' hj') hV] at this
-  exact this
-
-theorem jacVal_eq_pow_mul (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (i : K.bundle.ι) (j : L.ι)
-    (hi : ⊤ ≤ y ⁻¹ᵁ K.bundle.U i) (hj : ⊤ ≤ y ⁻¹ᵁ L.U j) (h₁ : V ≤ K.bundle.U i) (h₂ : V ≤ L.U j)
-    (hy : ⊤ ≤ y ⁻¹ᵁ V) (u : Γ(Y, V)) (f : Fin D → Γ(Y, V))
-    (e : ∀ a, resG Y h₂ ((s a).f j) = u * f a) (hf : ∀ a, evalPt y V hy (f a) = 0) :
-    K.jacVal s y i j hi hj = evalPt y V hy u ^ D * evalPt y V hy (K.jacobian i h₁ f) := by
-  rw [K.jacVal_eq s y i j hi hj h₁ h₂ hy, show (fun a => resG Y h₂ ((s a).f j)) = fun a => u * f a from funext e]
-  exact K.map_jacobian_mul i h₁ (evalPt y V hy) u f hf
-
-theorem jacVal_eq_iso_mul (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (a : K'.bundle.ι) (b : K.bundle.ι)
-    (j : L.ι) (ha : ⊤ ≤ y ⁻¹ᵁ K'.bundle.U a) (hb : ⊤ ≤ y ⁻¹ᵁ K.bundle.U b)
-    (hj : ⊤ ≤ y ⁻¹ᵁ L.U j) :
-    K'.jacVal s y a j ha hj =
-      evalPt y _ (le_preimage_inf ha hb) ((K'.isFrame a).ratio (K.isFrame b)).val *
-        K.jacVal s y b j hb hj := by
-  have hV : ⊤ ≤ y ⁻¹ᵁ (K'.bundle.U a ⊓ K.bundle.U b ⊓ L.U j) := le_preimage_inf (le_preimage_inf ha hb) hj
-  rw [K'.jacVal_eq s y a j ha hj (inf_le_left.trans inf_le_left) inf_le_right hV,
-    K.jacVal_eq s y b j hb hj (inf_le_left.trans inf_le_right) inf_le_right hV,
-    ← evalPt_res y inf_le_left (le_preimage_inf ha hb) hV, ← map_mul]
-  congr 1
-  exact K.coeff_eq_iso_mul K' a b _ _ _
-
-theorem dSec_f_eq_jacVal (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (hs : ∀ a, VanishesAlong (s a) y)
-    (c : ((K.adj L D).pull y).ι) (hc : ⊤ ≤ ((K.adj L D).pull y).U c)
-    (hi : ⊤ ≤ y ⁻¹ᵁ K.bundle.U (c PUnit.unit).1)
-    (hj : ⊤ ≤ y ⁻¹ᵁ L.U ((c PUnit.unit).2 PUnit.unit)) :
-    (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom (resG _ hc ((K.dSec s y hs).f c)) =
-      K.jacVal s y _ _ hi hj := by
-  rw [dSec_f]
-  unfold jacVal evalPt
-  change ((y.appLE _ _ _ ≫ (Sp F).presheaf.map (homOfLE hc).op) ≫ (Scheme.ΓSpecIso (CommRingCat.of F)).hom).hom _ = _
-  rw [Scheme.Hom.appLE_map]
-
-theorem isUnit_jacVal (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (hs : ∀ a, VanishesAlong (s a) y)
-    (i : K.bundle.ι) (j : L.ι) (hi : ⊤ ≤ y ⁻¹ᵁ K.bundle.U i) (hj : ⊤ ≤ y ⁻¹ᵁ L.U j)
-    (hV : IsAffineOpen V) (h₁ : V ≤ K.bundle.U i) (h₂ : V ≤ L.U j) (hy : ⊤ ≤ y ⁻¹ᵁ V)
-    (hu : ((Ideal.Quotient.mk (Ideal.span (Set.range fun a => resG Y h₂ ((s a).f j)))).comp
-      (algX p V)).FormallyUnramified) : IsUnit (K.jacVal s y i j hi hj) := by
-  rw [K.jacVal_eq s y i j hi hj h₁ h₂ hy]
-  refine K.isUnit_map_jacobian i hV h₁ _ hu _ fun a => ?_
-  rw [evalPt_res y h₂ hj hy]
-  exact (vanishesAlong_iff_evalPt (s a) y j hj).1 (hs a)
-
 end Point
 
 end CanonLB
@@ -757,42 +631,12 @@ theorem jacOn_eq (f : Fin (D + 1) → Γ(Y, U)) : jacOn p f =
   have : IsScalarTower k Γ(Y, U) Γ(Y, V) := IsScalarTower.of_algebraMap_eq' (resG_comp_algX p h).symm
   exact map_jac k Γ(Y, V) f
 
-theorem jacOn_mul (u : Γ(Y, U)) (f : Fin (D + 1) → Γ(Y, U)) :
-    jacOn p (fun a => u * f a) = u ^ (D + 1) • jacOn p f := by
-  let := (algX p U).toAlgebra
-  exact jac_mul k u f
-
 end TopForm
 
 namespace CanonLB
 
 variable {p : Y ⟶ Sp k} {D : ℕ} [SmoothOfRelativeDimension D p] (K : CanonLB p D) {L : LB Y}
   {V : Y.Opens}
-
-def jacSec (s : Fin (D + 1) → LB.Sec L) : LB.Sec (K.adj L (D + 1)) where
-  f c := K.coeff c.1 ((K.adj_U_le _ c).trans inf_le_left)
-    (jacOn p fun a => resG Y ((K.adj_U_le _ c).trans inf_le_right) ((s a).f (c.2 PUnit.unit)))
-  compat c c' := by
-    have l := K.adj_U_le _ c
-    have l' := K.adj_U_le _ c'
-    have l₁ := inf_le_inf (l.trans inf_le_left) (l'.trans inf_le_left)
-    have l₂ := inf_le_inf (l.trans inf_le_right) (l'.trans inf_le_right)
-    have h₂ := resG_tens_lbPow_g K.bundle (D + 1) c c' le_rfl l₁ l₂
-    rw [resG_self] at h₂
-    refine (K.resG_coeff _ _ _ _).trans (Eq.trans ?_
-      (congrArg₂ (· * ·) h₂.symm (K.resG_coeff _ _ _ _).symm))
-    rw [K.coeff_change c.1 c'.1 _ (l₁.trans inf_le_right), mul_assoc, ← smul_eq_mul (_ ^ _),
-      ← map_smul, resForm_jacOn, resForm_jacOn, ← jacOn_mul]
-    simp only [resG_resG, fun a => sec_rel (s a) _ _ (l₂.trans inf_le_left)
-      (l₂.trans inf_le_right) l₂]
-
-theorem resG_jacSec_f (s : Fin (D + 1) → LB.Sec L) (c : (K.adj L (D + 1)).ι)
-    (h : V ≤ (K.adj L (D + 1)).U c) (h₁ : V ≤ K.bundle.U c.1) (h₂ : V ≤ L.U (c.2 PUnit.unit)) :
-    resG Y h ((K.jacSec s).f c) =
-      K.coeff c.1 h₁ (jacOn p fun a => resG Y h₂ ((s a).f (c.2 PUnit.unit))) := by
-  change resG Y h (K.coeff c.1 _ (jacOn p fun a => resG Y _ ((s a).f (c.2 PUnit.unit)))) = _
-  rw [K.resG_coeff, resForm_jacOn]
-  simp only [resG_resG]
 
 theorem map_coeff_jacOn {R : Type*} [CommRing R] (i : K.bundle.ι) (h : V ≤ K.bundle.U i)
     (ψ : Γ(Y, V) →+* R) (f : Fin (D + 1) → Γ(Y, V)) (hf : ∀ a : Fin D, ψ (f a.succ) = 0) :
@@ -801,22 +645,6 @@ theorem map_coeff_jacOn {R : Type*} [CommRing R] (i : K.bundle.ι) (h : V ≤ K.
   simp only [map_smul, smul_eq_mul, map_mul, hf, mul_zero, zero_mul, Finset.sum_const_zero, add_zero,
     Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero]
   rfl
-
-theorem evalPt_jacSec_f {F : Type} [CommRing F] (s : Fin (D + 1) → LB.Sec L) (y : Sp F ⟶ Y)
-    (hs : ∀ a : Fin D, VanishesAlong (s a.succ) y) (c : (K.adj L (D + 1)).ι)
-    (hc : ⊤ ≤ y ⁻¹ᵁ (K.adj L (D + 1)).U c) (hi : ⊤ ≤ y ⁻¹ᵁ K.bundle.U c.1)
-    (hj : ⊤ ≤ y ⁻¹ᵁ L.U (c.2 PUnit.unit)) :
-    evalPt y _ hc ((K.jacSec s).f c) =
-      evalPt y _ hj ((s 0).f (c.2 PUnit.unit)) * K.jacVal (fun a => s a.succ) y _ _ hi hj := by
-  have hf : ∀ a : Fin D, evalPt y _ hc (resG Y ((K.adj_U_le _ c).trans inf_le_right)
-      ((s a.succ).f (c.2 PUnit.unit))) = 0 := fun a => by
-    rw [evalPt_res y _ hj hc]
-    exact (vanishesAlong_iff_evalPt _ y _ hj).1 (hs a)
-  change evalPt y _ hc (K.coeff c.1 ((K.adj_U_le _ c).trans inf_le_left)
-    (jacOn p fun a => resG Y ((K.adj_U_le _ c).trans inf_le_right) ((s a).f (c.2 PUnit.unit)))) = _
-  rw [K.map_coeff_jacOn c.1 _ _ _ hf, evalPt_res y _ hj hc,
-    K.jacVal_eq (fun a => s a.succ) y _ _ hi hj ((K.adj_U_le _ c).trans inf_le_left)
-      ((K.adj_U_le _ c).trans inf_le_right) hc]
 
 end CanonLB
 
@@ -843,20 +671,6 @@ theorem jacobian_inv {p : Y ⟶ Sp k} [SmoothOfRelativeDimension 1 p] (K : Canon
     fin_cases a
     simpa using hd
   rw [K.jacobian_eq_det_mul i h ![y] ![x] _ hm, Matrix.det_fin_one_of]
-
-example {p : Y ⟶ Sp k} [SmoothOfRelativeDimension 1 p] (K : CanonLB p 1) (i j : K.bundle.ι)
-    (x : Γ(Y, K.bundle.U i)) (y : Γ(Y, K.bundle.U j)) (hx : K.om i = dOn p ![x])
-    (hy : K.om j = dOn p ![y])
-    (e : resG Y (inf_le_left : K.bundle.U i ⊓ K.bundle.U j ≤ _) x * resG Y inf_le_right y = 1) :
-    (K.bundle.g i j).val = -resG Y inf_le_right y ^ 2 := by
-  have h₁ := K.jacobian_inv i inf_le_left _ _ e
-  have h₂ : K.jacobian i inf_le_left ![resG Y (inf_le_left : _ ⊓ K.bundle.U j ≤ _) x] = 1 := by
-    rw [← K.coeff_om i inf_le_left, hx, resForm_dOn, jacobian]
-    simp only [Matrix.vec_single_eq_const, Function.const_apply]
-  have h₃ : K.jacobian j inf_le_right ![resG Y (inf_le_right : K.bundle.U i ⊓ _ ≤ _) y] = 1 := by
-    rw [← K.coeff_om j inf_le_right, hy, resForm_dOn, jacobian]
-    simp only [Matrix.vec_single_eq_const, Function.const_apply]
-  rwa [K.jacobian_change i j _ inf_le_right, h₂, h₃, mul_one, mul_one, resG_self] at h₁
 
 section AffineSpace
 
@@ -964,24 +778,6 @@ theorem jacobian_affineSpace (f : Fin D → MvPolynomial (Fin D) k) :
     RingHom.map_det]
   rfl
 
-example : (affineSpace k D).jacobian PUnit.unit le_rfl (fun a => polyFn (X a)) = 1 := by
-  refine (jacobian_affineSpace _).trans (Eq.trans ?_ (map_one polyFn))
-  rw [← Matrix.det_one (n := Fin D)]
-  congr 2
-  ext a b : 2
-  simp [Matrix.one_apply, Pi.single_apply]
-
-example : (affineSpace k 2).jacobian PUnit.unit le_rfl (fun a => polyFn (![X 1, X 0] a)) = -1 := by
-  rw [jacobian_affineSpace]
-  simp [Matrix.det_fin_two]
-  rfl
-
-example : (affineSpace k 1).jacobian PUnit.unit le_rfl (fun a => polyFn (![X 0 ^ 2] a)) =
-    2 * polyFn (X 0) := by
-  rw [jacobian_affineSpace]
-  simp [map_ofNat]
-  rfl
-
 variable {k D} in
 
 def polySec (f : MvPolynomial (Fin D) k) :
@@ -997,15 +793,6 @@ theorem jacVal_affineSpace {F : Type} [CommRing F] (φ : MvPolynomial (Fin D) k 
   refine h1.trans ((congrArg (evalPt (spMap φ) ⊤ _) (congrArg ((affineSpace k D).jacobian PUnit.unit le_rfl)
     (funext fun a => resG_self _ _))).trans ?_)
   exact (congrArg _ (jacobian_affineSpace f)).trans (evalPt_spMap φ _)
-
-example : VanishesAlong (polySec (X 0 ^ 2 - 1 : MvPolynomial (Fin 1) k))
-      (spMap (eval fun _ => 1)) ∧
-    (affineSpace k 1).jacVal (fun a => polySec (![X 0 ^ 2 - 1] a)) (spMap (eval fun _ => 1))
-      PUnit.unit PUnit.unit le_rfl le_rfl = 2 := by
-  refine ⟨(vanishesAlong_iff_evalPt _ _ PUnit.unit le_rfl).2
-    ((evalPt_spMap _ _).trans (by simp)), ?_⟩
-  rw [jacVal_affineSpace]
-  simp
 
 end AffineSpace
 

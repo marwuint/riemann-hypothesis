@@ -1,18 +1,19 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniTrait
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelPointsAlgClosureFractionRingBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelStructureRationalThetaPointSubfield
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTateIsoOfLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabTors
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionLabelsOneTraitWeilPairingBijectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionLabelsTraitCompatibleLevelsMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelPointMulLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionLabelsOneTraitWeilPairingBijection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionLabelsTraitCompatibleLevelsMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelPointMulLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTorsionLabelingGaloisConjugateAlgClosureStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPointConjAlgClosureAutomorphismStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionLabelingsEqOfThetaPointPairingsOrderNStatement
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -44,14 +45,14 @@ theorem conj_eq_of_pow_eq_one [IsLocalRing R] (hR : Base R) (D : DegData R (maxi
     (h₂ : LabTors D.toPre A M x₂) (p' : QkPt D.toPre (Kb R) M) (hp' : lab M p' ^ n = 1) : x₂ p' = lab M p' := by
   subst hM
   have hnd : 1 ≤ n * d := Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))
-  have T₁ := GlobalTheory.T.torsion_labels_one_trait_weil_pairing_bijection R hR D A lab hT n hn
-  have T₂ := GlobalTheory.T.torsion_labels_one_trait_weil_pairing_bijection R hR D A lab hT (n * d) hnd
+  have T₁ := _root_.GlobalTheory.Mum.LabTorsTrait.labTors_of_oneTrait R hR D A lab hT n hn
+  have T₂ := _root_.GlobalTheory.Mum.LabTorsTrait.labTors_of_oneTrait R hR D A lab hT (n * d) hnd
   obtain ⟨r, hr⟩ := T₁.1 _ hp'
-  obtain ⟨q, hqy, hqg⟩ := GlobalTheory.T.exists_levelPoint_mul_level R D (Kb R) n d r
-  have hq : lab (n * d) q = lab n r := GlobalTheory.T.torsionLabels_trait_compatible_levels_mul R hR D A lab hT n d hn hd r q hqy hqg
+  obtain ⟨q, hqy, hqg⟩ := _root_.GlobalTheory.Mum.QkMul.exists_qk_mul R D (Kb R) n d r
+  have hq : lab (n * d) q = lab n r := _root_.GlobalTheory.Mum.lab_level_mul R hR D A lab hT n d hn hd r q hqy hqg
   have hqp : QkPt.Equiv D.toPre (Kb R) q p' := (T₂.2.2.1 q p').1 (hq.trans hr)
   obtain ⟨r₀, hr₀⟩ := GlobalTheory.QkClosure.exists_qkExt_descent σ.toRingHom σ.comp_algebraMap hnK r
-  obtain ⟨q₀, hq₀y, hq₀g⟩ := GlobalTheory.T.exists_levelPoint_mul_level R D (Kb R) n d r₀
+  obtain ⟨q₀, hq₀y, hq₀g⟩ := _root_.GlobalTheory.Mum.QkMul.exists_qk_mul R D (Kb R) n d r₀
   have hq₀ : QkExt σ.toRingHom q₀ q := by
     obtain ⟨y, g, e⟩ := q
     obtain ⟨y₀, g₀, e₀⟩ := q₀
@@ -59,7 +60,7 @@ theorem conj_eq_of_pow_eq_one [IsLocalRing R] (hR : Base R) (D : DegData R (maxi
     subst hqg hq₀g hqy hq₀y
     exact ⟨congrArg (d • ·) hr₀.1, hr₀.2.1, hr₀.2.2⟩
   have e₂ := hx₂ q₀ q hq₀
-  rw [GlobalTheory.T.torsionLabels_trait_compatible_levels_mul R hR D A lab hT n d hn hd r₀ q₀ hq₀y hq₀g, (T₁.2.2.1 r₀ r).2 (hQ r₀ r hr₀), hr, hA _ hp'] at e₂
+  rw [_root_.GlobalTheory.Mum.lab_level_mul R hR D A lab hT n d hn hd r₀ q₀ hq₀y hq₀g, (T₁.2.2.1 r₀ r).2 (hQ r₀ r hr₀), hr, hA _ hp'] at e₂
   exact ((h₂.2.2.1 q p').2 hqp).symm.trans (Over.OverMorphism.ext e₂)
 
 end GlobalTheory.Mum.ThetaLevels
@@ -91,7 +92,7 @@ theorem GlobalTheory.Mum.thetaLevels_galois : ∀ (R : Type) [CommRing R] [IsDom
     show spMap σ.toRingHom ≫ (lab ((n ^ i) ^ 2) (pre q')).left = _
     rw [GlobalTheory.QkClosure.qkExt_inj σ.toRingHom σ.comp_algebraMap (hpre q') h]
   have hM1 : 1 ≤ (n ^ i) ^ 2 := Nat.one_le_pow _ _ (Nat.pos_of_ne_zero (pow_ne_zero _ hn.ne_zero))
-  have H₁ := GlobalTheory.T.torsion_labels_one_trait_weil_pairing_bijection R hR D A lab hT ((n ^ i) ^ 2) hM1
+  have H₁ := _root_.GlobalTheory.Mum.LabTorsTrait.labTors_of_oneTrait R hR D A lab hT ((n ^ i) ^ 2) hM1
   have H₂ := GlobalTheory.T.isTorsionLabeling_galoisConjugate_algClosure R hR D A σ ((n ^ i) ^ 2) hM1 (lab ((n ^ i) ^ 2)) x₂ H₁ hx₂
   have Hn : ∀ q, lab ((n ^ i) ^ 2) q ^ n = 1 → x₂ q = lab ((n ^ i) ^ 2) q := fun q hq =>
     conj_eq_of_pow_eq_one hR D A lab hT hn.one_lt.le (Nat.cast_ne_zero.2 hn.ne_zero) σ (hG σ).1 (hG σ).2

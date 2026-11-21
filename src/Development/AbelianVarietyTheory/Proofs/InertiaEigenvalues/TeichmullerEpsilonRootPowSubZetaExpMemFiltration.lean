@@ -121,7 +121,7 @@ theorem epsT_sub_mem {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (s
     io AI (epsT AI s) - oB P (P.ζQ s) ∈ FilB P 1 := by
   obtain ⟨y, h1, h2⟩ := T.om (P.ζQ s)
   refine (GlobalTheory.ThetaTie.fil_nat T 1 _).2 ⟨GlobalTheory.MemLoc.aDp l (epsT AI s) - y, ?_, ?_⟩
-  · rw [← (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.1, map_sub, h2, (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.2.1, epsT,
+  · rw [← (_root_.GlobalTheory.MemLoc.thetaD_props l).2.1, map_sub, h2, (_root_.GlobalTheory.MemLoc.thetaD_props l).2.2.2.1, epsT,
       WittVector.fontaineTheta_teichmuller, untilt_εroot, AI.ζ_eq, sub_self]
   · rw [map_sub, map_sub, h1, io_apply, GlobalTheory.ThetaTie.eD_ιA]
 

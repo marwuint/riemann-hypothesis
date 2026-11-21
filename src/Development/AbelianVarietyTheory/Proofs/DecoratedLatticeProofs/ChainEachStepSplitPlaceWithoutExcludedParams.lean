@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.UpNeNSOfUpNe
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaLiftChainHeckeParameterTwistNextTargetChar
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSplitPrimeAvoiding
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPrimePlacesSplit
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SmallEntriesAndStringsAvoidExcludedNormPowersStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SmallEntriesAndStringsAvoidExcludedNormPowers
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ParBoundW
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeckeCharQuotientNeOneCompletelySplitPrimeStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
@@ -35,7 +36,7 @@ theorem chainNS_holds : ∀ D : D7, ChainNS D := by
     exact Multiset.mem_map_of_mem _ hβ
   rw [chainPar_twist_chT] at hmem
   have key : ((x⁻¹ * β : ℂˣ) : ℂ) ≠ GlobalTheory.LFun.npow w ((k' : ℂ) / 2) := by
-    have hN := GlobalTheory.T.small_entries_and_strings_avoid_excluded_norm_powers D.host.E w D.R.r D.R.t hrt k' hk'
+    have hN := _root_.GlobalTheory.RkNs.small_entries_and_strings_avoid_excluded D.host.E w D.R.r D.R.t hrt k' hk'
     simp only [Pi.add_apply, Finset.sum_apply, Multiset.mem_add, Multiset.mem_sum] at hmem
     rcases hmem with h | ⟨i, hi, h⟩
     · simp only [GlobalTheory.LFun.twist, Pi.inv_apply] at h

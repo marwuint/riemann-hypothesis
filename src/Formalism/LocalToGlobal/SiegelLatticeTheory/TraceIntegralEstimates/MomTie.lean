@@ -163,15 +163,4 @@ theorem paramTieG_of {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT :
     have hGX : Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L = Cl * large₂.sc.L * ((D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5) := by ring
     nlinarith [hH0, hX8, hCX, hCn, hGX]
 
-theorem parameter_gap_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Cg cb Cu cT CT C0 : ℝ) :
-    ParamTieGF Fm Cg cb Cu cT CT C0 := by
-  intro Cn
-  obtain ⟨x0, -, hx0⟩ := Formalism.MainNotions.BridgeLemma.ev_L (Fm := Fm) ((1000 + |Cn|) / Formalism.MainNotions.S.sCl Fm)
-  refine ⟨x0, fun x hx i hH => ?_⟩
-  have hCl : 0 < Formalism.MainNotions.S.sCl Fm := hH.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2
-  refine paramTieG_of hH.1 Cn ?_
-  have h := hx0 x hx i
-  rw [div_le_iff₀ hCl] at h
-  linarith
-
 end Formalism.L2.S.Pv.Mom

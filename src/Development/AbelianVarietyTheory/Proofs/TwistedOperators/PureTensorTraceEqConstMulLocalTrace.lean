@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasTypeVec
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ExponentSeparation
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsHilbertSchmidtOfFiniteDimensional
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactLevelOffFinEmpty
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFinsetLocalComponentCopiesFixedAwayStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TraceMulEndomorphismIsotypicRepStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFinsetLocalComponentCopiesFixedAway
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TraceMulEndomorphismIsotypicRep
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PureTensorOperatorEqOffPlaceMulAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchurAdmissibleStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchurAdmissibleAlt
 open MeasureTheory Set Filter NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary GlobalTheory.AutMult Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.Mult
@@ -37,16 +37,16 @@ theorem hasTrace_update_eq_const_mul : ∀ (D : D7) (V : HSp D) (u : HeightOneSp
   obtain ⟨H, K, hKo, hHc, hHf, hHop⟩ := GlobalTheory.T.pureTensorOperator_eq_offPlace_mul_atPlace D V u μf hμ hK1 ν hν W σ hσ.1 ff hff
   have hcont : Continuous (locFin V u) := (continuous_emb _ _ u).subtype_mk _
   have hρ : GlobalTheory.PRep.IsSmooth (σ.comp (locFin V u)) := fun x => (hσ.1 x).preimage hcont
-  obtain ⟨s, hs⟩ := GlobalTheory.T.exists_finset_localComponent_copies_fixed_away D V u W σ hσ N π hπi hπa hloc K hKo
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.FinMultAway.exists_finset_fixed_away D V u W σ hσ N π hπi hπa hloc K hKo
   have hrange : ∃ s : Finset (π.IntertwiningMap (σ.comp (locFin V u))),
       LinearMap.range H ≤ ⨆ φ ∈ s, LinearMap.range φ.toLinearMap := by
     refine ⟨s, ?_⟩
     rintro _ ⟨x, rfl⟩
     exact hs _ fun k hk hk1 => hHf x k hk hk1
   have hschur : ∀ φ : π.IntertwiningMap π, ∃ c : ℂ, φ.toLinearMap = c • LinearMap.id := fun φ =>
-    GlobalTheory.T.schur_admissible_alt (Gv V u) (Kv V u) (isOpen_stabLoc _ _ _ u) (isCompact_stabLoc _ _ _ u) N π hπi hπa
+    _root_.GlobalTheory.SchurAdm.schur_admissible (Gv V u) (Kv V u) (isOpen_stabLoc _ _ _ u) (isCompact_stabLoc _ _ _ u) N π hπi hπa
       φ.toLinearMap fun g x => Representation.IntertwiningMap.isIntertwining _ _ φ g x
-  obtain ⟨c, hc⟩ := GlobalTheory.T.trace_mul_endomorphism_isotypicRep (Gv V u) N W π (σ.comp (locFin V u)) hπi hschur hloc H
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.IsoTrace.trace_mul_isotypic (Gv V u) N W π (σ.comp (locFin V u)) hπi hschur hloc H
     (fun g x => hHc g x) hrange
   refine ⟨c, fun f hf => ⟨?_, ?_⟩⟩
   · have hfd := hπa.finiteDimensional_range_smoothOp (μ := μf u) hf.1 hf.2 (isOpen_stabLoc _ _ _ u)

@@ -1,10 +1,14 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.AApproxE
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHoloQuadraticAddLeviIsLittleOStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHoloQuadraticAddLeviIsLittleO
+
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
@@ -39,7 +43,7 @@ theorem psh_normal_frame : ∀ (n : ℕ) (O : Set (V n)) (φ : V n → ℝ) (p :
       exact (WithLp.ofLp_eq_zero 2).1 h0)
   have hφ2 : ContDiffAt ℝ 2 φ p :=
     ((hφ.contDiffAt (hO.mem_nhds hp)).of_le (by norm_cast))
-  obtain ⟨q, hq, ho⟩ := GlobalTheory.T.exists_holo_quadratic_add_levi_isLittleO n φ p hφ2
+  obtain ⟨q, hq, ho⟩ := _root_.GlobalTheory.TaylorLevi.exists_holo_quadratic_add_levi n φ p hφ2
   set A : ℝ := ∑ j, ∑ k, ‖wd n j (wdb n k g) p‖ with hA
   have hA0 : 0 ≤ A := Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => norm_nonneg _
   have hev := ho.def (half_pos hm)

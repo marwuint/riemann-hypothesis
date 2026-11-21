@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TauL
+import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.KFiniteVectors.KFiniteGlobalStability.GenStable
+import GroundTheory.AutomorphicForms.GL2.FiniteAdeleDecomp
 
 noncomputable section
 
@@ -7,7 +8,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Filter Topology
 open GroundTheory.Global GroundTheory.LocalField GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm
 open GroundTheory.Automorphic.GodementSection
 open scoped NumberField.AdeleRing ValuativeRel ENNReal
-open Ad3 Ad3.K Ad3.K.GPK GlobalTheory.CompanionTheory.GPKIntB
+open Ad3 Ad3.K Ad3.K.GPK
 
 namespace GlobalTheory.CompanionTheory.GPKIntB.TauLoc
 

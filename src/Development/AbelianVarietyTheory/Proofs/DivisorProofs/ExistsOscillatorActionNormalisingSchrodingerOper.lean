@@ -64,10 +64,6 @@ theorem lineSign_eq (a : Ix P Q) (b : Ix R S) : lineSign a b = if linePos (a, b)
 theorem Jm_transpose (R S : ℕ) : (Jm R S)ᵀ = Jm R S := by
   simp [Jm, Formalism.UG.Jpq, fromBlocks_transpose]
 
-theorem Jm_map_star (R S : ℕ) : (Jm R S).map star = Jm R S := by
-  ext a b
-  rcases a with a | a <;> rcases b with b | b <;> simp [Jm, Formalism.UG.Jpq, one_apply] <;> split_ifs <;> simp
-
 theorem diagonal_sgn : (diagonal fun n : Ix R S × (ι × Ix P Q) => if sgn n then (1 : ℂ) else -1) =
     blockDiagonal fun o : ι × Ix P Q => Jm P Q o.2 o.2 • Jm R S := by
   ext ⟨b, w, a⟩ ⟨b', w', a'⟩

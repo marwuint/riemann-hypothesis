@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConstMemBddAut
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SphericalEigenvectorGeneratesIrreducibleSubrepreStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormSatakeLeOfUnitarySphericalGLStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SphericalEigenvectorGeneratesIrreducibleSubrepre
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormSatakeLeOfUnitarySphericalGL
+import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SatakeTrivialRangeBound
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PowDvdOfHermMatEq
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SatakeParameterGLStarEqInvOfUnitarisable
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SatakeParameterOfSpherical
@@ -23,7 +25,7 @@ theorem exists_isSatVecGL_bound : ∀ (E : Type) [Field E] [NumberField E] (w : 
   intro E _ _ w n V _ _ ρ hun x hx0 hxf hs
   have hK : IsCommensurated (KGL w n) := Formalism.UG.Final.GLintComm E w n
   obtain ⟨U, hU, hxU, hirr, hunU, hline⟩ :=
-    GlobalTheory.T.spherical_eigenvector_generates_irreducible_subrepresentation ρ (KGL w n) (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).1 hK hun x hx0 hxf hs
+    _root_.GlobalTheory.spherical_eigenvector_generates_irreducible ρ (KGL w n) (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).1 hK hun x hx0 hxf hs
   set π := GlobalTheory.PRep.sub ρ U hU with hπ
   let x' : U := ⟨x, hxU⟩
   have hx'0 : x' ≠ 0 := fun e => hx0 (congrArg Subtype.val e)
@@ -44,7 +46,7 @@ theorem exists_isSatVecGL_bound : ∀ (E : Type) [Field E] [NumberField E] (w : 
   obtain ⟨B, hB⟩ := GlobalTheory.LFun.ExSatGL.exists_hasSatGL E w n U π
     ((Submodule.ne_bot_iff _).2 ⟨x', hx'f, hx'0⟩) heig
   have hx' : IsSatVecGL w π x' B := hB.2 x' hx'f hx'0
-  have hup := GlobalTheory.T.norm_satake_le_of_unitary_spherical_GL GlobalTheory.SatakeBound.satakeTrivialBound E w n _ π B hirr hunU hB
+  have hup := _root_.GlobalTheory.LFun.SatBoundGL.norm_le_of_hasSatGL GlobalTheory.SatakeBound.satakeTrivialBound E w n _ π B hirr hunU hB
   refine ⟨B, hx'.map U.subtype hsub hx0, fun β hβ => ⟨hup β hβ, ?_⟩⟩
   have hst := GlobalTheory.LFun.UnitaryParam.map_star_eq_map_inv E w n _ π x' B hunU hx'
   have h1 : β⁻¹ ∈ B.map star := hst ▸ Multiset.mem_map_of_mem _ hβ

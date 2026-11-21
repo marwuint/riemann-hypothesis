@@ -80,8 +80,4 @@ theorem key_bound {A S X Y a : ℝ} (hA : 1 ≤ A) (hX : 1 ≤ X) (hY : 1 ≤ Y)
 
 end Basic
 
-section Repro
-
-end Repro
-
 end Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity

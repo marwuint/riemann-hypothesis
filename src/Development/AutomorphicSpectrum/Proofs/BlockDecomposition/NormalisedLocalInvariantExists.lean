@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNormalised
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalBrauerRootsUnityEquivStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalBrauerRootsUnityEquiv
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalInvariantCupUniformizerStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalInvariantCupKummerStatement
 
@@ -15,7 +15,7 @@ theorem exists_bijective_isNormalised :
       ∃ f : H2 (muLoc F l r A) →ₗ[ZMod (l ^ r)] ZMod (l ^ r),
         Function.Bijective f ∧ IsNormalised ζ A v f := by
   intro F Ω _ _ _ _ _ l _ r hr ζ hζ A v hA
-  obtain ⟨e⟩ := GlobalTheory.T.local_brauer_roots_unity_equiv F Ω l r hr A v hA
+  obtain ⟨e⟩ := _root_.GlobalTheory.CompanionTheory.LocalInv.nonempty_H2_muLoc_equiv_zmod F Ω l r hr A v hA
   by_cases hN : IsNormalised ζ A v (e : H2 (muLoc F l r A) →ₗ[ZMod (l ^ r)] ZMod (l ^ r))
   · exact ⟨e, e.bijective, hN⟩
   · simp only [IsNormalised, not_forall] at hN

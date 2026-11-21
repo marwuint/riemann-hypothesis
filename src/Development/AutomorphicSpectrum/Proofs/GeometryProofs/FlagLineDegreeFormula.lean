@@ -1,18 +1,26 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocRatio
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GrGenOfIsFlagVBOn
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GradedDegreeFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagLabelBasesExistStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundGenericStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundCharZeroStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundOfFlagStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HermitianLineMetricBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LogCardQuotientBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GradedDegreeFormula
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SlopeBoundSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagLabelBasesExist
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundGeneric
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundCharZero
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundOfFlag
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HermitianLineMetricBound
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LogCardQuotientBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRatioProductFormulaStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsAtComplexEmbeddingStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtComplexEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelValueLiftStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramDetNeZeroOfIndepStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelValueLift
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramDetNeZeroOfIndep
 
 noncomputable section
 
@@ -47,32 +55,32 @@ theorem one_label (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K 
       IsFibre (fun z v w c => c = h.ip z v w) z B MB → ∀ F : SatFlag B r,
       (∀ j : Fin (r + 1), IsSubFibre M (flagStep Ω b₀ j.val) z MB (F.F j)) →
       |Ht.lineHt A L w - F.grDeg i| ≤ C := by
-  obtain ⟨C₀, hC₀⟩ := GlobalTheory.T.hermitian_line_metric_bound X Ω ξ K J y G Li M V r b₀ m i e₀ h A hc hall htie hm hind hsw hdeg hsm
+  obtain ⟨C₀, hC₀⟩ := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.arch_bound X Ω ξ K J y G Li M V r b₀ m i e₀ h A hc hall htie hm hind hsw hdeg hsm
   refine ⟨Real.log m + |C₀|, ?_⟩
   intro L _ _ w z hw B MB hfib F hsub
   have hne : ∀ k, ∃ c, w ⟨k, c⟩ ≠ 0 := fun k => (hw.1 k).imp fun c hc => hc.ne_zero
   choose c₀ hc₀ using hne
   have hne : ∀ k, ∃ c, w ⟨k, c⟩ ≠ 0 := fun k => ⟨c₀ k, hc₀ k⟩
   obtain ⟨f, ef, s, e, t, u, vf, ve, hf, hfi, hs1, hs0, hef, he, hv, hve, hsv, hcls, hu, hu0⟩ :=
-    GlobalTheory.T.coord_degree_bound_of_flag X Ω ξ K J y G Li M V r b₀ m i A.a e₀ hc hall htie hm hind hsw hdeg L w z hw B MB F hsub c₀ hc₀
+    _root_.GlobalTheory.CompanionTheory.Ar.RootHt.Pick.pick X Ω ξ K J y G Li M V r b₀ m i A.a e₀ hc hall htie hm hind hsw hdeg L w z hw B MB F hsub c₀ hc₀
   have hsub₀ : IsSubFibre M (flagStep Ω b₀ i) z MB (F.F i.castSucc) := by simpa using hsub i.castSucc
   have hsub₁ : IsSubFibre M (flagStep Ω b₀ (i + 1)) z MB (F.F i.succ) := by simpa using hsub i.succ
-  obtain ⟨φ, hker, hval⟩ := GlobalTheory.T.coord_degree_bound_generic X Ω ξ K J y G Li M V r b₀ m i A.a e₀ hc hall htie hm hind hsw hdeg L w z hw
+  obtain ⟨φ, hker, hval⟩ := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.FinPhi.exists_phi X Ω ξ K J y G Li M V r b₀ m i A.a e₀ hc hall htie hm hind hsw hdeg L w z hw
     B MB (F.F i.castSucc) (F.F i.succ) hsub₀ hsub₁ c₀ hc₀
-  have hloc := GlobalTheory.T.coord_degree_bound_char_zero X Ω ξ K J y G Li M V r b₀ m i A.a e₀ hc hall htie hm hind hsw hdeg L w z hw
+  have hloc := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal.coord_size X Ω ξ K J y G Li M V r b₀ m i A.a e₀ hc hall htie hm hind hsw hdeg L w z hw
     B MB (F.F i.castSucc) (F.F i.succ) hsub₀ hsub₁ c₀ hc₀ φ hval
   have hφ : φ ⟨s, hs1⟩ = u := hval ⟨s, hs1⟩ e ve t u he hve hsv hcls hu
   obtain ⟨hρ, hfin, hsum⟩ := GlobalTheory.T.local_ratio_product_formula L K J A.a w c₀ u hne hc₀ hu0
-  have hidx := GlobalTheory.T.log_card_quotient_bound L B.carrier (F.F i.castSucc) (F.F i.succ) φ ⟨s, hs1⟩ m (locRatio A.a w c₀)
+  have hidx := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.log_index_le L B.carrier (F.F i.castSucc) (F.F i.succ) φ ⟨s, hs1⟩ m (locRatio A.a w c₀)
     (IsNoetherian.noetherian _) hker (by rw [hφ]; exact hu0) hm hρ hfin hloc
   rw [hφ, hsum] at hidx
-  have hgr := GlobalTheory.T.graded_degree_formula L B r F i f s hf hfi hs1 hs0
+  have hgr := _root_.GlobalTheory.CompanionTheory.Ar.GrLine.grDeg_eq L B r F i f s hf hfi hs1 hs0
   have harch : ∀ σ : L →+* ℂ, |(1 / 2) * (Real.log ‖B.gramDet σ (Fin.snoc f s : Fin (i + 1) → B.carrier)‖ -
       Real.log ‖B.gramDet σ f‖) - Real.log ‖σ u‖ - ∑ k, (A.a k : ℝ) * Real.log ‖σ (w ⟨k, c₀ k⟩)‖ +
       Real.log (A.h fun p => σ (w p))| ≤ C₀ := by
     intro σ
-    choose v' hv' hl' using fun j => GlobalTheory.T.lie_model_value_lift X Ω ξ G Li M L z σ B.carrier MB (f j) (ef j) (vf j) (hv j).1 (hv j).2
-    obtain ⟨ve', hve', hle'⟩ := GlobalTheory.T.lie_model_value_lift X Ω ξ G Li M L z σ B.carrier MB s e ve hve hsv
+    choose v' hv' hl' using fun j => _root_.GlobalTheory.CompanionTheory.Ar.RootHt.pull_lie_value X Ω ξ G Li M L z σ B.carrier MB (f j) (ef j) (vf j) (hv j).1 (hv j).2
+    obtain ⟨ve', hve', hle'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.pull_lie_value X Ω ξ G Li M L z σ B.carrier MB s e ve hve hsv
     have g0 : B.gramDet σ f = (gramAt h _ v').det := gram_eq h hfib σ f v' hl'
     have g1 : B.gramDet σ (Fin.snoc f s : Fin (i + 1) → B.carrier) =
         (gramAt h _ (Fin.snoc v' ve' : Fin (i + 1) → (epsAt _ ⟶ G))).det := by
@@ -80,7 +88,7 @@ theorem one_label (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K 
       refine Fin.lastCases ?_ (fun j => ?_) a
       · simpa using hle'
       · simpa using hl' j
-    have hd : (gramAt h _ v').det ≠ 0 := by rw [← g0]; exact GlobalTheory.T.gram_det_ne_zero_of_indep L B σ _ f hfi
+    have hd : (gramAt h _ v').det ≠ 0 := by rw [← g0]; exact _root_.GlobalTheory.CompanionTheory.Ar.RootHt.gramDet_ne_zero_of_linearIndependent L B σ _ f hfi
     have := hC₀ _ _ (GlobalTheory.T.coords_at_complex_embedding X Ω ξ K J y L w z σ hw) c₀ (fun k => by simpa using hc₀ k) ef e v' ve' t (σ u)
       hef he hv' hve' hcls (GlobalTheory.T.val_at_complex_embedding X Ω ξ L z σ _ u hu) (by simpa using hu0) hd
     rw [g0, g1]
@@ -251,7 +259,7 @@ open GroundTheory.Heights₂.Heights
 
 theorem root_height : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) [Fintype (CMType H)] (Fl : 𝔐.Flag) (h : LieMetric 𝔐.M y) (x : CMType H × Fin (D.p + D.q) → HermLine J) (e : CMType H × Fin (D.p + D.q) → Ω), (∀ r, IsSmoothHerm (x r)) → Fl.RootLines (fun r => (x r).a) e → ∃ C : ℝ, ∀ (L : Type) [Field L] [NumberField L] (w : (Σ k, J k) → L) (z : Sp (𝓞 L) ⟶ 𝔐.X), CoordsAt 𝔐.ξ y (spMap (algebraMap (𝓞 L) L) ≫ z) w → ∀ (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel 𝔐.t.G z B.carrier) (A : FlagPair B (CMType H) D.p D.q), IsFibre (fun z v w c => c = h.ip z v w) z B MB → ((∀ τ i, IsSubFibre 𝔐.M (flagStep Ω (Fl.b (.inl τ)) i.val) z MB ((A.W τ).F i)) ∧ ∀ τ i, IsSubFibre 𝔐.M (flagStep Ω (Fl.b (.inr τ)) i.val) z MB ((A.S τ).F i)) → (∀ τ (i : Fin D.p), |Ht.lineHt (x (τ, Fin.castAdd D.q i)) L w - (A.W τ).grDeg i| ≤ C) ∧ ∀ τ (i : Fin D.q), |Ht.lineHt (x (τ, Fin.natAdd D.p i)) L w + (A.S τ).grDeg i.rev| ≤ C := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 _ Fl h x e hx hR
-  obtain ⟨m, hm, hsw⟩ := GlobalTheory.T.flag_label_bases_exist E H D l Xo c Y S Ω K J y 𝔐 Fl
+  obtain ⟨m, hm, hsw⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sandwich.lat_sandwich E H D l Xo c Y S Ω K J y 𝔐 Fl
   haveI : Smooth 𝔐.t.G.hom := 𝔐.t.semi.smooth
   have hc : CharZero Ω := by
     haveI : CharZero c.F := inferInstance

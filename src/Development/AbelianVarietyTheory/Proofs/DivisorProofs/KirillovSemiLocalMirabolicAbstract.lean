@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerInfMemLocSpan
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiLocalKirillovArchimedeanKernelComplexPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiLocalKirillovArchimedeanKernelComplexPlaces
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEqOnMirabolicOfSlicesFinitePlacesStatement
 
 noncomputable section
@@ -24,7 +24,7 @@ theorem kirillov_semiLocal : ∀ (E : Type) [Field E] [NumberField E] [IsTotally
   have hq0 : (fun g => W₀ (g * (q⁻¹ * p₀))) q ≠ 0 := by
     simpa [← mul_assoc] using hne₀
   obtain ⟨X, _, ν, _, k, γ, hk, hK⟩ :=
-    GlobalTheory.T.semiLocal_kirillov_archimedean_kernel_complexPlaces E m S b _ q hb hC (hsm q) (h1 _ hW') (h4 _ hW' q).1 (h4 _ hW' q).2 hq1 hq0
+    _root_.GlobalTheory.JSW.KirArchTransfer.kirillov_arch E m S b _ q hb hC (hsm q) (h1 _ hW') (h4 _ hW' q).1 (h4 _ hW' q).2 hq1 hq0
   exact ⟨_, h3 _ hW' X ν k γ hk, hK⟩
 
 end GlobalTheory.JSW.MirSemi

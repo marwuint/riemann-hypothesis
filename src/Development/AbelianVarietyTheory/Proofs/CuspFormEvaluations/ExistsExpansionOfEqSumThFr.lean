@@ -112,19 +112,6 @@ theorem mem_SS_of_eq_sum_thFr (hs : IsSympl X bas) (hn : Even n)
   obtain ⟨A, ν, h1, h2, h3⟩ := exists_expansion_of_eq_sum_thFr idx hr s t a b hs hn hpq hc hP hQ hξ hx
   exact FJZero.fj_eq_zero_of_isSec X _ Q hsec hξ hx A h1 ν h2 0 h3
 
-example : ∃ (c : HyperbolicCusp.flagData.Ψ → Fin 1 → ℕ)
-    (c' : HyperbolicCusp.flagData.Ψ → Fin HyperbolicCusp.flagData.p0 → ℕ)
-    (P : Harm.Poly ℂ HyperbolicCusp.flagData.Ψ 1 HyperbolicCusp.flagData.p0 (Fin 2)),
-    IsSympl _ Gauss.bas ∧ HyperbolicCusp.flagData.IsIso ![1, 1] ∧
-      HyperbolicCusp.flagData.p0 + 1 ≤ 2 ∧ (∃ τ, ∃ i : Fin 1, i.val + 1 = 1 ∧ 1 ≤ c τ i) ∧
-      P ∈ Harm.rowHighest ℂ c c' ∧ P ≠ 0 := by
-  have h : 1 + HyperbolicCusp.flagData.p0 ≤ 2 := (add_comm _ _).trans_le Gauss.hr.le
-  obtain ⟨τ⟩ := nonempty_type HyperbolicCusp.flagData
-  refine ⟨fun _ _ => 1, fun _ _ => 0, Harm.basePoly ℂ h (fun _ _ => 1) fun _ _ => 0,
-    Gauss.isSympl_bas,
-    HyperbolicCusp.isIso_one, Gauss.hr.le, ⟨τ, 0, rfl, le_rfl⟩, ?_, Harm.basePoly_ne_zero h _ _⟩
-  exact Harm.basePoly_mem_rowHighest h _ _
-
 end
 
 end GlobalTheory.ThFr

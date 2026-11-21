@@ -53,16 +53,6 @@ theorem log_densF_eq (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) :
   push_cast
   try ring
 
-private theorem sum_range_two_mul_sub_mul_sub_eq (L : ℕ → ℝ) (c : ℝ) (r : ℕ) :
-    ∑ i ∈ Finset.range r, ((2 * i : ℝ) - c) * (L (i + 1) - L i) =
-      2 * r * L r - 2 * ∑ i ∈ Finset.range r, L (i + 1) - c * L r + c * L 0 := by
-  induction r with
-  | zero => simp only [Finset.sum_range_zero, Nat.cast_zero]; ring
-  | succ n ih =>
-    rw [Finset.sum_range_succ, ih, Finset.sum_range_succ]
-    push_cast
-    ring
-
 theorem sbp (L : ℕ → ℝ) : ∀ r : ℕ, ∑ i ∈ Finset.range r, ((2 * i : ℝ) - ((r : ℝ) - 1)) * (L (i + 1) - L i) =
     ((r : ℝ) - 1) * L r - 2 * ∑ i ∈ Finset.range r, L i + ((r : ℝ) + 1) * L 0
   | 0 => by simp

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.MemPowSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitsLocalKummerNormsEqTopOfPowStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsAdmissiblePlacesContainingPrimeSupersetMonStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowCountPlacesNotLocalPowerLeIndexStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SUnitsSupLocalKummerNormsNeTopStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitsLocalKummerNormsEqTopOfPow
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsAdmissiblePlacesContainingPrimeSupersetMon
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowCountPlacesNotLocalPowerLeIndex
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SUnitsSupLocalKummerNormsNeTop
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSupersetMemSUnits
 open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNorm
 open scoped WithZero TensorProduct
@@ -26,17 +26,17 @@ theorem exists_not_mem_not_pow_completion :
     · haveI : CharZero (v.adicCompletion F) :=
         charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective
       obtain ⟨r, hr⟩ := hcon v hv
-      rw [GlobalTheory.T.unitsLocalKummerNorms_eq_top_of_pow p F _ _ u r hp.pos hu hr]
+      rw [_root_.GlobalTheory.CNorm.kNorm_eq_top_of_pow p F _ _ u r hp.pos hu hr]
       exact Subgroup.mem_top x
-  have hidx := (GlobalTheory.T.pow_countPlacesNotLocalPower_le_index p F ζ u S₀ hp hζ).1
+  have hidx := (_root_.GlobalTheory.CNorm.pow_tNon_le_index_finNorm p F ζ u S₀ hp hζ).1
   haveI : (finNorm p F u S₀).FiniteIndex := ⟨hidx⟩
   haveI : Fintype (Fˣ ⧸ finNorm p F u S₀) := Fintype.ofFinite _
   obtain ⟨S₁, -, hS₁⟩ := exists_superset_mem_sUnits F
     (insert (Units.mk0 u hu)
       (Finset.univ.image (fun q : Fˣ ⧸ finNorm p F u S₀ => q.out))) S₀
-  obtain ⟨S, hS, hadm⟩ := (GlobalTheory.T.exists_admissiblePlacesContainingPrime_superset_mono p F hp.pos).1 S₁
+  obtain ⟨S, hS, hadm⟩ := (_root_.GlobalTheory.CNorm.exists_admissiblePlaces_superset_and_mono p F hp.pos).1 S₁
   have hX := hS₁ S hS
-  refine GlobalTheory.T.sUnits_sup_localKummerNorms_ne_top p F ζ (Units.mk0 u hu) S hp hζ hadm
+  refine _root_.GlobalTheory.CNorm.sUnits_sup_finNorm_ne_top p F ζ (Units.mk0 u hu) S hp hζ hadm
     (hX _ (Finset.mem_insert_self _ _)) hns ?_
   rw [eq_top_iff]
   intro x _

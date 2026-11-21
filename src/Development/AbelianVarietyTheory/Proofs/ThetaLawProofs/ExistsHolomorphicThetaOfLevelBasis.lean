@@ -13,12 +13,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.IsLevelIffAut
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsHolomorphicUniformisationPowerThetaKeyDatu
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.CubeTrivialisationOnUniformisingSpace
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsRepresentativesModSimilitudeTransposeStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsHolomorphicCoordSimilitudeThetaProductStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaCharLevelOneAndHolomorphicParameterStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsRepresentativesModSimilitudeTranspose
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsHolomorphicCoordSimilitudeThetaProduct
+import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.EntireApplyEqOfPeriodicOfSpanReal
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaCharLevelOneAndHolomorphicParameter
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaGeneratorPullbackMulConstInFramesStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SimilitudeGeneratorEqExpInFramesStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaUniformisationFrameEqAutomorphyMulStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaUniformisationFrameEqAutomorphyMul
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.MulTransposeEqOfTransposeMulEq
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory
@@ -315,8 +316,8 @@ omit x u in
 
 theorem l2Val_holomorphic : Out.Laws → ThetaUnifAV → ∀ (g m : ℕ) (a b : Fin g → ℂ) (al : Matrix (Fin 4) (Fin 4) ℤ) (Th : Fin (m ^ g) → (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ), charHalf g a b → 1 ≤ m → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → LevBasis a b m Th → ∃ lam : (Fin g → Fin g → ℂ) → ℂ, DifferentiableOn ℂ lam (Key.phDom g) ∧ ∀ p ∈ Key.phDom g, ∀ (x : KeyIn ℂ) (h : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (bs : Fin (m ^ x.P.g) → RR x m) (la : ℂˣ), Wit x h u (per p) a b → (∀ k, FnPw x u (bs k) (Th (k.cast (by rw [h])) p)) → IsSquareDeterminantComparison x m al bs la → (la : ℂ) = lam p := by
   intro _ _ g m a b al Th hab hm hal hTh
-  obtain ⟨k, n, hkn⟩ := GlobalTheory.T.exists_perm_representatives_mod_similitude g m al hm hal
-  choose qa hqa hqa' using fun I => GlobalTheory.T.exists_holomorphic_coord_similitudeThetaProduct g m a b al Th hab hm hal hTh (k I) (n I)
+  obtain ⟨k, n, hkn⟩ := _root_.GlobalTheory.exists_representatives_mod_similitude_transpose g m al hm hal
+  choose qa hqa hqa' using fun I => _root_.GlobalTheory.SimilTheta.exists_holomorphic_coord_simTheta g m a b al Th hab hm hal hTh (k I) (n I)
   refine ⟨fun p => (Matrix.of fun I => qa I p).det ^ (2 * m ^ 2) /
     (∏ I, ∏ r, aut (per p) a b (∑ c, al r c • k I c) (∑ c, al r c • n I c) 0) ^ 2, ?_, ?_⟩
   · simp only [div_eq_mul_inv]
@@ -326,7 +327,7 @@ theorem l2Val_holomorphic : Out.Laws → ThetaUnifAV → ∀ (g m : ℕ) (a b : 
       exact DifferentiableOn.fun_sum fun σ _ => DifferentiableOn.const_mul
         (differentiableOn_prod _ fun I _ => hqa _ _) _
     · exact differentiableOn_prod _ fun I _ => differentiableOn_prod _ fun r _ =>
-        ((GlobalTheory.T.thetaChar_level_one_and_holomorphic_parameter g a b hab).2.2 _ _ _).differentiableOn
+        ((_root_.GlobalTheory.SimilTheta.level_one_and_holomorphic g a b hab).2.2 _ _ _).differentiableOn
   rintro p hp x h u bs la hW hb ⟨ξ, mu, w, Q, rho, hne, hker, hmu, hw, hnorm, hQ, hla⟩
   subst h
   have hlat : ∀ k n, lat (per p) k n ∈ u.Λ := fun k n => (hW.2.2.1 _).2 ⟨k, n, rfl⟩
@@ -353,7 +354,7 @@ theorem l2Val_holomorphic : Out.Laws → ThetaUnifAV → ∀ (g m : ℕ) (a b : 
   have h₁ : ∀ I, (fun I' => C I * Q I I') = qa (σ I) p := fun I =>
     (hqa' (σ I) p hp _).1 (theta_eq x u hW.2.2.2.2.1 bs (fun i => Th i p) hb _ _ (ξ I) (hξ I) (w I) (C I) (hC I)
       (Q I) (hQ I))
-  have h₂ := fun I => rho_eq x u hm hW.2.2.2.1 hlat (GlobalTheory.T.thetaUniformisation_frame_eq_automorphy_mul _ x rfl u (per p) a b hab hW) _ _ (ξ I) (hξ I) mu D hD
+  have h₂ := fun I => rho_eq x u hm hW.2.2.2.1 hlat (_root_.GlobalTheory.SimilTheta.Frame.frame_eq_aut_mul _ x rfl u (per p) a b hab hW) _ _ (ξ I) (hξ I) mu D hD
     (w I) (C I) (hC I) (rho I) fun q J hJ => ⟨(hnorm q J hJ).1, (hnorm q J hJ).2 I⟩
   have h₃ : (∏ I, C I) * Q.det = Equiv.Perm.sign σ * (Matrix.of fun I => qa I p).det := by
     rw [← Matrix.det_mul_column, ← Matrix.det_permute]

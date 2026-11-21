@@ -124,29 +124,6 @@ theorem wirtBar_fun (l : Fin m) (g : (Fin m → ℂ) → E) :
   funext y
   exact wirtBar_eq l g y
 
-theorem Wc_hol (k l : Fin m) (c : ℂ) (T : (Fin m → ℂ) →L[ℝ] ℂ) (hT : ∀ v, T v = c * v k) :
-    Wc (Pi.single l 1) (Pi.single l Complex.I) (-Complex.I) T = (if l = k then c else 0) ∧
-      Wc (Pi.single l 1) (Pi.single l Complex.I) Complex.I T = 0 := by
-  refine ⟨?_, ?_⟩ <;> rw [Wc_apply, hT, hT] <;> by_cases hl : l = k
-  · simp only [hl, Pi.single_eq_same, if_true, smul_eq_mul]
-    linear_combination (-c / 2) * Complex.I_sq
-  · simp [hl, Pi.single_eq_of_ne (Ne.symm hl)]
-  · simp only [hl, Pi.single_eq_same, smul_eq_mul]
-    linear_combination (c / 2) * Complex.I_sq
-  · simp [Pi.single_eq_of_ne (Ne.symm hl)]
-
-theorem Wc_anti (k l : Fin m) (c : ℂ) (T : (Fin m → ℂ) →L[ℝ] ℂ) (hT : ∀ v, T v = c * star (v k)) :
-    Wc (Pi.single l 1) (Pi.single l Complex.I) (-Complex.I) T = 0 ∧
-      Wc (Pi.single l 1) (Pi.single l Complex.I) Complex.I T = (if l = k then c else 0) := by
-  refine ⟨?_, ?_⟩ <;> rw [Wc_apply, hT, hT] <;> by_cases hl : l = k
-  · simp only [hl, Pi.single_eq_same, smul_eq_mul, star_one, Complex.star_def, Complex.conj_I]
-    linear_combination (c / 2) * Complex.I_sq
-  · simp [Pi.single_eq_of_ne (Ne.symm hl)]
-  · simp only [hl, Pi.single_eq_same, if_true, smul_eq_mul, star_one, Complex.star_def,
-      Complex.conj_I]
-    linear_combination (-c / 2) * Complex.I_sq
-  · simp [hl, Pi.single_eq_of_ne (Ne.symm hl)]
-
 def coef (k : Fin m) : Fin 6 → (Fin m → ℂ) → ℂ
   | 0 => fun y => y k
   | 1 => fun y => y k
@@ -298,10 +275,6 @@ theorem reg_Dop {g : (Fin m → ℂ) → E} (hg : Reg g) (k : Fin m) (j : Fin 6)
     exact contDiffAt_Wc (hg x hx) _ _ _
   | 4 => exact hg x hx
   | 5 => exact hg x hx
-
-theorem reg_opL {g : (Fin m → ℂ) → E} (hg : Reg g) (k : Fin m) (j : Fin 6) : Reg (opL k j g) := by
-  intro x hx
-  exact ((coef_contDiffAt hx j).smul (reg_Dop hg k j x hx)).congr_of_eventuallyEq (opL_ev k j g hx)
 
 def dco (l : Fin m) (i : Fin 6) (k : Fin m) (j : Fin 6) (x : Fin m → ℂ) : ℂ :=
   match i with

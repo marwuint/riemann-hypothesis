@@ -40,15 +40,4 @@ theorem KawamataViehweg.twist (h : KawamataViehweg) {k : Type} [Field k] [IsAlgC
   exact (cohOn.mapIso Γ(X, ⊤) ⊤ q (i ≪≫ Twist.unitTwistIso _)).toEquiv.subsingleton_congr.2
     (h.of_hom hp hX K h₁ h₂ hq)
 
-open GlobalTheory.ProjSpace in
-
-example (D : ℕ) : IsIntegral (PSpace ℂ D) ∧ IsProjOver (strHom ℂ (PSpace ℂ D)) ∧
-    IsNef ℂ (O1 ℂ D) ∧ IsBig ℂ (O1 ℂ D) ∧
-    ∃ _ : SmoothOfRelativeDimension D (strHom ℂ (PSpace ℂ D)),
-      Nonempty (CanonLB (strHom ℂ (PSpace ℂ D)) D) := by
-  rw [strHom_eq (algebraMap_top_eq ℂ D)]
-  have hs := Adelic.smoothOfRelativeDimension_pspace ℂ D
-  exact ⟨inferInstance, isProjOver_str ℂ D, isNef_twistingSheaf ℂ D, isBig_twistingSheaf ℂ D,
-    hs, CanonLB.nonempty⟩
-
 end GlobalTheory.Published

@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBCPf
 import Development.AbelianVarietyTheory.Definitions.Jets.SurjectiveAppTopSqCube
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ValCongr
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TruncationFramesLocalSeriesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TruncationFramesLocalSeries
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsPref
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.GsSpMapGermAt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalJetsReindexFin
@@ -138,7 +138,7 @@ theorem exists_chartData {E : Type} [Field E] [NumberField E] [IsCMField E] (H :
   obtain ⟨B, hB⟩ := JetRoad.jetRoad.2.2.2.2.2.2.2.2.2.1 V t.G s₂ s₃ t.PP t.cub (𝓞 E) t.act u hu d x hx j hj
   have := t.act.hom H.w0
   obtain ⟨ρ, hρ, hρc⟩ := (JetSer.exists_unique_normPrim _ t.G t.PP (t.act.act H.w0) t.prim).1
-  obtain ⟨ε, hε⟩ := GlobalTheory.T.truncation_frames_local_series E H V t d _ _ _ _ _ _ tg xT eT wPT hC hF hW hT j hj
+  obtain ⟨ε, hε⟩ := _root_.GlobalTheory.LinkEps.linkEps E H V t d _ _ _ _ _ _ tg xT eT wPT hC hF hW hT j hj
   refine ⟨x, j, u, B, ρ, ε, hx, hj, hu, hB, hρ,
     LinkRel.linkRel E H V t s₂ d BT tg xT eT wPT hC hF hW x hx hM j hj u hu B hB ε hε,
     fun q σ r S g hr hS hg m y J hJ => ?_⟩

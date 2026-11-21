@@ -10,12 +10,12 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddHsConj
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoefBoundOfCasselmanWallach
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormSubLeOfDerivIcc
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExpSecondKindCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExpSecondKindCoordinates
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.HasFDerivAtDerFamProdExpStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.DerFamExpandWordsStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.DerFamExpandWords
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.MeasurableDerFamCompStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AvgDerFamGrowthStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ContinuousOnAvgRightTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ContinuousOnAvgRightTranslates
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Matrix
 open Formalism.REAL GlobalTheory.SmoothGlob GlobalTheory.TypeSum
 open scoped TensorProduct
@@ -33,7 +33,7 @@ theorem continuousOn_and_umg_kAvg : ∀ (n : ℕ) (ε : Fin n → Bool) (f : Glo
   classical
   intro n ε f hf hU e he
   obtain ⟨N, F, hF0, hFd, hFg⟩ := hU
-  refine ⟨GlobalTheory.T.continuousOn_integral_mul_right_translate_toMK n ε f hf e he, ?_⟩
+  refine ⟨_root_.GlobalTheory.AvgCont.continuousOn_avg_right_translates n ε f hf e he, ?_⟩
   let B := Module.finBasis ℝ (GlobalTheory.LowTypeDetermined.lie (Jm ε))
   let b : Fin (Module.finrank ℝ (GlobalTheory.LowTypeDetermined.lie (Jm ε))) → Mx n := fun i => (B i : Mx n)
   have hb : ∀ i, b i ∈ lieSet ε := fun i => by rw [lieSet_eq_lie]; exact (B i).2
@@ -52,7 +52,7 @@ theorem continuousOn_and_umg_kAvg : ∀ (n : ℕ) (ε : Fin n → Bool) (f : Glo
   have hC : ∀ l : List (Mx n), (∀ Y ∈ l, Y ∈ lieSet ε) → ∀ Z ∈ lieSet ε, ∀ g ∈ UJset ε,
       F (Z :: l) g = ∑ i, (c i Z : ℂ) * F (b i :: l) g := by
     intro l hl Z hZ g hg
-    obtain ⟨τ, hτ0, hτ, hev⟩ := GlobalTheory.T.exp_second_kind_coordinates n ε _ b hb hli (fun Z hZ => ⟨fun i => c i Z, hsum Z hZ⟩) (fun i => c i Z)
+    obtain ⟨τ, hτ0, hτ, hev⟩ := _root_.GlobalTheory.SecondKindChart.exp_eq_expProd_near_zero n ε _ b hb hli (fun Z hZ => ⟨fun i => c i Z, hsum Z hZ⟩) (fun i => c i Z)
     have h2 := GlobalTheory.T.hasFDerivAt_derFam_mul_prod_exp_smul_zero n ε N F hFd hFg l hl _ b hb g hg
     rw [← hτ0] at h2
     have h3 := h2.comp_hasDerivAt (0 : ℝ) hτ
@@ -66,7 +66,7 @@ theorem continuousOn_and_umg_kAvg : ∀ (n : ℕ) (ε : Fin n → Bool) (f : Glo
     rw [h6]
     simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.smulRight_apply,
       ContinuousLinearMap.proj_apply, Complex.real_smul]
-  have hD := GlobalTheory.T.derFam_ofFn_eq_sum_prod_coeff_of_expand n ε F hFd _ b c hb hC
+  have hD := _root_.GlobalTheory.TypeSum.derFam_expand_words n ε F hFd _ b c hb hC
   have hK : ∀ k : ↥(KG ε), toMK k ∈ UJset ε := fun k => K_le_UJ (toMK_mem_K k)
   have had : ∀ (k : ↥(KG ε)) (X : Mx n), X ∈ lieSet ε → (toMK k)⁻¹ * X * toMK k ∈ lieSet ε := by
     intro k X hX

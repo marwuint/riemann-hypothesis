@@ -95,13 +95,6 @@ theorem exists_small_inv_AA (D : D7) : ∃ b : D.host.E, b ≠ 0 ∧ (∀ a ∈ 
       simpa [conj_conj] using this
     · exact hτ (τ.comp (D.host.conj : D.host.E →+* D.host.E))
 
-theorem epsLev_pos (E : Type) [Field E] [NumberField E] {d M : ℕ} (hd : 0 < d) (hM : 0 < M) {w : ℝ} (hw : 0 < w) :
-    0 < epsLev E d M w := by
-  unfold epsLev epStar
-  have h2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have hd' : (0 : ℝ) < d := by exact_mod_cast hd
-  exact lt_min one_pos (div_pos Real.pi_pos (by positivity))
-
 section Level
 
 variable {D : D7} {j : ℕ} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

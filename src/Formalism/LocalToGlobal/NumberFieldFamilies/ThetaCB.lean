@@ -139,8 +139,6 @@ open Classical in
 def pairR (V : HSpace E) : Measure (HA (AF F) cm.sig V.gram) × Set (HA (AF F) cm.sig V.gram) :=
   if h : ∃ p, GoodPairR cm emb cd V p then h.choose else (0, ∅)
 
-def volR (V : HSpace E) : ℝ := ((pairR cm emb cd V).1 (pairR cm emb cd V).2).toReal
-
 end Raw
 
 variable (D : D7)
@@ -162,28 +160,6 @@ theorem allSome_fam {Q : InfF D → Prop} : AllSome (IsInfFam (D := D)) Q ↔ Q 
 theorem ae_ext {x y : AE D} (h1 : infPart D x = infPart D y) (h2 : finPart D x = finPart D y) : x = y := by
   have key : ∀ z : AE D, pairE (infPart D z) (finPart D z) = z := fun z => pairE_eta z
   rw [← key x, ← key y, h1, h2]
-
-theorem ga_ext {V : HSp D} {g h : GA D V} (h1 : infHom V g = infHom V h) (h2 : finHom V g = finHom V h) : g = h := by
-  apply Subtype.ext
-  apply Units.ext
-  ext i j
-  apply ae_ext
-  · exact congrArg (fun u : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => u.1 i j) h1
-  · exact congrArg (fun u : GL (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E) => u.1 i j) h2
-
-theorem fin_inf_comm {V : HSp D} {k h : GA D V} (hk : k ∈ GfC V) (hh : h ∈ GinfC V) : k * h = h * k := by
-  have a : infHom V k = 1 := hk
-  have b : finHom V h = 1 := hh
-  apply ga_ext
-  · rw [map_mul, map_mul, a, one_mul, mul_one]
-  · rw [map_mul, map_mul, b, one_mul, mul_one]
-
-theorem atTau_mem (θ : InfF D) (V : HSp D) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
-    atTau θ V τ g ∈ GinfC V := by
-  unfold atTau
-  split_ifs with h
-  · exact h.choose_spec.1
-  · exact one_mem _
 
 theorem infMat_mul (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : HSp D) (g h : GA D V) :
     infMat D.sp.cm.sig V.gram θ (g * h) = infMat D.sp.cm.sig V.gram θ g * infMat D.sp.cm.sig V.gram θ h := by

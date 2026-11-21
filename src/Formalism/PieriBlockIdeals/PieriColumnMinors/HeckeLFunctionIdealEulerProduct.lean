@@ -201,16 +201,6 @@ theorem evaluation_congruence_holds : EvalCong := by
   intro k _ red hred
   rw [hc, map_add, map_mul, hred, zero_mul, add_zero]
 
-theorem linear_division_evaluation_holds : LinDivisionEval := by
-  intro O _ _ _ _ _ _ _ c a f f₁ hn hf
-  have hx : PowerSeries.HasEval c := hn
-  have hc : Continuous (RingHom.id O) := continuous_id
-  have h2 := congrArg (PowerSeries.eval₂Hom hc hx) hf
-  rw [map_add, map_mul, map_sub] at h2
-  simp only [PowerSeries.coe_eval₂Hom, eval₂_C, eval₂_X, RingHom.id_apply, sub_self,
-    zero_mul, zero_add] at h2
-  exact h2
-
 theorem gamma_mod_q_holds : GammaModQ := by
   intro O _ lam n D Th h a b
   obtain ⟨q, hq⟩ := h a b
@@ -219,51 +209,6 @@ theorem gamma_mod_q_holds : GammaModQ := by
     by_cases hab : a = b <;> simp [hab, Matrix.one_apply]
   simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, h1, map_add, map_mul]
   linear_combination X * hq
-
-theorem derivation_linear_holds : DLinear := by
-  intro A N _ _ _ p γA γ d htor hγadd hγsmul hd
-  have hadd : ∀ x y, d (x + y) = d x + d y := by
-    intro x y
-    apply eq_of_sub_eq_zero
-    apply htor
-    rw [smul_sub, smul_add, hd, hd, hd, hγadd]
-    abel
-  refine ⟨hadd, ?_⟩
-  intro a x ha
-  apply eq_of_sub_eq_zero
-  apply htor
-  rw [smul_sub, hd, hγsmul, ha, smul_comm p a (d x), hd, smul_sub]
-  exact sub_self _
-
-theorem dbar_coordinates_hold : DbarCoord := by
-  intro k _ n un D y z h a
-  obtain ⟨hadd, hmul, hC, -, hX, -, hcc0⟩ := gamma_laws_hold k 0 un
-  have h1 : ∀ y : k⟦X⟧, coeff 1 (gam0 0 un y) = coeff 1 y := by
-    intro y
-    obtain ⟨g, hg⟩ : X ∣ y - C (constantCoeff y) := by
-      rw [X_dvd_iff, map_sub, constantCoeff_C, sub_self]
-    have e : y = C (constantCoeff y) + X * g := by rw [← hg]; ring
-    rw [e, hadd, hmul, hC, hX]
-    rw [map_add, map_add, coeff_C, if_neg one_ne_zero, zero_add, zero_add]
-    rw [mul_assoc, show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_succ_X_mul,
-      coeff_zero_eq_constantCoeff_apply, coeff_zero_eq_constantCoeff_apply, map_mul, hcc0]
-    simp
-  have e2 : coeff 1 (X * z a) = constantCoeff (z a) := by
-    rw [show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]
-  rw [← e2, h a]
-  have hsm : ∀ v : Fin n → k⟦X⟧, ((X : k⟦X⟧) • D).mulVec v = (X : k⟦X⟧) • D.mulVec v := by
-    intro v
-    first
-    | exact Matrix.smul_mulVec X D v
-    | exact Matrix.smul_mulVec_assoc X D v
-    | (funext i; simp only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply,
-        Finset.mul_sum, mul_assoc])
-  rw [Matrix.add_mulVec, Matrix.one_mulVec, hsm]
-  simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_add]
-  rw [h1, show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]
-  first
-  | (simp only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, hcc0]; ring)
-  | (simp only [Matrix.mulVec, Matrix.dotProduct, map_sum, map_mul, Matrix.map_apply, hcc0]; ring)
 
 end A
 
@@ -281,27 +226,6 @@ theorem frobenius_laws_hold : FrobLaws := by
   · exact subst_mul hs f g
   · exact subst_C_eq_C a
   · exact subst_X hs
-
-theorem semilinear_change_holds : SemilinChange := by
-  intro R _ n θ M g g' y
-  rw [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul,
-    ← Matrix.mulVec_mulVec]
-  congr 1
-  funext a
-  rw [RingHom.map_mulVec]
-  rfl
-
-theorem det_dvd_holds : DetDvd := by
-  intro R _ n h x P Q hPQ
-  refine ⟨Q.det, ?_⟩
-  have h2 := congrArg Matrix.det hPQ
-  rw [Matrix.det_mul, Matrix.det_smul, Matrix.det_one, Fintype.card_fin, mul_one] at h2
-  rw [h2, ← pow_mul]
-
-theorem map_smul_one_matrix {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (n : ℕ) (x : R) :
-    ((x • (1 : Matrix (Fin n) (Fin n) R))).map f = f x • (1 : Matrix (Fin n) (Fin n) S) := by
-  ext i j
-  by_cases h : i = j <;> simp [h, Matrix.one_apply]
 
 theorem blockTriangular_of_mul_eq_pow_smul_one {R : Type} [CommRing R] [IsDomain R] (π : R) (n h : ℕ)
     (Φ Φ' : Matrix (Fin n) (Fin n) R) (b : Fin n → ℕ) (hπ : π ≠ 0) (hΦ : Φ.BlockTriangular b)
@@ -329,31 +253,6 @@ theorem blockTriangular_of_mul_eq_pow_smul_one {R : Type} [CommRing R] [IsDomain
   · exact absurd h5 (inv_ne_zero hc)
   · exact hinj (by rw [h5, map_zero])
 
-theorem toSquareBlock_mul_of_blockTriangular_alt {R : Type} [CommRing R] {n : ℕ} (A B : Matrix (Fin n) (Fin n) R)
-    (b : Fin n → ℕ) (hA : A.BlockTriangular b) (hB : B.BlockTriangular b) (r : ℕ) :
-    (A * B).toSquareBlock b r = A.toSquareBlock b r * B.toSquareBlock b r := by
-  ext ⟨i, hi⟩ ⟨j, hj⟩
-  simp only [Matrix.toSquareBlock_def, Matrix.toBlock_apply, Matrix.mul_apply,
-    Matrix.of_apply]
-  rw [← Fintype.sum_subtype_add_sum_subtype (fun k => b k = r)]
-  have hz : ∑ k : {k // ¬ b k = r}, A i k * B k j = 0 := by
-    apply Finset.sum_eq_zero
-    rintro ⟨k, hk⟩ -
-    rcases lt_or_gt_of_ne hk with h | h
-    · rw [hA (by rw [hi]; exact h), zero_mul]
-    · rw [hB (by rw [hj]; exact h), mul_zero]
-  rw [hz, add_zero]
-
-theorem block_height_holds : BlockHeight := by
-  intro R _ _ π n h Φ Φ' b hπ hΦ hm
-  have hΦ' := blockTriangular_of_mul_eq_pow_smul_one π n h Φ Φ' b hπ hΦ hm
-  refine ⟨hΦ', fun r => ?_⟩
-  rw [← toSquareBlock_mul_of_blockTriangular_alt Φ Φ' b hΦ hΦ' r, hm]
-  ext ⟨i, hi⟩ ⟨j, hj⟩
-  by_cases hij : i = j
-  · subst hij; simp [Matrix.toSquareBlock_def]
-  · simp [Matrix.toSquareBlock_def, Matrix.one_apply, hij]
-
 theorem block_height_on_line_holds : BlockHeightLine := by
   intro R _ _ π n h Φ Φ' b s hπ hΦ hm hs
   have hΦ' := blockTriangular_of_mul_eq_pow_smul_one π n h Φ Φ' b hπ hΦ hm
@@ -366,12 +265,6 @@ theorem block_height_on_line_holds : BlockHeightLine := by
     · exact absurd (hs j h3) hj
     · rw [hΦ' h3, mul_zero]
   · intro hs'; exact absurd (Finset.mem_univ s) hs'
-
-theorem unit_pow_holds : UnitPow := by
-  intro k _ h x x' hxx
-  obtain ⟨α, hα, hassoc⟩ := (dvd_prime_pow X_prime h).1 ⟨x', hxx.symm⟩
-  obtain ⟨u, hu⟩ := hassoc.symm
-  exact ⟨α, u, hα, by rw [← hu, mul_comm]⟩
 
 theorem frobenius_diagonal_holds : PhiDiag := by
   intro k _ l s p v w w' κ κ' hl heq
@@ -414,14 +307,6 @@ theorem frobenius_diagonal_holds : PhiDiag := by
 theorem gammaSeries_zero_eq {k : Type} [CommRing k] (un : k⟦X⟧) :
     gamSer 0 un = X * (1 + un * X) := by
   simp [gamSer]
-
-theorem coeff_one_add_X_mul_add_X_sq_mul {k : Type} [CommRing k] (x y z : k⟦X⟧) (hx : coeff 1 x = 0) :
-    coeff 1 (x + X * y + X ^ 2 * z) = constantCoeff y := by
-  rw [map_add, map_add, hx, zero_add]
-  first
-  | (rw [show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_X_pow_mul', if_neg (by norm_num),
-      add_zero, coeff_zero_eq_constantCoeff_apply])
-  | simp [coeff_X_pow_mul']
 
 theorem theta_diagonal_holds : ThetaDiag := by
   intro k _ un g c w κ heq
@@ -827,131 +712,6 @@ theorem weight_properties_of_inputs : WPropsOfInputs := by
     exact (minors_divide_all_holds (F⟦X⟧) n n t _ _).1
       (minorsDvd_frobenius_of_sum_bound l h W σ u U' hN i t (cc i) (hcc i)) W.pos W.pos
 
-theorem weight_lemma_from_inputs : LemmaWFromInputs := by
-  intro ι _ σ l h t n _ O F _ _ _ _ _ W u c U' bot kap hl2 hW
-  classical
-  have hα := alpha_bounds_hold ι σ l h t n O F W u c U' _ kap hl2 hW
-  have hU := hW.1.2.1
-  have hwt := hW.1.2.2.1
-  have hmain : ∀ cc : ι → ℕ,
-      (∀ i (J : Finset (Fin n)), J.card = t → (cc i : ℤ) ≤ ∑ j ∈ J, U' i j) → _ :=
-    fun cc hcc => twisted_block_bounds ι σ l h t n F (W.toWData l c σ) U' bot kap cc Fact.out
-      (weight_properties_of_inputs ι σ l h t n O F W u c U' bot kap cc hl2 hW hcc) hwt hα
-  have h0 := hmain (fun _ => 0) (fun i J _ => by
-    simpa using Finset.sum_nonneg fun j _ => (hU i j).1)
-  refine ⟨h0.1, h0.2.1, ?_⟩
-  intro i
-  by_contra hcon
-  push Not at hcon
-  have hA0 : 0 ≤ ∑ s : Fin t, (bot i + ((s : ℕ) : ℤ) + (l : ℤ) * kap (σ i) s - kap i s) :=
-    Finset.sum_nonneg fun s _ => by have := (hα i s).1; linarith
-  generalize hA : ∑ s : Fin t, (bot i + ((s : ℕ) : ℤ) + (l : ℤ) * kap (σ i) s - kap i s) = A at *
-  have h1 := (hmain (fun i' => if i' = i then A.toNat + 1 else 0) (by
-    intro i' J hJ
-    by_cases hi : i' = i
-    · subst hi
-      have := hcon J hJ
-      simp only [if_true]
-      push_cast
-      rw [Int.toNat_of_nonneg hA0]
-      omega
-    · simpa [hi] using Finset.sum_nonneg fun j _ => (hU i' j).1)).2.2 i
-  rw [hA] at h1
-  simp only [if_true] at h1
-  push_cast at h1
-  rw [Int.toNat_of_nonneg hA0] at h1
-  omega
-
-theorem weight_lemma_full : LemmaWFull := by
-  intro ι _ σ l h t n _ O F _ _ _ _ _ W u c U' wt kap hl2 hW
-  classical
-  have hα := alpha_bounds_hold ι σ l h t n O F W u c U' wt kap hl2 hW
-  have hW' := hW
-  obtain ⟨⟨⟨hu, hc, hun⟩, hU, hwt, ⟨hinj, hpos⟩, hΦ, hΓ, hcφ, hcγ⟩, hN, hψ⟩ := hW'
-  have hlp : l.Prime := Fact.out
-  refine ⟨?_, ?_, ?_⟩
-  · intro i s
-    exact shiftBound_holds ι σ l h (fun i => kap i s) (fun i => wt i s) hlp.two_le
-      (fun i => hwt i s) (fun i => hα i s) i
-  · intro i
-    have hΘ : (thetaOf (W.Gam i)).BlockTriangular W.b := by
-      intro a b hab
-      change coeff 1 (W.Gam i a b) = 0
-      rw [hΓ i hab, map_zero]
-    have h1 := charpolyDiagBlocks_holds F n (thetaOf (W.Gam i)) W.b (Finset.univ.image W.pos)
-      (fun j => -W.red (algebraMap ℤ_[l] O c) * ((U' i j : ℤ) : F)) hΘ
-      (by
-        intro s hs' j hj
-        obtain ⟨s0, _, rfl⟩ := Finset.mem_image.mp hs'
-        exact hpos s0 j hj) (charpoly_theta_eq_prod l h W u c U' hu hN i)
-    rw [Finset.image_val_of_injOn hinj.injOn, Multiset.map_map] at h1
-    apply map_cast_le_of_map_neg_mul_le l hlp F (W.red (algebraMap ℤ_[l] O c)) (reduction_algebraMap_unit_ne_zero l W.red c hc)
-    have e : ((fun s => thetaOf (W.Gam i) s s) ∘ W.pos) =
-        fun s : Fin t => -W.red (algebraMap ℤ_[l] O c) * ((wt i s - kap i s : ℤ) : F) := by
-      funext s
-      exact theta_diagonal_entry_eq l h W σ u c U' wt kap hl2 hW i s
-    rw [e] at h1
-    exact h1
-  · intro ν hν i
-    have hI : Function.Injective (fun s => W.b (W.pos s)) :=
-      fun x y hxy => hinj (hpos y (W.pos x) hxy)
-    generalize hch : Finset.univ.image (fun s => W.b (W.pos s)) = ch at *
-    generalize hm : ∑ r ∈ Finset.univ.image W.b \ ch, ν r = m at *
-    by_contra hcon
-    push Not at hcon
-    have hA0 : 0 ≤ ∑ s : Fin t, (wt i s + (l : ℤ) * kap (σ i) s - kap i s) + ((m : ℕ) : ℤ) * h := by
-      refine add_nonneg (Finset.sum_nonneg fun s _ => ?_) (by positivity)
-      have := (hα i s).1; linarith
-    generalize hA : ∑ s : Fin t, (wt i s + (l : ℤ) * kap (σ i) s - kap i s) + ((m : ℕ) : ℤ) * h = A
-      at *
-    have hmin := minorsDvd_frobenius_of_sum_bound l h W σ u U' hN i (t + m) (A.toNat + 1) (fun J hJ => by
-      have := hcon J hJ
-      push_cast
-      rw [Int.toNat_of_nonneg hA0]
-      omega)
-    let al : ℕ → ℕ := fun r => if hr : ∃ s, W.b (W.pos s) = r then
-      ((l : ℤ) * kap (σ i) (Classical.choose hr) + wt i (Classical.choose hr) -
-        kap i (Classical.choose hr)).toNat else 0
-    have hal : ∀ s, al (W.b (W.pos s)) = ((l : ℤ) * kap (σ i) s + wt i s - kap i s).toNat := by
-      intro s
-      have hr : ∃ s', W.b (W.pos s') = W.b (W.pos s) := ⟨s, rfl⟩
-      simp only [al, dif_pos hr]
-      rw [hI (Classical.choose_spec hr)]
-    have hcard : ch.card = t := by
-      rw [← hch, Finset.card_image_of_injective _ hI]; simp
-    obtain ⟨M, hM⟩ := frobenius_mul_eq_X_pow_smul_one l h W σ u U' hN i
-    have hbl := (block_height_holds (F⟦X⟧) X n h (W.Phi l σ i) M W.b X_ne_zero (hΦ i) hM).2
-    have h1 := minor_bound_extra_holds (F⟦X⟧) X n h (A.toNat + 1) (W.Phi l σ i) W.b ch al ν X_prime
-      (hΦ i)
-      (by
-        rw [← hch]
-        intro r hr
-        obtain ⟨s, _, rfl⟩ := Finset.mem_image.1 hr
-        exact Finset.mem_image_of_mem _ (Finset.mem_univ _))
-      (by
-        intro r hr
-        rw [← hch] at hr
-        obtain ⟨s, _, rfl⟩ := Finset.mem_image.1 hr
-        refine ⟨W.pos s, fun j => ⟨hpos s j, fun h0 => by rw [h0]⟩, ?_⟩
-        rw [hal s]
-        exact (frobenius_diagonal_entry_eq_unit_mul l h W σ u c U' wt kap hW i s).2)
-      (fun r hr => ⟨⟨_, hbl r⟩, hν r hr⟩)
-      (by rw [hcard, hm]; exact hmin)
-    have hsum : ∑ r ∈ ch, al r = ∑ s : Fin t, ((l : ℤ) * kap (σ i) s + wt i s - kap i s).toNat := by
-      rw [← hch, Finset.sum_image (fun x _ y _ hxy => hI hxy)]
-      exact Finset.sum_congr rfl fun s _ => hal s
-    rw [hsum, hm] at h1
-    have h2 : ((∑ s : Fin t, ((l : ℤ) * kap (σ i) s + wt i s - kap i s).toNat : ℕ) : ℤ) =
-        ∑ s : Fin t, (wt i s + (l : ℤ) * kap (σ i) s - kap i s) := by
-      rw [Nat.cast_sum]
-      refine Finset.sum_congr rfl fun s _ => ?_
-      rw [Int.toNat_of_nonneg (hα i s).1]; ring
-    have h3 : ((A.toNat + 1 : ℕ) : ℤ) ≤ ((∑ s : Fin t,
-        ((l : ℤ) * kap (σ i) s + wt i s - kap i s).toNat + m * h : ℕ) : ℤ) := by exact_mod_cast h1
-    push_cast at h3 h2
-    rw [h2, hA, Int.toNat_of_nonneg hA0] at h3
-    omega
-
 theorem sum_tail_le_sum_of_antitone {N : ℕ} (f : Fin N → ℤ) (hf : Antitone f) (m : ℕ) (J : Finset (Fin N))
     (hJ : J.card = (Finset.univ.filter fun a : Fin N => m ≤ (a : ℕ)).card) :
     ∑ a ∈ Finset.univ.filter (fun a : Fin N => m ≤ (a : ℕ)), f a ≤ ∑ a ∈ J, f a := by
@@ -1305,12 +1065,6 @@ theorem weight_inputs_of_norm : WInputsOfN := by
       (fun i a => (hF.2.1 i a).1) hNN,
     fun s => weight_lattice_of_norm ι l h 1 O L I ζ em jj (W.Npsi s) u c _ hl2 hF.1.1 hζ hζI hem hloc
       (fun i _ => (hF.2.2.1 i s).1) (hNpsi s)⟩
-
-theorem weight_lemma_from_lattice : LemmaWFromLattice := by
-  intro ι _ σ l h t n _ O F L _ _ _ _ _ _ I _ W u c U' wt kap ζ em jj hl2 hN
-  have hW := weight_inputs_of_norm ι σ l h t n O F L I W u c U' wt kap ζ em jj hl2 hN
-  obtain ⟨h1, h2, h3⟩ := weight_lemma_full ι σ l h t n O F W u c U' wt kap hl2 hW
-  exact ⟨alpha_bounds_hold ι σ l h t n O F W u c U' wt kap hl2 hW, h1, h2, h3⟩
 
 theorem weight_exponents_from_lattice : WEFromLattice := by
   intro ι _ σ k j t q l h _ O F L _ _ _ _ _ _ I _ W u c U U' bot cst kap τ ζ em jj hl2 hlt hN

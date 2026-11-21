@@ -15,9 +15,9 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisedTes
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsNeZeroOfLe
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LePreimageOpenPartIffTestCoordinates
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomGenericPoint
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SpanRowsClassZeroEqInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGeometricTestMapClassicalPointStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsoSpecialFibreTestGeometricTestStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SpanRowsClassZeroEqInvariant
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGeometricTestMapClassicalPoint
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsoSpecialFibreTestGeometricTest
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusActionWeightedChartsStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.KbIsAlgClosedAndConj
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LeOfClosedPoints
@@ -91,8 +91,8 @@ theorem hasCharts : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field
   have := FreeNear.finite_char S (S.TT M z)
   refine ⟨R, inferInstance, inferInstance, t, ht, htz, ofSec wt 0 s haff hcov, fun p _ y τ x hx h hh h1 h2 => ?_⟩
   have hU := cl_of_test τ
-  obtain ⟨y₀, g, c, ⟨tm⟩⟩ := (GlobalTheory.T.exists_geometricTest_map_classicalPoint hL o Ω S ρ M U₀ EE hB Q hBig hGeo).1 p y hU
-  obtain ⟨e, he, hef⟩ := GlobalTheory.T.exists_iso_special_fibre_test_geometric_test hL o Ω S ρ M U₀ EE hB Q ex p y y₀ g c tm τ hBig hFib
+  obtain ⟨y₀, g, c, ⟨tm⟩⟩ := (_root_.GlobalTheory.ZH.exists_geoTest_tMap_and_centre hL o Ω S ρ M U₀ EE hB Q hBig hGeo).1 p y hU
+  obtain ⟨e, he, hef⟩ := _root_.GlobalTheory.ZH.exists_iso_special_fibre_of_test hL o Ω S ρ M U₀ EE hB Q ex p y y₀ g c tm τ hBig hFib
   have hy : t (x (IsLocalRing.closedPoint _)) = y (ZH.cPt p) :=
     (congrArg (fun f => f (IsLocalRing.closedPoint (ZH.kb p))) hx).trans
       (congrArg y (IsLocalRing.comap_closedPoint (IsLocalRing.residue (ZH.OO p))))

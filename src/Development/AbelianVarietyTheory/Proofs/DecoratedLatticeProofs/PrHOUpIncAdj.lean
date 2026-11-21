@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SymRead
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LevTrue
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RatioOKOfRootOfUnity
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PairForm
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TailRd
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.NotBadPrimeBase
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValuationEqZeroOfRootOfSUnitRatio
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ChainParSucc
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomLatticeCompletionSelfAnnihilatorAtPlaces
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergFrameHalfInverse
@@ -12,6 +15,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualSp
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatticeCompletionIffSupportedMaps
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinTensMemLatO
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsHermitianAuxiliaryVectorSystemBesselVectors
+
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.RootEx GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.SplitWeil GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.SeeSaw GlobalTheory.StepData GlobalTheory.SymChain GlobalTheory.LocMod GlobalTheory.MiS GlobalTheory.MiTop GlobalTheory.Fam ValuativeRel
 open scoped TensorProduct Classical
@@ -25,23 +29,6 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 
 theorem pr_e (q : GlobalTheory.FinPl.SplitPt D k) : q.pr q.e = 1 := by
   rw [← GlobalTheory.FinPl.FrameLat.sec_one q, q.pr_sec]
-
-theorem mem_intAt_iff_pr (q : GlobalTheory.FinPl.SplitPt D k) (a : AE D) (ha : a ∈ GlobalTheory.FinPl.idAt D (· = q.v)) :
-    a ∈ GlobalTheory.FinPl.intAt D (· = q.v) ↔ q.pr a ∈ 𝒪[k] ∧ q.pr (cA D a) ∈ 𝒪[k] := by
-  have he := (GlobalTheory.FinPl.FrameLat.e_mem_intAt q).2
-  constructor
-  · rintro ⟨-, h⟩
-    constructor
-    · rw [q.int_iff, q.sec_pr, RingHom.map_mul]
-      exact GlobalTheory.FinPl.FrameLat.mul_mem_intAE he h
-    · rw [q.int_iff, q.sec_pr, RingHom.map_mul]
-      exact GlobalTheory.FinPl.FrameLat.mul_mem_intAE he ((GlobalTheory.FinPl.FrameLat.cA_int_iff a).2 h)
-  · rintro ⟨h1, h2⟩
-    refine ⟨ha, ?_⟩
-    rw [q.int_iff, q.sec_pr] at h1 h2
-    rw [← GlobalTheory.FinPl.FrameLat.cA_int_iff, RingHom.map_mul, GlobalTheory.LocSympl.conj_conj] at h2
-    rw [← (GlobalTheory.FinPl.FrameLat.idem_iff q a).1 ha, add_mul, RingHom.map_add]
-    exact add_mem h1 h2
 
 theorem incAdj_yZero_apply {ρ : ℕ} (hρ : 0 < ρ) {S T T₀ : HSp D} (d : HypDec T T₀ ρ) (z : Fin S.rank → D.host.E)
     (a : AE D) (i : Fin T.rank) (l : Fin S.rank) :

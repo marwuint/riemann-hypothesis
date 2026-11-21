@@ -227,63 +227,6 @@ theorem herrD_apply {m : ℕ} (D : ModPG R n (Vc k m)) (x : ZMod n → Vc k m) :
 
 theorem herrB_eq_range {m : ℕ} (D : ModPG R n (Vc k m)) : herrB D = LinearMap.range (herrD D) := rfl
 
-def latB {m : ℕ} (D : ModPG R n (Vc k m)) (N : Lats k n m) :
-    Submodule k ((ZMod n → Vc k m) × (ZMod n → Vc k m)) :=
-  (Submodule.pi Set.univ fun i => (N i).restrictScalars k).map (herrD D)
-
-theorem mem_latB {m : ℕ} {D : ModPG R n (Vc k m)} {N : Lats k n m} {p : (ZMod n → Vc k m) × (ZMod n → Vc k m)} :
-    p ∈ latB D N ↔ ∃ x : ZMod n → Vc k m, (∀ i, x i ∈ N i) ∧ herrD D x = p := by
-  simp [latB, Submodule.mem_pi]
-
-theorem latB_le_herrB {m : ℕ} (D : ModPG R n (Vc k m)) (N : Lats k n m) : latB D N ≤ herrB D :=
-  LinearMap.map_le_range
-
-theorem one_le_w_and_wst {r : ℕ} (Dt : TopData n r) (i : ZMod n) : 1 ≤ Dt.w i ∧ 1 ≤ Dt.wst i := by
-  have h1 := Dt.one_le_letterBlockLength
-  have h := Dt.range i (Dt.w i) (Multiset.mem_add.2 (Or.inr (mem_block.2 ⟨le_rfl, by omega⟩)))
-  exact ⟨h.1, by rw [TopData.wst]; omega⟩
-
-theorem latB_le_pairSpace {m r : ℕ} {D : ModPG R n (Vc k m)} {Dt : TopData n r} {N : Lats k n m}
-    (h : ABC D Dt.w Dt.wst N) : latB D N ≤ pairSpace D Dt N := by
-  intro p hp
-  obtain ⟨x, hx, rfl⟩ := mem_latB.1 hp
-  intro i
-  obtain ⟨hw, hw'⟩ := one_le_w_and_wst Dt i
-  have h0 : ∀ (a : ℤ) (P : Submodule k⟦X⟧ (Vc k m)), 0 ≤ a → P ≤ sh (-a) P := fun a P ha => by
-    have := sh_le_sh_of_le (show -a ≤ 0 by omega) P
-    rwa [sh_zero_eq] at this
-  have hφ : D.φ i (x (i - 1)) ∈ pull (D.φ i) (N (i - 1)) := Submodule.subset_span ⟨_, hx _, rfl⟩
-  rw [herrD_apply]
-  refine ⟨?_, h.2.2 i _ (hx i), fun _ => Submodule.sub_mem _ ((h.2.1 i).1 hφ) (h0 _ _ (by omega) (hx i)),
-    fun _ => ⟨Submodule.sub_mem _ (h0 _ _ (by omega) hφ) ?_, x i, hx i, by simp⟩⟩
-  · simp only [map_sub, D.comm]
-    abel
-  · have := sh_le_sh (-Dt.wst i) (h.2.1 i).2
-    rw [sh_sh_eq, neg_add_cancel, sh_zero_eq] at this
-    exact this (hx i)
-
-abbrev PairQuot {m r : ℕ} (D : ModPG R n (Vc k m)) (Dt : TopData n r) (N : Lats k n m) : Type :=
-  ↥(pairSpace D Dt N) ⧸ (latB D N).submoduleOf (pairSpace D Dt N)
-
-def maxModel (F : DFun R n G) (Base : ∀ A : Ob k G, Lats k n A.m → Prop) (A : Ob k G) : Lats k n A.m :=
-  fun i => ⨆ N : {N : Lats k n A.m // IsModel F Base A N}, N.1 i
-
-theorem IsModel.le_maxModel {F : DFun R n G} {Base : ∀ A : Ob k G, Lats k n A.m → Prop} {A : Ob k G}
-    {N : Lats k n A.m} (h : IsModel F Base A N) (i : ZMod n) : N i ≤ maxModel F Base A i :=
-  le_iSup (fun N : {N : Lats k n A.m // IsModel F Base A N} => N.1 i) ⟨N, h⟩
-
-theorem maxModel_eq {F : DFun R n G} {Base : ∀ A : Ob k G, Lats k n A.m → Prop} {A : Ob k G}
-    {N : Lats k n A.m} (h : IsModel F Base A N) (hmax : ∀ N', IsModel F Base A N' → ∀ i, N' i ≤ N i) :
-    maxModel F Base A = N :=
-  funext fun i => le_antisymm (iSup_le fun N' => hmax N'.1 N'.2 i) (h.le_maxModel i)
-
-theorem IsModel.of_base {F : DFun R n G} {Base : ∀ A : Ob k G, Lats k n A.m → Prop} {A : Ob k G}
-    {N : Lats k n A.m} (hA : F.Obj A) (h : Base A N) : IsModel F Base A N := by
-  refine ⟨A, N, A, LinearMap.id, LinearMap.id, h, fun _ _ => rfl, Function.injective_id, fun _ _ => rfl,
-    Function.surjective_id, funext fun i => ?_⟩
-  ext x
-  simp [DFun.push, DFun.pre, F.map_id A hA i]
-
 structure ModData (k G : Type) [Field k] [Group G] (n : ℕ) where
 
   T : Ob k G
@@ -333,10 +276,6 @@ end Law
 @[reducible] def ModTh.data {F : DFun R n G} {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt) : ModData k G n :=
   ⟨M.T, M.ω, M.Base, M.Nstd, M.Nχ⟩
 
-theorem ModTh.laws {F : DFun R n G} {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt) : Law.All F Dt M.data :=
-  ⟨M.ω_ne, M.base_obj, M.base_abc, M.base_sen, M.base_sum, M.base_e, ⟨M.T_m, M.std_model, M.std_sen⟩,
-    fun e h h' => ⟨M.χ_obj e h h', M.χ_lat e h h'⟩, M.χ_model, M.χ_zero⟩
-
 @[reducible] def ModTh.ofLaws {F : DFun R n G} {r : ℕ} {Dt : TopData n r} (Y : ModData k G n)
     (h : Law.All F Dt Y) : ModTh F Dt where
   T := Y.T
@@ -360,21 +299,5 @@ theorem ModTh.laws {F : DFun R n G} {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt
 
 theorem ModTh.data_ofLaws {F : DFun R n G} {r : ℕ} {Dt : TopData n r} (Y : ModData k G n) (h : Law.All F Dt Y) :
     (ModTh.ofLaws Y h).data = Y := rfl
-
-example : resCount ({3, 5, 5} : Multiset ℤ) 1 (4 : ℚ) = 2 := by
-  rw [resCount, show ({3, 5, 5} : Multiset ℤ) = {3} + ({5} + {5}) from rfl]
-  simp only [Multiset.filter_add, Multiset.filter_singleton, Multiset.card_add]
-  norm_num
-
-example : cob (chr (1 : G →* kˣ)) = ⊥ := by
-  rw [cob, LinearMap.range_eq_bot]
-  ext x g j
-  simp
-
-example (hγ : Function.Bijective R.γ) : herrD (Inh.powMod R hγ n 1) (fun _ _ => 1) = 0 := by
-  rw [herrD_apply]
-  refine Prod.ext (funext fun i => funext fun j => ?_) (funext fun i => funext fun j => ?_)
-  · exact sub_eq_zero.2 (map_one R.φ)
-  · exact sub_eq_zero.2 (map_one R.γ)
 
 end GlobalTheory.Models

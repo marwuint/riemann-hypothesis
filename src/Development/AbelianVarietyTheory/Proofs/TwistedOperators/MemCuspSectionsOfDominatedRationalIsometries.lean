@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsCan
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MemCuspFormsOfMultipleRationalIsometryMove
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteClassesRationalIsometriesBoundedDenominatoStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BoundedSectionTendstoConstantTermImaginaryFlowStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BoundedSectionTendstoConstantTermImaginaryFlow
 open NumberField AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj GlobalTheory.HeckeEx
 open GlobalTheory.Dict (castFr)
 open GlobalTheory.FrameNorm (IsUnitFr)
@@ -103,7 +103,7 @@ theorem GlobalTheory.HeckeEx.mem_SS_of_dom : ∀ (E : Type) [Field E] [NumberFie
   refine ⟨hB, fun ξ hξ x hx => ?_⟩
 
   choose S hS hS' using fun j => GlobalTheory.T.finite_classes_rational_isometries_bounded_denominator E r X (X' j) N hN
-  obtain ⟨hmem, hlim⟩ := GlobalTheory.T.boundedSection_tendsto_constantTerm_imaginary_flow E r X la P hB ξ hξ x hx
+  obtain ⟨hmem, hlim⟩ := _root_.GlobalTheory.HeckeEx.bddSec_tendsto_constTerm E r X la P hB ξ hξ x hx
   let xt : ℝ → Frame X.Ψ r := fun t => X.flow ξ (fun _ => Complex.I * (t : ℂ)) x
   let Bt : ℝ → ℝ := fun t => ∑ j, ∑ s ∈ (S j).attach,
     ‖Q j (lact s.1 (castFr (hS j s.1 s.2).psi (xt t)))‖
@@ -143,7 +143,7 @@ theorem GlobalTheory.HeckeEx.mem_SS_of_dom : ∀ (E : Type) [Field E] [NumberFie
         apply hξ.2.2
         rw [← GlobalTheory.Dict.Pull.inv_mulVec s.1 ξ, hv0, Matrix.mulVec_zero]
     have hy := h.mem_dom hx
-    obtain ⟨-, hl'⟩ := GlobalTheory.T.boundedSection_tendsto_constantTerm_imaginary_flow E r (X' j) (la' j) (Q j) (hQ j).1 v hv _ hy
+    obtain ⟨-, hl'⟩ := _root_.GlobalTheory.HeckeEx.bddSec_tendsto_constTerm E r (X' j) (la' j) (Q j) (hQ j).1 v hv _ hy
     rw [(hQ j).2 v hv _ hy] at hl'
     have hdiv : Filter.Tendsto (fun t : ℝ => t / (N : ℝ) ^ 2) Filter.atTop Filter.atTop :=
       Filter.tendsto_id.atTop_div_const (by positivity)

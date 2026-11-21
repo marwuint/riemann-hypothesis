@@ -4,8 +4,9 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ThClassPinsRec
 import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
 import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsSectionOfLevelCoverThetaClassSumStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaClassSumDominantWeightIsCuspFormStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsSectionOfLevelCoverThetaClassSum
+import Formalism.LocalToGlobal.ProjectiveLattices.CuspFree
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaClassSumDominantWeightIsCuspForm
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.EqOfForallAlgClosed
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsReducedIntegralBasisHarmonicPolynomials
 
@@ -20,11 +21,11 @@ theorem exists_cusp_isThClsD_unique : Formalism.MainNotions.ModuliIntegralCharts
   have hLat : LatsOK d.l₂.M La Nc := fun k => ⟨(hreps k).1, (hreps k).2.2.1, (hreps k).2.2.2.1⟩
   have hP : ∀ v, io v ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) := fun v =>
     GlobalTheory.HarmBasis.mem_HHa_of_mem_span subset_rfl (hio (LinearMap.mem_range_self io v))
-  obtain ⟨f, hf, hcls⟩ := GlobalTheory.T.exists_section_of_levelCover_thetaClassSum hci E H Dw l Xo c n d hlev (hA₂.trans hA.symm) hnab ψ hψ Cl w La Nc gam vol ep
+  obtain ⟨f, hf, hcls⟩ := _root_.GlobalTheory.exists_sec_isThClsD hci E H Dw l Xo c n d hlev (hA₂.trans hA.symm) hnab ψ hψ Cl w La Nc gam vol ep
     Vs io xs a hw hLat fun j => hP _
   refine ⟨f, ?_, hcls, fun f' hf' hcls' => ?_⟩
   · rw [← Formalism.L2.PjFree.cusp_ofPj]
-    exact GlobalTheory.T.thetaClassSum_dominant_weight_isCuspForm hci E H Dw l Xo c n d r (fun σ => Formalism.L2.PjFree.Unf.ofPj (U σ)) hr
+    exact _root_.GlobalTheory.ClsVal.isThClsD_mem_cusp hci E H Dw l Xo c n d r (fun σ => Formalism.L2.PjFree.Unf.ofPj (U σ)) hr
       (fun σ hσ => (Formalism.L2.PjFree.isUnf_ofPj (U σ)).2 (hU σ hσ)) hA hlev hA₂ hnab hunit Cl w La Nc gam vol ep Vs io xs a
       hD hL hLat (fun j => hP _) f hf hcls
   · exact GlobalTheory.ClassSumUnique.isThClsD_unique hci E H Dw l Xo c n d Cl w La Nc gam vol ep Vs io hlev hnab hLat a hP xs a n

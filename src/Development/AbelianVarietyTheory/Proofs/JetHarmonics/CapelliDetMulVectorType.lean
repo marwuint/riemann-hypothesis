@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliLeftComatrixStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliLeftComatrix
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QminorCommOfCommColumnsStatement
 
 open Formalism.REAL Finset
@@ -13,7 +13,7 @@ theorem qdet_mul_vector (A : Type) [Ring A] [Algebra ℂ A] (m : ℕ)
     (u : ℂ) (j : Fin (m + 1)) :
     qdet E u * x j = x j * qdet E u + ∑ a : Fin (m + 1), ((-1 : ℂ) ^ ((a : ℕ) + (j : ℕ))) •
       (x a * qminor E (Fin.succAbove a) (Fin.succAbove j) (u - 1)) := by
-  have h1 := GlobalTheory.T.capelli_left_comatrix_qminor_eq A m E hE u j j
+  have h1 := _root_.GlobalTheory.capelli_left_comatrix A m E hE u j j
   rw [if_pos rfl] at h1
   have h2 : ∀ a : Fin (m + 1), qminor E (Fin.succAbove a) (Fin.succAbove j) (u - 1) * x j
       = x j * qminor E (Fin.succAbove a) (Fin.succAbove j) (u - 1) := by

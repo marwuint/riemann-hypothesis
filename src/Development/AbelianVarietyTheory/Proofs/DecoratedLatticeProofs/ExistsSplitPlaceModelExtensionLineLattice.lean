@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatIndLastKerRow
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LineModelKappaTransformIsLocalModel
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHomLatticeCompletionOpenCompactStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSchwartzBruhatExtByZeroOfSplitPlaceHalfStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatMulConjugateHalfCharacterSplitPlacStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHomLatticeCompletionOpenCompact
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSchwartzBruhatExtByZeroOfSplitPlaceHalf
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatMulConjugateHalfCharacterSplitPlac
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.FinPl GlobalTheory.MixPer GlobalTheory.MixModel GlobalTheory.Unf GlobalTheory.LatPair GlobalTheory.SplitWeil GlobalTheory.SeeSaw ValuativeRel IsLocalRing
 open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer lastPair cosetInd withRow)
 open GlobalTheory.FinPl.ExtZero (colFun rowFun)
@@ -28,7 +28,7 @@ theorem exists_placeModel_ext : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel 
   classical
   set P := GlobalTheory.LocMod.Place.ofSplitPt p with hP
   set Λ := latO S L'' (LS : Set _) ((Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ₀} : Lat L'') : Set _) (· = p.v) with hΛ
-  obtain ⟨hAo, hAc⟩ := GlobalTheory.T.splitPlace_homLattice_completion_openCompact D k p S L'' LS (Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ₀}) hLS.1
+  obtain ⟨hAo, hAc⟩ := _root_.GlobalTheory.OpenCompactLat.openCompact D k p S L'' LS (Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ₀}) hLS.1
     (isLattice_span hζ) Unit n FS FL''
   have hinj : Function.Injective (Witness.ext P FS FL'') := by
     intro Φ Ψ h
@@ -42,7 +42,7 @@ theorem exists_placeModel_ext : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel 
     change TL (G (Witness.ext P FS FL'' Φ)) = TL Φ
     rw [← LinearMap.comp_apply G, hG, LinearMap.id_apply]
   have hsb : ∀ Φ, IsSBHalf p.e Λ Φ → ∃ Φ' : SB (Matrix Unit n k), Witness.ext P FS FL'' Φ' = Φ :=
-    GlobalTheory.T.exists_schwartzBruhat_extByZero_of_splitPlaceHalf D k P S L'' Unit n FS FL'' Λ hAo hAc
+    _root_.GlobalTheory.SBOfHalf.exists_sb_ext_eq D k P S L'' Unit n FS FL'' Λ hAo hAc
   generalize hA : (Λ.comap (Witness.upH P FS FL'') : AddSubgroup (Matrix Unit n k)) = A at hAo hAc
   have hcl : IsClopen (A : Set (Matrix Unit n k)) := ⟨A.isClosed_of_isOpen hAo, hAo⟩
   let Φ₀ : SB (Matrix Unit n k) := ⟨(A : Set (Matrix Unit n k)).indicator 1,
@@ -71,7 +71,7 @@ theorem exists_placeModel_ext : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel 
     rw [e2, hT₃, hT₃, hTL.trans (P.down FS FL'' x) Φ' Φ'' (fun t => rfl), Witness.up_down P FS FL'' hx]
   · obtain ⟨Φ', rfl⟩ := hsb Φ hΦ
     let Φ'' : SB (Matrix Unit n k) := ⟨fun s => ψ (symplO S L'' (P.up FS FL'' s) y) * Φ'.1 s,
-      GlobalTheory.T.schwartzBruhat_mul_conjugateHalf_character_splitPlace D k P ψ hψ S L'' Unit n FS FL'' y hy Φ'.1 Φ'.2⟩
+      _root_.GlobalTheory.ModSB.mul_char_mem_SB D k P ψ hψ S L'' Unit n FS FL'' y hy Φ'.1 Φ'.2⟩
     have e2 : (fun t => ψ (symplO S L'' t y) * Witness.ext P FS FL'' Φ' t) = Witness.ext P FS FL'' Φ'' := by
       funext t
       rw [Witness.ext_apply, Witness.ext_apply]

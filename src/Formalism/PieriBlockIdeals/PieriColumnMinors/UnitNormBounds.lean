@@ -537,21 +537,6 @@ theorem second_valuation_up_to_holds : Step2ValUpTo := by
   have h4 := mul_le_mul_of_nonneg_left h3 (Nat.cast_nonneg j : (0 : ℝ) ≤ (j : ℝ))
   linarith
 
-theorem c_prime_le_coarse_holds : CPrimeLeCoarse := by
-  intro l k j t q h N' ecl xm xp mB I hl hI
-  unfold cPrime cCoarse labelSumBoundPos
-  have h1 := (harmonic_positive_log_holds l h I hI).1
-  have hl1 : (0 : ℝ) ≤ (l : ℝ) - 1 := by
-    have : (2 : ℝ) ≤ (l : ℝ) := by exact_mod_cast hl
-    linarith
-  have h2 : ((h : ℝ) - 1) / ((l : ℝ) - 1) ≤ ((h : ℝ) + (N' : ℝ)) / ((l : ℝ) - 1) + 6 := by
-    have h3 : ((h : ℝ) - 1) / ((l : ℝ) - 1) ≤ ((h : ℝ) + (N' : ℝ)) / ((l : ℝ) - 1) :=
-      div_le_div_of_nonneg_right (by have : (0 : ℝ) ≤ (N' : ℝ) := Nat.cast_nonneg _; linarith) hl1
-    linarith
-  have h4 := mul_le_mul_of_nonneg_left h2
-    (by positivity : (0 : ℝ) ≤ (q : ℝ) + 2 * (j : ℝ))
-  linarith
-
 theorem labelRHSPlus_shift_invariant (l k t h : ℕ) (I : ℝ) (xm xp mB c : ℤ) :
     labelSumBoundPos l k t h I (xm + c) (xp + c) (mB + c) = labelSumBoundPos l k t h I xm xp mB := by
   unfold labelSumBoundPos

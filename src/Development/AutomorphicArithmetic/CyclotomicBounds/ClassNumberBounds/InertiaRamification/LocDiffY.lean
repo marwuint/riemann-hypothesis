@@ -54,12 +54,6 @@ private theorem locDiffY_sep {A B : Type*} [CommRing A] [CommRing B] [Algebra A 
     isAlgebraic_of_isFractionRing A B ..
   infer_instance
 
-private theorem locDiffY_ne_bot {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
-    [IsDedekindDomain A] [IsDedekindDomain B] [IsTorsionFree A B] [Module.Finite A B] [CharZero A] :
-    differentIdeal A B ≠ ⊥ := by
-  have := locDiffY_sep (A := A) (B := B)
-  exact differentIdeal_ne_bot
-
 private theorem locDiffY_iff {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [IsDedekindDomain A] [IsDedekindDomain B] [IsTorsionFree A B] [Module.Finite A B] [CharZero A]
     {p : Ideal A} (hp : p ≠ ⊥) (P a : Ideal B) (ha : P * a = p.map (algebraMap A B)) :

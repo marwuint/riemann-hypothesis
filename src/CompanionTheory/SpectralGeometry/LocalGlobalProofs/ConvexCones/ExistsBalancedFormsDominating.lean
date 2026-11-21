@@ -1,8 +1,11 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.IsMin2IffFinite
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinkowskiWeylOrthantConeIntegralConstraintsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonnegSumSmulIntBilinFormToRealMemPsdConeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinkowskiWeylOrthantConeIntegralConstraints
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEqAddOfRedVEq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonnegSumSmulIntBilinFormToRealMemPsdCone
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMulEqZeroOfSumToReal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsStrictIff
 
 set_option autoImplicit false
 
@@ -25,7 +28,7 @@ theorem contact_inter_rcone_spanned : ∀ (O : Type) [CommRing O] [IsDedekindDom
   let V : Set (Fin m → ℤ) := Set.range fun (p : O × X × X) (k : Fin m) =>
     u k (p.1 • p.2.1) p.2.2 - u k p.2.1 (bar p.1 • p.2.2)
   have hA : A.Finite := Set.finite_iUnion fun i => (F i).finite_toSet.image _
-  obtain ⟨r, v, hv, -⟩ := GlobalTheory.T.minkowskiWeyl_orthant_cone_integral_constraints m A V hA
+  obtain ⟨r, v, hv, -⟩ := _root_.GlobalTheory.MinkWeylReal.cone_orthant_fg m A V hA
   have hval : ∀ (t : Fin m → ℝ) (y z : X), (∑ k, t k • toReal (u k)) y z = ∑ k, t k * (u k y z : ℝ) :=
     fun t y z => by simp [LinearMap.sum_apply]
   have hdiff : ∀ (t : Fin m → ℝ) (p p' q q' : X), ∑ k, (((u k p p' - u k q q' : ℤ)) : ℝ) * t k =
@@ -82,7 +85,7 @@ theorem contact_inter_rcone_spanned : ∀ (O : Type) [CommRing O] [IsDedekindDom
     rw [hγ]
     exact Finset.sum_nonneg fun k _ => mul_nonneg (Int.natCast_nonneg _) (hpsd k y)
   refine ⟨r, γ, hbal, hnn, fun s => ⟨?_, fun i => ?_⟩, ?_⟩
-  · simpa using GlobalTheory.T.nonneg_sum_smul_intBilinFormToReal_mem_psdCone O bar X 1 ![γ s] ![1] (by simpa using hbal s) (by simpa using hnn s) (by simp)
+  · simpa using _root_.GlobalTheory.PolFan.ConeSub.sum_smul_toReal_mem_psdCone O bar X 1 ![γ s] ![1] (by simpa using hbal s) (by simpa using hnn s) (by simp)
   · rw [hγr]
     exact (hAiff _ (hvs s).1).2 (hvs s).2.1 i
   · rintro _ hB ⟨t, ht, rfl⟩

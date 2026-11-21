@@ -164,10 +164,6 @@ def GalLift : Prop :=
     (κw : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
     (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ), GalLiftFor T R F κw v₀ O ph
 
-theorem overK_base : OverK (D := D) D.what₂.embLL := by
-  intro x _
-  exact Eq.refl _
-
 end GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature
 
 end

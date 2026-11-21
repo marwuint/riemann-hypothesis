@@ -235,31 +235,6 @@ theorem cutAct_inj (hi : Function.Injective act) : Function.Injective (cutAct T 
   simp only [MulMemClass.coe_mul, Pi.mul_apply, ZeroMemClass.coe_zero, Pi.zero_apply] at this
   exact (mul_eq_zero.1 this).resolve_left h0
 
-theorem iSup_eig : ⨆ x, heckeEig T act x = ⊤ := by
-  classical
-  choose f h0 h1 using exists_sep T hs
-  refine top_unique fun v _ => ?_
-  let c : X → O := fun x => ∏ y ∈ Finset.univ.erase x, (f y : X → O) y
-  have e : (∑ x, c x • f x : T) = algebraMap O T (∏ y, (f y : X → O) y) := by
-    apply Subtype.ext
-    funext y
-    rw [AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, Finset.sum_eq_single y]
-    · simp [c, Finset.prod_erase_mul]
-    · intro x _ hx; simp [h1 x y (Ne.symm hx)]
-    · simp
-  have d0 : algebraMap O (FractionRing O) (∏ y, (f y : X → O) y) ≠ 0 :=
-    (map_ne_zero_iff _ (IsFractionRing.injective O _)).2 (Finset.prod_ne_zero_iff.2 fun y _ => h0 y)
-  rw [← Submodule.smul_mem_iff _ d0, algebraMap_smul]
-  have : (∏ y, (f y : X → O) y) • v = ∑ x, (act (c x • f x)).baseChange (FractionRing O) v := by
-    have a : ∀ s : Finset X, ∑ x ∈ s, (act (c x • f x)).baseChange (FractionRing O) v =
-        (act (∑ x ∈ s, c x • f x)).baseChange (FractionRing O) v := fun s => by
-      induction s using Finset.induction_on with
-      | empty => simp
-      | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ih, map_add, LinearMap.baseChange_add, LinearMap.add_apply]
-    rw [a, e, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, LinearMap.baseChange_smul, LinearMap.baseChange_one]; rfl
-  rw [this]
-  exact Submodule.sum_mem _ fun x _ => Submodule.mem_iSup_of_mem x (sep_mem T act (fun y hy => by simp [h1 x y hy]) v)
-
 omit hs [Fintype X] in
 theorem cutT_local [Nonempty S] [IsLocalRing T] : IsLocalRing (cutT T S) :=
   IsLocalRing.of_surjective' (resT T S).toRingHom (resT_surj T S)

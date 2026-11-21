@@ -18,8 +18,6 @@ lemma e_ne_es (l : Fin r) : eI k r l ≠ esI k r l := by
   simp only [eI, esI] at h'
   omega
 
-lemma es_ne_e (l : Fin r) : esI k r l ≠ eI k r l := (e_ne_es l).symm
-
 private lemma tau_val_lemma (i : Fin (2 * r + k + 1)) :
     (WeylGroupFacts.tau k r i).val = if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val := rfl
 
@@ -157,13 +155,6 @@ private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
   · subst h
     simp [sgn_sq_lemma]
   · simp [h, Ne.symm h]
-
-private lemma isUnit_det_Hpk' : IsUnit (Hpk k r).det := by
-  have h := congrArg Matrix.det (hpk_sq_lemma (k := k) (r := r))
-  rw [Matrix.det_mul, Matrix.det_one] at h
-  exact isUnit_iff_ne_zero.mpr fun h0 => by
-    rw [h0, zero_mul] at h
-    exact zero_ne_one h
 
 private lemma conjTranspose_mul_Hpk_mul_apply (A : Mx k r) (p q : Fin (2 * r + k + 1)) :
     (Aᴴ * Hpk k r * A) p q = ∑ y, star (A (WeylGroupFacts.tau k r y) p) * WeylGroupFacts.sgn k r y * A y q := by

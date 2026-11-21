@@ -45,35 +45,6 @@ theorem hcompl_le_Tw (w : HeightOneSpectrum (𝓞 K)) :
 theorem smul_coe {m : Type*} (r : 𝓞 K) (v : m → K) : r • v = (r : K) • v :=
   (algebraMap_smul K r v).symm
 
-def InS (w : HeightOneSpectrum (𝓞 K)) (x : K) : Prop :=
-  ∃ s ∈ Tw w, ∃ r : 𝓞 K, (s : K) * x = r
-
-theorem InS.star' {w : HeightOneSpectrum (𝓞 K)} {x : K} (h : InS w x) : InS w (star x) := by
-  obtain ⟨s, hs, r, hr⟩ := h
-  refine ⟨cO K s, cO_mem_Tw hs, cO K r, ?_⟩
-  rw [cO_coe, cO_coe, ← hr, star_mul']
-
-theorem common_den {w : HeightOneSpectrum (𝓞 K)} {ι : Type*} (S : Finset ι) (x : ι → K)
-    (h : ∀ k ∈ S, InS w (x k)) : ∃ s ∈ Tw w, ∀ k ∈ S, ∃ r : 𝓞 K, (s : K) * x k = r := by
-  classical
-  induction S using Finset.induction_on with
-  | empty => exact ⟨1, (Tw w).one_mem, by simp⟩
-  | @insert a S ha ih =>
-    obtain ⟨t, ht, hS⟩ := ih (fun k hk => h k (Finset.mem_insert_of_mem hk))
-    obtain ⟨s, hs, r, hr⟩ := h a (Finset.mem_insert_self a S)
-    refine ⟨s * t, (Tw w).mul_mem hs ht, ?_⟩
-    intro k hk
-    rcases Finset.mem_insert.1 hk with rfl | hk
-    · exact ⟨t * r, by show (s : K) * (t : K) * x k = (t : K) * (r : K); linear_combination (t : K) * hr⟩
-    · obtain ⟨r', hr'⟩ := hS k hk
-      exact ⟨s * r', by show (s : K) * (t : K) * x k = (s : K) * (r' : K); linear_combination (s : K) * hr'⟩
-
-theorem vw_zero (w : HeightOneSpectrum (𝓞 K)) : vw w (0 : K) = 0 := by
-  simp [vw, FractionalIdeal.spanSingleton_zero, FractionalIdeal.count_zero]
-
-theorem vw_one (w : HeightOneSpectrum (𝓞 K)) : vw w (1 : K) = 0 := by
-  simp [vw, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]
-
 theorem vw_mul (w : HeightOneSpectrum (𝓞 K)) {a b : K} (ha : a ≠ 0) (hb : b ≠ 0) :
     vw w (a * b) = vw w a + vw w b := by
   unfold vw
@@ -111,13 +82,6 @@ theorem Tw_ne_zero {w : HeightOneSpectrum (𝓞 K)} {s : 𝓞 K} (hs : s ∈ Tw 
   apply hs.1
   have : s = 0 := RingOfIntegers.ext (by simpa using h)
   rw [this]; exact w.asIdeal.zero_mem
-
-theorem hform_apply {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (y x : Fin n → K) :
-    hform H y x = star y ⬝ᵥ (H *ᵥ x) := by
-  rw [hform, Matrix.toLinearMapₛₗ₂'_apply]
-  simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, starRingEnd_apply,
-    RingHom.id_apply, smul_eq_mul]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 theorem main {n D : ℕ} (H : Matrix (Fin n) (Fin n) K) (P : Matrix (Fin D) (Fin n) K)
     (M : Submodule (𝓞 K) (Fin n → K)) (hM : M.FG) (l g : ℕ) (hl : 0 < l)

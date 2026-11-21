@@ -72,9 +72,6 @@ theorem coordA_mem_ideal (b : Module.Basis (Fin r) O (Fin r → O)) (j : Fin r)
     coordA b j w ∈ J :=
   Ideal.sum_mem _ (fun i _ => Ideal.mul_mem_left _ _ (hw i))
 
-theorem cst_sub (v v' : Fin r → O) : cst (v - v') = cst v - cst v' := by
-  ext i; simp [cst]
-
 theorem cst_mem_ext (V : Submodule O (Fin r → O)) (v : Fin r → O) (hv : v ∈ V) :
     cst v ∈ ext V :=
   Submodule.subset_span ⟨v, hv, rfl⟩

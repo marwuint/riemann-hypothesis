@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MeasurePreservin
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.StepUnfold
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsDefiniteOfAllPlus
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPerfectPairingCoefficientSpaceTensorModelStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeylKTypeTensorEqContragredientTranslatesSpanStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HighestWeightBaseParEqNegLowestKTypeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeylKTypeTensorEqContragredientTranslatesSpan
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HighestWeightBaseParEqNegLowestKType
 
 noncomputable section
 
@@ -65,12 +65,6 @@ end GlobalTheory.CoefBase
 
 namespace GlobalTheory.CoefBase
 
-section Core
-
-variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} [DecidableEq D.what₂.Tau]
-
-end Core
-
 section Core2
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} [DecidableEq D.what₂.Tau]
@@ -84,7 +78,7 @@ theorem core (M : Formalism.IndefR.Mult.DSModel V S) (θ : InfFam D) (c : CoefA 
   have m := fun τ => GlobalTheory.CompactModel.model_allPos D V S M τ (hε τ)
   haveI : ∀ τ, FiniteDimensional ℂ (M.H τ) := fun τ => (m τ).1
   obtain ⟨E, hE⟩ := GlobalTheory.T.exists_perfectPairing_coefficientSpace_tensorModel D V S M θ c pr hθ hp hc hpr
-  obtain ⟨Φ, hΦ⟩ := GlobalTheory.T.weyl_kTypeTensor_eq_contragredient_translatesSpan D.what₂.Tau V.rank M.H M.σ M.lam lam (fun τ => (M.enum τ).1) (fun τ => (m τ).2.2.1) (fun τ => (m τ).2.2.2)
+  obtain ⟨Φ, hΦ⟩ := _root_.GlobalTheory.DualWeylTensor.main D.what₂.Tau V.rank M.H M.σ M.lam lam (fun τ => (M.enum τ).1) (fun τ => (m τ).2.2.1) (fun τ => (m τ).2.2.2)
     (fun τ i => by rw [hl τ i, hε τ])
   haveI : FiniteDimensional ℂ (⨂[ℂ] τ, M.H τ) := inferInstance
   haveI : FiniteDimensional ℂ (Module.Dual ℂ (weylSub V.rank lam)) := Module.Finite.equiv Φ.symm
@@ -138,7 +132,7 @@ theorem coefBase [DecidableEq D.what₂.Tau] (ch : Choice R) (hθ : R.models_inf
       ∀ g φ, B ((baseRep (rowEntries D ch.sc.cGap)).dual g φ) =
         B φ ∘ₗ R.cX.ρ (cast (congrArg (fun X : LSp D => GA D X.sp) (colY_m R.toLevCh)) ((kappa ch.W g).2 0))⁻¹ := by
   obtain ⟨A0, hA0⟩ := core R.MX R.θ R.cX R.prX hθ (GlobalTheory.DefiniteMult.allPlus_parB _ (Nat.sub_le _ _) _) hc hpr
-    (baseWt (rowEntries D ch.sc.cGap)) (fun τ i => GlobalTheory.T.highestWeight_basePar_eq_neg_lowestKType D ch.sc.cGap R.MX τ i)
+    (baseWt (rowEntries D ch.sc.cGap)) (fun τ i => _root_.GlobalTheory.RowReal.hw_basePar_eq_neg_lowK D ch.sc.cGap R.MX τ i)
   obtain ⟨e, he⟩ := weyl_cast (ι := D.what₂.Tau) _ _ (rank_X ch) (baseWt (rowEntries D ch.sc.cGap))
   refine ⟨(A0.trans e.symm).dualMap, fun g φ => ?_⟩
   ext w

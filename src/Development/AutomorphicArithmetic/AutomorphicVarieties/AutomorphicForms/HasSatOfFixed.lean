@@ -23,12 +23,6 @@ private theorem sLoc_mem (w : HeightOneSpectrum (𝓞 F)) (x : Ov F w) : sLoc F 
   · rw [Pi.single_eq_of_ne h]
     exact zero_mem _
 
-private def sInt (w : HeightOneSpectrum (𝓞 F)) : Ov F w →ₙ+* Ohat F where
-  toFun x := ⟨sLoc F w x, sLoc_mem w x⟩
-  map_mul' x y := Subtype.ext (map_mul (sLoc F w) x.1 y.1)
-  map_zero' := Subtype.ext (map_zero (sLoc F w))
-  map_add' x y := Subtype.ext (map_add (sLoc F w) x.1 y.1)
-
 theorem LocIsotypic.hasFixed {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) (Af F)) V} {w : HeightOneSpectrum (𝓞 F)}
     {σ : SmIrr (GL (Fin n) (w.adicCompletion F))} (h : LocIsotypic ρ w σ)

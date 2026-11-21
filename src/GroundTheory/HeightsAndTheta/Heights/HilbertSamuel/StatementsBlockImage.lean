@@ -30,16 +30,6 @@ def BlockImageDatum.Statement : Prop :=
       (∀ z ∈ mcPts (mCoordIdeal d.y), d₀.A.h z = d'.m.ρ (blockMapC d.k₀ M z)) ∧
       ∀ n, blockChi d₀ n = resChi d' n
 
-section Inhabitants
-
-open ProjLine
-
-def idBlockMat : Matrix (Ix (Fin 2)) (Fin 2) ℤ := fun j i => if j.2 = i then 1 else 0
-
-def idBlockMat' : Matrix (Fin 2) (Ix (Fin 2)) ℤ := fun i j => if j.2 = i then 1 else 0
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

@@ -7,10 +7,16 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SameBlockAppend
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LoopTerm
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryHermFrameUnipotentStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealMatrixMemBesselUnipotentOfFrameStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelLinearMapMatrixExistsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelLinearMapMatrixExists
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LoopTermLem
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelHyperbolicBasisScaledStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualVectorsNormalFormMemSecondFlagStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBlockAntidiagonalScaledPairingMatrixStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualVectorsNormalFormMemSecondFlag
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsFundOne
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
+import Formalism.FlagUnipotentLattices.MemOfOrthogonalAnisotropic
+import Formalism.FormalDegreeBessel.StatementG
+import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBlockAntidiagonalScaledPairingMatrix
 
 noncomputable section
 open scoped Classical
@@ -49,7 +55,7 @@ theorem L_nset : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Modul
     n ∈ Formalism.QuantumDeterminants.Nset k r := GlobalTheory.T.realMatrix_mem_besselUnipotent_of_frame
 
 theorem L_mat : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what₂.Tau) (m : (VS D).V →ₗ[D.host.E] (VS D).V),
-    ∃ n : MatKR D.R.k D.R.rS, ∀ y, n *ᵥ GlobalTheory.TypeAsm.phiV C τ y = GlobalTheory.TypeAsm.phiV C τ (m y) := GlobalTheory.T.besselModel_linearMap_matrix_exists
+    ∃ n : MatKR D.R.k D.R.rS, ∀ y, n *ᵥ GlobalTheory.TypeAsm.phiV C τ y = GlobalTheory.TypeAsm.phiV C τ (m y) := _root_.GlobalTheory.TypeAsm.phiV_linMat_all
 
 theorem L_frame : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what₂.Tau) (a : Fin D.R.rS),
     GlobalTheory.TypeAsm.phiV C τ (X.eX a) =
@@ -68,14 +74,14 @@ theorem L_duals : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Modu
     ∃ f : Fin r → V, (∀ a, j ≤ a.val → f a = s a) ∧
       (∀ a, a.val < j → f a ∈ Submodule.span K (e' '' {b | b.val < j})) ∧
       (∀ a b, H.B (e a) (f b) = if a = b then 1 else 0) ∧ (∀ a b, H.B (f a) (f b) = 0) ∧
-      (∀ a, a.val < j → e' a ∈ Submodule.span K (f '' {b | b.val < j})) := GlobalTheory.T.dualVectors_normalForm_mem_secondFlag
+      (∀ a, a.val < j → e' a ∈ Submodule.span K (f '' {b | b.val < j})) := _root_.GlobalTheory.dual_vectors_in_second_flag
 
 theorem L_block : ∀ {K : Type} [Field K] {j r : ℕ} (hj : j ≤ r) (w : Formalism.MainNotions.S.Loc.Pt K j),
     ∃ β : Fin r → ℕ, Monotone β ∧ (∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val)) ∧
       ∀ (σ : K →+* ℂ) (sgn : Fin j → ℤˣ) (ρ : ℝ), 0 < ρ →
       GlobalTheory.Amp.BlockAnti (fun a : Fin j => β (Fin.castLE hj a))
         (Matrix.of fun a b : Fin j => (((ρ ^ (r - b.val))⁻¹ * (ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) *
-          σ (w.mat b a * ((sgn a : ℤ) : K))) := GlobalTheory.T.exists_blockAntidiagonal_scaled_pairing_matrix
+          σ (w.mat b a * ((sgn a : ℤ) : K))) := _root_.GlobalTheory.Amp.BlockFrame.blockAnti_scaled_pairing
 
 theorem herm_eI {k r : ℕ} (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) v (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a)) = v (Formalism.QuantumDeterminants.esI k r a) := by

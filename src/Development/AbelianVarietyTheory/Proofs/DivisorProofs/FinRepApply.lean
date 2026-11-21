@@ -80,12 +80,6 @@ structure IsFinIso (V V' : HSp D) (β : GL (Fin V.rank) (EAf D)) (β' : GL (Fin 
     HMul.hMul j β.val = (β' * intGL D.host.F D.host.E V'.rank u).val.submatrix id (Fin.cast h) ∧
       ∀ PP ∈ Pg, Formalism.UG.bc (resS D.host.F PP) u = 1
 
-theorem IsFinIso.refl (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Pg : Finset (Pl D.host.E)) :
-    IsFinIso V V β β Pg 1 (ContinuousMulEquiv.refl _) where
-  isom := by rw [Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]
-  conj g := by rw [Matrix.one_mul, Matrix.mul_one]; rfl
-  frame := ⟨rfl, 1, by rw [map_one, mul_one, Matrix.one_mul]; rfl, fun _ _ => map_one _⟩
-
 abbrev princDat (n r t : ℕ) (hr : r ≤ n) (Pg : Finset (Pl D.host.E)) (χ : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) :
     LevDat D.host.E ℂ n :=
   datY n r t 0 hr Pg ∅ (LevelP.triv Pg r ℂ) χ (fun _ => 1) Frm.B

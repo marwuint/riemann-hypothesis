@@ -18,7 +18,6 @@ variable {A : Type} [CommRing A] {s : A →+* A} {n j m : ℕ} {J : Matrix (Fin 
   {C D C' D' : Matrix (Fin n) (Fin j) A} {Z Z' : Matrix (Fin n) (Fin m) A} {J₀ Ji : Matrix (Fin m) (Fin m) A}
 
 theorem cT_add {p q : Type} (X Y : Matrix p q A) : cT s (X + Y) = cT s X + cT s Y := by ext; simp [cT]
-theorem cT_sub {p q : Type} (X Y : Matrix p q A) : cT s (X - Y) = cT s X - cT s Y := by ext; simp [cT]
 theorem cT_cT (h : ∀ x, s (s x) = x) {p q : Type} (X : Matrix p q A) : cT s (cT s X) = X := by ext; simp [cT, h]
 
 variable (s J) in
@@ -57,14 +56,6 @@ theorem unitary (g : Gram s J C D Z J₀) (g' : Gram s J C' D' Z' J₀) (hs : ca
     simp only [cT_mul, Matrix.mul_assoc]
   refine rext hs (lext hs ?_ ?_ ?_) (lext hs ?_ ?_ ?_) (lext hs ?_ ?_ ?_) <;> rw [a] <;> simp only [*]
 
-theorem gram_of_unitary (g : Gram s J C D Z J₀) {M : Matrix (Fin n) (Fin n) A} (hM : cT s M * J * M = J) :
-    Gram s J (M * C) (M * D) (M * Z) J₀ := by
-  have a : ∀ {p q : ℕ} (U : Matrix (Fin n) (Fin p) A) (V : Matrix (Fin n) (Fin q) A),
-      cT s (M * U) * (J * (M * V)) = cT s U * (J * V) := fun U V => by
-    conv_rhs => rw [← hM]
-    simp only [cT_mul, Matrix.mul_assoc]
-  simpa only [Gram, a] using g
-
 theorem gram_levi (hs : ∀ x, s (s x) = x) (g : Gram s J C D Z J₀) (α : GL (Fin j) A) :
     Gram s J (C * α.1) (D * cT s (α⁻¹).1) Z J₀ := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩ := g
@@ -86,26 +77,6 @@ theorem gram_levi (hs : ∀ x, s (s x) = x) (g : Gram s J C D Z J₀) (α : GL (
   · rw [a, h7, Matrix.mul_one, cT_cT hs, ← Units.val_mul, inv_mul_cancel, Units.val_one]
   · rw [c, h8]; simp
   · rw [a, h9]; simp
-
-theorem gram_unip_iff (hs : ∀ x, s (s x) = x) (g : Gram s J C D Z J₀) (h₀ : cT s Ji * J₀ = 1) (hi : J₀ * Ji = 1)
-    (b : Matrix (Fin j) (Fin m) A) (c : Matrix (Fin j) (Fin j) A) :
-    Gram s J C (D - Z * (Ji * cT s b) + C * c) (Z + C * b) J₀ ↔ c + cT s c + b * (Ji * cT s b) = 0 := by
-  obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩ := g
-  have b' : ∀ {p q q' : ℕ} (U : Matrix (Fin n) (Fin p) A) (V : Matrix (Fin n) (Fin q) A)
-      (y : Matrix (Fin q) (Fin q') A), cT s U * (J * (V * y)) = (cT s U * (J * V)) * y := fun U V y => by
-    simp only [Matrix.mul_assoc]
-  have i1 : ∀ x : Matrix (Fin m) (Fin j) A, J₀ * (Ji * x) = x := fun x => by rw [← Matrix.mul_assoc, hi, Matrix.one_mul]
-  have i2 : ∀ x : Matrix (Fin m) (Fin j) A, cT s Ji * (J₀ * x) = x := fun x => by
-    rw [← Matrix.mul_assoc, h₀, Matrix.one_mul]
-  have i3 : cT s Ji = Ji := by
-    rw [← Matrix.mul_one (cT s Ji), ← hi, ← Matrix.mul_assoc, h₀, Matrix.one_mul]
-  have i4 : Ji * J₀ = 1 := by rw [← h₀, i3]
-  simp only [Gram, cT_add, cT_sub, cT_mul, cT_cT hs, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul,
-    Matrix.mul_assoc, b', h1, h2, h3, h4, h5, h6, h7, h8, h9, i1, i2, i3, i4, Matrix.zero_mul, Matrix.mul_zero, Matrix.one_mul,
-    Matrix.mul_one, add_zero, zero_add, sub_zero, zero_sub, true_and, neg_add_cancel, neg_neg, sub_neg_eq_add, sub_self]
-  constructor
-  · intro h; rw [← h]; abel
-  · intro h; rw [← h]; abel
 
 end Ring
 
@@ -146,14 +117,7 @@ theorem sum_ad (f : Fr σ J C D Z J₀) : carry (sigR (AF F) σ) (JR (AF F) J) (
   simp
 
 theorem inv_mul₀ (f : Fr σ J C D Z J₀) : J₀⁻¹ * J₀ = 1 := Matrix.nonsing_inv_mul _ (Ne.isUnit f.herm₀.2)
-theorem mul_inv₀ (f : Fr σ J C D Z J₀) : J₀ * J₀⁻¹ = 1 := Matrix.mul_nonsing_inv _ (Ne.isUnit f.herm₀.2)
 theorem inv_mul_ad (f : Fr σ J C D Z J₀) : adMat F J₀⁻¹ * adMat F J₀ = 1 := by rw [← Matrix.map_mul, inv_mul₀ f]; simp
-theorem mul_inv_ad (f : Fr σ J C D Z J₀) : adMat F J₀ * adMat F J₀⁻¹ = 1 := by rw [← Matrix.map_mul, mul_inv₀ f]; simp
-theorem cT_inv_ad (f : Fr σ J C D Z J₀) : cT (sigR (AF F) σ) (adMat F J₀⁻¹) * adMat F J₀ = 1 := by
-  have : cT (σ : E →+* E) J₀ = J₀ := by ext a b; exact f.herm₀.1 a b
-  conv_lhs => rw [← this, ad_cT (σ := σ) J₀, this]
-  rw [← cT_mul, mul_inv_ad f, cT_one]
-
 def lvMat (f : Fr σ J C D Z J₀) : GL (Fin j) (AF F ⊗[F] E) →* Matrix (Fin n) (Fin n) (AF F ⊗[F] E) where
   toFun α := carry (sigR (AF F) σ) (JR (AF F) J) (adMat F C) (adMat F D) (adMat F Z) (adMat F J₀⁻¹)
     (adMat F C * α.1) (adMat F D * cT (sigR (AF F) σ) (α⁻¹).1) (adMat F Z)
@@ -215,67 +179,6 @@ theorem isLv_injective (f : Fr σ J C D Z J₀) {l : GL (Fin j) (AF F ⊗[F] E) 
   simp only [← Matrix.mul_assoc] at this h7
   rw [h7, Matrix.one_mul, Matrix.one_mul] at this
   exact Units.ext this
-
-theorem exists_crd_iff (f : Fr σ J C D Z J₀) (b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E))
-    (c : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) :
-    (∃ u, Crd σ J C D Z J₀ u b c) ↔ c + cT (sigR (AF F) σ) c + b * plus σ J₀ b = 0 := by
-  rw [plus, ← gram_unip_iff (sig_sig f.cm) (gram_ad f) (cT_inv_ad f) (mul_inv_ad f)]
-  constructor
-  · rintro ⟨u, h⟩
-    have := gram_of_unitary (gram_ad f) (M := (matHom _ σ J u).1) u.2
-    rwa [h.onC, h.onZ, h.onD] at this
-  · intro g
-    obtain ⟨e1, e2, e3⟩ := carry_frame (C' := adMat F C) (D' := adMat F D - adMat F Z * plus σ J₀ b + adMat F C * c)
-      (Z' := adMat F Z + adMat F C * b) (gram_ad f) (inv_mul_ad f)
-    have hu := unitary (gram_ad f) g (sum_ad f) e1 e2 e3
-    have hJ : IsUnit (JR (F := F) (AF F) J).det := by
-      rw [JR, ← RingHom.mapMatrix_apply, ← RingHom.map_det]; exact (Ne.isUnit f.herm.2).map _
-    rw [← hu, Matrix.det_mul] at hJ
-    obtain ⟨U, hU⟩ := (Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right hJ)
-    rw [← hU] at hu e1 e2 e3
-    exact ⟨⟨U, hu⟩, e1, e2, e3⟩
-
-theorem crd_unique (f : Fr σ J C D Z J₀) {u u' : GAd σ J} {b b' : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)}
-    {c c' : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)} (h : Crd σ J C D Z J₀ u b c) (h' : Crd σ J C D Z J₀ u' b' c') :
-    u = u' ↔ b = b' ∧ c = c' := by
-  constructor
-  · rintro rfl
-    have h7 := (gram_ad f).2.2.2.2.2.2.1
-    have k : ∀ {p : ℕ} {x y : Matrix (Fin j) (Fin p) (AF F ⊗[F] E)}, adMat F C * x = adMat F C * y → x = y := fun {p x y} e => by
-      have := congrArg (fun X : Matrix (Fin n) (Fin p) (AF F ⊗[F] E) =>
-        cT (sigR (AF F) σ) (adMat F D) * (JR (F := F) (AF F) J * X)) e
-      simp only [← Matrix.mul_assoc] at this h7
-      rwa [h7, Matrix.one_mul, Matrix.one_mul] at this
-    obtain rfl : b = b' := k (add_left_cancel (h.onZ.symm.trans h'.onZ))
-    exact ⟨rfl, k (add_left_cancel (h.onD.symm.trans h'.onD))⟩
-  · rintro ⟨rfl, rfl⟩
-    exact matHom_injective _ σ J (Units.ext (rext (sum_ad f) (h.onC.trans h'.onC.symm) (h.onZ.trans h'.onZ.symm)
-      (h.onD.trans h'.onD.symm)))
-
-theorem bse_eq (h : IsCMExt F E σ) : (GlobalTheory.Doubling.absE F E (GlobalTheory.Eis.Conv.halfE F E) : ℝ) = (bse F)⁻¹ := by
-  rw [GlobalTheory.Eis.Conv.absE_halfE F E σ h]; simp
-
-theorem fr_three (h : IsCMExt F E σ) : Fr σ !![0, 0, 1; 0, 1, 0; 1, 0, 0] (!![1; 0; 0] : Matrix (Fin 3) (Fin 1) E) !![0; 0; 1]
-    (!![0; 1; 0] : Matrix (Fin 3) (Fin 1) E) 1 := by
-  refine ⟨h, ⟨fun i j => ?_, by simp [Matrix.det_fin_three]⟩, ⟨fun i j => ?_, by simp⟩, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, rfl⟩
-  · fin_cases i <;> fin_cases j <;> simp
-  · fin_cases i; fin_cases j; simp
-  all_goals
-    ext i j; fin_cases i <;> fin_cases j <;> simp [cT, Matrix.mul_apply, Fin.sum_univ_three, Matrix.vecMul, dotProduct]
-
-theorem inhabited : ∃ (F E : Type) (_ : Field F) (_ : NumberField F) (_ : Field E) (_ : NumberField E) (_ : Algebra F E)
-    (σ : E →ₐ[F] E) (J : Matrix (Fin 3) (Fin 3) E) (C D Z : Matrix (Fin 3) (Fin 1) E) (J₀ : Matrix (Fin 1) (Fin 1) E)
-    (l : GL (Fin 1) (AF F ⊗[F] E) →* GAd σ J) (u : GAd σ J) (c : Matrix (Fin 1) (Fin 1) (AF F ⊗[F] E)),
-    Fr σ J C D Z J₀ ∧ IsLv σ J C D Z l ∧ Function.Injective l ∧ Crd σ J C D Z J₀ u 1 c ∧ u ∈ fixG σ J C := by
-  obtain ⟨F, E, _, _, _, _, _, σ, J, X, Y, L, a, hc, -⟩ := GlobalTheory.EisLineModel.data_inhabited
-  have f := fr_three hc
-  obtain ⟨u, hu⟩ := (exists_crd_iff f 1 (adMat F ((-2⁻¹ : E) • 1))).2 (by
-    have e : (-2⁻¹ : E) • (1 : Matrix (Fin 1) (Fin 1) E) + cT (σ : E →+* E) ((-2⁻¹ : E) • (1 : Matrix (Fin 1) (Fin 1) E)) + 1 = 0 := by
-      ext i j; fin_cases i; fin_cases j; simp [cT, map_ofNat]; norm_num
-    have := congrArg (adMat F) e
-    rw [plus, cT_one, inv_one, ← ad_cT]
-    simpa [Matrix.map_add] using this)
-  exact ⟨F, E, _, _, _, _, _, σ, _, _, _, _, _, lv f, u, _, f, isLv_lv f, isLv_injective f (isLv_lv f), hu, hu.onC⟩
 
 end GlobalTheory.SphEisModel
 

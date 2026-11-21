@@ -3,15 +3,16 @@ import Formalism.PairingDivisors.StatementA
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsFinSetSplitPlacesCoprimeConductor
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CountableIdealSummableAbsNormRpow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForallLocInShift
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitsInCMFieldTwoPrimesDegreeOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitsInCMFieldTwoPrimesDegreeOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValIotaLeOfMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCompletedOrderOfLocalCongruenceSplitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteCosetsUnitIdelesCompletedOrderStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdealSectionIntegralFiniteIdeleUpToUnitsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteCosetsUnitIdelesCompletedOrder
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdealSectionIntegralFiniteIdeleUpToUnits
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalUnitRepresentativesSplitPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformiserSplitPlaceCmOrderNonunitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceUniformiserIdeleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformiserSplitPlaceCmOrderNonunit
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceUniformiserIdele
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharUnramifiedInverseSplitPairStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConductorTimesSplitPrimesExponentsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConductorTimesSplitPrimesExponents
 
 noncomputable section
 open NumberField IsDedekindDomain GlobalTheory.CMVal Filter Topology
@@ -23,8 +24,8 @@ variable {E : Type} [Field E] [NumberField E]
 theorem summable_intI {c : Ideal (OF E)} (hc : c ≠ ⊥) {χ : HChar E} (hu : IsUnitary χ) {S : ℂ} (hS : 1 < S.re) :
     Summable (cs (hatOUnits c) (omega χ S) intI) := by
   classical
-  obtain ⟨R, hR⟩ := GlobalTheory.T.exists_finite_cosets_unitIdeles_completedOrder E c hc
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_ideal_section_integralFiniteIdele_upToUnits E
+  obtain ⟨R, hR⟩ := _root_.GlobalTheory.CMVal.Euler.exists_finset_cover_units E c hc
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.CMVal.exists_idele_section_of_ideal E
   have hI := ((GlobalTheory.countable_ideal_and_summable_absNorm_rpow E).2 S.re hS).1
   have hP : Summable fun p : R × Ideal (𝓞 E) => (Ideal.absNorm p.2 : ℝ) ^ (-S.re) :=
     (summable_prod_of_nonneg fun p => Real.rpow_nonneg (Nat.cast_nonneg _) _).2 ⟨fun _ => hI, Summable.of_finite⟩
@@ -104,8 +105,8 @@ theorem FS_step (hF : TrivOnF χ) (T : Finset (HeightOneSpectrum (𝓞 E))) {v :
     (hk : m v = k + 1) (hT : ∀ w ∈ T, ¬ Over w v) :
     FS c χ S m T = FS c χ S m (fib v ∪ T) +
       (((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-S)) ^ 2 * FS c χ S (Function.update m v k) T := by
-  obtain ⟨x, hx, hx'⟩ := GlobalTheory.T.exists_uniformiser_split_place_cm_order_nonunit E v hv
-  obtain ⟨π, h1, h2, h3, h4⟩ := GlobalTheory.T.exists_split_place_uniformiser_idele E v x hv hx
+  obtain ⟨x, hx, hx'⟩ := _root_.GlobalTheory.CMVal.Euler.locIn_succ_nonunit_iff E v hv
+  obtain ⟨π, h1, h2, h3, h4⟩ := _root_.GlobalTheory.CMVal.Euler.exists_split_unif_idele E v x hv hx
   have hm' : ∀ v', Function.update m v k v' ≤ expIn c v' := fun v' => by
     by_cases e : v' = v
     · subst e; rw [Function.update_self]; have := hm v'; omega
@@ -192,7 +193,7 @@ theorem FS_unr (hF : TrivOnF χ) (T : Finset (HeightOneSpectrum (𝓞 E))) {v : 
     by_cases e : P = A
     · exact ⟨B, hB, e ▸ hAB⟩
     · exact ⟨A, hA, e⟩
-  obtain ⟨s1, s2⟩ := GlobalTheory.T.splitsInCMField_two_primes_degree_one E v hv
+  obtain ⟨s1, s2⟩ := _root_.GlobalTheory.CMVal.Euler.SplitPlace.split_place E v hv
   obtain ⟨h', hval⟩ := GlobalTheory.T.heckeChar_unramified_inverse_split_pair E χ v P P' hF hv hP hP' hne (hl P' hP') h
   have hfib : fib v = {P, P'} := by
     ext w
@@ -222,7 +223,7 @@ open Classical in
 
 theorem hasSum_euler : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ → ∀ (s : ℕ) (κ : I → ℕ) (𝔣 : Ideal (OF E)) (Q : Finset (HeightOneSpectrum (OF E))) (χ : HChar E) (Pq : HeightOneSpectrum (OF E) → HeightOneSpectrum (𝓞 E)) (S L : ℂ), UnramFin E → IsBaseCond 𝔣 → IsFinSetSplitPlacesCoprimeConductor 𝔣 Q → IsValChar φ s κ 𝔣 Q χ → (∀ q ∈ Q, Over (Pq q) q) → 1 < S.re → HasProd (eulerFactor χ S) L → open Classical in HasSum (fun z : {z : (Af E)ˣ ⧸ hatOUnits (condQ 𝔣 Q) // ∃ y : (Af E)ˣ, (QuotientGroup.mk y : (Af E)ˣ ⧸ hatOUnits (condQ 𝔣 Q)) = z ∧ (y : Af E) ∈ hatO (condQ 𝔣 Q)} => (finPart χ z.1.out : ℂ) * ((modF z.1.out : ℝ) : ℂ) ^ S) (L * ∏ q ∈ Q.filter (fun q => UnrAt χ (Pq q)), ((1 - (val χ (Pq q) : ℂ) * (Ideal.absNorm q.asIdeal : ℂ) ^ (-S)) * (1 - (val χ (Pq q) : ℂ)⁻¹ * (Ideal.absNorm q.asIdeal : ℂ) ^ (-S)) + ((Ideal.absNorm q.asIdeal : ℂ) - 1) * ((Ideal.absNorm q.asIdeal : ℂ) ^ (-S)) ^ 2)) := by
   intro E _ _ _ I _ φ hφ s κ 𝔣 Q χ Pq S L hE h𝔣 hQ hχ hPq hS hL
-  obtain ⟨hc0, hsp, hdv, hnQ, hnQ', hfin⟩ := GlobalTheory.T.conductorTimesSplitPrimes_exponents E 𝔣 Q h𝔣 hQ
+  obtain ⟨hc0, hsp, hdv, hnQ, hnQ', hfin⟩ := _root_.GlobalTheory.CMVal.CondExp.condQ_exponents E 𝔣 Q h𝔣 hQ
   set c := condQ 𝔣 Q with hc
   have hu := hχ.1
   have hF := hχ.2.1

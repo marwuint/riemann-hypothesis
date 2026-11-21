@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.KeyFormula.GeomIntSelf
 import Development.AbelianVarietyTheory.Statements.FundamentalDomains.AtOfNumberField
 import Development.AbelianVarietyTheory.Statements.ThetaLevelCharacters.MemThetaLevelCharDimZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsIsoOfSamePeriodMatrixLevelStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsIsoOfSamePeriodMatrixLevel
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPullbackIdCompCancel
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPrePullbackPrincipalRingChange
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SymplecticFormBasisChange
@@ -83,7 +83,7 @@ theorem eq_of_ptAt : Out.Laws → ThetaUnifAV → ∀ (h k : ℕ) (K : Type) [Fi
     ⟨P', lev', φ', hper', ⟨hφ', _, φ₂', hs', hw'⟩, hl'⟩
   obtain ⟨c, hc⟩ := (GlobalTheory.SiegelRingChange.siegPre_pull_ringChange h k K K ζ ζ (RingHom.id K) _ _ F.s (p ≫ F.s) p rfl
     (by rw [show spMap (RingHom.id K) = 𝟙 (Sp K) from Spec.map_id _, Category.comp_id])).1 F.univ
-  obtain ⟨e, he, ⟨e₂, hes, hew⟩, hel⟩ := GlobalTheory.T.exists_iso_of_same_periodMatrix_level hL hU h k τ P' P lev' lev hper' hper
+  obtain ⟨e, he, ⟨e₂, hes, hew⟩, hel⟩ := _root_.GlobalTheory.KeyFam.exists_iso_of_perLev hL hU h k τ P' P lev' lev hper' hper
   have l : (abelian₂ P.A P.L).IsLB := LB.isLB_linComb P.isLB _ _
   have l' : (abelian₂ P'.A P'.L).IsLB := LB.isLB_linComb P'.isLB _ _
   have m : TriplePB P.A (abelian₂ P.A P.L) lev F.univ.A F.univ.P F.univ.lev p := ⟨φ, φ₂, hφ, hs, hw, hl⟩

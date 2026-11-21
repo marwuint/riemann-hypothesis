@@ -75,11 +75,4 @@ theorem CutByEffectiveDivisor.of_steps (h₀ : NoCommonComponentCase.Statement.{
   CutByEffectiveDivisor.proof (EffectiveCase.of_steps h₀ h₁) UniformiserCase.full
     ShiftByUniformiser.full EffectiveShift.full
 
-theorem VerticalDivisorsCommute.of_steps (h₀ : NoCommonComponentCase.Statement.{u})
-    (h₁ : CommonFactorInduction.Statement.{u}) : VerticalDivisorsCommute.Statement.{u} :=
-  VerticalDivisorsCommute.proof (CutByEffectiveDivisor.of_steps h₀ h₁) Representative.full
-    IntNumAddFirst.full DivCycleFiniteSupport.full MinimalPrimeMultiHomog.full
-    SupSpanMultiHomog.full SpecialQuotDim.full SpecialIdealCorresp.full SpecialIdealMultiHomog.full
-    DimStrictDrop.full
-
 end GroundTheory.Heights₂.Heights.NumbersDVR

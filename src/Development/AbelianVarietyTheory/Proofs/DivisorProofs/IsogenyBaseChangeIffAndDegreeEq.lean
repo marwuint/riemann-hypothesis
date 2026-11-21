@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFlatFinrankStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFlatFinrank
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFiniteEtaleSurjectiveLevelMap
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
@@ -47,7 +47,7 @@ by
       (MorphismProperty.iff_of_isPullback (P := @Surjective) sq.flip hQ)
   refine ⟨hiso, ?_⟩
   by_cases h : IsIsogeny f
-  · obtain ⟨-, hfl, -, hrk⟩ := GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B f h
+  · obtain ⟨-, hfl, -, hrk⟩ := _root_.GlobalTheory.AV.AbVar.isogeny_flat_finrank K A B f h
     have : IsFinite f.hom.left := h.1
     have e : deg (bcMap L f) = (bcMap L f).hom.left.finrank (baseChange L B).origin := if_pos (hiso.2 h)
     rw [e]

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTqSemisimpleCuspFormsGamma1Statement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTqSemisimpleCuspFormsGamma1
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMulPetProd
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorsOnHalfPlaneFunctionsAgreeExplicit
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTOperatorExplicitCuspFormStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorCommutesDiamondStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTOperatorExplicitCuspForm
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorCommutesDiamond
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.HolomorphicIrreducibility.FinDim
 open GlobalTheory.HeckeFamilyMatrices Polynomial UpperHalfPlane
 open scoped MatrixGroups ModularForm
@@ -306,9 +306,9 @@ theorem hecke_stab : ∀ (N l k : ℕ) (s : SL(2, ℤ)), 5 ≤ N → l.Prime →
   have hN0 : 0 < N := by omega
   have hlN' : ¬ l ∣ N * 1 := by rwa [mul_one]
   have hs' : GlobalTheory.Hk.IsDia N 1 l s := (hD N 1 l s).1 (by simpa using hs)
-  have h1 := GlobalTheory.T.heckeTOperatorExplicit_cuspForm N 1 l k s hN0 hl hlN' hs'
+  have h1 := _root_.GlobalTheory.Hk.heckeT_cuspForm N 1 l k s hN0 hl hlN' hs'
   have h2 := fun (d : ℤ) (ρ : SL(2, ℤ)) (hρ : GlobalTheory.Hk.IsDia N 1 d ρ) =>
-    GlobalTheory.T.hecke_operator_commutes_diamond N 1 l k d s ρ hN0 hl hlN' hs' hρ
+    _root_.GlobalTheory.Hk.heckeT_dia_comm N 1 l k d s ρ hN0 hl hlN' hs' hρ
   rw [lev_one] at h1 h2
   obtain ⟨g, hg⟩ := h1 f
   rw [← hT _ _ _ _ hl.pos] at hg
@@ -383,7 +383,7 @@ theorem ul_oldSpace : ∀ (N l k : ℕ), 5 ≤ N → l.Prime → ¬ l ∣ N → 
     obtain ⟨f, hfx, hf⟩ := x.2
     have h1 : (fun F => TqF (k : ℤ) l s F - μ • F)^[n] ⇑f = 0 := by
       rw [hfx, ← hiter, hn]; rfl
-    have h2 := GlobalTheory.T.heckeTq_semisimple_cuspForms_gamma1 N k l s hN hk hl hlN hs f μ n h1
+    have h2 := _root_.GlobalTheory.HeckeFamilyMatrices.SemisimpleLevelOne.tq_semisimple N k l s hN hk hl hlN hs f μ n h1
     apply Subtype.ext
     rw [hT0, Submodule.coe_smul, ← hfx, h2]
   have htop : ⨆ μ, T0.eigenspace μ = ⊤ :=

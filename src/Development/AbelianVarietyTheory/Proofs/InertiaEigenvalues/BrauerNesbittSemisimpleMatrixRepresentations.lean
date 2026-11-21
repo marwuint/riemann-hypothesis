@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BrauerNesbittExistsEquivOfCharpolyEqBindersStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyMonoidAlgebraLiftEqOfCharpolyEqStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyMonoidAlgebraLiftEqOfCharpolyEq
 open scoped BigOperators
 
 namespace GlobalTheory.BrauerNesbittMatrix
@@ -43,7 +43,7 @@ theorem main : ∀ {k G : Type} [Field k] [Group G] (n : ℕ) (ρ σ : G →* Ma
   obtain ⟨e, he⟩ := GlobalTheory.T.brauerNesbitt_exists_equiv_of_charpoly_eq' (colRep ρ) (colRep σ) (colRep_semisimple ρ hρ) (colRep_semisimple σ hσ)
     fun a => by
       rw [colRep_asAlgebraHom, colRep_asAlgebraHom, Matrix.charpoly_toLin', Matrix.charpoly_toLin']
-      exact GlobalTheory.T.charpoly_monoidAlgebraLift_eq_of_charpoly_eq n ρ σ hc a
+      exact _root_.GlobalTheory.charpoly_lift_eq_of_charpoly_eq n ρ σ hc a
   let P : GL (Fin n) k :=
     ⟨LinearMap.toMatrix' e.toLinearMap, LinearMap.toMatrix' e.symm.toLinearMap,
       by rw [← LinearMap.toMatrix'_comp]; simp,

@@ -18,13 +18,6 @@ def SeenTr : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n :
     ((w ∈ d.T → ¬ GlobalTheory.UnitaryBC.IsSplitAt w) →
       seen ((ls.foldr LM.mul (d.eL a)).tr d.P N) (ls.foldr LM.mul (d.eL a)).t w = (ls.foldr LM.mul (d.eL a)).tr d.P N w)
 
-theorem lmWd_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {κ : Pl E → Type} [∀ w, Fintype (κ w)] {B : Block E}
-    (Lo : PT B → LM κ B.a B.b) (w : List (BGen B)) (L₀ : LM κ B.a B.b) :
-    lmWd Lo w L₀ = ((w.filterMap Sum.getRight?).map Lo).foldr LM.mul L₀ := by
-  induction w with
-  | nil => rfl
-  | cons g w ih => cases g <;> simp [lmWd, List.filterMap_cons] at ih ⊢ <;> rw [ih]
-
 end PositivityTheory.Rg.BcB.F
 
 end

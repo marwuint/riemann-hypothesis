@@ -4,7 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentral
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasSatakeOfIsSatVecGL
 import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.RecAlgNormDiag
 import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.HasFixedOfHasSat
-import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.SatakeParametersLocal
+import Mathlib
+import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.ImportsAlt
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Brauer
+import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.FinrankAdjoinSqrtNegOne
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RealTransport.RealTransport
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportOfPrincipalSeriesSubquotient
 
 noncomputable section
@@ -77,7 +83,7 @@ theorem frob_of {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : 
 
 theorem good_of_fixed {n : ℕ} (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (hf : HasFixed σ.ρ (GlobalTheory.LFun.KGL w n)) :
     Good (IrrGL.of σ.ρ σ.smooth σ.irred) ∧ IsSpherical (IrrGL.of σ.ρ σ.smooth σ.irred).rep := by
-  obtain ⟨B, hB⟩ := (GlobalTheory.T.satakeParameters_local E n w σ).1 hf
+  obtain ⟨B, hB⟩ := (_root_.GlobalTheory.RealGal.SatLocProof.main E n w σ).1 hf
   obtain ⟨α, -, hα⟩ := hasSatake_of σ hB
   haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective
   have q := IrrGL.equivOf σ.ρ σ.smooth σ.irred
@@ -92,7 +98,7 @@ open GlobalTheory.RealGal.TwistUnr in
 theorem unrAt_of_isoTwist (hA : AdmissibleReal) (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (ha : 1 ≤ a)
     (π : TR.CuspSub F a) (η : HChar F) (hT : IsoTwist π η) (u : HeightOneSpectrum (𝓞 F)) (B : Multiset ℂˣ) (hB : π.HasSat u B) :
     η.UnrAt u := by
-  have hL := GlobalTheory.T.local_global_compatibility_real hA
+  have hL := _root_.GlobalTheory.RealGal.locCompR_of_admissibleReal hA
   obtain ⟨σ, hσ⟩ := (hL F a π u).1
   have hσ' := isLocComp_twist hT hσ
   obtain ⟨A, hAu⟩ := exists_isPlaceOver (AlgebraicClosure F) u

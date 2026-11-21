@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsUniversalJetCoordinatesPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsUniversalJetCoordinatesPullback
+import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralChartFormalBiext
 import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.JetTruncNotInjective
@@ -289,7 +290,7 @@ theorem GlobalTheory.integralChart_baseChange : ∀ (E : Type) [Field E] [Number
   letI := H.starRing
   obtain ⟨BT, hF, hA, -⟩ := GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y Ch
   have hU := GlobalTheory.PowGerm.univSt_holds E H Dw l Xo c T io y Ch
-  obtain ⟨z', hU', hz⟩ := GlobalTheory.T.exists_universalJetCoordinates_pullback T.V T'.V φ Ch.I.G.G t'.G mp.cm.F mp.cart _ Ch.xT hU
+  obtain ⟨z', hU', hz⟩ := _root_.GlobalTheory.UnivJetBaseChange.exists_univ_pullback T.V T'.V φ Ch.I.G.G t'.G mp.cm.F mp.cart _ Ch.xT hU
   obtain ⟨u1, u2, u3⟩ := univ_toAlg t'.G _ z' hU'
   refine ⟨Formalism.MainNotions.ModuliIntegralCharts.H1.FBMap.mapG φ BT.G, fun m => toAlg (z' m), Formalism.MainNotions.ModuliIntegralCharts.H1.FBMap.mapA φ BT.A,
     ?_, fun a => ?_, ⟨u1, u2, u3, fun m => ?_⟩, fun m a => ?_⟩

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHasCls
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.DiscreteSeriesCharacter
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactUnitaryTorusRealPlaceTensorEqComplexPowStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactUnitaryTorusRealPlaceTensorEqComplexPow
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeasurableEmbeddingEquiv
 
 open MeasureTheory Set Filter Polynomial NumberField IsDedekindDomain
@@ -553,7 +553,7 @@ theorem real_classes : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M 
   classical
   have hc := GlobalTheory.AdelicU.isCMExt_host D
   obtain ⟨Ψ, h1, h2, hα, h4, -, -⟩ :=
-    GlobalTheory.T.compact_unitaryTorus_real_place_tensor_eq_complex_pow D.host.F D.host.E D.sp.cm.sig hc V.rank P (placeOf D ρ) (embOverOf D ρ) hT
+    _root_.GlobalTheory.TrEll.realTorus_split D.host.F D.host.E D.sp.cm.sig hc V.rank P (placeOf D ρ) (embOverOf D ρ) hT
   have hfr := M.fr_gram ρ
   have hgram : gramAt D V ρ = V.gram.map (embOverOf D ρ).1 := rfl
   have hFu : IsUnit (M.fr ρ).det := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ)

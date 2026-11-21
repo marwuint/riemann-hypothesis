@@ -18,54 +18,6 @@ open GlobalTheory.KS
 
 namespace GlobalTheory.GlueFn
 
-theorem le_of_forall_point {X : Over (Sp ℂ)} [LocallyOfFiniteType X.hom] {O W : X.left.Opens}
-    (h : ∀ x : (𝟙_ (Over (Sp ℂ)) ⟶ X), ⊤ ≤ x.left ⁻¹ᵁ O → ⊤ ≤ x.left ⁻¹ᵁ W) : O ≤ W := by
-  have : JacobsonSpace X.left := LocallyOfFiniteType.jacobsonSpace X.hom
-  by_contra hne
-  have hne' : ((O : Set X.left) ∩ (W : Set X.left)ᶜ).Nonempty := by
-    obtain ⟨p, hp, hp'⟩ := Set.not_subset.1 hne
-    exact ⟨p, hp, hp'⟩
-  obtain ⟨c, ⟨hcO, hcW⟩, hc⟩ := nonempty_inter_closedPoints hne'
-    (O.isOpen.isLocallyClosed.inter W.isOpen.isClosed_compl.isLocallyClosed)
-  have hc' : IsClosed {c} := hc
-  let x : 𝟙_ (Over (Sp ℂ)) ⟶ X :=
-    Over.homMk (pointOfClosedPoint X.hom c hc') (pointOfClosedPoint_comp X.hom c hc')
-  have hx : ∀ U : X.left.Opens, ⊤ ≤ x.left ⁻¹ᵁ U ↔ c ∈ U := fun U => by
-    refine (top_le_preimage_iff_mem (pointOfClosedPoint X.hom c hc') U).trans ?_
-    exact (pointOfClosedPoint_apply X.hom c hc' _).symm ▸ Iff.rfl
-  exact hcW ((hx W).1 (h x ((hx O).2 hcO)))
-
-theorem ext_val {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.hom] {E : Type}
-    (e : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (he : Function.Surjective e) (U : X.left.Opens) (f f' : Γ(X.left, U))
-    (h : ∀ z, ⊤ ≤ (e z).left ⁻¹ᵁ U → valAt' (e z).left U f = valAt' (e z).left U f') : f = f' := by
-  refine eq_of_valAt'_eq valAt'_rules existsUnique_point_of_ringHom X inferInstance inferInstance U f f' ?_
-  intro x hx
-  obtain ⟨z, rfl⟩ := he x
-  exact h z hx
-
-theorem existsUnique_glue {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.hom] {E : Type}
-    (e : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (he : Function.Surjective e) (O : X.left.Opens) (ψ : E → ℂ)
-    (h : ∀ z, ⊤ ≤ (e z).left ⁻¹ᵁ O → ∃ (O' : X.left.Opens) (a : Γ(X.left, O')), O' ≤ O ∧
-      ⊤ ≤ (e z).left ⁻¹ᵁ O' ∧ ∀ z', ⊤ ≤ (e z').left ⁻¹ᵁ O' → valAt' (e z').left O' a = ψ z') :
-    ∃! a : Γ(X.left, O), ∀ z, ⊤ ≤ (e z).left ⁻¹ᵁ O → valAt' (e z).left O a = ψ z := by
-  choose U c hUO hzU hc using h
-  have hcov : O ≤ ⨆ p : {z // ⊤ ≤ (e z).left ⁻¹ᵁ O}, U p.1 p.2 := by
-    refine le_of_forall_point fun x hx => ?_
-    obtain ⟨z, rfl⟩ := he x
-    exact top_le_preimage_mono _ (le_iSup (fun p : {z // ⊤ ≤ (e z).left ⁻¹ᵁ O} => U p.1 p.2) ⟨z, hx⟩) (hzU z hx)
-  obtain ⟨s, hs, -⟩ := TopCat.Sheaf.existsUnique_gluing' X.left.sheaf
-    (fun p : {z // ⊤ ≤ (e z).left ⁻¹ᵁ O} => U p.1 p.2) O (fun p => homOfLE (hUO p.1 p.2)) hcov
-    (fun p => c p.1 p.2) (by
-      intro p q
-      refine ext_val e he (U p.1 p.2 ⊓ U q.1 q.2) _ _ fun z hz => ?_
-      obtain ⟨h1, h2⟩ := (top_le_preimage_inf _ _ _).1 hz
-      exact ((valAt'_map _ _ _ hz).trans (hc _ _ z h1)).trans
-        ((valAt'_map _ _ _ hz).trans (hc _ _ z h2)).symm)
-  have hval : ∀ z, ⊤ ≤ (e z).left ⁻¹ᵁ O → valAt' (e z).left O s = ψ z := fun z hz => by
-    rw [← hc z hz z (hzU z hz), ← hs ⟨z, hz⟩]
-    exact (valAt'_map _ _ _ (hzU z hz)).symm
-  exact ⟨s, hval, fun t ht => ext_val e he O t s fun z hz => (ht z hz).trans (hval z hz).symm⟩
-
 end GlobalTheory.GlueFn
 
 namespace GlobalTheory

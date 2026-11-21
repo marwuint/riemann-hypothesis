@@ -1,13 +1,14 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.HypJ
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteVolumeInductionCompactSumStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicBoxesCompactExhaustStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RationalGramAdelicCompactFiniteStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CountingRationalVectorsBoxBoundStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteVolumeInductionCompactSum
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicBoxesCompactExhaust
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RationalGramAdelicCompactFinite
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CountingRationalVectorsBoxBound
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolume
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -63,10 +64,10 @@ theorem cntI_nonzero_lt_top : ∀ (F E : Type) [Field F] [NumberField F] [Field 
   haveI := hAlc
   haveI := hAsc
   haveI := hAt2
-  obtain ⟨hTG, -, -, -, hBor, hact⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ (AF F)
+  obtain ⟨hTG, -, -, -, hBor, hact⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hCM M J hJ (AF F)
   haveI := hTG
   haveI := hBor
-  obtain ⟨-, -, -, hKt2, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)
+  obtain ⟨-, -, -, hKt2, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)
   haveI := hKt2
   haveI : Countable E :=
     ((Module.finBasis ℚ E).equivFun.toEquiv).injective.countable
@@ -91,16 +92,16 @@ theorem cntI_nonzero_lt_top : ∀ (F E : Type) [Field F] [NumberField F] [Field 
     exact measurable_const.indicator hs
 
   have hzero : cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0 ∧ gramE σ J X = 0} Φ < ⊤ := by
-    obtain ⟨-, hbox, -⟩ := GlobalTheory.T.adelic_boxes_compact_exhaust F E σ hCM _ (Module.finBasis F E) 1 M
+    obtain ⟨-, hbox, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.BoxF.box_facts F E σ hCM _ (Module.finBasis F E) 1 M
     obtain ⟨N, r, hN, hr, hsub⟩ := hbox Ω hΩ
-    obtain ⟨C, hC⟩ := GlobalTheory.T.isotropic_vector_count_box_bound F E σ hCM M J hJ hM μ 𝓕 hH hFD _ (Module.finBasis F E) N hN
+    obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.SW.mean_isotropic_box F E σ hCM M J hJ hM μ 𝓕 hH hFD _ (Module.finBasis F E) N hN
     refine lt_of_le_of_lt (le_trans (cntI_mono_fun fun Y => ?_) (hC r hr)) ENNReal.ofReal_lt_top
     exact Set.indicator_le_indicator_of_subset hsub (fun _ => zero_le) Y
 
   have hlen : ∀ t : F, t ≠ 0 →
       cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | gramE σ J X = fun _ _ => algebraMap F E t} Φ < ⊤ := by
     intro t ht
-    exact GlobalTheory.T.finite_volume_induction_compact_sum F E σ hCM M J hJ
+    exact _root_.GlobalTheory.CompanionTheory.SW.CountGen.finite_count F E σ hCM M J hJ
       (fun M' _ J' hJ' => GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM M' J' hJ') t ht μ 𝓕 hH hFD Ω hΩ
 
   have hfinset : ∀ T : Finset F, (∀ t ∈ T, t ≠ 0) →
@@ -127,7 +128,7 @@ theorem cntI_nonzero_lt_top : ∀ (F E : Type) [Field F] [NumberField F] [Field 
       refine lt_of_le_of_lt (hsub.trans (cntI_union_le hm)) (ENNReal.add_lt_top.2 ⟨?_, ?_⟩)
       · exact hlen a (hT a (Finset.mem_insert_self a T))
       · exact ih fun t ht => hT t (Finset.mem_insert_of_mem ht)
-  obtain ⟨hlenQ, hgram, hfin⟩ := GlobalTheory.T.rational_gram_adelic_compact_finite F E σ hCM M J hJ
+  obtain ⟨hlenQ, hgram, hfin⟩ := _root_.GlobalTheory.CompanionTheory.SW.FinQ.gram_rational_finite F E σ hCM M J hJ
   refine lt_of_le_of_lt ?_ (hfinset ((hfin Ω hΩ).toFinset.erase 0)
     fun t ht => (Finset.mem_erase.1 ht).1)
   refine cntI_le_of_contrib fun g X hX hne => ?_

@@ -1,6 +1,8 @@
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.NormProducts.LUnH
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassGroupAffineCurveDivisibleCharZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationEqOneOfPowEqSpanStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassGroupAffineCurveDivisibleCharZero
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationEqOneOfPowEqSpan
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DivisorDescentModUnramifiedGaloisSubmodule
 
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.Kd.K4 Polynomial
@@ -112,7 +114,7 @@ theorem UpperTheory.Kd.K4.cdAbs :
     refine finprod_congr fun v => ?_
     rw [FractionalIdeal.count_pow, hIdef, FractionalIdeal.count_finprod K v _ he,
       Int.mul_ediv_cancel' (hdiv v)]
-  obtain ⟨d, hd⟩ := GlobalTheory.T.classGroup_affineCurve_divisible_charZero k K m' hm' (ClassGroup.mk K (Units.mk0 I hI0))
+  obtain ⟨d, hd⟩ := _root_.GlobalTheory.classGroup_ringOfIntegers_divisible k K m' hm' (ClassGroup.mk K (Units.mk0 I hI0))
   obtain ⟨Ju, rfl⟩ : ∃ Ju : (FractionalIdeal (nonZeroDivisors (FunctionField.ringOfIntegers k K)) K)ˣ,
       ClassGroup.mk K Ju = d :=
     ClassGroup.induction K (P := fun d => ∃ Ju, ClassGroup.mk K Ju = d) (fun J => ⟨J, rfl⟩) d
@@ -127,6 +129,6 @@ theorem UpperTheory.Kd.K4.cdAbs :
       ← hxJ, mul_pow, hIm, FractionalIdeal.spanSingleton_pow,
       FractionalIdeal.spanSingleton_mul_spanSingleton, inv_pow, div_inv_eq_mul]
   have hw : f / x⁻¹ ^ m ≠ 0 := div_ne_zero hf (pow_ne_zero _ (inv_ne_zero hx))
-  obtain ⟨c, hc, hcv⟩ := GlobalTheory.T.exists_valuation_div_pow_eq_one_of_pow_eq_span K K (FunctionField.ringOfIntegers k K) B _ (m * m')
+  obtain ⟨c, hc, hcv⟩ := _root_.GlobalTheory.valuation_eq_one_of_pow_eq_span K K (FunctionField.ringOfIntegers k K) B _ (m * m')
     (Nat.mul_pos hm hm') (fun r => ringOfIntegers_mem_of_polynomial_mem k K B hB r) (f / x⁻¹ ^ m) hw hJ
   exact ⟨c, hc, by simpa using hcv⟩

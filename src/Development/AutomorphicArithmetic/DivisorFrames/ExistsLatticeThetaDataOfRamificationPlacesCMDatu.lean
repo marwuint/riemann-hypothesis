@@ -118,7 +118,7 @@ private theorem ram_set {D : D7} {W W₁ X : HSp D} {α β : (AE D)ˣ →* Circl
     obtain ⟨h2, -, h4⟩ := (h.ram v ε hε).resolve_left fun hu => h3 fun x a b c => by
       rw [MonoidHom.div_apply, hu.1 x a b c, hu.2 x a b c, div_one]
     refine ⟨?_, h4⟩
-    obtain ⟨t⟩ := GlobalTheory.T.nonempty_algHom_completion_of_split_place D v ε hε h2
+    obtain ⟨t⟩ := _root_.GlobalTheory.SplitPlaceEmb.nonempty_algHom_of_not_nonSplitAt D v ε hε h2
     obtain ⟨w, hw, hwv⟩ := (hT v).1 hv
     have hmem : w.asIdeal ∈ v.asIdeal.primesOver (𝓞 D.host.E) :=
       ⟨w.isPrime, ⟨by rw [← hwv]; rfl⟩⟩
@@ -127,7 +127,7 @@ private theorem ram_set {D : D7} {W W₁ X : HSp D} {α β : (AE D)ˣ →* Circl
     · exact ⟨t, (HeightOneSpectrum.ext h5 : w = _) ▸ hw⟩
     · exact ⟨_, (HeightOneSpectrum.ext h5 : w = _) ▸ hw⟩
   · obtain ⟨ε, hε⟩ := GlobalTheory.StabDense.exists_placeIdem (D := D) (w.under (𝓞 D.host.F))
-    exact (hS _ ε hε).1 ((hT _).1 hw) (GlobalTheory.T.heckeChar_unramified_place_of_unramified_one_prime D _ hν hr _ ε hε w rfl hu)
+    exact (hS _ ε hε).1 ((hT _).1 hw) (_root_.GlobalTheory.UnramFromOnePrime.unramAt_of_unrAt_one D _ hν hr _ ε hε w rfl hu)
   · obtain ⟨ε, hε⟩ := GlobalTheory.StabDense.exists_placeIdem (D := D) (w.under (𝓞 D.host.F))
     have hu := (hS _ ε hε).2 fun u hu e => hw ((hT _).2 ⟨u, hu, e⟩)
     exact ⟨GlobalTheory.BasePairChar.unrAt_of_unramAt hε hu.1 rfl, GlobalTheory.BasePairChar.unrAt_of_unramAt hε hu.2 rfl⟩

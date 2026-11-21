@@ -29,18 +29,6 @@ theorem isClosed_nilrad (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) :
   letI : NormedSpace ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.normedSpace
   exact Submodule.closed_of_finiteDimensional (nilrad W₁ W₂)
 
-theorem locallyCompact_nilrad (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) :
-    LocallyCompactSpace (nilrad W₁ W₂) := by
-  haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) :=
-    inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))
-  exact (isClosed_nilrad W₁ W₂).isClosedEmbedding_subtypeVal.locallyCompactSpace
-
-theorem secondCountable_nilrad (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) :
-    SecondCountableTopology (nilrad W₁ W₂) := by
-  haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) :=
-    inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))
-  exact TopologicalSpace.Subtype.secondCountableTopology _
-
 theorem nil_mul_mem {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂)
     {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ nilrad W₁ W₂) (hY : Y ∈ nilrad W₁ W₂) :
     X * Y ∈ nilrad W₁ W₂ := by
@@ -51,37 +39,6 @@ theorem nil_mul_mem {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W
 
 def nmul {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂) (Y X : nilrad W₁ W₂) : nilrad W₁ W₂ :=
   ⟨Y.1 + X.1 + Y.1 * X.1, (nilrad W₁ W₂).add_mem ((nilrad W₁ W₂).add_mem Y.2 X.2) (nil_mul_mem hW Y.2 X.2)⟩
-
-theorem uOf_nmul {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂) (Y X : nilrad W₁ W₂) :
-    uOf (nmul hW Y X) = uOf Y * uOf X := by
-  apply Units.ext
-  simp only [uOf_val, Units.val_mul, nmul]
-  noncomm_ring
-
-def ninv {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂) (X : nilrad W₁ W₂) : nilrad W₁ W₂ :=
-  ⟨-X.1 + X.1 * X.1, (nilrad W₁ W₂).add_mem ((nilrad W₁ W₂).neg_mem X.2) (nil_mul_mem hW X.2 X.2)⟩
-
-theorem uOf_ninv {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂) (X : nilrad W₁ W₂) :
-    uOf (ninv hW X) = (uOf X)⁻¹ := by
-  apply Units.ext
-  rw [uOf_val, ninv]
-  change _ = 1 - X.1 + X.1 * X.1
-  noncomm_ring
-
-def nSet (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (C : Set (GL (Fin n) ℂ)) : Set (GL (Fin n) ℂ) :=
-  {g | ∃ X : nilrad W₁ W₂, ∃ c ∈ C, uOf X * c = g}
-
-theorem exists_open_cover (n : ℕ) : ∃ U : ℕ → Set (GL (Fin n) ℂ),
-    (∀ i, IsOpen (U i)) ∧ (∀ i, IsCompact (closure (U i))) ∧ ∀ g, ∃ i, g ∈ U i := by
-  haveI := locallyCompact_GL n
-  haveI := secondCountable_GL n
-  haveI : SigmaCompactSpace (GL (Fin n) ℂ) := inferInstance
-  let K := CompactExhaustion.choice (GL (Fin n) ℂ)
-  refine ⟨fun i => interior (K i), fun i => isOpen_interior, fun i => ?_, fun g => ?_⟩
-  · exact (K.isCompact i).of_isClosed_subset isClosed_closure
-      (closure_minimal interior_subset (K.isCompact i).isClosed)
-  · obtain ⟨i, hi⟩ := K.exists_mem g
-    exact ⟨i + 1, K.subset_interior_succ i hi⟩
 
 theorem isClosed_twCent (d : GL (Fin n) ℂ) :
     IsClosed (twCent (thC n) d : Set (GL (Fin n) ℂ)) := by

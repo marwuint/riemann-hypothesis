@@ -75,20 +75,6 @@ private theorem mem_eig (D : LData E Ω l) (e : ℕ) {σ : Ω ≃+* Ω} (h : IsC
   · rw [map_smul, ← smul_sub, ← hm, smul_smul, hs, one_smul]
   · rw [map_smul, ← smul_sub, ← hm]
 
-theorem mk_mem_ShaPlus_iff (D : LData E Ω l) (e : ℕ) {σ : Ω ≃+* Ω} (h : IsConjOm σ) (z : Z1 (qzTw D (e : ℤ))) :
-    Submodule.Quotient.mk z ∈ ShaPlus D e ↔ Submodule.Quotient.mk z ∈ Sha D e ∧
-      ∃ m, ∀ g, z.1 (conjGS D h.isLift g) - z.1 g = qzTw D e g m - m := by
-  have := mem_eig D e h z 1
-  simp only [mul_one, one_smul] at this
-  exact and_congr_right fun _ => this
-
-theorem mk_mem_ShaMinus_iff (D : LData E Ω l) (e : ℕ) {σ : Ω ≃+* Ω} (h : IsConjOm σ) (z : Z1 (qzTw D (e : ℤ))) :
-    Submodule.Quotient.mk z ∈ ShaMinus D e ↔ Submodule.Quotient.mk z ∈ Sha D e ∧
-      ∃ m, ∀ g, z.1 (conjGS D h.isLift g) + z.1 g = qzTw D e g m - m := by
-  have := mem_eig D e h z (-1)
-  simp only [← pow_succ, neg_smul, one_smul, sub_neg_eq_add] at this
-  exact and_congr_right fun _ => this
-
 end UpperTheory.V
 
 end

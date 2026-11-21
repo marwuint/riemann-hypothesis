@@ -13,21 +13,6 @@ def projection_sandwich_lattice (D : D7) : Prop :=
   ∀ (W : HSpace D.host.E) (P Q : ℕ), W.SigOK → (∀ τ, W.sig τ = (P, Q)) → 3 ≤ W.rank →
     ∀ s : Bool, (if s then 1 ≤ P else 1 ≤ Q) → ∃ x : W.V, W.hT x x = (if s then 1 else -1)
 
-def projection_lemma_base_level (D : D7) : Prop :=
-  letI := D.host.cmStar
-  ∀ (W : HSpace D.host.E) (P Q : ℕ), W.SigOK → (∀ τ, W.sig τ = (P, Q)) → 3 ≤ W.rank →
-    ∀ s : Bool, (if s then 1 ≤ P else 1 ≤ Q) →
-    ∀ x : W.V, W.hT x x = (if s then 1 else -1) →
-      ∃ (W' : HSpace D.host.E) (ι : W'.V →ₗ[D.host.E] W.V),
-        HSpace.IsIsomEmb W' W ι ∧ LinearMap.range ι = LinearMap.ker (W.hT x) ∧ W'.SigOK ∧
-        (∀ τ, W'.sig τ = (if s then (P - 1, Q) else (P, Q - 1))) ∧
-        D.vol W / D.vol W' = Formalism.HermitianLatticesTheory.massRatioRightSide D.host.E W.rank
-
-theorem mass_volume_of_all_x (D : D7) (ha : projection_sandwich_lattice D) (hE : projection_lemma_base_level D) : Conclusion2 D := by
-  intro W P Q h1 h2 h3 s hs
-  obtain ⟨x, hx⟩ := ha W P Q h1 h2 h3 s hs
-  exact ⟨x, hx, hE W P Q h1 h2 h3 s hs x hx⟩
-
 section DS
 
 open Formalism.MainNotions.S MeasureTheory Matrix
@@ -47,27 +32,6 @@ def DiscreteSeriesDegreeBoundsOfGap (D : D7) : Prop :=
     fdegOf ((D.s.cdScale N ε : ENNReal) • Formalism.REAL.muG ε) σ w ≤
       4 * (Module.finrank ℂ (lowKSub ε lam σ) : ℝ) * (3 * p * q * lamAbs lam) ^ (p * q)
 
-def DiscreteSeriesUpperBoundOfLargeGap (D : D7) : Prop :=
-  ∀ (N : ℕ) (ε : Fin N → Bool) (lam : Fin N → ℝ) (h0 : ℝ) (H : Type) [NormedAddCommGroup H]
-    [InnerProductSpace ℂ H] (σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)) (w : H),
-    let p : ℝ := (Finset.univ.filter (fun a => ε a = true)).card
-    let q : ℝ := (Finset.univ.filter (fun a => ε a = false)).card
-    1 ≤ p → 1 ≤ q →
-    Formalism.QuantumDeterminants.IsHCParam lam → Formalism.QuantumDeterminants.GapAtLeast ε lam h0 →
-    120 * (N : ℝ) * (min p q) ^ ((3 : ℝ) / 2) ≤ h0 →
-    IsDS ε lam σ → w ≠ 0 →
-    fdegOf ((D.s.cdScale N ε : ENNReal) • Formalism.REAL.muG ε) σ w ≤
-      4 * (Module.finrank ℂ (lowKSub ε lam σ) : ℝ) * (3 * p * q * lamAbs lam) ^ (p * q)
-
-def FormalDegreeComparisonCompactCase (D : D7) : Prop :=
-  ∀ (N : ℕ) (ε : Fin N → Bool) (lam : Fin N → ℝ) (ep0 : ℝ) (H : Type) [NormedAddCommGroup H]
-    [InnerProductSpace ℂ H] (σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)) (w : H),
-    ((Finset.univ.filter (fun a => ε a = true)).card = 0 ∨ (Finset.univ.filter (fun a => ε a = false)).card = 0) →
-    Formalism.QuantumDeterminants.IsHCParam lam → Real.exp (-(N : ℝ)) ≤ ep0 → ep0 < 1 / 2 →
-    IsDS ε lam σ → w ≠ 0 →
-    (1 - ep0) * Formalism.QuantumDeterminants.fdegHC lam ≤ fdegOf ((D.s.cdScale N ε : ENNReal) • Formalism.REAL.muG ε) σ w ∧
-    fdegOf ((D.s.cdScale N ε : ENNReal) • Formalism.REAL.muG ε) σ w ≤ 4 * (Module.finrank ℂ (lowKSub ε lam σ) : ℝ)
-
 end DS
 
 def spectralGapLowerBound (D : D7) (ep0 : ℝ) : ℝ :=
@@ -80,16 +44,9 @@ def SigmaDegreeTwoSidedBoundOfGap (D : D7) : Prop :=
     D.dsig ρ ≤ 4 * dTau (rowSgn D) (rowLam D ρ) *
       (3 * (pY D : ℝ) * (qY D : ℝ) * lamAbs (rowLam D ρ)) ^ (pY D * qY D)
 
-def SigmaDegreeBoundOfDiscreteSeriesBounds (D : D7) : Prop := DiscreteSeriesDegreeBoundsOfGap D → FamilyMassLastLine D → DsigEx D → SigmaDegreeTwoSidedBoundOfGap D
-
-def DiscreteSeriesDegreeAndUpperBoundOfScale (D : D7) : Prop := Adm3 D → cdScaleTie D → DiscreteSeriesDegreeBoundsOfGap D ∧ DiscreteSeriesUpperBoundOfLargeGap D
-
 def DstarM (D : D7) : ℝ := DstarP D (D.host.g 0) (D.host.g 1) (massI D D.R.r) D.dsig
 
 def BaseVolumeEqualsMass (D : D7) : Prop := volY0 D = massI D D.R.r
-
-theorem DstarD_eq_DstarM (D : D7) (h : BaseVolumeEqualsMass D) : DstarD D = DstarM D := by
-  unfold DstarD DstarM; rw [h]
 
 def piN (n g : ℕ) : ℝ := ∏ i ∈ Finset.Icc 1 n, (1 - ((g : ℝ) ^ i)⁻¹)
 
@@ -137,8 +94,6 @@ def LemmaFiveOneIdentity (D : D7) : Prop :=
           Real.log (1 - ((D.host.g i : ℝ) ^ j)⁻¹)
       + ∑ ρ, Real.log (D.dsig ρ * facProd D.R.r / vand (uColR D u ρ))
 
-def LogWordScaleClosedFormOfIndexFormulas (D : D7) : Prop := MassRatio₂ D → VolumeEqMass₂ D → IndexProductFormulasAndRatio D → LemmaFiveOneIdentity D
-
 def lowS (D : D7) (sc : Scale) (w : ℕ → D.what₂.Tau → ℝ) : ℝ :=
   (∑ j ∈ range D.R.m, (1 / (D.R.f : ℝ)) * ∑ ρ, Real.log (w j ρ * D.host.v / Real.pi)) +
     (D.R.m : ℝ) * (∑ i : Fin 2, Real.log (D.host.g i : ℝ)) - 11 * sc.L
@@ -170,9 +125,6 @@ def VandermondeCountExplicit (D : D7) (sc : Scale) (C0 CY : ℝ) : Prop :=
       logXuD D u - 1 ≤ logXuD D u - 2 * Real.log Γ / ((D.R.f : ℝ) * D.R.k) ∧
       (D.R.m : ℝ) * sc.L / 2 ≤ logXuD D u - 1)
 
-def LemmaVStrong (D : D7) : Prop :=
-  ∀ u : D.what₂.Word, 2 * Real.log (D.mem u).A.GamP / ((D.R.f : ℝ) * D.R.k) ≤ 1
-
 def VandermondeVariationExplicitBound (D : D7) (sc : Scale) (C0 CY : ℝ) : Prop :=
   ∀ (Δ : ℝ) (w : ℕ → D.what₂.Tau → ℝ), DataA D sc C0 CY Δ w →
     (∀ (u u' : D.what₂.Word) (ρ : D.what₂.Tau),
@@ -183,30 +135,12 @@ def VandermondeVariationExplicitBound (D : D7) (sc : Scale) (C0 CY : ℝ) : Prop
 def VandermondeCountBound (D : D7) (sc : Scale) (C0 CY : ℝ) : Prop :=
   Conclusion5Sharp D sc C0 CY ∧ LogXuLowerBoundOfWeightFloor D sc C0 CY ∧ VandermondeCountExplicit D sc C0 CY ∧ VandermondeVariationExplicitBound D sc C0 CY
 
-def VandermondeCountExplicitBound (D : D7) (sc : Scale) (C0 CY : ℝ) : Prop :=
-  VolumeMass D → SigmaDegreeTwoSidedBoundOfGap D → LocalIndexFormulasAndBounds D → Conclusion4b D → PartFourSectionBData D sc 8192 C0 → VandermondeCountBound D sc C0 CY
-
 section Fam
 
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
 
-def FamilyMassExplicit : Prop := ∀ x (i : Fm.Ix x), projection_sandwich_lattice (Fm.D x i) ∧ projection_lemma_base_level (Fm.D x i)
-def FamilyTheoremThreeExplicit : Prop := ∀ x (i : Fm.Ix x), DiscreteSeriesDegreeBoundsOfGap (Fm.D x i) ∧ DiscreteSeriesUpperBoundOfLargeGap (Fm.D x i)
-def FamilySigmaDegreeTwoSidedBound : Prop := ∀ x (i : Fm.Ix x), SigmaDegreeTwoSidedBoundOfGap (Fm.D x i)
-def FamilyVolumeMassAndIndexFormulas : Prop := ∀ x (i : Fm.Ix x), BaseVolumeEqualsMass (Fm.D x i) ∧ LocalIndexFormulasAndBounds (Fm.D x i) ∧ IndexProductFormulasAndRatio (Fm.D x i)
-def FamilyLemmaFiveOne : Prop := ∀ x (i : Fm.Ix x), LemmaFiveOneIdentity (Fm.D x i)
-
 def FamilyVandermondeCountExplicit : Prop :=
   ∀ C0 CY : ℝ, ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x, VandermondeCountBound (Fm.D x i) (Fm.L x i).sc C0 CY
-
-def FamilyLogGammaBound : Prop := ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, LemmaVStrong (Fm.D x i)
-
-def FamilyMassExplicitOfVolumeAgreement : Prop := FamilyPartOne Fm → VolTieF Fm → FamilyMassExplicit Fm
-def FamilyTheoremThreeExplicitStatement : Prop := FamilyTheoremThreeAdmitted Fm → FamilyTheoremThreeExplicit Fm
-def FamilySigmaStatement : Prop := FamilyTheoremThreeExplicit Fm → FamilyTheoremThreeAdmitted Fm → DsigExF Fm → FamilySigmaDegreeTwoSidedBound Fm
-def FamilyIndexFormulasOfMassVolumeBounds : Prop := FamilyMassVolumeBounds Fm → FamilyVolumeMassAndIndexFormulas Fm
-def FamilyIdentityOfMassVolumeAndIndices : Prop := FamilyMassVolumeBounds Fm → FamilyVolumeMassAndIndexFormulas Fm → FamilyLemmaFiveOne Fm
-def FamilyVandermondeCountBound : Prop := FamilyMassVolumeBounds Fm → FamilySigmaDegreeTwoSidedBound Fm → FamilyVolumeMassAndIndexFormulas Fm → FamilyPartFourSectionB Fm 8192 → FamilyVandermondeCountExplicit Fm
 
 end Fam
 
@@ -342,65 +276,5 @@ theorem part_five_family_of_explicit {eps : ℝ} (Fm : Formalism.MainNotions.Fam
   refine ⟨max 11 (16 + 3 * C0), max x0 x1, fun x hx hxx i => ?_⟩
   exact part_five_all_of_explicit _ _ C0 C0 _ (hx0 x (le_trans (le_max_left _ _) hx) hxx i)
     (fun Δ w hB => hx1 x (le_trans (le_max_right _ _) hx) hxx i Δ w hB) (le_max_left _ _) (le_max_right _ _)
-
-section DS
-
-open Formalism.MainNotions.S MeasureTheory Matrix
-open scoped InnerProductSpace ComplexOrder
-
-theorem lamAbs_nonneg {N : ℕ} (lam : Fin N → ℝ) : 0 ≤ lamAbs lam :=
-  Real.iSup_nonneg fun _ => Real.iSup_nonneg fun _ => abs_nonneg _
-
-theorem theorem_three_of_explicit_and_compact (D : D7) (C3 : ℝ) (hC : 8192 ≤ C3) (hS : DiscreteSeriesDegreeBoundsOfGap D) (hZ : FormalDegreeComparisonCompactCase D) : RepresentationDimensionGeneral D C3 := by
-  intro N ε lam ep0 h0 H _ _ σ w p q hHC hgap he1 he2 hh hDS hw
-  by_cases hpq : (Finset.univ.filter (fun a => ε a = true)).card = 0 ∨
-      (Finset.univ.filter (fun a => ε a = false)).card = 0
-  · obtain ⟨z1, z2⟩ := hZ N ε lam ep0 H σ w hpq hHC he1 he2 hDS hw
-    refine ⟨z1, le_trans z2 ?_⟩
-    have e : p * q = 0 := by
-      rcases hpq with h | h
-      · have : p = 0 := by show ((Finset.univ.filter (fun a => ε a = true)).card : ℝ) = 0; rw [h]; simp
-        rw [this, zero_mul]
-      · have : q = 0 := by show ((Finset.univ.filter (fun a => ε a = false)).card : ℝ) = 0; rw [h]; simp
-        rw [this, mul_zero]
-    rw [e, Real.rpow_zero, mul_one]
-  · rw [not_or] at hpq
-    have hp : 1 ≤ p := by
-      show (1 : ℝ) ≤ ((Finset.univ.filter (fun a => ε a = true)).card : ℝ)
-      exact_mod_cast Nat.one_le_iff_ne_zero.2 hpq.1
-    have hq : 1 ≤ q := by
-      show (1 : ℝ) ≤ ((Finset.univ.filter (fun a => ε a = false)).card : ℝ)
-      exact_mod_cast Nat.one_le_iff_ne_zero.2 hpq.2
-    have hN : (1 : ℝ) ≤ N := by
-      have h1 : (Finset.univ.filter (fun a => ε a = true)).card ≤ N := by
-        simpa using Finset.card_filter_le (Finset.univ : Finset (Fin N)) (fun a => ε a = true)
-      have h2 : p ≤ N := by
-        show ((Finset.univ.filter (fun a => ε a = true)).card : ℝ) ≤ N
-        exact_mod_cast h1
-      linarith
-    have he : 0 < ep0 := lt_of_lt_of_le (Real.exp_pos _) he1
-    have hm : 0 ≤ min p q := le_min (by linarith) (by linarith)
-    have hl : 0 ≤ Real.log N := Real.log_nonneg hN
-    have hyp : 8192 * min p q * (p * q) ^ 3 * Real.log N / ep0 ^ 2 ≤ h0 := by
-      refine le_trans ?_ hh
-      apply div_le_div_of_nonneg_right _ (by positivity)
-      have h1 : 8192 * min p q * (p * q) ^ 3 ≤ C3 * min p q * (p * q) ^ 3 * N := by
-        have : 8192 * (min p q * (p * q) ^ 3) ≤ C3 * N * (min p q * (p * q) ^ 3) := by
-          apply mul_le_mul_of_nonneg_right _ (by positivity)
-          nlinarith
-        nlinarith
-      exact mul_le_mul_of_nonneg_right h1 hl
-    obtain ⟨s1, s2⟩ := hS N ε lam ep0 h0 H σ w hp hq hHC hgap he1 he2 hyp hDS hw
-    refine ⟨s1, le_trans s2 ?_⟩
-    have hla := lamAbs_nonneg lam
-    have hb : 3 * p * q * lamAbs lam ≤ C3 * p * q * N * lamAbs lam := by
-      have h3 : 3 ≤ C3 * N := by nlinarith
-      have : 3 * (p * q * lamAbs lam) ≤ C3 * N * (p * q * lamAbs lam) :=
-        mul_le_mul_of_nonneg_right h3 (by positivity)
-      nlinarith
-    exact mul_le_mul_of_nonneg_left
-      (Real.rpow_le_rpow (by positivity) hb (by positivity)) (by positivity)
-
-end DS
 
 end Formalism.MainNotions.StandardLattice

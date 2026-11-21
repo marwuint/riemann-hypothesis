@@ -182,7 +182,7 @@ theorem main : CrystallineSemistableComparison.Pb.KH.LocGr → CrystallineSemist
         Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1)) (xdtC s V c.t (∑ k : Fin (n + 1), (-1 : Γ(X, V)) ^ (k : ℕ) * D k (η k))) (resKS q s hVV _ _ _ x) := by
   intro _ _ _ K _ _ X q n _ s hs V V' hVV hV' c D hD f hf hdf x hx
   haveI : Smooth q := SmoothOfRelativeDimension.smooth (n + 1) q
-  obtain ⟨E, ε, hL⟩ := GlobalTheory.T.exists_local_frame_of_coords q c s (by omega)
+  obtain ⟨E, ε, hL⟩ := _root_.GlobalTheory.CompanionTheory.ConeLocal.exists_loc q c s (by omega)
   let σ : ∀ T, E.D ⟶ T := fun T => (E.ne T).some
   have hF := GlobalTheory.CompanionTheory.DPFil.isFil_sFil (KS q s {V})
   have hc : E.GrConst (sFil (KS q s {V})) := hL.1
@@ -191,7 +191,7 @@ theorem main : CrystallineSemistableComparison.Pb.KH.LocGr → CrystallineSemist
   obtain ⟨ξ, hξ⟩ := rep_exists (a := sFil (KS q s {V'}) (n : ℤ)) (b := sFil (KS q s {V'}) ((n : ℤ) + 1)) f hf hdf
   have h1 := rep_res (ks_le q s hVV) _ _ hξ
   have h2 := rep_res (ks_le q s hVV) _ _ hx
-  obtain ⟨y, hy⟩ := (GlobalTheory.T.local_graded_class_representative q c.t s E ε hL σ n (n : ℤ) rfl (by omega)).1 (resKS q s hVV _ _ _ ξ)
+  obtain ⟨y, hy⟩ := (_root_.GlobalTheory.CompanionTheory.ConeLocal.loc_coef q c.t s E ε hL σ n (n : ℤ) rfl (by omega)).1 (resKS q s hVV _ _ _ ξ)
   have hmem := GlobalTheory.T.local_frame_derivation_compat q s hVV hV' c D hD E ε hL σ n (n : ℤ) rfl (by omega) ξ y hy
   have h2' : CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1))
       (fun u => CH.d _ n (resQ (ks_le q s hVV) f) u) (resKS q s hVV _ _ _ x) := by

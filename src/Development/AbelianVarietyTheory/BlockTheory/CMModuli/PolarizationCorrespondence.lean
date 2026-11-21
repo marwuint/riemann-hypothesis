@@ -113,35 +113,12 @@ def linComb {n : ℕ} (c : Fin n → R) (v : Fin n → Tan G) : Tan G :=
 def IsLieBasis {n : ℕ} (v : Fin n → Tan G) : Prop :=
   Function.Bijective fun c : Fin n → R => linComb c v
 
-def TanCorr {R' : Type} [CommRing R'] {G' : Over (Sp R')} [GrpObj G'] (f : R →+* R')
-    (φ : G'.left ⟶ G.left) (v' : Tan G') (v : Tan G) : Prop :=
-  v'.1.left ≫ φ = spMap (epsHom f 1) ≫ v.1.left
-
-example (v : Tan G) : TanCorr (RingHom.id R) (𝟙 G.left) (Tan.smul 1 v) v := by
-  simp [TanCorr, Tan.smul, epsScale]
-
-example (c : R) (v : Tan G) : linComb ![c] ![v] = Tan.smul c v := by
-  simp [linComb]
-
 end Lie
 
 section Input
 
 def NonzeroOnFibres {S : Scheme.{0}} (A : Over S) {L : LB A.left} (s : LB.Sec L) : Prop :=
   ∀ y : S, ∃ x : A.left, A.hom x = y ∧ x ∈ nonzeroLocus s
-
-def GeneratesSections {S : Scheme.{0}} (A : Over S) {L : LB A.left} (s : LB.Sec L) : Prop :=
-  ∀ t : LB.Sec L, ∃ r : Γ(S, ⊤), ∀ i,
-    t.f i = (A.hom.appLE ⊤ (L.U i) le_top).hom r * s.f i
-
-def SecCorr {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} (φ : X' ⟶ X) (w : LB.Iso L' (L.pull φ))
-    (s' : LB.Sec L') (s : LB.Sec L) : Prop :=
-  ∀ (j : PUnit → L.ι) (i : L'.ι),
-    resG X' (inf_le_left.trans (LB.wchart_le L (fun _ : PUnit => φ) j PUnit.unit) :
-        (L.pull φ).U j ⊓ L'.U i ≤ φ ⁻¹ᵁ L.U (j PUnit.unit))
-      ((φ.app (L.U (j PUnit.unit))).hom (s.f (j PUnit.unit))) =
-    (@id (Γ(X', (L.pull φ).U j ⊓ L'.U i)ˣ) (w.s (j, i))).val *
-      resG X' (inf_le_right : (L.pull φ).U j ⊓ L'.U i ≤ L'.U i) (s'.f i)
 
 structure KeyInput (R : Type) [CommRing R] where
 
@@ -158,24 +135,6 @@ structure KeyInput (R : Type) [CommRing R] where
   b_basis : IsLieBasis b
 
 variable {R R' : Type} [CommRing R] [CommRing R']
-
-def PolCorr (f : R →+* R') (x : KeyInput R) (x' : KeyInput R') (φ : x'.P.A.left ⟶ x.P.A.left)
-    (w : LB.Iso x'.P.L (x.P.L.pull φ)) : Prop :=
-  IsGrpPullback x'.P.A x.P.A (spMap f) φ ∧ w.IsGen ∧
-    (∃ he : eSec x'.P.A ≫ φ = spMap f ≫ eSec x.P.A,
-      LB.Gen.Maps (LB.linCombIso w (K := PUnit) (fun _ => eSec x'.P.A) (fun _ => 1)) x'.rig
-        (rigPullOf φ (spMap f) he x.P.L x.rig)) ∧
-    SecCorr φ w x'.th x.th
-
-def IsBaseChange (f : R →+* R') (x : KeyInput R) (x' : KeyInput R') : Prop :=
-  ∃ (φ : x'.P.A.left ⟶ x.P.A.left) (w : LB.Iso x'.P.L (x.P.L.pull φ)) (hg : x'.P.g = x.P.g),
-    PolCorr f x x' φ w ∧ ∀ i : Fin x'.P.g, TanCorr f φ (x'.b i) (x.b (Fin.cast hg i))
-
-def IsBaseChangeDet (f : R →+* R') (x : KeyInput R) (x' : KeyInput R') : Prop :=
-  ∃ (φ : x'.P.A.left ⟶ x.P.A.left) (w : LB.Iso x'.P.L (x.P.L.pull φ)) (hg : x'.P.g = x.P.g),
-    PolCorr f x x' φ w ∧
-    ∃ (u : Fin x'.P.g → Tan x'.P.A) (M : Matrix (Fin x'.P.g) (Fin x'.P.g) R'),
-      (∀ i, TanCorr f φ (u i) (x.b (Fin.cast hg i))) ∧ M.det = 1 ∧ ∀ i, x'.b i = linComb (M i) u
 
 end Input
 

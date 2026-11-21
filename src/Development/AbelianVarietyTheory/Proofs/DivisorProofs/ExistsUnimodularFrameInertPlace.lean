@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinMapsOfForall
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemKAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AntiCols
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalBlockOfMatrix
@@ -10,9 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InLat2
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDualFamilyOfIsLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationAlgebraMapEqOfInertPlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatchedFiniteMapsRestriction
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBaseFieldGeneratorLocalDifferentInertPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBaseFieldGeneratorLocalDifferentInertPlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SkewHermitianLatticeSelfDualSmulTransposeInertStatement
-open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
+
+open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped TensorProduct Matrix
 
 noncomputable section
@@ -23,7 +24,7 @@ theorem selfDual_scaled : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [
   ∀ {v : Pl F} {w : HeightOneSpectrum (𝓞 E)}, Formalism.UG.IsInertAt F E v w →
   ∃ t : F, t ≠ 0 ∧ GlobalTheory.AdelicU.IsSelfDualAt σ (algebraMap F E t • W.Jᵀ) W.L v := by
   intro F E _ _ _ _ _ σ B d W r s hW v w hw
-  obtain ⟨t, ht0, s₁, s₂, h1, h2, c1, c2⟩ := GlobalTheory.T.exists_baseField_generator_localDifferent_inertPlace hw
+  obtain ⟨t, ht0, s₁, s₂, h1, h2, c1, c2⟩ := _root_.GlobalTheory.InertDifferentGen.exists_generator_different_of_isInertAt hw
   exact ⟨t, ht0, GlobalTheory.T.skewHermitianLattice_selfDual_smul_transpose_inert σ B W r s hW hw t ht0 s₁ s₂ h1 h2 c1 c2⟩
 
 theorem isConjAt_conjW {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]

@@ -27,12 +27,6 @@ def AdaptedReduction.Statement [FiniteDimensional E W] (h : HermitianForm F E W)
 
 end Reduction
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

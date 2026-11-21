@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuadraticUnramifiedIffInertOrSplit
-import Mathlib
+
 open scoped TensorProduct
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in

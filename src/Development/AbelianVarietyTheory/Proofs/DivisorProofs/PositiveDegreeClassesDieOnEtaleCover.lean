@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocallyIffAffineEtalePointCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecSigmaBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafSectionsExactStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexBasicPropertiesStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
@@ -23,7 +23,7 @@ theorem secRes_secRes {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (
 theorem classes_die_on_etale_cover : A5 := by
   intro R _ X F n hn x
   obtain ⟨α, rfl⟩ := x.mk_surjective
-  have hsch := GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R X (res R F) (n - 1) n (n + 1) (by omega) rfl
+  have hsch := _root_.GlobalTheory.EtC.sch_cls_cocycle_sec R X (res R F) (n - 1) n (n + 1) (by omega) rfl
   have hres := GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F X
   set z := ev α.1 0 n (by simp) X (𝟙 X) with hz
   have hdz : Sec.map ((res R F).d n (n + 1)) z = 0 := (hsch.2 α).1
@@ -50,7 +50,7 @@ theorem classes_die_on_etale_cover : A5 := by
       have hai : Sec.res (Sigma.ι V i) a = y i := congrFun ha i
       change Sec.res (Sigma.ι V i) (Sec.map _ a) = Sec.res (Sigma.ι V i) (Sec.res f z)
       rw [← secMap_secRes_comm, hai, hy, secRes_secRes, hιf]
-    have hY := GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R (∐ V) (res R F) (n - 1) n (n + 1) (by omega) rfl
+    have hY := _root_.GlobalTheory.EtC.sch_cls_cocycle_sec R (∐ V) (res R F) (n - 1) n (n + 1) (by omega) rfl
     have hev := GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := res R F) (n := n)
     let α' : Cocycle ((chains R).obj (sch.obj (∐ V))) (res R F) n :=
       zcomp (Cocycle.ofHom ((chains R).map (sch.map f))) α (zero_add n)

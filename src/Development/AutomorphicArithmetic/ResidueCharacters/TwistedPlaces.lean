@@ -76,9 +76,6 @@ def TwPl (D : D7) (w : D.what₂.places.Pl) : Prop := D.what₂.muAt w ≠ D.wha
 
 def TwLoc (D : D7) (i : D.nd.Loc) : Prop := TwPl D (D.nd.w i)
 
-theorem TwPl.muAt_eq {D : D7} {w : D.what₂.places.Pl} (h : TwPl D w) : D.what₂.muAt w = D.what₂.muTw w :=
-  (D.what₂.muAt_or w).resolve_left h
-
 theorem TwPl.twLoc {D : D7} {w : D.what₂.places.Pl} (h : TwPl D w) {j : ℕ} {i : D.nd.Loc}
     (hi : i ∈ D.nd.locs j w) : TwLoc D i := by
   unfold TwLoc
@@ -321,8 +318,6 @@ theorem admissibleMeanCondition_holds (L : SizeData₂ D) : TwistedWeightMeanBou
         field_simp
 
 def admitted (L : SizeData₂ D) (P : ParameterChoice' D L) (C : ℝ) : Prop := ShaFinOdd D → ∃ tb : Tab L, AdmT L tb C P
-
-def Stmt (L : SizeData₂ D) (P : ParameterChoice' D L) (Ca C : ℝ) : Prop := admitted L P Ca → aux₃ L C
 
 end Formalism.MainNotions.TwistedPlaces
 

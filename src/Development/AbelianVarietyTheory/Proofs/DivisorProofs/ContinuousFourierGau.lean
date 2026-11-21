@@ -37,11 +37,6 @@ theorem norm_gau (u : V) : ‖gau u‖ = Real.exp (-(π / 2) * ‖u‖ ^ 2) := b
   have : (-(π / 2 : ℂ) * (‖u‖ : ℂ) ^ 2) = ((-(π / 2) * ‖u‖ ^ 2 : ℝ) : ℂ) := by push_cast; ring
   rw [this, ofReal_re]
 
-theorem norm_gau_le_one (u : V) : ‖gau u‖ ≤ 1 := by
-  rw [norm_gau, Real.exp_le_one_iff]
-  have := Real.pi_pos
-  nlinarith [sq_nonneg ‖u‖]
-
 theorem gau_ne_zero (u : V) : gau u ≠ 0 := Complex.exp_ne_zero _
 
 theorem gau_zero : gau (0 : V) = 1 := by simp [gau]

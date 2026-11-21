@@ -45,13 +45,6 @@ theorem tens_cancel {Ψ : d.MF} (hΨ : d.IsAwayW w Ψ) (h0 : Ψ ≠ 0) {g g' : d
 theorem exists_adm (hT : TAll) {Ψ : d.MF} (hΨ : R.GoodAway w Ψ) {f : d.LF} (hf : IsSw f) :
     ∃ Φ ∈ d.sch, d.T Φ = R.tens w f Ψ := (hT.1 F E σ d).2.1 _ (hΨ.2.2 f hf)
 
-theorem locOp_unique (hT : TAll) (hG : GoodAwayEx) {L' : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
-    (hL : R.IsLocOp w L) (hL' : R.IsLocOp w L') : ∀ y f, IsSw f → L y f = L' y f := by
-  intro y f hf
-  obtain ⟨Ψ, hΨ⟩ := hG F E σ d R w
-  obtain ⟨Φ, hΦ, hT'⟩ := R.exists_adm hT hΨ hf
-  exact R.tens_cancel hΨ.1 hΨ.2.1 (((hL y f hf).2 Ψ hΨ.1 Φ hΦ hT').symm.trans ((hL' y f hf).2 Ψ hΨ.1 Φ hΦ hT'))
-
 theorem locOp_one (hT : TAll) (hG : GoodAwayEx) (hL : R.IsLocOp w L) : ∀ f, IsSw f → L 1 f = f := by
   intro f hf
   obtain ⟨Ψ, hΨ⟩ := hG F E σ d R w

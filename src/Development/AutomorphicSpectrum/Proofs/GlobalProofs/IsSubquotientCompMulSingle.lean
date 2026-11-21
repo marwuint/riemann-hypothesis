@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HasSupportOfIsSubquotientProdIrr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviBlockRepEquivFirst
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiExteriorTensorSmoothIrreducibleIsIrreducibleStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiExteriorTensorSmoothIrreducibleIsIrreducible
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmRep
 
 noncomputable section
 
@@ -147,7 +150,7 @@ theorem offdiag_eq_zero (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFinitene
   obtain ⟨s, hrow, hcol⟩ := exists_of_cell (hG k).2 f g (fun i => (p i).smooth)
     (fun i => hasFiniteLength_of_isIrreducible (p i).irr) hτ hτs h0
   have hR : ∀ i, ∃ t : Fin 2 → Multiset (IrrGL k), (∀ j, HasSupport (s i j).ρ (t j)) ∧ A i = ∑ j, t j :=
-    fun i => exists_sum_of_jac hG hBZ (hA i) (f i) (GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => s i j) (hrow i)
+    fun i => exists_sum_of_jac hG hBZ (hA i) (f i) (_root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k _ _ fun j => s i j) (hrow i)
       (fun j => s i j) (fun j => isSubquotient_comp_mulSingle _ (fun j => (s i j).irr) j)
   choose t ht hAt using hR
   have hC : ∀ j, HasSupport (y j).ρ (∑ i, t i j) := by

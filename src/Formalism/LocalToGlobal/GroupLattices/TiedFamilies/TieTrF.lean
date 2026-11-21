@@ -31,54 +31,6 @@ def lvSet {u : D.what₂.Word} {A : AtTTied (D := D) u} {i : ℕ} {hi : i ≤ D.
     LvTied (D := setGat D g' hd') u (atTTSet D g' hd' A) i hi := { P with }
 
 set_option maxHeartbeats 4000000 in
-def clsPSet {u : D.what₂.Word} (K : ClsPTied (D := D) u) : ClsPTied (D := setGat D g' hd') u := { K with }
-
-set_option maxHeartbeats 4000000 in
-def valPSet {u : D.what₂.Word} {K : ClsPTied (D := D) u} (W : ValPTied (D := D) u K) :
-    ValPTied (D := setGat D g' hd') u (clsPSet D g' hd' K) := { W with }
-
-set_option maxHeartbeats 4000000 in
-def tilSet {u : D.what₂.Word} {A : AtTTied (D := D) u} {K : ClsPTied (D := D) u} {P : LvTied (D := D) u A D.R.m le_rfl}
-    (Tl : TilTied (D := D) u A K P) :
-    TilTied (D := setGat D g' hd') u (atTTSet D g' hd' A) (clsPSet D g' hd' K) (lvSet D g' hd' P) := { Tl with }
-
-set_option maxHeartbeats 4000000 in
-def tilAdSet {u : D.what₂.Word} {A : AtTTied (D := D) u} {K : ClsPTied (D := D) u} {P : LvTied (D := D) u A D.R.m le_rfl}
-    {Tl : TilTied (D := D) u A K P} {Km : ClsTied (D := D) u D.R.m le_rfl} (Ta : TilAd (D := D) Tl Km) :
-    TilAd (D := setGat D g' hd') (tilSet D g' hd' Tl) (clsSet D g' hd' Km) := { Ta with }
-
-set_option maxHeartbeats 8000000 in
-
-def formsSet {u : D.what₂.Word} (T : FormsTied D u) : FormsTied (setGat D g' hd') u where
-  atT := atTTSet D g' hd' T.atT
-  cls := fun i hi => clsSet D g' hd' (T.cls i hi)
-  val := fun i hi => valSet D g' hd' (T.val i hi)
-  gl := T.gl
-  gl_K := T.gl_K
-  glev := T.glev
-  lv := fun i hi => lvSet D g' hd' (T.lv i hi)
-  fMe := T.fMe
-  fv := T.fv
-  upN := T.upN
-  dnN := T.dnN
-  norm := T.norm
-  bw := T.bw
-  clsP := clsPSet D g' hd' T.clsP
-  valP := valPSet D g' hd' T.valP
-  normP := T.normP
-  glevP := T.glevP
-  til := tilSet D g' hd' T.til
-  tilLat := T.tilLat
-  tilFv := T.tilFv
-  tilAd := tilAdSet D g' hd' T.tilAd
-  frExt := T.frExt
-  eWz := T.eWz
-  evz := T.evz
-  jM := T.jM
-  per := T.per
-  DGam := T.DGam
-
-set_option maxHeartbeats 4000000 in
 
 def forms0Set {u : D.what₂.Word} (T : Forms0 D u) : Forms0 (setGat D g' hd') u where
   atT := atTTSet D g' hd' T.atT

@@ -6,7 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.StandardFu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLevelCharacterAtConjugateSplitPlace
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalisedParabolicInductionReindexEquiv
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductRepresentationReorderEquivStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductRepresentationReorderEquiv
+
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.JHMult
 
 noncomputable section
@@ -127,33 +129,5 @@ theorem revRep_leviProj (e : (Σ a, Fin (d a)) ≃ Fin n)
   exact LinearMap.congr_fun key v
 
 end Local
-
-theorem multiProd_comp_invTranspose : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (h n : ℕ) (d : Fin h → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n) (e' : (Σ a, Fin (d (Fin.rev a))) ≃ Fin n) (X : Fin h → Type) [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (π : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)), (∀ a, IsSmooth (π a)) → Nonempty (Representation.Equiv ((multiProd e π).comp (GlobalTheory.TypeTame.invTranspose n)) (multiProd e' fun a => ((π (Fin.rev a)).comp (GlobalTheory.TypeTame.invTranspose (d (Fin.rev a))) : Representation ℂ (GL (Fin (d (Fin.rev a))) k) (X (Fin.rev a))))) := by
-  intro k _ _ _ _ h n d e e' X _ _ π _
-  set π' : ∀ a, Representation ℂ (GL (Fin (d (Fin.rev a))) k) (X (Fin.rev a)) :=
-    fun a => (π (Fin.rev a)).comp (invTranspose (d (Fin.rev a))) with hπ'
-  have key : ∀ (q : parab k e) (hq : invTranspose n (q : GL (Fin n) k) ∈ parab k (revPlace e)),
-      ((twist (revRep π') (deltaHalf k _)).comp (leviProj k (revPlace e))) ⟨invTranspose n q, hq⟩ =
-        ((twist (piTensor π) (deltaHalf k _)).comp (leviProj k e)) q := by
-    intro q hq
-    refine LinearMap.ext fun v => ?_
-    rw [MonoidHom.comp_apply, MonoidHom.comp_apply, twist_apply, twist_apply, deltaHalf_revPlace e q hq,
-      hπ', revRep_leviProj e π q hq]
-  obtain ⟨A⟩ : Nonempty ((parInd (revPlace e) (revRep π')).Equiv
-      ((multiProd e π).comp (invTranspose n))) := by
-    refine Relabel.smInd_equiv_comp (P := parab k (revPlace e)) (Q := parab k e)
-      (σ := (twist (revRep π') (deltaHalf k _)).comp (leviProj k (revPlace e)))
-      (τ := (twist (piTensor π) (deltaHalf k _)).comp (leviProj k e))
-      (invTranspose n) (invTranspose n) (continuous_invTranspose n) (continuous_invTranspose n)
-      (invTranspose_invTranspose n) (invTranspose_invTranspose n)
-      (fun q => ⟨⟨_, mem_parab_revPlace e q.2⟩, rfl, key q _⟩) (fun p => ?_)
-    have hp : invTranspose n (invTranspose n (p : GL (Fin n) k)) ∈ parab k (revPlace e) := by
-      rw [invTranspose_invTranspose]
-      exact p.2
-    refine ⟨⟨_, mem_parab_of_revPlace e p.2⟩, rfl, ?_⟩
-    refine (key ⟨_, mem_parab_of_revPlace e p.2⟩ hp).symm.trans ?_
-    exact congrArg _ (Subtype.ext (invTranspose_invTranspose n (p : GL (Fin n) k)))
-  obtain ⟨B⟩ := GlobalTheory.T.product_representation_reorder_equiv k h n (fun a => d (Fin.rev a)) (revPlace e) e' (fun a => X (Fin.rev a)) π'
-  exact ⟨A.symm.trans ((parIndEquiv (revPlace e) (revRepEquiv π')).trans B)⟩
 
 end GlobalTheory.InvTransposeProd

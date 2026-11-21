@@ -56,22 +56,6 @@ omit [NumberField E] in
 theorem mem_latMoved {g : GLoc σ J v} {x : Fin n → Fv F v ⊗[F] E} :
     x ∈ latMoved σ J L v g ↔ (matHom (Fv F v) σ J g⁻¹).1 *ᵥ x ∈ latLoc F L v := Iff.rfl
 
-omit [NumberField E] in
-
-example : latLength σ J L v 1 = 0 := by
-  rw [latLength, Module.length_eq_zero_iff, Submodule.Quotient.subsingleton_iff, eq_top_iff]
-  intro x _
-  refine ⟨x.2, (mem_latMoved σ J L v).2 ?_⟩
-  simp
-
-example (x : GL (Fin n) (Fv F v)) (d : Fin n → (Fv F v)ˣ) (hx : x.1 = Matrix.diagonal fun i => (d i : Fv F v)) :
-    IsElemDiv x d := ⟨1, one_mem _, 1, one_mem _, by simp [hx]⟩
-
-example [Submodule.IsLattice E L] : graphHgt σ J L v 1 = 1 := by
-  have : ((1 : GLoc σ J v), (1 : GLoc σ J v)) = 1 := rfl
-  rw [graphHgt, this, map_one]
-  exact hgtH_of_mem (continuous_absEv v) (isCompact_KFin v) (one_mem _)
-
 end GlobalTheory.IndefiniteRowSideFullHecke.GraphHeightLattice
 
 end

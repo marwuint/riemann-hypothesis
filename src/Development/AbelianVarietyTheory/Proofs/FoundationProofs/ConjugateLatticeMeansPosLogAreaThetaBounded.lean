@@ -33,7 +33,7 @@ theorem exists_crv_conj {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : C
       rw [← e]
       exact (congrArg Tor.abelian₂ hbar).symm
     generalize lamConj M' ρ' (lamOf D cc δ) = Λ at hm
-    obtain ⟨-, -, hdisc, -, hO⟩ := GlobalTheory.T.idealPeriodLattice_of_curveDatum D (GlobalTheory.InducedType.induced_type D).1 cc' δ' hc'
+    obtain ⟨-, -, hdisc, -, hO⟩ := _root_.GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc' δ' hc'
     have hd : TaylorLogMetric.discr Λ = 1 := by
       rw [← hm, TaylorLogMetric.discr, g2, g3, eisG_conj, eisG_conj] at hdisc
       apply (starRingEnd ℂ).injective
@@ -58,11 +58,11 @@ theorem means_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), ∀ (cc : Ideal (𝓞 D.
   have hc2 : 0 ≤ Real.posLog (2 * Real.pi ^ 2) := Real.posLog_nonneg
   refine ⟨18 + 3 / 2 * (Real.posLog (2 * Real.pi ^ 2) + (Real.posLog C + 2)), by positivity, ?_⟩
   intro D cc δ t0 hc _ L hL hrd hdl M _ h2 h3 _ t ht
-  obtain ⟨-, hlogd, hr1, -⟩ := GlobalTheory.T.derivationDenominators_and_hostField_sizes D (GlobalTheory.InducedType.induced_type D).1
+  obtain ⟨-, hlogd, hr1, -⟩ := _root_.GlobalTheory.NormSum.letters_and_sizes D (GlobalTheory.InducedType.induced_type D).1
   have hn : (0 : ℝ) < Module.finrank ℚ M := by exact_mod_cast Module.finrank_pos
   have hcard : (Fintype.card (M →ₐ[ℚ] ℂ) : ℝ) = Module.finrank ℚ M := by
     exact_mod_cast AlgHom.card ℚ M ℂ
-  have hper := GlobalTheory.T.mean_log_period_conjugates_eq_chowlaSelberg D (GlobalTheory.InducedType.induced_type D).1 cc δ hc M h2 h3
+  have hper := _root_.GlobalTheory.PeriodMean.mean_log_period D (GlobalTheory.InducedType.induced_type D).1 cc δ hc M h2 h3
   have hd0 : (0 : ℝ) < D.host.d := by exact_mod_cast D.host.hyp.2.1.pos
   have hpi := Real.pi_gt_three
   have hγ := Real.one_half_lt_eulerMascheroniConstant
@@ -85,15 +85,15 @@ theorem means_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), ∀ (cc : Ideal (𝓞 D.
     obtain ⟨cc', δ', hc', e⟩ := exists_crv_conj hc M ρ h2 h3
     have ht' := ht ρ
     rw [e] at ht' ⊢
-    obtain ⟨hΛ, -, hdisc, -, hO⟩ := GlobalTheory.T.idealPeriodLattice_of_curveDatum D (GlobalTheory.InducedType.induced_type D).1 cc' δ' hc'
+    obtain ⟨hΛ, -, hdisc, -, hO⟩ := _root_.GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc' δ' hc'
     obtain ⟨ha0, haC⟩ := hA _ hΛ hdisc
     constructor
     · rw [Real.log_div ha0.ne' (by positivity)]
       have h1 := Real.posLog_le_posLog ha0.le haC
       have h4 := Real.posLog_sub_posLog_inv (x := area (lamOf D cc' δ'))
       linarith
-    · have := posLog_nrm_le _ hΛ hdisc ((GlobalTheory.T.admJ_and_torsion_data_algebraic D (GlobalTheory.InducedType.induced_type D).1).1 cc' δ' hc'.1 hc'.2)
-        (GlobalTheory.T.sigmaStar_value_le_meanSquare_genusOne D (GlobalTheory.InducedType.induced_type D).1 cc' δ' hc') ht'.1 (not_mem_lattice_of_isCMTorsionBasePoint ht' hO)
+    · have := posLog_nrm_le _ hΛ hdisc ((_root_.GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D (GlobalTheory.InducedType.induced_type D).1).1 cc' δ' hc'.1 hc'.2)
+        (_root_.GlobalTheory.GenusOneSup.value_le_mean_square D (GlobalTheory.InducedType.induced_type D).1 cc' δ' hc') ht'.1 (not_mem_lattice_of_isCMTorsionBasePoint ht' hO)
       linarith
   have s1 : ∑ ρ : M →ₐ[ℚ] ℂ, Real.posLog (area (lamConj M ρ (lamOf D cc δ)))⁻¹ ≤
       (Real.posLog C + 2) * L * Module.finrank ℚ M := by

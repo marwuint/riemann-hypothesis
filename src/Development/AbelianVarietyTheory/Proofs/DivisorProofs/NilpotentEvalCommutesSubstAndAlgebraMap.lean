@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalAtNilpotentXEqCoordinateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentXStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentX
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 
 namespace GlobalTheory
@@ -14,13 +14,13 @@ theorem evA_subst_and_map : ∀ (k : Type) [CommRing k] (σ : Type) [Finite σ] 
   · intro τ _ φ _ a ha y hy hφa f
     have hs : HasSubst a := hasSubst_of_constantCoeff_zero ha
     have key : evA k y hy = φ.comp (substAlgHom hs) := by
-      refine GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k σ A _ _ (fun i => ?_) (fun i => ?_)
+      refine _root_.GlobalTheory.mvPowerSeries_algHom_ext_of_isNilpotent k σ A _ _ (fun i => ?_) (fun i => ?_)
       · rw [GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ A y hy i]; exact hy i
       · rw [GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ A y hy i, AlgHom.comp_apply, coe_substAlgHom, subst_X hs, hφa]
     rw [key, AlgHom.comp_apply, coe_substAlgHom]
   · intro B _ _ g x hx y hy hg f
     have key : evA k y hy = g.comp (evA k x hx) := by
-      refine GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k σ B _ _ (fun i => ?_) (fun i => ?_)
+      refine _root_.GlobalTheory.mvPowerSeries_algHom_ext_of_isNilpotent k σ B _ _ (fun i => ?_) (fun i => ?_)
       · rw [GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ B y hy i]; exact hy i
       · rw [GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ B y hy i, AlgHom.comp_apply, GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ A x hx i, hg]
     rw [key, AlgHom.comp_apply]

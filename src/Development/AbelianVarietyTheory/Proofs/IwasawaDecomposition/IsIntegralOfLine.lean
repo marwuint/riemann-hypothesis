@@ -164,35 +164,6 @@ section Coef
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype ι]
 
-theorem exists_cast {a n : ℕ} (h : n = a) (emb : ι → E →+* K) (lam : ι → Formalism.BasicNotions.DomWeight a) (lam' : ι → Formalism.BasicNotions.DomWeight n)
-    (hw : ∀ τ (i : Fin a) (i' : Fin n), (i : ℕ) = i' → (lam τ).w i = (lam' τ).w i') :
-    ∃ e0 : VV K lam' ≃ₗ[K] VV K lam,
-      (∀ v, (e0 v).1 = MvPolynomial.rename (Prod.map id (Prod.map (Fin.cast h) (Fin.cast h))) v.1) ∧
-      (∀ i j, (bVV K lam).repr (e0 (bVV K lam' i)) j ∈ cmMax K) ∧
-      (∀ x y, pairV emb lam 1 (e0 x) (e0 y) = pairV emb lam' 1 x y) ∧
-      (∀ γ : GL (Fin a) E, ∃ g, R3.MatEq γ g ∧ ∀ v, e0 (rhoV emb lam' g v) = rhoV emb lam γ (e0 v)) ∧
-      ∀ L L', (∀ x, x ∈ L ↔ (fun i => x (Fin.cast h i)) ∈ L') →
-        (nabAt emb lam' L').map ((e0 : VV K lam' →ₗ[K] VV K lam).restrictScalars (𝓞 K)) = nabAt emb lam L := by
-  subst h
-  obtain rfl : lam = lam' := funext fun τ => by
-    have : (lam τ).w = (lam' τ).w := funext fun i => hw τ i i rfl
-    revert this
-    cases lam τ
-    cases lam' τ
-    rintro rfl
-    rfl
-  refine ⟨LinearEquiv.refl _ _, fun v => ?_, fun i j => ?_, fun _ _ => rfl, fun γ => ⟨γ, ⟨rfl, fun i j i' j' a b => ?_⟩, fun _ => rfl⟩,
-    fun L L' hL => ?_⟩
-  · exact (MvPolynomial.rename_id_apply _).symm
-  · classical
-    rw [LinearEquiv.refl_apply, Module.Basis.repr_self, Finsupp.single_apply]
-    split_ifs
-    · exact one_mem _
-    · exact zero_mem _
-  · rw [Fin.ext a, Fin.ext b]
-  · obtain rfl : L = L' := Submodule.ext hL
-    exact Submodule.map_id _
-
 open scoped TensorProduct in
 
 theorem mem_globLat_swap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
@@ -294,27 +265,6 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 end Space
-
-section Rows
-
-open GlobalTheory.Mem.Col2 GlobalTheory.Mem.R3 GlobalTheory.EX
-
-variable (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL))
-  (tr : TrI X.B px)
-
-def valPol (v : VV X.B.fields.K X.B.wts.sgTrue) : Pol ℂ X.toD7.what₂.Tau X.toD7.sp.X'.rank :=
-  MvPolynomial.map X.toD7.what₂.embLL
-    (MvPolynomial.rename (Prod.map id (Prod.map (Fin.cast (RowAd.rank_X' X).symm) (Fin.cast (RowAd.rank_X' X).symm)))
-      (show Pol X.toD7.what₂.LL X.toD7.what₂.Tau (X.B.R.N X.B.R.m - 1) from v.1))
-
-theorem gram_eq_one (hI : I.Ok) : X.toD7.sp.X'.gram = 1 := by
-  show X.B.sp.X'.gram = 1
-  obtain ⟨hs, -, h2, -⟩ := hI.spaces
-  rw [h2]
-  refine Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_
-  simp [Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]
-
-end Rows
 
 end GlobalTheory.Mem.RowCoord
 

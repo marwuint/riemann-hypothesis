@@ -1,4 +1,5 @@
-import Formalism.SharpRestriction.AdmissibleParameterJoins.DIVfromGLe
+import Formalism.SharpRestriction.Divisibility.LocalQuadraticParts
+import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
 import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLu
 import Formalism.SharpRestriction.GlobalSchurBounds.JointsL
 import Formalism.LocalRingCardinality.SpanPowerMembership.PlacesOverNcardOfSplitInj

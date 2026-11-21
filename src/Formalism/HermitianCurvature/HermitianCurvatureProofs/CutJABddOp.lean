@@ -51,12 +51,6 @@ def BddClassOp (cls : ∀ P : M.Par, R.LevelData (MA.A P (MA.DQ P)) P.r → Set 
 
 def JABddScal : Prop := BddClassOp scalSet
 
-def JABddKap : Prop := BddClassOp fun P _ => Set.range (MA.kap P (MA.DQ P))
-
-def JABddSSn : Prop := BddClassOp ssnSet
-
-def JABddSSnStar : Prop := BddClassOp ssnStarSet
-
 theorem bddSet_cases (P : M.Par) (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (b : MA.A P (MA.DQ P))
     (hb : b ∈ MA.bddSet P L) :
     b ∈ scalSet P L ∨ b ∈ Set.range (MA.kap P (MA.DQ P)) ∨ b ∈ ssnSet P L ∨ b ∈ ssnStarSet P L := by
@@ -66,24 +60,6 @@ theorem bddSet_cases (P : M.Par) (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (b : M
   · exact Or.inr (Or.inl h)
   · exact Or.inr (Or.inr (Or.inl h))
   · exact Or.inr (Or.inr (Or.inr h))
-
-theorem jABddOp_of_bddLeaves (h1 : JABddScal) (h2 : JABddKap) (h3 : JABddSSn) (h4 : JABddSSnStar) : JABddOp := by
-  obtain ⟨K1, hK1, h1⟩ := h1
-  obtain ⟨K2, hK2, h2⟩ := h2
-  obtain ⟨K3, hK3, h3⟩ := h3
-  obtain ⟨K4, hK4, h4⟩ := h4
-  set K := max (max K1 K2) (max K3 K4) with hK
-  have e1 : K1 ≤ K := le_trans (le_max_left _ _) (le_max_left _ _)
-  have e2 : K2 ≤ K := le_trans (le_max_right _ _) (le_max_left _ _)
-  have e3 : K3 ≤ K := le_trans (le_max_left _ _) (le_max_right _ _)
-  have e4 : K4 ≤ K := le_trans (le_max_right _ _) (le_max_right _ _)
-  refine ⟨K, K, le_trans hK1 e1, ?_⟩
-  intro E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL b hb
-  rcases bddSet_cases _ L b hb with h | h | h | h
-  · exact h1 K K e1 e1 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL b h
-  · exact h2 K K e2 e2 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL b h
-  · exact h3 K K e3 e3 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL b h
-  · exact h4 K K e4 e4 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL b h
 
 def JABddOpQQ : Prop :=
   ∃ Cc Cb : ℝ, 0 ≤ Cb ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
@@ -102,11 +78,6 @@ def JABddOpQQ : Prop :=
         CutCoef S T v Θ 0 (Cb * ((S.G.r : ℝ) + 1)) ∧
         ∀ J ∈ smoothFormsPositiveCone S T v, B.opApply Θ J ∈ smoothFormsPositiveCone S T v ∧ B.opAdj Θ J ∈ smoothFormsPositiveCone S T v ∧
           MA.actA (D.parOf S v) b (trJ S T v e J) = trJ S T v e (B.opApply Θ J)
-
-theorem jABddOpQQ_of_jABddOp (h : JABddOp) : JABddOpQQ := by
-  obtain ⟨Cc, Cb, hCb, h⟩ := h
-  exact ⟨Cc, Cb, hCb, fun E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa _ hL =>
-    h E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL⟩
 
 def BddClassOpQQ (cls : ∀ P : M.Par, R.LevelData (MA.A P (MA.DQ P)) P.r → Set (MA.A P (MA.DQ P))) : Prop :=
   ∃ K : ℝ, 0 ≤ K ∧ ∀ Cc Cb : ℝ, K ≤ Cc → K ≤ Cb → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)

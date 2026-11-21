@@ -1,4 +1,3 @@
-import Formalism.LogFactorialBounds.LocalFactorSplitDv
 import Mathlib
 
 noncomputable section

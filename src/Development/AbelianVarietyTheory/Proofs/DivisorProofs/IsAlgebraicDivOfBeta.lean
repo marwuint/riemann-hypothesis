@@ -1,4 +1,6 @@
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SizeAt
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
@@ -6,7 +8,8 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LevelPlusSubgrou
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ToricSymbols
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ExistsSmallSpherical
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeTateFunctionalEquationCM
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeIsIntegralOverStandardLatticeStabilisStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeIsIntegralOverStandardLatticeStabilis
+
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigTop.Fun
 
 noncomputable section
@@ -32,7 +35,7 @@ theorem gBig_and {Q Q' : GP} (h : GBig @Q) (h' : GBig @Q') :
 theorem isAlgebraic_norm {D : D7} {δ t0 : ℂ} {Q N : ℕ} {B : ℝ} {del : ℕ → ℝ} (hC : GlobalTheory.NormSum.CoordInt D N B Q del)
     (P : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q) (hP : P.Small N B) : IsAlgebraic ℚ ((P.norm : ℝ) : ℂ) := by
   have hco : ∀ h T, P.coord h T ∈ Formalism.MainNotions.TaylorLogMetric.Qbar := fun h T => by
-    obtain ⟨p, hp, hi⟩ := GlobalTheory.T.exists_prime_isIntegralOverStandardLatticeStabiliser D P.d h
+    obtain ⟨p, hp, hi⟩ := _root_.GlobalTheory.NormSum.exists_prime_integralOver D P.d h
     haveI : Fact p.Prime := ⟨hp⟩
     exact ((hC δ t0 p Q le_rfl P hP).2.2 h hi T).1
   have hsq : ∀ g, ((P.sq g : ℝ) : ℂ) ∈ Formalism.MainNotions.TaylorLogMetric.Qbar := fun g => by

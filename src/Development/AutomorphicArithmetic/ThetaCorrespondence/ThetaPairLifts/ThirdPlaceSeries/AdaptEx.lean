@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedExistence
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RowAtOfRatStep
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 
@@ -13,12 +13,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.IndefR.Links Formali
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 namespace GlobalTheory.BigOn.Exp.Adapt
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-variable {D : D7}
-section Point
-variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
-  {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
-end Point
 end GlobalTheory.BigOn.Exp.Adapt
 open GlobalTheory.BigOn.Exp.Adapt in
 theorem GlobalTheory.BigOn.Exp.adaptEx_alt : _root_.GlobalTheory.BigOn.Exp.AdaptedExistence₂ := by

@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PolynomialBoundSetup
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.BoundAtTwoThreeFamilyFon
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ImportsMoreExtraStatement
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.NormChoiceFacts
@@ -28,7 +28,7 @@ theorem main_of_alt (hc : GlobalTheory.Published.GlobalArtinReciprocity → Glob
     hSet i (GlobalTheory.AtQDTypes.l_not_mem_gset i hi.1.1) π hπ
   obtain ⟨ep, hep⟩ := (_root_.GlobalTheory.JumpStatement.holds_all_alt D L (hS.facts.admJ L hS.par)).1
   have hJ := _root_.GlobalTheory.T.hodgeJumpParameters_of_setup hP D L P nch HW F Cm X C₂ hS ep hep
-  have hSt := GlobalTheory.T.lengthBound_of_rowConditions_and_dualityTheorems hP.artin hP.bk hP.tate hP.euler D (GlobalTheory.DesignUnconditional.main D hS.facts.large.2.2)
+  have hSt := _root_.GlobalTheory.InertiaEigenvalues.LengthBoundClosing.stmt_closed hP.artin hP.bk hP.tate hP.euler D (GlobalTheory.DesignUnconditional.main D hS.facts.large.2.2)
   have hN5 : EmbeddingTypeJumps.GlobalIndexAwayFromTypes X.r X.ρ := fun i π dc lenRow e' cB hA =>
     hSt.1 i (X.r i) (X.ρ i) π dc lenRow e' cB (hX.1 i) hA
   have hKill : EmbeddingTypeJumps.KillingTwistedPlaces X.ρ := by
@@ -53,7 +53,7 @@ theorem main_of_alt (hc : GlobalTheory.Published.GlobalArtinReciprocity → Glob
     (fun i hi => by obtain ⟨π, hπ⟩ := exists_good hi; exact (hpt i hi π hπ).2.2.2.2.2.1)
     hS.par67).2.2
 theorem main_alt_alt : ∃ (constantFirstHub : ℝ) (Q : MvPolynomial (Fin 3) ℕ), Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), _root_.GlobalTheory.NLink.SetupAlt L nch HW X C₂ → EmbeddingTypeJumps.Conclusion2 X.ρ L constantFirstHub Q :=
-  _root_.GlobalTheory.TheoremBQD.main_of_alt GlobalTheory.T.twistedPlace_selmerLengthBound_of_localDuality
+  _root_.GlobalTheory.TheoremBQD.main_of_alt _root_.GlobalTheory.TwistedPlaceBound.closing
 end GlobalTheory.TheoremBQD
 end
 end

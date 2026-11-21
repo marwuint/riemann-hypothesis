@@ -198,17 +198,4 @@ theorem sig_at (h5 : 5 ≤ p) (g2 g3 s2 ε : ℂ_[p]) :
 
 end Exp
 
-section EPart
-
-open Formalism.L2.Th1.B (fExp fExp_add constantCoeff_fExp)
-
-end EPart
-
-section Comparison₂
-
-open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker
-open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
-
-end Comparison₂
-
 end Formalism.L2.KerInert.MModel

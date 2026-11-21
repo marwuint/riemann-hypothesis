@@ -34,16 +34,4 @@ theorem exists_mulEquiv_points_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S
       Over.OverMorphism.ext ((hm _).trans (hF.1.lift_fst _ _ _))⟩
   exact ⟨MulEquiv.ofBijective (MonoidHom.mk' m hmul) ⟨hinj, hsurj⟩, hm⟩
 
-theorem exists_tors_mulEquiv_of_isGrpPullback (R K : Type) [CommRing R] [Field K] [Algebra R K] (G : Over (Sp R))
-    [GrpObj G] [IsCommMonObj G] (G₀ : Over (Sp K)) [GrpObj G₀] [IsCommMonObj G₀] (F : G₀.left ⟶ G.left)
-    (hF : IsGrpPullback G₀ G (spMap (algebraMap R K)) F) (N : ℕ) (B : Type) [CommRing B] [Algebra R B] [Algebra K B]
-    [IsScalarTower R K B] : ∃ τ : Tors G₀ N B ≃* Tors G N B, ∀ z', (τ z').1.left = z'.1.left ≫ F := by
-  obtain ⟨e, he⟩ := exists_mulEquiv_points_of_isGrpPullback hF (spMap (algebraMap K B)) (spMap (algebraMap R B)) (by
-    rw [IsScalarTower.algebraMap_eq R K B, spMap_comp_spMap])
-  exact ⟨{ toFun := fun z => ⟨e z.1, by rw [← map_pow, z.2, map_one]⟩
-           invFun := fun z => ⟨e.symm z.1, by rw [← map_pow, z.2, map_one]⟩
-           left_inv := fun z => Subtype.ext (e.symm_apply_apply z.1)
-           right_inv := fun z => Subtype.ext (e.apply_symm_apply z.1)
-           map_mul' := fun x y => Subtype.ext (e.map_mul x.1 y.1) }, fun z => he z.1⟩
-
 end GlobalTheory.GroupBplus.Aff

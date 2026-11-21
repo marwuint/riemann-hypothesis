@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioCover
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOfTendstoLocallyUniformlyOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRulesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRules
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedOneFormEvaluationRulesStatement
 
 set_option autoImplicit false
@@ -33,7 +33,7 @@ def valHom (U : A.left.Opens) : Sec (str A) U →ₐ[ℂ] Hol (W u U) where
   map_zero' := Subtype.ext (funext fun p => valAt'_zero _ _)
   map_add' a b := Subtype.ext (funext fun p => valAt'_add _ _ a b)
   commutes' c := Subtype.ext (funext fun p => by
-    obtain ⟨e, he⟩ := (GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.2.2.2.2.2.2.2.1 U p.1.2 p.2
+    obtain ⟨e, he⟩ := (_root_.GlobalTheory.CechPer.pre_val_rules A g L u).2.2.2.2.2.2.2.2.2.1 U p.1.2 p.2
     exact (he _).trans (e.commutes c))
 
 theorem fn_valHom (U : A.left.Opens) (b : Sec (str A) U) {p : Tot Empty g} (hp : p ∈ W u U) :
@@ -46,14 +46,14 @@ theorem fn_valHom (U : A.left.Opens) (b : Sec (str A) U) {p : Tot Empty g} (hp :
   le _ U' U := U' ≤ U
   le_refl _ := le_rfl
   le_trans h h' := h'.trans h
-  maps {l U U'} h p hp := ((GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.1 U.1 l p.2).2 ((GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.2.2.2.1 U.1 U'.1 h hp)
+  maps {l U U'} h p hp := ((_root_.GlobalTheory.CechPer.pre_val_rules A g L u).2.2.1 U.1 l p.2).2 ((_root_.GlobalTheory.CechPer.pre_val_rules A g L u).2.2.2.2.2.1 U.1 U'.1 h hp)
 
 theorem sh_valHom {l : u.Λ} {U V : A.left.affineOpens} (h : (ch u).le l V U) (b : Sec (str A) U.1) :
     Charts.sh h (valHom u U.1 b) = valHom u V.1 (Sec.res (str A) h b) :=
   Hol.ext_fn fun p hp => by
     rw [Charts.fn_sh h _ hp, fn_valHom u _ _ ((ch u).maps h p hp), fn_valHom u _ _ hp,
-      (GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.2.2.2.2.2.2.1 U.1 V.1 h b p.2 hp]
-    exact (GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.2.1 U.1 b l p.2
+      (_root_.GlobalTheory.CechPer.pre_val_rules A g L u).2.2.2.2.2.2.2.2.1 U.1 V.1 h b p.2 hp]
+    exact (_root_.GlobalTheory.CechPer.pre_val_rules A g L u).2.2.2.1 U.1 b l p.2
 
 def rl : Real (ch u) (str A) (algebraMap ℂ (Hol (fibFam u).V)) where
   x U := spMap (valHom u U.1 : Sec (str A) U.1 →+* Hol (W u U.1)) ≫ affPt (str A) U

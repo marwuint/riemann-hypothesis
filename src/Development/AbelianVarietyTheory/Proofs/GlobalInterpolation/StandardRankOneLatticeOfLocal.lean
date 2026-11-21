@@ -287,87 +287,10 @@ omit [NumberField E] [StarRing E] in
 theorem mem_localization_rank_one_lattice (P : HeightOneSpectrum (𝓞 E)) (I : Submodule (𝓞 E) E) (x : Sp E 1) :
     x ∈ localization₂ P.asIdeal (lat1 I) ↔ x 0 ∈ localization₂ P.asIdeal I := Iff.rfl
 
-theorem det_ideal_rank_one_lattice (I : Submodule (𝓞 E) E) : detI (lat1 I) = I := by
-  apply le_antisymm
-  · rw [detI, Submodule.span_le]
-    rintro _ ⟨A, hA, rfl⟩
-    have := hA _ (single_mem_stdLat (E := E) (0 : Fin 1) 1)
-    rw [mem_rank_one_lattice] at this
-    simpa [Matrix.det_unique] using this
-  · intro x hx
-    refine Submodule.subset_span ⟨x • 1, fun v hv => ?_, by simp⟩
-    obtain ⟨r, hr⟩ := Submodule.mem_one.1 (hv 0 (Set.mem_univ _))
-    rw [mem_rank_one_lattice, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.smul_apply, ← hr, smul_eq_mul, mul_comm, ← Algebra.smul_def]
-    exact I.smul_mem _ hx
-
-theorem self_dual_rank_one_lattice {I : Submodule (𝓞 E) E} (hI : NormOne I) : IsSdLat (lat1 I) := by
-  obtain ⟨J, hJ, hIJ⟩ := hI
-  refine ⟨⟨?_, ?_⟩, ?_⟩
-  · have hfg : I.FG := Submodule.fg_of_isUnit (IsUnit.of_mul_eq_one J hIJ)
-    have : lat1 I = I.map ((LinearEquiv.funUnique (Fin 1) (𝓞 E) E).symm : E →ₗ[𝓞 E] Sp E 1) := by
-      rw [Submodule.map_equiv_eq_comap_symm]
-      rfl
-    rw [this]
-    exact hfg.map _
-  · obtain ⟨a, ha, h0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (p := I) (by
-      rintro rfl
-      rw [Submodule.bot_mul] at hIJ
-      have : (1 : E) ∈ (⊥ : Submodule (𝓞 E) E) := hIJ ▸ Submodule.mem_one.2 ⟨1, map_one _⟩
-      simp at this)
-    rw [eq_top_iff]
-    intro x _
-    have : x = (x 0 / a) • (fun _ => a : Sp E 1) := by
-      funext i
-      rw [Subsingleton.elim i 0]
-      simp [h0]
-    rw [this]
-    exact Submodule.smul_mem _ _ (Submodule.subset_span ha)
-  · ext x
-    rw [mem_dual, mem_rank_one_lattice]
-    constructor
-    · intro h
-      have h1 : ∀ z ∈ I * J, z * x 0 ∈ I := by
-        intro z hz
-        refine Submodule.mul_induction_on hz (fun a ha b hb => ?_) fun a b ha hb => by rw [add_mul]; exact add_mem ha hb
-        have := h (fun _ => star b) ((hJ b).1 hb)
-        rw [hStd_apply, Fin.sum_univ_one, star_star] at this
-        obtain ⟨r, hr⟩ := Submodule.mem_one.1 this
-        rw [mul_assoc, ← hr, mul_comm, ← Algebra.smul_def]
-        exact I.smul_mem _ ha
-      simpa using h1 1 (hIJ ▸ Submodule.mem_one.2 ⟨1, map_one _⟩)
-    · intro h y hy
-      rw [hStd_apply, Fin.sum_univ_one, mul_comm, ← hIJ]
-      exact Submodule.mul_mem_mul h ((hJ _).2 (by rw [star_star]; exact hy))
-
-def detFr (f : Sp E n ≃ₗ[E] Sp E n) : Sp E 1 ≃ₗ[E] Sp E 1 := LinearEquiv.smulOfUnit (LinearEquiv.det f)
-
-omit [NumberField E] [StarRing E] in
-theorem det_detFr (f : Sp E n ≃ₗ[E] Sp E n) : LinearEquiv.det (detFr f) = LinearEquiv.det f := by
-  apply Units.ext
-  rw [LinearEquiv.coe_det]
-  have : (detFr f : Sp E 1 →ₗ[E] Sp E 1) = dt f • LinearMap.id := by
-    ext x i
-    rfl
-  rw [this, LinearMap.det_smul]
-  simp
-
-theorem isFr_detFr {P : HeightOneSpectrum (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {f : Sp E n ≃ₗ[E] Sp E n} (hf : IsFr P N f) :
-    IsFr P (lat1 (detI N)) (detFr f) := by
-  intro x
-  rw [mem_localization_rank_one_lattice, (gen_detI hf).2, stdAt, mem_localization_standardLattice, Fin.forall_fin_one, intAt_iff]
-  have : detFr f x 0 = dt f * x 0 := rfl
-  rw [this, map_mul]
-  exact mul_le_iff_le_one_right (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (dt_ne _)))
-
 theorem ordDet_eq {P : HeightOneSpectrum (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {f : Sp E n ≃ₗ[E] Sp E n} (hf : IsFr P N f) :
     ordDet P N = ordE P (dt f) := by
   unfold ordDet ordE
   rw [(gen_detI (isFr_frameAt ⟨f, hf⟩)).val_eq (gen_detI hf)]
-
-theorem order_det_rank_one_lattice (P : HeightOneSpectrum (𝓞 E)) {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N) :
-    ordDet P (lat1 (detI N)) = ordDet P N := by
-  obtain ⟨f, hf⟩ := exists_isFr P hN
-  rw [ordDet_eq hf, ordDet_eq (isFr_detFr hf), dt, det_detFr]
 
 omit [StarRing E] in
 theorem ordE_eq_zero_iff {P : HeightOneSpectrum (𝓞 E)} {a : E} (h0 : a ≠ 0) : ordE P a = 0 ↔ P.valuation E a = 1 := by
@@ -380,27 +303,6 @@ theorem ordE_eq_zero_iff {P : HeightOneSpectrum (𝓞 E)} {a : E} (h0 : a ≠ 0)
   · intro h
     rw [h, WithZero.log_one]
 
-theorem ordDet_of_std {P : HeightOneSpectrum (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} (h : localization₂ P.asIdeal N = stdAt E n P) :
-    ordDet P N = 0 := by
-  rw [ordDet_eq (f := 1) (fun x => by rw [h]; rfl), ordE_eq_zero_iff (dt_ne _)]
-  simp
-
-theorem ordDet_conj {P : HeightOneSpectrum (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N) (h : ordDet P N = 0) :
-    ordDet (conjPrime₂ P) N = 0 := by
-  obtain ⟨f, hf⟩ := exists_isFr P hN.1
-  obtain ⟨f', hf'⟩ := exists_isFr (conjPrime₂ P) hN.1
-  have := val_dual hN hf hf'
-  rw [ordDet_eq hf, ordE_eq_zero_iff (dt_ne _)] at h
-  rw [map_mul, val_star_eq_one h, one_mul] at this
-  rwa [ordDet_eq hf', ordE_eq_zero_iff (dt_ne _)]
-
-theorem standard_rank_one_lattice_of_det {P : HeightOneSpectrum (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N)
-    (h : ordDet P N = 0) : localization₂ P.asIdeal (lat1 (detI N)) = stdAt E 1 P := by
-  obtain ⟨f, hf⟩ := exists_isFr P hN
-  rw [ordDet_eq hf, ordE_eq_zero_iff (dt_ne _)] at h
-  ext x
-  rw [mem_localization_rank_one_lattice, (gen_detI hf).2, stdAt, mem_localization_standardLattice, Fin.forall_fin_one, intAt_iff, h]
-
 omit [NumberField E] [StarRing E] in
 theorem mem_localization_one (P : HeightOneSpectrum (𝓞 E)) (x : E) : x ∈ localization₂ P.asIdeal (1 : Submodule (𝓞 E) E) ↔ IntAt P x := by
   constructor
@@ -409,44 +311,5 @@ theorem mem_localization_one (P : HeightOneSpectrum (𝓞 E)) (x : E) : x ∈ lo
     exact ⟨r, s, hs, by rw [hr, Algebra.smul_def]⟩
   · rintro ⟨r, s, hs, h⟩
     exact ⟨s, hs, Submodule.mem_one.2 ⟨r, by rw [← h, Algebra.smul_def]⟩⟩
-
-theorem standard_rank_one_lattice_of_local {P : HeightOneSpectrum (𝓞 E)} {I : Submodule (𝓞 E) E}
-    (h : localization₂ P.asIdeal I = localization₂ P.asIdeal (1 : Submodule (𝓞 E) E)) : localization₂ P.asIdeal (lat1 I) = stdAt E 1 P := by
-  ext x
-  rw [mem_localization_rank_one_lattice, h, stdAt, mem_localization_standardLattice, Fin.forall_fin_one, mem_localization_one]
-
-omit [StarRing E] in
-
-theorem ordE_prime (w : HeightOneSpectrum (𝓞 E)) {p : ℕ} (hp : p.Prime) (h : ((p : ℕ) : 𝓞 E) ∈ w.asIdeal) :
-    ordE w (p : E) = eW w := by
-  obtain rfl := eq_prW_of_mem w hp h
-  have hp0 : ((prW w : ℕ) : 𝓞 E) ≠ 0 := by exact_mod_cast hp.ne_zero
-  have hv : w.valuation E ((prW w : ℕ) : E) = w.intValuation ((prW w : ℕ) : 𝓞 E) := by
-    rw [← HeightOneSpectrum.valuation_of_algebraMap (K := E)]
-    exact congrArg _ (map_natCast (algebraMap (𝓞 E) E) _).symm
-  have hne0 : w.intValuation ((prW w : ℕ) : 𝓞 E) ≠ 0 := w.intValuation_ne_zero _ hp0
-  have hmem : ∀ k : ℕ, ((prW w : ℕ) : 𝓞 E) ∈ w.asIdeal ^ k ↔ (k : ℤ) ≤ ordE w ((prW w : ℕ) : E) := by
-    intro k
-    rw [← w.intValuation_le_pow_iff_mem, ordE, hv, ← WithZero.log_le_iff_le_exp hne0, le_neg]
-  obtain ⟨m, hm⟩ := Int.eq_ofNat_of_zero_le ((hmem 0).1 (by simp))
-  have hmap : (w.asIdeal.under ℤ).map (algebraMap ℤ (𝓞 E)) = Ideal.span {((prW w : ℕ) : 𝓞 E)} := by
-    conv_lhs => rw [← Int.ideal_span_absNorm_eq_self (w.asIdeal.under ℤ)]
-    rw [Ideal.map_span, Set.image_singleton]
-    congr 2
-    simp [prW]
-  have hne : w.asIdeal.under ℤ ≠ ⊥ := by
-    intro h
-    rw [h, Ideal.map_bot] at hmap
-    exact hp0 (Ideal.span_singleton_eq_bot.1 hmap.symm)
-  have h1 : (w.asIdeal.under ℤ).ramificationIdx' w.asIdeal = m := by
-    apply Ideal.ramificationIdx'_spec
-    · rw [hmap, Ideal.span_singleton_le_iff_mem, hmem, hm]
-    · rw [hmap, Ideal.span_singleton_le_iff_mem, hmem, hm]
-      push_cast
-      omega
-  have h2 : (w.asIdeal.under ℤ).ramificationIdx' w.asIdeal = w.asIdeal.ramificationIdx ℤ :=
-    Ideal.ramificationIdx'_eq_ramificationIdx _ _ hne
-  unfold eW
-  rw [← h2, h1, hm]
 
 end GlobalTheory.CharValCompare

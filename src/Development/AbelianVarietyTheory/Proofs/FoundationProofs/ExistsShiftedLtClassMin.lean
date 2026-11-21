@@ -13,14 +13,6 @@ section Class
 
 variable {X : Type*} [AddCommGroup X]
 
-theorem mk_eq_mk_iff (N : ℤ) (a b : X) :
-    (Submodule.Quotient.mk b : QuotSMulTop N X) = Submodule.Quotient.mk a ↔ ∃ w, b = a + N • w := by
-  rw [Submodule.Quotient.eq, Submodule.mem_smul_pointwise_iff_exists]
-  exact ⟨fun ⟨w, _, h⟩ => ⟨w, by rw [h]; abel⟩, fun ⟨w, h⟩ => ⟨w, trivial, by rw [h]; abel⟩⟩
-
-def classMin (Q : QuadraticMap ℤ X ℝ) (N : ℤ) (z : QuotSMulTop N X) : ℝ :=
-  sInf ((fun x => Q x / N) '' {x | Submodule.Quotient.mk x = z})
-
 variable {Q : QuadraticMap ℤ X ℝ} {N : ℤ}
 
 theorem shifted_zsmul (hN : N ≠ 0) (ν : X →+ ℝ) (μ : X) :
@@ -124,29 +116,6 @@ theorem exists_shifted_lt_of_le {g : ℕ} (hg : finrank ℤ X ≤ g) (hQ : (real
   linarith
 
 end Main
-
-section Matrix
-
-open ReciprocityTheory.ReducedBases (SameClass IsMinInClass IsUniqueMinInClass)
-
-example : ∃ (A : Matrix (Fin 1) (Fin 1) ℝ) (ν : (Fin 1 → ℤ) →+ ℝ), A.PosDef ∧ ν ≠ 0 ∧
-    (∀ μ, 0 ≤ ReciprocityTheory.ReducedBases.Q A μ + ν μ) ∧
-    1 + 2 * (1 : ℕ) * (2 : ℝ) ^ (((1 : ℕ) : ℝ) / 2) < (4 : ℤ) := by
-  refine ⟨Matrix.diagonal fun _ => 2,
-    (Int.castAddHom ℝ).comp (Pi.evalAddMonoidHom (fun _ => ℤ) 0),
-    Matrix.PosDef.diagonal fun _ => two_pos, fun h => ?_, fun μ => ?_, ?_⟩
-  · simpa using DFunLike.congr_fun h 1
-  · have h1 : 0 ≤ μ 0 ^ 2 + μ 0 := by nlinarith [Int.le_self_sq (-μ 0)]
-    have h2 : (0 : ℝ) ≤ (μ 0 : ℝ) ^ 2 + μ 0 := by exact_mod_cast h1
-    simp [ReciprocityTheory.ReducedBases.Q, ReciprocityTheory.ReducedBases.polar, ReciprocityTheory.ReducedBases.toReal, dotProduct, Matrix.mulVec]
-    linarith
-  · have h1 := rpow_half_sq 1
-    have h2 : (2 : ℝ) ^ (((1 : ℕ) : ℝ) / 2) < 3 / 2 :=
-      lt_of_pow_lt_pow_left₀ 2 (by norm_num) (by rw [h1]; norm_num)
-    push_cast at h2 ⊢
-    linarith
-
-end Matrix
 
 end GlobalTheory.ClassMin
 

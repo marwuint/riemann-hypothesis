@@ -6,24 +6,24 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLiftClosedImmersionOfDense
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemePullbackStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemePullback
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelPullbackIdCompCancelStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsUniqueUpToUnitStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaCosetNonvanishingOfHasThStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaFamilyFromVeryDensePointsStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullback
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChange
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsUniqueUpToUnit
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaCosetNonvanishingOfHasTh
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaFamilyFromVeryDensePoints
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapePrimitivityPullbackDescent
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.VeryDenseClosedPointObjectsOfMinimalPrimesStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenericObjectMinimalPrimeModuliChartStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.VeryDenseClosedPointObjectsOfMinimalPrimes
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenericObjectMinimalPrimeModuliChart
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelIsoUniqueOfDenseCommonFibresStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SecCoordBcScaleUnique
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocallyStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocally
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsSectionCoordinateVectorOfLocallyOnRingStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIdealOfLocally
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapeOfGenericPointStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapeOfGenericPoint
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleOfAmpleGeometricFibresAbelianSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemeGlueAffineCoverStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemeGlueAffineCover
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
@@ -79,7 +79,7 @@ variable {o : Type} [CommRing o] {g k : ℕ} {J : Type} {b : TBase o k}
   {Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ} {κ : ℕ}
 
 theorem tpull {S S' : Scheme.{0}} {s : S ⟶ Sp o} (t : TObj g k J b s) (f : S' ⟶ S) (s' : S' ⟶ Sp o) (e : f ≫ s = s') :
-    ∃ t' : TObj g k J b s', TMap t' t f := T.exists_thetaLevelAbelianScheme_pullback o g k J b S S' s s' f t e
+    ∃ t' : TObj g k J b s', TMap t' t f := _root_.GlobalTheory.tObj_pull o g k J b S S' s s' f t e
 
 theorem tcomp {S S' S'' : Scheme.{0}} {s : S ⟶ Sp o} {s' : S' ⟶ Sp o} {s'' : S'' ⟶ Sp o} {t : TObj g k J b s}
     {t' : TObj g k J b s'} {t'' : TObj g k J b s''} {f : S' ⟶ S} {f' : S'' ⟶ S'} {f'' : S'' ⟶ S} (h : TMap t' t f)
@@ -133,7 +133,7 @@ theorem shape_of_minimalPrimes (h₁ : Out.Laws) (h₂ : Out.Laws2) {R : Type} [
   have := RingHom.ker_isPrime y
   obtain ⟨tq, htq⟩ := tpull t (spMap (Ideal.Quotient.mk (RingHom.ker y))) _ rfl
   have hq : tq.Shape Mat κ := by
-    refine T.thetaLevelShape_of_generic_point h₁ h₂ o g k J b Mat κ _ _ tq K' (spMap (RingHom.kerLift y)) s' t' ?_
+    refine _root_.GlobalTheory.shape_of_generic h₁ h₂ o g k J b Mat κ _ _ tq K' (spMap (RingHom.kerLift y)) s' t' ?_
       ((tcomp htq ((spMap_comp' _ _).trans (congrArg spMap (RingHom.ext fun r => RingHom.kerLift_mk y r)))).2 hm) hs
     rw [range_spMap_field, genericPoint_eq_bot_of_affine]
     congr 1
@@ -165,12 +165,12 @@ variable {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)}
 theorem hasTh_iff {S S' : Scheme.{0}} {s : S ⟶ Sp o} {s' : S' ⟶ Sp o} {t : TObj g (N' ^ 2) J b s}
     {t' : TObj g (N' ^ 2) J b s'} {f : S' ⟶ S} (h : TMap t' t f) {R : Type} [CommRing R] {x : Sp R ⟶ S'}
     {x' : Sp R ⟶ S} (e : x ≫ f = x') (v : Ix g (N' ^ 2) → R) : t'.HasTh x v ↔ t.HasTh x' v :=
-  e ▸ T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b S s t S' s' t' f R x v h
+  e ▸ _root_.GlobalTheory.hasTh_iff_of_tmap o g N' J b S s t S' s' t' f R x v h
 
 theorem hasTh_pull (h₂ : Out.Laws2) {R R' : Type} [CommRing R] [CommRing R'] {φ : R →+* R'} {s : Sp R ⟶ Sp o}
     {s' : Sp R' ⟶ Sp o} {t : TObj g (N' ^ 2) J b s} {t' : TObj g (N' ^ 2) J b s'} (h : TMap t' t (spMap φ))
     {v : Ix g (N' ^ 2) → R} (H : t.HasTh (𝟙 _) v) : t'.HasTh (𝟙 _) (fun a => φ (v a)) :=
-  (hasTh_iff h ((Category.id_comp _).trans (Category.comp_id _).symm) _).2 (T.hasThetaConstants_ring_baseChange h₂ o g N' J b _ s t R R' φ _ v H)
+  (hasTh_iff h ((Category.id_comp _).trans (Category.comp_id _).symm) _).2 (_root_.GlobalTheory.hasTh_baseChange h₂ o g N' J b _ s t R R' φ _ v H)
 
 theorem hasTh_iff_secCoord (h₁ : Out.Laws) (h₂ : Out.Laws2) (ho : Odd N') (h2 : 2 ≤ N') {X : Scheme.{0}} {s : X ⟶ Sp o}
     (t : TObj g (N' ^ 2) J b s) (M : LB X) (hM : M.IsLB) (th : Ix g (N' ^ 2) → M.Sec)
@@ -179,21 +179,21 @@ theorem hasTh_iff_secCoord (h₁ : Out.Laws) (h₂ : Out.Laws2) (ho : Odd N') (h
     (R : Type) [CommRing R] (x : Sp R ⟶ X) (v : Ix g (N' ^ 2) → R) : t.HasTh x v ↔ SecCoord M th x v := by
   have sp : ∀ (R : Type) [CommRing R] (x : Sp R ⟶ X) (v : Ix g (N' ^ 2) → R), t.HasTh x v →
       Ideal.span (Set.range v) = ⊤ := fun R _ x v h => span_eq_top_of_coset fun q hq =>
-    T.thetaCosetNonvanishing_of_hasTh h₁ h₂ o g N' J b X s t N' R x v q h2 dvd_rfl h hq
+    _root_.GlobalTheory.coset_of_hasTh h₁ h₂ o g N' J b X s t N' R x v q h2 dvd_rfl h hq
   have key : ∀ p : PrimeSpectrum R, ∃ f ∉ p.asIdeal, ∃ w,
       SecCoord M th (spMap (algebraMap R (Localization.Away f)) ≫ x) w ∧
       t.HasTh (spMap (algebraMap R (Localization.Away f)) ≫ x) w := fun p => by
     obtain ⟨R', _, x', v', _, hp, a, c⟩ := H (x p)
     obtain ⟨f, hf, z, e⟩ := exists_away_lift x x' p hp
     exact ⟨f, hf, fun i => z (v' i), e ▸ (Coord.secCoord_bc_scale_unique X M _ th R' x' v' hM a).1 _ z,
-      e ▸ T.hasThetaConstants_ring_baseChange h₂ o g N' J b X s t R' _ z x' v' c⟩
+      e ▸ _root_.GlobalTheory.hasTh_baseChange h₂ o g N' J b X s t R' _ z x' v' c⟩
   refine ⟨fun h => T.isSectionCoordinateVector_of_locally_on_ring X M _ th R x v hM (sp R x v h) fun p => ?_,
     fun h => hasTh_of_local t ho fun q hq => ?_⟩
   · obtain ⟨f, hf, w, a, c⟩ := key p
     refine ⟨Localization.Away f, inferInstance, algebraMap R _, inferInstance,
       (PrimeSpectrum.localization_away_comap_range (Localization.Away f) f).ge hf, ?_⟩
-    obtain ⟨u, hu⟩ := T.thetaConstants_unique_up_to_unit h₁ h₂ o g N' J b X s t _ _ w _ c
-      (T.hasThetaConstants_ring_baseChange h₂ o g N' J b X s t R _ (algebraMap R (Localization.Away f)) x v h) (sp _ _ _ c)
+    obtain ⟨u, hu⟩ := _root_.GlobalTheory.hasTh_unique_unit h₁ h₂ o g N' J b X s t _ _ w _ c
+      (_root_.GlobalTheory.hasTh_baseChange h₂ o g N' J b X s t R _ (algebraMap R (Localization.Away f)) x v h) (sp _ _ _ c)
     rw [funext hu]
     exact (Coord.secCoord_bc_scale_unique X M _ th _ _ w hM a).2.1 u
   · obtain ⟨f, hf, w, a, c⟩ := key ⟨q, hq⟩
@@ -214,7 +214,7 @@ theorem exists_glued (h₁ : Out.Laws) (h₂ : Out.Laws2) (ho : Odd N') {m : ℕ
       (∀ (R : Type) [CommRing R] (x : Sp R ⟶ X) (v : Ix g (N' ^ 2) → R), t.HasTh x v ↔ SecCoord M th x v) ∧
       ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ X) (t' : TObj g (N' ^ 2) J b (x ≫ s)) v,
         t'.Shape Mat κ → t'.HasTh (𝟙 _) v → SecCoord M th x v → TMap t' t x := by
-  choose R iR x v hx hp hv using (T.sectionCoordinateVector_exists_locally X M _ th hM).2.2
+  choose R iR x v hx hp hv using (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local X M _ th hM).2.2
   choose t hd hs ht hu using fun p => H (R p) (x p) (v p) (hx p) (hv p)
   have uniq : ∀ (p : X) (K : Type) [Field K] [IsAlgClosed K] (z : Sp K ⟶ Sp (R p)) (s' : Sp K ⟶ Sp o)
       (t' : TObj g (N' ^ 2) J b s') (y : Sp K ⟶ X) w, z ≫ x p = y → s' = y ≫ s → t'.Shape Mat κ → t'.HasTh (𝟙 _) w →
@@ -236,7 +236,7 @@ theorem exists_glued (h₁ : Out.Laws) (h₂ : Out.Laws2) (ho : Odd N') {m : ℕ
     rintro _ ⟨q, rfl⟩
     rw [Subsingleton.elim q (IsLocalRing.closedPoint K)]
     exact hp _
-  obtain ⟨t₀, h₀⟩ := T.exists_thetaLevelAbelianScheme_glue_affineCover h₁ h₂ o g N' J b m X s X R x t hm hm' ho hx (fun p => ⟨p, hp p⟩) (by
+  obtain ⟨t₀, h₀⟩ := _root_.GlobalTheory.ThetaAffineGlue.exists_glue h₁ h₂ o g N' J b m X s X R x t hm hm' ho hx (fun p => ⟨p, hp p⟩) (by
     intro i i' A _ a a' u ha e hu₁
     have := hx i
     have : IsReduced (Sp A) := isReduced_of_isOpenImmersion (a ≫ x i)
@@ -274,9 +274,9 @@ open FamGlue ThetaClosed
 
 theorem exists_family_over_MMPre : Out.Laws → Out.Laws2 → (∀ (g n : ℕ) (J : Type) (w w' : J), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Finite (IsLocalRing.ResidueField V)] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (β : o →+* V) (t : TObj g ((n ^ j) ^ 2) J b (spMap (algebraMap V K) ≫ spMap β)) (v : Ix g ((n ^ j) ^ 2) → V), t.Prim w w' → t.HasTh (𝟙 _) (fun a => algebraMap V K (v a)) → Coset n (n ^ j) v (IsLocalRing.maximalIdeal V) → ∃ (V' K' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsDiscreteValuationRing V') (_ : Field K') (_ : Algebra V' K') (_ : IsFractionRing V' K') (φ : V →+* V') (ψ : K →+* K') (t' : TObj g ((n ^ j) ^ 2) J b (spMap φ ≫ spMap β)) (tK : TObj g ((n ^ j) ^ 2) J b (spMap (algebraMap V' K') ≫ spMap φ ≫ spMap β)), IsLocalHom φ ∧ ψ.comp (algebraMap V K) = (algebraMap V' K').comp φ ∧ TMap tK t (spMap ψ) ∧ TMap tK t' (spMap (algebraMap V' K')) ∧ t'.HasTh (𝟙 _) (fun a => φ (v a))) → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ) (w w' : J), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (em : o →+* ℂ) (C : TObj g ((n ^ j) ^ 2) J b (spMap em) → Prop) (d : ℕ), ArBase em → GoodClass em C Mat κ w w' d → ∀ Y : MMPre n (n ^ j) (thIdeal em C), ∃ t : TObj g ((n ^ j) ^ 2) J b Y.s, Dense (fromSet em C t) ∧ t.Shape Mat κ ∧ (∀ (R : Type) [CommRing R] (x : Sp R ⟶ Y.MM) (v : Ix g ((n ^ j) ^ 2) → R), t.HasTh x v ↔ SecCoord Y.de Y.th x v) ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Y.MM) (t' : TObj g ((n ^ j) ^ 2) J b (x ≫ Y.s)) v, t'.Shape Mat κ → t'.HasTh (𝟙 _) v → SecCoord Y.de Y.th x v → TMap t' t x := by
   intro h₁ h₂ crit g J _ Mat κ n w w' hn ho
-  obtain ⟨j₁, H₁⟩ := T.exists_theta_family_from_very_dense_points h₁ h₂ g J Mat κ n hn ho
-  obtain ⟨j₂, H₂⟩ := T.veryDense_closedPoint_objects_of_minimalPrimes h₁ h₂ crit g J Mat κ n w w' hn ho
-  obtain ⟨j₃, H₃⟩ := T.exists_generic_object_minimalPrime_moduli_chart h₁ h₂ g J Mat κ n w w' hn ho
+  obtain ⟨j₁, H₁⟩ := _root_.GlobalTheory.ZM.exists_tObj_of_veryDense h₁ h₂ g J Mat κ n hn ho
+  obtain ⟨j₂, H₂⟩ := _root_.GlobalTheory.veryDense_objPrimes_of_minimalPrimes h₁ h₂ crit g J Mat κ n w w' hn ho
+  obtain ⟨j₃, H₃⟩ := _root_.GlobalTheory.GenericObject.exists_generic_object h₁ h₂ g J Mat κ n w w' hn ho
   refine ⟨max (max j₁ j₂) (max j₃ 2), fun j hj o _ b em C d hb hC Y => ?_⟩
   simp only [ge_iff_le, max_le_iff] at hj
   have : IsDedekindDomain o := hb.1

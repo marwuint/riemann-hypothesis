@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TriIff
 import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
 import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStalkFactor
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LieEigenspaceFrameCoordinatesUniqueInvertibleStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LieEigenspaceFrameCoordinatesCompStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAffineStableLieEigenspaceFrameStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LieEigenspaceFrameStableOfIsLocalRingStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LieEigenspaceFrameCoordinatesUniqueInvertible
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LieEigenspaceFrameCoordinatesComp
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAffineStableLieEigenspaceFrame
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LieEigenspaceFrameStableOfIsLocalRing
 
 set_option autoImplicit false
 
@@ -66,7 +66,7 @@ theorem frames_iff {R R₁ K : Type} [CommRing R] [CommRing R₁] [IsLocalRing R
     {T : Mat Dw.mult K} (hT : f.Coord (a.comp ψ) f₀ T) (A : Mat Dw.mult K) :
     ((∀ τ, (A τ).det ≠ 0) ∧ ∃ (φ₁ : c.F →+* R₁) (g : EigFrame Z φ₁ x₁), g.Coord a f₀ A⁻¹) ↔
       ∃ G : Mat Dw.mult R₁, (∀ τ, IsUnit (G τ).det) ∧ A * T = G.map a := by
-  have hU := (GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z R φ x f K φ₀ x₀ (a.comp ψ) inferInstance hf hT.1 hT.2.1).1 f₀
+  have hU := (_root_.GlobalTheory.ShFam.EigCoord.coord_spec E H Dw l Xo c O β Z R φ x f K φ₀ x₀ (a.comp ψ) inferInstance hf hT.1 hT.2.1).1 f₀
   have huniq : ∀ B, f.Coord (a.comp ψ) f₀ B → B = T := fun B hB => hU.1.unique hB hT
   constructor
   · rintro ⟨hA, φ₁, g, hg⟩
@@ -77,18 +77,18 @@ theorem frames_iff {R R₁ K : Type} [CommRing R] [CommRing R₁] [IsLocalRing R
       have h := RingHom.congr_fun (hg.2.1.symm.trans hT.2.1) r
       simpa using h
     subst hφ₁
-    obtain ⟨hE, hunits⟩ := (GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ ψ inferInstance hf hx rfl).1 g
+    obtain ⟨hE, hunits⟩ := (_root_.GlobalTheory.ShFam.EigCoord.coord_spec E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ ψ inferInstance hf hx rfl).1 g
     obtain ⟨G, hG, -⟩ := hE
     refine ⟨G, hunits G hG, ?_⟩
-    have hc := GlobalTheory.T.lie_eigenspace_frame_coordinates_comp E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ g K φ₀ x₀ f₀ ψ a G A⁻¹ inferInstance hG hg
+    have hc := _root_.GlobalTheory.ShFam.CoordComp.coord_comp E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ g K φ₀ x₀ f₀ ψ a G A⁻¹ inferInstance hG hg
     rw [← huniq _ hc, ← mul_assoc, Mat.mul_inv hA, one_mul]
   · rintro ⟨G, hG, hAT⟩
-    obtain ⟨g, hfg⟩ := (GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ ψ inferInstance hf hx rfl).2 G hG
-    have hgs : g.Stable := GlobalTheory.T.lie_eigenspace_frame_stable_of_isLocalRing E H Dw l Xo c O β Z R₁ (ψ.comp φ) x₁ g inferInstance
+    obtain ⟨g, hfg⟩ := (_root_.GlobalTheory.ShFam.EigCoord.coord_spec E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ ψ inferInstance hf hx rfl).2 G hG
+    have hgs : g.Stable := _root_.GlobalTheory.ShFam.EigStable.stable_of_isLocalRing E H Dw l Xo c O β Z R₁ (ψ.comp φ) x₁ g inferInstance
     have hx₀ : x₀ = spMap a ≫ x₁ := by rw [hT.1, hx, spMap_trans, Category.assoc]
     have hφ₀ : φ₀ = a.comp (ψ.comp φ) := hT.2.1.trans (RingHom.comp_assoc _ _ _)
-    obtain ⟨⟨B, hB, -⟩, -⟩ := (GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z R₁ (ψ.comp φ) x₁ g K φ₀ x₀ a inferInstance hgs hx₀ hφ₀).1 f₀
-    have hc := GlobalTheory.T.lie_eigenspace_frame_coordinates_comp E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ g K φ₀ x₀ f₀ ψ a G B inferInstance hfg hB
+    obtain ⟨⟨B, hB, -⟩, -⟩ := (_root_.GlobalTheory.ShFam.EigCoord.coord_spec E H Dw l Xo c O β Z R₁ (ψ.comp φ) x₁ g K φ₀ x₀ a inferInstance hgs hx₀ hφ₀).1 f₀
+    have hc := _root_.GlobalTheory.ShFam.CoordComp.coord_comp E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ g K φ₀ x₀ f₀ ψ a G B inferInstance hfg hB
     have hTB : B * G.map a = T := huniq _ hc
     have hGd : ∀ τ, (G.map a τ).det ≠ 0 := fun τ => by
       have h := ((hG τ).map a).ne_zero
@@ -147,7 +147,7 @@ def fam (e : F ≃+* c.F) (B : GlobalTheory.ProjVar.Var F) (j : B.X ⟶ gen Z)
     (f : EigFrame Z φ (stalkPt B y ≫ j ≫ genι Z)),
     f.Coord (algebraMap (B.X.presheaf.stalk y) B.X.functionField) f₀ A⁻¹}
   loc (z : B.X) := by
-    obtain ⟨U, hU, φ, f, hz, hφ, hf⟩ := GlobalTheory.T.exists_affine_stable_lie_eigenspace_frame E H Dw l Xo c O β Z (j z)
+    obtain ⟨U, hU, φ, f, hz, hφ, hf⟩ := _root_.GlobalTheory.ShFam.EigSpread.exists_stable_eigFrame E H Dw l Xo c O β Z (j z)
     have key : ∀ y : B.X, j y ∈ U → ∃ ψ : Γ(gen Z, U) →+* B.X.presheaf.stalk y,
         spMap ψ ≫ hU.fromSpec = stalkPt B y ≫ j := fun y hy =>
       exists_affine_factor _ hU (by
@@ -158,7 +158,7 @@ def fam (e : F ≃+* c.F) (B : GlobalTheory.ProjVar.Var F) (j : B.X ⟶ gen Z)
       fun y ψ h => by rw [spMap_trans, Category.assoc, h, genericPt_eq B y, Category.assoc]
     obtain ⟨ψ₀, hψ₀⟩ := key z hz
     have h₀ := key' z ψ₀ hψ₀
-    obtain ⟨⟨T, hT, -⟩, hu⟩ := (GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z _ φ _ f B.Fn (constF e B) (genericPt B ≫ j ≫ genι Z)
+    obtain ⟨⟨T, hT, -⟩, hu⟩ := (_root_.GlobalTheory.ShFam.EigCoord.coord_spec E H Dw l Xo c O β Z _ φ _ f B.Fn (constF e B) (genericPt B ≫ j ≫ genι Z)
       ((algebraMap (B.X.presheaf.stalk z) B.X.functionField).comp ψ₀) inferInstance hf
       (by rw [← Category.assoc, ← h₀, Category.assoc])
       (EigLoc.spMap_inj (by rw [← genericPt_str e B j hj, ← h₀, Category.assoc, hφ, ← spMap_trans]))).1 f₀
@@ -189,11 +189,11 @@ theorem GlobalTheory.ShFam.TieBase.exists_tied : ∀ (E : Type) [Field E] [Numbe
   refine ⟨f₀, fam e B j hj f₀, 1, ?_⟩
   unfold GlobalTheory.ShFam.Tied
   refine ⟨?_, ?_⟩
-  · have hst : f₀.Stable := GlobalTheory.T.lie_eigenspace_frame_stable_of_isLocalRing E H Dw l Xo c O β Z B.Fn (constF e B) _ f₀ inferInstance
+  · have hst : f₀.Stable := _root_.GlobalTheory.ShFam.EigStable.stable_of_isLocalRing E H Dw l Xo c O β Z B.Fn (constF e B) _ f₀ inferInstance
     have hsp : spMap (RingHom.id B.Fn) = 𝟙 _ := by simp only [spMap, CommRingCat.ofHom_id, Spec.map_id]
-    obtain ⟨⟨A₁, hA₁, huq⟩, hu⟩ := (GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z B.Fn (constF e B) _ f₀ B.Fn (constF e B) _
+    obtain ⟨⟨A₁, hA₁, huq⟩, hu⟩ := (_root_.GlobalTheory.ShFam.EigCoord.coord_spec E H Dw l Xo c O β Z B.Fn (constF e B) _ f₀ B.Fn (constF e B) _
       (RingHom.id B.Fn) inferInstance hst (by rw [hsp, Category.id_comp]) (RingHom.id_comp _).symm).1 f₀
-    have h2 := GlobalTheory.T.lie_eigenspace_frame_coordinates_comp E H Dw l Xo c O β Z B.Fn (constF e B) _ f₀ B.Fn (constF e B) _ f₀ B.Fn (constF e B) _ f₀
+    have h2 := _root_.GlobalTheory.ShFam.CoordComp.coord_comp E H Dw l Xo c O β Z B.Fn (constF e B) _ f₀ B.Fn (constF e B) _ f₀ B.Fn (constF e B) _ f₀
       (RingHom.id B.Fn) (RingHom.id B.Fn) A₁ A₁ inferInstance hA₁ hA₁
     have hm : A₁.map (RingHom.id B.Fn) = A₁ := by
       funext τ i j

@@ -1,4 +1,6 @@
-import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.SigmaConstantAgrees
+import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.ChordSecondLogDeriv
+import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.PhNormClosed
+import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.JetExpShape
 
 noncomputable section
 open scoped BigOperators
@@ -26,10 +28,5 @@ def JetsShape : Prop :=
     (∃ H : PowerSeries K, (∀ i : ℕ, jet l H i ∈ R) ∧
       (mvExp (-ph) : PowerSeries K) = mvExp (-(PowerSeries.C (jet l ph 2 / 2) * l ^ 2)) * H) ∧
     ∀ a b : K, AdjAt R l linv ph a b → (a - b) * jet l ph 2 ∈ R
-
-def SumTwoUnitsProd : Prop :=
-  ∀ (A B : Type) [CommRing A] [CommRing B],
-    (∀ a : A, ∃ u v : Aˣ, a = u + v) → (∀ b : B, ∃ u v : Bˣ, b = u + v) →
-    ∀ x : A × B, ∃ u v : (A × B)ˣ, x = u + v
 
 end Formalism.L2.Th1.C

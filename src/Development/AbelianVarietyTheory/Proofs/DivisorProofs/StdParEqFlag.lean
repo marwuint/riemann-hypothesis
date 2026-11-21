@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsConstAlongSingleton
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CTSubmatrixMul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviDecompositionGradedIsotropicFlagStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianWittFrameUnipotentLeFlagUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentRadicalGradedIsotropicFlagLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviSubgroupLeGradedIsotropicFlagLeviStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GradedIsotropicFlagLeviLeLeviSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviDecompositionGradedIsotropicFlag
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsSquareIntegrableIffMemL2
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianWittFrameUnipotentLeFlagUnipotent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentRadicalGradedIsotropicFlagLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviSubgroupLeGradedIsotropicFlagLevi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GradedIsotropicFlagLeviLeLeviSubgroup
 
 open NumberField MeasureTheory Matrix Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet
 open scoped TensorProduct
@@ -20,9 +21,9 @@ def leftStab {G : Type} [Group G] (φ : G → ℂ) : Subgroup G where
 
 theorem stdPar_eq_flag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (S : Finset (Fin r)) (s : ℕ) (hs : s ≤ r), (∀ i : Fin r, i.val < s ↔ ∃ k ∈ S, i ≤ k) → ∀ d : Fin s → ℕ, (∀ i, d i = (S.filter (· < Fin.castLE hs i)).card) → GlobalTheory.StdPar.unip σ J X S = GlobalTheory.UAut.unipFlag σ J (X.submatrix id (Fin.castLE hs)) d ∧ GlobalTheory.StdPar.levi σ J X Y S = GlobalTheory.UAut.leviFlag σ J (X.submatrix id (Fin.castLE hs)) (Y.submatrix id (Fin.castLE hs)) d ∧ ∀ (K : Subgroup (GAd σ J)) (φ : GAd σ J → ℂ), GlobalTheory.StdPar.IsAutOn σ J X Y S K φ ↔ GlobalTheory.UAut.IsAutOn σ J (GlobalTheory.UAut.leftGrp σ J (X.submatrix id (Fin.castLE hs)) d) K φ := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW S s hs hS d hd
-  have hu := le_antisymm (GlobalTheory.T.hermitianWittFrame_unipotent_le_flag_unipotent F E σ h n J hJ r X Y hW S s hs hS d hd) (GlobalTheory.T.unipotent_radical_graded_isotropic_flag_le F E σ h n J hJ r X Y hW S s hs hS d hd)
-  have hl := le_antisymm (GlobalTheory.T.leviSubgroup_le_gradedIsotropicFlagLevi F E σ h n J hJ r X Y hW S s hs hS d hd) (GlobalTheory.T.gradedIsotropicFlagLevi_le_leviSubgroup F E σ h n J hJ r X Y hW S s hs hS d hd)
-  have hg := (GlobalTheory.T.leviDecomposition_gradedIsotropicFlag F E σ h n J hJ s (X.submatrix id (Fin.castLE hs)) (Y.submatrix id (Fin.castLE hs)) d
+  have hu := le_antisymm (_root_.GlobalTheory.TieStd.unip_le_unipFlag F E σ h n J hJ r X Y hW S s hs hS d hd) (_root_.GlobalTheory.TieStd.unipFlag_castLE_le_unip F E σ h n J hJ r X Y hW S s hs hS d hd)
+  have hl := le_antisymm (_root_.GlobalTheory.TieStd.levi_le_leviFlag F E σ h n J hJ r X Y hW S s hs hS d hd) (_root_.GlobalTheory.TieStd.leviFlag_le_levi F E σ h n J hJ r X Y hW S s hs hS d hd)
+  have hg := (_root_.GlobalTheory.LeviFlag.levi_decomposition F E σ h n J hJ s (X.submatrix id (Fin.castLE hs)) (Y.submatrix id (Fin.castLE hs)) d
     (by rw [GlobalTheory.TieStd.cT_submatrix_mul, hW.xx]; ext; simp)
     (by rw [GlobalTheory.TieStd.cT_submatrix_mul, hW.yy]; ext; simp)
     (by rw [GlobalTheory.TieStd.cT_submatrix_mul, hW.xy]; exact Matrix.submatrix_one _ (Fin.castLE_injective hs))).2.2.1

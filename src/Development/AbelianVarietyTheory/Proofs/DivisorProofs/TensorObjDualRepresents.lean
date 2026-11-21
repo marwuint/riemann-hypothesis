@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.PowObjGeometricallyConnected
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothOfRelativeDimensionTensorObjDualStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothOfRelativeDimensionTensorObjDual
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open scoped CategoryTheory.Obj
@@ -92,6 +92,6 @@ theorem exists_homObj_relDim (S : Scheme.{0}) (B : Over S) [GrpObj B] (hB : IsAb
   haveI := hB.comm
   obtain ⟨u, h1, h2, h3, h4⟩ := tensorObj_dual_represents B a X
   exact ⟨_, inferInstance, u, (isTensor (Module.Dual O X) a).isAbelianScheme hB,
-    GlobalTheory.T.smoothOfRelativeDimension_tensorObj_dual_finrank_mul S B O a X g hg, h1, h2, h3, h4⟩
+    _root_.GlobalTheory.TensorDualDim.smoothOfRelativeDimension_tensorObj_dual S B O a X g hg, h1, h2, h3, h4⟩
 
 end GlobalTheory.HomScheme

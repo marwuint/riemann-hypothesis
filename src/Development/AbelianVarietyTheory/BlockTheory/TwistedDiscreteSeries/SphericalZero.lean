@@ -108,8 +108,6 @@ theorem evZero_delta (ν : Measure (WO A B)) (𝓕 : Set (WO A B)) (f₁ f₂ : 
     evZero A B ν 𝓕 (delta A B f₁ f₂) = ip A B ν 𝓕 f₁ f₂ := by
   simp only [evZero, ip, delta_lagr]
 
-example : sZero A B + (A.rank : ℂ) / 2 = (B.rank : ℂ) / 2 := by rw [sZero]; ring
-
 end Basic₂
 
 end GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero

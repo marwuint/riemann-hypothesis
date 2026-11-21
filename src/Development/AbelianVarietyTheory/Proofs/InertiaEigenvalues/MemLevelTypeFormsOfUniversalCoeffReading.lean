@@ -444,11 +444,6 @@ theorem th_typed_of_tie (i : X.Tw) {j : ℕ} (hj : j ∈ Finset.Icc 1 D.R.m) (b 
   obtain ⟨n, rfl⟩ := Nat.exists_eq_add_of_le' h1
   exact thetaSeriesDatum_mem_levelTypeForms (W i ⟨n, h2⟩ b) (hW i ⟨n, h2⟩ b) d
 
-def allData : ExpDat Y where
-  Dat0 _ j _ := {_d | j ∈ Finset.Icc 1 D.R.m}
-  theta_base_equivariant i _ b d hd u :=
-    sub_eq_zero.1 (LinearMap.mem_ker.1 ((Submodule.mem_iInf _).1 (th_typed_of_tie W hW i hd b d) u))
-
 end Record
 
 section Export

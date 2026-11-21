@@ -19,7 +19,7 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.PConsequences
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ExistsUnique
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ChangeOfModel
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsPermAppendSnoc
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPointsIntegralProductFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPointsIntegralProductFormula
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -237,7 +237,7 @@ theorem flagGrassPush : GlobalTheory.CompanionTheory.Ar.PB.Inputs → Reciprocit
     (fun _ => linLine Ψ N (muForm Ψ N j)) (vandLine Ψ N j) hb hArFl' hArIm hJ
     (fun _ => isSmoothHerm_fsHerm _) (fun _ => isPullHerm_mu hj hjN) (fun _ => isSmoothHerm_fsHerm _)
   rw [hIm, pts_neg_eq (hII _ _) hArGr, ← linLine_jForms,
-    pts_linForms Ψ N II hII hN (fun w => GlobalTheory.T.flag_points_integral_product_formula hIn hSys Ψ N w hN) _ hcnt, prod_jForms] at hgeo
+    pts_linForms Ψ N II hII hN (fun w => _root_.GlobalTheory.CompanionTheory.Ar.Giv.borel_word hIn hSys Ψ N w hN) _ hcnt, prod_jForms] at hgeo
   have hJint : (Jint Ψ N j cf : ℝ) =
       (cf : ℝ) * ((flagInt Ψ N (muPoly Ψ N j ^ dimN Ψ N j * vandBlocks Ψ N j) : ℚ) : ℝ) := by
     unfold Jint fib

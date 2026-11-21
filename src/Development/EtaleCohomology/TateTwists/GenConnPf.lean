@@ -8,10 +8,6 @@ def LateralTheory.EtaleFoundations.twF_gen_inj : Prop :=
       (c.val • (Submodule.Quotient.mk (Finsupp.single ζ 1) : (twF q i).obj (CommRingCat.of B)) :
         (twF q i).obj (CommRingCat.of B)))
 
-def LateralTheory.EtaleFoundations.gen_conn_surj : Prop :=
-  ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], Nontrivial A → (∀ e : A, IsIdempotentElem e → e = 0 ∨ e = 1) →
-    ∀ (i : ℤ) (ζ : Prim q Γ(Spec (CommRingCat.of A), ⊤)), Function.Surjective (fun c : ZMod q => c.val • twGen i ζ)
-
 namespace LateralTheory.EtaleFoundations.GenConn
 
 theorem twF_map_mk {q : ℕ} (i : ℤ) {B C : CommRingCat.{0}} (f : B ⟶ C) (ζ : Prim q B) :

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PullChartIsLB
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PureWeightSectionToTwistedPolarisationPowerStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PureWeightSectionToTwistedPolarisationPower
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSecOfUnitAt
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -15,7 +15,7 @@ theorem FibPre.exists_pure_ne_zero_at :
   intro hL hL2 k _ _ Φ N hN π α x
   obtain ⟨s, hs⟩ := GlobalTheory.TwistNoBasePoint.exists_sec_twist hL hL2 k π.PB (N * 1) (by omega) _
     (x ≫ Φ.D.q ≫ π.β.hom)
-  obtain ⟨φ, hφ, h⟩ := (GlobalTheory.T.pureWeightSection_to_twistedPolarisationPower k Φ N 1 π α (by omega) le_rfl).2 s
+  obtain ⟨φ, hφ, h⟩ := (_root_.GlobalTheory.ZH.TwSec.pure_sec_twist k Φ N 1 π α (by omega) le_rfl).2 s
   exact ⟨φ, hφ, (h x).2 hs⟩
 
 end GlobalTheory.ZH

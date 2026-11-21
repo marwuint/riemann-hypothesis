@@ -9,9 +9,9 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAlgClosedJoinOfTwoFieldExtensions
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsMonHomIffOfIsGrpPullback
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianSchemeDescentSmoothDimensionStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LineBundleTrivialIsoDescendFieldStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilPairingFieldExtensionIffStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianSchemeDescentSmoothDimension
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LineBundleTrivialIsoDescendField
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilPairingFieldExtensionIff
 
 set_option autoImplicit false
 
@@ -145,7 +145,7 @@ open SiegelDescent
 
 theorem exists_siegPre_of_descended_data : ∀ (h M : ℕ) (o : Type) [CommRing o] (ζ : o) (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K) (s₀ : Sp K₀ ⟶ Sp o) (s : Sp K ⟶ Sp o) (c : SiegPre h M ζ s) (A₀ : Over (Sp K₀)) [GrpObj A₀] (φ : c.A.left ⟶ A₀.left) (φ₂ : (G2 c.A).left ⟶ (G2 A₀).left) (P₀ : LB (G2 A₀).left) (lev₀ : Fin h ⊕ Fin h → (𝟙_ (Over (Sp K₀)) ⟶ A₀)), s = spMap i ≫ s₀ → IsGrpPullback c.A A₀ (spMap i) φ → IsSquare φ φ₂ → P₀.IsLB → LBIso c.P (P₀.pull φ₂) → (∀ u, (c.lev (Pi.single u 1)).left ≫ φ = spMap i ≫ (lev₀ u).left) → ∃ c₀ : SiegPre h M ζ s₀, SiegPB c c₀ (spMap i) := by
   intro h M o _ ζ K₀ K _ _ i s₀ s c A₀ _ φ φ₂ P₀ lev₀ hs hp sq hP₀ hw hlev
-  have ab : IsAbelianScheme A₀ := (T.abelian_scheme_descent_smooth_dimension K₀ K i A₀ c.A φ hp c.ab).1
+  have ab : IsAbelianScheme A₀ := (_root_.GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend K₀ K i A₀ c.A φ hp c.ab).1
   haveI := ab.comm
   haveI := ab.smooth
   haveI := ab.proper
@@ -155,7 +155,7 @@ theorem exists_siegPre_of_descended_data : ∀ (h M : ℕ) (o : Type) [CommRing 
   have hφ : φ ≫ A₀.hom = c.A.hom ≫ spMap i := hp.1.w
   have one := one_comp hp c.A A₀ φ hφ
   have idφ : (𝟙 c.A : c.A ⟶ c.A).left ≫ φ = φ ≫ (𝟙 A₀ : A₀ ⟶ A₀).left := by simp
-  have gen := (T.lineBundle_trivial_iso_descend_field K₀ K i _ _ A₀.hom c.A.hom φ inferInstance inferInstance inferInstance hp.1).1
+  have gen := (_root_.GlobalTheory.lb_gen_iso_descend_field K₀ K i _ _ A₀.hom c.A.hom φ inferInstance inferInstance inferInstance hp.1).1
   have rig : ∀ (a : c.A ⟶ c.A ⊗ c.A) (a₀ : A₀ ⟶ A₀ ⊗ A₀), a.left ≫ φ₂ = φ ≫ a₀.left →
       (∃ t : (c.P.pull a.left).Gen, t.IsGen) → ∃ t : (P₀.pull a₀.left).Gen, t.IsGen := fun a a₀ e ht =>
     gen _ (pull_isLB hP₀ _) (exists_gen_of_lbIso (pull_isLB c.isLB _) (pull_isLB (pull_isLB hP₀ _) _)
@@ -165,7 +165,7 @@ theorem exists_siegPre_of_descended_data : ∀ (h M : ℕ) (o : Type) [CommRing 
     have h₂ : IsProper (A₀ ⊗ A₀).hom := by rw [Over.tensorObj_hom]; infer_instance
     have h₃ : GeometricallyConnected (A₀ ⊗ A₀).hom := by
       rw [Over.tensorObj_hom]; exact GeometricallyConnected.comp _ _
-    refine (T.lineBundle_trivial_iso_descend_field K₀ K i _ _ (A₀ ⊗ A₀).hom (c.A ⊗ c.A).hom φ₂ h₁ h₂ h₃ (isPullback_square hp.1 φ₂ sq)).2 _ _ hP₀
+    refine (_root_.GlobalTheory.lb_gen_iso_descend_field K₀ K i _ _ (A₀ ⊗ A₀).hom (c.A ⊗ c.A).hom φ₂ h₁ h₂ h₃ (isPullback_square hp.1 φ₂ sq)).2 _ _ hP₀
       (pull_isLB hP₀ _) ?_
     exact LBIso.trans (pull_isLB hP₀ _) c.isLB (pull_isLB (pull_isLB hP₀ _) _) hw.symm
       (LBIso.trans c.isLB (pull_isLB c.isLB _) (pull_isLB (pull_isLB hP₀ _) _) c.symm
@@ -213,7 +213,7 @@ theorem exists_siegPre_of_descended_data : ∀ (h M : ℕ) (o : Type) [CommRing 
   · obtain ⟨a, ha⟩ := g₂ (σ g) (by rw [← map_pow, hg, map_one])
     exact ⟨a, σinj ((σlev a).trans ha)⟩
   · have hD := pull_isLB hP₀ (lift (𝟙 A₀) (𝟙 A₀)).left
-    refine (T.weilPairing_fieldExtension_iff _ A₀ k Ω j' (spMap i') _ _ _ _ _ ab hD).1 ?_
+    refine (_root_.GlobalTheory.weilIs_fieldExt_iff _ A₀ k Ω j' (spMap i') _ _ _ _ _ ab hD).1 ?_
     have H := (weilIs_grpPullback_of_comm _ _ A₀ c.A (spMap i) φ _ _ hD (pull_isLB c.isLB _) hp diag _ _ _ _
       (pushPt hφ _) (pushPt hφ _) _ rfl rfl).1 (g₃ a b)
     rw [map_zpow]

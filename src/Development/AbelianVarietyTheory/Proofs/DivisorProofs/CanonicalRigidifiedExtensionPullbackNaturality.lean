@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDatNeZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocycleTensorLiftApplyEqTwoPointValueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnPointsIsCocycleAndEvalEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleCotangentValueBaseChangeNaturaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocycleTensorLiftApplyEqTwoPointValue
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnPointsIsCocycleAndEvalEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleCotangentValueBaseChangeNatura
 
 open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct WithConv
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap epsR IsTangent IsGrpPullback)
@@ -41,7 +41,7 @@ theorem fv_pull (f : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))) {D D' : Type} [CommRing 
     letI := via σ D; letI := via σ D'
     fv (m.isMor.coef.pullbackOneCocycle f) D D' ψ x = fv f D D' (down σ ψ) (ptsDown m D (fun _ ↦ rfl) x) := by
   letI := via σ D; letI := via σ D'
-  exact ((GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R A f).2 D D' (ptsDown m D (fun _ ↦ rfl) x) (ptsDown m D' (fun _ ↦ rfl) (spOver ψ ≫ x))
+  exact ((_root_.GlobalTheory.PtExt.fv_isCoc_and_ev_eq R A f).2 D D' (ptsDown m D (fun _ ↦ rfl) x) (ptsDown m D' (fun _ ↦ rfl) (spOver ψ ≫ x))
     (down σ ψ) (m.isMor.functor.map (trivMap ψ x)) (fun _ ↦ rfl)).2
 
 end GlobalTheory.PtExtNat
@@ -87,7 +87,7 @@ def natDat {c : primDR A} (d : Dat t c) : Dat t' (m.pull c) where
     intro n
     letI := via σ (G'.A n); letI := via σ (G'.A (n + 1))
     rw [fv_pull σ m, ptsDown_y σ m t t']
-    have coc := (GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R A d.f).1
+    have coc := (_root_.GlobalTheory.PtExt.fv_isCoc_and_ev_eq R A d.f).1
     have h1 := coc (G.A (n + 1)) (G'.A (n + 1)) (G'.A n) (sR σ m t t' (n + 1)) (down σ (G'.res n : G'.A (n + 1) →ₐ[R'] G'.A n)) (t.y (n + 1)) (sm_whole _)
     have e : (down σ (G'.res n : G'.A (n + 1) →ₐ[R'] G'.A n)).comp (sR σ m t t' (n + 1)) = (sR σ m t t' n).comp (G.res n : G.A (n + 1) →ₐ[R] G.A n) :=
       AlgHom.ext fun a ↦ (t'.semiHom t m).res_app n a
@@ -166,7 +166,7 @@ private theorem coc_naturality_of_dat_algHom {c : primDR A} (d : Dat t c) (n : �
       fv d.f (G.A n) T ((down σ ψ).comp (sR σ m t t' n)) (t.y n) + ((down σ ψ).comp (sR σ m t t' n)) (d.h n) := by
   letI := via σ T
   letI := via σ (G'.A n)
-  have hc := (GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R A d.f).1 (G.A n) (G'.A n) T (sR σ m t t' n) (down σ ψ) (t.y n) (sm_whole _)
+  have hc := (_root_.GlobalTheory.PtExt.fv_isCoc_and_ev_eq R A d.f).1 (G.A n) (G'.A n) T (sR σ m t t' n) (down σ ψ) (t.y n) (sm_whole _)
   have hp := fv_pull σ m d.f ψ (t'.y n)
   rw [ptsDown_y σ m t t'] at hp
   change fv (m.isMor.coef.pullbackOneCocycle d.f) (G'.A n) T ψ (t'.y n) +
@@ -220,8 +220,8 @@ variable {p : ℕ} {G : PDivGroup p R} {G' : PDivGroup p R'} {t : G.TorsionTower
 theorem coc_nat {c : primDR A} (d : Dat t c) (n : ℕ) :
     ((t'.semiHom t m).app n).two (d.coc n) = (natDat (m := m) (t' := t') d).coc n := by
   letI := via σ (G'.A n); letI := via σ (G'.A n ⊗[R'] G'.A n)
-  have hL := GlobalTheory.T.cocycle_tensorLift_apply_eq_twoPointValue R A p G t c d n (G'.A n ⊗[R'] G'.A n) (sL σ m t t' n) (sRt σ m t t' n)
-  have hR := GlobalTheory.T.cocycle_tensorLift_apply_eq_twoPointValue R' A' p G' t' (m.pull c) (natDat (m := m) (t' := t') d) n (G'.A n ⊗[R'] G'.A n)
+  have hL := _root_.GlobalTheory.PtExt.Dat.lift_coc R A p G t c d n (G'.A n ⊗[R'] G'.A n) (sL σ m t t' n) (sRt σ m t t' n)
+  have hR := _root_.GlobalTheory.PtExt.Dat.lift_coc R' A' p G' t' (m.pull c) (natDat (m := m) (t' := t') d) n (G'.A n ⊗[R'] G'.A n)
     Algebra.TensorProduct.includeLeft Algebra.TensorProduct.includeRight
   rw [lift_eq_two] at hL
   rw [tensorProduct_lift_includeLeft_includeRight_apply] at hR
@@ -242,10 +242,10 @@ theorem om_nat {c : primDR A} (d : Dat t c) (n : ℕ) :
   letI := via σ (G'.A n)
   let a : trivAt (t.y n) ⟶ m.isMor.obj (trivAt (t'.y n)) :=
     Thick.trivHom (sR σ m t t' n) (PDivGroup.TorsionTower.semiOf_y (t := t) (t' := t') m n)
-  have e1 := GlobalTheory.T.crystallineCocycleCotangentValue_baseChange_natural R R' σ A A' φ m.isMor (G.A n) (G'.A n) ((t'.semiHom t m).app n) (t.y n) (t'.y n) a d.f
+  have e1 := _root_.GlobalTheory.PtExt.cotVal_pull R R' σ A A' φ m.isMor (G.A n) (G'.A n) ((t'.semiHom t m).app n) (t.y n) (t'.y n) a d.f
     (fun _ ↦ rfl)
   have e2 : ev d.f a = fv d.f (G.A n) (G'.A n) (sR σ m t t' n) (t.y n) :=
-    ((GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R A d.f).2 (G.A n) (G'.A n) (t.y n) (ptsDown m (G'.A n) (fun _ ↦ rfl) (t'.y n))
+    ((_root_.GlobalTheory.PtExt.fv_isCoc_and_ev_eq R A d.f).2 (G.A n) (G'.A n) (t.y n) (ptsDown m (G'.A n) (fun _ ↦ rfl) (t'.y n))
       (sR σ m t t' n) a (fun _ ↦ rfl)).2
   simp only [Dat.om, natDat, corr]
   rw [e1, e2, map_sub, SemiBialgHom.cot_d]

@@ -48,21 +48,6 @@ theorem fockAct1_lower {p q n : ℕ} (a : Fin p) (b : Fin q) (Φ : Pol p q n 0) 
         (try split_ifs) <;> (try simp) <;> (try ring)
   simp [omE, raiB, lowB, linePos, hne, hc (Sum.inr b, Sum.inl c) (Sum.inl a, Sum.inl c)]
 
-example {p q n : ℕ} : KilledByPMinus (1 : Pol p q n 0) := by
-  intro a b; simp [lowerOp]
-
-example {p q n : ℕ} (a : Fin p) (c : Fin n) :
-    KilledByPMinus (MvPolynomial.X (Sum.inl a, Sum.inl c) : Pol p q n 0) := by
-  intro a' b
-  refine Finset.sum_eq_zero fun c' _ => ?_
-  rw [MvPolynomial.pderiv_X_of_ne (by simp), map_zero]
-
-example : ¬ KilledByPMinus
-    (MvPolynomial.X (Sum.inl 0, Sum.inl 0) * MvPolynomial.X (Sum.inr 0, Sum.inl 0) : Pol 1 1 1 0) := by
-  intro h
-  have := h 0 0
-  simp [lowerOp, MvPolynomial.pderiv_X, Pi.single_apply] at this
-
 end GlobalTheory.IndefiniteRowSideFullHecke.FockSingularValues
 
 end

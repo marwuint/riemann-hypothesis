@@ -1,6 +1,8 @@
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.Kdata
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LApproxIdC
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsAdelicHaarCovolumeOneStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsAdelicHaarCovolumeOne
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsCovolOne
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsStandardLocalMeasuresStatement
 
 noncomputable section
@@ -22,10 +24,10 @@ theorem oneD : OneD := by
   intro F _ _ hF ψ hψ S ε hε ν hν
   classical
   haveI : BorelSpace (AF F) := ⟨rfl⟩
-  obtain ⟨db, hdb⟩ := GlobalTheory.T.exists_adelic_haar_covolume_one F
+  obtain ⟨db, hdb⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.exists_isCovolOne F
   obtain ⟨⟨laminf, hinf⟩, hlamex⟩ := GlobalTheory.T.exists_standard_local_measures F
   choose lam hlam using hlamex
-  obtain ⟨S₁, hS₁⟩ := GlobalTheory.T.exists_local_approximate_identity F hF ψ hψ db hdb laminf lam hinf hlam
+  obtain ⟨S₁, hS₁⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.exists_test_approx F hF ψ hψ db hdb laminf lam hinf hlam
   obtain ⟨ρ, U, hρ, hρt, hU, hUt, hinv, hint, -, hlim⟩ := hS₁ (S ∪ S₁) Finset.subset_union_right
   haveI : db.IsAddHaarMeasure := hdb.1
   have hεε := idF_mul hε

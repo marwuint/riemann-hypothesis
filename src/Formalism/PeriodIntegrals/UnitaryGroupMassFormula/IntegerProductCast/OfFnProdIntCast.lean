@@ -118,6 +118,4 @@ theorem qmStar_of (hrow : PI.RowForm) : PI.QmStar := by
   intro A _ _ _ _ n t E ε hE hs a b w
   rw [star_qminor E ε hs, ← hrow A n t E hE, qminor_rev_rev E hE]
 
-theorem qmStar_of_rowForm (h : PI.QmRowForm) : PI.QmStar := qmStar_of h
-
 end PI.UnitaryGroupMassFormula.QmStar

@@ -23,31 +23,6 @@ section Lat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
-theorem repr_change {ι ι' : Type} [Fintype ι'] (b : Module.Basis ι F E)
-    (c : Module.Basis ι' F E) (z : Fv F v ⊗[F] E) (k : ι) :
-    (Algebra.TensorProduct.basis (Fv F v) b).repr z k =
-      ∑ j, (Algebra.TensorProduct.basis (Fv F v) c).repr z j *
-        algebraMap F (Fv F v) (b.repr (c j) k) := by
-  conv_lhs => rw [← (Algebra.TensorProduct.basis (Fv F v) c).sum_repr z]
-  simp only [map_sum, Finsupp.coe_finset_sum, Finset.sum_apply, Algebra.TensorProduct.basis_apply,
-    TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.TensorProduct.basis_repr_tmul,
-    Finsupp.smul_apply, Finsupp.mapRange_apply]
-
-theorem int_iff {ι ι' : Type} [Fintype ι] [Fintype ι'] (b : Module.Basis ι F E)
-    (c : Module.Basis ι' F E)
-    (hbc : ∀ j k, algebraMap F (Fv F v) (b.repr (c j) k) ∈ v.adicCompletionIntegers F)
-    (hcb : ∀ k j, algebraMap F (Fv F v) (c.repr (b k) j) ∈ v.adicCompletionIntegers F)
-    (z : Fv F v ⊗[F] E) :
-    (∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr z k ∈ v.adicCompletionIntegers F) ↔
-      (∀ j, (Algebra.TensorProduct.basis (Fv F v) c).repr z j ∈ v.adicCompletionIntegers F) := by
-  constructor
-  · intro h j
-    rw [repr_change v c b z j]
-    exact sum_mem fun k _ => mul_mem (h k) (hcb k j)
-  · intro h k
-    rw [repr_change v b c z k]
-    exact sum_mem fun j _ => mul_mem (h j) (hbc j k)
-
 variable {σ : E →ₐ[F] E} (A : AntiB F E σ)
 
 abbrev Pt (x y : Fv F v) : Fv F v ⊗[F] E := x ⊗ₜ (1 : E) + y ⊗ₜ A.δ
@@ -116,13 +91,6 @@ theorem Xc_one : Xc v A 1 = 1 := by rw [one_eq_Pt v A, Xc_Pt]
 
 theorem Yc_one : Yc v A 1 = 0 := by rw [one_eq_Pt v A, Yc_Pt]
 
-theorem repr_incl (e : E) (j : Fin 2) :
-    (Algebra.TensorProduct.basis (Fv F v) A.c).repr (inclR (Fv F v) e) j =
-      algebraMap F (Fv F v) (A.c.repr e j) := by
-  show (Algebra.TensorProduct.basis (Fv F v) A.c).repr ((1 : Fv F v) ⊗ₜ e) j = _
-  rw [Algebra.TensorProduct.basis_repr_tmul]
-  simp
-
 theorem Xc_add (z w : Fv F v ⊗[F] E) : Xc v A (z + w) = Xc v A z + Xc v A w := by
   rw [Xc, Xc, Xc, map_add, Finsupp.add_apply]
 
@@ -176,13 +144,6 @@ def lamC : Subring (Fv F v ⊗[F] E) where
 theorem mem_lamC (z : Fv F v ⊗[F] E) : z ∈ lamC v A hD ↔
     Xc v A z ∈ v.adicCompletionIntegers F ∧ Yc v A z ∈ v.adicCompletionIntegers F := Iff.rfl
 
-theorem rho_mem {z : Fv F v ⊗[F] E} (hz : z ∈ lamC v A hD) : InC v A z := hz
-
-theorem incl_mem (e : E) (he : ∀ j, algebraMap F (Fv F v) (A.c.repr e j) ∈ v.adicCompletionIntegers F) :
-    inclR (Fv F v) e ∈ lamC v A hD := by
-  rw [mem_lamC, Xc, Yc, repr_incl, repr_incl]
-  exact ⟨he 0, he 1⟩
-
 theorem sig_mem {z : Fv F v ⊗[F] E} (hz : z ∈ lamC v A hD) : sigR (Fv F v) σ z ∈ lamC v A hD := by
   rw [mem_lamC, Xc_sig, Yc_sig]
   exact ⟨hz.1, neg_mem hz.2⟩
@@ -231,73 +192,8 @@ def rho : lamC v A hD →+* K where
 theorem rho_apply (z : lamC v A hD) : rho v A hD r hr z =
     algebraMap _ K (red v (Xc v A z)) + algebraMap _ K (red v (Yc v A z)) * r := rfl
 
-theorem rho_sig (σ' : K ≃ₐ[𝓞 F ⧸ v.asIdeal] K) (hσr : σ' r = -r)
-    (z : lamC v A hD) : rho v A hD r hr (sigC v A hD z) = σ' (rho v A hD r hr z) := by
-  have hz := z.2
-  rw [mem_lamC] at hz
-  rw [rho_apply, rho_apply, coe_sigC, Xc_sig, Yc_sig, red_neg v hz.2, map_add, map_mul,
-    AlgEquiv.commutes, AlgEquiv.commutes, hσr, map_neg]
-  ring
-
 variable (hbij : Function.Bijective
   (fun p : (𝓞 F ⧸ v.asIdeal) × (𝓞 F ⧸ v.asIdeal) => algebraMap _ K p.1 + algebraMap _ K p.2 * r))
-
-include hbij in
-theorem rho_eq_zero (z : lamC v A hD) : rho v A hD r hr z = 0 ↔
-    Valued.v (Xc v A z) < 1 ∧ Valued.v (Yc v A z) < 1 := by
-  have hz := z.2
-  rw [mem_lamC] at hz
-  rw [← red_eq_zero_iff v hz.1, ← red_eq_zero_iff v hz.2, rho_apply]
-  constructor
-  · intro h
-    have := hbij.1 (a₁ := (red v (Xc v A z), red v (Yc v A z))) (a₂ := (0, 0)) (by simpa using h)
-    simp only [Prod.mk.injEq] at this
-    exact this
-  · rintro ⟨h1, h2⟩
-    rw [h1, h2]; simp
-
-include hbij in
-theorem rho_surj (w : K) : ∃ z : lamC v A hD, rho v A hD r hr z = w := by
-  obtain ⟨⟨s, t⟩, hst⟩ := hbij.2 w
-  obtain ⟨x, hx, rfl⟩ := red_surj v s
-  obtain ⟨y, hy, rfl⟩ := red_surj v t
-  refine ⟨⟨Pt v A x y, ?_⟩, ?_⟩
-  · rw [mem_lamC, Xc_Pt, Yc_Pt]; exact ⟨hx, hy⟩
-  · rw [rho_apply]
-    simp only [Xc_Pt, Yc_Pt]
-    exact hst
-
-theorem smul_char (z : Fv F v ⊗[F] E) :
-    (∃ z', z' ∈ lamC v A hD ∧ unifV v • z' = z) ↔
-      (z ∈ lamC v A hD ∧ Valued.v (Xc v A z) < 1 ∧ Valued.v (Yc v A z) < 1) := by
-  have hπ := unifV_spec v
-  have hπv : Valued.v (unifV v) < 1 := by rw [unifV_val]; decide
-  constructor
-  · rintro ⟨z', hz', rfl⟩
-    rw [mem_lamC] at hz'
-    have ex : Xc v A (unifV v • z') = unifV v * Xc v A z' := by
-      rw [Xc, map_smul, Finsupp.smul_apply, smul_eq_mul]
-    have ey : Yc v A (unifV v • z') = unifV v * Yc v A z' := by
-      rw [Yc, map_smul, Finsupp.smul_apply, smul_eq_mul]
-    have h1 : ∀ x ∈ v.adicCompletionIntegers F, Valued.v (unifV v * x) < 1 := by
-      intro x hx
-      rw [map_mul]
-      calc Valued.v (unifV v) * Valued.v x ≤ Valued.v (unifV v) * 1 :=
-            mul_le_mul' le_rfl ((HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) (K := F) (v := v)).1 hx)
-        _ < 1 := by rw [mul_one]; exact hπv
-    refine ⟨?_, ?_, ?_⟩
-    · rw [mem_lamC, ex, ey]; exact ⟨mul_mem hπ.2.2 hz'.1, mul_mem hπ.2.2 hz'.2⟩
-    · rw [ex]; exact h1 _ hz'.1
-    · rw [ey]; exact h1 _ hz'.2
-  · rintro ⟨_, h1, h2⟩
-    refine ⟨(unifV v)⁻¹ • z, ?_, ?_⟩
-    · rw [mem_lamC, Xc, Yc, map_smul, Finsupp.smul_apply, Finsupp.smul_apply, smul_eq_mul,
-        smul_eq_mul]
-      exact ⟨(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) (K := F) (v := v)).2
-          ((lt_one_iff_unif v _).1 h1),
-        (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) (K := F) (v := v)).2
-          ((lt_one_iff_unif v _).1 h2)⟩
-    · rw [smul_smul, mul_inv_cancel₀ hπ.1, one_smul]
 
 end Lat
 

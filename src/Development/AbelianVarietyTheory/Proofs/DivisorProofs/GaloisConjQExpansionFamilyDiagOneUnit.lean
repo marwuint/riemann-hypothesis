@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasLevelStd
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertEisensteinJetGaloisConjCoefficientsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertEisensteinJetGaloisConjCoefficients
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertLatticeTwistByMatrixModNMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QConjTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QConjTorsion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModularGroupRowVecAndConjRightActions
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertLatticeTwistHasLevel
 
@@ -38,14 +38,14 @@ theorem qConj_family : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTo
   intro hE F _ _ _ hf s N _ L hs hL z hz g a κ κ' y hg hκ hy α
   have hact := GlobalTheory.WpFam.Act.rightActions N
   have hy' : vmul y α ≠ 0 := fun h ↦ hy ((hact.2.2.2.2.1 y α).1 h)
-  have hq := (GlobalTheory.T.qConj_torsion_points N g a hg (vmul y α)).2.2 hy'
+  have hq := (_root_.GlobalTheory.WpFam.ConjExp.qConj_torsion N g a hg (vmul y α)).2.2 hy'
   rw [hact.2.2.1] at hq
   have hcop : IsCoprime (((a : ZMod N).val : ℕ) : ℤ) (N : ℤ) :=
     Nat.isCoprime_iff_coprime.2 (ZMod.val_coe_unit_coprime a)
   have hz1 : g (Complex.exp ((2 * Real.pi * Complex.I) / N)) =
       Complex.exp ((2 * Real.pi * Complex.I) * ((((a : ZMod N).val : ℕ) : ℤ) : ℂ) / N) := by
     rw [← ch_one, hg 1, mul_one, ch, Int.cast_natCast]
-  have h := GlobalTheory.T.hilbert_eisenstein_jet_galois_conj_coefficients hE F hf s N (twist N L (α : Matrix (Fin 2) (Fin 2) (ZMod N))) hs (NeZero.pos N)
+  have h := _root_.GlobalTheory.HilbFam.qConj_hfun_twist hE F hf s N (twist N L (α : Matrix (Fin 2) (Fin 2) (ZMod N))) hs (NeZero.pos N)
     (GlobalTheory.HilbFam.hasLevel_twist_of_hasLevel F N L _ hL) z hz g _ κ κ' _ _ hcop hz1 hκ hq
   rw [diag_eq, GlobalTheory.T.hilbertLatticeTwistByMatrixModN_mul F N L _ _ hL.2, ← Units.val_mul] at h
   exact h

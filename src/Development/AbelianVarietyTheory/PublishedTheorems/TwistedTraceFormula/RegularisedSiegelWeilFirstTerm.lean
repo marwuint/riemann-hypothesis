@@ -47,9 +47,6 @@ theorem mul_jX (q : stab d) : mt T q ⬝ d.jX = d.jX ⬝ (onX d q).1 := q.2.choo
 
 theorem levi_mem (α : GL (Fin r) (AE D)) : d.levi α ∈ stab d := ⟨α, d.levi_jX α⟩
 
-theorem onX_levi (α : GL (Fin r) (AE D)) : onX d ⟨_, levi_mem d α⟩ = α :=
-  Units.ext ((eq_of_mul_jX d (mul_jX d _)).trans (eq_of_mul_jX d (d.levi_jX α)).symm)
-
 def absDet : stab d →* ℝ≥0 := (absA D).comp (Matrix.GeneralLinearGroup.det.comp (onX d))
 
 def HasIw (K : Subgroup (GA D T)) : Prop := ∀ h : GA D T, ∃ q : stab d, ∃ k ∈ K, h = q * k
@@ -86,11 +83,6 @@ theorem isClosed_stab : IsClosed (stab d : Set (GA D T)) := by
 
 variable (b : GL (Fin T.rank) (AE D))
 
-theorem HasIw.isIwasawa {d : HypDec T T₀ r} {b : GL (Fin T.rank) (AE D)} (h : HasIw d (Kmax T b)) :
-    IsIwasawa (absDet d) (Kmax T b) :=
-  haveI := isLattice_frameLat_host T
-  isIwasawa_of_isCompact (isClosed_stab d) (continuous_absDet d) (isCompact_levelAll (AdelicU.isCMExt_host D) _ _ _) h
-
 def rhoH (T : HSp D) (r : ℕ) : ℝ := ((T.rank : ℝ) - r) / 2
 
 def sphericalSection (s : ℂ) : GA D T → ℂ := fun h => npow (iwAbs (absDet d) (Kmax T b) h) (s + rhoH T r)
@@ -110,13 +102,6 @@ def EisensteinContinues : Prop :=
   (∀ s : ℂ, rhoH T r < s.re → ∀ h, CosetConv (stab d) (GQ T) (sphericalSection d b s) h) ∧ (∀ h, Continues (sphericalEisenstein d b h)) ∧
     (∀ s₀, ∃ k, EisensteinRegularAt d b s₀ k) ∧ eisensteinResidue d b ≠ 0 ∧
     ∀ h, PoleLE (sphericalEisenstein d b h) (rhoH T r) 1 ∧ ResidueAt (sphericalEisenstein d b h) (rhoH T r) (eisensteinResidue d b)
-
-theorem sphericalSection_levi_mul {d : HypDec T T₀ r} {b : GL (Fin T.rank) (AE D)} (h : HasIw d (Kmax T b)) (s : ℂ)
-    (α : GL (Fin r) (AE D)) {k : GA D T} (hk : k ∈ Kmax T b) :
-    sphericalSection d b s (d.levi α * k) = npow (absA D (Matrix.GeneralLinearGroup.det α)) (s + rhoH T r) := by
-  have := h.isIwasawa.iwAbs_mul ⟨_, levi_mem d α⟩ hk
-  rw [absDet, MonoidHom.comp_apply, MonoidHom.comp_apply, onX_levi] at this
-  exact congrArg (npow · _) this
 
 end SlopeTestRemainingChoices
 
@@ -146,12 +131,6 @@ def omCentreS (p : MvPolynomial ℕ ℂ) (φ : WO S T → ℂ) : WO S T → ℂ 
 
 def omCentreT (p : MvPolynomial ℕ ℂ) (φ : WO S T → ℂ) : WO S T → ℂ :=
   fun w => centreAct θ τ T p (fun h => om (1, h) φ w) 1
-
-theorem omCentreT_C (c : ℂ) (φ : WO S T → ℂ) : omCentreT om θ τ (MvPolynomial.C c) φ = c • φ := by
-  funext w
-  by_cases hc : c = 0
-  · simp [omCentreT, centreAct, polyAct, hc]
-  · simp [omCentreT, centreAct, polyAct, opPow, MvPolynomial.support_C, hc, show ((1 : GA D S), (1 : GA D T)) = 1 from rfl]
 
 end Schwartz
 
@@ -226,10 +205,6 @@ def RegularisedSiegelWeilFirstTerm : Prop :=
         ∀ φ, IsThetaFunO ψ (dblSp V) T φ → IsKFinVec ω (Khat V a) φ →
           EisCoeffAt V (flat V a (swSec V T ω μ₀ 𝓕₀ φ) (sZero V T)) (sZero V T) (-1)
             (κ • regRes ω' m θ τ d₀ b' zH P (ikeda ψ d μ₁ 𝓕₁ (projK ω ν φ)))
-
-example (D : D7) : ∃ (V T T' : HSp D) (t : ℕ) (_ : HypDec T T' t),
-    T.rank + T'.rank = 2 * V.rank ∧ T'.rank < T.rank ∧ 0 < T'.rank :=
-  ⟨diagSp D 2 ![false, false] 2 0, _, _, 1, hypDecThree D, rfl, (by decide : 1 < 3), Nat.one_pos⟩
 
 end GlobalTheory.Published
 

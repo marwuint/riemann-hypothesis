@@ -1,23 +1,37 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.RatTors
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteIsAlgClosedCExt
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionCoordinatesEqDegenerationSeriesStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionCoordinatesEqDegenerationSeries
+import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
+import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModuliModelUltrametricPointsStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LiftValuationIntegralNormStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusTorsionPointsCorrespondValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FamiliesValuesCorrespondStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorsionIsoOfLinearUniformisationTripleStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FamiliesValuesCorrespond
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorsionIsoOfLinearUniformisationTriple
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ExistsZeroGt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DataRigidSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DvrLem
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThetaVV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGenPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.VRatioGtStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValuationMultiplicationInvariance
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PeriodicValuation
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBC
+import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
+import Development.AbelianVarietyTheory.Definitions.Uniformization.AllDV
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsRigidifiedIso
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FamilyFibreEqUniformisedPullbackGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLinearUniformisationBaseChangeAdmissibleStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteDVRExtensionTorsionRationalStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLinearUniformisationBaseChangeAdmissible
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteDVRExtensionTorsionRational
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PolarisedAVIsoDescendsOfRationalThreeTorsionStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsomorphismValuesCocycleEqBundleIsoValueStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsomorphismValuesCocycleEqBundleIsoValue
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ValuesIsoCommActionAbelianPartTorsionStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PolarizedAbelianPullbackLineBundleStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModelIsoOfValuedAgreementOverFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistedLabelsMatchOfLevelGeFourStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistedLabelsAllLevelsOfFourLeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistedLabelsMatchOfLevelGeFour
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistedLabelsAllLevelsOfFourLe
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LevelConditionValuedFieldTwistedUniformisationStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LevelConditionOfOneAlgClosedFieldStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigIsoCongr
@@ -90,7 +104,7 @@ theorem hasArcData_of_model (hV : HV) (h6 : Laws6) (hU : GlobalTheory.LN.UDvrSt)
     · have := h.1; infer_instance
   have := M.cdv.1
   have := M.cdv.2.2
-  have tors := GlobalTheory.T.torsionIso_of_linear_uniformisation_triple hV.1 hV.2.1 hV.2.2.1 hV.2.2.2.1 hV.2.2.2.2 E H M.W _ (admissible_base_of_complete_dvr M.cdv) M.t M.P
+  have tors := _root_.GlobalTheory.UT.torsionIso_of_pelUnif hV.1 hV.2.1 hV.2.2.1 hV.2.2.2.1 hV.2.2.2.2 E H M.W _ (admissible_base_of_complete_dvr M.cdv) M.t M.P
   obtain ⟨n, hn, hno, hn3, hn1⟩ := exists_odd_prime C
   obtain ⟨N', ν', J, hlin, hlab, DW, _, oW, φ, he, w₀, e₀, νW, hm, -, hpt, Φ, wΦ, -, hΦ, hwΦ, hΦpt, -⟩ :=
     GlobalTheory.T.lift_valuation_integral_norm hV h6 hU hH hT hE hTU E H D l Xo c W₀ Y O' b ϖ a hB C A u r o M f u₀ hI hR.1 hu₁ hu hf n hn hno hn1
@@ -121,7 +135,7 @@ theorem hasArcData_of_model (hV : HV) (h6 : Laws6) (hU : GlobalTheory.LN.UDvrSt)
         exact (hlin x y).trans (congrArg (fun z => x • ν'.eX (J.e z)) (A.ν.eX.symm_apply_apply y).symm) }
   have fit : Fit A u M f ν' J ψ w e :=
     ⟨gψ, hw, pψ, fun y => congrArg (fun z => ν'.eX (J.e z)) (A.ν.eX.symm_apply_apply y),
-      GlobalTheory.T.isomorphismValues_cocycle_eq_bundleIso_value hL hL2 M.W O' f _ _ C hf N' A.N ν' A.ν ψ w J.toIso gψ hw pψ⟩
+      _root_.GlobalTheory.IsoValCocycle.cocycle_eq_val hL hL2 M.W O' f _ _ C hf N' A.N ν' A.ν ψ w J.toIso gψ hw pψ⟩
   have act : ∀ x, (M.P.oD.onB.act x).left ≫ ψ = ψ ≫ (a.oa.onB.act x).left := fun x => by
     refine GlobalTheory.T.polarized_abelian_pullback_line_bundle hL hE E H M.W _ _ _ _ M.P.oD.onB a.oa.onB ψ gψ lψ C n hn.two_le x fun j z hz => ?_
     obtain ⟨z, rfl⟩ := (J.φ.trans ν'.eA).surjective z
@@ -132,8 +146,8 @@ theorem hasArcData_of_model (hV : HV) (h6 : Laws6) (hU : GlobalTheory.LN.UDvrSt)
     rw [MulEquiv.apply_symm_apply, Over.comp_left]
     exact (congrArg (· ≫ _) (pψ z).symm).trans (Category.assoc _ _ _)
   obtain ⟨s₁, s₂, s₃, s₄, s₅, s₆⟩ := GlobalTheory.T.modelIso_of_valued_agreement_over_field hLL E H D l c _ _ O' b a C A u r o M f N' ν' J hR.1 hf u₀ hu ψ heψ w e fit hrig act
-  have lab := GlobalTheory.T.twistedLabels_all_levels_of_four_le hLL hGt E H D l c _ _ O' b a C A u r o M f N' ν' J hR.1 hf tors
-    (GlobalTheory.T.twistedLabels_match_of_level_ge_four hLL (GlobalTheory.T.torsionCoordinates_eq_degenerationSeries hV hGt (GlobalTheory.T.families_values_correspond hL hL2)) hGt E H D l c _ _ O' b a C A u r o M f N' ν' J hR.1 hf tors
+  have lab := _root_.GlobalTheory.Ex.LabelsAllLevels.labels_of_four_le hLL hGt E H D l c _ _ O' b a C A u r o M f N' ν' J hR.1 hf tors
+    (_root_.GlobalTheory.Ex.Trait.LevelFour.labels_of_four_le hLL (_root_.GlobalTheory.Ex.CoordSeries.coord_eq_series hV hGt (_root_.GlobalTheory.Ex.brFam hL hL2)) hGt E H D l c _ _ O' b a C A u r o M f N' ν' J hR.1 hf tors
       hR n hno hn3 (hlab 2))
   refine ⟨M.t, m, M.P, ψ, heψ, w, e, s₁, s₂, s₃, s₄, s₅, fun F _ _ _ _ uF hF huF => ⟨s₆ F uF hF huF, ?_⟩⟩
   intro yF hyF k p₀ σ hσ q₀ q x h₀ hq hg hx
@@ -218,11 +232,11 @@ theorem hasArcData_at_trait : HV → Laws6 → GlobalTheory.LN.UDvrSt → Global
       rw [e, Category.id_comp, Category.assoc, hs, reassoc_of% sq, hf₀, spMap_comp, spMap_comp, spMap_comp]
       simp only [Category.assoc]) o hF
   have inj₁ : Function.Injective f₁ := fun x y h => injW ((al₁ x).symm.trans (h ▸ al₁ y))
-  obtain ⟨W₂, _, _, _, _, io, hW₂, inj₂, fin₂, loc₂, al₂, ext₂, t₁, t₂⟩ := GlobalTheory.T.exists_completeDVR_extension_torsion_rational hL M.W M.cdv C M.ext 3 (by decide)
+  obtain ⟨W₂, _, _, _, _, io, hW₂, inj₂, fin₂, loc₂, al₂, ext₂, t₁, t₂⟩ := _root_.GlobalTheory.Ex.TorsionField.exists_cDvr_ratTors hL M.W M.cdv C M.ext 3 (by decide)
     _ _ (𝟙 _) (spMap (f₁.comp f₀)) M.P.D.toPre.P a.D₀.P
   have := hW₂.1
   have := hW₂.2.2
-  obtain ⟨t, m₀, P, ψ, gψ⟩ := GlobalTheory.T.exists_linearUniformisation_baseChange_admissible hL hL3 hL4 hL5 E H M.W W₂ _ _ (admissible_base_of_complete_dvr M.cdv) (admissible_base_of_complete_dvr hW₂) io inj₂
+  obtain ⟨t, m₀, P, ψ, gψ⟩ := _root_.GlobalTheory.Ex.Trait.exists_pelUnif_baseChange hL hL3 hL4 hL5 E H M.W W₂ _ _ (admissible_base_of_complete_dvr M.cdv) (admissible_base_of_complete_dvr hW₂) io inj₂
     (Ideal.map_le_iff_le_comap.2 fun x hx => map_nonunit io x hx) M.t M.P
   obtain ⟨m, -⟩ := sabComp pullCubComp E H _ _ _ _ _ _ _ _ m₁ m₀
   have al : Along (io.comp f₁) C := fun x => (al₂ _).trans (al₁ x)

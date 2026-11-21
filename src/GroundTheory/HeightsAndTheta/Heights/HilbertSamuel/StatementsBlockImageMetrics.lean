@@ -26,10 +26,6 @@ def BlockImageMetrics.Statement : Prop :=
     ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (k₀ : K) (P : Ideal (MRing ι)),
       IsSemipositiveRel ⊥ P (HermLine.ofMetrics (fun k => fsMetric (ι k)) (unitDeg k₀))
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

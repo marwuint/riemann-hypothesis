@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingTrRep
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalIntertwinerUniqueScalarStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenExtendsContinuousStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenContinuousInverseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictedTensorSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerIntertwinerL2ConstantStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalIntertwinerUniqueScalar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenExtendsContinuous
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenContinuousInverse
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictedTensorSchwartz
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerIntertwinerL2Constant
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.WeilTr MeasureTheory
 open scoped Matrix ENNReal
 
@@ -34,8 +34,8 @@ theorem exists_const : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
       apply (algebraMap F (Fv F v)).injective
       rw [map_ofNat, h, map_zero]
     letI : Invertible (2 : Fv F v) := invertibleOfNonzero h2
-    obtain ⟨ψv, hc, hne, A, hA⟩ := GlobalTheory.T.exists_addChar_normalizing_schrodinger_action F E σ B n d X W M χX χW om r s r' s' hPair M₁ hM₁ e hE ei ev hei hev hpure v
-    exact GlobalTheory.T.local_intertwiner_unique_scalar F v (Fin n × Fin d) ψv hc hne (ev v) A (hSB v) hA
+    obtain ⟨ψv, hc, hne, A, hA⟩ := _root_.GlobalTheory.ThK.ModelLocInt.exists_loc_schr F E σ B n d X W M χX χW om r s r' s' hPair M₁ hM₁ e hE ei ev hei hev hpure v
+    exact _root_.GlobalTheory.CompactOpenLattice.inner_eq_const_mul F v (Fin n × Fin d) ψv hc hne (ev v) A (hSB v) hA
   have hinf : ∃ c : ℝ, 0 ≤ c ∧ ∀ μ : @Measure (Fin n × Fin d → mixedEmbedding.mixedSpace F) (borel _),
       @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∀ f f' : SInf F (Fin n × Fin d),
         @integral _ ℂ _ _ (borel _) μ (fun x => ei f x * starRingEnd ℂ (ei f' x)) =
@@ -43,9 +43,9 @@ theorem exists_const : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     letI : Invertible (2 : ℝ) := invertibleOfNonzero two_ne_zero
     letI : Invertible (2 : mixedEmbedding.mixedSpace F) :=
       (Invertible.map (algebraMap ℝ (mixedEmbedding.mixedSpace F)) 2).copy 2 (map_ofNat _ 2).symm
-    obtain ⟨ψ, hψ, A, hA⟩ := GlobalTheory.T.weil_eigen_continuous_inverse F E σ B n d X W M χX χW om r s r' s' hPair M₁ hM₁ e hE ei ev hei hev hpure
-    exact GlobalTheory.T.schrodinger_intertwiner_l2_constant F (Fin n × Fin d) ψ hψ ei A hA
-  exact GlobalTheory.T.restricted_tensor_schwartz F (Fin n × Fin d) e M.vac M₁.vac ei ev (fun v => (hPair.good.vac v).1) hPair.good.std hM₁.std
+    obtain ⟨ψ, hψ, A, hA⟩ := _root_.GlobalTheory.ArchIntertw.ei_schr F E σ B n d X W M χX χW om r s r' s' hPair M₁ hM₁ e hE ei ev hei hev hpure
+    exact _root_.GlobalTheory.SvNForm.schrodinger_intertwiner_l2_const F (Fin n × Fin d) ψ hψ ei A hA
+  exact _root_.GlobalTheory.TensorSquareIntegral.exists_const_tensor F (Fin n × Fin d) e M.vac M₁.vac ei ev (fun v => (hPair.good.vac v).1) hPair.good.std hM₁.std
     (fun v => (hev v).1) hSB hpure hinf hfin μ hμ
 
 end GlobalTheory.EvalUnitUnconditional

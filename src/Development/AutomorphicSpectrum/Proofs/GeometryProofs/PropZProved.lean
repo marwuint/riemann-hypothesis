@@ -4,7 +4,8 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LocalComponent
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.PropZ
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsRegularSectionGenerator
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkClosedPointToGermTop
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConnectedSpecialFibreConstantStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConnectedSpecialFibreConstant
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
 open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.PropZPf
@@ -80,7 +81,7 @@ theorem GlobalTheory.CompanionTheory.Ar.Flat.PropZ_holds : GlobalTheory.Companio
   have hu₀ : unitAt ξ p₀ ((fun p : Cpt ξ => algebraMap O Ω ϖ ^ a / (σ / t p) ^ M) p₀) := by
     have := ZUnit.inv ((orderAt_iff_div (htq p₀ hp₀).1 (htq p₀ hp₀).2).1 hord₀)
     rwa [inv_div] at this
-  have key := GlobalTheory.T.connected_special_fibre_constant X Ω ξ O s ϖ hϖ hinj hs hg hconn
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.Flat.unitAt_of_localLifts_of_unitAt X Ω ξ O s ϖ hϖ hinj hs hg hconn
     (fun p : Cpt ξ => algebraMap O Ω ϖ ^ a / (σ / t p) ^ M) hloc ⟨p₀, hp₀, hu₀⟩
   refine ⟨M, a, hM, fun p => ?_⟩
   by_cases hp : unitAt ξ p (algebraMap O Ω ϖ)

@@ -29,6 +29,4 @@ theorem localSpec_fac_of_closedPoint_mem_range (S : Type) [CommRing S] [IsLocalR
   rw [Spec.map_preimage]
   exact IsOpenImmersion.lift_fac _ _ _
 
-example : ∀ (S : Type) [CommRing S] [IsLocalRing S] (X : Scheme.{0}) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (yb : Sp S ⟶ X), IsOpenImmersion ξ → yb (IsLocalRing.closedPoint S) ∈ Set.range ξ → ∃ φ : R →+* S, spMap φ ≫ ξ = yb := @localSpec_fac_of_closedPoint_mem_range
-
 end GlobalTheory

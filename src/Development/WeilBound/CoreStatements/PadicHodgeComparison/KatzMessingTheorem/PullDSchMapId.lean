@@ -14,10 +14,6 @@ variable (l : ℕ) [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing 
 
 def mapId (F : B.Fn O) : B.Fn.Map F F := ⟨𝟙 _, fun h => h⟩
 
-def mapComp {F F' F'' : B.Fn O} (u : B.Fn.Map F F') (v : B.Fn.Map F' F'') : B.Fn.Map F F'' where
-  u := u.u ≫ v.u
-  ov h := v.ov (u.ov h)
-
 omit [CommRing O] in
 theorem map_ext [CommRing O] {F F' : B.Fn O} {u v : B.Fn.Map F F'} (h : u.u = v.u) : u = v := by
   cases u

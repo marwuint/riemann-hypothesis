@@ -109,9 +109,6 @@ end lat2
 def E3itOf : Prop :=
   ∀ (O : Type) [CommRing O] (B : Base O), B.E3 → ∀ j, B.E3it j
 
-def LevelFactorMemSpanOf : Prop :=
-  ∀ (O : Type) [CommRing O] (B : Base O), 1 ≤ B.ℓ → B.E3 → ∀ s, B.E2 s
-
 def BaseGoodOf : Prop :=
   ∀ (O : Type) [CommRing O] (B : Base O) (j M g : ℕ), B.E3 → B.E4 → 3 * g ≤ (B.ℓ - 1) * M →
     B.Good j M g
@@ -210,32 +207,5 @@ def LatGoodOf : Prop :=
     (∀ c ∈ Cu.cuts, ∀ k : ℕ, 1 ≤ k → k ≤ j → Mi (c + (k : ZMod n)) ≤ G) →
     (∀ c ∈ Cu.cuts, L.PullFree c j) → L.Complete → L.XReg → L.LTors →
     L.Good Cu j M g sig
-
-def LatGoodPrim : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O) (B : Base O)
-    (n : ℕ) [NeZero n] (Cu : Cuts n) (j M g G sig : ℕ) (Mi : ZMod n → ℕ)
-    (V : Type) [AddCommGroup V] [Module (PowerSeries O) V] (L : Lat B n V),
-    Irreducible ϖ → ϖ ∣ (B.ℓ : O) → (B.ℓ : O) ≠ 0 → B.ℓ.Prime → 3 ≤ B.ℓ → 1 ≤ j →
-    IsAdicComplete (Ideal.span {(B.ℓ : O)}) O →
-    B.E3 → B.E4 → G ≤ g → SigOK B.ℓ j M g sig →
-    L.P9 → (∀ i, L.P5M i (Mi i)) → (∀ i, Mi i < (B.ℓ - 1) * M) →
-    (∀ c ∈ Cu.cuts, ∀ k : ℕ, 1 ≤ k → k ≤ j → Mi (c + (k : ZMod n)) ≤ G) →
-    (∀ c ∈ Cu.cuts, L.PullFree c j) → (∀ i, L.Free i) → L.LTors →
-    L.Good Cu j M g sig
-
-def ExtGoodOf : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O) (B : Base O)
-    (n : ℕ) [NeZero n] (Cu : Cuts n) (j M g G rr : ℕ) (Mi hi : ZMod n → ℕ)
-    (H : ZMod n → ℕ → ℕ)
-    (V₂ V₀ : Type) [AddCommGroup V₂] [Module (PowerSeries O) V₂] [AddCommGroup V₀]
-    [Module (PowerSeries O) V₀] (L₂ : Lat B n V₂) (L₀ : Lat B n V₀) (e₀ : V₀) (Y : Ext L₂ L₀),
-    Irreducible ϖ → ϖ ∣ (B.ℓ : O) → (B.ℓ : O) ≠ 0 → B.E3 → G ≤ g →
-    (∀ c ∈ Cu.cuts, Y.Lift e₀ c rr) → Y.LY.P9 → Y.P6 → L₀.XReg →
-    (∀ i, Y.LY.P5M i (Mi i)) → (∀ i, Y.LY.FrobeniusCobounded i (hi i)) →
-    (∀ c ∈ Cu.cuts, ∀ k : ℕ, 1 ≤ k → k ≤ j → Mi (c + (k : ZMod n)) ≤ G) →
-    (∀ c ∈ Cu.cuts, ∀ s < Cu.ell c, hi (c - (s : ZMod n)) ≤ H c s) →
-    (∀ c ∈ Cu.cuts, Y.LY.PullFree c j) →
-    (∀ c ∈ Cu.cuts, L₀.PhiFree (c - (Cu.ell c : ZMod n)) (Cu.ell c)) →
-    Y.Good e₀ Cu (fun c => ∏ s ∈ Finset.range (Cu.ell c), B.p s ^ H c s) j M g rr
 
 end Formalism.ExponentWindows.E

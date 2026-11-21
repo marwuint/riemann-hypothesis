@@ -5,11 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorO
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCycAwayHomComplex
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoIffBijectiveOverAlgClosed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteEtaleSymplecticLevelSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSymplecticLevelOfPulledBackObjectStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticLevelTwistBySimilitudeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueSimilitudeBetweenSymplecticLevelsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSymplecticLevelOfPulledBackObject
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticLevelTwistBySimilitude
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueSimilitudeBetweenSymplecticLevels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymplecticLevelGeometricPointHarrisTaylorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassifyingMapSymplecticLevelEquivariantStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassifyingMapSymplecticLevelEquivariant
 
 noncomputable section
 
@@ -42,11 +42,11 @@ theorem exists_galoisCover_of_geom {p : ℕ} [Fact p.Prime] {D : Datum p} {R : T
   choose lv' hlv' using hlift
   choose n σ hn hσζ hσs using fun a => (hρ a).2.1
   have hTw : ∀ a, SympCond o h M Y (t₁ ≫ spMap (σ a)) (sympTwist a lu) := fun a =>
-    GlobalTheory.T.symplecticLevel_twist_by_similitude p D R b N h M hM0 S t o Y t₁ lu hAu a (n a) (σ a) (hn a) (hσζ a)
+    _root_.GlobalTheory.HTSympCover.sympCond_twist p D R b N h M hM0 S t o Y t₁ lu hAu a (n a) (σ a) (hn a) (hσζ a)
   choose r hr using fun a => ((hY Y _ _).1 (hTw a)).exists
-  have hlev' : IsSympLev o'.P h M (zetaAway M) t₁ lv' := GlobalTheory.T.isSymplecticLevel_of_pulledBack_object p D R b N h M S t o Y t₁ o' m lv' lu hlv' hAu
+  have hlev' : IsSympLev o'.P h M (zetaAway M) t₁ lv' := _root_.GlobalTheory.HTSympCover.isSympLev_of_sympCond_pull p D R b N h M S t o Y t₁ o' m lv' lu hlv' hAu
   have hlevT : ∀ a, IsSympLev o'.P h M (zetaAway M) (t₁ ≫ spMap (σ a)) (sympTwist a lv') := fun a =>
-    GlobalTheory.T.isSymplecticLevel_of_pulledBack_object p D R b N h M S t o Y (t₁ ≫ spMap (σ a)) o' m (sympTwist a lv') (sympTwist a lu) (fun c => hlv' _) (hTw a)
+    _root_.GlobalTheory.HTSympCover.isSympLev_of_sympCond_pull p D R b N h M S t o Y (t₁ ≫ spMap (σ a)) o' m (sympTwist a lv') (sympTwist a lu) (fun c => hlv' _) (hTw a)
   obtain ⟨y, ⟨hys, hys₁, my, hmy⟩, -⟩ := huniv Y.left (Y.hom ≫ t) t₁ o' lv' hlev'
   have hdet := (GlobalTheory.SiegelTor.cycAway_galois M (by omega)).2.1
   have hσ1 : σ 1 = RingHom.id _ := hdet _ (σ 1) (RingHom.id _) (by
@@ -127,7 +127,7 @@ theorem exists_galoisCover_of_geom {p : ℕ} [Fact p.Prime] {D : Datum p} {R : T
       (hY _ _ _).2 ⟨P1, rfl, fun _ => rfl⟩
     have c2 : SympCond o h M (Over.mk (y₁ ≫ Y.hom)) (y₂ ≫ t₁) (fun c => P2 ≫ lu c) :=
       (hY _ _ _).2 ⟨P2, rfl, fun _ => rfl⟩
-    obtain ⟨a, ⟨ha1, ha2⟩, hu⟩ := GlobalTheory.T.existsUnique_similitude_between_symplecticLevels p D R b N h M hM0 hodd h1 σ (fun a => ⟨n a, hn a, hσζ a⟩) S t o K
+    obtain ⟨a, ⟨ha1, ha2⟩, hu⟩ := _root_.GlobalTheory.HTSympCover.sympCond_fibre_existsUnique p D R b N h M hM0 hodd h1 σ (fun a => ⟨n a, hn a, hσζ a⟩) S t o K
       (y₁ ≫ Y.hom) _ _ _ _ c1 c2
     refine ⟨a, ?_, fun a' ha' => hu a' ?_⟩
     · have : P1 ≫ r a = P2 := uniqY _ _ (by
@@ -143,7 +143,7 @@ theorem exists_galoisCover_of_geom {p : ℕ} [Fact p.Prime] {D : Datum p} {R : T
       · show P1 ≫ lu _ = P2 ≫ lu c
         rw [← e', Category.assoc, (hr a').2]
         rfl
-  · exact fun a => GlobalTheory.T.classifyingMap_symplecticLevel_equivariant p D R b N h M X s s₁ u lev huniv ρ hρ σ hσs S t o Y t₁ lu o' m lv' hlv' hlevT y my hmy
+  · exact fun a => _root_.GlobalTheory.HTSympCover.classify_equivariant p D R b N h M X s s₁ u lev huniv ρ hρ σ hσs S t o Y t₁ lu o' m lv' hlv' hlevT y my hmy
       hys hys₁ r (fun a => (hr a).1) (fun a => (hr a).2) a
 
 theorem exists_galoisCover : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R)

@@ -2,13 +2,18 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatThetaMapsPreserveThetaFunctionsStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatThetaMapsConvergeThetaFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorThetaFunctionalMixedSourceModeStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorThetaFunctionalMixedSourceMode
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsQuasiFam
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaAbsoluteSum
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergThetaMixedModelTargetOfMixedModelStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedCoordinatesOfThetaFunctionAreThetaFunctionsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedCoordinatesOfThetaFunctionAreThetaFunctions
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselToJacobiFlatSchwartzEquivariantStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.JacobiToBesselFlatIntertwinesWeilActionStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatSchwartzTargetUnipotentConjBesselCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumDescendsToWittCoreStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumDescendsToWittCore
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
 
 noncomputable section
 
@@ -50,7 +55,7 @@ theorem flatAt_dual (hψ : IsStdChar D ψ (-1)) (f : WO V W → ℂ) (hf : IsThe
   have key : ∀ u : UX D ρ, dV.mixS W ψ vS.μ vS.𝓕 (heisO ψ V W (dV.extY W a) f) (x ⬝ u.1.1) =
       ψ (symplO V W (dV.extX W x) (dV.extY W a)) • dV.mixS W ψ vS.μ vS.𝓕 f (x ⬝ u.1.1) := by
     intro u
-    rw [(GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ V V₀ W ρ dV vS f hf).2.1 (x ⬝ u.1.1) a]
+    rw [(_root_.GlobalTheory.HeisMixSource.heis_mixS D ψ hψ V V₀ W ρ dV vS f hf).2.1 (x ⬝ u.1.1) a]
     rw [symplO_eq_of_symplOH (a := dV.extX W (x ⬝ u.1.1)) (b := dV.extY W a) (a' := dV.extX W x) (b' := dV.extY W a)
       (by rw [dV.symplOH_extX_extY W, dV.symplOH_extX_extY W, ha u])]
   funext w
@@ -66,8 +71,8 @@ theorem flatAt_iso (hψ : IsStdChar D ψ (-1)) (f : WO V W → ℂ) (hf : IsThet
       ψ (symplO V₀ W (dW.incAdj V₀ y) (dW.incX V₀ ξ)) •
         dW.mixT V₀ ψ vT.μ vT.𝓕 (dV.mixS W ψ vS.μ vS.𝓕 f (x ⬝ u.1.1)) y := by
     intro u
-    rw [(GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ V V₀ W ρ dV vS f hf).2.2.1 (x ⬝ u.1.1) (dW.incX V₀ ξ)]
-    have hg := (GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ hψ).1 V V₀ W ρ dV vS.μ vS.𝓕 vS.covol f hf (x ⬝ u.1.1)
+    rw [(_root_.GlobalTheory.HeisMixSource.heis_mixS D ψ hψ V V₀ W ρ dV vS f hf).2.2.1 (x ⬝ u.1.1) (dW.incX V₀ ξ)]
+    have hg := (_root_.GlobalTheory.MixValues.mixed_values D ψ hψ).1 V V₀ W ρ dV vS.μ vS.𝓕 vS.covol f hf (x ⬝ u.1.1)
     exact (GlobalTheory.T.heisenbergThetaMixedModelTarget_of_mixedModel D ψ hψ V₀ W W₀ σ dW vT.μ vT.𝓕 vT.covol _ hg).1 ξ y
   funext w
   simp only [flatAt, flatFun, evalAt, key, Pi.smul_apply, smul_eq_mul]
@@ -81,8 +86,8 @@ theorem flatAt_core (hψ : IsStdChar D ψ (-1)) (f : WO V W → ℂ) (hf : IsThe
       (dV.mixS W ψ vS.μ vS.𝓕 (heisO ψ V W (dV.ext0 W (dW.inc0 V₀ w₀)) f) (x ⬝ u.1.1)) y =
       heisO ψ V₀ W₀ w₀ (dW.mixT V₀ ψ vT.μ vT.𝓕 (dV.mixS W ψ vS.μ vS.𝓕 f (x ⬝ u.1.1)) y) := by
     intro u
-    rw [(GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ V V₀ W ρ dV vS f hf).2.2.1 (x ⬝ u.1.1) (dW.inc0 V₀ w₀)]
-    have hg := (GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ hψ).1 V V₀ W ρ dV vS.μ vS.𝓕 vS.covol f hf (x ⬝ u.1.1)
+    rw [(_root_.GlobalTheory.HeisMixSource.heis_mixS D ψ hψ V V₀ W ρ dV vS f hf).2.2.1 (x ⬝ u.1.1) (dW.inc0 V₀ w₀)]
+    have hg := (_root_.GlobalTheory.MixValues.mixed_values D ψ hψ).1 V V₀ W ρ dV vS.μ vS.𝓕 vS.covol f hf (x ⬝ u.1.1)
     exact (GlobalTheory.T.heisenbergThetaMixedModelTarget_of_mixedModel D ψ hψ V₀ W W₀ σ dW vT.μ vT.𝓕 vT.covol _ hg).2.1 w₀ y
   funext w
   simp only [flatAt, flatFun, evalAt, key, heisO]
@@ -97,7 +102,7 @@ namespace GlobalTheory.FlatLawsDuality
 
 theorem flatBF_equiv : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) (f : WO B.V J.W → ℂ), IsThetaFunO ψ B.V J.W f → ∀ n ∈ flagN J.d, ∀ h : GA D J.W₀, flatBF s (s.om (1, n * J.d.emb0 h) f) = star (psiFlag ψ J.d n) • opA ψ J.d B.o B.ζ s.om₀ n h (flatBF s f) := by
   intro D ψ ρ B J s f hf n hn h
-  obtain ⟨om', hom'⟩ := (GlobalTheory.T.weilDatum_descends_to_wittCore D ψ B.V J.W s.χV s.χW s.om s.weil).1 B.V₀ ρ B.d
+  obtain ⟨om', hom'⟩ := (_root_.GlobalTheory.Desc.weil_data_descend D ψ B.V J.W s.χV s.χW s.om s.weil).1 B.V₀ ρ B.d
   have e := GlobalTheory.T.besselToJacobiFlatSchwartz_equivariant D ψ ρ B J s om' hom' f hf 1 n hn h
   have e1 : embA B.d B.o 1 = 1 := map_one _
   have e2 : B.o.emb (1, 1) = 1 := map_one _
@@ -106,7 +111,7 @@ theorem flatBF_equiv : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) 
 
 theorem flatFB_equiv : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B) (f : WO J.W B.V → ℂ), IsThetaFunO ψ J.W B.V f → ∀ n ∈ flagN B.d, ∀ h : GA D B.A, flatFB s (s.om (1, n * embA B.d B.o h) f) = star (psiBes ψ B.d 1 (vecB B.o B.ζ) n) • s.om₀ (1, B.o.emb (h, 1)) (flatFB s f) := by
   intro D ψ σ J B s f hf n hn h
-  have hD : Descent D := GlobalTheory.T.weilDatum_descends_to_wittCore D
+  have hD : Descent D := _root_.GlobalTheory.Desc.weil_data_descend D
   have h1 : IsThetaFunO ψ J.W B.V (s.om (1, embA B.d B.o h) f) := s.weil.om_pres _ _ hf
   have e : s.om (1, n * embA B.d B.o h) f = s.om (1, n) (s.om (1, embA B.d B.o h) f) := by
     rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]

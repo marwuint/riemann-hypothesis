@@ -138,74 +138,6 @@ variable {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ} {I : Fin 2 �
 theorem Agr.smul {τ : Type} {k : ℕ} {f g : MvPowerSeries τ C} (h : Agr k f g) (c : C) : Agr k (c • f) (c • g) :=
   fun e he => by rw [map_smul, map_smul, h e he]
 
-theorem lg_mulCv (Y : FBChart C V O dd) (p : PairData Y d I) {γ : Fin dd → PowerSeries C}
-    (hγ0 : ∀ j, PowerSeries.constantCoeff (γ j) = 0) (n : ℕ) (j : Fin dd) :
-    MvPowerSeries.subst (fun k => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (mulL Y.B.G.F n k))
-        ((Y.raw p).lg j) = (n : C) • alongCv γ ((Y.raw p).lg j) := by
-  have hG : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => γ q.2) :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hγ0 q.2
-  have hM : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => mulL Y.B.G.F n q.2) :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => FirstUnitSeriesIntegrality.multiplication_constantCoeff_zero Y.B.G n q.2
-  have hL0 : ∀ k, MvPowerSeries.constantCoeff
-      (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (mulL Y.B.G.F n k)) = 0 :=
-    fun k => MvPowerSeries.constantCoeff_subst_eq_zero hG (fun q => hγ0 q.2) (FirstUnitSeriesIntegrality.multiplication_constantCoeff_zero Y.B.G n k)
-  have h := congrArg (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2)) (MulLFrob.lg_mulL Y n j)
-  rw [eval_single_eq_subst, MvPowerSeries.subst_comp_subst_apply hM hG,
-    show (n • Y.lg j) = (n : C) • Y.lg j from (Nat.cast_smul_eq_nsmul C n _).symm,
-    MvPowerSeries.subst_smul hG] at h
-  show MvPowerSeries.subst _ (un1 (Y.lg j)) = (n : C) • MvPowerSeries.subst γ (un1 (Y.lg j))
-  rw [subst_singlePointUncurry hL0, subst_singlePointUncurry hγ0]
-  exact h
-
-theorem coeff_l_mulCv (Y : FBChart C V O dd) (p : PairData Y d I) {g : Fin 2} {w : I g → C}
-    {x : ℕ → I g ⊕ JJ I g → C} (h0 : x 0 = Sum.elim w 0) (h1 : ∀ c, x 1 (Sum.inl c) = 0)
-    {γ : Fin dd → PowerSeries C} (hγ : IsCv V γ)
-    (hlg : ∀ i, alongCv γ ((Y.raw p).lg i) = ∑ c : I g, (Y.raw p).u g c i • tyS V.l (fun s => x s (Sum.inl c)))
-    (k : Fin dd) :
-    V.MM (PowerSeries.coeff V.l (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (mulL Y.B.G.F V.l k))) := by
-  have hl := V.l_prime.two_le
-  have hγ0 : ∀ j, PowerSeries.constantCoeff (γ j) = 0 := fun j => (hγ j).1
-  have hG : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => γ q.2) :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hγ0 q.2
-  have hL0 : ∀ k, MvPowerSeries.constantCoeff
-      (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (mulL Y.B.G.F V.l k)) = 0 :=
-    fun k => MvPowerSeries.constantCoeff_subst_eq_zero hG (fun q => hγ0 q.2) (FirstUnitSeriesIntegrality.multiplication_constantCoeff_zero Y.B.G V.l k)
-  set U : Fin dd → C := fun j => ∑ c, (Y.raw p).u g c j * w c with hU
-  have hX0 : ∀ (a : C), MvPowerSeries.constantCoeff (a • (MvPowerSeries.X () : PowerSeries C)) = 0 := by
-    intro a
-    rw [MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_X, mul_zero]
-  have hcl : ∀ j, MvPowerSeries.constantCoeff (alongCv γ ((Y.raw p).lg j)) = 0 := fun j =>
-    MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ0) hγ0
-      (Y.chart_log_constantCoeff p j)
-
-  have eL := ex_lg_at Y p _ hL0 k
-  simp only [lg_mulCv Y p hγ0 V.l] at eL
-  have hAL : Agr (V.l ^ 2) (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (mulL Y.B.G.F V.l k))
-      (MvPowerSeries.subst (fun j => ((V.l : C) * U j) • (MvPowerSeries.X () : PowerSeries C)) ((Y.raw p).ex k)) := by
-    rw [← eL]
-    refine agr_subst_left (fun j => by rw [MvPowerSeries.smul_eq_C_mul, map_mul, hcl j, mul_zero])
-      (fun j => hX0 _) (fun j => ?_) _
-    have := Agr.smul (lgCv_agr Y p h0 h1 hlg j) (V.l : C)
-    rwa [smul_smul] at this
-
-  have eG := ex_lg_at Y p γ hγ0 k
-  have hAG : Agr (V.l ^ 2) (γ k)
-      (MvPowerSeries.subst (fun j => U j • (MvPowerSeries.X () : PowerSeries C)) ((Y.raw p).ex k)) := by
-    rw [← eG]
-    exact agr_subst_left hcl (fun j => hX0 _) (fun j => lgCv_agr Y p h0 h1 hlg j) _
-  have hdeg : (Finsupp.single () V.l).degree < V.l ^ 2 := by
-    rw [Finsupp.degree_single]
-    nlinarith
-  have e1 := hAL _ hdeg
-  have e2 := hAG _ hdeg
-  change PowerSeries.coeff V.l _ = PowerSeries.coeff V.l _ at e1 e2
-  rw [e1, FirstVanishing.coeff_subst_scale, ← e2]
-  obtain ⟨m, hm⟩ : ∃ m, V.l = m + 1 := ⟨V.l - 1, by omega⟩
-  have e3 : (V.l : C) ^ V.l = (V.l : C) * (V.l : C) ^ m := by
-    rw [← pow_succ', ← hm]
-  rw [e3, mul_assoc]
-  exact mm_l_mul ((VF.Ge.pow (ge_natCast V.l) m).mul_int ((hγ k).2 V.l))
-
 end Main
 
 section Frob
@@ -324,12 +256,5 @@ theorem coeff_l_mulCv_frob (Y : FBChart C V O dd) {γ : Fin dd → PowerSeries C
 end Frob
 
 end FirstVanishing
-
-theorem first_vanishing : GoodVectorsMulPrimePowerCoefficientsVanish := by
-  intro C _ _ V O _ _ dd Y d _ I _ p hrk Hc hAlt g a hbig w x hG hc0 γ lam hW k
-  have hB := FirstVanishing.coeff_l_mulCv Y p hG.1.2.1 hG.2 hW.1 hW.2.2.1 k
-  have hA := FirstVanishing.coeff_l_mulCv_frob Y hW.1 k
-  have h := MaximalIdealCongruence.mm_sub hB hA
-  rwa [sub_sub_cancel] at h
 
 end Formalism.L2.FormalSeriesBounds

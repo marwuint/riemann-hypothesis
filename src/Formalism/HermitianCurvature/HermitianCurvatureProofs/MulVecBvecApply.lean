@@ -233,61 +233,10 @@ section tower
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
-theorem tower_haarW (T : D.LevTower k r Wp Wq) (hT : D.TowerNormalised T) (i : ℕ) (hi : i ≤ r)
-    (h : i + (r - i) = r) : T.base.μW = (T.bs i).μW.map (levMt i (r - i) h) :=
-  haar_lev i (r - i) h (T.bs i).z T.base.z (T.z_lev i hi) T.base.μW (T.bs i).μW T.base.haarW (T.bs i).haarW
-    (hT 0 (Nat.zero_le r)).1 (hT i hi).1
-
 theorem tower_haarW' (T : D.LevTower k r Wp Wq) (hT : D.TowerNormalised T) (i : ℕ) (hi : i ≤ r)
     (h : i + (r - i) = r) : T.base.μW' = (T.bs i).μW'.map (levMt i (r - i) h) :=
   haar_lev i (r - i) h (T.bs i).z' T.base.z' (T.z'_lev i hi) T.base.μW' (T.bs i).μW' T.base.haarW' (T.bs i).haarW'
     (hT 0 (Nat.zero_le r)).2.1 (hT i hi).2.1
-
-theorem tower_intW {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (T : D.LevTower k r Wp Wq)
-    (hT : D.TowerNormalised T) (i : ℕ) (hi : i ≤ r) (h : i + (r - i) = r) (f : Mt k r → E) :
-    ∫ x, f x ∂T.base.μW = ∫ y, f (levMt i (r - i) h y) ∂(T.bs i).μW := by
-  rw [tower_haarW T hT i hi h]
-  exact (levMt_emb i (r - i) h).integral_map _
-
-theorem tower_intW' {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (T : D.LevTower k r Wp Wq)
-    (hT : D.TowerNormalised T) (i : ℕ) (hi : i ≤ r) (h : i + (r - i) = r) (f : Mt k r → E) :
-    ∫ x, f x ∂T.base.μW' = ∫ y, f (levMt i (r - i) h y) ∂(T.bs i).μW' := by
-  rw [tower_haarW' T hT i hi h]
-  exact (levMt_emb i (r - i) h).integral_map _
-
-theorem tower_haarWW' (T : D.LevTower k r Wp Wq) (hT : D.TowerNormalised T) (i : ℕ) (hi : i ≤ r)
-    (h : i + (r - i) = r) :
-    T.base.μW.prod T.base.μW' =
-      ((T.bs i).μW.prod (T.bs i).μW').map (Prod.map (levMt i (r - i) h) (levMt i (r - i) h)) := by
-  have : IsFiniteMeasure (T.bs i).μW := ⟨by rw [(hT i hi).1]; exact ENNReal.one_lt_top⟩
-  have : IsFiniteMeasure (T.bs i).μW' := ⟨by rw [(hT i hi).2.1]; exact ENNReal.one_lt_top⟩
-  have hm : Measurable (levMt (k := k) i (r - i) h) := (levMt_cont i (r - i) h).measurable
-  rw [tower_haarW T hT i hi h, tower_haarW' T hT i hi h, Measure.map_prod_map _ _ hm hm]
-
-theorem tower_intWW' {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (T : D.LevTower k r Wp Wq)
-    (hT : D.TowerNormalised T) (i : ℕ) (hi : i ≤ r) (h : i + (r - i) = r) (f : Mt k r × Mt k r → E) :
-    ∫ p, f p ∂(T.base.μW.prod T.base.μW') =
-      ∫ q, f (levMt i (r - i) h q.1, levMt i (r - i) h q.2) ∂((T.bs i).μW.prod (T.bs i).μW') := by
-  rw [tower_haarWW' T hT i hi h]
-  exact ((levMt_emb i (r - i) h).prodMap (levMt_emb i (r - i) h)).integral_map _
-
-theorem tower_π (T : D.LevTower k r Wp Wq) (i : ℕ) (hi : i ≤ r) (h : i + (r - i) = r) (y : Mt k (r - i)) :
-    (T.bs i).π (Matrix.of y) = T.base.π (Matrix.of (levMt i (r - i) h y)) := by
-  rw [T.π_lev i hi]; rfl
-
-theorem tower_π' (T : D.LevTower k r Wp Wq) (i : ℕ) (hi : i ≤ r) (h : i + (r - i) = r) (y : Mt k (r - i)) :
-    (T.bs i).π' (Matrix.of y) = T.base.π' (Matrix.of (levMt i (r - i) h y)) := by
-  rw [T.π'_lev i hi]; rfl
-
-theorem tower_mem (T : D.LevTower k r Wp Wq) (i : ℕ) (hi : i ≤ r) (h : i + (r - i) = r) (x : Mt k (r - i))
-    (hx : Matrix.of x ∈ UWset k (r - i) (T.bs i).z) : Matrix.of (levMt i (r - i) h x) ∈ UWset k r T.base.z := by
-  have := levMt_mem i (r - i) h (T.bs i).z x hx
-  rwa [T.z_lev i hi] at this
-
-theorem tower_mem' (T : D.LevTower k r Wp Wq) (i : ℕ) (hi : i ≤ r) (h : i + (r - i) = r) (x : Mt k (r - i))
-    (hx : Matrix.of x ∈ UWset k (r - i) (T.bs i).z') : Matrix.of (levMt i (r - i) h x) ∈ UWset k r T.base.z' := by
-  have := levMt_mem i (r - i) h (T.bs i).z' x hx
-  rwa [T.z'_lev i hi] at this
 
 end tower
 

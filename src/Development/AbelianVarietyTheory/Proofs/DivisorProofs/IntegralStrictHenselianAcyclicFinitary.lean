@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSepClosedResidueFieldOfModuleFinite
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AcycFOfPiShStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AcycFOfPiSh
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyFilteredColimitRingsFinitaryStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial TensorProduct GlobalTheory.EtC
 
@@ -61,7 +61,7 @@ theorem acycF_of_isIntegral : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary 
   obtain ⟨ι, hι, T, hT, hAl, e, hH, hS⟩ :=
     GlobalTheory.finite_algebra_strictly_henselian_pi A (Algebra.adjoin A (j : Set B))
   have hac : AcycF R (sp ((finDiag A B).obj j)) F :=
-    GlobalTheory.T.acycF_of_pi_sh' R F ι T ((finDiag A B).obj j) ⟨e.toRingEquiv⟩ (fun i => ⟨hH i, (hS i).1⟩)
+    _root_.GlobalTheory.EtC.acycF_of_pi_sh R F ι T ((finDiag A B).obj j) ⟨e.toRingEquiv⟩ (fun i => ⟨hH i, (hS i).1⟩)
   haveI := hac n hn
   have hy0 : y = 0 := Subsingleton.elim _ _
   rw [← hy, hy0]

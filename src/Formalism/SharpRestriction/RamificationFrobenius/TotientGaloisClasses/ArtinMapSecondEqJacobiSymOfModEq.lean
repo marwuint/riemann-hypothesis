@@ -12,15 +12,6 @@ theorem jac_congr {x y p : ℕ} (hxy : x ≡ y [MOD p]) : jacobiSym (x : ℤ) p 
   have h : ((x % p : ℕ) : ℤ) = ((y % p : ℕ) : ℤ) := congrArg _ hxy
   simpa [Int.natCast_mod] using h
 
-theorem jac_recip {r p : ℕ} (hr : r % 4 = 3) (hp : p % 2 = 1) : jacobiSym (-(r : ℤ)) p = jacobiSym (p : ℤ) r := by
-  have hp' : Odd p := Nat.odd_iff.mpr hp
-  have hr' : Odd r := Nat.odd_iff.mpr (by omega)
-  rw [jacobiSym.neg _ hp']
-  rcases (show p % 4 = 1 ∨ p % 4 = 3 by omega) with h4 | h4
-  · rw [ZMod.χ₄_nat_one_mod_four h4, one_mul, jacobiSym.quadratic_reciprocity_one_mod_four h4 hr']
-  · rw [ZMod.χ₄_nat_three_mod_four h4, jacobiSym.quadratic_reciprocity_three_mod_four hr h4]
-    ring
-
 theorem exists_sign {p : ℕ} (hp : p.Prime) (hp4 : p % 4 = 3) (s : ℤˣ) :
     ∃ b : ℕ, Nat.Coprime b p ∧ jacobiSym (b : ℤ) p = (s : ℤ) := by
   rcases Int.units_eq_one_or s with rfl | rfl
@@ -370,30 +361,6 @@ theorem decomp_d (ud : (ZMod (2 ^ (e + 2)))ˣ) (hud : (ud : ZMod (2 ^ (e + 2))) 
       push_cast
       rfl
     · rw [artinMap_dyadic_eq_of_modEq e hH u (hu.of_dvd (dvd_mul_right _ _)) (ud ^ k) (hV k), hcl_pow]
-
-theorem frob_iff {p : ℕ} (hp : p % 2 = 1) (u : (ZMod (2 ^ (e + 2) * q * d))ˣ)
-    (hu : (u : ZMod (2 ^ (e + 2) * q * d)) = (p : ZMod (2 ^ (e + 2) * q * d))) (g : FrobeniusOrbits.GG e) :
-    (((g.1.1 : ℤˣ) : ℤ) = jacobiSym (-(q : ℤ)) p ∧ ((g.1.2 : ℤˣ) : ℤ) = jacobiSym (-(d : ℤ)) p ∧
-      ∃ v : (ZMod (2 ^ (e + 2)))ˣ, (v : ZMod (2 ^ (e + 2))) = (p : ZMod _) ∧ g.2 = hcl e v) ↔ g = art0 e hH u := by
-  haveI := neZeroN e hH
-  have hup : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ p [MOD 2 ^ (e + 2) * q * d] :=
-    (ZMod.natCast_eq_natCast_iff _ _ _).mp (by rw [ZMod.natCast_zmod_val, hu])
-  have eq1 : (((art0 e hH u).1.1 : ℤˣ) : ℤ) = jacobiSym (-(q : ℤ)) p := by
-    rw [artinMap_first_eq_jacobiSym_of_modEq e hH u (hup.of_dvd (q_dvd e q d)), jac_recip (q4 hH) hp]
-  have eq2 : (((art0 e hH u).1.2 : ℤˣ) : ℤ) = jacobiSym (-(d : ℤ)) p := by
-    rw [artinMap_second_eq_jacobiSym_of_modEq e hH u (hup.of_dvd (d_dvd e q d)), jac_recip (d4 hH) hp]
-  have hc : Nat.Coprime p (2 ^ (e + 2)) := by
-    have : Nat.Coprime p 2 := by
-      rw [Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd Nat.prime_two]
-      omega
-    exact this.pow_right (e + 2)
-  constructor
-  · rintro ⟨h1, h2, v, hv, h3⟩
-    exact Prod.ext (Prod.ext (Units.ext (h1.trans eq1.symm)) (Units.ext (h2.trans eq2.symm)))
-      (h3.trans (artinMap_dyadic_eq_of_modEq e hH u (hup.of_dvd (two_dvd e q d)) v hv).symm)
-  · rintro rfl
-    exact ⟨eq1, eq2, ZMod.unitOfCoprime p hc, ZMod.coe_unitOfCoprime _ _,
-      artinMap_dyadic_eq_of_modEq e hH u (hup.of_dvd (two_dvd e q d)) _ (ZMod.coe_unitOfCoprime _ _)⟩
 
 end Formalism.HC.D7
 

@@ -75,16 +75,4 @@ theorem stdAt_of_stdOver (D : D7) {p : ℕ} (hp : p.Prime) {n : ℕ} {N : Submod
 
 variable {D : D7} {a b : ℕ}
 
-theorem applyAt0_monomial (cD : D.what₂.Tau → ℂ) (G : TaylorLogMetric.VC D a b → ℂ) (m : TaylorLogMetric.Mono D a b) :
-    GL3Theta.applyAt0 D (inLetters D cD (MvPolynomial.monomial m 1)) G =
-      (m.prod fun k n => cD k.1 ^ n) * ((m.prod fun _ n => (n.factorial : ℂ)) * TaylorLogMetric.taylor D G m) := by
-  classical
-  have h : inLetters D cD (MvPolynomial.monomial m (1 : ℂ)) = MvPolynomial.monomial m (m.prod fun k n => cD k.1 ^ n) := by
-    rw [inLetters, MvPolynomial.aeval_monomial, MvPolynomial.monomial_eq]
-    simp only [mul_pow, Finsupp.prod_mul, map_one, one_mul, map_finsuppProd, map_pow]
-  rw [h, GL3Theta.applyAt0, Finset.sum_subset MvPolynomial.support_monomial_subset, Finset.sum_singleton,
-    MvPolynomial.coeff_monomial, if_pos rfl, mul_assoc]
-  intro x _ hx
-  rw [MvPolynomial.notMem_support_iff.1 hx, zero_mul, zero_mul]
-
 end GlobalTheory.DatumJets.Transl

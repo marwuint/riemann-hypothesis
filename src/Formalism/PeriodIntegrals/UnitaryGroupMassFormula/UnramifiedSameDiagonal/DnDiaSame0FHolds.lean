@@ -326,8 +326,6 @@ theorem dnDiaSame0F_holds (T : Forms0 D u) : DnDiaSame0F T := by
       (fun w => by rw [dualSigma_apply, hφ, map_smul]) (γ1 x) (γ2 _) (η1 x) (η2 _) (κ1 x) (κ2 _) (hs1 x) (hs2 _)
       (hr1 x) (hr2 _) (hl1 x) (hl2 _) (hf1 x) (hf2 _)
 
-theorem dnSameAll_holds : DnSameAll := fun _ _ T => dnDiaSame0F_holds T
-
 end SameDiaZero
 
 end

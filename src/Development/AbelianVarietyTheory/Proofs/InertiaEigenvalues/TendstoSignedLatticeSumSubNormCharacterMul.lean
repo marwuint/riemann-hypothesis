@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DltEqZero
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlternatingDifferenceTermWindowStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TendstoBadWindowDivRhoStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlternatingDifferenceTermWindow
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TendstoBadWindowDivRho
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteStableLatticesDifferenceTermNeZeroStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SignedInvolutionStableLatticeSumMulFixedUnitStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLatticeIdempotentPositionInvolutionStableStatement
@@ -74,9 +74,9 @@ theorem HH_sub_chi_mul_HH_negligible : ∀ (K : UQ) (B : InvAlg K) (ι : Type) [
     exact IsFractionRing.injective K.O K.E (h.trans (map_zero _).symm)
 
   obtain ⟨N, hN⟩ := GlobalTheory.T.exists_lattice_idempotent_position_involution_stable K B ι e π S a hL.2 ha hF
-  obtain ⟨L₀, hL₀⟩ := GlobalTheory.T.alternatingDifference_term_window K B ι e π S a hL.2 ha hF I (S \ I) hI Finset.sdiff_subset hcov N
+  obtain ⟨L₀, hL₀⟩ := _root_.GlobalTheory.UnitLemma.Desc.term_window K B ι e π S a hL.2 ha hF I (S \ I) hI Finset.sdiff_subset hcov N
     (x * (1 - E) + E) (x * E + (1 - E)) hx'u hyu
-  obtain ⟨L₁, hL₁⟩ := GlobalTheory.T.alternatingDifference_term_window K B ι e π S a hL.2 ha hF I (S \ I) hI Finset.sdiff_subset hcov N
+  obtain ⟨L₁, hL₁⟩ := _root_.GlobalTheory.UnitLemma.Desc.term_window K B ι e π S a hL.2 ha hF I (S \ I) hI Finset.sdiff_subset hcov N
     1 1 isUnit_one isUnit_one
   obtain ⟨F, hFdef⟩ : ∃ F : ℕ → Submodule K.O B.A → ℚ, ∀ k M, F k M =
       B.sgnLat M * term B π I (S \ I) ((x * (1 - E) + E) * algebraMap K.O B.A a ^ (2 * k)) (x * E + (1 - E)) M :=
@@ -114,7 +114,7 @@ theorem HH_sub_chi_mul_HH_negligible : ∀ (K : UQ) (B : InvAlg K) (ι : Type) [
     · exact finsum_congr fun M => finsum_congr fun _ => (hFdef k M).symm
     · exact finsum_congr fun M => finsum_congr fun _ => (hGdef k M).symm
 
-  have hcmp := GlobalTheory.T.tendsto_finsum_div_rho_pow_zero K B ι e π S a hL.2 ha hF I (S \ I) hcov N (max L₀ L₁)
+  have hcmp := _root_.GlobalTheory.UnitLemma.Desc.tendsto_badWindow_div_rho K B ι e π S a hL.2 ha hF I (S \ I) hcov N (max L₀ L₁)
     (2 * 2 ^ I.card * 2 ^ (S \ I).card) (fun k M => F k M - G k M) hN
     (by
       intro k M

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
 import Formalism.HarderNarasimhan.StatementPl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataViehwegVanishingNumberFieldTwistStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChooseMulIntersectionNumberLeSectionDimStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataViehwegVanishingNumberFieldTwist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChooseMulIntersectionNumberLeSectionDim
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsLinearMapMultilinearMapBaseChange
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RingKrullDimQuotientEqOfMemMinimalPrimes
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.RingKrullDimOfEtaleMvPolynomial
@@ -44,8 +44,8 @@ theorem rankLow : Quoted → RankLow := by
   have hq := Twist.isFiniteQC_twist (F := GlobalTheory.structureModule G.Y) hM
   have hvan : VanishFrom G.L (twist (GlobalTheory.structureModule G.Y) (tens G.K.bundle G.LA)) 1 := fun j hj q hq =>
     (cohOn.mapIso Γ(G.Y, ⊤) ⊤ q ((twistFunctor (lbZPow G.L j)).mapIso e)).toEquiv.subsingleton_congr.2
-      (GlobalTheory.T.kawamataViehweg_vanishing_numberField_twist Q F G hnef hbig j (by omega) q hq)
-  have key := GlobalTheory.T.choose_mul_intersectionNumber_le_sectionDim F G.Y hproj G.L G.isLB G.N G.b
+      (_root_.GlobalTheory.HSCore.VanishNumberField.vanishFrom_adj Q F G hnef hbig j (by omega) q hq)
+  have key := _root_.GlobalTheory.HSCore.choose_mul_interNum_le_hdim F G.Y hproj G.L G.isLB G.N G.b
     (fun y => TopologicalSpace.Opens.mem_iSup.1 (G.geom.alg.bpf.ge (Set.mem_univ y))) G.D _
     ((suppDim_le _).trans hdim) 1 hvan (T - 1)
   rw [(diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom F G.Y) (GlobalTheory.structureModule G.Y) hproj

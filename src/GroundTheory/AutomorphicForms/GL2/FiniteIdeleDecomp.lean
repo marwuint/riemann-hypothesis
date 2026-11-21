@@ -31,9 +31,6 @@ theorem coe_finUnitAt (v : HeightOneSpectrum (𝓞 K)) (b : (FiniteAdeleRing (�
 theorem continuous_finUnitAt (v : HeightOneSpectrum (𝓞 K)) : Continuous (finUnitAt (K := K) v) :=
   Units.continuous_map (RestrictedProduct.continuous_eval v)
 
-theorem measurable_finUnitAt (v : HeightOneSpectrum (𝓞 K)) : Measurable (finUnitAt (K := K) v) :=
-  (continuous_finUnitAt v).measurable
-
 abbrev intUnitsAt (v : HeightOneSpectrum (𝓞 K)) : Subgroup (v.adicCompletion K)ˣ :=
   (Submonoid.ofClass (v.adicCompletionIntegers K)).units
 
@@ -80,9 +77,6 @@ theorem multHaar_intUnitsAt :
 
 theorem isOpen_intUnitsAt : IsOpen (intUnitsAt v : Set (v.adicCompletion K)ˣ) :=
   IdeleGroup.isOpen_units_adicCompletionIntegers K v
-
-theorem measurableSet_intUnitsAt : MeasurableSet (intUnitsAt v : Set (v.adicCompletion K)ˣ) :=
-  (isOpen_intUnitsAt v).measurableSet
 
 theorem finUnitAt_mem_intUnitsAt_iff (b : (FiniteAdeleRing (𝓞 K) K)ˣ) :
     finUnitAt v b ∈ intUnitsAt v ↔ (b : FiniteAdeleRing (𝓞 K) K) v ∈ v.adicCompletionIntegers K ∧

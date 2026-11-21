@@ -96,8 +96,4 @@ theorem isoW_holds (v : PlX X) (hv : ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdea
         · exact oEv_one v
         · exact oEv_zero v
 
-theorem extP_holds (v : PlX X) (hv : ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal) :
-    ExtP X.B.I.cm.sig X.B.I.J ψ v (abelian₂ X) (D.R.rS + 1 + D.R.rS) (yTup X u' v) :=
-  extP_of _ _ _ _ _ _ _ (a_succ_le_n X) (isoExt_of _ _ _ _ _ _ _ (isoW_holds X u' ψ v hv))
-
 end PI.OmVf

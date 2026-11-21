@@ -1,10 +1,11 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.HypJ
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicPrimitiveVectorCompactRescaleStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramOrbitCompactRepresentativeStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicPrimitiveVectorCompactRescale
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramOrbitCompactRepresentative
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HyperbolicAndBlockOneNondegenerateStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -136,12 +137,6 @@ theorem gramR_ratTup (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) 
   simp only [gramR, hR, hform, ratTup, JR, sigR_incl, Matrix.map_apply, gramE, hE, map_sum, map_mul]
   rfl
 
-theorem actW_smul (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {N n : ℕ}
-    (J : Matrix (Fin N) (Fin N) E) (g : HA R σ J) (a : R ⊗[F] E) (X : Fin n → Fin N → R ⊗[F] E) :
-    actW R σ J g (a • X) = a • actW R σ J g X := by
-  funext i
-  simp [actW, actTup, Matrix.mulVec_smul]
-
 end Tens
 
 def frame (E : Type) [Field E] (M : ℕ) : Fin 2 → Fin (M + 2) → E :=
@@ -258,11 +253,11 @@ theorem iwasawa : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
   haveI := lc
   haveI := sc
   haveI := t2
-  obtain ⟨hTG, -, -, -, -, hact⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM (M + 2) (hypJ J) hJ' (AF F)
-  obtain ⟨hTR, -, -, -, hsc, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)
+  obtain ⟨hTG, -, -, -, -, hact⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hCM (M + 2) (hypJ J) hJ' (AF F)
+  obtain ⟨hTR, -, -, -, hsc, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)
   haveI := hTG
   haveI := hTR
-  obtain ⟨Ω, hΩ, hprim⟩ := GlobalTheory.T.adelic_primitive_vector_compact_rescale F E σ hCM (M + 2)
+  obtain ⟨Ω, hΩ, hprim⟩ := _root_.GlobalTheory.CompanionTheory.SW.PrimA.unimodular_compact_mod_units F E σ hCM (M + 2)
   have hLh : ∀ i j, sigR (AF F) σ (JR (F := F) (AF F) (hypJ J) j i) = JR (F := F) (AF F) (hypJ J) i j := by
     intro i j
     simp only [JR, Matrix.map_apply, sigR_incl, hJ'.1 i j]
@@ -300,7 +295,7 @@ theorem iwasawa : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
     (fun g x y => congrFun (congrFun ((hact 2).2.2.2 g ![x, y]) 0) 1)
     (ratTup (AF F) (frame E M)) hX Ω hΩ hprim
     (fun Ω₂ hΩ₂ => by
-      obtain ⟨C, hC, hp⟩ := GlobalTheory.T.gram_orbit_compact_representative F E σ hCM (M + 2) (hypJ J) hJ' 2 (frame E M) hdet Ω₂ hΩ₂
+      obtain ⟨C, hC, hp⟩ := _root_.GlobalTheory.CompanionTheory.SW.Proper.compact_gram_fibre F E σ hCM (M + 2) (hypJ J) hJ' 2 (frame E M) hdet Ω₂ hΩ₂
       refine ⟨C, hC, fun Y hY hg => ?_⟩
       obtain ⟨c, hc, hcY⟩ := hp Y hY (by
         rw [hmapG]

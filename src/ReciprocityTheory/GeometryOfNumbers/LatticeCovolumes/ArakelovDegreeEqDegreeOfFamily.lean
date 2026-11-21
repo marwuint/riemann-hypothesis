@@ -14,10 +14,6 @@ theorem exists_isFrame (E : Submodule (𝓞 K) V) (hE : E.FG) :
   obtain rfl := hv.length_eq_latticeRank
   exact ⟨v, hv⟩
 
-theorem IsFrame.card_eq {E : Submodule (𝓞 K) V} {r : ℕ} {v : Fin r → V} (hv : IsFrame K E v) :
-    r = latRank K E := by
-  exact hv.length_eq_latticeRank
-
 theorem IsFrame.relIndex_ne_zero {E : Submodule (𝓞 K) V} (hE : E.FG) {r : ℕ} {v : Fin r → V}
     (hv : IsFrame K E v) :
     (Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.relIndex E.toAddSubgroup ≠ 0 := by

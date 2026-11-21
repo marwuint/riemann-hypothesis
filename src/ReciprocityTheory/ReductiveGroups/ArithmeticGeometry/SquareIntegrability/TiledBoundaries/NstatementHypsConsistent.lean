@@ -22,8 +22,6 @@ def dim0 : (E4 →+* ℂ) → ℕ := fun _ => 0
 
 instance : IsEmpty (Idx dim0) := ⟨fun i => i.2.elim0⟩
 
-theorem card_coordIndex_zeroDim : Fintype.card (Idx dim0) = 0 := Fintype.card_eq_zero
-
 instance : Subsingleton (Vsp dim0) := ⟨fun x y => PiLp.ext fun i => isEmptyElim i⟩
 
 instance : IsEmpty (Fin (2 * Fintype.card (Idx dim0))) :=
@@ -50,30 +48,6 @@ def X0 : PT E4 where
 instance : IsEmpty (Idx X0.dim) := inferInstanceAs (IsEmpty (Idx dim0))
 
 instance : Subsingleton (Vsp X0.dim) := inferInstanceAs (Subsingleton (Vsp dim0))
-
-theorem mem_lattice_zeroTorus (v : Vsp X0.dim) : v ∈ X0.L := by
-  rw [Subsingleton.elim v 0]; exact zero_mem _
-
-theorem hermFormPi_zeroTorus {n : ℕ} (v w : Fin n → Vsp X0.dim) : HC v w = 0 := by
-  simp only [HC]; exact Finset.sum_eq_zero fun k _ => Hf0 (v k) (w k)
-
-theorem inhab (q n : ℕ) (_hq : 1 ≤ q) :
-    IsPi X0 q LinearMap.id ∧ (fun _ : Fin 1 → Vsp X0.dim => (1 : ℂ)) ∈ X0.Sec 1 1 ∧ (fun _ : Fin 1 → Vsp X0.dim => (1 : ℂ)) ≠ 0 ∧
-      IsReps X0 q n LinearMap.id {0} := by
-  refine ⟨⟨fun _ _ => Subsingleton.elim _ _, fun x _ => mem_lattice_zeroTorus x, fun v w => ?_, fun x _ => ?_⟩,
-    ⟨differentiable_const _, fun γ _ v => ?_⟩, fun h => one_ne_zero (congrFun h 0),
-    ⟨fun b _ k => mem_lattice_zeroTorus _, fun b _ => ⟨0, ⟨Finset.mem_singleton_self _, fun k => mem_lattice_zeroTorus _⟩,
-      fun y hy => Finset.mem_singleton.mp hy.1⟩⟩⟩
-  · simp [Hf]
-  · simp [X0]
-  · rw [hermFormPi_zeroTorus, hermFormPi_zeroTorus]; simp [X0]
-
-theorem nstatement_hyps_consistent (q n : ℕ) (hq : 1 ≤ q) :
-    ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E) (X : PT E)
-      (π : Vsp X.dim →ₗ[ℂ] Vsp X.dim) (s : (Fin 1 → Vsp X.dim) → ℂ)
-      (K : Finset (Fin n → Vsp X.dim)),
-      1 ≤ q ∧ IsPi X q π ∧ s ∈ X.Sec 1 1 ∧ s ≠ 0 ∧ IsReps X q n π K :=
-  ⟨E4, inferInstance, inferInstance, inferInstance, X0, LinearMap.id, fun _ => 1, {0}, hq, inhab q n hq⟩
 
 end
 

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsAuxil
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MxAtOfMemDepLat
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FractionalIdealCompletionPropertiesAtPlace
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeScalingAtS0Statement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeScalingAtS0
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaGridPairingBoundMemCompletionOfMapBoundStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SepRows GlobalTheory.Asc
@@ -19,7 +19,7 @@ namespace GlobalTheory.CharXFB.HeisenbergPairBadPlaces
 
 theorem traceCharacter_trivial_heisenbergPair_at_badPlaces : All fun {D} _ _ {sc} {G} W _ => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m) (u : WO (G.V (.grid (2 * σ + 2 + 1) 0)) (G.V (.grid (2 * σ + 2) 0))), u ∈ latRow G (2 * σ + 2) → ∀ (p : Fin (σ + 1)) (v : GlobalTheory.FinPl.Pl D), v ∈ G.pl.S0 → psiE W.ψ (GlobalTheory.FinPlLoc.idem D (· = v) * (incA D D.host.xi0 * hA _ (ratV fun k => (G.colDec (2 * σ + 2) (by omega) h').a k (Fin.castLE (by omega) p)) (u *ᵥ ratV fun k => (G.colDec (2 * (σ + 1) + 1) (by omega) (by omega)).a k (Fin.castLE (by omega) p : Fin (2 * (σ + 1) + 1 - 1)).rev))) = 1 := by
   intro D hQ T L μ0 hL sc G W M hM σ h h' u hu p v hv
-  have hb := GlobalTheory.T.lattice_scaling_at_S0 D hQ T L μ0 hL sc G W M hM (2 * σ + 2) (by omega) u hu v hv
+  have hb := _root_.GlobalTheory.DepthMap.smul_mulVec_mem_latV D hQ T L μ0 hL sc G W M hM (2 * σ + 2) (by omega) u hu v hv
   have hC := GlobalTheory.T.thetaGrid_pairingBound_mem_completion_of_mapBound G σ h h' u v hb p
   generalize hA _ _ _ = x at hC ⊢
   obtain ⟨-, -, h3, -, h5, -⟩ := GlobalTheory.SeeSaw.idV_props D W.ψ W.ψ_std v

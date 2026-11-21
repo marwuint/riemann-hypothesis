@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardMulLeJumpSumOfMemUpperRamificationNotMemStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormalizedValuationOfPrimeOfGaloisExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UpperRamificationGroupOneEqTopOfExponentPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardMulLeJumpSumOfMemUpperRamificationNotMem
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormalizedValuationOfPrimeOfGaloisExtension
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UpperRamificationGroupOneEqTopOfExponentPrime
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory.LocalField GlobalTheory.PMon.Ram
 
@@ -22,7 +22,7 @@ theorem card_le_jumpSum_wild_of_exponent :
   have hker : (AlgEquiv.restrictNormalHom (F := F) (K₁ := L) M).ker = B := by
     rw [IntermediateField.restrictNormalHom_ker, IntermediateField.fixingSubgroup_fixedField]
   have hsurj := AlgEquiv.restrictNormalHom_surjective (F := F) (K₁ := M) L
-  obtain ⟨e, hordF, hEe, -⟩ := GlobalTheory.T.normalizedValuationOfPrime_of_galoisExtension F L p E hord
+  obtain ⟨e, hordF, hEe, -⟩ := _root_.GlobalTheory.PMon.Ram.ordIs_of_ordIs_ext F L p E hord
   have he : 0 < e := by
     rcases Nat.eq_zero_or_pos e with h | h
     · subst h; omega
@@ -34,7 +34,7 @@ theorem card_le_jumpSum_wild_of_exponent :
     obtain ⟨σ, rfl⟩ := hsurj s
     rw [← map_pow, ← MonoidHom.mem_ker, hker]
     exact hpow σ
-  have hM1 := GlobalTheory.T.upperRamificationGroup_one_eq_top_of_exponent_prime F M p e hp he hordF hM0 hMexp
+  have hM1 := _root_.GlobalTheory.PMon.Ram.upperRamificationGroup_one_eq_top_of_exponent F M p e hp he hordF hM0 hMexp
   obtain ⟨σ₀, hσ₀⟩ : ∃ σ₀, σ₀ ∉ B := by
     by_contra h
     push_neg at h
@@ -47,7 +47,7 @@ theorem card_le_jumpSum_wild_of_exponent :
     apply hσ₀
     rw [← hker, MonoidHom.mem_ker, ← hσe, ← MonoidHom.mem_ker, hker]
     exact hσB
-  have := GlobalTheory.T.card_mul_le_jumpSum_of_mem_upperRamification_not_mem F L B 1 h0 σ hσ hσB
+  have := _root_.GlobalTheory.PMon.Ram.card_mul_le_jumpSum_of_mem_upper_not_mem F L B 1 h0 σ hσ hσB
   rw [mul_one] at this
   exact_mod_cast this
 

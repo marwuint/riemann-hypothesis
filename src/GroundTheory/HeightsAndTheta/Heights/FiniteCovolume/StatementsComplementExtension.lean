@@ -21,12 +21,6 @@ def ComplementExtension.Statement (h : HermitianForm F E W) : Prop :=
 
 end Extension
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

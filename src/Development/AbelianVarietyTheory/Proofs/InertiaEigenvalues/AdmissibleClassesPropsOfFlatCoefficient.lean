@@ -26,11 +26,6 @@ structure ClosedClass (Ad : ∀ (M : Type) [AddCommGroup M] [Module O M], Repres
   prod : ∀ {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
     {π : Representation O G M} {π' : Representation O G M'}, Ad M π → Ad M' π' → Ad (M × M') (π.prod π')
 
-theorem closedClass_finite : ClosedClass (O := O) (G := G) (fun M _ _ _ => Finite M) where
-  sub f _ hf _ := Finite.of_injective f hf
-  quot f _ hf _ := Finite.of_surjective f hf
-  prod _ _ := inferInstance
-
 variable {Ad : ∀ (M : Type) [AddCommGroup M] [Module O M], Representation O G M → Prop}
 
 theorem ClosedClass.twist (h : ClosedClass Ad) (χ : G →* Oˣ) :
@@ -281,17 +276,6 @@ theorem admissible_of_twist_trivial_tensor {X : Type} [AddCommGroup X] [Module O
   | add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]
 
 end Classes
-
-theorem not_isUnit_prime (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O]
-    [Algebra.IsIntegral ℤ_[l] O] (hi : Function.Injective (algebraMap ℤ_[l] O)) : ¬ IsUnit ((l : ℕ) : O) := by
-  intro hu
-  obtain ⟨Q, hQ, hQc⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral (S := O)
-    (IsLocalRing.maximalIdeal ℤ_[l]) (by rw [(RingHom.injective_iff_ker_eq_bot _).mp hi]; exact bot_le)
-  have hmem : ((l : ℕ) : ℤ_[l]) ∈ Q.comap (algebraMap ℤ_[l] O) := by
-    rw [hQc]
-    exact (IsLocalRing.mem_maximalIdeal _).mpr PadicInt.p_nonunit
-  rw [Ideal.mem_comap, map_natCast] at hmem
-  exact hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem hu)
 
 open GlobalTheory.PhiGam GlobalTheory.Models GlobalTheory.TopSteps Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 

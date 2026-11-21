@@ -55,14 +55,4 @@ def CurveExponentCoboundaryCocycle : Prop :=
       (∀ n, ‖PowerSeries.coeff n (thetaS l g2 g3 ε)‖ ≤ 1) →
       F1 F (cob F (phFF l g2 g3 s2 ε))
 
-def BHypCurve : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l d : ℕ) [NeZero d]
-    (σ : K →+* K), UnrOK K l σ → 2 ≤ d → Even d →
-    ∀ F : MvPowerSeries (Fin 2) K, IsLawOfLog l F →
-    ∀ g2 g3 s2 ε : K, ‖g2‖ ≤ 1 → ‖g3‖ ≤ 1 → ‖ε‖ = 1 →
-      (∀ n, ‖PowerSeries.coeff n (thetaS l g2 g3 ε)‖ ≤ 1) →
-    ∀ (ι : Type) [Fintype ι] (om oms : ι → K), OwOK d σ om oms →
-    ∀ ζ : K, IsPrimitiveRoot ζ (l ^ d - 1) →
-      BHyp l d ⊤ ζ (beMean l σ (cob F (phFF l g2 g3 s2 ε)) om oms ζ)
-
 end Formalism.L2.Th1.D

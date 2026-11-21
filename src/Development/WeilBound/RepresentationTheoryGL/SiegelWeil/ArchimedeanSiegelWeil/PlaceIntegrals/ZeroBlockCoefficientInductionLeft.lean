@@ -1,18 +1,32 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FreeCell
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalWittIsotropicToE0Statement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrbitIntegralInvariantE0Statement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryMovingUnitVectorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FreeCellOpenIndependentStatement
-import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.LocalGramFibreIntegralEq
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalWittIsotropicToE0
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrbitIntegralInvariantE0
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryMovingUnitVector
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FreeCellOpenIndependent
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGramFibreIntegralEq
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicFibreFreeExtension
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StagedDisintegrationComposition
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisintegrationParameterContinuous
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartGramFirstEntry
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartIntegralFormulaHyperbolic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianBlockDecompositionHomeomorph
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartCompactSupportContinuous
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ContinuousDensitiesEqOfIntegralsOnCompacts
+import Formalism.UnipotentAdelicQuotients.SWXSDefs
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpen
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypOneZeroZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsTamagawaMeasureNormalization
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureAddRankOneBlock
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGramFibrationDisintegration
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GlobalVolumeRankOneProduct
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicSumNondegenerateFrame
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpenStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorelStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.DisintegrationDensityExists
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -99,11 +113,11 @@ theorem local_stages : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   intro F E _ _ _ _ _ σ hCM M J hJ n hn hnM h₀ h₁ h₂ R _ _ _ _ _ hLoc d b lam hlam m m₁ m' hm hm₁ hm' φ hφ
   have hR' := hLoc
   obtain ⟨_, _, _, _, -, -, -, -⟩ := hR'
-  obtain ⟨_, _, _, _, -, -, -, hbor, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R
+  obtain ⟨_, _, _, _, -, -, -, hbor, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R
   obtain ⟨hJH, -⟩ := GlobalTheory.CompanionTheory.WeilSiegel.HypStep.hypOne_isHermND_and_e0_mem F E σ hCM M J hJ
-  obtain ⟨_, _, _, _, _, gAct⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM (M + 2) (hypOne J) hJH R
-  obtain ⟨_, _, _, _, _, uAct⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ R
-  obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b lam hlam
+  obtain ⟨_, _, _, _, _, gAct⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hCM (M + 2) (hypOne J) hJH R
+  obtain ⟨_, _, _, _, _, uAct⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hCM M J hJ R
+  obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM R d b lam hlam
   have hb1 := hbor 1 (M + 2)
   have hb2 := hbor (n + 1) (M + 2)
   have hb3 := hbor n M
@@ -127,7 +141,7 @@ theorem local_stages : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   have hinvU : ∀ h : HA R σ J, (m' 0).map (actW R σ J h) = m' 0 := fun h =>
     GlobalTheory.CompanionTheory.WeilSiegel.Free.FibreInv.map_actW_fibre_free F E σ hCM M J hJ R hLoc n _ _ m' (hW n M) (hH n) hm' h 0
   haveI hσ' : SigmaFinite (m' 0) :=
-    GlobalTheory.CompanionTheory.WeilSiegel.FreeLocal.sigmaFinite_fib hm' (GlobalTheory.T.linearly_independent_frames_open F E σ hCM R hLoc n M) 0
+    GlobalTheory.CompanionTheory.WeilSiegel.FreeLocal.sigmaFinite_fib hm' (_root_.GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen.isOpen_free F E σ hCM R hLoc n M) 0
   have hact1 : ∀ g : HA R σ (hypOne J), Continuous (actW R σ (hypOne J) g : (Fin 1 → Fin (M + 2) → R ⊗[F] E) → _) :=
     fun g => (gAct 1).1.comp (Continuous.prodMk_right g)
   have hact2 : ∀ g : HA R σ (hypOne J),
@@ -163,7 +177,7 @@ theorem local_stages : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     show IsUnit (actW R σ (hypOne J) g⁻¹ (actW R σ (hypOne J) g (e0 _ M)) 0 0)
     rw [hcancel]
     exact isUnit_one
-  have hchM := (GlobalTheory.T.free_cell_open_independent F E σ hCM M J hJ R hLoc n).2.2.2.2
+  have hchM := (_root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStage.Cell.freeCell_props F E σ hCM M J hJ R hLoc n).2.2.2.2
 
   let Lc : ℕ → (Fin 1 → Fin (M + 2) → R ⊗[F] E) → ℝ≥0∞ := fun k x =>
     ∫⁻ Y, ∫⁻ a, φ (actW R σ (hypOne J) (gk k) (chartS R σ J x a 0 Y)) ∂(coordW R b lam 1 n) ∂(m' 0)
@@ -199,7 +213,7 @@ theorem local_stages : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     have hxg : gramR R σ (hypOne J) x = 0 := by
       rw [hx, (gAct 1).2.2.2, hy, (gAct 1).2.2.2, gramR_e0]
     have hxt : hR R σ (hypOne J) (x 0) (x 0) = 0 := congrFun (congrFun hxg 0) 0
-    obtain ⟨c, hc⟩ := GlobalTheory.T.unitary_moving_unit_vector F E σ hCM M J hJ R (x 0) hxu
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypUnit.cvec_unitary F E σ hCM M J hJ R (x 0) hxu
     have hch := chartS_zero (n := n) R σ J x hxt c hc
     have hce : actW R σ (hypOne J) c (e0 _ M) = x := by
       funext i
@@ -212,10 +226,10 @@ theorem local_stages : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
         ∫⁻ Y, ∫⁻ a, φ (actW R σ (hypOne J) (gk k₀ * c) (consA a Y)) ∂(coordW R b lam 1 n) ∂(m' 0)
       simp only [hch, (gAct (n + 1)).2.2.1]
     rw [hst]
-    refine GlobalTheory.T.orbit_integral_invariant_e0 F E σ hCM M J hJ R hLoc n d b lam hlam (m' 0) hinvU φ hφ _ _ ?_
+    refine _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStage.StabInv.stageInt_eq_of_e0 F E σ hCM M J hJ R hLoc n d b lam hlam (m' 0) hinvU φ hφ _ _ ?_
     rw [(gAct 1).2.2.1, hce, hx, hcancel']
   · have hae : ∀ᵐ X ∂(m 0), (fun _ : Fin 1 => X 0) ∈ ⋃ k, P k := by
-      obtain ⟨_, _, _, _, hlift⟩ := GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hCM R (n + 1)
+      obtain ⟨_, _, _, _, hlift⟩ := _root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hCM R (n + 1)
       obtain ⟨gl, -, hgf⟩ := hlift (M + 2) _ hJH
       filter_upwards [GlobalTheory.CompanionTheory.SW.FibreUniq.ae_eq_of_isFibreFamily Subtype.val_injective hgf hm 0] with X hX
       have hXg : gramR R σ (hypOne J) X = 0 := by
@@ -226,7 +240,7 @@ theorem local_stages : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
       have hg0 : gramR R σ (hypOne J) (fun _ : Fin 1 => X 0) = 0 := by
         funext a c
         exact congrFun (congrFun hXg 0) 0
-      obtain ⟨g, hg⟩ := GlobalTheory.T.local_witt_isotropic_to_e0 F E σ hCM M J hJ R hLoc _ hfree hg0
+      obtain ⟨g, hg⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypWitt.witt_e0 F E σ hCM M J hJ R hLoc _ hfree hg0
       rw [← hg]
       exact hOrb g
     have hfm : Measurable fun X : Fin (n + 1) → Fin (M + 2) → R ⊗[F] E => (fun _ : Fin 1 => X 0) :=
@@ -259,7 +273,7 @@ theorem local_stages : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
             lintegral_map (hBm k) (hact2 _).measurable
         _ = ∫⁻ x, ∫⁻ Y, ∫⁻ a, B k (actW R σ (hypOne J) (gk k) (chartS R σ J x a 0 Y))
               ∂(coordW R b lam 1 n) ∂(m' 0) ∂(m₁ 0) :=
-            GlobalTheory.T.local_gram_fibre_integral_eq F E σ hCM M J hJ R hLoc n d b lam hlam m m₁ m' hm hm₁ hm' _
+            _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStage.StageExt.stages_zero_unit F E σ hCM M J hJ R hLoc n d b lam hlam m m₁ m' hm hm₁ hm' _
               ((hBm k).comp (hact2 _).measurable) hunit
         _ = ∫⁻ x, H k (actW R σ (hypOne J) (gk k) x) ∂(m₁ 0) := by
             refine lintegral_congr fun x => ?_

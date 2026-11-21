@@ -7,12 +7,6 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr Uppe
 
 namespace UpperTheory.V.Z.J
 
-section
-variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
-  {D : Type} [Group D] [TopologicalSpace D]
-
-end
-
 end UpperTheory.V.Z.J
 
 theorem UpperTheory.V.Z.J.locHigh :

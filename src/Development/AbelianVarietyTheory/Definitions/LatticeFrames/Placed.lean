@@ -25,10 +25,6 @@ def Placed : Prop :=
 def tOf (a₀ a : GA D (D.sp.X 0)) : GA D (D.sp.Y 0) :=
   ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from f.g.b 0)
 
-def IsAt (a₀ a : GA D (D.sp.X 0)) : Prop :=
-  IsTransportAdelicCorrection (W.S.tr u) a₀ ∧ a ∈ GfC (D.sp.X 0) ∧ a ∈ Subgroup.center (GA D (D.sp.X 0)) ∧
-    Matches W.S.X W.Q.instEq (rJ W) (rChi W) (tOf f B a₀ a)
-
 end GlobalTheory.MiTop
 
 end

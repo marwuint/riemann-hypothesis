@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.Ideal
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusProjPeriodZeroEqReal
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FibreComparison
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FamilyUnifComponentConst
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExpEqOfIsometryMatchingMarkingsStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExpEqOfIsometryMatchingMarkings
 
 noncomputable section
 namespace GlobalTheory.ArcPts
@@ -84,7 +84,7 @@ theorem exists_cmp : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [Number
       Fu.u i (Pw w) = yw w ∧ ∀ v, (Fu.ex i (Pw w) (h₁ v)).left = (π w v).left := by
     intro w hwT
     obtain ⟨P, h, gam, hP, hu, hex, hPg, hEF, -, hA, hMM⟩ := key w hwT
-    obtain ⟨r1, r2⟩ := GlobalTheory.T.exp_eq_of_isometry_matching_markings E H D l Xo σ g ty Fu i P (Pw w) (gam.trans gam₁.symm)
+    obtain ⟨r1, r2⟩ := _root_.GlobalTheory.ArcPts.exp_eq_of_matching_markings E H D l Xo σ g ty Fu i P (Pw w) (gam.trans gam₁.symm)
       (h.symm.trans h₁).toLinearEquiv hstar hP (hper w hwT)
       (fun u v => by
         rw [← hEF₁, LinearEquiv.trans_apply, LinearEquiv.trans_apply, gam₁.apply_symm_apply, gam₁.apply_symm_apply, hEF])

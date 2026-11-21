@@ -1,5 +1,24 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.SphericalBigCell.IsLocallyConstantFinprod
-import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.SphericalBigCell.HeightInt
+import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.CoefDataExists
+import Development.WeilBound.CoreStatements.PublishedTheorems.SiegelWeilSchrodinger.SiegelWeilUnitarySchrodingerLit
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaDecompositionUnitary
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelParabolicUnnMatrixBlockUpperTriangular
+import Mathlib
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EisensteinIsotropicLine
+import Development.AbelianVarietyTheory.Definitions.Foundations.AnalyticOnNhdTsumNpow
+import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.LeftInvOfIsSection
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilSchrodingerRealParameter
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetCell
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentMapContinuousAdditive
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousHalfTr
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousHermPart
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.EqZeroOfFourierCoefficientsVanish
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainFourierUnfolding
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetCellInvariantUnipotentStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BigCellCosetsHermitianParamStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NondegenerateCharacterCellFactorizationStatement
+import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.DictKAOfParts
+import GroundTheory.GlobalFields.IdeleGroups.InfiniteProjInfiniteEmbeddingOfNe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableOfTsumEnormLtTop
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftInvSubtypeSum
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaIntegralContinuous
@@ -197,88 +216,6 @@ theorem ifrBAdd_of_weilThetaConvergence (hW : GlobalTheory.Published.WeilThetaCo
   funext x
   simp only [Finset.sum_apply]
   exact map_sum (Pi.evalAddMonoidHom (fun _ : Mx D V.rank n => ℂ) _) φs Finset.univ
-
-set_option maxHeartbeats 1000000 in
-
-theorem jt_finset_sum {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ : InfFam D}
-    (hθ : IsInfFam θ) {μ : Measure (Mx D V.rank n)} {𝓕 : Set (Mx D V.rank n)} (hμ : IsCovolOne (ratMx D V.rank n) μ 𝓕)
-    {N : ℕ} (φs : Fin N → Mx D V.rank n → ℂ) (hmem : ∀ j, φs j ∈ schwartzA θ V.rank n) (b : hermA D n) :
-    Jt ψ V μ (∑ j, φs j) b = ∑ j, Jt ψ V μ (φs j) b := by
-  obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.TowerRestrict.lattice_Mx D V.rank n
-  haveI : BorelSpace (Mx D V.rank n) := ⟨rfl⟩
-  haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
-  have hphase : Continuous fun y : Mx D V.rank n =>
-      ψ (halfTr (Matrix.trace (HMul.hMul b.1 (GlobalTheory.StdUnn.inner V y y) : Mx D n n))) :=
-    hψ.1.comp (GlobalTheory.CompanionTheory.BigCellJ.continuous_halfTr.comp
-      ((continuous_const.matrix_mul (GlobalTheory.CompanionTheory.BigCellJ.continuous_inner_self V n)).matrix_trace))
-  have hint : ∀ j, Integrable (fun y => φs j y *
-      ψ (halfTr (Matrix.trace (HMul.hMul b.1 (GlobalTheory.StdUnn.inner V y y) : Mx D n n)))) μ := fun j => by
-    have hi := GlobalTheory.CompanionTheory.BigCellJ.integrable_schwartzA hθ hμ (hmem j)
-    refine hi.norm.mono' (hi.aestronglyMeasurable.mul hphase.aestronglyMeasurable) ?_
-    exact Filter.Eventually.of_forall fun y => by rw [norm_mul, hψ.2.1, mul_one]
-  unfold Jt
-  rw [← integral_finsetSum _ fun j _ => hint j]
-  congr 1
-  funext y
-  rw [Finset.sum_apply, Finset.sum_mul]
-
-theorem norm_jt_le {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
-    (μ : Measure (Mx D V.rank n)) (φ : Mx D V.rank n → ℂ) (b : hermA D n) :
-    ‖Jt ψ V μ φ b‖ ≤ ∫ y, ‖φ y‖ ∂μ := by
-  unfold Jt
-  refine (norm_integral_le_integral_norm _).trans (le_of_eq ?_)
-  congr 1
-  funext y
-  rw [norm_mul, hψ.2.1, mul_one]
-
-theorem continuous_char_neg {n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (T : Mx D n n) :
-    Continuous fun b : hermA D n => ψ (-halfTr (Matrix.trace (HMul.hMul T b.1 : Mx D n n))) := by
-  haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
-  exact hψ.1.comp ((GlobalTheory.CompanionTheory.BigCellJ.continuous_halfTr.comp
-    (continuous_const.matrix_mul continuous_subtype_val).matrix_trace).neg)
-
-set_option maxHeartbeats 1000000 in
-
-theorem whitT_finset_sum {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ : InfFam D}
-    (hθ : IsInfFam θ) {μ : Measure (Mx D V.rank n)} {𝓕 : Set (Mx D V.rank n)} (hμ : IsCovolOne (ratMx D V.rank n) μ 𝓕)
-    (lam : Measure (hermA D n)) (nb : hermA D n → G D n) (w : G D n) (H : G D n → ℝ≥0) (T : Mx D n n) (g : G D n)
-    (z : ℂ) (hint : Integrable (fun b : hermA D n => npow (H (w * nb b * g)) (z - s0 V n)) lam)
-    {N : ℕ} (φs : Fin N → Mx D V.rank n → ℂ) (hmem : ∀ j, φs j ∈ schwartzA θ V.rank n) :
-    whitT ψ V μ lam nb w H (∑ j, φs j) T g z = ∑ j, whitT ψ V μ lam nb w H (φs j) T g z := by
-  obtain ⟨j1, j2, j3, j4, j5, -⟩ := GlobalTheory.TowerRestrict.lattice_Mx D n n
-  haveI : BorelSpace (Mx D n n) := ⟨rfl⟩
-  haveI : SecondCountableTopology (hermA D n) := TopologicalSpace.Subtype.secondCountableTopology _
-  haveI : BorelSpace (hermA D n) := Subtype.borelSpace _
-  have hchar := continuous_char_neg hψ T
-  have hterm : ∀ j, Integrable (fun b : hermA D n => npow (H (w * nb b * g)) (z - s0 V n) * Jt ψ V μ (φs j) b *
-      ψ (-halfTr (Matrix.trace (HMul.hMul T b.1 : Mx D n n)))) lam := fun j => by
-    have hJc := GlobalTheory.CompanionTheory.BigCellJ.jt_continuous D n V ψ θ μ (φs j) hψ hθ ⟨𝓕, hμ⟩ (hmem j)
-    refine (hint.norm.mul_const (∫ y, ‖φs j y‖ ∂μ)).mono' ?_ ?_
-    · exact (hint.aestronglyMeasurable.mul hJc.aestronglyMeasurable).mul hchar.aestronglyMeasurable
-    · refine Filter.Eventually.of_forall fun b => ?_
-      rw [norm_mul, norm_mul, hψ.2.1, mul_one]
-      exact mul_le_mul_of_nonneg_left (norm_jt_le hψ μ (φs j) b) (norm_nonneg _)
-  unfold whitT
-  rw [← integral_finsetSum _ fun j _ => hterm j]
-  congr 1
-  funext b
-  rw [jt_finset_sum hψ hθ hμ φs hmem b, Finset.mul_sum, Finset.sum_mul]
-
-theorem whitTAdd : WhitTAdd := by
-  intro D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hCD w hw β hβ a g N φs hφs
-  have hl : ∀ τ, l τ ≠ 0 := GlobalTheory.ResAniso.VacSchwartz.realPar_ne_zero D θ hS.hθ ψ hS.hψ l hS.hl
-  have hmem : ∀ j, φs j ∈ schwartzA θ V.rank n := fun j => mem_schwartzA_of_isMonoFock hl hS.hs (hφs j)
-  obtain ⟨𝓕, hμ⟩ := hS.hμ
-  refine ⟨((V.rank : ℝ) + n) / 2, fun z hz => ?_⟩
-  have hre : (z - s0 V n - (n : ℂ) / 2).re = z.re - (V.rank : ℝ) / 2 := by
-    have e : z - s0 V n - (n : ℂ) / 2 = z - (((V.rank : ℝ) / 2 : ℝ) : ℂ) := by
-      unfold s0; push_cast; ring
-    rw [e, Complex.sub_re, Complex.ofReal_re]
-  have hs' : (n : ℝ) / 2 < (z - s0 V n - (n : ℂ) / 2).re := by rw [hre]; linarith
-  have hint0 := integrable_npow_height hS.hψ hS.hH hCD hw β hβ hs' g
-  have hexp : z - s0 V n - (n : ℂ) / 2 + (n : ℂ) / 2 = z - s0 V n := by ring
-  rw [hexp] at hint0
-  exact whitT_finset_sum hS.hψ hS.hθ hμ lam nb w H _ g z hint0 φs hmem
 
 end PositivityTheory.PfSWUS.HandIAdd
 

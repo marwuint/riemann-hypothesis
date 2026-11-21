@@ -21,8 +21,6 @@ theorem normEx_holds : NormEx := normEx_of
 
 theorem quotInt_holds : QuotInt := quotInt_of
 
-theorem convTest_holds : ConvTest := convTest_of
-
 theorem untwist_holds : Untwist := untwist_of
 
 theorem twOrbLin_holds : TwOrbLin := twOrbLin_of orbProper_holds

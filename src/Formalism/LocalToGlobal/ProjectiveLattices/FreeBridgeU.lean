@@ -17,10 +17,6 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 open Formalism.L2.Pj (Rul)
 
-theorem isNormOn_iff {K : Type} [Field K] {R : Type} [CommRing R] [Algebra K R] (C : Submodule K R)
-    (σ : K →+* ℂ) (N : R → ℝ) : PjFree.IsNormOn C σ N ↔ Formalism.L2.Pj.IsNormOn C σ N :=
-  ⟨fun h => ⟨h.1, h.2, h.3, h.4⟩, fun h => ⟨h.1, h.2, h.3, h.4⟩⟩
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   (Xo : Moduli Dw l) (c : Coeff l)
 
@@ -43,15 +39,6 @@ variable (Xo c)
 
 theorem valSet_alg_eq (la : HeightOneSpectrum (𝓞 c.F)) :
     PjFree.valSet Xo c (PjFree.algCls Xo c) la = Formalism.L2.Pj.valSet Xo c (Formalism.L2.Pj.algCls Xo c) la := rfl
-
-theorem regR1Q_iff_free (C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c)) :
-    PjFree.RegularityR1Quotient Xo c C ↔ Formalism.L2.Pj.RegularityR1Quotient Xo c C :=
-  ⟨fun h a n f hf hx q => h a n f hf hx (QPt.ofPj q), fun h a n f hf hx q => h a n f hf hx q.toPj⟩
-
-theorem regR2Q_iff_free (C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c)) :
-    PjFree.RegularityR2Quotient Xo c C ↔ Formalism.L2.Pj.RegularityR2Quotient Xo c C :=
-  ⟨fun h aL nL aE nE k ws et c' hc hw he hx q => h aL nL aE nE k ws et c' hc hw he hx (QPt.ofPj q),
-   fun h aL nL aE nE k ws et c' hc hw he hx q => h aL nL aE nE k ws et c' hc hw he hx q.toPj⟩
 
 theorem intAll_iff : PjFree.IntAll Xo c ↔ Formalism.L2.Pj.IntAll Xo c := Iff.rfl
 

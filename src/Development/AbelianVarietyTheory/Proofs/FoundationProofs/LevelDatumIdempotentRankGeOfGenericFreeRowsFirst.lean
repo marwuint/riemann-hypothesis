@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SubgroupCharacte
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LevelDatumSubgroupCharacterPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankLevelDatumIdempotentEqOfSameShapeStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WhittakerTranslatesCornerLinearIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MonomialEqOfUpperUnipotentDoubleCosetStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRelevantBruhatCellsLevelDatumStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MonomialEqOfUpperUnipotentDoubleCoset
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRelevantBruhatCellsLevelDatum
 
 noncomputable section
 open Polynomial Classical GlobalTheory.BadShare
@@ -222,7 +222,7 @@ theorem avg_independent [FiniteDimensional ℂ M] {L : Lev g N} (hL : L.sharp = 
       · simp
     · intro w _ hw
       refine Finset.sum_eq_zero fun u hu => if_neg fun h => hw (Subtype.ext ?_)
-      exact GlobalTheory.T.monomial_eq_of_upperUnipotent_double_coset g N w w₀ u u' (hR w w.2).2 (hR w₀ w₀.2).2 (mem_blockUp.1 hu).1 hu'.1 h.symm
+      exact _root_.GlobalTheory.BadShare.monomial_eq_of_unipotent_double_coset g N w w₀ u u' (hR w w.2).2 (hR w₀ w₀.2).2 (mem_blockUp.1 hu).1 hu'.1 h.symm
     · simp
   rw [Finset.sum_congr rfl h2, ← Finset.mul_sum, ← Nat.cast_sum, mul_eq_zero] at key
   refine key.resolve_right ?_
@@ -296,7 +296,7 @@ theorem rk_ge_of_isGeneric_of_s_eq_zero : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ)
     have : 0 < 1 / (g : ℝ) := by positivity
     rw [hk, pow_zero]
     linarith
-  · obtain ⟨R, hcard, hR, hχ⟩ := GlobalTheory.T.exists_relevant_bruhat_cells_levelDatum g N L₁ hL₁ hco L.k hk hkN
+  · obtain ⟨R, hcard, hR, hχ⟩ := _root_.GlobalTheory.BadShare.Cells.relevant_cells g N L₁ hL₁ hco L.k hk hkN
     have h1 := card_le_rk ρ L' _ (avg_independent ρ hL₁ hx0 hx hkN R hR hχ) fun w u hu => by
       rw [hchi u hu]; exact avg_eigen ρ hL₁ hx (hR w w.2).1 hu.1 (hmem u hu)
     rw [Fintype.card_coe] at h1

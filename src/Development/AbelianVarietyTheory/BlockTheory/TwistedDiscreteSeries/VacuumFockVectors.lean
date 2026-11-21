@@ -52,9 +52,6 @@ theorem ptOf_one (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (M : DSModel V
   rw [h, Module.Basis.constr_basis]
   simp [opPow]
 
-example : multiFact (Finsupp.single () 3) = 6 := by
-  rw [multiFact, Finsupp.prod_single_index (by simp)]; rfl
-
 end GlobalTheory.IndefiniteRowSideFullHecke.VacuumFockVectors
 
 end

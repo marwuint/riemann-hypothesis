@@ -105,18 +105,6 @@ theorem hform_nondeg {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (hs : (hform H).Is
   refine ⟨fun x hx => hform_sepRight H hdet x (fun y => ?_), hform_sepRight H hdet⟩
   rw [← hsym x y, hx y, map_zero]
 
-theorem gramR_std {D : ℕ} (Γ : Matrix (Fin D) (Fin D) K) :
-    gramR Γ (fun i => (Pi.single i 1 : Fin D → K)) = Γ.det := by
-  unfold gramR
-  congr 1
-  ext a b
-  have hst : ∀ x : Fin D, star ((Pi.single a (1 : K) : Fin D → K) x) = (Pi.single a (1 : K) : Fin D → K) x := by
-    intro x; rcases eq_or_ne x a with rfl | h
-    · simp
-    · simp [Pi.single_eq_of_ne h]
-  simp only [Matrix.of_apply, dotProduct, Pi.star_apply, hst]
-  simp [Matrix.mulVec, dotProduct, Pi.single_apply]
-
 theorem expand_std {d : ℕ} (f : Fin d → Fin d → K) :
     (fun i => ∑ k, (Matrix.of f)ᵀ k i • (Pi.single k (1 : K) : Fin d → K)) = f := by
   funext i

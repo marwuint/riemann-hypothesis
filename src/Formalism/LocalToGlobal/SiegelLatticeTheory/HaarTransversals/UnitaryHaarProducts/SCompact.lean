@@ -95,14 +95,6 @@ theorem hJ_sum_right' {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (c : ι �
   unfold hJ
   simp [Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul]
 
-theorem hJ_sub_right' (x y y' : Fin n → ℂ) : hJ ε x (y - y') = hJ ε x y - hJ ε x y' := by
-  unfold hJ
-  simp [Matrix.mulVec_sub]
-
-theorem hJ_zero_right' (x : Fin n → ℂ) : hJ ε x 0 = 0 := by
-  unfold hJ
-  simp
-
 theorem hJ_conj' (x y : Fin n → ℂ) : hJ ε x y = starRingEnd ℂ (hJ ε y x) := by
   unfold hJ Formalism.REAL.Jm
   simp only [Matrix.mulVec_diagonal, dotProduct, map_sum, map_mul, Pi.star_apply, RCLike.star_def,
@@ -444,9 +436,5 @@ theorem colBound_of (hK : X.LevelSubgroupCharacter) (hCF : Cut.ClassFin X u hK) 
     (fun _ _ => norm_nonneg _) (Finset.mem_univ c)
 
 end Col
-
-def SCompactC : Prop := ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), SCompact X u
-
-def SinfSectionC : Prop := ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), SinfSection X u
 
 end Formalism.L2.SG.Pf

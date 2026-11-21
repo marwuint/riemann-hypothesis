@@ -5,7 +5,10 @@ import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LUnifOfRhoGeoEquivAll
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEquivariantUnitConstantsGoodEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEquivariantUnitConstantsGoodEmbedding
+import Formalism.LocalToGlobal.ProjectiveLattices.CuspFormsFiniteDimensionalOf
+import Formalism.LocalToGlobal.ProjectiveLattices.ThProps
+import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JUnifAndLUnifOfTieIn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TieInOfFwTie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PbEqOfPins
@@ -21,6 +24,6 @@ theorem lUnif_of_pins : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.M
   have hT : TieIn T R κ v₀ := GlobalTheory.Div.tieIn_of_fwTie T R κ v₀ fw
   have hpb : T.pb = R.C.P.pb := GlobalTheory.PinsFixHalf.pb_eq_of_pins T R κ v₀ O hI fw.laws hO
   have hu : JUnif T R κ v₀ := (GlobalTheory.HolDict.jUnif_and_lUnif_of_tieIn h1 h2 D G Pl0 T0 A T R κ v₀ hI hM hT hpb hn).1
-  exact lUnif_of_rhoGeo_equivAll fw hM hG hb hr ha (GlobalTheory.T.exists_equivariant_unit_constants_goodEmbedding T R κ v₀ O hI hT hpb hO) hu
+  exact lUnif_of_rhoGeo_equivAll fw hM hG hb hr ha (_root_.GlobalTheory.EquivConst.exists_equivariant_constants T R κ v₀ O hI hT hpb hO) hu
 
 end GlobalTheory.TiedUnif

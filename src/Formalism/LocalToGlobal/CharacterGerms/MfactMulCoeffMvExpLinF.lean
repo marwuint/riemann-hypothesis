@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.IncomingBounds.StatementThmP
 import Formalism.IncomingBounds.FlowDegreeBounds.ThmPExp
-import Formalism.IncomingBounds.FlowDegreeBounds.Cayley
 
 noncomputable section
 
@@ -73,11 +72,5 @@ theorem coeff_zero_mvExp (h : MvPowerSeries τ K) : coeff 0 (mvExp h) = 1 := by
   simp
 
 end ExpLin
-
-section Rename
-
-variable {K : Type} [Field K] {σ τ : Type}
-
-end Rename
 
 end Formalism.L2.FormalSeriesBounds

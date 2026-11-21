@@ -391,14 +391,6 @@ theorem heckeSum_liftEquiv (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin
   simp only [adelicLift, Pi.smul_apply, smul_eq_mul, coe_heckeSlash]
   exact archLift_smul k _ _ _
 
-theorem heckeAct_liftEquiv [MeasurableSpace (FiniteAdelicGL ℚ 2)] [BorelSpace (FiniteAdelicGL ℚ 2)]
-    (μ : Measure (FiniteAdelicGL ℚ 2)) [μ.IsHaarMeasure]
-    (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
-    heckeAct μ finRightRep ((heckeSet N p).indicator fun _ => (1 : ℂ)) (liftEquiv N k f : AdelicGL ℚ 2 → ℂ) =
-      (((μ.real (Gamma0Level N : Set (FiniteAdelicGL ℚ 2)) : ℝ) : ℂ) * heckeConst p k) •
-        (liftEquiv N k (heckeSlash N p k f) : AdelicGL ℚ 2 → ℂ) := by
-  rw [heckeAct_heckeSet N p μ (liftEquiv N k f).2.mem_fixedVectors, heckeSum_liftEquiv, smul_smul]
-
 section Forms
 
 open scoped Manifold
@@ -513,15 +505,6 @@ theorem heckeModular_toSlashInvariantForm (f : ModularForm (Gamma0 N : Subgroup 
 
 theorem heckeCusp_toSlashInvariantForm (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     (heckeCusp N p k f).toSlashInvariantForm = heckeSlash N p k f.toSlashInvariantForm := rfl
-
-theorem heckeAct_liftEquiv_modularForm [MeasurableSpace (FiniteAdelicGL ℚ 2)]
-    [BorelSpace (FiniteAdelicGL ℚ 2)] (μ : Measure (FiniteAdelicGL ℚ 2)) [μ.IsHaarMeasure]
-    (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
-    heckeAct μ finRightRep ((heckeSet N p).indicator fun _ => (1 : ℂ))
-        (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ) =
-      (((μ.real (Gamma0Level N : Set (FiniteAdelicGL ℚ 2)) : ℝ) : ℂ) * heckeConst p k) •
-        (liftEquiv N k (heckeModular N p k f).toSlashInvariantForm : AdelicGL ℚ 2 → ℂ) :=
-  heckeAct_liftEquiv N p μ f.toSlashInvariantForm
 
 end Forms
 

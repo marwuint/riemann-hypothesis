@@ -231,11 +231,6 @@ def NonZeroAn : Prop :=
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     (G.p = 0 → ∃ Φ ∈ PolData B G.M, G.M.I om Φ ≠ 0) ∧ (G.q = 0 → ∃ Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, G.M'.I om' Φ' ≠ 0)
 
-def NonZero : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
-    (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
-    (∃ Φ ∈ PolData B G.M, G.M.I om Φ ≠ 0) ∧ ∃ Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, G.M'.I om' Φ' ≠ 0
-
 def CTBigZero : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
@@ -265,26 +260,6 @@ def CTSmallZero : Prop :=
     ∀ e', IsEv B G.M' G₁.M' 1 H'.ι (iso0 a' H') e' → ∃ C : ℂ, C ≠ 0 ∧ ∀ X om om' om₁ om₁', IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →
       ∀ Φ' ∈ PolData B G.M', ∃ fa, Split2 G₁.W H' X (G.M'.I om' Φ') fa 0 ∧ ∀ h₁ m, IsLevi H' 1 h₁ m → ∀ h,
         fa (m * h) = C * G₁.M'.I om₁' (e' (om' (1, h) Φ')) h₁
-
-def LocB : Prop :=
-  ∃ e₁ e₂ s : ℤˣ, ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
-    (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
-    ∀ (R : RealMaps F a (b + 2)) (R₁ : RealMaps F a b) e e', IsEv B G.M G₁.M 1 H'.ι (iso0 a H') e →
-      IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →
-      ∃ C : ℂ, C ≠ 0 ∧ ∀ X om om' Rf om₁ om₁' Rf₁, IsMatched B G X om om' R Rf → IsMatched B G₁ X om₁ om₁' R₁ Rf₁ →
-      ∀ Φ, ∀ Φ' ∈ G.M'.So B.ψ B.τ₁, PolMatch B G X R Rf Φ Φ' → cone B G.M' om' e' K μK μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) Φ' ∈ G₁.M'.So B.ψ B.τ₁ ∧
-        PolMatch B G₁ X R₁ Rf₁ ((C * stepFac B X e₁ e₂ s H.𝔟 H'.𝔟 (-(((a - (b + 2)) / 2 : ℕ) : ℤ)) *
-          charL X.ν (X.S₀ : Set (Pl F)) ((((a - (b + 2)) / 2 : ℕ) : ℂ) + 1)) • e Φ) (cone B G.M' om' e' K μK μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) Φ')
-
-def LocA : Prop :=
-  ∃ e₁ e₂ s : ℤˣ, ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
-    (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
-    ∀ (R : RealMaps F (b + 2) a') (R₁ : RealMaps F b a') e e', IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e →
-      IsEv B G.M' G₁.M' 1 H'.ι (iso0 a' H') e' → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →
-      ∃ C : ℂ, C ≠ 0 ∧ ∀ X om om' Rf om₁ om₁' Rf₁, IsMatched B G X om om' R Rf → IsMatched B G₁ X om₁ om₁' R₁ Rf₁ →
-      ∀ Φ Φ', PolMatch B G X R Rf Φ Φ' →
-        PolMatch B G₁ X R₁ Rf₁ (cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) Φ) ((C * stepFac B X e₁ e₂ s H.𝔟 H'.𝔟 (1 - (((b + 2 - a') / 2 : ℕ) : ℤ)) *
-          charL X.ν (X.S₀ : Set (Pl F)) (((b + 2 - a') / 2 : ℕ) : ℂ)) • e' Φ')
 
 def FacNe : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
@@ -319,34 +294,6 @@ def PolRe : Prop :=
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →
     ∀ V V' W R₂ Rf₂, IsMatched B (reG G V V' W) X om om' R₂ Rf₂ → (∃ c, c ≠ 0 ∧ PolConst B (reG G V V' W) X om om' R₂ Rf₂ c) →
       ∃ c, c ≠ 0 ∧ PolConst B G X om om' R Rf c
-
-def PolAll : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
-    (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → ∃ c, c ≠ 0 ∧ PolConst B G X om om' R Rf c
-
-def FinInert : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
-    (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (v : Pl F) w, Formalism.UG.IsInertAt F E v w →
-    ∃ (P : Type) (_ : AddCommGroup P) (_ : Module ℂ P) (p : ((Fin a × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] P)
-      (p' : ((Fin a' × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] P), (SB _).map p = ⊤ ∧ (SB _).map p' = ⊤ ∧
-      augAt om v ≤ LinearMap.ker p ∧ augAt om' v ≤ LinearMap.ker p' ∧ Nontrivial P ∧
-      (∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB _, ∀ φ' ∈ SB _, ∀ φ₁ ∈ SB _, ∀ φ₁' ∈ SB _,
-        Acts (evFin F v) (om (1, h)) φ φ₁ → Acts (evFin F v) (om' (1, h)) φ' φ₁' → p φ = p' φ' → p φ₁ = p' φ₁') ∧
-      (∀ N : Submodule ℂ P, (∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB _, ∀ φ₁ ∈ SB _,
-        Acts (evFin F v) (om (1, h)) φ φ₁ → p φ ∈ N → p φ₁ ∈ N) → N = ⊥ ∨ N = ⊤) ∧
-      (v ∉ X.T → p (G.M.vac v) = p' (G.M'.vac v) ∧ p (G.M.vac v) ≠ 0)
-
-def FinSplit : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
-    (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (v : Pl F) (_ : E →ₐ[F] Fv F v), v ∉ X.T →
-    ∃ (P : Type) (_ : AddCommGroup P) (_ : Module ℂ P) (p : ((Fin a × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] P)
-      (p' : ((Fin a' × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] P), (SB _).map p = ⊤ ∧ (SB _).map p' = ⊤ ∧
-      augAt om v ≤ LinearMap.ker p ∧ augAt om' v ≤ LinearMap.ker p' ∧ Nontrivial P ∧
-      (∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB _, ∀ φ' ∈ SB _, ∀ φ₁ ∈ SB _, ∀ φ₁' ∈ SB _,
-        Acts (evFin F v) (om (1, h)) φ φ₁ → Acts (evFin F v) (om' (1, h)) φ' φ₁' → p φ = p' φ' → p φ₁ = p' φ₁') ∧
-      (∀ N : Submodule ℂ P, (∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB _, ∀ φ₁ ∈ SB _,
-        Acts (evFin F v) (om (1, h)) φ φ₁ → p φ ∈ N → p φ₁ ∈ N) → N = ⊥ ∨ N = ⊤) ∧
-      (v ∉ X.T → p (G.M.vac v) = p' (G.M'.vac v) ∧ p (G.M.vac v) ≠ 0)
 
 def ActsEx : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)

@@ -2,12 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEqKer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittModuleLengthCompositionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittModuleLengthComposition
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthGeFinrankOfSemilinearSurjectiveStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupIsogenyHeightEqDualSameDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneTheoryVEqVerschiebungInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaDieudonneModFrobeniusDifferentialsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneTheoryVEqVerschiebungInjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorProperties
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaDieudonneModFrobeniusDifferentials
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Dieu
 
 set_option autoImplicit false
@@ -98,22 +98,22 @@ theorem isog_core (T : Theory p) {G H : PDivGroup p k} (q : G ⟶ H) (hq : IsIso
   obtain ⟨n, q', h1, h2⟩ := hq
   have huv : ∀ m : T.M G, T.map q (T.map q' m) = p ^ n • m := by
     intro m
-    rw [← LinearMap.comp_apply, ← (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H G trivial trivial trivial).2.1 q q', h1,
-      (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G G G trivial trivial trivial).2.2.2.2.1 n (𝟙 G) m,
-      (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G G G trivial trivial trivial).1, LinearMap.id_apply]
+    rw [← LinearMap.comp_apply, ← (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k G H G trivial trivial trivial).2.1 q q', h1,
+      (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k G G G trivial trivial trivial).2.2.2.2.1 n (𝟙 G) m,
+      (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k G G G trivial trivial trivial).1, LinearMap.id_apply]
   have hvu : ∀ m : T.M H, T.map q' (T.map q m) = p ^ n • m := by
     intro m
-    rw [← LinearMap.comp_apply, ← (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k H G H trivial trivial trivial).2.1 q' q, h2,
-      (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k H H H trivial trivial trivial).2.2.2.2.1 n (𝟙 H) m,
-      (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k H H H trivial trivial trivial).1, LinearMap.id_apply]
+    rw [← LinearMap.comp_apply, ← (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k H G H trivial trivial trivial).2.1 q' q, h2,
+      (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k H H H trivial trivial trivial).2.2.2.2.1 n (𝟙 H) m,
+      (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k H H H trivial trivial trivial).1, LinearMap.id_apply]
   have hinj : Function.Injective (T.map q) := by
     intro a b hab
     have h := congrArg (T.map q') hab
     rw [hvu a, hvu b] at h
     have h0 : p ^ n • (a - b) = 0 := by rw [smul_sub, h, sub_self]
-    exact sub_eq_zero.1 ((GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k H H H trivial trivial trivial).2.2.2.2.2.2.2.2 n _ h0)
-  have LA := (GlobalTheory.T.witt_module_length_composition p k (T.M G) (T.M H) (T.M G)).1 (T.map q) (T.map q') hinj
-  have LB := (GlobalTheory.T.witt_module_length_composition p k (T.M G) (T.M G) (T.M G)).2.1 (T.base.free G trivial)
+    exact sub_eq_zero.1 ((_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k H H H trivial trivial trivial).2.2.2.2.2.2.2.2 n _ h0)
+  have LA := (_root_.GlobalTheory.Dieu.colength_add_and_pow_and_eq p k (T.M G) (T.M H) (T.M G)).1 (T.map q) (T.map q') hinj
+  have LB := (_root_.GlobalTheory.Dieu.colength_add_and_pow_and_eq p k (T.M G) (T.M G) (T.M G)).2.1 (T.base.free G trivial)
     (T.base.finite G trivial) n (T.map q ∘ₗ T.map q') (fun a => huv a)
   rw [LB] at LA
   have hfin : Module.length (WittVector p k) (T.M G ⧸ LinearMap.range (T.map q)) ≠ ⊤ := by
@@ -121,7 +121,7 @@ theorem isog_core (T : Theory p) {G H : PDivGroup p k} (q : G ⟶ H) (hq : IsIso
     rw [h, top_add] at LA
     exact ENat.coe_ne_top _ LA
   refine ⟨hinj, hfin, ?_⟩
-  obtain ⟨θ, hθ⟩ := GlobalTheory.T.exists_theta_dieudonne_mod_frobenius_differentials p T k
+  obtain ⟨θ, hθ⟩ := _root_.GlobalTheory.Dieu.theta_exists p T k
   have dimω : ∀ K : PDivGroup p k,
       Module.length (WittVector p k) (T.M K ⧸ frobImage (T.F K) ⊤) = Module.finrank k K.omega := by
     intro K
@@ -141,7 +141,7 @@ theorem isog_core (T : Theory p) {G H : PDivGroup p k} (q : G ⟶ H) (hq : IsIso
       · rintro ⟨c, h⟩
         exact ⟨c, Submodule.mem_top, h.symm⟩
   have hF : ∀ y : T.M H, T.map q (T.F H y) = T.F G (T.map q y) :=
-    fun y => (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H G trivial trivial trivial).2.2.2.2.2.2.1 q y
+    fun y => (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k G H G trivial trivial trivial).2.2.2.2.2.2.1 q y
   set X := LinearMap.range (T.map q) with hXdef
   set L3 := frobImage (T.F G) X with hL3
   set FG := frobImage (T.F G) ⊤ with hFG
@@ -160,14 +160,14 @@ theorem isog_core (T : Theory p) {G H : PDivGroup p k} (q : G ⟶ H) (hq : IsIso
     · rintro ⟨z, hz, rfl⟩
       obtain ⟨y, rfl⟩ := LinearMap.mem_range.1 hz
       exact ⟨⟨T.F H y, y, Submodule.mem_top, rfl⟩, hF y⟩
-  have eA := (GlobalTheory.T.witt_module_length_composition p k (T.M G) FG (Submodule.comap FG.subtype L3)).1
+  have eA := (_root_.GlobalTheory.Dieu.colength_add_and_pow_and_eq p k (T.M G) FG (Submodule.comap FG.subtype L3)).1
     FG.subtype (Submodule.comap FG.subtype L3).subtype (Submodule.injective_subtype _)
   rw [hr1, Submodule.range_subtype, Submodule.range_subtype] at eA
-  have eB := (GlobalTheory.T.witt_module_length_composition p k (T.M G) (T.M H) FH).1 (T.map q) FH.subtype hinj
+  have eB := (_root_.GlobalTheory.Dieu.colength_add_and_pow_and_eq p k (T.M G) (T.M H) FH).1 (T.map q) FH.subtype hinj
   rw [hr2, Submodule.range_subtype] at eB
   have hC : Module.length (WittVector p k) (FG ⧸ Submodule.comap FG.subtype L3) =
       Module.length (WittVector p k) (T.M G ⧸ X) :=
-    length_frobImage (T.F G) (GlobalTheory.T.dieudonneTheory_V_eq_verschiebung_injective p T k G).1 X
+    length_frobImage (T.F G) (_root_.GlobalTheory.Dieu.theory_V_verschiebung p T k G).1 X
   rw [hC, hFG, dimω G] at eA
   rw [hFH, dimω H] at eB
   obtain ⟨d, hd⟩ := ENat.ne_top_iff_exists.1 hfin

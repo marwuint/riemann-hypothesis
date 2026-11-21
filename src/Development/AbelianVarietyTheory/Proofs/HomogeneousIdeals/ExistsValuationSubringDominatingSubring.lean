@@ -97,14 +97,6 @@ theorem valExtEquiv_symm_apply_coe
 variable {V' K' : Type u} [CommRing V'] [IsDomain V'] [ValuationRing V'] [Field K']
   [Algebra V' K'] [IsFractionRing V' K']
 
-omit [IsDomain V] [ValuationRing V] [IsFractionRing V K] [IsDomain V'] [ValuationRing V']
-  [IsFractionRing V' K'] in
-theorem specAlgebraMap_comp_specMap (ψ : V →+* V') (χ : K →+* K')
-    (w : χ.comp (algebraMap V K) = (algebraMap V' K').comp ψ) :
-    specAlgebraMap V' K' ≫ Spec.map (CommRingCat.ofHom ψ) =
-      Spec.map (CommRingCat.ofHom χ) ≫ specAlgebraMap V K := by
-  rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, w]
-
 def valCentre : X := valExt p r y h (closedPoint V)
 
 theorem apply_valCentre_base : p (valCentre p r y h) = r (closedPoint V) :=
@@ -193,17 +185,6 @@ instance isLocalHom_comapToValuationSubring (V' : ValuationSubring K') (χ : K �
   exact isUnit_iff_exists_inv.mpr ⟨⟨_, hm⟩, Subtype.ext (mul_inv_cancel₀ ha0)⟩⟩
 
 end Domination
-
-section Graph
-
-variable {V K : Type u} [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K]
-  [IsFractionRing V K] {U Z Z₁ Z₂ S : Scheme.{u}}
-  (p₁ : Z₁ ⟶ S) [UniversallyClosed p₁] [IsSeparated p₁]
-  (p₂ : Z₂ ⟶ S) [UniversallyClosed p₂] [IsSeparated p₂]
-  (j₁ : U ⟶ Z₁) (j₂ : U ⟶ Z₂) (w : j₁ ≫ p₁ = j₂ ≫ p₂)
-  (r : Spec (.of V) ⟶ S) (y : Spec (.of K) ⟶ U) (h : y ≫ j₁ ≫ p₁ = specAlgebraMap V K ≫ r)
-
-end Graph
 
 section Centre
 
@@ -296,26 +277,6 @@ theorem DominatesStalk.range_eq_of_valuationRing [ValuationRing (X.presheaf.stal
   ext f
   exact (mem_iff_mem_range_of_isLocalHom (RingHom.id _) W ψ hψ f).symm
 
-theorem DominatesStalk.eq_top_iff (h : DominatesStalk W x) : W = ⊤ ↔ x = genericPoint X := by
-  constructor
-  · rintro rfl
-    obtain ⟨l, hl, rfl⟩ := dominatesStalk_iff_exists_hom.mp h
-    have hf : IsField (⊤ : ValuationSubring X.functionField) :=
-      MulEquiv.isField (Field.toIsField X.functionField) Subring.topEquiv.toMulEquiv
-    have e : specAlgebraMap (⊤ : ValuationSubring X.functionField) X.functionField
-        (closedPoint X.functionField) = closedPoint (⊤ : ValuationSubring X.functionField) := by
-      letI := hf.toField
-      exact Subsingleton.elim (α := PrimeSpectrum (⊤ : ValuationSubring X.functionField)) _ _
-    rw [← e]
-    exact (congrArg (fun l : Spec (.of X.functionField) ⟶ X ↦ l (closedPoint X.functionField))
-      hl).trans Scheme.fromSpecStalk_closedPoint
-  · rintro rfl
-    refine eq_top_iff.mpr fun f _ ↦ ?_
-    have e : X.presheaf.stalkSpecializes (specializes_refl (genericPoint X)) f = f :=
-      congr($(X.presheaf.stalkSpecializes_refl (genericPoint X)) f)
-    have h1 : X.presheaf.stalkSpecializes (specializes_refl (genericPoint X)) f ∈ W := h.1 f
-    rwa [e] at h1
-
 section Normal
 
 variable [IsNormalScheme X] [IsLocallyNoetherian X]
@@ -340,12 +301,6 @@ theorem DominatesStalk.isDiscreteValuationRing (h : DominatesStalk W x)
   obtain ⟨e, -⟩ := h.exists_ringEquiv hx
   have := IsNormalScheme.isDiscreteValuationRing_stalk hx
   exact IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e
-
-theorem DominatesStalk.ne_top (h : DominatesStalk W x) (hx : Order.coheight x = 1) : W ≠ ⊤ := by
-  have := h.isDiscreteValuationRing hx
-  rintro rfl
-  exact IsDiscreteValuationRing.not_isField (⊤ : ValuationSubring X.functionField)
-    (MulEquiv.isField (Field.toIsField X.functionField) Subring.topEquiv.toMulEquiv)
 
 end Normal
 
@@ -434,24 +389,6 @@ theorem centre_eq_iff (x : X) : centre p W hW = x ↔ DominatesStalk W x := by
   have : X.IsSeparated := ⟨by rw [← terminal.comp_from p]; infer_instance⟩
   exact ⟨fun e ↦ e ▸ dominatesStalk_centre p W hW, (dominatesStalk_centre p W hW).unique⟩
 
-theorem exists_centre_eq (x : X) : ∃ (W : ValuationSubring X.functionField)
-    (hW : ∀ a : O, toFunctionField p a ∈ W), centre p W hW = x := by
-  obtain ⟨W, hW⟩ := exists_dominatesStalk x
-  exact ⟨W, hW.toFunctionField_mem p, (centre_eq_iff ..).mpr hW⟩
-
 end Centre
-
-example : ∃ (W : ValuationSubring (Spec (.of ℤ)).functionField)
-    (hW : ∀ a : ℤ, toFunctionField (𝟙 (Spec (.of ℤ))) a ∈ W),
-    Order.coheight (centre (𝟙 _) W hW) = 1 ∧ IsDiscreteValuationRing W ∧ W ≠ ⊤ := by
-  let x : Spec (.of ℤ) :=
-    ⟨Ideal.span {2}, (Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two⟩
-  have hx : Order.coheight x = 1 := by
-    rw [← idealHeight_eq_coheight]
-    exact Ideal.height_span_singleton_eq_one_of_mem_nonZeroDivisors (R := ℤ)
-      (mem_nonZeroDivisors_of_ne_zero two_ne_zero) Int.prime_two.not_unit
-  obtain ⟨W, hW, e⟩ := exists_centre_eq (𝟙 (Spec (.of ℤ))) x
-  have hd := (centre_eq_iff _ W hW x).mp e
-  exact ⟨W, hW, e ▸ hx, hd.isDiscreteValuationRing hx, hd.ne_top hx⟩
 
 end GlobalTheory

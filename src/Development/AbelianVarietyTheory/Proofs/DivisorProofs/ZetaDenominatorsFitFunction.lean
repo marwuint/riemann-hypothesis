@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SizeAt
+import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ToricSymbols
@@ -19,40 +20,206 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeFunct
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LevelPlusSubgroup
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedTransport
 import Development.AbelianVarietyTheory.Definitions.Divisors.TwistedPlaceChoiceLiesOverPair
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedTransport
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaJetClassSumArchimedeanBoundOfCmTheta
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaNormBoundHypothesesSatisfiedStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassSumDenominatorBoundOfCmThetaHypothesesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaNormBoundHypothesesSatisfied
+import Formalism.PairingDivisors.StatementH
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassSumDenominatorBoundOfCmThetaHypotheses
+import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ExistsSmallSpherical
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InjKOfSeparates
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDerivLOneBoundFamilyStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricRatioConjugatesOfTransport
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricRatioFamilyEstimateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanFittedIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BundleOfRows
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenominatorFittedIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RamifiedSumsFifthEstimateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RamifiedSumsSeventhEstimateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialDescentEstimateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FieldDataExistenceOfSumsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteAndAwayFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralityFittedIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfinitePartIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LambdaLowGivesFirstIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelAtFittedPointsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultiplicityAtFittedPointsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapAtFittedPointsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneSquareFittedIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalingFunctionBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaBoundFittedIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightOfSizeBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTopStatementsOfInputsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumSizeFiniteAwayInfiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaIntegralRowStatementsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareRatioInEmbeddingRangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetAtOfSizeAtStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SizeAtHoldsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LiftsCuspidalOfFunctorialityStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConvKWithRealAll
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NuHTwisted
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricRatioFieldDataConjugate
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricRatioFieldDataAbelian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAutCentre
+import CompanionTheory.AutomorphicTheory.PlaceSeparation.IsOpenQuotientMapArt0
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalFormToricRatio
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCMValueHeckeCharacterAuxiliarySetOfEmpty
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsValCharTwist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedThetaValueValuationLeDivSq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanBoundBottomPairsNormsGrid
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenominatorFittedIdentity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RamifiedSumsFifthEstimate
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RamifiedSumsSeventhEstimate
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialDescentEstimate
+import Development.AbelianVarietyTheory.Definitions.Divisors.MulVecEqOfBasis
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.AuxiliaryPrimeNeTypePrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteAndAwayFormula
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralityFittedIdentity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfinitePartIdentity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LambdaLowGivesFirstIdentity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaEV0EqICPqRows
+import Formalism.LocalToGlobal.IndefiniteReal.CxLemmas
+import Formalism.LocalToGlobal.IndefiniteReal.CxPassRep
+import Formalism.LocalToGlobal.Divisibility.RowLatLemmas
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultiplicityAtFittedPoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapAtFittedPoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneSquareFittedIdentity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalingFunctionBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaBoundFittedIdentity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightOfSizeBound
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompletedHeckeLBoundedInVerticalStrips
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CompletedLStripBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BetaConjugateMeanLogAbsBoundOfTransport
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomConstantOfTheta
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomPairsExistBaseTupleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomPairsExistEveryTupleOfCmThetaHypothesesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareBottomHalfRankSumLeHalfRank
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBottomTriplePeriodConst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicPointUnitaryGroupGramOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomTriangleNonzeroConstantFirst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomTriangleNonzeroConstantSecond
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstantTripleCoefficient
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HypothesesAbsDet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomTriangleRootOfUnityTwist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilRepresentationVacuumCosetVectorsGrid
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.PolarizationScalarImPos
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BetaBoundVp
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearCombinationLogBoundRealInequality
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatCastMemBelow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeLValueUpperBoundPermutedWeightsOfFE
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareBottomHalfRankDiffLeHalfRank
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormBigOfNonvanishing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareRatioValuationWithoutNormFormulaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LValueRatioLowerBoundGauge
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomRankSumLeTwoMulTotalRank
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricValueHeightBoundOfDenominatorsMeans
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRatRepr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TowerOfThetaMatching
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BottomExistsIntegrable
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatInOfUnit
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomTrianglePolynomialFactor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomTriangleIntegralsNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCoefficientBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSumDenominatorBoundOfFactorClaims
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteInfinitePsiBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOKEx
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAtOfSubsingleton
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsExpansionIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCosetIndicatorExpansionOfDepthPeriodic
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCosetExpansionExpDepth
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DepthPeriodicOfCosetIndicatorExpansionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatProductDepthPeriodicGcdStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatTensorDepthConditionsAwayFromTwist
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DictionarySizeBound
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TwistPlacesOffPrimeQZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDataBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteGammaBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteInfiniteFormBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteInfinitePairBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PairIntAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDlNonneg
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizes
+import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.ImportsAlt
+import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.LossOne
+import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.ExpLoss
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VwNatCastNonneg
+import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.Imports
+import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.ImportsTer
+import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.ImportsBis
+import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.RatMove
+import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.KerStd
+import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.MatLat
+import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.LatMove
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumEqualSignKernelLossesBounded
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HBdNonneg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteVertexClassesCardLePrincipalCongruence
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardTopVertexClassesLeClassNumberBoundNormPowStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsNormGridModulusLeExpDepthLogNormSum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteKernelNodeRankLeTotalRank
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParameterSizeConditionsNumericBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalCongruenceLeTopLevelClassSum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassSumVertexLevelsContainPrincipalCongruence
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfCountAtOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DatumCountBoundLargeDataStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosineCountOfHyp
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PureTensorCountBoundOfCosetDepthBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanSumSizeBoundLargeDataFromFactors
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjPlInvolutive
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DictionaryDepthPairStandard
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfiniteTensorBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfiniteTopOfDictionaryDepth
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteInfiniteScalarBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousReGLSymm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridKernelPairingIndependentOfExpansion
+import Development.AbelianVarietyTheory.Definitions.Divisors.InvVolConjLevelOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatIntegrableAaVacOfConductor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemValuationEq
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaIntegralsOfMinguez
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilConvergenceOfSiegelSet
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsSmoothModerateOfIsAutFunSm
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsReading
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ExistsNeZeroOfIsMatch
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TripleFrameBaseExists
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockAlgebraicThetaVectorsStableFiniteAdelesLie
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawFramesWeilEquivalence
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilIntertwiningValueStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilLocalFactorEq
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilArchimedeanFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilUnramifiedFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilGlobalFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExpDiv
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsStableComplementOfIrreducibleSpanIntertwin
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleQuotientsIsoOfIntertwinedSemisimple
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OrientedPairFockMapsLieEquivariant
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsPairReading
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelRationalStructure
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTransformDarbouxModelLinearInjective
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieActionFockOperatorsScalarsTrace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilLineGoodModel
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelHermitianScaling
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ComplementaryAdelicSchwartzArchimedeanReplace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelCharacterMatch
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelFiniteExponent
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelArchimedeanExponent
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilModelOfExponents
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DixmierCommutantScalar
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LsumMapDomainSome
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinFLin
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigThetaKernelIntegrable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallThetaKernelTranslateIntegrable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMatchedFlipThetaIntegral
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProjectionOfFunctorialityAdopted
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RationalRowTestKernel
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LiftsCuspidalOfFunctoriality
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestLiftFormulaPrincipalLevelStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlipOfWeilConvergenceAndTheta
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JetsOfOrthogonalSum
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BesselPeriodCorankConvergesColumnStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAllTiedPerTied
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsAutFunOfMemCusp
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsAutFunTransportS
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AuxiliaryPrimeLtFirstTypePrimeOfSizes
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MeasColOfChoice
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCoordLatticeOfSelfDualFrame
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PureTensorOPerm
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SizesOfSizeRows
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsMatchOver
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestRationalSumsOfFiniteSumsMeaningful
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsRealFam
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IterationAndLinearityCuspidal
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsExpansionZero
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealLine
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LastRowRealIteratedIntegralEqConstMulFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CellSumRelationsPassToIntegralsProof
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowPeriodGroupsSplitRealFiniteLargeDepth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnfoldedIntegrandBiInvariantLargeDepthStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrandSupportedOnCellsLargeDepth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RepresentationAtEveryPlace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestCellValueOfStepsLargeDepth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SingleCosetOffTwistPlacesLargeDepthStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DefinitePeriodDependsOnProductFunction
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestDefinitePeriodChangeOfMeasures
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CellMassesAgainstLevelVolumesLargeDepthStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PeriodReductionToFockVectorsLargeDepth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LastRowUnfoldingBasicHypotheses
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestSupportFamiliesStaircaseCosets
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareRatioInEmbeddingRange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetAtOfSizeAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SizeAtHolds
 
 open Formalism.BasicNotions Formalism.MainNotions NumberField Formalism.L2.Indef Formalism.L2.Indef.Tree GlobalTheory.BigTop GlobalTheory.BigTop.Fun
 
@@ -113,76 +280,5 @@ theorem scLeB {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) : L.Sc ≤
       _ ≤ L.sc.b * (L.sc.x * D.R.n) := by nlinarith [mul_nonneg (mul_pos hx hb).le (sub_nonneg.2 hn)]
   have hS := L.Sc_pos
   nlinarith
-
-theorem desHLeaf : DesH := by
-  refine ⟨0, fun CF _ => ⟨1, one_pos, fun eps heps _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ => ?_⟩⟩⟩
-  intro _
-  refine ⟨0, fun C _ => ?_⟩
-  have hW : PageWin Fm := hF.2.1
-  refine ⟨max (Fm.x1 + 1) ((8 : ℝ) ^ (1 / eps)), fun x hx hx0 i p _ d _ => ?_⟩
-  have hx1 : 1 < x := lt_trans Fm.one_lt_family_threshold hx
-  have hx0' : (0 : ℝ) < x := by linarith
-  have h8 : (8 : ℝ) ≤ x ^ (8 * eps) := by
-    have e1 : (8 : ℝ) = ((8 : ℝ) ^ (1 / eps)) ^ eps := by
-      rw [← Real.rpow_mul (by norm_num), one_div, inv_mul_cancel₀ heps.ne', Real.rpow_one]
-    have e2 : ((8 : ℝ) ^ (1 / eps)) ^ eps ≤ x ^ eps :=
-      Real.rpow_le_rpow (by positivity) (le_trans (le_max_right _ _) hx0) heps.le
-    have e3 : x ^ eps ≤ x ^ (8 * eps) := Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)
-    linarith
-  obtain ⟨⟨hn, -⟩, ⟨-, hm⟩, -⟩ := hW x hx i
-  have hδ : (Fm.L x i).sc.delta1 ≤ 1 := by
-    unfold Scale.delta1
-    exact Real.rpow_le_one_of_one_le_of_nonpos (Fm.L x i).sc.one_lt_alt.le
-      (by linarith [(Fm.L x i).sc.eps_pos])
-  have hδ0 : 0 ≤ (Fm.L x i).sc.delta1 := by
-    unfold Scale.delta1
-    exact Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _
-  have hm4 : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 4 ≤ (((Fm.D x i).R.f : ℕ) : ℝ) := by
-    have hs := Real.sq_sqrt (mul_nonneg hx0'.le hδ0)
-    have hs0 := Real.sqrt_nonneg (x * (Fm.L x i).sc.delta1)
-    have hm0 : (0 : ℝ) ≤ ((Fm.D x i).R.m : ℝ) := by positivity
-    have hm2 : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 2 ≤ 4 * x := by nlinarith
-    have hm4' : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 4 ≤ 16 * x ^ 2 := by nlinarith
-    have hpow : x ^ ((2 : ℝ) + 8 * eps) = x ^ 2 * x ^ (8 * eps) := by
-      rw [Real.rpow_add hx0', Real.rpow_two]
-    have hf : (((Fm.D x i).R.f : ℕ) : ℝ) = 2 * ((Fm.D x i).R.n : ℝ) := by
-      unfold Ranks.f
-      push_cast
-      ring
-    rw [hf]
-    have hx2 : 0 ≤ x ^ 2 := by positivity
-    nlinarith
-  refine ⟨⟨(Fm.D x i).R.two_le_m, (Fm.D x i).R.m_add_three_le_k, by exact_mod_cast hm4,
-    (Fm.D x i).R.f_le_k⟩, ?_⟩
-  show (FunData.Lc d.O : ℝ) ≤ (Fm.L x i).sc.b
-  exact (lcLeOfCloud d.O (Fm.L x i).Sc (Fm.L x i).Sc_pos.le
-    (fun τ j => cloudIcc (Fm.L x i) τ j)).trans (scLeB (Fm.params x hx i))
-
-theorem fun0Fit_close : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator →
-    GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.Transport → GlobalTheory.ToricTransport.TwistedTransport → GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators → GlobalTheory.SqTop.Refl →
-    GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate →
-    GlobalTheory.BigTop.LamLow → GlobalTheory.BigTop.Fun.Fun0Fit @GlobalTheory.BigTop.Fun.Fld := by
-  intro hP hH hTD hTr hTw hZ hR hAg hMa hFS hL
-  obtain ⟨hDenSum, hThbSt, hOneSqSt, hBotSmall, hBotNe, hFieldDat, hTorEx, hDenEx, hBotEx, hLNe, hTriEx, hTower⟩ :=
-    GlobalTheory.T.square_top_statements_of_inputs hP.howeDualityReal hP hH hTD hTr hZ hR hAg hMa
-  obtain ⟨hFin, hAway, hInf⟩ := GlobalTheory.T.sum_size_finite_away_infinite hP
-  obtain ⟨hSumOK, hConst, hLin, hF2, hSumRat⟩ := GlobalTheory.T.theta_integral_row_statements hP hAg hMa
-  have hInj := GlobalTheory.RowTest.injK_of_separates hFS (GlobalTheory.RowTest.convK_withReal_all hP (GlobalTheory.T.lifts_cuspidal_of_functoriality hP))
-  have hSize := GlobalTheory.T.size_at_holds
-  have hSet := GlobalTheory.T.set_at_of_size_at hSize
-  have hDl := GlobalTheory.T.log_deriv_L_one_bound_family hP
-  have hInp := GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied
-  have hIntSt := GlobalTheory.T.classSumDenominatorBound_of_cmThetaHypotheses hInp
-  have hArchSt := GlobalTheory.ArchTop.archSt_of_inp hInp
-  have hThA := GlobalTheory.T.toric_ratio_family_estimate (GlobalTheory.ToricTransport.toricRatioConjugates_of_transport hTw) hSet hDl hFieldDat hTorEx
-  have hSq := GlobalTheory.T.square_ratio_in_embedding_range hP hAg hMa hSet hDl hConst hLNe hTriEx hTower
-  have hB : Bundle := @GlobalTheory.BigTop.Fun.bundle_of_rows
-  exact GlobalTheory.BigTop.Fun.fun0Fit_of_leaves _ _ hB GlobalTheory.T.scaling_function_bound
-    (GlobalTheory.T.field_data_existence_of_sums hSet hDl hSumOK hSumRat hConst hSq hIntSt hFieldDat hTorEx hDenEx hBotEx hBotSmall)
-    (GlobalTheory.T.multiplicity_at_fitted_points hSet) (GlobalTheory.T.one_map_at_fitted_points hB hSet hLin hInj hConst hF2) (GlobalTheory.T.kernel_at_fitted_points hB hSet hLin hInj hConst hF2)
-    (GlobalTheory.T.finite_and_away_formula hSet hFin hAway) (GlobalTheory.T.infinite_part_identity hB hSet hInf) (GlobalTheory.T.lambda_low_gives_first_identity hL)
-    (GlobalTheory.T.one_square_fitted_identity hSet hDl hThA hOneSqSt) (GlobalTheory.T.denominator_fitted_identity hSet hDl hDenSum) (GlobalTheory.T.integrality_fitted_identity hSet hDl hBotSmall hBotNe)
-    (GlobalTheory.T.archimedean_fitted_identity hSet hDl hArchSt hBotSmall) (GlobalTheory.T.theta_bound_fitted_identity hSet hDl hThbSt) (GlobalTheory.T.weight_of_size_bound hSize)
-    desHLeaf GlobalTheory.T.rank_gap_bound' GlobalTheory.T.ramified_sum_bound GlobalTheory.T.polynomial_descent_estimate
 
 end GlobalTheory.BigTop.Fun.Close

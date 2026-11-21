@@ -1,5 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMulStarEqOfNormOneUnramifiedQuadraticStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMulStarEqOfNormOneUnramifiedQuadratic
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedQuadraticIntegralTraceFormPerfectStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormOneAddEqOne
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
@@ -250,7 +251,7 @@ theorem pivot {n : Type} [Fintype n] [DecidableEq n] [Nonempty n] (G : Matrix n 
       _ = star w ⬝ᵥ (G *ᵥ w) := by rw [← dotProduct_mulVec, hG.eq]
   obtain ⟨u, hu⟩ := fixed_mem (F := F) _ ha
   have hu1 : ‖u‖ = 1 := by rw [← norm_algebraMap' E u, hu]; exact hq
-  obtain ⟨v0, hv0⟩ := GlobalTheory.T.exists_mul_star_eq_of_norm_one_unramifiedQuadratic F E u hu1
+  obtain ⟨v0, hv0⟩ := _root_.GlobalTheory.NormUnits.norm_onto_units F E u hu1
   rw [hu] at hv0
   have hv0n : ‖v0‖ = 1 := by
     have h := congrArg norm hv0

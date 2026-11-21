@@ -17,12 +17,6 @@ def PieceDegree.Statement : Prop :=
     ptsIntegral (mCoordIdeal y) (pot L) ({z | LiesOver y sg z}.indicator fun _ => (1 : ℝ)) =
       ptsIntegral (mCoordIdeal y) (pot L) ({z | LiesOver y sg' z}.indicator fun _ => (1 : ℝ))
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

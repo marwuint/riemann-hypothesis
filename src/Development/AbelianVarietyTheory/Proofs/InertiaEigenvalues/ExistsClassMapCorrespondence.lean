@@ -22,27 +22,6 @@ theorem pull_iso_of_cls_eq {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {
   exact ⟨Rep.mkIso (Representation.Equiv.mk φ.toLinearEquiv fun g =>
     φ.toIntertwiningMap.isIntertwining' (Matrix.GeneralLinearGroup.map (I.i k v).toRingHom g))⟩
 
-theorem exists_isRc_isClassMap : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
-    (I : Ident D), ∃ rc : GlobalTheory.SerSys.Corr D, IsRc hL T I rc ∧ ∀ k v, IsClassMap D.naut.lpDim (rc k v) := by
-  intro hL D T I
-  obtain ⟨rc, hrc⟩ := GlobalTheory.TypeRec.Model.exists_isRc hL T I
-  refine ⟨rc, hrc, fun k v n π hπ => ?_⟩
-  obtain ⟨_, _, _, -, H⟩ := GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))
-  obtain ⟨σ, e⟩ := GlobalTheory.TypeRec.Model.exists_pull I k v π hπ
-  refine ⟨?_, fun π' hπ' => ?_⟩
-  · rw [← T.dim, hrc k v n σ π e]
-    exact H.dim _
-  · obtain ⟨σ', e'⟩ := GlobalTheory.TypeRec.Model.exists_pull I k v π' hπ'
-    constructor
-    · intro hr
-      have h2 := congrArg (T.e _) hr
-      rw [hrc k v n σ π e, hrc k v n σ' π' e'] at h2
-      obtain ⟨f⟩ := pull_iso_of_cls_eq I k v σ σ' (H.bij.1 h2)
-      exact ⟨e.some ≪≫ f ≪≫ e'.some.symm⟩
-    · rintro ⟨f⟩
-      apply (T.e _).injective
-      rw [hrc k v n σ π e, hrc k v n σ π' ⟨f.symm ≪≫ e.some⟩]
-
 end GlobalTheory.TypeRec
 
 end

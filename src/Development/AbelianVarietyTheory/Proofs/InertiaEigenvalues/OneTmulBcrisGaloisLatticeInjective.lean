@@ -18,7 +18,7 @@ namespace GlobalTheory.TContInj
 theorem bcris_nontrivial (l : ℕ) [Fact l.Prime] : Nontrivial (Per.Bcris l) := by
   obtain ⟨j, hj⟩ := GlobalTheory.MemLoc.exists_isCrisP l
   obtain ⟨ι, -, -⟩ := GlobalTheory.MemLoc.exists_iota_cris_dR l j hj
-  haveI : Nontrivial (Per.BdR l) := ⟨(GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.2.1.exists_pair_ne⟩
+  haveI : Nontrivial (Per.BdR l) := ⟨(_root_.GlobalTheory.MemLoc.BdRField.bdR_isField l).2.2.1.exists_pair_ne⟩
   exact ι.domain_nontrivial
 
 theorem zl_bcris_injective (l : ℕ) [Fact l.Prime] : Function.Injective (algebraMap ℤ_[l] (Per.Bcris l)) := by

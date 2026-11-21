@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightParamCoeffSumBound
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LiftLambdaBound
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HostN
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.WtNZ
@@ -19,17 +19,12 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.CovTop.WtSz
-open GlobalTheory.CompHS
-end GlobalTheory.CovTop.WtSz
-namespace GlobalTheory.CovTop.WtSz
-open GlobalTheory.CompHS
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 end GlobalTheory.CovTop.WtSz
 namespace GlobalTheory.CovTop.WtSz
 end GlobalTheory.CovTop.WtSz
 namespace GlobalTheory.CovTop.WtSz
-variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
-  {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
+end GlobalTheory.CovTop.WtSz
+namespace GlobalTheory.CovTop.WtSz
 end GlobalTheory.CovTop.WtSz
 namespace GlobalTheory.CovTop.WtSz
 set_option maxHeartbeats 1000000 in

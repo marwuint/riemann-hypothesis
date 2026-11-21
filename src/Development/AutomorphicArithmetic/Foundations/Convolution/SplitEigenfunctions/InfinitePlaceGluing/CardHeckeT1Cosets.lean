@@ -3,7 +3,9 @@ import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitarisableOfIsLocCompCusp
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsUnitaryTwistAbsPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeTjCosetsFiniteCardLe
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormHeckeEigenvalueLeCardCosetsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormHeckeEigenvalueLeCardCosets
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
 
 noncomputable section
 
@@ -65,7 +67,7 @@ private theorem loc_sat (w : HeightOneSpectrum (𝓞 E)) {V : Type} [AddCommGrou
   have hs := GlobalTheory.T.satakeParameterGL_star_eq_inv_of_unitarisable E w 2 V ρ x _ hU hx
   obtain ⟨ϖ, hϖ⟩ := exists_isUnifV w
   obtain ⟨B0, h1, h2, h3⟩ := hU
-  have k1 := GlobalTheory.T.norm_heckeEigenvalue_le_card_cosets _ (KGL w 2) V ρ B0.flip (fun u v => h1 v u) (fun u hu => h2 u hu) (fun g u v => h3 g v u) _ x _
+  have k1 := _root_.GlobalTheory.LFun.norm_le_card_of_heckeVec_eq_smul _ (KGL w 2) V ρ B0.flip (fun u v => h1 v u) (fun u hu => h2 u hu) (fun g u v => h3 g v u) _ x _
     (fun g => by
       unfold Formalism.UG.Tj
       exact (norm_indicator_le_norm_self _ _).trans (by simp))
@@ -159,8 +161,8 @@ private theorem isUnitary_of_cenN {P : CuspSub E 2} {ω : HChar ℚ} (hc : CenN 
 
 private theorem exists_norm {P : CuspSub E 2} (hu : P.IsUnitary) :
     ∃ χ : HChar E, GlobalTheory.DiscSpec.IsNormalised (P.twist χ) ∧ ∀ v, χ.UnrAt v ∧ ‖((χ.val v : ℂˣ) : ℂ)‖ = 1 := by
-  have hcex := (GlobalTheory.T.cuspidalLetter_centralExponent_properties E ⟨2, P⟩).1
-  have hr : rexp (⟨2, P⟩ : Letter E) = 0 := ((GlobalTheory.T.cuspidalLetterRealExponent_eq_zero_iff_isUnitary E ⟨2, P⟩ (by norm_num)).1).2 hu
+  have hcex := (_root_.GlobalTheory.ResW.letter_centralExponent E ⟨2, P⟩).1
+  have hr : rexp (⟨2, P⟩ : Letter E) = 0 := ((_root_.GlobalTheory.ResW.rexp_eq_zero_iff_isUnitary E ⟨2, P⟩ (by norm_num)).1).2 hu
   have hd : (0 : ℝ) < ((2 : ℕ) : ℝ) * Module.finrank ℚ E := by
     have := Module.finrank_pos (R := ℚ) (M := E)
     positivity
@@ -173,12 +175,12 @@ private theorem exists_norm {P : CuspSub E 2} (hu : P.IsUnitary) :
   have hdc : (((2 : ℕ) : ℂ) * (Module.finrank ℚ E : ℂ)) = ((((2 : ℕ) : ℝ) * Module.finrank ℚ E : ℝ) : ℂ) := by
     push_cast
     ring
-  obtain ⟨χ, hz, hv, -, -⟩ := GlobalTheory.T.exists_idelic_absValue_cpow_character E (-(cex (⟨2, P⟩ : Letter E)) / (((2 : ℕ) : ℂ) * (Module.finrank ℚ E : ℂ)))
+  obtain ⟨χ, hz, hv, -, -⟩ := _root_.GlobalTheory.ResW.exists_abs_cpow E (-(cex (⟨2, P⟩ : Letter E)) / (((2 : ℕ) : ℂ) * (Module.finrank ℚ E : ℂ)))
   have hzre : (-(cex (⟨2, P⟩ : Letter E)) / (((2 : ℕ) : ℂ) * (Module.finrank ℚ E : ℂ))).re = 0 := by
     rw [hdc, Complex.div_ofReal_re, Complex.neg_re, hre]
     simp
   refine ⟨χ, ?_, fun v => ⟨(hv v).1, ?_⟩⟩
-  · have h4 := GlobalTheory.T.cuspidalLetter_centralExponent_properties E ⟨2, P.twist χ⟩
+  · have h4 := _root_.GlobalTheory.ResW.letter_centralExponent E ⟨2, P.twist χ⟩
     refine h4.2.2.2.1.1 (h4.2.2.2.2 0 ?_)
     obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 P.ne_bot
     refine ⟨mulChi 2 χ φ, ⟨φ, hφ, rfl⟩, fun h => h0 ((mulChi 2 χ).map_eq_zero_iff.1 h), ?_⟩
@@ -205,7 +207,7 @@ theorem UpperTheory.ConvolutionTheory.RankTwoDescent.satU_of :
     SatU := by
   intro E _ _ _ D P ω χ hc hu _ w α β hB
   obtain ⟨κ, hn, hκ⟩ := exists_norm (isUnitary_of_cenN hc hu)
-  have hD := (GlobalTheory.T.cuspForm_sqIntegrable_and_isDiscrete_splitCentre E 2).2 _ hn
+  have hD := (_root_.GlobalTheory.ResW.cuspForm_isSqInt_and_isDiscrete E 2).2 _ hn
   have hU : GlobalTheory.LGrp.IsUnitarisable ((P.twist κ).locRep w) := PositivityTheory.Rg.Rs.SatakeHermitian.isUnitarisable_locRepD hD w
   have hB' : GlobalTheory.LFun.HasSatGL w ((P.twist κ).locRep w) {α * κ.val w, β * κ.val w} := by
     simpa using CG.HasSat.twist (π := CG.mk P) hB (hκ w).1

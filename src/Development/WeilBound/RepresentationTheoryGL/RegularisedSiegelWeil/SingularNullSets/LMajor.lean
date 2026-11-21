@@ -3,7 +3,10 @@ import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.Singul
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LMajorE
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.CutSupp
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.DomBound
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TemperateMultiplierPreservesSchwartzStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TemperateMultiplierPreservesSchwartz
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.WeilSiegelTheta.BigCellDefs
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousRs
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsSchwartzBruhatAdelicMatrixOfMemAdelicSchwartzStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatAdelicMatrixContinuousLeMajorantStatement
 
@@ -38,7 +41,7 @@ theorem major : IdemEx → GoodEv → BumpEx → Major := by
   refine ⟨Φ₀, hΦ₀, hG₀, hpos, fun ε hε => ?_⟩
   have hMk : 0 < M * k + 1 := by have := mul_nonneg hM (Nat.cast_nonneg (α := ℝ) k); linarith
   obtain ⟨c, hct, hcc, hcb⟩ := hcut (ε / (M * k + 1)) (div_pos hε hMk)
-  refine ⟨fun x => c (cA θ x) * Φ x, GlobalTheory.T.temperate_multiplier_preserves_schwartz D θ a b c hct Φ hΦ, good_mul θ he hG c,
+  refine ⟨fun x => c (cA θ x) * Φ x, _root_.GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA D θ a b c hct Φ hΦ, good_mul θ he hG c,
     cutSupp θ hθ K hK Φ hbox c hcc, fun x => ?_⟩
   show ‖Φ x - c (cA θ x) * Φ x‖ ≤ ε * (Φ₀ x).re
   rw [show Φ x - c (cA θ x) * Φ x = (1 - c (cA θ x)) * Φ x by ring, norm_mul]

@@ -7,15 +7,15 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubs
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GagaLineGeneratorComplexStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperModelGenericFibreCompareStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeBasisPullbackDominantStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GagaLineGeneratorComplex
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperModelGenericFibreCompare
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeBasisPullbackDominant
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermStalkClosedPointToBaseChange
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapGermEqGenMapGerm
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsVBOneOfChartGenerators
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.InjectiveOfIsCptGen
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlgClosedTensorIsDomainStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlgClosedTensorIsDomain
 open TensorProduct
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
@@ -318,7 +318,7 @@ theorem cpt_base_change_dominates (K C : Type) [Field K] [CharZero K] [Field C] 
       Dominates ξ' ξ (pullback.fst s (spMap (algebraMap K C))) i ∧ IsCptGen ξ' ∧
       ∀ p' : ↥(pullback s (spMap (algebraMap K C))),
         genPt ξ ⤳ pullback.fst s (spMap (algebraMap K C)) p' → genPt ξ' ⤳ p' := by
-  haveI hdom : IsDomain (Ω ⊗[K] C) := GlobalTheory.T.alg_closed_tensor_isDomain K Ω C fun a ha => by
+  haveI hdom : IsDomain (Ω ⊗[K] C) := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isDomain_tensor_of_algebraically_closed_constants K Ω C fun a ha => by
     obtain ⟨x, y, hy, h⟩ := hCC a ha
     exact ⟨x / y, by rw [map_div₀, ← h, mul_div_cancel_right₀ _ ((map_ne_zero _).2 hy)]⟩
   let aT := algebraMap (Ω ⊗[K] C) (FractionRing (Ω ⊗[K] C))
@@ -613,7 +613,7 @@ theorem gaga_rat : GagaSections → ∀ (K : Type) [Field K] (σ : K →+* ℂ) 
     · rw [Set.range_unique]
       refine eq_top_iff.2 fun z _ => Submodule.mem_span_singleton.2 ⟨z / i (b default), ?_⟩
       exact div_mul_cancel₀ z hib
-    · exact GlobalTheory.T.lattice_basis_pullback_dominant X Ω ξ _ Ω' ξ' f i Ω Ω' i.toAddMonoidHom hD
+    · exact _root_.GlobalTheory.CompanionTheory.Ar.Flat.Lat.pull_isFrameAt_comp X Ω ξ _ Ω' ξ' f i Ω Ω' i.toAddMonoidHom hD
         (fun a e => by simp) L 1 b q' (hD.specializes q')
         (LinearIndependent.of_subsingleton 0 hib) (hq ⟨f q'.1, hD.specializes q'⟩ trivial hq')
   have hW' : genPt ξ' ∈ f ⁻¹ᵁ W := by
@@ -632,11 +632,11 @@ theorem gaga_rat : GagaSections → ∀ (K : Type) [Field K] (σ : K →+* ℂ) 
     obtain ⟨t, ht, hE⟩ := hext (x ≫ f) hcx hxs
     obtain ⟨h2, -, hg⟩ := pull_reg_and_gen X Ω ξ _ Ω' ξ' f i hD ⟨centre x, h⟩
     exact ⟨i t, hg L t ht, extends_pull hc hD hξ' hVB hW1 x hcx ht hE⟩
-  obtain ⟨f', κ, hκ, hgen, hval⟩ := GlobalTheory.T.gaga_line_generator_complex hG _ s' Ω' ξ' (L.pull ξ' f i.toAddMonoidHom) (f ⁻¹ᵁ W)
+  obtain ⟨f', κ, hκ, hgen, hval⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.gaga_rat_C hG _ s' Ω' ξ' (L.pull ξ' f i.toAddMonoidHom) (f ⁻¹ᵁ W)
     (fun y => F (y ≫ f)) hP' hS' h1 hξ' (constClosed_complex Ω') hVB' hW' hW1' hext'
   letI : Algebra K ℂ := σ.toAlgebra
   haveI : IsProper s := hP
-  obtain ⟨t, c, hgt, hft⟩ := GlobalTheory.T.proper_model_generic_fibre_compare X Ω ξ K s _ Ω' ξ' f i ℂ s' hξs (algebraMap K Ω).injective
+  obtain ⟨t, c, hgt, hft⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_gen_of_extension X Ω ξ K s _ Ω' ξ' f i ℂ s' hξs (algebraMap K Ω).injective
     (algebraMap K ℂ).injective hpb h1 hD hξ hξ' hCC L f'
     (fun p _ => by
       obtain ⟨U, hU, b, hb, hq⟩ := hVB p trivial

@@ -2,13 +2,16 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalLocalEquationAddSmulDivisor
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBertiniPolyDiscrepancySncBoundaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBertiniPolyDiscrepancySncBoundary
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.LogResolutionMultiplierLocalStatement
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.ExistsLogResolutionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverSourceBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdFunctionFieldPullbackPrimeDivisorOverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackBijectiveBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierDivisorPullbackSupportAndEffectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverSourceBirational
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOrdSubOneLeOrdWedgeDifferentials
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberPullbackProportionalOfProporti
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdFunctionFieldPullbackPrimeDivisorOver
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackBijectiveBirational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierDivisorPullbackSupportAndEffective
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -94,7 +97,7 @@ theorem GlobalTheory.PairStep.kltAt_add_general_member : GlobalTheory.Published.
   haveI : IsProper p := ((isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hproj).1
   haveI : IsProper (π ≫ p) := ((isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hres.proj).1
   haveI : IsProper π := IsProper.of_comp π p
-  obtain ⟨Q, hQ0, hQ⟩ := GlobalTheory.T.exists_bertini_poly_discrepancy_snc_boundary Y (π ≫ p) n hres.proj B hres.snc (pullCart π A) ι
+  obtain ⟨Q, hQ0, hQ⟩ := _root_.GlobalTheory.Discrepancy.exists_poly_neg_one_lt_discrep_member Y (π ≫ p) n hres.proj B hres.snc (pullCart π A) ι
     (fun i => functionFieldMap π (s i)) fun i => functionFieldMap_mem_sections π (hs i)
   refine ⟨Q, hQ0, fun u hu t ht y ⟨i, hi⟩ a c ha hc hklt => ?_⟩
 
@@ -120,7 +123,7 @@ theorem GlobalTheory.PairStep.kltAt_add_general_member : GlobalTheory.Published.
   have hsupp : (pullCart π G' - m'' • K).supp ≤ B := by
     rw [hΘ]
     refine (CartierDiv.supp_add_le _ _).trans (sup_le ((supp_nsmul_le _ _).trans hres.supp)
-      ((supp_nsmul_le _ _).trans fun w hw => hB w ((GlobalTheory.T.cartierDivisorPullback_support_and_effective X Y π D₀).1 w hw)))
+      ((supp_nsmul_le _ _).trans fun w hw => hB w ((_root_.GlobalTheory.Discrepancy.pullCart_supp_and_eff X Y π D₀).1 w hw)))
   have hres' : IsLogRes p n η m'' G' π K B := { hres with supp := hsupp }
 
   obtain ⟨g'', hg''⟩ := G'.exists_isEqn y
@@ -138,10 +141,10 @@ theorem GlobalTheory.PairStep.kltAt_add_general_member : GlobalTheory.Published.
   intro E hE
   rw [hdisc]
 
-  obtain ⟨E', hE'⟩ := GlobalTheory.T.exists_primeDivisor_over_source_birational ℂ X Y p π hres.bir E
+  obtain ⟨E', hE'⟩ := _root_.GlobalTheory.Discrepancy.DivOver.exists_over ℂ X Y p π hres.bir E
   obtain ⟨y', rfl, hy'⟩ := GlobalTheory.T.divisor_center_proper_lift ℂ X Y p π hres.bir inferInstance E' E hE' y hE
   have hη' : EtaleKlt.ratPull p π n η ≠ 0 := fun h =>
-    hη.ne_zero ((GlobalTheory.T.rationalTopFormPullback_bijective_birational ℂ X Y p π hres.bir n).1 (h.trans (map_zero _).symm))
+    hη.ne_zero ((_root_.GlobalTheory.EtaleKlt.ratPull_bijective_of_birational ℂ X Y p π hres.bir n).1 (h.trans (map_zero _).symm))
   have hΘm : ∀ w, w ⤳ y' → (pullCart π G' - m'' • K).mult w < m'' := fun w hw =>
     ((GlobalTheory.T.log_resolution_multiplier_local ℂ X p n hproj hn _ η m'' G' Y π K B hmult hres' (π y')).1.1 hklt) w
       (hw.map π.continuous)
@@ -159,7 +162,7 @@ theorem GlobalTheory.PairStep.kltAt_add_general_member : GlobalTheory.Published.
     K (pullCart π G' - m'' • K) m'' c (fnPull π g'') (fnPull π (t * ya)) hη' hres.div hm''pos
     hsupp hc hΘm hΘe hH' E' hy'
   have e1 := GlobalTheory.T.form_order_birational_pullback ℂ X Y p π hres.bir E' E hE' n η hη.ne_zero
-  have e2 := GlobalTheory.T.ord_functionField_pullback_primeDivisor_over ℂ X Y p π hres.bir E' E hE' g''
-  have e3 := GlobalTheory.T.ord_functionField_pullback_primeDivisor_over ℂ X Y p π hres.bir E' E hE' (t * ya)
+  have e2 := _root_.GlobalTheory.Discrepancy.DivOver.Over.ord_fnPull_of_bijective ℂ X Y p π hres.bir E' E hE' g''
+  have e3 := _root_.GlobalTheory.Discrepancy.DivOver.Over.ord_fnPull_of_bijective ℂ X Y p π hres.bir E' E hE' (t * ya)
   simp only [discrep, e1, e2, e3] at key
   simpa [discrep] using key

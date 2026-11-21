@@ -83,9 +83,6 @@ def rd (θ : InfFam D) (i : ℕ) (hi : i ≤ D.R.m) (β : Ch i) (ψ : (D.mem u).
 def OnChart (i : ℕ) (hi : i ≤ D.R.m) (β : Ch i) (ψ : (D.mem u).C.cls i → (D.mem u).C.Y i → ℂ) : Prop :=
   ∀ c, c ∉ Set.range (chart F i hi β).inc → ψ c = 0
 
-def rdP (θ : InfFam D) (z : (D.mem u).P.Wrow) (y : FrP D) : GA D D.sp.X' → ℂ :=
-  rdS θ D.sp.X' (rankP D) F.clsP.lev F.clsP.y (F.valP.eW z) y
-
 end Sym
 
 end GlobalTheory.AdForm

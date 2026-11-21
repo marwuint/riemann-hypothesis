@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedAutomorphicH
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalSobolevInequalityAdelicUnitary
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NcardRationalPointsTranslatedCompactLePowStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentativeParametricIntegralContinuousFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousRepresentativeAverageStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFixedAverageApproxOfSubgroupFixedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentativeParametricIntegralContinuousFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousRepresentativeAverage
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFixedAverageApproxOfSubgroupFixed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEvaluationExtensionClosureRepresentativesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSumIntegralCubeDerivativesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothAlongCurveProductsStableStatement
@@ -51,7 +51,7 @@ theorem hasDerivAt_rep [μ.IsMulRightInvariant]
     · rfl
   have hw : Continuous fun t => ρ (c t) v' := (hρ v').comp hc
   have key : ∀ a b : ℝ, a ≤ b → ∀ y, φ (y * c b) - φ (y * c a) = ∫ t in a..b, φ' (y * c t) := fun a b hab => by
-    obtain ⟨p1, p2⟩ := GlobalTheory.T.representative_parametric_integral_continuous_family G μ K ι hloc hlin ℝ volume (Set.Icc a b) (fun t => ρ (c t) v')
+    obtain ⟨p1, p2⟩ := _root_.GlobalTheory.LocRep.rep_parametric_integral G μ K ι hloc hlin ℝ volume (Set.Icc a b) (fun t => ρ (c t) v')
       (fun t y => φ' (y * c t)) isCompact_Icc hw (hφ'.comp (continuous_snd.mul (hc.comp continuous_fst)))
       fun t => rep_tr htr hv' _
     rw [integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hab,
@@ -111,7 +111,7 @@ theorem exists_eval [μ.IsMulRightInvariant]
           rw [e1, e2]⟩ }
   have hA : ∀ v (φ : G → ℂ), Continuous φ → ι v =ᵐ[μ] φ → (Continuous fun x => ∫ t in Q, κ t * φ (x * Θ t)) ∧
       ι (A v) =ᵐ[μ] fun x => ∫ t in Q, κ t * φ (x * Θ t) := fun v φ hφ hv =>
-    GlobalTheory.T.representative_parametric_integral_continuous_family G μ K ι hloc hlin _ volume Q (fun t => κ t • ρ (Θ t) v) (fun t x => κ t * φ (x * Θ t)) hQ (hw v)
+    _root_.GlobalTheory.LocRep.rep_parametric_integral G μ K ι hloc hlin _ volume Q (fun t => κ t • ρ (Θ t) v) (fun t x => κ t * φ (x * Θ t)) hQ (hw v)
       ((hκ.comp continuous_fst).mul (hφ.comp (continuous_snd.mul (hΘ.comp continuous_fst)))) fun t => by
         filter_upwards [rep_smul hlin (κ t) (ρ (Θ t) v), rep_tr htr hv (Θ t)] with x e1 e2
         rw [e1, e2]
@@ -147,8 +147,8 @@ theorem exists_eval [μ.IsMulRightInvariant]
           rw [integral_const_mul, mul_assoc, mul_assoc]
           exact mul_le_mul_of_nonneg_left (h1.trans (mul_le_mul_of_nonneg_left h2 hC)) (le_max_right _ _)
   refine ⟨Λ, fun v hv => hΛ v (Metric.mem_closure_iff.2 fun ε hε => ?_)⟩
-  obtain ⟨η, e1, e2, e3, e4⟩ := GlobalTheory.T.exists_fixed_average_approx_of_subgroup_fixed G μ K ρ hiso hρ H U hU hH v hv ε hε
-  exact ⟨_, ⟨e3, GlobalTheory.T.exists_continuous_representative_average G μ K ι hloc hlin ρ hiso hρ htr η v e1 e2⟩, by rwa [dist_eq_norm]⟩
+  obtain ⟨η, e1, e2, e3, e4⟩ := _root_.GlobalTheory.exists_average_fixed_approx_of_fixed G μ K ρ hiso hρ H U hU hH v hv ε hε
+  exact ⟨_, ⟨e3, _root_.GlobalTheory.LocRep.exists_continuous_rep_average G μ K ι hloc hlin ρ hiso hρ htr η v e1 e2⟩, by rwa [dist_eq_norm]⟩
 
 def Sm (ρ : G →* (K →L[ℂ] K)) {P : Type} (A : Set P) (e : P → ℝ → G) (v : K) : Prop :=
   ∀ (k : ℕ) (ps : Fin k → P), (∀ i, ps i ∈ A) →

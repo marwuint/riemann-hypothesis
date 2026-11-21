@@ -78,9 +78,6 @@ theorem hform_zero_left {N : ℕ} (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E
   unfold Formalism.UG.hform
   simp
 
-example {N : ℕ} (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (L : Submodule (𝓞 E) (Fin N → E)) (y : Fin N → E) :
-    y ∈ Formalism.BasicNotions.dualSet σ J L ↔ ∀ x ∈ L, Formalism.UG.hform σ J x y ∈ (algebraMap (𝓞 E) E).range := Iff.rfl
-
 theorem smul_coe {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W] (c : 𝓞 E) (w : W) :
     c • w = (c : E) • w := (algebraMap_smul E c w).symm
 

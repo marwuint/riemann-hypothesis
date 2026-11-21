@@ -32,10 +32,10 @@ theorem nabValN_transport (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing
     nabValN B' k h' w0 q (MvPowerSeries.map (algebraMap R k) f') (fun ℓ : Letter T r n => ℓ.2.2)
       (fun ℓ : Letter T r n => u' ⟨ℓ.1, ℓ.2.1⟩) P := by
   have hε1 := (GlobalTheory.T.formalChartJetRel_unit_one_on_axes R d O m B B' φ φi ε hε).1
-  obtain ⟨lam, hl0, hle⟩ := (GlobalTheory.T.jetEq_formalExp_iff_and_exists_log k 2 d m).2 (FB.toK k ε) (by simp [FB.toK, hε1])
+  obtain ⟨lam, hl0, hle⟩ := (_root_.GlobalTheory.ChartCmp.jeq_expS_iff_and_exists_log k 2 d m).2 (FB.toK k ε) (by simp [FB.toK, hε1])
   have hbi := GlobalTheory.T.canonicalGauge_difference_biadditive_jet R d O m B B' φ φi ε hε k h h' lam hh hh' hl0 hle
   obtain ⟨g', hg', hgg⟩ := GlobalTheory.T.exists_biadditive_series_jetEq_of_biadditiveJet R d O B' k m (by omega) _ hbi
-  have hcan := GlobalTheory.T.isCanonicalGauge_sub_biadditive R d O B' k h' g' hh' hg'
+  have hcan := _root_.GlobalTheory.ChartCmp.Regauge.isCanonGauge_sub R d O B' k h' g' hh' hg'
   have c0 : ∀ {C : FB R d O} {g : PS k 2 d}, C.IsCanonGauge k g → MvPowerSeries.constantCoeff g = 0 := by
     intro C g hg
     have := congrArg MvPowerSeries.constantCoeff hg.ax0
@@ -73,7 +73,7 @@ theorem nabValN_transport (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing
   have haK : GP (B.actK k w0) := fun i => by simp [FB.actK, B.A.const w0 i]
   have key := jeq_main (n := n) m q _ _ (B.actK k w0) hinv haK h (h' - g') lam (c0 hh) (c0 hcan) hl0 hj
     (MvPowerSeries.map (algebraMap R k) f')
-  rw [GlobalTheory.T.harmonicValueCopies_gauge_independent R d O k B' h' (h' - g') hh' hcan T r cc isX σ h1 h2 h3 h4 u' hu' n P hP w0 q]
+  rw [_root_.GlobalTheory.nabValN_harmonic_gauge_independent R d O k B' h' (h' - g') hh' hcan T r cc isX σ h1 h2 h3 h4 u' hu' n P hP w0 q]
   have hmap : MvPowerSeries.map (algebraMap R k) (ev (n := n) (fun b => comp1 φi (pt R (n := n) d b))
       (f' * ∏ b : Fin n, (ev ![pt R (n := n) d b, comp1 (B'.A.act w0) (pt R (n := n) d b)] ε) ^ q)) =
       ev (n := n) (fun b => comp1 (mapPt (algebraMap R k) φi) (pt k (n := n) d b))
@@ -88,7 +88,7 @@ theorem nabValN_transport (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing
       rw [map_pow, map_ev2 _ (nc_pt _) (nc_comp1 (nc_act _ _) (nc_pt _)), mapPt_comp1 _ _ (nc_pt _), mapPt_pt, hle]
       rfl
   unfold nabValN FB.hL
-  rw [hmap, hF, hact, GlobalTheory.T.constantCoeff_invariantPolyOperator_jetEq k d n _ _ _ _ P m _ _ (by omega) key,
+  rw [hmap, hF, hact, _root_.GlobalTheory.ChartCmp.constantCoeff_DpolyN_jEq k d n _ _ _ _ P m _ _ (by omega) key,
     GlobalTheory.T.invariantPolyOperatorCopies_transportedLaw k d n (mapLaw (algebraMap R k) B.G) _ _ hinv,
     gt_const_ev_eq _ (fun b => gp_comp1 _ _ hinv.1 (gp_pt b)), hd]
   simp only [hu]

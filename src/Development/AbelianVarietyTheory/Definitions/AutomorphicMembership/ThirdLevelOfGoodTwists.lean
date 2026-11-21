@@ -15,20 +15,6 @@ set_option maxHeartbeats 2000000
 
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 
-theorem kept_refl {D : D7} (c : NChoice D) : Kept c c :=
-  ⟨by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩
-
-theorem kept_withLoc {D : D7} (L : LocAll (lay0 D)) (c : NChoice D) : Kept c (chL L c) :=
-  ⟨by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩
-
-def levelThreeIndependentOfChoices {N : NExt hL} {S S' : SExt} {Γ Γ' : GeoP} {Z : w.Lt} (v : Lv3 (prmR N S Γ).s K w Z) : Lv3 (prmR N S' Γ').s K w Z :=
-  { g := v.g, coh := v.coh, Wt := v.Wt, p0 := v.p0, what₂ := v.what₂, rx := v.rx, nch := v.nch, n := v.n, xd := v.xd, chiT := v.chiT,
-    nx := v.nx }
-
-theorem third_level_of_good_twists {S : SExt} {Γ : GeoP} (h : Has3 (prmR (NEg hL) S Γ).s K B f T w) : Has3 (prmR (NEb hL) S Γ).s K B f T w :=
-  let ⟨Z, ⟨v⟩⟩ := h
-  ⟨Z, ⟨⟨⟨v.g, v.coh, v.Wt, v.p0, v.what₂, v.rx⟩, v.nch, v.n, v.xd, v.chiT, ⟨v.nx.1, v.nx.2.1⟩⟩⟩⟩
-
 theorem qOf_off (v : B.places.Pl) (h : v ∉ P.Wt) : QOf P v = ∅ := if_neg h
 
 theorem qOf_on (v : B.places.Pl) (h : v ∈ P.Wt) : QOf P v = T.Q v := if_pos h
@@ -92,12 +78,6 @@ theorem twisted_iff (x : St P) (v : B.places.Pl) : TwistedAt (Dof x) v ↔ v ∈
   split_ifs at h3
   · exact del_mul_ne_one B.host.pde'_prime (by simp [offSet]) f.isDel' v h3
   · exact del_mul_ne_one B.host.pde_prime (by simp [offSet]) f.isDel v h3
-
-theorem eta_zero {x : St P} (l : LA hL x) (j : ℕ) (v : B.places.Pl) (h1 : 1 ≤ j) (h2 : j ≤ B.R.m) : x.o.η j v = 0 := by
-  have h := x.o.N.etaJ_tie j v h1 h2
-  have hE : IsEmpty x.o.N.nd.Loc := l.a.A.bare
-  rw [Finset.eq_empty_of_isEmpty (x.o.N.nd.locs j v), Finset.sum_empty] at h
-  exact h
 
 theorem chain (h0 : StepW Start HasBare) (hA : SA hL) (hM : SMt) (hR : SRat hL) (hC : SCusp hL) (b0 : SettingsFormsExist hL) (b1 : SeriesExist hL)
     (b2 : SB2 hL) (hc : SC hL) (hF : SFin hL) (S : SExt) (Γ : GeoP) : StepW Start (Has3 (prmR (NEb hL) S Γ).s) := by

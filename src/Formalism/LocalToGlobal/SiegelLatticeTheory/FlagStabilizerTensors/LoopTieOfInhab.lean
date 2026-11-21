@@ -73,16 +73,4 @@ def loopRowsOf (H : TieHyp W hI) (A : AmpDat X) (hV : PvalForm W hI A) (hRR : Ro
 
 end AtTermTieOf
 
-section Inhab
-
-theorem parts_nonempty_of_noTerms (D : D7) (large₂ : SizeData₂ D) (T : TermTie D) (u u' : D.what₂.Word) (C1 : ℝ)
-    (h : IsEmpty (D.s.Term u u')) (hR : Formalism.MainNotions.S.Inh.tie_HRows D u) (hA : Formalism.MainNotions.S.Inh.tie_HAmp D large₂ u u' C1) :
-    Nonempty (LoopRowsDat D T u u') ∧ ∃ B : LoopLocDat D large₂ u u' C1, Nonempty (LoopTermDat D large₂ T u u' C1 B) := by
-  obtain ⟨L⟩ := Formalism.MainNotions.S.Inh.tie_loopTie_of_noTerms D large₂ T u u' C1 h hR hA
-  refine ⟨⟨⟨L.F0, L.flag_e_eq_hyperbolic, L.formsAtZero, L.what₂, L.isRows, L.fl_eq, L.Lam_mem, L.frame_ok, L.wRow_eq, L.pair_inj⟩⟩,
-    ⟨L.θ, L.θ_win, L.W, L.goodW, L.A, L.goodS, L.deg_eq⟩, ⟨?_⟩⟩
-  exact ⟨L.γ, L.pt, L.θR, L.νR, L.volR, L.volR_pos, L.gram, L.rel, L.J_irr, L.J_norm⟩
-
-end Inhab
-
 end Formalism.L2.SG.LoopTieOf

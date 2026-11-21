@@ -144,22 +144,6 @@ theorem coe_ideleEmbedding (x : IdeleGroup K) :
 theorem ideleEmbedding_injective : Function.Injective (ideleEmbedding K L) := fun _ _ h ↦
   Units.ext (adeleMap_injective (congrArg Units.val h))
 
-theorem continuous_ideleEmbedding : Continuous (ideleEmbedding K L) :=
-  Continuous.units_map (adeleMap K L).toMonoidHom continuous_adeleMap
-
-theorem isClosedEmbedding_ideleEmbedding : IsClosedEmbedding (ideleEmbedding K L) :=
-  haveI : T2Space (FiniteAdeleRing (𝓞 L) L) := inferInstanceAs (T2Space
-    (Πʳ w : HeightOneSpectrum (𝓞 L), [w.adicCompletion L, w.adicCompletionIntegers L]))
-  haveI : T2Space (InfiniteAdeleRing L) :=
-    inferInstanceAs (T2Space ((w : NumberField.InfinitePlace L) → w.Completion))
-  haveI : T2Space 𝔸[L] := inferInstanceAs (T2Space (InfiniteAdeleRing L × FiniteAdeleRing (𝓞 L) L))
-  haveI : T2Space (FiniteAdeleRing (𝓞 K) K) := inferInstanceAs (T2Space
-    (Πʳ v : HeightOneSpectrum (𝓞 K), [v.adicCompletion K, v.adicCompletionIntegers K]))
-  haveI : T2Space (InfiniteAdeleRing K) :=
-    inferInstanceAs (T2Space ((v : NumberField.InfinitePlace K) → v.Completion))
-  haveI : T2Space 𝔸[K] := inferInstanceAs (T2Space (InfiniteAdeleRing K × FiniteAdeleRing (𝓞 K) K))
-  Topology.IsClosedEmbedding.units_map (f := (adeleMap K L).toMonoidHom) isClosedEmbedding_adeleMap
-
 theorem ideleEmbedding_diagonal (k : Kˣ) :
     ideleEmbedding K L (IdeleGroup.diagonal K k) =
       IdeleGroup.diagonal L (Units.map (algebraMap K L).toMonoidHom k) :=
@@ -216,10 +200,6 @@ theorem ideleClassMap_mk (x : IdeleGroup K) :
 theorem ideleClassNorm_mk (x : IdeleGroup L) :
     ideleClassNorm K L (IdeleClassGroup.mk L x) = IdeleClassGroup.mk K (ideleNorm K L x) :=
   rfl
-
-theorem continuous_ideleClassMap : Continuous (ideleClassMap K L) :=
-  (QuotientGroup.isQuotientMap_mk _).continuous_iff.2
-    ((IdeleClassGroup.continuous_mk L).comp continuous_ideleEmbedding)
 
 theorem continuous_ideleClassNorm : Continuous (ideleClassNorm K L) :=
   (QuotientGroup.isQuotientMap_mk _).continuous_iff.2

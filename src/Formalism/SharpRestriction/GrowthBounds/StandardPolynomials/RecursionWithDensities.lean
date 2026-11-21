@@ -262,15 +262,6 @@ theorem ycond_pair (LL : ChainLetters N) (j : ℕ) (a a' : Fin N) (ha : LL.vec a
     refine Submodule.sum_mem _ fun c _ => ?_
     exact ycond_mono LL j hle (ycond_mul LL j _ _ (ycond_X LL j a c) (ycond_X LL j a' c))
 
-theorem ycond_monomial (LL : ChainLetters N) (j : ℕ) (ε : Fin N × Fin r →₀ ℕ) :
-    (monomial ε (1 : K) : MvPolynomial (Fin N × Fin r) K) ∈
-      YCond K (r := r) LL j ((∑ v : Fin N × Fin r, (ε v : ℤ) * (vWt LL j v.1 : ℤ) : ℤ) : WithTop ℤ) := by
-  classical
-  have e : (monomial ε (1 : K) : MvPolynomial (Fin N × Fin r) K) = ∏ v : Fin N × Fin r, X v ^ ε v := by
-    rw [MvPolynomial.monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]
-  rw [e]
-  exact ycond_prod LL j Finset.univ _ _ fun v _ => ycond_pow LL j _ (ycond_X LL j v.1 v.2) (ε v)
-
 end YC
 
 end Formalism.MainNotions.ColumnSystems.Pf

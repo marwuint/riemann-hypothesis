@@ -10,10 +10,6 @@ namespace Formalism.MainNotions.PlaneGram
 
 variable {K : Type} [Field K]
 
-theorem vala_iff_Aset' {L : Type} [DecidableEq L] {r : ℕ} (sg : L → Bool) (S : Finset L) (θ : ℝ)
-    (F : MvPolynomial (L × Fin r) K) : vala sg S θ F ↔ F ∈ Aset sg S ⌈θ⌉ := by
-  exact vala_iff_Aset sg S θ F
-
 theorem lg_mono' {p : ℕ} (hp : 2 ≤ p) {r : ℕ} (hr : 1 ≤ r) {a b : ℕ} (hab : a ≤ b) :
     lg p r a ≤ lg p r b := by
   unfold lg

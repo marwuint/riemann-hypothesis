@@ -2,7 +2,14 @@ import Mathlib
 import Development.WeilBound.CoreStatements.FlagImmersions.DivCycleEqZeroOfNotMemZ
 import Development.WeilBound.CoreStatements.FlagImmersions.SamePotTransRsmul
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootOriginHeightComparisonTwo
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootOriginHeightComparisonThreeStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootOriginHeightComparisonThree
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.TowerOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SplitComps
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArMonoReline
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagLabelBasesExist
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.IsMultiHomogIdealIff
 
@@ -201,7 +208,7 @@ theorem vertClose_some (hi : i.comp o₀.g = o.g) (hv : IsBlockMap κ v) (hv₀ 
     show _ = pullDeg κ (M.x t (τ, k)).a b - pullDeg κ₀ (R.x t (τ, k)).a b
     rw [M.x_deg, R.x_deg]
     rfl
-  · exact GlobalTheory.T.root_origin_height_comparison_three E H D l Xo c Y S ∅ M R R Sys Fx o o₀ o₀ M.Ω K ι y κ v κ₀ v₀ κ₀ v₀ (RingHom.id _) i i hv hv₀ hv₀
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.OrIso.root_isometric E H D l Xo c Y S ∅ M R R Sys Fx o o₀ o₀ M.Ω K ι y κ v κ₀ v₀ κ₀ v₀ (RingHom.id _) i i hv hv₀ hv₀
       hy hy₀ hy₀ (by rw [hi]; rfl) rfl hJ hJ₀ hJ₀ hdeg hA (τ, k) (f _) (g _) (df _) (dg _)
       ((GroundTheory.Heights₂.Heights.Bridge.isMultiHomog_iff _ _).2 (hf _))
       ((GroundTheory.Heights₂.Heights.Bridge.isMultiHomog_iff _ _).2 (hg _)) (funext (hd _)) (hfP _) (hgP _) (hfg _) t h0 h1 z hz

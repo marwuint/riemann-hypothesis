@@ -257,15 +257,6 @@ theorem dbar_ofReal (u : E → ℝ) (z v : E) :
     dbar (fun x => (u x : ℂ)) z v = conj (del (fun x => (u x : ℂ)) z v) := by
   simpa using dbar_conj (fun x => (u x : ℂ)) z v
 
-theorem del_comp {u : F → G} {φ : E → F} (hu : DifferentiableAt ℝ u (φ z))
-    (hφ : DifferentiableAt ℝ φ z) (v : E) :
-    del (fun x => u (φ x)) z v = del u (φ z) (del φ z v) + dbar u (φ z) (dbar φ z v) := by
-  have h : HasFDerivAt (fun x => u (φ x)) _ z := hu.hasFDerivAt.comp z hφ.hasFDerivAt
-  rw [del_apply, h.fderiv, del_apply φ, dbar_apply φ]
-  simp only [ContinuousLinearMap.comp_apply, ← del_add_dbar u, map_smul, map_sub, map_add,
-    map_smulₛₗ, conj_I, map_div₀, map_one, map_ofNat]
-  module
-
 theorem del_comp_holo {u : F → G} {φ : E → F} (hu : DifferentiableAt ℝ u (φ z))
     (hφ : DifferentiableAt ℂ φ z) (v : E) :
     del (fun x => u (φ x)) z v = del u (φ z) (fderiv ℂ φ z v) := by
@@ -303,10 +294,6 @@ theorem dbar_ofReal_comp {t : E → ℝ} {h : ℝ → ℝ} {h' : ℝ} (hh : HasD
 theorem contDiffAt_dbar {m n : WithTop ℕ∞} (hf : ContDiffAt ℝ n f z) (h : m + 1 ≤ n) :
     ContDiffAt ℝ m (dbar f) z :=
   (antilinPartCLM E F).contDiff.contDiffAt.comp z (hf.fderiv_right h)
-
-theorem contDiffAt_del {m n : WithTop ℕ∞} (hf : ContDiffAt ℝ n f z) (h : m + 1 ≤ n) :
-    ContDiffAt ℝ m (del f) z :=
-  (linPartCLM E F).contDiff.contDiffAt.comp z (hf.fderiv_right h)
 
 end FirstOrder
 
@@ -391,11 +378,6 @@ theorem ddbar_eq_dbar_del (hu : ContDiffAt ℝ 2 u z) (v w : E) :
   · ring
   · ring
 
-theorem ddbar_apply_self (hu : ContDiffAt ℝ 2 u z) (v : E) :
-    ddbar u z v v = (1 / 4 : ℂ) • (fderiv ℝ (fderiv ℝ u) z v v
-      + fderiv ℝ (fderiv ℝ u) z (I • v) (I • v)) := by
-  rw [ddbar_apply hu, (hu.isSymmSndFDerivAt (by simp)).eq v (I • v), add_sub_cancel_right]
-
 theorem ddbar_congr (h : u =ᶠ[𝓝 z] u') : ddbar u z = ddbar u' z :=
   del_congr (h.eventuallyEq_nhds.mono fun _ hx => dbar_congr hx)
 
@@ -425,16 +407,6 @@ theorem ddbar_sub (hu : ContDiffAt ℝ 2 u z) (hu' : ContDiffAt ℝ 2 u' z) :
     ddbar (fun x => u x - u' x) z = ddbar u z - ddbar u' z := by
   simp only [sub_eq_add_neg]
   rw [ddbar_add hu hu'.neg, ddbar_neg]
-
-theorem ddbar_sum {ι : Type*} {t : Finset ι} {A : ι → E → F}
-    (h : ∀ i ∈ t, ContDiffAt ℝ 2 (A i) z) :
-    ddbar (fun x => ∑ i ∈ t, A i x) z = ∑ i ∈ t, ddbar (A i) z := by
-  simp only [ddbar]
-  rw [← del_sum fun i hi => differentiableAt_dbar (h i hi)]
-  refine del_congr ?_
-  filter_upwards [(Finset.eventually_all t).2
-    fun i hi => eventually_differentiableAt_of_contDiffAt_two (h i hi)] with x h1
-    using dbar_sum h1
 
 theorem ddbar_eq_zero_of_holomorphic (hu : ∀ᶠ x in 𝓝 z, DifferentiableAt ℂ u x) :
     ddbar u z = 0 := by
@@ -493,40 +465,10 @@ theorem leviForm_eq_del_dbar (hu : ContDiffAt ℝ 2 u z) (v w : E) :
     leviForm u z v w = del (fun x => dbar (fun y => (u y : ℂ)) x w) z v :=
   ddbar_eq_del_dbar (contDiffAt_ofReal_comp hu) v w
 
-theorem fderiv_fderiv_ofReal_apply (hu : ContDiffAt ℝ 2 u z) (v w : E) :
-    fderiv ℝ (fderiv ℝ fun x => (u x : ℂ)) z v w = (fderiv ℝ (fderiv ℝ u) z v w : ℂ) := by
-  have h := differentiableAt_fderiv_of_contDiffAt_two (F := ℂ) (contDiffAt_ofReal_comp hu)
-  have h' : DifferentiableAt ℝ (fderiv ℝ u) z :=
-    (hu.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero
-  have h1 : DifferentiableAt ℝ (fun x => fderiv ℝ u x w) z := h'.clm_apply (differentiableAt_const _)
-  have he : (fun x => fderiv ℝ (fun x => (u x : ℂ)) x w) =ᶠ[𝓝 z]
-      fun x => ((fderiv ℝ u x w : ℝ) : ℂ) :=
-    (hu.eventually (by simp)).mono fun _ hx => fderiv_ofReal_apply (hx.differentiableAt two_ne_zero) w
-  rw [← fderiv_fderiv_apply (contDiffAt_ofReal_comp hu), he.fderiv_eq, fderiv_ofReal_apply h1,
-    fderiv_clm_apply h' (differentiableAt_const _)]
-  simp
-
-theorem leviForm_apply (hu : ContDiffAt ℝ 2 u z) (v w : E) :
-    leviForm u z v w = (1 / 4 : ℂ) * (fderiv ℝ (fderiv ℝ u) z v w
-      + fderiv ℝ (fderiv ℝ u) z (I • v) (I • w) + I * fderiv ℝ (fderiv ℝ u) z v (I • w)
-      - I * fderiv ℝ (fderiv ℝ u) z (I • v) w) := by
-  rw [leviForm, ddbar_apply (contDiffAt_ofReal_comp hu)]
-  simp only [fderiv_fderiv_ofReal_apply hu, smul_eq_mul]
-
-theorem leviForm_apply_self (hu : ContDiffAt ℝ 2 u z) (v : E) :
-    leviForm u z v v = ((1 / 4 * (fderiv ℝ (fderiv ℝ u) z v v
-      + fderiv ℝ (fderiv ℝ u) z (I • v) (I • v)) : ℝ) : ℂ) := by
-  rw [leviForm, ddbar_apply_self (contDiffAt_ofReal_comp hu)]
-  simp only [fderiv_fderiv_ofReal_apply hu, smul_eq_mul]
-  push_cast; ring
-
 theorem leviForm_conj_symm (hu : ContDiffAt ℝ 2 u z) (v w : E) :
     conj (leviForm u z v w) = leviForm u z w v := by
   rw [leviForm, ← ddbar_conj (contDiffAt_ofReal_comp hu)]
   simp only [conj_ofReal]
-
-theorem im_leviForm_apply_self (hu : ContDiffAt ℝ 2 u z) (v : E) : (leviForm u z v v).im = 0 := by
-  rw [leviForm_apply_self hu, ofReal_im]
 
 theorem leviForm_congr (h : u =ᶠ[𝓝 z] u') : leviForm u z = leviForm u' z :=
   ddbar_congr (h.mono fun _ hx => by simp only [hx])
@@ -546,21 +488,6 @@ theorem leviForm_sub (hu : ContDiffAt ℝ 2 u z) (hu' : ContDiffAt ℝ 2 u' z) :
 theorem leviForm_neg (u : E → ℝ) (z : E) : leviForm (fun x => -u x) z = -leviForm u z := by
   simp only [leviForm, ofReal_neg]
   exact ddbar_neg _ _
-
-theorem leviForm_const_mul (c : ℝ) (hu : ContDiffAt ℝ 2 u z) :
-    leviForm (fun x => c * u x) z = (c : ℂ) • leviForm u z := by
-  simp only [leviForm, ofReal_mul]
-  exact ddbar_const_smul (c : ℂ) (contDiffAt_ofReal_comp hu)
-
-theorem leviForm_add_const (c : ℝ) (hu : ContDiffAt ℝ 2 u z) :
-    leviForm (fun x => u x + c) z = leviForm u z := by
-  rw [leviForm_add hu contDiffAt_const, leviForm_const, add_zero]
-
-theorem leviForm_sum {ι : Type*} {t : Finset ι} {A : ι → E → ℝ}
-    (h : ∀ i ∈ t, ContDiffAt ℝ 2 (A i) z) :
-    leviForm (fun x => ∑ i ∈ t, A i x) z = ∑ i ∈ t, leviForm (A i) z := by
-  simp only [leviForm, ofReal_sum]
-  exact ddbar_sum fun i hi => contDiffAt_ofReal_comp (h i hi)
 
 theorem leviForm_comp_holo {u : F → ℝ} {φ : E → F} (hu : ContDiffAt ℝ 2 u (φ z))
     (hφ : ContDiffAt ℂ 2 φ z) (v w : E) :
@@ -606,11 +533,6 @@ def leviMatrix {ι : Type*} (u : E → ℝ) (z : E) (b : ι → E) : Matrix ι �
 
 @[simp] theorem leviMatrix_apply {ι : Type*} (u : E → ℝ) (z : E) (b : ι → E) (i j : ι) :
     leviMatrix u z b i j = leviForm u z (b i) (b j) := rfl
-
-theorem leviMatrix_isHermitian {ι : Type*} (hu : ContDiffAt ℝ 2 u z) (b : ι → E) :
-    (leviMatrix u z b).IsHermitian := by
-  ext i j
-  exact leviForm_conj_symm hu _ _
 
 end Levi
 
@@ -669,10 +591,6 @@ theorem leviForm_log_normSq_add {δ : ℝ} {z : H} (hz : ‖z‖ ^ 2 + δ ≠ 0)
 
 variable {φ : E → H} {z : E}
 
-theorem contDiffAt_log_normSq_add_comp {δ : ℝ} (hφ : ContDiffAt ℂ 2 φ z)
-    (hz : ‖φ z‖ ^ 2 + δ ≠ 0) : ContDiffAt ℝ 2 (fun x => Real.log (‖φ x‖ ^ 2 + δ)) z :=
-  (((hφ.restrict_scalars ℝ).norm_sq ℂ).add contDiffAt_const).log hz
-
 theorem leviForm_log_normSq_add_comp {δ : ℝ} (hφ : ContDiffAt ℂ 2 φ z)
     (hz : ‖φ z‖ ^ 2 + δ ≠ 0) (v w : E) :
     leviForm (fun x => Real.log (‖φ x‖ ^ 2 + δ)) z v w =
@@ -707,86 +625,12 @@ section Psh
 
 variable {u u' : E → ℝ} {s t : Set E}
 
-theorem IsPshC2On.mono (h : IsPshC2On u t) (hst : s ⊆ t) : IsPshC2On u s :=
-  fun z hz => h z (hst hz)
-
-theorem IsPshC2On.contDiffAt (h : IsPshC2On u s) {z : E} (hz : z ∈ s) : ContDiffAt ℝ 2 u z :=
-  (h z hz).1
-
 theorem IsPshC2On.nonneg (h : IsPshC2On u s) {z : E} (hz : z ∈ s) (v : E) :
     0 ≤ (leviForm u z v v).re := (h z hz).2 v
-
-theorem IsPshC2On.add (h : IsPshC2On u s) (h' : IsPshC2On u' s) :
-    IsPshC2On (fun x => u x + u' x) s := fun z hz =>
-  ⟨(h z hz).1.add (h' z hz).1, fun v => by
-    rw [leviForm_add (h z hz).1 (h' z hz).1]
-    exact add_nonneg ((h z hz).2 v) ((h' z hz).2 v)⟩
-
-theorem IsPshC2On.const_mul (h : IsPshC2On u s) {c : ℝ} (hc : 0 ≤ c) :
-    IsPshC2On (fun x => c * u x) s := fun z hz =>
-  ⟨contDiffAt_const.mul (h z hz).1, fun v => by
-    rw [leviForm_const_mul c (h z hz).1]
-    simpa using mul_nonneg hc ((h z hz).2 v)⟩
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedSpace ℝ H]
   [IsScalarTower ℝ ℂ H]
 
-theorem isPshC2On_normSq (s : Set H) : IsPshC2On (fun x : H => ‖x‖ ^ 2) s := fun z _ =>
-  ⟨(contDiff_norm_sq ℂ).contDiffAt, fun v => by
-    rw [leviForm_normSq, inner_self_eq_ofReal_norm_sq, ofReal_re]; positivity⟩
-
 end Psh
-
-section Circle
-
-open Real MeasureTheory Set Metric
-
-end Circle
-
-open scoped Laplacian in
-
-theorem leviForm_one_one_eq_laplacian {u : ℂ → ℝ} {z : ℂ} (hu : ContDiffAt ℝ 2 u z) :
-    leviForm u z 1 1 = ((Δ u z / 4 : ℝ) : ℂ) := by
-  rw [leviForm_apply_self hu, InnerProductSpace.laplacian_eq_iteratedFDeriv_complexPlane]
-  simp [iteratedFDeriv_two_apply]
-  ring
-
-example (z v : ℂ) : dbar (fun x : ℂ => conj x) z v = conj v ∧ del (fun x : ℂ => conj x) z v = 0 := by
-  rw [dbar_conj (fun x => x), del_conj (fun x => x), del_eq_fderiv differentiableAt_fun_id,
-    dbar_eq_zero differentiableAt_fun_id]
-  simp
-
-example (z : ℂ) : leviForm (fun x : ℂ => ‖x‖ ^ 2) z I 1 = I := by
-  rw [leviForm_normSq]; simp
-
-example (z : ℂ) : leviForm (fun x : ℂ => Real.log (‖x‖ ^ 2 + 1)) z 1 1 =
-    1 / ((‖z‖ ^ 2 + 1 : ℝ) : ℂ) ^ 2 := by
-  have h : ‖z‖ ^ 2 + 1 ≠ 0 := by positivity
-  have h' : ((‖z‖ ^ 2 + 1 : ℝ) : ℂ) ≠ 0 := by exact_mod_cast h
-  rw [leviForm_log_normSq_add h]
-  simp only [inner, star_def, map_one, one_mul, mul_one, conj_mul']
-  field_simp
-  push_cast
-  ring
-
-example (n : ℕ) (z : EuclideanSpace ℂ (Fin n)) :
-    IsPshC2On (fun x : EuclideanSpace ℂ (Fin n) => ‖x‖ ^ 2) Set.univ ∧
-    leviMatrix (fun x : EuclideanSpace ℂ (Fin n) => ‖x‖ ^ 2) z
-      (fun i => EuclideanSpace.single i 1) = 1 := by
-  refine ⟨isPshC2On_normSq _, ?_⟩
-  ext i j
-  simp [leviForm_normSq, Matrix.one_apply, EuclideanSpace.inner_single_left, eq_comm]
-
-example : ¬ IsPshC2On (fun x : ℂ => -‖x‖ ^ 2) {0} := fun h => by
-  have := h.nonneg rfl 1
-  rw [leviForm_neg, ContinuousLinearMap.neg_apply, ContinuousLinearMap.neg_apply,
-    leviForm_normSq] at this
-  norm_num at this
-
-example {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (z v w : V) :
-    leviForm (fun x : V => ‖x‖ ^ 2) z v w = inner ℂ w v := leviForm_normSq z v w
-
-example (n : ℕ) (u : (Fin n → ℂ) → ℝ) (z : Fin n → ℂ) (hu : ContDiffAt ℝ 2 u z) :
-    (leviMatrix u z fun i => Pi.single i 1).IsHermitian := leviMatrix_isHermitian hu _
 
 end GlobalTheory

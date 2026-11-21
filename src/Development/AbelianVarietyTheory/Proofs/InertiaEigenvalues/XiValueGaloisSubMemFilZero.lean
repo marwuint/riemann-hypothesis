@@ -5,12 +5,13 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InclLSmulCoord
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValueMemFiltrationZeroTame
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinSectionTrivialisesInvertPrimeTensorStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinSectionTrivialisesInvertPrimeTensor
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsAlgebraMapEqRoot
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmulMemFilTOfZero
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JBSingleMemFilTStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantLatticeFiltrationZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GalIBSubMemFilOStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorBcrisFrobeniusValueEqSumCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JBSingleMemFilT
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantLatticeFiltrationZero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GalIBSubMemFilO
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorBcrisFrobeniusValueEqSumCoordinates
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 
@@ -24,14 +25,14 @@ theorem GlobalTheory.BKGal.XiFil.xi_value_gal_sub_mem_filZero : ∀ (l : ℕ) [F
   have hwS : ∀ τ j, w τ j ∈ invL l (S O K e) := fun τ j =>
     away_mono (A_le_S l e) (by simp) (mem_tot.1 hwA τ j)
   have hd : ∀ j : ι, D.xi (fun _ => Pi.single j (1 : K)) ∈ D.MMl := fun j =>
-    ((GlobalTheory.T.breuilKisin_section_trivialises_invertPrime_tensor O K l e a ι D.toPhiMod).2 _).2 (mem_tot.2 fun τ i => by
+    ((_root_.GlobalTheory.BK.xi_trivialises_invL_S O K l e a ι D.toPhiMod).2 _).2 (mem_tot.2 fun τ i => by
       rw [cst_apply]
       exact HasK.C_mem _)
   obtain ⟨V, hV⟩ : ∃ V : ι → TW (OB l O) T,
       V = fun j => R.jB (toBcris t ϖ D.toPhiMod ⟨D.xi (fun _ => Pi.single j 1), hd j⟩) := ⟨_, rfl⟩
   obtain ⟨c, hc⟩ : ∃ c : ι → OB l O, c = fun j => ϖ.iB t K (fun τ => ⟨w τ j, hwS τ j⟩) := ⟨_, rfl⟩
   have hval : R.jB (toBcris t ϖ D.toPhiMod ⟨D.xiExt w, hw⟩) = ∑ j, c j • V j := by
-    rw [GlobalTheory.T.tensorBcris_frobenius_value_eq_sum_coordinates l a e O K t ϖ ι D.toPhiMod w hwS hw hd, map_sum, hV, hc]
+    rw [_root_.GlobalTheory.XiDecomp.toBcris_xiExt_eq_sum l a e O K t ϖ ι D.toPhiMod w hwS hw hd, map_sum, hV, hc]
     simp only [map_smul]
   have hfix : ∀ j, actB (sQ l) T g (V j) = V j := fun j => by
     rw [hV]
@@ -48,7 +49,7 @@ theorem GlobalTheory.BKGal.XiFil.xi_value_gal_sub_mem_filZero : ∀ (l : ℕ) [F
   rw [← sub_smul]
   have h1 : galOB O (sQ l g) (c j) - c j ∈ filO O C η := by
     rw [hc]
-    refine GlobalTheory.T.galOB_iB_sub_iB_mem_filO l a e O K t ϖ C η (fun τ => ⟨w τ j, hwS τ j⟩) (fun τ => mem_tot.1 hwA τ j)
+    refine _root_.GlobalTheory.BKGal.TaylorFil.gal_iB_sub_mem_filO l a e O K t ϖ C η (fun τ => ⟨w τ j, hwS τ j⟩) (fun τ => mem_tot.1 hwA τ j)
       (fun τ => ?_) g hg
     obtain ⟨h, hh, k, hk⟩ := hN τ j
     exact ⟨h, hh, k, hk⟩
@@ -63,7 +64,7 @@ theorem GlobalTheory.BKGal.XiFil.xi_value_gal_sub_mem_filZero : ∀ (l : ℕ) [F
     rw [hsum, map_sum]
     refine Submodule.sum_mem _ fun i _ => ?_
     rw [map_smul]
-    refine smul_mem_filT_of_zero ?_ (GlobalTheory.T.jB_single_mem_filT' l a e O K t ϖ ι η H D T R C i)
+    refine smul_mem_filT_of_zero ?_ (_root_.GlobalTheory.BKGal.XiPole.jB_single_mem_filT l a e O K t ϖ ι η H D T R C i)
     rw [hu, toBcris_apply]
-    exact GlobalTheory.T.invariant_lattice_filtration_zero l a e O K t ϖ C _
+    exact _root_.GlobalTheory.BKGal.XiFil.iB_mem_filO_zero l a e O K t ϖ C _
   exact smul_mem_filT_neg h1 h2

@@ -235,13 +235,4 @@ theorem phRat_of_identity (v₀ : (R.MW i (sg0 D A)).Vec) (cc : (C.U ((i : ℕ) 
 
 end Main
 
-section Class
-
-variable (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
-  (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1))
-  (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
-  (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (i : Fin D.R.m)
-
-end Class
-
 end GlobalTheory.PhaseRational

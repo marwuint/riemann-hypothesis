@@ -1,6 +1,6 @@
 import Mathlib
 import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.BackStable
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensorStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensor
 
 noncomputable section
 
@@ -76,7 +76,7 @@ theorem tens_apply {n : ℕ} (X : GMod n) (χ : Fin n → ℂ) (hS : ScalChar X 
   have hq : qdet X.E u = Formalism.QuantumDeterminants.capP χ (u - cn n) • (1 : Module.End ℂ X.V) := by
     have := hS (u - cn n)
     rwa [show u - cn n + ((n : ℂ) - 1) / 2 = u by unfold cn; ring] at this
-  have h := LinearMap.congr_fun (GlobalTheory.T.QuantumDeterminantTensor n X u) w
+  have h := LinearMap.congr_fun (_root_.GlobalTheory.CompanionTheory.RgExh.qdetTens n X u) w
   rw [hq] at h
   simpa [Module.End.mul_apply, compLeft_smul_one] using h
 

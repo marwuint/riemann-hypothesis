@@ -75,14 +75,6 @@ theorem apply_extend (θ : N →ₗ[B] B ⊗[A] N) (x : B ⊗[A] invariants θ) 
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul b m => simp [mem_invariants.1 m.2, smul_tmul']
 
-theorem apply_extend_eq_canonical (θ : N →ₗ[B] B ⊗[A] N) (x : B ⊗[A] invariants θ) :
-    θ (extend B _ x) =
-      ((extend B (invariants θ)).restrictScalars A).lTensor B (canonical B _ x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | add x y hx hy => simp only [map_add, hx, hy]
-  | tmul b m => simp [mem_invariants.1 m.2, smul_tmul']
-
 theorem IsDescentDatum.bijective_extend [Module.Flat A B] {θ : N →ₗ[B] B ⊗[A] N}
     (h : IsDescentDatum θ) : Function.Bijective (extend B (invariants θ)) := by
   constructor
@@ -144,46 +136,7 @@ end Amitsur
 
 section Morphisms
 
-def IsCompatible (θ : N →ₗ[B] B ⊗[A] N) (θ' : N' →ₗ[B] B ⊗[A] N') (f : N →ₗ[B] N') : Prop :=
-  ∀ n, θ' (f n) = (f.restrictScalars A).lTensor B (θ n)
-
-theorem IsCompatible.map_mem {θ : N →ₗ[B] B ⊗[A] N} {θ' : N' →ₗ[B] B ⊗[A] N'} {f : N →ₗ[B] N'}
-    (hf : IsCompatible θ θ' f) {n : N} (hn : n ∈ invariants θ) : f n ∈ invariants θ' := by
-  rw [mem_invariants] at hn ⊢
-  rw [hf n, hn]
-  simp
-
 variable {M M' : Type*} [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module A M']
-
-variable (B) in
-
-theorem isCompatible_baseChange (g : M →ₗ[A] M') :
-    IsCompatible (canonical B M) (canonical B M') (g.baseChange B) := by
-  intro x
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | add x y hx hy => simp only [map_add, hx, hy]
-  | tmul b m => simp
-
-theorem existsUnique_baseChange_eq_of_mem [Module.FaithfullyFlat A B]
-    (f : B ⊗[A] M →ₗ[B] B ⊗[A] M') (hf : ∀ m : M, f (1 ⊗ₜ m) ∈ invariants (canonical B M')) :
-    ∃! g : M →ₗ[A] M', g.baseChange B = f := by
-  let e := LinearEquiv.ofBijective _ (bijective_toInvariants (A := A) B M')
-  let g : M →ₗ[A] M' := e.symm.toLinearMap ∘ₗ
-    ((f.restrictScalars A) ∘ₗ TensorProduct.mk A B M 1).codRestrict _ hf
-  have hg : ∀ m, (1 : B) ⊗ₜ[A] g m = f (1 ⊗ₜ m) := fun m =>
-    congrArg Subtype.val (e.apply_symm_apply ⟨f (1 ⊗ₜ m), hf m⟩)
-  refine ⟨g, ?_, fun g' hg' => ?_⟩
-  · ext m
-    simpa using hg m
-  · ext m
-    apply Module.FaithfullyFlat.tensorProduct_mk_injective (A := A) (B := B) M'
-    simp only [TensorProduct.mk_apply, hg, ← hg', LinearMap.baseChange_tmul]
-
-theorem IsCompatible.existsUnique_baseChange_eq [Module.FaithfullyFlat A B]
-    {f : B ⊗[A] M →ₗ[B] B ⊗[A] M'} (hf : IsCompatible (canonical B M) (canonical B M') f) :
-    ∃! g : M →ₗ[A] M', g.baseChange B = f :=
-  existsUnique_baseChange_eq_of_mem f fun m => hf.map_mem (by simp)
 
 variable (B) in
 
@@ -212,22 +165,10 @@ theorem invertible_of_isBaseChange [Module.FaithfullyFlat A B] {M : Type*} [AddC
   rw [he]
   exact e.bijective
 
-variable (B) in
-
-theorem invertible_baseChange_iff [Module.FaithfullyFlat A B] (M : Type*) [AddCommGroup M]
-    [Module A M] : Module.Invertible B (B ⊗[A] M) ↔ Module.Invertible A M :=
-  ⟨fun _ => invertible_of_isBaseChange (TensorProduct.isBaseChange A M B), fun _ => inferInstance⟩
-
 theorem IsDescentDatum.invertible_invariants [Module.FaithfullyFlat A B]
     {θ : N →ₗ[B] B ⊗[A] N} (h : IsDescentDatum θ) [Module.Invertible B N] :
     Module.Invertible A (invariants θ) :=
   invertible_of_isBaseChange h.isBaseChange
-
-variable (B) in
-
-theorem isUnit_algebraMap_iff [Module.FaithfullyFlat A B] (a : A) :
-    IsUnit (algebraMap A B a) ↔ IsUnit a := by
-  rw [isUnit_iff_dvd_one, isUnit_iff_dvd_one, ← Descent.algebraMap_dvd_iff B a 1, map_one]
 
 end Invertible
 
@@ -240,13 +181,6 @@ def smulRight (b : B) : B ⊗[A] N →ₗ[B] B ⊗[A] N :=
 
 @[simp] theorem smulRight_tmul (b c : B) (n : N) :
     smulRight A b (c ⊗ₜ[A] n) = c ⊗ₜ[A] (b • n) := rfl
-
-structure IsGluing (φ : N ⊗[A] B →ₗ[B] B ⊗[A] N) : Prop where
-  bijective : Function.Bijective φ
-  map_tmul_mul : ∀ (n : N) (b c : B), φ (n ⊗ₜ (b * c)) = smulRight A b (φ (n ⊗ₜ c))
-  cocycle : ∀ (n : N) (b c : B),
-    (φ.restrictScalars A).lTensor B (TensorProduct.assoc A B N B (φ (n ⊗ₜ b) ⊗ₜ c)) =
-      (TensorProduct.mk A B N b).lTensor B (φ (n ⊗ₜ c))
 
 def datumOfGluing (φ : N ⊗[A] B →ₗ[B] B ⊗[A] N) : N →ₗ[B] B ⊗[A] N :=
   φ ∘ₗ (AlgebraTensorModule.mk A B N B).flip 1
@@ -273,122 +207,6 @@ def gluingOfDatum (θ : N →ₗ[B] B ⊗[A] N) : N ⊗[A] B →ₗ[B] B ⊗[A] 
 
 @[simp] theorem gluingOfDatum_tmul (θ : N →ₗ[B] B ⊗[A] N) (n : N) (b : B) :
     gluingOfDatum θ (n ⊗ₜ b) = smulRight A b (θ n) := rfl
-
-theorem smulRight_one (x : B ⊗[A] N) : smulRight A (1 : B) x = x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | add x y hx hy => simp only [map_add, hx, hy]
-  | tmul b m => simp
-
-theorem smulRight_mul (b c : B) (x : B ⊗[A] N) :
-    smulRight A (b * c) x = smulRight A b (smulRight A c x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | add x y hx hy => simp only [map_add, hx, hy]
-  | tmul b m => simp [mul_smul]
-
-theorem IsGluing.isDescentDatum {φ : N ⊗[A] B →ₗ[B] B ⊗[A] N} (h : IsGluing φ) :
-    IsDescentDatum (datumOfGluing φ) := by
-  have hco : ∀ n, ((datumOfGluing φ).restrictScalars A).lTensor B (datumOfGluing φ n) =
-      (TensorProduct.mk A B N 1).lTensor B (datumOfGluing φ n) := by
-    intro n
-    rw [datumOfGluing_apply, ← h.cocycle]
-    induction φ (n ⊗ₜ 1) using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy, add_tmul]
-    | tmul b m => simp
-  refine ⟨fun n => ?_, hco⟩
-  have h1 : ∀ x : B ⊗[A] N, act A B _ (((datumOfGluing φ).restrictScalars A).lTensor B x) =
-      datumOfGluing φ (act A B N x) := by
-    intro x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy]
-    | tmul b m => simp [← smul_tmul']
-  have h2 : ∀ x : B ⊗[A] N, act A B _ ((TensorProduct.mk A B N 1).lTensor B x) = x := by
-    intro x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy]
-    | tmul b m => simp [smul_tmul']
-  have h3 := congrArg (act A B _) (hco n)
-  rw [h1, h2] at h3
-  have h4 := congrArg (fun x => act A B N (TensorProduct.comm A N B x)) (h.bijective.1 h3)
-  simpa using h4
-
-theorem IsDescentDatum.isGluing {θ : N →ₗ[B] B ⊗[A] N} (h : IsDescentDatum θ) :
-    IsGluing (gluingOfDatum θ) := by
-  let φ : N ⊗[A] B →ₗ[A] B ⊗[A] N := (gluingOfDatum θ).restrictScalars A
-  let τ := TensorProduct.comm A B N
-  let κ : B ⊗[A] (B ⊗[A] N) →ₗ[A] B ⊗[A] N :=
-    ((act A B N).restrictScalars A).lTensor B ∘ₗ (TensorProduct.leftComm A B B N).toLinearMap
-  have hκ : ∀ (b : B) (x : B ⊗[A] N), κ (b ⊗ₜ x) = smulRight A b x := by
-    intro b x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy, tmul_add]
-    | tmul b m => simp [κ]
-  have h1 : ∀ (b : B) (x : B ⊗[A] N),
-      φ (τ (smulRight A b x)) = b • κ ((θ.restrictScalars A).lTensor B x) := by
-    intro b x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy, smul_add]
-    | tmul c m => simp [hκ, φ, τ]
-  have h2 : ∀ x : B ⊗[A] N, κ ((TensorProduct.mk A B N 1).lTensor B x) = 1 ⊗ₜ act A B N x := by
-    intro x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy, tmul_add]
-    | tmul c m => simp [hκ]
-  have h3 : ∀ x, τ (φ (τ (φ x))) = x := by
-    intro x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy]
-    | tmul n b =>
-      have : φ (n ⊗ₜ b) = smulRight A b (θ n) := rfl
-      rw [this, h1, h.coassoc, h2, h.counit]
-      simp [τ, smul_tmul']
-  refine ⟨⟨fun x y hxy => ?_, fun y => ⟨τ (φ (τ y)), ?_⟩⟩, fun n b c => ?_, fun n b c => ?_⟩
-  · rw [← h3 x, ← h3 y]
-    exact congrArg (fun z => τ (φ (τ z))) hxy
-  · obtain ⟨y, rfl⟩ := τ.symm.surjective y
-    have hτφ : Function.Bijective (fun x => τ (φ x)) := Function.Involutive.bijective h3
-    obtain ⟨z, rfl⟩ := hτφ.2 y
-    simp only [LinearEquiv.symm_apply_apply]
-    rw [h3]
-    rfl
-  · simp [smulRight_mul]
-  · let ψ : B ⊗[A] N →ₗ[A] B ⊗[A] N := (b • smulRight A c : B ⊗[A] N →ₗ[B] B ⊗[A] N).restrictScalars A
-    have h4 : ∀ x : B ⊗[A] N, φ.lTensor B (TensorProduct.assoc A B N B (smulRight A b x ⊗ₜ c)) =
-        ψ.lTensor B ((θ.restrictScalars A).lTensor B x) := by
-      intro x
-      induction x using TensorProduct.induction_on with
-      | zero => simp
-      | add x y hx hy => simp only [map_add, hx, hy, add_tmul]
-      | tmul d m => simp [φ, ψ]
-    have h5 : ∀ x : B ⊗[A] N, ψ.lTensor B ((TensorProduct.mk A B N 1).lTensor B x) =
-        (TensorProduct.mk A B N b).lTensor B (smulRight A c x) := by
-      intro x
-      induction x using TensorProduct.induction_on with
-      | zero => simp
-      | add x y hx hy => simp only [map_add, hx, hy]
-      | tmul d m => simp [ψ, smul_tmul']
-    rw [gluingOfDatum_tmul, gluingOfDatum_tmul, ← h5, ← h.coassoc, ← h4]
-
-variable (A B N) in
-
-def gluingEquivDatum : {φ : N ⊗[A] B →ₗ[B] B ⊗[A] N // IsGluing φ} ≃
-    {θ : N →ₗ[B] B ⊗[A] N // IsDescentDatum θ} where
-  toFun φ := ⟨datumOfGluing φ.1, φ.2.isDescentDatum⟩
-  invFun θ := ⟨gluingOfDatum θ.1, θ.2.isGluing⟩
-  left_inv φ := by
-    ext n b
-    simp [← φ.2.map_tmul_mul]
-  right_inv θ := by
-    ext n
-    simp [smulRight_one]
 
 end Gluing
 

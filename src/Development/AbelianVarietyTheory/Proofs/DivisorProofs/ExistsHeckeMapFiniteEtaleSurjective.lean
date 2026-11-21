@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHeckeMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorIntegralModelNonemptyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdjointPrimeToPSimilitudeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdjointPrimeToPSimilitude
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeckeMapHarrisTaylorIntegralModelsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorLevelForgettingFiniteEtaleSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorLevelForgettingFiniteEtaleSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorHeckeMapCompEqForgetLevelStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleOfCompEtaleSameRelativeDimensionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleIsFiniteOfCompEtaleSurjectiveStatement
@@ -30,7 +30,7 @@ theorem exists_heckeMap_finite_etale_surjective : ∀ (p : ℕ) [Fact p.Prime] (
     · subst h
       exact absurd (Nat.coprime_zero_left p |>.1 hk) hp.ne_one
     · exact h
-  obtain ⟨g', h1, h2, h3, h4, h5, h6, h7⟩ := GlobalTheory.T.exists_adjoint_primeToP_similitude p D g c k hc hk hg hgk hck
+  obtain ⟨g', h1, h2, h3, h4, h5, h6, h7⟩ := _root_.GlobalTheory.UPel.HT.Hecke.exists_adjoint_similitude p D g c k hc hk hg hgk hck
   have h3' : ∀ x y, D.EF (g' x) (g' y) = ((k ^ 2 / c : ℕ) : ℤ) * D.EF x y := by
     intro x y
     rw [h3 x y]
@@ -54,9 +54,9 @@ theorem exists_heckeMap_finite_etale_surjective : ∀ (p : ℕ) [Fact p.Prime] (
     M₂.toRepFam π π₁ hπ hπ₁
   have f2 := GlobalTheory.T.harrisTaylor_heckeMap_comp_eq_forgetLevel p D R b g' g (k ^ 2 / c) c k (N * k) hk l1 c1 h2 h1 (by rw [mul_comm, h7]) c3
     M'.toRepFam M₂.toRepFam M₃.toRepFam π₁ π₂ hπ₁ hπ₂
-  obtain ⟨a1, a2, a3⟩ := GlobalTheory.T.harrisTaylor_levelForgetting_finite_etale_surjective p D R b N (N * k * k) _ c2 hN M M₂ (π₁ ≫ π)
+  obtain ⟨a1, a2, a3⟩ := _root_.GlobalTheory.UPel.HT.forget_map_finite_etale_surjective p D R b N (N * k * k) _ c2 hN M M₂ (π₁ ≫ π)
     (by rw [Category.assoc, e, e₁]) f1
-  obtain ⟨-, -, b3⟩ := GlobalTheory.T.harrisTaylor_levelForgetting_finite_etale_surjective p D R b (N * k) (N * k * k * k) _ c3 l1 M' M₃ (π₂ ≫ π₁)
+  obtain ⟨-, -, b3⟩ := _root_.GlobalTheory.UPel.HT.forget_map_finite_etale_surjective p D R b (N * k) (N * k * k * k) _ c3 l1 M' M₃ (π₂ ≫ π₁)
     (by rw [Category.assoc, e₁, e₂]) f2
   have s1 : Surjective π₁ := Surjective.of_comp π₂ π₁
   have t1 : Etale π₁ := GlobalTheory.T.etale_of_comp_etale_sameRelativeDimension _ _ _ _ π₁ π M₂.s M'.s _ e₁ M₂.smooth M'.smooth a2

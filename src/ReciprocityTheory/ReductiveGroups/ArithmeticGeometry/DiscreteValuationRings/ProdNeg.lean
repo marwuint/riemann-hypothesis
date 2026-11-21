@@ -57,10 +57,6 @@ theorem prod_neg' {K U : Type} [Fintype K] [CommGroup U] (f : K → U) (e : K �
     ∏ i, f i ^ (-e i) = c⁻¹ := by
   simp only [zpow_neg, Finset.prod_inv_distrib, h]
 
-theorem prod_sum₂' {K K' U : Type} [Fintype K] [Fintype K'] [CommGroup U] (f : K ⊕ K' → U) {c c' : U}
-    (h : ∏ i, f (.inl i) = c) (h' : ∏ i, f (.inr i) = c') : ∏ i, f i = c * c' := by
-  rw [Fintype.prod_sum_type, h, h']
-
 theorem exists_eB (k : ℕ) (α mu : D.X) {Ix : Type} [Fintype Ix]
     {φV : Ix → (Spec (CommRingCat.of R) ⟶ D.P.A.left)} {εV : Ix → ℤ}
     (w : LB.Gen (LB.LinComb D.P.L φV εV)) (hw : w.IsGen)

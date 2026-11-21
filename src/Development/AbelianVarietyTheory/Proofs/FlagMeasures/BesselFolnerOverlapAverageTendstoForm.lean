@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselFormConvergesEquivariantHermitianStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FolnerSingleTranslateProportionTendstoOneStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FolnerSingleTranslateProportionTendstoOne
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
 open scoped InnerProductSpace
 
@@ -71,7 +71,7 @@ theorem tendsto_of_integrable {k r : ℕ} {S : Set (Mat k r)} {μ : Measure (Mt 
       ENNReal.div_le_of_le_mul (by rw [one_mul]; exact measure_mono fun s hs => hs.1)
     simpa using ENNReal.toReal_mono ENNReal.one_ne_top h1
   · filter_upwards [hae] with p hp
-    have h1 := GlobalTheory.T.folner_single_translate_proportion_tendsto_one k r S μ Om hO _ hp
+    have h1 := _root_.GlobalTheory.SgInf.folner_single_translate k r S μ Om hO _ hp
     have h2 := (ENNReal.tendsto_toReal ENNReal.one_ne_top).comp h1
     have h3 := (Complex.continuous_ofReal.tendsto _).comp h2
     have h4 := h3.mul_const (f p)

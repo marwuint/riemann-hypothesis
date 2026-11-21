@@ -1497,16 +1497,6 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.BetaSesquilinearity
 
-theorem assemble_diagonal_identity : Formalism.FourierDecayAlt.B.AssembleDiag := by
-  intro hC hAe hFa hL hDC k r Wp Wq _ _ _ _ _ _ D A hA hRB hRA hU hJ hDB
-  have hDD : DiagDom D A := diagDom hAe hFa hRB hRA hU hJ
-  refine ⟨hDD, ?_⟩
-  intro F hF τ hτ
-  have hF4 : InCC A 4 F := InCC_mono (by norm_num) hF
-  refine ⟨ne_top_of_le_ne_top ENNReal.ofReal_ne_top (hDD F hF4 τ hτ).2, ?_⟩
-  rw [← betaTau_self hJ hF4 hτ]
-  exact core hC hAe hFa hL hDC hA hRB hRA hU hJ hDB hτ F F hF hF
-
 theorem assemble_equality_identity : Formalism.FourierDecayAlt.B.AssembleEq := by
   intro hC hAe hFa hL hDC hJ1 k r Wp Wq _ _ _ _ _ _ D A hA hRB hRA hU hJ hDB
   have hDD : DiagDom D A := diagDom hAe hFa hRB hRA hU hJ

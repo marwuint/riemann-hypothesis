@@ -182,31 +182,10 @@ theorem rowsInputP_of_normProd_topUnram (hN : Formalism.L2.SG.SupportG.NormProd 
 theorem rowsInputP_of_normProd (hN : Formalism.L2.SG.SupportG.NormProd D) (hRD : RowsDatumP D) : RowsInputP D :=
   rowsInputP_of_normProd_topUnram hN (Formalism.L2.SG.Pf.topUnram_holds D) hRD
 
-theorem rowsInputAt_of_P (h : RowsInputP D)
-    (hPH : ∀ u u' : D.what₂.Word, Formalism.MainNotions.S.Lat.PrimeHyp D u (Formalism.MainNotions.S.Lat.Tu D u')) :
-    Formalism.L2.SG.DataInst.RowsInputAt D := by
-  unfold Formalism.L2.SG.DataInst.RowsInputAt
-  intros
-  apply h <;> first | assumption | exact hPH _ _
-
 end P
 
 end Formalism.L2.SG.DataCut
 
 namespace Formalism.L2.SG.LsDatumB
-
-open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.TermDef Formalism.L2.SG.DataCut
-open Classical ValuativeRel
-
-theorem rowsDatumP_of {D : Formalism.BasicNotions.D7}
-    (h : (VS D).SigOK → ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
-      (∀ p, Agree δ M p) → ∀ (L : CntLocal.LocSp D M) (u u' : D.what₂.Word),
-      (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Formalism.MainNotions.S.Lat.gS D) ^ 2] → Formalism.MainNotions.S.Lat.PrimeHyp D u (Formalism.MainNotions.S.Lat.Tu D u') →
-      ∀ (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)),
-        IsRowReps D F0 what₂ → CutAt M δ L u u' F0 what₂) :
-    RowsDatumP D := by
-  intro hsig δ M hA L u u' hc hPH F0 what₂ hRo ϖ hϖ nc hnc
-  exact rowsDatum_at (h hsig δ M hA L u u' hc hPH F0 what₂ hRo)
-    (eligFinite_of (Formalism.L2.SG.Closed.TermsAtFinite_holds D u u') hsig hRo) hRo ϖ hϖ nc hnc
 
 end Formalism.L2.SG.LsDatumB

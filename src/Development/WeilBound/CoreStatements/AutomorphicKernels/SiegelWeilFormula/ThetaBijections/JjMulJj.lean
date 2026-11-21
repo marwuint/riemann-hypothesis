@@ -1,6 +1,8 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaBijections.SymplecticFormCoordinates
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaBijections.IsOpAdm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZeroStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZero
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicSchwartzThetaDistributionSumNeZero
 
 noncomputable section
@@ -79,7 +81,7 @@ theorem core (d : SD σ) : ∃ (τ : d.κ ≃ Ix d) (e : ((d.κ → AF F) → �
     rw [h.Heisenberg₂ _ Ψ hΨ, hinv]
     rfl
   have hadm := isOp_adm h d.l hD.adm
-  obtain ⟨C, hC⟩ := GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F d.B.ψ hψ d.κ (d.l ∘ₗ e) hadm (fun y φ hφ => by
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CharInvForm.main F d.B.ψ hψ d.κ (d.l ∘ₗ e) hadm (fun y φ hφ => by
     obtain ⟨w, hw⟩ := hsurj (0, y)
     obtain ⟨Z, rfl⟩ := coordinates_fst_eq_zero d τ w (by rw [hw])
     have e1 : (fun x => d.B.ψ (x ⬝ᵥ y) * φ x) = schr d.B.ψ (c0 d τ (Z * (dg d)ᵀ)) φ := by

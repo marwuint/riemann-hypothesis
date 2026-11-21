@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Reframe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ContractionIdentityFramesWithOperatorScalarStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SiteFramesAndChangedFramesInvertibleStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SiteSystemRanksEqDatumRanksStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SeriesCoefficientsAtKernelSiteOfClassSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaSeriesSiteEqChangedFrameClassSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelScalarOfSourceTargetPartsProductStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SiteFramesAndChangedFramesInvertible
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SiteSystemRanksEqDatumRanks
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SeriesCoefficientsAtKernelSiteOfClassSeries
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaSeriesSiteEqChangedFrameClassSeries
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelScalarOfSourceTargetPartsProduct
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Formalism.MainNotions Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F Formalism.L2.KerInert Formalism.UG Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.Forms Formalism.L2.KerInert.SecondKernelInstances Formalism.L2.KerInert.SecondKernelSeries Formalism.L2.KerInert.QuadraticBaseChangeGL3 Formalism.L2.KerInert.SecondKernelDifference Formalism.L2.KerInert.SecondKernelHermitian GlobalTheory.TwU GlobalTheory.TwV GlobalTheory.TwV.DelB TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -16,11 +16,11 @@ theorem delPolAt_site : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H
   intro Φ₀ τ sc sO Gm j hj cK hN hMove hOp hDeg hDel hSc
   letI := wittFractionAlgebraCp (D.what₂.places.resChar w)
   letI := algKfC S.E.toCEmb
-  have hR := GlobalTheory.T.siteSystem_ranks_eq_datum_ranks S
-  have hFr := (GlobalTheory.T.siteFrames_and_changedFrames_invertible S).2 d
-  have hSer := GlobalTheory.T.thetaSeries_site_eq_changedFrame_classSeries S hDict hPair hPos d ι hι j hj
-  have hSerH := GlobalTheory.T.seriesCoefficients_at_kernelSite_of_classSeries S d ι j hN
-  have hChi := GlobalTheory.T.kernelScalar_of_sourceTarget_parts_product S hDict d ι j hj (fun j La => Formalism.L2.G.Pend.cA (sysS H X std) ℂ_[D.what₂.places.resChar w] j (BOf d.fd2 j La) * sO j La) sc cK hSc
+  have hR := _root_.GlobalTheory.TwV.DelB.sysS_ranks S
+  have hFr := (_root_.GlobalTheory.TwV.DelB.frames_invertible S).2 d
+  have hSer := _root_.GlobalTheory.TwV.DelB.serAt_all S hDict hPair hPos d ι hι j hj
+  have hSerH := _root_.GlobalTheory.TwV.DelB.tieSerH_series_of_classes S d ι j hN
+  have hChi := _root_.GlobalTheory.TwV.DelB.tieChiH_of_parts S hDict d ι j hj (fun j La => Formalism.L2.G.Pend.cA (sysS H X std) ℂ_[D.what₂.places.resChar w] j (BOf d.fd2 j La) * sO j La) sc cK hSc
   exact GlobalTheory.T.contraction_identity_frames_with_operator_scalar t u μ _ (sysS H X std) S.E S.hfin S.hst S.g S.hLT (hT.gat_pos u w hg) d.fd2 (ltC S.g S.hLT)
     (fun j La La' => FrecG S.E.toCEmb (hT.gat_pos u w hg) (J.fd std) t.B t.χ S.lam (ssRec t u μ) (t.rd u μ).lev (J.xi0 std S.Xi) S.muT (ltC S.g S.hLT) j La La')
     (d.gS S ι) hFr hLaw _ (clsAt X H) (kaAt X H hT).cmp (fun j => clsAt X H (j + 1)) ι Φ₀ τ sc (d.sH S ι) sO Gm j (hR.1 ▸ hj) cK hN

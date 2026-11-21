@@ -12,7 +12,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.VeryAmpleByP
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCoverNonzeroLocus
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsHomOfVeryAmpleBy
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsHomogeneousXPowMulAddXPowMul
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LocallyQuasiFiniteOfCubicalPowIsoPullStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LocallyQuasiFiniteOfCubicalPowIsoPull
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LocallyQuasiFiniteOfIsPullbackSurjective
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RelAmpleIffVeryAmpleBy
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsEquivOfIsPushout
@@ -198,7 +198,7 @@ theorem relAmple_of_effective : (∀ (k : Type) [Field k] [IsAlgClosed k] (B : O
   have : IsProper Z.hom := MorphismProperty.of_isPullback (P := @IsProper) hZ hq
   have : Surjective ρ := MorphismProperty.of_isPullback (P := @Surjective) hZ.flip inferInstance
   have hqf' : LocallyQuasiFinite φ'.left := by
-    refine GlobalTheory.T.locallyQuasiFinite_of_cubical_pow_iso_pull hcount K B' hB' ((cubeMapOf h).rigLB L hL' hr) c' (2 * k) n hn hnK hnk
+    refine _root_.GlobalTheory.CubicalQuasiFinite.locallyQuasiFinite_of_pow_iso_pull hcount K B' hB' ((cubeMapOf h).rigLB L hL' hr) c' (2 * k) n hn hnK hnk
       (fun x hxn htr => ?_) Z φ' (H.pull ρ) (pull_isLB hH ρ) ?_
     · have key : ∀ p' : Spec (CommRingCat.of K) ⟶ Spec (CommRingCat.of R), p' = p →
           ∀ y : Over.mk p' ⟶ B, y ^ n = 1 → Triv (translDiff B L.L y) → y = 1 := by

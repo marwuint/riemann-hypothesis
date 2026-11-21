@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsSigmaCompactConeInter
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FibreCountRotationInvariantStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FibreCountRotationInvariant
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsScaleStable
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MeasurableFibreCountOverStatement
 set_option maxSynthPendingDepth 1
 open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalTheory.CompanionTheory.Ar.Short.Crofton
@@ -33,5 +34,5 @@ theorem PositivityTheory.Xgn.t_xgz_chow_mahler_e0reduce : ∀ (n e : ℕ) (S : S
     simp
   simp_rw [h1]
   rw [lintegral_lintegral_swap hF.aemeasurable]
-  rw [lintegral_congr_ae ((ae_restrict_of_ae h0).mono fun w hw => GlobalTheory.T.fibre_count_rotation_invariant n e S hS w hw T),
+  rw [lintegral_congr_ae ((ae_restrict_of_ae h0).mono fun w hw => _root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.CntInv.lintegral_matGauss_cntOver n e S hS w hw T),
     setLIntegral_const, mul_comm]

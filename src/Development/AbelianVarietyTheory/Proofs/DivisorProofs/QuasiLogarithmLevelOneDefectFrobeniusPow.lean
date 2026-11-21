@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OmegaBaseChangeFini
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicContinuousEvaluationExistsUniqueSubstNatura
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubstSubIn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NmulSucc
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedInOfQuasiLogarithmStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupFormalChartEvNatMultipleEqConvPowerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedInOfQuasiLogarithm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupFormalChartEvNatMultipleEqConvPower
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
 set_option autoImplicit false
@@ -87,7 +87,7 @@ theorem ev_one_subst_nmul (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgCl
   have hpt : ∀ j, c.ev 1 (nmul c.μ p j) = 0 := fun j => by
     have h1 := G.mulBy_pow_self 1 (c.x 1 j)
     rw [pow_one] at h1
-    rw [GlobalTheory.T.pDivGroupFormalChart_ev_natMultiple_eq_convPower p C v O hv G d c 1 p j, h1, c.aug 1 j, map_zero]
+    rw [_root_.GlobalTheory.NMul.ev_nmul p C v O hv G d c 1 p j, h1, c.aug 1 j, map_zero]
   have hE' : IsEval p (fun j => c.ev 1 (nmul c.μ p j)) E' := by
     constructor
     · intro j
@@ -208,7 +208,7 @@ theorem defect_frob_pow : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsA
       (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ (by have := hpp.one_lt; omega)), ?_⟩
     rw [mul_pow, e']; ring
   have hD : DIn (⊤ : Ideal F.B) (map F.s f) := by
-    have h := GlobalTheory.T.divided_in_of_quasi_logarithm p F.B O F.Q F.θ F.frame d μ' hμ ⊤ f hf
+    have h := _root_.GlobalTheory.QLogDiff.dIn_of_QL p F.B O F.Q F.θ F.frame d μ' hμ ⊤ f hf
     intro α i
     obtain ⟨r, _, e'⟩ := h α i
     exact ⟨F.σ r, trivial, by rw [coeff_map, ← map_natCast F.s, ← map_mul, e', F.s_alg]⟩

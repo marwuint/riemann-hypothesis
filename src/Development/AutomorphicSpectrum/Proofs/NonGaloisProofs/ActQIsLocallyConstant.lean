@@ -1,11 +1,16 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AutomorphicSpectrum.Definitions.NonGaloisLines.TopLine
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardCocyclesMulInvariantsDiscrete
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.GoodOAdicCompleteCompactBasisStatement
-import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LatticeOpenCompactNhdsBasisStatement
+import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LatticeOpenCompactNhdsBasis
+
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module GlobalTheory.CompanionTheory.LocDual
 
 namespace GlobalTheory.CompanionTheory.FinCoc
@@ -80,18 +85,5 @@ theorem actQ_isLocallyConstant [TopologicalSpace G] (L : Lattice (O := O) ρ) {�
   exact (mk_isLocallyConstant L hW).comp_continuous hc
 
 end Generic
-
-theorem finZQ_of_duality : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →
-    ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), FinZQ ((D.loc l).PD K) := by
-  intro hT hE D l _ K LL _ _ _ O _ _ hg A LA ϖ hϖ r hI
-  obtain ⟨-, -, -, ⟨-, hl, -⟩, -, -⟩ := GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hg ϖ hϖ
-  obtain ⟨-, hB, hC, -, -⟩ := GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hg A LA ϖ hϖ
-  have hW : (fun x => ϖ ^ r • x) '' (LA.T : Set A.V) ∈ nhds (0 : A.V) := hB.mem_of_mem trivial
-  have hMfin := finite_quot LA hC hW
-  have hfin := GlobalTheory.CocycleCount.cocycles_finite_ncard_le hT hE l K r _
-    (fun g => (actQ LA _ hI g).toAddMonoidHom) (actQ_one' LA _ hI)
-    (fun g h m => actQ_mul' LA _ hI g h m) (pow_nsmul_quot LA hl r)
-    (actQ_isLocallyConstant LA hW A.cont hI)
-  exact hfin.1.to_subtype
 
 end GlobalTheory.CompanionTheory.FinCoc

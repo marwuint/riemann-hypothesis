@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.MemPowSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowPrimeRangeEqIteratedDifferenceStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowIndexTorsionKerRangeMulStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowIndexTorsionFiniteKerRangeStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.NormDifferenceIndexIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexRangeKerIterateEndomorphismStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowPrimeRangeEqIteratedDifference
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowIndexTorsionKerRangeMul
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowIndexTorsionFiniteKerRange
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.NormDifferenceIndexIdentity
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexRangeKerIterateEndomorphism
 
 open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNorm
 open scoped WithZero TensorProduct
@@ -53,7 +53,7 @@ theorem herbPhi_stable (p : ℕ) (A : Type) [CommGroup A] (σ : A →* A) (hp : 
     rw [SubmonoidClass.coe_finset_prod]
     simp only [hit]
     exact this
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.pow_prime_range_eq_iterated_difference p C τ lam hp (fun _ => rfl) hnτ
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CNorm.pows_eq_range_dif_pow p C τ lam hp (fun _ => rfl) hnτ
   obtain ⟨k, hk⟩ : ∃ k, p - 1 = k + 1 := ⟨p - 2, by have := hp.two_le; omega⟩
   rw [hk] at h1 h2 ⊢
   have eI : pIdx p C = (MonoidHom.range (lam ^ (k + 1) : Monoid.End C)).index := by
@@ -86,7 +86,7 @@ theorem herbPhi_stable (p : ℕ) (A : Type) [CommGroup A] (σ : A →* A) (hp : 
   rw [eI] at hI ⊢
   rw [eT] at hT ⊢
   rw [ei, ec]
-  exact GlobalTheory.T.index_range_ker_iterate_endomorphism C lam k hI hT
+  exact _root_.GlobalTheory.CNorm.index_ker_iterate C lam k hI hT
 
 theorem herbrand_prime_order : ∀ (p : ℕ) (A : Type) [CommGroup A] (σ : A →* A), p.Prime → (∀ a, σ^[p] a = a) → pIdx p (⊤ : Subgroup A) ≠ 0 → pTor p (⊤ : Subgroup A) ≠ 0 → (nrm σ p).range.relIndex (fix σ) ≠ 0 ∧ (dif σ).range.relIndex (nrm σ p).ker ≠ 0 ∧ pIdx p (fix σ) ≠ 0 ∧ pTor p (fix σ) ≠ 0 ∧ (nrm σ p).range.relIndex (fix σ) ^ (p - 1) * pIdx p (⊤ : Subgroup A) * pTor p (fix σ) ^ p = (dif σ).range.relIndex (nrm σ p).ker ^ (p - 1) * pTor p (⊤ : Subgroup A) * pIdx p (fix σ) ^ p := by
   intro p A _ σ hp hσ ha ht
@@ -101,13 +101,13 @@ theorem herbrand_prime_order : ∀ (p : ℕ) (A : Type) [CommGroup A] (σ : A �
         (fun x => ⟨x.1, trivial, x.2.2⟩) (fun x y h => Subtype.ext (by simpa using h))
     have : Nonempty {x : A // x ∈ (dif σ).range ∧ x ^ p = 1} := ⟨⟨1, one_mem _, one_pow _⟩⟩
     exact Nat.card_pos.ne'
-  obtain ⟨hbI, hbT, hcI⟩ := GlobalTheory.T.powIndex_torsion_finite_ker_range p A A (dif σ) ha ht hcT
-  obtain ⟨-, -, e1⟩ := GlobalTheory.T.powIndex_torsion_ker_range_mul p A A (dif σ) hbI hbT hcI hcT
+  obtain ⟨hbI, hbT, hcI⟩ := _root_.GlobalTheory.CNorm.pIdx_pTor_ker_range_ne_zero p A A (dif σ) ha ht hcT
+  obtain ⟨-, -, e1⟩ := _root_.GlobalTheory.CNorm.pIdx_pTor_ker_range p A A (dif σ) hbI hbT hcI hcT
   rw [hker] at hbI hbT e1
   obtain ⟨hi, hc, e2⟩ := herbPhi_stable p A σ hp (dif σ).range
     (by rintro _ ⟨y, rfl⟩; exact ⟨σ y, by rw [dif_apply, dif_apply, _root_.map_div]⟩)
     (by rintro _ ⟨y, rfl⟩; rw [herbPhi_nrm_dif, hσ, div_self']) hcI hcT
-  have e3 := GlobalTheory.T.norm_difference_index_identity p A σ hσ
+  have e3 := _root_.GlobalTheory.CNorm.herb_index_identity p A σ hσ
   have hle : pows p (fix σ) ≤ (nrm σ p).range := by
     rintro _ ⟨y, hy, rfl⟩
     refine ⟨y, ?_⟩

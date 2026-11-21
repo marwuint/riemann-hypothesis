@@ -1,7 +1,12 @@
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.ResidueVanishing.Leaves
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelWeilDoubledSpaceOfStandardUnitary
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousStandardUnitaryChartAndSymmStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StandardUnitaryChartSiegelLeviDetEqStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousStandardUnitaryChartAndSymm
+import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinPolesStd
+import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinSimplePoleOfDoublingMethod
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HalfData
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StandardUnitaryChartSiegelLeviDetEq
+import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWeilUnitaryConvergent
 noncomputable section
 open scoped ComplexConjugate Matrix NNReal
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField
@@ -19,29 +24,29 @@ theorem residue_vanishes_of_siegel_eisenstein : K0 → K1 → K2 → SimplePoleR
   intro k0 k1 k2 k2b k2c k3a k3b k4 hP hC D ψ θ A cA a hDef _ B W t hd _ _ hW0 _ hA h2 hlt χ omB omW hWB hWW ν 𝓕 hν m hm u hu hinv hK φ hφ hKφ
   have hrk := hd.rank_add
   have hIw := GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a hDef.maj
-  have hχ := GlobalTheory.T.isHeckeChar_restrictionEta_inv D χ W.rank hWW.hecT hWW.resT
+  have hχ := _root_.GlobalTheory.StdUnn.isHeckeChar_resEta_inv D χ W.rank hWW.hecT hWW.resT
   obtain ⟨hEC, hReg⟩ := hP D A (by omega) a hDef.maj hIw χ⁻¹ W.rank hχ.1 hχ.2 _ _
     (k0 D ψ A B χ omB hWB ν 𝓕 hν a hDef.maj φ hφ hKφ)
   obtain ⟨U, d, E, ε, hU, hR, hs, hd0, hhol, hc, hi, he, hrad⟩ :=
     k1 D A _ hEC hReg (fun g => hEC.1.analyticOnNhd_flat g) (sZero A B)
-  obtain ⟨m0, hm0, hp0⟩ := GlobalTheory.T.exists_siegel_parabolic_conj_doubled_compact D
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.exists_standardUnitaryChart_doubledSpace D A m0 hm0
+  obtain ⟨m0, hm0, hp0⟩ := _root_.GlobalTheory.StdUnn.ConjElt.exists_isConj D
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.StdUnn.chart_exists D A m0 hm0
   obtain ⟨p, hp⟩ := hp0 A a hDef.maj κ hκ
-  obtain ⟨lam, hlam, hψ', -⟩ := GlobalTheory.T.shiftedAdditiveCharacter_archimedeanParameters D ψ hWB.std θ hDef.inf m0 hm0
-  obtain ⟨oB, hTB⟩ := GlobalTheory.T.exists_weilDatum_transport_schwartzBruhat_standard D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf κ
+  obtain ⟨lam, hlam, hψ', -⟩ := _root_.GlobalTheory.StdUnn.shift_char_realPar D ψ hWB.std θ hDef.inf m0 hm0
+  obtain ⟨oB, hTB⟩ := _root_.GlobalTheory.StdUnn.exists_transport_std D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf κ
   obtain ⟨νW, 𝓨, hνW⟩ := GlobalTheory.MixModel.exists_isCovolOne D W.rank A.rank
-  obtain ⟨oW, hTW⟩ := GlobalTheory.T.exists_weilDatum_transport_schwartzBruhat_standard D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf κ
+  obtain ⟨oW, hTW⟩ := _root_.GlobalTheory.StdUnn.exists_transport_std D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf κ
   have hSB : IsWeilSch (shift ψ lam) χ⁻¹ θ B ν oB :=
-    ⟨GlobalTheory.T.transportedSchrodinger_standardLeviAction D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf m0 hm0 κ hκ oB hTB lam hlam,
-     GlobalTheory.T.transportedSchrodinger_siegelUnipotentAction D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf m0 hm0 κ hκ oB hTB lam hlam,
-     GlobalTheory.T.weyl_formula_standardUnitaryGroup_weilDatum D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf m0 hm0 κ hκ oB hTB lam hlam⟩
+    ⟨_root_.GlobalTheory.StdUnn.transport_levi D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf m0 hm0 κ hκ oB hTB lam hlam,
+     _root_.GlobalTheory.StdUnn.Unip.transport_unip D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf m0 hm0 κ hκ oB hTB lam hlam,
+     _root_.GlobalTheory.StdUnn.WeylStd.main D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf m0 hm0 κ hκ oB hTB lam hlam⟩
   have hSW : IsWeilSch (shift ψ lam) χ⁻¹ θ W νW oW :=
-    ⟨GlobalTheory.T.transportedSchrodinger_standardLeviAction D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf m0 hm0 κ hκ oW hTW lam hlam,
-     GlobalTheory.T.transportedSchrodinger_siegelUnipotentAction D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf m0 hm0 κ hκ oW hTW lam hlam,
-     GlobalTheory.T.weyl_formula_standardUnitaryGroup_weilDatum D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf m0 hm0 κ hκ oW hTW lam hlam⟩
+    ⟨_root_.GlobalTheory.StdUnn.transport_levi D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf m0 hm0 κ hκ oW hTW lam hlam,
+     _root_.GlobalTheory.StdUnn.Unip.transport_unip D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf m0 hm0 κ hκ oW hTW lam hlam,
+     _root_.GlobalTheory.StdUnn.WeylStd.main D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf m0 hm0 κ hκ oW hTW lam hlam⟩
   let Φ : schwartzA θ B.rank A.rank :=
     ⟨sch ψ A B ν 𝓕 (omB ((p : GA D (dblSp A))⁻¹, 1) φ),
-      (GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ hWB.std θ hDef.inf A B ν 𝓕 hν).1 _ (hWB.om_pres _ φ hφ)⟩
+      (_root_.GlobalTheory.SchSchwartzAll.schSchwartz D ψ hWB.std θ hDef.inf A B ν 𝓕 hν).1 _ (hWB.om_pres _ φ hφ)⟩
   obtain ⟨-, hCont, hser⟩ := k3b D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf m0 hm0 κ hκ oB hTB lam hlam a hDef.maj p hp φ hφ hKφ Φ rfl
     U d E hU hR hs hd0 hhol hc hi he
   obtain ⟨hH, hL⟩ := k3a D A m0 hm0 κ hκ a hDef.maj p hp

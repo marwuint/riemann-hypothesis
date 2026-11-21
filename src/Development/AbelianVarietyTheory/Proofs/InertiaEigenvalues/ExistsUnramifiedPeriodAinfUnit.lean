@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyClosureHomTiltFieldStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyClosureHomTiltField
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltGaloisActionRootOfUnityCoprimeStatement
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 
@@ -58,7 +58,7 @@ private theorem padicInt_ringHom_ext (l : ℕ) [Fact l.Prime] {R : Type*} [CommR
 
 theorem exists_unramified_period : ∀ (l : ℕ) [Fact l.Prime] (F : GQ l), (∀ (x : Om l) (m : ℕ), 0 < m → ¬ l ∣ m → x ^ m = 1 → F x = x ^ l) → ∀ u : ℤ_[l]ˣ, ∃ w : Per.Ainf l, IsUnit w ∧ (∀ g ∈ (MaximalUnramifiedExtension l).fixingSubgroup, Per.σA g w = w) ∧ Per.σA F w = Per.zA l u * w ∧ Per.φA l w = Per.zA l u * w := by
   intro l _ F hF u
-  obtain ⟨f⟩ := GlobalTheory.T.nonempty_closure_hom_tilt_field l
+  obtain ⟨f⟩ := _root_.GlobalTheory.Per.nonempty_algClosure_zmod_to_tilt l
   let u' : WittVector l (AlgebraicClosure (ZMod l)) :=
     WittVector.map (ZMod.castHom (dvd_refl l) _) (WittVector.fromPadicInt l u)
   have hu' : IsUnit u' := (u.isUnit.map _).map _

@@ -301,11 +301,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open PI.UnitaryDimensionFormula
 
-def FrGramS : Prop := ∀ (D : D7) (X : HidaSetting D) (e : Af X.B.I.F), EgProp X.B.I.F X.B.g e →
-  ∀ G : Matrix (Fin D.R.k) (Fin D.R.k) (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F), (∀ l j, G l j ∈ IntAf X.B.I.F X.B.I.E) →
-  (∀ l j, ZMod' X.B.I X.B.g (G l j - if l = j then epsX X e else 0)) →
-  ∃ y ∈ IntAf X.B.I.F X.B.I.E, epsX X e * G.det * y = epsX X e
-
 variable {D : D7} {X : HidaSetting D}
 
 theorem eps_eq (e : Af X.B.I.F) : epsX X e = E1 X e * X.ew := rfl

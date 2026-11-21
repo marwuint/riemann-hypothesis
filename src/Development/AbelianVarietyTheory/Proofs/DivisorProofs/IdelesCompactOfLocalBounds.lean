@@ -23,12 +23,6 @@ theorem compInf_unitArch (w : InfinitePlace F) (l : (AE F E)ˣ) :
   rw [map_add, compInf_smul, compInf_smul, evInf_eInf, map_sub, map_one, evInf_eInf, sub_self, zero_smul, one_smul,
     add_zero]
 
-theorem compFin_unitAt (v : Pl F) (l : (AE F E)ˣ) :
-    compFin F E v (unitAt E v l : AE F E) = compFin F E v l := by
-  change compFin F E v (eFin v • (l : AE F E) + (1 - eFin v) • 1) = _
-  rw [map_add, compFin_smul, compFin_smul, eFin, GlobalTheory.LatVac.evFin_liftV, map_sub, map_one, GlobalTheory.LatVac.evFin_liftV,
-    sub_self, zero_smul, one_smul, add_zero]
-
 end GlobalTheory.IdeleCyl
 
 namespace GlobalTheory.IdeleCyl
@@ -135,109 +129,5 @@ theorem GlobalTheory.IdeleCyl.exists_isCompact_box : ∀ (F E : Type) [Field F] 
 
 namespace GlobalTheory.IdeleCyl
 
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-
-theorem continuous_idemUnit (ε : AF F) (hε : ε * ε = ε) : Continuous (idemUnit E ε hε) := by
-  haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
-  haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
-  haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens
-  refine Units.continuous_iff.2 ⟨?_, ?_⟩
-  · exact (Units.continuous_val.const_smul ε).add continuous_const
-  · exact (Units.continuous_coe_inv.const_smul ε).add continuous_const
-
-theorem isClosed_unitsAt (v : Pl F) : IsClosed (unitsAt E v : Set (AE F E)ˣ) := by
-  haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
-  haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
-  haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens
-  haveI : T2Space (AE F E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension
-  haveI : T2Space (AE F E)ˣ := Units.isEmbedding_embedProduct.t2Space
-  have e : (unitsAt E v : Set (AE F E)ˣ) = Subtype.val '' {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v} := by
-    ext l
-    exact ⟨fun h => ⟨⟨l, unitsAt_le v h⟩, h, rfl⟩, by rintro ⟨m, hm, rfl⟩; exact hm⟩
-  rw [e]
-  exact ((isCompact_isOpen_unitsAt v).1.image continuous_subtype_val).isClosed
-
 end GlobalTheory.IdeleCyl
 
-open GlobalTheory.IdeleCyl in
-
-theorem GlobalTheory.IdeleCyl.isCompact_cyl : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (S : Finset (Pl F)) (A : Set (AE F E)ˣ) (B : Pl F → Set (AE F E)ˣ), IsCompact A → (∀ v ∈ S, IsCompact (B v)) →
-    IsCompact {l : (AE F E)ˣ | unitArch F E l ∈ A ∧ (∀ v ∈ S, unitAt E v l ∈ B v) ∧ ∀ v ∉ S, unitAt E v l ∈ unitsAt E v} := by
-  intro F E _ _ _ _ _ S A B hA hB
-  classical
-  haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
-  haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
-  haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens
-  haveI : T2Space (AE F E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension
-  haveI : T2Space (AE F E)ˣ := Units.isEmbedding_embedProduct.t2Space
-  have cArch : Continuous (unitArch F E) := continuous_idemUnit (E := E) _ _
-  have cAt : ∀ v : Pl F, Continuous (unitAt E v) := fun v => continuous_idemUnit (E := E) _ _
-
-  let M : ∀ w : InfinitePlace F, Set (w.Completion ⊗[F] E) := fun w =>
-    (fun u : (AE F E)ˣ => (GlobalTheory.Doubling.unitInf F E w u : w.Completion ⊗[F] E)) '' A
-  let M' : ∀ w : InfinitePlace F, Set (w.Completion ⊗[F] E) := fun w =>
-    (fun u : (AE F E)ˣ => (GlobalTheory.Doubling.unitInf F E w u⁻¹ : w.Completion ⊗[F] E)) '' A
-  let L : ∀ v : Pl F, Set (Fv F v ⊗[F] E) := fun v =>
-    if v ∈ S then (fun u : (AE F E)ˣ => (unitFin F E v u : Fv F v ⊗[F] E)) '' B v else intLoc F E v
-  let L' : ∀ v : Pl F, Set (Fv F v ⊗[F] E) := fun v =>
-    if v ∈ S then (fun u : (AE F E)ˣ => (unitFin F E v u⁻¹ : Fv F v ⊗[F] E)) '' B v else intLoc F E v
-  have hM : ∀ w, IsCompact (M w) := fun w =>
-    hA.image (Units.continuous_val.comp (GlobalTheory.Doubling.continuous_unitInf w))
-  have hM' : ∀ w, IsCompact (M' w) := fun w =>
-    hA.image (Units.continuous_val.comp ((GlobalTheory.Doubling.continuous_unitInf w).comp continuous_inv))
-  have hL : ∀ v, IsCompact (L v) := fun v => by
-    by_cases hv : v ∈ S
-    · simp only [L, if_pos hv]
-      exact (hB v hv).image (Units.continuous_val.comp (GlobalTheory.Doubling.continuous_unitFin v))
-    · simp only [L, if_neg hv]
-      exact (isCompact_isOpen_intLoc v).1
-  have hL' : ∀ v, IsCompact (L' v) := fun v => by
-    by_cases hv : v ∈ S
-    · simp only [L', if_pos hv]
-      exact (hB v hv).image (Units.continuous_val.comp ((GlobalTheory.Doubling.continuous_unitFin v).comp continuous_inv))
-    · simp only [L', if_neg hv]
-      exact (isCompact_isOpen_intLoc v).1
-  have hfin : ∀ᶠ v in Filter.cofinite, v ∉ S := Filter.eventually_cofinite.2 (S.finite_toSet.subset fun v hv => by
-    simpa using hv)
-  have hLc : ∀ᶠ v in Filter.cofinite, L v ⊆ (intLoc F E v : Set (Fv F v ⊗[F] E)) :=
-    hfin.mono fun v hv => by simp only [L, if_neg hv]; exact subset_rfl
-  have hLc' : ∀ᶠ v in Filter.cofinite, L' v ⊆ (intLoc F E v : Set (Fv F v ⊗[F] E)) :=
-    hfin.mono fun v hv => by simp only [L', if_neg hv]; exact subset_rfl
-  obtain ⟨K₁, hK₁, h₁⟩ := GlobalTheory.IdeleCyl.exists_isCompact_box F E M L hM hL hLc
-  obtain ⟨K₂, hK₂, h₂⟩ := GlobalTheory.IdeleCyl.exists_isCompact_box F E M' L' hM' hL' hLc'
-
-  have hC : IsClosed {l : (AE F E)ˣ | unitArch F E l ∈ A ∧ (∀ v ∈ S, unitAt E v l ∈ B v) ∧
-      ∀ v ∉ S, unitAt E v l ∈ unitsAt E v} := by
-    have c1 : IsClosed {l : (AE F E)ˣ | unitArch F E l ∈ A} := hA.isClosed.preimage cArch
-    have c2 : IsClosed {l : (AE F E)ˣ | ∀ v ∈ S, unitAt E v l ∈ B v} := by
-      simp only [Set.setOf_forall]
-      exact isClosed_iInter fun v => isClosed_iInter fun hv => (hB v hv).isClosed.preimage (cAt v)
-    have c3 : IsClosed {l : (AE F E)ˣ | ∀ v ∉ S, unitAt E v l ∈ unitsAt E v} := by
-      simp only [Set.setOf_forall]
-      exact isClosed_iInter fun v => isClosed_iInter fun _ => (isClosed_unitsAt v).preimage (cAt v)
-    exact c1.inter (c2.inter c3)
-  refine IsCompact.of_isClosed_subset (Units.isClosedEmbedding_embedProduct.isCompact_preimage
-    (hK₁.prod (hK₂.image MulOpposite.continuous_op))) hC ?_
-  rintro l ⟨hl1, hl2, hl3⟩
-  refine ⟨h₁ _ (fun w => ⟨unitArch F E l, hl1, ?_⟩) (fun v => ?_), ⟨_, h₂ (l⁻¹ : (AE F E)ˣ) (fun w => ⟨unitArch F E l, hl1, ?_⟩) (fun v => ?_), rfl⟩⟩
-  · exact compInf_unitArch w l
-  · by_cases hv : v ∈ S
-    · simp only [L, if_pos hv]
-      exact ⟨unitAt E v l, hl2 v hv, compFin_unitAt v l⟩
-    · simp only [L, if_neg hv]
-      change compFin F E v (l : AE F E) ∈ (intLoc F E v : Set (Fv F v ⊗[F] E))
-      rw [← compFin_unitAt v l]
-      exact (mem_unitsAt.1 (hl3 v hv)).2.1
-  · show compInf F E w ((unitArch F E l)⁻¹ : (AE F E)ˣ) = compInf F E w ((l⁻¹ : (AE F E)ˣ) : AE F E)
-    rw [← map_inv]
-    exact compInf_unitArch w l⁻¹
-  · by_cases hv : v ∈ S
-    · simp only [L', if_pos hv]
-      refine ⟨unitAt E v l, hl2 v hv, ?_⟩
-      show compFin F E v ((unitAt E v l)⁻¹ : (AE F E)ˣ) = _
-      rw [← map_inv]
-      exact compFin_unitAt v l⁻¹
-    · simp only [L', if_neg hv]
-      change compFin F E v ((l⁻¹ : (AE F E)ˣ) : AE F E) ∈ (intLoc F E v : Set (Fv F v ⊗[F] E))
-      rw [← compFin_unitAt v l⁻¹, map_inv]
-      exact (mem_unitsAt.1 (hl3 v hv)).2.2

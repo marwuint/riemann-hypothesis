@@ -8,10 +8,11 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ha
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasTypeAllAddOfEquiv
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddHsConjLe
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.CompactAverageContinuousOnUniformModerateGrowthStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.KProjectionLimitDiscreteSeriesCoeffsStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.EqMatrixCoeffOfLocallyUniformLimitKFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.DiscreteSeriesCoeffSeriesOfKTypeProjectionsStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CompactAverageContinuousOnUniformModerateGrowth
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoefBoundOfCasselmanWallach
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.KProjectionLimitDiscreteSeriesCoeffs
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.EqMatrixCoeffOfLocallyUniformLimitKFinite
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.DiscreteSeriesCoeffSeriesOfKTypeProjections
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Matrix
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -32,11 +33,11 @@ theorem hasTypeAll_of_closure : GlobalTheory.Published.HarishChandraModules → 
   intro hHC hCW n ε lam _ H _ _ σ hDS f hf hU happ
   haveI : CompleteSpace H := hDS.1
   have hstd : Std ε σ := std_of_isDS hHC hDS
-  refine GlobalTheory.T.discreteSeriesCoeffSeries_of_kTypeProjections hHC hCW n ε H σ hstd f hf hU ?_
+  refine _root_.GlobalTheory.TypeSum.KSeries.hasTypeAll_of_kTypes hHC hCW n ε H σ hstd f hf hU ?_
   intro e he hK
-  obtain ⟨hc, hu⟩ := GlobalTheory.T.compactAverage_continuousOn_uniformModerateGrowth n ε f hf hU e he
-  obtain ⟨d, w, hw, hap⟩ := GlobalTheory.T.kProjection_limit_discreteSeriesCoeffs n ε H σ hstd f hf happ e he hK
-  obtain ⟨L, hL, heq⟩ := GlobalTheory.T.eq_matrixCoeff_of_locallyUniform_limit_kFinite hHC hCW n ε H σ hstd d w hw _ hc hu hap
+  obtain ⟨hc, hu⟩ := _root_.GlobalTheory.KAvgGrowth.continuousOn_and_umg_kAvg n ε f hf hU e he
+  obtain ⟨d, w, hw, hap⟩ := _root_.GlobalTheory.TypeSum.kAvg_approx_coef n ε H σ hstd f hf happ e he hK
+  obtain ⟨L, hL, heq⟩ := _root_.GlobalTheory.TypeSum.CoefClos.eq_coef_of_closure hHC hCW n ε H σ hstd d w hw _ hc hu hap
   exact ⟨d, L, w, hL, hw, heq⟩
 
 end GlobalTheory.ClosureSeries

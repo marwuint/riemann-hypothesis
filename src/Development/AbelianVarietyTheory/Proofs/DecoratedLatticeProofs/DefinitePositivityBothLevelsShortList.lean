@@ -19,7 +19,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.NormalDecomposition.LiftHeckeOpera
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
 import Formalism.SharpRestriction.ElevenLe
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PartW
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaLiftAdjointScalarFormulaInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaLiftAdjointScalarFormulaInjective
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitaryRep
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoreClausesOfWeakCharacterisation
@@ -45,7 +45,7 @@ theorem pos_short : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.
   have hGiven := GlobalTheory.GivenOfTop.given_of_top R F hOk hCh hEx hHost ⟨L, ⟨hP⟩⟩ hcc hQ hGT
   obtain ⟨hCore, hSF, -, -⟩ := GlobalTheory.CoreOfWeak.core_of_weak R F hCh hEx
   have hFix := GlobalTheory.FixAllGood.fixAll_of_good R F hCh hEx
-  obtain ⟨-, hInj⟩ := GlobalTheory.T.thetaLift_adjoint_scalarFormula_injective hDS hHCF hHCM hCW hCusp hHowe hWS hSWc hSEc hUD R.toRealDat F.lv2 hGiven hcc hCh.allPl hFix R.SF hSF
+  obtain ⟨-, hInj⟩ := _root_.GlobalTheory.Core.Rk.UpInjRow.upInj hDS hHCF hHCM hCW hCusp hHowe hWS hSWc hSEc hUD R.toRealDat F.lv2 hGiven hcc hCh.allPl hFix R.SF hSF
   have hW := hx₀ D L hP hLe hLx hSz R.toRealDat F.lv2 hGiven
   have hRows := GlobalTheory.RowsNeProof.rowsNe R.toRealDat F.lv2 s hOk.1 hCore (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCusp R.toRealDat) R.SF hSF hTR hW
   exact GlobalTheory.RowsPosRed.pos_of_rows R F hOk hCh hEx hInj hRows hPG hIB hRT

@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.PairingDivisors.StatementA
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsFinSetSplitPlacesCoprimeConductor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValIotaLeOfMem
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitsInCMFieldTwoPrimesDegreeOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitsInCMFieldTwoPrimesDegreeOne
 
 noncomputable section
 
@@ -16,7 +16,7 @@ theorem exists_split_unif_idele : ∀ (E : Type) [Field E] [NumberField E] [IsCM
       modF π = ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)⁻¹ ^ 2 ∧ ∀ χ : HChar E, TrivOnF χ → finPart χ π = 1 := by
   classical
   intro E _ _ _ v x hv hx
-  obtain ⟨h2, hN⟩ := GlobalTheory.T.splitsInCMField_two_primes_degree_one E v hv
+  obtain ⟨h2, hN⟩ := _root_.GlobalTheory.CMVal.Euler.SplitPlace.split_place E v hv
   obtain ⟨P₁, P₂, hne, hP₁, hP₂⟩ := hv
   have hx0 : (x : maximalRealSubfield E) ≠ 0 := fun h => by
     have h0 : x = 0 := Subtype.ext h

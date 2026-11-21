@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefTwistPull
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividingThetaConstantsGenerateIntegralTorsionLabStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividingThetaConstantsGenerateIntegralTorsionLab
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThNeZero
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFramesOnUniformisedModelFibre
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
@@ -105,7 +105,7 @@ theorem isThetaTerms₀_of_terms : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (
             (X₁.ρ.pt l).left := by
           rw [← e]
           exact (congrArg (fun q => q.left) hl).symm
-        have hH : l ∈ X₁.S.HH X₁.M z₁ := (GlobalTheory.T.dividingThetaConstants_generate_integral_torsion_labels g n F W Z i X₁ z₁ act x₀ hd V ev X m t δ 𝔪 l).2
+        have hH : l ∈ X₁.S.HH X₁.M z₁ := (_root_.GlobalTheory.Poinc.Sep.mem_HH_iff_yy_zero g n F W Z i X₁ z₁ act x₀ hd V ev X m t δ 𝔪 l).2
           ⟨q, y, by rw [hq, map_zero], hy, hl'⟩
         obtain ⟨a, rfl⟩ : l ∈ Set.range lab := by rw [hlab]; exact hH
         refine ⟨a, 𝔪.cart.1.hom_ext ?_ ?_⟩

@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.RowsDef
 import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.UnitaryRepUnimodularOfFiniteVolume
-import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.PjStarProj
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SphericalFunctionConvolutionIdentity
 
 noncomputable section
 
@@ -18,12 +18,6 @@ def GfUnimod : Prop :=
 section Local
 
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-
-def repHom {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsURepOn (UJset ε) σ) :
-    Formalism.REAL.UJ ε →* (H →L[ℂ] H) where
-  toFun g := σ (umat g)
-  map_one' := (isURep_of_on hU).1
-  map_mul' a b := ((isURep_of_on hU).2.1 a b).trans (ContinuousLinearMap.mul_def _ _).symm
 
 theorem phLoc_conv {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsURepOn (UJset ε) σ) (w : H) (d : ℝ)
     (hF : IsFdeg (Formalism.REAL.muG ε) σ d) (hw : ‖w‖ = 1) (y : Formalism.REAL.UJ ε) :

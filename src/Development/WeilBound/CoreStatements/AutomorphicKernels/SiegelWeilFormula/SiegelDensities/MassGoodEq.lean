@@ -26,10 +26,10 @@ theorem mass_good_eq (hE2 : PositivityTheory.PfSWUS.HMass.OneVecBinaryMass) (hO 
   induction n with
   | zero =>
     intro J hJ T hT hdet d b
-    obtain ⟨β, -, hβ0, hβ⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm T hT
+    obtain ⟨β, -, hβ0, hβ⟩ := _root_.GlobalTheory.CompanionTheory.SW.hermOne_eq_scal F E σ hcm T hT
     have hβ0 := hβ0 hdet
     refine ⟨0, ?_⟩
-    filter_upwards [hO F E σ hcm J hJ d b, (GlobalTheory.T.integral_almost_all_places F E σ hcm d b).2 β hβ0] with v hv hu lam hl m hm
+    filter_upwards [hO F E σ hcm J hJ d b, (_root_.GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hcm d b).2 β hβ0] with v hv hu lam hl m hm
     rw [hβ (Fv F v), hv lam hl m hm _ hu]
     simp
   | succ n ih =>
@@ -48,9 +48,9 @@ theorem mass_good_eq (hE2 : PositivityTheory.PfSWUS.HMass.OneVecBinaryMass) (hO 
     obtain ⟨C₀, hC₀⟩ := PositivityTheory.PfSWUS.HMass.one_vec_bound hE2 hcm (n + 2) _ hJ' (by omega) b
     refine ⟨|C₀| + |C₁| + |C₀| * |C₁|, ?_⟩
     have e1 := GlobalTheory.T.local_densities_congruent_target_almost_all F E σ hcm (n + 2) J hJ (n + 2) T hT hdet g hgdet _ hbh hblock d b
-    have e2 := GlobalTheory.T.local_gram_fiber_measures_agree_almost_all F E σ hcm (n + 2) J hJ _ hJ' d b (n + 2)
-    have e3 := GlobalTheory.T.local_densities_block_one_almost_all F E σ hcm (n + 1) 1 hone t ht (n + 1) T₁ hT₁.1 hT₁.2 hbh d b
-    have e5 := (GlobalTheory.T.integral_almost_all_places F E σ hcm d b).2 t ht
+    have e2 := _root_.GlobalTheory.CompanionTheory.SW.lattice_mass_fibre_eq F E σ hcm (n + 2) J hJ _ hJ' d b (n + 2)
+    have e3 := _root_.GlobalTheory.CompanionTheory.SW.GoodStep.blockFibre_mass F E σ hcm (n + 1) 1 hone t ht (n + 1) T₁ hT₁.1 hT₁.2 hbh d b
+    have e5 := (_root_.GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hcm d b).2 t ht
     filter_upwards [e1, e2, e3, hC₀, e5, hC₁] with v h1 h2 h3 h4 h5 h6 lam hl m hm
     obtain ⟨m', hm'⟩ := exists_family hcm hJ' b v lam hl (n + 2)
     obtain ⟨m₁, hm₁⟩ := exists_family hcm hJ' b v lam hl 1
@@ -70,17 +70,17 @@ theorem massCAll_of (hE2 : PositivityTheory.PfSWUS.HMass.OneVecBinaryMass) (hO :
   obtain ⟨n, rfl⟩ : ∃ n, M = n + 1 := ⟨M - 1, by omega⟩
   refine ⟨?_, ?_⟩
   · intro v
-    have hloc : IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F v
+    have hloc : IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
     obtain ⟨hTR, hLC, hSC, hT2, -⟩ := id hloc
     haveI := hTR
     haveI := hLC
     haveI := hSC
     haveI := hT2
     haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-    have hh := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1
+    have hh := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) d b (lam v) (hlam v).1
     haveI hW := hh.2.1 (n + 1) (n + 1)
     haveI hH := hh.2.2 (n + 1)
-    haveI hlf := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM (n + 1) J hJ (Fv F v) hloc (n + 1) _ _ (m v) hW hH (hm v)
+    haveI hlf := (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hCM (n + 1) J hJ (Fv F v) hloc (n + 1) _ _ (m v) hW hH (hm v)
       (hermOf (Fv F v) σ T hT)).1
     rw [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]
     exact ENNReal.mul_lt_top ENNReal.coe_lt_top (GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b (n + 1) (n + 1) v).1.measure_lt_top

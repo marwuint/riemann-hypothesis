@@ -71,12 +71,6 @@ def sigMass (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (Y : Submod
     if IsSD L Hm o.out ∧ o.out ⊓ Y.restrictScalars L.O = Mh then
       ENNReal.ofReal (invVol (fixG L Hm Y ⊓ stabL L Λ0) (fixG L Hm Y ⊓ stabL L o.out)) else 0
 
-def primCnt (L : LocE F E) (ϖ : 𝒪[F]) (n : ℕ) {m : ℕ} (j : ℕ) (Gm : Matrix (Fin m) (Fin m) E) : ℕ :=
-  Set.ncard {C : Set (Fin m → Fin n → E) | ∃ x : Fin m → Fin n → E, (∀ a i, x a i ∈ L.O) ∧
-    (∃ y : Fin m → Fin n → E, (∀ a i, y a i ∈ L.O) ∧ ∀ a b, hf L 1 (x a) (y b) = if a = b then 1 else 0) ∧
-    (∀ a b, ∃ c ∈ L.O, hf L 1 (x b) (x a) - Gm a b = algebraMap F E ((ϖ : F) ^ j) * c) ∧
-    C = {y | ∀ a i, ∃ c ∈ L.O, y a i - x a i = algebraMap F E ((ϖ : F) ^ j) * c}}
-
 def IsQRefl (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (a : Fin n → E)
     (g : (Fin n → E) ≃ₗ[E] (Fin n → E)) : Prop :=
   IsUnit (hf L Hm a a) ∧ g ∈ isomG L Hm ∧ ∃ c : E, ∀ v, g v = v + (c * hf L Hm v a) • a

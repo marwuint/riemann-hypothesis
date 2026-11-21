@@ -1,5 +1,24 @@
 import Mathlib
-import ReciprocityTheory.GroupCohomology.ImportsAlt
+import ReciprocityTheory.GroupCohomology.FiveTerm
+import ReciprocityTheory.GroupCohomology.CupCor
+import ReciprocityTheory.GroupCohomology.CupConnRightStatement
+import ReciprocityTheory.GroupCohomology.DEqZeroOfMemB
+import ReciprocityTheory.GroupCohomology.FiberFirstH0Injective
+import ReciprocityTheory.GroupCohomology.LowLES
+import ReciprocityTheory.GroupCohomology.RankLen
+import ReciprocityTheory.GroupCohomology.Localise
+import ReciprocityTheory.GroupCohomology.ContinuousRho
+import ReciprocityTheory.GroupCohomology.CardLenStatement
+import ReciprocityTheory.GroupCohomology.ConnNatHolds
+import ReciprocityTheory.GroupCohomology.PairHomFCoeOfId
+import ReciprocityTheory.GroupCohomology.ResNormalHolds
+import ReciprocityTheory.GroupCohomology.InfRes
+import ReciprocityTheory.GroupCohomology.FiniteLevel
+import ReciprocityTheory.GroupCohomology.Shapiro
+import ReciprocityTheory.GroupCohomology.Section
+import ReciprocityTheory.GroupCohomology.InfIsoA
+import ReciprocityTheory.GroupCohomology.LengthKerEqCoker
+import ReciprocityTheory.GroupCohomology.IsLowExists
 import ReciprocityTheory.ClassFieldTheory.LocalClassField.HSubsingletonOfUniquelyDivisible
 import ReciprocityTheory.ClassFieldTheory.LocalClassField.FinCoh
 

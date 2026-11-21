@@ -18,28 +18,6 @@ def StepA : Prop :=
     (∀ F ∈ M, P F = 0 ∨ σ ≤ vw w (P F)) →
     ∀ x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (matLat ι (matLat π M)), B x = 0 ∨ σ ≤ vw w (B x)
 
-def StepC : Prop :=
-  ∀ (Φ Cs Q E : Type) [NormedAddCommGroup Φ] [InnerProductSpace ℂ Φ]
-    [NormedAddCommGroup Cs] [InnerProductSpace ℂ Cs]
-    [NormedAddCommGroup Q] [InnerProductSpace ℂ Q] [FiniteDimensional ℂ Q]
-    [NormedAddCommGroup E] [InnerProductSpace ℂ E]
-    (ι : Q →ₗ[ℂ] E), Function.Surjective ι →
-    ∀ (Ix : Type) [Fintype Ix] (Qp : Ix → Submodule ℂ Q), (⨆ p, Qp p) = ⊤ →
-    ∀ (s : Ix → ℝ) (smin : ℝ), 0 < smin → (∀ p, smin ≤ s p) →
-    (∀ p, ∀ x ∈ Qp p, ∀ y : Q, ⟪ι x, ι y⟫_ℂ = (s p : ℂ) * ⟪x, y⟫_ℂ) →
-    ∀ (col : Φ → Cs) (k : ℝ), (∀ φ, ‖col φ‖ ≤ k * ‖φ‖) →
-    ∀ (P : Cs → Q → ℂ) (p : ℝ), (∀ c F, ‖P c F‖ ≤ p * ‖c‖ * ‖F‖) →
-    ∀ B : Φ → E → ℂ, (∀ φ F, B φ (ι F) = P (col φ) F) →
-      0 ≤ k → 0 ≤ p → ∀ φ e, ‖B φ e‖ ≤ p * k / Real.sqrt smin * ‖φ‖ * ‖e‖
-
-def StepCMean : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (nB p k s : InfinitePlace K → ℝ),
-    (∀ v, 0 < nB v) → (∀ v, 0 < p v) → (∀ v, 0 < k v) → (∀ v, 0 < s v) →
-    (∀ v, nB v ≤ p v * k v / Real.sqrt (s v)) →
-      (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, Real.log (nB v ^ 2) ≤
-        (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, (Real.log (p v ^ 2) + Real.log (k v ^ 2)) -
-          (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, Real.log (s v)
-
 def BoundsSum : Prop :=
   ∀ (Pl J : Type) [Fintype J] (S : Finset Pl) (D : ℕ), 0 < D →
     ∀ (lcvR logκ LG E3 : ℝ) (lcvM L E1 E2 : J → ℝ) (l ell vG g : Pl → ℝ)

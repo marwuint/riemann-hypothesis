@@ -3,7 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthCom
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthToFunNonneg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EllEqOfInRCone
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.BalancedNonnegFormInPsdConeStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.BalancedNonnegFormInPsdCone
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntBilinFormToRealMemBalancedPsdCone
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotIsPrimZero
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolCell GlobalTheory.CompanionTheory.Ar.Fan
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.StarDepthDenominator
@@ -22,7 +24,7 @@ theorem starDepth_den : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZe
     obtain ⟨D, hD, hA⟩ := GlobalTheory.PolFan.StarDen.module_den (hψ (R k) (hR k).2.2) h2 h3
     refine ⟨D, hD, ?_⟩
     rintro x ⟨β, hβ, hp, rfl⟩
-    exact hA β (GlobalTheory.T.balanced_nonneg_form_in_psd_cone O bar hb (R k) β hβ hp)
+    exact hA β (_root_.GlobalTheory.CompanionTheory.Ar.Fan.PsdConeMembership.toReal_mem_psdCone_of_nonneg O bar hb (R k) β hβ hp)
   obtain ⟨D₀, hD₀, hall⟩ := GlobalTheory.PolFan.StarDen.common_den _ key
   refine ⟨D₀, hD₀, fun X _ _ _ _ hX β hβ hp => ?_⟩
   obtain ⟨k, ⟨f⟩⟩ := hcls X hX

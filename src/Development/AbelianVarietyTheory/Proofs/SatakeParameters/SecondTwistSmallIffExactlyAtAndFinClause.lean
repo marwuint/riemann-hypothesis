@@ -191,14 +191,6 @@ section Place
 
 variable (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
-theorem over_iff (τ : BlockSumMultiplicities.Emb D i w hw) (g : D.R.GG) :
-    BlockSumMultiplicities.Over D i w hw τ g ↔ CrystallineAtPlaces.Reads D i w hw τ g := by
-  refine forall_congr' fun x => ⟨?_, fun h => ⟨_, h.symm, CrystallineAtPlaces.embLL_sigmaOf g x⟩⟩
-  rintro ⟨y, h1, h2⟩
-  have : y = D.embE (D.host.sigmaOf g x) :=
-    D.what₂.embLL.injective (h2.trans (CrystallineAtPlaces.embLL_sigmaOf g x).symm)
-  rw [← this, h1]
-
 variable {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
 
 theorem mult_eq (τ : BlockSumMultiplicities.Emb D i w hw) (a : ℤ) :
@@ -206,23 +198,6 @@ theorem mult_eq (τ : BlockSumMultiplicities.Emb D i w hw) (a : ℤ) :
 
 end Place
 
-def FinClause : Prop :=
-  ∀ (i : D.nd.Loc) (r : BlockSumMultiplicities.Fam D i D.R.nV) (ρ : BlockSumMultiplicities.Fam D i D.R.r) (π : D.nd.X i),
-    BlockSumMultiplicities.HidaSetting D i r ρ π → ∀ w hw (τ : BlockSumMultiplicities.Emb D i w hw),
-      BlockSumMultiplicities.FinDR D i w hw (T2O D.nd i ρ π) τ
-
 variable {D}
-
-def JumpsByLetterAt (L : SizeData₂ D) (ε : ℤˣ) : Prop :=
-  ∀ (i : D.nd.Loc) (r : BlockSumMultiplicities.Fam D i D.R.nV) (ρ : BlockSumMultiplicities.Fam D i D.R.r) (π : D.nd.X i),
-    CrystallineAtPlaces.HidaSetting D i r ρ π →
-    ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)),
-      CrystallineAtPlaces.CrysInput D i w hw r → CrystallineAtPlaces.JumpInput D i w hw ε r →
-      CrystallineAtPlaces.CrysAt D i w hw (T2O D.nd i ρ π) ∧
-      ∀ τ g, CrystallineAtPlaces.Reads D i w hw τ g →
-        CrystallineAtPlaces.HasJumps D i w hw (T2O D.nd i ρ π) τ
-          (jT2 (hcAt D g) (CrystallineAtPlaces.liftIdx D i) (pos ε g)) ∧
-        ((etaHat L : ℤ) < szT (hcAt D g) (CrystallineAtPlaces.liftIdx D i) (pos ε g) →
-          CrystallineAtPlaces.countIn D i w hw (T2O D.nd i ρ π) τ (etaHat L) = D.R.m)
 
 end GlobalTheory.Cmp.SmallJumps

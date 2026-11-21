@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbsoluteSi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffTopMonEqZero
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CmFieldHostElementAddConjEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DimensionZeroCase
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClassicalThetaDescriptionAbelianPartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClassicalThetaDescriptionAbelianPart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRealCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetEqDetBlock
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValRPush
@@ -65,7 +65,7 @@ theorem exists_cd (κ : Rule) (hκ : Rule4 κ) {R : Type} [CommRing R] [IsDomain
   have : ∃ (d : AB N.toNumB D.P.g) (_ : Geo ν d), KeyOK κ ν d := by
     rcases Nat.eq_zero_or_pos D.P.g with h | h
     · exact GlobalTheory.MBLow.DimZero.main κ R D h1 h2 N ν h
-    · exact GlobalTheory.T.exists_classicalThetaDescription_abelianPart κ hκ R D h1 h2 N ν h
+    · exact _root_.GlobalTheory.MBLow.AbCl.exists_ab_keyOK κ hκ R D h1 h2 N ν h
   obtain ⟨e, G, hK⟩ := this
   obtain ⟨d, rfl⟩ := GlobalTheory.MBLow.Cl.PsiFrame.exists_cd N D.P.g r bX e (GlobalTheory.MBLow.Cl.cub_of_geo R D h1 h2 N ν _ e ⟨G⟩) (GlobalTheory.MBLow.Cl.sym_of_geo R D h1 h2 N ν _ e ⟨G⟩)
   exact ⟨d, G, hK⟩

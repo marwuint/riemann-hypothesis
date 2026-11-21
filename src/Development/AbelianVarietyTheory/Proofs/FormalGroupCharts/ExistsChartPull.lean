@@ -40,14 +40,6 @@ open IsDedekindDomain
 
 namespace GlobalTheory.DepthExt
 
-theorem vV_unit {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
-    [IsFractionRing V K] {u : V} (hu : IsUnit u) : vV V (algebraMap V K u) = 0 := by
-  have h : valV V (algebraMap V K u) = 1 := by
-    unfold valV
-    rw [HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]
-    exact fun h => (IsLocalRing.mem_maximalIdeal u).1 h hu
-  simp [vV, h]
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 theorem grp_id {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 _) (𝟙 _) :=
@@ -69,22 +61,6 @@ theorem tan_iff (t : SAB H (Sp V)) (w : epsR V ⟶ t.G) : IsTangent w ↔ IsTanA
 
 variable (ψ : V →+* V') {t : SAB H (Sp V)} {t' : SAB H (Sp V')} (mp : SABMap t' t (spMap ψ))
 
-theorem exists_lift {A A' : Type} [CommRing A] [CommRing A'] [Algebra V A] [Algebra V' A'] (g : A →+* A')
-    (hg : g.comp (algebraMap V A) = (algebraMap V' A').comp ψ) (x : Sp A ⟶ t.G.left)
-    (hx : x ≫ t.G.hom = spMap (algebraMap V A)) :
-    ∃ x' : Sp A' ⟶ t'.G.left, x' ≫ mp.φ = spMap g ≫ x ∧ x' ≫ t'.G.hom = spMap (algebraMap V' A') :=
-  ⟨mp.cart.1.lift (spMap g ≫ x) (spMap (algebraMap V' A')) (by
-    rw [Category.assoc, hx, RawChartBC.spMap_spMap, RawChartBC.spMap_spMap, hg]),
-    mp.cart.1.lift_fst _ _ _, mp.cart.1.lift_snd _ _ _⟩
-
 end Tangent
-
-theorem map_sq {V K V' K' σ : Type} [CommRing V] [CommRing K] [CommRing V'] [CommRing K'] {f : V →+* K}
-    {f' : V' →+* K'} {φ : K →+* K'} {ψ : V →+* V'} (h : ∀ a, f' (ψ a) = φ (f a)) {g : MvPowerSeries σ V}
-    {g' : MvPowerSeries σ K} (hg : g' = MvPowerSeries.map f g) :
-    MvPowerSeries.map f' (MvPowerSeries.map ψ g) =
-      MvPowerSeries.map (algebraMap K' K') (MvPowerSeries.map φ g') := by
-  ext m
-  simp [hg, MvPowerSeries.coeff_map, h]
 
 end GlobalTheory.DepthExt

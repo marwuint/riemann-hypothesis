@@ -41,28 +41,4 @@ theorem aMi_eq_aMinusQ (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau) (q n c : �
   rw [GlobalTheory.CoefMapRecord.aMi_cast D i τ q n c hq hn, DV.aMinusQ, dif_pos (by omega), h2]
   ring
 
-theorem wtOf_kapTop : ∀ D : D7, DV.KapDef D → ∀ i : Fin D.R.m,
-    (kapTop D i).n = D.R.nV ∧ Formalism.L2.Geo.wtOf (kapTop D i) = DV.kapW D ((i : ℕ) + 1) := by
-  intro D hK i
-  have hi := i.2
-  have hk := D.R.m_add_three_le_k
-  have hs : ∀ τ, (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1) := fun τ =>
-    D.sp.W_sigval _ (inR i).1 (inR i).2 _
-  have hp : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + i := by
-    simp only [Ranks.sigW]; omega
-  have hq : i + 1 + (D.R.sigW ((i : ℕ) + 1)).2 = D.R.m := by
-    simp only [Ranks.sigW]; omega
-  refine ⟨rfl, Formalism.L2.Geo.wtOf_eq_kapW _ (fun τ a => ?_) (fun τ c => ?_) rfl⟩
-  · have h := (hK _ (inR i).1 (inR i).2 τ).1 a
-    have h' := aPl_eq_aPlusQ D i τ a (hp ▸ a.2)
-    rw [(kapIs_kapTop D i τ).1 a, hs τ]
-    rw [← h, ← hp] at h'
-    exact_mod_cast h'
-  · have h := (hK _ (inR i).1 (inR i).2 τ).2 (Fin.rev c)
-    have hc := c.2
-    have h' := aMi_eq_aMinusQ D i τ _ c (Fin.rev c) hq (by rw [Fin.val_rev]; omega)
-    rw [(kapIs_kapTop D i τ).2.1 c, hs τ]
-    rw [← hp, ← neg_neg (DV.aMinusQ _ _ _ _), ← h] at h'
-    exact_mod_cast h'
-
 end GlobalTheory.RecordWeightVec

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValueEqChartValueStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValueEqChartValue
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MvPowerSeriesSubstConstTermsLocalAlgHomSpec
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumSupportRename
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.LocalChartDepthEqIntegralBiextDepth
@@ -87,7 +87,7 @@ theorem hv_eq_nabValN : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     unfold FB.actK
     funext i
     simp [hAct, hgen.2.1 a i]
-  have h1 := GlobalTheory.T.harmonicValue_eq_chart_value E H Dw l Xo c hstar nab hnab T.Fr y.1 C.ch k n F
+  have h1 := _root_.GlobalTheory.PlaceInt.hv_eq_chartVal E H Dw l Xo c hstar nab hnab T.Fr y.1 C.ch k n F
     (fun b => MvPowerSeries.map (algebraMap T.V T.Fr) (f b)) (fun b => hF b) w P hP
   rw [h1, nabValN_boxSer_eq_chartVal C.ch k _ P, ← toK_prod_evV T.V T.Fr f]
   exact GlobalTheory.ChartCmp.nabValN_congr_FK C.ch.B B T.Fr hFK hAK _ _ _ _ _ _ _

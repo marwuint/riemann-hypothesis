@@ -58,10 +58,6 @@ def realOf (C : Ctx S T) (σ : (D.what₂.Tau → ℂ) →+ AE D) : WR C.X S.ran
 theorem realPt_apply (C : Ctx S T) (w : WO S T) (s : C.X.Ψ) (k : Fin S.rank) (a : Fin T.rank) :
     C.realPt w s k a = conj (C.θ (C.m.e.symm s) (infPart D (w a k))) := rfl
 
-theorem realPt_sub (C : Ctx S T) (w w' : WO S T) : C.realPt (w - w') = C.realPt w - C.realPt w' := by
-  funext s k a
-  simp only [realPt_apply, Matrix.sub_apply, map_sub, Pi.sub_apply]
-
 theorem realPt_add (C : Ctx S T) (w w' : WO S T) : C.realPt (w + w') = C.realPt w + C.realPt w' := by
   funext s k a
   simp only [realPt_apply, Matrix.add_apply, map_add, Pi.add_apply]

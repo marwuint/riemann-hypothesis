@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GaloisStableSubmoduleLeSpanRationalStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GaloisStableSubmoduleLeSpanRational
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 
@@ -60,7 +60,7 @@ theorem exists_rat_projector : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (E 
   refine ⟨fun ij kl => p (single kl.1 kl.2 1) ij.1 ij.2, fun X => ?_, fun x hx => ?_⟩
   · rw [linExt_eq_sum]
     exact E.sum_mem fun kl _ => E.smul_mem _ (π (single kl.1 kl.2 1)).2
-  · have hd := GlobalTheory.T.galoisStable_submodule_le_span_rational (Matrix ι ι ℂ) (ι × ι) (Module.Basis.ofEquivFun (entryEquiv ι)) E
+  · have hd := _root_.GlobalTheory.ClassFin.GaloisDescent.le_span_rational (Matrix ι ι ℂ) (ι × ι) (Module.Basis.ofEquivFun (entryEquiv ι)) E
       (fun σ w hw => ⟨w.map σ, hE σ w hw, fun k => by
         rw [repr_entry, repr_entry]; rfl⟩) hx
     have key : Set.EqOn (linExtLin fun ij kl => p (single kl.1 kl.2 1) ij.1 ij.2) (LinearMap.id (R := ℂ))

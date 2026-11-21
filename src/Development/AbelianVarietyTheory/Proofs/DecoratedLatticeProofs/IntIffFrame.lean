@@ -14,7 +14,8 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsNorm
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IncAMulMemIntAt
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NatCastNotMemUnderSq
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPointHeckeComponentTameAndResidualStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPointHeckeComponentTameAndResidual
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
 
 noncomputable section
 
@@ -27,19 +28,6 @@ namespace GlobalTheory.SeeSaw.LevelData
 
 open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SymChain GlobalTheory.SymBridge GlobalTheory.LocMod
 open Formalism.L2.Col (IntAt redP qOf)
-
-section Gen
-
-variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-
-def reFrame {N n : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y] (M : Matrix (Fin N) (Fin n) k) (M' : Matrix (Fin n) (Fin N) k)
-    (h : M * M' = 1) (h' : M' * M = 1) (e : Y ≃ Fin n) : Frame k N Y :=
-  ⟨M.submatrix id e, M'.submatrix e id, by rw [submatrix_mul_equiv, h, submatrix_id_id],
-    by rw [← Equiv.coe_refl, submatrix_mul_equiv, h', submatrix_one_equiv]⟩
-
-variable {u : D.what₂.Word}
-
-end Gen
 
 section Chain
 
@@ -92,10 +80,6 @@ theorem mul_sec (q : GlobalTheory.FinPl.SplitPt D k) (x : AE D) (y : k) : x * q.
   rw [h, mul_left_comm, ← h']
 
 end Chain
-
-section Place
-
-end Place
 
 section World
 

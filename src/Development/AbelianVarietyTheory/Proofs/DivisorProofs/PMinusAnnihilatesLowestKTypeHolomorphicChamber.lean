@@ -2,9 +2,9 @@ import Mathlib
 import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.EigenspaceCyclicDensity.LowKMultOneP
 import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.DiscreteSeriesCharacters.DiscreteSeriesInfinitesimalCharacter
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HolomorphicDiscreteSeries
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHighestVectorRealWeightUnitaryCompactStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WordReachingIrreducibleKModuleReachesHighestWeigStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VoganNormSqLtOfRemoveNoncompactRootStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHighestVectorRealWeightUnitaryCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WordReachingIrreducibleKModuleReachesHighestWeig
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VoganNormSqLtOfRemoveNoncompactRoot
 open Matrix GlobalTheory.HolDS
 open Formalism.REAL (GlRel IsUnitary IsWeight KHighest root Jm inG)
 open Formalism.QuantumDeterminants (lowK IsHCParam)
@@ -47,7 +47,7 @@ theorem GlobalTheory.HolDS.pMinus_kills_lowest : ∀ (n : ℕ) (ε : Fin n → B
     · intro u v hu hv; rw [map_add]; exact N.add_mem hu hv
   have hxN : E b a x ∈ N := hgen ⟨(a, b), ha, hb⟩ x hx
   have hN0 : N ≠ ⊥ := fun h => hne (by rw [h, Submodule.mem_bot] at hxN; exact hxN)
-  obtain ⟨μ, w, hwN, hw0, hwh⟩ := GlobalTheory.T.exists_highest_vector_real_weight_unitary_compact n ε V E hkrel hkunit N hNfd hNs hN0
+  obtain ⟨μ, w, hwN, hw0, hwh⟩ := _root_.GlobalTheory.exists_kHighest_real_of_finiteDimensional n ε V E hkrel hkunit N hNfd hNs hN0
   have hex : ∃ p : {p : Fin n × Fin n // ε p.1 = true ∧ ε p.2 = false}, ∃ y ∈ L, ⟪E p.1.2 p.1.1 y, w⟫_ℂ ≠ 0 := by
     by_contra hcon
     push_neg at hcon
@@ -63,13 +63,13 @@ theorem GlobalTheory.HolDS.pMinus_kills_lowest : ∀ (n : ℕ) (ε : Fin n → B
     rw [hs] at h1
     simp only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]
     intro h0; apply hyw; rw [h1, h0]; simp
-  obtain ⟨l', hl'len, hl'ε, hl'sum⟩ := GlobalTheory.T.word_reaching_irreducible_k_module_reaches_highest_weight n ε V E hgl hkunit L hL hLs (lowK ε lam) hLh μ w hwh
+  obtain ⟨l', hl'len, hl'ε, hl'sum⟩ := _root_.GlobalTheory.HdStep.main n ε V E hgl hkunit L hL hLs (lowK ε lam) hLh μ w hwh
     true false [(p.1.1, p.1.2)] (by simp [p.2.1, p.2.2]) y hy hyw'
   obtain ⟨q, rfl⟩ := List.length_eq_one_iff.1 hl'len
   have hq := hl'ε q (by simp)
   simp only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero] at hl'sum
   have hμ : μ = lowK ε lam - root q.1 q.2 := eq_sub_of_add_eq hl'sum
-  have hlt := GlobalTheory.T.voganNormSq_lt_of_remove_noncompactRoot n ε lam hanti hhol q.1 q.2 hq.1 hq.2
+  have hlt := _root_.GlobalTheory.HolomorphicRootNormBound.vNormSq_lt_of_root n ε lam hanti hhol q.1 q.2 hq.1 hq.2
   have hle := hmin μ w hw0 hwh
   rw [hμ] at hle
   exact absurd (lt_of_lt_of_le hlt hle) (lt_irrefl _)

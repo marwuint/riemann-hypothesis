@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FirstCoupledKernelEquivariantCosets
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalizationUnimodularCompanionEqStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianLocalisationAdelicPointLatticeEqStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicPointLatticeFgOfFullStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicPointLatticeFgOfFull
+import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.IsOrthCo
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV GlobalTheory.TwU GlobalTheory.TwV Formalism.UG
 open Formalism.L2.PairingIndexBounds.F Formalism.MainNotions.G.KAat
 open scoped TensorProduct
@@ -127,7 +128,7 @@ theorem loc_latAd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
 theorem latAd_fg {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E)) (hfin : Module.Finite (𝓞 E) Lb) (hspan : Submodule.span E (Lb : Set (Fin N → E)) = ⊤)
     (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : (latAd x Lb).FG :=
-  GlobalTheory.T.adelicPointLattice_fg_of_full Lb hfin hspan x
+  _root_.GlobalTheory.LatAdFG.latAd_fg_of_full Lb hfin hspan x
 
 theorem phiT_lat : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ j (hj : j ≤ D.R.m) β x x₁ p p₁,
     IsPtAd A a j hj β x p → IsPtAd A a j hj β x₁ p₁ →

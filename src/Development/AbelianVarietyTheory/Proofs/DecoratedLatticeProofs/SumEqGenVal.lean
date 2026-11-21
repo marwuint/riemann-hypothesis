@@ -2,8 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCoType
 import Formalism.LocalToGlobal.Columns.HeckeSp
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CardParahoricDoubleCosetRepsInvEqStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsParahoricAndIntegralGLDoubleCosetRepsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TwoBlockParahoricLowerBlockDetTameCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsParahoricAndIntegralGLDoubleCosetReps
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TwoBlockParahoricLowerBlockDetTameCharacter
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelParam
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParahoricDatumEigenvectorTwoBlockParahoricStatement
 open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Doubling GlobalTheory.GLDoubling GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection GlobalTheory.ZonalCellDecomposition GlobalTheory.SatakeBound GlobalTheory.ParHecke
 
@@ -31,8 +32,8 @@ theorem sum_eq_genVal : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     intro j hj
     obtain ⟨hjJ, hdj⟩ := hR.1 j hj
     have hjiJ : j⁻¹ ∈ parahoric k A D := inv_mem hjJ
-    have hne := (GlobalTheory.T.twoBlockParahoric_lowerBlock_det_tameCharacter k A D ξ hξ j⁻¹ hjiJ).1
-    have hprod := (GlobalTheory.T.twoBlockParahoric_lowerBlock_det_tameCharacter k A D ξ hξ j hjJ).2 (d j) (Units.mk0 _ hne) hdj rfl
+    have hne := (_root_.GlobalTheory.ParahoricLowerBlock.lower_block_tame k A D ξ hξ j⁻¹ hjiJ).1
+    have hprod := (_root_.GlobalTheory.ParahoricLowerBlock.lower_block_tame k A D ξ hξ j hjJ).2 (d j) (Units.mk0 _ hne) hdj rfl
     have hx1 : ρ j⁻¹ x = (ξ (Units.mk0 _ hne) : ℂ) • x := hx.1 j⁻¹ hjiJ (Units.mk0 _ hne) rfl
     have he := hb (j * g⁻¹) 1 Φ (ρ (g * j⁻¹) x)
     have hone : (j * g⁻¹) * (g * j⁻¹) = 1 := by group
@@ -62,7 +63,7 @@ theorem sum_eq_genVal : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     rw [← he, smul_smul]
     simp
 
-  obtain ⟨R'', d'', hR''⟩ := (GlobalTheory.T.exists_parahoric_and_integralGL_doubleCosetReps k A D).1 g
+  obtain ⟨R'', d'', hR''⟩ := (_root_.GlobalTheory.ParHeckeReps.exists_reps_both k A D).1 g
   have hcard := (GlobalTheory.T.card_parahoricDoubleCosetReps_inv_eq k A D g R'' R d'' d hR'' hR).1
   have hT := hx.2.2 s R'' d'' hR''
   have hsum2 : genVal (resCard k) (Fintype.card A) (Fintype.card D) B s.card • b Φ x = R''.card • b Φ (ρ g x) := by

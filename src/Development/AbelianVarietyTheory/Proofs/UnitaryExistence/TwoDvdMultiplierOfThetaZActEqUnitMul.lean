@@ -105,12 +105,6 @@ theorem _root_.GlobalTheory.two_dvd_of_entire_sign_periodic {g : ℕ} {τ : Matr
         simp [_root_.ReciprocityTheory.PTheta.eC_zero])
   exact (ZMod.intCast_zmod_eq_zero_iff_dvd _ 2).mp (by simpa using hz)
 
-section Transform
-
-variable {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ} {τ : Matrix (Fin g) (Fin g) ℂ}
-
-end Transform
-
 open Complex Matrix NumberField Filter Topology in
 private theorem symplectic_block_combination_eq {g : ℕ} (A B C D τ : Matrix (Fin g) (Fin g) ℂ)
     (r2 : Cᵀ * B - Aᵀ * D = -1) (r4 : Dᵀ * B - Bᵀ * D = 0) :

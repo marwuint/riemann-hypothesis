@@ -27,11 +27,6 @@ variable {T T' : Scheme.{0}} {G₀ : Over T} [GrpObj G₀] {G₁ : Over T'} [Grp
 def IsTorPart (tι : splitTorus T X ⟶ G₀) : Prop :=
   IsMonHom tι ∧ ∃ (B : Over T) (_ : GrpObj B) (q : G₀ ⟶ B), IsProper B.hom ∧ IsMonHom q ∧ IsPullback tι (toUnit _) q η[B]
 
-theorem isTorPart_id : IsTorPart (𝟙 (splitTorus T X)) :=
-  ⟨inferInstance, 𝟙_ _, inferInstance, toUnit _, inferInstanceAs (IsProper (𝟙 T)), inferInstance,
-    haveI : IsIso η[𝟙_ (Over T)] := by rw [show η[𝟙_ (Over T)] = 𝟙 _ from toUnit_unique _ _]; infer_instance
-    IsPullback.of_horiz_isIso ⟨toUnit_unique _ _⟩⟩
-
 theorem IsTorPart.mono {tι : splitTorus T X ⟶ G₀} (h : IsTorPart tι) : Mono tι := by
   obtain ⟨-, B, _, q, -, -, hk⟩ := h
   exact ⟨fun a b k => hk.hom_ext k (toUnit_unique _ _)⟩
@@ -108,11 +103,6 @@ def ExtNear (gγ : Over.mk M.pt ⟶ G) (w : M.Z) : Prop := ∃ W h, w ∈ W ∧ 
 
 def ValAt (gγ : Over.mk M.pt ⟶ G) {T : Scheme.{0}} (s : T ⟶ M.Z) (v : T ⟶ G.left) : Prop :=
   ∃ (W : M.Z.Opens) (h : W.toScheme ⟶ G.left) (s' : T ⟶ W.toScheme), IsExt gγ W h ∧ s' ≫ W.ι = s ∧ s' ≫ h = v
-
-theorem extNear_of_section (σ : M.Z ⟶ G.left) (hσ : σ ≫ G.hom = 𝟙 _) (w : M.Z) :
-    ExtNear (Over.homMk (M.pt ≫ σ) (by simp [hσ]) : Over.mk M.pt ⟶ G) w :=
-  ⟨⊤, (⊤ : M.Z.Opens).ι ≫ σ, trivial, by rw [Category.assoc, hσ, Category.comp_id],
-    fun x hx => by rw [← Category.assoc, hx]; rfl⟩
 
 theorem ValAt.over {gγ : Over.mk M.pt ⟶ G} {T : Scheme.{0}} {s : T ⟶ M.Z} {v : T ⟶ G.left} (h : ValAt gγ s v) :
     v ≫ G.hom = s := by
@@ -192,16 +182,6 @@ def RkAt (w : M.Z) (r : ℕ) : Prop :=
     s (closedPoint κ) = w ∧ IsGrpPullback G₀ G s φ ∧ IsTorPart tι ∧ Module.finrank ℤ X = r
 
 variable {f gγ ζ L}
-
-theorem LatAt.rkAt {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] {m : I → X →+ X}
-    {c : T → X →+ ZMod L} {w : M.Z} (h : LatAt f gγ ζ L m c w) : RkAt G w (Module.finrank ℤ X) := by
-  obtain ⟨κ, _, s, a, G₀, _, φ, tι, h1, -, h2, h3, -⟩ := h
-  exact ⟨X, _, inferInstance, inferInstance, κ, _, s, G₀, _, φ, tι, h1, h2, h3, rfl⟩
-
-example (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (w : M.Z) :
-    RkAt (splitTorus M.Z X) w (Module.finrank ℤ X) :=
-  ⟨X, _, inferInstance, inferInstance, M.Z.residueField w, inferInstance, M.Z.fromSpecResidueField w, _, inferInstance, _, 𝟙 _,
-    Scheme.fromSpecResidueField_apply _ _, GlobalTheory.SplitTorus.isGrpPullback_bcMap _ X, isTorPart_id, rfl⟩
 
 omit [GrpObj G] in
 

@@ -6,14 +6,6 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory.RootFibre
 
-section
-variable (R K L : Type) [CommRing R] [Field K] [Algebra R K] [IsFractionRing R K]
-  [Field L] [Algebra K L] [Algebra R L] [IsScalarTower R K L] [FiniteDimensional K L]
-  [Algebra.IsSeparable K L]
-include K
-
-end
-
 variable (R L Q : Type) [CommRing R] [CommRing L] [Algebra R L] [CommRing Q] [Algebra R Q] [IsDomain Q]
 
 noncomputable def toFrac : Q ⊗[R] L →ₐ[Q] FractionRing Q ⊗[R] L :=

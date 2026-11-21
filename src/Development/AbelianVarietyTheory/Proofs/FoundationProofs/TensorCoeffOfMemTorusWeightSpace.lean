@@ -162,19 +162,6 @@ theorem tensorCoeff_gradingCoaction (ℳ : X → Submodule R M) [Decomposition �
     · subst hy; exact (decompose_of_mem_same _ m.2).symm
     · exact (decompose_of_mem_ne _ m.2 hy).symm
 
-theorem isCoaction_gradingCoaction (ℳ : X → Submodule R M) [Decomposition ℳ] :
-    IsCoaction (gradingCoaction ℳ) where
-  coassoc m := by
-    induction m using Decomposition.inductionOn ℳ with
-    | zero => simp
-    | add a b ha hb => simp only [map_add, ha, hb]
-    | homogeneous m => simp [gradingCoaction_of_mem ℳ m.2]
-  counit m := by
-    induction m using Decomposition.inductionOn ℳ with
-    | zero => simp
-    | add a b ha hb => simp only [map_add, ha, hb, add_tmul]
-    | homogeneous m => simp [gradingCoaction_of_mem ℳ m.2]
-
 @[simp] theorem torusWeightSpace_gradingCoaction (ℳ : X → Submodule R M) [Decomposition ℳ] :
     torusWeightSpace (gradingCoaction ℳ) = ℳ := by
   ext x m
@@ -187,43 +174,6 @@ theorem isCoaction_gradingCoaction (ℳ : X → Submodule R M) [Decomposition �
     [Decomposition (torusWeightSpace ρ)] : gradingCoaction (torusWeightSpace ρ) = ρ := by
   refine LinearMap.ext fun m => tensorCoeff_ext fun x => ?_
   rw [tensorCoeff_gradingCoaction, coe_decompose_torusWeightSpace]
-
-variable (R X M) in
-
-noncomputable def coactionEquivGrading :
-    {ρ : M →ₗ[R] M ⊗[R] R[X] // IsCoaction ρ} ≃ {ℳ : X → Submodule R M // IsInternal ℳ} where
-  toFun ρ := ⟨torusWeightSpace ρ.1, ρ.2.isInternal_torusWeightSpace⟩
-  invFun ℳ := letI := ℳ.2.chooseDecomposition; ⟨gradingCoaction ℳ.1, isCoaction_gradingCoaction _⟩
-  left_inv ρ := Subtype.ext (by
-    letI := ρ.2.decomposition
-    exact gradingCoaction_torusWeightSpace ρ.1)
-  right_inv ℳ := Subtype.ext (by
-    letI := ℳ.2.chooseDecomposition
-    exact torusWeightSpace_gradingCoaction ℳ.1)
-
-omit [DecidableEq X] in
-
-theorem IsCoaction.comm_iff_mapsTo_torusWeightSpace {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoaction ρ)
-    (ρ' : M' →ₗ[R] M' ⊗[R] R[X]) (f : M →ₗ[R] M') :
-    (∀ m, ρ' (f m) = f.rTensor R[X] (ρ m)) ↔
-      ∀ x, ∀ m ∈ torusWeightSpace ρ x, f m ∈ torusWeightSpace ρ' x := by
-  classical
-  refine ⟨fun hf x m hm => map_mem_coactionWeightSpace hf hm, fun hf m => ?_⟩
-  letI := h.decomposition
-  induction m using Decomposition.inductionOn (torusWeightSpace ρ) with
-  | zero => simp
-  | add a b ha hb => simp only [map_add, ha, hb]
-  | homogeneous m =>
-    rw [mem_coactionWeightSpace.1 (hf _ _ m.2), mem_coactionWeightSpace.1 m.2,
-      LinearMap.rTensor_tmul]
-
-theorem IsLeftCoaction.isInternal {ρ : M →ₗ[R] R[X] ⊗[R] M} (h : IsLeftCoaction ρ) :
-    IsInternal fun x : X => LinearMap.eqLocus ρ (TensorProduct.mk R R[X] M (single x 1)) := by
-  have := ((isLeftCoaction_iff_isCoaction_comm ρ).1 h).isInternal_torusWeightSpace
-  convert this using 2 with x
-  ext m
-  rw [mem_coactionWeightSpace, ← (TensorProduct.comm R M R[X]).apply_eq_iff_eq]
-  simp
 
 section Algebra
 
@@ -263,20 +213,6 @@ noncomputable def gradingCoactionAlgHom (𝒜 : X → Submodule R A) [GradedAlge
 
 @[simp] theorem gradingCoactionAlgHom_toLinearMap (𝒜 : X → Submodule R A) [GradedAlgebra 𝒜] :
     (gradingCoactionAlgHom 𝒜).toLinearMap = gradingCoaction 𝒜 := rfl
-
-variable (R X A) in
-
-noncomputable def algCoactionEquivGrading :
-    {ρ : A →ₐ[R] A ⊗[R] R[X] // IsCoaction ρ.toLinearMap} ≃
-      {𝒜 : X → Submodule R A // Nonempty (GradedAlgebra 𝒜)} where
-  toFun ρ := ⟨torusWeightSpace ρ.1.toLinearMap, ⟨ρ.2.gradedAlgebra⟩⟩
-  invFun 𝒜 := letI := 𝒜.2.some; ⟨gradingCoactionAlgHom 𝒜.1, isCoaction_gradingCoaction _⟩
-  left_inv ρ := Subtype.ext (AlgHom.toLinearMap_injective (by
-    letI := (⟨ρ.2.gradedAlgebra⟩ : Nonempty _).some
-    exact gradingCoaction_torusWeightSpace ρ.1.toLinearMap))
-  right_inv 𝒜 := Subtype.ext (by
-    letI := 𝒜.2.some
-    exact torusWeightSpace_gradingCoaction 𝒜.1)
 
 end Algebra
 

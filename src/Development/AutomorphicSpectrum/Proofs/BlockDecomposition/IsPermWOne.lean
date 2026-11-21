@@ -13,9 +13,6 @@ variable {L : Type} [Field L] {σ : L →+* L} {n : ℕ}
 def IsPermW (w : GU σ n) (π : Equiv.Perm (Fin n)) : Prop :=
   ∀ a c : Fin n, ((w : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a c = if c = π a then 1 else 0
 
-theorem isPermW_one : IsPermW (1 : GU σ n) 1 := fun a c => by
-  simp [Matrix.one_apply, eq_comm]
-
 variable [Valued L (WithZero (Multiplicative ℤ))]
 
 def permWt (t : GU σ n) (π : Equiv.Perm (Fin n)) : ℤ :=

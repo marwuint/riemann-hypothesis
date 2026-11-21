@@ -24,6 +24,4 @@ theorem mxAt_of_mem_depLat {T : Type} {L : LevCh D T} {sc : Consts} {G : GridDat
     {u : WO (G.pS p) (G.pT p)} (hu : u ∈ depLat G p) : MxAt (fun _ => True) u :=
   GlobalTheory.FinPl.LatMem.latO_mxAt hu.1
 
-example (T : HSp D) : hA T 0 0 = 0 := by simp [hA]
-
 end GlobalTheory.CharXFB

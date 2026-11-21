@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullback
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChange
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaConstantsLocallyOnBase
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsUniqueUpToUnit
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaCosetNonvanishingOfHasThStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaCosetNonvanishingOfHasTh
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsObjectAtMinimalPrime
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
@@ -54,7 +54,7 @@ theorem TObj.exists_hasTh_field (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [Co
   have e : spMap φ.hom ≫ x = 𝟙 _ := by
     rw [← IsOpenImmersion.lift_fac x (𝟙 _) hr, ← hφ]
     rfl
-  exact ⟨_, e ▸ GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ s t R K φ.hom x v hth⟩
+  exact ⟨_, e ▸ _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b _ s t R K φ.hom x v hth⟩
 
 theorem eval₂_eq_zero_of_fromC (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing o] {g n N' : ℕ} {J : Type}
     {b : TBase o (N' ^ 2)} {em : o →+* ℂ} {C : TObj g (N' ^ 2) J b (spMap em) → Prop} {S : Scheme.{0}}
@@ -75,16 +75,16 @@ theorem eval₂_eq_zero_of_fromC (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [C
     rwa [Category.id_comp] at this
   obtain ⟨v₀, hv₀⟩ := t₀.exists_hasTh_field hL hL2 hN
   have a3 : t₀.HasTh (spMap i) (fun a => i (v₀ a)) := by
-    have := GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ _ t₀ K₀ K i (𝟙 _) v₀ hv₀
+    have := _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b _ _ t₀ K₀ K i (𝟙 _) v₀ hv₀
     rwa [Category.comp_id] at this
   have hspan : Ideal.span (Set.range fun a => i (v₀ a)) = ⊤ := by
-    obtain ⟨a, ha⟩ := GlobalTheory.T.thetaCosetNonvanishing_of_hasTh hL hL2 o g N' J b _ _ t₀ n K (spMap i) _ ⊥ h2 hn a3 Ideal.isPrime_bot 0
+    obtain ⟨a, ha⟩ := _root_.GlobalTheory.coset_of_hasTh hL hL2 o g N' J b _ _ t₀ n K (spMap i) _ ⊥ h2 hn a3 Ideal.isPrime_bot 0
     rw [Ideal.mem_bot] at ha
     exact Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨_, rfl⟩) (Ne.isUnit ha)
   obtain ⟨u, hu⟩ := GlobalTheory.hasTh_unique_unit hL hL2 o g N' J b _ _ t₀ K (spMap i) _ w a3 a2 hspan
   have a4 : tc.HasTh (𝟙 _) (fun a => j (v₀ a)) := by
     refine (GlobalTheory.hasTh_iff_of_tmap o g N' J b _ _ t₀ _ _ tc (spMap j) ℂ (𝟙 _) _ m3).2 ?_
-    have := GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ _ t₀ K₀ ℂ j (𝟙 _) v₀ hv₀
+    have := _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b _ _ t₀ K₀ ℂ j (𝟙 _) v₀ hv₀
     rw [Category.comp_id] at this
     rwa [Category.id_comp]
   rw [hβi, funext hu]
@@ -97,7 +97,7 @@ theorem eval₂_eq_zero_of_fromC (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [C
 theorem inMM_of_dense_fromSet :
     Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g n N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (C : TObj g (N' ^ 2) J b (spMap em) → Prop) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (R : Type) [CommRing R] (β : o →+* R) (x : Sp R ⟶ S) (v : Ix g (N' ^ 2) → R), 2 ≤ n → n ∣ N' → Odd N' → IsReduced S → Dense (fromSet em C t) → IsOpenImmersion x → x ≫ s = spMap β → t.HasTh x v → InMM n N' (thIdeal em C) β v := by
   intro hL hL2 o _ g n N' J b em C S s t R _ β x v h2 hn hN hS hd hx hβ hth
-  refine ⟨fun F hF => ?_, fun q hq => GlobalTheory.T.thetaCosetNonvanishing_of_hasTh hL hL2 o g N' J b S s t n R x v q h2 hn hth hq⟩
+  refine ⟨fun F hF => ?_, fun q hq => _root_.GlobalTheory.coset_of_hasTh hL hL2 o g N' J b S s t n R x v q h2 hn hth hq⟩
   have hR : IsReduced (Sp R) := isReduced_of_isOpenImmersion x
   have hR' : _root_.IsReduced R := (affine_isReduced_iff (CommRingCat.of R)).1 hR
   refine IsNilpotent.eq_zero ((PrimeSpectrum.basicOpen_eq_bot_iff _).1 ?_)
@@ -117,7 +117,7 @@ theorem inMM_of_dense_fromSet :
     apply x.isOpenEmbedding.injective
     rw [← hp, ← e]
     rfl
-  have hw : t.HasTh y (fun a => φ.hom (v a)) := e ▸ GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t R K φ.hom x v hth
+  have hw : t.HasTh y (fun a => φ.hom (v a)) := e ▸ _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b S s t R K φ.hom x v hth
   have hs : y ≫ s = spMap (φ.hom.comp β) := by
     rw [← e, Category.assoc, hβ, ← Spec.map_comp]
     rfl

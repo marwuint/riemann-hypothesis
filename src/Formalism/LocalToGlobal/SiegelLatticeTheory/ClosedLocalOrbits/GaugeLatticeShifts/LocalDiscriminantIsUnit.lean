@@ -1729,30 +1729,6 @@ theorem frameGenLoc_of (Z : LocDat D) (hE : LocEqC D Z) (hS : LocSatC D Z) (hD :
 
 section Tied
 
-variable (D) in
-
-def LocTied : Prop := ∀ p : PlF D, Nonempty (Formalism.L2.S.LocIso (D.s.atP p) (Formalism.L2.S.locC D p))
-
-variable (D) in
-
-def LocEqT : Prop := LocTied D → ∀ Z : LocDat D, LocEqC D Z
-
-variable (D) in
-
-def LocSatT : Prop := LocTied D → ∀ Z : LocDat D, LocSatC D Z
-
-variable (D) in
-
-def LocDiffT : Prop := LocTied D → ∀ Z : LocDat D, LocDiffC D Z
-
-variable (D) in
-
-def LocUnimodT : Prop := LocTied D → ∀ Z : LocDat D, LocUnimodC D Z
-
-theorem bbTie_of_tied (hT : LocTied D) (hE : LocEqT D) (hS : LocSatT D) (hD : LocDiffT D) (Z : LocDat D) :
-    BBTie D Z :=
-  bbTie_of Z (hE hT Z) (hS hT Z) (hD hT Z)
-
 theorem frameGenLoc_of' (hDN : Formalism.L2.SG.GramJoint.DNeZeroAt) (Z : LocDat D) (hE : LocEqC D Z)
     (hS : LocSatC D Z) (hD : LocDiffC D Z) (hDu : LocUnimodC D Z)
     {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))

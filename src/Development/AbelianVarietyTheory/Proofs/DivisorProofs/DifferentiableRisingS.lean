@@ -110,8 +110,4 @@ theorem modPt_im_pos {Φ : Type} (φ : I → E →+* ℂ) (e : I ≃ Φ) (θ : E
     Complex.one_im]
   nlinarith [mul_pos h2 (sub_pos.2 h1)]
 
-example (φ : E →+* ℂ) (x : E) :
-    eTerm (fun _ : Unit => φ) (fun _ => 1) 0 0 x = -2 * (starRingEnd ℂ (φ x)) * (φ x)⁻¹ ^ 3 := by
-  simp [eTerm, defCoord]
-
 end GlobalTheory.WeightTwoSum

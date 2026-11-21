@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.CuspDiscreteDecompositionGL
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalKTypeFiniteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalKTypeFinite
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.NotIsFinitePartOfBot
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsOpenIsCompact
 
 noncomputable section
@@ -237,7 +238,7 @@ theorem mem_of_toL2_mem : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyCom
   let P : L2 (latticeGL E a) μ → Prop := fun v => v ∈ H ∧ ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) v = v
   let M : Submodule ℂ (L2 (latticeGL E a) μ) :=
     ⨆ (T : Y₀ →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : (∀ k w, T (ρ k w) = piInf E a μ k (T w)) ∧ ∀ w, P (T w)), LinearMap.range T
-  haveI hMf : FiniteDimensional ℂ M := GlobalTheory.T.cuspidal_K_type_finite E a μ H hcusp hirr U hUo Y₀ ρ
+  haveI hMf : FiniteDimensional ℂ M := _root_.GlobalTheory.CompanionTheory.IsoTypes.finiteDimensional_isotypic E a μ H hcusp hirr U hUo Y₀ ρ
   have hMP : M ≤ H ⊓ fixedBy μ U := iSup₂_le fun T hT => by
     rintro _ ⟨w, rfl⟩
     exact hT.2 w

@@ -31,9 +31,4 @@ theorem mono_j {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) (h
   have := Y.jQ_open
   unfold Model.j; infer_instance
 
-theorem j_over {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) :
-    Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap β := by
-  unfold Model.j
-  rw [Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]
-
 end GlobalTheory.ThetaShiftProofs

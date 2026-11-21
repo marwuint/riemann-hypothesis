@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.KTrivOfLamEq
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsGroupQuotientPullback
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PicardClassTrivialBySeesawStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PicardClassTrivialBySeesaw
 
 noncomputable section
 
@@ -133,7 +133,7 @@ theorem adj_quot {k : Type} [Field k] [IsAlgClosed k] {H : Host E} (tK : SAB H (
   have hGs := tK.semi
   have one_q : ∀ {Z : Over (Sp k)}, (1 : Z ⟶ tK.G) ≫ T.q = 1 := fun {Z} => MonObj.one_comp _
   have c₁ : D (fst T.B tK.G) (snd T.B tK.G ≫ T.q) = 0 := by
-    refine GlobalTheory.T.picard_class_trivial_by_seesaw k tK.G hGs T tK.G hGs.smooth hGs.geomConnected η[tK.G] _ ?_ ?_
+    refine _root_.GlobalTheory.CompanionTheory.TorusPic.pic_inj k tK.G hGs T tK.G hGs.smooth hGs.geomConnected η[tK.G] _ ?_ ?_
     · have e₁ : lift (fst tK.G tK.G ≫ T.q) (snd tK.G tK.G) ≫ fst T.B tK.G = fst tK.G tK.G ≫ T.q := lift_fst _ _
       have e₂ : lift (fst tK.G tK.G ≫ T.q) (snd tK.G tK.G) ≫ snd T.B tK.G ≫ T.q = snd tK.G tK.G ≫ T.q := by
         rw [← Category.assoc, lift_snd]
@@ -152,7 +152,7 @@ theorem adj_quot {k : Type} [Field k] [IsAlgClosed k] {H : Host E} (tK : SAB H (
     rw [Dpull, map_zero, lift_fst, e₂] at h
     exact h
   have c₂ : D (snd T.B T.B) (fst T.B T.B) = 0 := by
-    refine GlobalTheory.T.picard_class_trivial_by_seesaw k tK.G hGs T T.B hB.smooth hB.geomConnected η[T.B] _ ?_ ?_
+    refine _root_.GlobalTheory.CompanionTheory.TorusPic.pic_inj k tK.G hGs T T.B hB.smooth hB.geomConnected η[T.B] _ ?_ ?_
     · have e₁ : lift (fst tK.G T.B ≫ T.q) (snd tK.G T.B) ≫ fst T.B T.B = fst tK.G T.B ≫ T.q := lift_fst _ _
       have e₂ : lift (fst tK.G T.B ≫ T.q) (snd tK.G T.B) ≫ snd T.B T.B = snd tK.G T.B := lift_snd _ _
       rw [Dpull, e₁, e₂]

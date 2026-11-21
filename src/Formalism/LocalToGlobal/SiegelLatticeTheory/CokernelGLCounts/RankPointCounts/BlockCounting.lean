@@ -40,11 +40,6 @@ theorem rv_lt_of_bk_lt {i j : Fin n} (h : bk a i < bk a j) : rv a i < rv a j := 
   rw [bk_rv, bk_rv] at this
   omega
 
-theorem lt_of_bk_lt {i j : Fin n} (h : bk a i < bk a j) : i < j := by
-  by_contra hc
-  have := bk_mono a (not_lt.1 hc)
-  omega
-
 theorem cc_rv (i : Fin n) : cc a (rv a i) = cc a i := by unfold cc; rw [bk_rv]
 
 theorem cc_unit (i : Fin n) : IsUnit (cc a i) := Units.isUnit _
@@ -195,17 +190,6 @@ theorem matI_mul : matI a * a.mat = 1 := by
     · rw [if_neg h, if_neg (Ne.symm h), mul_zero]
   · intro k _ hk
     rw [matI, if_neg hk, zero_mul]
-  · simp
-
-theorem mat_mul_matI : a.mat * matI a = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Finset.sum_eq_single (rv a i)]
-  · rw [mat_apply, if_pos rfl, matI, Matrix.one_apply, ccU_rv]
-    by_cases h : j = i
-    · subst h; rw [if_pos (rv_rv a j).symm, if_pos rfl, cc_eq]; exact Units.mul_inv _
-    · rw [if_neg (fun e => h (by rw [e, rv_rv])), if_neg (Ne.symm h), mul_zero]
-  · intro k _ hk
-    rw [mat_apply, if_neg hk, zero_mul]
   · simp
 
 theorem bd_of_stab {l ρ : Matrix (Fin n) (Fin n) R} (hl : IsLoUni l) (hρ : IsUpUni ρ)

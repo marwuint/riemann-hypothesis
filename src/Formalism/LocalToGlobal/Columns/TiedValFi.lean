@@ -17,22 +17,6 @@ def InvAt (F : S.Cl → E.Y → ℂ) : Prop :=
   ∀ c, F c ∈ Submodule.span ℂ (Set.range E.ev) ∧
     ∀ γ : S.G, γ ∈ MulAction.stabilizer S.G (S.outSec.rep c) → E.tr γ (F c) = F c
 
-theorem invAt_of_mem_Fi {F : S.Cl → E.Y → ℂ} (hF : F ∈ E.Fi) : E.InvAt F := by
-  unfold Fi at hF
-  induction hF using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨φ, rfl⟩ := hx
-    intro c
-    refine ⟨Submodule.subset_span ⟨_, rfl⟩, fun γ hγ => ?_⟩
-    rw [emb_apply, E.tr_ev, ← φ.2 γ, MulAction.mem_stabilizer_iff.1 hγ]
-  | zero => exact fun c => ⟨zero_mem _, fun γ _ => map_zero _⟩
-  | add x y _ _ hx hy =>
-    exact fun c => ⟨add_mem (hx c).1 (hy c).1, fun γ hγ => by
-      rw [Pi.add_apply, map_add, (hx c).2 γ hγ, (hy c).2 γ hγ]⟩
-  | smul a x _ hx =>
-    exact fun c => ⟨Submodule.smul_mem _ _ (hx c).1, fun γ hγ => by
-      rw [Pi.smul_apply, map_smul, (hx c).2 γ hγ]⟩
-
 theorem span_ev_le_range_lin : Submodule.span ℂ (Set.range E.ev) ≤ LinearMap.range E.lin := by
   rw [Submodule.span_le]
   rintro _ ⟨x, rfl⟩
@@ -128,9 +112,6 @@ theorem mem_Fi_of_invAt (h : S.Ok) {F : S.Cl → E.Y → ℂ} (hF : E.InvAt F) :
   rw [key]
   exact Submodule.sum_mem _ fun c _ => Submodule.sum_mem _ fun i _ =>
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
-
-theorem mem_Fi_iff (h : S.Ok) (F : S.Cl → E.Y → ℂ) : F ∈ E.Fi ↔ E.InvAt F :=
-  ⟨E.invAt_of_mem_Fi, E.mem_Fi_of_invAt h⟩
 
 end GSD.Ev
 

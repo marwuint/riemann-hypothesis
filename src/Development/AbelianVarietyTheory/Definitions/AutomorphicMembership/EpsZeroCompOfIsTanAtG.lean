@@ -189,11 +189,6 @@ theorem ext {L L' : Lat B} (h : ∀ V, L.N.sec V = L'.N.sec V) : L = L' := by
   obtain rfl : N = N' := funext h
   rfl
 
-theorem isTop_iff {L : Lat B} : L.IsTop ↔ L = top B := by
-  refine ⟨fun hL => ext fun V => (hL V).trans (isTop_top V).symm, ?_⟩
-  rintro rfl
-  exact isTop_top
-
 end Lat
 
 variable (Y i₀) in
@@ -228,9 +223,6 @@ open Classical in
 
 def stepTy (s : Finset (Step Y i₀)) (σ : E →+* ℂ) : Finset ℕ := (s.filter fun t => t.σ = σ).image Step.k
 
-theorem mem_stepTy {s : Finset (Step Y i₀)} {σ : E →+* ℂ} {r : ℕ} : r ∈ stepTy s σ ↔ ∃ t ∈ s, t.σ = σ ∧ t.k = r := by
-  simp [stepTy, and_assoc]
-
 def IsFlagCl (Z : Mdl Y i₀) (s : Finset (Step Y i₀)) (Z' : Mdl Y i₀) : Prop :=
   Z'.i = Z.i ∧ (∀ σ, Z'.ty σ = Z.ty σ ∪ stepTy s σ) ∧ (∃ f, IsMap Z' Z f) ∧ (∀ t ∈ s, t.Holds Z') ∧
     ∀ Z'' : Mdl Y i₀, (∃ g, IsMap Z'' Z g) → (∀ t ∈ s, t.Holds Z'') → ∃ h, IsMap Z'' Z' h
@@ -238,18 +230,6 @@ def IsFlagCl (Z : Mdl Y i₀) (s : Finset (Step Y i₀)) (Z' : Mdl Y i₀) : Pro
 open Classical in
 
 def flagClosure (Z : Mdl Y i₀) (s : Finset (Step Y i₀)) : Mdl Y i₀ := if h : ∃ Z', IsFlagCl Z s Z' then h.choose else Z
-
-theorem isFlagCl_flagClosure {Z : Mdl Y i₀} {s : Finset (Step Y i₀)} (h : ∃ Z', IsFlagCl Z s Z') :
-    IsFlagCl Z s (flagClosure Z s) := by
-  rw [flagClosure, dif_pos h]
-  exact h.choose_spec
-
-theorem isFlagCl_empty {Z : Mdl Y i₀} (h : ∃ f, IsMap Z Z f) : IsFlagCl Z ∅ Z :=
-  ⟨rfl, fun σ => by simp [stepTy], h, by simp, fun _ hg _ => hg⟩
-
-theorem IsFlagCl.exists_isMap {Z Z₁ Z₂ : Mdl Y i₀} {s : Finset (Step Y i₀)} (h₁ : IsFlagCl Z s Z₁) (h₂ : IsFlagCl Z s Z₂) :
-    ∃ f, IsMap Z₁ Z₂ f :=
-  h₂.2.2.2.2 Z₁ h₁.2.2.1 h₁.2.2.2.1
 
 open Classical in
 
@@ -265,17 +245,6 @@ theorem mem_allSteps {B : Mdl Y i₀} {L : Lat B} {t : Step Y i₀} :
     exact ⟨σ, r, _, rfl⟩
   · rintro ⟨σ, r, hr, rfl⟩
     exact Finset.mem_image.2 ⟨⟨σ, ⟨r, Nat.lt_succ_iff.2 hr⟩⟩, Finset.mem_univ _, rfl⟩
-
-theorem stepTy_allSteps {B : Mdl Y i₀} (L : Lat B) (σ : E →+* ℂ) :
-    stepTy (allSteps L) σ = Finset.range (Dw.mult σ + 1) := by
-  ext r
-  rw [mem_stepTy, Finset.mem_range]
-  constructor
-  · rintro ⟨t, ht, rfl, rfl⟩
-    obtain ⟨σ', r', hr', rfl⟩ := mem_allSteps.1 ht
-    exact Nat.lt_succ_iff.2 hr'
-  · intro h
-    exact ⟨⟨B, L, σ, r, Nat.lt_succ_iff.1 h⟩, mem_allSteps.2 ⟨σ, r, _, rfl⟩, rfl, rfl⟩
 
 theorem allSteps_ne_empty {B : Mdl Y i₀} (L : Lat B) : allSteps L ≠ ∅ := by
   intro h
@@ -314,33 +283,13 @@ open Classical in
 def At.flagCl (ct : At S κ p) (Z : ct.Mdl) (s : Finset (Step ct.Y ⟨κ.l, κ.c, κ.good p ct.hp⟩)) : ct.Mdl :=
   if s = ∅ then Z else if s = allSteps (Lat.top Z) ∧ IsDRFlag Z ct.YY then ct.YY else flagClosure Z s
 
-theorem At.flagCl_empty (ct : At S κ p) (Z : ct.Mdl) : ct.flagCl Z ∅ = Z := by
-  simp [At.flagCl]
-
 theorem At.flagCl_allSteps (ct : At S κ p) : ct.flagCl ct.Xm (allSteps (Lat.top ct.Xm)) = ct.YY := by
   rw [At.flagCl, if_neg (allSteps_ne_empty _), if_pos ⟨rfl, ct.isYY⟩]
-
-theorem At.isFlagCl_flagCl (ct : At S κ p) (Z : ct.Mdl) (s : Finset (Step ct.Y ⟨κ.l, κ.c, κ.good p ct.hp⟩))
-    (hid : ∃ f, IsMap Z Z f) (hdr : IsDRFlag Z ct.YY → IsFlagCl Z (allSteps (Lat.top Z)) ct.YY)
-    (hex : ∃ Z', IsFlagCl Z s Z') : IsFlagCl Z s (ct.flagCl Z s) := by
-  rw [At.flagCl]
-  split_ifs with h₀ h₁
-  · subst h₀
-    exact isFlagCl_empty hid
-  · obtain ⟨rfl, h₂⟩ := h₁
-    exact hdr h₂
-  · exact isFlagCl_flagClosure hex
 
 def flgOf (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) : FlgSt ct where
   FlagData := FlagFam P
   flagCl Z s := ct.flagCl Z s.1
   allFlags := FlagFam.deRham ct.Xm
   YY_eq := ct.flagCl_allSteps.symm
-
-example (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) (Z : ct.Mdl) :
-    (flgOf ct P).flagCl Z (FlagFam.empty Z) = Z := ct.flagCl_empty Z
-
-example (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) (σ : D.host.E →+* ℂ) :
-    stepTy (flgOf ct P).allFlags.1 σ = ct.YY.ty σ := (stepTy_allSteps _ σ).trans (ct.isYY.2.1.1 σ).symm
 
 end GlobalTheory.LocM

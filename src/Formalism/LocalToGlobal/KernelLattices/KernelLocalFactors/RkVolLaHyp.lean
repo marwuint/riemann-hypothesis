@@ -15,7 +15,11 @@ import Formalism.LocalToGlobal.KernelLattices.ColumnData
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.BaseLinkOfNonzeroDelta
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.BaseExP
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ProvisionExtensionLink
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.Imports
+import Mathlib
+import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardTrivialFirstComponent
+import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
+import Development.AutomorphicArithmetic.WeightCongruences.IsRootOfIntegral
+import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.MuCardLeTwo
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.DetIdealsKernelNormOne
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsAdmissibleFlagPairOfUnitriangularLeftAutomorph
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.GMConjTranspose
@@ -48,7 +52,6 @@ import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqL
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqLMain
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqLMat
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqLTop
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.PolFamInhabited
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.RightMoveTrianglesOfUnit
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.Family
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.HfArith
@@ -60,7 +63,6 @@ import Formalism.LocalToGlobal.KernelLattices.ColumnData.IopIso
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IopNorm
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsometryLinkageTrivialLevel
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsometryLinkageAtSplitPrime
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.LinkChi
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.LinkThIndep
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.LinkThU
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.SelfDual
@@ -267,12 +269,6 @@ theorem aa_unit_at (P : HeightOneSpectrum (𝓞 X.E)) (hb : s.PrimeTo D.host.�
 
 end IdealS
 
-section NatS
-
-variable {D : Car} {X : Fields} (s : Seam D X)
-
-end NatS
-
 section Main
 
 variable {D : Car} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : Formalism.L2.Ker.Cd.TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
@@ -304,24 +300,5 @@ theorem laHyp_ambOf_top {δ : ℂ} (B : Base D (⊤ : Ideal (𝓞 D.host.K)) δ)
     (fun P _ => by rw [Ideal.map_top]; exact primeTo_top s P)
 
 end Main
-
-section Bad
-
-open Formalism.EigenvalueLevelCeiling (plc)
-
-variable {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
-
-variable {sel}
-
-variable (sel)
-
-end Bad
-
-section Chain
-
-variable {D : Car} {X : Fields} {Pr : Primes X} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : Formalism.L2.Ker.Cd.TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
-
-end Chain
 
 end Formalism.L2.Ker.Cd

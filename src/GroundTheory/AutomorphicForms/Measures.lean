@@ -281,61 +281,6 @@ theorem integral_mul_prod_eq [TotallyDisconnectedSpace G] (P K : Subgroup G)
 
 end General
 
-section GeneralLinear
-
-variable (F : Type*) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
-  (n : ℕ) {α : Type*} [LinearOrder α] {β : Fin n → α}
-
-variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
-
-theorem lintegral_parabolic_integralGL (hβ : Monotone β) (μG : Measure (GL (Fin n) F))
-    [μG.IsHaarMeasure] (μP : Measure (Iwasawa.blockUpper F n β)) [μP.IsHaarMeasure]
-    (μK : Measure (GLnLocal.integralGL F n)) [μK.IsHaarMeasure] {f : GL (Fin n) F → ℝ≥0∞}
-    (hf : Measurable f) :
-    μG (GLnLocal.integralGL F n) * ∫⁻ p, ∫⁻ k, f ((p : GL (Fin n) F) * k) ∂μK ∂μP =
-      μP (Subtype.val ⁻¹' (GLnLocal.integralGL F n : Set (GL (Fin n) F))) * μK univ *
-        ∫⁻ g, f g ∂μG :=
-  lintegral_mul_prod_eq _ _ (isClosed_blockUpper F n β) (GLnLocal.isOpen_integralGL F n)
-    (GLnLocal.isCompact_integralGL F n) (Iwasawa.exists_blockUpper_mul_integralGL F n hβ)
-    μG μP μK hf
-
-theorem lintegral_eq_lintegral_parabolic_integralGL (hβ : Monotone β)
-    (μG : Measure (GL (Fin n) F)) [μG.IsHaarMeasure] (μP : Measure (Iwasawa.blockUpper F n β))
-    [μP.IsHaarMeasure] (μK : Measure (GLnLocal.integralGL F n)) [μK.IsHaarMeasure]
-    (hG : μG (GLnLocal.integralGL F n) = 1)
-    (hP : μP (Subtype.val ⁻¹' (GLnLocal.integralGL F n : Set (GL (Fin n) F))) = 1)
-    (hK : μK univ = 1) {f : GL (Fin n) F → ℝ≥0∞} (hf : Measurable f) :
-    ∫⁻ g, f g ∂μG = ∫⁻ p, ∫⁻ k, f ((p : GL (Fin n) F) * k) ∂μK ∂μP := by
-  have h := lintegral_parabolic_integralGL F n hβ μG μP μK hf
-  rw [hG, hP, hK, one_mul, one_mul, one_mul] at h
-  exact h.symm
-
-theorem integral_parabolic_integralGL (hβ : Monotone β) (μG : Measure (GL (Fin n) F))
-    [μG.IsHaarMeasure] (μP : Measure (Iwasawa.blockUpper F n β)) [μP.IsHaarMeasure]
-    (μK : Measure (GLnLocal.integralGL F n)) [μK.IsHaarMeasure] {E : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E] {f : GL (Fin n) F → E}
-    (hf : Integrable f μG) :
-    μG.real (GLnLocal.integralGL F n) • ∫ p, ∫ k, f ((p : GL (Fin n) F) * k) ∂μK ∂μP =
-      (μP.real (Subtype.val ⁻¹' (GLnLocal.integralGL F n : Set (GL (Fin n) F))) * μK.real univ) •
-        ∫ g, f g ∂μG :=
-  integral_mul_prod_eq _ _ (isClosed_blockUpper F n β) (GLnLocal.isOpen_integralGL F n)
-    (GLnLocal.isCompact_integralGL F n) (Iwasawa.exists_blockUpper_mul_integralGL F n hβ)
-    μG μP μK hf
-
-theorem integral_eq_integral_parabolic_integralGL (hβ : Monotone β)
-    (μG : Measure (GL (Fin n) F)) [μG.IsHaarMeasure] (μP : Measure (Iwasawa.blockUpper F n β))
-    [μP.IsHaarMeasure] (μK : Measure (GLnLocal.integralGL F n)) [μK.IsHaarMeasure]
-    (hG : μG (GLnLocal.integralGL F n) = 1)
-    (hP : μP (Subtype.val ⁻¹' (GLnLocal.integralGL F n : Set (GL (Fin n) F))) = 1)
-    (hK : μK univ = 1) {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
-    {f : GL (Fin n) F → E} (hf : Integrable f μG) :
-    ∫ g, f g ∂μG = ∫ p, ∫ k, f ((p : GL (Fin n) F) * k) ∂μK ∂μP := by
-  have h := integral_parabolic_integralGL F n hβ μG μP μK hf
-  simp only [Measure.real, hG, hP, hK, ENNReal.toReal_one, one_mul, one_smul] at h
-  exact h.symm
-
-end GeneralLinear
-
 end Measures
 
 end GroundTheory.Automorphic

@@ -501,19 +501,4 @@ theorem serre_finiteness_vanishing (R : Type) [CommRing R] [IsNoetherianRing R] 
     exact ⟨hA.finite_coh hf F, H, fun L hL => ⟨fun n => H _ (isLB_lbZPow hL.isLB n),
       hL.eventually_subsingleton_coh_twistZ hf F, hL.eventually_subsingleton_coh_twist hf F⟩⟩
 
-example :
-    letI := algebraΓOfHom (PSpace.str ℤ 2)
-    ∀ᶠ n : ℤ in atTop, ∀ p, 0 < p →
-      Subsingleton (coh (twistZ (QCoh.structureModule _) (ProjSpace.O1 ℤ 2) n) p) :=
-  letI := algebraΓOfHom (PSpace.str ℤ 2)
-  eventually_subsingleton_coh_twistZ_of_isProjOver (f := PSpace.str ℤ 2) (fun _ => rfl) _
-    ⟨2, 𝟙 _, inferInstance, Category.id_comp _⟩ (isAmple_projective_O_one ℤ 2)
-
-example (k : Type) [Field k] (N : ℕ) :
-    letI := algebraΓOfHom (PSpace.str k N)
-    FiniteCohTwists k (QCoh.structureModule (PSpace k N)) :=
-  letI := algebraΓOfHom (PSpace.str k N)
-  finiteCohTwists_of_isProjOver (f := PSpace.str k N) (fun _ => rfl) _
-    ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩
-
 end GlobalTheory

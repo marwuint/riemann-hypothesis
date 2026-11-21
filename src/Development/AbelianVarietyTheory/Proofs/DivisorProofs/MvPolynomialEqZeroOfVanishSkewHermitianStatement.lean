@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPolynomialEqZeroOfVanishSkewHermitian
-import Mathlib
 import Formalism.SatakeDualWeyl.Statement
+
 set_option autoImplicit false
 noncomputable section
 open NumberField

@@ -3,17 +3,18 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.ExpToSat
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriTraceOfBorelCasselman
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocallyConstantOrbit
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeEigenFiniteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeEigenFinite
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorHeckeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorEigenStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorEigen
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorEigenRealStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractionFixedStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubEigenTailHeckeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractionFixed
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubEigenTailHecke
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetCountTailStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusExponentTailStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardBlocksExponentStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaBlocksExponentStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentToSaturationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusExponentTail
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardBlocksExponent
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaBlocksExponent
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentToSaturation
 
 noncomputable section
 
@@ -153,8 +154,8 @@ theorem rExpRead_of (h0 : PExp.HkEFin) (h1 : PExp.TensHk) (h2 : PExp.TensEig) (h
     exact (hA Pb y hy _).symm.trans (hBu ⟨y, hy⟩)
 
 theorem rExpRead : RExpRead :=
-  rExpRead_of GlobalTheory.T.hecke_eigen_finite GlobalTheory.T.tensor_hecke GlobalTheory.T.tensor_eigen GlobalTheory.T.tensor_eigen_real GlobalTheory.T.contraction_fixed GlobalTheory.T.sub_eigen_tail_hecke GlobalTheory.T.coset_count_tail
-    GlobalTheory.T.torus_exponent_tail GlobalTheory.T.delta_blocks_exponent GlobalTheory.T.exponent_to_saturation
+  rExpRead_of _root_.GlobalTheory.CompanionTheory.HeckeEnd.hkE_fin GlobalTheory.T.tensor_hecke _root_.GlobalTheory.CompanionTheory.TensContr.tensEig GlobalTheory.T.tensor_eigen_real _root_.GlobalTheory.CompanionTheory.RepTensor.contrFix _root_.GlobalTheory.CompanionTheory.SubEigIrr.subEig GlobalTheory.T.coset_count_tail
+    _root_.GlobalTheory.CompanionTheory.TorusExpU.torusExp _root_.GlobalTheory.CompanionTheory.DlBridgeAt.dlBridge _root_.GlobalTheory.CompanionTheory.ExpProd.expToSat
 
 end PositivityTheory.Rg.BcB.F.Tail
 

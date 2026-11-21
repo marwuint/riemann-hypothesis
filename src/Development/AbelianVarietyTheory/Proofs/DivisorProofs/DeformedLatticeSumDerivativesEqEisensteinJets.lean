@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasLevelStd
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeformedLatticeValueEqHilbertEisensteinValueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeformedLatticeValueEqHilbertEisensteinValue
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IterDEqOfEventuallyEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedPartialDerivConstMulReindex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertEisensteinLatticeValueEqOfIsValue
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivativeEqHilbertEisensteinJetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivativeEqHilbertEisensteinJet
 open NumberField UpperHalfPlane GlobalTheory.HilbFam GlobalTheory.QFam
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization (Emb Frac latM qPow upperHalf cK omegaFactor IsPartialZeta HasExpansion)
 open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (iterD partialD)
@@ -35,7 +35,7 @@ theorem iterD_defSum_eq_jet : EisExp → ∀ (E : Type) [Field E] [NumberField E
       rw [Metric.mem_ball, dist_zero_right] at hz
       exact lt_of_le_of_lt this hz
     obtain ⟨G, hG, hgz⟩ := hg z hzp
-    have hv := GlobalTheory.T.deformedLattice_value_eq_hilbertEisenstein_value E I φ e θ τ Λ L n (2 * s) z G hI ⟨s, two_mul s⟩ hφ hθ hn hLΛ hG
+    have hv := _root_.GlobalTheory.HilbFam.BrVal.isGVal_of_isEisValue E I φ e θ τ Λ L n (2 * s) z G hI ⟨s, two_mul s⟩ hφ hθ hn hLΛ hG
     have hu' := GlobalTheory.HilbFam.gval_eq_of_isGVal (FR E) (2 * s) L _ _ _ hv
     simp only [hW]
     rw [hu', hgz]
@@ -49,7 +49,7 @@ theorem iterD_defSum_eq_jet : EisExp → ∀ (E : Type) [Field E] [NumberField E
     rw [← hu (e.symm j)]
     conv_lhs => rw [← e.apply_symm_apply j]
     convert List.count_map_of_injective u e e.injective (e.symm j)
-  have := GlobalTheory.T.iterated_derivative_eq_hilbert_eisenstein_jet hE (FR E) hf s N L hs hN hL τ 1 (starRingEnd ℂ (τ : ℂ) - τ) (fun j ↦ κ (e.symm j)) (u.map e) τ.im_pos hc
+  have := _root_.GlobalTheory.HilbFam.iterD_eq_jet_of_count hE (FR E) hf s N L hs hN hL τ 1 (starRingEnd ℂ (τ : ℂ) - τ) (fun j ↦ κ (e.symm j)) (u.map e) τ.im_pos hc
   exact this
 
 end GlobalTheory.HilbFam

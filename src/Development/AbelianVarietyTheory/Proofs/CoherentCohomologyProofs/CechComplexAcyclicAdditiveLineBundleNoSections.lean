@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CubeTotalC
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.AbelianProjectiveBaseChange
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechLBHomologyZeroEquivSections
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechLBHomologyFiniteOfAffineCover
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.FinrankCechLBHomologyExtProdStatement
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.FinrankCechLBHomologyExtProd
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry DirectSum TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
@@ -97,9 +97,9 @@ theorem cechLB_acyclic_of_additive : ∀ (K : Type) [Field K] [IsAlgClosed K] (P
   obtain ⟨k, E, hE, hE'⟩ := exists_fin_affine_cover (P.A ⊗ P.A).left
   have finM := cechLB_homology_finite_of_affine_cover K _ P.A.hom M κ D hM hsep hproj hD hD'
   have finO := cechLB_homology_finite_of_affine_cover K _ P.A.hom _ κ D hO hsep hproj hD hD'
-  have k₀ := GlobalTheory.T.finrank_cechLB_homology_extProd_alt K _ _ _ _ _ _ _ M M h₀ hM hM hsep hsep κ D κ D _ E hD hD' hD hD' hE hE'
+  have k₀ := _root_.GlobalTheory.AbLaw.finrank_cechLB_homology_extProd K _ _ _ _ _ _ _ M M h₀ hM hM hsep hsep κ D κ D _ E hD hD' hD hD' hE hE'
     finM finM
-  have k₁ := GlobalTheory.T.finrank_cechLB_homology_extProd_alt K _ _ _ _ _ _ _ M _ h₁ hM hO hsep hsep κ D κ D _ E hD hD' hD hD' hE hE'
+  have k₁ := _root_.GlobalTheory.AbLaw.finrank_cechLB_homology_extProd K _ _ _ _ _ _ _ M _ h₁ hM hO hsep hsep κ D κ D _ E hD hD' hD hD' hE hE'
     finM finO
   have hf : μ[P.A].left ≫ P.A.hom = (fst P.A P.A).left ≫ P.A.hom :=
     (Over.w μ[P.A]).trans (Over.w (fst P.A P.A)).symm

@@ -59,7 +59,4 @@ theorem isNef_pow : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k
       H.point Z i hc hd r₀ hr₀]
     exact mul_nonneg (Nat.cast_nonneg _) h0
 
-example : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
-    IsArithVar p D → ∀ (M : HermLB p) (n : ℕ), M.IsNef D → (M.pow n).IsNef D := isNef_pow
-
 end GlobalTheory.NefPow

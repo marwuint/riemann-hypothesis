@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyDegreeEqCardKernelOfKilledByInvertibleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyIntCastSmulIsogenyDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyDegreeEqCardKernelOfKilledByInvertible
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyIntCastSmulIsogenyDegree
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -20,12 +20,12 @@ theorem card_torsion_pt (K : Type) [Field K] (A : AbVar K) (n : ℕ) (hn : (n : 
     Nat.card {x : A.Pt // x ^ n = 1} = n ^ (2 * A.dim) := by
   have hn0 : (n : ℤ) ≠ 0 := by
     intro h; apply hn; simp at h; simp [h]
-  obtain ⟨hiso, hdeg⟩ := GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree K A (n : ℤ) hn0
+  obtain ⟨hiso, hdeg⟩ := _root_.GlobalTheory.MulIsogeny.mul_isogeny K A (n : ℤ) hn0
   have hf : ((n : ℤ) • 𝟙 A).hom = (𝟙 A.X) ^ n := by
     rw [natCast_zsmul, nsmul_hom, id_hom]
   have hker : ∀ {T : Over (Sp K)} (x : T ⟶ A.X), x ≫ ((n : ℤ) • 𝟙 A).hom = x ^ n := by
     intro T x; rw [hf, comp_pow_id_torscard]
-  have hd := GlobalTheory.T.isogenyDegree_eq_card_kernel_of_killed_by_invertible K A A ((n : ℤ) • 𝟙 A) n hn hiso (fun T x hx => by rw [← hker]; exact hx)
+  have hd := _root_.GlobalTheory.AV.DegSep.deg_eq_card_ker_of_killed K A A ((n : ℤ) • 𝟙 A) n hn hiso (fun T x hx => by rw [← hker]; exact hx)
   rw [hdeg, Int.natAbs_natCast] at hd
   rw [hd]
   apply Nat.card_congr

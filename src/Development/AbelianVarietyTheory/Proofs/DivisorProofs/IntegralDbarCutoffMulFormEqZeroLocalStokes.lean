@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothFormsCalculusHolomorphicAtlasStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralEqEuclideanIntegralOfSupportInChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothFormsCalculusHolomorphicAtlas
+import Development.AbelianVarietyTheory.Definitions.Divisors.LineSCShortExact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralEqEuclideanIntegralOfSupportInChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralReTopDegreeDensityDbarEqZeroStatement
 
 set_option autoImplicit false
@@ -52,7 +53,7 @@ theorem integral_dbar_fn_mul_eq_zero : ∀ {M : Type} [TopologicalSpace M] [Comp
   intro M _ _ _ _ _ _ n A γ χ i hγ hχ hK
   set K := tsupport χ with hKdef
   have hKc : IsCompact K := (isClosed_tsupport χ).isCompact
-  have calc0 := (GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.1 0
+  have calc0 := (_root_.GlobalTheory.formCalculus M n A).2.1 0
   have hP : A.IsForm (A.fn χ * γ) := (calc0 _ _ (A.isForm_fn hχ) hγ).2.1
   have hω : A.IsForm (A.dbar (A.fn χ * γ)) := (calc0 _ _ hP hγ).2.2.2.2.1
 
@@ -66,7 +67,7 @@ theorem integral_dbar_fn_mul_eq_zero : ∀ {M : Type} [TopologicalSpace M] [Comp
     intro x hx
     refine dbarAt_eq_zero_of_eventually (hnear _ _ (x.ch.map_source x.2) ?_)
     rwa [x.ch.left_inv x.2]
-  rw [GlobalTheory.T.integral_eq_euclidean_integral_of_support_in_chart A _ i K hω hKc hK hvan]
+  rw [_root_.GlobalTheory.CxForm.HolAtlas.integral_eq_integral_chart_of_support A _ i K hω hKc hK hvan]
 
   set F := A.loc (A.fn χ * γ) i with hFdef
   set B : Set (V n) := A.e i '' K with hBdef

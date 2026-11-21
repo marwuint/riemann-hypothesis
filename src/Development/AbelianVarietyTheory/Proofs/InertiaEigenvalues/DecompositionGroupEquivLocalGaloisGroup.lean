@@ -6,7 +6,10 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CompletionDegrees.MemIn
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CompletionDegrees.ExistsDen
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CompletionDegrees.IsEquivAdicAbvNormAbv
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CompletionDegrees.SpanLIsMaximal
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDecompositionGroupEquivPadicGaloisStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDecompositionGroupEquivPadicGalois
+import Formalism.GaloisCohomology.LocalTateDualityK
+import ReciprocityTheory.Hypotheses.GalCohDefs
+import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalInertiaIffMemPlaceInertiaStatement
 
 noncomputable section
@@ -87,7 +90,7 @@ theorem decEquiv : ReciprocityTheory.ChartRestriction.T2.DecEquiv := by
   have : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F
   obtain ⟨w, hw, hAw⟩ := exists_place_below (F := F) A hp
   obtain ⟨j, hj⟩ := GlobalTheory.PlaceBridge.exists_embedding F Ω w A hw hAw
-  obtain ⟨i, hi⟩ := GlobalTheory.T.exists_decompositionGroup_equiv_padicGalois p F Ω A j hj
+  obtain ⟨i, hi⟩ := _root_.GlobalTheory.DecGalois.exists_continuousMulEquiv p F Ω A j hj
   refine ⟨_, GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range (j.comp (algebraMap F Ω)), i, ?_,
     fun g => GlobalTheory.T.localInertia_iff_mem_placeInertia p F Ω A j hj _ i.toMulEquiv hi g,
     fun v hv => finrank_closure_eq_locDeg p F Ω A j hj v hv⟩

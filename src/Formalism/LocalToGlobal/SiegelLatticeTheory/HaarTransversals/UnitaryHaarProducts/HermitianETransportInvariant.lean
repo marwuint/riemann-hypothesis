@@ -1075,10 +1075,6 @@ theorem hE_symm (x y : Fin X.B.I.n → X.B.I.E) : hE X y x = star (hE X x y) := 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
-theorem hE_smul_left (x y : Fin X.B.I.n → X.B.I.E) (c : X.B.I.E) : hE X (c • x) y = star c * hE X x y := by
-  simp only [hE, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, starRingEnd_apply, Finset.mul_sum]
-  exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
-
 theorem hE_add_left (x x' y : Fin X.B.I.n → X.B.I.E) : hE X (x + x') y = hE X x y + hE X x' y := by
   simp only [hE, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
@@ -1215,15 +1211,6 @@ theorem hE_span_left (s w : Fin X.B.I.n → X.B.I.E) (hs : s ∈ Submodule.span 
   show star (hEl X w (∑ b, hE X (X.fR b) s • X.eR b)) = 0
   rw [map_sum]
   simp only [map_smul, smul_eq_mul, hEl_apply, hw', mul_zero, Finset.sum_const_zero, star_zero]
-
-theorem hE_span_right (x s : Fin X.B.I.n → X.B.I.E) (hs : s ∈ Submodule.span X.B.I.E (Set.range X.eR))
-    (hx : ∀ a, hE X x (X.eR a) = 0) : hE X x s = 0 := by
-  rw [span_repr_E X s hs]
-  show hEl X x (∑ b, hE X (X.fR b) s • X.eR b) = 0
-  rw [map_sum]
-  simp only [map_smul, smul_eq_mul, hEl_apply, hx, mul_zero, Finset.sum_const_zero]
-
-theorem e_mem_span (a : Fin D.R.rS) : X.eR a ∈ Submodule.span X.B.I.E (Set.range X.eR) := Submodule.subset_span ⟨a, rfl⟩
 
 theorem unit_of_form (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)
     (hM : ∀ x y, hE X (M *ᵥ x) (M *ᵥ y) = hE X x y) :

@@ -39,21 +39,6 @@ theorem rmul_meas (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
   simp only [Formalism.FourierDecayAlt.B.rmulF, Matrix.mul_apply, Matrix.of_apply]
   exact continuous_finset_sum _ fun l _ => by fun_prop
 
-theorem isHaarOn_UWset_of_isHaarOn_of_univ_eq_one {z : Fin (2 * r + k + 1) → ℂ} {μW : Measure (Mt k r)} (hz : inWb k r z) (hT : 0 < Tz k r z)
-    (hμ : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (h1 : μW Set.univ = 1) :
-    Formalism.FourierDecayAlt.B.IsHaarOn (UWset k r z) μW := by
-  have : IsFiniteMeasure μW := ⟨by rw [h1]; exact ENNReal.one_lt_top⟩
-  obtain ⟨μ0, h0⟩ := Formalism.FourierDecayAlt.P.weyl_haar_exists k r z hz hT
-  obtain ⟨c, hc⟩ := Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar k r (UWset k r z) μ0 μW
-    (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) h0 hμ.2.2.1 hμ.2.2.2 (fun K _ => measure_lt_top _ _)
-  refine ⟨hμ.2.2.1, hμ.2.2.2, fun a ha => ?_, fun K _ => measure_lt_top _ _, hμ.2.1⟩
-  rw [hc, Measure.map_smul, h0.right a ha]
-
-theorem measPresW_right {z : Fin (2 * r + k + 1) → ℂ} {μW : Measure (Mt k r)} (hz : inWb k r z)
-    (hT : 0 < Tz k r z) (hμ : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (h1 : μW Set.univ = 1) :
-    ∀ h ∈ UWset k r z, MeasurePreserving (fun x : Mt k r => fun i j => (Matrix.of x * h) i j) μW μW :=
-  fun h hh => ⟨rmul_meas h, (isHaarOn_UWset_of_isHaarOn_of_univ_eq_one hz hT hμ h1).right h hh⟩
-
 theorem hsN_cont : Continuous (fun y : Mt k r => Formalism.MainNotions.GrowthW.hsN (Matrix.of y)) := by
   unfold Formalism.MainNotions.GrowthW.hsN
   simp only [Matrix.of_apply]

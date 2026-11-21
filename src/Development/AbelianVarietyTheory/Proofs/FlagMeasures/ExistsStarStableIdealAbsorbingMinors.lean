@@ -46,36 +46,6 @@ omit [NumberField K] in
 
 theorem coe_sig (x : 𝓞 K) : ((sig K x : 𝓞 K) : K) = star (x : K) := rfl
 
-omit [NumberField K] in
-
-theorem star_mem_one {x : K} (hx : x ∈ (1 : Submodule (𝓞 K) K)) : star x ∈ (1 : Submodule (𝓞 K) K) := by
-  obtain ⟨y, rfl⟩ := Submodule.mem_one.1 hx
-  exact Submodule.mem_one.2 ⟨sig K y, rfl⟩
-
-theorem star_mem_ipow {𝔡 : Ideal (𝓞 K)} (h : 𝔡 ≠ ⊥) (hs : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) (n : ℤ) :
-    ∀ x ∈ ipow 𝔡 n, star x ∈ ipow 𝔡 n := by
-  have hm : 𝔡.map (sig K : 𝓞 K →+* 𝓞 K) ≤ 𝔡 := by
-    rw [Ideal.map_le_iff_le_comap]
-    intro x hx
-    obtain ⟨y, hy, e⟩ := hs x hx
-    have : y = sig K x := by ext; rw [e, coe_sig]
-    rw [Ideal.mem_comap]
-    exact this ▸ hy
-  have hn : ∀ n : ℕ, ∀ x ∈ ipow 𝔡 n, star x ∈ ipow 𝔡 n := by
-    intro n x hx
-    obtain ⟨d, hd, rfl⟩ := (mem_ipow_nat 𝔡 n x).1 hx
-    refine (mem_ipow_nat 𝔡 n _).2 ⟨sig K d, ?_, rfl⟩
-    have := Ideal.mem_map_of_mem (sig K : 𝓞 K →+* 𝓞 K) hd
-    rw [Ideal.map_pow] at this
-    exact Ideal.pow_right_mono hm n this
-  obtain ⟨m, rfl | rfl⟩ := n.eq_nat_or_neg
-  · exact hn m
-  · intro x hx
-    rw [mem_ipow_iff h, neg_neg] at hx ⊢
-    intro u hu
-    have := star_mem_one (hx _ (hn m u hu))
-    rwa [star_mul', star_star] at this
-
 end Ideals
 
 section Flags

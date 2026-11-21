@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NilpotentOfNotIsUnit
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinFlatRadiusIdealFactsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdealSpanPrimeVariableBasisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOfPowLeOfPowLeSameAdicTopologyStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAdicTopologicalBasisOfSpanOfStrictStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StrictIndepPowOfRegularPairStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinFlatRadiusIdealFacts
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdealSpanPrimeVariableBasis
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOfPowLeOfPowLeSameAdicTopology
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAdicTopologicalBasisOfSpanOfStrict
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StrictIndepPowOfRegularPair
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
@@ -16,10 +16,10 @@ namespace GlobalTheory.BSP.AinfTopBasis
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K),
     ∃ ι : Type, Nonempty (TopBasis bk.ev bk.J ι) := by
   intro l _ K bk
-  obtain ⟨h0, hu, -, hJ⟩ := GlobalTheory.T.breuilKisin_flat_radius_ideal_facts l K bk
-  obtain ⟨ι, b, i₀, hb, hspan, hind⟩ := GlobalTheory.T.ideal_span_prime_variable_basis l K bk
+  obtain ⟨h0, hu, -, hJ⟩ := _root_.GlobalTheory.BSP.flat_disc l K bk
+  obtain ⟨ι, b, i₀, hb, hspan, hind⟩ := _root_.GlobalTheory.BSP.BK.exists_residue_basis l K bk
   have he := bk.deg_pos
-  have hstrict := GlobalTheory.T.strict_indep_pow_of_regular_pair bk.S (Ainf l) bk.ev (l : bk.S) X ι b
+  have hstrict := _root_.GlobalTheory.BSP.strict_indep_pow bk.S (Ainf l) bk.ev (l : bk.S) X ι b
     (fun x hx => by
       rw [map_natCast, mul_comm] at hx
       exact WittVector.eq_zero_of_p_mul_eq_zero x hx)
@@ -36,9 +36,9 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K),
     refine (GlobalTheory.Per.AinfComplete.main l _ fun h => hu ?_).1
     have h2 := h.map (WittVector.constantCoeff (p := l) (R := OCb l))
     rwa [bk.ev_X, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero] at h2
-  obtain ⟨TB, -⟩ := GlobalTheory.T.exists_adicTopologicalBasis_of_span_of_strict bk.S (Ainf l) bk.ev _ ι b i₀ hb
+  obtain ⟨TB, -⟩ := _root_.GlobalTheory.BSP.exists_topBasis_of_span_of_strict bk.S (Ainf l) bk.ev _ ι b i₀ hb
     (Submodule.FG.sup (Submodule.fg_span_singleton _) (Submodule.fg_span_singleton _)) hS hA hspan hstrict
-  obtain ⟨TB', -⟩ := GlobalTheory.T.exists_of_pow_le_of_pow_le_same_adicTopology bk.S (Ainf l) bk.ev _ ι TB bk.J (1 + bk.Ep.natDegree) 1
+  obtain ⟨TB', -⟩ := _root_.GlobalTheory.BSP.TopBasis.exists_of_pow_le_of_pow_le bk.S (Ainf l) bk.ev _ ι TB bk.J (1 + bk.Ep.natDegree) 1
     hS.toIsHausdorff (by omega) one_pos
     (by
       rw [← hJ]

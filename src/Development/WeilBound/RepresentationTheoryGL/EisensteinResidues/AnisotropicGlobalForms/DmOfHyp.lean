@@ -28,7 +28,7 @@ theorem dm_of_two : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Publi
   have r₁ := GlobalTheory.Grow.rapidDec_of_cuspForm hC hθ (GlobalTheory.Cusp.mem_cuspForms.1 h₁).1.1 (GlobalTheory.Cusp.mem_cuspForms.1 h₁).1.2
   have r₂ := GlobalTheory.Grow.rapidDec_of_cuspForm hC hθ (GlobalTheory.Cusp.mem_cuspForms.1 h₂).1.1 (GlobalTheory.Cusp.mem_cuspForms.1 h₂).1.2
   have hB : ∀ s : ℂ, (V.rank : ℝ) / 2 < s.re → BasicIdentity V μ m (flat V a φ s₁ s) f₁ f₂ := fun s hs =>
-    GlobalTheory.T.doubling_basicIdentity_unfolding D V a ha μ hμ s hs _ (flat_mem hI hφ s) (GlobalTheory.T.siegelEisenstein_spherical_moderateGrowth_real_point hS D V hV a ha hI s.re hs) m hm f₁ f₂ r₁ r₂
+    _root_.GlobalTheory.Core.Rk.BasicId.basicIdentity_unfold D V a ha μ hμ s hs _ (flat_mem hI hφ s) (_root_.GlobalTheory.Eis.modGrowth_eis_sph hS D V hV a ha hI s.re hs) m hm f₁ f₂ r₁ r₂
       (GlobalTheory.Cusp.mem_cuspForms.1 h₁).1.2
   exact ⟨hB, zetaContinues_of_eisRegularAt hμ hm h1.1 h1.1.1.analyticOnNhd_flat h1.2 r₁ r₂
     ⟨h1.1.1, fun s hs => (hB s hs).1⟩⟩

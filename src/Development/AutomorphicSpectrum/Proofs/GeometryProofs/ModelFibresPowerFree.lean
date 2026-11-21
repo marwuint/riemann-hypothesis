@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CompleteDvrDominatingValuationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricPowerFreeFunctorialStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PelUniformisedGeometricFreeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CompleteDvrDominatingValuation
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricPowerFreeFunctorial
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PelUniformisedGeometricFree
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Splits
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.LawsProved
@@ -148,7 +148,7 @@ theorem exists_complete_dvr (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRi
     refine sum_mem fun i _ => ?_
     rw [map_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply (ResidueField A) (ResidueField V) Ω]
     exact mul_mem (k'.algebraMap_mem _) (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)
-  obtain ⟨R, iR, iD, iV, f, iL, s, hc, hf, hs⟩ := GlobalTheory.T.complete_dvr_dominating_valuation V k'
+  obtain ⟨R, iR, iD, iV, f, iL, s, hc, hf, hs⟩ := _root_.GlobalTheory.CompanionTheory.Relay.complete_dvr_dominating_valuation V k'
   refine ⟨R, iR, iD, iV, f.comp g₀, inferInstance, s.comp (σ.toRingHom.codRestrict k'.toSubring hmem), hc,
     hf.comp hg₀, ?_⟩
   have e₁ : (σ.toRingHom.codRestrict k'.toSubring hmem).comp (algebraMap (ResidueField A) k) =
@@ -244,8 +244,8 @@ theorem model_fibPF : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
     rw [key] at h₀
     exact isGt_of_iso (pullCompIso (spMap (residue R)) ξ Y.t.G) h₀
   obtain ⟨P, -, -⟩ := h3 R inferInstance inferInstance hc ξ t m' habs hsplit
-  have g₁ := GlobalTheory.T.pel_uniformised_geometric_free E H R t P
-  obtain ⟨hb₁, hb₂⟩ := GlobalTheory.T.geometric_power_free_functorial E H Y.X Y.t
+  have g₁ := _root_.GlobalTheory.CompanionTheory.Ar.Unif.geomPF_closedPoint E H R t P
+  obtain ⟨hb₁, hb₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GeomBC.geomPF_baseChange E H Y.X Y.t
   have g₂ := (hb₂ (Sp R) t ξ m' (ResidueField R) (spMap (residue R))).mp g₁
   have g₃ := hb₁ _ (AlgebraicClosure (ResidueField R)) (algebraMap _ _) _ g₂
   refine ⟨AlgebraicClosure (ResidueField R), inferInstance, inferInstance, _, ?_, g₃⟩

@@ -310,13 +310,6 @@ theorem lattice_poisson_summation (f : 𝓢(E, ℂ)) (a : E) :
     LatticePoisson.per]
   exact tsum_congr fun ℓ => by rw [add_comm]
 
-theorem hasSum_lattice_poisson (f : 𝓢(E, ℂ)) (a : E) :
-    HasSum (fun μ : dualLattice L => 𝓕 (f : E → ℂ) μ * 𝐞 ⟪(μ : E), a⟫)
-      (ZLattice.covolume L • ∑' ℓ : L, f (ℓ + a)) := by
-  rw [lattice_poisson_summation, smul_smul, mul_inv_cancel₀ (ZLattice.covolume_ne_zero L volume),
-    one_smul]
-  exact (dualLattice_summable_norm L f a).of_norm.hasSum
-
 end Main
 
 end

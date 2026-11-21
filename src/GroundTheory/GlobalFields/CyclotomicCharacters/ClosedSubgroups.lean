@@ -10,47 +10,6 @@ namespace Cyclotomic
 
 open GroundTheory.LocalField.Abstract
 
-section Padic
-
-variable {ℓ : ℕ} [hℓ : Fact ℓ.Prime]
-
-theorem mul_mem_of_isClosed (H : AddSubgroup ℤ_[ℓ]) (hH : IsClosed (H : Set ℤ_[ℓ])) {x : ℤ_[ℓ]}
-    (hx : x ∈ H) (t : ℤ_[ℓ]) : x * t ∈ H :=
-  PadicInt.denseRange_natCast.induction_on t (hH.preimage (continuous_const.mul continuous_id))
-    fun k => by
-      show x * (k : ℤ_[ℓ]) ∈ H
-      rw [mul_comm, ← nsmul_eq_mul]
-      exact H.nsmul_mem hx k
-
-theorem isOpen_of_isClosed_of_ne_zero (H : AddSubgroup ℤ_[ℓ]) (hH : IsClosed (H : Set ℤ_[ℓ]))
-    {x : ℤ_[ℓ]} (hx : x ∈ H) (hx0 : x ≠ 0) : IsOpen (H : Set ℤ_[ℓ]) := by
-  obtain ⟨u, hu⟩ : ∃ u : ℤ_[ℓ]ˣ, x = u * (ℓ : ℤ_[ℓ]) ^ x.valuation :=
-    ⟨_, PadicInt.unitCoeff_spec hx0⟩
-  set v := x.valuation
-  rw [Metric.isOpen_iff]
-  intro y hy
-  refine ⟨(ℓ : ℝ) ^ (-(v : ℤ)), zpow_pos (by exact_mod_cast hℓ.out.pos) _, fun w hw => ?_⟩
-  have h1 : w - y ∈ Ideal.span {(ℓ : ℤ_[ℓ]) ^ v} :=
-    (PadicInt.norm_le_pow_iff_mem_span_pow _ _).1 (by
-      rw [← dist_eq_norm]; exact (Metric.mem_ball.1 hw).le)
-  obtain ⟨t, ht⟩ := Ideal.mem_span_singleton'.1 h1
-  have h2 : x * (↑u⁻¹ * t) = w - y := by
-    rw [← ht, hu, show (u : ℤ_[ℓ]) * (ℓ : ℤ_[ℓ]) ^ v * (↑u⁻¹ * t) =
-      ((u : ℤ_[ℓ]) * ↑u⁻¹) * t * (ℓ : ℤ_[ℓ]) ^ v by ring, Units.mul_inv, one_mul]
-  have h3 : w - y ∈ H := h2 ▸ mul_mem_of_isClosed H hH hx _
-  have := H.add_mem h3 hy
-  rwa [sub_add_cancel] at this
-
-theorem infinite_of_ne_zero (H : AddSubgroup ℤ_[ℓ]) {x : ℤ_[ℓ]} (hx : x ∈ H) (hx0 : x ≠ 0) :
-    (H : Set ℤ_[ℓ]).Infinite :=
-  Set.infinite_of_injective_forall_mem (f := fun k : ℕ => k • x)
-    (fun a b hab => by
-      simp only [nsmul_eq_mul] at hab
-      exact Nat.cast_injective (mul_right_cancel₀ hx0 hab))
-    fun k => H.nsmul_mem hx k
-
-end Padic
-
 section ProfiniteInteger
 
 def factorialPNat (n : ℕ) : ℕ+ := ⟨(n + 1).factorial, Nat.factorial_pos _⟩
@@ -93,10 +52,6 @@ theorem toPadicInt_primeIdempotent (q q' : Nat.Primes) :
     toPadicInt q' (primeIdempotent q) = Pi.single (M := fun q : Nat.Primes => ℤ_[q]) q 1 q' :=
   congrFun (toPadics_ofPadics _) q'
 
-theorem toPadicInt_surjective (q : Nat.Primes) : Function.Surjective (toPadicInt q) := fun z =>
-  ⟨ofPadics (Pi.single q z), by
-    rw [← toPadics_apply, toPadics_ofPadics, Pi.single_eq_same]⟩
-
 theorem mem_of_forall_toPadicInt (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set ℤ̂)) {y : ℤ̂}
     (hy : ∀ q : Nat.Primes, ∃ h ∈ H, toPadicInt q h = toPadicInt q y) : y ∈ H := by
   choose h hh hhy using hy
@@ -122,56 +77,6 @@ theorem mem_of_forall_toPadicInt (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set
   have ht' := (continuous_ofPadics.tendsto _).comp ht
   simp only [Function.comp_def, ofPadics_toPadics] at ht'
   exact hH.mem_of_tendsto ht' (Eventually.of_forall hs)
-
-theorem exists_eq_mul_of_isClosed (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set ℤ̂))
-    (hne : ∀ q : Nat.Primes, ∃ h ∈ H, toPadicInt q h ≠ 0) :
-    ∃ g : ℤ̂, (∀ q : Nat.Primes, toPadicInt q g ≠ 0) ∧ ∀ y, y ∈ H ↔ ∃ a, y = g * a := by
-  let I : Ideal ℤ̂ := idealOfIsClosed H hH
-  have hI : ∀ q : Nat.Primes, I.map (toPadicInt q) ≠ ⊥ := by
-    intro q hbot
-    obtain ⟨h, hh, hh0⟩ := hne q
-    apply hh0
-    have : toPadicInt q h ∈ I.map (toPadicInt q) := Ideal.mem_map_of_mem _ hh
-    rwa [hbot, Ideal.mem_bot] at this
-  choose v hv using fun q => PadicInt.ideal_eq_span_pow_p (hI q)
-  have hmem : ∀ (q : Nat.Primes) (z : ℤ_[q]), (∃ h ∈ H, toPadicInt q h = z) ↔ (q : ℤ_[q]) ^ v q ∣ z := by
-    intro q z
-    rw [← Ideal.mem_span_singleton, ← hv q, Ideal.mem_map_iff_of_surjective _
-      (toPadicInt_surjective q)]
-    rfl
-  let g : ℤ̂ := ofPadics fun q => (q : ℤ_[q]) ^ v q
-  have hg : ∀ q : Nat.Primes, toPadicInt q g = (q : ℤ_[q]) ^ v q := fun q =>
-    congrFun (toPadics_ofPadics _) q
-  refine ⟨g, fun q => by rw [hg]; exact pow_ne_zero _ (Nat.cast_ne_zero.2 q.2.ne_zero), ?_⟩
-  intro y
-  constructor
-  · intro hy
-    choose t ht using fun q => (hmem q (toPadicInt q y)).1 ⟨y, hy, rfl⟩
-    refine ⟨ofPadics t, ext_toPadicInt fun q => ?_⟩
-    rw [map_mul, hg, ht q]
-    congr 1
-    exact (congrFun (toPadics_ofPadics t) q).symm
-  · rintro ⟨a, rfl⟩
-    have hgH : g ∈ H := mem_of_forall_toPadicInt H hH fun q =>
-      (hmem q _).2 (by rw [hg])
-    rw [mul_comm]
-    exact mul_mem_of_isClosed' H hH hgH a
-
-theorem nonempty_addEquiv_of_isClosed (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set ℤ̂))
-    (hne : ∀ q : Nat.Primes, ∃ h ∈ H, toPadicInt q h ≠ 0) : Nonempty (H ≃+ ℤ̂) := by
-  obtain ⟨g, hg0, hgH⟩ := exists_eq_mul_of_isClosed H hH hne
-  let f : ℤ̂ →+ H :=
-    { toFun := fun a => ⟨g * a, (hgH _).2 ⟨a, rfl⟩⟩
-      map_zero' := by ext; simp
-      map_add' := fun a b => by ext; simp [mul_add] }
-  have hf : Function.Bijective f := by
-    refine ⟨fun a b hab => ext_toPadicInt fun q => ?_, fun y => ?_⟩
-    · have := congrArg (fun z : H => toPadicInt q (z : ℤ̂)) hab
-      simp only [f, AddMonoidHom.coe_mk, ZeroHom.coe_mk, map_mul] at this
-      exact mul_left_cancel₀ (hg0 q) this
-    · obtain ⟨a, ha⟩ := (hgH y).1 y.2
-      exact ⟨a, Subtype.ext ha.symm⟩
-  exact ⟨(AddEquiv.ofBijective f hf).symm⟩
 
 end ProfiniteInteger
 

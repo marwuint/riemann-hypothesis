@@ -51,8 +51,6 @@ def KeyRule (N : ℕ → ℕ) (g₀ : ℕ) (S : ∀ g : ℕ, (Fin g → ℂ) →
     ∀ (x : KeyIn ℂ) (τ : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ), g₀ ≤ x.P.g → S x.P.g a b →
       NormalAt x τ 1 a b 1 → κ ℂ x = 1
 
-def charZero' (g : ℕ) (a b : Fin g → ℂ) : Prop := a = 0 ∧ b = 0
-
 def charHalf (g : ℕ) (a b : Fin g → ℂ) : Prop := (∀ i, a i = 0 ∨ a i = 1 / 2) ∧ ∀ i, b i = 0 ∨ b i = 1 / 2
 
 open ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key ReciprocityTheory.ChartRestriction.G.Key.Chi in
@@ -95,35 +93,6 @@ theorem NormalAt.mem_siegelH {x : KeyIn ℂ} {τ M : Matrix (Fin x.P.g) (Fin x.P
   obtain ⟨_, hs, hp, -⟩ := h
   exact ⟨hs, hp⟩
 
-theorem ClauseH.mono {R : Type} [CommRing R] {N : ℕ → ℕ} {g₀ g₁ : ℕ} {κ : KeyIn R → Rˣ}
-    (h : ClauseH R N g₀ κ) (hg : g₀ ≤ g₁) : ClauseH R N g₁ κ := by
-  intro P hg' rig hr th hth v hv th' hth' v' hv' a M hP
-  exact h P hg' rig hr th hth v hv th' hth' v' hv' a M (hg.trans hP)
-
-theorem KeyRule.mono {N : ℕ → ℕ} {g₀ g₁ : ℕ} {S S' : ∀ g : ℕ, (Fin g → ℂ) → (Fin g → ℂ) → Prop}
-    (h : KeyRule N g₀ S) (hg : g₀ ≤ g₁) (hS : ∀ g a b, g₁ ≤ g → S' g a b → S g a b) : KeyRule N g₁ S' := by
-  obtain ⟨κ, h1, h2, h3, h4⟩ := h
-  refine ⟨κ, fun K _ _ => (h1 K).mono hg, ?_, ?_, ?_⟩
-  · intro K K' _ _ _ _ f x x' hx
-    exact h2 K K' f x x' (hg.trans hx)
-  · intro R K _ _ _ _ _ _ _ x xK hx
-    exact h3 R K x xK (hg.trans hx)
-  · intro x τ a b hx hs
-    exact h4 x τ a b (hg.trans hx) (hS _ a b hx hs)
-
-theorem keyRule_one_of_keyFormula (h : KeyFormula) : KeyRule (fun _ => 1) 1 charHalf := by
-  obtain ⟨κ, h1, h2, h3, h4, -⟩ := h
-  refine ⟨κ, ?_, ?_, ?_, ?_⟩
-  · intro K _ _ P hg rig hr th hth v hv th' hth' v' hv' a M _ hs hM
-    simpa only [mul_one] using h1 K P hg rig hr th hth v hv th' hth' v' hv' a M hs hM
-  · intro K K' _ _ _ _ f x x' _ hpb
-    exact h2 K K' f x x' hpb
-  · intro R K _ _ _ _ _ _ _ x xK _ hpb
-    exact h3 R K x xK hpb
-  · intro x τ a b _ hS hN
-    obtain ⟨u, hs, hp, hΛ, hr, hf, hd⟩ := (normalAt_one_iff x τ a b).1 hN
-    exact h4 x u τ a b hs hp hS.1 hS.2 hΛ hr hf hd
-
 open ReciprocityTheory.ChartRestriction.G.Key.Chi in
 
 theorem chiAt_iff_thetaLaw (g : ℕ) (sp : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) :
@@ -136,9 +105,6 @@ theorem chiAt_iff_thetaLaw (g : ℕ) (sp : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ F
   · intro h n n'
     obtain ⟨k, k', hk, hk', c, hc, hl⟩ := h n n'
     exact ⟨k, k', c, hk, hk', hc, hl⟩
-
-example : charHalf 1 (fun _ => 1 / 2) (fun _ => 1 / 2) ∧ ¬ charZero' 1 (fun _ => 1 / 2) (fun _ => 1 / 2) :=
-  ⟨⟨fun _ => Or.inr rfl, fun _ => Or.inr rfl⟩, fun h => by simpa using congrFun h.1 0⟩
 
 end GlobalTheory.KeyPow
 end

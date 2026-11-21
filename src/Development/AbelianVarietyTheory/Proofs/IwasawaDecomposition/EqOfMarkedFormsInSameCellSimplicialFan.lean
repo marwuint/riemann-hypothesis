@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfToRealRel
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SumMulEqOfSumToRealEq
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMarkedFormPiecesRaysOfSimplicialCellsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMarkedFormPiecesRaysOfSimplicialCells
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPosRatMultipleOfPosRealMultipleIntFormStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PrimitiveIntBilinFormEqOfPositiveRealRayStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PrimitiveIntBilinFormEqOfPositiveRealRay
 
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 
@@ -26,8 +26,8 @@ theorem eq_of_orbMark_of_inRCone_cell : ∀ (E : Type) [Field E] [NumberField E]
   have hcδ : ∀ j, InRCone δ (γ j) := hγδ
   obtain ⟨c, hc, hβc⟩ := inRCone_trans hcδ hin
   obtain ⟨c', hc', hβc'⟩ := inRCone_trans hcδ hin'
-  obtain ⟨p, hp, hpi, hpc⟩ := GlobalTheory.T.exists_markedForm_pieces_rays_of_simplicialCells E H φ hφ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt β hm
-  obtain ⟨p', hp', hpi', hpc'⟩ := GlobalTheory.T.exists_markedForm_pieces_rays_of_simplicialCells E H φ hφ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt β' hm'
+  obtain ⟨p, hp, hpi, hpc⟩ := _root_.GlobalTheory.PolFan.OrbMark.exists_pieces_match E H φ hφ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt β hm
+  obtain ⟨p', hp', hpi', hpc'⟩ := _root_.GlobalTheory.PolFan.OrbMark.exists_pieces_match E H φ hφ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt β' hm'
   have hlabray : ∀ (x : LinearMap.BilinForm ℤ X) (j : Fin m') (d : ℝ), 0 < d → x ∈ balForms H.bar X →
       (∀ y, 0 ≤ x y y) → toReal x = d • toReal (δ j) → lab.evalZ x = lab.evalZ (δ j) := by
     intro x j d hd hxb hxn hx
@@ -47,7 +47,7 @@ theorem eq_of_orbMark_of_inRCone_cell : ∀ (E : Type) [Field E] [NumberField E]
     subst hjj
     have : toReal (p i) = (d / d') • toReal (p' i) := by
       rw [hpd, hpd', smul_smul, div_mul_cancel₀ _ hd'.ne']
-    exact (GlobalTheory.T.primitive_intBilinForm_eq_of_positive_real_ray (p i) (p' i) (d / d') (div_pos hd hd') hpp hpp' this).1
+    exact (_root_.GlobalTheory.PrimRay.eq_of_toReal_eq_smul (p i) (p' i) (d / d') (div_pos hd hd') hpp hpp' this).1
   apply toReal_injective
   rw [hp, hp']
   refine Finset.sum_congr rfl fun i _ => ?_

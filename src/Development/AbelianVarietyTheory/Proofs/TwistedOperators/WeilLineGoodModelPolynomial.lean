@@ -6,7 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ArchimedeanLineI
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneParameterOperatorUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPairingCoordinatesSchrodingerFolland
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymplecticGroupMatrixOfPreservesPhaseSpace
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzOneParameterGroupFormulaStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzOneParameterGroupFormula
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RealMetaplecticRepresentation
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSymplecticLieEqExpOneParamStatement
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
@@ -101,7 +102,7 @@ theorem tendsto_slope_of_pairing (hP : GlobalTheory.FunPr.Hypotheses₂) {V : Ty
       _ = ∫⁻ x, ‖h x‖ₑ ^ 2 := by simp only [hK, C.apply_symm_apply]
   have hT'c : ∀ (h : GlobalTheory.RealWeil.Sch (Fin n)) (x : EuclideanSpace ℝ (Fin n)), Continuous fun t => T' t h x :=
     fun h x => by simp only [hT', hK']; exact hTc _ _
-  obtain ⟨a, ha⟩ := GlobalTheory.T.schwartz_one_parameter_group_formula hP (Fin n) Z hZ T' hT'0 hT'm hT'i hT'u hT'c
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.MetaplecticScalarDeriv.main hP (Fin n) Z hZ T' hT'0 hT'm hT'i hT'u hT'c
   refine ⟨K (a • K' f + GlobalTheory.RealWeil.quad Z (K' f)), ?_⟩
   have hlim := (K.continuous.tendsto _).comp (ha (K' f))
   refine Filter.Tendsto.congr (fun t => ?_) hlim

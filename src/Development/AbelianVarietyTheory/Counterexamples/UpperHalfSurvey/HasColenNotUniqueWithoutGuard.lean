@@ -35,31 +35,4 @@ theorem hasColen_unique (v : Valuation C NNReal) (hv : ∀ r : R, v (algebraMap 
   exact le_antisymm (vdet_le_of_span_le v hv B B' (by rw [← hB, ← hB']))
     (vdet_le_of_span_le v hv B' B (by rw [← hB, ← hB']))
 
-theorem intFun_eq_span {X : Type} [Fintype X] [DecidableEq X] :
-    intFun (C := C) R X = Submodule.span R (Set.range fun j x => (1 : Matrix X X C) x j) := by
-  apply le_antisymm
-  · intro f hf
-    choose r hr using hf
-    refine (Submodule.mem_span_range_iff_exists_fun R).mpr ⟨r, ?_⟩
-    ext x
-    simp [Finset.sum_apply, Algebra.smul_def, Matrix.one_apply, hr]
-  · refine Submodule.span_le.mpr ?_
-    rintro f ⟨j, rfl⟩ x
-    by_cases h : x = j
-    · exact ⟨1, by simp [Matrix.one_apply, h]⟩
-    · exact ⟨0, by simp [Matrix.one_apply, h]⟩
-
-theorem hasColen_intFun (v : Valuation C NNReal) {X : Type} [Fintype X] [DecidableEq X] :
-    HasColen R v (intFun (C := C) R X) 1 := ⟨1, intFun_eq_span, by simp⟩
-
-theorem hasColen_not_unique_without_guard (v : Valuation C NNReal) (t : C) (ht : t ≠ 0) :
-    HasColen C v (⊤ : Submodule C (Unit → C)) (v t) := by
-  refine ⟨Matrix.of fun _ _ => t, ?_, by simp⟩
-  symm
-  rw [eq_top_iff]
-  intro f _
-  refine (Submodule.mem_span_range_iff_exists_fun C).mpr ⟨fun _ => f () / t, ?_⟩
-  ext x
-  simp [ht]
-
 end GlobalTheory.HopfOrderCheck

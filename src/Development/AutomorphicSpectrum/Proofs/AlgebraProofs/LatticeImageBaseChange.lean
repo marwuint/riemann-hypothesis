@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LieLatticeData
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocFreeMapMkQIff
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeBaseChangeQuotientStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeBaseChangeQuotient
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChange
 
 noncomputable section
 
@@ -87,8 +87,8 @@ theorem imH_bc : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : T
     exact R.mul_mem ha h1
   have hhh : (D.bc RC).hh RC p (fun a => algebraMap Ω C (χ τ a)) =
       spanOver RC (bcMap Ω C (Fin n) '' D.hh R p (χ τ)) :=
-    (((GlobalTheory.T.lattice_good_base_change D R p w χ hc hB hG).2 C RC hR).2 τ).2.1
-  have key := (GlobalTheory.T.locally_free_base_change_quotient R RC hR (bcMap Ω C (Fin n)) (bcMap Ω C (Fin (s τ)))
+    (((_root_.GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodBaseChange.main D R p w χ hc hB hG).2 C RC hR).2 τ).2.1
+  have key := (_root_.GlobalTheory.CompanionTheory.Ar.GraphRestrict.main R RC hR (bcMap Ω C (Fin n)) (bcMap Ω C (Fin (s τ)))
     (isBaseChange_bcMap Ω C _) (isBaseChange_bcMap Ω C _) (D.Del τ) (D.hh R p (χ τ)) n
     (fun a ha v hv => (hB.stable τ a ha).2.1 v hv)
     (by rw [hfst]; exact locFree_divLat R hw0 (locFree_stdLat R n))

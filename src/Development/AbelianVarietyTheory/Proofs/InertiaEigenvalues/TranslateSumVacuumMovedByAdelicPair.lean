@@ -132,7 +132,7 @@ theorem step_pow (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (V
   obtain ⟨-, -, m4, -, m5, -⟩ := GlobalTheory.MovedLat.moved_lattices D V W ΛV ΛW a1 a2 a3 a4 1 k
   rw [show fin V 1 = 1 from map_one _, m5, a5] at m4
   obtain ⟨-, e', P', he', hP', hs'⟩ := hh
-  have horth := GlobalTheory.T.idempotentSum_conjSum_orthogonal_dvd D e e' P P' bad he he' hbad hP'
+  have horth := _root_.GlobalTheory.IdemOrth.idemSum_orth D e e' P P' bad he he' hbad hP'
   have hee := GlobalTheory.PlaceDatum.idemSum_mul_self he
   have hec := he.2
   have hcc : cA D e * cA D e = cA D e := by rw [← RingHom.map_mul, hee]

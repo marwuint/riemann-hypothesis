@@ -4,7 +4,6 @@ import Formalism.SharpRestriction.LevelLetterCocycles.TwGood
 import Formalism.FrobeniusOrbits.HostCorollaries
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.GoodPairSystems
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationComapLtOne
-import Development.AbelianVarietyTheory.Counterexamples.NonGaloisSurvey.NotGoodOfNoData
 
 noncomputable section
 
@@ -75,105 +74,8 @@ def below (w : D.what₂.places.Pl) : HeightOneSpectrum (𝓞 ↥D.LL0) where
 theorem mem_below (w : D.what₂.places.Pl) (x : 𝓞 ↥D.LL0) :
     x ∈ (below w).asIdeal ↔ 0 < D.what₂.places.val w ((x : ↥D.LL0) : D.what₂.LL) := Iff.rfl
 
-theorem val_eq_zero_of_not_mem (w : D.what₂.places.Pl) {x : 𝓞 ↥D.LL0} (hx : x ∉ (below w).asIdeal) :
-    D.what₂.places.val w ((x : ↥D.LL0) : D.what₂.LL) = 0 :=
-  le_antisymm (not_lt.1 hx) (val_int_nonneg w (isIntegral_coe x))
-
-theorem nonneg_of_below {w w' : D.what₂.places.Pl} (h : below w = below w') (x : ↥D.LL0)
-    (hx : 0 ≤ D.what₂.places.val w (x : D.what₂.LL)) : 0 ≤ D.what₂.places.val w' (x : D.what₂.LL) := by
-  obtain ⟨n, ⟨d, hd⟩, e | e⟩ := (below w).exists_primeCompl_mul_eq_or_mul_eq (K := ↥D.LL0) x
-  · have e' : (x : D.what₂.LL) * ((d : ↥D.LL0) : D.what₂.LL) = ((n : ↥D.LL0) : D.what₂.LL) := by
-      exact_mod_cast congrArg Subtype.val e
-    have h1 := (D.what₂.places.val w').map_mul (x : D.what₂.LL) ((d : ↥D.LL0) : D.what₂.LL)
-    rw [e', val_eq_zero_of_not_mem w' (x := d) (h ▸ hd), add_zero] at h1
-    rw [← h1]
-    exact val_int_nonneg w' (isIntegral_coe n)
-  · have e' : (x : D.what₂.LL) * ((n : ↥D.LL0) : D.what₂.LL) = ((d : ↥D.LL0) : D.what₂.LL) := by
-      exact_mod_cast congrArg Subtype.val e
-    have h1 := (D.what₂.places.val w).map_mul (x : D.what₂.LL) ((n : ↥D.LL0) : D.what₂.LL)
-    rw [e', val_eq_zero_of_not_mem w hd] at h1
-    have hn : n ∉ (below w).asIdeal := fun hn => by
-      have := lt_of_lt_of_le ((mem_below w n).1 hn) (le_add_of_nonneg_left hx)
-      rw [← h1] at this
-      exact lt_irrefl _ this
-    have h2 := (D.what₂.places.val w').map_mul (x : D.what₂.LL) ((n : ↥D.LL0) : D.what₂.LL)
-    rw [e', val_eq_zero_of_not_mem w' (x := d) (h ▸ hd), val_eq_zero_of_not_mem w' (x := n) (h ▸ hn), add_zero] at h2
-    exact h2.le
-
-theorem sameBelow_of_liesUnder {i : D.ntw.Tw} {w w' : D.what₂.places.Pl} (h : LiesUnder D i w)
-    (h' : LiesUnder D i w') : SameBelow D w w' := by
-  have e : below w = below w' := by
-    ext x
-    rw [mem_below, mem_below, ← h x, ← h' x]
-  exact fun x => ⟨nonneg_of_below e x, nonneg_of_below e.symm x⟩
-
-def exists_three_primes_one_mod_le_rpow (D : D7) : Set ℕ := {p | p.Prime ∧ (p = q0Av D ∨ p ∣ Ideal.absNorm D.host.ccK)}
-
-def AvoidsFurtherPrimes (Q : Finset (PlE D.host)) : Prop := ∀ P ∈ Q, ∀ p ∈ exists_three_primes_one_mod_le_rpow D, P ∉ placesOver D.host.E p
-
-def GoodPowers (I : TwIn D) (t : TwDatum D) : Prop :=
-  I.Ok t.1 ∧ ∀ a : ℤ, IsCoprime a (D.ntw.l t.1 : ℤ) → TwGoodOne D I t.1 true t.2.1 t.2.2.1 (t.2.2.2 ^ a)
-
-def ConstantTermsFinite (i : D.ntw.Tw) : Prop := ∀ lam : D.ntw.abelian₂ i, (∑ δ, D.ntw.th i ∅ lam δ) ≠ 0
-
-theorem goodPowers_congr {E : IntegralHeckeForms.XD D} {N0 S S'} {t : TwDatum D} (h : S t.1 = S' t.1)
-    (hg : GoodPowers ⟨E, N0, S⟩ t) : GoodPowers ⟨E, N0, S'⟩ t := by
-  unfold GoodPowers TwIn.Ok TwGoodOne at *
-  simp only at hg ⊢
-  rw [← h]
-  exact hg
-
 def AtPlace (t : D.what₂.places.Pl → TwDatum D) : Prop :=
   ∀ w, Twisted D w → LiesUnder D (t w).1 w ∨ LiesUnder D (t w).1 (D.what₂.places.conj w)
-
-def OnePerPair (t : D.what₂.places.Pl → TwDatum D) : Prop :=
-  ∀ w w', Twisted D w → Twisted D w' → SamePair D w w' → t w = t w'
-
-def DisjointPairs (t : D.what₂.places.Pl → TwDatum D) : Prop :=
-  ∀ w w', Twisted D w → Twisted D w' → ¬ SamePair D w w' →
-    ∀ P ∈ (t w).2.1, ∀ P' ∈ (t w').2.1, ∀ p : ℕ, p.Prime →
-      ¬ (P ∈ placesOver D.host.E p ∧ P' ∈ placesOver D.host.E p)
-
-theorem eq_of_setting_eq {t : D.what₂.places.Pl → TwDatum D} (h1 : AtPlace t) (h2 : OnePerPair t)
-    {w w' : D.what₂.places.Pl} (hw : Twisted D w) (hw' : Twisted D w') (e : (t w).1 = (t w').1) : t w = t w' := by
-  have cw := (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj w).2 hw
-  have cw' := (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj w').2 hw'
-  have ew := h2 _ _ hw cw (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.samePair_conj w)
-  have ew' := h2 _ _ hw' cw' (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.samePair_conj w')
-  rcases h1 w hw with a | a <;> rcases h1 w' hw' with b | b <;> rw [← e] at b <;>
-    have s := sameBelow_of_liesUnder a b
-  · exact h2 _ _ hw hw' (Or.inl s)
-  · rw [ew']; exact h2 _ _ hw cw' (Or.inl s)
-  · rw [ew]; exact h2 _ _ cw hw' (Or.inl s)
-  · rw [ew, ew']; exact h2 _ _ cw cw' (Or.inl s)
-
-theorem exists_series {E : IntegralHeckeForms.XD D} {N0} {t : D.what₂.places.Pl → TwDatum D} (h1 : AtPlace t) (h2 : OnePerPair t)
-    (h : ∀ w, Twisted D w → ∃ S, GoodPowers ⟨E, N0, S⟩ (t w)) :
-    ∃ S, ∀ w, Twisted D w → GoodPowers ⟨E, N0, S⟩ (t w) := by
-  have key : ∀ i : D.ntw.Tw, ∃ S, ∀ w, Twisted D w → (t w).1 = i → GoodPowers ⟨E, N0, S⟩ (t w) := by
-    intro i
-    by_cases hi : ∃ w, Twisted D w ∧ (t w).1 = i
-    · obtain ⟨w0, hw0, e0⟩ := hi
-      obtain ⟨S, hS⟩ := h w0 hw0
-      exact ⟨S, fun w hw e => eq_of_setting_eq h1 h2 hw0 hw (e0.trans e.symm) ▸ hS⟩
-    · exact ⟨fun _ _ _ => ∅, fun w hw e => absurd ⟨w, hw, e⟩ hi⟩
-  choose S hS using key
-  exact ⟨fun i => S i i, fun w hw => goodPowers_congr rfl (hS _ w hw rfl)⟩
-
-def TwGoodAllAt (c : NChoice D) (I : TwIn D) : Prop :=
-  ∀ w, TwistedAt D w → I.Ok (c.twI w) ∧ ∀ a : ℤ, IsCoprime a (D.ntw.l (c.twI w) : ℤ) →
-    TwGoodOne D I (c.twI w) (c.sd w) (c.Q w) (c.k' w) (c.psi' w ^ a)
-
-theorem TwGoodAllAt.twGoodAt {c : NChoice D} {I : TwIn D} (h : TwGoodAllAt c I) : TwGoodAt D c I := fun w hw => by
-  have := (h w hw).2 1 isCoprime_one_left
-  rw [zpow_one] at this
-  exact ⟨(h w hw).1, this⟩
-
-def AvoidsFurtherPrimesAt (c : NChoice D) : Prop := ∀ w, TwistedAt D w → AvoidsFurtherPrimes (c.Q w)
-
-def Surplus (c : NChoice D) : Prop :=
-  (∀ w, TwistedAt D w → ConstantTermsFinite (c.twI w)) ∧ AtPlace (recorded c) ∧ OnePerPair (recorded c) ∧
-    DisjointPairs (recorded c)
 
 theorem isUnit_of_toOe (c : NChoice D) (w : D.what₂.places.Pl) (y : D.ntw.O0 (c.twI w))
     (h : IsUnit (algebraMap (D.ntw.Ok (c.twI w) (c.k' w)) (c.Oe w)
@@ -263,34 +165,6 @@ theorem atPlace_of_tie (hG : IsGalois ℚ ↥D.LL0) {c : NChoice D} (h : NChTie 
   have := liesUnder_of_tie hG h w
   split_ifs at this
   exacts [Or.inl this, Or.inr this]
-
-theorem AtPlace.inW1 {t : D.what₂.places.Pl → TwDatum D} (h : AtPlace t) {w : D.what₂.places.Pl} (hw : Twisted D w) :
-    D.ntw.NonzeroIndexPlace (t w).1 := by
-  rcases h w hw with h1 | h1
-  exacts [⟨w, hw, h1⟩, ⟨_, (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj w).2 hw, h1⟩]
-
-def ExpRange (c : NChoice D) : Prop :=
-  ∀ w, TwistedAt D w → ∀ lam : D.ntw.abelian₂ (c.twI w), ∃ s : ℤ, BlochKatoReduction.Gen.SOk D.ntw (c.twI w) lam s
-
-def Eventually {eps : ℝ} (Fm : FamP eps) (P : ∀ x, Fm.x1 < x → Fm.Ix x → Prop) : Prop :=
-  ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), P x hx i
-
-def TwGoodAll {eps : ℝ} (Fm : FamP eps) : Prop :=
-  Eventually Fm fun x hx i => TwConjAt (Fm.D x i) (Fm.ex x hx i).nch ∧
-    ∃ N0 S, TwGoodAllAt (Fm.ex x hx i).nch ⟨twE Fm x hx i, N0, S⟩
-
-theorem TwGoodAll.twGood {eps : ℝ} {Fm : FamP eps} (h : TwGoodAll Fm) : TwGood Fm := by
-  obtain ⟨a, ha⟩ := h
-  refine ⟨a, fun x e hx i => ?_⟩
-  obtain ⟨h1, N0, S, h2⟩ := ha x e hx i
-  exact ⟨h1, N0, S, h2.twGoodAt⟩
-
-def FamilyAvoidsFurtherPrimes {eps : ℝ} (Fm : FamP eps) : Prop := Eventually Fm fun x hx i => AvoidsFurtherPrimesAt (Fm.ex x hx i).nch
-
-def FamSurplus {eps : ℝ} (Fm : FamP eps) : Prop :=
-  Eventually Fm fun x hx i => (∃ N0, BlochKatoReduction.adm9 (Fm.D x i) N0) ∧
-    (∀ w, TwistedAt (Fm.D x i) w → ConstantTermsFinite ((Fm.ex x hx i).nch.twI w)) ∧
-    OnePerPair (recorded (Fm.ex x hx i).nch) ∧ DisjointPairs (recorded (Fm.ex x hx i).nch)
 
 end GlobalTheory.TwistGoodCompare
 

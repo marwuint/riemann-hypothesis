@@ -39,19 +39,6 @@ def ClaimSg (W : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain F E : κ → 
     (tau : ι → ℝ) : Prop :=
   Sg W l (sgw J gain F E) tau = Ga W J l gain tau + Fo W J l F - Ee W J l E
 
-def ClaimGaFree (W Z : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain1 gain2 : κ → ι → ℝ)
-    (tau1 tau2 : ι → ℝ) : Prop :=
-  (∀ w ∈ W, w ∉ Z → (∀ j ∈ J, gain1 j w = gain2 j w) ∧ tau1 w = tau2 w) →
-  (∀ w ∈ W, w ∈ Z → (∀ j ∈ J, gain1 j w = 0 ∧ gain2 j w = 0) ∧ tau1 w = 0 ∧ tau2 w = 0) →
-  Ga W J l gain1 tau1 = Ga W J l gain2 tau2
-
-def ClaimUnit (W : Finset ι) (P : Finset ℕ) (pr : ι → ℕ) (l io : ι → ℝ) (iop : ℕ → ℝ) :
-    Prop :=
-  (∀ w ∈ W, pr w ∈ P) →
-  (∀ p ∈ P, ∑ w ∈ W.filter (fun w => pr w = p), l w = Real.log (p : ℝ)) →
-  (∀ w ∈ W, io w = iop (pr w)) →
-  IO W l io = 2 * ∑ p ∈ P, Real.log (p : ℝ) * iop p
-
 def ClaimDe (f : ℕ) (T dM du : ℝ) : Prop :=
   0 < dM → 2 < T → du = dM * (1 - 1 / (T - 1)) ^ f →
   du = (1 - (1 - du / dM)) * dM ∧ 0 ≤ 1 - du / dM ∧ 1 - du / dM < 1 ∧
@@ -70,12 +57,6 @@ def HypLow (W WT : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain F E : κ �
   ∑ w ∈ WT, 2 * l w * len w / du ≤ PT ∧
   ∑ w ∈ W, 2 * l w * (sgw J gain F E w - sg' w) ≤ Rd ∧
   muN = muMu + Sg W l sg' tau - BeSum W l du len tau
-
-def ClaimLow (W WT : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain F E : κ → ι → ℝ)
-    (tau io len sg' : ι → ℝ) (dM du de muMu muN PT Rd : ℝ) : Prop :=
-  HypLow W WT J l gain F E tau io len sg' dM du de muMu muN PT Rd →
-  muMu + Ga W J l gain tau + Fo W J l F - Ee W J l E - Rd - PT - IO W l io / (1 - de)
-      - de / (1 - de) * Ta W l tau ≤ muN
 
 def HypLow2 (W : Finset ι) (l tau io : ι → ℝ) (f T de b muM muMu IOp PT LT Rd RX : ℝ) :
     Prop :=

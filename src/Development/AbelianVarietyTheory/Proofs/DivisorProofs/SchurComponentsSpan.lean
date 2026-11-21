@@ -52,43 +52,6 @@ theorem mult_le_of_parts {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
     simp only [c, dif_pos h]
     exact congrArg (fun U : MMap M => U v) (hx ⟨(P, d, h.choose), h.choose_spec⟩)
 
-theorem iSup_partH_eq_top : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), SchurMult R.θ (R.MW i σ) (levSW R i) (chiW R i) (R.νW i) (R.fdW i) → (⨆ (c : GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.Sys D) (_ : IsNormSys R i c), partH R i σ c) = ⊤ := by
-  intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i σ hS
-  classical
-  obtain ⟨hinj, hrange, -⟩ := hC.models.HW i σ
-  have hrange' : LinearMap.range (R.HW i σ).e =
-      Mult R.θ (R.MW i σ) (Lev.levG _ (R.βW i) (R.datWp i R.triv) : Set (GA D (Wc D i))) (chiW R i) := hrange
-  haveI : FiniteDimensional ℂ
-      (Mult R.θ (R.MW i σ) (Lev.levG _ (R.βW i) (R.datWp i R.triv) : Set (GA D (Wc D i))) (chiW R i)) := by
-    rw [← hrange']; infer_instance
-  obtain ⟨n, hB⟩ := hC.lev.βW i
-  have key := mult_le_of_parts (J := Lev.levG _ (R.βW i) (R.datWp i R.triv)) (Sb := GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.badF R)
-    hC.models.inf (hC.models.νW i).1.1 (hC.models.νW i).2 hS (fun P d Rp h T hT => ?_)
-    ((⨆ (c : GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.Sys D) (_ : IsNormSys R i c), partH R i σ c).map (R.HW i σ).e) (fun c hc T hT => ?_)
-  · rw [eq_top_iff]
-    intro x _
-    obtain ⟨y, hy, e⟩ := key (hrange' ▸ LinearMap.mem_range_self _ x)
-    exact hinj e ▸ hy
-  · have hN : (((1 ^ n : ℕ) : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
-      rw [one_pow, Nat.cast_one]
-      exact (Ideal.ne_top_iff_one _).1 P.isPrime.ne_top
-    have hO : OffS D (GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.badF R) P := by
-      obtain ⟨_, _, _, _, hO, -⟩ := h
-      exact hO
-    have hP : ∀ PP, PP ∈ (R.datWp i R.triv).Pg ∨ PP ∈ (R.datWp i R.triv).Q → PP ≠ P ∧ ¬ Lev.IsConjPl PP P := by
-      rintro PP (hP | hP)
-      · exact GlobalTheory.HeckeOffLevel.sep_of_offS hO (by
-          unfold GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.badF
-          exact Finset.mem_image.2 ⟨PP, hP, rfl⟩)
-      · exact absurd hP (Finset.notMem_empty _)
-    rw [GlobalTheory.MultMem.mem_mult_iff] at hT ⊢
-    refine isMultMap_heckeOn hT (fun k hk => ?_) fun v => GlobalTheory.HeckeOffLevel.hasType_heckeLin hB hN hP h (hT.lev v)
-    obtain ⟨_, _, _, _, -, -, -, -, -, -, -, -, -, -, hc⟩ := h
-    exact (hc.1 k hk).1
-  · obtain ⟨y, rfl⟩ : T ∈ LinearMap.range (R.HW i σ).e := hrange' ▸ hT.1
-    exact Submodule.mem_map_of_mem
-      (le_iSup₂_of_le (f := fun (c : GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.Sys D) (_ : IsNormSys R i c) => partH R i σ c) c hc le_rfl hT)
-
 end GlobalTheory.PrincipalDecomp
 
 end

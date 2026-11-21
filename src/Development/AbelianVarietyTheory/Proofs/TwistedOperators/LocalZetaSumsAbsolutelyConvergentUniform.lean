@@ -3,10 +3,11 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Pa
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NoExcludedParameterOfLiftParameters
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoOneOfSummable
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSatVecUOfDiag
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumNormSphericalZetaKernelGLTrivialRepStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormGLZetaSumTrivialParameterSubOneLeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumNormSphericalZetaKernelUnramifiedUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormUnitaryZetaSumTrivialBoundSubOneLeStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumNormSphericalZetaKernelGLTrivialRep
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormGLZetaSumTrivialParameterSubOneLe
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumNormSphericalZetaKernelUnramifiedUnitary
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormUnitaryZetaSumTrivialBoundSubOneLe
 
 noncomputable section
 
@@ -56,14 +57,14 @@ theorem transport : ∀ (G H : Type) [Group G] [Group H] (e : G ≃* H) (K : Sub
 
 theorem glSum : GlobalTheory.Published.UnramifiedDoublingGL → ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (r t : ℕ), r + 5 ≤ t → ∀ (z : ℂˣ) (φ : GL (Fin r) (w.adicCompletion E) → ℂ), ‖(z : ℂ)‖ = 1 → KerGL w (r + t) z φ → ∃ A : ℝ, HasSum (fun a : GL (Fin r) (w.adicCompletion E) ⧸ KGL w r => ‖φ a.out‖) A ∧ |A - 1| ≤ 27 ^ r * ((qV E w : ℝ) ^ 2)⁻¹ := by
   intro hP E _ _ w r t ht z φ hz hk
-  obtain ⟨B, hc, hb, hs⟩ := GlobalTheory.T.hasSum_norm_sphericalZetaKernelGL_trivialRep hP E w r t (by omega) z φ hz hk
+  obtain ⟨B, hc, hb, hs⟩ := _root_.GlobalTheory.FinZeta.AbsZeta.hasSum_norm_kerGL hP E w r t (by omega) z φ hz hk
   refine ⟨_, by simpa using Complex.hasSum_re hs, ?_⟩
   have hq2 : 2 ≤ qV E w := one_lt_absNorm w
   have hX : ‖npow w (-((1 + (t : ℂ)) / 2))‖ = (qV E w : ℝ) ^ (-((1 + (t : ℝ)) / 2)) := by
     rw [norm_npow]
     congr 1
     simp
-  refine le_trans ?_ (GlobalTheory.T.norm_GL_zetaSum_trivialParameter_sub_one_le (qV E w) hq2 r t ht B hc hb _ hX)
+  refine le_trans ?_ (_root_.GlobalTheory.GLZetaBound.norm_trivial_sub_one_le (qV E w) hq2 r t ht B hc hb _ hX)
   have := Complex.abs_re_le_norm (eulerFac B (npow w (-((1 + (t : ℂ)) / 2))) *
     eulerFac (B.map fun β => β⁻¹) (npow w (-((1 + (t : ℂ)) / 2))) *
       ∏ i ∈ Finset.Ioc t (r + t), (1 - ((qV E w : ℂ) ^ i)⁻¹) - 1)
@@ -71,9 +72,9 @@ theorem glSum : GlobalTheory.Published.UnramifiedDoublingGL → ∀ (E : Type) [
 
 theorem uSum : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q r t : ℕ), IsUnramInv ϖ σ q → r + 5 ≤ t → ∀ (z : ℂˣ) (φ : GU σ r → ℂ), ‖(z : ℂ)‖ = 1 → KerU ϖ q (r + t) z φ → ∃ A : ℝ, HasSum (fun a : GU σ r ⧸ KU σ r => ‖φ a.out‖) A ∧ |A - 1| ≤ 27 ^ r * ((q : ℝ) ^ 2)⁻¹ := by
   intro L _ _ _ ϖ σ q r t hU ht z φ hz hk
-  obtain ⟨α, hb, hs⟩ := GlobalTheory.T.hasSum_norm_sphericalZetaKernel_unramifiedUnitary L ϖ σ q r t hU (by omega) z φ hz hk
+  obtain ⟨α, hb, hs⟩ := _root_.GlobalTheory.ZetaAbsU.hasSum_norm_kerU L ϖ σ q r t hU (by omega) z φ hz hk
   refine ⟨_, by simpa using Complex.hasSum_re hs, ?_⟩
-  refine le_trans ?_ (GlobalTheory.T.norm_unitaryZetaSum_trivialBound_sub_one_le q r t hU.2.2.2.2.2.1 ht α hb)
+  refine le_trans ?_ (_root_.GlobalTheory.FinZeta.UnitaryBound.norm_zetaSum_sub_one_le q r t hU.2.2.2.2.2.1 ht α hb)
   have := Complex.abs_re_le_norm (eulerFac (bcParam r α) (((q : ℂ) ^ (t + 1))⁻¹) *
     ∏ j ∈ Finset.range r, (1 - (-(q : ℂ)) ^ j * ((q : ℂ) ^ (r + t))⁻¹) - 1)
   simpa using this

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnipotentBlockColumnIndex
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerCoefficientRationalMirabolicMulStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerCoefficientRationalMirabolicMul
 
 noncomputable section
 
@@ -15,7 +15,7 @@ theorem colT_isMir_invariant : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ
     ∀ (m : ℕ) (f : GA E a → ℂ), m + 1 < a → Good ψ (m + 1) f → ∀ γ : GL (Fin a) E, IsMir m γ →
     ∀ g, colT ψ (m + 1) f (ratGL E a γ * g) = colT ψ (m + 1) f g := by
   intro E _ _ a ψ hψ m f hma hf γ hγ g
-  have key := GlobalTheory.T.whittakerCoefficient_rationalMirabolic_mul E a ψ hψ m f hf.cont hf.left γ hγ.succ (eLast a (m + 1)) g
+  have key := _root_.GlobalTheory.CuspGeneric.coefF_ratGL_mul E a ψ hψ m f hf.cont hf.left γ hγ.succ (eLast a (m + 1)) g
   unfold colT
   rw [key]
   congr 1

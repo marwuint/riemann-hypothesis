@@ -28,13 +28,6 @@ theorem ut_sub_one_last {r : ℕ} {u : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (
   · subst h; simp
   · simp [h, Ne.symm h]
 
-theorem ut_sub_one_col {r : ℕ} {u : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hu : u ∈ UTset (r + 1))
-    (c d : Fin (r + 1)) (h : c.val ≤ d.val) : (u - 1) d c = 0 := by
-  rcases lt_or_eq_of_le h with h | h
-  · rw [Matrix.sub_apply, hu.1 d c h, Matrix.one_apply_ne (by intro e; subst e; omega), sub_self]
-  · have : c = d := Fin.ext h
-    subst this; rw [Matrix.sub_apply, hu.2, Matrix.one_apply_eq, sub_self]
-
 theorem ut_conj_fix {r : ℕ} {u : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hu : u ∈ UTset (r + 1))
     (v : Fin (r + 1) → ℂ) (hv : ∀ a : Fin (r + 1), a.val < r → v a = 0) : uᴴ *ᵥ v = v := by
   ext a
@@ -75,17 +68,5 @@ theorem ut_adiag (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) {u : Matrix (Fin 
     · simp [ha, hb]
   · intro c _ hc; simp [hc]
   · simp
-
-theorem lowSupp (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (a : ℕ) (ha : a ≤ r) (x : Fin (r + 1) → ℂ)
-    (hx : ∀ c : Fin (r + 1), a ≤ c.val → x c = 0) (i : Fin (2 * r + k + 1)) (hi : a ≤ i.val) :
-    (∑ c, x c • fvec k r z c) i = 0 := by
-  rw [Finset.sum_apply]
-  refine Finset.sum_eq_zero fun c _ => ?_
-  by_cases hc : a ≤ c.val
-  · simp [hx c hc]
-  · have hcr : c.val < r := by omega
-    have hne : i ≠ eI k r ⟨c.val, hcr⟩ := by
-      intro e; rw [Fin.ext_iff] at e; simp [eI] at e; omega
-    simp [fvec, hcr, bvec, Pi.single_apply, hne]
 
 end PI.StabPairs.Conv

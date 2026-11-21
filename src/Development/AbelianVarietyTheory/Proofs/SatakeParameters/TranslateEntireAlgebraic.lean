@@ -7,7 +7,13 @@ import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.MovDXiAt
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.LocalClassDataOfTrivialStabilizers
 import Formalism.LocalToGlobal.GlobalTheory.BaseLatticeSelfDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalisedFamilyNonzeroThetaVectorsNumberField
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AlgEntireTranslate
+import Formalism.LocalToGlobal.KernelLattices.DeterminantCokernelCount.JetMomTA
+import Formalism.LocalToGlobal.GlobalTheory.GL3.PThIndep
+import Development.AbelianVarietyTheory.BlockTheory.JetGauges.ParabolicPointMembership
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsTraceNorm
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CoefInTranslate
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaOddPrimePhaseConjInvariant
+
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Formalism.MainNotions Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F Formalism.L2.KerInert Formalism.UG Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.G Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.L2.KerInert.SecondKernelInstances GlobalTheory.TwU GlobalTheory.TwV
 open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

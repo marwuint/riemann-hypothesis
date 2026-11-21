@@ -30,10 +30,6 @@ theorem crd_incl (R : Type) [CommRing R] [Algebra F R] (x : E) (k : Fin d) :
     crd b R (inclR R x) k = algebraMap F R (b.repr x k) := by
   simp [crd, inclR, Algebra.TensorProduct.basis_repr_tmul]
 
-theorem crd_add (R : Type) [CommRing R] [Algebra F R] (y z : R ⊗[F] E) (k : Fin d) :
-    crd b R (y + z) k = crd b R y k + crd b R z k := by
-  simp [crd]
-
 theorem crd_sum (R : Type) [CommRing R] [Algebra F R] {ι : Type} (s : Finset ι) (y : ι → R ⊗[F] E)
     (k : Fin d) : crd b R (∑ i ∈ s, y i) k = ∑ i ∈ s, crd b R (y i) k := by
   simp [crd, map_sum, Finsupp.finsetSum_apply]

@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivPro
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSupportOfIsSubquotientProdIrr
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SocleOfMultiplicityOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductIrreducibleAppendEquivStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosocleSurjectionFactorStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosocleSurjectionFactor
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionFiniteLength
 
 noncomputable section
@@ -130,7 +130,7 @@ theorem quotient_of_quotient {G V W X : Type} [Group G] [AddCommGroup V] [Module
     (hc : IsCosocle σ P) (hfl : HasFiniteLength P) (hf : ∃ f : P.IntertwiningMap Q, Function.Surjective f)
     (hQ : Nontrivial X) : ∃ g : Q.IntertwiningMap σ, Function.Surjective g := by
   obtain ⟨f, hf⟩ := hf
-  exact GlobalTheory.T.cosocle_surjection_factor σ P Q hc hfl f hf hQ
+  exact _root_.GlobalTheory.CompanionTheory.Segments.cosocle_quotient_of_quotient σ P Q hc hfl f hf hQ
 
 theorem quottwo : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]

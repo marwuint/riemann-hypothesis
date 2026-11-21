@@ -125,13 +125,4 @@ end GlobalTheory.ShareOn.Comparison₂
 
 namespace GlobalTheory.ShareOn
 
-theorem shareSt_of_shareWSt : ShareWSt → ShareSt := by
-  intro h
-  unfold ShareWSt AtRuns AtPts at h
-  unfold ShareSt AtRec
-  refine Closed.imp h fun Fm CH _ H => ⟨0, fun c _ _ => ?_⟩
-  obtain ⟨x0, hx0⟩ := H
-  exact ⟨x0, fun x hx hle i p hp hm r O hR =>
-    Comparison₂.leafShareI_of_shareW p hR (hx0 x hx hle i p hp hm r hR.1.ok hR.2)⟩
-
 end GlobalTheory.ShareOn

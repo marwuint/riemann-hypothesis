@@ -124,47 +124,4 @@ theorem pow_dvd_of_const_mem_span : ConstDist := by
     obtain ⟨c'', rfl⟩ := hc'
     exact ⟨c'', by ring⟩
 
-private theorem coprimeRat_symm' {O : Type} [CommRing O] {ϖ : O} {x y : PowerSeries O}
-    (h : CoprimeRat ϖ x y) : CoprimeRat ϖ y x := by
-  unfold CoprimeRat at h ⊢
-  obtain ⟨N, A, A', hA⟩ := h
-  exact ⟨N, A', A, by rw [← hA]; ring⟩
-
-private theorem coprimeRat_mul_left' {O : Type} [CommRing O] {ϖ : O} {x x' y : PowerSeries O}
-    (h1 : CoprimeRat ϖ x y) (h2 : CoprimeRat ϖ x' y) : CoprimeRat ϖ (x * x') y := by
-  unfold CoprimeRat at h1 h2 ⊢
-  obtain ⟨N, A, A', hA⟩ := h1
-  obtain ⟨M, B, B', hB⟩ := h2
-  refine ⟨N + M, A * B, A * x * B' + A' * (B * x' + B' * y), ?_⟩
-  rw [pow_add, map_mul, ← hA, ← hB]
-  ring
-
-private theorem coprimeRat_pow_left' {O : Type} [CommRing O] {ϖ : O} {x y : PowerSeries O}
-    (h : CoprimeRat ϖ x y) (a : ℕ) : CoprimeRat ϖ (x ^ a) y := by
-  induction a with
-  | zero =>
-    unfold CoprimeRat
-    exact ⟨0, 1, 0, by simp⟩
-  | succ a ih =>
-    rw [pow_succ]
-    exact coprimeRat_mul_left' ih h
-
-theorem coprimeProd_statement : CoprimeProd := by
-  intro O _ _ _ ϖ hϖ d d' p p' hp hp' hcop a b z hza hzb
-  have := PrincipalIdealRing.isMaximal_of_irreducible hϖ
-  have hc : CoprimeRat ϖ (p ^ a) (p' ^ b) :=
-    coprimeRat_symm' (coprimeRat_pow_left' (coprimeRat_symm' (coprimeRat_pow_left' hcop a)) b)
-  unfold CoprimeRat at hc
-  obtain ⟨M, B, B', hB⟩ := hc
-  obtain ⟨s, hs⟩ := Ideal.mem_span_singleton'.mp hza
-  obtain ⟨t, ht⟩ := Ideal.mem_span_singleton'.mp hzb
-  have hq : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) (p ^ a * p' ^ b) ≠ 0 := by
-    rw [map_mul, map_pow, map_pow]
-    exact mul_ne_zero (pow_ne_zero a (map_ne_zero_of_unitDist ϖ d p hp))
-      (pow_ne_zero b (map_ne_zero_of_unitDist ϖ d' p' hp'))
-  refine mem_span_of_C_pow_mul_mem_span ϖ hϖ.ne_zero _ hq M z
-    (Ideal.mem_span_singleton'.mpr ⟨B * t + B' * s, ?_⟩)
-  rw [← hB]
-  linear_combination (B * p ^ a) * ht + (B' * p' ^ b) * hs
-
 end Formalism.ExponentWindows

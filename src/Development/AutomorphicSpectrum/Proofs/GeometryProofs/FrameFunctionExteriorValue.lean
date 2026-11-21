@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.VAtVNeBot
 import Formalism.LocalToGlobal.ProjectiveLattices.RulInst
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StableEig
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FramePointVectors
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameOfUnitDetChangeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameOfUnitDetChange
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundle
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.LocFn
 
@@ -179,8 +179,8 @@ theorem GlobalTheory.CompanionTheory.Ar.LocFn.function_of_frames_at_field_point 
   have hu₂ : IsUnit (ψ.mapMatrix C₂).det := by
     rw [← RingHom.map_det]; exact hC₂.map ψ
   have hF₀ : IsFramed U τ ((ψ.comp (algebraMap S B)).comp (algebraMap c.F S)) y v₀ w₀ :=
-    ⟨hF.1, hF.2.1, GlobalTheory.T.eigen_frame_of_unit_det_change Xo.X F Xo.univ.t.G (under y) (𝓞 E) Xo.univ.t.act _ D.p v v₀ (ψ.mapMatrix C₁) hF.2.2.1 hc₁ hu₁,
-      GlobalTheory.T.eigen_frame_of_unit_det_change Xo.X F Xo.univ.t.G (under y) (𝓞 E) Xo.univ.t.act _ D.q w w₀ (ψ.mapMatrix C₂) hF.2.2.2 hc₂ hu₂⟩
+    ⟨hF.1, hF.2.1, _root_.GlobalTheory.CompanionTheory.Ar.FrameUnit.isEigFrame_of_isUnit_det Xo.X F Xo.univ.t.G (under y) (𝓞 E) Xo.univ.t.act _ D.p v v₀ (ψ.mapMatrix C₁) hF.2.2.1 hc₁ hu₁,
+      _root_.GlobalTheory.CompanionTheory.Ar.FrameUnit.isEigFrame_of_isUnit_det Xo.X F Xo.univ.t.G (under y) (𝓞 E) Xo.univ.t.act _ D.q w w₀ (ψ.mapMatrix C₂) hF.2.2.2 hc₂ hu₂⟩
   have hθF : spMap (ψ.comp θ) ≫ x = y ≫ Y.j := by
     rw [e0, Category.assoc, hθ, hy]
     simp only [Category.assoc]

@@ -27,9 +27,6 @@ theorem exp_local_matrix (n : Type) [Fintype n] [DecidableEq n] :
   have : CompleteSpace (Matrix n n ℂ) := FiniteDimensional.complete ℂ _
   exact exp_local_algebra (Matrix n n ℂ)
 
-theorem Jpq_mul_self (P Q : ℕ) : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1 := by
-  simp [Formalism.UG.Jpq, Matrix.fromBlocks_multiply]
-
 open MeasureTheory Filter Topology in
 private theorem exists_local_homeomorph_matrix_exp_source_zero {n : Type} [Fintype n] [DecidableEq n] :
     ∃ e : OpenPartialHomeomorph (Matrix n n ℂ) (Matrix n n ℂ),

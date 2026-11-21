@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPullHermPullLine
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArithmeticVarietyPointDimensionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArithmeticVarietyPointDimension
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ArakelovCycleHeights.QpSndStr
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ResidueDegreeOfIsClosedImmersion
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ArFormExists
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RingKrullDimQuotientEqOfMemMinimalPrimes
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedA
@@ -96,9 +99,9 @@ theorem dim_closure_iff_isArithVar : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (x 
     CharZero ((MP ℤ m n).residueField x) →
       (topologicalKrullDim (closure ({x} : Set (MP ℤ m n))) = (d : ℕ) ↔ Geo.IsArithVar (ptIdeal x) d) := by
   intro m n x d hc
-  refine ⟨GlobalTheory.T.arithmetic_variety_point_dimension m n x d hc, fun h => ?_⟩
+  refine ⟨_root_.GlobalTheory.CompanionTheory.MPDict.DimVar.isArithVar_ptIdeal m n x d hc, fun h => ?_⟩
   obtain ⟨e, he⟩ := exists_dim_closure_eq x
-  have h' := GlobalTheory.T.arithmetic_variety_point_dimension m n x e hc he
+  have h' := _root_.GlobalTheory.CompanionTheory.MPDict.DimVar.isArithVar_ptIdeal m n x e hc he
   have h1 := h.2.2.2
   have h2 := h'.2.2.2
   have hde : d = e := by

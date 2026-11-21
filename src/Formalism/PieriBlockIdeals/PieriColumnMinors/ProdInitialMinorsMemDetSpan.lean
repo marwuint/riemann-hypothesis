@@ -1,8 +1,12 @@
 import Formalism.PieriBlockIdeals.StatementLA
 import Formalism.GradedWeylDivisibility.FinalC
 import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LDlatLemmas
-import Formalism.PieriBlockIdeals.PieriColumnMinors.PadicValIntProdElevenMultiples
-import Formalism.PieriBlockIdeals.PieriColumnMinors.JointExactExponentStopHigh
+import Mathlib
+import Formalism.PieriBlockIdeals.Statement
+import Formalism.PieriBlockIdeals.StatementJ
+import Formalism.RankGapBounds.RankGapProofs.CardLargePrimeFactorsLeOneHolds
+import Formalism.PieriBlockIdeals.PieriColumnMinors.MaxValEqZeroOfLt
+import Formalism.PieriBlockIdeals.PieriColumnMinors.LocalComponentGL
 
 open MvPolynomial
 
@@ -11,40 +15,6 @@ noncomputable section
 namespace Formalism.CohomologicalDescent.LA
 
 open Formalism.GradedWeylDivisibility
-
-theorem max_valuation_eq : MaxValEq := by
-  intro l n
-  rfl
-
-theorem la_rowNu_antitone {r n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) :
-    Antitone (rowNu (r := r) ν) := by
-  intro a b hab
-  have hab' : a.val ≤ b.val := hab
-  unfold rowNu
-  by_cases hb : b.val < n
-  · have ha : a.val < n := by omega
-    rw [dif_pos hb, dif_pos ha]
-    exact hν (show (⟨a.val, ha⟩ : Fin n) ≤ ⟨b.val, hb⟩ from hab')
-  · rw [dif_neg hb]
-    exact Nat.zero_le _
-
-theorem lambda_u_strict_anti : LamUStrictAnti := by
-  unfold LamUStrictAnti
-  intro r n ν hν a b hab
-  have h1 := la_rowNu_antitone (r := r) ν hν (le_of_lt hab)
-  have h2 : a.val < b.val := hab
-  simp only [lamU]
-  omega
-
-theorem incl_z_monotone : InclZMono := by
-  unfold InclZMono InclZ
-  intro r n hn ν l e e' hee' hI
-  obtain ⟨m, hm, h⟩ := hI
-  refine ⟨m, hm, fun x hx => ?_⟩
-  have e1 : m * l ^ e' = l ^ (e' - e) * (m * l ^ e) := by
-    rw [mul_left_comm, ← pow_add, Nat.sub_add_cancel hee']
-  rw [e1, Nat.cast_mul, mul_smul]
-  exact Submodule.smul_mem _ _ (h x hx)
 
 theorem la_posPairs_two : Formalism.RankGapBounds.JumpSetsAlt.posPairs 2 = {((0 : Fin 2), (1 : Fin 2))} := by
   decide
@@ -57,68 +27,6 @@ theorem exact_exponent_rank_two : ExactExponentRankTwo := by
   congr 1
   simp only [lamU, Fin.val_zero, Fin.val_one]
   omega
-
-theorem joint_exact_z : JointExZ := by
-  unfold JointExZ
-  intro hA r n hn ν hν l hl
-  exact Nat.sInf_le (hA r n hn ν hν l hl)
-
-theorem la_strictAnti_gap {r : ℕ} (U : Fin r → ℤ) (hU : StrictAnti U) :
-    ∀ (k : ℕ) (a b : Fin r), b.val = a.val + k → U b + k ≤ U a := by
-  intro k
-  induction k with
-  | zero =>
-    intro a b h
-    have hab : b = a := Fin.ext (by omega)
-    subst hab
-    simp
-  | succ k ih =>
-    intro a b h
-    have hb := b.isLt
-    have hk : a.val + k < r := by omega
-    have h1 := ih a ⟨a.val + k, hk⟩ rfl
-    have h2 : U b < U ⟨a.val + k, hk⟩ :=
-      hU (Fin.lt_iff_val_lt_val.mpr (by show a.val + k < b.val; omega))
-    push_cast
-    omega
-
-theorem nu_of_specialization : NuOfSpec := by
-  unfold NuOfSpec
-  intro r U hU h0
-  have hgap := la_strictAnti_gap U hU
-  have hpos : ∀ a : Fin r, (r : ℤ) - 1 - a.val ≤ U a := by
-    intro a
-    have ha := a.isLt
-    have hlast : a.val + (r - 1 - a.val) < r := by omega
-    have h3 := hgap (r - 1 - a.val) a ⟨a.val + (r - 1 - a.val), hlast⟩ rfl
-    have h4 := h0 ⟨a.val + (r - 1 - a.val), hlast⟩
-    omega
-  constructor
-  · intro a b hab
-    have hab' : a.val ≤ b.val := hab
-    have hb := hpos b
-    have ha := hpos a
-    have key : U b + ((b.val - a.val : ℕ) : ℤ) ≤ U a := hgap (b.val - a.val) a b (by omega)
-    simp only [nuOf]
-    omega
-  · funext a
-    have ha := hpos a
-    have hal := a.isLt
-    simp only [lamU, rowNu, hal, ↓reduceDIte, nuOf, Fin.eta]
-    omega
-
-theorem joint_lemma_a_full : JointLemmaAFull := by
-  intro ι D W hA hE l hl hexc τ
-  obtain ⟨h1, h2⟩ := nu_of_specialization D.Nr (W.U τ) (W.anti τ) (fun a => (W.inRange τ a).1)
-  have h3 := joint_exact_z hA D.Nr D.Nr le_rfl (nuOf (W.U τ)) h1 l hl
-  rw [h2] at h3
-  exact (hE l hl hexc τ).trans h3
-
-theorem joint_lattice_inclusion : JointLatIncl := by
-  unfold JointLatIncl
-  intro hAR R _ _ r n hn ν hν l hl hu x
-  rw [Submodule.mem_comap]
-  simpa using hAR R r n hn ν hν l hl hu x x.2
 
 theorem la_word_mem (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ)
     (w : List (Fin r × Fin r × ℕ)) : applyWord R w (hw R hn ν) ∈ weyl R r n hn ν := Submodule.subset_span ⟨w, rfl⟩
@@ -514,127 +422,12 @@ theorem la_nabla_r2n1 (R : Type) [CommRing R] (ν : Fin 1 → ℕ) :
       intro a b hab
       exact ((ne_of_lt hab) (Subsingleton.elim a b)).elim
 
-theorem la_binForm_apply (R : Type) [CommRing R] (d : ℕ) (c : Fin (d + 1) → R) :
-    binForm R d c = ∑ i : Fin (d + 1), c i • la_xy R (0 : Fin 1) (d - i.val) i.val := by
-  simp only [binForm, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.proj_apply, la_xy]
-
-theorem la_binForm_single (R : Type) [CommRing R] (d : ℕ) (i : Fin (d + 1)) (t : R) :
-    binForm R d (Pi.single i t) = t • la_xy R (0 : Fin 1) (d - i.val) i.val := by
-  rw [la_binForm_apply, Finset.sum_eq_single i]
-  · simp
-  · intro j _ hj
-    simp [Pi.single_apply, hj]
-  · intro h
-    exact absurd (Finset.mem_univ i) h
-
-theorem la_coeff_binForm (R : Type) [CommRing R] (d : ℕ) (c : Fin (d + 1) → R) (i : Fin (d + 1)) :
-    coeff (la_mono (0 : Fin 1) (d - i.val) i.val) (binForm R d c) = c i := by
-  rw [la_binForm_apply, coeff_sum, Finset.sum_eq_single i]
-  · rw [coeff_smul, la_xy_eq, coeff_monomial, if_pos rfl, smul_eq_mul, mul_one]
-  · intro j _ hj
-    rw [coeff_smul, la_xy_eq, coeff_monomial, if_neg, smul_zero]
-    intro h
-    exact hj (Fin.ext (la_mono_inj 0 h).2)
-  · intro h
-    exact absurd (Finset.mem_univ i) h
-
-theorem binary_form_injective : BinFormInj := by
-  unfold BinFormInj
-  intro R _ d c c' h
-  funext i
-  rw [← la_coeff_binForm R d c i, ← la_coeff_binForm R d c' i, h]
-
-theorem la_range_binForm (R : Type) [CommRing R] (d : ℕ) :
-    LinearMap.range (binForm R d) = la_monLat R (0 : Fin 1) d := by
-  apply le_antisymm
-  · rintro _ ⟨c, rfl⟩
-    rw [la_binForm_apply, la_monLat]
-    exact Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _
-      (Submodule.subset_span ⟨d - i.val, i.val, by have := i.isLt; omega, rfl⟩))
-  · rw [la_monLat, Submodule.span_le]
-    rintro f ⟨p, q, hpq, rfl⟩
-    refine ⟨Pi.single ⟨q, by omega⟩ 1, ?_⟩
-    rw [la_binForm_single, one_smul]
-    simp only [Fin.val_mk, show d - q = p by omega]
-
-theorem nabla_rank_two_one_column : DualWeylBinaryForms := by
-  unfold DualWeylBinaryForms
-  intro R _ ν
-  rw [la_nabla_r2n1, la_range_binForm]
-
-theorem la_diagBinom_apply (R : Type) [CommRing R] (d : ℕ) (c : Fin (d + 1) → R) (i : Fin (d + 1)) :
-    Formalism.CohomologicalDescent.diagBinom R d c i = (d.choose i.val : R) * c i := by
-  simp [Formalism.CohomologicalDescent.diagBinom]
-
-theorem delta_rank_two_one_column : WeylRankTwoOneColumnImage := by
-  unfold WeylRankTwoOneColumnImage
-  intro R _ hn ν
-  rw [la_weyl_r2n1]
-  apply le_antisymm
-  · rw [la_binLat, Submodule.span_le]
-    rintro f ⟨p, q, hpq, rfl⟩
-    have hsingle : Formalism.CohomologicalDescent.diagBinom R (ν 0) (Pi.single (⟨q, by omega⟩ : Fin (ν 0 + 1)) 1) =
-        Pi.single ⟨q, by omega⟩ ((ν 0).choose q : R) := by
-      funext j
-      rw [la_diagBinom_apply]
-      by_cases hj : j = ⟨q, by omega⟩
-      · subst hj
-        simp
-      · simp [Pi.single_apply, hj]
-    refine Submodule.mem_map.mpr ⟨Formalism.CohomologicalDescent.diagBinom R (ν 0) (Pi.single ⟨q, by omega⟩ 1),
-      LinearMap.mem_range_self _ _, ?_⟩
-    rw [hsingle, la_binForm_single, MvPolynomial.smul_eq_C_mul, map_natCast]
-    simp only [Fin.val_mk, ← hpq, Nat.add_sub_cancel]
-  · rw [Submodule.map_le_iff_le_comap]
-    rintro _ ⟨c, rfl⟩
-    rw [Submodule.mem_comap, la_binForm_apply, la_binLat]
-    refine Submodule.sum_mem _ (fun i _ => ?_)
-    have hi := i.isLt
-    have hg : ((ν 0).choose i.val : R) • la_xy R (0 : Fin 1) (ν 0 - i.val) i.val ∈
-        Submodule.span R {f | ∃ p q, p + q = ν 0 ∧
-          f = ((p + q).choose q : MvPolynomial (Fin 2 × Fin 1) R) * la_xy R 0 p q} := by
-      rw [MvPolynomial.smul_eq_C_mul, map_natCast]
-      exact Submodule.subset_span ⟨ν 0 - i.val, i.val, by omega,
-        by rw [show ν 0 - i.val + i.val = ν 0 by omega]⟩
-    rw [la_diagBinom_apply, mul_comm ((ν 0).choose i.val : R), mul_smul]
-    exact Submodule.smul_mem _ _ hg
-
 theorem la_eExp_r2n1 (ν : Fin 1 → ℕ) (l : ℕ) :
     Formalism.RankGapBounds.JumpSetsAlt.eExp (lamU 2 1 ν) l = Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0) := by
   rw [exact_exponent_rank_two 1 ν l]
   have h0 : rowNu (r := 2) ν 0 = ν 0 := dif_pos (by decide)
   have h1 : rowNu (r := 2) ν 1 = 0 := dif_neg (by decide)
   rw [h0, h1, Nat.sub_zero]
-
-theorem lemma_a_rank_two_one_column : LemmaAR_r2n1 := by
-  unfold LemmaAR_r2n1
-  intro R _ hn ν l hl hu x hx
-  rw [la_nabla_r2n1] at hx
-  rw [la_weyl_r2n1, la_eExp_r2n1]
-  obtain ⟨m, hm, hdiv⟩ := la_arith l (ν 0) hl
-  obtain ⟨u, hu'⟩ := hu m hm
-  have key : ∀ y ∈ la_monLat R (0 : Fin 1) (ν 0),
-      ((m : R) * (l : R) ^ Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0)) • y ∈ la_binLat R 0 (ν 0) := by
-    intro y hy
-    rw [la_monLat] at hy
-    induction hy using Submodule.span_induction with
-    | mem z hz =>
-      obtain ⟨p, q, hpq, rfl⟩ := hz
-      have h := la_mem_of_dvd R (0 : Fin 1) hpq (N := m * l ^ Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0))
-        (by rw [hpq]; exact hdiv q (by omega))
-      rw [MvPolynomial.smul_eq_C_mul, ← Nat.cast_pow, ← Nat.cast_mul, map_natCast]
-      exact h
-    | zero =>
-      rw [smul_zero]
-      exact Submodule.zero_mem _
-    | add a b _ _ ha hb =>
-      rw [smul_add]
-      exact Submodule.add_mem _ ha hb
-    | smul c a _ ha =>
-      rw [smul_comm]
-      exact Submodule.smul_mem _ c ha
-  have h2 := Submodule.smul_mem _ (↑u⁻¹ : R) (key x hx)
-  rwa [smul_smul, ← mul_assoc, ← hu', Units.inv_mul, one_mul] at h2
 
 theorem sharp_rank_two_one_column : SharpInclusionRankTwoOneColumn := by
   unfold SharpInclusionRankTwoOneColumn
@@ -650,19 +443,6 @@ theorem lattice_z_rank_two_one_column : LemmaAZ_r2n1 := by
   intro hn ν l hl
   rw [la_eExp_r2n1]
   exact (sharp_rank_two_one_column hn ν l _ hl).mpr le_rfl
-
-theorem exact_z_rank_two_one_column : ExZR2N1 := by
-  unfold ExZR2N1
-  intro hn ν l hl
-  rw [la_eExp_r2n1]
-  unfold exZ
-  have hset : {e : ℕ | InclZ 2 1 hn ν l e} = {e : ℕ | Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0) ≤ e} := by
-    ext e
-    exact sharp_rank_two_one_column hn ν l e hl
-  rw [hset]
-  have hmem : Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0) ∈ {e : ℕ | Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0) ≤ e} :=
-    le_refl (Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0))
-  exact le_antisymm (Nat.sInf_le hmem) (le_csInf ⟨_, hmem⟩ (fun b hb => hb))
 
 theorem lattice_z_rank_one : LatticeInclusionRankOne := by
   unfold LatticeInclusionRankOne
@@ -759,11 +539,6 @@ theorem la_tw_stable (R : Type) [CommRing R] (L : Submodule R (MvPolynomial (Fin
     exact nsmul_mem (hs _ _ _ _ hg) _
   · rw [la_rowDiv_tw_ne R a b hab]
     exact Submodule.mem_map.mpr ⟨_, hs _ _ _ _ hg, rfl⟩
-
-theorem la_xy_mem_binLat (R : Type) [CommRing R] {n : ℕ} (s : Fin n) (d : ℕ) :
-    la_xy R s d 0 ∈ la_binLat R s d := by
-  rw [la_binLat]
-  exact Submodule.subset_span ⟨d, 0, by simp, by simp⟩
 
 theorem la_weyl_r2n2 (R : Type) [CommRing R] (hn : 2 ≤ 2) (ν : Fin 2 → ℕ) :
     weyl R 2 2 hn ν =
@@ -935,20 +710,6 @@ theorem lattice_z_rank_two_two_columns : LemmaAZ_r2n2 := by
   rw [la_eExp_r2n2]
   exact (sharp_rank_two_two_columns hn ν hν l _ hl).mpr le_rfl
 
-theorem exact_z_rank_two_two_columns : ExZR2N2 := by
-  unfold ExZR2N2
-  intro hn ν hν l hl
-  rw [la_eExp_r2n2]
-  unfold exZ
-  have hset : {e : ℕ | InclZ 2 2 hn ν l e} = {e : ℕ | Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0 - ν 1) ≤ e} := by
-    ext e
-    exact sharp_rank_two_two_columns hn ν hν l e hl
-  rw [hset]
-  have hmem : Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0 - ν 1) ∈
-      {e : ℕ | Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0 - ν 1) ≤ e} :=
-    le_refl (Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0 - ν 1))
-  exact le_antisymm (Nat.sInf_le hmem) (le_csInf ⟨_, hmem⟩ (fun b hb => hb))
-
 theorem lattice_z_rank_le_two : LatticeInclusionRankLeTwo := by
   unfold LatticeInclusionRankLeTwo
   intro r n hn hr ν hν l hl
@@ -1089,153 +850,9 @@ theorem la_incl_R_of_Z (R : Type) [CommRing R] [IsDomain R] (r n : ℕ) (hn : n 
   | add x y _ _ hx hy => rw [smul_add]; exact Submodule.add_mem _ hx hy
   | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ _ hx
 
-theorem lemma_a_real_of_integral : LemmaAROfZ := by
-  unfold LemmaAROfZ LemmaAR
-  intro hZ R _ _ r n hn ν hν l hl hu x hx
-  exact la_incl_R_of_Z R r n hn ν l _ hu (hZ r n hn ν hν l hl) x hx
-
 theorem la_map_smul (R : Type) [CommRing R] {σ : Type} (z : ℤ) (f : MvPolynomial σ ℤ) :
     map (Int.castRingHom R) (z • f) = (z : R) • map (Int.castRingHom R) f := by
   rw [map_zsmul]
   exact (Int.cast_smul_eq_zsmul R z _).symm
-
-theorem la_clear (R : Type) [CommRing R] (l : ℕ) (hl : l.Prime)
-    (hd : ∀ a : R, ∃ m : ℕ, ¬ l ∣ m ∧ ∃ z : ℤ, (m : R) * a = z)
-    {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) R)
-    (hf : f ∈ weyl R r n hn ν) :
-    ∃ m : ℕ, ¬ l ∣ m ∧ ∃ f0 ∈ weyl ℤ r n hn ν, (m : R) • f = map (Int.castRingHom R) f0 := by
-  have hf' : f ∈ Submodule.span R
-      (Set.range fun w : List (Fin r × Fin r × ℕ) => applyWord R w (hw R hn ν)) := hf
-  clear hf
-  induction hf' using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨w, rfl⟩ := hx
-    refine ⟨1, hl.not_dvd_one, applyWord ℤ w (hw ℤ hn ν), la_word_mem ℤ hn ν w, ?_⟩
-    rw [← la_applyWord_map_lemma_3, la_hw_map_lemma_4, Nat.cast_one, one_smul]
-  | zero =>
-    exact ⟨1, hl.not_dvd_one, 0, Submodule.zero_mem _, by simp⟩
-  | add x y _ _ hx hy =>
-    obtain ⟨m1, hm1, f1, hf1, e1⟩ := hx
-    obtain ⟨m2, hm2, f2, hf2, e2⟩ := hy
-    refine ⟨m1 * m2, fun h => ((Nat.Prime.dvd_mul hl).mp h).elim hm1 hm2,
-      (m2 : ℤ) • f1 + (m1 : ℤ) • f2,
-      Submodule.add_mem _ (Submodule.smul_mem _ _ hf1) (Submodule.smul_mem _ _ hf2), ?_⟩
-    rw [map_add, map_zsmul, map_zsmul, ← e1, ← e2, ← Int.cast_smul_eq_zsmul R,
-      ← Int.cast_smul_eq_zsmul R, smul_smul, smul_smul, smul_add, Nat.cast_mul, Int.cast_natCast,
-      Int.cast_natCast, mul_comm (m2 : R) (m1 : R)]
-  | smul a x _ hx =>
-    obtain ⟨m1, hm1, f1, hf1, e1⟩ := hx
-    obtain ⟨m, hm, z, hz⟩ := hd a
-    refine ⟨m * m1, fun h => ((Nat.Prime.dvd_mul hl).mp h).elim hm hm1, z • f1,
-      Submodule.smul_mem _ _ hf1, ?_⟩
-    rw [map_zsmul, ← e1, ← Int.cast_smul_eq_zsmul R, smul_smul, smul_smul, ← hz, Nat.cast_mul]
-    congr 1
-    ring
-
-theorem la_incl_of_gens (r n : ℕ) (hn : n ≤ r) (ν : Fin n → ℕ) (l e : ℕ) (hl : l.Prime)
-    (h : ∀ g ∈ dualWeyl ℤ r n ν, ∃ m : ℕ, ¬ l ∣ m ∧
-      ((m * l ^ e : ℕ) : ℤ) • g ∈ weyl ℤ r n hn ν) : InclZ r n hn ν l e := by
-  obtain ⟨S, hS⟩ := la_dualWeyl_fg r n ν
-  choose! M hM hMw using h
-  have hS' : ∀ g ∈ S, g ∈ dualWeyl ℤ r n ν := by
-    intro g hg
-    rw [← hS]
-    exact Submodule.subset_span hg
-  unfold InclZ
-  refine ⟨∏ g ∈ S, M g, ?_, fun x hx => ?_⟩
-  · rw [Prime.dvd_finset_prod_iff hl.prime]
-    push_neg
-    exact fun g hg => hM g (hS' g hg)
-  · rw [← hS] at hx
-    induction hx using Submodule.span_induction with
-    | mem g hg =>
-      obtain ⟨K, hK⟩ := Finset.dvd_prod_of_mem M hg
-      rw [hK, show M g * K * l ^ e = K * (M g * l ^ e) by ring, Nat.cast_mul, mul_smul]
-      exact Submodule.smul_mem _ _ (hMw g (hS' g hg))
-    | zero =>
-      rw [smul_zero]
-      exact Submodule.zero_mem _
-    | add x y _ _ hx hy =>
-      rw [smul_add]
-      exact Submodule.add_mem _ hx hy
-    | smul a x _ hx =>
-      rw [smul_comm]
-      exact Submodule.smul_mem _ a hx
-
-theorem incl_z_iff_incl_r : InclZIffR := by
-  intro R _ _ _ l hl hu hd r n hn ν e
-  constructor
-  · intro hZ x hx
-    exact la_incl_R_of_Z R r n hn ν l e hu hZ x hx
-  · intro hR
-    apply la_incl_of_gens r n hn ν l e hl
-    intro g hg
-    have h1 := hR _ (dualWeylMap ℤ R (Int.castRingHom R) r n ν g hg)
-    obtain ⟨m, hm, f0, hf0, h2⟩ := la_clear R l hl hd hn ν _ h1
-    refine ⟨m, hm, ?_⟩
-    have h3 : map (Int.castRingHom R) (((m * l ^ e : ℕ) : ℤ) • g) = map (Int.castRingHom R) f0 := by
-      rw [la_map_smul, ← h2, smul_smul]
-      push_cast
-      rfl
-    have hinj : Function.Injective (map (Int.castRingHom R) :
-        MvPolynomial (Fin r × Fin n) ℤ → MvPolynomial (Fin r × Fin n) R) :=
-      map_injective _ (RingHom.injective_int (Int.castRingHom R))
-    rw [hinj h3]
-    exact hf0
-
-theorem lemma_a_integral_of_real : LemmaAZOfR := by
-  intro hR r n hn ν hν l hl
-  have hl0 : (l : ℤ) ≠ 0 := by exact_mod_cast hl.ne_zero
-  have hP : (Ideal.span {(l : ℤ)}).IsPrime :=
-    (Ideal.span_singleton_prime hl0).2 (Nat.prime_iff_prime_int.1 hl)
-  let R := Localization.AtPrime (Ideal.span {(l : ℤ)})
-  have hinj : Function.Injective (algebraMap ℤ R) :=
-    IsLocalization.injective R (Ideal.primeCompl_le_nonZeroDivisors (Ideal.span {(l : ℤ)}))
-  have : CharZero R := charZero_of_injective_algebraMap hinj
-  have hmem : ∀ t : ℤ, t ∈ (Ideal.span {(l : ℤ)}).primeCompl ↔ ¬ (l : ℤ) ∣ t := by
-    intro t
-    rw [Ideal.mem_primeCompl_iff, Ideal.mem_span_singleton]
-  have hu : ∀ m : ℕ, ¬ l ∣ m → IsUnit (m : R) := by
-    intro m hm
-    have h1 : (m : ℤ) ∈ (Ideal.span {(l : ℤ)}).primeCompl :=
-      (hmem _).2 (by exact_mod_cast hm)
-    have h2 := IsLocalization.map_units R (⟨(m : ℤ), h1⟩ : (Ideal.span {(l : ℤ)}).primeCompl)
-    simpa using h2
-  have hd : ∀ a : R, ∃ m : ℕ, ¬ l ∣ m ∧ ∃ z : ℤ, (m : R) * a = z := by
-    intro a
-    obtain ⟨⟨z, t⟩, h1⟩ := IsLocalization.surj (Ideal.span {(l : ℤ)}).primeCompl a
-    have ht := (hmem _).1 t.2
-    simp only [eq_intCast] at h1
-    refine ⟨(t : ℤ).natAbs, fun h => ht (Int.natCast_dvd.2 h), ?_⟩
-    rcases Int.natAbs_eq (t : ℤ) with h | h
-    · refine ⟨z, ?_⟩
-      rw [← h1, mul_comm]
-      congr 1
-      rw [← Int.cast_natCast, ← h]
-    · refine ⟨-z, ?_⟩
-      have h2 : (((t : ℤ).natAbs : ℤ) : R) = -((t : ℤ) : R) := by
-        rw [← Int.cast_neg]
-        congr 1
-        omega
-      have h3 : (((t : ℤ).natAbs : ℕ) : R) = -((t : ℤ) : R) := by
-        rw [← Int.cast_natCast]
-        exact h2
-      rw [h3, Int.cast_neg, ← h1]
-      ring
-  exact (incl_z_iff_incl_r R l hl hu hd r n hn ν _).2 (hR R r n hn ν hν l hl hu)
-
-theorem la_exZ_le_of_U (hA : LemmaAZ) (r : ℕ) (U : Fin r → ℤ) (hU : StrictAnti U) (h0 : ∀ a, 0 ≤ U a)
-    (l : ℕ) (hl : l.Prime) : exZ r r le_rfl (nuOf U) l ≤ Formalism.RankGapBounds.JumpSetsAlt.eExp U l := by
-  obtain ⟨hanti, hlam⟩ := nu_of_specialization r U hU h0
-  have h := joint_exact_z hA r r le_rfl (nuOf U) hanti l hl
-  rwa [hlam] at h
-
-theorem joint_lemma_a_inputs : JointLemmaAInputs := by
-  intro ι D W hA hE hP l hl hexc
-  refine ⟨joint_lemma_a_full ι D W hA hE l hl hexc, fun τ hτ => ⟨?_, ?_⟩⟩
-  · exact (hP l hl hexc τ hτ).1.trans (la_exZ_le_of_U hA D.k (W.cloud τ)
-      (Formalism.CohomologicalDescent.Joint.cloud_anti W τ) (fun a => (W.inRange τ _).1) l hl)
-  · exact (hP l hl hexc τ hτ).2.trans (la_exZ_le_of_U hA (D.Nr - D.k) (W.rest τ)
-      (Formalism.CohomologicalDescent.Joint.rest_anti W τ) (fun a => (W.inRange τ _).1) l hl)
 
 end Formalism.CohomologicalDescent.LA

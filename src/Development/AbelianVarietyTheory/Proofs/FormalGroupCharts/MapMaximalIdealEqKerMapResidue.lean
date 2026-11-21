@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosure
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IsWeaklyRegularMvPowerSeriesOfFiniteColengthStatement
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FlatMvPowerSeriesOfIsNoetherianRingStatement
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FlatQuotientWeaklyRegularStatement
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IsWeaklyRegularMvPowerSeriesOfFiniteColength
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FlatMvPowerSeriesOfIsNoetherianRing
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FlatQuotientWeaklyRegular
 
 open IsLocalRing TensorProduct
 
@@ -27,11 +27,11 @@ theorem free_finite_quotient : ∀ (T : Type) [CommRing T] [IsLocalRing T] [IsNo
   have hfin : Module.Finite T (MvPowerSeries σ T ⧸ Ideal.span (Set.range f)) :=
     (GlobalTheory.FormalIsogeny.finiteReduction_iff.2 hM).finite_quotient
   refine ⟨?_, hfin⟩
-  haveI : Module.Flat T (MvPowerSeries σ T) := GlobalTheory.T.module_flat_mvPowerSeries_of_isNoetherianRing T σ
+  haveI : Module.Flat T (MvPowerSeries σ T) := _root_.GlobalTheory.FiniteHeight.flat_mvPowerSeries_of_isNoetherianRing T σ
   haveI : IsLocalHom (algebraMap T (MvPowerSeries σ T)) := ⟨fun r hr => by
     have := MvPowerSeries.isUnit_iff_constantCoeff.1 hr
     exact this⟩
-  have hreg := GlobalTheory.T.isWeaklyRegular_mvPowerSeries_of_finite_colength (ResidueField T) σ n e
+  have hreg := _root_.GlobalTheory.isWeaklyRegular_mvPowerSeries_of_pow_le (ResidueField T) σ n e
     (fun s => MvPowerSeries.map (residue T) (f (e.symm s)))
     (fun s => by rw [MvPowerSeries.constantCoeff_map, h0, map_zero])
     (by
@@ -57,7 +57,7 @@ theorem free_finite_quotient : ∀ (T : Type) [CommRing T] [IsLocalRing T] [IsNo
     intro r _ x
     change φ (Ideal.Quotient.mk _ r * x) = _ * φ x
     rw [map_mul, hφ]
-  have hflat := GlobalTheory.T.flat_quotient_weakly_regular T (MvPowerSeries σ T) (List.ofFn f) (fun r hr => by
+  have hflat := _root_.GlobalTheory.flat_quotient_ofList_of_isWeaklyRegular_closedFibre T (MvPowerSeries σ T) (List.ofFn f) (fun r hr => by
     obtain ⟨j, rfl⟩ := (List.mem_ofFn' _ _).1 hr
     rw [mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, h0]
     exact not_isUnit_zero) hreg'

@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDiscreteValuationRingValuationSubringAtPrime
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZeroOfEventually
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubicThreeRootsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivWeierstrassPAddHalfPeriodStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivWeierstrassPAddHalfPeriod
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 
@@ -49,9 +49,9 @@ theorem prod_derivWeierstrassP_translates_eq_Δ : ∀ (L : PeriodPair) (a b t : 
     convert this using 1; ring)
   obtain ⟨hfac, hdisc⟩ := GlobalTheory.T.cubic_factor_and_discriminant_of_three_distinct_roots L.g₂ L.g₃ _ _ _ (hroot a ha h2a) (hroot b hb h2b)
     (hroot _ hc h2c) h12 h13 h23
-  have e1 := GlobalTheory.T.derivWeierstrassP_add_half_period' L a t ha h2a ht (hshift a h2a)
-  have e2 := GlobalTheory.T.derivWeierstrassP_add_half_period' L b t hb h2b ht (hshift b h2b)
-  have e3 := GlobalTheory.T.derivWeierstrassP_add_half_period' L (a + b) t hc h2c ht (hshift _ h2c)
+  have e1 := _root_.GlobalTheory.derivWeierstrassP_add_half_period L a t ha h2a ht (hshift a h2a)
+  have e2 := _root_.GlobalTheory.derivWeierstrassP_add_half_period L b t hb h2b ht (hshift b h2b)
+  have e3 := _root_.GlobalTheory.derivWeierstrassP_add_half_period L (a + b) t hc h2c ht (hshift _ h2c)
   have hsq := L.derivWeierstrassP_sq t ht
   rw [hfac] at hsq
   have hd : L.derivWeierstrassP t ≠ 0 := fun h =>

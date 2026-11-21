@@ -30,7 +30,7 @@ theorem UpperTheory.Gal.Gen.ell_pf :
     intro g γ hγ d h
     have hγ' : g * (d : UA E n) * g⁻¹ ∈ ratU E n := by
       rw [← h, mul_inv_cancel_right]; exact hγ
-    have hd : IsOfFinOrder (d : UA E n) := GlobalTheory.T.isOfFinOrder_of_compact_conj_mem_unitaryRationalPoints E n D hDc g d d.2 hγ'
+    have hd : IsOfFinOrder (d : UA E n) := _root_.GlobalTheory.isOfFinOrder_of_conj_mem_ratU E n D hDc g d d.2 hγ'
     obtain ⟨m, hm, hpow⟩ := isOfFinOrder_iff_pow_eq_one.1 hd
     have hdm : d ^ m = 1 := Subtype.ext (by rw [Subgroup.coe_pow, hpow]; rfl)
     exact hfin (f d) (isOfFinOrder_iff_pow_eq_one.2 ⟨m, hm, by rw [← map_pow, hdm, map_one]⟩)

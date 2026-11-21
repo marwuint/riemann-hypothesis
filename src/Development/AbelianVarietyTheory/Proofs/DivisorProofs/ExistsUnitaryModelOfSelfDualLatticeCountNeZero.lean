@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjRelEquiv
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ValIrreducible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FixedIntegralUnitEqNormUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfDualLatticeOrthogonalUnitNormExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermitianModelOfOrthonormalBasisStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FixedIntegralUnitEqNormUnramified
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfDualLatticeOrthogonalUnitNormExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermitianModelOfOrthonormalBasis
 
 open NumberField GlobalTheory.UnitaryBC IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep Formalism.UG GlobalTheory.BCT GlobalTheory.KapLat
 open scoped Classical
@@ -26,7 +26,7 @@ theorem exists_orthonormal_of_selfDual (K : GlobalTheory.UnitLemma.UQ) (V : Type
     | succ k ih =>
       intro hk
       obtain ⟨f, hfL, hfo, hfu⟩ := ih (by omega)
-      obtain ⟨y, hyL, hyo, hyu⟩ := GlobalTheory.T.selfDual_lattice_orthogonal_unit_norm_extension K V h hadd hsmul hsym L hfg hsp hsd k f hfL hfo hfu (by omega)
+      obtain ⟨y, hyL, hyo, hyu⟩ := _root_.GlobalTheory.selfDual_orthogonal_unit_step K V h hadd hsmul hsym L hfg hsp hsd k f hfL hfo hfu (by omega)
       refine ⟨Fin.snoc f y, ?_, ?_, ?_⟩
       · intro i
         induction i using Fin.lastCases with
@@ -50,7 +50,7 @@ theorem exists_orthonormal_of_selfDual (K : GlobalTheory.UnitLemma.UQ) (V : Type
         | cast i => simpa using hfu i
   obtain ⟨f, -, hfo, hfu⟩ := key _ le_rfl
   choose t ht hft using hfu
-  choose v hv using fun i => GlobalTheory.T.fixed_integral_unit_eq_norm_unramified K (t i) (ht i) (by rw [← hft, ← hsym])
+  choose v hv using fun i => _root_.GlobalTheory.UnitLemma.UQ.unit_fixed_is_norm K (t i) (ht i) (by rw [← hft, ← hsym])
   have hsmul2 : ∀ (a : K.E) y z, h y (a • z) = K.c a * h y z := by
     intro a y z
     rw [hsym, hsmul, map_mul, hsym z y]
@@ -105,7 +105,7 @@ theorem exists_model_of_N_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [Is
     (fun a y z => GlobalTheory.UnitLemma.Basic.herm_smul_left B x y z a)
     (fun y z => GlobalTheory.UnitLemma.Basic.herm_symm B x hσx y z) L hlat.1 hlat.2 hsd
   have hd : Module.finrank K.E B.A = n := hF.2.2.1.trans hn
-  refine GlobalTheory.T.exists_hermitianModel_of_orthonormal_basis E w hw K e hB n B u x hF.2.2.2 (b.reindex (finCongr hd)) fun i j => ?_
+  refine _root_.GlobalTheory.KapLat.exists_model_of_orthonormal_basis E w hw K e hB n B u x hF.2.2.2 (b.reindex (finCongr hd)) fun i j => ?_
   simp only [Module.Basis.reindex_apply, hb, EmbeddingLike.apply_eq_iff_eq]
 
 end GlobalTheory.KapLat

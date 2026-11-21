@@ -217,23 +217,6 @@ theorem h1SUnitsToSPic_injective : Function.Injective (h1SUnitsToSPic (Ω := Ω)
 
 variable [IsSepClosed Ω]
 
-theorem exists_h1SUnitsToSPic_eq {N : ℕ} (hN : N ≠ 0)
-    (hNS : ∀ v ∉ S, ((N : ℕ) : 𝓞 F) ∉ v.asIdeal) (c : sPic S) (hc : N • c = 0) :
-    ∃ h, h1SUnitsToSPic (Ω := Ω) S h = c := by
-  obtain ⟨D, rfl⟩ := QuotientAddGroup.mk'_surjective _ c
-  rw [← map_nsmul, sPicMk_eq_zero_iff] at hc
-  obtain ⟨a, ha⟩ := hc
-  obtain ⟨x, hx⟩ := exists_divAbove_eq (Ω := Ω) S hN hNS D a ha
-  exact ⟨invariantsToH1 S (sInvariantToInvariants S (Additive.ofMul x)),
-    by rw [h1SUnitsToSPic_apply, hx]⟩
-
-theorem exists_h1SUnitsToSPic_eq_of_pow {n : ℕ} (hn : n ≠ 0)
-    (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 F) ∉ v.asIdeal) (c : sPic S) (k : ℕ) (hc : n ^ k • c = 0) :
-    ∃ h, h1SUnitsToSPic (Ω := Ω) S h = c := by
-  refine exists_h1SUnitsToSPic_eq S (pow_ne_zero k hn) (fun v hv h => hnS v hv ?_) c hc
-  rw [Nat.cast_pow] at h
-  exact v.isPrime.mem_of_pow_mem k h
-
 end H1
 
 section KummerPic
@@ -311,24 +294,6 @@ theorem kummerPicHom_eq_zero_iff (y : cohomology (galRootsOfUnity.{u} F (maxUnra
       (sUnitsToInvariants S (maxUnramifiedOutside F Ω S) a))) (δ_comp hK 0 1 rfl)
     simp only [ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_zero, LinearMap.zero_apply] at h0
     exact (congrArg (h1SUnitsToSPic (Ω := Ω) S) h0).trans (map_zero _)
-
-theorem mem_range_kummerPicHom_iff (c : sPic S) :
-    (∃ y, kummerPicHom (Ω := Ω) S n y = c) ↔ n • c = 0 := by
-  have hK := sUnitsKummerSequence_shortExact (Ω := Ω) S n hnS
-  have hg : ∀ h : cohomology (galSUnits S (maxUnramifiedOutside F Ω S)) 1,
-      (cohomologyMap (sUnitsKummerSequence S (maxUnramifiedOutside F Ω S) n).g 1).hom h = n • h :=
-    fun h => cohomologyMap_nsmul_id_apply (galSUnits S (maxUnramifiedOutside F Ω S)) n 1 h
-  constructor
-  · rintro ⟨y, rfl⟩
-    have h1 := cohomologyMap_g_cohomologyMap_f_apply (S := sUnitsKummerSequence S (maxUnramifiedOutside F Ω S) n) 1 y
-    have h1' := (hg _).symm.trans h1
-    have h2 := congrArg (h1SUnitsToSPic (Ω := Ω) S) h1'
-    exact (map_nsmul (h1SUnitsToSPic (Ω := Ω) S) n _).symm.trans (h2.trans (map_zero _))
-  · intro hc
-    obtain ⟨h, rfl⟩ := exists_h1SUnitsToSPic_eq (Ω := Ω) S (NeZero.ne n) hnS c hc
-    have hh : n • h = 0 := h1SUnitsToSPic_injective S (by rw [map_nsmul, hc, map_zero])
-    obtain ⟨y, hy⟩ := exists_cohomologyMap_f_eq hK 1 h ((hg h).trans hh)
-    exact ⟨y, congrArg (h1SUnitsToSPic (Ω := Ω) S) hy⟩
 
 end KummerPic
 

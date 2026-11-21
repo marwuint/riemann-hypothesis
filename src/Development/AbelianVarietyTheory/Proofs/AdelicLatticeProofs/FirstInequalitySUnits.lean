@@ -1,14 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexFormulaNormsInvolutionStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsQuadraticSqrtExtensionBasicFactsStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TwoMulCardPlacesLeCardOverQuadraticStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TwoMulCardInfinitePlaceLeQuadraticStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsQuadraticSqrtExtensionOfNotSquareStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SUnitsPlacesOverAndQuadraticConjStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.Hilbert90SUnitsQuadraticExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HeightOneSpectrumPlacesOverFiniteSetStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RelIndexSquaresSUnitsNumberFieldStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexFormulaNormsInvolution
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsQuadraticSqrtExtensionBasicFacts
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TwoMulCardPlacesLeCardOverQuadratic
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TwoMulCardInfinitePlaceLeQuadratic
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsQuadraticSqrtExtensionOfNotSquare
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SUnitsPlacesOverAndQuadraticConj
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.Hilbert90SUnitsQuadraticExtension
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HeightOneSpectrumPlacesOverFiniteSet
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RelIndexSquaresSUnitsNumberField
 
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
@@ -65,13 +65,13 @@ theorem first_inequality_sUnits :
         2 * (normSub (RingHom.id F) (δ : F)).relIndex (sUnits F S) ≤
           2 ^ (tFin F δ S + tReal F δ) := by
   intro F _ _ δ S hS hδ hns
-  obtain ⟨E, _, _, _, θ, σ, hq⟩ := GlobalTheory.T.exists_isQuadraticSqrtExtension_of_not_square F δ hns
-  obtain ⟨SE, hSE⟩ := (GlobalTheory.T.heightOneSpectrum_places_over_finite_set F E).1 S
-  obtain ⟨hinv, hfix, -, hnorm, -, -, -⟩ := GlobalTheory.T.isQuadraticSqrtExtension_basic_facts F E δ θ σ hq
-  obtain ⟨hup, hσ⟩ := GlobalTheory.T.sUnits_places_over_and_quadratic_conj F E δ θ σ hq S SE hSE
-  have h90 := GlobalTheory.T.hilbert90_sUnits_quadratic_extension_of_adm F E δ θ σ hq S SE hSE hS ((mem_sUnits F S δ).1 hδ)
-  have hcf := GlobalTheory.T.two_mul_card_places_le_card_over_quadratic F E δ θ σ hq S SE hSE
-  have hci := GlobalTheory.T.two_mul_card_infinitePlace_le_quadratic F E δ θ σ hq
+  obtain ⟨E, _, _, _, θ, σ, hq⟩ := _root_.GlobalTheory.QNorm.exists_isQuad F δ hns
+  obtain ⟨SE, hSE⟩ := (_root_.GlobalTheory.QNorm.places_over F E).1 S
+  obtain ⟨hinv, hfix, -, hnorm, -, -, -⟩ := _root_.GlobalTheory.QNorm.isQuad_basic F E δ θ σ hq
+  obtain ⟨hup, hσ⟩ := _root_.GlobalTheory.QNorm.sUnits_over_and_conj F E δ θ σ hq S SE hSE
+  have h90 := _root_.GlobalTheory.QNorm.hilbert90_sUnits_quadratic_extension_qnorm F E δ θ σ hq S SE hSE hS ((mem_sUnits F S δ).1 hδ)
+  have hcf := _root_.GlobalTheory.QNorm.two_mul_card_le_card_over F E δ θ σ hq S SE hSE
+  have hci := _root_.GlobalTheory.QNorm.two_mul_card_infinitePlace_le F E δ θ σ hq
   let τ : sUnits E SE →* sUnits E SE :=
     ((Units.map (σ : E →* E)).comp (sUnits E SE).subtype).codRestrict _ (fun y => hσ y y.2)
   have hτ : ∀ y : sUnits E SE, (((τ y : sUnits E SE) : Eˣ) : E) = σ ((y : Eˣ) : E) :=
@@ -110,7 +110,7 @@ theorem first_inequality_sUnits :
     · rintro ⟨x, rfl⟩
       apply hext
       rw [hτ, hj, AlgEquiv.commutes]
-  have key := GlobalTheory.T.index_formula_norms_involution (sUnits E SE) τ ⟨-1, hm⟩
+  have key := _root_.GlobalTheory.QNorm.two_mul_index_sqs_mul_relIndex_norm_involution (sUnits E SE) τ ⟨-1, hm⟩
     (fun a => hext _ _ (by rw [hτ, hτ, hinv]))
     (fun a ha => by
       have h1 : ((a : Eˣ) : E) * σ ((a : Eˣ) : E) = 1 := by
@@ -134,7 +134,7 @@ theorem first_inequality_sUnits :
       · exact Or.inl (hext _ _ (by simpa using h))
       · exact Or.inr (hext _ _ (by simpa using h)))
   rw [hrange, relIndex_sqs_range_eq j hjinj, index_sqs_top_eq, index_sqs_top_eq,
-    GlobalTheory.T.relIndex_squares_sUnitsNumberField E SE, GlobalTheory.T.relIndex_squares_sUnitsNumberField F S, ← Subgroup.index_comap] at key
+    _root_.GlobalTheory.QNorm.relIndex_sqs_sUnits E SE, _root_.GlobalTheory.QNorm.relIndex_sqs_sUnits F S, ← Subgroup.index_comap] at key
   refine arith_first_ineq _ _ _ _ _ ?_ key (by omega)
   apply Subgroup.index_dvd_of_le
   rintro x ⟨y, hy⟩

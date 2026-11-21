@@ -8,7 +8,16 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanHeisenbergTr
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSelfDualCLatFrame
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AddNsmulResidueAssoc
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompletedHomLatticeFinitelyGeneratedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompletedHomLatticeFinitelyGenerated
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemRangeOfOneTmulMem
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulMemLatO
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIntegralSplitIdempotentOverTwo
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsOpenNsmulCompletedHomLatticeFiniteAdelic
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ThetaNormSqSumHeisenbergTranslatesDistinctChars
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EventuallyFinEqOne
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ActAApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompletedHomLatticeMultipleMemOpenLevelStatement
 
 noncomputable section
@@ -255,7 +264,7 @@ theorem mem_span_local : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
   have hv : ∃ N : ℕ, 0 < N ∧ ∀ u ∈ Λ, ρ (N • u) ⟨x, hx⟩ = ⟨x, hx⟩ := by
     obtain ⟨U, hUo, hU⟩ := hx.1.level
     obtain ⟨N, hN, hNU⟩ :=
-      (GlobalTheory.T.completedHomLattice_multiple_mem_open_level D S T ΛS ΛT hsdS hsdT (GlobalTheory.T.completedHomLattice_finitelyGenerated D S T ΛS ΛT hsdS hsdT)).1 U hUo
+      (GlobalTheory.T.completedHomLattice_multiple_mem_open_level D S T ΛS ΛT hsdS hsdT (_root_.GlobalTheory.LatFinGen.latO_finitely_generated D S T ΛS ΛT hsdS hsdT)).1 U hUo
     refine ⟨N, hN, fun u hu => Subtype.ext ?_⟩
     have hu' : (u : WO S T) ∈ latO S T ΛS ΛT (fun w => w = v) := hu
     have hall := GlobalTheory.PlaceModel.latO_le_top _ hu'

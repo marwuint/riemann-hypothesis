@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SqMap
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientGermSubstitutionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientGermSubstitution
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FrRatio
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PsJetTwistedSeriesOfLeOne
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -280,7 +280,7 @@ theorem adRel_series : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   obtain ⟨uB, huB, hcB⟩ := hAdB m
   have hL := t.PP.isLB
   have hM := Q.tB.PP.isLB
-  have hC := GlobalTheory.T.abelian_quotient_germ_substitution E H hstar X t k p x Q d d' g gB Qs hQ hq m
+  have hC := _root_.GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.substitution_action_commutes E H hstar X t k p x Q d d' g gB Qs hQ hq m
   rw [FBIdJet.psJet_mul, FBIdJet.psJet_mul, psJet_subQ Qs hQ,
     ← GlobalTheory.FrameTwistCompare.jetSubstP_right m (g.B.A.const (H.bar a)) lam,
     ← GlobalTheory.FrameTwistCompare.jetSubstP_left m (g.B.A.const a) lam, ← hUl, ← hu, ← huB]

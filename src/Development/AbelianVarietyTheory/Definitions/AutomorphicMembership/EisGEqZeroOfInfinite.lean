@@ -48,48 +48,6 @@ theorem jLat_map (Λ : AddSubgroup ℂ) (δ : ℂ) (hδ : δ ≠ 0) :
 
 variable {LL : Type} [Field LL] [NumberField LL]
 
-theorem exists_isConjLat_self (emb : LL →+* ℂ) (Λ : AddSubgroup ℂ) (h : TaylorLogMetric.discr Λ ≠ 0)
-    (ha : ∃ a : LL, emb a = jLat Λ) : ∃ Λ', IsConjLat emb emb Λ Λ' := by
-  obtain ⟨δ, hδ⟩ := IsAlgClosed.exists_pow_nat_eq (TaylorLogMetric.discr Λ) (n := 12) (by norm_num)
-  have h0 : δ ≠ 0 := by rintro rfl; apply h; rw [← hδ]; simp
-  obtain ⟨a, ha⟩ := ha
-  refine ⟨Λ.map (AddMonoidHom.mulLeft δ), ?_, a, ha, ?_⟩
-  · rw [discr_map _ _ h0, hδ, inv_mul_cancel₀ h]
-  · rw [jLat_map _ _ h0, ha]
-
-theorem eisG_eq_zero_of_infinite (Λ : AddSubgroup ℂ) (h : {w : ℂ | w ∈ Λ ∧ w ≠ 0 ∧ ‖w‖ ≤ 1}.Infinite) (k : ℕ) :
-    eisG Λ k = 0 := by
-  unfold eisG
-  apply tsum_eq_zero_of_not_summable
-  intro hs
-  have ht := hs.tendsto_cofinite_zero
-  have he := (Metric.tendsto_nhds.1 ht) 1 one_pos
-  rw [Filter.eventually_cofinite] at he
-  apply h
-  refine (he.image Subtype.val).subset ?_
-  rintro w ⟨h1, h2, h3⟩
-  refine ⟨⟨w, h1, h2⟩, ?_, rfl⟩
-  simp only [Set.mem_setOf_eq, dist_zero_right, not_lt, norm_div, norm_one, norm_pow]
-  have hp : 0 < ‖w‖ ^ (2 * k) := pow_pos (norm_pos_iff.2 h2) _
-  rw [le_div_iff₀ hp, one_mul]
-  exact pow_le_one₀ (norm_nonneg _) h3
-
-theorem finite_of_isConjLat {emb s : LL →+* ℂ} {Λ Λ' : AddSubgroup ℂ} (h : IsConjLat emb s Λ Λ') :
-    {w : ℂ | w ∈ Λ' ∧ w ≠ 0 ∧ ‖w‖ ≤ 1}.Finite := by
-  by_contra hi
-  have := h.1
-  unfold TaylorLogMetric.discr g2 g3 at this
-  rw [eisG_eq_zero_of_infinite _ hi, eisG_eq_zero_of_infinite _ hi] at this
-  norm_num at this
-
-theorem ne_bot_of_isConjLat {emb s : LL →+* ℂ} {Λ Λ' : AddSubgroup ℂ} (h : IsConjLat emb s Λ Λ') : Λ' ≠ ⊥ := by
-  rintro rfl
-  have := h.1
-  haveI : IsEmpty {w : ℂ // w ∈ (⊥ : AddSubgroup ℂ) ∧ w ≠ 0} := ⟨fun w => w.2.2 (AddSubgroup.mem_bot.1 w.2.1)⟩
-  unfold TaylorLogMetric.discr g2 g3 eisG at *
-  rw [tsum_empty, tsum_empty] at *
-  norm_num at *
-
 variable {R : Ranks} (H : Host R)
 
 theorem ellLat_ne_bot (embE : H.E →+* LL) (g : R.GG) : ellLat H embE g ≠ ⊥ := by
@@ -118,21 +76,6 @@ theorem ne_zero_of_isGen {embE : H.E →+* LL} {g : R.GG} {x : LL} (h : IsGen H 
 
 theorem gen_spec {emb : LL →+* ℂ} {embE : H.E →+* LL} (h : FieldOK H emb embE) (g) :
     IsGen H embE g (gen H embE g) := Classical.epsilon_spec (h.2 g)
-
-theorem prod_norm_eq_of_isGen {embE : H.E →+* LL} {g : R.GG} {x y : LL}
-    (hx : IsGen H embE g x) (hy : IsGen H embE g y) :
-    ∏ s : LL →+* ℂ, ‖s x‖ = ∏ s : LL →+* ℂ, ‖s y‖ := by
-  have h : Submodule.span (𝓞 LL) {x} = Submodule.span (𝓞 LL) {y} := hx.trans hy.symm
-  obtain ⟨u, hu⟩ := Submodule.span_singleton_eq_span_singleton.1 h
-  have hu1 : ∏ s : LL →+* ℂ, ‖s ((u : 𝓞 LL) : LL)‖ = 1 := by
-    rw [Fintype.prod_equiv (RingHom.equivRatAlgHom LL ℂ) (fun f => ‖f ((u : 𝓞 LL) : LL)‖)
-      (fun φ => ‖φ ((u : 𝓞 LL) : LL)‖) (fun _ => rfl), ← norm_prod, ← Algebra.norm_eq_prod_embeddings ℚ ℂ]
-    have := NumberField.Units.norm LL u
-    simp only [eq_ratCast, Complex.norm_ratCast]
-    exact_mod_cast this
-  rw [← hu]
-  simp only [Units.smul_def, Algebra.smul_def, map_mul, norm_mul, Finset.prod_mul_distrib]
-  rw [show (∏ s : LL →+* ℂ, ‖s (algebraMap (𝓞 LL) LL u)‖) = 1 from hu1, one_mul]
 
 theorem area_pos_of_isConjLat {emb s : LL →+* ℂ} {Λ Λ' : AddSubgroup ℂ} (h : IsConjLat emb s Λ Λ') :
     (∃ L : PeriodPair, ∀ z, z ∈ Λ' ↔ z ∈ L.lattice) ∧ 0 < area Λ' := by

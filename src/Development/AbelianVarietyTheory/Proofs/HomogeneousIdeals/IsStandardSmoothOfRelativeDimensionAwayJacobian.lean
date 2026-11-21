@@ -274,22 +274,6 @@ instance smoothOfRelativeDimension_toSpec [W.IsElliptic] :
 instance smooth_toSpec [W.IsElliptic] : Smooth (toSpec W) :=
   SmoothOfRelativeDimension.smooth 1 _
 
-theorem locally_isStandardSmoothOfRelativeDimension_coordinateRing [W.IsElliptic] :
-    RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension 1)
-      (algebraMap R W.toAffine.CoordinateRing) := by
-  refine (HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension 1)
-    (φ := CommRingCat.ofHom (algebraMap R W.toAffine.CoordinateRing))).1 ?_
-  rw [← chartZ_toSpec]
-  exact inferInstanceAs (SmoothOfRelativeDimension (0 + 1) _)
-
-theorem locally_isStandardSmoothOfRelativeDimension_originRing [W.IsElliptic] :
-    RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension 1)
-      (algebraMap R (OriginRing W)) := by
-  refine (HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension 1)
-    (φ := CommRingCat.ofHom (algebraMap R (OriginRing W)))).1 ?_
-  rw [← chartY_toSpec]
-  exact inferInstanceAs (SmoothOfRelativeDimension (0 + 1) _)
-
 instance smooth_coordinateRing [W.IsElliptic] : Algebra.Smooth R W.toAffine.CoordinateRing := by
   refine RingHom.smooth_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @Smooth)
     (φ := CommRingCat.ofHom (algebraMap R W.toAffine.CoordinateRing))).1 ?_)
@@ -415,21 +399,6 @@ instance isReduced_scheme [_root_.IsReduced R] : AlgebraicGeometry.IsReduced (sc
   .of_openCover _ (chartCover W).openCover
 
 end Integral
-
-theorem proper_flat_geometricallyIntegral_smooth :
-    IsProper (toSpec W) ∧ Flat (toSpec W) ∧
-      (LocallyOfFinitePresentation (toSpec W) ∧ QuasiCompact (toSpec W) ∧
-        QuasiSeparated (toSpec W)) ∧
-      GeometricallyIntegral (toSpec W) ∧
-      (IsUnit W.Δ → SmoothOfRelativeDimension 1 (toSpec W)) :=
-  ⟨inferInstance, inferInstance, ⟨inferInstance, inferInstance, inferInstance⟩, inferInstance,
-    smoothOfRelativeDimension_toSpec_of_isUnit W⟩
-
-example : SmoothOfRelativeDimension 1 (toSpec (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ)) :=
-  smoothOfRelativeDimension_toSpec_of_isUnit _ (by
-    simp only [isUnit_iff_ne_zero, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄,
-      WeierstrassCurve.b₆, WeierstrassCurve.b₈]
-    norm_num)
 
 end WeierstrassCurve
 

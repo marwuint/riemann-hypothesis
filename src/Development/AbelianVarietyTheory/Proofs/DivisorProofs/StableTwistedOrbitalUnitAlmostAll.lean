@@ -1,6 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeLevelFamilyIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralSphericalUnitStatement
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalTwistContinuousInvolutionIntegralPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralTwistedConjInvariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyBezoutSeparableDerivativeAdicIntegers
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemMaxCompactGLOfCommuteEtaleCharpolyBoundedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralConjEtaleMemCentralizerMulIntegralGL
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertIntegralTwistedConjugatesTwistedCentralizer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KappaConstantMulOfCoprimeEllipticPolynomialsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalTwistContinuousInvolutionIntegralProperties
@@ -10,6 +16,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsNormEqXMod
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CyclicVectorOfSeparableCharpolyField
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CyclicVectorSemilocalOfCyclicVectorField
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsMulCommutativeCentRealUJ
+
 open NumberField IsDedekindDomain Polynomial Filter
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC
 open scoped Classical TensorProduct
@@ -190,41 +197,6 @@ theorem twConj_of_norm_eq [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (
 
 end Ring
 
-section Group
-
-variable {G : Type} [Group G]
-
-theorem exists_rep (θ : G →* G) (y : G) : ∃ g, TwCl.rep (θ := θ) (Quot.mk _ y) = g⁻¹ * y * θ g := by
-  have he : Equivalence fun x y : G => ∃ g, y = g⁻¹ * x * θ g :=
-    ⟨fun x => ⟨1, by simp⟩, fun ⟨g, h⟩ => ⟨g⁻¹, by rw [h, map_inv]; group⟩,
-      fun ⟨g, h⟩ ⟨k, h'⟩ => ⟨g * k, by rw [h', h, map_mul]; group⟩⟩
-  exact he.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq (Quot.mk _ y)).symm)
-
-theorem clSum_eq_one [TopologicalSpace G] (θ : G →* G) (K : Subgroup G) (S : Set G) (f : G → ℂ)
-    (hS : ∀ g, ∀ y ∈ S, g⁻¹ * y * θ g ∈ S)
-    (hf : ∀ y ∈ S, twOrb θ K y f = if ∃ g, g⁻¹ * y * θ g ∈ K then 1 else 0)
-    (hex : ∃ y ∈ S, y ∈ K) (hun : ∀ y ∈ S, ∀ z ∈ S, y ∈ K → z ∈ K → ∃ g, z = g⁻¹ * y * θ g) :
-    clSum θ K S 1 f = 1 := by
-  obtain ⟨y, hyS, hyK⟩ := hex
-  obtain ⟨g, hg⟩ := exists_rep θ y
-  rw [clSum, finsum_eq_single (α := TwCl θ) _ (Quot.mk _ y)]
-  · have h1 := hS g y hyS
-    rw [hg, if_pos h1, hf _ h1, if_pos ⟨g⁻¹, by
-      have : g⁻¹⁻¹ * (g⁻¹ * y * θ g) * θ g⁻¹ = y := by rw [map_inv]; group
-      rwa [this]⟩]
-    simp
-  · intro c hc
-    split_ifs with h1
-    · rw [hf _ h1, if_neg, mul_zero]
-      rintro ⟨k, hk⟩
-      obtain ⟨l, hl⟩ := hun _ (hS k _ h1) y hyS hk hyK
-      apply hc
-      rw [← Quot.out_eq c]
-      exact Quot.sound ⟨k * l, by rw [hl, map_mul]; simp only [TwCl.rep]; group⟩
-    · rfl
-
-end Group
-
 variable {E : Type} [Field E] [NumberField E]
 
 theorem eventually_int (x : E) :
@@ -273,13 +245,6 @@ theorem eventually_mem_KGL {n : ℕ} (g : GL (Fin n) E) : ∀ᶠ w : Pl E in cof
   exact mem_int _ _ a (by rw [← map_inv]; exact b)
 
 variable [IsCMField E]
-
-theorem exists_isSection : ∃ S : Set (Pl E), IsSection S := by
-  let f : Pl E → HeightOneSpectrum (𝓞 (maximalRealSubfield E)) := fun w => w.under _
-  let s : Setoid (Pl E) := Setoid.ker f
-  refine ⟨Set.range fun q : Quotient s => q.out, fun w => ⟨(Quotient.mk s w).out, ⟨⟨_, rfl⟩, Quotient.mk_out (s := s) w⟩, ?_⟩⟩
-  rintro _ ⟨⟨u, rfl⟩, hu⟩
-  rw [← Quotient.sound (s := s) hu, Quotient.out_eq]
 
 theorem twConj_of_mem (hU : Unr E) (n : ℕ) (w : Pl E) (Q : (w.adicCompletion E)[X])
     (hQ : ∀ q : (w.adicCompletionIntegers E)[X], q.map (algebraMap _ (w.adicCompletion E)) = Q → q.Separable)
@@ -331,26 +296,5 @@ theorem twConj_of_mem (hU : Unr E) (n : ℕ) (w : Pl E) (Q : (w.adicCompletion E
         _ = _ := by rw [hk, map_mul]; group
     refine ⟨GeneralLinearGroup.map ι (k * g), ?_⟩
     rw [thL, if_neg hw, ← hmap, ← map_inv, ← map_mul, ← map_mul, ← hz']
-
-theorem stTw_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (P : E[X]), P ∈ Ell E n →
-    ∀ᶠ w in (cofinite : Filter (Pl E)),
-      stTw n w (atPl w P) ((GlobalTheory.LFun.KGL w n : Set (GLw n w)).indicator 1) = 1 := by
-  intro E _ _ _ hU n P hP
-  obtain ⟨S, hS⟩ := exists_isSection (E := E)
-  obtain ⟨-, ⟨δ, hδ⟩, -⟩ := GlobalTheory.T.kappaConstant_mul_of_coprime_ellipticPolynomials E hU n 0 P 1 hP
-    ⟨monic_one, natDegree_one, separable_one, fun τ z hz => by simp at hz⟩ isCoprime_one_right
-  filter_upwards [GlobalTheory.T.twisted_orbital_integral_spherical_unit E hU n S hS P hP, eventually_separable P hP.2.2.1, eventually_mem_KGL δ,
-    eventually_mem_KGL (δ * thE E n δ)] with w h1 h2 h3 h4
-  refine clSum_eq_one _ _ _ _ (fun g y hy => ?_) h1 ⟨locEl n w δ, ?_, ?_⟩
-    fun y hy z hz => twConj_of_mem hU n w _ h2 y z hy hz
-  · change _ = _
-    rw [ThBasic.nrmL_twist hU, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']
-    exact hy
-  · change _ = _
-    rw [ThBasic.charpoly_nrmL hU, hδ]
-  · unfold locEl
-    split_ifs
-    · exact h4
-    · exact h3
 
 end GlobalTheory.BCT.UnitStable

@@ -173,19 +173,6 @@ theorem eventually_notMem {d : O} (hd : d ∈ O⁰) :
   have := Ideal.finite_factors (I := Ideal.span {d}) (by simpa using nonZeroDivisors.ne_zero hd)
   simpa [Filter.eventually_cofinite, Ideal.dvd_span_singleton] using this
 
-theorem eventually_localize_le {L L' : Submodule O V} (hL : L.FG)
-    (hL' : Submodule.span K (L' : Set V) = ⊤) :
-    ∀ᶠ v : HeightOneSpectrum O in Filter.cofinite, localize K v L ≤ localize K v L' := by
-  obtain ⟨d, hd, h⟩ := exists_smul_le (O := O) hL hL'
-  filter_upwards [eventually_notMem hd] with v hv
-  exact Submodule.span_le.2 fun x hx => (mem_localize_iff v L' x).2 ⟨d, hv, h x hx⟩
-
-theorem eventually_localize_eq (L L' : Submodule O V) [h : Submodule.IsLattice K L]
-    [h' : Submodule.IsLattice K L'] :
-    ∀ᶠ v : HeightOneSpectrum O in Filter.cofinite, localize K v L = localize K v L' := by
-  filter_upwards [eventually_localize_le h.fg h'.span_eq_top,
-    eventually_localize_le h'.fg h.span_eq_top] with v h₁ h₂ using le_antisymm h₁ h₂
-
 omit [IsDedekindDomain O] in
 theorem exists_mem_submonoid_forall {ι : Type*} {T : Set ι} (hT : T.Finite) (S : Submonoid O)
     (P : ι → O → Prop) (hP : ∀ i s t, P i s → P i (t * s)) (h : ∀ i ∈ T, ∃ s ∈ S, P i s) :
@@ -275,16 +262,6 @@ theorem isLattice_glue (L : Submodule O V) [hL : Submodule.IsLattice K L]
     · rw [hw]; exact Submodule.smul_of_tower_mem _ d (mem_localize_of_mem w hx)
     · exact h w hw x (mem_localize_of_mem w hx)
 
-def latticeEquivFamilies (L : Submodule O V) [Submodule.IsLattice K L] :
-    {L' : Submodule O V // Submodule.IsLattice K L'} ≃
-      {M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSubringAtPrime K) V //
-        (∀ v, Submodule.IsLattice K (M v)) ∧ ∀ᶠ v in Filter.cofinite, M v = localize K v L} where
-  toFun L' := haveI := L'.2
-    ⟨fun v => localize K v L'.1, fun v => isLattice_localize v _, eventually_localize_eq _ _⟩
-  invFun M := ⟨glue M.1, isLattice_glue L M.1 M.2.1 M.2.2⟩
-  left_inv L' := Subtype.ext (glue_localize L'.2.span_eq_top)
-  right_inv M := Subtype.ext (funext (localize_glue (isLattice_glue L M.1 M.2.1 M.2.2).span_eq_top))
-
 end Localize
 
 section Frame
@@ -345,25 +322,6 @@ theorem exists_eq_frameLattice [IsDomain A] [IsPrincipalIdealRing A] [IsFraction
   rw [Set.range_comp, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]
 
 end Frame
-
-section Dual
-
-variable (A : Type*) {K : Type*} [CommRing A] [Field K] [Algebra A K]
-  {V W : Type*} [AddCommGroup V] [Module K V] [Module A V] [IsScalarTower A K V]
-  [AddCommGroup W] [Module K W] {σ : K →+* K}
-
-def sesqDual (B : V →ₗ[K] W →ₛₗ[σ] K) (s : Set W) : Submodule A V where
-  carrier := {x | ∀ y ∈ s, B x y ∈ (1 : Submodule A K)}
-  add_mem' hx hx' y hy := by
-    rw [map_add, LinearMap.add_apply]; exact add_mem (hx y hy) (hx' y hy)
-  zero_mem' y _ := by simp
-  smul_mem' a x hx y hy := by
-    rw [← algebraMap_smul K a x, map_smul, LinearMap.smul_apply, algebraMap_smul]
-    exact Submodule.smul_mem _ a (hx y hy)
-
-variable {A}
-
-end Dual
 
 section LocalDual
 
@@ -564,19 +522,6 @@ theorem complete_rationalPart
     [hN : Submodule.IsLattice (v.adicCompletion K) N] : complete v (rationalPart v N) = N :=
   complete_rationalPart_of_span_eq_top v hN.span_eq_top
 
-def latticeOrderIsoCompletion :
-    {M : Submodule (v.valuationSubringAtPrime K) (ι → K) // Submodule.IsLattice K M} ≃o
-      {N : Submodule (v.adicCompletionIntegers K) (ι → v.adicCompletion K) //
-        Submodule.IsLattice (v.adicCompletion K) N} where
-  toFun M := haveI := M.2; ⟨complete v M.1, isLattice_complete v _⟩
-  invFun N := haveI := N.2; ⟨rationalPart v N.1, isLattice_rationalPart v _⟩
-  left_inv M := haveI := M.2; Subtype.ext (rationalPart_complete v M.1)
-  right_inv N := haveI := N.2; Subtype.ext (complete_rationalPart v N.1)
-  map_rel_iff' {M M'} := by
-    have := M'.2
-    change complete v M.1 ≤ complete v M'.1 ↔ M.1 ≤ M'.1
-    rw [complete_le_iff, rationalPart_complete]
-
 variable {v}
 
 end Completion
@@ -631,7 +576,5 @@ end NumberField
 end GlobalTheory.LocalLattice
 
 namespace GlobalTheory
-
-open LocalLattice
 
 end GlobalTheory

@@ -89,19 +89,4 @@ end GlobalTheory.TraceFlatLevel
 
 namespace GlobalTheory.BigOn.Exp.TupLe
 
-theorem traceSt : TraceSt := by
-  intro D L hT Gi Gl Kc Y cX ex Csz p j hr hm ρ hρ hpin hlev i b ψ ω hψ hQ hω h P
-  have hL := GlobalTheory.BigOn.links2_of_rows _ _ _ _ _ _ _ _ _ _ p hr hm.1
-  have hC : GlobalTheory.Hk3.Core (R2 p) (F2 p) := ⟨hL.1.lev, hL.1.grp, hL.1.fam, hL.1.models, hL.1.chain, hL.1.thP⟩
-  have hBo : BaseOf (R2 p) j (ρ.B i j b) := { baseOf_of_realPin_at (cG := p.cG) hC.lev hρ hpin i j b with }
-  refine GlobalTheory.TraceFlatLevel.traceLevel_flat (R2 p) j (ρ.B i j b) (hρ.base i j b) hBo (F2 p).P0 (F2 p).ψ0⁻¹
-    ((p.R.eG.trans p.cG).trans (ρ.eG i j b)) (fun g P h h' a c => ?_) (fun g => mem_level_iff hm.2.2 hlev i j b g)
-    (fun u hu => ?_) ψ hψ hQ ω hω h P
-  · have e1 := hpin.grp i j b (p.cG (p.R.eG g)) P h h' a c
-    rw [MulEquiv.symm_apply_apply] at e1
-    exact e1
-  · refine (level_chi hm.2.2 hρ hlev i j b u hu).1.trans ?_
-    rw [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀]
-    rfl
-
 end GlobalTheory.BigOn.Exp.TupLe

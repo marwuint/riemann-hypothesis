@@ -102,9 +102,6 @@ theorem minor_ne {q : ℕ} {A : Mt n} (h : ∀ i : Fin (n + 1), 0 < psgn q i * (
   rw [h0] at this
   simp at this
 
-theorem sgn_sq (q a : ℕ) : sgn q a * sgn q a = 1 := by
-  unfold sgn; split_ifs <;> norm_num
-
 theorem diag_pos {q : ℕ} (A : Mt n) (hA : Aᴴ = A) (h : ∀ i : Fin (n + 1), 0 < psgn q i * (lminor A i).re)
     (a : Fin n) : 0 < sgn q a * ((Lm A * A) a a).re := by
   have h1 := h a.succ

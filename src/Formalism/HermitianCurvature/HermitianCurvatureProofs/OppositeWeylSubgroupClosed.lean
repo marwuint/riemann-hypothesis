@@ -268,11 +268,6 @@ lemma mid_wI (m : Fin (k + 1)) : mid k r (wI k r m) := by
   have := m.isLt
   constructor <;> simp only [wI] <;> omega
 
-lemma midx_wI (m : Fin (k + 1)) : midx (mid_wI (r := r) m) = m := by
-  apply Fin.ext
-  simp only [wI, midx]
-  omega
-
 lemma wI_inj {a b : Fin (k + 1)} (h : wI k r a = wI k r b) : a = b := by
   have := congrArg Fin.val h
   simp only [wI] at this

@@ -1,5 +1,5 @@
 import Formalism.FrobeniusBaseCase.FrobeniusBaseCaseProofs.ChainI
-import Formalism.FrobeniusBaseCase.FrobeniusBaseCaseProofs.BaseCaseKOneHolds
+import Formalism.FrobeniusBaseCase.Statement
 
 open MvPowerSeries
 
@@ -215,75 +215,6 @@ theorem step (J : ℕ) (hJ1 : 1 ≤ J) (hJK : J ≤ D.K) (t : C → MvPowerSerie
   rw [h2]
   exact (HasWt.neg (HasWt.sum _ fun c _ =>
     D.wt_contrib J hJK t ht _ (le_max_right _ _) c b)) A
-
-theorem start_in_W_holds : D.StartInW := by
-  refine ⟨?_, ?_, ?_⟩
-  · intro c
-    unfold start
-    split_ifs with h
-    · exact D.ord_m h c
-    · exact OrdGE.zero
-  · intro c hc
-    unfold start
-    rw [if_pos hc, sub_self]
-    exact HasWt.zero
-  · intro c hc
-    unfold start
-    rw [if_neg (not_lt.2 hc)]
-    exact HasWt.zero
-
-theorem psi_in_W_holds : D.PsiW := by
-  intro t hnc hW
-  refine ⟨D.noConst_Psi t, ?_⟩
-  have h := D.step D.K D.K_pos le_rfl t hnc hW
-  rwa [min_eq_right (by omega)] at h
-
-theorem chainII_holds : D.ChainII := by
-  intro t hnc hfix
-  have hit : ∀ n, NoConst ((D.Psi)^[n] D.start) ∧ D.InW ((D.Psi)^[n] D.start) := by
-    intro n
-    induction n with
-    | zero => exact D.start_in_W_holds
-    | succ n ih =>
-      rw [Function.iterate_succ_apply']
-      exact D.psi_in_W_holds _ ih.1 ih.2
-  unfold InW
-  rw [inWTo_iff]
-  intro c A
-  have h := (D.inWTo_iff _ _).1 (hit A.degree).2 c A
-  have hc := D.hasUniqueFixedPoint.2 D.start t D.start_in_W_holds.1 hnc hfix A.degree A le_rfl c
-  rw [map_sub] at h ⊢
-  rw [← hc]
-  exact h
-
-theorem second_way_holds : D.SecondWay := by
-  have h1 : D.InWTo 1 D.zvec := by
-    refine ⟨?_, ?_⟩
-    · intro c hc
-      have : D.lev c = 0 := by omega
-      rw [this]
-      show D.Wt D.top (D.zvec c - D.zvec c)
-      rw [sub_self]
-      exact HasWt.zero
-    · intro c hc
-      rw [D.zvec_eq_zero (by omega)]
-      exact HasWt.zero
-  refine ⟨h1, fun J t hJ1 hJK hnc ht => D.step J hJ1 hJK t hnc ht, ?_⟩
-  have hK := D.K_pos
-  have hit : ∀ n, D.InWTo (min (n + 1) D.K) ((D.Psi)^[n] D.zvec) := by
-    intro n
-    induction n with
-    | zero =>
-      rw [min_eq_left (by omega)]
-      exact h1
-    | succ n ih =>
-      rw [Function.iterate_succ_apply']
-      have h2 := D.step _ (by omega) (min_le_right _ _) _ (D.noConst_iterate D.noConst_zvec n) ih
-      have h3 : min (min (n + 1) D.K + 1) D.K = min (n + 1 + 1) D.K := by omega
-      rwa [h3] at h2
-  intro n hn
-  have h2 := hit n
-  rwa [min_eq_right (by omega)] at h2
 
 end Data
 

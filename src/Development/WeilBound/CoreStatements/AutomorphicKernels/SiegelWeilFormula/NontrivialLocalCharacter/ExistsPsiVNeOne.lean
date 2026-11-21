@@ -1,5 +1,8 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellP
-import Development.AutomorphicSpectrum.Proofs.HermitianForms.AdelicCharacterLocalNontrivial
+import Mathlib
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.HermitianCharacters.SelfDualLatticeFiltrationCharacter
+import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
+import Formalism.UnipotentAdelicQuotients.StdAdditiveCharExists
 
 noncomputable section
 
@@ -17,7 +20,7 @@ theorem exists_norm_lt_one' : ∃ ϖ : Fv F v, 0 < ‖ϖ‖ ∧ ‖ϖ‖ < 1 := 
 variable {v}
 
 theorem continuous_psiV' {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) : Continuous (psiV F ψ v) :=
-  ((GlobalTheory.T.adelic_character_local_nontrivial F ψ hψ).1 v).1
+  ((_root_.GlobalTheory.CompanionTheory.AdeleCharLocal.char_nontrivial_at_every_place F ψ hψ).1 v).1
 
 theorem psiV_add' (ψ : AddChar (AF F) ℂ) (x y : Fv F v) :
     psiV F ψ v (x + y) = psiV F ψ v x * psiV F ψ v y := by
@@ -36,6 +39,6 @@ theorem norm_psiV' {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (x : Fv F v) 
 
 theorem exists_psiV_ne_one' {σ : E →ₐ[F] E} (_hcm : IsCMExt F E σ) {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
     ∃ y, psiV F ψ v y ≠ 1 :=
-  ((GlobalTheory.T.adelic_character_local_nontrivial F ψ hψ).1 v).2
+  ((_root_.GlobalTheory.CompanionTheory.AdeleCharLocal.char_nontrivial_at_every_place F ψ hψ).1 v).2
 
 end PositivityTheory.SiegelWeilFormula.SwLocFin

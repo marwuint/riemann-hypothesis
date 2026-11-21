@@ -12,7 +12,8 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnTInv
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnTPres
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmCapComm
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnHermHaar
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnWCell
+import Mathlib
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeylCellRange.ReflectionMultiplicationOnBigCell
 
 theorem Formalism.FourierDecayAlt.P.border_first_expansion : Formalism.FourierDecayAlt.Q.BorderE := by
   exact quantum_minor_border_es.1
@@ -22,12 +23,6 @@ theorem Formalism.FourierDecayAlt.P.border_last_expansion : Formalism.FourierDec
 
 theorem Formalism.FourierDecayAlt.P.border_full_expansion : Formalism.FourierDecayAlt.Q.BorderFull := by
   exact quantum_minor_border_full
-
-theorem Formalism.FourierDecayAlt.P.move_vector_identity : Formalism.FourierDecayAlt.Q.MoveVec := by
-  exact quantum_minor_move.1
-
-theorem Formalism.FourierDecayAlt.P.move_covariance : Formalism.FourierDecayAlt.Q.MoveCov := by
-  exact quantum_minor_move.2
 
 theorem Formalism.FourierDecayAlt.P.rtt_sandwich : Formalism.FourierDecayAlt.Q.RTTSandwich := by
   exact rtt_sandwich'
@@ -57,9 +52,3 @@ theorem Formalism.FourierDecayAlt.P.capelli_commutation : Formalism.FourierDecay
 theorem Formalism.FourierDecayAlt.P.hermitian_haar_invariance : Formalism.FourierDecayAlt.Q.HermHaar := by
   exact qnHermHaar
 
-theorem Formalism.FourierDecayAlt.P.hermitian_from_algebra : Formalism.FourierDecayAlt.Q.HermFromSteps := by
-  intro _ _ _ _ _ _ _ _
-  exact qnHermHaar
-
-theorem Formalism.FourierDecayAlt.P.weyl_cell_big_cell : Formalism.FourierDecayAlt.Q.WCellBigCell := by
-  exact quantum_w_big_cell

@@ -1,10 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleDescentBijectiveAppStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppBijectiveOfFlatBaseChangeGlobalFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppTopBijectiveAndSurjectiveNormalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorOffClosedFibreDescendedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorDescendedBundleNearClosedPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleDescentBijectiveApp
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppBijectiveOfFlatBaseChangeGlobalFunctions
+import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppTopBijectiveAndSurjectiveNormalDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorOffClosedFibreDescended
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenFarSet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorDescendedBundleNearClosedPoint
 
 noncomputable section
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
@@ -20,8 +22,8 @@ theorem app_bijective (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR :
     (hp : IsPullback β G'.hom G.hom M.π) : ∀ V : G.left.Opens, Function.Bijective (β.app V).hom := by
   obtain ⟨hN, -, hI, -⟩ := hR
   haveI := M.proper
-  exact GlobalTheory.T.app_bijective_of_flat_baseChange_globalFunctions R M.S G.left G'.left M.π G.hom β G'.hom inferInstance inferInstance
-    (GlobalTheory.T.appTop_bijective_and_surjective_normalDomain R M).1 hf hp
+  exact _root_.GlobalTheory.Mum.app_bijective_of_flat_baseChange R M.S G.left G'.left M.π G.hom β G'.hom inferInstance inferInstance
+    (_root_.GlobalTheory.Mum.Modif.appTop_bijective_surjective R M).1 hf hp
 
 theorem exists_closed_spec (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) (hG : QuasiCompact G.hom)
     (y : G.left) (hy : G.hom y = closedPoint R) :
@@ -46,9 +48,9 @@ theorem cubicalBundle_descends : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
     intro y
     by_cases hy : G.hom y = closedPoint R
     · obtain ⟨z, hzc, hyz, hz⟩ := exists_closed_spec R G hG.quasiCompact y hy
-      obtain ⟨V, hzV, t⟩ := GlobalTheory.T.exists_generator_descendedBundle_near_closedPoint R hR M G' hG' P' G β hG hpb θ O hO hθ z hzc hz
+      obtain ⟨V, hzV, t⟩ := _root_.GlobalTheory.Mum.ClosedPt.exists_gen_near_closed_point R hR M G' hG' P' G β hG hpb θ O hO hθ z hzc hz
       exact ⟨V, hyz.mem_open V.isOpen hzV, t⟩
-    · exact GlobalTheory.T.exists_generator_off_closedFibre_descended R hR M G' hG' P' G β hG hpb θ O hO hθ y hy
-  exact GlobalTheory.T.exists_lineBundle_descent_bijective_app _ _ β hbij P'.L.L P'.L.isLB hloc
+    · exact _root_.GlobalTheory.Mum.OffClosed.exists_gen_off_closed R hR M G' hG' P' G β hG hpb θ O hO hθ y hy
+  exact _root_.GlobalTheory.Mum.lb_descend _ _ β hbij P'.L.L P'.L.isLB hloc
 
 end GlobalTheory.Mum.CubeDesc

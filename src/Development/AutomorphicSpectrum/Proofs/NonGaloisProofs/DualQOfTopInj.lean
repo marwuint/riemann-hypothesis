@@ -1,15 +1,20 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AutomorphicSpectrum.Definitions.NonGaloisLines.TopLine
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.TateLocalDualityTopDegree
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.ExistsPerfectCharacterQuotient
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.GoodOAdicCompleteCompactBasis
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.CyclotomicTwistFiniteModuleCocycle
-import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.CyclotomicTwistFiniteModuleCoboundaryStatement
+import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.CyclotomicTwistFiniteModuleCoboundary
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.CyclotomicCupTwoCochainLocallyConstant
-import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LatticeOpenCompactNhdsBasisStatement
+import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LatticeOpenCompactNhdsBasis
+
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module GlobalTheory.CompanionTheory.LocDual
 
 noncomputable section
@@ -387,15 +392,6 @@ theorem act_lc {G Qp LL O : Type} [Group G] [TopologicalSpace G] [Field Qp] [Fie
   rw [sub_eq_add_neg]
   exact he.symm
 
-theorem act_locConst (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l)
-    (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O]
-    [Algebra O LL] (hG : GoodO (Qp := ℚ_[l]) LL O)
-    (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (ϖ : O) (hϖ : Irreducible ϖ) (r : ℕ)
-    (hI : StableSub LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T))
-    (m : ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)) :
-    IsLocallyConstant fun g => actQ LA _ hI g m :=
-  act_lc A LA ϖ r hI (GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hG A LA ϖ hϖ).2.1 m
-
 section Core
 variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -564,41 +560,5 @@ theorem dual_core (PD : PeriodData G Qp K₀ K B BdR) (hTop : TopInj PD)
       rfl
 
 end Core
-
-set_option maxHeartbeats 1000000 in
-
-theorem dualQ_of_topInj : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l),
-    TopInj ((D.loc l).PD K) → DualQ ((D.loc l).PD K) := by
-  intro hT D l _ K hTop LL _ _ _ O _ _ hG L1 hL1 A A' LA LA' P hdual ϖ hϖ r hI hI'
-  have hG0 : ∃ hO : IsDomain O, @IsDiscreteValuationRing O _ hO ∧ IsFractionRing O LL := hG.1
-  haveI hDom : IsDomain O := hG0.choose
-  haveI hDVR : IsDiscreteValuationRing O := hG0.choose_spec.1
-  haveI hFrac : IsFractionRing O LL := hG0.choose_spec.2
-  have h50 := GlobalTheory.CompanionTheory.GoodCoeff.goodO_structure l LL O hG ϖ hϖ
-  have hFin := h50.2.1
-  have hle : (l : O) ∈ Ideal.span {ϖ} := h50.2.2.2.1.choose_spec.1
-  have hInt := h50.2.2.2.2.2
-  have hdual' := (GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hG A LA ϖ hϖ).2.2.2.2 A' LA' P hdual
-  have hF1 := finite_quot O A.V LA.T ϖ r hFin LA.fg
-  have hF2 := finite_quot O A'.V LA'.T ϖ r hFin LA'.fg
-  have hlp : l.Prime := Fact.out
-  have hn : 0 < r + 1 := Nat.succ_pos r
-  have hlO : ((l ^ (r + 1) : ℕ) : O) ∈ Ideal.span {ϖ ^ r} := by
-    refine (Ideal.mem_span_singleton.1 hle).elim fun b hb => Ideal.mem_span_singleton.2 ?_
-    rw [Nat.cast_pow, hb, mul_pow, pow_succ ϖ r]
-    exact ⟨ϖ * b ^ (r + 1), by ring⟩
-  let w : ↥(GK K) →* ℤ_[l] := GlobalTheory.IndefiniteRowSideFullHecke.TateLocalDualityDegreeTwo.chiInt (D.loc l) K
-  let χ : ↥(GK K) →* (ZMod (l ^ (r + 1)))ˣ := ((PadicInt.toZModPow (r + 1)).toMonoidHom.comp w).toHomUnits
-  have hcomp : ∀ g, ∃ u : ℤ_[l], (u : ℚ_[l]) = ((((D.loc l).PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) ∧
-      PadicInt.toZModPow (r + 1) u = (χ g : ZMod (l ^ (r + 1))) := fun g => ⟨w g, rfl, rfl⟩
-  have hu0 : ∀ g, ∃ o : O, algebraMap O LL o = algebraMap ℚ_[l] LL (w g : ℚ_[l]) := fun g => hInt (w g)
-  refine (GlobalTheory.CompanionTheory.LocDual.GenChar.exists_generating_character O ϖ hϖ r (l ^ (r + 1)) (pow_pos hlp.pos _) hF1.1 hlO).elim fun ψ₀ hψ => ?_
-  exact dual_core ((D.loc l).PD K) hTop hG L1 hL1 A A' LA LA' P hdual (fun x => hdual'.2 x) ϖ hϖ r hI hI'
-    hF1.1 hF1.2 hF2.2 (l ^ (r + 1)) hlO χ ψ₀ hψ.1 hψ.2 (fun g => (hu0 g).choose)
-    (fun g => (hu0 g).choose_spec)
-    (fun g => exists_nat_rep (IsFractionRing.injective O LL) hInt _ (r + 1) hlO (w g) _ (hu0 g).choose_spec)
-    (act_locConst D l K LL O hG A LA ϖ hϖ r hI) (act_locConst D l K LL O hG A' LA' ϖ hϖ r hI')
-    (GlobalTheory.CompanionTheory.LocDual.TopCoh.coboundary_of_characters_GK hT D l K (r + 1) χ hn hcomp) (GlobalTheory.CompanionTheory.LocDual.Pair.double_annihilator hT D l K (r + 1) χ hn hcomp)
-    (GlobalTheory.T.cyclotomic_twist_finite_module_coboundary hT D l K (r + 1) χ hn hcomp)
 
 end GlobalTheory.CompanionTheory.LocDual.Q

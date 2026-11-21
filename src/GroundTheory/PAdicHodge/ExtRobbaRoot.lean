@@ -270,9 +270,6 @@ theorem taylor_eq (x : T.RobbaExt ρ0) (J : ℕ) :
 
 variable {hξ hr}
 
-theorem norm_ptEval_le_r (y : T.RobbaExt ρ0) :
-    ‖T.ptEval hξ hr y‖ ≤ T.extNorm ρ0 (T.ptRadIoc hξ hr) y := T.norm_ptEval_le hξ hr y
-
 theorem extNorm_next (y : T.RobbaExt ρ0) (σ : Set.Ioc (0 : ℝ) ρ0) :
     T.extNorm ρ0 σ (y - T.liftExt ρ0 (T.divStep hξ hr y).z (T.divStep hξ hr y).hV) =
       max (T.ptRad ξ) σ * T.extNorm ρ0 σ (T.divStep hξ hr y).next := by

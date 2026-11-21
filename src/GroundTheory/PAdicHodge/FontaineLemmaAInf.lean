@@ -160,14 +160,6 @@ theorem mem_span_mu_of_forall {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     exact h.resolve_right hp0
   exact hJ (mem_kerThetaFrob.2 ha)
 
-theorem kerThetaFrob_eq_span_mu {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
-    (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) :
-    kerThetaFrob K p = Ideal.span {mu ε} := by
-  refine le_antisymm (fun a ha => mem_span_mu_of_forall hε hζ (mem_kerThetaFrob.1 ha)) ?_
-  rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, mem_kerThetaFrob]
-  intro n
-  simpa using fontaineTheta_frobenius_pow_mul_mu (K := K) hε 1 n
-
 end AInf
 
 end GroundTheory.PAdicHodge

@@ -395,15 +395,4 @@ theorem localArtinMap_apply_of_mem (x : Eˣ) {y : Ω} (hy : y ∈ maximalAbelian
 
 end Functoriality
 
-section Relative
-
-variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-  {Ω : Type*} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω]
-  [Algebra K Ω] [ValuativeExtension K Ω] [IsSepClosure K Ω]
-  {E : IntermediateField K Ω} [FiniteDimensional K E]
-
-attribute [local instance] isDiscreteModule_units
-
-end Relative
-
 end GroundTheory.LocalField

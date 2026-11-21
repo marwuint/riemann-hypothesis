@@ -288,10 +288,6 @@ theorem lastVectorNotMemSup : Formalism.HermitianLatticeCounting.S6.LastVectorNo
   rw [e1, h4] at h5
   exact F.hT (neg_eq_zero.1 h5.symm)
 
-theorem memOfOrthogonalAnisotropic : Formalism.HermitianLatticeCounting.S6.MemOfOrthogonalAnisotropic := by
-  intro K V _ _ _ _ H r F F' hA y hy hyo
-  exact hA y hyo ((X_iso F') hy hy)
-
 private theorem HermSpace_exists_B_right_eq_linearForm {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (f : V →ₗ[K] K) : ∃ v : V, ∀ u : V, H.B u v = f u := by
   let b := Module.finBasis K V
@@ -1455,14 +1451,6 @@ theorem existsNormalForm : Formalism.HermitianLatticeCounting.S6.NormalForm := b
       rfl
   · obtain ⟨j, c, hj, hS⟩ := normalFormMeetNeBot K V H r F F' hμ hrel hm
     exact ⟨j, hj.le, c, nf_full F F' hA hA' j hj.le c hS⟩
-
-section DetBlocks
-
-variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
-
-def Esing (p : n) (s : R) : Matrix n n R := Matrix.of fun a b => if a = p ∧ b = p then s else 0
-
-end DetBlocks
 
 theorem eichlerMapIsometry : Formalism.HermitianLatticeCounting.S6.EichlerIsom := by
   intro K V _ _ _ _ H x v c hxx hxv hc

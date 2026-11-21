@@ -8,15 +8,7 @@ namespace Formalism.InvariantFactorPaths.G0
 
 def pp (x : ℝ) : ℝ := max x 0
 
-def gam (p : ℝ) : ℝ := p / (p ^ 2 - 1)
-
 def oddSum (f : ℕ → ℝ) : ℝ := ∑' i : ℕ, f (2 * i + 1)
-
-def askF {n : ℕ} (p y : ℝ) (w : ZMod n → ℝ) (s : ZMod n) : ℝ :=
-  oddSum fun e => pp (y / p ^ e - w (s + (e : ZMod n)))
-
-def minF {n : ℕ} (p y : ℝ) (w : ZMod n → ℝ) (s : ZMod n) : ℝ :=
-  oddSum fun e => min (y / p ^ e) (w (s + (e : ZMod n)))
 
 def askOn {n : ℕ} (EE : Set ℕ) (p y : ℝ) (w : ZMod n → ℝ) (s : ZMod n) : ℝ :=
   oddSum fun e => if e ∈ EE then pp (y / p ^ e - w (s + (e : ZMod n))) else 0
@@ -39,13 +31,7 @@ structure Orb (n m : ℕ) where
 
 variable {n m : ℕ}
 
-def Orb.Tev (O : Orb n m) : Finset (ZMod n) := O.T.filter fun s => Even s.val
-
-def Orb.Tod (O : Orb n m) : Finset (ZMod n) := O.T.filter fun s => ¬ Even s.val
-
 def dst (s s' : ZMod n) : ℕ := if s' = s then n else (s' - s).val
-
-def vonMangoldtClassSum (G : Glob) (O : Orb n m) (j : Fin m) (s : ZMod n) : ℝ := askF G.p (O.a s) (O.w j) s
 
 def al (G : Glob) (O : Orb n m) (s : ZMod n) : ℝ := O.a s - 2 * G.c
 
@@ -63,21 +49,5 @@ def g0raw (G : Glob) (O : Orb n m) (j : Fin m) : ℝ :=
   (∑ s ∈ O.T, askOn (allowed O s) G.p (al G O s) (cap G O j) s) - dl G O
 
 def g0 (G : Glob) (O : Orb n m) (j : Fin m) : ℝ := max (g0raw G O j) 0
-
-def gg (G : Glob) (O : Orb n m) (j : Fin m) : ℝ :=
-  gam G.p * (∑ s ∈ O.T, al G O s) - (∑ s ∈ O.Tod, minF G.p (al G O s) (cap G O j) s) - dl G O
-
-def Pr1 (G : Glob) (O : Orb n m) (j : Fin m) : ℝ :=
-  (∑ s ∈ O.Tod, (O.w j s - O.b s)) + (n : ℝ) * (G.wpp + G.eta + G.c + G.Nm)
-
-def Prr (G : Glob) (O : Orb n m) (r : ℝ) : ℝ :=
-  r * ((O.T.card : ℝ) * (2 * G.bp + G.c) + (n : ℝ) * (G.wpp + G.eta + G.c + G.Nm))
-
-def dEv (O : Orb n m) (y : ZMod n) : ℕ := sInf {e : ℕ | 1 ≤ e ∧ y - (e : ZMod n) ∈ O.Tev}
-
-def yMinus (O : Orb n m) (y : ZMod n) : ZMod n := y - (dEv O y : ZMod n)
-
-def kink (G : Glob) (O : Orb n m) : ℝ :=
-  ∑ y ∈ O.Tod, min (O.b y) (O.a (yMinus O y) / G.p ^ dEv O y)
 
 end Formalism.InvariantFactorPaths.G0

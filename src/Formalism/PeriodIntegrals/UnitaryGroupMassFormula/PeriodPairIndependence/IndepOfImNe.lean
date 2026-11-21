@@ -27,13 +27,6 @@ theorem indep_of_im_ne {a b : ℂ} (h : (conj a * b).im ≠ 0) : LinearIndepende
   rw [ht, Complex.ofReal_zero, zero_mul, add_zero] at hst
   exact (mul_eq_zero.1 hst).resolve_right ha |> Complex.ofReal_eq_zero.1
 
-def imMul {K : Type} [Field K] [CharZero K] (φ : K →+* ℂ) (a : ℂ) : K →ₗ[ℚ] ℝ where
-  toFun k := (conj a * φ k).im
-  map_add' x y := by simp [mul_add]
-  map_smul' q x := by
-    simp only [Rat.smul_def, map_mul, map_ratCast, RingHom.id_apply]
-    rw [mul_left_comm, ← Complex.ofReal_ratCast, Complex.im_ofReal_mul]
-
 theorem im_ne {K : Type} [Field K] [CharZero K] (φ : K →+* ℂ) (hφ : ∃ k : K, (φ k).im ≠ 0)
     (B : Module.Basis (Fin 2) ℚ K) : (conj (φ (B 0)) * φ (B 1)).im ≠ 0 := by
   intro h0

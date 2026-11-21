@@ -29,7 +29,7 @@ theorem frame_colsB {τ : Ψ} {a b ca cb : Fin N} {k₀ : K} (s : Swp N j a b ca
       algebraMap M.Ω Φ (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b (τ, a) k') *
         ∑ I, algebraMap M.Ω Φ (F.u ⟨k₀, m⟩ I) * minorIJ H I (colsB N j a ca cb) := by
   haveI : Infinite M.Ω := Infinite.of_injective (Nat.cast : ℕ → M.Ω) Nat.cast_injective
-  have h1 := GlobalTheory.T.minor_sum_identity_base_change M.Ω N j (F.T τ) _ _ (M.coef ⟨k₀, m⟩) (F.u ⟨k₀, m⟩) (stepCols N j a)
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.PB.MinorAny.minor_any M.Ω N j (F.T τ) _ _ (M.coef ⟨k₀, m⟩) (F.u ⟨k₀, m⟩) (stepCols N j a)
     (hF.2.1 (τ, a) k₀ hk m) Φ _ (s.block_swap hH)
   have e2 : (F.T τ).map (algebraMap M.Ω Φ) * H.updateCol ca (fun r => H r cb) =
       (M.g τ * bb).updateCol ca fun r => (M.g τ * bb) r cb := by

@@ -8,7 +8,10 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.ExistsCocycleProduct
 import Development.AutomorphicArithmetic.CommutativeAlgebra.ExteriorCupCocycleExistsOfPairing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPropertyCalculusRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSec
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf
 
 namespace UpperTheory.Kun
@@ -34,7 +37,7 @@ private theorem genK (W : Scheme.{0}) (I Q P : Cx R) [I.IsStrictlyGE 0] [Q.IsStr
       cpull ((chains R).map (prod.snd : sch.obj W ⨯ E ⟶ E)) I n p.1 +
         μ.cup (sch.obj W ⨯ E) h (cpull ((chains R).map (prod.snd : sch.obj W ⨯ E ⟶ E)) Q m p.2)
           (cpull ((chains R).map (prod.fst : sch.obj W ⨯ E ⟶ _)) P 1 (CohomologyClass.mk κ)) := by
-  have hz : Sec.map (P.d 1 2) (sg κ) = 0 := ((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R W P 0 1 2 (by omega) (by omega)).2 κ).1
+  have hz : Sec.map (P.d 1 2) (sg κ) = 0 := ((_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R W P 0 1 2 (by omega) (by omega)).2 κ).1
   have hmono := GlobalTheory.T.etaleLocal_property_calculus_rules.2.1
   haveI := LL_ge I Q
   have key : ∀ (T : Scheme.{0}) (n' : ℤ) (a₁ : Sec (I.X n') T) (a₂ : Sec (Q.X (n' + -1)) T),
@@ -50,7 +53,7 @@ private theorem genK (W : Scheme.{0}) (I Q P : Cx R) [I.IsStrictlyGE 0] [Q.IsStr
     (fun g s a => psi_nat W μ _ g s a) (fun T s t a => UpperTheory.psi_comm_differential_of_cocycle R W μ _ hz T s t a) Z hZ
     (by
       intro T hT n' b hb
-      obtain ⟨y, hy0, -⟩ := (GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R (W ⨯ T) I (n' - 1) n' (n' + 1) (by omega) rfl).1 b hb
+      obtain ⟨y, hy0, -⟩ := (_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R (W ⨯ T) I (n' - 1) n' (n' + 1) (by omega) rfl).1 b hb
       have hsy : sg y = b := (hy0 _ (𝟙 _)).trans (res_id _)
       refine hmono _ _ _ (hS T hT (n' + -1) n' (by omega) (CohomologyClass.mk y)) ?_
       rintro V g ⟨a, b', e⟩
@@ -60,13 +63,13 @@ private theorem genK (W : Scheme.{0}) (I Q P : Cx R) [I.IsStrictlyGE 0] [Q.IsStr
       have e2 : CohomologyClass.mk (β - zcomp (Cocycle.ofHom ((chains R).map (sch.map (prod.map (𝟙 W) g)))) y (zero_add n')) = 0 := by
         rw [CohomologyClass.mk_sub, hβ, e, sub_eq_zero]
         rfl
-      obtain ⟨c, hc⟩ := ((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R (W ⨯ V) I (n' - 1) n' (n' + 1) (by omega) rfl).2 _).2.1 e2
+      obtain ⟨c, hc⟩ := ((_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R (W ⨯ V) I (n' - 1) n' (n' + 1) (by omega) rfl).2 _).2.1 e2
       refine ⟨cc (sg α₁) (n'.negOnePow • sg α₂), c, ?_, ?_⟩
       · apply LLsec_ext
         · rw [c₁_d, c₁_cc, map_zero]
-          exact ((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R V I (n' - 1) n' (n' + 1) (by omega) rfl).2 α₁).1
+          exact ((_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R V I (n' - 1) n' (n' + 1) (by omega) rfl).2 α₁).1
         · rw [c₂_d, c₂_cc, map_zero]
-          have h0 := ((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R V Q (n' + -1 - 1) (n' + -1) (n' + 1 + -1) (by omega) (by omega)).2 α₂).1
+          have h0 := ((_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R V Q (n' + -1 - 1) (n' + -1) (n' + 1 + -1) (by omega) (by omega)).2 α₂).1
           generalize n'.negOnePow = ε
           rcases Int.units_eq_one_or ε with rfl | rfl <;> simp [sg, h0]
       · rw [key, ← hσ]
@@ -84,8 +87,8 @@ private theorem genK (W : Scheme.{0}) (I Q P : Cx R) [I.IsStrictlyGE 0] [Q.IsStr
       have h2' : Sec.map (Q.d (n' + -1) (n' + 1 + -1)) (n'.negOnePow • c₂ a) = 0 := by
         generalize n'.negOnePow = ε
         rcases Int.units_eq_one_or ε with rfl | rfl <;> simp [h2]
-      obtain ⟨α₁, hα₁, -⟩ := (GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R T I (n' - 1) n' (n' + 1) (by omega) rfl).1 _ h1
-      obtain ⟨α₂, hα₂, -⟩ := (GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R T Q (n' + -1 - 1) (n' + -1) (n' + 1 + -1) (by omega) (by omega)).1 _ h2'
+      obtain ⟨α₁, hα₁, -⟩ := (_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R T I (n' - 1) n' (n' + 1) (by omega) rfl).1 _ h1
+      obtain ⟨α₂, hα₂, -⟩ := (_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R T Q (n' + -1 - 1) (n' + -1) (n' + 1 + -1) (by omega) (by omega)).1 _ h2'
       have hs₁ : sg α₁ = c₁ a := (hα₁ _ (𝟙 _)).trans (res_id _)
       have hs₂ : sg α₂ = n'.negOnePow • c₂ a := (hα₂ _ (𝟙 _)).trans (res_id _)
       obtain ⟨β, hβ, hσ⟩ := UpperTheory.exists_cocycle_product_eq_pull_add_cup R W _ μ κ (by omega : n' + -1 + 1 = n') α₁ α₂
@@ -96,15 +99,15 @@ private theorem genK (W : Scheme.{0}) (I Q P : Cx R) [I.IsStrictlyGE 0] [Q.IsStr
           generalize n'.negOnePow = ε
           rcases Int.units_eq_one_or ε with rfl | rfl <;> simp
       have e0 : CohomologyClass.mk β = 0 := by
-        refine ((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R (W ⨯ T) I (n' - 1) n' (n' + 1) (by omega) rfl).2 β).2.2 ⟨c, ?_⟩
+        refine ((_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R (W ⨯ T) I (n' - 1) n' (n' + 1) (by omega) rfl).2 β).2.2 ⟨c, ?_⟩
         rw [← hc]
         change _ = sg β
         rw [hσ, ← key, ← ha']
       refine hmono _ _ _ (hJ T hT (n' + -1) n' (by omega) (CohomologyClass.mk α₁) (CohomologyClass.mk α₂) (by rw [← hβ, e0])) ?_
       rintro V g ⟨e₁, e₂⟩
-      obtain ⟨y₁, hy₁⟩ := ((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R V I (n' - 1) n' (n' + 1) (by omega) rfl).2
+      obtain ⟨y₁, hy₁⟩ := ((_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R V I (n' - 1) n' (n' + 1) (by omega) rfl).2
         (zcomp (Cocycle.ofHom ((chains R).map (sch.map g))) α₁ (zero_add n'))).2.1 e₁
-      obtain ⟨y₂, hy₂⟩ := ((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R V Q (n' - 1 + -1) (n' + -1) (n' + 1 + -1) (by omega) (by omega)).2
+      obtain ⟨y₂, hy₂⟩ := ((_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R V Q (n' - 1 + -1) (n' + -1) (n' + 1 + -1) (by omega) (by omega)).2
         (zcomp (Cocycle.ofHom ((chains R).map (sch.map g))) α₂ (zero_add (n' + -1)))).2.1 e₂
       change _ = sg _ at hy₁
       change _ = sg _ at hy₂

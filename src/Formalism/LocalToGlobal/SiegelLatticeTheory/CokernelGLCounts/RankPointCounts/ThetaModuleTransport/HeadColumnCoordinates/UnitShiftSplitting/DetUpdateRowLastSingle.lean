@@ -22,12 +22,6 @@ theorem cornerM_castSucc_right (c : R) (a : Fin (r + 1)) (b : Fin r) :
 theorem cornerM_last (c : R) : cornerM r c (Fin.last r) (Fin.last r) = c := by
   simp [cornerM]
 
-theorem cornerM_map {S : Type} [CommRing S] (f : R →+* S) (c : R) :
-    (cornerM r c).map f = cornerM r (f c) := by
-  ext a b
-  simp only [cornerM, Matrix.map_apply, Matrix.of_apply]
-  split_ifs <;> simp
-
 theorem head_add_cornerM (A : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) :
     (A + cornerM r c).submatrix Fin.castSucc Fin.castSucc = A.submatrix Fin.castSucc Fin.castSucc := by
   ext a b

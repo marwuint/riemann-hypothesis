@@ -4,9 +4,9 @@ import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.
 import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.StatementC
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementK
 import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.CubeThreeR
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FormalGroupMulByIntegralOfKernelPrimeToLStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OmegaKSqSubSelfAddEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsHomotheticPeriodPairLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FormalGroupMulByIntegralOfKernelPrimeToL
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OmegaKSqSubSelfAddEqZero
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsHomotheticPeriodPairLattice
 
 open PowerSeries GlobalTheory.Honda Formalism.L2.Th1.CM
 
@@ -41,12 +41,12 @@ theorem endOmega_holds : EndOmega := by
   intro d L hd hL l _ hl5 hld hsq ι g2 g3 hG n
   obtain ⟨-, -, h2, h3, hΔ, lam, hlam, rfl, rfl⟩ := hG
   have hc0 : ι.symm lam ≠ 0 := by simpa using hlam
-  obtain ⟨L', -, hg2, hg3, -, hCM⟩ := GlobalTheory.T.exists_homothetic_periodPair_lattice L (ι.symm lam) hc0
+  obtain ⟨L', -, hg2, hg3, -, hCM⟩ := _root_.GlobalTheory.homotheticLattice L (ι.symm lam) hc0
   have hιc : ι (ι.symm lam) = lam := ι.apply_symm_apply lam
   have e2 : ι L'.g₂ = lam ^ 4 * ι L.g₂ := by rw [hg2, map_mul, map_pow, hιc]
   have e3 : ι L'.g₃ = lam ^ 6 * ι L.g₃ := by rw [hg3, map_mul, map_pow, hιc]
   have hL' : HasCMBy d L' := hCM d hL
-  have hq := GlobalTheory.T.omegaK_sq_sub_self_add_eq_zero d hd
+  have hq := _root_.GlobalTheory.omegaK_quadratic d hd
   set N := (d + 1) / 4 with hNdef
   have hN0 : 0 < N := by omega
   have hlN : ¬ l ∣ N := by
@@ -69,7 +69,7 @@ theorem endOmega_holds : EndOmega := by
     have e : (N : ℂ) * z = omegaK d * z - omegaK d * (omegaK d * z) := by linear_combination z * hq
     rw [e]
     exact sub_mem hz hz2
-  have key := GlobalTheory.T.formalGroup_mulBy_integral_of_kernel_prime_to_l L' l hl5 ι (by rw [e2]; exact h2) (by rw [e3]; exact h3)
+  have key := _root_.GlobalTheory.Honda.mulBy_coefLe_of_kernel_prime_to L' l hl5 ι (by rw [e2]; exact h2) (by rw [e3]; exact h3)
     (by rw [e2, e3]; exact hΔ) (omegaK d) N hL' hιβ hN0 hlN hNz
   rw [e2, e3] at key
   rw [Formalism.L2.Th1.A.uSerEq ℂ_[l]]

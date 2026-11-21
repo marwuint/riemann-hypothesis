@@ -7,16 +7,18 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.MapConj
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteClsAndStab
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EisAutomorphyLinear
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionSpecStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.MaximalIsotropicDoubledGraphOrIsotropicStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EisensteinSeriesTermUnitaryGraphStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilDoubledTestFunctionZeroEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionZeroAndNormStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaSeriesTestFunctionHolomorphicWeightStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicitStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsHeatSwdStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.InvariantPolyDerivKillsDoubledHeatSolutionStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilDefiniteHermitianOfFourMulLtStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.MaximalIsotropicDoubledGraphOrIsotropic
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EisensteinSeriesTermUnitaryGraph
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilDoubledTestFunctionZeroEqZero
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionZeroAndNorm
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaSeriesTestFunctionHolomorphicWeight
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicit
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsHeatSwd
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.InvariantPolyDerivKillsDoubledHeatSolution
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilDefiniteHermitianOfFourMulLt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GCauchyStatement
 
 open Matrix Complex NumberField MeasureTheory GlobalTheory GlobalTheory.SW GlobalTheory.ThFr ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD
 open scoped ComplexConjugate ComplexOrder Real Classical
@@ -36,9 +38,9 @@ theorem isSB_wG (γ : GL (Fin r) E) (φ : TF n g) : IsSB (wG X bas idx γ φ) :=
 
 theorem ip_smul_right {φ ψ : TF n g} (hφ : IsSB φ) (hψ : IsSB ψ) (c : ℂ) :
     ip φ (c • ψ) = ip φ ψ * conj c := by
-  obtain ⟨-, -, -, hcψ, -⟩ := GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ (Fin n) (Fin g) ψ ψ hψ hψ
-  obtain ⟨-, -, hprod, -⟩ := GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ (Fin n) (Fin g) φ _ hφ hcψ
-  obtain ⟨-, -, -, -, -, hsmul, -⟩ := GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ (Fin n) (Fin g) _ _ hprod hprod
+  obtain ⟨-, -, -, hcψ, -⟩ := _root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ (Fin n) (Fin g) ψ ψ hψ hψ
+  obtain ⟨-, -, hprod, -⟩ := _root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ (Fin n) (Fin g) φ _ hφ hcψ
+  obtain ⟨-, -, -, -, -, hsmul, -⟩ := _root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ (Fin n) (Fin g) _ _ hprod hprod
   have e : (fun x => φ x * conj ((c • ψ) x)) = conj c • (φ * fun x => conj (ψ x)) := by
     funext x
     simp only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul, map_mul]
@@ -75,29 +77,29 @@ theorem hasSum_eis (hb : IsSympl X bas) (hn : Even n) (h4 : 4 * r < n) {M : ℕ}
     intro γ γ' h
     have h' : botSpan (iota X 1 (γ : GL (Fin r) E)) = botSpan (iota X 1 (γ' : GL (Fin r) E)) :=
       congrArg Subtype.val h
-    exact Subtype.ext ((GlobalTheory.T.maximalIsotropic_doubled_graph_or_isotropic E r X).1 γ γ' (hS.un γ γ.2) (hS.un γ' γ'.2) h')
+    exact Subtype.ext ((_root_.GlobalTheory.SW.lag_graph_or_isotropic E r X).1 γ γ' (hS.un γ γ.2) (hS.un γ' γ'.2) h')
   have hterm : ∀ γ : GL (Fin r) E, IsUn X γ → ∀ U : Lag E r, botSpan (iota X 1 γ) = U.1 →
       kZero X idx x₁ x₂ z w * eisTerm X.Ψ U.2.choose (dbl X bas idx φ₁ φ₂) (dblZ X x₁ x₂)
         (dblz X idx x₁ x₂ z w) (dblz' X idx x₁ x₂ z w) =
       a * ip φ₁ (wG X bas idx γ φ₂) * kZero X idx x₁ (lact γ x₂) z w := by
     intro γ hγ U hUγ
-    have e1 := (GlobalTheory.T.hermitianWeilAction_siegelParabolic_explicit E X.Ψ hT n r hn _ hψ).2 U.2.choose U.2.choose_spec.1 (iota X 1 γ)
+    have e1 := (_root_.GlobalTheory.SW.weil_parabolic E X.Ψ hT n r hn _ hψ).2 U.2.choose U.2.choose_spec.1 (iota X 1 γ)
       (DblPair.iota_mem X hun1 hγ) (U.2.choose_spec.2.trans hUγ.symm) _ hZ
       (dblz X idx x₁ x₂ z w) (dblz' X idx x₁ x₂ z w)
-    have e2 := GlobalTheory.T.eisensteinSeries_term_unitary_graph E r X g bas idx n hb hn γ hγ φ₁ φ₂ hφ₁ hφ₂ x₁ hx₁ x₂ hx₂ z w
+    have e2 := _root_.GlobalTheory.SW.eisTerm_graph E r X g bas idx n hb hn γ hγ φ₁ φ₂ hφ₁ hφ₂ x₁ hx₁ x₂ hx₂ z w
     have e3 := ha φ₁ _ hφ₁ (isSB_wG (X := X) (bas := bas) (idx := idx) γ φ₂)
     rw [e1, e2, e3]
   have hzero : ∀ U ∉ Set.range lagOf, kZero X idx x₁ x₂ z w * eisTerm X.Ψ U.2.choose
       (dbl X bas idx φ₁ φ₂) (dblZ X x₁ x₂) (dblz X idx x₁ x₂ z w) (dblz' X idx x₁ x₂ z w) = 0 := by
     intro U hU'
-    rcases (GlobalTheory.T.maximalIsotropic_doubled_graph_or_isotropic E r X).2 U with ⟨γ, hγ, hUγ⟩ | ⟨ξ, hξ0, hξ, hmem⟩
+    rcases (_root_.GlobalTheory.SW.lag_graph_or_isotropic E r X).2 U with ⟨γ, hγ, hUγ⟩ | ⟨ξ, hξ0, hξ, hmem⟩
     · have hγΔ : γ ∉ Δ := fun hΔ => hU' ⟨⟨γ, hΔ⟩, Subtype.ext hUγ⟩
       have e1 := hterm γ hγ U hUγ
       have e2 := hS.supp γ hγ hγΔ L₁ h₁ L₂ h₂ Λ hΛ
       rw [e1, e2]
       ring
     · have hw : weil X.Ψ U.2.choose (dbl X bas idx φ₁ φ₂) 0 = 0 :=
-        GlobalTheory.T.weil_doubledTestFunction_zero_eq_zero E r X g bas idx n hb hn φ₁ φ₂ hφ₁ hφ₂ ξ (hS.cusp ξ hξ0 hξ L₁ h₁ Λ hΛ)
+        _root_.GlobalTheory.SW.weil_dbl_zero_eq_zero E r X g bas idx n hb hn φ₁ φ₂ hφ₁ hφ₂ ξ (hS.cusp ξ hξ0 hξ L₁ h₁ Λ hΛ)
           U.2.choose U.2.choose_spec.1 (by rw [U.2.choose_spec.2]; exact hmem)
       unfold eisTerm
       rw [hw]
@@ -180,7 +182,7 @@ open KernSum in
 
 theorem kernel_identity : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → 4 * r < n → ∀ (M : ℕ) (Δ : Subgroup (GL (Fin r) E)) (𝓛 : Set (Lt E r)) (Φ : Lt E r → Lt E n → TF n g) (μ : GL (Fin r) E → Lt E r → ℂ), 0 < M → IsSystem X bas idx M Δ 𝓛 Φ μ → ∃ a : ℂ, a ≠ 0 ∧ ∀ (c : X.Ψ → Fin q0 → ℕ) (c' : X.Ψ → Fin X.p0 → ℕ), ∀ (m : ℕ) (P : Fin m → Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)), (∀ j, P j ∈ Harm.rowHighest ℂ c c') → InvFam P → ∀ L₁ ∈ 𝓛, ∀ L₂ ∈ 𝓛, ∀ x₁ ∈ X.dom, ∀ x₂ ∈ X.dom, HasSum (fun γ : Δ => a * classSum M (fun Λ => ip (Φ L₁ Λ) (Φ (mapL γ L₂) Λ)) * conj (μ γ L₂) * kern X hr idx P x₁ (lact γ x₂)) (classSum M (fun Λ => ∑ j, thP X hr bas idx (Φ L₁ Λ) (P j) x₁ * conj (thP X hr bas idx (Φ L₂ Λ) (P j) x₂))) := by
   intro E _ _ _ r X g q0 hr bas idx n hb hn h4 M Δ 𝓛 Φ μ hM hS
-  obtain ⟨a, ha0, b, -, hab⟩ := GlobalTheory.T.doubledHermitianTestFunction_zero_and_norm E r X g bas idx n hb hn
+  obtain ⟨a, ha0, b, -, hab⟩ := _root_.GlobalTheory.SW.dbl_zero_and_norm E r X g bas idx n hb hn
   refine ⟨a, ha0, ?_⟩
   intro c c' m P hP hInv L₁ h₁ L₂ h₂ x₁ hx₁ x₂ hx₂
   have ha : ∀ φ₁ φ₂ : TF n g, IsSB φ₁ → IsSB φ₂ → dbl X bas idx φ₁ φ₂ 0 = a * ip φ₁ φ₂ :=
@@ -204,7 +206,7 @@ theorem kernel_identity : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   have hthA : ∀ (j : Fin m) (L : Lt E r), L ∈ 𝓛 → ∀ cl : Cls E n M, ∀ x ∈ X.dom, ∀ p,
       AnalyticAt ℂ (thA X bas idx (Φ L (Quot.out cl).1) x) p := by
     intro j L hL cl x hx p
-    exact (GlobalTheory.T.thetaSeries_testFunction_holomorphic_weight E r X g q0 hr bas idx n hb hn c c' _ (hφ L hL cl) (P j) (hP j)).2.2.2
+    exact (_root_.GlobalTheory.SW.theta_holomorphic_weight E r X g q0 hr bas idx n hb hn c c' _ (hφ L hL cl) (P j) (hP j)).2.2.2
       x hx p (Set.mem_univ p)
   have hq := fun γ : Δ => KernSum.kZero_quad (n := n) X idx x₁ (lact (γ : GL (Fin r) E) x₂)
   choose A B hAB using hq
@@ -277,11 +279,11 @@ theorem kernel_identity : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     rw [eT]
     exact (hTP j).2
   obtain ⟨R, hAdm⟩ := hS.adm L₁ h₁ L₂ h₂
-  have hheat := GlobalTheory.T.isHeat_swd_of_adm E X.Ψ hT n r hn h4 M R _ hAdm
+  have hheat := _root_.GlobalTheory.SW.isHeat_swd E X.Ψ hT n r hn h4 M R _ hAdm
   have hsw : ∀ Z ∈ Hn X.Ψ r, swd X.Ψ M (fun Λ => dbl X bas idx (Φ L₁ Λ) (Φ L₂ Λ)) Z 0 0 = 0 :=
-    fun Z hZ => GlobalTheory.T.siegelWeil_definiteHermitian_of_four_mul_lt E X.Ψ hT n r hn h4 M R _ hAdm Z hZ
+    fun Z hZ => _root_.GlobalTheory.SW.siegel_weil_definite E X.Ψ hT n r hn h4 M R _ hAdm Z hZ
   have hrn : r ≤ n := by omega
-  have h0 := GlobalTheory.T.invariant_polyDeriv_kills_doubled_heat_solution E r X g q0 hr idx n m P hrn hInv _ hheat hsw x₁ hx₁ x₂ hx₂
+  have h0 := _root_.GlobalTheory.SW.biDeriv_kZero_mul_heat_eq_zero E r X g q0 hr idx n m P hrn hInv _ hheat hsw x₁ hx₁ x₂ hx₂
   have hTS : (fun p => T p + (-1) * S p) = fun p : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) =>
       kZero X idx x₁ x₂ p.1 p.2 * swd X.Ψ M (fun Λ => dbl X bas idx (Φ L₁ Λ) (Φ L₂ Λ))
         (dblZ X x₁ x₂) (dblz X idx x₁ x₂ p.1 p.2) (dblz' X idx x₁ x₂ p.1 p.2) := by

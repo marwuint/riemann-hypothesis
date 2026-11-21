@@ -153,7 +153,7 @@ theorem flowTie_of_onOrbit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     exact (map_eq_zero_iff _ Λ.eX.injective).1 hy0
   let x₀ : (U.X k).dom := ⟨_, hs₁⟩
   obtain ⟨-, -, -, -, Hm, hHm⟩ := Uw.period k x₀
-  have hκ := (GlobalTheory.T.riemann_form_frame_periods_eq_majorant E H Dw l Xo c σ r U Uw k x₀ Hm hσ hU hHm).2.1 hr
+  have hκ := (_root_.GlobalTheory.RiemMaj.riemann_eq_majorant E H Dw l Xo c σ r U Uw k x₀ Hm hσ hU hHm).2.1 hr
   obtain ⟨sE, -, hbe, hsp, -, hform⟩ := GlobalTheory.ArcFlow.rank_one (U.X k) (Uw.φ k) _ (Uw.iso k) y'' hY hκ hy''
     Λ.A.be Λ.A.be_symm Λ.A.be_pos nn' hnn'' hrep'' ξ hξ0 t' o3 hyt
   have hform' : ∀ v, (Uw.φ k (nn' v) : Fin r → E) =

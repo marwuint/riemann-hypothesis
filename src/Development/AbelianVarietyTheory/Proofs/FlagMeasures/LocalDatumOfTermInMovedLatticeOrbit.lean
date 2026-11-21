@@ -6,7 +6,8 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.LocalDiscriminantIsUnit
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PlacesOf
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeDatumEquivariantFlagIsometriesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeDatumEquivariantFlagIsometries
+import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermsOrbitsHeightsAmplitudesInCoordinatesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalIsometryExtendsLocalIsometryStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTerms
@@ -243,7 +244,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : Formalism.MainNotions.S.Loc.LocE F E} {r k : ℕ} (S : Frames L r k)
 
 theorem datOf_St {s : S.GLV} (hs : s ∈ S.St) (Λ : Submodule L.O S.V) : S.datOf (s • Λ) = S.datOf Λ := by
-  have DO := GlobalTheory.T.hermitian_lattice_datum_equivariant_flag_isometries L r k S
+  have DO := _root_.GlobalTheory.HL.DatumOf.main L r k S
   have hs' := Subgroup.mem_inf.1 hs
   exact Prod.ext (DO.2.2.1 s hs'.1 Λ) (Prod.ext (DO.2.2.2.1 s hs'.2 Λ) (GlobalTheory.FrameAct.graph_smul S s hs Λ))
 
@@ -303,7 +304,7 @@ theorem local_orbit (hM : M.OK) (c : WCoord P S) {d d' : LocNG.Datum P} (hdd : L
     obtain ⟨y, rfl⟩ := c.e.surjective y
     show S.h (conjH c.e ψ0 (c.e x)) (conjH c.e ψ0 (c.e y)) = S.h (c.e x) (c.e y)
     rw [hφ, hφ, c.h_eq, c.h_eq, hu]
-  have DO := GlobalTheory.T.hermitian_lattice_datum_equivariant_flag_isometries M.L r k S
+  have DO := _root_.GlobalTheory.HL.DatumOf.main M.L r k S
   obtain ⟨s, hs, h, hh, hsh⟩ := DO.2.2.2.2 _ hiso hf1 hf2
   have W := GlobalTheory.T.terms_orbits_heights_amplitudes_in_coordinates M hM H r k P S c
   obtain ⟨h1, hh1, hd⟩ := (W.2.1 d d').1 hdd

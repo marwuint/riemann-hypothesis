@@ -9,7 +9,16 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KTrivAndPolA
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmplePrincipalOfGenericFibreDvr
 import Development.AbelianVarietyTheory.Counterexamples.AbelianLawCounterexamples.HomExtendsOverDVRHolds
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProperAfterLocalizationStatement
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CoeIntEmbEmbP
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProperOfAbelianEverywhere
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RelativeAmpleSpreadOfPolarizedFiber
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsProperOfSubsingleton
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PullCub
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCRing
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalTrivialOfRelativeAmple
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AmplePt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
@@ -73,47 +82,5 @@ theorem algebraMap_fractionRing_bijective (O : Type) [CommRing O] [IsDomain O] (
   calc algebraMap O (FractionRing O) (x * b) = z * algebraMap O (FractionRing O) (y * b) := by
         rw [map_mul, map_mul, ← mul_assoc, ← hxy]
     _ = z := by rw [hb, map_one, mul_one]
-
-theorem algebraMap_away_bijective {O : Type} [CommRing O] (r : O) (hr : IsUnit r) :
-    Function.Bijective (algebraMap O (Localization.Away r)) := by
-  have e := IsLocalization.atUnit O (Localization.Away r) r hr
-  have h : ⇑(algebraMap O (Localization.Away r)) = ⇑e := funext fun x => by
-    simpa using (e.commutes x).symm
-  rw [h]
-  exact e.bijective
-
-theorem relAmple_kTriv_of_polAt_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (O : Type)
-    [CommRing O] [IsDomain O] [IsLocalRing O] [IsNoetherianRing O] [CharZero O], IsIntegrallyClosed O →
-    ∀ (t : SAB H (Sp O)), IsProper t.G.hom → GlobalTheory.LN.PolAt t (Out.jK O) →
-      Out.RelAmple t.G t.PP.L ∧ Out.KTriv t.G t.PP.L := by
-  intro E _ _ _ H O _ _ _ _ _ hIC t hprop hpol
-  by_cases hf : IsField O
-  · obtain ⟨u, ⟨mu⟩⟩ := exists_pull (Out.jK O) t
-    obtain ⟨hA, hK⟩ := GlobalTheory.LocM.PolFibre.ample_kTriv_of_polAt mu hpol
-    haveI : IsIso (Out.jK O) := isIso_spMap _ (algebraMap_fractionRing_bijective O hf)
-    exact ample_kTriv_of_iso mu hA hK
-  obtain ⟨V, _, _, _, ρ, hρ, hloc⟩ := GlobalTheory.KTrivSpread.exists_dvr O hf
-  obtain ⟨tV, ⟨mV⟩⟩ := exists_pull (spMap ρ) t
-  obtain ⟨tK, ⟨mK⟩⟩ := exists_pull (spMap (algebraMap V (FractionRing V))) tV
-  let ψ : FractionRing O →+* FractionRing V := IsLocalization.map (M := nonZeroDivisors O) (T := nonZeroDivisors V)
-    (FractionRing V) ρ (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective ρ hρ)
-  have heq : spMap ψ ≫ Out.jK O = Out.jK V ≫ spMap ρ := by
-    show spMap ψ ≫ spMap (algebraMap O (FractionRing O)) = spMap (algebraMap V (FractionRing V)) ≫ spMap ρ
-    rw [← spMap_comp, ← spMap_comp, IsLocalization.map_comp]
-  have hpV : GlobalTheory.LN.PolAt tV (Out.jK V) := GlobalTheory.DatUniq.polAt_pull mV hpol (Out.jK V) (spMap ψ) heq
-  obtain ⟨hAK, hKK⟩ := GlobalTheory.LocM.PolFibre.ample_kTriv_of_polAt mK hpV
-  obtain ⟨hAV, hKV⟩ := GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre GlobalTheory.HomExtExamples.homExtSt_holds GlobalTheory.allSixLaws.1
-    GlobalTheory.allSixLaws.2.1 E H V (FractionRing V) tV tK mK (isProper_of_map mV hprop) hAK hKK
-  obtain ⟨uk, ⟨mk⟩⟩ := exists_pull (spMap (IsLocalRing.residue V)) tV
-  obtain ⟨hAk, hKk⟩ := pull_ample_kTriv mk hAV hKV
-  obtain ⟨n, -⟩ := GlobalTheory.ObjMaps.exists_sab_comp mV mk
-  let β : O →+* IsLocalRing.ResidueField V := (IsLocalRing.residue V).comp ρ
-  have hpβ : GlobalTheory.LN.PolAt t (spMap β) := by
-    rw [spMap_comp]
-    exact GlobalTheory.LocM.PolFibre.polAt_of_map n (by haveI := hprop; infer_instance) hAk hKk
-  obtain ⟨r, hr, t', m', -, hA', hK'⟩ := GlobalTheory.T.proper_after_localization E H O hIC t hpol (IsLocalRing.ResidueField V) β hpβ
-  have hu : IsUnit r := isUnit_of_map_unit ρ r ((IsLocalRing.residue_ne_zero_iff_isUnit _).1 hr)
-  haveI := isIso_spMap _ (algebraMap_away_bijective r hu)
-  exact ample_kTriv_of_iso m' hA' hK'
 
 end GlobalTheory.PolLocal

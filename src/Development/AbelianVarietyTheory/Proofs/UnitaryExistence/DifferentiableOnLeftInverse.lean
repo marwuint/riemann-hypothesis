@@ -206,26 +206,6 @@ theorem _root_.GlobalTheory.RiemannRel.of_cols_mulVec (c : Fin g → Fin g → �
     (Matrix.of fun i j => c j i) *ᵥ Pi.single k 1 = c k := by
   ext i; simp [mulVec, dotProduct, Pi.single_apply]
 
-theorem cols_iff (h τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → Fin g → ℂ) :
-    (∀ k, h *ᵥ a k = Pi.single k 1 ∧ h *ᵥ b k = τ *ᵥ Pi.single k 1) ↔
-      h * (Matrix.of fun i j => a j i) = 1 ∧ τ = h * (Matrix.of fun i j => b j i) := by
-  constructor
-  · intro H
-    constructor
-    · ext i j
-      have := congrFun (H j).1 i
-      simp only [mulVec, dotProduct] at this
-      simp [mul_apply, this, one_apply, Pi.single_apply]
-    · ext i j
-      have := congrFun (H j).2 i
-      rw [mulVec_single_one] at this
-      simp only [mulVec, dotProduct] at this
-      simp [mul_apply, this]
-  · rintro ⟨h1, rfl⟩ k
-    constructor
-    · rw [← of_cols_mulVec a k, mulVec_mulVec, h1, one_mulVec]
-    · rw [← mulVec_mulVec, of_cols_mulVec]
-
 open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {g : ℕ} in

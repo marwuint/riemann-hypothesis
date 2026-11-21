@@ -2,13 +2,13 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFrameVec
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameArchimedeanStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameNonarchimedeanStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteResidueAbsoluteValueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteResidueAbsoluteValue
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRingStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DiscriminantValuationDifferentStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NonarchValuationOfPrimeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsElementSamePrimeCountStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DiscriminantValuationDifferent
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NonarchValuationOfPrime
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsElementSamePrimeCount
 open NumberField IsDedekindDomain MeasureTheory Filter Topology
 open Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.ChartRestriction.G.AR.Inst Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec
@@ -30,11 +30,11 @@ theorem exists_different_val (E : Type) [Field E] [NumberField E] [IsGalois ℚ 
   have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.out.one_lt
   have hpos : (0 : ℝ) < p := by linarith
   have hp0 : (p : 𝓞 E) ≠ 0 := by exact_mod_cast hp.out.ne_zero
-  obtain ⟨P, c, hPp, hPb, hpP, hc, hμ⟩ := GlobalTheory.T.nonarch_valuation_of_prime (𝓞 E) μ (p : 𝓞 E) hp0 h0 h1 hu
+  obtain ⟨P, c, hPp, hPb, hpP, hc, hμ⟩ := _root_.GlobalTheory.CompanionTheory.Ggeo.map_eq_pow_count_of_ultrametric (𝓞 E) μ (p : 𝓞 E) hp0 h0 h1 hu
     (by rw [hμp]; exact inv_lt_one_of_one_lt₀ hp1) (by rw [hμp]; exact (inv_pos.2 hpos).ne')
-  obtain ⟨d₀, hd, hd0, hcount⟩ := GlobalTheory.T.exists_element_same_prime_count (𝓞 E) (differentIdeal ℤ (𝓞 E)) P differentIdeal_ne_bot hPp hPb
+  obtain ⟨d₀, hd, hd0, hcount⟩ := _root_.GlobalTheory.CompanionTheory.Ggeo.exists_mem_count_normalizedFactors_span_eq (𝓞 E) (differentIdeal ℤ (𝓞 E)) P differentIdeal_ne_bot hPp hPb
   refine ⟨d₀, hd, ?_⟩
-  have hk := GlobalTheory.T.discriminant_valuation_different E p P hPp hpP
+  have hk := _root_.GlobalTheory.CompanionTheory.Different.padicValInt_discr_mul_count_eq E p P hPp hpP
   have he := hμ _ hp0
   have hv := hμ _ hd0
   rw [hcount] at hv
@@ -187,7 +187,7 @@ theorem fib_V_htDual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [I
       by_contra hne
       exact Lat.not_inFibre_of_coprime _
         ((Nat.coprime_primes (Or.𝔐.S_prime _ hp) (Or.𝔐.S_prime _ hp')).2 (Ne.symm hne)) hF h'
-  obtain ⟨hf1, hf2, -, hf4⟩ := GlobalTheory.T.finite_residue_absolute_value E H l c p la T e ho.1 hr
+  obtain ⟨hf1, hf2, -, hf4⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.absT_facts E H l c p la T e ho.1 hr
   have hreg : ∀ (hh : genPt Or.𝔐.ξ ⤳ centre zV) (a : 𝓞 E), Or.𝔐.emb s a ∈ regAt Or.𝔐.ξ ⟨centre zV, hh⟩ := fun hh a => by
     obtain ⟨_, g, hg, _⟩ := hσ a
     exact ⟨g, hg⟩

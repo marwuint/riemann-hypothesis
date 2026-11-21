@@ -39,29 +39,3 @@ theorem not_both_mem {D : D7} {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hne : p
 
 end GlobalTheory.Fam.UnrWeil
 
-open GlobalTheory.Fam.UnrWeil in
-
-theorem GlobalTheory.Fam.kom_weil_unram : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ (f : FamCh W u) (v : VCom f.c) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat f.c k ι), f.RowOK → f.ColOK → v.Is → VTie f v → ShapeOff v o → ∀ t j, j < D.R.m → ∃ μ, IsWeilDatumO f.c.ψ _ _ μ μ ((f.t t).kom j) ∧ ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D μ (o.p i).v := by
-  intro D L hT Gi Gl Kc Yd cX ex W u hW f v k _ _ _ _ ι o _ hC _ hV hS t j hj
-  refine ⟨(pk W).toLevCh.mu t (j + 1), hC.kom t j hj, fun i => ?_⟩
-  have lev : (pk W).toLevCh.Is W.P.A3.A.μ0 := hW.bot.hyp.2.2.2.1.lev
-  have hp : (o.p i).v ∈ v.tP := (hS.pre.tP _).2 ⟨i, rfl⟩
-  have hTF : (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∈ (o.p i).v.asIdeal := (hV.tP _).1 hp
-  have hTw : ∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = (o.p i).v →
-      (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal := by
-    intro w hw
-    rw [← hw] at hTF
-    have := Ideal.mem_comap.1 hTF
-    simpa using this
-  show GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (Formalism.IndefR.Lift.tup (pk W).toLevCh.mu0 ((pk W).toLevCh.xi t) (j + 1)) (o.p i).v
-  refine GlobalTheory.SeeSaw.WeilLines.charUnram_mul ?_ ?_
-  · refine GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => ?_
-    refine (GlobalTheory.LFun.unrAt_iff_of_chrEq (lev.mu0 ⟨j, hj⟩) w).2 ?_
-    refine ((pk W).toLevCh.C.isMu0 ⟨j, hj⟩).unr w fun kk hk => ?_
-    exact not_both_mem (D.mem u).A.T_prime (D.host.g_prime kk) (D.T_ne_g u kk) w (hTw w hw) hk
-  · refine GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => ?_
-    refine (GlobalTheory.LFun.unrAt_iff_of_chrEq (lev.xi t) w).2 ?_
-    by_contra hr
-    rcases (lev.Q_ram t w).1 hr with hq | ⟨PP', hq, hc⟩
-    · exact (lev.Q_off t w hq).2 u (hTw w hw)
-    · exact (lev.Q_off t PP' hq).2 u (natCast_mem_of_isConjPl _ hc (hTw w hw))

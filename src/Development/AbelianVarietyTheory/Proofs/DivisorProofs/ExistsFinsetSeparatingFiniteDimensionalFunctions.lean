@@ -32,7 +32,4 @@ theorem finiteDim_functions_detected_by_finset (K : Type) (W : Submodule ℂ (K 
   rw [← heq, memN] at hwN
   exact hwN.2 k (Finset.mem_insert_self k s0)
 
-example : ∀ (K : Type) (W : Submodule ℂ (K → ℂ)), FiniteDimensional ℂ W → ∃ s : Finset K, ∀ w ∈ W, (∀ k ∈ s, w k = 0) → w = 0 :=
-  finiteDim_functions_detected_by_finset
-
 end GlobalTheory

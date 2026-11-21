@@ -12,24 +12,6 @@ theorem jacobi_congr {a b s : ℕ} (h : a ≡ b [MOD s]) : jacobiSym (a : ℤ) s
   have h' : a % s = b % s := h
   rw [← Int.natCast_mod, ← Int.natCast_mod, h']
 
-theorem sum_perm {R : Type*} [AddCommMonoid R] (M c : ℕ) (hc : c.Coprime M) (S S' : Finset ℕ)
-    (hS : ∀ b ∈ S, b < M) (hmap : ∀ b ∈ S, (c * b) % M ∈ S') (hcard : S'.card ≤ S.card) (f : ℕ → R) :
-    ∑ b ∈ S', f b = ∑ b ∈ S, f ((c * b) % M) := by
-  have hinj : ∀ x ∈ S, ∀ y ∈ S, (c * x) % M = (c * y) % M → x = y := by
-    intro x hx y hy hxy
-    have h1 : c * x ≡ c * y [MOD M] := hxy
-    have h2 : x ≡ y [MOD M] := Nat.ModEq.cancel_left_of_coprime (Nat.Coprime.symm hc) h1
-    have h3 : x % M = y % M := h2
-    rwa [Nat.mod_eq_of_lt (hS x hx), Nat.mod_eq_of_lt (hS y hy)] at h3
-  have himg : S.image (fun b => (c * b) % M) = S' := by
-    apply Finset.eq_of_subset_of_card_le
-    · intro y hy
-      obtain ⟨b, hb, rfl⟩ := Finset.mem_image.mp hy
-      exact hmap b hb
-    · rw [Finset.card_image_of_injOn (fun x hx y hy h => hinj x hx y hy h)]
-      exact hcard
-  rw [← himg, Finset.sum_image (fun x hx y hy h => hinj x hx y hy h)]
-
 theorem exists_jacobi_neg_one (m t : ℕ) (ht : Odd t) (hsq : Squarefree t) (h1 : 1 < t)
     (hc : t.Coprime m) : ∃ u : ℕ, u ≡ 1 [MOD m] ∧ jacobiSym (u : ℤ) t = -1 := by
   obtain ⟨p, hp, hpt⟩ := Nat.exists_prime_and_dvd (show t ≠ 1 by omega)
@@ -138,39 +120,5 @@ theorem jacobi_separate (m₀ s₁ s₂ : ℕ) (hm : 0 < m₀) (h1 : Odd s₁) (
   · exact dvd_of_jacobiSym_agree_on_residue_class m₀ s₁ s₂ h1 h2 hq1 hc1 h
   · exact dvd_of_jacobiSym_agree_on_residue_class m₀ s₂ s₁ h2 h1 hq2 hc2
       (fun u hu hc => (h u hu (by rwa [mul_comm])).symm)
-
-theorem card_cls (m₀ s a : ℕ) (hcop : m₀.Coprime s) (hm : m₀ ≠ 0) (hs : s ≠ 0) :
-    ((range (m₀ * s)).filter (fun b => b % m₀ = a % m₀ ∧ b.Coprime s)).card = s.totient := by
-  have hpos : 0 < s := Nat.pos_of_ne_zero hs
-  rw [Nat.totient_eq_card_coprime]
-  apply Finset.card_bij (fun b _ => b % s)
-  · intro b hb
-    simp only [mem_filter, mem_range] at hb ⊢
-    refine ⟨Nat.mod_lt _ hpos, ?_⟩
-    show Nat.gcd s (b % s) = 1
-    rw [Nat.gcd_comm, ← Nat.gcd_rec]
-    exact hb.2.2.symm
-  · intro b₁ hb₁ b₂ hb₂ h
-    simp only [mem_filter, mem_range] at hb₁ hb₂
-    have h1 : b₁ ≡ b₂ [MOD m₀] := hb₁.2.1.trans hb₂.2.1.symm
-    have h2 : b₁ ≡ b₂ [MOD s] := h
-    have h3 := (Nat.modEq_and_modEq_iff_modEq_mul hcop).mp ⟨h1, h2⟩
-    have h4 : b₁ % (m₀ * s) = b₂ % (m₀ * s) := h3
-    rwa [Nat.mod_eq_of_lt hb₁.1, Nat.mod_eq_of_lt hb₂.1] at h4
-  · intro r hr
-    simp only [mem_filter, mem_range] at hr
-    obtain ⟨k, hk1, hk2⟩ := Nat.chineseRemainder hcop a r
-    have hk1' : k % m₀ = a % m₀ := hk1
-    have hk2' : k % s = r % s := hk2
-    refine ⟨k % (m₀ * s), ?_, ?_⟩
-    · simp only [mem_filter, mem_range]
-      refine ⟨Nat.mod_lt _ (Nat.pos_of_ne_zero (Nat.mul_ne_zero hm hs)), ?_, ?_⟩
-      · rw [Nat.mod_mul_right_mod]
-        exact hk1'
-      · show Nat.gcd _ s = 1
-        rw [Nat.gcd_comm, Nat.gcd_rec, Nat.mod_mul_left_mod, hk2', Nat.mod_eq_of_lt hr.1]
-        exact hr.2.symm
-    · show k % (m₀ * s) % s = r
-      rw [Nat.mod_mul_left_mod, hk2', Nat.mod_eq_of_lt hr.1]
 
 end Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds

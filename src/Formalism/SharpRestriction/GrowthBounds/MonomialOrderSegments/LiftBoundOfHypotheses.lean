@@ -124,15 +124,6 @@ def V2 [CharZero K] : Prop :=
 
 def initSet (N : ℕ) (i : ℕ) : Finset (Fin N) := univ.filter fun k => k.val < i
 
-def IsPieriStep {r : ℕ} (vec : Bool) (deg : ℕ) (μ ν : Fin r → ℤ) : Prop :=
-  if vec then (∀ a, μ a ≤ ν a) ∧ (∀ a b : Fin r, b.val + 1 = a.val → ν a ≤ μ b) ∧
-      ∑ a, ν a = ∑ a, μ a + deg
-  else (∀ a, ν a ≤ μ a) ∧ (∀ a b : Fin r, b.val + 1 = a.val → μ a ≤ ν b) ∧
-      ∑ a, μ a = ∑ a, ν a + deg
-
-def IsPieriPath {N r : ℕ} (sg : Fin N → Bool) (d : Fin N → ℕ) (path : Fin (N + 1) → Fin r → ℤ) : Prop :=
-  path 0 = 0 ∧ ∀ k : Fin N, IsPieriStep (sg k) (d k) (path k.castSucc) (path k.succ)
-
 variable (v : AddValuation K (WithTop ℚ)) (p : ℕ)
 
 def colVal (ci : ℤ) (h r : ℕ) : ℤ :=
@@ -370,9 +361,6 @@ def LiftBoundWith [CharZero K] (C0 kH k6 k18 kE : ℝ) : Prop :=
           ((D.E p C0 kE + 2 * D.kapD p : ℝ) : WithTop ℝ)
 
 def LiftBoundUniform [CharZero K] (C0 : ℝ) : Prop := LiftBoundWith K v p C0 13 12 30 2
-
-def LiftBoundOfHypotheses [CharZero K] (C0 : ℝ) : Prop :=
-  1 ≤ C0 → V2 K → SPAN K v p → PROJ K v p C0 → DIG K v p → DER K v p → LiftBoundUniform K v p C0
 
 end Thm
 

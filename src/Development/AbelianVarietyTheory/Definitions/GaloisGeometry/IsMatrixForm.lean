@@ -81,28 +81,6 @@ def galMap (σ : Ω ≃ₐ[k] Ω) : geom Ω p ⟶ geom Ω p :=
 def geomMap {Y : Scheme.{0}} {q : Y ⟶ Spec (CommRingCat.of k)} (u : X ⟶ Y) (hu : u ≫ q = p) : geom Ω p ⟶ geom Ω q :=
   pullback.lift (pullback.fst _ _ ≫ u) (pullback.snd _ _) (by rw [Category.assoc, hu, pullback.condition])
 
-def gal (n : ℕ) : Representation R (Ω ≃ₐ[k] Ω) (H R n (geom Ω p)) where
-  toFun σ := pull R n (galMap Ω p σ)
-  map_one' := by
-    have : galMap Ω p 1 = 𝟙 _ := by
-      apply pullback.hom_ext
-      · rw [galMap_fst, Category.id_comp]
-      · have h : CommRingCat.ofHom ((1 : Ω ≃ₐ[k] Ω) : Ω →+* Ω) = 𝟙 _ := by ext x; rfl
-        rw [galMap_snd, h, Spec.map_id, Category.id_comp, Category.comp_id]
-    rw [this, pull_id]; rfl
-  map_mul' σ τ := by
-    have : galMap Ω p (σ * τ) = galMap Ω p σ ≫ galMap Ω p τ := by
-      apply pullback.hom_ext
-      · rw [Category.assoc, galMap_fst, galMap_fst, galMap_fst]
-      · have h : CommRingCat.ofHom ((σ * τ : Ω ≃ₐ[k] Ω) : Ω →+* Ω) =
-            CommRingCat.ofHom (τ : Ω →+* Ω) ≫ CommRingCat.ofHom (σ : Ω →+* Ω) := by ext x; rfl
-        rw [Category.assoc, galMap_snd, galMap_snd, galMap_snd_assoc, h, Spec.map_comp]
-    rw [this, pull_comp]; rfl
-
-def IsMatrixForm (n : ℕ) {S : Type} [CommRing S] [Algebra R S] {a : ℕ} (r : (Ω ≃ₐ[k] Ω) →* GL (Fin a) S) : Prop :=
-  ∃ b : Module.Basis (Fin a) R (H R n (geom Ω p)), ∀ σ,
-    (r σ : Matrix (Fin a) (Fin a) S) = (LinearMap.toMatrix b b (gal R Ω p n σ)).map (algebraMap R S)
-
 end Galois
 
 abbrev fibre {O K : Type} [CommRing O] [CommRing K] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of O)) (φ : O →+* K) : Scheme.{0} :=

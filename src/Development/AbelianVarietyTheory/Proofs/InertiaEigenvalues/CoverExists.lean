@@ -4,10 +4,13 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPadicIntSpanImageLatticeRegularStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStableSpanningFinsetMatricesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallTracesDvdSpanImageStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteExtensionEntriesOfCompactRepStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPadicIntSpanImageLatticeRegular
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStableSpanningFinsetMatrices
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallTracesDvdSpanImage
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPsCharOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteSemisimple
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteExtensionEntriesOfCompactRep
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TupMemLatT
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLatticeLayerCoverBasisModPowStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivariantTransitionMatrixCoverStatement
@@ -21,8 +24,8 @@ namespace GlobalTheory.TraceConjugationCover
 theorem cover_exists : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] (a : ℕ) (L₀ : FinExt l) (r : Γ →* GL (Fin a) (Om l)), Continuous r → Formalism.MainNotions.N.IsSSRep r → ∀ Cl : Set (Γ →* GL (Fin a) (Om l)), (∀ ρ ∈ Cl, Continuous ρ) → LinApprox r Cl → Nonempty (Cover L₀ r Cl) := by
   intro l _ Γ _ _ _ _ a L₀ r hr hss Cl hCl hap
   classical
-  obtain ⟨d, ρ, b, e, hρ, hreads, hind, hbr⟩ := GlobalTheory.T.exists_padicInt_span_image_lattice_regular l Γ a r hr
-  obtain ⟨c, hc⟩ := GlobalTheory.T.small_traces_dvd_span_image l Γ a r hr hss
+  obtain ⟨d, ρ, b, e, hρ, hreads, hind, hbr⟩ := _root_.GlobalTheory.BKLim.exists_zl_span_lattice_reads l Γ a r hr
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.smallTrace_dvd_span l Γ a r hr hss
   obtain ⟨K, hK⟩ := traceL l a d b
   have hl1 : (1 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).one_lt
   have hl0 : (0 : ℝ) < l := by linarith
@@ -34,13 +37,13 @@ theorem cover_exists : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [Topo
         ∀ g, ∀ x ∈ t, ∃ c' : Matrix (Fin a) (Fin a) (Om l) → ℤ_[l], ((ρ' g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) * x = ∑ y ∈ t, zOm l (c' y) • y) := by
     intro ρ'
     by_cases h : Continuous ρ'
-    · obtain ⟨L, hLf, hL⟩ := GlobalTheory.T.exists_finiteExtension_entries_of_compact_rep l Γ a ρ' h
+    · obtain ⟨L, hLf, hL⟩ := _root_.GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem_of_continuous l Γ a ρ' h
       haveI := hLf
       haveI := L₀.2
       let L' : FinExt l := ⟨L ⊔ L₀.1, inferInstance⟩
       have hL' : ∀ g i j, ((ρ' g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j ∈ L'.1 := fun g i j =>
         (le_sup_left : L ≤ L ⊔ L₀.1) (hL g i j)
-      obtain ⟨t, h1, h2, h3, h4⟩ := GlobalTheory.T.exists_stable_spanning_finset_matrices l Γ a ρ' L' h hL'
+      obtain ⟨t, h1, h2, h3, h4⟩ := _root_.GlobalTheory.exists_stable_spanning_finset l Γ a ρ' L' h hL'
       exact ⟨L', t, fun _ => ⟨le_sup_right, hL', h1, h2, h3, h4⟩⟩
     · exact ⟨L₀, ∅, fun h' => absurd h' h⟩
   choose Lf tf htf using hch

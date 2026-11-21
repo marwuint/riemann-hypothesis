@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsPowSubMemSpanOfIsUnitModOfIsAlgClosed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsComplexPointNonvanishingStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsComplexPointNonvanishing
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointConjugate
 
 noncomputable section
@@ -16,7 +16,7 @@ theorem kappa_conj : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintyp
     (∀ σ, 0 < κ σ) → (∀ σ z, PtOver y φ σ z → ‖evC z f‖ = (κ σ * A.h z) ^ M * ‖evC z g‖) →
     ∀ σ, κ (ComplexEmbedding.conjugate σ) = κ σ := by
   intro K _ ι _ Ω _ F _ _ y φ A M f g dg κ hO hM hg hgy hA hκ hN σ
-  obtain ⟨z, hz, hgz⟩ := GlobalTheory.T.exists_complex_point_nonvanishing K ι Ω F y φ σ g dg hO hg hgy
+  obtain ⟨z, hz, hgz⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_ptOver_ne K ι Ω F y φ σ g dg hO hg hgy
   have h1 := hN σ z hz
   have h2 := hN _ _ (ptOver_conj K ι Ω F y φ σ z hz)
   rw [evC_conj, evC_conj, hA z, RCLike.norm_conj, RCLike.norm_conj] at h2

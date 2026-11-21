@@ -1,4 +1,7 @@
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.UnlAway
+import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.SphericalOfHasSat
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Hypotheses2
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.GalUnitary
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.BaseChangeUnits.IsAutQ
 
 noncomputable section
@@ -56,29 +59,8 @@ def IsAutQN (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n) (Qbar l)) : Prop
 section Conv
 variable {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
 
-theorem mkCsd [IsCMField F] (h : AutCsd0 ι r) (_ : Continuous r → Wit ι r) : IsAutCsd ι r := h
-theorem mkCsd' [IsCMField F] (h : AutCsd0 ι r) (u : Continuous r → Wit ι r) : IsAutCsdN ι r := ⟨h, u⟩
-theorem csd0 [IsCMField F] (h : IsAutCsd ι r) : AutCsd0 ι r := h
-theorem csd0' [IsCMField F] (h : IsAutCsdN ι r) : AutCsd0 ι r := h.1
-omit [NumberField F] in
-theorem automorphicQ_of_witness (h : IsAutQ ι r) : IsAutomorphicOverImagQuad ι r := h
-omit [NumberField F] in
-theorem autQ0' (h : IsAutQN ι r) : IsAutomorphicOverImagQuad ι r := fun hc K _ _ _ _ _ _ h2 hi => (h hc K h2 hi).1
 omit [NumberField F] in
 theorem mkQ (h : IsAutomorphicOverImagQuad ι r) (_ : Continuous r → WitQ ι r) : IsAutQ ι r := h
-omit [NumberField F] in
-theorem mkQ' (h : IsAutomorphicOverImagQuad ι r) (u : Continuous r → WitQ ι r) : IsAutQN ι r :=
-  fun hc K _ _ _ _ _ _ h2 hi => ⟨h hc K h2 hi, u hc K h2 hi⟩
-
-theorem UnlinkAt.unlAt {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} (h : UnlinkAt r w A) : UnlAt ι r w A := by
-  obtain ⟨s, j, hj, hs, hn⟩ := h
-  refine ⟨s, j, hj, hs, fun α hα hβ => ?_⟩
-  have back : ∀ z : ℂ, ((r s : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.map ι.toRingHom).IsRoot z →
-      (r s : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.IsRoot (ι.symm z) := fun z hz => by
-    rw [← ι.apply_symm_apply z] at hz
-    exact (Polynomial.isRoot_map_iff (f := ι.toRingHom) ι.injective).1 hz
-  refine hn _ _ (back _ hβ) (back _ hα) 1 le_rfl ?_
-  simp
 end Conv
 
 end UpperTheory.GalN.V

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeEqSmulOfIsot
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeScalarOnSphericalVectorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeScalarOnSphericalVectors
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalEigenvaluesIndependentOfStandardFrameStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelOperatorsAtPrimeOffLevelDatum
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
@@ -68,7 +68,7 @@ theorem part_in_eigenpart : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T
   obtain ⟨B0, hB0⟩ : IsLab (Wc D i0) P d :=
     (GlobalTheory.LabEq.isLab_W_iff (s := s) R F hC i0 P d hG).2.2
       ((GlobalTheory.LabEq.isLab_W_iff (s := s) R F hC i P d hG).2.1 ⟨B, hSph⟩)
-  obtain ⟨a, ha⟩ := GlobalTheory.T.sphericalHecke_scalar_on_spherical_vectors hF (PW i0) (hPW i0) π P d B0 hB0
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.SphScalar.spherical_scalar hF (PW i0) (hPW i0) π P d B0 hB0
   obtain ⟨⟨x0, hx0S, hx0, hx0T⟩, hEigOp, -⟩ := hEig
   have hB0full := ((LO i0 (R.levL F false (sg0 D A)) P hG).2.1 SF d B0).2 ⟨hoff, hB0⟩
   have hfix0 : ∀ κ, (PW i0).ψ κ ∈ hyp (Wc D i0) P → Formalism.L2.NG.rt D.host.E n κ x0 = x0 := by

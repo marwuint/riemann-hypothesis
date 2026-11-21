@@ -105,10 +105,6 @@ def aux₃ (_D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap
         ((1 - X.kapP C0 CE1 CE2 Cm Ckap - ∑ j, kT j) * (dimHH (m := X.m) Kf X.TT X.aT X.bT : ℝ) /
           gaussianNumber (X.p ^ X.n') (X.m + 1))
 
-def Conclusion2 (_D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Cc Cs : ℝ) : Prop :=
-  ∀ X : Loc, D1num X → HI C0 CYb Cde Ck CD Cb X → CBound Cc X →
-    X.kapP C0 CE1 CE2 Cm Ckap ≤ Cs * X.N * X.N1 / X.Y
-
 def PointsLemma (_D : Formalism.BasicNotions.D7) (C0 CE1 CE2 : ℝ) : Prop :=
   ∀ (X : Loc) [NeZero X.m] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (j : Fin (numSeg X.TT)) (aT' : Fin X.n' → ℕ) (m : ℝ),
@@ -145,32 +141,6 @@ def Conclusion4 (_D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Cc
             (fun i => coarseA X.p (X.seg C0 CE1 CE2 j) (digitBlock rz ry) i)
             (fun i => coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (digitBlock rz ry) i) *
           symDim (X.m + 1) ((X.seg C0 CE1 CE2 j).bPlus : ℤ)
-
-def DegreeDichotomy (_D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
-  ∀ (X : Loc) [NeZero X.m], D1num X → HI C0 CYb Cde Ck CD Cb X → CBound Cc X →
-    ∀ (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m),
-      DigitsOK X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b →
-      ∀ i : Fin (segS X.TT j),
-        ((i : ℕ) < (X.seg C0 CE1 CE2 j).sigma →
-          (coarseA X.p (X.seg C0 CE1 CE2 j) b i : ℝ) * (1 + X.de C0 Cde) < ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ)) ∧
-        ((X.seg C0 CE1 CE2 j).sigma ≤ (i : ℕ) →
-          ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) < (coarseA X.p (X.seg C0 CE1 CE2 j) b i : ℝ) * (1 - X.de C0 Cde))
-
-def ModelLatticeRank (_D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc : ℝ) : Prop :=
-  ∀ (X : Loc) [NeZero X.m] (W Qq O Kf : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
-    [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
-    (ι : Qq →+* Kf) (σ : Qq ≃+* Qq) (jO : W →+* O) (w : O),
-    UnramifiedQuadraticSetting X.p X.n' W Qq O Kf ι σ jO w → HI C0 CYb Cde Ck CD Cb X → CBound Cc X → ∀ m : ℝ, 0 ≤ m →
-      (1 - kappaMarginBound Ckap X.N X.k X.Q m X.N1 X.b' X.Y (X.E0 C0 CE1 CE2) X.a (X.La C0)) *
-          (dimHH (m := X.m) Kf X.TT X.aT X.bT : ℝ) ≤
-        gaussianNumber (X.p ^ X.n') (X.m + 1) *
-          ∏ j, (segRank O X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) m : ℝ)
-
-def OrderBoundDigits (_D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Ct Cc : ℝ) : Prop :=
-  ∀ (X : Loc), D1num X → HI C0 CYb Cde Ck CD Cb X → CBound Cc X →
-    ∀ bs : ∀ j : Fin (numSeg X.TT), SegBlock (segS X.TT j) X.m,
-      (∀ j, Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (bs j)) →
-      ((∑ j, blockOrd X.p (X.seg C0 CE1 CE2 j) (bs j) : ℕ) : ℝ) ≤ X.t0 C0 Ct
 
 def adm1 (D : Formalism.BasicNotions.D7) : Prop := Formalism.MainNotions.CovariantDegrees.adm1 D
 
@@ -261,38 +231,11 @@ def admitted (D : Formalism.BasicNotions.D7) : Prop :=
   adm1 D ∧ adm2 D ∧ adm3 D ∧ ArchimedeanSignatureMatching D ∧ adm5 D ∧ adm6 D ∧ adm7 D ∧ adm8 D ∧ adm9 D ∧ adm10 D ∧ adm11 D ∧
     adm12 D ∧ adm13 D ∧ adm14 D ∧ adm15 D ∧ adm16 D ∧ adm17 D ∧ adm18 D ∧ adm19 D ∧ adm20 D
 
-def ExportAllConjugates (D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs : ℝ) : Prop :=
-  aux₃ D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc ∧ Conclusion2 D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Cc Cs ∧
-    PointsLemma D C0 CE1 CE2 ∧ Conclusion4 D C0 CYb Cde Ck CD Cb CE1 CE2 Cc ∧ DegreeDichotomy D C0 CYb Cde Ck CD Cb CE1 CE2 Cc ∧
-    ModelLatticeRank D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc ∧ OrderBoundDigits D C0 CYb Cde Ck CD Cb CE1 CE2 Ct Cc
-
-def Stmt (D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs : ℝ) : Prop :=
-  admitted D → ExportAllConjugates D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs
-
 def Closed (P : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop) : Prop :=
   ∀ Cc : ℝ, 0 ≤ Cc → ∃ T0 : ℝ, 0 < T0 ∧ ∀ C0 : ℝ, T0 ≤ C0 →
     ∃ T1 : ℝ, 0 < T1 ∧ ∀ CE1 CE2 Cm : ℝ, T1 ≤ CE1 → T1 ≤ CE2 → T1 ≤ Cm →
       ∃ T2 : ℝ, 0 < T2 ∧ ∀ CYb Cde Ck CD Cb : ℝ, T2 ≤ CYb → T2 ≤ Cde → T2 ≤ Ck → T2 ≤ CD → T2 ≤ Cb →
         ∃ Ckap Ct Cs : ℝ, 0 < Ckap ∧ 0 < Ct ∧ 0 < Cs ∧ P C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs
-
-def ConclusionsWithConstants (D : Formalism.BasicNotions.D7) : Prop := Closed (Stmt D)
-
-def ClosedFormOfAdmitted (D : Formalism.BasicNotions.D7) : Prop := admitted D → Closed (ExportAllConjugates D)
-
-def AdmF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∀ x (i : Fm.Ix x), admitted (Fm.D x i)
-
-def FamilyAllConclusions {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), ExportAllConjugates (Fm.D x i) C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs
-
-def KudlaFamilyStatement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs : ℝ) : Prop :=
-  AdmF Fm → FamilyAllConclusions Fm C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs
-
-def FamilyClosedForm {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := AdmF Fm → Closed (FamilyAllConclusions Fm)
-
-def DerivativeStatementClosedDesign (Fm : Formalism.MainNotions.DFamP) : Prop :=
-  (∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52), AdmF (Fm ε h0 h1)) →
-    Closed fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs =>
-      ∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52), FamilyAllConclusions (Fm ε h0 h1) C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs
 
 def Loc.J0 (X : Loc) (C0 : ℝ) : ℝ := X.La C0 * X.b' / X.k
 
@@ -457,40 +400,10 @@ def ExtendedAllConclusions (D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb 
     ExtendedDigitRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc ∧ RootMultiplicityTwo D C0 CYb Cde Ck CD Cb CE1 CE2 Cc ∧
     FreeTopRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
-theorem HerrExtensionClass.toGrowthBound {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc : ℝ}
-    (h : HerrExtensionClass D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc) : aux₃ D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc := by
-  intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hHI hC
-  exact h X W Qq O Kf ι σ jO w hS hHI.toExt hC
-
 theorem ExtendedDigitRankBound.toDigitRankBound {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     (h : ExtendedDigitRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : Conclusion4 D C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hHI hC
   exact h X W Qq O Kf ι σ jO w hS hHI.toExt hC
-
-theorem ExtendedKappaBound.toKappaBound {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Cc Cs : ℝ}
-    (h : ExtendedKappaBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Cc Cs) :
-    Conclusion2 D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Cc Cs :=
-  fun X hD hHI hC => h X hD hHI.toExt hC
-
-theorem ExtendedDichotomy.toDegreeDichotomy {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
-    (h : ExtendedDichotomy D C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : DegreeDichotomy D C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
-  intro X _ hD hHI hC
-  exact h X hD hHI.toExt hC
-
-theorem ExtendedModelRank.toModelLatticeRank {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc : ℝ}
-    (h : ExtendedModelRank D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc) : ModelLatticeRank D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc := by
-  intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hHI hC
-  exact h X W Qq O Kf ι σ jO w hS hHI.toExt hC
-
-theorem ExtendedOrderBound.toOrderBoundDigits {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Ct Cc : ℝ}
-    (h : ExtendedOrderBound D C0 CYb Cde Ck CD Cb CE1 CE2 Ct Cc) : OrderBoundDigits D C0 CYb Cde Ck CD Cb CE1 CE2 Ct Cc :=
-  fun X hD hHI hC => h X hD hHI.toExt hC
-
-theorem ExtendedAllConclusions.toAllConjugates {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs : ℝ}
-    (h : ExtendedAllConclusions D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs) :
-    ExportAllConjugates D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs := by
-  obtain ⟨h1, h2, h3, h4, h5, h6, h7, -, -, -⟩ := h
-  exact ⟨h1.toGrowthBound, h2.toKappaBound, h3, h4, h5.toDegreeDichotomy, h6.toModelLatticeRank, h7.toOrderBoundDigits⟩
 
 theorem Closed.mono {P P' : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop}
     (hP : ∀ C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs, P C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs →
@@ -505,22 +418,6 @@ theorem Closed.mono {P P' : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ 
   obtain ⟨Ckap, Ct, Cs, c1, c2, c3, hx⟩ := h2 CYb Cde Ck CD Cb b1 b2 b3 b4 b5
   exact ⟨Ckap, Ct, Cs, c1, c2, c3, hP _ _ _ _ _ _ _ _ _ _ _ _ _ hx⟩
 
-def HerrExtensionTheorem (D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs : ℝ) : Prop :=
-  admitted D → ExtendedAllConclusions D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs
-
 def ExtendedClosedForm (D : Formalism.BasicNotions.D7) : Prop := admitted D → Closed (ExtendedAllConclusions D)
-
-theorem ExtendedClosedForm.closed_of_extended_closed {D : Formalism.BasicNotions.D7} (h : ExtendedClosedForm D) : ClosedFormOfAdmitted D :=
-  fun hA => Closed.mono (fun _ _ _ _ _ _ _ _ _ _ _ _ _ hx => ExtendedAllConclusions.toAllConjugates hx) (h hA)
-
-def FamilyExtendedConclusions {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), ExtendedAllConclusions (Fm.D x i) C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs
-
-def FamilyExtendedClosed {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := AdmF Fm → Closed (FamilyExtendedConclusions Fm)
-
-def ExtendedDesignClosed (Fm : Formalism.MainNotions.DFamP) : Prop :=
-  (∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52), AdmF (Fm ε h0 h1)) →
-    Closed fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs =>
-      ∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52), FamilyExtendedConclusions (Fm ε h0 h1) C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs
 
 end Formalism.MainNotions.ColumnSystems

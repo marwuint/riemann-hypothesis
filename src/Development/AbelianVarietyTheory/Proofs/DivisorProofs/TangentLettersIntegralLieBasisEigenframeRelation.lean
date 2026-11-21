@@ -91,7 +91,7 @@ theorem tangent_letter_model_relation : ∀ (E : Type) [Field E] [NumberField E]
   letI := (iK.comp (algebraMap c.F z.K)).toAlgebra
   intro φ yT y' g a hφ hmap hchg hg hint
   obtain ⟨-, hlet, -, hx, -, hu⟩ := hz
-  obtain ⟨vV, hvV, hvw⟩ := GlobalTheory.T.exists_lieBasis_local_model E H Dw l Xo c z p T iK M hval A hA
+  obtain ⟨vV, hvV, hvw⟩ := _root_.GlobalTheory.LamT.exists_isLieBasis_locMod E H Dw l Xo c z p T iK M hval A hA
   choose wK hwK hwV using hvw
   have hxT : yT.x = spMap iK ≫ z.x := by rw [hmap.1, hφ, hx]
   have hK := LieComb.lieComb_algebra z.K z.Φ.T.t.G _ z.Φ.v z.Φ.basis.1

@@ -6,7 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOpenNormal
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuotientIntegrationFormulaDiscreteSubgroupLeft
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SmoothContragredientIrreducibleAndReflexiveStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContraAdmissibleTraceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonemptyEquivOfSmoothTraceEqAdmissibleStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonemptyEquivOfSmoothTraceEqAdmissible
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TransposeInvariantOfConjInvariantDistributionGLStatement
 
 open MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.OpTrace Matrix
@@ -136,7 +137,7 @@ theorem equiv_contra (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] 
     change smoothTrace π μ ψ.1 = smoothTrace π μ φ.1
     rw [show ψ.1 = _ from funext h]
     exact smoothTrace_conj ha isOpen_KO isCompact_KO φ.2.1 φ.2.2 g
-  refine GlobalTheory.T.nonempty_equiv_of_smoothTrace_eq_admissible _ μ hb V _ _ _ (isAdmissible_comp _ Φ hΦ ha) hca
+  refine _root_.GlobalTheory.CharIndep.nonempty_equiv_of_smoothTrace_eq _ μ hb V _ _ _ (isAdmissible_comp _ Φ hΦ ha) hca
     (isIrreducible_comp _ (fun g => ⟨_, hinv g⟩) hi)
     ((GlobalTheory.T.smoothContragredient_irreducible_and_reflexive _ hb V V π π ha ha).1 hi) fun f hf hc => ?_
   have h1 := hf.comp_continuous Φ.continuous

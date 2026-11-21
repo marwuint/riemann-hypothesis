@@ -296,13 +296,6 @@ theorem level_ne_zero (l : Level H) : l.M' ≠ 0 :=
 
 end Level
 
-theorem pointHom_unique {Ω : Type} [Field Ω] [IsAlgClosed Ω] {p : ℕ} {x x' : Sp Ω ⟶ Xo.X}
-    {C : Subgroup (Over.mk x ⟶ Xo.univ.t.G)} {ψ : pullback Xo.univ.t.G.hom x ⟶ pullback Xo.univ.t.G.hom x'}
-    {f g : (Over.mk x ⟶ Xo.univ.t.G) →* (Over.mk x' ⟶ Xo.univ.t.G)} (hf : IsHkIsog p x x' C ψ f)
-    (hg : IsHkIsog p x x' C ψ g) : f = g :=
-  MonoidHom.ext fun a =>
-    sends_unique ((sends_conj_iff ψ _ _).2 (hf.2.2.1 a)) ((sends_conj_iff ψ _ _).2 (hg.2.2.1 a))
-
 theorem isog_iff {Ω : Type} [Field Ω] [IsAlgClosed Ω] {p : ℕ} (hp : p.Coprime l.M') (x x' : Sp Ω ⟶ Xo.X)
     (C : Subgroup (Over.mk x ⟶ Xo.univ.t.G)) (ψ : pullback Xo.univ.t.G.hom x ⟶ pullback Xo.univ.t.G.hom x') :
     (∃ ψp, IsHkIsog p x x' C ψ ψp) ↔ IsHeckeIsog p C (conj x x' ψ) := by

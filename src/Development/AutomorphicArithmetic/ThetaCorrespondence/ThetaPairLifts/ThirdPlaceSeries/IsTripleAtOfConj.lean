@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CharpolySmulOfProd
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.IsPotCrysAtOfMono0
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.GalRead
 
@@ -15,10 +15,6 @@ open GlobalTheory.GalChar (IsGal toQ block)
 open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf Zbar GalE toFb)
 open GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary (embOver)
 variable {D : D7}
-section Reading
-variable (X : NTw D.R D.host D.what₂ D.LL0 D.nd)
-variable {X} {i : X.Tw} {b : Bool}
-end Reading
 section Comparison₂
 variable (C : CharFrame D) (art : Ideles D.host.E →* Gab D.host.E D.nd.Om) {X : NTw D.R D.host D.what₂ D.LL0 D.nd}
 structure IsGaloisTripleWithReduction {i : X.Tw} {b : Bool} (ρ : Reading X i b) (s : X.Sig i) (σ : D.what₂.FT) (π : D.naut.CG D.R.r)
@@ -48,16 +44,6 @@ end Comparison₂
 def IsGaloisTripleOfExpansion {X : NTw D.R D.host D.what₂ D.LL0 D.nd} (Y : NExp D.R D.host D.what₂ D.LL0 D.nd X) : Prop :=
   ∃ (C : CharFrame D) (art : Ideles D.host.E →* Gab D.host.E D.nd.Om), _root_.GlobalTheory.Triple.IsGaloisTripleForExpansion C art Y
 def IsGaloisTriple (D : D7) : Prop := _root_.GlobalTheory.Triple.IsGaloisTripleOfExpansion D.nexp
-section ReadingAPI
-variable {X : NTw D.R D.host D.what₂ D.LL0 D.nd} {i : X.Tw} {b : Bool}
-end ReadingAPI
-section Chars
-variable (C : CharFrame D)
-variable {C} {X : NTw D.R D.host D.what₂ D.LL0 D.nd} {i : X.Tw} {b : Bool} {art : Ideles D.host.E →* Gab D.host.E D.nd.Om}
-end Chars
-section Values
-variable (μ : HChar D.host.E) (π : D.naut.CG D.R.r) (P : PlE D.host)
-end Values
 section API
 variable {C : CharFrame D} {art : Ideles D.host.E →* Gab D.host.E D.nd.Om} {X : NTw D.R D.host D.what₂ D.LL0 D.nd}
   {i : X.Tw} {b : Bool} {ρ : Reading X i b} {s : X.Sig i} {σ : D.what₂.FT} {π : D.naut.CG D.R.r}
@@ -78,11 +64,6 @@ theorem isTripleAt_of_conj_alt (good : D.nd.goodRow σ) (occurs : D.what₂.isot
   refine ⟨p, h1.trans ?_, h2⟩
   change _ = ((A * r g * A⁻¹ : GL (Fin D.R.r) (Qbar (X.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (X.l i))).charpoly
   rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
-theorem IsGaloisTripleWithReduction.hEig_zero (h : _root_.GlobalTheory.Triple.IsGaloisTripleWithReduction C art ρ s σ π r ν w red) {P : PlE D.host} (hP : IsSplitPl D.host P)
-    (hS : P ∉ X.S0 i) : X.hEig i s 0 P = 1 := by
-  obtain ⟨x, h1, h2⟩ := h.hecke 0 P (Nat.zero_le _) hP hS
-  rw [heckeVal_zero, ← map_one ρ.toC] at h2
-  rw [← h1, ρ.toC_injective h2, map_one]
 theorem IsGaloisTripleWithReduction.unr_of_notMem (h : _root_.GlobalTheory.Triple.IsGaloisTripleWithReduction C art ρ s σ π r ν w red) {P : PlE D.host} (hS : P ∉ X.S0 i) :
     D.naut.unr (D.naut.locG π P) := h.param.unr P fun k hk => hS (X.placesOver_subset_exceptional i k hk)
 variable {Y : NExp D.R D.host D.what₂ D.LL0 D.nd X}

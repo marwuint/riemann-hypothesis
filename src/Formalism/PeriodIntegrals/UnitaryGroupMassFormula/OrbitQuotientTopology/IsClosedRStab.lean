@@ -13,14 +13,6 @@ variable {k r : ℕ}
 def nβ (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℕ :=
   if i.val < r then i.val else if i.val ≤ r + k then r else r + 1
 
-theorem nβ_X {i : Fin (2 * r + k + 1)} (h : i.val < r) : nβ k r i = i.val := by
-  unfold nβ
-  rw [if_pos h]
-
-theorem nβ_S {i : Fin (2 * r + k + 1)} (h : r + k < i.val) : nβ k r i = r + 1 := by
-  unfold nβ
-  split_ifs <;> omega
-
 def NDiag (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Prop :=
   ∀ i j, nβ k r i = nβ k r j → nβ k r j ≤ r → a i j = (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) i j
 

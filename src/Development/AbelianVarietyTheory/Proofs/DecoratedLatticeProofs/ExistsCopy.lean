@@ -14,11 +14,6 @@ section Gen
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TypeLev Matrix
 open scoped TensorProduct
 
-theorem chiSymF_map {κ K : Type} [CommRing κ] [Field K] (emb : K →+* ℂ) (ψ : AddChar κ K) (n k rS : ℕ) (M : HPsymF κ n k rS) :
-    ((chiSymF ((emb : K →* ℂ).compAddChar ψ) n k rS M : ℂˣ) : ℂ) = emb ((chiSymF ψ n k rS M : Kˣ) : K) := by
-  rw [chiSymF_apply, chiSymF_apply, chiSym, chiSym, MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, Units.val_mul, map_mul]
-  rfl
-
 variable {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K]
 
 theorem lev_iff (hc : CMData F E) {n n' : ℕ} (e : n' = n) [NeZero n] {J' : Matrix (Fin n') (Fin n') E} {J : Matrix (Fin n) (Fin n) E}
@@ -118,53 +113,6 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open NumberField IsDedekindDomain Matrix MeasureTheory ValuativeRel GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.Core.Rk GlobalTheory.AdForm GlobalTheory.SeeSaw
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-set_option maxHeartbeats 2000000 in
-
-theorem topLev_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (v : B.Word), ∀ c, IsComOf I l Z c → ∀ top : StAt (I.rec7 l Z).sp.X', top.β = 1 → top.st.Is c B.R.m → GlobalTheory.Core.Rk.Top.TopLev (w.C.forms v).clsP (levS _ top.β top.L) (Lev.levChi _ top.β top.L) := by
-  intro B X I l Z w v c hc top hb hs
-  obtain ⟨hr, ξ, hL⟩ := hs.lev
-  have hL' : top.L = _ := hL
-  have hK := (w.std v).what₂
-  obtain ⟨-, gP, -, -⟩ := GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I w.ok w.pins l Z
-  have gX : (I.rec7 l Z).sp.X'.gram = 1 := by
-    have := congrArg (Matrix.reindex (finCongr (rankP (I.rec7 l Z))) (finCongr (rankP (I.rec7 l Z)))).symm gP
-    rw [gramP, Equiv.symm_apply_apply] at this
-    rw [this, Matrix.reindex_symm, Matrix.reindex_apply, Matrix.submatrix_one_equiv]
-  obtain ⟨c', -⟩ := (w.C.forms v).clsP.y_bij.2 (Quotient.mk'' 1)
-  haveI : NeZero (B.R.N B.R.m - 1) := ⟨by
-    have := Formalism.L2.Col.rank_X'_eq B.R; have := B.R.m_add_three_le_k; unfold Ranks.r at *; omega⟩
-  have hR := rd_all I hK c'
-  have hLb : (w.C.forms v).clsP.lev.Lb = Formalism.L2.Col.stdLat B.fields.E (B.R.N B.R.m - 1) := by
-    ext x
-    refine (hK.lb x).trans (Iff.trans ?_ (Formalism.L2.Col.mem_stdLat x).symm)
-    exact forall_congr' fun j => ⟨fun ⟨r, h, _⟩ => ⟨r, h.symm⟩, fun ⟨r, h⟩ => ⟨r, h.symm, fun _ => one_dvd _⟩⟩
-  obtain ⟨θ, ψ, μ, η, Pg, P, chi⟩ := c
-  obtain ⟨-, -, hPg, -, -, hchi, hP⟩ := hc
-  dsimp only at hPg hchi hP hL'
-  subst hPg hP
-  have key := @lev_iff B.fields.F B.fields.E B.fields.K _ _ _ _ (GlobalTheory.Mem.Col2.starE B) _ _ B.sp.cm (B.R.N B.R.m - 1) _
-    (rankP (I.rec7 l Z)) _ _ _ gX gP _ _ _ (w.C.forms v).clsP.lev hLb B.R.r B.R.t B.R.m (Formalism.L2.Col.r_le_X' B.R) hr
-    (Formalism.L2.Col.t_pos B.R) (Formalism.L2.Col.rank_X'_eq B.R) (B.primes X).vGs I.Ps (Formalism.L2.Col.chiAt I.Ch) B.embLL hR
-    (symLevel (D := I.rec7 l Z) (B.primes X).vGs (psiC I)) chi (fun PP => (ξ PP)⁻¹)
-    (fun g => mem_symLevel (D := I.rec7 l Z) g)
-    (fun g hg => by
-      refine (congrArg Units.val (symLevel_chi (D := I.rec7 l Z) g)).trans ?_
-      rw [Units.coe_prod]
-      refine Finset.prod_congr rfl fun PP _ => ?_
-      have e : psiC I PP.1 = (B.embLL : B.LL →* ℂ).compAddChar (I.Ch.psi0 PP) :=
-        congrArg _ (dif_pos PP.2)
-      rw [e]
-      exact chiSymF_map _ _ _ _ _ _)
-    (fun i PP a => by
-      have e : Formalism.L2.Col.chiP I.Ch PP.1 = Formalism.L2.Col.chiAt I.Ch PP := dif_pos PP.2
-      refine (congrArg (fun f : (Formalism.L2.DIV.kP PP.1)ˣ →* ℂˣ => ((f a : ℂˣ) : ℂ)) (hchi i PP.1)).trans ?_
-      show B.embLL ((Formalism.L2.Col.chiP I.Ch PP.1 i a : B.LLˣ) : B.LL) = _
-      rw [e])
-  rw [hb, hL']
-  refine ⟨fun h => ⟨fun hh => ?_, fun ⟨κ, h1, h2⟩ => ⟨h1, (key _ κ.1 h2).1.2 κ.2⟩⟩, fun h κ hκ => (key _ κ.1 hκ.2).2 κ.2⟩
-  obtain ⟨y, hy⟩ := exists_copy (rankP (I.rec7 l Z)) (Lev.finE (I.rec7 l Z).sp.X' h)
-  exact ⟨⟨y, (key _ y hy).1.1 hh.2⟩, hh.1, hy⟩
 
 end GlobalTheory.SeeSaw.TopLevel
 

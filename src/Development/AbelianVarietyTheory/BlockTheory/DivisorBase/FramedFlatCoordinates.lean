@@ -65,37 +65,6 @@ structure Framed (Y : Model Xo c β) (Xc : (Xo.XF c).Opens) (τ : E →+* ℂ) (
   v_basis : IsEigenBasis Y.t.act (x ≫ pullback.fst _ _) (chr c τ j) v
   w_basis : IsEigenBasis Y.t.act (x ≫ pullback.fst _ _) (chr c (conjEmb τ) j) w
 
-theorem exists_framed (Y : Model Xo c β) (Xc : (Xo.XF c).Opens) (τ : E →+* ℂ)
-    (hτ : τ (H.rt : E) = H.rt0) (k : Type) [Field k] [IsAlgClosed k] (j : c.F →+* k)
-    (y : Sp k ⟶ Xo.XF c) (hy : y ≫ pullback.snd _ _ = spMap j)
-    (hm : Set.range y ⊆ (Xc : Set (Xo.XF c))) :
-    ∃ a : Framed Y Xc τ k j, a.x = y ≫ Y.jQ := by
-  obtain ⟨hd, -⟩ := Y.oF.geom k y (j.comp (IntermediateField.inclusion c.le).toRingHom) (by
-    rw [pullback.condition, ← Category.assoc, hy]
-    exact (Spec.map_comp _ _).symm)
-  have h1 : chr c τ j H.rt = (j.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ :=
-    congrArg j (Subtype.ext hτ)
-  have h2 : chr c (conjEmb τ) j H.rt ≠
-      (j.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ := fun h => by
-    have h3 : starRingEnd ℂ (τ (H.rt : E)) = H.rt0 := congrArg Subtype.val (j.injective h)
-    rw [hτ] at h3
-    have h4 := H.sqrt_neg_disc_sq
-    have h5 : H.rt0.im = 0 := Complex.conj_eq_iff_im.1 h3
-    have h6 := congrArg Complex.re h4
-    have h7 : (0 : ℝ) < H.d := Nat.cast_pos.2 H.d_prime.pos
-    simp [pow_two, h5] at h6
-    nlinarith [mul_self_nonneg H.rt0.re]
-  have hv := (LiePull.lieMult_pull _ _ _ _ _ _ _ Y.t.act Y.oF.t.act Y.m.cart Y.m.act _ y _ _).1
-    ((hd _).1 h1)
-  have hw := (LiePull.lieMult_pull _ _ _ _ _ _ _ Y.t.act Y.oF.t.act Y.m.cart Y.m.act _ y _ _).1
-    ((hd _).2 h2)
-  rw [← Category.assoc, lieMult_iff] at hv hw
-  obtain ⟨v, hv⟩ := hv
-  obtain ⟨w, hw⟩ := hw
-  refine ⟨⟨y ≫ Y.jQ, by rw [Category.assoc, Y.jQ_over, hy], ?_, v, w, hv, hw⟩, rfl⟩
-  rintro _ ⟨z, rfl⟩
-  exact subset_closure ⟨y z, hm ⟨z, rfl⟩, by simp⟩
-
 def Rule (Y : Model Xo c β) (Xc : (Xo.XF c).Opens) (τ : E →+* ℂ) : Type 1 :=
   ∀ (R : Type) [CommRing R] (j : c.F →+* R), Framed Y Xc τ R j → R
 
@@ -148,10 +117,6 @@ def sections (Y : Model Xo c β) (Xc : (Xo.XF c).Opens) (τ : E →+* ℂ) : Sub
     rw [Rule.smul_apply, Rule.smul_apply, map_mul, _root_.mul_assoc, _root_.mul_assoc, hs R R' j j' a a' f M N h,
       ← h.1, RingHom.comp_apply]
 
-def FramesCover (Y : Model Xo c β) (Xc : (Xo.XF c).Opens) (τ : E →+* ℂ) : Prop :=
-  ∀ z ∈ compactification Y Xc, ∃ (R : Type) (_ : CommRing R) (j : c.F →+* R) (a : Framed Y Xc τ R j),
-    IsOpenImmersion a.x ∧ z ∈ Set.range a.x
-
 def VanishesNowhere (s : Rule Y Xc τ) : Prop :=
   ∀ (R : Type) [CommRing R] (j : c.F →+* R) (a : Framed Y Xc τ R j), IsUnit (s R j a)
 
@@ -181,20 +146,5 @@ def IsHorizontal (sig : Rule Y Xc τ) : Prop :=
       (∀ b, IsDirection Y y (fun z => (U.ex i P z).left) (W b) (a.w b).left) →
       (∀ k n, (if ty n = s.comp (embCoeff c τ) then P (x k) n else 0) = ∑ b, C k b * V b n) →
       sig ℂ s a = κ * flatCoord Hm (fun k => P (x k)) W C
-
-def DetLineTrivial : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
-    (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β),
-    IsNormalScheme (genFibre Y) →
-    ∀ (Xc : (Xo.XF c).Opens), IsClosed (Xc : Set (Xo.XF c)) →
-      GeometricallyConnected (Xc.ι ≫ pullback.snd _ _ : Xc.toScheme ⟶ Sp c.F) →
-      ∀ (τ : E →+* ℂ), τ (H.rt : E) = H.rt0 →
-        FramesCover Y Xc τ ∧ Module.finrank c.F (sections Y Xc τ) = 1 ∧
-          ∀ sig ∈ sections Y Xc τ, sig ≠ 0 → VanishesNowhere sig ∧ IsHorizontal sig
-
-example {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z : Fin 0 ⊕ Fin 1 → Fin g → ℂ) (W : Fin 0 → Fin g → ℂ)
-    (C : Fin 0 ⊕ Fin 1 → Fin 1 → ℂ) : flatCoord Hm z W C = C (.inr 0) 0 := by
-  rw [flatCoord, ← Matrix.det_submatrix_equiv_self (finSumFinEquiv.symm : Fin (0 + 1) ≃ _), Matrix.det_fin_one]
-  rfl
 
 end GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates

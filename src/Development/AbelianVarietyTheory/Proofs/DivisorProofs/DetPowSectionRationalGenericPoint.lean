@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatPath
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointSpMapCompRestrictStalkStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCentreFunctionFieldPlaceCurveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointGenericInjectiveFractionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointSpMapCompRestrictStalk
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCentreFunctionFieldPlaceCurve
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointGenericInjectiveFraction
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -60,12 +60,12 @@ theorem evAt_coord {R : Type} [CommRing R] {C : Scheme.{0}} (x : Sp R ⟶ C) {W 
     hx'.trans (x.preimage_mono hV)
   have hcc : ⊤ ≤ x ⁻¹ᵁ (c.U ⊓ c₀.U) := hx'.trans (x.preimage_mono (le_inf h₁ h₀))
   have e := congrArg (evAt x hxV) (σ.compat (fun _ => c) (fun _ => c₀))
-  rw [(GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 R C x _ _ _ h1 hxV, map_mul, (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 R C x _ _ _ h0 hxV] at e
+  rw [(_root_.GlobalTheory.Nef.evAt_calculus).2.2.1 R C x _ _ _ h1 hxV, map_mul, (_root_.GlobalTheory.Nef.evAt_calculus).2.2.1 R C x _ _ _ h0 hxV] at e
   rw [e]
   congr 1
   have hd : evAt x hcc (c.isFrame.detUnit c₀.isFrame (inf_le_left : c.U ⊓ c₀.U ≤ c.U) inf_le_right).val =
       (M.map (evAt x hx')).det := by
-    rw [← (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 R C x _ _ (le_inf h₁ h₀) hcc hx']
+    rw [← (_root_.GlobalTheory.Nef.evAt_calculus).2.2.1 R C x _ _ (le_inf h₁ h₀) hcc hx']
     have hr := IsFrame.res_detUnit c.isFrame c₀.isFrame (inf_le_left : c.U ⊓ c₀.U ≤ c.U) inf_le_right (le_inf h₁ h₀)
     refine (congrArg (evAt x hx') (congrArg Units.val hr)).trans ?_
     rw [IsFrame.val_detUnit, Module.Basis.det_apply, RingHom.map_det]
@@ -74,7 +74,7 @@ theorem evAt_coord {R : Type} [CommRing R] {C : Scheme.{0}} (x : Sp R ⟶ C) {W 
     rw [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.map_apply, Module.Basis.toMatrix_apply, hM]
     simp only [← IsFrame.basis_apply c.isFrame h₁]
     rw [Module.Basis.repr_sum_self]
-  rw [← hd, ← map_pow, ← (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 R C x _ _ (fun y hy => ⟨Set.mem_iInter.1 hy.1 PUnit.unit, Set.mem_iInter.1 hy.2 PUnit.unit⟩ : (lbPow (det W r) m).U (fun _ => c) ⊓ (lbPow (det W r) m).U (fun _ => c₀) ≤ c.U ⊓ c₀.U) hcc hxV]
+  rw [← hd, ← map_pow, ← (_root_.GlobalTheory.Nef.evAt_calculus).2.2.1 R C x _ _ (fun y hy => ⟨Set.mem_iInter.1 hy.1 PUnit.unit, Set.mem_iInter.1 hy.2 PUnit.unit⟩ : (lbPow (det W r) m).U (fun _ => c) ⊓ (lbPow (det W r) m).U (fun _ => c₀) ≤ c.U ⊓ c₀.U) hcc hxV]
   congr 1
   dsimp only [lbPow, LB.LinComb]
   rw [Fintype.prod_unique, zpow_natCast, Units.val_pow_eq_pow_val]
@@ -108,7 +108,7 @@ theorem GlobalTheory.Nef.sec_detPow_rational : ∀ (k K : Type) [Field k] [IsAlg
     Set.ext fun y => ⟨fun hy => Set.mem_iInter.1 hy PUnit.unit, fun hy => Set.mem_iInter.2 fun _ => hy⟩
   have hle : ∀ c : Chart W r, c.U ≤ (lbPow (det W r) m).U (fun _ => c) := fun c y hy =>
     Set.mem_iInter.2 fun _ => hy
-  obtain ⟨hx0, hinj0, -⟩ := GlobalTheory.T.evalSectionAtRingPoint_generic_injective_fraction K C x hx.2.1 ((lbPow (det W r) m).U fun _ => c₀)
+  obtain ⟨hx0, hinj0, -⟩ := _root_.GlobalTheory.Nef.isGen_evAt_frac K C x hx.2.1 ((lbPow (det W r) m).U fun _ => c₀)
     (by rw [hUeq]; exact hV₀)
   refine ⟨evAt x hx0 (σ.f fun _ => c₀), ?_, ?_⟩
   · intro hf
@@ -122,11 +122,11 @@ theorem GlobalTheory.Nef.sec_detPow_rational : ∀ (k K : Type) [Field k] [IsAlg
     · have hne2 : ((((lbPow (det W r) m).U fun _ => c) ⊓ (lbPow (det W r) m).U (fun _ => c₀) :
           C.Opens) : Set C).Nonempty :=
         nonempty_preirreducible_inter (Opens.isOpen _) (Opens.isOpen _) hne (by rw [hUeq]; exact hV₀)
-      obtain ⟨hxj, hinjj, -⟩ := GlobalTheory.T.evalSectionAtRingPoint_generic_injective_fraction K C x hx.2.1 _ hne
-      obtain ⟨hx2, -, -⟩ := GlobalTheory.T.evalSectionAtRingPoint_generic_injective_fraction K C x hx.2.1 _ hne2
+      obtain ⟨hxj, hinjj, -⟩ := _root_.GlobalTheory.Nef.isGen_evAt_frac K C x hx.2.1 _ hne
+      obtain ⟨hx2, -, -⟩ := _root_.GlobalTheory.Nef.isGen_evAt_frac K C x hx.2.1 _ hne2
       apply hinjj
       have e := congrArg (evAt x hx2) (σ.compat (fun _ => c) (fun _ => c₀))
-      rw [(GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 K C x _ _ _ hxj hx2, map_mul, (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 K C x _ _ _ hx0 hx2, h0,
+      rw [(_root_.GlobalTheory.Nef.evAt_calculus).2.2.1 K C x _ _ _ hxj hx2, map_mul, (_root_.GlobalTheory.Nef.evAt_calculus).2.2.1 K C x _ _ _ hx0 hx2, h0,
         map_zero, mul_zero] at e
       rw [e, map_zero]
     · exact eq_zero_of_basicOpen_eq_bot _ (eq_bot_iff.2 fun y hy => hne ⟨y, C.basicOpen_le _ hy⟩)
@@ -140,14 +140,14 @@ theorem GlobalTheory.Nef.sec_detPow_rational : ∀ (k K : Type) [Field k] [IsAlg
       rw [mul_comm, ← key]
       congr 1
       subst hb
-      exact (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).1 v.O K C v.O.subtype b _ hbj hxj _
+      exact (_root_.GlobalTheory.Nef.evAt_calculus).1 v.O K C v.O.subtype b _ hbj hxj _
     refine ⟨?_, ?_⟩
     · rw [hval]
       exact (Valuation.mem_valuationSubring_iff _ _).1 (evAt b hbj _).2
     · intro b' hb' hout
       have e : spMap (algebraMap K K) ≫ x = x := by
         rw [Algebra.algebraMap_self, spMap, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]
-      obtain ⟨b₀, -, huniq⟩ := GlobalTheory.T.existsUnique_centre_functionFieldPlace_curve k K K C x hx v
+      obtain ⟨b₀, -, huniq⟩ := _root_.GlobalTheory.Nef.existsUnique_centre k K K C x hx v
       have hbb : b' = b := (huniq b' (hb'.trans e.symm)).trans (huniq b (hb.trans e.symm)).symm
       subst hbb
       have hnu := not_isUnit_evAt b' hbj (σ.f fun _ => c) (fun hm => hout (Opens.mem_iSup.2 ⟨_, hm⟩))

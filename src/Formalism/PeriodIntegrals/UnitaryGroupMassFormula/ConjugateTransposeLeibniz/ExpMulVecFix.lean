@@ -80,20 +80,6 @@ lemma glev_mul {k r : ℕ} {i : Fin (r + 1)} {g h : Mx k r} (hg : g ∈ Glev k r
     · rw [← Matrix.mulVec_mulVec, h1, g1]
     · rw [← Matrix.mulVec_mulVec, h2, g2]
 
-lemma glev_closed (k r : ℕ) (i : Fin (r + 1)) : IsClosed (Glev k r i) := by
-  have e : Glev k r i = {g : Mx k r | gᴴ * Hpk k r * g = Hpk k r} ∩
-      ⋂ a : Fin r, ⋂ (_ : a.val < i.val),
-        ({g : Mx k r | g *ᵥ bvec (eI k r a) = bvec (eI k r a)} ∩
-          {g : Mx k r | g *ᵥ bvec (esI k r a) = bvec (esI k r a)}) := by
-    ext g
-    simp only [Glev, UH, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter]
-  rw [e]
-  refine IsClosed.inter ?_ (isClosed_iInter fun a => isClosed_iInter fun _ => IsClosed.inter ?_ ?_)
-  · exact isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
-      continuous_const
-  · exact isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const
-  · exact isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const
-
 lemma exp_mem_glev {k r : ℕ} {i : Fin (r + 1)} {X : Mx k r} (hX : inLieLev k r i X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ Glev k r i := by
   obtain ⟨hL, hF⟩ := hX

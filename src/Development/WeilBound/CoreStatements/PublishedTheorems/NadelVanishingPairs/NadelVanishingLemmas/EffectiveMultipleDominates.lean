@@ -12,33 +12,6 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 
 namespace GlobalTheory.Domin
 
-variable {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
-
-theorem mult_zero' (z : X) : (0 : CartierDiv X).mult z = 0 := by
-  have h₀ := CartierDiv.mult_add (0 : CartierDiv X) 0 z
-  rw [add_zero] at h₀
-  omega
-
-theorem mult_nsmul'' (E : CartierDiv X) (n : ℕ) (z : X) : (n • E).mult z = n * E.mult z := by
-  induction n with
-  | zero => rw [zero_nsmul, mult_zero']; simp
-  | succ n ih => rw [succ_nsmul, CartierDiv.mult_add, ih]; push_cast; ring
-
-theorem mult_sub' (D E : CartierDiv X) (z : X) : (D - E).mult z = D.mult z - E.mult z := by
-  have h := CartierDiv.mult_add (D - E) E z
-  rw [sub_add_cancel] at h
-  omega
-
-theorem eq_of_specializes_of_coheight (z z' : X) (h : z' ⤳ z) (hz : Order.coheight z = 1)
-    (hz' : Order.coheight z' = 1) : z' = z := by
-  by_cases h' : z' ≤ z
-  · exact (h.antisymm h').eq
-  · exfalso
-    have hlt : z < z' := lt_of_le_not_ge h h'
-    have h2 := Order.coheight_strictAnti hlt (by simp [hz'])
-    rw [hz, hz'] at h2
-    exact lt_irrefl _ h2
-
 end GlobalTheory.Domin
 
 private theorem exists_pow_eq_mul_of_mem_maximalIdeal_dim_le_one {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]

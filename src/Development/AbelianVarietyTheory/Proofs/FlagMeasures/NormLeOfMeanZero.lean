@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
 import Formalism.HarderNarasimhan.ShiftInvariance
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnipotentQuotientInvariantProbabilityStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproximationUnitaryUnipotentRadicalStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproximationUnitaryUnipotentRadical
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariant
+import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 
 open GlobalTheory.Count Formalism.MainNotions.S Formalism.HN Formalism.REAL Matrix NumberField MeasureTheory Finset
 open scoped InnerProductSpace
@@ -72,8 +74,8 @@ theorem norm_le_of_cusp (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [
     Real.sqrt (∑ i, ‖c i‖ ^ 2) ≤ r := by
   classical
   obtain ⟨ν, hνP, hνQ, Cp, hCp, -, hνCp⟩ := GlobalTheory.T.exists_unipotentQuotient_invariant_probability I W hW
-  obtain ⟨⟨N, hN⟩, -, hsplit, hdense, -⟩ := GlobalTheory.T.strong_approximation_unitaryUnipotentRadical I W hW
-  obtain ⟨-, -, -, -, hpos⟩ := GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf
+  obtain ⟨⟨N, hN⟩, -, hsplit, hdense, -⟩ := _root_.GlobalTheory.UnipApprox.strong_approximation I W hW
+  obtain ⟨-, -, -, -, hpos⟩ := _root_.GlobalTheory.AdelicUnimod.adelic_unimodular I μf
   obtain ⟨hT2, hLC, hSC, -, -, -, hKg⟩ := GlobalTheory.CongTop.adelic_topology I
   obtain ⟨hKo, ⟨K, hK⟩, -⟩ := hKg g hg
   haveI := hT2

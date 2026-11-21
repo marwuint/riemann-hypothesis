@@ -159,8 +159,8 @@ theorem exists_io_poly (D : D7) (V W : HSp D) (θ : InfFam D) (Sp : D.what₂.Ta
       ∃ (v : ∀ ρ, lowT M ρ) (w : c.W), (∀ ρ, ‖((v ρ : M.sm ρ) : M.H ρ)‖ = 1) ∧ ‖w‖ = 1 ∧
         io (PiTensorProduct.tprod ℂ v) w = fact M.ε x₁ x₂ x₃ k₀ 1 (delta p q ap am) := by
   obtain ⟨hhK, hhU⟩ := GlobalTheory.T.fockActions_isHolomorphicProductKRepFamily D W.rank V.rank M.ε x₁ x₂ x₃
-  obtain ⟨κ, Δ', hκ, hΔ, hbK, hbU⟩ := GlobalTheory.T.exists_minorProduct_translate_jointLowestWeight D W.rank V.rank M.ε p q ap am x₁ x₂ x₃ hr hpq hε hap ham
-  obtain ⟨m, hm1, hm2, hm3⟩ := GlobalTheory.T.holomorphic_family_low_lie_action D W Sp M _ _ _ hhK
+  obtain ⟨κ, Δ', hκ, hΔ, hbK, hbU⟩ := _root_.GlobalTheory.JointHarm.MinorBottom.exists_joint_bottom D W.rank V.rank M.ε p q ap am x₁ x₂ x₃ hr hpq hε hap ham
+  obtain ⟨m, hm1, hm2, hm3⟩ := _root_.GlobalTheory.JointHarm.MultiOp.lowest_types_act D W Sp M _ _ _ hhK
   obtain ⟨hv1', hv2', hv3, hv4⟩ := GlobalTheory.T.frameFunctionAction_holomorphic_extremal_lowest D.what₂.Tau V.rank lam
   obtain ⟨ϖ, hϖ⟩ : ∃ ϖ : (D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) → Module.End ℂ (Pol ℂ D.what₂.Tau V.rank),
       ϖ = fun u => vact lam fun ρ => u (l.symm ρ) := ⟨_, rfl⟩
@@ -181,7 +181,7 @@ theorem exists_io_poly (D : D7) (V W : HSp D) (θ : InfFam D) (Sp : D.what₂.Ta
       ∀ u : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, u τ ∈ Formalism.REAL.Kset (allPos V.rank)) →
         ψ (ϖ u F) = factU M.ε x₁ x₂ x₃ u (ψ F) := by
     intro F hF
-    have hF' := GlobalTheory.T.coefficientSpace_le_span_unitary_orbit_extremal D.what₂.Tau V.rank lam hF
+    have hF' := _root_.GlobalTheory.JointHarm.VV_le_span_vact_extremal D.what₂.Tau V.rank lam hF
     clear hF
     induction hF' using Submodule.span_induction with
     | mem F h =>
@@ -496,7 +496,7 @@ theorem exists_isIoW (D : D7) (V W : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ
   have hkk : k * (fun τ => star (k τ)) = 1 := funext fun τ => Unitary.mul_star_self_of_mem (hk τ).1
   have hkk' : (fun τ => star (k τ)) * k = 1 := funext fun τ => Unitary.star_mul_self_of_mem (hk τ).1
   obtain ⟨io, h1, h2, h3⟩ := exists_io_poly D V W θ _ M c lam l BS j hj1 hj2 _ _ _ _ x₁ x₂ x₃ hr hpq hε hap ham hK hU k hk
-  have hact := GlobalTheory.T.weil_maximalCompact_fock_substitution_character D ψ θ V W _ _ ω _ M BS hω hθ hV hW hBS _ _ hpq hε _ _ ha hb x₁ x₂ x₃ hx₁ hx₂ hx₃ f hth hvac
+  have hact := _root_.GlobalTheory.FockCompactAction.om_pureTensorO_eq_fact D ψ θ V W _ _ ω _ M BS hω hθ hV hW hBS _ _ hpq hε _ _ ha hb x₁ x₂ x₃ hx₁ hx₂ hx₃ f hth hvac
   have hio := isIoW_of_fact hθ hBu hact h1 h2 h3
   refine ⟨_, isIoW_comp hio (fact M.ε x₁ x₂ x₃ (fun τ => star (k τ)) 1)
     (fchar (n := V.rank) M.ε x₁ x₂ x₃ (fun τ => star (k τ)) 1) (fun P => ?_)

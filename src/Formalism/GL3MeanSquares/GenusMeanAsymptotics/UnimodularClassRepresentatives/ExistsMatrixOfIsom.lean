@@ -114,83 +114,10 @@ theorem exists_isom_matrix (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) 
   refine ⟨D l i, hD l i, ?_⟩
   simp
 
-theorem isUnit_det_mk (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K}
-    (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}
-    (hH : ∀ i j, jK (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {e k : ℕ}
-    (he : IsE h (locF 𝔭 (spanO b)) 𝔭 e) (hk : e + 1 ≤ k) (Y : Matrix κ κ (𝓞 K))
-    (hY : ∀ i j, (Yᴴ * H * Y - H) i j ∈ extP K 𝔭 ^ k) (N : ℕ) :
-    IsUnit (Ideal.Quotient.mk (extP K 𝔭 ^ N) Y.det) := by
-  have := h𝔭.isPrime
-  obtain ⟨π₀, s₀, hu⟩ := exists_isUnif0 h𝔭
-  obtain ⟨E, hE, hHE⟩ := exists_E hF hd b he hu.mem
-  obtain ⟨Z, hZ, hXZ⟩ := exists_Z hu hY
-  have hg := gramK_eq_map hH
-  rw [hg] at hHE
-  have hHh : (H.map jK)ᴴ = H.map jK := by rw [← hg]; exact gramK_conjTranspose hs b
-  obtain ⟨h0, h1⟩ := det_unit (isLocUnif hK hF h𝔭 hu) hHh (ent_map H) hE hHE hk (ent_map Y) hZ hXZ
-  have hdet : (Y.map jK).det = jK Y.det := by
-    have := RingHom.map_det jK Y
-    rw [RingHom.mapMatrix_apply] at this
-    exact this.symm
-  rw [hdet] at h0 h1
-  obtain ⟨t, ht, z, e1⟩ := mem_SP.1 h1
-  have e2 : z * Y.det = ι t := by
-    apply jK_inj
-    rw [map_mul, e1]
-    field_simp
-  obtain ⟨u, hu'⟩ := MeanA.exists_mul_sub_one_mem_pow h𝔭 ht N
-  apply IsUnit.of_mul_eq_one (Ideal.Quotient.mk _ (ι u * z))
-  rw [← map_mul, ← map_one (Ideal.Quotient.mk (extP K 𝔭 ^ N)), Ideal.Quotient.eq]
-  have : Y.det * (ι u * z) - 1 = ι (u * t - 1) := by
-    rw [map_sub, map_mul, map_one, ← e2]
-    ring
-  rw [this]
-  exact ι_mem_pow hu'
-
 theorem form_col (H Y : Matrix κ κ (𝓞 K)) (i j : κ) :
     (Yᴴ * H * Y) i j = star (fun l => Y l i) ⬝ᵥ (H *ᵥ fun l => Y l j) := by
   have := form_mulVec Y H (Pi.single i 1) (Pi.single j 1)
   rw [form_single, mulVec_single_one, mulVec_single_one] at this
   exact this.symm
-
-theorem exists_matrix_of_isom (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis κ K V)
-    {H : Matrix κ κ (𝓞 K)} (hH : ∀ i j, jK (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)}
-    (h𝔭 : 𝔭.IsMaximal) {g : V ≃ₗ[K] V} (hg : g ∈ autSub h (locF 𝔭 (spanO b))) (N : ℕ) :
-    ∃ Y : Matrix κ κ (𝓞 K), (∀ i j, (Yᴴ * H * Y - H) i j ∈ extP K 𝔭 ^ N) ∧
-      ∀ i, g (b i) - ∑ l, Y l i • b l ∈ (extP K 𝔭 ^ N • locF 𝔭 (spanO b) : Submodule (𝓞 K) V) := by
-  have := h𝔭.isPrime
-  have hgb : ∀ i, g (b i) ∈ locF 𝔭 (spanO b) := by
-    intro i
-    have h1 : g (b i) ∈ Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 (spanO b)) :=
-      ⟨b i, le_locF 𝔭 _ (Submodule.subset_span ⟨i, rfl⟩), rfl⟩
-    rwa [hg.2] at h1
-  choose c hc hcL using fun i => exists_approx h𝔭 (spanO b) N (hgb i)
-  have hsum : ∀ i, ∑ l, crd b ⟨_, hcL i⟩ l • b l = ι (c i) • g (b i) := by
-    intro i
-    have := coe_eq_sum b ⟨_, hcL i⟩
-    exact (Finset.sum_congr rfl fun l _ => (algebraMap_smul K _ _).symm).trans this.symm
-  refine ⟨Matrix.of fun l i => crd b ⟨_, hcL i⟩ l, fun i j => ?_, fun i => ?_⟩
-  · have h1 := form_eq h b hH ⟨_, hcL i⟩ ⟨_, hcL j⟩
-    have h2 : h (ι (c i) • g (b i)) (ι (c j) • g (b j)) = jK (ι (c i * c j) * H i j) := by
-      rw [form_smul hF, hg.1, ← hH, ← map_mul]
-    have h3 : (ι (c i * c j) * H i j) = ((Matrix.of fun l i => crd b ⟨_, hcL i⟩ l)ᴴ * H *
-        (Matrix.of fun l i => crd b ⟨_, hcL i⟩ l)) i j := by
-      rw [form_col]
-      exact jK_inj (h2.symm.trans h1)
-    rw [Matrix.sub_apply, ← h3]
-    have h4 : ι (c i * c j) * H i j - H i j = ι (c i * c j - 1) * H i j := by
-      rw [map_sub, map_one]; ring
-    rw [h4]
-    apply Ideal.mul_mem_right
-    apply ι_mem_pow
-    have : c i * c j - 1 = (c i - 1) * c j + (c j - 1) := by ring
-    rw [this]
-    exact add_mem (Ideal.mul_mem_right _ _ (hc i)) (hc j)
-  · have h1 : ∑ l, (Matrix.of fun l i => crd b ⟨_, hcL i⟩ l) l i • b l = ι (c i) • g (b i) := hsum i
-    rw [h1]
-    have h2 : g (b i) - ι (c i) • g (b i) = ι (-(c i - 1)) • g (b i) := by
-      rw [map_neg, map_sub, map_one, neg_smul, sub_smul, one_smul]; abel
-    rw [h2]
-    exact Submodule.smul_mem_smul (ι_mem_pow (neg_mem (hc i))) (hgb i)
 
 end Formalism.HermitianLattices.Ext.L3.HU

@@ -172,12 +172,6 @@ end GlobalTheory.RowReal
 
 namespace GlobalTheory.RowReal
 
-section Outer
-
-variable {X : Type} [MeasurableSpace X] {μ : Measure X} {s : Set X}
-
-end Outer
-
 section Multi
 
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}

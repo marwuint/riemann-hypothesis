@@ -69,12 +69,12 @@ theorem UpperTheory.Kd.L.nrm :
       · exact h
     obtain ⟨-, r, hr, -⟩ := ha
     exact hr (by rw [ha0, map_zero]; rfl)
-  obtain ⟨φ2, h2, hs2⟩ := GlobalTheory.T.exists_logDerivQExpansion_modPrimePow_of_translationInvariant ε X hj l A hl (n + k) M w hM hw0 hw
-  have hu := GlobalTheory.T.isLogDerivQExpansionModPrimePow_unique ε X hj l A hl n (M : ℚ) w φ φ2 hφ (isDl_weak X A l n k _ w φ2 h2)
+  obtain ⟨φ2, h2, hs2⟩ := _root_.GlobalTheory.dl_exists ε X hj l A hl (n + k) M w hM hw0 hw
+  have hu := _root_.GlobalTheory.Glue.isDl_unique ε X hj l A hl n (M : ℚ) w φ φ2 hφ (isDl_weak X A l n k _ w φ2 h2)
   have hT : ∀ b ∈ Finset.range M,
       IsDl X A l (n + k) (M : ℚ) (X.sl (ofSL (ModularGroup.T ^ b)) w) (NrmT.trT ε b φ2) :=
     fun b _ => NrmT.isLogDerivQExpansionModPrimePow_slash_T_pow X A l (n + k) _ w φ2 b h2
-  have hP := GlobalTheory.T.isLogDerivQExpansion_finset_prod_zpow ε X hj l A hl (n + k) (M : ℚ) ℕ (Finset.range M)
+  have hP := _root_.GlobalTheory.isDl_finset_prod_zpow ε X hj l A hl (n + k) (M : ℚ) ℕ (Finset.range M)
     (fun b => X.sl (ofSL (ModularGroup.T ^ b)) w) (fun b => NrmT.trT ε b φ2) (fun _ => 1) hT
   simp only [zpow_one, one_smul] at hP
   rw [NrmT.sum_trT M φ2 hs2 (NrmT.resZ φ2) (NrmT.resZ_coeff φ2)] at hP

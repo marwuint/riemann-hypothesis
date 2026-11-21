@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InvEntryNormLeOfSubSmulOnePosSemidef
-import Mathlib
+
 open Matrix
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in

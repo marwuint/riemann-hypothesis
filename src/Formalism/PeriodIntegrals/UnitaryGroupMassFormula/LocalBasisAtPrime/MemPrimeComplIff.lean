@@ -1,6 +1,4 @@
 import Mathlib
-import Formalism.PeriodIntegrals.LocBasisPlace
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalBasisAtPrime.SpanClear
 
 open NumberField
 
@@ -47,29 +45,5 @@ instance plc_isPrime : (plc ρ).IsPrime where
     have := mul_le_mul h.1 h.2 zero_le_one (le_trans zero_le_one h.1)
     change ‖ρ (algebraMap (𝓞 E) E a)‖ * ‖ρ (algebraMap (𝓞 E) E b)‖ < 1 at hab'
     linarith
-
-theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
-  have h1 := PadicComplex.norm_extends' p (p : ℚ_[p])
-  simp only [map_natCast, Padic.norm_p] at h1
-  have h2 : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
-    convert h1 using 2
-    first
-    | rfl
-    | exact (map_natCast _ p).symm
-    | norm_cast
-  rw [h2]
-  exact inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.mpr (Fact.out : p.Prime).one_lt)
-
-theorem plc_ne_bot : plc ρ ≠ ⊥ := by
-  intro h
-  have hp : (p : 𝓞 E) ∈ plc ρ := by
-    rw [mem_plc]
-    simpa [map_natCast] using norm_p_lt_one (p := p)
-  rw [h, Ideal.mem_bot] at hp
-  exact (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) hp
-
-theorem mem_primeCompl_iff (s : 𝓞 E) : s ∈ (plc ρ).primeCompl ↔ ‖ρ (s : E)‖ = 1 := by
-  rw [Ideal.mem_primeCompl_iff, mem_plc, not_lt]
-  exact ⟨fun h => le_antisymm (norm_le_one ρ s) h, fun h => h.ge⟩
 
 end LocBasisPlaceWork

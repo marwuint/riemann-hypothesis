@@ -95,34 +95,4 @@ def OneMeasure (D : D7) : Prop :=
       ∀ (μ : Measure (GA D (Wc D i))) (𝓕 : Set (GA D (Wc D i))), IsMeasFD (Wc D i) (levW C i P) μ 𝓕 →
         μ 𝓕 ≠ 0 ∧ μ 𝓕 ≠ ⊤ ∧ ExactRatio C i P μ 𝓕 ∧ ∀ L, Sizes D L → RatioBound i μ 𝓕 L
 
-omit [Algebra T.Q.c.F D.what₂.LL] in
-
-theorem OneMeasure.models (h : OneMeasure D) {G : Type} [Group G] [Fintype G] {Pl0 Tu : Type}
-    {A : FamIn D.what₂.LL G Pl0 Tu D.R.m} [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
-    (hl : R.toLevCh.Is A.μ0) (hm : R.IsModels) (hT : LawsJ T) (ha : AlgTie T) (large₂ : SizeData₂ D) (hs : Sizes D large₂.sc.L)
-    (n : ℝ) (hn : 1 ≤ n) :
-    ∃ c : ℝ, 0 < c ∧ Real.log c ≤ 122 * (D.R.f * (D.R.r : ℝ) ^ 2 * large₂.sc.L) ∧
-      ∀ (σ : D.what₂.LL →+* ℂ) (hV : T.V ((i : ℕ) + 1) (gd T σ) = Wc D i) (x : (R.HW i σ).H),
-        ∀ f ∈ scalarForms T i (gd T σ), Corr T i σ hV ((R.HW i σ).e x) f →
-          n⁻¹ * ‖x‖ ^ 2 = c * probSq T i (gd T σ) f := by
-  obtain ⟨-, hdim, hmeas⟩ := h Tu R.toLevCh A.μ0 hl i R.toLevCh.triv
-  obtain ⟨h0, htop, hex, hbd⟩ := hmeas (R.νW i) (R.fdW i) (hm.νW i)
-  have hpos : 0 < ratio D i (R.νW i) (R.fdW i) :=
-    mul_pos (ENNReal.toReal_pos h0 htop) (Finset.prod_pos fun τ _ => lt_of_lt_of_le one_pos (hdim τ))
-  have hn0 : 0 < n := lt_of_lt_of_le one_pos hn
-  obtain ⟨-, -, hb3⟩ := hbd large₂.sc.L hs
-  refine ⟨ratio D i (R.νW i) (R.fdW i) / n, div_pos hpos hn0, ?_, ?_⟩
-  · exact (Real.log_le_log (div_pos hpos hn0) (div_le_self hpos.le hn)).trans hb3
-  · intro σ hV x f hf hcorr
-    have hmem : (R.HW i σ).e x ∈ R.Wall i σ := by
-      rw [← (hm.HW i σ).2.1]
-      exact LinearMap.mem_range_self _ x
-    have hip := (hex T hT ha R.θ hm.inf σ (R.MW i σ) hV _ hmem f hf hcorr).2
-    have hnorm : ((‖x‖ ^ 2 : ℝ) : ℂ) =
-        ((ratio D i (R.νW i) (R.fdW i) * probSq T i (gd T σ) f : ℝ) : ℂ) := by
-      rw [← hip, ← (hm.HW i σ).2.2 x x, inner_self_eq_norm_sq_to_K]
-      norm_cast
-    rw [Complex.ofReal_injective hnorm]
-    ring
-
 end GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes

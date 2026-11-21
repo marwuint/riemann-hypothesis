@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ActAtApply
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolEval
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOneParameterSubgroupUnitaryOfRealPlaceLieAStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOneParameterSubgroupUnitaryOfRealPlaceLieA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIndefiniteUnitaryLieAlgAddISmulEqStatement
 
 noncomputable section
@@ -57,7 +57,7 @@ theorem tensAny_coinv_le_comap : ∀ (F E : Type) [Field F] [NumberField F] [Fie
       · subst h
         simpa [Y] using hZ
       · simp [Y, Pi.single_eq_of_ne h, upq]
-    obtain ⟨γ, hγ, hgen⟩ := GlobalTheory.T.exists_oneParameterSubgroup_unitary_of_realPlace_lieAlg F E σ (Fin n) P Q τ (incM F X.J) 1 A hCM hA Y hY
+    obtain ⟨γ, hγ, hgen⟩ := _root_.GlobalTheory.HoweD.exists_line_of_upqD F E σ (Fin n) P Q τ (incM F X.J) 1 A hCM hA Y hY
     have h1 := hact γ hγ Y hgen (e g)
     have h2 := (actsLaws F (Fin n × Fin d) _ _ 0).1 _ (fun t => map_zero _) h1
     have h3 := hN.2.1 γ hγ _ (hr ▸ LinearMap.mem_range_self Φ (e g)) _ h2

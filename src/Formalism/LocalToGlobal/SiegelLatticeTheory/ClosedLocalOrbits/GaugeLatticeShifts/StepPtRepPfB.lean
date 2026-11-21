@@ -88,10 +88,6 @@ theorem frame_dual_z_pairing_one : hJ ε F.zd F.z = 1 := by
   rw [zd, hJ_smul_left_eq_star_mul, F.star_cz, F.zz]
   field_simp [F.T_ne]
 
-theorem z_zd : hJ ε F.z F.zd = 1 := by
-  rw [zd, hJ_smul_right_gauge_lattice_shifts, F.zz]
-  field_simp [F.T_ne]
-
 theorem zd_zd : hJ ε F.zd F.zd = -(F.T : ℂ)⁻¹ := by
   rw [zd, hJ_smul_left_eq_star_mul, hJ_smul_right_gauge_lattice_shifts, F.star_cz, F.zz]
   field_simp [F.T_ne]

@@ -100,9 +100,6 @@ theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
     | (rw [Padic.norm_p]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt))
     | (rw [padicNormE.norm_p]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt))
 
-def vAdd (w : HeightOneSpectrum (𝓞 K)) (a : K) : ℤ :=
-  FractionalIdeal.count K w (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) a)
-
 end ReciprocityTheory.ChartRestriction.B3.IotaPl
 
 namespace ReciprocityTheory.ChartRestriction.B3

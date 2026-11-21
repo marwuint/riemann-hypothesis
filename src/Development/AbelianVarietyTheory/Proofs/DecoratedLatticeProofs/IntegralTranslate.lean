@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaA
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorThetaFunctionalMixedSourceModeStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorThetaFunctionalMixedSourceMode
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedCoordinatesOfThetaFunctionAreThetaFunctions
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfPartOneSubEInfSmul
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
@@ -60,9 +60,9 @@ theorem half_avg_heis_inv : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStd
     have hx : IsHalf (cA D e) x.1 := (hH x.1).1 x.2
     have hxa : IsHalf (cA D e) (x.1 + a) := fun i j => by
       simp only [Matrix.add_apply, mul_add, hx i j, ha i j]
-    obtain ⟨c1, -, -, -, -⟩ := GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v g₁ hg₁t
-    obtain ⟨-, -, c3, -, -⟩ := GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v g₂ hg₂t
-    obtain ⟨-, c2, -, -, -⟩ := GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v f hf
+    obtain ⟨c1, -, -, -, -⟩ := _root_.GlobalTheory.HeisMixSource.heis_mixS D ψ hψ S S₀ T ρ d v g₁ hg₁t
+    obtain ⟨-, -, c3, -, -⟩ := _root_.GlobalTheory.HeisMixSource.heis_mixS D ψ hψ S S₀ T ρ d v g₂ hg₂t
+    obtain ⟨-, c2, -, -, -⟩ := _root_.GlobalTheory.HeisMixSource.heis_mixS D ψ hψ S S₀ T ρ d v f hf
     have e1 : d.mixS T ψ μ 𝓕 (heisO ψ S T u f) x.1 = d.mixS T ψ μ 𝓕 g₁ (x.1 + a) := by
       rw [hsplit]; exact c1 x.1 a
     have e2 : d.mixS T ψ μ 𝓕 g₁ (x.1 + a) = heisO ψ S₀ T w (d.mixS T ψ μ 𝓕 g₂ (x.1 + a)) := c3 (x.1 + a) w

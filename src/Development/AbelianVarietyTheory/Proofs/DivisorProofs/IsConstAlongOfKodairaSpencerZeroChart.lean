@@ -2,8 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusInvariantHeatOperatorCommutingPeriodsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisRaynaudTangentInvariantFieldsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusInvariantHeatOperatorCommutingPeriods
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisRaynaudTangentInvariantFields
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatSymbolMemMaximalIdealOfKodairaSpencerZeroStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegenerationDataConstantOfFlatHeatOperatorsStatement
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.AdmissibleBaseChartRing
@@ -30,7 +31,7 @@ theorem isConstAlong_of_ks_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCM
   haveI : IsAdicComplete (maximalIdeal (ChartRing k m d)) (ChartRing k m d) := hA.2.2.2
   letI := H.starRing
   obtain ⟨Y⟩ : Nonempty (Ray P.oD) := inferInstance
-  obtain ⟨n', v', dd, hdd⟩ := GlobalTheory.T.exists_basis_raynaudTangent_invariantFields (ChartRing k m d) P.D.toPre (𝓞 E) P.oD Y
+  obtain ⟨n', v', dd, hdd⟩ := _root_.GlobalTheory.RayBasis.exists_basis_isInv (ChartRing k m d) P.D.toPre (𝓞 E) P.oD Y
   have hne : ∀ i, bdParam k m d i ≠ 0 := fun i h0 => by
     have h4 := congrArg (fun f : ChartRing k m d => MvPowerSeries.coeff (Finsupp.single (Sum.inl i) 1) f) h0
     simp [bdParam, MvPowerSeries.coeff_X] at h4
@@ -43,7 +44,7 @@ theorem isConstAlong_of_ks_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCM
     letI : Algebra ℤ (ChartRing k m d) := Ring.toIntAlgebra _
     let D' : Derivation ℤ (ChartRing k m d) (ChartRing k m d) :=
       { toFun := f, map_add' := f1, map_smul' := fun z x => f2 z x, map_one_eq_zero' := f3, leibniz' := f4 }
-    exact GlobalTheory.T.exists_torusInvariant_heatOperator_commuting_periods (ChartRing k m d) P.D (𝓞 E) P.oD Y n' v' dd hdd m (bdParam k m d) gam hmon hne D'
+    exact _root_.GlobalTheory.heat_commuting_periods_exists (ChartRing k m d) P.D (𝓞 E) P.oD Y n' v' dd hdd m (bdParam k m d) gam hmon hne D'
       (fun i => by
         show f (bdParam k m d i) ∈ _
         rw [hq i]; exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))

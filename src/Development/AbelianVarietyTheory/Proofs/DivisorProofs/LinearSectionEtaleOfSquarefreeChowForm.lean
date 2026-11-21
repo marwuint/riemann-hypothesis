@@ -52,7 +52,7 @@ theorem simpleAt_of_noSquare : ∀ (F : Type) [Field F] [NumberField F] (T : Tup
   haveI := hmod
   have hPfin : (T.geomPts E (T.linSection E s)).Finite := hfs.finite_subPts _
   have hcard := natCard_subPts _ _ hfs (AlgebraicClosure E)
-  have hI := GlobalTheory.T.etale_of_finrank_le_card_algHom E Γ((T.linSection E s).subscheme, ⊤)
+  have hI := _root_.GlobalTheory.etale_of_finrank_le_card_algHom_algebraicClosure E Γ((T.linSection E s).subscheme, ⊤)
   set P := T.geomPts E (T.linSection E s) with hPdef
   set Ω := AlgebraicClosure E
   let yv : (T.toLinSys.baseChange E).Pt Ω → Fin T.N → Ω := fun x => T.coords (LinSys.toBase x : T.Pt Ω).1

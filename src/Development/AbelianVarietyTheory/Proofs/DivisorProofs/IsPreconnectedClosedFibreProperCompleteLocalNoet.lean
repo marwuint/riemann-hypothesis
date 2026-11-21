@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalFunctionsExistsGlobalFunctionOfThickeningsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalFunctionsExistsGlobalFunctionOfThickenings
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdempotentOfClopen
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.GermEqZeroOfThickenings
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsClopenOfIsLocallyNoetherian
@@ -96,7 +96,7 @@ theorem isPreconnected_closedFibre : ∀ (A : Type) [CommRing A] [IsNoetherianRi
     change thickMap A (maximalIdeal A) e Y y ∈ ((thickObj A (maximalIdeal A) (e + 1) Y).left.basicOpen (g (e + 1)) : Set _) ↔ y ∈ D e
     rw [hgD (e + 1)]
     simp only [D, Set.mem_setOf_eq, ← Scheme.Hom.comp_apply, hcomp]
-  obtain ⟨s, hs⟩ := GlobalTheory.T.formalFunctions_exists_globalFunction_of_thickenings A (maximalIdeal A) hA Y hf g hcompat
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.FormalFunctions.exists_of_thick A (maximalIdeal A) hA Y hf g hcompat
   haveI : IsProper Y.hom := hf
   have : IsLocallyNoetherian Y.left := LocallyOfFiniteType.isLocallyNoetherian Y.hom
   have ht : s * s - s = 0 := by

@@ -98,9 +98,6 @@ theorem gamQF_eq_one_iff_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ
     exact_mod_cast this
   · rintro ⟨n, hn⟩
     exact ⟨n, by rw [hn]; push_cast; ring⟩
-section Lin
-variable {κ : Type} [Fintype κ]
-end Lin
 theorem sig_sig_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   exact τ.injective (by rw [hB.cm.2.2.2, hB.cm.2.2.2, star_star])

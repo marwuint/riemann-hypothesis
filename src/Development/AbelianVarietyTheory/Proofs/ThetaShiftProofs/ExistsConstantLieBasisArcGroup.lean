@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.PmapsOfGenRelR
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsAdicCompleteIdealEps
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsSmulPtSmulPt
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LieCombBaseChange
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArcStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieCombStatement
 
 noncomputable section
@@ -406,7 +406,7 @@ theorem exists_tr {ν : GtPt a.D₀ (epsR A)} {v : epsR (PowerSeries A) ⟶ W.t.
   have := isAdicComplete_map_of_finite (Ideal.span {(PowerSeries.X : PowerSeries A)}) (DualNumber (PowerSeries A))
   have := isLocalRing_dual (PowerSeries A)
   obtain ⟨v', hv', -⟩ := existsUnique_isPointOf W.P.U.toUnifPre g
-  obtain rfl : v' = v := (GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W ν).1.unique (lieImg_of_tr W hg hv') hv
+  obtain rfl : v' = v := (_root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W ν).1.unique (lieImg_of_tr W hg hv') hv
   exact ⟨g, hg, hv'⟩
 
 omit hG [IsLocalRing A] [IsNoetherianRing A] in
@@ -444,7 +444,7 @@ theorem exists_red (w : epsR (PowerSeries A) ⟶ W.t.G) :
     show _ = (redE A ≫ _) ≫ _
     rw [Category.assoc, ← e₁, ← Category.assoc]
     exact (Category.id_comp _).symm.trans (congrArg (· ≫ _) (redE_cstE A).symm)) ξ
-  obtain ⟨v, hv, -⟩ := (GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W ν).1
+  obtain ⟨v, hv, -⟩ := (_root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W ν).1
   obtain ⟨g, hg, hp⟩ := exists_tr W hG hv
   have P := Tr.cancel W.spec.1 W.e.surjective hg hν (Over.homMk (redE A) rfl) (redE_cstE A)
   have hc : HasCoords W.P.U.toUnifPre 0 g (redE A) y :=
@@ -474,7 +474,7 @@ open scoped MonObj
 
 theorem exists_const_basis : Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ), ∃ (g : ℕ) (e : Fin g → Out.GtPt a.D₀ (epsR A)) (v : Fin g → (epsR (PowerSeries A) ⟶ W.t.G)) (M : 𝓞 E → Matrix (Fin g) (Fin g) A), (∀ i, GtTanR (e i) ∧ LieImg W (e i) (v i)) ∧ IsLieBasis v ∧ (∀ ν, GtTanR ν → ∃! cf : Fin g → A, GtComb cf e ν) ∧ ∀ (x : 𝓞 E) i, IsLieComb (fun k => PowerSeries.C (R := A) (M x i k)) v (v i ≫ W.t.act.act x) := by
   intro hG E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W
-  have ex := GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W
+  have ex := _root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W
   have lin := GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y A b a χ W
   have := W.P.U.smooth
   obtain ⟨n, w, hw⟩ := Chart.exists_isLieBasis W.t.G this

@@ -39,20 +39,6 @@ lemma weierstrassCoeff_add_three (a b : R) (n : ℕ) :
       ∑ i : Fin (n + 1), weierstrassCoeff a b (i + 1) * weierstrassCoeff a b (n + 1 - i) := by
   rw [weierstrassCoeff]
 
-theorem weierstrassCoeff_map (f : R →ₐ[ℚ] S) (a b : R) (n : ℕ) :
-    f (weierstrassCoeff a b n) = weierstrassCoeff (f a) (f b) n := by
-  induction n using Nat.strong_induction_on with
-  | _ n ih =>
-    match n, ih with
-    | 0, _ => simp
-    | 1, _ => simp [map_smul]
-    | 2, _ => simp [map_smul]
-    | n + 3, ih =>
-      rw [weierstrassCoeff_add_three, weierstrassCoeff_add_three, map_smul, map_sum]
-      congr 1
-      refine Finset.sum_congr rfl fun i _ ↦ ?_
-      rw [map_mul, ih _ (by have := i.isLt; omega), ih _ (by omega)]
-
 theorem weierstrassCoeff_scale (t a b : R) (n : ℕ) :
     weierstrassCoeff (t ^ 4 * a) (t ^ 6 * b) n = t ^ (2 * n + 2) * weierstrassCoeff a b n := by
   induction n using Nat.strong_induction_on with
@@ -75,17 +61,6 @@ theorem weierstrassCoeff_scale (t a b : R) (n : ℕ) :
       ring
 
 end Recursion
-
-def eisensteinPoly (n : ℕ) : MvPolynomial (Fin 2) ℚ :=
-  (1 / (2 * (n : ℚ) + 1)) • weierstrassCoeff (MvPolynomial.X 0) (MvPolynomial.X 1) n
-
-lemma aeval_eisensteinPoly (x : Fin 2 → ℂ) (n : ℕ) :
-    MvPolynomial.aeval x (eisensteinPoly n) =
-      weierstrassCoeff (x 0) (x 1) n / (2 * n + 1) := by
-  rw [eisensteinPoly, map_smul, weierstrassCoeff_map, MvPolynomial.aeval_X, MvPolynomial.aeval_X,
-    Rat.smul_def]
-  push_cast
-  ring
 
 variable {L : PeriodPair}
 
@@ -292,18 +267,6 @@ theorem G_eq_weierstrassCoeff_div {n : ℕ} (hn : n ≠ 0) :
     have : ((2 * n + 1 : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
     exact_mod_cast this
   rw [← mul_G_eq_weierstrassCoeff hn, mul_div_cancel_left₀ _ h]
-
-theorem G_eq_aeval_eisensteinPoly {n : ℕ} (hn : n ≠ 0) :
-    L.G (2 * n + 2) = MvPolynomial.aeval ![L.g₂, L.g₃] (eisensteinPoly n) := by
-  rw [aeval_eisensteinPoly, G_eq_weierstrassCoeff_div hn]
-  rfl
-
-theorem exists_G_eq_aeval {k : ℕ} (hk : 2 ≤ k) :
-    ∃ P : MvPolynomial (Fin 2) ℚ, ∀ L : PeriodPair,
-      L.G (2 * k) = MvPolynomial.aeval ![L.g₂, L.g₃] P := by
-  refine ⟨eisensteinPoly (k - 1), fun L ↦ ?_⟩
-  rw [show 2 * k = 2 * (k - 1) + 2 by omega]
-  exact G_eq_aeval_eisensteinPoly (by omega)
 
 theorem G_eq_of_g₂_g₃ {L' : PeriodPair} {t : ℂ} (h₂ : L'.g₂ = t ^ 4 * L.g₂)
     (h₃ : L'.g₃ = t ^ 6 * L.g₃) {k : ℕ} (hk : 2 ≤ k) :

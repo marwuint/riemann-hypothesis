@@ -35,9 +35,6 @@ def IsExpn (Lie Gs : Set (Mx n)) (σ : Mx n → (H →L[ℂ] H)) (S : List (List
   (∀ i, SmoothVec Lie σ (v i)) ∧ (∀ i, 0 ≤ C i) ∧ (∀ i w, SmoothVec Lie σ w → ‖ℓ i w‖ ≤ C i * sobNorm σ S w) ∧
     Summable (fun i => C i * sobNorm σ S (v i)) ∧ ∀ g ∈ Gs, HasSum (fun i => ℓ i (σ g (v i))) (f g)
 
-def HasType (Lie Gs : Set (Mx n)) (σ : Mx n → (H →L[ℂ] H)) (f : Mx n → ℂ) : Prop :=
-  ∃ S, Words Lie S ∧ Ctrl Lie Gs σ S ∧ ∃ v ℓ C, IsExpn Lie Gs σ S v ℓ C f
-
 def IsDerFam (ε : Fin n → Bool) (F : List (Mx n) → Mx n → ℂ) : Prop :=
   ∀ l : List (Mx n), (∀ Y ∈ l, Y ∈ lieSet ε) → ∀ X ∈ lieSet ε, ∀ g ∈ UJset ε,
     HasDerivAt (fun t : ℝ => F l (g * NormedSpace.exp (t • X))) (F (X :: l) g) 0
@@ -62,10 +59,6 @@ def AvgBd (σ : Mx n → (H →L[ℂ] H)) (T : H → H) (Z : Set (Mx n)) (C : �
 
 def IsAvg (ε : Fin n → Bool) (σ : Mx n → (H →L[ℂ] H)) (T : H → H) : Prop :=
   ∃ (Z : Set (Mx n)) (C : ℝ), IsCompact Z ∧ Z ⊆ UJset ε ∧ 0 ≤ C ∧ AvgBd σ T Z C
-
-def DomBy (ε : Fin n → Bool) (Z : Set (Mx n)) (C : ℝ) (g : Mx n) (F Φ : Mx n → ℂ) : Prop :=
-  ∀ (ι : Type) [Fintype ι] (a : ι → ℂ) (g' : ι → Mx n), (∀ j, g' j ∈ UJset ε) → ∀ M : ℝ, 0 ≤ M →
-    (∀ y ∈ Z, ‖∑ j, a j * F (g * y * g' j)‖ ≤ M) → ‖∑ j, a j * Φ (g' j)‖ ≤ C * M
 
 def kAvg (ε : Fin n → Bool) (σ : Mx n → (H →L[ℂ] H)) (e : KG ε → ℂ) (w : H) : H :=
   ∫ k, e k • σ (toMK k) w ∂(muK ε)
@@ -292,17 +285,6 @@ theorem SobFun.translate (hσ : IsURepOn (UJset ε) σ) {ξ : H → ℂ} (h : So
   obtain ⟨l', hl', rfl⟩ := List.mem_map.1 hl
   obtain ⟨Y, hY, rfl⟩ := List.mem_map.1 hX
   exact conj_mem_lie (isUnit_Jm ε) hg (hS l' hl' Y hY)
-
-theorem SobFun.word (hσ : IsURepOn (UJset ε) σ) {ξ : H → ℂ} (h : SobFun ε σ ξ) {l : List (Mx n)}
-    (hl : ∀ X ∈ l, X ∈ lieSet ε) : SobFun ε σ fun w => ξ (Dw σ l w) := by
-  obtain ⟨h1, h2, S, C, hS, hC⟩ := h
-  refine ⟨fun x y hx hy => by beta_reduce; rw [Dw_add hσ hl hx hy, h1 _ _ (hx.word hσ hl) (hy.word hσ hl)],
-    fun c x hx => by beta_reduce; rw [Dw_smul hσ hl c hx, h2 _ _ (hx.word hσ hl)], S.map (· ++ l), C, ?_, fun w hw => ?_⟩
-  · intro l₁ hl₁ X hX
-    obtain ⟨l', hl', rfl⟩ := List.mem_map.1 hl₁
-    exact (List.mem_append.1 hX).elim (hS l' hl' X) (hl X)
-  · have := hC _ (hw.word hσ hl)
-    simpa [sobNorm, List.map_map, Function.comp_def, List.foldr_append] using this
 
 theorem sobCont_translate (hσ : IsURepOn (UJset ε) σ) {ℓ : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (lieSet ε) σ ℓ) {g : Mx n}
     (hg : g ∈ UJset ε) : Sobolev₂ (lieSet ε) σ (ℓ ∘ₗ (σ g : H →ₗ[ℂ] H)) :=

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExists
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeLatticeFlagBound
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.TrivFlagOnHodge
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
@@ -9,7 +9,12 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptGlobalNefBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptGlobalNefBound
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CurveSemiAbelianConjecture
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.SeparableFormGroupElementFixesUniquePositiveLine
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
 
 open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top
 open GroundTheory.Heights₂.Heights.LowerBoundFree (ComponentData ComponentSetting degMu ArLimExists slX)
@@ -27,7 +32,7 @@ theorem m2_of_good_tower : Given → ∀ (E : Type) [Field E] [NumberField E] [I
     hpbad ((o.toTowerOrigin.bad_iff p).2 ⟨hpr, dvd_mul_of_dvd_left (dvd_mul_of_dvd_right hd 2) _⟩)
   have hpS : p ∉ o.toTowerOrigin.S B := fun h => hnS ((o.toTowerOrigin.S_iff B p).1 h)
   rw [o.toTowerOrigin.j_eq] at hnef
-  exact GlobalTheory.T.hodge_cpt_global_nef_bound E H D Xo Yl
+  exact _root_.GlobalTheory.CompanionTheory.Ar.Conj.hodge_cpt_global_nefness E H D Xo Yl
     (fun p W hp hW i => ⟨((hloc p W hp hW).2 i).1, ((hloc p W hp hW).2 i).2.1⟩)
     l c hg Y hdom hp hq (o.toTowerOrigin.S B) (T.M B a) (o.toTowerOrigin.Or B a).𝔐
     (o.toTowerOrigin.Or B a).Fl (o.toTowerOrigin.Or B a).e (o.toTowerOrigin.Or B a).lines

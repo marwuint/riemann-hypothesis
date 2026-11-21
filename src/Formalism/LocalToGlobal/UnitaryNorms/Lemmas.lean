@@ -70,62 +70,6 @@ theorem adjoin_pair_eq_sup (x y : Qb) : adjoin ℚ {x, y} = ℚ⟮x⟯ ⊔ ℚ�
   rw [Set.insert_eq]
   exact IntermediateField.gc.l_sup
 
-theorem EQ_eq_adjoin (e q d : ℕ) : EQ e q d =
-    adjoin ℚ ((sqrts (-(q : ℤ)) ∪ sqrts (-(d : ℤ))) ∪ (fun z => z + z⁻¹) '' mus (2 ^ (e + 2))) := by
-  show sqQ (-(q : ℤ)) ⊔ sqQ (-(d : ℤ)) ⊔ cycQplus (2 ^ (e + 2)) = _
-  rw [sqQ, sqQ, cycQplus, ← IntermediateField.gc.l_sup, ← IntermediateField.gc.l_sup]
-  rfl
-
-theorem pow_neg_val {N : ℕ} [NeZero N] {z : Qb} (hz : z ^ N = 1) (u : ZMod N) :
-    z ^ (-u).val = z⁻¹ ^ u.val := by
-  have hdvd : N ∣ (-u).val + u.val := by
-    rw [← CharP.cast_eq_zero_iff (ZMod N) N]
-    simp
-  obtain ⟨c, hc⟩ := hdvd
-  have h1 : z ^ (-u).val * z ^ u.val = 1 := by rw [← pow_add, hc, pow_mul, hz, one_pow]
-  rw [inv_pow]
-  exact eq_inv_of_mul_eq_one_left h1
-
-theorem ActsAs.unique {e q d : ℕ} {s s' : EQ e q d →ₐ[ℚ] Qb} {g : GG e}
-    (h : ActsAs e q d s g) (h' : ActsAs e q d s' g) : s = s' := by
-  obtain ⟨h1, h2, u, hu, hs⟩ := h
-  obtain ⟨h1', h2', u', hu', hs'⟩ := h'
-  refine IntermediateField.algHom_ext_of_eq_adjoin ℚ (EQ_eq_adjoin e q d) ?_
-  intro x hx
-  rcases hx with (hx | hx) | ⟨z, hz, hzx⟩
-  · exact (h1 _ hx).trans (h1' _ hx).symm
-  · exact (h2 _ hx).trans (h2' _ hx).symm
-  · have hz1 : z ^ (2 ^ (e + 2)) = 1 := hz
-    have hz' : z⁻¹ ^ (2 ^ (e + 2)) = 1 := by rw [inv_pow, hz1, inv_one]
-    have hval : z ^ (u : ZMod (2 ^ (e + 2))).val + z⁻¹ ^ (u : ZMod (2 ^ (e + 2))).val =
-        z ^ (u' : ZMod (2 ^ (e + 2))).val + z⁻¹ ^ (u' : ZMod (2 ^ (e + 2))).val := by
-      have hq : (hcl e u : HGrp e) = hcl e u' := hu.trans hu'.symm
-      rw [hcl, hcl, QuotientGroup.eq, Subgroup.mem_zpowers_iff] at hq
-      obtain ⟨k, hk⟩ := hq
-      rcases Int.even_or_odd k with he | ho
-      · rw [he.neg_one_zpow, eq_comm, inv_mul_eq_one] at hk
-        rw [hk]
-      · rw [ho.neg_one_zpow, eq_comm, inv_mul_eq_iff_eq_mul, mul_neg_one] at hk
-        rw [hk, Units.val_neg, pow_neg_val hz1, pow_neg_val hz', inv_inv, add_comm]
-    exact ((hs _ z hz hzx.symm).trans hval).trans (hs' _ z hz hzx.symm).symm
-
-theorem ActsAs.snd {e q d : ℕ} {s : EQ e q d →ₐ[ℚ] Qb} {g : GG e} (h : ActsAs e q d s g)
-    (u' : (ZMod (2 ^ (e + 2)))ˣ) (hu' : hcl e u' = g.2) (x : EQ e q d) (z : Qb) (hz : z ∈ mus (2 ^ (e + 2)))
-    (hx : (x : Qb) = z + z⁻¹) :
-    s x = z ^ (u' : ZMod (2 ^ (e + 2))).val + z⁻¹ ^ (u' : ZMod (2 ^ (e + 2))).val := by
-  obtain ⟨-, -, u, hu, hs⟩ := h
-  rw [hs x z hz hx]
-  have hq : (hcl e u : HGrp e) = hcl e u' := hu.trans hu'.symm
-  rw [hcl, hcl, QuotientGroup.eq, Subgroup.mem_zpowers_iff] at hq
-  obtain ⟨k, hk⟩ := hq
-  have hz1 : z ^ (2 ^ (e + 2)) = 1 := hz
-  have hz' : z⁻¹ ^ (2 ^ (e + 2)) = 1 := by rw [inv_pow, hz1, inv_one]
-  rcases Int.even_or_odd k with he | ho
-  · rw [he.neg_one_zpow, eq_comm, inv_mul_eq_one] at hk
-    rw [hk]
-  · rw [ho.neg_one_zpow, eq_comm, inv_mul_eq_iff_eq_mul, mul_neg_one] at hk
-    rw [hk, Units.val_neg, pow_neg_val hz1, pow_neg_val hz', inv_inv, add_comm]
-
 section Layer
 
 variable {e q d : ℕ} {L : Type} [Field L] [NumberField L] {ζ a b : L}

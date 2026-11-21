@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FreeCell
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicSumNondegenerateFrame
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
 
 noncomputable section
 
@@ -118,7 +119,7 @@ theorem stageInt_eq_of_e0 : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
   haveI : LocallyCompactSpace R := hL.2.1
   haveI : SecondCountableTopology R := hL.2.2.1
   haveI : T2Space R := hL.2.2.2.1
-  obtain ⟨tK1, tK2, tK3, tK4, -, -, -, tK8, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R
+  obtain ⟨tK1, tK2, tK3, tK4, -, -, -, tK8, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
   haveI := tK1
   haveI := tK2
   haveI := tK3
@@ -127,10 +128,10 @@ theorem stageInt_eq_of_e0 : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
   haveI : BorelSpace (Fin n → Fin M → R ⊗[F] E) := tK8 n M
   haveI : BorelSpace (Fin 1 → Fin n → R ⊗[F] E) := tK8 1 n
   haveI : BorelSpace (Fin (n + 1) → Fin (M + 2) → R ⊗[F] E) := tK8 (n + 1) (M + 2)
-  obtain ⟨-, hW, -⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hcm R d b lam hlam
+  obtain ⟨-, hW, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm R d b lam hlam
   haveI := hW 1 n
-  obtain ⟨-, -, -, -, -, hA⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm (M + 2) (hypOne J) (isHermND_hypOne σ hJ) R
-  obtain ⟨-, -, -, -, -, hA'⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm M J hJ R
+  obtain ⟨-, -, -, -, -, hA⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hcm (M + 2) (hypOne J) (isHermND_hypOne σ hJ) R
+  obtain ⟨-, -, -, -, -, hA'⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hcm M J hJ R
   obtain ⟨-, e1, em, -⟩ := hA 1
   obtain ⟨hc, -, hm, -⟩ := hA (n + 1)
   obtain ⟨hc', -, -, -⟩ := hA' n

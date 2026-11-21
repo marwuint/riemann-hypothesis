@@ -46,16 +46,6 @@ theorem mem_levU_iff {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} :
     rw [e]
     exact hH
 
-theorem levU_eq_inf : levU hc n ST SG H = levU hc n ∅ SG H ⊓ ⨅ P ∈ ST, mirAt (F := F) n P := by
-  ext x
-  rw [Subgroup.mem_inf, mem_levU_iff, mem_levU_iff]
-  simp only [Subgroup.mem_iInf]
-  constructor
-  · rintro ⟨h1, h2, h3, h4⟩
-    exact ⟨⟨h1, h2, fun P hP => by simp at hP, h4⟩, h3⟩
-  · rintro ⟨⟨h1, h2, -, h4⟩, h3⟩
-    exact ⟨h1, h2, h3, h4⟩
-
 theorem levRed_apply (x : levU hc n ST SG H) (w : SG) :
     (levRed hc n ST SG H x : GLG E n SG) w =
       redFn (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) w.1 (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :=
@@ -156,14 +146,6 @@ theorem levU_parFam_eq_lev :
   · rintro ⟨⟨⟨⟨h1, h2⟩, h3⟩, -⟩, h4⟩
     exact ⟨h1, h2, fun _ hP => by simp at hP, fun w => ⟨(h3 w.1 w.2).2, h4 w (Set.mem_univ w)⟩⟩
 
-include ht hn in
-
-theorem levU_parFam_eq_lev_inf (ST : Finset (Pl E)) :
-    levU hc n ST SG (parFam h t s P χ).grp =
-      Formalism.L2.DIV.lev hc (1 : Matrix (Fin n) (Fin n) E) (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (parDat h t s P χ) ⊓
-        ⨅ Q ∈ ST, mirAt (F := F) n Q := by
-  rw [levU_eq_inf, levU_parFam_eq_lev hc h ht hn P χ]
-
 omit [StarRing E] in
 theorem rld_ofLocal_chi (Hl : ∀ PP : SG, Subgroup (GL (Fin r) (kP PP.1))) (cl : ∀ PP : SG, Hl PP →* Kˣ)
     (y : (Subgroup.pi Set.univ Hl : Subgroup (Formalism.L2.DIV.G0 SG r))) :
@@ -226,12 +208,6 @@ theorem levChr_parFam_eq_levChar (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af 
 
 end Cmp
 
-section FinCol
-
-variable {κ K : Type} [CommRing κ] [Field K] {n r : ℕ}
-
-end FinCol
-
 section Cols
 
 open Formalism.BasicNotions (Ranks)
@@ -243,12 +219,6 @@ theorem t_pos (R : Ranks) : 0 < R.t := by
 
 end Cols
 
-section SharpFin
-
-variable {κ K : Type} [CommRing κ] [Field K]
-
-end SharpFin
-
 section Sharp
 
 open Formalism.BasicNotions (Ranks)
@@ -258,10 +228,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (hc : Formalism.BasicNotions.C
 theorem colLevS_of_lt {j : ℕ} (hj : j + 1 < R.m) : colLevS Ch j = colLev Ch j := by
   funext w
   simp only [colLevS, if_pos hj]
-
-theorem colLevS_top_H {j : ℕ} (hj : R.m ≤ j) (w : Pr.vGs) :
-    (colLevS Ch j w).H = HXmsharp (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) R.k R.r R.t R.m := by
-  simp only [colLevS, if_neg (show ¬ j + 1 < R.m by omega), if_neg (show ¬ j + 1 = R.m by omega)]
 
 end Sharp
 

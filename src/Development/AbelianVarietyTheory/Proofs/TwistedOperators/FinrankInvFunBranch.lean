@@ -3,17 +3,17 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BranchesAlongOfI
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SqRepTopVecOfUnitriangular
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonemptyInvFunEquiv
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPiTensorShuffleEquivStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiTensorMapSurjectiveAndKerStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContractsTensorProductChainStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiTensorMapSurjectiveAndKer
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContractsTensorProductChain
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorRepresentationIntertwinerCompatStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContractsOfIsoDirectSumStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonemptyInvFunDualTprodEquivStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsoOuterDualStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsoTwistDetIrrShiftStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsoUnitaryIrrepConjDualStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryIrrepCompConjIsoDualStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockOnePlaceIsoDirectSumPartitionsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OuterTensorFockOnePlaceIsoUnitaryFockStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsoUnitaryIrrepConjDual
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryIrrepCompConjIsoDual
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockOnePlaceIsoDirectSumPartitions
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OuterTensorFockOnePlaceIsoUnitaryFock
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OuterIrrIsoWeylRepStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGanGrossPrasadRowWeightsStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGanGrossPrasadColumnWeightsStatement
@@ -33,7 +33,7 @@ theorem Contracts.outer {ι H G : Type} [Fintype ι] [DecidableEq ι] [Monoid H]
     Contracts (outer₂ φ) (outer σ) (outer σ') := by
   choose π hs he hk using h
   obtain ⟨e, hE⟩ := GlobalTheory.T.exists_piTensor_tmul_piTensor_linearEquiv_piTensor_tmul ι F V
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.piTensorProduct_map_surjective_and_dual_vanishes ι _ _ π hs
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.TensorKernel.piTensor_map_surjective_and_ker ι _ _ π hs
   refine ⟨PiTensorProduct.map π ∘ₗ e.toLinearMap, h1.comp e.surjective, fun h g f v => ?_, fun l hl x hx => ?_⟩
   · induction f using PiTensorProduct.induction_on with
     | add a b ha hb => simp only [map_add, TensorProduct.add_tmul, ha, hb]
@@ -126,7 +126,7 @@ theorem domWeight_ext {n : ℕ} {lam mu : DomWeight n} (h : ∀ i, lam.w i = mu.
 
 theorem iso_twist_conj (n : ℕ) (α : ℤ) (mu : DomWeight n) :
     Iso (twist (detU n ^ α) ((irr n mu).comp (conjU n))) (irr n (addW mu (-α))).dual := by
-  refine Iso.trans ?_ (GlobalTheory.T.iso_unitaryIrrep_conj_dual n _)
+  refine Iso.trans ?_ (_root_.GlobalTheory.ConjDual.iso_conj_dual n _)
   refine Iso.trans ?_ ((GlobalTheory.T.iso_twist_detU_pow_irr_of_weight_shift n (-α) mu (addW mu (-α)) fun _ => rfl).comp (conjU n))
   refine ⟨LinearEquiv.refl _ _, fun g x => ?_⟩
   have : detU n (conjU n g) = (detU n g)⁻¹ := by
@@ -155,7 +155,7 @@ theorem contracts_fockOne {a b : ℕ} (hab : a < b) (α β : ℤ) (lam : DomWeig
     have e : Fin.cast hm ⟨i.1, by omega⟩ = i := rfl
     simp only [addW, GlobalTheory.GLDuality.pad_w_of_lt i₀ i (by omega), i₀, e]
     omega
-  refine (GlobalTheory.T.contracts_of_iso_directSum' _ _ _ _ _ _ _ _ _ _ (irr a lam) i₀ (GlobalTheory.T.fockOnePlace_iso_directSum_partitions a b α β) (fun i hi => ?_) ?_).congr (Iso.refl _) (Iso.refl _)
+  refine (GlobalTheory.T.contracts_of_iso_directSum' _ _ _ _ _ _ _ _ _ _ (irr a lam) i₀ (_root_.GlobalTheory.OneFunctional.iso_directSum_fockOne a b α β) (fun i hi => ?_) ?_).congr (Iso.refl _) (Iso.refl _)
     (GlobalTheory.T.iso_twist_detU_pow_irr_of_weight_shift b β _ _ fun i => ?_)
   · refine ((iso_twist_conj a α _).tprod (Iso.refl _)).invFun_eq_bot ?_
     obtain ⟨e⟩ := GlobalTheory.T.nonempty_invFun_dual_tprod_equiv_intertwiningMap _ _ _ (irr a (addW (GlobalTheory.GLDuality.pad a i) (-α))) (irr a lam)
@@ -183,7 +183,7 @@ theorem contracts_fockOne {a b : ℕ} (hab : a < b) (α β : ℤ) (lam : DomWeig
 
 theorem iso_dual_dual {n : ℕ} (hn : 0 < n) (lam : DomWeight n) : Iso (irr n lam.dual).dual (irr n lam) := by
   have e : lam.dual.dual = lam := domWeight_ext fun i => by simp [DomWeight.dual]
-  have := (GlobalTheory.T.iso_unitaryIrrep_conj_dual n lam.dual).symm.trans (GlobalTheory.T.unitaryIrrep_comp_conj_iso_dual n hn lam.dual)
+  have := (_root_.GlobalTheory.ConjDual.iso_conj_dual n lam.dual).symm.trans (_root_.GlobalTheory.OneFunctional.iso_irr_comp_conjU n hn lam.dual)
   rwa [e] at this
 
 theorem finrank_invFun_branch {n N : ℕ} (h : n + 1 = N) (hn : 0 < n) (lam : DomWeight N) (kap : DomWeight n)
@@ -249,15 +249,15 @@ theorem oneLine : OneLine := by
   intro ι _ _ S P hP
   choose lam hl0 hl1 hl using fun τ => GlobalTheory.T.exists_ganGrossPrasad_row_weights S (P τ) (hP τ)
   choose kap hk0 hk1 hk using fun τ => GlobalTheory.T.exists_ganGrossPrasad_column_weights S (P τ) (hP τ)
-  obtain ⟨p, ps, pe, pk⟩ := GlobalTheory.T.contracts_tensorProduct_chain S.m (fun j => UG ι (S.nR j)) (fun j => Pol ι (S.nR j.castSucc) (S.nR j.succ)) _
+  obtain ⟨p, ps, pe, pk⟩ := _root_.GlobalTheory.OneFunctional.contracts_chain S.m (fun j => UG ι (S.nR j)) (fun j => Pol ι (S.nR j.castSucc) (S.nR j.succ)) _
     (fun j => fock _ _ (fun τ => (P τ).e j - (S.nR j.succ / 2 : ℕ)) (fun τ => -(P τ).e j + (S.nR j.castSucc / 2 : ℕ)))
     (fun j => outer fun τ => irr _ (lam τ j)) fun j =>
-      (Contracts.outer fun τ => contracts_fockOne (nR_lt S j) _ _ _ _ (hl τ j)).congr (GlobalTheory.T.outerTensor_fockOnePlace_iso_unitaryFock ι _ _ _ _) (Iso.refl _) (Iso.refl _)
-  obtain ⟨q, qs, qe, qk⟩ := GlobalTheory.T.contracts_tensorProduct_chain S.m (fun j => UG ι (S.nC j)) (fun j => Pol ι (S.nC j.castSucc) (S.nC j.succ)) _
+      (Contracts.outer fun τ => contracts_fockOne (nR_lt S j) _ _ _ _ (hl τ j)).congr (_root_.GlobalTheory.OneFunctional.FockTensor.outer₂_fockOne_iso ι _ _ _ _) (Iso.refl _) (Iso.refl _)
+  obtain ⟨q, qs, qe, qk⟩ := _root_.GlobalTheory.OneFunctional.contracts_chain S.m (fun j => UG ι (S.nC j)) (fun j => Pol ι (S.nC j.castSucc) (S.nC j.succ)) _
     (fun i => fock _ _ (fun τ => (P τ).c i.rev - ((S.nC i.succ + 1) / 2 : ℕ))
       (fun τ => -(P τ).c i.rev + ((S.nC i.castSucc + 1) / 2 : ℕ)))
     (fun j => outer fun τ => irr _ (kap τ j)) fun j =>
-      (Contracts.outer fun τ => contracts_fockOne (nC_lt S j) _ _ _ _ (hk τ j)).congr (GlobalTheory.T.outerTensor_fockOnePlace_iso_unitaryFock ι _ _ _ _) (Iso.refl _) (Iso.refl _)
+      (Contracts.outer fun τ => contracts_fockOne (nC_lt S j) _ _ _ _ (hk τ j)).congr (_root_.GlobalTheory.OneFunctional.FockTensor.outer₂_fockOne_iso ι _ _ _ _) (Iso.refl _) (Iso.refl _)
   have i1 := (GlobalTheory.T.outer_irr_iso_weylRep_of_pos ι _ (nR_pos S _) (psiWt P) (fun τ => lam τ 0) hl0).symm
   have i2 := ((GlobalTheory.T.outer_irr_iso_weylRep_of_pos ι _ (nC_pos S _) (baseWt P) (fun τ => (kap τ 0).dual) hk0).symm.dual.trans
     (GlobalTheory.T.iso_dual_outer_outer_dual ι _ _ _)).trans (Iso.outer fun τ => iso_dual_dual (nC_pos S _) (kap τ 0))

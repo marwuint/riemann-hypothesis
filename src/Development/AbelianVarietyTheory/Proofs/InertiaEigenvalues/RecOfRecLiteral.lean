@@ -12,12 +12,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeterminantRecCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistRecCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralCharacterRecCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EpsilonFactorRecCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LFactorRecCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConductorRecCompatibleStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeterminantRecCompatible
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistRecCompatible
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralCharacterRecCompatible
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EpsilonFactorRecCompatible
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LFactorRecCompatible
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConductorRecCompatible
 
 open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.Published
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -31,11 +31,11 @@ theorem isRec_of_isRecLit : DepthZeroCuspidalLL → DepthZeroInduction → Langl
   exact
     { bij := L.bij, dim := L.dim, one := L.one, eps := L.eps, cusp := L.cusp, langlands := L.langlands,
       twist := L.twist, central := L.central, dual := L.dual,
-      det := GlobalTheory.T.determinant_rec_compatible hSC E Ω A w h a ha _ rc L
-      prod := GlobalTheory.T.twist_rec_compatible hEx hLM hSC E Ω A w h a ha _ rc L
-      supp := GlobalTheory.T.central_character_rec_compatible hEx hZP hGL hBZ E Ω A w h a ha _ rc L
-      sph := GlobalTheory.T.l_factor_rec_compatible hEx hLM hSC hZP hGL hBZ E Ω A w h a ha _ rc L
-      sat := GlobalTheory.T.epsilon_factor_rec_compatible hEx hLM hSC hZP hGL hBZ E Ω A w h a ha _ rc L
-      depth := GlobalTheory.T.conductor_rec_compatible hDZ hDI hEx hZP hGL hBZ E Ω A w h rc ⟨a, ha, ε, hε, L⟩ }
+      det := _root_.GlobalTheory.lawsLit_det hSC E Ω A w h a ha _ rc L
+      prod := _root_.GlobalTheory.LocLanglands.lawsLit_prod hEx hLM hSC E Ω A w h a ha _ rc L
+      supp := _root_.GlobalTheory.LocLanglands.charPol_eq_prod_support hEx hZP hGL hBZ E Ω A w h a ha _ rc L
+      sph := _root_.GlobalTheory.LocLanglands.isSpherical_iff_unr_of_lawsLit hEx hLM hSC hZP hGL hBZ E Ω A w h a ha _ rc L
+      sat := _root_.GlobalTheory.LocLanglands.SatakeLaw.sat_of_lawsLit hEx hLM hSC hZP hGL hBZ E Ω A w h a ha _ rc L
+      depth := _root_.GlobalTheory.LlcDepth.fixed_ne_bot_iff_isTameWD hDZ hDI hEx hZP hGL hBZ E Ω A w h rc ⟨a, ha, ε, hε, L⟩ }
 
 end GlobalTheory.LocLanglands

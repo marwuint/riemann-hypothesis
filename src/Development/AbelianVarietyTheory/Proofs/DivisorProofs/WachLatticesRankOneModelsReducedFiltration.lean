@@ -3,8 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralBlock
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSlotsGlobal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMulVecEqPow
 import Formalism.PieriBlockIdeals.PieriColumnMinors.HeckeLFunctionIdealEulerProduct
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitRootCyclotomicExpExpansionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableLatticeChainWithLinesMatrixFormStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitRootCyclotomicExpExpansions
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankOfMulEqOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableLatticeChainWithLinesMatrixForm
 
 set_option autoImplicit false
 
@@ -42,8 +43,8 @@ theorem GlobalTheory.WachPlace.wach_lattices : GlobalTheory.Published.BhattSchol
   obtain ⟨_, _, _⟩ := GlobalTheory.FinExtIntegers.dvr_complete LL
   haveI : CharP (ResidueField ↥(OL LL)) l := GlobalTheory.WachMap.charP_residueField_of_irreducible LL
   obtain ⟨x, dim, hx, hd0, hdR, hds⟩ :=
-    GlobalTheory.T.stable_lattice_chain_with_lines_matrix_form _ ↥(OL LL) n t R r ψ ϖ M rs hirr hM0 hMtop hmono hstab hlines
-  obtain ⟨u, c, ζ, jj, hu, hc, hζ, hζm, hjj⟩ := GlobalTheory.T.exists_unit_root_cyclotomicExpExpansions l LL hl hz
+    _root_.GlobalTheory.WachChain.chain_of_lattices _ ↥(OL LL) n t R r ψ ϖ M rs hirr hM0 hMtop hmono hstab hlines
+  obtain ⟨u, c, ζ, jj, hu, hc, hζ, hζm, hjj⟩ := _root_.GlobalTheory.WachExp.exists_locExp_expAt l LL hl hz
   obtain ⟨un, hun⟩ := (unConst l ↥(OL LL) hl (u : ℤ_[l]) c hu).1
   have hψ' : ∀ s, GlobalTheory.ExpFrame.CrysWith
       ((Matrix.GeneralLinearGroup.map (toOm LL)).comp (GlobalTheory.TripleGal.rk1 (ψ s)))

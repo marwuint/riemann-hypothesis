@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFormsEqZeroOfPeriodSubConjCoboundaryStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspidalOfEichlerPeriodSubConjMemCoboundariesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerPeriodCocycleMemCocyclesAndEqStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerShimuraConjCocyclesCoboundariesPeriodSmulStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinrankEichlerShimuraCoboundariesOfGammaLeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFormsEqZeroOfPeriodSubConjCoboundary
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspidalOfEichlerPeriodSubConjMemCoboundaries
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerPeriodCocycleMemCocyclesAndEq
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerShimuraConjCocyclesCoboundariesPeriodSmul
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinrankEichlerShimuraCoboundariesOfGammaLe
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinrankEichlerShimuraCocyclesLeGamma1Statement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddWeightModularCuspDimensionLowerBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PolyDegreeSlashActionRightActionPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddWeightModularCuspDimensionLowerBound
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PolyDegreeSlashActionRightActionProperties
 
 open GlobalTheory.HeckeFamilyMatrices Polynomial UpperHalfPlane
 open scoped MatrixGroups ModularForm
@@ -77,11 +77,11 @@ theorem coboundaries_le_cocycles (Γ : Subgroup SL(2, ℤ)) (w : ℕ) : B1 Γ w 
   have hp : (p : ℂ[X]) ∈ degreeLT ℂ (w + 1) := p.2
   refine ⟨fun γ => ?_, fun γ δ => ?_⟩
   · change slP w (mat γ) p - p ∈ degreeLT ℂ (w + 1)
-    exact Submodule.sub_mem _ (GlobalTheory.T.polyDegreeSlashAction_right_action_properties w (mat γ) 1 p hp).1 hp
+    exact Submodule.sub_mem _ (_root_.GlobalTheory.HeckeFamilyMatrices.SlPAct.polySlash_act w (mat γ) 1 p hp).1 hp
   · change slP w (mat ((γ * δ : Γ) : SL(2, ℤ))) p - p =
       slP w (mat δ) (slP w (mat γ) p - p) + (slP w (mat δ) p - p)
     have hmat : mat ((γ * δ : Γ) : SL(2, ℤ)) = mat γ * mat δ := by simp [mat]
-    rw [hmat, (GlobalTheory.T.polyDegreeSlashAction_right_action_properties w (mat γ) (mat δ) p hp).2.1, map_sub]
+    rw [hmat, (_root_.GlobalTheory.HeckeFamilyMatrices.SlPAct.polySlash_act w (mat γ) (mat δ) p hp).2.1, map_sub]
     abel
 
 theorem integrable_seg {f : ℍ → ℂ} (hf : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f) (n : ℕ) (τ : ℍ) :
@@ -143,11 +143,11 @@ theorem exists_per_add_cj_per : ∀ (N M : ℕ) (Γ : Subgroup SL(2, ℤ)) (k : 
   intro N M Γ k hN hM hΓM hΓN hk hk3 z hz
   have : NeZero M := ⟨hM.ne'⟩
   have hfi : Γ.FiniteIndex := Subgroup.finiteIndex_of_le hΓM
-  obtain ⟨hfdM, hfdC, hcount⟩ := GlobalTheory.T.oddWeight_modular_cusp_dimension_lower_bound N M Γ k hN hM hΓM hΓN hk hk3
+  obtain ⟨hfdM, hfdC, hcount⟩ := _root_.GlobalTheory.OddFrame.dim_lower_bound N M Γ k hN hM hΓM hΓN hk hk3
   obtain ⟨hfdZ, hZ⟩ := GlobalTheory.T.finrank_z1_le_of_le_gamma1_of_finiteIndex N Γ (k - 2) hN hΓN hfi
-  have hB := GlobalTheory.T.finrank_b1_eq_of_gamma_le M Γ (k - 2) hM (by omega) hΓM
+  have hB := _root_.GlobalTheory.HeckeFamilyMatrices.finrank_eichlerShimuraCoboundaries_of_Gamma_le M Γ (k - 2) hM (by omega) hΓM
   have hk2 : 2 ≤ k := by omega
-  have hsm := (GlobalTheory.T.eichlerShimura_conj_cocycles_coboundaries_period_smul Γ (k - 2)).2.2
+  have hsm := (_root_.GlobalTheory.HeckeFamilyMatrices.cj_mem_Z1_cj_mem_B1_per_smul Γ (k - 2)).2.2
   have hnegper : ∀ g : ℍ → ℂ, per Γ (k - 2) (-g) = -per Γ (k - 2) g := by
     intro g
     simpa using hsm g (-1)
@@ -168,15 +168,15 @@ theorem exists_per_add_cj_per : ∀ (N M : ℕ) (Γ : Subgroup SL(2, ℤ)) (k : 
       simp only [FunLike.coe_smul]
       exact hsm _ _)
     (fun r x => by simp only [FunLike.coe_smul, hsm, cj_real_smul, smul_neg])
-    (fun x => (GlobalTheory.T.eichlerPeriodCocycle_mem_cocycles_and_eq Γ k hk2 x).1)
+    (fun x => (_root_.GlobalTheory.HeckeFamilyMatrices.PerCoc.per_mem_Z1_and_eq_slP_eichler_sub Γ k hk2 x).1)
     (fun y => Submodule.neg_mem _
-      ((GlobalTheory.T.eichlerShimura_conj_cocycles_coboundaries_period_smul Γ (k - 2)).1 _ (GlobalTheory.T.eichlerPeriodCocycle_mem_cocycles_and_eq Γ k hk2 (ModularFormClass.modularForm y)).1))
+      ((_root_.GlobalTheory.HeckeFamilyMatrices.cj_mem_Z1_cj_mem_B1_per_smul Γ (k - 2)).1 _ (_root_.GlobalTheory.HeckeFamilyMatrices.PerCoc.per_mem_Z1_and_eq_slP_eichler_sub Γ k hk2 (ModularFormClass.modularForm y)).1))
     (fun x y hxy => by
       have hxy' : per Γ (k - 2) ⇑x - cj (per Γ (k - 2) ⇑y) ∈ B1 Γ (k - 2) := by
         simpa [sub_eq_add_neg] using hxy
-      obtain ⟨f', hf'⟩ := GlobalTheory.T.cuspidal_of_eichlerPeriod_sub_conj_mem_coboundaries N Γ k hN hΓN hfi hk3 x y hxy'
+      obtain ⟨f', hf'⟩ := _root_.GlobalTheory.HeckeFamilyMatrices.cuspidal_of_per_sub_cj_mem N Γ k hN hΓN hfi hk3 x y hxy'
       rw [← hf'] at hxy'
-      obtain ⟨h1, h2⟩ := GlobalTheory.T.cuspForms_eq_zero_of_period_sub_conj_coboundary N Γ k hN hΓN hfi hk3 f' y hxy'
+      obtain ⟨h1, h2⟩ := _root_.GlobalTheory.HeckeFamilyMatrices.Positivity.eq_zero_of_per_sub_cj_mem N Γ k hN hΓN hfi hk3 f' y hxy'
       refine ⟨DFunLike.coe_injective ?_, h2⟩
       rw [← hf', h1]
       simp)

@@ -788,8 +788,4 @@ theorem universal_general_of_frame_sections (D : D7) (HW : HWOf D.loc) (F : FonO
   exact univCore_of _ _ (Formalism.MainNotions.WachCoordinates.Br.isUnit_π₀ hR) (KF.psStable_of _ hR) (hAdm.2.2.1 l K LL hA h5)
     (hFr l K LL hG hA h5) (hSec l K LL hG hA h5) (hGen l K LL hG hA h5) (hLift l K LL hG hA h5)
 
-theorem univNNL (D : D7) (HW : HWOf D.loc) : AtCaseA fun l _ K LL hG =>
-    UnivNNCore ((HW l).W K 1 LL hG) :=
-  fun _ _ _ _ _ _ _ => univNN _
-
 end Formalism.MainNotions.UnusedSlot80

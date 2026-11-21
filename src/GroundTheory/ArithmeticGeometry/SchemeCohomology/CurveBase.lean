@@ -77,13 +77,6 @@ lemma PrimeDivisor.point_ne_genericPoint (Z : PrimeDivisor X) : Z.point ≠ gene
   rw [h, coheight_eq_zero.mpr (fun y _ => genericPoint_specializes y)] at h1
   exact zero_ne_one h1
 
-noncomputable def primeDivisorEquiv (hX : topologicalKrullDim X ≤ 1) :
-    PrimeDivisor X ≃ {x : X // x ≠ genericPoint X} where
-  toFun Z := ⟨Z.point, Z.point_ne_genericPoint⟩
-  invFun x := ⟨x.1, ringKrullDim_stalk_eq_one hX x.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 lemma isClosed_singleton_of_ne (hX : topologicalKrullDim X ≤ 1) {x : X}
     (hx : x ≠ genericPoint X) : IsClosed ({x} : Set X) := by
   rw [← closure_subset_iff_isClosed]

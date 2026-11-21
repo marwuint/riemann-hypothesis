@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.CuspDiscreteDecompositionGL
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.NotIsFinitePartOfBot
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterCommutesLieAction
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SkewHermitianLiePreservesStableStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SkewHermitianLiePreservesStable
 
 open NumberField MeasureTheory Topology Matrix GlobalTheory.AutomorphicL2Unitary GlobalTheory.DiscreteSum GlobalTheory.OpTrace GlobalTheory.UnitaryBC GlobalTheory.DiscSpec GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL
 
@@ -27,7 +27,7 @@ theorem exists_finiteDimensional_zalg_lie_stable : ∀ (E : Type) [Field E] [Num
       simp only [map_mul, Module.End.mul_apply])
     exact hle hψ
   have hS₀L : ∀ X : GlobalTheory.CuspRep.Lie E a, (Matrix.of X)ᴴ = -(Matrix.of X) → ∀ ψ ∈ S₀, lie E a X ψ ∈ S₀ :=
-    fun X hX ψ hψ => GlobalTheory.T.skew_hermitian_lie_preserves_stable E a S₀ hS₀fd hS₀K X hX ψ hψ
+    fun X hX ψ hψ => _root_.GlobalTheory.CompanionTheory.Dblock.lie_skew_mem_of_cpt_stable E a S₀ hS₀fd hS₀K X hX ψ hψ
   have hφS₀ : φ ∈ S₀ := Submodule.subset_span ⟨1, by simp⟩
 
   let Y : Submodule ℂ (Sm E a) := Submodule.span ℂ

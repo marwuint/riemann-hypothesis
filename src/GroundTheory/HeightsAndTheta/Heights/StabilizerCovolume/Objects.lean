@@ -145,15 +145,9 @@ def lineFuller : FullerData II Unit Unit (PBlk 2) Ω (fun _ => Fin 2 → Ω) Gau
   htLat _ _ := twistBundle (segreCoord yLine)
   ht_away _ h := absurd h (Finset.notMem_empty _)
 
-def lineFullerZero : FullerData zeroSystem Unit Unit (PBlk 2) Ω (fun _ => Fin 2 → Ω) Gauss.Em :=
-  lineFuller zeroSystem fun _ _ => le_rfl
-
 theorem lineFuller_n : (lineFuller II hII).n = 1 := rfl
 
 theorem lineFuller_aMu : (lineFuller II hII).mu.aMu = 1 := rfl
-
-theorem lineFuller_cuspU (z : (Σ _ : Unit, Fin 2) → ℂ) : (lineFuller II hII).cuspU z = 0 := by
-  simp [FullerData.cuspU, lineFuller, Real.iSup_of_isEmpty]
 
 end LineFuller
 

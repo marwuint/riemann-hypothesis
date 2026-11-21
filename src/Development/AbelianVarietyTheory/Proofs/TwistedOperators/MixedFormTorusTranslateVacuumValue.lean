@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPairingSingleNe
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergQuotientOpSumVacuumCommensurableSelfDuStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeisenbergInvariantLinearFormIsotropicVacuStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergQuotientOpSumVacuumCommensurableSelfDu
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeisenbergInvariantLinearFormIsotropicVacu
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumOpTransversalStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexIntegralMatricesUnitaryDiagonalTranslate
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CayleyUnitaryTorusInvDetIntegralOrderStatement
@@ -125,7 +125,7 @@ theorem GlobalTheory.SphTheta.mixed_torus_value : ∀ (L : Type) [Field L] [Valu
   have hT : t.1.1 = Matrix.diagonal (fun i => ϖ ^ ex n' k i) := ht.trans (tMat_single ϖ n' k)
   have hΛ' := selfDual_map (n := n) (δ := δ) (ψ := ψ) t hΛ
   have hidx := idx_translate_ne (n := n) hU t _ hT
-  obtain ⟨e, he1, heinv⟩ := GlobalTheory.T.exists_heisenbergInvariant_linearForm_isotropic_vacuum hH _ hΛ s hS.2.1 hS.fixes hS.2.2.2 _ (fun a ha b hb => hH.iso hΛ ha hb)
+  obtain ⟨e, he1, heinv⟩ := _root_.GlobalTheory.SphTheta.exists_linearForm_invariant_isotropic_vacuum hH _ hΛ s hS.2.1 hS.fixes hS.2.2.2 _ (fun a ha b hb => hH.iso hΛ ha hb)
   have hv : Fixes ρ ((intMat L (Fin n') (Fin n)).map (lmulI t.1.1)) (ω (1, t) s) := by
     rintro _ ⟨y, hy, rfl⟩
     have h1 := congrArg (fun F : Module.End ℂ M => F s) (hS.1.norm 1 t y)
@@ -155,7 +155,7 @@ theorem GlobalTheory.SphTheta.mixed_torus_value : ∀ (L : Type) [Field L] [Valu
   obtain ⟨hd, hint, hord⟩ := GlobalTheory.T.cayley_unitaryTorus_inv_det_integral_order L ϖ σ q hU hS.v_two n' k t ht
   have hev := hC e heinv t⁻¹ hd hint
   rw [inv_inv, hord, he1, mul_one] at hev
-  have hco := (GlobalTheory.T.heisenbergQuotientOpSum_vacuum_commensurable_selfDualLattice hH _ hΛ s hS.2.1 hS.fixes hS.2.2.2 _ hΛ' hidx).2 e he1 heinv _ hv
+  have hco := (_root_.GlobalTheory.SphTheta.sumOp_vacuum_lift hH _ hΛ s hS.2.1 hS.fixes hS.2.2.2 _ hΛ' hidx).2 e he1 heinv _ hv
   rw [hco, map_smul, hsum, smul_eq_mul, mul_one]
   simp only [MonoidHom.comp_apply, MonoidHom.inr_apply] at hev
   rw [hev, _root_.zpow_neg, zpow_one, mul_inv, _root_.zpow_neg, zpow_natCast, ← inv_pow, inv_neg, inv_one]

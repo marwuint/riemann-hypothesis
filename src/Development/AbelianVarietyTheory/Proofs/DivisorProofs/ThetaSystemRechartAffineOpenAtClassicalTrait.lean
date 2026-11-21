@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LabRange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaSystemMovedToAffineOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaSystemMovedToAffineOpen
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.ZH
@@ -18,7 +18,7 @@ theorem rechart_at_classical_trait : ∀ (g n : ℕ) (F : SFam g n (zetaAway n))
     simp only [Scheme.Hom.comp_apply] at e1
     exact ⟨_, by simp only [Scheme.Hom.comp_apply]; exact e1.symm⟩
   obtain ⟨U, c₀, hc, fg, frac, hth', hev, ρ', ε', u', hU, hwU, -, hSame, hi₀, hdiag', hpt⟩ :=
-    GlobalTheory.T.exists_thetaSystem_moved_to_affineOpen g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag _ h1
+    _root_.GlobalTheory.Poinc.exists_rechart_affine g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag _ h1
   set w := (gPt p ≫ c.y) (closedPoint (PadicAlgCl p)) with hw
   have hne : (U : Set X₁.M.Z).Nonempty := ⟨w, hwU⟩
   have hle : X₁.M.ringOn U ≤ X₁.M.O w := RatModel.ringOn_le_O hwU

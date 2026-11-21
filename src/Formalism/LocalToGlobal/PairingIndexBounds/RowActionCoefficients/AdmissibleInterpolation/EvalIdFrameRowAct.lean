@@ -72,12 +72,6 @@ theorem colH_eq_iff (hν : Antitone ν) (k : ℕ) (s : Fin n) : colH ν k = s.va
     have : ¬ (s.val + 1 < colH ν k) := fun h' => by have := h2.1 h'; omega
     omega
 
-theorem nuNext_le (hν : Antitone ν) (s : Fin n) : nuNext ν s ≤ ν s := by
-  unfold nuNext
-  split_ifs with h
-  · exact hν (Fin.le_def.2 (by simp))
-  · exact Nat.zero_le _
-
 end Heights
 
 theorem card_fin_filter (c : ℕ) (p : ℕ → Prop) [DecidablePred p] :

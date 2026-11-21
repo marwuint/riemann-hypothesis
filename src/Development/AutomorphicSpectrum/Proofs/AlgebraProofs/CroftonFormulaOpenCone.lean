@@ -1,9 +1,14 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsSigmaCompactConeInter
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HausdorffConeBallMeasureStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BallAverageFibreCountStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AeFibrePointsCardEqDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianMatrixMeasurePosFiniteStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianProjectionConeCoarea
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsScaleStable
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianProjectionBallIndicatorStatement
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XXgzChowMahlerFibreavg
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FibreCountRotationInvariant
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MeasurableFibreCountOverStatement
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.TXgzChowMahlerE0reduce
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AeFibrePointsCardEqDegree
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianMatrixMeasurePosFinite
 set_option maxSynthPendingDepth 1
 open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalTheory.CompanionTheory.Ar.Short.Crofton
 open scoped ENNReal
@@ -27,7 +32,7 @@ theorem setCrofton : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomia
     filter_upwards [hπ] with w hw
     rw [hw]
     exact ENat.natCast_ne_top δ
-  obtain ⟨K, hK0, hKtop, hK⟩ := GlobalTheory.T.hausdorff_cone_ball_measure n (e + 1) (Nat.succ_pos e) hle
+  obtain ⟨K, hK0, hKtop, hK⟩ := _root_.PositivityTheory.Xgn.t_xgz_chow_mahler_fibreavg n (e + 1) (Nat.succ_pos e) hle
   have hball : Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ) (coneBall h W) < ⊤ :=
     ConeBallFinite.full n e h W f hW hf
   have hmass : ∀ B : Set (EuclideanSpace ℂ (Fin n)),
@@ -46,7 +51,7 @@ theorem setCrofton : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomia
       (fun y hy t ht => by
         have := hBs y hy (t : ℂ) (by exact_mod_cast ht.ne')
         simpa using this) (hmass B)
-    have h2 := GlobalTheory.T.ball_average_fibre_count n e (coneSet h W ∩ B)
+    have h2 := _root_.PositivityTheory.Xgn.t_xgz_chow_mahler_e0reduce n e (coneSet h W ∩ B)
       ((isScaleStable_coneSet h hW).inter hBs) (isSigmaCompact_cone_inter h W hB) id measurable_id
     simp only [id] at h2
     rw [← h2, h1]
@@ -57,7 +62,7 @@ theorem setCrofton : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomia
       gaussM (e + 1) n Set.univ * (δ : ℝ≥0∞) := by
     rw [hΓ, ← lintegral_mul_const' _ _ (ENNReal.natCast_ne_top δ)]
     refine lintegral_congr_ae ?_
-    filter_upwards [GlobalTheory.T.ae_fibre_points_card_eq_degree n e δ h W f hW hf hδ] with π hπ
+    filter_upwards [_root_.GlobalTheory.CompanionTheory.Relay.ae_fibre_points_card_eq_degree n e δ h W f hW hf hδ] with π hπ
     have : cntOver (coneSet h W ∩ Set.univ) π (firstCoordVec (e + 1)) = (δ : ℝ≥0∞) := by
       rw [Set.inter_univ, cntOver]
       have : (ptsOver (coneSet h W) π (firstCoordVec (e + 1))).encard = δ := hπ

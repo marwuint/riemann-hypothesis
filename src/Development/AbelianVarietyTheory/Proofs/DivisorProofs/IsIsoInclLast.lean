@@ -1,9 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StalkStepMono
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvMulApplyEqZeroOfMinor
+import Development.AbelianVarietyTheory.Definitions.Divisors.NormSqColGrLineOfOrthogonal
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchubertCellOpenImmersion
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagPointInSomeCell
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEqFlagPtOfIsLocalRing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOfValILeOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockLuDecompositionExists
+
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.FlagZ GlobalTheory.FlagZ.Univ
 open GlobalTheory.QCoh (freeModule)
 
@@ -51,11 +53,5 @@ instance isIso_sub_incl_last (τ : ι) : IsIso (sub ι N τ (Fin.last N)).incl :
     VB.Sub.lift_incl _ _ _⟩⟩
   rw [← cancel_mono (sub ι N τ (Fin.last N)).incl, Category.assoc, VB.Sub.lift_incl, Category.comp_id,
     Category.id_comp]
-
-theorem isIso_incl_last : ∀ (ι : Type) [Fintype ι] (N : ℕ) (τ : ι), IsIso (incl ι N τ (Fin.last N)) := by
-  intro ι _ N τ
-  have h := isIso_sub_incl_last ι N τ
-  unfold incl
-  exact @IsIso.comp_isIso _ _ _ _ _ _ _ h _
 
 end GlobalTheory.FlagZ.Univ

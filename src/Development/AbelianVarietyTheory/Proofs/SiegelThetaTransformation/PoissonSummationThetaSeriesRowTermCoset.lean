@@ -10,10 +10,6 @@ namespace GlobalTheory.SW.FourierJ.Row
 
 variable {ι : Type} [Fintype ι]
 
-omit [Fintype ι] in
-theorem qv_smul (v : ι → ℚ) (r : ℚ) : qv (r • v) = (r : ℂ) • qv v := by
-  ext i; simp [qv]
-
 open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] in

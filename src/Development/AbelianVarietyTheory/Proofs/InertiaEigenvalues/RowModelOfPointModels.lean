@@ -29,12 +29,6 @@ theorem coe_twistRep (ψ : Γ →* Oˣ) (ρ : Γ →* GL (Fin n) O) (g : Γ) :
 
 end Twist
 
-section Lift
-
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (i : N.Loc)
-
-end Lift
-
 section Eig
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} (A : NAut N) (i : N.Loc)
@@ -56,27 +50,6 @@ theorem frobEig_block (θ : A.CG 1) (t : ℕ) (w : PlE H) (b : ℂ) (hu : A.unr 
     simp
 
 end Eig
-
-def RowLift (D : D7) : Prop :=
-  ∀ (i : D.nd.Loc) (σ : D.what₂.FT), D.what₂.isot (D.nd.j i) σ ≠ ⊥ → D.nd.goodRow σ →
-    ∃ (P : D.naut.AV i) (π : D.naut.CG D.R.r), thetaOf D.nd D.naut i σ P ∧ D.naut.csd π ∧ D.naut.ralg π ∧
-      HasParamW D.nd D.naut i σ [⟨D.R.r, π, 1⟩] ∧
-      IsBCV D.nd D.naut i P (twistIso D.nd D.naut ([⟨D.R.r, π, 1⟩] ++ [muPart D.nd D.naut i]) D.naut.etaTinv)
-
-def AllMaximal (D : D7) : Prop :=
-  ∀ (i : D.nd.Loc) (P : D.naut.AV i), ∃ (i' : D.nd.Loc) (P' : D.naut.AV i') (x : D.nd.X i'),
-    D.nd.w i' = D.nd.w i ∧
-    (⟨D.nd.j i', D.nbc.embAV i' P'⟩ : Σ j, D.nbc.AU j) = ⟨D.nd.j i, D.nbc.embAV i P⟩ ∧ D.naut.ptV i' P' = some x
-
-def LocFree (D : D7) : Prop :=
-  ∀ i i' : D.nd.Loc, D.nd.j i' = D.nd.j i → D.nd.w i' = D.nd.w i →
-    D.naut.muC i' = D.naut.muC i ∧ ∀ σ w, IsSplitPl D.host w → D.naut.locW i' σ w = D.naut.locW i σ w
-
-def EtaValues (D : D7) : Prop :=
-  ∀ w : PlE D.host, ∀ a ∈ D.naut.frobEig (D.naut.lpTw (D.naut.locG D.naut.etaT w) (1 / 2)),
-    ∃ y : D.what₂.LL, D.what₂.embLL y = a
-
-def PointModels (D : D7) : Prop := ∀ (i : D.nd.Loc) (x : D.nd.X i), ∃ r, IsHeckeGalois D.nd i x r
 
 variable {D : D7}
 

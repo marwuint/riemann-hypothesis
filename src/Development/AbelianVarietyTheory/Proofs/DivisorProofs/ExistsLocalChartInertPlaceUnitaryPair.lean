@@ -1,14 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InclRMulPtAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertPlaceLocalFieldDataStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertPlaceOrthonormalSelfDualFrameStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertPlaceLocalFieldData
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertPlaceOrthonormalSelfDualFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertPlaceSeesawWScalarFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorHermitianFormInertPointEqLocalFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlacePointSupportedAndSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPointMemTensorLatticeIffIntegralCoordsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceActionOnTensorCoordsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertPlaceUnitaryAdelicHomStatement
-open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorHermitianFormInertPointEqLocalForm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlacePointSupportedAndSurjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPointMemTensorLatticeIffIntegralCoords
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceActionOnTensorCoords
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertPlaceUnitaryAdelicHom
+open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped TensorProduct Matrix
 
 noncomputable section
@@ -28,8 +28,8 @@ theorem exists_chart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
       GlobalTheory.InertBridge.Chart σ B G v ϖ σL q δ JS JT ψL κ ιS ιT := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hTr v w hw _
   have h : w.under (𝓞 F) = v := (InertChart.under_eq_iff hw w).2 rfl
-  obtain ⟨ϖ, σL, q, ψL, hc, hU, hodd, hpi, hpn, hψ⟩ := GlobalTheory.T.exists_inertPlace_localField_data F E σ B hTr.base v w hw h
-  obtain ⟨A, hAf, hA⟩ := GlobalTheory.T.exists_inertPlace_orthonormal_selfDual_frame F E σ B a a' G hTr.base hTr.geo v w hw h σL hc
+  obtain ⟨ϖ, σL, q, ψL, hc, hU, hodd, hpi, hpn, hψ⟩ := _root_.GlobalTheory.InertPsi.exists_field_data F E σ B hTr.base v w hw h
+  obtain ⟨A, hAf, hA⟩ := _root_.GlobalTheory.InertUnitFrame.exists_frame_one F E σ B a a' G hTr.base hTr.geo v w hw h σL hc
   obtain ⟨δ, Bm, hδ1, hδ2, hBf, hB⟩ := GlobalTheory.T.exists_frame_conjTranspose_mul_eq_smul_one F E σ B a a' G hTr.base hTr.geo v w hw h σL hc
   have hσσ : ∀ x, σL (σL x) = x := hU.1
   have hmapσσ : ∀ {k : ℕ} (M : Matrix (Fin k) (Fin k) (w.adicCompletion E)), (M.map σL).map σL = M := fun M =>
@@ -55,8 +55,8 @@ theorem exists_chart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   have hφSu : ∀ g, ((φS g : GL (Fin a') (w.adicCompletion E)) : Matrix (Fin a') (Fin a') (w.adicCompletion E))ᵀ *
       ((φS g : GL (Fin a') (w.adicCompletion E)) : Matrix (Fin a') (Fin a') (w.adicCompletion E)).map σL = 1 := fun g => by
     rw [hφS, hmapσσ]; exact hS g
-  obtain ⟨ιS, hSat, hSmat, hSK⟩ := GlobalTheory.T.exists_inertPlace_unitary_adelicHom F E σ v w hw h σL hc G.V' A 1 (by rw [hA, one_smul]) φS hφSu
-  obtain ⟨ιT, hTat, hTmat, hTK⟩ := GlobalTheory.T.exists_inertPlace_unitary_adelicHom F E σ v w hw h σL hc G.W Bm δ hB (Subgroup.subtype _) (fun g => hS' g)
+  obtain ⟨ιS, hSat, hSmat, hSK⟩ := _root_.GlobalTheory.InertPlace.exists_hom_inert F E σ v w hw h σL hc G.V' A 1 (by rw [hA, one_smul]) φS hφSu
+  obtain ⟨ιT, hTat, hTmat, hTK⟩ := _root_.GlobalTheory.InertPlace.exists_hom_inert F E σ v w hw h σL hc G.W Bm δ hB (Subgroup.subtype _) (fun g => hS' g)
   have hgrp : ∀ {k : ℕ} (P M : GL (Fin k) (w.adicCompletion E)),
       ((P⁻¹ : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) (w.adicCompletion E)) *
         ((P * M * P⁻¹ : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) (w.adicCompletion E)) *
@@ -66,8 +66,8 @@ theorem exists_chart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     group
   refine ⟨ϖ, σL, q, δ, 1, 1, ψL, kap hw h (A : Matrix (Fin a') (Fin a') (w.adicCompletion E))
     (Bm : Matrix (Fin (a + a')) (Fin (a + a')) (w.adicCompletion E)), ιS, ιT, hU, hodd, one_mem _, one_mem _, ?_, ?_,
-    ⟨hδ1, hδ2⟩, hpi, hpn, (GlobalTheory.T.inertPlacePoint_supported_and_surjective F E v w hw h A Bm).1, (GlobalTheory.T.inertPlacePoint_supported_and_surjective F E v w hw h A Bm).2,
-    GlobalTheory.T.inertPoint_mem_tensorLattice_iff_integral_coords F E v w hw h G.V' G.W A Bm hAf hBf, ?_, ?_, fun g => hSat g, fun g => hTat g, ?_, ?_⟩
+    ⟨hδ1, hδ2⟩, hpi, hpn, (_root_.GlobalTheory.InertCoord.kap_at_and_onto F E v w hw h A Bm).1, (_root_.GlobalTheory.InertCoord.kap_at_and_onto F E v w hw h A Bm).2,
+    _root_.GlobalTheory.InertLat.kap_mem_latAtV_iff F E v w hw h G.V' G.W A Bm hAf hBf, ?_, ?_, fun g => hSat g, fun g => hTat g, ?_, ?_⟩
   · intro i j
     simp only [Units.val_one, Matrix.one_apply, eq_comm (a := i)]
     split_ifs <;> simp
@@ -76,10 +76,10 @@ theorem exists_chart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     split_ifs <;> simp
   · intro x y
     show _ = B.ψ (⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) (-1 * hTens (cA σ) (incM F G.V'.J) (incM F G.W.J) _ _))
-    rw [GlobalTheory.T.tensorHermitianForm_inertPoint_eq_localForm F E σ v w hw h σL hc G.V'.J G.W.J _ _ δ hA hB x y]
+    rw [_root_.GlobalTheory.InertTens.hTens_kap_eq_locH F E σ v w hw h σL hc G.V'.J G.W.J _ _ δ hA hB x y]
     exact hψ _
   · intro g k x
-    rw [GlobalTheory.T.inertPlace_action_on_tensorCoords F E σ v w hw h G.V' G.W A Bm (ιS g) (ιT k) (hSat g) (hTat k) x, hSmat, hTmat, hgrp, hgrp, hφS]
+    rw [_root_.GlobalTheory.InertCoordAct.act_kap F E σ v w hw h G.V' G.W A Bm (ιS g) (ιT k) (hSat g) (hTat k) x, hSmat, hTmat, hgrp, hgrp, hφS]
     congr 1
     have key : ∀ M : GL (Fin a') (w.adicCompletion E),
         ((M : Matrix (Fin a') (Fin a') (w.adicCompletion E)).map σL)ᵀ * (M : Matrix (Fin a') (Fin a') (w.adicCompletion E)) = 1 →

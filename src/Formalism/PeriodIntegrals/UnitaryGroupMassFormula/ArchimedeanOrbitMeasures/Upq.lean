@@ -52,38 +52,6 @@ def Upq (p q : ℕ) : Subgroup (GL (Fin p ⊕ Fin q) ℂ) := UJ (starRingEnd ℂ
 
 end Points
 
-section Split
-
-variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
-
-end Split
-
-section Abstract
-
-variable {G : Type} [Group G]
-
-end Abstract
-
-section Tj
-
-variable {L : Type} [Field L]
-
-end Tj
-
-section Coeff
-
-variable (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n]
-
-end Coeff
-
-section More
-
-open NumberField IsDedekindDomain
-
-variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {n : Type} [Fintype n] [DecidableEq n]
-
-end More
-
 open NumberField IsDedekindDomain
 
 end HcS.UG

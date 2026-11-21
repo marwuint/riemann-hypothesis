@@ -5,7 +5,8 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.QatOf
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.DegreeInfimum.PlaceDegreeSums
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.Rationality.KerCorePf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.Rationality.LocalQuotientRank
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsNumberFieldFunctionalBoundedCompExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsNumberFieldFunctionalBoundedCompExtension
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ModelsAt
 
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.FreeQuotientRank
 open Formalism.L2.Pj Formalism.L2.Pj.QAt Formalism.MainNotions Formalism.BasicNotions Formalism.L2.LamCM GlobalTheory.ArcCM
@@ -44,7 +45,7 @@ theorem qbridge_of_numGood : ∀ (D : D7) (large₂ : SizeData₂ D) (B : Weight
       exact h2 (hv K₁ φ ⟨h1, h3⟩))
     (fun K' K₁ _ _ _ _ _ _ e f hf => ⟨e.toLinearMap.comp f, ⟨fun v hv => by
       have := LinearMap.mem_ker.1 (hf.1 hv)
-      simp [LinearMap.mem_ker, this], GlobalTheory.T.isNumberFieldFunctionalBounded_comp_extension _ _ _ _ _ _ _ K' K₁ e f hf.2⟩, fun _ => rfl⟩)
+      simp [LinearMap.mem_ker, this], _root_.GlobalTheory.ArcCM.numGood_comp _ _ _ _ _ _ _ K' K₁ e f hf.2⟩, fun _ => rfl⟩)
   have hrk : WeightFamilies.rhoP B CR Tt cc j ka + Module.finrank B.KO (WeightFamilies.MggK B CR Tt cc j ka) =
       Module.finrank B.KO (B.Cusp j ka) :=
     LocalQuotientRank.rank_QuotMW (K := B.KO) (B.Mlat j ka) hlat.fg hlat.span_eq_top (WeightFamilies.MggK B CR Tt cc j ka)

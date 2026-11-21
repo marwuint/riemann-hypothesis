@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckePrimeDetection
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckePointLawsOfTransport
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyThetaGeneratorTransportStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyThetaGeneratorTransport
 
 set_option autoImplicit false
 
 namespace GlobalTheory.HeckePointLaw
 
 theorem heckePointLaws : GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws :=
-  heckePointLaws_of_transport GlobalTheory.T.heckeIsogeny_thetaGenerator_transport
+  heckePointLaws_of_transport _root_.GlobalTheory.ThetaTransport.thetaTransportLaw
 
 end GlobalTheory.HeckePointLaw

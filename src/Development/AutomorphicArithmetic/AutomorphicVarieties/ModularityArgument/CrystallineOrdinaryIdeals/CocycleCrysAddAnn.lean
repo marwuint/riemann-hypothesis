@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.TriDefs
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.FinrankDualInvariantsScalarRepEqFinrankKerSmulStatement
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SpanCharacterSubCyclotomicEqOfPositiveWeightStatement
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.PositiveScalarRepOfCharacterPositiveWeightStatement
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.CocycleMemCrystallineSupSubrepOfPositiveStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SpanCharacterSubCyclotomicEqOfPositiveWeight
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.PositiveScalarRepOfCharacterPositiveWeight
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.CocycleMemCrystallineSupSubrepOfPositive
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology TensorProduct
 
 noncomputable section
@@ -39,7 +39,7 @@ theorem GlobalTheory.CrysAnn.cocycle_crys_add_ann : LocalPublishedTheorems → �
   set δ : B := if w = 1 then (χ σ : B) - (cycA l l B (φ σ) : B) else 1 with hδ
   have hspan : Ideal.span (Set.range fun g => (χ g : B) - algebraMap E B (((cycA l l E).comp φ g : Eˣ) : E)) =
       Ideal.span {δ} := by
-    have h := GlobalTheory.T.span_character_sub_cyclotomic_eq_of_positive_weight φ hφ π hπ χ hχc w hw hχI σ hσ
+    have h := _root_.GlobalTheory.CharCycIdeal.span_range_sub_cyc φ hφ π hπ χ hχc w hw hχI σ hσ
     have e : ∀ g, algebraMap E B (((cycA l l E).comp φ g : Eˣ) : E) = (cycA l l B (φ g) : B) := fun g =>
       congrArg Units.val (algebraMap_cycA (E := E) (B := B) (φ g))
     simp only [e, h, hδ]
@@ -54,8 +54,8 @@ theorem GlobalTheory.CrysAnn.cocycle_crys_add_ann : LocalPublishedTheorems → �
     Module.Finite.of_injective (I.subtype.restrictScalars ℚ_[l]) Subtype.val_injective
   let ρV : Representation E G B := resCoef E (chRep χ)
   let ρW : Representation E G I := smulRep I χ
-  have hV := GlobalTheory.T.positive_scalar_rep_of_character_positive_weight φ hφ π hπ χ hχc w hw hχI ρV (fun g x => rfl)
-  have hW := GlobalTheory.T.positive_scalar_rep_of_character_positive_weight φ hφ π hπ χ hχc w hw hχI ρW (fun g x => rfl)
+  have hV := _root_.GlobalTheory.PosModule.main φ hφ π hπ χ hχc w hw hχI ρV (fun g x => rfl)
+  have hW := _root_.GlobalTheory.PosModule.main φ hφ π hπ χ hχc w hw hχI ρW (fun g x => rfl)
   have dV := GlobalTheory.T.finrank_dualInvariants_scalarRep_eq_finrank_ker_smul χ ((cycA l l E).comp φ) ρV (fun g x => rfl) δ hspan
   have dW := GlobalTheory.T.finrank_dualInvariants_scalarRep_eq_finrank_ker_smul χ ((cycA l l E).comp φ) ρW (fun g x => rfl) δ hspan
   have kW : LinearMap.ker ((LinearMap.lsmul B I δ).restrictScalars E) = ⊤ := by
@@ -66,7 +66,7 @@ theorem GlobalTheory.CrysAnn.cocycle_crys_add_ann : LocalPublishedTheorems → �
     rw [dV, dW, kW, finrank_top]
     exact (LinearEquiv.refl E I).finrank_eq
   let i : I →ₗ[E] B := I.subtype.restrictScalars E
-  obtain ⟨cW, -, hf⟩ := GlobalTheory.T.cocycle_mem_crystalline_sup_subrep_of_positive hP φ hφ ρW ρV hW.1 hV.1 hW.2 hV.2 i Subtype.val_injective
+  obtain ⟨cW, -, hf⟩ := _root_.GlobalTheory.cocycle_eq_crys_add_sub hP φ hφ ρW ρV hW.1 hV.1 hW.2 hV.2 i Subtype.val_injective
     (fun g x => rfl) hdim c hc
   have hz : w ≠ 1 → ∀ g, (cW g : B) = 0 := by
     intro h1 g

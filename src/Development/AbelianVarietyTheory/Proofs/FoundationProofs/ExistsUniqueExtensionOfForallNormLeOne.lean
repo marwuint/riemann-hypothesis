@@ -90,20 +90,6 @@ theorem exists_padic_point_norm_lt (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈
   rw [norm_mul]
   exact mul_lt_of_lt_one_left (norm_pos_iff.mpr hb') hψm
 
-theorem exists_notMem_dvd_mul_of_forall_norm_le (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈ m)
-    (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m] [IsIntegrallyClosed L]
-    {b c f : A} (hc : c ≠ 0) (hf : f ≠ 0)
-    (h : ∀ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
-      (y : A →+* integralClosure ℤ_[p] K),
-      (maximalIdeal (integralClosure ℤ_[p] K)).comap y = m → y f ≠ 0 →
-        ‖((y b : K) : PadicAlgCl p)‖ ≤ ‖((y c : K) : PadicAlgCl p)‖) :
-    ∃ s ∉ m, c ∣ s * b := by
-  by_contra hn
-  push Not at hn
-  obtain ⟨K, hK, H⟩ := exists_padic_point_norm_lt m hp L hc hf hn
-  obtain ⟨y, h1, h2, h3⟩ := H K le_rfl
-  exact absurd (h K y h1 h2) (not_le.mpr h3)
-
 omit [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A] in
 
 theorem isUnit_val_comp_of_ne_zero {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
@@ -144,20 +130,6 @@ theorem exists_padic_point_one_lt_norm (m : Ideal A) [m.IsMaximal] (hp : (p : A)
   by_contra hn
   exact absurd h3 (not_lt.mpr (mul_le_of_le_one_left (norm_nonneg _) (not_lt.mp hn)))
 
-theorem exists_notMem_mul_eq_of_forall_norm_le_one (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈ m)
-    (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m] [IsIntegrallyClosed L]
-    (ha : a ≠ 0) {φ : S}
-    (h : ∀ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
-      (y : A →+* integralClosure ℤ_[p] K) (hya : y a ≠ 0),
-      (maximalIdeal (integralClosure ℤ_[p] K)).comap y = m →
-        ‖(IsLocalization.Away.lift a (isUnit_val_comp_of_ne_zero y hya) φ : PadicAlgCl p)‖ ≤ 1) :
-    ∃ s ∉ m, ∃ b : A, algebraMap A S s * φ = algebraMap A S b := by
-  by_contra hn
-  push Not at hn
-  obtain ⟨K, hK, H⟩ := exists_padic_point_one_lt_norm m hp L ha one_ne_zero hn
-  obtain ⟨y, h1, h2, -, h3⟩ := H K le_rfl
-  exact absurd (h K y h1 h2) (not_le.mpr h3)
-
 omit [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A] [IsLocalization.Away a S] in
 
 theorem algebraMap_mem_range_atPrime_iff (a : A) [IsLocalization.Away a S] (m : Ideal A) [m.IsPrime]
@@ -188,71 +160,6 @@ theorem algebraMap_mem_range_atPrime_iff (a : A) [IsLocalization.Away a S] (m : 
     rw [map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply] at e
     rw [e, IsScalarTower.algebraMap_apply A L F s, ← map_mul, IsScalarTower.algebraMap_apply A L F b]
     exact congrArg _ (IsLocalization.mk'_spec' L b (⟨s, hs⟩ : m.primeCompl))
-
-theorem mem_range_atPrime_of_forall_norm_le_one (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈ m)
-    (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m] [IsIntegrallyClosed L]
-    (ha : a ≠ 0) (F : Type*) [Field F] [Algebra A F] [FaithfulSMul A F] [Algebra S F]
-    [Algebra L F] [IsScalarTower A S F] [IsScalarTower A L F] {φ : S}
-    (h : ∀ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
-      (y : A →+* integralClosure ℤ_[p] K) (hya : y a ≠ 0),
-      (maximalIdeal (integralClosure ℤ_[p] K)).comap y = m →
-        ‖(IsLocalization.Away.lift a (isUnit_val_comp_of_ne_zero y hya) φ : PadicAlgCl p)‖ ≤ 1) :
-    algebraMap S F φ ∈ (algebraMap L F).range :=
-  (algebraMap_mem_range_atPrime_iff a m L F φ).mpr
-    (exists_notMem_mul_eq_of_forall_norm_le_one m hp L ha h)
-
-omit [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A] in
-
-theorem norm_le_one_of_mul_eq {m : Ideal A} {φ : S} {s b : A} (hs : s ∉ m)
-    (hb : algebraMap A S s * φ = algebraMap A S b)
-    (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
-    (y : A →+* integralClosure ℤ_[p] K) (hya : y a ≠ 0)
-    (hy : (maximalIdeal (integralClosure ℤ_[p] K)).comap y = m) :
-    ‖(IsLocalization.Away.lift a (isUnit_val_comp_of_ne_zero y hya) φ : PadicAlgCl p)‖ ≤ 1 := by
-  set v := IsLocalization.Away.lift (S := S) a (isUnit_val_comp_of_ne_zero y hya)
-  have e : (y s : K) * v φ = (y b : K) := by
-    have := congrArg v hb
-    rw [map_mul, IsLocalization.Away.lift_eq, IsLocalization.Away.lift_eq] at this
-    exact this
-  rw [← hy, Ideal.mem_comap, mem_maximalIdeal_integralClosure_iff, not_lt] at hs
-  have h1 := (mem_integralClosure_padicInt_iff K _).mp (y b).2
-  rw [← e, IntermediateField.coe_mul, norm_mul] at h1
-  exact (le_mul_of_one_le_left (norm_nonneg _) hs).trans h1
-
-theorem mem_range_atPrime_iff_forall_norm_le_one (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈ m)
-    (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m] [IsIntegrallyClosed L]
-    (ha : a ≠ 0) (F : Type*) [Field F] [Algebra A F] [FaithfulSMul A F] [Algebra S F]
-    [Algebra L F] [IsScalarTower A S F] [IsScalarTower A L F] (φ : S) :
-    algebraMap S F φ ∈ (algebraMap L F).range ↔
-      ∀ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
-        (y : A →+* integralClosure ℤ_[p] K) (hya : y a ≠ 0),
-        (maximalIdeal (integralClosure ℤ_[p] K)).comap y = m →
-          ‖(IsLocalization.Away.lift a (isUnit_val_comp_of_ne_zero y hya) φ :
-            PadicAlgCl p)‖ ≤ 1 := by
-  refine ⟨fun h K _ y hya hy => ?_, mem_range_atPrime_of_forall_norm_le_one m hp L ha F⟩
-  obtain ⟨s, hs, b, hb⟩ := (algebraMap_mem_range_atPrime_iff a m L F φ).mp h
-  exact norm_le_one_of_mul_eq hs hb K y hya hy
-
-theorem mem_range_of_forall_norm_le_one [IsIntegrallyClosed A] (ha : a ≠ 0) {φ : S}
-    (h : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
-      [FiniteDimensional ℚ_[p] K] (y : A →+* integralClosure ℤ_[p] K) (hya : y a ≠ 0),
-        ‖(IsLocalization.Away.lift a (isUnit_val_comp_of_ne_zero y hya) φ : PadicAlgCl p)‖ ≤ 1) :
-    φ ∈ (algebraMap A S).range := by
-  let I : Ideal A := (Submodule.span A {(1 : S)}).comap (LinearMap.toSpanSingleton A S φ)
-  have hI : ∀ s, s ∈ I ↔ ∃ b, algebraMap A S s * φ = algebraMap A S b := fun s => by
-    simp [I, Submodule.mem_span_singleton, Algebra.smul_def, eq_comm]
-  have : I = ⊤ := by
-    by_contra hne
-    obtain ⟨m, hm, hle⟩ := Ideal.exists_le_maximal I hne
-    obtain ⟨q, hq, hqm⟩ := exists_prime_natCast_mem_of_finiteType_int m
-    haveI : Fact q.Prime := ⟨hq⟩
-    haveI : IsIntegrallyClosed (Localization.AtPrime m) :=
-      isIntegrallyClosed_of_isLocalization _ _ m.primeCompl_le_nonZeroDivisors
-    obtain ⟨s, hs, hb⟩ := exists_notMem_mul_eq_of_forall_norm_le_one m hqm
-      (Localization.AtPrime m) ha (φ := φ) fun K _ y hya _ => h q K y hya
-    exact hs (hle ((hI s).mpr hb))
-  obtain ⟨b, hb⟩ := (hI 1).mp (this ▸ Submodule.mem_top)
-  exact ⟨b, by simpa using hb.symm⟩
 
 end Affine
 
@@ -427,67 +334,6 @@ theorem exists_germToFunctionField_eq_of_frequently_norm_le_one {U : Z.Opens} [N
   obtain ⟨K, hK, hle, H'⟩ := h p K₀
   obtain ⟨y, hy, h1, h2, h3⟩ := H K hle
   exact absurd (H' y hy (h1 ▸ hxW) (h1 ▸ hxU) h2) (not_le.mpr h3)
-
-theorem exists_germToFunctionField_eq_of_forall_norm_le_one [IsNormalScheme Z] {U : Z.Opens}
-    [Nonempty U] (W : Z.Opens) [Nonempty W] {φ : Γ(Z, U)}
-    (h : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
-      [FiniteDimensional ℚ_[p] K] (y : Spec (.of (integralClosure ℤ_[p] K)) ⟶ Z)
-      (hy : ⊤ ≤ (genericPt(p, K, y)) ⁻¹ᵁ U), y (closedPoint (integralClosure ℤ_[p] K)) ∈ W →
-        ‖(((Scheme.ΓSpecIso (.of K)).hom ((genericPt(p, K, y)).appLE U ⊤ hy φ) : K) :
-          PadicAlgCl p)‖ ≤ 1) :
-    ∃ ψ : Γ(Z, W), Z.germToFunctionField W ψ = Z.germToFunctionField U φ :=
-  exists_germToFunctionField_eq_of_frequently_norm_le_one π U W (fun _ _ _ _ => inferInstance)
-    fun p _ K hK => ⟨K, hK, le_rfl, fun y hy hW _ _ => h p K y hy hW⟩
-
-theorem existsUnique_extension_of_forall_norm_le_one [IsNormalScheme Z] {U : Z.Opens}
-    [Nonempty U] {φ : Γ(Z, U)}
-    (h : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
-      [FiniteDimensional ℚ_[p] K] (y : Spec (.of (integralClosure ℤ_[p] K)) ⟶ Z)
-      (hy : ⊤ ≤ (genericPt(p, K, y)) ⁻¹ᵁ U),
-        ‖(((Scheme.ΓSpecIso (.of K)).hom ((genericPt(p, K, y)).appLE U ⊤ hy φ) : K) :
-          PadicAlgCl p)‖ ≤ 1) :
-    ∃! ψ : Γ(Z, ⊤), Z.presheaf.map (homOfLE le_top).op ψ = φ := by
-  haveI : Nonempty (⊤ : Z.Opens) := ⟨⟨genericPoint Z, trivial⟩⟩
-  obtain ⟨ψ, hψ⟩ := exists_germToFunctionField_eq_of_forall_norm_le_one π ⊤ (φ := φ)
-    fun p _ K _ y hy _ => h p K y hy
-  have e : Z.presheaf.map (homOfLE le_top).op ψ = φ :=
-    Z.germToFunctionField_injective U
-      ((Z.presheaf.germ_res_apply (homOfLE le_top) _ _ ψ).trans hψ)
-  exact ⟨ψ, e, fun ψ' h' => map_injective_of_isIntegral Z (homOfLE le_top) (h'.trans e.symm)⟩
-
-omit π [IsIntegral Z] [Flat π] [LocallyOfFiniteType π] in
-
-theorem regular_of_forall_padic_point_norm_le_one :
-    (∀ (p : ℕ) [Fact p.Prime] (A : Type*) [CommRing A] [IsDomain A] [CharZero A]
-      [Algebra.FiniteType ℤ A] (m : Ideal A) [m.IsMaximal], (p : A) ∈ m →
-      IsIntegrallyClosed (Localization.AtPrime m) → ∀ a : A, a ≠ 0 → ∀ φ : Localization.Away a,
-      (∀ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
-        (y : A →+* integralClosure ℤ_[p] K) (hya : y a ≠ 0),
-        (maximalIdeal (integralClosure ℤ_[p] K)).comap y = m →
-          ‖(IsLocalization.Away.lift a (isUnit_val_comp_of_ne_zero y hya) φ :
-            PadicAlgCl p)‖ ≤ 1) →
-      ∃ s ∉ m, ∃ b : A, algebraMap A _ s * φ = algebraMap A _ b) ∧
-    ∀ (Z : Scheme.{0}) [IsIntegral Z] (π : Z ⟶ Spec (.of ℤ)) [Flat π] [LocallyOfFiniteType π]
-      (U : Z.Opens) [Nonempty U] (φ : Γ(Z, U)),
-      (∀ (p : ℕ) [Fact p.Prime] (x : Z), IsClosed ({x} : Set Z) → (p : Z.residueField x) = 0 →
-        IsIntegrallyClosed (Z.presheaf.stalk x) →
-        (∀ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
-          (y : Spec (.of (integralClosure ℤ_[p] K)) ⟶ Z) (hy : ⊤ ≤ (genericPt(p, K, y)) ⁻¹ᵁ U),
-          y (closedPoint (integralClosure ℤ_[p] K)) = x →
-            ‖(((Scheme.ΓSpecIso (.of K)).hom ((genericPt(p, K, y)).appLE U ⊤ hy φ) : K) :
-              PadicAlgCl p)‖ ≤ 1) →
-        Z.germToFunctionField U φ ∈ (algebraMap (Z.presheaf.stalk x) Z.functionField).range) ∧
-      (IsNormalScheme Z → ∀ (W : Z.Opens) [Nonempty W],
-        (∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
-          [FiniteDimensional ℚ_[p] K] (y : Spec (.of (integralClosure ℤ_[p] K)) ⟶ Z)
-          (hy : ⊤ ≤ (genericPt(p, K, y)) ⁻¹ᵁ U), y (closedPoint (integralClosure ℤ_[p] K)) ∈ W →
-            ‖(((Scheme.ΓSpecIso (.of K)).hom ((genericPt(p, K, y)).appLE U ⊤ hy φ) : K) :
-              PadicAlgCl p)‖ ≤ 1) →
-        ∃ ψ : Γ(Z, W), Z.germToFunctionField W ψ = Z.germToFunctionField U φ) :=
-  ⟨fun _ _ _ _ _ _ _ m _ hp _ _ ha _ h =>
-      exists_notMem_mul_eq_of_forall_norm_le_one m hp (Localization.AtPrime m) ha h,
-    fun _ _ π _ _ _ _ _ => ⟨fun _ _ _ hx hp _ h => mem_range_stalk_of_forall_norm_le_one π hx hp h,
-      fun _ W _ h => exists_germToFunctionField_eq_of_forall_norm_le_one π W h⟩⟩
 
 end Scheme
 

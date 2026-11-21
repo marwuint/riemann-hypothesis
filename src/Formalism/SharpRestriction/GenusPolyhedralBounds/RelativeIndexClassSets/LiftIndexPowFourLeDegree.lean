@@ -71,21 +71,6 @@ theorem sixteen_le_rdE_of_parA {large₂ : SizeData₂ D} {CA : ℝ} (h : ParA l
     exact_mod_cast this
   nlinarith
 
-theorem floor_of_tieC {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR CA : ℝ}
-    (ht : TieC K H Ch Ah Cq Aq C2 A2 CR) (hp : ParA large₂ CA) :
-    D.host.rdE ^ 2 / (4 * (D.R.f : ℝ)) ≤ WeightFamilies.RRv D CR := by
-  have hr : 1 ≤ D.host.rdE := by linarith [sixteen_le_rdE_of_parA hp]
-  obtain ⟨-, -, -, -, -, h4, -⟩ := ht
-  rw [h4]
-  unfold WeightFamilies.RRv
-  have e : D.host.rdE ^ (7 : ℝ) = D.host.rdE ^ (7 : ℕ) := by exact_mod_cast Real.rpow_natCast D.host.rdE 7
-  rw [e]
-  have hf' : (8 : ℝ) ≤ (D.R.f : ℝ) := by exact_mod_cast D.eight_le_f
-  have h27 : D.host.rdE ^ 2 ≤ D.host.rdE ^ 7 := pow_le_pow_right₀ hr (by norm_num)
-  have h0 : 0 ≤ D.host.rdE ^ 2 := by positivity
-  calc D.host.rdE ^ 2 / (4 * (D.R.f : ℝ)) ≤ D.host.rdE ^ 2 := div_le_self h0 (by linarith)
-    _ ≤ D.host.rdE ^ 7 := h27
-
 theorem tie_eqs {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR : ℝ} (ht : TieC K H Ch Ah Cq Aq C2 A2 CR) :
     H.Cc = C2 ∧ H.Ac = A2 ∧ H.CRc = CR :=
   ⟨ht.2.2.1, ht.2.2.2.1, ht.2.2.2.2.1.trans ht.2.2.2.2.2.1.symm⟩
@@ -130,13 +115,6 @@ theorem g0fm3_le_of_dom {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp} {Ch Ah 
     _ ≤ 1250 * zBase large₂ ^ 2 := by linarith
     _ ≤ (1000 * zBase large₂) ^ 2 := by rw [mul_pow]; linarith
     _ ≤ (C2 * zBase large₂ ^ A2) ^ 2 := a4
-
-theorem g0fm3_le_of_list {j : ℕ} {large₂ : SizeData₂ D} {X : PJ D B P j} {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR Bx CT : ℝ}
-    {S : Scal B} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
-    (hH : HypC large₂ X H C2 A2 CR Bx CT S ka wL wF T nP nW h0 nus) (ht : TieC K H Ch Ah Cq Aq C2 A2 CR)
-    (hPg : PageAt large₂ C2 A2) : (g0 D : ℝ) * D.R.f * (D.R.m : ℝ) ^ 3 ≤ WeightFamilies.PPv D large₂ C2 A2 ^ 2 := by
-  obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hd⟩ := hH.2.1
-  exact g0fm3_le_of_dom hPg ht hd
 
 theorem pvs_core4 (A E Cd Q R δ lδ d D T c g₀ G PH Prw Pη Pd PO PD PQ RR L κ F' f r SS PP C k b m δ₂ q DF ρ ρ' : ℝ)
     (hR : 0 ≤ R) (hRδ : R * δ ≤ d) (hδ : 0 ≤ δ) (hlδ0 : 0 ≤ lδ) (hlδ : lδ ≤ Pd) (hD : 1 ≤ D) (hT : 1 ≤ T)

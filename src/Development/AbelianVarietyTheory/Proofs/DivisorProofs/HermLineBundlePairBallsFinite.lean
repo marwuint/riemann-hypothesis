@@ -4,12 +4,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTe
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.VolGe
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairPowSectionMemAndNormPowStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairPowSectionMemAndNormPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsBaseBundlesAndTrivialStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairWithSectionsRepresentsTensorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsHermitianLineBundlePowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsHermitianLineBundleDualStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsHermitianLineBundlePow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsHermitianLineBundleDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallSectionsTwistedPowerEncardEqBallStatement
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
@@ -28,18 +28,18 @@ theorem exists_rep (P : Pair p) (a c : ℤ) : ∃ M : HermLB p, P.Rep a c M := b
   obtain ⟨hL, hA, -⟩ := GlobalTheory.T.represents_base_bundles_and_trivial k X p P
   have h1 : ∃ M : HermLB p, P.Rep a 0 M := by
     obtain ⟨n, rfl | rfl⟩ := Int.eq_nat_or_neg a
-    · have := GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 1 0 P.L n hL
+    · have := _root_.GlobalTheory.VolBr.Pair.rep_pow k X p P 1 0 P.L n hL
       rw [mul_one, mul_zero] at this
       exact ⟨_, this⟩
-    · have := GlobalTheory.T.represents_hermitianLineBundle_dual k X p P _ _ _ (GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 1 0 P.L n hL)
+    · have := _root_.GlobalTheory.VolBr.Pair.rep_dual k X p P _ _ _ (_root_.GlobalTheory.VolBr.Pair.rep_pow k X p P 1 0 P.L n hL)
       rw [mul_one, mul_zero, neg_zero] at this
       exact ⟨_, this⟩
   have h2 : ∃ M : HermLB p, P.Rep 0 c M := by
     obtain ⟨n, rfl | rfl⟩ := Int.eq_nat_or_neg c
-    · have := GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 0 1 P.A n hA
+    · have := _root_.GlobalTheory.VolBr.Pair.rep_pow k X p P 0 1 P.A n hA
       rw [mul_one, mul_zero] at this
       exact ⟨_, this⟩
-    · have := GlobalTheory.T.represents_hermitianLineBundle_dual k X p P _ _ _ (GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 0 1 P.A n hA)
+    · have := _root_.GlobalTheory.VolBr.Pair.rep_dual k X p P _ _ _ (_root_.GlobalTheory.VolBr.Pair.rep_pow k X p P 0 1 P.A n hA)
       rw [mul_one, mul_zero, neg_zero] at this
       exact ⟨_, this⟩
   obtain ⟨M₁, h₁⟩ := h1
@@ -69,7 +69,7 @@ theorem bl_finite : GlobalTheory.Published.ArithHilbertSamuel → ∀ (k : Type)
   have hSI := ((hC.arIso k X p D hX).2 Unit (fun _ => P.A) Φ hΦ).1 ()
   obtain ⟨m, hm⟩ := ((hHS k X p D hX P.A (M.shift (fun _ => R) fun _ => rfl) _ hG.nef hSI).1).exists
   have hA := (GlobalTheory.T.represents_base_bundles_and_trivial k X p P).2.1
-  have hAm := GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 0 1 P.A m hA
+  have hAm := _root_.GlobalTheory.VolBr.Pair.rep_pow k X p P 0 1 P.A m hA
   have hT := GlobalTheory.T.hermPairWithSections_represents_tensor k X p P _ _ _ _ _ _ hAm hM
   have hsm : (((P.A.pow m).tens M).shift (fun _ => R) fun _ => rfl).smallSec.Finite :=
     hm.subset (smallSec_tens_shift _ _ _)
@@ -78,10 +78,10 @@ theorem bl_finite : GlobalTheory.Published.ArithHilbertSamuel → ∀ (k : Type)
     rw [← Set.encard_lt_top_iff, ← e]
     exact hsm.encard_lt_top
   have hs := hG.s_mem
-  obtain ⟨hsH, hsn⟩ := GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow k X p P 0 1 s hs.1 m
+  obtain ⟨hsH, hsn⟩ := _root_.GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow k X p P 0 1 s hs.1 m
   refine (hB.preimage (f := fun f => s ^ m * f) (mul_right_injective₀ (pow_ne_zero m hG.s_ne)).injOn).subset ?_
   intro f hf
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P _ _ _ _ (s ^ m) f hsH hf.1
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.VolBr.NuMul.mul_mem_H_and_nu_mul k X p P _ _ _ _ (s ^ m) f hsH hf.1
   refine ⟨h1, fun σ y => ?_⟩
   rw [h2, hsn]
   have n1 : P.nu 0 1 σ y s ≤ 1 := hs.2 σ y

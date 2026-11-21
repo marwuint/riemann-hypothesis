@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.KeyFormula.GeomIntSelf
 import Development.AbelianVarietyTheory.Statements.FundamentalDomains.AtOfNumberField
 import Development.AbelianVarietyTheory.Statements.ThetaLevelCharacters.MemThetaLevelCharDimZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsPeriodLevelOfSiegelPointStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsPeriodLevelOfSiegelPoint
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsPointOfPerLev
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SiegelFamilyNearbyPeriodsSameComponentStatement
 
@@ -56,7 +56,7 @@ theorem sameComp_of_ptAt : Out.Laws → Out.Laws2 → ThetaUnifAV → GlobalTheo
   have hex : ∀ t : Matrix (Fin h) (Fin h) ℂ, t.IsSymm ∧ (t.map Complex.im).PosDef →
       ∃ r : Sp ℂ ⟶ F.X, r ≫ F.s = spMap σ ∧ PtAt F.univ r t := by
     rintro t ⟨ht, ht'⟩
-    obtain ⟨P, lev, hP⟩ := GlobalTheory.T.exists_periodLevel_of_siegel_point hT hA h k t ht ht'
+    obtain ⟨P, lev, hP⟩ := _root_.GlobalTheory.SiegelObject.exists_perLev_of_siegel hT hA h k t ht ht'
     obtain ⟨r, φ, hr, hsq, hlev⟩ := GlobalTheory.KeyFam.exists_point_of_perLev hL h k K ζ σ F hh hk hodd hζ P t lev hP
     exact ⟨r, hr, P, lev, φ, hP, hsq, hlev⟩
   have key := (convex_siegel h).isPreconnected.induction₂'

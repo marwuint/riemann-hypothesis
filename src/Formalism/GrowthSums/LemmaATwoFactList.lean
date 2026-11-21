@@ -4,8 +4,6 @@ import Formalism.GrowthSums.FactorialBaseGrowth.QuadraticExponentIdentity
 import Formalism.GrowthSums.FactorialBaseGrowth.Segment
 import Formalism.GrowthSums.FactorialBaseGrowth.NextEvenTopHolds
 import Formalism.GrowthSums.FactorialBaseGrowth.LogCoef
-import Formalism.GrowthSums.FactorialBaseGrowth.Length
-import Formalism.GrowthSums.FactorialBaseGrowth.KapPrime
 import Mathlib
 import Formalism.GrowthSums.FactorialBaseGrowth.PathBasisOfCount
 

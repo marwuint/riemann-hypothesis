@@ -135,46 +135,6 @@ theorem integral_chartPartMeasure [CompactSpace X] [T2Space X] [BorelSpace X]
     simp only [NNReal.smul_def, smul_eq_mul, Real.coe_toNNReal']
     ring
 
-private theorem isFiniteMeasure_sum' {α : Type} [MeasurableSpace α] {n : ℕ} (μ : Fin n → Measure α)
-    (h : ∀ j, IsFiniteMeasure (μ j)) : IsFiniteMeasure (∑ j, μ j) := by
-  refine Finset.sum_induction μ (fun ν => IsFiniteMeasure ν) (fun a b ha hb => ?_) ?_
-    (fun j _ => h j)
-  · haveI := ha
-    haveI := hb
-    infer_instance
-  · infer_instance
-
-private theorem mul_max_sub_mul_max_neg_eq_mul (a b : ℝ) : b * max (1 * a) 0 - b * max (-1 * a) 0 = b * a := by
-  rcases le_total 0 a with h | h
-  · rw [max_eq_left (by linarith : (0 : ℝ) ≤ 1 * a), max_eq_right (by linarith : -1 * a ≤ 0)]
-    ring
-  · rw [max_eq_right (by linarith : 1 * a ≤ 0), max_eq_left (by linarith : (0 : ℝ) ≤ -1 * a)]
-    ring
-
-theorem mIntMeasure : MIntMeasureStatement := by
-  intro e X _ _ _ _ _ A Φ hΦ
-  have hP : Nonempty (ChartPartition A) := existsPartition A
-  refine ⟨∑ j, chartPartMeasure A hP.some Φ 1 j, ∑ j, chartPartMeasure A hP.some Φ (-1) j,
-    isFiniteMeasure_sum' _ (fun j => isFiniteMeasure_chartPartMeasure A hP.some Φ hΦ 1 j),
-    isFiniteMeasure_sum' _ (fun j => isFiniteMeasure_chartPartMeasure A hP.some Φ hΦ (-1) j), ?_⟩
-  intro g hg hgi
-  have h1 := fun j => integral_chartPartMeasure A hP.some Φ hΦ 1 j g hg hgi
-  have h2 := fun j => integral_chartPartMeasure A hP.some Φ hΦ (-1) j g hg hgi
-  refine ⟨integrable_finset_sum_measure.2 (fun j _ => (h1 j).1),
-    integrable_finset_sum_measure.2 (fun j _ => (h2 j).1), ?_⟩
-  rw [integral_finset_sum_measure (fun j _ => (h1 j).1),
-    integral_finset_sum_measure (fun j _ => (h2 j).1), ← Finset.sum_sub_distrib]
-  unfold mInt
-  rw [dif_pos hP]
-  unfold integralWith
-  refine Finset.sum_congr rfl (fun j _ => ?_)
-  rw [(h1 j).2, (h2 j).2, ← integral_sub (integrableOn_part A hP.some Φ hΦ 1 j g hg hgi)
-    (integrableOn_part A hP.some Φ hΦ (-1) j g hg hgi)]
-  refine integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)
-  dsimp only
-  rw [mul_max_sub_mul_max_neg_eq_mul]
-  ring
-
 end
 
 end ReciprocityTheory.AnForm.M

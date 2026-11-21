@@ -1,10 +1,21 @@
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PartsGiveDimension
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GoodIdempotentFixesOfOnlySeriesOfLabelActs
+import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsobaricDiscreteSelfDualStrongMultiplicityOne
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisRepBaseChange
+import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeGaloisRepQbarConjugateUnique
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsHeckeGaloisQOfIsHeckeGalois
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeGaloisLocalWeights
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeGaloisLocalWeightsDeRham
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedMuPartInBaseChange
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RowParamOfThetaLiftBaseChangeStatement
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.GoodRCongr
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.SplitBCOfGalIso
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.DistinctAbsIrredConstituents
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TraceOfCharpoly
+
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial
 
 namespace UpperTheory.GalS.Parts
@@ -148,7 +159,7 @@ theorem constituentCondition_of_noRepeatedFactor (D : D7) (i : D.nd.Loc) (r : D.
     rw [← mapRep_comp, ← mapRep_comp, e]
     exact (hr x).2.1
   obtain ⟨K', hF, hA, hFD, hsplit⟩ :=
-    GlobalTheory.T.exists_finiteDimensional_ext_irrSub_absIrr (fun x => mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x)) hss
+    _root_.GlobalTheory.SplitField.exists_finite_ext_absIrrSub (fun x => mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x)) hss
   refine ⟨K', hF, hA, hFD, fun x => ⟨?_, ?_⟩⟩
   · rw [mapRep_comp]; exact hsplit x
   · intro W₁ W₂ h1 h2 hdis hiso
@@ -174,7 +185,7 @@ theorem constituentCondition_of_hodgeJumps (D : D7) (ht : SumRepresentations.tie
     (hon : ∀ x, ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i (mapRep (iotaOQ D.nd D.naut i) (r x)) w ∧
       ∀ τ, InducesW D.nd i τ w → D.naut.jumpsW i (mapRep (iotaOQ D.nd D.naut i) (r x)) τ = D.naut.locAutHodgeTateWeightsLevelZero i τ) :
     DistinctAbsIrredConstituents D.nd i r := by
-  have hr := fun x => GlobalTheory.T.isHeckeGaloisQ_of_isHeckeGalois' D i x (r x) (hg x)
+  have hr := fun x => _root_.GlobalTheory.NRows.isHeckeGaloisQ_of_isHeckeGalois D i x (r x) (hg x)
   refine constituentCondition_of_noRepeatedFactor D i r hr fun x K' _ f f' e' d u σ υ h Pm hd hrel => ?_
   have hQ : mapRep f' (mapRep f (r x)) = mapRep (iotaOQ D.nd D.naut i) (r x) := by rw [← mapRep_comp, e']
   have hrelQ := rel_map' f' h _ σ υ Pm hrel
@@ -196,7 +207,7 @@ theorem constituentCondition_of_hodgeJumps (D : D7) (ht : SumRepresentations.tie
 theorem constituentCondition_at_distinguishedPrime (D : D7) (h5 : SumRepresentations.adm5 D) (i : D.nd.Loc) (k : Fin 2) (hl : D.nd.l i = D.host.g k)
     (hL : GlobalTheory.CoefDuty.Live D.nd i) (r : D.nd.X i → (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i)))
     (hg : GoodR D.nd i r) (hb : ResidualCharpolyIndependent D.nd i r) : DistinctAbsIrredConstituents D.nd i r :=
-  constituentCondition_of_noRepeatedFactor D i r (fun x => GlobalTheory.T.isHeckeGaloisQ_of_isHeckeGalois' D i x (r x) (hg x)) fun x _ _ f f' e' _ _ σ υ h Pm hd hrel =>
+  constituentCondition_of_noRepeatedFactor D i r (fun x => _root_.GlobalTheory.NRows.isHeckeGaloisQ_of_isHeckeGalois D i x (r x) (hg x)) fun x _ _ f f' e' _ _ σ υ h Pm hd hrel =>
     noDouble_of_live D h5 i k hl hL r hg hb x f (by
       have := SumRepresentations.iotaOQ_injective D.nd D.naut i
       rw [← e'] at this
@@ -205,7 +216,7 @@ theorem constituentCondition_at_distinguishedPrime (D : D7) (h5 : SumRepresentat
 theorem lgc (D : D7) (t0 : SumRepresentations.tie0 D) (a2 : AutomorphicGaloisAdmissible D.nd D.naut) (a5 : SumRepresentations.adm5 D) : large₂ D := by
   intro i x P Pa hP hPa ρ hρ
   obtain ⟨ρ0, hc, hs, hw, hl⟩ := isoRep D t0 a2 i P Pa hPa
-  obtain ⟨Pm, hPm⟩ := GlobalTheory.T.heckeGaloisRepQbar_conjugate_unique D a5 i x ρ0 ρ (heckeQ D i x P Pa hP hPa ρ0 hc hs hw) hρ
+  obtain ⟨Pm, hPm⟩ := _root_.GlobalTheory.RepConjUniq.main D a5 i x ρ0 ρ (heckeQ D i x P Pa hP hPa ρ0 hc hs hw) hρ
   obtain ⟨c1, c2, c3⟩ := (t0.2.2.2.2.2 i).2.1 _ ρ0 ρ hc Pm hPm
   refine ⟨fun w h => by rw [c2 w (Or.inl h)]; exact hw w h, fun w h hn => ⟨(c1 w h).2 (hl w h hn).1,
     by rw [c2 w (Or.inr (hl w h hn).1)]; exact (hl w h hn).2.1, fun τ hτ => ?_⟩⟩
@@ -236,7 +247,7 @@ theorem heckeGaloisFamilyProperties_of_admissible (D : D7) (t0 : SumRepresentati
   have exq : ∃ rq : D.nd.X i → (G D.host.E D.nd.Om →* GL (Fin D.R.nV) (Qbar (D.nd.l i))),
       ∀ x, SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x (rq x) := ⟨fun x => (ex i x).choose, fun x => (ex i x).choose_spec⟩
   refine ⟨⟨exq, SumRepresentations.exists_GoodR D.nd D.naut hO i exq⟩, point_determines D a1 a5 ex lg i, fun r hr => ?_⟩
-  have he := fun x => GlobalTheory.T.isHeckeGaloisQ_of_isHeckeGalois' D i x (r x) (hr x)
+  have he := fun x => _root_.GlobalTheory.NRows.isHeckeGaloisQ_of_isHeckeGalois D i x (r x) (hr x)
   have g1 : SumRepresentations.At.G1 D.nd i r := SumRepresentations.charpoly_clause_of_chebotarev D.nd a5.2.2.1 i r hr
   have gb : ResidualCharpolyIndependent D.nd i r := SumRepresentations.residual_charpoly_of_chebotarev_clause D.nd i r g1
   have cu := crys_unram_of_lgc D t0 a1 lg i r he
@@ -251,11 +262,5 @@ theorem heckeGaloisFamilyProperties_of_admissible (D : D7) (t0 : SumRepresentati
     by_cases h0 : D.nd.l i = D.host.g 0
     · exact constituentCondition_at_distinguishedPrime D a5 i 0 h0 hL r hr gb
     · exact constituentCondition_at_distinguishedPrime D a5 i 1 (by by_contra h1; exact hl ⟨h0, h1⟩) hL r hr gb
-
-theorem p41 (D : D7) (t0 : SumRepresentations.tie0 D) (hO : SumRepresentations.hypO D) (a1 : SumRepresentations.adm1 D) (a2 : SumRepresentations.adm2 D) (a5 : SumRepresentations.adm5 D)
-    (a : SumRepresentations.AdmAt D) : SumRepresentations.Conclusion41 D := (fun _ _ _ => (SumRepresentations.proposition_families_iff D a5 hO).2 (GlobalTheory.NRows.Parts.h41 D a)) t0 a1 a2
-
-theorem main : ∀ D : D7, GlobalTheory.NRows.PartsGive D := fun D a t s hk l th g =>
-  ⟨p41 D a.1.1 a.1.2.1 a.1.2.2.1 a.1.2.2.2.1 a.1.2.2.2.2.2.2 a, g, (SumRepresentations.proposition_parameters_iff_reduced D t).2 (GlobalTheory.NRows.Parts.h42 D a s hk l th)⟩
 
 end UpperTheory.GalS.Parts

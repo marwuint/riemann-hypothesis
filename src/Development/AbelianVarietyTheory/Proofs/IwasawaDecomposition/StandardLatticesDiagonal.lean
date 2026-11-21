@@ -293,23 +293,6 @@ theorem hostHyp_frames_ev : Ev fun K => ∀ X : Stages, K.Over X.B.toPre →
     exact ⟨d, h⟩
   exact ⟨hyp, hF, fun i => ⟨fd _ (hWV i).1, fd _ (hWV i).2⟩, hP, hst, hstX, hVf, hXf⟩
 
-theorem frames_by_cases_stdW {D : D7} (hY : ∀ j, Formalism.IndefR.Seed.FrmC.StdLat (D.sp.Y j))
-    (hX : Formalism.IndefR.Seed.FrmC.StdLat D.sp.X') (hV : ∀ j, Formalism.IndefR.Seed.FrmC.StdLat (D.sp.V j))
-    (hW : ∀ i : Fin D.R.m, Formalism.IndefR.Seed.FrmC.StdLat (Wc D i)) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) :
-    ∃ ΛY ΛW βY βW,
-      Formalism.IndefR.Seed.Frm.SDFrames ΛY (Formalism.IndefR.Seed.FrmP.coordL D.sp.X') (fun i => Formalism.IndefR.Seed.FrmP.coordL (Vc D i)) ΛW βY 1
-        (fun _ => 1) βW ∧
-        (Formalism.IndefR.Seed.Frm.FramesExistDiagonal D Pg → Formalism.IndefR.Seed.Frm.NormalFrameConditionsDiagonal Pg βY βW) := by
-  by_cases h : Formalism.IndefR.Seed.Frm.FramesExistDiagonal D Pg
-  · obtain ⟨ΛY, -, -, ΛW, βY, -, -, βW, ⟨h1, -, -, h4⟩, h2⟩ := h
-    exact ⟨ΛY, ΛW, βY, βW, ⟨h1, Formalism.IndefR.Seed.FrmP.isSDFrame_std _ hX 1,
-      fun i => Formalism.IndefR.Seed.FrmP.isSDFrame_std _ (hV _) 1, h4⟩, fun _ => h2⟩
-  · exact ⟨fun j => Formalism.IndefR.Seed.FrmP.coordL _, fun i => Formalism.IndefR.Seed.FrmP.coordL (Wc D i),
-      fun _ => 1, fun _ => 1,
-      ⟨fun j _ => Formalism.IndefR.Seed.FrmP.isSDFrame_std _ (hY _) _, Formalism.IndefR.Seed.FrmP.isSDFrame_std _ hX 1,
-        fun i => Formalism.IndefR.Seed.FrmP.isSDFrame_std _ (hV _) 1, fun i => Formalism.IndefR.Seed.FrmP.isSDFrame_std _ (hW i) 1⟩,
-      fun h' => absurd h' h⟩
-
 end GlobalTheory.Mem.HostFrames
 
 end

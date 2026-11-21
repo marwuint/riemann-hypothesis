@@ -53,12 +53,4 @@ theorem DecoSet.sum_inertNb_smul {M : Type} [AddCommMonoid M] (P : Ideal (𝓞 E
 
 end Fin
 
-section Op
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K]
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
-  {ST SG : Finset (HeightOneSpectrum (𝓞 E))} {S : GSD K}
-
-end Op
-
 end Formalism.L2.Col

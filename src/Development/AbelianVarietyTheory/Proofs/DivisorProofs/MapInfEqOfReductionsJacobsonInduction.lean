@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapComapInfSupPowEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseIdealSheafOfIdealComapSpecMapSupportStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafLeOfLeOnReductionsJacobsonStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapComapInfSupPowEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseIdealSheafOfIdealComapSpecMapSupport
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafLeOfLeOnReductionsJacobson
 
 set_option autoImplicit false
 
@@ -18,12 +18,12 @@ theorem eq_of_sup_baseIdeal_pow_eq {C : Type} [CommRing C] [IsNoetherianRing C] 
     (h : ∀ e : ℕ, a ⊔ baseIdeal p (J ^ (e + 1)) = a' ⊔ baseIdeal p (J ^ (e + 1))) : a = a' := by
   haveI : IsLocallyNoetherian V := LocallyOfFiniteType.isLocallyNoetherian p
   refine le_antisymm ?_ ?_
-  · exact GlobalTheory.T.idealSheaf_le_of_le_on_reductions_jacobson C J hJ V p a a' inferInstance fun e => (h e) ▸ le_sup_left
-  · exact GlobalTheory.T.idealSheaf_le_of_le_on_reductions_jacobson C J hJ V p a' a inferInstance fun e => (h e).symm ▸ le_sup_left
+  · exact _root_.GlobalTheory.FormalAlg.le_of_le_reductions C J hJ V p a a' inferInstance fun e => (h e) ▸ le_sup_left
+  · exact _root_.GlobalTheory.FormalAlg.le_of_le_reductions C J hJ V p a' a inferInstance fun e => (h e).symm ▸ le_sup_left
 
 theorem map_inf_eq_of_reductions : ∀ (C : Type) [CommRing C] [IsNoetherianRing C] (J : Ideal C), J ≤ Ideal.jacobson ⊥ → ∀ (W' : Scheme.{0}) (π : W' ⟶ Spec (CommRingCat.of C)) (U : (Spec (CommRingCat.of C)).Opens), IsProper π → IsIso (π ∣_ U) → ∀ (K τ : (Spec (CommRingCat.of C)).IdealSheafData), (∀ x, x ∉ K.support → x ∈ U) → ∃ k₀ : ℕ, ∀ k, k₀ ≤ k → ∀ (T' : W'.IdealSheafData) (T'' : (Spec (CommRingCat.of C)).IdealSheafData), (∀ e : ℕ, T' ⊔ baseIdeal π (J ^ (e + 1)) = (τ ⊔ baseIdeal (𝟙 _) (J ^ (e + 1))).comap π) → (∀ e : ℕ, T'' ⊔ baseIdeal (𝟙 _) (J ^ (e + 1)) = τ ⊔ baseIdeal (𝟙 _) (J ^ (e + 1)) ⊔ K ^ k) → T'.map π ⊓ T'' = τ := by
   intro C _ _ J hJ W' π U hπ hU K τ hK
-  obtain ⟨k₀, hk₀⟩ := GlobalTheory.T.exists_map_comap_inf_sup_pow_eq (Spec (CommRingCat.of C)) W' π U inferInstance hU K τ hK
+  obtain ⟨k₀, hk₀⟩ := _root_.GlobalTheory.FormalAlg.map_comap_inf_sup_pow_eq (Spec (CommRingCat.of C)) W' π U inferInstance hU K τ hK
   refine ⟨k₀, fun k hk T' T'' h' h'' => ?_⟩
   have e' : T' = τ.comap π := by
     refine eq_of_sup_baseIdeal_pow_eq hJ π _ _ fun e => ?_

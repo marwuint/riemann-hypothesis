@@ -133,15 +133,6 @@ theorem reE_rfl : reE (E := E) (rfl : N = N) = LinearEquiv.refl E (Fin N → E) 
   ext x i
   simp [reE]
 
-theorem map_reE_symm {n : ℕ} (h : N = n) (h' : n = N) (Λ : Submodule (𝓞 E) (Fin N → E)) :
-    (Λ.map (((reE (E := E) h : (Fin N → E) ≃ₗ[E] (Fin n → E)) : (Fin N → E) →ₗ[E] (Fin n → E)).restrictScalars (𝓞 E))).map
-      (((reE (E := E) h' : (Fin n → E) ≃ₗ[E] (Fin N → E)) : (Fin n → E) →ₗ[E] (Fin N → E)).restrictScalars (𝓞 E)) = Λ := by
-  subst h
-  have e : ∀ h'' : N = N, reE (E := E) h'' = LinearEquiv.refl E (Fin N → E) := fun _ => reE_rfl
-  rw [e]
-  ext x
-  simp
-
 theorem map_reE_rfl (h : N = N) (Λ : Submodule (𝓞 E) (Fin N → E)) :
     Λ.map (((reE (E := E) h : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E)).restrictScalars (𝓞 E)) = Λ := by
   have e : reE (E := E) h = LinearEquiv.refl E (Fin N → E) := reE_rfl

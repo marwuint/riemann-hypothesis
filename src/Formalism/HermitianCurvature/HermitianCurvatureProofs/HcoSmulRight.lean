@@ -95,10 +95,6 @@ theorem cvec_smul (x : ℂ) (c : Co r) : cvec k z' ν' (x • c) = x • cvec k 
   simp only [cvec, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, mul_smul,
     ← Finset.smul_sum, smul_add]
 
-theorem cvec_sub (c d : Co r) : cvec k z' ν' (c - d) = cvec k z' ν' c - cvec k z' ν' d := by
-  simp only [cvec, Prod.fst_sub, Prod.snd_sub, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]
-  abel
-
 theorem cvec_sum {ι : Type*} (s : Finset ι) (f : ι → Co r) :
     cvec k z' ν' (∑ i ∈ s, f i) = ∑ i ∈ s, cvec k z' ν' (f i) := by
   classical

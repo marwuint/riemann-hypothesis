@@ -100,21 +100,6 @@ theorem rhoCont_of (hd : TruncatedSeriesCountingIdentities.SemisimpleDecompositi
   change (b1 * b2) * rO D.nd i (rN i r ρ π) π g (Fin.castAdd D.R.t a) (Fin.castAdd D.R.t b) = _
   rw [(normAt_rN i r ρ π).2.2 g a b]
 
-theorem admitted_items_normalized_self (hA : AdmR i r ρ π) : AdmR i (rN i r ρ π) ρ π :=
-  admitted_items_normalized i r ρ π (rhoCont_of i r ρ π hA.2.2.2.2.2.2.2.2.2.2.2.1 hA.2.2.2.2.2.2.2.2.2.1) hA
-
-theorem theorem_n5_of_normalized_items (dc : TruncatedSeriesCountingIdentities.Decl D i) (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ)
-    (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
-    (H : AdmR i (rN i r ρ π) ρ π → LargeLevelLemmas.GlobalIndexTheoremPlaces i (rN i r ρ π) ρ π dc lenRow e' cB)
-    (hA : AdmR i r ρ π) : LargeLevelLemmas.GlobalIndexTheoremPlaces i r ρ π dc lenRow e' cB :=
-  globalIndexTheoremPlaces_of_rN i r ρ π dc lenRow e' cB (rhoCont_of i r ρ π hA.2.2.2.2.2.2.2.2.2.2.2.1 hA.2.2.2.2.2.2.2.2.2.1) H hA
-
-theorem theorem_n5_normalized_of_adm (dc : TruncatedSeriesCountingIdentities.Decl D i) (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ)
-    (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
-    (H : AdmR i (rN i r ρ π) ρ π → LargeLevelLemmas.GlobalIndexTheoremPlaces i (rN i r ρ π) ρ π dc lenRow e' cB)
-    (hA : LargeLevelLemmas.admitted i r ρ π) : LargeLevelLemmas.GlobalIndexTheoremPlaces i r ρ π dc lenRow e' cB :=
-  theorem_n5_of_normalized_items i r ρ π dc lenRow e' cB H (admitted_items_of_adm i r ρ π hA)
-
 end Rec
 
 end Formalism.MainNotions.N.K.Norm

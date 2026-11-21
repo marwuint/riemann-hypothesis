@@ -215,9 +215,5 @@ theorem cechConerve_levelwise : LevelP := by
   intro n
   exact Q n.len
 
-theorem CechSq_full : CechSq :=
-  CechSq_of integral_surjective_ring_cech_augmentation_etale_eqv BaseChange_of LevelPush_of cechConerve_levelwise (Level0_of LevelPush_of)
-
 end LateralTheory.E.CechSqPf
 
-theorem LateralTheory.E.CechSqPf2.CechSq_of : LateralTheory.E.DescIntPf.CechSq := LateralTheory.E.CechSqPf.CechSq_full

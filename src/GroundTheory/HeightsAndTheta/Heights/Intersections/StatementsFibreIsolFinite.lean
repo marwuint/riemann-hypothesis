@@ -19,10 +19,4 @@ def FibreIsolFinite.Statement : Prop :=
           SameOrbit z'' z') →
         ∃ t ∈ T, SameOrbit z' t
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

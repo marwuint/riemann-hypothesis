@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import Formalism.RealPlaceAnalysis.StatementE
 import Formalism.RealPlaceAnalysis.StatementKT
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QuantumMinorRowExpansionEigenFunctionalStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QuantumMinorRowExpansionEigenFunctional
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
 
@@ -32,7 +32,7 @@ theorem quantumMinor_row_removal_chain (M Wp : Type) [AddCommGroup M] [Module �
       have h1 := ha x; have h2 := ha y; rw [hxy] at h1; exact Fin.ext (by omega)
     have hbi : Function.Injective b := fun x y hxy => by
       have h1 := hb x; have h2 := hb y; rw [hxy] at h1; exact Fin.ext (by omega)
-    obtain ⟨e, he, hl⟩ := GlobalTheory.T.quantumMinor_rowExpansion_eigenFunctional M Wp _ _ E l a b
+    obtain ⟨e, he, hl⟩ := _root_.GlobalTheory.qminor_row_step_under_functional M Wp _ _ E l a b
       (fun j : Fin (r + k) => (⟨r + j.val, by omega⟩ : Fin (2 * r + k + 1)))
       (fun j : Fin (r + k) => (⟨if j.val < k then r + j.val else r + j.val + 1,
             by split_ifs <;> omega⟩ : Fin (2 * r + k + 1)))
@@ -103,7 +103,7 @@ theorem quantumMinor_row_removal_chain (M Wp : Type) [AddCommGroup M] [Module �
       (fun j : Fin (t + 1) => (⟨i + 1 + j.val, by omega⟩ : Fin (2 * r + k + 1)))
       (fun j : Fin (t + 1) => (⟨i + 1 + 1 + j.val, by omega⟩ : Fin (2 * r + k + 1)))
       (by omega) (by omega) (fun _ => rfl) (fun _ => rfl)
-    obtain ⟨e, he, hl⟩ := GlobalTheory.T.quantumMinor_rowExpansion_eigenFunctional M Wp _ _ E l a b
+    obtain ⟨e, he, hl⟩ := _root_.GlobalTheory.qminor_row_step_under_functional M Wp _ _ E l a b
       (fun j : Fin (t + 1) => (⟨i + 1 + j.val, by omega⟩ : Fin (2 * r + k + 1)))
       (fun j : Fin (t + 1) => (⟨i + 1 + 1 + j.val, by omega⟩ : Fin (2 * r + k + 1)))
       ⟨i, by omega⟩ ⟨i + 1, by omega⟩ (p ⟨i, by omega⟩ ⟨i + 1, by omega⟩) hE hai hbi

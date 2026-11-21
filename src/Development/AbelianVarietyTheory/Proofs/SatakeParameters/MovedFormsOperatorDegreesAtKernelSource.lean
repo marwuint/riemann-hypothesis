@@ -2,16 +2,19 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RealAt
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RkLe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EquivFrameBTheta
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GmOfMapEqActC
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteValuesAtPointIffRealisesInStdCoordsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteValuesAtPointIffRealisesInStdCoords
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PolDYGoodDeg
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChangedFrameRationalUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NaturalActionInverseFrameUndoesMoveStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChangedFrameRationalUnitary
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NaturalActionInverseFrameUndoesMove
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OperatorPolynomialOfRealisingValueStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PosTieAt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ComparedFormLevelZeroRealisesComplexPolyStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ComparedFormNormalisedValuesLatticeTupleStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteModelStageWeightsEqChainWeightsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormDerivationGeneratorsEqOneAtSiteStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteModelStageWeightsEqChainWeights
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormDerivationGeneratorsEqOneAtSite
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Reframe
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.LocSpBot
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Formalism.MainNotions Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F Formalism.L2.KerInert Formalism.UG Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.L2.KerInert.SecondKernelProjection Formalism.L2.KerInert.QuadraticBaseChangeGL3 Formalism.L2.KerInert.SecondKernelDifference Formalism.L2.KerInert.SecondKernelHermitian Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.KerInert.SecondKernelInstances Formalism.L2.KerInert.SecondKernelSeries GlobalTheory.TwV GlobalTheory.TwV.DelB GlobalTheory.TwV.DelA
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -26,11 +29,11 @@ theorem moved_forms_at_source : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w h
   intro d j hjm hne hN
   have hj : j ≤ D.R.m := hjm.le
   have h : ((sysS H X std).Pj j).m + 1 = D.R.N j := rkS _ _ hN
-  have hWt := GlobalTheory.T.kernelSite_modelStageWeights_eq_chainWeights S j hjm hne
+  have hWt := _root_.GlobalTheory.TwV.DelA.wtOK_sites S j hjm hne
   have hPT := (posTie_at S hPos ι hι).1
   have hdg : ∀ τ, (t.O u μ).dgen τ ≠ 0 := by
     intro τ h0
-    have h1 := GlobalTheory.T.norm_derivation_generators_eq_one_at_site S ι hι τ
+    have h1 := _root_.GlobalTheory.TwV.DelB.dgen_unit S ι hι τ
     rw [h0, map_zero, norm_zero] at h1
     exact zero_ne_one h1
   have hV : ∀ (j : ℕ) (hj : j ≤ D.R.m) (h : ((sysS H X std).Pj j).m + 1 = D.R.N j) (La : (sysS H X std).Lt j),
@@ -50,7 +53,7 @@ theorem moved_forms_at_source : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w h
     intro La hLa x Q hQ
     have hL := S.Y.Rep_lat j La hLa
     obtain ⟨V, hVm, hVr⟩ := hV j hj h La hL x
-    have hFr := GlobalTheory.T.changedFrame_rational_unitary S d j hj h La
+    have hFr := _root_.GlobalTheory.TwV.DelA.changed_frame_unitary S d j hj h La
     have hmap := gmOf_map_eq_actC (sysS H X std) D (hT.gat_pos u w hg) ℂ_[D.what₂.places.resChar w] ι (J.rho std) hPT d.fd2 j La h
       (mM d j hj La) hFr.1 hFr.2.1 _ V hVm
     have hφ : ∀ y, (ex.tw.fm u μ).emb j x (clsAt X H j La.1 La.2) y =
@@ -62,7 +65,7 @@ theorem moved_forms_at_source : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w h
       rw [← h2]
       simp only [ColumnChain.sharp, mulFun, LinearMap.coe_mk, AddHom.coe_mk]
       field_simp
-    have hR := (GlobalTheory.T.kernelSite_valuesAtPoint_iff_realisesInStdCoords S d j hj h La ((D.chTw u μ).sSharp j) ((ex.tw.fm u μ).emb j x) (Q (clsAt X H j La.1 La.2)) hφ V).1 hVr
+    have hR := (_root_.GlobalTheory.TwV.DelA.realAt_iff_realises S d j hj h La ((D.chTw u μ).sSharp j) ((ex.tw.fm u μ).emb j x) (Q (clsAt X H j La.1 La.2)) hφ V).1 hVr
     have hw : (fun τ => (D.chTw u μ).sSharp j τ - cTw D j) = wT (sysS H X std) D (hT.gat_pos u w hg) j :=
       funext fun τ => (hWt.sh τ).symm
     rw [hw] at hR
@@ -71,7 +74,7 @@ theorem moved_forms_at_source : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w h
   refine ⟨fun La hLa x => ?_, fun La hLa x Q hQ n => ?_, fun La hLa x Q hQ α hα => ?_⟩
   · obtain ⟨Q, hQ⟩ := J.sharp j hjm x
     obtain ⟨h1, h2, -⟩ := core La hLa x Q hQ
-    exact ⟨GlobalTheory.T.naturalAction_inverseFrame_undoes_move (sysS H X std) D (hT.gat_pos u w hg) d.fd2 j La _, h1, h2⟩
+    exact ⟨_root_.GlobalTheory.TwV.DelA.natAct_glInv_gmOf (sysS H X std) D (hT.gat_pos u w hg) d.fd2 j La _, h1, h2⟩
   · rw [(core La hLa x Q hQ).2.2 n]
     simp only [sO, dif_pos hj]
   · exact polDY_goodDeg (sysS H X std) D (hT.gat_pos u w hg) j hN (nuT D u j) hWt.nu _ (hQ.1 _) _ α hα

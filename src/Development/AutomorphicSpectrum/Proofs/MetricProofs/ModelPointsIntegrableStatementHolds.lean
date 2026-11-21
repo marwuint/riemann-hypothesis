@@ -2,8 +2,14 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsModelPtsIntegrable
 import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicSectionOfPotentialStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicSectionOfPotential
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
+import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormula
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPtsBddConv
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StLemmaETailMass
 
 noncomputable section
 
@@ -110,7 +116,7 @@ end Transfer
 
 theorem modelPtsIntegrable : ModelPtsIntegrable.Statement := by
   intro K _ ι _ P e M n ψ L c N E v g hV hL hN hψ hcov hE hv hg Ψ hΨ
-  obtain ⟨Φ₀, hΦ₀, hloc⟩ := GlobalTheory.T.local_holomorphic_section_of_potential K ι P e M L hL
+  obtain ⟨Φ₀, hΦ₀, hloc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.exists_potential_of_smoothHerm K ι P e M L hL
   have hΦ : IsPotential M.atlas (Φ₀.rsmul c) := isPotentialRsmul M.atlas c Φ₀ hΦ₀
   have hli : ∀ j, LocallyIntegrableOn (fun y => v ((M.atlas.chart j).symm y))
       (M.atlas.chart j).target := fun j =>
@@ -124,7 +130,7 @@ theorem modelPtsIntegrable : ModelPtsIntegrable.Statement := by
   have hMI : MIntegrable M.atlas (fun _ : Fin e => Φ₀.rsmul c) v := fun j Q hQ hQc =>
     (hint j Q hQ hQc).mul_continuousOn
       ((locDensCont M.atlas _ (fun _ => hΦ) j).mono hQ) hQc
-  refine ((GlobalTheory.T.mixed_integral_model_formula K ι P e M Ψ Set.univ E N (fun _ => c) (fun _ => L)
+  refine ((_root_.GlobalTheory.CompanionTheory.Ar.Giv.push_chart_integrals K ι P e M Ψ Set.univ E N (fun _ => c) (fun _ => L)
     (fun _ => Φ₀.rsmul c) g v hV hΨ isOpen_univ hnull hN ?_ ?_ ?_ ?_).2.2 hMI).1
   · exact fun _ x j => (hΦ.1 x j).mono fun y hy => ⟨hy.1, hy.2.1⟩
   · intro _ x y₀ hy₀

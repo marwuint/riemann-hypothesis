@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonHomOfMulComp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRescalePsiW0
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PsiInOfIsPowDeg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorTransferThroughTensorIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDataMumfordSideGeneratorValuesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorTransferThroughTensorIso
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDataMumfordSideGeneratorValues
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -17,8 +17,8 @@ namespace GlobalTheory.TensPsi
 theorem tensorData_symmetric_pullback_and_psi_eq_tau : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D' : DegData R I) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (A₀ : Matrix (Fin r) (Fin r) ℤ) (O : Type) [CommRing O] [StarRing O] [Module O D'.toPre.X] (o : D'.toPre.OAct O) (w₀ : O), o.onB.act w₀ = GlobalTheory.TensAct.matAct T A₀ → (∀ y : D'.toPre.X, w₀ • y = GlobalTheory.TensAct.latAct T A₀ y) → W = (W + W.transpose) * A₀ → TraceFormTwistIso D'.toPre o w₀ := by
   intro R _ _ I D D' r W T A₀ O _ _ _ o w₀ hact hlat hW
   have := o.onB.hom w₀
-  obtain ⟨t, ht, vt⟩ := GlobalTheory.T.tensorData_mumfordSide_generator_values R I D D'.toPre W T A₀ (o.onB.act w₀) hact hW
-  obtain ⟨u₀, hu₀, vu₀⟩ := GlobalTheory.T.exists_generator_transfer_through_tensorIso R D.toPre D'.toPre W T
+  obtain ⟨t, ht, vt⟩ := _root_.GlobalTheory.MumSide.mside R I D D'.toPre W T A₀ (o.onB.act w₀) hact hW
+  obtain ⟨u₀, hu₀, vu₀⟩ := _root_.GlobalTheory.TensGen.exists_gen_transfer R D.toPre D'.toPre W T
     (![(padd D'.toPre.P.A (𝟙 _) (o.onB.act w₀)).left, 𝟙 D'.toPre.P.A.left, (o.onB.act w₀).left,
       (toUnit D'.toPre.P.A ≫ η[D'.toPre.P.A]).left] : Fin 4 → (D'.toPre.P.A.left ⟶ D'.toPre.P.A.left))
     ![1, -2, -1, 2] t ht

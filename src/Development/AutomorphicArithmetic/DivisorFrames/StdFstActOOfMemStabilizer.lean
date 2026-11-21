@@ -146,7 +146,7 @@ theorem UpperTheory.stdFst_actO_of_mem_stabilizer :
   have hκ := st_int ((Formalism.L2.DIV.St βS).inv_mem hg)
   have einv : (βS⁻¹ * (Lev.finE S g)⁻¹ * βS : GL (Fin S.rank) (Lev.EAf D)) = (βS⁻¹ * Lev.finE S g * βS)⁻¹ := by group
   rw [einv] at hκ
-  have hfr := GlobalTheory.T.frameMatrix_weilPairAction_left_inv D S T βS βT g x
+  have hfr := _root_.GlobalTheory.ChainOnto.FrameAct.frMapO_actO_left D S T βS βT g x
   generalize (βS⁻¹ * Lev.finE S g * βS : GL (Fin S.rank) (Lev.EAf D)) = γ at hy hκ hκ' hfr
   have hkk : (γ⁻¹).val * γ.val = 1 := Units.inv_mul γ
   unfold GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst

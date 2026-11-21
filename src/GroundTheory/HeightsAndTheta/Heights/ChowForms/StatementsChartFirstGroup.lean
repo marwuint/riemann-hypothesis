@@ -20,10 +20,6 @@ def ChartFirstGroupPrime.Statement : Prop :=
     IsProjPrime I → IsChowForm I (e + 1) f →
       Prime (map (algebraMap (MvPolynomial (Fin e × Fin n) F) (Localization.AtPrime p)) (firstGroup f))
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights

@@ -34,15 +34,15 @@ theorem cellMult_lt_of_star_new : ∀ (O : Type) [CommRing O] [IsDedekindDomain 
   classical
 
   obtain ⟨m₀, δ, hδ, hliδ, -, hγδ⟩ := hSL.2 X hX m γ hγ
-  obtain ⟨δt, hδt, hliδt, hprimδt, hδδt⟩ := GlobalTheory.T.exists_rescale_primitive_linearIndependent_cell bar φ δ hδ hliδ
+  obtain ⟨δt, hδt, hliδt, hprimδt, hδδt⟩ := _root_.GlobalTheory.PolFan.SmoothEnd.exists_rescale_prim bar φ δ hδ hliδ
   have hγδt : ∀ k, InRCone δt (γ k) := fun k => hδδt _ (hγδ k)
 
-  obtain ⟨h₂, h₂0, h₂γ, h₂cut⟩ := GlobalTheory.T.exists_linForm_cut_face_of_cell_in_cone bar φ δt γ hδt hγ hγδt
+  obtain ⟨h₂, h₂0, h₂γ, h₂cut⟩ := _root_.GlobalTheory.PolFan.CellFace.exists_face_form bar φ δt γ hδt hγ hγδt
   have hcutγ : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → h β = 0 →
       InRCone (fun k => γ (s k)) β :=
     fun β _ _ hβ hβ0 => GlobalTheory.T.inRealCone_generators_of_linForm_eq_zero γ h s β hcut.1 (fun i hi => (hcut.2 i).1 hi) hβ hβ0
   have hhs : ∀ k, h (γ (s k)) = 0 := fun k => (hcut.2 (s k)).2 ⟨k, rfl⟩
-  obtain ⟨h₃, h₃0, h₃γs, h₃cut⟩ := GlobalTheory.T.exists_linForm_cut_face_of_face_of_cone bar δt γ (fun k => γ (s k)) h₂ h hδt.mem hδt.nonneg
+  obtain ⟨h₃, h₃0, h₃γs, h₃cut⟩ := _root_.GlobalTheory.PolFan.exists_linForm_cut_face_of_face bar δt γ (fun k => γ (s k)) h₂ h hδt.mem hδt.nonneg
     (fun k => inRCone_self γ (s k)) h₂0 h₂γ h₂cut hcut.1 hhs hcutγ
 
   set I : Finset (Fin m₀) := Finset.univ.filter (fun i => h₃ (δt i) = 0) with hI
@@ -87,7 +87,7 @@ theorem cellMult_lt_of_star_new : ∀ (O : Type) [CommRing O] [IsDedekindDomain 
     ⟨fun i => (ρs i : LinearMap.BilinForm ℤ X), by simp [ρs, βs], fun k => by simp [ρs, δs], fun i => rfl⟩
   have hjeI : j ∉ Set.range eI := fun hh => hjI ((heI j).1 hh)
   have hliρ : LinearIndependent ℤ ρ := by
-    have h1 := GlobalTheory.T.linearIndependent_cons_balancedForm_of_coord_ne_zero bar δs βs c j eI hliδs hcβ hcj.ne' hjeI
+    have h1 := _root_.GlobalTheory.PolFan.linearIndependent_cons_of_coord_ne_zero bar δs βs c j eI hliδs hcβ hcj.ne' hjeI
     have h2 := h1.map' (balForms bar X).subtype (Submodule.ker_subtype _)
     have : ρ = (balForms bar X).subtype ∘ ρs := funext hρv
     rw [this]; exact h2
@@ -116,8 +116,8 @@ theorem cellMult_lt_of_star_new : ∀ (O : Type) [CommRing O] [IsDedekindDomain 
       exact StarNewCell.inRCone_trans (fun l => inRCone_cons_succ β₀ (fun j => γ (s j)) l)
         (h₃cut _ (hδt.mem _) (hδt.nonneg _) (inRCone_self δt _) ((heI _).1 ⟨k, rfl⟩))
 
-  obtain ⟨h₁, h₁0, h₁γ', h₁cut⟩ := GlobalTheory.T.exists_linForm_cut_face_of_cell_in_cone bar ψ' _ γ' hτ hγ' hγ'τ
-  obtain ⟨s', hs', -⟩ := GlobalTheory.T.eq_subfamily_of_face_simplicialCone_primitive bar ρ γ' hρmem hγ'.mem h₁ hliρ hliγ' hρprim hprimγ'
+  obtain ⟨h₁, h₁0, h₁γ', h₁cut⟩ := _root_.GlobalTheory.PolFan.CellFace.exists_face_form bar ψ' _ γ' hτ hγ' hγ'τ
+  obtain ⟨s', hs', -⟩ := _root_.GlobalTheory.PolFan.eq_subfamily_of_face bar ρ γ' hρmem hγ'.mem h₁ hliρ hliγ' hρprim hprimγ'
     (fun k => StarNewCell.inRCone_trans hτρ (hγ'τ k)) (fun i => val_nonneg h₁ h₁0 (hρτ i)) h₁γ'
     (fun i hi => h₁cut (ρ i) (hρmem i) (hρnn i) (hρτ i) hi)
 
@@ -130,7 +130,7 @@ theorem cellMult_lt_of_star_new : ∀ (O : Type) [CommRing O] [IsDedekindDomain 
     rw [Finset.range_orderEmbOfFin]
     simp [J]
   set ρ's : Fin (m₀ - 1 + 1) → balForms bar X := Fin.cons βs (fun k => δs (eJ k)) with hρ'sdef
-  have hliρ' : LinearIndependent ℤ ρ's := GlobalTheory.T.linearIndependent_cons_balancedForm_of_coord_ne_zero bar δs βs c j eJ hliδs hcβ hcj.ne' (fun hh => (heJ j).1 hh rfl)
+  have hliρ' : LinearIndependent ℤ ρ's := _root_.GlobalTheory.PolFan.linearIndependent_cons_of_coord_ne_zero bar δs βs c j eJ hliδs hcβ hcj.ne' (fun hh => (heJ j).1 hh rfl)
   have hmultρ' : (cellMult bar ρ's : ℝ) = c j * cellMult bar δs :=
     GlobalTheory.T.cell_multiplicity_positive_cone bar δs βs c j eJ hliδs hcβ hcj heJ (GlobalTheory.T.balancedFormCellMultiplicity_pos bar δs)
   have hrange : Set.range (fun i => (⟨γ' i, hγ'.mem i⟩ : balForms bar X)) ⊆ Set.range ρ's := by
@@ -146,7 +146,7 @@ theorem cellMult_lt_of_star_new : ∀ (O : Type) [CommRing O] [IsDedekindDomain 
       simp [ρ's, δs]
       rw [e, hl, hρs, hr]
   have hdvd : cellMult bar (fun i => (⟨γ' i, hγ'.mem i⟩ : balForms bar X)) ∣ cellMult bar ρ's :=
-    GlobalTheory.T.natCard_torsion_quot_span_dvd_of_range_subset' (balForms bar X) ρ's _ hliρ' hrange
+    _root_.GlobalTheory.natCard_torsion_quot_span_dvd_of_range_subset (balForms bar X) ρ's _ hliρ' hrange
   have hle := Nat.le_of_dvd (GlobalTheory.T.balancedFormCellMultiplicity_pos bar ρ's) hdvd
   have hδpos := GlobalTheory.T.balancedFormCellMultiplicity_pos bar δs
   have hlt : (cellMult bar ρ's : ℝ) < cellMult bar δs := by

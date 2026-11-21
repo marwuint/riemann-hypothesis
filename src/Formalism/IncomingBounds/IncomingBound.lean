@@ -39,11 +39,6 @@ def IsOptDual (D sig : ZMod d → ℝ) : Prop :=
 
 end LP
 
-def Constants : Prop :=
-  ∀ l : ℕ, 2 ≤ l →
-    HasSum (fun k : ℕ => ((l : ℝ) ^ (2 * k + 1))⁻¹) (gam l) ∧
-      rho l + gam l = 1 / ((l : ℝ) - 1)
-
 def ValGain : Prop :=
   ∀ l : ℕ, l.Prime →
     (∀ n : ℕ, 1 ≤ n → 1 / ((l : ℝ) - 1) ≤ (n : ℝ) / ((l : ℝ) - 1) - (padicValNat l n : ℝ)) ∧
@@ -60,12 +55,6 @@ def LemmaFa : Prop :=
       IsGreatest {t : ℝ | ∃ sig, IsDual l d sig ∧ t = ∑ s : ZMod d, D s * (gam l - sig s)}
         (Fnum l d D)
 
-def LemmaFb : Prop :=
-  ∀ (l d : ℕ) [NeZero d], 3 ≤ l → 2 ≤ d → Even d →
-    (∀ (c : ℝ) (D : ZMod d → ℝ), 0 ≤ c → 0 ≤ D → Fnum l d (c • D) = c * Fnum l d D) ∧
-      ConvexOn ℝ {D : ZMod d → ℝ | 0 ≤ D} (Fnum l d) ∧
-      ∀ D : ZMod d → ℝ, 0 ≤ D → rho l * (∑ s : ZMod d, D s) ≤ Fnum l d D
-
 def LemmaFc : Prop :=
   ∀ (l d : ℕ) [NeZero d], 3 ≤ l → 2 ≤ d → Even d → ∀ D E sig : ZMod d → ℝ, 0 ≤ D → 0 ≤ E →
     IsOptDual l d D sig →
@@ -80,21 +69,11 @@ def LemmaFd : Prop :=
         D s ≤ ∑ i ∈ oddLevels d, D (s - (i : ZMod d)) / (l : ℝ) ^ i ∧
         (0 < D s → ∃ s' : ZMod d, D s / gam l ≤ D s')
 
-def LemmaFe : Prop :=
-  ∀ (l d : ℕ) [NeZero d], 3 ≤ l → 2 ≤ d → Even d → ∀ D : ZMod d → ℝ, 0 ≤ D →
-    (∀ s s' : ZMod d, D s' ≤ (l : ℝ) * D s) → Fnum l d D = rho l * (∑ s : ZMod d, D s)
-
 def IncomingBound : Prop :=
   ∀ (l d : ℕ) [NeZero d], 3 ≤ l → 2 ≤ d → Even d → ∀ D sig : ZMod d → ℝ, 0 ≤ D →
     IsOptDual l d D sig →
       (∑ s ∈ Finset.univ.filter (fun s : ZMod d => 2 / (l : ℝ) ≤ sig s), D s) ≤
         (∑ s : ZMod d, D s) / l
-
-def TopRadius : Prop :=
-  ∀ (l : ℕ), 2 ≤ l → ∀ (A : ℝ) (cap : ℕ → ℝ) (J : ℕ), 0 ≤ A → (∀ j, 0 ≤ cap j) → Odd J →
-    ∃ eps : ℝ, ((l : ℝ) ^ J)⁻¹ ≤ eps ∧
-      A * eps + (∑ j ∈ (Finset.range J).filter Odd, cap j * max (1 - (l : ℝ) ^ j * eps) 0) ≤
-        (∑ j ∈ (Finset.range J).filter Odd, min (cap j) (A / (l : ℝ) ^ j)) + A / (l : ℝ) ^ J
 
 section TopData
 
@@ -117,34 +96,6 @@ def topTerm (s : ZMod d) : ℝ :=
     else if Odd e ∧ dTop d TT s < (e : ℕ∞) then (nu1 s : ℝ) / (l : ℝ) ^ e
     else 0
 
-open Classical in
-
-def baseTerm (s : ZMod d) : ℝ :=
-  ∑' e : ℕ,
-    if Odd e ∧ ¬ (∃ e0 : ℕ, dTop d TT s = (e0 : ℕ∞) ∧ s + (e : ZMod d) = s + (e0 : ZMod d)) then
-      max (((nu1 s : ℝ) - nu2 s) / (l : ℝ) ^ e - capL d TT nu1 nu2 (s + (e : ZMod d))) 0
-    else 0
-
-def ThmABound (N0 N1 a : ℕ) (CA vK : ℝ) : Prop :=
-  (∑ s ∈ TT, (topTerm l d TT nu1 nu2 s - gam l * (Wcap l d TT nu1 nu2 size s : ℝ))) +
-      Fnum l d (fun s => (Dl d TT nu1 size s : ℝ)) -
-      CA * ((d : ℝ) * N0 * N1 * (Real.logb l a + 1)) ≤ vK
-
 end TopData
-
-def CorFromThmA : Prop :=
-  ∃ C : ℝ, ∀ (l d : ℕ) [NeZero d], 3 ≤ l → 2 ≤ d → Even d →
-    ∀ (TT : Finset (ZMod d)) (nu1 nu2 size : ZMod d → ℕ) (N0 N1 a k : ℕ) (c CA vK : ℝ)
-      (w E : ZMod d → ℝ),
-      (∀ s, nu2 s ≤ nu1 s) → (∀ s, nu1 s + nu2 s ≤ size s) → 3 ≤ k →
-      (∀ s, 0 < w s) → (∀ s, 0 ≤ E s ∧ E s ≤ 4 * w s) →
-      (∀ s, s ∉ TT → (Dl d TT nu1 size s : ℝ) = ((k : ℝ) - 1) * w s + E s) →
-      (∀ s, s ∈ TT → (Dl d TT nu1 size s : ℝ) = ((k : ℝ) - 1) * w s - 2 * w s + E s) →
-      (∀ s, (capL d TT nu1 nu2 s : ℝ) ≤ w s + c) →
-      ThmABound l d TT nu1 nu2 size N0 N1 a CA vK →
-        (∑ s ∈ TT, baseTerm l d TT nu1 nu2 s) + Fnum l d (fun s => ((k : ℝ) - 1) * w s) -
-            C * (∑ s : ZMod d, w s) / l -
-            gam l * (∑ s ∈ TT, (Wcap l d TT nu1 nu2 size s : ℝ)) -
-            CA * ((d : ℝ) * N0 * N1 * (Real.logb l a + 1)) ≤ vK
 
 end Formalism.IncomingBounds

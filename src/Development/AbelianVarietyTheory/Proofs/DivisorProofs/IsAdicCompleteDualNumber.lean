@@ -48,31 +48,6 @@ theorem isAdicComplete_dualNumber {O : Type} [CommRing O] (p : ℕ)
     simp only [SModEq.sub_mem, mem_pow_iff] at ha hb
     exact ⟨TrivSqZeroExt.inl a + TrivSqZeroExt.inr b, fun n => ⟨by simpa using ha n, by simpa using hb n⟩⟩
 
-theorem finrank_omega_of_param {O : Type} [CommRing O] [Nontrivial O] {H : Over (Sp O)} [GrpObj H] {n : ℕ}
-    (e : (Fin n → O) ≃ LieG H) (hadd : ∀ c d, (e (c + d)).1 = (e c).1 * (e d).1)
-    (hsmul : ∀ (a : O) c, (e (a • c)).1 = ptMap (dualScale a) ≫ (e c).1) :
-    Module.finrank O (omega H) = n := by
-  let F : omega H ≃ₗ[O] Module.Dual O (Fin n → O) :=
-    { toFun := fun f =>
-        { toFun := fun c => f.1 (e c)
-          map_add' := fun c d => (congrArg f.1 (Subtype.ext (hadd c d))).trans
-            (omega_lieAdd f (e c) (e d))
-          map_smul' := fun a c => (congrArg f.1 (Subtype.ext (hsmul a c))).trans
-            (omega_lieScale f a (e c)) }
-      map_add' := fun _ _ => rfl
-      map_smul' := fun _ _ => rfl
-      invFun := fun l => ⟨fun x => l (e.symm x), fun x y h => by
-          obtain ⟨c, rfl⟩ := e.surjective x
-          obtain ⟨d, rfl⟩ := e.surjective y
-          rw [show (⟨_, h⟩ : LieG H) = e (c + d) from Subtype.ext (hadd c d).symm]
-          simp, fun a x h => by
-          obtain ⟨c, rfl⟩ := e.surjective x
-          rw [show (⟨_, h⟩ : LieG H) = e (a • c) from Subtype.ext (hsmul a c).symm]
-          simp⟩
-      left_inv := fun f => Subtype.ext (funext fun x => congrArg f.1 (e.apply_symm_apply x))
-      right_inv := fun l => LinearMap.ext fun c => congrArg l (e.symm_apply_apply c) }
-  rw [F.finrank_eq, ← (Pi.basisFun O (Fin n)).toDualEquiv.finrank_eq, Module.finrank_fin_fun]
-
 theorem exists_param {O : Type} [CommRing O] [IsLocalRing O] (H : Over (Sp O)) [GrpObj H] {n : ℕ}
     (hH : SmoothOfRelativeDimension n H.hom) :
     ∃ e : (Fin n → O) ≃ LieG H, (∀ c d, (e (c + d)).1 = (e c).1 * (e d).1) ∧
@@ -187,12 +162,5 @@ theorem exists_lieEquiv [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p 
     fun x => Subtype.ext ((hl _).unique (hf _) (hg x))⟩, fun x y z h => ?_, fun a x z h => ?_⟩
   · exact (hl _).unique (hf z) (h ▸ (hf x).mul (hf y))
   · exact (hl _).unique (hf z) (h ▸ (hf x).comp (dualScale a))
-
-theorem finrank_omega_Gt : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), Module.finrank O (omega P.Gt) = P.A.g := by
-  intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P
-  haveI := P.isLocalRing
-  obtain ⟨e, h₁, h₂⟩ := exists_param P.G (smoothDim_model P)
-  obtain ⟨e', h₃, h₄⟩ := exists_lieEquiv P
-  exact finrank_omega_of_param (e.trans e') (fun c d => h₃ _ _ _ (h₁ c d)) fun a c => h₄ a _ _ (h₂ a c)
 
 end GlobalTheory.HTLat.OmegaRank

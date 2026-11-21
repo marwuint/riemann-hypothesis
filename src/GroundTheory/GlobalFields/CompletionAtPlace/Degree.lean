@@ -102,17 +102,4 @@ theorem finrank_adicCompletion :
 
 end Degree
 
-section Check
-
-open AdicLiesOver
-
-variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
-  (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal]
-
-example : Module.finrank (v.adicCompletion K) (w.adicCompletion L) =
-    w.asIdeal.ramificationIdx (𝓞 K) * w.asIdeal.inertiaDeg (𝓞 K) :=
-  finrank_adicCompletion v w
-
-end Check
-
 end GroundTheory.Global

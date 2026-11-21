@@ -1,14 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GramMapPairsContinuousDensityNearDiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreFamilyHermitianQuadraticFormAtUnitPropsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreMeasureInvariantSupportedOrbitNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryStabilizerAnisotropicVectorEquivComplemenStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarMeasureGramGL2ActionTensorStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.VectorTupleProductMeasureTwoSidedActionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GramMapPairsContinuousDensityNearDiagonal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreFamilyHermitianQuadraticFormAtUnitProps
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreMeasureInvariantSupportedOrbitNeZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryStabilizerAnisotropicVectorEquivComplemen
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarMeasureGramGL2ActionTensor
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.VectorTupleProductMeasureTwoSidedAction
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousDistribHaarCharUnits
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TensorNiceRingArtinianReducedOpenUnits
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwoStepPairMeasureFiniteOnCompactsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwoStepPairMeasureFiniteOnCompacts
 
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal
@@ -168,8 +168,8 @@ end Alg
 
 theorem twoStep_swap_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E) (x₁ : Fin 1 → Fin (M + 1) → E) (a₁ : F) (B₁ : Matrix (Fin (M + 1)) (Fin M) E) (J₁' : Matrix (Fin M) (Fin M) E) (x₂ : Fin 1 → Fin (M + 1) → E) (a₂ : F) (B₂ : Matrix (Fin (M + 1)) (Fin M) E) (J₂' : Matrix (Fin M) (Fin M) E) (y₁ y₂ : Fin 1 → Fin M → E) (b₁ b₂ : F) (γ : GL (Fin 2) E), StepData σ J x₁ a₁ B₁ J₁' → StepData σ J x₂ a₂ B₂ J₂' → b₁ ≠ 0 → b₂ ≠ 0 → hE σ J₁' (y₁ 0) (y₁ 0) = algebraMap F E b₁ → hE σ J₂' (y₂ 0) (y₂ 0) = algebraMap F E b₂ → ![x₂ 0, B₂.mulVec (y₂ 0)] = lrAct 1 (γ : Matrix (Fin 2) (Fin 2) E) ![x₁ 0, B₁.mulVec (y₁ 0)] → ∃ u : E, u ≠ 0 ∧ ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R], Nice R → ∀ (lam : Measure (R ⊗[F] E)) (ν : Measure R) (m₁ m₂ : Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m₁' m₂' : Measure (Fin 1 → Fin M → R ⊗[F] E)) (N₁ N₂ : Measure (Fin 2 → Fin (M + 1) → R ⊗[F] E)), lam.IsAddHaarMeasure → ν.IsAddHaarMeasure → FibAt R σ J (tupMeas lam 1 (M + 1)) ν (algebraMap F R a₁) m₁ → FibAt R σ J₁' (tupMeas lam 1 M) ν (algebraMap F R b₁) m₁' → FibAt R σ J (tupMeas lam 1 (M + 1)) ν (algebraMap F R a₂) m₂ → FibAt R σ J₂' (tupMeas lam 1 M) ν (algebraMap F R b₂) m₂' → TwoStep R σ J x₁ B₁ m₁ m₁' N₁ → TwoStep R σ J x₂ B₂ m₂ m₂' N₂ → N₂ = modu (R ⊗[F] E) (inclR R u) • N₁.map (lrAct 1 ((γ : Matrix (Fin 2) (Fin 2) E).map (inclR R))) := by
   intro F E _ _ _ _ _ σ hσ M J x₁ a₁ B₁ J₁' x₂ a₂ B₂ J₂' y₁ y₂ b₁ b₂ γ hS₁ hS₂ hb₁ hb₂ hy₁ hy₂ hγ
-  have hP₁ := (GlobalTheory.T.unitary_stabilizer_anisotropic_vector_equiv_complement F E σ hσ (AF F) M J x₁ a₁ B₁ J₁' hS₁).1
-  have hP₂ := (GlobalTheory.T.unitary_stabilizer_anisotropic_vector_equiv_complement F E σ hσ (AF F) M J x₂ a₂ B₂ J₂' hS₂).1
+  have hP₁ := (_root_.GlobalTheory.FrameStep.frameStep F E σ hσ (AF F) M J x₁ a₁ B₁ J₁' hS₁).1
+  have hP₂ := (_root_.GlobalTheory.FrameStep.frameStep F E σ hσ (AF F) M J x₂ a₂ B₂ J₂' hS₂).1
   have hd : (γ : Matrix (Fin 2) (Fin 2) E).det ≠ 0 := (Matrix.isUnits_det_units γ).ne_zero
   set d := (γ : Matrix (Fin 2) (Fin 2) E).det with hdd
   have hw₁ : (consCol x₁ B₁).det / algebraMap F E a₁ ≠ 0 :=
@@ -202,26 +202,26 @@ theorem twoStep_swap_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E
     rw [← mp, ← mp, ← mm (pow_ne_zero _ hd) hw₂, ← mm (pow_ne_zero _ hd) hw₁,
       ← mm hu (by positivity), hue]
   have fin₁ : IsFiniteMeasureOnCompacts N₁ :=
-    GlobalTheory.T.twoStep_pair_measure_finite_on_compacts F E σ hσ R hR M J x₁ a₁ B₁ J₁' m₁ m₁' N₁ hS₁
-      (GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hσ R hR _ J x₁ a₁ lam ν m₁ hS₁.1 hS₁.2.1 hS₁.2.2.1 hlam hν f₁).2.1
-      (GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ R hR _ J _ ν _ m₁ hν (unF hS₁.2.1) f₁).2.1
-      (GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ R hR _ J₁' _ ν _ m₁' hν (unF hb₁) f₁').2.1
-      (GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hσ R hR _ J₁' y₁ b₁ lam ν m₁' hS₁.2.2.2.2.2 hb₁ hy₁ hlam hν f₁').1 t₁
+    _root_.GlobalTheory.GaugeEx.twoStep_finite_on_compacts F E σ hσ R hR M J x₁ a₁ B₁ J₁' m₁ m₁' N₁ hS₁
+      (_root_.GlobalTheory.GaugeEx.FibProp.fibre_invariant_orbit_ne_zero F E σ hσ R hR _ J x₁ a₁ lam ν m₁ hS₁.1 hS₁.2.1 hS₁.2.2.1 hlam hν f₁).2.1
+      (_root_.GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ R hR _ J _ ν _ m₁ hν (unF hS₁.2.1) f₁).2.1
+      (_root_.GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ R hR _ J₁' _ ν _ m₁' hν (unF hb₁) f₁').2.1
+      (_root_.GlobalTheory.GaugeEx.FibProp.fibre_invariant_orbit_ne_zero F E σ hσ R hR _ J₁' y₁ b₁ lam ν m₁' hS₁.2.2.2.2.2 hb₁ hy₁ hlam hν f₁').1 t₁
   have fin₂ : IsFiniteMeasureOnCompacts N₂ :=
-    GlobalTheory.T.twoStep_pair_measure_finite_on_compacts F E σ hσ R hR M J x₂ a₂ B₂ J₂' m₂ m₂' N₂ hS₂
-      (GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hσ R hR _ J x₂ a₂ lam ν m₂ hS₂.1 hS₂.2.1 hS₂.2.2.1 hlam hν f₂).2.1
-      (GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ R hR _ J _ ν _ m₂ hν (unF hS₂.2.1) f₂).2.1
-      (GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ R hR _ J₂' _ ν _ m₂' hν (unF hb₂) f₂').2.1
-      (GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hσ R hR _ J₂' y₂ b₂ lam ν m₂' hS₂.2.2.2.2.2 hb₂ hy₂ hlam hν f₂').1 t₂
+    _root_.GlobalTheory.GaugeEx.twoStep_finite_on_compacts F E σ hσ R hR M J x₂ a₂ B₂ J₂' m₂ m₂' N₂ hS₂
+      (_root_.GlobalTheory.GaugeEx.FibProp.fibre_invariant_orbit_ne_zero F E σ hσ R hR _ J x₂ a₂ lam ν m₂ hS₂.1 hS₂.2.1 hS₂.2.2.1 hlam hν f₂).2.1
+      (_root_.GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ R hR _ J _ ν _ m₂ hν (unF hS₂.2.1) f₂).2.1
+      (_root_.GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ R hR _ J₂' _ ν _ m₂' hν (unF hb₂) f₂').2.1
+      (_root_.GlobalTheory.GaugeEx.FibProp.fibre_invariant_orbit_ne_zero F E σ hσ R hR _ J₂' y₂ b₂ lam ν m₂' hS₂.2.2.2.2.2 hb₂ hy₂ hlam hν f₂').1 t₂
   let Γ : (Fin 2 → Fin (M + 1) → R ⊗[F] E) ≃ₜ (Fin 2 → Fin (M + 1) → R ⊗[F] E) :=
     lrHomeo ((γ : Matrix (Fin 2) (Fin 2) E).map (inclR R))
       (((γ⁻¹ : GL (Fin 2) E) : Matrix (Fin 2) (Fin 2) E).map (inclR R))
       (by rw [← Matrix.map_mul, Units.mul_inv]; simp) (by rw [← Matrix.map_mul, Units.inv_mul]; simp)
   change N₂ = modu (R ⊗[F] E) (inclR R u) • N₁.map Γ
-  obtain ⟨Φ, hΦ, hτ⟩ := GlobalTheory.T.haar_measure_gram_GL2_action_tensor F E σ hσ R lam ν γ hlam hν
+  obtain ⟨Φ, hΦ, hτ⟩ := _root_.GlobalTheory.GaugeEx.HermMod.haar_measure_gram_GL2_action F E σ hσ R lam ν γ hlam hν
   have hdet : ((γ : Matrix (Fin 2) (Fin 2) E).map (inclR (F := F) R)).det = inclR R d :=
     ((inclR (F := F) R).map_det _).symm
-  have hμ := GlobalTheory.T.vectorTupleProductMeasure_two_sided_action (R ⊗[F] E) hart hred lam hlam 2 (M + 1) 1
+  have hμ := _root_.GlobalTheory.GaugeEx.ModDet.tupMeas_lrAct (R ⊗[F] E) hart hred lam hlam 2 (M + 1) 1
     ((γ : Matrix (Fin 2) (Fin 2) E).map (inclR R)) (by simp) (by rw [hdet]; exact un hd)
   rw [hdet, Matrix.det_one, hone, one_pow, one_mul] at hμ
   have g₁ := unitaryOrthogonalComplement_gram_step R σ hσ.2.2.1 J x₁ a₁ B₁ J₁' (y₁ 0) b₁ hS₁ hy₁
@@ -236,9 +236,9 @@ theorem twoStep_swap_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E
   have fc : Continuous fun X => (f X : ℝ) := NNReal.continuous_coe.comp f.continuous
   have fs : HasCompactSupport fun X => (f X : ℝ) :=
     f.hasCompactSupport.comp_left (g := fun r : ℝ≥0 => (r : ℝ)) rfl
-  obtain ⟨U₂, D₂, o₂, e₂, c₂, n₂, i₂, v₂⟩ := GlobalTheory.T.gramMap_pairs_continuous_density_near_diagonal F E σ hσ R hR M J x₂ a₂ B₂ J₂' y₂ b₂ lam ν
+  obtain ⟨U₂, D₂, o₂, e₂, c₂, n₂, i₂, v₂⟩ := _root_.GlobalTheory.GaugeEx.GramDensity.gram_density F E σ hσ R hR M J x₂ a₂ B₂ J₂' y₂ b₂ lam ν
     m₂ m₂' N₂ hS₂ hb₂ hy₂ hlam hν f₂ f₂' t₂ (fun X => (f X : ℝ)) fc fs (fun X => (f X).2)
-  obtain ⟨U₁, D₁, o₁, e₁, c₁, n₁, i₁, v₁⟩ := GlobalTheory.T.gramMap_pairs_continuous_density_near_diagonal F E σ hσ R hR M J x₁ a₁ B₁ J₁' y₁ b₁ lam ν
+  obtain ⟨U₁, D₁, o₁, e₁, c₁, n₁, i₁, v₁⟩ := _root_.GlobalTheory.GaugeEx.GramDensity.gram_density F E σ hσ R hR M J x₁ a₁ B₁ J₁' y₁ b₁ lam ν
     m₁ m₁' N₁ hS₁ hb₁ hy₁ hlam hν f₁ f₁' t₁ (fun X => (f (Γ X) : ℝ)) (fc.comp Γ.continuous)
     (fs.comp_homeomorph Γ) (fun X => (f (Γ X)).2)
   have cmp := dens_compare (tupMeas lam 2 (M + 1)) (ν.prod (lam.prod ν)) (gram3 R σ J) Γ Φ

@@ -31,16 +31,4 @@ theorem split {R : Type*} [CommRing R] (π q l : R) (hq : q = π + l) (e B r : �
       _ = π * q ^ B * ((-1) ^ (r - k) * (r.choose k : R) * l ^ (r - k) * q ^ (k + e * (r + 1) - B)) := by
         rw [hq']; ring
 
-theorem count (e B r k : ℕ) (he : 1 ≤ e) (hk : k ≤ r) (hB : k + e * (r + 1) < B) (σ : ℝ)
-    (hσ : (B : ℝ) / e ≤ σ) : ((r + 1 : ℕ) : ℝ) * (e + 1) / e ≤ σ + (r - k : ℕ) := by
-  have he0 : (0 : ℝ) < e := by exact_mod_cast he
-  have h1 : ((r - k : ℕ) : ℝ) = (r : ℝ) - k := by rw [Nat.cast_sub hk]
-  have hB' : (k : ℝ) + e * (r + 1) + 1 ≤ B := by exact_mod_cast hB
-  rw [h1, div_le_iff₀ he0]
-  have h2 : (B : ℝ) ≤ σ * e := by rwa [div_le_iff₀ he0] at hσ
-  push_cast
-  have hkr : (k : ℝ) ≤ r := by exact_mod_cast hk
-  have he1 : (1 : ℝ) ≤ e := by exact_mod_cast he
-  nlinarith [mul_nonneg (sub_nonneg.2 hkr) (sub_nonneg.2 he1)]
-
 end Formalism.MainNotions.N.FrobeniusPowerSeries.DYAb

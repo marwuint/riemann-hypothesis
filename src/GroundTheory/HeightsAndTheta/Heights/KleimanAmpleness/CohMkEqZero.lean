@@ -333,12 +333,6 @@ theorem dimC (n : ℕ) :
 
 end IsSES
 
-theorem IsSES.ofDegZero :
-    IsSES (F := ℚ) (A := fun _ => ℚ) (B := fun _ => ℚ) (C := fun _ => ℚ) (fun _ => ⊥) degZero degZero
-      (fun _ => 0) (fun _ => 0) (fun _ => 0) (fun _ => 0) (fun _ => LinearMap.id) := by
-  obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, -⟩ := EulerSES.hyps
-  exact ⟨h1, h2, h2, h3, h4, h4, h5, h6, h7, h8, h9, h10, h11, h12⟩
-
 end SES
 
 theorem alt_sum (a b c i p r : ℕ → ℤ) (h0 : a 0 = i 0) (hs : ∀ n, a (n + 1) = i (n + 1) + r n)

@@ -21,9 +21,6 @@ theorem pair_add (ξ : ι → K) (x y : ι → 𝔸[K]) : pair ξ (x + y) = pair
 theorem pair_neg (ξ : ι → K) (x : ι → 𝔸[K]) : pair ξ (-x) = -pair ξ x := by
   simp [pair, Finset.sum_neg_distrib]
 
-theorem pair_sub (ξ : ι → K) (x y : ι → 𝔸[K]) : pair ξ (x - y) = pair ξ x - pair ξ y := by
-  rw [sub_eq_add_neg, pair_add, pair_neg, ← sub_eq_add_neg]
-
 theorem pair_zero (ξ : ι → K) : pair ξ (0 : ι → 𝔸[K]) = 0 := by simp [pair]
 
 theorem pair_algebraMap (ξ η : ι → K) :

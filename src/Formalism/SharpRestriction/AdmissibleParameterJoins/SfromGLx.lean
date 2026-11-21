@@ -1,5 +1,64 @@
 import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLu
-import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.OwnEvIntro
+import Formalism.SharpRestriction.CuspSpanNormBounds.PExtra
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.NcardPrimesOverOfSplitsCompl
+import Formalism.HermitianCurvature.StatementSz
+import Formalism.HermitianCurvature.PrimeToDifferent
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyProjectorSectionLocal
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CriticalLevelLowOfRefined
+import Formalism.SharpRestriction.CuspSpanNormBounds.MassAndBranchingHypotheses
+import Formalism.SharpRestriction.CuspSpanNormBounds.AmplitudeAndVolumeBounds
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SphericalFunctionConvolutionIdentity
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.StandardHypothesesOfScaleHyp
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CfgTopFalseIff
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyCriticalLevelLowerBound
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.ParabolicSumAdmissibleOfParabolic
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyExponentOfFormalDegree
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.DegreeRatioFormulaStatement
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyFormalDegreeLowerBound
+import Mathlib
+import Formalism.SharpRestriction.CuspSpanNormBounds.StandingNumericalData
+import Formalism.FrobeniusOrbits.RealSubfieldLeCompositum
+import Formalism.SharpRestriction.CuspSpanNormBounds.ThresholdCubicInequalitySignPattern
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.TraceConjMulEqHilbertSchmidt
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.DecayHypothesisOfLargeConstants
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SphericalL1StatementOfProjectors
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilySeparationBoundOfNorms
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilySeparationBound
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SplittingAdmissibleOfTermData
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.ClauseAOfIdentityFlag
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellDef
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellInv
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellBru
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellMono
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellPt
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellSchur
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellGeo
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellFin
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.UnitriangularFrameLift
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.IdScal
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.IdUnit
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.IdRoot
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.IdLiftDef
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LadjFrame
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LTheta
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LretrCancel
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LisoSmulMem
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LFrame
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.IdLift
+import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusProjectedBounds
+import Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.NormAdditiveCharacterTypePrimeEqOne
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyPacketOfEquivalentStatement
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.MinkowskiDividesFactorialOfBound
+import Formalism.SharpRestriction.CuspSpanNormBounds.UniformConstantsAndStatements
+import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
+import Formalism.SharpRestriction.CuspSpanNormBounds.LocalModelPeriodLattices
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SmoothBigCellSectionsExist
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SphericalFunctionIntegrableOfLocal
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.GlobalConditionOfLocalAgreement
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.GlobalConditionOfProductFormula
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyStatementOfItemsFourSeven
 
 noncomputable section
 
@@ -13,11 +72,6 @@ theorem splitsF_of_splitsE (D : D7) (p : ℕ) (hp : p.Prime) (h : S.SplitsE D p)
   · exact (Nat.card_coe_set_eq _).trans ((BridgeLemma.ncard_plOver D.host.F hp hF).trans (finrank_F_eq D))
   · have h1 := (hF v.asIdeal v.isMaximal hv).1
     rwa [Ideal.absNorm_apply, Submodule.cardQuot_apply] at h1
-
-theorem column_row_ranks_of_split (D : D7) (Lv : LevelData D) (h4 : StandardLattice.Conclusion4f D Lv) (h2 : StandardLattice.VolumeEqMass₂ D)
-    (hD : StandardLattice.FactDstar D) (hG : StandardLattice.GBig D) (hT : ∀ u, S.SplitsE D (D.mem u).A.T) (hM : ∀ u, StandardLattice.Mu0Tie D u) :
-    LocalBesselAndTopKernel.FamilyMidVolume D :=
-  column_row_ranks_of_weak_columns D Lv h4 h2 hD ⟨hG, fun u => ⟨splitsF_of_splitsE D _ (D.mem u).A.T_prime (hT u), hM u⟩⟩
 
 end Formalism.MainNotions.J
 

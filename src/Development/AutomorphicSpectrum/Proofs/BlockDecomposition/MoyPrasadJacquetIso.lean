@@ -3,9 +3,9 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Metaple
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFixedMkEqOfCommute
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedInjSmooth
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenGx
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCompactParahoricSubgroupStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParahoricLeviUnipotentLowerStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralTorusContractsLowerStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCompactParahoricSubgroup
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParahoricLeviUnipotentLower
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralTorusContractsLower
 
 noncomputable section
 
@@ -23,10 +23,10 @@ theorem moyPrasadJacquetIso : GlobalTheory.Published.MoyPrasadJacquetIso := by
     exact sub_eq_zero.1 (GlobalTheory.CompanionTheory.DepthZeroJac.fixed_inj_smooth k n s d e V π hπ.1 (v - w) (sub_mem hv hw) h0)
   · intro y hy
     obtain ⟨v, hv, hvy⟩ := GlobalTheory.CompanionTheory.JacquetCentral.exists_fixed_mk_eq_of_commute π hπ (Gx k e) (unipRad k e) (GlobalTheory.CompanionTheory.MoyPrasad.isOpen_Gx k n s d e)
-      (GlobalTheory.T.isCompact_parahoric_subgroup k n s d e) (leviEmb k e) (leviEmb_mem_normalizer k e) ((Gx k e).comap (leviEmb k e))
-      (fun _ hm => hm) (lowC k e) (GlobalTheory.T.parahoric_levi_unipotent_lower k n s d e)
+      (_root_.GlobalTheory.CompanionTheory.MoyPrasad.isCompact_Gx k n s d e) (leviEmb k e) (leviEmb_mem_normalizer k e) ((Gx k e).comap (leviEmb k e))
+      (fun _ hm => hm) (lowC k e) (_root_.GlobalTheory.CompanionTheory.MoyPrasad.factor_Gx k n s d e)
       (fun U hU => by
-        obtain ⟨t, ht, hc⟩ := GlobalTheory.T.central_torus_contracts_lower k n s d e U hU
+        obtain ⟨t, ht, hc⟩ := _root_.GlobalTheory.CompanionTheory.MoyPrasad.lowC_central_contract k n s d e U hU
         exact ⟨t, fun m _ => ht m, hc⟩) y hy
     exact ⟨v, hv, hvy⟩
 

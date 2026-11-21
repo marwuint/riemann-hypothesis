@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RecHeightSWith
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TrueColumnWeightSpreadLeTwoMulScaleStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TrueColumnWeightSpreadLeTwoMulScale
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WtsOkAndSizes
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsDefiniteLaws
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogLeLOfLeCond
@@ -15,7 +15,7 @@ theorem GlobalTheory.CoreHt.sizes_trueCols : ∀ {B : GlobalTheory.Mem.Base} {X 
   obtain ⟨P⟩ := hR.1
   have hfN := GlobalTheory.ColumnNormCompare.SizeRows.f_mul_N_le_b P hR.2.2.2.1.1
   have hb1 := GlobalTheory.ColumnNormCompare.SizeRows.one_le_b L.sc
-  refine ⟨hW.g_big, fun u => hT u, ?_, GlobalTheory.T.trueColumnWeight_spread_le_two_mul_scale I h l Z L CY hR hX' hx⟩
+  refine ⟨hW.g_big, fun u => hT u, ?_, _root_.GlobalTheory.CoreHt.SpreadBound.spread_lamTrue_le I h l Z L CY hR hX' hx⟩
   have hab : 2 * L.sc.b ≤ L.sc.a := by
     show 2 * L.sc.b ≤ L.sc.x * L.sc.b
     nlinarith

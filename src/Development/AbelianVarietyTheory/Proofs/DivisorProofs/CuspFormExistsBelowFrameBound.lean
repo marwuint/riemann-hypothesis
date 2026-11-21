@@ -21,20 +21,6 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace UpperTheory.Dv.Thin
 
-private theorem covers_and_imp {Q₁ Q₂ Q₃ : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
-    (i : Fin (Fm.D x ι).R.m) (_Y : Cov p i) (PP C : ℝ), Prop}
-    (h₁ : Covers Q₁) (h₂ : Covers Q₂)
-    (h : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
-      (i : Fin (Fm.D x ι).R.m) (Y : Cov p i) (PP C C' : ℝ),
-      Q₁ Fm x hx ι p i Y PP C → Q₂ Fm x hx ι p i Y PP C' → (i : ℕ) + 1 < (Fm.D x ι).R.m → GoodCov p i Y →
-        Q₃ Fm x hx ι p i Y PP C) : Covers Q₃ := by
-  unfold Covers Lifts at *
-  refine (h₁.and h₂).imp fun Fm CH _ hh => ?_
-  obtain ⟨⟨C, hC, h1⟩, ⟨C', _, h2⟩⟩ := hh
-  obtain ⟨a, h3⟩ := h1.and h2
-  exact ⟨C, hC, a, fun x hx hle ι p hp i hi Y hY =>
-    h Fm x hx ι p i Y _ C C' ((h3 x hx hle ι p hp).1 i hi Y hY) ((h3 x hx hle ι p hp).2 i hi Y hY) hi hY⟩
-
 private theorem cols_ge {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H) :
     Fintype.card (Psi H) * (Dw.p + Dw.q) * (Dw.p + Dw.q + 1) ≤ 2 * GlobalTheory.RefSum.nCol Dw := by
   refine le_trans ?_ (Nat.mul_le_mul_left 2 GlobalTheory.RefSum.sum_le_nCol)
@@ -159,35 +145,5 @@ private theorem sizes : Size → Covers fun Fm x _ ι p i Y PP _ => ∀ u1, Quo 
       _ = ((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.r * 5 * (Fm.L x ι).sc.b := by ring
       _ ≤ (Fm.L x ι).sc.b * (Fm.L x ι).sc.b := mul_le_mul_of_nonneg_right h6 (by linarith)
       _ = _ := by ring
-
-set_option maxHeartbeats 4000000 in
-
-theorem _root_.GlobalTheory.T.cusp_form_exists_below_frame_bound : Hypotheses2 → HypothesesH → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ u1, Quo p i PP u1 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (σ : Y.d.c₂.F →+* ℂ), GoodEmb Y.d.c₂ σ → ∀ y : FPt (Y.U σ).X, (⟨y.1, y.2.1⟩ : Σ k, Frame ((Y.U σ).X k).Ψ (Fm.D x ι).R.r) ∈ framesOn (Y.U σ) Z → (Y.d.l₂.M : ℝ) * ((Y.U σ).X y.1).firstMinimumSq y.2.1 < (Fm.L x ι).sc.b → ∃ f ∈ cuspW Y.d.Xo₂ Y.d.c₂ Y.U (GlobalTheory.RefSum.GOf p i u1), rdU (Y.U σ) f y.1 y.2.1 ≠ 0 ∧ ∀ z : FPt (Y.U σ).X, (⟨z.1, z.2.1⟩ : Σ k, Frame ((Y.U σ).X k).Ψ (Fm.D x ι).R.r) ∈ framesOn (Y.U σ) Z → Real.exp (-(2 * (ReciprocityTheory.ChartRestriction.G.I2.PT.f (Fm.D x ι).host.E : ℝ) / (ReciprocityTheory.ChartRestriction.G.I2.PT.rd (Fm.D x ι).host.E ^ 2 * ((Y.U σ).X y.1).la1 y.2.1 ^ 2) / 1250)) * ptN (modelWt (Y.U σ) (GlobalTheory.RefSum.GOf p i u1)) (rdU (Y.U σ) f) ⟨z.1, z.2.1⟩ ≤ ptN (modelWt (Y.U σ) (GlobalTheory.RefSum.GOf p i u1)) (rdU (Y.U σ) f) ⟨y.1, y.2.1⟩ := by
-  intro _ _ _ hS _
-  refine covers_and_imp (sizes hS) (GlobalTheory.ThetaSizeBounds.params_sqrt_bounds hS) ?_
-  intro eps Fm x hx ι p i Y PP C C' hA hB hi hY u1 hu Z σ hσ y hy hM
-  obtain ⟨⟨hD, hLP, ⟨EX⟩⟩, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10⟩ := hA u1 hu
-  obtain ⟨r1, -, -, r4⟩ := hB
-  obtain ⟨hrun, -⟩ := r4 _ s8 s9
-  have hj : InR (Fm.D x ι) ((i : ℕ) + 1) := ⟨by omega, hi.le⟩
-  have hl : p.T.Q.l.M = (Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1 := p.fw.laws.toLawsM.pins.2.1.1
-  obtain ⟨⟨α, hα1, hα2⟩, -⟩ := GlobalTheory.HalfGen.half_principal_and_split _ p.T.toCore p.fw.laws.toLawsM EX
-  obtain ⟨φ, hφ, hg⟩ := cover_transport _ p.T _ Y _ _ p.fw.laws hj hY.1 _ _ hD σ hσ
-  have hd := hφ ⟨y.1, y.2.1⟩ y.2.2
-  have hσ' : GoodEmb p.T.Q.c (Y.resEmb σ) := Y.good_resEmb hσ
-  have hla : ((p.T.U ((i : ℕ) + 1) (Y.resEmb σ)).X (φ ⟨y.1, y.2.1⟩).1).la1 (φ ⟨y.1, y.2.1⟩).2 =
-      ((Y.U σ).X y.1).la1 y.2.1 := congrArg Real.sqrt hd.2
-  have h0 : 0 ≤ ((Y.U σ).X y.1).firstMinimumSq y.2.1 := ReciprocityTheory.ChartRestriction.G.FD.MinimumGrowthBounds.minimumSq_nonneg _ y.2.2
-  have hs1 : (((Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1 : ℕ) : ℝ) * ((Y.U σ).X y.1).firstMinimumSq y.2.1 ≤ 1 := by
-    have h1 := (mul_le_mul_of_nonneg_right s10 h0).trans hM.le
-    rw [mul_right_comm] at h1
-    exact le_of_mul_le_mul_right (h1.trans_eq (one_mul _).symm) (by linarith only [s1])
-  obtain ⟨f, hf, hf0, hfz⟩ := core_ratio (GlobalTheory.LevGeo.laws_core _ p.T _ p.fw.laws hj) α hα1 hα2 hD hLP s1 s2 s3 s4 s5
-    (by rw [hl]; exact s6) (by rw [hl]; exact s7) s9 (by rw [hl]; exact hrun) r1 hσ' (φ ⟨y.1, y.2.1⟩).1
-    (φ ⟨y.1, y.2.1⟩).2 hd.1 (by rw [hl, hd.2]; exact hs1)
-  obtain ⟨g, hg', hgy⟩ := hg f hf
-  refine ⟨g, hg', (hgy ⟨y.1, y.2.1⟩ y.2.2).2.mpr hf0, fun z hz => ?_⟩
-  rw [(hgy ⟨z.1, z.2.1⟩ z.2.2).1, (hgy ⟨y.1, y.2.1⟩ y.2.2).1, ← hla]
-  exact hfz ⟨(φ ⟨z.1, z.2.1⟩).1, (φ ⟨z.1, z.2.1⟩).2, (hφ ⟨z.1, z.2.1⟩ z.2.2).1⟩
 
 end UpperTheory.Dv.Thin

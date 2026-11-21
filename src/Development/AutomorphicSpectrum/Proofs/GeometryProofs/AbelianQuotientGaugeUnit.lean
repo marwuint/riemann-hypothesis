@@ -1,8 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SqMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientLineBundleGauge
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdjointRelationGeneratorCorrStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermJetLiftStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdjointRelationGeneratorCorr
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermJetLift
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermFunPf
 
 noncomputable section
@@ -229,7 +231,7 @@ theorem eq_one_of_jets (hs : ∀ a : 𝓞 E, star a = H.bar a) {X : Scheme.{0}} 
     [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X) {d : ℕ} (g : GermAt t x d)
     (xk : ∀ m, Sp (Jet k (Fin 1 × Fin d) m) ⟶ pullback t.G.hom x) (hx : ∀ m, xk m = (fibPt t x (g.x m)).left)
     (f : Γ(pullback t.G.hom x, ⊤)) (h : ∀ m, (xk m).appTop.hom f = 1) : f = 1 := by
-  obtain ⟨hI, -, -, T⟩ := GlobalTheory.T.formal_germ_jet_lift E H hs X t k p x d g xk
+  obtain ⟨hI, -, -, T⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FibreTaylor.fibre_taylor_expansion E H hs X t k p x d g xk
     (fun m => by rw [hx]; exact fibPt_fst t x (g.x m))
     (fun m => by rw [hx]; exact (pullback.lift_snd _ _ _).trans (Category.comp_id _))
   haveI := hI
@@ -249,8 +251,8 @@ end Main
 theorem unit_one_on_axes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X : Scheme.{0}) (t : SAB H X) (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X) (Q : AbQuot t x) (d d' : ℕ) (g : GermAt t x d) (gB : GermAt Q.tB (𝟙 (Sp k)) d'), ∀ (w : LB.Iso (t.PP.L.pull (pullback.fst t.G.hom x)) (Q.tB.PP.L.pull Q.q.left)), w.IsGen → ∀ Qs : Fin d' → PS k 1 d, (∀ i, MvPowerSeries.constantCoeff (Qs i) = 0) → (∀ m, fibPt t x (g.x m) ≫ Q.q = homAt (𝟙 (Sp k)) (sub1 Qs m) ≫ gB.x m) → ∀ (a : 𝓞 E) (wL : AdTy t a) (wB : AdTy Q.tB a), wL.IsGen → wB.IsGen → AdRel t x d g.x g.B.A.act g.B.ad g.e a wL → AdRel Q.tB (𝟙 (Sp k)) d' gB.x gB.B.A.act gB.B.ad gB.e a wB → ∀ u : Γ((GF t x ⊗ GF t x).left, ⊤)ˣ, Tr w (adF t x a) (fun i => sqMap t x ≫ Sum.elim (cφG t ![fst t.G t.G, snd t.G t.G ≫ t.act.act (H.bar a)]) (cφG t ![fst t.G t.G ≫ t.act.act a, snd t.G t.G]) i) (fun i => qq Q ≫ Sum.elim (cφG Q.tB ![fst Q.tB.G Q.tB.G, snd Q.tB.G Q.tB.G ≫ Q.tB.act.act (H.bar a)]) (cφG Q.tB ![fst Q.tB.G Q.tB.G ≫ Q.tB.act.act a, snd Q.tB.G Q.tB.G]) i) (Sum.elim (cε 2) fun I => -cε 2 I) (LB.pullGen t.PP.L _ _ wL (sqMap t x)) (LB.pullGen Q.tB.PP.L _ _ wB (qq Q)) u → (ax0 t x).appTop.hom u.val = 1 ∧ (ax1 t x).appTop.hom u.val = 1 := by
   intro E _ _ _ H _ hs X t k _ _ p _ _ x Q d d' g gB w hw Qs hQ0 hQ a wL wB hL hB hR hRB u hT
   haveI := Q.q_hom
-  have cL := GlobalTheory.T.adjoint_relation_generator_corr E H hs X t k x d g a wL hL hR
-  have cB := GlobalTheory.T.adjoint_relation_generator_corr E H hs (Sp k) Q.tB k (𝟙 (Sp k)) d' gB a wB hB hRB
+  have cL := _root_.GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.WAxis.adAxes E H hs X t k x d g a wL hL hR
+  have cB := _root_.GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.WAxis.adAxes E H hs (Sp k) Q.tB k (𝟙 (Sp k)) d' gB a wB hB hRB
   have hLB := t.PP.isLB
   have hMB := Q.tB.PP.isLB
   constructor

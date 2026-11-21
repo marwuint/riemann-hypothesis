@@ -54,8 +54,6 @@ theorem mem_invOf {B : Subalgebra O K⟦X⟧} {W : Submodule B (Vec K a ι)} {v 
 
 abbrev Minv : Submodule O (Vec K a ι) := Δ.invOf P.M
 
-abbrev Linv : Submodule O (Vec K a ι) := Δ.invOf P.L
-
 abbrev Y (η : ℕ) : Submodule O (Vec K a ι) := Δ.invOf (P.EM η)
 
 def Y' (η : ℕ) : Submodule O (Vec K a ι) := (Δ.Y η).map ((mulV K a ι (X ^ e)).restrictScalars O)
@@ -103,12 +101,6 @@ theorem mem_Zl_of_mem_Z {η : ℕ} {w : P.Pol} (hw : w ∈ Δ.Z η) : w ∈ Δ.Z
 
 theorem cls_mem_Z {η : ℕ} {y : Vec K a ι} (hy : y ∈ Δ.Y η) : P.cls y ∈ Δ.Z η :=
   ⟨⟨y, hy.1, rfl⟩, Δ.cls_mem_invariants hy.2⟩
-
-theorem vPol_mem_Z {η : ℕ} {w : P.Pol} (hw : w ∈ Δ.Z η) : P.vPol w ∈ Δ.Z η := by
-  obtain ⟨⟨y, hy, rfl⟩, h⟩ := Δ.mem_Z.1 hw
-  refine ⟨⟨_, (P.EM η).smul_mem (uIn (A O K) ^ e) hy, rfl⟩, fun g => ?_⟩
-  rw [PhiMod.vPol_cls, actPol_cls, act_X_pow_smul, ← PhiMod.vPol_cls, ← actPol_cls, h g,
-    PhiMod.vPol_cls]
 
 def actO : Representation O (TameGal K l e a) (Vec K a ι) where
   toFun g := (Δ.act g).restrictScalars O
@@ -182,14 +174,6 @@ namespace Hom
 
 variable {Δ₁ : Descent P} {Δ₂ : Descent Q} {Δ₃ : Descent T} (F : Hom Δ₁ Δ₂)
 
-variable (Δ₁) in
-
-def scalar (c : O) : Hom Δ₁ Δ₁ where
-  toHom := BK.Hom.scalar P c
-  app_act g v := by
-    simp only [BK.Hom.app_scalar, algebraMap_smul]
-    exact (map_smul (Δ₁.actO g) c v).symm
-
 def comp (G : Hom Δ₂ Δ₃) (F : Hom Δ₁ Δ₂) : Hom Δ₁ Δ₃ where
   toHom := G.toHom.comp F.toHom
   app_act g v := by rw [BK.Hom.app_comp, BK.Hom.app_comp, F.app_act, G.app_act]
@@ -197,10 +181,6 @@ def comp (G : Hom Δ₂ Δ₃) (F : Hom Δ₁ Δ₂) : Hom Δ₁ Δ₃ where
 omit [NeZero e] in
 theorem app_mem_inv {v : Vec K a ι} (hv : v ∈ Δ₁.inv) : F.app v ∈ Δ₂.inv :=
   fun g => by rw [← F.app_act, hv g]
-
-omit [NeZero e] in
-theorem app_mem_Minv {v : Vec K a ι} (hv : v ∈ Δ₁.Minv) : F.app v ∈ Δ₂.Minv :=
-  ⟨F.app_mem_M hv.1, F.app_mem_inv hv.2⟩
 
 omit [NeZero e] in
 theorem app_mem_Y {η : ℕ} {y : Vec K a ι} (hy : y ∈ Δ₁.Y η) : F.app y ∈ Δ₂.Y η :=
@@ -215,13 +195,6 @@ theorem onPol_act (g : TameGal K l e a) (w : P.Pol) :
     F.onPol (Δ₁.actPol g w) = Δ₂.actPol g (F.onPol w) := by
   obtain ⟨y, rfl⟩ := P.Man.mkQ_surjective w
   rw [actPol_cls, BK.Hom.onPol_cls, BK.Hom.onPol_cls, actPol_cls, F.app_act]
-
-theorem onPol_mem_Z {η : ℕ} {w : P.Pol} (hw : w ∈ Δ₁.Z η) : F.onPol w ∈ Δ₂.Z η := by
-  obtain ⟨⟨y, hy, rfl⟩, h⟩ := Δ₁.mem_Z.1 hw
-  exact Δ₂.mem_Z.2 ⟨⟨_, F.app_mem_EM hy, rfl⟩, fun g => by rw [← F.onPol_act, h g]⟩
-
-theorem onPol_mem_Zl {η : ℕ} {w : P.Pol} (hw : w ∈ Δ₁.Zl η) : F.onPol w ∈ Δ₂.Zl η :=
-  ⟨F.onPol_mem_PolEta hw.1, fun g => by rw [← F.onPol_act, hw.2 g]⟩
 
 end Hom
 
@@ -290,55 +263,9 @@ variable {y : Vec K a ι} (hy : y ∈ P.Mext (invE l e (A O K)))
 
 omit [NormedAlgebra ℚ_[l] K] [NeZero e]
 
-theorem bas_inl (i : ι) : bas (Sum.inl i) = (P.plusInl hy).app (bas i) := by
-  rw [plusInl_app]
-  ext τ (j | j) : 2 <;> simp [bas, join, Pi.single_apply]
-
 omit [IsUltrametricDist K] [Fintype ι] in
 theorem bas_inr : (bas (Sum.inr ()) : Vec K a (ι ⊕ Unit)) = xVec := by
   ext τ (j | j) : 2 <;> simp [bas, join, xVec]
-
-theorem plus_upper {η : ℕ} (h : ∀ v ∈ P.L, E K l e ^ η • v ∈ P.M) (hη : y ∈ P.EM η) :
-    ∀ v ∈ (P.plus hy).L, E K l e ^ η • v ∈ (P.plus hy).M := fun _ =>
-  (P.plus hy).smul_mem_Mext_of_basis (by
-    rintro (i | ⟨⟨⟩⟩)
-    · rw [P.bas_inl hy, ← Hom.app_phi, ← map_smul]
-      exact Hom.app_mem_M _ (h _ (P.phi_mem_L (P.bas_mem_M i)))
-    · rw [bas_inr, phi_extension_generator_eq_add, smul_add, ← map_smul, ← bas_inr]
-      exact add_mem ((P.plus hy).M.smul_mem (EIn l e (A O K) ^ η) ((P.plus hy).bas_mem_M _))
-        (Hom.app_mem_M _ hη)) le_rfl
-
-theorem plus_lower {n : ℕ} (h : ∀ v ∈ P.M, E K l e ^ n • v ∈ P.L) (hn : E K l e ^ n • y ∈ P.L) :
-    ∀ v ∈ (P.plus hy).M, E K l e ^ n • v ∈ (P.plus hy).L := fun _ =>
-  (P.plus hy).smul_mem_ext_of_basis (by
-    rintro (i | ⟨⟨⟩⟩)
-    · rw [P.bas_inl hy, ← map_smul]
-      exact Hom.app_mem_ext _ le_rfl (h _ (P.bas_mem_M i))
-    · rw [bas_inr, eq_sub_of_add_eq (P.phi_extension_generator_eq_add hy).symm, smul_sub,
-        ← map_smul (P.plusInl hy).app, ← bas_inr]
-      exact sub_mem ((P.plus hy).L.smul_mem (EIn l e (A O K) ^ n)
-        ((P.plus hy).phi_mem_L ((P.plus hy).bas_mem_M _))) (Hom.app_mem_ext _ le_rfl hn)) le_rfl
-
-theorem isExactTriple_plus [NormedAlgebra ℚ_[l] K] [NeZero e] :
-    IsExactTriple (P.plusInl hy) (P.plusProj hy) where
-  inj v _ h := by
-    rw [plusInl_app] at h
-    exact funext fun τ => funext fun i => congrFun (congrFun h τ) (.inl i)
-  exact v hv := by
-    rw [← join_eta v, plusProj_app]
-    constructor
-    · intro h
-      refine ⟨fun τ i => v τ (.inl i), mem_tot.2 fun τ i => mem_tot.1 hv τ (.inl i), ?_⟩
-      refine (P.plusInl_app hy _).trans (congrArg _ ?_)
-      exact funext fun τ => (congrFun (congrFun h τ) ()).symm
-    · rintro ⟨w, -, hw⟩
-      have := (P.plusInl_app hy w).symm.trans hw
-      exact funext fun τ => funext fun _ => (congrFun (congrFun this τ) (.inr ())).symm
-  finiteLength := by
-    have : Subsingleton (P.plusProj hy).coker := Submodule.Quotient.subsingleton_iff.2 <|
-      eq_top_iff.2 fun v _ => ⟨join 0 fun τ => v.1 τ (), (P.join_mem_Mext hy).2
-        ⟨zero_mem _, fun τ => mem_tot.1 v.2 τ ()⟩, P.plusProj_app hy _ _⟩
-    exact .of_subsingleton
 
 end PhiMod
 

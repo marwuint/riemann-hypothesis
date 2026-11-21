@@ -1,10 +1,15 @@
 import Mathlib
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.Imports
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
+import Formalism.PeriodIntegrals.DSInfCharCap
+import Formalism.PeriodIntegrals.LowCyc
+import Formalism.PeriodIntegrals.UpqRep
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DiscreteSeriesUnitarySmoothBasicStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FrepDiscreteSeriesSumStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorRawOfFrepStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsKTypeNonzeroBesselStatement
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DiscreteSeriesUnitarySmoothBasic
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FrepDiscreteSeriesSum
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorRawOfFrep
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsKTypeNonzeroBessel
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.UhMeasurableSet
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselSumDecompositionStatement
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG
@@ -62,10 +67,10 @@ theorem kappa_dual : HypsG → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [Deci
   have hK : PI.KFinSmooth := hH.1.2.2.1
   obtain ⟨hbes, hS_eq, hsm⟩ :=
     GlobalTheory.T.isBes_tensor_projection_and_ev_equivariant_smooth hK k r ι κ ρ Γ d R RI io pr ε mu muI Wp z π om hR hRI hF hT.raw hom I
-  obtain ⟨-, -, -, -, hTKsm, -⟩ := GlobalTheory.T.discreteSeries_unitary_smooth_basic hK k r ε mu R hR
-  obtain ⟨-, -, -, hIsm, -⟩ := GlobalTheory.T.discreteSeries_unitary_smooth_basic hK k r ε (muI I) (RI I) (hRI I)
-  obtain ⟨hadj, -, hev, -⟩ := GlobalTheory.T.frep_discrete_series_sum hK k r ι κ ρ Γ d R RI io pr ep ε mu muI hR hRI hF hT
-  obtain ⟨-, -, -, hprTK⟩ := GlobalTheory.T.tensor_raw_of_frep hK k r ι κ ρ Γ d R RI io pr ε mu muI hR hRI hF hT.raw
+  obtain ⟨-, -, -, -, hTKsm, -⟩ := _root_.Gp91.GlobalTheory.rep_basic_of_isDS hK k r ε mu R hR
+  obtain ⟨-, -, -, hIsm, -⟩ := _root_.Gp91.GlobalTheory.rep_basic_of_isDS hK k r ε (muI I) (RI I) (hRI I)
+  obtain ⟨hadj, -, hev, -⟩ := _root_.Gp91.GlobalTheory.TensAdj.tens_adj hK k r ι κ ρ Γ d R RI io pr ep ε mu muI hR hRI hF hT
+  obtain ⟨-, -, -, hprTK⟩ := _root_.Gp91.GlobalTheory.tensor_decomposition_kfinite hK k r ι κ ρ Γ d R RI io pr ε mu muI hR hRI hF hT.raw
   have key : ∀ y ∈ (RI I).sm, ∀ v ∈ R.TK, (innerSL ℂ (l v)).smulRight (l (ev Γ R om (fun c => io I c y))) =
       (ep I : ℂ) • (innerSL ℂ (lI (∑ c, pr I c (tm R om v c)))).smulRight (lI y) := by
     intro y hy v hvTK
@@ -102,11 +107,11 @@ theorem kappa_dual : HypsG → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [Deci
     refine ⟨κ₀, fun v hv => ?_⟩
     by_contra hne
     have hB := bessel_add (hbes lI hlI.1) (Formalism.FourierDecayAlt.P.DDSmoothness.bessel_smul hl.1 (-κ₀))
-    obtain ⟨x, hx, hx0⟩ := GlobalTheory.T.exists_K_type_nonzero_bessel hH k r ε mu R Wp z π _ hR hB
+    obtain ⟨x, hx, hx0⟩ := _root_.Gp91.GlobalTheory.bessel_nonzero_on_translates hH k r ε mu R Wp z π _ hR hB
       ⟨v, hv, fun e => hne (by simpa only [neg_smul, add_neg_eq_zero] using e)⟩
     exact hx0 (by rw [hκ x hx, neg_smul, add_neg_cancel])
   intro κ₀ hκ y hy
-  obtain ⟨v, hvTK, hv0⟩ := GlobalTheory.T.exists_K_type_nonzero_bessel hH k r ε mu R Wp z π l hR hl.1 hnz
+  obtain ⟨v, hvTK, hv0⟩ := _root_.Gp91.GlobalTheory.bessel_nonzero_on_translates hH k r ε mu R Wp z π l hR hl.1 hnz
   have h3 := key y hy v hvTK
   rw [hκ v (hTKsm v hvTK)] at h3
   have h4 := congrArg (fun T : Wp →L[ℂ] Wp => T (l v)) h3

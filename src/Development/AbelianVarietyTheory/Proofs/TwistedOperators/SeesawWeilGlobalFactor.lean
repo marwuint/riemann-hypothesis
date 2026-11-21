@@ -1,13 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawFramesWeilEquivalence
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilArchimedeanFactorStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilUnramifiedFactorStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilArchimedeanFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilUnramifiedFactor
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsArchimedeanIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorIrreducibleOfCountableDimensionIrreducibleStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorProductIrreducibleCountableDimenStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RankSchwartzBruhatAdicCompletionPiLeAleph0Statement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelStandardCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorIrreducibleOfCountableDimensionIrreducible
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorProductIrreducibleCountableDimen
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RankSchwartzBruhatAdicCompletionPiLeAleph0
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelStandardCharacter
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOneParamSubgroupTransposeGramLieAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryLieElementsGenerateOneParamLines
@@ -408,9 +412,9 @@ theorem isIrred_piT : GlobalTheory.Published.HoweDualityReal → GlobalTheory.Fu
       ∀ R Rf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf →
         IsIrred X (ModuleCat.of ℂ (GlobalTheory.TripleAssembly.PiT R Γ Rf)) (GlobalTheory.TripleAssembly.opFin ωA (algF ψ θ true A B) (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf)) (GlobalTheory.TripleAssembly.opLie θ ωA (algF ψ θ true A B) (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf)) := by
   intro hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm
-  have iA := (GlobalTheory.T.seesaw_weil_factorization hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm).1
-  have eqf := (GlobalTheory.T.seesaw_weil_archimedean_factor hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm).1
-  have eql := (GlobalTheory.T.seesaw_weil_unramified_factor hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm).1
+  have iA := (_root_.GlobalTheory.DarbImage.thetaImage hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm).1
+  have eqf := (_root_.GlobalTheory.TripleAssembly.EqFin.mapA_mapB_equivariant_fin hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm).1
+  have eql := (_root_.GlobalTheory.TripleAssembly.mapA_mapB_lieEquiv hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm).1
   have hT := hm.triple
   have hg := hT.geo
   have hM := hg.hM
@@ -433,7 +437,7 @@ theorem isIrred_piT : GlobalTheory.Published.HoweDualityReal → GlobalTheory.Fu
       ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers D.host.F} 1 := fun φ hφ => by
     filter_upwards [hφ, hM.std] with v a b using a.trans b
 
-  obtain ⟨T, hTh, hinj⟩ := GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Γ.M ψ (sgn true W).gram e (hψ' ▸ hM) hstd dV dW gA
+  obtain ⟨T, hTh, hinj⟩ := _root_.GlobalTheory.ThetaTransformInj.linear_injective D Γ.M ψ (sgn true W).gram e (hψ' ▸ hM) hstd dV dW gA
   have hS := GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz _ _ _ Γ.M Bs.ψ Bs.emb hM
   have K : ∀ f ∈ Γ.M.Pol Bs.ψ Bs.emb, ∀ φ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = Γ.M.vac v) →
       GlobalTheory.TripleRead.thO Γ.M ψ (sgn true W).gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) ∈ algF ψ θ true A B ∧
@@ -498,12 +502,12 @@ theorem isIrred_piT : GlobalTheory.Published.HoweDualityReal → GlobalTheory.Fu
     · simp [Function.update_of_ne c]
   have rkv : ∀ v, Module.rank ℂ (Rf.Pi v) ≤ Cardinal.aleph0 := fun v => by
     rw [← rank_top ℂ (Rf.Pi v), ← hm.fin.onto v]
-    exact (rank_map_le _ _).trans (GlobalTheory.T.rank_schwartzBruhat_adicCompletion_pi_le_aleph0 _ _ v)
-  have irrF := GlobalTheory.T.restrictedTensorProduct_irreducible_countable_dimension Rf.Pi (vacIm Γ Rf) hfin0 rkv hm.fin.nontriv Sv irrv Op fun v a _ => hOp' v a
+    exact (rank_map_le _ _).trans (_root_.GlobalTheory.TripleAssembly.rank_SB_adicCompletion_le _ _ v)
+  have irrF := _root_.GlobalTheory.rtens_irreducible Rf.Pi (vacIm Γ Rf) hfin0 rkv hm.fin.nontriv Sv irrv Op fun v a _ => hOp' v a
   have rkR : Module.rank ℂ R.Pi ≤ Cardinal.aleph0 := by
     rw [← rank_top ℂ R.Pi, ← hm.real.quot.onto]
     exact (rank_map_le _ _).trans hrank
-  refine GlobalTheory.T.tensor_irreducible_of_countable_dimension_irreducible R.Pi _ {b | ∀ x ∈ N, LinearMap.rTensor _ b x ∈ N} {c | ∃ v, ∃ a ∈ Sv v, c = Op v a} rkR
+  refine _root_.GlobalTheory.TensIrr.tensor_irreducible R.Pi _ {b | ∀ x ∈ N, LinearMap.rTensor _ b x ∈ N} {c | ∃ v, ∃ a ∈ Sv v, c = Op v a} rkR
     inferInstance (fun Q hQ => ?_) (fun Q hQ => irrF Q fun v a ha => hQ _ ⟨v, a, ha, rfl⟩) N (fun b hb => hb) ?_
   ·
     have hlie := hred {γ | ∃ τ, ∃ Y ∈ lieAt X τ, ∀ t : ℝ, γ (Multiplicative.ofAdd t) =
@@ -526,7 +530,7 @@ theorem isIrred_piT : GlobalTheory.Published.HoweDualityReal → GlobalTheory.Fu
           obtain ⟨m1, k1⟩ := K f hf φ hφ hv
           obtain ⟨m2, k2⟩ := K _ (hδ f hf).1 φ hφ hv
           refine (congrArg _ k1.symm).trans ((eql τ Y hY _ m1 _ m2 fun z => ?_).symm.trans ?_)
-          · have hd := GlobalTheory.T.weil_model_standard_character hP Γ.M Bs.ψ _ _ om hT.base.cm hT.base.std hM hT.weil γ hγ 1 (fun _ => f) (fun _ => δ f) (fun _ => φ)
+          · have hd := _root_.GlobalTheory.ThetaLineDer.hasDerivAt_thetaSum_line hP Γ.M Bs.ψ _ _ om hT.base.cm hT.base.std hM hT.weil γ hγ 1 (fun _ => f) (fun _ => δ f) (fun _ => φ)
               (fun _ => ⟨hφ, hv⟩) (fun _ => ((hδ f hf).2 _).2 rfl) (GlobalTheory.TripleRead.ptO (sgn true W).gram e z)
             rw [Fin.sum_univ_one, Fin.sum_univ_one, hψ'] at hd
             refine hd.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)

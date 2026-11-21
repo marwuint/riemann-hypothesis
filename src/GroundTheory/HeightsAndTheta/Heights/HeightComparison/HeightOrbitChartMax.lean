@@ -14,11 +14,4 @@ def OrbitChartMax.Statement : Prop :=
       (∀ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ∉ V) →
         (chartPoint x c V).IsMaximal
 
-example : BlockNonzero samplePoint ∧
-    Geo.IsSectionOn (orbitIdeal samplePoint) (HermLine.standard _).toGeo
-      (chartMonomial (fun _ ↦ 0) 1) ∧ ∀ k, samplePoint k ((fun _ ↦ 0) k) ≠ 0 :=
-  ⟨samplePoint_blockNonzero,
-    isSectionOn_chartMonomial _ _ _ (fun _ ↦ by simp [samplePoint]) 1 (fun _ ↦ rfl),
-    fun _ ↦ by simp [samplePoint]⟩
-
 end GroundTheory.Heights₂.Heights

@@ -9,7 +9,7 @@ import Formalism.LocalRingCardinality.FactDelDualNabla
 import Formalism.BranchSandwichDivisors.BranchIsometryProofs.BranchScale
 import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Formalism.BranchSandwichDivisors.DivFromPassageAndNorm
-import Formalism.LocalToGlobal.GroupLattices.FockModels.WeylDim
+import Formalism.PeriodIntegrals.AdmissibleModel.WeylDim
 import Formalism.SharpRestriction.GlobalSchurBounds.FiniteModelOfAdmissibleTransports
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Wlocal
 
@@ -66,10 +66,6 @@ theorem gramB_det_ne [CharZero K] : (gramB (K := K) sg).det ≠ 0 := by
   funext i
   exact Fintype.linearIndependent_iff.mp (bVV K sg).linearIndependent c (by rw [← hxdef]; exact hx0) i
 
-theorem gramB_transpose : (gramB (K := K) sg).transpose = gramB sg := by
-  ext i j
-  simp [gramB, fockB_comm]
-
 theorem projVV_coe (p : Pol K ι n) :
     (projVV sg p : Pol K ι n) = ∑ i, ∑ j, ((gramB (K := K) sg)⁻¹ i j * fockB (bVVfun K sg j) p) • bVVfun K sg i := by
   classical
@@ -106,17 +102,6 @@ theorem fockB_projVV [CharZero K] (p : Pol K ι n) (v : Pol K ι n) (hv : v ∈ 
   rw [hv']
   simp only [← fockBL_apply, map_sum, map_smul]
   simp only [fockBL_apply, fockB_projVV_basis]
-
-theorem projVV_of_mem [CharZero K] (v : Pol K ι n) (hv : v ∈ VV K sg) : (projVV sg v : Pol K ι n) = v := by
-  set d : VV K sg := projVV sg v - ⟨v, hv⟩ with hd
-  have hd0 : ∀ y : VV K sg, pairBK sg y d = 0 := by
-    intro y
-    rw [pairBK_apply, pairB_apply, hd, Submodule.coe_sub, ← fockBL_apply, map_sub, fockBL_apply, fockBL_apply,
-      fockB_comm (y : Pol K ι n), fockB_comm (y : Pol K ι n), fockB_projVV sg v y y.2]
-    simp
-  have := (pairingBNondegenerate_holds K ι n sg).2 d hd0
-  rw [hd, sub_eq_zero] at this
-  exact congrArg Subtype.val this
 
 end Proj
 
@@ -319,54 +304,7 @@ theorem brTranspose : BrTranspose hN lam sg K := by
     ring
   linear_combination (fockB (coefLast hN (bExp hN lam sg) (f : Pol K ι N)) (g : Pol K ι n)) * hc
 
-theorem brAtTranspose (t : ι → K) (f : VV K lam) (g : VV K sg) :
-    pairBK sg (brAt hN lam sg t f) g = pairBK lam f (ioAt hN lam sg t g) := by
-  simp only [brAt, ioAt, LinearMap.smul_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]
-  rw [brTranspose hN lam sg f g]
-
 end Transpose
-
-section Period
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
-
-theorem PtilFF_eq (P : LevFam X.E X.K R.r Pr.vGs) (h : (mtildeGSD W Ch sel mu P).Ok) (u : Pr.Word)
-    (ψ : RowPt Pr R sel mu → VV X.K (W.lamTrue u R.m)) (F : RowPt Pr R sel mu → VV X.K W.sgTrue) :
-    PtilFF W Ch sel mu P h u ψ F = periodK W Ch sel mu P h (lowerK W sel mu u ψ) F := by
-  simp only [PtilFF, periodK, GSD.csOf, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.compl₁₂_apply,
-    LinearMap.comp_apply, LinearMap.proj_apply, lowerK, LinearMap.compLeft_apply, Function.comp_apply]
-
-theorem PtilC_eq (P : LevFam X.E X.K R.r Pr.vGs) (h : (mtildeGSD W Ch sel mu P).Ok) (u : Pr.Word)
-    (ψ : ColV W Ch u R.m) (F : MtildeV W Ch sel mu P) :
-    PtilC W Ch sel mu P h u ψ F =
-      periodK W Ch sel mu P h (lowerK W sel mu u (evzC W Ch sel mu u ψ))
-        (show RowPt Pr R sel mu → VV X.K W.sgTrue from (MtildeV W Ch sel mu P).subtype F) := by
-  exact PtilFF_eq W Ch sel mu P h u (evzC W Ch sel mu u ψ) ((MtildeV W Ch sel mu P).subtype F)
-
-end Period
-
-section Chi
-
-variable {G : Type} [CommGroup G]
-
-theorem chiScalar_eq (mt chi : G →* ℂˣ) (N N' : ℕ) (x x' : G) : chiScalar mt chi N N' x x' = (mt x)⁻¹ * mt x' := by
-  have hz : ∀ (k : ℤ) (y : G), (chi ^ k) y = chi y ^ k := fun k y => rfl
-  unfold chiScalar
-  rw [MonoidHom.mul_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, hz, hz, zpow_neg, zpow_neg]
-  generalize chi x ^ (((N' / 2 : ℕ) : ℤ)) = c
-  generalize chi x' ^ (((N / 2 : ℕ) : ℤ)) = d
-  generalize mt x = a
-  generalize mt x' = b
-  calc a⁻¹ * c⁻¹ * (b * d) * (c * d⁻¹) = (a⁻¹ * b) * (c⁻¹ * c) * (d * d⁻¹) := by ac_rfl
-    _ = a⁻¹ * b := by rw [inv_mul_cancel, mul_inv_cancel, mul_one, mul_one]
-
-theorem rhoA_chi (D : Formalism.BasicNotions.D7) (m1 : D.Dt →* ℂˣ) (N N' : ℕ) (x x' : D.Dt) :
-    Formalism.MainNotions.GL3Columns.rhoA D m1 N' x * Formalism.MainNotions.GL3Columns.rhoA' D m1 N x' *
-              (D.chiD x ^ (((N' / 2 : ℕ) : ℤ)) * D.chiD x' ^ (-((N / 2 : ℕ) : ℤ))) = (m1 x)⁻¹ * m1 x' :=
-  chiScalar_eq m1 D.chiD N N' x x'
-
-end Chi
 
 end Formalism.L2.Ker
 
@@ -571,33 +509,7 @@ theorem lb_map_projVV [CharZero K] [CharZero K'] {n : ℕ} (lam : ι → DomWeig
   | add y y' _ _ h1 h2 => rw [lb_fockB_add_right, lb_fockB_add_right, h1, h2]
   | smul c y _ h1 => rw [lb_fockB_smul_right, lb_fockB_smul_right, h1]
 
-theorem branching_map_rational [CharZero K] [CharZero K'] {N n : ℕ} (hN : N = n + 1) (lam : ι → DomWeight N)
-    (sg : ι → DomWeight n) : BrAtMap j hN lam sg := by
-  intro t x
-  apply Subtype.ext
-  simp only [bcVV, AddMonoidHom.coe_mk, ZeroHom.coe_mk, brAt, brStd, brStdP, LinearMap.smul_apply,
-    LinearMap.comp_apply, Submodule.coe_subtype, Submodule.coe_smul, bc_map_smul]
-  rw [lb_map_projVV, lb_map_coefLast, lb_map_brConst, map_prod]
-  simp only [map_zpow₀]
-
 end BCMaps
-
-section Member
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
-
-theorem brC_map (s : X.K →+* ℂ) (u : Pr.Word) (x : VV X.K (W.lamTrue u R.m)) :
-    brAt (N_m_succ R) (W.lamTrue u R.m) W.sgTrue (fun τ => s (X.emb τ (star ((Pr.piT u : 𝓞 X.E) : X.E))))
-        (bcVV s (W.lamTrue u R.m) x) = bcVV s W.sgTrue (brC W u x) :=
-  branching_map_rational s (N_m_succ R) (W.lamTrue u R.m) W.sgTrue _ x
-
-theorem lowerFn_map {K K' : Type} [Field K] [Field K'] [CharZero K] [CharZero K'] (j : K →+* K') {ι : Type} [Fintype ι]
-    {N n : ℕ} (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n) (Pt : Type) (t : ι → K) (ψ : Pt → VV K lam) :
-    lowerFn hN lam sg Pt (fun τ => j (t τ)) (fun d => bcVV j lam (ψ d)) = fun d => bcVV j sg (lowerFn hN lam sg Pt t ψ d) := by
-  funext d
-  exact branching_map_rational j hN lam sg t (ψ d)
-
-end Member
 
 end Formalism.L2.Ker
 
@@ -606,262 +518,6 @@ open MvPolynomial
 noncomputable section
 
 namespace Formalism.L2.Ker
-
-open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Col.Br
-
-section Shift
-
-theorem wtN_last_two (R : Ranks) (P : HCParam R) :
-    Examples₂.wtN P (R.N R.m - 1) = Examples₂.wtN P (R.N R.m - 2) := by
-  have hk := R.m_add_three_le_k
-  have hm := R.two_le_m
-  have ht := R.rank_add_five_le
-  have hN : R.N R.m = R.k + R.m * (R.t + 1) := rfl
-  have hmt : 2 * 2 ≤ R.m * (R.t + 1) := Nat.mul_le_mul hm (by omega)
-  have h1 : ¬ R.N R.m - 1 < R.k := by rw [hN]; omega
-  have h2 : ¬ R.N R.m - 2 < R.k := by rw [hN]; omega
-  have e1 : Examples₂.blkN R (R.N R.m - 1) = R.m - 1 := by
-    unfold Examples₂.blkN
-    rw [hN]
-    have : R.k + R.m * (R.t + 1) - 1 - R.k = (R.m - 1) * (R.t + 1) + R.t := by
-      obtain ⟨m', hm'⟩ : ∃ m', R.m = m' + 1 := ⟨R.m - 1, by omega⟩
-      rw [hm']
-      simp only [Nat.add_sub_cancel]
-      ring_nf
-      omega
-    rw [this, Nat.add_comm, Nat.add_mul_div_right _ _ (by omega), Nat.div_eq_of_lt (by omega), Nat.zero_add]
-  have e2 : Examples₂.blkN R (R.N R.m - 2) = R.m - 1 := by
-    unfold Examples₂.blkN
-    rw [hN]
-    have : R.k + R.m * (R.t + 1) - 2 - R.k = (R.m - 1) * (R.t + 1) + (R.t - 1) := by
-      obtain ⟨m', hm'⟩ : ∃ m', R.m = m' + 1 := ⟨R.m - 1, by omega⟩
-      rw [hm']
-      simp only [Nat.add_sub_cancel]
-      ring_nf
-      omega
-    rw [this, Nat.add_comm, Nat.add_mul_div_right _ _ (by omega), Nat.div_eq_of_lt (by omega), Nat.zero_add]
-  have hb1 : Examples₂.blkN R (R.N R.m - 1) < R.m := by rw [e1]; omega
-  have hb2 : Examples₂.blkN R (R.N R.m - 2) < R.m := by rw [e2]; omega
-  unfold Examples₂.wtN
-  rw [dif_neg h1, dif_neg h2, dif_pos hb1, dif_pos hb2]
-  have key : ∀ (a b : ℕ) (ha : a < R.m) (hb : b < R.m), a = b →
-      -wG R (P.e ⟨a, ha⟩) (a + 1) = -wG R (P.e ⟨b, hb⟩) (b + 1) := by
-    rintro a b ha hb rfl; rfl
-  exact key _ _ hb1 hb2 (by rw [e1, e2])
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
-
-theorem lamTrue_last_two (u : Pr.Word) (τ : X.Tau) (i j : Fin (R.N R.m)) (hi : i.1 = R.N R.m - 1) (hj : j.1 = R.N R.m - 2) :
-    (W.lamTrue u R.m τ).w i = (W.lamTrue u R.m τ).w j := by
-  unfold Wts.lamTrue shiftW Wts.lamN Examples₂.lamOf
-  simp only [dif_pos (le_refl R.m)]
-  rw [Examples₂.wtQ_eq_wtN, Examples₂.wtQ_eq_wtN, hi, hj, wtN_last_two]
-
-theorem sameShift_of_interlace (u : Pr.Word) (τ : X.Tau)
-    (hI : Interlace (N_m_succ R) (W.lamTrue u R.m τ) (W.sgTrue τ)) :
-    SameShift (W.lamTrue u R.m τ) (W.sgTrue τ) := by
-  have hk := R.m_add_three_le_k
-  have hm := R.two_le_m
-  have hN : R.N R.m = R.k + R.m * (R.t + 1) := rfl
-  have hmt : 2 * 2 ≤ R.m * (R.t + 1) := Nat.mul_le_mul hm (by have := R.rank_add_five_le; omega)
-  have hpos : 0 < R.N R.m - 1 := by rw [hN]; omega
-  have hpos' : 0 < R.N R.m := by omega
-  obtain ⟨ha, hb⟩ := hI ⟨R.N R.m - 1 - 1, by omega⟩
-  unfold aBr at ha
-  unfold bBr at hb
-  have e := lamTrue_last_two W u τ (iS (N_m_succ R) ⟨R.N R.m - 1 - 1, by omega⟩) (iC (N_m_succ R) ⟨R.N R.m - 1 - 1, by omega⟩)
-    (by simp [iS]; omega) (by simp [iC]; omega)
-  unfold SameShift DomWeight.detShift
-  rw [dif_pos hpos, dif_pos hpos']
-  have e2 : (W.lamTrue u R.m τ).w ⟨R.N R.m - 1, by omega⟩ = (W.lamTrue u R.m τ).w (iS (N_m_succ R) ⟨R.N R.m - 1 - 1, by omega⟩) := by
-    congr 1; ext; simp [iS]; omega
-  rw [e2]
-  have e3 : (W.sgTrue τ).w ⟨R.N R.m - 1 - 1, by omega⟩ = (W.sgTrue τ).w ⟨R.N R.m - 1 - 1, by omega⟩ := rfl
-  omega
-
-end Shift
-
-section Degen
-
-open Classical
-
-variable {K : Type} [Field K] {ι : Type} [Fintype ι]
-
-def weylTwoBlockMatrix (τ0 : ι) (k : ℕ) : ι × Fin k × Fin k → ℕ := fun v => if v.1 = τ0 then 1 else 0
-
-theorem iwh_rename {σ τ' : Type} (f : σ → τ') (w : τ' → ℕ) {φ : MvPolynomial σ K} {D : ℕ}
-    (h : IsWeightedHomogeneous (w ∘ f) φ D) : IsWeightedHomogeneous w (rename f φ) D := by
-  rw [φ.as_sum, map_sum, ← mem_weightedHomogeneousSubmodule]
-  refine Submodule.sum_mem _ fun d hd => ?_
-  rw [rename_monomial, mem_weightedHomogeneousSubmodule]
-  apply isWeightedHomogeneous_monomial
-  rw [Finsupp.weight_apply, Finsupp.sum_mapDomain_index (by simp) (by intros; simp [add_mul])]
-  have := h (mem_support_iff.mp hd)
-  rw [Finsupp.weight_apply] at this
-  simpa using this
-
-theorem weight_one_eq_sum_colW {k : ℕ} (m : Fin k × Fin k →₀ ℕ) :
-    Finsupp.weight (fun _ : Fin k × Fin k => (1 : ℕ)) m = ∑ s, Finsupp.weight (Formalism.GradedWeylDivisibility.colW k k) m s := by
-  simp only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, smul_eq_mul, mul_one]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun v _ => ?_
-  simp [Formalism.GradedWeylDivisibility.colW, Pi.single_apply]
-
-theorem dualWeyl_total {k : ℕ} {ν : Fin k → ℕ} {F : MvPolynomial (Fin k × Fin k) K}
-    (hF : F ∈ Formalism.GradedWeylDivisibility.dualWeyl K k k ν) : IsWeightedHomogeneous (fun _ => (1 : ℕ)) F (∑ s, ν s) := by
-  intro m hm
-  have h := (Formalism.GradedWeylDivisibility.mem_dualWeyl_iff.mp hF).1 hm
-  rw [weight_one_eq_sum_colW, h]
-
-theorem VV_le_blk {k : ℕ} (lam : ι → DomWeight k) (τ0 : ι) :
-    VV K lam ≤ weightedHomogeneousSubmodule K (weylTwoBlockMatrix τ0 k) (∑ s, (lam τ0).natW s) := by
-  unfold VV Formalism.GradedWeylDivisibility.tensorLat
-  rw [Submodule.span_le]
-  rintro P ⟨F, hF, rfl⟩
-  rw [SetLike.mem_coe, mem_weightedHomogeneousSubmodule]
-  have e : (∑ s, (lam τ0).natW s) = ∑ τ ∈ Finset.univ, (if τ = τ0 then ∑ s, (lam τ0).natW s else 0) := by
-    rw [Finset.sum_ite_eq']; simp
-  rw [e]
-  refine IsWeightedHomogeneous.prod _ _ _ fun τ _ => ?_
-  unfold Formalism.GradedWeylDivisibility.blockEmb
-  apply iwh_rename
-  by_cases hτ : τ = τ0
-  · subst hτ
-    have h1 := dualWeyl_total (hF τ)
-    rw [if_pos rfl]
-    have e2 : (weylTwoBlockMatrix τ k ∘ fun v : Fin k × Fin k => (τ, v)) = fun _ => (1 : ℕ) := by
-      funext v; simp [weylTwoBlockMatrix]
-    rw [e2]
-    exact h1
-  · rw [if_neg hτ]
-    have e2 : (weylTwoBlockMatrix τ0 k ∘ fun v : Fin k × Fin k => (τ, v)) = fun _ => (0 : ℕ) := by
-      funext v; simp [weylTwoBlockMatrix, hτ]
-    rw [e2]
-    intro m _
-    simp [Finsupp.weight_apply]
-
-theorem weight_blk_eq {k : ℕ} (τ0 : ι) (m : ι × Fin k × Fin k →₀ ℕ) :
-    Finsupp.weight (weylTwoBlockMatrix τ0 k) m = ∑ a, ∑ s, m (τ0, a, s) := by
-  rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_prod_type]
-  rw [Finset.sum_eq_single τ0 (by intro x _ hx; simp [weylTwoBlockMatrix, hx]) (by simp)]
-  rw [Fintype.sum_prod_type]
-  simp [weylTwoBlockMatrix]
-
-theorem coefLast_monomial {N n : ℕ} (hN : N = n + 1) (b : ι → Fin n → ℕ) (m : ι × Fin N × Fin N →₀ ℕ) :
-    coefLast (K := K) hN b (monomial m 1) =
-      if IsTop hN b m then monomial (m.comapDomain (upVar hN) (upVar_inj hN).injOn) (1 : K) else 0 := by
-  unfold coefLast
-  have e : (monomial m (1 : K)) = basisMonomials (ι × Fin N × Fin N) K m := by simp [coe_basisMonomials]
-  rw [e, Module.Basis.constr_basis]
-
-theorem weight_top {N n : ℕ} (hN : N = n + 1) (b : ι → Fin n → ℕ) (τ0 : ι) (m : ι × Fin N × Fin N →₀ ℕ)
-    (hm : IsTop hN b m) :
-    Finsupp.weight (weylTwoBlockMatrix τ0 N) m =
-      Finsupp.weight (weylTwoBlockMatrix τ0 n) (m.comapDomain (upVar hN) (upVar_inj hN).injOn) + ∑ s, b τ0 s := by
-  rw [weight_blk_eq, weight_blk_eq]
-  obtain ⟨h1, h2⟩ := hm
-  subst hN
-  rw [Fin.sum_univ_castSucc]
-  simp only [Fin.sum_univ_castSucc]
-  have e1 : ∀ a : Fin n, m (τ0, a.castSucc, Fin.last n) = 0 := fun a => h2 τ0 _
-  have e2 : m (τ0, Fin.last n, Fin.last n) = 0 := h2 τ0 _
-  have e3 : ∀ s : Fin n, m (τ0, Fin.last n, s.castSucc) = b τ0 s := fun s => h1 τ0 s
-  simp only [e1, e2, e3, add_zero]
-  congr 1
-
-theorem coefLast_blk {N n : ℕ} (hN : N = n + 1) (b : ι → Fin n → ℕ) (τ0 : ι) {f : Pol K ι N} {D d : ℕ}
-    (hf : IsWeightedHomogeneous (weylTwoBlockMatrix τ0 N) f D) (hD : D = d + ∑ s, b τ0 s) :
-    IsWeightedHomogeneous (weylTwoBlockMatrix τ0 n) (coefLast hN b f) d := by
-  rw [← mem_weightedHomogeneousSubmodule, f.as_sum, map_sum]
-  refine Submodule.sum_mem _ fun m hm => ?_
-  rw [show monomial m (coeff m f) = coeff m f • monomial m (1 : K) by rw [smul_monomial, smul_eq_mul, mul_one],
-    map_smul, coefLast_monomial]
-  refine Submodule.smul_mem _ _ ?_
-  split_ifs with ht
-  · rw [mem_weightedHomogeneousSubmodule]
-    apply isWeightedHomogeneous_monomial
-    have h1 := hf (mem_support_iff.mp hm)
-    rw [weight_top hN b τ0 m ht, hD] at h1
-    omega
-  · exact Submodule.zero_mem _
-
-theorem fockB_eq_zero_of_blk {σ : Type} {w : σ → ℕ} {p q : MvPolynomial σ K} {d1 d2 : ℕ}
-    (hp : IsWeightedHomogeneous w p d1) (hq : IsWeightedHomogeneous w q d2) (hne : d1 ≠ d2) : fockB p q = 0 := by
-  unfold fockB
-  refine Finset.sum_eq_zero fun m hm => ?_
-  have h1 := hp (mem_support_iff.mp hm)
-  by_cases h : coeff m q = 0
-  · simp [h]
-  · exact absurd (h1.symm.trans (hq h)) hne
-
-end Degen
-
-section Degen2
-
-open Classical
-
-variable {K : Type} [Field K] {ι : Type} [Fintype ι]
-
-theorem shift_arith {n : ℕ} (lam : DomWeight (n + 1)) (sg : DomWeight n) (hI : Interlace rfl lam sg) (hn : 0 < n) :
-    ((∑ i, lam.natW i : ℕ) : ℤ) =
-      ((∑ s, (bBr rfl lam sg s).toNat : ℕ) : ℤ) + ((∑ s, sg.natW s : ℕ) : ℤ) + n * (sg.detShift - lam.detShift) ∧
-    0 ≤ sg.detShift - lam.detShift := by
-  have hl : lam.detShift = lam.w (Fin.last n) := by
-    unfold DomWeight.detShift; rw [dif_pos (Nat.succ_pos n)]; congr 1
-  have hs : sg.detShift = sg.w ⟨n - 1, by omega⟩ := by
-    unfold DomWeight.detShift; rw [dif_pos hn]
-  have hA : ∀ i, ((lam.natW i : ℕ) : ℤ) = lam.w i - lam.w (Fin.last n) := by
-    intro i; unfold DomWeight.natW; rw [hl, Int.toNat_of_nonneg (by have := lam.anti (Fin.le_last i); omega)]
-  have hC : ∀ s, ((sg.natW s : ℕ) : ℤ) = sg.w s - sg.w ⟨n - 1, by omega⟩ := by
-    intro s; unfold DomWeight.natW
-    rw [hs, Int.toNat_of_nonneg (by have := sg.anti (show s ≤ (⟨n - 1, by omega⟩ : Fin n) from Fin.mk_le_mk.mpr (by omega)); omega)]
-  have hB : ∀ s, (((bBr rfl lam sg s).toNat : ℕ) : ℤ) = lam.w s.castSucc - sg.w s := by
-    intro s; rw [Int.toNat_of_nonneg (hI s).2]; unfold bBr iC; rfl
-  have hlast := hI ⟨n - 1, by omega⟩
-  unfold aBr iS at hlast
-  have e : (⟨(n - 1 : ℕ) + 1, by omega⟩ : Fin (n + 1)) = Fin.last n := Fin.ext (by simp; omega)
-  simp only [e] at hlast
-  refine ⟨?_, by rw [hs, hl]; exact hlast.1⟩
-  push_cast
-  simp only [hA, hB, hC]
-  rw [Fin.sum_univ_castSucc]
-  simp only [sub_self, add_zero, hs, hl]
-  rw [Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_sub_distrib]
-  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-  ring
-
-theorem brStd_eq_zero_of_shift {N n : ℕ} (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n)
-    (hI : InterlaceAll hN lam sg) (hn : 0 < n) (τ0 : ι) (hS : ¬ SameShift (lam τ0) (sg τ0)) :
-    brStd (K := K) hN lam sg = 0 := by
-  have key : ∀ (f : VV K lam) j, fockB (bVVfun K sg j) (coefLast hN (bExp hN lam sg) (f : Pol K ι N)) = 0 := by
-    intro f j
-    have hp : IsWeightedHomogeneous (weylTwoBlockMatrix τ0 n) (bVVfun K sg j) (∑ s, (sg τ0).natW s) := by
-      have := VV_le_blk (K := K) sg τ0 (show bVVfun K sg j ∈ VV K sg by rw [← bVV_coe]; exact (bVV K sg j).2)
-      rwa [mem_weightedHomogeneousSubmodule] at this
-    have hf : IsWeightedHomogeneous (weylTwoBlockMatrix τ0 N) (f : Pol K ι N) (∑ i, (lam τ0).natW i) := by
-      have := VV_le_blk (K := K) lam τ0 f.2
-      rwa [mem_weightedHomogeneousSubmodule] at this
-    have harith : ∑ s, (sg τ0).natW s + ∑ s, bExp hN lam sg τ0 s < ∑ i, (lam τ0).natW i := by
-      have h := hI τ0
-      subst hN
-      obtain ⟨h1, h2⟩ := shift_arith (lam τ0) (sg τ0) h hn
-      have h3 : (sg τ0).detShift - (lam τ0).detShift ≠ 0 := by
-        intro h0; apply hS; unfold SameShift; omega
-      have h4 : (0 : ℤ) < (n : ℤ) * ((sg τ0).detShift - (lam τ0).detShift) :=
-        mul_pos (by exact_mod_cast hn) (lt_of_le_of_ne h2 (Ne.symm h3))
-      unfold bExp
-      have : ((∑ s, (sg τ0).natW s + ∑ s, (bBr rfl (lam τ0) (sg τ0) s).toNat : ℕ) : ℤ) < ((∑ i, (lam τ0).natW i : ℕ) : ℤ) := by
-        push_cast at h1 ⊢; linarith
-      exact_mod_cast this
-    exact fockB_eq_zero_of_blk hp
-      (coefLast_blk hN _ τ0 hf (d := ∑ i, (lam τ0).natW i - ∑ s, bExp hN lam sg τ0 s) (by omega)) (by omega)
-  ext1 f
-  simp only [brStd, brStdP, LinearMap.comp_apply, LinearMap.smul_apply, Submodule.subtype_apply, projVV,
-    LinearMap.zero_apply]
-  simp only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, fockBL_apply, key, zero_smul,
-    smul_zero, Finset.sum_const_zero]
-
-end Degen2
 
 end Formalism.L2.Ker
 
@@ -912,8 +568,6 @@ theorem lx_zExp_off (b : ι → Fin n → ℕ) (v : ι × Fin N × Fin N) (hv : 
   rcases hv with h | h
   · exact h rfl
   · exact lx_iC_ne_iL hN s h
-
-theorem lx_upVar_inj : Function.Injective (upVar (ι := ι) hN) := upVar_inj hN
 
 theorem lx_isTop_iff (b : ι → Fin n → ℕ) (m : ι × Fin N × Fin N →₀ ℕ) (m' : ι × Fin n × Fin n →₀ ℕ) :
     (IsTop hN b m ∧ m.comapDomain (upVar hN) (upVar_inj hN).injOn = m') ↔
@@ -1387,8 +1041,6 @@ variable (K : Type) [Field K] {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n +
 
 def XiTenMem : Prop := xiTen hN K lam sg ∈ VV K lam
 
-def ProjFixesH : Prop := (projVV sg (hTen K sg) : Pol K ι n) = hTen K sg
-
 end Open
 
 end Formalism.L2.Ker
@@ -1609,120 +1261,6 @@ end Formalism.L2.Ker
 
 namespace Formalism.L2.Ker
 
-open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Col.Br
-
-section Inhabit
-
-def periodOf {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : ColumnChain R ι hc) (Pt : Type) {N n : ℕ}
-    (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n) (t : ι → ℂˣ) : PeriodMap R C where
-  Mt := ℂ
-  Wz := Pt → VV ℂ lam
-  evz := 0
-  Wrow := Pt → VV ℂ sg
-  lowerMap := lowerFn hN lam sg Pt fun τ => (t τ : ℂ)
-  period := 0
-
-def lowerShapeOf {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : ColumnChain R ι hc) (Pt : Type) {N n : ℕ}
-    (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n) (t : ι → ℂˣ) :
-    LowerShape (periodOf C Pt hN lam sg t) Pt hN lam sg t where
-  iz := LinearEquiv.refl ℂ _
-  ir := LinearEquiv.refl ℂ _
-  comm _ := rfl
-
-def periodTwice {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : ColumnChain R ι hc) (Pt : Type) {N n : ℕ}
-    (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n) (t : ι → ℂˣ) : PeriodMap R C where
-  Mt := ℂ
-  Wz := Pt → VV ℂ lam
-  evz := 0
-  Wrow := Pt → VV ℂ sg
-  lowerMap := (2 : ℂ) • lowerFn hN lam sg Pt fun τ => (t τ : ℂ)
-  period := 0
-
-def lowerShapeTwice {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : ColumnChain R ι hc) (Pt : Type) {N n : ℕ}
-    (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n) (t : ι → ℂˣ) :
-    LowerShape (periodTwice C Pt hN lam sg t) Pt hN lam sg t where
-  iz := LinearEquiv.refl ℂ _
-  ir := LinearEquiv.smulOfNeZero ℂ _ (2⁻¹ : ℂ) (by norm_num)
-  comm x := by
-    show (2⁻¹ : ℂ) • ((2 : ℂ) • lowerFn hN lam sg Pt (fun τ => (t τ : ℂ)) x) = lowerFn hN lam sg Pt (fun τ => (t τ : ℂ)) x
-    rw [smul_smul]; norm_num
-
-end Inhabit
-
-section Small
-
-def wt10 : DomWeight 2 := ⟨![1, 0], by intro a b h; fin_cases a <;> fin_cases b <;> simp_all⟩
-
-def wt0 : DomWeight 1 := ⟨![0], by intro a b _; fin_cases a; fin_cases b; simp⟩
-
-theorem small_interlace : InterlaceAll (rfl : 2 = 1 + 1) (fun _ : Unit => wt10) (fun _ : Unit => wt0) := by
-  intro τ i
-  fin_cases i
-  simp [aBr, bBr, wt10, wt0, iC, iS]
-
-theorem small_sameShift : SameShiftAll (fun _ : Unit => wt10) (fun _ : Unit => wt0) := by
-  intro τ
-  simp [SameShift, DomWeight.detShift, wt10, wt0]
-
-def weightTwoOneZero : DomWeight 3 := ⟨![2, 1, 0], by intro a b h; fin_cases a <;> fin_cases b <;> simp_all⟩
-
-theorem small2_interlace : InterlaceAll (rfl : 3 = 2 + 1) (fun _ : Unit => weightTwoOneZero) (fun _ : Unit => wt10) := by
-  intro τ i
-  fin_cases i <;> simp [aBr, bBr, weightTwoOneZero, wt10, iC, iS]
-
-theorem small2_sameShift : SameShiftAll (fun _ : Unit => weightTwoOneZero) (fun _ : Unit => wt10) := by
-  intro τ
-  simp [SameShift, DomWeight.detShift, weightTwoOneZero, wt10]
-
-theorem small2_cBr : cBr (rfl : 3 = 2 + 1) weightTwoOneZero wt10 = 1 := by
-  decide
-
-def weightTwoZeroZero : DomWeight 3 := ⟨![2, 0, 0], by intro a b h; fin_cases a <;> fin_cases b <;> simp_all⟩
-
-theorem small3_interlace : InterlaceAll (rfl : 3 = 2 + 1) (fun _ : Unit => weightTwoZeroZero) (fun _ : Unit => wt10) := by
-  intro τ i
-  fin_cases i <;> simp [aBr, bBr, weightTwoZeroZero, wt10, iC, iS]
-
-theorem small3_sameShift : SameShiftAll (fun _ : Unit => weightTwoZeroZero) (fun _ : Unit => wt10) := by
-  intro τ
-  simp [SameShift, DomWeight.detShift, weightTwoZeroZero, wt10]
-
-theorem small3_cBr : cBr (rfl : 3 = 2 + 1) weightTwoZeroZero wt10 = -1 := by
-  decide
-
-theorem small3_coefXi : CoefXi (rfl : 3 = 2 + 1) (fun _ : Unit => weightTwoZeroZero) (fun _ : Unit => wt10) ℚ :=
-  coefXi_of rfl _ _ small3_interlace small3_sameShift
-
-theorem small3_brStdP : brStdP (rfl : 3 = 2 + 1) (fun _ : Unit => weightTwoZeroZero) (fun _ : Unit => wt10)
-    (xiTen rfl ℚ (fun _ : Unit => weightTwoZeroZero) (fun _ : Unit => wt10)) =
-      brConst rfl ℚ (fun _ : Unit => weightTwoZeroZero) (fun _ : Unit => wt10) • projVV (fun _ : Unit => wt10) (hTen ℚ (fun _ : Unit => wt10)) :=
-  branchingProjection_xiTensor rfl _ _ small3_interlace small3_sameShift
-
-theorem small3_brStd_ne : brStd (K := ℚ) (rfl : 3 = 2 + 1) (fun _ : Unit => weightTwoZeroZero) (fun _ : Unit => wt10) ≠ 0 :=
-  brStd_ne_zero rfl _ _ small3_interlace small3_sameShift
-
-end Small
-
-section Chain
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
-
-theorem chain_coefXi (u : Pr.Word) (hI : ∀ τ, Interlace (N_m_succ R) (W.lamTrue u R.m τ) (W.sgTrue τ)) :
-    CoefXi (N_m_succ R) (W.lamTrue u R.m) W.sgTrue X.K :=
-  coefXi_of (N_m_succ R) _ _ hI (fun τ => sameShift_of_interlace W u τ (hI τ))
-
-theorem chain_brTranspose (u : Pr.Word) (f : VV X.K (W.lamTrue u R.m)) (g : VV X.K W.sgTrue) :
-    pairBK W.sgTrue (brC W u f) g =
-      pairBK (W.lamTrue u R.m) f
-        (ioAt (N_m_succ R) (W.lamTrue u R.m) W.sgTrue (fun τ => X.emb τ (star ((Pr.piT u : 𝓞 X.E) : X.E))) g) :=
-  brAtTranspose (N_m_succ R) _ _ _ f g
-
-theorem chain_brStd_ne (u : Pr.Word) (hI : ∀ τ, Interlace (N_m_succ R) (W.lamTrue u R.m τ) (W.sgTrue τ)) :
-    brStd (K := X.K) (N_m_succ R) (W.lamTrue u R.m) W.sgTrue ≠ 0 :=
-  brStd_ne_zero (N_m_succ R) _ _ hI (fun τ => sameShift_of_interlace W u τ (hI τ))
-
-end Chain
-
 end Formalism.L2.Ker
 
 namespace Formalism.L2.Ker
@@ -1753,9 +1291,6 @@ theorem ioHw_on_xi (hI : InterlaceAll hN lam sg) (hS : SameShiftAll lam sg)
   rw [brConst]
   simp only [kapBr, Int.cast_prod, div_eq_mul_inv, Finset.prod_mul_distrib, Finset.prod_inv_distrib]
   field_simp
-
-theorem projFixesH_of (hh : hTen K sg ∈ VV K sg) : ProjFixesH (K := K) sg :=
-  projVV_of_mem sg _ hh
 
 end Norm
 
@@ -1820,72 +1355,9 @@ theorem sameShiftTr (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (τ : D
 
 end ShiftTr
 
-section NZ
-
-variable {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n + 1)
-  (lam : ι → DomWeight N) (sg : ι → DomWeight n)
-
-theorem brAt_ne_zero (hI : InterlaceAll hN lam sg) (hS : SameShiftAll lam sg) (t : ι → Kˣ) :
-    brAt hN lam sg (fun τ => (t τ : K)) ≠ 0 := by
-  unfold brAt
-  exact smul_ne_zero (Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ (t τ).ne_zero) (brStd_ne_zero hN lam sg hI hS)
-
-theorem lowerFn_ne_zero (Pt : Type) [Nonempty Pt] (hI : InterlaceAll hN lam sg) (hS : SameShiftAll lam sg) (t : ι → Kˣ) :
-    lowerFn hN lam sg Pt (fun τ => (t τ : K)) ≠ 0 := by
-  intro h0
-  apply brAt_ne_zero hN lam sg hI hS t
-  ext1 x
-  have := congrFun (LinearMap.congr_fun h0 (fun _ => x)) (Classical.arbitrary Pt)
-  simpa [lowerFn] using this
-
-end NZ
-
-section ShapeNe
-
-theorem lowerShape_ne {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C : ColumnChain R ι hc} {P : PeriodMap R C}
-    {Pt : Type} [Nonempty Pt] {N n : ℕ} {hN : N = n + 1} {lam : ι → DomWeight N} {sg : ι → DomWeight n} {t : ι → ℂˣ}
-    (S : LowerShape P Pt hN lam sg t) (hI : InterlaceAll hN lam sg) (hS : SameShiftAll lam sg) : P.lowerMap ≠ 0 := by
-  intro h0
-  apply lowerFn_ne_zero hN lam sg Pt hI hS t
-  ext1 y
-  have := S.comm (S.iz.symm y)
-  rw [h0, LinearMap.zero_apply, map_zero, LinearEquiv.apply_symm_apply] at this
-  rw [← this, LinearMap.zero_apply]
-
-theorem small3_lowerMap_ne {R : Ranks} {hc : Unit → HCParam R} (C : ColumnChain R Unit hc) :
-    (periodOf C Unit (rfl : 3 = 2 + 1) (fun _ : Unit => weightTwoZeroZero) (fun _ : Unit => wt10) (fun _ => 1)).lowerMap ≠ 0 :=
-  lowerShape_ne (lowerShapeOf C Unit rfl _ _ _) small3_interlace small3_sameShift
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
-
-theorem chain_brC_ne (u : Pr.Word) (hpi : Pr.piT u ≠ 0)
-    (hI : ∀ τ, Interlace (N_m_succ R) (W.lamTrue u R.m τ) (W.sgTrue τ)) : brC W u ≠ 0 := by
-  have hne : ∀ τ, X.emb τ (star ((Pr.piT u : 𝓞 X.E) : X.E)) ≠ 0 := by
-    intro τ
-    rw [Ne, map_eq_zero, star_eq_zero]
-    exact_mod_cast hpi
-  exact brAt_ne_zero (N_m_succ R) _ _ hI (fun τ => sameShift_of_interlace W u τ (hI τ)) fun τ => Units.mk0 _ (hne τ)
-
-end ShapeNe
-
 section Comparison₂
 
 open Formalism.MainNotions.product_first_zeroth_parts
-
-theorem lowerTie_beOn {D : Formalism.BasicNotions.D7} {u : D.what₂.Word} (h : LowerTie D u) : BeOnTie D u := by
-  obtain ⟨P, hP⟩ := h
-  intro τ
-  rw [← hP τ]
-  exact P.beOn_eq τ
-
-theorem lowerTie_eval {D : Formalism.BasicNotions.D7} {u : D.what₂.Word} (P : Pend D u)
-    (hP : ∀ τ, P.br τ = brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)) (w : D.what₂.places.Pl)
-    (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) (c : (D.fm u).clsP) :
-    P.coP w ((D.mem u).P.lowerMap ((D.mem u).P.evz φ)) c =
-      blk (fun τ => brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)) (P.coM w c (φ ((D.fm u).til c))) := by
-  have := P.Pt_eq w φ hφ c
-  simp only [hP] at this
-  exact this
 
 variable {ι : Type} [Fintype ι]
 
@@ -1911,39 +1383,6 @@ theorem fockF_smul_smul {σ : Type} (c : ℂ) (p q : MvPolynomial σ ℂ) :
     refine Finset.sum_congr rfl fun m _ => ?_
     simp only [coeff_smul, smul_eq_mul, star_mul']
     ring
-
-theorem pend_rigid {D : Formalism.BasicNotions.D7} {u : D.what₂.Word} (P P' : Pend D u) (a : D.what₂.Tau → ℂ)
-    (hM : P'.coM = P.coM) (hg : P'.gP = P.gP) (hb : ∀ τ, P'.br τ = a τ • P.br τ) (w : D.what₂.places.Pl)
-    (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) (hz : Pt D u φ ∈ (D.fm u).ptC)
-    (hne : ((D.fm u).ipP (Pt D u φ) (Pt D u φ)).re ≠ 0) : ‖∏ τ, a τ‖ = 1 := by
-  have h1 := P.re_petersson_self_eq_sum_coord w _ hz
-  have h2 := P'.re_petersson_self_eq_sum_coord w _ hz
-  have e : ∀ c, P'.coP w (Pt D u φ) c = (∏ τ, a τ) • P.coP w (Pt D u φ) c := by
-    intro c
-    rw [P'.Pt_eq w φ hφ c, P.Pt_eq w φ hφ c, hM]
-    have : (fun τ => ⇑(P'.br τ)) = fun τ => ⇑(a τ • P.br τ) := by funext τ; rw [hb τ]
-    rw [this, blk_smul, LinearMap.smul_apply]
-  simp only [e, hg, map_smul, nfAll, fockF_smul_smul, mul_div_assoc] at h2
-  have hn : ((∏ τ, a τ) * star (∏ τ, a τ)) = ((‖∏ τ, a τ‖ ^ 2 : ℝ) : ℂ) := by
-    rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
-  simp only [hn, Complex.re_ofReal_mul] at h2
-  simp only [nfAll] at h1
-  have h3 : ((D.fm u).ipP (Pt D u φ) (Pt D u φ)).re = ‖∏ τ, a τ‖ ^ 2 * ((D.fm u).ipP (Pt D u φ) (Pt D u φ)).re := by
-    conv_rhs => rw [h1]
-    rw [h2, Finset.mul_sum]
-    refine Finset.sum_congr rfl fun c _ => ?_
-    ring
-  have h4 : ‖∏ τ, a τ‖ ^ 2 = 1 := by
-    have : (‖∏ τ, a τ‖ ^ 2 - 1) * ((D.fm u).ipP (Pt D u φ) (Pt D u φ)).re = 0 := by linarith
-    rcases mul_eq_zero.mp this with h | h
-    · linarith
-    · exact absurd h hne
-  have h5 : 0 ≤ ‖∏ τ, a τ‖ := norm_nonneg _
-  nlinarith
-
-theorem lowerTie_of_isEmpty (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (hE : IsEmpty (D.fm u).clsP) (hC : (D.fm u).ptC = ⊥)
-    (hI : (D.fm u).SgInterlace) (hb : BeOnTie D u) : LowerTie D u :=
-  ⟨Formalism.MainNotions.GlobalTheoryTheory.Inhab.pendJunk D u hE hC hI _ hb, fun _ => rfl⟩
 
 end Comparison₂
 
@@ -3017,9 +2456,6 @@ end B
 section C
 
 variable {K : Type} [Field K] [CharZero K] {N : ℕ}
-
-theorem hwD_ten_unit (f : MvPolynomial (Fin N × Fin N) K) : ten (fun _ : Unit => f) = blockEmb K () f := by
-  simp [ten]
 
 theorem hwD_fockB_unit (f g : MvPolynomial (Fin N × Fin N) K) :
     fockB (ten fun _ : Unit => f) (ten fun _ : Unit => g) = fockB f g := by
@@ -4684,54 +4120,10 @@ section Final
 
 open Formalism.MainNotions.product_first_zeroth_parts
 
-theorem brOne_isBr {N n : ℕ} (hN : N = n + 1) (l : Formalism.BasicNotions.DomWeight N) (s : Formalism.BasicNotions.DomWeight n)
-    (hI : Formalism.L2.Col.Br.Interlace hN l s) (hS : Formalism.L2.Col.Br.SameShift l s) :
-    Formalism.MainNotions.PrimeDegreeVariant.IsBr hN.symm l s (brOne ℂ hN l s) := by
-  refine ⟨int_brOne hN l s hI hS, fun f _ => ?_, ⟨Formalism.L2.Col.Br.xiBr ℂ hN l s, ?_, brOne_xi_ne hN l s hI hS⟩,
-    fun g f _ => brOne_sqAct hN l s hS g f, fun a f _ => brOne_last hN l s hI a f, fun f hf => ?_⟩
-  · rw [← Formalism.L2.Col.nablaSq_eq_delSq]; exact brOne_mem hN l s f
-  · rw [← Formalism.L2.Col.nablaSq_eq_delSq]; exact xiBr_mem hN l s hI hS
-  · rw [← Formalism.L2.Col.nablaSq_eq_delSq] at hf
-    refine (nm_le hN l s hI hS f hf).trans (mul_le_mul_of_nonneg_right (nm_bd_of hN l s hI hS (nm_kap_le hN l s hI hS)) ?_)
-    by_cases h0 : f = 0
-    · subst h0; simp [Formalism.BasicNotions.normFock, nm_fockF_zero_left]
-    · exact (nm_normFock_pos _ f h0).le
-
-theorem small3_isBr : Formalism.MainNotions.PrimeDegreeVariant.IsBr (rfl : 2 + 1 = 3) weightTwoZeroZero wt10 (brOne ℂ (rfl : 3 = 2 + 1) weightTwoZeroZero wt10) :=
-  brOne_isBr rfl weightTwoZeroZero wt10 (small3_interlace ()) (small3_sameShift ())
-
-theorem small3_norm_pos : 0 < beOnVal (rfl : 3 = 2 + 1) weightTwoZeroZero wt10 := by
-  unfold beOnVal
-  rw [small3_cBr]
-  have := nm_kapR_pos (rfl : 3 = 2 + 1) weightTwoZeroZero wt10 (small3_interlace ()) (small3_sameShift ())
-  have h2 := Real.sqrt_pos.mpr this
-  simpa using h2
-
 theorem brOneIsBr (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) : BrOneIsBr D u :=
   brOneIsBr_of D u (fun τ hI => int_member D u τ hI) (fun τ hI => nm_hB D u τ hI)
 
 theorem beOnEq (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) : BeOnEq D u := nm_beOnEq D u
-
-theorem lowerTie_isBr {D : Formalism.BasicNotions.D7} {u : D.what₂.Word} (h : LowerTie D u) : ∃ P : Pend D u, ArchimedeanSignatureMatching P := by
-  obtain ⟨P, hP⟩ := h
-  refine ⟨P, fun τ => ?_⟩
-  rw [hP τ]
-  exact brOneIsBr D u τ (interlaceTr D u P.interlace τ)
-
-theorem lowerTie_beOnVal {D : Formalism.BasicNotions.D7} {u : D.what₂.Word} (h : LowerTie D u) (τ : D.what₂.Tau) :
-    (D.fm u).beOn τ = beOnVal (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) := by
-  have h1 := lowerTie_beOn h τ
-  obtain ⟨P, -⟩ := h
-  rw [h1]
-  exact beOnEq D u τ (interlaceTr D u P.interlace τ)
-
-theorem lowerTie_brStdP {D : Formalism.BasicNotions.D7} {u : D.what₂.Word} (P : Pend D u)
-    (hP : ∀ τ, P.br τ = brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)) (w : D.what₂.places.Pl)
-    (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) (c : (D.fm u).clsP) :
-    P.coP w ((D.mem u).P.lowerMap ((D.mem u).P.evz φ)) c =
-      (Formalism.L2.Col.Br.brStdP (Nm_succ D.R).symm (lamTr D u) (sgTr D u) (P.coM w c (φ ((D.fm u).til c))) :
-        Formalism.L2.DIV.Pol ℂ D.what₂.Tau (D.R.N D.R.m - 1)) := by
-  rw [lowerTie_eval P hP w φ hφ c, blk_brOne]
 
 end Final
 
@@ -4768,16 +4160,6 @@ theorem ta_sum_map_comap {α : Type} (mon : ι × α →₀ ℕ) :
     exact hσ (congrArg Prod.fst hy)
   · intro h; exact absurd (Finset.mem_univ τ) h
 
-theorem ta_blk_id {n : ℕ} (p : MvPolynomial (ι × Fin n × Fin n) ℂ) :
-    blk (fun _ : ι => (id : MvPolynomial (Fin n × Fin n) ℂ → MvPolynomial (Fin n × Fin n) ℂ)) p = p := by
-  have h : blk (fun _ : ι => (id : MvPolynomial (Fin n × Fin n) ℂ → MvPolynomial (Fin n × Fin n) ℂ)) = LinearMap.id := by
-    apply (MvPolynomial.basisMonomials (ι × Fin n × Fin n) ℂ).ext
-    intro mon
-    rw [MvPolynomial.coe_basisMonomials, ta_blk_monomial]
-    simp only [id, LinearMap.id_apply]
-    rw [ten_monomial, ta_sum_map_comap]
-  rw [h]; rfl
-
 theorem ta_blk_comp {n n' n'' : ℕ} (F : ι → MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin n' × Fin n') ℂ)
     (G : ι → MvPolynomial (Fin n' × Fin n') ℂ →ₗ[ℂ] MvPolynomial (Fin n'' × Fin n'') ℂ) (p : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     blk (fun τ => ⇑(G τ)) (blk (fun τ => ⇑(F τ)) p) = blk (fun τ => ⇑(G τ ∘ₗ F τ)) p := by
@@ -4793,29 +4175,6 @@ def ta_sqActL {n : ℕ} (l : Formalism.BasicNotions.DomWeight n) (g : GL (Fin n)
   Formalism.BasicNotions.detPow ℂ n g l.detShift • (Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) (g : Matrix (Fin n) (Fin n) ℂ).transpose).toLinearMap
 
 theorem ta_sqActL_coe {n : ℕ} (l : Formalism.BasicNotions.DomWeight n) (g : GL (Fin n) ℂ) : ⇑(ta_sqActL l g) = Formalism.BasicNotions.sqAct ℂ n l g := rfl
-
-theorem ta_sqAct_inv {n : ℕ} (l : Formalism.BasicNotions.DomWeight n) (g : GL (Fin n) ℂ) (f : MvPolynomial (Fin n × Fin n) ℂ) :
-    Formalism.BasicNotions.sqAct ℂ n l g⁻¹ (Formalism.BasicNotions.sqAct ℂ n l g f) = f := by
-  unfold Formalism.BasicNotions.sqAct
-  rw [map_smul, smul_smul, Formalism.L2.DIV.rd_rowAct_rowAct, ← Matrix.transpose_mul]
-  have e1 : ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) * (g : Matrix (Fin n) (Fin n) ℂ) = 1 := by
-    rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
-  have e2 : Formalism.BasicNotions.detPow ℂ n g⁻¹ l.detShift * Formalism.BasicNotions.detPow ℂ n g l.detShift = 1 := by
-    unfold Formalism.BasicNotions.detPow
-    rw [← Units.val_mul, ← mul_zpow, ← map_mul, inv_mul_cancel, map_one, one_zpow, Units.val_one]
-  rw [e1, e2, Matrix.transpose_one, Formalism.L2.DIV.rd_rowAct_one, one_smul]
-
-theorem ta_blk_sqAct_inj {n : ℕ} (l : ι → Formalism.BasicNotions.DomWeight n) (g : ι → GL (Fin n) ℂ) (x : MvPolynomial (ι × Fin n × Fin n) ℂ)
-    (h : blk (fun τ => Formalism.BasicNotions.sqAct ℂ n (l τ) (g τ)) x = 0) : x = 0 := by
-  have h1 := ta_blk_comp (fun τ => ta_sqActL (l τ) (g τ)) (fun τ => ta_sqActL (l τ) (g τ)⁻¹) x
-  have h2 : (fun τ => ⇑(ta_sqActL (l τ) (g τ)⁻¹ ∘ₗ ta_sqActL (l τ) (g τ))) =
-      fun _ : ι => (id : MvPolynomial (Fin n × Fin n) ℂ → MvPolynomial (Fin n × Fin n) ℂ) := by
-    funext τ f
-    exact ta_sqAct_inv (l τ) (g τ) f
-  rw [h2, ta_blk_id] at h1
-  simp only [ta_sqActL_coe] at h1
-  rw [h, map_zero] at h1
-  exact h1.symm
 
 theorem ta_nfAll_pos {n : ℕ} (l : ι → Formalism.BasicNotions.DomWeight n) (x : MvPolynomial (ι × Fin n × Fin n) ℂ) (hx : x ≠ 0) :
     0 < (nfAll l x x).re := by
@@ -4833,260 +4192,7 @@ theorem ta_nfAll_nonneg {n : ℕ} (l : ι → Formalism.BasicNotions.DomWeight n
   · subst hx; simp [nfAll, nm_fockF_zero_left]
   · exact (ta_nfAll_pos l x hx).le
 
-theorem ta_ten_ne {n : ℕ} (f : ι → MvPolynomial (Fin n × Fin n) ℂ) (hf : ∀ τ, f τ ≠ 0) : Formalism.MainNotions.product_first_zeroth_parts.ten f ≠ 0 := by
-  unfold Formalism.MainNotions.product_first_zeroth_parts.ten
-  rw [Finset.prod_ne_zero_iff]
-  intro τ _
-  exact (map_ne_zero_iff _ (MvPolynomial.rename_injective _ (Prod.mk_right_injective τ))).2 (hf τ)
-
 end BlkCalc
-
-section TieAt
-
-variable {D : Formalism.BasicNotions.D7} {u : D.what₂.Word}
-  {coM : D.what₂.places.Pl → (D.fm u).clsP → (((D.mem u).C.Y D.R.m → ℂ) →ₗ[ℂ]
-    MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)}
-  {gP : D.what₂.places.Pl → (D.fm u).clsP → D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ}
-
-theorem lowerTieAt_weak (h : LowerTieAt D u coM gP) : LowerTie D u := by
-  obtain ⟨-, P, -, -, hP⟩ := h
-  exact ⟨P, hP⟩
-
-theorem lowerTieAt_mem (h : LowerTieAt D u coM gP) (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) :
-    (D.mem u).P.lowerMap ((D.mem u).P.evz φ) ∈ (D.fm u).ptC := h.1 φ hφ
-
-theorem brTen_ne (hI : (D.fm u).SgInterlace) : ∃ p ∈ CSpan ((D.fm u).lam D.R.m), brTen D u p ≠ 0 := by
-  choose f hf hne using fun τ => (brOneIsBr D u τ (interlaceTr D u hI τ)).2.2.1
-  refine ⟨Formalism.MainNotions.product_first_zeroth_parts.ten f, Submodule.subset_span ⟨f, fun τ => ?_, rfl⟩, ?_⟩
-  · have := hf τ
-    rwa [lamTr, delSq_wSh] at this
-  · unfold brTen
-    rw [blk_ten]
-    exact ta_ten_ne _ hne
-
-theorem seenAt_of_fullAt (hI : (D.fm u).SgInterlace) (w : D.what₂.places.Pl) (c : (D.fm u).clsP) (hF : FullAt D u coM w c) :
-    SeenAt D u coM w c := by
-  obtain ⟨p, hp, hne⟩ := brTen_ne (D := D) (u := u) hI
-  obtain ⟨φ, hφ, e⟩ := hF p hp
-  exact ⟨φ, hφ, by rw [e]; exact hne⟩
-
-theorem lowerTieAt_norm (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) :
-    ((D.fm u).ipP (Pt D u φ) (Pt D u φ)).re = lowerNormAt D u coM gP w φ := by
-  obtain ⟨hz, P, rfl, rfl, hP⟩ := h
-  rw [P.re_petersson_self_eq_sum_coord w _ (hz φ hφ)]
-  unfold lowerNormAt brTen
-  refine Finset.sum_congr rfl fun c _ => ?_
-  rw [P.Pt_eq w φ hφ c]
-  simp only [hP]
-
-theorem lowerTieAt_zero_iff (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) :
-    Pt D u φ = 0 ↔ ∀ c, brTen D u (coM w c (φ ((D.fm u).til c))) = 0 := by
-  obtain ⟨hz, P, rfl, rfl, hP⟩ := h
-  have e : ∀ c, P.coP w (Pt D u φ) c = brTen D u (P.coM w c (φ ((D.fm u).til c))) := by
-    intro c
-    rw [P.Pt_eq w φ hφ c]
-    unfold brTen
-    simp only [hP]
-  constructor
-  · intro h0 c
-    rw [← e c, h0, map_zero]; rfl
-  · intro h0
-    exact P.coP_inj w _ (hz φ hφ) (funext fun c => by rw [e c, h0 c]; rfl)
-
-theorem lowerTieAt_int (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) :
-    (∃ y ∈ (D.fm u).SP w, (D.fm u).ptEmb y = Pt D u φ) ↔
-      ∀ c, brTen D u (coM w c (φ ((D.fm u).til c))) ∈ IntSpan D w (D.fm u).sg := by
-  obtain ⟨hz, P, rfl, rfl, hP⟩ := h
-  rw [P.pt_co w _ (hz φ hφ)]
-  refine forall_congr' fun c => ?_
-  rw [P.Pt_eq w φ hφ c]
-  unfold brTen
-  simp only [hP]
-
-theorem lowerNormAt_pos (w : D.what₂.places.Pl) (c : (D.fm u).clsP) (φ : Fn D u D.R.m)
-    (hne : brTen D u (coM w c (φ ((D.fm u).til c))) ≠ 0) : 0 < lowerNormAt D u coM gP w φ := by
-  unfold lowerNormAt
-  have hc : ∀ c', 0 < ((Nat.card ((D.fm u).stabilizer₂ c') : ℝ))⁻¹ := fun c' => inv_pos.2 (by exact_mod_cast Nat.card_pos)
-  refine Finset.sum_pos' (fun c' _ => mul_nonneg (hc c').le (ta_nfAll_nonneg _ _)) ⟨c, Finset.mem_univ c, mul_pos (hc c) ?_⟩
-  exact ta_nfAll_pos _ _ fun h0 => hne (ta_blk_sqAct_inj _ _ _ h0)
-
-theorem lowerTieAt_pos (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (c : (D.fm u).clsP) (hS : SeenAt D u coM w c) :
-    ∃ φ ∈ (D.fm u).Fi D.R.m, 0 < ((D.fm u).ipP (Pt D u φ) (Pt D u φ)).re := by
-  obtain ⟨φ, hφ, hne⟩ := hS
-  exact ⟨φ, hφ, by rw [lowerTieAt_norm h w φ hφ]; exact lowerNormAt_pos w c φ hne⟩
-
-theorem lowerTieAt_rigid_seen (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (c : (D.fm u).clsP) (hS : SeenAt D u coM w c)
-    (P' : Pend D u) (a : D.what₂.Tau → ℂ) (hM : P'.coM = coM) (hg : P'.gP = gP)
-    (hb : ∀ τ, P'.br τ = a τ • brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)) : ‖∏ τ, a τ‖ = 1 := by
-  obtain ⟨φ, hφ, hpos⟩ := lowerTieAt_pos h w c hS
-  obtain ⟨hz, P, hPM, hPg, hP⟩ := h
-  exact pend_rigid P P' a (hM.trans hPM.symm) (hg.trans hPg.symm) (fun τ => by rw [hb τ, hP τ]) w φ hφ (hz φ hφ) hpos.ne'
-
-theorem lowerTieAt_rigid (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (c : (D.fm u).clsP) (hF : FullAt D u coM w c)
-    (P' : Pend D u) (a : D.what₂.Tau → ℂ) (hM : P'.coM = coM) (hg : P'.gP = gP)
-    (hb : ∀ τ, P'.br τ = a τ • brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)) : ‖∏ τ, a τ‖ = 1 :=
-  lowerTieAt_rigid_seen h w c (seenAt_of_fullAt P'.interlace w c hF) P' a hM hg hb
-
-theorem lowerTieAt_other (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m)
-    (coP' : (D.mem u).P.Wrow →ₗ[ℂ] ((D.fm u).clsP → MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m - 1) × Fin (D.R.N D.R.m - 1)) ℂ))
-    (h3 : ∀ z ∈ (D.fm u).ptC, ((D.fm u).ipP z z).re = ∑ c, ((Nat.card ((D.fm u).stabilizer₂ c) : ℝ))⁻¹ *
-      (nfAll (D.fm u).sg (blk (fun τ => Formalism.BasicNotions.sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coP' z c))
-        (blk (fun τ => Formalism.BasicNotions.sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coP' z c))).re)
-    (z : (D.mem u).P.Wrow) (hz : z ∈ (D.fm u).ptC) (h1 : ∀ c, coP' z c = brTen D u (coM w c (φ ((D.fm u).til c)))) :
-    ((D.fm u).ipP z z).re = ((D.fm u).ipP (Pt D u φ) (Pt D u φ)).re := by
-  rw [lowerTieAt_norm h w φ hφ, h3 z hz]
-  simp only [h1]
-  rfl
-
-theorem lowerTieAt_scalar (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (c : (D.fm u).clsP) (hS : SeenAt D u coM w c) (t : ℂ)
-    (coP' : (D.mem u).P.Wrow →ₗ[ℂ] ((D.fm u).clsP → MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m - 1) × Fin (D.R.N D.R.m - 1)) ℂ))
-    (h1 : ∀ φ ∈ (D.fm u).Fi D.R.m, ∀ c, coP' (t • Pt D u φ) c = brTen D u (coM w c (φ ((D.fm u).til c))))
-    (h3 : ∀ z ∈ (D.fm u).ptC, ((D.fm u).ipP z z).re = ∑ c, ((Nat.card ((D.fm u).stabilizer₂ c) : ℝ))⁻¹ *
-      (nfAll (D.fm u).sg (blk (fun τ => Formalism.BasicNotions.sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coP' z c))
-        (blk (fun τ => Formalism.BasicNotions.sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coP' z c))).re) : ‖t‖ = 1 := by
-  obtain ⟨φ, hφ, hpos⟩ := lowerTieAt_pos h w c hS
-  have h4 := lowerTieAt_other h w φ hφ coP' h3 (t • Pt D u φ) ((D.fm u).ptC.smul_mem t (h.1 φ hφ)) (h1 φ hφ)
-  rw [((D.fm u).ipP (t • Pt D u φ)).map_smul t (Pt D u φ), (D.fm u).ipP.map_smulₛₗ t (Pt D u φ), LinearMap.smul_apply, smul_eq_mul,
-    smul_eq_mul, ← mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.re_ofReal_mul] at h4
-  have h5 : ‖t‖ ^ 2 = 1 := by
-    have : (‖t‖ ^ 2 - 1) * ((D.fm u).ipP (Pt D u φ) (Pt D u φ)).re = 0 := by linarith
-    rcases mul_eq_zero.mp this with h | h
-    · linarith
-    · exact absurd h hpos.ne'
-  have h6 : 0 ≤ ‖t‖ := norm_nonneg _
-  nlinarith
-
-theorem lowerTieAt_scalar_one (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) :
-    ∃ coP' : (D.mem u).P.Wrow →ₗ[ℂ] ((D.fm u).clsP → MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m - 1) × Fin (D.R.N D.R.m - 1)) ℂ),
-      (∀ φ ∈ (D.fm u).Fi D.R.m, ∀ c, coP' ((1 : ℂ) • Pt D u φ) c = brTen D u (coM w c (φ ((D.fm u).til c)))) ∧
-      ∀ z ∈ (D.fm u).ptC, ((D.fm u).ipP z z).re = ∑ c, ((Nat.card ((D.fm u).stabilizer₂ c) : ℝ))⁻¹ *
-        (nfAll (D.fm u).sg (blk (fun τ => Formalism.BasicNotions.sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coP' z c))
-          (blk (fun τ => Formalism.BasicNotions.sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coP' z c))).re := by
-  obtain ⟨-, P, rfl, rfl, hP⟩ := h
-  refine ⟨P.coP w, fun φ hφ c => ?_, P.re_petersson_self_eq_sum_coord w⟩
-  rw [one_smul, P.Pt_eq w φ hφ c]
-  unfold brTen
-  simp only [hP]
-
-theorem lowerTieAt_integral (h : LowerTieAt D u coM gP) : ∃ hr : (D.fm u).PRat, (D.fm u).PtilIntegral hr := by
-  obtain ⟨hz, P, -, -, hP⟩ := h
-  have h4 : ArchimedeanSignatureMatching P := fun τ => by rw [hP τ]; exact brOneIsBr D u τ (interlaceTr D u P.interlace τ)
-  exact ⟨PRat_of P h4 hz, Pt_integral P h4 hz _⟩
-
-theorem seenAt_iff (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) :
-    (∃ c, SeenAt D u coM w c) ↔ ∃ φ ∈ (D.fm u).Fi D.R.m, Pt D u φ ≠ 0 := by
-  constructor
-  · rintro ⟨c, φ, hφ, hne⟩
-    exact ⟨φ, hφ, fun h0 => hne ((lowerTieAt_zero_iff h w φ hφ).1 h0 c)⟩
-  · rintro ⟨φ, hφ, hne⟩
-    by_contra H
-    apply hne
-    rw [lowerTieAt_zero_iff h w φ hφ]
-    intro c
-    by_contra H2
-    exact H ⟨c, φ, hφ, H2⟩
-
-theorem lowerTieAt_ex_iff : (∃ coM gP, LowerTieAt D u coM gP) ↔ (LowerTie D u ∧ ∀ φ ∈ (D.fm u).Fi D.R.m, Pt D u φ ∈ (D.fm u).ptC) :=
-  ⟨fun ⟨_, _, h⟩ => ⟨lowerTieAt_weak h, h.1⟩, fun ⟨⟨P, hP⟩, hz⟩ => ⟨P.coM, P.gP, hz, P, rfl, rfl, hP⟩⟩
-
-theorem lowerTieAt_pos_full (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (c : (D.fm u).clsP) (hF : FullAt D u coM w c) :
-    ∃ φ ∈ (D.fm u).Fi D.R.m, 0 < ((D.fm u).ipP (Pt D u φ) (Pt D u φ)).re := by
-  obtain ⟨P, -⟩ := h.2
-  exact lowerTieAt_pos h w c (seenAt_of_fullAt P.interlace w c hF)
-
-theorem lowerTieAt_scalar_full (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (c : (D.fm u).clsP) (hF : FullAt D u coM w c) (t : ℂ)
-    (coP' : (D.mem u).P.Wrow →ₗ[ℂ] ((D.fm u).clsP → MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m - 1) × Fin (D.R.N D.R.m - 1)) ℂ))
-    (h1 : ∀ φ ∈ (D.fm u).Fi D.R.m, ∀ c, coP' (t • Pt D u φ) c = brTen D u (coM w c (φ ((D.fm u).til c))))
-    (h3 : ∀ z ∈ (D.fm u).ptC, ((D.fm u).ipP z z).re = ∑ c, ((Nat.card ((D.fm u).stabilizer₂ c) : ℝ))⁻¹ *
-      (nfAll (D.fm u).sg (blk (fun τ => Formalism.BasicNotions.sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coP' z c))
-        (blk (fun τ => Formalism.BasicNotions.sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coP' z c))).re) : ‖t‖ = 1 := by
-  obtain ⟨P, -⟩ := h.2
-  exact lowerTieAt_scalar h w c (seenAt_of_fullAt P.interlace w c hF) t coP' h1 h3
-
-theorem ta_opNorm_smul (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (a : ℂ)
-    (b : MvPolynomial (Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ →ₗ[ℂ] MvPolynomial (Fin (D.R.N D.R.m - 1) × Fin (D.R.N D.R.m - 1)) ℂ) :
-    opNorm D u τ (a • b) = ‖a‖ * opNorm D u τ b := by
-  unfold opNorm
-  rw [← smul_eq_mul, ← Real.sSup_smul_of_nonneg (norm_nonneg a)]
-  congr 1
-  rw [← Set.image_smul, Set.image_image]
-  refine Set.image_congr fun f _ => ?_
-  have hn : (a * star a) = ((‖a‖ ^ 2 : ℝ) : ℂ) := by
-    rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
-  simp only [LinearMap.smul_apply, Formalism.BasicNotions.normFock, fockF_smul_smul, hn, smul_eq_mul]
-  rw [mul_div_assoc, Complex.re_ofReal_mul, mul_div_assoc, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
-
-theorem pend_rigid_br (P P' : Pend D u) (a : D.what₂.Tau → ℂ) (hb : ∀ τ, P'.br τ = a τ • P.br τ)
-    (τ : D.what₂.Tau) (h0 : (D.fm u).beOn τ ≠ 0) : ‖a τ‖ = 1 := by
-  have h1 := P.beOn_eq τ
-  have h2 := P'.beOn_eq τ
-  rw [hb τ, ta_opNorm_smul, ← h1] at h2
-  have h3 : (‖a τ‖ - 1) * (D.fm u).beOn τ = 0 := by linarith
-  rcases mul_eq_zero.mp h3 with h | h
-  · linarith
-  · exact absurd h h0
-
-theorem lowerTie_rigid_br (h : LowerTie D u) (P' : Pend D u) (a : D.what₂.Tau → ℂ)
-    (hb : ∀ τ, P'.br τ = a τ • brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)) (τ : D.what₂.Tau) : ‖a τ‖ = 1 := by
-  have hI := interlaceTr D u P'.interlace τ
-  have hI' := (interlace_iff _ _ (Nm_succ D.R)).1 hI
-  have hS := sameShiftTr D u τ hI
-  have hb0 : (D.fm u).beOn τ ≠ 0 := by
-    rw [lowerTie_beOnVal h τ]
-    unfold beOnVal
-    refine mul_ne_zero (abs_ne_zero.2 ?_) (Real.sqrt_pos.2 (nm_kapR_pos _ _ _ hI' hS)).ne'
-    exact_mod_cast cBr_ne_zero _ _ _ hI'
-  have h1 := lowerTie_beOn h τ
-  have h2 := P'.beOn_eq τ
-  rw [hb τ, ta_opNorm_smul, ← h1] at h2
-  have h3 : (‖a τ‖ - 1) * (D.fm u).beOn τ = 0 := by linarith
-  rcases mul_eq_zero.mp h3 with h | h
-  · linarith
-  · exact absurd h hb0
-
-theorem pend_unique (P : Pend D u) (w : D.what₂.places.Pl) (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) (hz : Pt D u φ ∈ (D.fm u).ptC)
-    (z : (D.mem u).P.Wrow) (hz' : z ∈ (D.fm u).ptC)
-    (h1 : ∀ c, P.coP w z c = blk (fun τ => P.br τ) (P.coM w c (φ ((D.fm u).til c)))) : z = Pt D u φ := by
-  have h0 : P.coP w (z - Pt D u φ) = 0 := by
-    funext c
-    rw [map_sub, Pi.sub_apply, h1 c, P.Pt_eq w φ hφ c, sub_self]; rfl
-  exact sub_eq_zero.1 (P.coP_inj w _ ((D.fm u).ptC.sub_mem hz' hz) h0)
-
-theorem lowerTieAt_of_isEmpty (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (hE : IsEmpty (D.fm u).clsP) (hC : (D.fm u).ptC = ⊥)
-    (hI : (D.fm u).SgInterlace) (hb : BeOnTie D u) (h0 : ∀ φ ∈ (D.fm u).Fi D.R.m, Pt D u φ = 0)
-    (coM : D.what₂.places.Pl → (D.fm u).clsP → (((D.mem u).C.Y D.R.m → ℂ) →ₗ[ℂ]
-      MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ))
-    (gP : D.what₂.places.Pl → (D.fm u).clsP → D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ) : LowerTieAt D u coM gP :=
-  ⟨fun φ hφ => by rw [h0 φ hφ]; exact Submodule.zero_mem _,
-    Formalism.MainNotions.GlobalTheoryTheory.Inhab.pendJunk D u hE hC hI _ hb, funext fun _ => funext fun c => hE.elim c,
-    funext fun _ => funext fun c => hE.elim c, fun _ => rfl⟩
-
-theorem lowerTieAt_zero_of_bot (h : LowerTieAt D u coM gP) (hC : (D.fm u).ptC = ⊥) (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) :
-    Pt D u φ = 0 := by
-  have := h.1 φ hφ
-  rw [hC] at this
-  exact (Submodule.mem_bot ℂ).1 this
-
-end TieAt
-
-section Kill
-
-open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Col.Br
-
-theorem small2_coef_kill : coefLast (K := ℂ) (rfl : 2 = 1 + 1) (bExp rfl (fun _ : Unit => wt10) (fun _ : Unit => wt0))
-    (monomial (Finsupp.single ((), (0 : Fin 2), (0 : Fin 2)) 1) 1) = 0 := by
-  rw [coefLast_monomial, if_neg]
-  intro h
-  have h1 := h.1 () 0
-  simp [bExp, bBr, wt10, wt0, iC, iL, Finsupp.single_apply] at h1
-
-theorem small2_brOne_kill : brOne ℂ (rfl : 2 = 1 + 1) wt10 wt0 (X (0, 0)) = 0 := by
-  have e : (toUnit ℂ 2) (X (0, 0)) = monomial (Finsupp.single ((), (0 : Fin 2), (0 : Fin 2)) 1) 1 := by
-    simp only [toUnit, renameEquiv_apply, rename_X]
-    rfl
-  simp only [brOne, LinearMap.comp_apply, AlgEquiv.toLinearMap_apply, e, brStdP, LinearMap.smul_apply, small2_coef_kill, map_zero, smul_zero]
-
-end Kill
 
 end At
 
@@ -5098,205 +4204,13 @@ open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Col.B
 
 section Eps
 
-theorem eps_natW_anti {n : ℕ} (l : DomWeight n) : Antitone l.natW :=
-  fun _ _ h => Int.toNat_le_toNat (sub_le_sub_right (l.anti h) _)
-
-theorem eps_homog {n : ℕ} (l : DomWeight n) (f : MvPolynomial (Fin n × Fin n) ℂ) (hf : f ∈ delSq ℂ n l) :
-    f.IsHomogeneous (∑ s, l.natW s) := by
-  have hd : f ∈ Formalism.GradedWeylDivisibility.dualWeyl ℂ n n l.natW := Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl l.natW (eps_natW_anti l) hf
-  have h1 : f ∈ weightedHomogeneousSubmodule ℂ (Formalism.GradedWeylDivisibility.colW n n) l.natW := (Submodule.mem_inf.mp hd).1
-  rw [mem_weightedHomogeneousSubmodule] at h1
-  have h2 : f ∈ homogeneousSubmodule (Fin n × Fin n) ℂ (∑ s, l.natW s) := by
-    rw [mem_homogeneousSubmodule]
-    intro m hm
-    rw [← Formalism.GradedWeylDivisibility.lclosedeq_weight_sum, h1 hm]
-  exact (mem_homogeneousSubmodule _ _).1 h2
-
-theorem eps_aeval_neg {σ : Type} (f : MvPolynomial σ ℂ) (d : ℕ) (hf : f.IsHomogeneous d) :
-    aeval (fun v => -X v) f = ((-1 : ℂ) ^ d) • f := by
-  conv_lhs => rw [f.as_sum]
-  conv_rhs => rw [f.as_sum]
-  rw [map_sum, Finset.smul_sum]
-  refine Finset.sum_congr rfl fun m hm => ?_
-  have hdeg : (Finsupp.weight 1) m = d := hf (mem_support_iff.1 hm)
-  have e : ∑ i ∈ m.support, m i = d := by
-    rw [← hdeg, Finsupp.weight_apply, Finsupp.sum]; simp
-  have hp : (m.prod fun i k => (-X i : MvPolynomial σ ℂ) ^ k) = (-1 : MvPolynomial σ ℂ) ^ d * m.prod fun i k => X i ^ k := by
-    unfold Finsupp.prod
-    rw [Finset.prod_congr rfl fun i _ => neg_pow (X i : MvPolynomial σ ℂ) (m i), Finset.prod_mul_distrib,
-      Finset.prod_pow_eq_pow_sum, e]
-  rw [aeval_monomial, monomial_eq, hp, smul_eq_C_mul, algebraMap_eq]
-  simp only [map_pow, map_neg, map_one]
-  ring
-
-theorem eps_sqAct_neg_one {n : ℕ} (l : DomWeight n) (f : MvPolynomial (Fin n × Fin n) ℂ) (hf : f ∈ delSq ℂ n l) :
-    sqAct ℂ n l (-1) f = ((-1 : ℂ) ^ Formalism.MainNotions.PrimeDegreeVariant.wsum l) • f := by
-  have hr : Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) ((-1 : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ).transpose =
-      aeval (fun v => -X v) := by
-    unfold Formalism.GradedWeylDivisibility.rowAct
-    congr 1
-    funext v
-    simp [Matrix.one_apply, apply_ite C, ite_mul]
-  unfold sqAct detPow
-  rw [hr, eps_aeval_neg f _ (eps_homog l f hf), smul_smul]
-  congr 1
-  rw [Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, Units.val_neg, Units.val_one,
-    Matrix.det_neg, Matrix.det_one, mul_one, Fintype.card_fin, ← zpow_natCast, ← zpow_mul, ← zpow_natCast,
-    ← zpow_add₀ (by norm_num : (-1 : ℂ) ≠ 0)]
-  congr 1
-  unfold Formalism.MainNotions.PrimeDegreeVariant.wsum DomWeight.natW
-  rcases Nat.eq_zero_or_pos n with hn | hn
-  · subst hn; simp
-  · have hge : ∀ i : Fin n, l.detShift ≤ l.w i := by
-      intro i
-      simp only [DomWeight.detShift, hn, dite_true]
-      exact l.anti (Fin.mk_le_mk.2 (by omega))
-    push_cast
-    rw [Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg (sub_nonneg.2 (hge i)), Finset.sum_sub_distrib,
-      Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-    ring
-
 theorem eps_sqAct_mem (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ)
     (hf : f ∈ delSq ℂ N lam) : sqAct ℂ N lam g f ∈ delSq ℂ N lam := by
   unfold sqAct; refine Submodule.smul_mem _ _ ?_
   have := Formalism.UG.P.weyl_module_GL_stable ℂ N N le_rfl lam.natW (inside₂ ℂ N g) f hf
   simpa [Formalism.UG.dwAct, inside₂, delSq] using this
 
-theorem eps_ten_smul {ι : Type} [Fintype ι] {n : ℕ} (c : ι → ℂ) (g : ι → MvPolynomial (Fin n × Fin n) ℂ) :
-    Formalism.MainNotions.product_first_zeroth_parts.ten (fun τ => c τ • g τ) = (∏ τ, c τ) • Formalism.MainNotions.product_first_zeroth_parts.ten g := by
-  unfold Formalism.MainNotions.product_first_zeroth_parts.ten
-  simp only [Algebra.smul_def, map_mul, AlgHom.commutes, Finset.prod_mul_distrib, map_prod]
-
 variable {D : Formalism.BasicNotions.D7} {u : D.what₂.Word}
-
-theorem negOp_ten (f : D.what₂.Tau → MvPolynomial (Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) :
-    negOp D u (Formalism.MainNotions.product_first_zeroth_parts.ten f) =
-      Formalism.MainNotions.product_first_zeroth_parts.ten fun τ => sqAct ℂ _ (lamTr D u τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1)) (f τ) :=
-  blk_ten (fun τ => ta_sqActL (lamTr D u τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1))) f
-
-theorem negOp_mem {p : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ}
-    (hp : p ∈ CSpan ((D.fm u).lam D.R.m)) : negOp D u p ∈ CSpan ((D.fm u).lam D.R.m) := by
-  induction hp using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨f, hf, rfl⟩ := hx
-    rw [negOp_ten]
-    refine Submodule.subset_span ⟨_, fun τ => ?_, rfl⟩
-    have := eps_sqAct_mem _ (lamTr D u τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1)) (f τ)
-      (by rw [lamTr, delSq_wSh]; exact hf τ)
-    rwa [lamTr, delSq_wSh] at this
-  | zero => rw [map_zero]; exact Submodule.zero_mem _
-  | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
-  | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ a hx
-
-theorem negOp_negOp (p : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) :
-    negOp D u (negOp D u p) = p := by
-  have hinv : (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1))⁻¹ = Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1) := by
-    rw [← map_inv, inv_neg_one]
-  have e := ta_blk_comp (fun τ => ta_sqActL (lamTr D u τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1)))
-    (fun τ => ta_sqActL (lamTr D u τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1))) p
-  have h2 : (fun τ => ⇑(ta_sqActL (lamTr D u τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1)) ∘ₗ
-      ta_sqActL (lamTr D u τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1)))) =
-      fun _ : D.what₂.Tau => (id : MvPolynomial (Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ → _) := by
-    funext τ f
-    have := ta_sqAct_inv (lamTr D u τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1)) f
-    rw [hinv] at this
-    exact this
-  rw [h2, ta_blk_id] at e
-  exact e
-
-theorem sgnSg_mul_self : sgnSg D u * sgnSg D u = 1 := by
-  unfold sgnSg
-  rw [← Finset.prod_mul_distrib]
-  refine Finset.prod_eq_one fun τ _ => ?_
-  rw [← mul_zpow]; norm_num
-
-theorem brTen_negOp (hI : (D.fm u).SgInterlace) {p : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ}
-    (hp : p ∈ CSpan ((D.fm u).lam D.R.m)) : brTen D u (negOp D u p) = sgnSg D u • brTen D u p := by
-  induction hp using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨f, hf, rfl⟩ := hx
-    have hf' : ∀ τ, f τ ∈ delSq ℂ _ (lamTr D u τ) := fun τ => by rw [lamTr, delSq_wSh]; exact hf τ
-    rw [negOp_ten]
-    unfold brTen
-    rw [blk_ten, blk_ten]
-    have e : ∀ τ, brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)
-        (sqAct ℂ _ (lamTr D u τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (-1)) (f τ)) =
-        ((-1 : ℂ) ^ Formalism.MainNotions.PrimeDegreeVariant.wsum (sgTr D u τ)) • brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) (f τ) := by
-      intro τ
-      have h4 := brOne_member4 D u τ (interlaceTr D u hI τ)
-      rw [h4.2.2.1 (-1) (f τ) (hf' τ)]
-      exact eps_sqAct_neg_one _ _ (h4.1 (f τ) (hf' τ))
-    simp only [e]
-    rw [eps_ten_smul]
-    rfl
-  | zero => simp
-  | add x y _ _ hx hy => rw [map_add, map_add, hx, hy, map_add, smul_add]
-  | smul a x _ hx => rw [map_smul, map_smul, hx, map_smul, smul_comm]
-
-theorem brTen_eps_zero (hI : (D.fm u).SgInterlace) {p : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ}
-    (hp : p ∈ CSpan ((D.fm u).lam D.R.m)) {ε : ℂ} (he : negOp D u p = ε • p) (hne : ε ≠ sgnSg D u) : brTen D u p = 0 := by
-  have h := brTen_negOp hI hp
-  rw [he, map_smul] at h
-  have h2 : (ε - sgnSg D u) • brTen D u p = 0 := by rw [sub_smul, h, sub_self]
-  exact (smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hne)
-
-theorem brTen_ne_eps (hI : (D.fm u).SgInterlace) :
-    ∃ q ∈ CSpan ((D.fm u).lam D.R.m), negOp D u q = sgnSg D u • q ∧ brTen D u q ≠ 0 := by
-  obtain ⟨p, hp, hne⟩ := brTen_ne (D := D) (u := u) hI
-  have hs := sgnSg_mul_self (D := D) (u := u)
-  refine ⟨(1 / 2 : ℂ) • (p + sgnSg D u • negOp D u p),
-    Submodule.smul_mem _ _ (add_mem hp (Submodule.smul_mem _ _ (negOp_mem hp))), ?_, ?_⟩
-  · have e1 : negOp D u ((1 / 2 : ℂ) • (p + sgnSg D u • negOp D u p)) = (1 / 2 : ℂ) • (negOp D u p + sgnSg D u • p) := by
-      rw [map_smul, map_add, map_smul, negOp_negOp]
-    have e2 : sgnSg D u • ((1 / 2 : ℂ) • (p + sgnSg D u • negOp D u p)) = (1 / 2 : ℂ) • (negOp D u p + sgnSg D u • p) := by
-      rw [smul_comm, smul_add, smul_smul, hs, one_smul, add_comm]
-    rw [e1, e2]
-  · rw [map_smul, map_add, map_smul, brTen_negOp hI hp, smul_smul, hs, one_smul, ← two_smul ℂ, smul_smul]
-    norm_num
-    exact hne
-
-theorem parityAt_of_seenAt {coM : D.what₂.places.Pl → (D.fm u).clsP → (((D.mem u).C.Y D.R.m → ℂ) →ₗ[ℂ]
-      MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)} (hI : (D.fm u).SgInterlace)
-    {w : D.what₂.places.Pl} {c : (D.fm u).clsP} {ε : ℂ}
-    (hC : ∀ φ ∈ (D.fm u).Fi D.R.m, coM w c (φ ((D.fm u).til c)) ∈ CSpan ((D.fm u).lam D.R.m))
-    (hV : ValEps D u coM w c ε) (hS : SeenAt D u coM w c) : ParityAt D u ε := by
-  by_contra hne
-  obtain ⟨φ, hφ, h⟩ := hS
-  exact h (brTen_eps_zero hI (hC φ hφ) (hV φ hφ) hne)
-
-theorem seenAt_of_fullAtEps {coM : D.what₂.places.Pl → (D.fm u).clsP → (((D.mem u).C.Y D.R.m → ℂ) →ₗ[ℂ]
-      MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)} (hI : (D.fm u).SgInterlace)
-    {w : D.what₂.places.Pl} {c : (D.fm u).clsP} {ε : ℂ} (hP : ParityAt D u ε) (hF : FullAtEps D u coM w c ε) :
-    SeenAt D u coM w c := by
-  obtain ⟨q, hq, he, hne⟩ := brTen_ne_eps (D := D) (u := u) hI
-  obtain ⟨φ, hφ, e⟩ := hF q hq (by rw [hP]; exact he)
-  exact ⟨φ, hφ, by rw [e]; exact hne⟩
-
-theorem fullAtEps_of_fullAt {coM : D.what₂.places.Pl → (D.fm u).clsP → (((D.mem u).C.Y D.R.m → ℂ) →ₗ[ℂ]
-      MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)}
-    {w : D.what₂.places.Pl} {c : (D.fm u).clsP} (hF : FullAt D u coM w c) (ε : ℂ) : FullAtEps D u coM w c ε :=
-  fun p hp _ => hF p hp
-
-theorem lowerTieAt_pos_eps {coM : D.what₂.places.Pl → (D.fm u).clsP → (((D.mem u).C.Y D.R.m → ℂ) →ₗ[ℂ]
-      MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)}
-    {gP : D.what₂.places.Pl → (D.fm u).clsP → D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ}
-    (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (c : (D.fm u).clsP) {ε : ℂ} (hP : ParityAt D u ε)
-    (hF : FullAtEps D u coM w c ε) : ∃ φ ∈ (D.fm u).Fi D.R.m, 0 < ((D.fm u).ipP (Pt D u φ) (Pt D u φ)).re := by
-  obtain ⟨P, -⟩ := h.2
-  exact lowerTieAt_pos h w c (seenAt_of_fullAtEps P.interlace hP hF)
-
-theorem lowerTieAt_scalar_eps {coM : D.what₂.places.Pl → (D.fm u).clsP → (((D.mem u).C.Y D.R.m → ℂ) →ₗ[ℂ]
-      MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)}
-    {gP : D.what₂.places.Pl → (D.fm u).clsP → D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ}
-    (h : LowerTieAt D u coM gP) (w : D.what₂.places.Pl) (c : (D.fm u).clsP) {ε : ℂ} (hP : ParityAt D u ε)
-    (hF : FullAtEps D u coM w c ε) (t : ℂ)
-    (coP' : (D.mem u).P.Wrow →ₗ[ℂ] ((D.fm u).clsP → MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m - 1) × Fin (D.R.N D.R.m - 1)) ℂ))
-    (h1 : ∀ φ ∈ (D.fm u).Fi D.R.m, ∀ c, coP' (t • Pt D u φ) c = brTen D u (coM w c (φ ((D.fm u).til c))))
-    (h3 : ∀ z ∈ (D.fm u).ptC, ((D.fm u).ipP z z).re = ∑ c, ((Nat.card ((D.fm u).stabilizer₂ c) : ℝ))⁻¹ *
-      (nfAll (D.fm u).sg (blk (fun τ => Formalism.BasicNotions.sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coP' z c))
-        (blk (fun τ => Formalism.BasicNotions.sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coP' z c))).re) : ‖t‖ = 1 := by
-  obtain ⟨P, -⟩ := h.2
-  exact lowerTieAt_scalar h w c (seenAt_of_fullAtEps P.interlace hP hF) t coP' h1 h3
 
 end Eps
 

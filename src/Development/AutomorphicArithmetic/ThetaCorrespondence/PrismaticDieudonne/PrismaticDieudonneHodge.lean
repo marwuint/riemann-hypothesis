@@ -3,9 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDatumBiconnOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSumEpsPairingSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPeriodIntegral
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WindowLiftToFontaineAinfMatricesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivisibleGroupDatumOfConnectedDualConnectedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrismaticDieudonneHodgeOfHodgeTateDatumStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WindowLiftToFontaineAinfMatrices
+import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivisibleGroupDatumOfConnectedDualConnected
+import Development.AbelianVarietyTheory.Definitions.Divisors.GhostFrobenius
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrismaticDieudonneHodgeOfHodgeTateDatum
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.FarguesExactness.FarguesExactOfPrismatic
 
 set_option autoImplicit false
@@ -20,8 +22,8 @@ theorem prismaticDieudonneHodge : GlobalTheory.Published.PrismaticDieudonneHodge
   intro p _ C _ _ _ v O _ _ hv _ _ ε hε
   haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)
   have hs : IsPrimitiveSystem ε := fun n => GlobalTheory.Dieudonne.isPrimitiveRoot_untilt_root hε n
-  exact GlobalTheory.T.prismaticDieudonneHodge_of_hodgeTateDatum p C v O hv ε hs (GlobalTheory.T.pDivisibleGroup_datum_of_connected_dual_connected p C v O hv ε hs
-    (hasDatum_biconn_of GlobalTheory.BRing.exists_bFrame GlobalTheory.QLog.WindowMat.window_matrices GlobalTheory.T.window_lift_to_fontaineAinf_matrices
+  exact _root_.GlobalTheory.PDivLat.prismaticDieudonneHodgeAt_of_hasDatum p C v O hv ε hs (_root_.GlobalTheory.PDivLat.hasDatum_of_conn_dual_conn p C v O hv ε hs
+    (hasDatum_biconn_of GlobalTheory.BRing.exists_bFrame GlobalTheory.QLog.WindowMat.window_matrices _root_.GlobalTheory.WinLift.Top.window_lift
       GlobalTheory.DatumOfMatrices.hasDatum_of_matrices p C v O hv ε hs))
 
 theorem farguesExact : GlobalTheory.CompanionTheory.Ar.HT.FarguesExact :=

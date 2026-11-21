@@ -7,11 +7,18 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DegVand
 import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselPeriodPositivity
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalizedBesselMapsAnyScalePieriConstants
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.GapCoefficientDerivativeBoundStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselGapExistsFunctionalStatement
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.GapCoefficientDerivativeBound
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
+import Formalism.PeriodIntegrals.DSInfCharCap
+import Formalism.PeriodIntegrals.LowCyc
+import Formalism.PeriodIntegrals.UpqRep
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselGapExistsFunctional
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HaarEqSmul
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselMapsProportionalDiscreteSeriesLargeGapStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsKFiniteBesselPeriodNeZeroGapStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselMapsProportionalDiscreteSeriesLargeGap
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsKFiniteBesselPeriodNeZeroGap
 
 open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
@@ -51,7 +58,7 @@ theorem one_side_gap (hH : GlobalTheory.GapIn.Hyp) {k r : ℕ} {ε : Fin (2 * r 
     rw [← hmul _ ht _ hti, Matrix.mul_nonsing_inv _ htd, hone]
   obtain ⟨hS', hR⟩ := GlobalTheory.BesselMoveGap.bessel_move_gap hH k r Wp z π u c μW μN μG νq t ht hN hcomm hpsi hS
   obtain ⟨hbes, hmove⟩ := hR R hU
-  obtain ⟨l₁, hl₁⟩ := Gp91.GlobalTheory.T.bessel_gap_exists_functional hH.1 k r ε mu h R Wp z π u μW _ μG _ hdg hgap hok hS'
+  obtain ⟨l₁, hl₁⟩ := _root_.Gp91.CompanionTheory.FamilyDerivativeExpansion.BeL.exists_normalised_bessel_map hH.1 k r ε mu h R Wp z π u μW _ μG _ hdg hgap hok hS'
   have hl₂ : IsBeL R z π μW (μN.map fun x => fun i j => (t⁻¹ * Matrix.of x * t) i j) (fun v => l (R.σ t v)) := by
     refine ⟨(hbes l).1 hl, fun x hx v hv => ⟨(hl₁.2 x hx v hv).1, ?_⟩⟩
     rw [(hl₁.2 x hx v hv).2, ← hbe _ (hsm t ht x hx) _ (hTK t ht v hv),
@@ -70,19 +77,19 @@ theorem one_side_gap (hH : GlobalTheory.GapIn.Hyp) {k r : ℕ} {ε : Fin (2 * r 
       rw [hmul _ hti _ hx, e2]
     simp only [this]
   have hB₁ : IsBes R z π (fun v => B (R.σ t v)) := (hbes B).1 hB
-  obtain ⟨v, hv, hv0⟩ := GlobalTheory.T.exists_kFinite_besselPeriod_ne_zero_gap hH k r ε mu h R Wp z π u μW _ μG _ (fun v => B (R.σ t v))
+  obtain ⟨v, hv, hv0⟩ := _root_.GlobalTheory.BesselPeriodNonzeroGap.exists_kFin_period_ne_zero hH k r ε mu h R Wp z π u μW _ μG _ (fun v => B (R.σ t v))
     (fun v => l (R.σ t v)) w hds hgap hok hS' hB₁ hw
     (by rw [htr B, hmass]; exact (ENNReal.ofReal_pos.2 hm).ne') (by rw [htr B, hmass]; exact ENNReal.ofReal_ne_top) hl₂
   have hvs : v ∈ R.sm := hTKsm v (hKT v hv)
   have hnz : NzOn R (fun v => l (R.σ t v)) := ⟨v, hvs, hv0⟩
   refine ⟨GlobalTheory.exists_kFin_ne_zero_of_cwCont hKF k r ε mu R hds Wp l hl.1 hl.2.1 hl.2.2.2 ⟨_, hsm t ht v hvs, hv0⟩, ?_⟩
-  obtain ⟨β, hβ⟩ := GlobalTheory.T.besselMaps_proportional_discreteSeries_largeGap hH k r ε mu R Wp z π u μW _ μG _ _ _ hdg hS' hl₂.1 hnz hB₁
+  obtain ⟨β, hβ⟩ := _root_.GlobalTheory.GapLine.bessel_line_gap hH k r ε mu R Wp z π u μW _ μG _ _ _ hdg hS' hl₂.1 hnz hB₁
   have hβ' : ∀ v ∈ R.sm, B v = β • l v := fun v hv => by
     have := hβ _ (hsm _ hti v hv)
     simpa only [e2] using this
   refine ⟨β, hβ', ?_⟩
   have hws : w ∈ R.sm := hTKsm w (hKT w hw)
-  have hiso := (Gp91.GlobalTheory.T.isIsoB_sqrt_fdeg_smul_of_gap hH.1 k r ε mu h R Wp z π u μW _ μG _ _ dd hdg hgap hok hS' hl₂ hdd hnz).2 w hws
+  have hiso := (_root_.Gp91.GlobalTheory.scaled_bessel_isometric hH.1 k r ε mu h R Wp z π u μW _ μG _ _ dd hdg hgap hok hS' hl₂ hdd hnz).2 w hws
   have h2 := (htr fun v => ((Real.sqrt dd : ℝ) : ℂ) • l v).symm.trans hiso
   have h3 : ENNReal.ofReal dd * PI.BesselPeriodGGP.l2SG νq (fun g => B (R.σ g w)) =
       ENNReal.ofReal (‖β‖ ^ 2) * PI.BesselPeriodGGP.l2SG νq (fun g => ((Real.sqrt dd : ℝ) : ℂ) • l (R.σ g w)) := by

@@ -185,9 +185,6 @@ theorem sigma_inv (g : GL (Fin n) F) : sigma g⁻¹ = (sigma g)⁻¹ := by
   refine eq_inv_of_mul_eq_one_left ?_
   rw [← sigma_mul, mul_inv_cancel, sigma_one]
 
-theorem sigma_involutive : Function.Involutive (sigma : GL (Fin n) F → GL (Fin n) F) :=
-  sigma_sigma
-
 theorem sigma_mem_unipotent {u : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n) :
     sigma u ∈ Iwasawa.unipotent F n := by
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
@@ -195,10 +192,6 @@ theorem sigma_mem_unipotent {u : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n
     exact hu.1 (Fin.rev_lt_rev.2 hij)
   · rw [sigma_apply]
     exact hu.2 (Fin.rev i)
-
-theorem sigma_mem_unipotent_iff {u : GL (Fin n) F} :
-    sigma u ∈ Iwasawa.unipotent F n ↔ u ∈ Iwasawa.unipotent F n :=
-  ⟨fun h => sigma_sigma u ▸ sigma_mem_unipotent h, sigma_mem_unipotent⟩
 
 theorem sigma_mem_borel {b : GL (Fin n) F} (hb : b ∈ borel n F) : sigma b ∈ borel n F := by
   rw [mem_borel_iff] at hb ⊢
@@ -219,9 +212,6 @@ theorem theta_mul (g h : GL (Fin n) F) : theta (g * h) = theta g * theta h := by
 @[simp]
 theorem theta_theta (g : GL (Fin n) F) : theta (theta g) = g := by
   rw [theta, theta, ← sigma_inv g, sigma_sigma, inv_inv]
-
-theorem sigma_theta (g : GL (Fin n) F) : sigma (theta g) = g⁻¹ := by
-  rw [theta, ← sigma_inv g, sigma_sigma]
 
 theorem sigma_mul_mul_inv (a g b : GL (Fin n) F) :
     sigma (a * g * b⁻¹) = theta b * sigma g * (theta a)⁻¹ := by
@@ -280,17 +270,6 @@ theorem sigma_mem_doubleCoset_permGL {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)}
   obtain ⟨b₁, hb₁, b₂, hb₂, rfl⟩ := mem_doubleCoset.1 hg
   refine mem_doubleCoset.2 ⟨sigma b₂, sigma_mem_borel hb₂, sigma b₁, sigma_mem_borel hb₁, ?_⟩
   rw [sigma_mul, sigma_mul, sigma_permGL, ← mul_assoc]
-
-theorem sigma_diagGL (t : Fin n → Fˣ) :
-    sigma (Iwasawa.diagGL F n t) = Iwasawa.diagGL F n (t ∘ Fin.rev) := by
-  refine Units.ext ?_
-  ext i j
-  simp only [sigma_apply, Iwasawa.coe_diagGL, Matrix.diagonal_apply, Fin.rev_inj,
-    Function.comp_apply]
-  by_cases h : i = j
-  · subst h
-    simp
-  · rw [if_neg (Ne.symm h), if_neg h]
 
 theorem sigma_diag_mul_permGL_eq (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n))
     (hw : ∀ b, w (Fin.rev (w b)) = Fin.rev b) (ht : ∀ b, t (w b) = t (Fin.rev b)) :

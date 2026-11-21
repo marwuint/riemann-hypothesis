@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SameFns
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormalFormActualOperatorsAlgebraicHypothesesStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PointwiseBoundedOfMemBoundedFactorsMonoidStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HatLettersMemNormalFormProductSpanStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ListProdHatLettersMemNormalFormProductSpanStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.RadialMultipliersSatisfyNormalFormRelationsStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PointwiseBoundedRadialOpsClosureAndFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WordOperatorColumnMemNormalFormProductSpanStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HatLettersProdMulMultiplierLeibnizStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormalFormActualOperatorsAlgebraicHypotheses
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PointwiseBoundedOfMemBoundedFactorsMonoid
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HatLettersMemNormalFormProductSpan
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ListProdHatLettersMemNormalFormProductSpan
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.RadialMultipliersSatisfyNormalFormRelations
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PointwiseBoundedRadialOpsClosureAndFunctions
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WordOperatorColumnMemNormalFormProductSpan
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HatLettersProdMulMultiplierLeibniz
 
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.Fr Formalism.REAL Formalism.QuantumDeterminants MeasureTheory GlobalTheory.HatNF
 
@@ -145,7 +145,7 @@ theorem span_bd {X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π'} {μ : Measure 
         q.2 ∈ Q.DomR P.k P.r Bs.z Bs.z')
       (fun H : List (RA P Bs) => H.length = n ∧ ∀ h ∈ H, h ∈ T) (fun H q => nv (H.prod.1 q.1) q.2)
       (fun q => (dR P Bs q.2.1 q.2.2)⁻¹ ^ i * (gR P Bs q.2.1 q.2.2)⁻¹ ^ j) (fun q => nv (y.1 q.1) q.2) := by
-  have hb := (GlobalTheory.T.pointwise_bounded_radial_ops_closure_and_functions Wp Wq P Bs X μ L st l0 d hD hN).2.2.2.2.2.2.2
+  have hb := (_root_.GlobalTheory.HatNF.ptB_basic Wp Wq P Bs X μ L st l0 d hD hN).2.2.2.2.2.2.2
   have hw : ∀ q : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π' × ((Fin P.r → ℂ) × Q.Mx P.k P.r),
       q.2 ∈ Q.DomR P.k P.r Bs.z Bs.z' →
       0 ≤ (dR P Bs q.2.1 q.2.2)⁻¹ ^ i * (gR P Bs q.2.1 q.2.2)⁻¹ ^ j := by
@@ -156,7 +156,7 @@ theorem span_bd {X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π'} {μ : Measure 
   induction hy using Submodule.span_induction with
   | mem y hy =>
     obtain ⟨b, hbm, H, hl, hH, rfl⟩ := hy
-    obtain ⟨C, hC, hCb⟩ := GlobalTheory.T.pointwiseBounded_of_mem_boundedFactors_monoid Wp Wq P Bs X μ L st l0 d hD hN b hbm
+    obtain ⟨C, hC, hCb⟩ := _root_.GlobalTheory.HatNF.BoundedFactors.ptB_of_mem_bmon Wp Wq P Bs X μ L st l0 d hD hN b hbm
     refine ⟨C, [H], hC, by simpa using ⟨hl, hH⟩, fun q hq => ?_⟩
     simp only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero, fst_mul]
     refine (hCb _ _ hq).trans (le_of_eq ?_)
@@ -177,9 +177,9 @@ end actual
 
 theorem word_bound : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π') (μ : Measure (Mt P.k P.r)) (L : LevelData (RA P Bs) P.r) (st : Start (RA P Bs)) (l0 : ℕ) (d : Q.NFData P (RA P Bs)), P5.IsData P Bs.z Bs.z' Bs.π Bs.π' X μ L st l0 → IsNF X d → ∀ (S : Type) [Fintype S] [DecidableEq S], ∀ (T : Set (RA P Bs)) (a : ℕ), (∀ x ∈ basics d, x ∈ nfSpan d T 0 a 1) → ∀ w : List (Letter ℂ S), admitted st w → ∃ (C : ℝ) (J : ℕ) (Ts : List (List (RA P Bs))), 0 ≤ C ∧ (∀ H ∈ Ts, H.length = w.length ∧ ∀ h ∈ H, h ∈ T) ∧ ∀ (φ : ℝ → ℝ) (W : ℕ → Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')), LE.SmoothLog φ → IsMulG P Bs φ W → ∀ (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (e : Ix S), ∀ x ∈ Q.DomR P.k P.r Bs.z Bs.z', nv ((((ofWord L st w).F * TL.bTA L w) e e1).1 (W 0 Φ)) x ≤ C * ((dR P Bs x.1 x.2)⁻¹ ^ w.length * (gR P Bs x.1 x.2)⁻¹ ^ (a * w.length)) * (∑ j ∈ Finset.range (J + 1), |LE.ld j φ (gR P Bs x.1 x.2)|) * (Ts.map fun H => nv (H.prod.1 Φ) x).sum := by
   intro Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 d hD hN S _ _ T a hT w hw
-  obtain ⟨hH, hTie⟩ := GlobalTheory.T.normalForm_actualOperators_algebraicHypotheses Wp Wq P Bs X μ L st l0 d hD hN
-  have hb := (GlobalTheory.T.pointwise_bounded_radial_ops_closure_and_functions Wp Wq P Bs X μ L st l0 d hD hN).2.2.2.2.2.2.2
-  have hhat := GlobalTheory.T.hatLetters_mem_normalFormProductSpan P _ d hH T a hT
+  obtain ⟨hH, hTie⟩ := _root_.GlobalTheory.HatNF.hatHyp_and_tie_of_isNF Wp Wq P Bs X μ L st l0 d hD hN
+  have hb := (_root_.GlobalTheory.HatNF.ptB_basic Wp Wq P Bs X μ L st l0 d hD hN).2.2.2.2.2.2.2
+  have hhat := _root_.GlobalTheory.HatNF.hats_mem_nfSpan P _ d hH T a hT
   set N := w.length with hNdef
   let ι : Type := (ℝ → ℝ) × (ℕ → Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) ×
     Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π' × ((Fin P.r → ℂ) × Q.Mx P.k P.r)
@@ -200,7 +200,7 @@ theorem word_bound : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpa
   have h1 : ∀ H : List (RA P Bs), H.length = N → (∀ h ∈ H, h ∈ hats d.L) →
       Bd p ok val G (fun q => nv (H.prod.1 q.2.2.1) q.2.2.2) := by
     intro H hl hh
-    have hm := GlobalTheory.T.list_prod_hatLetters_mem_normalFormProductSpan P _ d hH T a hhat H hh
+    have hm := _root_.GlobalTheory.HatNF.hats_prod_mem_nfSpan P _ d hH T a hhat H hh
     rw [hl] at hm
     obtain ⟨C, Ts, hC, hTs, h⟩ := span_bd hD hN T 0 (a * N) N _ hm
     refine ⟨C, Ts, hC, hTs, fun q hq => ?_⟩
@@ -209,7 +209,7 @@ theorem word_bound : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpa
   have h2 : ∀ H : List (RA P Bs), H.length = N → (∀ h ∈ H, h ∈ hats d.L) →
       Bd p ok val (fun q => Sg q * G q) (fun q => nv (H.prod.1 (q.2.1 0 q.2.2.1)) q.2.2.2) := by
     intro H hl hh
-    obtain ⟨ts, hts, hmul⟩ := GlobalTheory.T.hatLetters_prod_mul_multiplier_leibniz _ P.r d.L H hh
+    obtain ⟨ts, hts, hmul⟩ := _root_.GlobalTheory.HatNF.prod_hats_mul_multiplier _ P.r d.L H hh
     have h3 : ∀ t ∈ ts, Bd p ok val (fun q => Sg q * G q)
         (fun q => nv ((t.2.1 • (Q.mkP (q.2.1 (0 + t.1)) (q.2.1 (0 + t.1)) * t.2.2.prod : RA P Bs)).1 q.2.2.1)
           q.2.2.2) := by
@@ -229,7 +229,7 @@ theorem word_bound : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpa
     refine Bd.mono (K := 1) (u := fun _ => 1) zero_le_one (fun _ _ => zero_le_one)
       (Bd.listSum hv (fun q hq => mul_nonneg (hS q hq) (hG q hq)) _ ts h3) (fun q hq => ?_)
       (fun _ _ => (one_mul _).symm)
-    have hr := hmul _ (GlobalTheory.T.radialMultipliers_satisfy_normalForm_relations Wp Wq P Bs X μ L st l0 d hD hN q.1 q.2.1 hq.1 hq.2.1) 0
+    have hr := hmul _ (_root_.GlobalTheory.HatNF.MulRelActual.mulRel_actual Wp Wq P Bs X μ L st l0 d hD hN q.1 q.2.1 hq.1 hq.2.1) 0
     rw [one_mul, one_mul]
     have e : H.prod.1 (q.2.1 0 q.2.2.1) = (H.prod * (Q.mkP (q.2.1 0) (q.2.1 0) : RA P Bs)).1 q.2.2.1 := rfl
     rw [e, hr]
@@ -237,7 +237,7 @@ theorem word_bound : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpa
   have h4 : ∀ e : Ix S, Bd p ok val (fun q => Dd q * (Sg q * G q))
       (fun q => nv ((((ofWord L st w).F * TL.bTA L w) e e1).1 (q.2.1 0 q.2.2.1)) q.2.2.2) := by
     intro e
-    obtain ⟨C, Hs, hC, hHs, h⟩ := span_bd hD hN _ _ _ _ _ (GlobalTheory.T.wordOperator_column_mem_normalFormProductSpan P _ d hH L st _ hTie S w hw e)
+    obtain ⟨C, Hs, hC, hHs, h⟩ := span_bd hD hN _ _ _ _ _ (_root_.GlobalTheory.HatNF.word_mem_nfSpan P _ d hH L st _ hTie S w hw e)
     refine Bd.mono (K := C) (u := Dd) hC hDd
       (Bd.listSum hv (fun q hq => mul_nonneg (hS q hq) (hG q hq)) _ Hs
         (fun H hH' => h2 H (hHs H hH').1 (hHs H hH').2)) (fun q hq => ?_) (fun _ _ => rfl)

@@ -11,6 +11,6 @@ theorem GlobalTheory.Poinc.exists_div_integralClosure_of_mem_O : ∀ (o₁ Ω₁
   haveI := hF
   obtain ⟨U, hU, hz, -⟩ := exists_isAffineOpen_mem_and_subset (U := (⊤ : M₁.Z.Opens)) (x := z₁) trivial
   have hz₂ : z₂ ∈ q ⁻¹ᵁ U := show q z₂ ∈ U by rw [hq]; exact hz
-  obtain ⟨c, hc, d, hd, hd0, hdinv, e⟩ := GlobalTheory.T.exists_fraction_ringOn_of_mem_modelLocalRing _ _ M₂ _ (hU.preimage q) z₂ hz₂ x hx
+  obtain ⟨c, hc, d, hd, hd0, hdinv, e⟩ := _root_.GlobalTheory.Poinc.exists_eq_div_of_mem_O_affine _ _ M₂ _ (hU.preimage q) z₂ hz₂ x hx
   exact ⟨c, (mem_integralClosure_iff _ _).2 (isIntegral_of_mem_ringOn hF hg halg hU hz hc), d,
     (mem_integralClosure_iff _ _).2 (isIntegral_of_mem_ringOn hF hg halg hU hz hd), hd0, hdinv, e⟩

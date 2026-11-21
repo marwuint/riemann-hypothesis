@@ -52,8 +52,6 @@ theorem FSFullSupport.proof : FSFullSupport.Statement := by
     ⟨CP.chartCoord 0 x, ?_⟩
   simpa [CP.chartInv_chartCoord 0 hx0] using hxU
 
-example : 0 < CP.fsMeasure 1 univ := FSFullSupport.proof 1 univ isOpen_univ univ_nonempty
-
 end SectionsLatticeFS
 
 end

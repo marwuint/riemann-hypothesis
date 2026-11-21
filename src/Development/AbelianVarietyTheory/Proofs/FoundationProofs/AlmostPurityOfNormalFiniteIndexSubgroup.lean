@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlmostPurityMovesIntegersOfNeOneStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FixedFieldAlmostEtaleOfMovesIntegersStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlmostPurityMovesIntegersOfNeOne
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FixedFieldAlmostEtaleOfMovesIntegers
 open GlobalTheory.AlmostEt
 open scoped NNReal
 
@@ -30,7 +30,7 @@ theorem almostSep_of_normal_finiteIndex : ∀ (L : Type) [Field L] (v : Valuatio
     ApproxRoot p v (Fix L (⊤ : Subgroup G)) → ∀ U : Subgroup G, U.Normal → U.FiniteIndex →
     (∀ h : G, h ∉ U → ∃ x ∈ Fix L U, h • x ≠ x) → AlmostSep v U := by
   intro L _ v p hp hp0 hp1 G _ _ hv ζ hζ hζG hroot U hU hUfin hfaith
-  refine GlobalTheory.T.fixedFieldAlmostEtale_of_moves_integers L v G hv U hU hUfin ?_
+  refine _root_.GlobalTheory.AlmostEt.almostSep_of_moves L v G hv U hU hUfin ?_
   intro σ hσ
   let L' := ↥(Fix L U)
   let v' : Valuation L' ℝ≥0 := v.comap (Fix L U).subtype
@@ -52,7 +52,7 @@ theorem almostSep_of_normal_finiteIndex : ∀ (L : Type) [Field L] (v : Valuatio
   let ζ' : L' := ⟨ζ, hζU⟩
   have hζ' : IsPrimitiveRoot ζ' p :=
     (IsPrimitiveRoot.map_iff_of_injective (f := (Fix L U).subtype) Subtype.val_injective).1 hζ
-  have hmain := GlobalTheory.T.almostPurity_moves_integers_of_ne_one L' v' p hp (by rw [hv'x, hpcast]; exact hp0)
+  have hmain := _root_.GlobalTheory.AlmostEt.moves_of_ne_one L' v' p hp (by rw [hv'x, hpcast]; exact hp0)
     (by rw [hv'x, hpcast]; exact hp1) (G ⧸ U)
     (by
       intro q x

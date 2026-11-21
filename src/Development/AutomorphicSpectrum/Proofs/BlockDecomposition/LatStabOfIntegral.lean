@@ -1,7 +1,8 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PrimitiveVectorExtendsHyperbolicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalOrderTwoPrimesAlmostAllStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalOrderVolumeAlmostAllStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PrimitiveVectorExtendsHyperbolic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCovolOne
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalOrderTwoPrimesAlmostAll
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalOrderVolumeAlmostAll
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorIntegerRingAlmostAllPlaces
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeGramScalarAlmostAll
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicSumNondegenerateFrameStatement
@@ -94,7 +95,7 @@ theorem cover_pt (σ : E →ₐ[F] E) {M d : ℕ} (J Ji : Matrix (Fin M) (Fin M)
     have hmulT : JR (F := F) (Fv F v) J * JR (F := F) (Fv F v) Ji = 1 := by
       have := congrArg (RingHom.mapMatrix (inclR (Fv F v) (F := F) (E := E))) hmul
       rwa [map_mul, map_one] at this
-    obtain ⟨g, hgU, hgx, hgO, hgiO⟩ := GlobalTheory.T.primitive_vector_extends_hyperbolic _ O (sigR (Fv F v) σ) hstab hss h2 hδ π₁ π₂ hπ M
+    obtain ⟨g, hgU, hgx, hgO, hgiO⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.PrimTrans.trans_orbit _ O (sigR (Fv F v) σ) hstab hss h2 hδ π₁ π₂ hπ M
       (JR (Fv F v) J) (JR (Fv F v) Ji) hJO hJiO hmulT
       (fun i j => by
         show sigR (Fv F v) σ (inclR (Fv F v) (J j i)) = inclR (Fv F v) (J i j)
@@ -147,8 +148,8 @@ theorem prim_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   have I := GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ h d b
   have hH := (GlobalTheory.T.hyperbolic_sum_nondegenerate_frame F E σ h M J hJ).1
   have hdet : IsUnit J.det := isUnit_iff_ne_zero.2 hJ.2
-  filter_upwards [GlobalTheory.CompanionTheory.SW.GoodRing.good_ring F E σ h d b, GlobalTheory.T.local_order_two_primes_almost_all F E σ h d b,
-    GlobalTheory.T.local_order_volume_almost_all F E σ h (M + 2) (hypOne J) hH (by omega) d b,
+  filter_upwards [GlobalTheory.CompanionTheory.SW.GoodRing.good_ring F E σ h d b, _root_.GlobalTheory.CompanionTheory.SW.QuadMaxIdeal.maximal_ideals F E σ h d b,
+    _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.ScaleNonUnit.fibre_zero_image_le F E σ h (M + 2) (hypOne J) hH (by omega) d b,
     Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => I.1 (J i j),
     Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => I.1 (J⁻¹ i j)]
     with v hring h36 h37 hJv hJiv

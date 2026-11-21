@@ -1,8 +1,8 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TranslateToSecondModelCuspFormMapValueAutomorphiStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjTranslatedEvaluationMemAllRowsSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CuspFormMapEqZeroOfTranslatedEvalAeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjRowEqTranslatedEvaluationCuspFormMapStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TranslateToSecondModelCuspFormMapValueAutomorphi
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjTranslatedEvaluationMemAllRowsSpace
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CuspFormMapEqZeroOfTranslatedEvalAeZero
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjRowEqTranslatedEvaluationCuspFormMap
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ThetaIdentityOfMapsAll
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ChainParSucc
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.DiscreteSeriesClassificationIff
@@ -38,12 +38,12 @@ theorem evalAll_rows : GlobalTheory.Published.DiscreteSeriesClassification → G
     exact h1
   have hne : ∀ τ, (v₀ τ : M.H τ) ≠ 0 := fun τ h0 => by
     have := hnorm τ; rw [h0, norm_zero] at this; exact zero_ne_one this
-  have hfun := GlobalTheory.T.translateToSecondModel_cuspFormMap_value_automorphic hCusp D X h θ S M J χ t hθ hMat
+  have hfun := _root_.GlobalTheory.Core.Mi.rowFun_evS hCusp D X h θ S M J χ t hθ hMat
   obtain ⟨f, hf⟩ : ∃ f : MultT θ M J χ → L2X X, ∀ T : MultT θ M J χ, ((f T : L2X X) : X.B.I.GA → ℂ) =ᵐ[muX X]
       evS X h t (T.1 (PiTensorProduct.tprod ℂ v₀)) :=
     ⟨fun T => ((hfun T.1 T.2 (PiTensorProduct.tprod ℂ v₀)).2).toLp _, fun T => MemLp.coeFn_toLp _⟩
   have hmem : ∀ T : MultT θ M J χ, star (f T) ∈ HHX X := fun T =>
-    GlobalTheory.T.conj_translated_evaluation_mem_all_rows_space hCusp D X h θ S M J χ t v₀ hS hθ hGap hIdE hMat hConj T.1 T.2 (f T) (hf T)
+    _root_.GlobalTheory.Core.Mi.SeeHH.conj_evS_mem_HHX hCusp D X h θ S M J χ t v₀ hS hθ hGap hIdE hMat hConj T.1 T.2 (f T) (hf T)
   have hstar : ∀ T : MultT θ M J χ, ((star (f T) : L2X X) : X.B.I.GA → ℂ) =ᵐ[muX X]
       fun x => star (evS X h t (T.1 (PiTensorProduct.tprod ℂ v₀)) x) := fun T => by
     filter_upwards [Lp.coeFn_star (f T), hf T] with x h1 h2
@@ -91,10 +91,10 @@ theorem evalAll_rows : GlobalTheory.Published.DiscreteSeriesClassification → G
       rw [star_star] at h3
       rw [← h3]
       exact star_zero _
-    exact Subtype.ext (GlobalTheory.T.cuspFormMap_eq_zero_of_translatedEval_ae_zero D X h θ S M J χ t v₀ hθ hne T.1 T.2 hev)
+    exact Subtype.ext (_root_.GlobalTheory.Core.Mi.multT_eq_zero_of_evS_ae D X h θ S M J χ t v₀ hθ hne T.1 T.2 hev)
   · intro ψ
     have hψ : star (star (ψ : L2X X)) ∈ HHX X := by rw [star_star]; exact ψ.2
-    obtain ⟨T, hT, hTe⟩ := GlobalTheory.T.conj_row_eq_translated_evaluation_cusp_form_map hDS D X h θ S M J χ t v₀ hS hθ hGap hIdE hMat hConj
+    obtain ⟨T, hT, hTe⟩ := _root_.GlobalTheory.Core.SeeOnto.see_onto hDS D X h θ S M J χ t v₀ hS hθ hGap hIdE hMat hConj
       (star (ψ : L2X X)) hψ
     refine ⟨⟨T, hT⟩, ?_⟩
     apply Subtype.ext

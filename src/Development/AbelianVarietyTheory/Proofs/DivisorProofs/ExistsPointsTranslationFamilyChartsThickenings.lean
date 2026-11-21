@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsTaylorExpansionOrderOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.FstTszeSec
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsPeriodHom
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CloseTensorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CloseTensor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorLiftOfAnalyticThickeningStatement
 
 open CategoryTheory TopologicalSpace TensorProduct
@@ -34,7 +34,7 @@ theorem exists_points_on_DObj : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type}
     rw [(ψ S).map_sub, h2] at this
     exact this
   · have c1 := (hs _ _ _ (Charts.Hom.le f.1)).map (ψ S') (hJ S')
-    have c2 := GlobalTheory.T.close_comp_of_close_includeRight S'.T.J (ρ S.T.k) (hd S.T.k)
+    have c2 := _root_.GlobalTheory.CloseTen.close_tensor S'.T.J (ρ S.T.k) (hd S.T.k)
       ((ψ S').comp (Algebra.TensorProduct.map (AlgHom.id ℂ R) (Charts.shA (Charts.Hom.le f.1))).toRingHom)
       ((f.1.φ : S.T.C →+* S'.T.C).comp (ψ S))
       (fun d ↦ by

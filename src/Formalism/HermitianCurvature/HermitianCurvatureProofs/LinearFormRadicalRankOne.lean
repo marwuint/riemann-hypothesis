@@ -15,21 +15,8 @@ namespace Formalism.FourierDecayAlt.P.PBH
 
 variable {k : ℕ}
 
-theorem eBs_X {n ρ' : ℕ} (p : Fin (2 * (n + ρ') + k + 1)) (hp : p.val < n) :
-    (U.eB k n ρ').symm p = Sum.inl (Sum.inl ⟨p.val, hp⟩) := by
-  rw [Equiv.symm_apply_eq]
-  ext
-  simp [U.eB]
-
 theorem eBs_V {n ρ' : ℕ} (p : Fin (2 * (n + ρ') + k + 1)) (hp : n ≤ p.val) (hp' : p.val < n + (2 * ρ' + k + 1)) :
     (U.eB k n ρ').symm p = Sum.inl (Sum.inr ⟨p.val - n, by omega⟩) := by
-  rw [Equiv.symm_apply_eq]
-  ext
-  simp [U.eB]
-  omega
-
-theorem eBs_S {n ρ' : ℕ} (p : Fin (2 * (n + ρ') + k + 1)) (hp : n + (2 * ρ' + k + 1) ≤ p.val) :
-    (U.eB k n ρ').symm p = Sum.inr ⟨p.val - (n + (2 * ρ' + k + 1)), by omega⟩ := by
   rw [Equiv.symm_apply_eq]
   ext
   simp [U.eB]
@@ -42,12 +29,6 @@ theorem eX {n ρ' : ℕ} (p : Fin (2 * (n + ρ') + k + 1)) (hp : p.val < n) :
 
 theorem eV {n ρ' : ℕ} (p : Fin (2 * (n + ρ') + k + 1)) (hp : n ≤ p.val) (hp' : p.val < n + (2 * ρ' + k + 1)) :
     U.eB k n ρ' (Sum.inl (Sum.inr ⟨p.val - n, by omega⟩)) = p := by
-  ext
-  simp [U.eB]
-  omega
-
-theorem eS {n ρ' : ℕ} (p : Fin (2 * (n + ρ') + k + 1)) (hp : n + (2 * ρ' + k + 1) ≤ p.val) :
-    U.eB k n ρ' (Sum.inr ⟨p.val - (n + (2 * ρ' + k + 1)), by have := p.isLt; omega⟩) = p := by
   ext
   simp [U.eB]
   omega

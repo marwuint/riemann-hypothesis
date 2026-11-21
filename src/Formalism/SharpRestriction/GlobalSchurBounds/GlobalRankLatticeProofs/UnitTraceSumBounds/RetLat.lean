@@ -1,17 +1,13 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.SigmaStarUniq
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AreaLat
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.TransInvLat
+import Mathlib
+import Formalism.PeriodIntegrals.LatDefs
+import Formalism.PeriodIntegrals.AreaLat
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SigmaStarUniq
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.DiscrNe
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SigmaStarEx
 
 namespace Formalism.MainNotions.Ext
-
-theorem areaLat_holds : AreaLat := area_lattice_formula
-
-theorem transInvLat_holds : TransInvLat := translation_invariant_lattice
-
-theorem sigmaStarUniq_holds : SigmaStarUniq := sigma_star_unique
 
 theorem discrNe_holds : DiscrNe := discrNe'
 

@@ -61,13 +61,4 @@ theorem scale_latt (c ω₁ τ : ℂ) : scale c (latt ω₁ τ) = latt (c * ω�
   · rintro ⟨m, n, rfl⟩
     exact ⟨_, ⟨m, n, rfl⟩, by ring⟩
 
-example : Complex.I ∈ latt 1 Complex.I ∧ (1 / 2 : ℂ) ∉ latt 1 Complex.I := by
-  refine ⟨⟨0, 1, by simp⟩, ?_⟩
-  rintro ⟨m, n, h⟩
-  have h1 := congrArg Complex.re h
-  simp at h1
-  have h2 : ((2 * m : ℤ) : ℝ) = ((1 : ℤ) : ℝ) := by push_cast; linarith
-  have := Int.cast_injective h2
-  omega
-
 end GlobalTheory.IndefiniteRowSideFullHecke.PeriodLatticeAgreement

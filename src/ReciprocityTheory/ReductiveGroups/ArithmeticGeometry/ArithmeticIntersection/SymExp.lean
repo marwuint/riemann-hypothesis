@@ -2,15 +2,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 
 namespace ReciprocityTheory.ChartRestriction.G.AI
 
-theorem symm_eq_of_card {V : Type*} [AddCommGroup V] [Module ℝ V] [DecidableEq V] {n : ℕ}
-    (I : MultilinearMap ℝ (fun _ : Fin n => V) ℝ) (hI : IsSymmForm I) (v w : Fin n → V)
-    (h : ∀ x : V, (Finset.univ.filter fun i => v i = x).card = (Finset.univ.filter fun i => w i = x).card) :
-    I v = I w := by
-  have e : ∀ c : V, {a // w a = c} ≃ {b // v b = c} := fun c =>
-    Fintype.equivOfCardEq (by rw [Fintype.card_subtype, Fintype.card_subtype]; exact (h c).symm)
-  have hσ : v ∘ (Equiv.ofFiberEquiv e) = w := funext fun i => Equiv.ofFiberEquiv_map e i
-  rw [← hσ, hI]
-
 theorem symm_piecewise_eq {V : Type*} [AddCommGroup V] [Module ℝ V] {n : ℕ}
     (I : MultilinearMap ℝ (fun _ : Fin n => V) ℝ) (hI : IsSymmForm I) (x y : V) (s t : Finset (Fin n))
     (hst : s.card = t.card) :

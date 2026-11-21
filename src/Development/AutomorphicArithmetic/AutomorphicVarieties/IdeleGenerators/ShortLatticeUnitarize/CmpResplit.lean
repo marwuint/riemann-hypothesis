@@ -13,9 +13,6 @@ def nu {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) : Valuation ℂ ℝ≥0 
 
 theorem nu_apply {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (x : ℂ) : nu ι x = ‖ι.symm x‖₊ := rfl
 
-def IsPos {W : Type} [AddCommGroup W] [Module ℂ W] (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) : Prop :=
-  (∀ x y, B y x = starRingEnd ℂ (B x y)) ∧ ∀ x, x ≠ 0 → 0 < (B x x).re
-
 section Weight
 
 open MvPolynomial
@@ -84,8 +81,6 @@ def tc (n : I → ℕ) : Wt n →ₗ[ℂ] ℂ := (aeval (rowE I)).toLinearMap.co
 
 theorem tc_apply (n : I → ℕ) (P : Wt n) : tc n P = eval (rowE I) P.1 := rfl
 
-def eY (n : I → ℕ) : Wt n := ⟨∏ v, X (v, 1) ^ n v, fun s x => by simp [mul_pow, Finset.prod_mul_distrib]⟩
-
 end Weight
 
 section Abs
@@ -106,9 +101,6 @@ def psi (R : Representation ℂ G W) (t : W →ₗ[ℂ] ℂ) : (G → W) →ₗ[
 theorem psi_apply (R : Representation ℂ G W) (t : W →ₗ[ℂ] ℂ) (f : G → W) (g : G) : psi R t f g = t (R g⁻¹ (f g)) := rfl
 
 def stab (j : Γ →* G) (H : Subgroup G) (g : G) : Subgroup Γ := H.comap ((MulAut.conj g⁻¹).toMonoidHom.comp j)
-
-theorem mem_stab {j : Γ →* G} {H : Subgroup G} {g : G} {γ : Γ} : γ ∈ stab j H g ↔ g⁻¹ * j γ * g ∈ H := by
-  simp [stab]
 
 end Abs
 
@@ -140,10 +132,6 @@ def Cen (ω : (Af F)ˣ →* ℂˣ) : Submodule ℂ (GF F → W) where
 
 def Sp (Q : DefQuat F) (R : Representation ℂ (GF F) W) (c : Pl F → ℕ) (ω : (Af F)ˣ →* ℂˣ) : Submodule ℂ (GF F → W) :=
   AF Q.toFin R ⊓ Hi.fixd (Hi.rtr ℂ (GF F) W) (Kc c) ⊓ Cen W ω
-
-variable (W) in
-
-def Hk (w : Pl F) (c : ℕ) : Module.End ℂ (GF F → W) := Uop w ((Hi.rtr ℂ (GF F) W).comp (locGL F 2 w)) c
 
 end Sp
 
@@ -179,29 +167,10 @@ def gl : GF F →* (InfinitePlace F → GL (Fin 2) ℂ) := Pi.monoidHom fun v =>
 
 def R (n : InfinitePlace F → ℕ) (e : InfinitePlace F → ℤ) : Representation ℂ (GF F) (Wt n) := (wRep n e).comp D.gl
 
-def Cmp (Q : DefQuat F) : Prop := ∀ v y, Q.jc v y = (Q.jf y).map (D.ea v)
-
-open Classical in
-
-def nz (e : InfinitePlace F → ℤ) (w : Pl F) : ℂ := ∏ v, if D.pl v = w then (l : ℂ) ^ (-e v) else 1
-
 open Classical in
 
 def uf (e : InfinitePlace F → ℤ) (w : Pl F) : ℂ :=
   ∏ v, if D.pl v = w then (v.embedding (Formalism.L2.Host.unif w : Fˣ) / (l : ℂ)) ^ e v else 1
-
-def resplit (Q : DefQuat F) : DefQuat F :=
-  { Q with
-    jc := fun v => (D.ea v).mapMatrix.comp Q.jf.toRingHom
-    jc_alg := fun v x => by
-      have h : D.ea v (algebraMap F (Af F) x) = v.embedding x := D.em_alg v x
-      ext i j
-      simp [Matrix.algebraMap_matrix_apply, apply_ite (D.ea v), h] }
-
-theorem cmp_resplit (Q : DefQuat F) : D.Cmp (D.resplit Q) := fun _ _ => rfl
-
-theorem Cmp.toInf {D : LDat F ι} {Q : DefQuat F} (h : D.Cmp Q) (γ : Q.Dˣ) : Q.toInf γ = D.gl (Q.toFin γ) :=
-  funext fun v => Units.ext (h v γ)
 
 end LDat
 

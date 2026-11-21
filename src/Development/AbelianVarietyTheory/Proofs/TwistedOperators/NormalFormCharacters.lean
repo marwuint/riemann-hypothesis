@@ -10,7 +10,8 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ToricSymbols
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AlgebraicValuesFinite.AlgValsFinMain
 import Formalism.LocalToGlobal.UnitaryNorms.CharHost
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUniformiserValueIsAlgebraicStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUniformiserValueIsAlgebraic
+import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharLocalValueDivUniformiserPowStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNumberFieldValuesInEtaCharHalfTwistStatement
 
@@ -136,7 +137,7 @@ theorem locIn_alg (L : Type) [Field L] [NumberField L] (χ : HChar L) (m : (L �
     rw [Finset.coe_union, Set.mem_union] at hz
     rcases hz with hz | hz
     · obtain ⟨w, -, rfl⟩ := Finset.mem_image.1 hz
-      exact (GlobalTheory.T.heckeChar_uniformiser_value_isAlgebraic L χ m hm w).isIntegral
+      exact (_root_.GlobalTheory.heckeChar_val_isAlgebraic L χ m hm w).isIntegral
     · have hz' : z ^ N = 1 := by simpa [Polynomial.mem_nthRoots hN] using hz
       exact ⟨Polynomial.X ^ N - 1, Polynomial.monic_X_pow_sub_C 1 hN.ne', by simp [hz']⟩
   haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ (Z : Set ℂ)) := IntermediateField.finiteDimensional_adjoin hint

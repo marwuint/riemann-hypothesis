@@ -2,7 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EtaleSpaceCohomologyEqZeroOfSimplicialRowExact
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeTensorPowerLineBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBlockRefinementLinesStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBlockRefinementLines
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 
 noncomputable section
 
@@ -25,7 +28,7 @@ theorem HodgeCpt.Flag.exists_recoord_rootLines : ∀ (E : Type) [Field E] [Numbe
   have hroot : ∀ r, (Fl.rootLat r).IsVB 1 ⊤ := fun r =>
     (GlobalTheory.T.lattice_tensor_power_line_bundle _ _ _ Unit _ Set.univ (fun _ => hgr _ _) _).1
   obtain ⟨K', fK, J', fJ, y', κ, v, hκ, hv, tie', h⟩ :=
-    GlobalTheory.T.exists_block_refinement_lines 𝔐.X Ω 𝔐.ξ K J y (CMType H × Fin (D.p + D.q)) Fl.rootLat 𝔐.tie hroot
+    _root_.GlobalTheory.CompanionTheory.Ar.exists_addBlocks_isDegOn 𝔐.X Ω 𝔐.ξ K J y (CMType H × Fin (D.p + D.q)) Fl.rootLat 𝔐.tie hroot
   choose xdeg e hdeg using h
   exact ⟨K', fK, J', fJ, y', κ, v, tie', xdeg, e, hκ, hv, hdeg⟩
 

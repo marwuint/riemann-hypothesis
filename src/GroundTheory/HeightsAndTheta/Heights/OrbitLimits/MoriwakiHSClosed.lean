@@ -13,11 +13,4 @@ open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry GroundTheory.Heightsâ
 theorem RelSectionsLarge.full : RelSectionsLarge.Statement :=
   RelSectionsLarge.proof RelChartPoly.proof (RelOneStep.proof RelChartPoly.proof RelTorsionBound.proof)
 
-theorem MoriwakiHS.of_open (hC : KH.CondStatement) (hG : GridSeparation.Statement)
-    (hL2 : SectionL2Lattice.Statement) (hP : TensorPowerL2Degree.Statement)
-    (hM : NefCountAlongMultiples.Statement) (hS : NefSmallSectionEventually.Statement)
-    (hApx : NefSmallApprox.Statement) (hCurve : NefCountUpperCurve.Statement) :
-    ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement :=
-  MoriwakiHS.of_leaves hC hG RelSectionsLarge.full hL2 hP hM hS hApx hCurve
-
 end GroundTheory.Heightsâ‚‚.Heights.Targets

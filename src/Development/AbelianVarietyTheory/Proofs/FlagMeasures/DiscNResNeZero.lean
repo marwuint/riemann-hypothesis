@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.FlagPairDefi
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NormalFormDualOrthogonalLast
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeanPrimitiveSublatticesGenusDefiniteLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PairsIsometryNoFixedVectorCountBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountIsometryPairsWithGivenFixedSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianGenusMassEqOrbitStabilizerMassStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeanPrimitiveSublatticesGenusDefiniteLattice
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PairsIsometryNoFixedVectorCountBound
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountIsometryPairsWithGivenFixedSpace
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianGenusMassEqOrbitStabilizerMass
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeDiscriminantOrderNeZeroUnimodula
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RootDiscrGeThreeHalvesOfIsTotallyComplex
 
@@ -311,13 +311,13 @@ set_option maxHeartbeats 800000 in
 
 theorem main : MinkowskiBound → GlobalTheory.Mass.MaxMass → Formalism.HermitianLatticesTheory.SiegelMassRatio → ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → HasOrtho K → 1 ≤ Formalism.HermitianLatticesTheory.vInv K → GlobalTheory.Mass.PD H.B.flip → 3 ≤ (Module.finrank K V) → ∀ (T : ℕ) (L₀ : Submodule (𝓞 K) V) (Mb : ℝ), T.Prime → (∀ P : Ideal (𝓞 K), P.IsMaximal → (T : 𝓞 K) ∈ P → Ideal.absNorm P = T ∧ (T : 𝓞 K) ∉ P ^ 2) → GlobalTheory.Mass.IsIntLat H.B.flip L₀ → Nonempty ((↥(Formalism.HermitianLatticesTheory.dual H.B.flip L₀) ⧸ L₀.comap (Formalism.HermitianLatticesTheory.dual H.B.flip L₀).subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ Ideal.span {(T : 𝓞 K)})) → Mb = (20 * ((Formalism.HermitianLatticesTheory.fDeg K) : ℝ) * (2 * Formalism.HermitianLatticesTheory.vInv K) ^ 2) ^ (2 * ((Formalism.HermitianLatticesTheory.fDeg K) : ℝ) * (6 + cf K)) → ∀ D₀ : ℝ, D₀ = (T : ℝ) ^ (2 * (Formalism.HermitianLatticesTheory.fDeg K)) → ∀ (g j x x' : ℕ) (Y : ℝ), 2 ≤ g → 1 ≤ x → 1 ≤ x' → Y = (x : ℝ) * x' * D₀ ^ 2 → GlobalTheory.Mass.orbSum (Formalism.HermitianLatticesTheory.isom H.B.flip) (Formalism.HermitianLatticesTheory.genus H.B.flip L₀) (fun L => (((Trip H g L j x x').encard : ℕ∞) : ℝ≥0∞)) ≤ ENNReal.ofReal (Formalism.HermitianLatticesTheory.mass H.B.flip L₀ * ((x : ℝ) * x') ^ (((Module.finrank K V) : ℝ) / 2) * Y ^ (6 * (j : ℝ) + 10 + 4 * cf K) * (1 + Mb * (2 * Formalism.HermitianLatticesTheory.vInv K) ^ (Formalism.HermitianLatticesTheory.fDeg K) * (∑ s ∈ Finset.Ico 1 (Module.finrank K V), ((32 / (g : ℝ)) ^ ((Module.finrank K V) * (Formalism.HermitianLatticesTheory.fDeg K)) * ((4 * (Module.finrank K V) * (Formalism.HermitianLatticesTheory.fDeg K) : ℕ) : ℝ) ^ (4 * (Formalism.HermitianLatticesTheory.fDeg K)) * Y ^ 7) ^ s) + ((2 / (g : ℝ)) ^ ((Module.finrank K V) * (Formalism.HermitianLatticesTheory.fDeg K)) * ((4 * (Module.finrank K V) * (Formalism.HermitianLatticesTheory.fDeg K) : ℕ) : ℝ) ^ (4 * (Formalism.HermitianLatticesTheory.fDeg K)) * D₀ * x * x') ^ (Module.finrank K V))) := by
   intro hMk hMax hSi K V _ _ _ _ _ _ _ _ H hK hO hv hpd hk T L₀ Mb hT hTP hL₀ he hMb D₀ hD₀ g j x x' Y hg hx hx' hY
-  have hSC := GlobalTheory.T.mean_primitiveSublattices_genus_definiteLattice hMax hSi K V H hK hO hv hpd hk T L₀ Mb hT hTP hL₀ he hMb D₀ hD₀
+  have hSC := _root_.GlobalTheory.DegCnt.PrimGenus.main hMax hSi K V H hK hO hv hpd hk T L₀ Mb hT hTP hL₀ he hMb D₀ hD₀
   obtain ⟨e⟩ := he
   have hs := flip_isSymm H
   have hnd := pd_nondeg _ hpd
   obtain ⟨hd, t, ht, htM⟩ := of_equiv _ L₀ T e
   rw [(GlobalTheory.rootDiscr_ge_three_halves_of_totallyComplex K hK.1).1] at hd
-  obtain ⟨hmass, hm0, -⟩ := GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V H.B.flip hK hs hpd L₀ hL₀.1
+  obtain ⟨hmass, hm0, -⟩ := _root_.GlobalTheory.Mass.GenusOrb.main K V H.B.flip hK hs hpd L₀ hL₀.1
   have hgen := (GlobalTheory.Mass.DiscOrder.main K V H.B.flip hK hs hnd L₀ hL₀).2.2.2.1
   set k := Module.finrank K V with hkdef
   set f := Formalism.HermitianLatticesTheory.fDeg K with hf
@@ -355,8 +355,8 @@ theorem main : MinkowskiBound → GlobalTheory.Mass.MaxMass → Formalism.Hermit
       have hG : GenBy (Formalism.HermitianLatticesTheory.dual H.B.flip L) L 1 := genBy_of_genus _ hs hL₀.1 hL
         (fun x hx => (Formalism.HermitianLatticesTheory.isomAct_mem_dual _ L x).2 fun y hy => hLi.2 y hy x hx)
         (by rw [hLd]; omega) t ht htM
-      have ps := fun s n U => GlobalTheory.T.count_isometry_pairs_with_given_fixed_space hMk K V H hK hpd L g j D hLi hLd hG hg x x' s n U hx hx'
-      have pk := GlobalTheory.T.pairs_isometry_no_fixed_vector_count_bound hMk K V H hK hpd L g j D hLi hLd hG hg x x' hx hx'
+      have ps := fun s n U => _root_.GlobalTheory.DegCnt.FixedSpaceCount.main hMk K V H hK hpd L g j D hLi hLd hG hg x x' s n U hx hx'
+      have pk := _root_.GlobalTheory.PairNoFix.main hMk K V H hK hpd L g j D hLi hLd hG hg x x' hx hx'
       rw [← hY] at ps pk
       refine (encard_cover_le _ {p ∈ Trip H g L j x x' | fixSp p.2.2 = ⊤}
         {p ∈ Trip H g L j x x' | fixSp p.2.2 = ⊥} I

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RwAppend
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartAndRightWordsSmooth
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeRightBasisExpansionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedDerivativeSystemSmoothStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedDerivativeSystemSmooth
 open MeasureTheory Matrix Finset Filter Topology
 open scoped ContDiff ComplexConjugate InnerProductSpace ZeroAtInfty
 open PositivityTheory.RgTw (Mat G)
@@ -120,7 +120,7 @@ theorem limit_smooth : ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [NormedSp
     rw [h1]
     exact tendsto_nhds_unique h2 (hpt (p :: w) z hz)
   have hfam : ∀ v, ContDiffOn ℝ ∞ (Gf v) (GLs n) :=
-    GlobalTheory.T.closed_derivative_system_smooth n V (List (Bool × Fin n × Fin n)) Gf (fun p w => p :: w)
+    _root_.GlobalTheory.CompanionTheory.PresSobA.contDiffOn_of_right_family n V (List (Bool × Fin n × Fin n)) Gf (fun p w => p :: w)
       (fun v z hz => (hhas v z hz).differentiableAt) (fun v p z hz => hRd v p z hz)
   refine ⟨Gf, hu, hfam [], ?_⟩
   intro w

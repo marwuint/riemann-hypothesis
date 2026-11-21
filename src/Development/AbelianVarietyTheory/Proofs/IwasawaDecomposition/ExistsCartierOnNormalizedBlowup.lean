@@ -42,24 +42,4 @@ end GlobalTheory
 
 namespace GlobalTheory
 
-open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing TopologicalSpace
-open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
-open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
-
-theorem effCartier_comap_blowup_normal (K : Type) [Field K] [NumberField K] (X X' N : Scheme.{0})
-    (s : X ⟶ Sp (𝓞 K)) (J : X.IdealSheafData) (b : X' ⟶ X) (ν : N ⟶ X') :
-    IsProjOver s → Dense ((J.support : Set X)ᶜ) → FinalTheorems.Blowup b J → IsFinite ν →
-    ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N → IsIso (ν ∣_ (b ⁻¹ᵁ J.support.compl)) →
-    Dense ((ν ⁻¹ᵁ (b ⁻¹ᵁ J.support.compl) : N.Opens) : Set N) →
-    ∃ EX : GlobalTheory.EffCartierData N, EX.idealSheaf = J.comap (ν ≫ b) := by
-  intro _ _ hbl _ hN _ hd
-  obtain ⟨D, hD⟩ := EffCartierData.exists_idealSheaf_eq hbl.1
-  have hK : D.KeepsRegular ν := by
-    refine D.keepsRegular_of_dense ν (fun y => (hN y).1) (hd.mono fun z hz => ?_)
-    show ν z ∉ D.idealSheaf.support
-    rw [hD, Scheme.IdealSheafData.support_comap]
-    exact hz
-  refine ⟨D.pull ν hK, ?_⟩
-  rw [EffCartierData.idealSheaf_pull, hD, Scheme.IdealSheafData.comap_comp]
-
 end GlobalTheory

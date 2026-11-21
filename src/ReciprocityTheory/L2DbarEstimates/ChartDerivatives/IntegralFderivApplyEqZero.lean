@@ -19,19 +19,6 @@ theorem integral_fderiv_apply_eq_zero (n : ℕ) (H : V n → ℂ) (hH : ContDiff
     (fun x _ => differentiableAt_const _) (fun x _ => hH.differentiable one_ne_zero x)
   simpa using this
 
-theorem integral_wd_eq_zero (n : ℕ) (j : Fin n) (H : V n → ℂ) (hH : ContDiff ℝ 1 H)
-    (hc : HasCompactSupport H) : ∫ y, wd n j H y = 0 := by
-  unfold wd
-  have i1 : Integrable (fun y => fderiv ℝ H y (bas n j)) :=
-    ((hH.continuous_fderiv one_ne_zero).clm_apply continuous_const).integrable_of_hasCompactSupport
-      (hc.fderiv_apply (𝕜 := ℝ) _)
-  have i2 : Integrable (fun y => fderiv ℝ H y (Complex.I • bas n j)) :=
-    ((hH.continuous_fderiv one_ne_zero).clm_apply continuous_const).integrable_of_hasCompactSupport
-      (hc.fderiv_apply (𝕜 := ℝ) _)
-  rw [integral_div, integral_sub i1 (i2.const_mul Complex.I), integral_const_mul,
-    integral_fderiv_apply_eq_zero n H hH hc, integral_fderiv_apply_eq_zero n H hH hc]
-  simp
-
 theorem integral_wdb_eq_zero (n : ℕ) (j : Fin n) (H : V n → ℂ) (hH : ContDiff ℝ 1 H)
     (hc : HasCompactSupport H) : ∫ y, wdb n j H y = 0 := by
   unfold wdb
@@ -55,9 +42,6 @@ theorem integrable_of_continuous_real {M : Type*} [TopologicalSpace M] [T2Space 
   have h := integrable_of_continuous n z hz (fun x => (f x : ℂ)) (Complex.continuous_ofReal.comp hf)
     (hc.comp_left Complex.ofReal_zero)
   simpa using h.re
-
-theorem Smooth.integrable {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (f : M → ℂ) (hf : Smooth n z f) (hc : HasCompactSupport f) :
-    Integrable f (vol n z) := integrable_of_continuous n z hz f (Smooth.continuous n z hz f hf) hc
 
 theorem chart_extend {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (h : M → ℂ) (hh : Ck n z 1 h)
@@ -126,12 +110,6 @@ theorem integral_db_chart_eq_zero {M : Type*} [TopologicalSpace M] [T2Space M] [
     refine setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => ?_
     exact (wdb_congr n j _ _ y (hHo y hy)).trans (wdb_zero_fun n j y)
   rw [h1, h2, integral_wdb_eq_zero n j H hH1 hHc]
-
-theorem Ck.finset_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι : Type*}
-    (s : Finset ι) (F : ι → M → ℂ) (hF : ∀ i, Ck n z 1 (F i)) :
-    Ck n z 1 (fun y => ∑ i ∈ s, F i y) := by
-  intro e he
-  exact ContDiffOn.sum fun i _ => hF i e he
 
 private theorem wd_wdb_finset_sum {ι : Type*} {n : ℕ} (s : Finset ι) (G : ι → V n → ℂ) (y : V n)
     (hG : ∀ i ∈ s, DifferentiableAt ℝ (G i) y) (j : Fin n) :

@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NewtonPolygonLastDominantIndexMulXSubCStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NewtonPolygonDominantIndexXSubCMulStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NewtonPolygonLastDominantIndexMulXSubC
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NewtonPolygonDominantIndexXSubCMul
 open Polynomial
 open Classical
 
@@ -35,9 +35,9 @@ theorem dominantIndex_prod_X_sub_C (K : Type) [NormedField K] [IsUltrametricDist
     rw [heq, Multiset.filter_cons]
     by_cases ha : ‖a‖ ≤ ρ
     · rw [if_pos ha, Multiset.singleton_add, Multiset.card_cons]
-      exact GlobalTheory.T.newtonPolygon_lastDominantIndex_mul_X_sub_C K _ a ρ _ hρ ha h1 h2
+      exact _root_.GlobalTheory.newton_step_root_in_disc K _ a ρ _ hρ ha h1 h2
     · rw [if_neg ha, zero_add]
-      exact GlobalTheory.T.newtonPolygon_dominant_index_X_sub_C_mul K _ a ρ _ hρ (not_le.mp ha) h1 h2
+      exact _root_.GlobalTheory.newton_step_root_outside_disc K _ a ρ _ hρ (not_le.mp ha) h1 h2
 
 theorem card_roots_closedBall_eq_dominantIndex :
     ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [IsAlgClosed K] (f : K[X]) (ρ : ℝ), 0 < ρ → f ≠ 0 → (∀ j, ‖f.coeff j‖ * ρ ^ j ≤ ‖f.coeff (Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ))‖ * ρ ^ Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ)) ∧ ∀ j, Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ) < j → ‖f.coeff j‖ * ρ ^ j < ‖f.coeff (Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ))‖ * ρ ^ Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ) := by

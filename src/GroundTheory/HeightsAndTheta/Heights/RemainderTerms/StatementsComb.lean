@@ -109,24 +109,6 @@ def CombCfVandermondePsumOne.Statement : Prop :=
     cf l (alternantPsum m (List.replicate n 1)) =
       (n.factorial : ℚ) * vandermondeOf (fun i => (l i : ℚ)) / ∏ i, ((l i).factorial : ℚ)
 
-def CombVandermondeSucc.Statement : Prop :=
-  ∀ (n : ℕ) (v : Fin (n + 1) → ℚ),
-    vandermondeOf v = (∏ j : Fin n, (v 0 - v j.succ)) * vandermondeOf (fun j : Fin n => v j.succ)
-
-def CombHookShapeFacts.Statement : Prop :=
-  ∀ r s l : ℕ, l < s → s ≤ r → Antitone (hookShape r s l) ∧ ∑ i, hookShape r s l i = s
-
-def CombHookBranch.Statement : Prop :=
-  ∀ r s l : ℕ, 1 ≤ s → l ≤ s → s + 1 ≤ r → ∀ a : Fin r,
-    (if 1 ≤ hookShape r (s + 1) l a then
-      (latticeWords s (Function.update (hookShape r (s + 1) l) a
-        (hookShape r (s + 1) l a - 1))).card else 0) =
-      (if (a : ℕ) = 0 ∧ l < s then (latticeWords s (hookShape r s l)).card else 0) +
-        (if (a : ℕ) = l ∧ 1 ≤ l then (latticeWords s (hookShape r s (l - 1))).card else 0)
-
-def CombHookCount.Statement : Prop :=
-  ∀ r s l : ℕ, l < s → s ≤ r → (latticeWords s (hookShape r s l)).card = (s - 1).choose l
-
 def CombSortLe.Statement : Prop :=
   ∀ (m : ℕ) (u l : Fin m → ℕ) (σ : Perm (Fin m)), Antitone l → (∀ i, u i ≤ l i) →
     Antitone (u ∘ σ) → ∀ k, u (σ k) ≤ l k

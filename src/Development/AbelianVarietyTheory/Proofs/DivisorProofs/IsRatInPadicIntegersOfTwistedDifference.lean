@@ -40,8 +40,4 @@ theorem inZl_of_twisted_difference {G : Type} [CommGroup G] [Finite G] (l : ℕ)
   · linarith
   · linarith
 
-example : ∀ {G : Type} [CommGroup G] [Finite G] (l : ℕ) [Fact l.Prime] (g : G) (q : ℕ), l ∣ q →
-    ∀ x : G → ℚ, (∀ C, InZl l (x C - (q : ℚ) * x (C * g))) → ∀ C, InZl l (x C) :=
-  @inZl_of_twisted_difference
-
 end GlobalTheory

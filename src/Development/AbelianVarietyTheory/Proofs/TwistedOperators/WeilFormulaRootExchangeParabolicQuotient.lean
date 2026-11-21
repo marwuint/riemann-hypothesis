@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FourierJacobiAverage
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilFormulaRootExchangeParabolicIntersection
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulLeftInvariantVolGL
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProperTripleStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProperTriple
 
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage
 
@@ -78,7 +78,7 @@ theorem weil_formula_FJ : ∀ (k : Type) [Field k] [ValuativeRel k] [Topological
       · exact GlobalTheory.RootEx.QuotStep.continuous_embX.comp (continuous_fst.comp continuous_snd)
       · exact continuous_subtype_val.comp (continuous_snd.comp continuous_snd)
       · exact (GlobalTheory.RootEx.QuotStep.continuous_colE (ρ + 1)).comp continuous_fst
-    obtain ⟨D, hD, hDC⟩ := GlobalTheory.T.exists_compact_preimage_embX_mul_colE k n c ρ hρ hρc ((fun g => g * h⁻¹) '' tsupport F)
+    obtain ⟨D, hD, hDC⟩ := _root_.GlobalTheory.RootEx.ProperTriple.proper_triple k n c ρ hρ hρc ((fun g => g * h⁻¹) '' tsupport F)
       (hF'.2.image (continuous_mul_const h⁻¹))
     have hsupp : HasCompactSupport (fun w : (n → k) × (GL n k × N k n c (ρ + 1)) =>
         F (embX c w.2.1 * (w.2.2 : GL (n ⊕ Fin c) k) * colE c (ρ + 1) w.1 * h)) := by

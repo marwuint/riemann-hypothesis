@@ -4,8 +4,12 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSigmaList
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.AutomorphicFormsFiniteIdeal
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CenterEnvelopingAlgebraDirectSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EnvRepAllEnvIncl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EnvelopingRepresentationInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EnvelopingActionCommutesTranslationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPlaceRep
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitaryLieGeneratorsRep
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FaithfulOfDerivationsDualFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolyFunMemSmoothVectors
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightLieDerivativeRealEntryPolynomialFunctionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EnvelopingActionCommutesTranslation
 
 noncomputable section
 
@@ -87,16 +91,5 @@ theorem mem_of_mem_center (R : RealPoints θ V) {W : Submodule ℂ (GA D V → �
   | algebraMap r => intro f hf; rw [AlgHom.commutes]; exact W.smul_mem r hf
   | add x y _ _ hx hy => intro f hf; rw [map_add]; exact add_mem (hx f hf) (hy f hf)
   | mul x y _ _ hx hy => intro f hf; rw [map_mul]; exact hx _ (hy f hf)
-
-theorem exists_center (hθ : IsInfFam θ) (R : RealPoints θ V) {z : List (ℝ → GA D V) →₀ ℂ}
-    (hz : IsCentral D.sp.cm.sig V.gram z) :
-    ∃ u ∈ Subalgebra.center ℂ (GlobalTheory.AutFinLit.Env V), ∀ f : SmF θ V, dop z f.1 = (envRepAll R u f).1 := by
-  obtain ⟨u, hu⟩ := exists_env hθ R z hz.1
-  refine ⟨u, mem_center_of_comm u fun x => GlobalTheory.T.enveloping_representation_injective _ _ hθ V R ?_, hu⟩
-  rw [map_mul, map_mul]
-  refine GlobalTheory.T.enveloping_action_commutes_translation _ _ hθ V R u (fun a ha f hfa => ?_) x
-  rw [← hu, ← hu]
-  funext g
-  exact hz.2 f.1 (isSm_of_smF hθ R f) a ha g
 
 end GlobalTheory.CentralOps

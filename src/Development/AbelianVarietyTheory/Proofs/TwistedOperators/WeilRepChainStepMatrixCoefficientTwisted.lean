@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelParam
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IpOmOm
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LinearChangeOfVariablesLocalFieldMatrix
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParahoricDatumEigenvectorTwoBlockParahoricStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemIntegralGLOfInParahoricDatumSupportMulBlockDiStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemIntegralGLOfInParahoricDatumSupportMulBlockDi
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParahoricDatumTorusIntegrandEqIndicatorStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MeasureParahoricDatumSupportStatement
 
@@ -84,7 +84,7 @@ theorem part2 (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNona
   simp only [Pi.zero_apply, om, inv_one, Units.val_one, Matrix.one_mul]
   by_cases h1 : InSupp z
   · have h2 : ¬ InSupp (z * (emb₂ k (Equiv.refl (A ⊕ D)) (x, y) : Matrix (A ⊕ D) (A ⊕ D) k)) :=
-      fun h2 => hx (GlobalTheory.T.mem_integralGL_of_inParahoricDatumSupport_mul_blockDiag k A D E z x y h1 h2)
+      fun h2 => hx (_root_.GlobalTheory.SuppFirstBlock.mem_KO_of_inSupp k A D E z x y h1 h2)
     simp [datum, h2]
   · simp [datum, h1]
 

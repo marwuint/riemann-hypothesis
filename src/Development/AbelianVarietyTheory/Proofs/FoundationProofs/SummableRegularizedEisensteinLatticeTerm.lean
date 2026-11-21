@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SecondDifferenceInvPowBoundStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SecondDifferenceInvPowBound
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -103,7 +104,7 @@ theorem difdif_bound (j L : ℕ) (v : ℤ × ℤ) (τ : ℍ) (hj : 1 ≤ j) (hL 
 theorem latsum_summable : ∀ (j L : ℕ) (v : ℤ × ℤ) (τ : ℍ), 1 ≤ j → 0 < L →
     Summable fun x => ‖dif L v (dif L v (fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2))) x‖ := by
   intro j L v τ hj hL
-  obtain ⟨C, hC⟩ := GlobalTheory.T.second_difference_inv_pow_bound j
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.EisM.SecondDiff.second_diff_inv_pow j
   set w : ℂ := (v.1 : ℂ) * τ + v.2 with hw
   set R : ℝ := max (4 * (L * ‖w‖)) 1 with hR
   have hrτ : 0 < EisensteinSeries.r τ := EisensteinSeries.r_pos τ

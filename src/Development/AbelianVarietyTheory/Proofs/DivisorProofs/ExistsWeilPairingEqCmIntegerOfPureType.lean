@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsHomFamil
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaUniformisationComplexAbelianVariety
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulOfRankOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearEndomorphismOfConjugateAdjointFormStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearEndomorphismOfConjugateAdjointForm
 
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory GlobalTheory.CM GlobalTheory.FlatCM
 open scoped CategoryTheory.Obj
@@ -97,7 +97,7 @@ theorem exists_weilEq_smul_of_pure : ∀ (E : Type) [Field E] [NumberField E] [I
     have e : (β (s • x) y : ℝ) = β x (H.bar s • y) := by
       rw [hβ, hβ, ← hGP, ← hGP, hcomm f₁ hf₁ F₁ hF₁, hcomm f₂ hf₂ F₂ hF₂, hadj]
     exact_mod_cast e
-  obtain ⟨γ, hγ, hβγ⟩ := GlobalTheory.T.exists_linear_endomorphism_of_conjugate_adjoint_form E H D β hadd₁ hadd₂ hadjβ
+  obtain ⟨γ, hγ, hβγ⟩ := _root_.GlobalTheory.GramAdj.exists_endo_of_adjoint E H D β hadd₁ hadd₂ hadjβ
   obtain ⟨c, hc⟩ := GlobalTheory.T.exists_smul_of_rank_one' E H D (by rw [hp, hq]; exact hpq) γ hγ
   refine ⟨c, (weilEq_iff_hermForm_eq hT hL A.pol A.pol B.pol A.pol uA uA uB uA HB HA χB χA hB hA f₁ f₂
     (A.t.act.act c) (𝟙 _) F₁ F₂ (G c) LinearMap.id hF₁ hF₂ (hG c) (fun _ => (Category.comp_id _).symm)).2 ?_⟩

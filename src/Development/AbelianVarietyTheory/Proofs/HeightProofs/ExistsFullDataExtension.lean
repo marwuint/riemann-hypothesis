@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.CoeSelfD
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ShortGenIndepConnection
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ChartIndependenceUnconditional
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsCoeffDeltaOKOfCover
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSpecialPrimeLevelCoverOfFieldConditionsStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSpecialPrimeLevelCoverOfFieldConditions
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.LawsShortOfDeltaOK
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsPsiTieOfValues
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSecCharVal
@@ -21,7 +21,7 @@ theorem exists_delta_xiAt_noVol (D : D7) (J : CoreJ D) (hJ : LawsJ J) (hP : J.Q.
     (hxi : XiOK D p xi) (j : ℕ) (hj : InR D j) :
     ∃ e : ∀ n, DeltaDat (J.Q.Xo j) J.Q.c n, ∀ n, (∃ φ, e n = GlobalTheory.FormTies.withCoeff (e 0) φ) ∧
       DeltaOK (e n) p (P.asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))) ∧ XiAt J j (e n) xi := by
-  obtain ⟨hpr, -, hd⟩ := GlobalTheory.T.exists_specialPrime_levelCover_of_fieldConditions D J.Q hP hC p hF P hp
+  obtain ⟨hpr, -, hd⟩ := _root_.GlobalTheory.FinalJoin2.Cover.exists_cover_of_fieldOK D J.Q hP hC p hF P hp
   obtain ⟨d, hc, ha⟩ := hd j hj
   obtain ⟨f, hc', hr', hx⟩ := GlobalTheory.XiFun.exists_fun_xiAt D J hJ j hj p _ d xi hc ha hxi
   have ht := GlobalTheory.TwistTie.exists_psiTie_of_xiAt D J hJ j hj p _ { d with cδ := f } xi hpr hc' ha hxi hx

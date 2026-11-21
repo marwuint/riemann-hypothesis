@@ -5,11 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueDegreeEqOneO
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArCalcOfPrincipalisation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericDegreePullbackFormula
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermLineBundlePairPullbackDominantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiPosPullbackGenericallyBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TendstoLogSectionCountChangeOfMetricStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DominantProjArithSurjectiveComplexPointsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaiseFirstWeightSectionsLociValuesNormsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermLineBundlePairPullbackDominant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiPosPullbackGenericallyBirational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TendstoLogSectionCountChangeOfMetric
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DominantProjArithSurjectiveComplexPoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaiseFirstWeightSectionsLociValuesNorms
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemipositiveOfIsometric
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -90,15 +90,15 @@ theorem count_change_of_principalisation : GlobalTheory.Published.Principalisati
   intro hPr k _ X _ p D hX P a hsp hsi hgf
   have hC : Published.ArCalc := MixHt.arCalc_of_principalisation hPr
   obtain ⟨Y, hY, ρ, hYa, hYs, hgen, hdeg⟩ := GenRes.exists_birational_genSmooth hPr k X p D hX
-  obtain ⟨Q, e, hQL, -, he⟩ := T.exists_hermLineBundlePair_pullback_dominant k X p Y (ρ ≫ p) ρ rfl hgen P
+  obtain ⟨Q, e, hQL, -, he⟩ := _root_.GlobalTheory.HSAmp.pair_pull k X p Y (ρ ≫ p) ρ rfl hgen P
   have hs : ∀ σ : k →+* ℂ, Function.Surjective
       (Points.PtsOver.map ρ rfl (spMap σ) : CxPts (ρ ≫ p) σ → CxPts p σ) :=
-    T.dominant_projArith_surjective_complexPoints k X p D hX Y (ρ ≫ p) D hYa ρ rfl hgen
+    _root_.GlobalTheory.DomSurj.surjective_cxPts_map k X p D hX Y (ρ ≫ p) D hYa ρ rfl hgen
   have hne : ρ.residueDegree (genericPoint Y) ≠ 0 := by rw [hdeg]; exact one_ne_zero
   have hproj := hC.2.2.2.2.1 k X Y p (ρ ≫ p) D hX hYa ρ rfl hgen hne
   have hdeg' : ((ρ.residueDegree (genericPoint Y) : ℕ) : ℝ) = 1 := by rw [hdeg]; simp
   have hQsp : Q.L.SemiPos D := by
-    rw [hQL]; exact T.semiPos_pullback_generically_birational k X p D hX Y (ρ ≫ p) hYa ρ rfl hgen hdeg P.L hsp
+    rw [hQL]; exact _root_.GlobalTheory.SemiPullBir.semiPos_pull k X p D hX Y (ρ ≫ p) hYa ρ rfl hgen hdeg P.L hsp
   have hQsi : Q.L.IsSelfInter a := by
     have h := hproj.1 P.L a hsi
     rw [hdeg', one_mul] at h
@@ -107,12 +107,12 @@ theorem count_change_of_principalisation : GlobalTheory.Published.Principalisati
     rw [hQL, CovTest.gdegPull k X Y p (ρ ≫ p) D hX hYa ρ rfl hgen hne, hdeg', one_mul]
   have hgf' := goodFam_map P Q e ρ rfl hs he D _ _ hgf
   rw [← hQg] at hgf'
-  obtain ⟨t₀, ht⟩ := T.tendsto_logSectionCount_change_of_metric hC k Y (ρ ≫ p) D hYa hYs Q a hQsp hQsi _ hgf'
+  obtain ⟨t₀, ht⟩ := _root_.GlobalTheory.HSAmp.tendsto_logCount_sub_up hC k Y (ρ ≫ p) D hYa hYs Q a hQsp hQsi _ hgf'
   refine ⟨t₀, fun u B a' hB hu husp husi t ht' => ?_⟩
   have hiso : (up Q.L (u.pull ρ rfl)).Isometric ((up P.L u).pull ρ rfl) := by
     rw [hQL]; exact up_pull_isometric P.L u ρ rfl
   have h1 : (up Q.L (u.pull ρ rfl)).SemiPos D :=
-    HermLB.Isometric.semiPos _ _ D hiso.symm (T.semiPos_pullback_generically_birational k X p D hX Y (ρ ≫ p) hYa ρ rfl hgen hdeg _ husp)
+    HermLB.Isometric.semiPos _ _ D hiso.symm (_root_.GlobalTheory.SemiPullBir.semiPos_pull k X p D hX Y (ρ ≫ p) hYa ρ rfl hgen hdeg _ husp)
   have h2 : (up Q.L (u.pull ρ rfl)).IsSelfInter a' := by
     have h := hproj.1 (up P.L u) a' husi
     rw [hdeg', one_mul] at h
@@ -125,8 +125,8 @@ theorem count_change_of_principalisation : GlobalTheory.Published.Principalisati
       (upperParabolic Q (u.pull ρ rfl)).nu m 1 σ y (e f) =
         (upperParabolic P u).nu m 1 σ (Points.PtsOver.map ρ rfl (spMap σ) y) f := by
     intro m f hf σ y
-    rw [((T.raiseFirstWeight_sections_loci_values_norms k Y (ρ ≫ p) Q (u.pull ρ rfl) m 1).2.2 σ y (e f)).2,
-      ((T.raiseFirstWeight_sections_loci_values_norms k X p P u m 1).2.2 σ _ f).2, hnP m f hf σ y]
+    rw [((_root_.GlobalTheory.HSAmp.upAtPrime_groups_values_norms k Y (ρ ≫ p) Q (u.pull ρ rfl) m 1).2.2 σ y (e f)).2,
+      ((_root_.GlobalTheory.HSAmp.upAtPrime_groups_values_norms k X p P u m 1).2.2 σ _ f).2, hnP m f hf σ y]
     rfl
   refine h3.congr fun m => ?_
   rw [ncard_ballIn_map (upperParabolic P u) (upperParabolic Q (u.pull ρ rfl)) e ρ rfl hs _ _ _ (hnU m),

@@ -168,10 +168,6 @@ theorem VtupR_Kf : VtupR P Kf = P.Vtup := rfl
 def WtTie (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (lam : Tau → Formalism.BasicNotions.DomWeight n) : Prop :=
   ∀ v (s : Fin (P.n' v)) (i : Fin (P.m + 1)), P.lam0 v s i = (lam (pos ⟨v, s⟩)).w (finCongr h i)
 
-def EvValC (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (G : Tau → Matrix (Fin n) (Fin n) ℂ)
-    (M : Tau → GL (Fin n) ℂ) (lam : Tau → Formalism.BasicNotions.DomWeight n) : Prop :=
-  WtTie P h pos lam → (VtupR P ℂ).map (evC P h pos G (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ))) = ValC G lam
-
 end Formalism.L2.G.Cmp
 
 end

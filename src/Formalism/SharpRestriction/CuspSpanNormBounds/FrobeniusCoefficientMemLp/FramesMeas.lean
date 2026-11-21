@@ -34,11 +34,6 @@ theorem conjI_mul (M N : Mx k r) : tTi k r * (M * N) * tT k r = (tTi k r * M * t
     simp only [Matrix.mul_assoc]
   rw [h, tT_mul_tTi, Matrix.mul_one, Matrix.mul_assoc (tTi k r) M N]
 
-theorem conj_mul (M N : Mx k r) : tT k r * (M * N) * tTi k r = (tT k r * M * tTi k r) * (tT k r * N * tTi k r) := by
-  have h : (tT k r * M * tTi k r) * (tT k r * N * tTi k r) = tT k r * M * (tTi k r * tT k r) * N * tTi k r := by
-    simp only [Matrix.mul_assoc]
-  rw [h, tTi_mul_tT, Matrix.mul_one, Matrix.mul_assoc (tT k r) M N]
-
 theorem cA_cAi (x : Mt k r) : cA k r (cAi k r x) = x := by
   funext i j
   show (tTi k r * Matrix.of (cAi k r x) * tT k r) i j = x i j

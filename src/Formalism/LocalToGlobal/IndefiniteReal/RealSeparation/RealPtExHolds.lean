@@ -38,7 +38,4 @@ theorem realPtEx_holds : RealPtEx D := by
   intro θ m n hθ z
   exact ⟨Lb D m n z, (isRealPtO_iff hθ z _).2 rfl, fun w hw => (isRealPtO_iff hθ z w).1 hw⟩
 
-theorem realPt_eq {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (z : RPt D m n) : realPt θ z = Lb D m n z :=
-  (isRealPtO_iff hθ z _).1 (Classical.epsilon_spec ⟨Lb D m n z, (isRealPtO_iff hθ z _).2 rfl⟩)
-
 end Formalism.IndefR.Mi

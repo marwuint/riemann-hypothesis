@@ -116,10 +116,6 @@ theorem valL_smul (hφ : φ ∈ S.Fi emb σ lam) (b : S.β) (g : S.G b) (d : S.D
   rw [mul_smul, S.mv_smul, tr_mul] at h
   exact h
 
-theorem valL_rep (hφ : φ ∈ S.Fi emb σ lam) (c : S.Cl) : valL S emb σ c.1 (S.rep c) φ = φ c := by
-  have := valL_eq hφ c 1
-  rwa [one_smul, DiaStab.tr_one] at this
-
 theorem valL_mem (hφ : φ ∈ S.Fi emb σ lam) (b : S.β) (d : S.D b) : valL S emb σ b d φ ∈ ValC (Gr emb σ n) lam :=
   DiaStab.tr_mem S emb σ lam b _ (hφ _).1
 
@@ -152,11 +148,6 @@ def infN : GA D V →* (ι → GL (Fin n) ℂ) := by
 
 theorem finN_apply (g : GA D V) (i j : Fin n) : (finN V hn g : Matrix (Fin n) (Fin n) (AfE D.host.F D.host.E)) i j =
     (finE V g).1 (Fin.cast hn.symm i) (Fin.cast hn.symm j) := by
-  subst hn
-  rfl
-
-theorem infN_apply (g : GA D V) (τ : ι) (i j : Fin n) : (infN θ V hn t g τ : Matrix (Fin n) (Fin n) ℂ) i j =
-    infMat D.sp.cm.sig V.gram (θ (t τ)) g (Fin.cast hn.symm i) (Fin.cast hn.symm j) := by
   subst hn
   rfl
 
@@ -193,35 +184,6 @@ theorem finN_mem (hG : V.gram = 1) (g : GA D V) : finN V hn g ∈ UAd D.sp.cm n 
   rw [PtExist.mem_uad_iff, ← Matrix.map_one (swapAE D) (map_zero _) (map_one _), ← h2]
   congr 1
   exact Matrix.ext fun i j => (swapAE_sig _).symm
-
-theorem exists_point (hθ : IsInfFam θ) (hG : V.gram = 1) {x : GL (Fin n) (AfE D.host.F D.host.E)} (hx : x ∈ UAd D.sp.cm n)
-    (u : ι → Matrix (Fin n) (Fin n) ℂ) (hu : ∀ τ, (u τ)ᴴ * u τ = 1) :
-    ∃ g : GA D V, finN V hn g = x ∧ ∀ τ, (infN θ V hn t g τ : Matrix (Fin n) (Fin n) ℂ) = u τ := by
-  subst hn
-  have R := GlobalTheory.SmoothForms.RealPts.realPoints D |>.2 θ hθ V
-  obtain ⟨a, a1, a2⟩ := R.2.1 (fun τ => u (t.symm τ)) fun τ => by
-    show (u (t.symm τ))ᴴ * gramAt D V τ * u (t.symm τ) = gramAt D V τ
-    rw [gramAt, hG, Matrix.map_one _ (map_zero _) (map_one _), mul_one, hu]
-  let s := (Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).toRingEquiv
-  have hs : ∀ z, swapAE D (s.symm z) = z := s.apply_symm_apply
-  let x' := Formalism.UG.bc s.symm.toRingHom x
-  have hx' : x' ∈ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram := by
-    show Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ D.sp.cm.sig) x'.1 * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR _ V.gram * x'.1 = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR _ V.gram
-    rw [JR_one hG, mul_one]
-    apply Matrix.map_injective (f := swapAE D) s.injective
-    simp only [Matrix.map_mul]
-    rw [Matrix.map_one _ (map_zero _) (map_one _), ← (PtExist.mem_uad_iff x).1 hx]
-    congr 1
-    · exact Matrix.ext fun i j => (swapAE_sig _).trans (congrArg _ (hs _))
-    · exact Matrix.ext fun i j => hs _
-  obtain ⟨k, k1, k2⟩ := GlobalTheory.UnitarySplit.ga_glue V 1 x' (one_mem _) hx'
-  refine ⟨a * k, ?_, fun τ => ?_⟩
-  · rw [map_mul, finN_of_inf rfl a1, one_mul]
-    show Formalism.UG.bc (swapAE D) (finHom V k) = x
-    rw [k2]
-    exact Units.ext (Matrix.ext fun i j => hs _)
-  · rw [map_mul, infN_of_fin θ rfl t k1, mul_one]
-    exact (a2 (t τ)).trans (by rw [t.symm_apply_apply])
 
 theorem exists_rat (hθ : IsInfFam θ) (hG : V.gram = 1) {γ : GA D V} (hγ : γ ∈ GQ V) :
     ∃ δ : URat D.sp.cm n, finN V hn γ = Formalism.UG.bc (Formalism.UG.inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ.1 ∧

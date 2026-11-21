@@ -547,12 +547,6 @@ def Xpar (j : ℕ) (τ : D.what₂.Tau) : SPar :=
   ((Finset.univ.filter fun i : Fin D.R.m => i.1 < j).biUnion fun i =>
     (block (-P.e τ i) (P.t + 1)).image fun x => (x, true))
 
-def Centred : Prop :=
-  ∀ τ (j : Fin D.R.m),
-    (∀ i, ((P.t : ℚ) + 3) / 2 ≤ |P.u τ i + P.e τ j|) ∧ (∀ i, ((P.t : ℚ) + 3) / 2 ≤ |P.v τ i + P.e τ j|) ∧
-    (∀ i, ((P.t : ℚ) + 3) / 2 ≤ |P.e τ j - P.b τ i|) ∧
-    (∀ j' : Fin D.R.m, j' ≠ j → ∀ x ∈ block (-P.e τ j') P.t, ((P.t : ℚ) + 3) / 2 ≤ |x + P.e τ j|)
-
 end TPar
 
 end TH
@@ -692,37 +686,7 @@ namespace ThetaX
 
 variable {D : D7} (X : ThetaX D)
 
-def IsStable (V : HSp D) (π : Submodule ℂ (X.AF V)) : Prop :=
-  (∀ g, ∀ F ∈ π, X.actF V g F ∈ π) ∧
-  ∀ τ, ∀ h ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ F ∈ π, X.actR V τ h F ∈ π
-
-def sphOff (V : HSp D)
-    (S : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F))) :
-    Submodule ℂ (X.AF V) where
-  carrier := {F | ∀ g ∈ X.Ksph V S, X.actF V g F = F}
-  add_mem' := by
-    intro a b ha hb g hg
-    rw [map_add, ha g hg, hb g hg]
-  zero_mem' := by intro g _; exact map_zero _
-  smul_mem' := by
-    intro c a ha g hg
-    rw [map_smul, ha g hg]
-
-def cuspD (P : TPar D) (j : ℕ) : Submodule ℂ (X.AF (X.Ys P.t j)) :=
-  X.cusp _ ⊓ X.typ _ (P.Dpar j)
-
-def typeX (P : TPar D) (j : ℕ) : Submodule ℂ (X.AF (X.Xs P.t j)) := X.typ _ (P.Xpar j)
-
 def Bj (t j : ℕ) := X.Bper (X.Xs t j) (X.Ys t j) (X.iXYs t j)
-
-def Bm (t : ℕ) := X.Btop (X.Xs t D.R.m) (X.Ys t D.R.m) (X.iYXm t)
-
-def parOf (w : D.what₂.Word) : TPar D :=
-  TPar.ofWord D w (fun τ => -X.infTy X.etaT τ) (by
-    intro τ
-    rcases X.etaT_inf τ with h | h
-    · right; rw [h]
-    · left; rw [h]; ring)
 
 def carY (μ : D.what₂.Tup) (s i : ℕ) : X.Chr :=
   if Even i then X.chrOf μ s * X.etaT⁻¹ else X.chrOf μ s
@@ -733,23 +697,9 @@ def petY (μ : D.what₂.Tup) (j : ℕ) (F : X.AF (D.sp.Y j)) (G : X.cusp (D.sp.
 def dnY (μ : D.what₂.Tup) (j : ℕ) : X.cusp (D.sp.Y (j + 1)) →ₗ[ℂ] X.AF (D.sp.Y j) :=
   (X.mY μ (j + 1) : ℂ) • X.th _ _ (X.carY μ (j + 1) (j + 1)) (X.carY μ (j + 1) j) (X.PhiY μ j)
 
-def TieMY {Q : D.what₂.Tup → Type} [∀ μ, Fintype (Q μ)] (qv : ∀ μ, Q μ → ℕ) : Prop :=
-  ∀ μ j, j ≤ D.R.m → X.mY μ j = ∏ v : Q μ, TH.parIdx (qv μ v) D.R.r (j * D.R.t)
-
-def TieRowIsom : Prop :=
-  ∀ μ j, j ≤ D.R.m → ∀ (x y : D.what₂.Mult μ j),
-    X.petY μ j ((X.rowAF μ j x : X.cusp _) : X.AF _) (X.rowAF μ j y) = inner ℂ x y
-
 def TieIo : Prop :=
   ∀ μ j, j < D.R.m → ∀ (y : D.what₂.Mult μ (j + 1)) (x : D.what₂.Mult μ j),
     X.petY μ j (X.dnY μ j (X.rowAF μ (j + 1) y)) (X.rowAF μ j x) = inner ℂ (D.what₂.io μ j y) x
-
-def TieBm : Prop :=
-  ∀ u μ (φ : D.what₂.Mu u) (F : D.what₂.Amb μ),
-    D.what₂.perCol u μ φ F =
-      (X.mY μ D.R.m : ℂ) * X.Btop (D.sp.X D.R.m) (D.sp.Y D.R.m) (D.sp.iX'.comp D.sp.eYm.symm.toLinearMap)
-        (X.conjAF _ ((X.colAF u μ D.R.m φ : X.cusp _) : X.AF _))
-        (X.rowAF μ D.R.m ((D.what₂.multTop μ).symm F))
 
 end ThetaX
 

@@ -51,14 +51,6 @@ theorem point_ext {Z : Scheme.{u}} {y y' : Spec (.of K₀) ⟶ Z}
   have := epi_specAlg (K₀ := K₀) (K₁ := K₁)
   (cancel_epi _).mp h
 
-theorem fixed_of_factor {Z : Scheme.{u}} (y : Spec (.of K₀) ⟶ Z) (s : L ≃ₐ[K₀] L) :
-    Spec.map (CommRingCat.ofHom (s : L →+* L)) ≫ specAlg(K₁, L) ≫ specAlg(K₀, K₁) ≫ y =
-      specAlg(K₁, L) ≫ specAlg(K₀, K₁) ≫ y := by
-  simp only [← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp]
-  congr 3
-  ext a
-  simp [← IsScalarTower.algebraMap_apply]
-
 theorem existsUnique_factor [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
     (x : Spec (.of K₁) ⟶ Z)
     (hx : ∀ s : L ≃ₐ[K₀] L,
@@ -77,23 +69,11 @@ theorem existsUnique_factor [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
     rfl
   exact ⟨_, hy, fun y' hy' => point_ext (hy'.trans hy.symm)⟩
 
-theorem exists_factor_iff [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
-    (x : Spec (.of K₁) ⟶ Z) :
-    (∃ y : Spec (.of K₀) ⟶ Z, specAlg(K₀, K₁) ≫ y = x) ↔ ∀ s : L ≃ₐ[K₀] L,
-      Spec.map (CommRingCat.ofHom (s : L →+* L)) ≫ specAlg(K₁, L) ≫ x = specAlg(K₁, L) ≫ x :=
-  ⟨fun ⟨y, hy⟩ s => hy ▸ fixed_of_factor y s, fun h => (existsUnique_factor x h).exists⟩
-
 theorem existsUnique_factor_of_isAlgClosed [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
     (x : Spec (.of L) ⟶ Z)
     (hx : ∀ s : L ≃ₐ[K₀] L, Spec.map (CommRingCat.ofHom (s : L →+* L)) ≫ x = x) :
     ∃! y : Spec (.of K₀) ⟶ Z, specAlg(K₀, L) ≫ y = x :=
   existsUnique_factor (L := L) x fun s => by simpa using hx s
-
-theorem top_le_preimage_iff_mem {Z : Scheme.{u}} (x : Spec (.of K₁) ⟶ Z) (U : Z.Opens) :
-    ⊤ ≤ x ⁻¹ᵁ U ↔ x (IsLocalRing.closedPoint K₁) ∈ U := by
-  refine ⟨fun h => h (Set.mem_univ (IsLocalRing.closedPoint K₁)), fun h p _ => ?_⟩
-  rw [Subsingleton.elim p (IsLocalRing.closedPoint K₁)]
-  exact h
 
 theorem top_le_preimage_comp_iff {Z : Scheme.{u}} (y : Spec (.of K₀) ⟶ Z) (U : Z.Opens) :
     ⊤ ≤ (specAlg(K₀, K₁) ≫ y) ⁻¹ᵁ U ↔ ⊤ ≤ y ⁻¹ᵁ U := by

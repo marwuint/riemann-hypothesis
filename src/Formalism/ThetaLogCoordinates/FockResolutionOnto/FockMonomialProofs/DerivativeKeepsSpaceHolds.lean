@@ -299,26 +299,4 @@ theorem restriction_surjective [NeZero r] (hΩ : OmegaInj) (LL : Letters (K + 1)
 
 end Onto
 
-theorem derivative_keeps_space_holds : DKeepsX := by
-  intro p _ K r _ LL q J M ρ a e1 o hr hρ hv hHP ha x hx
-  have h0 := zero_mem_erase ρ hr hρ
-  refine pderiv_last_letter_mem LL J M ρ a o hr hρ hv (fun Mt => ?_) ha x hx
-  obtain ⟨P, hP, -, -⟩ := hHP.1 (K + 1) le_rfl (univ.erase ρ) (Or.inr rfl)
-    {la | ((la 0 : ℤ) : WithTop ℤ) ≤ Mt} (fun la la' hl => by
-      show (((la 0 : ℤ) : WithTop ℤ) ≤ Mt) ↔ (((la' 0 : ℤ) : WithTop ℤ) ≤ Mt)
-      rw [hl 0 h0])
-  exact ⟨P, hP⟩
-
-theorem resOntoKThm_of (hΩ : OmegaInj) : ResOntoKThm := by
-  intro p _ K r _ LL q J M ρ e1 hr hρ hv hHP x hx
-  have h0 := zero_mem_erase ρ hr hρ
-  have key := restriction_surjective hΩ LL J M ρ hr hρ hv (fun Mt => by
-    obtain ⟨P, hP, -, -⟩ := hHP.1 (K + 1) le_rfl (univ.erase ρ) (Or.inr rfl)
-      {la | ((la 0 : ℤ) : WithTop ℤ) ≤ Mt} (fun la la' hl => by
-        show (((la 0 : ℤ) : WithTop ℤ) ≤ Mt) ↔ (((la' 0 : ℤ) : WithTop ℤ) ≤ Mt)
-        rw [hl 0 h0])
-    exact ⟨P, hP⟩) (LL.deg (Fin.last K))
-  rw [setLast_self] at key
-  exact key x hx
-
 end Formalism.InvariantFactorPaths.L4

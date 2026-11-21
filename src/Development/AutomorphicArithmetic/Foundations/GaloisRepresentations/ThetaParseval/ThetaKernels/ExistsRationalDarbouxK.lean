@@ -7,14 +7,6 @@ set_option synthInstance.maxHeartbeats 200000
 section
 noncomputable section
 namespace Tw.RatDarboux
-open _root_.GlobalTheory
-section General
-open scoped TensorProduct
-open Matrix Module GlobalTheory.WeilM
-variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
-variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
-variable (R : Type) [CommRing R] [Algebra F R]
-end General
 end Tw.RatDarboux
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open IsDedekindDomain NumberField MeasureTheory Matrix

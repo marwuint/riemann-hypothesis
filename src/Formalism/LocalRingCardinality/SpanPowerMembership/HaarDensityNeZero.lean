@@ -1,6 +1,6 @@
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExistsDensity
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExistsOmegaLeb
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLeSum
+import Mathlib
 
 noncomputable section
 
@@ -21,26 +21,6 @@ def matHom : UpqT P Q →* MM P Q where
   map_mul' _ _ := rfl
 
 theorem mat_mem (g : UpqT P Q) : (UpqT.mat g)ᴴ * J * UpqT.mat g = J := g.2
-
-theorem mat_left_inv (g : UpqT P Q) : (J * (UpqT.mat g)ᴴ * J) * UpqT.mat g = 1 := by
-  have h := mat_mem P Q g
-  calc J * (UpqT.mat g)ᴴ * J * UpqT.mat g = J * ((UpqT.mat g)ᴴ * J * UpqT.mat g) := by
-        simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [h, J_sq]
-
-theorem mat_inv_eq (g : Formalism.UG.Upq P Q) :
-    (((g : GL (Fin P ⊕ Fin Q) ℂ)⁻¹ : GL (Fin P ⊕ Fin Q) ℂ) : MM P Q) =
-      J * (UpqT.mat (P := P) (Q := Q) g)ᴴ * J := by
-  have h1 := mat_left_inv P Q g
-  have h2 : UpqT.mat (P := P) (Q := Q) g *
-      (((g : GL (Fin P ⊕ Fin Q) ℂ)⁻¹ : GL (Fin P ⊕ Fin Q) ℂ) : MM P Q) = 1 :=
-    Units.mul_inv (g : GL (Fin P ⊕ Fin Q) ℂ)
-  calc (((g : GL (Fin P ⊕ Fin Q) ℂ)⁻¹ : GL (Fin P ⊕ Fin Q) ℂ) : MM P Q)
-      = (J * (UpqT.mat (P := P) (Q := Q) g)ᴴ * J * UpqT.mat (P := P) (Q := Q) g) *
-          (((g : GL (Fin P ⊕ Fin Q) ℂ)⁻¹ : GL (Fin P ⊕ Fin Q) ℂ) : MM P Q) := by
-        rw [h1, Matrix.one_mul]
-    _ = J * (UpqT.mat (P := P) (Q := Q) g)ᴴ * J := by
-        rw [Matrix.mul_assoc (J * (UpqT.mat (P := P) (Q := Q) g)ᴴ * J), h2, Matrix.mul_one]
 
 theorem mat_cont : Continuous (UpqT.mat : UpqT P Q → MM P Q) := Units.continuous_val.comp continuous_subtype_val
 
@@ -84,11 +64,6 @@ instance (N : ℕ) : CompactSpace (UpqT N 0) :=
 theorem exp_neg_mul' (X : MM P Q) : exp (-X) * exp X = 1 := by
   have h := NormedSpace.exp_add_of_commute (Commute.neg_left (Commute.refl X))
   rw [neg_add_cancel, NormedSpace.exp_zero] at h
-  exact h.symm
-
-theorem exp_mul_neg' (X : MM P Q) : exp X * exp (-X) = 1 := by
-  have h := NormedSpace.exp_add_of_commute (Commute.neg_right (Commute.refl X))
-  rw [add_neg_cancel, NormedSpace.exp_zero] at h
   exact h.symm
 
 theorem exp_conjJ (A : MM P Q) : exp (J * A * J) = J * exp A * J := by
@@ -220,7 +195,5 @@ def cdHaar : CDHaar where
       have h := omegaDensity_smul (P + Q) 0 (haar_density_spec (P + Q) 0) _ (scale_ne_top (P + Q) 0)
       rw [scale_mul (P + Q) 0] at h
       exact h⟩
-
-theorem cdHaar_nonempty : Nonempty CDHaar := ⟨cdHaar⟩
 
 end Formalism.BasicNotions.Examples₂.CD

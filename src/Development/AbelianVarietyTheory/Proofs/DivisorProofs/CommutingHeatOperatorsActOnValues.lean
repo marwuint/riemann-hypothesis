@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueIsPointOfDualNumber
 import Formalism.LocalToGlobal.ProjectiveLattices.PowMapMemOfPowMulMem
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatOperatorOnRingConjPowFractionFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueInFrameLinearCombinationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatOperatorValueAtPointEqRingOperatorStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatOperatorOnRingConjPowFractionField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueInFrameLinearCombination
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatOperatorValueAtPointEqRingOperator
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatOperatorValuesOfSectionsCompleteLocalRingStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
@@ -62,7 +63,7 @@ theorem heat_acts_on_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt gam hmono htt hab
   intro Y n vH dd hinv v' hpt D h hbasic hdef i0 Ω _ _ _ φ x x' δ hcompl hx hx' hδφ hδ hpx dΩ hW hdΩ g hg δL hδL
   letI := H.starRing
-  have hDφ := (GlobalTheory.T.heatOperator_value_at_point_eq_ringOperator R Y.H _ _ P.D.toPre.P.L n dd ⇑D h i0 Ω φ x hx δ hδ dΩ hW hdΩ).1
+  have hDφ := (_root_.GlobalTheory.HeatPointValue.value_acts R Y.H _ _ P.D.toPre.P.L n dd ⇑D h i0 Ω φ x hx δ hδ dΩ hW hdΩ).1
   obtain ⟨e, p0, p0', hcore⟩ := GlobalTheory.T.heat_operator_values_of_sections_complete_local_ring E H R t P m tt gam hmono htt hab Y n vH dd hinv v' hpt D h hbasic hdef i0 Ω φ x x' δ
     hcompl hx hx' hδφ hδ hpx dΩ hW hdΩ g hg
   obtain ⟨dL, hdL⟩ := exists_derivation_fractionRing_ext Ω dΩ
@@ -78,7 +79,7 @@ theorem heat_acts_on_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     show (h.Θ.map _)ᵀ = h.Θ.map _
     rw [← Matrix.transpose_map, h.symm]
   have hce : iK ((e⁻¹ : Ωˣ) : Ω) ≠ 0 := fun h0 => (e⁻¹).ne_zero (hiKinj (h0.trans (map_zero iK).symm))
-  obtain ⟨d', u'', q, q', hd'c, hconj⟩ := GlobalTheory.T.heatOperatorOnRing_conj_pow_fractionField Ω n dL δL ((iK.comp φ).mapMatrix h.Θ) hsymm h2K
+  obtain ⟨d', u'', q, q', hd'c, hconj⟩ := _root_.GlobalTheory.Heat.ringOp_conj_pow Ω n dL δL ((iK.comp φ).mapMatrix h.Θ) hsymm h2K
     (fun a => iK (φ (h.u a))) (iK p0) (iK p0') _ hce
   refine ⟨d', u'', q, q', fun r => ?_, ?_⟩
   · rw [hd'c _ (fun a => by rw [hδL, hδφ, map_zero]), hdL, hDφ]
@@ -98,7 +99,7 @@ theorem heat_acts_on_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
       (by rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul]) (fun a y => by
         rw [Derivation.leibniz, hδc, smul_zero, add_zero, smul_eq_mul])
     rw [← hs', hdc] at hRO
-    obtain ⟨σ₃, hv₃⟩ := GlobalTheory.T.sectionValueInFrame_linearCombination R t.G t.PP.L Ω φ x' hx' g k σ₂ σ ω₂ ω r₁ (-(2 * (k : R)) * D r₁ * r₂) hv₂ hv
+    obtain ⟨σ₃, hv₃⟩ := _root_.GlobalTheory.Heat.exists_isValue_lin R t.G t.PP.L Ω φ x' hx' g k σ₂ σ ω₂ ω r₁ (-(2 * (k : R)) * D r₁ * r₂) hv₂ hv
     refine ⟨r₁ * r₁ * r₂, σ₃, _, mul_ne_zero (mul_ne_zero hr₁ hr₁) hr₂, hv₃, ?_⟩
     simp only [RingHom.comp_apply, map_add, map_mul, map_neg, map_natCast, map_ofNat]
     rw [key, hRO, hs']

@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPowVan
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SupportPushforwardSubschemeSubset
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TensOfForallIsPsEff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowLeGlobalSectionsDimLineBundlePow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SheafCohomologyDimTwistCutInequalitiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SheafCohomologyDimTwistCutInequalities
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumBoundOfStepDiff
 
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter Asymptotics
@@ -29,11 +29,11 @@ theorem hdim_twist_lbPow_le_of_two_le : ∀ (k : Type) [Field k] [Infinite k] (X
   refine sum_bound_of_step_diff (fun m => hdim k (twist F (lbPow L m)) (j + 1)) d 1 (C₁ + C₂)
     le_rfl fun m => ?_
   obtain ⟨M, hM, eM⟩ := cls_surj (m • cls L hL - cls B hB)
-  have a₁ := (T.sheafCohomologyDim_twist_cut_inequalities k X hp F A (lbPow L (m + 1)) M hA (isLB_lbPow hL _) hM s hs (by
+  have a₁ := (_root_.GlobalTheory.hdim_twist_cut_inequalities k X hp F A (lbPow L (m + 1)) M hA (isLB_lbPow hL _) hM s hs (by
     rw [cls_lbPow hL, eM, succ_nsmul]
     nth_rewrite 2 [e]
     abel)).1 (j + 1)
-  have a₂ := (T.sheafCohomologyDim_twist_cut_inequalities k X hp F B (lbPow L m) M hB (isLB_lbPow hL _) hM t ht (by
+  have a₂ := (_root_.GlobalTheory.hdim_twist_cut_inequalities k X hp F B (lbPow L m) M hB (isLB_lbPow hL _) hM t ht (by
     rw [cls_lbPow hL, eM, sub_add_cancel])).2.1 j
   have a₃ := h₁ (m + 1)
   have a₄ : hdim k (twist (cut F hB t) (lbPow L m)) j ≤ C₂ * (d * (m + 1 + 1) ^ (d - 1)) :=

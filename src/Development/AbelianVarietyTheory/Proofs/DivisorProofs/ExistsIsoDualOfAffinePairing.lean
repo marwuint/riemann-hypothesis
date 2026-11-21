@@ -57,11 +57,6 @@ theorem resG_glued {V W : T.Opens} (hW : IsAffineOpen W) (h : W ≤ V) (s t : Γ
     resG T h (glued b hb V s t) = b W hW (resM H h s) (resM H h t) :=
   (exists_glued b hb V s t).choose_spec W hW h
 
-theorem glued_affine {V : T.Opens} (hV : IsAffineOpen V) (s t : Γ(H, V)) :
-    glued b hb V s t = b V hV s t := by
-  have := resG_glued b hb hV le_rfl s t
-  rwa [resG_self, resM_self, resM_self] at this
-
 theorem glued_res {V W : T.Opens} (h : W ≤ V) (s t : Γ(H, V)) :
     glued b hb W (resM H h s) (resM H h t) = resG T h (glued b hb V s t) :=
   fun_ext_affine fun U hU h' => by
@@ -96,55 +91,5 @@ def toDual : H ⟶ dual H :=
 
 theorem dualApp_toDual {V W : T.Opens} (h : W ≤ V) (s : Γ(H, V)) (t : Γ(H, W)) :
     dualApp ((toDual b hb).app V s) h t = glued b hb W (resM H h s) t := rfl
-
-theorem dualApp_toDual_affine {V : T.Opens} (hV : IsAffineOpen V) (s t : Γ(H, V)) :
-    dualApp ((toDual b hb).app V s) le_rfl t = b V hV s t := by
-  rw [dualApp_toDual, resM_self, glued_affine]
-
-theorem bijective_toDual_app {r : ℕ} {U V : T.Opens} {e : Fin r → Γ(H, U)} (he : IsFrame e)
-    (h : V ≤ U) (hV : IsAffineOpen V) (hp : (b V hV).IsPerfPair) :
-    Function.Bijective ((toDual b hb).app V) := by
-  refine ⟨fun s s' hs => hp.bijective_left.1 (LinearMap.ext fun t => ?_), fun l => ?_⟩
-  · rw [← dualApp_toDual_affine b hb hV, ← dualApp_toDual_affine b hb hV, hs]
-  · obtain ⟨s, hs⟩ := hp.bijective_left.2 (dualApp l le_rfl)
-    exact ⟨s, he.dual_ext h fun i => by rw [dualApp_toDual_affine b hb hV, hs]⟩
-
-theorem isIso_toDual {r : ℕ} (hH : IsVB H r)
-    (hp : ∀ (V : T.Opens) (hV : IsAffineOpen V), (b V hV).IsPerfPair) : IsIso (toDual b hb) := by
-  have key (W : T.Opens) (x : T) (hx : x ∈ W) : ∃ V : T.Opens, x ∈ V ∧ V ≤ W ∧
-      Function.Bijective ((toDual b hb).app V) := by
-    obtain ⟨U, e, hxU, he⟩ := hH x
-    obtain ⟨V, hV, hxV, hle⟩ := exists_affine_le (V := W ⊓ U) ⟨hx, hxU⟩
-    exact ⟨V, hxV, hle.trans inf_le_left,
-      bijective_toDual_app b hb he (hle.trans inf_le_right) hV (hp V hV)⟩
-  have : Mono (toDual b hb) := QCoh.mono_of_locally_app_injective _ fun W x hx =>
-    have ⟨V, h₁, h₂, h₃⟩ := key W x hx
-    ⟨V, h₁, h₂, h₃.1⟩
-  have : Epi (toDual b hb) := QCoh.epi_of_locally_app_surjective _ fun W x hx =>
-    have ⟨V, h₁, h₂, h₃⟩ := key W x hx
-    ⟨V, h₁, h₂, h₃.2⟩
-  exact isIso_of_mono_of_epi _
-
-theorem comp_toDual_comp_dualMap {F : T.Modules} (i : F ⟶ H)
-    (hi : ∀ (V : T.Opens) (hV : IsAffineOpen V) (x y : Γ(F, V)),
-      b V hV (i.app V x) (i.app V y) = 0) : i ≫ toDual b hb ≫ dualMap i = 0 := by
-  ext V x : 3
-  refine dual_ext fun W h y => fun_ext_affine fun U hU h' => ?_
-  change resG T h' (glued b hb W (resM H h (i.app V x)) (i.app W y)) = resG T h' 0
-  rw [resG_glued b hb hU, resM_resM, ← app_resM, ← app_resM, hi, map_zero]
-
-theorem exists_iso_dual_of_affine_pairing :
-    ∀ (T : Scheme.{0}) (H : T.Modules) (r : ℕ), GlobalTheory.VB.IsVB H r →
-    ∀ (b : ∀ (V : T.Opens), IsAffineOpen V → (Γ(H, V) →ₗ[Γ(T, V)] Γ(H, V) →ₗ[Γ(T, V)] Γ(T, V))),
-      (∀ (V V' : T.Opens) (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (h : V' ≤ V) (s t : Γ(H, V)),
-          b V' hV' (GlobalTheory.Twist.resM H h s) (GlobalTheory.Twist.resM H h t) = ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG T h (b V hV s t)) →
-      (∀ (V : T.Opens) (hV : IsAffineOpen V), (b V hV).IsPerfPair) →
-      ∀ (F : T.Modules) (i : F ⟶ H),
-        (∀ (V : T.Opens) (hV : IsAffineOpen V) (x y : Γ(F, V)), b V hV (i.app V x) (i.app V y) = 0) →
-        ∃ β : H ⟶ GlobalTheory.VB.dual H, IsIso β ∧ i ≫ β ≫ GlobalTheory.VB.dualMap i = 0 ∧
-          ∀ (V : T.Opens) (hV : IsAffineOpen V) (s t : Γ(H, V)), GlobalTheory.VB.dualApp (β.app V s) le_rfl t = b V hV s t :=
-  fun _ _ _ hH b hb hp _ i hi =>
-    ⟨toDual b hb, isIso_toDual b hb hH hp, comp_toDual_comp_dualMap b hb i hi,
-      fun _ hV s t => dualApp_toDual_affine b hb hV s t⟩
 
 end GlobalTheory.AffinePairingGlue

@@ -102,20 +102,3 @@ theorem exists_scale (M : FlagModel y Ψ N j) {F : Type} [Field F] (f : MvPolyno
 
 end GlobalTheory.CompanionTheory.Ar.PB.CovGraph.GenIdeal
 
-open GlobalTheory.CompanionTheory.Ar.PB.CovGraph.GenIdeal in
-
-theorem GlobalTheory.CompanionTheory.Ar.PB.CovGraph.mCoordIdeal_transPt : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M), mCoordIdeal (transPt Cv) = mCoordIdeal y := by
-  intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv
-  obtain ⟨B, hB, hind⟩ := M.g_indep
-  obtain ⟨B', hB', hind'⟩ := M'.g_indep
-  let ev : MvPolynomial (LowIdx Ψ N j) M.Ω →ₐ[M.Ω] Φ := aeval fun q => (M.g q.1.1 * B q.1.1) q.1.2.1 q.1.2.2
-  let ev₀ : MvPolynomial (LowIdx Ψ N j) M'.Ω →ₐ[M'.Ω] Φ' := aeval fun q => (M'.g q.1.1 * B' q.1.1) q.1.2.1 q.1.2.2
-  let ev' : MvPolynomial (LowIdx Ψ N j) M.Ω →+* Φ' := ev₀.toRingHom.comp (MvPolynomial.map Cv.φ)
-  have hev' : Function.Injective ev' :=
-    (show Function.Injective ev₀ from hind').comp (MvPolynomial.map_injective Cv.φ Cv.φ.injective)
-  obtain ⟨c, hc, hz⟩ := exists_scale M ev.toRingHom (algebraMap M.Ω Φ) (fun a => aeval_C _ a) M.g B M.g_block hB
-    (fun q => aeval_X _ q) y M.y_base M.y_step
-  obtain ⟨c', hc', hz'⟩ := exists_scale M ev' ((algebraMap M'.Ω Φ').comp Cv.φ)
-    (fun a => by simp [ev', ev₀]) M'.g B' M'.g_block hB' (fun q => by simp [ev', ev₀]) (transPt Cv)
-    (transPt_base Cv) (fun p k hp m => transPt_step Cv p k hp m)
-  rw [mCoordIdeal_eq ev' hev' _ _ c' hc' hz', mCoordIdeal_eq ev.toRingHom hind _ _ c hc hz]

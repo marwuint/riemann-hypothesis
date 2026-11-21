@@ -1,6 +1,7 @@
 import Mathlib
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.KaehlerBound
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.AnalyticLimit
@@ -15,19 +16,6 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChar
 noncomputable section
 
 theorem two_le_smooth_kb : (2 : WithTop ℕ∞) ≤ ∞ := by norm_cast
-
-theorem regChartData_isCompact_univ {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X}
-    (R : RegChartData A) : IsCompact (Set.univ : Set X) := by
-  have hK : ∀ j, IsCompact ((R.ψ j).symm '' closure (R.W'' j)) := fun j => by
-    have hc : IsCompact (closure (R.W'' j)) :=
-      (R.isCompact_closure_middle j).of_isClosed_subset isClosed_closure
-        ((R.closure_W''_subset j).trans subset_closure)
-    refine hc.image_of_continuousOn ((R.ψ j).continuousOn_symm.mono ?_)
-    exact (R.closure_W''_subset j).trans (subset_closure.trans
-      ((R.closure_W'_subset j).trans (R.W_subset j)))
-  refine (isCompact_iUnion hK).of_isClosed_subset isClosed_univ fun x _ => ?_
-  obtain ⟨j, hx, hxW⟩ := R.cover x
-  exact Set.mem_iUnion.2 ⟨j, R.ψ j x, subset_closure hxW, (R.ψ j).left_inv hx⟩
 
 variable {D : ℕ} {X : Type} [TopologicalSpace X]
 
@@ -170,72 +158,6 @@ theorem levi_abs_le_global (A : FinHolAtlas D X) (hX : IsCompact (Set.univ : Set
     (le_abs_self (m p)).trans (Finset.single_le_sum (fun i _ => abs_nonneg (m i)) hpt)
   rw [htr θ hθ hqθ hqp.1, htr om hom hqom hqp.2]
   nlinarith
-
-theorem KaehlerBound.proof : KaehlerBound.Statement := by
-  intro D X _ A R
-  obtain ⟨M, hM0, hM⟩ := levi_abs_le_global A (regChartData_isCompact_univ R) R.θ R.om R.θ_pot
-    R.om_pot R.om_pos
-  have hK : (0 : ℝ) < M + 1 := by linarith
-  have hsm : ∀ P : LocPot X, IsPotential A P → ∀ x k,
-      ∀ y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' P.U x,
-        ContDiffAt ℝ 2 (P.φ x ∘ (A.chart k).symm) y := fun P hP x k y hy =>
-    ((hP.1 x k).of_le two_le_smooth_kb).contDiffAt
-      (((A.chart k).continuousOn_symm.isOpen_inter_preimage (A.chart k).open_target
-        (P.isOpen_U x)).mem_nhds hy)
-  have hsmul : ∀ (P : LocPot X) (a : ℝ) x k y, ContDiffAt ℝ 2 (P.φ x ∘ (A.chart k).symm) y →
-      ∀ w, levi ((P.rsmul a).φ x ∘ (A.chart k).symm) y w =
-        a * levi (P.φ x ∘ (A.chart k).symm) y w := by
-    intro P a x k y hy w
-    have h := levi_add_smul a (contDiffAt_const (c := (0 : ℝ))) hy w
-    have he : (P.rsmul a).φ x ∘ (A.chart k).symm =
-        fun z => (0 : ℝ) + a * (P.φ x ∘ (A.chart k).symm) z := by
-      funext z
-      simp [LocPot.rsmul]
-    rw [he, h, levi_const, zero_add]
-  have key : ∀ x k, ∀ y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (R.θ.U x ∩ R.om.U x),
-      ∀ w : Fin D → ℂ,
-        levi ((thetaOmega R).φ x ∘ (A.chart k).symm) y w =
-            levi (R.θ.φ x ∘ (A.chart k).symm) y w + levi (R.om.φ x ∘ (A.chart k).symm) y w ∧
-          levi ((R.om.rsmul (M + 1)).φ x ∘ (A.chart k).symm) y w =
-            (M + 1) * levi (R.om.φ x ∘ (A.chart k).symm) y w ∧
-          |levi (R.θ.φ x ∘ (A.chart k).symm) y w| ≤
-            M * levi (R.om.φ x ∘ (A.chart k).symm) y w ∧
-          0 ≤ levi (R.om.φ x ∘ (A.chart k).symm) y w := by
-    intro x k y hy w
-    have hθs := hsm R.θ R.θ_pot x k y ⟨hy.1, hy.2.1⟩
-    have homs := hsm R.om R.om_pot x k y ⟨hy.1, hy.2.2⟩
-    refine ⟨?_, hsmul R.om (M + 1) x k y homs w, hM x k y hy w, ?_⟩
-    · have he : (thetaOmega R).φ x ∘ (A.chart k).symm = fun z =>
-          (R.θ.φ x ∘ (A.chart k).symm) z + 1 * (R.om.φ x ∘ (A.chart k).symm) z := by
-        funext z
-        show R.θ.φ x _ + R.om.φ x _ = _
-        simp
-      rw [he, levi_add_smul 1 hθs homs w, one_mul]
-    · rcases eq_or_ne w 0 with h0 | h0
-      · rw [h0, levi_zero]
-      · exact (R.om_pos x k y ⟨hy.1, hy.2.2⟩ w h0).le
-  refine ⟨⟨R.om.rsmul (M + 1), ReciprocityTheory.AnForm.M.isPotentialRsmul A (M + 1) R.om R.om_pot,
-    fun x k y hy w hw => ?_⟩, ?_, ?_⟩
-  · rw [hsmul R.om (M + 1) x k y (hsm R.om R.om_pot x k y hy) w]
-    exact mul_pos hK (R.om_pos x k y hy w hw)
-  · intro x k y hy w
-    have hy' : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (R.θ.U x ∩ R.om.U x) :=
-      ⟨hy.1, hy.2.1.2.1, hy.2.1.2.2⟩
-    obtain ⟨h1, h2, h3, h4⟩ := key x k y hy' w
-    show 1 * levi ((thetaOmega R).φ x ∘ (A.chart k).symm) y w ≤
-      1 * levi ((R.om.rsmul (M + 1)).φ x ∘ (A.chart k).symm) y w
-    rw [h1, h2]
-    have := abs_le.mp h3
-    nlinarith
-  · intro x k y hy w
-    have hy' : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (R.θ.U x ∩ R.om.U x) :=
-      ⟨hy.1, hy.2.2.1, hy.2.2.2⟩
-    obtain ⟨h1, h2, h3, h4⟩ := key x k y hy' w
-    show -1 * levi ((R.om.rsmul (M + 1)).φ x ∘ (A.chart k).symm) y w ≤
-      1 * levi ((thetaOmega R).φ x ∘ (A.chart k).symm) y w
-    rw [h1, h2]
-    have := abs_le.mp h3
-    nlinarith
 
 end
 

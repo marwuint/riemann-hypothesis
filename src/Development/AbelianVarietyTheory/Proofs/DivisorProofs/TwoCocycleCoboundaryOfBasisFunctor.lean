@@ -4,12 +4,16 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishingH1Invertin
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocalizationOfData
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitMpOmjExtIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CovBy
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfUpwardFamilyStandardCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedSectionUpwardFamilyStandardCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneCocycleUpwardFamilyIsCoboundaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoCocycleCoboundaryOnUnitLocusPieceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoCocycleCommaCoboundaryOfStandardCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BasisObjectsUnitLociCoverAboveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfUpwardFamilyStandardCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneCocycleCoboundaryCommaLocalBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlueCommaOfBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedSectionUpwardFamilyStandardCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneCocycleUpwardFamilyIsCoboundary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoCocycleCoboundaryOnUnitLocusPiece
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneCocycleInvertibleLocusIsCoboundary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionsInvertibleLocusOfBasisFunctor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoCocycleCommaCoboundaryOfStandardCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BasisObjectsUnitLociCoverAbove
 
 set_option autoImplicit false
 
@@ -30,8 +34,8 @@ theorem twoCocycle_coboundary_of_basisFunctor_alt : ∀ {R : Type} [CommRing R] 
     obtain ⟨p, v, w, -⟩ := hcT i T' l hl
     exact ⟨p, v, fun S u hu ↦ by obtain ⟨m, -⟩ := huniv S u hu; exact ⟨w ≫ m⟩⟩
   choose p v hp using hpt
-  obtain ⟨f, hf⟩ := GlobalTheory.T.twoCocycle_comma_coboundary_of_standardCover_alt F G H hcov hdir T n d hd z hz
-    fun i ↦ GlobalTheory.T.twoCocycle_coboundary_on_unitLocus_piece F G H hdir T (d i) (p i) (v i) (hp i) z hz
+  obtain ⟨f, hf⟩ := _root_.GlobalTheory.CatCoh.Desc.twoCocycle_comma_coboundary_of_standardCover F G H hcov hdir T n d hd z hz
+    fun i ↦ _root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.coboundary_on_piece F G H hdir T (d i) (p i) (v i) (hp i) z hz
   have hup : ∀ t (u : T ⟶ G.obj t) t' t'' (a : t ⟶ t') (b : t' ⟶ t''),
       (∃ i, IsUnit (mp F (u ≫ G.map a) (d i))) → ∃ i, IsUnit (mp F (u ≫ G.map (a ≫ b)) (d i)) := by
     rintro t u t' t'' a b ⟨i, hi⟩
@@ -41,9 +45,9 @@ theorem twoCocycle_coboundary_of_basisFunctor_alt : ∀ {R : Type} [CommRing R] 
   obtain ⟨h, hh⟩ := Desc.coboundary_of_restrict (G ⋙ F) (E := fun t ↦ T ⟶ G.obj t)
     (fun u a ↦ u ≫ G.map a) (fun u a b ↦ by simp only [Functor.map_comp, Category.assoc])
     (fun _ _ ↦ True) (fun t u ↦ ∃ i, IsUnit (mp F u (d i))) (fun _ _ _ _ _ ↦ trivial)
-    (fun t u _ ↦ GlobalTheory.T.eq_zero_of_upwardFamily_standardCover F G H hdir t _ (hup t u) (GlobalTheory.T.basisObjects_unitLoci_cover_above F G H hcov hdir T n d hd t u))
-    (fun t u _ ↦ GlobalTheory.T.exists_glued_section_upwardFamily_standardCover F G H hdir t _ (hup t u) (GlobalTheory.T.basisObjects_unitLoci_cover_above F G H hcov hdir T n d hd t u))
-    (fun t u _ ↦ GlobalTheory.T.van1_of_covBy_upward_sieve F G H hdir t _ (hup t u) (GlobalTheory.T.basisObjects_unitLoci_cover_above F G H hcov hdir T n d hd t u))
+    (fun t u _ ↦ _root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.sep_of_covBy F G H hdir t _ (hup t u) (_root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.covBy_unit_above F G H hcov hdir T n d hd t u))
+    (fun t u _ ↦ _root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.glue_upward_of_cov F G H hdir t _ (hup t u) (_root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.covBy_unit_above F G H hcov hdir T n d hd t u))
+    (fun t u _ ↦ _root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_upwardFamily_isCoboundary F G H hdir t _ (hup t u) (_root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.covBy_unit_above F G H hcov hdir T n d hd t u))
     z (fun t t' t'' t''' u a b c _ ↦ hz t t' t'' t''' u a b c) f
     (fun t t' t'' u a b hi ↦ hf t t' t'' u a b hi)
   exact ⟨h, fun t t' t'' u a b ↦ hh t t' t'' u a b trivial⟩

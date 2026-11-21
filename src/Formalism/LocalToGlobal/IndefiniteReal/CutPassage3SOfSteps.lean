@@ -123,10 +123,4 @@ theorem cutPassage3S_of_steps (h : Steps3) : CutPassage3S := by
   exact I.passage_of_steps ⟨hok, hsep, hst, hin, h4, hp0, hp1, hh2, hrat, hh2g, hratg, hgu, hge, hn0, hn1⟩
     τ nbar _ hρ hJ hR hMet hFr hU hLat hGL hS (hG S Ws τ) hτ hX hM1 hn hM2 hla
 
-theorem cutPassage3_of_S (h : CutPassage3S) : CutPassage3 := by
-  intro K _ _ _ _ G _ _ Pl0 I0 Ty T m A3 s P0 ψ0 P1 ψ1 Dc Sp Zsc X C CH gE S _ Ws _ _ _ τ nbar a1 a2 a3 a4 a5 a6 a7
-    a8 a9 a10 a11 a12 a13 _ _ a16 a17 a18 a19 a20 a21 a22 a23
-  exact h K G Pl0 I0 Ty T m A3 s P0 ψ0 P1 ψ1 Dc Sp Zsc X C CH gE S Ws τ nbar a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12
-    a13 a16 a17 a18 a19 a20 a21 a22 a23
-
 end Formalism.IndefR.CxPass

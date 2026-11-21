@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SiegelOfRiemann
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogPeriodsSubframeDetBounds
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FirstMinimumAndCuspWeightBoundsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FirstMinimumAndCuspWeightBounds
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SymplecticPolydiscPeriodBasis
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.Assembly
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.PRiemannExtensionSlices
@@ -468,7 +468,7 @@ theorem uLogBound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a 
     obtain ⟨hli, hsp⟩ := hb.2 z hz1 τ
     have e : (L.riem w hw).B = L.B z := by rw [hzdef]; rfl
     rw [e, ← hsp, finrank_span_eq_card hli, Fintype.card_fin]
-  obtain ⟨-, -, -, -, hU⟩ := GlobalTheory.T.first_minimum_and_cusp_weight_bounds E g Λ Ψ (L.riem w hw) σ m hσ hrank hm
+  obtain ⟨-, -, -, -, hU⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.cuspW_le E g Λ Ψ (L.riem w hw) σ m hσ hrank hm
   rw [← hzdef]
   have hone : (1 : ℝ) ≤ 1 + Real.log (Flat.logSize a z) := by linarith
   refine ⟨?_, ?_, ?_⟩

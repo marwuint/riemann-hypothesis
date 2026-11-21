@@ -197,21 +197,6 @@ theorem exists_ann_eq_span [IsDomain R] [IsPrincipalIdealRing R] [Finite ι] (h�
   obtain ⟨k, -, hk⟩ := Finset.prod_eq_zero_iff.1 this.symm
   exact ha k (sub_eq_zero.1 hk).symm
 
-theorem map_eq_smul_idem [IsDomain R] [DecidableEq ι] (hσ : Function.Injective σ) {i : ι} {x : R ⊗[ℤ] O}
-    (hx : x ∈ ann (σ i)) {R' : Type} [CommRing R'] (f : R →+* R') (h : IsSplitting fun k => f.comp (σ k)) :
-    Algebra.TensorProduct.map f.toIntAlgHom (AlgHom.id ℤ O) x = f (splitMap σ x i) • idem h i := by
-  have e (y : R ⊗[ℤ] O) (k : ι) : splitMap (fun k => f.comp (σ k))
-      (Algebra.TensorProduct.map f.toIntAlgHom (AlgHom.id ℤ O) y) k = f (splitMap σ y k) := by
-    induction y with
-    | zero => simp
-    | add y z hy hz => simp only [map_add, Pi.add_apply, hy, hz]
-    | tmul r a => simp
-  refine h.1 (funext fun k => ?_)
-  rw [e, map_smul, splitMap_idem, Pi.smul_apply, smul_eq_mul]
-  by_cases hk : k = i
-  · rw [hk, Pi.single_eq_same, mul_one]
-  · rw [Pi.single_eq_of_ne hk, mul_zero, splitMap_eq_zero_of_mem_ann (hσ.ne hk) hx, map_zero]
-
 variable {X : Scheme.{0}} {F : X.Modules}
 
 def tensAct (β : R →+* Γ(X, ⊤)) (ρ : O →+* End F) : R ⊗[ℤ] O →+* End F :=
@@ -326,12 +311,5 @@ theorem pbMod_omegaMap (a : G ⟶ G) (a' : G' ⟶ G') [IsMonHom a] [IsMonHom a']
   exact (congrArg (resM (modN (omega G') N) e) congr(($key).app V u)).trans (app_resM (modNMap (omegaMap a') N) e _).symm
 
 end Pull
-
-example {X : Scheme.{0}} (F : X.Modules) (V : X.Opens) (s : Γ(F, V)) : s ∈ (imSub (𝟙 F)).sec V := app_mem_imSub (𝟙 F) s
-
-example : (1 : ℤ) ⊗ₜ[ℤ] ((1, 0) : ℤ × ℤ) ∈ ann (RingHom.fst ℤ ℤ) := fun a => by
-  rw [Algebra.TensorProduct.tmul_mul_tmul, ← TensorProduct.tmul_smul]
-  cases a
-  simp
 
 end GlobalTheory.HTSheaf

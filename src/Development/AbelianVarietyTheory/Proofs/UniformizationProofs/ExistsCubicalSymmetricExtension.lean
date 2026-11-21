@@ -237,28 +237,4 @@ theorem exists_symmetry (gp : IsGrpPullback A G (etaK V K) F) {L : LB G.left} (h
 
 end DVR
 
-theorem exists_cubical_symmetric_extension : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (eA : (Over.pullback (jK V)).obj G ≅ A.A), IsMonHom eA.hom → ∃ (LG : RigLB G) (_c : CubicalStr G LG) (s : LB.Gen (LB.LinComb LG.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1])), s.IsGen ∧ LB.Gen.Corr LG.L _ _ _ _ (LB.pullGen LG.L _ _ s (eSec G)) (LB.oneGen LG.L) ∧ (∃ w : LB.Iso (A.L.pull eA.hom.left) (LG.L.pull (pullback.fst G.hom (jK V))), w.IsGen) := by
-  intro laws V _ _ _ G _ _ hG A eA hA
-  have := hG.smooth
-  have := hG.separated
-  have := hG.quasiCompact
-  have := hG.geomConnected
-  have : IsMonHom eA.symm.hom := inferInstanceAs (IsMonHom eA.inv)
-  have gp : IsGrpPullback A.A G (jK V) (eA.inv.left ≫ pullback.fst G.hom (jK V)) :=
-    ((isGrpPullback_of_iso eA.symm).comp (isGrpPullback_pullback G (jK V))).congr (Category.id_comp _) rfl
-  have hi : eA.inv.left ≫ eA.hom.left = 𝟙 _ := by rw [← Over.comp_left, eA.inv_hom_id, Over.id_left]
-  obtain ⟨r, hr⟩ := A.rigid
-  obtain ⟨ρ, hρ⟩ := gen_chartPull (chartPullLinComb A.L eA.hom.left (K := PUnit) (fun _ => eSec A.A ≫ eA.inv.left)
-    (fun _ => eSec A.A) (fun _ => 1) (𝟙 _) fun _ => by
-      rw [Category.assoc, hi, Category.comp_id, Category.id_comp]) r hr
-  obtain ⟨L, hφ⟩ := laws.extend V (FractionRing V) G (eSec A.A ≫ eA.inv.left)
-    ((Category.assoc _ _ _).trans (cubeMapOf gp).e_comm) (A.L.pull eA.hom.left) (pull_isLB A.isLB _) ρ hρ
-  have h₁ : LBIso (A.L.pull eA.hom.left) (L.L.pull (pullback.fst G.hom (jK V))) := LBIso.symm hφ
-  obtain ⟨w, hw⟩ : LBIso A.L (L.L.pull (eA.inv.left ≫ pullback.fst G.hom (jK V))) :=
-    LBIso.chartPull (chartPullSec A.L _ eA.inv.left hi) (chartPullSame L.L _ _ _ eA.inv.left fun _ => rfl) h₁
-  obtain ⟨c⟩ := (laws.cube _ A ⟨A.L, r, A.isLB, hr⟩ rfl).1
-  obtain ⟨c'⟩ := nonempty_cubical laws.cubicalExtends gp L c w hw
-  obtain ⟨s, hs, hs'⟩ := exists_symmetry gp L.isLB A.isLB A.sym w hw
-  exact ⟨L, c', s, hs, hs', h₁⟩
-
 end GlobalTheory.PolExtension

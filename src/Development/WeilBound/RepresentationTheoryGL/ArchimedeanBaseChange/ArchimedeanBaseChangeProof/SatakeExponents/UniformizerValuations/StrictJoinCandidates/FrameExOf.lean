@@ -17,11 +17,6 @@ def FixFin : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n :
   (K : Subgroup (GLw n w)), IsOpen (K : Set (GLw n w)) → IsCompact (K : Set (GLw n w)) →
   FiniteDimensional ℂ ↥(fixed (Tail.prodAt D w) K)
 
-def FrameExOf : Prop := USide → Eig.SphOne → Eig.SpecTrace → Eig.DiagAlg → Inert.InertPlaceEx → Inert.WittEx → Inert.SatEx →
-  Inert.UnifOf → InertInSec → LoneId → ConeEig → SatCompAt → CandIndep → CandFin → FixFin → Choice.ChoiceT →
-  Choice.ChoiceS → Choice.ChoiceM → Choice.ShufEx → Choice.VResStd → Choice.ShufStd → Choice.ConeTwo → Tail.TargetAlg →
-  Tail.MonoRes → FrameEx
-
 end PositivityTheory.Rg.BcB.F.FX
 
 end

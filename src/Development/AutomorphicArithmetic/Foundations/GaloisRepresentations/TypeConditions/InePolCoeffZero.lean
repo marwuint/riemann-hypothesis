@@ -1,13 +1,33 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.InePolOfUnr
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonodromyTrivialEverywhere
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugateCompletionIso
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTypeGroupBlockLift
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GoodIdempotentFixesOfOnlySeriesOfLabelActs
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroInertia
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceLocalComponentExistsUniqueClassStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitPlaceGoodSignature
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSplitPlaceEqFixedTypePrimePlace
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjugateSplitPlaceEqConjugatePlaceAndEmbedding
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLevelCharacterAtConjugateSplitPlace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EquivContra
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EqOrIsConjPlaceOfOverSplitPlace
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjGenTransportExists
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyDualTamePart
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MatrixCharpolySmul
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RankOneLocalComponentDet
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSpanFormsNeBot
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSteinberg
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeCharEqOfSplitOfTied
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeCharLocalComponentExistsUniqueUnitary
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFixedIff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTameGenAtOfIsPlaceOver
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.BernsteinZelevinskyGL.TopAdm
-import Development.WeilBound.CoreStatements.AutomorphicKernels.DepthZeroCuspidal.DzcDegOneFwd
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroCuspidalLL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.NotIsTemperedGLDetRepTwo
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ValuationDetOfMemKO
+import Development.WeilBound.CoreStatements.AutomorphicKernels.DepthZeroCuspidal.TameLpOfCharIff
+import Development.WeilBound.CoreStatements.AutomorphicKernels.DepthZeroCuspidal.LeviInductionForms
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LabLPIsLabelActK
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnrAtOfMulLeft
 
@@ -143,85 +163,6 @@ theorem sep_char (hLP : Formalism.MainNotions.SumRepresentations.At.TieLP N A) {
     rw [roots_scaleRoots _ hz.isUnit]
     exact (nodup_roots k2).map (mul_right_injective₀ hz)
 end
-
-theorem sep_conj (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {D : D7}
-    {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : CGTrue hL D T) {a : ℕ} (π : D.naut.CG a) (hc : D.naut.csd π) {w w' : PlE D.host}
-    (hw : IsConjPl D.host w w') (k : Sep D.nd D.naut (D.naut.locG π w)) : Sep D.nd D.naut (D.naut.locG π w') := by
-  have := host_isCMField D.host
-  obtain ⟨π₀, hπ₀⟩ := Quotient.exists_rep (C.e _ π).1
-  have hmk : CG.mk π₀ = (C.e _ π).1 := hπ₀
-  have hc₀ : π₀.IsCsd := by
-    have h1 := (C.csd _ π).1 hc
-    rw [CGu.IsCsd, ← hmk] at h1
-    exact h1
-  have hpar : ∀ v, T.e v (D.naut.locG π v) = ParLaws.locPar hL (CG.mk π₀) (D.nd.plOm.2 v) := fun v => by
-    rw [C.loc, hmk]
-    rfl
-  rw [sep_iff T, hpar] at k ⊢
-  obtain ⟨γ, hγ⟩ := GlobalTheory.exists_tameGenAt_of_isPlaceOver _ _ _ _ (D.nd.plOm.2 w')
-  obtain ⟨γ', ⟨c, hcE, hcA, -⟩, -⟩ := GlobalTheory.conjGen_transport_exists D w' w γ (GlobalTheory.TwistDet.isConjPl_symm hw) hγ
-  have hcp : ConjPl (IsCMField.complexConj D.host.E).toRingEquiv w w' :=
-    (conjPl_iff_mem _ _ _).2 fun x y e => hw x y (e.trans (host_complexConj D.host _))
-  obtain rfl : w' = conjSrc (IsCMField.complexConj D.host.E).toRingEquiv w := eq_conjSrc fun x => by
-    simpa using (hcp (IsCMField.complexConj D.host.E x)).symm
-  obtain ⟨σ, hσ, -⟩ := LocEx.exists_isLocComp hF _ a π₀ w
-  rw [ParLaws.locPar_mk hL hσ] at k
-  rw [ParLaws.locPar_mk hL (ParLaws.isLocComp_flip hc₀ hσ)]
-  let π₁ : IrrRep (GL (Fin a) (w.adicCompletion D.host.E)) :=
-    ⟨σ.V, σ.ρ.comp (GlobalTheory.TypeTame.invTranspose a), fun v => (σ.smooth v).preimage (GlobalTheory.TypeTame.continuous_invTranspose a),
-      GlobalTheory.GelfandKazhdan.isIrreducible_comp _ (fun g => ⟨_, GlobalTheory.TypeTame.invTranspose_invTranspose a g⟩) σ.irred⟩
-  have hE := GlobalTheory.GelfandKazhdan.equiv_contra _ a σ.V σ.ρ
-    (PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top _ a σ.V σ.ρ σ.smooth σ.irred) σ.irred
-  have hr := ParLaws.isRec_locRec hL (D.nd.plOm.2 w)
-  let cc := (IsCMField.complexConj D.host.E).toRingEquiv
-  let i := RingEquiv.ofBijective (conjLoc cc w) ⟨(conjLoc cc w).injective, ParLaws.conjLoc_surjective cc w⟩
-  let L := longElt a (w.adicCompletion D.host.E)
-  obtain ⟨b', b, h1, h2, -, h4⟩ := hL.2 _ _ _ _ _ _ _ _ _ _ _ _ (ParLaws.isRec_locRec hL (D.nd.plOm.2 (conjSrc cc w))) hr c
-    (D.host.conj : D.host.E →+* D.host.E) i (fun z => (hcA z).symm) hcE (conjLoc_spec cc w).1
-    (fun x => ((conjLoc_spec cc w).2.1 x).trans (congrArg _ (host_complexConj D.host x))) a
-    (ParLaws.toRep ⟨σ.V, σ.ρ.comp (ParLaws.flip (conjLoc cc w) a),
-        isSmooth_comp σ.smooth _ (ParLaws.continuous_flip (conjLoc_spec _ w).1),
-        ParLaws.isIrreducible_comp σ.irred _ (ParLaws.flip_surjective (ParLaws.conjLoc_surjective _ w))⟩) π₁
-    (LinearMap.GeneralLinearGroup.toLinearEquiv (σ.ρ.asGroupHom L)) (fun g v => by
-      change σ.ρ L (σ.ρ (invRevT (Matrix.GeneralLinearGroup.map (conjLoc cc w) g)) v) =
-        σ.ρ (invT a _ (Matrix.GeneralLinearGroup.map (conjLoc cc w) g)) (σ.ρ L v)
-      have e : ∀ (x y : GL (Fin a) (w.adicCompletion D.host.E)) (u : σ.V), σ.ρ x (σ.ρ y u) = σ.ρ (x * y) u :=
-        fun x y u => by rw [map_mul]; rfl
-      refine (e _ _ v).trans (Eq.trans ?_ (e _ _ v).symm)
-      rw [ParLaws.invRevT_eq, inv_mul_cancel_right])
-  obtain ⟨_, _, _, -, H⟩ := hr
-  have kd := k.dual
-  rw [← H.dual a (ParLaws.toRep σ) π₁ hE, ← h2] at kd
-  exact h1 ▸ kd.transport c (D.host.conj : D.host.E ≃+* D.host.E) hcE hcA h4
-
-theorem tm_rankOne (hL : GlobalTheory.Published.LocalLanglandsGL) {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : CGTrue hL D T)
-    {C₀ : CharFrame D} (S : CharSide D C₀) (π : D.naut.CG 1) (w : PlE D.host) (ht : (S.e1 π).1.TameAt w) :
-    Tm D.nd D.naut (D.naut.locG π w) := by
-  haveI := host_isCMField D.host
-  set χ' := (CGu.equivChar D.host.E (C.e 1 π)).1 with hχ'
-  set χ := (S.e1 π).1 with hχ
-  have hloc : ∀ v, T.e v (D.naut.locG π v) = ParLaws.locPar hL (CG.ofChar χ') (D.nd.plOm.2 v) := fun v => by
-    rw [C.loc, hχ', CGu.ofChar_equivChar]; rfl
-  have unr' : ∀ v, D.naut.unr (D.naut.locG π v) ↔ χ'.UnrAt v := fun v => by
-    rw [T.unr, hloc v]; exact GlobalTheory.RankOneComp.locPar_ofChar_unr_iff hL χ' _
-  have hchar : χ' = χ := by
-    rw [← mul_inv_eq_one]
-    apply GlobalTheory.HeckeSplitRow.eq_one_of_split D.host
-    filter_upwards [D.naut.locG_unr_ae π] with v hv _
-    have u1 := (S.unr_iff π v).1 hv
-    have u2 := (unr' v).1 hv
-    refine ⟨fun x hx => ?_, ?_⟩
-    · rw [Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, u1 x hx, u2 x hx, inv_one, mul_one]
-    · have hf := S.frob π v u1
-      have hf' : D.naut.frobEig (D.naut.locG π v) = {(((χ'.val v)⁻¹ : ℂˣ) : ℂ)} := by
-        rw [T.frobEig _ _ hv, hloc v]; exact GlobalTheory.RankOneComp.locPar_ofChar_frob hL χ' _ u2
-      rw [hf', Multiset.singleton_inj, Units.val_inj, inv_inj] at hf
-      rw [Formalism.L2.Host.HChar.val_mul, Formalism.L2.Host.HChar.val_inv, hf, mul_inv_cancel]
-  rw [tm_iff T, hloc, hchar, ParLaws.locPar_ofChar]
-  obtain ⟨a, ha, ε, -, H⟩ := ParLaws.isRec_locRec hL (D.nd.plOm.2 w)
-  rw [H.one]
-  refine GlobalTheory.SerSys.LabDepth.tame_of_isTameWD ((PositivityTheory.LocalParametersCuspidal.DZC.tame_lpOfChar_iff _ _).2 fun σ hσ => ?_)
-  exact GlobalTheory.MuTameQS.isTame_loc ht _ ((GlobalTheory.MuTameQS.val_lt_one_iff w _).2 (PositivityTheory.LocalParametersCuspidal.DZC.wild_to_unitsOne a ha σ hσ))
 
 theorem inePol_coeff_zero {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
     (T : GlobalTheory.RowTie.WDTie N A) {w : PlE H} (c : A.LP w) (s) (hs : s ∈ Ine (F := H.E) (N.plOm.1 w)) :

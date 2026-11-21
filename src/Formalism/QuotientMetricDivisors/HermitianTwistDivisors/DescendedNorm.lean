@@ -1,6 +1,7 @@
 import Mathlib
 import Formalism.QuotientMetricDivisors.HeightBoundExactNorms
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ReductionThirdStepMean
+import Formalism.QuotientMetricDivisors.ProdFormula
+import Formalism.QuotientMetricDivisors.StatementACE
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SlopeIneqMean
 
 open Module NumberField
@@ -200,24 +201,6 @@ theorem filter_zero {m : ℕ} :
 
 end OperatorNormFrames
 
-open OperatorNormFrames in
-theorem composition_norm : CompNorm := by
-  unfold CompNorm
-  intro m C _ Kj k hk hK φ
-  have key : ∀ i : Fin (m + 1), ‖chainFun Kj i φ‖ ≤
-      (∏ j ∈ Finset.univ.filter (fun j : Fin m => j.castSucc < i), k j) * ‖φ‖ := by
-    intro i
-    induction i using Fin.induction with
-    | zero =>
-      have h0 : chainFun Kj 0 φ = φ := by first | rfl | simp [chainFun]
-      simp only [h0, filter_zero, Finset.prod_empty, one_mul, le_refl]
-    | succ j ih =>
-      have h1 : chainFun Kj j.succ φ = Kj j (chainFun Kj j.castSucc φ) := by
-        first | rfl | simp [chainFun]
-      rw [prod_filter_succ, h1, mul_assoc]
-      exact (hK j _).trans (mul_le_mul_of_nonneg_left ih (hk j))
-  simpa only [filter_last] using key (Fin.last m)
-
 namespace OperatorNormFrames
 
 theorem minOver_le {Ix : Type} [Fintype Ix] [Nonempty Ix] (f : Ix → ℝ) (p : Ix) : minOver f ≤ f p := by
@@ -272,24 +255,6 @@ namespace OperatorNormFrames
 theorem cnorm_sq_mulVec {n d : ℕ} (Z : Matrix (Fin d) (Fin n) ℂ) (y : Fin n → ℂ) :
     ((Formalism.HermitianLatticesTheory.cnorm (Z.mulVec y) ^ 2 : ℝ) : ℂ) = star y ⬝ᵥ (Zᴴ * Z).mulVec y := by
   rw [← star_dot_self, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]
-
-theorem cnorm_le_of_orth {n : ℕ} (p q : Fin n → ℂ) (h : star p ⬝ᵥ q = 0) :
-    Formalism.HermitianLatticesTheory.cnorm p ≤ Formalism.HermitianLatticesTheory.cnorm (p + q) := by
-  have h2 : star q ⬝ᵥ p = 0 := by
-    have e : star q ⬝ᵥ p = star (star p ⬝ᵥ q) := by
-      first
-        | simp [dotProduct, mul_comm]
-        | simp [Matrix.dotProduct, mul_comm]
-    rw [e, h, star_zero]
-  have key : ((Formalism.HermitianLatticesTheory.cnorm (p + q) ^ 2 : ℝ) : ℂ) =
-      ((Formalism.HermitianLatticesTheory.cnorm p ^ 2 + Formalism.HermitianLatticesTheory.cnorm q ^ 2 : ℝ) : ℂ) := by
-    rw [Complex.ofReal_add, ← star_dot_self, ← star_dot_self, ← star_dot_self, star_add]
-    first
-      | rw [add_dotProduct, dotProduct_add, dotProduct_add, h, h2]
-      | rw [Matrix.add_dotProduct, Matrix.dotProduct_add, Matrix.dotProduct_add, h, h2]
-    ring
-  have key' := Complex.ofReal_injective key
-  nlinarith [cnorm_nonneg p, cnorm_nonneg (p + q), sq_nonneg (Formalism.HermitianLatticesTheory.cnorm q)]
 
 theorem quot_rep {n D : ℕ} (Hc X0 : Matrix (Fin n) (Fin n) ℂ) (h0 : IsUnit X0.det)
     (hH : (X0⁻¹)ᴴ * X0⁻¹ = Hc) (Pc : Matrix (Fin D) (Fin n) ℂ) (XQ : Matrix (Fin D) (Fin D) ℂ)
@@ -348,34 +313,7 @@ theorem quot_rep {n D : ℕ} (Hc X0 : Matrix (Fin n) (Fin n) ℂ) (h0 : IsUnit X
       hA, ← Matrix.mulVec_mulVec, hu]
     simp
 
-theorem quot_le {n D : ℕ} (Hc X0 : Matrix (Fin n) (Fin n) ℂ) (h0 : IsUnit X0.det)
-    (hH : (X0⁻¹)ᴴ * X0⁻¹ = Hc) (Pc : Matrix (Fin D) (Fin n) ℂ) (XQ : Matrix (Fin D) (Fin D) ℂ)
-    (hQ : IsUnit XQ.det) (hG : (XQ⁻¹)ᴴ * XQ⁻¹ = (Pc * Hc⁻¹ * Pcᴴ)⁻¹) (x : Fin n → ℂ) :
-    fnorm XQ (Pc.mulVec x) ≤ fnorm X0 x := by
-  obtain ⟨x0, hx0, hn, horth⟩ := quot_rep Hc X0 h0 hH Pc XQ hQ hG (Pc.mulVec x)
-  have hw : Pc.mulVec (x - x0) = 0 := by
-    rw [Matrix.mulVec_sub, hx0, sub_self]
-  have h := horth _ hw
-  rw [← hn]
-  show Formalism.HermitianLatticesTheory.cnorm (X0⁻¹ *ᵥ x0) ≤ Formalism.HermitianLatticesTheory.cnorm (X0⁻¹ *ᵥ x)
-  have e : X0⁻¹ *ᵥ x = X0⁻¹ *ᵥ x0 + X0⁻¹ *ᵥ (x - x0) := by
-    rw [← Matrix.mulVec_add]
-    congr 1
-    abel
-  rw [e]
-  exact cnorm_le_of_orth _ _ h
-
 end OperatorNormFrames
-
-open OperatorNormFrames in
-theorem quotient_metric_representation : QuotMetricRep := by
-  unfold QuotMetricRep
-  intro K _ _ _ n D H X0 h0 P hP XQ hQ v
-  obtain ⟨hQu, hQe⟩ := hQ v
-  exact ⟨fun x => quot_le (H.map v.embedding) (X0 v) (h0 v).1 (h0 v).2 (P.map v.embedding) (XQ v)
-      hQu hQe x,
-    fun y => quot_rep (H.map v.embedding) (X0 v) (h0 v).1 (h0 v).2 (P.map v.embedding) (XQ v)
-      hQu hQe y⟩
 
 namespace OperatorNormFrames
 
@@ -422,13 +360,6 @@ theorem opNormAt_nonneg {K : Type} [Field K] [NumberField K] [StarRing K]
     (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (b' : Basis κ K W)
     (X' : InfinitePlace K → Matrix κ κ ℂ) (v : InfinitePlace K) (φ : V →ₗ[K] W) :
     0 ≤ Formalism.HN.opNormAt b X b' X' v φ := norm_nonneg _
-
-theorem exists_section {K : Type} [Field K] {n D : ℕ} (P : Matrix (Fin D) (Fin n) K)
-    (hP : Function.Surjective P.mulVec) :
-    ∃ ρ : (Fin D → K) →ₗ[K] (Fin n → K), ∀ y, P.mulVec (ρ y) = y := by
-  obtain ⟨g, hg⟩ :=
-    (Matrix.mulVecLin P).exists_rightInverse_of_surjective (LinearMap.range_eq_top.mpr hP)
-  exact ⟨g, fun y => by simpa using LinearMap.congr_fun hg y⟩
 
 end OperatorNormFrames
 
@@ -531,10 +462,6 @@ namespace OperatorNormFrames
 section G
 
 variable {K : Type} [Field K] [NumberField K] {D : ℕ}
-
-def gmap (v : InfinitePlace K) (Y : Matrix (Fin D) (Fin D) ℂ) (x : Fin D → K) :
-    EuclideanSpace ℂ (Fin D) :=
-  WithLp.toLp 2 (Y⁻¹.mulVec fun i => v.embedding (x i))
 
 theorem map_mulVec_emb {n : ℕ} (v : InfinitePlace K) (N : Matrix (Fin D) (Fin n) K) (x : Fin n → K) :
     (fun i => v.embedding (N.mulVec x i)) = (N.map v.embedding).mulVec fun i => v.embedding (x i) := by

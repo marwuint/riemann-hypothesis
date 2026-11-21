@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreFamilyHermitianQuadraticFormAtUnitPropsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreMeasureInvariantSupportedOrbitNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreFamilyHermitianQuadraticFormAtUnitProps
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreMeasureInvariantSupportedOrbitNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNiceLocalFieldProductRingInfiniteAdelesComplet
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RestrictedProductMeasureBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsRestrictedProductTupleMeasureMapLeftRightActioStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RestrictedProductMeasureBasicProperties
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsRestrictedProductTupleMeasureMapLeftRightActio
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianQuadraticUnitaryLocalComponents
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WittTheoremAdelicOneVectorStatement
 
@@ -50,13 +50,13 @@ theorem stdX_props : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   obtain ⟨nI, nV⟩ := nice_ainf_fv F
   obtain ⟨qloc, gloc⟩ := q_and_unitary_local_components F E σ M J
   have hβu : IsUnit β := Ne.isUnit hβ
-  have bI := GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ (Ainf F) nI M J _ _ _ mi s.haar_nuI (hβu.map _) hi
-  have bV := fun v => GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ (Fv F v) (nV v) M J _ _ _ (mv v) (s.haar_nuV v)
+  have bI := _root_.GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ (Ainf F) nI M J _ _ _ mi s.haar_nuI (hβu.map _) hi
+  have bV := fun v => _root_.GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ (Fv F v) (nV v) M J _ _ _ (mv v) (s.haar_nuV v)
     (hβu.map _) (hv v)
-  have pI := GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hCM (Ainf F) nI M J x β _ _ mi hJ hβ hx s.haar_lamI s.haar_nuI hi
-  have pV := fun v => GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hCM (Fv F v) (nV v) M J x β _ _ (mv v) hJ hβ hx
+  have pI := _root_.GlobalTheory.GaugeEx.FibProp.fibre_invariant_orbit_ne_zero F E σ hCM (Ainf F) nI M J x β _ _ mi hJ hβ hx s.haar_lamI s.haar_nuI hi
+  have pV := fun v => _root_.GlobalTheory.GaugeEx.FibProp.fibre_invariant_orbit_ne_zero F E σ hCM (Fv F v) (nV v) M J x β _ _ (mv v) hJ hβ hx
     (s.haar_lamV v) (s.haar_nuV v) (hv v)
-  obtain ⟨hfin, hne, huniq, hsupp⟩ := GlobalTheory.T.restrictedProductMeasure_basic_properties F E d b 1 M ν mi mv hP
+  obtain ⟨hfin, hne, huniq, hsupp⟩ := _root_.GlobalTheory.GaugeEx.isProd_basic F E d b 1 M ν mi mv hP
   have h1 : ν {X | qR (AF F) σ J (X 0) ≠ algebraMap F (AF F) β} = 0 := by
     have := hsupp {X | qR (Ainf F) σ J (X 0) = algebraMap F _ β}
       (fun v => {X | qR (Fv F v) σ J (X 0) = algebraMap F _ β})
@@ -66,7 +66,7 @@ theorem stdX_props : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   refine ⟨h1, ?_, ?_, hfin, hne pI.2.2 fun v => (pV v).2.2⟩
   · intro g
     obtain ⟨⟨gi, hgi⟩, hgv⟩ := gloc g
-    have hT := GlobalTheory.T.isRestrictedProductTupleMeasure_map_leftRightAction F E d b 1 M ν mi mv (HA.mat (AF F) σ J g) 1 hP
+    have hT := _root_.GlobalTheory.GaugeEx.ProdTransport.isProd_map_lrAct F E d b 1 M ν mi mv (HA.mat (AF F) σ J g) 1 hP
     have e1 : mi.map (lrAct ((HA.mat (AF F) σ J g).val.map prInf)
         ((1 : GL (Fin 1) (AF F ⊗[F] E)).val.map prInf)) = mi := by
       rw [← hgi, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), ← smul_eq_lrAct]

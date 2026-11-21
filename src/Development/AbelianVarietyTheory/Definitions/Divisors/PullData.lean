@@ -26,10 +26,6 @@ theorem CanonOn.canon (h : CanonOn Q W G P) : Canon Q G P := by
   obtain ⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, -, h⟩ := h
   exact ⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, h⟩
 
-theorem CanonOn.mono (h : CanonOn Q W G P) (hW : W' ≤ W) : CanonOn Q W' G P := by
-  obtain ⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, hψ, h⟩ := h
-  exact ⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, fun y j V hV hU => hψ y j V hV (hU.trans hW), h⟩
-
 section Pull
 
 variable {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V]

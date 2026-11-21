@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuationCentreRegularUnitStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuationCentreRegularUnit
 open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
@@ -61,7 +61,7 @@ theorem isIntegral_of_forall_valuationSubring' {R Ω : Type} [CommRing R] [Field
 theorem isIntegral_and_isAlgebraic_of_regular : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (O : Type) [CommRing O] [IsDomain O] [Algebra O Ω] (s : X ⟶ Spec (CommRingCat.of O)) [IsProper s], ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap O Ω)) → Function.Injective (algebraMap O Ω) → IsCptGen ξ → ∀ a : Ω, ((∀ p : Cpt ξ, a ∈ regAt ξ p) → IsIntegral O a) ∧ ((∀ p ∈ genFibre O ξ, a ∈ regAt ξ p) → IsAlgebraic O a) := by
   intro X Ω _ ξ O _ _ _ s _ h hinj _ a
   refine ⟨fun ha => isIntegral_of_forall_valuationSubring' hinj a fun V hV => ?_, fun ha => ?_⟩
-  · obtain ⟨p, hp, -⟩ := GlobalTheory.T.valuation_centre_regular_unit X Ω ξ O s h V hV
+  · obtain ⟨p, hp, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_centre_of_isProper X Ω ξ O s h V hV
     exact hp (ha p)
   · haveI : FaithfulSMul O Ω := (faithfulSMul_iff_algebraMap_injective O Ω).2 hinj
     letI := FractionRing.liftAlgebra O Ω
@@ -71,7 +71,7 @@ theorem isIntegral_and_isAlgebraic_of_regular : ∀ (X : Scheme.{0}) (Ω : Type)
     have hO : ∀ o : O, algebraMap O Ω o ∈ V := fun o => by
       rw [IsScalarTower.algebraMap_apply O (FractionRing O) Ω]
       exact hV _
-    obtain ⟨p, hp, hu⟩ := GlobalTheory.T.valuation_centre_regular_unit X Ω ξ O s h V hO
+    obtain ⟨p, hp, hu⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_centre_of_isProper X Ω ξ O s h V hO
     refine hp (ha p fun o ho => ?_)
     have hne : algebraMap O Ω o ≠ 0 := fun h0 => ho (hinj (by simpa using h0))
     have hreg := algebraMap_mem_regAt' ξ s h p o

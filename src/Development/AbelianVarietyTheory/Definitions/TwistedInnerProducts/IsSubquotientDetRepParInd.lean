@@ -274,26 +274,6 @@ def jacMap (e : (Σ a, m a) ≃ n) {π : Representation ℂ (GL n k) V} {τ : Re
     (f : π.IntertwiningMap τ) : (jac e π).IntertwiningMap (jac e τ) :=
   twistMap (jacquetMap f _ _ _) _
 
-omit [∀ a, DecidableEq (m a)] in
-
-theorem modExp_opp (a : α) :
-    modExp (fun a : αᵒᵈ => m (OrderDual.ofDual a)) (OrderDual.toDual a) = -modExp m a := by
-  unfold modExp
-  rw [neg_sub]
-  rfl
-
-theorem deltaHalf_opp (g : Levi k m) :
-    deltaHalf k (fun a : αᵒᵈ => m (OrderDual.ofDual a)) g = (deltaHalf k m g)⁻¹ := by
-  rw [deltaHalf_apply k g, ← Finset.prod_inv_distrib]
-  refine (deltaHalf_apply k (m := fun a : αᵒᵈ => m (OrderDual.ofDual a)) g).trans
-    (Finset.prod_congr rfl fun a _ => ?_)
-  have key : ∀ (z : ℤ) (x : kˣ), z = -modExp m a →
-      absPow k ((z : ℂ) / 2) x = (absPow k ((modExp m a : ℂ) / 2) x)⁻¹ := by
-    rintro _ x rfl
-    rw [Int.cast_neg, neg_div, absPow_neg]
-    rfl
-  exact key _ _ (modExp_opp (m := m) a)
-
 abbrev IndSpLower (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) W) : Type :=
   smoothPart (ind (parabLower k e) ((twist ρ (deltaHalf k m)⁻¹).comp (leviProjLower k e)))
 
@@ -307,16 +287,6 @@ def parIndLower (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) W) :
 def jacLower (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) :
     Representation ℂ (Levi k m) (Jacquet π (unipRadLower k e)) :=
   twist (jacquet π (unipRadLower k e) (leviEmb k e) (leviEmb_mem_normalizer_lower k e)) (deltaHalf k m)
-
-theorem jacLower_eq (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) (g : Levi k m) :
-    jacLower e π g = jac (opp e) π g := by
-  have h : deltaHalf k m g = (deltaHalf k (fun a : αᵒᵈ => m (OrderDual.ofDual a)) g)⁻¹ :=
-    ((inv_inv _).symm.trans (congrArg _ (deltaHalf_opp g).symm))
-  exact congrArg (fun c : ℂˣ => (c : ℂ) • jacU (opp e) π g) h
-
-theorem isSmooth_jacLower (e : (Σ a, m a) ≃ n) {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) :
-    IsSmooth (jacLower e π) :=
-  isSmooth_twist (isSmooth_jacquet hπ _ _ _ (continuous_leviEmb k e)) (isSmoothChar_deltaHalf k)
 
 def multiProd (e : (Σ a, m a) ≃ n) {X : α → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
     (π : ∀ a, Representation ℂ (GL (m a) k) (X a)) :=
@@ -360,35 +330,11 @@ theorem isSmooth_jac₂ (e : a ⊕ b ≃ n) {π : Representation ℂ (GL n k) V}
     IsSmooth (jac₂ e π) :=
   isSmooth_comp (isSmooth_jac _ hπ) _ (continuous_leviTwo k)
 
-theorem isSmooth_jac₂Lower (e : a ⊕ b ≃ n) {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) :
-    IsSmooth (jac₂Lower e π) :=
-  isSmooth_comp (isSmooth_jacLower _ hπ) _ (continuous_leviTwo k)
-
 def prod₂ {r t : ℕ} (π₁ : Representation ℂ (GL (Fin r) k) V) (π₂ : Representation ℂ (GL (Fin t) k) W) :=
   ind₂ (stdSum (rfl : r + t = r + t)) (extTensor π₁ π₂)
 
 theorem isSmooth_prod₂ {r t : ℕ} (π₁ : Representation ℂ (GL (Fin r) k) V)
     (π₂ : Representation ℂ (GL (Fin t) k) W) : IsSmooth (prod₂ π₁ π₂) := isSmooth_parInd _ _
-
-theorem jac₂_detRep (e : a ⊕ b ≃ n) (χ : kˣ →* ℂˣ) (g : GL a k × GL b k)
-    (x : Jacquet (detRep n χ) (unipRad k (two e))) :
-    jac₂ e (detRep n χ) g x =
-      ((detChar a (χ * absPow k (-(Fintype.card b : ℂ) / 2)) g.1 *
-        detChar b (χ * absPow k ((Fintype.card a : ℂ) / 2)) g.2 : ℂˣ) : ℂ) • x := by
-  obtain ⟨v, rfl⟩ := Submodule.Quotient.mk_surjective _ x
-  have h := jac_mk (two e) (detRep n χ) (leviTwo k a b g) v
-  have h2 : detRep n χ (leviEmb k (two e) (leviTwo k a b g)) v =
-      ((χ (GeneralLinearGroup.det g.1) * χ (GeneralLinearGroup.det g.2) : ℂˣ) : ℂ) • v := by
-    rw [← map_mul, ← det_emb₂ k e g]
-    exact ofChar_apply _ _ _
-  rw [h2, Submodule.Quotient.mk_smul, smul_smul, deltaHalf_two] at h
-  refine h.trans ?_
-  congr 1
-  rw [← Units.val_mul]
-  congr 1
-  simp only [detChar_apply, MonoidHom.mul_apply, neg_div, absPow_neg, MonoidHom.inv_apply, mul_inv,
-    inv_inv]
-  simp only [mul_comm, mul_left_comm, mul_assoc]
 
 end Two
 
@@ -645,41 +591,6 @@ theorem isCuspidal_detRep_one {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
   obtain rfl : i = j := Subsingleton.elim _ _
   obtain ⟨⟨a, i⟩, rfl⟩ := e.surjective i
   simpa using (mem_unipRad.1 hu).2 a i i
-
-theorem not_isCuspidal_detRep_two (χ : kˣ →* ℂˣ) : ¬ IsCuspidal (detRep (Fin 2) χ) := by
-  intro h
-  let e : (Σ _ : Fin 2, Fin 1) ≃ Fin 2 := Equiv.sigmaUnique _ _
-  let u : GL (Fin 2) k := GeneralLinearGroup.mkOfDetNeZero !![1, 1; 0, 1] (by simp)
-  have hu : u ∈ unipRad k e := by
-    refine mem_unipRad.2 ⟨mem_parab_iff.2 fun a b i j hab => ?_, fun a i j => ?_⟩
-    · show (!![1, 1; 0, 1] : Matrix (Fin 2) (Fin 2) k) a b = 0
-      fin_cases a <;> fin_cases b <;> simp at hab ⊢
-    · show (!![1, 1; 0, 1] : Matrix (Fin 2) (Fin 2) k) a a = _
-      rw [Subsingleton.elim i j]
-      fin_cases a <;> simp
-  have hne : unipRad k e ≠ ⊥ := fun hb => by
-    rw [hb, Subgroup.mem_bot] at hu
-    have : (!![1, 1; 0, 1] : Matrix (Fin 2) (Fin 2) k) 0 1 = (1 : Matrix (Fin 2) (Fin 2) k) 0 1 :=
-      congrArg (fun g : GL (Fin 2) k => (g : Matrix (Fin 2) (Fin 2) k) 0 1) hu
-    simp at this
-  have := Submodule.Quotient.subsingleton_iff.1 (h.2 2 (fun _ => 1) e hne)
-  rw [twKer_detRep] at this
-  exact bot_ne_top this
-
-example (χ : kˣ →* ℂˣ) : HasCentralChar (detRep n χ) (χ ^ Fintype.card n) := fun z v => by
-  have : GeneralLinearGroup.det (GeneralLinearGroup.scalar n z) = z ^ Fintype.card n := by
-    ext; simp [GeneralLinearGroup.scalar]
-  simp [detRep, this]
-
-example {χ : kˣ →* ℂˣ} (h : IsUnitaryChar χ) : IsUnitarisable (detRep n χ) :=
-  (isUnitarisable_ofChar_iff _).2 fun _ => h _
-
-example {G : Type} [Group G] (χ : G →* ℂˣ) : 1 ≤ jhMult (ofChar χ) (ofChar χ) := by
-  refine le_iSup₂_of_le 1 ⟨fun _ => ⊤, fun _ => ⊥, fun _ => bot_le,
-    fun i j h => absurd (Subsingleton.elim i j) h.ne, fun _ => ⟨.mk ((Submodule.quotEquivOfEqBot _
-      (by ext; simp [show (⊥ : Subrepresentation (ofChar χ)).toSubmodule = ⊥ from rfl])).trans
-        Submodule.topEquiv) fun g => ?_⟩⟩ le_rfl
-  exact Submodule.linearMap_qext _ rfl
 
 end Examples
 

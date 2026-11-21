@@ -139,49 +139,11 @@ def coord (v : HeightOneSpectrum (𝓞 E)) (y : (Af E)ˣ) : (v.adicCompletion E)
 @[simp] theorem coe_coord (v : HeightOneSpectrum (𝓞 E)) (y : (Af E)ˣ) :
     (coord v y : v.adicCompletion E) = (y : Af E) v := rfl
 
-theorem SuppAt.eq_single {v : HeightOneSpectrum (𝓞 E)} {y : (Af E)ˣ} (h : SuppAt v y) : y = single v (coord v y) := by
-  ext : 1
-  apply Subtype.ext
-  funext w
-  show (y : Af E) w = (single v _ : Af E) w
-  by_cases hw : w = v
-  · subst hw; rw [single_self, coe_coord]
-  · rw [h w hw, suppAt_single v _ w hw]
-
-theorem SuppAt.finPart_eq {v : HeightOneSpectrum (𝓞 E)} {y : (Af E)ˣ} (h : SuppAt v y) (χ : HChar E) :
-    finPart χ y = χ.loc v (coord v y) := by
-  conv_lhs => rw [h.eq_single]
-  rfl
-
-theorem levelLe_iff_finPart (χ : HChar E) (v : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
-    χ.LevelLe v n ↔ ∀ y : (Af E)ˣ, SuppAt v y → Valued.v ((y : Af E) v) = 1 →
-      Valued.v ((y : Af E) v - 1) ≤ WithZero.exp (-(n : ℤ)) → finPart χ y = 1 := by
-  constructor
-  · intro h y hy h1 h2
-    rw [hy.finPart_eq]
-    exact h _ h1 h2
-  · intro h x hx hx'
-    rw [← finPart_single]
-    exact h _ (suppAt_single v x) (by rw [single_self]; exact hx) (by rw [single_self]; exact hx')
-
 theorem unifAt_spec (v : HeightOneSpectrum (𝓞 E)) :
     SuppAt v (unifAt v) ∧ Valued.v ((unifAt v : Af E) v) = WithZero.exp (-1 : ℤ) :=
   ⟨suppAt_single v _, by rw [unifAt, single_self]; exact unif_spec v⟩
 
 theorem finPart_unifAt (χ : HChar E) (v : HeightOneSpectrum (𝓞 E)) : finPart χ (unifAt v) = χ.val v := rfl
-
-theorem finPart_eq_val_zpow {χ : HChar E} {v : HeightOneSpectrum (𝓞 E)} (h : χ.UnrAt v) {y : (Af E)ˣ} (hy : SuppAt v y)
-    {n : ℤ} (hn : Valued.v ((y : Af E) v) = WithZero.exp (-n)) : finPart χ y = χ.val v ^ n := by
-  have hu : IsUnitAt v (coord v y * (atFin v (unif v) ^ n)⁻¹) := by
-    have h2 := unif_spec v
-    unfold IsUnitAt IsUnifAt at *
-    rw [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, coe_coord, hn, h2,
-      ← WithZero.exp_zsmul]
-    simp
-  have h3 := h _ hu
-  rw [map_mul, map_inv, mul_inv_eq_one, map_zpow] at h3
-  rw [hy.finPart_eq, h3]
-  rfl
 
 @[simp] theorem finPart_mul (χ χ' : HChar E) (y : (Af E)ˣ) : finPart (χ * χ') y = finPart χ y * finPart χ' y := rfl
 
@@ -233,26 +195,6 @@ theorem hasInfRatio_iff (χ : HChar E) (φ : I → E →+* ℂ) (m : I → ℤ) 
     congr 1
     rw [zpow_two, div_mul_div_comm, ← sq ((‖φ i (k : E)‖ : ℝ) : ℂ), ← Complex.mul_conj', mul_div_mul_left _ _ h1]
   simp only [this]
-
-theorem TrivOnF.inf_eq_one {χ : HChar E} (h : TrivOnF χ) (k : Eˣ) (hk : (k : E) ∈ maximalRealSubfield E) : χ.inf k = 1 := by
-  classical
-  let k' : (maximalRealSubfield E)ˣ := Units.mk0 ⟨k, hk⟩ (fun h0 => k.ne_zero (congrArg Subtype.val h0))
-  have hkk : k = upF (maximalRealSubfield E) k' := Units.ext rfl
-  have h1 : χ.inf k = ∏ w : InfinitePlace E, χ.locInf w (atInf w k) := by
-    show χ.1 (infDiag k) = _
-    unfold Formalism.L2.Host.infDiag
-    rw [MonoidHom.finset_prod_apply, map_prod]
-    rfl
-  rw [h1, ← Finset.prod_fiberwise Finset.univ (fun w : InfinitePlace E => w.comap (algebraMap (maximalRealSubfield E) E))]
-  refine Finset.prod_eq_one fun w _ => ?_
-  have h2 := h.2 w k'
-  unfold Formalism.L2.Host.HChar.resInf at h2
-  rw [MonoidHom.finset_prod_apply] at h2
-  rw [hkk]
-  convert h2 using 2
-  · unfold Formalism.L2.Host.aboveInf
-    congr
-  · rfl
 
 theorem ExpAt.unique {χ : HChar E} {v : HeightOneSpectrum (𝓞 E)} {n n' : ℕ} (h : ExpAt χ v n) (h' : ExpAt χ v n') : n = n' :=
   le_antisymm ((h n').1 ((h' n').2 le_rfl)) ((h' n).1 ((h n).2 le_rfl))
@@ -355,10 +297,6 @@ def picMap {c c' : Ideal (OF E)} (h : c' ≤ c) : PicO c' →* PicO c :=
 @[simp] theorem picMap_mk {c c' : Ideal (OF E)} (h : c' ≤ c) (y : (Af E)ˣ) :
     picMap h (QuotientGroup.mk y) = QuotientGroup.mk y := rfl
 
-theorem picMap_surjective {c c' : Ideal (OF E)} (h : c' ≤ c) : Function.Surjective (picMap h) := fun q => by
-  obtain ⟨y, rfl⟩ := QuotientGroup.mk_surjective q
-  exact ⟨QuotientGroup.mk y, rfl⟩
-
 theorem mem_lattice {c : Ideal (OF E)} {y : (Af E)ˣ} {x : E} :
     x ∈ lattice c y ↔ algebraMap E (Af E) x * (↑y⁻¹ : Af E) ∈ hatO c := Iff.rfl
 
@@ -455,25 +393,5 @@ theorem latDisc_ne_zero (Λ : PeriodPair) : latDisc Λ ≠ 0 := by
 
 theorem beta_eq (E : Type) [Field E] [NumberField E] (d s : ℕ) (κ : I → ℕ) (Λ : PeriodPair) (T : ℂ) :
     beta E d s κ Λ T = ((C0 E d (2 * s) κ : ℂ) * T) ^ 12 / latDisc Λ ^ (2 * s * Fintype.card I + 2 * ∑ i, κ i) := rfl
-
-example (s : ℂ) (v : HeightOneSpectrum (𝓞 E)) :
-    eulerFactor (1 : HChar E) s v = (1 - ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-s))⁻¹ := by
-  have h : (1 : HChar E).UnrAt v := fun _ _ => rfl
-  have h' : (1 : HChar E).val v = 1 := rfl
-  simp [eulerFactor, h, h']
-
-example (x : E) : x ∈ orderC (⊤ : Ideal (OF E)) ↔ ∃ b : 𝓞 E, x = algebraMap (𝓞 E) E b := by
-  rw [mem_orderC]
-  constructor
-  · rintro ⟨a, b, -, rfl⟩
-    exact ⟨algebraMap (OF E) (𝓞 E) a + b, by rw [map_add]; rfl⟩
-  · rintro ⟨b, rfl⟩
-    exact ⟨0, b, by simp [Ideal.map_top], by simp⟩
-
-example (φ : E →+* ℂ) (x : E) (h : φ x = Complex.I) :
-    term (fun _ : Unit => φ) 2 (fun _ => 1) 0 x = 1 ∧ term (fun _ : Unit => φ) 2 (fun _ => 0) 0 x = -1 := by
-  simp [term, h, pow_succ]
-
-example : Formalism.PairingDivisionLocalBalance.wtM (2 * 1) (fun _ : Unit => 3) = 8 := by decide
 
 end GlobalTheory.CMVal

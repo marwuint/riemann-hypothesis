@@ -12,7 +12,4 @@ theorem isAbelianScheme_of_smConn_of_isProper (S : Scheme.{0}) (G : Over S) [Grp
     (h : GlobalTheory.SS.SmConn G) (hp : IsProper G.hom) : IsAbelianScheme G :=
   ⟨h.1, h.2.1, hp, h.2.2.2.2⟩
 
-theorem main : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], GlobalTheory.SS.SmConn G → IsProper G.hom → IsAbelianScheme G :=
-  fun S G _ h hp => isAbelianScheme_of_smConn_of_isProper S G h hp
-
 end GlobalTheory.SmConnProper

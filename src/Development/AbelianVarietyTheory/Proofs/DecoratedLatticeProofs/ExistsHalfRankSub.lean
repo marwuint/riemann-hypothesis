@@ -1,6 +1,9 @@
 import Mathlib
 import Formalism.LocalToGlobal.GlobalTheory.HLatOpsP
-import Formalism.HarderNarasimhan.FinalCor
+import Formalism.HarderNarasimhan.ShiftInvariance
+import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PolygonSlopeSum
+import Formalism.HarderNarasimhan.Statement
+
 open Module NumberField Formalism.BasicNotions
 
 namespace GlobalTheory.HalfRankSub

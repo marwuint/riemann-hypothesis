@@ -1,7 +1,10 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToRingActOpOfRingAct
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyHomFixRepTrivial
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGaloisCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuativeExistenceOfDvrLiftsLocallyNoetherianStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuativeExistenceOfDvrLiftsLocallyNoetherian
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProperOfCompleteDVRLiftGenericPoint
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.AbelianSchemeHomExtendsDedekindOfIsGrpPullbackAl
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HomExtensionSemiAbelianDiscreteValuationRing
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
@@ -32,7 +35,7 @@ macro "lbt" : tactic => `(tactic| (repeat (first | assumption | apply pull_isLB)
 theorem isProper_of_finiteType : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left) (R : HomFixRep A B L M), IsAbelianScheme A → IsAbelianScheme B → L.IsLB → M.IsLB → Out.Rigidified A L → Out.Rigidified B M → QuasiCompact R.π → IsSeparated R.π → LocallyOfFiniteType R.π → IsProper R.π := by
   intro S _ A B _ _ _ _ L M R hA hB hL hM _ _ hqc hsep hlft
   have hex : ValuativeCriterion.Existence R.π := by
-    refine GlobalTheory.T.valuativeExistence_of_dvr_lifts_locallyNoetherian R.π hlft hqc hsep fun V _ _ _ x y hxy => ?_
+    refine _root_.GlobalTheory.DvrCriterion.existence_of_lift_discreteValuationRing R.π hlft hqc hsep fun V _ _ _ x y hxy => ?_
     haveI := R.hom
 
     let AV := (Over.pullback y).obj A

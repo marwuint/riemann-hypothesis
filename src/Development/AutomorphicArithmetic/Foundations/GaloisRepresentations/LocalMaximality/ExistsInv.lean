@@ -6,11 +6,6 @@ open scoped TensorProduct
 
 namespace UpperTheory.Gal.productCup_of_system
 
-section
-variable {A : Type} [Field A] [Algebra ℂ A]
-
-end
-
 end UpperTheory.Gal.productCup_of_system
 
 private theorem stab_lemma {L : Type} [Field L] [Algebra ℂ L] (B : Subalgebra ℂ L) (q : ℕ) :

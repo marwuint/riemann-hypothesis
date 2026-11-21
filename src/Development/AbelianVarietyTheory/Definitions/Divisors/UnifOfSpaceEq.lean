@@ -109,11 +109,7 @@ def dimFl : ℕ := fdeg E * (r * (r - 1) / 2)
 def locConst (w ε : ℝ) : ℝ :=
   8 * ((dimFl E r).factorial : ℝ) / (Real.pi * chartRad E r w ^ 2) ^ dimFl E r * multBd E r ε
 
-def massLev (M : ℕ) : ℝ := GlobalTheory.UCls.massBd E r M (classNumber E * M ^ (2 * fdeg E))
-
 def epsLev (d M : ℕ) (w : ℝ) : ℝ := epStar (2 * M * Real.sqrt d) (fdeg E) w 1
-
-def supConst (d M : ℕ) (w : ℝ) : ℝ := locConst E r w (epsLev E d M w) * massLev E r M
 
 def cmLen (q d M : ℕ) (w : ℝ) : ℝ :=
   frameBasisRadius r q (fdeg E) (dE E) (Real.sqrt (epsLev E d M w)) (3 * frameRadius w r / 5)
@@ -122,19 +118,11 @@ def lamSup (q d M : ℕ) (Om s t : ℝ) : ℝ :=
   (Formalism.L2.LamCM.pDeg Om + 1 / 2 * Real.log (cmLen E r q d M (s + t + 1))) * (s + t) +
     s * Real.log (r * cmLen E r q d M (s + t + 1))
 
-def lamPet (q d M : ℕ) (Om s t : ℝ) : ℝ := lamSup E r q d M Om s t + 1 / 2 * Real.log (supConst E r d M (s + t + 1))
-
 theorem one_le_multBd {ε : ℝ} (hε : 0 < ε) : 1 ≤ multBd E r ε := by
   unfold multBd
   refine one_le_pow₀ (le_add_of_nonneg_right ?_)
   have : 0 ≤ dE E := abs_nonneg _
   positivity
-
-example : dimFl E 1 = 0 := by simp [dimFl]
-
-example : dimFl E 2 = fdeg E := by simp [dimFl]
-
-example (d M : ℕ) (w : ℝ) : epsLev E d M w ≤ 1 := min_le_left _ _
 
 end Consts
 

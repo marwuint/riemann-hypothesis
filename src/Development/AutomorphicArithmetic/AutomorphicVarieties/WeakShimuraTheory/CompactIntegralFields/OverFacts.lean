@@ -18,18 +18,6 @@ private theorem low_r {n : M4 k} (h : IsLow n) : n * adj n = 1 := mul_eq_one_com
 
 end Mat
 
-section Grp
-variable {k Γ : Type} [Field k] [Group Γ]
-
-end Grp
-
-section Gal
-variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
-
-variable {D : Raw Ω c} {T T' : Tower D} {hT : T.Le T'} {k : Type} [Field k] {a : c.O →+* k}
-
-end Gal
-
 end UpperTheory.V.Ws.OvF
 
 private theorem eq_of_isLow_of_isUp_adj_mul_of_isUnit_det {k : Type} [Field k] {n m B : M4 k} (hn : IsLow n) (hm : IsLow m)

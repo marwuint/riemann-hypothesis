@@ -15,8 +15,6 @@ instance : IsDirected (FinSub K Ω) (· ≤ ·) :=
 
 instance : Nonempty (FinSub K Ω) := ⟨⟨⊥, inferInstance⟩⟩
 
-example : IsCofiltered (FinSub K Ω)ᵒᵖ := inferInstance
-
 def ringDiag : FinSub K Ω ⥤ CommRingCat.{0} where
   obj L := CommRingCat.of L.1
   map h := CommRingCat.ofHom (IntermediateField.inclusion (leOfHom h)).toRingHom
@@ -72,9 +70,6 @@ def arrCone : Cone (arr K Ω) where
             · exact (Category.comp_id _).symm }
 
 def cechCone : Cone (arr K Ω ⋙ SimplicialObject.cechNerve) := SimplicialObject.cechNerve.mapCone (arrCone K Ω)
-
-example : (cechCone K Ω).pt = cech (Spec.map (CommRingCat.ofHom (algebraMap K Ω))) := rfl
-example (L : (FinSub K Ω)ᵒᵖ) : (arr K Ω ⋙ SimplicialObject.cechNerve).obj L = cech (Spec.map (CommRingCat.ofHom (algebraMap K L.unop.1))) := rfl
 
 end GlobalTheory.SepCech
 end

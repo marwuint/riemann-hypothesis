@@ -223,25 +223,6 @@ def dualLoc (L : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpectrum (𝓞 
 def IsSelfDualAt (L : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpectrum (𝓞 F)) : Prop :=
   latLoc F L v = dualLoc σ J L v
 
-theorem isSelfDualAt_stdLattice_one (v : HeightOneSpectrum (𝓞 F)) :
-    IsSelfDualAt σ (1 : Matrix (Fin n) (Fin n) E) (stdLattice E n) v := by
-  have e : ∀ y x : Fin n → Fv F v ⊗[F] E,
-      hLin σ 1 (Fv F v) y x = ∑ i, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ (x i) * y i := fun y x => by
-    simp [hLin, hR, hform, JR, Matrix.one_apply]
-  ext y
-  rw [mem_latLoc_stdLattice]
-  constructor
-  · intro hy x hx
-    rw [e]
-    exact sum_mem fun i _ => mul_mem (sigR_mem_intLoc σ (mem_latLoc_stdLattice.1 hx i)) (hy i)
-  · intro hy i
-    have := hy (Pi.single i 1) (mem_latLoc_stdLattice.2 fun j => by
-      by_cases h : j = i
-      · subst h; simp
-      · simp [h])
-    rw [e, Finset.sum_eq_single i (fun j _ h => by simp [h]) (by simp)] at this
-    simpa using this
-
 end Dual
 
 section Level
@@ -320,12 +301,6 @@ theorem emb_mem_levelOff {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) {k : GL
   · subst e; simpa using hk
   · rw [proj_emb_ne σ J e]; exact one_mem _
 
-theorem isLatticeFrame_one : IsLatticeFrame (stdLattice E n) (1 : GL (Fin n) (AF F ⊗[F] E)) := fun v y => by
-  rw [map_one, Units.val_one, Matrix.one_mulVec, mem_latLoc_stdLattice]
-
-theorem isMajorantFrame_one : IsMajorantFrame σ (1 : Matrix (Fin n) (Fin n) E) 1 := fun w =>
-  ⟨fun _ => true, by simp [JR, cT_one]⟩
-
 end Level
 
 theorem vecLoc_mulVec (v : HeightOneSpectrum (𝓞 F)) (g : GAd σ J) (y : Fin n → Af F ⊗[F] E) :
@@ -357,8 +332,6 @@ section Height
 
 def height (g : GAd σ J) : ℝ≥0 := heightGL F (matHom _ σ J g)
 
-def heightIn (a : GL (Fin n) (AF F ⊗[F] E)) (g : GAd σ J) : ℝ≥0 := heightGL F (a⁻¹ * matHom _ σ J g * a)
-
 theorem height_eq (g : GAd σ J) : height σ J g =
     (∏ w, htInf F w (matHom _ σ J (projArch σ J w g))) * ∏ᶠ v, htFin F v (matHom _ σ J (proj σ J v g)) := rfl
 
@@ -374,57 +347,6 @@ theorem htInf_le_height (w : InfinitePlace F) (g : GAd σ J) :
     (fun _ _ => one_le_htOf _ _) (Finset.mem_univ w)).trans
     (le_mul_of_one_le_right' (one_le_finprod' fun _ => one_le_htOf _ _))
 
-theorem htFin_one (v : HeightOneSpectrum (𝓞 F)) : htFin F v (1 : GL (Fin n) (Fv F v ⊗[F] E)) = 1 :=
-  htOf_eq_one.2 ⟨normFin_one_le F v, normFin_one_le F v⟩
-
-theorem htInf_one (w : InfinitePlace F) : htInf F w (1 : GL (Fin n) (w.Completion ⊗[F] E)) = 1 :=
-  htOf_eq_one.2 ⟨normInf_one_le F w, normInf_one_le F w⟩
-
-theorem height_emb (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) :
-    height σ J (emb σ J v x) = htFin F v (matHom _ σ J x) := by
-  rw [height_eq, finprod_eq_single _ v fun u hu => by rw [proj_emb_ne σ J hu, map_one, htFin_one], proj_emb_self]
-  simp only [projArch_emb, map_one, htInf_one, Finset.prod_const_one, one_mul]
-
-theorem height_embArch (w : InfinitePlace F) (x : GArch σ J w) :
-    height σ J (embArch σ J w x) = htInf F w (matHom _ σ J x) := by
-  rw [height_eq, Finset.prod_eq_single w (fun u _ hu => by rw [projArch_embArch_ne σ J hu, map_one, htInf_one])
-    (by simp), projArch_embArch_self]
-  simp only [proj_embArch, map_one, htFin_one, finprod_one, mul_one]
-
-theorem conj_mul (a : GL (Fin n) (AF F ⊗[F] E)) (g h : GAd σ J) :
-    a⁻¹ * matHom _ σ J (g * h) * a = (a⁻¹ * matHom _ σ J g * a) * (a⁻¹ * matHom _ σ J h * a) := by
-  rw [map_mul]; group
-
-variable {σ} in
-theorem normInf_le_one_of_unitary (h : IsCMExt F E σ) {w : InfinitePlace F} {u : GL (Fin n) (w.Completion ⊗[F] E)}
-    (hu : u ∈ UJ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ) 1) : normInf F w u.1 ≤ 1 := by
-  refine (normInf_le_iff F w).2 fun τ => ?_
-  have h1 : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ) u.1 * 1 * u.1 = 1 := hu
-  have h2 : star (u.1.map (infEmb τ)) * u.1.map (infEmb τ) = 1 := by
-    have h3 : star (u.1.map (infEmb τ)) = (cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ) u.1).map (infEmb τ) := by
-      ext i j
-      exact infEmb_sigR h τ _
-    rw [mul_one] at h1
-    rw [h3, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]
-  have h4 := opNorm_one_le (n := Fin n)
-  rw [← h2, opNorm, map_mul, map_star, CStarRing.nnnorm_star_mul_self] at h4
-  by_contra hc
-  exact absurd h4 (not_le.2 (one_lt_mul'' (not_le.1 hc) (not_le.1 hc)))
-
-variable {σ J} in
-theorem normFin_conj_le_one {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF F ⊗[F] E)}
-    (ha : IsLatticeFrame L a) {v : HeightOneSpectrum (𝓞 F)} {k : GLoc σ J v} (hk : k ∈ stabLoc σ J L v) :
-    normFin F v ((bc (compFin F E v) a)⁻¹ * matHom _ σ J k * bc (compFin F E v) a).1 ≤ 1 := by
-  refine (normFin_le_iff F v).2 fun i j => absFin_le_one_of_mem_intLoc ?_
-  have h1 := (mem_stabLoc.1 hk _).1 ((ha v (Pi.single j 1)).1 fun l => by
-    by_cases e : l = j
-    · subst e; simp
-    · simp [e])
-  have h2 := (ha v (((bc (compFin F E v) a)⁻¹ * matHom _ σ J k * bc (compFin F E v) a).1 *ᵥ Pi.single j 1)).2 (by
-    rwa [Matrix.mulVec_mulVec, ← Units.val_mul, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, Units.val_mul,
-      ← Matrix.mulVec_mulVec]) i
-  simpa using h2
-
 end Height
 
 section Moderate
@@ -432,55 +354,7 @@ section Moderate
 def IsModerate {G X : Type*} [Norm X] (ht : G → ℝ≥0) (f : G → X) : Prop :=
   ∃ (C : ℝ) (N : ℕ), ∀ g, ‖f g‖ ≤ C * (ht g : ℝ) ^ N
 
-theorem IsModerate.exists_nonneg {G X : Type*} [Norm X] {ht : G → ℝ≥0} {f : G → X} (h : IsModerate ht f) :
-    ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ g, ‖f g‖ ≤ C * (ht g : ℝ) ^ N := by
-  obtain ⟨C, N, h⟩ := h
-  exact ⟨max C 0, N, le_max_right _ _, fun g => (h g).trans (by gcongr; exact le_max_left _ _)⟩
-
-theorem IsModerate.comp {G G' X : Type*} [Norm X] {ht : G → ℝ≥0} {ht' : G' → ℝ≥0} {f : G → X} (h : IsModerate ht f)
-    (φ : G' → G) {c : ℝ≥0} {m : ℕ} (hφ : ∀ g, ht (φ g) ≤ c * ht' g ^ m) : IsModerate ht' (f ∘ φ) := by
-  obtain ⟨C, N, hC, h⟩ := h.exists_nonneg
-  refine ⟨C * c ^ N, m * N, fun g => (h (φ g)).trans ?_⟩
-  rw [mul_assoc, pow_mul, ← mul_pow]
-  gcongr
-  exact_mod_cast hφ g
-
-theorem IsModerate.add {G X : Type*} [SeminormedAddGroup X] {ht : G → ℝ≥0} (h1 : ∀ g, 1 ≤ ht g) {f f' : G → X}
-    (h : IsModerate ht f) (h' : IsModerate ht f') : IsModerate ht (f + f') := by
-  obtain ⟨C, N, hC, h⟩ := h.exists_nonneg
-  obtain ⟨C', N', hC', h'⟩ := h'.exists_nonneg
-  refine ⟨C + C', max N N', fun g => (norm_add_le _ _).trans ?_⟩
-  have : (1 : ℝ) ≤ ht g := h1 g
-  rw [add_mul]
-  refine add_le_add ((h g).trans ?_) ((h' g).trans ?_) <;> gcongr <;> simp
-
-theorem IsModerate.smul {G R X : Type*} [SeminormedAddGroup R] [SeminormedAddGroup X] [SMul R X] [NormSMulClass R X]
-    {ht : G → ℝ≥0} {f : G → R} {f' : G → X} (h : IsModerate ht f) (h' : IsModerate ht f') :
-    IsModerate ht (f • f') := by
-  obtain ⟨C, N, hC, h⟩ := h.exists_nonneg
-  obtain ⟨C', N', h'⟩ := h'
-  refine ⟨C * C', N + N', fun g => ?_⟩
-  rw [Pi.smul_apply', norm_smul, pow_add, mul_mul_mul_comm]
-  exact mul_le_mul (h g) (h' g) (norm_nonneg _) (by positivity)
-
-def ModerateGrowth {X : Type*} [Norm X] (f : GAd σ J → X) : Prop := IsModerate (height σ J) f
-
-def ModerateGrowth₂ {X : Type*} [Norm X] {n' : ℕ} (J' : Matrix (Fin n') (Fin n') E) (f : GAd σ J × GAd σ J' → X) :
-    Prop := IsModerate (fun p => height σ J p.1 * height σ J' p.2) f
-
 variable {σ J}
-
-theorem ModerateGrowth.mul_right {X : Type*} [Norm X] {f : GAd σ J → X} (h : ModerateGrowth σ J f) (x : GAd σ J) :
-    ModerateGrowth σ J fun g => f (g * x) :=
-  IsModerate.comp h (· * x) (m := 1) (c := height σ J x) fun g => by
-    simpa [mul_comm] using height_mul_le σ J g x
-
-theorem ModerateGrowth.mul_left {X : Type*} [Norm X] {f : GAd σ J → X} (h : ModerateGrowth σ J f) (x : GAd σ J) :
-    ModerateGrowth σ J fun g => f (x * g) :=
-  IsModerate.comp h (x * ·) (m := 1) (c := height σ J x) fun g => by simpa using height_mul_le σ J x g
-
-theorem ModerateGrowth.add {X : Type*} [SeminormedAddGroup X] {f f' : GAd σ J → X} (h : ModerateGrowth σ J f)
-    (h' : ModerateGrowth σ J f') : ModerateGrowth σ J (f + f') := IsModerate.add (one_le_height σ J) h h'
 
 end Moderate
 
@@ -528,23 +402,6 @@ theorem isCMExt_of_isCMField (E : Type) [Field E] [NumberField E] [IsCMField E] 
     IsCMExt (maximalRealSubfield E) E (IsCMField.complexConj E : E →ₐ[maximalRealSubfield E] E) :=
   ⟨inferInstance, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ _,
     fun τ x => IsCMField.complexEmbedding_complexConj E τ x⟩
-
-example : ModerateGrowth σ J fun g => (height σ J g : ℝ) := ⟨1, 1, fun g => by simp⟩
-
-example (v : HeightOneSpectrum (𝓞 F)) : ¬ IsSelfDualAt σ (0 : Matrix (Fin 1) (Fin 1) E) (stdLattice E 1) v := by
-  intro h
-  letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))
-  obtain ⟨a, ha⟩ := NontriviallyNormedField.non_trivial (α := Fv F v)
-  have h1 : (fun _ => a ⊗ₜ[F] (1 : E)) ∈ dualLoc σ (0 : Matrix (Fin 1) (Fin 1) E) (stdLattice E 1) v :=
-    fun x _ => by simp [hLin, hR, hform, JR]
-  rw [← h, mem_latLoc_stdLattice] at h1
-  have h2 := absFin_le_one_of_mem_intLoc (h1 0)
-  rw [absFin_tmul_one] at h2
-  exact absurd (show ‖a‖ ≤ 1 from h2) (not_le.2 ha)
-
-example (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) :
-    normFin F v (Matrix.of fun _ _ : Fin 1 => a ⊗ₜ[F] (1 : E)) = ‖a‖₊ := by
-  simp [normFin, absFin_tmul_one, Finset.sup_const]
 
 end GlobalTheory.AdelicU
 

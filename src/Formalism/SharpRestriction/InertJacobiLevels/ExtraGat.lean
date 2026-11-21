@@ -37,12 +37,6 @@ theorem natAct_one : P.natAct (fun _ => 1) = LinearMap.id := by
     subst_one]
   rfl
 
-theorem map_colSpan {R K : Type*} [CommRing R] [Field K] [Algebra R K] {k : ℕ} (A g : Matrix (Fin k) (Fin k) K) :
-    (colSpan R g).map ((Matrix.mulVecLin A).restrictScalars R) = colSpan R (A * g) := by
-  unfold colSpan
-  rw [Submodule.map_span, ← Set.range_comp]
-  congr 1
-
 def sgnEl : (levAll P).Γ := ((1 : ∀ v, GL (Fin (P.m + 1)) (P.Qq v)), (-1 : ℤˣ))
 
 theorem smul_sgnEl (L : P.Tup) : (levAll P).smul (sgnEl P) L = L := by
@@ -75,19 +69,6 @@ theorem levAll_funMod (h2 : (2 : Kf) ≠ 0) (Hv : P.Tup → Submodule O P.Xsp) :
   exact (smul_eq_zero.mp h4).resolve_left h2
 
 theorem levAll_M (h2 : (2 : Kf) ≠ 0) : (levAll P).M = ⊥ := levAll_funMod P h2 _
-
-theorem levAll_trans (L L' : P.Tup) (hL : P.IsLatTup L) (hL' : P.IsLatTup L') :
-    ∃ γ : (levAll P).Γ, L' = (levAll P).smul γ L := by
-  choose g hg hgL using hL
-  choose g' hg' hgL' using hL'
-  refine ⟨((fun v => Matrix.GeneralLinearGroup.mk'' (g' v * (g v)⁻¹) (by
-    rw [Matrix.det_mul]; exact (hg' v).mul (Matrix.isUnit_nonsing_inv_det _ (hg v)))), 1), ?_⟩
-  funext v
-  show L' v = (L v).map ((Matrix.mulVecLin (g' v * (g v)⁻¹)).restrictScalars (P.W v))
-  rw [hgL v, hgL' v, map_colSpan, Matrix.nonsing_inv_mul_cancel_right _ _ (hg v)]
-
-theorem exists_latTup : ∃ L : P.Tup, P.IsLatTup L :=
-  ⟨fun _ => colSpan _ 1, fun _ => ⟨1, by simp, rfl⟩⟩
 
 theorem gat_M_bot (G : GAtP p) (h : ∀ c, (G.lev c).M = ⊥) : G.M = ⊥ := by
   rw [eq_bot_iff]

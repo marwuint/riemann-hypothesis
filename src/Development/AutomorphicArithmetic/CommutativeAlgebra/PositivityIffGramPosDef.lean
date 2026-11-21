@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.ComplexUniformizationSigOne
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.PointsNonemptyUnitaryGaussian
 import Development.AutomorphicArithmetic.RealSpanData.RealData
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveRealTensorToProdMatrixAlgebrasInfPlaces
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SimilitudePairGramInvCongruent
@@ -53,56 +53,6 @@ private theorem Pz_pi {I M : Type} [Fintype I] [Ring M] [Algebra ℝ M] (t : I �
       have e : Polynomial.aeval (t i) (∏ l ∈ Finset.univ.biUnion s, (Polynomial.X - Polynomial.C l)) = 0 := by
         rw [← Finset.prod_sdiff hsub, map_mul, h0 i, mul_zero]
       exact this.symm.trans e
-
-private theorem Pz_iff_pos_inner {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℝ W]
-    [FiniteDimensional ℝ W] (T : Module.End ℝ W) (hT : LinearMap.IsSymmetric T) :
-    Pz T ↔ ∀ x, x ≠ 0 → 0 < inner ℝ (T x) x := by
-  let e := hT.eigenvectorBasis (n := Module.finrank ℝ W) rfl
-  let lam := hT.eigenvalues (n := Module.finrank ℝ W) rfl
-  have hev : ∀ i, Module.End.HasEigenvector T (lam i) (e i) := fun i =>
-    hT.hasEigenvector_eigenvectorBasis rfl i
-  have hTe : ∀ i, T (e i) = lam i • e i := fun i => hev i |>.apply_eq_smul
-  constructor
-  · rintro ⟨s, hs, h⟩ x hx
-    have hl : ∀ i, 0 < lam i := by
-      intro i
-      have h1 := Module.End.aeval_apply_of_hasEigenvector (p := ∏ l ∈ s, (Polynomial.X - Polynomial.C l)) (hev i)
-      rw [h, LinearMap.zero_apply] at h1
-      have h2 := (smul_eq_zero.1 h1.symm).resolve_right (hev i).2
-      rw [Polynomial.eval_prod, Finset.prod_eq_zero_iff] at h2
-      obtain ⟨l, hl, h3⟩ := h2
-      have : lam i = l := by simpa [sub_eq_zero] using h3
-      exact this ▸ hs l hl
-    have hsum : inner ℝ (T x) x = ∑ i, lam i * (inner ℝ x (e i) * inner ℝ x (e i)) := by
-      rw [← e.sum_inner_mul_inner (T x) x]
-      refine Finset.sum_congr rfl fun i _ => ?_
-      rw [hT x (e i), hTe i, inner_smul_right, real_inner_comm x (e i)]
-      ring
-    rw [hsum]
-    obtain ⟨i, hi⟩ : ∃ i, inner ℝ x (e i) ≠ (0 : ℝ) := by
-      by_contra hc
-      push_neg at hc
-      apply hx
-      have := e.sum_inner_mul_inner x x
-      have h0 : inner ℝ x x = (0 : ℝ) := by rw [← this]; simp [hc]
-      exact inner_self_eq_zero.1 h0
-    refine Finset.sum_pos' (fun j _ => mul_nonneg (hl j).le (mul_self_nonneg _)) ⟨i, Finset.mem_univ i, ?_⟩
-    exact mul_pos (hl i) (mul_self_pos.2 hi)
-  · intro h
-    have hl : ∀ i, 0 < lam i := by
-      intro i
-      have := h (e i) (hev i).2
-      rw [hTe i, inner_smul_left] at this
-      simpa [e.orthonormal.1 i] using this
-    refine ⟨Finset.univ.image lam, ?_, ?_⟩
-    · intro l hl'
-      obtain ⟨i, -, rfl⟩ := Finset.mem_image.1 hl'
-      exact hl i
-    · refine e.toBasis.ext fun i => ?_
-      rw [OrthonormalBasis.coe_toBasis]
-      rw [Module.End.aeval_apply_of_hasEigenvector (hev i), Polynomial.eval_prod,
-        Finset.prod_eq_zero (Finset.mem_image_of_mem lam (Finset.mem_univ i)) (by simp)]
-      simp
 
 private theorem Pz_iff_pos {W : Type} [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W]
     (Q : W →ₗ[ℝ] W →ₗ[ℝ] ℝ) (hsym : ∀ x y, Q x y = Q y x) (hpos : ∀ x, x ≠ 0 → 0 < Q x x)

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HESmulRight
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorCmDifferentIdealScaledStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorCmDifferentIdealScaled
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaLatticeImageRationalHomLatticeStatement
 
 noncomputable section
@@ -193,7 +193,7 @@ theorem triDat_rows : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), cc �
     TriDat D (tor0 D cc δ) (La D (tor0 D cc δ) A (stdL D N')) (La D (tor0 D cc δ) B (stdL D N'))
       (La D (tor0 D cc δ) C (stdL D N')) P N' := by
   intro D cc δ hcc hδ N N' P hP hσ A B C ⟨hA, hB, hC, M, b, x, eA, eB, eC, hp, hθ⟩
-  obtain ⟨t₀, ht₀, hg, hq⟩ := GlobalTheory.T.exists_generator_cmDifferentIdealScaled D cc hcc P hP
+  obtain ⟨t₀, ht₀, hg, hq⟩ := _root_.GlobalTheory.IdealGenerator.exists_generator_Iid D cc hcc P hP
   have mA : M ≤ A := eA ▸ le_sup_left
   have mB : M ≤ B := eB ▸ le_sup_left
   have mC : M ≤ C := eC ▸ le_sup_left

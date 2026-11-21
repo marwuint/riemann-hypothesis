@@ -94,8 +94,6 @@ def Frame.ofGL {N : ℕ} (g : GL (Fin N) k) : Frame k N (Fin N) := ⟨g.val, (g�
 
 instance Frame.nonempty (N : ℕ) : Nonempty (Frame k N (Fin N)) := ⟨Frame.ofGL 1⟩
 
-example : (Frame.ofGL (1 : GL (Fin 2) k)).β = 1 := rfl
-
 def Place.ofSplitPt (q : GlobalTheory.FinPl.SplitPt D k) : Place D k :=
   ⟨q.e, q.split, q.pr, q.sec, q.pr_sec, q.sec_pr, q.cont_pr, q.cont_sec⟩
 
@@ -116,50 +114,11 @@ theorem Place.down_ofSplitPt {q : GlobalTheory.FinPl.SplitPt D k} {S T : HSp D} 
     [DecidableEq n'] (α : GlobalTheory.FinPl.Frame q S n') (β : GlobalTheory.FinPl.Frame q T n) (t : WO S T) :
     (Place.ofSplitPt q).down (Frame.ofFinPl α) (Frame.ofFinPl β) t = GlobalTheory.FinPl.rd α β t := rfl
 
-theorem Place.isLoc_ofSplitPt {q : GlobalTheory.FinPl.SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n]
-    (F : GlobalTheory.FinPl.Frame q S n) (g : GL n k) : (Place.ofSplitPt q).IsLoc (Frame.ofFinPl F) (F.gl g) g :=
-  ⟨F.gl_supp g, F.gl_mat g⟩
-
-example {n : Type} [Fintype n] [DecidableEq n] (B : BesLev D 1) (s : k) (FA : Frame k B.A.rank n)
-    (F : Frame k B.V.rank (n ⊕ Fin 3)) (h : p.IsBesFrame B s FA F) (r) :
-    F.β r (Sum.inr 0) = s * p.xi * p.pr (B.d.e r 0) ∧ F.β r (Sum.inr 1) = s * p.pr ((B.d.i₀ *ᵥ vecB B.o B.ζ) r) ∧
-      F.β r (Sum.inr 2) = -(s * (p.hz B / p.xi)) * p.pr (B.d.e' r 0) := by
-  refine ⟨by simpa using h.2.2.1 0 0 rfl r, h.2.2.2.1 1 rfl r, ?_⟩
-  rw [h.2.2.2.2 0 2 rfl r]
-  simp [neg_div]
-
-example {n : Type} [Fintype n] [DecidableEq n] (J : JacLev D 1) (s hh : k) (F₀ : Frame k J.W₀.rank n)
-    (F : Frame k J.W.rank (n ⊕ Fin 2)) (h : p.IsJacFrame J s hh F₀ F) (r) :
-    F.β r (Sum.inr 0) = s * p.xi * p.pr (J.d.e r 0) ∧ F.β r (Sum.inr 1) = s * (hh / p.xi) * p.pr (J.d.e' r 0) :=
-  ⟨by simpa using h.2.2.1 0 0 rfl r, by simpa using h.2.2.2 0 1 rfl r⟩
-
 namespace Witness
 open GlobalTheory.SplitHalf
 open scoped Topology
 
-theorem exists_place {e : AE D} (he : IsSplitIdem D e) : ∃ v : HeightOneSpectrum (𝓞 D.host.F),
-    letI := GlobalTheory.LocalData.complRel v
-    haveI := GlobalTheory.LocalData.isLocalField v
-    ∃ p : Place D (v.adicCompletion D.host.F), p.e = e := by
-  obtain ⟨v, π, hπ⟩ := GlobalTheory.SplitChart.exists_chart e he
-  letI := GlobalTheory.LocalData.complRel v
-  haveI := GlobalTheory.LocalData.isLocalField v
-  exact ⟨v, ⟨e, he, π, sec e v, chart_sec he.1 hπ, sec_chart he.1 hπ, chart_cont he hπ, sec_cont e v⟩, rfl⟩
-
-theorem nonempty_place (D : D7) : ∃ v : HeightOneSpectrum (𝓞 D.host.F),
-    letI := GlobalTheory.LocalData.complRel v
-    haveI := GlobalTheory.LocalData.isLocalField v
-    Nonempty (Place D (v.adicCompletion D.host.F)) := by
-  obtain ⟨e, he⟩ := exists_idem D
-  obtain ⟨v, p, -⟩ := exists_place he
-  exact ⟨v, ⟨p⟩⟩
-
 theorem e_ι (x : k) : p.e * p.ι x = p.ι x := by rw [← p.ι_π, p.π_ι]
-
-theorem exists_isChar {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) : ∃ ψk, p.IsChar ψ ψk :=
-  ⟨{ toFun := fun x => ⟨psiE ψ (incA D D.host.xi0 * p.ι x), mem_sphere_zero_iff_norm.2 (hψ.1.2.1 _)⟩
-     map_zero_eq_one' := Subtype.ext (by simp only [map_zero, mul_zero, psiE_zero]; rfl)
-     map_add_eq_mul' := fun a b => Subtype.ext (by simp only [map_add, mul_add, psiE_add]; rfl) }, fun _ => rfl⟩
 
 variable {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] {S T : HSp D}
   (FS : Frame k S.rank Y') (FT : Frame k T.rank Y)
@@ -277,56 +236,6 @@ theorem ext_sb (Φ) : IsSBHalf p.e (latO S T ΛS ΛT fun _ => True) (ext p FS FT
     exact nsmul_mem h3 _
 
 omit hS hT
-
-theorem exists_isModel {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) :
-    ∃ Tm, p.IsModel ψ FS FT Tm ∧ Tm ≠ 0 := by
-  classical
-  have hS := GlobalTheory.PlaceModel.isSelfDualC_latFrame S
-  have hT := GlobalTheory.PlaceModel.isSelfDualC_latFrame T
-  obtain ⟨θ, hθ⟩ := GlobalTheory.Member.exists_isInfFam_family D
-  have hc : ∀ (V : HSp D) τ, ∃ s, IsCartanInv (gramAt D V τ) s := fun V τ =>
-    GlobalTheory.Mem.ThetaNonzero.exists_isCartanInv (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ)
-  choose s hs using hc
-  obtain ⟨f, f0, hf⟩ := GlobalTheory.VacuumO.exists_ne_zero ψ θ hψ hθ S T (s S) (s T) (hs S) (hs T) _ _ hS hT
-  have hf1 := hf 1
-  simp only [one_mul] at hf1
-  have hO : GlobalTheory.PlaceModelSum.IsOrthSum p.e :=
-    ⟨Unit, {()}, fun _ => p.e, fun _ _ => p.split, fun _ _ _ _ h => absurd rfl h, by simp⟩
-  obtain ⟨T₀, h₀⟩ := hO.exists_model hψ hS hT p.split.2.1 hf1.2.1
-  refine ⟨T₀.comp (ext p FS FT), ⟨fun Φ => ?_, fun x Φ Φ' h => ?_, fun y hy Φ Φ' h => ?_⟩, fun h => f0 ?_⟩
-  · exact GlobalTheory.SchrTheta.isTheta_placeModel D ψ hψ S T _ _ hS hT p.e p.split.1 (GlobalTheory.PlaceCoord.infPart_split p.split)
-      _ hf1.1 T₀ h₀ _ (ext_sb p FS FT hS hT Φ)
-  · refine Eq.trans (congrArg T₀ ?_) (h₀.trans _ (ext_sb p FS FT hS hT Φ) _ (up_half p FS FT x))
-    funext t
-    rw [ext_apply, ext_apply, down_add, down_up, h]
-    exact if_congr (half_add (up_half p FS FT x)).symm rfl rfl
-  · refine Eq.trans (congrArg T₀ ?_) (h₀.modul _ (ext_sb p FS FT hS hT Φ) _ hy)
-    funext t
-    rw [ext_apply, ext_apply, h]
-    split_ifs with ht
-    · rw [up_down p FS FT ht]
-    · rw [mul_zero]
-  · have ho := lat_open p FS FT hS hT
-    have hk := lat_compact p FS FT hS hT
-    generalize hA : ((latO S T _ _ fun _ => True).comap (upH p FS FT) : AddSubgroup _) = A at ho hk
-    have hcl : IsClopen (A : Set (Matrix Y Y' k)) := ⟨A.isClosed_of_isOpen ho, ho⟩
-    let Φ : SB (Matrix Y Y' k) := ⟨(A : Set (Matrix Y Y' k)).indicator 1,
-      (LocallyConstant.charFn ℂ hcl).isLocallyConstant,
-      HasCompactSupport.intro hk fun x hx => Set.indicator_of_notMem hx _⟩
-    have e1 : ext p FS FT Φ = (1 : ℂ) • halfInd p.e (latO S T (GlobalTheory.PlaceModel.latFrame S) (GlobalTheory.PlaceModel.latFrame T) fun _ => True) := by
-      funext t
-      rw [one_smul, ext_apply, halfInd]
-      by_cases ht : IsHalf p.e t
-      · rw [if_pos ht]
-        change (A : Set (Matrix Y Y' k)).indicator 1 _ = _
-        rw [Set.indicator_apply, ← hA]
-        refine if_congr ?_ rfl rfl
-        change p.up FS FT (p.down FS FT t) ∈ (latO S T (GlobalTheory.PlaceModel.latFrame S) (GlobalTheory.PlaceModel.latFrame T) fun _ => True) ↔ _
-        rw [up_down p FS FT ht, and_iff_left ht]
-      · rw [if_neg ht, if_neg fun h => ht h.2]
-    have e2 : T₀ (ext p FS FT Φ) = 0 := congrArg (fun L => L Φ) h
-    rw [e1, h₀.vac] at e2
-    exact e2
 
 theorem exists_isComp (χ : (AE D)ˣ →* Circle) : ∃ μ, p.IsComp χ μ := by
   have h1 := p.split.1
@@ -516,46 +425,6 @@ theorem exists_isLoc (F : Frame k S.rank Y) (gk : GL Y k) : ∃ g, p.IsLoc F g g
   obtain ⟨g, g1, g2⟩ := exists_unitary_supportedAt_place_of_mul_eq_idem p _ _ hba
   exact ⟨g, g1, g2.trans hπa⟩
 
-theorem hyp_flatBF {ψ : AddChar (AF D.host.F) ℂ} {ρ : ℕ} (B : BesLev D ρ) (J : JacLev D ρ) (st : StepBF ψ B J)
-    {s : k} (hs : s ≠ 0) (FA : Frame k B.A.rank Y') (G₀ : Frame k J.W₀.rank Y) :
-    ∃ (ψk : AddChar k Circle) (F₀ : Frame k B.V₀.rank (Y' ⊕ Unit)) (FV : Frame k B.V.rank (Y' ⊕ Fin (2 * ρ + 1)))
-      (FW : Frame k J.W.rank (Y ⊕ Fin (2 * ρ))),
-      p.IsChar ψ ψk ∧ p.IsCoreFrame B s FA F₀ ∧ p.IsBesFrame B s FA FV ∧ p.IsJacFrame J s (p.hz B) G₀ FW ∧
-        ∃ Tm, p.IsModel ψ FV FW Tm ∧ Tm ≠ 0 := by
-  obtain ⟨ψk, h0⟩ := exists_isChar p st.weil.std
-  obtain ⟨F₀, h1⟩ := exists_core p B hs FA
-  obtain ⟨FV, h2⟩ := exists_bes p B hs FA
-  obtain ⟨FW, h3⟩ := exists_jac p J hs (hz_ne p B) G₀
-  exact ⟨ψk, F₀, FV, FW, h0, h1, h2, h3, exists_isModel p FV FW st.weil.std⟩
-
-theorem hyp_flatFB {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} (J : JacLev D (σ + 1)) (B : BesLev D σ) (st : StepFB ψ J B)
-    {s : k} (hs : s ≠ 0) (G₀ : Frame k J.W₀.rank Y') (FA : Frame k B.A.rank Y) :
-    ∃ (ψk : AddChar k Circle) (FW : Frame k J.W.rank (Y' ⊕ Fin (2 * σ + 1 + 1))) (F₀ : Frame k B.V₀.rank (Y ⊕ Unit))
-      (FV : Frame k B.V.rank (Y ⊕ Fin (2 * σ + 1))),
-      p.IsChar ψ ψk ∧ p.IsJacFrame J s (-p.xi ^ 2 * p.hz B) G₀ FW ∧ p.IsCoreFrame B (s * p.xi) FA F₀ ∧
-        p.IsBesFrame B (s * p.xi) FA FV ∧ ∃ Tm, p.IsModel ψ FW FV Tm ∧ Tm ≠ 0 := by
-  obtain ⟨ψk, h0⟩ := exists_isChar p st.weil.std
-  have hx := xi_ne p
-  obtain ⟨F₀, h1⟩ := exists_core p B (mul_ne_zero hs hx) FA
-  obtain ⟨FV, h2⟩ := exists_bes p B (mul_ne_zero hs hx) FA
-  obtain ⟨FW, h3⟩ := exists_jac p J hs (mul_ne_zero (neg_ne_zero.2 (pow_ne_zero 2 hx)) (hz_ne p B)) G₀
-  exact ⟨ψk, FW, F₀, FV, h0, h3, h1, h2, exists_isModel p FW FV st.weil.std⟩
-
-theorem hyp_contr {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {ρ σ : ℕ} (B : BesLev D ρ) (B' : BesLev D σ)
-    {s : k} (hs : s ≠ 0) {Z : Type} [Fintype Z] [DecidableEq Z] (FA : Frame k B.A.rank Y') (FA' : Frame k B'.A.rank Z)
-    (F : Frame k S.rank Y) :
-    ∃ (ψk : AddChar k Circle) (F₀ : Frame k B.V₀.rank (Y' ⊕ Unit)) (F₀' : Frame k B'.V₀.rank (Z ⊕ Unit)),
-      p.IsChar ψ ψk ∧ p.IsCoreFrame B s FA F₀ ∧ p.IsCoreFrame B' (s * p.xi) FA' F₀' ∧
-        (∃ T₁, p.IsModel ψ F₀ F T₁ ∧ T₁ ≠ 0) ∧ ∃ T₂, p.IsModel ψ F F₀' T₂ ∧ T₂ ≠ 0 := by
-  obtain ⟨ψk, h0⟩ := exists_isChar p hψ
-  obtain ⟨F₀, h1⟩ := exists_core p B hs FA
-  obtain ⟨F₀', h2⟩ := exists_core p B' (mul_ne_zero hs (xi_ne p)) FA'
-  exact ⟨ψk, F₀, F₀', h0, h1, h2, exists_isModel p F₀ F hψ, exists_isModel p F F₀' hψ⟩
-
-theorem exists_haar (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    [MeasurableSpace k] [BorelSpace k] : ∃ ν : Measure k, ν.IsAddHaarMeasure :=
-  ⟨Measure.addHaar, inferInstance⟩
-
 end Witness
 
 def OmLoc (D : D7) : Prop :=
@@ -610,37 +479,6 @@ theorem Witness.isModel_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Y Y
   · rw [LinearMap.smul_apply, LinearMap.smul_apply, h.trans x Φ Φ' e, hs]
   · rw [LinearMap.smul_apply, LinearMap.smul_apply, h.modul y hy Φ Φ' e, hs]
 
-theorem Witness.exists_prod {X X' U U' : Type} [TopologicalSpace X] [TopologicalSpace X'] (T₁ : SB X →ₗ[ℂ] (U → ℂ))
-    (T₂ : SB X' →ₗ[ℂ] (U' → ℂ)) (n₁ : T₁ ≠ 0) (n₂ : T₂ ≠ 0) : ∃ Λ : SB (X × X') →ₗ[ℂ] (U → U' → ℂ), Λ ≠ 0 ∧
-      ∀ (Ξ₁ : SB X) (Ξ₂ : SB X') Ξ, (∀ q, Ξ.1 q = Ξ₁.1 q.1 * Ξ₂.1 q.2) → ∀ u v, Λ Ξ u v = T₁ Ξ₁ u * T₂ Ξ₂ v := by
-  obtain ⟨Λ, hΛ⟩ := GlobalTheory.LocFlat.CFac.exists_linear_of_bilinear_prodSB X X' (U → U' → ℂ)
-    (LinearMap.mk₂ ℂ (fun Ξ₁ Ξ₂ u v => T₁ Ξ₁ u * T₂ Ξ₂ v)
-      (fun _ _ _ => by funext u v; simp [add_mul]) (fun _ _ _ => by funext u v; simp [mul_assoc])
-      (fun _ _ _ => by funext u v; simp [mul_add]) (fun _ _ _ => by funext u v; simp [mul_left_comm]))
-  have key : ∀ (Ξ₁ : SB X) (Ξ₂ : SB X') Ξ, (∀ q, Ξ.1 q = Ξ₁.1 q.1 * Ξ₂.1 q.2) → ∀ u v, Λ Ξ u v = T₁ Ξ₁ u * T₂ Ξ₂ v :=
-    fun Ξ₁ Ξ₂ Ξ e u v => by
-      rw [show Ξ = GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂ from Subtype.ext (funext e), hΛ]
-      rfl
-  refine ⟨Λ, fun h => ?_, key⟩
-  obtain ⟨Ξ₁, a₁⟩ := DFunLike.ne_iff.1 n₁
-  obtain ⟨Ξ₂, a₂⟩ := DFunLike.ne_iff.1 n₂
-  obtain ⟨u, hu⟩ := Function.ne_iff.1 a₁
-  obtain ⟨v, hv⟩ := Function.ne_iff.1 a₂
-  have := key Ξ₁ Ξ₂ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂) (fun _ => rfl) u v
-  rw [h] at this
-  exact mul_ne_zero hu hv this.symm
-
-theorem Witness.exists_isBiModel {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {A S A' : HSp D} {n n' n'' : Type}
-    [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] [Fintype n''] [DecidableEq n''] (FA : Frame k A.rank n')
-    (FS : Frame k S.rank n) (FA' : Frame k A'.rank n'') : ∃ Λ, p.IsBiModel ψ FA FS FA' Λ ∧ Λ ≠ 0 := by
-  obtain ⟨T₁, h₁, n₁⟩ := Witness.exists_isModel p FA FS hψ
-  obtain ⟨T₂, h₂, n₂⟩ := Witness.exists_isModel p FS FA' hψ
-  obtain ⟨Λ, h0, key⟩ := Witness.exists_prod T₁ T₂ n₁ n₂
-  refine ⟨Λ, ⟨fun Ξ₂ v => ⟨_, Witness.isModel_smul p h₁ (T₂ Ξ₂ v), fun Ξ₁ Ξ e u => ?_⟩,
-    fun Ξ₁ u => ⟨_, Witness.isModel_smul p h₂ (T₁ Ξ₁ u), fun Ξ₂ Ξ e v => ?_⟩⟩, h0⟩
-  · rw [key _ _ _ e, mul_comm, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]
-  · rw [key _ _ _ e, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]
-
 def ContrLoc (D : D7) : Prop :=
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (p : Place D k) (ν : Measure k), ν.IsAddHaarMeasure →
   ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (ψk : AddChar k Circle), p.IsChar ψ ψk →
@@ -653,32 +491,6 @@ def ContrLoc (D : D7) : Prop :=
     ∃ Λ : SB (Matrix n n' k × Matrix n'' n k) →ₗ[ℂ] (WO B.A S → WO S B'.A → ℂ), p.IsBiModel ψ FA FS FA' Λ ∧
       ∀ Ψ₁ Ψ₂, ∃ Ξ : SB (Matrix n n' k × Matrix n'' n k),
         Ξ.1 = GlobalTheory.LocFlat.contr ψk ν Ψ₁.1 Ψ₂.1 ∧ GlobalTheory.Unf.contr l S vL (T₁ Ψ₁) (T₂ Ψ₂) = Λ Ξ
-
-def MixTLoc (D : D7) : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (p : Place D k) (ν : Measure k), ν.IsAddHaarMeasure →
-  ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
-  ∀ (S T T₀ : HSp D) (σ : ℕ) (d : HypDec T T₀ σ) (vT : VolM D σ S.rank)
-    (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (FS : Frame k S.rank n') (G₀ : Frame k T₀.rank n)
-    (FT : Frame k T.rank (n ⊕ (Fin σ ⊕ Fin σ))),
-    FT.β = fromCols (d.i₀.map p.pr * G₀.β) (fromCols (d.e.map p.pr) (d.e'.map p.pr)) →
-  ∀ Tm, p.IsModel ψ FS FT Tm → ∀ y : Mx D S.rank σ, ∃ T₀m, p.IsModel ψ FS G₀ T₀m ∧
-    ∀ y' : Mx D S.rank σ, (∀ i j, (p.e + cA D p.e) * (y' - y) i j = (y' - y) i j) →
-    ∀ Φ, ∃ Ψ : SB (Matrix n n' k), d.mixT S ψ vT.μ vT.𝓕 (Tm Φ) y' = T₀m Ψ ∧ ∀ x₀, Ψ.1 x₀ =
-      ∫ ξ : Matrix (Fin σ) n' k, Φ.1 (fromRows x₀ (fromRows ξ (p.down FS FT (d.incAdj S y')).toRows₂.toRows₂)) *
-        ψ (symplO S T (p.up FS FT (fromRows 0 (fromRows ξ 0))) (d.incAdj S y')) ∂(volM ν (Fin σ) n')
-
-def MixSLoc (D : D7) : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (p : Place D k) (ν : Measure k), ν.IsAddHaarMeasure →
-  ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
-  ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (vS : VolM D T.rank ρ)
-    (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (G₀ : Frame k S₀.rank n') (FT : Frame k T.rank n)
-    (FS : Frame k S.rank (n' ⊕ (Fin ρ ⊕ Fin ρ))),
-    FS.β = fromCols (d.i₀.map p.pr * G₀.β) (fromCols (d.e.map p.pr) (d.e'.map p.pr)) →
-  ∀ Tm, p.IsModel ψ FS FT Tm → ∀ x : Mx D T.rank ρ, ∃ T₀m, p.IsModel ψ G₀ FT T₀m ∧
-    ∀ x' : Mx D T.rank ρ, (∀ i j, (p.e + cA D p.e) * (x' - x) i j = (x' - x) i j) →
-    ∀ Φ, ∃ Ψ : SB (Matrix n n' k), d.mixS T ψ vS.μ vS.𝓕 (Tm Φ) x' = T₀m Ψ ∧ ∀ x₀, Ψ.1 x₀ =
-      ∫ b : Matrix n (Fin ρ) k, Φ.1 (fromCols x₀ (fromCols (p.down FS FT (d.extX T x')).toCols₂.toCols₁ b)) *
-        ψ (symplO S T (p.up FS FT (fromCols 0 (fromCols 0 b))) (d.extX T x')) ∂(volM ν n (Fin ρ))
 
 end GlobalTheory.LocMod
 end

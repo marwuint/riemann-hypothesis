@@ -1,9 +1,16 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsSigmaCompactConeInter
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CroftonFormulaOpenConeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CroftonFormulaOpenCone
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianProjectionConeCoarea
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsScaleStable
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianProjectionBallIndicatorStatement
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XXgzChowMahlerFibreavg
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FibreCountRotationInvariant
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.TXgzChowMahlerE0reduce
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AeFibrePointsCardEqDegree
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianMatrixMeasurePosFinite
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.RandomSetSumExpectationStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MeasurableFibreCountOverStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianMatrixMeasurePosFiniteStatement
 import Development.WeilBound.CoreStatements.CommonZeroEvaluation.CroftonFormulaFibreSum
 set_option maxSynthPendingDepth 1
 open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalTheory.CompanionTheory.Ar.Short.Crofton
@@ -29,7 +36,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.crofton_formula_fibre_sum : �
       exact hcnt s)
     (fun s => by
       have hA := (hlev s).1
-      have T := GlobalTheory.T.crofton_formula_open_cone n e δ h W f hW hf hδ {y | s < φ y} hA (hlev s).2
+      have T := _root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.setCrofton n e δ h W f hW hf hδ {y | s < φ y} hA (hlev s).2
       simp only [ModelDimension.FnCrofton.encard_fibrePts_inter]
       rw [lintegral_smul_measure, smul_eq_mul, Measure.restrict_apply hA.measurableSet, gaussM,
         lintegral_withDensity_eq_lintegral_mul _ (ModelDimension.FnCrofton.measurable_matrix_gaussian _ _) (hcnt s)]

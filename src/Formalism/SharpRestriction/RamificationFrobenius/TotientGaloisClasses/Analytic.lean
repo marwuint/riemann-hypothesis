@@ -140,16 +140,9 @@ def KeptInXp (S : Finset PChar) : Prop := ∀ ψ ∈ S, ∃ θ ∈ φ.Xp, H.IsPr
 def KeptEqChat (S : Finset PChar) : Prop :=
   (∀ ψ ∈ S, ∃ θ ∈ φ.Chat, H.IsPrimOf θ ψ.χ) ∧ ∀ θ ∈ φ.Chat, H.Kept S θ
 
-def KeptEqXp (S : Finset PChar) : Prop := H.KeptInXp S ∧ ∀ θ ∈ φ.Xp, H.Kept S θ
-
 def ChebyshevCharacterBound (x eps c : ℝ) : Prop :=
   ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), H.IsCharE χ →
     ∀ y : ℝ, Real.exp (x ^ (eps / 3)) / 3 ≤ y → ‖An.gChi χ y‖ ≤ y * Real.exp (-(c * x ^ (eps / 8)))
-
-def LogDerivativeBound (S : Finset PChar) (X x eps C : ℝ) : Prop :=
-  (∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), H.IsPrimOf φ.chC χ → ‖An.logDerivativeAtOne χ‖ ≤ x ^ eps) ∧
-  ∀ θ ∈ H.Bounded S, ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), H.IsPrimOf θ χ →
-    ‖An.logDerivativeAtOne χ‖ ≤ C * Real.log X
 
 def BoundedCharsPointwise (S : Finset PChar) (x eps : ℝ) : Prop :=
   ∀ θ ∈ H.Bounded S, ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), H.IsPrimOf θ χ →
@@ -159,17 +152,6 @@ def ExceptionalCharacterKept (S : Finset PChar) (psK : Option PChar) : Prop :=
   (∀ ψ, psK = some ψ → H.IsPrimOf φ.psC ψ.χ) ∧ (psK = none → ¬ H.Kept S φ.psC)
 
 end HostRaw
-
-structure HostConditions (T : HType) (κ : HConst) (X x : ℝ) {φ : Frame} (H : HostRaw φ) : Prop where
-  kept : H.KeptInXp T.KEPT
-  a : H.ChebyshevCharacterBound x T.eps κ.c
-  b : H.LogDerivativeBound T.KEPT X x T.eps κ.C
-  c1 : H.BoundedCharsPointwise T.KEPT x T.eps
-  e : H.ExceptionalCharacterKept T.KEPT T.psK
-
-structure PreHostAn (T : HType) (κ : HConst) (X x : ℝ) {φ : Frame} (H : HostAx φ) (rr rr' : ℕ) : Prop
-    extends PreHost T κ X x H rr rr' where
-  ha10 : HostConditions T κ X x H.toHostRaw
 
 end Formalism.HC
 

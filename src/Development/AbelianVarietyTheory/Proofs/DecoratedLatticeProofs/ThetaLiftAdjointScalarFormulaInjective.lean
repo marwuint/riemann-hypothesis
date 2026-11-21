@@ -15,9 +15,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SchurOrthogonalitySquareIntegrable
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PartW
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStepPositiveScalarStandingHypothesesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStepPositiveScalarStandingHypotheses
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UpInjOfBForm
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftAdjointKeepsSphericalPartsOffTupleStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftAdjointKeepsSphericalPartsOffTuple
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchurConstantsExistOnChainOfCuspRapidDecay
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelGroupActionOnAdelicFunctionsEqZeroOfNoLift
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -31,8 +31,8 @@ namespace GlobalTheory.Core.Rk.UpInjRow
 
 theorem upInj : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.WeilSiegelFormulaUnitary → (∀ D' : Formalism.BasicNotions.D7, GlobalTheory.Core.Rk.SW.HeckeFormNS D') → GlobalTheory.Published.SiegelEisensteinContinuation → GlobalTheory.Published.UnramifiedDoublingGL → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → D.host.ccK = ⊤ → R.Sb = R.Pg → (∀ t P, GlobalTheory.Hk3.Good R t P → Formalism.DivisionValues.conjPl P = P → GlobalTheory.Hk3.FixAll R t P) → ∀ SF, GlobalTheory.Hk3.IsSF R SF → BForm R SF ∧ UpInj R := by
   intro hDS hHCF hHCM hCW hCRD hHowe hWS hHecke hSEC hUD D G _ _ Pl0 T A Ks _ _ _ R F hGiv hcc _hSb hFix SF hSF
-  have hSc := GlobalTheory.T.thetaChainStep_positive_scalar_standingHypotheses hDS hHCF hHCM hCW hCRD hHowe hWS hHecke hSEC hUD R F hGiv hcc
-  have hK := GlobalTheory.T.thetaLift_adjoint_keeps_spherical_parts_off_tuple hCRD hHowe R F hGiv.core hFix
+  have hSc := _root_.GlobalTheory.Core.Rk.ScalarsRow.scalars hDS hHCF hHCM hCW hCRD hHowe hWS hHecke hSEC hUD R F hGiv hcc
+  have hK := _root_.GlobalTheory.KeptRows.kept hCRD hHowe R F hGiv.core hFix
   have hS := GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCRD R
   have hB := GlobalTheory.ChainScalar.bForm R F hGiv.core hS hSc hK SF hSF
   exact ⟨hB, GlobalTheory.Core.Rk.upInj_of_bForm R F hGiv.core hS hGiv.irr hSc SF hSF hB⟩

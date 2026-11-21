@@ -13,11 +13,6 @@ open Formalism.LatticeIndexTer (ph)
 
 namespace UniformCovolumeTail
 
-theorem cvE (Cb ce X B0 l2 Nc : ℝ) (hX : 0 < X) :
-    Cb * (ce * X) * (B0 + l2 * Nc / X) = Cb * (ce * (X * B0 + l2 * Nc)) := by
-  have e : X * X⁻¹ = 1 := mul_inv_cancel₀ hX.ne'
-  linear_combination (Cb * ce * l2 * Nc) * e
-
 end UniformCovolumeTail
 
 namespace UniformCovolumeTail

@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 import Formalism.FormalDegreeBessel.FinalG
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompactStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompact
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOpNormPowerIntegralLtTopClosedSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselConstantBoundsOfGeTwoNPowFiveStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRepStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormProperties
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselConstantBoundsOfGeTwoNPowFive
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnimodularBesselSubgroupsUWNStatement
 
 noncomputable section
@@ -37,7 +37,7 @@ theorem continuous_of : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)) :
 theorem integrable_opn {μ : Measure (Mt k r)} {a : ℝ} (hint : normInt μ a < ⊤) :
     Integrable (fun x : Mt k r => opn (Matrix.of x : Mat k r) ^ (-a)) μ := by
   have hc : Continuous (fun x : Mt k r => opn (Matrix.of x : Mat k r)) :=
-    (GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).2.2.1.comp GlobalTheory.SgInf.BeForm.continuous_of
+    (_root_.GlobalTheory.SgInf.opn_facts k r).2.2.1.comp GlobalTheory.SgInf.BeForm.continuous_of
   have hm : AEStronglyMeasurable (fun x : Mt k r => opn (Matrix.of x : Mat k r) ^ (-a)) μ :=
     (hc.measurable.pow_const (-a)).aestronglyMeasurable
   refine (lintegral_ofReal_ne_top_iff_integrable hm
@@ -216,7 +216,7 @@ theorem be_continuousOn (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (h
     (hPb : ∀ s ∈ S, ‖P s‖ ≤ 1) (hμ : IsHaarOn S μ) (hint : normInt μ a < ⊤) (ha : 0 < a)
     {u u' : H} {C : ℝ} (hC : ∀ g ∈ GG k r, ‖coef σ u u' g‖ ≤ C * opn g ^ (-a)) :
     ContinuousOn (fun x => ∫ s, bint σ P (σ x u) u' s ∂μ) (GG k r) := by
-  have hop := GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r
+  have hop := _root_.GlobalTheory.SgInf.opn_facts k r
   have hdet : IsUnit (Hpk k r).det := Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1
   have : FirstCountableTopology (Mat k r) := inferInstanceAs (FirstCountableTopology (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ))
   intro x0 hx0
@@ -279,10 +279,10 @@ theorem be_converges_equivariant_hermitian_continuous : ∀ (k r : ℕ) {H : Typ
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide V hV hDec u hu u' hu'
   obtain ⟨hk, hσ, -, -, -, -, ha5, -, -⟩ := hStd
   obtain ⟨hz, hT, hπ, hHaar, -⟩ := hSide
-  have hS : IsClosedSub k r (Sset k r z) := (GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT).2.2.2.1
-  have h47 := GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ
+  have hS : IsClosedSub k r (Sset k r z) := (_root_.GlobalTheory.SgInf.closedSub_groups k r z hz hT).2.2.2.1
+  have h47 := _root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z c π hz hT hπ
   have hU : IsUnimod (Sset k r z) μS := (GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μS).1 hHaar
-  have hb := GlobalTheory.T.bessel_constant_bounds_of_ge_two_n_pow_five k r a hk ha5
+  have hb := _root_.GlobalTheory.SgInf.a_bounds_of_ge_two_n_pow_five k r a hk ha5
   have hn : (0:ℝ) ≤ 2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 := by positivity
   have hapos : 0 < a := by linarith [hb.1]
   have hint : normInt μS a < ⊤ := GlobalTheory.T.besselOpNormPowerIntegral_lt_top_closedSubgroup k r _ μS a hS hHaar (by linarith [hb.1])

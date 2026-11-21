@@ -2,12 +2,14 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GermSys
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CharacteristicPolynomialFreeGeneratorsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.RepresentationBasisLinearIndependentStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HeightCharFreeGeometricStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransportStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairingStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CharacteristicPolynomialFreeGenerators
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.RepresentationBasisLinearIndependent
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HeightCharFreeGeometric
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
+import Development.WeilBound.CoreStatements.HodgeTatePoints.IsPullbackWhisker
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransport
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairing
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Fl
 open scoped CategoryTheory.Obj
@@ -50,7 +52,7 @@ theorem hm_map {R₂ : Type} [CommRing R₂] {f : R →+* R₂} {B : Germ.FB R d
 
 theorem exists_hom (B : Germ.FB R d O) :
     ∃ ρ : O →+* Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) R, ∀ a, ρ a = hm B a := by
-  obtain ⟨ρH, hρ⟩ := (GlobalTheory.T.formal_hermitian_action_pairing R d O B).1
+  obtain ⟨ρH, hρ⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Conj.rhoH_hom_adjoint R d O B).1
   have key : ∀ a, hm B a = LinearMap.toMatrix' ((eqv R d).symm.conj (ρH a)) := fun a => by
     rw [hρ, ← conj_eq, LinearEquiv.conj_symm_conj, LinearMap.toMatrix'_toLin']
   refine ⟨⟨⟨⟨hm B, ?_⟩, fun a b => ?_⟩, ?_, fun a b => ?_⟩, fun _ => rfl⟩
@@ -113,7 +115,7 @@ theorem hchar_of_map [Nontrivial R] {R₂ : Type} [CommRing R₂] [Nontrivial R�
 theorem hchar_iso [Nontrivial R] {B B₂ : Germ.FB R d (𝓞 E)} {φ ψ : Germ.Pt R 1 d} {lam : Germ.PS R 2 d}
     (h : GlobalTheory.CompanionTheory.Ar.Conj.IsIso B B₂ φ ψ lam) {r : ℕ} (hB : HChar B r) : HChar B₂ r := by
   intro a
-  obtain ⟨-, -, hb, -, hc, -⟩ := GlobalTheory.T.formal_isomorphism_transport R d (𝓞 E) B B₂ φ ψ lam h
+  obtain ⟨-, -, hb, -, hc, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.Iso.rho_pairing R d (𝓞 E) B B₂ φ ψ lam h
   have e : (LinearEquiv.ofBijective (transH φ ψ lam) hb).conj (rhoH B₂ a) = rhoH B a := by
     refine LinearMap.ext fun y => ?_
     obtain ⟨v, rfl⟩ := (LinearEquiv.ofBijective (transH φ ψ lam) hb).surjective y
@@ -124,18 +126,18 @@ theorem hchar_iso [Nontrivial R] {B B₂ : Germ.FB R d (𝓞 E)} {φ ψ : Germ.P
 theorem hfree_of_map [IsLocalRing R] {k : Type} [Field k] {f : R →+* k} [IsLocalHom f] {B : Germ.FB R d (𝓞 E)}
     {B₂ : Germ.FB k d (𝓞 E)} (h : IsMapOf f B B₂) {r : ℕ} (hB : HFree B₂ r) : HFree B r := by
   obtain ⟨ρ, hρ⟩ := exists_hom B
-  have := GlobalTheory.T.representation_basis_linear_independent E R k f (Fin d ⊕ Fin d) r ρ
+  have := _root_.GlobalTheory.CompanionTheory.Ar.Flat.free_of_free_over_field E R k f (Fin d ⊕ Fin d) r ρ
   simp only [hρ, ← hm_map h] at this
   exact (hfree_iff B r).2 (this ((hfree_iff B₂ r).1 hB))
 
 theorem hfree_char0 [IsLocalRing R] {k : Type} [Field k] [CharZero k] (f : R →+* k) [IsLocalHom f]
     {B : Germ.FB R d (𝓞 E)} {r : ℕ} (hB : HChar B r) : HFree B r := by
   obtain ⟨ρ, hρ⟩ := exists_hom B
-  have h1 := GlobalTheory.T.representation_basis_linear_independent E R k f (Fin d ⊕ Fin d) r ρ
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Flat.free_of_free_over_field E R k f (Fin d ⊕ Fin d) r ρ
   let ρk : 𝓞 E →+* Module.End k ((Fin d ⊕ Fin d) → k) :=
     ((Matrix.toLinAlgEquiv' (R := k) (n := Fin d ⊕ Fin d)).toRingEquiv.toRingHom.comp f.mapMatrix).comp ρ
   have hk : ∀ a, ρk a = Matrix.toLin' ((ρ a).map f) := fun a => rfl
-  have h2 := GlobalTheory.T.characteristic_polynomial_free_generators E k ((Fin d ⊕ Fin d) → k) r ρk (fun a => by
+  have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Flat.charpoly_condition_gives_free_char_zero E k ((Fin d ⊕ Fin d) → k) r ρk (fun a => by
     rw [hk, Matrix.charpoly_toLin', Matrix.charpoly_map, hρ, ← charpoly_eq, hB a, Polynomial.map_pow,
       Polynomial.map_map, Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom k)])
   simp only [hk, Matrix.toLin'_apply] at h2
@@ -163,12 +165,12 @@ theorem at_point (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
       exact not_isUnit_zero hu'
     have : Fact p.Prime := ⟨hpp⟩
     have : CharP k p := (CharP.charP_iff_prime_eq_zero hpp).2 hpk
-    obtain ⟨g₂, hm₂, -⟩ := GlobalTheory.T.formal_germ_base_change E H hs X t _ k f _ d g
+    obtain ⟨g₂, hm₂, -⟩ := _root_.PositivityTheory.HtPt.Ce.germ_bc E H hs X t _ k f _ d g
     have e : spMap f ≫ X.fromSpecStalk (x (IsLocalRing.closedPoint k)) = x :=
       Scheme.Spec_stalkClosedPointTo_fromSpecStalk x
     have hx' : GeomPF t (spMap f ≫ X.fromSpecStalk (x (IsLocalRing.closedPoint k))) := by
       rw [e]; exact hx
-    exact hfree_of_map hm₂ (GlobalTheory.T.height_char_free_geometric E H hs X t hP k p _ hx' d r g₂ (hchar_map hm₂ hc))
+    exact hfree_of_map hm₂ (_root_.GlobalTheory.CompanionTheory.Ar.Flat.hfree_geom E H hs X t hP k p _ hx' d r g₂ (hchar_map hm₂ hc))
   · have := CharP.charP_to_charZero (IsLocalRing.ResidueField (X.presheaf.stalk z))
     exact hfree_char0 (IsLocalRing.residue (X.presheaf.stalk z)) hc
 

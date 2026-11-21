@@ -323,28 +323,6 @@ theorem pairVr_nfAll (emb : ι → E →+* K) (J : Matrix (Fin n) (Fin n) E) (la
   rw [e0, det_transpose, det_inv_of_frame _ _ (ho τ), shiftOf, _root_.zpow_mul, Complex.ofReal_zpow]
   congr 1
 
-theorem pairV_nfAll (emb : ι → E →+* K) (J : Matrix (Fin n) (Fin n) E) (lam : ι → DomWeight n) (s : K →+* ℂ)
-    (o : Frames (gramC J (embAt s emb))) (ho : ∀ τ, (o.1 τ)ᴴ * gramC J (embAt s emb) τ * o.1 τ = 1)
-    (F F' : VV K lam) (hF : ∀ m, s (star (F.1.coeff m)) = star (s (F.1.coeff m))) :
-    s (pairV emb lam J F F') = ((∏ τ, ‖(o.1 τ).det‖ ^ (-(2 * shiftOf lam τ)) : ℝ) : ℂ) *
-      nfAll lam (blockAct ℂ (fun τ => ((o.1 τ)⁻¹)ᵀ) (MvPolynomial.map s F'.1))
-        (blockAct ℂ (fun τ => ((o.1 τ)⁻¹)ᵀ) (MvPolynomial.map s F.1)) := by
-  have e0 : ∀ τ, (gramK emb J τ).map s = gramC J (embAt s emb) τ := fun τ => by
-    rw [gramK, gramC, embAt, Matrix.map_map]
-    rfl
-  have h := map_pairP s lam (gramK emb J) (fun τ => ((o.1 τ)⁻¹)ᵀ) (fun τ => by
-    rw [e0, eq_of_frame _ _ (ho τ), transpose_mul, ← conjTranspose_nonsing_inv]
-    congr 1) F.1 F'.1 hF
-  have e1 : pairV emb lam J F F' = pairP lam (gramK emb J) F.1 F'.1 := rfl
-  rw [e1, h]
-  congr 1
-  rw [Complex.ofReal_prod]
-  refine Finset.prod_congr rfl fun τ _ => ?_
-  have e2 : (gramC J (embAt s emb) τ).det = (((‖(o.1 τ).det‖ ^ 2 : ℝ) : ℂ))⁻¹ := by
-    rw [← det_inv_of_frame _ _ (ho τ), det_nonsing_inv, Ring.inverse_eq_inv', inv_inv]
-  rw [e0, e2, shiftOf, _root_.zpow_neg, _root_.zpow_mul, Complex.ofReal_inv, Complex.ofReal_zpow, _root_.inv_zpow]
-  congr 2
-
 end EPair
 
 section Pos
@@ -377,19 +355,6 @@ theorem frame_std {E : Type} [Field E] (emb : ι → E →+* ℂ) (y : Frames (g
   refine frame_pos y hy τ ?_
   simp only [gramC_one]
   exact Matrix.PosSemidef.one
-
-theorem norm_deFr_std {E : Type} [Field E] (emb : ι → E →+* ℂ) (y : Frames (gramC (1 : Matrix (Fin n) (Fin n) E) emb))
-    (hy : y.IsON) (τ : ι) :
-    ‖deFr y τ‖ = 1 := by
-  have h := frame_std emb y hy τ
-  simp only [gramC_one, Matrix.mul_one] at h
-  have hd := congrArg Matrix.det h
-  rw [Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one] at hd
-  have h2 : ‖(y.1 τ).det‖ * ‖(y.1 τ).det‖ = 1 := by
-    simpa [norm_mul, norm_star] using congrArg norm hd
-  have h0 : 0 ≤ ‖(y.1 τ).det‖ := norm_nonneg _
-  show ‖(y.1 τ).det‖ = 1
-  nlinarith [h2, h0]
 
 end Pos
 
@@ -694,19 +659,5 @@ theorem ipFr_evV (emb : ι → E →+* K) (J : Matrix (Fin n) (Fin n) E) (lam : 
     ← nfL_apply, map_smul, map_smulₛₗ, LinearMap.smul_apply, nfL_apply, smul_smul, starRingEnd_apply, hc, smul_eq_mul]
 
 end Metric2
-
-section Examples
-
-example (τ : Unit) (s : ℚ →+* ℂ) :
-    evFr (fun _ : Unit => (1 : Matrix (Fin 2) (Fin 2) ℂ)) (fun _ => -3) s (X (τ, 0, 0)) stdFr = 1 := by
-  rw [evFr_apply]
-  simp [stdFr]
-
-example (τ : Unit) (s : ℚ →+* ℂ) :
-    evFr (fun _ : Unit => (1 : Matrix (Fin 2) (Fin 2) ℂ)) (fun _ => -3) s (X (τ, 0, 1)) stdFr = 0 := by
-  rw [evFr_apply]
-  simp [stdFr]
-
-end Examples
 
 end Formalism.L2.Col

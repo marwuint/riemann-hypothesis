@@ -138,18 +138,4 @@ theorem exists_isMeasLevW (D : D7) (V : HSp D) (hV : V.SigOK) (K : Subgroup (GL 
   · intro hb
     exact ⟨_, hb, h2⟩
 
-theorem exists_isMeasLev (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
-    (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (hV : V.SigOK) :
-    ∃ μ, Lev.IsMeasLev V (lev D.sp.cm V.gram β L) μ := by
-  choose m hm using GlobalTheory.MinfMeasure.exists_isMinf
-  exact exists_isMeasLevW D V hV _ (GlobalTheory.ParahoricCompact.isOpen_comap_lev V β L)
-    (GlobalTheory.ParahoricCompact.isCompact_levG V β L) _ (fun _ => m _ _) (fun _ => (hm _ _).1) (fun _ => hm _ _)
-    (fun _ _ h => isMinf_unique (hm _ _) h)
-
-theorem exists_isMeasFD : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank), IsFrame β Λ → V.SigOK → ∃ μ 𝓕, Lev.IsMeasFD V (lev D.sp.cm V.gram β L) μ 𝓕 := by
-  intro D V β _ L _ hV
-  obtain ⟨μ, hμ⟩ := exists_isMeasLev D V β L hV
-  obtain ⟨𝓕, h𝓕⟩ := GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμ.1
-  exact ⟨μ, 𝓕, hμ, h𝓕⟩
-
 end GlobalTheory.LevelMeasure

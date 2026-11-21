@@ -19,12 +19,6 @@ noncomputable section
 
 namespace GlobalTheory.EigRows
 
-section Abstract
-
-variable {K V ι κ : Type*} [Field K] [AddCommGroup V] [Module K V]
-
-end Abstract
-
 section Record
 
 open Formalism.BasicNotions
@@ -91,27 +85,7 @@ theorem exists_readW (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) {x : Formalism
   rw [lift_readW, LinearEquiv.apply_symm_apply]
   rfl
 
-abbrev SbR (Y : Read (A3 := A3) R F X0) : Finset (HeightOneSpectrum (NumberField.RingOfIntegers D.host.F)) :=
-  SsetF R (Y.tupT D.what₂.mu0)
-
-def HkOnParts (Y : Read (A3 := A3) R F X0)
-    (lam : Fin D.R.m → D.what₂.FT → HeightOneSpectrum (NumberField.RingOfIntegers D.host.E) → ℕ → ℂ) : Prop :=
-  ∀ i σ, partR Y i σ ≤ Formalism.IndefR.Mult.part R.θ (R.MW i (sg0 D A3.A)) (levW R F i) (chiW R F i) (SbR Y) (lam i σ)
-
 end Real
-
-section RealMain
-
-open IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Cx
-  Formalism.IndefR.RecTie GlobalTheory.Mem.R3
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
-  {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
-  {R : RealDat D A3.A Ks} {F : Face D A3.A} {X0 : BaseLevelRowSide D}
-
-end RealMain
 
 section Spherical
 
@@ -201,8 +175,6 @@ theorem heckeOn_of_mem_partFull {c : HeightOneSpectrum (𝓞 D.host.E) → List 
   exact this P d B h
 
 def diagLab (n k : ℕ) : List ℤ := List.replicate k 1 ++ List.replicate (n - k) 0
-
-example : diagLab 3 1 = [1, 0, 0] := rfl
 
 variable (V) in
 

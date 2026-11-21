@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsBasOpens
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonAffineRefinementAlongMorphismStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonAffineRefinementAlongMorphism
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictPairInjective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLiftObstructionPairPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLiftObstructionPairPullback
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLiftObstructionRefineFinerBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLiftObstructionEqOfIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLiftObstructionEqOfIso
 open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open scoped TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.LiftSys GlobalTheory.Obs GlobalTheory.LBObs GlobalTheory.AbLaw GlobalTheory.AbDual GlobalTheory.CechPic
@@ -17,11 +17,11 @@ theorem lineBundleLiftObstruction_natural_alt : ∀ (R R₀ : Type) [CommRing R]
   intro R R₀ _ _ I hI π hπ hk R₁ _ _ α X₀ Z₀ s₀ t₀ S S' f₀ h l hl hn L L' c c' hL hL' hiso hc hc'
   obtain ⟨C, _, _, G, hGb, hG⟩ := hc
   obtain ⟨C', _, _, G', hG'b, hG'⟩ := hc'
-  obtain ⟨D, _, _, K, H, H', ⟨θ⟩, ⟨θ'⟩, hKb⟩ := GlobalTheory.T.exists_common_affine_refinement_along_morphism X₀ Z₀ f₀ C C' G G' hGb hG'b
+  obtain ⟨D, _, _, K, H, H', ⟨θ⟩, ⟨θ'⟩, hKb⟩ := _root_.GlobalTheory.LBObs.exists_pair_refine X₀ Z₀ f₀ C C' G G' hGb hG'b
   have h1 := GlobalTheory.T.lineBundleLiftObstruction_refine_finerBasis R R₀ I hI π hπ hk R₁ α X₀ s₀ S L c C D G (K ⋙ pairSnd f₀) H θ hG
-  have h2 := GlobalTheory.T.lineBundleLiftObstruction_pairPullback R R₀ I hI π hπ hk R₁ α X₀ Z₀ s₀ t₀ S S' f₀ h l hl hn L c D K h1
+  have h2 := _root_.GlobalTheory.LBObs.obAt_pairPull R R₀ I hI π hπ hk R₁ α X₀ Z₀ s₀ t₀ S S' f₀ h l hl hn L c D K h1
   have h3 := GlobalTheory.T.lineBundleLiftObstruction_refine_finerBasis R R₀ I hI π hπ hk R₁ α Z₀ t₀ S' L' c' C' D G' (K ⋙ pairFst f₀) H' θ' hG'
-  have h4 := GlobalTheory.T.lineBundleLiftObstruction_eq_of_iso R R₀ I hI π hπ hk R₁ α Z₀ t₀ S' L' (L.pull f₀) D (K ⋙ pairFst f₀) _ _ hL'
+  have h4 := _root_.GlobalTheory.LBObsUniq.obAt_eq_of_iso R R₀ I hI π hπ hk R₁ α Z₀ t₀ S' L' (L.pull f₀) D (K ⋙ pairFst f₀) _ _ hL'
     (pull_isLB hL f₀) hiso h3 h2
   apply GlobalTheory.LBObs.PairInj.restrict_pair_injective R₀ R₁ X₀ Z₀ t₀ f₀ D K hKb
   refine h4.symm.trans ?_

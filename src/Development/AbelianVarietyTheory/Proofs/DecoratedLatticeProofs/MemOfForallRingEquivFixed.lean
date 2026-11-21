@@ -39,28 +39,4 @@ theorem mem_of_forall_ringEquiv_fixed {Ω : Type} [Field Ω] [IsAlgClosed Ω] [C
     rw [← this]
     exact r.2
 
-theorem coeff_prod_mem {Ω : Type} [Field Ω] [IsAlgClosed Ω] [CharZero Ω] (k : Subfield Ω)
-    (S : Finset Ω) (hS : ∀ σ : Ω ≃+* Ω, (∀ a ∈ k, σ a = a) → ∀ x ∈ S, σ x ∈ S) (n : ℕ) :
-    (∏ x ∈ S, (X - C x)).coeff n ∈ k := by
-  apply mem_of_forall_ringEquiv_fixed k
-  intro σ hσ
-  have hmap : S.map σ.toEquiv.toEmbedding = S := by
-    apply Finset.eq_of_subset_of_card_le
-    · intro y hy
-      obtain ⟨x, hx, rfl⟩ := Finset.mem_map.1 hy
-      exact hS σ hσ x hx
-    · simp
-  have hP : (∏ x ∈ S, (X - C x)).map (σ : Ω →+* Ω) = ∏ x ∈ S, (X - C x) := by
-    rw [Polynomial.map_prod]
-    conv_rhs => rw [← hmap]
-    rw [Finset.prod_map]
-    simp
-  have := congrArg (fun P => Polynomial.coeff P n) hP
-  simpa [Polynomial.coeff_map] using this
-
-theorem main : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [CharZero Ω] (k : Subfield Ω) (S : Finset Ω),
-    (∀ σ : Ω ≃+* Ω, (∀ a ∈ k, σ a = a) → ∀ x ∈ S, σ x ∈ S) → ∀ n,
-      (∏ x ∈ S, (X - C x)).coeff n ∈ k :=
-  fun _ _ _ _ k S hS n => coeff_prod_mem k S hS n
-
 end GlobalTheory.FixedRoots

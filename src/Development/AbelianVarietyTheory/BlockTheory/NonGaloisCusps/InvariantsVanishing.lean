@@ -39,16 +39,6 @@ def Concl [NeZero n] : Prop :=
     TensIso Γ.T₀.L Γ.χ₁ X ∧
       adm PD emb Γ D.t D.Ut Γ.W₀ X = (finiteSelmer PD Γ.T₀.L Γ.χ₁ X : Set _)
 
-theorem invariants_eq_bot_iff :
-    (resRep Γ).invariants = ⊥ ↔ ∀ x, (∀ g, resRep Γ g x = x) → x = 0 := by
-  rw [Submodule.eq_bot_iff]
-  exact Iff.rfl
-
-example (x : resK Γ) : Γ.lam ^ 1 • x = 0 := by
-  obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
-  rw [pow_one]
-  exact Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))
-
 end Concl
 
 def ErrorExponentStatement {l : ℕ} [Fact l.Prime] (P : LocPrime l) : Prop :=
@@ -57,15 +47,10 @@ def ErrorExponentStatement {l : ℕ} [Fact l.Prime] (P : LocPrime l) : Prop :=
     Standing P K LL emb Γ.lam → IsTopGal (P.PD K) emb D Γ →
     D.T1 l → D.T2 l → D.T3 l → Concl (P.PD K) emb D Γ
 
-def Stmt : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ErrorExponentStatement P
-
 theorem letters_ne_zero {l : ℕ} [Fact l.Prime] {P : LocPrime l} {K LL : FinExt l} {n : ℕ}
     {emb : ZMod n → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1)} {lam : ↥(OL LL)} (h : Standing P K LL emb lam) : n ≠ 0 := by
   have := K.2
   rw [h.2.2.1]
   exact Module.finrank_pos.ne'
-
-example : exData.dsum = 2 := by decide
 
 end GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing

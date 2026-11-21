@@ -1,6 +1,6 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.MacdonaldHecke
-import GroundTheory.IdeleRoots.TorusPowers.SatakeBoundGauss
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -37,34 +37,7 @@ theorem lamS_comp_of_mem_iff {N : ℕ} {A B : Finset (Fin N)} {σ : Equiv.Perm (
   funext x
   simp only [Function.comp_apply, lamS, hσ]
 
-def lowSet (N k : ℕ) : Finset (Fin N) := univ.filter fun i => (i : ℕ) < k
-
-def famW (N m k : ℕ) : Fin (N + 1) → ℤ := Fin.cons (m : ℤ) (lamS (lowSet N k))
-
-section Values
-
-variable {n : ℕ} {ω : GL (Fin n) F → ℂ}
-  (hR : ∀ g, ∀ k ∈ integralGL F n, ω (g * k) = ω g)
-  (hL : ∀ g, ∀ k ∈ integralGL F n, ω (k * g) = ω g)
-include hR hL
-
-end Values
-
-section ValuesCons
-
-variable {N : ℕ} {ω : GL (Fin (N + 1)) F → ℂ}
-  (hR : ∀ g, ∀ k ∈ integralGL F (N + 1), ω (g * k) = ω g)
-  (hL : ∀ g, ∀ k ∈ integralGL F (N + 1), ω (k * g) = ω g)
-include hR hL
-
-end ValuesCons
-
 variable {n : ℕ} [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
-
-omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
-
-def heckeEig (ω : GL (Fin n) F → ℂ) (r : ℕ) : ℂ :=
-  ∑ S ∈ powersetCard r (univ : Finset (Fin n)), ∑ c : Pairs S → 𝓀[F], ω (gMat S c)
 
 end SatakeBound
 

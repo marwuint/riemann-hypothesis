@@ -289,20 +289,6 @@ theorem exists_forms_algebraicIndependent_smul_sub_sum_mem (I : Ideal (MvPolynom
         rw [map_C]) hind
   · rwa [Nat.add_sub_cancel_left]
 
-example : (⊥ : Ideal (MvPolynomial (Fin 2) ℤ)).IsHomogeneous (homogeneousSubmodule (Fin 2) ℤ) ∧
-    Module.IsTorsionFree ℤ (MvPolynomial (Fin 2) ℤ ⧸ (⊥ : Ideal (MvPolynomial (Fin 2) ℤ))) ∧
-    (Ideal.span {(2 : ℤ)}).IsMaximal ∧
-    (Ideal.span {(2 : ℤ)}).map
-      (algebraMap ℤ (MvPolynomial (Fin 2) ℤ ⧸ (⊥ : Ideal (MvPolynomial (Fin 2) ℤ)))) ≠ ⊤ := by
-  have h1 : Module.IsTorsionFree ℤ
-      (MvPolynomial (Fin 2) ℤ ⧸ (⊥ : Ideal (MvPolynomial (Fin 2) ℤ))) :=
-    Function.Injective.moduleIsTorsionFree _
-      (AlgEquiv.quotientBot ℤ (MvPolynomial (Fin 2) ℤ)).injective (fun c x => map_smul _ c x)
-  have h2 : (Ideal.span {(2 : ℤ)}).IsMaximal :=
-    PrincipalIdealRing.isMaximal_of_irreducible Int.prime_two.irreducible
-  exact ⟨Ideal.IsHomogeneous.bot _, h1, h2,
-    map_algebraMap_quotient_ne_top _ (Ideal.IsHomogeneous.bot _) bot_ne_top h2.ne_top⟩
-
 end Main
 
 end GlobalTheory

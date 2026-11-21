@@ -1,16 +1,19 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeTateFunctionalEquationCM
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPrimitiveHeckeLFunctionInvOfTrivialOnMaxRealStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPrimitiveHeckeLFunctionInvOfTrivialOnMaxReal
+import Formalism.PairingDivisors.StatementA
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsFinSetSplitPlacesCoprimeConductor
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsValCharTwist
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMulPowIntegral
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterUnramifiedAeAndExistsLevel
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntValuationEqOfMem
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateLocalEpsilonFactorMulTameCharStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalEpsilonFactorTameFiniteOrderTwistStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinprodNuValuesTwistOnlyRamifiedEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistAndNuRamifiedPlaceDegreeOneExponentTwoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistOnlyRamifiedPlacePrimeResidueDvdNormStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateLocalEpsilonFactorMulTameChar
+import Development.AbelianVarietyTheory.Definitions.Foundations.TupleConstantsNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalEpsilonFactorTameFiniteOrderTwist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinprodNuValuesTwistOnlyRamifiedEqOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistAndNuRamifiedPlaceDegreeOneExponentTwo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistOnlyRamifiedPlacePrimeResidueDvdNorm
 
 noncomputable section
 
@@ -28,8 +31,8 @@ theorem reflect_of_finEps (hFE : GlobalTheory.Published.HeckeTateFunctionalEquat
     (hs' : ∀ (i : I) (k : ℕ), 1 - s + ((|m i| : ℤ) : ℂ) ≠ -k) (he : finEps χ a s = e * finEps χ₀ a₀ s) :
     Λ s * Λ₀ (1 - s) = e * (Λ (1 - s) * Λ₀ s) := by
   have hcm := hFE.cm
-  have h1 := hcm E I φ m χ a Λ Λ hφ hu hi hm0 ha hΛ (GlobalTheory.T.isPrimitiveHeckeLFunction_inv_of_trivialOnMaxReal E χ Λ ht hΛ) s hs hs'
-  have h0 := hcm E I φ m χ₀ a₀ Λ₀ Λ₀ hφ hu₀ hi₀ hm0 ha₀ hΛ₀ (GlobalTheory.T.isPrimitiveHeckeLFunction_inv_of_trivialOnMaxReal E χ₀ Λ₀ ht₀ hΛ₀) s hs hs'
+  have h1 := hcm E I φ m χ a Λ Λ hφ hu hi hm0 ha hΛ (_root_.GlobalTheory.CMVal.isHeckeL_inv_of_trivOnF E χ Λ ht hΛ) s hs hs'
+  have h0 := hcm E I φ m χ₀ a₀ Λ₀ Λ₀ hφ hu₀ hi₀ hm0 ha₀ hΛ₀ (_root_.GlobalTheory.CMVal.isHeckeL_inv_of_trivOnF E χ₀ Λ₀ ht₀ hΛ₀) s hs hs'
   have hpi : (2 * (Real.pi : ℂ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)
   have hL : LInf m s ≠ 0 := by
     refine Finset.prod_ne_zero_iff.2 fun i _ => mul_ne_zero (mul_ne_zero two_ne_zero ?_) (Complex.Gamma_ne_zero (hs i))
@@ -210,7 +213,7 @@ theorem refl_square (hFE : GlobalTheory.Published.HeckeTateFunctionalEquation) {
     simp only [c]; rw [finprod_eq_if, if_neg (fun h' => h'.1 h)]
   have hcf : (Function.mulSupport c).Finite :=
     (GlobalTheory.Mem.UnrAe.finite_ramified ξ).subset fun w hw h => hw (hc1 w h)
-  have hcprod : ∏ᶠ w, c w = 1 := GlobalTheory.T.finprod_nu_values_twist_only_ramified_eq_one G hL i j t
+  have hcprod : ∏ᶠ w, c w = 1 := _root_.GlobalTheory.TwistPairs.finprod_val_nu_eq_one G hL i j t
   have hloc : ∀ w, ∃ g, GlobalTheory.Square.IsAwayUnit (Qn G t) g ∧
       locEps (nuH G t i j) w (a w) (s : ℂ) = D.what₂.embLL g * c w * locEps ν₀ w (a₀ w) (s : ℂ) := by
     intro w
@@ -222,21 +225,21 @@ theorem refl_square (hFE : GlobalTheory.Published.HeckeTateFunctionalEquation) {
       obtain ⟨g, hg⟩ := hxi (unif w ^ (a₀ w + diffExp w))
       exact ⟨g, isAwayUnit_of_locK D.what₂.embLL hN hf w _ hg hQn, by rw [hg, mul_one]⟩
     by_cases hU0 : ν₀.UnrAt w
-    · obtain ⟨q, hq, hcard, hqQ, w', hw', hw'N⟩ := GlobalTheory.T.twist_only_ramified_place_prime_residue_dvd_norm G hL i j t w hU hU0
+    · obtain ⟨q, hq, hcard, hqQ, w', hw', hw'N⟩ := _root_.GlobalTheory.SqTop.twist_ram_prime_dvd_Qn G hL i j t w hU hU0
       have h1 := expAt_one_of_tame (hL.xi_tame t w) hU
       have hroot : ∀ z : ℂ, z ^ q = 1 → z ∈ Set.range D.what₂.embLL := fun z hz => by
         refine hr t w' hw' z ?_
         have hd : 1 ≤ depthAt G w' := le_max_right _ _
         rw [hw'N, ← Nat.sub_add_cancel hd, pow_succ, pow_mul', hz, one_pow]
-      obtain ⟨hE, g, hg, hge⟩ := GlobalTheory.T.localEpsilonFactor_tame_finiteOrder_twist _ _ D.what₂.embLL ν₀ ξ w q (Qn G t) N s hq hcard hqQ hN hf hU0 h1 hxi hroot hs0
+      obtain ⟨hE, g, hg, hge⟩ := _root_.GlobalTheory.TameTwistEps.locEps_tame_twist _ _ D.what₂.embLL ν₀ ξ w q (Qn G t) N s hq hcard hqQ hN hf hU0 h1 hxi hroot hs0
       rw [← e] at hE
       have h0 : ExpAt ν₀ w 0 := (expAt_zero_iff ν₀ w).2 hU0
       rw [(ha w).unique hE, (ha₀ w).unique h0, e, hge]
       have hcw : c w = ((ν₀.val w : ℂˣ) : ℂ) := by
         simp only [c]; rw [finprod_eq_if, if_pos ⟨hU, hU0⟩]
       exact ⟨g, hg, by rw [hcw]⟩
-    · obtain ⟨q, hq, hcard, hsq, h2⟩ := GlobalTheory.T.twist_and_nu_ramified_place_degree_one_exponent_two G hL hb i j t w hU hU0
-      obtain ⟨hE, y, hy⟩ := GlobalTheory.T.tateLocalEpsilonFactor_mul_tameChar _ ν₀ ξ w q (s : ℂ) hq hcard hsq h2 (hL.xi_tame t w)
+    · obtain ⟨q, hq, hcard, hsq, h2⟩ := _root_.GlobalTheory.BadPlaceExp.main G hL hb i j t w hU hU0
+      obtain ⟨hE, y, hy⟩ := _root_.GlobalTheory.TameTwist.locEps_mul_tame _ ν₀ ξ w q (s : ℂ) hq hcard hsq h2 (hL.xi_tame t w)
       rw [← e] at hE
       rw [(ha w).unique hE, (ha₀ w).unique h2, e, hy]
       have hcw : c w = 1 := by simp only [c]; rw [finprod_eq_if, if_neg (fun h' => hU0 h'.2)]

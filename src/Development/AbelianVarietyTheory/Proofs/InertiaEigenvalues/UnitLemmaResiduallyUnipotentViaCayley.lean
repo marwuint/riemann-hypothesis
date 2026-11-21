@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocalRingOfIdem
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardStableLatticesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardStableLattices
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdjoinEqTopAndIsReducedOfCharpolySeparableStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyMulLeftSeparableOfAdjoinEqTopStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyMulLeftSeparableOfAdjoinEqTop
 
 noncomputable section
 
@@ -132,8 +132,8 @@ theorem val_res_eq {O E A₁ A₂ : Type} [CommRing O] [IsDomain O] [IsDiscreteV
     (s₁ : ∀ y ∈ M₁, g₁ * y ∈ M₁) (s₂ : ∀ y ∈ M₂, g₂ * y ∈ M₂) :
     val O (resultant (LinearMap.mulLeft E g₁).charpoly (LinearMap.mulLeft E g₂).charpoly) =
       val O (resultant (LinearMap.mulLeft E Y₁).charpoly (LinearMap.mulLeft E Y₂).charpoly) := by
-  have c1 := GlobalTheory.T.card_stable_lattices_alt O E A₁ A₂ g₁ g₂ hr M₁ M₂ l₁ l₂ s₁ s₂
-  have c2 := GlobalTheory.T.card_stable_lattices_alt O E A₁ A₂ Y₁ Y₂ hr' M₁ M₂ l₁ l₂ ((h₁ M₁).1 s₁) ((h₂ M₂).1 s₂)
+  have c1 := _root_.GlobalTheory.StableLatCount.card_stable_lattices O E A₁ A₂ g₁ g₂ hr M₁ M₂ l₁ l₂ s₁ s₂
+  have c2 := _root_.GlobalTheory.StableLatCount.card_stable_lattices O E A₁ A₂ Y₁ Y₂ hr' M₁ M₂ l₁ l₂ ((h₁ M₁).1 s₁) ((h₂ M₂).1 s₂)
   have hc : Nat.card {M : Submodule O (A₁ × A₂) // (∀ y ∈ M, (g₁, g₂) * y ∈ M) ∧
       M.comap (LinearMap.inl O A₁ A₂) = M₁ ∧ M.map (LinearMap.snd O A₁ A₂) = M₂} =
       Nat.card {M : Submodule O (A₁ × A₂) // (∀ y ∈ M, (Y₁, Y₂) * y ∈ M) ∧
@@ -148,7 +148,7 @@ theorem separable_of_adjoin {E A : Type} [Field E] [CharZero E] [CommRing A] [Al
     (g Y : A) (h₁ : Y ∈ Algebra.adjoin E ({g} : Set A)) (h₂ : g ∈ Algebra.adjoin E ({Y} : Set A))
     (hg : (LinearMap.mulLeft E g).charpoly.Separable) : (LinearMap.mulLeft E Y).charpoly.Separable := by
   obtain ⟨ht, hr⟩ := GlobalTheory.T.adjoin_eq_top_and_isReduced_of_charpoly_separable E A g hg
-  refine GlobalTheory.T.charpoly_mulLeft_separable_of_adjoin_eq_of_reduced E A Y (eq_top_iff.2 ?_) hr
+  refine _root_.GlobalTheory.charpoly_mulLeft_separable_of_adjoin_eq_top E A Y (eq_top_iff.2 ?_) hr
   rw [← ht]
   exact Algebra.adjoin_le (Set.singleton_subset_iff.2 h₂)
 

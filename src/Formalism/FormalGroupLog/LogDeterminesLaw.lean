@@ -92,6 +92,4 @@ theorem logIffHomGa : LogIffHomGa := by
   · rintro ⟨⟨h0, h2⟩, h1⟩
     exact ⟨h0, h1, h2.trans (key h0)⟩
 theorem substInjective : SubstInjective := substInjective_statement
-theorem isCommOfRat : IsCommOfRat := is_comm_of_rat
-
 end Formalism.G

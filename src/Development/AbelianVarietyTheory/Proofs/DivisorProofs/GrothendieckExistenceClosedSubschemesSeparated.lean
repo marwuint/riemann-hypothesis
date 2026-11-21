@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraiseOfIsImmersionProjectiveCompleteNoethStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChowLemmaProjectiveModificationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraisationOfProperModificationNoetherianStepStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraiseOfIsImmersionProjectiveCompleteNoeth
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChowLemmaProjectiveModification
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraisationOfProperModificationNoetherianStep
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.FormalAlg
@@ -47,14 +47,14 @@ theorem alg_of_isSeparated : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I
   have hqc' : QuasiCompact (i ≫ f₀) := inferInstance
   by_cases hW : Nonempty W
   · obtain ⟨W', P, π, q, s, U, hπ, hU, hiso, hs, hq, hcomm⟩ :=
-      GlobalTheory.T.chow_lemma_projective_modification R W (i ≫ f₀) hsep' hlft' hqc' hW
+      _root_.GlobalTheory.FormalAlg.exists_isProper_isImmersion_isProjOver R W (i ≫ f₀) hsep' hlft' hqc' hW
     have hA : Alg (π ≫ i ≫ f₀) I := by
       rw [← hcomm]
-      exact GlobalTheory.T.algebraise_of_isImmersion_projective_completeNoeth R I hI W' P q s hs hq
+      exact _root_.GlobalTheory.FormalAlg.alg_of_isImmersion_isProjOver R I hI W' P q s hs hq
     let K := Scheme.IdealSheafData.vanishingIdeal
       (⟨(U : Set W)ᶜ, U.isOpen.isClosed_compl⟩ : TopologicalSpace.Closeds W)
     have hK : ((K.support : Set W)) = (U : Set W)ᶜ := Scheme.IdealSheafData.coe_support_vanishingIdeal _
-    refine GlobalTheory.T.algebraisation_of_proper_modification_noetherian_step R I W (i ≫ f₀) hsep' hlft' hqc' W' π U hπ hiso K ?_ hA ?_
+    refine _root_.GlobalTheory.FormalAlg.alg_of_modification R I W (i ≫ f₀) hsep' hlft' hqc' W' π U hπ hiso K ?_ hA ?_
     · intro x hx
       by_contra hxU
       apply hx

@@ -35,7 +35,7 @@ theorem exists_sabMap_types {D D₁ D₂ : Datum H}
   have hL := GlobalTheory.ArcCM.known_holds.laws
   have hG := hL.globalFns
   have hA : HomAlg := GlobalTheory.exists_isMonHom_of_map_lattice hT hL
-  have hD : WeilDet := GlobalTheory.T.lambdaBundleIso_of_primeToP_weilPairings hL
+  have hD : WeilDet := _root_.GlobalTheory.lam_iso_of_weil_pairings hL
   have p₁ := GlobalTheory.obj_isAbelianScheme_dim_rigidified_sym E H D l _ _ _ _ o₁
   have p₂ := GlobalTheory.obj_isAbelianScheme_dim_rigidified_sym E H D l _ _ _ _ o₂
   obtain ⟨α, hα, hα'⟩ : ∃ α : o₁.t.G ⟶ o₂.t.G, IsMonHom α ∧ ∀ z, e₂ (h z) = e₁ z ≫ α :=

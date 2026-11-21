@@ -48,6 +48,4 @@ theorem locFin_sumPl : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V : ι →
     rw [map_add]
     exact Submodule.add_mem_sup (hs₁ y₁ hy₁) (hs₂ y₂ hy₂)
 
-example : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V : ι → Type) [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)] (L : ∀ i, Module.End ℂ (V i)), (∀ i, GlobalTheory.RealLift.LocFin (L i)) → GlobalTheory.RealLift.LocFin (GlobalTheory.RealLift.sumPl L) := locFin_sumPl
-
 end GlobalTheory.RealLift

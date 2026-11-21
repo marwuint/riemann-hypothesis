@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianHomExtendsFromGenericFibre
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteRegularLocalMeetOfFlatMapsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteRegularLocalMeetOfFlatMaps
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsRegularLocalRingOfFlatOfMapEqMaximalIdeal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocalRingNormalDomain
@@ -112,7 +112,7 @@ theorem ring_part (R R₀ R' O Ω : Type) [CommRing R] [IsNoetherianRing R] [Com
     by_contra hn
     exact this (by rw [← RingHom.mem_ker, hk]; exact hn)
   obtain ⟨E, _, _, _, a, b, v, fa, fb, hab, hv, hva, hvb, hma, -⟩ :=
-    GlobalTheory.T.exists_complete_regular_local_meet_of_flat_maps O R₁ R' Ω φ₁ φ' u₁ u' fl1 lo hc he hu k1 hk e3
+    _root_.GlobalTheory.exists_complete_regular_meet O R₁ R' Ω φ₁ φ' u₁ u' fl1 lo hc he hu k1 hk e3
   refine ⟨E, _, inferInstance, inferInstance, a.comp (algebraMap R₀ R₁), b, v, fl0.comp fa, fb, ?_, hv, ?_, hvb, ?_⟩
   · rw [RingHom.comp_assoc, ← e1, ← RingHom.comp_assoc, hab]; rfl
   · rw [← RingHom.comp_assoc, hva, e2]

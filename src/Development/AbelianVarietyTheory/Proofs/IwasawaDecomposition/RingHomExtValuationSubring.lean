@@ -203,81 +203,13 @@ theorem ringHom_ext_valuationSubring {F k : Type} [Field F] [Field k] (V : Valua
   · have : f x⁻¹ = g x⁻¹ := RingHom.congr_fun h ⟨x⁻¹, hx⟩
     rwa [map_inv₀, map_inv₀, inv_inj] at this
 
-theorem pow_left_comp {S S₁ S₂ : Scheme.{0}} {G : Over S} {G₁ : Over S₁} {G₂ : Over S₂} [GrpObj G] [GrpObj G₁] [GrpObj G₂]
-    {f₁ : S₁ ⟶ S} {f₂ : S₂ ⟶ S} {φ₁ : G₁.left ⟶ G.left} {φ₂ : G₂.left ⟶ G.left} (h₁ : IsGrpPullback G₁ G f₁ φ₁)
-    (h₂ : IsGrpPullback G₂ G f₂ φ₂) {T₁ : Over S₁} {T₂ : Over S₂} (x₁ : T₁ ⟶ G₁) (x₂ : T₂ ⟶ G₂) (r : T₂.left ⟶ T₁.left)
-    (h : x₂.left ≫ φ₂ = r ≫ x₁.left ≫ φ₁) (n : ℕ) : (x₂ ^ n).left ≫ φ₂ = r ≫ (x₁ ^ n).left ≫ φ₁ := by
-  let U : Over.mk (T₂.hom ≫ f₂) ⟶ Over.mk (T₁.hom ≫ f₁) := Over.homMk r (by
-    have := congrArg (· ≫ G.hom) h
-    simp only [Category.assoc, h₁.1.w, h₂.1.w, Over.w_assoc] at this
-    exact this.symm)
-  have e : pushHom h₂ T₂ x₂ = ReciprocityTheory.ChartRestriction.G.Geo.Tor.preHom U (pushHom h₁ T₁ x₁) := Over.OverMorphism.ext h
-  have e' : pushHom h₂ T₂ (x₂ ^ n) = ReciprocityTheory.ChartRestriction.G.Geo.Tor.preHom U (pushHom h₁ T₁ (x₁ ^ n)) := by
-    rw [map_pow, map_pow, map_pow, e]
-  exact congrArg (fun q => q.left) e'
-
 variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
-
-theorem isTrans_comp {i i₁ i₂ : Idx H p} {τ₁ : (Y i₁).X ⟶ (Y i).X} {τ₂ : (Y i₂).X ⟶ (Y i₁).X}
-    {mu₁ : SABMap (Y i₁).t (Y i).t τ₁} {mu₂ : SABMap (Y i₂).t (Y i₁).t τ₂} (d₁ : i.l.Dvd i₁.l) (d₂ : i₁.l.Dvd i₂.l)
-    (h₁ : IsTrans i i₁ τ₁ mu₁) (h₂ : IsTrans i₁ i₂ τ₂ mu₂) (mu : SABMap (Y i₂).t (Y i).t (τ₂ ≫ τ₁))
-    (hmu : mu.φ = mu₂.φ ≫ mu₁.φ) : IsTrans i i₂ (τ₂ ≫ τ₁) mu := by
-  obtain ⟨b₁, π₁, r₁, hb₁, hf₁, hs₁, fin₁, hj₁, he₁, hA₁⟩ := h₁
-  obtain ⟨b₂, π₂, r₂, hb₂, hf₂, hs₂, fin₂, hj₂, he₂, hA₂⟩ := h₂
-  have w₁ : τ₁ ≫ (Y i).s = (Y i₁).s ≫ spMap b₁ := by
-    rw [← hf₁, ← hs₁, Category.assoc, Category.assoc, pullback.condition]
-  let q : pullback (Y i₁).s (spMap b₂) ⟶ pullback (Y i).s (spMap (b₂.comp b₁)) :=
-    pullback.lift (pullback.fst _ _ ≫ τ₁) (pullback.snd _ _) (by
-      rw [Category.assoc, w₁, pullback.condition_assoc, sp_comp])
-  let ρ : pullback (Y i).s (spMap (b₂.comp b₁)) ⟶ pullback (Y i).s (spMap b₁) :=
-    pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap b₂) (by
-      rw [Category.assoc, sp_comp, pullback.condition])
-  have hρ : IsPullback ρ (pullback.snd _ _) (pullback.snd _ _) (spMap b₂) := by
-    refine IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback (Y i).s (spMap b₁))
-    rw [pullback.lift_fst, sp_comp]
-    exact IsPullback.of_hasPullback _ _
-  have hq : IsPullback (pullback.fst (Y i₁).s (spMap b₂)) q π₁ ρ := by
-    refine IsPullback.of_bot ?_ ?_ hρ
-    · rw [pullback.lift_snd, hs₁]
-      exact IsPullback.of_hasPullback _ _
-    · apply pullback.hom_ext
-      · simp only [Category.assoc, hf₁, q, ρ, pullback.lift_fst]
-      · simp only [Category.assoc, hs₁, q, ρ, pullback.lift_snd, pullback.lift_snd_assoc, pullback.condition]
-  have finq : IsFinite q := MorphismProperty.of_isPullback hq fin₁
-  have pw : ∀ {a a₁ a₂ : ℕ}, a ∣ a₁ → a₁ ∣ a₂ → ∀ (e : 𝟙_ (Over _) ⟶ (Y i).oF.t.G) (e₁ : 𝟙_ (Over _) ⟶ (Y i₁).oF.t.G)
-      (e₂ : 𝟙_ (Over _) ⟶ (Y i₂).oF.t.G),
-      (e₁ ^ (a₁ / a)).left ≫ (Y i₁).m.φ ≫ mu₁.φ = r₁ ≫ e.left ≫ (Y i).m.φ →
-      (e₂ ^ (a₂ / a₁)).left ≫ (Y i₂).m.φ ≫ mu₂.φ = r₂ ≫ e₁.left ≫ (Y i₁).m.φ →
-      (e₂ ^ (a₂ / a)).left ≫ (Y i₂).m.φ ≫ mu.φ = (r₂ ≫ r₁) ≫ e.left ≫ (Y i).m.φ := by
-    intro a a₁ a₂ da da₁ e e₁ e₂ k₁ k₂
-    have k := pow_left_comp (Y i₁).m.cart ((Y i₂).m.cart.comp mu₂.cart) e₁ (e₂ ^ (a₂ / a₁)) r₂ k₂ (a₁ / a)
-    rw [← pow_mul, Nat.div_mul_div da₁ da] at k
-    rw [hmu, Category.assoc, ← k₁]
-    simpa only [Category.assoc] using congrArg (· ≫ mu₁.φ) k
-  refine ⟨b₂.comp b₁, π₂ ≫ q, r₂ ≫ r₁, fun x => (hb₂ _).trans (hb₁ x), ?_, ?_, inferInstance, ?_,
-    fun a => pw d₁.1 d₂.1 _ _ _ (he₁ a) (he₂ a), fun a => pw d₁.2.2 d₂.2.2 _ _ _ (hA₁ a) (hA₂ a)⟩
-  · rw [Category.assoc, pullback.lift_fst, ← Category.assoc, hf₂]
-  · rw [Category.assoc, pullback.lift_snd, hs₂]
-  · rw [← Category.assoc, hj₂, Category.assoc, hj₁, Category.assoc]
-
-theorem corr_refl (Z : Mdl Y i₀) : LocM.Corr Z Z := ⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, le_rfl, fun _ => subset_rfl⟩
-
-theorem corr_trans {Z₁ Z₂ Z₃ : Mdl Y i₀} (h : LocM.Corr Z₁ Z₂) (h' : LocM.Corr Z₂ Z₃) : LocM.Corr Z₁ Z₃ :=
-  ⟨⟨h'.1.1.trans h.1.1, h.1.2.1.trans h'.1.2.1, h'.1.2.2.trans h.1.2.2⟩, h'.2.1.trans h.2.1,
-    fun σ => (h'.2.2 σ).trans (h.2.2 σ)⟩
 
 theorem tan_chart (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {a : Fin Z.m} {φ : Γ(Z.X, (Z.U a).1) →+* k}
     (h : spMap φ ≫ Z.chart a = w) (σ : E →+* ℂ) (j : Fin (Dw.mult σ)) :
     IsTanAtG (Y Z.i).t (w ≫ Z.π) ((Z.fr a).bc φ σ j) := by
   rw [← h, Category.assoc]
   exact GlobalTheory.FactorDepth.isTanAtG_map _ φ ((Z.frame a).1 σ j).1
-
-theorem range_subset_opn (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {u : Vecs Dw (Y Z.i).t k}
-    (h : Z.FlagAt w u) : Set.range w ⊆ Z.opn := by
-  obtain ⟨a, φ, rfl, -⟩ := h
-  rintro _ ⟨y, rfl⟩
-  rw [← Z.cover]
-  exact Set.mem_iUnion.2 ⟨a, (Z.U a).2.range_fromSpec.le ⟨spMap φ y, (Scheme.Hom.comp_apply _ _ _).symm⟩⟩
 
 theorem flagAt_two (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {u v : Vecs Dw (Y Z.i).t k}
     (hu : Z.FlagAt w u) (hv : Z.FlagAt w v) : ∃ f : Z.i.c.F →+* k, IsFrame (Y Z.i).t f (w ≫ Z.π) u ∧
@@ -293,50 +225,5 @@ theorem flagAt_two (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {u v
   exact sameFlag_trans (fun σ j => (fu.1 σ j).1) (tan_chart Z ha) (fun σ j => (fv.1 σ j).1)
     (sameFlag_symm (tan_chart Z ha) fu su)
     (sameFlag_trans (tan_chart Z ha) (tan_chart Z hb) (fun σ j => (fv.1 σ j).1) g sv)
-
-theorem isMap_comp {Z₁ Z₂ Z₃ : Mdl Y i₀} {f : Z₁.X ⟶ Z₂.X} {g : Z₂.X ⟶ Z₃.X} (hf : IsMap Z₁ Z₂ f) (hg : IsMap Z₂ Z₃ g) :
-    IsMap Z₁ Z₃ (f ≫ g) := by
-  refine ⟨corr_trans hf.1 hg.1, fun k _ w hw => ?_⟩
-  obtain ⟨τ₁, mu₁, u, t₁, e₁, fu, fu'⟩ := hf.2 k w hw
-  obtain ⟨τ₂, mu₂, v, t₂, e₂, fv, b, ψ, hb, fv', sv'⟩ := hg.2 k (w ≫ f) (range_subset_opn Z₂ fu')
-  obtain ⟨mu, hmu⟩ := sabComp pullCubComp E H _ _ _ _ _ _ _ _ mu₂ mu₁
-  obtain ⟨c, k₁, k₂, k₃⟩ := flagAt_two Z₂ fv fu'
-  have ex : ((w ≫ f) ≫ g) ≫ Z₃.π = ((w ≫ f) ≫ Z₂.π) ≫ τ₂ := e₂.trans (Category.assoc _ _ _).symm
-  have fr : IsFrame (Y Z₃.i).t (ψ.comp (Z₃.alg b)) (((w ≫ f) ≫ g) ≫ Z₃.π) (Dw := Dw)
-      fun σ j => (u σ j ≫ mu₁.φ) ≫ mu₂.φ := by
-    rw [ex] at fv' ⊢
-    exact isFrame_push mu₂ k₁ k₂ fv'
-  have sf := sameFlag_push mu₂ hg.1.2.2 k₃
-  rw [← ex] at sf
-  refine ⟨τ₁ ≫ τ₂, mu, u, isTrans_comp hg.1.1 hf.1.1 t₂ t₁ mu hmu, ?_, fu, ?_⟩
-  · rw [← Category.assoc w f g, ex, e₁]
-    simp only [Category.assoc]
-  · rw [hmu, ← Category.assoc w f g]
-    simp only [← Category.assoc (u _ _)]
-    exact ⟨b, ψ, hb, fr, sameFlag_trans (tan_chart Z₃ hb) (fun σ j => (fv'.1 σ j).1) (fun σ j => (fr.1 σ j).1) sv' sf⟩
-
-theorem exists_dominating (hd : ∀ Z₁ Z₂ : Mdl Y i₀, LocM.Corr Z₁ Z₂ → ∃ Z', IsDiag Z₁ Z₂ Z') (n : ℕ)
-    (Z : Fin (n + 1) → Mdl Y i₀) (hZ : ∀ a, (Z a).i = (Z 0).i ∧ (Z a).ty = (Z 0).ty) :
-    ∃ Z' : Mdl Y i₀, Z'.i = (Z 0).i ∧ Z'.ty = (Z 0).ty ∧ ∀ a, ∃ f : Z'.X ⟶ (Z a).X, IsMap Z' (Z a) f := by
-  classical
-  have key : ∀ s : Finset (Fin (n + 1)), ∃ Z' : Mdl Y i₀, Z'.i = (Z 0).i ∧ Z'.ty = (Z 0).ty ∧
-      ∀ a ∈ s, ∃ f : Z'.X ⟶ (Z a).X, IsMap Z' (Z a) f := by
-    intro s
-    induction s using Finset.induction_on with
-    | empty => exact ⟨Z 0, rfl, rfl, by simp⟩
-    | insert b s _ ih =>
-      obtain ⟨Z', hi, ht, hm⟩ := ih
-      have hc : LocM.Corr Z' (Z b) := by
-        unfold LocM.Corr
-        rw [hi, ht, (hZ b).1, (hZ b).2]
-        exact corr_refl (Z 0)
-      obtain ⟨Z'', hi', ht', f₁, f₂, m₁, m₂, -⟩ := hd Z' (Z b) hc
-      refine ⟨Z'', hi'.trans hi, ht'.trans ht, fun a ha => ?_⟩
-      rcases Finset.mem_insert.1 ha with rfl | ha
-      · exact ⟨f₂, m₂⟩
-      · obtain ⟨g, hg⟩ := hm a ha
-        exact ⟨f₁ ≫ g, isMap_comp m₁ hg⟩
-  obtain ⟨Z', hi, ht, hm⟩ := key Finset.univ
-  exact ⟨Z', hi, ht, fun a => hm a (Finset.mem_univ a)⟩
 
 end GlobalTheory.LocM.MapComp

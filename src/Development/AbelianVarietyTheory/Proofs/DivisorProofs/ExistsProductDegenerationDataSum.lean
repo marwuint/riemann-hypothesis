@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSumPolAV
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsProductPrincipallyPolarisedAbelianSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsProductPrincipallyPolarisedAbelianScheme
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.PsiInOfComponent
 
 set_option autoImplicit false
@@ -543,7 +543,7 @@ theorem exists_sum : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D�
       (q₁ : D.toPre.X →+ D₁.toPre.X) (q₂ : D.toPre.X →+ D₂.toPre.X),
       IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂ := by
   intro R _ _ I D₁ D₂
-  obtain ⟨P, a₁, a₂, hs, h⟩ := GlobalTheory.T.exists_product_principallyPolarised_abelianScheme _ D₁.toPre.P D₂.toPre.P
+  obtain ⟨P, a₁, a₂, hs, h⟩ := _root_.GlobalTheory.MumProd.SumPol.exists_sum_polAV _ D₁.toPre.P D₂.toPre.P
   have := hs.hom₁
   have := hs.hom₂
   have := hs.lim

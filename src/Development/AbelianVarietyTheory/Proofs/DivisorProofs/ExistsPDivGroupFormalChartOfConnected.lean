@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicContinuousEvaluationExistsUniqueSubstNaturaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicContinuousEvaluationExistsUniqueSubstNatura
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoordinatesOfIsConnectedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdicCompleteSpanNatCastStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerTensorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSeriesOfCompatibleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdicCompleteSpanNatCast
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerTensor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSeriesOfCompatible
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveEvalTmulStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffEqZeroOfEvalEqComulStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalChartGroupLawEvalRightUnitStatement
@@ -51,10 +51,10 @@ theorem chart_exists : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgC
   intro p _ C _ _ _ v O _ _ _ _ _ hv G hG
   obtain ⟨d, x, ev, hnil, hev, hres, haug, hsurj, hker⟩ := GlobalTheory.T.exists_coordinates_of_isConnected p C v O hv G hG
   have hc2 : ∀ n, IsAdicComplete (Ideal.span {(p : G.A n ⊗[O] G.A n)}) (G.A n ⊗[O] G.A n) :=
-    fun n => GlobalTheory.T.isAdicComplete_span_natCast_of_finite_projective' p O _
+    fun n => _root_.GlobalTheory.FinProjComplete.isAdicComplete_span_natCast p O _
   have hc3 : ∀ n, IsAdicComplete (Ideal.span {(p : G.A n ⊗[O] (G.A n ⊗[O] G.A n))})
-      (G.A n ⊗[O] (G.A n ⊗[O] G.A n)) := fun n => GlobalTheory.T.isAdicComplete_span_natCast_of_finite_projective' p O _
-  have hcA : ∀ n, IsAdicComplete (Ideal.span {(p : G.A n)}) (G.A n) := fun n => GlobalTheory.T.isAdicComplete_span_natCast_of_finite_projective' p O _
+      (G.A n ⊗[O] (G.A n ⊗[O] G.A n)) := fun n => _root_.GlobalTheory.FinProjComplete.isAdicComplete_span_natCast p O _
+  have hcA : ∀ n, IsAdicComplete (Ideal.span {(p : G.A n)}) (G.A n) := fun n => _root_.GlobalTheory.FinProjComplete.isAdicComplete_span_natCast p O _
   have nil2 : ∀ n, ∀ j, ∃ N : ℕ, (p : G.A n ⊗[O] G.A n) ∣
       (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n)) fun i => (1 : G.A n) ⊗ₜ[O] x n i) j ^ N := by
     rintro n (i | i)
@@ -70,13 +70,13 @@ theorem chart_exists : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgC
       IsEval p (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n)) fun i => (1 : G.A n) ⊗ₜ[O] x n i) E := by
     intro n
     haveI := hc2 n
-    exact (GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O _ _ _ (nil2 n)).1.exists
+    exact (_root_.GlobalTheory.CEval.continuous_eval p O _ _ _ (nil2 n)).1.exists
   choose E₂ hE₂ using hE2
   have hE3 : ∀ n, ∃ E : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) O →ₐ[O] G.A n ⊗[O] (G.A n ⊗[O] G.A n),
       IsEval p (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n ⊗[O] G.A n)) (Sum.elim (fun i => (1 : G.A n) ⊗ₜ[O] (x n i ⊗ₜ[O] (1 : G.A n))) fun i => (1 : G.A n) ⊗ₜ[O] ((1 : G.A n) ⊗ₜ[O] x n i))) E := by
     intro n
     haveI := hc3 n
-    exact (GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O _ _ _ (nil3 n)).1.exists
+    exact (_root_.GlobalTheory.CEval.continuous_eval p O _ _ _ (nil3 n)).1.exists
   choose E₃ hE₃ using hE3
   have hsurj2 : ∀ n, Function.Surjective (E₂ n) := fun n => by
     haveI := hc2 n
@@ -84,17 +84,17 @@ theorem chart_exists : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgC
   have hker2 : ∀ m N : ℕ, ∃ n, ∀ f, E₂ n f = 0 → ∀ α : Fin d ⊕ Fin d →₀ ℕ, α.degree < N → (p : O) ^ m ∣ coeff α f := by
     intro m N
     obtain ⟨n, hn⟩ := hker m N
-    exact ⟨n, GlobalTheory.T.dvd_coeff_of_ker_sum_of_dvd_coeff_ker p O _ _ _ _ (x n) (x n) (ev n) (ev n) (E₂ n) m N (hev n) (hev n) (hE₂ n) (hsurj n) (hsurj n) hn hn⟩
+    exact ⟨n, _root_.GlobalTheory.KerTensor.ker_tensor p O _ _ _ _ (x n) (x n) (ev n) (ev n) (E₂ n) m N (hev n) (hev n) (hE₂ n) (hsurj n) (hsurj n) hn hn⟩
   have hker3 : ∀ m N : ℕ, ∃ n, ∀ f, E₃ n f = 0 → ∀ α : Fin d ⊕ (Fin d ⊕ Fin d) →₀ ℕ, α.degree < N → (p : O) ^ m ∣ coeff α f := by
     intro m N
     obtain ⟨n, hn⟩ := hker m N
-    have hn2 := GlobalTheory.T.dvd_coeff_of_ker_sum_of_dvd_coeff_ker p O _ _ _ _ (x n) (x n) (ev n) (ev n) (E₂ n) m N (hev n) (hev n) (hE₂ n) (hsurj n) (hsurj n) hn hn
+    have hn2 := _root_.GlobalTheory.KerTensor.ker_tensor p O _ _ _ _ (x n) (x n) (ev n) (ev n) (E₂ n) m N (hev n) (hev n) (hE₂ n) (hsurj n) (hsurj n) hn hn
     have hpt : (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n ⊗[O] G.A n)) fun j => (1 : G.A n) ⊗ₜ[O] (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n)) (fun i => (1 : G.A n) ⊗ₜ[O] x n i) j)) = (Sum.elim (fun i => x n i ⊗ₜ[O] (1 : G.A n ⊗[O] G.A n)) (Sum.elim (fun i => (1 : G.A n) ⊗ₜ[O] (x n i ⊗ₜ[O] (1 : G.A n))) fun i => (1 : G.A n) ⊗ₜ[O] ((1 : G.A n) ⊗ₜ[O] x n i))) := by
       funext j
       rcases j with j | j | j <;> rfl
     have hE3' := hE₃ n
     rw [← hpt] at hE3'
-    exact ⟨n, GlobalTheory.T.dvd_coeff_of_ker_sum_of_dvd_coeff_ker p O _ _ _ _ (x n) _ (ev n) (E₂ n) (E₃ n) m N (hev n) (hE₂ n) hE3' (hsurj n) (hsurj2 n) hn hn2⟩
+    exact ⟨n, _root_.GlobalTheory.KerTensor.ker_tensor p O _ _ _ _ (x n) _ (ev n) (E₂ n) (E₃ n) m N (hev n) (hE₂ n) hE3' (hsurj n) (hsurj2 n) hn hn2⟩
   have hstep : ∀ i n f, E₂ (n + 1) f = Coalgebra.comul (R := O) (x (n + 1) i) →
       E₂ n f = Coalgebra.comul (R := O) (x n i) := by
     intro i n f hf
@@ -102,7 +102,7 @@ theorem chart_exists : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgC
       Algebra.TensorProduct.map (AlgHomClass.toAlgHom (G.res n)) (AlgHomClass.toAlgHom (G.res n))
     have hρ : ρ.comp (E₂ (n + 1)) = E₂ n := by
       haveI := hc2 n
-      refine (GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O _ _ _ (nil2 n)).1.unique ?_ (hE₂ n)
+      refine (_root_.GlobalTheory.CEval.continuous_eval p O _ _ _ (nil2 n)).1.unique ?_ (hE₂ n)
       have h1 := isEval_comp ρ (hE₂ (n + 1))
       convert h1 using 1
       funext j
@@ -111,7 +111,7 @@ theorem chart_exists : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgC
     exact (CoalgHomClass.map_comp_comul_apply (G.res n) (x (n + 1) i)).trans (by rw [hres])
   have hμ : ∀ i, ∃ g, ∀ n, E₂ n g = Coalgebra.comul (R := O) (x n i) := by
     intro i
-    exact GlobalTheory.T.exists_series_of_compatible' p O (Fin d ⊕ Fin d) (fun n => G.A n ⊗[O] G.A n) (fun n => (hc2 n).toIsHausdorff) _ E₂
+    exact _root_.GlobalTheory.CChartLimit.exists_series_of_compatible p O (Fin d ⊕ Fin d) (fun n => G.A n ⊗[O] G.A n) (fun n => (hc2 n).toIsHausdorff) _ E₂
       (fun n => Coalgebra.comul (R := O) (x n i)) hE₂ (fun n => hsurj2 n _) (hstep i) hker2
   choose μ hμ using hμ
   have hconst : ∀ i, constantCoeff (μ i) = 0 :=

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteCompOpenImmersionOfQuasiFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteCompOpenImmersionOfQuasiFinite
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -43,7 +43,7 @@ theorem exists_finite_openImmersion_nbhd : ∀ (H X : Scheme.{0}) (φ : H ⟶ X)
     exact quasiFiniteAt_of_isolated H X φ hloft z O hzO hO
   have : IsLocallyNoetherian H := LocallyOfFiniteType.isLocallyNoetherian φ
   have : QuasiCompact H'.ι := inferInstance
-  obtain ⟨T, q, j, hq, hj, hjq⟩ := GlobalTheory.T.exists_finite_comp_openImmersion_of_quasiFinite H'.toScheme X (H'.ι ≫ φ) hX inferInstance
+  obtain ⟨T, q, j, hq, hj, hjq⟩ := _root_.GlobalTheory.ZMTFin.exists_finite_openImmersion H'.toScheme X (H'.ι ≫ φ) hX inferInstance
     inferInstance inferInstance inferInstance
   have : QuasiCompact j := by
     have : QuasiCompact (j ≫ q) := by rw [hjq]; infer_instance

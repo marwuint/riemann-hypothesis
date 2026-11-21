@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PhaseNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterIdeleCharacterMatchUnique
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCongruenceHeckeCharacterBoundedLevelTriviaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterNonInertBoundedLevelKillsUnitsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCongruenceHeckeCharacterBoundedLevelTrivia
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterNonInertBoundedLevelKillsUnits
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterBoundedConductorKillsIdeleNormsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnramifiedEtaCharacterKillsFiniteIdeleNormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeNotInertPlaceOfMemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnramifiedEtaCharacterKillsFiniteIdeleNorm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeNotInertPlaceOfMem
 
 open scoped Pointwise
 open Formalism.BasicNotions Formalism.IndefR.Links IsDedekindDomain NumberField
@@ -27,7 +27,7 @@ theorem exists_betaInv_heckeU {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} 
   classical
   have k1 : 1 ≤ D.R.m - (i : ℕ) := by omega
   have k2 : D.R.m - (i : ℕ) ≤ D.R.m := by omega
-  choose! qf hqf using GlobalTheory.T.exists_prime_notInert_place_of_mem G.pl
+  choose! qf hqf using _root_.GlobalTheory.FunObj.SqNum.exists_prime_notInert_place G.pl
   have hS : ∀ q ∈ G.pl.S0.image qf, q.Prime ∧ ¬ InertQ D q := by
     intro q hq
     obtain ⟨v, hv, rfl⟩ := Finset.mem_image.1 hq
@@ -45,15 +45,15 @@ theorem exists_betaInv_heckeU {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} 
     · exact Or.inl (G.ch.unr _ k1 k2 PP h)
   have hcu := GlobalTheory.ChrEqUnique.isUnitary_of_chrEq D _ _ (G.ch.chi_eq _ k1 k2)
   have hci : (G.ch.chiH (D.R.m - i)).HasInf (embT D) (fun τ => 2 * cen D sc.cGap τ (D.R.m - i)) := G.ch.inf _ k1 k2
-  let χc : HeckeU D 0 := ofChar 0 _ _ hcu hci (GlobalTheory.T.exists_congruence_heckeCharacter_bounded_level_trivial D _ _ 2 (fun q hq => (hS q hq).1) hlev)
+  let χc : HeckeU D 0 := ofChar 0 _ _ hcu hci (_root_.GlobalTheory.HeckeCont.eq_one_of_cong D _ _ 2 (fun q hq => (hS q hq).1) hlev)
     (GlobalTheory.T.heckeCharacter_bounded_conductor_kills_idele_norms D _ _ _ 2 (G.ch.triv _ k1 k2) hci (fun q hq => (hS q hq).1) hlev)
-    (fun τ => by simp) (GlobalTheory.T.heckeCharacter_nonInert_bounded_level_kills_units D _ _ 2 hS hlev)
+    (fun τ => by simp) (_root_.GlobalTheory.FunObj.SqNum.hchar_finIdl_eq_one_of_zeroAt D _ _ 2 hS hlev)
   have he := L.C.isEta
   have hei : L.C.eta.HasInf (embT D) (fun _ => 1) := fun a => by
     rw [he.inf a, ← D.eTau.prod_comp]
     rfl
-  let χe : HeckeU D 1 := ofChar 1 L.C.eta _ he.unitary hei (GlobalTheory.T.exists_congruence_heckeCharacter_bounded_level_trivial D _ ∅ 0 (by simp) fun v => Or.inl (he.unr v))
-    (GlobalTheory.T.unramified_eta_character_kills_finite_idele_norm D _ he) (fun τ => by simp) (GlobalTheory.T.heckeCharacter_nonInert_bounded_level_kills_units D _ ∅ 0 (by simp) fun v => Or.inl (he.unr v))
+  let χe : HeckeU D 1 := ofChar 1 L.C.eta _ he.unitary hei (_root_.GlobalTheory.HeckeCont.eq_one_of_cong D _ ∅ 0 (by simp) fun v => Or.inl (he.unr v))
+    (_root_.GlobalTheory.EtaTildeNorm.map_finIdl_norm D _ he) (fun τ => by simp) (_root_.GlobalTheory.FunObj.SqNum.hchar_finIdl_eq_one_of_zeroAt D _ ∅ 0 (by simp) fun v => Or.inl (he.unr v))
   have hr : rankV D (i + 1) (j + 1) = rankV D i j + D.R.t + sLen D := by simp only [rankV]; ring
   have hx := (ranks_exact D i j).1
   obtain ⟨u, hu⟩ := D.R.t_odd

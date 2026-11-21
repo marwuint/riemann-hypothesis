@@ -77,24 +77,6 @@ structure IsShortGen {κ : Type} (Nm : κ → V → ℝ) (L : Submodule (𝓞 K)
 
   one_le : 1 ≤ abelian₂
 
-theorem exists_isShortGen {κ : Type} [Finite κ] (Nm : κ → V → ℝ) {L : Submodule (𝓞 K) V} (hL : L.FG) :
-    ∃ (n : ℕ) (w : Fin n → V) (abelian₂ : ℝ), IsShortGen Nm L w abelian₂ := by
-  obtain ⟨n, w, hw⟩ := Submodule.fg_iff_exists_fin_generating_family.1 (hL.restrictScalars (R := ℤ))
-  obtain ⟨B, hB⟩ := (Set.finite_range fun p : Fin n × κ => Nm p.2 (w p.1)).bddAbove
-  exact ⟨n, w, max B 1, fun x => by rw [hw]; rfl, fun i k => (hB ⟨(i, k), rfl⟩).trans (le_max_left _ _),
-    le_max_right _ _⟩
-
-omit [NumberField K] [Module K V] in
-
-theorem IsShortGen.log_le_cStar {κ : Type} {Nm : κ → V → ℝ} {L : Submodule (𝓞 K) V} {n : ℕ} {w : Fin n → V} {abelian₂ : ℝ}
-    (h : IsShortGen Nm L w abelian₂) (hL : L ≠ ⊥) : 0 ≤ Real.log abelian₂ ∧ Real.log abelian₂ ≤ cStar n abelian₂ := by
-  refine CompHt.log_le_cStar (Nat.pos_of_ne_zero ?_) h.one_le
-  rintro rfl
-  exact hL ((Submodule.eq_bot_iff _).2 fun x hx => by simpa using (h.gen x).1 hx)
-
-example : ∃ (n : ℕ) (w : Fin n → Fin 2 → ℚ) (abelian₂ : ℝ), IsShortGen (stdNorm 2) (stdLat 2) w abelian₂ :=
-  exists_isShortGen _ (Submodule.fg_span (Set.finite_range _))
-
 end Generic
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta
@@ -132,31 +114,10 @@ variable (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) {D : D7} (V : (c.
 
 def genPoint (Z : Comp Xo c) (C : Submodule c.F (Rul Xo c)) : C →ₗ[c.F] Om Z := (genVal Z).toLinearMap ∘ₗ C.subtype
 
-theorem mem_imageIdeal_genPoint (Z : Comp Xo c) {C : Submodule c.F (Rul Xo c)} {N : ℕ} (b : Basis (Fin N) c.F C) {d : ℕ}
-    {g : MvPolynomial (Fin N) c.F} (hg : g.IsHomogeneous d) :
-    g ∈ imageIdeal (genPoint Z C) b ↔ genVal Z (aeval (fun j => (b j : Rul Xo c)) g) = 0 := by
-  rw [imageIdeal, mem_coneIdeal_of_isHomogeneous _ hg, ← AlgHom.comp_apply, comp_aeval]
-  rfl
-
 def compIdeal (Z : Comp Xo c) (G : WTZ E) {N : ℕ} (b : Basis (Fin N) c.F (cuspOn U Z G)) :
     Ideal (MvPolynomial (Fin N) c.F) := imageIdeal (genPoint Z (cuspOn U Z G)) b
 
-theorem isPrime_compIdeal (Z : Comp Xo c) (G : WTZ E) {N : ℕ} (b : Basis (Fin N) c.F (cuspOn U Z G)) :
-    (compIdeal U Z G b).IsPrime := isPrime_coneIdeal _
-
-attribute [local instance] MvPolynomial.gradedAlgebra in
-
-theorem isHomogeneous_compIdeal (Z : Comp Xo c) (G : WTZ E) {N : ℕ} (b : Basis (Fin N) c.F (cuspOn U Z G)) :
-    (compIdeal U Z G b).IsHomogeneous (homogeneousSubmodule (Fin N) c.F) := isHomogeneous_coneIdeal _
-
 def compDeg (Z : Comp Xo c) (G : WTZ E) : ℕ := imageDeg (genPoint Z (cuspOn U Z G)) (dimFlag Dw)
-
-theorem compDeg_eq {Z : Comp Xo c} {G : WTZ E} {N δ : ℕ} {b : Basis (Fin N) c.F (cuspOn U Z G)}
-    {f : MvPolynomial (Fin (dimFlag Dw + 1) × Fin N) c.F} (hf : IsChowFormInt (compIdeal U Z G b) (dimFlag Dw) δ f) :
-    compDeg U Z G = δ := IsImageDeg.imageDeg_eq ⟨N, b, f, hf⟩
-
-def IsCompHeight (Z : Comp Xo c) (G : WTZ E) (h : ℝ) : Prop :=
-  IsImageHeight (normOn U x V dict Z G) (latOn U Z G) (genPoint Z (cuspOn U Z G)) (dimFlag Dw) h
 
 def compHeight (Z : Comp Xo c) (G : WTZ E) : ℝ :=
   imageHeight (normOn U x V dict Z G) (latOn U Z G) (genPoint Z (cuspOn U Z G)) (dimFlag Dw)
@@ -190,33 +151,10 @@ theorem petOn_conj (Z : Comp Xo c) (G : WTZ E) (σ : c.F →+* ℂ) (f : Rul Xo 
     petOn U x V dict Z G ((starRingEnd ℂ).comp σ) f = petOn U x V dict Z G σ f :=
   congrArg (fun s => petAt (U s) x (V s) (dict s) (muOn (U s) (V s) (dict s) Z) G f) (goodOf_conj σ)
 
-variable {U x V dict} in
-
-theorem isCompHeight_compHeight {Z : Comp Xo c} {G : WTZ E} (h : GoodOn U x V dict Z G) (hd : 0 < compDeg U Z G) :
-    IsCompHeight U x V dict Z G (compHeight U x V dict Z G) :=
-  isImageHeight_imageHeight (exists_isImageHeight_iff.2
-    ⟨exists_isFrame (Nm := normOn U x V dict Z G) conj_comp_ne (fun σ f => petOn_conj U x V dict Z G σ f) h.1 h.2.1 h.2.2, hd⟩)
-
-variable {U x V dict} in
-
-theorem CompPresents.isCompHeight {Z : Comp Xo c} {G : WTZ E} {T : Adelic.HermSys c.F}
-    (hT : CompPresents U x V dict Z G T) {h : ℝ} (hh : T.IsHeight h) : IsCompHeight U x V dict Z G h := by
-  rw [IsCompHeight, ← hT.1]
-  exact hT.2.isImageHeight hh
-
 def CompShortGen (G : WTZ E) {n : ℕ} (w : Fin n → cuspW Xo c U G) (abelian₂ : ℝ) : Prop :=
   IsShortGen (fun (k : (c.F →+* ℂ) × Comp Xo c) (f : cuspW Xo c U G) => petOn U x V dict k.2 G k.1 f) (latW U G) w abelian₂
 
 def depth_vw (G : WTZ E) (v : Rul Xo c → EReal) : EReal := ⨅ w ∈ latW U G, v w
-
-theorem depth_vw_nonneg (G : WTZ E) {la : HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo c → EReal}
-    (hv : v ∈ valSet Xo c (algCls Xo c) la) : 0 ≤ depth_vw U G v :=
-  le_iInf₂ fun _ hw => hw la v hv
-
-def valL_vw (G : WTZ E) (τ : ℕ) (v : Rul Xo c → EReal) (t : Rul Xo c) : EReal := v t - (τ : EReal) * depth_vw U G v
-
-def normL_sq (Z : Comp Xo c) (G : WTZ E) (τ : ℕ) (σ : c.F →+* ℂ) (t : Rul Xo c) (y : FPt (U σ).X) : ℝ≥0∞ :=
-  ENNReal.ofReal (homN (U σ) x (τ • G) t ⟨y.1, y.2.1⟩) ^ 2 / bergOn (U σ) (V σ) (dict σ) Z G y ^ τ
 
 def growthOn (Z : Comp Xo c) (G : WTZ E) : ℝ≥0∞ :=
   growth (dimFlag Dw) fun τ => Cardinal.toENat (Module.rank c.F (cuspOn U Z (τ • G)))
@@ -228,10 +166,6 @@ theorem vZero_nonneg (Z : Comp Xo c) : 0 ≤ vZero U Z :=
   div_nonneg ENNReal.toReal_nonneg (Int.cast_pos.2 (vdm_pos strictAnti_stdWt)).le
 
 def topDeg (Z : Comp Xo c) (la : Weight Dw) : ℝ := vZero U Z * (vdm la : ℤ)
-
-theorem topDeg_stdWt (Z : Comp Xo c) : topDeg U Z (stdWt (Psi H) (Dw.p + Dw.q)) =
-    (growthOn U Z (wtOf Dw (stdWt (Psi H) (Dw.p + Dw.q)) 0)).toReal :=
-  div_mul_cancel₀ _ (Int.cast_pos.2 (vdm_pos strictAnti_stdWt)).ne'
 
 def delPrime (Z : Comp Xo c) (u : Weight Dw) : ℝ := topDeg U Z (uPrime Dw u)
 
@@ -257,8 +191,6 @@ def ValFam.patch (S : Set ℕ) (A B : ValFam Xo c) : ValFam Xo c :=
     split_ifs at hv
     exacts [A.2 la v hv, B.2 la v hv]⟩
 
-example (A B : ValFam Xo c) : ValFam.patch ∅ A B = B := Subtype.ext (funext fun la => by simp [ValFam.patch])
-
 def latVal (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) : Submodule (𝓞 c.F) (cuspOn U Z G) :=
   latOf (cuspOn U Z G) Vs.1 Vs.2
 
@@ -267,15 +199,8 @@ theorem latVal_recVals (Z : Comp Xo c) (G : WTZ E) : latVal U (recVals Xo c) Z G
 def smallOn (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) (R : ℝ) : Set (cuspOn U Z G) :=
   {f | f ∈ latVal U Vs Z G ∧ ∀ σ, GoodEmb c σ → ∀ z ∈ framesOn (U σ) Z, homN (U σ) x G f z ≤ R}
 
-theorem smallOn_mono (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) : Monotone (smallOn U x Vs Z G) :=
-  fun _ _ h _ hf => ⟨hf.1, fun σ hσ z hz => (hf.2 σ hσ z hz).trans h⟩
-
 def compVol (a : ℕ) (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) (t : ℝ) : ℝ≥0∞ :=
   countVol (dimFlag Dw) (finrank ℚ c.F) a fun τ => (smallOn U x Vs Z (τ • G) (Real.exp (τ * t))).encard
-
-theorem compVol_mono (a : ℕ) (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) : Monotone (compVol U x a Vs Z G) :=
-  fun _ _ h => countVol_mono _ _ _ fun τ => Set.encard_le_encard (smallOn_mono U x Vs Z _
-    (Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left h τ.cast_nonneg)))
 
 def compVolSlope (a : ℕ) (Vs : ValFam Xo c) (Z : Comp Xo c) (la : Weight Dw) : EReal :=
   volSlope (topDeg U Z la) (compVol U x a Vs Z (wtOf Dw la 0))
@@ -284,10 +209,6 @@ theorem le_compVolSlope_iff (a : ℕ) (Vs : ValFam Xo c) {Z : Comp Xo c} {la : W
     (s : EReal) ≤ compVolSlope U x a Vs Z la ↔
       ∀ t : ℝ, ENNReal.ofReal (topDeg U Z la * (s + t)) ≤ compVol U x a Vs Z (wtOf Dw la 0) t :=
   le_volSlope_iff h _ s
-
-def compDegSlope (a : ℕ) (Vs : ValFam Xo c) (Z : Comp Xo c) (la : Weight Dw) : EReal :=
-  degSlope a (fun τ => AllWt.deg (normOn U x V dict Z (τ • wtOf Dw la 0)) (latVal U Vs Z (τ • wtOf Dw la 0)))
-    fun τ => Formalism.HN.rkK (latVal U Vs Z (τ • wtOf Dw la 0))
 
 theorem isLimSlope_iff {D' : D7} (Y : Formalism.BasicNotions.DV.ShimX D'.what₂.Tau) (B : ℝ) (u : D'.what₂.Tau → Fin Y.N → ℝ) (k : Y.Comp)
     (s : ℝ) : IsLimSlope (Formalism.MainNotions.WeightThresholdDefs.dimY Y) (fun t => Y.arSelfC (Y.Mbar B u t) k) (fun t => Y.geoC (Y.Mbar B u t) k) s ↔

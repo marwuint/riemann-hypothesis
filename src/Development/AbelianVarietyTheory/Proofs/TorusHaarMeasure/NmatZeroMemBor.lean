@@ -211,32 +211,6 @@ theorem lact_one {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) : lact (1 : GL (Fin
   rw [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
   rfl
 
-theorem main : ∀ (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (G : Wt X.Ψ r) (T a δ : ℕ), a ≤ T + 1 →
-    ∀ (t : Fin δ → Frame X.Ψ r → ℂ), (∀ k, X.IsSec G (t k)) → IsValBasisM X Fl.xs t →
-    ∀ f, X.IsSec (G + T • Xa.L) f →
-    ∃ cc : (Fin (nd X) → ℕ) → Fin δ → ℂ, ∀ j,
-      (fun z : V (nd X) => f (cpt X (Fl.xs j) z) - leadM X Fl.s Fl.w0 t T a cc (cpt X (Fl.xs j) z))
-        =O[𝓝 0] fun z => ‖z‖ ^ a := by
-  intro r X Xa Fl G T a δ ha t ht hb f hf
-  have hs0 : ∀ j k, Fl.s k (Fl.xs j) = 0 := fun j =>
-    (Fl.S_eq _ (Fl.xs_mem j)).2 ⟨j, 1, one_mem _, nmat X 0, nmat_zero_mem_Bor X, by
-      rw [rmul_nmat_zero, lact_one]⟩
-  exact jets (U := fun j => OmF X (Fl.xs j)) (f := fun j z => f (cpt X (Fl.xs j) z))
-    (w := fun j z => Fl.w0 (cpt X (Fl.xs j) z)) (s := fun j z k => Fl.s k (cpt X (Fl.xs j) z))
-    (t := fun j z k => t k (cpt X (Fl.xs j) z)) ha
-    (fun j => OntoB.isOpen_OmF X _)
-    (fun j => by
-      show cpt X (Fl.xs j) 0 ∈ X.dom
-      rw [cpt_zero]; exact Fl.xs_mem j)
-    (fun j => OntoB.hol_comp X _ hf.1)
-    (fun j => OntoB.hol_comp X _ Fl.weightForm_vanishes.1.1.1.1)
-    (fun j k => OntoB.hol_comp X _ (Fl.s_van k).1.1.1.1)
-    (fun j k => OntoB.hol_comp X _ (ht k).1)
-    (fun j => by simpa only [cpt_zero] using Fl.w0_ne j)
-    (fun j k => by simpa only [cpt_zero] using hs0 j k)
-    Fl.coord
-    (fun v => by simpa only [cpt_zero] using hb.1 v)
-
 end
 
 end GlobalTheory.LeadJets

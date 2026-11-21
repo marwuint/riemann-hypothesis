@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HenselianLocalRingOfIsAdicComplete
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsValuationSubringExtendingRingHomStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsValuationSubringExtendingRingHom
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Definitions.Degenerations.ExistsGenPullTriv
 import Development.AbelianVarietyTheory.Definitions.Uniformization.IsCPPullback
@@ -25,7 +25,7 @@ theorem geomPoint_factors_valuationSubring_algClosure :
   have hinj : Function.Injective j' :=
     (algebraMap L (AlgebraicClosure L)).injective.comp (IsFractionRing.injective W L)
   set g : W →+* k := (Spec.preimage x).hom with hg
-  obtain ⟨U, hU, h, hh⟩ := GlobalTheory.T.exists_valuationSubring_extending_ringHom W (AlgebraicClosure L) k j' hinj g
+  obtain ⟨U, hU, h, hh⟩ := _root_.GlobalTheory.ValExt.exists_valuationSubring_ext W (AlgebraicClosure L) k j' hinj g
   refine ⟨U, j'.codRestrict U.toSubring hU, h, ?_, ?_⟩
   · ext w; rfl
   · have hcomp : h.comp (j'.codRestrict U.toSubring hU) = g := by

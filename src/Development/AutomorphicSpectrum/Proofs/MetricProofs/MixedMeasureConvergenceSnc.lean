@@ -6,8 +6,8 @@ import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PGreenMassZero
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FixedMemberBase
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.CompChartEventuallyEq
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BdryIsAnalyticSubsetInteriorEmpty
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.UniformRestrictionStatementHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.UniformEnergyBoundOfSectionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.UniformRestrictionStatementHolds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.UniformEnergyBoundOfSection
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas
 open scoped ContDiff
 
@@ -143,7 +143,7 @@ theorem tail_mixed (hTB : TailBoundStatement) {n : ℕ} {Y : Type} [TopologicalS
       TailLogBound A (bdry s)ᶜ (rW L s) T CE := by
   classical
   have h : ∀ b : ℕ, _ := fun b : ℕ =>
-    GlobalTheory.T.uniform_energy_bound_of_section hTB A (fun i : Fin n => if (i : ℕ) < b then P i else Om) L s m W C₁
+    _root_.GlobalTheory.CompanionTheory.Ar.Giv.tailLogBound_of_tailBound hTB A (fun i : Fin n => if (i : ℕ) < b then P i else Om) L s m W C₁
       (fun i => by split_ifs; exacts [hP i, hOm])
       (fun i => by split_ifs; exacts [hPp i, hOmp]) hL hs hsnc hnorm hC₁
   choose CE hCE0 hCE using h
@@ -259,7 +259,7 @@ theorem green_small_core (hUI : GroundTheory.Heights₂.Heights.AnalyticLimit.Un
       mInt A (fun i => potForm (thS i) (uS i t)) (greenEp L' v ε) ≤ η := by
   classical
   obtain ⟨B, hB, n', m', W', hΘB, hposB, hsncB⟩ :=
-    GlobalTheory.T.uniform_restriction_statement_holds A Θ L s m W hΘ hpos hL hs L' v Dg hL' hv hsncv hsncsv
+    _root_.GlobalTheory.CompanionTheory.Ar.Giv.unifRestrict A Θ L s m W hΘ hpos hL hs L' v Dg hL' hv hsncv hsncsv
   haveI : CompactSpace Dg := isCompact_iff_compactSpace.mp
     (show IsClosed Dg from SimpleNormalCrossingSliceCharts.isClosed_divisorComponent A L' v ![1] ![Dg] hsncv 0).isCompact
   have hLB : IsPotential B (L.pullback Subtype.val hB.1) := isPotentialPullback A B _ hB L hL

@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitting
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWeilRepresentationHyperbolicSplitStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWeilRepresentationHyperbolicSplit
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFactsStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilRepresentationExistsEtaleOfSubsingletonStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaKEqNegOneOfNotNormStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEtaleInvolutiveAlgebraSplittingSmallerStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaKEqNegOneOfNotNorm
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEtaleInvolutiveAlgebraSplittingSmaller
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilConditionProductSplittingStatement
 
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
@@ -15,7 +15,7 @@ namespace GlobalTheory.JR.WeilEtProof
 theorem weilAt_of_isField : WeilField → ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E), IsField A.K → IsField A.L → WeilAt A := by
   intro hF F E _ _ _ _ _ A hK hL ψ hψ x μ hμ
   have hfacts := GlobalTheory.T.etaleHermitianPair_structure_facts F E A
-  refine hF F E A hK hL ψ hψ x μ hμ A.etaK (fun s => ⟨?_, fun h => GlobalTheory.T.etaK_eq_neg_one_of_not_norm F E A hK hL s h⟩)
+  refine hF F E A hK hL ψ hψ x μ hμ A.etaK (fun s => ⟨?_, fun h => _root_.GlobalTheory.JR.NonNorm.etaK_eq_neg_one F E A hK hL s h⟩)
   rintro ⟨y, hy⟩
   have hy0 : y ≠ 0 := by
     rintro rfl
@@ -46,7 +46,7 @@ theorem GlobalTheory.JR.weilEt_of_weilField : WeilField → WeilEt := by
     · by_cases hL : IsField A.L
       · exact weilAt_of_isField hF F E A hK hL
       · intro ψ hψ x μ hμ
-        obtain ⟨W, hW⟩ := GlobalTheory.T.exists_weilRepresentation_hyperbolic_split F E A ψ hψ hK hL x μ hμ
+        obtain ⟨W, hW⟩ := _root_.GlobalTheory.JR.weil_hyperbolic F E A ψ hψ hK hL x μ hμ
         exact ⟨1, W, hW⟩
-    · obtain ⟨A₁, A₂, eK, eL, hs, h₁, h₂⟩ := GlobalTheory.T.exists_etaleInvolutiveAlgebraSplitting_smaller F E A hnt hK
+    · obtain ⟨A₁, A₂, eK, eL, hs, h₁, h₂⟩ := _root_.GlobalTheory.JR.EtQuot.exists_splitting F E A hnt hK
       exact GlobalTheory.T.weil_condition_product_splitting F E A A₁ A₂ eK eL hs (ih _ (hn ▸ h₁) A₁ rfl) (ih _ (hn ▸ h₂) A₂ rfl)

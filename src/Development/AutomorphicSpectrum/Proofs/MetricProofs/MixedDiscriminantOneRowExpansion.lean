@@ -6,8 +6,8 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
 import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PDiagFibreFubini
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SphereMeasureStereographicIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.XiPotentialHessianDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantCofactorExpansionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.XiPotentialHessianDecomposition
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantCofactorExpansion
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.EvalW
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights
 open scoped ComplexOrder
@@ -56,7 +56,7 @@ theorem extract_one : ∀ (d : ℕ) (T : Fin 3 → Matrix (Fin d) (Fin d) ℂ) (
         ((∑ i, ((c r * n i : ℝ) : ℂ) • T i) + ((v r : ℝ) : ℂ) • H)) =
       e * L (evalW n n (pderiv (some 0) (∏ r, rowW ![c r, 0] (v r)))) := by
   intro d T H L hL c v n e
-  have h1 := ((GlobalTheory.T.mixed_discriminant_cofactor_expansion d).1 (fun r => (c r : ℂ) * e)
+  have h1 := ((_root_.GlobalTheory.CompanionTheory.Ar.PB.mdisc_split_fibre_direction d).1 (fun r => (c r : ℂ) * e)
     (fun r => (∑ i, ((c r * n i : ℝ) : ℂ) • T i) + ((v r : ℝ) : ℂ) • H))
   refine h1.trans ?_
   rw [pderiv_fin_prod, map_sum, map_sum, Finset.mul_sum]

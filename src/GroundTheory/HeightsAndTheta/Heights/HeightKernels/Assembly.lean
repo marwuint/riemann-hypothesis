@@ -1,7 +1,24 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.Imports
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.RestAssembly
+import GroundTheory.HeightsAndTheta.Heights.KernelsMatrix
+import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
+import GroundTheory.HeightsAndTheta.Heights.KernelsRest
+import ReciprocityTheory.ThetaQuasiPeriods.PeriodLattice
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.AssemblyAnalytic
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.AssemblySympl
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsLines
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesLatticeBasis
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesGenIndexDet
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesIsLattice
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesGenIndexTrans
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesIdealLatticeFG
+import GroundTheory.HeightsAndTheta.Heights.MatrixCharts.DetIneq
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesLineDegree
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.CoordFirst
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.CoordSiegel
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.CoordWeak
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.AltPush
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.AltFrob
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Statements
 import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.Assembly
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PGrassArithVar
@@ -45,6 +62,7 @@ import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PDualPtsOfPlane
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PDualStdMassAt
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PDualGeomDegPos
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLineOfLargeDegreeDual
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
@@ -120,23 +138,5 @@ theorem LineOfLargeDegreeFromZ.ofOpen (hVI : VertRIndex.Statement) (hSN : Sectio
     (DualPointLineDegree.ofOpen hVI hSN)
     (DualTopBound.ofOpen hEnergy hBasis hStacked hSDeg hBC hGL hCharts hGChart hMass)
     (DualGeomDegPos.ofOpen hDeg hInd)
-
-theorem KernelsCut.ofOpen (hZ1 : SuccessiveMinimaLowerBound) (hZ2 : SuccessiveMinimaUpperBound)
-    (hI : ReciprocityTheory.ChartRestriction.G.AI.I2.ExistsStatement)
-    (hVI : VertRIndex.Statement) (hSN : SectionIndexNorm.Statement)
-    (hEnergy : DualMetricEnergy.Statement)
-    (hBasis : DualTopBasisChange.Statement) (hStacked : DualTopStacked.Statement)
-    (hSDeg : DualStackedDegree.Statement) (hBC : DualStdBaseChange.Statement)
-    (hGL : GrassLinesProj.Statement) (hCharts : DualGeomDegCharts.Statement)
-    (hGChart : GrassGeomDegChart.Statement) (hMass : ChartMassInvariant.Statement)
-    (hDeg : DegreeStatement) (hInd : PtsIndepStatement)
-    (h₁ : RestTerms.CoinvariantTopDegree.Statement)
-    (h₂ : RestTerms.FlagIntegralKillsPowerSums.Statement)
-    (h₃ : RestTerms.RestTermWellDefined.Statement) (h₄ : RestTerms.SameFactorBound.Statement)
-    (h₅ : RestTerms.RestBound.Statement) : KernelsCut.Statement :=
-  KernelsCut.proof
-    (LineOfLargeDegreeFromZ.ofOpen hVI hSN hEnergy hBasis hStacked hSDeg hBC hGL hCharts hGChart
-      hMass hDeg hInd hZ1 hZ2 hI)
-    (RestTermSharp.ofRestTerms h₁ h₂ h₃ h₄ h₅)
 
 end GroundTheory.Heights₂.Heights

@@ -65,14 +65,6 @@ section EnlAux2
 
 variable {B B' : Base}
 
-theorem enlEmb_LL0 (hR : Set.range B.embLL ⊆ Set.range B'.embLL)
-    (hL : B'.embLL '' (B'.LL0 : Set B'.LL) = B.embLL '' (B.LL0 : Set B.LL)) {x : B.LL} (hx : x ∈ B.LL0) :
-    enlEmb hR x ∈ B'.LL0 := by
-  obtain ⟨x', hx', he⟩ : B.embLL x ∈ B'.embLL '' (B'.LL0 : Set B'.LL) := hL ▸ ⟨x, hx, rfl⟩
-  have : enlEmb hR x = x' := B'.embLL.injective (by rw [enlEmb_spec, he])
-  rw [this]
-  exact hx'
-
 theorem enlEmb_Ks (hR : Set.range B.embLL ⊆ Set.range B'.embLL)
     (hK : B'.embLL '' (B'.Ks : Set B'.LL) = B.embLL '' (B.Ks : Set B.LL)) {x : B'.LL} (hx : x ∈ B'.Ks) :
     ∃ x₀ ∈ B.Ks, enlEmb hR x₀ = x := by
@@ -188,19 +180,5 @@ theorem exists_adelicCore_transport_enlargedCoefficientBase : ∀ {B B' : Base} 
         latZ := (hL.latZ)
         cuNe := (hL.cuNe)
         expo := (hL.expo) }
-
-theorem exists_coreJ_of_enl : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')
-    (Z : w.Lt) (Z' : w'.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt),
-    Enl B B' → HEq f' f → CoreP z →
-    ∃ (core' : Formalism.L2.Pj.CoreJ (w'.st Z').toD7) (alg' : Algebra core'.Q.c.F (w'.st Z').toD7.what₂.LL),
-      (∀ y : core'.Q.c.F, B'.embLL (@algebraMap core'.Q.c.F (w'.st Z').toD7.what₂.LL _ _ alg' y) = (y : ℂ)) ∧
-      (∀ y : core'.Q.c.F, @algebraMap core'.Q.c.F (w'.st Z').toD7.what₂.LL _ _ alg' y ∈ B'.LL0) ∧
-      (∀ x ∈ B'.Ks, ∃ y : core'.Q.c.F, @algebraMap core'.Q.c.F (w'.st Z').toD7.what₂.LL _ _ alg' y = x) ∧
-      HEq core'.Q.H z.core.Q.H ∧ HEq core'.Q.l z.core.Q.l ∧ HEq core'.Q.c z.core.Q.c ∧ HEq core'.Q.Dw z.core.Q.Dw ∧
-      HEq core'.Q.Xo z.core.Q.Xo ∧ HEq core'.U z.core.U ∧ HEq core'.V z.core.V ∧ HEq core'.dict z.core.dict ∧
-      HEq core'.mu z.core.mu ∧ HEq core'.Kf z.core.Kf ∧ HEq core'.cE z.core.cE ∧ HEq core'.chiW z.core.chiW ∧
-      HEq core'.x₀ z.core.x₀ ∧ HEq core'.iota z.core.iota ∧
-      Formalism.L2.Pj.LawsCore core'.toCore ∧ core'.Q.Canon ∧ (∀ j, 1 ≤ (core'.Q.Dw j).p + (core'.Q.Dw j).q) ∧ core'.pb = f'.P.pb :=
-  fun w w' Z Z' hX Wt z hE => exists_adelicCore_transport_enlargedCoefficientBase w w' Z Z' hX Wt z (isBaseEnlargementFixedCoefField_of_coeffEnlargement hE)
 
 end GlobalTheory.Mem.R3.Rw

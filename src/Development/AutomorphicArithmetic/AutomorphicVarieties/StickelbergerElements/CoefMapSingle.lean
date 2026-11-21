@@ -12,8 +12,6 @@ def Ek (M k : ℕ) (b : ZMod M) : ℚ := bcoef M k b.val / k
 
 def yCl {M : ℕ} (a : ℕ) (b : ZMod M) : ZMod M := (a : ZMod M)⁻¹ * b
 
-def Eka (M k a : ℕ) (b : ZMod M) : ℚ := Ek M k b - (a : ℚ) ^ k * Ek M k (yCl a b)
-
 def jv (M a : ℕ) (b : ZMod M) : ℤ := ((a : ℤ) * (yCl a b).val - b.val) / M
 
 def Eone (M a : ℕ) (b : ZMod M) : ℤ := ((a : ℤ) - 1) / 2 - jv M a b
@@ -46,10 +44,6 @@ def xEl (a : ℕ) (φ : (ZMod M)ˣ →* Γ) : MonoidAlgebra ℤ Γ := -sumEl φ 
 
 def ytEl (e a : ℕ) (φ : (ZMod M)ˣ →* Γ) : MonoidAlgebra ℤ Γ := -sumEl φ fun b => (b.val : ℤ) ^ e * Eone M a b
 
-def stickEl (φ : (ZMod M)ˣ →* Γ) : MonoidAlgebra ℚ Γ := sumEl φ fun b => (b.val : ℚ) / M
-
-def normEl (R : Type) [CommRing R] (φ : (ZMod M)ˣ →* Γ) : MonoidAlgebra R Γ := sumEl φ fun _ => 1
-
 end Elements
 
 section Maps
@@ -63,22 +57,9 @@ theorem coefMap_single (R : Type) [CommRing R] (g : Γ) (n : ℤ) :
     coefMap R Γ (MonoidAlgebra.single g n) = MonoidAlgebra.single g (n : R) := by
   simp [coefMap, MonoidAlgebra.smul_single]
 
-def twHom {R : Type} [CommRing R] (κ : G →* Rˣ) (π : G →* Γ) (e : ℕ) : G →* MonoidAlgebra R Γ where
-  toFun g := MonoidAlgebra.single (π g) (((κ g)⁻¹ ^ e : Rˣ) : R)
-  map_one' := by simp [MonoidAlgebra.one_def]
-  map_mul' g h := by simp [MonoidAlgebra.single_mul_single, mul_pow, mul_comm]
-
-def tw {R : Type} [CommRing R] (κ : G →* Rˣ) (π : G →* Γ) (e : ℕ) : MonoidAlgebra ℤ G →+* MonoidAlgebra R Γ :=
-  (MonoidAlgebra.lift ℤ (MonoidAlgebra R Γ) G (twHom κ π e)).toRingHom
-
 def IntAt (l : ℕ) [Fact l.Prime] (r : ℕ) (z : MonoidAlgebra ℚ Γ) : Prop := ∀ g, z.coeff g / (l : ℚ) ^ r ∈ Zl l
 
 end Maps
-
-example : Eone 7 5 1 = 0 := by
-  have h : ((5 : ℕ) : ZMod 7)⁻¹ = 3 := ZMod.inv_eq_of_mul_eq_one 7 _ _ (by decide)
-  rw [Eone, jv, yCl, h]
-  decide
 
 end UpperTheory.V.B4
 

@@ -55,7 +55,7 @@ theorem card_transversal_mul : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪
     have hgm : (Matrix.of g).map (Ideal.Quotient.mk 𝔪) =
         ((g' : GL (Fin a) (𝓞 D.host.E ⧸ 𝔪)) : Matrix (Fin a) (Fin a) (𝓞 D.host.E ⧸ 𝔪)) := by
       ext i j; simp [hg]
-    obtain ⟨k, hk, hk'⟩ := GlobalTheory.T.exists_maxLevel_unitary_congr_mod_ideal D 𝔪 h𝔪 hcop a (Matrix.of g) (by rw [hgm]; exact Matrix.isUnits_det_units g')
+    obtain ⟨k, hk, hk'⟩ := _root_.GlobalTheory.MaxLevelLift.exists_intG_cong D 𝔪 h𝔪 hcop a (Matrix.of g) (by rw [hgm]; exact Matrix.isUnits_det_units g')
     simp only [Matrix.of_apply] at hk'
     refine ⟨⟨k, hk⟩, ?_⟩
     apply Units.ext
@@ -83,7 +83,7 @@ theorem card_transversal_mul : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪
       exact (inv_mul_eq_one.1 h1)
   have hcard : R.card = Nat.card (GL (Fin a) (𝓞 D.host.E ⧸ 𝔪)) := by
     rw [← Nat.card_eq_finsetCard, Nat.card_congr (Equiv.ofBijective f hf)]
-  rw [hcard, GlobalTheory.T.card_GL_ringOfIntegers_quotient_prod_factors _ 𝔪 h𝔪 a, GlobalTheory.StdLoc.absNorm_eq_prod h𝔪, ← Finset.prod_pow, ← Finset.prod_inv_distrib,
+  rw [hcard, _root_.GlobalTheory.CardGLQuot.card_GL_quot_prod _ 𝔪 h𝔪 a, GlobalTheory.StdLoc.absNorm_eq_prod h𝔪, ← Finset.prod_pow, ← Finset.prod_inv_distrib,
     ← Finset.prod_mul_distrib, locNorm]
   refine Finset.prod_congr rfl fun w hw => ?_
   have hq : (Ideal.absNorm w : ℝ) ≠ 0 := by

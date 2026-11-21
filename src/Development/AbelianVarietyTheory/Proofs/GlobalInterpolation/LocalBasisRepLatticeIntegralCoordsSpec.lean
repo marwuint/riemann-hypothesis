@@ -1,5 +1,10 @@
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CoP
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsLocalBasisSnocOfLocalBasisStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsLocalBasisSnocOfLocalBasis
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks
+import Formalism.LocalToGlobal.Columns.TiedValLatG
+import Formalism.LocalToGlobal.Columns.CoefModB
+import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
@@ -15,7 +20,7 @@ theorem usage₉ : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ 
     exact Classical.epsilon_spec (p := fun g : GL (Fin (B.R.N B.R.m - 1)) B.fields.E =>
       Formalism.L2.Forms.IsLocBasis (B.places.resChar w) ((I.perIn u a).S'.Lsh c.1 ((I.perIn u a).S'.rep c) : Set _) g) ⟨g, hg⟩
   refine ⟨hP, ?_⟩
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_localBasis_snoc_of_localBasis (N_m_succ B.R) (I.perIn u a).tz (l.per u a).tz_ne
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.isLocBasis_snoc (N_m_succ B.R) (I.perIn u a).tz (l.per u a).tz_ne
     (((I.chIn u a).S B.R.m).Lsh (I.perIn u a).b0 ((I.perIn u a).tilPt c))
     ((I.perIn u a).S'.Lsh c.1 ((I.perIn u a).S'.rep c))
     (fun x => (l.per u a).Lsh_til c.1 ((I.perIn u a).S'.rep c) x) (B.places.resChar w) (GlobalTheory.PerQ.Co.bP I u a w c)

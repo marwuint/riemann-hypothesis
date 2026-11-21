@@ -7,11 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CramerMemAdelicC
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexConjIsometryFlagDomainGroupNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralFundamentalSetConjFiniteIndexSubgroup
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelIndexComapPairOfDenseImage
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsotropicIndefiniteSelfDualTraceFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemFullLevelGroupIffCongruenceLcmStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryCongruenceDetEqOneOfThreeLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlagDomainDataOfFiniteIndexSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexConjEqOfPowEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsotropicIndefiniteSelfDualTraceForm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemFullLevelGroupIffCongruenceLcm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryCongruenceDetEqOneOfThreeLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlagDomainDataOfFiniteIndexSubgroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexConjEqOfPowEq
 
 noncomputable section
 
@@ -322,7 +322,7 @@ theorem covol_mul_relIndex (X X' : Data E r) (δ : GL (Fin r) E) (hΨ : X'.Ψ = 
   have e1 : ∀ K : Subgroup (GL (Fin r) E), K.map (MulAut.conj (1 : GL (Fin r) E)).toMonoidHom = K := fun K => by
     ext k
     rw [mem_map_conj]; simp
-  obtain ⟨P, hPΨ, hPG, hPp, hP⟩ := GlobalTheory.T.exists_flagDomainData_of_finiteIndex_subgroup E r X' (X.Γ.comap f ⊓ X'.Γ) inf_le_right
+  obtain ⟨P, hPΨ, hPG, hPp, hP⟩ := _root_.GlobalTheory.EqCovol.exists_data_of_le_relIndex_ne_zero E r X' (X.Γ.comap f ⊓ X'.Γ) inf_le_right
     (by rwa [Subgroup.inf_relIndex_right])
   have e2 : P.Γ.map f = X'.Γ.map f ⊓ X.Γ := by
     rw [hP, Subgroup.map_inf _ _ _ hinj, Subgroup.map_comap_eq_self_of_surjective (MulAut.conj δ).surjective,
@@ -350,14 +350,14 @@ theorem covol_eq_of_same_space : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     by_contra h
     push Not at h
     exact IsCMField.complexConj_ne_one E (AlgEquiv.ext h), Y.Gm_herm, Y.Gm_det⟩
-  have hiso : ∃ z : Fin r → E, z ≠ 0 ∧ hf (c : E →+* E) Y.Gm z z = 0 := GlobalTheory.T.exists_isotropic_indefinite_selfDualTraceForm E H r Y h1 h2 hs
+  have hiso : ∃ z : Fin r → E, z ≠ 0 ∧ hf (c : E →+* E) Y.Gm z z = 0 := _root_.GlobalTheory.EqCovol.exists_isotropic_of_isSelfDualTr E H r Y h1 h2 hs
   have hcomap : ∀ Z : Data E r, Z.Gm = Y.Gm → IsLevGrp l Z → IsSelfDualTr Z →
       (cong (sgA c) ((emb F).mapMatrix Y.Gm) (hat F (Z.Λ : Set (Fin r → E))) l.M').comap (embGL F) = Z.Γ := by
     intro Z hZ hlZ hsZ
     ext γ
-    rw [Subgroup.mem_comap, embGL_mem_cong c Y.Gm Z.Λ_fg Z.Λ_span hM0, GlobalTheory.T.mem_fullLevelGroup_iff_congruence_lcm E H l r Z hlZ hsZ, ← hZ]
+    rw [Subgroup.mem_comap, embGL_mem_cong c Y.Gm Z.Λ_fg Z.Λ_span hM0, _root_.GlobalTheory.EqCovol.mem_iff_congr_lcm E H l r Z hlZ hsZ, ← hZ]
     exact ⟨fun h => ⟨⟨h.1, h.2.2.1⟩, h.2.2.2⟩, fun h => ⟨h.1.1,
-      GlobalTheory.T.unitaryCongruence_det_eq_one_of_three_le E r _ Z.Gm Z.Λ γ hM Z.Gm_det Z.Λ_fg Z.Λ_span h.1 h.2, h.1.2, h.2⟩⟩
+      _root_.GlobalTheory.UnitaryCongruenceDetAny.det_eq_one E r _ Z.Gm Z.Λ γ hM Z.Gm_det Z.Λ_fg Z.Λ_span h.1 h.2, h.1.2, h.2⟩⟩
   have hsd : ∀ Z : Data E r, Z.Gm = Y.Gm → Z.ξ0 = Y.ξ0 → IsSelfDualTr Z → GlobalTheory.SW.SelfD Y Z.Λ := by
     intro Z hZ hZξ hsZ
     refine ⟨Z.Λ_fg, fun x => (hsZ x).trans (forall₂_congr fun y _ => ?_)⟩
@@ -402,7 +402,7 @@ theorem covol_eq_of_same_space : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     rw [Subgroup.mem_comap, mem_map_conj, mem_map_conj, ← hΓ, Subgroup.mem_comap, map_mul, map_mul, map_inv]
   rw [e3, hΓ] at b1 b2
   have hcov' := mul_left_cancel₀ (GlobalTheory.TrueCx.covol_pos Y).ne' (covol_mul_relIndex Y Y γ rfl rfl rfl hγU)
-  have key := GlobalTheory.T.relIndex_map_conj_symm_of_relIndex_map_conj_pow_symm _ K g r (by omega) (a1 ▸ n1) (a2 ▸ n2)
+  have key := _root_.GlobalTheory.relIndex_conj_eq_of_pow_eq _ K g r (by omega) (a1 ▸ n1) (a2 ▸ n2)
     (by rw [e2, ← b1, ← b2]; exact_mod_cast hcov')
   rw [← a1, ← a2] at key
   rw [← key] at hcov

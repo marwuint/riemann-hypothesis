@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocalRingNormalDomain
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulMemCodimOneRegularChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForallMemRegularChartIffHeightOnePrimesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussPropertyCodimOneChartHeightOnePrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierSectionsFlatBaseChangeLinearlyDisjointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingHomCoeffSpanSetSectionsFlatBaseChangeNormalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCartierMultipleChartIffRegularCodimOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulMemCodimOneRegularChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForallMemRegularChartIffHeightOnePrimes
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussPropertyCodimOneChartHeightOnePrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierSectionsFlatBaseChangeLinearlyDisjoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingHomCoeffSpanSetSectionsFlatBaseChangeNormal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCartierMultipleChartIffRegularCodimOne
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -203,7 +203,7 @@ theorem sec_eq_spanBy : ∀ (σ : Setup) (x : Sp σ.R) (k : ℕ), Sec (σ.D₁ x
     apply Function.Injective.of_comp (f := σ.θ x)
     rw [← RingHom.coe_comp, hc]
     exact (cst_injective _ e he).comp hρ
-  obtain ⟨hld, hsec⟩ := GlobalTheory.T.cartierSections_flat_baseChange_linearlyDisjoint σ.R (σ.C x).R (σ.ρ x) (σ.flat x) σ.A.left (σ.C x).G.left (σ.V x).toScheme
+  obtain ⟨hld, hsec⟩ := _root_.GlobalTheory.SecFlatBC.sections_linDisj_flatBaseChange σ.R (σ.C x).R (σ.ρ x) (σ.flat x) σ.A.left (σ.C x).G.left (σ.V x).toScheme
     (σ.A.hom ≫ awayMap σ.f) (σ.C x).G.hom (σ.V x).ι (σ.φ x) (σ.θ x) inferInstance inferInstance (σ.cart x) (σ.hθ x)
     σ.D (σ.D₁ x) (σ.pull x)
   have hinv : ∀ y : σ.A.left, RegAt y (σ.c₀ σ.f)⁻¹ := fun y => by
@@ -215,10 +215,10 @@ theorem sec_eq_spanBy : ∀ (σ : Setup) (x : Sp σ.R) (k : ℕ), Sec (σ.D₁ x
   have hW : ∀ y : Sp σ.R, W y.asIdeal = σ.W y := fun y => Set.ext fun u => ⟨fun h => h y.isPrime, fun h _ => h⟩
   let W₁ : Ideal (σ.C x).R → Set (σ.C x).G.left.functionField := fun q =>
     {v | ∀ z, Vert (σ.C x).G.hom (σ.ρ x σ.f) z → ((σ.C x).G.hom z).asIdeal = q → RegAt z v}
-  have key := GlobalTheory.T.ringHomCoeffSpanSet_sections_flat_baseChange_normal σ.R (σ.C x).R _ _ (σ.ρ x) σ.c₀ (GlobalTheory.Desc.cst (σ.C x).G.hom) (σ.θ x) σ.f σ.hf (σ.flat x) hρ hc₀
+  have key := _root_.GlobalTheory.Desc.spanBy_sections_eq_of_flat σ.R (σ.C x).R _ _ (σ.ρ x) σ.c₀ (GlobalTheory.Desc.cst (σ.C x).G.hom) (σ.θ x) σ.f σ.hf (σ.flat x) hρ hc₀
     hc hld (Sec σ.D k) (fun y => ((k • σ.D).vanishesAt_zero y).regularAt) (fun a ha b hb y => (ha y).add (hb y))
     (fun r a ha y => (ha y).regAt_mul (regAt_cst _ _ _)) (fun a ha y => (ha y).regAt_mul (hinv y)) W W₁
-    (fun p hp _ u => (GlobalTheory.T.exists_pow_mul_mem_codimOne_regular_chart' σ (⟨p, hp⟩ : PrimeSpectrum σ.R) u).imp fun m hm _ => hm)
+    (fun p hp _ u => (_root_.GlobalTheory.Desc.exists_pow_mul_mem_codimOne_regular_chart σ (⟨p, hp⟩ : PrimeSpectrum σ.R) u).imp fun m hm _ => hm)
     (fun p hp _ _ => by
       have h := W_closed σ (⟨p, hp⟩ : PrimeSpectrum σ.R)
       exact ⟨fun a ha b hb _ => h.1 a (ha hp) b (hb hp), fun r a ha _ => h.2.1 r a (ha hp),
@@ -228,19 +228,19 @@ theorem sec_eq_spanBy : ∀ (σ : Setup) (x : Sp σ.R) (k : ℕ), Sec (σ.D₁ x
           (RegAt z v ↔ ∃ s, s ∉ q ∧ GlobalTheory.Desc.cst (σ.C x).G.hom s * v ∈
             spanBy (GlobalTheory.Desc.cst (σ.C x).G.hom) (σ.θ x '' W (q.comap (σ.ρ x)))) := by
         rintro z hz rfl
-        have h := (GlobalTheory.T.gaussProperty_codimOne_chart_heightOnePrime σ x z hz).1 v hv
+        have h := (_root_.GlobalTheory.Desc.GaussPt.gaussAt_vert σ x z hz).1 v hv
         rw [← hW] at h
         exact h
       obtain ⟨z, hz, hzq⟩ := exists_vert_over _ e he hρf q h1 hfq
       exact ⟨fun h => (hG z hz hzq).1 (h z hz hzq), fun h z' hz' hq' => (hG z' hz' hq').2 h⟩)
   have hN : σ.N k = {u | u ∈ Sec σ.D k ∧ ∀ p : Ideal σ.R, p.IsPrime → p.height = 1 → σ.f ∈ p → u ∈ W p} := by
     ext u
-    refine and_congr_right fun _ => (GlobalTheory.T.forall_mem_regularChart_iff_heightOne_primes σ u).trans ⟨fun h p hp h1 hf _ => ?_, fun h p h1 hf => ?_⟩
+    refine and_congr_right fun _ => (_root_.GlobalTheory.Desc.Setup.forall_mem_W_iff σ u).trans ⟨fun h p hp h1 hf _ => ?_, fun h p h1 hf => ?_⟩
     · exact h (⟨p, hp⟩ : PrimeSpectrum σ.R) h1 hf
     · exact h p.asIdeal p.isPrime h1 hf p.isPrime
   rw [hN, key, ← hsec k]
   ext v
-  refine (GlobalTheory.T.mem_cartierMultiple_chart_iff_regular_codimOne σ x k v).trans (and_congr_right fun _ => ⟨fun h q _ _ _ z hz _ => h z hz, fun h z hz => ?_⟩)
+  refine (_root_.GlobalTheory.Desc.ChartHartogs.mem_sec_iff σ x k v).trans (and_congr_right fun _ => ⟨fun h q _ _ _ z hz _ => h z hz, fun h z hz => ?_⟩)
   exact h _ ((σ.C x).G.hom z).isPrime (height_of_vert _ hρf hz) hz.2 z hz rfl
 
 end GlobalTheory.Desc.ChartSpan

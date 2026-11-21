@@ -5,48 +5,6 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Ind
 noncomputable section
 namespace GlobalTheory.CompanionTheory.ThetaGLLen.FullRank
 
-theorem finite_coinv_of_common_generator : ∀ (H V : Type) [Group H] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ H V) (θ : H →* ℂˣ), (∀ w w' : V, ∃ t : V, w ∈ Submodule.span ℂ (Set.range fun g : H => ρ g t) ∧ w' ∈ Submodule.span ℂ (Set.range fun g : H => ρ g t)) → Module.Finite ℂ (V ⧸ twRel ρ θ) := by
-  intro H V _ _ _ ρ θ h
-  have hq : ∀ (g : H) (t : V), (twRel ρ θ).mkQ (ρ g t) = (θ g : ℂ) • (twRel ρ θ).mkQ t := by
-    intro g t
-    rw [← map_smul, ← sub_eq_zero, ← map_sub, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
-    exact Submodule.subset_span ⟨g, t, rfl⟩
-  have hspan : ∀ t w : V, w ∈ Submodule.span ℂ (Set.range fun g : H => ρ g t) →
-      ∃ s : ℂ, (twRel ρ θ).mkQ w = s • (twRel ρ θ).mkQ t := by
-    intro t w hw
-    induction hw using Submodule.span_induction with
-    | mem x hx =>
-      obtain ⟨g, rfl⟩ := hx
-      exact ⟨θ g, hq g t⟩
-    | zero => exact ⟨0, by simp⟩
-    | add x y _ _ hx hy =>
-      obtain ⟨s, hs⟩ := hx
-      obtain ⟨u, hu⟩ := hy
-      exact ⟨s + u, by rw [map_add, hs, hu, add_smul]⟩
-    | smul c x _ hx =>
-      obtain ⟨s, hs⟩ := hx
-      exact ⟨c * s, by rw [map_smul, hs, mul_smul]⟩
-  by_cases h0 : ∀ w : V, (twRel ρ θ).mkQ w = 0
-  · haveI : Subsingleton (V ⧸ twRel ρ θ) := ⟨fun p q => by
-      obtain ⟨w, rfl⟩ := (twRel ρ θ).mkQ_surjective p
-      obtain ⟨w', rfl⟩ := (twRel ρ θ).mkQ_surjective q
-      rw [h0, h0]⟩
-    infer_instance
-  · push Not at h0
-    obtain ⟨w₀, hw₀⟩ := h0
-    refine ⟨⟨{(twRel ρ θ).mkQ w₀}, ?_⟩⟩
-    rw [eq_top_iff]
-    intro z _
-    obtain ⟨w, rfl⟩ := (twRel ρ θ).mkQ_surjective z
-    obtain ⟨t, ht, ht'⟩ := h w w₀
-    obtain ⟨s, hs⟩ := hspan t w ht
-    obtain ⟨s₀, hs₀⟩ := hspan t w₀ ht'
-    have hne : s₀ ≠ 0 := fun e => hw₀ (by rw [hs₀, e, zero_smul])
-    have : (twRel ρ θ).mkQ w = (s / s₀) • (twRel ρ θ).mkQ w₀ := by
-      rw [hs, hs₀, smul_smul, div_mul_cancel₀ _ hne]
-    rw [this]
-    exact Submodule.smul_mem _ _ (Submodule.subset_span (by simp))
-
 theorem exists_nhds_smul_invariant : ∀ (H X : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [TopologicalSpace X] [MulAction H X] [ContinuousSMul H X] (f : SB X), ∃ U ∈ 𝓝 (1 : H), ∀ g ∈ U, ∀ x : X, f.1 (g • x) = f.1 x := by
   intro H X _ _ _ _ _ _ f
   have hc : IsCompact (tsupport f.1) := f.2.2
@@ -128,7 +86,7 @@ theorem exists_gl_mul_eq_base (e : c ⊕ d ≃ a) (x : Matrix c a k) (hx : x.ran
   have hr : (x * g.val).rank = Fintype.card c := by
     rw [rank_mul_eq_left_of_isUnit_det _ _ ((isUnit_iff_isUnit_det _).1 g.isUnit)]
     exact hx
-  have h := GlobalTheory.T.leftColumns_mulVec_injective_of_rank_eq_card k c c d a e (x * g.val) hr hg
+  have h := _root_.GlobalTheory.mulVec_firstCols_eq_zero_of_rank_eq_card k c c d a e (x * g.val) hr hg
   have hu : IsUnit ((x * g.val).submatrix id fun i => e (.inl i)) :=
     mulVec_injective_iff_isUnit.1 fun v w hvw => sub_eq_zero.1 (h _ (by rw [mulVec_sub, hvw, sub_self]))
   set u : Matrix c c k := (x * g.val).submatrix id fun i => e (.inl i) with hudef
@@ -192,9 +150,6 @@ def IsLevel (K N : Subgroup H) : Prop :=
 theorem IsLevel.inf {K N N' : Subgroup H} (h : IsLevel K N) (h' : IsLevel K N') : IsLevel K (N ⊓ N') :=
   ⟨by simpa using h.1.inter h'.1, inf_le_left.trans h.2.1,
     fun κ hκ n hn => ⟨h.2.2 κ hκ n hn.1, h'.2.2 κ hκ n hn.2⟩⟩
-
-theorem isLevel_self {K : Subgroup H} (h : IsOpen (K : Set H)) : IsLevel K K :=
-  ⟨h, le_rfl, fun _ hκ _ hn => K.mul_mem (K.mul_mem hκ hn) (K.inv_mem hκ)⟩
 
 def Reached (ρ : Representation ℂ H (SB X)) (K : Subgroup H) (x₀ : X) (f : SB X) : Prop :=
   ∃ N : Subgroup H, IsLevel K N ∧ ∃ v : SB X, (∀ x, v.1 x = (orb N x₀).indicator (fun _ => (1 : ℂ)) x) ∧
@@ -417,46 +372,6 @@ theorem continuous_rAct_inv (κ : ℕ) :
   exact (continuous_const.matrix_mul (continuous_subtype_val.comp continuous_snd)).matrix_mul
     (Units.continuous_coe_inv.comp continuous_fst)
 
-theorem fullRank_finite (κ : ℕ) (hκ : κ = Fintype.card c) (θ : GL a k →* ℂˣ) :
-    Module.Finite ℂ (SB (RankIn k a c {κ}) ⧸ twRel (rightRep (k := k) a c κ) θ) := by
-  obtain ⟨_, _⟩ := SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
-  have : NonarchimedeanAddGroup k := ⟨fun V hV => by
-    obtain ⟨s, hs⟩ := SplitWeil.exists_cball_subset hV
-    exact ⟨⟨⟨⟨⟨SplitWeil.cball s, SplitWeil.add_mem_cball⟩, by simp [SplitWeil.cball]⟩,
-      SplitWeil.neg_mem_cball⟩, SplitWeil.isOpen_cball s⟩, hs⟩⟩
-  have : TotallyDisconnectedSpace k := inferInstance
-  have : TotallyDisconnectedSpace (Matrix a a k) := inferInstanceAs (TotallyDisconnectedSpace (a → a → k))
-  have : LocallyCompactSpace (Matrix c a k) := inferInstanceAs (LocallyCompactSpace (c → a → k))
-  haveI : TotallyDisconnectedSpace (GL a k) :=
-    ⟨(isTotallyDisconnected_of_image (f := fun g : GL a k => g.val) SplitFlip.isEmbedding_val_GL.continuous.continuousOn
-      SplitFlip.isEmbedding_val_GL.injective (isTotallyDisconnected_of_totallyDisconnectedSpace _))⟩
-  letI := rMul (k := k) (a := a) (c := c) κ
-  have hsm : ∀ (g : GL a k) (x : RankIn k a c {κ}), g • x = rAct {κ} x g⁻¹ := fun _ _ => rfl
-  haveI : ContinuousSMul (GL a k) (RankIn k a c {κ}) := ⟨continuous_rAct_inv κ⟩
-  haveI : MulAction.IsPretransitive (GL a k) (RankIn k a c {κ}) := ⟨fun x y => by
-    obtain ⟨g, hg⟩ := exists_gl_eq_mul_of_rank k a c x.1 y.1 (x.2.trans hκ) (y.2.trans hκ)
-    refine ⟨g⁻¹, Subtype.ext ?_⟩
-    rw [hsm, inv_inv, rAct_val, hg]⟩
-  have hXo : IsOpen {x : Matrix c a k | x.rank ∈ ({κ} : Set ℕ)} := by
-    convert isOpen_le_rank (k := k) (a := a) (b := c) κ using 1
-    ext x
-    simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
-    exact ⟨fun h => h.ge, fun h => le_antisymm ((Matrix.rank_le_card_height x).trans hκ.ge) h⟩
-  haveI : LocallyCompactSpace (RankIn k a c {κ}) := hXo.locallyCompactSpace
-  have hop : ∀ x : RankIn k a c {κ}, IsOpenMap fun g : GL a k => g • x :=
-    fun x => isOpenMap_smul_of_sigmaCompact x
-  have hρ : ∀ (g : GL a k) (f : SB (RankIn k a c {κ})) (x : RankIn k a c {κ}),
-      (rightRep (k := k) a c κ g f).1 x = f.1 (g⁻¹ • x) := by
-    intro g f x
-    show _ = f.1 (rAct {κ} x g⁻¹⁻¹)
-    rw [inv_inv]
-    rfl
-  exact finite_coinv_of_common_generator _ _ _ _ (exists_common_generator (rightRep (k := k) a c κ) hρ hop SplitFlip.isCompact_KO SplitFlip.isOpen_KO)
-
 end Stratum
-
-theorem finite_coinv_rightRep : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a c : Type) [Fintype a] [DecidableEq a] [Fintype c] [DecidableEq c] (κ : ℕ), κ = Fintype.card c → ∀ θ : GL a k →* ℂˣ, Module.Finite ℂ (SB (RankIn k a c {κ}) ⧸ twRel (rightRep (k := k) a c κ) θ) := by
-  intro k _ _ _ _ a c _ _ _ _ κ hκ θ
-  exact fullRank_finite κ hκ θ
 
 end GlobalTheory.CompanionTheory.ThetaGLLen.FullRank

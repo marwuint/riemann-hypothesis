@@ -93,14 +93,6 @@ theorem norm_padicRingEquiv_eq_one {v : HeightOneSpectrum (𝓞 ℚ)} {a : (v.ad
     norm_pos_iff.2 ((map_ne_zero _).2 a.ne_zero)
   exact le_antisymm n1 ((inv_le_one₀ hpos).1 n2)
 
-theorem mem_units_of_norm_padicRingEquiv_eq_one {v : HeightOneSpectrum (𝓞 ℚ)} {a : (v.adicCompletion ℚ)ˣ}
-    (ha : ‖padicRingEquiv v (a : v.adicCompletion ℚ)‖ = 1) :
-    a ∈ (Submonoid.ofClass (v.adicCompletionIntegers ℚ)).units := by
-  have h2 : ‖padicRingEquiv v ((a⁻¹ : (v.adicCompletion ℚ)ˣ) : v.adicCompletion ℚ)‖ ≤ 1 := by
-    rw [Units.val_inv_eq_inv_val, map_inv₀, norm_inv, ha, inv_one]
-  exact (Submonoid.mem_units_iff _ _).2
-    ⟨mem_adicCompletionIntegers_of_norm_le v ha.le, mem_adicCompletionIntegers_of_norm_le v h2⟩
-
 theorem finiteEmbedding_mem_positiveSubgroup {v : HeightOneSpectrum (𝓞 ℚ)} {a : (v.adicCompletion ℚ)ˣ}
     (ha : ‖padicRingEquiv v (a : v.adicCompletion ℚ)‖ = 1) :
     finiteEmbedding v a ∈ RationalIdeles.positiveSubgroup := by
@@ -123,11 +115,6 @@ theorem heckeCharacter_finiteEmbedding_of_not_dvd {v : HeightOneSpectrum (𝓞 �
   refine coe_heckeCharacter_mk_of_forall χ ⟨_, finiteEmbedding_mem_positiveSubgroup ha⟩ fun w hw ↦ ?_
   have hwv : w ≠ v := fun h ↦ hv (h ▸ hw)
   rw [unitAt_eq_one (finiteProj_finiteEmbedding_of_ne hwv a), inv_one, Units.val_one, map_one, map_one]
-
-theorem not_dvd_conductor_of_not_dvd {v : HeightOneSpectrum (𝓞 ℚ)} (hv : ¬ prime v ∣ N) :
-    ¬ v.asIdeal ∣ (heckeCharacter χ).conductor :=
-  ((heckeCharacter χ).not_dvd_conductor_iff v).2 fun _ ha ↦
-    heckeCharacter_finiteEmbedding_of_not_dvd χ hv (norm_padicRingEquiv_eq_one ha)
 
 def uniformizer (v : HeightOneSpectrum (𝓞 ℚ)) : (v.adicCompletion ℚ)ˣ :=
   finiteProj v (diagonal ℚ (primeRat v))
@@ -197,96 +184,6 @@ theorem proj_unitPart_inv_uniformizer {N : ℕ} [NeZero N] {v : HeightOneSpectru
 theorem coe_heckeCharacter_uniformizer {v : HeightOneSpectrum (𝓞 ℚ)} (hv : ¬ prime v ∣ N) :
     (heckeCharacter χ (IdeleClassGroup.mk ℚ (finiteEmbedding v (uniformizer v))) : ℂ) = χ (prime v) := by
   rw [coe_heckeCharacter_apply, proj_unitPart_inv_uniformizer hv]
-
-theorem coe_idealCharacter_primeIdealUnit {v : HeightOneSpectrum (𝓞 ℚ)} (hv : ¬ prime v ∣ N) :
-    ((heckeCharacter χ).idealCharacter
-      ⟨primeIdealUnit v, primeIdealUnit_mem_idealsPrimeTo (not_dvd_conductor_of_not_dvd χ hv)⟩ : ℂ) =
-      χ (prime v) := by
-  rw [(heckeCharacter χ).idealCharacter_primeIdealUnit (not_dvd_conductor_of_not_dvd χ hv)
-    (valued_uniformizer v)]
-  exact coe_heckeCharacter_uniformizer χ hv
-
-theorem coe_inv_eq_natCast {p : ℕ} [Fact p.Prime] {u : ℤ_[p]ˣ} {m : ℕ} (hm : (m : ℚ_[p]) ≠ 0)
-    (h : ((u : ℤ_[p]) : ℚ_[p]) = (m : ℚ_[p])⁻¹) : ((u⁻¹ : ℤ_[p]ˣ) : ℤ_[p]) = m := by
-  have e : (((u⁻¹ : ℤ_[p]ˣ) : ℤ_[p]) : ℚ_[p]) * ((u : ℤ_[p]) : ℚ_[p]) = 1 := by
-    rw [← PadicInt.coe_mul, Units.inv_mul, PadicInt.coe_one]
-  rw [h] at e
-  apply Subtype.ext
-  rw [PadicInt.coe_natCast]
-  exact (mul_inv_eq_one₀ hm).1 e
-
-theorem exists_coe_heckeCharacter_finiteEmbedding {v : HeightOneSpectrum (𝓞 ℚ)} (hv : prime v ∣ N)
-    (b : (ZMod N)ˣ) (hb : ZMod.unitsMap (Nat.ordCompl_dvd N (prime v)) b = 1) :
-    ∃ a : (v.adicCompletion ℚ)ˣ, ‖padicRingEquiv v (a : v.adicCompletion ℚ)‖ = 1 ∧
-      (heckeCharacter χ (IdeleClassGroup.mk ℚ (finiteEmbedding v a)) : ℂ) = χ b := by
-  set m : ℕ := (b : ZMod N).val with hm
-  have hcop : (prime v).Coprime m :=
-    (Nat.Coprime.coprime_dvd_right hv (ZMod.val_coe_unit_coprime b)).symm
-  have hnm : ‖(m : ℚ_[prime v])‖ = 1 := Padic.norm_natCast_eq_one_iff.2 hcop
-  have hm0 : (m : ℚ_[prime v]) ≠ 0 := norm_ne_zero_iff.1 (by rw [hnm]; exact one_ne_zero)
-  let a : (v.adicCompletion ℚ)ˣ :=
-    Units.map (padicRingEquiv v).symm.toMonoidHom (Units.mk0 (m : ℚ_[prime v]) hm0)⁻¹
-  have ha : padicRingEquiv v (a : v.adicCompletion ℚ) = (m : ℚ_[prime v])⁻¹ := by
-    simp only [a, Units.coe_map, Units.val_inv_eq_inv_val, Units.val_mk0]
-    exact RingEquiv.apply_symm_apply _ _
-  have hnorm : ‖padicRingEquiv v (a : v.adicCompletion ℚ)‖ = 1 := by rw [ha, norm_inv, hnm, inv_one]
-  refine ⟨a, hnorm, coe_heckeCharacter_mk_of_forall χ ⟨_, finiteEmbedding_mem_positiveSubgroup hnorm⟩
-    fun w hw ↦ ?_⟩
-  by_cases hwv : w = v
-  · subst hwv
-    have hu : (((unitAt ⟨_, finiteEmbedding_mem_positiveSubgroup hnorm⟩ w : ℤ_[prime w]ˣ) :
-        ℤ_[prime w]) : ℚ_[prime w]) = (m : ℚ_[prime w])⁻¹ := by
-      rw [coe_unitAt]
-      change padicRingEquiv w (finiteProj w (finiteEmbedding w a) : w.adicCompletion ℚ) = _
-      rw [finiteProj_finiteEmbedding, ha]
-    rw [coe_inv_eq_natCast hm0 hu, map_natCast]
-    conv_rhs => rw [← ZMod.natCast_zmod_val (b : ZMod N), ← hm]
-    rw [map_natCast]
-  · rw [unitAt_eq_one (finiteProj_finiteEmbedding_of_ne hwv a), inv_one, Units.val_one, map_one]
-    have hcp : Nat.Coprime (prime w ^ N.factorization (prime w)) (prime v ^ N.factorization (prime v)) :=
-      Nat.Coprime.pow _ _ (coprime_prime hwv)
-    have h1 : prime w ^ N.factorization (prime w) ∣
-        prime v ^ N.factorization (prime v) * (N / prime v ^ N.factorization (prime v)) := by
-      rw [Nat.ordProj_mul_ordCompl_eq_self]
-      exact Nat.ordProj_dvd _ _
-    have hdvd := hcp.dvd_of_dvd_mul_left h1
-    rw [← castHom_castHom hdvd (Nat.ordCompl_dvd N (prime v)) (Nat.ordProj_dvd N (prime w))]
-    have hb' : ZMod.castHom (Nat.ordCompl_dvd N (prime v)) (ZMod (N / prime v ^ N.factorization (prime v)))
-        (b : ZMod N) = 1 := congrArg Units.val hb
-    rw [hb', map_one]
-
-theorem dvd_conductor_of_dvd (hχ : χ.IsPrimitive) {v : HeightOneSpectrum (𝓞 ℚ)} (hv : prime v ∣ N) :
-    v.asIdeal ∣ (heckeCharacter χ).conductor := by
-  by_contra h
-  have hker := ((heckeCharacter χ).not_dvd_conductor_iff v).1 h
-  have hf : χ.FactorsThrough (N / prime v ^ N.factorization (prime v)) := by
-    refine (DirichletCharacter.factorsThrough_iff_ker_unitsMap (Nat.ordCompl_dvd N (prime v))).2
-      fun b hb ↦ ?_
-    obtain ⟨a, ha, hval⟩ := exists_coe_heckeCharacter_finiteEmbedding χ hv b hb
-    have hunit : a ∈ (Submonoid.ofClass (v.adicCompletionIntegers ℚ)).units :=
-      mem_units_of_norm_padicRingEquiv_eq_one ha
-    have h1 : (heckeCharacter χ).localComponent v a = 1 := hker hunit
-    rw [HeckeCharacter.localComponent_apply, HeckeCharacter.toIdele_apply] at h1
-    rw [MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one, ← hval, h1,
-      Circle.coe_one]
-  have hdvd := χ.conductor_dvd_of_mem_conductorSet hf
-  rw [hχ] at hdvd
-  have heq : N / prime v ^ N.factorization (prime v) = N :=
-    Nat.dvd_antisymm (Nat.ordCompl_dvd N (prime v)) hdvd
-  have hpos : 0 < N.factorization (prime v) :=
-    (Fact.out : (prime v).Prime).factorization_pos_of_dvd (NeZero.ne N) hv
-  have h2 := Nat.ordProj_mul_ordCompl_eq_self N (prime v)
-  rw [heq] at h2
-  have h3 : prime v ^ N.factorization (prime v) = 1 := by
-    have hN : 0 < N := Nat.pos_of_neZero N
-    nlinarith [Nat.one_le_pow (N.factorization (prime v)) (prime v) (Fact.out : (prime v).Prime).pos]
-  rcases pow_eq_one_iff.1 h3 with h4 | h4
-  · exact (Fact.out : (prime v).Prime).one_lt.ne' h4
-  · exact hpos.ne' h4
-
-theorem dvd_conductor_iff (hχ : χ.IsPrimitive) (v : HeightOneSpectrum (𝓞 ℚ)) :
-    v.asIdeal ∣ (heckeCharacter χ).conductor ↔ prime v ∣ N :=
-  ⟨fun h ↦ by_contra fun h' ↦ not_dvd_conductor_of_not_dvd χ h' h, dvd_conductor_of_dvd χ hχ⟩
 
 end DirichletHecke
 

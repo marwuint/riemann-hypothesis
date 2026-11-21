@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.CechDifferentialPullback.Bridge
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafPullConnectingCompatStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechShortExactPullCompatStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechShortExactPullCompat
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -39,7 +39,7 @@ theorem cechHStep_pull' : ∀ {X Y : TopCat.{0}} (f : X ⟶ Y) {κ ι : Type} (V
       cechPullH f α.τ₃.hom V U τ hτ (m + 1) y := by
     rw [AddEquiv.symm_apply_eq]
     obtain ⟨σ, hσ, rfl⟩ := exists_cls y
-    exact GlobalTheory.T.cech_short_exact_pull_compat f V U τ hτ hC hC' α.τ₁.hom α.τ₂.hom α.τ₃.hom h₁₂ h₂₃ (m + 1)
+    exact _root_.GlobalTheory.CompanionTheory.OmCechDelta.cechPullH_delta f V U τ hτ hC hC' α.τ₁.hom α.τ₂.hom α.τ₃.hom h₁₂ h₂₃ (m + 1)
       ⟨σ, (mem_cocycles σ).2 hσ⟩
   simp only [cechHEquivStep, AddEquiv.trans_apply]
   rw [AddEquiv.symm_apply_apply, hδ, he]

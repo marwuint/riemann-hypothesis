@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.VsizeNonneg
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinitePlaceRelativeNormLeLocalSizePowStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfinitePlaceRelativeNormLeMaxEmbeddingPowStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfinitePlaceRelativeNormLeMaxEmbeddingPow
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -135,7 +135,7 @@ theorem rat_size {n : ℕ} (ξ : Fin n → D.host.E) (hξ : ξ ≠ 0) :
       (Finset.mem_univ i)
   have hA : ∀ w : InfinitePlace D.host.F, w (Algebra.norm D.host.F (ξ i)) ≤
       (vInf w (fun i => incA D (ξ i)) : ℝ) ^ Module.finrank D.host.F D.host.E := fun w =>
-    GlobalTheory.T.infinitePlace_relativeNorm_le_maxEmbedding_pow D w (ξ i) _ fun τ => by rw [← infEmb_compInf_incA]; exact le_vInf w (fun i => incA D (ξ i)) τ i
+    _root_.GlobalTheory.NormInf.main D w (ξ i) _ fun τ => by rw [← infEmb_compInf_incA]; exact le_vInf w (fun i => incA D (ξ i)) τ i
   have hfin : (Function.mulSupport fun v => vFin v (fun i => incA D (ξ i))).Finite := by
     have h1 : ∀ᶠ v in Filter.cofinite, vFin v (fun i => incA D (ξ i)) ≤ 1 := by
       have := Filter.eventually_all.2 fun j => eventually_absFin_le_one D.host.F (incA D (ξ j))

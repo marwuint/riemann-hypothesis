@@ -10,17 +10,6 @@ namespace Formalism.L2.Th1.B.Iso
 open PowerSeries
 open Formalism.L2.Th1.C (wpShift HasSecondLogDeriv)
 
-theorem curve_not_reduced : NotReduce := by
-  intro G _ G1 β β' hβ hβ' hinj t0 t' t'' h0 h1 h2 h3 h4
-  have key : t0 ∉ G1 := by
-    intro hm
-    have h5 : β' t0 = t'' := by rw [h0, map_add, h1, h2, zero_add]
-    have h6 : t'' ∈ G1 := h5 ▸ hβ' t0 hm
-    exact h3 (hinj t'' h6 h4)
-  refine ⟨key, ?_⟩
-  intro Q hQ hm
-  exact key (hQ ▸ hβ Q hm)
-
 variable {K : Type} [Field K] [CharZero K]
 
 theorem dz_rescale (a : K) (f : PowerSeries K) :

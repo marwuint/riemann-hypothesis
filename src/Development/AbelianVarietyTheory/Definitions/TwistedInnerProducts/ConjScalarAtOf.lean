@@ -20,10 +20,6 @@ def ConjScalarAt (R : RealDat D A Ks) : Prop :=
     ∀ ev : Pl D.host.E → List ℤ → ℂ, ∃ l : ℝ, ∀ u : H.H, th u ∈ GlobalTheory.LiftLower.partH R i σ ev →
       th (LinearMap.adjoint th (th u)) = (l : ℂ) • th u
 
-theorem conjScalarAt_of (h : ConjScalarThm) (R : RealDat D A Ks) (F : Face D A) (hC : R.Char F) (hψ : IsStdChar D R.ψ (-1))
-    (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) : ConjScalarAt R :=
-  h D G Pl0 T0 A Ks R F hC hψ hX
-
 end GlobalTheory.ConjScalar
 
 end

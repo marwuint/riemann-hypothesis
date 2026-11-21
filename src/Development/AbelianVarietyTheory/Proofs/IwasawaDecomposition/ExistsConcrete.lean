@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AddCharIsInt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharZeroOfSetting
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AmbientBaseHeq
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.CompanionOfBaseTied
-import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.RecursiveTieLevelZeroEq
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TieTrF
+import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.FullTiedCBase
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.GTiedFOfIsRecCEv
 import Formalism.LocalToGlobal.HermitianColumns.FullSym
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalIdentificationPlaceEqInducedRealPlaceStatement
@@ -90,12 +90,6 @@ theorem posOK_placeId (hS : Formalism.L2.Herm.StdTied D) (hC : Companion D L0)
   exact e
 
 end Main
-
-section Main2
-
-variable {D L0}
-
-end Main2
 
 theorem gPlTiedS_of {X : D7} {Gt : GatTies X} (H0 : Formalism.L2.Herm.Herm0 X)
     (hpl : ∀ u w hg (v : Fin (X.gat u w hg).P.nV) (s : Fin ((X.gat u w hg).P.n' v)) (x : 𝓞 X.host.F),

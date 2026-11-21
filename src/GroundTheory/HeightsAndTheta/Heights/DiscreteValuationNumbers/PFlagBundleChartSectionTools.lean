@@ -175,10 +175,6 @@ theorem eval_chartMono (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
       algebraMap Ω Φ (∏ k, y ⟨k, c k⟩ ^ α k) := by
   simp [chartMono, eval₂_prod, eval₂_pow, eval₂_X, projCoord, map_prod]
 
-theorem chartMono_mul (c : ∀ k, ι k) (α α' : K → ℕ) :
-    chartMono (F := F) M c α * chartMono M c α' = chartMono M c (α + α') := by
-  simp [chartMono, ← Finset.prod_mul_distrib, pow_add]
-
 theorem chartMono_pow_dvd (c : ∀ k, ι k) (δ : K → ℕ) (D : ℕ) :
     chartMono (F := F) M c δ ^ D ∣
       (∏ k, (X ⟨some k, c k⟩ : MRing (bundleIdx ι M) F)) ^ (D * ∑ k, δ k) := by

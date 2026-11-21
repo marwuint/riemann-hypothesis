@@ -268,9 +268,6 @@ instance (i : ℕ) : IsEmpty ((emptyColumnChain Tau).cls i) := inferInstanceAs (
 instance (Dst : ℝ) (hD : 0 < Dst) : Subsingleton (atTExample Tau T Dst hD).Mram :=
   ⟨fun _ _ => Subtype.ext (funext fun c => (IsEmpty.false c).elim)⟩
 
-theorem atTExample_du (Dst : ℝ) (hD : 0 < Dst) : (atTExample Tau T Dst hD).du = 0 :=
-  Module.finrank_zero_of_subsingleton
-
 def toyZeroSpaceEquiv (Dst : ℝ) (hD : 0 < Dst) : Z0 ≃ₗ[ℂ] (atTExample Tau T Dst hD).Mram :=
   LinearEquiv.ofSubsingleton _ _
 
@@ -298,11 +295,6 @@ theorem zeroHLat_good : (zeroHLat K).Good := by
   · rw [show (zeroHLat K).L = ⊤ from rfl, Subsingleton.elim (⊤ : Submodule (𝓞 K) (zeroHLat K).V) ⊥]
     exact Submodule.fg_bot
 
-theorem zeroHLat_rank : (zeroHLat K).rank = 0 := by
-  have : Subsingleton (Submodule.span K ((zeroHLat K).L : Set (zeroHLat K).V)) :=
-    ⟨fun x y => Subtype.ext (Subsingleton.elim _ _)⟩
-  exact Module.finrank_zero_of_subsingleton
-
 abbrev toyZeroLatticeDatum : DivData K Unit where
   RR := zeroHLat K
   Nu := fun _ => zeroHLat K
@@ -316,13 +308,6 @@ abbrev toyZeroLatticeDatum : DivData K Unit where
   Dall := 0
   delP := 0
   delP_le_one := zero_le_one
-
-theorem toyZeroLatticeDatum_good : (toyZeroLatticeDatum K).RR.Good ∧ ∀ u, ((toyZeroLatticeDatum K).Nu u).Good :=
-  ⟨zeroHLat_good K, fun _ => zeroHLat_good K⟩
-
-theorem toyZeroLatticeDatum_Drows_eq_zero : (toyZeroLatticeDatum K).Drows = 0 := zeroHLat_rank K
-
-theorem toyZeroLatticeDatum_Nu_rank_eq_zero (u : Unit) : ((toyZeroLatticeDatum K).Nu u).rank = 0 := zeroHLat_rank K
 
 def jZero (embLL : K →+* ℂ) : (zeroHLat K).V →ₛₗ[embLL] Z0 := 0
 

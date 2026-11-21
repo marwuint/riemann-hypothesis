@@ -28,6 +28,4 @@ theorem holds_of (hK : EtaleKummerTriangleExists) : EtaleKummerClassExplicitCocy
       (kum_mul_coc_of hK primLoc etale_sheaf_sections_glue_of_forget_isSheaf etale_chain_cochain_exists_of_eval_data etale_chain_cochain_eval_differential_formula_holds etale_chain_cochain_eval_basic_properties_hold)
       (kum_pow_coc_of hK etale_chain_cochain_exists_of_eval_data etale_chain_cochain_eval_differential_formula_holds he))
 
-theorem intersectionNumber_baseChange : EtaleKummerClassExplicitCocycle := holds_of LateralTheory.Fin.EtaleKummerTriangleExists.intersectionNumber_baseChange
-
 end LateralTheory.Fix.EtaleKummerClassExplicitCocycle

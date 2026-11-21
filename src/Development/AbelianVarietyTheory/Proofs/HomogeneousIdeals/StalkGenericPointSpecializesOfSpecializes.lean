@@ -6,29 +6,6 @@ universe u
 
 namespace GlobalTheory
 
-section Generisation
-
-variable {Z : Scheme.{u}} (η : Z) [IsDomain (Z.presheaf.stalk η)]
-
-noncomputable def stalkGenericPoint : Z :=
-  Z.fromSpecStalk η (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Z.presheaf.stalk η))
-
-variable [IsDiscreteValuationRing (Z.presheaf.stalk η)]
-
-end Generisation
-
-section ResidueCharacteristic
-
-end ResidueCharacteristic
-
-section LocalSource
-
-variable {Z : Scheme.{u}} {R : CommRingCat.{u}} [IsLocalRing R]
-
-variable {η ξ : Z} [IsDomain (Z.presheaf.stalk η)] [IsDiscreteValuationRing (Z.presheaf.stalk η)]
-
-end LocalSource
-
 section ThetaShiftProofs
 
 open PowerSeries
@@ -55,11 +32,5 @@ variable {Z : Scheme.{u}} {η ξ : Z} [IsDomain (Z.presheaf.stalk η)]
   {O : Type u} [CommRing O] [IsDomain O] [IsLocalRing O]
 
 end ThetaShiftProofs
-
-section Model
-
-open PowerSeries
-
-end Model
 
 end GlobalTheory

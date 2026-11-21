@@ -60,14 +60,6 @@ private theorem up_diag {K : Type} [CommRing K] {X Y : M4 K} (hX : IsUp X) (hY :
     · rw [hY b i h, mul_zero]
   · simp
 
-private theorem up_mul {K : Type} [CommRing K] {X Y : M4 K} (hX : IsUp X) (hY : IsUp Y) : IsUp (X * Y) := by
-  intro i j hij
-  rw [Matrix.mul_apply]
-  refine Finset.sum_eq_zero fun b _ => ?_
-  rcases lt_or_ge b i with h | h
-  · rw [hX i b h, zero_mul]
-  · rw [hY b j (lt_of_lt_of_le hij h), mul_zero]
-
 private theorem adj_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (X : M4 R) :
     adj (X.map f) = (adj X).map f := by
   ext i j

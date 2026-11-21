@@ -174,9 +174,6 @@ def toCircle {M : Type} [Group M] [Finite M] (c : M →* ℂˣ) : M →* Circle 
 @[simp] theorem coe_toCircle {M : Type} [Group M] [Finite M] (c : M →* ℂˣ) (u : M) :
     ((toCircle c u : Circle) : ℂ) = ((c u : ℂˣ) : ℂ) := rfl
 
-theorem toUnits_comp_toCircle {M : Type} [Group M] [Finite M] (c : M →* ℂˣ) : Circle.toUnits.comp (toCircle c) = c :=
-  MonoidHom.ext fun _ => Units.ext rfl
-
 end Res
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
@@ -322,10 +319,6 @@ variable (R)
 
 def tupTwist (t : T0) : Twist D Circle := ⟨R.Q t, R.xi t, fun PP => toCircle (R.xiR t PP)⟩
 
-theorem isResAt_tupTwist {t₀ : T0} (hL : R.toLevCh.Is t₀) (t : T0) {PP : Pl D.host.E} (hPP : PP ∈ R.Q t)
-    (h : Formalism.L2.NTheta.IsIdemAt (idemAt PP) PP) : IsResAt (tupTwist R t).chi PP ((tupTwist R t).res PP) :=
-  fun x hx hi u hu => Circle.ext (eq_res_of_chrEq (hL.xi t) h (hL.xi_tame t PP) (hL.xiR t PP hPP) x hx hi u hu)
-
 theorem isUnit_of_isONBasis {k p : ℕ} {J s B : Matrix (Fin k) (Fin k) ℂ} (h : IsONBasis J s B p) : IsUnit B := by
   obtain ⟨ε, h1, h2, -⟩ := h
   rw [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
@@ -351,26 +344,8 @@ theorem baseOf_baseAt (hB : R.models_BV) (δ : Twist D Circle) (P : LevelP R.Pg 
     BaseOf R i (baseAt R i hB δ P) :=
   ⟨rfl, rfl, rfl, fun _ => rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
 
-theorem isTupOf_baseAt (hB : R.models_BV) (t₀ : T0) (P : LevelP R.Pg (Wc D i).rank ℂ) :
-    IsTupOf R (baseAt R i hB (tupTwist R t₀) P) (Twist.triv Circle ∅) t₀ :=
-  ⟨(mul_one _).symm, by classical exact (Finset.union_empty _).symm.trans (by congr)⟩
-
 theorem isTupOf_tupTwist (hB : R.models_BV) (t : T0) (P : LevelP R.Pg (Wc D i).rank ℂ) :
     IsTupOf R (baseAt R i hB (Twist.triv Circle ∅) P) (tupTwist R t) t :=
   ⟨(one_mul _).symm, by classical exact (Finset.empty_union _).symm.trans (by congr)⟩
-
-example (hB : R.models_BV) (hω : R.thP_ωP) (t₀ : T0) (P : LevelP R.Pg (Wc D i).rank ℂ) :
-    (baseAt R i hB (tupTwist R t₀) P).IsWeil 1 (R.ωP i t₀) :=
-  (baseOf_baseAt R hB _ P).isWeil hω (isTupOf_baseAt R hB t₀ P)
-
-example (ψ : Twist D Circle) : ConjChar (starRingAut : ℂ ≃+* ℂ) ψ ⟨ψ.Q, ψ.chi⁻¹, fun PP => (ψ.res PP)⁻¹⟩ :=
-  ⟨rfl, fun x => Circle.coe_inv_eq_conj (ψ.chi x)⟩
-
-example (τ : D.what₂.Tau) (a : Fin (Vc D i).rank) (h1 : pS D i τ ≤ a.val) (h2 : a.val + qS D i τ < (Vc D i).rank) :
-    (lamV D i τ).w a = liftC D i τ := by
-  have h := (liftWeight_good D i).lam_eq τ a
-  rw [if_neg (show ¬ a.val < (liftWeight D i).p τ from not_lt.2 h1),
-    if_neg (show ¬ (Vc D i).rank - (liftWeight D i).q τ ≤ a.val from by change ¬ _ - qS D i τ ≤ _; omega), zero_add] at h
-  exact h
 
 end GlobalTheory.ConjTwist

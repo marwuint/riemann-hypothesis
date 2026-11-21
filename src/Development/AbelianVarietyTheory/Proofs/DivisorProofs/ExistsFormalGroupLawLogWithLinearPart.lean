@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundaryTwoCoboundaryOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSubInOfCob2InStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSubInOfCob2In
 
 set_option autoImplicit false
 
@@ -101,7 +101,7 @@ theorem GlobalTheory.QLog.exists_log_of_lin : ∀ (p : ℕ) [Fact p.Prime] (O C 
     map_assoc h μ hμ.const hμ.assoc
   have hcomm : (fun i => swap (up C μ i)) = up C μ := by
     funext i; rw [hup]; dsimp only; rw [← map_swap, hμ.comm i]
-  obtain ⟨g, hg0, hglin, -, hgc⟩ := GlobalTheory.T.swap_sub_in_of_cob2_in p O O C (RingHom.id O) hF d μ hlift ⊥ ⊤ bot_le
+  obtain ⟨g, hg0, hglin, -, hgc⟩ := _root_.GlobalTheory.symmetric_cocycle_is_coboundary_mod p O O C (RingHom.id O) hF d μ hlift ⊥ ⊤ bot_le
     (cob1 (up C μ) (map h F)) (Or.inl hμ)
     (by rw [hcmap, constantCoeff_map, constantCoeff_formalGroupLawCoboundaryOne_eq_zero μ hμ.const hF0, map_zero])
     (fun α => ⟨0, coeff α (cob1 μ F), Submodule.mem_top, by

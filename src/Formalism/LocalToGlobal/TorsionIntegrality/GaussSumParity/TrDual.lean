@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.GaussJetBounds.StatementP
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.IsLawOfLog
-import Formalism.FormalGroupWitt.ShiftSOneLetter
+import Formalism.FormalGroupWitt.Statement
 
 noncomputable section
 open scoped BigOperators

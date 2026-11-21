@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OpenChartOfSmoothFamilyGeomFibreInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlueOpenChartsAdditiveFamiliesRepresentingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OpenChartOfSmoothFamilyGeomFibreInjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlueOpenChartsAdditiveFamiliesRepresenting
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsAdditiveLineBundleFamiliesUniqueIso
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProperSmoothGeomConnectedDescendFiniteSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProperSmoothGeomConnectedDescendFiniteSurjective
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ExistsLiftPt
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
@@ -91,8 +91,8 @@ theorem hasRep_of_liftAt (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over 
     (hb : GlobalTheory.DualCon.Good g b.left) (hl : ∀ x : B.left, LiftAt A g b P x) : HasRep A g (𝟙_ _) := by
   choose U M j hM hU hj ho hx h using hl
   have hc : ∀ x, IsChart A (M x) := fun x ↦
-    GlobalTheory.T.openChart_of_smoothFamily_geomFibreInjective R A g hA hg (U x) (M x) (hU x) (hM x) (fibInj hP (hM x) (hj x) (h x))
-  obtain ⟨B₀, P₀, i, hP₀, hi, hcov, -⟩ := GlobalTheory.T.glue_openCharts_additiveFamilies_representing (Sp R) A hA B.left U M hc (by
+    _root_.GlobalTheory.ChartCrit.openChart R A g hA hg (U x) (M x) (hU x) (hM x) (fibInj hP (hM x) (hj x) (h x))
+  obtain ⟨B₀, P₀, i, hP₀, hi, hcov, -⟩ := _root_.GlobalTheory.PicGlue.glue (Sp R) A hA B.left U M hc (by
     intro K _ _ s N hN
     obtain ⟨t⟩ := exists_lift (S' := S') s
     obtain ⟨x, ⟨-, hxN⟩, -⟩ := hP.univ _ t N hN
@@ -108,7 +108,7 @@ theorem hasRep_of_liftAt (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over 
     (GlobalTheory.T.rep_ev_of_isPullback (Sp R) A B₀ _ S' _ _ P₀ _ _ _ hP₀ hpb)
   have hpb' : IsPullback (e.hom ≫ fst B₀ S') b (toUnit B₀) (toUnit S') :=
     hpb.of_iso e.symm (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp) (by simp [← he]) (by simp) (by simp)
-  refine ⟨B₀, toUnit B₀, P₀, hP₀, GlobalTheory.T.properSmoothGeomConnected_descend_finite_surjective _ _ _ _ _ _ _ _ g (hpb'.map (Over.forget _)) ?_ ?_ ?_ hb⟩
+  refine ⟨B₀, toUnit B₀, P₀, hP₀, _root_.GlobalTheory.DualCon.good_of_isPullback_finite_surjective _ _ _ _ _ _ _ _ g (hpb'.map (Over.forget _)) ?_ ?_ ?_ hb⟩
   · exact (congrArg (@IsFinite _ _) (toUnit_left S')).mpr hf
   · exact (congrArg (@Surjective _ _) (toUnit_left S')).mpr hs
   · exact (congrArg (@SmoothOfRelativeDimension g _ _) (toUnit_left B₀)).mpr hsm

@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ArchimedeanPointPureTensorKeepsFiniteFactorStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelCmExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ArchimedeanPointPureTensorKeepsFiniteFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelCmExtension
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerSkewPlaneUniqueDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationPreservesSchwartz
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatMulIntegralOfIsCompact
@@ -34,10 +34,10 @@ theorem GlobalTheory.Twist.smoothLine_pure : GlobalTheory.FunPr.Hypotheses₂ �
       (∀ t : ℝ, om (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c t) φ) ∧
       Tendsto (fun t : ℝ => t⁻¹ • (c t - c 0)) (𝓝[≠] 0) (𝓝 g) := by
   intro hP F E _ _ _ _ _ σ n d Y Wd M ψ χX χW om hCM hψ hM hW γ hγ f φ hφ hv
-  have h1 := fun t : ℝ => GlobalTheory.T.archimedeanPoint_pureTensor_keeps_finiteFactor M ψ χX χW om hψ hM hW (γ (Multiplicative.ofAdd t)) (hγ.2 _) f φ hφ hv
+  have h1 := fun t : ℝ => _root_.GlobalTheory.ArchPure.pure_arch M ψ χX χW om hψ hM hW (γ (Multiplicative.ofAdd t)) (hγ.2 _) f φ hφ hv
   choose c hc using h1
   by_cases h : ∃ y : Fin n × Fin d → AF F, ∏ᶠ v, φ v (fun i => evFin F v (y i)) ≠ 0
-  · obtain ⟨g, hg⟩ := GlobalTheory.T.weil_model_cm_extension hP M ψ χX χW om hCM hψ hM hW γ hγ f φ hφ hv h c hc
+  · obtain ⟨g, hg⟩ := _root_.GlobalTheory.Twist.SmoothLine.smooth_line_pure hP M ψ χX χW om hCM hψ hM hW γ hγ f φ hφ hv h c hc
     exact ⟨c, g, hc, hg⟩
   · push_neg at h
     have h0 : ∀ c' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure c' φ = 0 := fun c' => by

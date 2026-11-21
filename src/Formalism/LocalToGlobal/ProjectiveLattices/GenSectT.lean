@@ -26,41 +26,6 @@ def tJ (t : Fin (D + 1) × Fin m → K') (v : Fin m → Ω) : Ideal (Localizatio
     algebraMap (TZ K Ω Kl K') (Localization.Away (tsec K Kl t v 0)) (tsec K Kl t v i.succ) *
       IsLocalization.Away.invSelf (tsec K Kl t v 0))
 
-omit [Field Kl] [Field K'] [Algebra K Kl] [Algebra Kl K'] [Algebra K K'] [IsScalarTower K Kl K'] in
-
-theorem generic_section_not_mem [CharZero K] (htr : Algebra.trdeg K Ω = D) (x : Fin m → Ω) (k₀ : Fin m) (hx₁ : x k₀ = 1)
-    (halg : ∀ ω : Ω, IsAlgebraic (Algebra.adjoin K (Set.range (rr x k₀))) ω) :
-    algebraMap (ΩT Ω D m) (RS K Ω D m) (∑ k, X ((0 : Fin (D + 1)), k) * C (x k)) ∉ Is K x := by
-  classical
-  have hx₀ : x k₀ ≠ 0 := by rw [hx₁]; exact one_ne_zero
-  have hind := gs_indep (K := K) (D := D) x k₀ hx₀ htr halg
-  have hinj : ∀ q : KT K D m, q ≠ 0 → aeval (gs x k₀) q ≠ 0 := fun q hq h =>
-    hq (hind (h.trans (map_zero _).symm))
-  rw [ker_Phi x k₀ hx₀ hinj, RingHom.mem_ker, Phi_algebraMap]
-  intro h
-  have h2 : psi x k₀ (∑ k, X ((0 : Fin (D + 1)), k) * C (x k)) = 0 :=
-    IsFractionRing.injective (CT Ω D k₀) (FractionRing (CT Ω D k₀)) (h.trans (map_zero _).symm)
-  have hz : ∀ k : Fin m, ¬ Zs k₀ ((0 : Fin (D + 1)), k) := fun k hk => hk.1 rfl
-  have hg : ∀ k : Fin m, gs x k₀ ((0 : Fin (D + 1)), k) = X ⟨((0 : Fin (D + 1)), k), hz k⟩ := by
-    intro k
-    simp only [gs, xv, if_neg (hz k), dif_neg (hz k)]
-  have h2' : ∑ k, X ⟨((0 : Fin (D + 1)), k), hz k⟩ * C (x k) = (0 : CT Ω D k₀) := by
-    rw [← h2, map_sum]
-    refine Finset.sum_congr rfl fun k _ => ?_
-    rw [map_mul, psi_X, hg]
-    congr 1
-    exact ((psi x k₀).commutes (x k)).symm
-  have h3 := congrArg (MvPolynomial.eval
-    (fun q : {p : Fin (D + 1) × Fin m // ¬ Zs k₀ p} =>
-      if q.1 = ((0 : Fin (D + 1)), k₀) then (1 : Ω) else 0)) h2'
-  simp only [map_sum, map_mul, MvPolynomial.eval_X, MvPolynomial.eval_C, map_zero] at h3
-  rw [Finset.sum_eq_single k₀] at h3
-  · simp [hx₁] at h3
-  · intro b _ hb
-    simp [hb]
-  · intro hk
-    exact absurd (Finset.mem_univ _) hk
-
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 

@@ -22,8 +22,4 @@ theorem ramification_mul_inertia_base_field : eK p (Q0 p) * fK p (Q0 p) = 1 := b
 theorem residue_cardinality_base_field : qK p (Q0 p) = p := by
   rw [qK_eq_pow_fK p (Q0 p) finiteDimensional_base_field, Nat.eq_one_of_mul_eq_one_left ramification_mul_inertia_base_field, pow_one]
 
-theorem norm_eq_one_of_pow {n : ℕ} (hn : n ≠ 0) {z : PadicAlgCl p} (hz : z ^ n = 1) : ‖z‖ = 1 := by
-  have h : ‖z‖ ^ n = 1 := by rw [← norm_pow, hz, norm_one]
-  exact (pow_eq_one_iff_of_nonneg (norm_nonneg z) hn).1 h
-
 end ReciprocityTheory.DiscreteGroups.LocalClassField

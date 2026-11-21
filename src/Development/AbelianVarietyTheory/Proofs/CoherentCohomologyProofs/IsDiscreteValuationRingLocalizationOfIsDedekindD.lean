@@ -107,48 +107,6 @@ lemma length_quot_maximal (n : Ideal S) [n.IsMaximal] :
   rw [← Module.length_eq_finrank]
   exact Module.length_eq_of_surjective Ideal.Quotient.mk_surjective
 
-lemma isLocalHom_algebraMap (n : Ideal S) [n.IsMaximal] (B : Type*) [CommRing B] [IsLocalRing B]
-    [Algebra S B] [IsLocalization.AtPrime B n] [Algebra R B] [IsScalarTower R S B] :
-    IsLocalHom (algebraMap R B) := by
-  have := liesOver_maximalIdeal R n
-  refine ⟨fun a ha => ?_⟩
-  rw [IsScalarTower.algebraMap_apply R S B, IsLocalization.AtPrime.isUnit_to_map_iff B n] at ha
-  by_contra hu
-  exact ha ((Ideal.mem_of_liesOver n (maximalIdeal R) a).1 hu)
-
-lemma inertiaDeg_eq_finrank_residueField (n : Ideal S) [n.IsMaximal] (B : Type*) [CommRing B]
-    [IsLocalRing B] [Algebra S B] [IsLocalization.AtPrime B n] [Algebra R B]
-    [IsScalarTower R S B] [IsLocalHom (algebraMap R B)] :
-    n.inertiaDeg R = Module.finrank (ResidueField R) (ResidueField B) := by
-  have := liesOver_maximalIdeal R n
-  rw [Ideal.inertiaDeg_eq_of_isMaximal (maximalIdeal R) n]
-  refine Algebra.finrank_eq_of_equiv_equiv (RingEquiv.refl _)
-    (IsLocalization.AtPrime.equivQuotMaximalIdeal n B) ?_
-  ext a
-  change residue B (algebraMap R B a) =
-    IsLocalization.AtPrime.equivQuotMaximalIdeal n B (Ideal.Quotient.mk n (algebraMap R S a))
-  rw [IsLocalization.AtPrime.equivQuotMaximalIdeal_apply_mk, ← IsScalarTower.algebraMap_apply]
-  rfl
-
-lemma finite_residueField (n : Ideal S) [n.IsMaximal] (B : Type*) [CommRing B]
-    [IsLocalRing B] [Algebra S B] [IsLocalization.AtPrime B n] [Algebra R B]
-    [IsScalarTower R S B] [IsLocalHom (algebraMap R B)] :
-    Module.Finite (ResidueField R) (ResidueField B) :=
-  Module.finite_of_finrank_pos <| by
-    rw [← inertiaDeg_eq_finrank_residueField R n B]
-    exact Ideal.inertiaDeg_pos n R
-
-include R in
-
-lemma finite_maximalSpectrum : Finite (MaximalSpectrum S) := by
-  have := Algebra.QuasiFinite.finite_primesOver (R := R) (S := S) (maximalIdeal R)
-  have := this.to_subtype
-  refine Finite.of_injective (fun n : MaximalSpectrum S =>
-    (⟨n.asIdeal, n.isMaximal.isPrime, liesOver_maximalIdeal R n.asIdeal⟩ :
-      (maximalIdeal R).primesOver S)) ?_
-  intro a b h
-  exact MaximalSpectrum.ext (congrArg Subtype.val h)
-
 lemma length_localization_quot_maximal (m n : MaximalSpectrum S) [Decidable (n = m)]
     (B : Type*) [CommRing B] [Algebra S B] [IsLocalization.AtPrime B n.asIdeal] :
     Module.length B (B ⧸ m.asIdeal.map (algebraMap S B)) = if n = m then 1 else 0 := by

@@ -11,8 +11,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ds
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HarishChandraFinite
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtendedColumnDataAllClausesButPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtendedDataNonzeroIndexPlacesCorrespondStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtendedColumnDataAllClausesButPlaces
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CoefAEqOfHeq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtendedDataNonzeroIndexPlacesCorrespond
 
 noncomputable section
 
@@ -28,7 +29,7 @@ set_option maxHeartbeats 4000000 in
 
 theorem datExt0_of_hypotheses : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → DatExt0 := by
   intro h1 h2 h3 h4 h5 h6 h7
-  refine ((GlobalTheory.T.exists_extendedColumnData_all_clauses_but_places h1 h2 h3 h4 h5 h6 h7).and (GlobalTheory.T.extendedData_nonzero_index_places_correspond_alt h1 h2 h3 h4 h5 h6 h7)).trans (StepW.of_all ?_)
+  refine ((_root_.GlobalTheory.Mem.R3.Rw.ExtBuild.exists_ext_build h1 h2 h3 h4 h5 h6 h7).and (_root_.GlobalTheory.Mem.R3.TwistedPlaceExtensions.extendedData_nonzero_index_places_correspond h1 h2 h3 h4 h5 h6 h7)).trans (StepW.of_all ?_)
   intro K B' f' T' w' _ _ hAB B f T w hE hf hP hpx Z hX Wt z hg hga hF hL Z' hX' hg' hga' hV
   obtain ⟨z', hz', he⟩ := hAB.1 B f T w hE hf hP hpx Z hX Wt z hg hga hF hL Z' hX' hg' hga' hV
   exact ⟨z', hz', he.ext (hAB.2 B f T w hE hf hP hpx Z hX Wt z hg hga hF hL Z' hX' hg' hga' hV z' hz' he)⟩

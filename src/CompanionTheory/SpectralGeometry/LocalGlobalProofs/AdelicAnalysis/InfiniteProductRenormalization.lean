@@ -1,5 +1,5 @@
 import Mathlib
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductMultipliableStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductMultipliable
 open MeasureTheory Topology
 open scoped ENNReal NNReal Matrix
 
@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.SW.TailConst
 theorem tail_eq_mul_tail_insert {ι : Type} [DecidableEq ι] (a : ι → ℝ)
     (hs : Summable (fun v => |a v - 1|)) (S : Finset ι) (v : ι) (hv : v ∉ S) :
     ∏' w : {w // w ∉ S}, a w.1 = a v * ∏' w : {w // w ∉ insert v S}, a w.1 := by
-  have h := (GlobalTheory.T.infinite_product_multipliable {w // w ∉ S} (fun w => a w.1)
+  have h := (_root_.GlobalTheory.CompanionTheory.SW.AbsTprod.abs_tprod {w // w ∉ S} (fun w => a w.1)
     (hs.comp_injective Subtype.val_injective)).2.1 {⟨v, hv⟩}
   rw [h.2, Finset.prod_singleton]
   congr 1
@@ -33,7 +33,7 @@ theorem tail_eq_mul_tail_insert {ι : Type} [DecidableEq ι] (a : ι → ℝ)
 
 theorem tail_pos {ι : Type} (a : ι → ℝ) (hs : Summable (fun v => |a v - 1|)) (S : Finset ι)
     (hpos : ∀ v, v ∉ S → 0 < a v) : 0 < ∏' w : {w // w ∉ S}, a w.1 :=
-  (GlobalTheory.T.infinite_product_multipliable {w // w ∉ S} (fun w => a w.1)
+  (_root_.GlobalTheory.CompanionTheory.SW.AbsTprod.abs_tprod {w // w ∉ S} (fun w => a w.1)
     (hs.comp_injective Subtype.val_injective)).2.2.1 (fun w => hpos w.1 w.2)
 
 theorem exists_const_mul_tail : ∀ (ι : Type) [DecidableEq ι] (a : ι → ℝ) (c : Finset ι → ℝ≥0) (S₁ : Finset ι), (∀ v, 0 ≤ a v) → Summable (fun v => |a v - 1|) → (∀ S, S₁ ⊆ S → ∀ v, v ∉ S → (c S : ℝ) = c (insert v S) * a v) → ∃ (c₀ : ℝ≥0) (S₀ : Finset ι), S₁ ⊆ S₀ ∧ ∀ S, S₀ ⊆ S → (0 < ∏' v : {v // v ∉ S}, a v.1) ∧ (c S : ℝ) = c₀ * ∏' v : {v // v ∉ S}, a v.1 := by

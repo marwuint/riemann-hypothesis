@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.JacquetSubsetSums.JacquetSubsetSum
-import Formalism.JacquetSubsetSums.SeparationTR
+import Formalism.QuotientMetricDivisors.Statement
 
 open Finset
 

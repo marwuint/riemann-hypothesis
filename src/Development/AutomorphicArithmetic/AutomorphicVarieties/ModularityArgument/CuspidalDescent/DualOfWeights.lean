@@ -10,7 +10,14 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Cl
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.UpU
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.IsSubquotientOfHasSupport
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.EqOfTwist
-import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.MonoOfMemSumList
+import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Distinct
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Brauer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericGlLocalComponentExponentLeOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportOfPrincipalSeriesSubquotient
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGL
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSupportOfIsSubquotientProdIrr
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PrincipalSeriesSubquotientOfCharacters
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDimEqOne
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.WtBridge
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.FlagWD
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.OrdCharIff
@@ -31,6 +38,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WdParameterM
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsGenericIffIsGenericFor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdeleEmbeddingExtension
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeDEqSumOfAgree
+
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Polynomial ValuativeRel IsLocalRing GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.UnitaryBC UpperTheory.V UpperTheory.V.Hi UpperTheory.V.Hi.CaseU
 open UpperTheory.V.W (Plc Lp HidaSetting Vl Resid LamObj UniversalOrdinaryDeterminantRing Pair)
 open UpperTheory.V.HV (Coef)
@@ -383,7 +391,7 @@ theorem UpperTheory.V.Z.Desc.jPTw :
     (hLG' _ (hsp _ (hin _ (hlv v))) _ (hbc _ (hsp _ (hin _ (hlv v))))) lam (hψ v) (hfl' v) (hfl v).2
   refine upU PH l L Ω s n hn V Q c r ι B Λ R K hS J hJ x h lam hx hlam σ ρ' hσ hc' hs' hρ' hLG'
     (fun y => ?_) (fun w hw => ?_) ?_ fun v => ?_
-  · obtain ⟨ν, h1⟩ := GlobalTheory.T.exists_algebraicWeight_of_automorphic_definiteUnitary L n hn σ hσ (ι.toRingHom.comp y.res)
+  · obtain ⟨ν, h1⟩ := _root_.GlobalTheory.DefU.exists_hasWeightAt_of_isAutRepU L n hn σ hσ (ι.toRingHom.comp y.res)
     have h3 := hwt y.res ν h1
     rw [show HT' y.res = _ from (hab y.1).2 y.2] at h3
     rwa [← dual_of_weights (lam y.res) ν h3]

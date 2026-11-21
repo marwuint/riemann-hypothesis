@@ -1,5 +1,4 @@
 import Mathlib
-import Formalism.PeriodIntegrals.GalTorsConj
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GaloisTorsionConjugacy.WpBridge
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.EllipticOnePole
 

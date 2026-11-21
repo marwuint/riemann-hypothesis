@@ -3,8 +3,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CompletedLStripB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormWt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousTerm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralHeckeMellinGaussIntegrandEqProdGammaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmTypeProdNormSqEqAbsNormSpanStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralHeckeMellinGaussIntegrandEqProdGamma
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GammaIntegralExpSubstitutionRealLine
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmTypeProdNormSqEqAbsNormSpan
 
 noncomputable section
 
@@ -93,8 +94,8 @@ theorem mellin_term : ∀ (K : Type) [Field K] [NumberField K] [NumberField.IsTo
   intro K _ _ _ I _ φ hφ n s hs α hα
   have hαK : (α : K) ≠ 0 := by exact_mod_cast hα
   have hv : ∀ i, GlobalTheory.HeckeTheta.emb φ (α : K) i ≠ 0 := fun i => (map_ne_zero (φ i)).2 hαK
-  obtain ⟨hint, hI, hN⟩ := GlobalTheory.T.integral_heckeMellinGaussIntegrand_eq_prod_gamma I n s hs _ hv
-  have hnorm := GlobalTheory.T.cmType_prod_norm_sq_eq_absNorm_span K I φ hφ α
+  obtain ⟨hint, hI, hN⟩ := _root_.GlobalTheory.HeckeMellinProd.mellin_prod I n s hs _ hv
+  have hnorm := _root_.GlobalTheory.CMTypeNorm.prod_norm_sq_eq_absNorm K I φ hφ α
   refine ⟨hint, ?_, ?_⟩
   · rw [hI, ← Complex.ofReal_natCast, ← hnorm, ofReal_prod_cpow _ _ (fun i => by positivity),
       ← Finset.card_univ, Finset.pow_card_mul_prod]

@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NatCastMemP
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EvLawsGenFrNonemptyComp
 import Formalism.LocalToGlobal.ProjectiveLattices.LocFld
 import Formalism.LocalToGlobal.ProjectiveLattices.IntAll
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCdvrReadingInCpOfFiniteResidueStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCdvrReadingInCpOfFiniteResidue
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckePrimeDetection
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.GeoTie
 
 set_option autoImplicit false
@@ -186,7 +187,7 @@ theorem exists_ptC_of_finExt : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     · exact h0
   have hOσ' : OverLa (placeAt σ) T'.V (ψ.comp ι) (r * e1) := hOσ.bc ψ hrpos hr
 
-  obtain ⟨k', hk'⟩ := GlobalTheory.T.exists_cdvrReadingInCp_of_finiteResidue p L σ T' (ψ.comp ι) (r * e1) hOσ' hy'alg
+  obtain ⟨k', hk'⟩ := _root_.GlobalTheory.GeoTie.ReadExist.exists_isReading p L σ T' (ψ.comp ι) (r * e1) hOσ' hy'alg
   have hk : IsReading φ T' io' k' := by
     refine ⟨fun b => ?_, hk'.int⟩
     rw [← hψio, ← hσ b]

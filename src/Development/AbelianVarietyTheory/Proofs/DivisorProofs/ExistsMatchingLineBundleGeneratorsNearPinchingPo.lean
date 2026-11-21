@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Glues
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Matched
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenLeOfAppEqOneOfIsClosedImmersionAlStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftLineBundleSectionOfClosedImmersionAffineOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenLeOfAppEqOneOfIsClosedImmersionAl
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftLineBundleSectionOfClosedImmersionAffineOpen
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
 open scoped CategoryTheory.Obj
@@ -92,7 +92,7 @@ theorem near_matched : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X)
     have e' := congrArg Units.val e
     rw [Units.val_mul, gm_idHom_val z' _ hk, gm_idHom_val z' _ hl, gm_val i' z' (L'.U k ⊓ L'.U l) (show i' z' ∈ L'.U k ⊓ L'.U l from ⟨hk.1, hl.1⟩)] at e'
     exact e'
-  obtain ⟨θ, hθc, hθi⟩ := GlobalTheory.T.lift_lineBundle_section_of_closedImmersion_affineOpen X' Z' i' L' hL' (p ⁻¹ᵁ W₀) hY (fun k => (τu k).val) hτ
+  obtain ⟨θ, hθc, hθi⟩ := _root_.GlobalTheory.PinchLift.lift_section_of_closedImm X' Z' i' L' hL' (p ⁻¹ᵁ W₀) hY (fun k => (τu k).val) hτ
 
   have hN : ∀ z' : Z', i' z' ∈ p ⁻¹ᵁ W₀ → i' z' ∈ ⨆ k, X'.basicOpen (θ k) := by
     intro z' h
@@ -101,7 +101,7 @@ theorem near_matched : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X)
       rw [Scheme.preimage_basicOpen, hθi k, Scheme.basicOpen_of_isUnit _ (τu k).isUnit]
       exact ⟨hk, h⟩
     exact TopologicalSpace.Opens.mem_iSup.2 ⟨k, this⟩
-  obtain ⟨b, hb1, hbN⟩ := GlobalTheory.T.exists_basicOpen_le_of_app_eq_one_of_isClosedImmersion' X' Z' i' (p ⁻¹ᵁ W₀) hY _ hN
+  obtain ⟨b, hb1, hbN⟩ := _root_.GlobalTheory.exists_basicOpen_le_of_app_eq_one_of_isClosedImmersion X' Z' i' (p ⁻¹ᵁ W₀) hY _ hN
   obtain ⟨s, ⟨hsp, hsi⟩, -⟩ := hg W₀ b 1 (by
     rw [Scheme.Hom.appLE, CommRingCat.comp_apply, hb1, map_one, map_one])
   have hzW : i z ∈ X.basicOpen s := by

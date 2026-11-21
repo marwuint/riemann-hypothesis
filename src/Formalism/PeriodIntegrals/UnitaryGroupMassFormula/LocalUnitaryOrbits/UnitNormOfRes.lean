@@ -108,8 +108,4 @@ theorem trNd_of (hR : ResAlg σ J ψ v) : TrNd σ J ψ v := by
 theorem unitNorm_of_res (hR : ResAlg σ J ψ v) : UnitNorm σ J ψ v Λ :=
   unitNorm_of σ J ψ v Λ (fixLoc_holds σ v) (trNd_of σ J ψ v hR) (primPerp_holds σ J ψ v Λ)
 
-theorem orbAll_of_res (a : ℕ) (Y : TupV (E := E) v n a) (hN : NormOne σ J ψ v) (hR : ResAlg σ J ψ v) :
-    OrbAll σ J ψ v Λ a Y :=
-  orbAll_of_norm σ J ψ v Λ a Y hN (unitNorm_of_res σ J ψ v Λ hR)
-
 end PI.OmLocU.UnN

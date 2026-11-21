@@ -24,7 +24,7 @@ theorem distrib_eq [IsTotallyReal F] (u : (AF F)ˣ) :
       continuous_invFun := continuous_const.mul continuous_id }
   let j : AF F →+ (Unit → AF F) := { toFun := fun x _ => x, map_zero' := rfl, map_add' := fun _ _ => rfl }
   have hj : IsOpenEmbedding j := (Homeomorph.funUnique Unit (AF F)).symm.isOpenEmbedding
-  rw [GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict _ _ j hj _ e (fun x => by funext i; simp [mulVecCE_apply, Matrix.mulVec_diagonal, j, e])]
+  rw [_root_.GlobalTheory.HaarOpenEmb.addEquivAddHaarChar_eq_of_isOpenEmbedding _ _ j hj _ e (fun x => by funext i; simp [mulVecCE_apply, Matrix.mulVec_diagonal, j, e])]
   congr 1
   obtain ⟨K, hK⟩ := exists_compact_mem_nhds (0 : AF F)
   let μ : Measure (AF F) := Measure.addHaar

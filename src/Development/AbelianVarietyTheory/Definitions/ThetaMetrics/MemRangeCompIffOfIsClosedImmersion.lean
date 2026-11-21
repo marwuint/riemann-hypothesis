@@ -24,9 +24,6 @@ theorem valF_eq_valR {F : Type} [Field F] (x : Sp F ⟶ X) (U : X.Opens) (f : Γ
 
 theorem valAt'_eq_valR (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) : valAt' x U f = valR x U f := rfl
 
-theorem valAt_eq_valR (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
-    valAt x U h f = valR x U f := (valR_eq x U h f).symm
-
 theorem le_preimage_mono (x : Sp C ⟶ X) {U V : X.Opens} (e : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ U :=
   fun _ hz => e (h hz)
 
@@ -205,16 +202,6 @@ variable [TopologicalSpace C]
 instance topology (C : Type) [CommRing C] [TopologicalSpace C] (X : Scheme.{0}) :
     TopologicalSpace (Sp C ⟶ X) :=
   generateFrom {S | ∃ (U : X.Opens) (f : Γ(X, U)) (O : Set C), IsOpen O ∧ S = basicSet U f O}
-
-theorem topology_complex (X : Scheme.{0}) : topology ℂ X =
-    generateFrom {S | ∃ (U : X.Opens) (f : Γ(X, U)) (O : Set ℂ), IsOpen O ∧
-      S = {x : Sp ℂ ⟶ X | ∃ h : ⊤ ≤ x ⁻¹ᵁ U, valAt x U h f ∈ O}} := by
-  have : ∀ (U : X.Opens) (f : Γ(X, U)) (O : Set ℂ),
-      basicSet U f O = {x : Sp ℂ ⟶ X | ∃ h : ⊤ ≤ x ⁻¹ᵁ U, valAt x U h f ∈ O} := by
-    intro U f O
-    ext x
-    simp only [basicSet, Set.mem_setOf_eq, valAt_eq_valR, exists_prop]
-  simp only [topology, this]
 
 theorem isOpen_basicSet (U : X.Opens) (f : Γ(X, U)) {O : Set C} (hO : IsOpen O) :
     IsOpen (basicSet U f O) :=
@@ -439,17 +426,6 @@ theorem PtsOver.tendsto_iff_of_generators {R : Type} [CommRing R] {p : X ⟶ Sp 
     exact ((valR_constFn p (e b).1 U hb a).trans (by rw [(e b).2])).symm
   · exact H f hf
 
-theorem continuous_iff_of_generators {B : Type*} [TopologicalSpace B] {e : B → (Sp C ⟶ X)} {ι : Sort*}
-    {U : ι → X.Opens} (hU : ∀ i, IsAffineOpen (U i)) (hcov : iSup U = ⊤) {s : ∀ i, Set Γ(X, U i)}
-    (hs : ∀ i, Subring.closure (s i) = ⊤) :
-    Continuous e ↔ ∀ i, IsOpen {b | ⊤ ≤ e b ⁻¹ᵁ U i} ∧
-      ∀ f ∈ s i, ContinuousOn (fun b => valR (e b) (U i) f) {b | ⊤ ≤ e b ⁻¹ᵁ U i} := by
-  refine ⟨fun H i => ⟨(continuous_iff.1 H _).1, fun f _ => (continuous_iff.1 H _).2 f⟩, fun H => ?_⟩
-  refine continuous_iff_continuousAt.2 fun b => ?_
-  obtain ⟨i, hi⟩ := exists_le_preimage_of_iSup_eq_top (e b) hcov
-  have h := (H i).1.mem_nhds hi
-  exact (tendsto_iff_of_generators (hU i) hi (hs i)).2 ⟨h, fun f hf => ((H i).2 f hf).continuousAt h⟩
-
 theorem PtsOver.continuous_iff_of_generators {R : Type} [CommRing R] {p : X ⟶ Sp R} {t : Sp C ⟶ Sp R}
     {B : Type*} [TopologicalSpace B] {e : B → PtsOver p t} {ι : Sort*}
     {U : ι → X.Opens} (hU : ∀ i, IsAffineOpen (U i)) (hcov : iSup U = ⊤) {s : ∀ i, Set Γ(X, U i)}
@@ -568,22 +544,11 @@ theorem isClosedEmbedding_comp [T1Space C] (i : X ⟶ Y) [IsClosedImmersion i] :
   filter_upwards [(isOpen_basicSet V f (isOpen_compl_singleton (x := (0 : C)))).mem_nhds ⟨hyV, hne⟩]
     with z hz hz' using hz.2 ((mem_range_comp_iff_of_isClosedImmersion i hV z hz.1).1 hz' f hf)
 
-theorem isEmbedding_comp (i : X ⟶ Y) [IsImmersion i] : IsEmbedding fun x : Sp C ⟶ X => x ≫ i := by
-  have h := (isOpenEmbedding_comp (C := C) i.coborderRange.ι).isEmbedding.comp
-    (isEmbedding_comp_of_isClosedImmersion i.liftCoborder)
-  convert h using 1
-  ext1 x
-  simp only [Function.comp_apply, Category.assoc, Scheme.Hom.liftCoborder_ι]
-
 theorem PtsOver.isClosedEmbedding_map [T1Space C] {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} (i : X ⟶ Y)
     [IsClosedImmersion i] (hi : i ≫ q = p) (s : Sp C ⟶ S) : IsClosedEmbedding (PtsOver.map i hi s) :=
   ⟨PtsOver.isEmbedding_map i hi s (isClosedEmbedding_comp i).isEmbedding, by
     rw [PtsOver.range_map]
     exact (isClosedEmbedding_comp i).isClosed_range.preimage continuous_subtype_val⟩
-
-theorem PtsOver.isEmbedding_map_of_isImmersion {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} (i : X ⟶ Y)
-    [IsImmersion i] (hi : i ≫ q = p) (s : Sp C ⟶ S) : IsEmbedding (PtsOver.map i hi s) :=
-  PtsOver.isEmbedding_map i hi s (isEmbedding_comp i)
 
 theorem isEmbedding_of_isPullback {P S : Scheme.{0}} {fst : P ⟶ X} {snd : P ⟶ Y} {f : X ⟶ S} {g : Y ⟶ S}
     (hP : IsPullback fst snd f g) : IsEmbedding fun z : Sp C ⟶ P => (z ≫ fst, z ≫ snd) := by
@@ -716,11 +681,6 @@ def ptsOverEquivAlgHom {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C)) :
     rw [Spec.preimage_map]
     rfl
 
-theorem ptsOverEquivAlgHom_apply {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C))
-    (x : PtsOver (spMap (algebraMap R A)) t) (a : A) :
-    ptsOverEquivAlgHom A ht x a = valR x.1 ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a) :=
-  preimage_apply (A := CommRingCat.of A) x.1 a
-
 @[simp] theorem ptsOverEquivAlgHom_symm_val {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C))
     (φ : A →ₐ[R] C) : ((ptsOverEquivAlgHom A ht).symm φ).1 = spMap φ.toRingHom := rfl
 
@@ -815,11 +775,6 @@ theorem zeroSetHomeomorph_apply {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap 
     (I : Ideal (MvPolynomial σ R)) (x : PtsOver (spMap (algebraMap R (MvPolynomial σ R ⧸ I))) t) (i : σ) :
     (zeroSetHomeomorph ht I x : σ → C) i =
       ptsOverEquivAlgHom _ ht x (Ideal.Quotient.mk I (MvPolynomial.X i)) := rfl
-
-def zeroLocusHomeomorph {F : Type} [Field F] [TopologicalSpace F] [IsTopologicalDivisionRing F] [T1Space F]
-    {σ : Type} (I : Ideal (MvPolynomial σ F)) :
-    Pts (spMap (algebraMap F (MvPolynomial σ F ⧸ I))) ≃ₜ MvPolynomial.zeroLocus F I :=
-  zeroSetHomeomorph (id_eq_spMap_algebraMap F) I
 
 def affineSpaceHomeomorph {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C)) (σ : Type) :
     PtsOver (spMap (algebraMap R (MvPolynomial σ R))) t ≃ₜ (σ → C) :=
@@ -928,12 +883,6 @@ def conjHomeomorph (X : Scheme.{0}) : (Sp ℂ ⟶ X) ≃ₜ (Sp ℂ ⟶ X) :=
 theorem valR_conjHomeomorph (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valR (conjHomeomorph X x) U f = starRingEnd ℂ (valR x U f) := valR_spMap_comp _ x U h f
 
-def PtsOver.conjHomeomorph {S : Scheme.{0}} (p : X ⟶ S) (s : Sp ℂ ⟶ S) :
-    PtsOver p s ≃ₜ PtsOver p (spMap (starRingEnd ℂ) ≫ s) :=
-  (Points.conjHomeomorph X).subtype fun x => by
-    rw [conjHomeomorph_apply, Category.assoc]
-    exact (Points.conjHomeomorph S).injective.eq_iff.symm
-
 def ptsEquivCPt (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] : Pts p ≃ CPt X :=
   pointEquivClosedPoint p
 
@@ -967,11 +916,6 @@ theorem valR_eq_val (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (x : Pts p) (U : 
   rw [← h1] at h2
   rw [← hψ U h f]
   exact (congrFun h2 _).symm
-
-theorem valAt_eq_val (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (x : Pts p) (U : X.Opens)
-    (h : ⊤ ≤ x.1 ⁻¹ᵁ U) (f : Γ(X, U)) :
-    valAt x.1 U h f = val p f (ptsEquivCPt p x).1 ((ptsEquivCPt_mem_iff p x U).2 h) :=
-  (valAt_eq_valR x.1 U h f).trans (valR_eq_val p x U _ f)
 
 def resolutionHomeomorph {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {hP : IsMultiHomogIdeal P} (w : WData P D hP) :
@@ -1016,42 +960,5 @@ theorem resolutionHomeomorph_val {K : Type} [Fintype K] [Nonempty K] {ι : K →
     (x : Pts (w.π ≫ toSpecC hP)) : (resolutionHomeomorph w x).1 = x.1 (IsLocalRing.closedPoint ℂ) := rfl
 
 end Complex
-
-example : Nonempty (Pts (spMap (algebraMap ℂ (MvPolynomial (Fin 2) ℂ))) ≃ₜ (Fin 2 → ℂ)) :=
-  ⟨affineSpaceHomeomorph (id_eq_spMap_algebraMap ℂ) (Fin 2)⟩
-
-example : Nonempty (PtsOver (spMap (algebraMap ℤ (MvPolynomial Unit ℤ))) (spMap (algebraMap ℤ ℚ_[2])) ≃ₜ
-    (Unit → ℚ_[2])) :=
-  ⟨affineSpaceHomeomorph rfl Unit⟩
-
-example : let X := Pts (spMap (algebraMap ℂ (MvPolynomial Unit ℂ)))
-    ConnectedSpace X ∧ T2Space X ∧ Nontrivial X := by
-  let h := affineSpaceHomeomorph (id_eq_spMap_algebraMap ℂ) Unit
-  exact ⟨h.symm.surjective.connectedSpace h.symm.continuous, h.isEmbedding.t2Space,
-    h.toEquiv.nontrivial⟩
-
-example : valAt' (spMap (MvPolynomial.eval fun _ : Unit => 2 + Complex.I)) ⊤
-    ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial Unit ℂ))).inv.hom (MvPolynomial.X () ^ 2 + 1)) =
-      4 + 4 * Complex.I := by
-  rw [valAt'_eq_valR, valR_specMap (A := CommRingCat.of (MvPolynomial Unit ℂ))]
-  simp only [CommRingCat.hom_ofHom, map_add, map_pow, MvPolynomial.eval_X, map_one]
-  linear_combination Complex.I_mul_I
-
-example : CompactSpace (Pts (spMap (algebraMap ℝ (MvPolynomial (Fin 2) ℝ ⧸
-    Ideal.span {(MvPolynomial.X 0 ^ 2 + MvPolynomial.X 1 ^ 2 - 1 : MvPolynomial (Fin 2) ℝ)})))) := by
-  set I := Ideal.span {(MvPolynomial.X 0 ^ 2 + MvPolynomial.X 1 ^ 2 - 1 : MvPolynomial (Fin 2) ℝ)}
-  have hc : IsCompact {z : Fin 2 → ℝ | ∀ q ∈ I, MvPolynomial.aeval z q = 0} := by
-    refine (isCompact_closedBall (0 : Fin 2 → ℝ) 1).of_isClosed_subset ?_ fun z hz => ?_
-    · simp only [Set.setOf_forall]
-      exact isClosed_iInter fun q => isClosed_iInter fun _ =>
-        isClosed_eq (MvPolynomial.continuous_eval q) continuous_const
-    · have h := hz _ (Ideal.subset_span rfl)
-      simp only [map_sub, map_add, map_pow, MvPolynomial.aeval_X, map_one] at h
-      rw [mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]
-      intro i
-      rw [Real.norm_eq_abs, abs_le]
-      fin_cases i <;> constructor <;> simp only [Fin.zero_eta, Fin.mk_one] <;> nlinarith
-  have := isCompact_iff_compactSpace.1 hc
-  exact (zeroSetHomeomorph (id_eq_spMap_algebraMap ℝ) I).symm.compactSpace
 
 end GlobalTheory.Points

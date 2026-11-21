@@ -40,10 +40,6 @@ def sum (D D' : TrData q e) : TrData q e where
   bd s := by cases s; exacts [D.bd _, D'.bd _]
   int s := by cases s; exacts [D.int _, D'.int _]
 
-theorem card_sum (D D' : TrData q e) : Nat.card (D.sum D').S = Nat.card D.S + Nat.card D'.S := by
-  have := D.fin; have := D'.fin
-  exact Nat.card_sum
-
 theorem Classifies.sum {Γ : Type} [Group Γ] {l : ℕ} [Fact l.Prime] {D D' : TrData q e} {ι : Qbar l ≃+* ℂ} {g : Γ}
     {P P' : (Γ →* GL (Fin 3) (Qbar l)) → Prop} (h : D.Classifies ι g P) (h' : D'.Classifies ι g P') :
     (D.sum D').Classifies ι g fun r => P r ∨ P' r := by

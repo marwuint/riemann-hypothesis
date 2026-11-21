@@ -30,6 +30,4 @@ theorem span_harm2_sup_coinv_eq_univ : ∀ (P Q R S : ℕ) (x : ℂ),
   rw [this]
   exact Submodule.add_mem_sup (Submodule.subset_span hh) hd
 
-example : ∀ (P Q R S : ℕ) (x : ℂ), Submodule.span ℂ (harm2 P Q R S) ⊔ coinv P Q R S x = ⊤ := span_harm2_sup_coinv_eq_univ
-
 end GlobalTheory.HoweR

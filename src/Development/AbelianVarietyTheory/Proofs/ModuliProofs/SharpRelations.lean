@@ -34,9 +34,5 @@ theorem push_comp (h : IsGrpPullback A' A f φ) {p : A ⟶ A} {p' : A' ⟶ A'}
 
 end
 
-def postHom {S : Scheme.{0}} {A C : Over S} [GrpObj A] [GrpObj C] (p : A ⟶ C) [IsMonHom p] (T : Over S) :
-    (T ⟶ A) →* (T ⟶ C) :=
-  MonoidHom.mk' (· ≫ p) fun x y => MonObj.mul_comp x y p
-
 end GlobalTheory.SharpRel
 end

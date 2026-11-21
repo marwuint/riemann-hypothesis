@@ -181,17 +181,6 @@ theorem coindCokernelSection_mk (A : Rep.{u} k G) [IsDiscreteRep A] (f : Locally
       f - (coindEmbedding A).hom (coindEval k G A f) :=
   rfl
 
-theorem coindCokernelπ_coindCokernelSection (A : Rep.{u} k G) [IsDiscreteRep A]
-    (c : LocallyConstant G A ⧸ coindEmbeddingRange A) :
-    (coindCokernelπ A).hom (coindCokernelSection A c) = c := by
-  induction c using Submodule.Quotient.induction_on with
-  | H f =>
-    rw [coindCokernelSection_mk]
-    change Submodule.Quotient.mk _ = Submodule.Quotient.mk _
-    rw [Submodule.Quotient.mk_sub,
-      (Submodule.Quotient.mk_eq_zero _).2
-        ((mem_coindEmbeddingRange A _).2 ⟨coindEval k G A f, rfl⟩), sub_zero]
-
 end Embedding
 
 end GroundTheory.ProfCoh

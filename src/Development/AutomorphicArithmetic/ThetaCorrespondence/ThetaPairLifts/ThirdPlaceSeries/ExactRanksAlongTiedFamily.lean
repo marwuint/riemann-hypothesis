@@ -1,5 +1,16 @@
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExactRanksAlongTiedFamily
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Formalism.LocalToGlobal.ThresholdSelection
+import Formalism.SharpRestriction.GlobalSchurBounds.MassRatioUnfoldedOfTheoremTwo
+import Formalism.SharpRestriction.CuspSpanNormBounds.PExtra
+import Formalism.SharpRestriction.GlobalSchurBounds.TheoremThreeFamilyOfFormalDegreeInput
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassNumberAll
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FirstTypePrimeLargeOfRecord
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExactRanksOfRecord
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NcardPrimesOverOfNorm
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumeEqMassOfReal
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RankConditionOfColumnsEqualSymmetricLevel
+import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
+import Formalism.LocalToGlobal.HermitianForms.BothSym
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TSelF
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LayerTwoFamilyClass
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LinkedFamiliesFixedValues
@@ -17,7 +28,7 @@ theorem exact_ranks_along_tied_family_alt : (∀ D : D7, RT.MassRatioUnderVolume
   have hx1 : Fm.x1 < x := lt_of_lt_of_le (lt_add_one _) (le_trans (le_max_right _ _) hx)
   have R := s.2 x hx1 (le_trans (le_max_left _ _) hx) i
   have hr := R.T.theta.real
-  have hm : ∀ u, StandardLattice.Mu0Tie (Fm.D x i) u := GlobalTheory.T.rankCondition_of_columns_equal_symmetricLevel _ R.T.cols
+  have hm : ∀ u, StandardLattice.Mu0Tie (Fm.D x i) u := _root_.GlobalTheory.mu0Tie_of_colsTiedSym _ R.T.cols
   have h4f : StandardLattice.Conclusion4f (Fm.D x i) (Fm.ex x hx1 i).lev :=
     StandardLattice.HarishChandraReduction.rankFormula_of_classNumber _ _ (ColClassNumber.classNumber_all _ _)
   obtain ⟨-, -, -, -, -, -, -, -, hT, -, h0, h1, -⟩ := hh.1

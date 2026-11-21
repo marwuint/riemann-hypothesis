@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDesce
 import Development.AbelianVarietyTheory.Definitions.Divisors.GaloisRepOfPolarizedCuspidal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulMat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulMatInjective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceFormLinearIsometryEqMulNormOneTorusStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceFormLinearIsometryEqMulNormOneTorus
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralUnitsOfIsCompactClosureZpowersMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactClosureZpowersMulIntegralUnitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactClosureZpowersMulIntegralUnit
 open NumberField GlobalTheory.UnitaryBC IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep Formalism.UG GlobalTheory.BCT
 open scoped Classical
 
@@ -157,7 +157,7 @@ theorem twCent_equiv_torus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
       refine ⟨Matrix.toLin b b (em (g⁻¹ : GLw m w).val) y, ?_⟩
       rw [← LinearMap.comp_apply, ← Matrix.toLin_mul, ← map_mul, Units.mul_inv, map_one, Matrix.toLin_one,
         LinearMap.id_apply]
-    obtain ⟨a, haT, hfa⟩ := GlobalTheory.T.traceForm_linearIsometry_eq_mul_normOneTorus K B (m - 1) u β hβ hadj hnd f hfs hiso
+    obtain ⟨a, haT, hfa⟩ := _root_.GlobalTheory.IsomMulTorus.isom_eq_mul K B (m - 1) u β hβ hadj hnd f hfs hiso
     refine ⟨a, haT, Units.ext ?_⟩
     rw [mulU_val, ← hfM]
     have : LinearMap.mulLeft K.E (a : B.A) = f := LinearMap.ext fun y => (hfa y).symm
@@ -187,7 +187,7 @@ theorem twCent_equiv_torus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
       obtain ⟨a, haT, rfl⟩ := hsurj g hg
       exact ⟨a, ⟨GlobalTheory.T.integralUnits_of_isCompact_closure_zpowers_mul E hE w hw K e hec hint hval B m b a hc, haT⟩, rfl⟩
     · rintro ⟨a, ⟨hai, haT⟩, rfl⟩
-      exact ⟨hT a haT, GlobalTheory.T.isCompact_closure_zpowers_mul_integralUnit E hE w hw K e hec hint hval B m b a hai⟩
+      exact ⟨hT a haT, _root_.GlobalTheory.TwLat.isCompact_closure_zpowers_mulU E hE w hw K e hec hint hval B m b a hai⟩
   rw [cptPart, hset, Subgroup.closure_eq, hφ t]
   constructor
   · rintro ⟨a, ⟨hai, -⟩, ha⟩

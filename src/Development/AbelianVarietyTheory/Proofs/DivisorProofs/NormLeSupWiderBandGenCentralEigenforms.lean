@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemBand
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemExpSolCons
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExponentialPolynomialSolutionSpaceFiniteDimensioStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExponentialPolynomialEqZeroOfEqOnIooStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimContinuousNormLeOnIccOfDeterminedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExponentialPolynomialEqZeroOfEqOnIoo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimContinuousNormLeOnIccOfDetermined
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicAbsDetMulArchimedeanExpScalarCurveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraFiniteFormsGLSpanKilledScalarDerivaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraFiniteFormsGLSpanKilledScalarDeriva
 
 noncomputable section
 
@@ -67,19 +67,19 @@ theorem norm_le_of_band_wide : ∀ (E : Type) [Field E] [NumberField E] [IsTotal
   · refine ⟨1, fun φ _ M hM g _ _ => ?_⟩
     have e : g = 1 := Units.ext (Subsingleton.elim _ _)
     rw [one_mul]; exact hM g (e ▸ one_mem_band)
-  obtain ⟨Λ, hΛ⟩ := GlobalTheory.T.harishChandraFiniteFormsGL_span_killed_scalarDerivative E a L W X hX N
+  obtain ⟨Λ, hΛ⟩ := _root_.GlobalTheory.HCF.span_formsGL_killed_scalD E a L W X hX N
   set κ : ℝ := a * Module.finrank ℚ E with hκ
   have hκ0 : 0 < κ := mul_pos (by exact_mod_cast ha) (by exact_mod_cast Module.finrank_pos)
   set ℓ : ℝ := Real.log 2 / κ
   have hℓ : 0 < ℓ := div_pos (Real.log_pos (by norm_num)) hκ0
   have hvan : ∀ f ∈ expSol Λ, (∀ x ∈ Set.Icc 0 ℓ, f x = 0) → f = 0 := fun f hf h0 =>
-    GlobalTheory.T.exponentialPolynomial_eq_zero_of_eqOn_Ioo Λ f hf 0 ℓ hℓ fun x hx => h0 x (Set.Ioo_subset_Icc_self hx)
+    _root_.GlobalTheory.HCF.expSol_eq_zero_of_eqOn_Ioo Λ f hf 0 ℓ hℓ fun x hx => h0 x (Set.Ioo_subset_Icc_self hx)
   have hcont : ∀ f ∈ expSol Λ, Continuous f := by
     intro f hf
     cases Λ with
     | nil => rw [mem_expSol_nil.1 hf]; exact continuous_const
     | cons c l => exact (mem_expSol_cons.1 hf).1.continuous
-  obtain ⟨C, hC⟩ := GlobalTheory.T.finiteDim_continuous_norm_le_on_Icc_of_determined (expSol Λ) (GlobalTheory.T.exponentialPolynomialSolutionSpace_finiteDimensional Λ) hcont ℓ hℓ hvan (Real.log (2 * c) / κ)
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.finiteDim_norm_le_on_Icc_of_determined (expSol Λ) (GlobalTheory.T.exponentialPolynomialSolutionSpace_finiteDimensional Λ) hcont ℓ hℓ hvan (Real.log (2 * c) / κ)
   refine ⟨C, fun φ hφ M hM g hg1 hg2 => ?_⟩
   have hgpos := absDetA_pos g
   set τ : ℝ := Real.log (absDetA g) / κ

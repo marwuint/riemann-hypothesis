@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CharZeroOfIsPrimitiveRoot
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaPtEqUnitMulTh
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLawsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLaws
+import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsThetaPtOverOfSubsingleton
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsEquivOfIsPushout
 
@@ -265,7 +266,7 @@ theorem prod_cubN_wS {k : ℕ} (hk : Odd k) {b : B.A} (hb : b ^ k = 1) :
 
 theorem cubN_wS_sym {k : ℕ} (hk : Odd k) {b : B.A} (hb : b ^ k = 1) :
     cubN B.θ k 1 b b⁻¹ * B.wS k b 1 1 * (B.wS k b 1 1 * B.σ b⁻¹ ^ k) = 1 := by
-  have a₁ := (GlobalTheory.T.mulq_dbl_cubN_relations O B k 1 b b).2.2.1
+  have a₁ := (_root_.GlobalTheory.Ex.mulq_laws O B k 1 b b).2.2.1
   have a₂ := cubN_mul B.cub hb b⁻¹ b
   have a₃ := B.σ_inv b
   rw [hb, B.cub.N_one, dbl, B.cub.face, B.σ_one] at a₁

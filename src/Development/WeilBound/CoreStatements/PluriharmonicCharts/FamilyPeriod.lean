@@ -3,9 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.OmHeightslockG
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.IsDerivAt0Congr
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.DerivZero
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCBmExistsSumframe
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarisedStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarised
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairSumFrameAtPointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixChangeFrameStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixChangeFrame
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOfTendstoLocallyUniformlyOn
 
 open AlgebraicGeometry CategoryTheory NumberField Matrix ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.BMx ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P
@@ -47,7 +48,7 @@ theorem family_period (hN : N1c) (tie : FlagTie M 𝔐) (hpq : 1 ≤ D.p + D.q)
   have hfr := fun τ => PositivityTheory.Xgp.isFrameAt_comap_gbS E H D Xo l c Y S K ι Φ y M 𝔐 tie F hF τ _ hg
   obtain ⟨i, ρ, B, P, W, G, hρ, hρ', hB, h0, hsub, hP, hW, hall, hder⟩ := model_periods 𝔐
     (fun a : CMType H × Fin (D.p + D.q) => gb tie F a.1 a.2) p τ₀ FU hp hc hi
-    (fun a => GlobalTheory.T.hodge_generated_sum_specialization E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 _ _ _ (gbS tie F a.1) (p 0) (𝔐.all _) (hfr a.1) a.2)
+    (fun a => _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.FrameLat.frame_mem_lat E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 _ _ _ (gbS tie F a.1) (p 0) (𝔐.all _) (hfr a.1) a.2)
   let s : CMType H → (E →+* ℂ) := fun τ => τ₀.comp (τ.1.codRestrict c.F (c.conj τ.1))
   have hs : ∀ τ, s τ (H.rt : E) = H.rt0 := fun τ => by
     rw [← hτ]
@@ -58,12 +59,12 @@ theorem family_period (hN : N1c) (tie : FlagTie M 𝔐) (hpq : 1 ≤ D.p + D.q)
     (hall u hu).2.1 _ fun k => (τ, k)
   have hb0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1 := Metric.mem_ball_self one_pos
   have hpos : ∀ τ, (Γ τ 0).PosDef := fun τ => by
-    have hpol := GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 _ (hi 0 hb0)
+    have hpol := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.polarisedAt_of_interior E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 _ (hi 0 hb0)
     obtain ⟨Γ', h1, h2⟩ := GlobalTheory.T.pair_sum_frame_at_point E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 (.inl τ) (.inr τ) (D.p + D.q)
       (gbS tie F τ) _ (𝔐.all _) hpol (hfr τ)
     have h3 := hΓ τ 0 h0
     rw [smul_zero] at h3
-    rw [GlobalTheory.T.gram_matrix_change_frame E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 _ _ _ _ _ hpol h3 h1]
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.gramAt_unique_of_polarisedAt E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 _ _ _ _ _ hpol h3 h1]
     exact h2
   have key := fun τ => exists_period_of_frames hty hB h0 hP (hs τ) (W := fun k => W (τ, k)) (fun k => hW _)
     (fun u hu a j hj => by
@@ -99,7 +100,7 @@ theorem family_period (hN : N1c) (tie : FlagTie M 𝔐) (hpq : 1 ≤ D.p + D.q)
 theorem gramFn_eq {r : ℕ} {b : Fin r → 𝔐.Li} {z : Sp ℂ ⟶ 𝔐.X} {w : (Σ k, baseIdx ι M.blk k) → ℂ}
     {Γ : Matrix (Fin r) (Fin r) ℂ} (hw : CoordsAt 𝔐.ξ M.x z w) (hi : 𝔐.Interior z)
     (h1 : 𝔐.M.GramAt 𝔐.t.PP.L z b Γ) : HodgeMetric.gramFn 𝔐 b w = Γ := by
-  have tp := GlobalTheory.T.local_ring_points_existsUnique 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ
+  have tp := _root_.GlobalTheory.CompanionTheory.Ar.tie_points 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ
   have hex : ∃ (Γ : Matrix (Fin r) (Fin r) ℂ) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X),
       CoordsAt 𝔐.ξ M.x z w ∧ 𝔐.Interior z ∧ 𝔐.M.GramAt 𝔐.t.PP.L z b Γ := ⟨Γ, z, hw, hi, h1⟩
   unfold HodgeMetric.gramFn
@@ -107,8 +108,8 @@ theorem gramFn_eq {r : ℕ} {b : Fin r → 𝔐.Li} {z : Sp ℂ ⟶ 𝔐.X} {w :
   obtain ⟨z₀, hw₀, -, hΓ₀⟩ := hex.choose_spec
   have hz : z₀ = z := (tp.1 w hw.1 (tp.2.2 z w (𝔐.all _) hw).1).unique ⟨𝔐.all _, hw₀⟩ ⟨𝔐.all _, hw⟩
   rw [hz] at hΓ₀
-  exact GlobalTheory.T.gram_matrix_change_frame E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z _ _ _ _
-    (GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z hi) hΓ₀ h1
+  exact _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.gramAt_unique_of_polarisedAt E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z _ _ _ _
+    (_root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.polarisedAt_of_interior E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z hi) hΓ₀ h1
 
 theorem exists_family {n : ℕ} (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) {Z : Set Rb.X} (hZ : IsClosed Z) {x : Rb.X}
     (hx : x ∉ Z) : ∃ (j : Fin Rb.A.n) (r : ℝ) (p : (Fin n → ℂ) → (Sp ℂ ⟶ 𝔐.X)), 0 < r ∧ x ∈ (Rb.A.chart j).source ∧
@@ -129,7 +130,7 @@ theorem exists_family {n : ℕ} (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) {Z : Set
     nlinarith)
   have hex : ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, ∃ z : Sp ℂ ⟶ 𝔐.X, genPt 𝔐.ξ ⤳ centre z ∧
       CoordsAt 𝔐.ξ M.x z (Rb.lift x ((Rb.A.chart j).symm (Rb.A.chart j x + (r : ℂ) • u))) := fun u hu =>
-    (GlobalTheory.T.complex_points_iff_centres 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie _).1 (Rb.mem x _ (hm u hu).2.1)
+    (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie _).1 (Rb.mem x _ (hm u hu).2.1)
   haveI : Nonempty (Sp ℂ ⟶ 𝔐.X) := ⟨(hex 0 (by simp)).choose⟩
   choose! p hp₀ hp using hex
   refine ⟨j, r, p, hr, hj, differentiableOn_pi.2 fun q u hu => ?_, fun u hu => ⟨(hm u hu).2.2, hp u hu, ?_⟩⟩
@@ -137,7 +138,7 @@ theorem exists_family {n : ℕ} (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) {Z : Set
     have h2 : DifferentiableAt ℂ (fun u : Fin n → ℂ => Rb.A.chart j x + (r : ℂ) • u) u := by fun_prop
     exact (h1.comp u h2).differentiableWithinAt
   · obtain ⟨a, ha, e⟩ := Rb.compat _ x _ ⟨Rb.mem_U _, (hm u hu).2.1⟩
-    exact (((GlobalTheory.T.local_ring_points_existsUnique 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ).2.2 _ _ (𝔐.all _) (hp u hu)).2 _).2
+    exact (((_root_.GlobalTheory.CompanionTheory.Ar.tie_points 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ).2.2 _ _ (𝔐.all _) (hp u hu)).2 _).2
       ⟨fun k => Units.mk0 (a k) (ha k), e⟩
 
 theorem to_manifold {n : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas n X) (j : Fin A.n) {x : X}

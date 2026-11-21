@@ -381,7 +381,7 @@ theorem exists_good_vec : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T :
     have eg := congrArg star (congrFun (hxG κ hκ) g)
     rw [← eg, Finset.sum_apply, Finset.sum_apply, star_sum]
     refine Finset.sum_congr rfl fun a _ => ?_
-    have := GlobalTheory.T.star_idemOf_coeff_eq_self D.what₂.embLL A.X hOk.irr hX a
+    have := _root_.GlobalTheory.CuspMult.idemOf_coeff_real D.what₂.embLL A.X hOk.irr hX a
     simp only [principalLevelFrame.rt_apply, Pi.smul_apply, smul_eq_mul, star_mul']
     congr 1
     exact this.symm
@@ -463,7 +463,7 @@ theorem exists_mem_isotL (hP : GlobalTheory.Published.HarishChandraFinite) {D : 
   obtain ⟨c', hc'⟩ := hC.lev.βW i
   have hrk : (Yc D 0).rank = (Wc D i).rank := GlobalTheory.PartDims.rank_zeroth_component_eq.trans (GlobalTheory.PartDims.rank_weight_component_eq i).symm
   obtain ⟨j, Φ, hΦ⟩ := GlobalTheory.FinIsoExists.exists_isFinIso (Yc D 0) (Wc D i) (R.βY 0) (R.ΛY 0) _ (R.βW i) (R.ΛW i) _ R.Pg hrk hc hc'
-    (GlobalTheory.T.typePlaces_not_pairwise_conjugate R.C.P R.Pg hC.lev.Pg)
+    (_root_.GlobalTheory.TypePlaces.not_isConjPl R.C.P R.Pg hC.lev.Pg)
   obtain ⟨h, hh⟩ := frames_inner (Yc D 0) (Wc D i) hF PY PW hPY hPW (by rw [GlobalTheory.PartDims.rank_zeroth_component_eq]; exact odd_r D.R) _ _ _ j Φ hΦ
   set P := R.levL F false (sg0 D A) with hPdef
   let e := eqv PY
@@ -564,30 +564,6 @@ theorem exists_mem_isotL (hP : GlobalTheory.Published.HarishChandraFinite) {D : 
   refine Submodule.mem_iSup_of_mem Ψ (Submodule.mem_iSup_of_mem ⟨hΨe, hΨr⟩ ⟨GlobalTheory.OccRowVec.finRep π h ⟨y, hyS⟩, ?_⟩)
   show f' (GlobalTheory.OccRowVec.finRep π h⁻¹ (GlobalTheory.OccRowVec.finRep π h ⟨y, hyS⟩)) = _
   rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
-
-set_option maxHeartbeats 1000000 in
-set_option synthInstance.maxHeartbeats 400000 in
-
-theorem isot_ne_bot : GlobalTheory.Published.HarishChandraFinite → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → GlobalTheory.CuspMult.MultEq R.toRealDat → Formalism.L2.DIV.GoodStable A3.A.X → (∀ χ ∈ A3.A.X, chiIdem χ * lvlIdem F.P0 F.ψ0 ≠ 0) → ∀ (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : RecTie.TopMultH R.toRealDat) (hinj : ∀ i t, Function.Injective (R.toRealDat.extV i t)) (X0 : BaseLevelRowSide D) (Ish : RecTie.RowIds (RowSide.sharp D) (RecTie.toChainReal R.toRealDat F.lv2 tupT hm hTop) true) (Ib : RecTie.RowIds X0.s (RecTie.toChainReal R.toRealDat F.lv2 tupT hm hTop) false) (IL : RecTie.LiftIds (RecTie.toLiftReal R.toRealDat F.lv2 tupT hm hTop hinj)) (Kc : RecTie.ColReal D) {Xd : DivX D} (E : EigIdx D Xd) (labPi : E.Pi → A3.A.fam.base.Ix) {n : ℕ} (PY : principalLevelFrame.RowPsi (Yc D 0) n) (PW : ∀ i, principalLevelFrame.RowPsi (Wc D i) n) eFT piOf ι nch Tp, RecTie.RecReal R.toRealDat F.lv2 tupT hm hTop hinj X0 Ish Ib IL Kc E labPi PY PW eFT piOf ι nch Tp → tupT D.what₂.mu0 = A3.A.μ0 → ∀ (hF : D.host.F = maximalRealSubfield D.host.E), GlobalTheory.StdFrame.StdPsi hF PY → (∀ i, GlobalTheory.StdFrame.StdPsi hF (PW i)) → ∀ σ (i : Fin D.R.m), D.what₂.isot ((i : ℕ) + 1) (D.what₂.ft σ) ≠ ⊥ := by
-  intro hP D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hChar hEx hME hGS hgen tupT hm hTop hinj X0 Ish Ib IL Kc Xd E labPi n PY PW eFT piOf ι nch Tp hRec hmu hF hPY hPW σ i
-  have hL := hRec.tied.lift
-  obtain ⟨w, hw, hw0⟩ := exists_mem_isotL hP R.toRealDat F.lv2 hOk.ok2 (GlobalTheory.CoreOfWeak.core_of_weak R F hChar hEx).1 hME hGS hgen hF PY i (PW i)
-    hPY (hPW i) (principalLevelFrame.rowRepR R.θ (eFT (D.what₂.ft σ))) (principalLevelFrame.rowRepR_occ _ _)
-  intro hbot
-  let L := RecTie.toLiftReal R.toRealDat F.lv2 tupT hm hTop hinj
-  let lw : L.AmbW i := (PiTensorProduct.lift : Mult.MMap (R.MW i (sg0 D A3.A)) ≃ₗ[ℂ] L.AmbW i) w
-  have hgood : lw ∈ L.Wc i := Submodule.mem_map_of_mem hw.1
-  let y : D.what₂.Mj ((i : ℕ) + 1) := (IL.jMj i).symm ⟨lw, hgood⟩
-  have hjy : ((IL.jMj i y : L.Wc i) : L.AmbW i) = lw := by
-    simp only [y, LinearEquiv.apply_symm_apply]
-  have hmem : ((IL.jMj i y : L.Wc i) : L.AmbW i) ∈ IL.prtW i (D.what₂.ft σ) := by
-    rw [hjy, hRec.prtWE]
-    exact ⟨w, hw, rfl⟩
-  have hy0 : y ∈ D.what₂.isot ((i : ℕ) + 1) (D.what₂.ft σ) := (hL.isot i _ y).2 hmem
-  rw [hbot, Submodule.mem_bot] at hy0
-  apply hw0
-  have h1 : lw = 0 := by rw [← hjy, hy0, map_zero]; rfl
-  exact (PiTensorProduct.lift : Mult.MMap (R.MW i (sg0 D A3.A)) ≃ₗ[ℂ] L.AmbW i).injective (h1.trans (map_zero _).symm)
 
 end GlobalTheory.KapIsot
 end

@@ -1,56 +1,23 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.JumpSetDistinctOfRealPlaceFacts
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.DeRhamFamilyAway
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.JumpLemmaAOfAdmissible
 
 set_option synthInstance.maxHeartbeats 200000
 
 section
-noncomputable section
 namespace GlobalTheory.JumpSets
-open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.AdmissibleParameterJ
-variable {D : D7}
 end GlobalTheory.JumpSets
-end
-noncomputable section
 namespace GlobalTheory.JumpSets
-open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.AdmissibleParameterJ
-variable {D : D7}
-section HC
-variable {R : Ranks} (P : HCParam R)
-end HC
 end GlobalTheory.JumpSets
-end
-noncomputable section
 namespace GlobalTheory.JumpSets
-open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.AdmissibleParameterJ
-variable {D : D7}
 end GlobalTheory.JumpSets
-end
-noncomputable section
 namespace GlobalTheory.JumpSets
-open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.AdmissibleParameterJ
-variable {D : D7}
-section JB
-variable {L : SizeData₂ D} {j : ℕ} {ρ : D.what₂.Tau}
-end JB
 end GlobalTheory.JumpSets
-end
-noncomputable section
 namespace GlobalTheory.JumpSets
-open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.AdmissibleParameterJ
-variable {D : D7}
-section Core
-variable {L : SizeData₂ D} {j : ℕ} {ρ : D.what₂.Tau}
-end Core
 end GlobalTheory.JumpSets
-end
-noncomputable section
 namespace GlobalTheory.JumpSets
-open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.AdmissibleParameterJ Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Classical
-variable {D : D7}
 end GlobalTheory.JumpSets
-end
 noncomputable section
 namespace GlobalTheory.JumpSets
 open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.AdmissibleParameterJ

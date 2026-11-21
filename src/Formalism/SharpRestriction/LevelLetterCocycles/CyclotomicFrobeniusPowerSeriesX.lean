@@ -19,14 +19,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 theorem cyclotomicFrobeniusPowerSeries_X (W : LocWach PD LL O v n) : W.φ₀ X = (1 + X) ^ PD.p - 1 := by
   rw [W.φ₀_X, W.q₀_def]
 
-theorem glue1 (hR : Ring9 W) :
-    ∃ w : (PowerSeries O)ˣ, (baseIdOf hR).ι X = (w : PowerSeries O) * X ^ (PD.p - 1) := by
-  obtain ⟨w, hw⟩ := hR.2.2.1
-  refine ⟨Units.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) 0) w, ?_⟩
-  have h0 := congrFun hw 0
-  rw [(baseIdOf hR).ι_X]
-  simpa [LocWach.π₀, letπ] using h0
-
 theorem cyclo_comp_mul_X {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] :
     (Polynomial.cyclotomic p R).comp (Polynomial.X + 1) * Polynomial.X =
       (Polynomial.X + 1) ^ p - 1 := by

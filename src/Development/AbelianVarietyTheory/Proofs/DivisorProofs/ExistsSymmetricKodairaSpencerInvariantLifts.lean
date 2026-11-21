@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisPullbackMatrixInvariantFieldsRaynaudStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerDescentOfTorusInvariantLiftsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerRelationMatrixSymmetricLocalDomainStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisPullbackMatrixInvariantFieldsRaynaud
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerDescentOfTorusInvariantLifts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerRelationMatrixSymmetricLocalDomain
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -21,9 +21,9 @@ namespace GlobalTheory.InvLiftSymm
 
 theorem exists_symm_invLift : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) (O : Type) [CommRing O] [StarRing O] [Module O Dd.toPre.X] (oa : Dd.toPre.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∀ (D : Derivation ℤ R R) (J : Type) (V : J → Dd.toPre.P.A.left.Opens) (j : J → Dd.toPre.P.L.ι) (d : J → Fld Y.H.left), ⨆ i, V i = ⊤ → (∀ i, V i ≤ Dd.toPre.P.L.U (j i)) → (∀ i, IsLift Y.H ⇑D (Y.q.left ⁻¹ᵁ V i) (d i)) → (∀ i, (∀ (α : Dd.toPre.X) (V' : Dd.toPre.P.A.left.Opens), Y.q.left ⁻¹ᵁ V' ≤ Y.q.left ⁻¹ᵁ V i → ∀ f, IsWt Y α (Y.q.left ⁻¹ᵁ V') f → IsWt Y α (Y.q.left ⁻¹ᵁ V') (d i _ f))) → ∀ C : Matrix (Fin n) (Fin n) R, (∀ i i' (W : Y.H.left.Opens), W ≤ Y.q.left ⁻¹ᵁ V i ⊓ Y.q.left ⁻¹ᵁ V i' → ∀ f, d i W f - d i' W f = ∑ a, ∑ b, constFn Y.H.hom W (C a b) * dlg Y.H Y.q.left Dd.toPre.P.L (dd b) (j i) (j i') W * dd a W f) → ∃ Θ : Matrix (Fin n) (Fin n) R, Θᵀ = Θ ∧ ∀ i i' (W : Y.H.left.Opens), W ≤ Y.q.left ⁻¹ᵁ V i ⊓ Y.q.left ⁻¹ᵁ V i' → ∀ f, d i W f - d i' W f = ∑ a, ∑ b, constFn Y.H.hom W (Θ a b) * dlg Y.H Y.q.left Dd.toPre.P.L (dd b) (j i) (j i') W * dd a W f := by
   intro R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hinv D J V j d hcov hle hlift hwt C hrel
-  obtain ⟨g, w, e, P, Qm, he, hPQ, hfac⟩ := GlobalTheory.T.exists_basis_pullback_matrix_invariantFields_raynaud R Dd O oa Y n v dd hinv
-  have hKS := GlobalTheory.T.kodairaSpencer_descent_of_torus_invariant_lifts R Dd O oa Y n v dd hinv g w e P he hfac D J V j d hcov hle hlift hwt C hrel
-  have hM : (P * C * Pᵀ)ᵀ = P * C * Pᵀ := GlobalTheory.T.kodairaSpencer_relation_matrix_symmetric_local_domain R Dd.toPre.P g w e he D _ hKS
+  obtain ⟨g, w, e, P, Qm, he, hPQ, hfac⟩ := _root_.GlobalTheory.InvFactor.exists_basis_pull_matrix R Dd O oa Y n v dd hinv
+  have hKS := _root_.GlobalTheory.HeatDescend.ksRel_of_invLifts R Dd O oa Y n v dd hinv g w e P he hfac D J V j d hcov hle hlift hwt C hrel
+  have hM : (P * C * Pᵀ)ᵀ = P * C * Pᵀ := _root_.GlobalTheory.KSRelSymm.ksRel_symm R Dd.toPre.P g w e he D _ hKS
   have hM' : P * (Cᵀ * Pᵀ) = P * (C * Pᵀ) := by
     rw [Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose] at hM
     rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, ← hM, Matrix.mul_assoc]

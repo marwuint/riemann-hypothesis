@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMulStarEqOfNormOneUnramifiedQuadraticStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMulStarEqOfNormOneUnramifiedQuadratic
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.EtaChar
@@ -107,7 +107,7 @@ theorem main : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedF
       have hy0 : y ≠ 0 := by
         rintro rfl
         exact hx (norm_eq_zero.1 (by simpa using hy))
-      obtain ⟨v, hv⟩ := GlobalTheory.T.exists_mul_star_eq_of_norm_one_unramifiedQuadratic F E (x / y ^ 2) (by rw [norm_div, norm_pow, hy, div_self (by positivity)])
+      obtain ⟨v, hv⟩ := _root_.GlobalTheory.NormUnits.norm_onto_units F E (x / y ^ 2) (by rw [norm_div, norm_pow, hy, div_self (by positivity)])
       refine ⟨v * algebraMap F E y, ?_⟩
       rw [star_mul', hU.star_fix y]
       calc v * algebraMap F E y * (star v * algebraMap F E y)

@@ -45,11 +45,7 @@ def badS (D : D7) : Set ℕ :=
   hostS D.host.q D.host.d (D.host.g 0) (D.host.g 1)
     ((Set.range fun u : D.what₂.Word => (D.mem u).A.T) ∪ (D.host.small : Set ℕ))
 
-theorem T_mem_badS (D : D7) (u : D.what₂.Word) : (D.mem u).A.T ∈ badS D := Or.inr (Or.inl ⟨u, rfl⟩)
-
 theorem small_mem_badS (D : D7) (l : ℕ) (h : l ∈ D.host.small) : l ∈ badS D := Or.inr (Or.inr (Finset.mem_coe.2 h))
-
-theorem g_mem_badS (D : D7) (i : Fin 2) : D.host.g i ∈ badS D := Or.inl (by fin_cases i <;> simp)
 
 abbrev Twist (D : D7) : Type := Tup (recFields D).F (recFields D).E (recFields D).K (badS D)
 
@@ -138,17 +134,6 @@ def BoundAt {D : D7} (L : SizeData₂ D) (EX : ErrX D) (C1 : ℝ) (i : Fin 2) (w
   ∀ φ ∈ DV.MramL D u, ∀ F ∈ (D.what₂.Mtilde μ).carrier, ∃ y : D.what₂.LL,
     D.what₂.embLL y = D.what₂.perCol u μ (D.jN u φ) F ∧
       (y = 0 ∨ -(∑ j ∈ LiftErrorLocal.lifts D, vNN EX i u j w) - C1 * LiftErrorLocal.errC D L ≤ LiftErrorLocal.vG D w y)
-
-def periodBound_at (D : D7) (L : SizeData₂ D) (EX : ErrX D) (Dx : DivX D)
-    (Ch : Chars (recFields D) (recPrimes EX) D.R.m)
-    (mu0 : Fin D.R.m → Formalism.L2.Host.HChar D.host.E) (eta : Formalism.L2.Host.HChar D.host.E)
-    (sel : HeightOneSpectrum (𝓞 D.host.F) → HeightOneSpectrum (𝓞 D.host.E))
-    {δ : ℂ} (B : Base D D.host.ccK δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (C1 : ℝ) : Prop :=
-  HostTie EX → CharTie Ch mu0 eta sel → AnTie D δ χ cD →
-    ∀ (i : Fin 2), SizeAt D i → ∀ w : LiftErrorLocal.Pl D, LiftErrorLocal.Over D i w →
-      ∀ u : D.what₂.Word, D.what₂.places.resChar w ≠ (D.mem u).A.T →
-        ∀ μ : D.what₂.Tup, D.host.g i ∉ Dx.Qp μ →
-          ChainTie Ch sel Dx mu0 (ambOf (recSeam D) B χ cD) u μ → BoundAt L EX C1 i w u μ
 
 theorem recSeam_emb (D : D7) (τ : D.what₂.Tau) (x : D.host.E) :
     (recSeam D).σ₀ ((recFields D).emb τ x) = TaylorLogMetric.embT D ((recSeam D).iT τ) ((recSeam D).iE x) := by

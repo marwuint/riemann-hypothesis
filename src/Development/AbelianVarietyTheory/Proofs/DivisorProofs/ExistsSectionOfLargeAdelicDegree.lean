@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannInequalityCofinalFunctionFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceLocalIndexColengthStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceLocalIndexScaledUniformiserStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroLinearCombinationMemCommonKernelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannInequalityCofinalFunctionField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceLocalIndexColength
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceLocalIndexScaledUniformiser
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroLinearCombinationMemCommonKernel
 
 open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef
@@ -62,7 +62,7 @@ theorem exists_exp_bound (v : Place k F) {n : ℕ} (M : Matrix (Fin n) (Fin n) F
 theorem exists_section_of_large_deg : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F →
   ∃ γ : ℕ, ∀ (n : ℕ) (g : Place k F → Matrix (Fin n) (Fin n) F), admitted g → (n : ℤ) * γ < deg g → ∃ p : Fin n → F, p ≠ 0 ∧ ∀ (v : Place k F) (i : Fin n), v.1 ((g v).mulVec p i) ≤ 1 := by
   intro k F _ _ _ _ _ hFF
-  obtain ⟨γ, hγ⟩ := GlobalTheory.T.riemann_inequality_cofinal_functionField k F hFF
+  obtain ⟨γ, hγ⟩ := _root_.GlobalTheory.Nef.riemann_cofinal k F hFF
   refine ⟨γ, fun n g hg hdeg => ?_⟩
   classical
   set B := hg.2.toFinset with hBdef
@@ -77,7 +77,7 @@ theorem exists_section_of_large_deg : ∀ (k F : Type) [Field k] [IsAlgClosed k]
       ∀ p : Fin n → F, (∀ i, v.1 (p i) ≤ WithZero.exp (((D' v).toNat : ℕ) : ℤ)) → φ p = 0 →
         ∀ i, v.1 ((g v).mulVec p i) ≤ 1 := by
     intro v
-    refine GlobalTheory.T.functionFieldPlace_localIndex_scaled_uniformiser k F hFF v n (g v) _ (hg.1 v) ?_
+    refine _root_.GlobalTheory.Nef.local_index_scaled k F hFF v n (g v) _ (hg.1 v) ?_
     intro i j
     by_cases hv : v ∈ B
     · have hDv : D v = d0 v := by simp [D, Finsupp.onFinset_apply, hv]
@@ -85,7 +85,7 @@ theorem exists_section_of_large_deg : ∀ (k F : Type) [Field k] [IsAlgClosed k]
         _ ≤ _ := by
           rw [WithZero.exp_le_exp]; have := hDD' v; rw [hDv] at this; omega
     · have hU : Unimod v (g v) := by simpa [B] using hv
-      have hU' := ((GlobalTheory.T.functionFieldPlaceOrder_calculus k F v).2.2.2.2.2.2.2.2.2 n (g v) (g v) hU hU).2
+      have hU' := ((_root_.GlobalTheory.Nef.ord_calculus k F v).2.2.2.2.2.2.2.2.2 n (g v) (g v) hU hU).2
       calc v.1 ((g v)⁻¹ i j) ≤ 1 := hU'.1 i j
         _ = WithZero.exp 0 := rfl
         _ ≤ _ := by rw [WithZero.exp_le_exp]; omega
@@ -111,7 +111,7 @@ theorem exists_section_of_large_deg : ∀ (k F : Type) [Field k] [IsAlgClosed k]
     rw [← hsumD, ← hdegS]
     have := mul_le_mul_of_nonneg_left hm (Int.natCast_nonneg n)
     nlinarith
-  obtain ⟨c, hp0, hpψ⟩ := GlobalTheory.T.exists_ne_zero_linear_combination_mem_common_kernel k F (Place k F) n m f hf S N φ (by exact_mod_cast hNsum)
+  obtain ⟨c, hp0, hpψ⟩ := _root_.GlobalTheory.exists_ne_zero_comb_mem_ker k F (Place k F) n m f hf S N φ (by exact_mod_cast hNsum)
   refine ⟨_, hp0, fun v i => ?_⟩
   have hpb : ∀ i, v.1 (∑ j, c i j • f j) ≤ WithZero.exp (((D' v).toNat : ℕ) : ℤ) := fun i =>
     val_comb_le v f (c i) _ (fun j => val_le_exp_of_ord v _ _ (by omega)

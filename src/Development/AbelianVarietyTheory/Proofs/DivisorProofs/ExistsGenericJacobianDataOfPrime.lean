@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSqLocalizationOfPderivMemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDetNeZeroOfRowsSeparatingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMinimalLocalGeneratorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSqLocalizationOfPderivMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDetNeZeroOfRowsSeparating
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMinimalLocalGenerators
 open IsLocalRing TensorProduct
 
 namespace GlobalTheory
@@ -13,7 +13,7 @@ theorem exists_generic_jacobian_data_of_prime (Λ : Type) [CommRing Λ] [IsDomai
       g ∉ Q ∧ (∀ j, f j ∈ Q) ∧ (∀ x ∈ Q, g * x ∈ Ideal.span (Set.range f)) ∧
       (Matrix.of fun i j => MvPolynomial.pderiv (s i) (f j)).det ∉ Q := by
   classical
-  obtain ⟨h, f, g, hgQ, hfQ, hgen, -, hmin⟩ := GlobalTheory.T.exists_minimal_local_generators' (MvPolynomial σ Λ) Q
+  obtain ⟨h, f, g, hgQ, hfQ, hgen, -, hmin⟩ := _root_.GlobalTheory.exists_minimal_local_generators (MvPolynomial σ Λ) Q
 
   set φ : MvPolynomial σ Λ →+* FractionRing (MvPolynomial σ Λ ⧸ Q) :=
     (algebraMap (MvPolynomial σ Λ ⧸ Q) (FractionRing (MvPolynomial σ Λ ⧸ Q))).comp
@@ -42,14 +42,14 @@ theorem exists_generic_jacobian_data_of_prime (Λ : Type) [CommRing Λ] [IsDomai
       refine Q.add_mem ?_ (Q.sum_mem fun j _ => Q.mul_mem_right _ (hfQ j))
       rw [← hφker, map_sum]
       simp only [map_mul, hφa, mul_assoc, ← Finset.mul_sum, ha t, mul_zero]
-    obtain ⟨u, hu, hux⟩ := GlobalTheory.T.exists_not_mem_mul_mem_sq_of_pderiv_mem Λ σ Q hQ _ hx hpd
+    obtain ⟨u, hu, hux⟩ := _root_.GlobalTheory.mem_sq_localization_of_pderiv_mem Λ σ Q hQ _ hx hpd
     have haQ := hmin a' u hu hux
     funext j
     have h1 : φ (a' j) = 0 := (hφker _).mpr (haQ j)
     rw [hφa j] at h1
     exact (mul_eq_zero.mp h1).resolve_left
       (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2)
-  obtain ⟨s, hs⟩ := GlobalTheory.T.exists_det_ne_zero_of_separating_functionals (FractionRing (MvPolynomial σ Λ ⧸ Q)) σ h
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.exists_det_ne_zero_of_rows_separating (FractionRing (MvPolynomial σ Λ ⧸ Q)) σ h
     (fun t j => φ (MvPolynomial.pderiv t (f j))) hind
   refine ⟨h, f, s, g, hgQ, hfQ, hgen, fun hdet => hs ?_⟩
   have hmat : (Matrix.of fun i j => φ (MvPolynomial.pderiv (s i) (f j))) =

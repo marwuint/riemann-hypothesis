@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConstMemBddAut
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegralInverseAtSplitPlacesOfUnitsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegralInverseAtSplitPlacesOfUnits
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum GlobalTheory.LFun GlobalTheory.AdelicU GlobalTheory.PRep GlobalTheory.FinZeta GlobalTheory.AdelicScalar GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.LiftRows
@@ -112,12 +112,6 @@ theorem topL_mul {m n : ℕ} (hnm : n ≤ m) (A : Matrix (Fin m) (Fin n) (EAf D)
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [topL_pos _ ⟨hi, k.2⟩]
 
-theorem topL_smul {m n : ℕ} (c : EAf D) (A : Matrix (Fin m) (Fin n) (EAf D)) : topL n (c • A) = c • topL n A := by
-  ext i j
-  by_cases h : i.val < m ∧ j.val < n
-  · rw [topL_pos _ h, Matrix.smul_apply, Matrix.smul_apply, topL_pos _ h]
-  · rw [topL_neg _ h, Matrix.smul_apply, topL_neg _ h, smul_zero]
-
 end GlobalTheory.HalfUnit
 
 namespace GlobalTheory.HalfUnit
@@ -166,9 +160,9 @@ theorem int_of_unit_tops : ∀ {D : D7} (m n : ℕ), n ≤ m → ∀ (Z : Finset
   have hfV : toEAf D e • topL n (u * (γ⁻¹ : GL (Fin n) (EAf D)).1) = topL n (u * (γ⁻¹ : GL (Fin n) (EAf D)).1) := by
     rw [hVeq]
     exact smul_mul_fix _ _ _ hfU
-  obtain ⟨w, hw, hwe⟩ := GlobalTheory.T.exists_integral_inverse_at_splitPlaces_of_units Z e he _ (det_mem hUi) fun PP hPP =>
+  obtain ⟨w, hw, hwe⟩ := _root_.GlobalTheory.LocalInvIdem.exists_inv Z e he _ (det_mem hUi) fun PP hPP =>
     isUnit_res_det PP hUi (by rw [← topL_redM]; exact hU PP hPP)
-  obtain ⟨w', hw', hwe'⟩ := GlobalTheory.T.exists_integral_inverse_at_splitPlaces_of_units Z e he _ (det_mem hVi) fun PP hPP =>
+  obtain ⟨w', hw', hwe'⟩ := _root_.GlobalTheory.LocalInvIdem.exists_inv Z e he _ (det_mem hVi) fun PP hPP =>
     isUnit_res_det PP hVi (by rw [← topL_redM]; exact hV PP hPP)
   have hγ := adj_eq _ _ _ (toEAf D e) w' hUeq hwe' hfU
   have hγi := adj_eq _ _ _ (toEAf D e) w hVeq hwe hfV

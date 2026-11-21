@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsProbabilityMeasureAutQuotientNormalized
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.FundSetPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.OrthoStatementPf
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LintegralUnfoldArithmeticQuotientDoubleCosetsStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LintegralUnfoldArithmeticQuotientDoubleCosets
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UnitFrameRealUnitaryOrbitGramRigidStatement
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsDiscreteArithGroupImageRealUnitaryStatement
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsMeasurePreservingFrameChangeProportionalHeStatement
@@ -153,7 +153,7 @@ theorem lintegral_dict {Comp : Type} [Fintype Comp] (X : Comp → Data E r) {G :
     simp only [Matrix.nonsing_inv_mul_cancel_right _ _ (hyu k τ)] at h2
     exact Subtype.ext (Units.ext (((Matrix.isUnit_iff_isUnit_det _).2 (hyu k τ)).mul_left_cancel h2))
   haveI : ∀ k, (haarR (X k)).IsHaarMeasure := fun k => by unfold haarR; infer_instance
-  refine Exists.elim (GlobalTheory.T.lintegral_unfold_arithmetic_quotient_doubleCosets G μ Γ H Kf 𝓕 h𝓕 h0 h1 hH
+  refine Exists.elim (_root_.GlobalTheory.PeterssonUnfold.unfold_lintegral G μ Γ H Kf 𝓕 h𝓕 h0 h1 hH
     (fun z hz => (hmem z).2 ⟨1, one_mem _, z, hz, (one_mul _).symm⟩) Comp (fun k => RealGrp (X k))
     (fun k => haarR (X k)) ψ Λ s g _ (SameOrb X) dict (fun k a => ⟨k, rmul (frameOf (X k) a) (b k)⟩)
     (fun k => (hψc k).measurable) ?_ ?_ ?_ ?_ hΛd (sameOrb_equivalence X) ?_ ?_ ?_ ?_ ?_) ?_

@@ -16,17 +16,6 @@ section OneGroup
 
 variable {V : VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J]
 
-def StructEq (X : Cart V d I J) (S : Sys X) : Prop :=
-  ∃ (c : ℕ → I → I → C) (c' : ℕ → I → J → C),
-    (∀ s a b, V.Ge 0 (c s a b)) ∧ (∀ s a κ, V.Ge 0 (c' s a κ)) ∧
-    (∀ (s : ℕ) a b, X.ty (Sum.inl b) ≠ X.ty (Sum.inl a) + 1 + s → c s a b = 0) ∧
-    ∀ (a : I) (i : ℕ) (n : I ⊕ J),
-      (V.l : C) * S.cur a (i + 1) n =
-        (∑ s ∈ Finset.range (i + 1), ∑ b : I, c s a b ^ (V.l ^ (i - s)) * S.cur b (i - s) n) +
-          Sum.elim (fun _ => 0) (c' i a) n
-
-def StructEqAll (X : Cart V d I J) : Prop := ∀ S : Sys X, StructEq X S
-
 def LatticeInclusionFormsInjective (X : Cart V d I J) : Prop :=
   ∀ (S : Sys X) (c : I) (i : ℕ) (n : I ⊕ J), V.Ge (-(i : ℝ)) (S.cur c i n)
 
@@ -126,20 +115,6 @@ def LemmaM : Prop :=
       X.SatIn (1 - g) (a + (i : ZMod d)) U' →
       ∃ (n0 : ℕ) (e : Fin n0 → I g → C) (v' : Fin X.n → I (1 - g) → C) (Φ : Fin X.n → Fin n0 → C),
         X.MConcl g a i U U' n0 e v' Φ ∧ X.CurveSystemVanishing g a i n0 e v' Φ
-
-def LemmaMLeaf : Prop :=
-  X.Alt → 5 ≤ V.l → ∀ (g : Fin 2) (a : ZMod d), X.big g a → ∀ i : ℕ, Odd i → i < d →
-    ∀ (U : Fin X.n → I g → C) (U' : Fin X.n → I (1 - g) → C), X.SatIn g a U →
-      X.SatIn (1 - g) (a + (i : ZMod d)) U' →
-      ∃ (N1 : ℕ) (w : Fin N1 → I g → C) (Φ : Fin X.n → Fin N1 → C),
-        IsSat V w ∧
-        (∃ A : Fin N1 → Fin X.n → C, (∀ c b, V.Ge 0 (A c b)) ∧ ∀ c x, w c x = ∑ b, A c b * U b x) ∧
-        X.n ≤ N1 + (Formalism.BaseCaseIdentities.Kn i + 1) * X.j' ∧
-        (∀ b c, V.Ge 0 (Φ b c)) ∧
-        WtGe2 V i (1 / ((V.l : ℝ) - 1)) (X.hM g a i w U' - mainM V i Φ) ∧
-        ∃ (n0 : ℕ) (rr : Fin n0 ↪ Fin X.n) (cc : Fin n0 ↪ Fin N1),
-          X.n ≤ n0 + (i + 1) * X.j' + X.j ∧
-          V.v (Matrix.of fun b c : Fin n0 => Φ (rr b) (cc c)).det = 0
 
 def LemmaMPlus : Prop :=
   X.Alt → 5 ≤ V.l → 1 < d → ∀ (g : Fin 2) (a : ZMod d), X.big g a →

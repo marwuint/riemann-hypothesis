@@ -9,11 +9,11 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiamondOpera
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryOfIsON
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartWiden
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InclMulInvMul
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyClassMapAboveLastStepStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistPlacesPrimeToLevelAndTypePrimesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotTwistPlaceReferenceTupleStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroClassEquivReferenceTupleEqSelfStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroFormsIdentificationReferenceTupleEqSelfStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyClassMapAboveLastStep
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistPlacesPrimeToLevelAndTypePrimes
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotTwistPlaceReferenceTuple
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroClassEquivReferenceTupleEqSelf
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroFormsIdentificationReferenceTupleEqSelf
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DecoStabTrivial
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepQOfReindex
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPenultimateLevelCouplingCosetsStatement
@@ -156,7 +156,7 @@ theorem twStep_mid (hok : I.Ok) (pins : TC.Pins B X) {H : Formalism.L2.Herm.Herm
     (hQ : ∀ v, v ∈ Q ↔ I.UnderQ a v)
     (hF : ∀ u, I.StdF l Z u (F u)) (hC : CarH H F) : Nonempty (TwStep I l Z H F Q u a i) := by
   have hoff : ∀ v ∈ Q, ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal ∧ ∀ j, (((I.rec7 l Z).host.g j : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal :=
-    fun v hv => GlobalTheory.T.twistPlaces_prime_to_levelAndTypePrimes I hok l u a v ((hQ v).1 hv)
+    fun v hv => _root_.GlobalTheory.Mem.Col2.TC.underQ_prime_to_bad I hok l u a v ((hQ v).1 hv)
   have hi : i ≤ B.R.m := le_of_succ_m h2
   by_cases ha : a = I.mu0
   · subst ha
@@ -165,7 +165,7 @@ theorem twStep_mid (hok : I.Ok) (pins : TC.Pins B X) {H : Formalism.L2.Herm.Herm
         (fun c : {c // H.chOf u i c = β} => (I.chain l u I.mu0).stab i c.1) (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u I.mu0 i c.1)) :=
       fun β => chartWiden Set.subset_union_left ((F u).ch i h1 h2 β)
     refine ⟨twStep_mk hok pins u I.mu0 i h1 hi hoff (H.Ch u i) (H.ChFin u i) (H.chOf u i) id K hr0
-      (fun _ => hr0.elim fun k hk => ⟨k, hk, fun _ v hv => absurd hv (GlobalTheory.T.not_twistPlace_referenceTuple I hok v)⟩) (fun β => ?_) (fun β v _ => ?_) (fun _ _ β v _ => rfl)
+      (fun _ => hr0.elim fun k hk => ⟨k, hk, fun _ v hv => absurd hv (_root_.GlobalTheory.Mem.Col2.TC.not_underQ_mu0 I hok v)⟩) (fun β => ?_) (fun β v _ => ?_) (fun _ _ β v _ => rfl)
       (fun e => by omega) (fun h => absurd rfl h) (fun _ _ β κ κ' e _ => ?_)⟩
     · exact (hC.carC u i h1 h2 β).Lb_eq
     · exact (hC.carC u i h1 h2 β).Uloc_eq v
@@ -201,7 +201,7 @@ theorem twStep_top (hok : I.Ok) (pins : TC.Pins B X) {H : Formalism.L2.Herm.Herm
     (hQ : ∀ v, v ∈ Q ↔ I.UnderQ a v)
     (hF : ∀ u, I.StdF l Z u (F u)) (hC : CarH H F) : ∃ S : TwStep I l Z H F Q u a B.R.m, TopP S := by
   have hoff : ∀ v ∈ Q, ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal ∧ ∀ j, (((I.rec7 l Z).host.g j : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal :=
-    fun v hv => GlobalTheory.T.twistPlaces_prime_to_levelAndTypePrimes I hok l u a v ((hQ v).1 hv)
+    fun v hv => _root_.GlobalTheory.Mem.Col2.TC.underQ_prime_to_bad I hok l u a v ((hQ v).1 hv)
   have h1m : 1 ≤ B.R.m := one_le_m B.R
   have hr0 := (hF u).ends B.R.m le_rfl (Or.inr rfl)
   have hno : ∀ h2 : B.R.m + 1 ≤ B.R.m, False := fun h2 => by omega
@@ -283,7 +283,7 @@ theorem twPack_ex (hok : I.Ok) (pins : TC.Pins B X) {H : Formalism.L2.Herm.HermC
       · by_cases h3 : i = B.R.m
         · subst h3
           exact (twStep_top hok pins u a hQ hF hC).elim fun S _ => ⟨S⟩
-        · obtain ⟨f⟩ := GlobalTheory.T.nonempty_classMap_above_lastStep I hok u a i (by omega)
+        · obtain ⟨f⟩ := _root_.GlobalTheory.Mem.Col2.TC.nonempty_clDown I hok u a i (by omega)
           exact twStep_out u a i (by omega) (fun c => H.chOf u i (f c))
   obtain ⟨Sm, hSm⟩ := twStep_top (F := F) (Q := Q) hok pins u a hQ hF hC
   let St : ∀ i, TwStep I l Z H F Q u a i := Function.update (fun i => (ex i).some) B.R.m Sm
@@ -297,7 +297,7 @@ theorem twPack_ex (hok : I.Ok) (pins : TC.Pins B X) {H : Formalism.L2.Herm.HermC
       refine ((St (B.R.m - 1)).K h1 (Nat.sub_le _ _) β).lev.chi_triv κ fun v hv => ?_
       rcases hv with hv | hv
       · exact hκ v hv
-      · exact absurd (ha ▸ (hQ v).1 hv) (GlobalTheory.T.not_twistPlace_referenceTuple I hok v)
+      · exact absurd (ha ▸ (hQ v).1 hv) (_root_.GlobalTheory.Mem.Col2.TC.not_underQ_mu0 I hok v)
     · obtain ⟨n, hn, h⟩ := (St (B.R.m - 1)).chiFin ha h1 (Nat.sub_le _ _) β
       exact ⟨n, hn, fun κ _ => h κ⟩
   obtain ⟨J⟩ := GlobalTheory.T.exists_penultimateLevel_couplingCosets I hok pins l Z H.Ch H.chOf F u a Q h1 (St (B.R.m - 1)).Ch (St (B.R.m - 1)).fin (St (B.R.m - 1)).chOf
@@ -439,7 +439,7 @@ def twW (hok : I.Ok) (pins : TC.Pins B X) (l0 : I.Law0 l) {H : Formalism.L2.Herm
           exact (hF u).eV v)
       ipV u μ i hi := (GlobalTheory.Mem.Col2.MetricTie.ipV_norm_tie I hok pins l Z u μ i hi _ (idY_twYS hF Q hQ p u μ i hi)).1
       norm u μ i hi := (GlobalTheory.Mem.Col2.MetricTie.ipV_norm_tie I hok pins l Z u μ i hi _ (idY_twYS hF Q hQ p u μ i hi)).2
-      twisted_e0_at_mu0_eq_eMu0 u x := GlobalTheory.T.stepZeroFormsIdentification_referenceTuple_eq_self I hok l Z l0 u x, .. }
+      twisted_e0_at_mu0_eq_eMu0 u x := _root_.GlobalTheory.Mem.Col2.TC.MuZeroForms.law0_choose_mu0_eq_self I hok l Z l0 u x, .. }
   all_goals
     intro u μ h κ κ' e hv
     exact (p u μ).off κ κ' e hv
@@ -473,20 +473,15 @@ theorem tw_chains : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.
   let p := fun u a => (P u a).some
   choose A hA hA' using fun u a => GlobalTheory.Mem.Col2.TwAtStd.twAtT_exists I hok pins l Z l0 u a
   have hoff : ∀ (u : B.Word) a, ∀ v ∈ Q a, ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal ∧ ∀ j, (((I.rec7 l Z).host.g j : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal :=
-    fun u a v hv => GlobalTheory.T.twistPlaces_prime_to_levelAndTypePrimes I hok l u a v ((hQ a v).1 hv)
+    fun u a v hv => _root_.GlobalTheory.Mem.Col2.TC.underQ_prime_to_bad I hok l u a v ((hQ a v).1 hv)
   refine ⟨twT Q hQ' p, twJ Q hQ' p hoff, twW hok pins l0 hF' Q hQ' p hoff A hA, ⟨fun u i hi => Equiv.ext fun y => rfl,
-    fun u => Equiv.ext fun c => GlobalTheory.T.eCls0_mu0_eq_self I hok l u c⟩, ⟨fun _ _ => rfl, fun _ _ _ _ => rfl, fun _ _ _ => rfl, hA, ?_,
+    fun u => Equiv.ext fun c => _root_.GlobalTheory.Mem.Col2.TC.MuZeroCls.stepZeroClassEquiv_referenceTuple_eq_self I hok l u c⟩, ⟨fun _ _ => rfl, fun _ _ _ _ => rfl, fun _ _ _ => rfl, hA, ?_,
     fun u a _ i h1 hm => ((p u a).St i).reads h1 hm, fun u a ha h1 β => (p u a).top.top ha h1 β,
     fun u a ha h1 => (p u a).top.topk ha h1, fun u a _ i h1 hm β => ((p u a).St i).fk h1 hm β⟩, ⟨twJS Q hQ' p⟩⟩
   intro u a v r
   show ((A u a).eFv v).symm ((F u).atT.res ((A u a).eVT v) r) = _
   rw [(hF' u).res]
   exact ((A u a).eFv v).symm_apply_eq.2 (hA' u a v r).symm
-
-set_option maxHeartbeats 8000000 in
-
-theorem tw_chains_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (inQ : I.ι → HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) → Prop) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ a v, inQ a v ↔ I.UnderQ a v) → (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∃ (T : Formalism.L2.Herm.TwChTied (I.rec7 l Z) inQ) (J : Formalism.L2.Herm.TwChJointS T H) (W : TwFormsTiedS (I.rec7 l Z) (I.tw l l0 Z) T J F), Formalism.L2.Herm.TwChMu0 T ∧ I.StdW l Z l0 W ∧ Nonempty (SymmetricTwistedJointForms T F) :=
-  fun I hok pins l Z l0 inQ H F hin hF hC => tw_chains I hok pins l Z l0 inQ H F hin hF hC fun u => (hF u).2.2
 
 end GlobalTheory.Mem.Col2.TC
 end

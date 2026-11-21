@@ -11,13 +11,21 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaPtEqUnitM
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIntegralDegenerationValues
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusTorsionPointsCorrespondValues
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FamiliesValuesCorrespond
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationValuesIntOfAdmissibleBaseStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HasSumOfAdicSumUnitBallExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SummableVtQTStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HasSumGradedOfMulDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationValuesIntOfAdmissibleBase
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HasSumOfAdicSumUnitBallExtension
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SummableVtQT
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormRepGeneratorsAndThetaSeriesTerm
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HasSumGradedOfMulDegree
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ProductOfSectionsExpandsToConvolution
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsNsmulAndNeg
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionMapsCompatibleInLevelStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionMapsCompatibleInLevel
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ExistsZeroGt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DataRigidSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DvrLem
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThetaVV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGenPf
+import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpansionPullbackSectionEndomorphism
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UnivIdentity
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SymmetricLiftOddOrderActsAsExpansionOperator
@@ -363,7 +371,7 @@ theorem value_at_level (hL : LL) (hB : AdmBase R I) (hG : IsSemiAbelian G) (U : 
   obtain ⟨s', hs', -⟩ := ((GlobalTheory.UT.expBijF_and_expandsF_lin hL R _ hB D A G hG U).1 C N hN1 w₀ hN.1).1 t'
   have h₁ := (GlobalTheory.UT.EvalZero.value_at_origin hL R _ hB D A G hG U C).2.2 w₀ ρ hN N t' s' hs' o w₁ ho hw₁ (u * c)
     (hval t t' c ht' hc')
-  have h₂ := (Equiv.addRight q.y).hasSum_iff.2 (GlobalTheory.T.hasSum_of_adicSum_unitBallExtension R I C hC _ _ _ h₁)
+  have h₂ := (Equiv.addRight q.y).hasSum_iff.2 (_root_.GlobalTheory.Ex.AdicNormSum.main R I C hC _ _ _ h₁)
   have h₃ := hc 1 N le_rfl (Nat.mul_one N).symm q (one_nsmul _).symm rfl w' w₁ ω ⟨hw', fun _ _ _ => (pow_one _).symm⟩
     ⟨hw₁.1, fun _ _ _ => (pow_one _).symm⟩ ⟨hω, fun _ _ _ => (pow_one _).symm⟩ s s' (hΦ t t' s s' hts hs' ht')
   have h₄ := h₂.mul_left d
@@ -383,13 +391,13 @@ theorem value_at_torsion (hL : LL) (hB : AdmBase R I) (hG : IsSemiAbelian G) (U 
   obtain ⟨ω, hω⟩ := (coef_basic R D.toPre C 1 p.g).1
   choose Ω hΩ hΩv using exists_frm_pow ω hω
   have pf : ∀ (k : ℤ) z J, val (powFrame A.A A.L x e k) (𝟙 _) z J = val e (𝟙 _) z J ^ k := fun k z J => map_zpow _ _ _
-  obtain ⟨u, hu, H⟩ := GlobalTheory.T.hasSum_graded_of_mul_degree' C D.toPre.X (fun k a c => ∃ (t : SecA A C k) (s : Fam D.toPre C k),
+  obtain ⟨u, hu, H⟩ := _root_.GlobalTheory.hasSum_graded_of_mul_degree C D.toPre.X (fun k a c => ∃ (t : SecA A C k) (s : Fam D.toPre C k),
       U.ExpandsF C k w₀ t s ∧ ValIs t x e c ∧ a = coef s p.g (Ω k)) n k hn hk
     (by
       rintro k k' _ _ c c' hk hk' ⟨t, s, hs, ht, rfl⟩ ⟨t', s', hs', ht', rfl⟩
       obtain ⟨t'', h''⟩ := exists_secA_mul t t'
       obtain ⟨s'', hs'', -⟩ := (hbij (k + k') (by omega) w₀ hN.1).1 t''
-      refine ⟨_, ⟨t'', s'', hs'', fun z J hJ => ?_, rfl⟩, fun α => GlobalTheory.T.hasSum_of_adicSum_unitBallExtension R I C hC _ _ _
+      refine ⟨_, ⟨t'', s'', hs'', fun z J hJ => ?_, rfl⟩, fun α => _root_.GlobalTheory.Ex.AdicNormSum.main R I C hC _ _ _
         (ProdConv.main hL R _ hB D A G hG U C w₀ hN.1 k k' _ hk hk' rfl t t' t'' s s' s'' hs hs' hs''
           (fun z J hJ => h'' _ _ z J hJ) p.g _ _ _ (hΩ k) (hΩ k') (hΩ _)
           (fun z J hJ => by rw [hΩv _ z J hJ, hΩv _ z J hJ, hΩv _ z J hJ, pow_add]) α)⟩
@@ -404,7 +412,7 @@ theorem value_at_torsion (hL : LL) (hB : AdmBase R I) (hG : IsSemiAbelian G) (U 
       let q : QkPt D.toPre C (n * k) := TorusExt.qkMk D.tau_bimult (k • p.y) p.g (by
         rw [mul_nsmul, TorusExt.qk_nsmul D.tau_bimult p, map_nsmul])
       have hq : QkToAkU U.toUnifPre C (n * k) q x :=
-        ((GlobalTheory.T.uniformisation_torsion_maps_compatible_in_level hL R _ hB D A G hG U C n k _ hn hk rfl p q x).1 rfl rfl).1 hx
+        ((_root_.GlobalTheory.LevelCompat.qkToAkU_level hL R _ hB D A G hG U C n k _ hn hk rfl p q x).1 rfl rfl).1 hx
       obtain ⟨κ, hκ, Hκ⟩ := value_at_level hL hB hG U hC hN (Nat.mul_pos hn hk) q x hq e he (Ω _) (hΩ _)
       refine ⟨κ, hκ, ?_⟩
       rintro _ c ⟨t, s, hs, ht, rfl⟩
@@ -420,7 +428,7 @@ theorem summable_vt [IsLocalRing R] (hL : LL) (hgt : BrGtSt) (hfam : BrFamSt) (h
     exact Iff.rfl
   obtain ⟨N', ν', hν'⟩ := GlobalTheory.ValuesExist.exists_integral_values hL.1 R D.toPre D.psi_even D.tau_bimult C _
     (fun r => (mem _).2 (hC.1 r))
-  obtain ⟨Q, hQ⟩ := GlobalTheory.T.degenerationValues_int_of_admissibleBase R I hB D C hC N' ν' ⟨_, mem, hν'⟩
+  obtain ⟨Q, hQ⟩ := _root_.GlobalTheory.Ex.IntVal.main R I hB D C hC N' ν' ⟨_, mem, hν'⟩
   obtain ⟨p, hp⟩ := ((hgt R D.toPre D.psi_even D.tau_bimult C N ν).2.2.2.2 k).2.1 q
   obtain ⟨q', hq', -⟩ := ((hgt R D.toPre D.psi_even D.tau_bimult C N' ν').2.2.2.2 k).1 p
   obtain ⟨h₁, -, -, -, h₂, -⟩ := hfam R D.toPre D.psi_even D.tau_bimult C N' ν' 1 le_rfl
@@ -428,7 +436,7 @@ theorem summable_vt [IsLocalRing R] (hL : LL) (hgt : BrGtSt) (hfam : BrFamSt) (h
   obtain ⟨c', rfl⟩ := h₂ ϑ f hf
   obtain ⟨w, hw⟩ := (coef_basic R D.toPre C 1 p.g).1
   have a₁ : Summable (coef ϑ p.g w ∘ ν'.eX.toEquiv) :=
-    ((GlobalTheory.T.summable_vt_of_int C N' Q hQ k hk q').mul_left _).congr fun χ => (coef_theta ν' hf hq'.2 hw χ).symm
+    ((_root_.GlobalTheory.Ex.summable_vt_QT C N' Q hQ k hk q').mul_left _).congr fun χ => (coef_theta ν' hf hq'.2 hw χ).symm
   have a₂ := ν.eX.toEquiv.summable_iff.2 (ν'.eX.toEquiv.summable_iff.1 a₁)
   exact (summable_mul_left_iff (mul_ne_zero hc₀ (vF_ne ν w))).1 (a₂.congr fun χ => coef_theta ν hϑ hp.2 hw χ)
 

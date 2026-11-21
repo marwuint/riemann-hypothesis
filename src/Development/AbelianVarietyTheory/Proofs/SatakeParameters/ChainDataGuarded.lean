@@ -27,6 +27,4 @@ def ChainDataGuarded : Prop :=
         ∀ Y ∈ ybSet sel mu cst p.deco.1.N,
           FnModAt P.1 p.deco.1.N (tilQ sel mu u d).1.N (facTop Ch sel mu cst m2 p Y d P))
 
-def LastTwoStepsGuarded : Prop := FourierLattice ∧ ChainDataGuarded
-
 end GlobalTheory.LastSteps

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFormsEqSpanIntegralRationalFormsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowCharacterTimesInverseUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowCharacterTimesInverseUnitary
 
 open NumberField
 
@@ -24,13 +24,5 @@ theorem rho_mem_WK (p : PtAt ex Csz) (i : Fin D.R.m) (g) (f) (hf : f ∈ (p.R.to
     exact Subtype.property _
   · rw [(p.rhoGeo i).2 hk g]
     exact hf
-
-theorem ratAt_of_rows (p : PtAt ex Csz) (i : Fin D.R.m) (hp : p.Rows) (ht : RecTied D L) : RatAt p i :=
-  GlobalTheory.T.integralForms_eq_span_integralRationalForms _ _ _ _ _ _ _ _ (p.fw.ks i) (fun u f hf => rho_mem_WK p i u f hf) (GlobalTheory.T.row_character_times_inverse_unitary p i hp ht)
-
-theorem rat_of_hypotheses : Hypotheses2 → Rat := by
-  intro _
-  refine ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ =>
-    ⟨0, le_rfl, ⟨0, fun x hx _ ι p hp i => ratAt_of_rows p i hp.1 hp.2⟩⟩⟩⟩
 
 end GlobalTheory.CovTop

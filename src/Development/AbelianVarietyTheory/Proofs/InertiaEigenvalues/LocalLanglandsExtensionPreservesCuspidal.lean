@@ -33,24 +33,6 @@ theorem charPol_sumList (l : List (WD h)) (σ : Weil h) :
 variable {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
   {e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ} {r : IrrGL (w.adicCompletion E) → WD h}
 
-theorem nu_eq (H : CuspLaws a ha e r) {x : IrrGL (w.adicCompletion E)} (hx : x.IsCusp) (s : ℝ) :
-    r (x.nu s) = (r x).lpTw s := by
-  rw [IrrGL.nu, H.twist x hx, WD.lpTw]
-  congr 1
-  exact ha.absPow_comp s
-
-theorem charPol_seg (H : CuspLaws a ha e r) (Δ : Segment (w.adicCompletion E)) (σ : Weil h) :
-    (((r Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)).charPol σ
-      = (Δ.ms.map fun y => (r y).charPol σ).prod := by
-  rw [(GlobalTheory.WeilDeligne.charPol_lpTw_lpChar_lpSp E Ω A w h (r Δ.first)).2 Δ.len σ, Segment.ms, Multiset.map_map]
-  have h1 : ∀ j : Fin Δ.len, (r (Δ.term j)).charPol σ = ((r Δ.first).lpTw ((j : ℕ) : ℝ)).charPol σ := by
-    intro j
-    rw [Segment.term, show (((j : ℕ) : ℂ)) = ((((j : ℕ) : ℝ)) : ℂ) by push_cast; rfl, nu_eq H Δ.isCusp_first]
-  change _ = ∏ j : Fin Δ.len, (fun y => (r y).charPol σ) (Δ.term j)
-  simp only [h1]
-  rw [Fin.prod_univ_eq_prod_range (fun j => ((r Δ.first).lpTw (j : ℝ)).charPol σ) Δ.len]
-  rfl
-
 end GlobalTheory.LocLanglands.CuspExt
 
 namespace GlobalTheory.LocLanglands

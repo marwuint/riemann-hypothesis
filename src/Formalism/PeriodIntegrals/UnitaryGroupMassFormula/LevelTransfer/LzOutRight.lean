@@ -55,12 +55,6 @@ theorem ιLev_out (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ)
   simp only [ιLev]
   rw [dif_neg hp]
 
-theorem ιLev_in_out (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (p q : Fin (2 * (i + r') + k + 1))
-    (hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i) (hq : ¬ (i ≤ q.val ∧ q.val < 2 * r' + k + 1 + i)) :
-    ιLev k i r' g p q = 0 := by
-  simp only [ιLev]
-  rw [dif_pos hp, dif_neg hq]
-
 theorem sum_lev {M : Type*} [AddCommMonoid M] (f : Fin (2 * (i + r') + k + 1) → M)
     (h : ∀ p : Fin (2 * (i + r') + k + 1), ¬ (i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i) → f p = 0) :
     ∑ p, f p = ∑ j : Fin (2 * r' + k + 1), f (levPos k i r' j) := by

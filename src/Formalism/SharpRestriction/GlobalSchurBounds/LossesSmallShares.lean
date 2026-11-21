@@ -1,4 +1,5 @@
-import Formalism.SharpRestriction.GlobalSchurBounds.PrvFOfFamilyTheoremTiesEventualIncidenceTransport
+import Formalism.LocalToGlobal.GlobalTheory.PlacesP
+import Formalism.LocalToGlobal.GlobalTheory.PowFourLtCeilThresholdPrime
 import Formalism.SharpRestriction.GlobalSchurBounds.WeightVectorSmallSharesSeven
 
 noncomputable section
@@ -19,19 +20,6 @@ def LossFS (Fm : FamP eps) (eL : ℝ) : Prop :=
     ∀ i : Fm.Ix x, (∀ t : (Fm.D x i).host.TT,
         (Fm.L x i).aT t = av (t : (Fm.D x i).R.A).val ∧
         (Fm.L x i).bT t = bv (t : (Fm.D x i).R.A).val) → Loss_at (Fm.L x i) C eL
-
-theorem lossFS_of_cover (Fm : FamP eps) (eL : ℝ) (h : LossF Fm eL) (hc : Fm.CoverAll) : LossFS Fm eL := by
-  obtain ⟨C, x0, hC, hL⟩ := h
-  refine ⟨C, max x0 (Fm.x1 + 1), hC, fun x hx hwin => ?_⟩
-  obtain ⟨i0, av, bv, h1, h2⟩ := hL x (le_of_max_le_left hx) hwin
-  have hx1 : Fm.x1 < x := by linarith [le_of_max_le_right hx]
-  have hn : 0 < (Fm.D x i0).R.n := by
-    have e1 := (Fm.D x i0).R.two_le_m
-    have e2 := (Fm.D x i0).R.m_le_f
-    unfold Formalism.BasicNotions.Ranks.n
-    omega
-  obtain ⟨i1, -, hi1⟩ := hc x hx1 i0 0 av bv hn h1
-  exact ⟨i0, av, bv, h1, ⟨i1, hi1⟩, h2⟩
 
 set_option maxHeartbeats 1600000 in
 
@@ -298,13 +286,6 @@ theorem linkCore (Fm : FamP eps) (Cabs CH eL C5 c6 : ℝ) (hCabs : 0 ≤ Cabs) (
 def LossesSmallShares (Fm : FamP eps) : Prop :=
   ∃ C x0 : ℝ, 0 ≤ C ∧ ∀ x ≥ x0, ∀ i : Fm.Ix x, ChW_at (Fm.Gx x i) Fm.GK → Loss_at (Fm.L x i) C 0
 
-theorem lossF_of_7W (Fm : FamP eps) (h : LossesSmallShares Fm) (hW : ChosenW Fm) : LossF Fm 0 := by
-  obtain ⟨C, x0, hC, hL⟩ := h
-  obtain ⟨x1, hW⟩ := hW
-  refine ⟨C, max x0 x1, hC, fun x hx hwin => ?_⟩
-  obtain ⟨i0, av, bv, h1, h3⟩ := hW x (le_of_max_le_right hx) hwin
-  exact ⟨i0, av, bv, h1, fun i hi => hL x (le_of_max_le_left hx) i (h3 i hi)⟩
-
 theorem lossF_of_7 (Fm : FamP eps) (h : LossesSmallShares Fm) (hW : ChosenWS Fm) : LossFS Fm 0 := by
   obtain ⟨C, x0, hC, hL⟩ := h
   obtain ⟨x1, hW⟩ := hW
@@ -432,27 +413,6 @@ theorem chosenBadp_of_old (Fm : FamP eps) (Cb : ℝ) (hCb : 0 ≤ Cb) (cTT : Cho
       _ = x ^ (-2 + eps) := (Real.rpow_add hx0 _ _).symm
   exact le_trans hB (le_trans step (mul_le_mul_of_nonneg_left hfin hc0))
 
-theorem muRank_of_proviso (Fm : FamP eps) {C0 : ℝ} (crystallineComparison : ℝ) (hC0 : 0 < C0)
-    (cPr : ChosenProviso Fm C0) (hN : NuFullF Fm) (h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) (hS : GlobalTheoryTheory.SettingEventually Fm) :
-    J.MuRank Fm := by
-  obtain ⟨a3, hP⟩ := cPr
-  obtain ⟨a0, hN⟩ := hN
-  obtain ⟨a1, h10⟩ := h10
-  obtain ⟨a2, hS⟩ := hS
-  refine ⟨max (max a0 a1) (max (max a2 a3) (Fm.x1 + 1)), fun x hx i u => ?_⟩
-  have b0 : a0 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
-  have b1 : a1 ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
-  have b2 : a2 ≤ x := le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_right _ _)) hx
-  have b3 : a3 ≤ x := le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_right _ _)) hx
-  have b4 : Fm.x1 < x := by
-    have := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx
-    linarith
-  have hSet := hS x b2 b4 i u
-  have h1 : ((Fm.D x i).div.Nu u).rank = ((Fm.D x i).mem u).A.du := (hN x b0 i).rank u
-  rw [h1]
-  exact GlobalTheoryTheory.jnt_du_pos _ u (h10 x b1 i u hSet).2.1 (GlobalTheoryTheory.jnt_duS_pos_of_proviso (Fm.L x i) C0 hC0 (hP x b3 i) u)
-    (GlobalTheoryTheory.two_lt_level_prime _ u hSet)
-
 end Formalism.MainNotions.Lnk
 
 namespace Formalism.MainNotions
@@ -464,51 +424,6 @@ variable {eps : ℝ}
 def LinkGLOBAL7 (Fm : FamP eps) (Cabs CH C0 eD eL : ℝ) : Prop :=
   WeightVectorSmallSharesSeven Fm C0 CH → GlobalTheoremInputs Fm Cabs CH C0 →
     ∃ K cHH eK CL x0 : ℝ, ∀ x ≥ x0, x ∈ Fm.Win → ChainTied Fm eD eL K cHH eK CL x
-
-theorem linkGLOBAL7_pk (Fm : FamP eps) (Cabs CH C0 C3 crystallineComparison C22 : ℝ)
-    (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (hC0 : 1 ≤ C0)
-    (s59 : ∀ x : ℝ, Fm.x1 < x → ∀ i : Fm.Ix x, UnusedSlot33.division_rows_rational_lattice (Fm.D x i))
-    (s22 : TaylorLogMetric.StatementFamilyConstant Fm C22) (s23 : flipTwoThree.KudlaFamilyStatement Fm) (s24 : StandardLattice.KudlaFamilyStatement Fm C3) (s10 : product_first_zeroth_parts.KudlaFamilyStatement Fm crystallineComparison)
-    (hL7 : ChosenTT Fm → ChosenBadp Fm → LinkG Fm → LossesSmallShares Fm)
-    (hF3 : StandardLattice.FamilyTheoremThreeAdmitted Fm)
-    (tVol : StandardLattice.TiesF Fm)
-    (tOm : ∀ x (i : Fm.Ix x), ∃ δ : ℂ, TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice (Fm.D x i) (Fm.D x i).host.ccK δ ∧
-      OmLink (Fm.D x i) (TaylorLogMetric.tor0 (Fm.D x i) (Fm.D x i).host.ccK δ))
-    (tFree : ∀ x (i : Fm.Ix x), ThFree (Fm.D x i))
-    (tTh : ∀ x (i : Fm.Ix x), ExistsTwelfthRootCharacterThetaFamily (Fm.D x i) C22)
-    (t7 : flipTwoThree.admF7 Fm)
-    (tCV : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u))
-    (t10 : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word), IncidenceTransportConditions (Fm.D x i) u) :
-    TuSize Fm → LinkGLOBAL7 Fm Cabs CH C0 Cabs 0 := by
-  intro hTu hCh hIn
-  obtain ⟨C5, c6, hC5, hc6, cT2, cTT, cBad, cW, cQD, cTh, cPr, cCo⟩ := hCh
-  obtain ⟨lG, lS, lI, lD, lMu⟩ := hIn
-  have h10 := prvF_of_familyTheorem_ties_eventualIncidenceTransport Fm C3 crystallineComparison C22 s59 s22 s24 s10 hF3 tVol t10
-  have tSet : SettingEventually Fm := Formalism.L2.GlobalTheoryTheory.Places.settingF_of Fm hTu
-  have hNF : NuFullF Fm := nuFullF_of Fm (nuCommensF_of Fm crystallineComparison h10 tSet)
-  have hRank : J.MuRank Fm := muRank_of_proviso Fm crystallineComparison (by linarith) cPr hNF h10 tSet
-  have hRR : RRRankF Fm := rrRankF_of Fm Cabs CH C0 (by linarith) lS cPr lI lD
-  obtain ⟨C₅, h59a⟩ := UnusedSlot33.field_lemmas_except_seven
-  have h59 : UnusedSlot33.ConclusionOnFamily Fm 100 C₅ := fun x hx i => by
-    obtain ⟨p1, p2, p3, p4, p5, p5c, p6, p8⟩ := h59a (Fm.D x i) (Fm.L x i).sc
-    exact ⟨p1, p2, p3, p4, p5, p5c, p6, s59 x hx i, p8⟩
-  have h24 := s24 ⟨hF3, StandardLattice.column_lemma_family_of_definite Fm 100 C₅ h59 (fun _ _ => gram0Def _)⟩ tVol
-  have h22 : TaylorLogMetric.ConclusionOnFamily Fm C22 := s22 (fun x i => TaylorLogMetric.first_hypothesis_of_lifting _ (UnusedSlot33.ramification_two_and_conjugation_at_q_and_d _))
-  have h4p : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev :=
-    fun x hx i => (h24.2.2.2.2.2.1 x hx i).2.2.2.1
-  have hCount : CountF Fm := countF_fam Fm h24.2.2.2.2.2.2.2
-  have hDl := dl_of_chosen Fm C5 cQD
-  have h23 := s23 ⟨flipTwoThree.theta_norm_family_of_linked Fm C22 h22 tOm, flipTwoThree.theta_condition_family_of_linked Fm C22 tFree tTh,
-    flipTwoThree.stabiliser_family_of_column_lemma Fm 100 C₅ h59 h4p,
-    flipTwoThree.injectivity_family_of_theorem Fm crystallineComparison h10 tSet, flipTwoThree.norm_bound_family_of_theorem Fm crystallineComparison h10 tSet, t7⟩
-  have hSM : SlopesMF Fm := flipTwoThree.slopesMF_of_count_fam Fm h23.2.2.2.2.1 h23.2.2.2.2.2.1 hCount hDl tCV
-  have hSN : SlopesNF Fm := slopesNF_of Fm (Formalism.L2.GlobalTheoryTheory.Places.placesF_of Fm crystallineComparison h10 tSet hTu hRank lG lMu)
-  have hLat : LatF Fm := latF Fm lD hNF hRank hRR
-  have hFr : FrameF Fm CH := frameF_of Fm CH C0 hCH hC0
-    (frameRealF_of'' Fm Cabs CH C0 hCH.le lD lI lS cPr hNF hRank hTu (ramRankF_of Fm crystallineComparison h10 tSet)
-      (matKF_of Fm Cabs CH C0 (by linarith) lS cPr lD)) hLat cPr cCo hNF
-  exact linkCore Fm Cabs CH 0 C5 c6 hCabs hCH.le le_rfl hc6 hCount hSM hSN hLat (nodesF Fm) hFr
-    (lossF_of_7 Fm (hL7 cTT cBad lG) cW) (charF Fm) (size_windows_of_thick_density Fm cT2) cTT cQD cTh lI lD
 
 end Formalism.MainNotions
 

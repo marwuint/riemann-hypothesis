@@ -1,12 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PolyDegreeSlashActionRightActionPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormEvalSmulMulImRpowPolyDegreeSlashStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFormSlashHoloDecayStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerPeriodPolynomialLimitAtCuspStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LimitPolyOfPeriodicSlashFamilyConstStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalDiagPolyValuedInvariantTranslationTZpowMulStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StripEvalPolynomialDecayMulImRpowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PolyDegreeSlashActionRightActionProperties
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormEvalSmulMulImRpowPolyDegreeSlash
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFormSlashHoloDecay
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerPeriodPolynomialLimitAtCusp
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerIntegralFromISlashChangeOfVariablesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerIntegralFromITailExponentialDecay
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LimitPolyOfPeriodicSlashFamilyConst
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalDiagPolyValuedInvariantTranslationTZpowMul
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StripEvalPolynomialDecayMulImRpow
 
 open GlobalTheory.HeckeFamilyMatrices Polynomial UpperHalfPlane
 open scoped MatrixGroups ModularForm
@@ -45,11 +47,11 @@ theorem per_cov (Γ : Subgroup SL(2, ℤ)) (w : ℕ) (U : ℍ → ℂ[X]) (hU : 
   have e1 : slP w (mat (ModularGroup.T ^ (n : ℤ))) (slP w (mat σ) (U (σ • ModularGroup.T ^ (n : ℤ) • τ))) =
       slP w (mat (σ * ModularGroup.T ^ (n : ℤ))) (U (σ • ModularGroup.T ^ (n : ℤ) • τ)) := by
     rw [show mat (σ * ModularGroup.T ^ (n : ℤ)) = mat σ * mat (ModularGroup.T ^ (n : ℤ)) from
-      Matrix.SpecialLinearGroup.coe_mul _ _, (GlobalTheory.T.polyDegreeSlashAction_right_action_properties w _ _ _ (hU _)).2.1]
+      Matrix.SpecialLinearGroup.coe_mul _ _, (_root_.GlobalTheory.HeckeFamilyMatrices.SlPAct.polySlash_act w _ _ _ (hU _)).2.1]
   have e2 : slP w (mat σ) (slP w (mat ((⟨_, hγ⟩ : Γ) : SL(2, ℤ))) (U (σ • ModularGroup.T ^ (n : ℤ) • τ))) =
       slP w (mat (((⟨_, hγ⟩ : Γ) : SL(2, ℤ)) * σ)) (U (σ • ModularGroup.T ^ (n : ℤ) • τ)) := by
     rw [show mat (((⟨_, hγ⟩ : Γ) : SL(2, ℤ)) * σ) = mat ((⟨_, hγ⟩ : Γ) : SL(2, ℤ)) * mat σ from
-      Matrix.SpecialLinearGroup.coe_mul _ _, (GlobalTheory.T.polyDegreeSlashAction_right_action_properties w _ _ _ (hU _)).2.1]
+      Matrix.SpecialLinearGroup.coe_mul _ _, (_root_.GlobalTheory.HeckeFamilyMatrices.SlPAct.polySlash_act w _ _ _ (hU _)).2.1]
   rw [e1, e2, hm']
 
 theorem decay_at_cusp : ∀ (Γ : Subgroup SL(2, ℤ)) (k : ℕ), Γ.FiniteIndex → 3 ≤ k → ∀ (f h : CuspForm Γ (k : ℤ)) (p : ℂ[X]), p ∈ degreeLT ℂ (k - 1) → (∀ (γ : Γ) (τ : ℍ), slP (k - 2) (mat γ) (eichler (k - 2) ⇑f ((γ : SL(2, ℤ)) • τ) - (eichler (k - 2) ⇑h ((γ : SL(2, ℤ)) • τ)).map (starRingEnd ℂ) - p) = eichler (k - 2) ⇑f τ - (eichler (k - 2) ⇑h τ).map (starRingEnd ℂ) - p) → ∀ σ : SL(2, ℤ), Filter.Tendsto (fun τ : ℍ => ‖(eichler (k - 2) ⇑f (σ • τ) - (eichler (k - 2) ⇑h (σ • τ)).map (starRingEnd ℂ) - p).eval ((σ • τ : ℍ) : ℂ)‖ * (σ • τ).im ^ (-((k : ℝ) - 2) / 2)) UpperHalfPlane.atImInfty (nhds 0) := by
@@ -68,29 +70,29 @@ theorem decay_at_cusp : ∀ (Γ : Subgroup SL(2, ℤ)) (k : ℕ), Γ.FiniteIndex
     rw [mem_degreeLT] at h0 ⊢
     exact (degree_map_le).trans_lt h0
   set V : ℍ → ℂ[X] := fun τ => slP w (mat σ) (U (σ • τ)) with hV
-  have hVdeg : ∀ τ, V τ ∈ degreeLT ℂ (w + 1) := fun τ => (GlobalTheory.T.polyDegreeSlashAction_right_action_properties w (mat σ) 1 _ (hUdeg _)).1
+  have hVdeg : ∀ τ, V τ ∈ degreeLT ℂ (w + 1) := fun τ => (_root_.GlobalTheory.HeckeFamilyMatrices.SlPAct.polySlash_act w (mat σ) 1 _ (hUdeg _)).1
   have hexp : (-((k : ℝ) - 2) / 2) = -(w : ℝ) / 2 := by
     rw [hw, Nat.cast_sub hk2]; push_cast; ring
   have hfun : (fun τ : ℍ => ‖(U (σ • τ)).eval ((σ • τ : ℍ) : ℂ)‖ * (σ • τ).im ^ (-((k : ℝ) - 2) / 2)) =
       fun τ => ‖(V τ).eval (τ : ℂ)‖ * τ.im ^ (-(w : ℝ) / 2) := by
-    funext τ; rw [hexp]; exact GlobalTheory.T.norm_eval_smul_mul_im_rpow_polyDegreeSlash w σ (U (σ • τ)) τ (hUdeg _)
+    funext τ; rw [hexp]; exact _root_.GlobalTheory.HeckeFamilyMatrices.norm_eval_smul_mul_im_rpow w σ (U (σ • τ)) τ (hUdeg _)
   change Filter.Tendsto (fun τ : ℍ => ‖(U (σ • τ)).eval ((σ • τ : ℍ) : ℂ)‖ *
     (σ • τ).im ^ (-((k : ℝ) - 2) / 2)) _ _
   rw [hfun]
   obtain ⟨n, hn, hγ⟩ := per_exists Γ hΓ σ
   have hVper : ∀ τ : ℍ, slP w (mat (ModularGroup.T ^ (n : ℤ))) (V (ModularGroup.T ^ (n : ℤ) • τ)) = V τ :=
     fun τ => per_cov Γ w U hUdeg hequiv σ n hγ τ
-  obtain ⟨hfd, Cf, cf, hcf, hfb⟩ := GlobalTheory.T.cuspForm_slash_mdifferentiable_and_exp_decay Γ k hΓ f σ
-  obtain ⟨hhd, Ch, ch, hch, hhb⟩ := GlobalTheory.T.cuspForm_slash_mdifferentiable_and_exp_decay Γ k hΓ h σ
-  obtain ⟨Q, C', c, hQ, hc, hQb⟩ := GlobalTheory.T.eichlerPeriodPolynomial_limit_at_cusp k (⇑f) (⇑h) p σ Cf cf Ch ch hk2 hcf hch
+  obtain ⟨hfd, Cf, cf, hcf, hfb⟩ := _root_.GlobalTheory.HeckeFamilyMatrices.cuspForm_slash_holo_decay Γ k hΓ f σ
+  obtain ⟨hhd, Ch, ch, hch, hhb⟩ := _root_.GlobalTheory.HeckeFamilyMatrices.cuspForm_slash_holo_decay Γ k hΓ h σ
+  obtain ⟨Q, C', c, hQ, hc, hQb⟩ := _root_.GlobalTheory.EichlerLimit.polySlash_eichler_limit k (⇑f) (⇑h) p σ Cf cf Ch ch hk2 hcf hch
     (CuspFormClass.holo f) (CuspFormClass.holo h) hfd hhd hfb hhb hp
   have hQb' : ∀ τ : ℍ, 1 ≤ τ.im → ∀ j ≤ w, ‖(V τ - Q).coeff j‖ ≤ C' * Real.exp (-c * τ.im) * (1 + ‖(τ : ℂ)‖) ^ w :=
     hQb
-  have hQc := GlobalTheory.T.limit_poly_of_periodic_slash_family_const w n V Q C' c hn hc hQ hVdeg hVper hQb'
+  have hQc := _root_.GlobalTheory.HeckeFamilyMatrices.QConst.qconst w n V Q C' c hn hc hQ hVdeg hVper hQb'
   rw [hQc] at hQb'
   rw [Metric.tendsto_nhds]
   intro ε hε
-  obtain ⟨A, hA⟩ := GlobalTheory.T.strip_eval_polynomial_decay_mul_im_rpow w n (Q.coeff 0) V C' c hw1 hc hVdeg hQb' ε hε
+  obtain ⟨A, hA⟩ := _root_.GlobalTheory.HeckeFamilyMatrices.strip_eval_decay w n (Q.coeff 0) V C' c hw1 hc hVdeg hQb' ε hε
   refine (atImInfty_mem _).2 ⟨A, fun τ hτ => ?_⟩
   have hnR : (0 : ℝ) < n := by exact_mod_cast hn
   set m : ℤ := -⌊τ.re / n⌋ with hm
@@ -100,7 +102,7 @@ theorem decay_at_cusp : ∀ (Γ : Subgroup SL(2, ℤ)) (k : ℕ), Γ.FiniteIndex
     rw [hτ'v]; simp [add_comm]
   have him : τ'.im = τ.im := by
     rw [hτ'v]; simp
-  have hg := GlobalTheory.T.evalDiag_polyValued_invariant_translation_T_zpow_mul w n V hVdeg hVper m τ
+  have hg := _root_.GlobalTheory.HeckeFamilyMatrices.evalDiag_T_invariant w n V hVdeg hVper m τ
   have hfl1 : (⌊τ.re / n⌋ : ℝ) ≤ τ.re / n := Int.floor_le _
   have hfl2 : τ.re / n < ⌊τ.re / n⌋ + 1 := Int.lt_floor_add_one _
   have hr1 : 0 ≤ τ'.re := by

@@ -127,23 +127,4 @@ theorem unit {n : ℕ} (hn : ((n : ℕ) : 𝓞 F) ∉ p.asIdeal) :
 
 end
 
-theorem target : PI.PinHostLoc.Target := by
-  unfold PI.PinHostLoc.Target
-  intro F E _ _ _ _ _ sig p A g hg hne i hin hnot
-  have hres : Formalism.MainNotions.S.Loc.resChar p = g i := resChar_eq p (hg i) hin
-  refine ⟨?_, ?_⟩
-  · rw [hres]
-    exact irr A (hg i).ne_zero hin hnot
-  · obtain rfl | rfl : i = 0 ∨ i = 1 := by fin_cases i <;> simp
-    · have h1 : ((g 1 : ℕ) : 𝓞 F) ∉ p.asIdeal := fun h1 =>
-        hne ((resChar_eq p (hg 1) h1).symm.trans hres).symm
-      obtain ⟨u, hu, hu'⟩ := unit A h1
-      refine ⟨u, hu, ?_⟩
-      rw [hu', mul_div_cancel_left₀ _ (Nat.cast_ne_zero.mpr (hg 0).ne_zero)]
-    · have h0 : ((g 0 : ℕ) : 𝓞 F) ∉ p.asIdeal := fun h0 =>
-        hne ((resChar_eq p (hg 0) h0).symm.trans hres)
-      obtain ⟨u, hu, hu'⟩ := unit A h0
-      refine ⟨u, hu, ?_⟩
-      rw [hu', mul_div_cancel_right₀ _ (Nat.cast_ne_zero.mpr (hg 1).ne_zero)]
-
 end PI.PinHostLoc.UnitaryGroupMassFormula

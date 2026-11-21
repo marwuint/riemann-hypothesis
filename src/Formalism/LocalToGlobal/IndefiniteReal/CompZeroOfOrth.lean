@@ -28,13 +28,6 @@ def IpInv (P : RowPsi V n) (M : Mult.DSModel V Sp) (μ : Measure (GA D V)) (𝓕
 def HermPosLev (P : RowPsi V n) (M : Mult.DSModel V Sp) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) : Prop :=
   ∀ N : ℕ, 0 < N → PeterssonHilbertSpace.IsHermPos (Mult.Mult θ M (levN P N) (fun _ => 1)) (Mult.ipM M μ 𝓕)
 
-def MultType (P : RowPsi V n) (M : Mult.DSModel V Sp) (J : Set (GA D V)) (χ : GA D V → ℂ) : Prop :=
-  ∀ T ∈ Minf θ P M, (∀ k ∈ J, ∀ v g, T v (g * k) = χ k * T v g) → T ∈ Mult.Mult θ M J χ
-
-def EComb (P : RowPsi V n) (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) : Prop :=
-  ∃ (ι : Type) (_ : Fintype ι) (a : ι → ℂ) (hh : ι → Formalism.AUTREP.GAf D.host.E n),
-    ∀ F, e F = ∑ i, a i • rtA (P.ψ (hh i)) F
-
 def IsotDecomp (P : RowPsi V n) (M : Mult.DSModel V Sp) (J : Set (GA D V)) (χ : GA D V → ℂ)
     (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) : Prop :=
   Mult.goodPart θ M J χ e = ⨆ π : Formalism.L2.NG.FinTyp D.host.E n, isotL θ P M J χ e π ∧
@@ -111,19 +104,6 @@ theorem mult_le_Minf {J : Set (GA D V)} {χ : GA D V → ℂ} (hl : LevOK P J χ
     rw [e] at hκ
     exact (h0 κ hκ).2.symm
 
-def rhoA (hAS : ActStable θ P M) : Formalism.AUTREP.GAf D.host.E n →* Module.End ℂ (Minf θ P M) where
-  toFun h := (actM P M h).restrict (fun T hT => hAS h T hT)
-  map_one' := by
-    apply LinearMap.ext
-    intro T
-    apply Subtype.ext
-    simp [LinearMap.restrict_apply, map_one]
-  map_mul' a b := by
-    apply LinearMap.ext
-    intro T
-    apply Subtype.ext
-    simp [LinearMap.restrict_apply, map_mul, Module.End.mul_apply]
-
 variable (μ : Measure (GA D V)) (𝓕 : Set (GA D V))
 
 theorem hp3 (hHP : HermPosLev θ P M μ 𝓕) (x y z : Minf θ P M) :
@@ -156,11 +136,6 @@ def ipA (hHP : HermPosLev θ P M μ 𝓕) : Minf θ P M →ₗ⋆[ℂ] Minf θ P
       simp only [Submodule.coe_smul] at h1 h2 h4 ⊢
       rw [← h1, ← h2, h4, map_mul, Complex.conj_conj]
       rfl)
-
-def finTypSetoidAll : Setoid (Formalism.L2.NG.FinTyp D.host.E n) where
-  r π π' := π.Iso π'
-  iseqv := ⟨fun _ => Formalism.L2.NG.IsoRep.refl _, fun {π _} h => Formalism.L2.NG.IsoRep.symm π.stable h,
-    fun h h' => Formalism.L2.NG.IsoRep.trans h h'⟩
 
 end DecProofs
 

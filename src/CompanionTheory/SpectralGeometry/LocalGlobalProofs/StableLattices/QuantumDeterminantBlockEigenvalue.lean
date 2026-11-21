@@ -1,7 +1,7 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HasCharSub
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantAntiHomomorphismStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CommutingLocallyNilpotentCommonKernelStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CommutingLocallyNilpotentCommonKernel
 
 noncomputable section
 
@@ -41,7 +41,7 @@ theorem qdet_eigen_of_killed {n : ℕ} (Q : GMod n) (d : Fin 3 → ℕ) (h : ∑
     GlobalTheory.T.quantum_determinant_anti_homomorphism f f1 fm (bops Q d h i)
       (glRel_comp_inj Q.gl (fun p => stdBlocks d h ⟨i, p⟩)
         (fun p q e => by simpa using (stdBlocks d h).injective e)) u
-  have hspan := GlobalTheory.T.capelliDet_block_levi_congr_mod_upperBlockIdeal (Module.End ℂ Q.V)ᵐᵒᵖ d h X hX Y
+  have hspan := _root_.GlobalTheory.CapHC.qdet_blocks_congr (Module.End ℂ Q.V)ᵐᵒᵖ d h X hX Y
   let L : (Module.End ℂ Q.V)ᵐᵒᵖ →ₗ[ℂ] Q.V :=
     { toFun := fun a => a.unop w
       map_add' := fun _ _ => rfl

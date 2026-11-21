@@ -163,11 +163,6 @@ theorem softHseg (S : UniformizedDVR X.p O) (hS : S.SqP) (C0 CE1 CE2 : ℝ) (j :
       (fun l => (X.seg C0 CE1 CE2 j).P X.p i * dgH (topOdd X j i) l) := by
   exact softH S hS (topOdd X j i) _
 
-theorem sgKS_pow (j : Fin (numSeg X.TT)) (i : Fin (segS X.TT j)) (P : ℕ) :
-    sgKS O X j i ^ P = MvPolynomial.X ((topStart X j, true), 0) ^ (X.p ^ (segDists X.TT j).get i * P) *
-      MvPolynomial.X ((topOdd X j i, false), 0) ^ P := by
-  rw [sgKS, mul_pow, ← pow_mul]
-
 end H
 
 end Formalism.MainNotions.ColumnSystems.Pf

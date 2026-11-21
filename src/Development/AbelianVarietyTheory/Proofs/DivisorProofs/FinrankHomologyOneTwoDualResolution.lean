@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTo
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHomologyResolutionsResidueFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankRangeBaseChangeEqFinrankRangeDualMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KoszulResolutionThreeTermsExactStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHomologyResolutionsResidueField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankRangeBaseChangeEqFinrankRangeDualMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KoszulResolutionThreeTermsExact
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.IsRegularOfFnOfRingKrullDimQuotientAddLe
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ProjectiveOfIsLocallyConstantFinrankFiber
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
@@ -86,14 +86,14 @@ theorem finrank_homology_one_two_of_dual_resolution : ∀ (O : Type) [CommRing O
     calc ringKrullDim (O ⧸ Ideal.span (Set.range f)) + (g : WithBot ℕ∞) ≤ 0 + (g : WithBot ℕ∞) :=
           add_le_add_left h0 _
       _ = g := zero_add _
-  obtain ⟨e₁, e₂, hx1, hx2, he1, he2⟩ := GlobalTheory.T.koszul_resolution_three_terms_exact O g f hreg.toIsWeaklyRegular
+  obtain ⟨e₁, e₂, hx1, hx2, he1, he2⟩ := _root_.GlobalTheory.koszul_resolution_three_terms O g f hreg.toIsWeaklyRegular
 
   let ε : Module.Dual O (C.X 0) →ₗ[O] O ⧸ Ideal.span (Set.range f) :=
     eN.toLinearMap ∘ₗ (LinearMap.range (C.d 0 1).hom.dualMap).mkQ
   have hεs : Function.Surjective ε := eN.surjective.comp (Submodule.mkQ_surjective _)
   have hεx : Function.Exact (C.d 0 1).hom.dualMap ε := by
     rw [LinearMap.exact_iff, LinearEquiv.ker_comp, Submodule.ker_mkQ]
-  obtain ⟨hA, hB⟩ := GlobalTheory.T.finrank_homology_resolutions_residueField O K (O ⧸ Ideal.span (Set.range f))
+  obtain ⟨hA, hB⟩ := _root_.GlobalTheory.AbCoh.finrank_homology_base_change_resolutions O K (O ⧸ Ideal.span (Set.range f))
     (Module.Dual O (C.X 0)) (Module.Dual O (C.X 1)) (Module.Dual O (C.X 2)) (Module.Dual O (C.X 3))
     O (Fin g → O) (Fin (g.choose 2) → O) ε (C.d 0 1).hom.dualMap (C.d 1 2).hom.dualMap
     (C.d 2 3).hom.dualMap (Ideal.span (Set.range f)).mkQ e₁ e₂ hεs hεx (hex 0) (hex 1)
@@ -108,9 +108,9 @@ theorem finrank_homology_one_two_of_dual_resolution : ∀ (O : Type) [CommRing O
   have hc2 : Module.finrank K (K ⊗[O] (Fin (g.choose 2) → O)) = g.choose 2 :=
     GlobalTheory.Semicont.finrank_baseChange_fin _ _
 
-  obtain ⟨r0, n0⟩ := GlobalTheory.T.finrank_range_baseChange_eq_finrank_range_dualMap O K (C.X 0) (C.X 1) (C.d 0 1).hom
-  obtain ⟨r1, n1⟩ := GlobalTheory.T.finrank_range_baseChange_eq_finrank_range_dualMap O K (C.X 1) (C.X 2) (C.d 1 2).hom
-  obtain ⟨r2, n2⟩ := GlobalTheory.T.finrank_range_baseChange_eq_finrank_range_dualMap O K (C.X 2) (C.X 3) (C.d 2 3).hom
+  obtain ⟨r0, n0⟩ := _root_.GlobalTheory.AbCoh.finrank_range_baseChange_eq_dualMap_and_finrank_dual O K (C.X 0) (C.X 1) (C.d 0 1).hom
+  obtain ⟨r1, n1⟩ := _root_.GlobalTheory.AbCoh.finrank_range_baseChange_eq_dualMap_and_finrank_dual O K (C.X 1) (C.X 2) (C.d 1 2).hom
+  obtain ⟨r2, n2⟩ := _root_.GlobalTheory.AbCoh.finrank_range_baseChange_eq_dualMap_and_finrank_dual O K (C.X 2) (C.X 3) (C.d 2 3).hom
   have k1 := LinearMap.finrank_range_add_finrank_ker ((C.d 0 1).hom.dualMap.baseChange K)
   have k2 := LinearMap.finrank_range_add_finrank_ker ((C.d 1 2).hom.dualMap.baseChange K)
 

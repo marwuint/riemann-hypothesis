@@ -1,8 +1,12 @@
 import Development.WeilBound.CoreStatements.CentralCharts.TraceMulReNonneg
 import Development.WeilBound.CoreStatements.CentralCharts.ContDiffAtLogNorm
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramSmoothPuncturedStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramComparisonBoundStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.GramMatrixSubScalarPosSemidefStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramComparisonBound
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.GramMatrixSubScalarPosSemidef
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.HasStepCharts
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SelM
 
 noncomputable section
 
@@ -35,7 +39,7 @@ theorem tame_logdet {a₀ k r : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.Log
     (ha : ∀ i : Fin n, (i : ℕ) < a₀ → ((π.symm i : Fin n) : ℕ) < a) :
     Tame a fun t => Real.log (HodgeMetric.periodGram L U (HodgeMetric.uncentre 0 ρ π t)).det.re := by
   classical
-  obtain ⟨ε, c, C, hε, hερ, hc, hC, hB⟩ := GlobalTheory.T.period_gram_comparison_bound n a₀ k r a Λ L U 0 π ρ hρ hρ1 hU hli
+  obtain ⟨ε, c, C, hε, hερ, hc, hC, hB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.logBound_recentred n a₀ k r a Λ L U 0 π ρ hρ hρ1 hU hli
     (fun i hi => ⟨ha i hi, rfl⟩)
   set G : (Fin n → ℂ) → Matrix (Fin r) (Fin r) ℂ :=
     fun y => HodgeMetric.periodGram L U (HodgeMetric.uncentre 0 ρ π y) with hGdef
@@ -113,7 +117,7 @@ theorem tame_logdet {a₀ k r : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.Log
       have : P ≤ max P C := le_max_left _ _
       have : 0 ≤ max P C := by linarith
       nlinarith
-    have hd := GlobalTheory.T.gram_matrix_sub_scalar_posSemidef r r (Fin n → ℂ) G (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) y
+    have hd := _root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.gram_grad_scaled r r (Fin n → ℂ) G (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) y
       (C * logR a y)⁻¹ P Q (inv_pos.2 hK) (by linarith) hPQ
       (fun p q => ((hentry y hy hy0 p q).differentiableAt (by simp)))
       (fun p q => differentiableAt_const _)

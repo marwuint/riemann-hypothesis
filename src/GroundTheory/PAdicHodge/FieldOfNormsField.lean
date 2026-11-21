@@ -131,9 +131,6 @@ instance instNoZeroDivisors : NoZeroDivisors t.Plus where
 instance instIsDomain : IsDomain t.Plus :=
   NoZeroDivisors.to_isDomain _
 
-theorem charP : CharP t.Plus p :=
-  (CharP.charP_iff_prime_eq_zero t.prime).mpr natCast_p
-
 variable (t) in
 
 theorem exists_unif : ∃ z, t.IsIntFam z ∧ ∀ n, nrm K (z n) = t.value n := by

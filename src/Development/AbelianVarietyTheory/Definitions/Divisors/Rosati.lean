@@ -28,14 +28,4 @@ structure Pre (b : Base D R) (s : S ⟶ Sp R) where
 
 attribute [instance] Pre.grp Pre.comm
 
-def Pre.LieAt {b : Base D R} {s : S ⟶ Sp R} (o : Pre b s) {R' : Type} [CommRing R'] (x : Sp R' ⟶ S)
-    (β : R →+* R') : Prop :=
-  (∀ (R2 : Type) [CommRing R2] (g2 : R' →+* R2), ∀ v : epsPtR (spMap g2 ≫ x) ⟶ o.A,
-    IsTanScal o.act (spMap g2 ≫ x) (algebraMap (𝓞 D.F) D.O D.ω) (g2 (β b.ρ)) v →
-      ∃ w : Fin D.a → (epsPtR (spMap g2 ≫ x) ⟶ o.A),
-        (∀ i, ∀ c : 𝓞 D.F, IsTanScal o.act (spMap g2 ≫ x) (algebraMap (𝓞 D.F) D.O c) (g2 (β (b.t i c))) (w i)) ∧
-        v = (List.ofFn w).prod) ∧
-  ∀ (k : Type) [Field k] [IsAlgClosed k] (g2 : R' →+* k), ∀ i,
-    LieMult (o.act.toF D) (spMap g2 ≫ x) ((g2.comp β).comp (b.t i)) D.m
-
 end GlobalTheory.UPel.HT

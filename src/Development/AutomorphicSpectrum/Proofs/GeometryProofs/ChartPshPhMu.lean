@@ -7,7 +7,8 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogDetEigenFramePlurisubharmonicStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogDetEigenFramePlurisubharmonic
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataHodgeBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataIntersectionBound
@@ -23,12 +24,6 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.MuPsh
 
 open ReciprocityTheory.AnForm.A (IsPsh)
 open _root_.Metric
-
-def aff {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) (u : Fin n → ℂ) : Fin n → ℂ :=
-  t₀ + (ρ : ℂ) • (u ∘ π)
-
-def affInv {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) : Fin n → ℂ :=
-  ((ρ : ℂ)⁻¹ • (t - t₀)) ∘ π.symm
 
 theorem analyticAt_eval {A : Type} {n : ℕ} {q : (Fin n → ℂ) → A → ℂ} {t₀ : Fin n → ℂ}
     (hq : ∀ i, AnalyticAt ℂ (fun t => q t i) t₀) (p : MvPolynomial A ℤ) :
@@ -87,28 +82,9 @@ theorem hodgeInnerProduct_of_fibreLatticeVector {E : Type} [Field E] [NumberFiel
   obtain ⟨w', f', g'⟩ := h3 j
   exact ⟨t.PP.isLB, tan i, tan j, A, inferInstance, φ, g, u, R.Hm, χ, v', w', x i, x j, h1, h2, e', f', d', g', rfl⟩
 
-section Free
-
-variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ]
-  {Ω : Type} [Field Ω] [Algebra ℚ Ω] {W : Ψ → Type} [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)]
-
-end Free
-
 end GlobalTheory.CompanionTheory.Ar.Cusp.MuPsh
 
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.MuPsh
-
-open ReciprocityTheory.AnForm.A (IsPsh)
-open _root_.Metric
-open GroundTheory.Heights₂.Heights.Regular (logCover expCover)
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
-  {Xo : ∀ l : Tor.Level H, Moduli D l} {l : Tor.Level H} {c : Coeff l}
-  {Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)} {II : IntersectionSystem} {K : Type} [Fintype K]
-  {J : K → Type} [∀ k, Fintype (J k)] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {W : CMType H → Type}
-  [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)]
-  {Dc : GroundTheory.Heights₂.Heights.LowerBoundFree.ComponentData II (CMType H) K J Ω W}
-  {Hd : GroundTheory.Heights₂.Heights.LowerBoundFree.HodgeData Dc} {S₀ : Finset ℕ}
 
 end GlobalTheory.CompanionTheory.Ar.Cusp.MuPsh

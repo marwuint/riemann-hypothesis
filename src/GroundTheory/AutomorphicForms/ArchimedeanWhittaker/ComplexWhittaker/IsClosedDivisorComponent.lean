@@ -1,5 +1,5 @@
 import Mathlib
-import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.ComplexWhittaker.IsSmCCre
+import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.ComplexWhittaker.InstMeasurableSpaceU2
 
 namespace GroundTheory.Automorphic.ArchWhittakerC
 

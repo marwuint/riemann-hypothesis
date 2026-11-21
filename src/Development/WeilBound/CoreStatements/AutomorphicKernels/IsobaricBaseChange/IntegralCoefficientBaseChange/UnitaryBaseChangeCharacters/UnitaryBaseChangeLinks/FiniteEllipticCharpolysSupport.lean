@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
-import Development.WeilBound.CoreStatements.AutomorphicKernels.IsobaricBaseChange.IntegralCoefficientBaseChange.UnitaryBaseChangeCharacters.UnitaryBaseChangeLinks.LocalTwistContinuousInvolutionIntegralProperties
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalTwistContinuousInvolutionIntegralPropertiesStatement
 import Development.WeilBound.CoreStatements.AutomorphicKernels.IsobaricBaseChange.IntegralCoefficientBaseChange.UnitaryBaseChangeCharacters.UnitaryBaseChangeLinks.EllipticCharpolySelfReciprocal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMonicUnitRootsBoundedDenominatorNumberFielStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonIntegerDenominatorOfValuationBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharpolyCoeffDetInvValuationBoundedOfIsCompactGLStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemSectionConjStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMonicUnitRootsBoundedDenominatorNumberFiel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonIntegerDenominatorOfValuationBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharpolyCoeffDetInvValuationBoundedOfIsCompactGL
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemSectionConj
 
 noncomputable section
 
@@ -75,7 +75,7 @@ theorem bound_at (n : ℕ) (w : Pl E) (f : UL n w → ℂ) (hf : HasCompactSuppo
     have hy1 : y.1 ∈ GlobalTheory.LFun.KGL w n := (Subgroup.mem_subgroupOf).1 hyK
     obtain ⟨h1, h2⟩ := int_pts E n w y.1 hy1
     exact transfer w y.1 P hP 1 h1 h2
-  · obtain ⟨γ, hγ⟩ := GlobalTheory.T.charpoly_coeff_det_inv_valuation_bounded_of_isCompact_GL E n w (Subtype.val '' tsupport f) (hf.image continuous_subtype_val)
+  · obtain ⟨γ, hγ⟩ := _root_.GlobalTheory.BCT.charpoly_det_bounded_of_isCompact E n w (Subtype.val '' tsupport f) (hf.image continuous_subtype_val)
     refine ⟨γ, fun h => absurd h hind, ?_⟩
     rintro P ⟨y, hy, hP⟩
     obtain ⟨h1, h2⟩ := hγ y.1 ⟨y, subset_tsupport f hy, rfl⟩
@@ -107,7 +107,7 @@ theorem conj_coeff (n : ℕ) (P : E[X]) (hP : P ∈ Ell E n) (k : ℕ) :
 theorem finpoly : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (S : Set (Pl E)), IsSection S → ∀ f : ∀ w : Pl E, UL n w → ℂ, (∀ w, HasCompactSupport (f w)) → (∀ᶠ w in (cofinite : Filter (Pl E)), f w = (KL n w : Set (UL n w)).indicator 1) → {P : E[X] | P ∈ Ell E n ∧ ∀ w ∈ S, ∃ y : UL n w, f w y ≠ 0 ∧ y.1.val.charpoly = atPl w P}.Finite := by
   intro E _ _ _ _ n S hS f hcpt hev
   choose γ hγ1 hγ using fun w => bound_at n w (f w) (hcpt w)
-  have hpart := GlobalTheory.T.exists_mem_section_valuation_eq_conj E S hS
+  have hpart := _root_.GlobalTheory.BCT.exists_mem_section_conj E S hS
   let p : Pl E → Pl E := fun u => if h : u ∈ S then u else (hpart u h).choose
   have hpS : ∀ u, u ∉ S → p u ∈ S ∧ ∀ x : E, u.valuation E x = (p u).valuation E (IsCMField.complexConj E x) := by
     intro u hu; simp only [p, dif_neg hu]; exact (hpart u hu).choose_spec
@@ -127,8 +127,8 @@ theorem finpoly : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E 
     · intro u hu u' hu' he
       apply pl_ext; intro x
       rw [(hpS u hu.1).2, (hpS u' hu'.1).2, he]
-  obtain ⟨d, hd0, hd⟩ := GlobalTheory.T.exists_common_integer_denominator_of_valuation_bounds E Γ hΓ
-  refine (GlobalTheory.T.finite_monic_unitRoots_bounded_denominator_numberField E n d hd0).subset ?_
+  obtain ⟨d, hd0, hd⟩ := _root_.GlobalTheory.exists_nat_mul_integral_of_valuation_le E Γ hΓ
+  refine (_root_.GlobalTheory.monic_roots_norm_one_coeff_denom_finite E n d hd0).subset ?_
   rintro P ⟨hP, hPS⟩
   refine ⟨hP.1, hP.2.1, hP.2.2.2, fun k => hd _ fun u => ?_⟩
   by_cases huS : u ∈ S

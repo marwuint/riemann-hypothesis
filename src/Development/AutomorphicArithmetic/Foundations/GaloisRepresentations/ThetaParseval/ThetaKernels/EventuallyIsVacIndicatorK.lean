@@ -14,41 +14,18 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.AdelicU GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Filter Topology
 namespace Tw.VacIndic
-open _root_.GlobalTheory
-variable {F : Type} [Field F] [NumberField F]
 end Tw.VacIndic
 namespace Tw.VacIndic
-open _root_.GlobalTheory
-variable {F : Type} [Field F] [NumberField F]
 end Tw.VacIndic
 namespace Tw.VacIndic
-open _root_.GlobalTheory
-variable {F : Type} [Field F] [NumberField F]
 end Tw.VacIndic
 namespace Tw.VacIndic
-open _root_.GlobalTheory
-variable {F : Type} [Field F] [NumberField F]
-section AtLemmas
-variable {v : HeightOneSpectrum (𝓞 F)}
-end AtLemmas
 end Tw.VacIndic
 namespace Tw.VacIndic
-open _root_.GlobalTheory
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-variable {n d : ℕ}
 end Tw.VacIndic
 namespace Tw.VacIndic
-open _root_.GlobalTheory
-section SympAdd
-variable {R E' : Type} [CommRing R] [CommRing E'] [Algebra R E'] (c : E' →ₐ[R] E') (ξ : E')
-  {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α E') (JB : Matrix β β E')
-end SympAdd
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 end Tw.VacIndic
 namespace Tw.VacIndic
-open _root_.GlobalTheory
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-variable {n d : ℕ}
 end Tw.VacIndic
 namespace Tw.VacIndic
 open _root_.GlobalTheory

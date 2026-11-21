@@ -230,15 +230,15 @@ private theorem tr_dec {E : Type} [Field E] [NumberField E] [IsCMField E] (hU : 
     trOn (forms S lam K') (hop S K' F) =
       dimW lam * ∑ i, ∏ᶠ w ∈ S, twTr (σ₀ i w).ρ (KL n w) (K' w) (F w) LinearMap.id := by
   obtain ⟨hσ, hind, hsup⟩ := hdec
-  have hfd := (GlobalTheory.T.unitaryAutForms_weight_level_finite_sum_fixed_vectors E hU n hn S hS lam K' hLev).1
+  have hfd := (_root_.GlobalTheory.BCT.forms_decomp E hU n hn S hS lam K' hLev).1
   have hM : ∀ i, FiniteDimensional ℂ ↥(σ i ⊓ fixed (RF E n) (globLev S K')) := fun i =>
     Submodule.finiteDimensional_of_le (hsup ▸ le_iSup (fun i => σ i ⊓ fixed (RF E n) (globLev S K')) i)
-  have h1 := GlobalTheory.T.traceOnInvariantSubmodule_iSup_eq_sum _ ι (fun i => σ i ⊓ fixed (RF E n) (globLev S K')) (hop S K' F) hind hM
-    (fun i => GlobalTheory.T.heckeOperator_testFamily_preserves_level_forms E n S hS K' hLev F hF (σ i) (hσ i).1)
+  have h1 := _root_.GlobalTheory.BCT.trOn_iSup_eq_sum _ ι (fun i => σ i ⊓ fixed (RF E n) (globLev S K')) (hop S K' F) hind hM
+    (fun i => _root_.GlobalTheory.BCT.hop_mem_inf_fixed E n S hS K' hLev F hF (σ i) (hσ i).1)
   rw [hsup] at h1
   rw [h1, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ =>
-    GlobalTheory.T.trace_hecke_levelVectors_eq_dim_mul_local_traces E hU n hn (σ i) (hσ i).1 S hS lam (hσ i).2.1 K' hLev (σ₀ i) (hc i) F hF
+    _root_.GlobalTheory.BCT.trOn_hop_eq_dimW_mul_finprod_twTr E hU n hn (σ i) (hσ i).1 S hS lam (hσ i).2.1 K' hLev (σ₀ i) (hc i) F hF
 
 theorem evalD : EvalD := by
   intro E _ _ _ hU n hn S hS lam Z hZ K' hLev hKL ι _ σ hdec
@@ -249,7 +249,7 @@ theorem evalD : EvalD := by
     (hcc w).2.1 h ((hsec S hS w).2 hw hc)
   choose σ₀ hc hfd using fun i w => (GlobalTheory.T.exists_unique_admissible_localComponent_definiteUnitary E hU n hn (σ i) (hdec.1 i).1 w).1
   have hne : ∀ i, ∀ w ∈ S, fixed (σ₀ i w).ρ (K' w) ≠ ⊥ := fun i w hw =>
-    GlobalTheory.T.localComponent_levelFixedVectors_ne_bot E hU n hn S hS lam K' hLev (σ i) (hdec.1 i).1 (hdec.1 i).2.1 (hdec.1 i).2.2 w hw (σ₀ i w) (hc i w)
+    _root_.GlobalTheory.BCT.LocFix.fixed_ne_bot E hU n hn S hS lam K' hLev (σ i) (hdec.1 i).1 (hdec.1 i).2.1 (hdec.1 i).2.2 w hw (σ₀ i w) (hc i w)
   have hline : ∀ i, ∀ w ∈ S, w ∉ Z → Module.finrank ℂ (fixed (σ₀ i w).ρ (KL n w)) = 1 ∧
       ∃ B, ∀ hs : IsSplitAt w, HasSatGL w (toGL hs (σ₀ i w)).ρ B := fun i w hw hz => by
     have h0 := hne i w hw

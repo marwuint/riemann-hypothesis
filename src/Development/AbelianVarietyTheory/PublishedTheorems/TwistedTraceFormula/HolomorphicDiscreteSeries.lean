@@ -60,103 +60,9 @@ theorem single_mem_pPlus {ε : Fin n → Bool} {a b : Fin n} (ha : ε a = true) 
   rintro ⟨rfl, rfl⟩
   exact h ⟨ha, hb⟩
 
-theorem single_mem_pMinus {ε : Fin n → Bool} {a b : Fin n} (ha : ε a = true) (hb : ε b = false) (z : ℂ) :
-    Matrix.single b a z ∈ pMinus ε := by
-  intro c d h
-  rw [Matrix.single_apply, if_neg]
-  rintro ⟨rfl, rfl⟩
-  exact h ⟨hb, ha⟩
-
-theorem torus_mul_single (θ : Fin n → ℝ) (a b : Fin n) :
-    (Matrix.diagonal fun c => Complex.exp ((θ c : ℂ) * Complex.I)) * Matrix.single a b (1 : ℂ) =
-      Complex.exp (((∑ c, root a b c * θ c : ℝ) : ℂ) * Complex.I) •
-        (Matrix.single a b (1 : ℂ) * Matrix.diagonal fun c => Complex.exp ((θ c : ℂ) * Complex.I)) := by
-  have h : ∑ c, root a b c * θ c = θ a - θ b := by
-    simp [root, sub_mul, Finset.sum_sub_distrib, Pi.single_apply]
-  rw [h]
-  ext c d
-  rw [Matrix.diagonal_mul, Matrix.smul_apply, Matrix.mul_diagonal, Matrix.single_apply]
-  split_ifs with hc
-  · obtain ⟨rfl, rfl⟩ := hc
-    rw [mul_one, one_mul, smul_eq_mul, ← Complex.exp_add]
-    congr 1
-    push_cast
-    ring
-  · simp
-
 theorem IsHolChamber.lt {ε : Fin n → Bool} {lam : Fin n → ℝ} (h : IsHolChamber ε lam) (hl : StrictAnti lam)
     {a b : Fin n} (ha : ε a = true) (hb : ε b = false) : a < b :=
   hl.lt_iff_gt.1 (h a b ha hb)
-
-theorem le_raisingSpan {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool)
-    (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (S : Submodule ℂ H) : S ≤ raisingSpan ε σ S :=
-  fun v hv => Submodule.subset_span ⟨[], by simp, v, hv, rfl⟩
-
-theorem dRepC_single_self {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
-    {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {μ : Fin n → ℝ} {v : H} (hv : IsWtOn (Kset ε) σ μ v)
-    (a : Fin n) : GlobalTheory.SmVec.dRepC (Jm ε) σ (Matrix.single a a 1) v = (μ a : ℂ) • v := by
-  have hJ : (Jm ε)⁻¹ = Jm ε := Matrix.inv_eq_right_inv (Jm_mul_self ε)
-  have hc : GlobalTheory.SmVec.conjG (Jm ε) (Matrix.single a a (1 : ℂ)) = -Matrix.single a a 1 := by
-    unfold GlobalTheory.SmVec.conjG
-    rw [hJ]
-    congr 1
-    ext c d
-    simp only [Jm, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.single_apply]
-    by_cases h : a = c ∧ a = d
-    · obtain ⟨rfl, rfl⟩ := h
-      cases ε a <;> simp
-    · have h' : ¬ (a = d ∧ a = c) := fun h' => h ⟨h'.2, h'.1⟩
-      rw [if_neg h, if_neg h']
-      simp
-  have he : ∀ t : ℝ, σ (NormedSpace.exp (t • ((1 / (2 * Complex.I)) •
-      (Matrix.single a a (1 : ℂ) - -Matrix.single a a 1)))) v =
-      Complex.exp ((-(μ a : ℂ) * Complex.I) * t) • v := by
-    intro t
-    have h1 : t • ((1 / (2 * Complex.I)) • (Matrix.single a a (1 : ℂ) - -Matrix.single a a 1)) =
-        Matrix.diagonal fun c => (((Pi.single a (-t) : Fin n → ℝ) c : ℝ) : ℂ) * Complex.I := by
-      ext c d
-      simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.neg_apply, Matrix.single_apply, Matrix.diagonal_apply,
-        Pi.single_apply, smul_eq_mul, Complex.real_smul]
-      by_cases h : a = c ∧ a = d
-      · obtain ⟨rfl, rfl⟩ := h
-        simp only [and_self, if_true]
-        field_simp
-        push_cast
-        linear_combination (2 * (t : ℂ)) * Complex.I_sq
-      · rw [if_neg h]
-        split_ifs with h2 h3
-        · exact absurd ⟨h3.symm, h3.symm.trans h2⟩ h
-        · simp
-        · simp
-    have h2 : NormedSpace.exp (Matrix.diagonal fun c => (((Pi.single a (-t) : Fin n → ℝ) c : ℝ) : ℂ) * Complex.I) =
-        Matrix.diagonal fun c => Complex.exp ((((Pi.single a (-t) : Fin n → ℝ) c : ℝ) : ℂ) * Complex.I) := by
-      rw [Matrix.exp_diagonal]
-      congr 1
-      funext c
-      rw [Pi.coe_exp, Complex.exp_eq_exp_ℂ]
-    rw [h1, h2, hv]
-    · congr 2
-      simp [Pi.single_apply]
-      ring
-    · refine ⟨?_, by unfold Jm; exact Matrix.commute_diagonal _ _⟩
-      rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose,
-        Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-      congr 1
-      funext c
-      rw [Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq,
-        Complex.norm_exp_ofReal_mul_I]
-      simp
-  unfold GlobalTheory.SmVec.dRepC dRep
-  rw [hc, add_neg_cancel, smul_zero]
-  simp only [smul_zero, deriv_const, zero_add, he]
-  have hd : HasDerivAt (fun t : ℝ => Complex.exp ((-(μ a : ℂ) * Complex.I) * t) • v)
-      ((-(μ a : ℂ) * Complex.I) • v) 0 := by
-    have h1 : HasDerivAt (fun t : ℝ => (-(μ a : ℂ) * Complex.I) * t) (-(μ a : ℂ) * Complex.I) 0 := by
-      simpa using (Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).const_mul (-(μ a : ℂ) * Complex.I)
-    simpa using h1.cexp.smul_const v
-  rw [hd.deriv, smul_smul]
-  congr 1
-  linear_combination (-(μ a : ℂ)) * Complex.I_sq
 
 variable {p q : ℕ} {κ : Fin p ⊕ Fin q → ℤ}
 
@@ -178,11 +84,6 @@ theorem strictAnti_holEnt (h : HolOK p q κ) :
     have h2 : ((i : ℕ) : ℚ) < (j : ℕ) := by exact_mod_cast hcd
     simp only [holEnt, Sum.elim_inr]
     linarith
-
-theorem holOK_one_one : HolOK 1 1 (Sum.elim (fun _ => 1) fun _ => -1) := by
-  refine ⟨fun _ _ _ => le_rfl, fun _ _ _ => le_rfl, fun i j => ?_⟩
-  simp only [holEnt, Sum.elim_inl, Sum.elim_inr, Fin.val_eq_zero]
-  norm_num
 
 theorem enum_holPar (h : HolOK p q κ) {lam : Fin n → ℝ} {ε : Fin n → Bool} (he : IsEnum (holPar p q κ) lam ε) :
     ∃ hn : p + q = n, ∀ x, lam (Fin.cast hn (finSumFinEquiv x)) = holEnt p q κ x ∧
@@ -221,23 +122,6 @@ theorem enum_holPar (h : HolOK p q κ) {lam : Fin n → ℝ} {ε : Fin n → Boo
   obtain ⟨y, hy⟩ := (hm _).2 ⟨finSumFinEquiv x, rfl⟩
   obtain rfl : y = x := hinj ((congrArg Prod.fst hy).trans h1)
   exact (congrArg Prod.snd hy).symm
-
-theorem isHCParam_holPar (h : HolOK p q κ) {lam : Fin n → ℝ} {ε : Fin n → Bool} (he : IsEnum (holPar p q κ) lam ε) :
-    IsHCParam lam ∧ IsHolChamber ε lam := by
-  obtain ⟨rfl, hx⟩ := enum_holPar h he
-  simp only [Fin.cast_eq_self] at hx
-  refine ⟨⟨he.1, fun a => ?_⟩, fun a b ha hb => ?_⟩
-  · obtain ⟨x, rfl⟩ := finSumFinEquiv.surjective a
-    rw [(hx x).1]
-    rcases x with i | i
-    · exact ⟨κ (Sum.inl i) - q - (i : ℕ), by simp only [holEnt, Sum.elim_inl]; push_cast; ring⟩
-    · exact ⟨κ (Sum.inr i) - (i : ℕ), by simp only [holEnt, Sum.elim_inr]; push_cast; ring⟩
-  · obtain ⟨x, rfl⟩ := finSumFinEquiv.surjective a
-    obtain ⟨y, rfl⟩ := finSumFinEquiv.surjective b
-    rw [(hx _).2] at ha hb
-    rw [(hx x).1, (hx y).1]
-    rcases x with i | i <;> rcases y with j | j <;> simp at ha hb
-    exact_mod_cast h.2.2 i j
 
 theorem lowK_holPar (h : HolOK p q κ) {lam : Fin n → ℝ} {ε : Fin n → Bool} (he : IsEnum (holPar p q κ) lam ε) :
     ∃ hn : p + q = n, ∀ x, lowK ε lam (Fin.cast hn (finSumFinEquiv x)) = κ x := by
@@ -278,12 +162,6 @@ theorem lowK_holPar (h : HolOK p q κ) {lam : Fin n → ℝ} {ε : Fin n → Boo
 end GlobalTheory.HolDS
 
 namespace GlobalTheory.Published
-
-theorem HolomorphicDiscreteSeries.of_holOK (hp : HolomorphicDiscreteSeries) {p q : ℕ} {κ : Fin p ⊕ Fin q → ℤ}
-    (h : Formalism.L2.NTheta.HolOK p q κ) {n : ℕ} {lam : Fin n → ℝ} {ε : Fin n → Bool}
-    (he : IsEnum (Formalism.L2.NTheta.holPar p q κ) lam ε) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsDS ε lam σ) : GlobalTheory.HolDS.IsLowestWeightOver ε lam σ :=
-  hp n ε lam (GlobalTheory.HolDS.isHCParam_holPar h he).1 (GlobalTheory.HolDS.isHCParam_holPar h he).2 H σ hσ
 
 end GlobalTheory.Published
 

@@ -338,7 +338,4 @@ theorem exists_isPtOf_cm (n : ℕ) (ST SG Q : Finset (HeightOneSpectrum (𝓞 E)
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem exists_isPtOf : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (n : ℕ) (ST SG Q : Finset (HeightOneSpectrum (𝓞 H.E))) (p : DecoF H.E n ST SG Q), Disjoint ST SG → Disjoint ST Q → Disjoint SG Q → (∀ P ∈ uSG ST (uSG SG Q), conjPrime₂ P ∉ uSG ST (uSG SG Q)) → ∃ g : GL (Fin n) (AfE H.F H.E), IsPtOf (host_cmData R H) g p :=
-  fun R H n ST SG Q p => exists_isPtOf_cm (host_cmData R H) n ST SG Q p
-
 end GlobalTheory.Mem.Col2.PtExist

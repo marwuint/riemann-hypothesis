@@ -1,13 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PrincipalLattices.LogHermFormOfUnitDiscriminant
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsEllipticCurvePolarisedLatticeFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EllipticCurveLatticeBaseChangeStableStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsEllipticCurvePolarisedLatticeFamily
+import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.OpensRangeChartYSupOpensRangeChartZ
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EllipticCurveLatticeBaseChangeStable
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsLieNormSqIffEqPiDivCovolume
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LatticeUnifFibreEqOfPeriod
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.QuadraticEquationOfDerivative
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsCmCurvesOfWeierstrassCurves
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsNumberFieldDefiningCmCurveHomsStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MeanLogLieNormSqEqMeanLogEtaStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsNumberFieldDefiningCmCurveHoms
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MeanLogLieNormSqEqMeanLogEta
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RingOfIntegersSqrtNegThreeModFour
 
 noncomputable section
@@ -34,8 +35,8 @@ theorem cmCurve_of_uniformisation : ThetaUnifAV → Out.PolBaseChangeSt → (∀
   obtain ⟨w, bar, hw, -, hgen, hσ, σ₀, hσ₀⟩ := ringOfIntegers_sqrt_neg_three_mod_four d hs h4 K h2 r hr
   have hnr := (hσ σ₀).1
   choose 𝔟 h𝔟 using ClassGroup.mk0_surjective (R := 𝓞 K)
-  obtain ⟨M, hM, κ, P, v, L₀, Q, t, L, δ, hκ, hP, hQ, hδ, hc, hβ⟩ := GlobalTheory.T.exists_numberField_defining_cm_curve_homs hU hB K h2 σ₀ hnr 𝔟
-    (exists_cm_curves_of_weierstrass_curves (GlobalTheory.T.exists_ellipticCurve_polarised_lattice_family hU hB) K h2 σ₀ hnr 𝔟)
+  obtain ⟨M, hM, κ, P, v, L₀, Q, t, L, δ, hκ, hP, hQ, hδ, hc, hβ⟩ := _root_.GlobalTheory.CommonField.exists_common_field hU hB K h2 σ₀ hnr 𝔟
+    (exists_cm_curves_of_weierstrass_curves (_root_.GlobalTheory.exists_polAV_latticeFamily hU hB) K h2 σ₀ hnr 𝔟)
   have hv : IsTangent v := hP.2.1.1 0
   have hwc : ((κ (w : K) : M) : ℂ) = (1 + Complex.I * √d) / 2 := by
     have e := congrArg σ₀ hw
@@ -43,12 +44,12 @@ theorem cmCurve_of_uniformisation : ThetaUnifAV → Out.PolBaseChangeSt → (∀
     rw [hκ]
     linear_combination e / 2
   refine ⟨M, hM, κ (w : K), P, v, hwc, hP.1, hP.2.1, ?_, ?_, fun s => ?_,
-    GlobalTheory.T.mean_log_lieNormSq_eq_mean_log_eta_alt hU hB hE K h2 σ₀ hnr 𝔟 h𝔟 M κ P v L₀ Q t L δ ⟨hκ, hP, hQ, hδ, hc⟩ hβ⟩
+    _root_.GlobalTheory.mean_log_lieNormSq_eq_mean_log_eta hU hB hE K h2 σ₀ hnr 𝔟 h𝔟 M κ P v L₀ Q t L δ ⟨hκ, hP, hQ, hδ, hc⟩ hβ⟩
   · obtain ⟨P₀, φ, hφ⟩ := exists_isPolFibre hB (algebraMap (𝓞 M) M) P
     obtain ⟨v₀, hv₀, -⟩ := existsUnique_isVecOver hφ.2.1.1 v
     obtain ⟨β, -, hend, -⟩ := hβ
     obtain ⟨W, hW, hWv⟩ := hend w P₀ P₀ φ φ v₀ v₀ hφ hφ hv₀ hv₀
-    have hP₀ := GlobalTheory.T.ellipticCurve_lattice_baseChange_stable _ P v L₀ M _ P₀ φ v₀ hP hφ hv₀
+    have hP₀ := _root_.GlobalTheory.curve_lattice_baseChange _ P v L₀ M _ P₀ φ v₀ hP hφ hv₀
     refine ⟨P₀, φ, v₀, W, hφ, hv₀, hP₀.2.1, hW, ?_, hWv⟩
     refine LieMultiple.quadratic_equation_of_derivative hU hB M (algebraMap M ℂ) P₀ v₀ W _ _ (hP₀.2.1.1 0)
       hP₀.2.2.1 hW hWv ?_

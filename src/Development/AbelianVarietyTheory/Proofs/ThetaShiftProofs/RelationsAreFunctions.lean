@@ -54,9 +54,6 @@ include hB in
 theorem equiv_equivalence : Equivalence (QkPt.Equiv D F (k := k)) :=
   ⟨qk_equiv_refl hB, equiv_symm hB, equiv_trans hB⟩
 
-def qkSetoid (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) : Setoid (QkPt D F k) :=
-  ⟨QkPt.Equiv D F, equiv_equivalence hB⟩
-
 def qkZero (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) : QkPt D F k :=
   qkMk hB 0 0 (by rw [nsmul_zero, map_zero])
 
@@ -186,41 +183,5 @@ theorem qkAct_of_qkExt {a : O} {p r : QkPt D F k} {p' r' : QkPt D F' k} (hp : Qk
   exact qkExt_congr hB f hf ((qkAct_iff hB hG oa _ _ _).1 h)
 
 end Extension
-
-theorem relations_are_functions (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
-    (hB : D.TauBimult) (F : Type) [Field F] [Algebra (FractionRing R) F] :
-    letI := gtGroup D F
-    (∀ g g' : GtPtF D F, g.b = g'.b → (∀ χ, LB.Gen.Corr D.P.L _ _ _ _ (g.s χ) (g'.s χ)) → g = g') ∧
-    ((∀ g g' g'' : GtPtF D F, g.IsAdd g' g'' ↔ g'' = g + g') ∧ (∀ g : GtPtF D F, g.IsZero ↔ g = 0) ∧
-      ∀ (k : ℕ) (g h : GtPtF D F), GtPtF.IsNsmul k g h ↔ h = k • g) ∧
-    ((∀ (y : D.X) (g : GtPtF D F), GtPtF.IsIota y g ↔ g = iota hB F y) ∧
-      (∀ g : GtPtF D F, gtProj D F g = Additive.ofMul g.b) ∧
-      (0 : GtPtF D F).b = 1 ∧ ∀ g g' : GtPtF D F, (g + g').b = g.b * g'.b) ∧
-    (∀ k : ℕ, Equivalence (QkPt.Equiv D F (k := k)) ∧ (∀ p p' : QkPt D F k, ∃ r, QkAdd p p' r) ∧
-      ∀ p p' q q' r r' : QkPt D F k, QkPt.Equiv D F p q → QkPt.Equiv D F p' q' → QkAdd p p' r →
-        (QkAdd q q' r' ↔ QkPt.Equiv D F r r')) ∧
-    (∀ (O : Type) [CommRing O] [StarRing O] [Module O D.X] (oa : D.OAct O),
-      letI := gtModule hG oa F
-      (∀ (a : O) (g g' : GtPtF D F), GtAct oa a g g' ↔ g' = a • g) ∧
-      (∀ (a : O) (y : D.X), iota hB F (a • y) = a • iota hB F y) ∧
-      (∀ (a : O) (g : GtPtF D F), (a • g).b = g.b ≫ oa.onB.act a) ∧
-      ∀ (k : ℕ) (a : O), (∀ p : QkPt D F k, ∃ r, QkAct oa a p r) ∧
-        ∀ p q r r' : QkPt D F k, QkPt.Equiv D F p q → QkAct oa a p r → (QkAct oa a q r' ↔ QkPt.Equiv D F r r')) ∧
-    ∀ (F' : Type) [Field F'] [Algebra (FractionRing R) F'] (f : F →+* F'),
-      f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F' → ∀ k : ℕ,
-      (∀ p : QkPt D F k, ∃! p' : QkPt D F' k, QkExt f p p') ∧
-      (∀ (p q : QkPt D F k) (p' q' : QkPt D F' k), QkExt f p p' → QkExt f q q' → QkPt.Equiv D F p q →
-        QkPt.Equiv D F' p' q') ∧
-      (∀ (p q r : QkPt D F k) (p' q' r' : QkPt D F' k), QkExt f p p' → QkExt f q q' → QkExt f r r' → QkAdd p q r →
-        QkAdd p' q' r') ∧
-      ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.X] (oa : D.OAct O) (a : O) (p r : QkPt D F k)
-        (p' r' : QkPt D F' k), QkExt f p p' → QkExt f r r' → QkAct oa a p r → QkAct oa a p' r' :=
-  ⟨fun _ _ => gt_ext, ⟨isAdd_iff_eq, isZero_iff_eq, isNsmul_iff_eq⟩, ⟨isIota_iff_eq hB, gtProj_apply, zero_b, add_b⟩,
-    fun _ => ⟨equiv_equivalence hB, fun p p' => ⟨_, qkAdd_qkAdd hB p p'⟩,
-      fun _ _ _ _ _ _ h h' e => qkAdd_iff_of_equiv hB h h' e⟩,
-    fun _ _ _ _ oa => ⟨gtAct_iff_eq_gtSmul hG oa, iota_smul hG oa hB, gtSmul_b hG oa,
-      fun _ a => ⟨fun p => ⟨_, qkAct_qkSmul hB hG oa a p⟩, fun _ _ _ _ h e => qkAct_iff_of_equiv hB hG oa h e⟩⟩,
-    fun _ _ _ f hf _ => ⟨existsUnique_qkExt hB f hf, fun _ _ _ _ => equiv_of_qkExt hB f hf,
-      fun _ _ _ _ _ _ => qkAdd_of_qkExt hB f hf, fun _ _ _ _ oa _ _ _ _ _ => qkAct_of_qkExt hB f hf hG oa⟩⟩
 
 end GlobalTheory.TorusExt

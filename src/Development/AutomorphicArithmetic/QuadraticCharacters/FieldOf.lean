@@ -24,9 +24,6 @@ noncomputable instance : NumberField E.field := inferInstance
 
 instance : IsAbelianGalois ℚ E.field := IsAbelianGalois.tower_bot ℚ E.field E.Cyc
 
-noncomputable def galRes : (ZMod E.N)ˣ →* Gal(E.field/ℚ) :=
-  (AlgEquiv.restrictNormalHom E.field).comp E.cycGal.symm.toMonoidHom
-
 end AbField
 
 end HostParam

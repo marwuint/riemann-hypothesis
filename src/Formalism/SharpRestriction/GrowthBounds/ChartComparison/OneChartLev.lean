@@ -169,54 +169,7 @@ theorem valTied_toG (V : ValTied u eV i hi K) :
 
 variable {p : ℕ}
 
-set_option maxHeartbeats 2000000 in
-
-def stepInOne (V : ValTied u eV i hi K) (G : GAtP p) (dt : DetTie K.lev) (cmpt : Unit → Type) [∀ β, Fintype (cmpt β)]
-    (eC : (Σ β, cmpt β) ≃ G.comp) (loc : ∀ β, LocAt D.host.F D.host.E (D.R.N i) (gatCh G fun a : cmpt β => eC ⟨β, a⟩))
-    (pos : (Σ v : Fin G.P.nV, Fin (G.P.n' v)) ≃ D.what₂.Tau) : StepIn (D.fm u) i hi G where
-  T := (D.mem u).A.T
-  bad := badG D
-  eY := V.eY
-  okW := fun _ => True
-  Ch := Unit
-  chOf := chU u i
-  lat := clsCrd D u i hi
-  K := oneChart K
-  val := valTied_toG V
-  tw := fun _ => DetTw.ofChiD dt (cTw D i)
-  cmpt := cmpt
-  eC := eC
-  loc := loc
-  pos := pos
-
 variable {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
-
-set_option maxHeartbeats 2000000 in
-
-def stepInMid (F : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (h2 : i + 1 ≤ D.R.m) (G : GAtP p)
-    (dt : ∀ β, DetTie (F.ch i h1 h2 β).lev) (cmpt : Ch i → Type) [∀ β, Fintype (cmpt β)]
-    (eC : (Σ β, cmpt β) ≃ G.comp) (loc : ∀ β, LocAt D.host.F D.host.E (D.R.N i) (gatCh G fun a : cmpt β => eC ⟨β, a⟩))
-    (pos : (Σ v : Fin G.P.nV, Fin (G.P.n' v)) ≃ D.what₂.Tau) : StepIn (D.fm u) i (le_of_succ_m h2) G where
-  T := (D.mem u).A.T
-  bad := badG D
-  eY := F.eYC i h1 h2
-  okW := fun _ => True
-  Ch := Ch i
-  chOf := chOf i
-  lat := fun c => clsCrd D u i (le_of_succ_m h2) c
-  K := F.ch i h1 h2
-  val := F.valC i h1 h2
-  tw := fun β => DetTw.ofChiD (dt β) (cTw D i)
-  cmpt := cmpt
-  eC := eC
-  loc := loc
-  pos := pos
-
-def stepInTop (F : FormsTiedSym D u Ch chOf) (G : GAtP p) (dt : DetTie (F.cls D.R.m le_rfl (Or.inr rfl)).lev)
-    (cmpt : Unit → Type) [∀ β, Fintype (cmpt β)] (eC : (Σ β, cmpt β) ≃ G.comp)
-    (loc : ∀ β, LocAt D.host.F D.host.E (D.R.N D.R.m) (gatCh G fun a : cmpt β => eC ⟨β, a⟩))
-    (pos : (Σ v : Fin G.P.nV, Fin (G.P.n' v)) ≃ D.what₂.Tau) : StepIn (D.fm u) D.R.m le_rfl G :=
-  stepInOne (F.val D.R.m le_rfl (Or.inr rfl)) G dt cmpt eC loc pos
 
 end Formalism.MainNotions.G.CmpJ
 

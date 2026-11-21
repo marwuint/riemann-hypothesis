@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HzUnit
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SeeSawWeilBiActionCommutesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SeeSawWeilBiActionCommutes
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValLast
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittDecompositionMixedCoordsRankZero
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SetIntegralFundamentalDomainRightTranslateInvari
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousIntegralCompactAutomorphicQuotientPara
@@ -338,7 +339,7 @@ theorem main : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c), c.Is → c.Vo
     (t.kom (j + 1)) omT omz'' (hχV ▸ s.weil₀) hWa hWz hWX hWT hWz'' (flatBF s Φ₁') _ hΞ hΦ₂'').2
   have hC := lastBi_biTheta D c.ψ (c.bes j 0 h).V₀ (c.X j) (c.bes j 0 h).L (c.X (j + 1)) (c.X (j + 1 + 1)) c.T c.Lz
     (c.bes j 0 h).o (c.oT (j + 1 + 1) h) (v.τ j h) hτ (flatBF s Φ₁') _ hΞ hΦ₂''
-  have hBA := (GlobalTheory.T.seeSawWeilBiAction_commutes D c.ψ (c.X j) (c.X (j + 1)) (c.X (j + 1 + 1)) χA s.χW χS' (χT * χz⁻¹) (t.kom j) (t.kom (j + 1))
+  have hBA := (_root_.GlobalTheory.SeeSaw.biAct_all D c.ψ (c.X j) (c.X (j + 1)) (c.X (j + 1 + 1)) χA s.χW χS' (χT * χz⁻¹) (t.kom j) (t.kom (j + 1))
     hWa hWX _ hC).2.2.1
   show ∫ h' in c.volT.𝓕, rTrans bT F h' * (∫ x in s.vW.𝓕, t.omT j h (x, h') Φ₂' 0 *
       (∫ h₀ in (c.x j).vol.𝓕, φ h₀ * s.om (embA (c.bes j 0 h).d (c.bes j 0 h).o h₀, x) Φ₁' 0 ∂(c.x j).vol.μ) ∂s.vW.μ)

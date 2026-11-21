@@ -4,8 +4,10 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.PlaceBetween
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.WtOfForm
 import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.EventuallyMemHeckeLevelAndIwahoriCongruence
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAutFormsWeightLevelFiniteSumFixedVectorsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalComponentLevelFixedVectorsNeBotStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAutFormsWeightLevelFiniteSumFixedVectors
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalComponentLevelFixedVectorsNeBot
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueAdmissibleLocalComponentDefiniteUnit
 
 noncomputable section
@@ -42,7 +44,7 @@ private theorem fixOf {L : Type} [Field L] [NumberField L] [IsCMField L] (hU : G
   obtain ⟨-, f, hf0, hfm, hf⟩ := hc
   let p : locU n w →* GlobalTheory.BCT.UL n w :=
     ((cLoc w).comp (locU n w).subtype).codRestrict (GlobalTheory.BCT.UL n w) fun x => hUL ▸ Subgroup.mem_top _
-  exact GlobalTheory.T.localComponent_levelFixedVectors_ne_bot L hU n hn S hS lam K' hLev π h1 h2 h3 w hw σ₁
+  exact _root_.GlobalTheory.BCT.LocFix.fixed_ne_bot L hU n hn S hS lam K' hLev π h1 h2 h3 w hw σ₁
     ⟨p, fun x => rfl, σ₁.irred, f, hf0, hfm, fun x v => hf x v⟩
 
 section Tf
@@ -175,7 +177,7 @@ theorem UpperTheory.V.Z.J.D.decomp :
   have hS := Dc.secRange s
   have hLev : GlobalTheory.BCT.IsLevelFam (fun w : GlobalTheory.BCT.Pl L => MonoidHom.id (GlobalTheory.BCT.UL n w)) (GlobalTheory.BCT.KL n)
       (Dc.Kf s n (c0 + b + 1)) := Dc.levFam hfin
-  obtain ⟨-, J', hJ', σ, hσ, hind, hsup, -⟩ := GlobalTheory.T.unitaryAutForms_weight_level_finite_sum_fixed_vectors L hU n hn _ hS lam' _ hLev
+  obtain ⟨-, J', hJ', σ, hσ, hind, hsup, -⟩ := _root_.GlobalTheory.BCT.forms_decomp L hU n hn _ hS lam' _ hLev
   have hdec : IsDec (Set.range s.w) lam' (Dc.Kf s n (c0 + b + 1)) σ := ⟨hσ, hind, hsup⟩
   have hσind := hI L n _ hS lam' _ hLev J' σ hdec
   refine ⟨Set.range s.w, Dc.Kf s n (c0 + b + 1), J', hJ', σ, hS, hLev, fun w hw => Dc.Kf_notS hw, hdec,

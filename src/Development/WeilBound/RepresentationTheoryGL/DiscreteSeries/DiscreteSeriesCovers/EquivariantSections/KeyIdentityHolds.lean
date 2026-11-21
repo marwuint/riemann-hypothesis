@@ -1,5 +1,7 @@
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LowDegreeAlgebraFactsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HolomorphicFunctionFactsStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HolomorphicFunctionFacts
+import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSeriesCovers.EquivariantSections.EquivSection
 import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSeriesCovers.RhoRepresentations.EquivSection
 import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSeriesCovers.RhoRepresentations.RhoRep
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusRestrictionRepresentationStatement
@@ -13,7 +15,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KeyPropositionO
 namespace PositivityTheory.RgDs.K
 
 theorem key_identity_holds : PositivityTheory.RgDs.Key :=
-  GlobalTheory.T.key_proposition_of_components GlobalTheory.T.low_degree_algebra_facts GlobalTheory.T.holomorphic_function_facts (PositivityTheory.RgDs.K.equivariant_section_holds) (PositivityTheory.RgDs.K.rho_representation_holds) GlobalTheory.T.action_equivariance_statement GlobalTheory.T.torus_restriction_representation
-    GlobalTheory.T.torus_weight_decomposition GlobalTheory.T.transfer_statement GlobalTheory.T.compact_exhaustion_statement (GlobalTheory.T.beta_weight_of_torus_facts GlobalTheory.T.holomorphic_function_facts GlobalTheory.T.torus_restriction_representation GlobalTheory.T.torus_weight_decomposition)
+  GlobalTheory.T.key_proposition_of_components GlobalTheory.T.low_degree_algebra_facts _root_.GlobalTheory.CompanionTheory.HolOm.holFacts (PositivityTheory.RgDs.K.equivariant_section_holds) (PositivityTheory.RgDs.K.rho_representation_holds) GlobalTheory.T.action_equivariance_statement GlobalTheory.T.torus_restriction_representation
+    GlobalTheory.T.torus_weight_decomposition GlobalTheory.T.transfer_statement GlobalTheory.T.compact_exhaustion_statement (GlobalTheory.T.beta_weight_of_torus_facts _root_.GlobalTheory.CompanionTheory.HolOm.holFacts GlobalTheory.T.torus_restriction_representation GlobalTheory.T.torus_weight_decomposition)
 
 end PositivityTheory.RgDs.K

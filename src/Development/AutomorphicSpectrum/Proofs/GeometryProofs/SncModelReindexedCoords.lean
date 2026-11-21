@@ -4,8 +4,9 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CardComapMulFinsumEqFinsumFibres
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePoint
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncChartOfSmoothCoords
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -215,7 +216,7 @@ theorem exists_denominator {X X' : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero 
     exact h hb
   let φ : B' →+* S' := (B'.val : B' →+* Ω).codRestrict S' fun b => hB'S' b b.2
   haveI := hq
-  obtain ⟨p', ⟨hpc, hpu⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point X' Ω ξ' ℤ _ (seg y') tie' c' hxc' (q.comap φ) inferInstance
+  obtain ⟨p', ⟨hpc, hpu⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X' Ω ξ' ℤ _ (seg y') tie' c' hxc' (q.comap φ) inferInstance
   have hu' : ∀ b (hb : b ∈ B'), (⟨b, hB'S' b hb⟩ : S') ∉ q ↔ unitAt ξ' p' b := fun b hb => hpu ⟨b, hb⟩
   have hnot : ∀ (b b' : Ω) (hb : b ∈ S') (hb' : b' ∈ S'), b * b' = 1 → (⟨b, hb⟩ : S') ∉ q :=
     fun b b' hb hb' h hmem => hq.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem
@@ -264,7 +265,7 @@ theorem exists_denominator {X X' : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero 
   have ht : (t : Ω) ∈ regAt ξ ⟨g p'.1, hspec _⟩ := hR ▸ hS'T t.2
   have hp : InChart ξ (seg y) c ⟨g p'.1, hspec _⟩ :=
     ⟨hxc, fun d => hR ▸ hB'reg _ (hBB' (Algebra.subset_adjoin ⟨d, rfl⟩))⟩
-  obtain ⟨s, hs, hsu, hst⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ (seg y) tie c _ hp t).1 ht
+  obtain ⟨s, hs, hsu, hst⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ _ (seg y) tie c _ hp t).1 ht
   refine ⟨⟨s, hBS s hs⟩, ⟨s * t, hBS _ hst⟩, ?_, rfl⟩
   have hsu' : unitAt ξ' p' s := by
     unfold unitAt at *

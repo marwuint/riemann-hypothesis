@@ -5,8 +5,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SmoothIsMultiplicative
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RigidifiedSymBoxLB
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.KTrivExternalTensorPowerLineBundleStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RelAmpleExternalTensorPowerGroupPowerStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.KTrivExternalTensorPowerLineBundle
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RelAmpleExternalTensorPowerGroupPower
 
 set_option autoImplicit false
 
@@ -32,8 +32,8 @@ def powPolOf (P : PolAV S) {j : ℕ} (A' : Over S) [GrpObj A'] (p : IsPowGrp A' 
     isLB := LB.isLB_linComb P.isLB _ _
     rigid := (rigidified_sym_boxLB S A' P.A j p P.L P.isLB).1 P.rigid
     sym := (rigidified_sym_boxLB S A' P.A j p P.L P.isLB).2 P.sym
-    ample := T.relAmple_externalTensorPower_groupPower S A' P.A j p P.L P.isLB P.ample
-    ktriv := T.kTriv_external_tensor_power_lineBundle S A' P.A j p P.L P.isLB P.ktriv }
+    ample := _root_.GlobalTheory.relAmple_boxLB S A' P.A j p P.L P.isLB P.ample
+    ktriv := _root_.GlobalTheory.kTriv_boxLB S A' P.A j p P.L P.isLB P.ktriv }
 
 def isPowPolAV_powPolOf (P : PolAV S) {j : ℕ} (A' : Over S) [GrpObj A'] (p : IsPowGrp A' P.A j) :
     IsPowPolAV (powPolOf P A' p) P j where

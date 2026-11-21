@@ -34,44 +34,10 @@ theorem baseSpan_eq_range (F : Type*) [Field F] [Algebra K F] (U : Submodule K V
       exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨u, u.2, rfl⟩)
     | add y z hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
 
-theorem mem_baseSpan_iff (F : Type*) [Field F] [Algebra K F] (U : Submodule K V)
-    (x : F ⊗[K] V) : x ∈ baseSpan F U ↔ LinearMap.lTensor F U.mkQ x = 0 := by
-  have hex := lTensor_exact F (LinearMap.exact_subtype_mkQ U) (Submodule.mkQ_surjective U)
-  rw [hex x, baseSpan_eq_range, LinearMap.mem_range]
-  constructor
-  · rintro ⟨y, rfl⟩; exact ⟨y, (incU_apply_eq_lTensor F U y).symm⟩
-  · rintro ⟨y, rfl⟩; exact ⟨y, incU_apply_eq_lTensor F U y⟩
-
 variable {Ω : Type*} [Field Ω] [Algebra K Ω]
-
-noncomputable def fldIncl (K₁ : IntermediateField K Ω) : K₁ →ₗ[K] Ω :=
-  (IsScalarTower.toAlgHom K K₁ Ω).toLinearMap
-
-theorem fldIncl_injective (K₁ : IntermediateField K Ω) : Function.Injective (fldIncl K₁) :=
-  (algebraMap K₁ Ω).injective
 
 theorem inclT_tmul' (K₁ : IntermediateField K Ω) (a : K₁) (v : V) :
     inclT K₁ V (a ⊗ₜ[K] v) = (a : Ω) ⊗ₜ[K] v := rfl
-
-theorem lTensor_mkQ_inclT (K₁ : IntermediateField K Ω) (U : Submodule K V) (x : K₁ ⊗[K] V) :
-    LinearMap.lTensor Ω U.mkQ (inclT K₁ V x) =
-      LinearMap.rTensor (V ⧸ U) (fldIncl K₁) (LinearMap.lTensor K₁ U.mkQ x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a v => simp [inclT_tmul', fldIncl]
-  | add y z hy hz => simp only [map_add, hy, hz]
-
-theorem mem_baseSpan_of_inclT (K₁ : IntermediateField K Ω) (U : Submodule K V) (x : K₁ ⊗[K] V)
-    (h : inclT K₁ V x ∈ baseSpan Ω U) : x ∈ baseSpan K₁ U := by
-  rw [mem_baseSpan_iff] at h ⊢
-  rw [lTensor_mkQ_inclT] at h
-  apply Module.Flat.rTensor_preserves_injective_linearMap (M := V ⧸ U) _ (fldIncl_injective K₁)
-  rw [h, map_zero]
-
-theorem inclT_mem_baseSpan (K₁ : IntermediateField K Ω) (U : Submodule K V) (x : K₁ ⊗[K] V)
-    (h : x ∈ baseSpan K₁ U) : inclT K₁ V x ∈ baseSpan Ω U := by
-  rw [mem_baseSpan_iff] at h ⊢
-  rw [lTensor_mkQ_inclT, h, map_zero]
 
 theorem inclT_tmul (K₁ : IntermediateField K Ω) (a : K₁) (v : V) :
     inclT K₁ V (a ⊗ₜ[K] v) = (a : Ω) • ((1 : Ω) ⊗ₜ[K] v) := by
@@ -112,21 +78,5 @@ theorem finrank_baseSpan (F : Type*) [Field F] [Algebra K F] (U : Submodule K V)
     [FiniteDimensional K U] : Module.finrank F (baseSpan F U) = Module.finrank K U := by
   rw [baseSpan_eq_range, LinearMap.finrank_range_of_inj (incU_injective F U),
     Module.finrank_baseChange]
-
-theorem finiteDimensional_baseSpan (F : Type*) [Field F] [Algebra K F] (U : Submodule K V)
-    [FiniteDimensional K U] : FiniteDimensional F (baseSpan F U) := by
-  rw [baseSpan_eq_range]; infer_instance
-
-theorem exists_ratFun {c : Module.Dual Ω (Ω ⊗[K] V)} {K₁ : IntermediateField K Ω}
-    (h : DefinedOver c K₁) :
-    ∃ φ : Module.Dual K₁ (K₁ ⊗[K] V), ∀ x, algebraMap K₁ Ω (φ x) = c (inclT K₁ V x) := by
-  let ψ : K₁ ⊗[K] V →ₗ[K₁] Ω := (c.restrictScalars K₁).comp (inclT K₁ V)
-  have hr : ∀ x, ψ x ∈ LinearMap.range (Algebra.linearMap K₁ Ω) := fun x => by
-    obtain ⟨y, hy⟩ := h x; exact ⟨y, hy⟩
-  let e := LinearEquiv.ofInjective (Algebra.linearMap K₁ Ω) (algebraMap K₁ Ω).injective
-  refine ⟨e.symm.toLinearMap ∘ₗ ψ.codRestrict _ hr, fun x => ?_⟩
-  have h1 : ((e (e.symm ⟨ψ x, hr x⟩) : LinearMap.range (Algebra.linearMap K₁ Ω)) : Ω) = ψ x := by
-    rw [e.apply_symm_apply]
-  exact h1
 
 end ReciprocityTheory.ChartRestriction.G.FreeQuotientRank

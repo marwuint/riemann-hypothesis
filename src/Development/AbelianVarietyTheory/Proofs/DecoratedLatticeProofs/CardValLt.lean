@@ -15,6 +15,4 @@ theorem card_val_lt : ∀ (N n : ℕ), n ≤ N → Finset.card {i : Fin N | (↑
       exact ⟨⟨m, by omega⟩, hm, rfl⟩
   rw [← Finset.card_map Fin.valEmbedding, hmap, Finset.card_range]
 
-example : ∀ (N n : ℕ), n ≤ N → Finset.card {i : Fin N | (↑i : ℕ) < n} = n := card_val_lt
-
 end GlobalTheory.CardValuationLt

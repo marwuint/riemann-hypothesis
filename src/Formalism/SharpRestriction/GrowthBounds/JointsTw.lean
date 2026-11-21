@@ -228,16 +228,6 @@ theorem unit_bound_of_local_system (D : D7) (L : SizeData₂ D) (X : Inst D L) (
   intro hE μ hUs hT hLT u w hg hq
   exact UAt_of D L X (W.Yt μ) K _ hT hLT u w hg (hP hE μ hUs hT hLT u w hg hq) hNum hLarge
 
-theorem unit_bound_of_local_system' (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) (Dx : DivX D)
-    (W : Formalism.MainNotions.WeilJacquetShalikaLaw.TwLoc D Y) (lev : LevelData D) (Xe : ErrX D) (ce : ErrC) (sp : ℝ)
-    (hP : Formalism.BasicNotions.ErrDefs D L Xe lev K ce → ∀ μ, Formalism.BasicNotions.DV.Used D μ → ∀ (hT : GatTies D), LatTied hT X (W.Yt μ) →
-      ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
-      D.what₂.places.resChar w ∉ Dx.Qp μ →
-      SysUAt D L X (W.Yt μ) u w hg (Formalism.MainNotions.WeilJacquetShalikaLaw.lowS L Xe K ce sp u w))
-    (hNum : Formalism.MainNotions.FormalGroupSystem.SmallResidueCharComparison D L X Y K) (hK : K.Nonneg) (hPr1 : 1 ≤ K.Pr1) (P : ParameterChoice' D L) :
-    Formalism.MainNotions.WeilJacquetShalikaLaw.unitBoundAtTwistedPlaces D L X Y K Dx W lev Xe ce sp :=
-  unit_bound_of_local_system D L X Y K Dx W lev Xe ce sp hP hNum (Formalism.MainNotions.G.TopChoiceBounds.hLarge_proved X K hK hPr1 P)
-
 open Classical in
 
 theorem unit_bound_of_sum_over_primes (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) (Dx : DivX D)

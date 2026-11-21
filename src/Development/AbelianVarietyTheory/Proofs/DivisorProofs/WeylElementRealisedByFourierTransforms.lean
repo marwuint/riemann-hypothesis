@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DblActId
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealisedOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicFourierRealisesWeylElementStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicFourierRealisesWeylElement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfStandardTraceAdelicAddChar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductFunctionOnSumCoordsMemAdelicSchwartzSpace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjMemAdelicSchwartzSpaceNumberFieldOfMem
@@ -49,8 +49,8 @@ theorem GlobalTheory.TowU.realised_weyl2 : ∀ (F : Type) [Field F] [NumberField
   haveI : ν.IsAddHaarMeasure := E.isAddHaarMeasure_map _ hc hc'
   let ε₁ : κ → ℤˣ := fun _ => 1
   let ε₂ : κ ⊕ κ → ℤˣ := Sum.elim (fun _ => 1) (fun _ => -1)
-  obtain ⟨S, S', hS, hSf⟩ := GlobalTheory.T.adelicFourier_realises_weylElement F ψ hψ κ μ inferInstance ε₁
-  obtain ⟨Sd, Sd', hSd, hSdf⟩ := GlobalTheory.T.adelicFourier_realises_weylElement F ψ hψ (κ ⊕ κ) ν inferInstance ε₂
+  obtain ⟨S, S', hS, hSf⟩ := _root_.GlobalTheory.TowU.FourWeyl.isOp_fourier F ψ hψ κ μ inferInstance ε₁
+  obtain ⟨Sd, Sd', hSd, hSdf⟩ := _root_.GlobalTheory.TowU.FourWeyl.isOp_fourier F ψ hψ (κ ⊕ κ) ν inferInstance ε₂
   refine ⟨S, S', ?_, Sd, Sd', ?_, fun φ₁ h₁ φ₂ h₂ => ?_⟩
   · convert hS using 1
     funext w

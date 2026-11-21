@@ -7,9 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeQuotientT
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPrimitiveNormalisation
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsOActDescendOfEtaleIsogeny
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TrivOfAxesTrivPullbackEtaleIsogenyStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TrivOfAxesTrivPullbackEtaleIsogeny
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubeOfExistsRelAmple
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmplePrincipalDescendedBundleNoetherianStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmplePrincipalDescendedBundleNoetherian
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -33,7 +33,7 @@ theorem exists_quotient_triple_family : ∀ (E : Type) [Field E] [NumberField E]
   have hc : ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Sp R),
       Nat.card {z : Over.mk x ⟶ t.G // z ≫ ψ = 1} = (p ^ 2) ^ g := fun k _ _ x => by
     rw [← pow_mul]; exact (hker k x).1
-  have hMamp : Out.RelAmple B M := (GlobalTheory.T.relAmple_principal_descendedBundle_noetherian R P (p ^ 2) B ψ M hR hn hB hM hψ hf he hs hc hiso).1
+  have hMamp : Out.RelAmple B M := (_root_.GlobalTheory.relAmple_kTriv_of_descent_family R P (p ^ 2) B ψ M hR hn hB hM hψ hf he hs hc hiso).1
   have hΘ : ∃ s : LB.Gen (Theta B M), s.IsGen := cube_of_relAmple _ B M hB hM hMamp
   obtain ⟨act, hact⟩ := GlobalTheory.exists_oAct_descend_of_etale_isogeny (𝓞 E) (Sp R) t.G B ψ t.act hA hB hψ hf he hs
     fun k _ _ x z c hz => ((hker k x).2 z hz).2 c
@@ -73,7 +73,7 @@ theorem exists_quotient_triple_family : ∀ (E : Type) [Field E] [NumberField E]
       refine (cls_eq_zero_iff (pull_isLB hN _)).1 ?_
       rw [cls_pull hN, cls_div h₂ h₁, cls_cube_two hM, cls_cube_two hM, map_sub, pull_lam, pull_lam, lift_fst,
         lift_snd, lift_fst_assoc, lift_snd_assoc, ← hm, h, sub_self]
-    refine GlobalTheory.T.triv_of_axes_triv_pullback_etale_isogeny (Sp R) t.G B ψ M _ (p ^ 2) hA hB hM hMamp hN hψ hf he hs hn hunit
+    refine _root_.GlobalTheory.IsogenyBitriv.triv_of_triv_pull_isogeny (Sp R) t.G B ψ M _ (p ^ 2) hA hB hM hMamp hN hψ hf he hs hn hunit
       (fun k _ _ x z hz => ((hker k x).2 z hz).1) (val _ _ ?_) (val _ _ ?_) ?_
     · rw [MonObj.one_comp, lam_one_left, lam_one_left]
     · rw [MonObj.one_comp, lam_one_right, lam_one_right]
@@ -92,7 +92,7 @@ theorem exists_quotient_triple_family : ∀ (E : Type) [Field E] [NumberField E]
   have hn' : (lbPow t.PP.L (p ^ 2)).IsLB := LB.isLB_linComb hL _ _
   have hfinal : LBIso (lbPow t.PP.L (p ^ 2)) (PP.L.pull ψ.left) := by
     rw [← cls_eq_iff hn' (pull_isLB hP' _), cls_lbPow hL, cls_pull hP', hpull]
-  obtain ⟨a₃, a₄⟩ := GlobalTheory.T.relAmple_principal_descendedBundle_noetherian R P (p ^ 2) B ψ PP.L hR hn hB hP' hψ hf he hs hc hfinal
+  obtain ⟨a₃, a₄⟩ := _root_.GlobalTheory.relAmple_kTriv_of_descent_family R P (p ^ 2) B ψ PP.L hR hn hB hP' hψ hf he hs hc hfinal
   exact ⟨{ G := B, semi := isSemiAbelian_of_isAbelianScheme B hB, act := act, PP := PP, cub := cub, sym := hsym,
            adj := hadj, prim := hprim }, ψ, hB.proper, a₃, a₄, ⟨hψ, hf, he, hs, hact, hfinal⟩, fun _ _ => Iff.rfl⟩
 

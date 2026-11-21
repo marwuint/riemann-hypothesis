@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoMulInvOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrandPeriodic
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FiniteAdeleVectorAnnihilatorsCompactOpenBasisStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FiniteAdeleVectorAnnihilatorsCompactOpenBasis
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DecayZero
 
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.SWQ GlobalTheory.ThetaTransform
 open scoped Matrix Classical
@@ -40,7 +41,7 @@ theorem invV_level_support : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) 
     hU.preimage (f := fun u : Fin N → AF F => ((u, 0) : VA F N)) (continuous_id.prodMk continuous_const), ?_⟩, ?_⟩
   · intro u hu hi x
     rw [← invV_heisV_fst, hf (u, 0) hu hi h0]
-  · refine ⟨_, (GlobalTheory.T.finiteAdeleVector_annihilators_compact_open_basis F N ψ lam ν (half F N) hc).1 (U.comap (finEmbSnd F N))
+  · refine ⟨_, (_root_.GlobalTheory.SWQ.finite_annihilators F N ψ lam ν (half F N) hc).1 (U.comap (finEmbSnd F N))
       (hU.preimage (continuous_finEmbSnd F N)), fun x hx v hv => ?_⟩
     have h1 := invV_heisV_snd hc.2.2.2.1 hD hq (finEmbSnd F N v).2 x
     rw [show ((0 : Fin N → AF F), (finEmbSnd F N v).2) = finEmbSnd F N v from rfl, hf _ hv h0 rfl,

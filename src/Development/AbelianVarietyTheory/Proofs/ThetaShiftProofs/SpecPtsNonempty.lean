@@ -4,8 +4,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Sec
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ArcDictExpZeroSection
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFShiftZeroIff
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsSumsAtHalfCurveFraction
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyProjCoordsConvergentCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueLiftCoordsLocalSubringStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyProjCoordsConvergentCoefficients
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueLiftCoordsLocalSubring
 
 noncomputable section
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -56,7 +56,7 @@ theorem exists_ext {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsSeparated G.hom] 
   obtain ⟨x₁, hx₁⟩ := exists_lift x _ hxU
   obtain ⟨j₀, hj₀⟩ := exists_chart L hL x
   obtain ⟨u₀, hu₀⟩ := (hτ.1 j₀ hj₀).pow 4
-  obtain ⟨z₁, ⟨hz₁, hz₂, hz₃⟩, -⟩ := GlobalTheory.T.existsUnique_lift_coords_localSubring S G L U 4 n b R K f y x₁ cf j₀ u₀ hL hU hb hf hyU
+  obtain ⟨z₁, ⟨hz₁, hz₂, hz₃⟩, -⟩ := _root_.GlobalTheory.LiftPoint.existsUnique_lift S G L U 4 n b R K f y x₁ cf j₀ u₀ hL hU hb hf hyU
     (by rw [← Category.assoc, hx₁, hx]) (by rw [hx₁]; exact hj₀)
     (fun i => by rw [hu₀]; exact hv i x₁ j₀ hx₁ hj₀) hcf
   have hz : spMap f ≫ z₁ ≫ (G.hom ⁻¹ᵁ U).ι = x := by rw [← Category.assoc, hz₂, hx₁]
@@ -104,8 +104,8 @@ theorem germs_local (Γ : Germs) (w : ℂ) : IsLocalRing (Γ.R w) :=
 theorem specPts_nonempty : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (B : Type) [CommRing B] (bb : Base l B) (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp B) (o : Obj D l bb s) (A : AnArc (𝓞 E)) (y : Sp ℂ⸨X⸩ ⟶ S) (Φ : GenPts A o.t y) (Γ : Germs) (k : Type) [CommRing k] (s₀ : S ⟶ Sp k) [LocallyOfFiniteType s₀] (b₀ : k →+* ℂ), y ≫ s₀ = spMap ((algebraMap ℂ ℂ⸨X⸩).comp b₀) → AnFin A → Φ.Rational → Nonempty (SpecPts Φ Γ) := by
   intro h1 h2 E _ _ _ H _ D l B _ bb S _ s o A y Φ Γ k _ s₀ _ b₀ hy hA hΦ
   classical
-  obtain ⟨C⟩ := GlobalTheory.T.nonempty_projCoords_convergent_coefficients h1 h2 E H D l B bb S s o A y Φ hA hΦ 4 le_rfl
-  obtain ⟨C'⟩ := GlobalTheory.T.nonempty_projCoords_convergent_coefficients h1 h2 E H D l B bb S s o A y Φ hA hΦ 5 (by norm_num)
+  obtain ⟨C⟩ := _root_.GlobalTheory.SpanFrame.nonempty_coords h1 h2 E H D l B bb S s o A y Φ hA hΦ 4 le_rfl
+  obtain ⟨C'⟩ := _root_.GlobalTheory.SpanFrame.nonempty_coords h1 h2 E H D l B bb S s o A y Φ hA hΦ 5 (by norm_num)
   haveI := o.proper
   obtain ⟨x₀, hx₀⟩ := hΦ.1 0
   have hy₀ : spMap (algebraMap Conv.convLaurent ℂ⸨X⸩) ≫ x₀ ≫ o.t.G.hom = y := by

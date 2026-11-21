@@ -6,19 +6,6 @@ open WeierstrassCurve WeierstrassCurve.Affine
 
 namespace TorsionUnit
 
-variable {K : Type} [NormedField K] [IsUltrametricDist K]
-
-def unitBall (K : Type) [NormedField K] [IsUltrametricDist K] : Subring K where
-  carrier := {x | ‖x‖ ≤ 1}
-  mul_mem' := fun {a b} ha hb => by
-    simp only [Set.mem_setOf_eq, norm_mul] at *
-    exact mul_le_one₀ ha (norm_nonneg _) hb
-  one_mem' := by simp
-  add_mem' := fun {a b} ha hb =>
-    (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
-  zero_mem' := by simp
-  neg_mem' := fun {a} ha => by simpa using ha
-
 end TorsionUnit
 
 open WeierstrassCurve WeierstrassCurve.Affine in

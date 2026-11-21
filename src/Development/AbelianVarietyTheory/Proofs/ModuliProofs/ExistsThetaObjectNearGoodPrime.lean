@@ -1,10 +1,10 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAdditionMorphismThetaFamilyNearGoodPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsEndomorphismsExtendNearGoodPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAdditionMorphismThetaFamilyNearGoodPrime
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsEndomorphismsExtendNearGoodPrime
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLocLoc
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ChartPullCompOfPullPull
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSectionsFam
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGoodThetaObjectEmbeddingDataStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGoodThetaObjectEmbeddingData
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GrpFamOfDenseFibres
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KTrivNearGoodPrime
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAwayFlatProjRep
@@ -176,9 +176,9 @@ end
 theorem exists_tObj_near : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (β : o →+* R) (v : Ix g ((n ^ j) ^ 2) → R), DenseP (objPrimes b Mat κ β v) → ∀ q₀ ∈ objPrimes b Mat κ β v, ∃ (f : R) (t : TObj g ((n ^ j) ^ 2) J b (spMap ((algebraMap R (Localization.Away f)).comp β))), f ∉ q₀ ∧ t.HasTh (𝟙 _) (fun a => (algebraMap R (Localization.Away f)) (v a)) ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (x : (Localization.Away f) →+* K) (t' : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap ((algebraMap R (Localization.Away f)).comp β))), t'.Shape Mat κ → t'.HasTh (𝟙 _) (fun a => x ((algebraMap R (Localization.Away f)) (v a))) → TMap t' t (spMap x) := by
   classical
   intro h1 h2 g J _ Mat κ n hn hodd
-  obtain ⟨j₁, H₁⟩ := GlobalTheory.T.exists_goodThetaObjectEmbeddingData h1 h2 g J Mat κ n hn hodd
-  obtain ⟨j₂, H₂⟩ := GlobalTheory.T.exists_addition_morphism_thetaFamily_near_goodPrime h1 h2 g J Mat κ n hn hodd
-  obtain ⟨j₃, H₃⟩ := GlobalTheory.T.exists_endomorphisms_extend_near_good_prime h1 h2 g J Mat κ n hn hodd
+  obtain ⟨j₁, H₁⟩ := _root_.GlobalTheory.ZM.GoodFibre.exists_fibData h1 h2 g J Mat κ n hn hodd
+  obtain ⟨j₂, H₂⟩ := _root_.GlobalTheory.ZM.NearBuild.exists_add_near h1 h2 g J Mat κ n hn hodd
+  obtain ⟨j₃, H₃⟩ := _root_.GlobalTheory.ZM.NearBuild.exists_endomorphism_near h1 h2 g J Mat κ n hn hodd
   refine ⟨j₁ + j₂ + j₃ + 2, fun j hj o _ b R _ _ _ β v hd q₀ hq₀ => ?_⟩
   haveI : NeZero ((n ^ j) ^ 2) := ⟨pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)⟩
   suffices H : NearC b Mat κ β v q₀ by

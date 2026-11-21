@@ -1,7 +1,8 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
+import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentGroupPullbackEpsilonLift
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.Hypotheses2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentGroupPullbackEpsilonLiftStatement
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
+import Development.AbelianVarietyTheory.Definitions.Divisors.P22
 
 section
 set_option autoImplicit false
@@ -10,9 +11,6 @@ open CategoryTheory AlgebraicGeometry DividedPowers TensorProduct TrivSqZeroExt
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.CrysConn
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.KSSym
-variable {R : Type} [CommRing R] {X : Scheme.{0}}
-variable {s : X ⟶ Sp R} {s' : X ⟶ Sp (DualNumber R)}
-open GlobalTheory.Published
 end GlobalTheory.KSSym
 namespace GlobalTheory.KSSym
 open NumberField Formalism.L2.Pj MonObj

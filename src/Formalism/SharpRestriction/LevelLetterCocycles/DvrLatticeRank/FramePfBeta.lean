@@ -55,18 +55,6 @@ theorem framepf_hh_ebar (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (j : 
   rw [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply,
     Fintype.linearCombination_apply_single, one_smul]
 
-theorem framepf_sum_ebar (ℓ : LcQ W T π' c) :
-    ∑ k, framepf_Lbas Bs π' c hπ0 hΔπ hR2 γ0 hu ℓ k • framepf_ebar Bs π' c hπ0 hΔπ hR2 γ0 hu k = ℓ := by
-  unfold framepf_ebar
-  simp_rw [← LinearEquiv.map_smul, ← map_sum]
-  rw [LinearEquiv.symm_apply_eq]
-  conv_rhs => rw [← Finset.univ_sum_single (framepf_Lbas Bs π' c hπ0 hΔπ hR2 γ0 hu ℓ)]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  ext m
-  by_cases h : m = k
-  · subst h; simp
-  · simp [h]
-
 def framepf_Ψβ (βφ : Module.Basis (Fin Bs.r) W.EE (W.DD T)) (F : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) :
     W.DD T →ₗ[W.EE] W.EE ⊗[O] LcQ W T π' c :=
   βφ.constr W.EE fun k => ∑ j, algebraMap (LetA O n) W.EE (W.φA (framepf_ι π' (c - 1) (F j k))) ⊗ₜ

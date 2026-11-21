@@ -79,48 +79,12 @@ namespace GeoX
 
 variable {D : D7} {r j p : ℕ} {Lc : ModuliIntegralCharts.Loc D r j p} (G : GeoX Lc)
 
-open Classical in
-
-def typeDeg {y : Lc.Pt Lc.Xm} {La : Lc.Unim} (e : G.Lt y La →₀ ℕ) (σ : ModuliIntegralCharts.PsiT D × Bool) : ℕ :=
-  ∑ l ∈ e.support, if G.ltype y La l = σ then e l else 0
-
-def HomT {y : Lc.Pt Lc.Xm} {La : Lc.Unim} (P : MvPolynomial (G.Lt y La) (Lc.fld y).C) : Prop :=
-  ∀ e ∈ P.support, ∀ e' ∈ P.support, ∀ σ, G.typeDeg e σ = G.typeDeg e' σ
-
-def IntP {y : Lc.Pt Lc.Xm} {La : Lc.Unim} (P : MvPolynomial (G.Lt y La) (Lc.fld y).C) : Prop :=
-  ∀ e, ‖P.coeff e‖ ≤ 1
-
-def nnOf {y : Lc.Pt Lc.Xm} {La : Lc.Unim} (x : D.host.E) (e : G.Lt y La →₀ ℕ) : (Lc.fld y).C :=
-  e.prod fun l k => G.sgE y (G.ltype y La l) x ^ k
-
-def IsV {y : Lc.Pt Lc.Xm} {La : Lc.Unim} (x : D.host.E) (l : G.Lt y La) : Prop :=
-  ‖G.sgE y (G.ltype y La l) x‖ < 1
-
-open Classical in
-
-def subV {y : Lc.Pt Lc.Xm} {La : Lc.Unim} (x : D.host.E) (yy : G.Lt y La → (Lc.fld y).C)
-    (P : MvPolynomial (G.Lt y La) (Lc.fld y).C) : MvPolynomial (G.Lt y La) (Lc.fld y).C :=
-  MvPolynomial.bind₁ (fun l => if G.IsV x l then MvPolynomial.C (yy l) else MvPolynomial.X l) P
-
 def INT : Prop :=
   ∀ (y : Lc.Pt Lc.Xm) (La : Lc.Unim), G.nrm y La 1 (Lc.vth y La 1) ≤ 1 ∧
     (∀ n (s : Lc.Sn y La n), G.nrm y La (p * n) (G.pull y La n s) = G.nrm y La n s) ∧
     (∀ n (γ : Lc.Th y La n) (s : Lc.Sn y La n), (∃ k : ℕ, 0 < k ∧ γ ^ k = 1) →
       G.nrm y La n (Lc.act y La n γ s) = G.nrm y La n s) ∧
     (∀ n (s : Lc.Sn y La n), G.nrm y La n s ≤ 1 → ∀ DF, Lc.jet y La n DF s ∈ Lc.intJet y La n DF)
-
-def LemA (x : D.host.E) : Prop :=
-  ∀ (y : Lc.Pt Lc.Xm) (La : Lc.Unim) (n' : ℕ), Nat.Coprime n' p → ∀ s : Lc.Sn y La n', G.nrm y La n' s ≤ 1 →
-    ∀ γ : Lc.Th y La (p * n'), (∃ k : ℕ, 0 < k ∧ γ ^ k = 1) →
-      G.inQQ y La (p * n') (Multiplicative.toAdd (Lc.ovr y La (p * n') γ)) →
-    (∀ DF, Lc.jet y La (p * n') DF (Lc.act y La (p * n') γ (G.pull y La n' s)) ∈ Lc.intJet y La (p * n') DF) ∧
-    ∀ P : MvPolynomial (G.Lt y La) (Lc.fld y).C, G.IntP P → G.harm y La P → G.HomT P → P.totalDegree + 1 < p →
-      ‖G.ev y La (p * n') P (Lc.act y La (p * n') γ (G.pull y La n' s))‖ ≤ 1 ∧
-      (∀ e ∈ P.support, G.ev y La (p * n') P (Lc.act y La (p * n') γ (G.pull y La n' s)) =
-        G.nnOf x e * G.evT y La n' γ s P) ∧
-      (∀ yy, G.isHT y La (p * n') (Multiplicative.toAdd (Lc.ovr y La (p * n') γ)) yy →
-        ‖G.ev y La (p * n') P (Lc.act y La (p * n') γ (G.pull y La n' s)) -
-          G.ev y La (p * n') (G.subV x yy P) (Lc.act y La (p * n') γ (G.pull y La n' s))‖ ≤ (p : ℝ)⁻¹)
 
 end GeoX
 
@@ -137,17 +101,8 @@ def PhiB {D : D7} {r j p : ℕ} (Lc : ModuliIntegralCharts.Loc D r j p) (CRd : �
     ∀ (a : Lc.Ylat y) (n : ℕ), 0 < n → ∃ z : Lc.Ylat y,
       Lc.be y (a - n • z) (a - n • z) / 2 ≤ (n : ℝ) ^ 2 * ((Lc.dP y : ℝ) * CdOf D CRd (Lc.dP y) * Lc.phiCy y)
 
-def pib {D : D7} (EX : ErrX D) (i : Fin 2) : D.host.E := D.host.conj (EX.piG i : D.host.E)
-
 def plS {D : D7} (nch : NChoice D) (w : Pl D) (b : Bool) : Pl D :=
   if b = nch.sd w then w else D.what₂.places.conj w
-
-theorem plS_self {D : D7} (nch : NChoice D) (w : Pl D) (h : D.what₂.places.conj w = w) (b : Bool) :
-    plS nch w b = w := by
-  unfold plS
-  split_ifs
-  · rfl
-  · exact h
 
 structure Run (D : D7) (B : WeightFamilies.Prov D) (j : ℕ) where
   S : WeightAlgebra.Scal B
@@ -276,9 +231,6 @@ def RangeB (_X : Loc D nch) (CRd : ℝ) (i : Fin 2) {j : ℕ} (wt : WeightFamili
 
 end Loc
 
-def AjMu (D : D7) (μ : D.what₂.Tup) (j : ℕ) (w : Pl D) : ℤ :=
-  D.what₂.Ij μ j w + D.what₂.Ij μ j (D.what₂.places.conj w) + D.what₂.jw μ j w
-
 section admitted
 
 variable (D : D7) (L : SizeData₂ D) {nch : NChoice D} (X : Loc D nch)
@@ -287,11 +239,7 @@ def adm1 : Prop := (∀ d i, (X.gx d i).INT) ∧ ∀ N i, (X.cmx N i).INT
 
 def adm2 : Prop := (∀ d (i : Fin 2), HTb (X.P6.loc d (D.host.g i))) ∧ ∀ N i, HTb (X.cm N i)
 
-def adm3 : Prop := ModuliIntegralCharts.LinkConditions D X.P6
-
 def adm3b (CRd : ℝ) : Prop := ∀ d (i : Fin 2), PhiB (X.P6.loc d (D.host.g i)) CRd
-
-def ArchimedeanSignatureMatching (H : WeightAlgebra.KHyp) (C2 A2 CR CT : ℝ) : Prop := WeightAlgebra.Conclusion1 L X.W H C2 A2 CR CT
 
 def adm5 (C : NChoice D) : Prop := ∀ i0 w, Over D i0 w → ∀ j ∈ lifts D, ∀ b : Bool,
   ∀ B1 B2 : Submodule (D.ntw.O (C.twI w)) (D.nexp.Fm (C.twI w) j b),
@@ -315,24 +263,6 @@ def twistV0Submodule (C : NChoice D) (w : Pl D) (j : ℕ) (b : Bool) :
     Submodule (D.ntw.Ok (C.twI w) (C.k' w))
       (D.ntw.Ok (C.twI w) (C.k' w) ⊗[D.ntw.O (C.twI w)] D.nexp.Fm (C.twI w) j b) :=
   ((IntegralHeckeForms.V0 D.nexp (C.twI w) j b).restrictScalars (D.ntw.O (C.twI w))).baseChange (D.ntw.Ok (C.twI w) (C.k' w))
-
-def adm7 : Prop := ∀ i0 w, Over D i0 w → ∀ j ∈ lifts D,
-  (∀ b : Bool, IntegralHeckeForms.eThPMt D.nexp (nch.twI w) j b (nch.k' w) ∅ 1 ≤ twistV0Submodule D nch w j b ∧
-    (D.what₂.Ij D.what₂.muStar j (plS nch w b) : ℝ) ≤
-      (D.what₂.places.ramIdx (plS nch w b) : ℝ) * X.IsgBase w j b) ∧
-  (TwistedAt D w →
-    (∀ b : Bool, IntegralHeckeForms.eThPMt D.nexp (nch.twI w) j b (nch.k' w) (nch.Q w) (X.psiW w b) ≤ twistV0Submodule D nch w j b ∧
-      (D.what₂.Ij (D.what₂.muTw w) j (plS nch w b) : ℝ) ≤
-        (D.what₂.places.ramIdx (plS nch w b) : ℝ) * X.IsgTw w j b) ∧
-    (D.what₂.jw (D.what₂.muTw w) j w : ℝ) ≤ (D.what₂.places.ramIdx w : ℝ) * (D.what₂.etaJ j w : ℝ))
-
-def SelfConjIdx : Prop :=
-  ∀ w, TwistedAt D w → D.what₂.places.conj w = w → ∀ j ∈ lifts D,
-    IntegralHeckeForms.eThPMt D.nexp (nch.twI w) j (!nch.sd w) (nch.k' w) (nch.Q w) (X.psiW w (!nch.sd w)) ≤ twistV0Submodule D nch w j (!nch.sd w) ∧
-      X.IsgTw w j (!nch.sd w) = X.IsgTw w j (nch.sd w)
-
-def adm8 : Prop := ∀ i0 w, Over D i0 w → TwistedAt D w →
-  X.I.Ok (nch.twI w) ∧ TwGoodOne D X.I (nch.twI w) (nch.sd w) (nch.Q w) (nch.k' w) (nch.psi' w)
 
 def adm9 : Prop := ∀ N (i : Fin 2) (y : (X.cm N i).Pt (X.cm N i).Xm) (La : (X.cm N i).Unim) (mm : ℕ),
   Nat.Coprime mm (D.host.g i) → ∀ γ : (X.cm N i).Th y La (mm ^ 2), (∃ k : ℕ, 0 < k ∧ γ ^ k = 1) →
@@ -364,22 +294,7 @@ def adm11 (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) : Prop := ∀ j (h1 :
     WeightAlgebra.Hyp L (X.W j h1 h2) H C2 A2 CR 0 CT (X.run j).S (X.run j).ka (X.run j).wL (X.run j).wF X.TO
       (X.run j).nP (X.run j).nW (X.run j).h0 (X.run j).nus)
 
-def adm12 : Prop := Formalism.MainNotions.N.LocsCoverTw D
-
-def admitted (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) : Prop :=
-  adm1 D X ∧ adm2 D X ∧ adm3 D X ∧ adm3b D X CRd ∧ ArchimedeanSignatureMatching D L X H C2 A2 CR CT ∧ adm5 D nch ∧
-    adm6 D nch ∧ TorsionSectionsReflex D nch ∧ adm7 D X ∧ adm8 D X ∧ adm9 D X ∧ adm10 D X ∧ adm11 D L X H C2 A2 CR CT CRd ∧
-    adm12 D
-
 def AdmLA : Prop := adm1 D X ∧ adm2 D X
-
-def AdmLB (CRd : ℝ) : Prop := adm1 D X ∧ adm2 D X ∧ adm3 D X ∧ adm3b D X CRd
-
-def AdmC : Prop := adm1 D X ∧ adm2 D X ∧ adm9 D X
-
-def AdmA (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) : Prop :=
-  adm3b D X CRd ∧ ArchimedeanSignatureMatching D L X H C2 A2 CR CT ∧ adm5 D nch ∧ adm6 D nch ∧ TorsionSectionsReflex D nch ∧ adm7 D X ∧ adm8 D X ∧
-    adm10 D X ∧ adm11 D L X H C2 A2 CR CT CRd ∧ adm12 D
 
 end admitted
 
@@ -387,112 +302,10 @@ section Conclusion₂
 
 variable (D : D7) (L : SizeData₂ D) (EX : ErrX D) {nch : NChoice D} (X : Loc D nch)
 
-def LemmaOneDefinite : Prop := ∀ N (i : Fin 2) (y : (X.cm N i).Pt (X.cm N i).Xm) (La : (X.cm N i).Unim)
-  (s : (X.cm N i).Sn y La 1), (X.cmx N i).nrm y La 1 s ≤ 1 →
-  ∀ γ : (X.cm N i).Th y La (D.host.g i * 1), (∃ k : ℕ, 0 < k ∧ γ ^ k = 1) →
-    (X.cmx N i).inQQ y La (D.host.g i * 1) (Multiplicative.toAdd ((X.cm N i).ovr y La (D.host.g i * 1) γ)) →
-    ∀ e : (X.cmx N i).Lt y La →₀ ℕ, 2 * e.degree + 2 < D.host.g i →
-      ‖(X.cmx N i).nnOf (pib EX i) e * (X.cmx N i).evT y La 1 γ s (MvPolynomial.monomial e 1)‖ ≤ 1
-
-def L2BoundAlt : Prop := ∀ (i : Fin 2) (n : ℕ) (R : Type) [CommRing R] [IsDomain R] (ζ : R),
-  IsPrimitiveRoot ζ (D.host.g i) →
-  ∀ φ : (Fin D.R.f × Fin n → ℚ_[D.host.g i]) → R,
-    (∀ x, φ x ≠ 0 → ∀ a, ‖x a‖ ≤ 1) →
-    (∀ (x : Fin D.R.f × Fin n → ℚ_[D.host.g i]) (z : Fin D.R.f × Fin n → ℤ_[D.host.g i]),
-      φ (fun a => x a + (D.host.g i : ℚ_[D.host.g i]) * (z a : ℚ_[D.host.g i])) = φ x) →
-    ∃ c : (Fin D.R.f × Fin n → ZMod (D.host.g i)) → R, ∀ x : Fin D.R.f × Fin n → ℚ_[D.host.g i],
-      (D.host.g i : R) ^ (D.R.f * n) * φ x =
-        open Classical in
-        if h : ∀ a, ‖x a‖ ≤ 1 then
-          ∑ y : Fin D.R.f × Fin n → ZMod (D.host.g i),
-            c y * ζ ^ (∑ a, PadicInt.toZMod (⟨x a, h a⟩ : ℤ_[D.host.g i]) * y a).val
-        else 0
-
-def LemmaAGaloisBound : Prop :=
-  (∀ d i, (X.gx d i).LemA ((EX.piG i : 𝓞 D.host.E) : D.host.E)) ∧ ∀ N i, (X.cmx N i).LemA (pib EX i)
-
-def LemmaBWeightBound (CRd : ℝ) : Prop := ∀ (i : Fin 2) j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) la, X.laOver i la →
-  ∀ (wt : WeightFamilies.Wt D j) (n1 n2 : ℕ), X.RangeB CRd i wt n1 n2 →
-  ∀ y : (X.W j h1 h2).Pt la, ∃ F ∈ X.WWB j la wt n1 n2,
-    (X.W j h1 h2).vAt la y ((X.W j h1 h2).inc wt F) ≤
-      (((eWL X.B.KO la : ℝ) * (WeightAlgebra.DF wt : ℝ) / ((D.host.g i : ℝ) - 1) +
-        X.cB CRd i j (WeightAlgebra.DF wt) (n1 + n2) * (X.W j h1 h2).phiC la y : ℝ) : EReal)
-
 def errC : ℝ :=
   (D.R.f : ℝ) * ((D.R.m : ℝ) * (D.R.N D.R.m : ℝ) * ((D.R.N D.R.m : ℝ) + D.R.t) + (D.R.m : ℝ) ^ 3 * L.etaSz)
 
 def Dpi (u : D.what₂.Word) (j : ℕ) : ℝ := ∑ τ : D.what₂.Tau, nuAbs D u j τ
-
-def PropositionCLatticeBound (C1 C2 : ℝ) : Prop :=
-  (∀ (i : Fin 2) w, Over D i w → ∀ u : D.what₂.Word, D.what₂.places.resChar w ≠ (D.mem u).A.T → ∀ μ : D.what₂.Tup,
-    ∀ φ ∈ DV.MramL D u, ∀ F ∈ (D.what₂.Mtilde μ).carrier, ∃ y : D.what₂.LL, D.what₂.embLL y = D.what₂.perCol u μ (D.jN u φ) F ∧
-      (y = 0 ∨ -(∑ j ∈ lifts D, vNN EX i u j w) - C1 * errC D L ≤ vG D w y)) ∧
-  (∀ (i : Fin 2) w, Over D i w → ∀ u : D.what₂.Word, D.what₂.places.resChar w ≠ (D.mem u).A.T → ∀ μ : D.what₂.Tup,
-    ∀ φ ∈ DV.MramL D u, ∀ φ' ∈ DV.MramL D u, ∀ F ∈ (D.what₂.Mtilde μ).carrier, ∀ F' ∈ (D.what₂.Mtilde μ).carrier, ∀ y y' : D.what₂.LL,
-      D.what₂.embLL y = D.what₂.perCol u μ (D.jN u φ) F → D.what₂.embLL y' = D.what₂.perCol u μ (D.jN u φ') F' →
-      y ≠ 0 → y' ≠ 0 →
-      -(∑ j ∈ lifts D, Dpi D u j) - C2 * errC D L ≤ vG D w y + vG D (D.what₂.places.conj w) y')
-
-def JetConsequence (C1 C2 C3 : ℝ) : Prop :=
-  (∀ (i : Fin 2) w, Over D i w → ∀ u : D.what₂.Word, D.what₂.places.resChar w ≠ (D.mem u).A.T → ∀ μ : D.what₂.Tup,
-    ∀ φ ∈ DV.MramL D u, ∀ F ∈ (D.what₂.Mtilde μ).carrier, ∃ y : D.what₂.LL, D.what₂.embLL y = D.what₂.perCol u μ (D.jN u φ) F ∧
-      (y = 0 ∨ -(∑ j ∈ lifts D, vNN EX i u j w) - C1 * errC D L ≤ vG D w y)) ∧
-  (∀ (i : Fin 2) w, Over D i w → ∀ u, ∀ j ∈ lifts D,
-    vNN EX i u j w + vNN EX i u j (D.what₂.places.conj w) = Dpi D u j) ∧
-  (∀ (i : Fin 2) w, Over D i w → ∀ u : D.what₂.Word, D.what₂.places.resChar w ≠ (D.mem u).A.T → ∀ μ : D.what₂.Tup,
-    ∀ φ ∈ DV.MramL D u, ∀ φ' ∈ DV.MramL D u, ∀ F ∈ (D.what₂.Mtilde μ).carrier, ∀ F' ∈ (D.what₂.Mtilde μ).carrier, ∀ y y' : D.what₂.LL,
-      D.what₂.embLL y = D.what₂.perCol u μ (D.jN u φ) F → D.what₂.embLL y' = D.what₂.perCol u μ (D.jN u φ') F' →
-      y ≠ 0 → y' ≠ 0 →
-      -(∑ j ∈ lifts D, Dpi D u j) - C2 * errC D L ≤ vG D w y + vG D (D.what₂.places.conj w) y') ∧
-  (∀ u, ∀ j ∈ lifts D,
-    (∀ τ, (∀ t : D.host.TT, (D.eTau τ : D.R.GG) ≠ D.R.tau1 t) →
-      |nuAbs D u j τ - (D.R.k : ℝ) * wj D j τ| ≤ C3 * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * D.R.t * L.etaSz)) ∧
-    (∀ τ (t : D.host.TT), (D.eTau τ : D.R.GG) = D.R.tau1 t →
-      |nuAbs D u j τ - ((L.aT t : ℝ) + ((D.R.k : ℝ) - 1) * wj D j τ)| ≤
-        C3 * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * D.R.t * L.etaSz + L.sc.b' / L.sc.x)) ∧
-    Dpi D u j ≤ (∑ t, (L.aT t : ℝ)) +
-      ∑ τ, ((D.R.k : ℝ) * wj D j τ + C3 * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * D.R.t * L.etaSz)))
-
-def rhsA (C : ℝ) (r : HeightOneSpectrum (𝓞 X.B.KO) → ℝ) (j : ℕ) (w : Pl D) : ℝ :=
-  -((Dpm D j : ℝ)) * D.what₂.D0 + C * ((X.TO : ℝ) + D.R.f * (D.R.nV : ℝ) ^ 2) * D.what₂.D0 +
-    (r (X.laK w) / (eWL X.B.KO (X.laK w) : ℝ) +
-      r (X.laK (D.what₂.places.conj w)) / (eWL X.B.KO (X.laK (D.what₂.places.conj w)) : ℝ)) / delq D
-
-def ConjugationNormInvariance (C : ℝ) : Prop := ∃ r : ℕ → HeightOneSpectrum (𝓞 X.B.KO) → ℝ,
-  (∀ j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m), (∀ la, 0 ≤ r j la) ∧ Summable (fun la => r j la * lw X.B.KO la) ∧
-    (∑' la, r j la * lw X.B.KO la) ≤
-      (X.W j h1 h2).rk (X.run j).ka (X.B.Mlat j (X.run j).ka) * D.R.f * D.R.m * L.sc.b * L.de2) ∧
-  ∀ (i : Fin 2) w, Over D i w →
-    (∀ j ∈ lifts D, ((D.what₂.Ij D.what₂.muStar j w + D.what₂.Ij D.what₂.muStar j (D.what₂.places.conj w) : ℤ) : ℝ) ≤
-      (D.what₂.places.ramIdx w : ℝ) * rhsA D X C (r j) j w) ∧
-    (TwistedAt D w → ∃ ε : ℕ → ℝ, (∀ j, 0 ≤ ε j) ∧ (∑ j ∈ lifts D, ε j) ≤ (D.host.g i : ℝ) ^ (-2 : ℤ) ∧
-      ∀ j ∈ lifts D,
-        ((D.what₂.Ij (D.what₂.muTw w) j w + D.what₂.Ij (D.what₂.muTw w) j (D.what₂.places.conj w) : ℤ) : ℝ) ≤
-          (D.what₂.places.ramIdx w : ℝ) * (rhsA D X C (r j) j w + ε j) ∧
-        (AjMu D (D.what₂.muTw w) j w : ℝ) ≤
-          (D.what₂.places.ramIdx w : ℝ) * (rhsA D X C (r j) j w + (D.what₂.etaJ j w : ℝ) + ε j))
-
-def ThetaAdjointPositiveScalar (C : ℝ) : Prop := DV.KapDef D → ∀ j ∈ lifts D,
-  |(Dpm D j : ℝ) - ∑ τ, ((D.R.k : ℝ) - 1) * wj D j τ| ≤
-    C * D.R.f * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * L.etaSz + (D.R.k : ℝ) * ((D.R.N D.R.m : ℝ) + D.R.t))
-
-def Conclusion₂ (CRd C1 C2 C3 CA CD : ℝ) : Prop :=
-  LemmaOneDefinite D EX X ∧ L2BoundAlt D ∧ LemmaAGaloisBound D EX X ∧ LemmaBWeightBound D X CRd ∧ PropositionCLatticeBound D L EX C1 C2 ∧ JetConsequence D L EX C1 C2 C3 ∧
-    ConjugationNormInvariance D L X CA ∧ ThetaAdjointPositiveScalar D L CD
-
-def Stmt (H : WeightAlgebra.KHyp) (C2h A2 CR CT CRd C1 C2 C3 CA CD : ℝ) : Prop :=
-  admitted D L X H C2h A2 CR CT CRd → Conclusion₂ D L EX X CRd C1 C2 C3 CA CD
-
-def LemmasOneTwoAStatement : Prop := AdmLA D X → LemmaOneDefinite D EX X ∧ L2BoundAlt D ∧ LemmaAGaloisBound D EX X
-
-def LemmaBStatementAlt (CRd : ℝ) : Prop := AdmLB D X CRd → LemmaBWeightBound D X CRd
-
-def PropositionCStatement (C1 C2 C3 : ℝ) : Prop := AdmC D X → PropositionCLatticeBound D L EX C1 C2 ∧ JetConsequence D L EX C1 C2 C3
-
-def IntegralityGoodReduction (H : WeightAlgebra.KHyp) (C2h A2 CR CT CRd CA : ℝ) : Prop :=
-  AdmA D L X H C2h A2 CR CT CRd → LemmaBWeightBound D X CRd → ConjugationNormInvariance D L X CA
-
-def KappaDegreeStatement (CD : ℝ) : Prop := ThetaAdjointPositiveScalar D L CD
 
 end Conclusion₂
 
@@ -503,67 +316,10 @@ section Fam
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
   (XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc (Fm.D x i) (Fm.ex x hx i).nch)
 
-def AdmF (H : WeightAlgebra.KHyp) (C2h A2 CR CRd : ℝ) : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
-    admitted (Fm.D x i) (Fm.L x i) (XF x hx i) H C2h A2 CR (Fm.Ct + 1) CRd
-
-def OrbitValuationBound (CRd C1 C2 C3 CA CD : ℝ) : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
-    Conclusion₂ (Fm.D x i) (Fm.L x i) (Fm.ex x hx i).errX (XF x hx i) CRd C1 C2 C3 CA CD
-
 def AdmLAF : Prop :=
   ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, AdmLA (Fm.D x i) (XF x hx i)
 
-def LemmasOneTwoAFamily : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
-    LemmaOneDefinite (Fm.D x i) (Fm.ex x hx i).errX (XF x hx i) ∧ L2BoundAlt (Fm.D x i) ∧
-      LemmaAGaloisBound (Fm.D x i) (Fm.ex x hx i).errX (XF x hx i)
-
-def AdmLBF (CRd : ℝ) : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, AdmLB (Fm.D x i) (XF x hx i) CRd
-
-def LemmaBFamily (CRd : ℝ) : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, LemmaBWeightBound (Fm.D x i) (XF x hx i) CRd
-
-def AdmCF : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, AdmC (Fm.D x i) (XF x hx i)
-
-def familyJetConsequence (C1 C2 C3 : ℝ) : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
-    PropositionCLatticeBound (Fm.D x i) (Fm.L x i) (Fm.ex x hx i).errX C1 C2 ∧ JetConsequence (Fm.D x i) (Fm.L x i) (Fm.ex x hx i).errX C1 C2 C3
-
 end Fam
-
-def KudlaFamilyStatement (𝒪 : ObjClass) (H : WeightAlgebra.KHyp) (C2h A2 CR CRd C1 C2 C3 CA CD : ℝ) {eps : ℝ}
-    (Fm : Formalism.MainNotions.FamP eps) (_CH : ℝ) : Prop :=
-  ∀ XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc (Fm.D x i) (Fm.ex x hx i).nch,
-    (∀ x hx i, 𝒪 (Fm.L x i) (Fm.ex x hx i).nch (XF x hx i)) →
-    AdmF Fm XF H C2h A2 CR CRd → OrbitValuationBound Fm XF CRd C1 C2 C3 CA CD
-
-def ClosedAbsoluteShare (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClass) : Prop :=
-  ∃ C1 C2 C3 CA CD : ℝ, Formalism.MainNotions.Closed 𝒞 (fun Fm CH => ∀ (H : WeightAlgebra.KHyp) (C2h A2 CR CRd : ℝ), 2 ≤ CRd →
-    KudlaFamilyStatement 𝒪 H C2h A2 CR CRd C1 C2 C3 CA CD Fm CH)
-
-def LemmasOneTwoAFamilyStatement (𝒪 : ObjClass) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (_CH : ℝ) : Prop :=
-  ∀ XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc (Fm.D x i) (Fm.ex x hx i).nch,
-    (∀ x hx i, 𝒪 (Fm.L x i) (Fm.ex x hx i).nch (XF x hx i)) → AdmLAF Fm XF → LemmasOneTwoAFamily Fm XF
-
-def ClosedLemmasOneTwoA (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClass) : Prop :=
-  Formalism.MainNotions.Closed 𝒞 (fun Fm CH => LemmasOneTwoAFamilyStatement 𝒪 Fm CH)
-
-def LemmaBFamilyStatement (𝒪 : ObjClass) (CRd : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (_CH : ℝ) : Prop :=
-  ∀ XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc (Fm.D x i) (Fm.ex x hx i).nch,
-    (∀ x hx i, 𝒪 (Fm.L x i) (Fm.ex x hx i).nch (XF x hx i)) → AdmLBF Fm XF CRd → LemmaBFamily Fm XF CRd
-
-def ClosedLemmaB (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClass) : Prop :=
-  Formalism.MainNotions.Closed 𝒞 (fun Fm CH => ∀ CRd : ℝ, 2 ≤ CRd → LemmaBFamilyStatement 𝒪 CRd Fm CH)
-
-def PropositionCFamily (𝒪 : ObjClass) (C1 C2 C3 : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (_CH : ℝ) : Prop :=
-  ∀ XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc (Fm.D x i) (Fm.ex x hx i).nch,
-    (∀ x hx i, 𝒪 (Fm.L x i) (Fm.ex x hx i).nch (XF x hx i)) → AdmCF Fm XF → familyJetConsequence Fm C1 C2 C3
-
-def ClosedPropositionC (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClass) : Prop :=
-  ∃ C1 C2 C3 : ℝ, Formalism.MainNotions.Closed 𝒞 (fun Fm CH => PropositionCFamily 𝒪 C1 C2 C3 Fm CH)
 
 end Formalism.MainNotions.LiftErrorLocal
 

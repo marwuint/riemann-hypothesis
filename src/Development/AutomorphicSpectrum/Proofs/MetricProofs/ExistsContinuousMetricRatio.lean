@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PositionPot
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.VerticalFactorSmoothHermitianMetricStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
+import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.VerticalFactorSmoothLine
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -72,7 +75,7 @@ theorem logDiff_descends : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, F
     intro p
     by_cases hp : p ∈ D.SB B
     · obtain ⟨A, h1, h2, -, h3⟩ :=
-        (GlobalTheory.T.vertical_factor_smooth_hermitian_metric K J II Ψ Ω W D p (Finset.mem_of_mem_filter p hp)).1
+        (_root_.LevelTowerAlt.vertical_factor_smooth_line K J II Ψ Ω W D p (Finset.mem_of_mem_filter p hp)).1
       exact ⟨A, fun _ => ⟨h1, h2, h3⟩⟩
     · exact ⟨S.ref, fun h => absurd h hp⟩
   choose A hA using hA

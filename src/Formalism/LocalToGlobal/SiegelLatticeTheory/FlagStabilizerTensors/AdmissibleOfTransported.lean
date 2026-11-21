@@ -155,35 +155,4 @@ theorem adm13_of_colJoin (hM : P.MIstar2 eV sEE) (J : JoinAt X G Y j Tr P fc eV 
 
 end At
 
-section Ties
-
-variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst D L} {Gl : MainNotions.G.LatInst D} {Kc : MainNotions.G.Consts}
-  {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {R : Formalism.L2.RecT ex}
-
-theorem adm13_of_joinAt (S : Formalism.L2.SG.SpectralTiesReal.STiesR R)
-    {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs}
-    {P' : CxData A} {fc : DefSub A → DefFace Bs}
-    {eV : ∀ t, (Fin ((fc P'.zs).Df1.nV t) → K) →ₗ[K] A.FR t} {sEE : P'.EE →ₗ⋆[ℂ] (fc P'.zs).Sp.HH} {s : Bool} {σ : K →+* ℂ}
-    (hM : P'.MIstar2 eV sEE) (J : JoinAt S.X S.G S.Y (jOf S) S.tr P' fc eV sEE s σ) (hF : FinX S.Y)
-    (hon : (D.what₂.V0 D.what₂.mu0).map (D.what₂.iota D.what₂.mu0) = ⊤) : Formalism.MainNotions.LocalQuadraticParts.adm13 D :=
-  adm13_of_colJoin hM J hF (S.hI hF) (jOf_spec S hF) (colJoinS_of_sTiesR S hF) R.pin.buDef hon
-
-end Ties
-
-section Real
-
-variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst D L} {Gl : MainNotions.G.LatInst D} {Kc : MainNotions.G.Consts}
-  {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
-
-variable {R : Formalism.L2.RecT ex} {S : Formalism.L2.SG.SpectralTiesReal.STiesR R} {P : Formalism.L2.Rows.RowSideFamily ex}
-  {Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)} {Spf : ∀ Zs, SPer (Dcf Zs)}
-  {Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
-  {Q : Formalism.IndefR.RealT R P Dcf Spf Zscf S Ks}
-
-theorem adm13_of_joinSI (hM : (cx Q).MIstar2 (Q.F.eV (cx Q).zs) Q.sEE) (J : JoinSI R S Q) (hF : FinX S.Y)
-    (hon : (D.what₂.V0 D.what₂.mu0).map (D.what₂.iota D.what₂.mu0) = ⊤) : Formalism.MainNotions.LocalQuadraticParts.adm13 D :=
-  adm13_of_joinAt S hM J.toJoinAt hF hon
-
-end Real
-
 end Formalism.L2.SG.JoinSI

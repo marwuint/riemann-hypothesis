@@ -82,26 +82,10 @@ def IsOpIntG {G : Type*} [Group G] [MeasurableSpace G] (μ : Measure G) {Hp : Ty
     [InnerProductSpace ℂ Hp] (π : G →* (Hp →L[ℂ] Hp)) (φ : G → ℂ) (P : Hp →L[ℂ] Hp) : Prop :=
   Integrable φ μ ∧ ∀ x y : Hp, ⟪x, P y⟫_ℂ = ∫ g, φ g * ⟪x, π g y⟫_ℂ ∂μ
 
-def slopeD {K V : Type} [Field K] [AddCommGroup V] [Module K V] (d : Submodule K V → ℝ) (A B : Submodule K V) : ℝ :=
-  (d B - d A) / ((Module.finrank K B : ℝ) - (Module.finrank K A : ℝ))
-
-def IsChainD {K V : Type} [Field K] [AddCommGroup V] [Module K V] (d : Submodule K V → ℝ) (s : ℕ)
-    (W : ℕ → Submodule K V) : Prop :=
-  FiniteDimensional K V ∧ W 0 = ⊥ ∧ W s = ⊤ ∧ (∀ i < s, W i < W (i + 1)) ∧
-    (∀ i, i + 2 ≤ s → slopeD d (W (i + 1)) (W (i + 2)) < slopeD d (W i) (W (i + 1))) ∧
-    ∀ i < s, ∀ U : Submodule K V, W i < U → U ≤ W (i + 1) → slopeD d (W i) U ≤ slopeD d (W i) (W (i + 1))
-
 theorem isOpIntG_iff_isOpOf {G H : Type} [Group G] [MeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (μ : Measure G) (π : G →* (H →L[ℂ] H)) (φ : G → ℂ) (P : H →L[ℂ] H) :
     IsOpIntG μ π φ P ↔ IsOpOf μ π φ P := by
   exact Iff.rfl
-
-theorem IsOpOf.unique {G H : Type} [MeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    {μ : Measure G} {π : G → (H →L[ℂ] H)} {φ : G → ℂ} {T T' : H →L[ℂ] H}
-    (h : IsOpOf μ π φ T) (h' : IsOpOf μ π φ T') : T = T' := by
-  ext y
-  refine ext_inner_left ℂ fun x => ?_
-  rw [h.2, h'.2]
 
 theorem IsURep.integrable_coef {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     [OpensMeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : G → (H →L[ℂ] H)} (hπ : IsURep π)
@@ -166,17 +150,6 @@ theorem IsURep.exists_isOpOf {G H : Type} [Group G] [TopologicalSpace G] [Measur
   rcases (norm_nonneg (T y)).eq_or_lt with h0 | hpos
   · rw [← h0]; positivity
   · nlinarith
-
-theorem IsFdegG.unique {G H : Type} [MeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Nontrivial H]
-    {μ : Measure G} {σ : G → (H →L[ℂ] H)} {d d' : ℝ} (h : IsFdegG μ σ d) (h' : IsFdegG μ σ d') : d = d' := by
-  obtain ⟨v, hv⟩ := exists_ne (0 : H)
-  have e := (h.2 v v v v).2.symm.trans (h'.2 v v v v).2
-  have hvv : ⟪v, v⟫_ℂ ≠ 0 := inner_self_ne_zero.mpr hv
-  have hd : (d : ℂ) ≠ 0 := by exact_mod_cast h.1.ne'
-  have hd' : (d' : ℂ) ≠ 0 := by exact_mod_cast h'.1.ne'
-  rw [div_eq_div_iff hd hd'] at e
-  have e2 : (d' : ℂ) = d := mul_left_cancel₀ (mul_ne_zero hvv hvv) e
-  exact_mod_cast e2.symm
 
 theorem isHaarSub_univ {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] (μ : Measure G)
     [μ.IsHaarMeasure] : IsHaarSub (Set.univ : Set G) μ := by
@@ -281,16 +254,6 @@ theorem exists_isHaarSub_NW {n : ℕ} (ε : Fin n → Bool) (W : Submodule ℂ (
   rw [coe_nwSub] at h
   exact ⟨_, h⟩
 
-open Classical in
-
-theorem slice_apply (I : AutInst) (f : I.GA → ℂ) (x : I.GA) (v : InfinitePlace I.F) (g : UJ (I.ε v)) :
-    slice I f x v (uMat g) = f (x * (Pi.mulSingle v g, 1)) := by
-  have h : ∃ g' : UJ (I.ε v), uMat g' = uMat g := ⟨g, rfl⟩
-  simp only [slice]
-  rw [dif_pos h]
-  have e : h.choose = g := Subtype.ext (Units.ext h.choose_spec)
-  rw [e]
-
 theorem Eword_congr {n : ℕ} (ε : Fin n → Bool) {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : ∀ g, inUJ ε g → f g = f' g) (w : List (Fin n × Fin n)) :
     ∀ g, inUJ ε g → Eword ε w f g = Eword ε w f' g := by
@@ -305,129 +268,7 @@ theorem Eword_congr {n : ℕ} (ε : Fin n → Bool) {f f' : Matrix (Fin n) (Fin 
     simp only [Eword, Eab, Ec, Rd]
     rw [hcurve _ hm.1, hcurve _ hm.2.1]
 
-private theorem exists_uMat_eq_of_inUJ {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
-    ∃ u : UJ ε, uMat u = g := by
-  have hg' : gᴴ * Jm ε * g = Jm ε := hg
-  have h1 : (Jm ε * gᴴ * Jm ε) * g = 1 := by
-    have e : Jm ε * (gᴴ * Jm ε * g) = 1 := by rw [hg', Jm_mul_self]
-    simpa [Matrix.mul_assoc] using e
-  have h2 : g * (Jm ε * gᴴ * Jm ε) = 1 := mul_eq_one_comm.mp h1
-  exact ⟨⟨⟨g, Jm ε * gᴴ * Jm ε, h2, h1⟩, hg⟩, rfl⟩
-
-open Classical in
-
-theorem zOp_eq_gelf (I : AutInst) (v : InfinitePlace I.F) (m : ℕ) (f : I.GA → ℂ) (x : I.GA)
-    (F : Matrix (Fin I.n) (Fin I.n) ℂ → ℂ) (hF : ∀ g : UJ (I.ε v), F (uMat g) = f (x * (Pi.mulSingle v g, 1))) :
-    zOp I v m f x = gelf (I.ε v) m F 1 := by
-  simp only [zOp, gelf]
-  refine Finset.sum_congr rfl fun a _ => Eword_congr (I.ε v) (fun g hg => ?_) _ 1 ?_
-  · obtain ⟨u, rfl⟩ := exists_uMat_eq_of_inUJ hg
-    rw [slice_apply, hF]
-  · simp [inUJ]
-
 namespace ProjEx
-
-def circRep (z : Circle) : ℂ →L[ℂ] ℂ := (z : ℂ) • ContinuousLinearMap.id ℂ ℂ
-
-theorem isURep_circRep : IsURep circRep := by
-  refine ⟨?_, fun a b => ?_, fun g v => ?_, fun v => ?_⟩
-  · ext
-    simp [circRep]
-  · ext
-    simp [circRep, mul_comm]
-  · simp [circRep, Circle.norm_coe]
-  · unfold circRep
-    fun_prop
-
-theorem isIrr_circRep : IsIrr circRep := by
-  intro S _ _
-  exact Ideal.eq_bot_or_top S
-
-theorem isFdegG_circRep [MeasurableSpace Circle] (μ : Measure Circle) [IsProbabilityMeasure μ] :
-    IsFdegG μ circRep 1 := by
-  refine ⟨one_pos, fun v w v' w' => ?_⟩
-  have key : (fun z : Circle => ⟪w, circRep z v⟫_ℂ * star ⟪w', circRep z v'⟫_ℂ) =
-      fun _ => ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ := by
-    funext z
-    have hz : (z : ℂ) * (starRingEnd ℂ) (z : ℂ) = 1 := by
-      rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, Circle.norm_coe]
-      norm_num
-    simp only [circRep, _root_.smul_apply, ContinuousLinearMap.id_apply, smul_eq_mul,
-      RCLike.inner_apply, Complex.star_def, map_mul, Complex.conj_conj]
-    linear_combination ((starRingEnd ℂ) w * v * w' * (starRingEnd ℂ) v') * hz
-  rw [key]
-  refine ⟨integrable_const _, ?_⟩
-  simp
-
-def circHom : Circle →* (ℂ →L[ℂ] ℂ) where
-  toFun := circRep
-  map_one' := isURep_circRep.1
-  map_mul' := isURep_circRep.2.1
-
-theorem phG_circHom (z : Circle) : phG 1 circHom 1 z = star (z : ℂ) := by
-  simp [phG, circHom, circRep]
-
-theorem isOpIntG_circHom [MeasurableSpace Circle] [BorelSpace Circle] (μ : Measure Circle) [IsProbabilityMeasure μ] :
-    IsOpIntG μ circHom (phG 1 circHom 1) 1 ∧ IsOpOf μ circRep (phG 1 circHom 1) 1 := by
-  have hphi : ∀ z : Circle, phG 1 circHom 1 z = star (z : ℂ) := phG_circHom
-  have hcont : Continuous fun z : Circle => phG 1 circHom 1 z := by
-    simp only [hphi]
-    fun_prop
-  have hint : Integrable (phG 1 circHom 1) μ := by
-    refine Integrable.of_bound hcont.aestronglyMeasurable 1 (Filter.Eventually.of_forall fun z => ?_)
-    rw [hphi]
-    simp [Circle.norm_coe]
-  have h2 : IsOpOf μ circRep (phG 1 circHom 1) 1 := by
-    refine ⟨hint, fun x y => ?_⟩
-    have key : (fun z : Circle => phG 1 circHom 1 z * ⟪x, circRep z y⟫_ℂ) = fun _ => ⟪x, y⟫_ℂ := by
-      funext z
-      have hz : (starRingEnd ℂ) (z : ℂ) * (z : ℂ) = 1 := by
-        rw [mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, Circle.norm_coe]
-        norm_num
-      rw [hphi]
-      simp only [circRep, _root_.smul_apply, ContinuousLinearMap.id_apply, smul_eq_mul,
-        Complex.star_def, RCLike.inner_apply]
-      linear_combination ((starRingEnd ℂ) x * y) * hz
-    rw [key]
-    simp
-  exact ⟨(isOpIntG_iff_isOpOf μ circHom _ 1).mpr h2, h2⟩
-
-example : ∃ (_ : MeasurableSpace Circle) (_ : BorelSpace Circle) (μ : Measure Circle), μ.IsHaarMeasure ∧
-    IsURep circRep ∧ IsIrr circRep ∧ IsFdegG μ circRep 1 ∧ IsOpIntG μ circHom (phG 1 circHom 1) 1 := by
-  borelize Circle
-  haveI : IsProbabilityMeasure (Measure.haarMeasure (⊤ : TopologicalSpace.PositiveCompacts Circle)) :=
-    ⟨by simpa using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts Circle))⟩
-  exact ⟨_, inferInstance, Measure.haarMeasure ⊤, inferInstance, isURep_circRep, isIrr_circRep, isFdegG_circRep _,
-    (isOpIntG_circHom _).1⟩
-
-example (T : ℂ →L[ℂ] ℂ) : ¬ IsOpOf (volume : Measure ℝ) (fun _ => (1 : ℂ →L[ℂ] ℂ)) (fun _ => 1) T := by
-  intro h
-  simpa [integrable_const_iff, not_isFiniteMeasure_iff.2 Real.volume_univ] using h.1
-
-def e11 : Fin 2 → Bool := ![true, false]
-
-def isotropicLineOneOne : Submodule ℂ (Fin 2 → ℂ) := Submodule.span ℂ {![1, 1]}
-
-def nElt : UJ e11 :=
-  ⟨⟨!![1 + Complex.I, -Complex.I; Complex.I, 1 - Complex.I], !![1 - Complex.I, Complex.I; -Complex.I, 1 + Complex.I],
-    by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring_nf <;> simp,
-    by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring_nf <;> simp⟩,
-   by
-    show inUJ e11 _
-    unfold inUJ
-    ext i j
-    fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Jm, e11, Matrix.diagonal_apply] <;>
-      ring_nf <;> simp⟩
-
-def ax : Submodule ℚ (ℚ × ℚ) := Submodule.span ℚ {(1, 0)}
-
-open Classical in
-
-def dg (U : Submodule ℚ (ℚ × ℚ)) : ℝ := if U = ax then 1 else 0
-
-example (d : Submodule ℚ (ℕ →₀ ℚ) → ℝ) (s : ℕ) (W : ℕ → Submodule ℚ (ℕ →₀ ℚ)) : ¬ IsChainD d s W := fun h => by
-  haveI := h.1
-  exact Module.Finite.not_linearIndependent_of_infinite _ (Finsupp.basisSingleOne (R := ℚ) (ι := ℕ)).linearIndependent
 
 end ProjEx
 

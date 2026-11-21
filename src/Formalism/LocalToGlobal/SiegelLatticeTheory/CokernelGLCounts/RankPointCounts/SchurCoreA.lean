@@ -45,10 +45,6 @@ def WfrSpan : Prop :=
     hJ (X.B.I.ε v) (rv X.B.I v (X.zR u)) y = 0 →
     y = ∑ b, hJ (X.B.I.ε v) (X.wfr u v b) y • X.wfr u v b
 
-def CplxKer : Prop :=
-  ∀ (E : Type) [Field E] (φ : E →+* ℂ) (m N : ℕ) (A : Matrix (Fin m) (Fin N) E) (c : Fin N → ℂ),
-    A.map φ *ᵥ c = 0 → c ∈ Submodule.span ℂ ((fun s : Fin N → E => fun i => φ (s i)) '' {s | A *ᵥ s = 0})
-
 variable {D : D7} in
 
 def spanAt (X : HidaSetting D) (v : InfinitePlace X.B.I.F) (U : Submodule D.host.E (VS D).V) :

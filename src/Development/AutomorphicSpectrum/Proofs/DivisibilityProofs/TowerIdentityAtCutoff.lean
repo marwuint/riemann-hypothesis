@@ -5,11 +5,12 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumDeltaDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagShiftTotalPowerSumStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ExistsFlagDegreeOnePolysStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeLinearFunctionalsStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RemainderTermSummableStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumDeltaDecomposition
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagShiftTotalPowerSum
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ExistsFlagDegreeOnePolys
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeLinearFunctionals
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RemainderTermSummable
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 
@@ -103,8 +104,8 @@ theorem exists_finite_identity (II : IntersectionSystem) (T : RootTower Ψ N) (h
           b B * ∑ σ, Tot σ (pk τ k * Q) +
           ∑ p ∈ (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ T.bad), restTerm T.j p (frob p τ) k Q) + E B := by
   have hN : 2 ≤ N := by have := T.j_pos; have := T.j_lt; omega
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.power_sum_delta_decomposition Ψ N T.j frob T.j_lt.le (by omega) hshape
-  obtain ⟨-, hSh, hTot, -⟩ := GlobalTheory.T.flag_degree_linear_functionals Ψ N
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.deltaTerm_eq Ψ N T.j frob T.j_lt.le (by omega) hshape
+  obtain ⟨-, hSh, hTot, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.degFl_Sh_Tot_linear Ψ N
   choose ΦS hΦS using hSh
   choose ΦT hΦT using hTot
   obtain ⟨C, B₁, hC⟩ := hBA
@@ -160,10 +161,10 @@ theorem GlobalTheory.CompanionTheory.Ar.Top.exists_identAt : ∀ II : Intersecti
   have hN : 2 ≤ N := by have := T.j_pos; have := T.j_lt; omega
   obtain ⟨a, b, hid⟩ := exists_finite_identity II T hh frob hshape h6 hBA B₀ hB₀
   have hrest : ∀ (τ : Ψ) (k : ℕ) (Q : RP Ψ N), _ := fun τ k Q =>
-    (GlobalTheory.T.remainder_term_summable Ψ N T.j T.bad frob τ k Q).2 B₀
+    (_root_.GlobalTheory.CompanionTheory.Ar.Top.restTerm_bound_and_tendsto Ψ N T.j T.bad frob τ k Q).2 B₀
   by_cases hΨ : Nonempty Ψ
   · obtain ⟨τ₀⟩ := hΨ
-    obtain ⟨⟨Q₁, hQ₁, hd₁⟩, Q₂, hQ₂, hd₂⟩ := GlobalTheory.T.exists_flag_degree_one_polys Ψ N T.j τ₀ T.j_pos T.j_lt
+    obtain ⟨⟨Q₁, hQ₁, hd₁⟩, Q₂, hQ₂, hd₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.testForms_sh_tot Ψ N T.j τ₀ T.j_pos T.j_lt
     have hQ₁' : Q₁.IsHomogeneous (dimFl Ψ N + 1 - 1) := by simpa using hQ₁
     have hQ₂' : Q₂.IsHomogeneous (dimFl Ψ N + 1 - 2) := by
       have : dimFl Ψ N + 1 - 2 = dimFl Ψ N - 1 := by omega
@@ -171,16 +172,16 @@ theorem GlobalTheory.CompanionTheory.Ar.Top.exists_identAt : ∀ II : Intersecti
     obtain ⟨E₁, hE₁, h₁⟩ := hid τ₀ 1 le_rfl (by omega) Q₁ hQ₁'
     obtain ⟨E₂, hE₂, h₂⟩ := hid τ₀ 2 (by omega) hN Q₂ hQ₂'
     have hn : ∑ σ, Tot σ (pk τ₀ 1 * Q₁) ≠ 0 := by
-      have h5 := fun σ => (GlobalTheory.T.flag_shift_total_power_sum Ψ N T.j τ₀ σ 1 Q₁ le_rfl).2
+      have h5 := fun σ => (_root_.GlobalTheory.CompanionTheory.Ar.Top.sh_tot_pk_mul Ψ N T.j τ₀ σ 1 Q₁ le_rfl).2
       simp only [h5, hd₁]
       simp
       omega
     have hs₂ : ∑ σ, Sh T.j σ (pk τ₀ 2 * Q₂) ≠ 0 := by
-      have h5 := fun σ => (GlobalTheory.T.flag_shift_total_power_sum Ψ N T.j τ₀ σ 2 Q₂ (by omega)).1
+      have h5 := fun σ => (_root_.GlobalTheory.CompanionTheory.Ar.Top.sh_tot_pk_mul Ψ N T.j τ₀ σ 2 Q₂ (by omega)).1
       simp only [h5]
       simp [hd₂]
     have ht₂ : ∑ σ, Tot σ (pk τ₀ 2 * Q₂) = 0 := by
-      have h5 := fun σ => (GlobalTheory.T.flag_shift_total_power_sum Ψ N T.j τ₀ σ 2 Q₂ (by omega)).2
+      have h5 := fun σ => (_root_.GlobalTheory.CompanionTheory.Ar.Top.sh_tot_pk_mul Ψ N T.j τ₀ σ 2 Q₂ (by omega)).2
       simp [h5]
     obtain ⟨A₀, b₀, ha, hb⟩ := tendsto_coeffs_of_tests hvol.ne' hn hs₂ ht₂
       (hrest τ₀ 1 Q₁) (hrest τ₀ 2 Q₂) hE₁ hE₂ h₁ h₂

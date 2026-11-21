@@ -66,11 +66,6 @@ theorem cycl_map (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (n : ℕ) :
     show (σ.symm x) ^ (p ^ n) = 1
     rw [← map_pow, hx, map_one]
 
-theorem map_mem_cycl (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) {n : ℕ} {x : PadicAlgCl p}
-    (hx : x ∈ cycl p n) : σ x ∈ cycl p n := by
-  rw [← cycl_map σ n]
-  exact ⟨x, hx, rfl⟩
-
 end
 
 end GroundTheory.PAdicHodge

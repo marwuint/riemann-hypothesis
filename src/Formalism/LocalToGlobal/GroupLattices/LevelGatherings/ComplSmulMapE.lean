@@ -189,42 +189,6 @@ theorem bc_sec_ne (X : GL n (E ⊗[F] w.adicCompletion F)) {v : HeightOneSpectru
     map_add, map_mul, map_sub, map_one, prV_epsW_ne F E w h, prV_iE_ne F E w _ h, sub_zero, one_mul, add_zero]
   by_cases hij : i = j <;> simp [hij, Matrix.one_apply]
 
-private theorem cT_sec_lemma (σE : E →ₐ[F] E) (X : Matrix n n (E ⊗[F] w.adicCompletion F)) :
-    cT (sigR σE (FiniteAdeleRing (𝓞 F) F)) ((1 - epsW F E w) • (1 : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) +
-      mapE F E w X) = (1 - epsW F E w) • 1 + mapE F E w (cT (sigR σE (w.adicCompletion F)) X) := by
-  have hε : sigR σE (FiniteAdeleRing (𝓞 F) F) (epsW F E w) = epsW F E w := by
-    rw [epsW, sig_iE, map_one]
-  ext i j
-  simp only [cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, mapE,
-    map_add, map_mul, map_sub, map_one, hε, sig_iE]
-  by_cases hij : i = j
-  · subst hij; simp
-  · simp [Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]
-
-private theorem epsJ_lemma_4 (J : Matrix n n E) :
-    epsW F E w • J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) =
-      mapE F E w (J.map (inclE (F := F) (w.adicCompletion F))) := by
-  ext i j
-  simp only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, mapE, epsW_mul_incl]
-
-private theorem triple_lemma_2 (Y X Jw : Matrix n n (E ⊗[F] w.adicCompletion F))
-    (J' : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hJ : epsW F E w • J' = mapE F E w Jw) :
-    ((1 - epsW F E w) • 1 + mapE F E w Y) * J' * ((1 - epsW F E w) • 1 + mapE F E w X) =
-      (1 - epsW F E w) • J' + mapE F E w (Y * Jw * X) := by
-  have h2 : ∀ (Z : Matrix n n (E ⊗[F] w.adicCompletion F)) (M : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)),
-      (1 - epsW F E w) • (M * mapE F E w Z) = 0 := by
-    intro Z M
-    rw [← Matrix.mul_smul, compl_smul_mapE, Matrix.mul_zero]
-  have h3 : mapE F E w Y * J' = mapE F E w (Y * Jw) := by
-    rw [← eps_smul_mapE F E w Y, Matrix.smul_mul, ← Matrix.mul_smul, hJ, mapE_mul]
-  simp only [Matrix.add_mul, Matrix.mul_add, h3, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one,
-    smul_add, smul_smul, compl_idem _ (epsW_idem F E w), h2, compl_smul_mapE, ← mapE_mul, add_zero, zero_add, smul_zero]
-
-private theorem split_lemma_3 (Jw : Matrix n n (E ⊗[F] w.adicCompletion F))
-    (J' : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hJ : epsW F E w • J' = mapE F E w Jw) :
-    (1 - epsW F E w) • J' + mapE F E w Jw = J' := by
-  rw [← hJ, ← add_smul, sub_add_cancel, one_smul]
-
 theorem sec_mem_UPts (σE : E →ₐ[F] E) (J : Matrix n n E) {X : GL n (E ⊗[F] w.adicCompletion F)}
     (hX : X ∈ UPts σE J (w.adicCompletion F)) : sec F E w X ∈ UPts σE J (FiniteAdeleRing (𝓞 F) F) := by
   have hX' : cT (sigR σE (w.adicCompletion F)) (X : Matrix n n (E ⊗[F] w.adicCompletion F)) *

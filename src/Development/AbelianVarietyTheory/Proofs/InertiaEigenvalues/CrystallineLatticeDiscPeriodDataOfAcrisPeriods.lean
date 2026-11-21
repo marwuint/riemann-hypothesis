@@ -2,14 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinAinfDiscIsDomainNormBounds
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClosedDiscToDiscInjectiveOfAdicBasisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAcrisRingHomBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisFilDvdEisensteinPowOnDiscStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisDiscRingHomExtOfAinfStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerTiltMinusOneAssociatedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisLogTeichmullerAssociatedSubOneOnDiscStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfAdicTopologicalBasisOverBreuilKisinStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinNormEisensteinLeRadiusStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClosedDiscToDiscInjectiveOfAdicBasis
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAcrisRingHomBounded
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisFilDvdEisensteinPowOnDisc
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisDiscRingHomExtOfAinf
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerTiltMinusOneAssociated
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisLogTeichmullerAssociatedSubOneOnDisc
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfAdicTopologicalBasisOverBreuilKisin
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinNormEisensteinLeRadius
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.CrystallinePeriods.CrisMaps
@@ -38,12 +38,12 @@ theorem sigA_alg (g : Per.Gq l) (a : Ainf l) : sigA g (algebraMap (Ainf l) (Per.
   rw [(GlobalTheory.CrisMaps.sigA_extends g).alg]
 
 theorem iA_injective : Function.Injective bk.iA := by
-  obtain ⟨h0, h1, -, -⟩ := GlobalTheory.T.breuilKisin_norm_eisenstein_le_radius l K bk (Ainf l) bk.ev
-  obtain ⟨ι, ⟨tb⟩⟩ := GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk
-  exact (GlobalTheory.T.closedDisc_toDisc_injective_of_adicBasis l K bk (Ainf l) bk.ev ι tb bk.ρ₀ h0 h1).1
+  obtain ⟨h0, h1, -, -⟩ := _root_.GlobalTheory.BSP.norm_E_le_radius l K bk (Ainf l) bk.ev
+  obtain ⟨ι, ⟨tb⟩⟩ := _root_.GlobalTheory.BSP.AinfTopBasis.main l K bk
+  exact (_root_.GlobalTheory.BSP.toDisc_injective_of_topBasis l K bk (Ainf l) bk.ev ι tb bk.ρ₀ h0 h1).1
 
 theorem isDomain : IsDomain (bk.DA bk.ρ₀) := by
-  obtain ⟨h0, h1, -, -⟩ := GlobalTheory.T.breuilKisin_norm_eisenstein_le_radius l K bk (Ainf l) bk.ev
+  obtain ⟨h0, h1, -, -⟩ := _root_.GlobalTheory.BSP.norm_E_le_radius l K bk (Ainf l) bk.ev
   exact (discAinf_isDomain l K bk bk.ρ₀ h0 h1).1
 
 variable {bk}
@@ -51,7 +51,7 @@ variable {bk}
 theorem comm_phi (γ : Per.Acris l →+* bk.DA bk.ρ₀) (hγ : ∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a)
     (hn : ∀ x, ‖γ x‖ ≤ 1) (Φ : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀) (hΦ : IsDiscMap WittVector.frobenius Φ) (x : Per.Acris l) :
     Φ (γ x) = γ (phiA l x) := by
-  have h := GlobalTheory.T.acris_disc_ringHom_ext_of_ainf l K bk (Φ.comp γ) (γ.comp (phiA l)) (fun a => by
+  have h := _root_.GlobalTheory.AcrisDiscExt.acris_disc_ext l K bk (Φ.comp γ) (γ.comp (phiA l)) (fun a => by
       simp only [RingHom.comp_apply, hγ, phiA_alg]
       exact hΦ.ext a) (fun x => (hΦ.norm_le _).trans (hn x)) (fun x => hn _)
   exact RingHom.congr_fun h x
@@ -59,7 +59,7 @@ theorem comm_phi (γ : Per.Acris l →+* bk.DA bk.ρ₀) (hγ : ∀ a : Ainf l, 
 theorem comm_sig (γ : Per.Acris l →+* bk.DA bk.ρ₀) (hγ : ∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a)
     (hn : ∀ x, ‖γ x‖ ≤ 1) (g : Per.Gq l) (G : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀) (hG : IsDiscMap (Per.σA g) G)
     (x : Per.Acris l) : G (γ x) = γ (sigA g x) := by
-  have h := GlobalTheory.T.acris_disc_ringHom_ext_of_ainf l K bk (G.comp γ) (γ.comp (sigA g)) (fun a => by
+  have h := _root_.GlobalTheory.AcrisDiscExt.acris_disc_ext l K bk (G.comp γ) (γ.comp (sigA g)) (fun a => by
       simp only [RingHom.comp_apply, hγ, sigA_alg]
       exact hG.ext a) (fun x => (hG.norm_le _).trans (hn x)) (fun x => hn _)
   exact RingHom.congr_fun h x
@@ -68,8 +68,8 @@ theorem acrisToDisc_image_t_eq_unit_mul_period (C : Core l) {τ : Ainf l} (hτ :
     (hγ : ∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a) (hn : ∀ x, ‖γ x‖ ≤ 1) :
     ∃ ν : (bk.DA bk.ρ₀)ˣ, γ C.t = ν * bk.iA (bk.ev bk.E * τ) := by
   obtain ⟨hE, ε, η, hε, hη⟩ := hτ
-  obtain ⟨u, hu⟩ := GlobalTheory.T.acris_log_teichmuller_associated_sub_one_on_disc l K bk C γ hγ hn
-  obtain ⟨v, hv⟩ := GlobalTheory.T.teichmullerTiltMinusOne_associated l ε C.ε hε (core_isEps l C)
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.BSP.SeedT.t_assoc_mu l K bk C γ hγ hn
+  obtain ⟨v, hv⟩ := _root_.GlobalTheory.EpsilonAssociated.mu_associated l ε C.ε hε (core_isEps l C)
   refine ⟨u⁻¹ * Units.map bk.iA.toMonoidHom v * (Units.map bk.iA.toMonoidHom η)⁻¹, ?_⟩
   have e1 : bk.ev bk.E * τ = η * mu ε := by rw [← hE, hη]; rfl
   have hu' : γ C.t * u = bk.iA (mu ε) * bk.iA v := by rw [hu, ← hv, map_mul]
@@ -110,7 +110,7 @@ theorem GlobalTheory.BSP.seed_of_periods : ∀ (l : ℕ) [Fact l.Prime] (K : Fin
   intro l _ K bk C τ hτ d ρ N c₁ c₂ c₃ F F' X X' hF hX hnp Z Z' hZ
   obtain ⟨hZZ, hφ, hg, hf1, hf2⟩ := hZ
   haveI := isDomain bk
-  obtain ⟨γ, hγ, hn⟩ := GlobalTheory.T.exists_acris_ring_hom_bounded l K bk
+  obtain ⟨γ, hγ, hn⟩ := _root_.GlobalTheory.AcrisDisc.exists_acris_to_disc l K bk
   obtain ⟨ν, hν⟩ := acrisToDisc_image_t_eq_unit_mul_period C hτ γ hγ hn
   set a := bk.iA (bk.ev bk.E * τ) with ha_def
   have ha : a ≠ 0 := fun h => evE_mul_ne_zero hτ (iA_injective bk (h.trans (map_zero _).symm))
@@ -121,8 +121,8 @@ theorem GlobalTheory.BSP.seed_of_periods : ∀ (l : ℕ) [Fact l.Prime] (K : Fin
   have hmapS : ∀ M : Matrix (Fin d) (Fin d) bk.S,
       (M.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)).map γ = M.map bk.iS := fun M => by
     ext i j; simp only [Matrix.map_apply]; exact hγS _
-  choose w hw using fun i j => GlobalTheory.T.acris_fil_dvd_eisenstein_pow_on_disc l K bk C γ hγ hn (2 * N) _ (hf1 i j)
-  choose w' hw' using fun i j => GlobalTheory.T.acris_fil_dvd_eisenstein_pow_on_disc l K bk C γ hγ hn (2 * N) _ (hf2 i j)
+  choose w hw using fun i j => _root_.GlobalTheory.AcrisDisc.main l K bk C γ hγ hn (2 * N) _ (hf1 i j)
+  choose w' hw' using fun i j => _root_.GlobalTheory.AcrisDisc.main l K bk C γ hγ hn (2 * N) _ (hf2 i j)
   set G := Z.map γ
   set G' := Z'.map γ
   set Xs := X.map bk.iS

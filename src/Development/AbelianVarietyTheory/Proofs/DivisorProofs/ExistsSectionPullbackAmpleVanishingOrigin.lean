@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemNonzeroLocusIffPowFn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAmpleSectionsVanishingOriginSeparatingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsApplyNeOriginStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsApplyNeOrigin
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -24,7 +24,7 @@ theorem exists_sec_pull_ample_vanish_origin : ∀ (K : Type) [Field K] (A B : Ab
   intro K _ A B f d hd hf
   obtain ⟨L, hL, amp, rfl⟩ := hd
   obtain ⟨N, hN, M, t, h0, h1⟩ := GlobalTheory.T.exists_ampleSections_vanishing_origin_separating K B L hL amp
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_apply_ne_origin' K A B f hf
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.AV.AbVar.exists_apply_ne_origin K A B f hf
   let ιB := (B.X.hom ⁻¹ᵁ ⊤).ι
   let h : A.X.left ⟶ (B.X.hom ⁻¹ᵁ ⊤).toScheme := IsOpenImmersion.lift ιB f.hom.left (by
     rw [Scheme.Opens.range_ι]; intro x _; trivial)

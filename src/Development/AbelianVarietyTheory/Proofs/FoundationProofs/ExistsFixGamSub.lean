@@ -46,12 +46,8 @@ end GlobalTheory.K5.MonX
 
 namespace GlobalTheory.K5.MonX
 
-open GlobalTheory.K5 GlobalTheory.KumDlog GlobalTheory.K5.Rel
-
 end GlobalTheory.K5.MonX
 
 namespace GlobalTheory.K5.MonX
-
-open GlobalTheory.K5 GlobalTheory.KumDlog GlobalTheory.K5.Rel
 
 end GlobalTheory.K5.MonX

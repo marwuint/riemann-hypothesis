@@ -4,19 +4,19 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NormalFormDualOrthogonalLast
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsStarStableIdealAbsorbingMinorsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardLatticesNearReferenceLatticeLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardSublatticesDefiniteQuotientNormalFormLeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardLatticesNearReferenceLatticeLe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardSublatticesDefiniteQuotientNormalFormLe
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeOfLatMod
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormGeometrySummaryStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardUnimodularHermGluingsLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairCommonUnipotentStabiliserSummaryStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairCommonUnipotentStabiliserSummary
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonUnipotentStabiliserPreservesTermsAndDatumStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairInnerLatticesUnimodularPrimitiveStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagPairDefiniteThetaLatticeLeFixedIndexBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagPairDefiniteThetaLatticeLeFixedIndexBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairExistsUnipotentSplitLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormExistsConjNearReferenceStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormExistsConjNearReference
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelIndexNeZero
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SplitTermWeightLeNearReferenceLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SplitTermWeightLeNearReferenceLattice
 
 open NumberField Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.DegCnt
 open scoped Pointwise ENNReal Classical
@@ -155,7 +155,7 @@ theorem om_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF H r
     (hΛ : N.IsTerm g Λ) {s : V ≃ₗ[K] V} (hs : s ∈ N.R) : N.om (s • Λ) = N.om Λ := by
   obtain ⟨-, hS, -, -⟩ := GlobalTheory.T.commonUnipotent_stabiliser_preserves_terms_and_datum K V H hK r N g Λ hg hΛ s hs
   obtain ⟨-, -, -, -, hRef, -⟩ := GlobalTheory.T.hermFramePair_innerLattices_unimodular_primitive K V H hK r N g Λ hg hΛ
-  obtain ⟨-, -, -, -, hnil⟩ := GlobalTheory.T.hermFramePairCommonUnipotentStabiliser_summary K V H hK r N
+  obtain ⟨-, -, -, -, hnil⟩ := _root_.GlobalTheory.UnipStab.common_unipotent_stabiliser K V H hK r N
   have hL : Submodule.IsLattice K Λ := ((isUnimod_iff H Λ).1 hΛ.1.1).1
   unfold NF.om NF.Gam
   rw [hS.1]
@@ -164,7 +164,7 @@ theorem om_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF H r
 theorem isLatMod_latLa (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF H r) {g : ℕ} {Λ : Submodule (𝓞 K) V} (hg : 1 ≤ g)
     (hΛ : N.IsTerm g Λ) :
     IsLatMod (latLa N.F N.F' Λ (g : 𝓞 K)) (wSp N.F N.F') (II N.F N.F') := by
-  obtain ⟨hTh, -, -, -, -, -, -, ⟨M, -, hM⟩, hsp⟩ := GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ hg hΛ
+  obtain ⟨hTh, -, -, -, -, -, -, ⟨M, -, hM⟩, hsp⟩ := _root_.GlobalTheory.DegCnt.FixIdx.main K V H hK r N g Λ hg hΛ
   obtain ⟨⟨⟨⟨M', hM', hL⟩, -⟩, -⟩, -⟩ := GlobalTheory.T.hermFramePair_innerLattices_unimodular_primitive K V H hK r N g Λ hg hΛ
   have h0 : latLa N.F N.F' Λ (g : 𝓞 K) ≤ flagPairDefinitePartLattice N.F N.F' Λ := fun x hx => hx.1.2
   have hI : rs (𝓞 K) (II N.F N.F') ≤ latLa N.F N.F' Λ (g : 𝓞 K) := le_trans (by rw [hM]; exact le_sup_right) hTh
@@ -189,7 +189,7 @@ theorem idx_dual_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF
     (hΛ : N.IsTerm g Λ) (h : N.Split Λ) :
     (idx (dual H (Λ ⊓ rs (𝓞 K) N.Wt)) (Λ ⊓ rs (𝓞 K) N.Wt) : ℝ) ≤ (N.Del * N.NT) ^ 2 := by
   obtain ⟨-, hlift, -, -, -, -, hw, -, hPD, -⟩ := GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N
-  obtain ⟨-, -, -, -, hgi, -, hdel, hlat⟩ := GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ hg hΛ
+  obtain ⟨-, -, -, -, hgi, -, hdel, hlat⟩ := _root_.GlobalTheory.DegCnt.FixIdx.main K V H hK r N g Λ hg hΛ
   have h1 : ∀ x ∈ N.Wt ⊔ II N.F N.F', ∀ y ∈ II N.F N.F', H.B x y = 0 := by
     intro x hx y hy
     rw [← hw] at hx
@@ -263,11 +263,11 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
     intro Λ' h
     obtain ⟨s, hs, hsp⟩ := GlobalTheory.T.hermFramePair_exists_unipotent_split_lattice K V H hK r N g Λ' hg h.1
     have h' := hQs Λ' h s hs
-    obtain ⟨t, ht, hsp', hnear⟩ := GlobalTheory.T.hermFramePairNormalForm_exists_conj_near_reference K V H hK r N g _ hg h'.1 𝔠 c0 c1 c2 c3 hsp
+    obtain ⟨t, ht, hsp', hnear⟩ := _root_.GlobalTheory.DegCnt.NormalPos.exists_near K V H hK r N g _ hg h'.1 𝔠 c0 c1 c2 c3 hsp
     have h'' := hQs _ h' t ht.1
     refine ⟨ENNReal.ofReal_le_ofReal ?_, ⟨t, ht.1⟩ * ⟨s, hs⟩, ?_⟩
     · rw [← om_smul hK N hg h.1 hs, ← om_smul hK N hg h'.1 ht.1, hB, ← h''.2.2.2]
-      exact GlobalTheory.T.splitTermWeight_le_near_referenceLattice K V H hK r N g _ hg h''.1 𝔠 c0 c1 c2 c3 _ hsp' hnear
+      exact _root_.GlobalTheory.DegCnt.Weight.om_le K V H hK r N g _ hg h''.1 𝔠 c0 c1 c2 c3 _ hsp' hnear
     · rw [mul_smul]
       exact ⟨h'', hsp', hnear⟩
   refine step1.trans ?_
@@ -275,9 +275,9 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
   · rw [hE]; simp
   have hi : 1 ≤ i := by
     rw [← hΛ₀.1.2.2.1]
-    exact (GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ₀ hg hΛ₀.1.1).2.2.1
-  have hTh := GlobalTheory.T.card_sublattices_definiteQuotient_normalForm_le K V H hK r N _ i hi (isLatMod_latLa hK N hg hΛ)
-  have hP := GlobalTheory.T.encard_lattices_near_reference_lattice_le K V H hK r N (𝔠 ^ (12 * r + 50)) (pow_ne_zero _ c0)
+    exact (_root_.GlobalTheory.DegCnt.FixIdx.main K V H hK r N g Λ₀ hg hΛ₀.1.1).2.2.1
+  have hTh := _root_.GlobalTheory.DegCnt.count_sublattices_definite K V H hK r N _ i hi (isLatMod_latLa hK N hg hΛ)
+  have hP := _root_.GlobalTheory.DegCnt.NearCount.main K V H hK r N (𝔠 ^ (12 * r + 50)) (pow_ne_zero _ c0)
   have step2 := encard_le_of_fibres S
     ({Th : Submodule (𝓞 K) V | rs (𝓞 K) (II N.F N.F') ≤ Th ∧ Th ≤ latLa N.F N.F' Λ (g : 𝓞 K) ∧
         idx (latLa N.F N.F' Λ (g : 𝓞 K)) Th = i} ×ˢ
@@ -291,7 +291,7 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
     refine ⟨⟨?_, ?_, ?_⟩, h6⟩
     · show _ ≤ latTh N.F N.F' Λ'
       rw [h5]; exact le_sup_right
-    · rw [← e]; exact (GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ' hg h1).1
+    · rw [← e]; exact (_root_.GlobalTheory.DegCnt.FixIdx.main K V H hK r N g Λ' hg h1).1
     · rw [← e]; exact h3
   · rintro Λ' ⟨⟨h1, h2, h3, h4⟩, h5, h6⟩
     have hgl := GlobalTheory.T.encard_unimodular_hermGluings_le K V H hK N.Wt (Λ' ⊓ rs (𝓞 K) N.Wt) (Λ' ⊓ rs (𝓞 K) N.Pi) _ hcompl rfl

@@ -73,40 +73,6 @@ theorem cl_kK (hL : LgFacts) {k : Mat n → L} (hk : ContDiffOn ℝ ∞ k (GLs n
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 hx)] at h
   linarith
 
-theorem Rd_clm (T : L →L[ℂ] L) (X : Mat n) {f : Mat n → L} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
-    Set.EqOn (Rd X fun x => T (f x)) (fun x => T (Rd X f x)) (GLs n) := by
-  intro g hg
-  have hd := (GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth hf hg).hasFDerivAt
-  have h : HasFDerivAt (fun x => T (f x)) ((T.restrictScalars ℝ).comp (fderiv ℝ f g)) g :=
-    (T.restrictScalars ℝ).hasFDerivAt.comp g hd
-  show fderiv ℝ (fun x => T (f x)) g (g * X) = _
-  rw [h.fderiv]
-  rfl
-
-theorem Eu_clm (T : L →L[ℂ] L) (s : Bool) (a b : Fin n) {f : Mat n → L} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
-    Set.EqOn (Eu s a b fun x => T (f x)) (fun x => T (Eu s a b f x)) (GLs n) := by
-  intro g hg
-  simp only [Eu, Pi.smul_apply, Pi.add_apply, Rd_clm T _ hf hg, map_smul, map_add]
-
-theorem Epow_clm (hR : RCalc) (T : L →L[ℂ] L) (s : Bool) {f : Mat n → L} (hf : ContDiffOn ℝ ∞ f (GLs n)) (m : ℕ) :
-    ∀ a b : Fin n, Set.EqOn (Epow s m a b fun x => T (f x)) (fun x => T (Epow s m a b f x)) (GLs n) := by
-  induction m with
-  | zero =>
-    intro a b x _
-    by_cases hab : a = b <;> simp [Epow, hab]
-  | succ m ih =>
-    intro a b x hx
-    simp only [Epow, Finset.sum_apply, map_sum]
-    refine Finset.sum_congr rfl fun c _ => ?_
-    rw [GlobalTheory.CompanionTheory.WaveAll.Eu_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs (ih c b) s a c hx]
-    exact Eu_clm T s a c (GlobalTheory.CompanionTheory.WaveAll.Epow_smooth hR hf s m c b) hx
-
-theorem zOp_congr (w : List (Bool × ℕ)) {f f' : Mat n → L} (h : Set.EqOn f f' (GLs n)) :
-    Set.EqOn (zOp w f) (zOp w f') (GLs n) := by
-  induction w with
-  | nil => exact h
-  | cons p w ih => exact GlobalTheory.CompanionTheory.WaveAll.gel_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs ih p.1 p.2
-
 end Lem
 
 theorem secondCountable_G : SecondCountableTopology (G n) := by

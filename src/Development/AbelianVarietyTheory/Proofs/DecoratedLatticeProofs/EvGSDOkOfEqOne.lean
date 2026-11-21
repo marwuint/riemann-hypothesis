@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ColHeightWith
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SlopeStep
+import Formalism.LocalRingCardinality.DataArith
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
 import Development.AbelianVarietyTheory.Definitions.Divisors.FactorBounds
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeightedNormSquareRows

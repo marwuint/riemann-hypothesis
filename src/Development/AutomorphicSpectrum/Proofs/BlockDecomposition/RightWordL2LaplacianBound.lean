@@ -39,19 +39,6 @@ theorem Rw_append (w w' : List (Ix n)) (f : Mat n → V) : Rw w' (Rw w f) = Rw (
 
 end Words
 
-section HWords
-
-variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [MeasurableSpace (G n)] {μ : Measure (G n)}
-
-end HWords
-
-section Skew
-
-variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
-variable [MeasurableSpace (G n)] [BorelSpace (G n)] {μ : Measure (G n)} [μ.IsHaarMeasure]
-
-end Skew
-
 section Bracket
 
 def cf (M : Mat n) (p : Ix n) : ℝ := if p.1 then (M p.2.1 p.2.2).re else (M p.2.1 p.2.2).im
@@ -79,29 +66,5 @@ theorem Rd_sum_cf (M : Mat n) (f : Mat n → V) (g : Mat n) :
   exact (Complex.coe_smul _ _).symm
 
 end Bracket
-
-section HBracket
-
-variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [MeasurableSpace (G n)] {μ : Measure (G n)}
-
-end HBracket
-
-section Sections
-
-variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
-
-end Sections
-
-section Powers
-
-variable [MeasurableSpace (G n)] [BorelSpace (G n)] {μ : Measure (G n)} [μ.IsHaarMeasure]
-
-end Powers
-
-section Main
-
-variable [MeasurableSpace (G n)] [BorelSpace (G n)] {μ : Measure (G n)} [μ.IsHaarMeasure]
-
-end Main
 
 end GlobalTheory.CompanionTheory.SobSecK

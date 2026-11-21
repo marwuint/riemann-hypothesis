@@ -1,5 +1,5 @@
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.HostConj
-import ReciprocityTheory.ReductiveGroups.LocalHeights.Imports
+import CompanionTheory.AutomorphicTheory.HeckeStandardModules.InvMemRl
 
 open Formalism.BasicNotions NumberField
 
@@ -16,10 +16,5 @@ theorem linkEta_closed {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
       HeckeTied (Fm.D x i) M) :
     Formalism.MainNotions.LinkEta Fm := by
   exact linkEtaTw_closed Fm hfam
-
-theorem etaN_eq_etaJ' {D : D7} {M : MtFam D} (T : NormalizedLocalCompatibility D M) (HT : HeckeTied D M) {j : ℕ}
-    {w : D.what₂.places.Pl} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hw : D.what₂.muAt w ≠ D.what₂.mu0) :
-    etaN T j w = D.what₂.etaJ j w :=
-  etaN_eq_etaJ_of_muAt_ne T ReciprocityTheory.ChartRestriction.L3H.heckeStd HT h1 h2 hw
 
 end Formalism.L2

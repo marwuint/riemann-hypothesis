@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorsOnHalfPlaneFunctionsAgreeExplicit
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTOperatorExplicitModularFormStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTOperatorExplicitModularForm
+import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMulPetProd
 open GlobalTheory.HeckeFamilyMatrices Polynomial UpperHalfPlane Filter Topology
 open scoped MatrixGroups ModularForm
 open scoped Manifold
@@ -373,7 +374,7 @@ theorem tq_sub_smul_cuspForm : ∀ (N l k : ℕ), 5 ≤ N → l.Prime → ¬ l �
   obtain ⟨f', hf'⟩ : ∃ f' : ModularForm (Lev N l) (k : ℤ), ⇑f' = TqF (k : ℤ) q σ ⇑f := by
     obtain ⟨-, -, hT, hD, -⟩ := GlobalTheory.SlashUpperTriangularMatrices.bridge
     rw [hT _ _ _ _ hq.pos]
-    exact GlobalTheory.T.heckeTOperatorExplicit_modularForm N l q k σ hN0 hq hqNl ((hD N l q σ).1 (by simpa using hdiam)) f
+    exact _root_.GlobalTheory.Hk.heckeT_modularForm N l q k σ hN0 hq hqNl ((hD N l q σ).1 (by simpa using hdiam)) f
   let G : ModularForm (Lev N l) (k : ℤ) := f' - ((1 : ℂ) + (q : ℂ) ^ (k - 1)) • f
   have hG : ⇑G = TqF (k : ℤ) q σ ⇑f - ((1 : ℂ) + (q : ℂ) ^ (k - 1)) • ⇑f := by
     simp [G, hf']

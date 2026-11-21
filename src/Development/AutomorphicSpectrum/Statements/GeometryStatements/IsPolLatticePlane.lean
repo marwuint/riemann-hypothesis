@@ -57,12 +57,6 @@ def PointHT : Prop :=
 
 namespace PointTest
 
-def toInt : 𝓞 ℚ ≃+* ℤ := Rat.ringOfIntegersEquiv
-
-def planeForm : (Fin 2 → 𝓞 ℚ) →ₗ[ℤ] (Fin 2 → 𝓞 ℚ) →ₗ[ℤ] ℤ :=
-  LinearMap.mk₂ ℤ (fun x y => toInt (x 0 * y 1 - x 1 * y 0)) (by intros; simp; ring) (by intros; simp; ring)
-    (by intros; simp; ring) (by intros; simp; ring)
-
 variable {C O : Type} [Field C] [CommRing O] [Algebra O C] {v : Valuation C NNReal} {p : ℕ}
 
 theorem val_sub_one_pow [hp : Fact p.Prime] {ζ : C} (hζ : IsPrimitiveRoot ζ p) : v (ζ - 1) ^ (p - 1) = v (p : C) := by
@@ -92,12 +86,6 @@ theorem isHTConst_sub_one [hp : Fact p.Prime] {ζ : O} (hζ : IsPrimitiveRoot (a
   refine ⟨?_, ?_⟩ <;> rw [map_sub, map_one]
   · exact hζ.sub_one_ne_zero hp.out.one_lt
   · exact (val_sub_one_pow hζ).le
-
-theorem isHTConst_two [CharZero C] : IsHTConst v 2 (2 : O) :=
-  ⟨by rw [map_ofNat]; exact two_ne_zero, by rw [map_ofNat]; simp⟩
-
-theorem not_isHTConst_one (h : v (p : C) < 1) : ¬ IsHTConst v p (1 : O) := fun h1 =>
-  absurd (by simpa using h1.2) (not_le.2 h)
 
 end PointTest
 

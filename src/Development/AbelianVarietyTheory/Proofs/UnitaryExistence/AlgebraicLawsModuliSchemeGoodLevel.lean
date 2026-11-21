@@ -18,7 +18,13 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IntegralAlgebrai
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.SChartsAndTransferOfGoodLevel
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemHolSubIff
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SupNormDefiniteOnCuspFormsGoodEmbedding
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CompactifiedModuliPartOneStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CompactifiedModuliPartOne
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import Development.AbelianVarietyTheory.PublishedTheorems.SemistableReduction₂.SemistableReductionSt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmModuliConsequenceOfAbelianSchemeLaws
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj
 open scoped TensorProduct Matrix Topology
@@ -32,7 +38,7 @@ theorem algebraic_laws_of_good_level :
   intro E _ _ _ H Dw l Xo c hpq hg
   have hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt := GlobalTheory.firstFiveLaws.1.secBaseChange
   have hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt := GlobalTheory.firstFiveLaws.2.1.secTwist
-  have hP : PartI := GlobalTheory.T.compactifiedModuli_partOne
+  have hP : PartI := _root_.GlobalTheory.partI_closed
   have hA : N1ab := GlobalTheory.Moduli.moduli_scheme_exists
   have hC : N1c := GlobalTheory.closing_of_abelianSchemeLaws
   have h3 := GlobalTheory.Frames.algebraic_laws hS E H Dw l Xo c

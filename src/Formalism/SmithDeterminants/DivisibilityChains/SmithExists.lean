@@ -1,4 +1,4 @@
-import Formalism.SmithDeterminants.DefsDVR
+import Formalism.SmithDeterminants.StatementDVR
 
 namespace Formalism.A
 

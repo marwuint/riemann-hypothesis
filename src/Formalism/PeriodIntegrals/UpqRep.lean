@@ -19,9 +19,6 @@ def inG {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : Prop 
 def inK {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : Prop :=
   inG ε X ∧ X * Jm ε = Jm ε * X
 
-def inP {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : Prop :=
-  inG ε X ∧ X * Jm ε = -(Jm ε * X)
-
 def Kset {n : ℕ} (ε : Fin n → Bool) : Set (Matrix (Fin n) (Fin n) ℂ) :=
   {g | g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Jm ε = Jm ε * g}
 
@@ -316,10 +313,6 @@ def lowKSub (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fi
 
 def IsOrthProjOnto (E : H →L[ℂ] H) (S : Submodule ℂ H) : Prop :=
   E.comp E = E ∧ (∀ x y : H, ⟪E x, y⟫_ℂ = ⟪x, E y⟫_ℂ) ∧ LinearMap.range (E : H →ₗ[ℂ] H) = S
-
-def IsHighestUnit (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
-    (w : H) : Prop :=
-  ‖w‖ = 1 ∧ w ∈ lowKSub ε lam σ ∧ IsWtOn (Kset ε) σ (lowK ε lam) w
 
 def IsLowUnit (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (w : H) : Prop :=
   ‖w‖ = 1 ∧ w ∈ lowKSub ε lam σ

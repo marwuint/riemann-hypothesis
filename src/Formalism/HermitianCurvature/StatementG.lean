@@ -105,8 +105,6 @@ def GermRate : Prop :=
       DerivBound k (detSet (m + 1) Kc) (fun Z => K * min 1 (‖Z‖ ^ (-A))) Φ →
       ∀ t c : ℂ, t ≠ 0 → c * t ^ (m + 1) ∈ Kc → ‖remainder β m (fun _ => 1) Φ t c‖ ≤ Cst * K * ‖t‖
 
-def GermOfRate : Prop := GermRate → Germ
-
 def PsiChar : Prop :=
   ∀ β x y : ℂ, psi β (x + y) = psi β x * psi β y ∧ ‖psi β x‖ = 1 ∧ psi β 0 = 1
 
@@ -118,13 +116,6 @@ def SelfDual : Prop :=
   ∀ β : ℂ, β ≠ 0 → ∀ (f : SchwartzMap ℂ ℂ) (w : ℂ),
     ∫ ξ : ℂ, (∫ x : ℂ, f x * psi β (ξ * x) ∂(mu β)) * psi β (w * ξ) ∂(mu β) = f (-w)
 
-def SelfDualUnique : Prop :=
-  ∀ β : ℂ, β ≠ 0 → ∀ κ : NNReal,
-    (∀ (f : SchwartzMap ℂ ℂ) (w : ℂ),
-      ∫ ξ : ℂ, (∫ x : ℂ, f x * psi β (ξ * x) ∂(κ • (volume : Measure ℂ))) * psi β (w * ξ)
-        ∂(κ • (volume : Measure ℂ)) = f (-w)) →
-    κ = Real.toNNReal (‖β‖ / (2 * Real.pi))
-
 def AffineChange : Prop :=
   ∀ β α γ : ℂ, α ≠ 0 →
     Measure.map (fun ρ : ℂ => α * ρ + γ) (mu β) = Real.toNNReal ((‖α‖ ^ 2)⁻¹) • mu β
@@ -133,43 +124,6 @@ def ScalePi : Prop :=
   ∀ (β z : ℂ) (ι : Type) [Fintype ι], z ≠ 0 →
     Measure.map (fun v : ι → ℂ => z • v) (muPi β ι) =
       Real.toNNReal ((‖z‖ ^ (2 * Fintype.card ι))⁻¹) • muPi β ι
-
-def CharAdditive : Prop :=
-  ∀ (n : ℕ) (p q : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ),
-    (IsUpperUni p → IsUpperUni q → superSum (p * q) = superSum p + superSum q) ∧
-    (IsLowerUni p → IsLowerUni q → subSum (p * q) = subSum p + subSum q)
-
-def StabLong : Prop :=
-  ∀ (n : ℕ) (z : ℂ), z ≠ 0 → ∀ l u : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, IsLowerUni l → IsUpperUni u →
-    (l * ptLong (n + 1) z * u = ptLong (n + 1) z ↔ l = wMat (n + 1) * u⁻¹ * wMat (n + 1)) ∧
-    (l * ptLong (n + 1) z * u = ptLong (n + 1) z → subSum l + superSum u = 0)
-
-def SectionLong : Prop :=
-  ∀ (n : ℕ) (z : ℂ), z ≠ 0 → ∀ l u : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, IsLowerUni l → IsUpperUni u →
-    ∃! v : UT (n + 1) → ℂ, ∃ k k' : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, IsLowerUni k ∧ IsUpperUni k' ∧
-      k * ptLong (n + 1) z * k' = ptLong (n + 1) z ∧ l * k = 1 ∧ k' * u = upper v
-
-def StabBlock : Prop :=
-  ∀ (n : ℕ) (t c : ℂ), t ≠ 0 → ∀ l u : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, IsLowerUni l → IsUpperUni u →
-    (l * ptBlock n t c * u = ptBlock n t c ↔
-      ∃ k : Matrix (Fin n) (Fin n) ℂ, IsUpperUni k ∧ u = blk k 0 0 1 ∧
-        l = blk (wMat n * k⁻¹ * wMat n) 0 0 1) ∧
-    (l * ptBlock n t c * u = ptBlock n t c → subSum l + superSum u = 0)
-
-def SectionBlock : Prop :=
-  ∀ (n : ℕ) (t c : ℂ), t ≠ 0 → ∀ l u : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, IsLowerUni l → IsUpperUni u →
-    ∃! p : BlockCoord n, ∃ k k' : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, IsLowerUni k ∧ IsUpperUni k' ∧
-      k * ptBlock n t c * k' = ptBlock n t c ∧ l * k = lowRow p.1 ∧ k' * u = blk (upper p.2.1) p.2.2 0 1
-
-def coordU {d : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) : UT d → ℂ := fun p => M p.1.1 p.1.2
-
-def quotMap (n : ℕ) (q : (UT n → ℂ) × BlockCoord n) : (UT (n + 1) → ℂ) × (UT (n + 1) → ℂ) :=
-  (coordU (lowRow q.2.1 * blk (wMat n * (upper q.1)⁻¹ * wMat n) 0 0 1)ᵀ,
-   coordU (blk (upper q.1) 0 0 1 * blk (upper q.2.2.1) q.2.2.2 0 1))
-
-def QuotientMeasure : Prop :=
-  ∀ (n : ℕ) (β : ℂ), MeasurePreserving (quotMap n) ((muPi β (UT n)).prod (muBlock β n))
-    ((muPi β (UT (n + 1))).prod (muPi β (UT (n + 1))))
 
 def DetOrbit : Prop :=
   (∀ (n : ℕ) (t c : ℂ) (p : BlockCoord n),
@@ -210,10 +164,6 @@ def PhaseFormula : Prop :=
 
 def coordMap (n : ℕ) (t : ℂ) (p : BlockCoord n) : BlockCoord n := (rhoOf t p.1 p.2.1, t • p.2.1, t • p.2.2)
 
-def Jacobian : Prop :=
-  ∀ (n : ℕ) (β t : ℂ), t ≠ 0 →
-    Measure.map (coordMap n t) (muBlock β n) = Real.toNNReal ((‖t‖ ^ (n * (n + 3)))⁻¹) • muBlock β n
-
 def CornerRelation : Prop :=
   ∀ (n : ℕ) (t c : ℂ) (a b : Fin n → ℂ) (v : UT n → ℂ),
     t ^ n * (c + a ⬝ᵥ (wMat n *ᵥ (t • b))) =
@@ -238,10 +188,6 @@ def CofLead : Prop :=
 def rho1 {m : ℕ} (D σ : ℂ) (ρ' : Fin m → ℂ) (X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (B : Fin (m + 1) → ℂ)
     (t : ℂ) : ℂ :=
   (t ^ (m + 1) * σ - D - R0 X B ρ' t) / Cof X B t
-
-def Rho1Limit : Prop :=
-  ∀ (m : ℕ) (D σ : ℂ) (ρ' : Fin m → ℂ) (X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (B : Fin (m + 1) → ℂ),
-    IsStrictUpper X → rho1 D σ ρ' X B 0 = (-1) ^ (m + 3) * D / ∏ k, xOf X B k
 
 abbrev RedCoord (m : ℕ) : Type := ℂ × (Fin m → ℂ) × (UT (m + 1) → ℂ) × (Fin (m + 1) → ℂ)
 
@@ -279,11 +225,6 @@ def PhaseFunctionCritical : Prop :=
       ((∀ k, dg0 D' x k = 0) ↔ ∃ z : ℂ, z ^ (m + 2) = D' ∧ x = fun _ => z)) ∧
     (∀ z : ℂ, z ^ (m + 2) = D' → g0 D' (fun _ : Fin (m + 1) => z) = ((m : ℂ) + 2) * z)
 
-def GradSmall : Prop :=
-  ∃ C : ℝ, ∀ (m : ℕ) (D' : ℂ), D' ≠ 0 → ∀ x : Fin (m + 1) → ℂ, (∀ k, x k ≠ 0) →
-    ∀ η : ℝ, 0 < η → η ≤ 1 / (4 * ((m : ℝ) + 2)) → (∀ k, ‖dg0 D' x k‖ < η) →
-    ∃ z : ℂ, z ^ (m + 2) = D' ∧ ∀ k, ‖x k - z‖ ≤ C * η * ‖z‖
-
 def GradLower : Prop :=
   ∀ (m : ℕ) (Kc : Set ℂ), IsCompact Kc → (0 : ℂ) ∉ Kc → ∀ δ : ℝ, 0 < δ → ∃ cδ : ℝ, 0 < cδ ∧
     ∀ D' ∈ Kc, ∀ x : Fin (m + 1) → ℂ, (∀ k, x k ≠ 0) →
@@ -316,23 +257,10 @@ def GaussMulti : Prop :=
   ∀ (d : ℕ) (β t : ℂ) (H : Matrix (Fin d) (Fin d) ℂ), β ≠ 0 → t ≠ 0 → H.IsSymm → H.det ≠ 0 →
     Tendsto (gaussInt β d H t) (𝓝[>] 0) (𝓝 ((‖t‖ ^ d / ‖H.det‖ : ℝ) : ℂ))
 
-def GaussHess : Prop :=
-  ∀ (m : ℕ) (β t z : ℂ), β ≠ 0 → t ≠ 0 → z ≠ 0 →
-    Tendsto (gaussInt β (m + 1) (z⁻¹ • (1 + Matrix.of fun _ _ => (1 : ℂ))) t) (𝓝[>] 0)
-      (𝓝 ((‖t‖ ^ (m + 1) * ‖z‖ ^ (m + 1) / ((m : ℝ) + 2) : ℝ) : ℂ))
-
 def Takagi : Prop :=
   ∀ (d : ℕ) (H : Matrix (Fin d) (Fin d) ℂ), H.IsSymm →
     ∃ W ∈ Matrix.unitaryGroup (Fin d) ℂ, ∃ σ : Fin d → ℝ, (∀ i, 0 ≤ σ i) ∧
       H = W * Matrix.diagonal (fun i => ((σ i : ℝ) : ℂ)) * Wᵀ
-
-def UnitaryInvariant : Prop :=
-  ∀ (d : ℕ) (β : ℂ), ∀ W ∈ Matrix.unitaryGroup (Fin d) ℂ,
-    MeasurePreserving (fun x : Fin d → ℂ => W *ᵥ x) (muPi β (Fin d)) (muPi β (Fin d))
-
-def GaussMultiOfOne : Prop := Takagi → UnitaryInvariant → GaussOneDamped → GaussMulti
-
-def GaussHessOfMulti : Prop := GaussMulti → HessDet → GaussHess
 
 def CornerEntryCritical : Prop :=
   ∀ (m : ℕ) (z D σ : ℂ) (ρ' : Fin m → ℂ) (X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (B : Fin (m + 1) → ℂ),
@@ -340,11 +268,6 @@ def CornerEntryCritical : Prop :=
     rho1 D σ ρ' X B 0 = z ∧
     HasDerivAt (fun t => rho1 D σ ρ' X B t)
       (superSum (wMat (m + 2) * Mcoord 0 X B (Fin.cons z ρ') σ) / z) 0
-
-def LimitShape : Prop :=
-  ∀ (m : ℕ) (z σ : ℂ) (ρ' : Fin m → ℂ) (X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (B : Fin (m + 1) → ℂ),
-    IsStrictUpper X → (∀ k, xOf X B k = z) →
-    IsStrictUpper (wMat (m + 2) * Mcoord 0 X B (Fin.cons z ρ') σ - z • (1 : Matrix (Fin (m + 2)) (Fin (m + 2)) ℂ))
 
 def LimitMatrix : Prop :=
   ∀ (n : ℕ) (z : ℂ), z ≠ 0 → ∀ y : UT (n + 1) → ℂ,
@@ -373,15 +296,6 @@ def OmConverges : Prop :=
 def RootSetSpec : Prop :=
   ∀ (s : ℕ) (a : ℂ), 0 < s → (∀ z, z ∈ rootSet s a ↔ z ^ s = a) ∧ (a ≠ 0 → (rootSet s a).card = s)
 
-def CofLower : Prop :=
-  ∀ (m : ℕ) (Kc : Set ℂ), IsCompact Kc → (0 : ℂ) ∉ Kc → ∃ t₀ c₀ : ℝ, 0 < t₀ ∧ 0 < c₀ ∧
-    ∀ ε : ℝ, 0 < ε → ε ≤ 1 / (2 * ((m : ℝ) + 2)) → ∀ D ∈ Kc, ∀ t : ℂ, t ≠ 0 → ‖t‖ ≤ t₀ →
-    ∀ (X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (B : Fin (m + 1) → ℂ) (ρ₁ : ℂ) (ρ' : Fin m → ℂ) (σ : ℂ),
-      IsStrictUpper X → (∀ i j, ‖X i j‖ ≤ ‖t‖ ^ (-ε)) → (∀ i, ‖B i‖ ≤ ‖t‖ ^ (-ε)) → ‖ρ₁‖ ≤ ‖t‖ ^ (-ε) →
-      (∀ k, ‖ρ' k‖ ≤ ‖t‖ ^ (-ε)) → ‖σ‖ ≤ ‖t‖ ^ (-ε) →
-      t ^ (m + 1) * σ = D + Cof X B t * ρ₁ + R0 X B ρ' t →
-      c₀ * ‖t‖ ^ ε ≤ ‖Cof X B t‖
-
 def LeadingConstant : Prop :=
   ∀ (m : ℕ) (τ ζ : ℝ), 0 < τ → 0 < ζ →
     (τ ^ ((m + 1) * (m + 2)))⁻¹ * (τ ^ (m + 1) * ζ ^ (m + 1) / ((m : ℝ) + 2)) * (ζ ^ (2 * (m + 1)))⁻¹ *
@@ -391,20 +305,6 @@ def LeadingConstant : Prop :=
 def DimCount : Prop :=
   ∀ n : ℕ, 2 * Fintype.card (UT n) = n * (n - 1) ∧
     n + Fintype.card (UT n) + n = Fintype.card (UT (n + 1)) + n
-
-def quotMapLong (d : ℕ) (q : (UT d → ℂ) × (UT d → ℂ)) : (UT d → ℂ) × (UT d → ℂ) :=
-  (coordU (wMat d * (upper q.1)⁻¹ * wMat d)ᵀ, coordU (upper q.1 * upper q.2))
-
-def QuotientMeasureLong : Prop :=
-  ∀ (d : ℕ) (β : ℂ), MeasurePreserving (quotMapLong d) ((muPi β (UT d)).prod (muPi β (UT d)))
-    ((muPi β (UT d)).prod (muPi β (UT d)))
-
-def StabInvariant : Prop :=
-  ∀ (n : ℕ) (β : ℂ) (g l u k k' : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ),
-    ((∃ z : ℂ, z ≠ 0 ∧ g = ptLong (n + 1) z) ∨ ∃ t c : ℂ, t ≠ 0 ∧ g = ptBlock n t c) →
-    IsLowerUni l → IsUpperUni u → IsLowerUni k → IsUpperUni k' → k * g * k' = g →
-    l * k * g * (k' * u) = l * g * u ∧
-      psi β (subSum (l * k)) * psi β (superSum (k' * u)) = psi β (subSum l) * psi β (superSum u)
 
 def CofLowerR : Prop :=
   ∀ (m : ℕ) (Kc : Set ℂ), IsCompact Kc → (0 : ℂ) ∉ Kc → ∀ R : ℝ, 0 < R → ∃ t₀ c₀ : ℝ, 0 < t₀ ∧ 0 < c₀ ∧
@@ -438,12 +338,6 @@ def SplitXYMatrix : Prop :=
         (Fin.cons ρ₁ (redOf m p).2.1) (redOf m p).1 =
       t • subShift (m + 2) + Matrix.diagonal (Fin.cons ρ₁ p.1 : Fin (m + 2) → ℂ) + strictUpper p.2
 
-def LimitCoords : Prop :=
-  ∀ (m : ℕ) (z : ℂ) (y : UT (m + 2) → ℂ), ∃! q : RedCoord m,
-    (∀ k, xOf (strictUpper q.2.2.1) q.2.2.2 k = z) ∧
-    wMat (m + 2) * Mcoord 0 (strictUpper q.2.2.1) q.2.2.2 (Fin.cons z q.2.1) q.1 =
-      z • (1 : Matrix (Fin (m + 2)) (Fin (m + 2)) ℂ) + strictUpper y
-
 def LimitCoordsXY : Prop :=
   ∀ (m : ℕ) (z : ℂ) (y : UT (m + 2) → ℂ),
     wMat (m + 2) * Mcoord 0 (strictUpper (redOf m (fun _ => z, y)).2.2.1) (redOf m (fun _ => z, y)).2.2.2
@@ -455,10 +349,6 @@ def chi0 (r : ℝ) : ℝ := Real.smoothTransition (2 - r)
 def cutM {s : ℕ} (τ : ℝ) (Z : Mat s) : ℝ := ∏ i, ∏ j, chi0 (‖Z i j‖ ^ 2 / τ ^ 2)
 
 def critCut {n : ℕ} (δ : ℝ) (z : ℂ) (x : Fin n → ℂ) : ℝ := ∏ k, chi0 (‖x k - z‖ ^ 2 / δ ^ 2)
-
-def Chi0Spec : Prop :=
-  (∀ r : ℝ, r ≤ 1 → chi0 r = 1) ∧ (∀ r : ℝ, 2 ≤ r → chi0 r = 0) ∧ (∀ r : ℝ, 0 ≤ chi0 r ∧ chi0 r ≤ 1) ∧
-    ∀ k : ℕ, ContDiff ℝ k chi0
 
 def CutMSpec : Prop :=
   ∀ s : ℕ,

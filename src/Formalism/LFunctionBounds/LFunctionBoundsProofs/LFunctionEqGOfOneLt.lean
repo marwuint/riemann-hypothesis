@@ -41,12 +41,6 @@ lemma norm_integral_le {x : ℝ} (hx : 0 < x) (s : ℂ) :
     simp
   · exact (continuousOn_id.rpow_const fun t ht => Or.inl (pos_of_mem_uIcc_self_add_one hx ht).ne').intervalIntegrable
 
-lemma integral_rpow_eq {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
-    ∫ t in x..(x + 1), t ^ (-σ - 1) = (x ^ (-σ) - (x + 1) ^ (-σ)) / σ := by
-  rw [integral_rpow (Or.inr ⟨by linarith, fun h0 => lt_irrefl 0 (pos_of_mem_uIcc_self_add_one hx h0)⟩)]
-  have e : -σ - 1 + 1 = -σ := by ring
-  rw [e, div_neg, ← neg_div, neg_sub]
-
 lemma integral_rpow_le {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
     ∫ t in x..(x + 1), t ^ (-σ - 1) ≤ x ^ (-σ - 1) := by
   have h1 : ∫ t in x..(x + 1), t ^ (-σ - 1) ≤ ∫ t in x..(x + 1), x ^ (-σ - 1) := by
@@ -56,15 +50,6 @@ lemma integral_rpow_le {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
     · intro t ht
       exact Real.rpow_le_rpow_of_nonpos hx ht.1 (by linarith)
   simpa using h1
-
-lemma norm_cpow_sub_le {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : 0 < s.re) :
-    ‖(x : ℂ) ^ (-s) - ((x + 1 : ℝ) : ℂ) ^ (-s)‖ ≤
-      ‖s‖ / s.re * (x ^ (-s.re) - (x + 1) ^ (-s.re)) := by
-  have hs0 : s ≠ 0 := fun h => by rw [h, Complex.zero_re] at hs; exact lt_irrefl 0 hs
-  rw [cpow_sub_eq_integral hx hs0, norm_mul]
-  refine le_trans (mul_le_mul_of_nonneg_left (norm_integral_le hx s) (norm_nonneg _)) (le_of_eq ?_)
-  rw [integral_rpow_eq hx hs]
-  ring
 
 lemma norm_cpow_sub_le' {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : 0 < s.re) :
     ‖(x : ℂ) ^ (-s) - ((x + 1 : ℝ) : ℂ) ^ (-s)‖ ≤ ‖s‖ * x ^ (-s.re - 1) := by
@@ -106,17 +91,6 @@ lemma norm_dterm_le {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 
     show ‖Ap χ n * ((n : ℂ) ^ (-s) - ((n : ℂ) + 1) ^ (-s))‖ ≤ _
     rw [norm_mul]
     exact mul_le_mul (hB n) key (norm_nonneg _) hB0
-
-lemma norm_dterm_le' {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) {n : ℕ}
-    (hn : 1 ≤ n) :
-    ‖dterm χ s n‖ ≤ B * (‖s‖ / s.re * ((n : ℝ) ^ (-s.re) - ((n : ℝ) + 1) ^ (-s.re))) := by
-  have hB0 : 0 ≤ B := (norm_nonneg _).trans (hB 0)
-  have hx : (0 : ℝ) < n := by exact_mod_cast hn
-  have key := norm_cpow_sub_le hx hs
-  rw [← natCast_add_one_eq, Complex.ofReal_natCast] at key
-  show ‖Ap χ n * ((n : ℂ) ^ (-s) - ((n : ℂ) + 1) ^ (-s))‖ ≤ _
-  rw [norm_mul]
-  exact mul_le_mul (hB n) key (norm_nonneg _) hB0
 
 lemma summable_norm_dterm {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     Summable (fun n => ‖dterm χ s n‖) := by

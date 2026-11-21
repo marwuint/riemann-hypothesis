@@ -215,9 +215,6 @@ def ChainUp (D : D7) : Prop :=
       ∀ ipD₀ ip₀ ipD ip, IsMet c s₀ ipD₀ ip₀ → IsMet c s ipD ip → ∀ (u : s₀.CC c) B, IsPar u B →
         ∃ x : s.CC c, (∀ y, ip y x = ip₀ (Θ y) u) ∧ IsPar x (chainPar c B k)
 
-example (c : Com D) (s₀ : PiLocalization₂ D) : Reach c s₀ 0 s₀ LinearMap.id ∧ Function.Surjective (LinearMap.id : s₀.CC c →ₗ[ℂ] s₀.CC c) :=
-  ⟨Reach.zero, Function.surjective_id⟩
-
 theorem chainPar_succ (c : Com D) (B : GlobalTheory.LFun.Fam D.host.E) (k : ℕ) :
     chainPar c B (k + 1) = stepPar (c.χ k) (c.χ k) c.t (chainPar c B k) := rfl
 

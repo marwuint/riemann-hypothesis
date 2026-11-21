@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.UnipotentAdelicQuotients.SmComplete
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieAlgebraOfTangentCurveStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieAlgebraOfTangentCurve
 open SmoothVectors Filter Topology
 open scoped ContDiff Matrix.Norms.Elementwise
 
@@ -50,7 +50,7 @@ theorem exists_submodule_eq_lieAlg :
   · intro a b ha hb
     have ha' : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • a) ∈ G := ha
     have hb' : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • b) ∈ G := hb
-    refine GlobalTheory.T.lie_algebra_of_tangent_curve n G hG
+    refine _root_.GlobalTheory.CompanionTheory.SmTangent.tangent_mem_lieAlg n G hG
       (fun t : ℝ => NormedSpace.exp ((t : ℂ) • a) * NormedSpace.exp ((t : ℂ) • b)) (a + b) ?_ ?_
       (hasDerivAt_exp_mul_exp a b)
     · simp

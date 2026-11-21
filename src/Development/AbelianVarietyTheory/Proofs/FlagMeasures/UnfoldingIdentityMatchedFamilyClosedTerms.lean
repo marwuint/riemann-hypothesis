@@ -3,8 +3,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassGenusLocalDataProductLocalWeightsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowWeightsLocalOrbitsSumEqGenusMassStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassGenusLocalDataProductLocalWeights
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowWeightsLocalOrbitsSumEqGenusMass
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalisedBaseFramesRelevantPairStatement
 
 open scoped Classical ENNReal
@@ -146,7 +147,7 @@ theorem unfold_tied : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.wh
     refine ⟨Λ₀, hΛl, Fm.P.finite_toSet.subset fun p hp => ?_⟩
     by_contra hp'
     exact hp ⟨_, hΛ₀ p hp', rfl⟩
-  obtain ⟨V1, hV1, hmass⟩ := GlobalTheory.T.mass_genus_local_data_product_local_weights D X Y u u' F00 F'0 w hZ hG (zOf Y) Fm.FP hBased hRel Fm.d0 hterm0 hΛfin
+  obtain ⟨V1, hV1, hmass⟩ := _root_.GlobalTheory.Unfold.mass_genus_local_weights D X Y u u' F00 F'0 w hZ hG (zOf Y) Fm.FP hBased hRel Fm.d0 hterm0 hΛfin
   have hΛ' : ∃ Λ : LV D, Submodule.IsLattice D.host.E Λ ∧ ∀ p, p ∉ Fm.P →
       ∃ τ, LocNG.IsTermOver (Fm.FP p) (Fm.d0 p) τ ∧ τ.abelian₂ = lattice₂ D (zOf Y).M p Λ :=
     ⟨Λ₀, hΛl, fun p hp => ⟨_, hΛ₀ p hp, rfl⟩⟩
@@ -164,7 +165,7 @@ theorem unfold_tied : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.wh
   let dd : Dat (zOf Y) Fm.FP := fun p => if hp : p ∈ Fm.P then (d ⟨p, hp⟩).1 else Fm.d0 p
   have hdd1 : ∀ p (hp : p ∈ Fm.P), dd p = (d ⟨p, hp⟩).1 := fun p hp => by simp [dd, hp]
   have hdd2 : ∀ p, p ∉ Fm.P → dd p = Fm.d0 p := fun p hp => by simp [dd, hp]
-  obtain ⟨hddT, hsum⟩ := GlobalTheory.T.rowWeights_localOrbits_sum_eq_genusMass D X Y u u' F00 F'0 w hZ hG TS cls Fm hBased hCls hLC' hD hStd hΛ' hdat' d hd
+  obtain ⟨hddT, hsum⟩ := _root_.GlobalTheory.Unfold.GenusRows.rows_mass_genus D X Y u u' F00 F'0 w hZ hG TS cls Fm hBased hCls hLC' hD hStd hΛ' hdat' d hd
     dd hdd1 hdd2
   have hfin : {p | dd p ≠ Fm.d0 p}.Finite :=
     Fm.P.finite_toSet.subset fun p hp => by

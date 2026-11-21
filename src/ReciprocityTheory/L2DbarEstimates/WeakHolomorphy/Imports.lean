@@ -1,4 +1,0 @@
-import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.MeasurableEmbeddingRotAbout
-import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.MvDivIntegrand
-import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.ExtNull
-import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.ImportsAlt

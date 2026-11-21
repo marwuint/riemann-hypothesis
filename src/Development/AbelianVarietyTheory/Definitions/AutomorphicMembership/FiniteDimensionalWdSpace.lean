@@ -216,11 +216,6 @@ theorem IsModel.unique {LL' : FinExt l} {r₁ r₂ : ↥Gw →* GL (Fin a) ↥LL
   exact congrArg (fun f : ↥Gw →* GL (Fin a) (Om l) => (f g : Matrix (Fin a) (Fin a) (Om l)) i j)
     (h₁.2.trans h₂.2.symm)
 
-omit [NumberField E] in
-
-theorem isModel_one : IsModel Bw (1 : ↥Gw →* GL (Fin a) (Om l)) Bw.LL 1 :=
-  ⟨le_rfl, MonoidHom.ext fun _ => by simp [Formalism.MainNotions.N.mapRep]⟩
-
 end Model
 
 section At
@@ -303,20 +298,6 @@ theorem smul_phiB_tInv : (l : ℚ_[l]) • P.φB (tInv P) = tInv P := by
   have h := congrArg P.φB (tInv_mul P)
   rw [map_mul, map_one, localPrime_frobenius_periodT, mul_smul_comm, ← smul_mul_assoc] at h
   exact (isUnit_tB P).mul_right_cancel (h.trans (tInv_mul P).symm)
-
-def tateRep : Representation ℚ_[l] ↥(GK K) (ℚ_[l] × ℚ_[l]) where
-  toFun g := LinearMap.prod ((P.χQ (g : GQ l) : ℚ_[l]) • LinearMap.fst ℚ_[l] ℚ_[l] ℚ_[l] +
-    (kummer P (g : GQ l) : ℚ_[l]) • LinearMap.snd ℚ_[l] ℚ_[l] ℚ_[l]) (LinearMap.snd ℚ_[l] ℚ_[l] ℚ_[l])
-  map_one' := by ext <;> simp
-  map_mul' g h := by ext <;> simp [kummer_mul, add_comm]
-
-def tateX : (ℚ_[l] × ℚ_[l]) ⊗[ℚ_[l]] Bst P := (1, 0) ⊗ₜ C (tInv P)
-
-def tateY : (ℚ_[l] × ℚ_[l]) ⊗[ℚ_[l]] Bst P := (0, 1) ⊗ₜ 1 - (1, 0) ⊗ₜ (C (tInv P) * X)
-
-example (ρ : Representation ℚ_[l] ↥(GK K) (Fin 0 → ℚ_[l])) : IsPst P ρ := by
-  have : Subsingleton (DpstUr P ρ) := inferInstanceAs (Subsingleton ↥(Dpst P ρ))
-  rw [IsPst, rank_subsingleton', rank_subsingleton']
 
 end Examples
 

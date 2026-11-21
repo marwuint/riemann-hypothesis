@@ -13,7 +13,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsTraceChar
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExpandByConductor
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TwoGeometricSumsIndexBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormGaussSumLe
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLocalCharacterSumStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLocalCharacterSum
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
@@ -123,7 +123,7 @@ theorem prime_share (hH : IsHermND L Hm) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ)
   obtain ⟨-, -, -, -, -, -, hq, -⟩ := GlobalTheory.UnramOrder.order_facts L ϖ hϖ
   obtain ⟨ψ, hψ1, hψ, -⟩ := GlobalTheory.TraceChar.exists_trace_char L
   obtain ⟨nrm, Q, hnrm, hQ, hdvd⟩ := exists_norm L Hm hH ϖ hϖ UU hUU
-  obtain ⟨hc, hg⟩ := GlobalTheory.T.hermitian_local_character_sum L Hm hH ϖ hϖ ψ hψ1 hψ UU hUU ρ e he hee π j N hπ hπj hπN R nrm hnrm
+  obtain ⟨hc, hg⟩ := _root_.GlobalTheory.HL.DivisibleGauss.share_and_gauss_sum L Hm hH ϖ hϖ ψ hψ1 hψ UU hUU ρ e he hee π j N hπ hπj hπN R nrm hnrm
     hRU hR
   set R' := R.filter fun u => ∀ a, ∃ c ∈ L.O, hf L Hm u (e a) = π * c with hR'
   have hfil : (R.filter fun u => Z u ∧ ∀ a, ∃ c ∈ L.O, hf L Hm u (e a) = π * c)

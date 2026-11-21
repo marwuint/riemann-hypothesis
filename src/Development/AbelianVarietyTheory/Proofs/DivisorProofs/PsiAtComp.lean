@@ -74,22 +74,3 @@ theorem psiAt_comp {Γ Γ' A : Type} [Group Γ] [Group Γ'] [CommGroup A] (b : B
 
 end GlobalTheory.BigOn.Exp.TwAdmProof
 
-open GlobalTheory.BigOn.Exp.TwAdmProof in
-
-theorem GlobalTheory.BigOn.Exp.twAdm : TwAdm := by
-  unfold TwAdm AtTw AtPts
-  refine ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ =>
-    EvPt.of_forall fun x hx i p hR _ w hw _ => ?_⟩⟩
-  have hmu := (p.tw_iff w).1 hw
-  obtain ⟨-, N0, S, hG⟩ := hR.ties.twist
-  obtain ⟨-, hall⟩ := hG w hmu
-  have h1 := hall 1 (by simp)
-  rw [zpow_one] at h1
-  have hpsi := h1.1
-  refine ⟨?_, ?_, GlobalTheory.Mem.Top.twistedPlaceIndex_mem_firstPair_of_compatibleChoice _ _ (Fm.ex x hx i).nch_tie (Fm.ties x i).baseField_isGalois w hmu⟩
-  · have h2 := Formalism.MainNotions.IntegralHeckeForms.TwOK_psiAt ((Fm.ex x hx i).nch.sd w) (Formalism.MainNotions.IntegralHeckeForms.TwOK_of_PsiOk hpsi)
-    rw [psiAt_comp, Formalism.MainNotions.psiAt_psiAt] at h2
-    exact h2
-  · intro P hP
-    obtain ⟨-, hin, he⟩ := hpsi.1 P hP
-    exact exists_splitK_of P hin he

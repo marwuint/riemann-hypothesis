@@ -28,22 +28,6 @@ theorem smooth_translate {w : H} (hmul : MulOnUH Hm σ) (hw : w ∈ smoothVecs H
     show σ x (σ g w) = F (x * g)
     rw [← e, hmul.2 x hxI g hg, ContinuousLinearMap.comp_apply]
 
-theorem smooth_sub {v v' : H} (hv : v ∈ smoothVecs Hm σ) (hv' : v' ∈ smoothVecs Hm σ) :
-    v - v' ∈ smoothVecs Hm σ := by
-  have h₁ : PI.PhMeasCore.SmoothOnH Hm (fun x => σ x v) := hv
-  have h₂ : PI.PhMeasCore.SmoothOnH Hm (fun x => σ x v') := hv'
-  show PI.PhMeasCore.SmoothOnH Hm (fun x => σ x (v - v'))
-  intro g₀ hg₀
-  obtain ⟨U₁, F₁, hU₁, m₁, hF₁, e₁⟩ := h₁ g₀ hg₀
-  obtain ⟨U₂, F₂, hU₂, m₂, hF₂, e₂⟩ := h₂ g₀ hg₀
-  refine ⟨U₁ ∩ U₂, fun x => F₁ x - F₂ x, hU₁.inter hU₂, ⟨m₁, m₂⟩, ?_, ?_⟩
-  · exact (hF₁.mono Set.inter_subset_left).sub (hF₂.mono Set.inter_subset_right)
-  · intro x hx hxI
-    have a₁ : σ x v = F₁ x := e₁ x hx.1 hxI
-    have a₂ : σ x v' = F₂ x := e₂ x hx.2 hxI
-    show σ x (v - v') = F₁ x - F₂ x
-    rw [map_sub, a₁, a₂]
-
 end PI.PhMeasCore.UnitaryGroupMassFormula
 
 end

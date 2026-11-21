@@ -35,16 +35,8 @@ theorem exFDStab_of (h1 : SCHA) (h2 : DiscHF) : ExFDStab := by
   obtain ⟨𝓕, -, h𝓕⟩ := PI.VolSemiDirect.W.exists_fd (G := stabT (AF F) σ J X0) (ratIn F E σ M J (stabT (AF F) σ J X0))
   exact ⟨𝓕, h𝓕 μ'⟩
 
-theorem sCHA_of_lcscHA (h : PI.VolSemiDirect.W.LcscHA) : SCHA := by
-  intro F E _ _ _ _ _ σ hE M J hJ _ _ _ _ _ _ _ _
-  exact (h F E σ hE M J hJ).2.1
-
 theorem discHF_of_discHA (h : PI.VolSemiDirect.W.DiscHA) : DiscHF := by
   intro F E _ _ _ _ _ σ hE M J hJ _ _ _ _ _ _ _ _
   exact (h F E σ hE M J hJ).2
-
-theorem exFDStab_of_semiDirect (h1 : PI.VolSemiDirect.W.LcscHA) (h2 : PI.VolSemiDirect.W.DiscHA) :
-    ExFDStab :=
-  exFDStab_of (sCHA_of_lcscHA h1) (discHF_of_discHA h2)
 
 end PI.VolStabS

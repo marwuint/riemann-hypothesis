@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationAtLeastAtEmbeddingRingOps
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeierstrassEisensteinNonholomorphicIdentity
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EisensteinJetConjDirectionDiagonalExpansionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormHilbertEisensteinValueLeOfIntegralJStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EisensteinJetConjDirectionDiagonalExpansion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormHilbertEisensteinValueLeOfIntegralJ
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasLevelStd
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
@@ -36,13 +36,13 @@ theorem sz_jet_conj : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTot
       ring
   have hneg : Sz l lam ρ (-((G2s τ / (2 * (Real.pi : ℂ) * Complex.I) ^ 2 + wp N y τ) / ω ^ 2)) := by
     simpa only [zero_sub] using (hadd ρ _ _ (h0 ρ) hst).2
-  rw [GlobalTheory.T.eisenstein_jet_conj_direction_diagonal_expansion hE F hF s N L hs (Nat.pos_of_ne_zero (NeZero.ne N)) hL τ κ (wB N y), Finset.sum_div]
+  rw [_root_.GlobalTheory.HilbFam.jet_conj_expand hE F hF s N L hs (Nat.pos_of_ne_zero (NeZero.ne N)) hL τ κ (wB N y), Finset.sum_div]
   refine hsum _ _ _ _ fun μ hμ ↦ ?_
   have hle : ∀ i, μ i ≤ κ i := Finset.mem_Iic.mp hμ
   have hs' : ∑ i, κ i = ∑ i, (κ i - μ i) + ∑ i, μ i := by
     rw [← Finset.sum_add_distrib]
     exact Finset.sum_congr rfl fun i _ ↦ (Nat.sub_add_cancel (hle i)).symm
-  have hh := GlobalTheory.T.norm_hilbertEisensteinValue_le_of_integral_j hE F hF s N L hs hL z hz l lam μ y M M' b e ρ₀ ρ he hze hM hML hLv hN hρ hρ0 hM' hy hy0 τ ω hj hω
+  have hh := _root_.GlobalTheory.HilbFam.size_values_hfun hE F hF s N L hs hL z hz l lam μ y M M' b e ρ₀ ρ he hze hM hML hLv hN hρ hρ0 hM' hy hy0 τ ω hj hω
   have key := hmul _ _ _ _ (hmul _ _ _ _ (hint (∏ i, rco (2 * s) (κ i) (μ i))) (hpow _ (∑ i, (κ i - μ i)) hneg)) hh
   rw [GlobalTheory.wB_nonhol_correction N y τ]
   have hw : wt (2 * s) κ = 2 * (∑ i, (κ i - μ i)) + wt (2 * s) μ := by

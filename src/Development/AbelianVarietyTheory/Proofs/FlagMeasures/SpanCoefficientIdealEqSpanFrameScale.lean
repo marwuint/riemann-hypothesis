@@ -5,10 +5,12 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.LocFacts
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SaturatedPf
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Ia
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalFlagScaledFrameEqBaseChangeFlagStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ScaledLocalDualCoeffEqGlobalCoeffStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagStepLocallyStandardDualCoeffIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFlagStepLocallyStandardDualCoeffOneStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalFlagScaledFrameEqBaseChangeFlag
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ScaledLocalDualCoeffEqGlobalCoeff
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagStepLocallyStandardDualCoeffIntegral
+import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.NormAdditiveCharacterTypePrimeEqOne
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFlagStepLocallyStandardDualCoeffOne
 
 open scoped Classical ENNReal
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.NGData Formalism.L2.SG.TermLoc GlobalTheory.Unfold
@@ -44,7 +46,7 @@ theorem span_coefIdeal_eq_span_frFac : ∀ (D : D7) (T : D.host.E) (G : LFlag (V
 
   have hFj : (A p).Fj (a.val + 1) =
       Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (G.fl.Xa (a.val + 1) : Set (VS D).V)) :=
-    (GlobalTheory.T.local_flag_scaled_frame_eq_baseChange_flag D T G Z A hA p (a.val + 1)).symm
+    (_root_.GlobalTheory.FlagBaseChange.span_bcP_Xa_eq_Fj D T G Z A hA p (a.val + 1)).symm
   have hXle : G.fl.Xa (a.val + 1) ≤ G.fl.X := Submodule.span_mono (Set.image_subset_range _ _)
 
   have hint : ∀ y : D.host.E, IsIntegral ℤ y → (D.s.atP p).ιE y ∈ (Z.M p).L.O := by
@@ -62,8 +64,8 @@ theorem span_coefIdeal_eq_span_frFac : ∀ (D : D7) (T : D.host.E) (G : LFlag (V
         rw [hFj]; exact Submodule.subset_span ⟨x, hxX, rfl⟩
       have hv2 : baseChange₂ D p x ∈ LocNG.img n ((A p).LamStd L) := by
         rw [← hΛ]; exact Submodule.subset_span ⟨x, hxΛ, rfl⟩
-      have hO := GlobalTheory.T.flagStep_locallyStandard_dualCoeff_integral (A p) n hn L a (baseChange₂ D p x) hv1 hv2
-      rw [← GlobalTheory.T.scaled_local_dual_coeff_eq_global_coeff D T G Z A hA p a x (hXle hxX)]
+      have hO := _root_.GlobalTheory.locCoef_integral (A p) n hn L a (baseChange₂ D p x) hv1 hv2
+      rw [← _root_.GlobalTheory.RowLatXS.scaled_local_coef_eq D T G Z A hA p a x (hXle hxX)]
       rw [SetLike.mem_coe, Submodule.mem_span_singleton]
       exact ⟨⟨_, hO⟩, by rw [Subring.smul_def, smul_eq_mul, mul_comm]⟩
     | zero =>
@@ -79,7 +81,7 @@ theorem span_coefIdeal_eq_span_frFac : ∀ (D : D7) (T : D.host.E) (G : LFlag (V
       exact hmem
   ·
     rw [Submodule.span_le, Set.singleton_subset_iff]
-    obtain ⟨v, hvΛ, hvF, hv1⟩ := GlobalTheory.T.exists_flagStep_locallyStandard_dualCoeff_one (A p) n hn L a
+    obtain ⟨v, hvΛ, hvF, hv1⟩ := _root_.GlobalTheory.locStd_exists_flag_coef_one (A p) n hn L a
     rw [← hΛ] at hvΛ
     rw [hFj] at hvF
     set Xr : Submodule D.host.E (VS D).V := G.fl.Xa (a.val + 1) with hXr
@@ -126,7 +128,7 @@ theorem span_coefIdeal_eq_span_frFac : ∀ (D : D7) (T : D.host.E) (G : LFlag (V
     · rw [hv1, mul_one] at key
       exact key
     · rintro _ ⟨x, ⟨hxΛ, hxX⟩, rfl⟩
-      rw [GlobalTheory.T.scaled_local_dual_coeff_eq_global_coeff D T G Z A hA p a x (hXle hxX)]
+      rw [_root_.GlobalTheory.RowLatXS.scaled_local_coef_eq D T G Z A hA p a x (hXle hxX)]
       exact Submodule.subset_span ⟨_, Submodule.subset_span ⟨x, hxΛ, hxX, rfl⟩, rfl⟩
 
 end GlobalTheory.RowLatXS

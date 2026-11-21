@@ -194,24 +194,6 @@ theorem isIntegral_cone_iff {p : L[X]} :
     rw [p.as_sum_support_C_mul_X_pow]
     exact IsIntegral.sum _ fun n _ => h n
 
-theorem piece_zero : piece o t 0 = (integralClosure o L).toSubmodule := by
-  ext a
-  rw [mem_piece, pow_zero, mul_one, Subalgebra.mem_toSubmodule, mem_integralClosure_iff]
-  constructor
-  · intro h
-    have h1 : ∀ s : cone o t, ((evalRingHom 0).comp (algebraMap (cone o t) L[X])) s ∈
-        (⊥ : Subalgebra o L) := fun s => by
-      have := coeff_mem_span_pow s.2 0
-      rw [pow_zero, Submodule.mem_one, coeff_zero_eq_eval_zero] at this
-      exact Algebra.mem_bot.mpr this
-    have h2 : IsIntegral (⊥ : Subalgebra o L) (evalRingHom 0 (C a)) :=
-      h.map_of_comp_eq (RingHom.codRestrict _ _ h1) (evalRingHom 0) rfl
-    rw [coe_evalRingHom, eval_C] at h2
-    haveI : Algebra.IsIntegral o (⊥ : Subalgebra o L) := inferInstance
-    exact isIntegral_trans a h2
-  · intro h
-    exact (h.map (CAlgHom (R := o) (A := L))).tower_top
-
 theorem isIntegral_div_of_mem_piece (i : σ) {n : ℕ} {a : L} (ha : a ∈ piece o t n) :
     IsIntegral (ratioRing o t i) (a / t i ^ n) := by
   have h1 : ∀ s : cone o t, ((evalRingHom (t i)⁻¹).comp (algebraMap (cone o t) L[X])) s ∈

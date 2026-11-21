@@ -218,21 +218,8 @@ def invFun {G V : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] (ρ : Represe
   zero_mem' _ _ := rfl
   smul_mem' c _ h g x := by simp [h g x]
 
-def intertw {G V V' : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
-    (ρ : Representation ℂ G V) (ρ' : Representation ℂ G V') : Submodule ℂ (V →ₗ[ℂ] V') where
-  carrier := {f | ∀ g x, f (ρ g x) = ρ' g (f x)}
-  add_mem' h h' g x := by simp [h g x, h' g x]
-  zero_mem' _ _ := by simp
-  smul_mem' c _ h g x := by simp [h g x]
-
 def Interlace (big small : List ℚ) : Prop :=
   big.length = small.length + 1 ∧ ∀ i (h : i < small.length) (h' : i + 1 < big.length), big[i] > small[i] ∧ small[i] > big[i + 1]
-
-def Interlacing : Prop :=
-  ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (S : Sizes) (P : ι → Entries S), (∀ τ, (P τ).Good) →
-    (∀ τ, Interlace (P τ).bigPar (P τ).smallPar) ∧
-      Module.finrank ℂ (intertw (weylRep (S.nC S.m) fun τ => hw (P τ).smallPar)
-        ((weylRep (S.nR S.m) fun τ => hw (P τ).bigPar).comp (embed S.nC_succ))) = 1
 
 def OneLine : Prop :=
   ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (S : Sizes) (P : ι → Entries S), (∀ τ, (P τ).Good) →
@@ -344,21 +331,5 @@ theorem hw_small (Q : Entries S) (i : ℕ) (hi : i < Q.smallPar.length) :
   · obtain ⟨j, -, h⟩ := List.mem_flatMap.1 h
     exact block_odd (Q.c j) S.s_odd x h
   · exact base_int Q x h
-
-abbrev exSizes : Sizes := ⟨2, 2, 3, 1, by decide, by decide, by decide, by decide, by decide, by decide⟩
-
-def exEntries : Entries exSizes := ⟨![23 / 2, 13 / 2, 5 / 2], ![8, 4], ![1], ![1 / 2], ![1, 5], ![3, 7]⟩
-
-theorem exEntries_good : exEntries.Good where
-  a_half l := by
-    fin_cases l
-    exacts [⟨11, by norm_num [exEntries]⟩, ⟨6, by norm_num [exEntries]⟩, ⟨2, by norm_num [exEntries]⟩]
-  u_half i := by
-    fin_cases i
-    exact ⟨0, by norm_num [exEntries]⟩
-  order := by decide +kernel
-
-example : exEntries.bigPar = [23 / 2, 17 / 2, 15 / 2, 13 / 2, 9 / 2, 7 / 2, 5 / 2, 1 / 2, -5 / 2, -7 / 2, -13 / 2, -15 / 2] ∧
-    exEntries.smallPar = [9, 8, 7, 5, 4, 3, 1, -1, -3, -5, -7] := by decide +kernel
 
 end GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries

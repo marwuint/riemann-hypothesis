@@ -142,15 +142,6 @@ theorem descEquiv_π (φ : M₁ ≃ₗ[RR] M₂) (hφ : φ P₁.p = P₂.p) (x :
     descEquiv P₁ P₂ φ hφ (P₁.π x) = P₂.π (φ x) :=
   descMap_π P₁ P₂ φ.toLinearMap hφ x
 
-theorem descEquiv_ℓ (φ : M₁ ≃ₗ[RR] M₂) (hφ : φ P₁.p = P₂.p)
-    (hg : P₂.g.comp φ.toLinearMap = P₁.g) :
-    P₂.ℓ.comp (descEquiv P₁ P₂ φ hφ).toLinearMap = P₁.ℓ :=
-  LinearMap.ext fun a => by
-    obtain ⟨x, rfl⟩ := P₁.surj a
-    rw [LinearMap.comp_apply, LinearEquiv.coe_coe, descEquiv_π, P₂.hℓ, P₁.hℓ,
-      ← LinearMap.congr_fun hg x]
-    rfl
-
 theorem liftEquiv_descEquiv (hinj : Function.Injective (algebraMap RR K)) (φ : M₁ ≃ₗ[RR] M₂)
     (hφ : φ P₁.p = P₂.p) (hθ : P₂.ℓ.comp (descEquiv P₁ P₂ φ hφ).toLinearMap = P₁.ℓ)
     (hg : P₂.g.comp φ.toLinearMap = P₁.g) :
@@ -165,22 +156,6 @@ theorem descEquiv_liftEquiv (hinj : Function.Injective (algebraMap RR K)) (θ : 
   LinearEquiv.ext fun a => by
     obtain ⟨x, rfl⟩ := P₁.surj a
     exact (descEquiv_π P₁ P₂ _ hφ x).trans (liftEquiv_spec P₁ P₂ hinj θ hθ x).1
-
-noncomputable def isoEquiv (hinj : Function.Injective (algebraMap RR K)) (q₁ : M₁) (q₂ : M₂)
-    (hq : P₁.g q₁ = P₂.g q₂) :
-    {θ : A₁ ≃ₗ[RR] A₂ // θ (P₁.π q₁) = P₂.π q₂ ∧ P₂.ℓ.comp θ.toLinearMap = P₁.ℓ} ≃
-      {φ : M₁ ≃ₗ[RR] M₂ // P₂.g.comp φ.toLinearMap = P₁.g ∧ φ P₁.p = P₂.p ∧ φ q₁ = q₂} where
-  toFun θ := ⟨liftEquiv P₁ P₂ hinj θ.1 θ.2.2,
-    LinearMap.ext fun x => (liftEquiv_spec P₁ P₂ hinj θ.1 θ.2.2 x).2,
-    P₂.uniq hinj (by rw [(liftEquiv_spec P₁ P₂ hinj θ.1 θ.2.2 _).1, π_p, map_zero, π_p])
-      (by rw [(liftEquiv_spec P₁ P₂ hinj θ.1 θ.2.2 _).2, P₁.gp, P₂.gp]),
-    P₂.uniq hinj (by rw [(liftEquiv_spec P₁ P₂ hinj θ.1 θ.2.2 _).1, θ.2.1])
-      (by rw [(liftEquiv_spec P₁ P₂ hinj θ.1 θ.2.2 _).2, hq])⟩
-  invFun φ := ⟨descEquiv P₁ P₂ φ.1 φ.2.2.1, by rw [descEquiv_π, φ.2.2.2],
-    descEquiv_ℓ P₁ P₂ φ.1 φ.2.2.1 φ.2.1⟩
-  left_inv θ := Subtype.ext (descEquiv_liftEquiv P₁ P₂ hinj θ.1 θ.2.2 _)
-  right_inv φ := Subtype.ext (liftEquiv_descEquiv P₁ P₂ hinj φ.1 φ.2.2.1
-    (descEquiv_ℓ P₁ P₂ φ.1 φ.2.2.1 φ.2.1) φ.2.1)
 
 end Pres
 
@@ -456,77 +431,6 @@ noncomputable def PB (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K
       = cval K Z * fV Z v at h
     linear_combination h
 
-theorem PB_π_bbar (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K Z).det)
-    (hZ' : IsUnit (toK K (blk Z)).det) :
-    (PB Z hZ hZ').π (Submodule.Quotient.mk (Z *ᵥ eN)) = bbar Z := by
-  change (Submodule.Quotient.mk (Pcs (Z *ᵥ eN)) : coker (blk Z)) = bbar Z
-  unfold bbar
-  congr 1
-  funext i
-  rw [Pcs, LinearMap.funLeft_apply, eN, mulVec_single_one]
-  rfl
-
-noncomputable def midEquiv {m₁ m₂ : ℕ} (Z₁ : Matrix (Fin (m₁+1)) (Fin (m₁+1)) RR)
-    (Z₂ : Matrix (Fin (m₂+1)) (Fin (m₂+1)) RR) (h1 : IsUnit (toK K Z₁).det)
-    (h2 : IsUnit (toK K Z₂).det) (h1' : IsUnit (toK K (blk Z₁)).det)
-    (h2' : IsUnit (toK K (blk Z₂)).det) (hc : cval K Z₁ = cval K Z₂) :
-    {φ : MM Z₁ ≃ₗ[RR] MM Z₂ // (PA Z₂ h2).g.comp φ.toLinearMap = (PA Z₁ h1).g ∧
-        φ (PA Z₁ h1).p = (PA Z₂ h2).p ∧
-        φ (Submodule.Quotient.mk eN) = Submodule.Quotient.mk eN} ≃
-      {φ : MM Z₁ ≃ₗ[RR] MM Z₂ // (PB Z₂ h2 h2').g.comp φ.toLinearMap = (PB Z₁ h1 h1').g ∧
-        φ (PB Z₁ h1 h1').p = (PB Z₂ h2 h2').p ∧
-        φ (Submodule.Quotient.mk (Z₁ *ᵥ eN)) = Submodule.Quotient.mk (Z₂ *ᵥ eN)} :=
-  Equiv.subtypeEquivRight fun φ => by
-    have hu : cval K Z₁ * kappa K Z₁ = 1 := cval_mul_kappa Z₁ h1 h1'
-    constructor
-    · rintro ⟨hg, hp, hq⟩
-      refine ⟨LinearMap.ext fun x => ?_, ?_, hp⟩
-      · have h := LinearMap.congr_fun hg x
-        change gA Z₂ h2 (φ x) = gA Z₁ h1 x at h
-        change -(cval K Z₂) * gA Z₂ h2 (φ x) = -(cval K Z₁) * gA Z₁ h1 x
-        rw [h, hc]
-      · change φ (Submodule.Quotient.mk (-eN)) = Submodule.Quotient.mk (-eN)
-        rw [Submodule.Quotient.mk_neg, map_neg, hq, Submodule.Quotient.mk_neg]
-    · rintro ⟨hg, hp, hq⟩
-      refine ⟨LinearMap.ext fun x => ?_, hq, ?_⟩
-      · have h := LinearMap.congr_fun hg x
-        change -(cval K Z₂) * gA Z₂ h2 (φ x) = -(cval K Z₁) * gA Z₁ h1 x at h
-        change gA Z₂ h2 (φ x) = gA Z₁ h1 x
-        rw [← hc] at h
-        linear_combination (-(kappa K Z₁)) * h - (gA Z₂ h2 (φ x) - gA Z₁ h1 x) * hu
-      · change φ (Submodule.Quotient.mk (-eN)) = Submodule.Quotient.mk (-eN) at hp
-        rw [Submodule.Quotient.mk_neg, map_neg, Submodule.Quotient.mk_neg, neg_inj] at hp
-        exact hp
-
 end Conc
-
-theorem isoTransfer_proof2 : Formalism.NuclearRankWeightBounds.C.IsoTransfer := by
-  intro RR K _ _ _ hinj m₁ m₂ Z₁ Z₂ h1 h2 h1' h2' hκ
-  have hc : cval K Z₁ = cval K Z₂ := by
-    have e1 := cval_mul_kappa Z₁ h1 h1'
-    have e2 := cval_mul_kappa Z₂ h2 h2'
-    rw [hκ] at e1
-    calc cval K Z₁ = cval K Z₁ * (cval K Z₂ * kappa K Z₂) := by rw [e2, mul_one]
-      _ = cval K Z₂ * (cval K Z₁ * kappa K Z₂) := by ring
-      _ = cval K Z₂ := by rw [e1, mul_one]
-  have eA := (PA Z₁ h1).isoEquiv (PA Z₂ h2) hinj (Submodule.Quotient.mk eN)
-    (Submodule.Quotient.mk eN)
-    (by
-      change fV Z₁ eN = fV Z₂ eN
-      rw [show fV (K := K) Z₁ eN = kappa K Z₁ from fV_single Z₁,
-        show fV (K := K) Z₂ eN = kappa K Z₂ from fV_single Z₂, hκ])
-  have eB := (PB Z₁ h1 h1').isoEquiv (PB Z₂ h2 h2') hinj (Submodule.Quotient.mk (Z₁ *ᵥ eN))
-    (Submodule.Quotient.mk (Z₂ *ᵥ eN))
-    (by
-      change -(cval K Z₁) * fV Z₁ (Z₁ *ᵥ eN) = -(cval K Z₂) * fV Z₂ (Z₂ *ᵥ eN)
-      rw [fV_mulVec Z₁ h1, fV_mulVec Z₂ h2, hc]
-      simp [eN])
-  have eA' : {θ : coker Z₁ ≃ₗ[RR] coker Z₂ //
-      θ (ebar Z₁) = ebar Z₂ ∧ (lam K Z₂).comp θ.toLinearMap = lam K Z₁} ≃ _ := eA
-  have eB' : _ ≃ {θ : coker (blk Z₁) ≃ₗ[RR] coker (blk Z₂) //
-      θ (bbar Z₁) = bbar Z₂ ∧ (alpha K Z₂).comp θ.toLinearMap = alpha K Z₁} :=
-    eB.symm.trans (Equiv.subtypeEquivRight fun θ => by
-      rw [PB_π_bbar, PB_π_bbar]; rfl)
-  exact ⟨eA'.trans ((midEquiv Z₁ Z₂ h1 h2 h1' h2' hc).trans eB')⟩
 
 end Formalism.NuclearRankWeightBounds.P

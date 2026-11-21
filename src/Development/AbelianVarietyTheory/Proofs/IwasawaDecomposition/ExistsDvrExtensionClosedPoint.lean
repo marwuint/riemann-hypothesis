@@ -1,12 +1,14 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartMem
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHenselRootResidueStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolynomialApproxPowMaximalStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolynomialApproxUniquenessStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HenselRootsCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPrimitiveElementUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCommonUnramifiedExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDvrResidueLiftIrreducibleStatement
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BlowPolSt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHenselRootResidue
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolynomialApproxPowMaximal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolynomialApproxUniqueness
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HenselRootsCompatible
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPrimitiveElementUnramified
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCommonUnramifiedExtension
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDvrResidueLiftIrreducible
+import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
+
 open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
@@ -55,9 +57,9 @@ theorem exists_lift : ∀ (X : Scheme.{0}) (R : Type) [CommRing R] [IsDomain R] 
   have hur' : (ResidueField.map φ).FormallyUnramified := by
     rw [← ResidueField.map_comp_residue] at hur
     exact RingHom.FormallyUnramified.of_comp hur
-  obtain ⟨θ, q, hqm, hqθ, hqd, hgen, hind⟩ := GlobalTheory.T.exists_primitive_element_unramified φ hfin hur
-  obtain ⟨M, _, u, v, huv, hvf, hvu⟩ := GlobalTheory.T.exists_common_unramified_extension (ResidueField.map φ) (ResidueField.map α) hfin' hur'
-  obtain ⟨V, _, _, _, f, τ, hV, hfinj, hfloc, hirr, hτ⟩ := GlobalTheory.T.exists_dvr_residue_lift_irreducible W hW v hvf hvu
+  obtain ⟨θ, q, hqm, hqθ, hqd, hgen, hind⟩ := _root_.GlobalTheory.exists_hensel_generator_of_residue_finite_unramified φ hfin hur
+  obtain ⟨M, _, u, v, huv, hvf, hvu⟩ := _root_.GlobalTheory.compositum_finite_formallyUnramified (ResidueField.map φ) (ResidueField.map α) hfin' hur'
+  obtain ⟨V, _, _, _, f, τ, hV, hfinj, hfloc, hirr, hτ⟩ := _root_.GlobalTheory.exists_unramified_ext_residue W hW v hvf hvu
   haveI := hV.2.1
   let σ : ResidueField R →+* ResidueField V := τ.comp u
   have hσ : ∀ a, σ (residue R (φ a)) = residue V ((f.comp α) a) := by
@@ -65,10 +67,10 @@ theorem exists_lift : ∀ (X : Scheme.{0}) (R : Type) [CommRing R] [IsDomain R] 
     have h1 := congrArg (fun g => g (residue _ a)) huv
     simp only [RingHom.comp_apply, ResidueField.map_residue] at h1
     simp only [σ, RingHom.comp_apply, h1, hτ]
-  obtain ⟨η, hη, -⟩ := GlobalTheory.T.exists_hensel_root_residue φ (f.comp α) σ hσ θ q hqm hqθ hqd
-  have hgp := GlobalTheory.T.polynomial_approx_pow_maximal φ hmax θ hgen
-  have hip := GlobalTheory.T.polynomial_approx_uniqueness φ hflat hmax θ q hqm hqθ hgp hind
-  obtain ⟨ψ, hψ, hψl⟩ := GlobalTheory.T.hensel_roots_compatible φ (f.comp α) inferInstance θ η q hqm hqθ hη hgp hip
+  obtain ⟨η, hη, -⟩ := _root_.GlobalTheory.exists_root_lift_of_residue_map φ (f.comp α) σ hσ θ q hqm hqθ hqd
+  have hgp := _root_.GlobalTheory.exists_poly_sub_mem_maximalIdeal_pow φ hmax θ hgen
+  have hip := _root_.GlobalTheory.coeff_mem_pow_of_flat_of_indep_mod_max φ hflat hmax θ q hqm hqθ hgp hind
+  obtain ⟨ψ, hψ, hψl⟩ := _root_.GlobalTheory.lift_of_compatible_approx φ (f.comp α) inferInstance θ η q hqm hqθ hη hgp hip
   exact ⟨V, inferInstance, inferInstance, inferInstance, f, ψ, hV, hfinj, hfloc, hψl, hirr ϖ hϖ,
     eq_of_stalkClosedPointTo' ξ χ hpt ψ f hψ⟩
 

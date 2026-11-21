@@ -1,4 +1,5 @@
-import ReciprocityTheory.DualLattices.StThmAFull
+import ReciprocityTheory.DualLattices.NsetExpInjectiveSurjective
+import ReciprocityTheory.DualLattices.SmallLevelClassSet
 import ReciprocityTheory.DualLattices.VDetEqOneOfIntegral
 
 noncomputable section
@@ -34,17 +35,5 @@ lemma det_sq_eq (E Φ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) D) (c : D)
     _ = c ^ (2 * g) * (E.det * (stdJ D g).det) := by rw [h]; ring
 
 end Mat
-
-section Span
-
-variable {R₀ : Type} [CommRing R₀]
-
-end Span
-
-section Val
-
-variable {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C]
-
-end Val
 
 end ReciprocityTheory.PGsh

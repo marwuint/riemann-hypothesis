@@ -22,7 +22,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnique
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DenseTorsionAndEqOne
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsIsGenOfInvariant
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformizationEndomorphismCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RosatiAdjointAbelianPartAndClassifyingMapLinearStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RosatiAdjointAbelianPartAndClassifyingMapLinear
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpansionPullbackSectionEndomorphismStatement
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
@@ -385,7 +385,7 @@ theorem psi_pull : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWS
   have := E.homB
   have : CharZero (FractionRing R) := charZero_of_injective_algebraMap (IsFractionRing.injective R _)
   have : CharZero F := charZero_of_injective_algebraMap (algebraMap (FractionRing R) F).injective
-  have hc := (T.rosatiAdjoint_abelianPart_and_classifying_map_linear hL R I hI D A G hG U E E' hR).2.2.2 y
+  have hc := (_root_.GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU hL R I hI D A G hG U E E' hR).2.2.2 y
   have hc' : cP D.toPre (TF (R := R) F) (E'.h y) = cP D.toPre _ y ≫ E.aB := by rw [cP, hc, ← Category.assoc]; rfl
   obtain ⟨s, hs⟩ := FamFree.exists_fam_support (D := D.toPre) (F := F) hGF hL.2.1.secTwist D.tau_bimult le_rfl 0
   obtain ⟨x, j, hx, hu⟩ := exists_torsion_ne_zero hL.1 (s.s 0) ((hs 0).2 ⟨0, by simp⟩) (l := ν + 1) (by omega)

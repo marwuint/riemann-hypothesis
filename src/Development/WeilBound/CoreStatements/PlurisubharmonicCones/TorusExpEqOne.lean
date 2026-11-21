@@ -3,7 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrincipalNearBounda
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolUnifPeriodMatrixMiddle
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolUnifPeriodMatrixRight
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodLatticeSpans
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodLatticeDiscreteFreeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodLatticeDiscreteFree
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExponentialFamilyPeriods
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExponentialSurjectiveSemiabelian
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLieLieModel
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUniqueLeftBasisCoordsAdicCompletion
@@ -212,7 +215,7 @@ theorem torus_lift (e : FamExp t.G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) (P
       fun y s hs => Over.OverMorphism.ext ((hρ' _).trans (hl y s ((hρ s).symm.trans (congrArg (·.left) hs))))
     constructor
     · intro hy
-      obtain ⟨Γ₀, hΓ, hd, -, -⟩ := GlobalTheory.T.period_lattice_discrete_free R t.G g n M B ψ e b hb
+      obtain ⟨Γ₀, hΓ, hd, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.FamExp.per_discrete R t.G g n M B ψ e b hb
       have hcount : (e.per b).Countable := by
         rw [← hΓ]
         haveI := hd

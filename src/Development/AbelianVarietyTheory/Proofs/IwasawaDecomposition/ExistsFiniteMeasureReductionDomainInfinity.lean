@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulRightInvari
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IdeleClassFiniteness.BorelGL
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IdeleClassFiniteness.LatticeIdealNonzero
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarInfiniteGLLtTopOfInfiniteGLHaarMeasureLtTopStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CovolumeUnitDetNormSlabLatticeAutLtTopStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarInfiniteGLLtTopOfInfiniteGLHaarMeasureLtTop
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CovolumeUnitDetNormSlabLatticeAutLtTop
 
 open NumberField IsDedekindDomain Matrix MeasureTheory Topology
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.UnitaryBC GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL
@@ -67,10 +67,10 @@ theorem GlobalTheory.GLInfReduction.exists_cover_of_finite_measure (E : Type) [F
   have hN : 0 < N := by positivity
   have hNR : (N : ℝ) ≠ 0 := by exact_mod_cast hN.ne'
 
-  have hslab := GlobalTheory.T.covolume_unitDetNormSlab_latticeAut_lt_top E inferInstance a ha Λ hΛ
+  have hslab := _root_.GlobalTheory.SlabFinVol.covol_unitSlab_lt_top E inferInstance a ha Λ hΛ
   simp only [GlobalTheory.FlagMeas.covol, iInf_lt_iff] at hslab
   obtain ⟨D, hDm, hcov, hDlt⟩ := hslab
-  have hD' := GlobalTheory.T.haar_infiniteGL_lt_top_of_infiniteGLHaarMeasure_lt_top E a ν D hDm hDlt
+  have hD' := _root_.GlobalTheory.haarGL_finite_pullback E a ν D hDm hDlt
   set S : Set (GL (Fin a) (Cinf E)) := {y | entries (y : Matrix (Fin a) (Fin a) (Cinf E)) ∈ D} with hS
   have hS' : ν S < ⊤ := hD'
 

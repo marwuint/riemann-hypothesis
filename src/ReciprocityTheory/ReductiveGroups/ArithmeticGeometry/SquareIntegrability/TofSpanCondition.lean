@@ -40,9 +40,6 @@ theorem tof_act_smul {dim : (E →+* ℂ) → ℕ} (α : 𝓞 E) (c : ℂ) (v : 
   simp [act]
   ring
 
-theorem tof_natc_smul {dim : (E →+* ℂ) → ℕ} (n : ℕ) (z : Vsp dim) : (n : ℂ) • z = (n : ℝ) • z := by
-  rw [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
-
 theorem tof_fg_div_eq_bot {Q : Type*} [NormedAddCommGroup Q] [InnerProductSpace ℝ Q]
     (M : Submodule ℤ Q) (hM : M.FG)
     (r : ℕ) (hr : 2 ≤ r) (hdiv : ∀ m ∈ M, ∃ m' ∈ M, m = r • m') : M = ⊥ := by

@@ -6,7 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdemAtEqOneIff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemSuppOnIffIdemMulOfNatural
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalAtMulTriangularIntVec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfTvalInvertible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorValueOfTriangularLawStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorValueOfTriangularLaw
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdelicOne
+import Formalism.LocalToGlobal.CMDeterminantIdeals.StatementG
+import Formalism.PolynomialDimension.WeylDim
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFrameRingOverTestRing
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.FramePolynomialEquivariantAndNeZero
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsEqProdBlockDetPolyPowMul
@@ -170,7 +173,7 @@ theorem exists_reads (h₀ : LiesOn Z y₀)
 
 theorem exists_coord {f : Rul Xo c} (hf : f ∈ sec Xo c a n) (hs : f ∈ suppOn Z) : ∃ x, Reads Z y₀ a n x f := by
   obtain ⟨G, hG, -⟩ := GlobalTheory.LamT.FieldPoly.exists_isFrPoly_isHomogeneous E H Dw l Xo c c.F y₀ a n f hf
-  obtain ⟨x, hx⟩ := GlobalTheory.T.exists_tensor_value_of_triangular_law _ Dw.mult (part Dw a) c.F G fun y b hy hb => by
+  obtain ⟨x, hx⟩ := _root_.GlobalTheory.TensorValue.exists_tval_of_triangular _ Dw.mult (part Dw a) c.F G fun y b hy hb => by
     have h := GlobalTheory.LamT.evalFr_mul_tri hf hG inferInstance (AlgHom.id c.F c.F) y b (fun τ => (hy τ).isUnit)
       (fun τ => by
         rw [Matrix.det_of_upperTriangular (hb τ).1]

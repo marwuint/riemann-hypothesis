@@ -4,12 +4,6 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
-section ExpSeries
-
-variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {I : Type}
-
-end ExpSeries
-
 open scoped ContDiff in
 private lemma norm_smulRight_le_opNorm_mul_norm {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup E] [NormedSpace ℂ E] (L : V →L[ℝ] ℂ) (w : E) :

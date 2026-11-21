@@ -11,9 +11,6 @@ namespace GlobalTheory.NoPr
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.CellAmp
 
-def Gp (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) : Prop :=
-  ∃ h : ℝ, Formalism.QuantumDeterminants.GapAtLeast ε mu h ∧ Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h
-
 def AmpKF0 : Prop :=
   ∀ (k r : ℕ) (L : LocBessel k r) (h : ℝ) (μG : Measure (Mt k r)) (w0 : L.Hs) (l : L.Hs → L.Wp) (l' : L.Hs → L.Wq),
     OnePlaceKF L h μG w0 l l' →

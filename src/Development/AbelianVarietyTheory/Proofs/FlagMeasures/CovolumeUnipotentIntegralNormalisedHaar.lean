@@ -1,6 +1,9 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LoopBCovN
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TransportedFundDomainVolumeClassicalStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TransportedFundDomainVolumeClassical
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LocWSOf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.VolPin
+import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.JacobianCoordinates
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarLieIsHaarOnUnipotentRadical
 open scoped Classical ENNReal
 open Matrix MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full Formalism.L2.SG.PackageTie2 Formalism.L2.SG.TermTieOf Formalism.L2.SG.LocWSOf Formalism.L2.SG.LoopTerm
@@ -22,7 +25,7 @@ theorem main : Formalism.L2.SG.Pf.LoopBCovN.CovNFormula := by
   intro D X Y θ C u hθ
   haveI : SigmaFinite (haarLie (Formalism.QuantumDeterminants.Nset D.R.k D.R.rS) 1) :=
     (GlobalTheory.haarLie_isHaarOn_Nset D.R.k D.R.rS 1 one_pos ENNReal.one_lt_top).1
-  have hI := GlobalTheory.T.transportedFundDomain_volume_classical D X Y θ C u
+  have hI := _root_.GlobalTheory.CovDom.main D X Y θ C u
   set v2 : ℝ := 2 * D.host.v with hv2
   have hv : 0 < v2 := lt_of_lt_of_le one_pos (Formalism.L2.SG.Pf.LoopBCovN.rdE_ge_one D)
   set t : ℝ := v2 ^ (-((D.R.rS : ℝ) * D.R.k)) * θ with ht

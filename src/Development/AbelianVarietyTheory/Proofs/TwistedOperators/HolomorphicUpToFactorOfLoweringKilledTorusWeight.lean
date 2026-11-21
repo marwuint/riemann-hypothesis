@@ -2,13 +2,17 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ApplyMulTorProd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionTorusEquivariantOrthonormalFramesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentiableOnFramesOfKilledNilpotentDerivativStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjugateModelUnitFramesEqMovedOrthonormalFramesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactTorusProductRealPlacesSpecStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPlaceDeterminantPowerMulNeZeroExpStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjugateModelUnitFramesEqMovedOrthonormalFrames
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelOrthonormalFrameInDomainPeriodLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsWeakOfDatum
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArchimedeanLiftUnitaryGroupProduct
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactTorusProductRealPlacesSpec
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPlaceDeterminantPowerMulNeZeroExp
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPlaceDeterminantPowerMulCompactTorusElementStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjFrameToRealLieAlgebraSpecStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjFrameToRealLieAlgebraSpec
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FderivConjFrameToRealLieLoweringOperatorEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeightedTraceConjFrameToRealLieLoweringOperatorStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeightedTraceConjFrameToRealLieLoweringOperator
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.FWT Formalism.L2.Pj
 open MeasureTheory IsDedekindDomain NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Ker GlobalTheory.AdSpan
@@ -25,8 +29,8 @@ open GlobalTheory.HolRead in
 theorem holUpTo_of_lowKilled : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (B : C.Bas), C.IsB B → ∀ (la : Wt C.X.Ψ T.rank) (m : D.what₂.Tau → ℤ) (φ : GA D T → ℂ), LowKilled C.θ T B φ → (∀ (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) (g : GA D T), φ (g * torAt C.θ T B ρ t) = cexp (((∑ a, ((m ρ - la (C.m.e ρ) a : ℤ) : ℝ) * t a : ℝ) : ℂ) * I) * φ g) → HolUpTo C B la (detPow C.θ T m) φ := by
   intro D S T C B hB la m φ hL htor g
   have R : GlobalTheory.SmoothForms.RealPoints C.θ T := (GlobalTheory.SmoothForms.RealPts.realPoints D).2 C.θ C.inf T
-  obtain ⟨U1, U2, U3⟩ := GlobalTheory.T.conjugateModel_unitFrames_eq_movedOrthonormalFrames D S T C B hB
-  obtain ⟨dMul, dNe, dExp⟩ := GlobalTheory.T.realPlaceDeterminantPower_mul_ne_zero_exp D C.θ C.inf T m
+  obtain ⟨U1, U2, U3⟩ := _root_.GlobalTheory.AdSpan.ConjHol.unitFr_conj_moved D S T C B hB
+  obtain ⟨dMul, dNe, dExp⟩ := _root_.GlobalTheory.AdSpan.ConjHol.detPow_mul_ne_zero_exp D C.θ C.inf T m
   let F : Frame C.X.Ψ T.rank → ℂ := fun y =>
     if h : IsUnitFr C.X y then φ (g * (U2 y h).choose) / detPow C.θ T m (U2 y h).choose else 0
   have hF : ∀ a ∈ GinfC T, F (C.xB (C.mvB a B)) = φ (g * a) / detPow C.θ T m a := by
@@ -38,7 +42,7 @@ theorem holUpTo_of_lowKilled : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (B : C.B
     intro y hy t
     obtain ⟨a, ha, rfl⟩ := U2 y hy
     let s : D.what₂.Tau → Fin T.rank → ℝ := fun ρ c => -t (C.m.e ρ) c
-    obtain ⟨hk, hk2⟩ := GlobalTheory.T.compactTorusProductRealPlaces_spec D S T C B hB s
+    obtain ⟨hk, hk2⟩ := _root_.GlobalTheory.AdSpan.ConjHol.torProd_spec D S T C B hB s
     have e1 := xB_mvB_mul C B hB a (torProd C.θ T B s) (fun τ => diagonal fun c => cexp ((t τ c : ℂ) * I)) fun ρ => ?_
     · erw [← e1]
       rw [hF _ (mul_mem ha hk), hF a ha, ← mul_assoc,
@@ -95,7 +99,7 @@ theorem holUpTo_of_lowKilled : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (B : C.B
     · show infMat _ _ (C.θ ρ) _ = _
       rw [he.2 ρ]
       change NormedSpace.exp ((toLieC C R B Z ρ).1) = _
-      rw [(GlobalTheory.T.conjFrameToRealLieAlgebra_spec D S T C R B hB Z hZ).1 ρ,
+      rw [(_root_.GlobalTheory.AdSpan.ConjHol.ToLie.toLieC_spec D S T C R B hB Z hZ).1 ρ,
         Matrix.exp_conj _ _ ((isUnit_iff_isUnit_det _).2 (isUnit_det_B C hB ρ))]
       congr 2
       exact (exp_map_conj _).symm
@@ -114,7 +118,7 @@ theorem holUpTo_of_lowKilled : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (B : C.B
   intro τ c d hcd Z hZ Z' hZ' e
   obtain ⟨ρ, rfl⟩ := C.m.e.surjective τ
   have hD := GlobalTheory.T.fderiv_conjFrameToRealLie_loweringOperator_eq_zero D S T C R B hB φ hL (g * a) ρ c d hcd Z Z' hZ hZ' e
-  have hT := GlobalTheory.T.weightedTrace_conjFrameToRealLie_loweringOperator D S T C R B hB m ρ c d hcd Z Z' hZ hZ' e
+  have hT := _root_.GlobalTheory.AdSpan.ConjHol.trLin_toLieC_unitFr D S T C R B hB m ρ c d hcd Z Z' hZ hZ' e
   have hℓ : ∀ W : Frame C.X.Ψ T.rank, ((detPow C.θ T m a)⁻¹ • (φ (g * a * GlobalTheory.SmoothForms.expInf C.θ T 0) •
       (cexp (-lam 0) • -lam) + cexp (-lam 0) • Dφ)).comp L W = (detPow C.θ T m a)⁻¹ *
       (φ (g * a * GlobalTheory.SmoothForms.expInf C.θ T 0) * (cexp (-lam 0) * -trLin T m (toLieC C R B W)) +

@@ -7,33 +7,6 @@ namespace GlobalTheory.CompanionTheory.Ar.Pub.NefRRModel
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry GroundTheory.Heights₂.Heights.HilbertSamuel Filter Topology
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet
 
-open ProjLine in
-
-theorem hyps_projLine :
-    IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
-      NefOnGenericDeg (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (fun _ => 1) ∧
-      genDeg (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) 1 (fun _ => 1) = 1 := by
-  refine ⟨isArithVar_y', birational_y, ?_, genDeg_y⟩
-  intro W hW hPW
-  rw [← IsArithVar.eq_of_le isArithVar_y' hW hPW, genDeg_y]
-  norm_num
-
-open ProjLine in
-
-theorem projLine_limit (h : NefRR) :
-    Tendsto (fun τ : ℕ => (Module.finrank ℚ (Submodule.span ℚ
-      (chartLatNm (ι := GlobalTheory (Fin 2)) y (fun _ => 1) τ : Set FnField)) : ℝ) / (τ : ℝ)) atTop (𝓝 1) := by
-  obtain ⟨h1, h2, h3, h4⟩ := hyps_projLine
-  have := (h _ _ _ y 1 _ h1 h2 h3).2
-  rw [h4] at this
-  simpa using this
-
-theorem genDeg_nonneg (h : NefRR) (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω]
-    [CharZero Ω] (y : (Σ k, ι k) → Ω) (D : ℕ) (a : K → ℤ) (h1 : IsArithVar (mCoordIdeal y) (D + 1))
-    (h2 : Birational y) (h3 : NefOnGenericDeg (mCoordIdeal y) a) : 0 ≤ genDeg (mCoordIdeal y) D a := by
-  have := ge_of_tendsto' (h K ι Ω y D a h1 h2 h3).2 (b := 0) (fun τ => by positivity)
-  exact_mod_cast this
-
 section DimZero
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω]

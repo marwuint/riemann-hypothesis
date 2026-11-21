@@ -74,9 +74,4 @@ end ReciprocityTheory.ChartRestriction.G.AR.Up.EtaPf
 
 namespace ReciprocityTheory.ChartRestriction.G.AR.Up
 
-open NumberField
-
-theorem EtaStatement_holds {E : Type} [Field E] [NumberField E] [IsCMField E] : EtaStatement (E := E) :=
-  EtaPf.eta_holds
-
 end ReciprocityTheory.ChartRestriction.G.AR.Up

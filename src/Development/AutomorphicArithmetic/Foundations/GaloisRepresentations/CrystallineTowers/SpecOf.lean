@@ -98,8 +98,6 @@ variable {l : ℕ} [Fact l.Prime] {K : Formalism.BasicNotions.Loc.FinExt l}
 
 theorem sigma_eq (g : Formalism.BasicNotions.Loc.GQ l) (y : ℂ_[l]) : GaloisFrobeniusFixed.σC g y = Formalism.Per.σC g y := UpperTheory.Gal.Seam.sigC_eq l g y
 
-example : CharZero K.1 := inferInstance
-
 end Dict
 
 section Build

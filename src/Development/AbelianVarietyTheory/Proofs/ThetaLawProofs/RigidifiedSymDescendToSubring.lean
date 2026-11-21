@@ -8,7 +8,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Map
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.SymplecticCharacters.OneEqSpTranslZero
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.LineBundleIsoDescendsToSubringOfFinsetStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.LineBundleIsoDescendsToSubringOfFinset
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -30,7 +30,7 @@ theorem pic_descends (S : Type) [CommRing S] (R₀ : Subring S) (X X₀ : Scheme
         IsPullback π₁ f₁ f₀ (spMap (Subring.inclusion h)) → pull π₁ c = pull π₁ d := by
   obtain ⟨M, hM, rfl⟩ := cls_surj c
   obtain ⟨N, hN, rfl⟩ := cls_surj d
-  obtain ⟨F, hF⟩ := GlobalTheory.T.lineBundleIso_descends_to_subring_of_finset S R₀ X X₀ f f₀ π M N H hM hN
+  obtain ⟨F, hF⟩ := _root_.GlobalTheory.lbIso_descends_to_subring_containing_finset S R₀ X X₀ f f₀ π M N H hM hN
     ((cls_eq_iff (pull_isLB hM π) (pull_isLB hN π)).1 e)
   exact ⟨F, fun R₁ h hR X₁ f₁ π₁ H₁ =>
     (cls_eq_iff (pull_isLB hM π₁) (pull_isLB hN π₁)).2 (hF R₁ h hR X₁ f₁ π₁ H₁)⟩

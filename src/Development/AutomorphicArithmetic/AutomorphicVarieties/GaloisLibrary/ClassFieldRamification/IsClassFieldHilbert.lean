@@ -7,21 +7,6 @@ open NumberField IsDedekindDomain UpperTheory.V.Kum
 
 namespace UpperTheory.V.CF
 
-section Art
-
-variable (K H : Type) [Field K] [NumberField K] [Field H] [NumberField H] [Algebra K H]
-
-def IsArt (φ : ClassGroup (𝓞 K) →* Gal(H/K)) : Prop :=
-  ∀ (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 H)), w.asIdeal.LiesOver v.asIdeal →
-    IsArithFrobAt (𝓞 K) (φ (primeCl v)) w.asIdeal
-
-structure IsClassField (B : Subgroup (ClassGroup (𝓞 K))) : Prop where
-  ab : IsAbelianGalois K H
-  unr : GroundTheory.Global.IsUnramifiedEverywhere K H
-  art : ∃ φ : ClassGroup (𝓞 K) →* Gal(H/K), IsArt K H φ ∧ Function.Surjective φ ∧ φ.ker = B
-
-end Art
-
 section Tower
 
 variable (k K H : Type) [Field k] [Field K] [Field H] [Algebra k K] [Algebra K H] [Algebra k H] [IsScalarTower k K H]
@@ -80,9 +65,6 @@ def augIdeal (R G : Type) [CommRing R] [CommGroup G] : Ideal (MonoidAlgebra R G)
   Ideal.span (Set.range fun g : G => MonoidAlgebra.of R G g - 1)
 
 def pStar (p : ℕ) : ℤ := (-1) ^ (p / 2) * p
-
-example : pStar 7 = -7 := by decide
-example : pStar 5 = 5 := by decide
 
 end UpperTheory.V.CF
 

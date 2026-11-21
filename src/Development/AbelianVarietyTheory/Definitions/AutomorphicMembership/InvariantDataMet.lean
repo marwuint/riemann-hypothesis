@@ -135,7 +135,4 @@ def invariantData {Γ : Subgroup (ι → GL (Fin p ⊕ Fin q) ℂ)} (hΓ : Γ �
   metOm_inv := fun γ hγ z hz τ => by
     rw [Matrix.mul_smul, Matrix.smul_mul, moebI, hQ_moeb (hΓ hγ τ (Set.mem_univ _)) (hz τ)]
 
-example (ξ η : Pt ι p q) : bergman 0 ξ η = ∑ τ, (ξ τ * (η τ)ᴴ).trace := by
-  simp [bergman_apply, hP, hQ]
-
 end GlobalTheory.HodgeDomain

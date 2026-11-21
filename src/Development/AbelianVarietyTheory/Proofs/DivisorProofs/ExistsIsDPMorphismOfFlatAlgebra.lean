@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RatBasisLinearIndependentInt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDividedPowersOfCompOnGeneratorsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsPreDividedPowersOfGeneratorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDividedPowersOfCompOnGenerators
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsPreDividedPowersOfGenerators
 
 set_option autoImplicit false
 
@@ -113,13 +113,13 @@ theorem exists_isDPMorphism_of_flat : ∀ (R A : Type) [CommRing R] [CommRing A]
   let x : I → A := fun i ↦ algebraMap R A i
   have hspan : Ideal.span (Set.range x) = I.map (algebraMap R A) := by
     rw [Ideal.map]; congr 1; ext b; simp [x]
-  obtain ⟨γ, hγ, hγx⟩ := GlobalTheory.T.exists_isPreDividedPowers_of_generators A I x (fun i n ↦ algebraMap R A (κ.dpow n i))
+  obtain ⟨γ, hγ, hγx⟩ := _root_.GlobalTheory.PDA.exists_isPreDividedPowers_of_generators₂ A I x (fun i n ↦ algebraMap R A (κ.dpow n i))
     (fun i ↦ by simp [κ.dpow_zero i.2]) (fun i ↦ by simp [x, κ.dpow_one i.2])
     (fun i n hn ↦ Ideal.subset_span ⟨⟨κ.dpow n i, κ.dpow_mem hn i.2⟩, rfl⟩)
     (fun i m n ↦ by rw [← map_mul, κ.mul_dpow i.2, map_mul, map_natCast])
     (prod_expS_eq_one κ)
   rw [hspan] at hγ
-  obtain ⟨δ, hδ⟩ := GlobalTheory.T.exists_dividedPowers_of_comp_on_generators A _ γ (Set.range x) hγ hspan.symm (by
+  obtain ⟨δ, hδ⟩ := _root_.GlobalTheory.PDA.exists_dividedPowers_of_comp_on_gens A _ γ (Set.range x) hγ hspan.symm (by
     rintro _ ⟨i, rfl⟩ m n hn
     rw [hγx, show algebraMap R A (κ.dpow n i) = x ⟨κ.dpow n i, κ.dpow_mem hn i.2⟩ from rfl, hγx]
     simp only [κ.dpow_comp hn i.2, map_mul, map_natCast]

@@ -89,9 +89,6 @@ theorem SumLe.mono {f g : ℕ → ℕ∞} {t : ℕ} {B : ℝ} (h : SumLe l O g t
   rw [Finset.mem_Ico] at he
   exact nrm_mono l (hf e he.1 he.2) (h.1 e he.1 he.2)
 
-abbrev resChar (Ω : Type) {E : Type} [Field Ω] [Algebra k Ω] [Field E] [Algebra k E] [Algebra E Ω] [IsScalarTower k E Ω] [Normal k E]
-    (ψ : (E ≃ₐ[k] E) →* Oˣ) : G k Ω →* Oˣ := ψ.comp (AlgEquiv.restrictNormalHom E)
-
 end Len
 
 section Dir
@@ -135,8 +132,6 @@ variable (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
 instance (A : AbF) : NeZero A.m := ⟨A.pos.ne'⟩
 
-def abU (A : AbF) : Subgroup (G ℚ Ω) := levH ℚ Ω A.H
-
 def HasLevel (E : Type) [Field E] [NumberField E] (N : ℕ) [NeZero N] (H : Subgroup (ZMod N)ˣ) : Prop :=
   ∃ (j : E →ₐ[ℚ] CyclotomicField N ℚ) (ζ : CyclotomicField N ℚ), IsPrimitiveRoot ζ N ∧
     ∀ (τ : CyclotomicField N ℚ ≃ₐ[ℚ] CyclotomicField N ℚ) (u : (ZMod N)ˣ), τ ζ = ζ ^ (u : ZMod N).val →
@@ -148,14 +143,6 @@ def evenSet (O : Type) [CommRing O] {N : ℕ} (H : Subgroup (ZMod N)ˣ) (e : ℕ
 def loss (l N n e : ℕ) : ℕ := (n + n ^ 2) * LDataCardLeFinrank.nuBound l N e + N.primeFactors.card * (n * n.factorization l)
 
 end OverQ
-
-example (N : ℕ) [NeZero N] : HasLevel ℚ N ⊤ := by
-  haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension N ℚ
-  exact ⟨Algebra.ofId _ _, _, IsCyclotomicExtension.zeta_spec N ℚ (CyclotomicField N ℚ), fun τ _ _ =>
-    ⟨fun _ => trivial, fun _ x => τ.commutes x⟩⟩
-
-example : (1 : DirichletCharacter ℤ 5) ∈ evenSet ℤ (⊤ : Subgroup (ZMod 5)ˣ) 2 :=
-  ⟨fun u _ => by ext; simp, by rw [MulChar.one_apply (by simp)]; norm_num⟩
 
 end UpperTheory.V.Chr
 

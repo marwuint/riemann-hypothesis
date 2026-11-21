@@ -46,23 +46,4 @@ def OneWhittakerVector : Prop :=
     ∀ χ : G0 Pg r → K, IsCuspIndProdChar Pg r s χ →
       lvlSum (P0 Pg r ψ) χ = (Nat.card (P0 Pg r ψ).H : K)
 
-def OneWhittakerVectorDim : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] (Pg : Finset (Pl E)) (r : ℕ) [Fintype (G0 Pg r)]
-    (K : Type) [Field K] [CharZero K] (s : K →+* ℂ) (ψ : ∀ PP : Pl E, AddChar (kP PP) K),
-    IsGenericPsi Pg ψ →
-    ∀ (T : Formalism.MainNotions.PrimeDegreeVariant.GoodSet K (G0 Pg r)) (t : T.S),
-      IsCuspIndProdChar Pg r s (fun g => LinearMap.trace K (T.W t) (T.tau t g)) →
-      Formalism.MainNotions.PrimeDegreeVariant.nS T ⟨(P0 Pg r ψ).H, (P0 Pg r ψ).chi⟩ t = 1
-
-example {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)} {r : ℕ} {K : Type} [Field K]
-    (P : LevelP Pg r K) (χ : G0 Pg r → K) (h : ∀ x : P.H, χ x = (P.chi x : K)) :
-    lvlSum P χ = (Nat.card P.H : K) := by
-  unfold lvlSum
-  letI := fintypeH P
-  simp [h, Nat.card_eq_fintype_card]
-
-example {E : Type} [Field E] [NumberField E] (r : ℕ) {K : Type} [Field K] (s : K →+* ℂ) :
-    IsCuspIndProdChar (∅ : Finset (Pl E)) r s (fun _ => 1) :=
-  ⟨fun _ _ => 1, fun PP => absurd PP.2 (Finset.notMem_empty _), fun g => by simp⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter

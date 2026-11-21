@@ -273,9 +273,6 @@ theorem SeparatesSections.meetsOpens (hL : IsAmpleLB L) (h : SeparatesSections L
   rw [h0 b] at hb
   exact (Scheme.basicOpen_zero _ _).le hb
 
-theorem MeetsOpens.separatesSections [IsReduced X] (hx : MeetsOpens x) (L : LB X) : SeparatesSections L x :=
-  fun _ _ _ h a => hx.fn_ext fun j hj => (h j a hj).trans (valF_zero' hj).symm
-
 def IsFrameAt (L : LB X) (y : Sp F ⟶ X) (τ : L.ι → F) : Prop :=
   (∀ a, ⊤ ≤ y ⁻¹ᵁ L.U a → τ a ≠ 0) ∧ ∀ a b, ⊤ ≤ y ⁻¹ᵁ L.U a → ⊤ ≤ y ⁻¹ᵁ L.U b →
     τ a = valF y (L.U a ⊓ L.U b) (L.g a b).val * τ b
@@ -286,44 +283,6 @@ def HasValueAt {N : ℕ} (s : H0 L N) (y : Sp F ⟶ X) (τ : L.ι → F) (c : F)
 theorem stk_valF_g {y : Sp F ⟶ X} {a b : L.ι} (ha : ⊤ ≤ y ⁻¹ᵁ L.U a) (hb : ⊤ ≤ y ⁻¹ᵁ L.U b) :
     toStk (pt F) (valF y (L.U a ⊓ L.U b) (L.g a b).val) = (gm y (pt F) _ (L.g a b)).val :=
   toStk_valF y (L.U a ⊓ L.U b) _ ⟨mem_of_le ha, mem_of_le hb⟩ _
-
-theorem exists_isFrameAt (hL : L.IsLB) (y : Sp F ⟶ X) {a : L.ι} (ha : ⊤ ≤ y ⁻¹ᵁ L.U a) {c : F} (hc : c ≠ 0) :
-    ∃ τ, IsFrameAt L y τ ∧ τ a = c := by
-  refine ⟨fun b => valF y (L.U b ⊓ L.U a) (L.g b a).val * c, ⟨fun b hb => mul_ne_zero (fun e => ?_) hc,
-    fun b b' hb hb' => ?_⟩, ?_⟩
-  · have := stk_valF_g hb ha
-    rw [e, map_zero] at this
-    exact Units.ne_zero _ this.symm
-  · rw [← _root_.mul_assoc]
-    refine congrArg (· * c) ((toStk (pt F)).injective ?_)
-    rw [map_mul, stk_valF_g hb ha, stk_valF_g hb hb', stk_valF_g hb' ha, ← Units.val_mul,
-      gm_cocycle hL y _ (mem_of_le hb) (mem_of_le hb') (mem_of_le ha)]
-  · refine (congrArg (· * c) ((toStk (pt F)).injective (a₂ := 1) ?_)).trans (_root_.one_mul c)
-    rw [stk_valF_g ha ha, gm_self hL y _ (mem_of_le ha), map_one, Units.val_one]
-
-theorem HasValueAt.of_chart {N : ℕ} {s : H0 L N} {y : Sp F ⟶ X} {τ : L.ι → F} (hτ : IsFrameAt L y τ) {c : F}
-    {b : L.ι} (hb : ⊤ ≤ y ⁻¹ᵁ L.U b) (h : valF y (chart L b) (s.f fun _ => b) = c * τ b ^ N) :
-    HasValueAt s y τ c := fun a ha => by
-  rw [hτ.2 a b ha hb, mul_pow, mul_left_comm, ← h]
-  refine (toStk (pt F)).injective ?_
-  rw [map_mul, map_pow, stk_valF_g ha hb]
-  refine (stk_valF (top_le_chart ha) _).trans ((sec_trans s y _ (le_chart (mem_of_le ha))
-    (le_chart (mem_of_le hb))).trans (congrArg₂ (· * ·) ?_ (stk_valF (top_le_chart hb) _).symm))
-  rw [trF, Fin.prod_univ_one, Category.comp_id, zpow_natCast, Units.val_pow_eq_pow_val]
-
-def genCoord {y : Sp F ⟶ X} (τ : LB.Gen (L.pull y)) (a : L.ι) : F := valF (𝟙 (Sp F)) _ (τ.s fun _ => a).val
-
-theorem isFrameAt_genCoord {y : Sp F ⟶ X} {τ : LB.Gen (L.pull y)} (hτ : τ.IsGen) : IsFrameAt L y (genCoord τ) := by
-  have val : ∀ a, ⊤ ≤ y ⁻¹ᵁ L.U a → toStk (pt F) (genCoord τ a) = (gm (𝟙 _) (pt F) _ (τ.s fun _ => a)).val :=
-    fun a ha => toStk_valF _ _ _ (mem_pull.2 (mem_of_le ha)) _
-  refine ⟨fun a ha e => ?_, fun a b ha hb => (toStk (pt F)).injective ?_⟩
-  · have := val a ha
-    rw [e, map_zero] at this
-    exact Units.ne_zero _ this.symm
-  · rw [map_mul, val a ha, val b hb, stk_valF_g ha hb, ← Units.val_mul]
-    refine congrArg Units.val ((gen_trans hτ (𝟙 _) (pt F) (mem_pull.2 (mem_of_le ha))
-      (mem_pull.2 (mem_of_le hb))).trans (congrArg (· * _) ?_))
-    rw [trF, Fintype.prod_unique, Category.id_comp, zpow_one]
 
 theorem MeetsOpens.exists_lbIso [IsReduced X] (hx : MeetsOpens x) (β : X ⟶ X') (hβ : ∀ j, x j ≫ β = x' j)
     {τ : J → L.ι → F} {τ' : J → L'.ι → F} (hτ : ∀ j, IsFrameAt L (x j) (τ j)) (hτ' : ∀ j, IsFrameAt L' (x' j) (τ' j))
@@ -449,70 +408,6 @@ theorem exists_over_hom (hτ : ∀ j, IsFrameAt (F := F) P.L (x j).left (τ j))
   have hw : β ≫ P'.A.hom = P.A.hom := hx.hom_ext fun j =>
     (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ P'.A.hom) (hβ j)).trans (hf j).symm)
   exact ⟨Over.homMk β hw, fun j => Over.OverMorphism.ext (hβ j)⟩
-
-theorem exists_iso_of_frames (hA : AmpleSt) {j₀ : J} (h₀ : x j₀ = 1) (h₀' : x' j₀ = 1)
-    (hτ : ∀ j, IsFrameAt (F := F) P.L (x j).left (τ j)) (hτ' : ∀ j, IsFrameAt (F := F) P'.L (x' j).left (τ' j))
-    {N M : ℕ} (hN : 4 ≤ N) (hM : M = N + 1) {I K : Type} [Fintype I] [Fintype K]
-    (s : I → H0 P.L N) (s' : I → H0 P'.L N) (t : K → H0 P.L M) (t' : K → H0 P'.L M)
-    (hs : ∀ u, InSpan P.A.hom s u) (hs' : ∀ u, InSpan P'.A.hom s' u)
-    (ht : ∀ u, InSpan P.A.hom t u) (ht' : ∀ u, InSpan P'.A.hom t' u)
-    (vs : ∀ i j, ∃ c, HasValueAt (F := F) (s i) (x j).left (τ j) c ∧ HasValueAt (F := F) (s' i) (x' j).left (τ' j) c)
-    (vt : ∀ i j, ∃ c, HasValueAt (F := F) (t i) (x j).left (τ j) c ∧ HasValueAt (F := F) (t' i) (x' j).left (τ' j) c)
-    (dense : SeparatesSections (F := F) P.L fun j => (x j).left)
-    (dense' : SeparatesSections (F := F) P'.L fun j => (x' j).left) :
-    ∃ β : P.A ≅ P'.A, IsMonHom β.hom ∧ (∀ j, x j ≫ β.hom = x' j) ∧
-      ∃ w : LB.Iso P.L (P'.L.pull β.hom.left), w.IsGen ∧ ∀ j a a', ⊤ ≤ (x j).left ⁻¹ᵁ P.L.U a →
-        ⊤ ≤ (x' j).left ⁻¹ᵁ P'.L.U a' → valF (F := F) (x j).left _ (w.s (fun _ => a', a)).val * τ j a = τ' j a' := by
-  have := isIntegral_left_of_isAbelianScheme_field P.A P.isAb
-  have es := polarized_abelian_embeds_by_sections hA P hN s hs
-  have es' := polarized_abelian_embeds_by_sections hA P' hN s' hs'
-  obtain ⟨β, hβ⟩ := exists_over_hom hτ hτ' s s' es es' vs dense
-  obtain ⟨δ, hδ⟩ := exists_over_hom hτ' hτ s' s es' es (fun i j => (vs i j).imp fun _ h => h.symm) dense'
-  refine ⟨⟨β, δ, hom_ext_of_separatesSections P P dense fun j => ?_,
-    hom_ext_of_separatesSections P' P' dense' fun j => ?_⟩, rigidity_holds _ _ _ P.isAb P'.isAb β ?_, hβ, ?_⟩
-  · rw [← Category.assoc, hβ, hδ, Category.comp_id]
-  · rw [← Category.assoc, hδ, hβ, Category.comp_id]
-  · have e := hβ j₀
-    rw [h₀, h₀', Hom.one_def, Hom.one_def, Category.assoc] at e
-    have : IsIso (toUnit (baseOver (Spec (CommRingCat.of F)))) :=
-      isIso_of_isTerminal Over.mkIdTerminal isTerminalTensorUnit _
-    exact (cancel_epi _).1 e
-  · exact (meetsOpens_of_separatesSections P dense).exists_lbIso (x' := fun j => (x' j).left) β.left
-      (fun j => congrArg CommaMorphism.left (hβ j)) hτ hτ' hM s s' t t' es.1 es'.1
-      (polarized_abelian_embeds_by_sections hA P (by omega) t ht).1 (polarized_abelian_embeds_by_sections hA P' (by omega) t' ht').1 vs vt
-
-theorem _root_.GlobalTheory.polAV_iso_of_matching_values (hA : AmpleSt) (P P' : PolAV (Spec (CommRingCat.of F)))
-    (x : J → (baseOver (Spec (CommRingCat.of F)) ⟶ P.A)) (x' : J → (baseOver (Spec (CommRingCat.of F)) ⟶ P'.A))
-    (j₀ : J) (h₀ : x j₀ = 1) (h₀' : x' j₀ = 1)
-    (τ : ∀ j, LB.Gen (P.L.pull (Y := Sp F) (x j).left)) (τ' : ∀ j, LB.Gen (P'.L.pull (Y := Sp F) (x' j).left))
-    (hτ : ∀ j, (τ j).IsGen) (hτ' : ∀ j, (τ' j).IsGen) {I K : Type} [Fintype I] [Fintype K]
-    (s : I → H0 P.L 4) (s' : I → H0 P'.L 4) (t : K → H0 P.L 5) (t' : K → H0 P'.L 5)
-    (hs : ∀ u, InSpan P.A.hom s u) (hs' : ∀ u, InSpan P'.A.hom s' u)
-    (ht : ∀ u, InSpan P.A.hom t u) (ht' : ∀ u, InSpan P'.A.hom t' u)
-    (vs : ∀ i j, ∃ c : F, HasValueAt (s i) (x j).left (genCoord (τ j)) c ∧
-      HasValueAt (s' i) (x' j).left (genCoord (τ' j)) c)
-    (vt : ∀ i j, ∃ c : F, HasValueAt (t i) (x j).left (genCoord (τ j)) c ∧
-      HasValueAt (t' i) (x' j).left (genCoord (τ' j)) c)
-    (dense : SeparatesSections (F := F) P.L fun j => (x j).left)
-    (dense' : SeparatesSections (F := F) P'.L fun j => (x' j).left) :
-    ∃ β : P.A ≅ P'.A, IsMonHom β.hom ∧ (∀ j, x j ≫ β.hom = x' j) ∧
-      (∃ w : LB.Iso P.L (P'.L.pull β.hom.left), w.IsGen ∧ ∀ j, GenRel (F := F) w (τ j) (τ' j) 1) ∧
-      ∀ (f : P.A ⟶ P.A) (f' : P'.A ⟶ P'.A) (r : J → J), (∀ j, x j ≫ f = x (r j)) → (∀ j, x' j ≫ f' = x' (r j)) →
-        f ≫ β.hom = β.hom ≫ f' := by
-  obtain ⟨β, hm, hβ, w, hw, hv⟩ := exists_iso_of_frames hA h₀ h₀' (fun j => isFrameAt_genCoord (hτ j))
-    (fun j => isFrameAt_genCoord (hτ' j)) le_rfl rfl s s' t t' hs hs' ht ht' vs vt dense dense'
-  refine ⟨β, hm, hβ, ⟨w, hw, fun j => ⟨fun _ => congrArg CommaMorphism.left (hβ j), fun a a' h => ?_⟩⟩,
-    fun f f' r hf hf' => hom_ext_of_separatesSections P P' dense fun j => ?_⟩
-  · obtain ⟨a, rfl⟩ : ∃ b, a = fun _ => b := ⟨a PUnit.unit, rfl⟩
-    obtain ⟨a', rfl⟩ : ∃ b, a' = fun _ => b := ⟨a' PUnit.unit, rfl⟩
-    have hm := mem_of_le (h PUnit.unit)
-    have ha' : ⊤ ≤ (x' j).left ⁻¹ᵁ P'.L.U a' := by
-      rw [← hβ]; exact le_of_mem (x := (x j).left ≫ β.hom.left) (mem_pull.1 hm.1)
-    have e := hv j a a' (le_of_mem hm.2) ha'
-    have n := left_ne_zero_of_mul (e.trans_ne ((isFrameAt_genCoord (hτ' j)).1 a' ha'))
-    rw [Fintype.prod_unique, _root_.one_mul, zpow_neg, zpow_one]
-    exact (eq_inv_mul_iff_mul_eq₀ n).2 e
-  · rw [← Category.assoc, hf, hβ, ← Category.assoc, hβ, hf']
 
 end Abelian
 

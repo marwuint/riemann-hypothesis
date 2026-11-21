@@ -107,11 +107,6 @@ theorem fIwasawa_int_inv (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (M : Matri
   unfold fIwasawaInv
   exact fIwasawa_int_mul _ _ (fIwasawa_int_mul _ _ hJ hcT) hJ
 
-theorem fIwasawa_int_P (π : Equiv.Perm (Fin n)) : fIwasawaInt (fIwasawaP (L := L) π) := by
-  intro i j
-  simp only [fIwasawaP, Matrix.of_apply]
-  split_ifs <;> simp
-
 theorem fIwasawa_int_E (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (e z : Fin n → L) (c : L)
     (he : ∀ i, Valued.v (e i) ≤ 1) (hz : ∀ i, Valued.v (z i) ≤ 1) (hc : Valued.v c ≤ 1) :
     fIwasawaInt (fIwasawaE σ e z c) := by
@@ -147,15 +142,6 @@ theorem fIwasawa_mk_mem_K (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (M : Matr
   show RingHom.mapMatrix (intL L).subtype A = _
   rw [hA]
   exact (fIwasawa_mk_val σ M hM).symm
-
-theorem fIwasawa_K_int (k : GU σ n) (hk : k ∈ KU σ n) :
-    fIwasawaInt (((k : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) := by
-  intro i j
-  have h1 := Subgroup.mem_subgroupOf.1 hk
-  obtain ⟨k', hk'⟩ := (Subgroup.mem_inf.1 h1).2
-  rw [← hk']
-  show Valued.v (((k' : Matrix (Fin n) (Fin n) (intL L)) i j : intL L) : L) ≤ 1
-  exact (k' i j).2
 
 end FIwasawaInt
 

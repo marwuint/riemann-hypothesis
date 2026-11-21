@@ -1,9 +1,11 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.GenericUnlinkedGL.UnlinkedRealize
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalSupportRealisedByProductStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerRankProductLeOneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalSupportRealisedByProduct
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiProdEquivStandardBlocks
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerRankProductLeOne
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorProductRankLeOneStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerRankExtensionBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandKazhdanLocalStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandKazhdanLocal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalSwapProductGenericStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NontrivialTwJacquetOfSurjective
 
@@ -31,17 +33,17 @@ theorem genericUnique_of_perm {k : Type} [Field k] [ValuativeRel k] [Topological
   intro N s V W _ _ _ _ π σ hπ hσ gπ gσ
   obtain ⟨ψ, hψc, hψ1, gπψ⟩ := gπ
   have gσψ : IsGenericFor ψ σ := (isGeneric_iff_isGenericFor hψc hψ1 σ).1 gσ
-  obtain ⟨h, x, hd, hxs, hxc, hπx⟩ := GlobalTheory.T.cuspidal_support_realised_by_product k π s hπ
-  obtain ⟨h', y, hd', hys, hyc, hσy⟩ := GlobalTheory.T.cuspidal_support_realised_by_product k σ s hσ
+  obtain ⟨h, x, hd, hxs, hxc, hπx⟩ := _root_.GlobalTheory.CompanionTheory.GenSupp.hasSupport_std k π s hπ
+  obtain ⟨h', y, hd', hys, hyc, hσy⟩ := _root_.GlobalTheory.CompanionTheory.GenSupp.hasSupport_std k σ s hσ
   obtain ⟨e, he⟩ := exists_equiv_of_map_univ_eq x y (hxs.trans hys.symm)
   have hh : h = h' := by simpa using Fintype.card_congr e
   subst hh
   have hfun : (fun a => y (e a)) = x := funext he
   subst hfun
   have hσx : IsSubquotient σ (prodIrr (fun a => y (e a)) hd) :=
-    hP hA (GlobalTheory.T.gelfand_kazhdan_local hA) hH hW hC ψ hψc hψ1 y hyc hd' e hd σ hσ.isSmooth hσ.isIrreducible gσψ hσy
+    hP hA (_root_.GlobalTheory.CompanionTheory.GenGK.gkLocal_gen hA) hH hW hC ψ hψc hψ1 y hyc hd' e hd σ hσ.isSmooth hσ.isIrreducible gσψ hσy
   exact GlobalTheory.T.whittaker_rank_extension_bound k ψ hψc N (prodIrr (fun a => y (e a)) hd) π σ (isSmooth_prodIrr _ hd)
-    (GlobalTheory.T.whittaker_rank_product_le_one k hH hW ψ hψc hψ1 h N _ hd) hπ.isIrreducible hσ.isIrreducible hπx hσx gπψ gσψ
+    (_root_.GlobalTheory.CompanionTheory.RgGu.rank_twJacquet_prodIrr_le_one k hH hW ψ hψc hψ1 h N _ hd) hπ.isIrreducible hσ.isIrreducible hπx hσx gπψ gσψ
 
 theorem perm_abs {α : Type 1} {h : ℕ} (P : (Fin h → α) → Prop)
     (hP : ∀ (y : Fin h → α) (j : ℕ) (hj : j + 1 < h), P y → P fun a => y (Equiv.swap ⟨j, by omega⟩ ⟨j + 1, hj⟩ a))

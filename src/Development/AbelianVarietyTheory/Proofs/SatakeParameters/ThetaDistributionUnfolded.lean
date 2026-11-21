@@ -198,40 +198,6 @@ theorem eval_frDet (v : ι × Fin a × Fin a → ℂ) (τ : ι) : eval v (frDet 
   ext α k
   simp
 
-theorem frPolyG_inj (fr : Y → ι → Matrix (Fin a) (Fin a) ℂ)
-    (hr : ∀ f : ι → Matrix (Fin a) (Fin a) ℂ, (∀ τ, (f τ).det ≠ 0) → ∃ y, fr y = f) : Function.Injective (frPolyG fr) := by
-  rw [injective_iff_map_eq_zero]
-  intro Q hQ
-  have h0 : Q * ∏ τ, frDet ℂ a τ = 0 := by
-    apply MvPolynomial.funext
-    intro v
-    rw [map_mul, map_zero, map_prod]
-    simp only [eval_frDet]
-    by_cases h : ∀ τ, (Matrix.of fun α k => v (τ, α, k) : Matrix (Fin a) (Fin a) ℂ).det ≠ 0
-    · obtain ⟨y, hy⟩ := hr (fun τ => Matrix.of fun α k => v (τ, α, k)) h
-      have h1 := congrFun hQ y
-      have h2 : eval v Q = 0 := by
-        have : frPolyG fr Q y = eval v Q := by
-          show eval (fun k : ι × Fin a × Fin a => fr y k.1 k.2.1 k.2.2) Q = _
-          rw [hy]; rfl
-        rw [← this, h1]; rfl
-      rw [h2, zero_mul]
-    · push Not at h
-      obtain ⟨τ, hτ⟩ := h
-      rw [Finset.prod_eq_zero (Finset.mem_univ τ) hτ, mul_zero]
-  rcases mul_eq_zero.1 h0 with h | h
-  · exact h
-  · exfalso
-    have h1 := congrArg (eval fun k : ι × Fin a × Fin a => if k.2.1 = k.2.2 then (1 : ℂ) else 0) h
-    rw [map_prod, map_zero] at h1
-    simp only [eval_frDet] at h1
-    have h2 : ∀ τ : ι, (Matrix.of fun α k : Fin a => (if α = k then (1 : ℂ) else 0)).det = 1 := by
-      intro τ
-      have : (Matrix.of fun α k : Fin a => (if α = k then (1 : ℂ) else 0)) = 1 := by
-        ext α k; simp [Matrix.one_apply]
-      rw [this, Matrix.det_one]
-    exact one_ne_zero ((Finset.prod_eq_one fun τ _ => h2 τ).symm.trans h1)
-
 theorem frInvG_spec {fr : Y → ι → Matrix (Fin a) (Fin a) ℂ} (hinj : Function.Injective (frPolyG fr)) :
     frInvG fr ∘ₗ frPolyG fr = LinearMap.id :=
   Classical.epsilon_spec (p := fun g => g ∘ₗ frPolyG fr = LinearMap.id)
@@ -274,86 +240,6 @@ theorem unfolding_gl_eval : UnfGEv := by
   rw [← eval_map, map_jetMap, funext hJ, jetMap_scal, smul_eval, ← Finset.prod_inv_distrib]
   simp only [zpow_neg]
   ring
-
-theorem frPolyG_colSub (fr : Y → ι → Matrix (Fin a) (Fin a) ℂ) (β : ι → Matrix (Fin a) (Fin a) ℂ) (Q : Pol ℂ ι a) (y : Y) :
-    frPolyG fr (colSub β Q) y = eval (fun k : ι × Fin a × Fin a => (fr y k.1 * β k.1) k.2.1 k.2.2) Q := by
-  have e : (eval fun k : ι × Fin a × Fin a => fr y k.1 k.2.1 k.2.2).comp (colSub β).toRingHom =
-      eval fun k : ι × Fin a × Fin a => (fr y k.1 * β k.1) k.2.1 k.2.2 := by
-    apply MvPolynomial.ringHom_ext
-    · intro c
-      simp [colSub]
-    · intro v
-      simp only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, colSub, aeval_X, map_sum, map_mul, eval_C, eval_X,
-        Matrix.mul_apply]
-      exact Finset.sum_congr rfl fun r _ => mul_comm _ _
-  exact RingHom.congr_fun e Q
-
-theorem det_bor {β : ι → Matrix (Fin a) (Fin a) ℂ} (hβ : IsBor β) (τ : ι) : (β τ).det = ∏ r, β τ r r :=
-  Matrix.det_of_isUpperTriangular fun r s h => (hβ τ).1 r s h
-
-theorem bor_id {β : ι → Matrix (Fin a) (Fin a) ℂ} (hβ : IsBor β) (d : ι → ℂ) (lam : ι → Fin a → ℤ) (sS : ι → ℤ) (ν : ι → Fin a → ℕ)
-    (hν : ∀ τ r, lam τ r + sS τ = ν τ r) :
-    (∏ τ, (d τ * (β τ).det) ^ sS τ) * ∏ τ, ∏ r, β τ r r ^ lam τ r = (∏ τ, ∏ r, β τ r r ^ ν τ r) * ∏ τ, d τ ^ sS τ := by
-  simp only [mul_zpow, Finset.prod_mul_distrib]
-  rw [mul_assoc, mul_comm]
-  congr 1
-  rw [← Finset.prod_mul_distrib]
-  refine Finset.prod_congr rfl fun τ _ => ?_
-  rw [det_bor hβ, ← Finset.prod_zpow, ← Finset.prod_mul_distrib]
-  refine Finset.prod_congr rfl fun r _ => ?_
-  rw [← zpow_add₀ ((hβ τ).2 r), add_comm, hν, zpow_natCast]
-
-theorem sharp_vector_formula : SharpVIs := by
-  intro ι _ a Y fr hr lam sS ν hν F
-  have hdet : ∀ y τ, (fr y τ).det ≠ 0 := fun y => (hr (fr y)).1 ⟨y, rfl⟩
-  have hinj : Function.Injective (frPolyG fr) := frPolyG_inj fr fun f hf => (hr f).2 hf
-  have hP : ∀ y, (∏ τ, (fr y τ).det ^ sS τ) ≠ 0 := fun y => Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (hdet y τ)
-  constructor
-  · rintro ⟨Q, hQ, rfl⟩
-    refine ⟨⟨fun y => (∏ τ, (fr y τ).det ^ sS τ)⁻¹ * frPolyG fr Q y, ⟨⟨Q * ∏ τ, frDet ℂ a τ ^ (-sS τ).toNat, fun τ => (sS τ).toNat, ?_⟩, ?_⟩, ?_⟩, Q, rfl⟩
-    · intro y
-      show (∏ τ, (fr y τ).det ^ sS τ)⁻¹ * eval (fun k : ι × Fin a × Fin a => fr y k.1 k.2.1 k.2.2) Q * ∏ τ, (fr y τ).det ^ (sS τ).toNat =
-        eval (fun k : ι × Fin a × Fin a => fr y k.1 k.2.1 k.2.2) (Q * ∏ τ, frDet ℂ a τ ^ (-sS τ).toNat)
-      rw [map_mul, map_prod, mul_comm (∏ τ, (fr y τ).det ^ sS τ)⁻¹, mul_assoc, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]
-      congr 1
-      refine Finset.prod_congr rfl fun τ _ => ?_
-      rw [map_pow, eval_frDet, ← zpow_neg, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hdet y τ)]
-      congr 1
-      have := Int.toNat_sub_toNat_neg (sS τ)
-      omega
-    · intro y y₂ β hβ h2
-      have e1 : frPolyG fr Q y₂ = (∏ τ, ∏ r, β τ r r ^ ν τ r) * frPolyG fr Q y := by
-        have := frPolyG_colSub fr β Q y
-        rw [hQ β hβ] at this
-        show eval (fun k : ι × Fin a × Fin a => fr y₂ k.1 k.2.1 k.2.2) Q = _
-        simp only [h2]
-        rw [← this]
-        simp
-      have e2 := bor_id hβ (fun τ => (fr y τ).det) lam sS ν hν
-      have e3 : (∏ τ, (fr y₂ τ).det ^ sS τ) = ∏ τ, ((fr y τ).det * (β τ).det) ^ sS τ :=
-        Finset.prod_congr rfl fun τ _ => by rw [h2, Matrix.det_mul]
-      show (∏ τ, (fr y₂ τ).det ^ sS τ)⁻¹ * frPolyG fr Q y₂ = _ * ((∏ τ, (fr y τ).det ^ sS τ)⁻¹ * frPolyG fr Q y)
-      rw [e1, inv_mul_eq_iff_eq_mul₀ (hP y₂), e3, ← mul_assoc, ← mul_assoc, e2, mul_assoc (∏ τ, ∏ r, β τ r r ^ ν τ r), mul_assoc,
-        mul_inv_cancel₀ (hP y), one_mul]
-    · funext y
-      show _ = (∏ τ, (fr y τ).det ^ sS τ) * ((∏ τ, (fr y τ).det ^ sS τ)⁻¹ * frPolyG fr Q y)
-      rw [mul_inv_cancel_left₀ (hP y)]
-  · rintro ⟨⟨f, ⟨-, hw⟩, hF⟩, Q, hQ⟩
-    refine ⟨Q, fun β hβ => hinj ?_, hQ⟩
-    funext y
-    obtain ⟨y₂, h2⟩ := (hr fun τ => fr y τ * β τ).2 fun τ => by
-      rw [Matrix.det_mul, det_bor hβ]
-      exact mul_ne_zero (hdet y τ) (Finset.prod_ne_zero_iff.2 fun r _ => (hβ τ).2 r)
-    have h2' : ∀ τ, fr y₂ τ = fr y τ * β τ := fun τ => congrFun h2 τ
-    have e0 : ∀ y, frPolyG fr Q y = (∏ τ, (fr y τ).det ^ sS τ) * f y := fun y => by rw [← hQ, hF]; rfl
-    have e1 : frPolyG fr (colSub β Q) y = frPolyG fr Q y₂ := by
-      rw [frPolyG_colSub]
-      show _ = eval (fun k : ι × Fin a × Fin a => fr y₂ k.1 k.2.1 k.2.2) Q
-      simp only [h2']
-    have e2 := bor_id hβ (fun τ => (fr y τ).det) lam sS ν hν
-    have e3 : (∏ τ, (fr y₂ τ).det ^ sS τ) = ∏ τ, ((fr y τ).det * (β τ).det) ^ sS τ :=
-      Finset.prod_congr rfl fun τ _ => by rw [h2', Matrix.det_mul]
-    rw [e1, map_smul, Pi.smul_apply, smul_eq_mul, e0, e0, hw y y₂ β hβ h2', e3, ← mul_assoc, e2, mul_assoc]
 
 end UnfG
 
@@ -1065,18 +951,6 @@ theorem nu_t_identity : NuTIs := by
 
 theorem UnfIsAll.unfIs {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {O : GL3Theta.LiftObj D C} {i : ℕ} (h : UnfIsAll O i)
     (ν : D.what₂.Tau → Fin (D.R.N i) → ℕ) : UnfIs O i ν := fun c c' Q _ => h c c' Q
-
-theorem forms_sharp_description : FormsSharp := by
-  intro hSP D u C O i hi ν f hf
-  have e1 : C.sharp i f = mulFun (fun y => ∏ τ, (O.frm i y τ).det ^ C.sSharp i τ) f := by
-    have e : (fun y => ∏ τ, (O.frm i y τ).det ^ C.sSharp i τ) = fun y => ∏ τ, (C.de i y τ) ^ (C.sSharp i τ) := by
-      funext y; simp only [O.frm_de i hi]
-    rw [e]
-    rfl
-  obtain ⟨Q, hQ⟩ := hSP D.what₂.Tau (D.R.N i) (C.Y i) (O.frm i) (O.frm_range i hi) _ (C.sSharp i) ν (fun τ r => sub_add_cancel _ _) f hf
-  obtain ⟨Q', hQ', h⟩ := (sharp_vector_formula D.what₂.Tau (D.R.N i) (C.Y i) (O.frm i) (O.frm_range i hi) _ (C.sSharp i) ν (fun τ r => sub_add_cancel _ _)
-    (mulFun (fun y => ∏ τ, (O.frm i y τ).det ^ C.sSharp i τ) f)).2 ⟨⟨f, hf, rfl⟩, Q, hQ⟩
-  exact ⟨Q', hQ', e1.trans h⟩
 
 theorem chain_char_eval : ChainCEv := by
   intro D u C O i hi K _ σ c c' J z hJ sh n hn P

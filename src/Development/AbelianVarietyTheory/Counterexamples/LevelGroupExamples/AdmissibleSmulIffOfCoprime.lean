@@ -28,14 +28,6 @@ theorem _root_.GlobalTheory.LevelCoverDatum.pd_pos (d : _root_.Formalism.L2.Pj.D
   rw [h0, mul_zero] at h3
   omega
 
-theorem Mb_ne_bot (l : Level H) : l.Mb ≠ ⊥ := by
-  have hM : l.M ≠ 0 := by have := l.three_le; omega
-  intro h
-  have : Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb := l.prod ▸ Ideal.mul_le_left
-  have := this (Ideal.subset_span rfl)
-  rw [h, Ideal.mem_bot] at this
-  exact hM (by exact_mod_cast this)
-
 set_option autoImplicit false in
 open NumberField in
 open CategoryTheory in
@@ -54,16 +46,6 @@ theorem _root_.GlobalTheory.LevelCoverDatum.half_mul_conj (d : _root_.Formalism.
     have := l.three_le
     omega
   exact mul_left_cancel₀ hne h2
-
-theorem half_unique (d d' : DeltaDat Xo c n) (h : d.IsLev) (h' : d'.IsLev) (e : d.l₂ = d'.l₂) :
-    d.I = d'.I ∧ d.pd = d'.pd := by
-  have hM : 0 < l.M := by have := l.three_le; omega
-  refine ⟨mul_left_cancel₀ (Mb_ne_bot l) ?_, Nat.eq_of_mul_eq_mul_left hM ?_⟩
-  · rw [← h.2.2.2.1, ← h'.2.2.2.1, e]
-  · rw [← h.2.1, ← h'.2.1, e]
-
-theorem isLev_change (d : DeltaDat Xo c n) (h : d.IsLev) (φ : (Fin n → LevQ Dw d.l₂) → c.F)
-    (nab : NabV d.Xo₂ d.c₂) : DeltaDat.IsLev { d with φδ := φ, nab₂ := nab } := h
 
 set_option autoImplicit false in
 open NumberField in

@@ -106,11 +106,6 @@ theorem card_primesOver {g : ℕ} (hg : g.Prime) (h : SplitsCompl K g) :
     exact Nat.pow_right_injective hg.two_le h2
   rw [he, hf]
 
-theorem ncard_primesOver_of_splitsCompl {g : ℕ} (hg : g.Prime) (h : SplitsCompl K g) :
-    (Ideal.primesOver (Ideal.span {(g : ℤ)}) (𝓞 K)).ncard = Module.finrank ℚ K := by
-  haveI := span_isMaximal hg
-  rw [← IsDedekindDomain.coe_primesOverFinset (span_ne_bot hg), Set.ncard_coe_finset, card_primesOver K hg h]
-
 theorem image_plOver {g : ℕ} (hg : g.Prime) :
     HeightOneSpectrum.asIdeal '' plOver K g = (IsDedekindDomain.primesOverFinset (Ideal.span {(g : ℤ)}) (𝓞 K) : Set (Ideal (𝓞 K))) := by
   haveI := span_isMaximal hg
@@ -185,22 +180,6 @@ theorem finprod_typedPl (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 
   rw [typedPl_eq, finprod_mem_union (disjoint_plOver _ (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne)
     (finite_plOver _ (D.host.g_prime 0)) (finite_plOver _ (D.host.g_prime 1)),
     finprod_plOver _ (D.host.g_prime 0) hF0, finprod_plOver _ (D.host.g_prime 1) hF1, finrank_hostF_eq]
-
-theorem ncard_typedPl (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 1)) : (typedPl D).ncard = 2 * D.R.f := by
-  have hF0 : SplitsCompl D.host.F (D.host.g 0) := splitsCompl_down D.host.F D.host.E _ (D.host.g_prime 0) h0
-  have hF1 : SplitsCompl D.host.F (D.host.g 1) := splitsCompl_down D.host.F D.host.E _ (D.host.g_prime 1) h1
-  rw [typedPl_eq, Set.ncard_union_eq (disjoint_plOver _ (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne)
-    (finite_plOver _ (D.host.g_prime 0)) (finite_plOver _ (D.host.g_prime 1)),
-    ncard_plOver _ (D.host.g_prime 0) hF0, ncard_plOver _ (D.host.g_prime 1) hF1, finrank_hostF_eq, two_mul]
-
-theorem typed_factor_split (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 1)) : HostFactorProductPowerIdentity D := by
-  unfold HostFactorProductPowerIdentity f3G
-  rw [finprod_typedPl D h0 h1 (fun x : ℝ => 1 + 3 / x), Fin.prod_univ_two, mul_pow]
-
-theorem typed_factor_split_of_data {C0 : ℝ} (h : StandingNumericalData D C0) : HostFactorProductPowerIdentity D := by
-  unfold StandingNumericalData at h
-  dsimp only at h
-  exact typed_factor_split D h.2.2.2.2.2.2.2.2.2.2.1 h.2.2.2.2.2.2.2.2.2.2.2.1
 
 theorem gaG_eq (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 1)) :
     gaG D = (∏ i ∈ Finset.Icc 1 D.R.k, ((D.host.g 0 : ℝ) ^ i - 1)) ^ D.R.f *

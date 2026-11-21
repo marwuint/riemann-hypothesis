@@ -48,9 +48,6 @@ theorem IsUnitary.contra (h : π.IsUnitary) : π.contra.IsUnitary := by
   obtain ⟨ω, h1, h2⟩ := h
   exact ⟨ω⁻¹, h1.inv, h2.contra⟩
 
-theorem HasSatGL.contra {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ} (h : HasSatGL w (π.locRep w) B) :
-    HasSatGL w (π.contra.locRep w) (B.map (·⁻¹)) := UpperTheory.V.TC.hasSatGL_dual h
-
 end CuspSub
 
 namespace CG
@@ -63,11 +60,6 @@ def contra (π : CG E a) : CG E a :=
 theorem IsUnitary.contra {π : CG E a} (h : π.IsUnitary) : π.contra.IsUnitary := by
   induction π using Quotient.inductionOn with
   | _ π => exact (isUnitary_mk π.contra).2 ((isUnitary_mk π).1 h).contra
-
-theorem HasSat.contra {π : CG E a} {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ} (h : π.HasSat w B) :
-    π.contra.HasSat w (B.map (·⁻¹)) := by
-  induction π using Quotient.inductionOn with
-  | _ π => exact CuspSub.HasSatGL.contra h
 
 @[simp] theorem contra_contra (π : CG E a) : π.contra.contra = π := by
   induction π using Quotient.inductionOn with

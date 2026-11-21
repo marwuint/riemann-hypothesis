@@ -19,13 +19,6 @@ theorem der_sq (d : Derivation ℤ A A) (a : A) : d (a ^ 2) = 2 * a * d a := by
   rw [pow_two, der_mul]
   ring
 
-theorem der_two_mul (d : Derivation ℤ A A) (a : A) : d (2 * a) = 2 * d a := by
-  rw [two_mul, map_add, two_mul]
-
-theorem der_three_mul (d : Derivation ℤ A A) (a : A) : d (3 * a) = 3 * d a := by
-  rw [show (3 : A) * a = a + a + a by ring, map_add, map_add]
-  ring
-
 theorem der_inv (d : Derivation ℤ A A) {t s : A} (ht : t * s = 1) : d t = -t ^ 2 * d s := by
   have h0 : t * d s + s * d t = 0 := by rw [← der_mul, ht, Derivation.map_one_eq_zero]
   have h1 : d t = t * s * d t := by rw [ht, one_mul]

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTermStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTerm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralTwistedConjInvariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableTwistedOrbitalIntegralIntegralNormCongruen
@@ -387,7 +387,7 @@ theorem match_ctMu_of_isSplitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCM
     have hct : ctMu (Nat.add_sub_cancel' ha) w μ f = fun y =>
         (μ ((-1) ^ (a * (n - a)) * GeneralLinearGroup.det y.1 ^ (n - a) * GeneralLinearGroup.det y.2 ^ a) : ℂ) *
           ct (Nat.add_sub_cancel' ha) w (fun y => f (toSub (UL n w) y)) y := rfl
-    rw [hct, twOrb_mulConst _ _ _ _ _ ?_, GlobalTheory.T.twisted_orbital_integral_levi_constant_term E n a ha w _ (Or.inr ⟨_, hisH.1, hisH.2⟩) (x₁, x₂)
+    rw [hct, twOrb_mulConst _ _ _ _ _ ?_, _root_.GlobalTheory.LeviDesc.orbInt_descent E n a ha w _ (Or.inr ⟨_, hisH.1, hisH.2⟩) (x₁, x₂)
       (by rw [hx₁, hx₂]; exact hsep), hδ]
     · dsimp only
       rw [hx₁, hx₂]

@@ -80,66 +80,6 @@ theorem pderiv_pderiv_comm (a b : Ix P Q) (f : OscPol P Q) : pderiv a (pderiv b 
   have := congrArg (fun D : Derivation ℂ (OscPol P Q) (OscPol P Q) => D f) h
   simpa [Derivation.commutator_apply, sub_eq_zero] using this
 
-theorem low_mul_low (a b : Ix P Q) : low a * low b = low b * low a := by
-  refine LinearMap.ext fun f => ?_
-  rcases a with a | a <;> rcases b with b | b <;> simp [low, pderiv_pderiv_comm, mul_left_comm]
-
-theorem rai_mul_rai (a b : Ix P Q) : rai a * rai b = rai b * rai a := by
-  refine LinearMap.ext fun f => ?_
-  rcases a with a | a <;> rcases b with b | b <;> simp [rai, pderiv_pderiv_comm, mul_left_comm]
-
-theorem low_mul_rai (a b : Ix P Q) : low a * rai b = rai b * low a + if a = b then 1 else 0 := by
-  refine LinearMap.ext fun f => ?_
-  by_cases h : a = b
-  · subst h
-    rcases a with a | a <;> simp [low, rai]
-  · rcases a with a | a <;> rcases b with b | b <;>
-      simp_all [low, rai, pderiv_pderiv_comm, mul_left_comm, Ne.symm h, eq_comm]
-
-theorem unitOp_comm (i j k l : Ix P Q) :
-    unitOp i j * unitOp k l - unitOp k l * unitOp i j =
-      (if j = k then unitOp i l else 0) - if l = i then unitOp k j else 0 := by
-  have h1 : rai i * low j * (rai k * low l) = rai i * rai k * (low j * low l) + if j = k then rai i * low l else 0 := by
-    rw [mul_assoc, ← mul_assoc (low j), low_mul_rai]
-    split_ifs <;> noncomm_ring
-  have h2 : rai k * low l * (rai i * low j) = rai i * rai k * (low j * low l) + if l = i then rai k * low j else 0 := by
-    rw [mul_assoc, ← mul_assoc (low l), low_mul_rai, rai_mul_rai i k, low_mul_low j l]
-    split_ifs <;> noncomm_ring
-  have h3 : ∀ a b : Ix P Q, unitOp a b = rai a * low b + (if a = b then (1 / 2 : ℂ) else 0) • 1 := fun a b => by
-    rw [unitOp]; split_ifs <;> simp
-  have h4 : unitOp i j * unitOp k l - unitOp k l * unitOp i j =
-      rai i * low j * (rai k * low l) - rai k * low l * (rai i * low j) := by
-    simp only [h3, mul_add, add_mul, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
-    module
-  rw [h4, h1, h2, add_sub_add_left_eq_sub, unitOp, unitOp]
-  by_cases hjk : j = k <;> by_cases hli : l = i
-  · subst hjk hli; simp
-  · simp [hjk, hli, Ne.symm hli]
-  · simp [hjk, hli, Ne.symm hjk]
-  · simp [hjk, hli]
-
-theorem isLieAct_oscAct (P Q : ℕ) : IsLieAct (oscAct P Q) := by
-  intro X Y
-  induction X using Matrix.induction_on' with
-  | h_zero => simp
-  | h_add X X' h h' =>
-    rw [add_mul, mul_add, add_sub_add_comm, map_add, h, h', map_add]; noncomm_ring
-  | h_std_basis i j c =>
-    induction Y using Matrix.induction_on' with
-    | h_zero => simp
-    | h_add Y Y' h h' =>
-      rw [add_mul, mul_add, add_sub_add_comm, map_add, h, h', map_add]; noncomm_ring
-    | h_std_basis k l d =>
-      rw [oscAct_single, oscAct_single, smul_mul_smul_comm, smul_mul_smul_comm, mul_comm d c, ← smul_sub,
-        unitOp_comm, map_sub, smul_sub]
-      congr 1
-      · split_ifs with h
-        · subst h; rw [Matrix.single_mul_single_same, oscAct_single]
-        · rw [Matrix.single_mul_single_of_ne (h := h), map_zero, smul_zero]
-      · split_ifs with h
-        · subst h; rw [Matrix.single_mul_single_same, oscAct_single, mul_comm]
-        · rw [Matrix.single_mul_single_of_ne (h := h), map_zero, smul_zero]
-
 section Adjoint
 
 variable {σ H : Type} [DecidableEq σ] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -190,35 +130,10 @@ section AdjointAct
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ι : OscPol P Q →ₗ[ℂ] H}
 
-theorem inner_rai (h : IsFockIP ι) (l : Ix P Q) (f g : OscPol P Q) :
-    inner ℂ (ι (rai l f)) (ι g) = (sgn l : ℂ) * inner ℂ (ι f) (ι (low l g)) := by
-  rcases l with i | i <;> simp [rai, low, sgn, inner_X_mul h, inner_pderiv h]
-
-theorem inner_low (h : IsFockIP ι) (l : Ix P Q) (f g : OscPol P Q) :
-    inner ℂ (ι (low l f)) (ι g) = (sgn l : ℂ) * inner ℂ (ι f) (ι (rai l g)) := by
-  rcases l with i | i <;> simp [rai, low, sgn, inner_X_mul h, inner_pderiv h]
-
-theorem inner_unitOp (h : IsFockIP ι) (a b : Ix P Q) (f g : OscPol P Q) :
-    inner ℂ (ι (unitOp a b f)) (ι g) = (sgn a : ℂ) * (sgn b : ℂ) * inner ℂ (ι f) (ι (unitOp b a g)) := by
-  simp only [unitOp, LinearMap.add_apply, Module.End.mul_apply, map_add, inner_add_left, inner_add_right,
-    inner_rai h, inner_low h, mul_add, mul_assoc]
-  congr 1
-  by_cases hab : a = b
-  · subst hab
-    rcases a with i | i <;> simp [sgn, inner_smul_left, inner_smul_right, map_ofNat]
-  · simp [hab, Ne.symm hab]
-
 theorem adjZ_apply (Z : Mat P Q) (a b : Ix P Q) :
     adjZ Z a b = (sgn a : ℂ) * (sgn b : ℂ) * (starRingEnd ℂ) (Z b a) := by
   rw [adjZ, Jm, FockEmb.Jpq_eq_diagonal, Matrix.mul_diagonal, Matrix.diagonal_mul]
   rcases a with a | a <;> rcases b with b | b <;> simp [sgn]
-
-theorem inner_oscAct (h : IsFockIP ι) (Z : Mat P Q) (f g : OscPol P Q) :
-    inner ℂ (ι (oscAct P Q Z f)) (ι g) = inner ℂ (ι f) (ι (oscAct P Q (adjZ Z) g)) := by
-  simp only [oscAct_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, sum_inner, inner_sum,
-    inner_smul_left, inner_smul_right, inner_unitOp h, adjZ_apply]
-  rw [Finset.sum_comm]
-  exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 end AdjointAct
 
@@ -292,31 +207,7 @@ namespace Osc
 
 variable {P Q : ℕ} {T0 : GrpData P Q}
 
-def toURep (O : Osc P Q T0) : URep T0 where
-  H := O.H
-  π := O.Om
-  isom := O.isom
-  cont := O.cont
-
 theorem isFockIP (O : Osc P Q T0) : IsFockIP O.ι := fun α β => by convert O.fockIP α β
-
-theorem norm_vacuum (O : Osc P Q T0) : ‖O.ι 1‖ = 1 := by
-  have h := O.fockIP 0 0
-  rw [if_pos rfl, Finsupp.prod_zero_index, inner_self_eq_norm_sq_to_K, monomial_zero', C_1] at h
-  have h2 : ‖O.ι 1‖ ^ 2 = 1 := Complex.ofReal_injective (by simpa using h)
-  exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2
-
-theorem inner_oscAct (O : Osc P Q T0) (Z : Mat P Q) (f g : OscPol P Q) :
-    inner ℂ (O.ι (oscAct P Q Z f)) (O.ι g) = inner ℂ (O.ι f) (O.ι (oscAct P Q (adjZ Z) g)) :=
-  Oscillator.inner_oscAct O.isFockIP Z f g
-
-theorem isDer (O : Osc P Q T0) {Z : Mat P Q} (hZ : Z ∈ upq P Q) (f : OscPol P Q) :
-    IsDer T0 O.Om Z (O.ι f) (O.ι (oscAct P Q Z f)) := ⟨hZ, O.der Z hZ f⟩
-
-theorem smooth (O : Osc P Q T0) (f : OscPol P Q) : Smooth T0 O.Om (O.ι f) :=
-  ⟨LinearMap.range O.ι, ⟨f, rfl⟩, by
-    rintro _ ⟨g, rfl⟩ Z hZ
-    exact ⟨_, ⟨_, rfl⟩, O.isDer hZ g⟩⟩
 
 section Pair
 
@@ -427,24 +318,6 @@ instance uniqueIxOneZero : Unique (Ix 1 0) := ⟨⟨.inl 0⟩, by rintro (i | i)
 
 instance uniqueIxZeroOne : Unique (Ix 0 1) := ⟨⟨.inr 0⟩, by rintro (i | i); exacts [i.elim0, congrArg _ (Subsingleton.elim _ _)]⟩
 
-def circlePos : Osc 1 0 (DetSqrtCover.grpOf 1 0 MeasureTheory.Measure.haar) := rankOne _
-
-def circleNeg : Osc 0 1 (DetSqrtCover.grpOf 0 1 MeasureTheory.Measure.haar) := rankOne _
-
-example (T0 : GrpData 1 0) (g : T0.G) (k : ℕ) :
-    (rankOne T0).Om g ((rankOne T0).ι (monomial (Finsupp.single (.inl 0) k) 1)) =
-      ((T0.sq g : ℂˣ) : ℂ) ^ (2 * k + 1 : ℤ) • (rankOne T0).ι (monomial (Finsupp.single (.inl 0) k) 1) := by
-  have h : expo (Finsupp.single (Sum.inl 0 : Ix 1 0) k) = 2 * k + 1 := by
-    change (1 : ℤ) * (2 * (Finsupp.single (Sum.inl 0 : Ix 1 0) k (.inl 0) : ℕ) + 1) = _
-    simp
-  exact h ▸ rankOneRep_monomial g (Finsupp.single (.inl 0) k) 1
-
-example : oscAct 0 1 (Eab (.inr 0) (.inr 0)) 1 = (-(1 / 2) : ℂ) • 1 := by
-  rw [oscAct_Eab, unitOp_inr_inr]; simp
-
-example : oscAct 1 1 (Eab (.inl 0) (.inr 0)) 1 = X (.inl 0) * X (.inr 0) := by
-  rw [oscAct_Eab, unitOp_inl_inr, mul_one]
-
 end Osc
 
 end GlobalTheory
@@ -542,27 +415,6 @@ theorem IsOsc.fockOf_toOsc {F : Fock (Ix P Q)} {Om : T0.G →* (F.H →L[ℂ] F.
 
 theorem toOsc_isOsc_fockOf (O : GlobalTheory.Osc P Q T0) : (isOsc_fockOf O).toOsc = O := rfl
 
-theorem nonempty_osc_iff :
-    Nonempty (GlobalTheory.Osc P Q T0) ↔ ∃ (F : Fock (Ix P Q)) (Om : T0.G →* (F.H →L[ℂ] F.H)), IsOsc T0 F Om :=
-  ⟨fun ⟨O⟩ => ⟨_, _, isOsc_fockOf O⟩, fun ⟨_, _, h⟩ => ⟨h.toOsc⟩⟩
-
-theorem isOsc_rankOne [Unique (Ix P Q)] (T0 : GrpData P Q) :
-    IsOsc T0 (seqFock (Ix P Q)) (GlobalTheory.Osc.rankOneRep T0) :=
-  isOsc_fockOf (GlobalTheory.Osc.rankOne T0)
-
-theorem isOsc_circlePos : IsOsc _ (fockOf GlobalTheory.Osc.circlePos) GlobalTheory.Osc.circlePos.Om := isOsc_fockOf _
-
-theorem isOsc_circleNeg : IsOsc _ (fockOf GlobalTheory.Osc.circleNeg) GlobalTheory.Osc.circleNeg.Om := isOsc_fockOf _
-
-theorem not_isOsc_one (T0 : GrpData 1 0) (F : Fock (Ix 1 0)) : ¬ IsOsc T0 F 1 := fun h => by
-  have hZ : (Complex.I • (1 : Mat 1 0)) ∈ upq 1 0 := by
-    simp [upq, Matrix.conjTranspose_smul]
-  have h1 := (h.der _ hZ (monomial 0 1)).unique (hasDerivAt_const (0 : ℝ) (F.ι (monomial 0 1)))
-  rw [omAct0_eq, GlobalTheory.Osc.oscAct_monomial_of_unique, ← map_zero F.ι] at h1
-  have h2 := congrArg (coeff 0) (F.ι_inj h1)
-  have h3 : GlobalTheory.Osc.expo (0 : Ix 1 0 →₀ ℕ) = 1 := rfl
-  simp [h3] at h2
-
 theorem hasCoeff_coe {σ : Type} [DecidableEq σ] (F : Fock σ) (f : MvPolynomial σ ℂ) :
     HasCoeff F (F.ι f) (f : MvPowerSeries σ ℂ) := by
   intro α
@@ -578,12 +430,6 @@ theorem hasCoeff_coe {σ : Type} [DecidableEq σ] (F : Fock σ) (f : MvPolynomia
 theorem coeff_zero_gaussPoly (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → ℂ) : coeff 0 (gaussPoly A x) = 0 := by
   change constantCoeff (gaussPoly A x) = 0
   simp [gaussPoly]
-
-example : oscillatorMatrixUnit (P := 1) (Q := 1) (.inl 0) (.inr 0) 1 = X (.inl 0) * X (.inr 0) := by
-  rw [matrixUnitOperator_eq, unitOp_inl_inr, mul_one]
-
-example : oscillatorMatrixUnit (P := 1) (Q := 1) (.inr 0) (.inr 0) 1 = (-(1 / 2) : ℂ) • 1 := by
-  rw [matrixUnitOperator_eq, unitOp_inr_inr]; simp
 
 end Bridge
 

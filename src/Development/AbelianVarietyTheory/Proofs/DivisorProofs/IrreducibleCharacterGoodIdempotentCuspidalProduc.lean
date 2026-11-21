@@ -7,8 +7,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CharacterIdempotents.Sc
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IrreducibleCharacterSeries.ConjugateCharacterFormula
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IrreducibleCharacterSeries.CharacterEqOfRepIso
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentsSimpleFDRepFiniteFinsumEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSimpleLabelOfSeriesIdempotentPairStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquarefreeLabelIsCuspidalParabolicProductCharactStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSimpleLabelOfSeriesIdempotentPair
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquarefreeLabelIsCuspidalParabolicProductCharact
+import Formalism.PadicSubsetSums.CentralIdempotents.GaloisConjCentralIdempotent
 open CategoryTheory Polynomial Formalism.IrreducibleCountingLemmas.TYPES Formalism.BasicNotions Formalism.L2.DIV
 
 noncomputable section
@@ -260,9 +261,9 @@ theorem irreducible_character_good_idempotent_cuspidal_product : ∀ (D : D7) [F
   have hsq : Squarefree (Formalism.CyclotomicNorms.monicOf (a kv)) := (hP kv.1).1.2.1 kv.2
   have h1 := hs kv
   simp only [hCO] at h1
-  obtain ⟨τ, hτ, hl, hc⟩ := GlobalTheory.T.exists_simple_label_of_seriesIdempotent_pair (D.host.g kv.1) (C kv.1) (O kv.1) D.R.r (Formalism.CyclotomicNorms.monicOf (a kv)) (ψ kv)
+  obtain ⟨τ, hτ, hl, hc⟩ := _root_.GlobalTheory.SeriesIdem.exists_simple_of_eSerO_pair (D.host.g kv.1) (C kv.1) (O kv.1) D.R.r (Formalism.CyclotomicNorms.monicOf (a kv)) (ψ kv)
     (hψ kv) h1
-  have h2 := GlobalTheory.T.squarefreeLabel_isCuspidalParabolicProductCharacter (ZMod (D.host.g kv.1)) (C kv.1) (O kv.1) D.R.r τ _ hτ hl hsq
+  have h2 := _root_.GlobalTheory.SqfreeCuspProd.isCuspProdChar_of_squarefree (ZMod (D.host.g kv.1)) (C kv.1) (O kv.1) D.R.r τ _ hτ hl hsq
   have e : ψ kv = fun x => τ.character x := funext fun x => (hc x).symm
   rw [e]
   exact h2

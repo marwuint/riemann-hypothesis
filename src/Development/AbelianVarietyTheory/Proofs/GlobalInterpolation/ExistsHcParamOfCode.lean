@@ -2,8 +2,8 @@ import Mathlib
 import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ScalePolynomialQuantitiesComparisonStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScaleStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ScalePolynomialQuantitiesComparison
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScale
 import Development.AutomorphicArithmetic.WeightCongruences.IsRootOfIntegral
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab GlobalTheory.EX NumberField
 
@@ -78,8 +78,8 @@ theorem hc_sizes (eps cD ch : ℝ) (h0 : 0 < eps) (h1 : eps < 1 / 52) (hcD : 0 �
     ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks), s.eps = eps → x0 ≤ s.x → RankVal s R →
       1 ≤ Delv s cD ∧ ((R.t : ℚ) + 3) / 2 ≤ (⌈s.x ^ ch⌉₊ : ℕ) ∧
       (R.k : ℝ) * (4 * (Delv s cD : ℝ)) ≤ s.a ∧ (R.k : ℝ) ≤ s.b' / s.x ∧ 0 < s.b' ∧ 0 < s.b ∧ 0 < s.w'' R.n := by
-  obtain ⟨x1, H1⟩ := GlobalTheory.T.scale_polynomial_quantities_comparison eps (cD + 6) 1 h0 one_pos
-  obtain ⟨x2, H2⟩ := GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps h0 h1
+  obtain ⟨x1, H1⟩ := _root_.GlobalTheory.scale_poly_comparison eps (cD + 6) 1 h0 one_pos
+  obtain ⟨x2, H2⟩ := _root_.GlobalTheory.EX.rank_basic_bounds eps h0 h1
   refine ⟨max 8 (max x1 x2), fun s R he hx hR => ?_⟩
   have hx8 : 8 ≤ s.x := le_trans (le_max_left _ _) hx
   have hx1 : x1 ≤ s.x := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx

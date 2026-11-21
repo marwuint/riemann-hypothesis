@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CompletedLStripB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormWt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaplaceIntegralEntireBoundedInVerticalStripsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMeasurablePartitionOfUnityUnitLogTranslateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableWeightedHeckeThetaKernelHalfSpaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMeasurablePartitionOfUnityUnitLogTranslate
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableWeightedHeckeThetaKernelHalfSpace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodicBoundedGaussianSummableCmTypeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeThetaKernelPoissonSummationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchFactorMulPSeriesEqIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchFactorMulPSeriesEqIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MellinIntegralSplitFunctionalEquationStatement
 
 noncomputable section
@@ -18,7 +18,7 @@ namespace GlobalTheory.HeckeStrip
 theorem completed_pSeries_entire_bounded : ∀ (K : Type) [Field K] [NumberField K] [NumberField.IsTotallyComplex K] (I : Type) [Fintype I] (φ : I → K →+* ℂ), GlobalTheory.CMVal.IsCMType φ → ∀ (n : I → ℤ), (∃ i, n i ≠ 0) → ∀ (M : Ideal (𝓞 K)) (F : 𝓞 K → ℂ), M ≠ ⊥ → (∀ α μ : 𝓞 K, μ ∈ M → F (α + μ) = F α) → (∀ (u : (𝓞 K)ˣ) (α : 𝓞 K), F ((u : 𝓞 K) * α) * GlobalTheory.HeckeStrip.wt φ n (((u : 𝓞 K) * α : 𝓞 K) : K) = F α * GlobalTheory.HeckeStrip.wt φ n (α : K)) → ∃ Λ : ℂ → ℂ, Differentiable ℂ Λ ∧ GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.BoundedInStrips Λ ∧ ∀ s : ℂ, 1 < s.re → Λ s = GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.archFactor n s * GlobalTheory.HeckeStrip.pSeries F φ n s := by
   intro K _ _ _ I _ φ hφ n hn M F hM hper hinv
   haveI : Nonempty I := ⟨hn.choose⟩
-  obtain ⟨p, hpm, hp0, hpsum, R, hpR⟩ := GlobalTheory.T.exists_measurable_partitionOfUnity_unitLogTranslates K I φ hφ
+  obtain ⟨p, hpm, hp0, hpsum, R, hpR⟩ := _root_.GlobalTheory.exists_measurable_nonneg_hasSum_ulog_translates K I φ hφ
   obtain ⟨⟨C, hC⟩, hsumm, hge⟩ := GlobalTheory.T.periodic_bounded_gaussian_summable_cmType K I φ hφ M F hM hper
   obtain ⟨a, κ, hasumm, ⟨δ, hδ, hδa⟩, hfe⟩ := GlobalTheory.T.heckeThetaKernel_poisson_summation K I φ hφ n M F hM hper
   have hp1 : ∀ y, p y ≤ 1 := fun y => by
@@ -31,9 +31,9 @@ theorem completed_pSeries_entire_bounded : ∀ (K : Type) [Field K] [NumberField
   have hSm : MeasurableSet S := measurableSet_le measurable_const (by fun_prop)
   have hℓ : Measurable (fun y : I → ℝ => ∑ i, y i) := by fun_prop
   have hS0 : ∀ᵐ y ∂(volume.restrict S), 0 ≤ ∑ i, y i := ae_restrict_of_forall_mem hSm fun y hy => hy
-  obtain ⟨D1m, D1i⟩ := GlobalTheory.T.integrable_weighted_heckeThetaKernel_halfSpace I (fun α : 𝓞 K => GlobalTheory.HeckeTheta.emb φ (α : K)) F n p 1 R hn hsumm
+  obtain ⟨D1m, D1i⟩ := _root_.GlobalTheory.HeckeTheta.Decay.integrable_weight_theta I (fun α : 𝓞 K => GlobalTheory.HeckeTheta.emb φ (α : K)) F n p 1 R hn hsumm
     ⟨1, one_pos, fun α _ h => hge α h⟩ hpm hpB hpR
-  obtain ⟨D2m, D2i⟩ := GlobalTheory.T.integrable_weighted_heckeThetaKernel_halfSpace I (fun v : I → ℂ => v) a n (fun y => p (-y)) 1 R hn hasumm ⟨δ, hδ, hδa⟩
+  obtain ⟨D2m, D2i⟩ := _root_.GlobalTheory.HeckeTheta.Decay.integrable_weight_theta I (fun v : I → ℂ => v) a n (fun y => p (-y)) 1 R hn hasumm ⟨δ, hδ, hδa⟩
     (hpm.comp measurable_neg) (fun y => hpB _) (fun y hy i j => by
       have := hpR (-y) hy j i
       simp only [Pi.neg_apply] at this
@@ -68,7 +68,7 @@ theorem completed_pSeries_entire_bounded : ∀ (K : Type) [Field K] [NumberField
     gcongr
     exact hC2 (1 - s) (by simp; linarith) (by simp; linarith)
   · intro s hs
-    rw [GlobalTheory.T.archFactor_mul_pSeries_eq_integral_alt K I φ hφ n hn F C hC hinv p hpm hp0 hpsum s hs,
+    rw [_root_.GlobalTheory.HeckeMellin.archFactor_mul_pSeries_eq_integral K I φ hφ n hn F C hC hinv p hpm hp0 hpsum s hs,
       GlobalTheory.T.mellin_integral_split_functional_equation I p _ _ κ s hfe (hint _ s D1m D1i) (hint _ (1 - s) D2m D2i)]
 
 end GlobalTheory.HeckeStrip

@@ -13,9 +13,6 @@ open Formalism.DivisionValues Formalism.HermitianLatticesTheory
 
 section Gen
 
-def lenQ {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (X Y : Submodule R W) : ℕ :=
-  (Module.length R (↥X ⧸ Y.comap X.subtype)).toNat
-
 theorem locLen_congr {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (p : Ideal R) [p.IsPrime]
     {A A' C C' : Submodule R W} (hA : localization₂ p A = localization₂ p A') (hC : localization₂ p C = localization₂ p C') :
     locLen p A C = locLen p A' C' := by
@@ -89,11 +86,5 @@ theorem local_conditions_weighted_at_place : LocalConditionsWeightedAtPlace := b
     hM hTh1 hTh hThK h1le hle hFG hEig hMs hTs σ hσ hsc hdata a E r ha hE hT0 h0 hJ h0J
     (idxRules_inf_lat h3 h4) X θ' eX pr Mt hc hpr h4 inf_le_right ε
     (by rw [locP w _ _ _ h34]; exact hTW) d φ hinj hrng Mj Tj hMj hTj
-
-section Instance
-
-variable (K : Type) [Field K] [NumberField K] [StarRing K]
-
-end Instance
 
 end Formalism.EigenvalueLevelCeiling

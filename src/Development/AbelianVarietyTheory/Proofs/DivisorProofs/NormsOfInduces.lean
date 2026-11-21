@@ -24,38 +24,6 @@ def Norms (V : Cover Y) (L : HermLB V.p) (f : Y.X → Y.Fn) (a : ∀ σ : F →+
       (i : (L.B.pull V.j).ι), z ≫ V.π = y.1 → spMap e.O.subtype ≫ yt = z ≫ V.j → ⊤ ≤ yt ⁻¹ᵁ L.B.U (i PUnit.unit) →
       l v e y = Real.log (e.w (valAt z (V.φ (f (below y.1)) * (r i : V.G.functionField))))
 
-theorem norms_of_induces {C : CxSt F} {V : Cover Y} {A : Adl C Y} {L : HermLB V.p} {k : ℕ} (h : V.Induces A L k) :
-    Norms V L (fun x => genAt A.D x ^ k)
-      (fun σ y => k * lnAdl A σ y)
-      fun v e y => k * A.lg v e y := by
-  obtain ⟨r, hr, hu, hc, hf⟩ := h
-  refine ⟨r, hr, fun i x hx => by rw [map_pow]; exact hu i x hx, fun σ z y y' i e₁ e₂ hi => ?_,
-    fun v e y z yt i e₁ e₂ hi => by rw [map_pow]; exact hf v e y z yt i e₁ e₂ hi⟩
-  have H := hc σ z y y' i e₁ e₂ hi
-  have hπ : V.π (under z) = under y := by
-    show _ = y.1 _
-    rw [e₁]
-    rfl
-  have hU := hu i _ hi
-  rw [hπ] at hU
-  have h0 := ratVal_ne_zero (y := z) hU
-  have H' := congrArg Real.log H
-  rw [Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 h0)) (Real.exp_ne_zero _), Real.log_exp, Real.log_pow,
-    Real.log_pow] at H'
-  beta_reduce
-  rw [map_pow]
-  rcases Nat.eq_zero_or_pos k with rfl | hk
-  · simp only [Nat.cast_zero, zero_mul, genAt] at H' ⊢
-    simp only [Nat.cast_ofNat] at H'
-    linarith
-  have hp : C.pn Y σ A.D (A.m σ) (C.cx Y σ (genAt A.D (under y))) y ≠ 0 := fun h => by
-    rw [h, mul_zero, zero_pow hk.ne'] at H
-    exact (mul_pos (pow_pos (norm_pos_iff.2 h0) 2) (Real.exp_pos _)).ne H
-  rw [Real.log_mul (Real.exp_ne_zero _) hp, Real.log_exp] at H'
-  simp only [lnAdl, lnN, genAt] at H' ⊢
-  simp only [Nat.cast_ofNat] at H'
-  linarith
-
 theorem Norms.congr {V : Cover Y} {L : HermLB V.p} {f f' : Y.X → Y.Fn} {a a' : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     {l l' : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ} (h : Norms V L f a l) (hf : ∀ x, f x = f' x)
     (ha : ∀ σ y, a σ y = a' σ y) (hl : ∀ v e y, l v e y = l' v e y) : Norms V L f' a' l' := by

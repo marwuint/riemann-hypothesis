@@ -10,10 +10,21 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PullCub
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinear
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackEquivalence
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrincipalHermitianFibreStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsPrincipalBaseChangeIffStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SlopeBoundSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrincipalHermitianFibre
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsPrincipalBaseChangeIff
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelComplexBaseChangeStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
@@ -122,8 +133,8 @@ theorem exists_ext (D : PPData H L) (L' : Type) [Field L'] [NumberField L'] [Alg
       spMap (algebraMap L L') ≫ spMap (algebraMap (𝓞 L) L) := by
     rw [spMap_comp, spMap_comp, algebraMap_square]
   obtain ⟨m₃, -⟩ := sabCancel pullCubCancel E H _ _ _ D.t D.tK tK' _ (spMap (algebraMap L L')) D.m (hsq ▸ n)
-  have pr : IsPrincipal tK' := (GlobalTheory.T.isPrincipal_base_change_iff E H L L' (algebraMap L L') D.tK tK' m₃).2 D.princ
-  obtain ⟨B, MB, fib⟩ := GlobalTheory.T.principal_hermitian_fibre E H L' t' tK' m₂ pr
+  have pr : IsPrincipal tK' := (_root_.GlobalTheory.CompanionTheory.Ar.isPrincipal_iff_of_sabMap_field E H L L' (algebraMap L L') D.tK tK' m₃).2 D.princ
+  obtain ⟨B, MB, fib⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeFibre.exists_hermitianBundle E H L' t' tK' m₂ pr
   exact ⟨⟨⟨t', tK', m₂, pr, B, MB, fib⟩, m₁⟩⟩
 
 theorem ext_props (D : PPData H L) (D' : PPData H L') (m : D.Ext D') :
@@ -153,7 +164,7 @@ theorem ext_props (D : PPData H L) (D' : PPData H L') (m : D.Ext D') :
     rw [Algebra.smul_def, mul_smul]⟩
   let jl : D.B.carrier →ₗ[𝓞 L] D'.B.carrier :=
     { toFun := j, map_add' := j.map_add, map_smul' := fun r x => j.map_smulₛₗ r x }
-  have hb : IsBaseChange (𝓞 L') jl := GlobalTheory.T.lie_model_isBaseChange _ D.t.G _ _ (𝟙 _) _ _ D.MB Mq jl hj
+  have hb : IsBaseChange (𝓞 L') jl := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_isBaseChange _ D.t.G _ _ (𝟙 _) _ _ D.MB Mq jl hj
   have hΦ : ∀ x, hb.equiv ((1 : 𝓞 L') ⊗ₜ[𝓞 L] x) = j x := fun x => by
     rw [hb.equiv_tmul, one_smul]
     rfl
@@ -184,7 +195,7 @@ theorem ext_props (D : PPData H L) (D' : PPData H L') (m : D.Ext D') :
         (Category.comp_id _).symm.trans (h₁ e)
       change lf _ ≫ m.φ = lf _
       rw [h₃, c₁, c₂, Category.assoc, hj', ← Category.assoc, spMap_comp, dualMap_comp, hring]
-    have T := GlobalTheory.T.hodge_inner_product_pullback_unique E H _ _ D'.t D.t _ m (spMap (σ'.comp (algebraMap (𝓞 L') L')) ≫ 𝟙 _) _ _ _ _ (hv x) (hv y)
+    have T := _root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.main E H _ _ D'.t D.t _ m (spMap (σ'.comp (algebraMap (𝓞 L') L')) ≫ 𝟙 _) _ _ _ _ (hv x) (hv y)
     exact T.2 _ _ ((T.1 _).1 b) (hodge_congr _ hz (h₃ _).symm (h₃ _).symm a)
   refine ⟨hb.finrank_eq, ?_, j, ?_, ?_, hmet⟩
   · have := normDegree_top_eq D.B D'.B j hb.equiv hΦ hmet

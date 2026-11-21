@@ -43,7 +43,7 @@ theorem central_chart (h0 : Flat.FlatLineGenerator) (h1 : Flat.FlatLineGenerator
     ∃ (F : (Fin n → ℂ) → ℂ) (d : ℝ), AnalyticAt ℂ F 0 ∧ F 0 ≠ 0 ∧
       ∀ᶠ t in 𝓝 (0 : Fin n → ℂ), ∑ i, Real.log ((hx (τ, i)).h (χ.γ t)) = Real.log ‖F t‖ + d := by
   have pts : ∀ w ∈ mcPts (mCoordIdeal y), ∃ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z w := fun w hw => by
-    obtain ⟨z, -, hz⟩ := (GlobalTheory.T.complex_points_iff_centres 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie w).1 hw
+    obtain ⟨z, -, hz⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie w).1 hw
     exact ⟨z, hz⟩
   obtain ⟨z₀, hz₀⟩ := pts _ (χ.mem 0 (Metric.mem_ball_self one_pos))
   obtain ⟨c₁, a, tt, h⟩ := central h0 h1 hS hpq 𝔐 Fl xdeg e hx hroot hhod hdg τ

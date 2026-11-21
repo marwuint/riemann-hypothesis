@@ -40,11 +40,11 @@ private theorem colT_rel (hψ : StdPsi ψ) (X : Set (GA E a))
       simp [dot]
     simp only [coefF, e, one_mul]
     exact hv
-  obtain ⟨γ, hγ, hγξ⟩ := GlobalTheory.T.exists_rationalMirabolic_moving_row_to_last E a m hma ξ hξ0
+  obtain ⟨γ, hγ, hγξ⟩ := _root_.GlobalTheory.CuspGeneric.mir_exists_row E a m hma ξ hξ0
   have hγ' : IsMir (a - 1) γ := fun i k h => hγ i k (by omega)
   have h1 := h0 _ (hX γ hγ' g₀ hgX)
   simp only [colT] at h1
-  rw [GlobalTheory.T.whittakerCoefficient_rationalMirabolic_mul E a ψ hψ m f hG.cont hG.left γ hγ (eLast a (m + 1)) g₀] at h1
+  rw [_root_.GlobalTheory.CuspGeneric.coefF_ratGL_mul E a ψ hψ m f hG.cont hG.left γ hγ (eLast a (m + 1)) g₀] at h1
   have e : (fun t : UnipotentBlockColumnIndex a (m + 1) (m + 1) => ∑ s : UnipotentBlockColumnIndex a (m + 1) (m + 1), eLast a (m + 1) s * γ.val s.1.1 t.1.1) = ξ :=
     funext hγξ
   rw [e] at h1
@@ -174,7 +174,7 @@ theorem UpperTheory.V.Z.Desc.V0.kirCusp :
     KirCusp := by
   intro E _ _ _ a _ P w σ hσ
   obtain ⟨f, hf0, hf⟩ := hσ
-  obtain ⟨ψ, hψ⟩ := GlobalTheory.T.exists_standardAdelicAddChar E
+  obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.CuspGeneric.exists_stdPsi E
   have hg : ∀ v, Good ψ (a - 1) (f v).1.1 := fun v => GlobalTheory.T.isMirabolicWhittakerStage_of_isCuspForm E a ψ (f v).1 (P.cusp _ (f v).2)
   have h0 : a - 1 < a ∨ a - 1 = 0 := by omega
   obtain ⟨v₀, hv₀⟩ : ∃ v, f v ≠ 0 := by
@@ -183,7 +183,7 @@ theorem UpperTheory.V.Z.Desc.V0.kirCusp :
     exact hf0 (LinearMap.ext h)
   have hv1 : (f v₀).1.1 ≠ 0 := fun h => hv₀ (Subtype.ext (Subtype.ext h))
   obtain ⟨g₀, hg₀⟩ := Function.ne_iff.1 ((whit_good hψ (a - 1) h0 (hg v₀)).2 hv1)
-  obtain ⟨h₀, gw, e, hc₀⟩ := GlobalTheory.T.exists_split_adelicMatrix_localComponent E a w g₀
+  obtain ⟨h₀, gw, e, hc₀⟩ := _root_.GlobalTheory.CuspGeneric.exists_split_loc E a w g₀
   have hrt : ∀ u v x, whit ψ (a - 1) (f (σ.ρ u v)).1.1 x =
       whit ψ (a - 1) (f v).1.1 (x * finGL E a (locGL E a w u)) := fun u v x => by
     rw [hf u v]
@@ -205,7 +205,7 @@ theorem UpperTheory.V.Z.Desc.V0.kirCusp :
       L h (σ.ρ u v) = (locPsi hψ w (∑ p : Fin a × Fin a with (p.2 : ℕ) = p.1 + 1, (u : GL (Fin a) (w.adicCompletion E)).val p.1 p.2) : ℂ) * L h v := by
     intro h hc u v
     obtain ⟨u1, u2⟩ := (GlobalTheory.SmGL.mem_unipB _).1 u.2
-    obtain ⟨t1, t2, t3⟩ := GlobalTheory.T.localUpperUnipotent_adelic_upperUnipotent E a w u u1 u2
+    obtain ⟨t1, t2, t3⟩ := _root_.GlobalTheory.CuspRep.locTri_adelic E a w u u1 u2
     have hlw := (whit_good hψ (a - 1) h0 (hg v)).1.law
     have := GlobalTheory.T.whittakerLaw_upperTriangularUnipotent_adelic E a ψ _ (fun k hk => hlw k hk) _ t1 t2 h
     rw [hL, hrt, hc, this, t3]

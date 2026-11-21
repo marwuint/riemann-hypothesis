@@ -162,50 +162,6 @@ section Alg2
 variable {K : Type} [CommRing K] {R : Subring K} {ψ : AddChar K ℂ}
 variable {C : Type} [AddCommGroup C] [Module R C]
 
-theorem psiKR_zero (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) :
-    psiKR R ψ (0 : KR R) = 1 := (psiBar h).map_zero_eq_one
-
-theorem mem_of_kills (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) [Finite C]
-    (S : Submodule R (C →ₗ[R] KR R)) (μ : C →ₗ[R] KR R)
-    (hμ : ∀ c, (∀ α ∈ S, α c = 0) → μ c = 0) : μ ∈ S := by
-  classical
-  have := finite_dual (C := C) h
-  have := Fintype.ofFinite C
-  have := Fintype.ofFinite S
-  by_contra hn
-  have e1 : ∑ c : C, ∑ α : S, psiKR R ψ (((α : C →ₗ[R] KR R) - μ) c) = 0 := by
-    rw [Finset.sum_comm]
-    apply Finset.sum_eq_zero
-    intro α _
-    rw [← finsum_eq_sum_of_fintype, sum_over_C h, if_neg]
-    intro h0
-    apply hn
-    rw [← sub_eq_zero.1 h0]
-    exact α.2
-  have e2 : ∀ c : C, ∑ α : S, psiKR R ψ (((α : C →ₗ[R] KR R) - μ) c) =
-      if ∀ α ∈ S, α c = 0 then (Nat.card S : ℂ) else 0 := by
-    intro c
-    have h3 : ∀ α : S, psiKR R ψ (((α : C →ₗ[R] KR R) - μ) c) =
-        psiKR R ψ ((α : C →ₗ[R] KR R) c) * psiKR R ψ (-(μ c)) := by
-      intro α
-      rw [LinearMap.sub_apply, sub_eq_add_neg]
-      exact (psiBar h).map_add_eq_mul _ _
-    simp_rw [h3]
-    rw [← Finset.sum_mul, ← finsum_eq_sum_of_fintype, sum_over_S h]
-    split_ifs with hc
-    · rw [hμ c hc, neg_zero, psiKR_zero h, mul_one]
-    · rw [zero_mul]
-  simp_rw [e2] at e1
-  rw [Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul] at e1
-  rcases mul_eq_zero.1 e1 with h1 | h1
-  · have h4 : (0 : C) ∈ Finset.univ.filter (fun c : C => ∀ α ∈ S, α c = 0) := by
-      simp
-    rw [Nat.cast_eq_zero, Finset.card_eq_zero] at h1
-    rw [h1] at h4
-    exact absurd h4 (Finset.notMem_empty _)
-  · rw [Nat.cast_eq_zero] at h1
-    exact Nat.card_pos.ne' h1
-
 open Classical in
 
 theorem sum_over_dual' (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) [Finite C]
@@ -327,71 +283,6 @@ end Formalism.FourierDecayAlt.P.A5x3
 namespace Formalism.FourierDecayAlt.P
 
 open A5x3
-
-theorem dualSpan_true_hc : Formalism.FourierDecayAlt.A5.DualSpan := by
-  intro K _ R ψ h C _ _ _ ι _ lam μ hμ
-  apply mem_of_kills h
-  intro c hc
-  exact hμ c fun j => hc _ (Submodule.subset_span ⟨j, rfl⟩)
-
-theorem quotientEndScalar : Formalism.FourierDecayAlt.A5.EndKR := by
-  intro K _ _ _ R ψ hD f
-  obtain ⟨ϖ, hϖ, hex⟩ := hD.unif
-  have := hD.t2
-  have hcl : IsClosed (R : Set K) := hD.isCompact.isClosed
-  let A : ℕ → Set K := fun m => {r | r ∈ R ∧ ∀ x : K, (ϖ : K) ^ m * x ∈ R →
-    f (Submodule.Quotient.mk x) = Submodule.Quotient.mk (r * x)}
-  have hclosed : ∀ m, IsClosed (A m) := by
-    intro m
-    have h1 : A m = (R : Set K) ∩ ⋂ x : K, ⋂ _ : (ϖ : K) ^ m * x ∈ R,
-        {r | f (Submodule.Quotient.mk x) = Submodule.Quotient.mk (r * x)} := by
-      ext r
-      simp only [A, Set.mem_ofPred_eq, Set.mem_inter_iff, SetLike.mem_coe, Set.mem_iInter]
-    rw [h1]
-    refine hcl.inter (isClosed_iInter fun x => isClosed_iInter fun _ => ?_)
-    obtain ⟨y, hy⟩ := Submodule.Quotient.mk_surjective _ (f (Submodule.Quotient.mk x))
-    have h2 : {r : K | f (Submodule.Quotient.mk x) = (Submodule.Quotient.mk (r * x) : KR R)} =
-        (fun r => y - r * x) ⁻¹' (R : Set K) := by
-      ext r
-      simp only [Set.mem_ofPred_eq, Set.mem_preimage, SetLike.mem_coe]
-      rw [← hy, mk_eq_mk]
-    rw [h2]
-    exact hcl.preimage (by fun_prop)
-  have hne : (⋂ m, A m).Nonempty := by
-    apply IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed
-    · intro m r hr
-      refine ⟨hr.1, fun x hx => hr.2 x ?_⟩
-      rw [pow_succ', mul_assoc]
-      exact R.mul_mem hϖ hx
-    · intro m
-      obtain ⟨y, hy⟩ := Submodule.Quotient.mk_surjective _
-        (f (Submodule.Quotient.mk (((ϖ⁻¹ : Kˣ) : K) ^ m)))
-      have hpow : (ϖ : K) ^ m * ((ϖ⁻¹ : Kˣ) : K) ^ m = 1 := by
-        rw [← mul_pow, Units.mul_inv, one_pow]
-      have hpm : (ϖ : K) ^ m ∈ R := R.pow_mem hϖ m
-      have hr : (ϖ : K) ^ m * y ∈ R := by
-        rw [← mk_eq_zero, ← smul_mk R ⟨_, hpm⟩, hy, ← map_smul, smul_mk, hpow,
-          (mk_eq_zero R 1).2 R.one_mem, map_zero]
-      refine ⟨(ϖ : K) ^ m * y, hr, fun x hx => ?_⟩
-      have hx1 : (Submodule.Quotient.mk x : KR R) =
-          (⟨_, hx⟩ : R) • Submodule.Quotient.mk (((ϖ⁻¹ : Kˣ) : K) ^ m) := by
-        rw [smul_mk]
-        congr 1
-        simp only
-        rw [mul_right_comm, hpow, one_mul]
-      rw [hx1, map_smul, ← hy, smul_mk]
-      congr 1
-      simp only
-      ring
-    · exact hD.isCompact.of_isClosed_subset (hclosed 0) fun r hr => hr.1
-    · exact hclosed
-  obtain ⟨r, hr⟩ := hne
-  rw [Set.mem_iInter] at hr
-  refine ⟨⟨r, (hr 0).1⟩, fun x => ?_⟩
-  induction x using Submodule.Quotient.induction_on with
-  | H x =>
-    obtain ⟨m, hm⟩ := hex x
-    rw [(hr m).2 x hm, smul_mk]
 
 theorem characterOrthogonalityDual : Formalism.FourierDecayAlt.A5.CharOrthDual := by
   intro K _ _ _ R ψ hD n Z hZ hdet

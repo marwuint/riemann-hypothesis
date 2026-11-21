@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResV
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InjectiveRingMapOfPointValuesDetectFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoverMemberContainingFractionFieldPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointValueFractionFieldEqBasicOpenExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartFunctionEqValueMulUnitPowFractionFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionValueInFrameLocalRingPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointValueFractionFieldCommVectorFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationFractionRingOfVectorFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatRingOperatorConjByPowNonzeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoverMemberContainingFractionFieldPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointValueFractionFieldEqBasicOpenExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartFunctionEqValueMulUnitPowFractionField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionValueInFrameLocalRingPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointValueFractionFieldCommVectorField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationFractionRingOfVectorField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatRingOperatorConjByPowNonzero
 
 set_option autoImplicit false
 
@@ -39,11 +39,11 @@ theorem value_opV_ringOp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   haveI : CharZero Ω := charZero_of_injective_ringHom (φ.comp (algebraMap ℚ R)).injective
   haveI : CharZero (FractionRing Ω) :=
     charZero_of_injective_ringHom (IsFractionRing.injective Ω (FractionRing Ω))
-  obtain ⟨i0, hi0⟩ := GlobalTheory.T.exists_cover_member_containing_fractionField_point R t.G Ω φ x' hx' c hφc J W hcov
-  obtain ⟨dt0, hdt0⟩ := GlobalTheory.T.exists_derivation_fractionRing_of_vectorField t.G.left Ω x' hinj (W i0) (d i0) (hfield i0) hi0
-  have hddv := fun a => GlobalTheory.T.pointValue_fractionField_comm_vectorField t.G.left Ω x' (dd' a) (δ a) (δL a) (hinv a).1 (hval a) (hδL a)
-  have hcst := GlobalTheory.T.pointValue_fractionField_eq_basicOpen_extension R t.G Ω φ x' hx' c iota hiota (W i0) (hW i0) hi0
-  obtain ⟨e₀, he₀⟩ := GlobalTheory.T.chartFunction_eq_value_mul_unit_pow_fractionField t.G.left t.PP.L t.PP.isLB Ω x' g (j i0) (W i0) (hWU i0) hi0
+  obtain ⟨i0, hi0⟩ := _root_.GlobalTheory.genPt_mem_cover R t.G Ω φ x' hx' c hφc J W hcov
+  obtain ⟨dt0, hdt0⟩ := _root_.GlobalTheory.GenDer.exists_derivation_fractionRing t.G.left Ω x' hinj (W i0) (d i0) (hfield i0) hi0
+  have hddv := fun a => _root_.GlobalTheory.GenericVal.valR_generic t.G.left Ω x' (dd' a) (δ a) (δL a) (hinv a).1 (hval a) (hδL a)
+  have hcst := _root_.GlobalTheory.HeatV.valR_cst_eq_iota R t.G Ω φ x' hx' c iota hiota (W i0) (hW i0) hi0
+  obtain ⟨e₀, he₀⟩ := _root_.GlobalTheory.FracPt.chart_eq_value_mul_pow t.G.left t.PP.L t.PP.isLB Ω x' g (j i0) (W i0) (hWU i0) hi0
   set ψ : Γ(t.G.left, W i0) →+* FractionRing Ω :=
     (Scheme.ΓSpecIso (CommRingCat.of (FractionRing Ω))).hom.hom.comp
       ((spMap (algebraMap Ω (FractionRing Ω)) ≫ x').appLE (W i0) ⊤ hi0).hom with hψ
@@ -55,7 +55,7 @@ theorem value_opV_ringOp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     intro a F; rw [← hv, ← hv]; exact hddv a _ _ hi0
   have hc' : ∀ θ, ψ (GlobalTheory.HeatV.cst t.G.hom _ (hW i0) θ) = iota θ := by
     intro θ; rw [← hv]; exact hcst θ
-  obtain ⟨dt, u', p, p', hdt, hgauge⟩ := GlobalTheory.T.heatRingOperator_conj_by_pow_nonzero Ω n dt0 δL (iota.mapMatrix Θ₁) two_ne_zero
+  obtain ⟨dt, u', p, p', hdt, hgauge⟩ := _root_.GlobalTheory.Heat.ringOp_conj_pow_gen Ω n dt0 δL (iota.mapMatrix Θ₁) two_ne_zero
     (fun a => iota (u a)) (ψ (pf i0)) (ψ (pf' i0)) (e₀ : FractionRing Ω) e₀.ne_zero
   have hdtR : ∀ r, dt (algebraMap Ω (FractionRing Ω) (φ r)) = algebraMap Ω (FractionRing Ω) (φ (D r)) := by
     intro r
@@ -69,7 +69,7 @@ theorem value_opV_ringOp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     intro F
     simp only [GlobalTheory.HeatV.opV, ringOp, map_add, map_sub, map_mul, map_sum, map_natCast, map_ofNat, map_pow, hd0, hdd,
       hc', rsT_self, RingHom.mapMatrix_apply, Matrix.map_apply]
-  obtain ⟨ω', hω'⟩ := GlobalTheory.T.exists_sectionValue_in_frame_localRing_point t.G.left t.PP.L t.PP.isLB Ω x' g hg k σ'
+  obtain ⟨ω', hω'⟩ := _root_.GlobalTheory.HeatV.exists_isValue t.G.left t.PP.L t.PP.isLB Ω x' g hg k σ'
   refine ⟨ω', hω', ?_⟩
   have h1 := he₀ k σ ω hω
   have h2 := he₀ k σ' ω' hω'

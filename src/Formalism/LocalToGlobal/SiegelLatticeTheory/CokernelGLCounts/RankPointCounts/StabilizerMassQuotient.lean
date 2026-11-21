@@ -8,9 +8,6 @@ namespace Formalism.L2.SG.Pf.StabilizerMassQuotient
 
 variable (Γ : Type*) [Group Γ]
 
-def mass (A : Type*) [MulAction Γ A] : ℝ≥0∞ :=
-  ∑' o : Quotient (MulAction.orbitRel Γ A), ((Nat.card (MulAction.stabilizer Γ o.out) : ℝ≥0∞))⁻¹
-
 variable {Γ}
 
 theorem card_stab_smul {A : Type*} [MulAction Γ A] (g : Γ) (a : A) :
@@ -112,41 +109,5 @@ def orbEquiv (oB : Quotient (MulAction.orbitRel Γ B)) :
       Quotient.mk _ oA.out).trans (Quotient.out_eq oA)
 
 end Fibre
-
-section Sub
-
-variable {Y : Type*} [MulAction Γ Y]
-
-@[reducible] def subAct (X : Set Y) (hX : ∀ (g : Γ) y, y ∈ X → g • y ∈ X) : MulAction Γ X where
-  smul g y := ⟨g • y.1, hX g y.1 y.2⟩
-  one_smul y := Subtype.ext (one_smul Γ y.1)
-  mul_smul g h y := Subtype.ext (mul_smul g h y.1)
-
-def subStab (X : Set Y) (hX : ∀ (g : Γ) y, y ∈ X → g • y ∈ X) (y : X) :
-    (letI := subAct X hX; MulAction.stabilizer Γ y) ≃ MulAction.stabilizer Γ y.1 := by
-  letI := subAct X hX
-  exact
-    { toFun := fun g => ⟨g.1, by
-        have h := MulAction.mem_stabilizer_iff.1 g.2
-        exact MulAction.mem_stabilizer_iff.2 (congrArg Subtype.val h)⟩
-      invFun := fun g => ⟨g.1, by
-        rw [MulAction.mem_stabilizer_iff]
-        exact Subtype.ext (MulAction.mem_stabilizer_iff.1 g.2)⟩
-      left_inv := fun _ => rfl
-      right_inv := fun _ => rfl }
-
-end Sub
-
-section Pair
-
-variable {Y : Type*} [MulAction Γ Y]
-
-end Pair
-
-section Local
-
-variable {T : Type*} [MulAction Γ T]
-
-end Local
 
 end Formalism.L2.SG.Pf.StabilizerMassQuotient

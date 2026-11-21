@@ -173,12 +173,6 @@ theorem le_PP {P : ParameterChoice' D L} (T : ParamsT D L P) : (D.R.f : ℝ) * (
   have h1 : D.R.f * D.R.r ^ 2 ≤ T.nWn := le_trans (by nlinarith [Nat.zero_le (D.R.f * D.R.r)]) T.nW_lo.1
   exact le_trans (by exact_mod_cast h1) T.nW_le
 
-theorem wtPt_of_wtN (h : WtN) : WtPt :=
-  Closed.imp h fun Fm _ _ ⟨_, _, a, h⟩ => ⟨802, by norm_num, a, fun x hx hle ι p hp i hi u1 hq =>
-    wtAt_of_wtNum p i (h x hx hle ι p hp i) (le_PP (Fm.parT x hx ι)) hi u1 hq⟩
-
-theorem wtPt_of_size : Size → WtPt := fun _ => wtPt_of_wtN GlobalTheory.T.weight_bound_holds
-
 end GlobalTheory.RefSum.DivWt
 
 end

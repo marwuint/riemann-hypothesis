@@ -1,7 +1,8 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.GramCEqTranspose
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalMatrixEigenspaceImageSpannedRationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSpanInfRationalSubspaceIntegersExtStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalMatrixEigenspaceImageSpannedRational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentIdealSmulMemSpanRational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSpanInfRationalSubspaceIntegersExt
 open NumberField
 
 namespace GlobalTheory
@@ -57,8 +58,8 @@ theorem mall_eq_span_rat (LL Ks WL G0 : Type) [Field LL] [NumberField LL] [Field
   let φ : (Fin n → Ks) →ₗ[𝓞 Ks] WL := (Fintype.linearCombination Ks b).restrictScalars (𝓞 Ks)
   let M : Submodule (𝓞 Ks) (Fin n → Ks) := A.MK.comap φ
   have hMmem : ∀ x, x ∈ M ↔ ∑ k, x k • b k ∈ A.MK := fun x => by simp [M, φ, Fintype.linearCombination_apply]
-  have hI1 := (GlobalTheory.T.rational_matrix_eigenspace_image_spanned_rational Ks LL n J0 Am lamK 0).1
-  have hI2 := GlobalTheory.T.lattice_span_inf_rational_subspace_integers_ext Ks LL n M Wt
+  have hI1 := (_root_.GlobalTheory.rational_eigen_image_span Ks LL n J0 Am lamK 0).1
+  have hI2 := _root_.GlobalTheory.span_inf_span_eq_span_inf_of_rational Ks LL n M Wt
   let ψO : (Fin n → LL) →ₗ[𝓞 LL] WL := ψ.restrictScalars (𝓞 LL)
   rintro y ⟨hy1, hy2⟩
   have hle : Submodule.span (𝓞 LL) (A.MK : Set WL) ≤ (Submodule.span (𝓞 LL) (e '' (M : Set _))).map ψO := by

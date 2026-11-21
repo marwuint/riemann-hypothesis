@@ -25,13 +25,6 @@ lemma tay_congr' (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) (h : f =ᶠ
     tay f = tay g :=
   tay_congr ((hf.continuousAt.eventuallyEq_nhds_iff_eventuallyEq_nhdsNE hg.continuousAt).1 h)
 
-lemma tay_add (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
-    tay (fun z => f z + g z) = tay f + tay g := by
-  ext n
-  simp only [map_add, PowerSeries.coeff_mk, coef1, ← add_div]
-  congr 1
-  exact iteratedDeriv_add hf.contDiffAt hg.contDiffAt
-
 lemma tay_sub (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     tay (fun z => f z - g z) = tay f - tay g := by
   ext n

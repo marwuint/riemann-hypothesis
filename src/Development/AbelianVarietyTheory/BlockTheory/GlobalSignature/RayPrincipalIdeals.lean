@@ -78,17 +78,6 @@ def RayField : Prop :=
         ∀ (𝔭 : HeightOneSpectrum (𝓞 K)) (h : ¬ 𝔭.asIdeal ∣ 𝔪),
           GlobalTheory.NT.UnramIn L 𝔭 ∧ GlobalTheory.NT.IsFrob L 𝔭 (Art (primeClass 𝔪 𝔭 h))
 
-example : idealsPrimeTo (⊤ : Ideal (𝓞 K)) = ⊤ := by
-  refine eq_top_iff.2 fun J _ 𝔭 h => absurd ?_ 𝔭.isPrime.ne_top
-  exact top_le_iff.1 (Ideal.le_of_dvd h)
-
-example (𝔪 : Ideal (𝓞 ℚ)) : (-1 : ℚˣ) ∉ rayUnits 𝔪 := by
-  rintro ⟨a, b, ⟨-, -, -, -, -, hp⟩, hx⟩
-  have := hp (Rat.castHom ℝ)
-  rw [← hx] at this
-  simp only [Units.val_neg, Units.val_one, map_mul, map_neg, map_one] at this
-  nlinarith [mul_self_nonneg ((Rat.castHom ℝ) (b : ℚ))]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.RayPrincipalIdeals
 
 end

@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DblActId
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealisedOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxRationalBasisCompatible
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticMemClosureGenerators
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDarbouxOperatorsLeviAndDoubleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDarbouxOperatorsLeviAndDouble
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDarbouxChangeOperatorWithDoubleLowerUnipotStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylElementRealisedByFourierTransformsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylElementRealisedByFourierTransforms
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxChangeRealisedCompAndReindexStatement
 open scoped TensorProduct NNReal ENNReal Matrix Classical
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.TowU
@@ -57,11 +57,11 @@ theorem realised_of_sp {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F)
   induction hcl using Submonoid.closure_induction with
   | mem x hx =>
     rcases hx with (⟨A, hA, rfl⟩ | ⟨C, hC, rfl⟩) | hx
-    · exact GlobalTheory.T.exists_darbouxOperators_levi_and_double F ψ hψ κ A hA
+    · exact _root_.GlobalTheory.TowU.realised_levi2 F ψ hψ κ A hA
     · exact GlobalTheory.T.exists_darbouxChangeOperatorWithDouble_lowerUnipotent F ψ hψ κ C hC
     · rw [Set.mem_singleton_iff] at hx
       subst hx
-      exact GlobalTheory.T.weylElement_realised_by_fourierTransforms F ψ hψ κ
+      exact _root_.GlobalTheory.TowU.realised_weyl2 F ψ hψ κ
   | one =>
     obtain ⟨S, S', h⟩ := (GlobalTheory.T.darbouxChange_realised_comp_and_reindex F ψ hψ).2 κ κ (Equiv.refl κ)
     refine ⟨S, S', ?_⟩

@@ -133,26 +133,6 @@ def LEx : (Ix Dw → ℤ) →+ C.Y.Dv where
 
 def Lw (la : GlobalTheory.AllWt.Weight Dw) : C.Y.Dv := C.LEx (GlobalTheory.AllWt.exOf Dw la 0)
 
-theorem Lw_zero : C.Lw 0 = 0 := by
-  have h : GlobalTheory.AllWt.exOf Dw 0 0 = 0 := by
-    rw [GlobalTheory.AllWt.exOf, GlobalTheory.AllWt.wtOf_zero]; funext i; cases i <;> rfl
-  rw [Lw, h, map_zero]
-
-theorem Lw_add (la la' : GlobalTheory.AllWt.Weight Dw) : C.Lw (la + la') = C.Lw la + C.Lw la' := by
-  have h := GlobalTheory.AllWt.exOf_add la la' 0 0
-  rw [add_zero] at h
-  rw [Lw, h, map_add, Lw, Lw]
-
-theorem LEx_congr {a b : Ix Dw → ℤ} (h : ∀ x, a (some x) = b (some x)) : C.LEx a = C.LEx b := by
-  simp only [LEx, AddMonoidHom.coe_mk, ZeroHom.coe_mk, h]
-
-open Classical in
-
-theorem LEx_single (x : Σ τ : E →+* ℂ, Fin (Dw.mult τ)) : C.LEx (Pi.single (some x) 1) = -C.gr x.1 x.2 := by
-  simp only [LEx, AddMonoidHom.coe_mk, ZeroHom.coe_mk]
-  rw [Finset.sum_eq_single x (fun b _ hb => by rw [Pi.single_eq_of_ne (by simpa using hb), zero_smul]) (by simp),
-    Pi.single_eq_same, one_smul]
-
 def val (f : Rul Xo c) : C.Y.Fn := letI := (constF e C.Y).toAlgebra; evR Xo c f C.y0
 
 end FlagCpt
@@ -173,10 +153,6 @@ structure KeySec (Xo : Moduli Dw l) (c : Coeff l) : Type where
   ρ : (Rul Xo c)ˣ
   mem : (ρ : Rul Xo c) ∈ GlobalTheory.AllWt.secZ Xo c (keyEx Dw)
 
-def FlagCpt.cmp {Z : Model Xo c β} {e : F ≃+* c.F} (C : FlagCpt Z e) (κ : KeySec Xo c) {c₀ : Coeff l} (hle : c₀.F ≤ c.F)
-    (n : ℕ) (f : Rul Xo c₀) : C.Y.Fn :=
-  C.val (GlobalTheory.FieldBC.rulBC hle f * (κ.ρ : Rul Xo c) ^ (n / 2))
-
 def exKey (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Ix Dw → ℤ :=
   fun i => (ex Dw a n i : ℤ) + ((n / 2 : ℕ) : ℤ) * keyEx Dw i
 
@@ -192,10 +168,6 @@ theorem exKey_two_mul (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ) :
   cases i <;> simp [exKey, keyEx, ex, exZ]
   ring
 
-theorem FlagCpt.LEx_exKey {Z : Model Xo c β} {e : F ≃+* c.F} (C : FlagCpt Z e) (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ) :
-    C.LEx (exKey Dw a (2 * m)) = C.Lw (GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ)) m) := by
-  rw [exKey_two_mul, FlagCpt.Lw]
-
 theorem KeySec.pow_mem (κ : KeySec Xo c) (m : ℕ) :
     (κ.ρ : Rul Xo c) ^ m ∈ GlobalTheory.AllWt.secZ Xo c (fun i => (m : ℤ) * keyEx Dw i) := by
   induction m with
@@ -206,11 +178,6 @@ theorem KeySec.pow_mem (κ : KeySec Xo c) (m : ℕ) :
     have h : (fun i => ((m + 1 : ℕ) : ℤ) * keyEx Dw i) = (fun i => (m : ℤ) * keyEx Dw i) + keyEx Dw := by
       funext i; simp only [Pi.add_apply]; push_cast; ring
     rw [pow_succ, h]; exact GlobalTheory.AllWt.mul_mem_secZ ih κ.mem
-
-theorem KeySec.mul_pow_mem (κ : KeySec Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) :
-    f * (κ.ρ : Rul Xo c) ^ (n / 2) ∈ GlobalTheory.AllWt.secZ Xo c (exKey Dw a n) := by
-  rw [← GlobalTheory.AllWt.secZ_nat] at hf
-  exact GlobalTheory.AllWt.mul_mem_secZ hf (κ.pow_mem (n / 2))
 
 end Free
 

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VecPairApply
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BkOnLeMapOfSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BkOnLeMapOfSurjective
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PairingEquivariantStatement
 
 noncomputable section
@@ -99,7 +99,7 @@ theorem dualSel_of_smul_cob : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R
     show e.compLeft _ (z g) = _
     rw [hz, map_sub, repOn_map, hm₂, hm₀ g hg, map_sub]
     abel
-  · obtain ⟨xc, hxc, hxe⟩ := GlobalTheory.T.bkOn_le_map_h1MapSubgroup_of_surjective D N X bkP i s A κ Q hS hK Y Y₂ f hf v hx₂
+  · obtain ⟨xc, hxc, hxe⟩ := _root_.GlobalTheory.NewPrime.bkOn_le_map_of_surjective D N X bkP i s A κ Q hS hK Y Y₂ f hf v hx₂
     obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ xc
     have h1 := hy.2.2 v hv x hxc
     have h2 := cupB_right _ ((repOn (Tgl i s) κ Y).comp (DecV N v).subtype) ((repOn ρ κ⁻¹ Y').comp (DecV N v).subtype)

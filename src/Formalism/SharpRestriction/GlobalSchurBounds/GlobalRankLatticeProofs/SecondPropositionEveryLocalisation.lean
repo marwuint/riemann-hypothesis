@@ -25,10 +25,6 @@ theorem iotaH_add (e : ℕ) (i j : ZMod (2 ^ e)) : iotaH e (i + j) = iotaH e i *
   rw [ZMod.val_add, ← pow_add]
   exact h
 
-theorem iotaH_zero (e : ℕ) : iotaH e 0 = 1 := by
-  unfold iotaH
-  rw [ZMod.val_zero, pow_zero]
-
 theorem iotaH_injective (e : ℕ) : Function.Injective (iotaH e) := by
   intro i j hij
   unfold iotaH at hij
@@ -44,13 +40,6 @@ theorem iotaH_bijective (e : ℕ) : Function.Bijective (iotaH e) := by
 theorem iotaH_iotaHInv (e : ℕ) (x : HGrp e) : iotaH e (iotaHInv e x) = x :=
   Function.rightInverse_invFun (iotaH_bijective e).2 x
 
-theorem iotaH_nsmul (e : ℕ) (k : ℕ) (i : ZMod (2 ^ e)) : iotaH e (k • i) = iotaH e i ^ k := by
-  induction k with
-  | zero => rw [zero_smul, iotaH_zero, pow_zero]
-  | succ k ih =>
-    rw [succ_nsmul, iotaH_add, ih]
-    exact (pow_succ _ _).symm
-
 def iotaHom (e : ℕ) : Multiplicative (ZMod (2 ^ e)) →* HGrp e :=
   MonoidHom.mk' (fun x => iotaH e (Multiplicative.toAdd x)) (fun _ _ => iotaH_add e _ _)
 
@@ -58,9 +47,6 @@ theorem orderOf_iotaH (e : ℕ) (i : ZMod (2 ^ e)) : orderOf (iotaH e i) = addOr
   have h := orderOf_injective (iotaHom e) (iotaH_injective e) (Multiplicative.ofAdd i)
   rw [orderOf_ofAdd_eq_addOrderOf] at h
   exact h
-
-theorem ordH_eq (e : ℕ) (x : HGrp e) : ordH (iotaHInv e x) = orderOf x := by
-  rw [ordH, ← orderOf_iotaH, iotaH_iotaHInv]
 
 theorem cc_mul_cc (φ : Formalism.HC.Frame) : φ.cc * φ.cc = 1 := φ.cc_mul_cc
 

@@ -1,13 +1,34 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Statements.HaarFundamentalDomain.HypothesesHold
-import Development.AbelianVarietyTheory.BlockTheory.ClassSums.ReadingWithSpecialisation
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.DatEqZero
+import Formalism.LocalToGlobal.ProjectiveLattices.CuspFree
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
+import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
+import Formalism.LocalToGlobal.ProjectiveLattices.VAtVNeBot
+import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsIsotropicGroupLatticeClassRepresentatives
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InZhGeoInjStable
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFramedPointBaseChangeAlgHom
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.CmHostUnitAddConjEqOne
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsSpanningHypotheses
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsLetterRowWeightDictionary
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UniformisationComponentLatticesMarkings
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AnalyticFibreUnitFrameUniformisation
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AnFibLift
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DualHalfLevelMarkingExistsAndMatch
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ConstOfNormFactorUnitFr
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FramedPointGeneratorIsThetaLevelOne
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ProdLevelOneThetaEqVacuumTheta
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeVacuaExistUnique
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ContinuousRmulPair
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointsLiftToLevelCover
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointBaseChangeUniqueReflIff
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ValuesAlgIffValuesUnitOfNe
 
 open AlgebraicGeometry CategoryTheory NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level
 open GlobalTheory.SW hiding Level
-open Formalism.L2.Pj GlobalTheory.Dict GlobalTheory.ClsVal GlobalTheory.IndefiniteRowSideFullHecke.ReadingWithSpecialisation
+open Formalism.L2.Pj GlobalTheory.Dict GlobalTheory.ClsVal
 open scoped Classical
 
 namespace GlobalTheory.ClsVal.Cmp
@@ -64,17 +85,6 @@ theorem imInv_ren : imInv X bas (π.trans idx) x = imInv X bas idx x := by
 theorem hx_ren (z w : Fin g → ℂ) : hx X bas (π.trans idx) x (ren π z) (ren π w) = hx X bas idx x z w := by
   simp only [hx, hMat_mulVec_ren, imInv_ren]
 
-def sg (π : Equiv.Perm (Fin g)) (n : ℕ) : ℂ := (((Equiv.Perm.sign π : ℤˣ) : ℤ) : ℂ) ^ (n / 2)
-
-theorem letterDir_ren (hr : X.p0 + q0 = r) (ℓ : Harm.Var X.Ψ q0 X.p0 (Fin n)) :
-    letterDir X hr (π.trans idx) ℓ = fun k => ren π (letterDir X hr idx ℓ k) := by
-  funext k
-  simp only [letterDir]
-  by_cases h : k = ℓ.2.2
-  · subst h
-    simp only [Pi.single_eq_same, ren_single, Equiv.symm_trans_apply]
-  · simp only [Pi.single_eq_of_ne h, map_zero]
-
 variable {X bas idx x}
 
 def anFibRen [Algebra c.F ℂ] {e : Fin g ≃ Lt1 Dw} {L : Lt E r} {y : FrPt Xo c ℂ}
@@ -104,31 +114,6 @@ def anFibRen [Algebra c.F ℂ] {e : Fin g ≃ Lt1 Dw} {L : Lt E r} {y : FrPt Xo 
     rw [A.fr_per v hv j _ h, pv_ren, hx_ren, hx_ren, map_add]
 
 end Rename₂
-
-def reindex₃ {σ : c.F →+* ℂ} {X : Data E r} {a : (E →+* ℂ) × ℕ → ℕ} (D : Dic Dw c σ X g q0 n a)
-    (π : Equiv.Perm (Fin g)) : Dic Dw c σ X g q0 n a :=
-  { D with
-    idx := π.trans D.idx
-    e := π.trans D.e
-    per_eq := fun x v j => D.per_eq x v (π j)
-    ty_eq := fun j => D.ty_eq (π j)
-    dir_eq := fun ℓ => by
-      rw [letterDir_ren, D.dir_eq]
-      funext k
-      by_cases h : k = ℓ.2.2
-      · subst h
-        simp only [Pi.single_eq_same, ren_single]
-        rfl
-      · simp only [Pi.single_eq_of_ne h, map_zero] }
-
-def ClassSumValuesUnit : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H)
-    (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r),
-    Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → 1 ≤ r → l.A = 1 →
-    ∀ (W : UW U) (k : U.Comp) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n →
-    ∀ (g q0 : ℕ) (D : Dic Dw c σ (U.X k) g q0 n a) (v : TF n g),
-      IsVac (U.X k) D.bas (H.w0 : E) (tens (stdLat E n) (U.X k).Λ) v →
-      ∃ κ : ℂ, κ ≠ 0 ∧ IsModulus (U.X k) D.bas D.idx (H.w0 : E) v ‖κ‖ ∧ ReadsUnit U W k D v κ
 
 end
 

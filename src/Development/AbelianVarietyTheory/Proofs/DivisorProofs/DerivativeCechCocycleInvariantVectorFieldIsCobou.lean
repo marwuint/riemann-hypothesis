@@ -221,9 +221,6 @@ theorem axis_coboundary {I : Type} (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.
     (GlobalTheory.Points.le_preimage_comp x e (hr t') ht') (GlobalTheory.Points.le_preimage_comp x e he (GlobalTheory.Points.le_preimage_top x))
   linear_combination e1 - e2 - e3
 
-theorem exists_one_in (V : J → A.left.Opens) (hV : ⨆ a, V a = ⊤) : ∃ c, ⊤ ≤ η[A].left ⁻¹ᵁ V c :=
-  GlobalTheory.Points.exists_le_preimage_of_iSup_eq_top (C := K) η[A].left hV
-
 theorem pairCocycle_left (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.left, V a ⊓ V b))
     (hφ : ∀ (a b c : J) (P : GPt A), P.In (V a) → P.In (V b) → P.In (V c) →
       valR P.x _ (φ a b) + valR P.x _ (φ b c) = valR P.x _ (φ a c))

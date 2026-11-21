@@ -132,17 +132,6 @@ theorem HeckeRowsC.maps' (h2 : X.H2 cr b) (H : X.HeckeRowsC cr b cf) (T : cf.Hk)
   rw [← h2.2.2]
   exact LinearMap.mem_range_self _ y
 
-theorem HeckeRowsC.key (h2 : X.H2 cr b) (H : X.HeckeRowsC cr b cf) (T : cf.Hk)
-    (x : Fin ((lv (fc X.zs) b).dQ Bs.μ0) → K) :
-    X.iC cr b Bs.μ0 (cpt Bs.v0.embedding (H.hEK T x)) = H.hC T (X.iC cr b Bs.μ0 (cpt Bs.v0.embedding x)) := by
-  simpa [HeckeRowsC.hEK, Matrix.toLin'_apply] using
-    relMat_op_key Bs.v0.embedding (X.iC cr b Bs.μ0) (H.hC T) (H.maps' h2 T) (H.rat T) x
-
-theorem HeckeWC.key (H : X.HeckeWC b cf) (j : Bs.J) (T : cf.Hk) (x : Fin (X.dW b j) → K) :
-    X.w0C b j (cpt Bs.v0.embedding (H.hWK j T x)) = H.hC j T (X.w0C b j (cpt Bs.v0.embedding x)) := by
-  simpa [HeckeWC.hWK, Matrix.toLin'_apply] using
-    relMat_op_key Bs.v0.embedding (X.w0C b j) (H.hC j T) (H.maps j T) (H.rat j T) x
-
 theorem HeckeRowsC.eigE (h2 : X.H2 cr b) (H : X.HeckeRowsC cr b cf) (c : Bs.Ix) :
     X.Ep cr b c = ⨅ T, LinearMap.ker (H.hEK T - cf.ev c T • LinearMap.id) := by
   have h := eig_transport Bs.v0.embedding (X.iC cr b Bs.μ0) h2.1 H.hC (H.maps' h2) H.rat (X.EEp c) (cf.ev c)

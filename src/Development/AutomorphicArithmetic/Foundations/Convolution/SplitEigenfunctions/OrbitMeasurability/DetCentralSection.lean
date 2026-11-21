@@ -185,8 +185,6 @@ private theorem det_centralSection (s : {r : ℝ // 0 < r}) : Dt (centralSection
 
 private def toS (y : GL (Fin 2) (A ℚ)) (h : Dt y = 1) : G1 ℚ := ⟨y.val, congrArg Units.val h⟩
 
-private theorem gl_toS (y : GL (Fin 2) (A ℚ)) (h : Dt y = 1) : gl (toS y h) = y := Units.ext rfl
-
 private theorem toS_eq {y y' : GL (Fin 2) (A ℚ)} {h : Dt y = 1} {h' : Dt y' = 1} (g : G1 ℚ) (e : y = gl g * y') :
     toS y h = g * toS y' h' := Subtype.ext (congrArg Units.val e)
 

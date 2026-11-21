@@ -83,22 +83,4 @@ theorem degree_tensorCSA (A B : CSA.{u, v} K) :
 
 end CSA
 
-section Index
-
-variable (K : Type u) [Field K] (A : Type v) [Ring A] [Algebra K A]
-
-noncomputable def index : ℕ :=
-  sInf {d : ℕ | ∃ (n : ℕ) (_ : NeZero n) (D : Type v) (_ : DivisionRing D) (_ : Algebra K D),
-    Nonempty (A ≃ₐ[K] Matrix (Fin n) (Fin n) D) ∧ degree K D = d}
-
-variable {K A}
-
-variable (K A)
-
-variable {K A}
-
-variable (K A)
-
-end Index
-
 end GroundTheory.Brauer

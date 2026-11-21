@@ -64,37 +64,6 @@ instance : Category (LocAlg O Or) where
   rw [RingEquiv.symm_apply_eq]
   simp [ResidueField.map_residue]
 
-theorem red_comp {A B : LocAlg O Or} (f : A ⟶ B) (a : A.A) : B.red (f.f a) = A.red a := by
-  obtain ⟨r, hr⟩ := (A.bij.2 (residue A.A a))
-  obtain ⟨r, rfl⟩ := residue_surjective r
-  have h1 : a - algebraMap Or A.A r ∈ maximalIdeal A.A := by
-    rw [← residue_eq_zero_iff, map_sub, ← hr, ResidueField.map_residue, sub_self]
-  have h2 : f.f a - algebraMap Or B.A r ∈ maximalIdeal B.A := by
-    rw [← AlgHom.commutes f.f r, ← map_sub]
-    haveI := f.isLocal
-    exact map_nonunit (f.f : A.A →+* B.A) _ h1
-  have e : ∀ (C : LocAlg O Or) (x : C.A), x - algebraMap Or C.A r ∈ maximalIdeal C.A →
-      C.red x = residue Or r := fun C x hx => by
-    have := C.red_eq_zero hx
-    rw [map_sub, sub_eq_zero] at this
-    rw [this]
-    simp only [red, FOM.resRed, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]
-    rw [RingEquiv.symm_apply_eq]
-    simp [ResidueField.map_residue]
-  rw [e B _ h2, e A _ h1]
-
-def residueField : LocAlg O Or where
-  A := ResidueField Or
-  isLocalHom := ⟨fun a h => by
-    by_contra ha
-    exact h.ne_zero ((residue_eq_zero_iff a).2 ((mem_maximalIdeal a).2 ha))⟩
-  bij := ⟨RingHom.injective _, fun y => by
-    obtain ⟨x, rfl⟩ := residue_surjective y
-    obtain ⟨r, rfl⟩ := residue_surjective x
-    refine ⟨residue Or r, ?_⟩
-    rw [ResidueField.map_residue]
-    rfl⟩
-
 abbrev Trunc (R : LocAlg O Or) (k : ℕ) : Type := R.A ⧸ maximalIdeal R.A ^ (k + 1)
 
 def truncRed (R : LocAlg O Or) (k : ℕ) : R.Trunc k →+* ResidueField Or :=
@@ -177,44 +146,6 @@ structure Defo (S : Type) [CommRing S] [Algebra O S] (red : S →+* ResidueField
 
 variable {p Hb}
 
-section Iso
-
-variable {S : Type} [CommRing S] [Algebra O S] {red : S →+* ResidueField Or}
-
-structure DefoIso (D D' : Defo p Hb S red) : Type where
-
-  e : D.H ≅ D'.H
-
-  compat : ∀ n a, D.s.app n (PDivGroup.Hom.app e.hom.f n a) = D'.s.app n a
-
-def DefoIso.refl (D : Defo p Hb S red) : DefoIso D D := ⟨Iso.refl _, fun _ _ => rfl⟩
-
-def DefoIso.symm {D D' : Defo p Hb S red} (i : DefoIso D D') : DefoIso D' D :=
-  ⟨i.e.symm, fun n a => by
-    have h := congrArg (fun g : D.H ⟶ D.H => PDivGroup.Hom.app g.f n a) i.e.hom_inv_id
-    simp only [VarpiDivModule.comp_f, VarpiDivModule.id_f, PDivGroup.comp_app,
-      PDivGroup.id_app] at h
-    rw [← i.compat n]
-    exact congrArg (D.s.app n) h⟩
-
-def DefoIso.trans {D D' D'' : Defo p Hb S red} (i : DefoIso D D') (j : DefoIso D' D'') :
-    DefoIso D D'' :=
-  ⟨i.e.trans j.e, fun n a => by
-    simp only [Iso.trans_hom, VarpiDivModule.comp_f, PDivGroup.comp_app]
-    exact (i.compat n _).trans (j.compat n a)⟩
-
-variable (p Hb S red) in
-
-def defoSetoid : Setoid (Defo p Hb S red) where
-  r D D' := Nonempty (DefoIso D D')
-  iseqv := ⟨fun D => ⟨DefoIso.refl D⟩, fun ⟨i⟩ => ⟨i.symm⟩, fun ⟨i⟩ ⟨j⟩ => ⟨i.trans j⟩⟩
-
-end Iso
-
-variable (p Hb) in
-
-def DefFun (A : LocAlg O Or) : Type 1 := Quotient (defoSetoid p Hb A.A A.red)
-
 def IsPush {S S' : Type} [CommRing S] [Algebra O S] [CommRing S'] [Algebra O S']
     {red : S →+* ResidueField Or} {red' : S' →+* ResidueField Or} (f : S →+* S')
     (D : Defo p Hb S red) (D' : Defo p Hb S' red') : Prop :=
@@ -236,16 +167,6 @@ structure Push {S S' : Type} [CommRing S] [Algebra O S] [CommRing S'] [Algebra O
 
   s_app : ∀ n a, D'.s.app n (t.app n a) = D.s.app n a
 
-theorem Push.isPush {S S' : Type} [CommRing S] [Algebra O S] [CommRing S'] [Algebra O S']
-    {red : S →+* ResidueField Or} {red' : S' →+* ResidueField Or} {f : S →+* S'}
-    {D : Defo p Hb S red} {D' : Defo p Hb S' red'} (P : Push f D D') : IsPush f D D' :=
-  ⟨P.t, P.cart, P.comm, P.s_app⟩
-
-theorem isPush_iff_nonempty {S S' : Type} [CommRing S] [Algebra O S] [CommRing S'] [Algebra O S']
-    {red : S →+* ResidueField Or} {red' : S' →+* ResidueField Or} {f : S →+* S'}
-    {D : Defo p Hb S red} {D' : Defo p Hb S' red'} : IsPush f D D' ↔ Nonempty (Push f D D') :=
-  ⟨fun ⟨t, h1, h2, h3⟩ => ⟨⟨t, h1, h2, h3⟩⟩, fun ⟨P⟩ => P.isPush⟩
-
 variable (p Hb) in
 
 structure ProRep (R : LocAlg O Or) : Type 1 where
@@ -259,10 +180,6 @@ structure ProRep (R : LocAlg O Or) : Type 1 where
   universal : ∀ (A : LocAlg O Or) [IsArtinianRing A.A] (D : Defo p Hb A.A A.red),
     ∃! g : R ⟶ A, ∃ (k : ℕ) (hk : ∀ x ∈ maximalIdeal R.A ^ (k + 1), g.f x = 0),
       IsPush (LocAlg.truncLift g k hk) (univ k) D
-
-theorem ProRep.trans {R : LocAlg O Or} (U : ProRep p Hb R) (k : ℕ) :
-    IsPush (R.truncMap k) (U.univ (k + 1)) (U.univ k) :=
-  (U.tr k).isPush
 
 end Defo
 
@@ -533,27 +450,5 @@ theorem smul_def (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) (x : L.Rm) : g •
 end LevelRep
 
 end LevelRep
-
-section Examples
-
-variable (O Or : Type) [CommRing O] [CommRing Or] [IsLocalRing Or] [Algebra O Or]
-
-example : IsArtinianRing (LocAlg.residueField (O := O) (Or := Or)).A :=
-  inferInstanceAs (IsArtinianRing (ResidueField Or))
-
-example (r : Or) : (LocAlg.residueField (O := O) (Or := Or)).red (residue Or r) = residue Or r :=
-
-  LocAlg.red_algebraMap LocAlg.residueField r
-
-example (p : ℕ) [Fact p.Prime] (S T : Type) [CommRing S] [Algebra O S] [CommRing T] [Algebra S T]
-    (G : PDivGroup p S) (ι : PDivGroup.Action O G) (ϖ : O) (n m : ℕ) :
-    MulAction (GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m}))ᵐᵒᵖ (Level p G ι ϖ n m T) := inferInstance
-
-example (p : ℕ) [Fact p.Prime] {Hb : GlobalTheory.VDiv.VarpiDivModule p O (ResidueField Or)} {R : LocAlg O Or}
-    {U : ProRep p Hb R} {ϖ : O} {n m : ℕ} (L : LevelRep U ϖ n m) (x : L.Rm) :
-    (1 : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) • x = L.actRing 1 x ∧ L.actRing 1 x = x :=
-  ⟨L.smul_def 1 x, by rw [L.actRing_one]; rfl⟩
-
-end Examples
 
 end GlobalTheory.VDefo

@@ -4,10 +4,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GoodThetaClassOfLatticeFamiliesStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.E8SharpClassPrimitiveIsoClosedStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPeriodsEighthPowerEvenUnimodularBundleStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.EighthPowerThetaObjectOfUniformisationStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GoodThetaClassOfLatticeFamilies
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.E8SharpClassPrimitiveIsoClosed
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPeriodsEighthPowerEvenUnimodularBundle
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.EighthPowerThetaObjectOfUniformisation
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TransportThetaLevelUniformisationCoordinates
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.BijectiveTensorOmegaStd
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsOpenPosDefOfContinuous
@@ -184,7 +184,7 @@ theorem goodClass_sharpClass : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) 
     rw [Matrix.transpose_mul, hGs.eq]
   refine ⟨fun j => Matrix.of fun i' i =>
     bas.symm (fun u => ∑ v, a j u v • bas (Pi.single i 1) v) i', κ, fun n hn hodd => ?_⟩
-  obtain ⟨j₀, hj₀⟩ := GlobalTheory.T.goodThetaClass_of_lattice_families L₁ L₂ hgen hunif g J (fun j => Matrix.of fun i' i =>
+  obtain ⟨j₀, hj₀⟩ := _root_.GlobalTheory.goodClass_of_lattice_families L₁ L₂ hgen hunif g J (fun j => Matrix.of fun i' i =>
     bas.symm (fun u => ∑ v, a j u v • bas (Pi.single i 1) v) i') κ n w w' hn hodd
   refine ⟨j₀, fun j hj N' hN o _ b em => ?_⟩
   have hk : N' ^ 2 ≠ 0 := by
@@ -196,8 +196,8 @@ theorem goodClass_sharpClass : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) 
   refine hj₀ j hj N' hN o b em _ _ r (fun _ => Fin 8 → (Fin h ⊕ Fin h → ℤ)) (fun _ => EF)
     (fun p i u => ms p (bas (Pi.single i 1) u)) (fun _ j x u => ∑ v, a j u v • x v)
     (fun _ => B) (fun _ => Q) (fun _ => Hm) ?_ ?_ ?_ ?_
-  · exact fun t t' ht hm => (GlobalTheory.T.sharpClass_prim_and_closed_under_tMap hgen o g _ J b em w w' h W a bas t ht).2 t' hm
-  · exact fun t ht => (GlobalTheory.T.sharpClass_prim_and_closed_under_tMap hgen o g _ J b em w w' h W a bas t ht).1 hE hw hw'
+  · exact fun t t' ht hm => (_root_.GlobalTheory.sharpClass_prim_and_iso hgen o g _ J b em w w' h W a bas t ht).2 t' hm
+  · exact fun t ht => (_root_.GlobalTheory.sharpClass_prim_and_iso hgen o g _ J b em w w' h W a bas t ht).1 hE hw hw'
   · intro p
     refine ⟨hbij, hBo, hBc.isPreconnected, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
     · intro x
@@ -234,11 +234,11 @@ theorem goodClass_sharpClass : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) 
       have h1 := hinj (τ bb) (τ z') (Q bb) (Q z') (hQ bb hb).1 (hQ z' hz').1 he
       exact (hτs (τ bb) (hτ bb hb).1 (hτ bb hb).2).unique ⟨hb, rfl⟩ ⟨hz', h1.symm⟩
     · intro bb hb t hu _
-      exact GlobalTheory.T.eighthPower_theta_object_of_uniformisation L₁ L₂ hgen hunif o g _ J b em w w' h W a bas σ EF hE hbas hw hw' hEF t
+      exact _root_.GlobalTheory.sharpClass_of_unif L₁ L₂ hgen hunif o g _ J b em w w' h W a bas σ EF hE hbas hw hw' hEF t
         (τ bb) (ms p) (Q bb) (Hm bb) (hτ bb hb) (hms p) (hQ bb hb).1 (hQ bb hb).2 hu
   · intro t ht
     obtain ⟨τ₀, m, Q₀, H₀, hτ₀, hm, hQ₀, hpol, hu⟩ :=
-      GlobalTheory.T.exists_periods_eighthPower_evenUnimodularBundle L₁ L₂ hgen hunif o g _ J b em w w' h W a bas σ EF hE hbas hw hw' hEF t ht
+      _root_.GlobalTheory.exists_periods_of_sharpClass L₁ L₂ hgen hunif o g _ J b em w w' h W a bas σ EF hE hbas hw hw' hEF t ht
     obtain ⟨bb, ⟨hb, rfl⟩, -⟩ := hτs τ₀ hτ₀.1 hτ₀.2
     obtain ⟨p, hp⟩ := hrep m hm
     choose y hy using hp

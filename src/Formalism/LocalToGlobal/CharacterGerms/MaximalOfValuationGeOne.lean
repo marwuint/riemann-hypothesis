@@ -158,11 +158,6 @@ theorem MMS.mul_left {f g : MvPowerSeries σ C} (hf : IntS V f) (hg : MMS V g) :
   rw [MvPowerSeries.coeff_mul]
   exact mm_sum _ _ (fun p _ => mm_mul_ge' (hf p.1) (hg p.2))
 
-theorem MMS.mul_right {f g : MvPowerSeries σ C} (hf : MMS V f) (hg : IntS V g) : MMS V (f * g) := by
-  intro μ
-  rw [MvPowerSeries.coeff_mul]
-  exact mm_sum _ _ (fun p _ => mm_mul_ge (hf p.1) (hg p.2))
-
 theorem MMS.pderiv {f : MvPowerSeries σ C} (hf : MMS V f) (i : σ) : MMS V (MvPowerSeries.pderiv C i f) := by
   intro μ
   rw [MvPowerSeries.coeff_pderiv]
@@ -214,14 +209,6 @@ theorem MMS.subst [Finite σ] {a : σ → MvPowerSeries τ C} (ha0 : ∀ s, MvPo
 theorem MMS.ev_of {d m n : ℕ} {a : Fin m → Pt C n d} (ha : Z0 a) (hi : ∀ k i, IntS V (a k i)) {f : PS C m d}
     (hf : MMS V f) : MMS V (ev a f) := by
   exact MMS.subst (a := fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) (fun p => hi p.1 p.2) hf
-
-def intSer (V : VF C) (σ : Type) : Subring (MvPowerSeries σ C) where
-  carrier := {f | IntS V f}
-  mul_mem' := fun ha hb => intS_mul ha hb
-  one_mem' := intS_one
-  add_mem' := fun ha hb => intS_add ha hb
-  zero_mem' := intS_zero
-  neg_mem' := fun ha => intS_neg ha
 
 theorem mms_l_mul {f : MvPowerSeries σ C} (hf : IntS V f) : MMS V ((V.l : MvPowerSeries σ C) * f) := by
   intro μ

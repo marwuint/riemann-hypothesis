@@ -115,42 +115,6 @@ theorem IsFactorisation.eventually_fixed (h : IsFactorisation σ J δ ξ π B) (
     (Sum.inr_injective.tendsto_cofinite.eventually (h.fixed (ofFin σ J g))).mono fun v hv =>
       (congrArg (δ (.inr v) · _) (proj_ofFin σ J v g)).symm.trans hv
 
-theorem IsFactorisation.apply_embPl [DecidableEq (Formalism.MainNotions.SchurIrreducible.Pl F)] (h : IsFactorisation σ J δ ξ π B) {y : ∀ v, Hs v}
-    (hy : Restr ξ y) (v : Formalism.MainNotions.SchurIrreducible.Pl F) (g : GPl σ J v) :
-    π (embPl σ J v g) (B y) = B (Function.update y v (δ v g (y v))) := by
-  rw [h.apply_pure _ _ hy]
-  congr 1
-  funext u
-  by_cases e : u = v
-  · subst e; simp
-  · simp [projPl_embPl_ne σ J e, e]
-
-theorem IsFactorisation.hasCompPl (h : IsFactorisation σ J δ ξ π B) (v : Formalism.MainNotions.SchurIrreducible.Pl F) :
-    HasCompPl σ J v (δ v) π := by
-  classical
-  refine eq_top_iff.2 (h.dense.ge.trans
-    (Submodule.topologicalClosure_minimal _ (Submodule.span_le.2 ?_) isSubrep_isoPart.1))
-  rintro _ ⟨y, hy, rfl⟩
-  have hr := SmallThetaModules.restr_update hy v
-  have h0 : B (Function.update y v 0) = 0 := h.ext fun z hz => by simp [h.inner_update hy hz]
-  let T : Hs v →ₗ[ℂ] H :=
-    { toFun := fun x => B (Function.update y v x)
-      map_add' := fun a b => by simpa using h.pure_update hy v 1 a b
-      map_smul' := fun c a => by simpa [h0] using h.pure_update hy v c a 0 }
-  have hT : ∀ x, ‖T x‖ ≤ √‖∏ᶠ (u) (_ : u ≠ v), ⟪y u, y u⟫_ℂ‖ * ‖x‖ := fun x => by
-    have e := h.inner_update hy (hr x) v x
-    rw [Function.update_self, finprod_congr fun u => finprod_congr fun hu : u ≠ v => by
-      rw [Function.update_of_ne hu]] at e
-    have e' := congrArg norm e
-    rw [norm_mul, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at e'
-    refine le_of_sq_le_sq (le_of_eq ?_) (by positivity)
-    rw [mul_pow, Real.sq_sqrt (norm_nonneg _), mul_comm]
-    simpa [T] using e'
-  have := apply_mem_isoPart (π := δ v) (ρ := π.comp (embPl σ J v)) (U := ⊤) (T := T.mkContinuous _ hT)
-    (mem_homIn_top.2 fun g x => by
-      simpa [T] using (h.apply_embPl (hr x) v g).symm) (y v)
-  simpa [T] using this
-
 end Places
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -185,13 +149,7 @@ def toFin : GA D V →* GfC V :=
 def toInf : GA D V →* GinfC V :=
   ((ofInf D.sp.cm.sig V.gram).comp (projInf _ _)).codRestrict _ fun _ => mem_infPts.2 (projFin_ofInf _ _ _)
 
-def KOff (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) : Subgroup (GfC V) :=
-  (levelOff D.sp.cm.sig V.gram (frameLat V) S).subgroupOf (GfC V)
-
 variable {V}
-
-theorem mem_KOff {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {g : GfC V} : g ∈ KOff V S ↔ (g : GA D V) ∈ KsphC V S := by
-  rw [KsphC_eq]; rfl
 
 @[simp] theorem coe_locFin (v : HeightOneSpectrum (𝓞 D.host.F)) (x : Gv V v) : (locFin V v x : GA D V) = embV V v x := rfl
 
@@ -226,22 +184,8 @@ variable {H X W : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Normed
 
 section Components
 
-def HasLocComp (v : HeightOneSpectrum (𝓞 D.host.F)) (δ : Gv V v →* (X →L[ℂ] X)) (π : GA D V →* (H →L[ℂ] H)) : Prop :=
-  IsIsotypic δ (π.comp (embV V v))
-
 def HasArchComp (w : InfinitePlace D.host.F) (δ : Gw V w →* (X →L[ℂ] X)) (π : GA D V →* (H →L[ℂ] H)) : Prop :=
   IsIsotypic δ (π.comp (embW V w))
-
-def HasFinComp (δ : GfC V →* (X →L[ℂ] X)) (π : GA D V →* (H →L[ℂ] H)) : Prop := IsIsotypic δ (π.comp (GfC V).subtype)
-
-def HasInfComp (δ : GinfC V →* (X →L[ℂ] X)) (π : GA D V →* (H →L[ℂ] H)) : Prop :=
-  IsIsotypic δ (π.comp (GinfC V).subtype)
-
-def HasLocCompSm (v : HeightOneSpectrum (𝓞 D.host.F)) (σ : Representation ℂ (Gv V v) W)
-    (π : GA D V →* (H →L[ℂ] H)) : Prop := IsIsotypicDense σ (π.comp (embV V v))
-
-def HasFinCompSm (σ : Representation ℂ (GfC V) W) (π : GA D V →* (H →L[ℂ] H)) : Prop :=
-  IsIsotypicDense σ (π.comp (GfC V).subtype)
 
 def FinHasLocComp {Y : Type} [AddCommGroup Y] [Module ℂ Y] (v : HeightOneSpectrum (𝓞 D.host.F))
     (σv : Representation ℂ (Gv V v) Y) (σ : Representation ℂ (GfC V) W) : Prop := IsIsotypicAlg σv (σ.comp (locFin V v))
@@ -249,19 +193,6 @@ def FinHasLocComp {Y : Type} [AddCommGroup Y] [Module ℂ Y] (v : HeightOneSpect
 abbrev IsFinFactorisation {N : HeightOneSpectrum (𝓞 D.host.F) → Type} [∀ v, AddCommGroup (N v)] [∀ v, Module ℂ (N v)]
     (σs : ∀ v, Representation ℂ (Gv V v) (N v)) (s : ∀ v, N v) (σ : Representation ℂ (GfC V) W) : Prop :=
   IsRestrTensorAlg (finLoc V) σs s σ
-
-def IsFinInf {Y : Type} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] (πf : GfC V →* (Y →L[ℂ] Y))
-    (πi : GinfC V →* (X →L[ℂ] X)) (π : GA D V →* (H →L[ℂ] H)) : Prop := ∃ J, IsTensorMap (toFin V) (toInf V) πf πi π J
-
-abbrev finInf {Y : Type} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] (πf : GfC V →* (Y →L[ℂ] Y))
-    (πi : GinfC V →* (X →L[ℂ] X)) : GA D V →* (HTensor Y X →L[ℂ] HTensor Y X) := hTensor (toFin V) (toInf V) πf πi
-
-def IsInfTensor {Hs : InfinitePlace D.host.F → Type} [∀ w, NormedAddCommGroup (Hs w)] [∀ w, InnerProductSpace ℂ (Hs w)]
-    (δs : ∀ w, Gw V w →* (Hs w →L[ℂ] Hs w)) (δ : GinfC V →* (X →L[ℂ] X)) : Prop :=
-  ∃ B, IsRestrTensor (infArch V) δs 0 δ B
-
-abbrev IsCopyFinInf (σ : Representation ℂ (GfC V) W) (δ : GinfC V →* (X →L[ℂ] X)) (ρ : GA D V →* (H →L[ℂ] H))
-    (U : Submodule ℂ H) : Prop := IsTensorCopy (GfC V).subtype (GinfC V).subtype σ δ ρ U
 
 variable {V}
 
@@ -302,12 +233,6 @@ theorem mem_homDS {θ : InfF D} (hθ : IsInfFam θ) {M : DSModel V S} {ρ : GA D
 
 variable {Y : Type} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] {πf : GfC V →* (Y →L[ℂ] Y)}
   {πi : GinfC V →* (X →L[ℂ] X)} {π ρ : GA D V →* (H →L[ℂ] H)} {U : Submodule ℂ H}
-
-theorem IsFinInf.isUnitaryRep (h : IsFinInf V πf πi π) (hf : IsUnitaryRep πf) (hi : IsUnitaryRep πi) : IsUnitaryRep π :=
-  let ⟨_, h⟩ := h
-  h.isUnitaryRep (continuous_toFin V) (continuous_toInf V) hf hi
-
-theorem IsFinInf.uEquiv [CompleteSpace H] (h : IsFinInf V πf πi π) : UEquiv (finInf V πf πi) π := h.choose_spec.uEquiv
 
 def finPart (δ : GinfC V →* (X →L[ℂ] X)) (hU : IsSubrep ρ U) :
     Representation ℂ (GfC V) (homIn δ (ρ.comp (GinfC V).subtype) U) :=

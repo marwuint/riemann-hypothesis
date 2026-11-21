@@ -3,8 +3,18 @@ import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ExistsPshPull
 import Development.WeilBound.CoreStatements.VolumeEquality.DegPushPF
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.EvCEqZeroIffOfSameOrbit
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsomorphicLinesPotentialDifference
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsoLineOnEquivalenceStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HermitianCombinationSmoothConjStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsoLineOnEquivalence
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpPair
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HermitianCombinationSmoothConj
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
 
 open Filter Topology ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 open ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.Cmp GlobalTheory.CompanionTheory.Ar.Cmp.Build
@@ -93,14 +103,14 @@ theorem anCore (hR : Replace) (hB : BaseSide) (hI : PB.Inputs) (hK : ResK.ResKSt
           (fun _ : Fin a => Top.combLine (fun o : Option σ => o.elim (SheetDecomposition.PF.cst ρ') (l t)) fun o => o.elim 0 m)
           fun j => Top.combLine (fun o : Option σ => o.elim (SheetDecomposition.PF.cst ρ') (l t)) (n j))) (𝓝[>] 0) (𝓝 0) := by
   obtain ⟨γ, c, hγ, hγn, hz⟩ := exists_bdry_form Re alg
-  have hjb := GlobalTheory.T.block_join_inclusions_compat
+  have hjb := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.join_block_maps
   have hn : rename v₁ γ ∉ mCoordIdeal y := fun h => hγn (by
     rw [← he₁, ← hjb.2.1 K₁ J₁ K₃ ρ κ₁ v₁ Ω₃ y hb₁]
     exact h)
   have hBn : β * rename v₁ γ ∉ mCoordIdeal y := fun h => (har.2.1.1.mem_or_mem h).elim hβn hn
   have hBh := Build.isMultiHomog_mul hβ (isMultiHomog_rename hb₁ hγ)
   obtain ⟨K', _, ρ', _, κ, v, y', J', R, Amp, hb, hy, hfield, har', -, -, hpot, hpos, hbad⟩ :=
-    GlobalTheory.T.block_extension_arith_var hK K₃ ρ Ω₃ y d _ _ har hBh hBn
+    _root_.GlobalTheory.CompanionTheory.Ar.Cmp.Good.exists_good_model hK K₃ ρ Ω₃ y d _ _ har hBh hBn
   refine ⟨K', inferInstance, ρ', inferInstance, κ, v, y', hb, hy, hfield, har', fun Mt l hMt hl a b n hab => ?_⟩
   have e₀ : imageZ v (mCoordIdeal y') = mCoordIdeal y := by rw [hjb.2.1 K₃ ρ K' ρ' κ v Ω₃ y' hb, hy]
   have hc₁ := hjb.2.2 K₁ J₁ K₃ ρ K' ρ' κ₁ v₁ κ v hb₁ hb
@@ -119,10 +129,10 @@ theorem anCore (hR : Replace) (hB : BaseSide) (hI : PB.Inputs) (hK : ResK.ResKSt
   have hbd₁ : ∀ x, π x ∈ bdry S.s → evC (R.lift x x) (rename v (β * rename v₁ γ)) = 0 := fun x hx => by
     rw [hB0, evC_bdry hc₁.1 Re e₁ R l₁ hγ hz x hx, mul_zero]
   obtain ⟨L, s, nb, mb, Wb, C₅, C, t₀, hL, hsec, hsnc, hnorm, hbd, ht₁, -, hm, -⟩ :=
-    GlobalTheory.T.common_resolution_potential_comparison hI.pullback K' ρ' _ J' d R Amp (rename v (β * rename v₁ γ)) _ σ S S π π hπ hπ hpot hpos
+    _root_.GlobalTheory.CompanionTheory.Ar.Cmp.r_combine hI.pullback K' ρ' _ J' d R Amp (rename v (β * rename v₁ γ)) _ σ S S π π hπ hπ hpot hpos
       (isMultiHomog_rename hb hBh) (fun h => hBn (e₀ ▸ h)) hbad hbd₁ hbd₁
   have ht₀ : 0 < t₀ := (hm (Classical.arbitrary σ)).2.1.1
-  have hp₁ := GlobalTheory.T.block_pullback_herm_line K₁ J₁ K' ρ' (κ ∘ κ₁) (v ∘ v₁) hc₁.1
+  have hp₁ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.hermLine_pull_blockMap K₁ J₁ K' ρ' (κ ∘ κ₁) (v ∘ v₁) hc₁.1
   choose r hr using fun a => (hp₁.1 (Re.ref a)).exists
   have hrs : ∀ a, IsSmoothHerm (r a) := fun a => hp₁.2.1 _ _ (hr a) (Re.ref_smooth a)
   have hla : ∀ t a, (l t a).a = (r a).a := fun t a => by rw [(hl t a).1, (hr a).1, Re.line_deg]
@@ -146,27 +156,27 @@ theorem anCore (hR : Replace) (hB : BaseSide) (hI : PB.Inputs) (hK : ResK.ResKSt
     have h6 := (abs_le.1 (hph a x hx)).1
     refine ⟨abs_le.2 ⟨?_, ?_⟩, h4.trans (le_abs_self C)⟩ <;> nlinarith [le_abs_self C, abs_nonneg C₅, abs_nonneg C]
   obtain ⟨ref, Cb, hrefs, hev, hun⟩ := hB K J II Ψ Ω W D Hd M Sr B K' ρ' _ J' d R _ _ _ Mt hSr hc₂.1 e₂ hpot hpos hMt
-  obtain ⟨L₁, hL₁⟩ := ((GlobalTheory.T.block_pullback_herm_line K₁ J₁ K₃ ρ κ₁ v₁ hb₁).1 Sg).exists
-  obtain ⟨L₂, hL₂⟩ := ((GlobalTheory.T.block_pullback_herm_line K J K₃ ρ κ₂ v₂ hb₂).1 (muVert Hd B)).exists
+  obtain ⟨L₁, hL₁⟩ := ((_root_.GlobalTheory.CompanionTheory.Ar.Cmp.hermLine_pull_blockMap K₁ J₁ K₃ ρ κ₁ v₁ hb₁).1 Sg).exists
+  obtain ⟨L₂, hL₂⟩ := ((_root_.GlobalTheory.CompanionTheory.Ar.Cmp.hermLine_pull_blockMap K J K₃ ρ κ₂ v₂ hb₂).1 (muVert Hd B)).exists
   obtain ⟨f, g, hfg, hdef⟩ := hiso L₁ L₂ hL₁ hL₂
-  have hcr := (GlobalTheory.T.iso_line_on_equivalence K' ρ' _ ∅ har'.2.1 (Set.empty_subset _)).2.2.2 K₁ J₁ _ _ σ Re.ref r m hc₁.1 hr
+  have hcr := (_root_.GlobalTheory.CompanionTheory.Ar.Cmp.IsoLines.isoLineOn_comb_trans_symm_pull K' ρ' _ ∅ har'.2.1 (Set.empty_subset _)).2.2.2 K₁ J₁ _ _ σ Re.ref r m hc₁.1 hr
   have hfg' : IsLineIso (mCoordIdeal y') (Top.combLine r m).a ref.a (rename v f) (rename v g) := by
     obtain ⟨t, ht⟩ := hev.exists
     rw [hcr.1, ← hSa, hc₁.2, ← hL₁.1, ← ht.2.1, (hMt t).1, hc₂.2, muReg, smoothRep_a]
-    have := (GlobalTheory.T.line_isomorphism_groupoid_laws K₃ ρ _ har.2.1).2.2.2.2 K' ρ' κ v _ hb e₀ _ _ _ _ hfg
+    have := (_root_.GlobalTheory.CompanionTheory.Ar.Cmp.lineIso_algebra K₃ ρ _ har.2.1).2.2.2.2 K' ρ' κ v _ hb e₀ _ _ _ _ hfg
     rwa [hL₂.1] at this
-  obtain ⟨w, hw, -, hws⟩ := GlobalTheory.T.line_isomorphism_defect_function K' ρ' _ J' d R _ ref _ _ har'.2.1 hfg' ((GlobalTheory.T.hermitian_combination_smooth_conj K' ρ' σ r m).1 hrs) hrefs
+  obtain ⟨w, hw, -, hws⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.defect_exists_smooth K' ρ' _ J' d R _ ref _ _ har'.2.1 hfg' ((_root_.GlobalTheory.CompanionTheory.Ar.Top.combLine_smooth_conj K' ρ' σ r m).1 hrs) hrefs
   obtain ⟨B₀, hB₀⟩ := isCompact_univ.exists_bound_of_continuousOn (OneModel.continuous_of_smooth R.A hws).continuousOn
   have hB₀' : ∀ x, |w (R.lift x x)| ≤ |B₀| := fun x => (hB₀ x trivial).trans (le_abs_self _)
   have hmain : ∀ x ∉ bdry s, (fun p => R.lift x x ((v ∘ v₂) p)) ∉ D.Bd ∧ w (R.lift x x) = ∑ a, (m a : ℝ) * S.ph a (π x) +
       Real.log (ref.h (R.lift x x)) - Real.log ((muVert Hd B).h fun p => R.lift x x ((v ∘ v₂) p)) := by
     intro x hxb
-    have hz' : (fun p => R.lift x x (v p)) ∈ mcPts (mCoordIdeal y) := e₀ ▸ (GlobalTheory.T.block_pullback_herm_line K₃ ρ K' ρ' κ v hb).2.2.1 _ _ (hx x)
+    have hz' : (fun p => R.lift x x (v p)) ∈ mcPts (mCoordIdeal y) := e₀ ▸ (_root_.GlobalTheory.CompanionTheory.Ar.Cmp.hermLine_pull_blockMap K₃ ρ K' ρ' κ v hb).2.2.1 _ _ (hx x)
     have hne : evC (R.lift x x) (rename v (β * rename v₁ γ)) ≠ 0 := fun h => hxb ((hbd x).2 h)
     have hβ' : evC (fun p => R.lift x x (v p)) β ≠ 0 := fun h => hne (by rw [hB0, h, zero_mul])
     refine ⟨hbd₂ _ hz' hβ', ?_⟩
     have hm1 : (fun p => R.lift x x ((v ∘ v₁) p)) ∈ mcPts P₁ := e₁ ▸ hp₁.2.2.1 _ _ (hx x)
-    obtain ⟨x₁, hx₁⟩ := GlobalTheory.T.log_resolution_covers_complex_points K₁ J₁ _ _ d Re.R Re.arith _ hm1
+    obtain ⟨x₁, hx₁⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.resolution_onto_complex_points K₁ J₁ _ _ d Re.R Re.arith _ hm1
     have ε₁ : π x = Re.π x₁ := l₁ x x₁ hx₁
     obtain ⟨u, u', huu, hu, hu'⟩ := OneModel.exists_pair_ne hfg.2 hz'
     have k₁ := hdef _ ⟨hz', hβ'⟩ u u' huu hu

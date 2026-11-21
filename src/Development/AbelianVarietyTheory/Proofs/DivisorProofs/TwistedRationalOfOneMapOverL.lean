@@ -6,9 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneMapOfOfPtIdent
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IpMSelfEqZero
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ChartIndependenceUnconditional
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrameConstantsOfCharacterisationCoreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCuspFormClassSumNormalisedDataStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicLiftEqGeometricClassSumAllTuplesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrameConstantsOfCharacterisationCore
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCuspFormClassSumNormalisedData
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicLiftEqGeometricClassSumAllTuples
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNormalisedTupleDataOverCoefficientFieldStatement
 
 set_option autoImplicit false
@@ -84,23 +85,6 @@ variable (R) in
 
 def AllRational (ph : Fin D.R.m → ℂ) : Prop :=
   ∀ (i : Fin D.R.m) (t : T0) (x₀ : A.fam.amb.FL i t), ∃ y, adForm R i y = ph i • R.thF i t (jVx R i t x₀)
-
-theorem exists_base_lift {F : Face D A} (hU : R.LUnif) (h5 : R.LTheta F) (hr : R.LRatTh F)
-    (hRk : Formalism.L2.Indef.Tree.RankRows ((R.toCx F).data F.cr false)) (i : Fin D.R.m) :
-    ∃ (x₀ : A.fam.amb.FL i A.μ0) (y : Fin (R.nW i) → D.what₂.LL),
-      (R.FW i).j (sg0 D A) y = R.thG i A.μ0 (R.jV i A.μ0 x₀) ∧ (R.FW i).j (sg0 D A) y ≠ 0 := by
-  refine Classical.byContradiction fun hn => ?_
-  have hd : 0 < Module.finrank D.what₂.LL (R.WL F false i) := hRk.1.trans_eq (hRk.2 i).symm
-  obtain ⟨y, hy⟩ : ∃ y, (GlobalTheory.OntoChain.thetaMat R F i A.μ0).mulVec y = fun _ => 1 :=
-    ((R.toCx F).liftMat_bij F.cr false (RealDat.kForm hU false) (RealDat.ewNorm false) (RealDat.nP_pos false) (h5 false)
-      (hr false) i A.μ0).2 _
-  have h1 := GlobalTheory.OntoChain.j_thetaMat h5 hr i A.μ0 y
-  refine hn ⟨(A.fam.L i A.μ0).toF (GlobalTheory.OntoChain.liftLvl F) (GlobalTheory.OntoChain.liftSub R F i A.μ0) y,
-    GlobalTheory.OntoChain.coordMap R F i ((GlobalTheory.OntoChain.thetaMat R F i A.μ0).mulVec y), h1, fun h0 => ?_⟩
-  have h2 : GlobalTheory.OntoChain.coordMap R F i ((GlobalTheory.OntoChain.thetaMat R F i A.μ0).mulVec y) = 0 :=
-    (injective_iff_map_eq_zero _).1 (j_injective hU i) _ h0
-  have h3 := (injective_iff_map_eq_zero _).1 (GlobalTheory.OntoChain.coordMap_injective (R := R) (F := F) i) _ h2
-  exact one_ne_zero (congrFun (hy.symm.trans h3) ⟨0, hd⟩)
 
 end Linear
 
@@ -354,9 +338,9 @@ theorem tieIn (fw : FWTie T R κ v₀) : TieIn T R κ v₀ := ⟨fw.laws, fw.alg
 theorem seriesIdentity_of_core (hC : GlobalTheory.Hk3.Core R F) (fw : FWTie T R κ v₀) (hio : IoExt R) (i : Fin D.R.m) :
     SeriesIdentity T R κ v₀ i := fun O₀ h₀ => by
   have hI := GlobalTheory.chartIndependence_unconditional
-  obtain ⟨cc, hcc⟩ := GlobalTheory.T.exists_frameConstants_of_characterisationCore hI D G Pl0 T0 A T R F κ v₀ hC (tieIn fw) i _ _ O₀ h₀
-  exact ⟨cc, fun O h => ⟨(GlobalTheory.T.exists_adelicLift_eq_geometric_classSum_all_tuples hI D G Pl0 T0 A T R F κ v₀ hC (tieIn fw) hio i _ _ O h cc hcc).imp fun _ h => h.2,
-    GlobalTheory.T.exists_cuspForm_classSum_normalisedData hI D G Pl0 T0 A T R F κ v₀ hC (tieIn fw) i _ _ O h⟩⟩
+  obtain ⟨cc, hcc⟩ := _root_.GlobalTheory.AdTh.CcExCore.exists_ccIs_core hI D G Pl0 T0 A T R F κ v₀ hC (tieIn fw) i _ _ O₀ h₀
+  exact ⟨cc, fun O h => ⟨(_root_.GlobalTheory.AdTh.SerCore.exists_serOf_core hI D G Pl0 T0 A T R F κ v₀ hC (tieIn fw) hio i _ _ O h cc hcc).imp fun _ h => h.2,
+    _root_.GlobalTheory.ClassSumRule.exists_cusp_isThClsD_core hI D G Pl0 T0 A T R F κ v₀ hC (tieIn fw) i _ _ O h⟩⟩
 
 theorem allRational_of_core (hC : GlobalTheory.Hk3.Core R F) (fw : FWTie T R κ v₀) (hio : IoExt R) (hU : R.LUnif)
     {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)} (hQ : QGuard R) (hrow : ∀ i, OneMapRowR T R κ v₀ O ph i)

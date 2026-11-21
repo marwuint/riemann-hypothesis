@@ -54,9 +54,4 @@ theorem eulerInverse_eval_one {ι : Type} [Fintype ι] (c : ℕ → ℂ) (hc : S
   · rw [← eq_inv_of_mul_eq_one_left h3]
     exact (Summable.of_norm hc).hasSum
 
-example : ∀ {ι : Type} [Fintype ι] (c : ℕ → ℂ), (Summable fun d => ‖c d‖) → ∀ (Q : ι → ℂ),
-    PowerSeries.mk c * ∏ p, (1 - PowerSeries.C (Q p) * PowerSeries.X) = 1 →
-    (∏ p, (1 - Q p)) ≠ 0 ∧ HasSum c (∏ p, (1 - Q p))⁻¹ :=
-  fun c hc Q h => eulerInverse_eval_one c hc Q h
-
 end GlobalTheory.JSW

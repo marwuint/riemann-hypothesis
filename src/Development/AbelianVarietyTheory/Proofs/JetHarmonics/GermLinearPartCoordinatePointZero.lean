@@ -1,11 +1,13 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.JetGauges.AdjointCanonicalGauge
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
 import Development.AbelianVarietyTheory.BlockTheory.JetGauges.LogExpAdaptedGauge
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.PderivSecondEvFirstPointEqZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.CalcAdd
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.CalcExp
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.GaugeTrans
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.BetaHSumSmulRight
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.CoeffSingleLawAdd
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FormalCompApplyEqMvPowerSeriesSubst
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsFormalBiextMap
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsNormSubEqOne
@@ -23,11 +25,6 @@ namespace GlobalTheory.GermDerivativeLinearMaps
 section Calc
 
 variable {k : Type} [CommRing k] {d : ℕ}
-
-theorem cc_pderiv (f : PS k 1 d) (i : Fin d) :
-    constantCoeff (pderiv k ((0 : Fin 1), i) f) = coeff (Finsupp.single ((0 : Fin 1), i) 1) f := by
-  rw [← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]
-  simp
 
 theorem dLin_comp (φ ψ : Pt k 1 d) (hψ : GP ψ) : dLin (comp1 φ ψ) = dLin φ * dLin ψ := by
   ext i j
@@ -123,103 +120,6 @@ theorem additive_eq_lin (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (F i
       simp at he
   rw [← e3, gt_comp1_comp1 _ _ hε _ hℓ0, hi.2.2.2, gt_comp1_pt_right]
 
-theorem exists_isLogExp {R : Type} [CommRing R] [Algebra R k] (G : FGLaw R d) :
-    ∃ ℓ ε : Pt k 1 d, LogExpAdaptedGauge.IsLogExp k G ℓ ε := by
-  obtain ⟨ℓ, h0, h1, h2⟩ := FormalLog.logSt k d (FBMap.mapLaw (algebraMap R k) G)
-  obtain ⟨ε, hε⟩ := ChartInv.exists_isInvPair k d ℓ h0 (by rw [h1, Matrix.det_one]; exact isUnit_one)
-  exact ⟨ℓ, ε, h1, h2, hε⟩
-
 end Log
-
-section Predicates
-
-variable {C : Type} [NormedField C] [IsUltrametricDist C] {d : ℕ}
-
-end Predicates
-
-section Predicates2
-
-variable {R : Type} [CommRing R] {d : ℕ} (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
-  {O : Type} [CommRing O] [StarRing O]
-
-def comap {O' : Type} [CommRing O'] [StarRing O'] (f : O' →+* O) (hf : ∀ a, f (star a) = star (f a))
-    (B : FB R d O) : FB R d O' :=
-  { B with
-    A :=
-      { act := fun a => B.A.act (f a)
-        const := fun a => B.A.const (f a)
-        hom := fun a => B.A.hom (f a)
-        add_act := fun a b => by rw [map_add, B.A.add_act]
-        mul_act := fun a b => by rw [map_mul, B.A.mul_act]
-        one_act := by rw [map_one, B.A.one_act] }
-    ad := fun a => B.ad (f a)
-    adjoint_zero_fst := fun a => B.adjoint_zero_fst (f a)
-    adjoint_zero_snd := fun a => B.adjoint_zero_snd (f a)
-    adjoint_compat_left := fun a => by simpa only [hf] using B.adjoint_compat_left (f a)
-    adjoint_compat_right := fun a => by simpa only [hf] using B.adjoint_compat_right (f a)
-    ad_one := by simpa only [map_one] using B.ad_one
-    ad_mul := fun a b => by simpa only [hf, map_mul] using B.ad_mul (f a) (f b)
-    ad_add := fun a b => by simpa only [hf, map_add] using B.ad_add (f a) (f b)
-    ad_sy := fun a => by simpa only [hf] using B.ad_sy (f a) }
-
-end Predicates2
-
-section Letters
-
-variable {C : Type} [NormedField C] [IsUltrametricDist C] [CharZero C]
-  {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] {d : ℕ}
-
-end Letters
-
-section Frame
-
-variable {C : Type} [NormedField C] [IsUltrametricDist C] [CharZero C]
-  {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] {d : ℕ}
-
-def ColumnBody (g : ℕ) (B : FB (LogExpAdaptedGauge.Ints C) d (𝓞 E)) (ε : Pt C 1 d) (h : PS C 2 d) (w0 : 𝓞 E)
-    (u : PS (LogExpAdaptedGauge.Ints C) 2 d) : Prop :=
-    ∀ n : ℕ, IsUnit (LogExpAdaptedGauge.colProd B u w0 n) ∧ ∃ hL : PS C n d, constantCoeff hL = 0 ∧
-      FB.toK C (LogExpAdaptedGauge.colProd B u w0 n) * FB.expS C (LogExpAdaptedGauge.colSum C B h w0 n) = FB.expS C hL ∧
-      ∀ (U : Matrix (Fin d) (Fin d) (LogExpAdaptedGauge.Ints C)) (ty : Fin d → (E →+* C)), LogExpAdaptedGauge.IsAdapted B U ty →
-        LogExpAdaptedGauge.IntBelow g (LogExpAdaptedGauge.inChart (LogExpAdaptedGauge.letterChart ε U) hL) ∧
-        ∀ m : Fin n × Fin d →₀ ℕ, coeff m (LogExpAdaptedGauge.inChart (LogExpAdaptedGauge.letterChart ε U) hL) ≠ 0 →
-          3 ≤ LogExpAdaptedGauge.degTot m ∧
-          ∃ (i : Fin n) (a b : Fin d), (∀ p, m p ≠ 0 → p.1 = i ∧ (ty p.2 = ty a ∨ ty p.2 = ty b)) ∧
-            m (i, a) ≠ 0 ∧ m (i, b) ≠ 0 ∧ ty b = LogExpAdaptedGauge.conjType (ty a)
-
-def ColumnFrameFor (g : ℕ) (B : FB (LogExpAdaptedGauge.Ints C) d (𝓞 E)) (ε : Pt C 1 d) (h : PS C 2 d) (w0 : 𝓞 E) : Prop :=
-  ∃ u : PS (LogExpAdaptedGauge.Ints C) 2 d,
-    ev (n := 1) ![0, pt (LogExpAdaptedGauge.Ints C) d 0] u = 1 ∧ ev (n := 1) ![pt (LogExpAdaptedGauge.Ints C) d 0, 0] u = 1 ∧
-    ColumnBody g B ε h w0 u
-
-def TwoPoint (B : FB (LogExpAdaptedGauge.Ints C) d (𝓞 E)) (ε : Pt C 1 d) (h : PS C 2 d) (u : PS (LogExpAdaptedGauge.Ints C) 2 d) : Prop :=
-  ∃ h₂ : PS C 2 d, ev (n := 1) ![0, pt C d 0] h₂ = 0 ∧ ev (n := 1) ![pt C d 0, 0] h₂ = 0 ∧
-    FB.toK C u * FB.expS C h = FB.expS C h₂ ∧
-    ∀ (U : Matrix (Fin d) (Fin d) (LogExpAdaptedGauge.Ints C)) (ty : Fin d → (E →+* C)), LogExpAdaptedGauge.IsAdapted B U ty →
-      bilinPart C (LogExpAdaptedGauge.inChart (LogExpAdaptedGauge.letterChart ε U) h₂) = 0 ∧
-      ∀ m : Fin 2 × Fin d →₀ ℕ, coeff m (LogExpAdaptedGauge.inChart (LogExpAdaptedGauge.letterChart ε U) h₂) ≠ 0 →
-        ∃ τ : E →+* C, (∀ i, m (0, i) ≠ 0 → ty i = τ) ∧ (∀ j, m (1, j) ≠ 0 → ty j = LogExpAdaptedGauge.conjType τ)
-
-end Frame
-
-def ColumnFrame : Prop :=
-  ∀ (g : ℕ), g.Prime → Odd g →
-  ∀ (C : Type) [NormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [CharZero C],
-    ‖(g : C)‖ < 1 →
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)],
-    (∀ a : 𝓞 E, ((star a : 𝓞 E) : E) = IsCMField.complexConj E (a : E)) → LogExpAdaptedGauge.SplitsCompletely g E →
-  ∀ (d : ℕ) (B : FB (LogExpAdaptedGauge.Ints C) d (𝓞 E)) (ℓ ε : Pt C 1 d), LogExpAdaptedGauge.IsLogExp C B.G ℓ ε →
-  ∀ w0 : 𝓞 E, w0 + star w0 = 1 → ∃ h : PS C 2 d, LogExpAdaptedGauge.IsAdjGauge C B h ∧ ColumnFrameFor g B ε h w0
-
-def UniformFrame : Prop :=
-  ∀ (g : ℕ), g.Prime → Odd g →
-  ∀ (C : Type) [NormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [CharZero C],
-    ‖(g : C)‖ < 1 →
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)],
-    (∀ a : 𝓞 E, ((star a : 𝓞 E) : E) = IsCMField.complexConj E (a : E)) → LogExpAdaptedGauge.SplitsCompletely g E →
-  ∀ (d : ℕ) (B : FB (LogExpAdaptedGauge.Ints C) d (𝓞 E)) (ℓ ε : Pt C 1 d), LogExpAdaptedGauge.IsLogExp C B.G ℓ ε →
-  ∃ h : PS C 2 d, LogExpAdaptedGauge.IsAdjGauge C B h ∧ ∃ u : PS (LogExpAdaptedGauge.Ints C) 2 d,
-    ev (n := 1) ![0, pt (LogExpAdaptedGauge.Ints C) d 0] u = 1 ∧ ev (n := 1) ![pt (LogExpAdaptedGauge.Ints C) d 0, 0] u = 1 ∧
-    TwoPoint B ε h u ∧ ∀ w0 : 𝓞 E, w0 + star w0 = 1 → ColumnBody g B ε h w0 u
 
 end GlobalTheory.GermDerivativeLinearMaps

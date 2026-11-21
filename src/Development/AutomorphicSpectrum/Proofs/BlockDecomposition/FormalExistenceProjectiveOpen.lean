@@ -2,10 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformVanishing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedNoetherianStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformVanishingOfGradedNoetherianStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformGenerationOfVanishingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AmpleTwistedSectionsApproximationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedSectionsFiniteGeneratorsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedSectionsUniformGeneratorsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformGenerationOfVanishing
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AmpleTwistedSectionsApproximation
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedSectionsFiniteGenerators
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedSectionsUniformGenerators
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoherentExtensionSurjectionOpenStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedSystemRestrictionOpenStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedSystemRestrictionSubobjectStatement
@@ -25,16 +25,16 @@ theorem exists_sub_of_ample {A : Type} [CommRing A] [IsNoetherianRing A] (I : Id
   have hcs : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))
   have hno : IsNoetherian X := ⟨⟩
   have hV : UniformVanishing := @GlobalTheory.T.uniform_vanishing_of_graded_noetherian GlobalTheory.T.graded_noetherian
-  have hG : UniformGen := @GlobalTheory.T.uniform_generation_of_vanishing GlobalTheory.T.graded_noetherian (@hV)
-  obtain ⟨n₁, h₁⟩ := GlobalTheory.T.ample_twisted_sections_approximation (@hG) I H hH hP S hS
+  have hG : UniformGen := @_root_.GlobalTheory.CompanionTheory.GE.uniformGen_of_gradedNoeth GlobalTheory.T.graded_noetherian (@hV)
+  obtain ⟨n₁, h₁⟩ := _root_.GlobalTheory.CompanionTheory.GE.Step.step_uniform (@hG) I H hH hP S hS
   have hW : ∀ n : ℤ, ∃ W : Set Γ(GlobalTheory.twistZ P H n, ⊤), (∀ e, W ⊆ twSecs H n (S e)) ∧
       (n₁ ≤ n → ∀ e, ∀ x ∈ twSecs H n (S e), ∃ b ∈ W, x - b ∈ twPow I H n P (e + 1)) := fun n => by
     by_cases hn : n₁ ≤ n
-    · obtain ⟨W, a, b⟩ := GlobalTheory.T.twisted_sections_finite_generators I hI H hH hP S hS n (h₁ n hn)
+    · obtain ⟨W, a, b⟩ := _root_.GlobalTheory.CompanionTheory.GE.TwLim.exists_compat_limit I hI H hH hP S hS n (h₁ n hn)
       exact ⟨W, a, fun _ => b⟩
     · exact ⟨∅, fun _ => Set.empty_subset _, fun h => absurd h hn⟩
   choose W a b using hW
-  exact GlobalTheory.T.twisted_sections_uniform_generators I H hH hP S hS n₁ W a b
+  exact _root_.GlobalTheory.CompanionTheory.GE.TwGen.exists_alg_of_twSecs I H hH hP S hS n₁ W a b
 
 theorem statement_open_projective : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A), IsAdicComplete I A → ∀ {N : ℕ} {Y : Scheme.{0}} (i : Y ⟶ projectiveSpace A N), IsClosedImmersion i → ∀ (O : Y.Opens), letI : (O : Scheme.{0}).Over (Spec (.of A)) := ⟨O.ι ≫ i ≫ ProjSpace.toSpecBase A N⟩; Statement I (⊥ : (O : Scheme.{0}).IdealSheafData) := by
   intro A _ _ I hI N Y i hi O

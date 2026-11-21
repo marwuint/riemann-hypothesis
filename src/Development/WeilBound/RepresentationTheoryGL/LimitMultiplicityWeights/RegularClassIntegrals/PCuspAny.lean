@@ -21,8 +21,8 @@ theorem MainStatements.WeightKernel.cuspAny : MainStatements.WeightKernel.CuspAn
   obtain ⟨h, hh, e⟩ := hff.2.1 v
   have hF := hff.isFinFamily
   have he := (T.frame v).idem_mem (μf v.1) (T.τ v)
-  refine GlobalTheory.T.unipotentIntegrals_pureTensor_vanish_of_local D V 𝔉 fa ff hA hF v.1 fun ν _ x y => ?_
-  exact (GlobalTheory.T.typeIdempotent_unipotentIntegral_vanish_splitPlace D V T v a ha0 (by omega) hv 𝔉 (hpar v).1 (μf v.1) _ (conv_mem_SB he hh) (ff v.1) (Or.inr e)
+  refine _root_.GlobalTheory.TestConstTerm.unipIntegralsVanish_tensor D V 𝔉 fa ff hA hF v.1 fun ν _ x y => ?_
+  exact (_root_.GlobalTheory.LocConst.unip_integral_vanish D V T v a ha0 (by omega) hv 𝔉 (hpar v).1 (μf v.1) _ (conv_mem_SB he hh) (ff v.1) (Or.inr e)
     ν x y).2
 
 end

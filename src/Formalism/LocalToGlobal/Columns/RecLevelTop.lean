@@ -51,10 +51,6 @@ theorem rlt_compact_int (v : HeightOneSpectrum (𝓞 F)) : CompactSpace 𝒪[v.a
   · exact (Valued.isClosed_integer (v.adicCompletion F)).isComplete.completeSpace_coe
   · exact inferInstanceAs (IsDiscreteValuationRing (v.adicCompletionIntegers F))
 
-theorem rlt_isCompact_int (v : HeightOneSpectrum (𝓞 F)) :
-    IsCompact (v.adicCompletionIntegers F : Set (v.adicCompletion F)) :=
-  isCompact_iff_compactSpace.2 (rlt_compact_int v)
-
 theorem rlt_isOpen_intAd : IsOpen (Formalism.UG.intAd F : Set (FiniteAdeleRing (𝓞 F) F)) := by
   have := RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
     (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F)))

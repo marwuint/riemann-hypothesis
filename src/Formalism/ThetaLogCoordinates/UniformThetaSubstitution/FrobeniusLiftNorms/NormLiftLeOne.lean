@@ -55,19 +55,4 @@ theorem BetaIsG_of (h0 : StepZero) (h1 : StepI) (h2 : StepII) (hH : StepH) (h3 :
   obtain ⟨-, hsymm, htrans, -, -⟩ := hS K (Fin 2)
   exact ⟨c, hc, hσσ, htrans _ _ _ (hsymm _ _ hGbe) hSimG⟩
 
-theorem ThmSFull_of (hB : BetaIsG) (hK : CyclicPowerClassOfExpEquiv) (hM : MapSimeq) : ThmSFull := by
-  intro K0 K _ _ _ _ _ _ _ j p ν r0 r1 _ σ hj hU hζ F hF be hbe
-  obtain ⟨c, hc, hσc, hsim⟩ := hB K0 p σ hU hζ F hF be hbe
-  refine ⟨c, hc, hσc, ?_⟩
-  intro om oms ϖ μ U0 Φ hϖ hom hμ0 hμ hU0 hΦ0 hΦ
-  have hpK : ‖(p : K)‖ = (p : ℝ)⁻¹ := by
-    rw [← map_natCast j p, hj]
-    exact hU.2.2.1
-  have hσc1 : ‖σ c‖ ≤ 1 := norm_lift_le_one hU hc
-  obtain ⟨hMs, hMG⟩ := hM K0 K (Fin 2) j hj
-  refine hK K p ν r0 r1 om oms (j c) (j (σ c)) ϖ μ U0 Φ (MvPowerSeries.map j be) hU.1 hpK hϖ
-    hom (by rw [hj]; exact hc) (by rw [hj]; exact hσc1) hμ0 hμ hU0 hΦ0 hΦ ?_
-  rw [← hMG p c (σ c)]
-  exact hMs _ _ hsim
-
 end Formalism.InvariantFactorPaths.G7

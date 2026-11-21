@@ -2,7 +2,8 @@ import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.HermitianFo
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.HermitianForms.SelfAdjointForms.ColumnAlgebra.PiColElAdd
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalizedAbsCharacterization
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CharacterAnnihilatorIntegerLatticeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsScaledNontrivialCharacterStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsScaledNontrivialCharacter
 
 noncomputable section
 
@@ -83,7 +84,7 @@ theorem exists_sep {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 
     by_contra hcon
     push Not at hcon
     exact hψ1 (DFunLike.ext _ _ (fun c => by rw [hcon c, AddChar.one_apply]))
-  obtain ⟨d, hd, -, hd2⟩ := GlobalTheory.T.exists_scaled_nontrivial_character k ψ hψ a c₀ ha hc₀
+  obtain ⟨d, hd, -, hd2⟩ := _root_.GlobalTheory.CompanionTheory.CharConductor.exists_conductor_step k ψ hψ a c₀ ha hc₀
   refine ⟨d, hd, fun c hc t ht => ?_⟩
   rw [dotProduct_single]
   have := hd2 (t (Fin.last m) * c) (mul_mem (ht _) hc)

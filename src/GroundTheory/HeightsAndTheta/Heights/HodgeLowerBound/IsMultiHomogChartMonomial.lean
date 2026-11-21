@@ -122,14 +122,6 @@ theorem IsValueAt.add {a b : Ω} {v w : ℂ} (ha : IsValueAt y a z v) (hb : IsVa
     rw [hzg, hzg']
     ring
 
-theorem IsValueAt.neg {a : Ω} {v : ℂ} (ha : IsValueAt y a z v) : IsValueAt y (-a) z (-v) := by
-  obtain ⟨d, g, h, hg, hh, hy, hyg, hz, hzg⟩ := ha
-  refine ⟨d, -g, h, ProjLine.mhNeg hg, hh, hy, ?_, hz, ?_⟩
-  · rw [map_neg, hyg]
-    ring
-  · rw [map_neg, eval_neg, hzg]
-    ring
-
 theorem isValueAt_intCast (n : ℤ) : IsValueAt y (n : Ω) z (n : ℂ) := by
   refine ⟨0, C n, 1, isMultiHomog_C n, ProjLine.isMultiHomog_one, by simp, by simp, by simp, by simp⟩
 

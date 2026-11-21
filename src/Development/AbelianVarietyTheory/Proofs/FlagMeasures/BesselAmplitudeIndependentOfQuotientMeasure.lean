@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBess
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsIsFolnerUWset
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralEqOfQuotientMeasuresBesselUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralEqOfQuotientMeasuresBesselUnitary
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalInterConjugateClosedUnimodularStatement
 
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.SnMass
@@ -59,7 +59,7 @@ theorem amp_uniq : ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerPro
     calc (starRingEnd ℂ) (ψ' ρ) * inner ℂ (Φ' x) w * ψ' ρ
         = ((starRingEnd ℂ) (ψ' ρ) * ψ' ρ) * inner ℂ (Φ' x) w := by ring
       _ = inner ℂ (Φ' x) w := by rw [Complex.conj_mul', hn]; simp
-  have key := (GlobalTheory.T.integral_eq_of_quotientMeasures_besselUnitary k r (Rset k r γ) μG μR ν (ENNReal.ofReal t • ν') hRc hG hR (hRu μR hR) hν hν₂
+  have key := (_root_.GlobalTheory.SnMass.QuotUniq.quot_uniq k r (Rset k r γ) μG μR ν (ENNReal.ofReal t • ν') hRc hG hR (hRu μR hR) hν hν₂
     (Wq →L[ℂ] Wp) F hFc hFi).2
   rw [integral_smul_measure, ENNReal.toReal_ofReal ht.le] at key
   change (cN : ℂ)⁻¹ • ∫ x, F (Matrix.of x) ∂ν = (t : ℂ) • ((cN : ℂ)⁻¹ • ∫ x, F (Matrix.of x) ∂ν')

@@ -379,9 +379,4 @@ theorem exists_isGrLB' (hZ : HasDR Z) (e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ
 
 end Model
 
-theorem exists_isGrLB : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
-    (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →
-    ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p), ∀ (Z : Mdl Y i₀), HasDR Z → ∀ e, ∃ L, IsGrLB Z e L :=
-  fun _ _ _ _ _ _ _ _ _ _ _ _ _ Z hZ e => exists_isGrLB' Z hZ e
-
 end GlobalTheory.GradedPieces

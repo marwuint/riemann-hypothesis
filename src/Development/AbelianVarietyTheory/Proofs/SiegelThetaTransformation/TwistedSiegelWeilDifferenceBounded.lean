@@ -5,10 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.Schwart
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UnitaryActHalfSpace
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteClsAndStab
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TwistAdmissible
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicitStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilDifferenceAutomorphyLinearityStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilDifferenceInvariantNormBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsRationalMatrixMoveAdmissibleUniformLevelStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicit
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilDifferenceAutomorphyLinearity
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilDifferenceInvariantNormBounded
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsRationalMatrixMoveAdmissibleUniformLevel
 open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
 open scoped ComplexConjugate ComplexOrder Real Classical
@@ -105,14 +105,14 @@ theorem exists_moved (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * N < n) {M : ℕ} 
     simp only [hFac, hden, h, zero_dotProduct, Finset.sum_const_zero, mul_zero, Complex.exp_zero,
       mul_one, hk]
   refine ⟨_, hZ', ?_, ?_⟩
-  · have h1 := (GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n N hn hN M φ hM hφ Z hZ).1 γ hU
-    have h2 := (GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n N hn hN M (fun Λ x => φ Λ (x * a)) hM hψ _ hZ').2.2.2.1 k
+  · have h1 := (_root_.GlobalTheory.SW.swd_automorphy_linear E Ψ hΨ n N hn hN M φ hM hφ Z hZ).1 γ hU
+    have h2 := (_root_.GlobalTheory.SW.swd_automorphy_linear E Ψ hΨ n N hn hN M (fun Λ x => φ Λ (x * a)) hM hψ _ hZ').2.2.2.1 k
     apply mul_left_cancel₀ hk0
     rw [← h2, ← hfac, ← h1, hfac]
     refine Base.classSum_congr fun Λ hΛ => ?_
     have : weil Ψ γ (φ Λ) = (k • fun Λ x => φ Λ (x * a) : Fam E n N) Λ := by
       funext x
-      rw [(GlobalTheory.T.hermitianWeilAction_siegelParabolic_explicit E Ψ hΨ n N hn (φ Λ) (hφ Λ hΛ)).1 γ hU rfl x]
+      rw [(_root_.GlobalTheory.SW.weil_parabolic E Ψ hΨ n N hn (φ Λ) (hφ Λ hΛ)).1 γ hU rfl x]
       simp [hγ, chiH, hk]
     simp only [this]
   · rw [← hIm, abs_norm_eq hΨ, mul_left_comm, ← Finset.prod_mul_distrib,
@@ -136,8 +136,8 @@ open TwistBound in
 theorem twist_swd_bounded : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → 4 * (N + 1) < n → SWAt Ψ n N → ∀ (M R : ℕ) (φ : Fam E n (N + 1)), admitted M R φ → ∃ C : ℝ, ∀ 𝔛 : Lt E (N + 1), 𝔛.FG → Agree (R * M) 𝔛 (stdL E (N + 1)) → ∀ Z ∈ Hn Ψ (N + 1), gidx 𝔛 ^ ((n : ℝ) / 2) * ‖swd Ψ M (twist R 𝔛 φ) Z 0 0‖ * detIm Z ^ ((n : ℝ) / 2) ≤ C := by
   intro E _ _ _ Ψ hΨ n N hn hN hSW M R φ hφ
   obtain ⟨B, hB0, hB⟩ := bounded_of_adm hφ
-  obtain ⟨c, C₁, -, h1⟩ := GlobalTheory.T.exists_rational_matrix_move_admissible_uniform_level E (N + 1)
-  obtain ⟨C₂, h2⟩ := GlobalTheory.T.siegelWeil_difference_invariant_norm_bounded E Ψ hΨ n N hn hN hSW M (R * c)
+  obtain ⟨c, C₁, -, h1⟩ := _root_.GlobalTheory.SW.twist_move_adm E (N + 1)
+  obtain ⟨C₂, h2⟩ := _root_.GlobalTheory.SW.swd_invariant_bound E Ψ hΨ n N hn hN hSW M (R * c)
   refine ⟨max C₁ 0 ^ ((n : ℝ) / 2) * (C₂ * B), fun 𝔛 hfg hag Z hZ => ?_⟩
   obtain ⟨a, ha, hidx, hadm⟩ := h1 n M R φ 𝔛 hφ hfg hag
   obtain ⟨-, -, -, hpos, ⟨R', hR'⟩, -⟩ := twist_admissible E n (N + 1) M R φ 𝔛 hφ hfg hag

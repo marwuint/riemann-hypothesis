@@ -113,15 +113,6 @@ def cplxO (sS : Matrix (Fin n) (Fin n) ℂ) (sT : Matrix (Fin m) (Fin m) ℂ) (z
     Matrix (Fin m) (Fin n) ℂ :=
   Complex.I • (sT * z * sS)
 
-def actC (V W : HSp D) (a : Matrix (Fin V.rank) (Fin V.rank) ℂ) (b : Matrix (Fin W.rank) (Fin W.rank) ℂ)
-    (z : Matrix (Fin V.rank) (Fin W.rank) ℂ) : Matrix (Fin V.rank) (Fin W.rank) ℂ :=
-  if V.rank ≤ W.rank then a.map (starRingEnd ℂ) * z * b.transpose
-  else a * z * (b.map (starRingEnd ℂ)).transpose
-
-def cplxT (V W : HSp D) (sV : Matrix (Fin V.rank) (Fin V.rank) ℂ) (sW : Matrix (Fin W.rank) (Fin W.rank) ℂ)
-    (z : Matrix (Fin V.rank) (Fin W.rank) ℂ) : Matrix (Fin V.rank) (Fin W.rank) ℂ :=
-  Complex.I • actC V W sV sW z
-
 def annih (hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)) (θ : InfFam D) (τ : D.what₂.Tau)
     (J : Matrix (Fin m) (Fin n) ℂ → Matrix (Fin m) (Fin n) ℂ) (z : Matrix (Fin m) (Fin n) ℂ)
     (f : Mx D m n → ℂ) : Mx D m n → ℂ :=
@@ -168,12 +159,6 @@ def aPlusAll (hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)) (θ :
     (B : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (B' : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) :
     FVar D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ) :=
   fun k => aPlus hs θ k.1 (J k.1) (unitMap (B k.1) (B' k.1) k.2.1 k.2.2)
-
-def fockVec (hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)) (θ : InfFam D)
-    (J : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ → Matrix (Fin m) (Fin n) ℂ)
-    (B : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (B' : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ)
-    (P : MvPolynomial (FVar D m n) ℂ) (f : Mx D m n → ℂ) : Mx D m n → ℂ :=
-  pureTensorL (aPlusAll hs θ J B B') f P
 
 end Real
 
@@ -226,12 +211,6 @@ def IsVacO (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
   IsStdChar D ψ (-1) ∧ IsVacuum (IsThetaFunO ψ S T) (heisO ψ S T) (ratL T S) θ (fun τ => cplxO (sS τ) (sT τ))
     (latO S T LS LT fun _ => True) f
 
-def IsVacT (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D)
-    (sV : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ)
-    (LV : Set (Fin V.rank → D.host.E)) (LW : Set (Fin W.rank → D.host.E)) (f : WA V W → ℂ) : Prop :=
-  IsStdChar D ψ (-1) ∧ IsVacuum (IsThetaFun ψ V W) (Heisenberg₂ ψ V W) (ratL V W) θ (fun τ => cplxT V W (sV τ) (sW τ))
-    (latT V W LV LW fun _ => True) f
-
 end Vac
 
 section Split
@@ -258,9 +237,6 @@ def IsThetaAt (ψ : AddChar (AF D.host.F) ℂ) (B : Mx D m n → Mx D m n → AF
     (hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)) (e : AE D) (Λ : AddSubgroup (Mx D m n)) (c : ℂ)
     (f₀ Φ f : Mx D m n → ℂ) : Prop :=
   AllSome (IsPlaceModel ψ B hs e Λ c f₀) fun T => f = T Φ
-
-def volRel {X : Type} [AddCommGroup X] (A B : AddSubgroup X) : ℝ :=
-  (Nat.card (A ⧸ (A ⊓ B).addSubgroupOf A) : ℝ) / (Nat.card (B ⧸ (A ⊓ B).addSubgroupOf B) : ℝ)
 
 end Split
 
@@ -303,35 +279,6 @@ def deltaAt (τ : D.what₂.Tau) (p : ℕ) (ap : ℕ → ℕ) (q : ℕ) (am : �
 def delta (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) : MvPolynomial (FVar D m n) ℂ :=
   ∏ τ, deltaAt τ (p τ) (ap τ) (q τ) (am τ)
 
-structure IsIoFock {GK GU TK Tau : Type} [NormedAddCommGroup TK] [InnerProductSpace ℂ TK] [NormedAddCommGroup Tau]
-    [InnerProductSpace ℂ Tau] (πK : GK → TK →ₗ[ℂ] TK) (πT : GU → Tau →ₗ[ℂ] Tau)
-    (πP : GK × GU → MvPolynomial (FVar D m n) ℂ →ₗ[ℂ] MvPolynomial (FVar D m n) ℂ)
-    (hK : TK) (hT : Tau) (Δ : MvPolynomial (FVar D m n) ℂ)
-    (io : TK →ₗ[ℂ] Tau →ₗ[ℂ] MvPolynomial (FVar D m n) ℂ) : Prop where
-  unitK : ∀ k x y, inner ℂ (πK k x) (πK k y) = inner ℂ x y
-  unitT : ∀ u x y, inner ℂ (πT u x) (πT u y) = inner ℂ x y
-  irrK : ∀ U : Submodule ℂ TK, (∀ k, ∀ x ∈ U, πK k x ∈ U) → U = ⊥ ∨ U = ⊤
-  irrT : ∀ U : Submodule ℂ Tau, (∀ u, ∀ x ∈ U, πT u x ∈ U) → U = ⊥ ∨ U = ⊤
-  normK : ‖hK‖ = 1
-  normT : ‖hT‖ = 1
-  delta_ne : Δ ≠ 0
-  equiv : ∀ k u x y, io (πK k x) (πT u y) = πP (k, u) (io x y)
-  extremal : io hK hT = Δ
-
-structure IsIt {Pol Dj Djm : Type} [AddCommGroup Pol] [Module ℂ Pol] [AddCommGroup Dj] [Module ℂ Dj]
-    [AddCommGroup Djm] [Module ℂ Djm] {KA gA KB gB : Type}
-    (ωKa : KA → Pol →ₗ[ℂ] Pol) (πKa : KA → Djm →ₗ[ℂ] Djm) (ωga : gA → Pol →ₗ[ℂ] Pol) (πga : gA → Djm →ₗ[ℂ] Djm)
-    (ωKb : KB → Pol →ₗ[ℂ] Pol) (πKb : KB → Dj →ₗ[ℂ] Dj) (ωgb : gB → Pol →ₗ[ℂ] Pol) (πgb : gB → Dj →ₗ[ℂ] Dj)
-    (It : Pol →ₗ[ℂ] Dj →ₗ[ℂ] Djm) : Prop where
-  ne : It ≠ 0
-
-  nonemptyA : Nonempty gA
-  nonemptyB : Nonempty gB
-  eqK : ∀ k x y, It (ωKa k x) y = πKa k (It x y)
-  eqg : ∀ X x y, It (ωga X x) y = πga X (It x y)
-  invK : ∀ k x y, It (ωKb k x) (πKb k y) = It x y
-  invg : ∀ X x y, It (ωgb X x) y + It x (πgb X y) = 0
-
 end Ext
 
 def IsSelfDualC (S : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) : Prop :=
@@ -364,13 +311,6 @@ def VacUniqueO (D : D7) : Prop :=
       ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)),
         IsSelfDualC S ΛS → IsSelfDualC T ΛT →
         ∀ f f', IsVacO ψ θ S T sS sT ΛS ΛT f → IsVacO ψ θ S T sS sT ΛS ΛT f' → ∃ c : ℂ, ‖c‖ = 1 ∧ f' = c • f
-
-def PlaceModelExistsO (D : D7) : Prop :=
-  ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (e : AE D) (v : HeightOneSpectrum (𝓞 D.host.F))
-    (ε : AF D.host.F), IsSplitIdem D e → IsPlaceIdem D v ε → e + cA D e = algebraMap (AF D.host.F) (AE D) ε →
-    ∀ (c : ℂ) (f₀ : WO S T → ℂ), c ≠ 0 → IsThetaFunO ψ S T f₀ →
-      IsLatVac (heisO ψ S T) (latO S T (L0c D S) (L0c D T) fun w => w = v) f₀ →
-      ∃ Tm, IsPlaceModel ψ (symplO S T) (heisO ψ S T) e (latO S T (L0c D S) (L0c D T) fun w => w = v) c f₀ Tm
 
 def BridgeSmall (D : D7) : Prop :=
   ∀ S T : HSp D, S.rank ≤ T.rank →

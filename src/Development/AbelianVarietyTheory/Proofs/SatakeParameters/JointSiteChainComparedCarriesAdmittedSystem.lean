@@ -7,17 +7,17 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PlaceExtendsToIs
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.TieStabKaAtAny
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SecondKernelProjection
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SecondKernelSeries
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteSeriesIndependentAwayFromPlaceOverPStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteFrameValuesPositiveStepsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteFrameValuesStepZeroStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleJointDictionaryStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteSeriesDataBelowLastStepStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteLawAndFixedCoordinateStabiliserLawStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteArithmeticGroupMovesFramesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteLatticeTuplePairsAdmissibleStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SitePlaceInducesPositionEmbeddingsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteSeriesScalarPowIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JointDataAtPAndAdelicDatumNonemptyStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteSeriesIndependentAwayFromPlaceOverP
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteFrameValuesPositiveSteps
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteFrameValuesStepZero
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleJointDictionary
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteSeriesDataBelowLastStep
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteLawAndFixedCoordinateStabiliserLaw
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteArithmeticGroupMovesFrames
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteLatticeTuplePairsAdmissible
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SitePlaceInducesPositionEmbeddings
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteSeriesScalarPowIntegral
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JointDataAtPAndAdelicDatumNonempty
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.Ker Formalism.L2.G.Pend Formalism.L2.KerInert GlobalTheory.TwV
 
 noncomputable section
@@ -28,14 +28,14 @@ set_option maxHeartbeats 4000000 in
 
 private theorem admissible_at_each_site : Lt.AdmAtEnt2 → AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => DV.Used D μ → OrbitPlaces.Stab0 D → admitted D (sysS H X std) S.Y) := by
   intro hA D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hU hS0
-  have hDict := GlobalTheory.T.latticeTuple_joint_dictionary t std J
-  have hPair := GlobalTheory.T.kernelSite_latticeTuplePairs_admissible S hDict
-  have hPos := GlobalTheory.T.site_place_induces_position_embeddings S
-  have hMove := GlobalTheory.T.kernelSite_arithmeticGroup_moves_frames S hDict
-  have hAway := GlobalTheory.T.kernelSite_series_independent_away_from_place_over_p S hDict
-  have hScal := GlobalTheory.T.kernelSite_seriesScalar_pow_integral S hDict
-  have hK1 := GlobalTheory.T.allSites_k1_of_dict_pair_pos_scal S hDict hPair hPos hScal
-  obtain ⟨hLaw, hLawIn, hXi⟩ := GlobalTheory.T.kernelSite_law_and_fixedCoordinateStabiliserLaw S hPair hPos hMove hAway
+  have hDict := _root_.GlobalTheory.TwV.joint_dict t std J
+  have hPair := _root_.GlobalTheory.pairOK_allSites S hDict
+  have hPos := _root_.GlobalTheory.TwV.pos_at_site S
+  have hMove := _root_.GlobalTheory.TwV.move_at_site S hDict
+  have hAway := _root_.GlobalTheory.TwV.away_of_dict S hDict
+  have hScal := _root_.GlobalTheory.TwV.scal_at_site S hDict
+  have hK1 := _root_.GlobalTheory.TwV.kernelSite_seriesData_below_lastStep S hDict hPair hPos hScal
+  obtain ⟨hLaw, hLawIn, hXi⟩ := _root_.GlobalTheory.TwV.site_law_xiIn S hPair hPos hMove hAway
   obtain ⟨ι, hι⟩ := GlobalTheory.ThLoc.place_extends_to_iso _ S.lam
   haveI := Lt.fracAt Gl u w hg
   have key := hA D L hT Gi Gl Kc Dx cX ex t u μ w hg (Gl.Fl u w hg) Lv (chainAt H hT) (kaAt X H hT) std (vpOf (D.gat u w hg)) (vpOf_irreducible (D.gat u w hg))
@@ -62,8 +62,8 @@ private theorem admissible_at_each_site : Lt.AdmAtEnt2 → AllSites (fun {D L hT
   · have hD : S.Del j := by
       rcases Nat.eq_zero_or_pos j with h0 | hpos
       · subst h0
-        exact GlobalTheory.T.kernelSite_frameValues_step_zero S hDict hPair hPos hLaw
-      · exact GlobalTheory.T.kernelSite_frameValues_positive_steps S hDict hPair hPos hLaw j hpos hj
+        exact _root_.GlobalTheory.TwV.StepZero.del_zero S hDict hPair hPos hLaw
+      · exact _root_.GlobalTheory.TwV.StepDel.del_of_pos S hDict hPair hPos hLaw j hpos hj
     obtain ⟨cK, hn, hd⟩ := hD ι.toRingHom (fun z => hι z)
     refine ⟨cK, ?_, ?_, ?_, hd⟩
     · show ‖cK‖ ≤ 1
@@ -79,7 +79,7 @@ theorem site_cmpLite_siteAdm : Lt.AdmAtEnt2 → Lt.CurveEx → ∀ {D : D7} {L :
   haveI : Fact (D.what₂.places.resChar w).Prime := ⟨hg.1⟩
   refine ⟨⟨(kaAt X H hT).cmp, (kaAt X H hT).cmp_zero, (kaAt X H hT).cmp_K, (kaAt X H hT).rat, (kaAt X H hT).val⟩, ?_⟩
   have std : Lt.StdAtW D Gl u w hg := GlobalTheory.TwU.std_at_served D u w hg L hT Gi Gl J.tied hk
-  obtain ⟨S⟩ := GlobalTheory.T.jointData_at_p_and_adelicDatum_nonempty hCur t std J
+  obtain ⟨S⟩ := _root_.GlobalTheory.TwV.joint_at_nonempty hCur t std J
   have hA : admitted D (sysS H X std) S.Y := admissible_at_each_site hAdm S hU hS
   refine ⟨inferInstance, std, vpOf (D.gat u w hg), vpOf_irreducible (D.gat u w hg),
     eOOf (D.gat u w hg) (p_ne_zero_of_place (D.gat u w hg) (Gl.vOf u w hg 0)),

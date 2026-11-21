@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaussNormExtensionAcris
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltNormUltrametricEqZero
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisMulEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisMulEqZero
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
@@ -88,7 +88,7 @@ theorem map_prod_ne_zero_pt : ∀ s : List (Formalism.Per.Fl l), (∀ e ∈ s, e
     intro hs
     rw [List.map_cons, List.prod_cons, map_mul]
     intro h
-    exact (GlobalTheory.T.acris_eq_zero_or_eq_zero_of_mul_eq_zero l _ _ h).elim
+    exact (_root_.GlobalTheory.PMon.Gauss.acris_mul_eq_zero l _ _ h).elim
       (map_ne_zero_pt l _ (tm_sub_one_ne_zero_pt l e (hs e List.mem_cons_self)))
       (ih fun e' he' => hs e' (List.mem_cons_of_mem _ he'))
 
@@ -100,7 +100,7 @@ theorem GlobalTheory.PMon.Trans.acris_bcris : ∀ (l : ℕ) [Fact l.Prime], Func
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
   obtain ⟨e, he, hne⟩ := GlobalTheory.CrisLoc.exists_root_ne_one l
   obtain ⟨n, h⟩ := GlobalTheory.CrisLoc.exists_pow_mul_eq_zero l e he hne hx
-  refine (GlobalTheory.T.acris_eq_zero_or_eq_zero_of_mul_eq_zero l _ _ h).resolve_left ?_
+  refine (_root_.GlobalTheory.PMon.Gauss.acris_mul_eq_zero l _ _ h).resolve_left ?_
   have h1 := GlobalTheory.PMon.Trans.map_prod_ne_zero_pt l (List.replicate n e)
     fun e' he' => (List.eq_of_mem_replicate he').symm ▸ hne
   rwa [List.map_replicate, List.prod_replicate, map_pow] at h1

@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.InclEquiv
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralLiftSymbol
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductOfVectorMultiplicationsGlobalResiduesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertSamuelSectionShiftCommSingleMonomialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductOfVectorMultiplicationsGlobalResidues
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertSamuelSectionShiftCommSingleMonomial
 open CategoryTheory AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
 open GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.HermTools GlobalTheory.Vanishing GlobalTheory.Adelic GlobalTheory.HilbertSamuel GlobalTheory.ChowHt GlobalTheory.TangentOrigin
@@ -58,7 +58,7 @@ theorem totSym_mono : ∀ (K : Type) [Field K] [NumberField K] (X : Data K) (s :
         Co.ev k (hs.res k x') p = (∏ q, ∑ j, u q j * Co.y p j) * Co.ev 0 (hs.res 0 m₀) p := by
     intro t k h u
     subst h
-    obtain ⟨x', h1, h2, h3⟩ := GlobalTheory.T.productOfVectorMultiplications_global_residues K X.toGeo t 0 u _ hm₀
+    obtain ⟨x', h1, h2, h3⟩ := _root_.GlobalTheory.HSShort.GlobWord.word_global K X.toGeo t 0 u _ hm₀
     exact ⟨x', h1, h2, h3 s hs δ Co⟩
   obtain ⟨x', h1, h2, h3⟩ := H _ _ (Nat.zero_add _) l
   obtain ⟨f, hf, hsym⟩ := exists_filV_mulPow X Co haT α x' h1
@@ -66,7 +66,7 @@ theorem totSym_mono : ∀ (K : Type) [Field K] [NumberField K] (X : Data K) (s :
     change pw (shift X.toGeo) s α.1 (word (shift X.toGeo) l (Pi.single 0 (m₀ : X.Sec 0))) =
       Pi.single X.T (f.1 : X.Sec X.T)
     rw [h2, hf]
-    exact (GlobalTheory.T.hilbertSamuelSectionShift_comm_single_monomial K X.toGeo).2.2 s a _ _ _ α x'
+    exact (_root_.GlobalTheory.HSShort.shift_comm_single_mono K X.toGeo).2.2 s a _ _ _ α x'
   refine ⟨⟨f.1, f.2, e.symm⟩, fun α' p => ?_⟩
   rw [totSym_incl Co a f _ e, hsym, h3]
   have : totRes Co (incl X 0 m₀) = Co.ev 0 (hs.res 0 m₀) := by simp [totRes, incl]

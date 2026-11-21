@@ -52,25 +52,6 @@ def heckeFunI {W : Type} [AddCommGroup W] [Module ℂ W] (U : Subgroup (GAf L n)
     if hc : ∃ x : GAf L n, (x : GAf L n ⧸ U) = c ∧ TrivOutside {v} x then
       D.hval h (D.loc hc.choose) • f (g * hc.choose) else 0
 
-open Classical in
-
-def heckeEndI {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (GQ L n) W)
-    (U : Subgroup (GAf L n)) {v : HeightOneSpectrum (𝓞 L⁺)} {w : HeightOneSpectrum (𝓞 L)}
-    (D : InertDatum L n v w) (h : Formalism.UG.GU D.σw n → ℂ) : Module.End ℂ (Forms L n ρ U) :=
-  if hφ : ∃ φ : Module.End ℂ (Forms L n ρ U), ∀ f g,
-      (φ f : GAf L n → W) g = heckeFunI L n U D h (f : GAf L n → W) g
-  then hφ.choose else 0
-
 end Inert
-
-def inertPoly (q n : ℕ) {m : ℕ} (α : Fin m → ℂ) : ℂ[X] :=
-  (∏ i, (X - C ((q : ℂ) ^ (n - 1) * α i)) * (X - C ((q : ℂ) ^ (n - 1) * (α i)⁻¹))) *
-    (X - C ((q : ℂ) ^ (n - 1))) ^ (n % 2)
-
-def InertDatumExists : Prop :=
-  Formalism.UG.InertLocal → Formalism.UG.InertAntidiag →
-  ∀ (L : Type) [Field L] [NumberField L] [IsCMField L], GoodCM L →
-  ∀ (n : ℕ) (v : HeightOneSpectrum (𝓞 (NumberField.maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)),
-    Formalism.UG.IsInertAt (NumberField.maximalRealSubfield L) L v w → Nonempty (InertDatum L n v w)
 
 end Formalism.AUTREP

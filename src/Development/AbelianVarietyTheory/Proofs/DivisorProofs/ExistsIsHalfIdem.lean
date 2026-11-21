@@ -21,7 +21,7 @@ def IsHalfIdem (D : D7) (ε : AE D) : Prop :=
     (∀ e, IsSplitIdem D e → (ε * e = e ∧ ε * cA D e = 0) ∨ (ε * e = 0 ∧ ε * cA D e = cA D e)) ∧
     ∀ v η, NonSplitAt D v η → algebraMap (AF D.host.F) (AE D) η * ε = 0
 
-theorem exists_isHalfIdem (D : D7) : ∃ ε, IsHalfIdem D ε := GlobalTheory.T.exists_splitPlaces_selecting_adelicIdempotent D
+theorem exists_isHalfIdem (D : D7) : ∃ ε, IsHalfIdem D ε := _root_.GlobalTheory.HalfIdem.exists_half_idem D
 
 theorem finRat_eq (S T : HSp D) (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     finRat S T x = (1 - realIdem D) • (ratW T S x : WO S T) := by

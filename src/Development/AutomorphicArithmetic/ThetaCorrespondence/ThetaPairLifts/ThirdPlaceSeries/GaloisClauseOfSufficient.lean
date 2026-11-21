@@ -1,5 +1,5 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.Bridge
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TrivialLocalCondition
@@ -10,58 +10,10 @@ section
 noncomputable section
 namespace Formalism.MainNotions.SumRepresentations
 open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions.N Polynomial NumberField IsDedekindDomain ReciprocityTheory.Gal Topology
-section BN
-variable {Γ : Type} [Group Γ] {k : Type} [Field k] {a : ℕ}
-end BN
-section G1
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)
-end G1
-section SS
-variable {Γ : Type} [Group Γ] {a : ℕ}
-variable {K L : Type} [Field K] [Field L] [Algebra K L]
-end SS
-section Cont
-end Cont
-section Main
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
-end Main
-section C42
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 namespace At
 end At
 namespace At
 end At
-end C42
-section Del
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)
-end Del
-section G5c
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) {i : N.Loc}
-  (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i))) {ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))}
-  {π : N.X i} {S : IdempotentChoiceData N i}
-end G5c
-section Quad
-end Quad
-section G5c
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) {i : N.Loc}
-  (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i))) {ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))}
-  {π : N.X i} {S : IdempotentChoiceData N i}
-end G5c
-section G5c
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) {i : N.Loc}
-  (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i))) {ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))}
-  {π : N.X i} {S : IdempotentChoiceData N i}
-end G5c
-section Cont
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (i : N.Loc)
-end Cont
-section G5b
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) {i : N.Loc}
-  (r : N.X i → (Formalism.ConjugateSelfDual.G H.E N.Om →* GL (Fin R.nV) (N.O i)))
-end G5b
-section Maschke
-variable {Γ : Type} [Group Γ] {k : Type} [Field k] {a : ℕ}
-end Maschke
 section G5a
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) {i : N.Loc}
   (r : N.X i → (Formalism.ConjugateSelfDual.G H.E N.Om →* GL (Fin R.nV) (N.O i)))
@@ -72,16 +24,8 @@ theorem splitI_of_monodromyInertiaType_of_lgCatN (A : NAut N) (hr : GoodR N i r)
     (hL : _root_.UpperTheory.GalS.LGCatN N r A w) (x : N.X i) : SplitI N r w x :=
   _root_.UpperTheory.GalS.SplitI_of_TY N r A hr w (N.SQ_l i w hSQ) hL (fun P => hTY.1 i P w hSQ hcond) x
 end G5a
-section H0
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) {i : N.Loc}
-end H0
-section Lin
-end Lin
-section Z
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 namespace At
 end At
-end Z
 namespace At
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 def SufficientGaloisClauseAlt (i : N.Loc) : Prop :=

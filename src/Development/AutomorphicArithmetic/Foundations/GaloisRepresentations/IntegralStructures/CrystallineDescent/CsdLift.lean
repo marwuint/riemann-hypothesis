@@ -19,7 +19,7 @@ theorem UpperTheory.Gal.Int.Core.csdLift_holds :
   refine ⟨hreg', ⟨fun v => by rw [locInf_pow, quadChar_locInf], ?_⟩, trivial⟩
   rw [GlobalTheory.CsdLift.compNorm_quadChar_pow]
   refine UpperTheory.polOfSat_of_thetaSat UpperTheory.theta_satake_parameters_inverse hJ hG M a ha P 1 ?_
-  have hsd := GlobalTheory.T.polarizedPair_satakeParameter_conjugatePlace hF E a π _ hpol
+  have hsd := _root_.GlobalTheory.PolarizedSat.hasSat_conjPlace hF E a π _ hpol
   have hun := GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep hF E a π
   filter_upwards [(GlobalTheory.LiftPolar.tendsto_under (K := E) (L := M)).eventually (hsd.and hun)] with w ⟨hs, B, hB⟩
   rw [GlobalTheory.CsdLift.compNorm_quadChar_pow] at hs

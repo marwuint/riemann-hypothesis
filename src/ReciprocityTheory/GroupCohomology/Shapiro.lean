@@ -286,10 +286,6 @@ theorem coindEv_isCoind : IsCoind U M (coindRep U M) (coindEv U M) := by
 
 end Coind
 
-theorem coind_holds : CoindStatement.{u} := by
-  intro R _ G _ _ _ _ U M
-  exact ⟨coindRep U M, coindEv U M, coindEv_isCoind U M⟩
-
 end
 
 end ReciprocityTheory.Coh

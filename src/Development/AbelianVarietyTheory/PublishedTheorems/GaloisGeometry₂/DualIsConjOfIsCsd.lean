@@ -1,13 +1,20 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.CaraianiLocalGlobalDual
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.GelfandKazhdanDual
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.NotCompatCyc
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.CaraianiLocalGlobal
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.ConclusionFinite
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.NotIsPolarizedOne
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.NotIsTemperedGLDetRepTwo
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsPotentiallySemistableCoefficientFieldEnlarge
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsKurOfActStFixed
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KummerNotCoboundary
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WdParameterMonodromyZeroIffPotentiallyCrystallin
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolarizedPairLineIff
 
 noncomputable section
 
 open NumberField IsDedekindDomain Matrix Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N
-open GlobalTheory.CuspRep GlobalTheory.ContraPair GlobalTheory.LocGlobAll.Model
+open GlobalTheory.CuspRep GlobalTheory.ContraPair
 
 namespace GlobalTheory.LocGlobDual.Model
 
@@ -91,48 +98,7 @@ theorem dualIsConj_of_isCsd {π : CuspSub L a} (h : Paired π π invTOp) (hc : �
   · change B _ (S.symm _) + B _ (S.symm _) = 0
     rw [hS', add_comm]; exact h5 _ _ _
 
-theorem theta_form (hG : GlobalTheory.Published.GelfandKazhdanDual) (H : GlobalTheory.Published.CaraianiLocalGlobalDual) :
-    GlobalTheory.Published.CaraianiLocalGlobal := fun E Ω _ _ _ _ _ _ l _ ι a ha π hc hcoh =>
-  H E Ω l ι a ha π (dualIsConj_of_isCsd (hG E a π) hc) hcoh
-
-theorem dualIsConj_iso {π π' : CuspSub L a} (h : π.Iso π') (hd : DualIsConj π) : DualIsConj π' := by
-  obtain ⟨T, hT⟩ := h
-  obtain ⟨B, h1, h2, h3, h4, h5⟩ := hd
-  have hT' : ∀ o φ, T.symm (π'.op o φ) = π.op o (T.symm φ) := fun o φ => by
-    rw [LinearEquiv.symm_apply_eq, hT, LinearEquiv.apply_symm_apply]
-  refine ⟨B.compl₁₂ T.symm.toLinearMap T.symm.toLinearMap, fun φ h => ?_, fun ψ h => ?_, fun k φ ψ => ?_,
-    fun k φ ψ => ?_, fun X φ ψ => ?_⟩
-  · exact (map_eq_zero_iff _ T.symm.injective).1 (h1 _ fun x => by simpa using h (T x))
-  · exact (map_eq_zero_iff _ T.symm.injective).1 (h2 _ fun x => by simpa using h (T x))
-  · simp [hT', h3]
-  · simp [hT', h4]
-  · simp [hT', h5]
-
-theorem central_eq_zero {π : CuspSub L a} (hd : DualIsConj π) {c : ℂ} (hc : ∀ φ, π.op (.lie (oneL L a)) φ = c • φ) :
-    c = 0 := by
-  obtain ⟨B, h1, -, -, -, h5⟩ := hd
-  have e : conjOp (.lie (oneL L a)) = (.lie (oneL L a) : Op L a) := by
-    change Op.lie _ = _
-    congr 1
-    funext i j
-    by_cases h : i = j <;> simp [Matrix.one_apply, h]
-  obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 π.ne_bot
-  by_contra hne
-  refine h0 (congrArg Subtype.val (h1 ⟨φ, hφ⟩ fun ψ => ?_))
-  have := h5 (oneL L a) ⟨φ, hφ⟩ ψ
-  rw [e, hc, hc, map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul, ← two_mul] at this
-  simpa [hne] using this
-
 variable (Ω : Type) [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
-
-theorem compat_of (H : GlobalTheory.Published.CaraianiLocalGlobalDual) (ha : 2 ≤ a) (π : CuspSub L a) (hc : DualIsConj π)
-    (hcoh : GKCoh.IsCohomological π) : ∃ R, Compat Ω ι π R := H L Ω l ι a ha π hc hcoh
-
-theorem triv_all : DualIsConj (CuspSub.triv L (le_refl 1)) ∧ GKCoh.IsCohomological (CuspSub.triv L (le_refl 1)) ∧
-    Compat Ω ι (CuspSub.triv L (le_refl 1)) 1 := by
-  refine ⟨?_, ⟨_, GKCoh.isCohFor_triv le_rfl⟩, compat_triv Ω ι⟩
-  have h := GlobalTheory.ContraPair.Model.polarizedPair_triv (L := L).dual
-  rwa [pow_one, GlobalTheory.GalOfCusp.compNorm_quadChar, dualIsConjBy_one] at h
 
 end GlobalTheory.LocGlobDual.Model
 

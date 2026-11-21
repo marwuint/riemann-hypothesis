@@ -39,17 +39,6 @@ def Moves : Prop :=
         ∃ h : ind (A₁ : Set A) ∈ Sch c A₀,
           ∑ a ∈ SA, ∑ b ∈ SB, WA a (WB b θ) = (SB.card : k) • Xi ⟨ind (A₁ : Set A), h⟩
 
-def Fourier : Prop :=
-  ∀ (k : Type) [Field k] (A B T : Type) [AddCommGroup A] [AddCommGroup B] [AddCommGroup T] [Module k T]
-    (c : B → A → k) (WA : A → T →ₗ[k] T) (WB : B → T →ₗ[k] T), IsBichar c → IsHeis c WA WB →
-    ∀ (A₀ A₂ : AddSubgroup A) (B₀ B₂ : AddSubgroup B) (θ : T) (Xi : Sch c A₀ →ₗ[k] T), IsXi c WA WB A₀ θ Xi →
-      A₂ ≤ A₀ → (∀ b, b ∈ B₀ ↔ ∀ a ∈ A₀, c b a = 1) → (∀ b, b ∈ B₂ ↔ ∀ a ∈ A₂, c b a = 1) →
-      (∀ a ∈ A₀, (∀ b ∈ B₂, c b a = 1) → a ∈ A₂) →
-      ∀ (SA : Finset A) (SB : Finset B), IsRepsG A₂ A₀ SA → IsRepsG B₀ B₂ SB → (SB.card : k) ≠ 0 →
-      ∀ Φ : A → k, (∀ t, t ∉ A₀ → Φ t = 0) → (∀ t, ∀ s ∈ A₂, Φ (t + s) = Φ t) →
-        ∃ h : Φ ∈ Sch c A₀, Xi ⟨Φ, h⟩ =
-          ∑ b ∈ SB, (((SB.card : k))⁻¹ * ∑ t ∈ SA, Φ t * (c b t)⁻¹) • WB b θ
-
 def IndexDual : Prop :=
   ∀ (k : Type) [Field k] (A B : Type) [AddCommGroup A] [AddCommGroup B] (c : B → A → k), IsBichar c →
     ∀ (A₀ A₁ : AddSubgroup A) (B₀ B₁ : AddSubgroup B),

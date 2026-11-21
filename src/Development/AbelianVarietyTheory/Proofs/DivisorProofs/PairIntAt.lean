@@ -14,22 +14,6 @@ namespace GlobalTheory.SumSize
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-section Claims
-
-variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
-  {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (C b : ℝ)
-
-def PairIntAt : Prop := ∃ dl, Loss dl (bOne ch.G C b) ∧ ∀ (t : T) (p : Pair T), DefPair D.R.m p → ∀ w, Away ch.G t w →
-  ∀ (k : ℕ) (d : FinDatum ch.G t p), 0 < k → IsCosetDatum k d → d.z = 1 → d.P = locPl ch.G t →
-    (∀ l : ℕ, l.Prime → (l : 𝓞 D.what₂.LL) ∈ w.asIdeal → padicValNat l k ≤ depL ch.G l) →
-    ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big) (a : ℝ) v,
-      InLat _ w a (latAt ch.S.toGridChoice p.small x) v →
-        InLat _ w (a + dl w) (latAt ch.S.toGridChoice p.big y) (ch.S.Z.kkMap 1 d x y v)
-
-end Claims
-
-def PairIntK : Prop := BigC fun _ ch C b => PairIntAt ch C b
-
 theorem BigC.mono {Q Q' : ChQ} (h : BigC Q)
     (hQ : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
       {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (F : Face D A) (ch : Choice R) (C b : ℝ),

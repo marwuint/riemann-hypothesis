@@ -38,18 +38,4 @@ def FlagStatement : Prop :=
     (∀ i : Fin n, GenAF p AA.carrier (flagSub b i).toAddSubgroup) →
   ∀ σ : MulChar F R, IsFund p σ → FlagConcl v p AA.carrier b σ
 
-def PolarisedFlagStatement : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (g : ℕ) (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
-    (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C] [Algebra ℤ_[p] R]
-    (O : Type) [CommRing O] [Algebra ℤ_[p] O] (σO : O ≃ₐ[ℤ_[p]] O) (cp : R),
-    HodgeTateSetting p v R O σO cp → ∀ H : HodgeTateDatum p g v R O σO cp,
-    (∀ K : AddSubgroup (Nb p g), GenAF p H.AA.carrier K) →
-    ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p]
-      (Nw : Type) [AddCommGroup Nw] [Module F Nw] [Fintype Nw] [DecidableEq Nw]
-      (ι : Nw →+ Nb p g) (π : Nb p g →+ Nw), (∀ y, π (ι y) = y) →
-      (∀ h ∈ H.AA.carrier, (fun x => h (ι (π x))) ∈ H.AA.carrier) →
-      FStable F (H.AA.carrier.map (LinearMap.funLeft R C (ι : Nw → Nb p g))) →
-    ∀ (n : ℕ) (b : Module.Basis (Fin n) F Nw) (σ : MulChar F R), IsFund p σ →
-      FlagConcl v p (H.AA.carrier.map (LinearMap.funLeft R C (ι : Nw → Nb p g))) b σ
-
 end GlobalTheory.CompanionTheory.Ar.GR

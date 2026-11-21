@@ -5,13 +5,13 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.StrictInterlaceI
 import Development.AbelianVarietyTheory.Definitions.Divisors.LeastSplitAuxiliaryPrimeThetaChainSpec
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSignsMatchBranchingCoordinateEquivStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardMinusSignsHalfOfEvenStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HarishChandraParamOfEvenStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InterlacedSignedParametersStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsInterlacedSubSingleOfSpreadStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParametersSeparatedByOneStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HarishChandraParamOfEven
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InterlacedSignedParameters
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsInterlacedSubSingleOfSpread
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParametersSeparatedByOne
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParametersSpacingAndGapStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SignedParametersBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChiGridNumericalDataRealPlaceGapSizeBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SignedParametersBounded
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChiGridNumericalDataRealPlaceGapSizeBounds
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.Grow
@@ -49,9 +49,9 @@ private theorem exists_par_of_gridData_bounds {G : GlobalTheory.SignedHC.GridDat
   have hvk1 : 1 ≤ G.v G.k + G.b 1 := by omega
   obtain ⟨hc, hc'⟩ := GlobalTheory.T.card_minus_signs_half_of_even hme hga0 hl hm
   obtain ⟨e, he⟩ := GlobalTheory.T.exists_signsMatchBranchingCoordinate_equiv ε ε' (hc.trans hc'.symm)
-  obtain ⟨hHl, hHm⟩ := GlobalTheory.T.harish_chandra_param_of_even hke hme hn hl hm
-  have hw := GlobalTheory.T.interlaced_signed_parameters hga0 hvk1 hl hm
-  obtain ⟨hs1, hs2⟩ := GlobalTheory.T.parameters_separated_by_one hga0 hv (by omega) hl hm
+  obtain ⟨hHl, hHm⟩ := _root_.GlobalTheory.HCEnum.isHCParam_parPi_zero_parD0 hke hme hn hl hm
+  have hw := _root_.GlobalTheory.SignedHC.GridData.interlaced_pi_zero_and_D0 hga0 hvk1 hl hm
+  obtain ⟨hs1, hs2⟩ := _root_.GlobalTheory.WordSep.word_sep hga0 hv (by omega) hl hm
   obtain ⟨hwl, hwm, hgl, hgm⟩ := GlobalTheory.T.parameters_spacing_and_gap hH hga hv hvk hb hl hm
   have habs : ∀ a c, a ≠ c → 2 ≤ |lam a - lam c| := by
     intro a c hac
@@ -59,7 +59,7 @@ private theorem exists_par_of_gridData_bounds {G : GlobalTheory.SignedHC.GridDat
     · exact (hwl a c h).trans (le_abs_self _)
     · rw [abs_sub_comm]
       exact (hwl c a h).trans (le_abs_self _)
-  have hB := GlobalTheory.T.signed_parameters_bounded hvk0 hb1 ha0 hbm hl hm
+  have hB := _root_.GlobalTheory.Twist.parPi_parD0_entries_bounded hvk0 hb1 ha0 hbm hl hm
   have hk2 := G.two_le_k
   have hsum := Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n)))
     (fun i => ε' i = false)
@@ -75,7 +75,7 @@ private theorem exists_par_of_gridData_bounds {G : GlobalTheory.SignedHC.GridDat
       simp
     rw [heq, Finset.card_univ, Fintype.card_fin] at hsum
     omega
-  exact ⟨e, he, h3, hHl, hHm, hw, GlobalTheory.T.isInterlaced_sub_single_of_spread hw habs hs1 hs2, hwl, hwm, hgl, hgm, hneg, hpos, hB⟩
+  exact ⟨e, he, h3, hHl, hHm, hw, _root_.GlobalTheory.SepReal.interlaced_sub_single hw habs hs1 hs2, hwl, hwm, hgl, hgm, hneg, hpos, hB⟩
 
 theorem realInputPar : Ev fun {D} _ _ {sc} _ _ _ => ∀ (τ : D.what₂.Tau) (ε : Fin (D.R.r + 1) → Bool) (lam : Fin (D.R.r + 1) → ℝ)
     (ε' : Fin D.R.r → Bool) (mu : Fin D.R.r → ℝ), IsEnum (Node.par D sc.cGap (.core 0) τ) lam ε →
@@ -84,7 +84,7 @@ theorem realInputPar : Ev fun {D} _ _ {sc} _ _ _ => ∀ (τ : D.what₂.Tau) (ε
   intro _ _ _
   refine ⟨0, fun D large₂ _ _ hS T L μ0 _ Gr W M _ => ?_⟩
   intro τ ε lam ε' mu hlam hmu
-  obtain ⟨hv, hvk, hb, hga, hvk0, hb1, ha0, hbm, hb1', hb4⟩ := GlobalTheory.T.chiGridNumericalData_realPlace_gap_size_bounds D large₂ hS τ
+  obtain ⟨hv, hvk, hb, hga, hvk0, hb1, ha0, hbm, hb1', hb4⟩ := _root_.GlobalTheory.GridReal.num_real_bounds D large₂ hS τ
   have hl : IsEnum ((GlobalTheory.ChiGrid.num D 1 τ).parPi 0) lam ε := hlam
   have hD : dualPar (parB (Ptw D) 0 τ) = (GlobalTheory.ChiGrid.num D 1 τ).parD0 := by
     rw [← GlobalTheory.SignedHC.GridData.parD_zero_zero, parB, ← parV_zero D 1 (Nat.zero_le _) τ, dualPar_dualPar']

@@ -128,11 +128,6 @@ theorem IsFrame.ext (h : IsFrame ε ε₀ B B₀) {m : Type} {M N : Matrix m (Fi
       simp only [Matrix.mul_add, Matrix.mul_sum, ← Matrix.mul_assoc, h1, h2', h3]
     _ = N := Matrix.mul_one N
 
-theorem IsFrame.lev_one (h : IsFrame ε ε₀ B B₀) : lev ε B B₀ (fun _ => 1) 1 = 1 := by
-  unfold lev
-  simp only [inv_one, Matrix.conjTranspose_one, Matrix.mul_one]
-  exact h.2.2.2.2.2.2
-
 theorem IsFrame.lev_mul (h : IsFrame ε ε₀ B B₀) :
     lev ε B B₀ (fun i => x i * x' i) (g * g') = lev ε B B₀ x g * lev ε B B₀ x' g' := by
   refine h.ext (fun i => ?_) (fun i => ?_) ?_

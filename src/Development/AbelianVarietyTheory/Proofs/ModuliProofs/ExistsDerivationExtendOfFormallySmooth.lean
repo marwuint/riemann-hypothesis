@@ -11,19 +11,6 @@ open GlobalTheory.KS
 
 namespace GlobalTheory.KS
 
-theorem exists_ringHom_lift_of_formallySmooth (R B E C : Type) [CommRing R] [CommRing B]
-    [CommRing E] [CommRing C] [Algebra R B] [Algebra.FormallySmooth R B]
-    (φ : B →+* C) (ψ : R →+* E) (π : E →+* C) (hπ : Function.Surjective π)
-    (hn : IsNilpotent (RingHom.ker π)) (hc : ∀ r, π (ψ r) = φ (algebraMap R B r)) :
-    ∃ l : B →+* E, (∀ b, π (l b) = φ b) ∧ ∀ r, l (algebraMap R B r) = ψ r := by
-  letI : Algebra R E := ψ.toAlgebra
-  letI : Algebra R C := (φ.comp (algebraMap R B)).toAlgebra
-  let f : B →ₐ[R] C := { φ with commutes' := fun _ => rfl }
-  let g : E →ₐ[R] C := { π with commutes' := fun r => hc r }
-  refine ⟨(Algebra.FormallySmooth.liftOfSurjective f g hπ hn).toRingHom, fun b => ?_, fun r => ?_⟩
-  · exact Algebra.FormallySmooth.liftOfSurjective_apply f g hπ hn b
-  · exact (Algebra.FormallySmooth.liftOfSurjective f g hπ hn).commutes r
-
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct ContDiff in
 

@@ -75,9 +75,6 @@ def IsTame {κ κ' : Type} [Fintype κ] [Fintype κ'] (T : ((κ → AF F) → �
 
 variable {F}
 
-theorem isTame_id {κ : Type} [Fintype κ] : IsTame F (LinearMap.id : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) :=
-  fun g hg => ⟨Unit, inferInstance, fun _ => ContinuousLinearMap.id ℂ _, fun _ => g, fun _ => hg, fun f => by simp⟩
-
 theorem IsTame.comp {κ κ' κ'' : Type} [Fintype κ] [Fintype κ'] [Fintype κ'']
     {T : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)} {T' : ((κ' → AF F) → ℂ) →ₗ[ℂ] ((κ'' → AF F) → ℂ)}
     (hT : IsTame F T) (hT' : IsTame F T') : IsTame F (T' ∘ₗ T) := by

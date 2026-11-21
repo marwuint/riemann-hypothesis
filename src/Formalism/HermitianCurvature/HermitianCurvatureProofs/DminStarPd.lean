@@ -19,11 +19,6 @@ lemma gf_pd (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) :
     U.IsPolyDeg (2 * r + 2) (fun g : Mat k r => ((Gf k r z z' g : ℝ) : ℂ)) := by
   exact gram_function_polynomial k r z z'
 
-lemma dmin_pd (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
-    U.IsPolyDeg (2 * r + 2) (fun g : Mat k r => Dmin k r z z' g l) := by
-  obtain ⟨q, hq, he⟩ := minor_polynomial_property k r z z' l
-  exact ⟨q, hq.trans (by have := l.isLt; omega), he⟩
-
 section fac
 
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]

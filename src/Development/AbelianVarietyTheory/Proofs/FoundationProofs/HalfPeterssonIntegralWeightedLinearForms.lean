@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrablePeterssonIntegrandModerateGrowthStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasModerateGrowthQExpansionOfCoeffPolynomialGrowStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionPolyGrowthSummableContinuousStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrablePeterssonIntegrandModerateGrowth
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasModerateGrowthQExpansionOfCoeffPolynomialGrow
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionPolyGrowthSummableContinuous
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -13,9 +14,9 @@ namespace GlobalTheory.EisM
 theorem qs_lin (a b : ℕ → ℂ) (x y : ℂ) (ha : PolyB a) (hb : PolyB b) (τ : ℍ) :
     qs (x • a + y • b) τ = x * qs a τ + y * qs b τ := by
   have sa : Summable fun n : ℕ => a n * cexp (2 * π * Complex.I * n * τ) :=
-    ((GlobalTheory.T.qExpansion_polyGrowth_summable_continuous a ha).1 τ).of_norm
+    ((_root_.GlobalTheory.EisM.qs_summable_continuous a ha).1 τ).of_norm
   have sb : Summable fun n : ℕ => b n * cexp (2 * π * Complex.I * n * τ) :=
-    ((GlobalTheory.T.qExpansion_polyGrowth_summable_continuous b hb).1 τ).of_norm
+    ((_root_.GlobalTheory.EisM.qs_summable_continuous b hb).1 τ).of_norm
   unfold qs
   rw [← tsum_mul_left, ← tsum_mul_left, ← (sa.mul_left x).tsum_add (sb.mul_left y)]
   congr 1; funext n; simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]; ring
@@ -25,8 +26,8 @@ theorem pet_linear : ∀ (k L L' N : ℕ) (ε : DirichletCharacter ℂ N) (ρ : 
   have intg : ∀ h a : ℕ → ℂ, CF k L' (ch ε) h → PolyB a →
       Integrable (fun τ : ℍ => (ρ τ : ℂ) * (conj (qs h τ) * qs a τ * (τ.im : ℂ) ^ k)) := by
     intro h a hh ha
-    exact GlobalTheory.T.integrable_petersson_integrand_moderateGrowth k L L' N ε h ρ (qs a) hk hL' hN hW hh
-      (GlobalTheory.T.qExpansion_polyGrowth_summable_continuous a ha).2.aestronglyMeasurable (GlobalTheory.T.hasModerateGrowth_qExpansion_of_coeffPolynomialGrowth a ha)
+    exact _root_.GlobalTheory.EisM.integrable_pet_integrand k L L' N ε h ρ (qs a) hk hL' hN hW hh
+      (_root_.GlobalTheory.EisM.qs_summable_continuous a ha).2.aestronglyMeasurable (_root_.GlobalTheory.EisM.mod_qs_of_polyB a ha)
   refine ⟨?_, ?_⟩
   · intro h a b x y hh ha hb
     unfold pet

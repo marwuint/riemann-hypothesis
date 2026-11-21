@@ -19,10 +19,6 @@ theorem hom_ext {P P' : Obj l R} {a b : Hom P P'} (h : a.f = b.f) : a = b := by
 theorem comp_assoc {P₁ P₂ P₃ P₄ : Obj l R} (c : Hom P₃ P₄) (b : Hom P₂ P₃) (a : Hom P₁ P₂) :
     (c.comp b).comp a = c.comp (b.comp a) := hom_ext rfl
 
-theorem qmap_comp {P₁ P₂ P₃ : Obj l R} (g : Hom P₂ P₃) (f : Hom P₁ P₂) (m : ℕ) :
-    qmap (g.comp f) m = (qmap g m).comp (qmap f m) :=
-  Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl)
-
 theorem of_isPushout {P : ∀ {A B : Type} [CommRing A] [CommRing B], (A →+* B) → Prop}
     (hP : RingHom.IsStableUnderBaseChange @P)
     {A B A' B' : Type} [CommRing A] [CommRing B] [CommRing A'] [CommRing B']

@@ -94,12 +94,4 @@ theorem isCompact_levelOff (S : Finset (HeightOneSpectrum (𝓞 F))) :
 
 theorem isCompact_levelFin : IsCompact (levelFin σ J L : Set (GAd σ J)) := isCompact_levelOff σ J L ∅
 
-theorem levels_open_compact :
-    (∀ v, IsOpen (stabLoc σ J L v : Set (GLoc σ J v)) ∧ IsCompact (stabLoc σ J L v : Set (GLoc σ J v))) ∧
-    IsOpen (levelOpen σ J L : Set (GAd σ J)) ∧
-    (IsOpen (levelOffFin σ J L ∅ : Set (GFin σ J)) ∧ IsCompact (levelOffFin σ J L ∅ : Set (GFin σ J))) ∧
-    ∀ S, IsCompact (levelOff σ J L S : Set (GAd σ J)) :=
-  ⟨fun v => ⟨isOpen_stabLoc σ J L v, isCompact_stabLoc σ J L v⟩, isOpen_levelOpen σ J L,
-    isOpen_isCompact_levelOffFin_empty σ J L, isCompact_levelOff σ J L⟩
-
 end GlobalTheory.AdelicU

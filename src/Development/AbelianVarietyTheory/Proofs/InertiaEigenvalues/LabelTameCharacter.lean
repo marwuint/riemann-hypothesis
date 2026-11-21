@@ -103,42 +103,6 @@ theorem inflates_det {E : Type} [Field E] [NumberField E] {g : ℕ} [Fact g.Prim
     ((χ (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k))) : ℂˣ) : ℂ) • v
   rw [e2, e3, h7]
 
-theorem label_reduction : GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : Formalism.BasicNotions.D7) (Γ : GlobalTheory.HeightCounting.GrpSide D) (k : Fin 2) (v : D.nd.PlG k) (χ : ((D.naut.plGw k v).adicCompletion D.host.E)ˣ →* ℂˣ) (hχ : IsSmoothChar χ) (u : ZMod (D.host.g k)), IsTame χ → labAt hL D k v (Irr.ofDet 1 χ hχ) = Polynomial.X - Polynomial.C u → haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩; resCard ((D.naut.plGw k v).adicCompletion D.host.E) = D.host.g k ∧ ∀ L : GlobalTheory.GLq.LabelDatum (D.host.g k), L.teich = D.ntypes.teichC k → L.gen = Γ.ζ k → ∃ θ : (ZMod (D.host.g k))ˣ →* ℂˣ, CharLift θ χ ∧ GlobalTheory.GLp.IsCharLab L θ u := by
-  intro H hL D Γ k v χ hχ u htame hlab
-  haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
-  have hp : resCard ((D.naut.plGw k v).adicCompletion D.host.E) = D.host.g k := by
-    haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois
-    obtain ⟨h1, -, -⟩ := GlobalTheory.Mem.Chr.splitsC_place (D.host.g_prime k) (D.nd.g_split k) _ (D.naut.plGw_over k v)
-    exact (GlobalTheory.LocLanglands.resCard_eq_normV _).trans h1
-  refine ⟨hp, fun L hteich hgen => ?_⟩
-  obtain ⟨θ, hθ⟩ := exists_charLift hp htame
-  set x := GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 (D.naut.plGw k v))
-    (GlobalTheory.LocLanglands.cls (IrrRep.det (Fin 1) χ hχ)) with hx
-  have hlab' : GlobalTheory.WeilDeligne.WD.lab (D.ntypes.teichC k) (D.ntypes.tg k v) x = X - C u := hlab
-  refine ⟨θ, hθ, fun hu0 => ?_, fun u' hu' => ?_⟩
-  · have := GlobalTheory.WeilDeligne.WD.lab_coeff_zero_ne_zero (D.ntypes.teichC k) (D.ntypes.tg k v) x
-    rw [hlab', hu0] at this
-    simp at this
-  · obtain ⟨I⟩ := GlobalTheory.TypeIdent.nonempty_ident D
-    obtain ⟨P, hP, hPe⟩ := exists_label L θ u' hu'
-    have hT : Formalism.L2.NT.TameCoupled (D.nd.plOm.1 (D.naut.plGw k v)) (Γ.kv k v) (D.ntypes.tg k v) L.gen := by
-      rw [hgen]; exact Γ.tg_tame k v
-    have h1 := H D.host.E D.nd.Om (D.host.g k) _ _ (D.nd.plOm.2 (D.naut.plGw k v)) _
-      (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL _) (I.i k v) (I.cont k v) (Γ.kv k v) L _ (D.ntypes.tg_mem k v) hT 1
-      (IrrRep.det (Fin 1) χ hχ) (GlobalTheory.LocGL.IrrGL.isCusp_ofChar χ hχ) (tauOne θ) P hP
-      (inflates_det (I.i k v) (I.cont k v) hχ hθ)
-    rw [hPe] at h1
-    obtain ⟨a, ha, ε, -, hl⟩ := GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))
-    have hdim : x.lpDim = 1 := hl.dim _
-    have h2 := GlobalTheory.WeilDeligne.WD.inePol_eq_of_natDegree_lab (D.ntypes.teichC k) (D.ntypes.tg k v) x
-      (by rw [hlab', hdim, natDegree_X_sub_C])
-    have hr : Formalism.CyclotomicNorms.rootsBar (X - C u) = {algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) u} := by
-      simp [Formalism.CyclotomicNorms.rootsBar]
-    rw [hlab', hr, h1] at h2
-    have h3 := congrArg (fun q => q.coeff 0) h2
-    simp at h3
-    rw [hteich]
-    exact h3
 end GlobalTheory.TameCharLabel
 
 end

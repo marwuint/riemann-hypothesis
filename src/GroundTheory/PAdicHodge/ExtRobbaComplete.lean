@@ -384,27 +384,6 @@ theorem res_res {ρ2 : Set.Ioo (0 : ℝ) 1} (h12 : (ρ1 : ℝ) ≤ ρ0) (h23 : (
     (isClosed_eq ((T.continuous_res _).comp (T.continuous_res _)) (T.continuous_res _))
     fun b => by rw [res_coe, res_coe, res_coe]; rfl
 
-theorem coe_eq_zero_Econ {b : T.Econ ρ0} (hb : (b : T.RobbaExt ρ0) = 0) : b = 0 := by
-  have h1 : T.extNorm ρ0 (topRad ρ0) (b : T.RobbaExt ρ0) = 0 := by rw [hb, extNorm_zero]
-  rw [extNorm_coe] at h1
-  change gaussNorm (T.coeffB b) (ρ0 : ℝ) = 0 at h1
-
-  by_contra hb0
-  have hb0' : (b : T.B) ≠ 0 := fun h => hb0 (Subtype.ext h)
-  obtain ⟨n, x, hx⟩ := IsLocalization.Away.surj T.π (b : T.B)
-  have hx0 : x ≠ 0 := by
-    rintro rfl; exact hb0' (T.eq_zero_of_mul_pow (by rw [hx, map_zero]))
-  have hc := b.2
-  rw [mem_Econ, T.coeffB_eq hx] at hc
-  rw [T.coeffB_eq hx, gaussNorm_shift ρ0.2.1] at h1
-  have hx0' : T.zcoeff x ≠ 0 := fun h => hx0 ((T.zcoeff_eq_zero_iff x).1 h)
-  have := gaussNorm_pos ρ0.2.1 ((convergesAt_shift_iff ρ0.2.1 _).1 hc) hx0'
-  have hz := zpow_pos ρ0.2.1 (-(n : ℤ))
-  nlinarith [mul_pos this hz]
-
-theorem coe_injective_Econ : Function.Injective ((↑) : T.Econ ρ0 → T.RobbaExt ρ0) := fun a b hab =>
-  sub_eq_zero.1 (T.coe_eq_zero_Econ (by rw [Completion.coe_sub, hab, sub_self]))
-
 end TeichLift
 
 end GroundTheory.PAdicHodge

@@ -64,9 +64,6 @@ theorem norm_prod_sgn {l : ℕ} (hl : l ≤ r + 1) : ‖∏ i : Fin l, sgnV r (F
   intro i _
   simp [sgnV]
 
-theorem prod_one' (l : ℕ) (hl : l ≤ r + 1) : ∏ _i : Fin l, (fun _ : Fin (r + 1) => (1 : ℂ)) (Fin.castLE hl _i) = 1 := by
-  simp
-
 theorem norm_dl_zhatO (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) {l : ℕ} (hl : l ≤ r + 1) :
     ‖RealObj.Dl Z l‖ = ‖RealObj.Dl (RealObj.ZhatO Z) l‖ := by
   rw [zhatO_eq_mul, dl_diag _ _ _ hl, norm_mul, norm_mul, norm_prod_sgn hl]

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoAppTopOfIsPullbackOfSurjective
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsIntegralOfSmoothFieldOfConnectedSpace
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianSchemeSpreadsOutFiniteTypeSubringStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianSchemeSpreadsOutFiniteTypeSubring
 open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -29,7 +29,7 @@ theorem isIso_appTop_restrict {S : Scheme.{0}} (A : Over S) [GrpObj A]
   let f : Sp R ⟶ S := e.inv ≫ V.ι
   have hf : e.hom ≫ f = V.ι := by simp [f]
   obtain ⟨S₀, B, _, φ, -, hfin, hB, hpb⟩ :=
-    GlobalTheory.T.abelianScheme_spreads_out_finiteType_subring R ((Over.pullback f).obj A) ∅ (isAbelianScheme_pullback A hA f)
+    _root_.GlobalTheory.CompanionTheory.Ar.Approx.abelianScheme_descends_to_fg_subring R ((Over.pullback f).obj A) ∅ (isAbelianScheme_pullback A hA f)
   have : IsNoetherianRing S₀ := Algebra.FiniteType.isNoetherianRing ℤ S₀
   have := hB.smooth
   have := hB.proper

@@ -118,16 +118,7 @@ theorem germLoc_of_realised {S : C.HidaSetting E Wp Wq} {v : Fin S.f} (hR : Germ
 
 end loc
 
-def GermLocOfRealised : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting E Wp Wq) (v : Fin S.f),
-    GermRealised S v → GermCont S v → KB.GermLoc S v
-
 end
 
 end Formalism.FourierDecayAlt.P.GermRealisation
 
-theorem Formalism.FourierDecayAlt.P.germ_local_of_realised : Formalism.FourierDecayAlt.P.GermRealisation.GermLocOfRealised := by
-  intro E _ _ _ Wp Wq _ _ _ _ S v hR hC
-  exact Formalism.FourierDecayAlt.P.GermRealisation.germLoc_of_realised hR hC

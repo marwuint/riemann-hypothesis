@@ -260,26 +260,6 @@ theorem ker_localSymbol : (localSymbol v w).ker = normSubgroup v w := by
       rw [localSymbol_apply v w hv, completionConj, dif_neg hw, ite_self]
     · rw [localSymbol_of_not_isReal v w hv, MonoidHom.one_apply]
 
-theorem localSymbol_surjective : Function.Surjective (localSymbol v w) := by
-  intro σ
-  by_cases h2 : v.IsReal ∧ w.IsComplex
-  · obtain ⟨hv, hw⟩ := h2
-    rcases eq_one_or_eq_completionConj hv hw σ with rfl | rfl
-    · exact ⟨1, map_one _⟩
-    · refine ⟨-1, ?_⟩
-      rw [localSymbol_apply v w hv, if_pos]
-      simp
-  · have := subsingleton_gal w h2
-    exact ⟨1, Subsingleton.elim _ _⟩
-
-def normQuotientEquivGal : v.Completionˣ ⧸ normSubgroup v w ≃* Gal(w.Completion/v.Completion) :=
-  (QuotientGroup.quotientMulEquivOfEq (ker_localSymbol v w).symm).trans
-    (QuotientGroup.quotientKerEquivOfSurjective _ (localSymbol_surjective v w))
-
-theorem natCard_quotient_normSubgroup :
-    Nat.card (v.Completionˣ ⧸ normSubgroup v w) = Module.finrank v.Completion w.Completion := by
-  rw [Nat.card_congr (normQuotientEquivGal v w).toEquiv, natCard_gal_completion w]
-
 end LocalSymbol
 
 section Herbrand
@@ -425,11 +405,6 @@ theorem cyclicHerbrand_unitsRep_eq_two (hv : v.IsReal) (hw : w.IsComplex) :
   rw [cyclicHerbrand, herbrandQuotient, natCard_kerModRange_cycSub_normHom v w hv hw,
     natCard_kerModRange_normHom_cycSub v w hv hw]
   norm_num
-
-theorem hasCyclicHerbrand_unitsRep (hv : v.IsReal) (hw : w.IsComplex) :
-    HasCyclicHerbrand (unitsRep v w) (completionConj hv) :=
-  ⟨Nat.finite_of_card_ne_zero (by rw [natCard_kerModRange_cycSub_normHom v w hv hw]; norm_num),
-    Nat.finite_of_card_ne_zero (by rw [natCard_kerModRange_normHom_cycSub v w hv hw]; norm_num)⟩
 
 theorem cyclicHerbrand_unitsRep_eq_finrank (σ : Gal(w.Completion/v.Completion))
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :

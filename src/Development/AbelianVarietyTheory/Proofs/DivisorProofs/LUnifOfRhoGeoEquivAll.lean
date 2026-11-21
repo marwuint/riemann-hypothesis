@@ -114,12 +114,6 @@ theorem exists_bases (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] F
   refine ⟨n, (Basis.mk h5 h6).map e.symm, Basis.mk h3 h4.ge, fun k => ?_⟩
   simp
 
-theorem equivFun_eq_crd {F : FormsL L K WL W G} {e : C ≃ₗ[K] F.WK} {n : ℕ} {b : Basis (Fin n) K C} {B : Basis (Fin n) L WL}
-    (hB : ∀ k, B k = (e (b k) : WL)) (f : C) : B.equivFun (e f : WL) = crd L b f := by
-  rw [← LinearEquiv.eq_symm_apply, Basis.equivFun_symm_apply]
-  conv_lhs => rw [← b.sum_repr f]
-  simp only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, crd_apply, hB, algebraMap_smul]
-
 theorem indep_span (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] F.WK) (σ : L →+* ℂ) {y : C → W σ} {s : ℂ} (hs : s ≠ 0)
     (hy : ∀ f, F.j σ (e f : WL) = s • y f)
     (h1 : ∀ (m : ℕ) (b : Fin m → C), LinearIndependent K b → LinearIndependent ℂ fun k => y (b k))
@@ -155,13 +149,6 @@ theorem rhoIs_of_form (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] 
   rw [← B.sum_repr x]
   simp only [map_sum, map_smulₛₗ, Finset.smul_sum, RingHom.id_apply, hB, hf]
   exact Finset.sum_congr rfl fun k _ => smul_comm _ _ _
-
-theorem exists_ext_action (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] F.WK) (ρC : G →* (C →ₗ[K] C)) :
-    ∃ ρ : G →* (WL →ₗ[L] WL), ∀ g f, ρ g (e f : WL) = (e (ρC g f) : WL) := by
-  obtain ⟨n, b, B, hB⟩ := exists_bases F h e
-  refine ⟨(B.equivFun.symm.conjRingEquiv : _ →* _).comp (rhoB L b ρC), fun g f => ?_⟩
-  show B.equivFun.symm (rhoB L b ρC g (B.equivFun (e f : WL))) = _
-  rw [equivFun_eq_crd hB, rhoB_crd, ← equivFun_eq_crd hB, LinearEquiv.symm_apply_apply]
 
 theorem injective_of_indep {σ : L →+* ℂ} (j : WL →ₛₗ[σ] W σ)
     (h : ∀ (m : ℕ) (x : Fin m → WL), LinearIndependent L x → LinearIndependent ℂ fun k => j (x k)) : Function.Injective j := by
@@ -228,48 +215,8 @@ theorem indep_span_of_tie (t : FWTie T R κ v₀) (he : R.models_HW) (hb : BarTi
   obtain ⟨s, hs, h⟩ := exists_jK_eq_smul t he hb hu i σ
   exact indep_span (C := Cu T κ i) (R.FW i) (t.ks i) (t.e i) σ hs h (hu i σ).1 (hu i σ).2
 
-theorem chi_eq_chiTop (hc : R.grp_chiW) (i : Fin D.R.m) : (R.FW i).chi = chiTop R i := by
-  have h1 : ChiIs R i (R.FW i).chi := fun g => (hc i g).trans (Units.coe_prod _ _).symm
-  have h2 : ChiIs R i (chiTop R i) := by
-    have hex : ∃ chi, ChiIs R i chi := ⟨_, h1⟩
-    rw [chiTop, dif_pos hex]
-    exact hex.choose_spec
-  exact MonoidHom.ext fun g => Units.ext (D.what₂.embLL.injective ((h1 g).trans (h2 g).symm))
-
 theorem jK_apply (t : FWTie T R κ v₀) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (f : Cu T κ i) :
     t.jK i σ f = (R.FW i).j σ ((t.e i f : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL) := rfl
-
-theorem equiv_smul {H X : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup X] [Module ℂ X] (E : H →ₗ[ℂ] X) (a : X →ₗ[ℂ] X)
-    {s c : ℂ} {x x' y y' : H} (hx : x = s • y) (hx' : x' = s • y') (h : E y = c • a (E y')) : E x = c • a (E x') := by
-  rw [hx, hx', map_smul, map_smul, map_smul, h, smul_comm]
-
-theorem exists_rhoIs_all (t : FWTie T R κ v₀) (he : R.models_HW) (hc : R.grp_chiW) (hb : BarTie t) (hu : JUnif T R κ v₀)
-    (hg : GeoAct T R κ v₀) (i : Fin D.R.m) :
-    ∃ ρ, ∀ σ, RhoIs σ ((R.FW i).j σ) (R.HW i σ).e (actW R i σ) (R.FW i).chi ρ := by
-  obtain ⟨ρC, hρ⟩ := hg i
-  obtain ⟨ρ, h1⟩ := exists_ext_action (C := Cu T κ i) (R.FW i) (t.ks i) (t.e i) ρC
-  refine ⟨ρ, fun σ => rhoIs_of_form (C := Cu T κ i) (R.FW i) (t.ks i) (t.e i) σ (R.HW i σ).e (actW R i σ) (R.FW i).chi ρ
-    fun g f => ?_⟩
-  obtain ⟨s, -, h⟩ := exists_jK_eq_smul t he hb hu i σ
-  have h2 := hρ.1 σ g f
-  rw [← chi_eq_chiTop hc i] at h2
-  have h3 := (congrArg ((R.FW i).j σ) (h1 g f)).trans ((jK_apply t i σ (ρC g f)).symm.trans (h (ρC g f)))
-  have h4 := (jK_apply t i σ f).symm.trans (h f)
-  have h5 := equiv_smul (R.HW i σ).e (actW R i σ g) h3 h4 h2
-  exact h5
-
-theorem lUnif_of_rhoIs_at (t : FWTie T R κ v₀) (he : R.models_HW) (hc : R.grp_chiW) (hb : BarTie t) (hu : JUnif T R κ v₀)
-    (hg : GeoAct T R κ v₀)
-    (h0 : ∀ i, ∃ σ, RhoIs σ ((R.FW i).j σ) (R.HW i σ).e (actW R i σ) (R.FW i).chi (R.FW i).ρ) : R.LUnif := by
-  intro i σ
-  refine ⟨(indep_span_of_tie t he hb hu i σ).1, (indep_span_of_tie t he hb hu i σ).2, ?_⟩
-  obtain ⟨ρ, hρ⟩ := exists_rhoIs_all t he hc hb hu hg i
-  obtain ⟨σ₁, h1⟩ := h0 i
-  have e : (R.FW i).ρ = ρ := RhoIs.unique
-    (injective_of_indep (W := fun σ => (R.HW i σ).H) _ (indep_span_of_tie t he hb hu i σ₁).1) (he i σ₁).1 h1 (hρ σ₁)
-  have h2 := hρ σ
-  rw [← e] at h2
-  exact h2
 
 theorem levChi_flag_datWp (i : Fin D.R.m) (k : GA D (Wc D i)) :
     levChi (Wc D i) (R.βW i) (flagL (R.datWp i R.triv)) k = 1 := by
@@ -393,14 +340,6 @@ variable (T R κ O) in
 def EquivConstExist : Prop :=
   ∀ (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ), GoodEmb T.Q.c σ → ∀ hV : T.V ((i : ℕ) + 1) σ = Wc D i,
     ∃ c', CUnit c' ∧ EqAt T R κ (O i) σ hV c'
-
-variable (T R κ O) in
-
-def EquivConstExistBase : Prop :=
-  ∀ (i : Fin D.R.m) (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i), ∃ c', CUnit c' ∧ EqAt T R κ (O i) T.toCore.σ₀ hV c'
-
-theorem EquivConstExist.base (h : EquivConstExist T R κ O) : EquivConstExistBase T R κ O :=
-  fun i hV => h i _ T.good_σ₀ hV
 
 variable {F : Face D A}
 

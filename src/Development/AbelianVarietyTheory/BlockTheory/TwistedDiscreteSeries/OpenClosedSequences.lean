@@ -108,16 +108,6 @@ def omegaOn (μ : kˣ →* ℂˣ) (s : Set ℕ) : Representation ℂ (GL a k × 
 
 variable {a b}
 
-theorem omega_eq_om (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) (Φ : SB (Matrix b a k)) :
-    (omega a b μ (g, h) Φ).1 = om μ⁻¹ g h Φ.1 := by
-  funext x
-  have h1 : ((Fintype.card b : ℂ) / 2) = (((Fintype.card b : ℝ) / 2 : ℝ) : ℂ) := by push_cast; rfl
-  have h2 : (-(Fintype.card a : ℂ) / 2) = ((-(Fintype.card a : ℝ) / 2 : ℝ) : ℂ) := by push_cast; rfl
-  show (omChar a b μ (g, h) : ℂ) * Φ.1 (act x (g, h)) = _
-  simp only [omChar, om, act, MonoidHom.mul_apply, MonoidHom.comp_apply, detChar_apply, Units.val_mul, h1, h2,
-    val_absPow_ofReal, MonoidHom.inv_apply, inv_inv, MonoidHom.coe_fst, MonoidHom.coe_snd]
-  ring
-
 theorem omegaOn_apply (μ : kˣ →* ℂˣ) (s : Set ℕ) (γ : GL a k × GL b k) (Φ : SB (RankIn k a b s))
     (x : RankIn k a b s) :
     (omegaOn a b μ s γ Φ).1 x =
@@ -138,67 +128,6 @@ def filt (μ : kˣ →* ℂˣ) (s : Set ℕ) (κ : ℕ) : Subrepresentation (ome
   apply_mem_toSubmodule γ Φ hΦ x hx := by
     rw [omegaOn_apply, hΦ _ (by rwa [rank_act]), mul_zero]
 
-variable (k a) in
-
-def biReg : Representation ℂ (GL a k × GL a k) (SB (GL a k)) :=
-  sbRep (fun y γ => γ.2⁻¹ * y * γ.1) (fun y => by simp) (fun y γ δ => by simp [mul_assoc])
-    (fun γ => by fun_prop)
-
-variable (a b) in
-
-def openDatum (μ : kˣ →* ℂˣ) : Representation ℂ (GL a k × (GL a k × GL b k)) (SB (GL a k)) :=
-  twist ((biReg k a).comp ((MonoidHom.id _).prodMap (MonoidHom.fst _ _)))
-    ((detChar b μ).comp ((MonoidHom.snd _ _).comp (MonoidHom.snd _ _)))
-
 end Model
-
-section Statement
-
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-
-def OpenClosedSeq (a t : ℕ) (μ : kˣ →* ℂˣ) : Prop :=
-  ∃ (i : (omegaOn (Fin a) (Fin (a + t)) μ {a}).IntertwiningMap (omega (Fin a) (Fin (a + t)) μ))
-    (r : (omega (Fin a) (Fin (a + t)) μ).IntertwiningMap (omegaOn (Fin a) (Fin (a + t)) μ (Set.Iio a))),
-    (∀ Φ x, (i Φ).1 x = if h : x.rank = a then Φ.1 ⟨x, h⟩ else 0) ∧
-    (∀ Φ x, (r Φ).1 x = Φ.1 x.1) ∧
-    Function.Injective i ∧ Function.Exact i r ∧ Function.Surjective r
-
-def RankFiltration (a t : ℕ) (μ : kˣ →* ℂˣ) : Prop :=
-  filt (Fin a) (Fin (a + t)) μ (Set.Iio a) 0 = ⊤ ∧ filt (Fin a) (Fin (a + t)) μ (Set.Iio a) a = ⊥ ∧
-  ∀ (κ : ℕ) (hκ : κ < a),
-    filt (Fin a) (Fin (a + t)) μ (Set.Iio a) (κ + 1) ≤ filt (Fin a) (Fin (a + t)) μ (Set.Iio a) κ ∧
-    (∃ j : (omegaOn (Fin a) (Fin (a + t)) μ (Set.Ico κ a)).Equiv
-        (filt (Fin a) (Fin (a + t)) μ (Set.Iio a) κ).toRepresentation,
-      ∀ Φ x, (j Φ).1.1 x = if h : κ ≤ x.1.rank then Φ.1 ⟨x.1, h, x.2⟩ else 0) ∧
-    ∃ q : (subQuot (filt (Fin a) (Fin (a + t)) μ (Set.Iio a) κ)
-        (filt (Fin a) (Fin (a + t)) μ (Set.Iio a) (κ + 1))).Equiv (omegaOn (Fin a) (Fin (a + t)) μ {κ}),
-      ∀ Φ x, (q (Submodule.Quotient.mk Φ)).1 x = Φ.1.1 ⟨x.1, lt_of_eq_of_lt x.2 hκ⟩
-
-def LowerStrata (a t : ℕ) (μ : kˣ →* ℂˣ) : Prop :=
-  ∀ (κ β : ℕ) (h : κ + β = a), 1 ≤ β →
-    ∃ (W : Type) (_ : AddCommGroup W) (_ : Module ℂ W) (R : Representation ℂ (GL (Fin κ) k) W),
-      IsSmooth R ∧
-      Nonempty (Representation.Equiv
-        ((omegaOn (Fin a) (Fin (a + t)) μ {κ}).comp (MonoidHom.inl _ _))
-        (ind₂Lower (stdSum h)
-          (extTensor R (detRep (Fin β) (μ⁻¹ * absPow k (((t : ℂ) + β) / 2))))))
-
-def OpenStratum (a t : ℕ) (μ : kˣ →* ℂˣ) : Prop :=
-  Nonempty ((omegaOn (Fin a) (Fin (a + t)) μ {a}).Equiv
-    (indSnd (stdSum (rfl : a + t = a + t)) (openDatum (Fin a) (Fin t) μ)))
-
-def RankStrata : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    (a t : ℕ), 1 ≤ a → 1 ≤ t → ∀ μ : kˣ →* ℂˣ, IsSmoothChar μ → IsUnitaryChar μ →
-      (OpenClosedSeq a t μ ∧ RankFiltration a t μ) ∧ LowerStrata a t μ ∧ OpenStratum a t μ
-
-example (a t : ℕ) (μ : kˣ →* ℂˣ) : filt (Fin a) (Fin (a + t)) μ (Set.Iio a) 0 = ⊤ :=
-  eq_top_iff.2 fun _ _ _ hx => absurd hx (Nat.not_lt_zero _)
-
-example (a t : ℕ) (μ : kˣ →* ℂˣ) : filt (Fin a) (Fin (a + t)) μ (Set.Iio a) a = ⊥ :=
-  Subrepresentation.toSubmodule_injective <|
-    eq_bot_iff.2 fun _ hΦ => Subtype.ext (funext fun x => hΦ x x.2)
-
-end Statement
 
 end GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences

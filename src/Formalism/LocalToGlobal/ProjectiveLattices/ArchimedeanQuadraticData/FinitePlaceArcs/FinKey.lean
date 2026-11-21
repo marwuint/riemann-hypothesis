@@ -8,25 +8,6 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Re
 
 namespace FinKey
 
-theorem bind₁_scale_monomial {ι R : Type} [CommRing R] (a : ι → R) (ν : ι →₀ ℕ) (r : R) :
-    bind₁ (fun x => C (a x) * X x) (monomial ν r) = monomial ν (r * ν.prod fun x e => a x ^ e) := by
-  rw [bind₁_monomial, monomial_eq, Finsupp.prod, Finsupp.prod, map_mul, map_prod]
-  simp only [mul_pow, Finset.prod_mul_distrib, map_pow]
-  ring
-
-theorem coeff_bind₁_scale {ι R : Type} [CommRing R] (a : ι → R) (q : MvPolynomial ι R) (μ : ι →₀ ℕ) :
-    coeff μ (bind₁ (fun x => C (a x) * X x) q) = (μ.prod fun x e => a x ^ e) * coeff μ q := by
-  classical
-  refine MvPolynomial.induction_on' q ?_ ?_
-  · intro ν r
-    rw [bind₁_scale_monomial, coeff_monomial, coeff_monomial]
-    split_ifs with h
-    · subst h
-      ring
-    · simp
-  · intro p q hp hq
-    rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
 def detZ (Dw : Datum H) : MvPolynomial (ArcLt Dw) ℤ :=

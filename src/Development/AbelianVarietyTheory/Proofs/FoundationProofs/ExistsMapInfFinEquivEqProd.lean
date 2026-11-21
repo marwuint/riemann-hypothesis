@@ -105,14 +105,6 @@ theorem isGroupCoord_matCoord {n : Type} [Fintype n] [DecidableEq n] {ι : H →
 
 variable [IsTopologicalGroup H] {c : H → X} {f f' : H → ℂ}
 
-theorem IsGroupCoord.translate_mem (h : IsGroupCoord c) (hf : f ∈ CcSmooth c) (a b : H) :
-    (fun g => f (a * g * b)) ∈ CcSmooth c := by
-  obtain ⟨-, ⟨m, hm, em⟩, -⟩ := h
-  obtain ⟨hc, Φ, hΦ, e⟩ := hf
-  exact ⟨hc.comp_homeomorph ((Homeomorph.mulLeft a).trans (Homeomorph.mulRight b)),
-    fun y => Φ (m (m (c a, y), c b)), hΦ.comp (hm.comp ((hm.comp (by fun_prop)).prodMk contDiff_const)),
-    fun g => by simp only [e, em]⟩
-
 variable [FiniteDimensional ℝ X]
 
 theorem IsGroupCoord.inv_mem (h : IsGroupCoord c) (hf : f ∈ CcSmooth c) : (fun g => f g⁻¹) ∈ CcSmooth c := by
@@ -154,21 +146,9 @@ theorem IsGroupCoord.conv_mem (h : IsGroupCoord c) (hf : f ∈ CcSmooth c) (hf' 
 
 end Coord
 
-section Mat
-
-variable {H n : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Fintype n] [DecidableEq n]
-  {ι : H →* Matrix n n ℂ} {f f' : H → ℂ}
-
-variable [T2Space H] [MeasurableSpace H] [BorelSpace H] (μ : Measure H) [IsFiniteMeasureOnCompacts μ]
-
-end Mat
-
 section General
 
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
-
-theorem translate_mem_SB {f : G → ℂ} (h : f ∈ SB G) (a b : G) : (fun g => f (a * g * b)) ∈ SB G :=
-  comp_mem_SB h ((Homeomorph.mulLeft a).trans (Homeomorph.mulRight b))
 
 variable [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [IsFiniteMeasureOnCompacts μ]
 

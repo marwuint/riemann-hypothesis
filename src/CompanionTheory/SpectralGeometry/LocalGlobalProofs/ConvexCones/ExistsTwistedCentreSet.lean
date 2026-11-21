@@ -3,8 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInvari
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultCellsAmong
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageStart
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.EqOfOrbitMarkInCellConeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.OrbitMarkCoordinateLtOneStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOfMarkedFormsInSameCellSimplicialFan
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.EqOfOrbitMarkInCellCone
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MarkedFormCoordinateLtOneInPrimitiveCell
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.OrbitMarkCoordinateLtOne
 
 noncomputable section
 
@@ -55,14 +58,14 @@ theorem centres_exists : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZ
       exact not_isPrim_zero hvp
     refine ⟨OrbMark.orbFun O w0 v, isTwG_orbFun w0 v,
       fun X _ _ _ _ hX => ⟨fun β _ _ => OrbMark.orbFun_eval_eq_zero_or_one _ _ _,
-        fun β _ _ h1 => GlobalTheory.T.markedOrbit_form_primitive bar w0 v hv hvp β h1,
+        fun β _ _ h1 => _root_.GlobalTheory.PolFan.OrbMark.eq_one_of_smul_eq_of_orbFun_evalZ_eq_one bar w0 v hv hvp β h1,
         fun m γ hγ β hβ hβp β' hβ' hβp' h1 h1' hc hc' =>
-          GlobalTheory.T.eq_of_orbit_mark_in_cell_cone O bar w0 hb q φ lab hφ hlab hsl δ₀ h₀ hli hpr v t hv0 (fun i => (ht i).1) htv X hX m γ hγ β hβ hβp β' hβ' hβp'
+          _root_.GlobalTheory.CompanionTheory.Ar.Fan.OrbitMarkUniqueInCell.eq_of_orbMark_of_inRCone_cell O bar w0 hb q φ lab hφ hlab hsl δ₀ h₀ hli hpr v t hv0 (fun i => (ht i).1) htv X hX m γ hγ β hβ hβp β' hβ' hβp'
             h1 h1' hc hc'⟩,
       fun X _ _ _ _ _ m δ _ hδ => ?_,
       fun X _ _ _ _ _ m δ h hδ hδp β hβ hβp h1 c' hc' hβc =>
-        GlobalTheory.T.orbit_mark_coordinate_lt_one O bar w0 hb φ hφ δ₀ h₀ hli hpr v t hv0 ht htv X m δ h hδ hδp β hβ hβp h1 c' hc' hβc⟩
-    obtain ⟨β, hβ, hβp, h1, hin⟩ := GlobalTheory.T.carries_exists_marked_form_in_cone bar w0 c δ₀ v t hv hv0 hvn hc₀ (fun i => (ht i).1) htv X m δ hδ
+        _root_.GlobalTheory.CompanionTheory.Ar.Fan.OrbitMarkCoordinateBound.orbMark_coord_lt_one O bar w0 hb φ hφ δ₀ h₀ hli hpr v t hv0 ht htv X m δ h hδ hδp β hβ hβp h1 c' hc' hβc⟩
+    obtain ⟨β, hβ, hβp, h1, hin⟩ := _root_.GlobalTheory.PolFan.carries_exists_marked bar w0 c δ₀ v t hv hv0 hvn hc₀ (fun i => (ht i).1) htv X m δ hδ
     exact ⟨β, hβ, hβp, h1, hin⟩
   · refine ⟨GlobalTheory.PolFan.zeroFun O, fun _ _ _ _ => rfl, fun X _ _ _ _ _ =>
       ⟨fun β _ _ => Or.inl (zeroFun_evalZ β), fun β _ _ h => by simp at h,

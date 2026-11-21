@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeEigenProjectionStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.RiemannLatticeEigenProjections
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 
 noncomputable section
@@ -100,7 +102,7 @@ theorem isometry_and_commutes : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     (∀ x y, R'.form (γ x) (γ y) = R.form x y) → (∀ x, R'.P (γ x) = φ (R.P x)) →
     (∀ x y, R'.ip (φ x) (φ y) = R.ip x y) ∧ ∀ a x, φ (R.B a x) = R'.B a (φ x) := by
   intro E _ _ _ g Λ _ _ R R' γ φ hf hP
-  have hs := (GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R).2.1
+  have hs := (_root_.LevelTowerAlt.riemann_lattice_eigen_projections E g Λ Unit R).2.1
   exact ⟨isometry_of_periods R R' hs γ φ hf hP, commutes_of_periods R R' hs γ φ hP⟩
 
 end GlobalTheory.CompanionTheory.Ar.Cusp.PeriodIso

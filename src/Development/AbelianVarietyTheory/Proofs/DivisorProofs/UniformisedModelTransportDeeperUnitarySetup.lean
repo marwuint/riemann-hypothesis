@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyUWit
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabRange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineChartThetaSystemUnitaryModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeeperIdentificationChainAgreesGenericallyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineChartThetaSystemUnitaryModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeeperIdentificationChainAgreesGenerically
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedModelTransportDeeperSetupStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -26,7 +26,7 @@ theorem transport : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     rw [hw]
     exact h'.symm
   obtain ⟨U, c₂, hc₂, fg₂, frac₂, hth₂, hev₂, ρ₂, u₂', hUa, hwU, hS₂, hi₂, ⟨G₂, _, α₂, β₂, hα₂, hβ₂, hL₂, hm₂⟩, hu₂⟩ :=
-    GlobalTheory.T.exists_affine_chart_thetaSystem_unitary_model E H Dw hpq l Xo cf C D.X w₂ w hwr
+    _root_.GlobalTheory.UPoinc.exists_urechart_affine E H Dw hpq l Xo cf C D.X w₂ w hwr
   have hle : D.X.M.ringOn (U : Set D.X.M.Z) ≤ D.X.M.O w := RatModel.ringOn_le_O hwU
   set y₂ : D.X.M.ringOn (U : Set D.X.M.Z) →+* PadicAlgCl p :=
     (D.X.M.valHom (gPt p ≫ y) w (RatModel.range_eq_singleton _ _)).comp (Subalgebra.inclusion hle).toRingHom with hy₂
@@ -35,7 +35,7 @@ theorem transport : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     intro a
     rw [hval]
     exact RatModel.norm_val_le_one rfl (Subalgebra.algebraMap_mem _ a)
-  have hch := GlobalTheory.T.deeper_identification_chain_agrees_generically E H Dw l Xo cf C X₁ D w₁ w₂ hT c₀ hc R' fg frac hth hev ρ' G inferInstance α β hm c₂ hc₂ _ fg₂ frac₂ hth₂ hev₂ ρ₂ G₂ inferInstance α₂ β₂ hm₂
+  have hch := _root_.GlobalTheory.UPoinc.tied_chain_generic E H Dw l Xo cf C X₁ D w₁ w₂ hT c₀ hc R' fg frac hth hev ρ' G inferInstance α β hm c₂ hc₂ _ fg₂ frac₂ hth₂ hev₂ ρ₂ G₂ inferInstance α₂ β₂ hm₂
   refine ⟨c₂, hc₂, D.X.M.ringOn (U : Set D.X.M.Z), fg₂, frac₂, hth₂, hev₂, ρ₂, u₂', hS₂, hi₂, hu₂, hle, G₂, inferInstance, α₂, β₂, hα₂, hβ₂, hL₂, hm₂, y₂, hval, hint, ?_⟩
   exact GlobalTheory.T.uniformisedModel_transport_deeper_setup E H Dw l Xo cf C X₁ D p z₁ ct y h c₀ hc R' fg frac hth hev ρ' u' hS hi hu hR G inferInstance α β hα hβ hL y₀ hy₀ u c₂ hc₂ _ fg₂ frac₂ hth₂ hev₂ ρ₂ u₂' hS₂ hi₂ hu₂ hle G₂ inferInstance α₂ β₂ hα₂ hβ₂ hL₂ y₂ hval hint hch
 

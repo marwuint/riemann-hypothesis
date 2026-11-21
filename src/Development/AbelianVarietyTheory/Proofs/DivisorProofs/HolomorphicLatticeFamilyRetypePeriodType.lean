@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicFamilyConjConstantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSemisimpleRingOfPosFormAdjointClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramRePosDefAdjointPeriodStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicFamilyConjConstant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSemisimpleRingOfPosFormAdjointClosed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramRePosDefAdjointPeriod
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
@@ -199,7 +199,7 @@ theorem retype : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+*
     · intro b hb
       rw [hF b hb]
       rfl
-  obtain ⟨Q, hQh, hQp, hQa⟩ := GlobalTheory.T.gram_re_posDef_adjoint_period O bar g ρ D (P b₀) _ e hper
+  obtain ⟨Q, hQh, hQp, hQa⟩ := _root_.GlobalTheory.PELU.gram_re_posdef_adj O bar g ρ D (P b₀) _ e hper
   have hcl : ∀ x ∈ S, ∃ y ∈ S, Q * y = xᴴ * Q := by
     intro x hx
     induction hx using Algebra.adjoin_induction with
@@ -220,8 +220,8 @@ theorem retype : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+*
       obtain ⟨v, hv, hv'⟩ := hy
       exact ⟨v * u, S.mul_mem hv hu, by
         rw [← Matrix.mul_assoc, hv', Matrix.mul_assoc, hu', Matrix.conjTranspose_mul, Matrix.mul_assoc]⟩
-  haveI : IsSemisimpleRing S := GlobalTheory.T.isSemisimpleRing_of_posDef_adjoint_closed _ Q S hQh hQp hcl
-  obtain ⟨B'', h, hB''o, hb₀'', hB''sub, hh1, hhd, hhu⟩ := GlobalTheory.T.holomorphic_family_conj_constant S g m B' b₀ F hB'o hb₀' hFd
+  haveI : IsSemisimpleRing S := _root_.GlobalTheory.isSemisimpleRing_of_posForm_adjoint_closed _ Q S hQh hQp hcl
+  obtain ⟨B'', h, hB''o, hb₀'', hB''sub, hh1, hhd, hhu⟩ := _root_.GlobalTheory.holFamily_conj_const S g m B' b₀ F hB'o hb₀' hFd
   refine ⟨B'', fun b => (h b)⁻¹, hB''o, hb₀'', hB''sub.trans Set.inter_subset_left, by simp [hh1], ?_, ?_⟩
   · exact dOn_inv h hhd (fun b hb => ((Matrix.isUnit_iff_isUnit_det _).1 (hhu b hb).1).ne_zero)
   · intro b hb

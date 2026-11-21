@@ -2,11 +2,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCharacter
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNontrivialCharacterFiniteCommGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescendedLineBundleEquivariantGeneratorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechTrivialPullbackOfIsPullbackGeneratorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterEqOneOfDescendedLineBundleTrivialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterLineBundleAdditiveOfEquivariantGeneratoStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNontrivialCharacterFiniteCommGroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescendedLineBundleEquivariantGenerator
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechTrivialPullbackOfIsPullbackGenerator
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterEqOneOfDescendedLineBundleTrivial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterLineBundleAdditiveOfEquivariantGenerato
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
 open scoped CategoryTheory.Obj
@@ -28,9 +29,9 @@ theorem exists_nontriv_family : ∀ (K : Type) [Field K] [IsAlgClosed K] (A A' N
     intro h
     apply hi1
     rw [← Category.id_comp i, h, MonObj.one_comp]
-  obtain ⟨T, χ, hχ, hne⟩ := GlobalTheory.T.exists_nontrivial_character_finite_comm_group K N hNf hN1
-  obtain ⟨M, e, hM, he⟩ := GlobalTheory.T.exists_descended_lineBundle_equivariantGenerator _ A A' N T i q χ hi hq hqf hqfl hqs hker hχ
-  exact ⟨T, M, hM, GlobalTheory.T.characterLineBundle_additive_of_equivariantGenerator K A A' N T i q χ M e hA hA' hi hq hqf hqfl hqs hker hχ hM he,
-    GlobalTheory.T.cechTrivial_pullback_of_isPullbackGenerator _ _ _ M e he.1, fun h => hne (GlobalTheory.T.character_eq_one_of_descended_lineBundle_trivial K A A' N T i q χ M e hA hq hker hM he h)⟩
+  obtain ⟨T, χ, hχ, hne⟩ := _root_.GlobalTheory.CharExists.exists_character_ne_one K N hNf hN1
+  obtain ⟨M, e, hM, he⟩ := _root_.GlobalTheory.CharKer.exists_equivGen _ A A' N T i q χ hi hq hqf hqfl hqs hker hχ
+  exact ⟨T, M, hM, _root_.GlobalTheory.CharKer.isAdditive_of_isEquivGen K A A' N T i q χ M e hA hA' hi hq hqf hqfl hqs hker hχ hM he,
+    _root_.GlobalTheory.CharKer.triv_pull_of_isPullGen _ _ _ M e he.1, fun h => hne (_root_.GlobalTheory.CharKer.character_eq_one_of_triv K A A' N T i q χ M e hA hq hker hM he h)⟩
 
 end GlobalTheory.CharKer

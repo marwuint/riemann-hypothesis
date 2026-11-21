@@ -32,22 +32,10 @@ def LevAtG.lamG (X : LevAtG σE J gp splitG Lb Uloc k m t j) (hg : ∀ i, gp i �
 def LevAtG.typeX (X : LevAtG σE J gp splitG Lb Uloc k m t j) (hg : ∀ i, gp i ≠ 0) (ch : CharsG F gp Z) (p : ℕ)
     (hp : ∀ i, Nat.Coprime p (gp i)) : awayG σE J Uloc p →* Z := (X.lamG hg ch p hp)⁻¹
 
-def LevAtG.psiX (X : LevAtG σE J gp splitG Lb Uloc k m t j) (hg : ∀ i, gp i ≠ 0) (ch : CharsG F gp Z) (p : ℕ)
-    (hp : ∀ i, Nat.Coprime p (gp i)) : awayG σE J Uloc p →* Z := (X.typeX hg ch p hp)⁻¹
-
-theorem LevAtG.psiX_eq (X : LevAtG σE J gp splitG Lb Uloc k m t j) (hg : ∀ i, gp i ≠ 0) (ch : CharsG F gp Z) (p : ℕ)
-    (hp : ∀ i, Nat.Coprime p (gp i)) : X.psiX hg ch p hp = X.lamG hg ch p hp := inv_inv _
-
 variable (σE J Uloc) in
 
 def lamQG (Q : Finset (HeightOneSpectrum (𝓞 F))) (lamQ : ∀ v, v ∈ Q → (Uloc v →* Z)) (p : ℕ)
     (hQ : ∀ v ∈ Q, ((p : ℕ) : 𝓞 F) ∉ v.asIdeal) : awayG σE J Uloc p →* Z :=
   prodChar Q Uloc lamQ (awayG σE J Uloc p) (fun v hv => awayG_le_comap p v (hQ v hv))
-
-theorem lamQG_empty (lamQ : ∀ v, v ∈ (∅ : Finset (HeightOneSpectrum (𝓞 F))) → (Uloc v →* Z)) (p : ℕ)
-    (hQ : ∀ v ∈ (∅ : Finset (HeightOneSpectrum (𝓞 F))), ((p : ℕ) : 𝓞 F) ∉ v.asIdeal) :
-    lamQG σE J Uloc ∅ lamQ p hQ = 1 := by
-  unfold lamQG prodChar
-  simp
 
 end Formalism.L2.G

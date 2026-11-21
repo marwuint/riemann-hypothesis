@@ -9,15 +9,15 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistingCharac
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.StdCharFinitePartRationalEqExpTrace
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComapRealSubfieldEqIffEqOrIsConjPlace
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleTwistOfTwistingCharacter
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IrreducibleWeightDescendsToPolynomialModuleStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftWeightInfinitesimalCharacterEqDefiniteParamStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IrreducibleWeightDescendsToPolynomialModule
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftWeightInfinitesimalCharacterEqDefiniteParam
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueCharacterArtinTameGaloisEqTameValueStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevelCharactersTypePlacesEqLocalComponentsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BaseDataTypeCharacterEqLocalComponentStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevelCharactersTypePlacesEqLocalComponents
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BaseDataTypeCharacterEqLocalComponent
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStandardFrameKeepsMatricesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameKeepsMatricesMatchesRationalPointsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWeightEmbeddingHarmonicPolynomialsLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraicFormsLevelGroupEqTwistLevelStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameKeepsMatricesMatchesRationalPoints
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWeightEmbeddingHarmonicPolynomialsLattices
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraicFormsLevelGroupEqTwistLevel
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraicLevelCharacterEqTwistLevelCharacterStatement
 
 noncomputable section
@@ -98,7 +98,7 @@ theorem exists_wtMap {cf : CharFrame D} (X : NExpTied D) (cs : CharSide D cf) (h
     rw [hemb, ← embLL0_labLL0]
     exact RingHom.ext fun x => hρ.e_LL0 i b _
   choose lam0 hlam0 using fun t => X.rhoW_hw i (j.1 + 1) b t h1 h2
-  obtain ⟨lam, hlam, T₀, hT₀⟩ := GlobalTheory.T.irreducible_weight_descends_to_polynomial_module D.host.E D.R.nV D.what₂.Tau _ (ρ.e i b) (NX.kEmb D i b)
+  obtain ⟨lam, hlam, T₀, hT₀⟩ := _root_.GlobalTheory.WtDescent.weight_descends D.host.E D.R.nV D.what₂.Tau _ (ρ.e i b) (NX.kEmb D i b)
     (by rw [he]; exact GlobalTheory.StdRat.tauE_injective D)
     (by
       rw [he]
@@ -125,9 +125,9 @@ theorem exists_wtMap {cf : CharFrame D} (X : NExpTied D) (cs : CharSide D cf) (h
         exact ⟨fun _ => 1, fun _ => by norm_num, cf.isEta.inf⟩) (D.eTau t)).1
       rw [show (1 / 2 : ℂ) = ((1 / 2 : ℚ) : ℂ) by norm_num]
       exact this
-    rw [hlam, X.rhoW_wt i _ b t h1 h2 _ _ hi (hlam0 t), GlobalTheory.T.lift_weight_infinitesimal_character_eq_definite_param D j hn t]
+    rw [hlam, X.rhoW_wt i _ b t h1 h2 _ _ hi (hlam0 t), _root_.GlobalTheory.InertiaEigenvalues.LamParam.infOf_lamV_eq_paramV D j hn t]
     rfl
-  exact GlobalTheory.T.exists_weightEmbedding_harmonicPolynomials_lattices D _ _ (ρ.B i j b) (hρ.base i j b) _ hF P hP hn _ _ (ρ.ek i b k) (NX.toKk D i k) (sideEmb D.ntw i b)
+  exact _root_.GlobalTheory.MtRead.WtEmb.exists_wtMap D _ _ (ρ.B i j b) (hρ.base i j b) _ hF P hP hn _ _ (ρ.ek i b k) (NX.toKk D i k) (sideEmb D.ntw i b)
     (fun x => (ek_toKk hρ i b k _).trans (hρ.e_LL0 i b x)) (hρ.isCoefRing_k i b k) _ (X.rhoW i (j.1 + 1) b) lam
     (fun t a => by rw [hw, hB]; rfl) T₀ hT₀ M.W M.ρ M.bc
 
@@ -185,7 +185,7 @@ theorem levMatch (hA : GlobalTheory.Published.GlobalArtinReciprocity) : ∀ (D :
   have hgrp : ∀ (g : G0g D.nd) kv (h : NX.pG D kv ∈ (ρ.B i j b).G.Pg) (a c : Fin (Wc D j).rank),
       (ρ.eG i j b g ⟨NX.pG D kv, h⟩).val a c = is kv ((g kv).val (Fin.cast (FWT.rank_Wc j) a) (Fin.cast (FWT.rank_Wc j) c)) :=
     fun g kv h a c => (hp.grp i j b g _ h (hp.Pg i j b ▸ h) a c).trans (his kv g _ _ _)
-  refine ⟨GlobalTheory.T.algebraicForms_levelGroup_eq_twistLevel D i j b k Q ψ _ _ _ _ _ _ _ hF (PV j) (hPV j) hβ hPg hinj hQ hD is _ hgrp (hlv.U_eq i j b) Bs.exp.U_eq,
+  refine ⟨_root_.GlobalTheory.MtLev.levMem D i j b k Q ψ _ _ _ _ _ _ _ hF (PV j) (hPV j) hβ hPg hinj hQ hD is _ hgrp (hlv.U_eq i j b) Bs.exp.U_eq,
     GlobalTheory.T.algebraicLevelCharacter_eq_twistLevelCharacter D i j b k Q ψ _ _ _ _ _ _ _ hF (PV j) (hPV j) hβ hPg hinj hQ hD is _ hgrp (hlv.U_eq i j b) Bs.exp.U_eq ?_
       (ρ.e i b) (ρ.ek i b k) (ek_toKk hρ i b k) (Bs.exp.psiU_gen i b) (hlv.psiU_eq i j b) ?_ ?_ ?_⟩
   · rw [← hQ, ← hD]
@@ -197,8 +197,8 @@ theorem levMatch (hA : GlobalTheory.Published.GlobalArtinReciprocity) : ∀ (D :
       rw [hz, map_natCast, ← map_natCast (is kv), ZMod.natCast_zmod_val]
     have hu : ((((x : ZMod (D.host.g kv.1)).val : ℕ) : 𝓞 D.host.E) : D.host.E) ≠ 0 := fun h => z.ne_zero (by
       rw [hz', RingOfIntegers.coe_eq_zero_iff.1 h, map_zero])
-    rw [GlobalTheory.T.base_data_type_character_eq_local_component D _ _ _ hB (cf.mu0 j) (by rw [hp.mu0, ← hC]; exact hlev.mu0 j) _ hmem _ hu z hz', hτ i _ b kv x h1 h2, hρ.e_LL0,
-      GlobalTheory.T.levelCharacters_typePlaces_eq_local_components hA D cf Rw low Pq S hL eig θ Bs hV τ hτ j kv x _ hu (by rw [sub_self]; exact zero_mem _)]
+    rw [_root_.GlobalTheory.TypeCharUnits.muC_eq_locK D _ _ _ hB (cf.mu0 j) (by rw [hp.mu0, ← hC]; exact hlev.mu0 j) _ hmem _ hu z hz', hτ i _ b kv x h1 h2, hρ.e_LL0,
+      _root_.GlobalTheory.TwInputs.tau_eq_locK hA D cf Rw low Pq S hL eig θ Bs hV τ hτ j kv x _ hu (by rw [sub_self]; exact zero_mem _)]
   · intro PP hPP u hu z hz
     rw [← hQ] at hPP
     have hl : ((D.ntw.l i : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal := (hAd.1 PP (mem_half.1 hPP).1).2
@@ -275,7 +275,7 @@ theorem exists_reading : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (
       obtain ⟨ω, hω⟩ := exists_wtMap Bs.exp cs hlev hρ hp i j b k Q ψ (PV j) (hPV j)
         (Bs.exp.mtV i (j.1 + 1) b k Q ψ (by omega) (by omega) (admissible_twist_of_twisting_character hT))
       obtain ⟨r, r1, r2, r3, r4⟩ := read_cell (ρ.B i j b) (hρ.base i j b) (ρ.tw i b k Q ψ) (frameEquiv (PV j)) (D.ntw.Ok i k)
-        (ρ.ek i b k) (hρ.isCoefRing_k i b k) _ _ _ ω (GlobalTheory.T.frameKeepsMatrices_matches_rationalPoints D _ _ hF (PV j) (hPV j)).1 hω
+        (ρ.ek i b k) (hρ.isCoefRing_k i b k) _ _ _ ω (_root_.GlobalTheory.MtRead.ratMatch_of_idFrame D _ _ hF (PV j) (hPV j)).1 hω
         (levMatch hA D cf Rw low Pq S hL eig θ Bs hτ hV hspl hPq Γ Pl0 I0 T A3 Ks R F cG hlev hC hK hF PV hPV ρ hρ hp hlv hch
           i j b k Q ψ (admissible_twist_of_twisting_character hT) hT) _ (hρ.classes i j b _ hg ha).reps
         (Bs.exp.mtV i (j.1 + 1) b k Q ψ (by omega) (by omega) (admissible_twist_of_twisting_character hT)).real

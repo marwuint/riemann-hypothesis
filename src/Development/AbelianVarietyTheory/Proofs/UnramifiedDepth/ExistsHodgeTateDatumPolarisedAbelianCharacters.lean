@@ -13,10 +13,10 @@ import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisI
 import ReciprocityTheory.DualLattices.ExistsPrimitiveRoot
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HodgeTateDatumHypothesesPeriodTower
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HopfPointMem
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NilpotentChartBaseChangeFormalGroupStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsHodgeTateDatumFormalGroupCharactersStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalGroupLawJacobianExtensionChangeCoeffStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPolarisedAbelianSchemeBaseChangeRingActionStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NilpotentChartBaseChangeFormalGroup
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsHodgeTateDatumFormalGroupCharacters
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalGroupLawJacobianExtensionChangeCoeff
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPolarisedAbelianSchemeBaseChangeRingAction
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry TensorProduct Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
 open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2 GlobalTheory.ChF
@@ -34,12 +34,12 @@ theorem exists_htd_characters_base : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Fi
     obtain ⟨H⟩ := htd_dim_zero p C v O hv OE (show O from (Ainf.ainfTowerL p O hv ε hε).c)
     exact ⟨_, hs, H, 1, Subsingleton.elim _ _, Subsingleton.elim _ _, isUnit_one,
       fun _ => Subsingleton.elim _ _, fun i => (IsEmpty.false i).elim⟩
-  · obtain ⟨P', φ, hφ, hL, hg', hact⟩ := GlobalTheory.T.exists_polarisedAbelianScheme_baseChange_ringAction T O io P
+  · obtain ⟨P', φ, hφ, hL, hg', hact⟩ := _root_.GlobalTheory.exists_polBaseChange_oAct T O io P
     obtain ⟨o', ho'⟩ := hact OE o
-    obtain ⟨X', hX', hR⟩ := GlobalTheory.T.nilpotentChart_baseChange_formalGroup T O io P.A P'.A φ hφ g F.F X hX
-    obtain ⟨F', hF'⟩ := (GlobalTheory.T.formalGroupLaw_jacobian_extension_changeCoeff T O io).1 g F
+    obtain ⟨X', hX', hR⟩ := _root_.GlobalTheory.ChF.nilChart_baseChange T O io P.A P'.A φ hφ g F.F X hX
+    obtain ⟨F', hF'⟩ := (_root_.GlobalTheory.ChF.changeCoeff_law_lin_extSer T O io).1 g F
     have hX'' : NilChart P'.A F'.F X' := by rw [hF']; exact hX'
-    have h := GlobalTheory.T.exists_hodgeTateDatum_formalGroupCharacters p C v O hv T P io P' φ hφ hL hg' (by omega) g (hg'.trans hg) OE o' F' X'
+    have h := _root_.GlobalTheory.ChF.exists_htd_chars p C v O hv T P io P' φ hφ hL hg' (by omega) g (hg'.trans hg) OE o' F' X'
       hX'' (fun a j => MvPowerSeries.map io (α a j))
       (fun a => hR (o.act a) (o'.act a) (α a) (ho' a) (hα a))
     rw [hF'] at h

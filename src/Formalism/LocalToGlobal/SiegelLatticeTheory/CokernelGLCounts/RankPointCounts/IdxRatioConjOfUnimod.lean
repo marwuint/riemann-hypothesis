@@ -15,21 +15,11 @@ theorem idxRatio_conj_of_unimod {G : Type} [Group G] (A B : Subgroup G) (s : G) 
     (hU : IdxRatio A (cj s A) = 1) : IdxRatio A (cj s B) = (B.relIndex A : ℝ) := by
   rw [idxCocycle G A (cj s B) (cj s A) (cj_le hBA) (by rw [relIndex_cj]; exact hf), hU, relIndex_cj, mul_one]
 
-theorem unimod_of_sub {G : Type} [Group G] (A B' : Subgroup G) (s : G) (hAB' : A ≤ B') (hs : s ∈ B')
-    (hf : A.relIndex B' ≠ 0) : IdxRatio A (cj s A) = 1 := by
-  have h := idxRatio_conj_sub A A B' s le_rfl hAB' hs hf
-  rw [h, Subgroup.relIndex_self, Nat.cast_one]
-
 variable {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
   (δ : ∀ p : PlF D, (D.s.atP p).Fp) (u u' : D.what₂.Word) {p : PlF D}
 
 def UnimodAt (w : Point D.host.E (D.R.rS + 1)) : Prop :=
   ∀ s ∈ StP M δ u u' w p, IdxRatio (Ag M δ u u' (p := p) w) (cj s (Ag M δ u u' (p := p) w)) = 1
-
-theorem unimod_of_over (w : Point D.host.E (D.R.rS + 1)) (h : OverAt M δ u u' (p := p) w) : UnimodAt M δ u u' (p := p) w := by
-  intro s hs
-  obtain ⟨B', hAB', hsB', hf⟩ := h s hs
-  exact unimod_of_sub _ B' s hAB' hsB' hf
 
 theorem locIdx_at' (w : Point D.host.E (D.R.rS + 1)) (hA : Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D)
     (hL : IsLoUni L) (hU : IsUpUni U) (v : ℝ) (hN : CountAt M δ u u' w hA L U hL hU v)

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfMemSpanK
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsChiDetSplitCentre
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DiscreteSpectrumOfResidual
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalOfCommutingFiniteAlgebraJointEiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalOfCommutingFiniteAlgebraJointEi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalEigenIntertwinersStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentreCompMemKinfEquivariantAutomorphicMapsStatement
 
@@ -85,7 +85,7 @@ theorem finiteDimensional_mapsJ : GlobalTheory.Published.AutomorphicFormsFiniteG
   have hcap : ∀ (τ : E →+* ℂ) (u : ℂ), cap (a := a) τ u ∈ Zalg E a := fun τ u =>
     Algebra.subset_adjoin ⟨τ, u, rfl⟩
   let S : Set (Module.End ℂ (mapsJ φ L)) := {s | ∃ τ u, s = postZ φ L (cap τ u) (hcap τ u)}
-  refine GlobalTheory.T.finiteDimensional_of_commuting_finiteAlgebra_jointEigen (mapsJ φ L) S ?_ ?_ ?_
+  refine _root_.GlobalTheory.AutGrowth.finiteDimensional_of_commuting_finite_eigen (mapsJ φ L) S ?_ ?_ ?_
   · rintro _ ⟨τ, u, rfl⟩ _ ⟨τ', u', rfl⟩
     refine LinearMap.ext fun T => Subtype.ext (LinearMap.ext fun w => ?_)
     show cap τ u (cap τ' u' (T.1 w)) = cap τ' u' (cap τ u (T.1 w))

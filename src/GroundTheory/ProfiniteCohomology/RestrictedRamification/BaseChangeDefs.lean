@@ -320,11 +320,6 @@ theorem coe_gsBaseChange_apply (σ : (gsOpenSubgroup S hL : Subgroup (galUnramif
       ((σ : galUnramifiedOutside F Ω S) ((gsFieldEquiv hL).symm x) : Ω) :=
   coe_fixingMulEquivOfRestrictScalarsEq_apply _ σ x
 
-theorem gsFieldEquiv_apply_apply (σ : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)))
-    (x : maxUnramifiedOutside F Ω S) :
-    gsFieldEquiv hL ((σ : galUnramifiedOutside F Ω S) x) = gsBaseChange S hL σ (gsFieldEquiv hL x) :=
-  fieldEquivOfRestrictScalarsEq_apply_apply _ σ x
-
 theorem coe_gsBaseChange_symm_apply (τ : galUnramifiedOutside L Ω (placesOver S))
     (x : maxUnramifiedOutside F Ω S) :
     (((((gsBaseChange S hL).symm τ : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S))) : galUnramifiedOutside F Ω S) x :

@@ -295,16 +295,6 @@ theorem gl2ArchRep_conj_adelicLift {f : ℍ → ℂ}
       gl2ArchRep_ι_adelicLift_of_holCoeff hf hhol (gl2HolCoeff_cayleyGL2_conj _ le_rfl),
       gl2WeightChar_cayleyGL2_conj_diag]
 
-theorem gl2ArchRep_ι_one_adelicLift {f : ℍ → ℂ}
-    (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (hhol : MDiff f) :
-    gl2ArchRep (UniversalEnvelopingAlgebra.ι ℂ (1 : HarishChandra.gl 2))
-      ⟨adelicLift N k f, isArchSmooth_adelicLift hf hhol⟩ = 0 := by
-  rw [gl2ArchRep_ι_adelicLift_of_holCoeff hf hhol (by simp [gl2HolCoeff])]
-  have : gl2WeightChar k (1 : HarishChandra.gl 2) = 0 := by
-    simp [gl2WeightChar]
-    ring
-  rw [this, zero_smul]
-
 theorem isZFinite_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (hhol : MDiff f) :
     IsZFinite (⟨adelicLift N k f, isArchSmooth_adelicLift hf hhol⟩ : archSmooth ℚ 2) :=

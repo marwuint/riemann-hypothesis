@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PerCEmb
 import Formalism.LocalToGlobal.IndefiniteReal.ThPinsR
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaSeriesTestFunctionHolomorphicWeight
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 
 open NumberField Matrix Complex MeasureTheory IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh
@@ -19,9 +20,9 @@ theorem thA_heis_entire_linear_injective : ∀ (E : Type) [Field E] [NumberField
   refine ⟨fun y z => ?_, GlobalTheory.SW.ThetaHol.differentiable_thA idx hs hφ hd, fun ψ hψ => ⟨fun a b => ?_, ?_⟩⟩
   · obtain ⟨h1, -, -, -, h2⟩ := (GlobalTheory.SW.heisG_laws E r X g bas idx n hs hn).2.2.2 y φ hφ
     exact ⟨h1, h2 x hd z⟩
-  · have h1 : GlobalTheory.SW.IsSB (a • φ) := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ hφ hφ).2.1 a
-    have h2 : GlobalTheory.SW.IsSB (b • ψ) := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ hψ hψ).2.1 b
-    refine ⟨(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h1 h2).1, ?_⟩
+  · have h1 : GlobalTheory.SW.IsSB (a • φ) := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ hφ hφ).2.1 a
+    have h2 : GlobalTheory.SW.IsSB (b • ψ) := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ hψ hψ).2.1 b
+    refine ⟨(_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ h1 h2).1, ?_⟩
     rw [GlobalTheory.SW.UnAct.thA_add idx hs hd h1 h2, GlobalTheory.SW.UnAct.thA_smul, GlobalTheory.SW.UnAct.thA_smul]
   · exact GlobalTheory.SW.UnAct.eq_of_thA_eq idx hs hd hφ hψ
 

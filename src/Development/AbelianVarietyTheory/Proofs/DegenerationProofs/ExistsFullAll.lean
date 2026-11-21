@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsEquivStdSymp
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsStarNormLEOfIsCMField
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsThetaPtDownStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLevelOfFullStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLevelOfFull
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTateIsoMoveStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLimitPointTateIsoSequenceStatement
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CharZeroOfIsPrimitiveRoot
@@ -81,8 +81,8 @@ theorem exists_iso (hL : Laws) (h₁ : ThetaPtDeterminesSt) (h₂ : EndDetermine
   have hM0 : 0 < M := pow_pos hp _
   haveI : NeZero M := ⟨hM0.ne'⟩
   haveI := o.charZero
-  obtain ⟨hg, lev, hb, hl⟩ := GlobalTheory.T.exists_level_of_full' hL E H D g bas hbas K o M hM0
-  have Q := GlobalTheory.T.exists_level_of_full' hL E H D g bas hbas K o' M hM0
+  obtain ⟨hg, lev, hb, hl⟩ := _root_.GlobalTheory.exists_level_of_full hL E H D g bas hbas K o M hM0
+  have Q := _root_.GlobalTheory.exists_level_of_full hL E H D g bas hbas K o' M hM0
   rw [← hζ] at Q
   obtain ⟨hg', lev', hb', hl'⟩ := Q
   let lab : (Fin (2 * g) → ZMod M) → D.La := fun a => bas fun i => ((a i).val : ℤ)

@@ -107,5 +107,4 @@ end LateralTheory.CohomologicalPurity.TubeCut
 
 namespace LateralTheory.CohomologicalPurity.TubeCut
 
-theorem LeafHsSum_of (hS : LeafSum) (hP : LeafPbSum) : LeafHsSum := LeafHsSum_of_dbl hS (leafDblSum_of hP) leafDiscSumH
 end LateralTheory.CohomologicalPurity.TubeCut

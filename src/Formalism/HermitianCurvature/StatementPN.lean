@@ -21,8 +21,6 @@ def NormBound : Prop :=
   ∀ (P : Type) [Fintype P] (B : S3.MassData P), NormInputs B →
     B.Gam1 * B.AA * ((B.c0 * B.c0')⁻¹ * B.IntN) ≤ B.d * B.d' / B.Dstar
 
-def NormOfMain : Prop := S3.MainTheorem → NormBound
-
 def NormOfLemmas : Prop := S3.JacobianConstant → S3.LocalProduct → S3.Columns → NormBound
 
 def abelian₂ (rd : ℝ) (r k f : ℕ) : ℝ := rd ^ (2 * r * (r + 1) * (k - 1) * f)
@@ -116,10 +114,6 @@ def Unfold : Prop :=
 end LocalNG
 
 def e7 (C1 C0 r : ℕ) : ℕ := C1 * (r + 1) ^ 2 + C0 * (r + 1) ^ 2 + 2 * (2 * r + 2) + 5
-
-def ZpowForm : Prop :=
-  ∀ q k r : ℕ, 1 ≤ q → 2 * r + 5 ≤ k →
-    (q : ℝ) ^ (-((k : ℤ) - 2 * r - 5)) = ((q : ℝ) ^ (k - 2 * r - 5))⁻¹
 
 def MeanAmpJoint : Prop :=
   Formalism.HermitianLatticeCounting.S4.Step4 → Formalism.HermitianLatticeCounting.S4.OmCount →
@@ -230,10 +224,6 @@ def eN (r : ℕ) : ℕ := 10 * (r + 1) ^ 2 + 6 * (2 * r + 2) + 1
 def GenMassInput (AAre e1 : ℝ) : Prop :=
   ∀ γ, IsPt X N γ → 0 ≤ N.n γ ∧ N.ngen γ ≤ AAre * e1 * N.Hh γ ^ eN r * N.n γ
 
-def GenMassSplit (AAre e1 : ℝ) (Gk dens tw : Pts E r → ℝ) : Prop :=
-  ∀ γ, IsPt X N γ → 0 < Gk γ ∧ 0 < tw γ ∧ N.n γ = Gk γ * tw γ ∧ 0 ≤ dens γ ∧ dens γ ≤ e1 * N.Hh γ ∧
-    (tw γ)⁻¹ ≤ N.Hh γ ^ (6 * (2 * r + 2)) ∧ N.ngen γ ≤ AAre * Gk γ * dens γ * N.Hh γ ^ (10 * (r + 1) ^ 2)
-
 def HeightInput (gf : ℝ) : Prop :=
   ∀ γ, IsPt X N γ → 1 ≤ N.NG γ ∧ 1 ≤ N.ND γ ∧ N.Hh γ ≤ gf * N.NG γ * N.ND γ
 
@@ -242,12 +232,6 @@ def PointSumInput [NumberField E] (Aexp : ℕ) (TB : ℝ) : Prop :=
     ∑ γ ∈ S, Formalism.HermitianLatticeCounting.ExpansionTerms.blockMinorWeight γ * N.n γ * (N.NG γ * N.ND γ) ^ Aexp * N.jacobianSquareBound γ ≤ TB
 
 end row
-
-def GenMassOfSplit : Prop :=
-  ∀ (τ Rw I H H₁ : Type) [Fintype I] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H₁]
-    [InnerProductSpace ℂ H₁] (X : PB.Terms τ Rw I H H₁) (E : Type) [Field E] (r : ℕ) (Cl Nu : Type)
-    (N : NGData τ E r Cl Nu) (AAre e1 : ℝ) (Gk dens tw : Pts E r → ℝ), 0 ≤ AAre →
-    (∀ γ, IsPt X N γ → 1 ≤ N.Hh γ) → GenMassSplit X N AAre e1 Gk dens tw → GenMassInput X N AAre e1
 
 def ExactCores : Prop :=
   Formalism.HermitianLatticeCounting.S4.Step4 ∧ Formalism.HermitianLatticeCounting.S4.OmCount ∧ Formalism.HermitianLatticeCounting.S4.WeightedCS ∧ Formalism.HermitianLatticeCounting.ExpansionTerms.BlockMinorSumPowSixtyFour
@@ -275,10 +259,6 @@ def RowNGAbstract : Prop :=
 
 def ExponentSum : Prop :=
   ∀ C1 C0 A r : ℕ, C1 + C0 + 38 ≤ A → e7 C1 C0 r + eN r + 6 ≤ A * (r + 1) ^ 2
-
-def ExponentSumText : Prop :=
-  ∀ r : ℕ, ((39 + 9) * (r + 1) ^ 2 + 2 * (2 * r + 2) + 5) + (10 * (r + 1) ^ 2 + 6 * (2 * r + 2) + 1) + 6 ≤
-      86 * (r + 1) ^ 2 ∧ 86 * (r + 1) ^ 2 ≤ 100 * (r + 1) ^ 2
 
 def NGSizes (Cg CT CSt : ℝ) (r f : ℕ) (b rd g TT cSt e1 : ℝ) : Prop :=
   1 ≤ f ∧ 16 ≤ b ∧ 0 < rd ∧ rd ≤ b ∧ 1 ≤ g ∧ g ≤ b ^ Cg ∧ 0 < TT ∧
@@ -324,50 +304,9 @@ def RowNGJoint : Prop :=
         Real.exp (Cn * ((2 * r + 2 : ℕ) : ℝ) ^ 5 * (Fintype.card (InfinitePlace E) : ℕ) * Real.log b))
         (B.d * B.d' / B.Dstar)
 
-def PairCores : Prop :=
-  PB.MainRow ∧ PB.PairBound ∧ PB.LocalCores ∧ PB.GlobalCores ∧ PB.LatticeLink ∧ PB.AxiomsOfLocalModel ∧
-  A5.ThetaExistsStep ∧ PB.PairBoundAbstract ∧ PB.NormSqBoundOfEqualIota ∧ PB.GramSumLeOfPosSemidef ∧ PB.PairSplit ∧ PB.SubFamily ∧
-  PB.NumPrice ∧ PB.NumExp ∧ PB.NumDens ∧ PB.NumLoops ∧ PB.NumNG ∧ PB.NGExponent ∧ PB.SqrtSumSqLeOneAddInvPowSix
-
 def LoopCores : Prop :=
   Formalism.HermitianLatticeCounting.LatticeSumBounds.NonDegSum ∧ Formalism.HermitianLatticeCounting.LatticeSumBounds.DegSum ∧ Formalism.HermitianLatticeCounting.LatticeSumBounds.SingleRowBound ∧ Formalism.HermitianLatticeCounting.LatticeSumBounds.GainSqrt ∧
   Formalism.HermitianLatticeCounting.LatticeSumBounds.ExpSumLe' ∧ PB.LoopsJoint ∧ PB.LoopsGiveRows
-
-def PairBoundFromLocalNG : Prop :=
-  PB.PairBoundFromLocal → PairCores → RowNGJoint → NGChain → LoopCores →
-  ∀ C₄ Cthr CL : ℝ, 1 ≤ C₄ → 1 ≤ CL →
-  ∀ (C1 C0n A : ℕ) (CB CSt Cg CT : ℝ), 0 ≤ CB → 0 ≤ CSt → 0 ≤ Cg → 0 ≤ CT →
-    C1 + C0n + 38 ≤ A →
-    ∃ CA C K₀ Cn : ℝ, Cthr ≤ CA ∧ 1 ≤ CA ∧ 0 ≤ C ∧ C ≤ CA ∧ 0 ≤ Cn ∧
-    ∀ (C0 CG CDel cT Cb : ℝ), 1 ≤ C0 → 0 ≤ CG → 4 < CDel → 0 < cT → 0 < Cb → 1 < cT * Cb →
-    ∃ k0 : ℕ, ∀ (E W : Type) [Field E] [NumberField E] [IsCMField E] (D : TB.Data E W)
-      (e : Fin D.f ≃ InfinitePlace E) (G : Sz.Glob (InfinitePlace E)) (bb Cp Cf Th : ℝ)
-      (de de' : ℕ → ℝ) (T T' : ℕ) (du du' : ℝ) (l : ℕ),
-      k0 ≤ G.k → J.SzHyp G CA C0 CG CDel cT Cb bb Cp Th de de' T T' du du' l →
-      16 ≤ Sz.cExp CDel cT Cb * Cf → Cf * Real.log bb ≤ G.f * Real.log G.k →
-      S6.Unram E → J.Inst D e G CA de de' T T' l → PB.LocalModel D →
-      ∀ (jn : ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-        (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ) (sd : ℝ),
-        PB.RealInputs D C₄ jn Vt → PB.DensInput G.k G.r G.f sd →
-        ∀ (P : Type) [Fintype P] (B : S3.MassData P), PB.RowsInput D sd Vt c B → PB.MassDataHyp B →
-          PB.EnergyLink B jn sd C Th D.r D.f →
-          ∀ (τ Rw I HS H₁ : Type) [Fintype I] [NormedAddCommGroup HS] [InnerProductSpace ℂ HS]
-            [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁]
-            (X : PB.Terms τ Rw I HS H₁),
-            PB.Link X B G de T du du' → PB.SplitInputs X B.tt →
-            PB.SizeNumbers G.k G.r G.f bb G.g1 G.g2 (1 / 3) Cn →
-            ∀ (Al NT Gam : ℝ) (Xi : ℕ → ℝ), 1 ≤ Al →
-              Formalism.HermitianLatticeCounting.LatticeSumBounds.Params CL K₀ G.k (2 * G.r + 2) G.f bb G.g G.v NT Gam →
-              Formalism.HermitianLatticeCounting.LatticeSumBounds.XiHyp CL G.k (2 * G.r + 2) G.f bb G.v NT Xi →
-              6 * Real.log (3 * Al) ≤ (G.k : ℝ) * G.f * Real.log G.k →
-              PB.LoopsInput X Al CL G.k G.r G.f bb G.g G.v Gam Xi
-                (du * du' / (G.size de T du).Dstar) →
-              ∀ (Cl Nu : Type) (N : NGData τ E G.r Cl Nu) (cSt e1 Irat Ire : ℝ),
-                FrameInputs B (2 * G.v) G.g G.r G.k G.f Irat Ire →
-                NGSizes Cg CT CSt G.r G.f bb (2 * G.v) G.g ((T : ℝ) * T') cSt e1 →
-                NGInputs X N G.k G.f C1 C0n A CB bb (2 * G.v) G.g ((T : ℝ) * T') cSt
-                  (abelian₂ (2 * G.v) G.r G.k G.f * B.AA) e1 Ire →
-                ‖X.K0‖ ^ 2 ≤ (1 + (bb ^ 6)⁻¹) * (du * du' / (G.size de T du).Dstar)
 
 end
 

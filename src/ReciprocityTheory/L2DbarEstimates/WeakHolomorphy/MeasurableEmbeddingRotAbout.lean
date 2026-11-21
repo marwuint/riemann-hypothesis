@@ -48,23 +48,6 @@ theorem setLIntegral_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (
     lintegral_congr fun z => indicator_rotAbout c ha R g z]
   exact (measurePreserving_rotAbout c ha).lintegral_comp_emb (measurableEmbedding_rotAbout c ha) _
 
-theorem setIntegral_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (R : ℝ)
-    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (g : V n → E) :
-    ∫ z in ball c R, g (rotAbout c a z) = ∫ z in ball c R, g z := by
-  rw [← integral_indicator measurableSet_ball, ← integral_indicator measurableSet_ball,
-    integral_congr_ae (Eventually.of_forall fun z => indicator_rotAbout c ha R g z)]
-  exact (measurePreserving_rotAbout c ha).integral_comp (measurableEmbedding_rotAbout c ha) _
-
-theorem integrableOn_rotAbout_iff {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (R : ℝ)
-    {E : Type*} [NormedAddCommGroup E] (g : V n → E) :
-    IntegrableOn (fun z => g (rotAbout c a z)) (ball c R) ↔ IntegrableOn g (ball c R) := by
-  rw [← integrable_indicator_iff measurableSet_ball, ← integrable_indicator_iff measurableSet_ball]
-  have : (ball c R).indicator (fun z => g (rotAbout c a z)) =
-      (ball c R).indicator g ∘ rotAbout c a :=
-    funext fun z => indicator_rotAbout c ha R g z
-  rw [this]
-  exact (measurePreserving_rotAbout c ha).integrable_comp_emb (measurableEmbedding_rotAbout c ha)
-
 theorem norm_exp_mul_I_eq_one (θ : ℝ) : ‖Complex.exp ((θ : ℂ) * I)‖ = 1 :=
   Complex.norm_exp_ofReal_mul_I θ
 
@@ -128,68 +111,5 @@ theorem mv : MVStatement := by
       = ‖u c‖ₑ ^ 2 * ENNReal.ofReal (2 * Real.pi) * ∫⁻ z in ball c R, r ‖z - c‖ := by ring
     _ ≤ _ := low
     _ = _ := key.symm
-
-theorem mvEq : MVEqStatement := by
-  intro n c R u k hu hk hF
-  have hT1 := norm_exp_mul_I_eq_one
-  have hpi : (0 : ℝ) ≤ 2 * Real.pi := Real.two_pi_pos.le
-  have hrot : ∀ θ : ℝ, ∫ z in ball c R,
-      u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ) =
-        ∫ z in ball c R, u z * (k ‖z - c‖ : ℂ) := by
-    intro θ
-    have h := setIntegral_rotAbout c (hT1 θ) R (fun z => u z * (k ‖z - c‖ : ℂ))
-    simp only [rotAbout_sub c (hT1 θ)] at h
-    exact h
-  have hrotN : ∀ θ : ℝ, ∫ z in ball c R,
-      ‖u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ)‖ =
-        ∫ z in ball c R, ‖u z * (k ‖z - c‖ : ℂ)‖ := by
-    intro θ
-    have h := setIntegral_rotAbout c (hT1 θ) R (fun z => ‖u z * (k ‖z - c‖ : ℂ)‖)
-    simp only [rotAbout_sub c (hT1 θ)] at h
-    exact h
-  have hrotI : ∀ θ : ℝ, IntegrableOn
-      (fun z => u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ)) (ball c R) := by
-    intro θ
-    have h := integrableOn_rotAbout_iff c (hT1 θ) R (fun z => u z * (k ‖z - c‖ : ℂ))
-    simp only [rotAbout_sub c (hT1 θ)] at h
-    exact h.2 hF
-  have hmeas : AEStronglyMeasurable
-      (fun p : ℝ × V n => u (rotAbout c (Complex.exp ((p.1 : ℂ) * I)) p.2) * (k ‖p.2 - c‖ : ℂ))
-      ((volume.restrict (Ioc 0 (2 * Real.pi))).prod (volume.restrict (ball c R))) := by
-    have h1 : AEStronglyMeasurable
-        (fun p : ℝ × V n => u (rotAbout c (Complex.exp ((p.1 : ℂ) * I)) p.2))
-        ((volume.restrict (Ioc 0 (2 * Real.pi))).prod (volume.restrict (ball c R))) := by
-      rw [Measure.prod_restrict]
-      exact (continuousOn_comp_rotAbout hu (Ioc 0 (2 * Real.pi))).aestronglyMeasurable
-        (measurableSet_Ioc.prod measurableSet_ball)
-    exact h1.mul hk.aestronglyMeasurable.comp_snd
-  have hint : Integrable (Function.uncurry fun (θ : ℝ) (z : V n) =>
-      u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ))
-      ((volume.restrict (Ioc 0 (2 * Real.pi))).prod (volume.restrict (ball c R))) := by
-    refine (integrable_prod_iff hmeas).2 ⟨Eventually.of_forall hrotI, ?_⟩
-    have hc0 : Integrable (fun _ : ℝ => ∫ z in ball c R, ‖u z * (k ‖z - c‖ : ℂ)‖)
-        (volume.restrict (Ioc 0 (2 * Real.pi))) :=
-      integrableOn_const (by rw [Real.volume_Ioc]; exact ENNReal.ofReal_ne_top)
-    exact hc0.congr (Eventually.of_forall fun θ => (hrotN θ).symm)
-  have hswap := integral_integral_swap hint
-  have hL : ∫ θ in Ioc 0 (2 * Real.pi), ∫ z in ball c R,
-      u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ) =
-        ((2 * Real.pi : ℝ) : ℂ) * ∫ z in ball c R, u z * (k ‖z - c‖ : ℂ) := by
-    simp only [hrot]
-    rw [setIntegral_const, Real.volume_real_Ioc_of_le hpi, sub_zero, Complex.real_smul]
-  have hR : ∫ z in ball c R, ∫ θ in Ioc 0 (2 * Real.pi),
-      u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ) =
-        ((2 * Real.pi : ℝ) : ℂ) * u c * ∫ z in ball c R, (k ‖z - c‖ : ℂ) := by
-    rw [← integral_const_mul]
-    refine setIntegral_congr_fun measurableSet_ball (fun z hz => ?_)
-    have hw : ‖z - c‖ < R := by rw [mem_ball, dist_eq_norm] at hz; exact hz
-    have hcm := circle_mean hu hw
-    simp only [rotAbout]
-    rw [integral_mul_const, ← intervalIntegral.integral_of_le hpi, hcm]
-  have h2 : ((2 * Real.pi : ℝ) : ℂ) * ∫ z in ball c R, u z * (k ‖z - c‖ : ℂ) =
-      ((2 * Real.pi : ℝ) : ℂ) * (u c * ∫ z in ball c R, (k ‖z - c‖ : ℂ)) := by
-    rw [← hL, hswap, hR, mul_assoc]
-  have hne : ((2 * Real.pi : ℝ) : ℂ) ≠ 0 := by exact_mod_cast Real.two_pi_pos.ne'
-  exact mul_left_cancel₀ hne h2
 
 end ReciprocityTheory.L2DbarEstimates.C

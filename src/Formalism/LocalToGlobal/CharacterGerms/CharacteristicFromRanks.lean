@@ -33,9 +33,6 @@ def CHProp {V : VF C} {d : ℕ} {I J : Fin 2 → Type} [∀ g, Fintype (I g)] [�
         V.v (Matrix.of fun ρ c : Fin n => ∑ x, y ρ x * u c x).det ≤
           ((((j : ℝ) + j') / ((V.l : ℝ) - 1) : ℝ) : WithTop ℝ))
 
-example {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
-    [∀ g, Fintype (J g)] (X : RowData C V d I J) : CHProp X.G X.n X.j X.j' X.big := X.CH
-
 def intR (V : VF C) : Subring C where
   carrier := {x | V.Ge 0 x}
   mul_mem' {_ _} ha hb := VF.Ge.mul_int (V := V) ha hb
@@ -219,65 +216,6 @@ private theorem ch_core_lemma {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → T
       exact ⟨y, hy1, hy2, fun h' => absurd h' hA, fun _ => hy3⟩
     · exact ⟨fun _ _ => 0, fun _ _ => VF.Ge.zero (V := V) 0, fun S t _ ρ => zero_germ g t,
         fun h' => absurd h' hA, fun h' => absurd h' hall⟩
-
-theorem characteristic_of_rank_split {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
-    [∀ g, Fintype (J g)] (G : ∀ g, Cart V d (I g) (J g)) (n j j' rh r : ℕ)
-    (r_eq : r = n + j + j') (big : Fin 2 → ZMod d → Prop)
-    (big_compl : ∀ g a, big (1 - g) a ↔ ¬ big g a)
-    (rk_big : ∀ g a, big g a → pT G g a = n + j)
-    (rk_small : ∀ g a, ¬ big g a → pT G g a = j')
-    (rk_fil : ∀ g a, (Finset.univ.filter fun κ : J g => (G g).ty (Sum.inr κ) = a).card + rh +
-      pT G g a = r)
-    (l_odd : V.l ≠ 2)
-    (h : Fin 2 → ℕ) (hh : ∀ g, h g + rh = r)
-    (ht : ∀ g, Fin (h g) → I g → C) (ht_int : ∀ g i x, V.Ge 0 (ht g i x))
-    (l1 l2 : Fin 2 → ZMod d → ℝ)
-    (hDET : ∀ g a, big g a → S4.CorDET V.l (pT G g) (l1 g) (l2 g) a)
-    (hAi : ∀ g a, big g a → S4.ThmAi V.l r rh (pT G g) (l2 g) a)
-    (hAiii : ∀ g a, big g a → ∃ e : Fin (pT G g a) ≃ {x : I g // (G g).ty (Sum.inl x) = a},
-      S4.ThmAiii V.v (Matrix.of fun c i => ht g i (e c)) (l1 g a))
-    (hGerm : ∀ g (i : Fin (h g)) (S : ∀ g, Sys (G g)) (t : ∀ g, I g → MvPowerSeries (I g) C),
-      (∀ g, (S g).IsT (t g)) →
-      upG g (mvExp (∑ x : I g, ht g i x • (MvPowerSeries.X x : MvPowerSeries (I g) C))) ∈
-        IntGerm V t) :
-    CHProp G n j j' big := by
-  have hlodd : Odd V.l := V.l_prime.odd_of_ne_two l_odd
-  refine ch_core_lemma G n j j' big big_compl h ht ht_int (fun g a hb => ?_) hGerm
-  obtain ⟨e, hAe⟩ := hAiii g a hb
-  have hrh : rh ≤ j' := by
-    have h1 := rk_fil g a
-    rw [rk_big g a hb] at h1
-    omega
-  have hn : n ≤ pT G g a := by rw [rk_big g a hb]; omega
-  let αR : Matrix (Fin (pT G g a)) (Fin (h g)) (intR V) := fun c i => ⟨ht g i (e c), ht_int g i _⟩
-  have hcoe : S4.lenCoker (vR V) αR = S4.lenCoker V.v (Matrix.of fun c i => ht g i (e c)) :=
-    lenCoker_coe V αR
-  have hAR : S4.ThmAiii (vR V) αR (l1 g a) := by
-    unfold S4.ThmAiii
-    rw [hcoe]
-    exact hAe
-  let S : Matrix (Fin n) (Fin (pT G g a)) (intR V) := Matrix.of fun i k => if (k : ℕ) = i then 1 else 0
-  let W : Matrix (Fin (pT G g a)) (Fin n) (intR V) := Matrix.of fun k i => if (k : ℕ) = i then 1 else 0
-  have hSW : S * W = 1 := by
-    ext i i'
-    simp only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply, S, W]
-    rw [Finset.sum_eq_single (Fin.castLE hn i)]
-    · simp [Fin.ext_iff]
-    · intro k _ hk
-      have hki : (k : ℕ) ≠ i := fun hk' => hk (Fin.ext (by simp [hk']))
-      simp [hki]
-    · simp
-  refine ⟨e, fun hA => ?_, fun hall => ?_⟩
-  · have H := S4.ch_inert (vR V) (vR_nonneg V) hA.1 V.l V.l_prime hlodd r n j j' rh (h g) r_eq (hh g)
-      hrh (big g) (alt_step big big_compl hA g) (pT G g) (rk_big g) (rk_small g) a hb αR S W hSW
-      (l1 g) (l2 g) (hDET g a hb) (hAi g a hb) hAR
-    rw [← hcoe]
-    exact H.1.1.trans (WithTop.coe_le_coe.2 H.1.2.2)
-  · have H := S4.ch_split (vR V) (vR_nonneg V) (NeZero.ne d) V.l V.l_prime hlodd r n j j' rh (h g)
-      (n + j) (by omega) (hh g) hrh (pT G g) (fun τ => rk_big g τ (hall τ)) a αR S W hSW
-      (l1 g) (l2 g) (hDET g a hb) (hAi g a hb) hAR
-    rw [← hcoe]
-    exact H.1.1.trans (WithTop.coe_le_coe.2 H.1.2)
 
 theorem CH_of_lenCoker {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
     [∀ g, Fintype (J g)] (G : ∀ g, Cart V d (I g) (J g)) (n j j' : ℕ)

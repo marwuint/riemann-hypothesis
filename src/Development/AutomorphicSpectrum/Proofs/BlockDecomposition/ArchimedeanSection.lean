@@ -3,8 +3,9 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodinge
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRealCoords
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousBiadditiveBounded
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOnRingInverseOfIsOpenEmbeddingUnits
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensorStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensor
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
 noncomputable section
 open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureTheory Topology
@@ -269,13 +270,13 @@ theorem secInf : PositivityTheory.PfSWUS.SchInf.SecInf := by
   have hR : GlobalTheory.CompanionTheory.SW.IsLocR (Ainf F) := GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hσ.1
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩
   have hunits : IsOpenEmbedding (Units.val : (Ainf F ⊗[F] E)ˣ → Ainf F ⊗[F] E) :=
-    GlobalTheory.T.units_open_embedding_local_tensor F E σ hσ (Ainf F) hR
+    _root_.GlobalTheory.CompanionTheory.SW.KUnits.units_val_isOpenEmbedding F E σ hσ (Ainf F) hR
   obtain ⟨hTR, hLC, hSC, hT2, -, -, -, -⟩ := id hR
   haveI := hTR
   haveI := hLC
   haveI := hSC
   haveI := hT2
-  obtain ⟨iTR, -, -, -, hsig, -, -, -, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)
+  obtain ⟨iTR, -, -, -, hsig, -, -, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Ainf F)
   haveI := iTR
   obtain ⟨N, e₀, he₀, he₀'⟩ := GlobalTheory.CompanionTheory.SW.SchwartzFib.exists_real_coords F E n n
   have hinvol : ∀ b : Ainf F ⊗[F] E, sigR (Ainf F) σ (sigR (Ainf F) σ b) = b := by

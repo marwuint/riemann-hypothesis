@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeNotMemForallGtEqMaximalIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInjectiveNormLeOneOfFinitePadicIntDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinitePadicIntDomainEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInjectiveNormLeOneOfFinitePadicIntDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinitePadicIntDomainEmbedding
 
 open IsLocalRing
 
@@ -78,10 +78,10 @@ theorem exists_ringHom_padicAlgCl_ne_zero : ∀ (B : Type) [CommRing B] [IsDomai
     refine le_sInf fun P ⟨hle, hP⟩ => ?_
     have hP0 : P ≠ ⊥ := fun h0 => hpC (by rw [h0] at hle; exact (Submodule.mem_bot _).1 (hle (Ideal.mem_span_singleton_self _)))
     exact (hdim P hP hP0).ge
-  obtain ⟨D, _, _, _, hDfin, ι, hι⟩ := GlobalTheory.T.exists_finite_padicInt_domain_embedding p C hfinC hpC hpmC hdim
+  obtain ⟨D, _, _, _, hDfin, ι, hι⟩ := _root_.GlobalTheory.CompletionEmbed.exists_finite_padicInt_domain p C hfinC hpC hpmC hdim
   have hpD : (p : D) ≠ 0 := by
     rw [← map_natCast ι]; exact fun h0 => hpC (hι (by rw [h0, map_zero]))
-  obtain ⟨φ, hφ, hφ1⟩ := GlobalTheory.T.exists_injective_norm_le_one_of_finite_padicInt_domain p D hpD
+  obtain ⟨φ, hφ, hφ1⟩ := _root_.GlobalTheory.PadicEmb.exists_embedding p D hpD
   refine ⟨p, hF, (φ.comp ι).comp π, fun b => hφ1 _, fun b hb => ?_, ?_⟩
   · have hc := hπm b hb
     have hcN : π b ^ N ∈ Ideal.span {(p : C)} := hN (Ideal.pow_mem_pow hc N)

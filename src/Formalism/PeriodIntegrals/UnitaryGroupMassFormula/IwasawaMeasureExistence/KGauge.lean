@@ -22,8 +22,6 @@ def realifyM (X : Matrix (Fin n) (Fin n) ℂ) : MatR n :=
 
 def toMat (x : MatR n) : Matrix (Fin n) (Fin n) ℂ := fun i j => ⟨x.ofLp (i, j, false), x.ofLp (i, j, true)⟩
 
-def expU (x : MatR n) : (Matrix (Fin n) (Fin n) ℂ)ˣ := (Matrix.isUnit_exp (toMat x)).unit
-
 variable {ε : Fin n → Bool}
 
 def lieOf (H : Subgroup (Formalism.REAL.UJ ε)) : Set (Matrix (Fin n) (Fin n) ℂ) :=
@@ -48,10 +46,6 @@ structure IsRiem (H : Subgroup (Formalism.REAL.UJ ε)) (y : Formalism.REAL.UJ ε
   dens : ∀ S : Set (lieSp (conjInv H y)), MeasurableSet S → Bornology.IsBounded S →
     0 < (volume : Measure (lieSp (conjInv H y))) S → (volume : Measure (lieSp (conjInv H y))) (frontier S) = 0 →
     Tendsto (fun r : ℝ => R (expSetY H y (r • S)) / (volume : Measure (lieSp (conjInv H y))) (r • S)) (𝓝[>] 0) (𝓝 1)
-
-def RiemHaar : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (H : Subgroup (Formalism.REAL.UJ ε)) (y : Formalism.REAL.UJ ε), IsClosed (H : Set (Formalism.REAL.UJ ε)) →
-    ∃ R, IsRiem H y R
 
 end Riem
 

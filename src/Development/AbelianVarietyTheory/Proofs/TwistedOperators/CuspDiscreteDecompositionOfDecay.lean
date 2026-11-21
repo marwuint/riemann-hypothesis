@@ -6,13 +6,13 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ContinuousIntegr
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsArchEquivEq
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CcGASmoothAndRderMem
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ContinuousSetIntegralConstTermOn
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsHilbertSchmidtOfAePointwiseBoundedLpTwoStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConvolutionRightInvariantOpenStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConvolutionPreservesCuspidalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContDiffRightConvolutionAlongOneParameterProductStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsHilbertSchmidtOfAePointwiseBoundedLpTwo
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConvolutionRightInvariantOpen
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConvolutionPreservesCuspidal
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContDiffRightConvolutionAlongOneParameterProduct
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RightDerivativeRightConvolutionEqTestFunctionStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NcardRationalPointsInTranslateLeHeightPowStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormRightConvolutionLeAdelicHeightPowStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NcardRationalPointsInTranslateLeHeightPow
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormRightConvolutionLeAdelicHeightPow
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta MeasureTheory Set Filter NumberField
 open scoped Topology ContDiff TensorProduct
@@ -48,8 +48,8 @@ theorem norm_convR_le (hP : GlobalTheory.Published.CuspDecayBound) {f : GA D V �
     have c := continuous_of_mem_ccAd (hfl l hl)
     c.1.bounded_above_of_compact_support c.2
   choose! M hM using hM
-  obtain ⟨A, Cg, hg⟩ := GlobalTheory.T.norm_rightConvolution_le_adelic_height_pow μ hfc.2.isCompact (GlobalTheory.T.ncard_rational_points_in_translate_le_height_pow hfc.2.isCompact)
-  obtain ⟨U, hU, hlev⟩ := GlobalTheory.T.convolution_right_invariant_open μ hf
+  obtain ⟨A, Cg, hg⟩ := _root_.GlobalTheory.ConvGrowth.norm_convR_le_height μ hfc.2.isCompact (_root_.GlobalTheory.RatCount.ncard_rat_mem_translate_le hfc.2.isCompact)
+  obtain ⟨U, hU, hlev⟩ := _root_.GlobalTheory.ConvLevel.convR_level μ hf
   obtain ⟨L, C, hL, hB⟩ := hP D θ hθ V U hU A 0
   refine ⟨C * ∑ l ∈ L, Cg * M l, fun F hF g => ?_⟩
   have hgr : ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → ∀ x,
@@ -60,7 +60,7 @@ theorem norm_convR_le (hP : GlobalTheory.Published.CuspDecayBound) {f : GA D V �
   have hcont := (GlobalTheory.AutomorphicL2Local.continuous_convR_lift _ (GQ V) μ f hfc.1 hfc.2 F).2
   have key := hB (convR μ f (lift (GQ V) F))
     ⟨fun γ hγ x => ((leftInv_lift (Γ := GQ V) F).convR (μ := μ) f) γ hγ x, ⟨U, hU, hlev F⟩, hcont⟩
-    (hlev F) (GlobalTheory.T.contDiff_rightConvolution_along_one_parameter_products μ θ hθ hf F) (fun l hl => ⟨_, hgr l hl⟩) (GlobalTheory.T.convolution_preserves_cuspidal μ hf F hF)
+    (hlev F) (_root_.GlobalTheory.ConvSmooth.contDiff_convR_lift_oneP μ θ hθ hf F) (fun l hl => ⟨_, hgr l hl⟩) (_root_.GlobalTheory.CuspConv.isCuspFun_convR_lift μ hf F hF)
     (fun l => Cg * M l * ‖F‖) (fun l hl x => hgr l (hL l hl) x) g
   rw [pow_zero, mul_one, ← Finset.sum_mul, ← mul_assoc] at key
   exact key
@@ -71,7 +71,7 @@ theorem isHilbertSchmidt_RcuspOp (hP : GlobalTheory.Published.CuspDecayBound) {f
   have hfc := continuous_of_mem_ccAd hf
   have hi : Integrable f μ := hfc.1.integrable_of_hasCompactSupport hfc.2
   have h1 : IsHilbertSchmidt ((L2cusp V μ).subtypeL ∘L RcuspOp V μ f) := by
-    refine GlobalTheory.T.isHilbertSchmidt_of_ae_pointwise_bounded_Lp_two _ K fun v => ?_
+    refine _root_.GlobalTheory.isHilbertSchmidt_of_ae_bounded _ K fun v => ?_
     have e : ((L2cusp V μ).subtypeL ∘L RcuspOp V μ f) v = RopG V μ f v := coe_RcuspOp V μ hi v
     rw [e]
     refine ae_quotMeasure_iff.2 ?_

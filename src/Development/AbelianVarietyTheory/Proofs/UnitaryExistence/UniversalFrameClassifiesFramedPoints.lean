@@ -5,8 +5,8 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointBaseChangeAlgebraMapStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointBaseChangeUniqueReflIffStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeExistsUniqueOfSamePointStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointBaseChangeUniqueReflIff
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeExistsUniqueOfSamePoint
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeCommBaseChangeStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -19,8 +19,8 @@ theorem univFrame_classifies : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] 
   obtain ⟨⟨-, hring⟩, u₀, hu₀, hchg⟩ := hu
   obtain ⟨z₀, hz₀⟩ := GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hS E H Dw l Xo c R T ψ y₀
   have hx₀ : z₀.x = spMap ψ.toRingHom ≫ y₀.x :=
-    (((GlobalTheory.T.framedPoint_baseChange_unique_refl_iff E H Dw l Xo c R T ψ y₀).2.2 z₀).1 hz₀).1
-  obtain ⟨hex, huniq⟩ := GlobalTheory.T.frameChange_exists_unique_of_same_point E H Dw l Xo c T z₀ z
+    (((_root_.GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c R T ψ y₀).2.2 z₀).1 hz₀).1
+  obtain ⟨hex, huniq⟩ := _root_.GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c T z₀ z
   obtain ⟨g, a₀, hg, hgz⟩ := hex (hz.trans hx₀.symm)
   have key : ∀ k : A →ₐ[c.F] T, k.comp π = ψ →
       (FrMap k u z ↔ FrChg (fun τ => (X τ).map k) (k (s : A)) z₀ z) := by
@@ -28,7 +28,7 @@ theorem univFrame_classifies : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] 
     obtain ⟨w, hw⟩ := GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hS E H Dw l Xo c A T k u₀
     have hw' : FrMap (k.comp π) y₀ w := frMap_trans (Xo := Xo) (c := c) _ _ _ π k y₀ u₀ w hu₀ hw
     rw [hk] at hw'
-    obtain rfl : w = z₀ := (GlobalTheory.T.framedPoint_baseChange_unique_refl_iff E H Dw l Xo c R T ψ y₀).1 w z₀ hw' hz₀
+    obtain rfl : w = z₀ := (_root_.GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c R T ψ y₀).1 w z₀ hw' hz₀
     exact GlobalTheory.T.frameChange_comm_baseChange E H Dw l Xo c A T k u₀ u w z X (s : A) hchg hw
   obtain ⟨k, ⟨hk, hkX, hks⟩, hku⟩ := hring T ψ g a₀ hg
   refine ⟨k, ⟨hk, (key k hk).2 ?_⟩, ?_⟩

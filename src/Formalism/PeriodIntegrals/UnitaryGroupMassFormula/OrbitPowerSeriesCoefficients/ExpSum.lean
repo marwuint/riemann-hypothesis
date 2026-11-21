@@ -171,11 +171,6 @@ theorem subst_eS {b : τ → MvPowerSeries υ K} (hb : HasSubst b) (f : MvPowerS
     (hf : constantCoeff f = 0) : subst b (eS f) = eS (subst b f) := by
   exact subst_psubst hb (PowerSeries.HasSubst.of_constantCoeff_zero hf) _
 
-theorem rename_eS (e : τ → υ) [Filter.TendstoCofinite e] (f : MvPowerSeries τ K) (hf : constantCoeff f = 0) :
-    rename e (eS f) = eS (rename e f) := by
-  rw [rename_eq_subst, rename_eq_subst]
-  exact subst_eS (HasSubst.X_comp e) f hf
-
 end PI.OrbShared.ExpSum
 
 end

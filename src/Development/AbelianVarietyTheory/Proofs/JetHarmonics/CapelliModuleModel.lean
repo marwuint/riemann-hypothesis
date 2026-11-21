@@ -6,7 +6,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.BaseIndexConstantIn
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.DilationUnipotentWeylMeasure
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QminorIntertwiningApply
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CkOnInCCCongrOnGroup
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.OperatorEabPreservesSmoothClassCCStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.OperatorEabPreservesSmoothClassCC
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliEigenRealToComplex
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Finset
 
@@ -137,7 +137,7 @@ theorem capelli_module_model : ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGrou
     rintro a b v ⟨hv, hv'⟩
     refine ⟨fun m => ?_, fun u => ?_⟩
     · exact (GlobalTheory.ckOn_inCC_congr_on_group k r _ A _ _ (fun g hg => (ev_Eu a b v g hg).symm)).2 m
-        ((GlobalTheory.T.operatorEab_preserves_smooth_classCC k r Wp Wq A a b _ ⟨smooth_iff.1 v.2.1, hv⟩).2 m)
+        ((_root_.GlobalTheory.EabClass.eh_class k r Wp Wq A a b _ ⟨smooth_iff.1 v.2.1, hv⟩).2 m)
     · have := LinearMap.congr_fun (qDetCentral _ _ _ hgl u a b) v
       rw [Module.End.mul_apply, Module.End.mul_apply, hv', map_smul] at this
       exact this

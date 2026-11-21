@@ -4,10 +4,11 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.LocFacts
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Ia
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FractionalIdealEqOfLocalSpansEqStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FractionalIdealEqOfLocalSpansEq
+import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SaturatedPf
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagCoeffIdealOfLatticeFgAndMemIffStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LatticeInfIsotropicEqSumFractionalIdealSmulStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanCoefficientIdealEqSpanFrameScaleStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanCoefficientIdealEqSpanFrameScale
 
 noncomputable section
 
@@ -30,9 +31,9 @@ theorem xlam_eq_span_scaled : ∀ (D : D7) (T : D.host.E) (G : LFlag (VS D) D.R.
       ((ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) :
         Submodule (𝓞 D.host.E) D.host.E) := by
     intro a
-    refine GlobalTheory.T.fractional_ideal_eq_of_local_spans_eq D Z _ _ (GlobalTheory.T.flagCoeffIdealOfLattice_fg_and_mem_iff _ _ _ G.fl Λ a hΛ.fg).1
+    refine _root_.GlobalTheory.Sloc.fg_eq_of_completions D Z _ _ (GlobalTheory.T.flagCoeffIdealOfLattice_fg_and_mem_iff _ _ _ G.fl Λ a hΛ.fg).1
       (FractionalIdeal.fg_of_isNoetherianRing le_rfl _) (fun p => ?_)
-    rw [GlobalTheory.T.span_coefficientIdeal_eq_span_frameScale D T G Z A hA Λ hΛ hloc p a]
+    rw [_root_.GlobalTheory.RowLatXS.span_coefIdeal_eq_span_frFac D T G Z A hA Λ hΛ hloc p a]
     have h := Formalism.L2.SG.Pf.locDiffC_holds D Z p a.castSucc
     simp only [Fin.coe_castSucc] at h
     exact h.symm

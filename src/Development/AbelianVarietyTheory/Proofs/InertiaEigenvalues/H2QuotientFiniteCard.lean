@@ -2,8 +2,8 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BijectiveOfRetract
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousCyclotomicCharacterLocalGaloisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardH2LeCardLocalStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotPowMaximalIdealDiscreteFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardH2LeCardLocal
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotPowMaximalIdealDiscreteFinite
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardH2EqSameActionStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NatCardH2CompEquivStatement
 open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC ReciprocityTheory.ChartRestriction.T2 GlobalTheory.FunctorialityH2
@@ -38,7 +38,7 @@ theorem h2_twist_card_of_zmod {p : ℕ} [Fact p.Prime] {K : IntermediateField �
     unfold ReciprocityTheory.Gal.ContAction
     rw [e]
     exact hc.comp ((i.symm.continuous.comp continuous_fst).prodMk continuous_snd)
-  obtain ⟨hF, hC⟩ := GlobalTheory.T.card_H2_le_card_local hTD p K hK r M rho hr hcont
+  obtain ⟨hF, hC⟩ := _root_.GlobalTheory.card_H2_le_of_local_duality hTD p K hK r M rho hr hcont
   have htr := GlobalTheory.T.natCard_H2_comp_equiv i rho
   have hsc := GlobalTheory.T.card_H2_eq_same_action (rho.comp i.toMulEquiv.toMonoidHom) (twist ε M) (fun g x => by
       show rho (i g) x = ((ε g : Oˣ) : O) • x
@@ -52,7 +52,7 @@ theorem h2_twist_card_of_zmod {p : ℕ} [Fact p.Prime] {K : IntermediateField �
 
 theorem h2_quot_card : ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O] [IsTopologicalRing O] {G : Type} [Group G] [TopologicalSpace G], Formalism.GaloisCohomology.LocalTateDualityK → FiniteDimensional ℚ_[p] K → PadicCoeff p O → ∀ (i : G ≃ₜ* GK p K) {ε : G →* Oˣ}, IsCyc p K (carry i ε) → ∀ k : ℕ, Finite (H2 (twist ε (O ⧸ IsLocalRing.maximalIdeal O ^ k))) ∧ Nat.card (H2 (twist ε (O ⧸ IsLocalRing.maximalIdeal O ^ k))) ≤ Nat.card (O ⧸ IsLocalRing.maximalIdeal O ^ k) := by
   intro p _ K O _ _ _ _ _ G _ _ hTD hK hO i ε hε k
-  obtain ⟨hdisc, hfin⟩ := GlobalTheory.T.quotient_maximalIdeal_pow_discrete_and_finite hO k
+  obtain ⟨hdisc, hfin⟩ := _root_.GlobalTheory.NatQuot.quot_pow_maximalIdeal_discrete_finite hO k
   haveI := hdisc
   haveI := hfin
   have hkill : ∀ x : O ⧸ IsLocalRing.maximalIdeal O ^ k, (p ^ (k + 1)) • x = 0 := by

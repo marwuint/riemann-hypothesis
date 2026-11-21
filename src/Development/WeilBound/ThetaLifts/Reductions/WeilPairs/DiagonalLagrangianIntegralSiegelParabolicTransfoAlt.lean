@@ -1,5 +1,10 @@
 import Mathlib
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.DiagonalLagrangianIntegralSiegelParabolicTransfoBis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReindexDblIncM
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LagrInt
+import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.Mfac
+import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.DCdE
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoMulInvOf
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DecayZero
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.LamFormula
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.ProjFacts
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.SymplOHF
@@ -8,6 +13,7 @@ import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.SchAFacts
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.ParsevalPol
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaTransformEqOrientedThetaFunctionCM
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAddCharIsStandardCharOfAdmissibleCM
+
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
@@ -17,7 +23,7 @@ noncomputable section
 
 namespace PositivityTheory.ThKW.PhaseFourierInjectivity
 
-open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.ModulusDerivativeNormalisation PositivityTheory.ThKW.LagrangianIntegralFactorisation GlobalTheory.ThetaTransform
+open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.ModulusDerivativeNormalisation GlobalTheory.ThetaTransform
 
 theorem coef : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

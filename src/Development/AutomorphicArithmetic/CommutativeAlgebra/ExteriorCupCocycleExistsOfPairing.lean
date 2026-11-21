@@ -1,6 +1,9 @@
 import Development.AutomorphicArithmetic.CommutativeAlgebra.MapZeroS
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexDifferentialValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSec
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAWExistsUniqueBiadditiveEtaleStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CupEqClassOfIsAWStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf UpperTheory.Kun
@@ -110,7 +113,7 @@ theorem UpperTheory.exteriorCup_cocycle_exists_of_pairing :
           μ.cup (sch.obj W ⨯ E) h (cpull ((chains R).map (prod.snd : sch.obj W ⨯ E ⟶ E)) Q m (CohomologyClass.mk α₂))
             (cpull ((chains R).map (prod.fst : sch.obj W ⨯ E ⟶ _)) P 1 (CohomologyClass.mk κ)) := by
   intro R _ W I Q P μ κ E m n h α₁ α₂ β hβ
-  have hS := GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R W P 0 1 2 (by norm_num) (by norm_num)
+  have hS := _root_.GlobalTheory.EtC.sch_cls_cocycle_sec R W P 0 1 2 (by norm_num) (by norm_num)
   obtain ⟨z', hz0, hz1⟩ := hS.1 (sg κ) (hS.2 κ).1
   have hκ : CohomologyClass.mk κ = CohomologyClass.mk z' := by
     rw [← sub_eq_zero, ← CohomologyClass.mk_sub]

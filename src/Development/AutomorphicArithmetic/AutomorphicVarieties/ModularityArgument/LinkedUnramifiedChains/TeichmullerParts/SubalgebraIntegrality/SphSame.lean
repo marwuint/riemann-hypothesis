@@ -67,28 +67,4 @@ private theorem scalar (L : Type) [Field L] [NumberField L] (n : ℕ) (w : Plc L
       exact h ((Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, h0⟩)
     simp [hv0]
 
-theorem sphSame : ZEq → SphSame := by
-  intro hZ hLit l _ L Ω _ _ _ _ _ _ s n hn V hV Q c ι m τ₀ lam d e ξ hξ A _ _ _ θ x c0 sp hWt hSp K ev hev σ σ' hσ hσ' hcp hne
-  have hAx := UpperTheory.V.Hi.axU hLit l L Ω s n hn V Q c m τ₀
-  have hYB : YOf Q ι τ₀ e ξ σ' ≤ (hset Q τ₀).Big ι ξ := inf_le_left
-  rw [hZ L Ω l n c (hset Q τ₀) hAx A θ hWt ι x lam d ξ c0 sp hSp K ev hev]
-  refine lat hYB ?_ ?_
-  · haveI : IsEmpty (hset Q τ₀).Q := ⟨fun q => Q.notS q (by
-      have h : (Q.wq q).under (𝓞 (Lp L)) ∈ V.S' := by
-        rw [Q.range]
-        exact Or.inr ⟨q, rfl⟩
-      rwa [hV] at h)⟩
-    have hl : (hset Q τ₀).lev K = (hset Q τ₀).UQ := by
-      simp only [HSet.lev, iSup_of_empty]
-      exact sup_bot_eq _
-    rw [hl]
-    exact hYB.trans inf_le_right
-  · refine le_iInf fun p => ?_
-    obtain ⟨τ, h1, h2⟩ := hcp p.1.1 p.1.2.2
-    obtain ⟨a, ha⟩ := scalar L n p.1.1 τ ((p.2 : ℕ) + 1)
-    have hs := fun (σ₁ : Submodule ℂ (UA L n → ℂ)) (hσ₁ : IsAutRepU σ₁) (hτ₁ : Cp σ₁ p.1.1 τ) =>
-      UpperTheory.V.Hi.partUR2Sph l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ σ₁ hσ₁ hAx p.1.1 p.1.2.1 p.1.2.2 τ hτ₁ _ a ha
-    exact eig_le ((hset Q τ₀).opC ι lam d) ev (.inl p) a ((hset Q τ₀).OrdAt θ ι x.toRingHom lam ξ K c0) _ _ hne
-      (hs σ hσ h1) (hs σ' hσ' h2)
-
 end UpperTheory.V.Z.J.D

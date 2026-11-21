@@ -2,8 +2,8 @@ import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.LocalDefs
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResAlgSplitTwo
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedNondeg
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCardStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueAlgebraUnramifiedStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCard
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueAlgebraUnramified
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormFibreCardNonzeroStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormFibreCardZeroStatement
 
@@ -106,7 +106,7 @@ theorem gauss_level_one : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) 
     push_neg at hcon
     exact hna (hψ.prim a ha hcon)
   obtain ⟨b, hb, hχ⟩ := hex
-  refine GaussOne.gauss_core (GlobalTheory.T.residue_algebra_unramified R σ ϖ q ε hR) (ψ 1) _ (Ideal.Quotient.mk _ b) ?_ ?_
+  refine GaussOne.gauss_core (_root_.GlobalTheory.CompanionTheory.UnrDens.resAlg_of_isUnrQuad R σ ϖ q ε hR) (ψ 1) _ (Ideal.Quotient.mk _ b) ?_ ?_
   · rw [barσ_mk, hb]
   · rwa [← map_mul]
 

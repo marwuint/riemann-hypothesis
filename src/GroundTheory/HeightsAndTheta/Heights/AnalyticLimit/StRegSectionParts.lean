@@ -1,6 +1,11 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StRegSection
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.ConvergenceStatements
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.ConvergenceRate
+import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Telescoping
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.AnalyticLimit
@@ -147,13 +152,6 @@ def BdComparison.Statement : Prop :=
   ∀ {X : Type} [TopologicalSpace X] (D : ℕ) (A : FinHolAtlas D X) (R : RegChartData A)
     (φ : Fin R.n → X → ℝ), IsBdMetric R φ → ∀ c : ℝ,
     ∃ B : ℝ, ∀ y ∈ R.Yo, |R.r y - rSec (bdPot R φ c) (bdSec R) y| ≤ B
-
-section Inhabitants
-
-open ReciprocityTheory.AnForm.M (p1 holoOn_const)
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (projLineChartData)
-
-end Inhabitants
 
 end
 

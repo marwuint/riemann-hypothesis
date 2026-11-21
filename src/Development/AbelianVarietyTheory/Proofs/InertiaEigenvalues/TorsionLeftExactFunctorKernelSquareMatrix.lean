@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.H1MapSubgroup
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGeneratorsOfCardHomResidueFieldLeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCompatibleGeneratorsTowerLocalRingStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChainLeIInfSupPowSmulTopOfPrecompleteStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCompatibleGeneratorsTowerLocalRing
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChainLeIInfSupPowSmulTopOfPrecomplete
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTorsionModuleExtendingResidueMapsStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LeftExactFunctorRepresentableTorsionModulesStatement
 
@@ -398,11 +398,11 @@ theorem kernelRep : KernelRep := by
     intro y
     have h0 : π.hom y = 0 := by rw [hπ]; rfl
     exact LinearMap.mem_range.mp ((Submodule.Quotient.mk_eq_zero _).mp h0)
-  obtain ⟨a, p, hp, hpt, hp0⟩ := GlobalTheory.T.exists_compatible_generators_tower_local_ring Λ (fun n => M0 (n + 1)) (fun n => (t n).hom) hsurjT
+  obtain ⟨a, p, hp, hpt, hp0⟩ := _root_.GlobalTheory.exists_compatible_generators_tower Λ (fun n => M0 (n + 1)) (fun n => (t n).hom) hsurjT
     (fun n => (hkerT n).trans (Submodule.smul_mono_left (Ideal.pow_le_self (Nat.succ_ne_zero n))))
   let N : Submodule Λ (Fin a → Λ) := ⨅ n, LinearMap.ker (p n)
   have hN' : ∀ n, LinearMap.ker (p n) ≤ N ⊔ maximalIdeal Λ ^ (n + 1) • (⊤ : Submodule Λ (Fin a → Λ)) := by
-    refine GlobalTheory.T.chain_le_iInf_sup_pow_smul_top_of_precomplete Λ (maximalIdeal Λ) a (fun n => LinearMap.ker (p n)) ?_ ?_ ?_
+    refine _root_.GlobalTheory.chain_le_iInf_sup_pow_smul_top Λ (maximalIdeal Λ) a (fun n => LinearMap.ker (p n)) ?_ ?_ ?_
     · intro n c hc
       show p n c = 0
       rw [← hpt n, LinearMap.comp_apply, LinearMap.mem_ker.mp hc, map_zero]

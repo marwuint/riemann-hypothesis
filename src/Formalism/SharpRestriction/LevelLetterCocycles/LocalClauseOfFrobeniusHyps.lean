@@ -993,12 +993,6 @@ theorem QToolOpen_of (W : LocWach PD LL O v n) (hX : Formalism.MainNotions.Lifti
   have hSπ : Formalism.MainNotions.LiftingTheory.Sur W π := ⟨hYc, hone, hses.2.2.1⟩
   exact ⟨hkill π i (hX Y W.one π Mi hi hSπ hJY i), hWA hA Y W.one π Mi hi hSπ hJY i⟩
 
-theorem QTool_of_crys (W : LocWach PD LL O v n) (hX : Formalism.MainNotions.LiftingTheory.coreWX W) (hWA : Formalism.MainNotions.LiftingTheory.coreWA W)
-    (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL)
-    (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) (hY : ExtJumps W) :
-    QTool W :=
-  QTool_of_open W hWA (QToolOpen_of W hX hWA h9 hE hC hQ hY)
-
 end QMain
 
 section Rows

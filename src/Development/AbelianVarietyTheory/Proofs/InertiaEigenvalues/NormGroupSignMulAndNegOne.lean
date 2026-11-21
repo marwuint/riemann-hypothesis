@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStableGauss
 import GroundTheory.LocalFields.FiniteExtension
 import GroundTheory.AutomorphicForms.HermitianClassification
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegOneMemNormOfValuationEqStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegOneMemNormOfValuationEq
+import GroundTheory.LocalFields.UnramifiedNormSurj
 
 open scoped TensorProduct
 
@@ -88,7 +89,7 @@ theorem norms_of_isField {F E : Type} [NontriviallyNormedField F] [NontriviallyN
     exact @mul_norm_of_not_norm A.K A.L _ vK tK hKloc _ _ _ hKL s t hs ht
   · obtain ⟨vE, hEloc, hEv⟩ := exists_valuativeRel_of_normed E
     haveI : ValuativeExtension F E := ⟨fun a b => by rw [hEv, hFv, norm_algebraMap', norm_algebraMap']⟩
-    obtain ⟨z, hz⟩ := GlobalTheory.T.exists_norm_eq_neg_one_of_unramified_values F E (fun y => by
+    obtain ⟨z, hz⟩ := _root_.GlobalTheory.neg_one_mem_norm_of_valuation_eq F E (fun y => by
       obtain ⟨x, hx⟩ := hU.unram y
       exact ⟨x, by rw [hEv, norm_algebraMap', hx], by rw [hEv, norm_algebraMap', hx]⟩)
     refine ⟨algebraMap E A.L z, ?_⟩

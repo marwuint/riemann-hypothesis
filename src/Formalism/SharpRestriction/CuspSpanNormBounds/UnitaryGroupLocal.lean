@@ -66,36 +66,6 @@ instance locallyCompactSpace_adicCompletion : LocallyCompactSpace (v.adicComplet
   (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v).locallyCompactSpace_of_mem_nhds_of_addGroup
     ((Valued.isOpen_valuationSubring _).mem_nhds (zero_mem (v.adicCompletionIntegers F)))
 
-abbrev oE : Subring (E ⊗[F] v.adicCompletion F) :=
-  PI.UnitaryApproxDefs.tensInt (F := F) (v.adicCompletion F) (PI.UnitaryApproxDefs.intOE E)
-    (v.adicCompletionIntegers F).toSubring
-
-abbrev Ix (E : Type) [Field E] [NumberField E] : Type := Module.Free.ChooseBasisIndex ℤ (𝓞 E)
-
-def bE (i : Ix E) : E := algebraMap (𝓞 E) E (RingOfIntegers.basis E i)
-
-def psi (a : Ix E → v.adicCompletion F) : E ⊗[F] v.adicCompletion F := ∑ i, bE i ⊗ₜ[F] a i
-
-def psiL : (Ix E → v.adicCompletion F) →ₗ[v.adicCompletion F] v.adicCompletion F ⊗[F] E :=
-  ∑ i, (LinearMap.proj i : (Ix E → v.adicCompletion F) →ₗ[v.adicCompletion F] v.adicCompletion F).smulRight
-    ((1 : v.adicCompletion F) ⊗ₜ[F] bE i)
-
-def PsiInt : Set (E ⊗[F] v.adicCompletion F) :=
-  {x | ∃ a : Ix E → v.adicCompletion F, (∀ i, a i ∈ v.adicCompletionIntegers F) ∧ psi v a = x}
-
-theorem sigR_mem (σ : E →ₐ[F] E) {x : E ⊗[F] v.adicCompletion F} (hx : x ∈ oE v) :
-    PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F) x ∈ oE v := by
-  refine Subring.closure_induction (p := fun x _ => PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F) x ∈ oE v)
-    (fun x hx => ?_) (by simp) (by simp) (fun x y _ _ hx hy => by rw [map_add]; exact add_mem hx hy)
-    (fun x _ hx => by rw [map_neg]; exact neg_mem hx) (fun x y _ _ hx hy => by rw [map_mul]; exact mul_mem hx hy) hx
-  rcases hx with ⟨⟨e, ⟨y, rfl⟩⟩, rfl⟩ | ⟨⟨r, hr⟩, rfl⟩
-  · refine Subring.subset_closure (Or.inl ⟨⟨σ (algebraMap (𝓞 E) E y), ?_⟩, ?_⟩)
-    · obtain ⟨z, hz⟩ : ∃ z : 𝓞 E, algebraMap (𝓞 E) E z = σ (algebraMap (𝓞 E) E y) :=
-        ⟨⟨σ (algebraMap (𝓞 E) E y), (y.2.map (σ.restrictScalars ℚ))⟩, rfl⟩
-      exact ⟨z, hz⟩
-    · simp [PI.UnitaryApproxDefs.sigR]
-  · exact Subring.subset_closure (Or.inr ⟨⟨r, hr⟩, by simp [PI.UnitaryApproxDefs.sigR]⟩)
-
 end Int
 
 end Formalism.MainNotions.UnitaryGroupLocal

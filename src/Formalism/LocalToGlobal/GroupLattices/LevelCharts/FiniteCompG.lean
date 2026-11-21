@@ -82,13 +82,4 @@ theorem finite_compG (p : ℕ) (U : Subgroup (GL (Fin N) (E ⊗[F] FiniteAdeleRi
   intro x hx
   exact Subgroup.mem_subgroupOf.2 (le_awayG σE J Uloc p U hU (Subgroup.mem_subgroupOf.1 hx))
 
-section Col
-
-variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
-    [StarRing E] [Algebra F E] {sp : Spaces R F E} {gp : Fin 2 → ℕ}
-    {ι' : Type} [Fintype ι'] {hc : ι' → HCParam R} {C : ColumnChain R ι' hc} {A : ColumnsAtT R C}
-    {clsLat : ∀ i, C.cls i → Submodule (𝓞 E) (sp.X i).V}
-
-end Col
-
 end Formalism.L2.G

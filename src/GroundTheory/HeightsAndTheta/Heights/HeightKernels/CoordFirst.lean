@@ -54,10 +54,4 @@ theorem sq_coord_le {ι : Type*} [Fintype ι] [DecidableEq ι] (Y : Matrix ι ι
 
 end KCoord
 
-theorem FirstCoordinateBound.intersectionNumber_baseChange : FirstCoordinateBound.Statement := by
-  intro g _ Y hY v
-  have h := KCoord.sq_coord_le Y hY 0 v
-  rw [div_le_iff₀ hY.inv.diag_pos, mul_comm]
-  exact h
-
 end GroundTheory.Heights₂.Heights

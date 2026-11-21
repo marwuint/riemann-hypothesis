@@ -5,12 +5,19 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepW
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalFamilyOrthogonalDecomposition
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelOperatorsAtPrimeOffLevelDatumStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalHeckeCombinationsCommuteFixedVectorsStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalHeckeCombinationsCommuteFixedVectors
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalHeckeConjPlaceEqDualLabelStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVectorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeterssonAdjointHeckeOperatorEqDualLabelStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVector
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeterssonAdjointHeckeOperatorEqDualLabel
+import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
+import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
+import Formalism.LocalToGlobal.IndefiniteReal.IndefiniteWeightData
+import Formalism.LocalToGlobal.IndefiniteReal.HeckeTupleStatement
+import Formalism.LocalRingCardinality.DataExtra
 
 noncomputable section
 
@@ -86,12 +93,12 @@ theorem hk_comm (V : HSp D) (P P' : Pl D.host.E) (d d' : List ℤ) (u : GA D V �
     refine Finset.sum_congr rfl fun b hb => Finset.sum_congr rfl fun a ha => ?_
     rw [mul_assoc, mul_assoc, ((key.1 f h1.1 h1.2.1).2.2 f' a b h0 (rep_supp h d a ha) (rep_supp h' d' b hb)).eq]
   · simp only [← opOf_rt]
-    exact GlobalTheory.T.sphericalHeckeCombinations_commute_fixedVectors V _ _ _ _ (rt V) u hu
+    exact _root_.GlobalTheory.SphLabelComm.label_ops_comm V _ _ _ _ (rt V) u hu
   · obtain rfl := eq_conj hc
     simp only [← opOf_rt]
     rw [(GlobalTheory.T.sphericalHecke_conjPlace_eq_dualLabel V P).2.2 _ _ (rt V) u hu,
-      (GlobalTheory.T.sphericalHecke_conjPlace_eq_dualLabel V P).2.2 _ _ (rt V) _ ((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).2.1 _ _ (rt V) u hu)]
-    exact GlobalTheory.T.sphericalHeckeCombinations_commute_fixedVectors V _ _ _ _ (rt V) u hu
+      (GlobalTheory.T.sphericalHecke_conjPlace_eq_dualLabel V P).2.2 _ _ (rt V) _ ((_root_.GlobalTheory.SphLabelOps.label_operators V P).2.1 _ _ (rt V) u hu)]
+    exact _root_.GlobalTheory.SphLabelComm.label_ops_comm V _ _ _ _ (rt V) u hu
 
 variable {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S}
 
@@ -165,7 +172,7 @@ theorem exists_ops (J : Subgroup (GA D V)) (χ : GA D V → ℂ) (SF : Finset (H
     exact hk_comm V P P' d d' _ (hfix P hP x v)
   have hadj1 : ∀ P, ok P → ∀ d, LinearMap.adjoint (h P (Finsupp.single d 1)) = h P (Finsupp.single (dualLab d) 1) := by
     intro P hP d
-    have hdd := ((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).2.2.2.1 d).1
+    have hdd := ((_root_.GlobalTheory.SphLabelOps.label_operators V P).2.2.2.1 d).1
     by_cases hd : IsLab V P d
     · symm
       rw [LinearMap.eq_adjoint_iff]
@@ -173,7 +180,7 @@ theorem exists_ops (J : Subgroup (GA D V)) (χ : GA D V → ℂ) (SF : Finset (H
       have e1 : ∀ d z, H.e (h P (Finsupp.single d 1) z) = heckeOn M (rep V P d) (H.e z) := fun d z => by
         rw [hh P _ hP, hk_single]; rfl
       rw [hip, hip, e1, e1]
-      refine GlobalTheory.T.petersson_adjoint_heckeOperator_eq_dualLabel D V S θ M J χ SF μ 𝓕 hθ hμ h𝓕 hS P (dualLab d) _ _ ((hfull _ _ _).2 ⟨hP, sphOp_rep (hdd.1 hd)⟩)
+      refine _root_.GlobalTheory.HeckeAdjoint.ipM_heckeOn_dualLab D V S θ M J χ SF μ 𝓕 hθ hμ h𝓕 hS P (dualLab d) _ _ ((hfull _ _ _).2 ⟨hP, sphOp_rep (hdd.1 hd)⟩)
         ((hfull _ _ _).2 ⟨hP, ?_⟩) _ (hW (hmW x)) _ (hW (hmW y)) (e1 _ x ▸ hW (hmW _)) (e1 _ y ▸ hW (hmW _))
       rw [dualLab_dualLab]
       exact sphOp_rep hd
@@ -184,7 +191,7 @@ theorem exists_ops (J : Subgroup (GA D V)) (χ : GA D V → ℂ) (SF : Finset (H
     rw [Submodule.mem_comap, mem_partFull]
     refine ⟨hW (hmW x), fun P d B hB v => ?_⟩
     obtain ⟨hP, hB⟩ := (hfull _ _ _).1 hB
-    have e1 := ((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).1 d B hB).2 _ (rt V) _ (hfix P hP x v)
+    have e1 := ((_root_.GlobalTheory.SphLabelOps.label_operators V P).1 d B hB).2 _ (rt V) _ (hfix P hP x v)
     rw [← LinearMap.sum_apply, sum_rt, opOf_rt] at e1
     have e2 := hh P (Finsupp.single d 1) hP x
     rw [hx P d hP ⟨B, hB⟩, map_smul] at e2
@@ -224,7 +231,7 @@ theorem exists_ops (J : Subgroup (GA D V)) (χ : GA D V → ℂ) (SF : Finset (H
 
 theorem exists_opsE : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Core R F → SchurAll R → ∀ SF, IsSF R SF → ∃ h, IsOpsE R h ∧ NormalFam (Good R A.μ0) h ∧ (⨆ c, EEc R SF c) = ⊤ ∧ (∀ c P, Good R A.μ0 P → ∀ cc, ∀ x ∈ EEc R SF c, h P cc x = evC (Yc D 0) P (fun d => c P (dualLab d)) cc • x) ∧ ∀ (c : Pl D.host.E → List ℤ → ℂ) x, (∀ P d, Good R A.μ0 P → IsLab (Yc D 0) P d → h P (Finsupp.single d 1) x = c P (dualLab d) • x) → x ∈ EEc R SF c := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC hS SF hSF
-  obtain ⟨hQ, hg, hoff, -⟩ := GlobalTheory.T.theta_lift_levels_good_primes_properties R F hC.lev
+  obtain ⟨hQ, hg, hoff, -⟩ := _root_.GlobalTheory.GoodPrimes.good_primes R F hC.lev
   obtain ⟨n, hβ⟩ := hC.lev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)
   have lev := fun P (hP : Good R A.μ0 P) => GlobalTheory.T.level_operators_at_prime_off_level_datum (Yc D 0) (R.βY 0) (R.ΛY 0) _ (R.dat0 R.triv) hβ P
     (by rw [Nat.cast_pow]; exact fun hm => (hg _ P hP).1 (P.isPrime.mem_of_pow_mem n hm))

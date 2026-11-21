@@ -23,11 +23,6 @@ end Local
 def SurjSt : Prop := ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
   (ν α : kˣ →* ℂˣ), USm ν → ν ≠ 1 → ∀ Φ ∈ SB (Matrix (Fin n) (Fin d) k), ∃ Φ₀, Full Φ₀ ∧ Φ - Φ₀ ∈ aug n d ν α
 
-def IrrSt : Prop := ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
-  (ν α : kˣ →* ℂˣ), n ≤ d → USm ν → USm α → ∀ N : Submodule ℂ (Matrix (Fin n) (Fin d) k → ℂ), aug n d ν α ≤ N →
-  (∀ h : GL (Fin d) k, ∀ Φ ∈ N, Φ ∈ SB (Matrix (Fin n) (Fin d) k) → omB ν α 1 h Φ ∈ N) →
-  (∀ Φ, Full Φ → Φ ∈ N) ∨ ∀ Φ ∈ N, Full Φ → Φ ∈ aug n d ν α
-
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 section Dict

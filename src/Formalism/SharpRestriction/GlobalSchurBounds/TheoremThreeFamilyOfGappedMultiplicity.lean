@@ -1,4 +1,11 @@
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HCFdegRGap
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalDegreeGap.HCFdegRGapHolds
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalDegreeGap.DimensionBoundOfGapUniform
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalDegreeGap.DimensionFamilyOfWeylMultiplicity
+import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
+import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSchur
+import Formalism.SharpRestriction.CuspSpanNormBounds.DiscreteSeriesWeylDimension
+import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLe
+import Formalism.PeriodIntegrals.ExplicitFormulaCounts.WeylForK
 import Formalism.SharpRestriction.CuspSpanNormBounds.DiscreteSeriesExistence.LowKMultOneG
 
 noncomputable section
@@ -125,9 +132,6 @@ theorem theorem_three_of_gap_bound (s : (n : ℕ) → (Fin n → Bool) → NNRea
 theorem theorem_three_of_weyl_gapped_multiplicity (hW : DiscreteSeriesWeylDimension.WeylForK) (hL : DiscreteSeriesWeylDimension.LowKMultOneG) : Formalism.MainNotions.RT.DiscreteSeriesDegreeBoundsAllScales :=
   fun cd s hc => theorem_three_of_gap_bound s (PI.UnitaryGroupMassFormula.HCFdegRGap.hCFdegRGap_holds cd s hc) hW hL
 
-theorem explicit_bound_all_scales : Formalism.MainNotions.RT.DiscreteSeriesDegreeBoundsAllScales :=
-  theorem_three_of_weyl_gapped_multiplicity weylForK_closed Formalism.MainNotions.BesselDiscreteSeries.lowest_K_type_mult_one_of_gaps
-
 theorem theorem_three_rows_of_real_place (D : D7) (hc : cdScaleTie D) (hdt : dsigTie D) (hW : DiscreteSeriesWeylDimension.WeylForK)
     (hL : DiscreteSeriesWeylDimension.LowKMultOneG) : StandardLattice.SigmaDegreeTwoSidedBoundOfGap D := by
   have hAll : StandardLattice.DiscreteSeriesDegreeBoundsOfGap D := Formalism.MainNotions.RT.theorem_three_under_scale_of_general (theorem_three_of_weyl_gapped_multiplicity hW hL) D hc
@@ -199,79 +203,6 @@ theorem theorem_three_family_of_gapped_multiplicity {eps : ℝ} (Fm : Formalism.
 
 theorem explicit_bound_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Formalism.MainNotions.flipTwoThree.fam0 Fm Formalism.MainNotions.StandardLattice.SigmaDegreeTwoSidedBoundOfGap :=
   theorem_three_family_of_gapped_multiplicity Fm Formalism.MainNotions.BesselDiscreteSeries.lowest_K_type_mult_one_of_gaps
-
-theorem theorem_three_rows_family_holds {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : StandardLattice.FamilySigmaDegreeTwoSidedBound Fm := by
-  intro x i
-  exact theorem_three_rows_of_real_place (Fm.D x i) (Fm.ties x i).cdScale_tie (Fm.ties x i).dsig_tie
-    weylForK_closed Formalism.MainNotions.BesselDiscreteSeries.lowest_K_type_mult_one_of_gaps
-
-private theorem dTau_nonneg_of_strictAnti {N : ℕ} (S : Fin N → Bool) (L : Fin N → ℝ) (hL : StrictAnti L) :
-    0 ≤ StandardLattice.dTau S L := by
-  unfold StandardLattice.dTau
-  apply div_nonneg
-  · apply Finset.prod_nonneg
-    intro a _
-    apply Finset.prod_nonneg
-    intro b hb
-    rw [Finset.mem_filter] at hb
-    obtain ⟨_, hab, hs⟩ := hb
-    have h1 : L b < L a := hL hab
-    have h2 : StandardLattice.rhoN S b ≤ StandardLattice.rhoN S a := by
-      unfold StandardLattice.rhoN
-      have c1 : ((Finset.univ.filter (fun x => b < x ∧ S x ≠ S b)).card : ℝ) ≤
-          ((Finset.univ.filter (fun x => a < x ∧ S x ≠ S a)).card : ℝ) := by
-        exact_mod_cast Finset.card_le_card (by
-          intro x hx
-          simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢
-          exact ⟨lt_trans hab hx.1, by rw [hs]; exact hx.2⟩)
-      have c2 : ((Finset.univ.filter (fun x => x < a ∧ S x ≠ S a)).card : ℝ) ≤
-          ((Finset.univ.filter (fun x => x < b ∧ S x ≠ S b)).card : ℝ) := by
-        exact_mod_cast Finset.card_le_card (by
-          intro x hx
-          simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢
-          exact ⟨lt_trans hx.1 hab, by rw [← hs]; exact hx.2⟩)
-      linarith
-    linarith
-  · apply mul_nonneg
-    · unfold StandardLattice.facProd
-      exact Finset.prod_nonneg (fun i _ => by positivity)
-    · unfold StandardLattice.facProd
-      exact Finset.prod_nonneg (fun i _ => by positivity)
-
-theorem theorem_three_family_large_constant {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C3 : ℝ) (hC3 : 8192 ≤ C3) : StandardLattice.FamilyTheoremThree Fm C3 := by
-  unfold StandardLattice.FamilyTheoremThree
-  intro x i
-  unfold StandardLattice.PointsLemma
-  have h := theorem_three_rows_family_holds Fm x i
-  unfold StandardLattice.SigmaDegreeTwoSidedBoundOfGap at h
-  intro ep0 h1 h2 ρ hg
-  have hr : (1 : ℝ) ≤ ((Fm.D x i).R.r : ℝ) := by
-    rcases Nat.eq_zero_or_pos (Fm.D x i).R.r with h0 | h0
-    · rw [h0] at h1
-      simp at h1
-      linarith
-    · exact_mod_cast h0
-  have h8 : (8192 : ℝ) ≤ C3 * ((Fm.D x i).R.r : ℝ) := by nlinarith
-  have hM : 0 ≤ ((min (pY (Fm.D x i)) (qY (Fm.D x i)) : ℕ) : ℝ) *
-      (((pY (Fm.D x i) : ℕ) : ℝ) * ((qY (Fm.D x i) : ℕ) : ℝ)) ^ 3 * Real.log ((Fm.D x i).R.r : ℝ) := by
-    have := Real.log_natCast_nonneg (Fm.D x i).R.r
-    positivity
-  have key : StandardLattice.spectralGapLowerBound (Fm.D x i) ep0 ≤ StandardLattice.gap3 (Fm.D x i) C3 ep0 := by
-    clear h hg h1 h2
-    unfold StandardLattice.spectralGapLowerBound StandardLattice.gap3
-    gcongr ?_ / _
-    nlinarith [mul_nonneg (sub_nonneg.2 h8) hM]
-  obtain ⟨hl, hu⟩ := h ep0 h1 h2 ρ (fun a b hab => le_trans key (hg a b hab))
-  refine ⟨hl, le_trans hu ?_⟩
-  have hT := dTau_nonneg_of_strictAnti (rowSgn (Fm.D x i)) (rowLam (Fm.D x i) ρ) (StandardLattice.line_param_strictAnti (Fm.D x i) ρ)
-  have hA : 0 ≤ lamAbs (rowLam (Fm.D x i) ρ) :=
-    Real.iSup_nonneg (fun a => Real.iSup_nonneg (fun b => abs_nonneg _))
-  have h3 : (3 : ℝ) ≤ C3 * ((Fm.D x i).R.r : ℝ) := by linarith
-  have hP : 0 ≤ ((pY (Fm.D x i) : ℕ) : ℝ) * ((qY (Fm.D x i) : ℕ) : ℝ) * lamAbs (rowLam (Fm.D x i) ρ) := by
-    positivity
-  refine mul_le_mul_of_nonneg_left ?_ (mul_nonneg (by norm_num) hT)
-  gcongr ?_ ^ _
-  nlinarith [mul_nonneg (sub_nonneg.2 h3) hP]
 
 end Formalism.MainNotions.GappedMultiplicityBounds
 

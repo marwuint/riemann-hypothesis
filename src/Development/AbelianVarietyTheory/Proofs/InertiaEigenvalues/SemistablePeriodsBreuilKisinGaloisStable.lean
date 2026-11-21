@@ -65,13 +65,6 @@ theorem frob_zl (z : ℤ_[l]) :
   rw [WittVector.frobenius_eq_map_frobenius]
   exact map_zlW l _ z
 
-theorem σA_frob (g : GQ l) (a : Ainf l) :
-    Per.σA g (WittVector.frobenius a) = WittVector.frobenius (Per.σA g a) := by
-  apply inclW_injective
-  rw [← galW_inclW, ← frobW_inclW, ← frobW_inclW, ← galW_inclW]
-  refine WittVector.ext fun n => ?_
-  simp [galW, mapAlgEquivW, mapEquivW, frobW, WittVector.map_coeff, frobenius_def, map_pow]
-
 theorem frob_Y (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) {d N : ℕ} {ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]}
     (F : Pre bk N d ρ) (M : ℕ) (Y : Matrix (Fin d) (Fin d) (Ainf l)) (hY : Y.map (inclW l) = inclW l τ ^ M • F.T) :
     bk.ev bk.E ^ N • Y.map WittVector.frobenius = bk.ev bk.E ^ M • (Y * F.A.map bk.ev) := by

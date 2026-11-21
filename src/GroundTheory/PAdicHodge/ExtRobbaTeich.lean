@@ -169,12 +169,6 @@ theorem finSum_congr {a b : ℕ → L} {n : ℕ} (h : ∀ i < n, a i = b i) :
     T.finSum a n = T.finSum b n :=
   Finset.sum_congr rfl fun i hi => by rw [h i (Finset.mem_range.1 hi)]
 
-theorem finSum_mem_span_of_eq_zero {a : ℕ → L} {n m : ℕ} (h : ∀ i < m, a i = 0) (hmn : m ≤ n) :
-    T.finSum a n ∈ Ideal.span {T.π ^ m} := by
-  have h0 : T.finSum a m = 0 := by
-    rw [T.finSum_congr (b := 0) h]; simp [finSum]
-  simpa [h0] using T.finSum_sub_finSum_mem a hmn
-
 def partialSum (x : Γ) (n : ℕ) : Γ := T.finSum (T.coeff x) n
 
 theorem sub_partialSum (x : Γ) (n : ℕ) : x - T.partialSum x n = T.π ^ n * T.tail^[n] x := by
@@ -255,8 +249,6 @@ theorem mk_sub_finSum_mem (a : ℕ → L) (n : ℕ) : T.ofCoeff a - T.finSum a n
 
 @[simp] theorem coeff_ofCoeff (a : ℕ → L) : T.coeff (T.ofCoeff a) = a :=
   funext fun n => T.coeff_eq_of_mem (T.mk_sub_finSum_mem a (n + 1)) n le_rfl
-
-theorem ofCoeff_coeff (x : Γ) : T.ofCoeff (T.coeff x) = x := T.eq_of_coeff_eq (by simp)
 
 theorem coeff_eq_coeff_of_sub_mem {x y : Γ} {n : ℕ} (h : x - y ∈ Ideal.span {T.π ^ (n + 1)}) :
     ∀ m ≤ n, T.coeff x m = T.coeff y m := by

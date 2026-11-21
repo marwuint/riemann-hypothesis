@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DecayZero
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TotallyRealSelfAnnihilatorAdeleCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalVectorsAdelesFundamentalDomainMassOneStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalVectorsAdelesFundamentalDomainMassOne
 
 noncomputable section
 
@@ -371,7 +371,7 @@ theorem periodic_eq_zero_of_coeff : ∀ (F : Type) [Field F] [NumberField F] (N 
     (∀ ξ : Fin N → F, ∫ u in D, P u * ψ (-(Bd (AF F) a u (rat ξ))) ∂(muV N ν) = 0) → P = 0 := by
   intro F _ _ N ψ lam ν a hctx D hD hD1 P hPc hPp hcoef
   obtain ⟨hTR, hψ, -, hcov, ha⟩ := hctx
-  obtain ⟨hμ, hL, -, ⟨K, hK, hKc⟩, -⟩ := GlobalTheory.T.rationalVectors_adeles_fundamentalDomain_mass_one F N ν hcov
+  obtain ⟨hμ, hL, -, ⟨K, hK, hKc⟩, -⟩ := _root_.GlobalTheory.SWQ.rat_lattice_fundamentalDomain F N ν hcov
   exact FZero.eq_zero_of ψ a hψ (GlobalTheory.T.numberField_self_annihilator_adeleCharacter F hTR ψ hψ).2 ha hL hK hKc (muV N ν) hμ D hD
     (by rw [hD1]; exact ENNReal.one_ne_top) P hPc hPp hcoef
 

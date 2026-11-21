@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EndValuedForm11Coeffs
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralAntiholomorphicJacobianEqZeroPoincareGroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralAntiholomorphicJacobianEqZeroPoincareGro
 
 set_option autoImplicit false
 
@@ -17,7 +17,7 @@ theorem integral_mixTop_mdbar_eq_zero : ∀ {n : ℕ} {r : Type} [Fintype r] [De
         (offHyp S U) ∧
       ∫ v in offHyp S U, (Matrix.of fun i b => mdbar (θ i (u i)) v (coordVec b) (p i) (p (π i))).det = 0 := by
     intro p π u
-    exact GlobalTheory.T.integral_antiholomorphicJacobian_eq_zero_poincareGrowth S U K (fun i x => θ i (u i) x (p i) (p (π i))) j u c hU hK hKU hS
+    exact _root_.GlobalTheory.GoodTop.integral_det_dbar_eq_zero_of_poincare S U K (fun i x => θ i (u i) x (p i) (p (π i))) j u c hU hK hKU hS
       (fun i v hv => (hθ i (u i) v hv (p i) (p (π i))).contDiffWithinAt)
       (fun v hv hvK => by simp [h0 (u j) v hv hvK])
       (fun v hv hvK => hb v hv hvK (u j) _ _)

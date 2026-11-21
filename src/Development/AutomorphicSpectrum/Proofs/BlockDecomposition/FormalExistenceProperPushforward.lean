@@ -3,11 +3,11 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowSubSuccLe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowIdeal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperPushforwardCoherentStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedSystemPullbackStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperSupportPullbackSystemStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperSupportPullbackSystem
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PushforwardClosedSystemUnseenStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperPullbackSystemQuasicoherentStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperPullbackSystemQuasicoherent
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NonemptyOpenIdealNotNilpotentStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdealPowerKillsSystemStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdealPowerKillsSystem
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperBirationalClosedSystemStatement
 
 set_option autoImplicit false
@@ -26,7 +26,7 @@ theorem core_integral_step : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I
     haveI := hψ
     infer_instance
   have hcl := GlobalTheory.T.closed_system_pullback I (ψ ≫ J.subschemeι) hover hE hS
-  have hps := GlobalTheory.T.proper_support_pullback_system I (ψ ≫ J.subschemeι) hφ hover hE hS hP
+  have hps := _root_.GlobalTheory.CompanionTheory.GE.PullSupp.propSupp_pullSys I (ψ ≫ J.subschemeι) hφ hover hE hS hP
   have hEZ := isCoherent_pullback (ψ ≫ J.subschemeι) hE
   obtain ⟨B, hBq, hBP, hB⟩ := hZ _ hEZ _ hcl (fun e U a ha x => by
     have ha0 : a = 0 := by simpa using ha
@@ -41,9 +41,9 @@ theorem core_integral_step : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I
     (SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso
       (kernelSubobjectIso (adjMap (ψ ≫ J.subschemeι) B)).symm
       (isCoherent_kernel (adjMap (ψ ≫ J.subschemeι) B) hE).1
-  obtain ⟨c, hc⟩ := GlobalTheory.T.proper_pullback_system_quasicoherent I (ψ ≫ J.subschemeι) hφ hover hE hS B hBq hB
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.GE.Shift.shift I (ψ ≫ J.subschemeι) hφ hover hE hS B hBq hB
   obtain ⟨J₀, hJ₀, hJ₀J⟩ := GlobalTheory.T.nonempty_open_ideal_not_nilpotent J W hW
-  obtain ⟨m, hm⟩ := GlobalTheory.T.ideal_power_kills_system hE (adjKer (ψ ≫ J.subschemeι) B) hDq S hS.qcoh J₀
+  obtain ⟨m, hm⟩ := _root_.GlobalTheory.CompanionTheory.GE.Globalize.exists_uniform_pow_kills hE (adjKer (ψ ≫ J.subschemeι) B) hDq S hS.qcoh J₀
     (fun V f hf x hx => GlobalTheory.T.proper_birational_closed_system I J ψ hψ hover W hiso hE hS hK B hB V f (hJ₀ V f hf) x hx)
   refine ⟨adjKer (ψ ≫ J.subschemeι) B, c, J ⊔ powIdeal J₀ m, hDq,
     GlobalTheory.T.pushforward_closed_system_auxiliary (ψ ≫ J.subschemeι) hφ hover B hBP, hc, ?_, ?_⟩

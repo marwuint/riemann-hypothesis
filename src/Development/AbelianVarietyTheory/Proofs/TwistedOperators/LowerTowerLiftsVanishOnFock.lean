@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CartFrSgn
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NoInvariantPairingSmallerFockDiscreteSeriesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NoInvariantPairingSmallerFockDiscreteSeries
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SignBlockDeterminantOne
 
 noncomputable section
@@ -52,7 +52,7 @@ theorem pairing_eq_zero : ∀ (X : ProvA) (p q r s : ℕ) (lam' : Ix r s → ℚ
       map_add' := fun P Q => by ext v; simp
       map_smul' := fun c P => by ext v; simp }
   have hB' : ∀ P v, B' (κ P) v = b P (j v) := fun P v => by simp [B']
-  have h0 : B' = 0 := GlobalTheory.T.no_invariant_pairing_smaller_fock_discreteSeries X p q r s lam' hadm hlow i hi hip hiq B' (fun Y hY P y => by
+  have h0 : B' = 0 := _root_.GlobalTheory.NoLowPairing.no_pairing_of_noLow X p q r s lam' hadm hlow i hi hip hiq B' (fun Y hY P y => by
     obtain ⟨P, rfl⟩ := κ.surjective P
     have hY' : toFrame M' τ (plainMat e' Y) ∈ lieAt W τ := h₂.lie ▸ ⟨Y, hY, rfl⟩
     have h4 : (plainMat e' Y).trace = Y.trace := trace_reindex' e' Y

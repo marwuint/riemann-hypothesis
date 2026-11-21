@@ -19,18 +19,6 @@ def IntCoordArInt.Statement : Prop :=
         (fun j => intCoordLine B ⟨A, hBA⟩ (L j)) =
       arInt Q s Ab L
 
-def intCoordSwap : Matrix (Fin 2) (Fin 2) ℤ := !![0, 1; 1, 0]
-
-theorem intCoordSwap_mul_self : intCoordSwap * intCoordSwap = 1 := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [intCoordSwap, Matrix.mul_apply, Fin.sum_univ_two]
-
-example : intCoordSwap * intCoordSwap = 1 ∧ IsArithVar (⊥ : Ideal (MRing (dualBlocks (Fin 2)))) (1 + 1) ∧
-    (∀ j, IsSmoothHerm (![fsLine 2] j)) ∧ IsSmoothHerm (fsLine 2) ∧
-    IsSectionOn (⊥ : Ideal (MRing (dualBlocks (Fin 2)))) (fsLine 2) (Xc 2 0) :=
-  ⟨intCoordSwap_mul_self, Inter.isArithVar_projLine, fun j => by fin_cases j; exact Inter.isSmoothHerm_fsLine 2,
-    Inter.isSmoothHerm_fsLine 2, Inter.isSectionOn_Xc 2 0⟩
-
 end
 
 end GroundTheory.Heights₂.Heights

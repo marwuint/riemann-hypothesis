@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameLocalBound
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagEqualChangeLowerTriangularStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagEqualChangeLowerTriangular
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFrameVec
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameSectionBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFlagXdeg
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializesOfUnits
@@ -94,7 +95,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
 theorem isFrameAt_of_tri (V : Lat ξ L) (p : Cpt ξ) {r : ℕ} (b b₀ : Fin r → L) (T : Matrix (Fin r) (Fin r) Ω)
     (hfl : ∀ i : ℕ, flagStep Ω b i = flagStep Ω b₀ i) (hb : V.IsFrameAt b p) (hT : ∀ i, b i = ∑ j, T i j • b₀ j)
     (h1 : ∀ i j, T i j ∈ regAt ξ p) (h2 : ∀ i, T i i ≠ 0 ∧ (T i i)⁻¹ ∈ regAt ξ p) : V.IsFrameAt b₀ p := by
-  obtain ⟨hi, htri⟩ := GlobalTheory.T.flag_equal_change_lower_triangular Ω L r b b₀ T hb.1 hfl hT
+  obtain ⟨hi, htri⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.FlagTri.independent_and_triangular Ω L r b b₀ T hb.1 hfl hT
   refine ⟨hi, hb.2.trans (le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_))⟩
   · rintro _ ⟨i, rfl⟩
     rw [hT]

@@ -8,9 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolarisedE8Th
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelLoweringQuotientRepresentsReduced
 import Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymplecticLevelPrincipalSiegelAlgClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymplecticLevelPrincipalSiegelAlgClosed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerE8BundleIsoOfPrincipalSiegelIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsFiniteOfPolarisedAVIsoAlgClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsFiniteOfPolarisedAVIsoAlgClosed
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.ZH GlobalTheory.UMin GlobalTheory.SiegTh Classical
@@ -63,12 +63,12 @@ theorem finite_sharpOver : ∀ (g n : ℕ), 2 ≤ n → ∀ (F : SFam g n (zetaA
     have hc0 := GlobalTheory.ThetaQuasiFinite.sRel_zero_of_siegPB hc
     have hcP : c.Principal := sRel_principal hc0 F.princ
     have hd : SmoothOfRelativeDimension g c.A.hom := GlobalTheory.SiegSharpCover.smoothDim c hn2 hζ (isUnit_natCast hn)
-    obtain ⟨C, hC⟩ := GlobalTheory.T.exists_symplecticLevel_principalSiegel_algClosed g n N _ _ K _ c b hNodd hN3 hcP hd
+    obtain ⟨C, hC⟩ := _root_.GlobalTheory.SiegLift.exists_level_of_forget g n N _ _ K _ c b hNodd hN3 hcP hd
     have hCP : C.Principal := sRel_principal hC hcP
     obtain ⟨t, ht⟩ := GlobalTheory.SiegelPower.exists_tObj_isSharp hL hL2 g (8 * g) W _ a bas hW hbas N K b (Sp K) (𝟙 _) C hNodd hN3 hbζ hCP
     have hCF : SRel C F.univ 0 0 y := by simpa using sRel_comp hc0 hC
     exact ⟨C, t, hCP, hCF, ht, GlobalTheory.T.eighthPower_E8Bundle_iso_of_principalSiegelIso g n N _ _ K _ c b C W _ a bas t Q pr hpr huniv hiso hC ht⟩
-  obtain ⟨V, hVf, hV⟩ := GlobalTheory.T.thetaConstants_finite_of_polarisedAVIso_algClosed (8 * g) N' (Fin 8 × Fin 8) K b Q hN'odd hN'3
+  obtain ⟨V, hVf, hV⟩ := _root_.GlobalTheory.ThetaFiniteIso.thetaPts_finite (8 * g) N' (Fin 8 × Fin 8) K b Q hN'odd hN'3
   have := GlobalTheory.ThetaQuasiFinite.finite_points_cycAway hn K
   let T : (Ix (8 * g) N → K) → (Sp K ⟶ Sp (cycAway n)) → Set (Sp K ⟶ F.X) := fun v x₀ =>
     {y | y ≫ F.s = x₀ ∧ ∃ (C : SiegPre g N (b.ζ : K) (𝟙 (Sp K))) (t : TObj (8 * g) N (Fin 8 × Fin 8) b (𝟙 (Sp K))),

@@ -2,8 +2,8 @@ import Mathlib
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodRingsGaloisActionLawsFrobeniusComm
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInjectiveBcrisToBdRStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApproxStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInjectiveBcrisToBdR
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusSimpleRootsSectionUniqueEquivariantStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootOfUnityPrimeToTeichmullerLiftStatement
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
@@ -45,7 +45,7 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 theorem iota_injective (C : Core l) : Function.Injective C.ι := by
-  obtain ⟨ι, h1, h2⟩ := GlobalTheory.T.exists_injective_bcris_to_bdR l C.j C.j_cris
+  obtain ⟨ι, h1, h2⟩ := _root_.GlobalTheory.MemLoc.exists_iota_cris_dR l C.j C.j_cris
   have e : C.ι = ι := GlobalTheory.RingIface.bcris_ext l fun x => (C.ι_j x).trans (h1 x).symm
   rw [e]
   exact h2
@@ -62,13 +62,13 @@ theorem iota_sigma (C : Core l) (g : GQ l) (b : Per.Bcris l) :
   have e : C.ι.comp (Per.σB g) = (Per.σD g).comp C.ι := by
     refine GlobalTheory.RingIface.bcris_ext l fun x => ?_
     simp only [RingHom.comp_apply]
-    rw [hB, C.ι_j, C.ι_j, hD, (GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l C.j C.j_cris).2.1]
+    rw [hB, C.ι_j, C.ι_j, hD, (_root_.GlobalTheory.MemLoc.crisP_unique_equivariant l C.j C.j_cris).2.1]
   exact RingHom.congr_fun e b
 
 theorem iota_isCrisDR (C : Core l) : Per.IsCrisDR l C.ι := by
   obtain ⟨ι, hι⟩ := GlobalTheory.CrisIncl.exists_incl l
   obtain ⟨j, h1, h2, h3⟩ := GlobalTheory.CrisIncl.exists_restrict l ι hι
-  have e : j = C.j := (GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l C.j C.j_cris).1 j ⟨h2, h3⟩
+  have e : j = C.j := (_root_.GlobalTheory.MemLoc.crisP_unique_equivariant l C.j C.j_cris).1 j ⟨h2, h3⟩
   have e' : C.ι = ι := GlobalTheory.RingIface.bcris_ext l fun x => by rw [C.ι_j, h1, e]
   rwa [e']
 

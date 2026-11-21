@@ -6,7 +6,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.IsUnitOfComplexPoints
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAlgebraicSectionOfHolomorphicThetaStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAlgebraicSectionOfHolomorphicTheta
 
 noncomputable section
 
@@ -78,7 +78,7 @@ theorem lbIso_of_same_factor : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) 
     have := P.isAb.proper
     infer_instance
 
-  obtain ⟨s, hs⟩ := GlobalTheory.T.exists_algebraic_section_of_holomorphic_theta hL hL2 hTh hU P (LB.div M' M) (SameFactor.divUnif u u' hex) (fun _ => 1)
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.exists_sec_isFn_of_differentiable hL hL2 hTh hU P (LB.div M' M) (SameFactor.divUnif u u' hex) (fun _ => 1)
     (LB.isLB_div hM' hM) (differentiable_const 1) (by
       intro l p z hz
       obtain ⟨h1, h2⟩ := (top_le_preimage_inf _ _ _).1 hz

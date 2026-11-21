@@ -22,8 +22,6 @@ namespace GlobalTheory.CompanionTheory.StdSubCusp
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-def top (Δ : Segment k) : IrrGL k := Δ.first.nu ((Δ.len - 1 : ℕ) : ℂ)
-
 def Emb {p q : ℕ} (a : Fin p → IrrGL k) (b : Fin q → IrrGL k) : Prop :=
   ∃ (N : ℕ) (ha : ∑ i, (a i).1 = N) (hb : ∑ i, (b i).1 = N)
     (f : (prodIrr a ha).IntertwiningMap (prodIrr b hb)), Function.Injective f
@@ -39,17 +37,6 @@ theorem Emb.trans {p q r : ℕ} {a : Fin p → IrrGL k} {b : Fin q → IrrGL k} 
   obtain ⟨N', hb', hc, g, hg⟩ := h'
   obtain rfl : N = N' := hb.symm.trans hb'
   exact ⟨N, ha, hc, g.comp f, hg.comp hf⟩
-
-theorem prod₂_map_injective_right {r t : ℕ} {U W W' : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup W] [Module ℂ W]
-    [AddCommGroup W'] [Module ℂ W'] (σ : Representation ℂ (GL (Fin r) k) U) {ρ : Representation ℂ (GL (Fin t) k) W}
-    {ρ' : Representation ℂ (GL (Fin t) k) W'} (g : ρ.IntertwiningMap ρ') (hg : Function.Injective g) :
-    ∃ F : (prod₂ σ ρ).IntertwiningMap (prod₂ σ ρ'), Function.Injective F := by
-  have hι : Function.Injective (GlobalTheory.ParIndExact.extTensorMapRight σ g) :=
-    Module.Flat.lTensor_preserves_injective_linearMap g.toLinearMap hg
-  have hι' : Function.Injective (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ g)
-      (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom) := hι
-  exact ⟨parIndMap (two (stdSum rfl)) (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ g)
-    (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom), GlobalTheory.ParIndExact.parIndMap_injective _ _ hι'⟩
 
 end GlobalTheory.CompanionTheory.StdSubCusp
 

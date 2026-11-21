@@ -79,9 +79,6 @@ theorem mem_one_iff (l : ℕ) (x : ℚ) : x ∈ (1 : Submodule (Zl l) ℚ) ↔ x
   · intro hx
     exact ⟨⟨x, hx⟩, rfl⟩
 
-example (l : ℕ) (V : Type) [AddCommGroup V] [Module ℚ V] : IsScalarTower (Zl l) ℚ V := inferInstance
-example (l : ℕ) : Algebra (Zl l) ℚ := inferInstance
-
 theorem lrc_smul_def (l : ℕ) {V : Type*} [AddCommGroup V] [Module ℚ V] (c : Zl l) (v : V) :
     c • v = (c : ℚ) • v := rfl
 

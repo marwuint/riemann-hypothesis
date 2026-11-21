@@ -2,19 +2,19 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramNear
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EMatMulNegCol
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FibreMassEq
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralOrderDataExistAtPlaceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactSetContainedInLatticeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralOrderDataExistAtPlace
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactSetContainedInLattice
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalLatticeVolumeOrderDataStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalLatticeGaussSumEstimateStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalLatticeQuadraticIntegralStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalLatticeCharacterIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalOrderConjugationStableStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalScalingVolumeByUnitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalOrderStableIntegralStructureStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalScalingMeasureByUnitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureUnramifiedFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalOrderConjugationStable
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalScalingVolumeByUnit
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalOrderStableIntegralStructure
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalScalingMeasureByUnit
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureUnramifiedFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DensityBoundByRecursionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureUnramifiedVolumeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureUnramifiedVolume
 
 noncomputable section
 
@@ -56,8 +56,8 @@ theorem GlobalTheory.CompanionTheory.AvgFree.scale_density : ∀ (F E : Type) [F
     · exact O.one_mem
     · exact O.neg_mem (ha i)
   have hncl : negCol (Fv F v) l a l = 1 := by simp [negCol]
-  obtain ⟨hY1m, hY1⟩ := GlobalTheory.T.local_order_stable_integral_structure F E σ hσ d b v lv hlv O hOc hOo hOs n l _ hnc hncl Y hY
-  obtain ⟨hY2m, hY2⟩ := GlobalTheory.T.local_scaling_measure_by_unit F E σ hσ d b v lv hlv s θ hmod n l _ hY1m
+  obtain ⟨hY1m, hY1⟩ := _root_.GlobalTheory.CompanionTheory.AvgFree.ElemHerm.coordHerm_cjPre_eMat F E σ hσ d b v lv hlv O hOc hOo hOs n l _ hnc hncl Y hY
+  obtain ⟨hY2m, hY2⟩ := _root_.GlobalTheory.CompanionTheory.AvgFree.cjPre_dMat_scale F E σ hσ d b v lv hlv s θ hmod n l _ hY1m
   refine ⟨_, hY2m, by rw [hY2, hY1], ?_⟩
   have hθ : θ ≠ 0 := by
     rintro rfl
@@ -104,8 +104,8 @@ theorem GlobalTheory.CompanionTheory.AvgFree.scale_density : ∀ (F E : Type) [F
       exact hY'
     exact (a10 n M J).measurable ((a9 n).isClosedEmbedding_subtypeVal.measurableEmbedding.measurableSet_image.2 hY3)
   have hD2 := hD.inter (hgm _ hY2m)
-  have hwe := GlobalTheory.T.local_order_conjugation_stable F E σ hσ d b v lv hlv O hOc hOo hOs n M l a ha hal
-  have hwd := GlobalTheory.T.local_scaling_volume_by_unit F E σ hσ d b v lv hlv s⁻¹ θ⁻¹ hmod' n M l _ hD2
+  have hwe := _root_.GlobalTheory.CompanionTheory.AvgFree.shear_measurePreserving F E σ hσ d b v lv hlv O hOc hOo hOs n M l a ha hal
+  have hwd := _root_.GlobalTheory.CompanionTheory.AvgFree.coordW_dMat_scale F E σ hσ d b v lv hlv s⁻¹ θ⁻¹ hmod' n M l _ hD2
   have hm2 : MeasurableSet {Z | GlobalTheory.CompanionTheory.SW.rmul (Fv F v) Z (dMat (Fv F v) l ((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)) ∈
       D ∩ gramIn (Fv F v) σ J (cjPre (Fv F v) σ (dMat (Fv F v) l (s : Fv F v ⊗[F] E))
         (cjPre (Fv F v) σ (eMat (Fv F v) l (negCol (Fv F v) l a)) Y))} :=
@@ -311,8 +311,8 @@ theorem GlobalTheory.CompanionTheory.AvgFree.exhaust_density : ∀ (F E : Type) 
   haveI := hlv.1
   obtain ⟨-, hW, hH⟩ := GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ (Fv F v) d b lv hlv.1
   haveI := hW n M
-  obtain ⟨O, S, hOS⟩ := GlobalTheory.T.integral_order_data_exist_at_place F E σ hσ d b v lv hlv
-  obtain ⟨L, hLc, hLo, hAL⟩ := GlobalTheory.T.compact_set_contained_in_lattice F E σ hσ v O hOS.1 hOS.2.1 n M A hAc
+  obtain ⟨O, S, hOS⟩ := _root_.GlobalTheory.CompanionTheory.AvgFree.exists_ordData F E σ hσ d b v lv hlv
+  obtain ⟨L, hLc, hLo, hAL⟩ := _root_.GlobalTheory.CompanionTheory.AvgFree.exists_lattice_tupIn F E σ hσ v O hOS.1 hOS.2.1 n M A hAc
   obtain ⟨ι, I, α, β, ρ, hρ, hs, hstep⟩ := GlobalTheory.CompanionTheory.AvgFree.bad_density F E σ hσ d b v lv hlv M J n hn hM O S hOS L hLc hLo
   have hcl := GlobalTheory.T.local_lattice_volume_order_data F E σ hσ d b v lv hlv O S hOS L hLc hLo n M
   obtain ⟨hmono, hfree⟩ := GlobalTheory.T.local_lattice_gauss_sum_estimate F E σ hσ d b v lv hlv O S hOS L hLc hLo n M
@@ -326,7 +326,7 @@ theorem GlobalTheory.CompanionTheory.AvgFree.exhaust_density : ∀ (F E : Type) 
     exact isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hLc
   have hj : ∀ᶠ j in Filter.atTop, ρ j < 1 := hρ.eventually (gt_mem_nhds zero_lt_one)
   obtain ⟨j₀, hj₀⟩ := hj.exists
-  obtain ⟨hmass, -, -, C₀, hC₀⟩ := GlobalTheory.T.local_fibre_measure_unramified_formula F E σ hσ d b v lv hlv M J hJ n mv hmv _ (hcl j₀).1 (hcl j₀).2 (hfree j₀)
+  obtain ⟨hmass, -, -, C₀, hC₀⟩ := _root_.GlobalTheory.CompanionTheory.AvgFree.free_fibre_masses F E σ hσ d b v lv hlv M J hJ n mv hmv _ (hcl j₀).1 (hcl j₀).2 (hfree j₀)
   obtain ⟨C, hC⟩ := GlobalTheory.T.density_bound_by_recursion (HermR (Fv F v) σ n) ι (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n)
     (fun Y => GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M
       (tupIn (M := M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E)) ∩ gramIn (Fv F v) σ J Y))
@@ -401,4 +401,4 @@ theorem GlobalTheory.CompanionTheory.AvgFree.avgFree_tendsto : ∀ (F E : Type) 
   obtain ⟨-, -, -, -, -, -, -, a8, -, -⟩ := GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)
   haveI := a8 n M
   obtain ⟨Tt, h1, h2, h3, ε, h4, h5⟩ := GlobalTheory.CompanionTheory.AvgFree.exhaust_density F E σ hσ d b v lv hlv M J hJ n hn hM mv hmv A hAc hAo
-  exact ⟨hAo.measurableSet, GlobalTheory.T.local_fibre_measure_unramified_volume F E σ hσ d b v lv hlv M J hJ n mv hmv c A hAc hAo Tt h1 h2 h3 ε h4 h5⟩
+  exact ⟨hAo.measurableSet, _root_.GlobalTheory.CompanionTheory.AvgFree.Lim.avg_tendsto_free F E σ hσ d b v lv hlv M J hJ n mv hmv c A hAc hAo Tt h1 h2 h3 ε h4 h5⟩

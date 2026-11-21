@@ -57,18 +57,7 @@ def WpKO (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) := coefRep (Wp 
 def KOtw (i : N.Loc) (e : ℤ) : Representation (N.O i) (G H.E N.Om) (KmodO (N.O i)) :=
   Formalism.GaloisCohomology.scalRep (KmodO (N.O i)) ((epsO N i) ^ (-e))
 
-def rChiInv (i : N.Loc) (r : G H.E N.Om →* GL (Fin R.nV) (N.O i)) :
-    Representation (N.O i) (G H.E N.Om) (Fin R.nV → N.O i) :=
-  twistRep (glRep r) (N.chi i 1)⁻¹
-
-def rDualChi (i : N.Loc) (r : G H.E N.Om →* GL (Fin R.nV) (N.O i)) :
-    Representation (N.O i) (G H.E N.Om) (Module.Dual (N.O i) (Fin R.nV → N.O i)) :=
-  twistRep (Representation.dual (glRep r)) (N.chi i 1 * epsO N i)
-
 end Glob
-
-def liftSpanFinrank {R : Ranks} (what₂ : Rows.Data R) (μ : what₂.Tup) (j : ℕ) : ℕ :=
-  Module.finrank ℂ (what₂.Zj μ j)
 
 def hE {R : Ranks} (H : Host R) : ℕ := NumberField.classNumber H.E
 
@@ -377,12 +366,6 @@ def bkW (π : N.X i) (w : HeightOneSpectrum (𝓞 H.E))
     (HfD PD (stdLat N i (((WpO N i ρ π).comp (decS N w)).comp ι))).comap
       ((LinearMap.funLeft (N.O i) (KOr N i) ι).comp (Submodule.subtype _))).map (Submodule.mkQ _)
 
-def selPi (π : N.X i)
-    (Ll : ∀ v, Submodule (N.O i) (H1 ((WKO N i ρ π).comp (Dec (F := H.E) (N.plOm.1 v)).subtype))) :
-    Submodule (N.O i) (H1 (WKO N i ρ π)) :=
-  Formalism.GaloisCohomology.SelAll (WKO N i ρ π) N.plOm
-    (Formalism.GaloisCohomology.bkCond (WKO N i ρ π) N.plOm (N.l i) (↑(N.S i ∪ N.Q i)) Ll)
-
 def jW (π : N.X i) (w : HeightOneSpectrum (𝓞 H.E))
     {G : Type} [Group G] [TopologicalSpace G] {K₀ Kw B BdR : Type} [Field K₀] [Field Kw]
     [Algebra ℚ_[N.l i] K₀] [Algebra ℚ_[N.l i] Kw] [Algebra K₀ Kw] [IsScalarTower ℚ_[N.l i] K₀ Kw]
@@ -394,9 +377,6 @@ def jW (π : N.X i) (w : HeightOneSpectrum (𝓞 H.E))
 
 def h0W (π : N.X i) (w : HeightOneSpectrum (𝓞 H.E)) : ℚ :=
   lenUnit (O := N.O i) (N.l i) ↥(Representation.invariants ((WKO N i ρ π).comp (decS N w)))
-
-def lenCol (e' : ℕ) (j : ℕ) (π : N.X i) (w : HeightOneSpectrum (𝓞 H.E)) : ℚ :=
-  (e' : ℚ) + (j : ℚ) * ((e' : ℚ) + N.vdel i) + 2 * N.vdel i + h0W N i ρ π w
 
 end Sel
 
@@ -576,29 +556,6 @@ def rhoBarTw (π : N.X i) (a : ℤ) : Representation (kk N i) (GE N) (kr N i) :=
   matRep (mapM (IsLocalRing.residue (N.O i))
     (twistM (rhoO N i ρ π) ((chiU N i 1)⁻¹ * (epsU N i) ^ a)))
 
-def TameInertiaCondition (π : N.X i) (S : IdempotentChoiceData N i) : Prop :=
-  ∀ v : HeightOneSpectrum (𝓞 H.E), (v ∈ N.S i ∨ v ∈ N.Q i) →
-    TameGen N (N.plOm.1 v) (N.gam0 i v) ∧
-    ((v ∈ N.Q i ∨ v ∈ placesOver H.E H.pde) →
-      (∀ x, ∀ γ ∈ Ine (F := H.E) (N.plOm.1 v),
-        (rO N i r x γ - 1) *
-          (rO N i r x γ - ((chiU N i 1 γ : (N.O i)ˣ) : N.O i) • (1 : MatN N i)) = 0) ∧
-      ∃ γ ∈ Ine (F := H.E) (N.plOm.1 v), chiU N i 1 γ ≠ 1) ∧
-    ((∃ k, v ∈ placesOver H.E (H.g k)) →
-      ∃ P : Polynomial (N.T i),
-        (∀ x, ∀ γ ∈ Ine (F := H.E) (N.plOm.1 v),
-          Polynomial.aeval (rO N i r x (N.gam0 i v)) (P.map (evT N i x)) *
-            (rO N i r x γ - ((chiU N i 1 γ : (N.O i)ˣ) : N.O i) • (1 : MatN N i)) = 0) ∧
-        IsUnit (P.eval (algebraMap (N.O i) (N.T i) (N.zeta i v)))) ∧
-    (v ∈ N.S i →
-      (∀ c : Fin R.t, ∀ φ : (S.X' → MatN N i) →ₗ[N.O i] KmodO (N.O i),
-        (∀ a, InR' N r S a → ∀ y, InY N r S y → φ (a * y) = S.ψχ c a • φ y) →
-        ∀ γ ∈ Ine (F := H.E) (N.plOm.1 v), φ (yg N r S γ) = 0) ∧
-      ∀ a : ℤ,
-        Subsingleton ↥(H0 ((rhoBarTw N ρ π a).comp (decS N v))) ∧
-        Subsingleton (H1 ((rhoBarTw N ρ π a).comp (decS N v))) ∧
-        Subsingleton (H2 ((rhoBarTw N ρ π a).comp (decS N v))))
-
 end G5
 
 end Formalism.MainNotions.N
@@ -753,8 +710,6 @@ instance finLL : FiniteDimensional ℚ_[l] (LLw Bw) := Bw.LL.2
 
 def cE : E →+* ↥Bw.Kw.1 := (Bw.j.comp (algebraMap E Ω)).codRestrict Bw.Kw.1 Bw.j_E
 
-def SplitsW : Prop := Nat.card (↥Bw.Kw.1 →ₐ[ℚ_[l]] LLw Bw) = finrank ℚ_[l] ↥Bw.Kw.1
-
 def EOAlg : Prop :=
   ∀ z : ℤ_[l], Bw.eO (algebraMap ℤ_[l] O z) = algebraMap ℤ_[l] (Ow Bw) z
 
@@ -876,9 +831,6 @@ def IsPotCrysW : Prop := (nbr i w hw).IsPotCrysW (L (N.l i)) (r.comp (decS N w))
 def IsJumpW (τ : Kw nbr i w hw →ₐ[ℚ_[N.l i]] LL nbr i w hw) (a : ℤ) : Prop :=
   (nbr i w hw).IsJumpW (L (N.l i)) (r.comp (decS N w)) τ a
 
-def jumpMult (τ : Kw nbr i w hw →ₐ[ℚ_[N.l i]] LL nbr i w hw) (a : ℤ) : ℤ :=
-  multV (PD L nbr i w hw) ((nbr i w hw).rep (r.comp (decS N w))) τ a
-
 end Cr
 
 def DegW : Prop := finrank ℚ_[N.l i] (Kw nbr i w hw) = locDeg H.E w
@@ -888,8 +840,6 @@ def EmbTypeU (τ : Kw nbr i w hw →ₐ[ℚ_[N.l i]] LL nbr i w hw) : Prop :=
   ∃ φ ∈ H.cmType,
     ∀ (x : H.E) (y : what₂.LL), toLLK (nbr i w hw) (N.embK i y) = τ (cEw nbr i w hw x) →
       what₂.embLL y = φ x
-
-def PlTypeU : Prop := ∀ τ, EmbTypeU nbr i w hw τ
 
 end Loc
 
@@ -908,10 +858,6 @@ def bkTw (w : HeightOneSpectrum (𝓞 H.E)) (hw : w ∈ placesOver H.E (tw.l i))
     (M : GE N →* Matrix (Fin k) (Fin k) (tw.O0 i)) :
     Submodule (tw.O0 i) (H1 ((WKG M).comp (decS N w))) :=
   bkG (nbt i w hw) (L (tw.l i)) ((WKG M).comp (decS N w)) (M.comp (decS N w))
-
-def selTw (Sig : Set (HeightOneSpectrum (𝓞 H.E))) {k : ℕ}
-    (M : GE N →* Matrix (Fin k) (Fin k) (tw.O0 i)) : Submodule (tw.O0 i) (H1 (WKG M)) :=
-  selG N.plOm (tw.l i) (L (tw.l i)) (nbt i) Sig M
 
 end Tw
 

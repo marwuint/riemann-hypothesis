@@ -1,6 +1,8 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.DetOfCharpoly
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannRelationConverseConjAffineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyPosDefHermFormNearZeroMatrixStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyPosDefHermFormNearZeroMatrix
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPeriodMapCompInjectiveRealLinearStatement
 
 noncomputable section
@@ -16,7 +18,7 @@ theorem perNear_of : PerNear := by
   intro O _ bar g ρ D P₀ M₀ hP hM d co hco
   obtain ⟨hHerm, hPos, hIm⟩ := hM
   have hdet : M₀.det ≠ 0 := det_ne_zero_of_pos hPos
-  obtain ⟨t, ht, htO, ht0⟩ := eventually_nhds_iff.mp (T.eventually_posDef_hermForm_near_zero_matrix M₀ hPos)
+  obtain ⟨t, ht, htO, ht0⟩ := eventually_nhds_iff.mp (_root_.GlobalTheory.PosOpen.posopen M₀ hPos)
   have hcont : Continuous co := LinearMap.continuous_of_finiteDimensional co
   refine ⟨co ⁻¹' t, htO.preimage hcont, by simpa using ht0, ?_, ?_⟩
   · intro b hb

@@ -40,53 +40,6 @@ variable (A X S) in
   left_inv _ := PiTensorProduct.algHom_ext fun s => by simp
   right_inv f := funext fun s => by simp
 
-theorem piTensor_induction
-    (P : ∀ (B : Type (max u v w)) [CommRing B] [Algebra A B], Prop)
-    (equiv : ∀ (B C : Type (max u v w)) [CommRing B] [Algebra A B] [CommRing C] [Algebra A C],
-      (B ≃ₐ[A] C) → P B → P C)
-    (base : ∀ (B : Type (max u v w)) [CommRing B] [Algebra A B], (A ≃ₐ[A] B) → P B)
-    (σ : Type w) [Fintype σ] :
-    ∀ (X : σ → Type v) [∀ s, CommRing (X s)] [∀ s, Algebra A (X s)],
-      (∀ s (B : Type (max u v w)) [CommRing B] [Algebra A B], P B → P (B ⊗[A] X s)) →
-      P (⨂[A] s, X s) := by
-  classical
-  refine Fintype.induction_empty_option (P := fun σ _ =>
-    ∀ (X : σ → Type v) [∀ s, CommRing (X s)] [∀ s, Algebra A (X s)],
-      (∀ s (B : Type (max u v w)) [CommRing B] [Algebra A B], P B → P (B ⊗[A] X s)) →
-      P (⨂[A] s, X s)) ?_ ?_ ?_ σ
-  · intro α β _ e ih X _ _ h
-    have := Fintype.ofEquiv β e.symm
-    refine equiv _ _ (AlgEquiv.ofAlgHom (piTensorLift fun a => singleAlgHom (e a))
-      (piTensorLift (e.piCongrLeft (fun b => X b →ₐ[A] ⨂[A] a, X (e a))
-        fun a => singleAlgHom (A := fun a => X (e a)) a)) ?_ ?_)
-      (ih (fun a => X (e a)) fun a => h (e a))
-    · refine PiTensorProduct.algHom_ext fun b => ?_
-      obtain ⟨a, rfl⟩ := e.surjective b
-      simp [AlgHom.comp_assoc]
-    · refine PiTensorProduct.algHom_ext fun a => ?_
-      simp [AlgHom.comp_assoc]
-  · intro X _ _ _
-    exact base _ (AlgEquiv.ofAlgHom (Algebra.ofId _ _) (piTensorLift fun s => s.elim)
-      (PiTensorProduct.algHom_ext fun s => s.elim) (Subsingleton.elim _ _))
-  · intro α _ ih X _ _ h
-    refine equiv _ _ (AlgEquiv.ofAlgHom
-      (Algebra.TensorProduct.lift (piTensorLift fun a => singleAlgHom (some a)) (singleAlgHom none)
-        fun _ _ => Commute.all _ _)
-      (piTensorLift fun o => match o with
-        | none => Algebra.TensorProduct.includeRight
-        | some a => Algebra.TensorProduct.includeLeft.comp
-            (singleAlgHom (A := fun a => X (some a)) a)) ?_ ?_)
-      (h none _ (ih (fun a => X (some a)) fun a => h (some a)))
-    · refine PiTensorProduct.algHom_ext fun o => ?_
-      rw [AlgHom.comp_assoc, piTensorLift_comp_single]
-      cases o with
-      | none => simp
-      | some a => simp [← AlgHom.comp_assoc]
-    · refine Algebra.TensorProduct.ext (PiTensorProduct.algHom_ext fun a => ?_) ?_
-      · simp [AlgHom.comp_assoc]
-      · ext x
-        simp [piTensorLift_single, -singleAlgHom_apply]
-
 end
 
 end GlobalTheory

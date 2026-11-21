@@ -117,16 +117,6 @@ def LargeX (x ε e K : ℝ) : Prop :=
 def LargeXEv : Prop :=
   ∀ ε e K : ℝ, 0 < ε → ε < 1 / 4 → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → LargeX x ε e K
 
-def WindowsSat : Prop :=
-  ∀ ε e K c : ℝ, 0 < ε → ε ≤ 1 / 52 → 40 ≤ e → 1 ≤ K → 0 ≤ c → c ≤ K → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x →
-    ∃ P : Par, P.x = x ∧ P.ε = ε ∧ x ^ (2 + 8 * ε) < P.n ∧ P.n ≤ 2 * x ^ (2 + 8 * ε) ∧
-      P.k = x ^ (9 / 2 + 10 * ε) ∧ P.p₀ = ⌈P.k ^ 2 * x ^ 26⌉₊ ∧ P.th = 1 / (P.k * x ^ 13) ∧
-      P.K₀ = P.k ^ 2 * x ^ 78 ∧ P.ρ = (x ^ 2)⁻¹ ∧ P.La = x ^ ε ∧
-      P.Sc = Real.exp (x ^ (ε / 4)) ∧ P.η = Real.exp (x ^ (ε / 4)) ∧ P.N = x ^ e ∧ P.t = x ^ e ∧
-      P.C = K ∧ P.Cord = c ∧ P.rG = K ∧ P.β = K * (x ^ 2)⁻¹ ∧ P.Y = P.Xp * (1 + P.ρ) ∧
-      P.s₀ = (x ^ 9)⁻¹ ∧ P.bo = Real.exp (x ^ ε / 2) ∧
-      Windows P e K ∧ LargeX x ε e K
-
 def unitU (P : Par) (m T : ℝ) : ℝ := T * m * P.b
 
 def tFloors (P : Par) (m : ℝ) : ℝ :=
@@ -142,8 +132,6 @@ def tOr (P : Par) (m T : ℝ) : ℝ :=
   m * T * (2 * P.C * P.lx * P.a * ((P.La / P.k + 1 / P.K₀) * (Real.log P.Xp + Real.log 4) +
     2 * (Real.log ((P.p₀ : ℝ) - 1) + 1) / ((P.p₀ : ℝ) - 1)))
 
-def tBad (P : Par) (m T : ℝ) : ℝ := 32 * P.β * m * P.a * T * (Real.log P.Xp + Real.log 4)
-
 def tOrders (P : Par) (m T : ℝ) : ℝ :=
   4 * m * T * P.a * (P.Cord * P.Jo * Real.log (2 ^ P.e₂ * max P.Y P.Xpp) ^ 2 / (2 : ℝ) ^ P.e₂)
 
@@ -155,16 +143,7 @@ def tHigh (P : Par) (m T : ℝ) : ℝ :=
 
 def tD (P : Par) (m T : ℝ) : ℝ := m * T * (2 * P.a * Real.log P.d / P.d)
 
-def tSecondIo (P : Par) (m T : ℝ) : ℝ :=
-  (P.s₀ / P.θ + P.s₀) * (4 * (m * T * P.a) * (Real.log P.Y + Real.log 4))
-
 def sg (P : Par) (K : ℝ) : ℝ := 100 * K * P.x ^ (4 * P.ε) / P.x
-
-def SgLeOne : Prop :=
-  ∀ (P : Par) (e K : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ sg P K ∧ sg P K ≤ 1
-
-def SgSmall : Prop :=
-  ∀ ε K δ : ℝ, 0 < ε → ε < 1 / 4 → 0 < δ → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → 100 * K * x ^ (4 * ε) / x ≤ δ
 
 def SizeFloors : Prop :=
   ∀ (P : Par) (e K m T : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
@@ -182,17 +161,9 @@ def SizePrHigh : Prop :=
   ∀ (P : Par) (e K m T : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
     tPrHigh P m T ≤ (2 * Real.log 4 * P.C + 3 * sg P K) * unitU P m T
 
-def SizePrHighLower : Prop :=
-  ∀ (P : Par) (e K m T : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
-    2 * Real.log 4 * P.C * unitU P m T ≤ tPrHigh P m T
-
 def SizeOr : Prop :=
   ∀ (P : Par) (e K m T : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
     tOr P m T ≤ sg P K * unitU P m T
-
-def SizeBad : Prop :=
-  ∀ (P : Par) (e K m T : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
-    tBad P m T ≤ sg P K * unitU P m T
 
 def SizeOrders : Prop :=
   ∀ (P : Par) (e K m T : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
@@ -209,22 +180,6 @@ def SizeHigh : Prop :=
 def SizeD : Prop :=
   ∀ (P : Par) (e K m T : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
     tD P m T ≤ sg P K * unitU P m T
-
-def SizeSecondIo : Prop :=
-  ∀ (P : Par) (e K m T : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
-    tSecondIo P m T ≤ sg P K * unitU P m T
-
-def tDet (P : Par) (m T : ℝ) : ℝ :=
-  tFloors P m + tCp P m T + tPrLow P m T + tPrHigh P m T + tOr P m T + tBad P m T + tOrders P m T
-    + tBand P m T + tHigh P m T + tD P m T
-
-def WindowSizeBoundSharp : Prop :=
-  ∀ (P : Par) (e K m T : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
-    tDet P m T + tSecondIo P m T ≤ (2 * Real.log 4 * P.C + 13 * sg P K) * unitU P m T
-
-def WindowSizeBound : Prop :=
-  ∀ (P : Par) (e K m T : ℝ), Windows P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
-    tDet P m T + tSecondIo P m T ≤ (3 * P.C + 13) * unitU P m T
 
 def SideConditionsOfWindows : Prop :=
   ∀ (P : Par) (e K : ℝ), Windows P e K → LargeX P.x P.ε e K →
@@ -270,8 +225,6 @@ structure LD (ι κ τ : Type) where
 
 variable {ι κ τ : Type}
 
-def LD.vonMangoldtClassSum (D : LD ι κ τ) (j : κ) (t : τ) (p : ℕ) : ℝ := askAt (D.Iex j t p) (D.at_ t) p (D.wz j t p)
-
 def LD.ASK (D : LD ι κ τ) (d : ℕ) (Ps : Finset ℕ) (J : Finset κ) (TT : Finset τ) : ℝ :=
   DeficitSplitLemmas.ASK Ps J TT (fun j t p => askAt (D.Iex j t p) (D.at_ t) p (D.wz j t p))
     (fun j t => Real.log d * askAt (D.Id j t) (D.at_ t) d (D.wd j t))
@@ -300,18 +253,6 @@ def FirstHyp (P : Par) (Ps : Finset ℕ) (cl : ℕ → PClass) : Prop :=
         (orderOf (Formalism.RankGapBounds.LocalQuadraticParts.hOf P.e₂ p hl) : ℝ) < P.x ^ (P.ε / 4)) ∨
       (P.p₀ ≤ p ∧ ∃ i : ℕ, 1 ≤ i ∧ P.Xp * (1 - P.ρ) ≤ (p : ℝ) ^ i ∧ (p : ℝ) ^ i ≤ P.Xp * (1 + P.ρ)))
 
-def LossChoiceU : Prop :=
-  ∀ (Ω U : Type) [Fintype Ω] (π : Ω → ℝ) (Loss : U → Ω → ℝ) (s : Finset ℕ) (Sig : ℕ → Ω → ℝ)
-    (io : U → ℕ → Ω → ℝ) (D : U → ℝ) (Y θ s₀ mTa : ℝ),
-    (∀ o, 0 ≤ π o) → ∑ o, π o = 1 → 0 < θ → 0 ≤ s₀ → 0 ≤ mTa → 1 ≤ Y →
-    (∀ p ∈ s, p.Prime ∧ (p : ℝ) ≤ Y) → (∀ p ∈ s, ∀ o, 0 ≤ Sig p o) →
-    (∀ p ∈ s, ∑ o, π o * Sig p o ≤ s₀) →
-    (∀ υ o, Loss υ o ≤ D υ + ∑ p ∈ s, (if θ < Sig p o then 4 * mTa * Real.log p / p else 0)) →
-    (∀ υ, ∀ p ∈ s, ∀ o, io υ p o ≤ 2 * Sig p o * (2 * mTa / p)) →
-    ∃ o, 0 < π o ∧
-      (∀ υ, Loss υ o ≤ D υ + (s₀ / θ + s₀) * (4 * mTa * (Real.log Y + Real.log 4))) ∧
-      ∀ υ, ∑ p ∈ s, Real.log p * io υ p o ≤ (s₀ / θ + s₀) * (4 * mTa * (Real.log Y + Real.log 4))
-
 def SecondLe : Prop :=
   ∀ (Ps s : Finset ℕ) (cl : ℕ → PClass) (Sg : ℕ → ℝ) (θ m T a : ℝ), 0 ≤ m → 0 ≤ T → 0 ≤ a →
     (∀ p ∈ Ps, cl p = PClass.second → p ∈ s ∧ θ < Sg p) →
@@ -327,89 +268,6 @@ def FirstKind : Prop :=
     ∑ p ∈ s, Real.log p / p ≤
       C * J * Real.log (2 ^ e * Y) ^ 2 / (2 : ℝ) ^ e +
         (⌊Real.log X'⌋₊ : ℝ) * ((4 * ρ + 1 / p₀) * Real.log (2 * X'))
-
-def TopsOutcome : Prop :=
-  ∀ (α : Type) [Fintype α] [DecidableEq α] (sB : Finset ℕ) (δ β m a : ℝ)
-    (BAD : ℕ → α → Finset α → Prop),
-    0 < δ → δ ≤ 1 → 16 ≤ δ * Fintype.card α → 0 ≤ β → 0 ≤ m → 0 ≤ a →
-    (∀ p ∈ sB, ∀ t, ∑ T ∈ (Finset.univ : Finset (Finset α)).filter (fun T => t ∈ T ∧ BAD p t T),
-        Formalism.RankGapBounds.LocalQuadraticParts.wt δ T ≤ β * δ) →
-    ∃ T : Finset α, δ * Fintype.card α / 2 ≤ T.card ∧ (T.card : ℝ) ≤ 2 * δ * Fintype.card α ∧
-      ∑ p ∈ sB, 4 * m * a * (Real.log p / p) * ((T.filter fun t => BAD p t T).card : ℝ) ≤
-        32 * β * m * a * T.card * ∑ p ∈ sB, Real.log p / p
-
-def WindowSettingHypotheses (P : Par) {U Ω : Type} [Fintype Ω] (π : Ω → ℝ) (Ps s sB : Finset ℕ) (J : Finset κ)
-    (TT : Finset τ) (BAD : ℕ → τ → Prop) (Sig : ℕ → Ω → ℝ) (io : U → ℕ → Ω → ℝ)
-    (D : U → Ω → LD ι κ τ) : Prop :=
-  TT.Nonempty ∧ (∀ p ∈ Ps, p.Prime ∧ p ≠ 2) ∧
-  (∀ o, 0 ≤ π o) ∧ ∑ o, π o = 1 ∧
-  (∀ p ∈ s, p.Prime ∧ (p : ℝ) ≤ P.Y) ∧ (∀ p ∈ s, ∀ o, 0 ≤ Sig p o) ∧
-  (∀ p ∈ s, ∑ o, π o * Sig p o ≤ P.s₀) ∧
-  (∀ υ, ∀ p ∈ s, ∀ o, io υ p o ≤ 2 * Sig p o * (2 * ((J.card : ℝ) * TT.card * P.a) / p)) ∧
-  (∀ p ∈ sB, p.Prime ∧ (p : ℝ) ≤ P.Xp) ∧
-  (∑ p ∈ sB, 4 * (J.card : ℝ) * P.a * (Real.log p / p) * ((TT.filter fun t => BAD p t).card : ℝ) ≤
-    32 * P.β * (J.card : ℝ) * P.a * TT.card * ∑ p ∈ sB, Real.log p / p) ∧
-  (∀ υ o, ParametersHyp P Ps J TT (D υ o) ∧ FirstHyp P Ps (D υ o).cl ∧
-    (∀ p ∈ Ps, (D υ o).cl p = PClass.second → p ∈ s ∧ P.θ < Sig p o) ∧
-    (∀ p ∈ Ps, (D υ o).cl p = PClass.served → ∀ t ∈ TT \ (D υ o).TTp p, p ∈ sB ∧ BAD p t))
-
-def LossesWithinWindowUnit (P : Par) {U Ω : Type} (Ps s : Finset ℕ) (J : Finset κ) (TT : Finset τ)
-    (io : U → ℕ → Ω → ℝ) (D : U → Ω → LD ι κ τ) (o : Ω) : Prop :=
-  (∀ υ, (D υ o).ASK P.d Ps J TT - (D υ o).Ga J ≤ (3 * P.C + 13) * unitU P J.card TT.card) ∧
-  ∀ υ, ∑ p ∈ s, Real.log p * io υ p o ≤ unitU P J.card TT.card
-
-def WindowLossesBound : Prop :=
-  ∃ Cord : ℝ, 0 ≤ Cord ∧ ∀ (P : Par) (e K : ℝ), P.Cord = Cord → Windows P e K → LargeX P.x P.ε e K →
-    ∀ (ι κ τ U Ω : Type) [Fintype Ω] (π : Ω → ℝ) (Ps s sB : Finset ℕ) (J : Finset κ) (TT : Finset τ)
-      (BAD : ℕ → τ → Prop) (Sig : ℕ → Ω → ℝ) (io : U → ℕ → Ω → ℝ) (D : U → Ω → LD ι κ τ),
-      WindowSettingHypotheses P π Ps s sB J TT BAD Sig io D →
-      ∃ o, 0 < π o ∧ LossesWithinWindowUnit P Ps s J TT io D o
-
-def WindowLossesEventual : Prop :=
-  ∃ Cord : ℝ, 0 ≤ Cord ∧ ∀ ε e K : ℝ, 0 < ε → ε < 1 / 4 → ∃ x₀ : ℝ,
-    ∀ (P : Par), P.ε = ε → P.Cord = Cord → x₀ ≤ P.x → Windows P e K →
-    ∀ (ι κ τ U Ω : Type) [Fintype Ω] (π : Ω → ℝ) (Ps s sB : Finset ℕ) (J : Finset κ) (TT : Finset τ)
-      (BAD : ℕ → τ → Prop) (Sig : ℕ → Ω → ℝ) (io : U → ℕ → Ω → ℝ) (D : U → Ω → LD ι κ τ),
-      WindowSettingHypotheses P π Ps s sB J TT BAD Sig io D →
-      ∃ o, 0 < π o ∧ LossesWithinWindowUnit P Ps s J TT io D o
-
-open Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds in
-
-def LeadingTermLossesOfWindow : Prop :=
-  ∀ (P : Par) (ι κ τ U U0 Ω : Type) (Ps s : Finset ℕ) (J : Finset κ) (TT : Finset τ)
-    (io : U → ℕ → Ω → ℝ) (D : U → Ω → LD ι κ τ) (o : Ω) (sel : U0 → U)
-    {W : U0 → Type} {Top : Type} [Fintype Top] {m f : ℕ} (Dd : Data U0 W Top m f) (Cc : Consts),
-    LossesWithinWindowUnit P Ps s J TT io D o → 1 ≤ P.x → 0 ≤ P.ε → 0 ≤ P.C →
-    Dd.x = P.x → Dd.ε = P.ε → Dd.b = P.b → Fintype.card Top = TT.card → m = J.card →
-    (∀ u0, Dd.ASK u0 = (D (sel u0) o).ASK P.d Ps J TT) → (∀ u0, Dd.Ga u0 = (D (sel u0) o).Ga J) →
-    (∀ u0, Dd.IO u0 = ∑ p ∈ s, Real.log p * io (sel u0) p o) →
-    3 * P.C + 13 ≤ Cc.cLoss → 0 ≤ Cc.eLoss →
-    LossBounds Dd Cc
-
-open Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds in
-
-def WindowLossesLeadingTermForm : Prop :=
-  ∃ Cord : ℝ, 0 ≤ Cord ∧ ∀ ε e K : ℝ, 0 < ε → ε < 1 / 4 → ∃ x₀ : ℝ,
-    ∀ (P : Par), P.ε = ε → P.Cord = Cord → x₀ ≤ P.x → Windows P e K →
-    ∀ (ι κ τ U U0 Ω : Type) [Fintype Ω] (π : Ω → ℝ) (Ps s sB : Finset ℕ) (J : Finset κ)
-      (TT : Finset τ) (BAD : ℕ → τ → Prop) (Sig : ℕ → Ω → ℝ) (io : U → ℕ → Ω → ℝ)
-      (D : U → Ω → LD ι κ τ),
-      WindowSettingHypotheses P π Ps s sB J TT BAD Sig io D →
-      ∃ o, 0 < π o ∧
-        ∀ (sel : U0 → U) {W : U0 → Type} {Top : Type} [Fintype Top] {m f : ℕ}
-          (Dd : Data U0 W Top m f) (Cc : Consts),
-          Dd.x = P.x → Dd.ε = P.ε → Dd.b = P.b → Fintype.card Top = TT.card → m = J.card →
-          (∀ u0, Dd.ASK u0 = (D (sel u0) o).ASK P.d Ps J TT) → (∀ u0, Dd.Ga u0 = (D (sel u0) o).Ga J) →
-          (∀ u0, Dd.IO u0 = ∑ p ∈ s, Real.log p * io (sel u0) p o) →
-          3 * P.C + 13 ≤ Cc.cLoss → 0 ≤ Cc.eLoss →
-          LossBounds Dd Cc
-
-def WindowSettingSatisfiable : Prop :=
-  ∀ (P : Par) (e K : ℝ), Windows P e K → LargeX P.x P.ε e K →
-    ∃ (π : Unit → ℝ) (Ps s sB : Finset ℕ) (J : Finset Unit) (TT : Finset Unit) (BAD : ℕ → Unit → Prop)
-      (Sig : ℕ → Unit → ℝ) (io : Unit → ℕ → Unit → ℝ) (D : Unit → Unit → LD Unit Unit Unit),
-      WindowSettingHypotheses P π Ps s sB J TT BAD Sig io D ∧ J.card = 1 ∧ TT.card = 1 ∧ Ps.Nonempty ∧
-      0 < (D () ()).ASK P.d Ps J TT
 
 end
 

@@ -1,9 +1,9 @@
 import Mathlib
 import ReciprocityTheory.DualLattices.IsPairingValueAddRight
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NEvalSqZero
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AbelianFunctorNilChartNsmulAndKilledByPPowStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPowerSeriesOfNaturalNilpotentPointsStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PowerSeriesEqOfEvalAtNilpotentPointsEqStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AbelianFunctorNilChartNsmulAndKilledByPPow
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPowerSeriesOfNaturalNilpotentPoints
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PowerSeriesEqOfEvalAtNilpotentPointsEq
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartFH
 import ReciprocityTheory.DualLattices.TowerZeroSurjective
 import ReciprocityTheory.DualLattices.LinPairStatement
@@ -178,7 +178,7 @@ theorem exists_character_pairSer : ∀ (R₀ : Type) [CommRing R₀] (B : BX R�
     rwa [Ne, Ideal.span_singleton_eq_top]
   have hex : ∀ (R : LAlg R₀) (s : LHom O R) (a : Fin g → (R : Type)), IsNilpotent (p : (R : Type)) →
       (∀ i, IsNilpotent (a i)) → ∃ z, PVal p τ s (Y R s a) z := fun R s a hR ha =>
-    pval_exists h1 s (GlobalTheory.T.abelianFunctorNilChart_nsmul_and_killed_by_p_pow R₀ B O g F Y hY p R s a hR ha).2
+    pval_exists h1 s (_root_.GlobalTheory.ChF.bxChart_nsmul_and_killed R₀ B O g F Y hY p R s a hR ha).2
   let c : ∀ (S : Type) [CommRing S] [Algebra (O : Type) S], (Fin 1 → Fin g → S) → S := fun S _ _ a =>
     if h : ∃ z : Sˣ, ∃ hL : LocO O S, PVal p τ (mkS O S hL) (Y _ (mkS O S hL) (a 0)) z then (h.choose : S) else 0
   have hcv : ∀ (S : Type) [CommRing S] [Algebra (O : Type) S] (a : Fin 1 → Fin g → S) (hL : LocO O S) (z : Sˣ),
@@ -189,7 +189,7 @@ theorem exists_character_pairSer : ∀ (R₀ : Type) [CommRing R₀] (B : BX R�
     have := pval_unique h1 h2 h' hz
     simp only [c, dif_pos h]
     exact congrArg Units.val this
-  obtain ⟨u, hu⟩ := GlobalTheory.T.exists_powerSeries_of_natural_nilpotentPoints (O : Type) _ hc 1 g (fun S _ _ => LocO O S)
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.ChF.exists_series_of_natural (O : Type) _ hc 1 g (fun S _ _ => LocO O S)
     (fun k m => jet_local _ hI _ k m) c (by
       intro S _ _ S' _ _ φ a hL hL' hS hk ha
       obtain ⟨z, hz⟩ := hex (mkL O S hL) (mkS O S hL) (a 0) ((kills_iff p).1 hk) (ha 0)
@@ -222,7 +222,7 @@ theorem exists_character_pairSer : ∀ (R₀ : Type) [CommRing R₀] (B : BX R�
     exact h5.symm
   refine ⟨u, ⟨?_, ?_⟩, fun R s a n z hR ha hz => key R s a z hR ha ⟨n, hz⟩⟩
   · have h6 : (MvPowerSeries.C (MvPowerSeries.constantCoeff u) : PS (O : Type) 1 g) = 1 := by
-      refine GlobalTheory.T.powerSeries_eq_of_evalAtNilpotentPoints_eq (O : Type) _ hc.toIsHausdorff 1 g _ _ fun S _ _ k hk hL a ha => ?_
+      refine _root_.GlobalTheory.ChF.eq_of_nv_eq (O : Type) _ hc.toIsHausdorff 1 g _ _ fun S _ _ k hk hL a ha => ?_
       have hL : LocO O S := hL inferInstance hI'
       have hS := (kills_iff p).1 ⟨k, hk⟩
       obtain ⟨ψ, hψ, hψC, -⟩ := (nv_calculus _ S (algebraMap (O : Type) S) 1 g a ha).1
@@ -242,7 +242,7 @@ theorem exists_character_pairSer : ∀ (R₀ : Type) [CommRing R₀] (B : BX R�
       rw [h9] at h7
       exact h7.symm
     simpa using congrArg MvPowerSeries.constantCoeff h6
-  · refine GlobalTheory.T.powerSeries_eq_of_evalAtNilpotentPoints_eq (O : Type) _ hc.toIsHausdorff 2 g _ _ fun S _ _ k hk hL a ha => ?_
+  · refine _root_.GlobalTheory.ChF.eq_of_nv_eq (O : Type) _ hc.toIsHausdorff 2 g _ _ fun S _ _ k hk hL a ha => ?_
     have hL : LocO O S := hL inferInstance hI'
     have hS := (kills_iff p).1 ⟨k, hk⟩
     obtain ⟨⟨ψ, hψ, -, hψX⟩, hnil, hsub, -⟩ := nv_calculus _ S (algebraMap (O : Type) S) 2 g a ha

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CoeffRingsHaveRootsOfUnity
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimitiveCentralIdempotentEqSimpleRepIdempotentStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimitiveCentralIdempotentEqSimpleRepIdempotent
 open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.L2 NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module Polynomial GlobalTheory.Pass GlobalTheory.PendOf
 
 namespace GlobalTheory.AdmDepthZero
@@ -9,7 +9,7 @@ theorem main : ∀ (D : D7) (P : PairedCharacterCondition.Pend D), PairedCharact
   intro D P h i k v PI τ hτ
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
   intro hsq hu
-  obtain ⟨ρ, hρ, he⟩ := GlobalTheory.T.primitiveCentralIdempotent_eq_simpleRepIdempotent (D.host.g k) D.R.r (P.lz k) τ
+  obtain ⟨ρ, hρ, he⟩ := _root_.GlobalTheory.PrimCentIdem.main (D.host.g k) D.R.r (P.lz k) τ
   have hO := PairedCharacterCondition.RT.ktyTie_of_spec P i PI k v τ hτ
   rw [he] at hO
   have hs : Formalism.IrreducibleCountingLemmas.TYPES.zIdem ρ * D.ntypes.eSer k ((P.lz k).lab τ) =

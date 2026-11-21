@@ -5,8 +5,9 @@ import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralCong
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsMultiProjPrimeExtTo
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FractionRingRingEquiv
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FiniteVerticalRecursionStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.VerticalNumberLocalCycleStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.UniformizerDivisorCycleNumberStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.VerticalNumberLocalCycle
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.UniformizerDivisorCycleNumber
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.CompanionTheory.Ar.Num GlobalTheory.CompanionTheory.Ar.Top GroundTheory.Heights₂.Heights.ModelLeaves
 open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar IsHorizontal mcPts mCoordIdeal IsIntersectionFamily IsIntersectionSystem IntersectionSystem ptsIntegral geoNum charOf recR arInt ChartBundle chartRing)
 
@@ -157,8 +158,8 @@ theorem vertAt_self_eq_intNum (P : Ideal (MRing ι ℤ)) (D : ℕ) (hP : IsArith
     rw [show P.comap (C : ℤ →+* MRing ι ℤ) = ⊥ from hP.2.2.1] at h2
     have := p.2.ne_zero
     simp_all
-  rw [GlobalTheory.T.vertical_number_local_cycle K ι P D hP p 0 (C ((p : ℕ) : ℤ)) f2 nm2 (List.ofFn b) hlen]
-  have hcy := GlobalTheory.T.uniformizer_divisor_cycle_number (ZP p) (((p : ℕ) : ZP p)) hm.1 K ι (extTo (ZP p) P) D hm.2.1 1 1
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.Num.vertAt_eq_cycList K ι P D hP p 0 (C ((p : ℕ) : ℤ)) f2 nm2 (List.ofFn b) hlen]
+  have hcy := _root_.GlobalTheory.CompanionTheory.Ar.Num.cycNum_divCycle_const (ZP p) (((p : ℕ) : ZP p)) hm.1 K ι (extTo (ZP p) P) D hm.2.1 1 1
     Empty Empty.elim 1 0 (MvPolynomial.isHomogeneous_one _ _) (List.ofFn b) (by simp)
   have hg := genNum_zp_eq_rat K ι P p Empty Empty.elim 1 (List.ofFn b)
   have hcN : ∀ Z : Ideal (MRing ι (ZP p)) → ℤ,

@@ -2,7 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.EqOneOfTriv
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSectionsGenerateSquareBundle
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAffineOpenNonzeroLocusOfFibrewiseAmpleStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAffineOpenNonzeroLocusOfFibrewiseAmple
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.AlWellDefSt
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingStalkGeneric
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsIntegralOfSmoothFieldOfConnectedSpace
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsRegularRingOfIsDiscreteValuationRing
@@ -11,7 +16,12 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.InKIffTrivia
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSecPullNeZero
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsClosedSubschemeTranslationKernel
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsAffineOfQuasiAffine
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatKernelPolarisationCosetsOverDVRStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatKernelPolarisationCosetsOverDVR
+import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.IsNsmul
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.QkToAkU
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSabExtension
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsOActExtendDedekind
@@ -93,7 +103,7 @@ theorem kTriv_of_generic (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) (c : Cu
   obtain ⟨hO, hu, hK⟩ := TrivTwist.inK_iff_trivial_twist _ A L.L hL
   obtain ⟨Z, i, hi, hZ⟩ := TwistKer.exists_closed_twist_kernel hG V A hA hP L.L (pw L.L 0) hL hO
   have hfin : IsFinite Z.hom := AmpleStabFinite.isFinite_of_relAmple hG V A hA L.L (pw L.L 0) hL hO ha Z i hi hZ
-  have hflat : Flat Z.hom := GlobalTheory.T.flat_kernelPolarisation_cosets_over_DVR hG V A hA hP L c (pw L.L 0) hO hu Z i hi hZ hfin
+  have hflat : Flat Z.hom := _root_.GlobalTheory.StabFlat.flat_of_isFinite hG V A hA hP L c (pw L.L 0) hO hu Z i hi hZ hfin
   have hrep : ∀ (T : Over (Sp V)) (x : T ⟶ A), InK A L.L x ↔ ∃ y : T ⟶ Z, y ≫ i = x :=
     fun T x => (hK _ rfl T x).trans (hZ T x)
   have := hA.proper
@@ -226,7 +236,7 @@ theorem relAmple_of_generic (hl : Out.Laws) (hA : IsAbelianScheme A) (c : Cubica
       (pushHom hB _ x) (by rw [← map_pow, hx, map_one]) (AmpleCrit.triv_translDiff_push hB hL x ht)
     have e' := e.trans (map_one (pushHom hB (Over.mk (𝟙 _)))).symm
     exact Over.OverMorphism.ext (hB.1.hom_ext (congrArg (fun q => q.left) e') (by rw [Over.w, Over.w]))
-  have aff := GlobalTheory.T.isAffineOpen_nonzeroLocus_of_fibrewise_ample V _ A.hom L.L d m u hd hA.proper hL hu (fun q hq => by
+  have aff := _root_.GlobalTheory.FibreAmple.isAffineOpen_nonzeroLocus_of_fibres V _ A.hom L.L d m u hd hA.proper hL hu (fun q hq => by
     by_cases h0 : q = ⊥
     · exact ⟨K, inferInstance, algebraMap V K,
         h0 ▸ (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V K), ha₀⟩

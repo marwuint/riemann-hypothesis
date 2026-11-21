@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubPairRight
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningAffinePreimageStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningRestrictionCompatibleOpensStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningAffinePreimage
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningRestrictionCompatibleOpens
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.AbLaw PositivityTheory.FormalThickening
 open GlobalTheory.ProjSpace GlobalTheory.QCoh.Qcqs GlobalTheory.Cartier GlobalTheory.CompanionTheory.FormalAlg GlobalTheory.CompanionTheory.FormalAlg.Lift
 
@@ -21,7 +21,7 @@ theorem mem_smul_top_of_redL {R : Type} [CommRing R] (I : Ideal R)
     (hx : redL I Y β hβ L w hL e V V' h.ge x ∈
       I • (⊤ : Submodule R (SecOnR (toR I Y e) (L e) V'))) :
     x ∈ I • (⊤ : Submodule R (SecOnR (toR I Y (e + 1)) (L (e + 1)) V)) := by
-  obtain ⟨hsurj, hker⟩ := GlobalTheory.T.thickening_affine_preimage R I Y β hβ L w hL e V V' h hV
+  obtain ⟨hsurj, hker⟩ := _root_.GlobalTheory.CompanionTheory.FormalAlg.Lift.redL_surjective_ker R I Y β hβ L w hL e V V' h hV
   have hmap : Submodule.map (redL I Y β hβ L w hL e V V' h.ge)
       (I • (⊤ : Submodule R (SecOnR (toR I Y (e + 1)) (L (e + 1)) V))) =
       I • (⊤ : Submodule R (SecOnR (toR I Y e) (L e) V')) := by
@@ -68,7 +68,7 @@ theorem resT_mulT_sub_mem : ∀ (R : Type) [CommRing R] (I : Ideal R) (Y : ∀ e
         (fun e => ⟨isLB_pw (hN e).1 _, pullPow_isGen (v e) _ (hN e).2⟩) e (D (e + 1) S')
         (D e S') (hDβ e S') (hDa (e + 1) S' hS') _ ?_
       rw [map_sub]
-      have h1 := GlobalTheory.T.thickening_restriction_compatible_opens R I Y β hβ (fun e => pw (N e) (d : ℤ))
+      have h1 := _root_.GlobalTheory.CompanionTheory.FormalAlg.Lift.redL_restrict R I Y β hβ (fun e => pw (N e) (d : ℤ))
         (fun e => pullPow (v e) (d : ℤ))
         (fun e => ⟨isLB_pw (hN e).1 _, pullPow_isGen (v e) _ (hN e).2⟩) e (D (e + 1) S)
         (D (e + 1) S') (D e S) (D e S') (hDβ e S).ge (hDβ e S').ge (hDm (e + 1) S S' h)

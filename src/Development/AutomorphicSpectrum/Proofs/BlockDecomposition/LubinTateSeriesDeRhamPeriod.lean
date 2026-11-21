@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvalMod
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerNearPowerExistsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerNearPowerExists
 noncomputable section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations
 open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.CompanionTheory.LTHodge GlobalTheory.CompanionTheory.LTPer
@@ -163,7 +163,7 @@ theorem evalMod_teichmuller : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (μ : 
     refine ⟨- oB K μ c', S.neg_mem (ho _), ?_⟩
     rw [tchHom_apply, hc', map_add, map_mul]; ring
   have hϖ0 : thB l (oB K μ π) ≠ 0 := (env.unit.map (thB l)).ne_zero
-  obtain ⟨M, -, s, hs, hM⟩ := GlobalTheory.T.teichmuller_near_power_exists S hw (oB K μ π) hϖ0 x hx
+  obtain ⟨M, -, s, hs, hM⟩ := _root_.GlobalTheory.CompanionTheory.LTPer.TopNil.main S hw (oB K μ π) hϖ0 x hx
   rw [pow_one] at hM
   exact evalMod_of_lift S (FB l) (oB K μ π) (oB K μ) (tchHom l) r (tchHom_zero l)
     (fun a => hw _) env.mem hadd hcoef

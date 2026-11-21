@@ -34,15 +34,4 @@ def IsClosedHerm (B : Set E) (k : E → E →ₗ[ℂ] E →ₗ⋆[ℂ] ℂ) : Pr
   (∀ v w, ContDiffOn ℝ ∞ (fun b => k b v w) B) ∧ ∀ b ∈ B, (∀ v w, k b w v = conj (k b v w)) ∧
     ∀ u v w, d10 (fun x => k x v w) b u = d10 (fun x => k x u w) b v
 
-theorem isTorsionFormWith_zero (b : E) (T : Ext (n + n)) :
-    IsTorsionFormWith τ M j h β b 0 T ↔ IsTorsionForm τ M j h β b T := by
-  simp [IsTorsionFormWith, IsTorsionForm, IsHeatTraceWith, IsHeatTrace, baseMul]
-
-example (k : ℂ) : baseMul (n := 1) (of fun _ _ => k) (Pi.single ∅ 1) Finset.univ = k := by
-  have e₁ : (Finset.univ : Finset (Fin 2)).erase 0 = {1} := by decide
-  have e₄ : (({1} : Finset (Fin 2)).filter (· = 0)).card = 0 := by decide
-  have e₅ : Fin.castAdd 1 (0 : Fin 1) = (0 : Fin 2) := rfl
-  have e₆ : Fin.natAdd 1 (0 : Fin 1) = (1 : Fin 2) := rfl
-  simp [baseMul, wedge, sgn, e₁, e₄, e₅, e₆]
-
 end GlobalTheory.TorsionForm

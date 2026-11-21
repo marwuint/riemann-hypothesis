@@ -74,13 +74,6 @@ theorem le_powerSubgroup (U : Subgroup Gal(ℚ̄/ℚ)) (s : Gal(ℚ̄/ℚ))
   | exact GroundTheory.Variant₂.N1.le_powerSubgroup₂ ..
   | (intros; apply GroundTheory.Variant₂.N1.le_powerSubgroup₂ <;> assumption)
 
-theorem mem_powerSubgroup_self (U : Subgroup Gal(ℚ̄/ℚ)) (s : Gal(ℚ̄/ℚ))
-    (hU : ∀ (k : ℤ), ∀ x ∈ U, s ^ k * x * (s ^ k)⁻¹ ∈ U) : s ∈ powerSubgroup U s hU := by
-  first
-  | exact @GroundTheory.Variant₂.N1.mem_mulZPowers_self U s hU
-  | exact GroundTheory.Variant₂.N1.mem_mulZPowers_self ..
-  | (intros; apply GroundTheory.Variant₂.N1.mem_mulZPowers_self <;> assumption)
-
 section Fields
 
 variable (K L : FiniteSubfield) [hKL : Fact (K ≤ L)]
@@ -273,11 +266,6 @@ theorem abstractSymbol_mk_finiteEmbedding (v : HeightOneSpectrum (𝓞 K.1))
     rw [mk_finiteEmbedding_normUnits (K := K.1) (L := L.1) (FiniteSubfield.placeBelow P hP K) wL z]
     exact abstractSymbol_ideleClassNorm_eq_one K L _
   rw [hx, map_mul, map_mul, map_mul, hy1, h2, mul_one]
-
-theorem abstractSymbol_comp_finiteEmbedding (v : HeightOneSpectrum (𝓞 K.1)) :
-    ((abstractSymbol K L).comp (IdeleClassGroup.mk K.1)).comp (finiteEmbedding v) =
-      Abelianization.of.comp (localSymbol L.1 v) :=
-  MonoidHom.ext fun x ↦ abstractSymbol_mk_finiteEmbedding K L v x
 
 end Main
 

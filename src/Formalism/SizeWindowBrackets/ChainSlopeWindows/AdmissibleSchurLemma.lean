@@ -1,6 +1,8 @@
 import Formalism.SizeWindowBrackets.SecondKindBucket
 import Formalism.LogFactorialBounds.LogFactorialProofs.PrimeSum
-import Formalism.RankGapBounds.RankGapProofs.RankGapDecayHypothesis
+import Formalism.RankGapBounds.RankAndGapBounds
+import Formalism.RankGapBounds.RandomSubsetCounterexample
+import Mathlib
 import Formalism.RankGapBounds.RankGapProofs.PmModulusFacts
 import Formalism.RankGapBounds.RankGapProofs.FourNotDvdOddSqAddOne
 
@@ -89,23 +91,6 @@ theorem deficit_dropped {κ τ : Type*} (J : Finset κ) (TT : Finset τ) (vonMan
     deficit J TT vonMangoldtClassSum gain tau p = wholeAsk J TT vonMangoldtClassSum p := by
   unfold deficit wholeAsk
   rw [Finset.sum_eq_zero hg, ht]; ring
-
-theorem splitLe_valid : SplitLe := by
-  intro ι κ τ W below l Ps S J TT TTp vonMangoldtClassSum dT gainW tauW gain tau lo fl h hS hled hdrop
-  rw [splitEq_valid ι κ τ W below l Ps J TT vonMangoldtClassSum dT gainW tauW gain tau h,
-    ← Finset.sum_sdiff hS]
-  have hA : ∑ p ∈ S, 2 * Real.log p * deficit J TT vonMangoldtClassSum gain tau p ≤
-      ∑ p ∈ S, 2 * Real.log p * servedLoss J TT TTp vonMangoldtClassSum lo fl p := by
-    apply Finset.sum_le_sum
-    intro p hp
-    exact mul_le_mul_of_nonneg_left (deficit_le J TT TTp vonMangoldtClassSum gain tau lo fl p (hled p hp))
-      (by have := Real.log_natCast_nonneg p; linarith)
-  have hB : ∑ p ∈ Ps \ S, 2 * Real.log p * deficit J TT vonMangoldtClassSum gain tau p =
-      ∑ p ∈ Ps \ S, 2 * Real.log p * wholeAsk J TT vonMangoldtClassSum p := by
-    apply Finset.sum_congr rfl
-    intro p hp
-    rw [deficit_dropped J TT vonMangoldtClassSum gain tau p (hdrop p hp).1 (hdrop p hp).2]
-  linarith
 
 theorem split_classes_count : SplitClasses := by
   intro ι κ τ W below l Ps cl J TT TTp vonMangoldtClassSum dT gainW tauW gain tau lo fl h hled hdrop
@@ -599,154 +584,6 @@ theorem or_bucket_bound : OrBucket := by
   refine (add_le_add (add_le_add h4 h5) h6).trans (le_of_eq ?_)
   ring
 
-theorem bad_orbits_bucket_bound : BadOrbitsBucket := by
-  intro α ι _ _ _ δ β m a ω BAD _ hδ0 hδ1 h16 hβ hω hm ha hcond
-  obtain ⟨T, hT1, hT2, hT3⟩ :=
-    Formalism.RankGapBounds.V4.tops_lemma_sixteen_holds α ι δ β ω BAD hδ0 hδ1 h16 hβ hω hcond
-  refine ⟨T, hT1, hT2, ?_⟩
-  have hSum : 0 ≤ ∑ p, ω p := Finset.sum_nonneg (fun p _ => hω p)
-  have e : ∑ p, 4 * m * a * ω p * ((T.filter fun t => BAD p t T).card : ℝ) =
-      4 * m * a * ∑ p, ω p * ((T.filter fun t => BAD p t T).card : ℝ) := by
-    rw [Finset.mul_sum]; apply Finset.sum_congr rfl; intro p _; ring
-  rw [e]
-  have h1 := mul_le_mul_of_nonneg_left hT3 (show 0 ≤ 4 * m * a by positivity)
-  have h2 : 4 * β * δ * Fintype.card α * ∑ p, ω p ≤ 8 * β * T.card * ∑ p, ω p := by
-    apply mul_le_mul_of_nonneg_right _ hSum
-    nlinarith
-  have h3 := mul_le_mul_of_nonneg_left h2 (show 0 ≤ 4 * m * a by positivity)
-  refine h1.trans (h3.trans (le_of_eq ?_))
-  ring
-
-theorem orders_bucket_bound : OrdersBucket := by
-  obtain ⟨C, hC⟩ := Formalism.RankGapBounds.LocalQuadraticParts.ordersSumY_of Formalism.RankGapBounds.LocalQuadraticParts.powTwoPowEqOneIff_holds
-  refine ⟨C, ?_⟩
-  intro e J Y mTa s he hJ hY hm hs
-  rw [← Finset.mul_sum]
-  exact mul_le_mul_of_nonneg_left (hC e J Y s he hJ hY hs) (by linarith)
-
-theorem markov_drop : MarkovDrop := by
-  intro Ω _ π s Sig L θ s₀ hπ hθ hSig hL hmean
-  have h1 : ∑ o, π o * ∑ p ∈ s, (if θ < Sig p o then L p else 0) ≤
-      ∑ o, π o * ∑ p ∈ s, (Sig p o / θ * L p) := by
-    apply Finset.sum_le_sum
-    intro o _
-    apply mul_le_mul_of_nonneg_left _ (hπ o)
-    apply Finset.sum_le_sum
-    intro p hp
-    split_ifs with h
-    · have : 1 ≤ Sig p o / θ := by rw [le_div_iff₀ hθ]; linarith
-      nlinarith [hL p hp]
-    · exact mul_nonneg (div_nonneg (hSig p hp o) hθ.le) (hL p hp)
-  have h2 : ∑ o, π o * ∑ p ∈ s, (Sig p o / θ * L p) = ∑ p ∈ s, L p / θ * ∑ o, π o * Sig p o := by
-    simp only [Finset.mul_sum]
-    rw [Finset.sum_comm]
-    apply Finset.sum_congr rfl; intro p _
-    apply Finset.sum_congr rfl; intro o _
-    ring
-  have h3 : ∑ p ∈ s, L p / θ * ∑ o, π o * Sig p o ≤ ∑ p ∈ s, L p / θ * s₀ := by
-    apply Finset.sum_le_sum
-    intro p hp
-    exact mul_le_mul_of_nonneg_left (hmean p hp) (div_nonneg (hL p hp) hθ.le)
-  have h4 : ∑ p ∈ s, L p / θ * s₀ = s₀ / θ * ∑ p ∈ s, L p := by
-    rw [Finset.mul_sum]; apply Finset.sum_congr rfl; intro p _; ring
-  linarith
-
-theorem sigma_mean : SigMean := by
-  intro Ω ν _ π V kap N m T c hm hc hmean hN
-  have h1 : ∑ o, π o * (m * ∑ v ∈ V, kap v o) = m * ∑ v ∈ V, ∑ o, π o * kap v o := by
-    simp only [Finset.mul_sum]
-    rw [Finset.sum_comm]
-    apply Finset.sum_congr rfl; intro v _
-    apply Finset.sum_congr rfl; intro o _
-    ring
-  have h2 : ∑ v ∈ V, ∑ o, π o * kap v o ≤ ∑ v ∈ V, N v * c := Finset.sum_le_sum hmean
-  rw [← Finset.sum_mul] at h2
-  have h3 : (∑ v ∈ V, N v) * c ≤ T * c := mul_le_mul_of_nonneg_right hN hc
-  rw [h1]
-  have := mul_le_mul_of_nonneg_left (h2.trans h3) hm
-  linarith
-
-theorem second_kind_bucket_bound : SecondKindBucket := by
-  intro Ω _ π s Sig Y θ s₀ mTa hπ hθ hs₀ hm hY hSig hs hmean
-  have h1 := markov_drop Ω π s Sig (fun p => 4 * mTa * Real.log p / p) θ s₀ hπ hθ hSig
-    (fun p _ => div_nonneg (mul_nonneg (by linarith) (Real.log_natCast_nonneg p)) (Nat.cast_nonneg p))
-    hmean
-  refine h1.trans ?_
-  apply mul_le_mul_of_nonneg_left _ (div_nonneg hs₀ hθ.le)
-  have e : ∑ p ∈ s, 4 * mTa * Real.log p / p = 4 * mTa * ∑ p ∈ s, Real.log p / p := by
-    rw [Finset.mul_sum]; apply Finset.sum_congr rfl; intro p _; ring
-  rw [e]
-  exact mul_le_mul_of_nonneg_left (prime_log_sum_bound Y s hY hs) (by linarith)
-
-theorem io_mean_bound : IoMean := by
-  intro Ω _ π s Sig io Y s₀ mTa hπ hs₀ hm hY hs hmean hio
-  have h1 : ∑ o, π o * ∑ p ∈ s, Real.log p * io p o ≤
-      ∑ o, π o * ∑ p ∈ s, Real.log p * (2 * Sig p o * (2 * mTa / p)) := by
-    apply Finset.sum_le_sum
-    intro o _
-    apply mul_le_mul_of_nonneg_left _ (hπ o)
-    apply Finset.sum_le_sum
-    intro p hp
-    exact mul_le_mul_of_nonneg_left (hio p hp o) (Real.log_natCast_nonneg p)
-  have h2 : ∑ o, π o * ∑ p ∈ s, Real.log p * (2 * Sig p o * (2 * mTa / p)) =
-      ∑ p ∈ s, 4 * mTa * (Real.log p / p) * ∑ o, π o * Sig p o := by
-    simp only [Finset.mul_sum]
-    rw [Finset.sum_comm]
-    apply Finset.sum_congr rfl; intro p _
-    apply Finset.sum_congr rfl; intro o _
-    ring
-  have h3 : ∑ p ∈ s, 4 * mTa * (Real.log p / p) * ∑ o, π o * Sig p o ≤
-      ∑ p ∈ s, 4 * mTa * (Real.log p / p) * s₀ := by
-    apply Finset.sum_le_sum
-    intro p hp
-    apply mul_le_mul_of_nonneg_left (hmean p hp)
-    exact mul_nonneg (by linarith) (div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p))
-  have h4 : ∑ p ∈ s, 4 * mTa * (Real.log p / p) * s₀ = 4 * mTa * s₀ * ∑ p ∈ s, Real.log p / p := by
-    rw [Finset.mul_sum]; apply Finset.sum_congr rfl; intro p _; ring
-  have h5 := mul_le_mul_of_nonneg_left (prime_log_sum_bound Y s hY hs)
-    (show 0 ≤ 4 * mTa * s₀ by positivity)
-  linarith
-
-theorem sigma_mean_variance : SigMeanVar := by
-  intro Ω ν _ π V Vo kap N m T c hm hc hπ hsub hkap hmean hN
-  refine le_trans ?_ (sigma_mean Ω ν π V kap N m T c hm hc hmean hN)
-  apply Finset.sum_le_sum
-  intro o _
-  apply mul_le_mul_of_nonneg_left _ (hπ o)
-  apply mul_le_mul_of_nonneg_left _ hm
-  exact Finset.sum_le_sum_of_subset_of_nonneg (hsub o) (fun v hv _ => hkap v hv o)
-
-theorem choose_window : ChooseWindow := by
-  intro Ω _ π X M hπ h1 hM
-  by_contra hcon
-  push Not at hcon
-  have hterm : ∀ o ∈ (Finset.univ : Finset Ω), 0 ≤ π o * (X o - M) := by
-    intro o _
-    rcases (hπ o).eq_or_lt with h | h
-    · rw [← h]; simp
-    · exact mul_nonneg h.le (by linarith [hcon o h])
-  have hsum : ∑ o, π o * (X o - M) ≤ 0 := by
-    have e : ∑ o, π o * (X o - M) = ∑ o, π o * X o - (∑ o, π o) * M := by
-      rw [Finset.sum_mul, ← Finset.sum_sub_distrib]
-      apply Finset.sum_congr rfl; intro o _; ring
-    rw [e, h1]; linarith
-  have hz := (Finset.sum_eq_zero_iff_of_nonneg hterm).1
-    (le_antisymm hsum (Finset.sum_nonneg hterm))
-  have hπ0 : ∀ o, π o = 0 := by
-    intro o
-    by_contra hne
-    have hpos : 0 < π o := lt_of_le_of_ne (hπ o) (Ne.symm hne)
-    have h2 := hz o (Finset.mem_univ o)
-    have h3 : 0 < π o * (X o - M) := mul_pos hpos (by linarith [hcon o hpos])
-    linarith
-  simp [hπ0] at h1
-
-theorem choose_window_second : ChooseWindow2 := by
-  intro Ω _ π F G A B hπ h1 hF hG hA hB
-  obtain ⟨o, ho, hX⟩ := choose_window Ω π (fun o => F o + G o) (A + B) hπ h1 (by
-    simp only [mul_add, Finset.sum_add_distrib]; linarith)
-  exact ⟨o, ho, hX, by linarith [hG o], by linarith [hF o]⟩
-
 lemma dsum_le {κ τ : Type*} (J : Finset κ) (S : Finset τ) (g : κ → τ → ℝ) (c : ℝ)
     (h : ∀ j ∈ J, ∀ t ∈ S, g j t ≤ c) :
     ∑ j ∈ J, ∑ t ∈ S, g j t ≤ (J.card : ℝ) * S.card * c := by
@@ -1004,51 +841,6 @@ theorem first_kind_bucket_bound : FirstKindBucket := by
   · apply band_total I P X' c p₀ _ hc0 hc hp₀ hP
     intro i _ n hn
     exact (Finset.mem_filter.1 hn).2
-
-theorem loss_choice : LossChoice := by
-  intro Ω _ π Loss s Sig io D Y θ s₀ mTa hπ h1 hθ hs₀ hm hY hs hSig hmean hLoss hio
-  have hA := second_kind_bucket_bound Ω π s Sig Y θ s₀ mTa hπ hθ hs₀ hm hY hSig hs hmean
-  have hB := io_mean_bound Ω π s Sig (fun p o => 2 * Sig p o * (2 * mTa / p)) Y s₀ mTa hπ hs₀ hm hY
-    hs hmean (fun p _ o => le_rfl)
-  obtain ⟨o, ho, hFG, -, -⟩ := choose_window_second Ω π
-    (fun o => ∑ p ∈ s, (if θ < Sig p o then 4 * mTa * Real.log p / p else 0))
-    (fun o => ∑ p ∈ s, Real.log p * (2 * Sig p o * (2 * mTa / p)))
-    _ _ hπ h1 (by
-      intro o
-      apply Finset.sum_nonneg
-      intro p _
-      split_ifs
-      · exact div_nonneg (mul_nonneg (by linarith) (Real.log_natCast_nonneg p)) (Nat.cast_nonneg p)
-      · exact le_rfl) (by
-      intro o
-      apply Finset.sum_nonneg
-      intro p hp
-      have h2 := hSig p hp o
-      have h3 := Real.log_natCast_nonneg p
-      have h4 : (0 : ℝ) ≤ p := Nat.cast_nonneg p
-      positivity) hA hB
-  have hF0 : 0 ≤ ∑ p ∈ s, (if θ < Sig p o then 4 * mTa * Real.log p / p else 0) := by
-    apply Finset.sum_nonneg
-    intro p _
-    split_ifs
-    · exact div_nonneg (mul_nonneg (by linarith) (Real.log_natCast_nonneg p)) (Nat.cast_nonneg p)
-    · exact le_rfl
-  have hG0 : 0 ≤ ∑ p ∈ s, Real.log p * (2 * Sig p o * (2 * mTa / p)) := by
-    apply Finset.sum_nonneg
-    intro p hp
-    have h2 := hSig p hp o
-    have h3 := Real.log_natCast_nonneg p
-    have h4 : (0 : ℝ) ≤ p := Nat.cast_nonneg p
-    positivity
-  have hio' : ∑ p ∈ s, Real.log p * io p o ≤ ∑ p ∈ s, Real.log p * (2 * Sig p o * (2 * mTa / p)) :=
-    Finset.sum_le_sum (fun p hp =>
-      mul_le_mul_of_nonneg_left (hio p hp o) (Real.log_natCast_nonneg p))
-  have e : (s₀ / θ + s₀) * (4 * mTa * (Real.log Y + Real.log 4)) =
-      s₀ / θ * (4 * mTa * (Real.log Y + Real.log 4)) +
-        4 * mTa * s₀ * (Real.log Y + Real.log 4) := by ring
-  refine ⟨o, ho, ?_, ?_⟩
-  · rw [e]; linarith [hLoss o]
-  · rw [e]; linarith
 
 end
 

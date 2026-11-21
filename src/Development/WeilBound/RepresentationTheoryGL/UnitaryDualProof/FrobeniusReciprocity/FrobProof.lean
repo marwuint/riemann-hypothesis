@@ -2,7 +2,8 @@ import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.BernsteinUnitaryProducts.BernsteinTheoremA.FrobeniusReciprocity.TrivSymmApply
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsContinuousSectionQuotientStatement
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.FrobeniusReciprocity.HaarDistr
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSchwartzBruhatCharacterIntegralOneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSchwartzBruhatCharacterIntegralOne
+import Development.WeilBound.CoreStatements.AutomorphicKernels.BernsteinUnitaryProducts.BernsteinTheoremA.FrobeniusReciprocity.SupportedInIffOfFrob
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnimodularHaarRightInvariantStatement
 
 noncomputable section
@@ -75,7 +76,7 @@ theorem avg_lift (b0 : SB H) (hb0 : ∫ y, (b0 : H → ℂ) y ∂μH = 1) (f : S
   simp [hb0]
 
 theorem exists_schwartz_integral_one : ∃ b0 : SB H, ∫ y, (b0 : H → ℂ) y ∂μH = 1 := by
-  obtain ⟨b0, hb0⟩ := GlobalTheory.T.exists_schwartzBruhat_character_integral_one H μH 1
+  obtain ⟨b0, hb0⟩ := _root_.GlobalTheory.CompanionTheory.FrobNz.exists_SB_integral_mul_char_eq_one H μH 1
     (by simp only [MonoidHom.one_apply, Units.val_one]; exact continuous_const)
   exact ⟨b0, by simpa using hb0⟩
 
@@ -307,7 +308,7 @@ theorem frobeniusReciprocity : FrobeniusReciprocity := by
     exact hc.locallyCompactSpace
   obtain ⟨s, hs, hsec⟩ := GlobalTheory.T.exists_continuous_section_quotient G H hH
   let σ : Sec H := ⟨s, hs, hsec⟩
-  obtain ⟨α0, hα0⟩ := GlobalTheory.T.exists_schwartzBruhat_character_integral_one G μG χ hχ
+  obtain ⟨α0, hα0⟩ := _root_.GlobalTheory.CompanionTheory.FrobNz.exists_SB_integral_mul_char_eq_one G μG χ hχ
   let Fr := LinearEquiv.ofBijective (FrMap hp σ hpc μH μG χ uG uH hχ α0 hα0)
     ⟨FrMap_injective hp σ hpc μH μG χ uG uH hχ α0 hα0,
       FrMap_surjective hp σ hpc μH μG χ uG uH hχ α0 hα0⟩

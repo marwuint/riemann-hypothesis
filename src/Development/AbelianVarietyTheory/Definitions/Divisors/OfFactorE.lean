@@ -66,27 +66,4 @@ def Canon [IsLocalRing R] (Q : Data R) (G : Over (Sp R)) [GrpObj G] [IsCommMonOb
       inc ≫ pr = 𝟙 G ∧ pr ≫ inc = oG.act F.e ∧
       LBIso P ((abelian₂ G' U'.LG.L).pull (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left)
 
-theorem Canon.isLB [IsLocalRing R] {Q : Data R} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {P : LB (G2 G).left}
-    (h : Canon Q G P) : P.IsLB := h.1
-
-def PFactor.ofFactor {D D' : DegPre R} (F : Factor D D') (hF : F.Alg) (hB : D.TauBimult) :
-    PFactor (PolDeg.Wit.ofDeg D hB) D' where
-  O := F.O; o := F.o; e := F.e; f := F.f; inc := F.inc; pr := F.pr; xi := F.xi; xp := F.xp; w := F.w
-  idem := F.idem; inc_hom := F.inc_hom; pr_hom := F.pr_hom; inc_pr := F.inc_pr; pr_inc := F.pr_inc
-  xp_xi := F.xp_xi; xi_xp := F.xi_xp; c_xi := F.c_xi; inj := F.inj; onto := F.onto; w_gen := F.w_gen
-  tau a b z J J' hJ hJ' := ((PolDeg.Wit.exists_tau D a b).choose_spec.2 _ _ z J' hJ').trans (F.tau a b z J J' hJ hJ')
-  alg := hF
-
-theorem PFactor.ofFactor_e {D D' : DegPre R} (F : Factor D D') (hF : F.Alg) (hB : D.TauBimult) :
-    (PFactor.ofFactor F hF hB).e = F.e ∧ (PFactor.ofFactor F hF hB).f = F.f := ⟨rfl, rfl⟩
-
-def Wit.pfac : PFactor (PolDeg.Wit.ofDeg InhTate.tatePre InhTate.tauBimult) Wit.tate2 :=
-  PFactor.ofFactor Wit.fac Wit.fac_alg InhTate.tauBimult
-
-theorem Wit.pfac_e : Wit.pfac.e ≠ 0 ∧ Wit.pfac.e ≠ 1 := Wit.fac_e
-
-example : Wit.pfac.f = (1 : ℤ × ℤ) := rfl
-
-example : Wit.pfac.O = (ℤ × ℤ) := rfl
-
 end GlobalTheory.Mum

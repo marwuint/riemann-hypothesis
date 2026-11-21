@@ -38,24 +38,6 @@ def SymFrame (U : Unif I D A G) : Prop :=
         ∀ w, TXFrame N p w → ∀ t t' s s', U.ExpandsF F N w₀ t s → U.ExpandsF F N w₀ t' s' → IsActOf A.A A.L N θ t t' →
           PhiRel D.toPre F N p w s s'
 
-def SeriesFrame {D₀ : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F] (m : ℕ) (p : QkPt D₀ F (m ^ 2))
-    (g' : GtPtF D₀ F) (w' : Frm D₀ F 1 g'.b) : Prop :=
-  GtPtF.IsNsmul m p.g g' ∧ w'.IsGen ∧ ∃ (w : Frm D₀ F (m ^ 2) p.g.b) (κ : LB.Gen (kapLB D₀ (𝟙 D₀.P.A ^ m) (m ^ 2) 1)),
-    TXFrame (m ^ 2) p w ∧ Normd κ ∧ ∀ z J, Good D₀.P.L z J → val w (𝟙 _) z J * val κ p.g.b.left z J = val w' (𝟙 _) z J
-
-def Series (U : Unif I D A G) : Prop :=
-  (∃ w₀ ρ, NormW U.toUnifPre w₀ ρ) ∧
-  ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F], ∀ w₀ ρ, NormW U.toUnifPre w₀ ρ → ∀ th : SecA A F 1, (∃! ϑ : Fam D.toPre F 1, U.ExpandsF F 1 w₀ th ϑ) ∧
-    ∀ ϑ : Fam D.toPre F 1, U.ExpandsF F 1 w₀ th ϑ → ∀ (m : ℕ), Odd m → ∀ x : TFK (R := R) F ⟶ A.A, x ^ (m ^ 2) = 1 →
-      (∃ p : QkPt D.toPre F (m ^ 2), QkToAkU U.toUnifPre F (m ^ 2) p x) ∧
-      (∃! q : SecA A F (m ^ 2) × F, ThC A ρ m th x q.1 q.2) ∧
-      ∀ p : QkPt D.toPre F (m ^ 2), QkToAkU U.toUnifPre F (m ^ 2) p x →
-        (∃ (g' : GtPtF D.toPre F) (w' : Frm D.toPre F 1 g'.b), SeriesFrame m p g' w') ∧
-        ∀ (g' : GtPtF D.toPre F) (w' : Frm D.toPre F 1 g'.b), SeriesFrame m p g' w' →
-          ∀ t c, ThC A ρ m th x t c → SumF I F (coef ϑ g' w') c ∧
-            ∀ s, U.ExpandsF F (m ^ 2) w₀ t s → ∀ (o : GtPtF D.toPre F) (w₁ : Frm D.toPre F (m ^ 2) o.b), o.IsZero → FrmOne w₁ →
-              (∀ χ, coef s o w₁ (m • χ + p.y) = coef ϑ g' w' χ) ∧ ∀ β, (∀ χ, β ≠ m • χ + p.y) → coef s o w₁ β = 0
-
 def Functorial (U : Unif I D A G) : Prop :=
   (∀ (aG : G ⟶ G) (aA : A.A ⟶ A.A), IsMonHom aG → IsMonHom aA → (Over.pullback (jK R)).map aG ≫ U.gen.hom = U.gen.hom ≫ aA → ∃ E : EndU U.toUnifPre, E.aG = aG ∧ E.aA = aA) ∧
   ∀ E E' : EndU U.toUnifPre, LBIso (cubeLB G ![fst G G ≫ E.aG, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ E'.aG] U.LG.L) →
@@ -65,9 +47,6 @@ def Functorial (U : Unif I D A G) : Prop :=
       (∀ y (g g' : GtPtF D.toPre F), GtPtF.IsIota y g → E.Act g g' → GtPtF.IsIota (E'.h y) g') ∧
       ∀ (k : ℕ), 1 ≤ k → ∀ (p p' : QkPt D.toPre F k) x, p'.y = E'.h p.y → E.Act p.g p'.g → QkToAkU U.toUnifPre F k p x →
         QkToAkU U.toUnifPre F k p' (x ≫ E.aA)
-
-def FamilyRing (U : Unif I D A G) : Prop :=
-  ExpBijF U.toUnifPre ∧ ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F], ∀ (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ (k k' k'' : ℕ), 1 ≤ k → 1 ≤ k' → k'' = k + k' → ∀ (t : SecA A F k) (t' : SecA A F k') (t'' : SecA A F k'') s s' s'', U.ExpandsF F k w₀ t s → U.ExpandsF F k' w₀ t' s' → U.ExpandsF F k'' w₀ t'' s'' → (∀ z J, Good A.L z J → sA t'' (𝟙 _) z J = sA t (𝟙 _) z J * sA t' (𝟙 _) z J) → ∀ (g : GtPtF D.toPre F) (w : Frm D.toPre F k g.b) (w' : Frm D.toPre F k' g.b) (w'' : Frm D.toPre F k'' g.b), w.IsGen → w'.IsGen → w''.IsGen → (∀ z J, Good D.toPre.P.L z J → val w'' (𝟙 _) z J = val w (𝟙 _) z J * val w' (𝟙 _) z J) → ∀ α, SumF I F (fun χ => coef s g w χ * coef s' g w' (α - χ)) (coef s'' g w'' α)
 
 def Determined (U : Unif I D A G) : Prop :=
   ∀ (D' : DegData R I) (A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G' : Over (Spec (CommRingCat.of R))) [GrpObj G']
@@ -81,12 +60,5 @@ def Balanced (U : Unif I D A G) : Prop :=
   ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] (ιD : D.toPre.OAct O) (ιA : A.OAct O) (ιG : RingAct G O), U.toUnifPre.OLinear O ιD ιA ιG → (∀ a, LBIso (cubeLB G ![fst G G ≫ ιG.act a, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ ιG.act (star a)] U.LG.L)) → ∀ (w₀ : O) (ν : ℕ), w₀ + star w₀ = 1 → w₀ * star w₀ = (ν : O) → 1 ≤ ν → Even ν → LBIso U.LG.L (cubeLB G ![𝟙 G, ιG.act w₀] U.LG.L) → TraceFormTwistIso D.toPre ιD w₀
 end
 
-def SeriesVal {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V)) : Prop :=
-  ∀ (ϖ : V) (hϖ : Irreducible ϖ), (∃ Q : D.toPre.X → ℤ, QForm.IsQ D.toPre ϖ Q) ∧ ∀ Q : D.toPre.X → ℤ, QForm.IsQ D.toPre ϖ Q →
-    ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)) (hv : ValOver ϖ F v),
-      (∀ (N : ℕ), 1 ≤ N → ∀ (p : QkPt D.toPre F N) w, TXFrame N p w → GenV hϖ hv w ((Q p.y : ℚ) / N)) ∧
-      ∀ (m : ℕ), 1 ≤ m → ∀ (p : QkPt D.toPre F (m ^ 2)) (g' : GtPtF D.toPre F) (w' : Frm D.toPre F 1 g'.b),
-        SeriesFrame m p g' w' → ∀ ϑ : Fam D.toPre F 1, NuGe D Q F v 1 ϑ 0 →
-          ∀ χ, (((Q (m • χ + p.y) : ℚ) / (m ^ 2 : ℕ) : ℚ) : WithTop ℚ) ≤ v (coef ϑ g' w' χ)
 end GlobalTheory.UT.Cl
 end

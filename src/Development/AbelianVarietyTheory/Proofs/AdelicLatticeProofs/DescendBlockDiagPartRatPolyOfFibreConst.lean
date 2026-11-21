@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RatComponentMemRatPolysVanishingOnMatrixSetStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsComplexPolyBlockDiagPartOfFibreConstStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RatComponentMemRatPolysVanishingOnMatrixSet
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsComplexPolyBlockDiagPartOfFibreConst
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 
@@ -54,7 +54,7 @@ theorem descend_blk_rat : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Se
     intro p x
     unfold evC ev
     rw [MvPolynomial.eval_map, MvPolynomial.aeval_def]
-  obtain ⟨b, hb⟩ := GlobalTheory.T.exists_complexPoly_blockDiagPart_of_fibre_const ι Γ e hΓ he hpar (MvPolynomial.map (algebraMap ℚ ℂ) f)
+  obtain ⟨b, hb⟩ := _root_.GlobalTheory.ClassFin.exists_evC_blk_of_fibre_const ι Γ e hΓ he hpar (MvPolynomial.map (algebraMap ℚ ℂ) f)
     (fun x hx x' hx' h => by rw [hmap, hmap]; exact hf x hx x' hx' h)
   obtain ⟨s, hs⟩ := exists_poly_blk e
   obtain ⟨l, hl⟩ : ∃ l : ℂ →ₗ[ℚ] ℚ, l 1 = 1 := by
@@ -86,7 +86,7 @@ theorem descend_blk_rat : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Se
     unfold ev
     rw [h, ← MvPolynomial.comp_aeval]
     rfl
-  have hvan := GlobalTheory.T.rat_component_mem_ratPolysVanishingOnMatrixSet ι Γ hΓ.aut_mem
+  have hvan := _root_.GlobalTheory.ClassFin.component_mem_vanI ι Γ hΓ.aut_mem
     (MvPolynomial.map (algebraMap ℚ ℂ) f -
       MvPolynomial.aeval (fun i => MvPolynomial.map (algebraMap ℚ ℂ) (s i)) b)
     (fun g hg => by

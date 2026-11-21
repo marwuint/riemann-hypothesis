@@ -109,33 +109,6 @@ theorem additive_character_psi : Formalism.FourierDecayAlt.G.PsiChar := by
   · simp only [psi]; rw [mul_comm]; exact Complex.norm_exp_ofReal_mul_I _
   · simp [psi]
 
-theorem character_additive : Formalism.FourierDecayAlt.G.CharAdditive := by
-  intro n p q
-  have key : ∀ p q : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, IsUpperUni p → IsUpperUni q →
-      superSum (p * q) = superSum p + superSum q := by
-    intro p q hp hq
-    simp only [superSum, ← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [Matrix.mul_apply]
-    have hne : i.castSucc ≠ i.succ := (Fin.castSucc_lt_succ).ne
-    rw [Finset.sum_eq_add i.castSucc i.succ hne]
-    · rw [hp.1, hq.1]; ring
-    · intro k _ hk
-      rcases lt_trichotomy k i.castSucc with h | h | h
-      · rw [hp.2 _ _ h]; ring
-      · exact absurd h hk.1
-      · have : i.succ < k := by
-          rcases lt_or_eq_of_le (Fin.castSucc_lt_iff_succ_le.1 h) with h' | h'
-          · exact h'
-          · exact absurd h'.symm hk.2
-        rw [hq.2 _ _ this]; ring
-    · simp
-    · simp
-  refine ⟨key p q, fun hp hq => ?_⟩
-  have := key qᵀ pᵀ hq hp
-  have e : ∀ l : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, subSum l = superSum lᵀ := fun l => rfl
-  rw [e, e, e, Matrix.transpose_mul, this]; ring
-
 theorem det_weyl_matrix : Formalism.FourierDecayAlt.G.DetMatch :=
   fun n => ⟨det_wMat_succ n, det_wMat_ne_zero n⟩
 

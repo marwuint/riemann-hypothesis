@@ -33,9 +33,6 @@ abbrev FiniteAdelicGL : Type _ := GL (Fin n) (FiniteAdeleRing (𝓞 K) K)
 theorem isTopologicalGroup : IsTopologicalGroup (AdelicGL K n) :=
   inferInstance
 
-theorem t2Space : T2Space (AdelicGL K n) :=
-  inferInstance
-
 theorem locallyCompactSpace : LocallyCompactSpace (AdelicGL K n) :=
   inferInstance
 
@@ -207,10 +204,6 @@ theorem isCompact_integralFiniteGL :
   simp only [SetLike.mem_coe, integralFiniteGL, Submonoid.mem_units_iff, Set.mem_preimage,
     Set.mem_prod, Units.embedProduct_apply, Subring.mem_toSubmonoid]
   exact Iff.rfl
-
-def integralFiniteOpenSubgroup : OpenSubgroup (FiniteAdelicGL K n) where
-  toSubgroup := integralFiniteGL K n
-  isOpen' := isOpen_integralFiniteGL K n
 
 theorem totallyDisconnectedSpace_of_injective {X Y : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] [TotallyDisconnectedSpace Y] {f : X → Y} (hf : Continuous f)

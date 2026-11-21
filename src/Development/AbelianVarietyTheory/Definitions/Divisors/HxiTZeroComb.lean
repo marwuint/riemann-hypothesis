@@ -90,36 +90,8 @@ theorem galEt_zero (E : Type) [CommRing E] [Algebra ℚ_[l] E] {k : Type} [Field
     {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of k)) (n : ℤ) (σ : Ω ≃ₐ[k] Ω) :
     galEt l E Ω q n 0 σ = galE l E Ω q n σ := rfl
 
-example (Y : Scheme.{0}) (n : ℤ) : HEt l E Y n 0 = HE l E Y n := rfl
-
 @[simp] theorem opT_zero_comb {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B) (n t : ℤ) :
     opT l act p b (0 : Matrix (Fin m) (Fin m) O →₀ E) n t = 0 := by
   simp [opT]
-
-theorem HxiT_zero_comb {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B) (k : ℕ) (t i : ℤ) :
-    HxiT l act p b (0 : Matrix (Fin m) (Fin m) O →₀ E) k t i = ⊥ := by
-  rw [HxiT, opT_zero_comb, LinearMap.range_zero]
-
-theorem opT_add {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B)
-    (ε ε' : Matrix (Fin m) (Fin m) O →₀ E) (n t : ℤ) : opT l act p b (ε + ε') n t = opT l act p b ε n t + opT l act p b ε' n t := by
-  unfold opT
-  exact Finsupp.sum_add_index' (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)
-
-abbrev latRep {p : ℕ} [Fact p.Prime] (D : Datum p) : D.O →+* Module.End ℤ D.La := Module.toModuleEnd ℤ D.La
-
-example {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (A : Over S) (m : ℕ) (p : S ⟶ Spec (CommRingCat.of k)) :
-    ksBC A m p (Spec.map (CommRingCat.ofHom (algebraMap k Ω))) = GlobalTheory.Et.geom Ω ((pow A m).hom ≫ p) := rfl
-
-def ArtinQE (E : Type) [Field E] [Algebra ℚ_[l] E] : Prop :=
-  ∃ e : ∀ (X : Scheme.{0}) (p : X ⟶ Spec (CommRingCat.of ℂ)) [LocallyOfFiniteType p] [QuasiCompact p] [IsSeparated p] (n : ℕ),
-      HE l E X n ≃ₗ[E] SH E (GlobalTheory.CxPts p (RingHom.id ℂ)) n,
-    ∀ (X Y : Scheme.{0}) (p : X ⟶ Spec (CommRingCat.of ℂ)) [LocallyOfFiniteType p] [QuasiCompact p] [IsSeparated p]
-      (q : Y ⟶ Spec (CommRingCat.of ℂ)) [LocallyOfFiniteType q] [QuasiCompact q] [IsSeparated q]
-      (u : X ⟶ Y) (g : C(GlobalTheory.CxPts p (RingHom.id ℂ), GlobalTheory.CxPts q (RingHom.id ℂ))), u ≫ q = p → (∀ x, (g x).1 = x.1 ≫ u) →
-      ∀ (n : ℕ) (y : HE l E Y n), e X p n (pullE l E u n y) = shMap E g n (e Y q n y)
-
-def trivMap (E : Type) [Field E] {G G' : Type} [Group G] [Group G'] (α : G' →* G) :
-    Rep.res α (Rep.trivial E G E) ⟶ Rep.trivial E G' E :=
-  Rep.ofHom { toLinearMap := LinearMap.id, isIntertwining' := fun _ => rfl }
 
 end GlobalTheory.KS

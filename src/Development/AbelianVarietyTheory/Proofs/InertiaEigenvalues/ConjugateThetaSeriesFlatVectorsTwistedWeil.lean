@@ -23,8 +23,8 @@ theorem conj_series_twisted : Formalism.MainNotions.ModuliIntegralCharts.H1.Char
   obtain ⟨fw⟩ := hFW
   have hTie : TieIn T R κw v₀ := ⟨fw.laws, fw.alg_eq, fw.kap, fw.hv₀, fw.chiR, fw.x0⟩
   have hE : (O i).EquivAt (κw i) (T.cE ((i : ℕ) + 1) (O i).s0) :=
-    (hPT (GlobalTheory.T.thetaOneMap_baseTuple_of_characterisation_extremal hCI D G Pl0 T0 A T R F κw v₀ hC hTie hio O i hOP)).1
-  obtain ⟨ζ0, hζ0, hgb⟩ := GlobalTheory.T.conjugate_thetaSeries_flatDatum_rootOfUnity hCI D G Pl0 T0 A T R F κw v₀ O ph hnV hC hT0 ⟨fw⟩ hio hQG i hOP hPT c hc u hu τ hτ
+    (hPT (_root_.GlobalTheory.OneMapTies.oneMapRow0_of_ties_core hCI D G Pl0 T0 A T R F κw v₀ hC hTie hio O i hOP)).1
+  obtain ⟨ζ0, hζ0, hgb⟩ := _root_.GlobalTheory.ConjTwist.FlatSeries.conj_flat_series hCI D G Pl0 T0 A T R F κw v₀ O ph hnV hC hT0 ⟨fw⟩ hio hQG i hOP hPT c hc u hu τ hτ
   have hQ' : B.admitted ψ'.Q := by rw [hcc.1]; exact hQ
   obtain ⟨f, hf⟩ := (GlobalTheory.FlatVecExist.flatVec_existsUnique D G Pl0 T0 A _ R F hC hQG i t).1
   obtain ⟨f', hf'⟩ := (GlobalTheory.FlatVecExist.flatVec_existsUnique D G Pl0 T0 A _ R F hC hQG i t').1

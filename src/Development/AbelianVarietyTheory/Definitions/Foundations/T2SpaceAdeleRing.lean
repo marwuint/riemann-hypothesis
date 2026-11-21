@@ -152,36 +152,12 @@ abbrev hgtAd : GAd σ Q → ℝ≥0 := hgtH σ Q (absE F E) (KAd σ Q L a)
 abbrev degPSFin (μ : (Fv F v ⊗[F] E)ˣ →* Circle) (s : ℂ) : Submodule ℂ (GLoc σ Q v → ℂ) :=
   degPSH σ Q (absEv F E v) (KFin σ Q L v) μ s
 
-abbrev degPSArch (μ : (w.Completion ⊗[F] E)ˣ →* Circle) (s : ℂ) : Submodule ℂ (GArch σ Q w → ℂ) :=
-  degPSH σ Q (absEw F E w) (KArch σ Q w b) μ s
-
 abbrev degPSAd (μ : (AF F ⊗[F] E)ˣ →* Circle) (s : ℂ) : Submodule ℂ (GAd σ Q → ℂ) :=
   degPSH σ Q (absE F E) (KAd σ Q L a) μ s
 
-abbrev flatFin (Φ : GLoc σ Q v → ℂ) (s₀ s : ℂ) : GLoc σ Q v → ℂ := flatH σ Q (absEv F E v) (KFin σ Q L v) Φ s₀ s
-
-abbrev flatArch (Φ : GArch σ Q w → ℂ) (s₀ s : ℂ) : GArch σ Q w → ℂ := flatH σ Q (absEw F E w) (KArch σ Q w b) Φ s₀ s
-
 abbrev flatAd (Φ : GAd σ Q → ℂ) (s₀ s : ℂ) : GAd σ Q → ℂ := flatH σ Q (absE F E) (KAd σ Q L a) Φ s₀ s
 
-def prodFun (Φi : ∀ w, GArch σ Q w → ℂ) (Φf : ∀ v, GLoc σ Q v → ℂ) : GAd σ Q → ℂ :=
-  fun g => (∏ w, Φi w (projArch σ Q w g)) * ∏ᶠ v, Φf v (proj σ Q v g)
-
-def AlmostOne (Φf : ∀ v, GLoc σ Q v → ℂ) : Prop := ∀ᶠ v in Filter.cofinite, ∀ k ∈ KFin σ Q L v, Φf v k = 1
-
 variable {Q} (h : Q = dblGram finSumFinEquiv J) {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X]
-
-def zetaFin (m : Measure (GLoc σ J v)) (Φ : GLoc σ Q v → ℂ) (s₀ s : ℂ) (π : GLoc σ J v → X → X) (x y : X) : ℂ :=
-  zetaH σ h m (flatFin σ Q L v Φ s₀ s) (coef π x y)
-
-def ZetaConvFin (m : Measure (GLoc σ J v)) (Φ : GLoc σ Q v → ℂ) (s₀ s : ℂ) (π : GLoc σ J v → X → X) (x y : X) : Prop :=
-  ZetaConvH σ h m (flatFin σ Q L v Φ s₀ s) (coef π x y)
-
-def zetaArch (m : Measure (GArch σ J w)) (Φ : GArch σ Q w → ℂ) (s₀ s : ℂ) (π : GArch σ J w → X → X) (x y : X) : ℂ :=
-  zetaH σ h m (flatArch σ Q w b Φ s₀ s) (coef π x y)
-
-def ZetaConvArch (m : Measure (GArch σ J w)) (Φ : GArch σ Q w → ℂ) (s₀ s : ℂ) (π : GArch σ J w → X → X) (x y : X) :
-    Prop := ZetaConvH σ h m (flatArch σ Q w b Φ s₀ s) (coef π x y)
 
 end Defs
 
@@ -195,18 +171,6 @@ theorem apply_rat_mul {μ : (AF F ⊗[F] E)ˣ →* Circle} (hμ : ∀ x : Eˣ, �
   obtain ⟨x, hx⟩ := exists_aH_eq_of_mem_ratPts ⟨γ, hγ⟩ hγ'
   have := (mem_degPSH.1 hΦ).1 ⟨γ, hγ⟩ g
   rwa [hx, hμ, absE_inclR, one_npow, Circle.coe_one, one_mul, one_mul] at this
-
-omit [NumberField E] in
-theorem HasIwasawa.fin (hI : HasIwasawa σ Q (KAd σ Q L a)) (v : HeightOneSpectrum (𝓞 F)) :
-    HasIwasawa σ Q (KFin σ Q L v) := fun g => by
-  obtain ⟨p, k, hk, e⟩ := hI (emb σ Q v g)
-  exact ⟨projP v p, _, (mem_KAd.1 hk).1 v, by rw [coe_projP, ← map_mul, ← e, proj_emb_self]⟩
-
-omit [NumberField E] in
-theorem HasIwasawa.arch (hI : HasIwasawa σ Q (KAd σ Q L a)) (w : InfinitePlace F) :
-    HasIwasawa σ Q (KArch σ Q w (bc (compInf F E w) a)) := fun g => by
-  obtain ⟨p, k, hk, e⟩ := hI (embArch σ Q w g)
-  exact ⟨projArchP w p, _, (mem_KAd.1 hk).2 w, by rw [coe_projArchP, ← map_mul, ← e, projArch_embArch_self]⟩
 
 theorem isCompact_KArch (hc : IsCMExt F E σ) (w : InfinitePlace F) (b : GL (Fin n) (w.Completion ⊗[F] E)) :
     IsCompact (KArch σ Q w b : Set (GArch σ Q w)) := Frames.isCompact_stabArch hc Q w _
@@ -236,15 +200,6 @@ theorem hgtAd_mul (hc : IsCMExt F E σ) (p : siegelH (AF F) σ Q) {k : GAd σ Q}
     hgtAd σ Q L a (p * k) = absE F E (aH _ σ Q p) :=
   haveI := t2Space_adeleRing' (F := F)
   hgtH_mul continuous_absE (isCompact_KAd hc) p hk
-
-theorem AlmostOne.finite {Φf : ∀ v, GLoc σ Q v → ℂ} (h : AlmostOne σ Q L Φf) (g : GAd σ Q) :
-    (Function.mulSupport fun v => Φf v (proj σ Q v g)).Finite :=
-  (Filter.eventually_cofinite.1 (h.and (eventually_proj_mem_stabLoc σ Q (sumLat finSumFinEquiv L L) g))).subset
-    fun _ hv h' => hv (h'.1 _ h'.2)
-
-theorem finite_mulSupport_hgtFin (g : GAd σ Q) : (Function.mulSupport fun v => hgtFin σ Q L v (proj σ Q v g)).Finite :=
-  (Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc σ Q (sumLat finSumFinEquiv L L) g)).subset
-    fun v hv h' => hv (hgtH_of_mem (continuous_absEv v) (isCompact_KFin v) h')
 
 theorem HasIwasawa.hgtAd_eq (hI : HasIwasawa σ Q (KAd σ Q L a)) (hc : IsCMExt F E σ) (g : GAd σ Q) :
     hgtAd σ Q L a g = (∏ w, hgtArch σ Q w (bc (compInf F E w) a) (projArch σ Q w g)) *
@@ -324,26 +279,6 @@ abbrev Gv : Type := GLoc D.sp.cm.sig V.gram v
 
 abbrev Gw : Type := GArch D.sp.cm.sig V.gram w
 
-abbrev degPSv (μ : (AE D)ˣ →* Circle) (s : ℂ) : Submodule ℂ (Gv (dblSp V) v → ℂ) :=
-  degPSFin D.sp.cm.sig (dblSp V).gram (frameLat V) v (charAt μ v) s
-
-abbrev degPSw (μ : (AE D)ˣ →* Circle) (s : ℂ) : Submodule ℂ (Gw (dblSp V) w → ℂ) :=
-  degPSArch D.sp.cm.sig (dblSp V).gram w (bc (compInf _ _ w) a) (charAtInf μ w) s
-
-abbrev Zv (m : Measure (Gv V v)) (Φ : Gv (dblSp V) v → ℂ) (s₀ s : ℂ) (π : Gv V v → X → X) (x y : X) : ℂ :=
-  zetaFin D.sp.cm.sig (frameLat V) v (gram_hdbl V) m Φ s₀ s π x y
-
-abbrev ZvConv (m : Measure (Gv V v)) (Φ : Gv (dblSp V) v → ℂ) (s₀ s : ℂ) (π : Gv V v → X → X) (x y : X) : Prop :=
-  ZetaConvFin D.sp.cm.sig (frameLat V) v (gram_hdbl V) m Φ s₀ s π x y
-
-abbrev Zw (m : Measure (Gw V w)) (Φ : Gw (dblSp V) w → ℂ) (s₀ s : ℂ) (π : Gw V w → X → X) (x y : X) : ℂ :=
-  zetaArch D.sp.cm.sig w (bc (compInf _ _ w) a) (gram_hdbl V) m Φ s₀ s π x y
-
-abbrev ZwConv (m : Measure (Gw V w)) (Φ : Gw (dblSp V) w → ℂ) (s₀ s : ℂ) (π : Gw V w → X → X) (x y : X) : Prop :=
-  ZetaConvArch D.sp.cm.sig w (bc (compInf _ _ w) a) (gram_hdbl V) m Φ s₀ s π x y
-
-abbrev dLoc (W : HSp D) (s : ℂ) : ℂ := GlobalTheory.LFun.dv D.host.E V.rank W.rank v s
-
 end Local
 
 instance isLattice_frameLat_host : Submodule.IsLattice D.host.E (frameLat V) := isLattice_frameLat V
@@ -364,8 +299,6 @@ theorem io_eq_ioSum (g : GA D V) (g' : GA D (negSp V)) : ioSum V (negSp V) (g, g
   matHom_injective _ D.sp.cm.sig (dblSp V).gram ((matHom_ioSum V (negSp V) g g').trans (matHom_io V g (negEquiv V g')).symm)
 
 theorem continuous_io : Continuous (io V) := continuous_ioH _
-theorem io_injective : Function.Injective (io V) := ioH_injective _
-
 theorem io_mem_GQ {g g' : GA D V} (h : g ∈ GQ V) (h' : g' ∈ GQ V) : io V (g, g') ∈ GQ (dblSp V) := ioH_mem_ratPts _ h h'
 
 theorem io_mem_siegel {g g' : GA D V} : io V (g, g') ∈ siegel V ↔ g = g' := ioH_mem_siegelH _
@@ -406,42 +339,7 @@ theorem comp_conjUnit_eq_inv {μ : (AE D)ˣ →* Circle} {k : ℕ} (h : ResEta D
   rw [MonoidHom.comp_apply, ← map_mul, ← h1]
   exact congrArg μ (Units.ext (algebraMap_norm_eq (isCMExt_host D) x.1).symm)
 
-example (g : GA D V) : hgt V a (io V (g, g)) = 1 := by
-  have := hgt_mul V a (ioDiag (gram_hdbl V) g) (one_mem _)
-  rwa [mul_one, aH_ioDiag, abs_detH (absE_conjUnit _) (isHermND_gram V).2] at this
-
 end Record
-
-theorem exists_leviH {R : Type} [CommRing R] [Algebra F R] {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x)
-    {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (h : Q = dblGram finSumFinEquiv J) (hJ : IsHermND σ J)
-    (α : GL (Fin n) (R ⊗[F] E)) : ∃ p : siegelH R σ Q, (p : HA R σ Q) ∈ leviH R σ Q ∧
-      leviOf finSumFinEquiv (matHom R σ Q) p = α ∧ aH R σ Q p = Matrix.GeneralLinearGroup.det α := by
-  letI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero
-  letI : Invertible (2 : R ⊗[F] E) := (Invertible.map (algebraMap F (R ⊗[F] E)) 2).copy _ (map_ofNat _ 2).symm
-  obtain ⟨β, hβ⟩ := exists_leviElt_mem_UJ finSumFinEquiv (σ := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ) (sigR_invol hσ)
-    (J := JR R J) (by ext i j; exact congrArg (fun x => (1 : R) ⊗ₜ[F] x) (hJ.1 i j)) (isUnit_det_JR hJ.2) α
-  rw [← JR_dblGram, ← h] at hβ
-  obtain ⟨g, hg⟩ : ∃ g : HA R σ Q, matHom R σ Q g = leviElt finSumFinEquiv (α, β) := ⟨⟨_, hβ⟩, rfl⟩
-  have h1 : g ∈ siegelH R σ Q := Subgroup.mem_comap.2 (hg ▸ leviElt_mem_diag finSumFinEquiv (α, β))
-  have e : leviOf finSumFinEquiv (matHom R σ Q) ⟨g, h1⟩ = α :=
-    Units.ext (by rw [val_leviOf, hg, leviMat_leviElt])
-  exact ⟨⟨g, h1⟩, ⟨h1, Subgroup.mem_comap.2 (hg ▸ leviElt_mem_anti finSumFinEquiv (α, β))⟩, e,
-    by rw [aH, aOf, MonoidHom.comp_apply, e]⟩
-
-example (hd : Module.finrank F E = 2) {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J)
-    [Submodule.IsLattice E L] (v : HeightOneSpectrum (𝓞 F)) (c : (Fv F v)ˣ) :
-    ∃ g, hgtFin σ (dblGram finSumFinEquiv J) L v g = ‖c.1‖₊ ^ (2 * n) := by
-  obtain ⟨p, -, -, hp⟩ := exists_leviH hσ rfl hJ (Matrix.GeneralLinearGroup.scalar (Fin n)
-    (Units.map (algebraMap (Fv F v) (Fv F v ⊗[F] E)).toMonoidHom c))
-  refine ⟨p * 1, ?_⟩
-  rw [hgtFin_mul p (one_mem _), hp, pow_mul, ← hd, ← absEv_algebraMap, ← map_pow]
-  congr 1
-  ext
-  simp
-
-example {R : Type} [CommRing R] [Algebra F R] (Q : Matrix (Fin (0 + 0)) (Fin (0 + 0)) E) (K : Subgroup (HA R σ Q)) :
-    HasIwasawa σ Q K := fun g =>
-  ⟨⟨g, mem_siegelOf.2 (Subsingleton.elim _ _)⟩, 1, one_mem _, (mul_one g).symm⟩
 
 end GlobalTheory.Doubling
 

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentralNilGL
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFundamentalDomainUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FundamentalDomainMeasureFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicIwasawaMaximalParabolicFiniteRepsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalAutomorphicFormsGLStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFundamentalDomainUnipotent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FundamentalDomainMeasureFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicIwasawaMaximalParabolicFiniteReps
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalAutomorphicFormsGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinsetSeparatingFiniteDimensionalFunctionsStatement
 
 noncomputable section
@@ -37,11 +37,11 @@ theorem finiteDimensional_constTerm : ∀ (E : Type) [Field E] [NumberField E] [
     induction hf using Submodule.span_induction with
     | mem x hx =>
       obtain ⟨φ, rfl⟩ := hx
-      refine ⟨fun y g => GlobalTheory.T.integral_fundamental_domain_unipotent E a r μ 𝓕 hμ h𝓕 _ (hleft φ.1 φ.2) y g, fun l hl g => ?_, fun g => ?_⟩
+      refine ⟨fun y g => _root_.GlobalTheory.CuspRep.constTerm_unip_invariant E a r μ 𝓕 hμ h𝓕 _ (hleft φ.1 φ.2) y g, fun l hl g => ?_, fun g => ?_⟩
       · change ∫ x in 𝓕, φ.1.1 (unip x * (g * finGL E a l)) ∂μ = ∫ x in 𝓕, φ.1.1 (unip x * g) ∂μ
         simp_rw [← mul_assoc]
         exact congrArg (fun h : (BlockIx a r → Ad E) → ℂ => ∫ x in 𝓕, h x ∂μ) (funext fun x => hright φ.1 φ.2 l hl _)
-      · exact GlobalTheory.T.fundamental_domain_measure_finite E a L W hW X N r μ 𝓕 hμ h𝓕 h1 φ.1 φ.2 g
+      · exact _root_.GlobalTheory.HCFct.constTerm_cptTranslate_mem E a L W hW X N r μ 𝓕 hμ h𝓕 h1 φ.1 φ.2 g
     | zero => exact ⟨fun _ _ => rfl, fun _ _ _ => rfl, fun _ => W.zero_mem⟩
     | add x y _ _ hx hy =>
       refine ⟨fun u g => ?_, fun l hl g => ?_, fun g => W.add_mem (hx.2.2 g) (hy.2.2 g)⟩
@@ -51,7 +51,7 @@ theorem finiteDimensional_constTerm : ∀ (E : Type) [Field E] [NumberField E] [
       refine ⟨fun u g => ?_, fun l hl g => ?_, fun g => W.smul_mem c (hx.2.2 g)⟩
       · exact congrArg (c * ·) (hx.1 u g)
       · exact congrArg (c * ·) (hx.2.1 l hl g)
-  obtain ⟨T, hT⟩ := GlobalTheory.T.adelicIwasawa_maximalParabolic_finiteReps E a r L hL
+  obtain ⟨T, hT⟩ := _root_.GlobalTheory.IwaParab.iwasawa_parab E a r L hL
   obtain ⟨s, hs⟩ := GlobalTheory.T.exists_finset_separating_finiteDimensional_functions (Kinf E a) W hW
   let M := {m : GA E a // (∀ i j : Fin a, ((i : ℕ) < r ↔ (j : ℕ) < r) ∨ m.1 i j = 0)}
   let ι := {t // t ∈ T} × {κ // κ ∈ s}
@@ -59,7 +59,7 @@ theorem finiteDimensional_constTerm : ∀ (E : Type) [Field E] [NumberField E] [
   let Vi : ι → Submodule ℂ (M → ℂ) := fun i =>
     Submodule.span ℂ (Set.range fun φ : S => fun m : M => ct φ (pt i m))
   have hVi : ∀ i, FiniteDimensional ℂ (Vi i) := fun i =>
-    GlobalTheory.T.finiteDimensional_automorphic_forms_GL E a hind L hL W hW X hX N r hr0 hra μ 𝓕 hμ h𝓕 h1 i.1.1 i.2.1
+    _root_.GlobalTheory.LeviCT.finiteDimensional_levi E a hind L hL W hW X hX N r hr0 hra μ 𝓕 hμ h𝓕 h1 i.1.1 i.2.1
   let R : (GA E a → ℂ) →ₗ[ℂ] (ι → M → ℂ) :=
     LinearMap.pi fun i => LinearMap.pi fun m => LinearMap.proj (pt i m)
   have hR : ∀ f ∈ V, ∀ i, R f i ∈ Vi i := by

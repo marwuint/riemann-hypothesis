@@ -65,10 +65,6 @@ def NmHasse : Prop :=
       (cp γ).map ((inc v.Completion).comp (algebraMap F E))) →
     ∃ a : GL (Fin n) E, nm σ (Module.finrank F E) a = up E γ ∧ Commute a (up E γ)
 
-def NormAlmostAll : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (A : Type) [CommRing A] [Algebra F A] [Module.Finite F A] [IsReduced A] (a : Aˣ),
-    {v : HeightOneSpectrum (𝓞 F) | ¬ IsNm F E ((1 : v.adicCompletion F) ⊗ₜ[F] (a : A))}.Finite
-
 def NmInt : Prop :=
   ∀ (O S k R : Type) [CommRing O] [IsLocalRing O] [CommRing S] [Algebra O S] [Field k] [CommRing R] [Algebra k R]
     (i : O →+* k) (j : S →+* R) (s : S ≃ₐ[O] S) (σ : R ≃ₐ[k] R) (q : ℕ), IsGal s q → IsGal σ q → Function.Injective j →

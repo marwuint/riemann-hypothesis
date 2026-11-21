@@ -1,9 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsMirClass
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerJacquetIdempotentsPropertiesPrimeFieldStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerJacquetIdempotentsPropertiesPrimeField
+import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerDimensionHarishChandraInductionMulStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BernsteinZelevinskyDerivativeGLnEqTwistedSumStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MirabolicClassFunBlockDiagonalEqSumDerivativesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BernsteinZelevinskyDerivativeGLnEqTwistedSum
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MirabolicClassFunBlockDiagonalEqSumDerivatives
 
 open Polynomial Formalism.MainNotions.ArithmeticCylinders GlobalTheory.GLq GlobalTheory.GLm
 open scoped Classical
@@ -44,7 +46,7 @@ theorem gg_class (ψ : AddChar (ZMod g) ℂ) (n : ℕ) : IsClass (gg ψ n) := by
 
 theorem wh_dirac (ψ : AddChar (ZMod g) ℂ) (n : ℕ) :
     wh ψ (dirac g n) = ((g : ℂ) ^ (n * (n - 1) / 2))⁻¹ := by
-  rw [← (GlobalTheory.T.whittakerJacquetIdempotents_properties_primeField g n 0 0 ψ).2.1]
+  rw [← (_root_.GlobalTheory.Adopt.whittakerJacquetIdempotents_properties_primeField g n 0 0 ψ).2.1]
   simp [wh, tr, dirac]
 
 theorem wh_mul_left (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (c : ℂ) (f : Gn g n → ℂ) :
@@ -91,7 +93,7 @@ theorem der_dirac (ψ : AddChar (ZMod g) ℂ) (i n : ℕ) (hi : i ≤ n) :
     der ψ i (dirac g n) =
       fun h => ((g : ℂ) ^ (i * (n - i) + (n - i) * (n - i - 1) / 2))⁻¹ * dirac g i h := by
   funext h
-  rw [GlobalTheory.T.bernsteinZelevinskyDerivativeGLn_eq_twisted_sum g ψ i n _ h hi]
+  rw [_root_.GlobalTheory.GLm.der_eq_sum g ψ i n _ h hi]
   congr 1
   rw [Finset.sum_eq_single (1 : Gn g n)]
   · have e : ((1 : Mt g i) = (h : Mt g i)) ↔ h = 1 :=
@@ -153,7 +155,7 @@ theorem sum_wh_gg : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) , �
   have h1 : dirac g k = fun h => ∑ i ∈ Finset.range (k + 1),
       hc i (k - i) (der ψ i (dirac g (k + 1))) (gg ψ (k - i)) k h := by
     funext h
-    rw [← GlobalTheory.T.mirabolicClassFun_blockDiagonal_eq_sum_derivatives g ψ hψ k _ (fun p x _ _ => dirac_class _ x p) h]
+    rw [← _root_.GlobalTheory.GLm.mirClass_diag1_eq_sum g ψ hψ k _ (fun p x _ _ => dirac_class _ x p) h]
     simp only [dirac, blockDiagonalWithIdentityGL_eq_one_iff]
   have h2 := wh_dirac ψ k
   rw [h1, wh_sum] at h2

@@ -139,8 +139,4 @@ theorem fam_eq_zero (hϖ : Irreducible ϖ) (G : Fam D.toPre F 1)
 
 end FEGen
 
-section Local
-
-end Local
-
 end ReciprocityTheory.ChartRestriction.G.DVR.TG

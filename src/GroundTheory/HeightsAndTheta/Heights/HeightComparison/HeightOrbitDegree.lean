@@ -10,6 +10,4 @@ def OrbitDegree.Statement : Prop :=
   ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (n : ι → ℕ) (x : Cone n (AlgebraicClosure ℚ)),
     BlockNonzero x → 0 < Geo.degC (ι := blockIdx n) (orbitIdeal x)
 
-example : BlockNonzero samplePoint := samplePoint_blockNonzero
-
 end GroundTheory.Heights₂.Heights

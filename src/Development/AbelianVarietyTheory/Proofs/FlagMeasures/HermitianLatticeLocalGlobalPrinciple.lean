@@ -3,7 +3,12 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PlacesOf
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueGlobalLatticeOfLocalLatticesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueGlobalLatticeOfLocalLattices
+import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
+import Formalism.SharpRestriction.CuspSpanNormBounds.PsiEDef
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NumberFieldLatticeDeterminedByLocalLatticesStatement
 
 noncomputable section
@@ -74,7 +79,7 @@ theorem lattices_local_global : ∀ (D : D7) (Z : LocDat D), (∀ Λ₁ Λ₂ : 
     rw [r₁, r₂]
     refine forall_congr' fun p => ?_
     rw [← localLattice_eq, ← localLattice_eq, h p]
-  · obtain ⟨Γ, ⟨hΓ, hΓp⟩, -⟩ := GlobalTheory.T.exists_unique_global_lattice_of_local_lattices (GlobalTheory.HL.placesOf Z) (nV D) Lp (fun p => hL p)
+  · obtain ⟨Γ, ⟨hΓ, hΓp⟩, -⟩ := _root_.GlobalTheory.HL.Glue.glue (GlobalTheory.HL.placesOf Z) (nV D) Lp (fun p => hL p)
       (((std_finite Z Λ₀ h₀).union hfin).subset fun p hp => by
         by_contra hc
         simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc

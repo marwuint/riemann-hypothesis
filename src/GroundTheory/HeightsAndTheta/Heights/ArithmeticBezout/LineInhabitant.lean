@@ -183,24 +183,6 @@ theorem isProjPrime_line : IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) F)) wh
     simp [hf]
   isRelevant := ⟨0, by rw [Ideal.mem_bot]; exact X_ne_zero 0⟩
 
-theorem isMultiHomog_line : IsMultiHomog 1 (D2 : MvPolynomial (Fin 2 × Fin 2) F) := by
-  have hX : ∀ i j : Fin 2, IsWeightedHomogeneous (groupWeight 2 2)
-      (X (i, j) : MvPolynomial (Fin 2 × Fin 2) F) (Pi.single i 1) :=
-    fun i j => isWeightedHomogeneous_X F (groupWeight 2 2) (i, j)
-  have hw : (Pi.single 0 1 + Pi.single 1 1 : Fin 2 → ℕ) = fun _ => 1 := by
-    funext i; fin_cases i <;> simp
-  have a := (hX 0 0).mul (hX 1 1)
-  have b := (hX 0 1).mul (hX 1 0)
-  rw [hw] at a b
-  exact (weightedHomogeneousSubmodule F (groupWeight 2 2) (fun _ => 1)).sub_mem a b
-
-theorem linForm_line : linForm (fun j : Fin 2 => if j = 0 then (1 : F) else 0) ∉
-    (⊥ : Ideal (MvPolynomial (Fin 2) F)) := by
-  rw [Ideal.mem_bot]
-  intro h
-  have := congrArg (eval (fun _ : Fin 2 => (1 : F))) h
-  simp [linForm, Fin.sum_univ_two] at this
-
 end LineChowForm
 
 end

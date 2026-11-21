@@ -153,11 +153,6 @@ lemma herm_add_right {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (v a b : Fin m �
   unfold herm
   rw [star_add, add_dotProduct]
 
-lemma herm_sub_left {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (a b w : Fin m → ℂ) :
-    herm H (a - b) w = herm H a w - herm H b w := by
-  unfold herm
-  rw [Matrix.mulVec_sub, dotProduct_sub]
-
 lemma herm_inv {m : ℕ} {H g : Matrix (Fin m) (Fin m) ℂ} (hg : gᴴ * H * g = H) (v w : Fin m → ℂ) :
     herm H (g *ᵥ v) (g *ᵥ w) = herm H v w := by
   unfold herm

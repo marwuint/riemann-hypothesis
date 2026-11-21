@@ -2,7 +2,7 @@ import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.HilbertSamuelGrowthO
 import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.IsolatedPointsCount
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.PLocalLengthPlaces
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.HeightComparison.HeightCentredConductor
+import GroundTheory.HeightsAndTheta.Heights.HeightComparison.HeightOrbitChart
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.PLocalQuotCard
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitCenterDivSupp
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitCenterMemIff
@@ -11,13 +11,13 @@ import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitChartQuot
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitChartResidue
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.PPlacesRingQuot
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.PSubringPrimeMaximal
-import GroundTheory.HeightsAndTheta.Heights.ChowlaSelberg.Assembly
-import GroundTheory.HeightsAndTheta.Heights.ChowlaSelberg.PDeltaIntSeries
-import GroundTheory.HeightsAndTheta.Heights.ChowlaSelberg.PHeckeRatioExpansion
-import GroundTheory.HeightsAndTheta.Heights.ChowlaSelberg.PHeckeRatioHolo
-import GroundTheory.HeightsAndTheta.Heights.ChowlaSelberg.PIntSeriesInv
-import GroundTheory.HeightsAndTheta.Heights.ChowlaSelberg.PIntSeriesRing
-import GroundTheory.HeightsAndTheta.Heights.ChowlaSelberg.PJQExpansion
+import GroundTheory.HeightsAndTheta.Heights.ChowlaSelberg.Statements
+import GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.MirabolicInduction.DedekindZetaEqSumRealEisenstein
+import GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.MirabolicInduction.CfunOmStatements
+import GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityHom
+import GroundTheory.HeightsAndTheta.Heights.ChowlaSelberg.StatementsWitness
+import GroundTheory.GlobalFields.AnalyticClassNumber.QuadraticLegendre
+import GroundTheory.GlobalFields.ComplexMultiplication.JInvariantSurjective
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PTubeDeepAreaCount
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConeVarInj
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConeVarUnit
@@ -27,14 +27,26 @@ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PFunctionFieldFinite
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PMChartDehomog
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PMChartHomog
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.IrreducibleConnected.PMonicRootGrowth
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.IrreducibleConnected.PPieceCoefficientsHolomorphic
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.IrreducibleConnected.PPieceRootProductPolynomial
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PBlockResolutionSupBound
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PComplexMinimalPrimesContract
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PComponentResBadNull
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PComponentResFibreFinite
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PComponentResInt
+import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
+import GroundTheory.HeightsAndTheta.Heights.Intersections.AnalyticResolutionHypothesesProjectiveLine
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterGood
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedA
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Stokes
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeN
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
+import GroundTheory.HeightsAndTheta.Heights.HeightComparison.IsMultiHomogIdealIff
+import ReciprocityTheory.AnalyticForms.RegularLocalRings.MemConePtsIffChartIdeal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterFib
+import ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeK
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeL
+import ReciprocityTheory.AnalyticForms.AnalyticCharts.NullZero
+import GroundTheory.HeightsAndTheta.Heights.Intersections.IsSmoothMetricOfIsSmoothHerm
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeA
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegrableOnTargetOfTsupport
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PIndependentModBaseChange
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPrimeComplexRadical
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPrimeZariskiDense
@@ -50,14 +62,17 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PBirationalRatioClos
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PFlagRatioTrdeg
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHodgeFlagArith
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHodgeFlagNeZero
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PPlueckerRatioTrdeg
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsBirationalRatioClosure
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.GenericMinors
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsFlagRatioTrdeg
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PFnFieldTrdeg
 import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PFreeSheafBasis
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PPullbackBasis
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PRatDenominators
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PSpreadHomSections
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PSpreadHomSectionsLoc
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PSpreadLocal
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PZLocDenominators
+import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PullbackBasis
+import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProjectiveCohomology.ImmersionPullback
+import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.HasFiniteBiproductsModules
+import GroundTheory.HeightsAndTheta.Heights.IntegralModels.Statements
+import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PClearDenominators
+import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PVectorBundleRestrict
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PBlowUpHorizontalCorresp
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PBlowUpHorizontalLift
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PBlowUpHorizontalSat
@@ -83,6 +98,7 @@ import GroundTheory.HeightsAndTheta.Heights.Regularisation.PGlueRegularised
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.ChartFun
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PChowNormForm
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSecAlgFieldChange
+
 set_option maxSynthPendingDepth 1
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.Inter_R1Indep : GroundTheory.Heights₂.Heights.Inter.RegularityIndependence.Statement :=
@@ -115,9 +131,6 @@ theorem GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_C3ExceptionalContra
 theorem GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_BlowUpHorizontalCorresp.{u} : GroundTheory.Heights₂.Heights.NumbersDVR.BlowUpHorizontalCorresp.Statement.{u} :=
   @GroundTheory.Heights₂.Heights.NumbersDVR.BlowUpHorizontalCorresp.proof.{u} GroundTheory.Heights₂.Heights.NumbersDVR.BlowUpHorizontalSat.full GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_BlowUpHorizontalMult GroundTheory.Heights₂.Heights.NumbersDVR.BlowUpHorizontalLift.full GroundTheory.Heights₂.Heights.NumbersDVR.BlowUpHorizontalStrict.full
 
-theorem GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_GenericProjClosureDim : GroundTheory.Heights₂.Heights.NumbersDVR.GenericProjClosureDim.Statement :=
-  @GroundTheory.Heights₂.Heights.NumbersDVR.GenericProjClosureDim.proof GroundTheory.Heights₂.Heights.NumbersDVR.DvrConeDimTrdeg.proof GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_PairBundleTrdeg
-
 theorem GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_C3ResidualContractionComponent.{u} : GroundTheory.Heights₂.Heights.NumbersDVR.ResidualContractionComponent.Statement.{u} :=
   @GroundTheory.Heights₂.Heights.NumbersDVR.ResidualContractionComponent.proof.{u} GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_C3BlowUpPieces
 
@@ -126,15 +139,6 @@ theorem GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_LocalCoeffRing.{u} 
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_HomLocRingDimLe.{u} : GroundTheory.Heights₂.Heights.NumbersDVR.HomLocRingDimLe.Statement.{u} :=
   @GroundTheory.Heights₂.Heights.NumbersDVR.HomLocRingDimLe.proof.{u} GroundTheory.Heights₂.Heights.NumbersDVR.HomLocRingMem.proof GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_HomLocRingIsLocal
-
-theorem GroundTheory.Heights₂.Heights.AutoClose.Model_SpreadHomSectionsLoc : GroundTheory.Heights₂.Heights.Model.SpreadHomSectionsLoc.Statement :=
-  @GroundTheory.Heights₂.Heights.Model.SpreadHomSectionsLoc.proof GroundTheory.Heights₂.Heights.Model.ZLocDenominators.proof GroundTheory.Heights₂.Heights.Model.PullbackBasis.proof GroundTheory.Heights₂.Heights.AutoClose.Model_PullInjLoc
-
-theorem GroundTheory.Heights₂.Heights.AutoClose.Model_SpreadLocal : GroundTheory.Heights₂.Heights.Model.SpreadLocal.Statement :=
-  @GroundTheory.Heights₂.Heights.Model.SpreadLocal.proof GroundTheory.Heights₂.Heights.Model.FreeSheafBasis.proof GroundTheory.Heights₂.Heights.AutoClose.Model_BasisIsoFree
-
-theorem GroundTheory.Heights₂.Heights.AutoClose.Model_SpreadHomSections : GroundTheory.Heights₂.Heights.Model.SpreadHomSections.Statement :=
-  @GroundTheory.Heights₂.Heights.Model.SpreadHomSections.proof GroundTheory.Heights₂.Heights.Model.RatDenominators.proof GroundTheory.Heights₂.Heights.Model.PullbackBasis.proof GroundTheory.Heights₂.Heights.AutoClose.Model_GenericPullInj
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.TubeDeepAreaCount : GroundTheory.Heights₂.Heights.TubeDeepAreaCount.Statement :=
   @GroundTheory.Heights₂.Heights.TubeDeepAreaCount.proof GroundTheory.Heights₂.Heights.AutoClose.IsolatedPointsCount

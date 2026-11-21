@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LevelMatchIff
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.FrLink
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicColumnLatticeEqSpanPartTransportedFrameStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MovedTypeVectorsSpanFixedLatticeVectorModLevelStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicEmbeddingBasisLiesInModuleStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MovedTypeVectorsSpanFixedLatticeVectorModLevel
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicEmbeddingBasisLiesInModule
 open MeasureTheory NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.ColDict GlobalTheory.St GlobalTheory.St.G
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -14,7 +14,7 @@ theorem span_mod : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (
   intro D X u wt ιA hW hI c p hc hp hpL hef hz b bd hb hbd y hy
   have h1 := (GlobalTheory.T.adelicColumnLattice_eq_spanPart_transportedFrame D X u wt ιA hW hI).1
   have hv : embA X wt ιA y ∈ X.B.I.Lf := (h1 y).1 hy
-  have hA := GlobalTheory.T.moved_type_vectors_span_fixed_lattice_vector_mod_level D X u c p hc hpL hef hz _ hv (hp y)
+  have hA := _root_.GlobalTheory.St.G.SpanMoved.span_moved D X u c p hc hpL hef hz _ hv (hp y)
   have e1 : (Set.range (fun i => (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p (X.B.I.fmat (X.xu u) *ᵥ X.bw i))) =
       Set.range (fun i => embA X wt ιA (b i)) := by
     congr 1; funext i; exact (hb i).symm
@@ -22,6 +22,6 @@ theorem span_mod : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (
       Set.range (fun i => embA X wt ιA (bd i)) := by
     congr 1; funext i; exact (hbd i).symm
   rw [e1, e2] at hA
-  exact GlobalTheory.T.adelic_embedding_basis_lies_in_module D X u wt ιA hW hI b bd y hA
+  exact _root_.GlobalTheory.St.G.TransportCong.inModL_of_inMod_embA D X u wt ιA hW hI b bd y hA
 
 end GlobalTheory.St.G.FrameSpan

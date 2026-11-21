@@ -1,5 +1,12 @@
 import Formalism.WachLatticeTwists.CupProductVanishing.Statement
-import Formalism.WachLatticeTwists.CharacterSplitJumps.CharacterJumpProofs.PropLocContBK
+import Formalism.WachLatticeTwists.LatticeDualFibres.FibreDualStable
+import Formalism.WachLatticeTwists.CharacterSplitJumps.CharacterJumpProofs.MemAnnih
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.LocDualOrth
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.QuotLen
+import Formalism.WachLatticeTwists.LatticeDualFibres.Statement
+import ReciprocityTheory.GaloisValuations.ContinuousConstSMulQuotient
+import Formalism.WachLatticeTwists.LatticeDualFibres.StatDualFibreLattice
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.ExistsBasisOfLattice
 
 variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
 
@@ -21,17 +28,5 @@ theorem compat : StatCompat := by
       | H t => rfl
   rw [h, hc]
   rfl
-
-theorem realise_of (hI : StatInvGK) : StatRealise := by
-  intro p _ K O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ D hK hO hF hD
-  obtain ⟨inv, invF, h⟩ := hI p K O hK hO hF D.ε hD.cyc
-  exact ⟨inv.toLinearMap, invF.toLinearMap,
-    ⟨hD.cyc, hD.lat, hD.perf, hD.contT, hD.openT, hD.t2, hD.t2', hD.cs, hD.cs'⟩, inv.bijective, invF.bijective, h⟩
-
-theorem propLocGK_of (h1 : StatFinGK) (h2 : StatRatGK) (h3 : StatIntGK) : StatPropLocGK := by
-  intro p _ K O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ D HfV HfV' ℓ e' ι₁ ι₂ P Q hK hO hF hD hi hiF hc hBK hsat hP hQ
-  exact propLocContBK O (GK p K) VT VT' D HfV HfV' (pairF D) ℓ e' ι₁ ι₂ P Q hD.lat hD.perf
-    (h1 p K O VT VT' D hK hO hD) hc hBK hsat (h2 p K O VT VT' D hK hO hF hD hiF)
-    (compat O (GK p K) VT VT' D hc) (h3 p K O VT VT' D hK hO hF hD hi) hP hQ
 
 end Formalism.RepresentationBoundsCohomology.T2

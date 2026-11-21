@@ -83,10 +83,6 @@ lemma prj_mem_of_span {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (W : Subm
   | add x y _ _ hx hy => rw [prj_add_lemma_6]; exact add_mem hx hy
   | smul r x _ hx => rw [prj_rsmul]; exact W.smul_of_tower_mem r hx
 
-lemma span_act {dim : (E →+* ℂ) → ℕ} (S : Set (Vsp dim))
-    (hS : ∀ (α : 𝓞 E) y, y ∈ S → act α y ∈ S) (α : 𝓞 E) {a : Vsp dim}
-    (ha : a ∈ Submodule.span ℝ S) : act α a ∈ Submodule.span ℝ S := act_span_lemma_3 S α (fun y hy => Submodule.subset_span (hS α y hy)) ha
-
 end ChA
 end
 end ReciprocityTheory.ChartRestriction.G.I2

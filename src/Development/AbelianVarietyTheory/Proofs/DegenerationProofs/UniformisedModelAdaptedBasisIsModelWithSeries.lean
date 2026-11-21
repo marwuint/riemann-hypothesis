@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.IsAffineSplitT
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CompanionTheory
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisedTestDimensionsAndSplitFibre
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyGeometricSpecialFibreUniformisedStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GoodReductionAdaptedBasisStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyGeometricSpecialFibreUniformised
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GoodReductionAdaptedBasis
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaSeriesAtPointIntegralOfPeriodValuationStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -21,7 +21,7 @@ theorem utest_nonempty_mod : GlobalTheory.UT.LL → UTorsSt → ∀ (o Ω : Type
   intro hL hT o Ω _ _ _ _ S ρ p _ y₀ u l σ cls f hb
   obtain ⟨-, hdim, hsm, h4, -⟩ := utest_dim_and_split hL o Ω S ρ p y₀ u
   have h1 : 1 ≤ S.N := le_trans (by norm_num) h4
-  obtain ⟨fb⟩ := GlobalTheory.T.nonempty_geometric_special_fibre_uniformised hL o Ω S ρ p y₀ u S.N h1
+  obtain ⟨fb⟩ := _root_.GlobalTheory.ZH.UFib.nonempty_fibOf hL o Ω S ρ p y₀ u S.N h1
   obtain ⟨F, hF, hred⟩ := fb.exp S.J σ f (fun i => hb.2.2.2.1 i 0)
   refine ⟨{ isLB := LB.isLB_linComb u.U.LG.isLB _ _
             smooth := hsm
@@ -30,7 +30,7 @@ theorem utest_nonempty_mod : GlobalTheory.UT.LL → UTorsSt → ∀ (o Ω : Type
             cart := fb.cart
             xe := fb.xe
             F := F
-            good := GlobalTheory.T.good_reduction_adapted_basis hL o Ω S ρ p y₀ u l S.N fb h1 S.J σ cls f hb F hF
+            good := _root_.GlobalTheory.ZH.RedGood.good_reduction hL o Ω S ρ p y₀ u l S.N fb h1 S.J σ cls f hb F hF
             pol := fb.pol
             dim := ?_
             red := hred

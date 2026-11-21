@@ -5,7 +5,10 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundleStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundle
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsChartBundle
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueLatOfChartBundle
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.AlternatingMapSumSmulEqDetSmul
@@ -282,7 +285,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
         e₀⁻¹ • Pw = (u * chartMono Dc.y c aMu) • PiTensorProduct.tprod Ω fun τ => quotWedge (F τ) hj (b τ) := by
     intro l hfl
     obtain ⟨V, ⟨b, hspan, hhead, hmem, hfr⟩, hV⟩ := hl l
-    refine ⟨b, fun τ => ⟨(GlobalTheory.T.segre_chart_bundle 𝔐.X Ω 𝔐.ξ K J Dc.y (W τ) Dc.N (Dc.W τ) _ hT (hvb τ) (hch τ) c (f l) (b τ) hc (hf l) hfl).2
+    refine ⟨b, fun τ => ⟨(_root_.GlobalTheory.CompanionTheory.Ar.isFrameOver_iff_forall_isFrameAt 𝔐.X Ω 𝔐.ξ K J Dc.y (W τ) Dc.N (Dc.W τ) _ hT (hvb τ) (hch τ) c (f l) (b τ) hc (hf l) hfl).2
       fun p hp hu => (hfr τ p (hV p hp hu)).1, hspan τ, hhead τ⟩, ?_⟩
     have hex : ∀ τ, ∃ T : Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) Ω,
         ∀ a, i τ (b τ (tailIdx hj a)) = ∑ a', T a' a • s τ a' := fun τ => by

@@ -4,16 +4,19 @@ import Formalism.LocalToGlobal.HermitianColumns.SymAll
 import Formalism.LocalToGlobal.GroupLattices.DownNaturalLevelZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlESymmApply
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinsumPairsAboveEqAffineHyperplaneStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfUpSumOfNormStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfUpSumOfNorm
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelPrimeUnramifiedUniformizerStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivariantLocalPairMapAdelicStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpwardLevelMoveIncidenceOfPairsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DownwardLevelMoveReachesKernelLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicFormValuesNearPointSpecStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivariantLocalPairMapAdelic
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpwardLevelMoveIncidenceOfPairs
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DownwardLevelMoveReachesKernelLattice
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicFormValuesNearPointSpec
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpwardOperatorMemAdelicFormsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpwardHeckeOperatorCommuteDiamondStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpwardHeckeOperatorCommuteDiamond
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpwardOperatorPreservesRationalityStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RamifiedFormsCommensurableOfUStableInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RamifiedFormsCommensurableOfUStableInjective
+import Formalism.LocalRingCardinality.DataLatDefs
+import Formalism.LocalRingCardinality.Lemmas
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IndexAtLevelIffOuterClausesAnd
 
 open Formalism.BasicNotions Formalism.L2.Forms Formalism.UG Formalism.L2.GlobalTheoryTheory.LocalLatticeBases NumberField IsDedekindDomain Matrix GlobalTheory.LevelHecke
 open scoped TensorProduct
@@ -120,14 +123,14 @@ theorem uop_rs (g) (hg : g ∈ AdFun T.cls0.lev (embT D)) :
     obtain ⟨γ, η, κ, h1, h2, h3, h4, h5, h6⟩ := T.up_natural_level_zero.upTie v c z hw
     refine ⟨η, h1, ?_, h6 g hg⟩
     rw [pair_move hp γ _ _ η κ h2, hy]
-    exact ⟨(pc_ok _ _ _).act _, GlobalTheory.T.upwardLevelMove_incidence_of_pairs D u T.atT 0 _ T.lv0 T.cls0 v c _ z γ.1 hw h3 h4 h5⟩
+    exact ⟨(pc_ok _ _ _).act _, _root_.GlobalTheory.LevelHecke.up_move_incidence D u T.atT 0 _ T.lv0 T.cls0 v c _ z γ.1 hw h3 h4 h5⟩
   choose! η h1 h2 h3 using key
   have hsum := GlobalTheory.T.finsum_pairsAbove_eq_affineHyperplane _ _ _ _ _ (T.atT.res v) (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) (pc T.lv0 v c)
     (locExt (T.atT.res v) (Ld D u 0 (Nat.zero_le _) c) (T.lv0.pr v c)) ((D.fm u).fv 0 v c)
     (fun w => p (T.cls0.y c * η w)) (valAt (T.atT.eV v).1 p g (T.cls0.y c)) (T.atT.res_surj v) hun.1 torsionFree
     (pc_ok T.lv0 v c).sat
     (locExt_red _ _ hun _ _ (T.lv0.pr_smul v c) (T.lv0.pr_surj v c) (T.lv0.pr_ker v c)) (fun _ _ => rfl) h2
-  have hval := (GlobalTheory.T.adelicForm_values_near_point_spec _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p (level_places_not_bad T.atT v) hp g hg).1
+  have hval := (_root_.GlobalTheory.LevelHecke.ValAt.valAt_spec _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p (level_places_not_bad T.atT v) hp g hg).1
   funext s
   show _ = upAd _ _ _ p g (T.cls0.y c) (T.val0.eY s)
   unfold upAd
@@ -159,7 +162,7 @@ theorem uop_rho (hok : ∀ x, (p x).Ok (T.atT.res v)) (φ : LT.Fn D u 0) (hφ : 
     intro h
     obtain rfl : v' = v := T.atT.eV.injective (Subtype.ext h)
     rw [hk]; exact a.ne_zero
-  exact (congrFun (GlobalTheory.T.upwardHeckeOperator_commute_diamond _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p (level_places_not_bad T.atT v) hp
+  exact (congrFun (_root_.GlobalTheory.LevelHecke.UpDia.upAd_dia _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p (level_places_not_bad T.atT v) hp
     (T.atT.res v) _ (T.atT.res_surj v) hok g hg.1 _ (T.atT.eV v').2 k δ (level_places_not_bad T.atT v') hne hδ _) _).symm
 
 theorem uop_ram (hok : ∀ x, (p x).Ok (T.atT.res v)) (φ : LT.Fn D u 0) (hφ : φ ∈ (D.mem u).A.Mram) : LT.Uop D u 0 v φ ∈ (D.mem u).A.Mram := by
@@ -179,7 +182,7 @@ theorem uop_inj (φ : LT.Fn D u 0) (hφ : φ ∈ (D.mem u).A.Mram) (h0 : LT.Uop 
   obtain ⟨g, hg, rfl⟩ := (mem_Fi T φ).1 h1
   have hun := GlobalTheory.T.levelPrime_unramifiedUniformizer D u T.atT v
   have hb := level_places_not_bad T.atT v
-  obtain ⟨hv1, hv2, hv3⟩ := GlobalTheory.T.adelicForm_values_near_point_spec _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p hb hp g hg.1
+  obtain ⟨hv1, hv2, hv3⟩ := _root_.GlobalTheory.LevelHecke.ValAt.valAt_spec _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p hb hp g hg.1
   have hU := GlobalTheory.T.upwardOperator_mem_adelicForms _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p hb hp
     (T.atT.res v) (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) _ g hg
   rw [uop_rs T v p hp hy g hg.1] at h0
@@ -202,14 +205,14 @@ theorem uop_inj (φ : LT.Fn D u 0) (hφ : φ ∈ (D.mem u).A.Mram) (h0 : LT.Uop 
   haveI : Module.Finite ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) :=
     Module.finite_of_finrank_pos (by rw [(D.fm u).lk_rank]; exact D.R.N_pos 0)
   haveI : Finite ((D.fm u).lk 0 v c) := Module.finite_of_finite ((D.mem u).A.Fv v)
-  have hinj := GlobalTheory.T.eq_zero_of_sum_inc_eq_zero_of_sum_dil_eq_zero _ _ _ _ _ (T.atT.res v) (((D.mem u).A.T : ℕ) : 𝓞 D.host.E)
+  have hinj := _root_.GlobalTheory.LevelHecke.eq_zero_of_upSum_of_norm _ _ _ _ _ (T.atT.res v) (((D.mem u).A.T : ℕ) : 𝓞 D.host.E)
     (loc (T.atT.res v) (Lk T.atT 0 (Nat.zero_le _) v c))
     (locExt (T.atT.res v) (Lk T.atT 0 (Nat.zero_le _) v c) (T.lv0.prk v c)) (valAt (T.atT.eV v).1 p g (T.cls0.y c))
     (T.atT.res_surj v) hun.1 torsionFree (loc_sat _ _)
     (locExt_red _ _ hun _ _ (T.lv0.prk_smul v c) (T.lv0.prk_surj v c) (T.lv0.prk_ker v c))
     (fun g' hg' => by
       obtain ⟨γ, η, κ, e1, e2, e3, e4, -⟩ := T.down_natural_level_zero v c g' hg'
-      obtain ⟨f1, f2⟩ := GlobalTheory.T.downwardLevelMove_reaches_kernelLattice D u T.atT 0 _ T.lv0 T.cls0 v c _ g' γ.1 e3 e4
+      obtain ⟨f1, f2⟩ := _root_.GlobalTheory.LevelHecke.pc_act_down D u T.atT 0 _ T.lv0 T.cls0 v c _ g' γ.1 e3 e4
       have hm := pair_move hp γ _ _ η κ e2
       rw [hy] at hm
       refine ⟨_, f1, f2, ?_⟩
@@ -242,8 +245,8 @@ theorem commensurable_of_tied (D : D7) (u : D.what₂.Word) (T : Forms0 D u)
     (h : ∀ i v h x, ∃ r : D.what₂.LL, D.what₂.embLL r = T.gl.psi0 i v h x) (w : D.what₂.places.Pl) :
     ∃ n : ℕ, n ≠ 0 ∧ (∀ x ∈ DV.MramL D u, D.nuIn u (n • x) ∈ LT.Nlam D u w) ∧
       ∀ x, D.nuIn u x ∈ LT.Nlam D u w → InLoc (D.plEq w) (DV.MramL D u) (n • x) := by
-  choose p hp hy hok using GlobalTheory.T.exists_equivariant_local_pair_map_adelic D u T.atT 0 _ T.lv0 T.cls0 T.fMe0 T.fv0 (Main.herm T)
-  refine GlobalTheory.T.ramifiedForms_commensurable_of_U_stable_injective D u (fun v x hx => ?_) (fun v φ hφ => Main.uop_inj T v (p v) (hp v) (hy v) φ hφ) w
+  choose p hp hy hok using _root_.GlobalTheory.LevelHecke.exists_pmap D u T.atT 0 _ T.lv0 T.cls0 T.fMe0 T.fv0 (Main.herm T)
+  refine _root_.GlobalTheory.LevelCommensurable.commensurable D u (fun v x hx => ?_) (fun v φ hφ => Main.uop_inj T v (p v) (hp v) (hy v) φ hφ) w
   have h1 := Main.uop_ram T v (p v) (hp v) (hy v) (hok v) _ hx
   obtain ⟨y, hy'⟩ := GlobalTheory.T.upwardOperator_preserves_rationality D u T h v x (by rw [(D.fm u).Fi_zero]; exact h1.1)
   exact ⟨y, by show (D.fm u).emb 0 y ∈ (D.mem u).A.Mram; rw [hy']; exact h1, hy'⟩

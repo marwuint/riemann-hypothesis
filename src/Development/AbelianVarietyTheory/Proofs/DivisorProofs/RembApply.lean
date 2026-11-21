@@ -35,7 +35,4 @@ def phi1 (k : ℕ) (w : ℂ) (t : ℝ) : ℂ :=
 def Phi (k : ℕ) (z : (F →+* ℝ) → ℂ) (ξ : RSp F) : ℂ :=
   ∏ τ : F →+* ℝ, phi1 k (z τ) (ξ τ)
 
-example : phi1 2 Complex.I 1 ≠ 0 := by
-  simp [phi1, Complex.exp_ne_zero]
-
 end GlobalTheory.LipschitzTR

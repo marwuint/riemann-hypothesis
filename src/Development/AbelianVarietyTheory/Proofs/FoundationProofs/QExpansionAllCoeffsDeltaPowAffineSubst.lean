@@ -6,8 +6,8 @@ import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJTau
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModBasic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QAllQConjOfDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QExpansionCoeffsInSubringRingClosedStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularDiscriminantDivQIntegerQExpansionsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionAllCoeffsCompUpperTriangularStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularDiscriminantDivQIntegerQExpansions
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionAllCoeffsCompUpperTriangular
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators
 open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
@@ -43,11 +43,11 @@ theorem qAll_pole_affine : ∀ (E : Subring ℂ) (N w a d : ℕ) (b : ℤ) (φ :
   obtain ⟨d', rfl⟩ : ∃ d', d = d' + 1 := ⟨d - 1, by omega⟩
   have hM : 0 < N * (a * (d' + 1)) := by positivity
   have RC := GlobalTheory.T.qExpansionCoeffsInSubring_ring_closed E (N * (a * (d' + 1))) hM
-  obtain ⟨hDq, hqD⟩ := GlobalTheory.T.modularDiscriminant_div_q_integer_qExpansions
+  obtain ⟨hDq, hqD⟩ := _root_.GlobalTheory.FN.dd_div_q_and_q_div_dd
   have h1 := QAll.of_dvd hM ⟨a, by ring⟩ E.zero_mem
-    (GlobalTheory.T.qExpansionAllCoeffs_comp_upper_triangular E N a (d' + 1) b _ hE hN ha (by omega) hφ)
+    (_root_.GlobalTheory.FNQ.qAll_affine E N a (d' + 1) b _ hE hN ha (by omega) hφ)
   have h2 := QAll.of_dvd hM ⟨N * a, by ring⟩ E.zero_mem
-    (GlobalTheory.T.qExpansionAllCoeffs_comp_upper_triangular E 1 a (d' + 1) b _ hE one_pos ha (by omega) (qAll_of_int E hqD))
+    (_root_.GlobalTheory.FNQ.qAll_affine E 1 a (d' + 1) b _ hE one_pos ha (by omega) (qAll_of_int E hqD))
   have h3 := QAll.of_dvd hM (one_dvd _) E.zero_mem (qAll_of_int E hDq)
   have h2w := RC.2.2.2.2.1 _ w h2
   have h3w := RC.2.2.2.2.1 _ (w * (a * (d' + 1))) h3

@@ -101,10 +101,6 @@ theorem comp_invT_mem_mspanR (π : CuspSub E a) (F : GA E a → ℂ) (hF : F ∈
   rw [← rspan_eq_mspanR] at hF ⊢
   exact (memT F).1 (hle hF)
 
-example (π : CuspSub E a) {φ : Sm E a} (hφ : φ ∈ π.V) :
-    (fun g => φ.1 (invT a (Ad E) g)) ∈ mspanR π.contra ∧ mspanR π.contra ≠ ⊥ :=
-  ⟨comp_invT_mem_mspanR π φ.1 (rspan_eq_mspanR π ▸ mem_rspan hφ), rspan_eq_mspanR π.contra ▸ rspan_ne_bot _⟩
-
 theorem invT_mem_mspanR_contra : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a)
     (F : GA E a → ℂ), F ∈ GlobalTheory.JSW.mspanR π → (fun g => F (invT a (Ad E) g)) ∈ GlobalTheory.JSW.mspanR π.contra :=
   fun _ _ _ _ _ π F hF => comp_invT_mem_mspanR π F hF

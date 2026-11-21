@@ -92,19 +92,6 @@ variable {R : Type*} [CommRing R] {σ : Type*}
 def minorPolynomial (R : Type*) [CommRing R] {k : ℕ} (g : Fin k → Fin k → σ) : MvPolynomial σ R :=
   (Matrix.of fun i j => (X (g i j) : MvPolynomial σ R)).det
 
-theorem minorPolynomial_ne_zero [IsDomain R] {k : ℕ} (g : Fin k → Fin k → σ)
-    (hg : Function.Injective (fun x : Fin k × Fin k => g x.1 x.2)) : minorPolynomial R g ≠ 0 := by
-  have e : minorPolynomial R g = rename (fun x : Fin k × Fin k => g x.1 x.2)
-      (Matrix.mvPolynomialX (Fin k) (Fin k) R).det := by
-    rw [AlgHom.map_det, minorPolynomial]
-    congr 1
-    ext i j
-    simp [Matrix.mvPolynomialX]
-  rw [e]
-  intro h
-  apply Matrix.det_mvPolynomialX_ne_zero (m := Fin k) (R := R)
-  exact (rename_injective _ hg) (by rw [h, map_zero])
-
 theorem minorPolynomial_isWeightedHomogeneous {k : ℕ} (g : Fin k → Fin k → σ) (w : σ → ℕ) (u v : Fin k → ℕ)
     (hw : ∀ i j, w (g i j) = u i + v j) :
     IsWeightedHomogeneous w (minorPolynomial R g) (∑ i, u i + ∑ j, v j) := by
@@ -128,38 +115,11 @@ theorem minorPolynomial_isWeightedHomogeneous {k : ℕ} (g : Fin k → Fin k →
   rw [zero_add] at this
   exact this
 
-theorem minorPolynomial_mem_supported {k : ℕ} (g : Fin k → Fin k → σ) (S : Set σ) (hS : ∀ i j, g i j ∈ S) :
-    minorPolynomial R g ∈ supported R S := by
-  classical
-  rw [minorPolynomial, Matrix.det_apply']
-  apply Subalgebra.sum_mem
-  intro τ _
-  apply Subalgebra.mul_mem
-  · exact Subalgebra.intCast_mem _ _
-  · apply Subalgebra.prod_mem
-    intro i _
-    simp only [Matrix.of_apply]
-    exact Algebra.subset_adjoin ⟨g (τ i) i, hS _ _, rfl⟩
-
 theorem pderiv_eq_zero_of_supported {S : Set σ} {f : MvPolynomial σ R} (hf : f ∈ supported R S)
     {v : σ} (hv : v ∉ S) : pderiv v f = 0 := by
   apply pderiv_eq_zero_of_notMem_vars
   intro h
   exact hv ((mem_supported.1 hf) h)
-
-theorem pderiv_mem_supported {S : Set σ} {f : MvPolynomial σ R} (hf : f ∈ supported R S)
-    (v : σ) : pderiv v f ∈ supported R S := by
-  classical
-  by_cases hv : v ∈ S
-  · rw [supported_eq_range_rename] at hf ⊢
-    obtain ⟨g, rfl⟩ := hf
-    have := pderiv_rename (R := R) Subtype.val_injective (⟨v, hv⟩ : S) g
-    simp only at this
-    change pderiv v (rename Subtype.val g) ∈ _
-    rw [this]
-    exact AlgHom.mem_range_self _ _
-  · rw [pderiv_eq_zero_of_supported hf hv]
-    exact Subalgebra.zero_mem _
 
 end Minor
 

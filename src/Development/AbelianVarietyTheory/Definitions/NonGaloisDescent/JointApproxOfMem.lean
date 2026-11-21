@@ -21,35 +21,6 @@ def JointApprox {k Γ : Type} [NormedField k] [Group Γ] {a : ℕ} (r : Γ →* 
     (t : Set (Γ →* GL (Fin a) k)) ⊆ C ∧ (∀ g : Γ, ‖trc r g - ∑ ρ ∈ t, c ρ * trc ρ g‖ ≤ ε) ∧
       ∀ j ≤ n, ‖S j - ∑ ρ ∈ t, c ρ * s ρ j‖ ≤ ε
 
-section Local
-
-variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
-    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
-    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
-    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
-    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
-    (PD : Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR)
-    {LL : Type} [Field LL] [Algebra Qp LL]
-    {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
-    (ρ : Representation LL G V)
-
-def IsPhiD (T : ↥(Formalism.WeaklyAdmissibleFiltrations.Dcris PD ρ) ≃ₗ[LL] ↥(Formalism.WeaklyAdmissibleFiltrations.Dcris PD ρ)) : Prop :=
-  ∀ x, ((T x : ↥(Formalism.WeaklyAdmissibleFiltrations.Dcris PD ρ)) : V ⊗[Qp] B) = Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := V) x
-
-open Classical in
-
-def phiTr (m : ℤ) : LL :=
-  if h : ∃ T, IsPhiD PD ρ T then
-    LinearMap.trace LL _ ((h.choose ^ ((Module.finrank Qp K₀ : ℤ) * m) : ↥(Formalism.WeaklyAdmissibleFiltrations.Dcris PD ρ) ≃ₗ[LL] ↥(Formalism.WeaklyAdmissibleFiltrations.Dcris PD ρ)) :
-      ↥(Formalism.WeaklyAdmissibleFiltrations.Dcris PD ρ) →ₗ[LL] ↥(Formalism.WeaklyAdmissibleFiltrations.Dcris PD ρ))
-  else 0
-
-open Classical in
-
-def phiLetter (m : ℤ) : LL := phiTr PD ρ m / (Module.finrank Qp K₀ : LL)
-
-end Local
-
 section Om
 
 variable {l : ℕ} [Fact l.Prime]
@@ -66,13 +37,6 @@ def CrysLe (P : LocPrime l) (K : FinExt l) {a : ℕ} (ρ : ↥(GK K) →* GL (Fi
   ∃ (L : FinExt l) (r' : ↥(GK K) →* GL (Fin a) ↥L.1), IsMod ρ L r' ∧ Formalism.WeaklyAdmissibleFiltrations.IsCrys (P.PD K) (matRep L r') ∧
     Formalism.WeaklyAdmissibleFiltrations.DdR (P.PD K) (matRep L r') ≤ Formalism.WeaklyAdmissibleFiltrations.FilV (P.PD K) (LL := ↥L.1) (V := Fin a → ↥L.1) (-(N : ℤ)) ∧
     Formalism.WeaklyAdmissibleFiltrations.DdR (P.PD K) (matRep L r') ⊓ Formalism.WeaklyAdmissibleFiltrations.FilV (P.PD K) (LL := ↥L.1) (V := Fin a → ↥L.1) ((N : ℤ) + 1) = ⊥
-
-open Classical in
-
-def phiOm (P : LocPrime l) (K : FinExt l) {a : ℕ} (ρ : ↥(GK K) →* GL (Fin a) (Om l)) (m : ℤ) : Om l :=
-  if h : ∃ (L : FinExt l) (r' : ↥(GK K) →* GL (Fin a) ↥L.1), IsMod ρ L r' then
-    ((phiLetter (P.PD K) (matRep h.choose h.choose_spec.choose) m : ↥h.choose.1) : Om l)
-  else 0
 
 end Om
 

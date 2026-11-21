@@ -15,8 +15,6 @@ abbrev GrpSch (S : Scheme.{u}) : Type (u + 1) := Grp (Over S)
 def IsAbSch {S : Scheme.{u}} (A : GrpSch S) : Prop :=
   IsCommMonObj A.X ∧ IsProper A.X.hom ∧ Smooth A.X.hom ∧ GeometricallyConnected A.X.hom
 
-def AbSch (S : Scheme.{u}) : Type (u + 1) := {A : GrpSch S // IsAbSch A}
-
 def bchG {S T : Scheme.{u}} (f : T ⟶ S) (A : GrpSch S) : GrpSch T :=
   (Over.pullback f).mapGrp.obj A
 
@@ -41,17 +39,5 @@ structure ModelG (O : Type u) [CommRing O] [IsLocalRing O] where
   Z : Scheme.{u}
   str : Z ⟶ Spec (CommRingCat.of O)
   G : GrpSch Z
-
-def ModelG.spf {O : Type u} [CommRing O] [IsLocalRing O] (M : ModelG O) : Scheme.{u} :=
-  M.str.fiber (IsLocalRing.closedPoint O)
-
-def ModelG.Gen {O : Type u} [CommRing O] [IsLocalRing O] (M : ModelG O) : Type u :=
-  ↥(irreducibleComponents M.spf)
-
-def ModelG.gpt {O : Type u} [CommRing O] [IsLocalRing O] (M : ModelG O) (η : M.Gen) : M.Z :=
-  M.str.fiberι _ (η.2.1.genericPoint)
-
-def ModelG.abAt {O : Type u} [CommRing O] [IsLocalRing O] (M : ModelG O) (η : M.Gen) : Prop :=
-  AbelianAt M.G (M.gpt η)
 
 end Formalism.MainNotions.DIV.Cons

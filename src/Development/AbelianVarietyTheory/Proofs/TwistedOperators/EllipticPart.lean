@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHasCls
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsInertPlOfInertOff
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinitePreimageOfNhdsZero
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyUnitaryTorusOrbitalClassTrivialLocalStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyUnitaryTorusOrbitalClassTrivialLocal
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalStableOrbitalIntegralsWellDefinedStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralCharpolyKernelEqStableOrbitalIntegralsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTorusClassOfIrreducibleCharpolyUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryTorusCompactQuotientFiniteVolumeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTorusClassOfIrreducibleCharpolyUnitary
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryTorusCompactQuotientFiniteVolume
 open MeasureTheory Set Filter Polynomial NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots GlobalTheory.TrEll
@@ -78,7 +78,7 @@ theorem elliptic_expansion {E : Type} [Field E] [NumberField E] {F : Subfield E}
     refine finsum_group (fun γ : GRat σ J => γ.1.1.charpoly) _ hinj _ (fun γ => ⟨fun h => ?_, ?_⟩)
       (u := fun γ => tensor σ J fa ff ((Quotient.out q)⁻¹ * ratEmb σ J γ * Quotient.out q))
       ((hfinx (Quotient.out q)).subset fun γ h => subset_tsupport _ h) S (hS _)
-    · obtain ⟨P, hP, -⟩ := (GlobalTheory.T.exists_torusClass_of_irreducible_charpoly_unitary F E σ hcm r J hJ).2 γ h
+    · obtain ⟨P, hP, -⟩ := (_root_.GlobalTheory.TrEll.RatEll.exists_cls_of_irreducible F E σ hcm r J hJ).2 γ h
       exact ⟨P, hP⟩
     · rintro ⟨P, hP⟩
       rw [hP]
@@ -91,12 +91,12 @@ theorem elliptic_expansion {E : Type} [Field E] [NumberField E] {F : Subfield E}
     refine finsum_eq_zero_of_forall_eq_zero fun δ => ?_
     by_contra h
     exact hn (hS _ δ.1 P h δ.2)
-  refine ⟨fun P => ⟨⟨(GlobalTheory.T.unitaryTorus_compact_quotient_finite_volume F E σ hcm r P).2 _ (ht P).haar, fun v => ?_, ?_⟩, fun w => ?_⟩,
+  refine ⟨fun P => ⟨⟨(_root_.GlobalTheory.TorCompact.torus_compact_finiteVol F E σ hcm r P).2 _ (ht P).haar, fun v => ?_, ?_⟩, fun w => ?_⟩,
     S.finite_toSet.subset hsupp, ?_, ?_⟩
   · exact (GlobalTheory.T.local_stable_orbital_integrals_well_defined F E σ hcm r r P J hJ).1 v _ _ _ (hμ.haar_loc v) ((ht P).haar_loc v) (hf.1 v).1.continuous
       (hf.1 v).2
   · have := isLattice_stdLattice (E := Fld P) (n := 1)
-    filter_upwards [GlobalTheory.T.eventually_unitaryTorus_orbitalClass_trivial_local F E σ hcm r P J hJ L, hf.2, hμ.eventually_eq_one,
+    filter_upwards [_root_.GlobalTheory.TrEll.eventually_unitLoc_orbCls F E σ hcm r P J hJ L, hf.2, hμ.eventually_eq_one,
       IsRestrictedProd.eventually_eq_one (ht P)] with v h1 h2 h3 h4
     have h5 := h1.2.2.2 (μf v) (dtf P v) (hμ.haar_loc v) ((ht P).haar_loc v) h3 h4
     rw [h2, Phi, finsum_eq_single _ ⟨1, h1.1⟩ fun q hq => (h5 q).2 fun e => hq (Subtype.ext e)]
@@ -106,11 +106,5 @@ theorem elliptic_expansion {E : Type} [Field E] [NumberField E] {F : Subfield E}
     exact integrable_finsetSum _ fun P _ => (hpol P).1
   · rw [hsum, integral_finsetSum _ fun P _ => (hpol P).1, finsum_eq_sum_of_support_subset _ hsupp, hterm]
     exact Finset.sum_congr rfl fun P _ => (hpol P).2
-
-theorem ellipticPart : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.EllipticPart := by
-  intro D V lam S M T U μa μf μ fa ff h dta dtf dt ht
-  obtain ⟨-, -, -, -, hμ, ha, hf⟩ := h
-  exact elliptic_expansion (isCMExt_host D) (GlobalTheory.InertOfConj.unram D) (isHermND_gram V) (frameLat V) hμ ha.mem hf.isFinFamily
-    dta dtf dt ht _ rfl _ rfl
 
 end GlobalTheory.TrEllSum

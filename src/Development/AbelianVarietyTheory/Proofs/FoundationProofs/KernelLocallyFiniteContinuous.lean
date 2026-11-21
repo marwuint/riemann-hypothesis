@@ -31,15 +31,4 @@ theorem continuous_kernel [LocallyCompactSpace G] (hf : Continuous f) (hc : HasC
   refine h.congr fun p => ?_
   exact (tsum_eq_finsum (finite_support_kernel hc p.1 p.2)).symm
 
-theorem kernel_locallyFinite_continuous :
-    ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
-      (Γ : Subgroup G) [DiscreteTopology Γ] (f : G → ℂ), Continuous f → HasCompactSupport f →
-      (∀ C C' : Set G, IsCompact C → IsCompact C' → {γ : Γ | ∃ x ∈ C, ∃ y ∈ C', f (x⁻¹ * γ * y) ≠ 0}.Finite) ∧
-        Continuous (fun p : G × G => kernel Γ f p.1 p.2) ∧ Continuous (orbitSum Γ f) := by
-  intro G _ _ _ _ _ Γ _ f hf hc
-  refine ⟨fun C C' hC hC' => finite_contributing hc hC hC', continuous_kernel hf hc, ?_⟩
-  refine ((continuous_kernel (Γ := Γ) hf hc).comp (continuous_const.prodMk continuous_id :
-    Continuous fun x : G => ((1 : G), x))).congr fun x => ?_
-  simp [kernel, orbitSum]
-
 end GlobalTheory.AutomorphicL2KernelContinuous

@@ -8,7 +8,7 @@ open Finset Classical Formalism.BasicNotions
 
 namespace Formalism.MainNotions.N.K.QS
 
-open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic Formalism.RepresentationBoundsCohomology.JL Formalism.RepresentationBoundsCohomology.JT Formalism.RepresentationBoundsCohomology.JS Formalism.RepresentationBoundsCohomology.SplitClassesAll Formalism.RepresentationBoundsCohomology.LocallyConstantCohomology Formalism.RepresentationBoundsCohomology.FIN
+open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic Formalism.RepresentationBoundsCohomology.JL Formalism.RepresentationBoundsCohomology.JT Formalism.RepresentationBoundsCohomology.SplitClassesAll Formalism.RepresentationBoundsCohomology.LocallyConstantCohomology Formalism.RepresentationBoundsCohomology.FIN
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.N.K
 open Formalism.RepresentationBoundsCohomology.ringDataObjects (RingData RingDef)
 
@@ -347,8 +347,6 @@ theorem locClause (hE : Ev r π Dd) (hN : RepresentationBoundsCohomology.NormAt 
     (hS : LocS i Dd c'.succ) : LocClause i dc Dd c'.succ :=
   ⟨locQ i dc r ρ π Dd hE hN hG5 h5x hQP c', inertia_triviality_clause i r ρ π Dd hE hG4 hdec, hS⟩
 
-theorem c1_eq : (c1 (D := D)) = Fin.succ (⟨0, RepresentationBoundsCohomology.one_le_letterBlockLength D.R⟩ : Fin D.R.t) := Fin.ext rfl
-
 end Assemble
 
 section LocSpde
@@ -541,20 +539,6 @@ theorem Fall_succ (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) (c
 theorem Fall_zero (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) :
     Fall i dc Dd F0 0 = F0 := rfl
 
-theorem qsAll (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
-    (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (hAdm : LargeLevelLemmas.admitted i r ρ π) (hQP : QPow i) :
-    InertiaActsTrivially i Dd ∧ (∀ c : Fin (D.R.t + 1), c ≠ 0 → LocClause i dc Dd c) ∧ LocClause i dc Dd (c1 (D := D)) ∧
-      CoverClause i dc Dd ∧ NoFixedVectorOffZ i Dd := by
-  obtain ⟨-, -, -, -, -, -, -, hG4, -, hG5, h5x, hG6, -, -, -, -, hdec, -⟩ := hAdm
-  have hE := ev_of hD
-  have hloc : ∀ c : Fin (D.R.t + 1), c ≠ 0 → LocClause i dc Dd c := by
-    intro c hc
-    obtain ⟨c', rfl⟩ := Fin.exists_succ_eq.2 hc
-    exact locClause i dc r ρ π Dd hE hN hG4 hdec hG5 h5x hQP c' (locS i r ρ π Dd hE hN hG5 h5x c')
-  refine ⟨inertia_triviality_clause i r ρ π Dd hE hG4 hdec, hloc, hloc _ ?_, coverClause i dc Dd, no_fixed_vector_off_z i r π Dd hE hG6⟩
-  rw [c1_eq]
-  exact Fin.succ_ne_zero _
-
 end Final
 
 section Shape
@@ -572,9 +556,6 @@ theorem idx_not_qs {v : HeightOneSpectrum (𝓞 D.host.E)} (hv : v ∈ plSet i d
 theorem row_mem_pl {v : HeightOneSpectrum (𝓞 D.host.E)} (hv : v ∈ dc.row) : v ∈ plSet i dc :=
   Finset.mem_union_left _ (Finset.mem_union_left _ hv)
 
-theorem col_mem_pl {v : HeightOneSpectrum (𝓞 D.host.E)} (hv : v ∈ dc.col) : v ∈ plSet i dc :=
-  Finset.mem_union_left _ (Finset.mem_union_right _ hv)
-
 set_option maxHeartbeats 1000000 in
 
 theorem Fpos_row (c : Fin (D.R.t + 1)) {w : ℕ} (hw : w ∈ rowsN i dc) :
@@ -586,27 +567,6 @@ theorem Fpos_row (c : Fin (D.R.t + 1)) {w : ℕ} (hw : w ∈ rowsN i dc) :
     exact idx_not_qs i dc (row_mem_pl i dc hv) ((dc.cover v).1 (Or.inl hv))
   unfold Fpos
   simp only [if_neg hq, if_pos hw]
-
-set_option maxHeartbeats 1000000 in
-
-theorem Fpos_col (c : Fin (D.R.t + 1)) (l : Col i dc) :
-    Fpos i dc Dd c (colIdx i dc l) =
-      if (c : ℕ) = 1 then unrH1 (resU i dc Dd c (colIdx i dc l)) (I i dc (colIdx i dc l)) else ⊥ := by
-  have hpl := col_mem_pl i dc l.2
-  have hl := (dc.cover l.1).1 (Or.inr l.2)
-  have hr : colIdx i dc l ∉ rowsN i dc := by
-    intro h
-    obtain ⟨u, hu, he⟩ := Finset.mem_image.1 h
-    have huv := idx_inj i dc (row_mem_pl i dc hu) hpl he
-    exact Finset.disjoint_left.1 dc.disj hu (huv ▸ l.2)
-  have hq : colIdx i dc l ∉ qsN i dc := idx_not_qs i dc hpl hl
-  unfold Fpos
-  simp only [if_neg hq, if_neg hr]
-
-theorem Fpos_qs (c : Fin (D.R.t + 1)) {w : ℕ} (hw : w ∈ qsN i dc) :
-    Fpos i dc Dd c w = unrH1 (resU i dc Dd c w) (I i dc w) := by
-  unfold Fpos
-  rw [if_pos hw]
 
 end Shape
 

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SmallFam
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTensTriv
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLBLeBySmallSectionIffExistsSmallSectionDiffeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLBLeBySmallSectionIffExistsSmallSectionDiffe
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
@@ -16,7 +16,7 @@ theorem mixed_diff_nonneg : GlobalTheory.Published.ArCalc → ∀ (k : Type) [Co
   intro hC k _ X _ p D hX A B Φ hΦ hle x y hN
   classical
   haveI := hX.isLocallyNoetherian
-  obtain ⟨s, hs, hs0⟩ := (GlobalTheory.T.hermLBLeBySmallSection_iff_exists_smallSection_difference k X p A B).1 hle
+  obtain ⟨s, hs, hs0⟩ := (_root_.GlobalTheory.HSNef.le_iff_exists_smallSec k X p A B).1 hle
   have hg :=  (sec_ne_zero_iff s).1 hs0
   let L : Fin 2 → HermLB p := ![A, B]
   let F : Option (Fin 2) → HermLB p := fun o => o.elim (A.tens B.dual) L

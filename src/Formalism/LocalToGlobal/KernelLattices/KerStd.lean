@@ -68,16 +68,6 @@ def LamTie : Prop :=
     (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)), s.Ok →
     lamF (ambOf s B χ cD) N N' = s.laF B.tor (s.lat N) (s.lat N')
 
-def KerStdAmb : Prop :=
-  ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
-    (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
-    (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]),
-    s.Ok → TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → TaylorLogMetric.IsChi D χ → CmOK a₀ b₀ c₀ D.host.d → B.IsCm a₀ b₀ ha hd lam hlam →
-    Even a → Even b → IsSdLat N → IsSdLat N' → s.StdAtP p N → s.StdAtP p N' →
-    ¬ (p : ℤ) ∣ NumberField.discr X.E → (∀ τ, ‖ι (cD τ)‖ ≤ 1) →
-    IntCurve (curveL p (cmL a₀ b₀ D.host.d ha hd lam hlam) ι) →
-    KerStd (ambOf s B χ cD) N N' a₀ b₀ c₀ ha hd lam hlam p ι
-
 def KerStdLatOn (Q : D7 → ℕ → Prop) : Prop :=
   ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
     (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
@@ -87,10 +77,6 @@ def KerStdLatOn (Q : D7 → ℕ → Prop) : Prop :=
     Even a → Even b → IsSdLat N → IsSdLat N' → s.StdAtP p N → s.StdAtP p N' →
     ¬ (p : ℤ) ∣ NumberField.discr X.E → (∀ τ, ‖ι (cD τ)‖ ≤ 1) → 5 ≤ p → Q D p →
     KerStd (ambOf s B χ cD) N N' a₀ b₀ c₀ ha hd lam hlam p ι
-
-def KerStdLat : Prop := KerStdLatOn fun _ _ => True
-
-def KerStdLatSplit : Prop := KerStdLatOn SplitK
 
 def KerStdExOn (Q : D7 → ℕ → Prop) : Prop :=
   ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ),
@@ -103,7 +89,5 @@ def KerStdExOn (Q : D7 → ℕ → Prop) : Prop :=
         KerStd (ambOf s B χ cD) N N' a₀ b₀ c₀ ha hd lam hlam p ι
 
 def KerStdEx : Prop := KerStdExOn fun _ _ => True
-
-def KerStdExSplit : Prop := KerStdExOn SplitK
 
 end Formalism.L2.Ker

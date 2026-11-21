@@ -6,14 +6,6 @@ import Mathlib
     fun (F : Type) [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) ↦
       IsDedekindDomain.HeightOneSpectrum.adicCompletion F v
 
-theorem UpperTheory.Reformulated.B.Qh24.aux2 :
-    ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F]
-      (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)),
-      SubsemiringClass (ValuationSubring (IsDedekindDomain.HeightOneSpectrum.adicCompletion F v))
-        (IsDedekindDomain.HeightOneSpectrum.adicCompletion F v) := by
-  intros
-  infer_instance
-
 noncomputable def UpperTheory.Reformulated.B.Qh24.inclR :
     {F E : Type} →
       [inst : Field F] →

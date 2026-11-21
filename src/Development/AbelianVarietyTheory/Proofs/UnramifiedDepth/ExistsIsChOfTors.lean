@@ -7,11 +7,11 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Cha
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisIff
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MemSupSpanXPowIffAndIsAdicComplete
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalDiscPointsValuationIntegersStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CharacterOnTorsionPointsEqSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LinMulFAndCompAndSpanLeAndMemPowStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalDiscPointsValuationIntegers
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CharacterOnTorsionPointsEqSeries
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LinMulFAndCompAndSpanLeAndMemPow
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PointsAddCommMonoidStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalGroupSeriesSeparatedByTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalGroupSeriesSeparatedByTorsion
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EqZeroOfForallPairPointsValuationIntegersStatement
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry TensorProduct Matrix
@@ -37,7 +37,7 @@ private theorem killed_pow_mono {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d
   apply apply_eq_zero_of_killed h
   have hn : p ^ n = p ^ (n - m) * p ^ m := by rw [← pow_add, Nat.sub_add_cancel hmn]
   rw [hn]
-  exact (GlobalTheory.T.mulF_span_mul_le_and_mulF_pow_mem_ideal_pow R d F).2.2.1 _ _ (Ideal.subset_span ⟨j, rfl⟩)
+  exact (_root_.GlobalTheory.ChF.lin_mulF_and_comp_and_span_le_and_mem_pow R d F).2.2.1 _ _ (Ideal.subset_span ⟨j, rfl⟩)
 
 private theorem addOf_pt {R : Type} [CommRing R] {d : ℕ} (F : Fin d → PS R 2 d) :
     addOf F (pt R (n := 2) d 0) (pt R (n := 2) d 1) = F := by
@@ -60,9 +60,9 @@ private theorem hasSubst_law {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) :
 theorem exists_isCh_of_tors : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (d : ℕ) (F : FGLaw O d), FH p F.F → ∀ (κ : (PS O 1 d →ₐ[O] O) → C), (∀ φ φ' ψ, Tors p F.F φ → Tors p F.F φ' → IsSum F.F φ φ' ψ → κ ψ = κ φ * κ φ') → (∀ φ, (∀ f, φ f = MvPowerSeries.constantCoeff f) → κ φ = 1) → ∃ u : PS O 1 d, IsCh F.F u ∧ ∀ φ, Tors p F.F φ → algebraMap O C (φ u) = κ φ := by
   intro p _ C _ _ _ v O _ _ hv _ _ d F hFH κ hmul hone
   have hinj : Function.Injective (algebraMap O C) := hv.hom_inj
-  choose w hw using fun k : ℕ => GlobalTheory.T.exists_series_eq_character_on_torsion p C v O hv d F hFH k κ
+  choose w hw using fun k : ℕ => _root_.GlobalTheory.character_on_torsion_points_eq_series p C v O hv d F hFH k κ
     (fun φ φ' ψ h h' hs => hmul φ φ' ψ ⟨k, h⟩ ⟨k, h'⟩ hs) hone
-  obtain ⟨hsep, hsepT⟩ := GlobalTheory.T.formalGroup_series_separated_by_torsion p C v O hv d F hFH
+  obtain ⟨hsep, hsepT⟩ := _root_.GlobalTheory.ChF.mem_span_mulF_of_killed_and_eq_zero_of_tors p C v O hv d F hFH
   have hsame : ∀ {m n : ℕ}, m ≤ n → ∀ φ, Killed F.F (p ^ m) φ → φ (w m) = φ (w n) := by
     intro m n hmn φ h
     apply hinj
@@ -78,7 +78,7 @@ theorem exists_isCh_of_tors : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] 
     have h2 : Ideal.span (Set.range (mulF F.F (p ^ m))) ≤ J ^ (m + 1) := by
       rw [Ideal.span_le]
       rintro _ ⟨j, rfl⟩
-      exact (GlobalTheory.T.mulF_span_mul_le_and_mulF_pow_mem_ideal_pow O d F).2.2.2 p m j
+      exact (_root_.GlobalTheory.ChF.lin_mulF_and_comp_and_span_le_and_mem_pow O d F).2.2.2 p m j
     exact Ideal.pow_le_pow_right (Nat.le_succ m) (h2 h1)
   obtain ⟨u, hu⟩ := hcomp.toIsPrecomplete.prec hcauchy
   have hval : ∀ φ, Tors p F.F φ → algebraMap O C (φ u) = κ φ := by
@@ -90,7 +90,7 @@ theorem exists_isCh_of_tors : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] 
     apply hH.haus
     intro n
     rw [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]
-    obtain ⟨N, hN⟩ := (GlobalTheory.T.formalDisc_points_valuationIntegers p C v O hv (Fin 1 × Fin d)).2.2 φ n
+    obtain ⟨N, hN⟩ := (_root_.GlobalTheory.ChF.formalDisc_points_integers p C v O hv (Fin 1 × Fin d)).2.2 φ n
     have h1 := hu (max N k)
     rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at h1
     have h2 := hN _ (Ideal.pow_le_pow_right (le_max_left N k) h1)

@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFlipDet
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaKernelFockVectorEqOfFinitePointMoveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCentralFlipTranslateHalfPlacesThetaPairStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipScalarMemCoefficientRingAuxiliaryLevelStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipScalarPrimePowIntegralAtLevelPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HalfTranslatesLeLevelHalfTranslatesOfDvdStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIdempotentSumSubsetAndConjugateFlipStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevelHalfLeConjPlaceOfNotLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaKernelFockVectorEqOfFinitePointMove
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCentralFlipTranslateHalfPlacesThetaPair
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipScalarMemCoefficientRingAuxiliaryLevel
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipScalarPrimePowIntegralAtLevelPlaces
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HalfTranslatesLeLevelHalfTranslatesOfDvd
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIdempotentSumSubsetAndConjugateFlip
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevelHalfLeConjPlaceOfNotLe
 
 open NumberField Matrix Complex IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
@@ -43,8 +43,8 @@ theorem exists_flip_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : 
     refine (Ideal.finite_factors h0).subset fun PP hPP => ?_
     exact Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hPP)
   choose zOf hzG hzOne hzFlip using fun T : Finset (Formalism.L2.DIV.Pl D.host.E) =>
-    GlobalTheory.T.exists_central_flip_translate_halfPlaces_thetaPair D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T M₀
-  choose cOf hcOf using fun T => GlobalTheory.T.flipScalar_primePow_integral_at_levelPlaces D ψ θ V W χV χW om ΛV ΛW sW f₀ hP hodd χ M₀ l hχ hl hM₀ T
+    _root_.GlobalTheory.LevelSeries.exists_central_flip_step D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T M₀
+  choose cOf hcOf using fun T => _root_.GlobalTheory.LevelSeries.flipScal_pow_mem D ψ θ V W χV χW om ΛV ΛW sW f₀ hP hodd χ M₀ l hχ hl hM₀ T
   refine ⟨hfin.toFinset.powerset.image zOf, hfin.toFinset.powerset.sup cOf, ?_, ?_⟩
   · intro z hz
     obtain ⟨T, -, rfl⟩ := Finset.mem_image.1 hz
@@ -60,14 +60,14 @@ theorem exists_flip_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : 
     obtain ⟨h1, h2, -⟩ := Finset.mem_filter.1 hPP
     refine Finset.mem_union_left _ (Finset.mem_sdiff.2 ⟨h1, fun h3 => ?_⟩)
     exact not_mem_of_coprime hc1 h2 (Finset.mem_filter.1 h3).2.1
-  obtain ⟨⟨eT₀, heT₀⟩, e₁, he₁⟩ := GlobalTheory.T.exists_idempotentSum_subset_and_conjugate_flip D e P T₀ he (Finset.filter_subset _ _)
-  obtain ⟨⟨eT₁, heT₁⟩, e₃, he₃⟩ := GlobalTheory.T.exists_idempotentSum_subset_and_conjugate_flip D e₁ P₁ T₁ he₁ hT₁P₁
+  obtain ⟨⟨eT₀, heT₀⟩, e₁, he₁⟩ := _root_.GlobalTheory.IdemFlip.idemSum_sub_and_flip D e P T₀ he (Finset.filter_subset _ _)
+  obtain ⟨⟨eT₁, heT₁⟩, e₃, he₃⟩ := _root_.GlobalTheory.IdemFlip.idemSum_sub_and_flip D e₁ P₁ T₁ he₁ hT₁P₁
   have hT₀S : T₀ ∈ hfin.toFinset.powerset :=
     Finset.mem_powerset.2 fun PP hPP => hfin.mem_toFinset.2 (Finset.mem_filter.1 hPP).2.1
   obtain ⟨x₂, hx₂, hstep₂⟩ := hzFlip T₀ eT₀ heT₀ hoddM₀ (Nat.Coprime.coprime_mul_right (hM ▸ hbad)) fun PP hPP => (Finset.mem_filter.1 hPP).2.1
-  obtain ⟨z₁, hz₁G, hz₁One, hz₁F⟩ := GlobalTheory.T.exists_central_flip_translate_halfPlaces_thetaPair D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T₁ pd
+  obtain ⟨z₁, hz₁G, hz₁One, hz₁F⟩ := _root_.GlobalTheory.LevelSeries.exists_central_flip_step D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T₁ pd
   obtain ⟨x₁, hx₁, hstep₁⟩ := hz₁F eT₁ heT₁ hoddpd (Nat.Coprime.coprime_mul_left (hM ▸ hbad)) fun PP hPP => (Finset.mem_filter.1 hPP).2.1
-  have hsub := GlobalTheory.T.halfTranslates_le_levelHalfTranslates_of_dvd D H l₂ e₂ e₃ _ he₂ he₃ (fun PP hPP => by
+  have hsub := _root_.GlobalTheory.LevelSeries.trSp_le_of_subhalf D H l₂ e₂ e₃ _ he₂ he₃ (fun PP hPP => by
     rcases Finset.mem_union.1 hPP with h1 | h1
     · obtain ⟨h2, h3⟩ := Finset.mem_sdiff.1 h1
       rcases Finset.mem_union.1 h2 with h4 | h4
@@ -80,10 +80,10 @@ theorem exists_flip_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : 
         · exact h3 (Finset.mem_filter.2 ⟨h5, h9, h7⟩)
       · obtain ⟨Q, hQ, rfl⟩ := Finset.mem_image.1 h4
         obtain ⟨hQ1, -, hQ2⟩ := Finset.mem_filter.1 hQ
-        exact GlobalTheory.T.levelHalf_le_conj_place_of_not_le D H l₂ Q (hPM Q hQ1) hQ2
+        exact _root_.GlobalTheory.LevelSeries.mb_le_conjPl_of_not_le D H l₂ Q (hPM Q hQ1) hQ2
     · obtain ⟨Q, hQ, rfl⟩ := Finset.mem_image.1 h1
       obtain ⟨hQ1, -, hQ2⟩ := Finset.mem_filter.1 hQ
-      exact GlobalTheory.T.levelHalf_le_conj_place_of_not_le D H l₂ Q (hPM Q hQ1) hQ2) ψ V W ΛV ΛW f₀ l₂.M O
+      exact _root_.GlobalTheory.LevelSeries.mb_le_conjPl_of_not_le D H l₂ Q (hPM Q hQ1) hQ2) ψ V W ΛV ΛW f₀ l₂.M O
   have hlO : ((l : ℕ) : ℂ) ∈ O := natCast_mem O l
   have ha : (l : ℂ) ^ (hfin.toFinset.powerset.sup cOf) * flipScal χW V W T₀ M₀ x₂ ∈ O := by
     obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le' (Finset.le_sup (f := cOf) hT₀S)
@@ -91,7 +91,7 @@ theorem exists_flip_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : 
     exact mul_mem (pow_mem hlO _) (hcOf T₀ eT₀ x₂ heT₀ (fun PP hPP => (Finset.mem_filter.1 hPP).2.1) hx₂ k σ la O hla hO
       hconj hval hoddM₀ (Nat.Coprime.coprime_mul_right (hM ▸ hbad)))
   have hb : flipScal χW V W T₁ pd x₁ ∈ O :=
-    GlobalTheory.T.flipScalar_mem_coefficientRing_auxiliaryLevel D ψ θ V W χV χW om ΛV ΛW sW f₀ hP hodd χ M₀ l pd hχ hl hc1 hc2 (Nat.Coprime.coprime_mul_left (hM ▸ hbad))
+    _root_.GlobalTheory.LevelSeries.flipScal_mem_valRing_of_unit D ψ θ V W χV χW om ΛV ΛW sW f₀ hP hodd χ M₀ l pd hχ hl hc1 hc2 (Nat.Coprime.coprime_mul_left (hM ▸ hbad))
       k σ la O hla hO hconj hval T₁ eT₁ x₁ heT₁ (fun PP hPP => (Finset.mem_filter.1 hPP).2.1) hx₁
   refine ⟨zOf T₀, Finset.mem_image_of_mem _ hT₀S, z₁, hz₁G,
     hz₁One l (fun PP hPP => not_mem_of_coprime hc2 (Finset.mem_filter.1 hPP).2.1), fun f hf => ?_⟩
@@ -106,7 +106,7 @@ theorem exists_flip_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : 
     rw [e1, map_mul, Module.End.mul_apply, Subring.smul_def]
     change om (zOf T₀, 1) (om (z₁, 1) (((l : ℂ) ^ c * flipScal χW V W T₀ M₀ x₂ * flipScal χW V W T₁ pd x₁) • F₂)) = _
     rw [← smul_smul, map_smul, hF₂eq, ← smul_smul, map_smul, hF₁eq]
-  have := GlobalTheory.T.thetaKernel_fockVector_eq_of_finite_point_move D ψ θ V W χV χW om ΛV ΛW sW f₀ hP (zOf T₀ * z₁) (mul_mem (hzG T₀) hz₁G) e e₂ l₂.M O f _ _ hf
+  have := _root_.GlobalTheory.LevelSeries.thetaKO_flip D ψ θ V W χV χW om ΛV ΛW sW f₀ hP (zOf T₀ * z₁) (mul_mem (hzG T₀) hz₁G) e e₂ l₂.M O f _ _ hf
     (Submodule.smul_mem _ _ (hsub hF₂)) hom BW Q s g
   rw [← mul_assoc] at this
   exact this

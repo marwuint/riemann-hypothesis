@@ -1,7 +1,9 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTypeVec
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.DiscreteSeriesCharacter
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompactWeyl
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPlaceCompactTorusClassesCompactWeylCosetsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPlaceCompactTorusClassesCompactWeylCosets
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHasCls
 open MeasureTheory Set Filter NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary GlobalTheory.AutMult Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.Mult
@@ -25,6 +27,6 @@ theorem signs_real : ∀ {D : D7} (V : HSp D) {S : D.what₂.Tau → SPar} (M : 
         (∀ q a, Complex.exp (θ q a * Complex.I) = cxRoots (embOverOf D ρ).1 P ((y q)⁻¹ a)) ∧
         ∀ q, ∃ g : GArch D.sp.cm.sig V.gram (placeOf D ρ), frameMat M ρ (g⁻¹ * gam q.2.choose_spec.choose_spec.2 * g) =
           Matrix.diagonal fun a => Complex.exp (θ q a * Complex.I) :=
-  of_cosets GlobalTheory.T.real_place_compact_torus_classes_compactWeyl_cosets
+  of_cosets _root_.GlobalTheory.TrEll.RealClasses.real_classes
 
 end GlobalTheory.RealSigns

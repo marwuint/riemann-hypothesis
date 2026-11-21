@@ -1168,40 +1168,6 @@ theorem lowerProjection_mul_right_inverse {a a' : ℕ} (h : GL (Fin (a + a')) k)
 theorem wt_ne_zero {n : ℕ} (d : ℕ) (ν : kˣ →* ℂˣ) (g : GL (Fin n) k) : wt d ν g ≠ 0 :=
   mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _)
 
-theorem onto_of_irred (hI : IndIrred) {a a' : ℕ} {α β : kˣ →* ℂˣ} (hα : ∀ x, ‖(α x : ℂ)‖ = 1)
-    (hβ : ∀ x, ‖(β x : ℂ)‖ = 1) {X : Type} [TopologicalSpace X] (p : (X → ℂ) → GL (Fin (a + a')) k → ℂ)
-    (hlin : ∀ Φ ∈ SB X, ∀ Φ₁ ∈ SB X, ∀ c : ℂ, p (Φ + c • Φ₁) = p Φ + c • p Φ₁)
-    (hin : ∀ Φ ∈ SB X, p Φ ∈ indSp a a' α β)
-    (heq : ∀ Φ ∈ SB X, ∀ h₁, ∃ Φ' ∈ SB X, p Φ' = rtr h₁ (p Φ))
-    (hne : ∃ Φ ∈ SB X, p Φ ≠ 0) : ∀ F ∈ indSp a a' α β, ∃ Φ ∈ SB X, p Φ = F := by
-  have h0 : p 0 = 0 := by
-    have := hlin 0 (SB X).zero_mem 0 (SB X).zero_mem 1
-    simpa using this
-  let N : Submodule ℂ (GL (Fin (a + a')) k → ℂ) :=
-    { carrier := {F | ∃ Φ ∈ SB X, p Φ = F}
-      add_mem' := by
-        rintro _ _ ⟨Φ, hΦ, rfl⟩ ⟨Φ₁, hΦ₁, rfl⟩
-        exact ⟨Φ + (1 : ℂ) • Φ₁, (SB X).add_mem hΦ ((SB X).smul_mem _ hΦ₁), by rw [hlin _ hΦ _ hΦ₁, one_smul]⟩
-      zero_mem' := ⟨0, (SB X).zero_mem, h0⟩
-      smul_mem' := by
-        rintro c _ ⟨Φ, hΦ, rfl⟩
-        exact ⟨0 + c • Φ, (SB X).add_mem (SB X).zero_mem ((SB X).smul_mem _ hΦ), by
-          rw [hlin _ (SB X).zero_mem _ hΦ, h0, zero_add]⟩ }
-  have hle : N ≤ indSp a a' α β := by
-    rintro _ ⟨Φ, hΦ, rfl⟩
-    exact hin Φ hΦ
-  have hst : ∀ h₁, ∀ F ∈ N, rtr h₁ F ∈ N := by
-    rintro h₁ _ ⟨Φ, hΦ, rfl⟩
-    exact heq Φ hΦ h₁
-  rcases hI k a a' α β hα hβ N hle hst with h | h
-  · obtain ⟨Φ, hΦ, hne⟩ := hne
-    have hm : p Φ ∈ N := ⟨Φ, hΦ, rfl⟩
-    rw [h] at hm
-    exact absurd ((Submodule.mem_bot ℂ).1 hm) hne
-  · intro F hF
-    rw [← h] at hF
-    exact hF
-
 variable [MeasurableSpace k] [BorelSpace k]
 variable {a a' : ℕ} {ϖ : kˣ} {α β ν : kˣ →* ℂˣ}
 
@@ -1404,25 +1370,5 @@ end Clauses2
 end PositivityTheory.ThK.SplitLoc.Unr
 
 namespace PositivityTheory.ThK.SplitLoc
-
-open Unr GlobalTheory.SplitFlip GlobalTheory.SplitWeil
-
-theorem unrMaps_of (hI : IndIrred) : UnrMaps := by
-  intro k _ _ _ _ _ _ a a' ϖ α β ν hS hα hβ
-  have hν := isUnram_nu hS hα hβ
-  have hp1 := p_lin hS hν
-  have hp2 := p'_lin hS hν
-  have hp3 := p_mem hS hν hβ
-  have hp4 := p'_mem hS hν hα
-  have hu := p_unit hS hν hβ
-  have hu' := p'_unit hS hν hα
-  refine ⟨hp1, hp2, hp3, hp4, p_inv hS hν, p'_inv hS hν, fun Φ _ h₁ => p_equiv Φ h₁, fun Ψ _ h₁ => p'_equiv Ψ h₁,
-    ?_, ?_, hu, hu'⟩
-  · refine onto_of_irred hI hS.unitα hS.unitβ _ hp1 hp3 (fun Φ hΦ h₁ => ⟨_, omA_mem_SB ν β 1 h₁ hΦ, p_equiv Φ h₁⟩)
-      ⟨_, indicator_int_mem_SB, fun h0 => ?_⟩
-    simpa [hu 1 (one_mem _)] using congrFun h0 1
-  · refine onto_of_irred hI hS.unitα hS.unitβ _ hp2 hp4 (fun Ψ hΨ h₁ => ⟨_, omB_mem_SB ν α 1 h₁ hΨ, p'_equiv Ψ h₁⟩)
-      ⟨_, indicator_int_mem_SB, fun h0 => ?_⟩
-    simpa [hu' 1 (one_mem _)] using congrFun h0 1
 
 end PositivityTheory.ThK.SplitLoc

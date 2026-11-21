@@ -38,6 +38,4 @@ end Formalism.L2.FormalSeriesBounds.MapFB
 
 namespace Formalism.L2.FormalSeriesBounds
 
-open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ MapFB
-
 end Formalism.L2.FormalSeriesBounds

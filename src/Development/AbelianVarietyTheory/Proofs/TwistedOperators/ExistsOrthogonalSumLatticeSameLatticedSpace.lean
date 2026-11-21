@@ -19,11 +19,6 @@ variable {D : D7}
 
 def SameSp (V V' : HSp D) : Prop := ∃ L h1 h2, V' = reLat V L h1 h2
 
-theorem SameSp.refl (V : HSp D) : SameSp V V := by
-  refine ⟨V.L0, V.standardTuple_isLattice, V.baseLattice_isUnimodular, ?_⟩
-  cases V
-  rfl
-
 theorem SameSp.neg {V V' : HSp D} (h : SameSp V V') : SameSp (negSp V) (negSp V') := by
   obtain ⟨L, h1, h2, rfl⟩ := h
   exact ⟨L, h1, (negSp (reLat V L h1 h2)).baseLattice_isUnimodular, rfl⟩

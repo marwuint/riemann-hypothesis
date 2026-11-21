@@ -7,15 +7,8 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.PhiGam.Close
 variable {k : Type} [Field k]
 
-theorem vv_alg : vv k = algebraMap k⟦X⟧ k⸨X⸩ PowerSeries.X := by
-  simp [vv]
-
 variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
   [IsScalarTower k⟦X⟧ k⸨X⸩ V]
-
-omit [Module k V] in
-theorem mem_sh_of (a : ℕ) (N : Submodule k⟦X⟧ V) {x : V} (hx : x ∈ N) : vv k ^ a • x ∈ sh a N :=
-  ⟨x, hx, by simp⟩
 
 open scoped LaurentSeries PowerSeries in
 variable {k : Type} [Field k] in
@@ -28,10 +21,6 @@ theorem _root_.GlobalTheory.PhiGam.Close.sh_le {a : ℕ} {N N' : Submodule k⟦X
   intro x hx
   obtain ⟨y, hy, rfl⟩ := _root_.GlobalTheory.PhiGam.mem_sh_iff_exists.mp hx
   simpa [zpow_natCast] using h y hy
-
-omit [Module k V] in
-theorem sh_zero (N : Submodule k⟦X⟧ V) : sh (-0) N = N := by
-  ext x; simp [sh]
 
 open scoped LaurentSeries PowerSeries in
 variable {k : Type} [Field k] in
@@ -349,24 +338,5 @@ theorem _root_.GlobalTheory.PhiGam.Close.le_sg {l : ℕ} (hl : 1 < l) {n : ℕ} 
       tendsto_const_nhds
   rw [zero_add] at lim
   exact ge_of_tendsto' lim bound
-
-theorem main : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l] (R : RingPG k l) {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] [FiniteDimensional k⸨X⸩ V] (D : ModPG R n V), ∀ (h : ZMod n → ℕ) (N₁ N₂ : ZMod n → Submodule k⟦X⟧ V), (∀ i, IsLat (N₁ i)) → (∀ i, IsLat (N₂ i)) → CondAB D.φ (fun _ => 0) (fun i => h i) N₁ → CondAB D.φ (fun _ => 0) (fun i => h i) N₂ → ∀ i, sh (sg l h i) (N₁ i) ≤ N₂ i := by
-  intro k _ l hl _ R n _ V _ _ _ _ _ _ _ _ D h N₁ N₂ h₁ h₂ c₁ c₂ i
-  classical
-  have hex : ∀ i, ∃ a : ℕ, ∀ x ∈ N₁ i, vv k ^ a • x ∈ N₂ i := fun i => exists_pow (h₁ i).1 (h₂ i).2
-  have hrec : ∀ i, Nat.find (hex (i - 1)) ≤ (Nat.find (hex i) + h i) / l := by
-    intro i
-    refine Nat.find_min' _ fun x hx => ?_
-    refine key hl.out.pos R (D.φ i) (D.φ_semi i) (D.etale i) _ (h₂ _) _ x ?_
-    have e1 : D.φ i x ∈ N₁ i := by
-      have := (c₁ i).1 (Submodule.subset_span ⟨x, hx, rfl⟩)
-      rwa [sh_zero] at this
-    have e2 := (c₂ i).2 (mem_sh_of (h i) _ (Nat.find_spec (hex i) _ e1))
-    rwa [← mul_smul, ← pow_add, add_comm] at e2
-  have hle := le_sg hl.out.one_lt h (fun i => Nat.find (hex i)) (fun i => by
-    have := hrec (i + 1)
-    simp only [add_sub_cancel_right] at this
-    exact (Nat.mul_le_mul_left l this).trans (Nat.mul_div_le _ _)) i
-  exact sh_le fun x hx => pow_smul_mem hle (Nat.find_spec (hex i) x hx)
 
 end GlobalTheory.PhiGam.Close

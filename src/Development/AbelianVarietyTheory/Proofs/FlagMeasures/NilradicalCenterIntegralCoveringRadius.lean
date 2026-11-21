@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.CenteredPerp
 import Formalism.HarderNarasimhan.ShiftInvariance
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointLatticeIntersectionSelfDualProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalCanonicalFiltrationStepsAutPoint
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvLeSizeQAboveOrthogonalSaturatedStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ComplexSpanAtRealPlaceAutPointLatticePropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SubquotientCoveringRadiusRealPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvLeSizeQAboveOrthogonalSaturated
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ComplexSpanAtRealPlaceAutPointLatticeProperties
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SubquotientCoveringRadiusRealPlaces
 
 open GlobalTheory.Count GlobalTheory.IndefiniteRowSideFullHecke.CenteredPerpendicularSets Formalism.MainNotions.S Formalism.HN Formalism.REAL Matrix NumberField Finset
 
@@ -121,9 +121,6 @@ section Norm
 
 variable {n : ℕ}
 
-theorem hs_nonneg' (a : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hs a := by
-  unfold hs; positivity
-
 theorem hs_sub_le (a b : Matrix (Fin n) (Fin n) ℂ) : hs (a - b) ≤ 2 * hs a + 2 * hs b := by
   unfold hs
   simp only [Finset.mul_sum, ← Finset.sum_add_distrib]
@@ -202,13 +199,13 @@ theorem main : ∀ (I : AutInst) (x : I.GA) (R : Submodule (𝓞 I.E) (Fin I.n �
   intro I x R hi rho hR hRp hhi hls hrho Z hZ
   obtain ⟨-, hA, hsp, hdual, -⟩ := GlobalTheory.PointLattice.lamX_selfDual I x
   obtain ⟨hS, hrk, -⟩ := (PerpStep.main I x).2.2.2 R R hR hR le_rfl
-  obtain ⟨-, htop, hperp, -⟩ := GlobalTheory.T.complexSpanAtRealPlace_autPointLattice_properties I x R
+  obtain ⟨-, htop, hperp, -⟩ := _root_.GlobalTheory.RealSpan.spanAt_properties I x R
   have hmem : ∀ y, y ∈ perpIn I x R ↔
       y ∈ lamX I x ∧ ∀ s ∈ R, Formalism.UG.hform (starRingEnd I.E) I.J s y = 0 := by
     intro y
     rw [PerpStep.perpIn_eq, PerpStep.mem_perp]
-  obtain ⟨Φ, hΦS, hΦA, D, hD, hn⟩ := GlobalTheory.T.subquotient_covering_radius_real_places I x (lamX I x) (perpIn I x R) R hi⁻¹ hi hA hS
-    (Submodule.FG.of_le hA hR.1) (inv_pos.2 hhi) hhi (GlobalTheory.T.inv_le_sizeQ_above_orthogonal_saturated I x R hi hR hhi hls) hls
+  obtain ⟨Φ, hΦS, hΦA, D, hD, hn⟩ := _root_.GlobalTheory.Count.SubquotFrame.subquot_frame I x (lamX I x) (perpIn I x R) R hi⁻¹ hi hA hS
+    (Submodule.FG.of_le hA hR.1) (inv_pos.2 hhi) hhi (_root_.GlobalTheory.Count.PerpSize.inv_le_sizeQ_perp I x R hi hR hhi hls) hls
     (fun v => (1 / 2 : ℂ) • Z v)
     (by
       intro v y hy

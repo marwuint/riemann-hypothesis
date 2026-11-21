@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsHomAlgebraisingThickeningsProjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsHomAlgebraisingThickeningsProjective
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
@@ -42,7 +42,7 @@ theorem final_comm {C : Type*} [Category C] {Y B S T Z : C} {p : B ⟶ T} {t : S
 
 theorem exists_hom_of_tower : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R), I ≠ ⊤ → IsAdicComplete I R → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → ∀ (B : Over (Spec (CommRingCat.of R))) (b : ∀ e, (Y e).left ⟶ B.left), IsProjBy B.hom → Flat B.hom → (∀ e, IsPullback (b e) (Y e).hom B.hom (thick R I e)) → (∀ e, β e ≫ b (e + 1) = b e) → ∀ Z : Over (Spec (CommRingCat.of R)), IsProjBy Z.hom → ∀ c : ∀ e, (Y e).left ⟶ Z.left, (∀ e, c e ≫ Z.hom = (Y e).hom ≫ thick R I e) → (∀ e, β e ≫ c (e + 1) = c e) → ∃ g : B ⟶ Z, ∀ e, b e ≫ g.left = c e := by
   intro R _ _ _ I hI hc Y β hβ B b hB hfl hb hβb Z hZ c hcZ hβc
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_hom_algebraising_thickenings_projective R I hI hc B Z hB hZ hfl (fun e => (hb e).isoPullback.inv ≫ c e)
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.MorAlgIdeal.exists_hom_of_thickenings R I hI hc B Z hB hZ hfl (fun e => (hb e).isoPullback.inv ≫ c e)
     (fun e => base_comm (hb e) (hcZ e))
     (fun e => step_comm (hb e) (hb (e + 1)) (hβb e) (hβ e).w _ _ (hβc e))
   exact ⟨g, fun e => final_comm (hb e) (hg e)⟩

@@ -4,7 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Contin
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParameterSphericalProductSpehQuotients
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntPolyEsymmEqPowerSumMultisetStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntPolyEsymmEqPowerSumMultiset
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ElementarySymmetricInverse
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp
@@ -104,7 +106,7 @@ private theorem pow_op (R : Subring ℂ) (a n : ℕ) (hn : 1 ≤ n) (t : Fin (a 
     ∃ F : G →₀ ℂ, (∀ g, F g ∈ R) ∧ ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (v : V)
       (s : Multiset ℂ), Multiset.card s = a → (∀ j : Fin (a + 1), opOf ρ (t j) v = s.esymm j • v) →
       opOf ρ F v = (s.map (· ^ n)).sum • v := by
-  obtain ⟨P, hP⟩ := GlobalTheory.T.exists_intPoly_esymm_eq_powerSum_multiset a n hn
+  obtain ⟨P, hP⟩ := _root_.GlobalTheory.PowerSumPoly.exists_intPoly_psum_eq a n hn
   obtain ⟨F, h1, h2⟩ := poly_op R t ht P
   refine ⟨F, h1, fun V _ _ ρ v s hs h => ?_⟩
   rw [h2 V ρ v (fun j => s.esymm j) h, hP s hs]

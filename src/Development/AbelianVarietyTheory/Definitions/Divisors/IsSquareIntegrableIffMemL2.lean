@@ -56,10 +56,6 @@ def IsConstTermOn (N : Subgroup (GAd σ J)) (φ c : GAd σ J → ℂ) : Prop :=
   ∀ (μ : Measure N) (𝓕 : Set N), μ.IsHaarMeasure → IsFundamentalDomain ((ratPts σ J).subgroupOf N) 𝓕 μ → μ 𝓕 = 1 →
     ∀ g, c g = ∫ u in 𝓕, φ ((u : GAd σ J) * g) ∂μ
 
-def IsSqInt (φ : GAd σ J → ℂ) : Prop :=
-  ∀ (μ : Measure (GAd σ J)) (𝓕 : Set (GAd σ J)), μ.IsHaarMeasure → IsFundamentalDomain (ratPts σ J) 𝓕 μ →
-    IntegrableOn (fun g => ‖φ g‖ ^ 2) 𝓕 μ
-
 variable {σ J} {r : ℕ} {H H' K K' N : Subgroup (GAd σ J)} {φ c c' : GAd σ J → ℂ} {C : Matrix (Fin n) (Fin r) E}
 
 omit [NumberField E] in
@@ -69,58 +65,6 @@ theorem kfin_iff : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : 
   rw [show (Set.range fun k : K => fun g => φ (g * k)) = {Ψ | ∃ k ∈ K, Ψ = fun g => φ (g * k)} from
     Set.ext fun Ψ => ⟨fun ⟨k, e⟩ => ⟨k, k.2, e.symm⟩, fun ⟨k, hk, e⟩ => ⟨⟨k, hk⟩, e.symm⟩⟩]
   rfl
-
-theorem isAut_iff_isAutOn : IsAut σ J K φ ↔ IsAutOn σ J (ratPts σ J) K φ :=
-  ⟨fun h => ⟨h.mod.left, h.mod.level, h.mod.cont, h.mod.smooth, h.mod.growth, kfin_iff.1 h.kfin, h.zfin⟩,
-    fun h => ⟨⟨h.left, h.level, h.cont, h.smooth, h.growth⟩, kfin_iff.2 h.kfin, h.zfin⟩⟩
-
-theorem IsAutOn.mono (h : IsAutOn σ J H K φ) (hH : H' ≤ H) (hK : K' ≤ K) : IsAutOn σ J H' K' φ :=
-  ⟨fun γ hγ => h.left γ (hH hγ), h.level, h.cont, h.smooth, h.growth,
-    let ⟨W, hW, e⟩ := GlobalTheory.Doubling.isKFinite_iff.1 h.kfin
-    GlobalTheory.Doubling.isKFinite_iff.2 ⟨W, hW, fun k hk => e k (hK hk)⟩, h.zfin⟩
-
-omit [NumberField E] in
-
-theorem foldr_lineDer_char (hφ : ∀ g h, φ (g * h) = φ g * φ h) (a : ℂ) (l : List (ℝ → GAd σ J)) :
-    ∃ b : ℂ, l.foldr lineDer (a • φ) = b • φ := by
-  induction l with
-  | nil => exact ⟨a, rfl⟩
-  | cons γ l ih =>
-    obtain ⟨b, h⟩ := ih
-    refine ⟨b * deriv (fun t => φ (γ t)) 0, ?_⟩
-    rw [List.foldr_cons, h]
-    funext g
-    simp only [lineDer, Pi.smul_apply, smul_eq_mul, hφ, ← mul_assoc, deriv_const_mul_field']
-    ring
-
-theorem isAut_of_char (K : Subgroup (GAd σ J)) (hφ : ∀ g h, φ (g * h) = φ g * φ h) (a : ℂ)
-    (hm : IsSmoothModerate σ J (a • φ)) : IsAut σ J K (a • φ) := by
-  refine ⟨hm, ?_, ?_⟩ <;> refine Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {φ}) (Submodule.span_le.2 ?_)
-  · rintro _ ⟨k, rfl⟩
-    exact Submodule.mem_span_singleton.2 ⟨a * φ k, funext fun g => by simp only [Pi.smul_apply, smul_eq_mul, hφ]; ring⟩
-  · rintro _ ⟨z, -, rfl⟩
-    choose b hb using foldr_lineDer_char hφ a
-    exact Submodule.mem_span_singleton.2 ⟨z.sum fun l x => x * b l, funext fun g => by
-      simp [dop, hb, Finsupp.sum, Finset.sum_mul, mul_assoc]⟩
-
-variable (σ J) in
-
-theorem isAut_const (K : Subgroup (GAd σ J)) (a : ℂ) : IsAut σ J K fun _ => a := by
-  have e : (fun _ => a) = a • fun _ : GAd σ J => (1 : ℂ) := funext fun _ => by simp
-  exact e ▸ isAut_of_char K (by simp) a (e ▸ isSmoothModerate_const σ J a)
-
-variable (σ J) in
-
-theorem isAutOn_const (H K : Subgroup (GAd σ J)) (a : ℂ) : IsAutOn σ J H K fun _ => a :=
-  { isAut_iff_isAutOn.1 (isAut_const σ J K a) with left := fun _ _ _ => rfl }
-
-example : IsCentral σ J (Finsupp.single [] 1) :=
-  ⟨by simp, fun f _ a _ g => by simp [dop]⟩
-
-omit [NumberField E] in
-
-theorem isMaxCpt_infPts (h : IsCompact (infPts σ J : Set (GAd σ J))) : IsMaxCpt σ J (infPts σ J) :=
-  ⟨⟨le_rfl, h⟩, fun _ hK _ => hK.1⟩
 
 theorem le_one_of_pow_mul_le {t a M : ℝ} (ha : 0 < a) (h : ∀ k : ℕ, t ^ k * a ≤ M) : t ≤ 1 := by
   by_contra ht
@@ -239,32 +183,9 @@ theorem isMaxCpt_majCpt (h : IsCMExt F E σ) {c : ∀ w : InfinitePlace F, GL (F
   rw [mul_one, ← h2]
   exact Matrix.map_injective (infEmb_bijective h τ).1 (h4.trans (Matrix.map_one _ (map_zero _) (map_one _)).symm)
 
-theorem exists_isMaxCpt (h : IsCMExt F E σ) (hJ : IsHermND σ J) : ∃ K, IsMaxCpt σ J K := by
-  choose c ε hc using Frames.exists_arch_frame h hJ
-  exact ⟨_, isMaxCpt_majCpt h fun w => ⟨ε w, hc w⟩⟩
-
-example (ξ : E) (hξ : σ ξ = -ξ) : ∃ g ∈ ratPts σ !![0, 1; 1, 0] ⊓
-    unipFlag σ !![0, 1; 1, 0] (!![1; 0] : Matrix (Fin 2) (Fin 1) E) fun _ => 0,
-      (matHom _ σ _ g).1 = adMat F !![1, ξ; 0, 1] := by
-  let γ : GRat σ (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) E) := ⟨⟨!![1, ξ; 0, 1], !![1, -ξ; 0, 1], by simp [one_fin_two],
-    by simp [one_fin_two]⟩, show _ * _ * _ = _ by
-      ext i j; fin_cases i <;> fin_cases j <;> simp [Formalism.UG.cT, Matrix.mul_apply, Fin.sum_univ_two, hξ]⟩
-  have e : (matHom _ σ _ (ratEmb σ _ γ)).1 = adMat F !![1, ξ; 0, 1] := rfl
-  refine ⟨ratEmb σ _ γ, ⟨range_ratEmb σ _ ▸ ⟨γ, rfl⟩, Subgroup.subset_closure ⟨fun i => ⟨0, fun _ _ => rfl, ?_⟩,
-    fun x _ => ⟨fun _ => inclR (AF F) (ξ * x 1), ?_⟩⟩⟩, e⟩ <;> rw [e] <;> funext k <;> fin_cases k <;>
-    simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, Subsingleton.elim _ (0 : Fin 1)]
-
 omit [NumberField E] in
 
 theorem isConstTerm_iff : IsConstTerm σ J C φ c ↔ IsConstTermOn σ J (unipRad σ J C) φ c := Iff.rfl
-
-theorem isConstTerm_iff_unipFlag : IsConstTerm σ J C φ c ↔ IsConstTermOn σ J (unipFlag σ J C fun _ => 0) φ c := by
-  rw [unipFlag_const]; rfl
-
-omit [NumberField E] in
-
-theorem isConstTermOn_const (N : Subgroup (GAd σ J)) (a : ℂ) : IsConstTermOn σ J N (fun _ => a) fun _ => a :=
-  fun μ 𝓕 _ _ h _ => by simp [Measure.real, h]
 
 theorem isConstTermOn_constTermOn [LocallyCompactSpace N] (hφ : LeftInv (ratPts σ J ⊓ N) φ) :
     IsConstTermOn σ J N φ (constTermOn (ratPts σ J) N φ) := fun μ 𝓕 _ h h1 g => by
@@ -313,10 +234,6 @@ theorem locallyCompact_unipRad : LocallyCompactSpace (unipRad σ J C) :=
 theorem cocompact_unipRad : Cocompact (ratPts σ J) (unipRad σ J C) :=
   unipFlag_const (σ := σ) (J := J) C 0 ▸ cocompact_unipFlag hJ (sigma_sigma h) hC _
 
-theorem existsUnique_isConstTerm (hφ : LeftInv (ratPts σ J) φ) : ∃! c, IsConstTerm σ J C φ c := by
-  simp only [isConstTerm_iff_unipFlag]
-  exact existsUnique_isConstTermOn h hJ hC _ fun γ hγ => hφ γ hγ.1
-
 theorem IsConstTermOn.eq_constTermOn_par {d : Fin r → ℕ} (hc : IsConstTermOn σ J (unipFlag σ J C d) φ c)
     (hφ : LeftInv (ratPts σ J ⊓ parFlag σ J C d) φ) [LocallyCompactSpace (unipFlag σ J C d)] :
     Cocompact (ratPts σ J ⊓ parFlag σ J C d) (unipFlag σ J C d) ∧
@@ -359,17 +276,6 @@ theorem isIsoCols_of_isWittFrame {X Y : Matrix (Fin n) (Fin r) E} (hW : IsWittFr
   have hX : LinearIndependent E Xᵀ := Matrix.mulVec_injective_iff.1 fun a b e => by
     simpa only [Matrix.mulVec_mulVec, yx, Matrix.one_mulVec] using congrArg ((Formalism.UG.cT (σ : E →+* E) Y * J) *ᵥ ·) e
   exact ⟨hX.comp _ (Fin.castLE_injective hk), Matrix.ext fun i j => congrFun (congrFun hW.xx _) _⟩
-
-example (h : IsCMExt F E σ) (a : ℂ) (c : GAd σ !![0, 1; 1, 0] → ℂ) :
-    IsConstTerm σ !![0, 1; 1, 0] ((!![1; 0] : Matrix (Fin 2) (Fin 1) E).submatrix id (Fin.castLE le_rfl)) (fun _ => a) c ↔
-      c = fun _ => a := by
-  have hJ : IsHermND σ (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) E) :=
-    ⟨fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp⟩
-  exact ⟨fun hc => (existsUnique_isConstTerm h hJ (isIsoCols_of_isWittFrame isWittFrame_plane (sigma_sigma h) hJ le_rfl)
-    fun _ _ _ => rfl).unique hc (isConstTermOn_const _ a), fun e => e ▸ isConstTermOn_const _ a⟩
-
-example : ∃ (μ : Measure (GAd σ J)) (𝓕 : Set (GAd σ J)), μ.IsHaarMeasure ∧ IsFundamentalDomain (ratPts σ J) 𝓕 μ :=
-  ⟨Measure.haar, _, inferInstance, isFundamentalDomain_stdDom _ _⟩
 
 end GlobalTheory.UAut
 

@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeDefinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisOfPolarized
+import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsNormalisedOfIsDiscrete
 
 noncomputable section
@@ -46,14 +47,7 @@ def IsTransfer [IsCMField D.host.E] (V : HSp D) (θ : D.what₂.Tau → (Ainf D.
 variable {V : HSp D} {S : D.what₂.Tau → SPar} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
   (M : DSModel V S)
 
-def IsStableCompl (W' W W₀ : Submodule ℂ (MMap M)) : Prop :=
-  GlobalTheory.SphGal.IsStableSub θ M W₀ ∧ W₀ ≤ W ∧ W' ⊓ W₀ = ⊥ ∧ W' ⊔ W₀ = W
-
 variable {θ M}
-
-def uOf [IsCMField D.host.E] (j : UA D.host.E V.rank ≃ₜ* GA D V) (h₀ : GA D V) (W₀ : Submodule ℂ (MMap M)) :
-    Submodule ℂ (UA D.host.E V.rank → ℂ) :=
-  Submodule.span ℂ {φ | ∃ T ∈ W₀, ∃ v : M.Vec, φ = fun x => T v (j x * h₀)}
 
 end GlobalTheory.DefTransfer
 

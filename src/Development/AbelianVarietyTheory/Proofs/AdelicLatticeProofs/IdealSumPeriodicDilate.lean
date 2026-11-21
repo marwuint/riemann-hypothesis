@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.LatticeSumDilateHaarAsymptoticStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.LatticeSumDilateHaarAsymptotic
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical
 open scoped ContDiff nonZeroDivisors
 
@@ -106,7 +106,7 @@ theorem ideal_sum_periodic_dilate : ∀ (K : Type) [Field K] [NumberField K] (m 
     exact ⟨x, hx, by rw [map_add, Ideal.Quotient.eq_zero_iff_mem.2 hy, add_zero]⟩
   choose s hsb hs using hrep
   let J : (Ideal (𝓞 K))⁰ := ⟨b * m, mem_nonZeroDivisors_iff_ne_zero.2 (mul_ne_zero hb hm)⟩
-  obtain ⟨C, hC⟩ := GlobalTheory.T.lattice_sum_dilate_haar_asymptotic (mixedSpace K) volume
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.lattice_sum_dilate_haar (mixedSpace K) volume
     (idealLattice K (FractionalIdeal.mk0 K J)) f hf hfc A
   refine ⟨(∑ r : 𝓞 K ⧸ m, ‖ψ (s r)‖) * C, fun t ht ht1 => ?_⟩
   have hsum : Summable fun α : b => ψ α * f (t • mixedEmbedding K ((α : 𝓞 K) : K)) := by

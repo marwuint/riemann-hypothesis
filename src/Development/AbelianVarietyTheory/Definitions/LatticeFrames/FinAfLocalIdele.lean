@@ -16,12 +16,6 @@ namespace GlobalTheory.Core.Cls.JointsStd
 
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.L2.Host.CT Neutral.B1
 
-section Refl
-
-variable {E : Type} [Field E] [NumberField E]
-
-end Refl
-
 section Std
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC

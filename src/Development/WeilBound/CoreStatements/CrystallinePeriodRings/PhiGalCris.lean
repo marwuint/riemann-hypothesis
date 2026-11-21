@@ -89,12 +89,6 @@ theorem σB_mul (g h : GQ l) (b : Per6.Bcris l) : Per6.σB (g * h) b = Per6.σB 
   ιCD_injective (((ιCD_σB_aux (g * h) b).trans (σD_mul_aux g h _)).trans
     ((ιCD_σB_aux g _).trans (congrArg (Per6.σD g) (ιCD_σB_aux h b))).symm)
 
-theorem σD_one (b : Per6.BdR l) : Per6.σD (1 : GQ l) b = b :=
-  σD_one_aux b
-
-theorem σD_mul (g h : GQ l) (b : Per6.BdR l) : Per6.σD (g * h) b = Per6.σD g (Per6.σD h b) :=
-  σD_mul_aux g h b
-
 theorem ιCD_σB (g : GQ l) (b : Per6.Bcris l) : ιCD l (Per6.σB g b) = Per6.σD g (ιCD l b) :=
   ιCD_σB_aux g b
 
@@ -108,26 +102,7 @@ theorem φB_σB (g : GQ l) (b : Per6.Bcris l) : Per6.φB l (Per6.σB g b) = Per6
       (congrArg (Per6.cB l) (phi_galCris g x))).trans
       ((congrArg (Per6.σB g) (φB_cB x)).trans (σB_cB g _)).symm) b
 
-theorem σD_mem_FilD (g : GQ l) (a : ℤ) (x : Per6.BdR l) (hx : x ∈ Per6.FilD l a) :
-    Per6.σD g x ∈ Per6.FilD l a := by
-  rw [σD_eq_smul]
-  exact (gal_smul_mem_fil_iff (Per6.toBot g) a x).2 hx
-
 theorem σB_tB (g : GQ l) : Per6.σB g (tB l) = qB l ((χQ l g : ℚ_[l]ˣ) : ℚ_[l]) * tB l := by
   rw [tB_eq, σB_cB, Per6.galCris_tA, map_mul, cB_χA]
-
-theorem χQ_cyc (g : GQ l) (m : ℕ) (ζ : Om l) (hζ : ζ ^ (l ^ m) = 1) :
-    ∃ a : ℕ, ‖(χQ l g : ℚ_[l]) - (a : ℚ_[l])‖ ≤ (l : ℝ) ^ (-(m : ℤ)) ∧ g ζ = ζ ^ a := by
-  refine ⟨((cycloChar ⊥ (Per6.toBot g) : ℤ_[l]).toZModPow m).val, ?_,
-    cycloChar_spec ⊥ (Per6.toBot g) hζ⟩
-  rw [coe_χQ]
-  generalize (cycloChar ⊥ (Per6.toBot g) : ℤ_[l]) = z
-  have h1 : z - ((z.toZModPow m).val : ℤ_[l]) ∈ Ideal.span {(l : ℤ_[l]) ^ m} := by
-    have : NeZero (l ^ m) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
-    rw [← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val,
-      sub_self]
-  have h2 := (PadicInt.norm_le_pow_iff_mem_span_pow _ m).2 h1
-  rw [PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast] at h2
-  exact h2
 
 end PositivityTheory.LocInh

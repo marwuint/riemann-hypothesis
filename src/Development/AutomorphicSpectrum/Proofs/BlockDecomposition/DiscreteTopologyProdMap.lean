@@ -3,7 +3,22 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTwConjOfIsTest
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsFundamentalDomainRangeProdMap
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LintegralKernelNeTop
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockMahlerBound
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IsotropicMahlerBounds.LogAbsoluteWedges.LogAbsBasic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MahlerBoundOfDegree
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegreeBoundedOfBasis
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegreeRationalSubspace
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegreeBasisGeneral
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicDegreeFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteSupportOfSize
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SizeFinitePlaces
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LogAbsBasicFacts
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiplicativityFinitePlaces
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeterminantMonotonicity
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiplicativityInfinitePlaces
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WedgeBoundFinitePlaces
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WedgeBoundInfinitePlaces
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicGLNormOneSplit
+import GroundTheory.AutomorphicForms.ReductionMahler
 
 noncomputable section
 
@@ -174,8 +189,6 @@ theorem unfold2_of (hM : Mahler) : Unfold2 := by
     (χ := fun x => chiT τ x.1 * chiT τ x.2) (φ := φ) hι hθ hFd hcls hH hχm hχb hχi (hC₁.prod hC₂) hχK hφm hB
     (fun L hL => finite_pair hφ.supp hL)
   exact key
-
-theorem unfold2 : Unfold2 := unfold2_of GlobalTheory.CompanionTheory.MahlerAdelic.mahler
 
 end GlobalTheory.CompanionTheory.TwUnfold
 

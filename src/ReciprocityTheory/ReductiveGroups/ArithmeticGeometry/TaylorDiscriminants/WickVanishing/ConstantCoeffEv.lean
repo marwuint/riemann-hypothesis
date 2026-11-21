@@ -62,9 +62,6 @@ theorem constantCoeff_ev {a : Fin m → Pt k n d} (ha : CZ a) {f : PS k m d} (hf
     constantCoeff (ev a f) = 0 :=
   MvPowerSeries.constantCoeff_subst_eq_zero ha.hasSubst (fun p => ha p.1 p.2) hf
 
-theorem CZ.ev {a : Fin m → Pt k n d} (ha : CZ a) {l : ℕ} {b : Fin l → Pt k m d} (hb : CZ b) :
-    CZ (fun j i => ev a (b j i)) := fun j i => constantCoeff_ev ha (hb j i)
-
 theorem ev_ev {l : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) {b : Fin l → Pt k m d} (hb : CZ b) (f : PS k l d) :
     ev a (ev b f) = ev (fun j i => ev a (b j i)) f := by
   exact MvPowerSeries.subst_comp_subst_apply hb.hasSubst ha.hasSubst f
@@ -73,8 +70,6 @@ theorem ev_pt (f : PS k m d) : ev (fun j => pt k (n := m) d j) f = f := by
   show MvPowerSeries.subst (fun p : Fin m × Fin d => (X p : PS k m d)) f = f
   rw [show (fun p : Fin m × Fin d => (X p : PS k m d)) = X from rfl, MvPowerSeries.subst_self]
   rfl
-
-theorem CZ.pt : CZ (fun j => pt k (n := n) d j) := fun j i => MvPowerSeries.constantCoeff_X _
 
 theorem pderiv_ev {a : Fin m → Pt k n d} (ha : CZ a) (f : PS k m d) (v : Fin n × Fin d) :
     pderiv k v (ev a f) = ∑ p : Fin m × Fin d, ev a (pderiv k p f) * pderiv k v (a p.1 p.2) := by

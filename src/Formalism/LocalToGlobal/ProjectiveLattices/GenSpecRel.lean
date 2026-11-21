@@ -35,13 +35,6 @@ def liftT {X Y : Over (Spec (CommRingCat.of k))} (φ : Y ⟶ X) : viaT tk Y ⟶ 
 
 variable {tk g}
 
-theorem one_left' {T : Scheme.{0}} {X : Over T} {M : Over T} [GrpObj M] : (1 : X ⟶ M).left = X.hom ≫ η[M].left := by
-  exact ReciprocityTheory.ChartRestriction.G.Chart.one_left'
-
-theorem comp_one'' {T : Scheme.{0}} {X Y M : Over T} [GrpObj M] (u : Y ⟶ X) : u ≫ (1 : X ⟶ M) = 1 := by
-  ext
-  rw [Over.comp_left, Formalism.L2.Pj.GSR.one_left', Formalism.L2.Pj.GSR.one_left', ← Category.assoc, Over.w u]
-
 include hc in
 theorem rel_uniq_w {X : Over (Spec (CommRingCat.of k))} {w w' : viaT tk X ⟶ G'} {v : X ⟶ (Over.pullback g).obj G}
     (h : Rel (F := F) tk g w v) (h' : Rel (F := F) tk g w' v) : w = w' := by
@@ -57,14 +50,6 @@ theorem rel_uniq_v {X : Over (Spec (CommRingCat.of k))} {w : viaT tk X ⟶ G'} {
   have hv : v.left ≫ pullback.snd G.hom g = X.hom := by simpa using Over.w v
   have hv' : v'.left ≫ pullback.snd G.hom g = X.hom := by simpa using Over.w v'
   rw [hv, hv']
-
-include hc hg in
-theorem rel_exists_w {X : Over (Spec (CommRingCat.of k))} (v : X ⟶ (Over.pullback g).obj G) :
-    ∃ w : viaT tk X ⟶ G', Rel (F := F) tk g w v := by
-  have hv : v.left ≫ pullback.snd G.hom g = X.hom := by simpa using Over.w v
-  have cond : (v.left ≫ pullback.fst G.hom g) ≫ G.hom = (X.hom ≫ tk) ≫ f := by
-    rw [Category.assoc, pullback.condition, reassoc_of% hv, Category.assoc, hg]
-  exact ⟨Over.homMk (hc.1.lift _ _ cond) (hc.1.lift_snd _ _ cond), hc.1.lift_fst _ _ cond⟩
 
 include hc hg in
 theorem rel_exists_v {X : Over (Spec (CommRingCat.of k))} (w : viaT tk X ⟶ G') :
@@ -122,66 +107,6 @@ theorem rel_pre {X Y : Over (Spec (CommRingCat.of k))} (φ : Y ⟶ X) {w : viaT 
   show (φ.left ≫ w.left) ≫ F = (φ.left ≫ v.left) ≫ pullback.fst G.hom g
   rw [Category.assoc, Category.assoc, (h : w.left ≫ F = _)]
 
-theorem rel_act (a : G' ⟶ G') (b : G ⟶ G) (hab : a.left ≫ F = F ≫ b.left) {X : Over (Spec (CommRingCat.of k))}
-    {w : viaT tk X ⟶ G'} {v : X ⟶ (Over.pullback g).obj G} (h : Rel (F := F) tk g w v) :
-    Rel (F := F) tk g (w ≫ a) (v ≫ (Over.pullback g).map b) := by
-  have h' : w.left ≫ F = v.left ≫ pullback.fst G.hom g := h
-  show (w ≫ a).left ≫ F = (v ≫ (Over.pullback g).map b).left ≫ pullback.fst G.hom g
-  first
-  | (simp [hab, reassoc_of% h']; erw [pullback.lift_fst])
-  | exact ReciprocityTheory.ChartRestriction.G.Chart.rel_act (F := F) a b hab (show ReciprocityTheory.ChartRestriction.G.Chart.Rel (F := F) tk g w v from h)
-
 end Corr
-
-section Count
-
-variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G'] {f : S' ⟶ S} {F : G'.left ⟶ G.left}
-  (hc : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback G' G f F) {k : Type} [CommRing k] {tk : Spec (CommRingCat.of k) ⟶ S'}
-  {g : Spec (CommRingCat.of k) ⟶ S} (hg : tk ≫ f = g)
-
-include hc in
-theorem rel_eq_iff {X : Over (Spec (CommRingCat.of k))} {w₁ w₂ : viaT tk X ⟶ G'} {v₁ v₂ : X ⟶ (Over.pullback g).obj G}
-    (h₁ : Rel (F := F) tk g w₁ v₁) (h₂ : Rel (F := F) tk g w₂ v₂) : w₁ = w₂ ↔ v₁ = v₂ := by
-  constructor
-  · rintro rfl
-    exact Formalism.L2.Pj.GSR.rel_uniq_v h₁ h₂
-  · rintro rfl
-    exact Formalism.L2.Pj.GSR.rel_uniq_w hc h₁ h₂
-
-include hc hg in
-theorem tan_iff {w : viaT tk (sp (R₀ := k) (DualNumber k)) ⟶ G'} {v : sp (R₀ := k) (DualNumber k) ⟶ (Over.pullback g).obj G}
-    (h : Rel (F := F) tk g w v) :
-    ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ w.left = (1 : Over.mk tk ⟶ G').left ↔ ReciprocityTheory.ChartRestriction.G.Chart.IsTan v := by
-  have h1 := rel_pre (spMap (fstD k)) h
-  have h2 := rel_one hc hg (X := sp (R₀ := k) k)
-  have hid : (sp (R₀ := k) k).hom = 𝟙 _ := by
-    show Spec.map (CommRingCat.ofHom (algebraMap k k)) = _
-    rw [Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]
-    rfl
-  have e1 : (1 : viaT tk (sp (R₀ := k) k) ⟶ G').left = (1 : Over.mk tk ⟶ G').left := by
-    rw [one_left', one_left']
-    show ((sp (R₀ := k) k).hom ≫ tk) ≫ _ = tk ≫ _
-    rw [hid, Category.id_comp]
-  rw [ReciprocityTheory.ChartRestriction.G.Chart.IsTan, ← rel_eq_iff hc h1 h2]
-  constructor
-  · intro e
-    apply Over.OverMorphism.ext
-    exact e.trans e1.symm
-  · intro e
-    exact (congrArg (fun q => q.left) e).trans e1
-
-include hc in
-theorem eig_iff (a : G' ⟶ G') (b : G ⟶ G) (hab : a.left ≫ F = F ≫ b.left) (s : k)
-    {w : viaT tk (sp (R₀ := k) (DualNumber k)) ⟶ G'} {v : sp (R₀ := k) (DualNumber k) ⟶ (Over.pullback g).obj G}
-    (h : Rel (F := F) tk g w v) :
-    (w ≫ a).left = ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR s) ≫ w.left ↔ v ≫ (Over.pullback g).map b = spMap (scaleD s) ≫ v := by
-  rw [← rel_eq_iff hc (rel_act a b hab h) (rel_pre (spMap (scaleD s)) h)]
-  constructor
-  · intro e
-    exact Over.OverMorphism.ext e
-  · intro e
-    exact congrArg (fun q => q.left) e
-
-end Count
 
 end Formalism.L2.Pj.GSR

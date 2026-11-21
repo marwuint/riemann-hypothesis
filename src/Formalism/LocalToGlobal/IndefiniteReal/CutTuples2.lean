@@ -197,31 +197,10 @@ def MuDef (N : IndefNum Bs) (tw : HeightOneSpectrum (𝓞 K) → Bs.Tup) : Prop 
   (∀ w, X.W1 cr N w → tw w ≠ Bs.μ0) ∧ (∀ w, X.W1 cr N w → tw (conjPl w) = tw w) ∧
     (∀ w, X.μ w = if X.W1 cr N w then tw w else Bs.μ0) ∧ ∀ w, w ∈ X.Tw ↔ X.W1 cr N w
 
-def CutTuples (C CH : ℝ) : Prop :=
-  ∀ tw, X.MuDef cr ((fc X.zs).Z.num C CH) tw → X.H0 ∧ (X.data cr false).Untwisted ((fc X.zs).Z.num C CH)
-
 def CutTuples2 (C CH : ℝ) : Prop :=
   X.H0 → (∀ w, X.W1 cr ((fc X.zs).Z.num C CH) w → w ∈ X.Tw) → (X.data cr false).Untwisted ((fc X.zs).Z.num C CH)
 
 end Tuples
-
-section Passage
-
-variable {fc : DefSub A → DefFace Bs} (cr : Crd A fc)
-
-open Formalism.L2.GlobalTheoryTheory.DivPassage in
-
-def Levels (N : IndefNum Bs) : Prop :=
-  ∃ LA : LevelAmb K (X.data cr false).D (X.data cr true).D,
-    LA.FramesG ∧ LA.LatG ∧ LA.EmbAt LA.ι0 LA.ep0 LA.h0 (X.data cr false).XE ∧
-    LA.EmbAt LA.ι1 LA.ep1 LA.h1 (X.data cr true).XE ∧ LA.SandAt LA.ι0 LA.ep0 LA.h0 (X.data cr false).RR ∧
-    LA.SandAt LA.ι1 LA.ep1 LA.h1 (X.data cr true).RR ∧ LA.Sizes N.la ∧ LA.Ranks ∧ LA.Deg0 ∧ LA.Deg1 ∧
-    LA.MaxT ∧ LA.Mult N.de ∧ LA.RowsG
-
-def CutPassage [IsTotallyComplex K] (C CH : ℝ) : Prop :=
-  X.Levels cr ((fc X.zs).Z.num C CH) → Passage ((fc X.zs).Z.num C CH) (X.data cr false) (X.data cr true)
-
-end Passage
 
 end CxData
 

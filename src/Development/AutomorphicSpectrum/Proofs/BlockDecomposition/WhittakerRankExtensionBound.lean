@@ -1,8 +1,8 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.GenericUnlinkedGL.UnlinkedRealize
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubquotientRealisedBySubrepsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenericSubquotientIffWhittakerQuotientStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedKernelSupDistributesSubrepsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubquotientRealisedBySubreps
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenericSubquotientIffWhittakerQuotient
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedKernelSupDistributesSubreps
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwoGenericSubquotientsImpossibleStatement
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsCuspidalIffCompositions
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NontrivialTwJacquetOfSurjective
@@ -21,14 +21,14 @@ theorem nonempty_equiv_of_generic_subquotients (k : Type) [Field k] [ValuativeRe
     (hπ : π.IsIrreducible) (hσ : σ.IsIrreducible)
     (hπρ : IsSubquotient π ρ) (hσρ : IsSubquotient σ ρ)
     (hgπ : IsGenericFor ψ π) (hgσ : IsGenericFor ψ σ) : Nonempty (π.Equiv σ) := by
-  obtain ⟨A, B, hBA, ⟨e₁⟩⟩ := GlobalTheory.T.subquotient_realised_by_subreps ρ π hπρ
-  obtain ⟨C, D, hDC, ⟨e₂⟩⟩ := GlobalTheory.T.subquotient_realised_by_subreps ρ σ hσρ
+  obtain ⟨A, B, hBA, ⟨e₁⟩⟩ := _root_.GlobalTheory.CompanionTheory.SubquotPres.exists_equiv_subQuot ρ π hπρ
+  obtain ⟨C, D, hDC, ⟨e₂⟩⟩ := _root_.GlobalTheory.CompanionTheory.SubquotPres.exists_equiv_subQuot ρ σ hσρ
   have hiAB : (subQuot A B).IsIrreducible := GlobalTheory.Parabolic.isIrreducible_of_equiv e₁ hπ
   have hiCD : (subQuot C D).IsIrreducible := GlobalTheory.Parabolic.isIrreducible_of_equiv e₂ hσ
-  have hAB := (GlobalTheory.T.generic_subquotient_iff_whittaker_quotient k ψ hψ N ρ hρ A B hBA).1 (hgπ.of_equiv e₁)
-  have hCD := (GlobalTheory.T.generic_subquotient_iff_whittaker_quotient k ψ hψ N ρ hρ C D hDC).1 (hgσ.of_equiv e₂)
+  have hAB := (_root_.GlobalTheory.CompanionTheory.PRep.WhitQuot.isGenericFor_subQuot_iff k ψ hψ N ρ hρ A B hBA).1 (hgπ.of_equiv e₁)
+  have hCD := (_root_.GlobalTheory.CompanionTheory.PRep.WhitQuot.isGenericFor_subQuot_iff k ψ hψ N ρ hρ C D hDC).1 (hgσ.of_equiv e₂)
   obtain ⟨e⟩ := GlobalTheory.T.nonempty_equiv_subQuot_of_not_le_sup ρ (twKer ρ (unipB k (Fin N)) (whitChar ψ N)) hrank
-    (GlobalTheory.T.twisted_kernel_sup_distributes_subreps k ψ hψ N ρ hρ) A B C D hBA hDC hiAB hiCD hAB hCD
+    (_root_.GlobalTheory.CompanionTheory.PRep.WhitSup.sup_inf_twKer_le k ψ hψ N ρ hρ) A B C D hBA hDC hiAB hiCD hAB hCD
   exact ⟨(e₁.trans e).trans e₂.symm⟩
 
 end GlobalTheory.CompanionTheory.GenUniq

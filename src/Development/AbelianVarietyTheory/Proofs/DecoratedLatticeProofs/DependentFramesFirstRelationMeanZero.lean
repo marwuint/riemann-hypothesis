@@ -3,16 +3,17 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.KerBF
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaAbsoluteSum
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TransvectionLemmaOfWittCoreDescentStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TransvectionLemmaOfWittCoreDescent
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsQuasiFam
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlagSubgroupsClosedNormalCocompactStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralTsumNormalEigenfunctionsEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedThetaSeriesTermsLawsUnipotentRationalStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaTermSeriesSummableModerateGrowthUniformStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralTsumNormalEigenfunctionsEqZero
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedThetaSeriesTermsLawsUnipotentRational
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaTermSeriesSummableModerateGrowthUniform
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DependentFrameFirstColumnRelationStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsotropicUnipotentRadicalsRationalCocompact
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RationalFlagUnipotentIsotropicBlockUnitriangularStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GramMatrixOfColumnsUnitriangularConjEqStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RationalFlagUnipotentIsotropicBlockUnitriangular
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GramMatrixOfColumnsUnitriangularConjEq
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TransvectionTrivialAfterFlagUnipotentFixingStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow
@@ -38,10 +39,10 @@ theorem dep_frames_mean_zero : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF
   haveI : SecondCountableTopology (flagN d) := TopologicalSpace.Subtype.secondCountableTopology _
   haveI : vN.ν.IsHaarMeasure := vN.unit.1
   obtain ⟨hle, hNcl, hNnorm, K, hK, hcov⟩ := h56.2 (Nfix d j) (Or.inr (Or.inr ⟨j, rfl⟩))
-  have hT := GlobalTheory.T.mixedThetaSeries_terms_laws_unipotent_rational D ψ V V₀ W ρ d χV χW om om' hw hw' vS
+  have hT := _root_.GlobalTheory.Unf.TermLaw.term_laws D ψ V V₀ W ρ d χV χW om om' hw hw' vS
   have hcont : ∀ x, Continuous fun n : flagN d => term ψ d W vS (om (n.1, 1) Ψ) x := fun x =>
     ((hT Ψ hΨ).2.2.2.1 x).comp (continuous_subtype_val.prodMk continuous_const)
-  obtain ⟨C, A, hC⟩ := GlobalTheory.T.thetaTermSeries_summable_moderateGrowth_uniform D ψ V V₀ W ρ d χV χW om om' hw hw' vS Ψ hΨ
+  obtain ⟨C, A, hC⟩ := _root_.GlobalTheory.Unf.sum_term_bound D ψ V V₀ W ρ d χV χW om om' hw hw' vS Ψ hΨ
   obtain ⟨K0, hK0, hcov0⟩ := (GlobalTheory.Mem.UnipCocompact.radicals_cocompact D V ρ d.e (isIsoSub_e d)).1
   obtain ⟨Mb, hMb⟩ := hK0.exists_bound_of_continuousOn (f := fun n : flagN d => Th n.1) hTh.cont.continuousOn
   have hThb : ∀ n : flagN d, ‖Th n.1‖ ≤ Mb := by
@@ -78,7 +79,7 @@ theorem dep_frames_mean_zero : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF
   have hPu : ∀ u u' : Matrix (Fin ρ) (Fin ρ) D.host.E, u * u' = 1 → u' * u = 1 → (∀ i, u i i = 1) →
       (∀ i k, k < i → u i k = 0) → ∀ x, Pj x ↔ Pj (x * u) := by
     intro u u' huu' hu'u hdiag htri x
-    have hG := GlobalTheory.T.gramMatrixOfColumns_unitriangular_conj_eq D W ρ x₀ hB u hdiag htri
+    have hG := _root_.GlobalTheory.Unf.gramQ_unitri D W ρ x₀ hB u hdiag htri
     refine and_congr ⟨fun h => by rw [gramQ_mul, h, hG], fun h => ?_⟩ ((GlobalTheory.T.dependent_frame_first_column_relation D.host.E W.rank ρ x).2.2 j u hdiag htri)
     rw [gramQ_mul, ← hG] at h
     have h' := congrArg (fun M => u'ᴴ * M * u') h
@@ -109,7 +110,7 @@ theorem dep_frames_mean_zero : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF
     · rcases le_or_gt k j with h | h
       · rw [hu i k h]; split_ifs <;> simp
       · rw [hc k h]; simp
-  refine GlobalTheory.T.integral_tsum_normal_eigenfunctions_eq_zero (flagN d) vN.ν ((GQ V).subgroupOf (flagN d)) ((Nfix d j).subgroupOf (flagN d)) ?_ ?_ hNnorm
+  refine _root_.GlobalTheory.CutSum.integral_tsum_eq_zero (flagN d) vN.ν ((GQ V).subgroupOf (flagN d)) ((Nfix d j).subgroupOf (flagN d)) ?_ ?_ hNnorm
     (hNcl.preimage continuous_subtype_val) ?_ vN.𝓝 vN.unit.2.1 (by rw [vN.unit.2.2]; exact ENNReal.one_ne_top)
     {x // Pj x} (Fin ρ → D.host.E) (fun x => Classical.choose x.2.2.2)
     (fun x n => Th n.1 * term ψ d W vS (om (n.1, 1) Ψ) x.1) (fun x => (hTh.cont.mul (hcont x.1)).measurable)
@@ -130,7 +131,7 @@ theorem dep_frames_mean_zero : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF
       exact Subtype.ext (Subtype.ext e2)
   · intro γ hγ n
     have hγ' : γ.1 ∈ GQ V := Subgroup.mem_subgroupOf.1 hγ
-    obtain ⟨u, u', hu, huu', hu'u, hdiag, htri, -⟩ := GlobalTheory.T.rational_flagUnipotent_isotropicBlock_unitriangular D V V₀ ρ d γ.1 hγ' γ.2
+    obtain ⟨u, u', hu, huu', hu'u, hdiag, htri, -⟩ := _root_.GlobalTheory.Unf.ratBlock_unitri D V V₀ ρ d γ.1 hγ' γ.2
     let e : {x // Pj x} ≃ {x // Pj x} :=
       { toFun := fun x => ⟨x.1 * u, (hPu u u' huu' hu'u hdiag htri x.1).1 x.2⟩
         invFun := fun x => ⟨x.1 * u', (hPu u u' huu' hu'u hdiag htri (x.1 * u')).2
@@ -143,7 +144,7 @@ theorem dep_frames_mean_zero : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF
     exact tsum_congr fun i => key γ hγ' u hu n i.1
   · intro c γ hγ hγM n
     have hγ' : γ.1 ∈ GQ V := Subgroup.mem_subgroupOf.1 hγ
-    obtain ⟨u, u', hu, huu', hu'u, hdiag, htri, hfix⟩ := GlobalTheory.T.rational_flagUnipotent_isotropicBlock_unitriangular D V V₀ ρ d γ.1 hγ' γ.2
+    obtain ⟨u, u', hu, huu', hu'u, hdiag, htri, hfix⟩ := _root_.GlobalTheory.Unf.ratBlock_unitri D V V₀ ρ d γ.1 hγ' γ.2
     have hfu := hfixv u (hfix j (Subgroup.mem_subgroupOf.1 hγM))
     let e : {x // Pj x} ≃ {x // Pj x} :=
       { toFun := fun x => ⟨x.1 * u, (hPu u u' huu' hu'u hdiag htri x.1).1 x.2⟩

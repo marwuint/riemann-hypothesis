@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DegOneIffSurjective
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ContinuousIdeleCharLocalFactorizationStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.QuadraticRingOfIntegersMulMemSpanOneGenStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.QuadraticRingOfIntegersMulMemSpanOneGen
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsWeakApproxUnitFinitePlaceStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCongrModPowResidueDegreeOneFactorsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsPowValuationDivSubOneLeOfCongrStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCongrModPowResidueDegreeOneFactors
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsPowValuationDivSubOneLeOfCongr
 open NumberField IsDedekindDomain HeckeValGen GlobalTheory.HeckeSplit
 
 namespace GlobalTheory.HeckeFin
@@ -56,7 +56,7 @@ theorem trivAt_of_degOne_cofinite : ∀ (F E : Type) [Field F] [NumberField F] [
     intro v hv; by_contra h
     exact hv (by simp only [hS, Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq]; exact Or.inl (Or.inr h))
   have hwS : w ∈ S := by simp [hS]
-  obtain ⟨θ, D, hD0, hθ⟩ := GlobalTheory.T.exists_denom_mul_mem_span_one_gen_of_finrank_two F E (Algebra.IsQuadraticExtension.finrank_eq_two F E)
+  obtain ⟨θ, D, hD0, hθ⟩ := _root_.GlobalTheory.quadratic_ringOfIntegers_mul_mem_span_one_gen F E (Algebra.IsQuadraticExtension.finrank_eq_two F E)
   set ι := algebraMap (𝓞 F) (𝓞 E) with hι
   have hιinj : Function.Injective ι := by
     first
@@ -100,10 +100,10 @@ theorem trivAt_of_degOne_cofinite : ∀ (F E : Type) [Field F] [NumberField F] [
     intro h; apply hD0; apply hιinj; rw [h, map_zero]
   have hc1 : ι D * y1 ≠ 0 := mul_ne_zero hDι hy1'
   have hc2 : ι D * y2 ≠ 0 := mul_ne_zero hDι hy2'
-  choose Nf hNf using fun (v : HeightOneSpectrum (𝓞 E)) (c : 𝓞 E) (hc : c ≠ 0) => GlobalTheory.T.exists_pow_valuation_div_sub_one_le_of_congr E v c hc n
+  choose Nf hNf using fun (v : HeightOneSpectrum (𝓞 E)) (c : 𝓞 E) (hc : c ≠ 0) => _root_.GlobalTheory.exists_pow_valuation_div_sub_one_le E v c hc n
   set N : ℕ := S'.sup (fun v => Nf v _ hc1 ⊔ Nf v _ hc2) with hN
-  obtain ⟨k1, hk1, hk1P⟩ := GlobalTheory.T.exists_congr_mod_pow_residueDegreeOne_factors F E θ D hθ m hm0 hmD y1 N
-  obtain ⟨k2, hk2, hk2P⟩ := GlobalTheory.T.exists_congr_mod_pow_residueDegreeOne_factors F E θ D hθ m hm0 hmD y2 N
+  obtain ⟨k1, hk1, hk1P⟩ := _root_.GlobalTheory.exists_shift_mod_pow_degOne F E θ D hθ m hm0 hmD y1 N
+  obtain ⟨k2, hk2, hk2P⟩ := _root_.GlobalTheory.exists_shift_mod_pow_degOne F E θ D hθ m hm0 hmD y2 N
   have hmem : ∀ v ∈ S', ∀ (k c : 𝓞 E), k - c ∈ Ideal.map ι (m ^ N) → ∀ M ≤ N, k - c ∈ v.asIdeal ^ M := by
     intro v hv k c h M hM
     have h1 : Ideal.map ι (m ^ N) ≤ v.asIdeal ^ N := by

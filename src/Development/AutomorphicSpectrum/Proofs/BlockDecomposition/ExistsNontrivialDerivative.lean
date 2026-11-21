@@ -1,8 +1,8 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.UnipotentDerivatives.DerUnipLeUnipB
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicTwistedKernelDerivativeZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedJacquetPhiMinusEquivStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothMirabolicKernelEqZeroStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedJacquetPhiMinusEquiv
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothMirabolicKernelEqZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedActionSmoothStatement
 
 noncomputable section
@@ -82,13 +82,13 @@ theorem exists_derivative_nontrivial (k : Type) [Field k] [ValuativeRel k] [Topo
           τ (levi k (m + 1) g) v ∉ twKer τ (MirUin k (m + 1)) (mirChar k ψ m) := by
         by_contra hcon
         push_neg at hcon
-        exact hv (GlobalTheory.T.smooth_mirabolic_kernel_eq_zero k ψ hψc hψ m V τ hτ v h1 hcon)
+        exact hv (_root_.GlobalTheory.CompanionTheory.MirFourier.eq_zero_of_forall_twKer k ψ hψc hψ m V τ hτ v h1 hcon)
       obtain ⟨g, hg⟩ := hex
       haveI := nontrivial_quot_of_not_mem _ _ hg
       have hs : IsSmooth (phiMinus k ψ τ) :=
         GlobalTheory.T.twisted_action_smooth τ hτ _ _ _ (continuous_levi_comp_subtype m) (levi_stab ψ m)
       obtain ⟨n, hn, hnt⟩ := ih _ (phiMinus k ψ τ) hs inferInstance
-      obtain ⟨e⟩ := GlobalTheory.T.twisted_jacquet_phi_minus_equiv k ψ m n hn V τ
+      obtain ⟨e⟩ := _root_.GlobalTheory.CompanionTheory.BZMirStep.phiMinus_twJacquet_equiv k ψ m n hn V τ
       exact ⟨n, hn.trans (Nat.le_succ m), e.injective.nontrivial⟩
     · refine ⟨m + 1, le_rfl, ?_⟩
       apply nontrivial_quot_of_not_mem _ v

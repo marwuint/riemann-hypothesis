@@ -8,15 +8,6 @@ open MvPolynomial Formalism.BasicNotions Formalism.MainNotions.product_first_zer
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
-theorem embS_embLL : embS D D.what₂.embLL = embT D := by
-  funext τ
-  apply RingHom.ext
-  intro x
-  show D.what₂.embLL (D.embE (D.host.sigmaOf (D.eTau τ : D.R.GG) x)) =
-    D.host.φ₀ (D.host.sigmaOf (D.eTau τ : D.R.GG) x)
-  rw [← D.embE_φ₀]
-  rfl
-
 theorem brOne_gFull (Tf : FormsTiedSym D u Ch chOf) (τ : D.what₂.Tau) (g : GL (Fin (D.R.N D.R.m - 1)) ℂ)
     (f : MvPolynomial (Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) :
     Formalism.L2.Ker.brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) (sqAct ℂ _ (lamTr D u τ) (gFull D u g) f) =

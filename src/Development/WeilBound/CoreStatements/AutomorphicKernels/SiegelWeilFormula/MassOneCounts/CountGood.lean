@@ -4,17 +4,21 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.Integra
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.MassOneCounts.SolCountOneOne
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.MassOneCounts.FormRes
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.UnramifiedWhittaker.QuadAtOf
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedFiniteIntegralStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedFiniteIntegral
+import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.UnramifiedWhittaker.BasisSet
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueRingStructureStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedFieldStructureStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedFieldStructure
+import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.UnramifiedWhittaker.AlmostGoodOf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerExistenceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceDualAtPlaceStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceDualAtPlace
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuadraticConditionOneStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuadraticConditionTwoStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuadraticConditionTwo
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuadraticConditionThreeStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuadraticConditionFourStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuadraticConditionFiveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardUnimodularHermitianRepsLevelOneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardUnimodularHermitianRepsLevelOne
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResAlgSplitTwo
 
 noncomputable section
 
@@ -65,7 +69,7 @@ theorem count_good (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
               IsLocalRing.residue (v.adicCompletionIntegers F) s} : ℝ) =
           (Ideal.absNorm v.asIdeal : ℝ) - Densx.eR E v := by
   classical
-  have hFI := GlobalTheory.T.unramified_finite_integral F (basisSet σ b)
+  have hFI := _root_.GlobalTheory.CompanionTheory.Gunr.finInt F (basisSet σ b)
   obtain ⟨hintE, hun⟩ := GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hCM d b
   have hj0 : J 0 0 ≠ 0 := by
     have h := hJ.2
@@ -74,8 +78,8 @@ theorem count_good (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
   have hv2' : Valued.v (2 : Fv F v) = 1 := by rwa [map_ofNat] at hv2
   obtain ⟨ϖ, hϖ0, hϖ1, hϖd, hϖc⟩ := GlobalTheory.T.uniformizer_existence F v
   obtain ⟨S, σS, hS, hsig⟩ := GlobalTheory.T.residue_ring_structure F E σ d b v hInt
-  have hfix := GlobalTheory.T.fixed_field_structure F E σ hCM v
-  have htr := GlobalTheory.T.trace_dual_at_place F E σ hCM d b v hInt
+  have hfix := _root_.GlobalTheory.CompanionTheory.FixedPointsCM.fixedK F E σ hCM v
+  have htr := _root_.GlobalTheory.CompanionTheory.Gunr.TraceDual.traceDualAt F E σ hCM d b v hInt
   have hR1 : (1 : Fv F v ⊗[F] E) ∈ Rv b v := by
     rw [← hS]
     exact S.one_mem
@@ -95,7 +99,7 @@ theorem count_good (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
   have hε : (ε : ℂ) = PositivityTheory.SiegelWeilFormula.Gen.eSp E v := by
     simp only [ε, PositivityTheory.SiegelWeilFormula.Gen.eSp]
     split_ifs <;> simp
-  have hQ := PositivityTheory.SiegelWeilFormula.Gunr.quadAt_of GlobalTheory.T.unramified_quadratic_condition_one GlobalTheory.T.unramified_quadratic_condition_two GlobalTheory.T.unramified_quadratic_condition_three GlobalTheory.T.unramified_quadratic_condition_four GlobalTheory.T.unramified_quadratic_condition_five
+  have hQ := PositivityTheory.SiegelWeilFormula.Gunr.quadAt_of GlobalTheory.T.unramified_quadratic_condition_one _root_.GlobalTheory.CompanionTheory.ValuationCompleteness.q2 GlobalTheory.T.unramified_quadratic_condition_three GlobalTheory.T.unramified_quadratic_condition_four GlobalTheory.T.unramified_quadratic_condition_five
     F E σ hCM d b v hInt S σS hS hsig ϖ hϖ0 hϖ1 hϖd hϖc hϖS ε hε
   let ϖS : S := ⟨_, hϖS⟩
   have hjS : inclR (Fv F v) (J 0 0) ∈ S := (hRS _).1 hjI
@@ -142,7 +146,7 @@ theorem count_good (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
       · apply Subtype.ext
         simp only [tS, tiS, MulMemClass.coe_mul, OneMemClass.coe_one]
         rw [← map_mul, inv_mul_cancel₀ hs0, map_one]
-  have hcount := GlobalTheory.T.card_unimodular_hermitian_reps_level_one S σS ϖS (Ideal.absNorm v.asIdeal) ε hQ 1 1 le_rfl _ _ hUj hUt
+  have hcount := _root_.GlobalTheory.CompanionTheory.UnrDens.solCount_one S σS ϖS (Ideal.absNorm v.asIdeal) ε hQ 1 1 le_rfl _ _ hUj hUt
   rw [solCount_one_one] at hcount
 
   have hlev : ∀ x : S, x ∈ PositivityTheory.PfSWUS.Loc.lev ϖS 1 ↔

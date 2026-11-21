@@ -80,18 +80,6 @@ theorem rowOrb_S (hc : TruncatedSeriesCountingIdentities.FamilyContinuous (D := 
   exact orb_of_sub (LL := Br.LLw (D.nbr i _ hw)) (rowSub_S i r π dc g0 eB e₁ s Dd hD n hn hw)
     (fun x => by exact locC_du_cont i r hc hw (TruncatedSeriesCountingIdentities.CoefExt.self i _ hw) x) v
 
-set_option maxHeartbeats 4000000 in
-set_option synthInstance.maxHeartbeats 400000 in
-
-theorem rowTop_S :
-    haveI := Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD
-    KRow.RowTop i dc (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (T₁ := FirstSummandSubmodule (D.nd.O i) Dd.e₁) := by
-  apply KRow.rowTop_of
-  · intro n _ hn
-    exact KOrb.topMatch_pi (i := i) (hw := hn) _
-  · exact rowTop1_S (i := i) (r := r) (π := π) (dc := dc) (g0 := g0) (eB := eB) (e₁ := e₁) (s := s)
-      (Dd := Dd) (hD := hD)
-
 variable [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)] (hc : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r)
 
 set_option maxHeartbeats 4000000 in

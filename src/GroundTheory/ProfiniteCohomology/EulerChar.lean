@@ -151,26 +151,6 @@ theorem coe_eulerCharUnit (hG : HasFiniteCohomology k G P)
     (eulerCharUnit hG A : ℚ) = eulerChar A.obj :=
   rfl
 
-noncomputable def eulerCharHom (hG : HasFiniteCohomology k G P) :
-    GrothendieckGroup k G P →+ Additive ℚˣ :=
-  QuotientAddGroup.lift (grothendieckRelations k G P)
-    (FreeAbelianGroup.lift fun A => Additive.ofMul (eulerCharUnit hG A)) (by
-      rw [grothendieckRelations, AddSubgroup.closure_le]
-      rintro x ⟨S, h₁, h₂, h₃, hS, rfl⟩
-      have := h₁.1
-      have := h₂.1
-      have := h₃.1
-      have := h₁.2.1
-      have := h₂.2.1
-      have := h₃.2.1
-      have key := eulerChar_shortExact_of_mem hG hS h₁.2.2 h₂.2.2 h₃.2.2
-      simp only [SetLike.mem_coe, AddMonoidHom.mem_ker, map_sub, FreeAbelianGroup.lift_apply_of]
-      rw [sub_sub, sub_eq_zero, ← ofMul_mul]
-      congr 1
-      ext
-      simp only [Units.val_mul, coe_eulerCharUnit]
-      exact key)
-
 end Hypothesis
 
 section Shapiro

@@ -27,14 +27,6 @@ def coefL {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ 
     (σ : Mat k r → (H →L[ℂ] H)) (x₀ : Mat k r) (w : H) (ξ : Vp) (g : Mat k r) (m : H) : Vp :=
   per P μW μN ψ π (coefX σ x₀ w m) ξ g
 
-def HaarRightStatement : Prop :=
-  ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)),
-    Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z →
-    Formalism.MainNotions.S.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW → Formalism.MainNotions.S.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μN →
-    (∀ h ∈ Formalism.QuantumDeterminants.UWset k r z, μW.map (fun x => fun i j => (Matrix.of x * h) i j) = μW) ∧
-    (∀ m ∈ Formalism.QuantumDeterminants.Nset k r, μN.map (fun x => fun i j => (Matrix.of x * m) i j) = μN) ∧
-    (∀ h ∈ Formalism.QuantumDeterminants.UWset k r z, μN.map (fun x => fun i j => (h * Matrix.of x * h⁻¹) i j) = μN)
-
 def PerEquivStatement : Prop :=
   ∀ (k r : ℕ) (u : Fin k → ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (Vp : Type) [NormedAddCommGroup Vp]
     [InnerProductSpace ℂ Vp] [CompleteSpace Vp] (π : Mat k r → (Vp →L[ℂ] Vp)) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r))

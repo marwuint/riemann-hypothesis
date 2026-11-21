@@ -46,8 +46,6 @@ theorem Tends.map (ψ : B →+* B') (hψ : ∀ z, ∃ z', ψ (i z) = i' z') {s :
     obtain ⟨z', hz'⟩ := hψ z
     exact ⟨z', by simp only [← map_sub, hz, map_mul, map_pow, map_natCast, hz']⟩
 
-theorem Tends.const (y : B) : Tends p i (fun _ => y) y := fun _ => ⟨0, fun _ _ => ⟨0, by simp⟩⟩
-
 theorem Tends.add {s t : ℕ → B} {y w : B} (h : Tends p i s y) (h' : Tends p i t w) :
     Tends p i (fun n => s n + t n) (y + w) := fun r => by
   obtain ⟨N, hN⟩ := h r
@@ -57,43 +55,6 @@ theorem Tends.add {s t : ℕ → B} {y w : B} (h : Tends p i s y) (h' : Tends p 
   obtain ⟨z', hz'⟩ := hN' n (le_of_max_le_right hn)
   exact ⟨z + z', by rw [mul_add, map_add, ← hz, ← hz']; ring⟩
 
-theorem Tends.mul_left (hp : IsUnit (p : B)) {c : B} (hc : ∃ (D : ℕ) (z : C), (p : B) ^ D * c = i z)
-    {s : ℕ → B} {y : B} (h : Tends p i s y) : Tends p i (fun n => c * s n) (c * y) := fun r => by
-  obtain ⟨D, w, hw⟩ := hc
-  refine (h (D + r)).imp fun N hN n hn => ?_
-  obtain ⟨z, hz⟩ := hN n hn
-  refine ⟨w * z, ?_⟩
-  simp only [← mul_sub, hz, map_mul, map_pow, map_natCast, ← hw]
-  ring
-
-theorem Tends.tendsto {F : Type*} [NormedField F] (ψ : B →+* F) (hψ : ∀ z, ‖ψ (i z)‖ ≤ 1) (hp : ‖(p : F)‖ < 1)
-    {s : ℕ → B} {y : B} (h : Tends p i s y) : Filter.Tendsto (fun n => ψ (s n)) Filter.atTop (nhds (ψ y)) := by
-  rw [Metric.tendsto_atTop]
-  intro ε hε
-  obtain ⟨r, hr⟩ := exists_pow_lt_of_lt_one hε hp
-  refine (h r).imp fun N hN n hn => ?_
-  obtain ⟨z, hz⟩ := hN n hn
-  rw [dist_eq_norm, ← map_sub, hz]
-  simp only [map_mul, map_pow, map_natCast, norm_mul, norm_pow]
-  exact lt_of_le_of_lt (mul_le_of_le_one_right (by positivity) (hψ z)) hr
-
-theorem exists_sum [h : IsPrecomplete (Ideal.span {(p : C)}) C] {N : ℕ} (hN : 0 < N) (t : ℕ → C)
-    (ht : ∀ k, (p : C) ^ (k / N) ∣ t k) : ∃ S : C, ∀ n, (p : C) ^ (n / N) ∣ ∑ k ∈ range n, t k - S := by
-  have h1 : ∀ m n, m ≤ n → (p : C) ^ (m / N) ∣ ∑ k ∈ range m, t k - ∑ k ∈ range n, t k := fun m n hmn => by
-    rw [← neg_sub, dvd_neg, ← sum_Ico_eq_sub _ hmn]
-    exact dvd_sum fun k hk => (pow_dvd_pow _ (Nat.div_le_div_right (mem_Ico.1 hk).1)).trans (ht k)
-  obtain ⟨S, hS⟩ := h.prec' (fun n => ∑ k ∈ range (n * N), t k) fun {m n} hmn => by
-    rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
-    have := h1 _ _ (Nat.mul_le_mul_right N hmn)
-    rwa [Nat.mul_div_cancel _ hN] at this
-  refine ⟨S, fun n => ?_⟩
-  have h2 := hS (n / N)
-  rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton] at h2
-  have h3 := h1 _ _ (Nat.div_mul_le_self n N)
-  rw [Nat.mul_div_cancel _ hN] at h3
-  have := dvd_sub h2 h3
-  rwa [show ∀ u v w : C, u - v - (u - w) = w - v from fun u v w => by ring] at this
-
 theorem pow_div_dvd {x : C} {M : ℕ} (hx : (p : C) ∣ x ^ M) (k : ℕ) : (p : C) ^ (k / M) ∣ x ^ k := by
   refine (pow_dvd_pow_of_dvd hx _).trans ?_
   rw [← pow_mul]
@@ -102,9 +63,6 @@ theorem pow_div_dvd {x : C} {M : ℕ} (hx : (p : C) ∣ x ^ M) (k : ℕ) : (p : 
 theorem two_mul_div_le (k M : ℕ) : k / (M * 2) + k / (M * 2) ≤ k / M := by
   rw [← Nat.div_div_eq_div_mul]
   omega
-
-theorem exists_pos_pow {x : C} (hx : ∃ M : ℕ, (p : C) ∣ x ^ M) : ∃ M : ℕ, 0 < M ∧ (p : C) ∣ x ^ M :=
-  hx.elim fun M hM => ⟨M + 1, M.succ_pos, hM.trans (pow_dvd_pow _ M.le_succ)⟩
 
 theorem term_bound (h : ∀ c, i (o c) = κ (a c)) {L : PowerSeries K} {M D : ℕ}
     (hD : ∀ k : ℕ, ∃ b : A, (p : K) ^ (D + k / (M * 2)) * coeff k L = a b) {k n : ℕ} (hk : k ≤ n) {z : C}
@@ -120,53 +78,12 @@ theorem term_bound (h : ∀ c, i (o c) = κ (a c)) {L : PowerSeries K} {M D : �
   simp only [map_mul, map_pow, map_natCast, h, hd, ← h2]
   ring
 
-theorem exists_isEval_rate [IsPrecomplete (Ideal.span {(p : C)}) C] (hp : IsUnit (p : B))
-    (h : ∀ c, i (o c) = κ (a c)) {L : PowerSeries K} (hL : OnDisc p a L) {x : C}
-    (hx : ∃ M : ℕ, (p : C) ∣ x ^ M) : ∃ y : B, IsEval p i κ L (i x) y ∧ ∃ D N : ℕ, 0 < N ∧
-      (∀ k, ∃ w : C, (p : B) ^ D * (κ (coeff k L) * i x ^ k) = i ((p : C) ^ (k / N) * w)) ∧
-      ∀ n, ∃ w : C, (p : B) ^ D * (psum κ L (i x) n - y) = i ((p : C) ^ (n / N) * w) := by
-  obtain ⟨M, hM, hx⟩ := exists_pos_pow hx
-  have hN : 0 < M * 2 := by omega
-  obtain ⟨D, hD⟩ := hL (M * 2) hN
-  have ht := fun k => term_bound h hD (le_refl k) (pow_div_dvd hx k)
-  simp only [map_pow i x] at ht
-  choose w hw using id ht
-  obtain ⟨S, hS⟩ := exists_sum hN (fun k => (p : C) ^ (k / (M * 2)) * w k) fun k => dvd_mul_right _ _
-  obtain ⟨u, hu⟩ := (hp.pow D).exists_right_inv
-  have hr : ∀ n, ∃ w : C, (p : B) ^ D * (psum κ L (i x) n - u * i S) = i ((p : C) ^ (n / (M * 2)) * w) :=
-    fun n => (hS n).imp fun z hz => by
-      rw [← hz, map_sub, map_sum, mul_sub, ← mul_assoc, hu, one_mul, psum, mul_sum]
-      simp only [hw]
-  refine ⟨u * i S, fun r => ⟨(D + r) * (M * 2), fun n hn => ?_⟩, D, M * 2, hN, ht, hr⟩
-  obtain ⟨z, hz⟩ := hr n
-  obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le ((Nat.le_div_iff_mul_le hN).2 hn)
-  refine ⟨(p : C) ^ d * z, (hp.pow D).mul_left_cancel ?_⟩
-  simp only [hz, hd, map_mul, map_pow, map_natCast]
-  ring
-
-theorem existsUnique_isEval [IsAdicComplete (Ideal.span {(p : C)}) C] (hi : Function.Injective i)
-    (hp : IsUnit (p : B)) (h : ∀ c, i (o c) = κ (a c)) {L : PowerSeries K} (hL : OnDisc p a L) {x : C}
-    (hx : ∃ M : ℕ, (p : C) ∣ x ^ M) : ∃! y : B, IsEval p i κ L (i x) y :=
-  (exists_isEval_rate hp h hL hx).elim fun y hy => ⟨y, hy.1, fun _ h' => Tends.unique hi h' hy.1⟩
-
 theorem IsEval.map {K' : Type*} [CommRing K'] {κ' : K' →+* B'} (ψ : B →+* B') (τ : K →+* K')
     (hψ : ∀ z, ∃ z', ψ (i z) = i' z') (hκ : ∀ c, ψ (κ c) = κ' (τ c)) {L : PowerSeries K} {x y : B}
     (h : IsEval p i κ L x y) : IsEval p i' κ' (PowerSeries.map τ L) (ψ x) (ψ y) := by
   have := Tends.map ψ hψ h
   intro r
   simpa only [psum, map_sum, map_mul, map_pow, hκ, coeff_map] using this r
-
-theorem IsEval.C_mul (hp : IsUnit (p : B)) {c : K} (hc : ∃ (D : ℕ) (z : C), (p : B) ^ D * κ c = i z)
-    {L : PowerSeries K} {x y : B} (h : IsEval p i κ L x y) : IsEval p i κ (PowerSeries.C c * L) x (κ c * y) := by
-  have := Tends.mul_left hp hc h
-  intro r
-  simpa only [psum, coeff_C_mul, map_mul, mul_sum, mul_assoc] using this r
-
-theorem IsEval.add {L L' : PowerSeries K} {x y y' : B} (h : IsEval p i κ L x y) (h' : IsEval p i κ L' x y') :
-    IsEval p i κ (L + L') x (y + y') := by
-  have := Tends.add h h'
-  intro r
-  simpa only [psum, map_add, add_mul, sum_add_distrib] using this r
 
 theorem pow_sub_dvd (u : PowerSeries A) {x y d : C} {n : ℕ} (hx : d ∣ x ^ n)
     (hy : d ∣ y - ∑ j ∈ range n, o (coeff j u) * x ^ j) (k : ℕ) :
@@ -229,23 +146,5 @@ theorem IsEval.subst (hp : IsUnit (p : B)) (h : ∀ c, i (o c) = κ (a c)) {L : 
     simp only [hd, map_mul, map_pow, map_natCast]
     ring
   exact ⟨z - (p : C) ^ d * ∑ k ∈ range n, v k, by rw [mul_sub, map_sub, ← hz, ← h2]; ring⟩
-
-theorem onDisc_of_log {π : A} (hπ : π ∣ (p : A)) {q : ℕ} (hq : 1 < q) {L : PowerSeries K}
-    (hL : ∀ k, ∃ b : A, a π ^ Nat.log q k * coeff k L = a b) : OnDisc p a L := fun M hM => by
-  refine ⟨M, fun k => ?_⟩
-  obtain ⟨b, hb⟩ := hL k
-  obtain ⟨c, hc⟩ := hπ
-  have h1 : Nat.log q k ≤ M + k / M := by
-    rcases Nat.eq_zero_or_pos k with rfl | hk
-    · simp
-    refine (Nat.log_lt_of_lt_pow hk.ne' ?_).le
-    rw [pow_add]
-    refine (Nat.lt_mul_div_succ k hM).trans_le (Nat.mul_le_mul (Nat.lt_pow_self hq).le (Nat.lt_pow_self hq))
-  obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le h1
-  refine ⟨c ^ Nat.log q k * (p : A) ^ d * b, ?_⟩
-  have h2 : (p : K) = a π * a c := by rw [← map_mul, ← hc, map_natCast]
-  simp only [hd, map_mul, map_pow, map_natCast, ← hb, pow_add]
-  rw [show (p : K) ^ Nat.log q k = (a π * a c) ^ Nat.log q k by rw [h2]]
-  ring
 
 end GlobalTheory.DiscEval

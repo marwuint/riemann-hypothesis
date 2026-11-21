@@ -59,14 +59,6 @@ theorem cotMap_eq_zero_iff [IsCocomm R C] {f : C →ₐc[R] A} (hf : Function.Su
   rw [exact_cotMap hf _ hk w]
   exact exists_congr fun v => by rw [cotMap_mulBy, eq_comm]
 
-theorem ker_cotMap [IsCocomm R C] {f : C →ₐc[R] A} (hf : Function.Surjective f) {m : ℕ}
-    (hk : RingHom.ker f = torsionIdeal R C m) :
-    LinearMap.ker (cotMap f) = Ideal.span {(m : R)} • (⊤ : Submodule R (Cot R C)) := by
-  ext w
-  rw [LinearMap.mem_ker, cotMap_eq_zero_iff hf hk, Submodule.ideal_span_singleton_smul,
-    Submodule.mem_smul_pointwise_iff_exists]
-  exact exists_congr fun v => by simp [eq_comm]
-
 end PDiv
 
 namespace PDivGroup
@@ -74,11 +66,6 @@ namespace PDivGroup
 open PDiv
 
 variable {p : ℕ} {O : Type} [CommRing O] (G : PDivGroup p O)
-
-theorem ker_cotMap_of_ker_eq {m n : ℕ} {f : G.A n →ₐc[O] G.A m} (hf : Function.Surjective f)
-    (hk : RingHom.ker f = torsionIdeal O _ (p ^ m)) :
-    LinearMap.ker (cotMap f) = Ideal.span {(p : O) ^ m} • (⊤ : Submodule O (Cot O (G.A n))) := by
-  rw [ker_cotMap hf hk, Nat.cast_pow]
 
 theorem cotMap_res_surjective (n : ℕ) : Function.Surjective (cotMap (G.res n)) :=
   cotMap_surjective (G.res_surjective n)

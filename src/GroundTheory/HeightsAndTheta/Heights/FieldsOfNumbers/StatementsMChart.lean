@@ -58,10 +58,6 @@ def MChartLocDim.Statement : Prop :=
       ringKrullDim (degZeroLoc P {W}) =
         ((chartIdeal W u).map (Ideal.Quotient.mk (chartIdeal P u))).height
 
-section Example
-
-end Example
-
 end
 
 end GroundTheory.Heights₂.Heights.FieldNumbers

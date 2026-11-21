@@ -7,24 +7,6 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormSub
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology Polynomial
 open GlobalTheory.UnramifiedCrys
 
-private def algSub (p : ℕ) [hp : Fact p.Prime] (R : Type) [CommRing R] [CharP R p] : Subring R where
-  carrier := {y | ∃ m, 0 < m ∧ y ^ p ^ m = y}
-  one_mem' := ⟨1, one_pos, one_pow _⟩
-  zero_mem' := ⟨1, one_pos, zero_pow (pow_pos hp.out.pos _).ne'⟩
-  mul_mem' := by
-    rintro x y ⟨a, ha, hx⟩ ⟨b, hb, hy⟩
-    refine ⟨a * b, Nat.mul_pos ha hb, ?_⟩
-    rw [mul_pow, pow_pow_mul hx, mul_comm a b, pow_pow_mul hy]
-  add_mem' := by
-    rintro x y ⟨a, ha, hx⟩ ⟨b, hb, hy⟩
-    refine ⟨a * b, Nat.mul_pos ha hb, ?_⟩
-    rw [add_pow_char_pow, pow_pow_mul hx, mul_comm a b, pow_pow_mul hy]
-  neg_mem' := by
-    rintro x ⟨a, ha, hx⟩
-    refine ⟨a, ha, ?_⟩
-    have h := sub_pow_char_pow (p := p) (n := a) (0 : R) x
-    rwa [zero_sub, hx, zero_pow (pow_pos hp.out.pos _).ne', zero_sub] at h
-
 private theorem exists_alg {p : ℕ} [hp : Fact p.Prime] {G : Type} [Group G] {R : Type} [CommRing R]
     (ρ : G →* (R ≃+* R)) [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [IsDomain R] [CharP R p]
     (hopen : ∀ (y : R) (m : ℕ), 0 < m → y ^ p ^ m = y → ∀ᶠ g in 𝓝 (1 : G), ρ g y = y)

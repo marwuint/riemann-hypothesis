@@ -114,65 +114,6 @@ theorem ramForm_basis {B : Base} {C : Cols B} (W : RowsRest B C) (u : B.Word) {�
     obtain ⟨ψ, hψ, hψ'⟩ := h2 h1
     rwa [← hginj hψ']
 
-theorem exists_divStage (B : Base) (C : Cols B) (W : RowsRest B C) (n : ℕ) (c : Module.Basis (Fin n) ℂ W.EE)
-    (Xo : InfinitePlace B.LL → Matrix (Fin n) (Fin n) ℂ) (hXo : ∀ v, IsUnit (Xo v).det)
-    (Lr : Submodule (𝓞 B.LL) (Fin n → B.LL)) (Ln : ∀ u, Submodule (𝓞 B.LL) ((C.fm u).lat 0).V)
-    (Bk : ∀ u, ((C.fm u).lat 0).V →ₗ[B.LL] Module.Dual B.LL (Fin n → B.LL)) (h : B.Word → ℝ) (etaF : ℝ) :
-    ∃ (V : DivStage B C W) (e : V.div.RR.V ≃ₗ[B.LL] (Fin n → B.LL)),
-      (∀ x, V.jEE x = ∑ i, B.embLL (e x i) • c i) ∧ (∀ x, x ∈ V.div.RR.L ↔ e x ∈ Lr) ∧
-      (∀ v, v ≠ InfinitePlace.mk B.embLL → ∀ x, Formalism.HermitianLatticesTheory.normAt V.div.RR.b V.div.RR.X v x =
-        Formalism.HermitianLatticesTheory.normAt (Pi.basisFun B.LL (Fin n)) Xo v (e x)) ∧
-      (∀ u x, x ∈ (V.div.Nu u).L ↔ V.nuIn u x ∈ Ln u) ∧
-      (∀ u φ x, V.div.Bk u φ x = Bk u (V.nuIn u φ) (e x)) ∧ V.div.h = h ∧ V.div.etaF = etaF ∧
-      V.div.HH = sFrame V.div.Nu V.div.h + V.div.RR.muMax := by
-  classical
-  obtain ⟨X0, hX0, hX0n⟩ := GlobalTheory.exists_frames_normAt_eq_norm B.LL B.embLL W.EE n c Lr
-  choose m bN XN hXN hXNn using fun u : B.Word =>
-    GlobalTheory.Mem.exists_restricted_frames B.LL ((C.fm u).lat 0) (C.fm u).ramSub ⊥ ((C.fm u).lat_good 0).1
-  let X : InfinitePlace B.LL → Matrix (Fin n) (Fin n) ℂ := fun v =>
-    if v = InfinitePlace.mk B.embLL then X0 v else Xo v
-  let RR : HLat B.LL :=
-    { V := Fin n → B.LL, ι := Fin n, b := Pi.basisFun B.LL (Fin n), X := X, L := Lr }
-  let Nu : B.Word → HLat B.LL := fun u =>
-    { V := (C.fm u).ramSub, ι := Fin (m u), b := bN u, X := XN u,
-      L := (Ln u).comap ((C.fm u).ramSub.subtype.restrictScalars (𝓞 B.LL)) }
-  let D : DivData B.LL B.Word :=
-    { RR := RR, Nu := Nu, Bk := fun u => (Bk u) ∘ₗ (C.fm u).ramSub.subtype, h := h,
-      HH := sFrame Nu h + RR.muMax, HH_ge := le_rfl, etaF := etaF, Dall := W.Dall, delP := W.delp,
-      delP_le_one := W.delp_le_one }
-  let V : DivStage B C W :=
-    { div := D
-      div_good := ⟨fun v => by
-        show IsUnit (if v = InfinitePlace.mk B.embLL then X0 v else Xo v).det
-        split_ifs
-        · exact hX0 v
-        · exact hXo v, fun u v => hXN u v⟩
-      jEE := coordForm B.embLL c
-      jEE_basis := by
-        have : (fun i => coordForm B.embLL c (Pi.basisFun B.LL (Fin n) i)) = c :=
-          funext (coordForm_basisFun B.embLL c)
-        show LinearIndependent ℂ (fun i => coordForm B.embLL c (Pi.basisFun B.LL (Fin n) i)) ∧
-          Submodule.span ℂ (Set.range (fun i => coordForm B.embLL c (Pi.basisFun B.LL (Fin n) i))) = ⊤
-        rw [this]
-        exact ⟨c.linearIndependent, c.span_eq⟩
-      jN := ramForm W
-      jN_basis := fun u => ramForm_basis W u (bN u)
-      Dall_eq := rfl
-      delP_eq := rfl
-      nuIn := fun u => (C.fm u).ramSub.subtype
-      nuIn_inj := fun u => (C.fm u).ramSub.injective_subtype
-      nuIn_range := fun u => Submodule.range_subtype _
-      nuIn_jN := fun u x => eMu_ramForm W u x
-      nuIn_norm := fun u v x => hXNn u v x
-      jEE_norm := fun x => by
-        refine Eq.trans ?_ (hX0n x)
-        show Formalism.HermitianLatticesTheory.normAt (Pi.basisFun B.LL (Fin n)) X _ x = _
-        simp only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.fcoord, X, if_true] }
-  refine ⟨V, LinearEquiv.refl _ _, fun x => rfl, fun x => Iff.rfl, fun v hv x => ?_, fun u x => Iff.rfl,
-    fun u φ x => rfl, rfl, rfl, rfl⟩
-  show Formalism.HermitianLatticesTheory.normAt (Pi.basisFun B.LL (Fin n)) X v x = Formalism.HermitianLatticesTheory.normAt (Pi.basisFun B.LL (Fin n)) Xo v x
-  simp only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.fcoord, X, if_neg hv]
-
 end GlobalTheory.Mem
 
 end

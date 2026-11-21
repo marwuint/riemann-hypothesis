@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.UniformizerMemDeltaInvariants
-import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.RecNZFullLen
 import Formalism.JumpKernelCokernel.LengthTheoremsWithEarlier
 
 noncomputable section
@@ -23,22 +22,6 @@ def π0N (T : LocLat G Qp LL O) (i : ZMod n) : Submodule O ↥(NDl W T i) :=
 
 def IsRed (T : LocLat G Qp LL O) (i : ZMod n) {r : ℕ} (red : ↥(NDl W T i) →ₗ[O] (Fin r → O)) : Prop :=
   Function.Surjective red ∧ LinearMap.ker red = π0N W T i
-
-def DetRed : Prop :=
-  ∀ (d : ℕ) (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L) (b : ZMod n → ℕ) (S η m : ℕ),
-    SetCS W d T₁ T₂ F b S η m → ∀ i ∈ evens n d,
-      ∃ (r : ℕ) (red : ↥(NDl W T₂ i) →ₗ[O] (Fin r → O)), IsRed W T₂ i red
-
-def DetCols : Prop :=
-  ∀ (d : ℕ) (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L) (b : ZMod n → ℕ) (S η m : ℕ),
-    SetCS W d T₁ T₂ F b S η m → ∀ i ∈ evens n d, ∀ (r : ℕ) (red : ↥(NDl W T₂ i) →ₗ[O] (Fin r → O)),
-      IsRed W T₂ i red →
-      ∃ (m' : ℕ) (_ : m' ≤ m) (g : Fin m' → W.DD T₂) (_ : ∀ j, g j ∈ NDl W T₂ i)
-        (cols : Fin r → ↥(NDl W T₂ i)),
-        (∀ k, ((cols k : ↥(NDl W T₂ i)) : W.DD T₂) ∈ QhP W T₂ i (b i + S) ∨
-          ∃ j, ((cols k : ↥(NDl W T₂ i)) : W.DD T₂) = g j) ∧
-        ∃ V : ℕ, V ≤ finrank LL T₂.V * S + 2 * ⌊cD PD.p (hpar n b S + η)⌋₊ * m ∧
-          (Matrix.of fun l k => red (cols k) l).det ∣ ((PD.p : ℕ) : O) ^ V
 
 theorem length_coker_le {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {r : ℕ}
     (QQ : Matrix (Fin r) (Fin r) O) (l : O) (hl : l ≠ 0) (V : ℕ) (hd : QQ.det ∣ l ^ V) :
@@ -175,14 +158,6 @@ theorem lemmaDN_core {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L
     unfold Formalism.MainNotions.RamifiedCoefficientChains.S9.lenC
     push_cast
     exact mul_le_mul_of_nonneg_right hV' (Nat.cast_nonneg k)
-
-theorem lemmaDN_of_det (h0 : DetRed W) (h1 : DetCols W) :
-    LemmaDN W := by
-  intro d T₁ T₂ F b S η m hS i hi
-  obtain ⟨r, red, hred⟩ := h0 d T₁ T₂ F b S η m hS i hi
-  obtain ⟨m', hm', g, hgN, cols, hcols, V, hV, hdet⟩ := h1 d T₁ T₂ F b S η m hS i hi r red hred
-  obtain ⟨hsurj, hker⟩ := hred
-  exact lemmaDN_core W hS i red hsurj hker hm' g hgN cols hcols V hV hdet
 
 def DetColsE : Prop :=
   ∀ (d : ℕ) (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L) (b : ZMod n → ℕ) (S η m : ℕ),

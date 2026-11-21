@@ -131,8 +131,6 @@ theorem capAdInv : CapAdInv := by
   exact ad_main (Q.EH k r) EH_HC EH_HL EH_HA EH_HS EH_HGl (EHc k r y) (EHc_HL hy) hQP
     (fun c d φ hφ g hg => EHc_change hy c d φ hφ g hg) e u f (by rw [hm]; exact hf) h hh
 
-theorem cVRight : JF.CVRight := cvRight_of capAdInv
-
 theorem cVRho : JF.CVRho := cvRho_of capAdInv
 
 end Formalism.FourierDecayAlt.P.JFxE

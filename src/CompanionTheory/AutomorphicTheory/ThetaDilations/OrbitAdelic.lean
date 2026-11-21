@@ -1,7 +1,9 @@
 import CompanionTheory.AutomorphicTheory.ThetaDilations.SqPosOfNe
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureScalingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureLinearChangeStatement
+import Mathlib
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureLinearChange
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WeilRepresentationQuadraticDatumStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IwasawaDecompositionAdelicSL2Statement
 
@@ -90,7 +92,7 @@ theorem fstar_decay : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace 
   have hD := impl_D H a⁻¹ hm fun s hs => by
     have hs' : MeasurableSet ((fun u => ((a⁻¹ : (A F)ˣ) : A F) • u) '' s) :=
       (Homeomorph.smul a⁻¹ : (ι → A F) ≃ₜ (ι → A F)).measurableEmbedding.measurableSet_image.2 hs
-    have h2 := (GlobalTheory.T.adelic_haar_measure_linear_change F lf hlf h1 ι).2 a _ hs'
+    have h2 := (_root_.GlobalTheory.CompanionTheory.SW.Core.PiScale.pi_scale F lf hlf h1 ι).2 a _ hs'
     rw [Set.image_image, ha, hden, hQ.2.1] at h2
     simp only [smul_smul, Units.mul_inv, one_smul, Set.image_id'] at h2
     rw [muF, Measure.smul_apply, Measure.smul_apply, h2, smul_eq_mul, smul_eq_mul, mul_left_comm, ← mul_assoc _ (_ ^ _),

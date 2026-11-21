@@ -1,6 +1,7 @@
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.SymInt
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.WittPNe
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.DualFlatOf
+import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.PairLift
+import Formalism.LocalToGlobal.GroupLattices.FockModels.TestSideEdge
 
 noncomputable section
 
@@ -29,36 +30,6 @@ def kapZ (p : ℕ) {n' : ℕ} (m : ℕ) (TT : Finset (Fin n')) (aT bT : Fin n' �
 
 def zTen (K : Type) [Field K] (p : ℕ) {n' : ℕ} (m : ℕ) (TT : Finset (Fin n')) (aT bT : Fin n' → ℕ) : K :=
   (p : K) ^ kapZ p m TT aT bT / ∏ x : TT × Bool, ((hhDegs TT aT bT x).factorial : K)
-
-def TestFlatAt : Prop :=
-  ∀ (p n' : ℕ) [Fact p.Prime] (W Qq O Kf : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
-    [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
-    (ι : Qq →+* Kf) (σ : Qq ≃+* Qq) (jO : W →+* O) (w : O),
-    HidaSetting p n' W Qq O Kf ι σ jO w → ∀ φ : WF p n' ≃+* W, IsWittIdent σ φ →
-    ∀ (m : ℕ) (TT : Finset (Fin n')) (aT bT : Fin n' → ℕ), 1 ≤ m →
-    ∀ e : Edge W Qq (m + 1), IsEdge p n' 1 e →
-    letI : Algebra (WF p n') O := algOfIdent jO φ
-    ∃ (h h' : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq)
-      (Θ Θ' : ↥((Pol (KK O) (ι := TT × Bool) (m + 1) (hhDegs TT aT bT)).restrictScalars O) ≃ₗ[O]
-        ↥(VHH (m := m) Kf TT aT bT))
-      (g g' : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n'))
-      (Ξ : ↥(VHH (m := m) Kf TT aT bT) →ₗ[Kf] Module.Dual Kf ↥(VHH (m := m) Kf TT aT bT)),
-      (IsFlatTheta ι σ jO w φ TT aT bT h Θ ∧ e.src = colSpan W h ∧ IsGLW g ∧
-        IsEdgeBasis p 1 e (h * ((matQ φ g)⁻¹).transpose)) ∧
-      (IsEdge p n' 1 e.dual ∧ IsFlatTheta ι σ jO w φ TT aT bT h' Θ' ∧ e.dual.src = colSpan W h' ∧ IsGLW g' ∧
-        IsEdgeBasis p 1 e.dual (h' * ((matQ φ g')⁻¹).transpose)) ∧
-      (∀ (t c : ℕ), ∀ v ∈ CCe p ι σ w TT aT bT t c e.dual, Ξ v ∈ CCe' p ι σ w TT aT bT t c e) ∧
-      (∀ F : ↥((Pol (KK O) (ι := TT × Bool) (m + 1) (hhDegs TT aT bT)).restrictScalars O),
-        liftSubst p n' O w 1 (hhLetters TT) g (F : MvPolynomial ((TT × Bool) × Fin (m + 1)) (KK O)) ∈
-            Pol (KK O) (ι := TT × Bool) (m + 1) (hhDegs TT aT bT) ∧
-        liftSubst p n' O w 1 (hhLetters TT) g' (F : MvPolynomial ((TT × Bool) × Fin (m + 1)) (KK O)) ∈
-            Pol (KK O) (ι := TT × Bool) (m + 1) (hhDegs TT aT bT)) ∧
-      ∀ (F F' : ↥((Pol (KK O) (ι := TT × Bool) (m + 1) (hhDegs TT aT bT)).restrictScalars O)) (y : O),
-        zTen (KK O) p m TT aT bT *
-          fock (liftSubst p n' O w 1 (hhLetters TT) g (F : MvPolynomial ((TT × Bool) × Fin (m + 1)) (KK O)))
-            (liftSubst p n' O w 1 (hhLetters TT) g' (F' : MvPolynomial ((TT × Bool) × Fin (m + 1)) (KK O))) =
-          algebraMap O (KK O) y →
-        beHH (m := m) p TT aT bT (Θ F) (Ξ (Θ' F')) = algebraMap O Kf y
 
 open Classical in
 

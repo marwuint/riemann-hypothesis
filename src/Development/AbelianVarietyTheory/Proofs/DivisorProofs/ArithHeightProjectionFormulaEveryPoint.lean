@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHeightPullbackResidueDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHeightProjectionFormulaPointCurveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHeightProjectionFormulaInductiveStepStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHeightPullbackResidueDegree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHeightProjectionFormulaPointCurve
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHeightProjectionFormulaInductiveStep
 open CategoryTheory AlgebraicGeometry TopologicalSpace MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -29,16 +29,16 @@ theorem heightProj : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ S
     | zero =>
       intro w hw
       rcases hY.vertical_or_horizontal (cloι w) with ⟨l, _, hl⟩ | ⟨hc, e, he⟩
-      · exact GlobalTheory.T.arith_height_pullback_residue_degree k X Y p q D E hX hY π hπ L h h' H H' w l hl
-      · exact GlobalTheory.T.arithHeight_projectionFormula_pointCurve k X Y p q D E hX hY π hπ L h h' H H' w hc hw
+      · exact _root_.GlobalTheory.ProjFormulaVert.height_pull_vertical k X Y p q D E hX hY π hπ L h h' H H' w l hl
+      · exact _root_.GlobalTheory.ProjCurve.main k X Y p q D E hX hY π hπ L h h' H H' w hc hw
     | succ m ih =>
       intro w hw
       rcases hY.vertical_or_horizontal (cloι w) with ⟨l, _, hl⟩ | ⟨hc, e, he⟩
-      · exact GlobalTheory.T.arith_height_pullback_residue_degree k X Y p q D E hX hY π hπ L h h' H H' w l hl
-      · exact GlobalTheory.T.arithHeight_projectionFormula_inductiveStep k X Y p q D E hX hY π hπ L h h' H H' w m hc hw ih
+      · exact _root_.GlobalTheory.ProjFormulaVert.height_pull_vertical k X Y p q D E hX hY π hπ L h h' H H' w l hl
+      · exact _root_.GlobalTheory.ProjStep.main k X Y p q D E hX hY π hπ L h h' H H' w m hc hw ih
   intro y
   rcases hY.vertical_or_horizontal (cloι y) with ⟨l, _, hl⟩ | ⟨hc, e, he⟩
-  · exact GlobalTheory.T.arith_height_pullback_residue_degree k X Y p q D E hX hY π hπ L h h' H H' y l hl
+  · exact _root_.GlobalTheory.ProjFormulaVert.height_pull_vertical k X Y p q D E hX hY π hπ L h h' H H' y l hl
   · exact key e y ((hasDim_iff_clo y (e + 1)).2 he)
 
 end GlobalTheory.MixHt

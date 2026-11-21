@@ -33,7 +33,7 @@ variable {D : D7} {θ : InfF D} {V : HSp D} {τ : D.what₂.Tau} {X : Matrix (Fi
 
 theorem gelf_Rder (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (hφ : φ ∈ SmFun θ V) (τ' : D.what₂.Tau) (k : ℕ) :
     gelf θ V τ' k (Rder θ V τ X φ) = Rder θ V τ X (gelf θ V τ' k φ) := by
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   obtain ⟨c, hc, hg⟩ := GlobalTheory.SmoothForms.exists_gelf R τ'
   let ψ : GlobalTheory.SmoothForms.SmF θ V := ⟨φ, (GlobalTheory.SmoothForms.smooth_iff R φ).1 hφ⟩
   let X' : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ := ⟨X, hX⟩
@@ -107,12 +107,6 @@ theorem isCuspFun_Rder (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (h : IsAutFun
     (GlobalTheory.Mem.Lift.hasDerivAt_oneP hθ hX (GlobalTheory.Mem.Lift.hasDerivAt_Rder h.smooth hX)) x
   rw [h0, GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one] at this
   exact this.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))
-
-theorem rder_mem_autForms_cuspForms : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D) (K : Subgroup (GA D V)), K ≤ GinfC V → ∀ τ, ∀ X ∈ lieAt V τ, (∀ φ ∈ autForms θ V K, Rder θ V τ X φ ∈ autForms θ V K) ∧ ∀ φ ∈ cuspForms θ V K, Rder θ V τ X φ ∈ cuspForms θ V K := by
-  intro D θ hθ V K hK τ X hX
-  refine ⟨fun φ h => ⟨isAutFunSm_Rder hθ hX h.1, isKFinite_Rder hθ hX hK h.1.smooth h.2⟩, fun φ h => ?_⟩
-  obtain ⟨⟨h1, h2⟩, h3⟩ := mem_cuspForms.1 h
-  exact mem_cuspForms.2 ⟨⟨isAutFunSm_Rder hθ hX h1, isCuspFun_Rder hθ hX h1 h2⟩, isKFinite_Rder hθ hX hK h1.smooth h3⟩
 
 end GlobalTheory.CuspLie
 

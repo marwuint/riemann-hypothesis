@@ -28,8 +28,6 @@ def inertia (p : ℕ) : Subgroup E.Gal := (E.inertiaUnits p).map E.res
 
 def Ramified (p : ℕ) : Prop := E.inertia p ≠ ⊥
 
-def frob (p : ℕ) (hp : p.Coprime E.N) : E.Gal := E.res (ZMod.unitOfCoprime p hp)
-
 def IsModulus (M : ℕ) : Prop := ∃ h : M ∣ E.N, (ZMod.unitsMap h).ker ≤ E.H
 
 noncomputable def conductor : ℕ := sInf {M : ℕ | E.IsModulus M}

@@ -28,12 +28,6 @@ def FibreNormBadPrimesFinite.Statement : Prop :=
     (∀ z ∈ mcPts (mCoordIdeal y), ∃ j, eval z (map (Int.castRingHom ℂ) (L j)) ≠ 0) →
     {p : ℕ | ∃ hp : p.Prime, HasCommonZeroModP y L p hp}.Finite
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

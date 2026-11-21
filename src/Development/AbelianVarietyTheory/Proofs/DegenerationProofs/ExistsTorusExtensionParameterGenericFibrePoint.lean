@@ -3,12 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.BaseFacts
 import Development.AbelianVarietyTheory.Definitions.Degenerations.IsAffineSplitTorusLeft
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CompanionTheory
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIntegralNthRootTestModelPointStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIntegralNthRootTestModelPoint
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GtAddIotaSubExist
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusExtensionPointOfIntegralModelPointStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusExtensionPointOfIntegralModelPoint
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusCoordUnitAndSectionEqExpansionStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaTestPowerIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaParameterOfThetaParameterMulDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaTestPowerIntegral
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaParameterOfThetaParameterMulDegree
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitCarries
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -28,9 +28,9 @@ theorem exists_parAt : GlobalTheory.UT.LL → UTorsSt → ∀ (o Ω : Type) [Com
     nlinarith
   haveI : CharZero u.V := RingHom.charZero
     ((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V)))
-  obtain ⟨k, hk, hint⟩ := GlobalTheory.T.theta_test_power_integral hL o Ω S ρ p y₀ u a
-  obtain ⟨a₁, ⟨c, hc, hca⟩, hpow⟩ := GlobalTheory.T.exists_integral_nthRoot_testModel_point hL o Ω S ρ p y₀ u (a ^ k) k hk hint
-  obtain ⟨g₁, hg₁⟩ := GlobalTheory.T.exists_torusExtensionPoint_of_integralModelPoint hL o Ω S ρ p y₀ u c hc
+  obtain ⟨k, hk, hint⟩ := _root_.GlobalTheory.ZH.exists_int_pow hL o Ω S ρ p y₀ u a
+  obtain ⟨a₁, ⟨c, hc, hca⟩, hpow⟩ := _root_.GlobalTheory.IntDiv.exists_integral_root hL o Ω S ρ p y₀ u (a ^ k) k hk hint
+  obtain ⟨g₁, hg₁⟩ := _root_.GlobalTheory.IntegralGt.exists_lev hL o Ω S ρ p y₀ u c hc
   have hpar := (GlobalTheory.T.torusCoord_unit_and_section_eq_expansion hL o Ω S ρ p y₀ u c g₁ a₁ hc hca hg₁).2
   have hNk : 1 ≤ S.N * k := Nat.mul_pos (by omega) hk
   obtain ⟨f, hf, hsurj, -⟩ := hT u.V u.complete u.A u.G u.D u.U (PadicAlgCl p) (S.N * k) hNk
@@ -41,7 +41,7 @@ theorem exists_parAt : GlobalTheory.UT.LL → UTorsSt → ∀ (o Ω : Type) [Com
     rw [mul_comm S.N k, pow_mul, mul_pow, inv_pow, hk', mul_inv_cancel, one_pow]
   obtain ⟨pk, hpk⟩ := hsurj _ hx
   obtain ⟨g, hg⟩ := (gt_add_iota_sub_exist hL o Ω S ρ p y₀ u).1 pk.g g₁
-  refine ⟨g, GlobalTheory.T.thetaParameter_of_thetaParameter_mul_degree hL o Ω S ρ p y₀ u l S.N k a g hN hk ?_⟩
+  refine ⟨g, _root_.GlobalTheory.ParameterRoot.parAt_of_parAt_mul hL o Ω S ρ p y₀ u l S.N k a g hN hk ?_⟩
   exact ParTranslate.parAt_translate hL o Ω S ρ p y₀ u (S.N * k) pk _ a₁ a g₁ g hNk
     ((hf pk _).2 hpk.symm) (by rw [inv_mul_cancel_right]) hg (hpar _ hNk)
 

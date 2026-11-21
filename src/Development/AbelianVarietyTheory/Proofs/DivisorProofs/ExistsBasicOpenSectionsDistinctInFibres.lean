@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqualizerSectionsClosedIdealStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqualizerSectionsClosedIdeal
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -15,7 +15,7 @@ theorem sep_elem (R : Type) [CommRing R] (X : Over (Sp R)) (hX : IsSeparated X.h
     (hx : x ≫ X.hom = 𝟙 _) (hy : y ≫ X.hom = 𝟙 _) (hne : spMap e ≫ x ≠ spMap e ≫ y) :
     ∃ r : R, e r ≠ 0 ∧ ∀ (F : Type) [Field F] (ψ : R →+* F), ψ r ≠ 0 →
       spMap ψ ≫ x ≠ spMap ψ ≫ y := by
-  obtain ⟨I, hI⟩ := GlobalTheory.T.equalizer_sections_closed_ideal R X hX x y hx hy
+  obtain ⟨I, hI⟩ := _root_.GlobalTheory.sections_eqLocus_ideal R X hX x y hx hy
   have h1 : ¬ ∀ r ∈ I, e r = 0 := fun h => hne ((hI K e).2 h)
   push_neg at h1
   obtain ⟨r, hrI, hr⟩ := h1

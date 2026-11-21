@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentralNilGL
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSpanFormsNeBot
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalMatrixCoefficientSpanStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CenterActsByScalarOnEigenformsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CenterActsByScalarOnEigenforms
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExpoConjOfIsCsd
 
 noncomputable section
 
@@ -23,7 +24,7 @@ theorem automorphicFormsFiniteGL_of_core (h : CoreFiniteGL) : GlobalTheory.Publi
     match zs, hlen with
     | [z], _ =>
       have hz : z ∈ Zalg E a := hzs z (List.mem_singleton_self z)
-      have hex := GlobalTheory.T.center_acts_by_scalar_on_eigenforms E a c z hz
+      have hex := _root_.GlobalTheory.CuspRep.Zalg_acts_by_scalar E a c z hz
       have hχ : χ z = hex.choose := dif_pos hex
       simp only [List.foldr_cons, List.foldr_nil]
       rw [hχ, hex.choose_spec φ h4, sub_self]

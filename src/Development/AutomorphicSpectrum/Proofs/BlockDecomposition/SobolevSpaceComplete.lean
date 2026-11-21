@@ -3,7 +3,8 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Lap
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SobolevOperatorFacts
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusJointCurve
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformLimitRightDerivativesStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformLimitRightDerivatives
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RwAppend
 
 open MeasureTheory Matrix Finset Filter Topology
 open scoped ContDiff ComplexConjugate InnerProductSpace ZeroAtInfty ENNReal
@@ -64,7 +65,7 @@ theorem sob_complete : ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] 
     have b := GlobalTheory.CompanionTheory.CurveJ.bound3 hb (hs p.1 w) (hs p.2 w) (hs p.2 w) 0 hx
     simp only [zero_smul, sub_zero, ← dist_eq_norm] at b
     exact lt_of_le_of_lt b hp
-  obtain ⟨Gf, hG, hsm, hR⟩ := GlobalTheory.T.uniform_limit_right_derivatives n V a (fun k => (ha k).1) hU
+  obtain ⟨Gf, hG, hsm, hR⟩ := _root_.GlobalTheory.CompanionTheory.PresSobA.LimSmooth.limit_smooth n V a (fun k => (ha k).1) hU
   have hy : ∀ w, ∃ y : Lp V 2 μ, Tendsto (fun k => cls μ (Rw w (a k))) atTop (𝓝 y) := fun w =>
     cauchySeq_tendsto_of_complete (hC w)
   choose y hy using hy

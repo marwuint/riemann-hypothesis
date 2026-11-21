@@ -255,13 +255,4 @@ theorem iotaStep_holds : ScalarFramePf.IotaStep := by
   exact ScalarFrameIota.iotaG_main Z p Λ F F' F'' β hF hc' hc'' ha' ha'' hP
     (gfacts_of Λ F F' F'' β hF hl' hl'' hc' hc'' hP hs hsc hG' hG'' hT hT') gg hgg
 
-theorem scalarFrameCT_holds : ScalarFramePf.ScalarFrameCT := by
-  intro D Z Λ T T' F F' F'' β Tn T'n hF hl' hl'' hc' hc'' ha' ha'' hP hg' hg'' hs hsc hG' hG'' hT hT' p
-  exact isScalarPair_lt (Z := Z) (p := p) Λ _ _ _ β Tn T'n
-    (gfacts_of Λ F F' F'' β hF hl' hl'' hc' hc'' hP hs hsc hG' hG'' hT hT')
-    (iotaStep_holds D Z Λ F F' F'' β hF hl' hl'' hc' hc'' ha' ha'' hP hg' hg'' hs hsc hG' hG'' hT hT' p)
-
-theorem scalarFrameCT_explicit' : type_of% (scalarFrameCT_explicit iotaStep_holds) :=
-  scalarFrameCT_explicit iotaStep_holds
-
 end Formalism.L2.SG.Pf

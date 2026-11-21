@@ -101,15 +101,4 @@ theorem Chapters.print (h : Chapters) (h₁ : GlobalTheory.SpreadingModels.Schem
         (wedge_alt (w R A g hA hg)))
   exact h.final h.stein par h1 deg wh obc (h.formbc h.stein par)
 
-theorem Chapters.h1Le (h : Chapters) : PositivityTheory.ObstructionTrivialLocus.H1StructureDimLe := by
-  have low := h.low h.dict
-  have htpy := h.htpy h.cx
-  have qc := h.qcalc h.cx
-  have fub := h.fubini h.cx
-  have aff := h.affacyc h.cx htpy
-  have des := h.descent h.cx htpy qc fub aff
-  have axo := h.axo des low (h.sysbc des low) h.stein
-  exact h.h1le des low h.stein (h.van h.cx (h.cmp h.cx)) (h.hopf htpy qc fub aff des low axo)
-    (h.hopfle h.cx h.dict low)
-
 end MainStatements.Hodge.Free

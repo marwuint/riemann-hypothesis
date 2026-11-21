@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ResBound
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleCocycleNegCharPowerMemCoboundariesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleCocycleNegCharPowerMemCoboundaries
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TrivialLineAdmissibleCocyclesNotIndependentStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvrComplete
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteQuotientPow
@@ -176,7 +176,7 @@ theorem bound_gen (hs : Function.Surjective (algebraMap O k))
     by_contra hs0
     let a : Fin s := ⟨0, by omega⟩
     exact hli.ne_zero a ((Submodule.Quotient.mk_eq_zero _).mpr
-      (GlobalTheory.T.admissibleCocycles_neg_char_pow_mem_cob F M h1 h2 h3 ((c : ℤ) - 1) (by omega) (by omega) (z a) (hz a)))
+      (_root_.GlobalTheory.CharSplit.admissibleCocycle_negCharPower_mem_coboundaries F M h1 h2 h3 ((c : ℤ) - 1) (by omega) (by omega) (z a) (hz a)))
   · have e : M.ω ^ (-((c : ℤ) - 1)) = 1 := by simp [hc]
     rw [e] at key
     obtain ⟨z, hz, hli⟩ := key

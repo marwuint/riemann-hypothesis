@@ -3,11 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ChapterMu
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.CuspidalUnitaryTwistsClaim
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FormsOfCharactersIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SturmSumOverCharactersEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LinearFunctionalEqCoeffLinearCombinationFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructureStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FormsOfCharactersIndependent
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SturmSumOverCharactersEqZero
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LinearFunctionalEqCoeffLinearCombinationFinite
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructure
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -19,19 +20,19 @@ theorem lam_extend_by_zero : ∀ (k L N : ℕ) (χ₀ : DirichletCharacter ℂ N
     ∃ (B' : ℕ) (c' : ℕ → ℂ), (∀ a, MF k L (ch χ₀) a → lam B' c' a = lam B c a) ∧
       ∀ (ε : DirichletCharacter ℂ N) (a : ℕ → ℂ), ε ≠ χ₀ → MF k L (ch ε) a → lam B' c' a = 0 := by
   intro k L N χ₀ B c hL hN
-  have lin := GlobalTheory.T.modularFormCoeffSeq_linear_structure k L
+  have lin := _root_.GlobalTheory.EisM.mf_linear k L
   let Fam : (DirichletCharacter ℂ N → ℕ → ℂ) → Prop := fun a => ∀ ε, MF k L (ch ε) (a ε)
   have uniq : ∀ a b, Fam a → Fam b → (∑ ε, a ε) = ∑ ε, b ε → a = b := by
     intro a b ha hb hab
     have hd : Fam (fun ε => a ε + (-1 : ℂ) • b ε) := fun ε =>
       ((lin (ch ε)).2.1 _ _ (ha ε) ((lin (ch ε)).2.2.1 (-1) _ (hb ε)).1).1
-    have h0 := GlobalTheory.T.eq_zero_of_mf_ch_sum_eq_zero k L N (fun ε => a ε + (-1 : ℂ) • b ε) hL hN hd (by
+    have h0 := _root_.GlobalTheory.EisM.Indep.forms_of_characters_independent k L N (fun ε => a ε + (-1 : ℂ) • b ε) hL hN hd (by
       rw [Finset.sum_add_distrib, ← Finset.smul_sum, hab, neg_one_smul, add_neg_cancel])
     funext ε
     have h1 : a ε + (-1 : ℂ) • b ε = 0 := h0 ε
     rw [neg_one_smul, ← sub_eq_add_neg] at h1
     exact sub_eq_zero.mp h1
-  obtain ⟨B₀, hB₀⟩ := GlobalTheory.T.sturm_sum_over_characters_eq_zero k L N hL hN
+  obtain ⟨B₀, hB₀⟩ := _root_.GlobalTheory.EisM.sturm_sum_coef_zero k L N hL hN
   let S : Set (ℕ → ℂ) := {s | ∃ a, Fam a ∧ s = ∑ ε, a ε}
   let rep : (ℕ → ℂ) → DirichletCharacter ℂ N → ℕ → ℂ := fun s => if h : s ∈ S then Classical.choose h else 0
   have rep_spec : ∀ a, Fam a → rep (∑ ε, a ε) = a := by
@@ -46,7 +47,7 @@ theorem lam_extend_by_zero : ∀ (k L N : ℕ) (χ₀ : DirichletCharacter ℂ N
   have lam_smul : ∀ (t : ℂ) (x : ℕ → ℂ), lam B c (t • x) = t * lam B c x := by
     intro t x; simp only [lam, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
     exact Finset.sum_congr rfl fun n _ => by ring
-  obtain ⟨c', hc'⟩ := GlobalTheory.T.linearFunctional_eq_coeffLinearCombinationFinite S B₀ φ
+  obtain ⟨c', hc'⟩ := _root_.GlobalTheory.func_eq_lam S B₀ φ
     ⟨0, fun ε => (lin (ch ε)).1, by simp⟩
     (by
       rintro _ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩

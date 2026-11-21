@@ -4,13 +4,19 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CardComapMulFinsumEqFinsumFibres
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptBirationalArithVarStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptBirationalArithVar
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AmpleOfSingleCoordBlockStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SameOrbitOfProportionalCoordsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicAtlasCoordCompatStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicAtlasCoordCompat
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmallPointsCoordRatioBound
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AlgebraicConstantsInRangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPushAlongMapStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicInverseChartValueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPushAlongMap
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicInverseChartValue
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
@@ -316,9 +322,9 @@ theorem refRoot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
       exact ⟨(ix ij.1, ix ij.2), rfl⟩
     · rintro ⟨ij, rfl⟩
       exact ⟨(ix.symm ij.1, ix.symm ij.2), by simp⟩
-  obtain ⟨Mf, hMf⟩ := GlobalTheory.T.lie_model_push_along_map E H _ _ G.𝔐.t Y.t G.𝔐.f G.𝔐.m G.Ω G.𝔐.ξ G.𝔐.Li G.𝔐.M
+  obtain ⟨Mf, hMf⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SabLie.lieModel_of_sabMap E H _ _ G.𝔐.t Y.t G.𝔐.f G.𝔐.m G.Ω G.𝔐.ξ G.𝔐.Li G.𝔐.M
   haveI : Nonempty G.K := ⟨G.k₀⟩
-  have hb : Birational G.y := (GlobalTheory.T.hodge_cpt_birational_arith_var E H D l Xo c (𝓞 c.F) (algebraMap _ _) Y ∅ G.Ω G.K G.J G.y G.𝔐 G.Fl
+  have hb : Birational G.y := (_root_.GlobalTheory.CompanionTheory.Ar.flagged_model_dim E H D l Xo c (𝓞 c.F) (algebraMap _ _) Y ∅ G.Ω G.K G.J G.y G.𝔐 G.Fl
     (RingOfIntegers.coe_injective)).1
   have hδ : 0 < Module.finrank ℚ c.F * G.Fl.deg := by
     rw [G.deg_one, _root_.mul_one]
@@ -359,9 +365,9 @@ theorem refRoot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
       exact ⟨c' G.k₀, hc' _, funext fun i => congrFun e ⟨G.k₀, ix i⟩⟩
     · intro p hp j hj
       obtain ⟨j₁, hj₁⟩ := A.Re.R.A.cover (inv x)
-      obtain ⟨h1, h2⟩ := GlobalTheory.T.holomorphic_atlas_coord_compat G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y G.k₀ G.𝔐.tie G.embeds _ _ A.Re.R.A _ _ A.embedded
+      obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ImmBlock.immersion_block G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y G.k₀ G.𝔐.tie G.embeds _ _ A.Re.R.A _ _ A.embedded
         (Fin (m + 1)) ix (inv x) p hp j₁ hj₁
-      exact GlobalTheory.T.holomorphic_inverse_chart_value _ _ _ _ A.Re.R.A A.Sys.A A.Re.π inv A.Re.holo hinvH A.π_bij hinv
+      exact _root_.GlobalTheory.CompanionTheory.Ar.ImmersionBiholo.ker_fderiv_comp_biholo _ _ _ _ A.Re.R.A A.Sys.A A.Re.π inv A.Re.holo hinvH A.π_bij hinv
         (fun y i => A.Re.R.lift (inv x) y ⟨G.k₀, ix i⟩ / A.Re.R.lift (inv x) y ⟨G.k₀, ix p⟩) x j₁ j hj₁ hj h1 h2
 
 end GlobalTheory.CompanionTheory.Ar.RefRoot

@@ -3,12 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 
 namespace UpperTheory.Gal.KunnethLefschetz.G.PX
 
-section Chart
-
-open CategoryTheory Limits MvPolynomial
-
-end Chart
-
 end UpperTheory.Gal.KunnethLefschetz.G.PX
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX

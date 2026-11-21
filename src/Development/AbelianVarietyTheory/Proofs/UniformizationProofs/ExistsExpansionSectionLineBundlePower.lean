@@ -7,7 +7,8 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsUniqueS
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ValuesNatural
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BijectiveOfIso
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniqueThickTorusLevelWeightExpansionStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniqueTwistedSectionOfCompatibleLevelsStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniqueTwistedSectionOfCompatibleLevels
+import Development.AbelianVarietyTheory.Definitions.Uniformization.WCompat
 
 set_option autoImplicit false
 
@@ -181,7 +182,7 @@ theorem main : Laws → Laws2 → (AllPre fun U => ∀ k, 1 ≤ k → ∀ σ, �
     intro z J hJ
     rw [← E]
     exact ((hf' α _ _ z J hJ).trans (congrArg (fun p => sval (f (e + 1) α) p z J) (Category.id_comp _))).symm
-  choose s hs _ using fun α => GlobalTheory.T.existsUnique_twistedSection_of_compatible_levels h1 h2 V hV D k hk α (fun e => f e α) (compat α)
+  choose s hs _ using fun α => _root_.GlobalTheory.SecLimit.existsUnique_sec_of_compatible h1 h2 V hV D k hk α (fun e => f e α) (compat α)
   choose F hF using fun α => exists_pull (snd (𝟙_ _) D.P.A).left (famφT_eq (𝟙_ _) α) (s α)
   refine ⟨F, fun e => ⟨S e, fun Z x rG rB hrG hrB _ z JG J hJG hJ => ?_⟩⟩
   have v : ∀ α, sval (F α) rB z J = sval (f e α) (x ≫ (U.gt e).q.left) z J := fun α => by

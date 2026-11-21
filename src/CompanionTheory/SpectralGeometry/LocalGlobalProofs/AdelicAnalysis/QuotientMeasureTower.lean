@@ -1,6 +1,6 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteCovolumeUnimodular
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ClosedSubgroupQuotientMeasureStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ClosedSubgroupQuotientMeasure
 
 open MeasureTheory Topology
 open scoped ENNReal NNReal Matrix
@@ -136,7 +136,7 @@ theorem lintegral_sum_cosets_average : ∀ (G : Type) [Group G] [TopologicalSpac
     GlobalTheory.CompanionTheory.SW.LatticeUnimod.unimodular_of_isFundamentalDomain G₁ Γ₁ μ₁ 𝓕₁ h𝓕₁ hfin
   haveI := hright
   haveI := hinvinv
-  obtain ⟨w, hw, hw1⟩ := GlobalTheory.T.closed_subgroup_quotient_measure G G₁ ι hιce μ₁
+  obtain ⟨w, hw, hw1⟩ := _root_.GlobalTheory.CompanionTheory.SW.exists_weight_mass_one_right_coset G G₁ ι hιce μ₁
   have hιc : Continuous ι := hιce.continuous
   have hι : Function.Injective ι := hιce.injective
   have hm : Measurable (fun p : G × G₁ => φ (ι p.2 * p.1)) :=

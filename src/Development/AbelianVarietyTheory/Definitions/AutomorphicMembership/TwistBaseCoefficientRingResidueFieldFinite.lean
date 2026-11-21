@@ -285,15 +285,6 @@ def TwL.empty (T : TwR LL0 N) : TwL T where
   qs_conj := fun _ a => a.elim
   th := fun _ _ a => a.elim
 
-def NLay0.setTw (L : NLay0 R H what₂ LL0) (tw : NTw R H what₂ LL0 L.nd) (ex : NExp R H what₂ LL0 L.nd tw)
-    (h0 : ∀ g : G0g L.nd, what₂.embLL ((ex.eLL0 g : ↥LL0) : what₂.LL) = L.ntypes.e0.coeff g)
-    (th : NTh R H what₂ LL0 L.nd tw ex)
-    (br : ∀ (i : tw.Tw) (w : HeightOneSpectrum (𝓞 H.E)), w ∈ Formalism.BasicNotions.placesOver H.E (tw.l i) →
-      Formalism.BasicNotions.LocBridge (tw.l i) H.E L.nd.Om (ReciprocityTheory.Gal.Dec (F := H.E) (L.nd.plOm.1 w)) (tw.O0 i))
-    (hbr : ∀ (i : tw.Tw) (w : HeightOneSpectrum (𝓞 H.E)) (hw : w ∈ Formalism.BasicNotions.placesOver H.E (tw.l i))
-      (x : L.nd.Om), x ∈ L.nd.plOm.1 w ↔ ‖(br i w hw).j x‖ ≤ 1) : NLay0 R H what₂ LL0 :=
-  { L with ntw := tw, nexp := ex, nStage_trivialCharacter_coeff_eq := h0, nth := th, ntwbr := br, ntwbr_ind := hbr }
-
 def setTw (D : D7) (tw : NTw D.R D.host D.what₂ D.LL0 D.nd) (ex : NExp D.R D.host D.what₂ D.LL0 D.nd tw)
     (h0 : ∀ g : G0g D.nd, D.what₂.embLL ((ex.eLL0 g : ↥D.LL0) : D.what₂.LL) = D.ntypes.e0.coeff g)
     (th : NTh D.R D.host D.what₂ D.LL0 D.nd tw ex)

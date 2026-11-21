@@ -99,10 +99,6 @@ theorem geoV_of (hC : LeafCurveV) (hS : CurveThroughGenericPointSpreadsToSmoothP
   rw [← Scheme.Hom.comp_apply, key, ← hx0]
   simp only [Scheme.Hom.comp_apply]
 
-theorem goal_of (hC : LeafCurveV) (hD : LeafDescendQF) (hB : LateralTheory.E.LeafSpreadVCut.LeafCloseB)
-    (hE : LeafExtendZMT) : LateralTheory.E.LeafGeoCut.LeafGeoV :=
-  geoV_of hC (spread_of hD hB hE)
-
 end LateralTheory.E.LeafGeoVV2Cut
 
 end

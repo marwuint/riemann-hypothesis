@@ -21,20 +21,6 @@ theorem multT_le_empty {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : I
   intro T hT
   exact ⟨hT.aut, hT.cusp, fun v k hk => absurd hk (Set.notMem_empty k), hT.equiv, hT.cont⟩
 
-theorem rowConv : GlobalTheory.FunPr.Hypotheses₂ → RowTower → RowConv := by
-  intro hP hT D hq hS T L μ0 hL sc hc G W M hM M₀ hM₀ t ht w ρ ξ Ψ hΨ Φ
-  obtain ⟨S, MB, -, -, vec, hv⟩ := hT D hq hS T L μ0 hL sc hc G W M hM M₀ hM₀ D.R.m le_rfl
-  obtain ⟨F', hF', hF⟩ := hv t (multT_le_empty _ _ _ _ ht) Φ
-  obtain ⟨hconv, hpart⟩ := hF ρ w
-  have hrow : (fun i : Fin D.R.m => W.datum ρ Φ (Fin.castLE (le_refl D.R.m) i)) = W.datum ρ Φ := by
-    funext i; simp
-  rw [hrow] at hconv
-  have hth : thetaChi W M ρ Φ (t w) = F' (vec ρ w) := hpart
-  refine ⟨hconv, ?_⟩
-  rw [hth]
-  have hA := (GlobalTheory.ChainOnto.MultRapid.multT_apply_rapidDec hP.cuspRapidDecay D _ S MB W.θ W.θ_is ∅ 1 F' hF' (vec ρ w)).1
-  exact GlobalTheory.RowBplus.bplusConv_col W M hM ξ Ψ hΨ _ hA.toIsAutFun
-
 end GlobalTheory.RowConvAll
 
 end

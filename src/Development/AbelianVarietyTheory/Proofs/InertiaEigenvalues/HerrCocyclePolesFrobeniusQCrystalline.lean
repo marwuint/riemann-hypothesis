@@ -16,7 +16,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapMulLeft
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachInclusionXQFrobenius
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCocycleSolutionConv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeOfFrob
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZgFormulaStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZgFormula
 
 noncomputable section
 
@@ -551,7 +551,7 @@ theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf 
   obtain ⟨Dc, hC⟩ := exists_disc' hTied h (GamL (HW l) h) (SerL (HW l) (F l) h hL) (IoL (HW l) (F l) h hL)
     (ioW (HW l) (F l) h hL) hβ
   obtain ⟨m, hm, -⟩ := GlobalTheory.NL.SandArb.sandwich D HW F l K s LL h T hT
-  obtain ⟨zz, hz1, hz2, hz3⟩ := GlobalTheory.T.zg_formula_alt D HW F l K s LL h T hT y z hz hyz
+  obtain ⟨zz, hz1, hz2, hz3⟩ := _root_.GlobalTheory.NL.ZgAll.zg_formula D HW F l K s LL h T hT y z hz hyz
   obtain ⟨b, hb⟩ := (GlobalTheory.WittTensorFixed.main l K LL T).1 (((F l).E K s LL h).tie.jD T y)
   obtain ⟨c, hc1, hc2⟩ := hz3 b hb
   obtain ⟨a, ha⟩ := GlobalTheory.NL.FrobDenom.main D HW F l K s LL h T hT J y hy b hb J.sup fun _ => Multiset.le_sup

@@ -77,10 +77,6 @@ theorem divisor_mul {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
 theorem divisor_inv (x : K) : divisor x⁻¹ = -(divisor x : Divisor k K) := by
   ext v; simp [Place.ord_inv]
 
-theorem divisor_div {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
-    divisor (x / y) = (divisor x - divisor y : Divisor k K) := by
-  rw [div_eq_mul_inv, divisor_mul hx (inv_ne_zero hy), divisor_inv, sub_eq_add_neg]
-
 theorem divisor_eq_zero_of_isAlgebraic {x : K} (hx : IsAlgebraic k x) (hx0 : x ≠ 0) :
     divisor x = (0 : Divisor k K) := by
   ext v; simp [v.ord_eq_zero_of_isAlgebraic hx hx0]
@@ -119,9 +115,6 @@ theorem zeroDivisor_apply (x : K) (v : Place k K) :
 theorem poleDivisor_apply (x : K) (v : Place k K) :
     poleDivisor x v = max (-v.ord x) 0 := by
   simp [poleDivisor, Finsupp.sup_apply]
-
-theorem zeroDivisor_nonneg (x : K) : (0 : Divisor k K) ≤ zeroDivisor x :=
-  Finsupp.le_def.2 fun v => by simp
 
 theorem poleDivisor_nonneg (x : K) : (0 : Divisor k K) ≤ poleDivisor x :=
   Finsupp.le_def.2 fun v => by simp
@@ -338,12 +331,6 @@ theorem finrank_L_le_deg_add {D : Divisor k K} (hD : 0 ≤ D) :
   have := finrank_L_le_of_le hD
   rw [finrank_L_zero, map_zero] at this
   omega
-
-theorem finrank_L_le_deg_add_one (hk : algebraicClosure k K = ⊥) {D : Divisor k K}
-    (hD : 0 ≤ D) : (finrank k (L D) : ℤ) ≤ deg D + 1 := by
-  have := finrank_L_le_deg_add hD
-  rw [hk, IntermediateField.finrank_bot] at this
-  exact_mod_cast this
 
 end Divisor
 

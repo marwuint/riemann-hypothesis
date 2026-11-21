@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapMemA
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImageStableDegreeBounds
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowerSeriesExistsUniqueDecompOverFrobeniusLikeEnStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowerSeriesExistsUniqueDecompOverFrobeniusLikeEn
 open PowerSeries GlobalTheory.BK Matrix GlobalTheory.LiftCoker
 
 namespace GlobalTheory.LiftCoker
@@ -19,7 +19,7 @@ theorem colon_map_expand_le : ∀ (O K : Type) [CommRing O] [NormedField K] [IsU
     obtain ⟨f, hf⟩ := (equivA O K).surjective ⟨w i, hw i⟩
     exact ⟨f, by rw [← coe_equivA, hf]⟩
   choose f hf using hf
-  have hdec := fun i => (GlobalTheory.T.powerSeries_existsUnique_decomp_over_frobeniusLike_endo l hl2 (PowerSeries.expand l (Fact.out : l.Prime).ne_zero)
+  have hdec := fun i => (_root_.GlobalTheory.InertiaEigenvalues.PowerSeriesFree.main l hl2 (PowerSeries.expand l (Fact.out : l.Prime).ne_zero)
     (fun g m => PowerSeries.coeff_expand _ _ g) (f i)).exists
   choose g hg using hdec
   have hα' := fun j : Fin l => (mem_colon.1 hα) (fun i => PowerSeries.map (algebraMap O K) (g i j))

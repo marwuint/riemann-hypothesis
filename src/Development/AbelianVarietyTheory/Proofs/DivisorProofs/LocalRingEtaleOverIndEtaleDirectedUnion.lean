@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnnihilatorOfDirectedEssentiallyEtaleUnionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalizationDirectedUnionEssEtaleLocalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleOverDirectedUnionEssEtaleLocalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnnihilatorOfDirectedEssentiallyEtaleUnion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalizationDirectedUnionEssEtaleLocal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleOverDirectedUnionEssEtaleLocal
 open IsLocalRing
 
 namespace GlobalTheory
@@ -11,11 +11,11 @@ theorem localDecomp_indEtale : ∀ (R S T : Type) [CommRing R] [CommRing S] [Com
   obtain ⟨f⟩ := hf
   letI : Algebra R B := ((algebraMap S B).comp (algebraMap R S)).toAlgebra
   haveI : IsScalarTower R S B := IsScalarTower.of_algebraMap_eq (fun _ => rfl)
-  obtain ⟨ι, _, _, _, C, hCm, hCc, hCe⟩ := GlobalTheory.T.etale_over_directedUnion_essEtale_local R S B hS
+  obtain ⟨ι, _, _, _, C, hCm, hCc, hCe⟩ := _root_.GlobalTheory.EtaleOverDirectedUnion.construct R S B hS
   have hCe' : ∀ i, (∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Localization.AtPrime (Q.comap ((C i).val : C i →ₐ[R] B)))) :=
     fun i => hCe i _ inferInstance
-  have hann := GlobalTheory.T.annihilator_of_directed_essentiallyEtale_union R B Q ι C hCm hCc hCe'
-  obtain ⟨μ, _, _, _, W, hWm, hWc, hWu, hWe⟩ := GlobalTheory.T.localization_directedUnion_essEtale_local R B Q ι C hCm hCc hCe' hann
+  have hann := _root_.GlobalTheory.ann_of_directed_essEtale R B Q ι C hCm hCc hCe'
+  obtain ⟨μ, _, _, _, W, hWm, hWc, hWu, hWe⟩ := _root_.GlobalTheory.localDecomp_core R B Q ι C hCm hCc hCe' hann
   let g : Localization.AtPrime Q →ₐ[R] T :=
     { toRingHom := U.val.toRingHom.comp f.toRingHom
       commutes' := fun r => by

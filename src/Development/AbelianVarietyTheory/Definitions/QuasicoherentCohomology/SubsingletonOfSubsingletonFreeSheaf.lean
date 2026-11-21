@@ -14,9 +14,6 @@ variable {C : Type u} [Category.{v} C] (J : GrothendieckTopology C)
 abbrev freeSheaf : C ⥤ Sheaf J AddCommGrpCat.{v} :=
   yoneda ⋙ (Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free ⋙ presheafToSheaf _ _
 
-def tautSection (U : C) : ((freeSheaf J).obj U).obj.obj (op U) :=
-  (toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free)).app (op U) (FreeAbelianGroup.of (𝟙 U))
-
 variable {J}
 
 def freeSheafHomEquiv (U : C) (F : Sheaf J AddCommGrpCat.{v}) :
@@ -28,30 +25,6 @@ def freeSheafHomEquiv (U : C) (F : Sheaf J AddCommGrpCat.{v}) :
 lemma freeSheafHomEquiv_comp (U : C) {F G : Sheaf J AddCommGrpCat.{v}}
     (φ : (freeSheaf J).obj U ⟶ F) (f : F ⟶ G) :
     freeSheafHomEquiv U G (φ ≫ f) = f.hom.app (op U) (freeSheafHomEquiv U F φ) := rfl
-
-lemma freeSheaf_map_tautSection {U V : C} (i : V ⟶ U) :
-    ((freeSheaf J).map i).hom.app (op V) (tautSection J V) =
-      ((freeSheaf J).obj U).obj.map i.op (tautSection J U) := by
-  have h₁ := ConcreteCategory.congr_hom (NatTrans.congr_app
-    (toSheafify_naturality J (Functor.whiskerRight (yoneda.map i) AddCommGrpCat.free.{v})) (op V))
-    (FreeAbelianGroup.of (𝟙 V))
-  have h₂ := ConcreteCategory.congr_hom
-    ((toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free.{v})).naturality i.op)
-    (FreeAbelianGroup.of (𝟙 U))
-  refine h₁.symm.trans (Eq.trans ?_ h₂)
-  change (toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free.{v})).app (op V)
-      (FreeAbelianGroup.of (𝟙 V ≫ i)) =
-    (toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free.{v})).app (op V)
-      (FreeAbelianGroup.of (i ≫ 𝟙 U))
-  rw [Category.id_comp, Category.comp_id]
-
-lemma freeSheafHomEquiv_map_comp {U V : C} (i : V ⟶ U) {F : Sheaf J AddCommGrpCat.{v}}
-    (φ : (freeSheaf J).obj U ⟶ F) :
-    freeSheafHomEquiv V F ((freeSheaf J).map i ≫ φ) =
-      F.obj.map i.op (freeSheafHomEquiv U F φ) := by
-  change φ.hom.app (op V) (((freeSheaf J).map i).hom.app (op V) (tautSection J V)) = _
-  rw [freeSheaf_map_tautSection]
-  exact ConcreteCategory.congr_hom (φ.hom.naturality i.op) _
 
 def freePresheafIsoConst {T : C} (hT : IsTerminal T) :
     yoneda.obj T ⋙ AddCommGrpCat.free.{v} ≅
@@ -120,15 +93,6 @@ lemma zeroEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (U : C) (x :
   congr 1
   apply (extEquiv G 0 U).injective
   rw [extEquiv_map, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, Ext.mk₀_comp_mk₀]
-
-lemma zeroEquiv_res (F : Sheaf J AddCommGrpCat.{v}) {U V : C} (i : V ⟶ U) (x : F.H' 0 U) :
-    zeroEquiv F V (res F 0 i x) = F.obj.map i.op (zeroEquiv F U x) := by
-  obtain ⟨y, rfl⟩ := (extEquiv F 0 U).symm.surjective x
-  obtain ⟨φ, rfl⟩ := (Ext.mk₀_bijective _ _).surjective y
-  rw [zeroEquiv_mk₀, ← freeSheafHomEquiv_map_comp, ← zeroEquiv_mk₀]
-  congr 1
-  apply (extEquiv F 0 V).injective
-  rw [extEquiv_res, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, Ext.mk₀_comp_mk₀]
 
 def terminalEquiv (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) {T : C} (hT : IsTerminal T) :
     F.H' n T ≃+ F.H n :=

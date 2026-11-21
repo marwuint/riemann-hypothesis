@@ -6,10 +6,12 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ReadQuot
 import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LeftInvOfUnitary
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdelicCuspFormAutomorphicBoundedSquareIntegrableStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DiscreteTopologyRationalPointsHermitianSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsOpenStabilizerCompletedLatticeAdelicUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsCompactLatticeStabilizerBoundedRealStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdelicCuspFormAutomorphicBoundedSquareIntegrable
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DiscreteTopologyRationalPointsHermitianSpace
+import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
+import Formalism.LocalToGlobal.GlobalTheory.GL5.FamilyMassVolumeIdentityOfClassDecomp
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsOpenStabilizerCompletedLatticeAdelicUnitary
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsCompactLatticeStabilizerBoundedReal
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ArchimedeanMatrixUnitaryContinuousMultiplicative
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
@@ -75,7 +77,7 @@ theorem exists_volMeas (V : HSp D) (hs : V.SigOK) :
     rw [hψm]
     simp only [← Matrix.mul_assoc, hl, Matrix.one_mul]
     rw [Matrix.mul_assoc, hl, Matrix.mul_one]
-  obtain ⟨μ, hμ, hμs⟩ := exists_haar_image (stab V) (GlobalTheory.T.isOpen_stabilizer_completedLattice_adelicUnitary D V)
+  obtain ⟨μ, hμ, hμs⟩ := exists_haar_image (stab V) (_root_.GlobalTheory.StabOpen.isOpen_stab_latHat D V)
     (Measure.pi fun ρ => D.cd.cd (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) (Pi.monoidHom ψ)
     (continuous_pi hψ) (fun t => by
       obtain ⟨g, hg, hgu⟩ := (GlobalTheory.SmoothForms.RealPts.glue θ hθ V).2 (fun ρ => L ρ * UpqT.mat (t ρ) * A ρ)
@@ -91,7 +93,7 @@ theorem exists_volMeas (V : HSp D) (hs : V.SigOK) :
       have hf : Continuous f := continuous_finset_sum _ fun ρ _ => continuous_finset_sum _ fun i _ =>
         continuous_finset_sum _ fun j _ => (((continuous_const.matrix_mul
           (continuous_mat.comp (continuous_apply ρ))).matrix_mul continuous_const).matrix_elem i j).norm
-      obtain ⟨K, hK, hKm⟩ := GlobalTheory.T.exists_compact_lattice_stabilizer_bounded_real D V θ hθ (f t + 1)
+      obtain ⟨K, hK, hKm⟩ := _root_.GlobalTheory.StabCompact.exists_compact_stab D V θ hθ (f t + 1)
       refine ⟨{s | f s < f t + 1}, (isOpen_lt hf continuous_const).mem_nhds (lt_add_one (f t)), K, hK, fun h hh => ?_⟩
       refine hKm h hh.1 fun ρ i j => le_trans ?_ (le_of_lt hh.2)
       rw [hback]
@@ -123,7 +125,7 @@ theorem exists_volPair (V : HSp D) (hs : V.SigOK) :
   obtain ⟨i1, i2, i3⟩ := GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary D.host.F D.host.E D.sp.cm.sig V.rank V.gram
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram
-  have := GlobalTheory.T.discreteTopology_rationalPoints_hermitianSpace D V
+  have := _root_.GlobalTheory.RationalDiscrete.discreteTopology_GQ D V
   obtain ⟨F, -, -, hF⟩ := GlobalTheory.exists_isFundamentalDomain_subgroup (GQ V)
   exact ⟨(μ, F), hμ, hF μ⟩
 
@@ -200,7 +202,7 @@ theorem adelic_linearIndependent : ∀ (D : D7) (T : CoreJ D) (h : LawsJ T) (j :
   refine h1 w ?_
   have hs : (T.V j σ).SigOK := by rw [h.spaceW j hj σ hσ]; exact D.sp.W_sig j
   have hQ : QuotSupp (T.V j σ) := quotSupp_of _ (h.finVol j hj σ hσ) (exists_volPair _ hs)
-  have had := fun i => GlobalTheory.T.adelic_cuspForm_automorphic_bounded_square_integrable D T h j hj σ hσ a n hD (b i) (b i).2
+  have had := fun i => _root_.GlobalTheory.AdelicCusp.phiJ_automorphic D T h j hj σ hσ a n hD (b i) (b i).2
   have hae := sum_toLp_ae (muQ1 (T.V j σ))
     (fun i => jFn (T.V j σ) σ (rdC (T.U j) σ a n) (T.dict j σ) (T.mu j σ) (b i))
     (fun i => h.cuspidalL2Subspace j hj σ hσ a n hD (b i)) w Finset.univ

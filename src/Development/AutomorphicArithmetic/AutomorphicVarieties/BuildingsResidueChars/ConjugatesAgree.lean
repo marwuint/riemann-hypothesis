@@ -17,16 +17,3 @@ private theorem conj_val {K M Ω : Type} [Field K] [Field M] [NumberField M] [Fi
     rw [hj]
     exact (IsCMField.complexEmbedding_complexConj M (j.comp (algebraMap M Ω)) x).symm
 
-theorem UpperTheory.conjugates_agree :
-    UpperTheory.V.Af.Sol.ConjAgree := by
-  intro K M Ω _ _ _ _ _ _ _ _ _ _ _ l _ hM δ hδ c c' hc hc'
-  obtain ⟨s, hs⟩ := conj_val (K := K) (Ω := Ω) hM
-  let g : G M Ω := AlgEquiv.ofRingEquiv (f := (c⁻¹ * c').toRingEquiv) (fun x => by
-    change c.symm (c' (algebraMap M Ω x)) = _
-    rw [hs c' hc', ← hs c hc, AlgEquiv.symm_apply_apply])
-  have hg : resG K M Ω g = c⁻¹ * c' := AlgEquiv.ext fun _ => rfl
-  have h1 : δ (c⁻¹ * c') = 1 := by
-    rw [← hg]
-    exact DFunLike.congr_fun hδ g
-  rw [map_mul, map_inv, inv_mul_eq_one] at h1
-  exact h1

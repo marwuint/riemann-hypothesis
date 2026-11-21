@@ -39,7 +39,7 @@ theorem exists_congr_back : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   obtain ⟨P, hP, p, hPx, hv, -⟩ := hpt k ⟨x, hx⟩
   obtain ⟨P', hP', p', hPx', hv', -⟩ := hpt k ⟨lact γ x, hx'⟩
   have hu : F.u (ik k) P' = F.u (ik k) P := by rw [← hPx, ← hPx', hB.1]
-  obtain ⟨h, gam, hex, hh, hiso, hM, -⟩ := GlobalTheory.T.familyUnif_exp_unique_alt E H Dw l Xo _ g _ F (ik k) (ik k) P' P p' p hu
+  obtain ⟨h, gam, hex, hh, hiso, hM, -⟩ := _root_.GlobalTheory.familyUnif_exp_unique E H Dw l Xo _ g _ F (ik k) (ik k) P' P p' p hu
 
   have hM' : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) (F.Di (ik k)).La),
       ∃ e, gam a = a + l.M • e := by

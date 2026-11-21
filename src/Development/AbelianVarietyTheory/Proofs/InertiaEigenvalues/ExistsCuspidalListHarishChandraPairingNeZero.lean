@@ -3,10 +3,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraFrobeniusReciprocityStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionExteriorProductAssocCommStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterDecompositionAndClassFunctionExpansionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionCharacterRestrictionDecompStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvariStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentralStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterDecompositionAndClassFunctionExpansion
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionCharacterRestrictionDecomp
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvari
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentral
 
 noncomputable section
 
@@ -29,16 +29,16 @@ theorem ip_add_right (u v w : G → ℂ) : ip u (v + w) = ip u v + ip u w := by
 theorem irr_char {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
   obtain ⟨V, -, hV⟩ := h; exact ⟨V, hV⟩
 
-theorem char_class {χ : G → ℂ} (h : IsChar χ) : IsClass χ := (GlobalTheory.T.character_decomposition_and_classFunction_expansion G χ).2.2.1 h
+theorem char_class {χ : G → ℂ} (h : IsChar χ) : IsClass χ := (_root_.GlobalTheory.charDec G χ).2.2.1 h
 
 theorem ip_irr_char_nat {α A : G → ℂ} (hα : IsIrr α) (hA : IsChar A) : ∃ c : ℕ, ip α A = c := by
-  obtain ⟨L, hL, rfl⟩ := (GlobalTheory.T.character_decomposition_and_classFunction_expansion G A).1 hA
+  obtain ⟨L, hL, rfl⟩ := (_root_.GlobalTheory.charDec G A).1 hA
   clear hA
   induction L with
   | nil => exact ⟨0, by simp [ip]⟩
   | cons ρ L ih =>
     obtain ⟨c, hc⟩ := ih (fun r hr => hL r (List.mem_cons_of_mem _ hr))
-    have h1 := (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G α ρ hα (hL ρ (by simp))).2.2
+    have h1 := (_root_.GlobalTheory.GLq.ZOrth.zorth G α ρ hα (hL ρ (by simp))).2.2
     refine ⟨(if α = ρ then 1 else 0) + c, ?_⟩
     rw [List.sum_cons, ip_add_right, hc, h1]; split_ifs <;> simp
 
@@ -95,10 +95,10 @@ theorem degL_append (L₁ L₂ : List (Pc g)) : degL (L₁ ++ L₂) = degL L₁ 
   simp [degL, List.map_append, List.sum_append]
 
 theorem class_hcL (L : List (Pc g)) (hL : ∀ p ∈ L, IsChar p.2) : IsClass (hcL L (degL L)) :=
-  char_class (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g L L (degL L) rfl hL).1
+  char_class (_root_.GlobalTheory.gl_list_product_perm_char g L L (degL L) rfl hL).1
 
 theorem char_hcL (L : List (Pc g)) (hL : ∀ p ∈ L, IsChar p.2) : IsChar (hcL L (degL L)) :=
-  (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g L L (degL L) rfl hL).1
+  (_root_.GlobalTheory.gl_list_product_perm_char g L L (degL L) rfl hL).1
 
 theorem hcL_append (L₁ L₂ : List (Pc g)) (h : ∀ p ∈ L₁ ++ L₂, IsChar p.2) (n : ℕ)
     (hn : n = degL L₁ + degL L₂) :
@@ -128,7 +128,7 @@ theorem exists_cusp_list (g : ℕ) [Fact g.Prime] (n : ℕ) (χ : Gn g n → ℂ
   induction n using Nat.strong_induction_on with
   | _ n ih =>
   have hcls : IsClass χ := char_class (irr_char hχ)
-  have hself : ip χ χ = 1 := by simpa using (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ χ hχ hχ).2.2
+  have hself : ip χ χ = 1 := by simpa using (_root_.GlobalTheory.GLq.ZOrth.zorth _ χ χ hχ hχ).2.2
   by_cases hn : n = 0
   · subst hn
     have hsub : ∀ x : Gn g 0, x = 1 := fun x => Units.ext (Matrix.ext fun i _ => i.elim0)
@@ -152,7 +152,7 @@ theorem exists_cusp_list (g : ℕ) [Fact g.Prime] (n : ℕ) (χ : Gn g n → ℂ
       obtain ⟨a, ha0, han, hres⟩ := hne
       generalize hb : n - a = b at hres
       have hnab : n = a + b := by omega
-      obtain ⟨R, hR, hRes⟩ := (GlobalTheory.T.harishChandra_induction_character_restriction_decomp g a b n hnab).2 χ (irr_char hχ)
+      obtain ⟨R, hR, hRes⟩ := (_root_.GlobalTheory.GLq.HCChar.hc_isChar_and_res_decomp g a b n hnab).2 χ (irr_char hχ)
       obtain ⟨k, hk⟩ : ∃ k, k ∈ R := by
         rcases R with _ | ⟨k, R⟩
         · exact absurd (by simpa using hRes 1 1) hres

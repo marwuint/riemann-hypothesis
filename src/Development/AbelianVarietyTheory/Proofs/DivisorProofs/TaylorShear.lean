@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GaussManinPeriods
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.MemAnalyticAtZeroOfEventuallyDifferentiableAt
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ConstantCoeffDpolyOfAdditiveTaylorPts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorCompChainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorCoordAndEvalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraFormalPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorCompChain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorCoordAndEval
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraFormalProperties
 open Filter Topology
 
 namespace GlobalTheory.PeriodFamily
@@ -31,8 +31,8 @@ theorem taylor_shear : ∀ {I : Type} [Fintype I] [DecidableEq I] {D : Type} [Co
       exact (analyticAt_const (v := (w + τ 0) a)).add (hco (Sum.inr a) 0)
     refine AnalyticAt.comp_of_eq hh hin ?_
     ext <;> simp
-  have key := GlobalTheory.T.taylor_comp_eq_taylor_taylor_of_analyticAt N t ht _ _ hΦ hΦ0 hH
-  obtain ⟨hadd, -, hconst, -⟩ := GlobalTheory.T.taylorPolynomialEvalAlgebra_formal_properties N t
+  have key := _root_.GlobalTheory.PeriodFamily.taylor_comp_chain N t ht _ _ hΦ hΦ0 hH
+  obtain ⟨hadd, -, hconst, -⟩ := _root_.GlobalTheory.PeriodFamily.taylor_formal_properties N t
   have e1 : (fun z : I → ℂ ↦ h (z, w + τ z)) = fun z : I → ℂ ↦
       (fun x : I ⊕ Fin g → ℂ ↦ h (fun i ↦ x (Sum.inl i), w + τ 0 + fun a ↦ x (Sum.inr a)))
         (Sum.elim z (fun a ↦ τ z a - τ 0 a)) := by
@@ -43,7 +43,7 @@ theorem taylor_shear : ∀ {I : Type} [Fintype I] [DecidableEq I] {D : Type} [Co
   congr 1
   funext k
   rcases k with i | a
-  · exact (GlobalTheory.T.taylor_coord_and_taylor_eval_of_prod_eq_zero N t ht).1 i
+  · exact (_root_.GlobalTheory.PeriodFamily.taylor_coord_and_eval N t ht).1 i
   · have := hadd (fun z ↦ τ z a) (fun _ ↦ - τ 0 a) (hτa a) analyticAt_const
     rw [hconst, map_neg] at this
     simpa [sub_eq_add_neg] using this

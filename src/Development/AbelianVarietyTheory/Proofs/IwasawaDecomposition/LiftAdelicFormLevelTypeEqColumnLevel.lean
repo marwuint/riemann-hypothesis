@@ -4,12 +4,14 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NVNeZero
 import Formalism.LocalToGlobal.IndefiniteReal.BridgeColPts
 import Formalism.LocalToGlobal.Columns.InputsGenus
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelHyperspecialTrivialCharacterSplitsOffPlaces
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockTriangularBlockIndexOfIffColBlockUTTwoBlockStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TopBlockEqOneIffMemColHKStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SecondBlockDetEqBlockDetOfSumPartitionsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftLevelCharacterTypePrimeEqColumnCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftResidueTwistCharacterEqResCharStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypePrimesDisjointTwistChosenPrimesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockTriangularBlockIndexOfIffColBlockUTTwoBlock
+import Formalism.LocalToGlobal.Columns.GenericUnipotentCharacter
+import Formalism.LocalToGlobal.Divisibility.DefGroup
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TopBlockEqOneIffMemColHK
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SecondBlockDetEqBlockDetOfSumPartitions
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftLevelCharacterTypePrimeEqColumnCharacter
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftResidueTwistCharacterEqResChar
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypePrimesDisjointTwistChosenPrimes
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -155,7 +157,7 @@ theorem lev_type_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
   have hβ : L.βV i = 1 := hL.beta.1 i
   have hPg : L.Pg = (X.B.primes px).vGs := hL.Pg
   have hQ : L.Q t = Formalism.L2.Col.QE I.sel t.1 := by rw [hL.Q t, ← tup_ixOf I t]
-  have hdisj := GlobalTheory.T.typePrimes_disjoint_twistChosenPrimes X px I U L hI hV hL t
+  have hdisj := _root_.GlobalTheory.Mem.LevDisj.places_disjoint X px I U L hI hV hL t
   have hrk := LiftBrg.rkEq X i
   have hnV : X.B.R.nV = X.B.R.r + X.B.R.t := rfl
   have hM : ∀ x : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV,
@@ -224,8 +226,8 @@ theorem lev_type_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
           convert hg w.1 hPP using 2
           all_goals first | rfl | exact hcr _
         rw [castGL_blkOf] at h1
-        have h2 := ((GlobalTheory.T.mem_blockTri_blkOf_and_blk2_iff_mem_blockUT hnV _).1).1 h1
-        refine (GlobalTheory.T.upperLeftBlock_eq_one_iff_mem_HK hnV (Formalism.L2.Col.r_le_nV X.B.R) _ h2).1 ?_
+        have h2 := ((_root_.GlobalTheory.blockTriangular_blockIndexOf_iff_colBlockUT_twoBlocks hnV _).1).1 h1
+        refine (_root_.GlobalTheory.topBlock_eq_one_iff_mem_colHK hnV (Formalism.L2.Col.r_le_nV X.B.R) _ h2).1 ?_
         have h3 : upperLeftBlock (flag1L (L.datVt i t)).hr (LiftBrg.castGL hrk (redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X))
             (w.1 : Pl X.toD7.host.E) (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)))) = 1 := by
           have h3' : upperLeftBlock (flag1L (L.datVt i t)).hr (redFn (1 : GL (Fin (Vc X.toD7 i).rank) (LiftBrg.EA X)) (w.1 : Pl X.toD7.host.E)
@@ -244,7 +246,7 @@ theorem lev_type_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
           convert hq w.1 hPP using 2
           all_goals first | rfl | exact hcr _
         rw [generalLinearGroupCastOfEq_mem_twoBlockTri_iff] at h1
-        exact ((GlobalTheory.T.mem_blockTri_blkOf_and_blk2_iff_mem_blockUT hnV _).2).1 h1
+        exact ((_root_.GlobalTheory.blockTriangular_blockIndexOf_iff_colBlockUT_twoBlocks hnV _).2).1 h1
     · rintro ⟨hx, hH⟩
       have hSt := ((mem_J0_empty _ _ _).1 hx).2
       have hw' : ∀ w : LiftBrg.sgL X I U t, redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) (w.1 : Pl X.toD7.host.E)
@@ -256,7 +258,7 @@ theorem lev_type_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
       · have hv : PP ∈ (X.B.primes px).vGs := by rw [← hPg]; exact hPP
         have hk := (hHv ⟨PP, Finset.mem_union_left _ hv⟩ hv _).1 (hw' ⟨PP, Finset.mem_union_left _ hv⟩)
         rw [← hcr, castGL_blkOf]
-        exact ((GlobalTheory.T.mem_blockTri_blkOf_and_blk2_iff_mem_blockUT hnV _).1).2 (Formalism.L2.Col.HK_le_blockUT _ _ _ _ hk)
+        exact ((_root_.GlobalTheory.blockTriangular_blockIndexOf_iff_colBlockUT_twoBlocks hnV _).1).2 (Formalism.L2.Col.HK_le_blockUT _ _ _ _ hk)
       · have hq' : PP ∈ Formalism.L2.Col.QE I.sel t.1 := by rw [← hQ]; exact hPP
         have hb : redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) PP (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)) ∈
             Formalism.L2.Col.blockUT X.B.R.nV _ X.B.R.r [X.B.R.t] := by
@@ -265,14 +267,14 @@ theorem lev_type_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
               ((hHv ⟨PP, Finset.mem_union_right _ hq'⟩ hv _).1 (hw' ⟨PP, Finset.mem_union_right _ hq'⟩))
           · exact (hHq ⟨PP, Finset.mem_union_right _ hq'⟩ hv _).1 (hw' ⟨PP, Finset.mem_union_right _ hq'⟩)
         rw [← hcr, generalLinearGroupCastOfEq_mem_twoBlockTri_iff]
-        exact ((GlobalTheory.T.mem_blockTri_blkOf_and_blk2_iff_mem_blockUT hnV _).2).2 hb
+        exact ((_root_.GlobalTheory.blockTriangular_blockIndexOf_iff_colBlockUT_twoBlocks hnV _).2).2 hb
       · refine Subgroup.mem_bot.2 ?_
         funext PP
         have hv : PP.1 ∈ (X.B.primes px).vGs := by rw [← hPg]; exact PP.2
         have hk := (hHv ⟨PP.1, Finset.mem_union_left _ hv⟩ hv _).1 (hw' ⟨PP.1, Finset.mem_union_left _ hv⟩)
         show upperLeftBlock (L.datVt i t).hr (redFn 1 PP.1 (LiftBrg.castGL hrk (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)))) = 1
         rw [← hcr, generalLinearGroupCastOfEq_rowBlock_eq hrk (L.datVt i t).hr (Formalism.L2.Col.r_le_nV X.B.R)]
-        exact (GlobalTheory.T.upperLeftBlock_eq_one_iff_mem_HK hnV _ _ (Formalism.L2.Col.HK_le_blockUT _ _ _ _ hk)).2 hk
+        exact (_root_.GlobalTheory.topBlock_eq_one_iff_mem_colHK hnV _ _ (Formalism.L2.Col.HK_le_blockUT _ _ _ _ hk)).2 hk
 
   have hJ : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).J =
       (Bridge.colJ X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t)
@@ -336,13 +338,13 @@ theorem lev_type_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
         simp only [List.length_singleton, Finset.prod_range_one]
         rfl
       have d1 : dBlk (blkOf X.B.R.r X.B.R.t) 1 g =
-          Formalism.L2.Col.blkDet X.B.R.nV _ (Formalism.L2.Col.coarse X.B.R.r [X.B.R.t]) 1 ⟨g, hb⟩ := (GlobalTheory.T.dBlk_eq_blkDet_coarse hnV g hb).1
+          Formalism.L2.Col.blkDet X.B.R.nV _ (Formalism.L2.Col.coarse X.B.R.r [X.B.R.t]) 1 ⟨g, hb⟩ := (_root_.GlobalTheory.secondBlockDet_eq_blockDet_of_sum_partitions hnV g hb).1
       have d2 : dBlk (blkOf X.toD7.R.r X.toD7.R.t) 1 (redFn (1 : GL (Fin (Vc X.toD7 i).rank) (LiftBrg.EA X)) w.1
             (LiftBrg.castGL hrk ((k : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) : GL (Fin X.B.R.nV) (LiftBrg.EA X)))) =
           dBlk (blkOf X.B.R.r X.B.R.t) 1 g :=
         (congrArg _ (hcrk w.1)).trans ((generalLinearGroupCastOfEq_diagBlock_eq hrk _ _ _).trans (congrArg _ hgw.symm))
       rw [l1, l2, MonoidHom.inv_apply, inv_inv]
-      refine (GlobalTheory.T.liftLevelCharacter_typePrime_eq_columnCharacter X px I U L hI hL i ⟨w.1, hv⟩ _).symm.trans ?_
+      refine (_root_.GlobalTheory.Mem.R3.LevChi.chi_succ_eq X px I U L hI hL i ⟨w.1, hv⟩ _).symm.trans ?_
       exact congrArg _ (d2.trans d1).symm
 
     · rw [if_neg hv]
@@ -365,7 +367,7 @@ theorem lev_type_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
         rw [Formalism.L2.Col.detChar_apply]
         simp only [List.length_singleton, Finset.prod_range_one]
       have d1 : dBlk (blk2 X.B.R.r) 1 g =
-          Formalism.L2.Col.blkDet X.B.R.nV _ (Formalism.L2.Col.coarse X.B.R.r [X.B.R.t]) 1 ⟨g, hb⟩ := (GlobalTheory.T.dBlk_eq_blkDet_coarse hnV g hb).2
+          Formalism.L2.Col.blkDet X.B.R.nV _ (Formalism.L2.Col.coarse X.B.R.r [X.B.R.t]) 1 ⟨g, hb⟩ := (_root_.GlobalTheory.secondBlockDet_eq_blockDet_of_sum_partitions hnV g hb).2
       have d2 : dBlk (blk2 X.toD7.R.r) 1 (redFn (1 : GL (Fin (Vc X.toD7 i).rank) (LiftBrg.EA X)) w.1
             (LiftBrg.castGL hrk ((k : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) : GL (Fin X.B.R.nV) (LiftBrg.EA X)))) =
           dBlk (blk2 X.B.R.r) 1 g :=
@@ -373,7 +375,7 @@ theorem lev_type_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
       rw [l1, l2]
       refine (map_inv (Units.map X.toD7.what₂.embLL.toMonoidHom) _).trans ?_
       congr 1
-      refine (GlobalTheory.T.liftResidueTwistCharacter_eq_resChar X px I U L hI hV hL t w.1 hq' _).symm.trans ?_
+      refine (_root_.GlobalTheory.Mem.LevResXi.xiR_eq_map_resChar X px I U L hI hV hL t w.1 hq' _).symm.trans ?_
       exact congrArg _ (d2.trans d1).symm
 
   obtain ⟨φ, hφ⟩ : ∃ φ : Pl X.toD7.host.E → ℂˣ, ∀ PP, φ PP =

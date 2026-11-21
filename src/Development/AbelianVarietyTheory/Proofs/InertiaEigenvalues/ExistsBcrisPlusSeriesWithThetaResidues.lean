@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ImportsAlt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsThetaDeRhamFiltrationAcrisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAcrisPhiPowEigenvectorDoubleSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusDoubleSeriesHasSumAndNormBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsThetaDeRhamFiltrationAcris
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAcrisPhiPowEigenvectorDoubleSeries
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusDoubleSeriesHasSumAndNormBounds
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltToComplexPAdicBasicLawsStatement
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
@@ -48,7 +48,7 @@ theorem series_residues : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : Lo
         ∃ b : P.R.B, Plus T b ∧ P.φB^[h] b = (l : P.R.B) * b ∧
           ∀ j : ℕ, ∃ hm, θ ⟨ev P j b, hm⟩ = abelian₂ h j y := by
   intro l _ P AI T
-  obtain ⟨S, θ, Θ, hS, hθ1, hθc, hΘn, hΘt, hΘ⟩ := GlobalTheory.T.exists_theta_deRhamFiltration_acris l P AI T
+  obtain ⟨S, θ, Θ, hS, hθ1, hθc, hΘn, hΘt, hΘ⟩ := _root_.GlobalTheory.PSer.theta_fil_acris l P AI T
   refine ⟨S, θ, hS, hθ1, hθc, ?_⟩
   intro h r y hh hr hy
   have hp : l.Prime := Fact.out
@@ -64,7 +64,7 @@ theorem series_residues : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : Lo
     calc ‖sh (y k)‖ ^ (l ^ (h * N)) ≤ r ^ (l ^ (h * N)) := pow_le_pow_left₀ (norm_nonneg _) (hy k) _
       _ ≤ r ^ N := pow_le_pow_of_le_one hr0 hr.le hNle
       _ ≤ ‖(l : ℂ_[l])‖ := hN.le
-  obtain ⟨w, hwφ, hwΘ⟩ := GlobalTheory.T.exists_acris_phi_pow_eigenvector_double_series l h (fun k => y k ^ l ^ (h * N)) hh key
+  obtain ⟨w, hwφ, hwΘ⟩ := _root_.GlobalTheory.PSer.exists_acris_Lam l h (fun k => y k ^ l ^ (h * N)) hh key
   set c : ℚ_[l] := ((l : ℚ_[l]) ^ N)⁻¹ with hcdef
   set b' : P.R.B := T.eB.symm (algebraMap (Formalism.Per.Acris l) (Formalism.Per.Bcris l) w) with hb'
   refine ⟨algebraMap ℚ_[l] P.R.B c * b', ?_, ?_, ?_⟩
@@ -87,7 +87,7 @@ theorem series_residues : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : Lo
     have hsub : (⟨ev P j (algebraMap ℚ_[l] P.R.B c * b'), heq ▸ S.mul_mem hm1 hm2⟩ : ↥S) =
         ⟨algebraMap ℚ_[l] P.R.BdR c, hm1⟩ * ⟨_, hm2⟩ := Subtype.ext heq
     rw [hsub, map_mul, e1, e2, hwΘ Θ hΘn hΘt j,
-      (GlobalTheory.T.untiltFrobeniusDoubleSeries_hasSum_and_norm_bounds l h j r y (by omega) hr hy).2.2.2 N, hcdef, map_inv₀, map_pow, map_natCast,
+      (_root_.GlobalTheory.PSer.Lam_main l h j r y (by omega) hr hy).2.2.2 N, hcdef, map_inv₀, map_pow, map_natCast,
       inv_mul_cancel_left₀ (pow_ne_zero _ (Nat.cast_ne_zero.2 hp.ne_zero))]
 
 end GlobalTheory.PSer

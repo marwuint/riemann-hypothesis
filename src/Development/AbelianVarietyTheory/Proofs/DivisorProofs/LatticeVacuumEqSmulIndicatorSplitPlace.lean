@@ -6,12 +6,12 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatMulIntegra
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslatesEqPrimFrameLat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoBarZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearModelIntertwinerGoodSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceSymplecticSelfZeroSplitSupportedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearModelIntertwinerGoodSplitPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceSymplecticSelfZeroSplitSupported
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatInvariantSupportedEqSmulVacuumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatMatricesInvariantSupportedEqSmulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatMatricesInvariantSupportedEqSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticePairingTrivialMatricesSubMemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosureVanishingLatticeEqRowLatticeMatricesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosureVanishingLatticeEqRowLatticeMatrices
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links
 open IsDedekindDomain NumberField MeasureTheory Matrix
@@ -46,7 +46,7 @@ theorem vacuum_eq_smul_indicator : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.
       (P : GL (Fin a') (Fv D.host.F Bs.v₁)) (Λ : Submodule 𝒪[Fv D.host.F Bs.v₁] (Fin (a + a') → Fv D.host.F Bs.v₁)) (c : ℂ),
       Γ.M'.IsLinBar Bs.ψ Bs.τ₁ 1 1 ι ∧ ∀ Y, ι φ₀ Y = c * (matLat (Fin a') Λ : Set _).indicator 1 (P.val * Y) := by
   intro D a a' Bs Γ X om om' hTr L₁ L₂ θ hθ φ₀ h0 hne hfix huniq
-  obtain ⟨ι, hι⟩ := GlobalTheory.T.exists_linearModel_intertwiner_goodSplitPlace Bs Γ X om om' hTr
+  obtain ⟨ι, hι⟩ := _root_.GlobalTheory.LinBarExist.exists_isLinBar Bs Γ X om om' hTr
   have hfSB : ι φ₀ ∈ GlobalTheory.WeilM.SB _ := hι.bij.mapsTo h0
   have hf0 : ι φ₀ ≠ 0 := by
     intro h
@@ -57,7 +57,7 @@ theorem vacuum_eq_smul_indicator : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.
     rintro _ ⟨u, hu, hu0, rfl⟩ Y
     have hat := (GlobalTheory.LatVac.latAtV_at_stable _ _ _).1 u hu
     have hA := hfix u hu
-    rw [GlobalTheory.T.traceSymplectic_self_zero_splitSupported Bs Γ X om om' hTr u hat (Or.inl hu0), mul_zero, AddChar.map_zero_eq_one, one_smul] at hA
+    rw [_root_.GlobalTheory.VacIso.symp_self_eq_zero Bs Γ X om om' hTr u hat (Or.inl hu0), mul_zero, AddChar.map_zero_eq_one, one_smul] at hA
     exact (hι.trans u hat hu0 φ₀ h0 φ₀ h0 hA Y).symm
   have hsupp : ∀ Y ∉ GlobalTheory.VacShape.Bd Bs Γ L₁ L₂, ι φ₀ Y = 0 := by
     intro Y hY
@@ -65,13 +65,13 @@ theorem vacuum_eq_smul_indicator : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.
     obtain ⟨x, hx, hx0, rfl, u, hu, hu0, hne1⟩ := hY
     have hat := (GlobalTheory.LatVac.latAtV_at_stable _ _ _).1 u hu
     have hB := hfix u hu
-    rw [GlobalTheory.T.traceSymplectic_self_zero_splitSupported Bs Γ X om om' hTr u hat (Or.inr hu0), mul_zero, AddChar.map_zero_eq_one, one_smul] at hB
+    rw [_root_.GlobalTheory.VacIso.symp_self_eq_zero Bs Γ X om om' hTr u hat (Or.inr hu0), mul_zero, AddChar.map_zero_eq_one, one_smul] at hB
     have hm := hι.mult u hat hu0 φ₀ h0 φ₀ h0 hB x hx hx0
     by_contra h
     exact hne1 ((mul_eq_right₀ h).mp hm.symm)
-  obtain ⟨c, hc, hop, hcp⟩ := GlobalTheory.T.schwartzBruhat_matrices_invariant_supported_eq_smul Bs.v₁ _ _ (GlobalTheory.T.latticePairingTrivialMatrices_sub_mem Bs Γ X om om' hTr L₁ L₂) (ι φ₀) hfSB hf0 hinv hsupp
+  obtain ⟨c, hc, hop, hcp⟩ := _root_.GlobalTheory.SBClosure.main Bs.v₁ _ _ (GlobalTheory.T.latticePairingTrivialMatrices_sub_mem Bs Γ X om om' hTr L₁ L₂) (ι φ₀) hfSB hf0 hinv hsupp
     (GlobalTheory.T.schwartzBruhat_invariant_supported_eq_smul_vacuum Bs Γ X om om' hTr L₁ L₂ θ hθ ι hι φ₀ h0 hne hfix huniq)
-  obtain ⟨P, Λ, hPΛ⟩ := GlobalTheory.T.closure_vanishing_lattice_eq_row_lattice_matrices Bs Γ X om om' hTr L₁ L₂ hop hcp
+  obtain ⟨P, Λ, hPΛ⟩ := _root_.GlobalTheory.VacShapeCl.closure_Sa_eq_matLat Bs Γ X om om' hTr L₁ L₂ hop hcp
   refine ⟨ι, P, Λ, c, hι, fun Y => ?_⟩
   have hY := congrFun hc Y
   rw [Pi.smul_apply, smul_eq_mul] at hY

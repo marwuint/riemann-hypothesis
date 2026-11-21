@@ -2,7 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompletionUnramifiedNormal
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalizationTensorNormalOfCharZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNoetherianRingAdicCompletionOfNoetherian
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompletionIsDomainAndIsIntegrallyClosed
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteIntegralClosureOfEssFiniteTypeIntDomain
 
 open IsLocalRing GlobalTheory.Toroidal GlobalTheory.TorRef TensorProduct
 
@@ -86,29 +88,5 @@ theorem exists_etale_of_isEtaleCompletion (A R : Type) [CommRing A] [IsLocalRing
   haveI : Algebra.FinitePresentation D R :=
     (Algebra.FinitePresentation.of_finiteType (R := D) (A := R)).1 inferInstance
   exact ⟨g, hg, Algebra.Etale.of_formallyUnramified_of_flat⟩
-
-theorem normal_transfer {S S' : Type} [CommRing S] [CommRing S'] (e : S ≃+* S')
-    (h : ∀ (Q : Ideal S) [Q.IsPrime], IsDomain (Localization.AtPrime Q) ∧ IsIntegrallyClosed (Localization.AtPrime Q))
-    (Q' : Ideal S') [Q'.IsPrime] : IsDomain (Localization.AtPrime Q') ∧ IsIntegrallyClosed (Localization.AtPrime Q') := by
-  haveI : (Q'.comap e).IsPrime := Ideal.comap_isPrime _ _
-  obtain ⟨h1, h2⟩ := h (Q'.comap e)
-  have hM : (Q'.comap e).primeCompl.map e.toMonoidHom = Q'.primeCompl := by
-    ext x
-    constructor
-    · rintro ⟨y, hy, rfl⟩
-      exact hy
-    · intro hx
-      refine ⟨e.symm x, ?_, by simp⟩
-      show e.symm x ∉ Q'.comap e
-      rw [Ideal.mem_comap, RingEquiv.apply_symm_apply]
-      exact hx
-  let f : Localization.AtPrime (Q'.comap e) ≃+* Localization.AtPrime Q' :=
-    IsLocalization.ringEquivOfRingEquiv (Localization.AtPrime (Q'.comap e)) (Localization.AtPrime Q') e hM
-  exact ⟨f.symm.injective.isDomain _, IsIntegrallyClosed.of_equiv f⟩
-
-theorem normal_noetherian_tensor : ∀ (A C R : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A] [CommRing C] [Algebra A C] [Algebra.EssFiniteType A C] [CommRing R] [IsDomain R] [IsLocalRing R] [Algebra A R], (∀ (P : Ideal C) [P.IsPrime], IsDomain (Localization.AtPrime P) ∧ IsIntegrallyClosed (Localization.AtPrime P) ∧ CharZero (Localization.AtPrime P)) → IsCN R → IsEtaleCompletion (algebraMap A R) → ((residue R).comp (algebraMap A R)).FormallyUnramified → ∀ (Q : Ideal (TensorProduct A C R)) [Q.IsPrime], IsDomain (Localization.AtPrime Q) ∧ IsIntegrallyClosed (Localization.AtPrime Q) ∧ IsNoetherianRing (Localization.AtPrime Q) := by
-  intro A C R _ _ _ _ _ _ _ _ _ _ hC hCN het hfu
-  haveI := hCN.1
-  exact GlobalTheory.TensorNormal.localization_tensor_normal_of_charZero A C R hC het hfu
 
 end GlobalTheory.NormalBaseChange

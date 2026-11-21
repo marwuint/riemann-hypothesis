@@ -2,12 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinPair
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicCuspFormOfExtremalVectorMultiplicityStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicCuspFormOfExtremalVectorMultiplicity
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedHolomorphicFormEqMultiplicitySpaceValueStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicAdelicFormOfBoundedSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicCuspFormTransvectionConstantTermsZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundedSectionOfBoundedHolomorphicFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHolomorphicCuspFormOfAdelicConstantTermsZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicCuspFormTransvectionConstantTermsZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundedSectionOfBoundedHolomorphicForm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHolomorphicCuspFormOfAdelicConstantTermsZero
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.L2.Pj Formalism.IndefR.FWT Formalism.IndefR GlobalTheory.HolDict
 open scoped TensorProduct InnerProductSpace ContDiff
@@ -28,7 +28,7 @@ theorem mult_eval_eq_adel_holSub0 : GlobalTheory.Published.CuspRapidDecay → Gl
     induction hP1 using Submodule.span_induction with
     | mem P hP =>
       have h1 := GlobalTheory.T.holomorphicAdelicForm_of_boundedSection D θ V S M w r hr Comp X la dict mu c Kf hS hG P (fun k => (hP k).1)
-      have h2 := GlobalTheory.T.adelicCuspForm_transvection_constantTerms_zero D θ V S M w r hr Comp X la dict mu c Kf hS hG P hP
+      have h2 := _root_.GlobalTheory.HolDict.TransvCusp.zCusp_adel D θ V S M w r hr Comp X la dict mu c Kf hS hG P hP
       obtain ⟨T, hT, hTv⟩ := GlobalTheory.T.boundedHolomorphicForm_eq_multiplicitySpace_value D θ V S M w v hG.inf hS hw hv (exists_finPair hvol D V)
         (Kf : Set (GA D V)) χ _ hG.levFin (h1.congr_level fun k hk => (hχ k hk).symm) h2
       exact ⟨T, Submodule.subset_span hT, hTv⟩
@@ -40,10 +40,10 @@ theorem mult_eval_eq_adel_holSub0 : GlobalTheory.Published.CuspRapidDecay → Gl
     | smul a P _ hP =>
       obtain ⟨T, hT, hTv⟩ := hP
       exact ⟨a • T, Submodule.smul_mem _ a hT, by rw [map_smul, _root_.smul_apply, hTv]⟩
-  · obtain ⟨h1, h2⟩ := GlobalTheory.T.holomorphic_cusp_form_of_extremal_vector_multiplicity hdec D θ V S M w v hG.inf hS hw hv (Kf : Set (GA D V)) χ T hT
-    obtain ⟨P, hP0, hPb, hPe⟩ := GlobalTheory.T.exists_boundedSection_of_boundedHolomorphicForm D θ V S M w r hr Comp X la dict mu c Kf hS hG (T v)
+  · obtain ⟨h1, h2⟩ := _root_.GlobalTheory.HolDict.holForm_zCusp_of_mem_mult hdec D θ V S M w v hG.inf hS hw hv (Kf : Set (GA D V)) χ T hT
+    obtain ⟨P, hP0, hPb, hPe⟩ := _root_.GlobalTheory.HolDict.IntoSec.exists_bddSec_adel_eq D θ V S M w r hr Comp X la dict mu c Kf hS hG (T v)
       (h1.congr_level hχ)
-    have hc := GlobalTheory.T.isHolomorphicCuspForm_of_adelic_constantTerms_zero D θ V S M w r hr Comp X la dict mu c Kf hS hG P hPb (hPe ▸ h2)
+    have hc := _root_.GlobalTheory.HolDict.IntoCusp.isHolCusp_of_zCusp D θ V S M w r hr Comp X la dict mu c Kf hS hG P hPb (hPe ▸ h2)
     exact ⟨P, ⟨holCusp_mem_holSub X la hc, hP0⟩, hPe⟩
 
 end GlobalTheory.HolDict

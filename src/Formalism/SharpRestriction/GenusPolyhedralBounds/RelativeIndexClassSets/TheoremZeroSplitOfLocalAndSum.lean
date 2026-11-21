@@ -16,59 +16,6 @@ section J
 
 variable {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
-theorem hypC_of_hyp {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR Bx CT : ℝ} {S : Scal B} {T nP nW : ℕ} {h0 : ℝ}
-    {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ} (h : Hyp large₂ X H C2 A2 CR Bx CT S ka wL wF T nP nW h0 nus) :
-    HypC large₂ X H C2 A2 CR Bx CT S ka wL wF T nP nW h0 nus := by
-  obtain ⟨a1, a2, a3, ⟨b1, b2, b3, -⟩, a5, a6, a7, a8⟩ := h
-  exact ⟨a1, a2, a3, ⟨b1, b2, b3⟩, a5, a6, a7, a8⟩
-
-theorem split_of_tied {G : GlobalFamilyData X ka wL wF} {large₂ : SizeData₂ D} {S : Scal B} {CRm : ℝ} {T : ℕ} {c Gc Prw Ch Ah Cf Af : ℝ}
-    (hT : G.Tied large₂ S CRm T c Gc Prw Ch Ah Cf Af) :
-    G.TiedW S Gc Prw ∧ G.TiedTh S Gc ∧ G.TiedZ S T Gc ∧ G.TiedQ large₂ S CRm T c Ch Ah ∧ G.TiedEt large₂ Cf Af := by
-  obtain ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14⟩ := hT
-  exact ⟨⟨a1, a2, a3, a4, a5⟩, a6, ⟨a7, a8, a9⟩, ⟨a10, a11, a12, a13⟩,
-    fun hj => ⟨(a14 hj).1, (a14 hj).2.1, (a14 hj).2.2.1, (a14 hj).2.2.2.2⟩⟩
-
-theorem split_of_deepIn {large₂ : SizeData₂ D} {CG AG Pd : ℝ} (h : DeepIn X ka large₂ CG AG Pd) :
-    DeepHerm X ka ∧ DeepSubMul X ∧ DeepLogD X ka Pd ∧ PageGd X ka large₂ CG AG Pd := h
-
-theorem split_of_shares {del rz rq d T : ℕ} {CRm c : ℝ} (h : Shares D wL del rz rq d T CRm c) :
-    ShareRd (D := D) (j := j) T del d ∧ ShareRho (D := D) (j := j) T rz d ∧ ShareRhoP (D := D) (j := j) T rq d := h
-
-theorem split_of_inContain {G : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)} {S : Scal B} {CRm : ℝ} {T : ℕ} {c : ℝ}
-    (h : InContain G la S CRm T c) : InContainZ G la S T ∧ InContainM G la CRm T c := h
-
-theorem combined_bound_of_H1_admissible {large₂ : SizeData₂ D} {H : KHyp} {S : Scal B} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
-    (G : GlobalFamilyData X ka wL wF) (hH1 : H1 large₂ X H S wL nus) (c : ℝ) (hc0 : 0 ≤ c) (hc : cc D large₂ H.Cc H.Ac H.CRc wL ≤ c)
-    (hEt : j < D.R.m → 0 < G.iet ∧
-      ∀ la (y : X.Pt la), ((2 * G.iet * X.phiC la y : ℝ) : EReal) ≤ X.vAt la y (X.inc _ G.et)) :
-    CombBound G S c nus := by
-  intro la y
-  have hφ := Formalism.MainNotions.Gaps.T0.phiC_nonneg X la y
-  have hd := hH1.2.2.2 la y
-  refine ⟨fun hj => ?_, fun hj => ?_⟩
-  · obtain ⟨hi, h⟩ := hEt hj
-    have hi' : (0 : ℝ) < 2 * (G.iet : ℝ) := by positivity
-    have h1 := h la y
-    have h0 : (0 : ℝ) ≤ 2 * G.iet * X.phiC la y := mul_nonneg hi'.le hφ
-    refine ⟨le_trans (by exact_mod_cast h0) h1, fun hfin => hd.trans ?_⟩
-    rw [← EReal.coe_toReal hfin (X.vAt_ne_bot la y _), EReal.coe_le_coe_iff] at h1
-    rw [EReal.coe_le_coe_iff]
-    have h2 : X.phiC la y ≤ (X.vAt la y (X.inc _ G.et)).toReal / (2 * (G.iet : ℝ)) := by
-      rw [le_div_iff₀ hi']; linarith
-    have h3 : cc D large₂ H.Cc H.Ac H.CRc wL * X.phiC la y ≤ c * X.phiC la y := mul_le_mul_of_nonneg_right hc hφ
-    have h4 : c * X.phiC la y ≤ c * ((X.vAt la y (X.inc _ G.et)).toReal / (2 * (G.iet : ℝ))) :=
-      mul_le_mul_of_nonneg_left h2 hc0
-    have h5 : c / (2 * (G.iet : ℝ)) * (X.vAt la y (X.inc _ G.et)).toReal =
-        c * ((X.vAt la y (X.inc _ G.et)).toReal / (2 * (G.iet : ℝ))) := by ring
-    rw [h5]
-    linarith
-  · have h0 : X.phiC la y = 0 := by
-      unfold PJ.phiC
-      rw [if_neg (not_lt.2 hj)]
-    rw [h0, mul_zero, add_zero] at hd
-    exact hd
-
 variable {G : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)}
 
 theorem vEt_nonneg_comb {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ} (hB : CombBound G S c nus)
@@ -192,27 +139,5 @@ theorem theorem_zero_split_of_local_and_sum (hL : LocalC D B P) (hS : SumC D B P
     (fun la e he V' hV => hL large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA
       G Gc PH Prw Pet Pd tW tTh tZ tQ tEt dH dS dL pG sRd sRho sRhoP hP hB la (Qf la) (iB la) (iC la) (iT la)
       (iLf la tW (iC la) (iT la)) (iZ la) (iM la) (hHt.1 la) e he V' hV)
-
-def LiftAll (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) : Prop :=
-  ∀ (j : ℕ) (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
-    (Q : LocalPointData G la) (S : Scal B) (CRm : ℝ) (T : ℕ) (c : ℝ), Q.Ok S CRm T c → Q.InLift T
-
-theorem theorem_zero_bundled_of_split (hLf : LiftAll D B P) (h : Conclusion1OfComb (D := D) (B := B) (P := P)) :
-    Conclusion1Of2 (D := D) (B := B) (P := P) := by
-  intro large₂ X K H Ch Ah Cq Aq C2 A2 CR CT hA hBan hin j h1 h2 S ka wL wF T nP nW h0 nus hH
-  obtain ⟨G, Gc, PH, Prw, Pet, Pd, hT, hI, hSh, hP, Qf, hOk, hHt⟩ := hin j h1 h2 S ka wL wF T nP nW h0 nus hH
-  obtain ⟨tW, tTh, tZ, tQ, tEt⟩ := split_of_tied hT
-  obtain ⟨dH, dS, dL, pG⟩ := split_of_deepIn hI
-  obtain ⟨sRd, sRho, sRhoP⟩ := split_of_shares hSh
-  exact h large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus (hypC_of_hyp hH)
-    (hA.1 j h1 h2 ka) (fun F σ => hA.2.1.2 j h1 h2 ka F σ) (hA.2.2.2.2.1 j h1 h2 ka)
-    (fun hj hCR hO hn hLP hsz hT hc hTc => hA.2.2.2.2.2.2 hCR hO j h1 hj ka hn hLP hsz _ _ hT hc hTc)
-    G Gc PH Prw Pet Pd Qf tW tTh tZ tQ tEt dH dS dL pG sRd sRho sRhoP hP (fun la => (hOk la).1)
-    (fun la => (hOk la).2.1) (fun la => (hOk la).2.2.1)
-    (fun la _ _ _ => hLf j _ ka wL wF G la (Qf la) S _ T _ (hOk la)) (fun la => (split_of_inContain (hOk la).2.2.2).1)
-    (fun la => (split_of_inContain (hOk la).2.2.2).2)
-    (combined_bound_of_H1_admissible G hH.2.2.2.1 _ (cc_pos_of hH.2.1 hH.2.2.2.2.2.1 hP).le (cc_le_cc hP wL)
-      (fun hj => ⟨(hT.2.2.2.2.2.2.2.2.2.2.2.2.2 hj).1, (hT.2.2.2.2.2.2.2.2.2.2.2.2.2 hj).2.2.2.1⟩))
-    hHt
 
 end Formalism.MainNotions.Gaps.EtaleWeightGaps

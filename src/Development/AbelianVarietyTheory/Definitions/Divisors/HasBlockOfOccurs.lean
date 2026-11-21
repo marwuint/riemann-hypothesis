@@ -173,10 +173,6 @@ theorem eq_one_of_occurs {L V J : Type} [Field L] [AddCommGroup V] [Module L V] 
   rw [e, smul_pow, one_pow, LinearMap.smul_apply, Module.End.one_apply, smul_eq_zero] at hk
   exact (sub_eq_zero.1 (eq_zero_of_pow_eq_zero (hk.resolve_right hv0))).symm
 
-theorem Reads.hasBlock_of_occurs {w : HeightOneSpectrum (𝓞 K)} (R : Reads F lam B w) (h0 : ∀ P, B.op (P, 0) = 1) {x : B.Pl × ℕ → K}
-    (hx : Formalism.L2.Col.Occurs B.op x) (hb : Formalism.L2.Col.HasBlocks B.n B.q B.t B.bl x) : R.HasBlock fun i => R.e0 (x (R.ix i)) :=
-  ⟨x, fun P => eq_one_of_occurs hx (h0 P), hb, fun _ => rfl⟩
-
 end Reading
 
 section Galois

@@ -73,19 +73,6 @@ theorem gamDvd (l : I.Laws) (Z : Later B (I.cols l)) :
       Fintype.card (((famC I hX U Xg tr).A.fam.L j t).S.Gam c) ∣ ((I.rec7 l Z).mem (I.rec7 l Z).u₀).C.DGam :=
   gamDvd_DGam I hX U Xg tr
 
-theorem gamDvd_stages (Y : Stages) {px : PreX Y.B.toPre} (I : TC Y.B px) (l : I.Laws) (hC : Y.C = I.cols l) (hX : Y.B.fields.Ok)
-    (U : Set I.ι) (Xg : Finset (Gc Y.B px → Y.B.LL)) (tr : TrI Y.B px) :
-    (∀ (t : TupU I U) (c : ((famC I hX U Xg tr).A.fam.R t).S.Cl),
-      Fintype.card (((famC I hX U Xg tr).A.fam.R t).S.Gam c) ∣ (Y.toD7.mem Y.toD7.u₀).C.DGam) ∧
-    ∀ (j : Fin Y.B.R.m) (t : TupU I U) (c : ((famC I hX U Xg tr).A.fam.L j t).S.Cl),
-      Fintype.card (((famC I hX U Xg tr).A.fam.L j t).S.Gam c) ∣ (Y.toD7.mem Y.toD7.u₀).C.DGam := by
-  have e : (Y.toD7.mem Y.toD7.u₀).C.DGam = DGam Y.B.fields.E Y.B.R := by
-    have e1 : ∀ u, (Y.toD7.mem u).C.DGam = (Y.C.mem u).C.DGam := fun _ => rfl
-    rw [e1, hC]
-    rfl
-  rw [e]
-  exact gamDvd_DGam I hX U Xg tr
-
 end Fam
 
 end GlobalTheory.Mem.R3.GamDvd

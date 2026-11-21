@@ -6,9 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMul
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PeriodsLactSymplectic
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableNormSiegelThetaSeriesTerms
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EqOfSiegelThetaSeriesRationalEq
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticSiegelActionMemUpperHalfSpaceAndCocyclStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsWeilOfSymplecticStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsWeilOfSymplectic
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CanonicalThetaExponentSymplecticInvariantStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LactMulFrame
 
@@ -92,7 +93,7 @@ theorem exists_weil (hs : IsSympl X bas) (hn : Even n) {γ : GL (Fin r) E} (hγ 
       (∀ x ∈ X.dom, thA X bas idx (ω φ) (lact γ x) = thA X bas idx φ x) ∧
       ∀ φ', IsSB φ' → ip (ω φ) (ω φ') = ip φ φ' := by
   obtain ⟨σ, hσ, h⟩ := periods_lact_symplectic E r X g bas idx n hs hn γ hγ
-  obtain ⟨ω, hω⟩ := GlobalTheory.T.exists_weil_of_symplectic' (Fin n) (Fin g) σ (by simpa using hn) hσ
+  obtain ⟨ω, hω⟩ := _root_.GlobalTheory.SW.exists_weil_of_symplectic (Fin n) (Fin g) σ (by simpa using hn) hσ
   refine ⟨ω, fun φ hφ => ⟨(hω φ hφ).1, fun x hx => ?_, (hω φ hφ).2.2⟩⟩
   obtain ⟨-, hτ, h1, h2⟩ := h x hx
   funext z
@@ -163,9 +164,9 @@ theorem wG_laws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : �
   refine ⟨k1, k2, fun ψ hψ => ⟨k3 ψ hψ, ?_, fun x hx => eq_of_thA_eq idx hs hx hφ hψ⟩,
     fun a => ?_, ?_, fun γ' hγ' => ?_, fun y => ?_⟩
   · obtain ⟨l1, l2, -⟩ := key γ hγ ψ hψ
-    refine wG_eq idx hs hγ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ k1 l1).1 fun x hx => ?_
+    refine wG_eq idx hs hγ (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ k1 l1).1 fun x hx => ?_
     rw [thA_add idx hs (hγ.lact_mem hx) k1 l1, thA_add idx hs hx hφ hψ, k2 x hx, l2 x hx]
-  · refine wG_eq idx hs hγ ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ k1 k1).2.1 a) fun x hx => ?_
+  · refine wG_eq idx hs hγ ((_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ k1 k1).2.1 a) fun x hx => ?_
     rw [thA_smul, thA_smul, k2 x hx]
   · exact wG_eq idx hs (fun u v => by simp) hφ fun x _ => by rw [lact_one']
   · obtain ⟨l1, l2, -⟩ := key γ' hγ' _ k1

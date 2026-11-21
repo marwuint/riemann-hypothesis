@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechGluingOfKodairaSpencerRelation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateUnique
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VerticalVectorFieldUniqueCombinationBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCocycleEqCoboundaryAddLogDerivativesAffineStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VerticalVectorFieldUniqueCombinationBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCocycleEqCoboundaryAddLogDerivativesAffine
 
 set_option autoImplicit false
 
@@ -24,7 +24,7 @@ theorem exists_coboundary_add_dlog : ∀ (E : Type) [Field E] [NumberField E] [I
   intro E _ _ _ H X t hP hA hK U n v hv hb J W j hWa hcov hj e he hev hcoc
   have hWU : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ U.1 := fun i => (le_iSup W i).trans hcov.le
   choose dd hdF hd0 hdv using fun a => exists_invField U (hv a)
-  have hsp := fun i i' => GlobalTheory.T.verticalVectorField_unique_combination_basis E H X t U n v hv hb dd hdF hd0 hdv (W i ⊓ W i') (inf_le_left.trans (hWU i))
+  have hsp := fun i i' => _root_.GlobalTheory.VertSpan.vert_span E H X t U n v hv hb dd hdF hd0 hdv (W i ⊓ W i') (inf_le_left.trans (hWU i))
     (e i i') (he i i') (fun r => hev i i' _ r)
   choose c hc using fun i i' => (hsp i i').exists
   have hcc : ∀ a i i' i'', resG t.G.left (inf_le_left : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i') (c i i' a) +
@@ -37,7 +37,7 @@ theorem exists_coboundary_add_dlog : ∀ (E : Type) [Field E] [NumberField E] [I
     have h2 : W i ⊓ W i' ⊓ W i'' ≤ W i' ⊓ W i'' := le_inf (inf_le_left.trans inf_le_right) inf_le_right
     have h3 : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i'' := le_inf (inf_le_left.trans inf_le_left) inf_le_right
     have hT : W i ⊓ W i' ⊓ W i'' ≤ t.G.hom ⁻¹ᵁ U.1 := h3.trans (inf_le_left.trans (hWU i))
-    have hu := (GlobalTheory.T.verticalVectorField_unique_combination_basis E H X t U n v hv hb dd hdF hd0 hdv (W i ⊓ W i' ⊓ W i'') hT (e i i'')
+    have hu := (_root_.GlobalTheory.VertSpan.vert_span E H X t U n v hv hb dd hdF hd0 hdv (W i ⊓ W i' ⊓ W i'') hT (e i i'')
       (isField_mono h3 (he i i'')) (fun r => ?_)).unique
       (y₁ := fun a => resG _ h1 (c i i' a) + resG _ h2 (c i' i'' a)) (y₂ := fun a => resG _ h3 (c i i'' a)) ?_ ?_
     · exact congrFun hu a
@@ -48,7 +48,7 @@ theorem exists_coboundary_add_dlog : ∀ (E : Type) [Field E] [NumberField E] [I
     · intro O hO f
       rw [hc i i'' O (hO.trans h3) f]
       simp only [resG_resG']
-  choose θ hh hθ using fun a => GlobalTheory.T.cechCocycle_eq_coboundary_add_logDerivatives_affine E H X t hP hA hK U n v hv hb dd hdF hd0 hdv J W j hWa hcov hWU hj
+  choose θ hh hθ using fun a => _root_.GlobalTheory.CechH1Span.exists_dlog_add_coboundary E H X t hP hA hK U n v hv hb dd hdF hd0 hdv J W j hWa hcov hWU hj
     (fun i i' => c i i' a) (hcc a)
   refine ⟨Matrix.of fun a b => θ a b, fun i O f => ∑ a, smulFld (hh a i) (dd a) O f,
     fun i => isField_sum fun a => isField_smul _ (isField_mono (hWU i) (hdF a)), fun i hW r => ?_,

@@ -86,24 +86,8 @@ theorem exists_sec_four (hpq : 1 ≤ Dw.p + Dw.q) {σ : c.F →+* ℂ} (y : FrPt
     simp only [CompSplitPfB.cspB_evR_mul]
     exact mul_ne_zero (M₀ := ℂ) (mul_ne_zero (M₀ := ℂ) (mul_ne_zero (M₀ := ℂ) h1 h1) (mul_ne_zero (M₀ := ℂ) h1 h1)) (h0 y)
 
-open Classical in
-
-def flatFour (τ : Psi H) : (E →+* ℂ) × ℕ → ℕ :=
-  fun x => if x.1 = τ.1 then 3 else if x.1 = conjEmb τ.1 then 5 else 4
-
 variable {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r}
 
 end Hol
-
-section Main
-
-open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix
-open Formalism.DegreeFormula Formalism.MJ Formalism.UG Formalism.L2.Geo Formalism.L2.PjFree
-open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.PullbackSections
-open GlobalTheory GlobalTheory.HodgeDomain GlobalTheory.LieMet GlobalTheory.CxPts GlobalTheory.TrueCx
-open GlobalTheory.AllWt (Psi)
-attribute [local instance] Over.cartesianMonoidalCategory
-
-end Main
 
 end GlobalTheory.TrueCx.FlatConst

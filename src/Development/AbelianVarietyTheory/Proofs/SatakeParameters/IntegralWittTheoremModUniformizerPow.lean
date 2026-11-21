@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DvdPowZeroIff
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralWittUnitaryModUniformizerStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitaryGroupHenselStepFamiliesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitaryGroupHenselStepFamilies
 
 noncomputable section
 
@@ -128,7 +128,7 @@ theorem witt_mod_pow : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicat
     | succ k hk ih =>
       obtain ⟨h, hh, hc⟩ := ih
       have hHint := glint_entry hh
-      obtain ⟨g, hg, hg1, hgc⟩ := GlobalTheory.T.unitaryGroup_hensel_step_families L ϖ σ q hU hq n' JT hJT hJh {i // k < a i}
+      obtain ⟨g, hg, hg1, hgc⟩ := _root_.GlobalTheory.Hk3.IntWitt.hensel_step L ϖ σ q hU hq n' JT hJT hJh {i // k < a i}
         (fun i => ((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ z i.1) (fun i => z' i.1) k hk
         (fun i r => mulVec_int hHint (hz i.1) r) (fun i r => hz' i.1 r)
         (indepMod_sub (indepMod_mulVec hh hiz) (fun i => k < a i))

@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsLatticeFamily
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeFamilyModelBundlesStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeFamilyModelBundles
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChange
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LieLatticeData
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XChartNoethFrac
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XFamConstr
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.ImageLatticeBaseChange
@@ -208,7 +209,7 @@ theorem PositivityTheory.Xgn.t_fam_good2 : ∀ (O : Type) [CommRing O] [IsDomain
   obtain ⟨hno, -, hch⟩ := PositivityTheory.Xgn.t_chart_noeth_frac O Ω K ι x
   have hχ := charData hinj p hp w χ hD.char
   have hfam := (PositivityTheory.Xgn.t_fam_constr O Ω K ι x hinj p hp w χ φ D hD).2
-  have hfr := fun c hc τ => ((GlobalTheory.T.lattice_good_base_change (D c) _ p _ _ (hχ _) (hD.base c hc) (hG c hc)).1 τ).1
+  have hfr := fun c hc τ => ((_root_.GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodBaseChange.main (D c) _ p _ _ (hχ _) (hD.base c hc) (hG c hc)).1 τ).1
   let I : Type := Sg ⊕ (Sg × Fin (n + 1)) ⊕ (Sg × Fin (n + 1)) ⊕ (Sg × Fin n) ⊕ Sg
   let M : I → ModuleCat.{0} Ω := fun j => match j with
     | .inl _ => ModuleCat.of Ω (Fin n → Ω)
@@ -225,7 +226,7 @@ theorem PositivityTheory.Xgn.t_fam_good2 : ∀ (O : Type) [CommRing O] [IsDomain
         ((D c).stepGraph q.1 (fun a => algebraMap O Ω (χ q.1 a)) q.2).map (AddMonoidHom.snd _ _)
     | .inr (.inr (.inr (.inr τ))) => fun c =>
         (D c).imH (chartRing O (mseg x) c) p τ (fun a => algebraMap O Ω (χ τ a))
-  obtain ⟨K', hK, hK', ι', hι', z, hz, hfree⟩ := GlobalTheory.T.lattice_family_model_bundles O Ω K ι x d hx hfn I
+  obtain ⟨K', hK, hK', ι', hι', z, hz, hfree⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlattenMany.main O Ω K ι x d hx hfn I
     (fun j => Module.finrank Ω (M j)) (fun j => M j) Γ (by
       rintro (τ | q | q | q | τ)
       · exact ⟨rfl, (hfam τ).1, fun c hc => gens _ (hno c) (hfr c hc τ) LinearMap.id Function.surjective_id
@@ -245,7 +246,7 @@ theorem PositivityTheory.Xgn.t_fam_good2 : ∀ (O : Type) [CommRing O] [IsDomain
   obtain ⟨hc1, hle⟩ := (hch K' ι' z).2 c hc
   have hB := hD.base _ hc1
   have hG1 := hG _ hc1
-  have e1 := fun τ => (((GlobalTheory.T.lattice_good_base_change _ _ p _ _ (hχ _) hB hG1).2 Ω _ hle).2 τ).1
+  have e1 := fun τ => (((_root_.GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodBaseChange.main _ _ p _ _ (hχ _) hB hG1).2 Ω _ hle).2 τ).1
   have e2 := PositivityTheory.Xgn.kernel_lattice_base_change _ _ p _ _ (hχ _) hB hG1 Ω _ hle
   have e3 := PositivityTheory.Xgn.image_lattice_base_change _ _ p _ _ (hχ _) hB hG1 (haf _ hc1) Ω _ hle
   simp only [bc_self, bc_self_prod, Algebra.algebraMap_self_apply] at e1 e2 e3

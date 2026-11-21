@@ -9,13 +9,16 @@ import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.N
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAlgebraicOfRoot
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeriesVecFlatEqSum
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ChartIndependenceUnconditional
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSmallGenerationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EllipticCurveMapToAbelianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteSideRealisationsCoefMapDifferRootOfUnityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoefficientPolynomialGLFunctionNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjTupleAtStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjFixAtStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjCoefAtStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSmallGeneration
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvOfRoot
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EllipticCurveMapToAbelian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExpConjOfOne
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ConjTupRefl
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteSideRealisationsCoefMapDifferRootOfUnity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoefficientPolynomialGLFunctionNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjTupleAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjFixAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjCoefAt
 
 set_option autoImplicit false
 noncomputable section
@@ -39,8 +42,8 @@ theorem scale_pow_eq {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Ty
   obtain ⟨gR, cR0, cL0, hT, u, hu, hF⟩ := h
   obtain ⟨gR', cR0', cL0', hT', u', hu', hF'⟩ := h'
   obtain rfl : u' = u := funext fun τ => Subtype.ext ((hu' τ).trans (hu τ).symm)
-  obtain ⟨a, ⟨k, hk, hak⟩, ha⟩ := GlobalTheory.T.definiteSideRealisations_coefMap_differ_rootOfUnity _ _ _ _ _ _ _ _ _ _ _ _ _ hT hT' j
-  obtain ⟨F, x, hx⟩ := GlobalTheory.T.exists_coefficientPolynomial_GLFunction_ne_zero (FWT.lamV D j)
+  obtain ⟨a, ⟨k, hk, hak⟩, ha⟩ := _root_.GlobalTheory.CoefRoot.coef_root _ _ _ _ _ _ _ _ _ _ _ _ _ hT hT' j
+  obtain ⟨F, x, hx⟩ := _root_.GlobalTheory.CoeffNonvanish.exists_coefFn_ne_zero (FWT.lamV D j)
   have e1 := hF' F
   rw [ha] at e1
   erw [LinearMap.map_smul, LinearMap.map_smul, hF F] at e1
@@ -48,16 +51,6 @@ theorem scale_pow_eq {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Ty
   simp only [Pi.smul_apply, smul_eq_mul] at e2
   have hc : c' = D.what₂.embLL a * c := (mul_right_cancel₀ hx ((mul_assoc _ _ _).trans e2)).symm
   exact ⟨k, hk, by rw [hc, mul_pow, ← map_pow, hak, map_one, one_mul]⟩
-
-theorem normAt : NormAt := AtTw.of_forall fun _ _ _ _ p _ _ _ _ _ B ν ν' ⟨_, c, hc, n, hn, hνn⟩ ⟨_, c', hc', m, hm, hνm⟩ => by
-  obtain ⟨k, hk, hkk⟩ := scale_pow_eq p.R p.v₀ B hc hc'
-  refine ⟨n * m * k, Nat.mul_ne_zero (Nat.mul_ne_zero hn hm) hk, ?_⟩
-  have e1 : ν' ^ (n * m * k) = (ν' ^ m) ^ (n * k) := by rw [← pow_mul]; ring_nf
-  have e2 : ν ^ (n * m * k) = (ν ^ n) ^ (m * k) := by rw [← pow_mul]; ring_nf
-  have e3 : c' ^ (n * m * k) = c ^ (n * m * k) := by
-    rw [show n * m * k = k * (n * m) by ring, pow_mul c', pow_mul c, hkk]
-  rw [e1, e2, hνm, hνn, ← pow_mul, ← pow_mul, mul_pow, mul_pow,
-    show m * (n * k) = n * m * k by ring, show n * (m * k) = n * m * k by ring, e3]
 
 theorem root_mul {a b : ℂ} (ha : IsRoot1 a) (hb : IsRoot1 b) : IsRoot1 (a * b) := by
   obtain ⟨n, hn, ha⟩ := ha
@@ -136,36 +129,5 @@ theorem rescale {X : Type} (τ : ℂ ≃+* ℂ) {ξ ζ : ℂ} (hξ : ξ ≠ 0) {
       simp only [map_mul, Finset.smul_sum, smul_smul]
     rw [e3, e2, h', smul_smul, inv_mul_cancel_right₀ hξ, mul_smul]
     rfl
-
-theorem twOne_of_steps (hA : TwAdm) (hT : TupAt) (hF : FixAt) (hC : CoefAt)
-    (hE : AtTw fun Fm x _ i p _ j => ∀ τ : ℂ ≃+* ℂ,
-      (∀ y, τ (Formalism.L2.Host.embLL0 (Fm.D x i) y) = Formalism.L2.Host.embLL0 (Fm.D x i) y) →
-      ∀ Φ Φ' : GA (Fm.D x i) (Wc (Fm.D x i) j) → ℂ, ConjFun (p.O j) (p.κ j) τ 1 Φ Φ' →
-        ∃ (n : ℕ) (b : Fin n → ℂ) (g : Fin n → NX.FmK p.Sx ((j : ℕ) + 1)),
-          Φ = ∑ k, b k • evW p.nexp p.v₀ j (g k).val ∧ ∑ k, τ (b k) • evW p.nexp p.v₀ j (g k).val = Φ') : TwOne := by
-  refine AtTw.imp (AtTw.and (AtTw.and hA hT) (AtTw.and hF (AtTw.and hC hE))) fun Fm x hx i p hr hm w _ j H => ?_
-  obtain ⟨⟨a1, a2⟩, a3, a4, a5⟩ := H
-  intro ρ ρ' ν hρ hρ' hp hS hL hAd hN h₀ P hP h hh τ hτ hcc
-  obtain ⟨c, u, ξ, hc, hu, hξ, K⟩ := a4 ρ ν hρ hp hN
-  obtain ⟨y, hy, hyy⟩ := K h₀ P hP
-  obtain ⟨f1, f2⟩ := a3 ρ hρ hp hL τ hτ
-  obtain ⟨g1, g2, -⟩ := GlobalTheory.TwistGood.tw_good _ _ _ ρ hρ _ j ((Fm.ex x hx i).nch.sd w) _ _ _ a1.1
-  obtain ⟨g3, -, -⟩ := GlobalTheory.TwistGood.tw_good _ _ _ ρ' hρ' _ j ((Fm.ex x hx i).nch.sd w) _ _ _ a1.1
-  obtain ⟨ζ, hζ, hcf⟩ := conjFun_gen (Fm.parT x hx i).nV_ge (a2 ρ ρ' hρ hρ' hp hS hAd) (hρ.base _ _ _) (hρ.weil_base _ _ _) g1 g3 g2
-    (hcc.1.symm ▸ g2) (root_delta hρ _ _ _) (root_charOf _ _ a1.1.2.2.1) hc hu f1 f2 hcc hh (hyy τ hτ)
-  have hcf1 := (GlobalTheory.ConjClassSum.conjFun_iff _ _ _ _ _ _).2
-    (GlobalTheory.ConjGen.cf_one_of (root_ne hζ) ((GlobalTheory.ConjClassSum.conjFun_iff _ _ _ _ _ _).1 hcf))
-  obtain ⟨n, b, g, e1, e2⟩ := a5 τ hτ _ _ hcf1
-  have hsm : ∀ ψ, ν • genW (Fm.ex x hx i) w j ρ ψ h P =
-      ξ • phs p j • genW (Fm.ex x hx i) w j ρ ψ h (p.R.ioP j (PiTensorProduct.tprod ℂ u) (c y)) := fun ψ =>
-    smul_apply_of _ hy
-  exact ⟨_, root_mul (root_mul (root_map τ hξ) (root_inv hζ)) (root_inv hξ), n, fun l => ξ * b l, g,
-    rescale τ (root_ne hξ) (hsm _) (hsm _) e1 e2⟩
-
-theorem conjTw_of : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
-    GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.SerStd.SeriesRatS →
-    TwAdm → TwChr → ConjTw := fun h1 h2 h3 hD hW h4 hA hC =>
-  conjTw_of_one hA GlobalTheory.T.LatticeSmallGeneration normAt (twOne_of_steps hA (GlobalTheory.T.twisted_conj_tuple_at h1 h2 h3 hD hW hA hC) (GlobalTheory.T.twisted_conj_fix_at h3 hA) (GlobalTheory.T.twisted_conj_coef_at hA)
-    (GlobalTheory.T.conjugate_twist_function_decomposition h1 h2 h3 h4))
 
 end GlobalTheory.BigOn.Exp.TwConj

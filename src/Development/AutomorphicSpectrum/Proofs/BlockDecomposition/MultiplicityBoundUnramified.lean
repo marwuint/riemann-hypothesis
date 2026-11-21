@@ -103,7 +103,7 @@ theorem nu_lower {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h : IsUnrQuad R
   obtain ⟨w, hw⟩ := exists_form_unit h hH hnd
   have hq : 0 < q := lt_trans Nat.zero_lt_one h.one_lt
   have hfin : Finite (R ⧸ lev ϖ k) :=
-    Nat.finite_of_card_ne_zero (by rw [GlobalTheory.T.unramified_quotient_card R σ ϖ q ε h k]; exact (pow_pos hq _).ne')
+    Nat.finite_of_card_ne_zero (by rw [_root_.GlobalTheory.CompanionTheory.UnrDens.card_quot_lev R σ ϖ q ε h k]; exact (pow_pos hq _).ne')
   set B := red ϖ k (ϖ ^ (k - j) • H) with hB
   let lift : R ⧸ lev ϖ j → R := Function.surjInv Ideal.Quotient.mk_surjective
   have hlift : ∀ c, Ideal.Quotient.mk (lev ϖ j) (lift c) = c := Function.surjInv_eq _
@@ -146,7 +146,7 @@ theorem nu_lower {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h : IsUnrQuad R
     rw [← hlift c₁, ← hlift c₂]
     exact Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 h6)
   have := Nat.card_le_card_of_injective f hinj
-  rwa [GlobalTheory.T.unramified_quotient_card R σ ϖ q ε h j] at this
+  rwa [_root_.GlobalTheory.CompanionTheory.UnrDens.card_quot_lev R σ ϖ q ε h j] at this
 
 def lvl (σ : R →+* R) (ϖ : R) (n k j : ℕ) : Set (Matrix (Fin n) (Fin n) (R ⧸ lev ϖ k)) :=
   {B | ∃ H : Matrix (Fin n) (Fin n) R, cT σ H = H ∧ B = red ϖ k (ϖ ^ (k - j) • H)}

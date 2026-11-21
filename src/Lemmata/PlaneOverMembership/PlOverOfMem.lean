@@ -16,7 +16,12 @@ import Formalism.SizeWindowBrackets.SlopesHypothesisFinitePlaces
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DiscreteSpanOfLinIndep
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.HtGram
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.MuChar
-import Formalism.SizeWindowBrackets.ChainSlopeWindows.WeightedMeanLemmaNeedsDegree
+import Formalism.SizeWindowBrackets.RealSlopeBoundsSplit
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
+import Mathlib.Data.Fintype.BigOperators
 import Formalism.QuotientMetricDivisors.ProdFormula
 import Formalism.QuotientMetricDivisors.DualMu
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DegSupermodZ
@@ -32,7 +37,8 @@ import Formalism.HarderNarasimhan.HarderNarasimhanProofs.HNSlopes
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.ShiftInvariance
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Duality
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PiSumForallInsertOnly
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Example
+import Formalism.HarderNarasimhan.DegSupermodZ
+import Formalism.LatticeSlopes.ExistsSaturatedSlopeEqMuMax
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PlaceSplit
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.GramBlock
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.RescaleCovol
@@ -41,8 +47,8 @@ import Formalism.HarderNarasimhan.HarderNarasimhanProofs.HtImage
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Rerealize
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.QuotRealize
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.FrameLinearAlgebraFirst
-import Formalism.HarderNarasimhan.StatementFrame
-import Formalism.LatticeSlopes.ExistsSaturatedSlopeEqMuMax
+import Formalism.HarderNarasimhan.StatementPl
+import Formalism.CorankShare.StatementFR
 import Formalism.CorankShare.CorankShareProofs.LayerCakeFormula
 import Formalism.CorankShare.CorankShareProofs.SumNormSqLeHilbertSchmidt
 import Formalism.HarderNarasimhan.StatementFrameF

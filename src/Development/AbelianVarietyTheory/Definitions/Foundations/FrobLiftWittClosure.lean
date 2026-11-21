@@ -6,64 +6,10 @@ open PowerSeries
 namespace GlobalTheory.Col.Model
 open GlobalTheory.Col
 
-theorem frobLift_witt (p : ℕ) [hp : Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] :
-    FrobLift (WittVector p k) p (WittVector.frobeniusEquiv p k) where
-  dom := inferInstance
-  prime := (WittVector.irreducible p).prime
-  complete := inferInstance
-  frob := by
-    intro x
-    rw [WittVector.mem_span_p_iff_coeff_zero_eq_zero]
-    have : (WittVector.constantCoeff : WittVector p k →+* k) (WittVector.frobeniusEquiv p k x - x ^ p) = 0 := by
-      rw [map_sub, map_pow]
-      simp [WittVector.frobeniusEquiv, WittVector.coeff_frobenius_charP]
-    simpa using this
-  perfect := by
-    intro x
-    obtain ⟨y, hy⟩ := (PerfectRing.bijective_frobenius (R := k) (p := p)).2 (x.coeff 0)
-    refine ⟨WittVector.teichmuller p y, ?_⟩
-    rw [WittVector.mem_span_p_iff_coeff_zero_eq_zero]
-    have : (WittVector.constantCoeff : WittVector p k →+* k) (WittVector.teichmuller p y ^ p - x) = 0 := by
-      rw [map_sub, map_pow]
-      simpa [sub_eq_zero] using hy
-    simpa using this
-
-theorem frobLift_witt_closure (p : ℕ) [hp : Fact p.Prime] :
-    FrobLift (WittVector p (AlgebraicClosure (ZMod p))) p (WittVector.frobeniusEquiv p (AlgebraicClosure (ZMod p))) :=
-  frobLift_witt p _
-
 section Free
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime]
 
 abbrev om : PowerSeries R := (1 + X) ^ p - 1
-
-theorem om_order (hu : (p : R) ∈ nonunits R) :
-    ((om p : PowerSeries R).map (Ideal.Quotient.mk (Ideal.span {(p : R)}))).order.toNat = p := by
-  haveI : CharP (R ⧸ Ideal.span {(p : R)}) p := CharP.quotient R p hu
-  haveI : Nontrivial (R ⧸ Ideal.span {(p : R)}) := CharP.nontrivial_of_char_ne_one (R := R ⧸ Ideal.span {(p : R)}) hp.out.ne_one
-  haveI : CharP (PowerSeries (R ⧸ Ideal.span {(p : R)})) p :=
-    charP_of_injective_ringHom (f := PowerSeries.C) PowerSeries.C_injective p
-  have : (om p : PowerSeries R).map (Ideal.Quotient.mk (Ideal.span {(p : R)})) = X ^ p := by
-    simp only [om, map_sub, map_pow, map_add, map_one, PowerSeries.map_X]
-    rw [add_pow_char]; simp
-  rw [this, order_X_pow]; simp
-
-theorem om_div (hu : (p : R) ∈ nonunits R) : (om p : PowerSeries R).IsWeierstrassDivisorAt (Ideal.span {(p : R)}) := by
-  unfold IsWeierstrassDivisorAt
-  rw [om_order p hu]
-  have h : ((1 + X) ^ p : PowerSeries R) = (((1 + Polynomial.X) ^ p : Polynomial R) : PowerSeries R) := by simp
-  have : coeff p (om p : PowerSeries R) = 1 := by
-    rw [om, map_sub, h, Polynomial.coeff_coe, Polynomial.coeff_one_add_X_pow, coeff_one, if_neg hp.out.ne_zero]; simp
-  rw [this]; exact isUnit_one
-
-theorem phi_split (c : R) (g : PowerSeries R) : phi p hp.out.pos (C c + X * g) = C c + om p * phi p hp.out.pos g := by
-  rw [map_add, map_mul, phi_X]
-  congr 1
-  exact (phi (R := R) p hp.out.pos).commutes c
-
-theorem eq_zero_of_X_pow_dvd (f : PowerSeries R) (h : ∀ n, X ^ n ∣ f) : f = 0 := by
-  ext n
-  exact (X_pow_dvd_iff.1 (h (n + 1))) n (Nat.lt_succ_self n)
 
 variable [IsAdicComplete (Ideal.span {(p : R)}) R]
 
@@ -334,22 +280,7 @@ def basis (hu : (p : R) ∈ nonunits R) : Module.Basis (Fin p) (PowerSeries R) (
       rw [Submodule.mem_span_range_iff_exists_fun]
       exact ⟨g, hg.symm⟩)
 
-theorem normOp_phi (hu : (p : R) ∈ nonunits R) (g : PowerSeries R) : normOp p (phi p hp.out.pos g) = g ^ p := by
-  have := Algebra.norm_algebraMap_of_basis (basis p hu) g
-  rw [Fintype.card_fin] at this
-  exact this
-
-theorem trOp_phi (hu : (p : R) ∈ nonunits R) (g : PowerSeries R) : trOp p (phi p hp.out.pos g) = p • g := by
-  have := Algebra.trace_algebraMap_of_basis (basis p hu) g
-  rw [Fintype.card_fin] at this
-  exact this
-
 end Basis
-
-theorem frobLift_ops {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] (σ : R ≃+* R) (F : FrobLift R p σ)
-    (g : PowerSeries R) : normOp p (phi p hp.out.pos g) = g ^ p ∧ trOp p (phi p hp.out.pos g) = p • g := by
-  haveI := F.complete
-  exact ⟨normOp_phi p F.prime.not_isUnit g, trOp_phi p F.prime.not_isUnit g⟩
 
 def UpL (R : Type) [CommRing R] (p m : ℕ) (_hm : 1 ≤ m) : Type := lev R p (m + 1)
 
@@ -452,25 +383,5 @@ theorem _root_.GlobalTheory.Col.Model.nrm_ev (hu : (p : R) ∈ nonunits R) (h : 
   rw [key, Module.Basis.repr_sum_self]
 
 end Level
-
-theorem lev_nontrivial {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] (hu : (p : R) ∈ nonunits R) (m : ℕ) :
-    Nontrivial (lev R p (m + 1)) := by
-  refine Ideal.Quotient.nontrivial_iff.2 ?_
-  rw [Ne, Ideal.span_singleton_eq_top, isUnit_iff_constantCoeff]
-  have : constantCoeff (cyc R p (m + 1)) = (p : R) := by
-    unfold cyc
-    rw [Polynomial.hom_eval₂]
-    have : (constantCoeff : PowerSeries R →+* R).comp C = RingHom.id R := by ext; simp
-    rw [this]
-    simp [Polynomial.eval₂_id, Polynomial.eval_one_cyclotomic_prime_pow]
-  rw [this]; exact hu
-
-theorem dd_test {R : Type} [CommRing R] (p : ℕ) (hp : 0 < p) :
-    dd (phi (R := R) p hp (1 + X)) = (p : PowerSeries R) * phi (R := R) p hp (dd (1 + X : PowerSeries R)) := by
-  have h1 : dd (1 + X : PowerSeries R) = 1 + X := by simp [dd]
-  rw [h1, phi_one_add_X]
-  obtain ⟨n, rfl⟩ : ∃ n, p = n + 1 := ⟨p - 1, by omega⟩
-  simp [dd, Derivation.leibniz_pow]
-  ring
 
 end GlobalTheory.Col.Model

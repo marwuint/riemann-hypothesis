@@ -35,11 +35,6 @@ def AdL {k r : ℕ} (p : B.SS k r) (X : B.Mat k r) : B.Mat k r := (sL p)⁻¹ * 
 
 def AdR {k r : ℕ} (p : B.SS k r) (X : B.Mat k r) : B.Mat k r := (sR p)⁻¹ * X * sR p
 
-def IsEqv {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (UU : Set (B.Mat k r))
-    (f : B.Mat k r → (Wq →L[ℂ] Wp)) : Prop :=
-  ∀ p, D.inSS p → ∀ g ∈ UU, xiP D p • B.rho D p f g = f g
-
 def castW {k : ℕ} (μ : B.Mat k 0) : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ :=
   Matrix.reindex (finCongr (by omega)) (finCongr (by omega)) μ
 
@@ -96,20 +91,6 @@ def RwRho : Prop :=
     ∀ u v : List (B.Mat k r), (∀ X ∈ u, B.inLie k r X) → (∀ X ∈ v, B.inLie k r X) → u.length + v.length ≤ m →
       ∀ g ∈ B.GV k r, B.dLR u v (B.rho D p f) g = B.rho D p (B.dLR (u.map (AdL p)) (v.map (AdR p)) f) g
 
-def LastLevelDiagonalSlice : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (A : ℝ)
-    (m : ℕ) (F : B.Mat k r → (Wq →L[ℂ] Wp)),
-    TransportedAlt k r A m → B.InCC A m F →
-    (∀ c : Fin r → ℂ, (∀ a, c a ≠ 0) → ∀ μ ∈ B.GV k 0,
-      Integrable (fun nn : Mt k r × Mt k r =>
-        F ((Matrix.of nn.1)⁻¹ * bigCell k r c (castW μ) * Matrix.of nn.2)) (D.μN.prod D.μN)) ∧
-    (∀ c : Fin r → ℂ, (∀ a, c a ≠ 0) →
-      B.InCC (k := k) (r := 0) ((A - 6 * (r : ℝ) * (m : ℝ)) / (9 * ((r : ℝ) + 1))) m (sliceR D F c)) ∧
-    ∀ (d : ℕ) (O : Set (Fin d → ℝ)) (cx : (Fin d → ℝ) → Fin r → ℂ) (μx : (Fin d → ℝ) → B.Mat k 0),
-      IsOpen O → ContDiffOn ℝ ∞ cx O → ContDiffOn ℝ ∞ μx O → (∀ x ∈ O, (∀ a, cx x a ≠ 0) ∧ μx x ∈ B.GV k 0) →
-      ContDiffOn ℝ (m : WithTop ℕ∞) (fun x => sliceR D F (cx x) (μx x)) O
-
 def CVLeft : Prop :=
   ∀ (k r : ℕ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (Y : ℂ) (f : B.Mat k r → E),
     B.CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (B.GV k r) f →
@@ -158,66 +139,10 @@ def GqOm : Prop :=
   ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq), ∀ᵐ q ∂(volume.restrict (B.Qset D)), B.gq D q ∈ Om k r D.z D.z'
 
-def GqOmOfDom : Prop := GqDom → GqOm
-
-def BesselCommutesOfParts : Prop :=
-  JWords → CVRho → CVUnderInt → GqOm → B2.ConjInvAll → BesselNEquiv → BesselUEquiv → Q.BesselCommutes
-
-def JTheta : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (A : ℝ)
-    (m : ℕ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (Θ : B.DiffOp k r Wp Wq),
-    B.opOrder Θ ≤ m → TransportedAlt k r A m → B.InCC A m F → B.Commutes D (Om k r D.z D.z') Θ →
-    ∀ g ∈ Om k r D.z D.z', B.opApply Θ (B.JF D F) g = B.JF D (B.opApply Θ F) g
-
-def JThetaOfParts : Prop := JWords → RwRho → JTheta
-
-def RadialPartIntertwines : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (A : ℝ)
-    (m : ℕ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (Θ : B.DiffOp k r Wp Wq),
-    B.opOrder Θ ≤ m → TransportedAlt k r A m → B.InCC A m F → B.Commutes D (Om k r D.z D.z') Θ →
-    ∀ᵐ q ∂(volume.restrict (B.Qset D)), B.JF D (B.opApply Θ F) (B.gq D q) = B.opApply Θ (B.JF D F) (B.gq D q)
-
-def RadialPartIntertwinesFromComponents : Prop := JTheta → GqOm → RadialPartIntertwines
-
 def PsiOnto : Prop :=
   ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq), ∀ g ∈ Om k r D.z D.z',
       ∃ p, D.inSS p ∧ ∃ q ∈ QDom k r D.z D.z', g = B.sgs p (B.gq D q)
-
-def PsiQUnique : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (p₁ p₂ : B.SS k r) (q₁ q₂ : (Fin r → ℂ) × ℂ),
-    D.inSS p₁ → D.inSS p₂ → q₁ ∈ QDom k r D.z D.z' → q₂ ∈ QDom k r D.z D.z' →
-    B.sgs p₁ (B.gq D q₁) = B.sgs p₂ (B.gq D q₂) → q₁ = q₂
-
-def EquivDet : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (f f' : B.Mat k r → (Wq →L[ℂ] Wp)),
-    IsEqv D (Om k r D.z D.z') f → IsEqv D (Om k r D.z D.z') f' →
-    (∀ q ∈ QDom k r D.z D.z', f (B.gq D q) = f' (B.gq D q)) → ∀ g ∈ Om k r D.z D.z', f g = f' g
-
-def EquivDetOfOnto : Prop := PsiOnto → EquivDet
-
-def ThetaEquiv : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (Θ : B.DiffOp k r Wp Wq)
-    (f : B.Mat k r → (Wq →L[ℂ] Wp)),
-    B.Commutes D (Om k r D.z D.z') Θ → Q.CkLev k r 0 (B.opOrder Θ) (Q.OmPlus k r D.z D.z') f →
-    IsEqv D (Om k r D.z D.z') f → IsEqv D (Om k r D.z D.z') (B.opApply Θ f)
-
-def RadAdj : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq)
-    (Θ : B.DiffOp k r Wp Wq) (f f' : B.Mat k r → (Wq →L[ℂ] Wp)) (K : Set ((Fin r → ℂ) × ℂ)),
-    B.IntFormula D → B.SmoothCoef (Om k r D.z D.z') Θ → B.Commutes D (Om k r D.z D.z') Θ →
-    Q.SmoothLev k r 0 (Q.OmPlus k r D.z D.z') f → Q.SmoothLev k r 0 (Q.OmPlus k r D.z D.z') f' →
-    IsEqv D (Om k r D.z D.z') f → IsEqv D (Om k r D.z D.z') f' →
-    IsCompact K → K ⊆ QDom k r D.z D.z' →
-    (∀ q ∈ QDom k r D.z D.z', q ∉ K → f (B.gq D q) = 0 ∧ f' (B.gq D q) = 0) →
-    betaBig k r (Tz k r D.z) (Tz k r D.z') D.μsec (fun g => B.hsVec (B.opApply Θ f g)) (fun g => B.hsVec (f' g)) =
-      betaBig k r (Tz k r D.z) (Tz k r D.z') D.μsec (fun g => B.hsVec (f g)) (fun g => B.hsVec (B.opAdj Θ f' g))
 
 def JqSmooth : Prop :=
   ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]

@@ -82,25 +82,12 @@ theorem sP_Lq {z : Fin (2 * r + k + 1) → ℂ} {q : Mt k r × Mt k r} (hq : q �
   simp only [mul_assoc]
   rw [← mul_assoc ((Matrix.of q.1 : Mat k r)⁻¹), h1, one_mul]
 
-theorem Lq_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hCW : ClosedW) (hCN : ClosedN) (hUN : UWNormal)
-    {q p : Mt k r × Mt k r} (hq : q ∈ SS z) (hp : p ∈ SS z) : Lq q p ∈ SS z :=
-  ⟨(hCW k r z).mul_mem _ hq.1 _ hp.1, (hCN k r).mul_mem _ hq.2 _ (hUN k r z hz _ hq.1 _ hp.2).1⟩
-
 theorem sP_Iv {z : Fin (2 * r + k + 1) → ℂ} {p : Mt k r × Mt k r} (hp : p ∈ SS z) : sP (Iv p) = (sP p)⁻¹ := by
   have hu := det_unit_G hp.1.1
   have h1 := mul_inv_G hp.1.1
   show (Matrix.of p.1 : Mat k r)⁻¹ * (Matrix.of p.2 : Mat k r)⁻¹ * ((Matrix.of p.1 : Mat k r)⁻¹)⁻¹ *
       (Matrix.of p.1 : Mat k r)⁻¹ = ((Matrix.of p.2 : Mat k r) * Matrix.of p.1)⁻¹
   rw [Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu, mul_assoc, h1, mul_one]
-
-theorem Iv_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hCW : ClosedW) (hCN : ClosedN) (hUN : UWNormal)
-    {p : Mt k r × Mt k r} (hp : p ∈ SS z) : Iv p ∈ SS z := by
-  have hi : (Matrix.of p.1 : Mat k r)⁻¹ ∈ UWset k r z := (hCW k r z).inv_mem _ hp.1
-  refine ⟨hi, ?_⟩
-  have h2 := (hUN k r z hz _ hi _ ((hCN k r).inv_mem _ hp.2)).1
-  have e : ((Matrix.of p.1 : Mat k r)⁻¹)⁻¹ = Matrix.of p.1 := Matrix.nonsing_inv_nonsing_inv _ (det_unit_G hp.1.1)
-  show (Matrix.of p.1 : Mat k r)⁻¹ * (Matrix.of p.2 : Mat k r)⁻¹ * ((Matrix.of p.1 : Mat k r)⁻¹)⁻¹ ∈ Nset k r
-  exact h2
 
 theorem meas_lmul (a : Mat k r) : Measurable (lmulM (k := k) (r := r) a) := by
   apply Continuous.measurable

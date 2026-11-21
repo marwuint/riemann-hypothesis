@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWeakTopo
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZlTowerGen
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousGaloisOrbitWittTensorLatticeWeakTopoloStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOneTmulStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JDANEqRangeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JDANEqRange
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactSpaceATopStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousWittCbInclusionSmulWeakTopologyStatement
 
@@ -53,7 +53,7 @@ theorem jD_piN_closed : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F
   haveI hAG : IsTopologicalAddGroup (TW (RW LL) T) :=
     Topology.IsInducing.topologicalAddGroup (GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b) ⟨rfl⟩
   refine ⟨τ, hT2, hAG, GlobalTheory.T.continuous_galois_orbit_wittTensorLatticeWeakTopology (D.locA l) T b, GlobalTheory.T.continuous_one_tmul_latB T b, ?_⟩
-  obtain ⟨r, y, hy⟩ := GlobalTheory.T.exists_image_aN_eq_range_sum ((F l).E K s LL h) T
+  obtain ⟨r, y, hy⟩ := _root_.GlobalTheory.NL.WkRange.jD_aN_eq_range ((F l).E K s LL h) T
   rw [hy]
   letI := aTop (K := K) bO
   haveI := GlobalTheory.T.compactSpace_aTop' (K := K) bO

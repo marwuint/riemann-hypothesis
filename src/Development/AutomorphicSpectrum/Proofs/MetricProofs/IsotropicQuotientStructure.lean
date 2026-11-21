@@ -2,17 +2,17 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeEigenProjectionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.QuotientLatticeByIsotropicSubmoduleStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.RiemannLatticeEigenProjections
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.IsotropicQuotientLattice
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsBasisSubsetOfSaturatedSubmoduleStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LinearIndependentRealPeriodsBasisStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MemSpanOfRealCombinationPeriodsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LinearIndependentComplexOfRealHermitianStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsHermitianOrthogonalProjectionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsRealOrthogonalProjectionOfRealGramStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsPosDefFormOnQuotientStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LinearIndependentRealPeriodsBasis
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MemSpanOfRealCombinationPeriods
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LinearIndependentComplexOfRealHermitian
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsHermitianOrthogonalProjection
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsRealOrthogonalProjectionOfRealGram
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsPosDefFormOnQuotient
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsDescendedRingHomOnQuotientStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeQuotientCompatStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeQuotientCompat
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.Regular
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Univ.QuotLat
@@ -62,7 +62,7 @@ theorem im_quot (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k : ℕ} {e : 
   have heI : ∀ i, e i ∈ I := fun i => (hI _).2 (Submodule.subset_span ⟨i, rfl⟩)
   have hui : ∀ i j, (R.P (e i) ⬝ᵥ R.Hm *ᵥ star (R.P (e j))).im = 0 := fun i j => by
     rw [R.im, hiso _ (heI i) _ (heI j)]; simp
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_real_orthogonal_projection_of_real_gram g k R.Hm R.pos _ hLI (GlobalTheory.T.exists_hermitian_orthogonal_projection g k R.Hm R.pos _ hLI) hui (R.P y) (fun j => by
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ProjReal.orthogonal_projection_real_coefficients g k R.Hm R.pos _ hLI (_root_.GlobalTheory.CompanionTheory.Ar.PosFormProjection.exists_orthogonal_coefficients g k R.Hm R.pos _ hLI) hui (R.P y) (fun j => by
     rw [R.im, hy _ (heI j)]; simp)
   set s : Fin g → ℂ := ∑ i, (c i : ℂ) • R.P (e i) with hs
   have hsk : q s = 0 := by
@@ -91,14 +91,14 @@ theorem period_facts (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k n : ℕ
     (hI : ∀ v, v ∈ I ↔ v ∈ Submodule.span ℤ (Set.range fun i => b (f i))) (hiso : IsIsoSub R.form I) :
     LinearIndependent ℂ fun i => R.P (b (f i)) := by
   have heI : ∀ i, b (f i) ∈ I := fun i => (hI _).2 (Submodule.subset_span ⟨i, rfl⟩)
-  refine GlobalTheory.T.linearIndependent_complex_of_real_hermitian g k R.Hm R.pos _ ((GlobalTheory.T.linearIndependent_real_periods_basis E g Λ R n b).comp f hf) fun i j => ?_
+  refine _root_.GlobalTheory.CompanionTheory.Ar.RealFormIndep.linearIndependent_complex_of_real_form g k R.Hm R.pos _ ((_root_.GlobalTheory.CompanionTheory.Ar.Cusp.riemLat_basis_periods_linearIndependent E g Λ R n b).comp f hf) fun i j => ?_
   rw [R.im, hiso _ (heI i) _ (heI j)]; simp
 
 theorem exists_orth (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k : ℕ} {e : Fin k → Λ}
     (hI : ∀ v, v ∈ I ↔ v ∈ Submodule.span ℤ (Set.range e))
     (hLI : LinearIndependent ℂ fun i => R.P (e i)) (z : Fin g → ℂ) :
     ∃ s ∈ Submodule.span ℂ (R.P '' I), ∀ v ∈ Submodule.span ℂ (R.P '' I), (z - s) ⬝ᵥ R.Hm *ᵥ star v = 0 := by
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_hermitian_orthogonal_projection g k R.Hm R.pos _ hLI z
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PosFormProjection.exists_orthogonal_coefficients g k R.Hm R.pos _ hLI z
   rw [span_period R hI]
   refine ⟨∑ i, c i • R.P (e i), Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ (c i) (Submodule.subset_span ⟨i, rfl⟩), ?_⟩
   refine orth_of_set ?_
@@ -111,7 +111,7 @@ theorem mem_of_mem_span (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k n : 
     {x : Λ} (hx : ∀ v ∈ I, R.form x v = 0) (hs : R.P x ∈ Submodule.span ℂ (R.P '' I)) : x ∈ I := by
   have heI : ∀ i, b (f i) ∈ I := fun i => (hI _).2 (Submodule.subset_span ⟨i, rfl⟩)
   have hLI := period_facts R b f hf hI hiso
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_real_orthogonal_projection_of_real_gram g k R.Hm R.pos _ hLI (GlobalTheory.T.exists_hermitian_orthogonal_projection g k R.Hm R.pos _ hLI) (fun i j => by
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ProjReal.orthogonal_projection_real_coefficients g k R.Hm R.pos _ hLI (_root_.GlobalTheory.CompanionTheory.Ar.PosFormProjection.exists_orthogonal_coefficients g k R.Hm R.pos _ hLI) (fun i j => by
     rw [R.im, hiso _ (heI i) _ (heI j)]; simp) (R.P x) (fun j => by rw [R.im, hx _ (heI j)]; simp)
   rw [span_period R hI] at hs
   set s : Fin g → ℂ := ∑ i, (c i : ℂ) • R.P (b (f i)) with hsdef
@@ -124,7 +124,7 @@ theorem mem_of_mem_span (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k n : 
     have := R.pos _ hne
     rw [h0] at this
     simp at this
-  exact (hI x).2 (GlobalTheory.T.mem_span_of_real_combination_periods g k n Λ R.P b f (GlobalTheory.T.linearIndependent_real_periods_basis E g Λ R n b) hf x c (sub_eq_zero.1 hw))
+  exact (hI x).2 (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.mem_span_part_of_period_real_comb g k n Λ R.P b f (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.riemLat_basis_periods_linearIndependent E g Λ R n b) hf x c (sub_eq_zero.1 hw))
 
 end
 
@@ -133,7 +133,7 @@ theorem exists_univ_quot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   classical
   haveI := R₀.free
   haveI := R₀.fin
-  obtain ⟨g', Λ', i1, i2, R₀', q₀, hq₀s, hq₀k, hq₀B, hq₀r, hq₀m⟩ := GlobalTheory.T.quotient_lattice_by_isotropic_submodule E g Λ Unit R₀ I hsat hiso
+  obtain ⟨g', Λ', i1, i2, R₀', q₀, hq₀s, hq₀k, hq₀B, hq₀r, hq₀m⟩ := _root_.LevelTowerAlt.isotropic_quotient_lattice E g Λ Unit R₀ I hsat hiso
   obtain ⟨k, n, b, f, hf, hN⟩ := GlobalTheory.T.exists_basis_subset_of_saturated_submodule Λ (AddSubgroup.toIntSubmodule I.toAddSubgroup) (fun v m hm h => hsat v m hm h)
   have hI : ∀ v, v ∈ I ↔ v ∈ Submodule.span ℤ (Set.range fun i => b (f i)) := fun v => by
     rw [hN]; rfl
@@ -159,7 +159,7 @@ theorem exists_univ_quot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     intro x h
     simp only [π, dif_pos h]
     exact (hex x h).choose_spec
-  have hinj : Function.Injective R₀'.P := (GlobalTheory.T.riemann_lattice_eigen_projection E g' Λ' Unit R₀').1
+  have hinj : Function.Injective R₀'.P := (_root_.LevelTowerAlt.riemann_lattice_eigen_projections E g' Λ' Unit R₀').1
   have hπs : ∀ x', ∃ x ∈ D, π x = x' := by
     intro x'
     have : R₀'.P x' ∈ Set.range R₀'.P := ⟨x', rfl⟩
@@ -194,7 +194,7 @@ theorem exists_univ_quot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   have hiso' : IsIsoSub R.form I := hR ▸ hiso
   have hLI := period_facts R b f hf hI hiso'
   refine ⟨hLI, span_period R hI, fun q hqs hqk => ?_⟩
-  obtain ⟨Hm', hherm, hpos, hmet⟩ := GlobalTheory.T.exists_posDef_form_on_quotient g g' R.Hm R.herm R.pos _ q hqs hqk (exists_orth R hI hLI)
+  obtain ⟨Hm', hherm, hpos, hmet⟩ := _root_.GlobalTheory.CompanionTheory.Ar.QuotUniv.hermitian_transport_along_orthogonal_complement g g' R.Hm R.herm R.pos _ q hqs hqk (exists_orth R hI hLI)
   have hD' : ∀ x, (∀ y ∈ I, R.form x y = 0) → x ∈ D := fun x h => by rw [hDmem, ← hR]; exact h
   have hDR : ∀ x ∈ D, ∀ y ∈ I, R.form x y = 0 := fun x h => by rw [hR]; exact h
   have hmet' : ∀ a c, (∀ v ∈ I, R.ip (R.P v) a = 0) → q c ⬝ᵥ Hm' *ᵥ star (q a) = c ⬝ᵥ R.Hm *ᵥ star a := by
@@ -230,7 +230,7 @@ theorem exists_univ_quot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     intro x hx y hy
     rw [im_quot R hI hiso' hLI q hqk Hm' hmet' (hDR x hx) (hDR y hy), hπform x hx y hy, hR]
   obtain ⟨B', hB'⟩ := GlobalTheory.T.exists_descended_ringHom_on_quotient (𝓞 E) g g' R.B q hqs hqB
-  obtain ⟨R', h1, h2, h3⟩ := GlobalTheory.T.riemannLattice_quotient_compat E g g' Λ Λ' R R₀' D π q Hm' B' hπs hπadd hπsmul hker hB' hherm hpos him
+  obtain ⟨R', h1, h2, h3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.riemLat_assemble_of_quot E g g' Λ Λ' R R₀' D π q Hm' B' hπs hπadd hπsmul hker hB' hherm hpos him
   refine ⟨R', h1, fun x hx => h3 x (hD' x hx), fun x y hx => ?_⟩
   show q y ⬝ᵥ R'.Hm *ᵥ star (q x) = y ⬝ᵥ R.Hm *ᵥ star x
   rw [h2]

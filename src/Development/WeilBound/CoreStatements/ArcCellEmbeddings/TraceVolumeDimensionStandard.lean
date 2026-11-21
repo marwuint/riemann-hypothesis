@@ -1,5 +1,7 @@
-import Development.WeilBound.CoreStatements.ArcCellEmbeddings.Imports
-open MeasureTheory Filter Topology Matrix Metric Set GlobalTheory.SUVol GlobalTheory.CompanionTheory.Ar.abelian₂
+import Mathlib
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsCompactDualHaar
+
+open MeasureTheory Filter Topology Matrix Metric Set GlobalTheory.SUVol
 open scoped ENNReal NNReal Pointwise
 
 noncomputable section
@@ -21,9 +23,6 @@ theorem ww_ne (p q : ℂ) : ww p q ≠ 0 := fun h => by
   have := norm_ww p q
   rw [h, norm_zero] at this
   exact zero_ne_one this
-
-theorem ww_mul {p q : ℂ} (hp : p = 1 ∨ p = -1) (hq : q = 1 ∨ q = -1) : ww p q * ww q p = q * p := by
-  rcases hp with rfl | rfl <;> rcases hq with rfl | rfl <;> simp [ww_self, ww_pm, ww_mp]
 
 theorem ww_eq {p q : ℂ} (hp : p = 1 ∨ p = -1) (hq : q = 1 ∨ q = -1) (x y : ℂ) :
     ww q p * x + starRingEnd ℂ (ww p q * y) = (ww q p * q) * (x * q + p * starRingEnd ℂ y) := by
@@ -102,57 +101,5 @@ def theta (he : ∀ i a, e i a = 1 ∨ e i a = -1) :
 theorem theta_apply (he : ∀ i a, e i a = 1 ∨ e i a = -1) (X : suLie (fun i => Matrix.diagonal (e i))) (i : ι)
     (a c : Fin r) : (theta he X).1 i a c = e i a * e i c * X.1 i a c := rfl
 
-theorem theta_theta (he : ∀ i a, e i a = 1 ∨ e i a = -1) : theta he ∘ₗ theta he = LinearMap.id := by
-  ext X i a c
-  rw [LinearMap.comp_apply, theta_apply, theta_apply, LinearMap.id_apply]
-  rcases he i a with h | h <;> rcases he i c with h' | h' <;> simp [h, h']
-
-theorem trForm_TT [Fintype ι] (he : ∀ i a, e i a = 1 ∨ e i a = -1) (X Y : suLie (fun i => Matrix.diagonal (e i))) :
-    trForm (TT he X).1 (TT he Y).1 = trForm X.1 (theta he Y).1 := by
-  unfold trForm
-  refine Finset.sum_congr rfl fun i _ => congrArg Complex.re ?_
-  simp only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_
-  rw [TT_apply, TT_apply, theta_apply, ← ww_mul (he i a) (he i c)]
-  ring
-
 end UnitaryFrameBall.Iso
 
-open UnitaryFrameBall.Iso UnitaryFrameBall.Tr in
-theorem UnitaryFrameBall.trace_volume_dimension_standard : ∀ (ι : Type) [Fintype ι] (r : ℕ) (H : ι → Matrix (Fin r) (Fin r) ℂ), (∀ i, IsSignMat (H i)) → ∀ (n : ℕ) (b : Module.Basis (Fin n) ℝ (suLie H)), n ≤ 2 * r ^ 2 * Fintype.card ι ∧ ∃ b₀ : Module.Basis (Fin n) ℝ (suLie (fun _ : ι => (1 : Matrix (Fin r) (Fin r) ℂ))), ∀ ρ : ℝ, trVol b (lieBall H ρ) = trVol b₀ (lieBall (fun _ : ι => (1 : Matrix (Fin r) (Fin r) ℂ)) ρ) := by
-  intro ι _ r H hH n b
-  constructor
-  · have h1 := Module.finrank_eq_card_basis b
-    have h2 := Submodule.finrank_le (suLie H)
-    rw [h1, Fintype.card_fin, Module.finrank_pi_fintype, Module.finrank_matrix, Complex.finrank_real_complex,
-      Fintype.card_fin, Finset.sum_const, Finset.card_univ, smul_eq_mul] at h2
-    exact h2.trans_eq (by ring)
-  choose e he hHe using hH
-  obtain rfl : H = fun i => Matrix.diagonal (e i) := funext hHe
-  refine ⟨b.map (TT he), fun ρ => ?_⟩
-  unfold trVol
-  congr 1
-  · have h1 : (Matrix.of fun k l => trForm ((b.map (TT he)) k).1 ((b.map (TT he)) l).1) =
-        LinearMap.BilinForm.toMatrix b ((trB _).compRight (theta he)) := by
-      ext k l
-      rw [LinearMap.BilinForm.toMatrix_apply, Matrix.of_apply, Module.Basis.map_apply, Module.Basis.map_apply,
-        trForm_TT]
-      rfl
-    have h2 : |LinearMap.det (theta he)| = 1 := by
-      have := congrArg LinearMap.det (theta_theta he)
-      rw [LinearMap.det_comp, LinearMap.det_id] at this
-      rcases mul_self_eq_one_iff.1 this with h | h <;> simp [h]
-    rw [h1, gram_eq, LinearMap.BilinForm.toMatrix_compRight, Matrix.det_mul, LinearMap.det_toMatrix, abs_mul, h2,
-      mul_one]
-  · congr 1
-    have hn : ∀ X i a c, ‖(TT he X).1 i a c‖ = ‖X.1 i a c‖ := fun X i a c => by
-      rw [TT_apply, norm_mul, norm_ww, one_mul]
-    have hm : ∀ X, (b.map (TT he)).equivFun (TT he X) = b.equivFun X := fun X => by
-      ext k; simp
-    ext t
-    constructor
-    · rintro ⟨X, hX, rfl⟩
-      exact ⟨TT he X, fun i a c => (hn X i a c).trans_le (hX i a c), hm X⟩
-    · rintro ⟨Y, hY, rfl⟩
-      obtain ⟨X, rfl⟩ := (TT he).surjective Y
-      exact ⟨X, fun i a c => (hn X i a c).symm.trans_le (hY i a c), (hm X).symm⟩

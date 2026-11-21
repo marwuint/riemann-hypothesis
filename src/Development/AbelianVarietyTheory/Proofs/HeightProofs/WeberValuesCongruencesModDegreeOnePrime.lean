@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimens
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LFunctionPositiveConductorFourEight
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsFieldCmCurvesUnitDiscriminant
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeberInvariantCongruencesImaginaryQuadratic
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeierstrassPMulCongrFrobeniusOfPrimeNormStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.TorsionIntegralDistinctOfPosStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeierstrassPMulCongrFrobeniusOfPrimeNorm
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.TorsionIntegralDistinctOfPos
 
 open NumberField IsDedekindDomain Polynomial GlobalTheory.FieldSize GlobalTheory.WeberCongruence
 open scoped IntermediateField
@@ -58,7 +58,7 @@ theorem weber_congruences : ∀ (K : IntermediateField ℚ ℂ) [NumberField K] 
     convert this using 1
     linear_combination (-1 / 27 : ℂ) * hΔ'
   have hD : (L'.g₂ ^ 3 - 27 * L'.g₃ ^ 2)⁻¹ ∈ W := by rw [hΔ', inv_one]; exact one_mem W
-  obtain ⟨a, ha, -, -, a2, a3, a4⟩ := GlobalTheory.T.weierstrassP_mul_congr_frobenius_of_primeNorm L' W ((π : K) : ℂ) p i2 i3 hg hh hD hp hpW hπ
+  obtain ⟨a, ha, -, -, a2, a3, a4⟩ := _root_.GlobalTheory.EisensteinCongruence.weierstrassP_mul_congr_pow_of_pos L' W ((π : K) : ℂ) p i2 i3 hg hh hD hp hpW hπ
     (fun l hl ↦ by
       obtain ⟨z, rfl⟩ : ∃ z, l = c * z := ⟨c⁻¹ * l, by field_simp⟩
       rw [mul_left_comm]
@@ -69,7 +69,7 @@ theorem weber_congruences : ∀ (K : IntermediateField ℚ ℂ) [NumberField K] 
   refine ⟨hJ, c1, fun m hpm ↦ ?_⟩
   have hm : 0 < m := Nat.pos_of_ne_zero fun h ↦ hpm (h ▸ dvd_zero p)
   have im := inv_natCast_mem W hp hpW hpm
-  obtain ⟨t1, t2⟩ := GlobalTheory.T.weierstrassP_torsion_mem_and_distinct_mod_nonunits L' W m i2 i3 hg hh hD hm im
+  obtain ⟨t1, t2⟩ := _root_.GlobalTheory.TorsionIntegralPos.torsion_integral_distinct_of_pos L' W m i2 i3 hg hh hD hm im
   have s1 : ∀ t, (m : ℂ) * t ∈ L.lattice → (m : ℂ) * (c * t) ∈ L'.lattice := fun t ht ↦ by
     rw [mul_left_comm]; exact (H _).mpr ht
   refine ⟨fun t ht ht' ↦ ?_, fun n1 n2 t t' ht ht0 ht' ht0' h ↦ ?_⟩

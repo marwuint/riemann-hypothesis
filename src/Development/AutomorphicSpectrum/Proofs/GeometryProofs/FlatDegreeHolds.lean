@@ -1,14 +1,17 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.HermitianMetricLogNormFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofiniteStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChowlaSelbergPeriodStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogNormsExtDegreeAdelicStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumEmbeddingsBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionCmValueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionCmHeightStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionCmNumberFieldStatement
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.HermitianMetricLogNormFormula
+import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofinite
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChowlaSelbergPeriod
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogNormsExtDegreeAdelic
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumEmbeddingsBaseChange
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionCmValue
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionCmHeight
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionCmNumberField
 
 noncomputable section
 
@@ -21,7 +24,7 @@ open Matrix GlobalTheory GlobalTheory.CM
 theorem flatDegree_mean_ext {M k : Type} [Field M] [NumberField M] [Field k] [NumberField k] (f : M →+* k)
     (F : (M →+* ℂ) → ℝ) :
     (∑ s : k →+* ℂ, F (s.comp f)) / Module.finrank ℚ k = (∑ s, F s) / Module.finrank ℚ M := by
-  have h := GlobalTheory.T.sum_embeddings_base_change M k ℂ f F
+  have h := _root_.GlobalTheory.CompanionTheory.Ar.Fl.finrank_mul_sum_comp_eq M k ℂ f F
   have hM : (Module.finrank ℚ M : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Module.finrank_pos.ne'
   have hk : (Module.finrank ℚ k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Module.finrank_pos.ne'
   rw [div_eq_div_iff hk hM]
@@ -65,19 +68,19 @@ theorem flatDegree : FlatDegree := by
   have hsq : ∀ b : Bool, sgnRt H b ^ 2 = -(H.d : ℂ) := by
     intro b
     cases b <;> simp [sgnRt, neg_sq, H.sqrt_neg_disc_sq]
-  choose Z x hz hper hxv using fun b => GlobalTheory.T.chowla_selberg_period E H χ hχ (sgnRt H b) (hsq b)
+  choose Z x hz hper hxv using fun b => _root_.GlobalTheory.CompanionTheory.Ar.Fl.exists_curve0_hasPeriod E H χ hχ (sgnRt H b) (hsq b)
   have hx : x false = x true := Complex.ofReal_injective ((hxv false).trans (hxv true).symm)
   haveI := (Z true).nf
   haveI := (Z false).nf
   obtain ⟨n₁, hn₁, hm₁⟩ := hper true
   obtain ⟨n₀, hn₀, hm₀⟩ := hper false
   obtain ⟨k, hkfd, r, hc, hM, hr0, hrz⟩ :=
-    GlobalTheory.T.frame_function_cm_value E H D l Xo c g ty FU i Z U τ φ e ρ hty hrt mem line hli hcm
+    _root_.GlobalTheory.CompanionTheory.Ar.Fl.ConstAlg.const_algebraic E H D l Xo c g ty FU i Z U τ φ e ρ hty hrt mem line hli hcm
   haveI := hkfd
   haveI : NumberField k := ⟨⟩
   choose t ht1 ht2 ht3 using fun ℓ : Nat.Primes =>
-    GlobalTheory.T.frame_function_cm_height E H D l Xo c g ty FU i Z U τ φ e ρ k hc hM r ℓ hty hrt mem line hli hcm hr0 hrz
-  have hgram := GlobalTheory.T.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) (Fin D.p ⊕ Fin D.q) e
+    _root_.GlobalTheory.CompanionTheory.Ar.Fl.flatGen_finNorm E H D l Xo c g ty FU i Z U τ φ e ρ k hc hM r ℓ hty hrt mem line hli hcm hr0 hrz
+  have hgram := _root_.GlobalTheory.CompanionTheory.Relay.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) (Fin D.p ⊕ Fin D.q) e
     (by rw [Fintype.card_sum, Fintype.card_fin, Fintype.card_fin, (FU.sig i).1, (FU.sig i).2]) hli
   have hrt2 : ((H.rt : E)) ^ 2 = -(H.d : E) := by
     have h := congrArg (algebraMap (NumberField.RingOfIntegers E) E) H.rt_sq
@@ -92,7 +95,7 @@ theorem flatDegree : FlatDegree := by
     intro ℓ hℓ hloc
     obtain ⟨j, hj⟩ := hℓ
     exact hj (ht2 ℓ hloc j)
-  have key := GlobalTheory.T.hermitian_metric_log_norm_formula (↥k) E (RingHom.comp (IntermediateField.inclusion hc : ↥c.F →+* ↥k) (GlobalTheory.CompanionTheory.Ar.Fl.tauE c τ))
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.Fl.deg_eq_of_local_two_curves (↥k) E (RingHom.comp (IntermediateField.inclusion hc : ↥c.F →+* ↥k) (GlobalTheory.CompanionTheory.Ar.Fl.tauE c τ))
     (N.ext (IntermediateField.inclusion hc).toRingHom) r (GlobalTheory.CompanionTheory.Ar.Fl.gramE (FU.Di i) e).det
     (H.rt : E) D.p D.q H.d
     (fun s => n₁ (s.comp (IntermediateField.inclusion (hM true)).toRingHom))
@@ -101,7 +104,7 @@ theorem flatDegree : FlatDegree := by
     hr0 hgram.1 (Nat.Prime.pos H.d_prime) hrt2
     (by rw [neg_div, hmean₁, ← hm₁]; rfl)
     (by rw [neg_div, hmean₀, ← hx, ← hm₀]; rfl)
-    (fun s => GlobalTheory.T.frame_function_cm_number_field E H D l Xo c g ty FU i Z U τ φ e ρ k hc hM r s
+    (fun s => _root_.GlobalTheory.CompanionTheory.Ar.Fl.InfPlace.hasInfNorm_value E H D l Xo c g ty FU i Z U τ φ e ρ k hc hM r s
       (n₁ (s.comp (IntermediateField.inclusion (hM true)).toRingHom))
       (n₀ (s.comp (IntermediateField.inclusion (hM false)).toRingHom))
       (N.inf (s.comp (IntermediateField.inclusion hc).toRingHom))

@@ -4,11 +4,13 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RestrictJumps
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusSubOneWittTensorLatticeSurjectiveFixed
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H1fClassFromWachPairStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HodgeTateJumpRestrictFiniteExtStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HodgeTateJumpRestrictFiniteExt
+import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvQPowNygaardExtComesFromBaseFieldStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.XNygaardExtComesFromBaseFieldStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCocycleMemImageOfCrystallineStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HerrCocycleOfWittTensorRelationsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCocycleMemImageOfCrystalline
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HerrCocycleOfWittTensorRelations
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HerrClassOfCocycleValuesStatement
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct GlobalTheory.NL Formalism.MainNotions.DeltaInvariantLattices GlobalTheory.NL.CrystallineBase
@@ -69,11 +71,11 @@ private theorem descend_of_eq_K0_of_isCrys (D : Formalism.BasicNotions.D7) (HW :
   have hZ₁ : Zf (D.locA l) T ((HW l).W K s LL h).GKs c (toTW hle T b') (eMap hle ((HW l).W K s LL h).GKs ((HW l).W K' s LL h').GKs hm g') =
       ((F l).E K s LL h).tie.jD T z := by
     rw [hZf b' _, hfe, hc'g g' ((hlam'g g').1 hg'), hjz]
-  have hall := GlobalTheory.T.cyclotomicCocycle_mem_image_of_crystalline D HW F l K s LL h T hT c (toTW hle T b') lam hlamc hlam1 hzero _ hg₁ z hz hZ₁
+  have hall := _root_.GlobalTheory.NL.ZVal.zval D HW F l K s LL h T hT c (toTW hle T b') lam hlamc hlam1 hzero _ hg₁ z hz hZ₁
   obtain ⟨lamK, -, -, hlamKg, ⟨g₀, hg₀⟩, -⟩ := lam_exists D HW K s LL h
   have hγ := (hlamKg g₀).1 hg₀
   obtain ⟨z₀, hz₀, hZ₀⟩ := hall g₀
-  have hyz := GlobalTheory.T.herr_cocycle_of_witt_tensor_relations D HW F l K s LL h T c (toTW hle T b') y z₀ g₀ hγ hb hZ₀
+  have hyz := _root_.GlobalTheory.NL.HerrCocycleCriterion.cocyc D HW F l K s LL h T c (toTW hle T b') y z₀ g₀ hγ hb hZ₀
   exact ⟨y, z₀, hyz, hy, hz₀, c, c',
     GlobalTheory.T.herr_class_of_cocycle_values D HW F l K s LL h T c (toTW hle T b') y z₀ hyz g₀ hγ hb hzero hZ₀, hc'cl, hcc'⟩
 
@@ -102,7 +104,7 @@ private theorem wach_pow_smul_of_good_ext : ∀ (D : Formalism.BasicNotions.D7) 
   have hm' : ∀ g : ↥((HW l).W K s LL h).GKs, ((g : ↥(GK K)) : GQ l) ∈ GK K' := fun g => (hiff _).1 g.2
   have hT' := restrict_crys D hle T hT
   have hJ' := restrict_jumps D HW K s LL h K' h' hle T hT M hh hJ
-    (fun τ' a hj => @GlobalTheory.T.hodgeTateJump_restrict_finite_ext l _ (D.loc l) (D.locA l) (D.locT l) K K' LL hle T.V _ _ _ _ _ T.ρ hT τ' a hj)
+    (fun τ' a hj => @_root_.GlobalTheory.Per.JumpRestrict.jump_restrict l _ (D.loc l) (D.locA l) (D.locT l) K K' LL hle T.V _ _ _ _ _ T.ρ hT τ' a hj)
   obtain ⟨cκ, cκ', hcκ, hcκ'f, hcκ'⟩ := pull_h1f (D.loc l) hle T ((HW l).W K s LL h).GKs ((HW l).W K' s LL h').GKs hm κ hκ
   obtain ⟨n, y', z', hyz', hy', hz', hcl'⟩ := GlobalTheory.T.H1f_class_of_wach_pair D HW F Cm l K' s LL h' (resLt (K := K) (K' := K') (LL := LL) hle T) hT' htop
     (fun _ => mx M) (fun _ => mx hh) hJ' _ hcκ'f

@@ -4,19 +4,32 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsThetaMeanSqu
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.ZhangDimensionPushDownGrassmannianHeightBounds
 import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsBundles
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExactKeyFormulaProofStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PolarizedDataFieldExtensionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrameStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExactKeyFormulaProof
+import Development.AbelianVarietyTheory.Statements.FundamentalDomains.AtOfNumberField
+import Development.AbelianVarietyTheory.Statements.FundamentalDomains.KeyFormulaPowOfKeyFormula
+import Development.AbelianVarietyTheory.Definitions.KeyFormula.LevBasis
+import Development.AbelianVarietyTheory.Statements.ThetaLevelCharacters.MemThetaLevelCharDimZero
+import Development.AbelianVarietyTheory.Definitions.KeyFormula.IsSquareDeterminantComparison
+import Development.AbelianVarietyTheory.Definitions.KeyFormula.KaRuleK
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.IsPluriharmonicSiegel
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.MapsAtLeA
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.SymplecticCharacters.OneEqSpTranslZero
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PolarizedDataFieldExtension
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrame
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaMultiplierQuadraticCharacterStatement
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.GramMatrixPosDefConjugate
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LeWchartOne
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NonvanishingSectionFieldExtStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KeyInputFromPpDataStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KeyOverLieBasisDegreeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NonvanishingSectionFieldExt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KeyInputFromPpData
+import Development.WeilBound.CoreStatements.HodgeTatePoints.QacInt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KeyDegreePpDataStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeMetricFrameInnerStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FundamentalDomainRiemannFormStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalizedDegreeGramDetStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeMetricFrameInner
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FundamentalDomainRiemannForm
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalizedDegreeGramDet
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights TensorProduct
@@ -173,7 +186,7 @@ theorem is_L2_of_gram_det_pos {E : Type} [Field E] [NumberField E] [IsCMField E]
   have hσk : 0 < ‖σ k‖ := norm_pos_iff.mpr ((map_ne_zero σ).mpr hk)
   have hent : ∀ i j, ((D.B.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] e i)
       ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] e j) : ℂ) = Real.pi * (W j ⬝ᵥ a.Hm.mulVec (star (W i))) :=
-    fun i j => GlobalTheory.T.hodge_metric_frame_inner E H L D σ a (e i) (e j) (W i) (W j) (hW i) (hW j)
+    fun i j => _root_.GlobalTheory.CompanionTheory.Ar.Sl.FrameGram.inner_eq_pi_herm E H L D σ a (e i) (e j) (W i) (W j) (hW i) (hW j)
   have hGn := gramDet_norm D.B σ e W a.Hm hent
   obtain ⟨hHerm, hpos⟩ := isHermitian_and_posDef_of_gramDet_pos D.B σ e W a.Hm hent hG
   have hWn : 0 < ‖W.det‖ := by
@@ -196,7 +209,7 @@ theorem is_L2_of_gram_det_pos {E : Type} [Field E] [NumberField E] [IsCMField E]
     rw [h8, Real.exp_log hX]
   unfold GlobalTheory.CompanionTheory.Ar.Sl.ArchFrame.IsThetaMeanSquareNorm
   refine ⟨Real.exp_pos _, fun Fd hFd => ?_⟩
-  have hV := GlobalTheory.T.fundamental_domain_riemann_form D.g a.u.Λ a.Hm a.u.discrete a.u.full hHerm hpos hint1 hint2 Fd hFd
+  have hV := _root_.GlobalTheory.CompanionTheory.Ar.Sl.SelfDualCovol.volume_mul_norm_det_eq_one D.g a.u.Λ a.Hm a.u.discrete a.u.full hHerm hpos hint1 hint2 Fd hFd
   have hA' := hA Fd hFd
   have hq : (volume Fd).toReal / (Real.pi ^ D.g * ‖W.det‖ ^ 2) = 1 / ‖D.B.gramDet σ e‖ := by
     rw [hGn, div_eq_div_iff (mul_pos (pow_pos Real.pi_pos _) (pow_pos hWn 2)).ne'
@@ -222,7 +235,7 @@ open scoped ComplexOrder in
 
 theorem keyDeg_of_keyBad : KeyBadSt → KeyDegSt := by
   intro hb
-  have hKF := GlobalTheory.T.exactKeyFormula_proof
+  have hKF := _root_.GlobalTheory.KeyFam.keyFormula_holds
   unfold ReciprocityTheory.ChartRestriction.G.Geo.Tor.KeyFormula at hKF
   obtain ⟨κ, h1, h2, h3, h4, h5⟩ := hKF
   have hHom : GlobalTheory.KeyCl.Homog (fun _ => 1) κ := by
@@ -234,14 +247,14 @@ theorem keyDeg_of_keyBad : KeyBadSt → KeyDegSt := by
   unfold GlobalTheory.CompanionTheory.Ar.Sl.KeyDegSt
   refine ⟨1, zero_le_one, ?_⟩
   intro E _ _ _ H L _ _ D hg
-  obtain ⟨L', i1, i2, i3, D', x3, s, e, hNV, hLI, hsp⟩ := GlobalTheory.T.nonvanishing_section_field_ext E H L D hg
-  have h15 := (GlobalTheory.T.polarized_data_field_extension E H L D L').2 D' x3
+  obtain ⟨L', i1, i2, i3, D', x3, s, e, hNV, hLI, hsp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.KeyGen.section_and_basis E H L D hg
+  have h15 := (_root_.GlobalTheory.CompanionTheory.Ar.Sl.ext_baseChange E H L D L').2 D' x3
   have hgg : D'.g = D.g := h15.1
   have hpp : D'.hp = D.hp := h15.2.1
   have hg' : 1 ≤ D'.g := hgg ▸ hg
-  obtain ⟨x, th, hgx, v, hSS, hNV', hKO, hLB, hv⟩ := GlobalTheory.T.key_input_from_pp_data E H L' D' hg' s e hNV hLI hsp
+  obtain ⟨x, th, hgx, v, hSS, hNV', hKO, hLB, hv⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.KeyDatum.exists_keyIn E H L' D' hg' s e hNV hLI hsp
   have hint : IsIntegral ℤ ((κ L' x : L'ˣ) : L') :=
-    GlobalTheory.T.key_over_lie_basis_degree hb κ hHom h2 h3 h4 hArch E H L' D'.t th x v hKO hLB hNV'
+    _root_.PositivityTheory.HtPt.Qac.keydeg_integral hb κ hHom h2 h3 h4 hArch E H L' D'.t th x v hKO hLB hNV'
   have hk : ((κ L' x : L'ˣ) : L') ≠ 0 := Units.ne_zero _
   have hGpos : ∀ σ : L' →+* ℂ, 0 < ‖D'.B.gramDet σ e‖ := by
     intro σ
@@ -254,7 +267,7 @@ theorem keyDeg_of_keyBad : KeyBadSt → KeyDegSt := by
   refine ⟨fun σ => Real.exp (Real.log ((2 * Real.pi) ^ (2 * D'.g) * ‖D'.B.gramDet σ e‖ ^ 2 /
     ‖σ ((κ L' x : L'ˣ) : L')‖) / 8), ?_, ?_⟩
   · intro σ a θ hθ
-    have h13 := ((GlobalTheory.T.theta_function_archimedean_frame E H L' D' σ).2 a).2.2
+    have h13 := ((_root_.GlobalTheory.CompanionTheory.Ar.Sl.frames_main E H L' D' σ).2 a).2.2
     choose W hW using fun i => (h13 (e i)).1.exists
     exact KeyDeg.is_L2_of_gram_det_pos D' _ hk e σ (hGpos σ) a θ (Matrix.of W) hW
       (fun Fd hFd => GlobalTheory.T.key_degree_pp_data κ h2 hArch E H L' D' x th s hgx v e hSS hKO hLB hv σ a θ
@@ -271,7 +284,7 @@ theorem keyDeg_of_keyBad : KeyBadSt → KeyDegSt := by
       push_cast
       ring
     have hmk := KeyDeg.mean_log_nonneg ((κ L' x : L'ˣ) : L') hk hint
-    have hmG := GlobalTheory.T.normalized_degree_gram_det L' D'.B D'.g e hLI hsp
+    have hmG := _root_.GlobalTheory.CompanionTheory.Ar.Sl.KeyDegFree.normDegree_top_eq_mean_gramDet L' D'.B D'.g e hLI hsp
     have hhp : -D'.B.normDegree ⊤ ≤ D'.hp := by
       unfold GlobalTheory.CompanionTheory.Ar.Sl.PPData.hp
       exact le_max_left _ _

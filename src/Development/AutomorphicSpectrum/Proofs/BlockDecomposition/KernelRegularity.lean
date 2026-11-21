@@ -1,18 +1,19 @@
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorRapid
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RapidFactorizationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EigenvalueAdjointFactsStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RapidFactorization
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EigenvalueAdjointFacts
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelRowExistsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelRowMatrixStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelAdjointSmoothStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftTranslateSobolevStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftTranslateCommutesStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelRowMatrix
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelAdjointSmooth
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftTranslateSobolev
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftTranslateCommutes
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelRowLeftInvariantStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelActionFormulaStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveRepresentationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveUniquenessStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiResolventIdentityStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveIntegralIdentityStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelRowSupportStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveUniqueness
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiResolventIdentity
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveIntegralIdentity
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelRowSupport
 
 noncomputable section
 
@@ -114,9 +115,9 @@ theorem kerCore_of (hFR : RowExists) (hRM : RowMatrix) (hAS : AdjSmooth) (hRL : 
       hWV f hf hcpt u hu h0 f' hf's hf'e hf'c x hx]
 
 theorem kerCore : KerCore :=
-  have hLC := GlobalTheory.T.left_translate_commutes GlobalTheory.T.left_translate_sobolev
-  kerCore_of (GlobalTheory.T.kernel_row_exists GlobalTheory.T.rapid_factorization GlobalTheory.T.eigenvalue_adjoint_facts) GlobalTheory.T.kernel_row_matrix GlobalTheory.T.kernel_adjoint_smooth
-    (GlobalTheory.T.kernel_row_left_invariant GlobalTheory.T.left_translate_sobolev hLC) (GlobalTheory.T.kernel_action_formula GlobalTheory.T.left_translate_sobolev hLC) GlobalTheory.T.wave_representation GlobalTheory.T.wave_uniqueness GlobalTheory.T.phi_resolvent_identity
-    GlobalTheory.T.wave_integral_identity GlobalTheory.T.kernel_row_support
+  have hLC := _root_.GlobalTheory.CompanionTheory.KerFc.ltComm_of_ltSob _root_.GlobalTheory.CompanionTheory.KerFc.ltSob
+  kerCore_of (GlobalTheory.T.kernel_row_exists _root_.GlobalTheory.CompanionTheory.KerFc.factorRapid _root_.GlobalTheory.CompanionTheory.KerFc.evAdj) _root_.GlobalTheory.CompanionTheory.KerFc.rowMatrix_holds _root_.GlobalTheory.CompanionTheory.KerFc.adjSmooth
+    (GlobalTheory.T.kernel_row_left_invariant _root_.GlobalTheory.CompanionTheory.KerFc.ltSob hLC) (GlobalTheory.T.kernel_action_formula _root_.GlobalTheory.CompanionTheory.KerFc.ltSob hLC) GlobalTheory.T.wave_representation _root_.GlobalTheory.CompanionTheory.KerFc.waveUniq _root_.GlobalTheory.CompanionTheory.KerFc.phiRes_holds
+    _root_.GlobalTheory.CompanionTheory.KerFc.waveInt _root_.GlobalTheory.CompanionTheory.KerFc.supportRow
 
 end GlobalTheory.CompanionTheory.KerFc

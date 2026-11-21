@@ -292,18 +292,6 @@ theorem unitsLocalRes_sUnitsInfl (r : ℕ) (y : cohomology (galSUnitsMax K.1 ℚ
 
 end Compat
 
-def realLocalEmbeddings (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion) :
-    LocalEmbeddings K where
-  fin _ := Classical.choice nonempty_algHom_of_isSepClosed
-  inf v := by
-    classical
-    exact if h : v.IsReal then ιr ⟨v, h⟩ else Classical.choice nonempty_algHom_of_isSepClosed
-
-theorem realLocalEmbeddings_inf (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
-    (w : {v : InfinitePlace K.1 // v.IsReal}) : (realLocalEmbeddings ιr).inf w.1 = ιr w := by
-  unfold realLocalEmbeddings
-  exact dif_pos w.2
-
 end
 
 end GroundTheory.ProfCoh

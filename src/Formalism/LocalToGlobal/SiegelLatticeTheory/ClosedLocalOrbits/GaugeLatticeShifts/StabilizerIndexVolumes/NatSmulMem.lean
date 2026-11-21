@@ -28,9 +28,6 @@ theorem intE_add {x y : E} (hx : IntE x) (hy : IntE y) : IntE (x + y) := by
 theorem intE_neg {x : E} (hx : IntE x) : IntE (-x) := by
   obtain ⟨a, rfl⟩ := hx; exact ⟨-a, by simp⟩
 
-theorem intE_sub {x y : E} (hx : IntE x) (hy : IntE y) : IntE (x - y) := by
-  rw [sub_eq_add_neg]; exact intE_add hx (intE_neg hy)
-
 theorem intE_mul {x y : E} (hx : IntE x) (hy : IntE y) : IntE (x * y) := by
   obtain ⟨a, rfl⟩ := hx; obtain ⟨b, rfl⟩ := hy; exact ⟨a * b, by simp⟩
 
@@ -63,10 +60,6 @@ theorem den_fin {ι : Type*} [Fintype ι] (x : ι → E) : ∃ m : ℕ, m ≠ 0 
     push_cast; ring
   rw [this]
   exact intE_nat_mul _ (hx i)
-
-theorem intE_scale {m : ℕ} (k : ℕ) {x : E} (h : IntE ((m : E) * x)) : IntE (((k * m : ℕ) : E) * x) := by
-  have : ((k * m : ℕ) : E) * x = (k : E) * ((m : E) * x) := by push_cast; ring
-  rw [this]; exact intE_nat_mul k h
 
 theorem den_mat {m n : Type*} [Fintype m] [Fintype n] (A : Matrix m n E) :
     ∃ k : ℕ, k ≠ 0 ∧ ∀ i j, IntE ((k : E) * A i j) := by

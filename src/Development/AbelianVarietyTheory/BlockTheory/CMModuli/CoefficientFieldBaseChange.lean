@@ -39,20 +39,6 @@ theorem ze_mem_KA (l : Level H) : ze l.A ∈ KA l := IntermediateField.subset_ad
 
 def baseKA (l : Level H) : Base l (KA l) := subfieldBase l (KA l) (rootZero_mem_adjoin l) (ze_mem_KA l)
 
-def dimD (D : Datum H) : ℕ := Module.finrank ℚ (maximalRealSubfield E) * D.p * D.q
-
-structure IsModuli (D : Datum H) (l : Level H) {X : Scheme.{0}} (str : X ⟶ Sp (KA l))
-    (univ : Obj D l (baseKA l) str) : Prop where
-  smooth : SmoothOfRelativeDimension (dimD D) str
-  qproj : IsQProjOver str
-  repr : ∀ (S : Scheme.{0}) [IsReduced S] (s : S ⟶ Sp (KA l)) (o : Obj D l (baseKA l) s),
-    ∃! f : S ⟶ X, f ≫ str = s ∧ Nonempty (ObjMap o univ f)
-  rigid : ∀ (k : Type) [Field k] (v : Sp (DualNumber k) ⟶ X) (o : Obj D l (baseKA l) (v ≫ str)),
-    Nonempty (ObjMap o univ v) →
-    Nonempty (ObjMap o univ
-      (spMap (algebraMap k (DualNumber k)) ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ v)) →
-    v = spMap (algebraMap k (DualNumber k)) ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ v
-
 structure IsCoeffField (l : Level H) (F₀ : IntermediateField ℚ ℂ) : Prop where
   fin : FiniteDimensional ℚ F₀
   conj : ∀ (τ : E →+* ℂ) (x : E), τ x ∈ F₀
@@ -87,9 +73,6 @@ theorem IsCoeffField.KA_le {l : Level H} {F₀ : IntermediateField ℚ ℂ} (h :
 def IsCoeffField.incl {l : Level H} {F₀ : IntermediateField ℚ ℂ} (h : IsCoeffField l F₀) : KA l →+* F₀ :=
   (IntermediateField.inclusion h.KA_le).toRingHom
 
-def IsCoeffField.base {l : Level H} {F₀ : IntermediateField ℚ ℂ} (h : IsCoeffField l F₀) : Base l F₀ :=
-  subfieldBase l F₀ h.coeff_field_contains_root h.ze_mem
-
 def baseChange {l : Level H} {X : Scheme.{0}} (str : X ⟶ Sp (KA l)) {F₀ : IntermediateField ℚ ℂ}
     (h : IsCoeffField l F₀) : Scheme.{0} := pullback str (spMap h.incl)
 
@@ -98,9 +81,5 @@ def baseChangeFst {l : Level H} {X : Scheme.{0}} (str : X ⟶ Sp (KA l)) {F₀ :
 
 def baseChangeStr {l : Level H} {X : Scheme.{0}} (str : X ⟶ Sp (KA l)) {F₀ : IntermediateField ℚ ℂ}
     (h : IsCoeffField l F₀) : baseChange str h ⟶ Sp F₀ := pullback.snd str (spMap h.incl)
-
-theorem isPullback_baseChange {l : Level H} {X : Scheme.{0}} (str : X ⟶ Sp (KA l)) {F₀ : IntermediateField ℚ ℂ}
-    (h : IsCoeffField l F₀) : IsPullback (baseChangeFst str h) (baseChangeStr str h) str (spMap h.incl) :=
-  IsPullback.of_hasPullback _ _
 
 end GlobalTheory.IndefiniteRowSideFullHecke.CoefficientFieldBaseChange

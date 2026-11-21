@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HilbertKodairaSpencer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAHOfIsFactorAH
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointLocallyConstantComplexAbelianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasGeneratorLambdaPullbackComplexPointOfEqOnOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointLocallyConstantComplexAbelian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasGeneratorLambdaPullbackComplexPointOfEqOnOpen
 
 set_option autoImplicit false
 
@@ -25,8 +25,8 @@ theorem torsion_point_comp_eq_one : ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelia
   apply Over.OverMorphism.ext
   apply AlgebraicGeometry.Scheme.hom_ext_of_forall
   intro t
-  obtain ⟨U, y, htU, hU⟩ := GlobalTheory.T.torsionPoint_locally_constant_complexAbelian A hA N hN T x hx t
-  have hy : y ≫ f = 1 := hf y (GlobalTheory.T.hasGenerator_lambdaPullback_complexPoint_of_eqOnOpen A hA M hM T x U y t htU hU hgen)
+  obtain ⟨U, y, htU, hU⟩ := _root_.GlobalTheory.TorsionLocal.locally_eq_const_of_pow_eq_one A hA N hN T x hx t
+  have hy : y ≫ f = 1 := hf y (_root_.GlobalTheory.PointDesc.hasGen_lam_pull_of_eq_on_open A hA M hM T x U y t htU hU hgen)
   refine ⟨U, htU, ?_⟩
   have h1 : (1 : T ⟶ A) = toUnit T ≫ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A) := (comp_one _).symm
   have h2 : (toUnit T).left = T.hom := by

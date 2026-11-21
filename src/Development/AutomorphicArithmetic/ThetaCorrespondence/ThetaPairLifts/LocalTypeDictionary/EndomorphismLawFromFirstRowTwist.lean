@@ -2,7 +2,12 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlippedTensorEigenvalueLaws
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.TwistFirstRowScalarMultiple
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlippedTensorEigenvalueLawsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.StepUnfold
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairPtsClasses
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowMapVUpdateZero
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EdgeFactorNeZero
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
@@ -11,23 +16,12 @@ open GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 noncomputable section
 namespace GlobalTheory.FirstRowEndLaw
-section Local
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k]
-  [BorelSpace k] {Γ : Grid k}
-end Local
 end GlobalTheory.FirstRowEndLaw
 namespace GlobalTheory.FirstRowEndLaw
-open GlobalTheory.FunObj.GivenAdm
-variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
-variable {μ₀ : T} {G : GridData L sc} {t : T} {w : Pl D.host.E}
 end GlobalTheory.FirstRowEndLaw
 namespace GlobalTheory.FirstRowEndLaw
-open GlobalTheory.FunObj.GivenAdm
-variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} {G : GridData L sc} {t : T} {w : Pl D.host.E}
 end GlobalTheory.FirstRowEndLaw
 namespace GlobalTheory.FirstRowEndLaw
-open GlobalTheory.FunObj.GivenAdm
-variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} {G : GridData L sc} {w : Pl D.host.E}
 end GlobalTheory.FirstRowEndLaw
 namespace GlobalTheory.FirstRowEndLaw
 set_option maxHeartbeats 1600000 in

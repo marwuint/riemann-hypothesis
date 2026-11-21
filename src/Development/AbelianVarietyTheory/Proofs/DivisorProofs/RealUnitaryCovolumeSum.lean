@@ -1,11 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TamagawaSpecialUnitary
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFactorProductBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianLieVolumeFormulaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFactorProductBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianLieVolumeFormula
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FormallyUnramifiedRingOfIntegersIffDifferentIdea
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FinrankEqTwoMulHalfDegree
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryLieBasisStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryLieBasis
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EmbGLMemRealSU
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralMultipleInLieLatticeStatement
 open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.AdLat GlobalTheory.UCls GlobalTheory.SUVol ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up
 open scoped ENNReal
@@ -74,7 +76,7 @@ theorem exists_lie_basis {E : Type} [Field E] [NumberField E] [IsCMField E] {r :
     (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (hΛ : SelfDualLat G Λ) :
     ∃ e : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) E,
       (∀ i, e i ∈ lieLat G Λ) ∧ LinearIndependent (maximalRealSubfield E) e := by
-  obtain ⟨e, he, hli⟩ := GlobalTheory.T.exists_unitary_lie_basis G hΛ.1 hΛ.2.1
+  obtain ⟨e, he, hli⟩ := _root_.GlobalTheory.suLie_finrank_ge G hΛ.1 hΛ.2.1
   choose N hN hmem using fun i => GlobalTheory.T.integral_multiple_in_lie_lattice G Λ hΛ.2.2.1 hΛ.2.2.2.1 (e i) (he i).1 (he i).2
   refine ⟨fun i => (N i : E) • e i, hmem, ?_⟩
   let w : Fin (r ^ 2 - 1) → (maximalRealSubfield E)ˣ :=
@@ -90,8 +92,8 @@ theorem sum_covolume_le : GlobalTheory.Published.TamagawaSpecialUnitary → ∀ 
   intro hP E _ _ _ r X Λ x _ _ J s hr hU hΛ hx hs
   obtain ⟨e, he, hli⟩ := exists_lie_basis X.Gm Λ hΛ
   obtain ⟨hmult, hP1⟩ := hP E r X.Gm Λ X.Ψ e J s hr hU hΛ X.cmType he hli hs
-  have hlie := GlobalTheory.T.riemannian_lie_volume_formula E r X Λ x e hr hU hΛ hx he hli
-  obtain ⟨hPpos, hPinv⟩ := GlobalTheory.T.local_factor_product_bound E r hr hmult
+  have hlie := _root_.GlobalTheory.LieCovol.riemLie_eq_sqrt_index_smul_formLie E r X Λ x e hr hU hΛ hx he hli
+  obtain ⟨hPpos, hPinv⟩ := _root_.GlobalTheory.EulerLocVol.tprod_locFactor_bound E r hr hmult
   set m : ℝ := ((Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range e)).toAddSubgroup.relIndex
     (lieLat X.Gm Λ) : ℝ) with hm
   set P : ℝ := ∏' v, locFactor E r v with hPdef

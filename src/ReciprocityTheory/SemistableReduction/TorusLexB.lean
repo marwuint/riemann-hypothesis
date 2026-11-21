@@ -52,11 +52,6 @@ theorem norm_torusMono {ι : Type} [Fintype ι] (θ : ι → ℝ) (s : ι →₀
 theorem continuous_torusPoint {ι : Type} : Continuous (fun θ : ι → ℝ => torusPoint θ) := by
   exact continuous_pi fun i => by simp only [torusPoint]; fun_prop
 
-theorem continuous_torusMono {ι : Type} [Fintype ι] (s : ι →₀ ℕ) :
-    Continuous (fun θ : ι → ℝ => torusMono θ s) := by
-  unfold torusMono
-  exact continuous_finset_prod _ fun i _ => ((continuous_apply i).comp continuous_torusPoint).pow _
-
 theorem torus_orth {ι : Type} [Fintype ι] (s t : ι →₀ ℕ) :
     ∫ θ, torusMono θ t * conj (torusMono θ s) ∂(torusProb ι) = if t = s then 1 else 0 := by
   classical

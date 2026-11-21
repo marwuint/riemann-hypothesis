@@ -351,17 +351,6 @@ theorem ReadSame.objT {N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V} {h : B
   mjH := (by with_unfolding_all exact ((s.mj_fwd (X := O.X) ((H.mjH))) : _))
   kapR σ := (by with_unfolding_all exact (((H.kapR σ).trans (GlobalTheory.EX.OB.kapSharp_tr (D := w.D Z) N h).symm) :))
 
-set_option maxHeartbeats 4000000 in
-
-theorem rows_move_of_read (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl)
-    (O : Obj2 (w.D Z)) (t : RowsT K w Z Wt O.p0) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ)
-    (O' : Obj2 (w.D (Db.setDivZ Z N h))) (hO : O' = O.tr N h) (hs : ∃ Y L, ReadSame N h t Y L) :
-    ∃ t' : RowsT K w (Db.setDivZ Z N h) Wt O'.p0, RowsSame t t' ∧ HEq (SRe.pkOf t') ((SRe.pkOf t).up Z Z.S N h) ∧
-      (ObjT O t → ObjT O' t') ∧ (Nonempty (RXs t) → Nonempty (RXs t')) := by
-  subst hO
-  obtain ⟨Y, L, s⟩ := hs
-  exact ⟨(by with_unfolding_all exact (s.what₂ :)), (by with_unfolding_all exact (s.rowsSame :)), (by with_unfolding_all exact (s.pk :)), fun H => (by with_unfolding_all exact ((s.objT H) :)), fun ⟨x⟩ => ⟨(by with_unfolding_all exact ((s.rxs x) :))⟩⟩
-
 end GlobalTheory.Mem.R3.Rw.DivMv
 
 end

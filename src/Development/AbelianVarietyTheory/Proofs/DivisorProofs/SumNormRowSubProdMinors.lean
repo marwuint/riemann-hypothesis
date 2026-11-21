@@ -48,24 +48,12 @@ end GlobalTheory.MinorFrame
 
 noncomputable section
 namespace GlobalTheory.MinorFrame
-open scoped Matrix
-
 end GlobalTheory.MinorFrame
 
 noncomputable section
 namespace GlobalTheory.MinorFrame
-open MvPolynomial
-open scoped Matrix ComplexConjugate
-
-variable {ι : Type} [Fintype ι]
-
-def tupCoef {a d : ℕ} {n : ι → ℕ} (κ : ι → Matrix (Fin d) (Fin d) ℂ) (T T' : Tup ι a d n) : ℂ :=
-  ∏ τ, ∏ j, ((κ τ)ᵀ.submatrix (T τ j).1 (T' τ j).1).det
-
 end GlobalTheory.MinorFrame
 
 noncomputable section
 namespace GlobalTheory.MinorFrame
-open MvPolynomial
-
 end GlobalTheory.MinorFrame

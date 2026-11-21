@@ -383,10 +383,6 @@ theorem valLiftOf_of (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (h1 : F
   refine ⟨(Φ.codRestrict (FiBc S β c).toAddSubgroup fun Q => h1 β c _ (hΦ Q)), fun k Q hQ => ?_⟩
   exact LinearIndependent.of_comp (FiBc S β c).subtype (hind k Q hQ)
 
-theorem invLeOf_of_two (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (h1 : FormsOnClassOf S) (h2 : CmpLiftOf S e) :
-    InvLeOf S e :=
-  invLeOf_of_lift S e (valLiftOf_of S e h1 h2)
-
 theorem chartRankGe_of_lift [IsFractionRing G.O G.Kf] (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β)
     (hS : BlockRationalityField) (X : KAat.ChX S) (hV : ValLiftOf S e) : ChartRankGe S :=
   chartRankGe_of S e H hS X (invLeOf_of_lift S e hV)

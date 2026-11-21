@@ -274,46 +274,6 @@ theorem pic_mapAlgebra_groupAlgebra_bijective :
 variable {X} (N : Type*) [AddCommGroup N] [Module (AddMonoidAlgebra A X) N]
   [Module.Invertible (AddMonoidAlgebra A X) N]
 
-theorem exists_pic_linearEquiv_groupAlgebra_tensor :
-    ∃ M : Pic A, Nonempty (N ≃ₗ[AddMonoidAlgebra A X] AddMonoidAlgebra A X ⊗[A] M) := by
-  obtain ⟨M, hM⟩ := (pic_mapAlgebra_groupAlgebra_bijective A X).2 (Pic.mk _ N)
-  exact ⟨M, Pic.mk_eq_mk_iff.mp hM.symm⟩
-
-theorem free_of_mapRingHom_mk_eq_one (ε : AddMonoidAlgebra A X →ₐ[A] A)
-    (h : Pic.mapRingHom (ε : AddMonoidAlgebra A X →+* A) (Pic.mk _ N) = 1) :
-    Module.Free (AddMonoidAlgebra A X) N := by
-  obtain ⟨M, hM⟩ := (pic_mapAlgebra_groupAlgebra_bijective A X).2 (Pic.mk _ N)
-  rw [← hM, ← Pic.mapRingHom_algebraMap, Pic.mapRingHom_mapRingHom, ε.comp_algebraMap,
-    Pic.mapRingHom_algebraMap, Pic.mapAlgebra_self_apply] at h
-  rw [← Pic.mk_eq_one_iff_free, ← hM, h, map_one]
-
-theorem subsingleton_pic_groupAlgebra (X : Type*) [AddCommGroup X] [Module.Free ℤ X]
-    [Subsingleton (Pic A)] : Subsingleton (Pic (AddMonoidAlgebra A X)) :=
-  (pic_mapAlgebra_groupAlgebra_bijective A X).2.subsingleton
-
 end Picard
-
-theorem pic_groupAlgebra_of_isIntegrallyClosed.{u, v, w} (A : Type u) [CommRing A] [IsDomain A]
-    [IsIntegrallyClosed A] (X : Type v) [AddCommGroup X] [Module.Free ℤ X] :
-    Function.Bijective (Pic.mapAlgebra A (AddMonoidAlgebra A X)) ∧
-    (∀ (N : Type w) [AddCommGroup N] [Module (AddMonoidAlgebra A X) N]
-      [Module.Invertible (AddMonoidAlgebra A X) N],
-      ∃ (M : Type u) (_ : AddCommGroup M) (_ : Module A M), Module.Invertible A M ∧
-        Nonempty (N ≃ₗ[AddMonoidAlgebra A X] AddMonoidAlgebra A X ⊗[A] M)) ∧
-    (∀ (M M' : Type w) [AddCommGroup M] [Module A M] [Module.Invertible A M] [AddCommGroup M']
-      [Module A M'] [Module.Invertible A M'],
-      Nonempty (AddMonoidAlgebra A X ⊗[A] M ≃ₗ[AddMonoidAlgebra A X]
-        AddMonoidAlgebra A X ⊗[A] M') → Nonempty (M ≃ₗ[A] M')) := by
-  refine ⟨pic_mapAlgebra_groupAlgebra_bijective A X, fun N _ _ _ => ?_,
-    fun M M' _ _ _ _ _ _ ⟨e⟩ => ?_⟩
-  · obtain ⟨M, hM⟩ := exists_pic_linearEquiv_groupAlgebra_tensor A (X := X) N
-    exact ⟨M, inferInstance, inferInstance, inferInstance, hM⟩
-  · refine Pic.mk_eq_mk_iff.mp (pic_mapAlgebra_addMonoidAlgebra_injective A X
-      (Pic.mk_eq_mk_iff.mpr ⟨?_⟩))
-    exact TensorProduct.AlgebraTensorModule.congr (.refl _ _) (Pic.mk.linearEquiv A M) ≪≫ₗ e ≪≫ₗ
-      TensorProduct.AlgebraTensorModule.congr (.refl _ _) (Pic.mk.linearEquiv A M').symm
-
-example : Subsingleton (Pic (AddMonoidAlgebra ℤ (Fin 2 → ℤ))) :=
-  subsingleton_pic_groupAlgebra ℤ (Fin 2 → ℤ)
 
 end GlobalTheory

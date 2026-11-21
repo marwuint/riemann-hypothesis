@@ -9,19 +9,6 @@ universe u
 
 namespace GlobalTheory.GaloisDescent
 
-section Instances
-
-variable (K L G V : Type*) [CommSemiring K] [Semiring L] [Algebra K L] [Monoid G]
-  [MulSemiringAction G L]
-
-end Instances
-
-section Group
-
-variable {K L G : Type*} [Field K] [Field L] [Algebra K L] [Group G] [MulSemiringAction G L]
-
-end Group
-
 section AlgEquiv
 
 variable {K L : Type*} [Field K] [Field L] [Algebra K L]

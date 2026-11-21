@@ -40,7 +40,7 @@ private theorem conj_mem (N l : ℕ) (σ γ : SL(2, ℤ))
 theorem UpperTheory.V.Z.Kato.Nb.sBStab :
     UpperTheory.V.Z.Kato.Nb.SBStab := by
   intro Ω _ _ _ ε X l _ N w hN b hb
-  obtain ⟨hA, hG⟩ := GlobalTheory.T.modular_function_tower_integrality ε X ε.injective (X.j_hol.imp fun _ h => h.symm) l
+  obtain ⟨hA, hG⟩ := _root_.GlobalTheory.KZ.kmap_A_stable ε X ε.injective (X.j_hol.imp fun _ h => h.symm) l
   have key : ∀ f : X.Fn l →ₗ[ℤ_[l]] X.Fn l, (∀ c ∈ X.BSet N l w, f c ∈ X.BSet N l w) → f b ∈ X.B N l w := by
     intro f hf
     have hle : X.B N l w ≤ (X.B N l w).comap f :=

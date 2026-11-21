@@ -35,18 +35,18 @@ theorem exists_open_same_model (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : Fo
     ∃ B₁, IsOpen B₁ ∧ b₀ ∈ B₁ ∧ ∀ b ∈ B₁, ∃ (x : (U.X k₀).dom) (t : Ix Dw → (CAt σ)ˣ),
       FrBor t (U.un k₀ x) (y b) := by
   obtain ⟨hr, hty, -, -, -, g, e, F, ik, ψ, hef, hun⟩ := hU
-  obtain ⟨B₁, k, P, hB₁, hb₁, hs₁, hP, hyP⟩ := GlobalTheory.T.exists_holomorphic_periods_adapted E H Dw l Xo c σ g e F A yA m B φ y hB hφ hy b₀ hb₀
+  obtain ⟨B₁, k, P, hB₁, hb₁, hs₁, hP, hyP⟩ := _root_.GlobalTheory.AdaptedPeriods.exists_holPeriods_adapted E H Dw l Xo c σ g e F A yA m B φ y hB hφ hy b₀ hb₀
   obtain ⟨P₁, hP₁, hP₁', hx₁, -⟩ := hun k₀ x₁
   obtain rfl : ik k₀ = k := F.disj _ _ _ _ hP₁' (hP.1 b₀ hb₁) (hx₁.symm.trans (ht₁.1.symm.trans (hyP b₀ hb₁).1))
-  obtain ⟨d, hd, horth⟩ := GlobalTheory.T.period_eq_triangular_orthonormal_alt E H Dw l c σ g e _ r (U.X k₀) (ψ k₀) hσ (F.sig _).1 (F.sig _).2 hr
+  obtain ⟨d, hd, horth⟩ := _root_.GlobalTheory.FrameNorm.period_eq_triangular_orthonormal E H Dw l c σ g e _ r (U.X k₀) (ψ k₀) hσ (F.sig _).1 (F.sig _).2 hr
     (hty k₀).1 (hty k₀).2 (hef k₀)
-    (GlobalTheory.T.im_neg_of_frame_period_vector E H Dw l c σ g e _ r (U.X k₀) (ψ k₀) hσ hr (hty k₀).1 (hty k₀).2 (hef k₀) x₁.1 x₁.2 P₁ hP₁ hP₁')
+    (_root_.GlobalTheory.FrameSign.im_neg_of_isPeriod E H Dw l c σ g e _ r (U.X k₀) (ψ k₀) hσ hr (hty k₀).1 (hty k₀).2 (hef k₀) x₁.1 x₁.2 P₁ hP₁ hP₁')
   refine ⟨B₁, hB₁, hb₁, fun b hb => ?_⟩
   have hp := hP.1 b hb
   obtain ⟨x₀, hx₀, -, S, -, hsupp, hper, -⟩ := horth _ hp
   obtain ⟨P₀, hP₀, hP₀', hux, hud, -⟩ := hun k₀ ⟨x₀, hx₀⟩
   have hPS : ∀ a, P₀ a = S *ᵥ P b a := fun a => funext fun j => (hP₀ a j).trans (hper a j).symm
-  obtain ⟨t, ht, -⟩ := GlobalTheory.T.triangular_frame_change_of_triangular_period E H Dw l Xo c σ g e F _ (P b) P₀ S (y b) (U.un k₀ ⟨x₀, hx₀⟩) hp hP₀' hPS hsupp
+  obtain ⟨t, ht, -⟩ := _root_.GlobalTheory.FrameNorm.frBor_of_triangular_period E H Dw l Xo c σ g e F _ (P b) P₀ S (y b) (U.un k₀ ⟨x₀, hx₀⟩) hp hP₀' hPS hsupp
     (hyP b hb).1 hux (hyP b hb).2 hud
   exact ⟨⟨x₀, hx₀⟩, t, ht⟩
 

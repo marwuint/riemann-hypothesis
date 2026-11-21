@@ -1,16 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeTOperatorQExpansionSlashSumStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PeterssonDoubleCosetAdjointStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrablePeterssonIntegrandModerateGrowthStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasModerateGrowthQExpansionOfCoeffPolynomialGrowStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasModerateGrowthAlgebraSlashStableStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlashIntMatrixPosDetPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionPolyGrowthSummableContinuousStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLeftGamma0CosetDecompositionHeckeRepTOperatorStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RightGamma0CosetDecompositionAdjugateHeckeTStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeTOperatorQExpansionSlashSum
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PeterssonDoubleCosetAdjoint
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrablePeterssonIntegrandModerateGrowth
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasModerateGrowthQExpansionOfCoeffPolynomialGrow
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasModerateGrowthAlgebraSlashStable
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlashIntMatrixPosDetProperties
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionPolyGrowthSummableContinuous
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLeftGamma0CosetDecompositionHeckeRepTOperator
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RightGamma0CosetDecompositionAdjugateHeckeT
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -38,23 +39,23 @@ theorem GlobalTheory.EisM.pet_To_adjoint : ∀ (k L N q : ℕ) (ε : DirichletCh
   have hcop : q.Coprime N := (Nat.Prime.coprime_iff_not_dvd hq).2 hqN
   have hq0 : 0 < q := hq.pos
   have hε1 : ch ε 1 = 1 := by simp [ch]
-  obtain ⟨-, hTaeq⟩ := GlobalTheory.T.coeffHeckeTOperator_qExpansion_slashSum k q (ch ε) a hk hq0 hε1 ha.1
-  obtain ⟨-, hTheq⟩ := GlobalTheory.T.coeffHeckeTOperator_qExpansion_slashSum k q (ch ε) h hk hq0 hε1 hh.1.1
-  have hcont_h := (GlobalTheory.T.qExpansion_polyGrowth_summable_continuous h hh.1.1).2
-  have hcont_a := (GlobalTheory.T.qExpansion_polyGrowth_summable_continuous a ha.1).2
-  have hslz := GlobalTheory.T.slashIntMatrixPosDet_properties k (qs a) hk
+  obtain ⟨-, hTaeq⟩ := _root_.GlobalTheory.EisM.qs_To_hsum k q (ch ε) a hk hq0 hε1 ha.1
+  obtain ⟨-, hTheq⟩ := _root_.GlobalTheory.EisM.qs_To_hsum k q (ch ε) h hk hq0 hε1 hh.1.1
+  have hcont_h := (_root_.GlobalTheory.EisM.qs_summable_continuous h hh.1.1).2
+  have hcont_a := (_root_.GlobalTheory.EisM.qs_summable_continuous a ha.1).2
+  have hslz := _root_.GlobalTheory.EisM.slz_props k (qs a) hk
   have hdetpos : ∀ i, 0 < (repT q i).det := by
     intro i; cases i <;> simp [repT, repU, Matrix.det_fin_two_of, hq0]
   have hlow : ∀ i, (repT q i) 1 0 = 0 := by
     intro i; cases i <;> simp [repT, repU]
   have hint : ∀ i, Integrable (fun τ : ℍ => (ρ τ : ℂ) * (conj (qs h τ) * slz k (repT q i) (qs a) τ * (τ.im : ℂ) ^ k)) :=
-    fun i => GlobalTheory.T.integrable_petersson_integrand_moderateGrowth k L L N ε h ρ (slz k (repT q i) (qs a)) hk hL hNL hρ hh
+    fun i => _root_.GlobalTheory.EisM.integrable_pet_integrand k L L N ε h ρ (slz k (repT q i) (qs a)) hk hL hNL hρ hh
       ((hslz.2.2.2.1 _ (hdetpos i) hcont_a).aestronglyMeasurable)
-      (GlobalTheory.T.hasModerateGrowth_algebra_slash_stable.2.2 _ k _ (hdetpos i) (hlow i) (GlobalTheory.T.hasModerateGrowth_qExpansion_of_coeffPolynomialGrowth a ha.1))
-  have hadj := GlobalTheory.T.petersson_doubleCoset_adjoint k L N q ε ρ (DT L q) (Option (Fin q)) (Option (Fin q)) (repT q)
+      (GlobalTheory.T.hasModerateGrowth_algebra_slash_stable.2.2 _ k _ (hdetpos i) (hlow i) (_root_.GlobalTheory.EisM.mod_qs_of_polyB a ha.1))
+  have hadj := _root_.GlobalTheory.EisM.pet_hsum_adjoint k L N q ε ρ (DT L q) (Option (Fin q)) (Option (Fin q)) (repT q)
     (fun i => (repT q i).adjugate) (qs h) (qs a) hk hN hNL hq0 hcop hρ
     (fun δ hδ => ⟨hδ.1, (Int.natCast_dvd_natCast.2 hNL).trans hδ.2⟩)
-    (GlobalTheory.T.isLeftGamma0CosetDecomposition_heckeRepTOperator L q hq hqL) (GlobalTheory.T.rightGamma0CosetDecomposition_adjugate_heckeT L q hq hqL) hh.1.2 ha.2 hcont_h hcont_a hint
+    (_root_.GlobalTheory.EisM.lRep_DT_repT L q hq hqL) (_root_.GlobalTheory.EisM.rrep_DT_adj_repT L q hq hqL) hh.1.2 ha.2 hcont_h hcont_a hint
   rw [← hTaeq] at hadj
   rw [hadj]
 

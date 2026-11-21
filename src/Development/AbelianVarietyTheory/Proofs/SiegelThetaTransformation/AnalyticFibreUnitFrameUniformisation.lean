@@ -5,7 +5,7 @@ import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChart
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.AnChartAsm
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ValAtLem
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianFormAtFrameLaws
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UniformisationComponentLatticesMarkingsStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UniformisationComponentLatticesMarkings
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr
@@ -55,7 +55,7 @@ theorem uw_anFib : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : H
     · rintro ⟨v, hv, rfl⟩
       obtain ⟨a, rfl⟩ := hφs v hv
       exact ⟨a, hPv a⟩
-  obtain ⟨-, -, -, -, -, hspan, hEF⟩ := GlobalTheory.T.uniformisation_component_lattices_markings E H Dw l Xo c σ r U hσ hU hr W k
+  obtain ⟨-, -, -, -, -, hspan, hEF⟩ := _root_.GlobalTheory.Dict.uw_lattice E H Dw l Xo c σ r U hσ hU hr W k
   have hrng : Set.range (W.emb k) = ((U.X k).Λ : Set (Fin r → E)) := by
     ext v
     constructor

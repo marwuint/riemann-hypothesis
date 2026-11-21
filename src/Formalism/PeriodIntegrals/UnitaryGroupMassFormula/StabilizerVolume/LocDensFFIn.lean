@@ -169,9 +169,6 @@ theorem frob_of_ne (σ : K ≃ₐ[k] K) (h2 : finrank k K = 2) (hne : σ ≠ Alg
   · rw [map_mul, hax, hbq, mul_pow] at h
     exact ha (hax.trans (mul_right_cancel₀ (pow_ne_zero _ hb0) h))
 
-theorem mem_range_of_pow (d : K) (hd : d ^ Fintype.card k = d) :
-    ∃ d0 : k, algebraMap k K d0 = d := mem_range_algebraMap_of_pow_card_eq d hd
-
 theorem card_norm_fiber (σ : K ≃ₐ[k] K) (hfrob : ∀ x, σ x = x ^ Fintype.card k)
     (h2 : finrank k K = 2) (d : K) (hd : σ d = d) :
     Nat.card {t : K // t * σ t = d} = if d = 0 then 1 else Fintype.card k + 1 := by

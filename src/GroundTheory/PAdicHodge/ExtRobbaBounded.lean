@@ -685,36 +685,11 @@ theorem mem_Econ {ρ : Set.Ioo (0 : ℝ) 1} : b ∈ T.Econ ρ ↔ ConvergesAt (T
 theorem Econ_anti {ρ ρ' : Set.Ioo (0 : ℝ) 1} (h : (ρ' : ℝ) ≤ ρ) : T.Econ ρ ≤ T.Econ ρ' :=
   fun _ hb => convergesAt_of_le (T.coeffB_neg_exists _) hb ρ'.2.1 h
 
-theorem algebraMap_teich_mem_Econ (c : L) (ρ : Set.Ioo (0 : ℝ) 1) :
-    algebraMap Γ T.B (T.teich c) ∈ T.Econ ρ := by
-  rw [mem_Econ, coeffB_algebraMap, zcoeff_teich]; exact convergesAt_pi_single _ _ _
-
 theorem algebraMap_π_mem_Econ (ρ : Set.Ioo (0 : ℝ) 1) : algebraMap Γ T.B T.π ∈ T.Econ ρ := by
   rw [mem_Econ, coeffB_algebraMap, ← pow_one T.π, zcoeff_π_pow]; exact convergesAt_pi_single _ _ _
 
 theorem invSelf_mem_Econ (ρ : Set.Ioo (0 : ℝ) 1) : IsLocalization.Away.invSelf T.π ∈ T.Econ ρ := by
   rw [mem_Econ, coeffB_invSelf]; exact convergesAt_pi_single _ _ _
-
-def Gcon : Subring Γ where
-  carrier := {x | ∃ ρ : Set.Ioo (0 : ℝ) 1, ConvergesAt (T.zcoeff x) ρ}
-  zero_mem' := ⟨⟨1 / 2, by norm_num, by norm_num⟩, by
-    rw [(T.zcoeff_eq_zero_iff 0).2 rfl]; simpa using convergesAt_pi_single (L := L) 0 0 (1 / 2)⟩
-  one_mem' := ⟨⟨1 / 2, by norm_num, by norm_num⟩, by rw [zcoeff_one]; exact convergesAt_pi_single _ _ _⟩
-  add_mem' := by
-    rintro x y ⟨ρ₁, h₁⟩ ⟨ρ₂, h₂⟩
-    refine ⟨⟨min ρ₁ ρ₂, lt_min ρ₁.2.1 ρ₂.2.1, min_lt_of_left_lt ρ₁.2.2⟩, ?_⟩
-    exact T.convergesAt_zcoeff_add (lt_min ρ₁.2.1 ρ₂.2.1) (min_lt_of_left_lt ρ₁.2.2)
-      (convergesAt_of_le (T.zcoeff_neg_exists x) h₁ (lt_min ρ₁.2.1 ρ₂.2.1) (min_le_left _ _))
-      (convergesAt_of_le (T.zcoeff_neg_exists y) h₂ (lt_min ρ₁.2.1 ρ₂.2.1) (min_le_right _ _))
-  mul_mem' := by
-    rintro x y ⟨ρ₁, h₁⟩ ⟨ρ₂, h₂⟩
-    refine ⟨⟨min ρ₁ ρ₂, lt_min ρ₁.2.1 ρ₂.2.1, min_lt_of_left_lt ρ₁.2.2⟩, ?_⟩
-    exact T.convergesAt_zcoeff_mul (lt_min ρ₁.2.1 ρ₂.2.1) (min_lt_of_left_lt ρ₁.2.2)
-      (convergesAt_of_le (T.zcoeff_neg_exists x) h₁ (lt_min ρ₁.2.1 ρ₂.2.1) (min_le_left _ _))
-      (convergesAt_of_le (T.zcoeff_neg_exists y) h₂ (lt_min ρ₁.2.1 ρ₂.2.1) (min_le_right _ _))
-  neg_mem' := by
-    rintro x ⟨ρ, h⟩
-    exact ⟨ρ, T.convergesAt_zcoeff_neg ρ.2.1 ρ.2.2 h⟩
 
 def Edag : Subring T.B where
   carrier := {b | ∃ ρ : Set.Ioo (0 : ℝ) 1, ConvergesAt (T.coeffB b) ρ}

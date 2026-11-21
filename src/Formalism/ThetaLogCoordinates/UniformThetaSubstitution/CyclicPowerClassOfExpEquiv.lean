@@ -56,12 +56,6 @@ def LogRescaleUnique : Prop :=
     (PowerSeries.subst μ (lamF p ϖ) : PowerSeries K) = PowerSeries.X →
     (PowerSeries.subst μ' (lamF p ϖ) : PowerSeries K) = PowerSeries.X → μ = μ'
 
-def TraceDual : Prop :=
-  ∀ (F L ι : Type) [Field F] [Field L] [Algebra F L] [FiniteDimensional F L] [IsGalois F L]
-    [Fintype ι] [DecidableEq ι] (b : Module.Basis ι F L) (σ τ : L ≃ₐ[F] L),
-    (σ = τ → ∑ r, σ ((Algebra.traceForm F L).dualBasis (traceForm_nondegenerate F L) b r) * τ (b r) = 1) ∧
-    (σ ≠ τ → ∑ r, σ ((Algebra.traceForm F L).dualBasis (traceForm_nondegenerate F L) b r) * τ (b r) = 0)
-
 section Coord
 
 variable {K : Type} [Field K] {ν r0 r1 : ℕ}

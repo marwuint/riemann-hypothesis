@@ -9,16 +9,17 @@ import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PSegreFlagCutDiv
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PSegreFlagCutLiesOverX
 import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.FieldNumbersLocalIntegralClosureFinite
 import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.NumbersDVRC3ResidualContractionComponent
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CutEffectiveDivisorStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.VerticalDivisorsCommuteStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CutEffectiveDivisor
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Statements
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.VerticalDivisorsCommute
 
 namespace GlobalTheory.CompanionTheory.CommAlg.SegreFlag
 
 open GroundTheory.Heights₂.Heights.NumbersDVR GroundTheory.Heights₂.Heights.AutoClose
 
 theorem segreFlagClosureCut : SegreFlagClosureCut.Statement :=
-  SegreFlagClosureCut.proof GlobalTheory.T.cut_effective_divisor
-    (PairNumberExpansionIndependence.proof GlobalTheory.T.vertical_divisors_commute)
+  SegreFlagClosureCut.proof _root_.GlobalTheory.CompanionTheory.Ar.Num.CutClosed.main
+    (PairNumberExpansionIndependence.proof _root_.GlobalTheory.CompanionTheory.CommAlg.VerticalDivisors.verticalDivisorsCommute)
     NumbersDVR_SegreFlagClosureModel
     (SegreFlagCutSection.proof NumbersDVR_SegreFlagClosureModel
       SegreFlagCutForms.proof SegreFlagCutDivisor.closed segre_flag_degree_zero_holds)

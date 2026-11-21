@@ -312,10 +312,6 @@ def gammaCechIso [LinearOrder ι] (n : ℤ) : grCech ι (gammaGrading R x F W) n
 
 end Loc
 
-example (hL : L.IsLB) [Nontrivial Γ(F, V)] : Nontrivial (GammaStar R x F V) :=
-  ((GrSum.of_injective (gammaOp_commute R x F V) 0).comp
-    (ConcreteCategory.bijective_of_isIso ((twistZZeroIso F hL).hom.app V)).1).nontrivial
-
 end Twist
 
 end GlobalTheory

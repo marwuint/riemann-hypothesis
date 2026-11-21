@@ -1,10 +1,5 @@
 import Mathlib
 
-theorem UpperTheory.Reformulated.B.Yzb5.aux1 :
-    ∀ {F : Type} [inst : Field F], SubsemiringClass (Subring F) F := by
-  intro F _
-  infer_instance
-
 noncomputable def UpperTheory.Reformulated.B.Yzb5.resQ :
     {F : Type} → [inst : Field F] → [inst_1 : ValuativeRel F] → ↥(ValuativeRel.valuation F).integer → ℕ :=
     fun {F : Type} [Field F] [ValuativeRel F] (ϖ : ↥(ValuativeRel.valuation F).integer) ↦

@@ -4,12 +4,12 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormWt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EmbAApply
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.SummableLatticeExpNegPiMulNormSqDiv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierHarmonicMonomialMulGaussianComplexStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierHarmonicMonomialMulGaussianComplex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierProdSingleCoordinateFunctionsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierCompCoordDilationByHalfExpStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeIdealEuclideanLatticeIsZLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussianHarmonicProductKernelContinuousBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TsumRingEqSumIdealCosetsTsumStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussianHarmonicProductKernelContinuousBounded
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TsumRingEqSumIdealCosetsTsum
 
 noncomputable section
 
@@ -31,7 +31,7 @@ theorem norm_toLp_unit (z : ℂ) : ‖(WithLp.toLp 2 (fun _ : Unit => z) : Eucli
 
 theorem integrable_hmon_gauss (k : ℤ) :
     Integrable (fun z : ℂ => hmon k z * Complex.exp ((-2 * Real.pi * ‖z‖ ^ 2 : ℝ) : ℂ)) := by
-  obtain ⟨hc, C, hC⟩ := GlobalTheory.T.gaussianHarmonicProductKernel_continuous_bounded Unit (fun _ => k)
+  obtain ⟨hc, C, hC⟩ := _root_.GlobalTheory.HeckeTheta.GaussBound.gauss_cont_bound Unit (fun _ => k)
   have hcont : Continuous (fun z : ℂ => hmon k z * Complex.exp ((-2 * Real.pi * ‖z‖ ^ 2 : ℝ) : ℂ)) := by
     have : Continuous (fun z : ℂ => (WithLp.toLp 2 (fun _ : Unit => z) : EuclideanSpace ℂ Unit)) := by fun_prop
     simpa [Function.comp_def, gauss_unit] using hc.comp this
@@ -53,7 +53,7 @@ theorem fourier_gauss (n : I → ℤ) (l : EuclideanSpace ℂ I) :
   have e : (fun w : EuclideanSpace ℂ I => gauss n (WithLp.ofLp w)) =
       fun w => ∏ i, (hmon (n i) (w i) * Complex.exp ((-2 * Real.pi * ‖w i‖ ^ 2 : ℝ) : ℂ)) := rfl
   rw [e, h]
-  simp only [GlobalTheory.T.fourier_harmonicMonomial_mul_gaussian_complex]
+  simp only [_root_.GlobalTheory.HeckeLemma.fourier_hmon_mul_gaussian]
   unfold kappa gauss
   rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.prod_pow_eq_pow_sum, Finset.card_univ]
   simp [one_div, inv_pow]
@@ -93,7 +93,7 @@ theorem norm_dil_sq_ge (y : I → ℝ) (w : EuclideanSpace ℂ I) :
 
 theorem gauss_dil_bound (n : I → ℤ) (y : I → ℝ) : ∃ C a : ℝ, 0 ≤ C ∧ 0 < a ∧ ∀ w : EuclideanSpace ℂ I,
     ‖gauss n (dil y (WithLp.ofLp w))‖ ≤ C * Real.exp (-a * ‖w‖ ^ 2) := by
-  obtain ⟨-, C, hC⟩ := GlobalTheory.T.gaussianHarmonicProductKernel_continuous_bounded I n
+  obtain ⟨-, C, hC⟩ := _root_.GlobalTheory.HeckeTheta.GaussBound.gauss_cont_bound I n
   have hC0 : 0 ≤ C := by
     have h := (norm_nonneg _).trans (hC 0)
     exact le_of_mul_le_mul_right (by rw [zero_mul]; exact h) (Real.exp_pos _)
@@ -123,7 +123,7 @@ theorem poisson_coset (L : Submodule ℤ (EuclideanSpace ℂ I)) [DiscreteTopolo
   obtain ⟨C, a, hC0, ha, hC⟩ := gauss_dil_bound n y
   obtain ⟨C', a', hC0', ha', hC'⟩ := gauss_dil_bound n (-y)
   have hcont : Continuous f := by
-    have h1 := (GlobalTheory.T.gaussianHarmonicProductKernel_continuous_bounded I n).1
+    have h1 := (_root_.GlobalTheory.HeckeTheta.GaussBound.gauss_cont_bound I n).1
     have h2 : Continuous (fun w : EuclideanSpace ℂ I => (WithLp.toLp 2 (dil y (WithLp.ofLp w)) : EuclideanSpace ℂ I)) := by
       unfold dil; fun_prop
     have h3 := h1.comp h2
@@ -308,7 +308,7 @@ theorem theta_poisson : ∀ (K : Type) [Field K] [NumberField K] [NumberField.Is
       rw [tsum_congr h1, tsum_mul_left,
         e.tsum_eq (fun x : L => gauss n (dil y (WithLp.ofLp ((x : EuclideanSpace ℂ I) + u c)))),
         (poisson_coset L n y (u c)).2]
-    have hLHS := GlobalTheory.T.tsum_ring_eq_sum_ideal_cosets_tsum (𝓞 K) M _ hsum
+    have hLHS := _root_.GlobalTheory.cosets_main (𝓞 K) M _ hsum
     unfold GlobalTheory.HeckeTheta.theta
     rw [hLHS, Finset.sum_congr rfl (fun c _ => hcoset c)]
 

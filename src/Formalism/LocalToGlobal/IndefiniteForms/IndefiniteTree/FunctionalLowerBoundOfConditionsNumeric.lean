@@ -234,10 +234,6 @@ macro "pos_tac" : tactic =>
 macro "onele_tac" : tactic =>
   `(tactic| (repeat' (first | exact one_le_pow₀ (by assumption) | apply one_le_mul_of_one_le_of_one_le)) <;> assumption)
 
-theorem le_mul_one_le {a z t : ℝ} (ha : 0 ≤ a) (hz : 1 ≤ z) (ht : a * z = t) : a ≤ t := by
-  rw [← ht]
-  exact le_mul_of_one_le_right ha hz
-
 set_option maxHeartbeats 4000000 in
 
 theorem size_arith (f k m N L PPF Bw C b lx Sg cs np Rp lg l1 l2 l3 EM hI FP Arch Del T : ℝ)
@@ -399,14 +395,6 @@ theorem size_arith (f k m N L PPF Bw C b lx Sg cs np Rp lg l1 l2 l3 EM hI FP Arc
 theorem htLe_mono {g : Pl K → ℤ} {z : K} {B B' : ℝ} (h : HtLe g z B) (hB : B ≤ B') : HtLe g z B' := by
   unfold Formalism.PairingDivisionLocalBalance.HtLe at h ⊢
   exact ⟨h.1, h.2.trans hB⟩
-
-theorem log_mul_le {a y : ℝ} (ha : 0 ≤ a) (hy : 1 ≤ y) : Real.log (a * y) ≤ max (Real.log a) 0 + Real.log y := by
-  rcases eq_or_lt_of_le ha with h | h
-  · rw [← h, zero_mul, Real.log_zero, max_self, zero_add]
-    exact Real.log_nonneg hy
-  · rw [Real.log_mul h.ne' (by linarith)]
-    have := le_max_left (Real.log a) 0
-    linarith
 
 section Sizes
 

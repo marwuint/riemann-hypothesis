@@ -1,4 +1,4 @@
-import CompanionTheory.ThickeningEstimates.LieGroupReduction.MetaDef
+import CompanionTheory.ThickeningEstimates.InnerProductFactorization.EqOfInner
 
 noncomputable section
 
@@ -127,35 +127,5 @@ theorem LD.differentiableAt {V : ℝ → Sch l →L[ℂ] Sch l} {Q : Sch l → S
   obtain ⟨ι, _, A, Λ, hA, h⟩ := exists_factor lam
   simp only [h]
   exact (Λ.restrictScalars ℝ).differentiableAt.comp t₀ (differentiableAt_pi.2 fun i => key _ (hA i) f)
-
-theorem LD.hasDerivAt {V : ℝ → Sch l →L[ℂ] Sch l} {Q : Sch l →L[ℂ] Sch l} (hV : LD V Q 0) (h0 : ∀ f, V 0 f = f)
-    (v : ℝ → (l ⊕ l → ℝ) → (l ⊕ l → ℝ)) (v' : (l ⊕ l → ℝ) → (l ⊕ l → ℝ)) (hv0 : ∀ w, v 0 w = w)
-    (hv : ∀ w a, HasDerivAt (fun t => v t w a) (-v' w a) 0) (hQ : ∀ w, Q * dRho w - dRho w * Q = dRho (v' w))
-    (h : ∀ᶠ t in 𝓝 (0 : ℝ), ∀ w f, dRho w (V t f) = V t (dRho (v t w) f)) (f : Sch l) (lam : Sch l →L[ℂ] ℂ) :
-    HasDerivAt (fun t => lam (V t f)) (lam (Q f)) 0 := by
-  have key : ∀ A ∈ weylAlg l, ∀ f, HasDerivAt (fun t => schwartzToL2 l (A (V t f))) (schwartzToL2 l (A (Q f))) 0 := fun A hA => by
-    refine weylAlg_induction (P := fun A => ∀ f, HasDerivAt (fun t => schwartzToL2 l (A (V t f))) (schwartzToL2 l (A (Q f))) 0)
-      hV ?_ (fun f => by simpa using hasDerivAt_const _ _) ?_ ?_ hA
-    · intro A w ih f
-      refine ((HasDerivAt.fun_sum (u := Finset.univ) fun a _ =>
-        (hv w a).fun_smul (ih (dRho (Pi.single a 1) f))).congr_deriv ?_).congr_of_eventuallyEq ?_
-      · have e : dRho w * Q = Q * dRho w - dRho (v' w) := by rw [← hQ, sub_sub_cancel]
-        rw [ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply (dRho w), e, dRho_eq_sum w,
-          dRho_eq_sum (v' w)]
-        simp only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul, hv0, h0,
-          ContinuousLinearMap.sub_apply, ContinuousLinearMap.mul_apply, map_sub, neg_smul, ← sub_eq_add_neg,
-          Finset.sum_sub_distrib]
-        simp only [csmul]
-      · filter_upwards [h] with t ht
-        exact weyl_step (ht w) A f
-    · intro A B hA hB f
-      simp only [ContinuousLinearMap.add_apply, map_add]
-      exact (hA f).add (hB f)
-    · intro c A hA f
-      simp only [ContinuousLinearMap.smul_apply, map_smul]
-      exact (hA f).const_smul c
-  obtain ⟨ι, _, A, Λ, hA, h⟩ := exists_factor lam
-  simp only [h]
-  exact (Λ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (hasDerivAt_pi.2 fun i => key _ (hA i) f)
 
 end CompanionTheory.ThKR.LL

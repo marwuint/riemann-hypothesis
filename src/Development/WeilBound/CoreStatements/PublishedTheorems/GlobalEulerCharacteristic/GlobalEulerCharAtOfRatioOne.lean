@@ -1,4 +1,4 @@
-import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.Narrow
+import ReciprocityTheory.Hypotheses.GalCoh
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.RatioOneKilled
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalFiniteness.Transport
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.WorkDictfwdA

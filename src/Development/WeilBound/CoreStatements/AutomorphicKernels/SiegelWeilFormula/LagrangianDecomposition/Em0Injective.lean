@@ -54,11 +54,6 @@ def Res (d : SD σ) {n : ℕ} (h : n + 1 = d.n) {Y : Spc F E n} (b : GL (Fin n �
     (∀ X : Mx F E d.m d.n, (∀ a, X a (i0 h) = 0) → Tof d.B.ψ dd l b Φ' (X.submatrix id (em0 h)) = d.T Φ X) →
     ∀ g (X : Mx F E d.m d.n), (∀ a, X a (i0 h) = 0) → Tof d.B.ψ dd l b (om g Φ') (X.submatrix id (em0 h)) = d.T (d.om (j g) Φ) X
 
-def IsGenF {n : ℕ} {Y : Spc F E n} (b : GL (Fin n ⊕ Fin n) E) (x : G2 σ Y) : Prop :=
-  (∃ β, inFrame b x = Matrix.fromBlocks 1 β 0 1) ∨
-  (∃ t u : GL (Fin n) (AE F E), inFrame b x = Matrix.fromBlocks t.1 0 0 u.1) ∨
-  (∃ γ, inFrame b x = Matrix.fromBlocks 1 0 γ 1)
-
 end PositivityTheory.SiegelWeilFormula.Ald
 
 end

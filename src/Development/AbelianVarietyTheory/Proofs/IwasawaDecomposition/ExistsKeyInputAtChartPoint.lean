@@ -102,17 +102,4 @@ theorem exists_keyAt_model (M : GChart Y) {K : Type} [Field K] (z : Sp K ⟶ Y.X
   rw [hn] at hg hpos ⊢
   exact exists_keyAt_of_sabMap M z hz m hp hA hK hg hpos
 
-theorem exists_keyAt : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) (ct : At S κ p) (M : ct.KeyChart) (K : Type) [Field K] (z : Sp K ⟶ ct.Xm.X) (hz : ⊤ ≤ z ⁻¹ᵁ M.U), Set.range z ⊆ ct.Xm.opn → ∃ x : KeyIn K, x.P.g = D.R.f * N ∧ KeyAt M z hz x := by
-  intro D A N j S κ p ct M K _ z hz h
-  have hd : Module.finrank ℚ D.host.E / 2 * (S.Dw.p + S.Dw.q) = D.R.f * N := by
-    rw [GlobalTheory.PinNum.finrank_host, S.rank_eq, Nat.mul_div_cancel_left _ two_pos]
-  have hf : 1 ≤ D.R.f := by
-    have h₁ : 0 < Module.finrank ℚ D.host.E := Module.finrank_pos
-    rw [GlobalTheory.PinNum.finrank_host] at h₁
-    omega
-  have hN := S.two_le
-  rw [← hd]
-  exact exists_keyAt_model (Y := ct.base) M z hz (ct.range_base_j ▸ h)
-    (hd ▸ Nat.mul_pos hf (by omega))
-
 end GlobalTheory.KeyAtEx

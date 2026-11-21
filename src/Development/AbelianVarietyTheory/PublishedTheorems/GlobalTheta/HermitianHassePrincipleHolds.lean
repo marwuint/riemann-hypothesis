@@ -24,18 +24,6 @@ def CongrOver (σ : E ≃ₐ[F] E) (A : Type*) [CommRing A] [Algebra F A] {r : �
 variable {σ : E ≃ₐ[F] E} {A : Type*} [CommRing A] [Algebra F A] {r : ℕ}
   {G G' : Matrix (Fin r) (Fin r) E}
 
-theorem CongrOver.of_congr
-    (h : ∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map σ) :
-    CongrOver σ A G G' := by
-  obtain ⟨P, hP, rfl⟩ := h
-  let ι : E →+* A ⊗[F] E := Algebra.TensorProduct.includeRight.toRingHom
-  refine ⟨P.map ι, ?_, ?_⟩
-  · rw [show (P.map ι).det = ι P.det from (RingHom.map_det ι P).symm]
-    exact hP.isUnit.map ι
-  · change (Pᵀ * G * P.map σ).map ι = (P.map ι)ᵀ * G.map ι * _
-    rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]
-    rfl
-
 theorem CongrOver.det_norm (hd' : G'.det ≠ 0) (h : CongrOver σ A G G') :
     ∃ z : A ⊗[F] E, (1 : A) ⊗ₜ[F] (G.det / G'.det) = z * baseConj σ A z := by
   obtain ⟨P, ⟨p, hp⟩, h⟩ := h
@@ -445,15 +433,5 @@ def HermitianHassePrinciple : Prop :=
 
 theorem hermitianHassePrinciple_holds : HermitianHassePrinciple :=
   fun _ _ _ _ _ _ _ _ _ hσ _ _ _ hG hG' hd hd' hf hi => congr_of_local hσ hG hG' hd hd' hf hi
-
-theorem HermitianHassePrinciple.iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
-    [Algebra F E] [Algebra.IsQuadraticExtension F E] {σ : E ≃ₐ[F] E} (hσ : σ ≠ 1) {r : ℕ}
-    {G G' : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, σ (G a b) = G b a)
-    (hG' : ∀ a b, σ (G' a b) = G' b a) (hd : G.det ≠ 0) (hd' : G'.det ≠ 0) :
-    (∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map σ) ↔
-      (∀ v : HeightOneSpectrum (𝓞 F), CongrOver σ (v.adicCompletion F) G G') ∧
-        ∀ v : InfinitePlace F, CongrOver σ v.Completion G G' :=
-  ⟨fun h => ⟨fun _ => .of_congr h, fun _ => .of_congr h⟩,
-    fun h => congr_of_local hσ hG hG' hd hd' h.1 h.2⟩
 
 end GlobalTheory.Published

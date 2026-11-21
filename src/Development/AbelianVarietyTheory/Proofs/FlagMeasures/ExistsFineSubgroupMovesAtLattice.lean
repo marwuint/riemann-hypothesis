@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRing
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasisOfIsCompl
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFactsStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EichlerLatticeLocallyConstantDataStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EichlerLatticeLocallyConstantData
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL GlobalTheory.IdxInt MeasureTheory
 open scoped Pointwise ENNReal Classical
@@ -481,7 +481,7 @@ theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
   obtain ⟨A, hA0⟩ := Int.eq_ofNat_of_zero_le (GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT).1
   have hA : algebraMap F E ((S.ϖ : F) ^ S.a) = algebraMap F E S.ϖ ^ A := by rw [hA0, zpow_natCast, map_pow]
   obtain ⟨v, hv⟩ := half_int S
-  obtain ⟨n, hn⟩ := GlobalTheory.T.eichlerLattice_locally_constant_data L r k S Λ hΛ A
+  obtain ⟨n, hn⟩ := _root_.GlobalTheory.HL.EichlerLocal.moved_locally_constant L r k S Λ hΛ A
   have hJ0 : (j : ℕ) + 1 ≤ r := j.2
   have hJ : (j : ℕ) + 1 ≤ r + 1 := by omega
   have hp := fun n => L.O.pow_mem (algO S S.ϖ) n

@@ -9,9 +9,6 @@ variable {p : ℕ} [hp : Fact p.Prime]
 
 def kapE (N r B : ℕ) : ℕ := (N + 4) * (r * B) + 6 * B
 
-theorem kapE_ge (N r B : ℕ) (_hr : 1 ≤ r) : (N + 4) * (r * B) + 6 * B ≤ kapE N r B := by
-  exact le_refl _
-
 section term2
 variable {N r : ℕ}
 

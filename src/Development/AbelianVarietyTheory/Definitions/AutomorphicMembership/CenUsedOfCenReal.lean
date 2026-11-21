@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StrictHenselianAcyclic
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTypeGroupBlockLift
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.OExt
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RatInEig
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInertiaCyclotomicElement
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DetCharacterMemPrincipalCongruenceFixedVectors
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypeIdempotentCoeffAcrossLayers
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GoodIdempotentFixesOfOnlySeriesOfLabelActs
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.CMTypeEmbeddings
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
@@ -65,43 +68,7 @@ abbrev LayP (hL : GlobalTheory.Published.LocalLanglandsGL) : Type 1 :=
   ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl)
     (p0 : BaseLevelRowSide (w.D Z)) (t : RowsT K w Z Wt p0) (nch : NChoice (w.D Z)) (n : NchT w Z Wt nch), NCore hL t n → Prop
 
-def AtMem (hL : GlobalTheory.Published.LocalLanglandsGL) (p : LayP hL) : Prop :=
-  EvLgG fun K B f T => KPx B f → ∀ w Z Wt p0 t nch n xd c, Nonempty (NE hL K B f T w Z Wt p0 t nch n xd c) → Nonempty (RXs t) →
-    ColPin w → p K B f T w Z Wt p0 t nch n c
-
-def CenUsed (D : D7) (M : MtFam D) : Prop :=
-  ∀ (μ : D.what₂.Tup), Formalism.IndefR.RecTie.Used0 D μ → ∀ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m), ∃ L : G0g D.nd → GAf D.host.E D.R.nV,
-    GlobalTheory.PendOf.IsTypeGroupBlockLift D D.R.nV L ∧ ∀ (z : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) (x : D.what₂.Mt μ j),
-      (M μ j h1 h2).real (D.ntypes.cenMt μ j z x) =
-        GlobalTheory.PendOf.actSum D L (z : MonoidAlgebra ℂ (G0g D.nd)) ((M μ j h1 h2).real x)
-
-theorem cenUsed_of_cenReal {D : D7} {M : MtFam D} (h : GlobalTheory.PendOf.CenReal D M) : CenUsed D M := fun μ _ => h μ
-
-def SumUsed (D : D7) (M : MtFam D) : Prop :=
-  ∀ (μ : D.what₂.Tup), Formalism.IndefR.RecTie.Used0 D μ → ∀ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m), GlobalTheory.CoefDuty.ClassSum (M μ j h1 h2)
-
 def RootsLL (D : D7) : Prop := ∃ ζ : D.what₂.LL, IsPrimitiveRoot ζ D.what₂.restRowsFiniteGroupCard
-
-structure PinAt {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
-    (a : NAt hL D cf nch tp) (P : GlobalTheory.NPin.Pin hL D) : Prop where
-  cf_eq : P.cf = cf
-  C_eq : P.C = nch
-  tp_eq : HEq P.tp tp
-  rep_eq : HEq P.rep a.nt.rep
-  M_eq : P.M = a.all.gal.mt
-  lab : GlobalTheory.PendOf.LabAll D P.T
-  green : GlobalTheory.PendOf.GreenLab P.ty.grp
-  chiT : ChiTOk D P.cf
-
-def ParSt (hL : GlobalTheory.Published.LocalLanglandsGL) : Prop :=
-  AllSt fun _ _ _ _ _ _ x => ∀ l : LA hL x, GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.GoodRowCuspParam (Dof x) l.a.A.row
-
-def SXd (hL : GlobalTheory.Published.LocalLanglandsGL) : Prop :=
-  AllSt fun _ _ _ _ _ _ x => SeriesLevel hL x → ∃ xd : ThData (Dof x), XdAll xd
-
-def PtSt (hL : GlobalTheory.Published.LocalLanglandsGL) : Prop :=
-  AllSt fun _ _ _ _ _ _ x => ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' =>
-    (SumRepresentations.hypO D' → SumRepresentations.Conclusion41 D' ∧ AutomorphicSideWildInertia.ResidualIrreducibleGood D' ∧ SumRepresentations.Conclusion42 D' ∧ SumRepresentations.ConclusionZ D') ∧ D'.nd.EigSpan ∧ Rows.IsotInternal D'.what₂
 
 end GlobalTheory.HeightCounting.Up
 

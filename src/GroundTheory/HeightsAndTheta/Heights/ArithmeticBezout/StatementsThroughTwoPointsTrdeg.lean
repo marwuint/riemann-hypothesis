@@ -17,14 +17,6 @@ def ThroughTwoPointsTrdeg.Statement : Prop :=
       (∀ i, ∑ m, algebraMap (MvPolynomial (Fin k × Fin n) K) Ω (genSubst x c (i, m)) * y m = 0) →
         (k : Cardinal) ≤ Algebra.trdeg K (Algebra.adjoin K (Set.range fun m => y m * (y j)⁻¹))
 
-section Inhabitants
-
-def pointOffFirstAxis : Fin 3 → FractionRing (MvPolynomial (Fin 1 × Fin 3) ℚ) :=
-  fun m => algebraMap (MvPolynomial (Fin 1 × Fin 3) ℚ) _
-    (![0, X (0, 2), -X (0, 1)] m)
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights

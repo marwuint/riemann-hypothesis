@@ -470,21 +470,4 @@ theorem exists_fg_lbIso [QuasiCompact pB] [QuasiSeparated pB] (h : R₀.FG)
 
 end Tower
 
-theorem lbIso_spreads_out (k : IntermediateField ℚ ℂ) (B : Scheme.{0}) (pB : B ⟶ Sp k) [QuasiCompact pB]
-    [QuasiSeparated pB] (R₀ : Subalgebra k ℂ) (h : R₀.FG)
-    (M N : LB (pullback pB (spMap (algebraMap k R₀)))) (hM : M.IsLB) (hN : N.IsLB)
-    (j₀ : pullback pB (spMap (algebraMap k ℂ)) ⟶ pullback pB (spMap (algebraMap k R₀)))
-    (h₁ : j₀ ≫ pullback.fst _ _ = pullback.fst _ _)
-    (h₂ : j₀ ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap R₀.val.toRingHom)
-    (H : LBIso (M.pull j₀) (N.pull j₀)) :
-    ∃ (R : Subalgebra k ℂ) (hR : R₀ ≤ R)
-      (i : pullback pB (spMap (algebraMap k R)) ⟶ pullback pB (spMap (algebraMap k R₀))), R.FG ∧
-      i ≫ pullback.fst _ _ = pullback.fst _ _ ∧
-      i ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (Subalgebra.inclusion hR).toRingHom ∧
-      LBIso (M.pull i) (N.pull i) := by
-  obtain rfl : j₀ = baseChangeMap pB R₀.val :=
-    pullback.hom_ext (h₁.trans (baseChangeMap_fst pB _).symm) (h₂.trans (baseChangeMap_snd pB _).symm)
-  obtain ⟨R, hR, hfg, hiso⟩ := exists_fg_lbIso pB h M N hM hN H
-  exact ⟨R, hR, _, hfg, baseChangeMap_fst pB _, baseChangeMap_snd pB _, hiso⟩
-
 end GlobalTheory

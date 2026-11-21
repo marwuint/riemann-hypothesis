@@ -226,19 +226,6 @@ lemma actF_sub (K K' : Form R n) (m : Matrix (Fin n) (Fin n) R) :
   funext J
   simp only [actF, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
-lemma wedgeF_add (K K' : Form R n) (X : Fin n → R) :
-    wedgeF (K + K') X = wedgeF K X + wedgeF K' X := by
-  funext I
-  simp only [wedgeF, Pi.add_apply, mul_add, add_mul, Finset.sum_add_distrib]
-
-lemma wedgeF_smul (c : R) (K : Form R n) (X : Fin n → R) :
-    wedgeF (c • K) X = c • wedgeF K X := by
-  funext I
-  simp only [wedgeF, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro m _
-  ring
-
 lemma contrF_add (K K' : Form R n) (X : Fin n → R) :
     contrF (K + K') X = contrF K X + contrF K' X := by
   funext I
@@ -368,34 +355,6 @@ lemma contrF_oneF (Y : Fin n → R) : contrF (oneF : Form R n) Y = 0 := by
 lemma actF_zero (m : Matrix (Fin n) (Fin n) R) : actF (0 : Form R n) m = 0 := by
   funext J
   simp [actF]
-
-theorem actFormMul : FactX2mul := by
-  intro R _ n K m m'
-  constructor
-  · refine form_induction (P := fun K => actF K 1 = K) ?_ ?_ ?_ ?_ K
-    · exact actF_oneF 1
-    · intro K K' h h'
-      try dsimp only at h h' ⊢
-      rw [actF_add, h, h']
-    · intro c K h
-      try dsimp only at h ⊢
-      rw [actF_smul, h]
-    · intro K X h
-      try dsimp only at h ⊢
-      rw [actFormWedge R n K X 1, h, Matrix.vecMul_one]
-  · refine form_induction (P := fun K => actF (actF K m) m' = actF K (m * m')) ?_ ?_ ?_ ?_ K
-    · try dsimp only
-      rw [actF_oneF, actF_oneF, actF_oneF]
-    · intro K K' h h'
-      try dsimp only at h h' ⊢
-      rw [actF_add, actF_add, actF_add, h, h']
-    · intro c K h
-      try dsimp only at h ⊢
-      rw [actF_smul, actF_smul, actF_smul, h]
-    · intro K X h
-      try dsimp only at h ⊢
-      rw [actFormWedge R n K X m, actFormWedge R n (actF K m) (Matrix.vecMul X m) m', h,
-        actFormWedge R n K X (m * m'), Matrix.vecMul_vecMul]
 
 theorem actFormContract : FactX2contr := by
   intro R _ n K Y g

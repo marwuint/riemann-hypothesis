@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountableHermC
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HuaDeterminantIntegrableOfLtStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HuaDeterminantIntegrableOfLt
 open MeasureTheory
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch
 
@@ -12,7 +12,7 @@ theorem integrable_prod_detW_rpow : ∀ (W : Type) [Fintype W] (n : ℕ) (s : �
   intro W _ n s hs ν hν
   let μ₀ : Measure (hermC n) := Measure.addHaar
   have hf : ∀ _w : W, Integrable (fun b : hermC n => detW (b : Matrix (Fin n) (Fin n) ℂ) ^ (-s)) μ₀ :=
-    fun _ => GlobalTheory.T.hua_determinant_integrable_of_lt n s hs μ₀ inferInstance
+    fun _ => _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.HuaInt.hua_integrable n s hs μ₀ inferInstance
   have hpi := Integrable.fintype_prod (μ := fun _ : W => μ₀)
     (f := fun _ : W => fun b : hermC n => detW (b : Matrix (Fin n) (Fin n) ℂ) ^ (-s)) hf
   rw [Measure.isAddLeftInvariant_eq_smul ν (Measure.pi fun _ : W => μ₀)]

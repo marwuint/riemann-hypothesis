@@ -198,10 +198,5 @@ theorem Cohom.isCob_sub (f : Y ⟶ Y) (hU : ⨆ i, U i = ⊤) {c c₁ c' c₁' :
   rw [rsT_pbT f inf_le_right e₁, rsT_pbT f inf_le_right e₂]
   ring
 
-theorem cohom_calculus : ∀ (K : Type) [Field K] (Y : Scheme.{0}) (q : Y ⟶ Sp K) (f : Y ⟶ Y) (I : Type) (U : I → Y.Opens), f ≫ q = q → ⨆ i, U i = ⊤ → (∀ c c₁ c' c₁' : C1 U, Cohom f U c c' → Cohom f U c₁ c₁' → IsCob U (c' - c₁') → IsCob U (c - c₁)) ∧ (∀ (g : ℕ) (a : Fin g → K) (c c' : Fin g → C1 U), (∀ x, Cohom f U (c x) (c' x)) → Cohom f U (lc q a c) (lc q a c')) ∧ (∀ (g : ℕ) (a : Fin g → K) (c : Fin g → C1 U), (∀ x, IsCob U (c x)) → IsCob U (lc q a c)) ∧ ∀ c c' : C1 U, IsCob U c → IsCob U c' → IsCob U (c + c') ∧ IsCob U (c - c') :=
-  fun _ _ _ q f _ _ hf hU =>
-    ⟨fun _ _ _ _ h h₁ hc => Cohom.isCob_sub f hU h h₁ hc, fun _ a c c' h => cohom_lc q f hf a c c' h,
-      fun _ a c h => isCob_lc q a c h, fun _ _ h h' => ⟨h.add h', h.sub h'⟩⟩
-
 end GlobalTheory.KS
 end

@@ -13,10 +13,6 @@ noncomputable def tp (B : Finset (Fin d → ℤ)) (c : (Fin d → ℤ) → ℂ) 
 lemma continuous_ee (σ : Fin d → ℤ) : Continuous (fun y : Fin d → ℝ => ee y σ) := by
   unfold ee; fun_prop
 
-lemma continuous_tp (B : Finset (Fin d → ℤ)) (c : (Fin d → ℤ) → ℂ) : Continuous (tp B c) := by
-  unfold tp
-  exact continuous_finsetSum _ (fun σ _ => continuous_const.mul (continuous_ee σ))
-
 lemma normSq_tp (B : Finset (Fin d → ℤ)) (c : (Fin d → ℤ) → ℂ) (y : Fin d → ℝ) :
     ((‖tp B c y‖ ^ 2 : ℝ) : ℂ) =
       ∑ σ ∈ B, ∑ σ' ∈ B, ee y (σ - σ') * c σ * starRingEnd ℂ (c σ') := by

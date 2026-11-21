@@ -179,20 +179,8 @@ variable {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype 
 
 def Alt : Prop := Even d ∧ ∀ a : ZMod d, (X.big 0 a ↔ Even a.val)
 
-theorem d_even (h : X.Alt) : Even d := h.1
-
 def m : ℕ := X.j + X.j'
 
 end RowData
-
-structure RowValue {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
-    [∀ g, Fintype (J g)] (X : RowData C V d I J) where
-  nu : WithTop ℝ
-  FF : ∀ N : ℕ, Set (MvPolynomial (Fin N × WV I) C)
-  VAL : ∀ (N : ℕ), ∀ P ∈ FF N, ∀ kind : Fin N → Option (Fin 2 × ZMod d × ZMod d),
-    RowsOK X.G X.Alt P kind →
-    ∀ (S : ∀ g, Sys (X.G g)) (t : ∀ g, I g → MvPowerSeries (I g) C), (∀ g, (S g).IsT (t g)) →
-    ∀ gr : Fin N → MvPowerSeries (WV I) C, (∀ ρ, gr ρ ∈ IntGerm V t) →
-      nu ≤ V.v (ValOf X.hL P kind gr)
 
 end Formalism.L2.FormalSeriesBounds

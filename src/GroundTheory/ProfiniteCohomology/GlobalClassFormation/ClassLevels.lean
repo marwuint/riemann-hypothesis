@@ -67,35 +67,6 @@ theorem classLevelMap_hom_apply (x : Additive (IdeleClassGroup F.1)) :
     (classLevelMap K F E).hom x = Additive.ofMul (ideleClassMap (Fact.out : F ≤ E) x.toMul) :=
   rfl
 
-variable (K F E) in
-
-def classLevelTransition (n : ℕ) :
-    cohomology (ideleClassRep K.1 F.1) n ⟶ cohomology (ideleClassRep K.1 E.1) n :=
-  cohomologyMapAlong (levelRestrict K F E) continuous_levelRestrict (classLevelMap K F E) n
-
-theorem classLevelCochains_comp :
-    cochainsMapAlong (levelRestrict K F E) continuous_levelRestrict (classLevelMap K F E) ≫
-      cochainsMapAlong restrictHom continuous_restrictHom (classLevelMor K E) =
-      cochainsMapAlong restrictHom continuous_restrictHom (classLevelMor K F) := by
-  rw [← cochainsMapAlong_comp]
-  ext m x : 3
-  apply Subtype.ext
-  funext g
-  change Additive.ofMul (IdeleClassLimit.of E (ideleClassMap (Fact.out : F ≤ E)
-      ((x.1 fun i => levelRestrict K F E (restrictHom (E := E) (g i))).toMul))) =
-    Additive.ofMul (IdeleClassLimit.of F ((x.1 fun i => restrictHom (E := F) (g i)).toMul))
-  have hfun : (fun i => levelRestrict K F E (restrictHom (E := E) (g i))) =
-      fun i => restrictHom (E := F) (g i) := funext fun i => levelRestrict_restrictHom (g i)
-  refine (congrArg Additive.ofMul (IdeleClassLimit.of_ideleClassMap (Fact.out : F ≤ E) _)).trans ?_
-  rw [hfun]
-
-theorem classLevelTransition_comp_classLevelInfl (n : ℕ) :
-    classLevelTransition K F E n ≫ classLevelInfl K E n = classLevelInfl K F n := by
-  rw [classLevelTransition, classLevelInfl, classLevelInfl]
-  unfold cohomologyMapAlong
-  refine (HomologicalComplex.homologyMap_comp _ _ n).symm.trans ?_
-  rw [classLevelCochains_comp]
-
 end Transition
 
 section Colimit
@@ -103,16 +74,6 @@ section Colimit
 abbrev classLevelCochainsInfl (p : GLevel K) :
     cochainsComplex (ideleClassRep K.1 p.1.1) ⟶ cochainsComplex (classLimitRep K) :=
   cochainsMapAlong restrictHom continuous_restrictHom (classLevelMor K p.1)
-
-abbrev classLevelCochainsMap {p q : GLevel K} (h : p ≤ q) :
-    cochainsComplex (ideleClassRep K.1 p.1.1) ⟶ cochainsComplex (ideleClassRep K.1 q.1.1) :=
-  haveI : Fact (p.1 ≤ q.1) := ⟨h⟩
-  cochainsMapAlong (levelRestrict K p.1 q.1) continuous_levelRestrict (classLevelMap K p.1 q.1)
-
-theorem classLevelCochainsMap_comp_classLevelCochainsInfl {p q : GLevel K} (h : p ≤ q) :
-    classLevelCochainsMap h ≫ classLevelCochainsInfl q = classLevelCochainsInfl p :=
-  haveI : Fact (p.1 ≤ q.1) := ⟨h⟩
-  classLevelCochains_comp
 
 theorem classLevelCochains_injective (p : GLevel K) (m : ℕ) :
     Function.Injective ((classLevelCochainsInfl p).f m).hom := by
@@ -197,33 +158,6 @@ theorem exists_classLevelInfl_eq (n : ℕ) (x : cohomology (classLimitRep K) n) 
   refine (homologyMap_homologyπ_apply (classLevelCochainsInfl p) n w).trans (congrArg _ ?_)
   apply (ModuleCat.mono_iff_injective ((cochainsComplex (classLimitRep K)).iCycles n)).1 inferInstance
   rw [iCycles_cyclesMap_apply, hw, hy₀]
-
-set_option maxHeartbeats 1600000 in
-
-theorem exists_classLevelTransition_eq_zero (n : ℕ) (p : GLevel K)
-    (y : cohomology (ideleClassRep K.1 p.1.1) n) (hy : (classLevelInfl K p.1 n).hom y = 0) :
-    ∃ (q : GLevel K) (h : p ≤ q),
-      (HomologicalComplex.homologyMap (classLevelCochainsMap h) n).hom y = 0 := by
-  obtain ⟨w, hw⟩ : ∃ w, ((cochainsComplex (ideleClassRep K.1 p.1.1)).homologyπ n).hom w = y :=
-    (ModuleCat.epi_iff_surjective ((cochainsComplex (ideleClassRep K.1 p.1.1)).homologyπ n)).1
-      inferInstance y
-  subst hw
-  have hy' := (homologyMap_homologyπ_apply (classLevelCochainsInfl p) n w).symm.trans hy
-  obtain ⟨u, hu⟩ := (homologyπ_eq_zero_iff _ _).1 hy'
-  rw [iCycles_cyclesMap_apply] at hu
-  obtain ⟨q, u', hu'⟩ := exists_classLevelCochains_eq _ u
-  obtain ⟨r, hpr, hqr⟩ := GLevel.exists_ge p q
-  refine ⟨r, hpr, (homologyMap_homologyπ_apply (classLevelCochainsMap hpr) n w).trans
-    ((homologyπ_eq_zero_iff _ _).2 ⟨((classLevelCochainsMap hqr).f _).hom u', ?_⟩)⟩
-  rw [iCycles_cyclesMap_apply]
-  apply classLevelCochains_injective r n
-  rw [hom_f_d_apply]
-  have e1 := congrArg (fun φ => (φ.f _).hom u') (classLevelCochainsMap_comp_classLevelCochainsInfl hqr)
-  have e2 := congrArg (fun φ => (φ.f n).hom
-      (((cochainsComplex (ideleClassRep K.1 p.1.1)).iCycles n).hom w))
-    (classLevelCochainsMap_comp_classLevelCochainsInfl hpr)
-  simp only [HomologicalComplex.comp_f, ModuleCat.hom_comp, LinearMap.comp_apply] at e1 e2
-  rw [e1, e2, hu', hu]
 
 end Colimit
 

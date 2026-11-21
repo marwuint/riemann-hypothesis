@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsPolAVSectionInver
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbsoluteSiegel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffTopMonEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrVal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamilyTermTranslateBoundFunctionalEquationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateSectionValuesBoundedIntegralTangentStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamilyTermTranslateBoundFunctionalEquation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateSectionValuesBoundedIntegralTangent
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
@@ -23,8 +23,8 @@ theorem jc_bound_k (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing
     (gm : GtPt D.toPre (TE V C)) (htan : GtTan gm₀) (hpull : GtPt.IsPull (spMap (dualMap (toF V C))) gm₀ gm) :
     ∃ b : ℝ, ∀ α, ‖(jc ν s gm α).fst / ν.rg ^ k‖ ≤ b * Real.exp (-(q α / (k : ℝ))) ∧
       ‖(jc ν s gm α).snd / ν.rg ^ k‖ ≤ b * Real.exp (-(q α / (k : ℝ))) := by
-  have H1 := GlobalTheory.T.familyTerm_translate_bound_functionalEquation V D C hC N ν hν q hq k hk1 s gm₀ gm htan hpull
-  have H2 := GlobalTheory.T.translate_section_values_bounded_integral_tangent V D C hC N ν hν k hk1 s gm₀ gm htan hpull
+  have H1 := _root_.GlobalTheory.MBLow.TranslBound.main V D C hC N ν hν q hq k hk1 s gm₀ gm htan hpull
+  have H2 := _root_.GlobalTheory.MBLow.trVal_bounded V D C hC N ν hν k hk1 s gm₀ gm htan hpull
   choose bb hbb using H2
   have hk0 : (0 : ℤ) < k := by exact_mod_cast hk1
   have hkR : (0 : ℝ) < k := by exact_mod_cast hk1

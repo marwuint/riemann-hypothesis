@@ -1,6 +1,16 @@
-import Development.WeilBound.CoreStatements.AutomorphicKernels.LocalLanglandsExistence.KernelCond
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecTransportFieldIso
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.EpsMeasFamily
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaussSumNeZeroOfRamified
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDimEqOne
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalEmbeddingsTowerCompatibleStatement
+import Formalism.LocalToGlobal.GaloisLevelStructure.DefsGal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasNormGroups
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalFieldNormValuation
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddCharConductorAndHaarIntegersExist
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulLeftInvariantVolGL
+import GroundTheory.GlobalFields.TateThesis.HeckeChar
+import GroundTheory.LocalFields.LocalZetaEpsilon
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecTransportFieldIso
 
 noncomputable section
 
@@ -59,28 +69,7 @@ def Term.neg (T : Term h ψ) (σ : Weil h) : ℂ[X] :=
 
 def Term.val (T : Term h ψ) : ℂˣ := (T.e / T.e₀) ^ T.c
 
-def listPos (l : List (Term h ψ)) (σ : Weil h) : ℂ[X] := (l.map fun T => T.pos σ).prod
-
-def listNeg (l : List (Term h ψ)) (σ : Weil h) : ℂ[X] := (l.map fun T => T.neg σ).prod
-
-def listVal (l : List (Term h ψ)) : ℂˣ := (l.map Term.val).prod
-
-def IsPres (x : WD h) (l : List (Term h ψ)) : Prop :=
-  ∀ σ, x.charPol σ * listNeg l σ = (X - 1) ^ x.lpDim * listPos l σ
-
 end Pres
-
-def tateOne {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    (ψ : AddChar k Circle) (t : ℝ) : ℂˣ :=
-  open Classical in if H : ∃ e : ℂˣ, IsTateMeas ψ t 1 e then H.choose else 1
-
-def presVal {K : Type} [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] {v : HeightOneSpectrum (𝓞 K)}
-    (h : IsPlaceOver A v) (ψ : AddChar (v.adicCompletion K) Circle) (x : WD h) : ℂˣ :=
-  open Classical in if H : ∃ l : List (Term h ψ), IsPres x l then listVal H.choose else 1
-
-variable (A) in
-
-def epsFam : EpsMeasFamily A := fun _ _ _ _ _ _ h ψ t x => tateOne ψ t ^ x.lpDim * presVal h ψ x
 
 end PositivityTheory.Pf1.LocalLanglands.TateLocalFactor
 

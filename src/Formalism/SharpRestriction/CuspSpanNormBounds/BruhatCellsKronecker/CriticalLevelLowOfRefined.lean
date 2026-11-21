@@ -437,12 +437,6 @@ theorem level_frame_of_sizes (Cg cb Cu cT CT C0 C3 : ℝ) (hCl : 4 ≤ sCl Fm)
 
 end Fam
 
-section Check
-
-variable {eps : ℝ} (Fm : FamP eps)
-
-end Check
-
 end Formalism.MainNotions.BridgeLemma
 
 end

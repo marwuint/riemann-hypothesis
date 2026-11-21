@@ -76,33 +76,6 @@ def q1 (w : ℂ) : ℝ := Real.sqrt d / 2 * (herm L w w).re
 
 def aa (w : ℂ) : ℂ := Complex.exp ((Real.pi : ℂ) * Complex.I * ((q1 L d w : ℝ) : ℂ))
 
-def io (w : ℂ) : Unit → ℂ := fun _ => w
-
-theorem io_mem {w : ℂ} (h : w ∈ L.lattice) : io w ∈ stdLat L Unit := by
-  unfold stdLat
-  first
-    | exact fun _ _ => h
-    | (rw [← SetLike.mem_coe, AddSubgroup.coe_pi]; exact Set.mem_univ_pi.mpr fun _ => h)
-
-private theorem stdH_unit_io_io_eq_herm (x y : ℂ) : stdH L Unit (io x) (io y) = herm L x y := by
-  unfold stdH
-  rw [matH_apply]
-  simp only [Finset.univ_unique, Finset.sum_singleton, Matrix.smul_apply, Matrix.one_apply_eq,
-    smul_eq_mul, mul_one, io, herm]
-  ring
-
-theorem cmQuadraticForm_eq_alternatingForm (w : ℂ) : qOf (Real.sqrt d / 2) (stdH L Unit) (io w) = q1 L d w := by
-  unfold qOf q1
-  rw [stdH_unit_io_io_eq_herm]
-
-theorem aa_eq (w : ℂ) : alphaQ (Real.sqrt d / 2) (stdH L Unit) (io w) = aa L d w := by
-  unfold alphaQ aa
-  rw [cmQuadraticForm_eq_alternatingForm]
-
-theorem altE_io (x y : ℂ) : altE (stdH L Unit) (io x) (io y) = EE x y := by
-  unfold Formalism.L2.Th1.H.altE Formalism.L2.Th1.F.altE
-  rw [stdH_unit_io_io_eq_herm]
-
 private theorem coord_lemma (z : ℂ) (hz : z ∈ L.lattice) :
     ∃ m n : ℤ, z = (m : ℂ) * L.ω₁ + (n : ℂ) * L.ω₂ := by
   obtain ⟨m, n, h⟩ := Submodule.mem_span_pair.mp hz
@@ -143,9 +116,6 @@ private theorem exists_sign_EE_lattice_eq_det : ∃ s : ℤ, (s = 1 ∨ s = -1) 
     push_cast
     ring
 
-theorem altE_add_right (x y z : ℂ) : EE x (y + z) = EE x y + EE x z := by
-  simp only [Formalism.L2.Th1.F.altE, herm, map_add, mul_add, add_div, Complex.add_im]
-
 private theorem exists_int_EE_eq_of_mem_lattice (x : ℂ) (hx : x ∈ L.lattice) (y : ℂ) (hy : y ∈ L.lattice) :
     ∃ m : ℤ, EE x y = m := by
   obtain ⟨s, -, hs⟩ := exists_sign_EE_lattice_eq_det L
@@ -153,29 +123,12 @@ private theorem exists_int_EE_eq_of_mem_lattice (x : ℂ) (hx : x ∈ L.lattice)
   obtain ⟨c, e, rfl⟩ := coord_lemma L y hy
   exact ⟨_, hs a b c e⟩
 
-theorem altE_two_right (x v : ℂ) : EE x (2 * v) = 2 * EE x v := by
-  have h : herm L x (2 * v) = ((2 : ℝ) : ℂ) * herm L x v := by
-    simp only [herm, map_mul, map_ofNat]
-    push_cast
-    ring
-  simp only [Formalism.L2.Th1.F.altE]
-  rw [h, Complex.im_ofReal_mul]
-
 private theorem exp_pi_I_intCast_eq_neg_one_pow (m : ℤ) :
     Complex.exp ((Real.pi : ℂ) * Complex.I * (((m : ℝ)) : ℂ)) = (-1 : ℂ) ^ m := by
   have h : (Real.pi : ℂ) * Complex.I * (((m : ℝ)) : ℂ) = (m : ℂ) * ((Real.pi : ℂ) * Complex.I) := by
     push_cast
     ring
   rw [h, Complex.exp_int_mul, Complex.exp_pi_mul_I]
-
-theorem altE_half_left (x y : ℂ) : EE (x / 2) y = EE x y / 2 := by
-  have h : herm L (x / 2) y = ((1 / 2 : ℝ) : ℂ) * herm L x y := by
-    simp only [herm]
-    push_cast
-    ring
-  simp only [Formalism.L2.Th1.F.altE]
-  rw [h, Complex.im_ofReal_mul]
-  ring
 
 private theorem cmTheta_one_eq :
     cmTheta 1 d = ((1 / 2 : ℝ) : ℂ) + ((Real.sqrt d / 2 : ℝ) : ℂ) * Complex.I := by

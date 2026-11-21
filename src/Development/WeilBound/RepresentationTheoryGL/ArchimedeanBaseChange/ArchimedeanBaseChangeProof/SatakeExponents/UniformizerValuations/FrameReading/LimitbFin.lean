@@ -21,12 +21,6 @@ section Level
 
 variable (B : Block E) (K₁ : Subgroup (GL (Fin B.a) (Af E))) (K₂ : Subgroup (GL (Fin B.b) (Af E)))
 
-theorem typeH_rinv {W₁ : Submodule ℂ (Kinf E B.a → ℂ)} {W₂ : Submodule ℂ (Kinf E B.b → ℂ)}
-    (F : B.I → H E B.a B.b → ℂ) (hF : ∀ i, TypeH K₁ K₂ W₁ W₂ (F i)) :
-    ∀ i, ∀ u ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b)), ∀ x, F i (x * finH u) = F i x := by
-  intro i u hu x
-  exact (hF i).1 u.1 (Subgroup.mem_prod.1 hu).1 u.2 (Subgroup.mem_prod.1 hu).2 x
-
 theorem mulF_idem_rinv (cK : ℂ) (ψ₀ : Matrix B.κ B.κ (Hf E B.a B.b → ℂ))
     (hψ₀ : ∀ x y h, ψ₀ x y h = if x = y ∧ h ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b)) then cK else 0)
     (ψ : Matrix B.κ B.κ (Hf E B.a B.b → ℂ)) :

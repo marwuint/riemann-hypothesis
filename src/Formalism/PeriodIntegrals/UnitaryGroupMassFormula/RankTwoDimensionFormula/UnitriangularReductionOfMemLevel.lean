@@ -9,18 +9,6 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 
 namespace PI.UnitaryDimensionFormula.NormCutK
 
-section NCongS
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
-
-def NCong (x : X.B.I.Gf) : Prop :=
-  (∀ a : Fin D.R.rS, (X.B.I.fmat x - 1) *ᵥ X.e0 a ∈ Mo X.B.I X.B.g (X.e0 '' {b | b.1 < a.1})) ∧
-    (X.B.I.fmat x - 1) *ᵥ X.z0 ∈ Mo X.B.I X.B.g (Set.range X.e0)
-
-end NCongS
-
 section K2iff
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisTransitiveOnValuationRingsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisTransitiveOnValuationRings
 
 open scoped Pointwise
 open GlobalTheory.Published GlobalTheory.Published.AbVarRed
@@ -34,7 +34,7 @@ theorem exists_smul_eq_of_isAbove (R K : Type) [CommRing R] [IsDomain R] [IsDisc
         rw [← hW]
         ext y
         rfl
-      obtain ⟨τ, hτ⟩ := GlobalTheory.T.galois_transitive_on_valuation_rings R K L _ _ (hc V hV) (hc V' hV')
+      obtain ⟨τ, hτ⟩ := _root_.GlobalTheory.ProlongConj.exists_smul_eq_of_isAbove R K L _ _ (hc V hV) (hc V' hV')
       refine ⟨τ.liftNormal Ω, trivial, Set.mem_iInter₂.2 fun x hx => ?_⟩
       have h1 : τ.liftNormal Ω x = algebraMap L Ω (τ ⟨x, hL x hx⟩) := τ.liftNormal_commutes Ω ⟨x, hL x hx⟩
       change τ.liftNormal Ω x ∈ V' ↔ x ∈ V

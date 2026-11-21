@@ -10,30 +10,11 @@ open scoped ENNReal
 
 noncomputable section
 
-def realForm {p q : ℕ} (M : Matrix (Fin p) (Fin q) ℂ) : Matrix (Fin p × Fin 2) (Fin q × Fin 2) ℝ :=
-  Matrix.of fun ia jb =>
-    (![![(M ia.1 jb.1).re, -(M ia.1 jb.1).im], ![(M ia.1 jb.1).im, (M ia.1 jb.1).re]] :
-      Fin 2 → Fin 2 → ℝ) ia.2 jb.2
-
 def AreaLinear.Statement : Prop :=
   ∀ (k m : ℕ) (L : EuclideanSpace ℝ (Fin k) →ₗ[ℝ] EuclideanSpace ℝ (Fin m)),
     Function.Injective L → ∀ A : Set (EuclideanSpace ℝ (Fin k)),
       μH[(k : ℝ)] (L '' A) =
         ENNReal.ofReal (√(LinearMap.det (LinearMap.adjoint L ∘ₗ L))) * μH[(k : ℝ)] A
-
-def ComplexJacobian.Statement : Prop :=
-  ∀ (p q : ℕ) (M : Matrix (Fin p) (Fin q) ℂ),
-    (((1 + (realForm M)ᵀ * realForm M).det : ℝ) : ℂ) = (1 + Mᴴ * M).det ^ 2
-
-open Classical in
-
-def CauchyBinetMinors.Statement : Prop :=
-  ∀ (p q : ℕ) (M : Matrix (Fin p) (Fin q) ℂ),
-    (1 + Mᴴ * M).det =
-      ((∑ k ∈ Finset.range (p + 1),
-        ∑ a ∈ Finset.univ.filter (fun a : Fin k → Fin p => StrictMono a),
-          ∑ b ∈ Finset.univ.filter (fun b : Fin k → Fin q => StrictMono b),
-            ‖(M.submatrix a b).det‖ ^ 2 : ℝ) : ℂ)
 
 def realGraphPt {k m : ℕ} (F : EuclideanSpace ℝ (Fin k) → EuclideanSpace ℝ (Fin m))
     (x : EuclideanSpace ℝ (Fin k)) : EuclideanSpace ℝ (Fin k ⊕ Fin m) :=
@@ -85,15 +66,6 @@ def MassFinite.Statement : Prop :=
     ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d → ∀ R : ℝ,
       μH[((2 * d : ℕ) : ℝ)] (zeroSetEuc J ∩ Metric.ball 0 R) < ⊤
 
-def MassBound.Statement : Prop :=
-  ∀ (n d : ℕ) (J : Ideal (MvPolynomial (Fin n) ℂ)), J.IsPrime →
-    ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d →
-    ∀ (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n))) (R : ℝ),
-      μH[((2 * d : ℕ) : ℝ)] (zeroSetEuc J ∩ Metric.ball 0 R) ≤
-        ∑ I ∈ Finset.univ.powersetCard d,
-          (⨆ x : I → ℂ, frameFibreCount b I (zeroSetEuc J) x) *
-            μH[((2 * d : ℕ) : ℝ)] (Metric.ball (0 : EuclideanSpace ℂ I) R)
-
 def PolySublevel.Statement : Prop :=
   ∀ (d : ℕ) (Q : MvPolynomial (Fin d) ℂ), Q ≠ 0 → ∀ R : ℝ, 0 < R →
     ∃ C α : ℝ, 0 < C ∧ 0 < α ∧ ∀ η : ℝ, 0 < η → η ≤ 1 →
@@ -115,10 +87,6 @@ def SlabBound.Statement : Prop :=
     J.IsPrime → IsFiniteLinProj J A → linForm u ∉ J →
       ∃ Q : MvPolynomial (Fin d) ℂ, Q ≠ 0 ∧ ∀ R : ℝ, ∃ C : ℝ, ∀ z ∈ zeroSetEuc J, ‖z‖ ≤ R →
         ‖eval (A *ᵥ fun j => z j) Q‖ ≤ C * ‖∑ j, u j * z j‖
-
-section Inhabitants
-
-end Inhabitants
 
 end
 

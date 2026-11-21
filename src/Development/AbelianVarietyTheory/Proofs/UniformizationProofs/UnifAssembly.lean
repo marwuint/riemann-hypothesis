@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.WCompat
 import Development.AbelianVarietyTheory.Definitions.Uniformization.IsCPPullback
 import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsUniqueSamePt
 import Development.AbelianVarietyTheory.Definitions.Uniformization.SameB
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniformisationOfFunctionalEquationDegreeOnStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniformisationOfFunctionalEquationDegreeOn
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -21,7 +21,7 @@ theorem unif_assembly : Laws → Laws2 → (AllSet fun {V} _ _ _ {A} {G} _ _ s =
   intro h1 h2 hA hB V _ _ _ A G _ _ s
   obtain ⟨D, U, hP, hg⟩ := hA V A G s
   obtain ⟨D', U', hP', hg', hFE⟩ := hB V s.cdvr D A G U
-  obtain ⟨U'', hM⟩ := GlobalTheory.T.exists_uniformisation_of_functionalEquation_degreeOne h1 h2 V s.cdvr D' A G U' hFE
+  obtain ⟨U'', hM⟩ := _root_.GlobalTheory.UU.exists_unif_of_fe_one h1 h2 V s.cdvr D' A G U' hFE
   have e : U'.P = s.P := hP'.trans hP
   refine ⟨D', U'', ?_, ?_, ?_⟩
   · exact hM.LG.trans (by rw [e])

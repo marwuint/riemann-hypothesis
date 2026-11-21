@@ -226,15 +226,6 @@ theorem satakeTransform_apply (h : SphericalHecke μ (F := F) (n := n)) :
     satakeTransform μ h = normalize F n (satake μ h) :=
   rfl
 
-theorem satakeTransform_eq_sum (h : SphericalHecke μ (F := F) (n := n)) :
-    satakeTransform μ h = (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) •
-      ∑ x ∈ cosetSupport h, single (iwasawaExponent F n x.out)
-        (halfModulus F (iwasawaExponent F n x.out) * (h : HeckeAlgebra μ) x.out) := by
-  rw [satakeTransform_apply, satake, map_smul, map_sum]
-  congr 1
-  refine Finset.sum_congr rfl fun x _ => ?_
-  rw [normalize_single, mul_comm]
-
 theorem coeff_satakeTransform (h : SphericalHecke μ (F := F) (n := n)) (l : Fin n → ℤ) :
     (satakeTransform μ h).coeff l = halfModulus F l * (satake μ h).coeff l :=
   coeff_normalize _ l

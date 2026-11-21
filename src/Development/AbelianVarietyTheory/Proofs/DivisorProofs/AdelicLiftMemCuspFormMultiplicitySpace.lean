@@ -5,8 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsThetaL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaIntegrandIntegrable
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PrincipalLevelFixesFockVectorsFiniteDatum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftModelHolomorphicOverReflexFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LoweringPartKillsFockProductMinorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftModelHolomorphicOverReflexField
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqTopOfTranslates
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LoweringPartKillsFockProductMinors
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelFockVectorHeisenbergAverageIsotropicEqZeroStatement
 
 noncomputable section
@@ -31,13 +32,13 @@ theorem liftIsCuspC : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G 
     have := D.sp.V_sig ((i : ℕ) + 1) (tauE D τ)
     rw [hm.vpos i] at this
     exact GlobalTheory.DefiniteQuotient.posDef_of_signature this
-  obtain ⟨hM, w, hw⟩ := GlobalTheory.T.liftModel_holomorphic_overReflexField R F h5 i σ s hemb
+  obtain ⟨hM, w, hw⟩ := _root_.GlobalTheory.LowRow.holShape_overK R F h5 i σ s hemb
   have : IsTopologicalGroup (GA D (Vc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _
   have hF := GlobalTheory.ThetaIntegrand.form_continuous (finHom (Vc D i)).rangeRestrict (GQ (Vc D i)) c.ρ hc.2.2.1
     (eventually_grpOf (Vc D i) (R.βV i) (datV i R.Pg (R.Q t) P m)) hφ
   have key := GlobalTheory.DefLift.ThetaMap.exists_member hP hom hm.inf hpos hM hw hc
     (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i σ)) (R.BV i) BW f) hpt hio
-    (GlobalTheory.T.lowering_part_kills_fock_product_minors R F i t σ s P cμ cη m ω BW f₀ f c io hd)
+    (_root_.GlobalTheory.LowKillDelta.rderC_ptAt_delta_eq_zero R F i t σ s P cμ cη m ω BW f₀ f c io hd)
     (J := levS _ (R.βW i) (R.datWp i R.triv)) (fun _ hk => hk.1) (GlobalTheory.DefLift.ThetaMap.level_open _ _ _)
     (fun k hk Q => GlobalTheory.PrincipalLevelFock.levW_fix_ptAt R F i t σ s P cμ cη m ω BW f₀ f c io hd Q k hk)
     (GlobalTheory.IndefiniteRowSideFullHecke.VectorLevelCharacters.principalLevelCharacter_eq_one R i)

@@ -17,10 +17,6 @@ noncomputable def princ (a : ℕ) : Subgroup ℤ_[l]ˣ := (redPow l a).ker
 
 noncomputable def resOrder (U : Subgroup ℤ_[l]ˣ) : ℕ := Nat.card (U.map (red l))
 
-noncomputable def depth (U : Subgroup ℤ_[l]ˣ) : ℕ∞ := nu l (U ⊓ princ l 1) 1
-
-noncomputable def stdGroup (o a : ℕ) : Subgroup ℤ_[l]ˣ := rootsOfUnity o ℤ_[l] ⊔ princ l a
-
 abbrev QmodZ : Type := ℚ_[l] ⧸ (1 : Submodule ℤ_[l] ℚ_[l])
 
 def twistInv (A : Type*) [AddCommGroup A] [Module ℤ_[l] A] (U : Subgroup ℤ_[l]ˣ) (tr : ℕ) :
@@ -31,12 +27,6 @@ def twistInv (A : Type*) [AddCommGroup A] [Module ℤ_[l] A] (U : Subgroup ℤ_[
   smul_mem' := fun c x hx u hu => by rw [smul_comm, hx u hu]
 
 noncomputable def H0 (U : Subgroup ℤ_[l]ˣ) (tr : ℕ) : Submodule ℤ_[l] (QmodZ l) := twistInv l (QmodZ l) U tr
-
-def TraceFixedResidues (N : ℕ) (U : Subgroup ℤ_[l]ˣ) (tr : ℕ) : AddSubgroup (ZMod (l ^ N)) where
-  carrier := {x | ∀ u ∈ U, ((redPow l N u : (ZMod (l ^ N))ˣ) : ZMod (l ^ N)) ^ tr * x = x}
-  zero_mem' := fun u _ => mul_zero _
-  add_mem' := fun {x y} hx hy u hu => by rw [mul_add, hx u hu, hy u hu]
-  neg_mem' := fun {x} hx u hu => by rw [mul_neg, hx u hu]
 
 noncomputable def levelGroup (N : ℕ) (H : Subgroup (ZMod N)ˣ) : Subgroup ℤ_[l]ˣ :=
   (H.map (ZMod.unitsMap (Nat.ordProj_dvd N l))).comap (redPow l (N.factorization l))

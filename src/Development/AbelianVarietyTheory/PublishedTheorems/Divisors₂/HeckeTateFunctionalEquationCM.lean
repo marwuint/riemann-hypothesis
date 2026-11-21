@@ -23,9 +23,6 @@ variable (E) in
 theorem isStdChar_stdChar : GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.IsStdChar E (stdChar E) :=
   (GlobalTheory.StdCharUnique.existsUnique_isStdChar E).exists.choose_spec
 
-theorem eq_stdChar {ψ : AddChar (AF E) ℂ} (h : GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.IsStdChar E ψ) : ψ = stdChar E :=
-  (GlobalTheory.StdCharUnique.existsUnique_isStdChar E).unique h (isStdChar_stdChar E)
-
 def psiAt (w : HeightOneSpectrum (𝓞 E)) (x : w.adicCompletion E) : ℂ := psiV E (stdChar E) w x
 
 def diffExp (w : HeightOneSpectrum (𝓞 E)) : ℕ := multiplicity w.asIdeal (differentIdeal ℤ (𝓞 E))
@@ -126,60 +123,6 @@ theorem out_notMem (w : HeightOneSpectrum (𝓞 E)) {a : ℕ} (ha : a ≠ 0) (y 
   rw [← Ideal.Quotient.mk_out (y : 𝓞 E ⧸ w.asIdeal ^ a), Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem.2 h] at h1
   have := Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top
   exact not_isUnit_zero h1
-
-theorem locK_mul_gaussSumAt_eq {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (ha : a ≠ 0) (hχ : LevelLe χ w a) {c c' : Eˣ}
-    (hc : w.valuation E (c : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ)))
-    (hc' : w.valuation E (c' : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ))) :
-    ((χ.locK w c' : ℂˣ) : ℂ) * gaussSumAt χ w a c' = ((χ.locK w c : ℂˣ) : ℂ) * gaussSumAt χ w a c := by
-  have := Fintype.ofFinite (𝓞 E ⧸ w.asIdeal ^ a)ˣ
-  have := w.isMaximal
-  have hu : w.valuation E ((c : E) / c') = 1 := by rw [map_div₀, hc, hc', div_self WithZero.exp_ne_zero]
-  obtain ⟨r, hr⟩ := w.exists_valuation_sub_lt_of_integer hu.le (Units.mk0 _ (WithZero.exp_ne_zero (a := -(a : ℤ))))
-  rw [Units.val_mk0] at hr
-  have hr1 : w.valuation E (r : E) = 1 := by
-    rw [← hu]
-    refine Valuation.map_eq_of_sub_lt _ (hr.trans_le ?_)
-    rw [hu, ← WithZero.exp_zero, WithZero.exp_le_exp]
-    omega
-  obtain ⟨ρ, hρ⟩ := Ideal.Quotient.isUnit_mk_pow_of_notMem w.asIdeal (n := a) ((w.valuation_eq_one_iff_notMem (K := E)).1 hr1)
-  rw [gaussSumAt, gaussSumAt, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum, Finset.mul_sum]
-  refine Fintype.sum_equiv (Equiv.mulRight ρ) _ _ fun y => ?_
-  set z : 𝓞 E := Quotient.out (y : 𝓞 E ⧸ w.asIdeal ^ a) with hz
-  have hz1 : w.valuation E (z : E) = 1 := (w.valuation_eq_one_iff_notMem (K := E)).2 (out_notMem w ha y)
-  have hz0 : (z : E) ≠ 0 := fun h => by
-    rw [h, map_zero] at hz1
-    exact zero_ne_one hz1
-  have hzc : (z : E) * (c / c') ≠ 0 := mul_ne_zero hz0 (div_ne_zero c.ne_zero c'.ne_zero)
-  have h1 : gaussTerm χ w c ((Quotient.out ((Equiv.mulRight ρ y : (𝓞 E ⧸ w.asIdeal ^ a)ˣ) : 𝓞 E ⧸ w.asIdeal ^ a) : 𝓞 E) : E) =
-      gaussTerm χ w c (z * (c / c')) := by
-    have h2 : (Quotient.out ((Equiv.mulRight ρ y : (𝓞 E ⧸ w.asIdeal ^ a)ˣ) : 𝓞 E ⧸ w.asIdeal ^ a) : 𝓞 E) - z * r ∈ w.asIdeal ^ a := by
-      rw [← Ideal.Quotient.eq, Ideal.Quotient.mk_out, map_mul, hz, Ideal.Quotient.mk_out, ← hρ]
-      rfl
-    have h3 : w.valuation E ((z * r : 𝓞 E) : E) = 1 := by
-      push_cast
-      rw [map_mul, hz1, hr1, one_mul]
-    rw [gaussTerm_congr' hχ hc ((w.valuation_eq_one_iff_notMem (K := E)).2 (out_notMem w ha _)) h3 (valuation_sub_le h2)]
-    refine gaussTerm_congr' hχ hc h3 (by rw [map_mul, hz1, hu, one_mul]) ?_
-    push_cast
-    rw [← mul_sub, map_mul, hz1, one_mul]
-    exact hr.le
-  have e1 : Units.mk0 _ hzc = Units.mk0 _ hz0 * c * c'⁻¹ := by
-    ext
-    simp [div_eq_mul_inv, mul_assoc]
-  have e2 : (z : E) * (c / c') / c = z / c' := by
-    have := c.ne_zero
-    field_simp
-  rw [h1, gaussTerm, gaussTerm, dif_neg hz0, dif_neg hzc, e1, e2, map_mul, map_mul, map_inv]
-  simp only [mul_inv, inv_inv, Units.val_mul, Units.val_inv_eq_inv_val]
-  have := (χ.locK w c).ne_zero
-  field_simp
-
-theorem locEps_of_ne_zero {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (ha : a ≠ 0) (hχ : LevelLe χ w a) {c : Eˣ}
-    (hc : w.valuation E (c : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ))) (s : ℂ) :
-    locEps χ w a s = ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-s * ((a + diffExp w : ℕ) : ℂ)) *
-      ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ ((diffExp w : ℂ) / 2) * (((χ.locK w c : ℂˣ) : ℂ) * gaussSumAt χ w a c) := by
-  rw [locEps, if_neg ha, locK_mul_gaussSumAt_eq ha hχ (valuation_unif_pow w _) hc]
-  ring
 
 theorem locEps_zero (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (s : ℂ) :
     locEps χ w 0 s = ((val χ w : ℂˣ) : ℂ) ^ diffExp w * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-s * (diffExp w : ℂ)) *

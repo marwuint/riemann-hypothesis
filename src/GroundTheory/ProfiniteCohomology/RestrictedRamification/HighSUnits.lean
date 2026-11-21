@@ -97,11 +97,6 @@ theorem sUnitsInfl_apply (r : ℕ) (y : cohomology (galSUnitsMax K.1 ℚ̄ S) r)
     sUnitsInfl K S r y = gsUnitsInfl K S r ((cohomologyMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) r).hom y) :=
   rfl
 
-include hℓ hS hD in
-
-theorem isIsoModCoprime_sUnitsInfl_of_divisor {r : ℕ} (hr : 4 ≤ r) : IsIsoModCoprime ℓ (sUnitsInfl K S r) :=
-  (isIsoModCoprime_gsUnitsInfl K S hℓ hS (by omega)).comp (isIsoModCoprime_sUnitsToUnits K S ιs hℓ hS hD hr)
-
 end
 
 end GroundTheory.ProfCoh

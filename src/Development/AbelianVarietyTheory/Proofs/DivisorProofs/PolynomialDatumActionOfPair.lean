@@ -10,13 +10,14 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeakExponentialActi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryLieElementsGenerateOneParamLines
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalCompactOneParameterLinesOfLieLines
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExistStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockToSchrodingerMapExistsOfArchHeisenbergDerivaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExist
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockToSchrodingerMapExistsOfArchHeisenbergDeriva
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzFockVacuumLineUniqueOfHeisenbergDerivatiStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialSpaceEqFockImageOfArchLawsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneParamSubgroupGeneratorsExistStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieScalarStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartanEigenOrthonormalFrameExistsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneParamSubgroupGeneratorsExist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieScalar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartanEigenOrthonormalFrameExists
 
 noncomputable section
 
@@ -145,9 +146,9 @@ theorem member (hP : GlobalTheory.FunPr.Hypotheses₂) {σ : E →ₐ[F] E} {α 
     (∀ γ ∈ RLines σ JB, DerOn (LinearMap.range Φ) (fun t => om (γ (Multiplicative.ofAdd t)))) ∧
     ∀ k : UG (cA σ) JB, At (evI F) ((k.1 : Matrix β β (AE F E)) - 1) →
       (∀ w, Commute ((k.1 : Matrix β β (AE F E)).map (piInf (τ w))) (θ w)) → OpOn (LinearMap.range Φ) (om k) := by
-  have hder : DerEx := GlobalTheory.T.archHeisenbergDerivatives_exist
-  have hls : LieScalar := GlobalTheory.T.lieScalar_of_prints_derEx_vacLine hP hder (GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hder)
-  have hgen : GenEx := GlobalTheory.T.oneParamSubgroup_generators_exist
+  have hder : DerEx := _root_.GlobalTheory.HeisDer.derEx
+  have hls : LieScalar := _root_.GlobalTheory.LieScal.lieScalar hP hder (GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hder)
+  have hgen : GenEx := _root_.GlobalTheory.RealLiftGen.genEx
   have hkl : KLine := kLine_of_lineEx exists_line_of_upq
   obtain ⟨c, hact⟩ := hls F E σ _ _ _ _ _ _ _ ψ τ _ _ d a b A C Φ om hcm hψ fr hΦ hs
   refine ⟨fun γ hγ => ?_, fun k hk hc => ?_⟩
@@ -165,9 +166,9 @@ theorem polActs_of_isPair : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type
     (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → GlobalTheory.RealActs.PolActs B M om := by
   intro hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' h
   have hb := h.base
-  have hfr : FrameEx := GlobalTheory.T.cartanEigen_orthonormalFrame_exists
-  have hder : DerEx := GlobalTheory.T.archHeisenbergDerivatives_exist
-  have hfe : FockEx := GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hder
+  have hfr : FrameEx := _root_.GlobalTheory.RealLift.frameEx_holds
+  have hder : DerEx := _root_.GlobalTheory.HeisDer.derEx
+  have hfe : FockEx := _root_.GlobalTheory.FockMapEx.fockEx_of_derEx hder
   have hpr : PolRange := GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws actsLaws hder (GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hder)
   choose A hA hAθ using fun w => hfr _ _ _ _ _ (h.herm.sig w) (h.herm.cartan w)
   choose C hC hCθ using fun w => hfr _ _ _ _ _ (h.skew.sig w) (h.skew.cartan w)

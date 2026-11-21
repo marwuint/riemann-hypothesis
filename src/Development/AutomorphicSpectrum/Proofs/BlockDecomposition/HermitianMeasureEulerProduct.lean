@@ -6,17 +6,17 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ArchimedeanHaarScalin
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsAdelicHaarCovolumeOne
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.SelfDualMap
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualProdIff
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HCoContinuousAddEquivStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianCoordinatesNaturalInRingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HCoContinuousAddEquiv
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianCoordinatesNaturalInRing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianPairingInCoordinatesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinateFormSymmetricNondegenerateStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianCoordinatesMeasurePreservingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CovolumeOneInvariantUnderMatrixStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinateFormSymmetricNondegenerate
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianCoordinatesMeasurePreserving
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CovolumeOneInvariantUnderMatrix
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TestFunctionContinuousCompactSupportAltBis
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatrixPreservesIntegersAlmostAllStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FourierInversionInvariantMatrixStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ApproximateIdentityProductBumpsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductNeighbourhoodsShrinkCompactOpenStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatrixPreservesIntegersAlmostAll
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FourierInversionInvariantMatrix
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ApproximateIdentityProductBumps
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductNeighbourhoodsShrinkCompactOpen
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Published.SiegelOneVector GlobalTheory.CompanionTheory.SiegelND GlobalTheory.CompanionTheory.SiegelND.Coef GlobalTheory.CompanionTheory.SiegelND.Coef.TestN
 open scoped TensorProduct ENNReal
 
@@ -85,17 +85,17 @@ theorem core (F : Type) [Field F] [NumberField F] (hF : IsTotallyReal F) (ψ : A
   haveI : BorelSpace (AF F) := ⟨rfl⟩
   obtain ⟨ν, hν⟩ := GlobalTheory.CompanionTheory.Hypotheses₂.OneV.exists_isCovolOne F
   obtain ⟨S₀, h₀⟩ := GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.exists_test_approx F hF ψ hψ ν hν laminf lam hinf hlam
-  obtain ⟨S₂, h₂⟩ := GlobalTheory.T.matrix_preserves_integers_almost_all F ι B hBd
+  obtain ⟨S₂, h₂⟩ := _root_.GlobalTheory.CompanionTheory.MatInt.exists_finset_mulVec_integral_iff F ι B hBd
   refine ⟨S₀ ∪ S₂, fun S hS => ?_⟩
   obtain ⟨ρ, U, hρ, hρt, hU, hUt, hinv, hint, hb, hlim⟩ := h₀ S (Finset.subset_union_left.trans hS)
   haveI : ν.IsAddHaarMeasure := hν.1
   set Bm := B.map (algebraMap F (AF F)) with hBm
   set P : Measure (ι → AF F) := Measure.pi fun _ : ι => ν with hPdef
-  have hpres : P.map (fun x => Bm.mulVec x) = P := GlobalTheory.T.covolume_one_invariant_under_matrix F ν hν ι B hBd
+  have hpres : P.map (fun x => Bm.mulVec x) = P := _root_.GlobalTheory.CompanionTheory.SiegelND.piCovol_map_matrix F ν hν ι B hBd
   have hu : IsUnit Bm.det := GlobalTheory.CompanionTheory.SW.SdCoord.isUnit_det_map _ hBd
   have hemb : MeasurableEmbedding fun x : ι → AF F => Bm.mulVec x :=
     (GlobalTheory.CompanionTheory.SW.SdCoord.matE Bm hu).toHomeomorph.measurableEmbedding
-  have hT := fun k => GlobalTheory.T.fourier_inversion_invariant_matrix (AF F) ν ψ ι Bm (hBs.map _) hemb hpres (testT (ρ k) S (U k))
+  have hT := fun k => _root_.GlobalTheory.CompanionTheory.BigCell.fourier_prod_symm_preserving (AF F) ν ψ ι Bm (hBs.map _) hemb hpres (testT (ρ k) S (U k))
     (fouA ψ ν (testT (ρ k) S (U k))) (fun y => rfl) (hinv k).1 (hinv k).2
   have hc := fun k => GlobalTheory.T.continuous_and_hasCompactSupport_testT F (ρ k) S (U k) (hρ k).1 (hρ k).2.1 (fun v => ⟨(hU k v).1, (hU k v).2.1⟩)
   have hfou : ∀ k y, fouP ψ Bm P (powT (testT (ρ k) S (U k))) y =
@@ -189,13 +189,13 @@ theorem mem_latH_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
 theorem hCo_fin {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {d : ℕ}
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (y : HermR (AF F) σ n) (i : Idx n d) :
     hCo (Fv F v) σ b (hermV σ v (hermFin σ y)) i = (sndA F (hCo (AF F) σ b y i)) v := by
-  rw [hermV, GlobalTheory.T.hermitian_coordinates_natural_in_ring, hermFin, GlobalTheory.T.hermitian_coordinates_natural_in_ring]
+  rw [hermV, _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.hCo_hermMap, hermFin, _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.hCo_hermMap]
   rfl
 
 theorem hCo_inf {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {d : ℕ}
     (b : Module.Basis (Fin d) F E) {n : ℕ} (y : HermR (AF F) σ n) (i : Idx n d) :
     hCo (Ainf F) σ b (hermInf σ y) i = fstA F (hCo (AF F) σ b y i) := by
-  rw [hermInf, GlobalTheory.T.hermitian_coordinates_natural_in_ring]
+  rw [hermInf, _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.hCo_hermMap]
 
 theorem testH_eq {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {d : ℕ}
     (b : Module.Basis (Fin d) F E) {n : ℕ} (ρ : Ainf F → ℝ) (S : Finset (HeightOneSpectrum (𝓞 F)))
@@ -252,7 +252,7 @@ theorem exists_testH_approx : ∀ (F E : Type) [Field F] [NumberField F] [Field 
   intro F E _ _ _ _ _ σ hCM M J hJ n hn ψ hψ db hdb d b laminf lam hinf hlam
   classical
   have hF := hCM.1
-  obtain ⟨t1, -, -, -, -, -, -, -, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)
+  obtain ⟨t1, -, -, -, -, -, -, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)
   haveI := t1
   haveI : BorelSpace (AF F) := ⟨rfl⟩
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩
@@ -269,10 +269,10 @@ theorem exists_testH_approx : ∀ (F E : Type) [Field F] [NumberField F] [Field 
   haveI : ∀ v : HeightOneSpectrum (𝓞 F), T2Space (Fv F v) := fun v => (hloc v).2.2.2.1
   haveI : laminf.IsAddHaarMeasure := hinf.1
   haveI : ∀ v, (lam v).IsAddHaarMeasure := fun v => (hlam v).1
-  obtain ⟨eA, heA⟩ := GlobalTheory.T.exists_homeomorph_hermR_coordinates F E σ hCM (AF F) d b n
-  obtain ⟨eI, heI⟩ := GlobalTheory.T.exists_homeomorph_hermR_coordinates F E σ hCM (Ainf F) d b n
-  choose eV heV using fun v : HeightOneSpectrum (𝓞 F) => GlobalTheory.T.exists_homeomorph_hermR_coordinates F E σ hCM (Fv F v) d b n
-  obtain ⟨hBs, hBd⟩ := GlobalTheory.T.coordinate_form_symmetric_nondegenerate F E σ hCM d b n
+  obtain ⟨eA, heA⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.hCo_continuousAddEquiv F E σ hCM (AF F) d b n
+  obtain ⟨eI, heI⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.hCo_continuousAddEquiv F E σ hCM (Ainf F) d b n
+  choose eV heV using fun v : HeightOneSpectrum (𝓞 F) => _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.hCo_continuousAddEquiv F E σ hCM (Fv F v) d b n
+  obtain ⟨hBs, hBd⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordForm_isSymm_det_ne_zero F E σ hCM d b n
   set B := coordForm σ b n with hB
   set Bm := B.map (algebraMap F (AF F)) with hBm
   have hpair : ∀ w y : HermR (AF F) σ n, pairHerm (AF F) σ n w y = dotProduct (eA w) (Bm.mulVec (eA y)) := by
@@ -290,9 +290,9 @@ theorem exists_testH_approx : ∀ (F E : Type) [Field F] [NumberField F] [Field 
   obtain ⟨ρ, U, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩ := hcore S hS
   have hcoI : ∀ T, hCo (Ainf F) σ b T = eI T := fun T => (heI T).symm
   have hcoV : ∀ v T, hCo (Fv F v) σ b T = eV v T := fun v T => (heV v T).symm
-  obtain ⟨g1, g2⟩ := GlobalTheory.T.approximate_identity_product_bumps (HermR (Ainf F) σ n) (Ainf F) (Idx n d) eI ρ
+  obtain ⟨g1, g2⟩ := _root_.GlobalTheory.CompanionTheory.BigCell.prod_coordinate_bumps (HermR (Ainf F) σ n) (Ainf F) (Idx n d) eI ρ
     (fun k => ⟨(h1 k).1, (h1 k).2.1, (h1 k).2.2.1⟩) h2
-  have g3 := fun v => GlobalTheory.T.product_neighbourhoods_shrink_compact_open (HermR (Fv F v) σ n) (Fv F v) (Idx n d) (eV v) (fun k => U k v)
+  have g3 := fun v => _root_.GlobalTheory.CompanionTheory.BigCell.preimage_box_shrinking (HermR (Fv F v) σ n) (Fv F v) (Idx n d) (eV v) (fun k => U k v)
     (fun k => h3 k v) (h4 v)
   have hρe : ∀ k, (fun T => ∏ i, ρ k (hCo (Ainf F) σ b T i)) = fun T => ∏ i, ρ k (eI T i) := fun k => by
     funext T
@@ -318,12 +318,12 @@ theorem exists_testH_approx : ∀ (F E : Type) [Field F] [NumberField F] [Field 
   have hI : ∀ k, ∫ w, testH σ b (ρh k) S (Uh k) w ∂db = ∫ x, powT (testT (ρ k) S (U k)) x ∂(db.map eA) := fun k => by
     rw [hemb.integral_map, hτ]
   have hmI : (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf n).map eI = Measure.pi fun _ : Idx n d => laminf := by
-    rw [← GlobalTheory.T.hermitian_coordinates_measure_preserving F E σ hCM (Ainf F) d b laminf hinf.1 n]
+    rw [← _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordHerm_map_hCo F E σ hCM (Ainf F) d b laminf hinf.1 n]
     congr 1
     funext T
     exact (heI T)
   have hmV : ∀ v, (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b (lam v) n).map (eV v) = Measure.pi fun _ : Idx n d => lam v := fun v => by
-    rw [← GlobalTheory.T.hermitian_coordinates_measure_preserving F E σ hCM (Fv F v) d b (lam v) (hlam v).1 n]
+    rw [← _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordHerm_map_hCo F E σ hCM (Fv F v) d b (lam v) (hlam v).1 n]
     congr 1
     funext T
     exact (heV v T)

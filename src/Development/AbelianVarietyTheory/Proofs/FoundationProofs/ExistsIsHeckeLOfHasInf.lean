@@ -394,9 +394,4 @@ theorem gen_relation (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hL : 
 
 end Main
 
-theorem distribution_relation (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hL : ToricSumFormula) :
-    (∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N), IsToricElt X → BlochKatoReduction.Gen.adm10 X) ∧
-    ∀ D : D7, IsToricElt D.ntw → BlochKatoReduction.adm10 D :=
-  ⟨fun _ _ _ ht => gen_relation hA hL ht, fun _ ht => gen_relation hA hL ht⟩
-
 end GlobalTheory.ToricDistribution

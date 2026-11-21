@@ -6,20 +6,6 @@ namespace Formalism.MainNotions.Pk
 
 open Formalism.BasicNotions
 
-def EvD {eps : ℝ} (Fm : FamP eps) (P : D7 → Prop) : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, P (Fm.D x i)
-
-theorem EvD.and {eps : ℝ} {Fm : FamP eps} {P Q : D7 → Prop} (hP : EvD Fm P) (hQ : EvD Fm Q) :
-    EvD Fm fun D => P D ∧ Q D := by
-  obtain ⟨x1, h1⟩ := hP
-  obtain ⟨x2, h2⟩ := hQ
-  exact ⟨max x1 x2, fun x hx i => ⟨h1 x (le_trans (le_max_left _ _) hx) i, h2 x (le_trans (le_max_right _ _) hx) i⟩⟩
-
-theorem EvD.mono {eps : ℝ} {Fm : FamP eps} {P Q : D7 → Prop} (hP : EvD Fm P) (h : ∀ D, P D → Q D) : EvD Fm Q := by
-  obtain ⟨x0, h0⟩ := hP
-  exact ⟨x0, fun x hx i => h _ (h0 x hx i)⟩
-
-theorem EvD.of_all {eps : ℝ} (Fm : FamP eps) {P : D7 → Prop} (h : ∀ D, P D) : EvD Fm P := ⟨0, fun _ _ _ => h _⟩
-
 def DGamSmooth {eps : ℝ} (Fm : FamP eps) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word) (p : ℕ), p.Prime → p ∣ ((Fm.D x i).mem u).C.DGam →
     p ≤ 2 * (Fm.D x i).R.f * (Fm.D x i).R.N (Fm.D x i).R.m + 1

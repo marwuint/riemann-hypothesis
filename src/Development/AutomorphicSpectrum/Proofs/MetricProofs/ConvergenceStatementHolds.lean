@@ -7,7 +7,7 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocDensAddOfFunContin
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsCompactRWSublevel
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MaMeasureEqOfConst
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TailBoundStatementHolds
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedEnergyRegularizationBoundStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedEnergyRegularizationBound
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas
 open scoped ContDiff
 
@@ -146,7 +146,7 @@ theorem conv_core {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2
     (∀ᶠ t in 𝓝[>] 0, Integrable (gT t) (maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ))) ∧
     Tendsto (fun t => ∫ y, gT t y ∂maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ))
       (𝓝[>] 0) (𝓝 (∫ y, g y ∂maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ))) := by
-  obtain ⟨-, K₁, hK₁⟩ := GlobalTheory.T.mixed_energy_regularization_bound tailBound_holds A Θ L s m W hΘ hpos hL hS hSNC hnorm
+  obtain ⟨-, K₁, hK₁⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.limit_measure_tail tailBound_holds A Θ L s m W hΘ hpos hL hS hSNC hnorm
     th ph phT C₅ C t₀ hW hR hC2
   obtain ⟨K₂, t₁, ht₁, ht₁₀, hU⟩ := tail_uniform tailBound_holds A Θ L s m W hΘ hpos hL hS hSNC
     hnorm th ph phT C₅ C t₀ hW hR
@@ -235,7 +235,7 @@ theorem convergence_holds : ConvergenceStatement := by
   intro e X _ _ _ _ _ A Θ L s n m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR hC2 g gT C₆
     hgc hgb hgl
   intro μT μ
-  obtain ⟨hfin, -⟩ := GlobalTheory.T.mixed_energy_regularization_bound tailBound_holds A Θ L s m W hΘ hpos hL hS hSNC hnorm
+  obtain ⟨hfin, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.limit_measure_tail tailBound_holds A Θ L s m W hΘ hpos hL hS hSNC hnorm
     th ph phT C₅ C t₀ hW hR hC2
   obtain ⟨hg1, hg2, hg3⟩ := conv_core A Θ L s m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀
     hW hR hC2 g gT C₆ hgc hgb hgl

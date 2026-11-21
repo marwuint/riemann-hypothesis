@@ -54,6 +54,4 @@ end GlobalTheory.LKGeo.ForgetHecke
 
 namespace GlobalTheory.LKGeo.ForgetHecke
 
-variable {p : ℕ} [Fact p.Prime] {D : Datum p}
-
 end GlobalTheory.LKGeo.ForgetHecke

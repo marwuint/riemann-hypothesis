@@ -62,12 +62,6 @@ def NablaLDiag : Prop :=
         Submodule.span R (Set.range fun i => (∏ a, t a ^ μ i a)⁻¹ • rowAct K g⁻¹ (map (algebraMap R K) (b i))) =
           nablaL R K k n ν (g * Matrix.diagonal t)
 
-def NablaLTwist : Prop :=
-  ∀ (R K : Type) [CommRing R] [Field K] [Algebra R K] (φ : K ≃+* K) (ψ : R ≃+* R),
-    (∀ x : R, φ (algebraMap R K x) = algebraMap R K (ψ x)) →
-    ∀ (k n : ℕ) (ν : Fin n → ℕ) (g : Matrix (Fin k) (Fin k) K) (F : MvPolynomial (Fin k × Fin n) K),
-      F ∈ nablaL R K k n ν g ↔ map (φ : K →+* K) F ∈ nablaL R K k n ν (g.map φ)
-
 def NablaLLe : Prop :=
   ∀ (R K : Type) [CommRing R] [Field K] [Algebra R K] (k n : ℕ) (ν : Fin n → ℕ) (g : Matrix (Fin k) (Fin k) K),
     IsUnit g.det → ∀ F ∈ nablaL R K k n ν g, F ∈ dualWeyl K k n ν
@@ -88,13 +82,6 @@ def dualLat (R K : Type*) [CommRing R] [Field K] [Algebra R K] {V : Type*} [AddC
     obtain ⟨a, ha⟩ := hφ v hv
     refine ⟨c * a, ?_⟩
     rw [LinearMap.smul_apply, ← ha, map_mul, Algebra.smul_def]
-
-def DualLatBasis : Prop :=
-  ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K], Function.Injective (algebraMap R K) →
-    ∀ (V : Type) [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V] {ι : Type} [Fintype ι]
-      [DecidableEq ι] (b : Module.Basis ι K V),
-      LinearIndependent R (fun i => b.dualBasis i) ∧
-      dualLat R K (Submodule.span R (Set.range b)) = Submodule.span R (Set.range fun i => b.dualBasis i)
 
 def blockEmb (K : Type*) [CommRing K] {S : Type*} {k n : ℕ} (s : S) :
     MvPolynomial (Fin k × Fin n) K →ₐ[K] MvPolynomial (S × (Fin k × Fin n)) K :=

@@ -69,9 +69,6 @@ theorem res_sub {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V �
 theorem res_zero' {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) :
     Sec.res g (0 : Sec F U) = 0 := map_zero _
 
-theorem smap_zero {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} :
-    Sec.map φ (0 : Sec F U) = 0 := map_zero _
-
 theorem sec_eq_zero_of_loc {R : Type} [CommRing R] (F : Shv R) {U : Scheme.{0}} (s : Sec F U)
     (h : Loc U fun _ g => Sec.res g s = 0) : s = 0 := by
   obtain ⟨S, hS, hS'⟩ := h

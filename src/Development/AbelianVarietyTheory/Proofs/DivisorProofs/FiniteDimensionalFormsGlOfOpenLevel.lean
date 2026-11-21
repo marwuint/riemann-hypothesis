@@ -12,8 +12,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantTermAutomorphicFormIntegralStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantTermIntegralLeftInvariantStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantTermModerateGrowthStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraCapelliUniformDiagonalBlocksStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalSlowlyIncreasingKilledCapelliPoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraCapelliUniformDiagonalBlocks
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalSlowlyIncreasingKilledCapelliPo
 
 noncomputable section
 
@@ -173,7 +173,7 @@ theorem exists_block_poly {r : ℕ} (hr : r ≤ a) (Q : (E →+* ℂ) → ℂ �
       add_mem' := fun hx hy p => (congrArg₂ (· + ·) (hx p) (hy p)).trans (add_zero _)
       smul_mem' := fun c _ hx p => (congrArg (c * ·) (hx p)).trans (mul_zero _) }
   have hM : ∀ X, ∀ ψ ∈ M', lie E a X ψ ∈ M' := fun X ψ hψ y g => lie_left (hψ y) X g
-  have key := fun τ : E →+* ℂ => GlobalTheory.T.harishChandra_capelli_uniform_diagonalBlocks (Sm E a) a r hr (Eop τ) (glRel_Eop τ) M' K
+  have key := fun τ : E →+* ℂ => _root_.GlobalTheory.LeviHC.CapAlg.capalg (Sm E a) a r hr (Eop τ) (glRel_Eop τ) M' K
     (fun i j x hx => M'.smul_mem (1 / 2 : ℂ) (M'.sub_mem (hM _ x hx) (M'.smul_mem Complex.I (hM _ x hx))))
     (fun i j hi hj x hx => K.smul_mem (1 / 2 : ℂ) (K.sub_mem (lieS_upper hr hx hi hj _)
       (K.smul_mem Complex.I (lieS_upper hr hx hi hj _))))
@@ -274,7 +274,7 @@ theorem exists_slice_space (f : Fin b ↪ Fin a)
       (∀ g, (fun k : Kinf E a => (cptRep E a k ψ).1 g) ∈ W) → ψ.1 ∈ growth E a →
       (∀ τ u m, (aeval (qdet (fun i j : Fin b => Eop (a := a) τ (f i) (f j)) u) (q τ u) ψ).1 (g * embGL f m) = 0) →
       (fun m => ψ.1 (g * embGL f m)) ∈ V := by
-  obtain ⟨V, hV, h⟩ := GlobalTheory.T.finiteDimensional_slowlyIncreasing_killed_capelliPolynomials E b hb (L.comap (embGL f)) (hL.preimage (continuous_embGL f))
+  obtain ⟨V, hV, h⟩ := _root_.GlobalTheory.CapKilled.finite_of_finiteness E b hb (L.comap (embGL f)) (hL.preimage (continuous_embGL f))
     (W.map (LinearMap.funLeft ℂ ℂ (embK f))) inferInstance (fun τ u => q τ (u + ((b : ℂ) - 1) / 2)) fun τ u => hq τ _
   refine ⟨V.map (Sm E b).subtype, inferInstance, fun ψ g h1 h2 h3 h4 h5 =>
     ⟨slice f g ψ, h _ h1 (fun k hk => ?_) (fun m => ?_) (growth_slice f g ψ h4) fun τ u => ?_, rfl⟩⟩

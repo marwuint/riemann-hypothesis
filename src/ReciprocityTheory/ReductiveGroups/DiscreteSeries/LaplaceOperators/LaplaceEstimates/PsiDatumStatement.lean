@@ -267,9 +267,4 @@ def FinStatement : Prop :=
         ∀ g ∈ UJset ε, F g = 0) →
       BesselNZ ε lam' u
 
-def ConvStatement : Prop :=
-  ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (n : ℕ) (E : Fin n → Fin n → Module.End ℂ M),
-    Capelli.tensV E = LemK.tensV E ∧ Capelli.tensVd E = LemK.tensVd E ∧
-      Capelli.eeV E = LemK.eeV E ∧ Capelli.eeVd E = LemK.eeVd E
-
 end ReciprocityTheory.ChartRestriction.DS.Lap

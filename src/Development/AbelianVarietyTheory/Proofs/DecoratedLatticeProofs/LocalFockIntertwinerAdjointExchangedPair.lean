@@ -7,7 +7,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ha
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockSignTransposeExchangesLocalGlActionsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormal
 import Formalism.LocalToGlobal.IndefiniteReal.GvPairOfOrbitDerivCont
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SmoothVectorsOfLieClosedFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SmoothVectorsOfLieClosedFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVectorsSubspaceStableSobolevFormDeriv
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.JacobianCommutation.PCkPartials
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum MeasureTheory NumberField Matrix
 open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.Chain.RealIt
 open scoped TensorProduct InnerProductSpace ComplexConjugate
@@ -296,7 +298,7 @@ theorem adj_locIt : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (
           (c : ℂ) • (locS (M'.ε τ) (M.ε τ) ((M'.fr τ * Y * (M'.fr τ)⁻¹).map (starRingEnd ℂ)) Q - ((aS : ℂ) * Y.trace) • Q)
         rw [em, locS_smul, LinearMap.smul_apply, Matrix.trace_smul, smul_sub, smul_smul, smul_eq_mul, mul_left_comm]
       rw [e, map_smul, LinearMap.smul_apply]
-    exact GlobalTheory.T.smoothVectors_of_lie_closed_family W.rank (gramAt D W τ) (M'.H τ) (M'.rep τ) (LPol V.rank W.rank) (fun Q => A' Q w) δ
+    exact _root_.GlobalTheory.SmoothCrit.smoothVec_of_closed_family W.rank (gramAt D W τ) (M'.H τ) (M'.rep τ) (LPol V.rank W.rank) (fun Q => A' Q w) δ
       (gram_det_ne M' τ) (GlobalTheory.HolDict.ModelRep.model_rep D W S' M' τ).2.1 hadd hsmul (fun Y hY Q => hsrc Y hY Q w) Q
   refine ⟨A', hsm, ?_, fun Q y => ⟨A (j.symm Q) y, fun w => hA'r Q w y⟩, hsrc, htgt⟩
   obtain ⟨P, y, -, hne⟩ := hA.ne

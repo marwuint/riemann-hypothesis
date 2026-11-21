@@ -8,9 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueScalar
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaCoordinatesExistUniqueSeparatePoints
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ValuationThetaRatioEqBilinear
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSecNeZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorTranslatedBundleIntegralPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorTranslatedBundleIntegralPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFrameIdentityOfGenericPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionThetaSectionIntegralPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionThetaSectionIntegralPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFamilyTermZeroIntegralTorusPointStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -66,7 +66,7 @@ theorem GlobalTheory.Poinc.Sep.FrameInt.integral_terms : ∀ (m : ℕ), Odd m �
   have ht : ∀ c, ∃ t : LB.Gen (LB.LinComb D.P.L ![(η[D.P.A]).left, (b c).left] (DegPre.lineε 1)), t.IsGen ∧
       ∀ z J, Good D.P.L z J → val t (toUnit (TF (R := V₁) (FractionRing V₁))).left z J = val (w c) (𝟙 _) z J := by
     intro c
-    obtain ⟨t', ht'⟩ := GlobalTheory.T.exists_generator_translatedBundle_integralPoint V₁ D (b c)
+    obtain ⟨t', ht'⟩ := _root_.GlobalTheory.GenLocal.exists_gen_unit_point V₁ D (b c)
     obtain ⟨ε, hε⟩ := hfr c t' ht'
     obtain ⟨t, htg, htv⟩ := exists_rescale_gen D.P.L _ _ t' ht'
       (Units.map (Scheme.ΓSpecIso (CommRingCat.of V₁)).inv.hom.toMonoidHom ε)
@@ -76,7 +76,7 @@ theorem GlobalTheory.Poinc.Sep.FrameInt.integral_terms : ∀ (m : ℕ), Odd m �
 
   obtain ⟨ν, hν⟩ := exists_ratio (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.P.isLB rfl ρ₀ D.rig hρ₀ D.rig_gen
   obtain ⟨lam, hlam⟩ := GlobalTheory.T.thetaFamily_term_zero_integral_torusPoint V₁ D θ hθ th
-  choose f hf using fun c => GlobalTheory.T.exists_function_thetaSection_integralPoint V₁ D θ (b c) (t c) (htg c) ρ₀ hρ₀
+  choose f hf using fun c => _root_.GlobalTheory.IntPointFn.fn_of_theta V₁ D θ (b c) (t c) (htg c) ρ₀ hρ₀
   obtain ⟨z⟩ := exists_pt (R := V₁) (F := FractionRing V₁)
   obtain ⟨J, hJ⟩ := exists_good' D.P.isLB z
   have hTF : (TF (R := V₁) (FractionRing V₁)).hom = (toUnit (TF (R := V₁) (FractionRing V₁))).left := by

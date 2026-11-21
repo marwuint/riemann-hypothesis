@@ -2,7 +2,9 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.UsedLocalConclusion
 import Formalism.SharpRestriction.LevelLetterCocycles.LiftingTheory
 import Formalism.SharpRestriction.LevelLetterCocycles.SemisimpleLetterIffForallMem
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachOperatorProductShiftMemLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachOperatorProductShiftMemLattice
+import Formalism.SharpRestriction.LevelLetterCocycles.ExpRules
+import Formalism.SharpRestriction.LevelLetterCocycles.CrystallineLiftingInputs
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitsEqOfPowPredEqOfValOne
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
@@ -132,7 +134,7 @@ theorem dss_semisimple_of_used : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf 
     have hYi : Formalism.MainNotions.LiftingTheory.qp ((HW l).W K 1 LL h) ^ Y • ((letE i : LetA ↥(OL LL) _) • seq 0) ∈
         ((HW l).W K 1 LL h).N T := by
       exact smul_letE_mem ((HW l).W K 1 LL h) T i _ (seq 0) hy
-    have key := GlobalTheory.T.wachOperatorProduct_shift_mem_lattice D HW F Cm hN l K LL hCAl T hT i 0 Y cO hc' _
+    have key := _root_.GlobalTheory.wachShift_mem_of_N1used D HW F Cm hN l K LL hCAl T hT i 0 Y cO hc' _
       (fun τ a j hO hjump hj hjY => hjx i τ a j hO hjump hj hjY)
       (fun k => (letE i : LetA ↥(OL LL) _) • seq k) hDL hYi
       (fun k hk => letE_rec ((HW l).W K 1 LL h) T i _ _ _ (hrec k hk))

@@ -48,7 +48,7 @@ theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.trLim_holds :
     rw [Matrix.trace_sum] at h
     simp only [Matrix.trace_smul, smul_eq_mul] at h
     exact h.trans hle
-  obtain ⟨htor, hcomp, -⟩ := GlobalTheory.T.acris_torsionFree_complete_frobenius_properties l K bk
+  obtain ⟨htor, hcomp, -⟩ := _root_.GlobalTheory.AcrisFrobE.main l K bk
   have hz := GlobalTheory.CrZero.eq_zero_of_forall_dvd _ hcomp.toIsHausdorff _ hdvd
   have hs0 : s = 0 := GlobalTheory.CrZero.pow_cancel (l : Per.Acris l) htor c₂ s 0 (by simpa using hz)
   haveI : Nontrivial P.R.B := GlobalTheory.Pst.nontrivial_B P

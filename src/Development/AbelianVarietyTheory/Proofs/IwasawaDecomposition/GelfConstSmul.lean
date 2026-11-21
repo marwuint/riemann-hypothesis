@@ -187,11 +187,6 @@ theorem IsKerSys.swap {θ : InfF D} {V W : HSp D} {M : Type} [AddCommGroup M] [M
     obtain ⟨a, b, ha, hb, hab⟩ := h.cap τ
     exact ⟨b, a, fun k f g' => hb k f g', fun k f g => ha k f g, hab.symm⟩
 
-def constKer (V W : HSp D) : ℂ →ₗ[ℂ] (GA D V → GA D W → ℂ) where
-  toFun c _ _ := c
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-
 def OmCont (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) : Prop :=
   ∀ f, IsThetaFunO ψ S T f → ∀ w, Continuous fun p : GA D S × GA D T => om p f w
 

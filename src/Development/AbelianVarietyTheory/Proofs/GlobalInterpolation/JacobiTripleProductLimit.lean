@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MultipliableTpFactor
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JacobiTripleFiniteCoeffTendstoAndBoundedStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JacobiTripleFiniteCoeffTendstoAndBounded
 open Complex
 open scoped Real
 
@@ -16,7 +16,7 @@ theorem tendsto_finCoeff_sum_jacobiTheta₂ : ∀ (τ : ℂ) (z : ℂ), 0 < τ.i
   have ht1 : ‖t‖ < 1 := by
     rw [ht, norm_pow]
     nlinarith [norm_nonneg (cexp (π * I * τ))]
-  obtain ⟨hlim, C, hC⟩ := GlobalTheory.T.jacobiTripleFiniteCoeff_tendsto_and_bounded t ht1
+  obtain ⟨hlim, C, hC⟩ := _root_.GlobalTheory.JacobiTriple.finCoeff_tendsto_and_bounded t ht1
   have hsum : Summable (fun j : ℤ => C * ‖jacobiTheta₂_term j z τ‖) :=
     ((summable_jacobiTheta₂_term_iff z τ).2 hτ).norm.mul_left C
   have hT := tendsto_tsum_of_dominated_convergence (𝓕 := Filter.atTop)

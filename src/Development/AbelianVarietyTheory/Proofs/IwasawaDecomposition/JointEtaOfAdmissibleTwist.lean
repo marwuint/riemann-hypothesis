@@ -203,7 +203,7 @@ theorem para_mem (hP : IdFrame hF P) (hPq : ∀ v, NG.OverPl (Pq v) v) (hsp : �
     Lev.finE V (P.ψ κ) ∈ Formalism.L2.DIV.lev D.sp.cm V.gram 1 L := by
   obtain ⟨hn, -⟩ := id hP
   have hU := umax_of_para h hp
-  refine mem_lev_of_red hL _ ((GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D V _ hF P hP hn κ).1.1 hU) (fun kv => ?_) fun PP hPP => ?_
+  refine mem_lev_of_red hL _ ((_root_.GlobalTheory.MtRead.Red.red_eq_local D V _ hF P hP hn κ).1.1 hU) (fun kv => ?_) fun PP hPP => ?_
   · rw [red_one' hP hU h (hsp kv) fun ho => hg ⟨_, ho, kv.1, D.naut.plGw_over kv.1 kv.2⟩]
     exact ⟨one_mem _, ut_one⟩
   · obtain ⟨-, -, -, hQ, -⟩ := hL
@@ -233,7 +233,7 @@ theorem uni_mem (hP : IdFrame hF P) (hsp : ∀ kv, ∃ s : SplitPlace D.host.E, 
     Lev.finE V (P.ψ κ) ∈ Formalism.L2.DIV.lev D.sp.cm V.gram 1 L := by
   obtain ⟨hn, -⟩ := id hP
   have hU := umax_of_para h hp.1
-  refine mem_lev_of_red hL _ ((GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D V _ hF P hP hn κ).1.1 hU) (fun kv' => ?_) fun PP hPP => ?_
+  refine mem_lev_of_red hL _ ((_root_.GlobalTheory.MtRead.Red.red_eq_local D V _ hF P hP hn κ).1.1 hU) (fun kv' => ?_) fun PP hPP => ?_
   · by_cases e : NX.pG D kv' = s.w
     · rw [e]
       exact (inLevG_iff hP hn hU s _).1 (inLevG_of_uni hp)
@@ -249,7 +249,7 @@ theorem chr_pow (hP : IdFrame hF P) (hsp : ∀ kv, ∃ s : SplitPlace D.host.E, 
     (hκ' : Lev.finE V (P.ψ κ) ∈ Formalism.L2.DIV.lev D.sp.cm V.gram 1 L') :
     Lev.levChi V 1 L (P.ψ κ) ^ (D.host.g kv.1 - 1) = Lev.levChi V 1 L' (P.ψ κ) ^ (D.host.g kv.1 - 1) := by
   obtain ⟨hn, -⟩ := id hP
-  have hU := (GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D V _ hF P hP hn κ).1.2 (Formalism.L2.DIV.parLev_St hκ.1)
+  have hU := (_root_.GlobalTheory.MtRead.Red.red_eq_local D V _ hF P hP hn κ).1.2 (Formalism.L2.DIV.parLev_St hκ.1)
   have hg : ∀ kv', NX.pG D kv' ≠ NX.pG D kv → redFn 1 (NX.pG D kv') (Lev.finE V (P.ψ κ)) = 1 := fun kv' e =>
     red_one' hP hU h (hsp kv') (hoff kv' (hs ▸ e))
   unfold Lev.levChi
@@ -419,24 +419,6 @@ theorem joint_of {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {M : MtFam D} (ad
       exact h4
 
 end Rows
-
-theorem joint : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ B _ T w P x => ∀ (l : StrictHenselianAcyclic hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → Joint (D := Dof x) (eta (D := Dof x) (cfOf x) w.I.xi v j) (mtAt (D := Dof x) l.mt.M v j) l.b.Bs.exp b hA j := by
-  intro _ hL
-  refine StepW.of_all ?_
-  intro K B f T w _ _ _ P x l v i b ψ hA j hv _ hT
-  have hon : (Dof x).what₂.muTw v = (Dof x).what₂.muAt v := (P.q.mu.on v (GlobalTheory.HeightCounting.Up.Model.mem_of_twisted x v hv)).symm
-  have hμ : Formalism.IndefR.RecTie.Used0 (Dof x) ((Dof x).what₂.muTw v) := Or.inr ⟨v, hon⟩
-  refine joint_of (D := Dof x) l.mt.ad l.rat.rat l.b.Bs l.b.ser x.m.z.lev.is x.m.z.pins.keep l.Pq_over l.a.elem (fun t PP hPP => ?_)
-    hμ j ?_ b hA hT
-  · rw [x.m.z.lev.Q] at hPP
-    rw [l.sel]
-    obtain ⟨u, -, e⟩ := (Formalism.L2.Col.mem_QE _ _ _).1 hPP
-    exact ⟨u, e⟩
-  · have e1 := x.m.z.lev.xiH (x.r.Y.tupT ((Dof x).what₂.muTw v))
-    have e2 := x.m.tup (x.r.Y.tupT ((Dof x).what₂.muTw v))
-    rw [← x.r.tup, x.r.Y.tupTie _ hμ] at e2
-    rw [e1, ← e2, x.m.z.lev.C]
-    rfl
 
 end GlobalTheory.JointLevel
 end

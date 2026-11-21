@@ -14,16 +14,19 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfI
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockJetsUnitVacuumEqScaledThetaJets
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusHermitianFormScaledCoordinateEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockVacuumRealRestrictionGaussianEntireStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockMonomialAtOriginGaussianEntireOrthonormalStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockMonomialAtOriginGaussianEntireOrthonormal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramAtPosDef
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsVacuumConjOfNegHermitianSpace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockVectorNegHermitianSpaceConjMonomial
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilRepresentationVacuumSignInertPlaces
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UnitaryDatumNumbersForSupBounds
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergRootSmulFiniteRationalLatticeDecompStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergRootSmulFiniteRationalLatticeDecomp
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OmAtSmulRight
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DeltaOrthonormalCoordsMemLatticeOfFiniteRationalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EntireEqOfMonomialDerivationsAtZeroEqStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergTranslateFiniteRationalRealGaussianStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualImageOrthonormalFrameLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EntireEqOfMonomialDerivationsAtZeroEq
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergTranslateFiniteRationalRealGaussian
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualImageOrthonormalFrameLattice
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim
 open Formalism.L2.Host (HChar)
@@ -98,10 +101,10 @@ theorem core (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
   obtain rfl := cart_one frT hT hcT
   have hψ : IsStdChar D ψ (-1) := hF.1
   have hθ : IsInfFam θ := hF.2.inf
-  obtain ⟨ΛS, hΛSe, hΛS⟩ := GlobalTheory.T.isSelfDual_image_orthonormalFrame_lattice S frS hS Ls hLs
-  obtain ⟨ΛT, hΛTe, hΛT⟩ := GlobalTheory.T.isSelfDual_image_orthonormalFrame_lattice T frT hT Lt hLt
+  obtain ⟨ΛS, hΛSe, hΛS⟩ := _root_.GlobalTheory.MovedDict.isSelfDualC_inV S frS hS Ls hLs
+  obtain ⟨ΛT, hΛTe, hΛT⟩ := _root_.GlobalTheory.MovedDict.isSelfDualC_inV T frT hT Lt hLt
   rw [← hΛSe, ← hΛTe] at hF hw
-  obtain ⟨M, ζ, hζ, hnM, heq⟩ := GlobalTheory.T.heisenberg_root_smul_finiteRational_latticeDecomp ψ S T ΛS ΛT hψ hΛS hΛT F hF.2.lat n hn w hw
+  obtain ⟨M, ζ, hζ, hnM, heq⟩ := _root_.GlobalTheory.MultLatDecomp.heisO_eq_root_smul_finRat ψ S T ΛS ΛT hψ hΛS hΛT F hF.2.lat n hn w hw
   rw [hΛSe, hΛTe] at hnM
   obtain ⟨Φ, hΦd, hΦ⟩ := GlobalTheory.T.fockVacuum_real_restriction_gaussian_entire ψ θ S T frS frT _ _ hS hT F hF
   set sc : ℂ := (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹) with hsc
@@ -117,8 +120,8 @@ theorem core (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     have hx : 0 < Formalism.L2.Pj.xiR D := GlobalTheory.SupDict.xiR_pos D
     exact_mod_cast (Real.sqrt_pos.2 (by positivity)).ne'
   have hΦeq : Φ = fun z => c * Θ₀ (δ • z) := by
-    refine GlobalTheory.T.entire_eq_of_monomial_derivations_at_zero_eq Φ _ hΦd ((hΘ.comp (differentiable_id.const_smul δ)).const_mul c) fun k => ?_
-    have h1 := GlobalTheory.T.fockMonomial_at_origin_gaussian_entire_orthonormal ψ θ S T frS frT hψ hθ hS hT F Φ hΦd hΦ k
+    refine _root_.GlobalTheory.EntireJetUniq.eq_of_applyAt0_monomial_eq Φ _ hΦd ((hΘ.comp (differentiable_id.const_smul δ)).const_mul c) fun k => ?_
+    have h1 := _root_.GlobalTheory.FockPos.fock_monomial_zero_of_on ψ θ S T frS frT hψ hθ hS hT F Φ hΦd hΦ k
     have h2 := hj k
     rw [applyAt0_scale Θ₀ hΘ c δ k]
     refine mul_left_cancel₀ (pow_ne_zero (k.sum fun _ n => n) hsc0) ?_
@@ -126,7 +129,7 @@ theorem core (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     ring
   set X : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank := fun τ a b =>
     -(((GlobalTheory.FockPos.frAt frT τ)⁻¹ * Matrix.of (GlobalTheory.VacUnique.infRat S T M τ) * GlobalTheory.FockPos.frAt frS τ) a b) with hX
-  have hR := GlobalTheory.T.heisenbergTranslate_finiteRational_realGaussian ψ θ S T frS frT hS hT hψ hθ F hF.2.theta Φ hΦ M X hX
+  have hR := _root_.GlobalTheory.MovedTrans.heisO_finRat_real ψ θ S T frS frT hS hT hψ hθ F hF.2.theta Φ hΦ M X hX
   set Φ₁ : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ := fun Z => ζ * (Φ (Z + X) *
     Complex.exp (-(Real.pi : ℂ) * (2 * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (X τ a b)) -
       (Real.pi : ℂ) * (2 * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ a, ∑ b, X τ a b * starRingEnd ℂ (X τ a b)) / 2)) with hΦ₁
@@ -167,7 +170,7 @@ theorem core (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     simp only [e, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.neg_apply, Matrix.smul_apply,
       smul_eq_mul, Pi.smul_apply, hX, nsmul_eq_mul]
     ring
-  · rw [GlobalTheory.T.fockMonomial_at_origin_gaussian_entire_orthonormal ψ θ S T frS frT hψ hθ hS hT _ Φ₁ hΦ₁d hR' k, hΦ₁eq, applyAt0_scale G hGd c δ k, hprod, mul_pow]
+  · rw [_root_.GlobalTheory.FockPos.fock_monomial_zero_of_on ψ θ S T frS frT hψ hθ hS hT _ Φ₁ hΦ₁d hR' k, hΦ₁eq, applyAt0_scale G hGd c δ k, hprod, mul_pow]
     ring
 
 end GlobalTheory.HeisTrans

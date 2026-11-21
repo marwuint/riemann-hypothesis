@@ -76,50 +76,8 @@ def wG (R : Ranks) (ej : ℚ) (j : ℕ) : ℚ := ej - (R.k : ℚ) / 2 - (2 * (j 
 
 def RankBaseSpaceEq : Prop := ∀ R : Ranks, R.N 0 + 1 + 2 * R.rS = R.r
 
-def SignatureBaseSpaceSum : Prop := ∀ R : Ranks, R.sigY0.1 + R.sigY0.2 = R.r
-
-def FactSigW : Prop := ∀ R : Ranks, ∀ j, 1 ≤ j → j ≤ R.m → (R.sigW j).1 + (R.sigW j).2 = R.r
-
-def SignatureBaseMiddleEq : Prop := ∀ R : Ranks, R.sigY0 = R.sigW (R.m / 2)
-
-def FactWmDef : Prop := ∀ R : Ranks, (R.sigW R.m).2 = 0 ∧ (R.sigW R.m).1 = R.r
-
 def FactXm : Prop := ∀ R : Ranks, R.N R.m = R.rankX' + 1
 
-def FactYm : Prop := ∀ R : Ranks, R.rankY R.m = R.rankX'
-
-def FactNStep : Prop := ∀ R : Ranks, ∀ j, R.N (j + 1) = R.N j + (R.t + 1)
-
 def FactNEven : Prop := ∀ R : Ranks, ∀ j, Even (R.N j)
-
-def FactROdd : Prop := ∀ R : Ranks, Odd R.r
-
-def FactSigmaCount : Prop := ∀ R : Ranks, (R.k - 1) + R.m = R.r
-
-def FactSShift : Prop := ∀ R : Ranks, ∀ (ej : ℚ) (j : ℕ), 1 ≤ j →
-  sExp R ej j - sExp' R ej j = ((R.t : ℚ) + 1) / 2
-
-def FactWG : Prop := ∀ R : Ranks, ∀ (ej : ℚ) (j : ℕ), 1 ≤ j →
-  wG R ej j = sExp R ej j - (j : ℚ) * ((R.t : ℚ) + 1) / 2
-
-def FactSInt : Prop := ∀ R : Ranks, ∀ (z : ℤ) (j : ℕ), 1 ≤ j →
-  (∃ a : ℤ, sExp R (z : ℚ) j = a) ∧ (∃ a : ℤ, sExp' R (z : ℚ) j = a)
-
-def FactNV : Prop := ∀ R : Ranks, R.nV - R.r = R.t
-
-def FactHCMono : Prop := ∀ (R : Ranks) (P : HCParam R),
-  (∀ i : Fin (R.k - 1), P.v i < P.u ⟨i.1, by omega⟩ ∧ P.u ⟨i.1 + 1, by omega⟩ < P.v i) ∧
-  (∀ (h : 0 < R.k) (h' : 0 < R.m), -P.b ⟨0, h'⟩ < P.u ⟨R.k - 1, by omega⟩) ∧
-  (∀ j : Fin R.m, -P.e j < -P.b j) ∧
-  (∀ j : Fin R.m, ∀ h : j.1 + 1 < R.m, -P.b ⟨j.1 + 1, h⟩ < -P.e j)
-
-theorem factHCMono : FactHCMono := by
-  intro R P
-  have ht : (0 : ℚ) ≤ R.t := by positivity
-  refine ⟨fun i => ⟨P.u_gt_v i, P.v_gt_u i⟩, P.u_last_gt, fun j => ?_, fun j h => ?_⟩
-  · have := P.gap_be j
-    linarith
-  · have := P.gap_eb j h
-    linarith
 
 end Formalism.BasicNotions

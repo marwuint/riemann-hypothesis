@@ -19,10 +19,6 @@ def chrStep (μ : ℕ → C) (η : C) (j : ℕ) : C × C :=
 
 def chrTh (μ : ℕ → C) (η : C) (j : ℕ) : C × C := (μ j, μ j * η⁻¹)
 
-def chrLine (η : C) : C := η⁻¹
-
-def chrLineTop (η : C) : C := η
-
 theorem chrStep_eq_att (μ : ℕ → C) (η : C) {r t j : ℕ} (hr : Odd r) (ht : Odd t) (hj : 1 ≤ j) :
     chrStep μ η j = (attChr (μ j) η (r + (j - 1) * t), attChr (μ j) η (r + j * t)) := by
   have hr' : r % 2 = 1 := Nat.odd_iff.mp hr
@@ -54,23 +50,6 @@ structure IsIo (ν : Measure H) (𝓕 : Set H) (th : G → H → S → ℂ) (pt 
   eq : ∀ F : CCs, ∀ φ v g,
     liftInt ν 𝓕 th (pt φ) ((F : Ds →ₗ[ℂ] (H → ℂ)) v) g = ((io F : CCt) : Dt →ₗ[ℂ] (G → ℂ)) (T φ v) g
 
-theorem IsIo.unique {ν : Measure H} {𝓕 : Set H} {th : G → H → S → ℂ} {pt : Sinf → S}
-    {T : Sinf →ₗ[ℂ] Ds →ₗ[ℂ] Dt} {CCs : Submodule ℂ (Ds →ₗ[ℂ] (H → ℂ))}
-    {CCt : Submodule ℂ (Dt →ₗ[ℂ] (G → ℂ))} {io io' : CCs →ₗ[ℂ] CCt}
-    (hT : ∀ u : CCt, (∀ φ v, (u : Dt →ₗ[ℂ] (G → ℂ)) (T φ v) = 0) → u = 0)
-    (h : IsIo ν 𝓕 th pt T CCs CCt io) (h' : IsIo ν 𝓕 th pt T CCs CCt io') : io = io' := by
-  apply LinearMap.ext
-  intro F
-  have h0 : io F - io' F = 0 := by
-    apply hT
-    intro φ v
-    funext g
-    have e1 := h.eq F φ v g
-    have e2 := h'.eq F φ v g
-    simp only [Submodule.coe_sub, LinearMap.sub_apply, Pi.sub_apply, Pi.zero_apply]
-    rw [← e1, ← e2, sub_self]
-  exact sub_eq_zero.mp h0
-
 def IsTPlus (ipDs : Ds →ₗ[ℂ] Ds →ₗ⋆[ℂ] ℂ) (ipDt : Dt →ₗ[ℂ] Dt →ₗ⋆[ℂ] ℂ) (T : Sinf →ₗ[ℂ] Ds →ₗ[ℂ] Dt)
     (Tp : Sinf →ₗ⋆[ℂ] Dt →ₗ[ℂ] Ds) : Prop :=
   ∀ φ v' v, ipDt (T φ v') v = ipDs v' (Tp φ v)
@@ -87,23 +66,6 @@ structure IsIoUp [MeasurableSpace G] (νG : Measure G) (𝓕G : Set G) (th : G �
       ((up u : CCs) : Ds →ₗ[ℂ] (H → ℂ)) (Tp φ v) h
 
 end Step
-
-section Adj
-
-variable {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
-
-def IsAdjOf (ipM : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ) (ipN : N →ₗ[ℂ] N →ₗ⋆[ℂ] ℂ) (A : M →ₗ[ℂ] N) (B : N →ₗ[ℂ] M) : Prop :=
-  ∀ x y, ipN (A x) y = ipM x (B y)
-
-theorem IsAdjOf.unique {ipM : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ} {ipN : N →ₗ[ℂ] N →ₗ⋆[ℂ] ℂ} {A : M →ₗ[ℂ] N}
-    {B B' : N →ₗ[ℂ] M} (hnd : ∀ z, (∀ x, ipM x z = 0) → z = 0)
-    (h : IsAdjOf ipM ipN A B) (h' : IsAdjOf ipM ipN A B') : B = B' := by
-  apply LinearMap.ext
-  intro y
-  have h0 : B y - B' y = 0 := hnd _ (fun x => by rw [map_sub, ← h x y, ← h' x y, sub_self])
-  exact sub_eq_zero.mp h0
-
-end Adj
 
 section Chain
 
@@ -122,10 +84,6 @@ def IsChainIo {S Sinf : ℕ → Type*} [∀ j, MeasurableSpace (G j)] [∀ j, Ad
     (T : ∀ k, Sinf k →ₗ[ℂ] D (k + 1) →ₗ[ℂ] D k) (io : ∀ k, CC (k + 1) →ₗ[ℂ] CC k) : Prop :=
   ∀ k < m, IsIo (ν (k + 1)) (𝓕 (k + 1)) (th k) (pt k) (T k) (CC (k + 1)) (CC k) (io k)
 
-def IsThetaUp (ip : ∀ j, CC j →ₗ[ℂ] CC j →ₗ⋆[ℂ] ℂ) (io : ∀ k, CC (k + 1) →ₗ[ℂ] CC k) (m : ℕ)
-    (up : CC 0 →ₗ[ℂ] CC m) : Prop :=
-  IsAdjOf (ip m) (ip 0) (thetaDn CC io m) up
-
 end Chain
 
 section Rows
@@ -141,18 +99,6 @@ def iota (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) : Qmu dn V0 →ₗ[ℂ] N
 
 theorem iota_mk (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (x : V0) :
     iota dn V0 (Submodule.Quotient.mk x) = dn x := rfl
-
-theorem iota_injective (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) : Function.Injective (iota dn V0) := by
-  rw [← LinearMap.ker_eq_bot]
-  first
-    | exact Submodule.ker_liftQ_eq_bot _ _ _ le_rfl
-    | exact Submodule.ker_liftQ_eq_bot _ _ le_rfl
-    | exact Submodule.ker_liftQ_eq_bot' _ _ rfl
-
-def qNormSq (ip : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ) (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (q : Qmu dn V0) : ℝ :=
-  sInf ((fun x : V0 => (ip x x).re) '' {x | Submodule.Quotient.mk x = q})
-
-def Zmu (up : N →ₗ[ℂ] M) (EE : Submodule ℂ N) : Submodule ℂ M := EE.map up
 
 end Rows
 
@@ -173,38 +119,11 @@ structure IsThetaP (ν : Measure H') (𝓕 : Set H') (th : G' → H' → S' → 
 
   eq : ∀ f : A, ∀ e g, thP f e g = thetaPInt ν 𝓕 th pt io f e g
 
-theorem IsThetaP.unique {ν : Measure H'} {𝓕 : Set H'} {th : G' → H' → S' → ℂ} {pt : Sinf' → S'}
-    {io : TK →ₗ[ℂ] Tau →ₗ[ℂ] Sinf'} {A : Submodule ℂ (H' → Tau)}
-    {thP thP' : A →ₗ[ℂ] (TK →ₗ[ℂ] (G' → ℂ))}
-    (h : IsThetaP ν 𝓕 th pt io A thP) (h' : IsThetaP ν 𝓕 th pt io A thP') : thP = thP' := by
-  apply LinearMap.ext
-  intro f
-  apply LinearMap.ext
-  intro e
-  funext g
-  rw [h.eq f e g, h'.eq f e g]
-
 variable {A Amb : Type*} [AddCommGroup A] [Module ℂ A] [AddCommGroup Amb] [Module ℂ Amb]
-
-def Zj (ipA : A →ₗ[ℂ] A →ₗ⋆[ℂ] ℂ) (thP : A →ₗ[ℂ] Amb) (good : Submodule ℂ A) : Submodule ℂ A :=
-  (LinearMap.ker thP).orthogonalBilin ipA ⊓ good
-
-def ZjE (ipA : A →ₗ[ℂ] A →ₗ⋆[ℂ] ℂ) (eThP : A →ₗ[ℂ] Amb) : Submodule ℂ A :=
-  (LinearMap.ker eThP).orthogonalBilin ipA
 
 def IsLamP {Sig : Type*} (thW : A →ₗ[ℂ] Amb) (adj : Amb →ₗ[ℂ] A) (part : Sig → Submodule ℂ Amb)
     (lam : Sig → ℝ) : Prop :=
   ∀ σ, ∀ x ∈ part σ, thW (adj x) = (lam σ : ℂ) • x
-
-theorem IsLamP.unique {Sig : Type*} {thW : A →ₗ[ℂ] Amb} {adj : Amb →ₗ[ℂ] A} {part : Sig → Submodule ℂ Amb}
-    {lam lam' : Sig → ℝ} (h : IsLamP thW adj part lam) (h' : IsLamP thW adj part lam') {σ : Sig}
-    (hσ : part σ ≠ ⊥) : lam σ = lam' σ := by
-  obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hσ
-  have e := (h σ x hx).symm.trans (h' σ x hx)
-  have e2 : ((lam σ : ℂ) - (lam' σ : ℂ)) • x = 0 := by rw [sub_smul, e, sub_self]
-  rcases smul_eq_zero.mp e2 with h0 | h0
-  · exact_mod_cast sub_eq_zero.mp h0
-  · exact absurd h0 hx0
 
 end ThetaP
 
@@ -232,42 +151,9 @@ theorem IsKap.unique {Tup Sig : Type*} {m : ℕ} {dnup : Tup → N →ₗ[ℂ] N
 
 end Kap
 
-section Bu
-
-variable {M N Mu : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
-
-def IsBu (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (Bt : Mu → V0 → ℂ) (B : Mu → N → ℂ) : Prop :=
-  ∀ φ (x : V0), B φ (iota dn V0 (Submodule.Quotient.mk x)) = Bt φ x
-
-theorem IsBu.unique {dn : M →ₗ[ℂ] N} {V0 : Submodule ℂ M} {Bt : Mu → V0 → ℂ} {B B' : Mu → N → ℂ}
-    (h : IsBu dn V0 Bt B) (h' : IsBu dn V0 Bt B') (φ : Mu) {y : N}
-    (hy : y ∈ LinearMap.range (iota dn V0)) : B φ y = B' φ y := by
-  obtain ⟨q, rfl⟩ := LinearMap.mem_range.mp hy
-  obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-  rw [h φ x, h' φ x]
-
-def zeta {I : Type*} [Monoid I] (ξ : I →* Circle) (a : I) : ℂ := ξ a
-
-end Bu
-
 section Statements
 
 variable {M N Mu : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
-
-def UpLiftInProjectedFormSpace (up : N →ₗ[ℂ] M) (EE : Submodule ℂ N) (V0 : Submodule ℂ M) : Prop := EE.map up ≤ V0
-
-def DnIntoEE (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (EE : Submodule ℂ N) : Prop := V0.map dn ≤ EE
-
-def UpInjEE (up : N →ₗ[ℂ] M) (EE : Submodule ℂ N) : Prop := Set.InjOn up EE
-
-def IotaOnto (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (EE : Submodule ℂ N) : Prop :=
-  LinearMap.range (iota dn V0) = EE
-
-def BtVanish (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (Bt : Mu → V0 → ℂ) : Prop :=
-  ∀ φ, ∀ x ∈ Umu dn V0, Bt φ x = 0
-
-def Prop6iii (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (ζ : ℂ) (Pt : Mu → V0 → ℂ) (B : Mu → N → ℂ) : Prop :=
-  ∀ φ (x : V0), ζ * Pt φ x = B φ (iota dn V0 (Submodule.Quotient.mk x))
 
 def IoExists {G H S Sinf Ds Dt : Type*} [MeasurableSpace H] [AddCommGroup Sinf] [Module ℂ Sinf]
     [AddCommGroup Ds] [Module ℂ Ds] [AddCommGroup Dt] [Module ℂ Dt] (ν : Measure H) (𝓕 : Set H)
@@ -281,56 +167,6 @@ def pet {X : Type*} [MeasurableSpace X] (ν : Measure X) (𝓕 : Set X) (f₁ f�
 def IsSchur {X Dm : Type*} [MeasurableSpace X] [AddCommGroup Dm] [Module ℂ Dm] (ν : Measure X) (𝓕 : Set X)
     (ipD : Dm →ₗ[ℂ] Dm →ₗ⋆[ℂ] ℂ) (CC : Submodule ℂ (Dm →ₗ[ℂ] (X → ℂ))) (ip : CC →ₗ[ℂ] CC →ₗ⋆[ℂ] ℂ) : Prop :=
   ∀ F₁ F₂ : CC, ∀ v v', pet ν 𝓕 ((F₁ : Dm →ₗ[ℂ] (X → ℂ)) v) ((F₂ : Dm →ₗ[ℂ] (X → ℂ)) v') = ip F₁ F₂ * ipD v v'
-
-def AdjointLiftPeterssonIdentity {G H S Sinf Ds Dt : Type*} [MeasurableSpace G] [MeasurableSpace H] [AddCommGroup Sinf] [Module ℂ Sinf]
-    [AddCommGroup Ds] [Module ℂ Ds] [AddCommGroup Dt] [Module ℂ Dt] (ν : Measure H) [SFinite ν] (𝓕 : Set H)
-    (νG : Measure G) [SFinite νG]
-    (𝓕G : Set G) (th : G → H → S → ℂ) (pt : Sinf → S) (T : Sinf →ₗ[ℂ] Ds →ₗ[ℂ] Dt) (Tp : Sinf →ₗ⋆[ℂ] Dt →ₗ[ℂ] Ds)
-    (ipDs : Ds →ₗ[ℂ] Ds →ₗ⋆[ℂ] ℂ) (ipDt : Dt →ₗ[ℂ] Dt →ₗ⋆[ℂ] ℂ)
-    (CCs : Submodule ℂ (Ds →ₗ[ℂ] (H → ℂ))) (CCt : Submodule ℂ (Dt →ₗ[ℂ] (G → ℂ)))
-    (ipS : CCs →ₗ[ℂ] CCs →ₗ⋆[ℂ] ℂ) (ipT : CCt →ₗ[ℂ] CCt →ₗ⋆[ℂ] ℂ) (io : CCs →ₗ[ℂ] CCt) (up : CCt →ₗ[ℂ] CCs) :
-    Prop :=
-  IsSchur ν 𝓕 ipDs CCs ipS → IsSchur νG 𝓕G ipDt CCt ipT → IsTPlus ipDs ipDt T Tp →
-    (∃ φ v' v, ipDt (T φ v') v ≠ 0) →
-    (∀ (F : CCs) (u : CCt) φ v' v, Integrable (fun q : G × H => th q.1 q.2 (pt φ) *
-      (F : Ds →ₗ[ℂ] (H → ℂ)) v' q.2 * starRingEnd ℂ ((u : Dt →ₗ[ℂ] (G → ℂ)) v q.1))
-      ((νG.restrict 𝓕G).prod (ν.restrict 𝓕))) →
-    IsIo ν 𝓕 th pt T CCs CCt io → IsIoUp νG 𝓕G th pt Tp CCs CCt up → IsAdjOf ipS ipT io up
-
-def ThmA {A Amb Sig : Type*} [AddCommGroup A] [Module ℂ A] [AddCommGroup Amb] [Module ℂ Amb]
-    (thW : A →ₗ[ℂ] Amb) (adj : Amb →ₗ[ℂ] A) (part : Sig → Submodule ℂ Amb) : Prop :=
-  ∃ lam : Sig → ℝ, IsLamP thW adj part lam ∧ ∀ σ, part σ ≠ ⊥ → 0 < lam σ
-
-def ThmB {Tup Sig : Type*} (m : ℕ) (dnup : Tup → N →ₗ[ℂ] N) (partE : Sig → Submodule ℂ N)
-    (lam : Tup → ℕ → Sig → ℝ) : Prop :=
-  ∃ κ : ℝ, 0 < κ ∧ IsKap m dnup partE lam κ
-
-def RatMuC {A Amb : Type*} [AddCommGroup A] [Module ℂ A] [AddCommGroup Amb] [Module ℂ Amb]
-    (thP : A →ₗ[ℂ] Amb) (Z : Submodule ℂ A) (invariantSubspaceW : Submodule ℂ Amb) : Prop :=
-  Set.InjOn thP Z ∧ Z.map thP = invariantSubspaceW
-
-def OrthogonalComplementCharacterisation (ip : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ) (dn : M →ₗ[ℂ] N) (up : N →ₗ[ℂ] M) (V0 : Submodule ℂ M)
-    (EE : Submodule ℂ N) : Prop :=
-  ∀ x : M, x ∈ Zmu up EE ↔ x ∈ V0 ∧ ∀ u ∈ Umu dn V0, ip (u : M) x = 0
-
-def ZjAgree {A Amb : Type*} [AddCommGroup A] [Module ℂ A] [AddCommGroup Amb] [Module ℂ Amb]
-    (ipA : A →ₗ[ℂ] A →ₗ⋆[ℂ] ℂ) (thP : A →ₗ[ℂ] Amb) (eA : A →ₗ[ℂ] A) (eW : Amb →ₗ[ℂ] Amb) : Prop :=
-  (∀ x, eA (eA x) = eA x) → (∀ x y, ipA (eA x) y = ipA x (eA y)) → (∀ x, eW (thP x) = thP (eA x)) →
-    (∀ z, ipA z z = 0 → z = 0) → Zj ipA thP (LinearMap.range eA) = ZjE ipA (eW ∘ₗ thP)
-
-def DimQ (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (EE : Submodule ℂ N) : Prop :=
-  Module.finrank ℂ (Qmu dn V0) = Module.finrank ℂ EE
-
-def EEDecomp {Sig : Type*} (ip : N →ₗ[ℂ] N →ₗ⋆[ℂ] ℂ) (partE : Sig → Submodule ℂ N) (EE : Submodule ℂ N) : Prop :=
-  (⨆ σ, partE σ) = EE ∧ ∀ σ σ', σ ≠ σ' → ∀ x ∈ partE σ, ∀ y ∈ partE σ', ip x y = 0
-
-def PartsMatch {Sig : Type*} (m : ℕ) {W : ℕ → Type*} [∀ j, AddCommGroup (W j)] [∀ j, Module ℂ (W j)]
-    (partE : Sig → Submodule ℂ N) (partW : ∀ j, Sig → Submodule ℂ (W j)) : Prop :=
-  ∀ σ, partE σ ≠ ⊥ → ∀ j ∈ Finset.Icc 1 m, partW j σ ≠ ⊥
-
-def ThmBLev {L Tup Sig : Type*} (m : ℕ) {NL : L → Type*} [∀ l, AddCommGroup (NL l)] [∀ l, Module ℂ (NL l)]
-    (dnup : ∀ l, Tup → NL l →ₗ[ℂ] NL l) (partE : ∀ l, Sig → Submodule ℂ (NL l)) (lam : Tup → ℕ → Sig → ℝ) : Prop :=
-  ∃ κ : ℝ, 0 < κ ∧ ∀ l, IsKap m (dnup l) (partE l) lam κ
 
 end Statements
 
@@ -346,20 +182,6 @@ def IsPairKernel (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circl
     (th : GA D V → GA D W → (Formalism.IndefR.Datum.WO V W → ℂ) → ℂ) : Prop :=
   ∃ ω : GA D V × GA D W →* Module.End ℂ (Formalism.IndefR.Datum.WO V W → ℂ),
     Formalism.IndefR.Datum.IsWeilDatumO ψ V W χS χT ω ∧ th = fun g h f => Formalism.IndefR.Datum.thetaKO ω g h f
-
-def IsStepKernel (ψ : AddChar (AF D.host.F) ℂ) (μ : ℕ → (AE D)ˣ →* Circle) (η : (AE D)ˣ →* Circle) (j : ℕ)
-    (V W : HSp D) (th : GA D V → GA D W → (Formalism.IndefR.Datum.WO V W → ℂ) → ℂ) : Prop :=
-  IsPairKernel ψ (chrStep μ η j).1 (chrStep μ η j).2 V W th
-
-def IsThPKernel (ψ : AddChar (AF D.host.F) ℂ) (μ : ℕ → (AE D)ˣ →* Circle) (η : (AE D)ˣ →* Circle) (j : ℕ)
-    (Vj Wj : HSp D) (th : GA D Wj → GA D Vj → (Formalism.IndefR.Datum.WO Vj Wj → ℂ) → ℂ) : Prop :=
-  IsPairKernel ψ (attChr (μ j) η Vj.rank) (attChr (μ j) η Wj.rank) Vj Wj fun h g f => th g h f
-
-def IsChainKernel (ψ : AddChar (AF D.host.F) ℂ) (μ : ℕ → (AE D)ˣ →* Circle) (η : (AE D)ˣ →* Circle) (m : ℕ)
-    (Y : ℕ → HSp D) (th : ∀ k, GA D (Y k) → GA D (Y (k + 1)) → (Formalism.IndefR.Datum.WO (Y k) (Y (k + 1)) → ℂ) → ℂ) :
-    Prop :=
-  ∀ k < m, IsPairKernel ψ (attChr (μ (k + 1)) η (Y k).rank) (attChr (μ (k + 1)) η (Y (k + 1)).rank) (Y k) (Y (k + 1))
-    (th k)
 
 def CharsOK (μ : ℕ → (AE D)ˣ →* Circle) (η : (AE D)ˣ →* Circle) (m : ℕ) : Prop :=
   IsHeckeChar D η ∧ UnramEverywhere D η ∧ ResEta D η 1 ∧ (∀ τ, HasInfExp D η τ (1 / 2)) ∧

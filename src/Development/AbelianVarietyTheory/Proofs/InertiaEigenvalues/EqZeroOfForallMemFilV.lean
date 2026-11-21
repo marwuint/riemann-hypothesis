@@ -568,18 +568,6 @@ structure Adapted (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) {ι : Type
     (∀ i, r i ∈ FilV PD (LL := LL) (V := LL) (n - k i)) ∧
       sm Qp F LL V (idem F τ) y = ∑ i, sm Qp F LL V (r i) (d i)
 
-theorem adapted_trivial (τ : K →ₐ[Qp] LL) :
-    Adapted PD (Representation.trivial LL G LL) τ (fun _ : Unit => idem F τ) (fun _ => 0) where
-  mem _ := by
-    refine ⟨?_, idem_mem_FilV PD τ⟩
-    have := sm_idem_mem_DdRE PD (Representation.trivial LL G LL) τ (x := 1)
-      ((mem_DdR PD _ _).2 fun g => by simp [Algebra.TensorProduct.one_def])
-    rwa [sm_self, mul_one] at this
-  indep r h i := by
-    rw [mul_comm]
-    simpa [sm_self] using h
-  span n y hy := ⟨fun _ => y, fun _ => by simpa using hy, by simp [sm_self, mul_comm]⟩
-
 end Period
 
 end GlobalTheory.DRFil

@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PtFJQOver
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CoordAtConstMulIff
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SerreHolomorphicSectionsHolds
 
 set_option autoImplicit false

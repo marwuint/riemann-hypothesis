@@ -152,16 +152,6 @@ theorem exists_finite_abelian_mem {y : Ω} (hy : y ∈ maximalAbelianExtension F
       · exact (mem_fixedField_iff _ y).1 hy g (Subgroup.le_topologicalClosure _ hg)
     exact hle hg
 
-theorem maximalAbelianExtension_eq_iSup :
-    maximalAbelianExtension F Ω =
-      ⨆ (L : IntermediateField F Ω) (_ : FiniteDimensional F L) (_ : IsAbelianGalois F L), L := by
-  refine le_antisymm (fun y hy => ?_) (iSup_le fun L => iSup_le fun _ => iSup_le fun _ =>
-    le_maximalAbelianExtension L)
-  obtain ⟨L, hL1, hL2, hyL⟩ := exists_finite_abelian_mem hy
-  have hle : L ≤ ⨆ (L : IntermediateField F Ω) (_ : FiniteDimensional F L) (_ : IsAbelianGalois F L), L :=
-    le_iSup_of_le L (le_iSup_of_le hL1 (le_iSup_of_le hL2 le_rfl))
-  exact hle hyL
-
 theorem ext_restrictAb {σ τ : maximalAbelianExtension F Ω ≃ₐ[F] maximalAbelianExtension F Ω}
     (h : ∀ (L : IntermediateField F Ω) [FiniteDimensional F L] [IsAbelianGalois F L],
       restrictAb L (le_maximalAbelianExtension L) σ = restrictAb L (le_maximalAbelianExtension L) τ) :
@@ -251,10 +241,6 @@ theorem isAbelianGalois_of_le_maximalAbelianExtension (E : IntermediateField F �
   obtain ⟨σ', rfl⟩ := restrictAb_surjective E h σ
   obtain ⟨τ', rfl⟩ := restrictAb_surjective E h τ
   rw [← map_mul, ← map_mul, mul_comm' σ' τ']
-
-theorem isAbelianGalois_iff_le_maximalAbelianExtension (E : IntermediateField F Ω) [Normal F E] :
-    IsAbelianGalois F E ↔ E ≤ maximalAbelianExtension F Ω :=
-  ⟨fun _ => le_maximalAbelianExtension E, isAbelianGalois_of_le_maximalAbelianExtension E⟩
 
 end Commutative
 

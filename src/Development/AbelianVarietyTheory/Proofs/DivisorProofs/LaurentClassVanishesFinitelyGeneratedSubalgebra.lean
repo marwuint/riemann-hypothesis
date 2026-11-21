@@ -71,12 +71,6 @@ theorem val_CT (t : Finset S) (a : Algebra.adjoin A (t : Set S)) (n : ℤ) :
   rw [map_mul, laurentMap_C, laurentMap_T]
   rfl
 
-theorem ι_map {t u : Finset S} (h : t ⟶ u) (p : LaurentPolynomial (Algebra.adjoin A (t : Set S))) :
-    laurentMap (Algebra.adjoin A (u : Set S)).val.toRingHom (((diag A S).map h).hom p) =
-      ((cocone A S).ι.app t).hom p := by
-  show ((diag A S).map h ≫ (cocone A S).ι.app u).hom p = _
-  rw [(cocone A S).w]
-
 theorem lm_val_incl {t u : Finset S} (h : (t : Set S) ⊆ u) (p : LaurentPolynomial (Algebra.adjoin A (t : Set S))) :
     laurentMap (Algebra.adjoin A (u : Set S)).val.toRingHom
         (laurentMap (Subalgebra.inclusion (Algebra.adjoin_mono h)).toRingHom p) =

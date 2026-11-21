@@ -29,12 +29,6 @@ section Obj
 
 variable {D : D7} (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u μ)) (B : PlaceMatrixFamily D)
 
-theorem basC_spec (h : BasEx P O) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw u μ).cls i)
-    (τ : D.what₂.Tau) : IsBasC P O u μ w i c τ (basC P O u μ w i c τ) :=
-  Classical.epsilon_spec (h u μ w i hi c τ)
-
-theorem basC_ok (h : BasEx P O) : BasOk P O (basC P O) := fun u μ w i hi c τ => (basC_spec P O h u μ w i hi c τ).1
-
 theorem secC_spec (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ) (v : ValQ O u μ i) : (LinearMap.ker (evP O u μ i)).mkQ (secC O u μ i v) = v :=
   LinearMap.congr_fun (Classical.choose_spec ((LinearMap.ker (evP O u μ i)).mkQ.exists_rightInverse_of_surjective (Submodule.range_mkQ _))) v
 
@@ -294,12 +288,6 @@ theorem kfTieOf_un {D : D7} (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.Li
     (hC : CanOnto P) (h : KerEntHyp P O B Dx Tw) (u : D.what₂.Word) (μ : D.what₂.Tup) (hR : GL3Columns.RhoAlg (O u μ)) (w : D.what₂.places.Pl) :
     (kfTieOf P O B hB hC h u μ w).UnIs :=
   kfTieC_un P O B hB (canS_of P B hC) (canT_of P B hC) (twLe D) h u μ hR w
-
-theorem kfPair_of_field {D : D7} {Dx : DivX D} {Tw : TwForms D} (E : KerEnt D Dx Tw) {u : D.what₂.Word} {μ : D.what₂.Tup}
-    {O : GL3Theta.LiftObj D (D.chTw u μ)} {w : D.what₂.places.Pl} (T : GL3Columns.KFTie E O w) (hw : LevFree Dx u μ w) (hU : T.UnIs) : T.kfPair :=
-  fun i hi c c' v v' h I => by
-    rw [← hU i hi c c']
-    exact E.kform u μ w hw i hi c c' v v' h I
 
 end Formalism.L2.Ker
 

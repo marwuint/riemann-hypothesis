@@ -30,37 +30,6 @@ def trP (φ : (Fin r → k) → R) : R := ∑ f ∈ univ.filter (fun f => f ≠ 
 
 end Ops
 
-def AdjointReformulated : Prop :=
-  ∀ (k : Type) [Field k] [Fintype k] [DecidableEq k] (r : ℕ) (R : Type) [CommRing R]
-    (ψ φ : (Fin r → k) → R),
-    ∑ f, opU ψ f * φ f = ∑ x, ψ x * opD φ x
-
-def DualCompositionReformulated : Prop :=
-  ∀ (k : Type) [Field k] [Fintype k] [DecidableEq k] (r : ℕ) (R : Type) [CommRing R],
-    2 ≤ r → ∀ (ψ : (Fin r → k) → R) (x : Fin r → k), x ≠ 0 →
-      opD (opU ψ) x = ((Fintype.card k : R)) ^ (r - 1) * ψ x
-        - ((Fintype.card k : R)) ^ (r - 2) * nmV ψ x + ((Fintype.card k : R)) ^ (r - 2) * trV ψ
-
-def CompositionWithDual : Prop :=
-  ∀ (k : Type) [Field k] [Fintype k] [DecidableEq k] (r : ℕ) (R : Type) [CommRing R],
-    2 ≤ r → ∀ (φ : (Fin r → k) → R) (f : Fin r → k), f ≠ 0 →
-      opU (opD φ) f = ((Fintype.card k : R)) ^ (r - 1) * φ f
-        - ((Fintype.card k : R)) ^ (r - 2) * nmP φ f + ((Fintype.card k : R)) ^ (r - 2) * trP φ
-
-def EquivarianceReformulated : Prop :=
-  ∀ (k : Type) [Field k] [Fintype k] [DecidableEq k] (r : ℕ) (R : Type) [CommRing R] (c : kˣ),
-    (∀ ψ : (Fin r → k) → R, opU (diaV c ψ) = diaP c (opU ψ)) ∧
-    (∀ φ : (Fin r → k) → R, opD (diaP c φ) = diaV c (opD φ))
-
-def UnitsSumZero : Prop :=
-  ∀ (k : Type) [Field k] [Fintype k] [DecidableEq k] (r : ℕ) (R : Type) [CommRing R],
-    (∀ ψ : (Fin r → k) → R, (∀ y, y ≠ 0 → nmV ψ y = 0) →
-      (∀ f, nmP (opU ψ) f = 0) ∧ trV ψ = 0 ∧
-      (2 ≤ r → ∀ x, x ≠ 0 → opD (opU ψ) x = ((Fintype.card k : R)) ^ (r - 1) * ψ x)) ∧
-    (∀ φ : (Fin r → k) → R, (∀ f, f ≠ 0 → nmP φ f = 0) →
-      (∀ x, nmV (opD φ) x = 0) ∧ trP φ = 0 ∧
-      (2 ≤ r → ∀ f, f ≠ 0 → opU (opD φ) f = ((Fintype.card k : R)) ^ (r - 1) * φ f))
-
 def ramSub (ι H X K : Type) [DecidableEq ι] [Group H] [Fintype H] [MulAction (ι → H) X] [Field K] :
     Submodule K (X → K) where
   carrier := {φ | ∀ (v : ι) (x : X), ∑ c : H, φ ((Pi.mulSingle v c : ι → H) • x) = 0}

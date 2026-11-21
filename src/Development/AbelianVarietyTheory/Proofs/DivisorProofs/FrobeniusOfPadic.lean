@@ -52,33 +52,4 @@ end GlobalTheory.DetInv.PsiPhi
 
 namespace GlobalTheory.DetInv
 
-open PsiPhi in
-
-theorem psi_phi_tensor : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
-    [IsAdicComplete (Ideal.span {(p : O)}) O] (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ],
-    (∀ c : ℤ_[p], phiInv p O (ofPadic p O c) = ofPadic p O c) ∧ Function.Bijective (phiInv p O) ∧
-    ∃ ψ φ : RL p O Λ →+* RL p O Λ, IsPsi ψ ∧
-      (∀ (a : Ainf p O) (l : Λ), φ (a ⊗ₜ l) = WittVector.frobenius a ⊗ₜ l) ∧
-      (∀ r, φ (ψ r) = r) ∧ ∀ r, ψ (φ r) = r := by
-  intro p _ O _ _ _ Λ _ _
-  refine ⟨fun c => phiInv_ofPadic c,
-    Function.bijective_iff_has_inverse.mpr ⟨WittVector.frobenius, frobenius_phiInv', phiInv_frobenius'⟩,
-    (Algebra.TensorProduct.map (phiInvAlg (p := p) (O := O)) (AlgHom.id ℤ_[p] Λ)).toRingHom,
-    (Algebra.TensorProduct.map (frobAlg (p := p) (O := O)) (AlgHom.id ℤ_[p] Λ)).toRingHom,
-    fun a l => rfl, fun a l => rfl, ?_, ?_⟩
-  · intro r
-    induction r using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a l =>
-      change (frobAlg (phiInvAlg a)) ⊗ₜ l = a ⊗ₜ l
-      exact congrArg (· ⊗ₜ[ℤ_[p]] l) (frobenius_phiInv' a)
-    | add x y hx hy => simp only [map_add] at hx hy ⊢; rw [hx, hy]
-  · intro r
-    induction r using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a l =>
-      change (phiInvAlg (frobAlg a)) ⊗ₜ l = a ⊗ₜ l
-      exact congrArg (· ⊗ₜ[ℤ_[p]] l) (phiInv_frobenius' a)
-    | add x y hx hy => simp only [map_add] at hx hy ⊢; rw [hx, hy]
-
 end GlobalTheory.DetInv

@@ -12,8 +12,6 @@ namespace PI.UnitaryGroupMassFormula.DLm
 
 namespace HBx
 
-variable {k r : ℕ}
-
 end HBx
 
 namespace HBx

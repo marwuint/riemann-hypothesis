@@ -108,15 +108,4 @@ def EigenFrameE : Prop :=
       ∃ q : ((Bool × H) × Fin N0 × Fin N1) → ((Bool × H) × Fin N0 × Fin N1) → ℂ_[p],
         IsPairFrame (ι : ℂ →+* ℂ_[p]) (cmL a b d ha hd lam hlam) h Λ v A u (ι (Complex.I * ((Real.sqrt d : ℝ) : ℂ))) q
 
-def HomGram : Prop :=
-  ∀ (O L L' : Type) [CommRing O] [AddCommGroup L] [Module O L] [AddCommGroup L'] [Module O L']
-    (hL' : L' → L' → O) (N0 N1 : ℕ) (e es : Fin N0 → L) (e' es' : Fin N1 → L'),
-    (∀ y, hL' 0 y = 0) → (∀ y, hL' y 0 = 0) → (∀ b b', hL' (e' b) (es' b') = if b = b' then 1 else 0) →
-    ∀ (Eab Es : Fin N0 × Fin N1 → L →ₗ[O] L'),
-      (∀ a b a', Eab (a, b) (e a') = if a = a' then e' b else 0) → (∀ a b a', Eab (a, b) (es a') = 0) →
-      (∀ a b a', Es (a, b) (es a') = if a = a' then es' b else 0) → (∀ a b a', Es (a, b) (e a') = 0) →
-    ∀ x y : Fin N0 × Fin N1,
-      (∑ a, hL' (Eab x (e a)) (Es y (es a)) + ∑ a, hL' (Eab x (es a)) (Es y (e a))) =
-        if x = y then 1 else 0
-
 end Formalism.L2.Th1.GD

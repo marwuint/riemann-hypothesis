@@ -17,15 +17,6 @@ end GlobalTheory.KSRechart
 
 namespace GlobalTheory.KSRechart
 
-open scoped Classical in
-
-noncomputable def corr {Z : Scheme.{0}} {n : ℕ} (δ : Fin n → ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O)) (W₂ : Z.Opens)
-    (θ : Matrix (Fin n) (Fin n) Γ(Z, W₂)) (u : Γ(Z, W₂)ˣ) : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O) :=
-  fun O f => if h : O ≤ W₂ then
-    ∑ a, ∑ b, resG Z h (θ a b) *
-      (δ b O ((Semi.res h u : Γ(Z, O)ˣ) : Γ(Z, O)) * (((Semi.res h u)⁻¹ : Γ(Z, O)ˣ) : Γ(Z, O))) * δ a O f
-  else 0
-
 private theorem valR_comp_eq_valR_app' {A : Type} [CommRing A] {X Z : Scheme.{0}} (x : Sp A ⟶ Z) (m : Z ⟶ X)
     (U : X.Opens) (O : Z.Opens) (h : O ≤ m ⁻¹ᵁ U) (hO : ⊤ ≤ x ⁻¹ᵁ O) (r : Γ(X, U)) :
     valR x O ((m.appLE U O h).hom r) = valR (x ≫ m) U r := by

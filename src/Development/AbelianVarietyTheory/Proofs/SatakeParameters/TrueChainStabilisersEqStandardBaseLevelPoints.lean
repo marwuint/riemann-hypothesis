@@ -9,7 +9,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsPr
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EvGLawOfFixedCol
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExtUHInjective
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LastColumnStepDatumEqTwistTopDatumStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TypePrimeLevelLastStepSymmetricRowsEqTwistLevelStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TypePrimeLevelLastStepSymmetricRowsEqTwistLevel
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.XiAtPenultimateEqXiCpl1
+import Formalism.LocalToGlobal.Columns.KOneCharacterTrivialNearOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelQuotientEqTwistedTopStatement
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix
@@ -99,7 +101,7 @@ theorem stab_pin : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.P
     have hb : b.1 = none := Option.not_isSome_iff_eq_none.1 fun h => lt_irrefl _ (b.2.1 h)
     unfold levGAt
     rw [hb]
-    exact (topLev_levG_m _ _ _ _ _).trans (GlobalTheory.T.typePrimeLevel_lastStep_symmetricRows_eq_twistLevel B.fields (B.primes X) B.R I.Ch hXo hPro hI.ch_ok)
+    exact (topLev_levG_m _ _ _ _ _).trans (_root_.GlobalTheory.levGTop_rPsymF_eq_twLt B.fields (B.primes X) B.R I.Ch hXo hPro hI.ch_ok)
   have hQt : ∀ b : Idx I.sel (I.tup a) (I.idx a) B.R.m,
       levQAt I.sel (I.tup a) (I.idx a) (I.Tp a) B.R.m b = twTt (R := B.R) I.sel (I.tup a) B.R.m := by
     intro b

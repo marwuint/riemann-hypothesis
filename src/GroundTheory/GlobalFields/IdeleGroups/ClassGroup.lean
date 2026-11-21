@@ -275,11 +275,6 @@ theorem toClassGroup_mk (x : IdeleGroup K) :
     toClassGroup (mk K x) = IdeleGroup.toClassGroup x :=
   rfl
 
-theorem toClassGroup_surjective : Function.Surjective (toClassGroup (K := K)) := by
-  intro c
-  obtain ⟨x, rfl⟩ := IdeleGroup.toClassGroup_surjective c
-  exact ⟨mk K x, rfl⟩
-
 theorem ker_toClassGroup :
     (toClassGroup (K := K)).ker = (standardOpenSubgroup K).map (mk K) := by
   ext c
@@ -297,11 +292,6 @@ theorem ker_toClassGroup :
 
 instance : ((standardOpenSubgroup K).map (mk K)).Normal :=
   ⟨fun n hn g ↦ by rwa [mul_comm g n, mul_inv_cancel_right]⟩
-
-def quotientEquivClassGroup :
-    IdeleClassGroup K ⧸ (standardOpenSubgroup K).map (mk K) ≃* ClassGroup (𝓞 K) :=
-  (QuotientGroup.quotientMulEquivOfEq (ker_toClassGroup (K := K)).symm).trans
-    (QuotientGroup.quotientKerEquivOfSurjective _ toClassGroup_surjective)
 
 end IdeleClassGroup
 

@@ -20,9 +20,6 @@ def resG : G E' Ω →* G E Ω := AlgEquiv.restrictScalarsHom E
 
 @[simp] theorem resG_apply (σ : G E' Ω) (x : Ω) : resG E σ x = σ x := rfl
 
-theorem resG_injective : Function.Injective (resG E (E' := E') (Ω := Ω)) :=
-  AlgEquiv.restrictScalarsHom_injective E
-
 variable [NumberField E] [NumberField E'] {A : ValuationSubring Ω}
 
 theorem resG_mem_Dec {σ : G E' Ω} (hσ : σ ∈ Dec (F := E') A) : resG E σ ∈ Dec (F := E) A := by
@@ -167,11 +164,6 @@ theorem iso_resRep {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) : (resRep h 
 
 def WD.res : WD h → WD h' :=
   Quotient.map (fun a => ⟨a.1, resRep h h' a.2⟩) (fun _ _ hab => iso_resRep h h' hab)
-
-theorem WD.res_mk (a : WDRep h V) : WD.res h h' (WD.mk a) = WD.mk (resRep h h' a) := by
-  show Quotient.mk _ (⟨_, resRep h h' (WD.std a).2⟩ : Σ n : ℕ, WDRep h' (Fin n → ℂ)) = _
-  rw [WD.quotientMk_eq]
-  exact WD.sound (iso_resRep h h' (WD.iso_std a).symm)
 
 end WDRes
 

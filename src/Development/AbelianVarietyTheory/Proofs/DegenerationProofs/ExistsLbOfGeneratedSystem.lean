@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsHomogeneou
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsHomOfVeryAmpleBy
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.HomEqOfPullSections
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveModel
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsHomAlgebraisationOfReductionTowerStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsHomAlgebraisationOfReductionTower
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw
@@ -106,7 +106,7 @@ theorem exists_lb_of_generated_system : ∀ (R : Type) [CommRing R] [IsLocalRing
     exact GlobalTheory.MapUniq.hom_eq_of_pull_sections R P f O n t hO hva _ (H e) (s e) _ _ w'' (w e) (hH e).1
       (by rw [Category.assoc, hc', hc', c₁]) ((isGen_iff _).2 (T.pgen_comp (hH (e + 1)).1 hw' hv)) (hw e)
       (fun j => Rel.comp T (hH (e + 1)).1 (hr (e + 1) j) (hs e j)) (hr e)
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_hom_algebraisation_of_reductionTower R I hI hc Y β hβ B b hB hfl hb hbb (Over.mk f) ⟨O, hO, n, t, hva⟩ c hc' hcc
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.MorAlgTower.exists_hom_of_tower R I hI hc Y β hβ B b hB hfl hb hbb (Over.mk f) ⟨O, hO, n, t, hva⟩ c hc' hcc
   refine ⟨O.pull g.left, pull_isLB hO _, fun e => ?_⟩
   exact LBIso.trans (hH e).1 (pull_isLB hO _) (pull_isLB (pull_isLB hO _) _) ⟨w e, hw e⟩
     (GlobalTheory.GenSpread.lbIso_pull_pull hO (b e) (hg e).symm)

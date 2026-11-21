@@ -92,12 +92,6 @@ theorem pderiv_subst_X_ne {i j : σ} (h : j ≠ i) (g : PowerSeries R) :
   rw [pderiv_subst i (a := MvPowerSeries.X j) (MvPowerSeries.constantCoeff_X j) g,
     MvPowerSeries.pderiv_X_of_ne h, zero_mul]
 
-def sumL (l : PowerSeries R) (c : σ → R) (s : Finset σ) : MvPowerSeries σ R :=
-  ∑ j ∈ s, MvPowerSeries.C (c j) * PowerSeries.subst (MvPowerSeries.X j) l
-
-def DvR (v : PowerSeries R) (i : σ) (f : MvPowerSeries σ R) : MvPowerSeries σ R :=
-  PowerSeries.subst (MvPowerSeries.X i) v * MvPowerSeries.pderiv R i f
-
 theorem subst_one' (a : MvPowerSeries σ R) : PowerSeries.subst a (1 : PowerSeries R) = 1 := by
   simpa using PowerSeries.subst_C (a := a) (1 : R)
 

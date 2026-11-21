@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSurjHomZmodOfIsPGroupStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSurjHomZmodOfIsPGroup
 
 open GlobalTheory.AlmostEt
 open scoped NNReal
@@ -16,7 +16,7 @@ theorem exists_lagrange_resolvent : ∀ (L : Type) [Field L] (p : ℕ), p.Prime 
   haveI : Fact (1 < p) := ⟨hp.one_lt⟩
   classical
   letI : Fintype G := Fintype.ofFinite G
-  obtain ⟨χ, hχ⟩ := GlobalTheory.T.exists_surjective_hom_zmod_of_isPGroup p G hG
+  obtain ⟨χ, hχ⟩ := _root_.GlobalTheory.AlmostEt.exists_surj_hom_zmod_of_isPGroup p G hG
   set ψ : G → L := fun g => ζ ^ (Multiplicative.toAdd (χ g)).val with hψdef
   have hζp : ζ ^ p = 1 := hζ.pow_eq_one
   have hmod : ∀ n : ℕ, ζ ^ n = ζ ^ (n % p) := fun n => by

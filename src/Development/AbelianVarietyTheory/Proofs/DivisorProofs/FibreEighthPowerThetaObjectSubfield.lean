@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.ExistsArBaseAway
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpRefinementOddPrimeLocalizationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpRefinementCoefficientFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpRefinementOddPrimeLocalization
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpRefinementCoefficientFamily
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg
@@ -33,11 +33,11 @@ theorem sharp_fibre_theta_object : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W 
       q ≫ pullback.fst D.P.A.hom (spMap ev) = y.left → q ≫ pullback.snd D.P.A.hom (spMap ev) = 𝟙 _ →
       ∃ a, q ≫ ψ = (t.lab a).left := by
   intro W hW gQ
-  obtain ⟨J, hJ, Mat, κ, w, w', hA⟩ := GlobalTheory.T.sharp_refinement_odd_prime_localization W hW gQ
+  obtain ⟨J, hJ, Mat, κ, w, w', hA⟩ := _root_.GlobalTheory.Poinc.Sep.E8Fibration.eighthPowerFibre_thetaObj W hW gQ
   refine ⟨J, hJ, Mat, κ, w, w', ?_⟩
   intro l hl ho j hj V V₁ _ _ _ _ _ hCN hu Q hQ ρ hρ D e hS C u mo hmo hT K _ _ ev k₀ hk₀ hr
   obtain ⟨bT, t, ψ, h1, h2, h3, h4, h5⟩ := hA l hl ho j hj V V₁ hCN hu Q hQ ρ hρ D e hS K ev k₀ hk₀
-  obtain ⟨v, hv⟩ := GlobalTheory.T.sharp_refinement_coefficient_family W hW gQ J l hl ho j hj V V₁ hCN hu Q hQ ρ hρ D e hS C u mo hmo hT K ev k₀ hk₀ hr bT t ψ h3 h4
+  obtain ⟨v, hv⟩ := _root_.GlobalTheory.Poinc.Sep.fibre_theta_consts_in_subfield W hW gQ J l hl ho j hj V V₁ hCN hu Q hQ ρ hρ D e hS C u mo hmo hT K ev k₀ hk₀ hr bT t ψ h3 h4
   exact ⟨bT, t, v, ψ, h1, h2, hv, h3, h4, h5⟩
 
 end GlobalTheory.Poinc.Sep

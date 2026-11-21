@@ -8,13 +8,13 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeQuotientTriple
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsIsGenOfUniqueFactorizationMonoid
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLiftObstructionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLiftObstructionTensorAdditiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLiftObstructionNaturalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLiftOfObstructionZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveDegreeTwoAnyRingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSquareGroupSchemePullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleObstructionZeroOfRestrictionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLiftObstruction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLiftObstructionTensorAdditive
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLiftObstructionNatural
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLiftOfObstructionZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveDegreeTwoAnyRing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSquareGroupSchemePullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleObstructionZeroOfRestriction
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
@@ -32,22 +32,22 @@ theorem GlobalTheory.LBObs.exists_lift_of_lam_iso_pull : ∀ (R R₀ : Type) [Co
   obtain ⟨R₁, _, _, ⟨α⟩⟩ := GlobalTheory.Obs.exists_aug R R₀ (RingHom.ker π) hI π hπ rfl
   have hpb : IsPullback i B₀.hom B.hom (spMap π) := hgp.1
   obtain ⟨S, ⟨Pr⟩⟩ := GlobalTheory.LiftSys.exists_sys_presents R R₀ (RingHom.ker π) hI π hπ rfl B₀.left B₀.hom B.left B.hom i hpb hsm
-  obtain ⟨k, hkp, hkμ, hkf, hks⟩ := GlobalTheory.T.exists_square_group_scheme_pullback (Sp R) (Sp R₀) (spMap π) B B₀ i hgp
+  obtain ⟨k, hkp, hkμ, hkf, hks⟩ := _root_.GlobalTheory.SqPull.sq_of_grpPullback (Sp R) (Sp R₀) (spMap π) B B₀ i hgp
   have hki : i₂ = k := (GlobalTheory.SqPull.tensor_isPullback B B).hom_ext (hsq.1.trans hkf.symm) (hsq.2.trans hks.symm)
   subst hki
   have hsm2 : Smooth (B ⊗ B).hom := inferInstanceAs (Smooth (Limits.pullback.fst B.hom B.hom ≫ B.hom))
   obtain ⟨S₂, ⟨P₂⟩⟩ := GlobalTheory.LiftSys.exists_sys_presents R R₀ (RingHom.ker π) hI π hπ rfl (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom (B ⊗ B).left
     (B ⊗ B).hom i₂ hkp hsm2
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_lineBundleLiftObstruction R R₀ _ hI π hπ rfl R₁ α B₀.left B₀.hom S L₀ hL₀
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.LBObs.ObEx.exists_isObL R R₀ _ hI π hπ rfl R₁ α B₀.left B₀.hom S L₀ hL₀
   have h1 : (L₀.pull (fst B₀ B₀).left).IsLB := pull_isLB hL₀ _
   have h2 : (L₀.pull (snd B₀ B₀).left).IsLB := pull_isLB hL₀ _
   have h3 : (P.pull i₂).IsLB := pull_isLB hP _
-  obtain ⟨c₁, hc₁⟩ := GlobalTheory.T.exists_lineBundleLiftObstruction R R₀ _ hI π hπ rfl R₁ α (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom S₂ _ h1
-  obtain ⟨c₂, hc₂⟩ := GlobalTheory.T.exists_lineBundleLiftObstruction R R₀ _ hI π hπ rfl R₁ α (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom S₂ _ h2
+  obtain ⟨c₁, hc₁⟩ := _root_.GlobalTheory.LBObs.ObEx.exists_isObL R R₀ _ hI π hπ rfl R₁ α (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom S₂ _ h1
+  obtain ⟨c₂, hc₂⟩ := _root_.GlobalTheory.LBObs.ObEx.exists_isObL R R₀ _ hI π hπ rfl R₁ α (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom S₂ _ h2
   have hc₃ : IsObL S₂ α (P.pull i₂) 0 :=
-    GlobalTheory.T.lineBundle_obstruction_zero_of_restriction R R₀ _ hI π hπ rfl R₁ α (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom S₂ (B ⊗ B).left (B ⊗ B).hom i₂ P₂ P hkp hP
-  have hc₁₂ := GlobalTheory.T.lineBundleLiftObstruction_tensor_additive R R₀ _ hI π hπ rfl R₁ α (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom S₂ _ _ c₁ c₂ hc₁ hc₂
-  have hc₁₂₃ := GlobalTheory.T.lineBundleLiftObstruction_tensor_additive R R₀ _ hI π hπ rfl R₁ α (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom S₂ _ _ _ _ hc₁₂ hc₃
+    _root_.GlobalTheory.LBObs.isObL_pull_zero R R₀ _ hI π hπ rfl R₁ α (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom S₂ (B ⊗ B).left (B ⊗ B).hom i₂ P₂ P hkp hP
+  have hc₁₂ := _root_.GlobalTheory.LBObs.isObL_tens R R₀ _ hI π hπ rfl R₁ α (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom S₂ _ _ c₁ c₂ hc₁ hc₂
+  have hc₁₂₃ := _root_.GlobalTheory.LBObs.isObL_tens R R₀ _ hI π hπ rfl R₁ α (B₀ ⊗ B₀).left (B₀ ⊗ B₀).hom S₂ _ _ _ _ hc₁₂ hc₃
   rw [add_zero] at hc₁₂₃
 
   have hz : GlobalTheory.CechPic.pull (1 : B₀ ⊗ B₀ ⟶ B₀).left (cls L₀ hL₀) = 0 := by
@@ -74,11 +74,11 @@ theorem GlobalTheory.LBObs.exists_lift_of_lam_iso_pull : ∀ (R R₀ : Type) [Co
     intro f₀ f hf L' c' hL' hiso hob
     obtain ⟨l, hl, hn⟩ := GlobalTheory.Obs.exists_chart_lifts R R₀ _ hI π hπ rfl B₀.left (B₀ ⊗ B₀).left B.left (B ⊗ B).left
       B₀.hom (B₀ ⊗ B₀).hom B.hom (B ⊗ B).hom i i₂ hpb hkp S S₂ Pr P₂ f₀.left (overW f₀) f.left (Over.w f) hf
-    exact GlobalTheory.T.lineBundleLiftObstruction_natural R R₀ _ hI π hπ rfl R₁ α B₀.left (B₀ ⊗ B₀).left B₀.hom (B₀ ⊗ B₀).hom S S₂ f₀.left (overW f₀)
+    exact _root_.GlobalTheory.LBObs.lineBundleLiftObstruction_natural_alt R R₀ _ hI π hπ rfl R₁ α B₀.left (B₀ ⊗ B₀).left B₀.hom (B₀ ⊗ B₀).hom S S₂ f₀.left (overW f₀)
       l hl hn L₀ L' c c' hL₀ hL' hiso hc hob
   have eμ := nat μ[B₀] μ[B] hkμ _ (c₁ + c₂) (isLB_tens (isLB_tens h1 h2) h3) hiso hc₁₂₃
   have e1 := nat (fst B₀ B₀) (fst B B) hkf _ c₁ h1 (GlobalTheory.PolBaseChange.lbIso_refl h1) hc₁
   have e2 := nat (snd B₀ B₀) (snd B B) hks _ c₂ h2 (GlobalTheory.PolBaseChange.lbIso_refl h2) hc₂
-  have h0 : c = 0 := GlobalTheory.T.primitive_degree_two_any_ring R₀ R₁ α.q α.sq B₀ g hab hdim c c₁ c₂ eμ e1 e2
+  have h0 : c = 0 := _root_.GlobalTheory.Obs.primE2_any_ring R₀ R₁ α.q α.sq B₀ g hab hdim c c₁ c₂ eμ e1 e2
   subst h0
-  exact GlobalTheory.T.exists_lineBundleLift_of_obstruction_zero R R₀ _ hI π hπ rfl R₁ α B₀.left B₀.hom S B.left B.hom i Pr L₀ hpb hL₀ hc
+  exact _root_.GlobalTheory.LBObs.exists_lift_of_isObL_zero R R₀ _ hI π hπ rfl R₁ α B₀.left B₀.hom S B.left B.hom i Pr L₀ hpb hL₀ hc

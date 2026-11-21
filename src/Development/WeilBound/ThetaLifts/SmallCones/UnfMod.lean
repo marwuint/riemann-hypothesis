@@ -1,8 +1,10 @@
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ModulusCharacterUnitActionProductStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitsDecompositionFlowCompactStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsRealFlowAdelicUnitsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RationalTuplesDiscreteCocompactAdelicStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdeleRingCocompactDiscreteNumberFieldStatement
+import Mathlib
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ModulusCharacterUnitActionProduct
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.HypJ
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitsDecompositionFlowCompact
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsRealFlowAdelicUnits
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RationalTuplesDiscreteCocompactAdelic
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdeleRingCocompactDiscreteNumberField
 import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceAdeleRing
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
@@ -95,16 +97,16 @@ theorem modulus (h : IsCMExt F E σ) (M : ℕ) (μW : Measure (Fin 1 → Fin M �
       (∀ a : (AF F ⊗[F] E)ˣ, (μW.prod μA).map (fun p => (sigR (AF F) σ (a : AF F ⊗[F] E) • p.1,
         Algebra.norm (AF F) (a : AF F ⊗[F] E) * p.2)) = χ a • μW.prod μA) ∧ ∀ a, χ a * absE F E a ^ (M + 1) = 1 := by
   obtain ⟨⟨_, _, _⟩, -⟩ := GlobalTheory.CompanionTheory.AdeleTop.adele_top F
-  obtain ⟨_, _, _, _, hsc, -, -, hB, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ h (AF F)
+  obtain ⟨_, _, _, _, hsc, -, -, hB, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ h (AF F)
   have := hB 1 M
   have : BorelSpace (AF F) := ⟨rfl⟩
   haveI : Countable E := Function.Injective.countable (Module.finBasis ℚ E).equivFun.injective
   haveI : Countable F := Function.Injective.countable (Module.finBasis ℚ F).equivFun.injective
-  obtain ⟨τ, hτ⟩ := GlobalTheory.T.exists_real_flow_adelic_units F E σ h
-  obtain ⟨χ, χc, χ1, χ2⟩ := GlobalTheory.T.modulus_character_unit_action_product F E σ h τ hτ M μW μA hW hA
-  obtain ⟨ω, hω, hid⟩ := GlobalTheory.T.adelic_units_decomposition_flow_compact F E σ h τ hτ
-  obtain ⟨⟨CW, hCW, cW⟩, fW, -⟩ := GlobalTheory.T.rational_tuples_discrete_cocompact_adelic F E σ h 1 M
-  obtain ⟨⟨CA, hCA, cA⟩, fA, -⟩ := GlobalTheory.T.adele_ring_cocompact_discrete_number_field F
+  obtain ⟨τ, hτ⟩ := _root_.GlobalTheory.CompanionTheory.SW.Flow.exists_flow F E σ h
+  obtain ⟨χ, χc, χ1, χ2⟩ := _root_.GlobalTheory.CompanionTheory.SW.FChi.exists_modulus_chi F E σ h τ hτ M μW μA hW hA
+  obtain ⟨ω, hω, hid⟩ := _root_.GlobalTheory.CompanionTheory.SW.Fujisaki.units_decomp F E σ h τ hτ
+  obtain ⟨⟨CW, hCW, cW⟩, fW, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.CocW.main F E σ h 1 M
+  obtain ⟨⟨CA, hCA, cA⟩, fA, -⟩ := _root_.GlobalTheory.CompanionTheory.Adelic.FieldCocompact.discrete_cocompact F
   have rt : ∀ X Y : Fin 1 → Fin M → E, ratTup (F := F) (AF F) (X + Y) = ratTup (AF F) X + ratTup (AF F) Y :=
     fun X Y => funext fun a => funext fun i => map_add _ _ _
   have rat : ∀ (l : Eˣ) (a : (AF F ⊗[F] E)ˣ), (a : AF F ⊗[F] E) = inclR (AF F) (l : E) → χ a = 1 := fun l a hl => by

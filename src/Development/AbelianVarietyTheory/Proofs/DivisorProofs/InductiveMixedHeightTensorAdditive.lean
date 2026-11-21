@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightOneIffPointClosureDimProjArithStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightOneIffPointClosureDimProjArith
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixedArchIntegralAdditiveAndDiagonalStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -26,7 +26,7 @@ theorem recVal_tens_cons : ArchInteg → ∀ (k : Type) [CommRing k] (Y : Scheme
     by_cases h0 : (M.div hr).mult z = 0
     · simp [h0]
     · have hc := CartierDiv.coheight_eq_one_of_mult_ne_zero h0
-      have hd := ((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Y q hq (e + 1) hdim).1 z).1 hc
+      have hd := ((_root_.GlobalTheory.MixHt.dimOne k Y q hq (e + 1) hdim).1 z).1 hc
       rw [hT.add e A B L z le_rfl hd, mul_add]
   rw [hsum]
   ring

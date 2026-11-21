@@ -8,8 +8,15 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Di
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRealIntertwinerOfCompactGroupIntertwiner
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteLastStepRealIntertwiner
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasInfExpMulZero
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHoweDualityIntertwinerUnitaryPairLocalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridRowRealParameterSuccAllPlusLowestWeightsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHoweDualityIntertwinerUnitaryPairLocal
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TotalDegreeSubstFLe
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalHoweContractionCompactUnitary
+import ReciprocityTheory.DualLattices.FischerSelfNeZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetTwistedConjugateIsKTypeOfReversedStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridRowRealParameterSuccAllPlusLowestWeights
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.NodeYPredEqChainVertexAtRowZeroLast
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LastStepParametersPartitionExtendedByZeros
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
 open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
@@ -173,16 +180,16 @@ theorem exists_col_intertwiner : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ
     ⟨(hsp.X j (by omega)).sigOK, (hsp.X j (by omega)).par⟩
   have en : ∀ τ, IsEnum (parXp D j τ) ((G.Xp j).M.lam τ) ((G.Xp j).M.ε τ) := fun τ => hS.2 ▸ (G.Xp j).M.enum τ
   have en' : ∀ τ, IsEnum (parXp D (j + 1) τ) ((G.nX j).M.lam τ) ((G.nX j).M.ε τ) := fun τ => hT.2 ▸ (G.nX j).M.enum τ
-  have hp := fun τ => GlobalTheory.T.gridRowRealParameter_succ_allPlus_lowestWeights D j hj τ (G.Xp j).V.rank (G.nX j).V.rank _ _ _ _ (en τ) (en' τ)
+  have hp := fun τ => _root_.GlobalTheory.ColParam.colPar D j hj τ (G.Xp j).V.rank (G.nX j).V.rank _ _ _ _ (en τ) (en' τ)
   have hε := fun τ => (hp τ).1
   have hε' := fun τ => (hp τ).2.1
   choose x₁ x₃ h1 h3 hn ν n1 n2 n3 n4 using fun τ => (hp τ).2.2
-  have m := fun τ => GlobalTheory.T.allPositive_model_finiteDimensional_compactType D (G.Xp j).V _ (G.Xp j).M τ (hε τ)
-  have m' := fun τ => GlobalTheory.T.allPositive_model_finiteDimensional_compactType D (G.nX j).V _ (G.nX j).M τ (hε' τ)
+  have m := fun τ => _root_.GlobalTheory.CompactModel.model_allPos D (G.Xp j).V _ (G.Xp j).M τ (hε τ)
+  have m' := fun τ => _root_.GlobalTheory.CompactModel.model_allPos D (G.nX j).V _ (G.nX j).M τ (hε' τ)
   have hl := fun τ =>
     haveI := (m τ).1
     haveI := (m' τ).1
-    GlobalTheory.T.exists_howeDuality_intertwiner_unitaryPair_local (G.nX j).V.rank (G.Xp j).V.rank (hn τ) (ν τ) (x₁ τ) (x₃ τ) _ _ ((G.Xp j).M.H τ) ((G.Xp j).M.σ τ) ((G.nX j).M.H τ) ((G.nX j).M.σ τ)
+    _root_.GlobalTheory.CompactHowe.exists_local_lift (G.nX j).V.rank (G.Xp j).V.rank (hn τ) (ν τ) (x₁ τ) (x₃ τ) _ _ ((G.Xp j).M.H τ) ((G.Xp j).M.σ τ) ((G.nX j).M.H τ) ((G.nX j).M.σ τ)
       (n1 τ) (n2 τ) (n3 τ) (n4 τ) (m τ).2.2.1 (m τ).2.2.2 (m' τ).2.2.1 (m' τ).2.2.2
   choose I I0 hI using hl
   obtain ⟨J, J0, hJ⟩ := GlobalTheory.T.exists_equivariant_piTensor_polynomialBilinear D.what₂.Tau (G.nX j).V.rank (G.Xp j).V.rank (G.Xp j).M.H (G.nX j).M.H I I0
@@ -205,7 +212,7 @@ theorem exists_col_intertwiner : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ
       rwa [map_update, GlobalTheory.CompactHowe.LastStep.map_one'] at this)
   have hvv := isVacVec_of_isVac hf
   have hstd : IsStdChar D R.ψ (-1) := hf.1
-  have hinj := GlobalTheory.T.fockVectorsOfThetaDatum_injective D (G.Xp j).V (G.nX j).V _ _ R.ψ R.θ (G.Xp j).M (G.nX j).M f hstd hθ hvv
+  have hinj := _root_.GlobalTheory.FockInj.ptOf_injective D (G.Xp j).V (G.nX j).V _ _ R.ψ R.θ (G.Xp j).M (G.nX j).M f hstd hθ hvv
   have hmu := fun t τ => hasInfExp_mu R.toLevCh hC.lev t ⟨j, hj⟩ τ
   refine ⟨It, fun t => hIt ((ω t).swap) (GlobalTheory.Grid.fock R.ψ R.θ false (G.Xp j) (G.nX j) f) hinj (fun τ g hg φ => ?_) fun τ h hh φ => ?_⟩
   · rw [WRep.swap_apply]

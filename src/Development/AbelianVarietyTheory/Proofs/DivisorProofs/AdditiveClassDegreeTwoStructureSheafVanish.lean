@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHod
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueIsPullForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AxesO1OfProjectiveRankCupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafPullbackRelationsBasicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExteriorPowerTwoDiagonalAdditiveEqZeroProjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSquareAffineH1VanishStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafPullbackRelationsBasic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExteriorPowerTwoDiagonalAdditiveEqZeroProjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSquareAffineH1Vanish
 open CategoryTheory AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj
 open scoped TensorProduct
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.LiftSys GlobalTheory.Obs
@@ -40,7 +40,7 @@ theorem pullHO1_comp {A B C : Over (Sp R)} (f : B ⟶ C) (g : A ⟶ B) (a : HO1 
     pullHO1 (overW g) (pullHO1 (overW f) a) = pullHO1 (overW (g ≫ f)) a := by
   have h'' : (g.left ≫ f.left) ≫ C.hom = A.hom ≫ spMap (RingHom.id R) := by
     rw [← Over.comp_left]; exact overW (g ≫ f)
-  have k := (GlobalTheory.T.structureSheaf_pullback_relations_basic R C.left B.left C.hom B.hom f.left (overW f)).2.2 A.left A.hom g.left (overW g) h'' a _ _
+  have k := (_root_.GlobalTheory.Obs.pullO_basic R C.left B.left C.hom B.hom f.left (overW f)).2.2 A.left A.hom g.left (overW g) h'' a _ _
     (isPullO_pullHO1 _ a) (isPullO_pullHO1 _ _)
   exact IsPullO.eq_pullHO1 _ ((isPullO_congr (show g.left ≫ f.left = (g ≫ f).left from rfl) _ _).1 k)
 
@@ -58,7 +58,7 @@ theorem pullHO1_pull_one {A B : Over (Sp R)} [GrpObj A] (f : B ⟶ A) (g : A ⟶
   rw [pullHO1_congr (show (g ≫ f).left = (toUnit A ≫ η[A]).left by rw [e, Hom.one_def]) _ h', ← pullHO1_comp]
   have : pullHO1 (overW η[A]) a = 0 := by
     haveI : IsAffine (𝟙_ (Over (Sp R))).left := by change IsAffine (Sp R); infer_instance
-    exact (GlobalTheory.T.abelian_square_affine_h1_vanish R).2 _ _ _
+    exact (_root_.GlobalTheory.Obs.sq_abelian_and_affine_H1 R).2 _ _ _
   rw [this, map_zero]
 
 variable (A : Over (Sp R)) [GrpObj A]
@@ -122,7 +122,7 @@ theorem isPullO2_smul {a : CatCoh.H2 (OAff s)} {a' : CatCoh.H2 (OAff s')} (ha : 
 
 theorem isPullO2_unique {c : CatCoh.H2 (OAff s)} {x y : CatCoh.H2 (OAff s')} (hx : IsPullbackH2Structure h c x)
     (hy : IsPullbackH2Structure h c y) : x = y :=
-  (GlobalTheory.T.structureSheaf_pullback_relations_basic R X X' s s' φ h).1.1 (hx.symm.trans hy)
+  (_root_.GlobalTheory.Obs.pullO_basic R X X' s s' φ h).1.1 (hx.symm.trans hy)
 
 theorem pullback_wedge_cup_square (h : φ ≫ s = s' ≫ spMap (RingHom.id R))
     (e : ⋀[R]^2 (HO1 s) ≃ₗ[R] CatCoh.H2 (OAff s))
@@ -136,7 +136,7 @@ theorem pullback_wedge_cup_square (h : φ ≫ s = s' ≫ spMap (RingHom.id R))
     have hc : (pullHO1 h) ∘ ![a, b] = ![pullHO1 h a, pullHO1 h b] := by
       funext i; fin_cases i <;> try rfl
     rw [exteriorPower.map_apply_ιMulti, hc, he, he']
-    exact (GlobalTheory.T.structureSheaf_pullback_relations_basic R X X' s s' φ h).2.1 a b _ _ (isPullO_pullHO1 h a) (isPullO_pullHO1 h b)
+    exact (_root_.GlobalTheory.Obs.pullO_basic R X X' s s' φ h).2.1 a b _ _ (isPullO_pullHO1 h a) (isPullO_pullHO1 h b)
   have ht : t ∈ Submodule.span R (Set.range (exteriorPower.ιMulti R 2)) := by
     rw [exteriorPower.ιMulti_span]; trivial
   induction ht using Submodule.span_induction with
@@ -162,7 +162,7 @@ theorem GlobalTheory.Obs.primitiveStructureSheafDegTwoVanish_of_cup_iso
         ∀ a b, e (exteriorPower.ιMulti R 2 ![a, b]) = GlobalTheory.CatCoh.cup (OAff A.hom) a b) : PrimitiveStructureSheafDegTwoVanish := by
   intro R _ A _ g hA hg c c₁ c₂ hm h1 h2
   have hax : AxesVanishingStructureSheafDegOne := GlobalTheory.T.axesO1_of_projective_rank_cup H
-  obtain ⟨hAA, hgg⟩ := (GlobalTheory.T.abelian_square_affine_h1_vanish R).1 A g hA hg
+  obtain ⟨hAA, hgg⟩ := (_root_.GlobalTheory.Obs.sq_abelian_and_affine_H1 R).1 A g hA hg
   obtain ⟨⟨_, hproj, _⟩, e, he⟩ := H R A g hA hg
   obtain ⟨_, e', he'⟩ := H R (A ⊗ A) (g + g) hAA hgg
   obtain ⟨t, rfl⟩ := e.surjective c
@@ -201,4 +201,4 @@ theorem GlobalTheory.Obs.primitiveStructureSheafDegTwoVanish_of_cup_iso
       rw [← LinearMap.comp_apply, ← exteriorPower.map_comp, hid, exteriorPower.map_id, LinearMap.id_apply]
     rw [← k x, ← k y, hxy]
   haveI := hproj
-  rw [GlobalTheory.T.exteriorPowerTwo_diagonal_additive_eq_zero_projective R (HO1 A.hom) t (hinj E), map_zero]
+  rw [_root_.GlobalTheory.WedgeDiag.eq_zero_of_diag_additive R (HO1 A.hom) t (hinj E), map_zero]

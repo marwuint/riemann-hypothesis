@@ -19,8 +19,6 @@ theorem blkWord₀ : BlockWordOperators := blkWord' wave_existence_speed_multipl
 
 theorem pTTest₀ : PTTest := pTTest' wave_existence_speed_multiplicity.2.2.1
 
-theorem blkGrowth₀ (h : D4.EllFormula2J) : BlockEllipticGrowth := blkGrowth' wave_existence_speed_multiplicity.2.2.2 h
-
 theorem locOk₀ : LocOk := locOk idemAlg PositivityTheory.Rg.BcN.F2.LocOpPf.locOp3
 
 theorem locComm₀ : LocComm := locComm idemAlg sphComm PositivityTheory.Rg.BcN.F2.LocOpPf.locOp3

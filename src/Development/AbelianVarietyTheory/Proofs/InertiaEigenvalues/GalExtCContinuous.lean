@@ -44,8 +44,4 @@ noncomputable def galActC (l : ℕ) [Fact l.Prime] : GQ l →* (PadicComplex l �
 theorem isActC_galActC (l : ℕ) [Fact l.Prime] : IsActC (galActC l) :=
   ⟨galExtC_coe, norm_galExtC⟩
 
-theorem exists_isActC :
-    ∀ (l : ℕ) [Fact l.Prime], ∃ act : GQ l →* (PadicComplex l ≃+* PadicComplex l), IsActC act :=
-  fun l _ => ⟨galActC l, isActC_galActC l⟩
-
 end GlobalTheory.InertiaEigenvalues

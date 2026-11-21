@@ -59,32 +59,8 @@ end Words
 def Cert {F A J : Type*} [Field F] [Ring A] [Algebra F A] (T : J → A) (θ : J → F) (t : List J →₀ F) : Prop :=
   wop θ t = 1 ∧ IsIdempotentElem (wop T t) ∧ ∀ j, ∃ N : ℕ, (T j - algebraMap F A (θ j)) ^ N * wop T t = 0
 
-example {F A J : Type*} [Field F] [Ring A] [Algebra F A] (θ : J → F) :
-    Cert (fun j => algebraMap F A (θ j)) θ (Finsupp.single [] 1) :=
-  ⟨by simp, by simp [IsIdempotentElem], fun _ => ⟨1, by simp⟩⟩
-
-abbrev gen {F W J : Type*} [Field F] [AddCommGroup W] [Module F W] (T : J → End F W) (θ : J → F) : Submodule F W :=
-  ⨅ j, (T j).maxGenEigenspace (θ j)
-
 def ProjOne : Prop := ∀ (F : Type) [Field F] (A : Type u) [Ring A] [Algebra F A] [Module.Finite F A] (J : Type) (T : J → A),
   (∀ i j, Commute (T i) (T j)) → ∀ θ : J → F, ∃ t, Cert T θ t
-
-def ProjTwo : Prop := ∀ (F K : Type) [Field F] [Field K] (e : F ≃+* K) (A : Type u) [Ring A] [Algebra F A] [Module.Finite F A]
-  (I : Type) [Finite I] (B : I → Type v) [∀ i, Ring (B i)] [∀ i, Algebra K (B i)] [∀ i, Module.Finite K (B i)]
-  (J : Type) (T : J → A) (S : ∀ i, J → B i), (∀ j j', Commute (T j) (T j')) → (∀ i j j', Commute (S i j) (S i j')) →
-  ∀ θ : J → F, ∃ t, Cert T θ t ∧ ∀ i, Cert (S i) (fun j => e (θ j)) (wmap e.toRingHom t)
-
-theorem Cert.map {F K A B J : Type*} [Field F] [Field K] [Ring A] [Ring B] [Algebra F A] [Algebra K B] (f : F →+* K) (g : A →+* B)
-    (hg : ∀ c, g (algebraMap F A c) = algebraMap K B (f c)) {T : J → A} {θ : J → F} {t : List J →₀ F} (h : Cert T θ t) :
-    Cert (fun j => g (T j)) (fun j => f (θ j)) (wmap f t) := by
-  refine ⟨?_, ?_, fun j => ?_⟩
-  · rw [← map_wop_wmap f f (fun _ => rfl), h.1, map_one]
-  · rw [← map_wop_wmap f g hg]; exact h.2.1.map g
-  · obtain ⟨N, hN⟩ := h.2.2 j
-    exact ⟨N, by rw [← map_wop_wmap f g hg, ← hg, ← map_sub, ← map_pow, ← map_mul, hN, map_zero]⟩
-
-def CertProj : Prop := ∀ (F : Type) [Field F] (W : Type u) [AddCommGroup W] [Module F W] (J : Type) (T : J → End F W),
-  (∀ i j, Commute (T i) (T j)) → ∀ (θ : J → F) (t : List J →₀ F), Cert T θ t → LinearMap.IsProj (gen T θ) (wop T t)
 
 def ProjTrace : Prop := ∀ (F : Type) [Field F] (W : Type u) [AddCommGroup W] [Module F W] [FiniteDimensional F W]
   (U : Submodule F W) (p u : End F W), LinearMap.IsProj U p → ∀ h : ∀ x ∈ U, u x ∈ U,
@@ -114,28 +90,6 @@ def CentralChar {Γ H Z V : Type} [Group Γ] [Group H] [Group Z] [AddCommGroup V
     (ξ : Representation ℂ Γ V) (ζ : Z →* H) (ψ : Z →* ℂˣ) (Φ : H → V) : Prop :=
   (∀ z g, Φ (g * ζ z) = (ψ z : ℂ) • Φ g) ∧ (∀ z, ζ z ∈ K → ψ z = 1) ∧
     ∀ z γ (a : ℂ), ζ z = ι γ → (∀ v, ξ γ v = a • v) → (ψ z : ℂ) = a
-
-def CentralEig : Prop := ∀ (Γ H Z V : Type) [Group Γ] [Group H] [Group Z] [AddCommGroup V] [Module ℂ V] (ι : Γ →* H)
-  (K : Subgroup H) (ξ : Representation ℂ Γ V) [FiniteDimensional ℂ (forms ι K ξ)] (ζ : Z →* H), (∀ z g, ζ z * g = g * ζ z) →
-  ∀ M : Submodule ℂ (H → V), M ≤ forms ι K ξ → M ≠ ⊥ → (∀ Φ ∈ M, ∀ z, (fun g => Φ (g * ζ z)) ∈ M) →
-  ∃ Φ ∈ M, Φ ≠ 0 ∧ ∃ ψ : Z →* ℂˣ, CentralChar ι K ξ ζ ψ Φ
-
-def ExtEig : Prop := ∀ (Γ H A Z V : Type) [Group Γ] [Group H] [Group A] [Group Z] [AddCommGroup V] [Module ℂ V] (ι : Γ →* H)
-  (K : Subgroup H) (ξ : Representation ℂ Γ V) [FiniteDimensional ℂ (forms ι K ξ)] (c : H →* A) (ζ : Z →* H),
-  (∀ z g, ζ z * g = g * ζ z) → ∀ φ : H → V, KerForm ι K ξ c φ → (∃ u, c u = 1 ∧ φ u ≠ 0) →
-  ∀ (J : Type) (r : J → H →₀ ℂ) (θ : J → ℂ), (∀ j, ∀ u ∈ (r j).support, c u = 1) →
-    (∀ j, ∀ Φ ∈ forms ι K ξ, rop (r j) Φ ∈ forms ι K ξ) → (∀ j u, c u = 1 → rop (r j) φ u = θ j • φ u) →
-  ∃ Φ ∈ forms ι K ξ, Φ ≠ 0 ∧ (∀ j, rop (r j) Φ = θ j • Φ) ∧ ∃ ψ : Z →* ℂˣ, CentralChar ι K ξ ζ ψ Φ
-
-def ExtHecke : Prop := ∀ (Γ H A Z V : Type) [Group Γ] [Group H] [Group A] [Group Z] [AddCommGroup V] [Module ℂ V] (ι : Γ →* H)
-  (K : Subgroup H) (ξ : Representation ℂ Γ V) [FiniteDimensional ℂ (forms ι K ξ)] (c : H →* A) (ζ : Z →* H),
-  (∀ z g, ζ z * g = g * ζ z) → ∀ φ : H → V, KerForm ι K ξ c φ → (∃ u, c u = 1 ∧ φ u ≠ 0) →
-  ∀ (J : Type) (F : J → H → ℂ) (z : J → Z) (T : J → (forms ι K ξ →ₗ[ℂ] forms ι K ξ)) (θ : J → ℂ),
-    (∀ j, IsHecke ι K ξ (F j) (T j)) → (∀ j, ∀ k ∈ K, ∀ g, F j (g * k) = F j g) →
-    (∀ j, Set.Finite {h : H ⧸ K | F j h.out ≠ 0}) →
-    (∀ j g, F j g ≠ 0 → ∃ u k, c u = 1 ∧ k ∈ K ∧ g = u * ζ (z j) * k) →
-    (∀ j u, c u = 1 → ∑ᶠ h : c.ker ⧸ K.subgroupOf c.ker, F j ((h.out : H) * ζ (z j)) • φ (u * (h.out : H)) = θ j • φ u) →
-  ∃ Φ : forms ι K ξ, Φ ≠ 0 ∧ ∃ ψ : Z →* ℂˣ, CentralChar ι K ξ ζ ψ Φ ∧ ∀ j, T j Φ = (θ j * (ψ (z j) : ℂ)) • Φ
 
 end Ext
 

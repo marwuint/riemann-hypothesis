@@ -40,12 +40,6 @@ def CoreAtH (H : HostRaw φ) (TT : Finset φ.A) (eD eL K cHH eK eps x : ℝ) : P
     RestSize eps x (Fintype.card φ.A) TT.card T2.card m Dd.b Dd.k Dd.a ∧
     ∀ s ∈ T2, s ∈ φ.A0
 
-def pcOf (ψ : PChar) : Deduction.PC := ⟨ψ.N, ψ.χ, ψ.prim⟩
-
-def pcTo (ξ : Deduction.PC) : PChar := ⟨ξ.N, ξ.χ, ξ.prim⟩
-
-def pcEquiv : PChar ≃ Deduction.PC := ⟨pcOf, pcTo, fun _ => rfl, fun _ => rfl⟩
-
 end UpperTheory.Comparison₂
 
 end

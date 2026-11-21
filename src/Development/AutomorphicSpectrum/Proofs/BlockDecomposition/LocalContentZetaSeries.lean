@@ -3,9 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsContent
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorIntegerRingAlmostAllPlaces
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalRankOneDensityUniformizerPower
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSquareMulOfNonsquareUnits
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalUnitScalingNormMeasureStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticBasisIntegralUnramifiedStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticBasisIntegralOrderStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalUnitScalingNormMeasure
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticBasisIntegralUnramified
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticBasisIntegralOrder
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.WeilSiegel.Free GlobalTheory.CompanionTheory.WeilSiegel.HypStep GlobalTheory.CompanionTheory.WeilSiegel.HypMass
@@ -62,7 +62,7 @@ theorem content : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
     exact NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w) hreal
   obtain ⟨D, b₂, hsq, hb0, hσ1, hD⟩ := GlobalTheory.QuadNormBase.exists_basis F E σ h.2.2.1 hinv hne
   have hD0 : D ≠ 0 := fun h0 => hsq (h0 ▸ IsSquare.zero)
-  have I := GlobalTheory.T.integral_almost_all_places F E σ h
+  have I := _root_.GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ h
   filter_upwards [(I d b).2 D hD0, (I d b).2 2 two_ne_zero,
     Filter.eventually_all.2 fun k => (I 2 b₂).1 (b k),
     Filter.eventually_all.2 fun j => (I d b).1 (b₂ j)] with v hD1 h21 hBC hCB
@@ -83,19 +83,19 @@ theorem content : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
           rw [← Valuation.map_neg]
           simpa [pow_two] using h1
         exact absurd he (by rw [this]; exact lt_irrefl _)
-    obtain ⟨hnf, c, c1, c3, c4, c5⟩ := GlobalTheory.T.quadratic_basis_integral_order F E σ h d b b₂ D hb0 hσ1 hD v hD1 h21 hBC hCB e he
+    obtain ⟨hnf, c, c1, c3, c4, c5⟩ := _root_.GlobalTheory.CompanionTheory.SW.SplitIdeals.split_content F E σ h d b b₂ D hb0 hσ1 hD v hD1 h21 hBC hCB e he
     refine ⟨ℕ × ℕ, inferInstance, c, fun i => i.1 + i.2, ⟨c1, ?_, c3, c4, c5⟩, ?_⟩
     · intro i lam hlam
       obtain ⟨t, ht, hn⟩ := c3 i
-      exact GlobalTheory.T.local_unit_scaling_norm_measure F E σ h d b v lam hlam (c i) t _ (c1 i).1 ht hn
+      exact _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypMass.ContentScale.coordK_map_mul F E σ h d b v lam hlam (c i) t _ (c1 i).1 ht hn
     · intro s hs
       rw [zetaV, if_neg hnf]
       exact hasSum_split _ hq s hs
-  · obtain ⟨hf, c, c1, c3, c4, c5⟩ := GlobalTheory.T.quadratic_basis_integral_unramified F E σ h d b b₂ D hb0 hσ1 hD v hD1 h21 hBC hCB hres
+  · obtain ⟨hf, c, c1, c3, c4, c5⟩ := _root_.GlobalTheory.CompanionTheory.SW.QuadField.inert_content F E σ h d b b₂ D hb0 hσ1 hD v hD1 h21 hBC hCB hres
     refine ⟨ℕ, inferInstance, c, fun i => 2 * i, ⟨c1, ?_, c3, c4, c5⟩, ?_⟩
     · intro i lam hlam
       obtain ⟨t, ht, hn⟩ := c3 i
-      exact GlobalTheory.T.local_unit_scaling_norm_measure F E σ h d b v lam hlam (c i) t _ (c1 i).1 ht hn
+      exact _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypMass.ContentScale.coordK_map_mul F E σ h d b v lam hlam (c i) t _ (c1 i).1 ht hn
     · intro s hs
       rw [zetaV, if_pos hf]
       exact hasSum_field _ hq s hs

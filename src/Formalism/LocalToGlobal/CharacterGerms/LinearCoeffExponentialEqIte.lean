@@ -149,11 +149,4 @@ theorem endoLog_holds {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [C
   show VP.lin1 (VP.PhiAt Y ε MvPowerSeries.X m) j • a j = _
   rw [VP.linear_coeff_formal_law_at_X Y hε]
 
-theorem valuation_eq_pair_of_projections' {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ}
-    [NeZero d] {Orb : Type} [Fintype Orb] {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
-    (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (H : ∀ o, (Y.raw (p o)).Hyps V)
-    (Ls : LetSys C dd) (n : ℕ) (hK : KillSt Y p) (hP : ∀ o, ProjSt Y (p o))
-    (hT : ∀ o, RawChart.TCoordSt (H o).cartH) : ValEqPSt Y p H Ls n :=
-  valuation_eq_pair_of_projections Y p H Ls n (endoLog_holds Y) hK hP hT
-
 end Formalism.L2.FormalSeriesBounds

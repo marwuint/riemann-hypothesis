@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.HeightFunctions.XiValIffXiAt
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RayFieldTheta
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RingOfIntegersSqrtNegThreeModFour
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CmCurveTorsionDefinedOverOfWeberValues
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeberInvariantTorsionValuesSubsetOfContainsRayFiStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeberInvariantTorsionValuesSubsetOfContainsRayFi
 
 set_option autoImplicit false
 
@@ -97,7 +97,7 @@ theorem weberIn_of_containsRayField : ∀ (E : Type) [Field E] [NumberField E] [
     rw [← hw']
     simp
   refine ⟨fun P hP => ?_, hle hr0⟩
-  have hW := GlobalTheory.T.weberInvariantTorsionValues_subset_of_containsRayField K₀ F hle h2 (by omega) P (fun z => ?_) n hn hC'
+  have hW := _root_.GlobalTheory.FieldSize.WeberIn.weberSet_subset K₀ F hle h2 (by omega) P (fun z => ?_) n hn hC'
   · exact ⟨hW (Set.mem_insert _ _), fun s hs => hW (Set.mem_insert_of_mem _
       ⟨_, (hP _).2 ⟨s, rfl⟩, hs, rfl⟩)⟩
   · rw [hP]

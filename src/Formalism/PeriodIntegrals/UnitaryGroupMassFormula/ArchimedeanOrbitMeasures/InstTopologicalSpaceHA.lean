@@ -59,13 +59,6 @@ def HA.mat (h : HA R σ J) : GL (Fin M) (R ⊗[F] E) := let h' : HR R σ J := h;
 
 end Top
 
-def SelfDual {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] (μ : Measure V)
-    (χ : V → V → ℂ) : Prop :=
-  μ.IsAddHaarMeasure ∧
-  ∀ Φ : V → ℂ, Continuous Φ → HasCompactSupport Φ →
-    Integrable (fun y => ∫ x, Φ x * χ x y ∂μ) μ →
-      ∀ z, ∫ y, (∫ x, Φ x * χ x y ∂μ) * χ y z ∂μ = Φ (-z)
-
 section Adeles
 
 variable (F : Type) [Field F] [NumberField F]
@@ -95,50 +88,14 @@ scoped instance measAf : MeasurableSpace (Af F) := borel _
 
 variable (F)
 
-def pairA (x : Ainf F) (y : Af F) : AF F := (x, y)
-
-def fstA : AF F →ₐ[F] Ainf F := AlgHom.fst F (Ainf F) (Af F)
-
-def IsCharAF (ψ : AddChar (AF F) ℂ) : Prop :=
-  Continuous ψ ∧ (∀ x, ‖ψ x‖ = 1) ∧ (∀ a : F, ψ (algebraMap F (AF F) a) = 1) ∧ ∃ x, ψ x ≠ 1
-
-def psiInf (ψ : AddChar (AF F) ℂ) (x : Ainf F) : ℂ := ψ (pairA F x 0)
-
 end AdeleAnalysis
 
-section Tuples
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
-
-end Tuples
-
 end HcS.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 namespace HcS.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
-open scoped TensorProduct
-open NumberField IsDedekindDomain MeasureTheory Topology
-
-section More
-
-variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
-
-variable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
-
-end More
-
 end HcS.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 namespace HcS.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-
-open scoped TensorProduct
-open NumberField IsDedekindDomain MeasureTheory Topology
-
-section HMeasures
-
-variable (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
-  (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
-
-end HMeasures
 
 end HcS.MainNotions.GlobalTheoryTheory.GenusMassVolumes

@@ -177,12 +177,6 @@ theorem fc_inj_pt_per {B : Base F E} (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n
   have h0 := congrFun key 0
   simpa [PositivityTheory.SiegelWeilFormula.kfour.nb_zero hnb] using h0
 
-theorem fc_inj_pt_core {B : Base F E} (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n) E) (nb : nA σ Y b → G2 σ Y)
-    (lam : Measure (nA σ Y b)) (𝓖 : Set (nA σ Y b)) (hb : IsFrame2 σ Y b) (hc : CoefData (σ := σ) (Y := Y) b nb lam 𝓖)
-    (f : G2 σ Y → ℂ) (hf : Continuous f) (hinv : ∀ γ ∈ rat2 σ Y, ∀ y, f (γ * y) = f y) (x : G2 σ Y)
-    (hx : ∀ T : nF σ Y b, fc B.ψ b nb lam 𝓖 f T x = 0) : f x = 0 :=
-  fc_inj_pt_per hB b nb lam 𝓖 hb hc f hf (fun β hβ g => hinv _ (PositivityTheory.SiegelWeilFormula.kfour.nb_rat hc.1 β hβ) g) x hx
-
 end PositivityTheory.FTA.ZFC
 
 end

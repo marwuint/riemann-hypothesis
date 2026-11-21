@@ -6,7 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraS
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListDegreeStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerDimensionHarishChandraInductionMulStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerDimensionCuspidalGreenDegreeEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvariStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvari
+import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 
 open Polynomial Formalism.MainNotions.ArithmeticCylinders GlobalTheory.GLq GlobalTheory.BadShare GlobalTheory.BadShare.Basic
 open scoped Classical
@@ -50,7 +51,7 @@ theorem wh_hcL (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (L : List (Pc g))
       obtain ⟨V, -, hV⟩ := hq.2.1
       exact ⟨V, hV⟩
     have c1 := isClass_of_isChar (hch p hp.1)
-    have c2 := isClass_of_isChar (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g L L _ rfl fun q hq => hch q (hL q hq).1).1
+    have c2 := isClass_of_isChar (_root_.GlobalTheory.gl_list_product_perm_char g L L _ rfl fun q hq => hch q (hL q hq).1).1
     rw [hcL_cons, hc, GlobalTheory.T.whittakerDimension_harishChandraInduction_mul g ψ hψ p.1 (degL L) _ (by simp [degL]) _
       (fun y a b => by simp only [c1 a b]) (fun x a b => by simp only [c2 a b])]
     simp only [wh_const_mul, ih hL, mul_one]

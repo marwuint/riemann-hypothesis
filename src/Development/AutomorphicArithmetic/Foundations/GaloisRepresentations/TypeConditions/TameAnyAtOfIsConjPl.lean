@@ -4,7 +4,18 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeC
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertiaCharpolyEq
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameAnyAtPlace
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameOfFrobeniusDense
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ImportsBisSide
+import Mathlib
+import Formalism.SharpRestriction.LevelLetterCocycles.AdmissibleThreePrime
+import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.InjPrimeTo
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjPlMemPlacesOver
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameFixedAway
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PointParOfTwist
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistInvOfCharLawsMultOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FirstCharacterTrivialWildInertiaTypePrime
+import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
+import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 
 noncomputable section
 
@@ -48,16 +59,9 @@ theorem ineAt' : ∀ D : D7, UpperTheory.GalS.GalAwayN D → FrobDense D → ∀
 end GlobalTheory.IneAway
 
 namespace GlobalTheory.TypeLeaf
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
-open GlobalTheory.TameLabels
-
 end GlobalTheory.TypeLeaf
 
 namespace GlobalTheory.TypeLeaf.ConjPlace
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
-open GlobalTheory.TameLabels GlobalTheory.AntiRamConj GlobalTheory.TwistDet
-open scoped Pointwise
-
 end GlobalTheory.TypeLeaf.ConjPlace
 
 namespace GlobalTheory.AdmTame

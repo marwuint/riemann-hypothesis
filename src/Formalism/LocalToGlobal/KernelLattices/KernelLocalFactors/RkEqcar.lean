@@ -3,7 +3,13 @@ import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThetaLocalEquiv
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.RkConj
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.RkThindEq
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ColInst
-import Formalism.LocalToGlobal.Columns.ChainOneOkF
+import Formalism.LocalToGlobal.Columns.ChainOneOk
+import Formalism.LocalToGlobal.Columns.ReductionExistsInLatticeStabilizerHolds
+import Formalism.LocalToGlobal.Columns.ResidueFieldUnfoldingClaimsHold
+import Formalism.LocalToGlobal.Columns.BlockTriangularMulVecMemPartialFlag
+import Formalism.LocalToGlobal.Columns.ReducedMatrixExtensionEntry
+import Formalism.LocalToGlobal.Columns.FrameEntryAuxiliarySuperdiagonal
+import Formalism.LocalToGlobal.Columns.ColumnsProofs.SymLevEnt
 
 open NumberField IsDedekindDomain
 
@@ -44,29 +50,5 @@ theorem thEquivP_ambOf_tiesD (hok : s.Ok) (hcc : Cd.TaylorLogMetric.IsCurveIdeal
     (muProdLaw_of hX hPr hsel hg hT i hi e he _) (muProdLaw_of hX hPr hsel hg hT i hi e he _)
 
 end Step
-
-section All
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Ch : Chars X Pr R.m}
-  {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {u : Pr.Word} {m2 : ℕ}
-  {D : Car} (s : Cd.Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Cd.Base D cc δ) (χ : Cd.TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
-
-theorem thEquivP_ambOf_car (hok : s.Ok) (hcc : Cd.TaylorLogMetric.IsCurveIdeal D cc) (hδ : Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hχ : Cd.TaylorLogMetric.IsChi D χ)
-    (hX : X.Ok) (hX1 : X.AbelianUnramifiedExtensionConditions) (hPr : Pr.Ok) (hCh : Ch.Ok) (hW : W.Ok) (hsel : IsSel X sel)
-    (hg0 : XiOffG Pr ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K)) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (Gc : ChGlob X R.m)
-    {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied Gc.σ₀ (fun j τ => (W.row τ).e j) Gc.mu0 eta) (hWe : Ch.WeilTied Gc.σ₀ Gc.xi0)
-    (hval : ∀ (j : Fin R.m) (w : HeightOneSpectrum (𝓞 X.E)), w ∈ Pr.vGs → ∃ y : X.K, Gc.σ₀ y = ((((Gc.mu0 j).locK w (ciQU w)) : ℂˣ) : ℂ)⁻¹)
-    (hm : R.m = m2 + 2) (e : ℕ → X.Tau → ℤ) (he : ∀ i (hi : i < R.m) τ, (e i τ : ℚ) = (W.row τ).e ⟨i, hi⟩)
-    (hLa : ∀ i j, (Cd.ambOf s B χ cD : Amb X).LaHyp (R.N i) (R.N j) (Sall sel (mu0 X.F X.E X.K S) u))
-    (hRat : ∀ i, i < R.m → (Cd.ambOf s B χ cD : Amb X).JetsRatDeg (R.N i) (R.N (i + 1)) (Sall sel (mu0 X.F X.E X.K S) u)
-      (cAof sel (mu0 X.F X.E X.K S) (ookCstR Ch sel S Gc) * cBof sel (mu0 X.F X.E X.K S) (ookCstR Ch sel S Gc) u) (stepDeg W u i)) :
-    ∀ i, i < R.m → ThEquivP (stepT W Ch sel (mu0 X.F X.E X.K S) (ookCstR Ch sel S Gc) (Cd.ambOf s B χ cD) u i (W.lamTrue u (i + 1)))
-      (Sall sel (mu0 X.F X.E X.K S) u) (cAof sel (mu0 X.F X.E X.K S) (ookCstR Ch sel S Gc) * cBof sel (mu0 X.F X.E X.K S) (ookCstR Ch sel S Gc) u)
-      (colValF W sel (mu0 X.F X.E X.K S) u i).rho (colValF W sel (mu0 X.F X.E X.K S) u (i + 1)).rho := by
-  have hL := oneIdx_ok_closed sel S hX hPr hCh h4 Gc hT hWe hval hm
-  have hTies : LawTies W Ch sel (mu0 X.F X.E X.K S) (ookCstR Ch sel S Gc) Gc := lawTies_of_ok W Ch sel _ _ _ Gc m2 hL hW ⟨eta, hT⟩
-  exact fun i hi => thEquivP_ambOf_tiesD u s B χ cD hok hcc hδ hχ hX1 hPr hsel hg0 hTies (hPr.T_prime u).pos hi (e i) (he i hi) (hLa _ _) (hRat i hi)
-
-end All
 
 end Formalism.L2.Ker.Cd.CarC

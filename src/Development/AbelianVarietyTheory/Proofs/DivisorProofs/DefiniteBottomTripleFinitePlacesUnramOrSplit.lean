@@ -1,16 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCharacterUnramifiedMuStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridCharactersUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallPlaceNotNonsplitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlaceUnderNotNonSplitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LargePlaceRatioRamifiedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdeleCharacterQuotientNotUnramifiedAtBasePlaceIdStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareMuDivChiRamifiedAtTwistPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LargePlaceNotDvdDifferentStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCharacterUnramifiedMu
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridCharactersUnramified
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallPlaceNotNonsplit
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlaceUnderNotNonSplit
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LargePlaceRatioRamified
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdeleCharacterQuotientNotUnramifiedAtBasePlaceId
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareMuDivChiRamifiedAtTwistPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LargePlaceNotDvdDifferent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AuxiliaryPlaceNotDvdDifferentBaseFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlaceUnderNotDvdDifferentIdealStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlaceUnderNotDvdDifferentIdeal
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Theta IsDedekindDomain NumberField Finset MeasureTheory
 open GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTheory.RowTest GlobalTheory.SqTop
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
@@ -40,23 +40,23 @@ theorem bottom_ram : GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i
   · right
     rw [mul_div_mul_right_eq_div]
     rcases hS with hS | ⟨PP, hPP, hPv⟩
-    · refine ⟨GlobalTheory.T.small_place_not_nonsplit G μ₀ hμ t v e he hS, ?_, ?_⟩
+    · refine ⟨_root_.GlobalTheory.SplitAtSmallPlaces.not_nonSplitAt G μ₀ hμ t v e he hS, ?_, ?_⟩
       · rcases G.pl.mem_S0_of_sum_eq.1 hS with h0 | h1
-        · exact GlobalTheory.T.not_unramAt_mu_div_chi_at_base_place G μ₀ hμ t v e he h0 i j
-        · exact GlobalTheory.T.large_place_ratio_ramified G μ₀ hμ t v e he h1 i j
+        · exact _root_.GlobalTheory.RamifiedIdeleBasePlace.ideleCharacterQuotient_not_unramified_at_basePlaceIdempotent G μ₀ hμ t v e he h0 i j
+        · exact _root_.GlobalTheory.RamifiedOnLargePlaces.not_unramAt G μ₀ hμ t v e he h1 i j
       · rcases G.pl.mem_S0_of_sum_eq.1 hS with h0 | h1
         · subst h0; exact GlobalTheory.T.auxiliary_place_not_dvd_different_base_field G
-        · exact GlobalTheory.T.large_place_not_dvd_different large₂ hr v h1
-    · refine ⟨GlobalTheory.T.twist_place_under_not_nonSplit G μ₀ hμ t v e he PP hPP hPv, ?_, hPv ▸ GlobalTheory.T.twist_place_under_not_dvd_differentIdeal Lc μ₀ hμ t PP hPP⟩
+        · exact _root_.GlobalTheory.DiffSOne.not_dvd_differentIdeal large₂ hr v h1
+    · refine ⟨_root_.GlobalTheory.SplitTwistPlaces.not_nonSplitAt G μ₀ hμ t v e he PP hPP hPv, ?_, hPv ▸ _root_.GlobalTheory.TwistPlDiff.under_not_dvd_differentIdeal Lc μ₀ hμ t PP hPP⟩
       by_cases h0 : v ∈ G.pl.S0
       · rcases G.pl.mem_S0_of_sum_eq.1 h0 with h0 | h1
-        · exact GlobalTheory.T.not_unramAt_mu_div_chi_at_base_place G μ₀ hμ t v e he h0 i j
-        · exact GlobalTheory.T.large_place_ratio_ramified G μ₀ hμ t v e he h1 i j
-      · exact GlobalTheory.T.square_mu_div_chi_ramified_at_twist_place G μ₀ hμ t v e he h0 PP hPP hPv i j
+        · exact _root_.GlobalTheory.RamifiedIdeleBasePlace.ideleCharacterQuotient_not_unramified_at_basePlaceIdempotent G μ₀ hμ t v e he h0 i j
+        · exact _root_.GlobalTheory.RamifiedOnLargePlaces.not_unramAt G μ₀ hμ t v e he h1 i j
+      · exact _root_.GlobalTheory.SqTop.not_unramAt_twist G μ₀ hμ t v e he h0 PP hPP hPv i j
   · left
     push_neg at hS
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.grid_characters_unramified G μ₀ hμ t v e he hS.1 i
-    exact ⟨unramAt_mul (GlobalTheory.T.level_character_unramified_mu G μ₀ hμ t v e he hS.1 hS.2 j) (unramAt_pow h2 _), unramAt_mul h1 (unramAt_pow h2 _)⟩
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.GridUnr.chi_eta_unramAt G μ₀ hμ t v e he hS.1 i
+    exact ⟨unramAt_mul (_root_.GlobalTheory.BotTripleUnr.unramAt_mu G μ₀ hμ t v e he hS.1 hS.2 j) (unramAt_pow h2 _), unramAt_mul h1 (unramAt_pow h2 _)⟩
 
 end GlobalTheory.BotRam
 

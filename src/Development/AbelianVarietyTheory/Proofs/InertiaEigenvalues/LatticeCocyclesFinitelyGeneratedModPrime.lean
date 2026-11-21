@@ -4,7 +4,7 @@ import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Formalism.GaloisCohomology.LocalTateDualityK
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteH1H2LocalStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteH1H2Local
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoefficientRingIntegersCompactAdicPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixingSubgroupEquivBicontinuous
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOpenOfFgOfSpanEqTop
@@ -232,7 +232,7 @@ theorem cocycles_fg_mod_l : Formalism.GaloisCohomology.LocalTateDualityK → ∀
     exact (isLocallyConstant_mk hS (fun g => A.ρ g t) (A.cont _)
       (fun g => hρT g t t.2)).continuous.comp hΦ.2
   have hH1 : Finite (ReciprocityTheory.Gal.H1 ρb) :=
-    (GlobalTheory.T.finite_H1_H2_local hT l K.1 K.2 1 (Red LA.T ϖ) ρb one_pos hρb).1
+    (_root_.GlobalTheory.finite_H1_H2_of_localTateDuality hT l K.1 K.2 1 (Red LA.T ϖ) ρb one_pos hρb).1
   have hcT : ∀ (c : ↥(latticeCocycles LA)) (g : ↥(GK K)), (c : ↥(GK K) → A.V) g ∈ LA.T :=
     fun c g => Submodule.mem_pi.1 (Submodule.mem_inf.1 c.2).2 g (Set.mem_univ g)
   let ev : ↥(latticeCocycles LA) → ↥(GK K) → ↥LA.T := fun c g => ⟨(c : ↥(GK K) → A.V) g, hcT c g⟩

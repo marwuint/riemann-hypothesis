@@ -1,9 +1,9 @@
 import Mathlib
 import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.BackStable
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensorStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensor
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CayleyHamiltonStatementStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeNonVanishingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeNonVanishing
 
 noncomputable section
 
@@ -432,8 +432,8 @@ theorem scal_before (hQ : QdetTens) (hC : CayleyHam) (hV : NonVan) (hX : HasChar
 
 theorem back : Back := by
   intro n X χ s hX hfree hS
-  exact ⟨scal_before GlobalTheory.T.QuantumDeterminantTensor GlobalTheory.T.CayleyHamiltonHk GlobalTheory.T.HeckeNonVanishing hX hfree hS,
-    om_scalar GlobalTheory.T.QuantumDeterminantTensor hS hfree⟩
+  exact ⟨scal_before _root_.GlobalTheory.CompanionTheory.RgExh.qdetTens GlobalTheory.T.CayleyHamiltonHk _root_.GlobalTheory.CompanionTheory.RgExhHecke.NonVanProof.nonVan hX hfree hS,
+    om_scalar _root_.GlobalTheory.CompanionTheory.RgExh.qdetTens hS hfree⟩
 
 end Main
 

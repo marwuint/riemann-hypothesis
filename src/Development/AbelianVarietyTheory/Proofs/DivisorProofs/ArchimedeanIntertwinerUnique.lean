@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingTrRep
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRealAdEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzHadamardLemma
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzEqZeroOfWrongSignGaussianRelation
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslationCharacterInvariantFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslationInvariantFormConstL2Statement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslationCharacterInvariantForm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslationInvariantFormConstL2
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.WeilTr MeasureTheory
 open scoped Matrix ENNReal
 
@@ -120,7 +120,7 @@ theorem const_of_intertwines : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F : Typ
   haveI : BorelSpace (κ → mixedEmbedding.mixedSpace F) := ⟨rfl⟩
   set μ₀ : Measure (κ → mixedEmbedding.mixedSpace F) := Measure.addHaar with hμ₀
   have hμ₀H : μ₀.IsAddHaarMeasure := by rw [hμ₀]; infer_instance
-  obtain ⟨c, hc⟩ := GlobalTheory.T.translation_invariant_form_const_l2 _ μ₀ hμ₀H T (htr μ₀ hμ₀H) (GlobalTheory.T.translation_character_invariant_form _ μ₀ hμ₀H T (hmod μ₀ hμ₀H))
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.TransConstForm.eq_const_mul_l2_of_translation_invariant _ μ₀ hμ₀H T (htr μ₀ hμ₀H) (_root_.GlobalTheory.CharMult.multiplier_symm _ μ₀ hμ₀H T (hmod μ₀ hμ₀H))
   obtain ⟨Φ, hΦ⟩ := GlobalTheory.ArchUniqStd.exists_one (V := κ → mixedEmbedding.mixedSpace F)
   have hself : ∀ h : SInf F κ, ∫ x, h x * starRingEnd ℂ (h x) ∂μ₀ = ((∫ x, ‖h x‖ ^ 2 ∂μ₀ : ℝ) : ℂ) :=
     fun h => GlobalTheory.WrongSignGauss.ip_self μ₀ h

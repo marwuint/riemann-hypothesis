@@ -83,11 +83,6 @@ theorem map_pInf_mul_inv (g : GA F 2) :
       ((g⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)).map (UpperTheory.V.TR.pInf F) = 1 := by
   rw [← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
-theorem map_pInf_inv_mul (g : GA F 2) :
-    ((g⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)).map (UpperTheory.V.TR.pInf F) *
-      (g : Matrix (Fin 2) (Fin 2) (Ad F)).map (UpperTheory.V.TR.pInf F) = 1 := by
-  rw [← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
-
 theorem pFin_moduleSection (t : {r : ℝ // 0 < r}) :
     pFin F ((moduleSection (w0 F) t : Ideles F) : Ad F) = 1 := by
   rw [coe_moduleSection]

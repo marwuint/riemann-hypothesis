@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsPosHermFormV
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IntMIffInt
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralGaussianUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeisenbergReproducingKernelSumSpecStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryFiniteGaussSumPhaseRootOfUnityStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralUnfoldFundamentalDomainStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralGaussianUnitary
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeisenbergReproducingKernelSumSpec
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryFiniteGaussSumPhaseRootOfUnity
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralUnfoldFundamentalDomain
 open Complex MeasureTheory GlobalTheory.UnitaryTheta
 open scoped BigOperators ComplexConjugate Real Classical
 
@@ -94,13 +94,13 @@ theorem ph_det_mul_integral : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace
   haveI : ProperSpace V := FiniteDimensional.proper ℂ V
   haveI : Countable Λ := TopologicalSpace.separableSpace_iff_countable.1 inferInstance
   haveI : Countable Λ' := (AddSubgroup.inclusion_injective hle).countable
-  obtain ⟨κ, -, hg⟩ := GlobalTheory.T.integral_cexp_herm_gaussian_eq_div_det V μ H hH a ha hdet
+  obtain ⟨κ, -, hg⟩ := _root_.GlobalTheory.UnitaryTheta.integral_gaussian_unitary V μ H hH a ha hdet
   let E := LinearMap.equivOfDetNeZero _ hdet
   have hE : ∀ x, E x = x - a x := fun x => rfl
   let B : V →ₗ[ℂ] V := E.symm
   have hB1 : ∀ x, B x - a (B x) = x := fun x => by rw [← hE]; exact E.apply_symm_apply x
   have hB2 : ∀ x, B (x - a x) = x := fun x => by rw [← hE]; exact E.symm_apply_apply x
-  obtain ⟨M, _, s, hs, huniq, hph⟩ := GlobalTheory.T.unitary_finite_gaussSum_phase_rootOfUnity V H hH a ha B hB1 hB2 Λ Λ' hfg hle hfi haΛ α hα hαa
+  obtain ⟨M, _, s, hs, huniq, hph⟩ := _root_.GlobalTheory.UnitaryTheta.GaussPhase.gauss_phase V H hH a ha B hB1 hB2 Λ Λ' hfg hle hfi haΛ α hα hαa
   have hint : ∀ x, Integrable (term H a α x) μ := fun x => by
     have : term H a α x = _ := funext fun z => term_eq H a ha α x (B x) z (hB1 x)
     rw [this]
@@ -122,7 +122,7 @@ theorem ph_det_mul_integral : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace
   have hsum : ∀ z, kerSum H Λ α z (a z) * cexp (-(π : ℂ) * H z z) =
       ∑ m, ∑' y : Λ', term H a α (s m) (z + y) := fun z => by
     have h1 : Summable (fun x : Λ => term H a α x z) :=
-      ((GlobalTheory.T.heisenbergReproducingKernelSum_spec V H hH Λ α hα).1 (a z) z).mul_right _
+      ((_root_.GlobalTheory.UnitaryTheta.KerSum.kerSum_spec V H hH Λ α hα).1 (a z) z).mul_right _
     have h2 := (Equiv.ofBijective f hf).summable_iff.2 h1
     rw [kerSum, ← tsum_mul_right]
     change ∑' x : Λ, term H a α x z = _
@@ -131,7 +131,7 @@ theorem ph_det_mul_integral : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace
     rw [tsum_fintype]
     refine Finset.sum_congr rfl fun m _ => tsum_congr fun y => ?_
     exact term_shift H hH a ha Λ α hα (s m) y z (hs m) (hle y.2) (haΛ _ y.2) (hαa _ y.2)
-  have hu := fun m => GlobalTheory.T.setIntegral_tsum_translate_eq_integral V μ Λ' Fd hFd _ (hint (s m))
+  have hu := fun m => _root_.GlobalTheory.integral_unfold_fundamentalDomain V μ Λ' Fd hFd _ (hint (s m))
   simp only [hsum]
   rw [integral_finset_sum _ (fun m _ => (hu m).1)]
   simp only [fun m => (hu m).2, hval]

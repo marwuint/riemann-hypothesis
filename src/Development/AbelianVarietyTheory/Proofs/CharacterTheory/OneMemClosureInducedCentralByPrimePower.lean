@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.OneMemOfMulMemOfForallPrimeNotDvd
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.OneMemVirtualCharactersOfIntegralCombinationStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsInducedIntPrimeToStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.OneMemVirtualCharactersOfIntegralCombination
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsInducedIntPrimeTo
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IndMulClassFunEqIndMulRestrict
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharactersMulComapConjIndLinearStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharactersMulComapConjIndLinear
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 
 namespace GlobalTheory.BI
@@ -15,7 +15,7 @@ theorem one_mem_closure_ind_centralByPrime :
   intro G _ _
   classical
   set A : Set (G → ℂ) := {f : G → ℂ | ∃ (E : Subgroup G) (ψ : E → ℂ), (∃ l : ℕ, l.Prime ∧ ∀ y : E, ∃ j : ℕ, y ^ l ^ j ∈ Subgroup.center E) ∧ ψ ∈ Virt ℂ ℂ E ∧ f = ind E ψ} with hA
-  obtain ⟨hmul, hpull, hclass, hind, -⟩ := GlobalTheory.T.virtualCharacters_mul_comap_conj_ind_linear G
+  obtain ⟨hmul, hpull, hclass, hind, -⟩ := _root_.GlobalTheory.BI.virt_mul_comap_conj_ind_linear G
   have hAV : ∀ f ∈ A, f ∈ Virt ℂ ℂ G := by
     rintro f ⟨E, ψ, -, hψ, rfl⟩
     exact hind E ψ hψ
@@ -25,7 +25,7 @@ theorem one_mem_closure_ind_centralByPrime :
     have hgV := hAV g hg
     obtain ⟨E, ψ, hE, hψ, rfl⟩ := hf
     refine ⟨E, fun h => ψ h * g h, hE, ?_, ind_mul_classFun_eq_ind_mul_restrict G E ψ g (hclass g hgV)⟩
-    exact (GlobalTheory.T.virtualCharacters_mul_comap_conj_ind_linear E).1 ψ hψ _ (hpull g hgV E E.subtype)
+    exact (_root_.GlobalTheory.BI.virt_mul_comap_conj_ind_linear E).1 ψ hψ _ (hpull g hgV E E.subtype)
   let R := integralClosure ℤ ℂ
   let J : Submodule R (G → ℂ) := Submodule.span R A
   have hJJ : ∀ f ∈ J, ∀ g ∈ J, f * g ∈ J := by
@@ -48,7 +48,7 @@ theorem one_mem_closure_ind_centralByPrime :
       rw [map_mul]
       exact hJJ _ hf _ hg
     · intro x p hp
-      obtain ⟨E, f, ι, _, r, lam, hE, hf, hr, hsum⟩ := GlobalTheory.T.exists_integral_comb_induced_linear_not_dvd G x p hp
+      obtain ⟨E, f, ι, _, r, lam, hE, hf, hr, hsum⟩ := _root_.GlobalTheory.exists_induced_int_prime_to G x p hp
       refine ⟨f, ?_, hf⟩
       rw [hS]
       have : c f = ∑ i, (⟨r i, hr i⟩ : R) • ind E (fun e => (lam i e : ℂ)) := by
@@ -57,10 +57,10 @@ theorem one_mem_closure_ind_centralByPrime :
         exact hsum g
       rw [this]
       refine J.sum_mem fun i _ => J.smul_mem _ (Submodule.subset_span ?_)
-      exact ⟨E, _, hE, (GlobalTheory.T.virtualCharacters_mul_comap_conj_ind_linear E).2.2.2.2 (lam i), rfl⟩
+      exact ⟨E, _, hE, (_root_.GlobalTheory.BI.virt_mul_comap_conj_ind_linear E).2.2.2.2 (lam i), rfl⟩
   rw [hS, map_one] at h1
   obtain ⟨n, r, s, hsum⟩ := Submodule.mem_span_set'.1 h1
-  refine GlobalTheory.T.one_mem_virtualCharacters_of_integral_combination G _ hJV (Fin n) (fun i => (r i : ℂ)) (fun i => (s i : G → ℂ)) (fun i => (r i).2)
+  refine _root_.GlobalTheory.BI.one_mem_of_integral_combination G _ hJV (Fin n) (fun i => (r i : ℂ)) (fun i => (s i : G → ℂ)) (fun i => (r i).2)
     (fun i => AddSubgroup.subset_closure (s i).2) fun g => ?_
   have := congrFun hsum g
   rw [Finset.sum_apply] at this

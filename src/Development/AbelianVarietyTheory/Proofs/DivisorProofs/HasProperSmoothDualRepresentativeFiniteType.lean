@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeBisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasProperSmoothDualRepresentativeNoetherianInducTer
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasProperSmoothDualRepresentativeGrpPullbackIffStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasProperSmoothDualRepresentativeNoetherianInducBis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasProperSmoothDualRepresentativeGrpPullbackIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeAndRelDimOfIsGrpPullback
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
@@ -26,7 +26,7 @@ theorem hasRep_quot_of_factor {S T : Type} [CommRing S] [CommRing T] (J : Ideal 
   have hB : IsGrpPullback B A f (pullback.fst A.hom f) := isGrpPullback_pullback A f
   obtain ⟨hAB, hgB⟩ :=
     GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback φ A B _ g hB hA hg
-  have h2 := (GlobalTheory.T.hasProperSmoothDualRepresentative_grpPullback_iff _ _ f A B _ hB g (𝟙_ _)).1.mp (h B hAB hgB)
+  have h2 := (_root_.GlobalTheory.DualCon.hasRep_baseChange_iff _ _ f A B _ hB g (𝟙_ _)).1.mp (h B hAB hgB)
   refine GlobalTheory.T.baseChangeBis _ A (Over.mk ((𝟙_ (Over (Sp T))).hom ≫ f)) (Over.mk (spMap (Ideal.Quotient.mk J))) g
     (Over.homMk (spMap ψ) ?_) h2
   change spMap ψ ≫ 𝟙 _ ≫ spMap φ = spMap (Ideal.Quotient.mk J)
@@ -45,7 +45,7 @@ theorem hasRep_quot (R : Type) [CommRing R] [Algebra.FiniteType ℤ R] (g : ℕ)
     intro A _ hA hg
     haveI : @Algebra.FiniteType ℤ (R ⧸ I) _ _ (Ring.toIntAlgebra _) :=
       Algebra.FiniteType.of_surjective (Ideal.Quotient.mk I).toIntAlgHom Ideal.Quotient.mk_surjective
-    refine GlobalTheory.T.hasProperSmoothDualRepresentative_noetherian_induction (R ⧸ I) A g hA hg fun J' hJ' => ?_
+    refine _root_.GlobalTheory.DualCon.Step.step (R ⧸ I) A g hA hg fun J' hJ' => ?_
     let J : Ideal R := J'.comap (Ideal.Quotient.mk I)
     have hle : I ≤ J := fun a ha => by
       show Ideal.Quotient.mk I a ∈ J'
@@ -72,7 +72,7 @@ theorem hasRep_quot (R : Type) [CommRing R] [Algebra.FiniteType ℤ R] (g : ℕ)
 theorem hasRep_of_finiteType : ∀ (R : Type) [CommRing R] [Algebra.FiniteType ℤ R] (A : Over (Sp R)) [GrpObj A]
     (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → HasRep A g (𝟙_ _) := by
   intro R _ _ A _ g hA hg
-  refine GlobalTheory.T.hasProperSmoothDualRepresentative_noetherian_induction R A g hA hg fun J _ => ?_
+  refine _root_.GlobalTheory.DualCon.Step.step R A g hA hg fun J _ => ?_
   exact hasRep_quot_of_factor J (Ideal.Quotient.mk J) (RingHom.id _) rfl g
     (fun B _ hB hgB => hasRep_quot R g J B hB hgB) A hA hg
 

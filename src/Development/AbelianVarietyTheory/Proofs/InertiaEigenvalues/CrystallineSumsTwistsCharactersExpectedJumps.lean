@@ -10,9 +10,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlockCharacter
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankSplit
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsComponentEquiv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveTensorBcrisToBdR
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConcretePeriodDeRhamModuleFinrankLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConcretePeriodDeRhamModuleFinrankLe
+import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
+import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamComparisonIsFilteredStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedIsCrysAndJumpEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedIsCrysAndJumpEqZero
 import Development.AbelianVarietyTheory.Counterexamples.NonGaloisSurvey.ReindexedFiltrationComparison
 
 noncomputable section
@@ -108,7 +110,7 @@ theorem exists_inverse_fontaineElement_mem_fil_neg_one : ∃ s ∈ (P.PD K).Fil 
 theorem isDR {V : Type} [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V]
     [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) (h : IsCrys (P.PD K) ρ) :
     IsDR (P.PD K) ρ := by
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL V ρ
   refine (GlobalTheory.DRFil.isDR_of_isCrys (P.PD K) (fun m c hc b hb => GlobalTheory.T.injective_tensor_Bcris_to_BdR l P AI T K m c hc b ?_) ρ h2 h).1
   simpa only [P.PD_ι] using hb
 
@@ -176,7 +178,7 @@ theorem multV_char_zero (hc : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = finran
   classical
   haveI := (P.PD K).finK
   have hdr := isDR T K LL _ hθ
-  haveI := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL ↥LL.1 (charRep θ)).1
+  haveI := (_root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL ↥LL.1 (charRep θ)).1
   obtain ⟨m, k, β, d, hd, h1⟩ := GlobalTheory.T.deRham_comparison_isFiltered l P AI T K LL ↥LL.1 (charRep θ) hdr 0 1
     ⟨1 ⊗ₜ ⟨1, (P.PD K).one_mem⟩, rfl⟩
   have hpos : ∀ τ', 1 ≤ finrank ↥LL.1 (DdRE (P.PD K) (charRep θ) τ') := fun τ' => by
@@ -211,8 +213,8 @@ theorem crysCalc {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (h
       (GlobalTheory.Cmp.WachMonoidal.isCrys_prod _ h.1 h'.1)
     rw [LinearEquiv.symm_apply_eq, he, LinearEquiv.apply_symm_apply]
     rfl
-  · haveI := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T S.K S.LL _ A.ρ).1
-    haveI := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T S.K S.LL _ A'.ρ).1
+  · haveI := (_root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T S.K S.LL _ A.ρ).1
+    haveI := (_root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T S.K S.LL _ A'.ρ).1
     rw [GlobalTheory.HTW.SumJumps.multV_add _ e he, h.2 i τ hτ, h'.2 i τ hτ, Multiset.count_add, Nat.cast_add]
   · exact (isCrys_iff T _ _ _ _ (chiLL ↥S.LL.1 θ) (fun _ _ => rfl) hθ.2.1).1 h.1
   · obtain ⟨c, rfl⟩ : ∃ c', c = c' + a i := ⟨c - a i, by ring⟩
@@ -227,7 +229,7 @@ theorem crysCalc {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (h
       (crysWith_cyc T S.K S.LL S.emb (cycLL (P.PD S.K) ↥S.LL.1)⁻¹ 1 (by simp))
     rw [inv_inv, ← e] at this
     exact this
-  · obtain ⟨h1, h2⟩ := GlobalTheory.T.unramified_isCrys_and_jump_eq_zero l P AI T S.K S.LL (charLat ℚ_[l] Subtype.val_injective μ hc)
+  · obtain ⟨h1, h2⟩ := _root_.GlobalTheory.UnramifiedRep.isCrys_and_jump_eq_zero l P AI T S.K S.LL (charLat ℚ_[l] Subtype.val_injective μ hc)
       (fun g hg x => by
         change (chiLL ↥S.LL.1 μ g : ↥S.LL.1) • x = x
         simp [hμ g hg])

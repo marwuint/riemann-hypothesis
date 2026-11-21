@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBasisInFiniteDomainTraceMemStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlatTensorEmbedsTensorFractionFieldsStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsUnitMapOfMemNonZeroDivisorsTensorStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntegralOfFiniteBaseChangeImageStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntegralOfFiniteBaseChangeImage
 
 open TensorProduct Polynomial
 
@@ -127,14 +127,14 @@ theorem exists_conductor_of_fractionFields
     exact (IsLocalization.map_units (FractionRing (U ⊗[T] C)) r).mul_left_eq_zero.1 h
   have hω : IsIntegral U (ψ c) := by
     obtain ⟨p, hp, hpc⟩ := hc
-    refine GlobalTheory.T.isIntegral_of_monic_eval_tmul_map_eq_zero T U C F K L φ hφ (ψ c) p hp ?_
+    refine _root_.GlobalTheory.integral_of_finite_base_change_image T U C F K L φ hφ (ψ c) p hp ?_
     have h1 := congrArg ψ hpc
     rw [hom_eval₂, map_zero] at h1
     have h2 : ψ.comp (algebraMap (U ⊗[T] C) _) = φ := RingHom.ext hψ
     rwa [h2] at h1
   have hBi : ∀ i, IsIntegral U (B i) := by
     intro i
-    refine GlobalTheory.T.isIntegral_of_monic_eval_tmul_map_eq_zero T U C F K L φ hφ (B i) (X - Polynomial.C (1 ⊗ₜ e i))
+    refine _root_.GlobalTheory.integral_of_finite_base_change_image T U C F K L φ hφ (B i) (X - Polynomial.C (1 ⊗ₜ e i))
       (monic_X_sub_C _) ?_
     rw [eval₂_sub, eval₂_X, eval₂_C, hφ, map_one, he, hB, sub_self]
   obtain ⟨v, hv⟩ := det_smul_eq_sum U L (L ⊗[F] K) (Fin n) B (ψ c)

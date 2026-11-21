@@ -20,10 +20,6 @@ abbrev mX : X.B.I.Ginf → ℂ := Formalism.L2.SG.ProjRows.mInf X.B.I X.B.σ X.B
 abbrev coefV (v : InfinitePlace X.B.I.F) : Formalism.REAL.UJ (X.B.I.ε v) → ℂ :=
   fun g => ⟪X.B.w v, X.B.σ v (uMat g) (X.B.w v)⟫_ℂ
 
-def WuDom (u : D.what₂.Word) : Prop :=
-  ∃ (C : ℝ≥0∞) (x0 : X.B.I.Ginf), C ≠ ⊤ ∧
-    ∀ x, ‖X.Wu u x‖ₑ ≤ C * ∫⁻ s, ‖mX X (x0⁻¹ * (s * x))‖ₑ ∂(muS X u)
-
 def MuSOn (u : D.what₂.Word) : Prop := ∀ᵐ s ∂(muS X u), s ∈ X.SinfU u
 
 def CoefWeighted : Prop :=
@@ -43,94 +39,14 @@ theorem continuous_uMat {n : ℕ} {ε : Fin n → Bool} :
     Continuous (fun g : Formalism.REAL.UJ ε => uMat g) :=
   Units.continuous_val.comp continuous_subtype_val
 
-theorem continuous_opn {n : ℕ} : Continuous (fun A : Matrix (Fin n) (Fin n) ℂ => opn A) := by
-  unfold opn
-  let L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :=
-    { toFun := fun A => Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin n) A
-      map_add' := fun A B => map_add _ A B
-      map_smul' := fun c A => map_smul _ c A }
-  exact continuous_norm.comp L.continuous_of_finiteDimensional
-
 theorem weight_exponent_nonneg : 0 ≤ N1 X := by
   unfold N1; positivity
-
-theorem normInf_nonneg (g : X.B.I.Ginf) : 0 ≤ normInf X g :=
-  Finset.prod_nonneg fun _ _ => opn_nonneg _
-
-theorem normInf_mul_le (a b : X.B.I.Ginf) : normInf X (a * b) ≤ normInf X a * normInf X b := by
-  unfold normInf
-  rw [← Finset.prod_mul_distrib]
-  refine Finset.prod_le_prod (fun v _ => opn_nonneg _) (fun v _ => ?_)
-  show opn (uMat (a v * b v)) ≤ _
-  rw [uMat_mul']
-  exact opn_mul_le _ _
 
 theorem continuous_coefV (v : InfinitePlace X.B.I.F) : Continuous (coefV X v) := by
   have hc := (X.ds v).2.2.1.2.2 (X.B.w v)
   have h2 : Continuous fun g : Formalism.REAL.UJ (X.B.I.ε v) => X.B.σ v (uMat g) (X.B.w v) :=
     hc.comp_continuous continuous_uMat (fun g => g.2)
   exact continuous_const.inner h2
-
-def gW (v : InfinitePlace X.B.I.F) (g : Formalism.REAL.UJ (X.B.I.ε v)) : ℝ :=
-  ‖coefV X v g‖ * opn (uMat g) ^ N1 X
-
-theorem gW_nonneg (v : InfinitePlace X.B.I.F) (g : Formalism.REAL.UJ (X.B.I.ε v)) : 0 ≤ gW X v g :=
-  mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (opn_nonneg _) _)
-
-theorem continuous_gW (v : InfinitePlace X.B.I.F) : Continuous (gW X v) := by
-  unfold gW
-  exact (continuous_coefV X v).norm.mul
-    ((Real.continuous_rpow_const (weight_exponent_nonneg X)).comp (continuous_opn.comp continuous_uMat))
-
-theorem integrable_gW (hC : CoefWeighted X) (v : InfinitePlace X.B.I.F) :
-    Integrable (gW X v) (Formalism.REAL.muG (X.B.I.ε v)) := by
-  refine ⟨(continuous_gW X v).aestronglyMeasurable, ?_⟩
-  unfold HasFiniteIntegral
-  refine lt_of_eq_of_lt (lintegral_congr fun g => ?_) (hC v)
-  rw [← ofReal_norm, Real.norm_of_nonneg (gW_nonneg X v g), gW,
-    ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm]
-
-theorem F_eq (y : X.B.I.Ginf) :
-    ‖mX X y‖ₑ * ENNReal.ofReal (normInf X y ^ N1 X) = ‖∏ v, gW X v (y v)‖ₑ := by
-  rw [Real.enorm_eq_ofReal (Finset.prod_nonneg fun v _ => gW_nonneg X v (y v))]
-  rw [← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _)]
-  congr 1
-  unfold gW normInf mX Formalism.L2.SG.ProjRows.mInf
-  rw [norm_prod, ← Real.finsetProd_rpow _ _ (fun v _ => opn_nonneg _), ← Finset.prod_mul_distrib]
-
-theorem weighted_global (hC : CoefWeighted X) (x0 : X.B.I.Ginf) :
-    ∫⁻ y, ‖mX X (x0⁻¹ * y)‖ₑ * ENNReal.ofReal (normInf X y ^ N1 X) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) < ⊤ := by
-  set F : X.B.I.Ginf → ℝ≥0∞ := fun y => ‖mX X y‖ₑ * ENNReal.ofReal (normInf X y ^ N1 X) with hF
-  set c : ℝ≥0∞ := ENNReal.ofReal (normInf X x0 ^ N1 X) with hc
-  have hle : ∀ y, ‖mX X (x0⁻¹ * y)‖ₑ * ENNReal.ofReal (normInf X y ^ N1 X) ≤ c * F (x0⁻¹ * y) := by
-    intro y
-    have h1 : normInf X y ≤ normInf X x0 * normInf X (x0⁻¹ * y) := by
-      have := normInf_mul_le X x0 (x0⁻¹ * y)
-      rwa [mul_inv_cancel_left] at this
-    have h2 : normInf X y ^ N1 X ≤ normInf X x0 ^ N1 X * normInf X (x0⁻¹ * y) ^ N1 X := by
-      rw [← Real.mul_rpow (normInf_nonneg X _) (normInf_nonneg X _)]
-      exact Real.rpow_le_rpow (normInf_nonneg X _) h1 (weight_exponent_nonneg X)
-    have h3 : ENNReal.ofReal (normInf X y ^ N1 X) ≤
-        c * ENNReal.ofReal (normInf X (x0⁻¹ * y) ^ N1 X) := by
-      rw [hc, ← ENNReal.ofReal_mul (Real.rpow_nonneg (normInf_nonneg X _) _)]
-      exact ENNReal.ofReal_le_ofReal h2
-    calc ‖mX X (x0⁻¹ * y)‖ₑ * ENNReal.ofReal (normInf X y ^ N1 X)
-        ≤ ‖mX X (x0⁻¹ * y)‖ₑ * (c * ENNReal.ofReal (normInf X (x0⁻¹ * y) ^ N1 X)) := by gcongr
-      _ = c * F (x0⁻¹ * y) := by rw [hF]; ring
-  have hFin : ∫⁻ y, F y ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) < ⊤ := by
-    have hI : Integrable (fun y : X.B.I.Ginf => ∏ v, gW X v (y v)) (Formalism.L2.SG.ProjRows.muInf X.B.I) :=
-      Integrable.fintype_prod_dep (fun v => integrable_gW X hC v)
-    have := hI.2
-    unfold HasFiniteIntegral at this
-    refine lt_of_eq_of_lt (lintegral_congr fun y => ?_) this
-    exact F_eq X y
-  calc ∫⁻ y, ‖mX X (x0⁻¹ * y)‖ₑ * ENNReal.ofReal (normInf X y ^ N1 X) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I)
-      ≤ ∫⁻ y, c * F (x0⁻¹ * y) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) := lintegral_mono hle
-    _ = c * ∫⁻ y, F (x0⁻¹ * y) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) :=
-        lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
-    _ = c * ∫⁻ y, F y ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) := by
-        rw [lintegral_mul_left_eq_self F x0⁻¹]
-    _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hFin
 
 theorem phInt_of (hC : MatrixCoefficientIntegrability X) : Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I) := by
   have hm : Integrable (mX X) (Formalism.L2.SG.ProjRows.muInf X.B.I) :=
@@ -271,63 +187,10 @@ theorem nuInf_le (u : D.what₂.Word) (x s : X.B.I.Ginf) (hs : s ∈ X.SinfU u) 
     ⟨0, by rintro _ ⟨t, rfl⟩; exact normInf_nonneg' X _⟩
   exact ciInf_le hb (⟨s, hs⟩ : X.SinfU u)
 
-theorem coefV_continuous (v : InfinitePlace X.B.I.F) : Continuous (coefV X v) := by
-  have hc := (X.ds v).2.2.1.2.2 (X.B.w v)
-  have hu : Continuous fun g : Formalism.REAL.UJ (X.B.I.ε v) => uMat g :=
-    Units.continuous_val.comp continuous_subtype_val
-  have h2 : Continuous fun g : Formalism.REAL.UJ (X.B.I.ε v) => X.B.σ v (uMat g) (X.B.w v) :=
-    hc.comp_continuous hu fun g => g.2
-  exact continuous_const.inner h2
-
-theorem mX_continuous : Continuous (mX X) := by
-  unfold mX Formalism.L2.SG.ProjRows.mInf
-  exact continuous_finsetProd _ fun v _ => (coefV_continuous X v).comp (continuous_apply v)
-
 theorem opn_continuous {n : ℕ} : Continuous fun M : Matrix (Fin n) (Fin n) ℂ => opn M := by
   unfold opn
   have : Continuous fun M : Matrix (Fin n) (Fin n) ℂ => Matrix.toEuclideanCLM (𝕜 := ℂ) M :=
     (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin n)).toAlgEquiv.toLinearEquiv.toLinearMap.continuous_of_finiteDimensional
   exact continuous_norm.comp this
-
-theorem normInf_continuous : Continuous (normInf X) := by
-  unfold normInf
-  exact continuous_finsetProd _ fun v _ =>
-    opn_continuous.comp ((Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v))
-
-theorem wuWeighted_of (u : D.what₂.Word) (hD : WuDom X u) (hS : MuSOn X u) (hC : CoefWeighted X) :
-    WuWeighted X u := by
-  obtain ⟨C, x0, hCt, hb⟩ := hD
-  set F : X.B.I.Ginf → ℝ≥0∞ := fun y => ‖mX X (x0⁻¹ * y)‖ₑ * ENNReal.ofReal (normInf X y ^ N1 X) with hFdef
-  have hFm : Measurable F := by
-    have h1 : Measurable fun y : X.B.I.Ginf => ‖mX X (x0⁻¹ * y)‖ₑ :=
-      (continuous_enorm.comp ((mX_continuous X).comp (continuous_const_mul x0⁻¹))).measurable
-    have h2 : Measurable fun y : X.B.I.Ginf => ENNReal.ofReal (normInf X y ^ N1 X) :=
-      (ENNReal.continuous_ofReal.comp
-        ((normInf_continuous X).rpow_const fun _ => Or.inr (weight_exponent_nonneg X))).measurable
-    exact h1.mul h2
-  have hpt : ∀ x, ‖X.Wu u x‖ₑ * ENNReal.ofReal (nuInf X u x ^ N1 X) ≤ C * ∫⁻ s, F (s * x) ∂(muS X u) := by
-    intro x
-    calc ‖X.Wu u x‖ₑ * ENNReal.ofReal (nuInf X u x ^ N1 X)
-        ≤ (C * ∫⁻ s, ‖mX X (x0⁻¹ * (s * x))‖ₑ ∂(muS X u)) * ENNReal.ofReal (nuInf X u x ^ N1 X) :=
-          by gcongr; exact hb x
-      _ = C * ∫⁻ s, ‖mX X (x0⁻¹ * (s * x))‖ₑ * ENNReal.ofReal (nuInf X u x ^ N1 X) ∂(muS X u) := by
-          rw [mul_assoc, lintegral_mul_const' _ _ ENNReal.ofReal_ne_top]
-      _ ≤ C * ∫⁻ s, F (s * x) ∂(muS X u) := by
-          gcongr C * ?_
-          refine lintegral_mono_ae ?_
-          filter_upwards [hS] with s hs
-          simp only [hFdef]
-          gcongr _ * ?_
-          exact ENNReal.ofReal_le_ofReal
-            (Real.rpow_le_rpow (nuInf_nonneg X u x) (nuInf_le X u x s hs) (weight_exponent_nonneg X))
-  unfold WuWeighted
-  calc ∫⁻ x, ‖X.Wu u x‖ₑ * ENNReal.ofReal (nuInf X u x ^ N1 X) ∂(X.nuQ u)
-      ≤ ∫⁻ x, C * ∫⁻ s, F (s * x) ∂(muS X u) ∂(X.nuQ u) := lintegral_mono hpt
-    _ = C * ∫⁻ x, ∫⁻ s, F (s * x) ∂(muS X u) ∂(X.nuQ u) := lintegral_const_mul' _ _ hCt
-    _ = C * ∫⁻ y, F y ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) := by rw [X.nuQ_weil u F hFm]
-    _ < ⊤ := ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hCt) (weighted_global X hC x0)
-
-theorem wuWeighted_of' (u : D.what₂.Word) (hD : WuDom X u) (hC : CoefWeighted X) : WuWeighted X u :=
-  wuWeighted_of X u hD (muSOn X u) hC
 
 end Formalism.L2.SG.WuDecayPf

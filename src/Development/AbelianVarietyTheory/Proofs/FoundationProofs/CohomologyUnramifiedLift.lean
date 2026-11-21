@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralTwoCocyc
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CupProductUnramifiedClassesVanishesStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnramifiedCocycleKillsRootsStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAuxiliaryPrimeFrobeniusNearCommutatorStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CupProductCoboundaryModStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CupProductCoboundaryMod
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalHeightFrobeniusPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCharacterPrimeConductorDegreePrimePowStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CocyclePairingLocallyConstantStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CocyclePairingLocallyConstant
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalConditionsIndependentOfPlaceOverStatement
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.EqOfNatCastMem
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CongruenceMulOfUnitFactor
@@ -211,7 +211,7 @@ theorem ht_vanish_commutator : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀
   have hker2 : (toGS Ω (S2 : Set Pl)).ker ≤ N0g W ⊓ ψ.ker := by
     rw [htc_ker_toGS]
     exact le_inf ((htc_NS_anti hsub).trans hNS_N0) hNSψ
-  have hxi := GlobalTheory.T.cocycle_pairing_locally_constant l Ω c n S2 W y z d u P ψ hWc hO hdet2 hker2 hψlc hPO hy hz hyO hzO
+  have hxi := _root_.GlobalTheory.Ord2.cup_product_two_cocycle l Ω c n S2 W y z d u P ψ hWc hO hdet2 hker2 hψlc hPO hy hz hyO hzO
     (fun a ha => by
       rw [htc_ker_toGS] at ha
       have ha' := htc_NS_anti hsub ha
@@ -250,7 +250,7 @@ theorem ht_vanish_commutator : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀
       subst hvv'
       refine ⟨A, hAv', hξDec v hvS A hAv' ?_⟩
       obtain ⟨x, hxO, hx⟩ := hzl
-      exact GlobalTheory.T.cup_product_coboundary_mod l Ω c n W (Dec (F := ℚ) A) d z hWc hO hdet2 (hCocd v hvS A hAv') (hCocz _)
+      exact _root_.GlobalTheory.Ord2.CupCob.cup_cob l Ω c n W (Dec (F := ℚ) A) d z hWc hO hdet2 (hCocd v hvS A hAv') (hCocz _)
         (Or.inr ⟨x, hxO, fun s hs => by rw [hx s hs]; exact hCv _⟩)
     · obtain ⟨B', hB', hcobd⟩ := hdq v hvS hvl
       obtain ⟨x, hxO, hx⟩ := hzq v hvl B' hB'

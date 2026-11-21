@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OverExtAlgebra
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeOfValNonneg
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightedOrbitSumCongrCoefficientRingStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIntegralUnramifiedExtIffIsIntegralBaseStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HermitianDualInvAlgBaseChangeUnramifiedIffStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFullLatticeOverUnramifiedExtIffStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HermitianDualInvAlgBaseChangeUnramifiedIff
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFullLatticeOverUnramifiedExtIff
 
 noncomputable section
 
@@ -29,8 +29,8 @@ theorem N_overExt : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K 
         add_mem' := fun ha hb => L.add_mem ha hb
         zero_mem' := L.zero_mem
         smul_mem' := fun c z hz => hS (hO c) z hz }
-    refine ⟨L', ⟨(GlobalTheory.T.isFullLatticeOver_unramifiedExt_iff K K' d φ hU B ψ hψ hσ L' L rfl).2 hL.1, fun y hy => hL.2.1 y hy, fun y => ?_⟩, rfl⟩
-    exact (hL.2.2 y).trans (GlobalTheory.T.hermitianDual_invAlgBaseChangeUnramified_iff K K' d φ hU B ψ hψ hσ L' x y).symm
+    refine ⟨L', ⟨(_root_.GlobalTheory.UnitLemma.Unr.isLat_overExt_iff K K' d φ hU B ψ hψ hσ L' L rfl).2 hL.1, fun y hy => hL.2.1 y hy, fun y => ?_⟩, rfl⟩
+    exact (hL.2.2 y).trans (_root_.GlobalTheory.UnitLemma.Unr.dual_iff K K' d φ hU B ψ hψ hσ L' x y).symm
   · intro L' hL'
     let M : Submodule K.O B.A :=
       { carrier := (L' : Set B.A)
@@ -41,8 +41,8 @@ theorem N_overExt : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K 
           have h : c • z = ψ (algebraMap K'.O K'.E b) * z := by
             rw [Algebra.smul_def, hb, hψ, ← IsScalarTower.algebraMap_apply]
           rw [h]; exact L'.smul_mem b hz }
-    refine ⟨M, ⟨(GlobalTheory.T.isFullLatticeOver_unramifiedExt_iff K K' d φ hU B ψ hψ hσ L' M rfl).1 hL'.1, fun y hy => hL'.2.1 y hy, fun y => ?_⟩, rfl⟩
-    exact (hL'.2.2 y).trans (GlobalTheory.T.hermitianDual_invAlgBaseChangeUnramified_iff K K' d φ hU B ψ hψ hσ L' x y)
+    refine ⟨M, ⟨(_root_.GlobalTheory.UnitLemma.Unr.isLat_overExt_iff K K' d φ hU B ψ hψ hσ L' M rfl).1 hL'.1, fun y hy => hL'.2.1 y hy, fun y => ?_⟩, rfl⟩
+    exact (hL'.2.2 y).trans (_root_.GlobalTheory.UnitLemma.Unr.dual_iff K K' d φ hU B ψ hψ hσ L' x y)
   · ext t
     simp only [Subgroup.mem_inf]
     refine and_congr_left' ?_

@@ -1,5 +1,7 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FullToGlIsSelfAdjoint
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralUnitaryGroupTransitiveNormOneVectorsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralUnitaryGroupTransitiveNormOneVectors
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 noncomputable section
@@ -80,7 +82,7 @@ theorem actU_liftH_support {r : ℕ} (X : Hn r F E) (ν : E) (l : F) (hν : ‖�
       rw [Matrix.mem_unitaryGroup_iff'.mp g.2]; simp
     rw [← h1]
     simp [dotProduct, Matrix.mul_apply, v, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_apply]
-  obtain ⟨k, hk, hke⟩ := GlobalTheory.T.integralUnitaryGroup_transitive_norm_one_vectors F E r v hint hunit
+  obtain ⟨k, hk, hke⟩ := _root_.GlobalTheory.UnitaryTransitive.uO_transitive F E r v hint hunit
   set h := k⁻¹ * g with hh
   have he : h.1 *ᵥ eL r E = eL r E := by
     have hgk : g.1 *ᵥ eL r E = k.1 *ᵥ eL r E := by rw [hgv]; exact hke.symm

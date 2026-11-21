@@ -6,10 +6,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ValSetAlgSubset
 import Formalism.LocalToGlobal.ProjectiveLattices.IntAll
 import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 import Formalism.LocalToGlobal.ProjectiveLattices.VolProofs
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemberDictionaryInvariantRationalLevelStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemberDictionaryFramesOrthonormalUnitStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemberDictionaryInvariantRationalLevel
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemberDictionaryFramesOrthonormalUnit
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPrincipalLevelSubgroupOpenStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MarkingRuleTranslateStableStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MarkingRuleTranslateStable
 
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj
 open scoped TensorProduct Matrix Topology
@@ -28,7 +28,7 @@ theorem adel_leftInv_and_continuous : ∀ (D : D7) (H : ReciprocityTheory.ChartR
     inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))
   have hM : 0 < l.M := lt_of_lt_of_le (by norm_num) l.three_le
   obtain ⟨⟨Kf, hKf⟩, hnb⟩ := GlobalTheory.T.exists_principalLevel_subgroup_open D V l.M
-  obtain ⟨h1, -, h3, -, h5⟩ := GlobalTheory.T.memberDictionary_invariant_rational_level D H Dw l Xo c σ V r C hC dict hd Kf hKf
+  obtain ⟨h1, -, h3, -, h5⟩ := _root_.GlobalTheory.Member.dict_invariant D H Dw l Xo c σ V r C hC dict hd Kf hKf
   have hχ := hC.base.chi
   have hsec : ∀ k, (C.M.X k).IsSec (la k) (P k) := fun k => (hP k).1.1
   constructor
@@ -42,7 +42,7 @@ theorem adel_leftInv_and_continuous : ∀ (D : D7) (H : ReciprocityTheory.ChartR
     intro g₀
     obtain ⟨γ, hmk, -⟩ := hd.1 g₀
     generalize (dict g₀).1 = k at hmk
-    have hfr := fun h => GlobalTheory.T.memberDictionary_frames_orthonormal_unit D H Dw l Xo c σ V r C hC h k
+    have hfr := fun h => _root_.GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC h k
     have hPc : ContinuousOn (P k) (C.M.X k).dom := (hsec k).1.continuousOn
     have hx : Continuous (fun g : GA D V => C.fr (γ * g) k) :=
       (hfr 1).2.2.2.1.comp (continuous_const.mul continuous_id)
@@ -56,7 +56,7 @@ theorem adel_leftInv_and_continuous : ∀ (D : D7) (H : ReciprocityTheory.ChartR
       exact hcont h0
     have heq : (fun g => mu g * P k (C.fr (γ * g) k)) =ᶠ[𝓝 g₀] adel V dict mu P := by
       filter_upwards [hN] with g hg
-      have hmk' := (GlobalTheory.T.markingRule_translate_stable D H Dw l Xo c σ V r C hC g₀ k γ hmk).2.1 _ hg
+      have hmk' := (_root_.GlobalTheory.Member.mark_move D H Dw l Xo c σ V r C hC g₀ k γ hmk).2.1 _ hg
       rw [mul_inv_cancel_left] at hmk'
       obtain ⟨δ, hδ, he⟩ := h5 g k γ hmk'
       show mu g * P k (C.fr (γ * g) k) = mu g * P (dict g).1 (dict g).2

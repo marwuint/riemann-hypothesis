@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import Formalism.RealPlaceAnalysis.StatementE
 import Formalism.RealPlaceAnalysis.StatementKT
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmRowExp
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QuantumMinorEqUnitSmulOfRangeEqStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QuantumMinorEqUnitSmulOfRangeEq
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
 
@@ -18,7 +18,7 @@ theorem qminor_row_step_under_functional : ∀ (M Wp : Type) [AddCommGroup M] [M
     Fin.cons_injective_iff.2 ⟨hb0, hb'⟩
   have hrB : Set.range b = Set.range (Fin.cons b0 b' : Fin (t + 1) → Fin n) := by
     rw [Fin.range_cons]; exact hrb
-  obtain ⟨e, he, hq⟩ := GlobalTheory.T.quantumMinor_eq_unit_smul_of_range_eq (Module.End ℂ M) n (t + 1) E a (Fin.cons a0 a') b (Fin.cons b0 b') hE
+  obtain ⟨e, he, hq⟩ := _root_.GlobalTheory.qminor_eq_smul_of_range_eq (Module.End ℂ M) n (t + 1) E a (Fin.cons a0 a') b (Fin.cons b0 b') hE
     ha hA hb hB (by rw [Fin.range_cons]; exact hra) hrB
   refine ⟨e, he, fun u v => ?_⟩
   have key : ∀ (j : Fin (t + 1)) (w : ℂ) (x : M),

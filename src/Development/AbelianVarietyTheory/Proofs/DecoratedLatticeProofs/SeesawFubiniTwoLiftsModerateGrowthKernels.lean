@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsGrowthSobNeTopOfIsAutFunSm
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegrableUnitaryQuotientHeightPowMulRapidlyDecrStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegrableUnitaryQuotientHeightPowMulRapidlyDecr
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralKernelLiftsFubiniSigmaFiniteStatement
 open scoped ComplexConjugate Matrix NNReal
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField
@@ -49,7 +49,7 @@ theorem integrable_lift_integrand {A B : HSp D} (m : Measure (GA D A)) (hm : m.I
   have hKc : Continuous fun g => K g h := hc.comp (continuous_id.prodMk continuous_const)
   have hmeas : Measurable (descend (GQ A) fun g => K g h * u g) :=
     measurable_out (φ := fun g => K g h * u g) (fun γ hγ g => by simp only [hl γ hγ, hu.1 γ hγ]) (hKc.mul hu.2.1)
-  refine ((GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing D A m hm u hu a).const_mul (C * 2 ^ a)).mono' hmeas.aestronglyMeasurable
+  refine ((_root_.GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec D A m hm u hu a).const_mul (C * 2 ^ a)).mono' hmeas.aestronglyMeasurable
     (ae_of_all _ fun q => ?_)
   show ‖K q.out h * u q.out‖ ≤ C * 2 ^ a * (GlobalTheory.Grow.quotHeight A q.out ^ a * ‖u q.out‖)
   rw [norm_mul, ← mul_assoc]
@@ -95,7 +95,7 @@ theorem weight_data {A : HSp D} (m : Measure (GA D A)) (hm : m.IsHaarMeasure) {u
     exact ENNReal.ofReal_le_ofReal (by nlinarith [ht q])
   · have hint : Integrable (fun q : AutQ A => (1 + c * GlobalTheory.Grow.quotHeight A q.out ^ a) * ‖u q.out‖)
         (autMeasure A m) := by
-      refine ((GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing D A m hm u hu 0).add ((GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing D A m hm u hu a).const_mul c)).congr
+      refine ((_root_.GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec D A m hm u hu 0).add ((_root_.GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec D A m hm u hu a).const_mul c)).congr
         (ae_of_all _ fun q => ?_)
       simp only [Pi.add_apply, pow_zero, one_mul]
       ring

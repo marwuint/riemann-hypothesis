@@ -1,5 +1,7 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.HeckeFixedPointCMCycleClass
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformisationsSamePointDifferByIsometryStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformisationsSamePointDifferByIsometry
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen
@@ -52,7 +54,7 @@ theorem UpperTheory.Gal.W2.fixFwd_of :
   revert e₁
   rw [hx']
   intro e₁ hU₁
-  obtain ⟨w, hh, hmk, hPw, -⟩ := GlobalTheory.T.complexUniformisations_same_point_differ_by_isometry D.O D.inv D.g ρ _ _ _ _ N D' D'' t t'' P P'' _ _ _ hN hU₁ hU''
+  obtain ⟨w, hh, hmk, hPw, -⟩ := _root_.GlobalTheory.PELU.unifAt_cmp D.O D.inv D.g ρ _ _ _ _ N D' D'' t t'' P P'' _ _ _ hN hU₁ hU''
   obtain ⟨y, s, hs, hys, hyj⟩ := hForm p D G L B.β B.β D'' D' j'' j hPl'' hPl
     (w : D'.La →ₗ[D.O] D''.La) 1 one_pos (fun u u' => by
       rw [_root_.one_mul]

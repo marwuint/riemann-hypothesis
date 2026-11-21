@@ -21,10 +21,6 @@ theorem conj_pmat_eq_adK {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → �
     toMK k⁻¹ * pmat z * toMK k = pmat (adK k⁻¹ z) := by
   rw [pmat_adK, toMK_inv_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]
 
-theorem pmat_real_smul {ε : Fin n → Bool} (t : ℝ) (z : PCoord ε → ℂ) :
-    pmat ((t : ℂ) • z) = (t : ℂ) • pmat z := by
-  rw [Complex.coe_smul, adKAux_pmat_smul]
-
 theorem rhoP_real_smul {ε : Fin n → Bool} (t : ℝ) (z : PCoord ε → ℂ) : rhoP ((t : ℂ) • z) = |t| * rhoP z := by
   have hS : ∑ ab, ‖((t : ℂ) • z) ab‖ ^ 2 = t ^ 2 * ∑ ab, ‖z ab‖ ^ 2 := by
     rw [Finset.mul_sum]

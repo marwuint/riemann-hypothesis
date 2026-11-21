@@ -109,21 +109,4 @@ def Statement : Prop :=
       ClassInvariance φ s) ∧
     DualFormValue φ ∧ DualFormBase φ
 
-example (φ : I → E →+* ℂ) (k : ℕ) (σ : ℂ) (x : E) : defTerm φ k 0 σ x = term φ k (fun _ => 0) σ x := by
-  simp [defTerm, term, defCoord]
-
-example : risingFactor 2 (fun _ : Unit => 2) = 6 := by
-  simp [risingFactor, Finset.prod_range_succ]; norm_num
-
-example (φ : I → E →+* ℂ) (z : I → ℂ) (hz : z ∈ polydisc I) (x : E) (hx : x ≠ 0) (i : I) : defCoord φ z x i ≠ 0 := by
-  intro h
-  have h0 : φ i x ≠ 0 := by simpa using hx
-  have h1 : φ i x = -(z i * starRingEnd ℂ (φ i x)) := eq_neg_of_add_eq_zero_left h
-  have h2 : ‖φ i x‖ = ‖z i‖ * ‖φ i x‖ := by
-    conv_lhs => rw [h1]
-    simp
-  have h3 : 0 < ‖φ i x‖ := norm_pos_iff.2 h0
-  have h4 := hz i
-  nlinarith
-
 end GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates

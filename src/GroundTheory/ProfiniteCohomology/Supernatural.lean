@@ -71,11 +71,6 @@ theorem ofNat_dvd_ofNat {m n : ℕ} (hm : m ≠ 0) (hn : n ≠ 0) : ofNat m ∣ 
     show ((m.factorization p : ℕ) : ℕ∞) ≤ n.factorization p
     exact_mod_cast h p
 
-theorem ofNat_injective {m n : ℕ} (hm : m ≠ 0) (hn : n ≠ 0) : ofNat m = ofNat n ↔ m = n := by
-  refine ⟨fun h => Nat.dvd_antisymm ?_ ?_, fun h => h ▸ rfl⟩
-  · exact (ofNat_dvd_ofNat hm hn).mp (h ▸ dvd_rfl)
-  · exact (ofNat_dvd_ofNat hn hm).mp (h ▸ dvd_rfl)
-
 theorem ofNat_prime_dvd_iff (p : Nat.Primes) (a : Supernatural) :
     ofNat p ∣ a ↔ 1 ≤ a.exp p := by
   have h1 : (ofNat p).exp p = 1 := by

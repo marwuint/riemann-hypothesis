@@ -1,5 +1,7 @@
 import Mathlib
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.H1algStatement
+import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
+import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
+import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.OEOsInjective
 import Formalism.LocalToGlobal.ProjectiveLattices.DepRun
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.SpanResCharNeBot
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.WeightFloorInequalities
@@ -66,36 +68,5 @@ theorem kappa_last (Tp : ParamsT D L P) (hK : DV.KapDef D) {j : ℕ} (hj : InR D
   unfold kaR
   rw [e1]
   exact_mod_cast this
-
-theorem lR_lastPos (Tp : ParamsT D L P) (hK : DV.KapDef D) {j : ℕ} (hj : InR D j) : (lR Tp hK j).LastPos := by
-  intro τ i hi
-  have hn : ¬ i.1 + 1 < (D.R.sigW j).1 := by omega
-  have hk := kappa_last Tp hK hj τ i hi
-  show 1 ≤ ofGaps (lGapP D (kaR Tp hK j) Tp.TO Tp.nWn τ) i
-  rw [ofGaps_last _ _ hn]
-  unfold lGapP
-  rw [if_neg hn]
-  have hp : (0 : ℤ) < (WeightAlgebra.Tp D j Tp.TO : ℤ) := by unfold WeightAlgebra.Tp; push_cast; omega
-  rw [Int.fdiv_eq_ediv_of_nonneg _ hp.le]
-  have h1 : ((Tp.Dp : ℤ) + 2) * Tp.nWn + 2 * D.R.r ≤ Tp.TO := by exact_mod_cast Tp.TO_nW
-  have h40 : 40 * ((Tp.Dp : ℤ) + 2) ≤ Tp.TO := by exact_mod_cast Tp.TO_40
-  have : (1 : ℤ) ≤ (((kaR Tp hK j).aP τ i : ℤ) - ((WeightFamilies.dimY D j : ℤ) + 2) * Tp.nWn - 2 * D.R.r) / (WeightAlgebra.Tp D j Tp.TO : ℤ) := by
-    rw [Int.le_ediv_iff_mul_le hp]
-    unfold WeightAlgebra.Tp
-    rw [dimY_eq Tp hj]
-    push_cast
-    nlinarith
-  omega
-
-theorem one_le_DF (Tp : ParamsT D L P) (hK : DV.KapDef D) {j : ℕ} (hj : InR D j) (τ : D.what₂.Tau) :
-    1 ≤ WeightAlgebra.DF (lR Tp hK j) := by
-  have hk : 5 ≤ D.R.k := by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega
-  have hs : (D.R.sigW j).1 = D.R.k + j - 1 := rfl
-  have h1 := lR_lastPos Tp hK hj τ ⟨(D.R.sigW j).1 - 1, by omega⟩ (by show (D.R.sigW j).1 - 1 + 1 = _; omega)
-  unfold WeightAlgebra.DF WeightAlgebra.degP
-  refine le_trans ?_ (Finset.single_le_sum (f := fun τ => (∑ i, (lR Tp hK j).aP τ i) + ∑ i, (lR Tp hK j).aM τ i)
-    (fun _ _ => Nat.zero_le _) (Finset.mem_univ τ))
-  exact le_trans (le_trans h1 (Finset.single_le_sum (f := fun i => (lR Tp hK j).aP τ i) (fun _ _ => Nat.zero_le _)
-    (Finset.mem_univ _))) (Nat.le_add_right _ _)
 
 end GlobalTheory.DepthBoundProbe

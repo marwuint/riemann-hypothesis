@@ -109,10 +109,6 @@ theorem r_congr (Q : P) {s t : S} (h : Z.p Q s = Z.p Q t) : r Q s = r Q t := by
   obtain ⟨ρ, -, hρ⟩ := Z.exists_res Q
   rw [← hρ, ← hρ, show Z.pO Q s = Z.pO Q t from Subtype.ext h]
 
-theorem gl_ext {n : ℕ} {x y : GL (Fin n) A} (h : ∀ Q, bc (Z.p Q) x = bc (Z.p Q) y) : x = y := by
-  refine Units.ext (Matrix.ext fun i j => Z.ext' fun Q => ?_)
-  exact congrArg (fun g : GL (Fin n) (Z.K Q) => (g : Matrix (Fin n) (Fin n) (Z.K Q)) i j) (h Q)
-
 theorem gl_int {n : ℕ} {x : GL (Fin n) A} (h : ∀ Q, ∃ y : GL (Fin n) (Z.O Q), bc (Z.O Q).subtype y = bc (Z.p Q) x) :
     ∃ y : GL (Fin n) S, bc S.subtype y = x := by
   have key : ∀ {x : GL (Fin n) A}, (∀ Q, ∃ y : GL (Fin n) (Z.O Q), bc (Z.O Q).subtype y = bc (Z.p Q) x) →

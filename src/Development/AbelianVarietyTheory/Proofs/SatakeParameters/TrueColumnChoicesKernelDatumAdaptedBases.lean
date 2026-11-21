@@ -7,8 +7,9 @@ import Formalism.LocalToGlobal.KernelLattices.TopPin
 import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.DiagramFitsSourceRank
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormNatCastEqOne
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelEntryHypOfTrueColumnChoicesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DominantWeightPolynomialFunctionalMinorsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelEntryHypOfTrueColumnChoices
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DominantWeightPolynomialFunctionalMinors
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdaptedThKerEntC
 
 noncomputable section
@@ -222,9 +223,9 @@ theorem GlobalTheory.Pdv.kerEntC_true : ∀ {B : Base} {X : PreX B.toPre} (I : T
   have hU := GlobalTheory.Mem.Col2.TC.AdaptedBases.dgenUnitAd Pl O
   have hB : BasOk Pl O (fun u μ w i c τ => (Pm w u μ i c τ).map (Formalism.MainNotions.TaylorLogMetric.tauEmb _ (Pl.lam w) τ)) :=
     fun u μ w i hi c τ => h1 w u μ i hi c τ
-  have hC := GlobalTheory.T.toy_entPl_canOnto _ Pl
+  have hC := _root_.GlobalTheory.Mem.CanonicalSurjection.canOnto_all _ Pl
   have hR : ∀ u μ, GL3Columns.RhoAlg (O u μ) := fun u μ => KerEntTrue.rhoAlg_std I hok hp l Z hs u μ
-  have h0 := GlobalTheory.T.kernelEntryHyp_of_trueColumnChoices I hok hp l Z l0 Y O Pl _ hq hs hB
+  have h0 := _root_.GlobalTheory.Mem.Col2.TC.kerEntHyp_true I hok hp l Z l0 Y O Pl _ hq hs hB
     (fun u a w _ i _ c τ j k => GlobalTheory.KerRescale.tauEmb_mem Pl w τ (Pm w u a i c τ j k)) hu hj
   have ha := GlobalTheory.KerRescale.norm_adUnit Pl O hU
   have hBs := GlobalTheory.Pdv.KerScale.basOk_scB Pl O _ _ ha hB

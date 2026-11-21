@@ -12,10 +12,6 @@ def curve (u : A) (V : WeierstrassCurve A) : WeierstrassCurve A :=
 
 def triple (u : A) (P : Fin 3 → A) : Fin 3 → A := ![u ^ 2 * P 0, u ^ 3 * P 1, P 2]
 
-theorem curve_eq_smul (u : Aˣ) (V : WeierstrassCurve A) :
-    curve (u : A) V = (⟨u⁻¹, 0, 0, 0⟩ : WeierstrassCurve.VariableChange A) • V := by
-  ext <;> simp [curve, WeierstrassCurve.variableChange_def]
-
 theorem map_curve (g : A →+* B) (u : A) (V : WeierstrassCurve A) :
     (curve u V).map g = curve (g u) (V.map g) := by
   ext <;> simp [curve]
@@ -23,16 +19,6 @@ theorem map_curve (g : A →+* B) (u : A) (V : WeierstrassCurve A) :
 theorem curve_map_eq (g : A →+* B) {u : A} {V : WeierstrassCurve A} (h : curve u V = V) :
     curve (g u) (V.map g) = V.map g := by
   rw [← map_curve, h]
-
-theorem comp_triple (g : A →+* B) (u : A) (P : Fin 3 → A) :
-    g ∘ triple u P = triple (g u) (g ∘ P) := by
-  ext i; fin_cases i <;> simp [triple]
-
-theorem triple_triple (u v : A) (P : Fin 3 → A) : triple u (triple v P) = triple (u * v) P := by
-  ext i; fin_cases i <;> simp [triple] <;> ring
-
-theorem triple_one (P : Fin 3 → A) : triple 1 P = P := by
-  ext i; fin_cases i <;> simp [triple]
 
 theorem equation_triple (u : A) {V : WeierstrassCurve A} {P : Fin 3 → A}
     (h : V.toProjective.Equation P) : (curve u V).toProjective.Equation (triple u P) := by
@@ -89,15 +75,5 @@ theorem isSumTriple_triple {u : A} {V : WeierstrassCurve A} (hV : curve u V = V)
   have h₂ := diagXYZ_triple u V P Q
   rw [hV] at h₁ h₂
   exact ⟨h₁ ▸ proportional_triple u _ h.add, h₂ ▸ proportional_triple u _ h.diag⟩
-
-open WeierstrassCurve.Projective in
-theorem isSumTriple_cubeRoot {w : A} (hw : w ^ 2 + w + 1 = 0) {X Y Z : A}
-    (h : (⟨0, 0, 1, 0, 0⟩ : WeierstrassCurve A).toProjective.Equation ![X, Y, Z]) :
-    IsSumTriple ⟨0, 0, 1, 0, 0⟩ ![X, Y, Z] ![w * X, Y, Z] ![w ^ 2 * X, -Y - Z, Z] := by
-  rw [WeierstrassCurve.Projective.equation_iff] at h
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val] at h
-  constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;>
-    simp [addXYZ, addX, addY, negAddY, addZ, diagXYZ, diagX, diagY, negDiagY, diagZ, negY] <;>
-    grind
 
 end GlobalTheory.WeightScale

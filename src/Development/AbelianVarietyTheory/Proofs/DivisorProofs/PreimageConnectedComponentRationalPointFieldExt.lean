@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenConnectedComponentOfIsLocallyNoetherianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricallyConnectedOfSmoothOfSectionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenConnectedComponentOfIsLocallyNoetherian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricallyConnectedOfSmoothOfSection
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct
 open scoped CategoryTheory.Obj
 
@@ -11,7 +11,7 @@ theorem preimage_connectedComponent_rationalPoint_baseChange : ∀ (k k' : Type)
   have hN : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian f
   set x : X := e (IsLocalRing.closedPoint k) with hx
   set x' : X' := e' (IsLocalRing.closedPoint k') with hx'
-  have hopen : IsOpen (connectedComponent x) := GlobalTheory.T.isOpen_connectedComponent_of_isLocallyNoetherian' X hN x
+  have hopen : IsOpen (connectedComponent x) := _root_.GlobalTheory.isOpen_connectedComponent_of_isLocallyNoetherian X hN x
   let U : X.Opens := ⟨connectedComponent x, hopen⟩
   have hsub : Subsingleton (Spec (CommRingCat.of k)) :=
     inferInstanceAs (Subsingleton (PrimeSpectrum k))
@@ -24,7 +24,7 @@ theorem preimage_connectedComponent_rationalPoint_baseChange : ∀ (k k' : Type)
   have hUc : ConnectedSpace U.toScheme :=
     isConnected_iff_connectedSpace.mp (isConnected_connectedComponent (x := x))
   have hgc : GeometricallyConnected (U.ι ≫ f) :=
-    GlobalTheory.T.geometricallyConnected_of_smooth_of_section' k U.toScheme (U.ι ≫ f) eU inferInstance (by rw [← Category.assoc, heU, he]) hUc
+    _root_.GlobalTheory.geometricallyConnected_of_smooth_of_section k U.toScheme (U.ι ≫ f) eU inferInstance (by rw [← Category.assoc, heU, he]) hUc
   have hP1 : IsPullback (q ∣_ U) (q ⁻¹ᵁ U).ι U.ι q := isPullback_morphismRestrict q U
   have hP2 : IsPullback (q ∣_ U) ((q ⁻¹ᵁ U).ι ≫ f') (U.ι ≫ f) p := hP1.paste_vert hP
   have hc : ConnectedSpace (q ⁻¹ᵁ U).toScheme :=

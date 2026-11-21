@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.RunsAlong
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IndexBoundCoefficientFieldOfExactSmallFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjGeneratorsMemFramePrimesTrueColumnsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IndexBoundCoefficientFieldOfExactSmallField
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FieldTies
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonzeroPlacesOverPrimes
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LargeFor
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjGeneratorsMemFramePrimesTrueColumns
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JEvExists
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj Formalism.L2.Theta GlobalTheory.RunJoin GlobalTheory.FinalJoin GlobalTheory.FinalJoin2 GlobalTheory.AtMember GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Plug
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -13,9 +16,9 @@ theorem tied_cfOf : GlobalTheory.NT.RayField → ∀ (𝒮 : Slots), CoreSlot �
   refine ⟨?_, ?_, ?_, ?_⟩
   · exact p.x.what₂.r.z.geo.fw.laws
   · exact hcs K p.B p.f p.T p.w p.Z p.x.Wt p.O.p0 p.x.what₂ p.x.rx
-  · exact GlobalTheory.T.fieldTies_of_rayField_of_ksExact hR (p.w.st p.Z) p.f p.w.δ p.w.exact
+  · exact _root_.GlobalTheory.AtMember.fieldTies_of_ksExact hR (p.w.st p.Z) p.f p.w.δ p.w.exact
   · show HalfAt (ofObj p.O).errX (Fr.at (p.w.st p.Z) p.f)
     rw [p.x.errX]
-    exact GlobalTheory.T.conjGenerators_mem_framePrimes_trueColumns p.B p.f p.T p.w p.Z p.x.col.toColT
+    exact _root_.GlobalTheory.AtMember.conj_gen_mem_frame p.B p.f p.T p.w p.Z p.x.col.toColT
 
 end GlobalTheory.Plug

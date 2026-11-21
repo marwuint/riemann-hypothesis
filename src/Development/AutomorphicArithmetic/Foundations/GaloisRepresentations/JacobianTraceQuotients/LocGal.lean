@@ -1,6 +1,9 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.JacobianTraceQuotients.ElemPairJ
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.OrbitalIntegrals.TwistedOrbitalIntegrals.PlaceData
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapLinearEquivAddHaarLocalFieldStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapLinearEquivAddHaarLocalField
+import Development.AbelianVarietyTheory.Definitions.Divisors.UnipVal
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places
 
 open MeasureTheory NumberField IsDedekindDomain Filter ValuativeRel
@@ -41,7 +44,7 @@ private theorem nabs_norm [CharZero k] (x : k'ˣ) :
   have hf : μ K ≠ ∞ := hK.measure_lt_top.ne
   refine distribHaarChar_eq_of_measure_smul_eq_mul (μ := μ) h0 hf ?_
   let T : k' ≃ₗ[k] k' := DistribMulAction.toLinearEquiv k k' x⁻¹
-  have hT := GlobalTheory.T.map_linearEquiv_addHaar_localField k k' μ T
+  have hT := _root_.GlobalTheory.KSp.map_linearEquiv_haar k k' μ T
   have hdet : LinearEquiv.det T = (Units.map (Algebra.norm k : k' →* k) x)⁻¹ := by
     ext
     simp only [LinearEquiv.coe_det, T, Units.coe_map, MonoidHom.coe_coe, Algebra.norm_apply,

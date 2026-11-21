@@ -9,14 +9,9 @@ import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.Action
 import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.TruncLogEqOfPowEqZero
 import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.MapEqPadicPowCyclotomicCharacter
 import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.Comparison
-import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.Envelope
+import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.SpanNatCastLeComap
+
 namespace CrisToPeriodApply
-section
-
-theorem Bridge.cris_zero_to_period_apply : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap ↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) a = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) a) :=
-  fun _ _ _ => RingHom.comp_apply _ _ _
-
-end
 end CrisToPeriodApply
 namespace PeriodMapApply
 section
@@ -27,13 +22,6 @@ theorem Bridge.aB_apply : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPer
 end
 end PeriodMapApply
 namespace PeriodGeneratorApply
-section
-
-theorem Bridge.algebraMap_comp_ofPadicInt_apply : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), ((algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z) := by
-  intro l _ z
-  exact RingHom.comp_apply _ _ _
-
-end
 end PeriodGeneratorApply
 namespace TeichmullerAction
 section
@@ -63,13 +51,6 @@ theorem Bridge.thetaD_of_mem_FilP : ∀ (l : ℕ) [Fact l.Prime] {y : (Reformula
 end
 end ThetaOfFiltration
 namespace SigmaEqMap
-section
-
-theorem Bridge.sigA_eq_map : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)), (Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) = WittVector.map ((Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g))) := by
-  intro l _ g
-  rfl
-
-end
 end SigmaEqMap
 namespace IsUnitOfGenerator
 section
@@ -107,13 +88,6 @@ theorem Bridge.sigC_cont : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃�
 end
 end ContinuousGalois
 namespace FiltrationMem
-section
-
-theorem Bridge.mem_FilP : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))), y ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n ↔ Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n y = 0 := by
-  intro l _ n y
-  rw [← Reformulated.AutPerF.BdRPlus.ker_eval n, RingHom.mem_ker]
-
-end
 end FiltrationMem
 namespace AlgebraMemThetaKernel
 section
@@ -126,12 +100,6 @@ theorem Bridge.alg_mem_kerP : ∀ (l : ℕ) [Fact l.Prime] {a : (Reformulated.Au
 end
 end AlgebraMemThetaKernel
 namespace CrisEquivExists
-section
-
-theorem Bridge.exists_acris_equiv : ∀ (l : ℕ) [Fact l.Prime], ∃ e : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) ≃+* AdicCompletion (Ideal.span {((l : ℕ) : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)))}) ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))), ∀ s, e (algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) s) = algebraMap _ _ s :=
-  fun _ _ => ⟨RingEquiv.refl _, fun _ => rfl⟩
-
-end
 end CrisEquivExists
 namespace DividedPowerFiltrationIff
 section
@@ -178,34 +146,8 @@ theorem Bridge.bcris_ext : ∀ (l : ℕ) [Fact l.Prime] {R : Type} [CommRing R] 
 end
 end PeriodRingExt
 namespace DeRhamFiltrationNeg
-section
-
-theorem Bridge.mem_FilD_neg : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (x : (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))), x ∈ Reformulated.AutPerF.BdR.fil l ↥(PadicComplexInt l) (-(n : ℤ)) ↔ ∀ y ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n, ∃ z : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)), algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) z = x * algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) y := by
-  intro l _ n x
-  have h1 : (-(n : ℤ)).toNat = 0 := by omega
-  have h2 : (- -(n : ℤ)).toNat = n := by omega
-  rw [Reformulated.AutPerF.BdR.fil, h1, h2, Submodule.mem_div_iff_forall_mul_mem,
-    Reformulated.AutPerF.BdR.filNat, Reformulated.AutPerF.BdR.filNat]
-  constructor
-  · intro h y hy
-    obtain ⟨z, -, hz⟩ := Submodule.mem_map.1 (h _ (Submodule.mem_map.2 ⟨y, hy, rfl⟩))
-    exact ⟨z, hz⟩
-  · intro h y hy
-    obtain ⟨w, hw, rfl⟩ := Submodule.mem_map.1 hy
-    obtain ⟨z, hz⟩ := h w hw
-    refine Submodule.mem_map.2 ⟨z, ?_, hz⟩
-    rw [Reformulated.AutPerF.BdRPlus.fil, pow_zero, Ideal.one_eq_top]
-    exact Submodule.mem_top
-
-end
 end DeRhamFiltrationNeg
 namespace FrobeniusEqMap
-section
-
-theorem Bridge.phiA_eq_map : ∀ (l : ℕ) [Fact l.Prime], (Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) = WittVector.map (frobenius ((Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) l) :=
-  fun _ _ => Reformulated.AutPerF.Ainf.frob_eq_map
-
-end
 end FrobeniusEqMap
 namespace DividedPowerApply
 section
@@ -216,13 +158,6 @@ theorem Bridge.pD_apply : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPer
 end
 end DividedPowerApply
 namespace CrisGeneratorB
-section
-
-theorem Bridge.zB_apply : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z = ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z) := by
-  intro l _ z
-  exact RingHom.comp_apply _ _ _
-
-end
 end CrisGeneratorB
 namespace ScalarTowerAlt
 section
@@ -234,30 +169,10 @@ theorem Bridge.tower : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.A
 end
 end ScalarTowerAlt
 namespace DeRhamGeneratorApply
-section
-
-theorem Bridge.zD_apply : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (((algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))).comp ((algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)))) z = ((algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))) (((algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z) :=
-  fun _ _ _ => RingHom.comp_apply _ _ _
-
-end
 end DeRhamGeneratorApply
 namespace CrisToComplexAlgebra
-section
-
-theorem Bridge.toC_alg : ∀ (l : ℕ) [Fact l.Prime] (a : ↥(PadicComplexInt l)), ((Reformulated.AutPerF.IsUnitBall.awayEquiv (PadicComplexInt l) l).toRingEquiv.toRingHom) (algebraMap (↥(PadicComplexInt l)) (Localization.Away ((l : ℕ) : ↥(PadicComplexInt l))) a) = (a : ℂ_[l]) :=
-  fun l _ a => Reformulated.AutPerF.IsUnitBall.awayEquiv_algebraMap (PadicComplexInt l) l a
-
-end
 end CrisToComplexAlgebra
 namespace CrisZeroDividedPowerMem
-section
-
-theorem Bridge.mem_Acris0_of_dividedPower : ∀ (l : ℕ) [Fact l.Prime] {x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))} (hx : (WittVector.fontaineTheta ↥(PadicComplexInt l) l) x = 0) {n : ℕ} {y : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))} (h : (n.factorial : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * y = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x ^ n), y ∈ (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) := by
-  intro l _ x hx n y h
-  rw [← Reformulated.AutPerF.AinfInv.eq_gamma h]
-  exact (Reformulated.AutPerF.AcrisZero.gamma n x hx).2
-
-end
 end CrisZeroDividedPowerMem
 namespace SigmaCoeffA
 section
@@ -269,13 +184,6 @@ theorem Bridge.sigA_coeff : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃�
 end
 end SigmaCoeffA
 namespace CrisGeneratorA
-section
-
-theorem Bridge.zA_apply : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z = WittVector.map (ZMod.castHom (dvd_refl l) ((Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l)))) (WittVector.fromPadicInt l z) := by
-  intro l _ z
-  rfl
-
-end
 end CrisGeneratorA
 namespace GeneratorRelation
 section
@@ -359,15 +267,6 @@ theorem Bridge.exists_of_mem_FilD_nat : ∀ (l : ℕ) [Fact l.Prime] {n : ℕ} {
 end
 end FiltrationNatExists
 namespace CrisZeroLe
-section
-
-theorem Bridge.Acris0_le : ∀ (l : ℕ) [Fact l.Prime] {S : Subalgebra ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)))} (h : ∀ (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) (n : ℕ) (y : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), (WittVector.fontaineTheta ↥(PadicComplexInt l) l) x = 0 → (n.factorial : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * y = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x ^ n → y ∈ S), (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) ≤ S := by
-  intro l _ S h
-  refine Algebra.adjoin_le ?_
-  rintro y ⟨n, x, hx, rfl⟩
-  exact h x n _ hx (Reformulated.AutPerF.AinfInv.factorial_mul_gamma n _)
-
-end
 end CrisZeroLe
 namespace ThetaDeRhamAlgebra
 section
@@ -398,28 +297,10 @@ theorem Bridge.padicIntMap_eq_algebraMap_comp : ∀ (l : ℕ) [Fact l.Prime] (z 
 end
 end GeneratorAlgebraRelation
 namespace PeriodCrisZeroAlgebra
-section
-
-theorem Bridge.aB_a0B_alg : ∀ (l : ℕ) [Fact l.Prime], (∀ a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) a = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) a)) ∧ ∀ s : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap ↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) s = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) s) :=
-  fun _ _ => ⟨fun _ => RingHom.comp_apply _ _ _, fun _ => RingHom.comp_apply _ _ _⟩
-
-end
 end PeriodCrisZeroAlgebra
 namespace DividedPowerFiltration
-section
-
-theorem Bridge.sigDp_mem_FilP : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (n : ℕ) (y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))), y ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n → (Reformulated.AutPerF.BdRPlus.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) y ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n :=
-  fun _ _ _ _ _ hy => Reformulated.AutPerF.BdRPlus.map_mem_fil _ hy
-
-end
 end DividedPowerFiltration
 namespace DividedPowerCrisAlgebra
-section
-
-theorem Bridge.pD_a0B_alg : ∀ (l : ℕ) [Fact l.Prime], (∀ a : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)), ((algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))) a = algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) a)) ∧ (∀ s : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap ↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) s = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) s)) :=
-  fun _ _ => ⟨fun _ => RingHom.comp_apply _ _ _, fun _ => RingHom.comp_apply _ _ _⟩
-
-end
 end DividedPowerCrisAlgebra
 namespace DeRhamFiltrationZero
 section
@@ -479,29 +360,8 @@ theorem Bridge.acris0_le : ∀ (l : ℕ) [Fact l.Prime] (S : Subalgebra ((Reform
 end
 end CrisZeroLeAlt
 namespace CrisToPeriodAlgebra
-section
-
-theorem Bridge.cris_zero_to_period_algebra : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap ↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) a) = ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) a := by
-  intro l _ a
-  first
-    | rfl
-    | (simp only [RingHom.comp_apply]; rw [← IsScalarTower.algebraMap_apply])
-
-end
 end CrisToPeriodAlgebra
 namespace FrobeniusGeneratorB
-section
-
-theorem Bridge.phiB_zB : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (Reformulated.AutPerF.Bcris.frob l ↥(PadicComplexInt l)) ((((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z) = (((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z := by
-  intro l _ z
-  have h : Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)
-      (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l) z) =
-      Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l) z :=
-    Reformulated.AutPerF.Ainf.frob_algebraMap z
-  rw [RingHom.comp_apply, RingHom.comp_apply, Reformulated.AutPerF.Bcris.frob_algebraMap_acris,
-    Reformulated.AutPerF.Acris.frob_algebraMap, h]
-
-end
 end FrobeniusGeneratorB
 namespace CrisZeroLeThird
 section
@@ -526,22 +386,8 @@ theorem Bridge.dividedPower_mem_Acris0 : ∀ (l : ℕ) [Fact l.Prime] (x : (Refo
 end
 end DividedPowerInCrisZero
 namespace PeriodGeneratorImage
-section
-
-theorem Bridge.aB_zA : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z) = (((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z :=
-  fun _ _ z => (RingHom.comp_apply _ _ z).symm
-
-end
 end PeriodGeneratorImage
 namespace DividedPowerMemCrisZero
-section
-
-theorem Bridge.dividedPower_mem_acris0 : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), a ∈ RingHom.ker ((WittVector.fontaineTheta ↥(PadicComplexInt l) l)) → ∀ (n : ℕ) (x : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), ((n.factorial : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * x = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) a ^ n → x ∈ (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) := by
-  intro l _ a ha n x hx
-  rw [← Reformulated.AutPerF.AinfInv.eq_gamma hx]
-  exact (Reformulated.AutPerF.AcrisZero.gamma n a ha).2
-
-end
 end DividedPowerMemCrisZero
 namespace EvaluationDividedPower
 section
@@ -563,12 +409,6 @@ theorem Bridge.CrisMaps.φB_algebraMap : ∀ (l : ℕ) [Fact l.Prime] (x : (Refo
 end
 end FrobeniusPeriodAlgebraMap
 namespace DeRhamFraction
-section
-
-theorem Bridge.CrisLoc.bdR_frac : ∀ (l : ℕ) [Fact l.Prime], IsFractionRing ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) :=
-  fun _ _ => inferInstance
-
-end
 end DeRhamFraction
 namespace CrisRootNeOne
 section
@@ -742,12 +582,6 @@ theorem Bridge.RingBasics.awayMap_algebraMap₂ : ∀ (l : ℕ) [Fact l.Prime] (
 end
 end ExtensionAlgebra
 namespace FrobeniusGeneratorA
-section
-
-theorem Bridge.φA_zA : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z) = (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z :=
-  fun _ _ z => Reformulated.AutPerF.Ainf.frob_algebraMap z
-
-end
 end FrobeniusGeneratorA
 namespace UntiltFrobenius
 section
@@ -794,59 +628,12 @@ theorem Bridge.RingBasics.p_ne_zero : ∀ (l : ℕ) [Fact l.Prime] , ((l : ℕ) 
 end
 end PrimeNeZero
 namespace FactorialMulPartial
-section
-
-theorem Bridge.CrisIncl.factorial_mul_partial : ∀ {R : Type} [CommRing R] (hR : ∀ m : ℕ, m ≠ 0 → IsUnit (m : R)) (x : R) (n : ℕ), ((n.factorial : ℕ) : R) * ∑ k ∈ Finset.range n, (-1) ^ k * Ring.inverse ((k + 1 : ℕ) : R) * x ^ (k + 1) = ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : R) * x ^ (k + 1) := by
-  intro R _ hR x n
-  rw [Finset.mul_sum]
-  refine Finset.sum_congr rfl fun k hk => ?_
-  have hk' : k + 1 ≤ n := Finset.mem_range.mp hk
-  obtain ⟨c, hc⟩ : k + 1 ∣ n.factorial := Nat.dvd_factorial (Nat.succ_pos k) hk'
-  have h1 : n.factorial / (k + 1) = c := by
-    rw [hc]; exact Nat.mul_div_cancel_left c (Nat.succ_pos k)
-  have h2 : ((k + 1 : ℕ) : R) * Ring.inverse ((k + 1 : ℕ) : R) = 1 :=
-    Ring.mul_inverse_cancel _ (hR (k + 1) (Nat.succ_ne_zero k))
-  rw [h1, hc, Nat.cast_mul]
-  linear_combination ((-1) ^ k * (c : R) * x ^ (k + 1)) * h2
-
-end
 end FactorialMulPartial
 namespace AdicLevelCompat
-section
-
-theorem Bridge.AdicMaps.levMap_compat : ∀ {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow J hle).comp (((Ideal.quotientMap (J ^ n) f (Reformulated.AutPerF.pow_le_comap_pow hf n))).comp (AdicCompletion.evalₐ I n : AdicCompletion I R →+* R ⧸ I ^ n)) = ((Ideal.quotientMap (J ^ m) f (Reformulated.AutPerF.pow_le_comap_pow hf m))).comp (AdicCompletion.evalₐ I m : AdicCompletion I R →+* R ⧸ I ^ m) := by
-  intro R S _ _ I J f hf m n hle
-  ext x
-  obtain ⟨a, rfl⟩ := AdicCompletion.mk_surjective I R x
-  simp only [RingHom.comp_apply, RingHom.coe_coe, AdicCompletion.evalₐ_mk, Ideal.Quotient.mkₐ_eq_mk, Ideal.quotientMap_mk, Ideal.Quotient.factor_mk]
-  rw [Ideal.Quotient.eq, ← map_sub]
-  apply Reformulated.AutPerF.pow_le_comap_pow hf m
-  have h := a.2 hle
-  rw [SModEq.sub_mem] at h
-  have h2 := (Submodule.neg_mem_iff _).2 h
-  simpa using h2
-
-end
 end AdicLevelCompat
 namespace AdicEvaluationMk
-section
-
-theorem Bridge.AdicMaps.evalₐ_adicMap_mk : ∀ {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ) (x : AdicCompletion I R) (r : R) (h : AdicCompletion.evalₐ I n x = Ideal.Quotient.mk _ r), AdicCompletion.evalₐ J n (Reformulated.AutPerF.adicMap I J f hf x) = Ideal.Quotient.mk _ (f r) := by
-  intro R S _ _ I J f hf n x r h
-  rw [Reformulated.AutPerF.evalₐ_adicMap, h]
-  first | rfl | simp
-
-end
 end AdicEvaluationMk
 namespace DeRhamHomExt
-section
-
-theorem Bridge.CrisLoc.bdR_hom_ext : ∀ (l : ℕ) [Fact l.Prime] {R : Type} [CommRing R] {f g : (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l)) →+* R} (h : ∀ x : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)), f (algebraMap _ _ x) = g (algebraMap _ _ x)), f = g := by
-  intro l _ R _ f g h
-  exact IsLocalization.ringHom_ext
-    (nonZeroDivisors (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (RingHom.ext h)
-
-end
 end DeRhamHomExt
 namespace GaloisNormAlt
 section
@@ -859,12 +646,6 @@ theorem Bridge.RingBasics.norm_gal : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlg
 end
 end GaloisNormAlt
 namespace AdicEvaluationMap
-section
-
-theorem Bridge.AdicMaps.evalₐ_adicMap : ∀ {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ) (x : AdicCompletion I R), AdicCompletion.evalₐ J n (Reformulated.AutPerF.adicMap I J f hf x) = (Ideal.quotientMap (J ^ n) f (Reformulated.AutPerF.pow_le_comap_pow hf n)) (AdicCompletion.evalₐ I n x) :=
-  fun I J f hf n x => Reformulated.AutPerF.evalₐ_adicMap I J f hf n x
-
-end
 end AdicEvaluationMap
 namespace RootConstantCoeffNeZero
 section
@@ -887,14 +668,6 @@ theorem Bridge.AdicMaps.adicMap_alg : ∀ {R S : Type} [CommRing R] [CommRing S]
 end
 end AdicMapAlgebra
 namespace AdicSpanLeComap
-section
-
-theorem Bridge.AdicMaps.span_le_comap : ∀ {R S : Type} [CommRing R] [CommRing S] (p : ℕ) (f : R →+* S), Ideal.span {(p : R)} ≤ (Ideal.span {(p : S)}).comap f := by
-  intro R S _ _ p f
-  rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast]
-  exact Ideal.mem_span_singleton_self _
-
-end
 end AdicSpanLeComap
 namespace FrobeniusComplexOne
 section
@@ -938,116 +711,14 @@ theorem Bridge.RingBasics.isUnit_nat :
 end
 end NatIsUnit
 namespace AdicLevelMap
-section
-
-theorem Bridge.AdicMaps.levMap_mk : ∀ {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ) (r : R), (Ideal.quotientMap (J ^ n) f (Reformulated.AutPerF.pow_le_comap_pow hf n)) (Ideal.Quotient.mk _ r) = Ideal.Quotient.mk _ (f r) := by
-  intro R S _ _ I J f hf n r
-  exact Ideal.quotientMap_mk
-
-end
 end AdicLevelMap
 namespace FactorPowerEval
-section
-
-theorem Bridge.AdicMaps.factorPow_evalₐ : ∀ {R : Type} [CommRing R] (I : Ideal R) {m n : ℕ} (hle : m ≤ n) (x : AdicCompletion I R), Ideal.Quotient.factorPow I hle (AdicCompletion.evalₐ I n x) = AdicCompletion.evalₐ I m x := by
-  intro R _ I m n hle x
-  obtain ⟨s, rfl⟩ := AdicCompletion.mk_surjective I R x
-  rw [AdicCompletion.evalₐ_mk, AdicCompletion.evalₐ_mk, Ideal.Quotient.factorPow,
-    Ideal.Quotient.factor_mk, Ideal.Quotient.eq]
-  have h := SModEq.sub_mem.1 (s.property hle).symm
-  simpa using h
-
-end
 end FactorPowerEval
 namespace CrisToDeRhamInjective
-section
-
-noncomputable section
-
 namespace Bridge.alg_Bcris_injective_aux
-
-open Ideal Reformulated.AutPerF
-
-universe u
-
-variable {p : ℕ} [Fact p.Prime]
-variable {R : Type u} [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span {(p : R)}) R]
-  [IsDomain R] [ValuationRing R] [CharZero R] [IsAlgClosed (FractionRing R)]
-
-theorem mem_acrisZero_iff (ϖ : PFlat p R) (x : AinfInv p R) :
-    x ∈ acrisZero p R ↔ x ∈ dpSpan (AinfInv p R) (Ainf.xi ϖ) Set.univ := by
-  constructor
-  · intro hx
-    have := AcrisZero.mem_span_gamma_xi ϖ hx
-    rw [dpSpan, Set.image_univ]
-    exact this
-  · intro hx
-    refine (show dpSpan (AinfInv p R) (Ainf.xi ϖ) Set.univ ≤
-      Subalgebra.toSubmodule (acrisZero p R) from ?_) hx
-    rw [dpSpan, Submodule.span_le]
-    rintro _ ⟨m, -, rfl⟩
-    exact (AcrisZero.gamma m (Ainf.xi ϖ) (Ainf.theta_xi ϖ)).2
-
-theorem p_dvd_of_eq_zero {x : Acris p R} (hx : Acris.toBdRPlus p R x = 0) :
-    (p : Acris p R) ∣ x := by
-  obtain ⟨ϖ⟩ : Nonempty (PFlat p R) := inferInstance
-  obtain ⟨a, y, rfl⟩ := Acris.exists_eq_add 1 x
-  rw [pow_one] at hx ⊢
-  have h0 : algebraMap (Ainf p R) (AinfInv p R) (Ainf.xi ϖ) ≠ 0 :=
-    (map_ne_zero_iff _ AinfInv.algebraMap_injective).2 (Ainf.xi_ne_zero ϖ)
-  have hξ : ∀ a : Ainf p R, algebraMap (Ainf p R) (AinfInv p R) (Ainf.xi ϖ) ∣
-      algebraMap (Ainf p R) (AinfInv p R) a → Ainf.xi ϖ ∣ a := by
-    intro a ha
-    have h1 := (AinfInv.algebraMap_mem_kerTheta_pow_iff ϖ 1 a).1 (by
-      rw [pow_one, AinfInv.kerTheta_eq ϖ, mem_span_singleton]; exact ha)
-    simpa using h1
-  obtain ⟨z, hz, e⟩ := exists_eq_mul_of_forall h0 hξ (q := p) (Fact.out : p.Prime).pos
-    (AinfInv.isUnit_p p) ((mem_acrisZero_iff ϖ _).1 a.2) (fun n => by
-      obtain ⟨w, hw⟩ := (Acris.toRange p R n y).2
-      refine ⟨-(w : AinfInv p R), neg_mem ((mem_acrisZero_iff ϖ _).1 w.2), ?_⟩
-      have h1 := congrArg (BdRPlus.eval p R n) hx
-      rw [map_add, map_mul, map_natCast, map_add, map_mul, map_natCast, map_zero,
-        Acris.toBdRPlus_algebraMap_zero, BdRPlus.eval_algebraMap, Acris.eval_toBdRPlus, ← hw] at h1
-      have h2 : Ideal.Quotient.mk (AinfInv.kerTheta p R ^ n)
-          ((a : AinfInv p R) - p * -(w : AinfInv p R)) = 0 := by
-        rw [mul_neg, sub_neg_eq_add, map_add, map_mul, map_natCast]
-        exact h1
-      rw [Ideal.Quotient.eq_zero_iff_mem, AinfInv.kerTheta_eq ϖ, Ideal.span_singleton_pow,
-        mem_span_singleton] at h2
-      exact h2)
-  have e' : a = (p : AcrisZero p R) * ⟨z, (mem_acrisZero_iff ϖ _).2 hz⟩ := by
-    apply Subtype.ext
-    simp only [MulMemClass.coe_mul, SubringClass.coe_natCast]
-    exact e
-  rw [e', map_mul, map_natCast]
-  exact dvd_add (dvd_mul_right _ _) (dvd_mul_right _ _)
-
-theorem toBdRPlus_injective : Function.Injective (Acris.toBdRPlus p R) := by
-  rw [injective_iff_map_eq_zero]
-  intro x hx
-  refine Acris.eq_zero_of_forall_dvd fun n => ?_
-  have hu : IsUnit (p : BdRPlus p R) := IsUnit.of_mul_eq_one _ BdRPlus.p_mul_inv
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    obtain ⟨y, rfl⟩ := ih
-    rw [map_mul, map_pow, map_natCast] at hx
-    rw [pow_succ]
-    exact mul_dvd_mul_left _ (p_dvd_of_eq_zero ((hu.pow n).mul_right_eq_zero.1 hx))
-
-theorem algebraMap_injective : Function.Injective (algebraMap (Acris p R) (Bcris p R)) := by
-  intro x y h
-  have h1 := congrArg (Bcris.toBdR p R) h
-  rw [Bcris.toBdR_algebraMap_acris, Bcris.toBdR_algebraMap_acris] at h1
-  exact toBdRPlus_injective (BdR.algebraMap_injective h1)
 
 end Bridge.alg_Bcris_injective_aux
 
-theorem Bridge.alg_Bcris_injective : ∀ (l : ℕ) [Fact l.Prime], Function.Injective (algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) :=
-  fun _ _ => Bridge.alg_Bcris_injective_aux.algebraMap_injective
-
-end
-end
 end CrisToDeRhamInjective
 namespace ExtendedInverse
 section
@@ -1132,40 +803,8 @@ theorem Bridge.CrisLoc.bcris_hom_ext : ∀ (l : ℕ) [Fact l.Prime] {R : Type} [
 end
 end CrisHomExt
 namespace UnitOfGenerator
-section
-
-theorem Bridge.CrisLoc.unit_of_generator : ∀ (l : ℕ) [Fact l.Prime] (b : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) (hb : (Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l)) = Ideal.span {b}), IsUnit (algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) b)) := by
-  intro l _ b hb
-  have h : RingHom.ker (Reformulated.AutPerF.BdRPlus.theta l ↥(PadicComplexInt l)) = Ideal.span
-      {algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))
-        (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) b} := by
-    rw [Reformulated.AutPerF.BdRPlus.ker_theta_eq_map, hb, Ideal.map_span, Set.image_singleton]
-  exact (Reformulated.AutPerF.BdR.algebraMap_ne_zero h).isUnit
-
-end
 end UnitOfGenerator
 namespace PadicIntHomExt
-section
-
-theorem Bridge.padicInt_hom_ext : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] [IsHausdorff (Ideal.span {((l : ℕ) : A)}) A] (f g : ℤ_[l] →+* A), f = g := by
-  intro l _ A _ hA f g
-  refine RingHom.ext fun x => ?_
-  rw [← sub_eq_zero]
-  refine hA.haus _ fun n => ?_
-  rw [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
-  obtain ⟨y, hy⟩ := Ideal.mem_span_singleton.1 (PadicInt.appr_spec n x)
-  have hx : x = ((PadicInt.appr x n : ℕ) : ℤ_[l]) + (l : ℤ_[l]) ^ n * y := by
-    rw [← hy]; ring
-  refine ⟨f y - g y, ?_⟩
-  have h1 : f x = ((PadicInt.appr x n : ℕ) : A) + (l : A) ^ n * f y := by
-    conv_lhs => rw [hx]
-    rw [map_add, map_mul, map_pow, map_natCast, map_natCast]
-  have h2 : g x = ((PadicInt.appr x n : ℕ) : A) + (l : A) ^ n * g y := by
-    conv_lhs => rw [hx]
-    rw [map_add, map_mul, map_pow, map_natCast, map_natCast]
-  rw [h1, h2]; ring
-
-end
 end PadicIntHomExt
 namespace WittFrobeniusLift
 section

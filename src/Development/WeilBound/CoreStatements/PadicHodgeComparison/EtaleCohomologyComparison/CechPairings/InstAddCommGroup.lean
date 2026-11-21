@@ -29,7 +29,6 @@ def Almost (I : Ideal R) (f : M →ₗ[R] N) : Prop := ∀ s ∈ I, UpTo s f
 def ExactUpTo {P : Type w''} [AddCommGroup P] [Module R P] (s : R) (f : M →ₗ[R] N) (g : N →ₗ[R] P) : Prop :=
   ∀ y, g y = 0 → ∃ x, f x = s • y
 
-def Killed (s : R) (M : Type w) [AddCommGroup M] [Module R M] : Prop := ∀ x : M, s • x = 0
 end UpTo
 
 structure Cx (R : Type) [CommRing R] : Type (w + 1) where
@@ -66,8 +65,6 @@ variable {C}
 
 theorem mem_B_succ {n : ℕ} {x : C.X (n + 1)} : x ∈ C.B (n + 1) ↔ ∃ y, C.d n y = x :=
   LinearMap.mem_range
-
-theorem d_mem_B (n : ℕ) (y : C.X n) : C.d n y ∈ C.B (n + 1) := mem_B_succ.2 ⟨y, rfl⟩
 
 @[ext]
 structure Hom {R S : Type} [CommRing R] [CommRing S] (C : Cx.{w₁} R) (D : Cx.{w₂} S)
@@ -271,17 +268,6 @@ def SubF.fn (S : SubF F) : C ⥤ ModuleCat.{w} R where
 def SubF.inc (S : SubF F) : Mor S.fn F (RingHom.id R) where
   G := 𝟭 C
   τ T := (S.S T).subtype
-  nat _ _ := rfl
-
-def SubF.quot (S : SubF F) : C ⥤ ModuleCat.{w} R where
-  obj T := ModuleCat.of R (F.obj T ⧸ S.S T)
-  map φ := ModuleCat.ofHom (Submodule.mapQ _ _ (F.map φ).hom fun _ hx => S.map_mem φ hx)
-  map_id T := by ext x; simp
-  map_comp φ ψ := by ext x; simp
-
-def SubF.proj (S : SubF F) : Mor F S.quot (RingHom.id R) where
-  G := 𝟭 C
-  τ T := (S.S T).mkQ
   nat _ _ := rfl
 
 def SubF.img (S : SubF F) (n : ℕ) : Submodule R (H F n) := LinearMap.range (S.inc.pull n)

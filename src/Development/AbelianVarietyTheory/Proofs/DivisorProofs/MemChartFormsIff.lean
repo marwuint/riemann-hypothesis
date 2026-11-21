@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsEulerContraction
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDifferentialMulLogCoordinateWedgeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDifferentialMulLogCoordinateWedge
 open GlobalTheory GlobalTheory.LogDR
 
 set_option autoImplicit false
@@ -45,9 +45,9 @@ theorem ιMulti_frame {n : ℕ} (x : Fin n → Kˣ) (J : Finset (Fin n)) :
     rw [ExteriorAlgebra.ιMulti_succ_apply, he, ← hi0, frame_eq, map_smul, smul_mul_smul_comm]
     by_cases hi : i0 ∈ I
     · refine ⟨∅, 0, fun h => absurd rfl h, ?_⟩
-      rw [(GlobalTheory.T.logDifferential_mul_logCoordinateWedge K n x i0 I).1 hi]
+      rw [(_root_.GlobalTheory.LogDR.dlog_mul_logWedge K n x i0 I).1 hi]
       simp
-    · obtain ⟨ε, hε, hw⟩ := (GlobalTheory.T.logDifferential_mul_logCoordinateWedge K n x i0 I).2 hi
+    · obtain ⟨ε, hε, hw⟩ := (_root_.GlobalTheory.LogDR.dlog_mul_logWedge K n x i0 I).2 hi
       refine ⟨insert i0 I, m * ε, fun h => ?_, ?_⟩
       · rw [Finset.card_insert_of_notMem hi, hc (left_ne_zero_of_mul h)]
       · rw [hw, ← Int.cast_smul_eq_zsmul K, smul_smul, ← wt_mul_prod x J I i0 hi]

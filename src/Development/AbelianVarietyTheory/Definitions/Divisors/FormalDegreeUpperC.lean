@@ -107,13 +107,6 @@ def ConjRatLift5 : Prop :=
     ∀ i : Fin D.R.m, (O i).OneMapOf (κ i) (v₀ i (sg0 D A)) (T.cE ((i : ℕ) + 1) (O i).s0) ph →
      GalOut R i ph
 
-theorem AdelC.full {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
-    {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} (h : AdelC R F) :
-    AdelicLiftScalar R F := fun hc => h ⟨hc.lev, hc.grp, hc.fam, hc.models, hc.chain, hc.thP⟩
-
-theorem ConjRatLift5.full (h : ConjRatLift5) : GlobalTheory.ConjScalar.ConjRatLift :=
-  fun D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hc => h D G Pl0 T0 A T R F κ v₀ O ph (GlobalTheory.Core5.of_char hc)
-
 end GlobalTheory.LowRow
 
 end

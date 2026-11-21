@@ -1,10 +1,52 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GPowPf
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BoxRosati
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBCPf
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.RosatiAdjPow
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PowOActOfGlobalFns
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.PsiInOfComponent
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PowerSeriesDvrAdmissibleXIdeal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HasArcDataIff
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.DimSplitPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
+import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCoreOfIsAbelianScheme
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPolAVGenericFibreOfTriple
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GenericPointMemModuliOfMeetsAbelianLocus
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSecUnitClosedFibre
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLevelGoodAtAllPrimesAndIdx
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPointOfPeriod
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LambdaBundleAdjointOfWeilPairingAdjoint
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TheoremOfCubePolAbelianScheme
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaOfTranslDiff
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSecImageNonzeroLocus
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPrimitiveNormalisation
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalTorusAlgebraic
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsMonHomOfMapLattice
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FamilyUnifOfParts
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFormEqOne
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ModNOfDvdModulus
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSimTrivialOfMult
+import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ThetaUnifAVOfLaws
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TypeFnPeriodExistModuliNonempty
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifPowOf3
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DvrLem
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigIsoCongr
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsMonHomOfMul
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGenPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FamMod
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPelUniformisationCompleteDvr
 
 set_option autoImplicit false
 
@@ -17,21 +59,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PowActProbe
 
-theorem exists_pow (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (n : ℕ) :
-    ∃ D' : DegData R I, Nonempty (IsPowDeg D'.toPre D.toPre n) :=
-  GlobalTheory.PowDegData.main GlobalTheory.globalFns_holds R I D n
-
-section Unique
-
-variable {R : Type} [CommRing R] [IsDomain R] {D' D : DegPre R} {n : ℕ}
-
-theorem isMonHom_of_coord (pD : IsPowDeg D' D n) (f : D.P.A ⟶ D.P.A) [IsMonHom f] (f' : D'.P.A ⟶ D'.P.A)
-    (h : ∀ i, f' ≫ pD.pw.pr i = pD.pw.pr i ≫ f) : IsMonHom f' := by
-  have : f' = powMap pD.pw f := pow_ext pD.pw fun i => (h i).trans (powMap_pr _ _ i).symm
-  rw [this]; exact powMap_isMonHom _ _
-
-end Unique
-
 theorem powOActSt_iff : PowOActSt ↔
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V]
       [IsDiscreteValuationRing V] (t : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t)
@@ -42,12 +69,5 @@ theorem powOActSt_iff : PowOActSt ↔
             P.mod.toDistribMulAction.toMulAction.toSMul.smul a (pD.xe x i)) ∧
         ∀ (a : 𝓞 E) (i : Fin n), (letI := H.starRing; oD'.onB.act a) ≫ pD.pw.pr i =
           pD.pw.pr i ≫ (letI := H.starRing; P.oD.onB.act a) := Iff.rfl
-
-theorem premises_met (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Δ : Datum H)
-    (h : 1 ≤ Δ.p + Δ.q) (n : ℕ) :
-    ∃ (t : SAB H (Sp (PowerSeries ℂ))) (P : PELUnif (maximalIdeal (PowerSeries ℂ)) t), 0 < P.A.g ∧
-      ∃ D' : DegData (PowerSeries ℂ) (maximalIdeal _), Nonempty (IsPowDeg D'.toPre P.D.toPre n) := by
-  obtain ⟨t, P, -, -, hg, -⟩ := GlobalTheory.ConstantFamily.exists_pelUnif_powerSeries E H Δ h
-  exact ⟨t, P, hg, exists_pow _ _ P.D n⟩
 
 end GlobalTheory.PowActProbe

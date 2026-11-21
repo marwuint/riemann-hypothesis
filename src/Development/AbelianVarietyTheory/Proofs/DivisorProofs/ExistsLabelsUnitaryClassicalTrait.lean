@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyUWit
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabRange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRechartingThetaSystemAffineOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RechartAtUnitaryClassicalTraitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRechartingThetaSystemAffineOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RechartAtUnitaryClassicalTrait
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisedModelLabelsUnitaryTraitStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -23,8 +23,8 @@ theorem exists_uIsLabW : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     simp only [Scheme.Hom.comp_apply] at e ⊢
     exact e.symm
   obtain ⟨U, c₀, hc, fg, frac, hth, hev, ρ', u', hU, hwU, hsame, hi₀, hpt, G, hG, α, β, hα, hβ, hL, hm⟩ :=
-    GlobalTheory.T.exists_recharting_thetaSystem_affineOpen E H Dw hpq l Xo cf C X wi _ hw
-  obtain ⟨hle, y₁, hy₁, hpt₁, hint⟩ := GlobalTheory.T.rechart_at_unitaryClassicalTrait E H Dw hpq l Xo cf C X p z ct U u' hU hwU hpt
+    _root_.GlobalTheory.UPoinc.exists_rechart_wit E H Dw hpq l Xo cf C X wi _ hw
+  obtain ⟨hle, y₁, hy₁, hpt₁, hint⟩ := _root_.GlobalTheory.UPoinc.rechart_at_uClassical_trait E H Dw hpq l Xo cf C X p z ct U u' hU hwU hpt
   obtain ⟨u, lb, j, hq, hcong⟩ :=
     GlobalTheory.T.exists_uniformisedModel_labels_unitaryTrait E H Dw hpq l Xo cf X.o₁ X.Ω₁ _ ρ' u' G hG α β hα hβ hL p y₁ ct.T ct.ι ct.int hpt₁ hint
   let jm : ModN (X.S.r * X.S.N) u.D.toPre.X →+ ModN (X.S.r * X.S.N) ct.T.P.D.toPre.X :=

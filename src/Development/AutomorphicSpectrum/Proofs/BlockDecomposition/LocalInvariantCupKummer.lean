@@ -7,10 +7,12 @@ import GroundTheory.ProfiniteCohomology.GlobalClassFormation.LocalInvariants
 import ReciprocityTheory.GaloisValuations.GlobalE
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DecompositionGroupFrobeniusFactorStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrobeniusPowerFixesRootUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormFromKummerUnramifiedUnitStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormFromKummerUnramifiedUnit
+import GroundTheory.LocalFields.MainTheorem
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KummerCocycleNormCriterionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueFieldCardEqNormStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerRatioValuationZeroStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueFieldCardEqNorm
+import GroundTheory.GlobalFields.LocalFieldAtPlace
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerRatioValuationZero
 set_option maxSynthPendingDepth 1
 
 open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Published GlobalTheory.Published.PoitouTate
@@ -114,7 +116,7 @@ theorem exists_cochain_cup (l : ℕ) [Fact l.Prime] (r : ℕ) (hr : 0 < r) {ζ :
   obtain ⟨ξ, hξ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot Ω n
   rw [hn] at hξ
   have hξv : IsPrimitiveRoot (ι ξ) (Nat.card 𝓀[v.adicCompletion F] ^ l ^ r - 1) := by
-    rw [GlobalTheory.T.residue_field_card_eq_norm F v]
+    rw [_root_.GlobalTheory.CompanionTheory.LocRes.natCard_residueField_eq_normV F v]
     exact hξ.map_of_injective ι.toRingHom.injective
   let ψ : GlobalTheory.LocDict.GalLoc v →* Multiplicative (ZMod (l ^ r)) :=
     (addHom χ ha).comp θ.symm.toMonoidHom
@@ -146,8 +148,8 @@ theorem exists_cochain_cup (l : ℕ) [Fact l.Prime] (r : ℕ) (hr : 0 < r) {ζ :
     (div_ne_zero hϖ0' hϖ0)
   have hU : (U : v.adicCompletion F) * algebraMap F (v.adicCompletion F) (ϖ : F) =
       algebraMap F (v.adicCompletion F) (ϖ' : F) := div_mul_cancel₀ _ hϖ0
-  have hord := GlobalTheory.T.uniformizer_ratio_valuation_zero F v ϖ ϖ' h1 h2 h1' h2' U hU
-  have hnorm := GlobalTheory.T.norm_from_kummer_unramified_unit (K := v.adicCompletion F) (Ω := GlobalTheory.LocDict.Kbar v) (l ^ r) hN.ne' (ι ξ) hξv ψ ho hfix U hord
+  have hord := _root_.GlobalTheory.CompanionTheory.Uniformiser.ord_ratio_eq_zero F v ϖ ϖ' h1 h2 h1' h2' U hU
+  have hnorm := _root_.GlobalTheory.CompanionTheory.LocalField.exists_norm_fixedField_ker_eq_unit (K := v.adicCompletion F) (Ω := GlobalTheory.LocDict.Kbar v) (l ^ r) hN.ne' (ι ξ) hξv ψ ho hfix U hord
   have hcomm : ∀ x : F, ι (algebraMap F Ω x) =
       algebraMap (v.adicCompletion F) (GlobalTheory.LocDict.Kbar v) (algebraMap F (v.adicCompletion F) x) := fun x => by
     rw [ι.commutes, ← IsScalarTower.algebraMap_apply]

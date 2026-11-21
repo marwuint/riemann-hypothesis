@@ -291,27 +291,6 @@ theorem clsGL_congr {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V}
 
 variable {A : Type 1} [CommRing A] {Ψ : GrothGL k ≃+ A}
 
-theorem IsProductIso.comm (hΨ : IsProductIso k Ψ) {r t : ℕ} {π₁ : Representation ℂ (GL (Fin r) k) V}
-    {π₂ : Representation ℂ (GL (Fin t) k) W} (h₁ : HasFiniteLength π₁) (h₂ : HasFiniteLength π₂)
-    (s₁ : IsSmooth π₁) (s₂ : IsSmooth π₂) :
-    ∃ h h', clsGL (prod₂ π₁ π₂) h = clsGL (prod₂ π₂ π₁) h' := by
-  obtain ⟨h, e⟩ := hΨ.2 r t V W π₁ π₂ h₁ h₂ s₁ s₂
-  obtain ⟨h', e'⟩ := hΨ.2 t r W V π₂ π₁ h₂ h₁ s₂ s₁
-  exact ⟨h, h', Ψ.injective (by rw [e, e', mul_comm])⟩
-
-theorem IsProductIso.cancel [IsDomain A] (hΨ : IsProductIso k Ψ) {r t : ℕ}
-    (π₁ π₂ : IrrRep (GL (Fin r) k)) (τ : IrrRep (GL (Fin t) k))
-    (φ : (prod₂ π₁.ρ τ.ρ).Equiv (prod₂ π₂.ρ τ.ρ)) : Nonempty (π₁.ρ.Equiv π₂.ρ) := by
-  obtain ⟨h, e⟩ := hΨ.2 r t _ _ π₁.ρ τ.ρ π₁.hasFiniteLength τ.hasFiniteLength π₁.smooth τ.smooth
-  obtain ⟨h', e'⟩ := hΨ.2 r t _ _ π₂.ρ τ.ρ π₂.hasFiniteLength τ.hasFiniteLength π₂.smooth τ.smooth
-  have h0 : Ψ (clsGL τ.ρ τ.hasFiniteLength) ≠ 0 := by
-    rw [clsGL_irr, map_ne_zero_iff _ Ψ.injective]
-    exact Finsupp.single_ne_zero.2 one_ne_zero
-  rw [clsGL_congr φ h h', e'] at e
-  have h1 := Ψ.injective (mul_right_cancel₀ h0 e)
-  rw [clsGL_irr, clsGL_irr, Finsupp.single_left_inj one_ne_zero] at h1
-  exact IrrRep.cl_eq_iff.1 (sigma_mk_injective (β := fun n => IrrCl (GL (Fin n) k)) h1).symm
-
 end RingConsequences
 
 section Characters
@@ -341,20 +320,6 @@ theorem nonempty_jac_det_equiv (e : (Σ _ : Fin l, Fin 1) ≃ n) (χ : kˣ →* 
   simp only [LinearMap.comp_apply]
   rw [key, Model.jac_detRep, map_smul]
 
-theorem exists_det_embedding (e : (Σ _ : Fin l, Fin 1) ≃ n) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
-    ∃ φ : (detRep n (χ * absPow k (((l : ℂ) - 1) / 2))).IntertwiningMap
-      (multiProd e (segTerm (detRep (Fin 1) χ) l)), Function.Injective φ := by
-  obtain ⟨ψ⟩ := nonempty_jac_det_equiv e χ
-  obtain ⟨φ, hφ⟩ := (Model.evalOne_bijective e ((isSmooth_ofChar_iff _).2
-    (hχ.mul (isSmoothChar_of_isUnram (isUnram_absPow k _))).detChar) _).2 ψ.toIntertwiningMap
-  refine ⟨φ, (injective_iff_map_eq_zero _).2 fun v hv => ?_⟩
-  have h1 : ψ (Submodule.Quotient.mk v) = (φ v).1.1 1 :=
-    (congrArg (fun F => F (Submodule.Quotient.mk v)) hφ).symm
-  replace h1 : ψ (Submodule.Quotient.mk v) = 0 := h1.trans (congrArg (fun F => F.1.1 1) hv)
-  have h2 : v ∈ twKer (detRep n (χ * absPow k (((l : ℂ) - 1) / 2))) (unipRad k e) 1 :=
-    (Submodule.Quotient.mk_eq_zero _).1 ((map_eq_zero_iff ψ ψ.injective).1 h1)
-  rwa [twKer_detRep] at h2
-
 theorem IsSegmentClass.ofChar {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)}
     (hZ : IsSegmentClass k Z) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (hl : 0 < l) :
     Z (Segment.ofChar χ hχ l hl) = (IrrRep.det (Fin (l * 1)) (χ * absPow k (((l : ℂ) - 1) / 2))
@@ -364,14 +329,6 @@ theorem IsSegmentClass.ofChar {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * 
     (IrrRep.det (Fin (l * 1)) (χ * absPow k (((l : ℂ) - 1) / 2))
       (hχ.mul (isSmoothChar_of_isUnram (isUnram_absPow k _))))).2
   exact (h1.2 (nonempty_jac_det_equiv (l := l) (n := Fin (l * 1)) e χ)).symm
-
-example : Function.Injective fun l : ℕ =>
-    Segment.ofChar (1 : kˣ →* ℂˣ) isSmoothChar_one (l + 1) l.succ_pos :=
-  fun _ _ h => Nat.succ_injective (congrArg Segment.len h)
-
-example : ∃ b b' : SizeMatrix (fun _ : Fin 2 => Fin 1) (fun _ : Fin 2 => Fin 1), b ≠ b' :=
-  ⟨⟨![![1, 0], ![0, 1]], by decide⟩, ⟨![![0, 1], ![1, 0]], by decide⟩, fun h =>
-    absurd (congrArg (fun b => b.1 0 0) h) (by decide)⟩
 
 end Characters
 

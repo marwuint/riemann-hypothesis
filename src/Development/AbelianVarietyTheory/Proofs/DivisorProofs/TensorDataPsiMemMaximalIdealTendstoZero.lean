@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteEvenCubicalValuesNotMemMaximalIdealPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvenCubicalTensorPosDefFormPositiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteEvenCubicalValuesNotMemMaximalIdealPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvenCubicalTensorPosDefFormPositive
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitValEqMul
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PsiInIffScalarMem
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PsiScalarsRelationsUpToBaseUnits
@@ -128,8 +128,8 @@ theorem scalars (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsInt
     simp only [ofMul_mul, eκ', ← Finset.sum_add_distrib, ← smul_add, Pi.add_apply, map_add, LinearMap.add_apply]
     refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => congrArg _ ?_
     abel
-  have κ'p := GlobalTheory.T.even_cubical_tensor_posDef_form_positive R X κ κn κc κp W hW
-  have κ't := GlobalTheory.T.finite_even_cubical_values_not_mem_maximalIdeal_pow R (Fin r → X) κ' κ'n κ'c κ'p
+  have κ'p := _root_.GlobalTheory.Mum.TPos.tensor_pos R X κ κn κc κp W hW
+  have κ't := _root_.GlobalTheory.QuadTend.finite_not_mem_pow R (Fin r → X) κ' κ'n κ'c κ'p
   have ea : ∀ z, ∃ v ∈ unitsK R, a' z = v * κ' z := fun z => by
     obtain ⟨v, hv, e⟩ := h' z
     refine ⟨v * ∏ i, ∏ j, (u (z i + z j) * (u (z i))⁻¹ * (u (z j))⁻¹) ^ W i j, mul_mem hv (prod_mem fun i _ => prod_mem fun j _ =>

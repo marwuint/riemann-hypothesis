@@ -6,10 +6,12 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeLocalGlobalPrincipleStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsComplementUnitaryMulActionLocalInnerDatumStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryComplementMovesLocalTermsWithDataStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDatumEqOfSameLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDatumEqOfSameLattice
+import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermAtBasePointOfFramesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnfoldingGenusWeightsSumToMassStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsTermLatticeBaseFramesOfBasePointStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnfoldingGenusWeightsSumToMass
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsTermLatticeBaseFramesOfBasePoint
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalDataOfTermLatticeAndOrbitsStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalisedBaseFramesRelevantPairStatement
 open scoped Classical ENNReal
@@ -79,12 +81,12 @@ theorem rows_mass_genus : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : 
   have hrk : ∀ p : PlF D, Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1 := fun p => rank_Vp p
   have luniq : ∀ p (a b : Formalism.MainNotions.S.LocNG.Datum (Fm.FP p)) (τ τ' : Formalism.MainNotions.S.Loc.Term (Vp D p) ((zOf Y).M p) D.R.rS),
       Formalism.MainNotions.S.LocNG.IsTermOver (Fm.FP p) a τ → Formalism.MainNotions.S.LocNG.IsTermOver (Fm.FP p) b τ' → τ.abelian₂ = τ'.abelian₂ → a = b :=
-    fun p a b τ τ' h1 h2 h3 => GlobalTheory.T.hermitianDatum_eq_of_same_lattice _ (hMo p) _ _ _ _ (hrk p) (hRG p) a b τ τ' h1 h2 h3
+    fun p a b τ τ' h1 h2 h3 => _root_.GlobalTheory.HL.LatUniq.datum_of_lattice _ (hMo p) _ _ _ _ (hrk p) (hRG p) a b τ τ' h1 h2 h3
   have hA : ∀ t ∈ TS, ptPN t = toPts w → (∀ p (hp : p ∈ Fm.P), OverOrb Fm t p (d ⟨p, hp⟩).1) →
       ∃ (Λ : LV D) (y : Dat (zOf Y) Fm.FP), TG F F' t Λ ∧ LocOver Λ y ∧ InGen dd y ∧
         ∀ p a, OverOrb Fm t p a ↔ Formalism.MainNotions.S.LocNG.Datum.Rel a (y p) := by
     intro t ht hpt hov
-    obtain ⟨Λ, hΛ⟩ := GlobalTheory.T.exists_termLattice_baseFrames_of_basePoint D X Y u u' F F' w hZ hG t hpt
+    obtain ⟨Λ, hΛ⟩ := _root_.GlobalTheory.Unfold.tg_of_base_point D X Y u u' F F' w hZ hG t hpt
     obtain ⟨y, hy, hyr⟩ := GlobalTheory.T.localData_of_term_lattice_and_orbits D X Y u u' F F' w hZ hG (zOf Y) Fm.FP hB hRG t Λ hΛ
     have hyr' : ∀ p a, OverOrb Fm t p a ↔ Formalism.MainNotions.S.LocNG.Datum.Rel a (y p) := fun p a => hyr p a
     refine ⟨Λ, y, hΛ, hy, ⟨fun p => ?_, ?_⟩, hyr'⟩
@@ -127,7 +129,7 @@ theorem rows_mass_genus : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : 
     intro κ t ht
     show Formalism.L2.SG.TermOp.wt (Classical.choose (hKmem κ.1 κ.2)) ^ 2 = _
     rw [hkey_wt _ _ ((Classical.choose_spec (hKmem κ.1 κ.2)).trans ht.symm)]
-  have hsum := GlobalTheory.T.unfolding_genus_weights_sum_to_mass D X Y u u' F F' w hZ hG (zOf Y) Fm.FP hB hRG TS hLC t0 Λ y dd ht0 hΛ hy hgen K rfl ω hω
+  have hsum := _root_.GlobalTheory.Unfold.SumK.weights_add_up_to_mass D X Y u u' F F' w hZ hG (zOf Y) Fm.FP hB hRG TS hLC t0 Λ y dd ht0 hΛ hy hgen K rfl ω hω
   rw [← hsum]
   have hsel : ∀ x : {x : Cl × NuC D // Fm.dat x.1 x.2 = some d},
       ∃ t ∈ TS, cls t = x.1.1 ∧ ptPN t = toPts w ∧ nmlOf Y u u' t = x.1.2 :=

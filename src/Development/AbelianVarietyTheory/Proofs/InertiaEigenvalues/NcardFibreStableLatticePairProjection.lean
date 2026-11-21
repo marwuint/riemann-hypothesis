@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComapInlMemStLat
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardStableLatticesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardStableLattices
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 
 noncomputable section
 
@@ -61,7 +62,7 @@ theorem ncard_fibre_latProj (O E A₁ A₂ : Type) [CommRing O] [IsDomain O] [Is
         (Nat.card (IsLocalRing.ResidueField O) : ℚ) ^
           val O (resultant (LinearMap.mulLeft E g₁).charpoly (LinearMap.mulLeft E g₂).charpoly) := by
   intro hR y
-  have key := GlobalTheory.T.card_stable_lattices_alt O E A₁ A₂ g₁ g₂ hR y.1.1 y.2.1 y.1.2.1 y.2.2.1 y.1.2.2 y.2.2.2
+  have key := _root_.GlobalTheory.StableLatCount.card_stable_lattices O E A₁ A₂ g₁ g₂ hR y.1.1 y.2.1 y.1.2.1 y.2.2.1 y.1.2.2 y.2.2.2
   let e : ↥(latProj O E g₁ g₂ ⁻¹' {y}) ≃
       {M : Submodule O (A₁ × A₂) // (∀ z ∈ M, (g₁, g₂) * z ∈ M) ∧
         M.comap (LinearMap.inl O A₁ A₂) = y.1.1 ∧ M.map (LinearMap.snd O A₁ A₂) = y.2.1} :=

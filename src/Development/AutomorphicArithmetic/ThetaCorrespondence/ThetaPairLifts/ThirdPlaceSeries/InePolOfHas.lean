@@ -1,5 +1,5 @@
 import Development.DiscreteGroups.GlobalIrreducibility.RegularLocalOfDepthZero
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SglobDzBigDef
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RecUnit
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
@@ -46,7 +46,7 @@ theorem inePol_eq_liftPoly_of_has (hBZ : GlobalTheory.Published.BernsteinZelevin
     (hf : Has (sysOf L h5 hA) (π.π.comp (Matrix.GeneralLinearGroup.map i.toRingHom)) f) :
     (rc (cls π.toIrrRep)).inePol t = TameGen.liftPoly L.teich f := by
   have hi' := GlobalTheory.TameRecord.continuous_symm w i hi
-  obtain ⟨s, d, σ, hs⟩ := GlobalTheory.T.exists_cuspidalSupport_irreducibleSmoothGL hBZ hGL _ n π
+  obtain ⟨s, d, σ, hs⟩ := _root_.GlobalTheory.CuspSupportExist.main hBZ hGL _ n π
   have h1 := hrc.recSupp n s π d σ hs (ineIncl h ⟨t, ht⟩)
   obtain ⟨-, hc, e, U, T, hT⟩ := hs
   obtain ⟨φ⟩ := GlobalTheory.IndField.multiProd_comp_glMap i.symm hi' hi

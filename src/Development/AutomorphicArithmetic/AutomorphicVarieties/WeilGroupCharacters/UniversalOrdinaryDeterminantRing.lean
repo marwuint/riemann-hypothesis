@@ -272,8 +272,6 @@ def E0gens : Set (MonoidAlgebra B.B F.G₀) :=
 
 def GroupAlgebraKernelIdeal : TwoSidedIdeal (MonoidAlgebra B.B F.G₀) := closureIdeal (maximalIdeal B.B) B.E0gens
 
-abbrev E0 : Type := B.GroupAlgebraKernelIdeal.ringCon.Quotient
-
 abbrev E0kap (q : PrimeSpectrum B.B) : Type :=
   (TwoSidedIdeal.span (MonoidAlgebra.mapRingHom F.G₀ (B.toKap q) '' B.GroupAlgebraKernelIdeal)).ringCon.Quotient
 
@@ -285,20 +283,12 @@ def P1core : Prop :=
   ∀ (x : Point r) (f : B.B →ₐ[O] x.A), x.NiceI → B.IsPt x f → J ≤ RingHom.ker f →
     ∀ q : PrimeSpectrum B.B, q.asIdeal ≤ RingHom.ker f → J ≤ q.asIdeal
 
-def P2core : Prop :=
-  ∀ (x : Point r) (f : B.B →ₐ[O] x.A), x.NiceE → B.IsPt x f →
-    (∃ q₁ : PrimeSpectrum B.B, B.IsStable q₁ ∧ J ≤ q₁.asIdeal ∧ q₁.asIdeal ≤ RingHom.ker f) →
-    ∀ q : PrimeSpectrum B.B, q.asIdeal ≤ RingHom.ker f → B.IsStable q ∨ B.IsThick q → J ≤ q.asIdeal
-
 def P3core : Prop :=
   ∀ (h : ℕ) (x : Fin (h + 1) → Point r) (f : ∀ i, B.B →ₐ[O] (x i).A) (e : Fin h → PrimeSpectrum B.B),
     (∀ i, (x i).NiceE) → (∀ i, B.IsPt (x i) (f i)) →
     (∀ i, B.IsThick (e i) ∧ (e i).asIdeal ≤ RingHom.ker (f i.castSucc) ∧ (e i).asIdeal ≤ RingHom.ker (f i.succ)) →
     (∃ q₁ : PrimeSpectrum B.B, B.IsStable q₁ ∧ J ≤ q₁.asIdeal ∧ q₁.asIdeal ≤ RingHom.ker (f 0)) →
     ∀ q : PrimeSpectrum B.B, q.asIdeal ≤ RingHom.ker (f (Fin.last h)) → B.IsStable q ∨ B.IsThick q → J ≤ q.asIdeal
-
-theorem P3core.p2 {B : UniversalOrdinaryDeterminantRing r} {J : Ideal B.B} (H : B.P3core J) : B.P2core J := fun x f hx hf h₁ q hq hs =>
-  H 0 (fun _ => x) (fun _ => f) Fin.elim0 (fun _ => hx) (fun _ => hf) (fun i => i.elim0) h₁ q hq hs
 
 end UniversalOrdinaryDeterminantRing
 

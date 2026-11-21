@@ -2,7 +2,8 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviIntegralFacts
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleOfFixedLine
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIrreducibleSubquotient
+import Development.AbelianVarietyTheory.Definitions.Foundations.OrderedConst
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NontrivialOfIrreducible
 
 noncomputable section
 

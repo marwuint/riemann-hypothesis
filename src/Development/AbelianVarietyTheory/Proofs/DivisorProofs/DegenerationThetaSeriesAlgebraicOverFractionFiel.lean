@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsNumDHomDegenerationValuesFieldExtension
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIntegralDegenerationValues
@@ -8,9 +8,11 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusTorsionPo
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HasSumOfAdicSumUnitBallExtension
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomTransport
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.UniformizationLawsAndExpansionStatements
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSeriesTermsTorsionPointFiniteAdicCombinatioStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdicSumFieldOfCoeffTendstoZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSeriesTermsRescaleByGeneratorMultipleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSeriesTermsTorsionPointFiniteAdicCombinatio
+import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdicSumFieldOfCoeffTendstoZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSeriesTermsRescaleByGeneratorMultiple
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -52,14 +54,14 @@ theorem theta_series_algebraic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
     (((GlobalTheory.Ex.GtValues.points_correspond R D.toPre D.psi_even D.tau_bimult (Kb R) N₀ ν₀).2.2.2.2 (m ^ 2)).1 (p i)).exists
   choose q₀ hq₀ using hq₀
   have hv : ∀ i, ∃ v, GlobalTheory.UT.SumF (maximalIdeal R) (Kb R) (N₀.txT m (q₀ i)) v := fun i => by
-    obtain ⟨Jx, _, g, c, hc, hfin⟩ := GlobalTheory.T.thetaSeriesTerms_torsionPoint_finite_adic_combination R hB D N₀ ν₀ m hm hu (p i) (q₀ i) (hq₀ i)
-    obtain ⟨s, hs⟩ := GlobalTheory.T.exists_adic_sum_field_of_coeff_tendsto_zero R hAC (Kb R) Jx g N₀.X c hfin
+    obtain ⟨Jx, _, g, c, hc, hfin⟩ := _root_.GlobalTheory.ThetaTermAdic.terms R hB D N₀ ν₀ m hm hu (p i) (q₀ i) (hq₀ i)
+    obtain ⟨s, hs⟩ := _root_.GlobalTheory.Mum.exists_sumF_of_coeff R hAC (Kb R) Jx g N₀.X c hfin
     refine ⟨s, ?_⟩
     rwa [show N₀.txT m (q₀ i) = _ from funext hc]
   choose v hv using hv
   refine ⟨v, fun C _ _ _ _ _ hC em N nu p₁ q hp hq => ?_⟩
   obtain ⟨r, hr⟩ := ν₀.th_gen nu.th
-  obtain ⟨N', ν', e, hth, htx⟩ := GlobalTheory.T.thetaSeries_terms_rescale_by_generator_multiple R D.toPre D.psi_even D.tau_bimult C N nu ν₀.th r hr ν₀.th_gen
+  obtain ⟨N', ν', e, hth, htx⟩ := _root_.GlobalTheory.Mum.Rescale.txT_rescale R D.toPre D.psi_even D.tau_bimult C N nu ν₀.th r hr ν₀.th_gen
   obtain ⟨I, hlam, -, hI⟩ := GlobalTheory.GaugeHom.exists_hom R D.toPre (Kb R) C em.toRingHom
     (RingHom.ext fun x => em.commutes x) N₀ N' ν₀ ν' hth
   have hq' : ∀ i, ∃ q' : N'.QT (m ^ 2), ν'.QPt (p₁ i) q' := fun i =>
@@ -81,7 +83,7 @@ theorem theta_series_algebraic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
     have hz : ∀ j, nu.th.f j = 0 := fun j => by rw [hr j]; simp [scal]
     obtain ⟨r', hr'⟩ := nu.th_gen ν₀.th
     have hz₀ : ∀ j, ν₀.th.f j = 0 := fun j => by rw [hr' j, hz j, mul_zero]
-    obtain ⟨N'', ν'', e'', -, htx''⟩ := GlobalTheory.T.thetaSeries_terms_rescale_by_generator_multiple R D.toPre D.psi_even D.tau_bimult (Kb R) N₀ ν₀ ν₀.th 0
+    obtain ⟨N'', ν'', e'', -, htx''⟩ := _root_.GlobalTheory.Mum.Rescale.txT_rescale R D.toPre D.psi_even D.tau_bimult (Kb R) N₀ ν₀ ν₀.th 0
       (fun j => by rw [hz₀ j, mul_zero]) ν₀.th_gen
     have h0 : ∀ i, em (v i) = 0 := fun i => by
       obtain ⟨q'', hq''⟩ := (((GlobalTheory.Ex.GtValues.points_correspond R D.toPre D.psi_even D.tau_bimult (Kb R) N'' ν'').2.2.2.2

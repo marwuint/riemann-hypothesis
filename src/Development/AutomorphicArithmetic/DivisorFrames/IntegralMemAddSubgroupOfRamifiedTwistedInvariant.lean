@@ -66,7 +66,7 @@ theorem UpperTheory.integral_mem_addSubgroup_of_ramified_twisted_invariant :
   swap
   · rw [integral_undef hint]; exact M.zero_mem
   have hφ := mem_SB_of_periodic ϖ _ φ hS hP
-  obtain ⟨-, h2, h3, h4⟩ := GlobalTheory.T.zetaIntegralShells_vanish_beyondPeriod_ramified k ϖ hϖ ν e hram hcond n μ φ hφ
+  obtain ⟨-, h2, h3, h4⟩ := _root_.GlobalTheory.ShellVan.shell_lemma k ϖ hϖ ν e hram hcond n μ φ hφ
   haveI : BorelSpace (GL (Fin n) k) := borel_GL
   haveI : μ.IsMulRightInvariant := isMulRightInvariant_of_haar μ
   have hsh : ∀ m : Fin n → ℤ, shell μ ϖ ν z φ m ∈ M := by

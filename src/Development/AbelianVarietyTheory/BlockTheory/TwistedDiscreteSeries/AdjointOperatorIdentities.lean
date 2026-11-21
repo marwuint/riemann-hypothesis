@@ -133,22 +133,4 @@ def PairOperatorStatement : Prop :=
       Vanishing k n M ϖ ∧ OperatorIdentities k n M ϖ (resChar ψ hψ ϖ)) ∧
     AdjointIdentities k n ϖ (resChar ψ hψ ϖ)
 
-section Examples
-
-example {n : Type} (W : Submodule ℂ (Form k n ℂ)) : IsScaledUnitaryOn W 1 1 :=
-  ⟨Set.bijOn_id _, fun _ _ _ _ _ _ => (one_mul _).symm⟩
-
-example {V : Type} [AddCommGroup V] [Module 𝓀[k] V] [Fintype {x : V // x ≠ 0}] :
-    IsUnitStable (k := k) (Finset.univ : Finset {x : V // x ≠ 0}) := fun _ _ _ _ _ => Finset.mem_univ _
-
-example {n : Type} [Fintype n] [Nonempty n] (a : ℂ) : ¬ IsScaledUnitaryOn (k := k) (n := n) ⊤ a 0 := by
-  classical
-  obtain ⟨P⟩ : Nonempty (Pair k n) := inferInstance
-  rintro ⟨h, -⟩
-  obtain ⟨φ, -, hφ⟩ := h.surjOn (show Pi.single P (1 : ℂ) ∈ {φ : Form k n ℂ | φ ∈ (⊤ : Submodule ℂ _) ∧ (Function.support φ).Finite} from
-    ⟨trivial, (Set.finite_singleton P).subset Pi.support_single_subset⟩)
-  simpa using congrFun hφ P
-
-end Examples
-
 end GlobalTheory.IndefiniteRowSideFullHecke.AdjointOperatorIdentities

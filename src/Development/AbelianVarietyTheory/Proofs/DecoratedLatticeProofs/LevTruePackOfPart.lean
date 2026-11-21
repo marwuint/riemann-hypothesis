@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.HeightFunctions.OntoAlong
 import Development.AbelianVarietyTheory.Definitions.Divisors.RowSideOfCompatibleThetaPair
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsTypePlacesOfLevCh
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CornerCoordinateAutomatic
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.EZeroNe
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LevTrue
 
 noncomputable section
 

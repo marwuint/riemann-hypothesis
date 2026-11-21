@@ -120,11 +120,4 @@ theorem exists_basis_norm_eq_succMin :
 
 end Normed
 
-section Quadratic
-
-variable {V : Type*} [AddCommGroup V] [Module ℝ V] {Q : QuadraticForm ℝ V} {L : Submodule ℤ V}
-  {n : ℕ}
-
-end Quadratic
-
 end GlobalTheory

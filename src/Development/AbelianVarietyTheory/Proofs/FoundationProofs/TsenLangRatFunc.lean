@@ -188,8 +188,4 @@ theorem tsenLang_ratFunc :
     rw [hy i, map_zero, hgmap, map_mul, MvPolynomial.eval_C] at h1
     exact (mul_eq_zero.mp h1.symm).resolve_left hb0
 
-example : ∀ (k : Type) [Field k] [IsAlgClosed k] (n r d : ℕ) (f : Fin r → MvPolynomial (Fin n) (RatFunc k)),
-  (∀ i, (f i).IsHomogeneous d) → 0 < d → r * d < n → ∃ x : Fin n → RatFunc k, x ≠ 0 ∧ ∀ i, MvPolynomial.eval x (f i) = 0 :=
-  tsenLang_ratFunc
-
 end GlobalTheory

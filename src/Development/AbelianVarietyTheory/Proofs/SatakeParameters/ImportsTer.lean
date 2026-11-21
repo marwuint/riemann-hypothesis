@@ -39,11 +39,6 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' {E : Type} [Field E] [Numbe
     rw [this]
     exact L.smul_mem a hνx
 
-theorem main {E : Type} [Field E] [NumberField E] {n : ℕ}
-    (L : Submodule (RingOfIntegers E) (Fin n → E))
-    (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (y : Fin n → E) :
-    ∃ ν : RingOfIntegers E, ν ≠ 0 ∧ ν • y ∈ L := exists_ne_zero_smul_mem_of_mem_span' L y (by rw [hL]; exact Submodule.mem_top)
-
 theorem target : ∀ {E : Type} [inst : Field E] [NumberField E] {n : ℕ} (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)), Submodule.span E (↑L : Set (Fin n → E)) = ⊤ → ∀ (y : Fin n → E), ∃ (ν : NumberField.RingOfIntegers E), ν ≠ (0 : NumberField.RingOfIntegers E) ∧ ν • y ∈ L := by
   intro E _ _ n L hL y
   exact exists_ne_zero_smul_mem_of_mem_span' L y (by rw [hL]; exact Submodule.mem_top)

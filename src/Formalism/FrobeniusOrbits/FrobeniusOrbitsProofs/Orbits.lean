@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.FrobeniusOrbits.HostOrbitsPlaces
+import Formalism.FrobeniusOrbits.Statement
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CoprimeTwoPow
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.Galois
 
@@ -10,14 +10,6 @@ noncomputable section
 namespace Formalism.FrobeniusOrbits
 
 namespace Orbits
-
-lemma orderOf_conjugation_eq_two : orderOf c0 = 2 := by
-  unfold c0
-  apply orderOf_eq_prime
-  · ext <;> simp
-  · intro h
-    have := congrArg Prod.fst h
-    simp at this
 
 lemma chD_apply (e : ℕ) (g : GG e) : chD e g = g.1.2 := rfl
 
@@ -93,87 +85,5 @@ lemma dim_bound {E : Type*} [Field E] [Algebra ℚ E] [FiniteDimensional ℚ E]
 end Orbits
 
 open Orbits
-
-theorem hostOrbits : HostOrbits := by
-  unfold HostOrbits
-  intro e φ hφ
-  have hb : φ.1.2 = -1 := by rcases hφ with h | h <;> simp [h, c0]
-  refine ⟨fun τ hτ i => ?_, fun h0 hne => ?_⟩
-  · have hτ2 : τ.1.2 = 1 := by simpa [Psi, chD] using hτ
-    have hm : (φ ^ i * τ).1.2 = (-1) ^ i := by simp [hb, hτ2]
-    have : φ ^ i * τ ∈ Psi e ↔ (φ ^ i * τ).1.2 = 1 := by simp [Psi, chD]
-    rw [this, hm]
-    exact neg_one_pow_eq_one_iff_even (by decide)
-  ·
-    have hpow : ∀ x : HGrp e, x ^ (2 ^ (e + 1)) = 1 := by
-      intro x
-      obtain ⟨u, rfl⟩ := QuotientGroup.mk_surjective x
-      have hc : Fintype.card (ZMod (2 ^ (e + 2)))ˣ = 2 ^ (e + 1) := by
-        rw [ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ Nat.prime_two]
-        simp
-      rw [← QuotientGroup.mk_pow, ← hc, pow_card_eq_one, QuotientGroup.mk_one]
-    obtain ⟨j, -, hj⟩ := (Nat.dvd_prime_pow Nat.prime_two).mp (orderOf_dvd_of_pow_eq_one (hpow φ.2))
-    have hj0 : j ≠ 0 := by
-      rintro rfl
-      exact hne (orderOf_eq_one_iff.mp (by simpa using hj))
-    have hev : Even (orderOf φ.2) := by
-      rw [hj]
-      exact (Nat.even_pow.mpr ⟨even_two, hj0⟩)
-    refine ⟨hev, ?_⟩
-    rw [Prod.orderOf, h0, orderOf_conjugation_eq_two]
-    exact Nat.lcm_eq_right (even_iff_two_dvd.mp hev)
-
-theorem hostOrbitsPlaces : HostOrbitsPlaces := by
-  unfold HostOrbitsPlaces
-  intro e φ hφ τ hτ i
-  have hτ2 : τ.1.2 = 1 := by simpa [Psi, chD] using hτ
-  have hne : (-1 : ℤˣ) ≠ 1 := by decide
-  rcases Nat.even_or_odd i with hi | hi
-  · have hc : φ.1 ^ i = 1 := by
-      rcases hφ with h | h
-      · rw [h, c0]; ext <;> simp [hi.neg_one_pow]
-      · rw [h]; ext <;> simp [hi.neg_one_pow]
-    have hp : placeOf (φ ^ i * τ) = φ ^ i * τ := by
-      unfold placeOf
-      rw [if_pos]
-      simp [Prod.pow_fst, hc, hτ2]
-    rw [hp]
-    refine ⟨by simp, fun _ => by simp [hc], fun _ => by simp [hc, hi]⟩
-  · have hp : placeOf (φ ^ i * τ) = cc e * (φ ^ i * τ) := by
-      unfold placeOf
-      rw [if_neg]
-      rcases hφ with h | h
-      · simp [h, c0, hi.neg_one_pow, hτ2, hne]
-      · simp [h, hi.neg_one_pow, hτ2, hne]
-    rw [hp]
-    refine ⟨by simp [cc], fun h => ?_, fun h => ?_⟩
-    · ext <;> simp [cc, c0, h, hi.neg_one_pow, hτ2]
-    · have hni : ¬ Even i := Nat.not_even_iff_odd.mpr hi
-      ext <;> simp [cc, c0, h, hi.neg_one_pow, hτ2, hni, sg]
-
-theorem hostOrbitCount : HostOrbitCount := by
-  unfold HostOrbitCount
-  intro e φ h0 τ hτ
-  have hpl : ∀ i : ℕ, placeOf (φ ^ i * τ) = (τ.1, φ.2 ^ i * τ.2) := by
-    intro i
-    obtain ⟨h2, h1, -⟩ := hostOrbitsPlaces e φ (Or.inl h0) τ hτ i
-    exact Prod.ext (h1 h0) h2
-  have hr : (Set.range fun i : ℕ => placeOf (φ ^ i * τ)) =
-      (fun x : HGrp e => ((τ.1, x * τ.2) : GG e)) '' Set.range (fun i : ℕ => φ.2 ^ i) := by
-    ext y
-    simp [hpl]
-  rw [hr, Set.ncard_image_of_injective _ (fun x y hxy => by simpa using hxy)]
-  rw [show Set.range (fun i : ℕ => φ.2 ^ i) = (Submonoid.powers φ.2 : Set (HGrp e)) from
-    (Submonoid.coe_powers φ.2).symm, ← Nat.card_coe_set_eq]
-  exact Nat.card_submonoidPowers
-
-theorem hostFiniteOrder : HostFiniteOrder := by
-  unfold HostFiniteOrder
-  intro e q d hqd L _ _ ζ a b h k g hg M hM hne
-  have := dim_bound k g hg M hM hne
-  rwa [Galois.finrank_cmField hqd h] at this
-
-theorem hostOrbitsFin : HostOrbits ∧ HostOrbitsPlaces ∧ HostOrbitCount ∧ HostFiniteOrder :=
-  ⟨hostOrbits, hostOrbitsPlaces, hostOrbitCount, hostFiniteOrder⟩
 
 end Formalism.FrobeniusOrbits

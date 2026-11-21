@@ -33,14 +33,6 @@ def latG (g : GL (Fin n) (Fin𝔸 F ⊗[F] E)) : Submodule (𝓞 E) W :=
 
 def latBase : Submodule (𝓞 E) W := Submodule.span (𝓞 E) {v | ∃ a ∈ 𝔄, ∃ x ∈ L, v = a • x}
 
-omit [NumberField E] [IsCMField E] [IsScalarTower (𝓞 E) E W] in
-
-theorem latBase_le_latG_one : latBase L 𝔄 ≤ latG F fr L 𝔄 1 := by
-  refine Submodule.span_mono ?_
-  rintro v ⟨a, ha, x, hx, rfl⟩
-  refine ⟨a, ha, x, ⟨toFin F fr x, AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩, ?_⟩, rfl⟩
-  simp
-
 def CongrAt (M : ℕ) (g : GL (Fin n) (Fin𝔸 F ⊗[F] E)) (u v : W) : Prop :=
   ∃ y ∈ latAd F fr L 𝔄 g, toFin F fr v - g.1.mulVec (toFin F fr u) = M • y
 

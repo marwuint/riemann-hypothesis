@@ -1,8 +1,10 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.JoinType
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFixedNonzeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusTrivialOnCompactParabolicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicElementBlockFormStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusTrivialOnCompactParabolic
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicElementBlockForm
 
 noncomputable section
 
@@ -81,7 +83,7 @@ theorem fixed_ind₂_twist (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
     fixed (GlobalTheory.SmGL.ind₂ e (GlobalTheory.SmGL.extTensor (twRep ρ χ) (twRep σ ψ))) K ≠ ⊥ := by
   refine fixed_ind₂_ne_bot k e _ K hKo x hx fun p hp => ?_
   obtain ⟨h1, h2⟩ := hfix p hp
-  rw [GlobalTheory.T.modulus_trivial_on_compact_parabolic k a b n e K hKc p hp, Units.val_one, one_smul, extTensor_twRep, h1, h2, Units.val_one, one_smul]
+  rw [_root_.GlobalTheory.CompanionTheory.ModCompactParab.deltaHalf_leviProj_eq_one_of_isCompact k a b n e K hKc p hp, Units.val_one, one_smul, extTensor_twRep, h1, h2, Units.val_one, one_smul]
 
 theorem isSpherical_of_join (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b n : ℕ} (e : Fin a ⊕ Fin b ≃ Fin n) {U V W : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
@@ -116,7 +118,7 @@ theorem levi_of_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : 
     (p : GlobalTheory.SmGL.parab (w.adicCompletion E) (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum h))) (hp : (p : GLw n w) ∈ K) :
     Q ((GlobalTheory.SmGL.leviTwo (w.adicCompletion E) (Fin a) (Fin b)).symm
       (GlobalTheory.SmGL.leviProj (w.adicCompletion E) (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum h)) p)) := by
-  obtain ⟨X, hX⟩ := GlobalTheory.T.parabolic_element_block_form E n a b h w p
+  obtain ⟨X, hX⟩ := _root_.GlobalTheory.CompanionTheory.ParabBlock.parab_eq_blk E n a b h w p
   exact hKQ _ X (hX ▸ hp)
 
 set_option maxHeartbeats 1000000 in

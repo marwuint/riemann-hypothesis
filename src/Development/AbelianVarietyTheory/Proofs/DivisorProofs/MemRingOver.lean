@@ -39,9 +39,4 @@ theorem mem_descMod {K' : IntermediateField X.functionField (Kbar X)} {U : AffOp
     {L : Submodule U.Bp (Fin h → U.Bp)} {a : Fin h → ringOver K' U} :
     a ∈ descMod K' U L ↔ (fun i => (a i : U.Bp)) ∈ L := Iff.rfl
 
-def IsDescended (K' : IntermediateField X.functionField (Kbar X)) (U : AffOp X) {h : ℕ}
-    (L : Submodule U.Bp (Fin h → U.Bp)) : Prop :=
-  Module.Finite (ringOver K' U) (descMod K' U L) ∧ Module.Projective (ringOver K' U) (descMod K' U L) ∧
-    L = Submodule.span U.Bp {x | ∃ a ∈ descMod K' U L, x = fun i => (a i : U.Bp)}
-
 end GlobalTheory.BplusDescent

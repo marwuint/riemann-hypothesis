@@ -189,19 +189,6 @@ theorem normIntegerUnits_surjective : Function.Surjective (normIntegerUnits K L)
   obtain ⟨g, -, rfl⟩ := hh
   exact ⟨g, rfl⟩
 
-theorem map_normUnits_unitFiltrationUnits (n : ℕ) :
-    (unitFiltrationUnits L n).map (normUnits K L) = unitFiltrationUnits K n := by
-  have h : (normUnits K L).comp (unitsIncl L) = (unitsIncl K).comp (normIntegerUnits K L) := by
-    ext u
-    simp [normUnits_unitsIncl]
-  rw [unitFiltrationUnits, unitFiltrationUnits, Subgroup.map_map, h, ← Subgroup.map_map,
-    map_normIntegerUnits_unitFiltration]
-
-theorem unitFiltrationUnits_zero_le_range_normUnits :
-    unitFiltrationUnits K 0 ≤ (normUnits K L).range := by
-  rw [← map_normUnits_unitFiltrationUnits (L := L) 0]
-  exact Subgroup.map_le_range _ _
-
 end Residue
 
 section NormGroup
@@ -265,36 +252,6 @@ def quotientRangeNormUnitsEquiv :
 theorem quotientRangeNormUnitsEquiv_mk (x : Kˣ) :
     quotientRangeNormUnitsEquiv K L (QuotientGroup.mk x) = ordModFinrank K L x :=
   rfl
-
-theorem index_range_normUnits : (normUnits K L).range.index = Module.finrank K L := by
-  rw [Subgroup.index, Nat.card_congr (quotientRangeNormUnitsEquiv K L).toEquiv]
-  exact Nat.card_zmod _
-
-theorem zpowers_mk_uniformizerUnit {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
-    Subgroup.zpowers (QuotientGroup.mk (uniformizerUnit hϖ) : Kˣ ⧸ (normUnits K L).range) = ⊤ := by
-  rw [eq_top_iff]
-  rintro q -
-  induction q using QuotientGroup.induction_on with
-  | H x =>
-    refine ⟨ord (x : K), ?_⟩
-    have hϖ0 : (ϖ : K) ≠ 0 := by exact_mod_cast hϖ.ne_zero
-    simp only
-    rw [← QuotientGroup.mk_zpow, QuotientGroup.eq, mem_range_normUnits_iff, Units.val_mul,
-      Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, coe_uniformizerUnit,
-      ord_mul (inv_ne_zero (zpow_ne_zero _ hϖ0)) x.ne_zero, ← zpow_neg, ord_zpow hϖ0,
-      ord_uniformizer hϖ]
-    simp
-
-theorem orderOf_mk_uniformizerUnit {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
-    orderOf (QuotientGroup.mk (uniformizerUnit hϖ) : Kˣ ⧸ (normUnits K L).range) =
-      Module.finrank K L := by
-  rw [orderOf_eq_card_of_forall_mem_zpowers (fun q ↦ by
-    rw [zpowers_mk_uniformizerUnit hϖ]; exact Subgroup.mem_top q)]
-  exact index_range_normUnits
-
-theorem isCyclic_quotient_range_normUnits : IsCyclic (Kˣ ⧸ (normUnits K L).range) := by
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
-  exact isCyclic_iff_exists_zpowers_eq_top.2 ⟨_, zpowers_mk_uniformizerUnit hϖ⟩
 
 end NormGroup
 

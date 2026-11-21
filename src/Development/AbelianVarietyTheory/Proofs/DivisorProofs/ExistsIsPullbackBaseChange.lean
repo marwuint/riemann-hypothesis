@@ -127,54 +127,6 @@ theorem exists_isPullback_baseChange (y : SpAlg O R ⟶ A)
     exact Category.comp_id _
   · exact (Q.lift_fst _ _ (P2.w.trans (Category.assoc _ _ _).symm)).symm ▸ P2
 
-theorem finrank_eq_of_field {K : Type} [Field K] [IsAlgClosed K] {B : Over (Sp K)} [GrpObj B]
-    (hB : IsAbelianScheme B) {g : ℕ} (hg : SmoothOfRelativeDimension g B.hom) (hN : (N : K) ≠ 0)
-    {S : Type} [CommRing S] [Algebra K S] (y : SpAlg K S ⟶ B)
-    (h : IsPullback y.left (spMap (algebraMap K S)) (mulN B N).left η[B].left) :
-    Module.finrank K S = N ^ (2 * g) := by
-  have := hB.comm
-  have := hB.smooth
-  have he : Etale (mulN B N).left := GrpTangent.etale_mulN B (by
-    simpa using (Ne.isUnit hN).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)
-  have : Algebra.Etale K S := RingHom.etale_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @Etale)).1
-    (MorphismProperty.of_isPullback (P := @Etale) h he))
-  have hy := isUnivTorsion_of_isPullback y h
-  rw [← natCard_algHom_eq_finrank_of_etale K S K,
-    ← UU.TorsionCount.card_torsion_points_unconditional K B g N hB hg hN]
-  let i : SpAlg K K ≅ 𝟙_ (Over (Sp K)) := Over.isoMk (Iso.refl _) (by
-    exact (Category.comp_id _).trans (Cris.spMap_id K).symm)
-  refine Nat.card_eq_of_bijective (fun φ => ⟨i.inv ≫ spOver φ ≫ y, by
-    rw [← MonObj.comp_pow, ← MonObj.comp_pow, hy.1, MonObj.comp_one, MonObj.comp_one]⟩) ⟨fun φ ψ e => ?_, fun x => ?_⟩
-  · exact (hy.2 K (spOver ψ ≫ y) (by rw [← MonObj.comp_pow, hy.1, MonObj.comp_one])).unique
-      ((cancel_epi i.inv).1 (congrArg Subtype.val e)) rfl
-  · obtain ⟨φ, hφ, -⟩ := hy.2 K (i.hom ≫ x.1) (by rw [← MonObj.comp_pow, x.2, MonObj.comp_one])
-    exact ⟨φ, Subtype.ext (by simp only [hφ, Iso.inv_hom_id_assoc])⟩
-
-theorem exists_isUnivTorsion [IsDomain O] (hA : IsAbelianScheme A) {g : ℕ}
-    (hg : SmoothOfRelativeDimension g A.hom) (hN : (N : O) ≠ 0) :
-    ∃ (R : Type) (_ : CommRing R) (_ : Algebra O R) (y : SpAlg O R ⟶ A), Module.Finite O R ∧
-      Module.Projective O R ∧ IsUnivTorsion N y ∧
-      ∀ q : PrimeSpectrum O, Module.rankAtStalk R q = N ^ (2 * g) := by
-  obtain ⟨R, _, _, y, h1, h2, h⟩ := exists_isPullback (N := N) hA
-    (Nat.one_le_iff_ne_zero.2 (by rintro rfl; exact hN Nat.cast_zero))
-  refine ⟨R, inferInstance, inferInstance, y, h1, h2, isUnivTorsion_of_isPullback y h, fun q => ?_⟩
-  let K := AlgebraicClosure (FractionRing O)
-  have hi : Function.Injective (algebraMap O K) :=
-    (algebraMap (FractionRing O) K).injective.comp (IsFractionRing.injective O _)
-  obtain ⟨y', h'⟩ := exists_isPullback_baseChange y h K
-  have hr := finrank_eq_of_field (ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback _ A hA)
-    ((smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback
-      (IsPullback.of_hasPullback A.hom (spMap (algebraMap O K))) hg)
-    (by rw [← map_natCast (algebraMap O K)]; exact (map_ne_zero_iff _ hi).2 hN) y' h'
-  rw [← Module.rankAtStalk_eq_of_le_of_finite_of_flat R
-      (p := PrimeSpectrum.comap (algebraMap O K) ⊥) (q := q) ?_, ← Module.rankAtStalk_baseChange,
-    Module.rankAtStalk_eq_finrank_of_free, hr]
-  · rfl
-  · intro a ha
-    have ha' : algebraMap O K a = 0 := ha
-    rw [(map_eq_zero_iff _ hi).1 ha']
-    exact zero_mem _
-
 end Scheme
 
 namespace IsUnivTorsion
@@ -325,30 +277,5 @@ theorem exists_res {M : ℕ} {S : Type} [CommRing S] [Algebra O S] {x : SpAlg O 
     exact Ideal.Quotient.eq_zero_iff_mem.1 this
 
 end IsUnivTorsion
-
-theorem exists_pDivGroup (p : ℕ) (O : Type) [CommRing O] [IsDomain O] (hp : (p : O) ≠ 0)
-    (A : Over (Sp O)) [GrpObj A] (hA : IsAbelianScheme A) (g : ℕ) (hg : SmoothOfRelativeDimension g A.hom) :
-    ∃ G : PDivGroup p O, G.height = 2 * g ∧ Nonempty (G.TorsionTower A) := by
-  have := hA.comm
-  choose R _ _ y h1 h2 h hr using fun n : ℕ => exists_isUnivTorsion (N := p ^ n) hA hg
-    (by rw [Nat.cast_pow]; exact pow_ne_zero _ hp)
-  choose r r1 r2 r3 using fun n : ℕ => (h n).exists_res (h (n + 1)) (by rw [pow_succ, pow_mul, (h n).1, one_pow])
-  let G : PDivGroup p O :=
-    { height := 2 * g
-      A := R
-      hopf := fun n => (h n).hopfAlgebra
-      cocomm := fun n => (h n).isCocomm
-      finite := h1
-      projective := h2
-      rank_eq := fun n q => (hr n q).trans (pow_mul _ _ _).symm
-      res := r
-      res_surjective := r1
-      ker_res := r2 }
-  exact ⟨G, rfl, ⟨{
-    y := y
-    mul := fun n B _ _ => (h n).mul_y
-    inj := fun n B _ _ _ _ => (h n).inj
-    surj := fun n B _ _ z hz => ((h n).2 B z hz).exists
-    res := r3 }⟩⟩
 
 end GlobalTheory.AbelianPDiv

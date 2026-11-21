@@ -12,7 +12,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PadicIntAddFil
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimePowMulInvPowMemAinfFilLatticeStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAinfCocycleRecursionOfFrobeniusTwistStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSeriesLimitLatStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvIoPiStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvIoPi
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.ExpImage
 
 noncomputable section
@@ -95,7 +95,7 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     · obtain ⟨η, h⟩ := asw (AI.ξ ^ (k + 1)) (q (k + 1))
       exact ⟨η, h, fun h => absurd h (Nat.succ_ne_zero k)⟩
   choose η hη hη0 using hη'
-  obtain ⟨u, hu0, hu⟩ := GlobalTheory.T.exists_inv_io_pi_alt l P AI T
+  obtain ⟨u, hu0, hu⟩ := _root_.GlobalTheory.ExpImage.exists_inv_io_pi l P AI T
   have small := GlobalTheory.T.prime_pow_mul_inv_pow_mem_ainfFilLattice l P AI s hs u hu0 hu M
   obtain ⟨b, hb0, hb⟩ := GlobalTheory.T.exists_series_limit_Lat_alt l P AI M
     (fun k => (l : P.R.BdR) ^ (s * k) * (io AI (β k) * u ^ (k + 1)))

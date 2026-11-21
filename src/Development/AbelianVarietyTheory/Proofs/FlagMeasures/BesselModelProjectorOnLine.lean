@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselFunctionalStandardSideStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormIdentityBesselCoefficientQuotientStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormIdentityBesselCoefficientQuotient
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmoothVectorsDenseInvariantStatement
 
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
@@ -80,7 +80,7 @@ theorem projector_line : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [Inne
   refine ⟨?_, ?_, ?_⟩
   · intro u hu
     obtain ⟨_, _, hmem, heq, _, _⟩ :=
-      GlobalTheory.T.norm_identity_besselCoefficient_quotient k r σ w a μG d z c π μS hStd hSide ν hq u hu u hu v0 hv0 (l v0)
+      _root_.GlobalTheory.SgInf.normIdentity_besselCoef k r σ w a μG d z c π μS hStd hSide ν hq u hu u hu v0 hv0 (l v0)
     set A : Mt k r → Wp := fun x => Afun (psiGen k r z c) π μS σ u v0 (l v0) (Matrix.of x) with hAdef
     set L : Mt k r → Wp := fun x => l (σ (Matrix.of x) u) with hLdef
     set N : ℝ := ‖l v0‖ ^ 2 with hNdef

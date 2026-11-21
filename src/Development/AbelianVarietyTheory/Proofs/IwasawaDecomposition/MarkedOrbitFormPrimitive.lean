@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemilinearPullbackOfMarkedOrbitIndicatorStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemilinearPullbackOfMarkedOrbitIndicator
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntBilinFormDescendAlongSurjectiveStatement
 
 noncomputable section
@@ -18,7 +18,7 @@ theorem eq_one_of_smul_eq_of_orbFun_evalZ_eq_one :
         (OrbMark.orbFun O w0 v).evalZ β = 1 →
         ∀ (k : ℕ) (β' : LinearMap.BilinForm ℤ X), (k : ℤ) • β' = β → k = 1 := by
   intro O _ bar w0 X₀ _ _ v hv hp X _ _ _ β hβ k β' hk
-  obtain ⟨τ, f, -, hf, -, H⟩ := GlobalTheory.T.exists_semilinear_pullback_of_markedOrbitIndicator w0 v β hβ
+  obtain ⟨τ, f, -, hf, -, H⟩ := _root_.GlobalTheory.PolFan.OrbMark.exists_semilinear_pull_of_evalZ_eq_one w0 v β hβ
   have hval : ∀ (x₀ y₀ : X₀), ∃ x y, v x₀ y₀ = β x y := by
     intro x₀ y₀
     obtain ⟨x, hx⟩ := hf (Submodule.Quotient.mk x₀)

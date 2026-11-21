@@ -100,17 +100,6 @@ theorem isOrth_lact {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x0 : Frame X.Ψ r} 
   rw [gram_lact X hγ]
   exact h τ
 
-theorem OmF_lact {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x0 : Frame X.Ψ r) : OmF X (lact γ x0) = OmF X x0 := by
-  ext z
-  simp only [OmF, Set.mem_setOf_eq, cpt_lact, lact_mem_dom_iff X hγ]
-
-theorem densF_lact {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x0 : Frame X.Ψ r) (z : V (nd X)) :
-    densF X (lact γ x0) z = densF X x0 z := by
-  simp only [densF, cpt_lact, dmin_lact X hγ]
-
-theorem muF_lact {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x0 : Frame X.Ψ r) : muF X (lact γ x0) = muF X x0 := by
-  simp only [muF, OmF_lact X hγ, densF_lact X hγ]
-
 theorem lact_cont (γ : GL (Fin r) E) : Continuous (lact (Ψ := X.Ψ) (r := r) γ) := by
   refine continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => ?_
   simp only [lact, mat, Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply]

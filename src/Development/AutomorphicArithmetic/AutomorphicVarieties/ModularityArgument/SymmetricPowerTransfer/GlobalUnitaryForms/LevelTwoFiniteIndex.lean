@@ -11,13 +11,6 @@ section Field
 
 variable {K K' : Type} [Field K] [Field K']
 
-def qmap (f : K →+* K') (a b : K) : QuadraticAlgebra K a b →+* QuadraticAlgebra K' (f a) (f b) where
-  toFun x := ⟨f x.re, f x.im⟩
-  map_one' := by ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
-  map_mul' x y := by ext <;> simp
-  map_zero' := by ext <;> simp
-  map_add' x y := by ext <;> simp
-
 def lmap (f : K →+* K') (Δ : K) : Lsq K Δ →+* Lsq K' (f Δ) where
   toFun x := ⟨f x.re, f x.im⟩
   map_one' := by ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
@@ -248,7 +241,5 @@ structure IsBK (ch : F → ℂ) (B : Base (DX Δ) (DA Δ) V) : Prop where
 end Dat
 
 end Global
-
-example : SigData (K := ℚ) (-1) := ⟨∅, ⊤, ⊤, ⊤, 0, 0, 0, 1, 1, 1⟩
 
 end UpperTheory.V.Z.Sym.Glob

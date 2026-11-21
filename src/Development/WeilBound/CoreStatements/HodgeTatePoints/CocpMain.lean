@@ -5,11 +5,11 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TranslDiffEq
 import Development.WeilBound.CoreStatements.HodgeTatePoints.IsPullbackWhisker
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOneSeriesPFormulaStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaKernelDerivativeVanishesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermJetLiftStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermJetLift
 import Development.WeilBound.CoreStatements.HodgeTatePoints.QamCore
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UnitsMulRelationRearrangeCommRing
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DeltaExpansionRestrictionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PderivZeroOfJetPthPowerDiffStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DeltaExpansionRestriction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PderivZeroOfJetPthPowerDiff
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1 GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj GlobalTheory.CompanionTheory.Ar.Coc
 open scoped CategoryTheory.Obj
@@ -30,7 +30,7 @@ theorem cocycle_p : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     rintro ⟨i, j⟩
     obtain rfl : i = 0 := Subsingleton.elim _ _
     exact hkill j
-  obtain ⟨hI, hN, hCh, hT⟩ := GlobalTheory.T.formal_germ_jet_lift E H hstar X0 t k p x d g (fun m => xkZ t.G x (g.x m))
+  obtain ⟨hI, hN, hCh, hT⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FibreTaylor.fibre_taylor_expansion E H hstar X0 t k p x d g (fun m => xkZ t.G x (g.x m))
     (fun m => xkZ_fst t.G x _) (fun m => xkZ_snd t.G x _)
   obtain ⟨C, hC, hnorm, hB⟩ := GlobalTheory.CompanionTheory.Ar.Coc.Pf.pfold E H hstar X0 t k p x d g w gs hax hpow _ rfl hy0 hyp
   have hL := t.PP.isLB
@@ -62,7 +62,7 @@ theorem cocycle_p : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   have main := PositivityTheory.HtPt.Qam.core_firstOrder X0 t.G k x p hp hN t.PP.L hL _ _ (prZ_fst t.G x p).symm (secZ_pa t.G x _ hy0) C hC hnorm j₀
     (fun c h hc => by
       obtain ⟨F, hF1, -, hF3⟩ := hT _ hU (c (Fin.last p))
-      refine hF3 (GlobalTheory.T.pderiv_zero_of_jet_pth_power_diff k p d F _ hf fun m => ?_)
+      refine hF3 (_root_.GlobalTheory.CompanionTheory.Ar.Coc.pderiv_eq_zero_of_jet_pow_sub k p d F _ hf fun m => ?_)
       obtain ⟨v, hv⟩ := hB j₀ hj₀ m
       refine ⟨v, ?_⟩
       have hr : ⊤ ≤ rQ t.G x p (g.x m) ⁻¹ᵁ (prZ t.G x p ⁻¹ᵁ (pullback.fst t.G.hom x ⁻¹ᵁ t.PP.L.U j₀)) := by
@@ -75,7 +75,7 @@ theorem cocycle_p : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
         exact hU m trivial
       have hr' : ⊤ ≤ rQ t.G x p (g.x m) ⁻¹ᵁ LB.wchart t.PP.L (K := Fin 2) ![_, _] (fun _ => j₀) :=
         hr.trans fun q hq => h hq
-      have h2 := GlobalTheory.T.delta_expansion_restriction X0 t.G k x p hp _ (g.x m) _ (hU m) c _ (v ^ p - psJet m (dSer gs fun i => w i ^ p)) hc hr (by
+      have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Coc.coef_pull X0 t.G k x p hp _ (g.x m) _ (hU m) c _ (v ^ p - psJet m (dSer gs fun i => w i ^ p)) hc hr (by
         rw [← hv hr']
         exact congrArg (fun q => q.hom (C.s fun _ => j₀).val) (Scheme.Hom.map_appLE (rQ t.G x p (g.x m)) hr (homOfLE h).op))
       exact toΓ_inj _ ((hF1 m).symm.trans h2))

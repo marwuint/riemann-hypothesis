@@ -1,6 +1,13 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.FRGood
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.IwahoriPairLeMaximal
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SlotEmbeddingsExistStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorEmbeddingsExist
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.FmTools
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinsumOutOfLe
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LevelFamInf
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousPairProjection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOfIsOpen
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ImportsBisExtra
 
 noncomputable section
 
@@ -25,7 +32,7 @@ theorem levReadOf_holds : LevReadOf := by
   obtain ⟨⟨h1o, -⟩, ⟨h2o, -⟩, hset, -⟩ := hLI E n S d a ha hS hd hPS
   have hTU : ∀ u ∈ (lev₁ S d a).prod (lev₂ S d a), ∀ x, G (x * finH u) = G x := fun u hu x =>
     hT.1 u.1 (Subgroup.mem_prod.1 hu).1 u.2 (Subgroup.mem_prod.1 hu).2 x
-  obtain ⟨e, -, hcp, hcp', he₁, he₂⟩ := GlobalTheory.T.position_embeddings_exist (E := E) a (n - a) hS
+  obtain ⟨e, -, hcp, hcp', he₁, he₂⟩ := _root_.GlobalTheory.CompanionTheory.FinActS.exists_factorEmb (E := E) a (n - a) hS
   have hlev : ∀ (i : Slot S) m, m ∈ Rd.LevOC.C d a i → e i m ∈ (lev₁ S d a).prod (lev₂ S d a) := by
     intro i m hm
     have h : e i m ∈ Rd.LevOC.gSet S d a := by

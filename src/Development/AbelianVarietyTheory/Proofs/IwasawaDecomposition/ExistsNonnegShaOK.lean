@@ -13,7 +13,4 @@ theorem shaOK_shaTrue (B : Pre) : ShaOK B (GaloisStage.shaTrue B.host) := by
   show ((Formalism.GaloisCohomology.shaLen (GaloisStage.lData B.host p) (e : ℤ)).toNat : ℚ) = n
   rw [h, ENat.toNat_natCast]
 
-theorem exists_nonneg_shaOK : ∀ B : Pre, ∃ s : ℕ → ℕ → ℚ, (∀ p e, 0 ≤ s p e) ∧ ShaOK B s :=
-  fun B => ⟨GaloisStage.shaTrue B.host, GaloisStage.shaTrue_nonneg B.host, shaOK_shaTrue B⟩
-
 end GlobalTheory.MemN

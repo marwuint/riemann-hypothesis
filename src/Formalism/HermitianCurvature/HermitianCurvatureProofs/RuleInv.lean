@@ -91,12 +91,8 @@ theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_S_prod {f : Fin r → A
     obtain ⟨i, rfl⟩ := List.mem_ofFn.mp ha
     exact L.inv_S_mem (hf i))
 
-theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_Drbi_Drb : L.Drbi * L.Drb = 1 :=
-  prod_mul_prod_eq_one r L.cbi L.cb L.cbi_cb (fun i j => L.inv_fcomm (L.inv_mem_cbi i) (L.inv_mem_cb j))
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_Drb_Drbi : L.Drb * L.Drbi = 1 :=
   prod_mul_prod_eq_one r L.cb L.cbi L.cb_cbi (fun i j => L.inv_fcomm (L.inv_mem_cb i) (L.inv_mem_cbi j))
-theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_Dri_Dr : L.Dri * L.Dr = 1 :=
-  prod_mul_prod_eq_one r L.ci L.c L.ci_c (fun i j => L.inv_fcomm (L.inv_mem_ci i) (L.inv_mem_c j))
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_Dr_Dri : L.Dr * L.Dri = 1 :=
   prod_mul_prod_eq_one r L.c L.ci L.c_ci (fun i j => L.inv_fcomm (L.inv_mem_c i) (L.inv_mem_ci j))
 

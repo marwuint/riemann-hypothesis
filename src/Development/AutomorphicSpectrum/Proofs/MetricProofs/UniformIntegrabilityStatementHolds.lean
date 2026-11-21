@@ -4,9 +4,11 @@ import ReciprocityTheory.AnalyticForms.LeviForms.TailCut
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.OfListTailLog
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PGreenMassZero
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TailBoundStatementHolds
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceStatementHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedMeasureConvergenceSncStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.WeakConvergenceOffZeroSetStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceStatementHolds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedMeasureConvergenceSnc
+import ReciprocityTheory.AnalyticForms.LeviForms.UnifInt
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.UIObjects
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.WeakConvergenceOffZeroSet
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas
 open scoped ContDiff
 
@@ -45,7 +47,7 @@ theorem unifInt_holds : UnifIntStatement := by
   intro e X _ _ _ _ _ A Θ L s n m W hΘ hΘpos hL hs hsnc hsle L' v Dg hL' hv hvsnc hsvsnc hvle
     th ph phT C₅ C t₀ hsing hreg hC2
   dsimp only
-  have hconv := GlobalTheory.T.convergence_statement_holds A Θ L s m W hΘ hΘpos hL hs hsnc hsle th ph phT C₅ C t₀ hsing hreg hC2
+  have hconv := _root_.GlobalTheory.CompanionTheory.Ar.Giv.convergence_holds A Θ L s m W hΘ hΘpos hL hs hsnc hsle th ph phT C₅ C t₀ hsing hreg hC2
   have hlog1 : ∀ y, 1 ≤ Real.log (rW L s y) := by
     intro y
     have h := rW_ge L s hsle y
@@ -116,10 +118,10 @@ theorem unifInt_holds : UnifIntStatement := by
     simp only [hμeq]
     exact ⟨hint, Filter.Eventually.of_forall fun _ => hint, tendsto_const_nhds⟩
   | succ e =>
-    have hsmall := GlobalTheory.T.mixed_measure_convergence_snc GroundTheory.Heights₂.Heights.AnalyticLimit.UniformIntegrability.full
+    have hsmall := _root_.GlobalTheory.CompanionTheory.Ar.Giv.green_small_uniform GroundTheory.Heights₂.Heights.AnalyticLimit.UniformIntegrability.full
       GlobalTheory.CompanionTheory.Ar.Giv.tailBound_holds A Θ L s m W hΘ hΘpos hL hs hsnc hsle L' v Dg hL' hv hvsnc
       hsvsnc th ph phT C₅ C t₀ hsing hreg
-    exact GlobalTheory.T.weak_convergence_off_zero_set (maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ))
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Giv.tendsto_integral_neg_log_of_green_small (maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ))
       (fun t => maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ))
       (GroundTheory.Heights₂.Heights.AnalyticLimit.secNorm L' v) hμfin hμTfin
       (GroundTheory.Heights₂.Heights.AnalyticLimit.continuous_secNorm A L' v hL' hv) hbd (hnull _)

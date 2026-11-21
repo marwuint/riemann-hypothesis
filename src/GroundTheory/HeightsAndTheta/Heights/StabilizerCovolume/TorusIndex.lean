@@ -42,43 +42,6 @@ def TorusIndex.Statement : Prop :=
 
 namespace Gauss
 
-open Gauss
-
-theorem split (ι σ : Em →+* ℂ) : ∃ t : Em →+* Em, ι.comp t = σ := by
-  have hcc : (ι.comp (cc : Em →+* Em)) ζ = -ι ζ := by
-    rw [RingHom.comp_apply]
-    change ι (cc ζ) = -ι ζ
-    rw [cc_ζ, map_neg]
-  rcases emb_ζ σ with h | h <;> rcases emb_ζ ι with h0 | h0
-  · exact ⟨RingHom.id _, ringHom_ext (by rw [RingHom.comp_id, h, h0])⟩
-  · exact ⟨_, ringHom_ext (by rw [hcc, h, h0, neg_neg])⟩
-  · exact ⟨_, ringHom_ext (by rw [hcc, h, h0])⟩
-  · exact ⟨RingHom.id _, ringHom_ext (by rw [RingHom.comp_id, h, h0])⟩
-
-def isoVec : Fin 2 → Em := fun _ => 1
-
-def isoLine : Submodule (𝓞 Em) (Fin 2 → Em) := Submodule.span (𝓞 Em) {isoVec}
-
-def isoFam : Fin 1 → Fin 2 → Em := fun _ => isoVec
-
-theorem span_isoFam : Submodule.span (𝓞 Em) (Set.range isoFam) = isoLine := by
-  show Submodule.span (𝓞 Em) (Set.range fun _ : Fin 1 => isoVec) = isoLine
-  rw [Set.range_const]
-  rfl
-
-theorem isoFam_nz : IsNzFamily isoLine 1 isoFam := by
-  refine ⟨le_rfl, fun _ => Submodule.subset_span rfl, ?_, ?_⟩
-  · refine linearIndependent_unique_iff.2 ?_
-    intro h
-    have := congrFun h 0
-    simp [isoFam, isoVec] at this
-  · rw [span_isoFam, AddSubgroup.relIndex_self]
-    exact one_ne_zero
-
 end Gauss
-
-example : (∀ σ : Gauss.Em →+* ℂ, ∃ t : Gauss.Em →+* Gauss.Em, Gauss.φ₀.comp t = σ) ∧
-    IsNzFamily Gauss.isoLine 1 Gauss.isoFam :=
-  ⟨Gauss.split Gauss.φ₀, Gauss.isoFam_nz⟩
 
 end GroundTheory.Heights₂.Heights.NineStatements

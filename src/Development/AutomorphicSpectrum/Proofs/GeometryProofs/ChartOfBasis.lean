@@ -39,9 +39,4 @@ theorem germ_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
   obtain ⟨hax, hr⟩ := FBIdAd.fbId E H X0 t hp hs S x0 _ G A _ tg' _ x e ph1 ph2 sy ad hc hfr hfa had
   exact ⟨_, ⟨⟨mkFB G A ph1 ph2 sy ad hax hr, x, e, tg', hc, ht, hb, hfr, htr, hfa⟩⟩⟩
 
-section One
-variable {X Y Z : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
-
-end One
-
 end GlobalTheory.CompanionTheory.Ar.Conj.GermInh

@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WordAppend
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanDecayOperatorApplyMemAdelicSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergDerivArchimedeanLiftTraceFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergDerivArchimedeanWeilRepIntertwineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanCoordsMovedStaySupportedAndRecoveredStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepMovedArchimedeanCoordsPolynomialHeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WordOperatorL2BoundPolynomialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergDerivArchimedeanLiftTraceFormula
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergDerivArchimedeanWeilRepIntertwine
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanCoordsMovedStaySupportedAndRecovered
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepMovedArchimedeanCoordsPolynomialHeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WordOperatorL2BoundPolynomial
 
 noncomputable section
 
@@ -21,8 +21,8 @@ open GlobalTheory.ArchDecay
 theorem GlobalTheory.ArchDecay.word_action_square_integrable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∀ (μ : @Measure (Fin n × Fin d → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∀ p : ℕ, ∃ (C : ℝ) (k : ℕ), ∀ g h (w : List (Op F (Fin n × Fin d))), w.length ≤ p → (∀ o ∈ w, size F o ≤ 1) → ∫⁻ x, ‖word F w (om (g, h) Φ) x‖ₑ ^ 2 ∂μ ≤ ENNReal.ofReal (C * ((ht g : ℝ) * ht h) ^ k) := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ μ hμ p
   have S := IsUWeilPair.isUSplitting hP.weil
-  obtain ⟨T, hT⟩ := GlobalTheory.T.heisenbergDeriv_archimedeanLift_traceFormula F E σ n d X W M B.ψ hP.base.std
-  obtain ⟨C3, k3, hsz⟩ := GlobalTheory.T.weilRep_moved_archimedean_coords_polynomial_height F E σ B n d X W M χX χW om r s r' s' hP
+  obtain ⟨T, hT⟩ := _root_.GlobalTheory.ArchDecay.HeisArch.heisD_liftI F E σ n d X W M B.ψ hP.base.std
+  obtain ⟨C3, k3, hsz⟩ := _root_.GlobalTheory.ArchDecay.movI_size F E σ B n d X W M χX χW om r s r' s' hP
   set c : ℂ := -(2 * Real.pi * Complex.I) with hc
   have hcn : ‖c‖ = 2 * Real.pi := by
     rw [hc, norm_neg, norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs,
@@ -32,7 +32,7 @@ theorem GlobalTheory.ArchDecay.word_action_square_integrable : ∀ (F E : Type) 
     intro h0
     rw [h0, norm_zero] at hcn
     linarith [Real.pi_pos]
-  obtain ⟨C4, hwb⟩ := GlobalTheory.T.word_operator_L2_bound_polynomial F (Fin n × Fin d)
+  obtain ⟨C4, hwb⟩ := _root_.GlobalTheory.ArchDecay.wordR_L2_le F (Fin n × Fin d)
     (T : (Fin n × Fin d → mixedEmbedding.mixedSpace F) →L[ℝ] ((Fin n × Fin d → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ))
     c Φ hΦ μ hμ p
   have hcl : ∀ ζ, ∀ f ∈ schA F (Fin n × Fin d), heisD M B.ψ (liftI M ζ) f ∈ schA F (Fin n × Fin d) := by
@@ -117,10 +117,10 @@ theorem GlobalTheory.ArchDecay.word_action_square_integrable : ∀ (F E : Type) 
     induction zs with
     | nil => rfl
     | cons ζ zs ih =>
-      obtain ⟨hA, hL⟩ := GlobalTheory.T.archimedeanCoords_moved_stay_supported_and_recovered F E σ n d X W M (g, h) ζ
+      obtain ⟨hA, hL⟩ := _root_.GlobalTheory.ArchDecay.liftI_at_movI F E σ n d X W M (g, h) ζ
       show heisD M B.ψ (liftI M ζ) (wordH M B.ψ zs (om (g, h) Φ)) =
         om (g, h) (heisD M B.ψ (liftI M (movI M (g, h) ζ)) (wordH M B.ψ (zs.map (movI M (g, h))) Φ))
-      rw [ih, GlobalTheory.T.heisenbergDeriv_archimedean_weilRep_intertwine F E σ B n d X W M χX χW om r s r' s' hP (g, h) _ hA _ (hHcl _ _ hΦ), hL]
+      rw [ih, _root_.GlobalTheory.ArchDecay.HeisWeil.heisD_weil F E σ B n d X W M χX χW om r s r' s' hP (g, h) _ hA _ (hHcl _ _ hΦ), hL]
   obtain ⟨a, ha, e⟩ := c1 w
   have ha' : ‖a‖ₑ ≤ 1 := by
     rw [← ofReal_norm_eq_enorm]

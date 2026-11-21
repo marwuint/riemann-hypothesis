@@ -153,12 +153,6 @@ theorem nonempty_choices {φ : Frame} (H : HostRaw φ) : Nonempty (Choices φ H)
       second_set_no_relation := by simp [NoRel]
       CT2 := 0 }⟩
 
-structure PairAt (T : HType) (X : ℝ) (q d : ℕ) : Prop where
-  hyp : HostHyp q d
-  log_q : T.z X / 2 < Real.log q ∧ Real.log q ≤ T.z X
-  log_d : T.z' X / 2 < Real.log d ∧ Real.log d ≤ T.z' X
-  split : ∀ p : ℕ, p.Prime → p ≠ 2 → (p : ℝ) ≤ T.z X → jacobiSym (-(d : ℤ)) p = 1
-
 end HostParam.Seam
 
 end

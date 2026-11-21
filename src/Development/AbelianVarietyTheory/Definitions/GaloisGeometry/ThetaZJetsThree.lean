@@ -65,8 +65,4 @@ theorem locNorm (H : LatAt a₀ b₀ c₀ dK ha hdK lam hlam h Λ θ p ι) : Loc
 
 end LatAt
 
-example : CmOK 1 1 2 7 := ⟨by norm_num, by decide, by norm_num, by norm_num⟩
-
-example : CmOK 1 1 6 23 ∧ 23 % 8 = 7 ∧ 23 % 3 = 2 := ⟨⟨by norm_num, by decide, by norm_num, by norm_num⟩, by norm_num, by norm_num⟩
-
 end GlobalTheory.ThLoc

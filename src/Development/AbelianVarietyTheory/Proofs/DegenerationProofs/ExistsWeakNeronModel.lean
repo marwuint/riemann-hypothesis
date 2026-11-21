@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SmoothFlatAlgebraFiniteCoverDecompStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSchemeModelOfAffineSmoothChartStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCoverModelIrreducibleSpecialFibreStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SmoothFlatAlgebraFiniteCoverDecomp
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSchemeModelOfAffineSmoothChart
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCoverModelIrreducibleSpecialFibre
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -264,16 +264,16 @@ theorem exists_weakNeron : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscret
   have h₁ := fun i => by
     haveI := (hB i).1
     haveI := (hB i).2.1
-    exact GlobalTheory.T.smooth_flat_algebra_finite_cover_decomp R K π hπ hperf (B i) (hs i)
+    exact _root_.GlobalTheory.SS.Smoothening.smoothening R K π hπ hperf (B i) (hs i)
   choose n C instR instA φ hC hlift using h₁
-  have h₂ := fun i k => GlobalTheory.T.exists_scheme_model_of_affine_smooth_chart R K A hsm inferInstance inferInstance (C i k) (hC i k).1
+  have h₂ := fun i k => _root_.GlobalTheory.ChartModel.exists_model_of_chart R K A hsm inferInstance inferInstance (C i k) (hC i k).1
     (spMap (Algebra.TensorProduct.map (AlgHom.id K K) (φ i k)).toRingHom ≫ u i)
     (by haveI := (hC i k).2; haveI := (hB i).2.2.1; infer_instance)
     (by
       rw [Category.assoc, (hB i).2.2.2, sp_comp]
       exact congrArg spMap (AlgHom.comp_algebraMap (Algebra.TensorProduct.map (AlgHom.id K K) (φ i k))))
   choose M g hg₁ hg₂ hg₃ hg₄ using h₂
-  choose p N q hN hcov using fun i k => GlobalTheory.T.exists_cover_model_irreducible_specialFibre R K A (M i k)
+  choose p N q hN hcov using fun i k => _root_.GlobalTheory.SS.IrrSplit.exists_cover_irr R K A (M i k)
   let e := Fintype.equivFin (Σ (i : Fin m) (k : Fin (n i)), Fin (p i k))
   refine ⟨_, fun t => N (e.symm t).1 (e.symm t).2.1 (e.symm t).2.2, fun t => (hN _ _ _).1, ?_⟩
   intro V L _ _ _ _ _ _ _ hmax a ha

@@ -473,12 +473,4 @@ def frobPeriod (l : ℕ) {e : ℕ} (c : ZMod e) : ℕ := Function.minimalPeriod 
 def maxPeriod (l : ℕ) {e : ℕ} (T : Finset (ZMod e)) : ℕ :=
   (T ×ˢ T).sup fun p => frobPeriod l (p.1 - p.2)
 
-example : frobPeriod 3 (1 : ZMod 8) = 2 :=
-  Function.minimalPeriod_eq_prime (p := 2) (by decide) (by decide)
-
-example : ringAct (TameGal.inertia (rootsOfUnity.mkOfPowEq (-1 : ℚ_[3]) (n := 2) (by norm_num)) :
-    TameGal ℚ_[3] 3 2 1) (fun _ => X) 0 = -X := by
-  rw [ringAct_X]
-  simp
-
 end GlobalTheory.BK

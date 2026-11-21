@@ -129,11 +129,6 @@ theorem theta_le_msup_of_setC {large₂ : SizeData₂ D} (X : PJ D B P j) (S : S
   obtain ⟨c0, -, -, -, -, -, -, -, -, -, -, -, -, c13, c14, c15, -, -, c18, -⟩ := hC
   exact theta_le_msup X S h2 c15 c14.1 (c0.trans c13) c18
 
-theorem theta_le_msup_of_hyp {large₂ : SizeData₂ D} (X : PJ D B P j) {H : KHyp} {C2 A2 CR Bx CT : ℝ} (S : Scal B)
-    {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
-    (h : Hyp large₂ X H C2 A2 CR Bx CT S ka wL wF T nP nW h0 nus) : X.Theta S ka wL wF T ≤ X.Msup ka :=
-  theta_le_msup_of_setC X S h.2.2.2.2.1 h.2.1
-
 end Formalism.MainNotions.Gaps.T0
 
 end

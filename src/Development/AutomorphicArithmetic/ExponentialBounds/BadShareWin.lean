@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LogDivSqrtLeFourExp
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BadRowsShareBoundTwoPrimesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BadRowsShareBoundTwoPrimes
+import Development.AbelianVarietyTheory.Definitions.Foundations.StandardFiveNontrivial
 import Formalism.SharpRestriction.ElevenLe
 import Formalism.LocalRingCardinality.DataParams
 
@@ -111,7 +112,7 @@ theorem badShare_win (eps C : ℝ) (heps : 0 < eps) (heps1 : eps ≤ 1) : ∃ x�
     rw [e]; linarith
   obtain ⟨hN5, -, -⟩ := hx₀ x ((le_max_left _ _).trans hx) g₁ f m N _ hg1 hf hf' hm0 hm hN hN' le_rfl
   have hN5' : 100000 ≤ N := by exact_mod_cast hN5
-  have key := GlobalTheory.T.badRows_share_bound_two_primes g₁ g₂ N m q d ι₁ ι₂ hN5' hp1 hp2 L₁ L₂ τ₁ τ₂ ht1 ht2 ch₁ ch₂ M ρ 0 le_rfl (by norm_num) hC
+  have key := _root_.GlobalTheory.BadShare.ShareThm.bad_share g₁ g₂ N m q d ι₁ ι₂ hN5' hp1 hp2 L₁ L₂ τ₁ τ₂ ht1 ht2 ch₁ ch₂ M ρ 0 le_rfl (by norm_num) hC
   rw [h1, h2] at key
   refine ⟨_, ?_, ?_, key⟩
   · have := le_max_left 0 (badBound g₁ f m N ((min q d : ℕ) : ℝ))

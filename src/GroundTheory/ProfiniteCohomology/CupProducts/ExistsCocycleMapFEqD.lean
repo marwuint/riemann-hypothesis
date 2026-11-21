@@ -98,44 +98,6 @@ instance isDiscreteRep_map_tensorRight_X₃ : IsDiscreteRep (S.map (tensorRight 
 
 variable {B}
 
-theorem δ_cup_of_shortExact_tensorRight (hS : S.ShortExact)
-    (hSB : (S.map (tensorRight B)).ShortExact) {p p' q n n' : ℕ} (hp : p + 1 = p')
-    (hn : n + 1 = n') (h : p + q = n) (h' : p' + q = n') (x : cohomology S.X₃ p)
-    (y : cohomology B q) :
-    δ hSB n n' hn (cup h x y) = cup h' (δ hS p p' hp x) y := by
-  subst hp hn
-  obtain ⟨x₃, rfl⟩ := cohomologyπ_surjective S.X₃ p x
-  obtain ⟨y, rfl⟩ := cohomologyπ_surjective B q y
-  have := hS.epi_g
-  obtain ⟨x₂, hx₂⟩ := (ModuleCat.epi_iff_surjective ((cochainsMap S.g).f p)).1 inferInstance
-    (cocycleι S.X₃ p x₃)
-  obtain ⟨x₁, hx₁⟩ := exists_cocycle_map_f_eq_d hS (p + 1) x₃ x₂ hx₂
-  have hx₂' : (fun σ => S.g.hom (cochainOf S.X₂ x₂ σ)) = cochainOf S.X₃ (cocycleι S.X₃ p x₃) :=
-    congrArg (cochainOf S.X₃) hx₂
-  have hx₁' : (fun σ => S.f.hom (cochainOf S.X₁ (cocycleι S.X₁ (p + 1) x₁) σ)) =
-      (inhomogeneousCochains.d S.X₂ p).hom (cochainOf S.X₂ x₂) :=
-    (congrArg (cochainOf S.X₂) hx₁).trans (cochainOf_d x₂)
-  rw [δ_cohomologyπ_of_lift hS rfl x₃ x₂ hx₂ x₁ hx₁, cup_cohomologyπ, cup_cohomologyπ]
-  refine δ_cohomologyπ_of_lift hSB rfl (cupCocycles h x₃ y)
-    (cupLocallyConstant h x₂ (cocycleι B q y)) ?_ (cupCocycles h' x₁ y) ?_
-  · change (cochainsMap (S.g ▷ B)).f n (cupLocallyConstant h x₂ (cocycleι B q y)) =
-      cocycleι (S.X₃ ⊗ B) n (cupCocycles h x₃ y)
-    apply cochainOf_injective
-    rw [cochainOf_cochainsMap_f, cocycleι_cupCocycles, cochainOf_cupLocallyConstant,
-      cochainOf_cupLocallyConstant, ← hx₂']
-    funext σ
-    rw [← tensorHom_id, tensorHom_cupCochain]
-    rfl
-  · change (cochainsMap (S.f ▷ B)).f (n + 1) (cocycleι (S.X₁ ⊗ B) (n + 1) (cupCocycles h' x₁ y)) =
-      (cochainsComplex (S.X₂ ⊗ B)).d n (n + 1) (cupLocallyConstant h x₂ (cocycleι B q y))
-    apply cochainOf_injective
-    rw [cochainOf_cochainsMap_f, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_d,
-      cochainOf_cupLocallyConstant, d_cupCochain, d_cocycleι, cupCochain_zero_right, smul_zero,
-      add_zero, ← hx₁']
-    funext σ
-    rw [← tensorHom_id, tensorHom_cupCochain]
-    rfl
-
 end TensorRight
 
 section TensorLeft
@@ -153,46 +115,6 @@ instance isDiscreteRep_map_tensorLeft_X₃ : IsDiscreteRep (S.map (tensorLeft B)
   isDiscreteRep_tensor B S.X₃
 
 variable {B}
-
-theorem δ_cup_of_shortExact_tensorLeft (hS : S.ShortExact)
-    (hSB : (S.map (tensorLeft B)).ShortExact) {p p' q n n' : ℕ} (hp : p + 1 = p')
-    (hn : n + 1 = n') (h : q + p = n) (h' : q + p' = n') (y : cohomology B q)
-    (x : cohomology S.X₃ p) :
-    δ hSB n n' hn (cup h y x) = (-1 : k) ^ q • cup h' y (δ hS p p' hp x) := by
-  subst hp hn
-  obtain ⟨x₃, rfl⟩ := cohomologyπ_surjective S.X₃ p x
-  obtain ⟨y, rfl⟩ := cohomologyπ_surjective B q y
-  have := hS.epi_g
-  obtain ⟨x₂, hx₂⟩ := (ModuleCat.epi_iff_surjective ((cochainsMap S.g).f p)).1 inferInstance
-    (cocycleι S.X₃ p x₃)
-  obtain ⟨x₁, hx₁⟩ := exists_cocycle_map_f_eq_d hS (p + 1) x₃ x₂ hx₂
-  have hx₂' : (fun σ => S.g.hom (cochainOf S.X₂ x₂ σ)) = cochainOf S.X₃ (cocycleι S.X₃ p x₃) :=
-    congrArg (cochainOf S.X₃) hx₂
-  have hx₁' : (fun σ => S.f.hom (cochainOf S.X₁ (cocycleι S.X₁ (p + 1) x₁) σ)) =
-      (inhomogeneousCochains.d S.X₂ p).hom (cochainOf S.X₂ x₂) :=
-    (congrArg (cochainOf S.X₂) hx₁).trans (cochainOf_d x₂)
-  rw [δ_cohomologyπ_of_lift hS rfl x₃ x₂ hx₂ x₁ hx₁, cup_cohomologyπ, cup_cohomologyπ,
-    ← map_smul]
-  refine δ_cohomologyπ_of_lift hSB rfl (cupCocycles h y x₃)
-    (cupLocallyConstant h (cocycleι B q y) x₂) ?_ ((-1 : k) ^ q • cupCocycles h' y x₁) ?_
-  · change (cochainsMap (B ◁ S.g)).f n (cupLocallyConstant h (cocycleι B q y) x₂) =
-      cocycleι (B ⊗ S.X₃) n (cupCocycles h y x₃)
-    apply cochainOf_injective
-    rw [cochainOf_cochainsMap_f, cocycleι_cupCocycles, cochainOf_cupLocallyConstant,
-      cochainOf_cupLocallyConstant, ← hx₂']
-    funext σ
-    rw [← id_tensorHom, tensorHom_cupCochain]
-    rfl
-  · change (cochainsMap (B ◁ S.f)).f (n + 1)
-        (cocycleι (B ⊗ S.X₁) (n + 1) ((-1 : k) ^ q • cupCocycles h' y x₁)) =
-      (cochainsComplex (B ⊗ S.X₂)).d n (n + 1) (cupLocallyConstant h (cocycleι B q y) x₂)
-    apply cochainOf_injective
-    rw [cochainOf_cochainsMap_f, map_smul, cochainOf_smul, cocycleι_cupCocycles,
-      cochainOf_cupLocallyConstant, cochainOf_d, cochainOf_cupLocallyConstant, d_cupCochain,
-      d_cocycleι, cupCochain_zero_left, zero_add, ← hx₁']
-    funext σ
-    rw [Pi.smul_apply, Pi.smul_apply, map_smul, ← id_tensorHom, tensorHom_cupCochain]
-    rfl
 
 end TensorLeft
 

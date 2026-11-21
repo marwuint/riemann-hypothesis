@@ -44,7 +44,7 @@ theorem fourQ : FourQ k := by
   letI : MeasurableSpace k := borel k
   haveI : BorelSpace k := ⟨rfl⟩
   obtain ⟨ψ, hψ⟩ := GlobalTheory.SplitWeil.exists_hasConductor_one (k := k)
-  have hψc : Continuous ψ := (GlobalTheory.T.addChar_conductor_integers_continuous_ne_one k ψ hψ).1
+  have hψc : Continuous ψ := (_root_.GlobalTheory.hasConductor_one_continuous_ne_one k ψ hψ).1
   let ν : Measure k := Measure.addHaar
   obtain ⟨C, hC⟩ := Submodule.exists_isCompl (supportedIn (Set.univ : Set (Sp k n)))
   let Φ : (Sp k n → ℂ) →ₗ[ℂ] (Sp k n → ℂ) := LinearMap.ofIsCompl hC (phiS ψ ν h hψc) 0

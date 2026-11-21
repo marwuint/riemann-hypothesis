@@ -111,16 +111,6 @@ theorem eq_ideleMap (hφc : ∀ v, Continuous (φ v)) (hφinfc : ∀ w, Continuo
     (fun v a ↦ by rw [ideleMap_finiteEmbedding, ← hfin v, MonoidHom.comp_apply])
     (fun w a ↦ by rw [ideleMap_infiniteEmbedding, ← hinf w, MonoidHom.comp_apply])
 
-include hφ in
-
-theorem existsUnique_ideleMap (hφc : ∀ v, Continuous (φ v))
-    (hφinfc : ∀ w, Continuous (φinf w)) :
-    ∃! ψ : IdeleGroup K →* G, Continuous ψ ∧ (∀ v, ψ.comp (finiteEmbedding v) = φ v) ∧
-      ∀ w, ψ.comp (infiniteEmbedding w) = φinf w :=
-  ⟨ideleMap φ φinf hφ, ⟨continuous_ideleMap φ φinf hφ hφc hφinfc,
-      ideleMap_comp_finiteEmbedding φ φinf hφ, ideleMap_comp_infiniteEmbedding φ φinf hφ⟩,
-    fun _ hψ ↦ eq_ideleMap φ φinf hφ hφc hφinfc hψ.1 hψ.2.1 hψ.2.2⟩
-
 end IdeleMap
 
 end

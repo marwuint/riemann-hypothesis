@@ -118,7 +118,4 @@ theorem rowAct_X_isWH {R : Type*} [CommRing R] {r n : ℕ} (g : Matrix (Fin r) (
     (isWeightedHomogeneous_X (R := R) (colW r n) (b, v.2)) using 1
   simp [colW]
 
-def rowWO (r n : ℕ) : Option (Fin r × Fin n) → (Fin r → ℕ) :=
-  fun o => Option.elim o 0 (fun v => Pi.single v.1 1)
-
 end Formalism.GradedWeylDivisibility

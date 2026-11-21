@@ -177,10 +177,6 @@ noncomputable def comp (g : Hom G H) (f : Hom F G) : Hom F H :=
 theorem toPowerSeries_comp (g : Hom G H) (f : Hom F G) :
     (g.comp f).toPowerSeries = PowerSeries.subst f.toPowerSeries g.toPowerSeries := rfl
 
-theorem apply_comp (g : Hom G H) (f : Hom F G) {σ : Type*} (x : F.Point σ) :
-    (g.comp f).apply x = g.apply (f.apply x) :=
-  (substPoint_substPoint _ _ _ x).symm
-
 variable (F) in
 
 noncomputable def id : Hom F F :=
@@ -316,11 +312,6 @@ theorem add_comp [H.IsComm] (g₁ g₂ : Hom G H) (f : Hom F G) :
     (g₁ + g₂).comp f = g₁.comp f + g₂.comp f :=
   toPoint_injective (by rw [toPoint_comp, add_apply, toPoint_add]; rfl)
 
-variable (F) in
-
-theorem toPowerSeries_neg_id [F.IsComm] : (-id F).toPowerSeries = inv F :=
-  PowerSeries.X_subst _
-
 end Comm
 
 section Ring
@@ -339,14 +330,6 @@ noncomputable instance : Ring (Hom F F) :=
 
 theorem one_apply {σ : Type*} (x : F.Point σ) : (1 : Hom F F).apply x = x :=
   substPoint_X x _
-
-theorem intCast_apply (n : ℤ) {σ : Type*} (x : F.Point σ) : (n : Hom F F).apply x = n • x := by
-  induction n using Int.induction_on with
-  | zero => rw [Int.cast_zero, zero_apply, zero_zsmul]
-  | succ n ih => rw [Int.cast_add, Int.cast_one, add_apply, ih, one_apply, add_zsmul, one_zsmul]
-  | pred n ih =>
-    rw [Int.cast_sub, Int.cast_one, sub_eq_add_neg, add_apply, neg_apply, ih, one_apply,
-      sub_zsmul, one_zsmul]
 
 end Ring
 

@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftModMaximalSkewStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsotropicGraphDetLowerRowNeZeroFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftModMaximalSkew
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsotropicGraphDetLowerRowNeZeroField
 open scoped Matrix
 
 namespace GlobalTheory
@@ -10,8 +10,8 @@ theorem exists_isotropic_graph_isUnit_lowerRow : ∀ (O : Type) [CommRing O] [Is
     ∀ g : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) O, IsUnit g.det →
       gᵀ * Matrix.fromBlocks 0 J J 0 * g.map c = Matrix.fromBlocks 0 J J 0 →
       ∃ Z : Matrix (Fin n) (Fin n) O, Zᵀ * J + J * Z.map c = 0 ∧ IsUnit (g.toBlocks₂₁ * Z + g.toBlocks₂₂).det := by
-  have hfield := GlobalTheory.T.exists_isotropic_graph_det_ne_zero
-  have hlift := GlobalTheory.T.exists_skew_lift_mod_maximalIdeal
+  have hfield := _root_.GlobalTheory.exists_isotropic_graph_det_lowerRow_ne_zero_field
+  have hlift := _root_.GlobalTheory.lift_mod_maximal_skew
 
   intro O _ _ c hc h2 hx0 n J hJ hJdet g hg hgu
   obtain ⟨x, hx⟩ := hx0

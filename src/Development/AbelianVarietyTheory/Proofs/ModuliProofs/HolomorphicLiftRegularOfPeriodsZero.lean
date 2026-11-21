@@ -7,7 +7,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueUniformisingVectorVerticalTangentStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFibreCoords
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDifferentiableOnVerticalVectorFieldStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDifferentiableOnVerticalVectorField
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLocalDerivationAlongFibreOfSmooth
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.InvariantVectorFieldAbelianVarietyAlgebraic
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LocDerRegularCoeff
@@ -101,7 +101,7 @@ theorem exists_periodic_vector (hu : GoodU u Hm χ) (hp : Smooth p) (hm : IsPull
       ∀ r, s z ⊤ (constFn p ⊤ r) - ptOf V d (u.ex z).left ⊤ (constFn p ⊤ r) = 0 := fun z hz =>
     ⟨ptDer_sub (hs.der z) (ptDer_ptOf hd (u.ex z).left hz), fun r => by
       rw [hs.base z r, ptOf_const hd (u.ex z).left (hq z) hz r, sub_self]⟩
-  obtain ⟨w, hw, hrep⟩ := GlobalTheory.T.exists_differentiableOn_verticalVectorField P₀ u Hm χ hu R x₀ X p m hp hm P₀.g (dom u m V) id
+  obtain ⟨w, hw, hrep⟩ := _root_.GlobalTheory.KS.VertField.exists_differentiableOn_vertical P₀ u Hm χ hu R x₀ X p m hp hm P₀.g (dom u m V) id
     (fun z W f => s z W f - ptOf V d (u.ex z).left W f) hdomV differentiable_id hpt
     (fun W f => ((hs.hol W f).mono fun z hz => hz.2).sub
       (((u.hol (m ⁻¹ᵁ (W ⊓ V)) (d (W ⊓ V) (resG X inf_le_left f))).2).mono fun z hz a ha => ⟨hz.2 ha, hz.1 ha⟩))

@@ -5,9 +5,20 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PIsolatedFibreOp
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PIsolatedPointsCountPrime
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSameOrdersLiftCentre
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetSumMeasurable
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceCutChain
+import Mathlib
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LineInhabitant
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StChartMassCompact
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOffBoundaryBound
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOffGradient
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PHessCCompPluri
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLogLogCutHessDeriv
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFibreBound
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceIdeal
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PartsPiola
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.LogIntegrableOnOfLogIntegrable
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase
+
 set_option maxSynthPendingDepth 1
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.IsolatedPointsCountPrime : GroundTheory.Heights₂.Heights.IsolatedPointsCountPrime.Statement :=
@@ -16,5 +27,3 @@ theorem GroundTheory.Heights₂.Heights.AutoClose.IsolatedPointsCountPrime : Gro
 theorem GroundTheory.Heights₂.Heights.AutoClose.SameOrdersLiftCentre : GroundTheory.Heights₂.Heights.SameOrdersLiftCentre.Statement :=
   @GroundTheory.Heights₂.Heights.SameOrdersLiftCentre.proof GroundTheory.Heights₂.Heights.AutoClose.branchOffHypersurface_holds
 
-theorem GroundTheory.Heights₂.Heights.AutoClose.ConeSliceSheetParam : GroundTheory.Heights₂.Heights.ConeSliceSheetParam.Statement :=
-  @GroundTheory.Heights₂.Heights.ConeSliceSheetParam.proof GroundTheory.Heights₂.Heights.AutoClose.DiscriminantSheetCover

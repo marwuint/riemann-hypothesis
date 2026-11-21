@@ -5,21 +5,6 @@ open Matrix GlobalTheory.KZ
 
 namespace GlobalTheory.BertiniNoether
 
-theorem aeval_mem_valuationSubring {F : Type} [Field F] {L : Type} [Field L] [Algebra F L] {t : L}
-    {V : ValuationSubring F} {W : ValuationSubring L} (h : ∀ a : F, algebraMap F L a ∈ W ↔ a ∈ V)
-    (ht : t ∈ W) (P : Polynomial F) (hP : ∀ i, P.coeff i ∈ V) : Polynomial.aeval t P ∈ W := by
-  rw [Polynomial.aeval_eq_sum_range]
-  refine sum_mem fun i _ => ?_
-  rw [Algebra.smul_def]
-  exact mul_mem ((h _).2 (hP i)) (pow_mem ht i)
-
-theorem eval₂_mem_valuationSubring {F : Type} [Field F] {L : Type} [Field L] [Algebra F L] {t ω : L}
-    {V : ValuationSubring F} {W : ValuationSubring L} (h : ∀ a : F, algebraMap F L a ∈ W ↔ a ∈ V)
-    (ht : t ∈ W) (hω : ω ∈ W) (R : Polynomial (Polynomial F)) (hR : ∀ i j, (R.coeff i).coeff j ∈ V) :
-    R.eval₂ (Polynomial.aeval t).toRingHom ω ∈ W := by
-  rw [Polynomial.eval₂_eq_sum_range]
-  exact sum_mem fun i _ => mul_mem (aeval_mem_valuationSubring h ht _ (hR i)) (pow_mem hω i)
-
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 open Polynomial in

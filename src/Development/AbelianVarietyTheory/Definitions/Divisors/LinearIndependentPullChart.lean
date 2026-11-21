@@ -204,25 +204,6 @@ theorem restr_pullChart (a : ChartPull B' B r) (hq : r ≫ p = q ≫ spMap φ) (
     rw [germ_restr, germ_pullChart, germ_pullChart]
     exact congrArg _ (germ_restr _ _ _ _ _ _).symm
 
-def polarMap (C : ProdChart P B N) (t : P.Sec) (ht : O ≤ nonzeroLocus t) : H0 p N ⊤ →ₗ[k] H0 p B O :=
-  (C.mulEquiv (σ := H0.ofSec p O t) fun y hy i hi => by
-    rw [germ_ofSec, isUnit_ger_iff]; exact ht hy).symm.toLinearMap ∘ₗ restr le_top
-
-variable (p B) in
-
-def polar (hP : P.IsLB) (hB : B.IsLB) (t : P.Sec) (ht : O ≤ nonzeroLocus t) : Submodule k (H0 p B O) :=
-  LinearMap.range (polarMap (tensChart hP hB) t ht)
-
-theorem mem_polar {hP : P.IsLB} {hB : B.IsLB} {t : P.Sec} {ht : O ≤ nonzeroLocus t} {f : H0 p B O} :
-    f ∈ polar p B hP hB t ht ↔
-      ∃ g : H0 p (tens P B) ⊤, restr le_top g = (tensChart hP hB).mul (H0.ofSec p O t) f :=
-  exists_congr fun _ => LinearEquiv.symm_apply_eq _
-
-theorem range_restr_le_polar (hP : P.IsLB) (hB : B.IsLB) (t : P.Sec) (ht : O ≤ nonzeroLocus t) :
-    LinearMap.range (restr (le_top : O ≤ ⊤)) ≤ polar p B hP hB t ht := by
-  rintro _ ⟨f, rfl⟩
-  exact mem_polar.2 ⟨(tensChart hP hB).mul (H0.ofSec p ⊤ t) f, by rw [ProdChart.restr_mul, restr_ofSec]⟩
-
 variable (σ : k →+* ℂ)
 
 def cval : H0 p B O →ₛₗ[σ] (B.ι → CxPts p σ → ℂ) where
@@ -246,25 +227,10 @@ theorem cval_mem (f : H0 p B ⊤) : cval σ f ∈ fibSec p σ B := by
   obtain ⟨s, rfl⟩ := bijective_ofSec_top.2 f
   exact cval_ofSec σ s ▸ secVal_mem s
 
-theorem cval_mem_holSec {D : ℕ} (R : AnRead p σ D) (f : H0 p B ⊤) : cval σ f ∈ R.holSec B := by
-  obtain ⟨s, rfl⟩ := bijective_ofSec_top.2 f
-  exact cval_ofSec σ s ▸ R.secVal_mem_holSec s
-
 variable {σ}
 
 def assocVal : ((tens (tens P B) N).ι → CxPts p σ → ℂ) →ₗ[ℂ] ((tens P (tens B N)).ι → CxPts p σ → ℂ) :=
   LinearMap.funLeft ℂ _ fun c => ((c.1, c.2.1), c.2.2)
-
-theorem assocVal_mem_holSec {D : ℕ} {R : AnRead p σ D} {f : (tens (tens P B) N).ι → CxPts p σ → ℂ}
-    (hf : f ∈ R.holSec _) : assocVal f ∈ R.holSec _ := by
-  have e (c : (tens P (tens B N)).ι) : (tens P (tens B N)).U c = (tens (tens P B) N).U ((c.1, c.2.1), c.2.2) :=
-    (inf_assoc _ _ _).symm
-  refine ⟨⟨fun c c' y h h' => ?_, fun c y h => hf.1.2 _ y (e c ▸ h)⟩, fun c => e c ▸ hf.2 _⟩
-  have g := e c ▸ h
-  have g' := e c' ▸ h'
-  refine (hf.1.1 _ _ y g g').trans (congrArg (· * _) ?_)
-  rw [gv_tens g g', gv_tens h h', gv_tens (mem_ptsIn_inf.1 g).1 (mem_ptsIn_inf.1 g').1,
-    gv_tens (mem_ptsIn_inf.1 h).2 (mem_ptsIn_inf.1 h').2, mul_assoc]
 
 end General
 
@@ -362,11 +328,6 @@ theorem csq_pointHerm (τ : E →+* ℂ) {ι : Type*} [Fintype ι] (c : ι → �
   simp only [← Fintype.sum_prod_type']
   exact Fintype.sum_equiv ⟨fun t => (t.2.2, t.2.1, t.1), fun t => (t.2.2, t.2.1, t.1), fun _ => rfl, fun _ => rfl⟩
     _ _ fun t => by simp only [Equiv.coe_fn_mk]; ring
-
-theorem nrm_pointHerm_sq (τ : E →+* ℂ) (g : H0 q B ⊤) :
-    (pointHerm hf he φ).nrm τ g ^ 2 = ∑ᶠ y, (φ τ).nsq (cval τ g) y := by
-  rw [← cnrm_one, cnrm_sq, csq_pointHerm]
-  simp
 
 end Points
 

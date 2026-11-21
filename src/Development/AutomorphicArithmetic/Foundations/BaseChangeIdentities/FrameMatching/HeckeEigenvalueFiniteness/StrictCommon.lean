@@ -31,12 +31,6 @@ theorem strict_common {E : Type} [Field E] [NumberField E] [IsCMField E] {n : �
   · rw [m1 i, m2]
     rfl
 
-theorem strict_refl {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (P : Pre E n) : Strict P P :=
-  ⟨List.forall₂_same.2 fun _ _ => ⟨rfl, LinearEquiv.refl ℂ _, fun _ _ _ h => h⟩, rfl, fun _ => rfl⟩
-
-theorem strictEqv : StrictEqv := fun _ _ _ _ _ _ P' _ =>
-  ⟨fun h => strict_common (strict_refl P') h, fun h h' => strict_common h (strict_common (strict_refl _) h')⟩
-
 end UpperTheory.HeckeLevelFrameExistence.CF
 
 end

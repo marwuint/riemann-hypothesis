@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValueDoubleUnif
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleUnfoldingStepAtGluedFinitePlace
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedPlaceSourceConstantProofStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedPlaceSourceConstantProof
 
 noncomputable section
 
@@ -70,7 +70,7 @@ theorem vertexExact (D : D7) : VertexExact D := by
   letI : MeasurableSpace k := borel k
   haveI : BorelSpace k := ⟨rfl⟩
   haveI := secondCountable k
-  obtain ⟨e, he, HC⟩ := GlobalTheory.T.splitPlace_lineComponents_contraction D k p ψ χ hIs
+  obtain ⟨e, he, HC⟩ := _root_.GlobalTheory.FinPl.contraction_all D k p ψ χ hIs
   obtain ⟨ν, hν, -⟩ := exists_isUnitVol k
   let ε : 𝓀[k]ˣ := if e = 1 then 1 else -1
   have hεe : (e = 1 ∧ ε = 1) ∨ (e = -1 ∧ ε = -1) := by
@@ -82,7 +82,7 @@ theorem vertexExact (D : D7) : VertexExact D := by
     · exact Or.inl h
     · exact Or.inr h
   intro n n' n'' _ _ _ _ _ _
-  obtain ⟨r₁, e₁, hr₁, HS⟩ := GlobalTheory.T.gluedPlaceSourceConstant_proof D k p n n' q χ hχ
+  obtain ⟨r₁, e₁, hr₁, HS⟩ := _root_.GlobalTheory.FinPl.sourceExact D k p n n' q χ hχ
   refine ⟨r₁ * (pairCount k n : ℝ), e₁, mul_pos hr₁ (Nat.cast_pos.2 pairCount_pos), ?_⟩
   intro P Q R σ B J B' s₁ s₂ l vL hu₁ hu₂ α α₀ β γ γ₀ hα hγ L₁ L₂ L₂' L₃ f₁ Ξ₁ Ξ₁' f₂ Ξ₂ Ξ₂' o₁ o₁' o₂ o₂' φ hφ
   have hψ : IsStdChar D ψ (-1) := s₁.weil₀.std
@@ -94,13 +94,13 @@ theorem vertexExact (D : D7) : VertexExact D := by
     change Continuous (fun a => ((χ a : Circle) : ℂ))
     rw [h2]
     exact h1
-  obtain ⟨lS₁, lT₁, uS₁, uT₁, lin₁⟩ := GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ _ _ _ _ _ s₁.weil₀
-  obtain ⟨lS₂, lT₂, uS₂, uT₂, lin₂⟩ := GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ _ _ _ _ _ s₂.weil₀
+  obtain ⟨lS₁, lT₁, uS₁, uT₁, lin₁⟩ := _root_.GlobalTheory.SplitLinAt.linModelAt D k p ψ _ _ _ _ _ s₁.weil₀
+  obtain ⟨lS₂, lT₂, uS₂, uT₂, lin₂⟩ := _root_.GlobalTheory.SplitLinAt.linModelAt D k p ψ _ _ _ _ _ s₂.weil₀
   have vS₁ := uS₁ hu₁.2
   have vT₁ := uT₁ hu₁.1
   have vS₂ := uS₂ hu₂.2
   have vT₂ := uT₂ hu₂.1
-  obtain ⟨-, D2, -⟩ := GlobalTheory.T.gluedLattice_finite_expansions_localField k n n'' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat
+  obtain ⟨-, D2, -⟩ := _root_.GlobalTheory.GluedExp.finite_expansions k n n'' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat
   let μ : Measure (n → k) := Measure.pi fun _ => ν
   have I0 : fpair χ e μ (vecInd Q.lat) (dualInd Q.lat) ≠ 0 := Comm.fpair_ne_zero χ hχc e he μ Q.lat
   have hvec := Comm.vecInd_mem Q.lat
@@ -134,7 +134,7 @@ theorem vertexExact (D : D7) : VertexExact D := by
     row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (dualInd Q.lat) hdual
   let y₀ : SB (Matrix (n'' ⊕ Fin 1) n k) := row (latInd Q.lat R.ker) (latInd_mem_SB _ _) (dualInd Q.lat) hdual
   let y : Pair k n → SB (Matrix (n'' ⊕ Fin 1) n k) := fun Q'' =>
-    row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (cosetInd q Q''.lat Q''.red) (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _)
+    row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (cosetInd q Q''.lat Q''.red) (_root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _)
 
   have h2 : hand0 s₁ s₂ l vL (φ P) Ξ₁ Ξ₂ = ((r₁ : ℂ) * chrPow s₁.χW (p.idele q.unit) e₁) •
       hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ P) (U₁ (∑ Q' ∈ withLat Q.lat, x Q')) Ξ₂ :=
@@ -152,7 +152,7 @@ theorem vertexExact (D : D7) : VertexExact D := by
   have t0 : ∀ Q' ∈ withLat Q.lat, (Θ v' (x Q') y₀).1 = 0 := fun Q' hQ' => by
     have := key v' (phiOne P Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P Q') (latInd Q.lat R.ker) (latInd_mem_SB _ _)
       (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (dualInd Q.lat) (dualInd Q.lat) (charInd_mem' _ Q') hvec hdual hdual
-    have hf := GlobalTheory.T.fourierPairing_pairCharIndicator_dualLatticeIndicator_zero k n q χ hχ e he μ Q'
+    have hf := _root_.GlobalTheory.FinPl.Comm.fpair_charInd_dualInd k n q χ hχ e he μ Q'
     rw [mem_withLat.1 hQ'] at hf
     rw [hf, zero_smul] at this
     exact (smul_eq_zero.1 this).resolve_left I0
@@ -165,14 +165,14 @@ theorem vertexExact (D : D7) : VertexExact D := by
     rw [Finset.sum_eq_single_of_mem (ε • Q') hmem]
     · have := key v' (phiOne P Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P Q') (phiOne (ε • Q') R)
         (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ R) (charInd (resChar χ hχ q) Q') (vecInd Q.lat)
-        (cosetInd q (ε • Q').lat (ε • Q').red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _) hdual
+        (cosetInd q (ε • Q').lat (ε • Q').red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (_root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _) hdual
       rw [(GlobalTheory.T.fourierPairing_pairCharIndicator_cosetIndicator k n q χ hχ e ε hεe μ Q' (ε • Q') (by rw [Pair.dia_lat])).1 rfl, hQ'l] at this
       exact smul_right_injective _ I0 this
     · intro Q'' hQ'' hne
       have hQ''l : Q''.lat = Q.lat := mem_withLat.1 hQ''
       have := key v' (phiOne P Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P Q') (phiOne Q'' R)
         (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ R) (charInd (resChar χ hχ q) Q') (vecInd Q.lat)
-        (cosetInd q Q''.lat Q''.red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _) hdual
+        (cosetInd q Q''.lat Q''.red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (_root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _) hdual
       rw [(GlobalTheory.T.fourierPairing_pairCharIndicator_cosetIndicator k n q χ hχ e ε hεe μ Q' Q'' (hQ''l.trans hQ'l.symm)).2 hne, zero_smul] at this
       exact (smul_eq_zero.1 this).resolve_left I0
 

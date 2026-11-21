@@ -14,32 +14,6 @@ open GroundTheory.Heights₂.Heights.NumbersDVR (MRing)
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
-omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
-
-theorem map_rat_complex (f : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) :
-    MvPolynomial.map (algebraMap ℚ ℂ) (MvPolynomial.map (Int.castRingHom ℚ) f) =
-      MvPolynomial.map (Int.castRingHom ℂ) f := by
-  rw [MvPolynomial.map_map]
-  congr 1
-
-omit [DecidableEq K] [∀ k, Fintype (ι k)] in
-
-theorem isOpen_blockNonzero : IsOpen {w : MCone ι | ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0} := by
-  have h : {w : MCone ι | ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {w : MCone ι | w ⟨k, i⟩ ≠ 0} := by
-    ext w
-    simp
-  rw [h]
-  exact isOpen_iInter_of_finite fun k => isOpen_iUnion fun i =>
-    isOpen_ne_fun (continuous_apply _) continuous_const
-
-omit [DecidableEq K] in
-
-theorem isSmoothMetric_of_isSmoothHerm (P : Ideal (MRing ι ℂ)) (L : HLine ι)
-    (h : ReciprocityTheory.ChartRestriction.G.Geo.IsSmoothHerm L) : IsSmoothMetric P L := by
-  intro z hz
-  refine ⟨_, isOpen_blockNonzero.mem_nhds hz.1, logH L, ?_, fun w _ => rfl⟩
-  exact h.log fun w hw => (L.pos w hw).ne'
-
 theorem isProjVarQ_of_isArithVar {P : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)} {e : ℕ}
     (hP : ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar P (e + 1)) :
     IsProjVarQ (P.map (MvPolynomial.map (Int.castRingHom ℚ))) e := by

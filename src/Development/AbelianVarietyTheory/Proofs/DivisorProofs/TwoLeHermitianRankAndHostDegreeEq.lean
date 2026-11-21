@@ -1,7 +1,10 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsRestFurther
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OneMeasureSizes
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TamagawaSpecialUnitary
 import Formalism.LocalToGlobal.LatticeGeometry.DegFlLApply
 import Formalism.LocalToGlobal.ProjectiveLattices.HostSize
+
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.FWT GlobalTheory.CovTop
 open scoped TensorProduct
 

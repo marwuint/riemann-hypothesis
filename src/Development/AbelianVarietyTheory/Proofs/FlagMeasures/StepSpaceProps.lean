@@ -20,13 +20,6 @@ theorem kset_inUJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g
   unfold inUJ
   rw [Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
-theorem inUJ_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hh : inUJ ε h) :
-    inUJ ε (g * h) := by
-  unfold inUJ at *
-  calc (g * h)ᴴ * Jm ε * (g * h) = hᴴ * (gᴴ * Jm ε * g) * h := by
-        simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
-    _ = Jm ε := by rw [hg, hh]
-
 theorem inG_conj {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) (hX : inG ε X) :
     inG ε (g * X * gᴴ) := by
   have h2 : gᴴ * Jm ε = Jm ε * gᴴ := by
@@ -117,47 +110,5 @@ theorem dWord_conj {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ : Matrix (Fin
     change σ g (dAct σ Y (dWord σ l u)) =
       dAct σ (g * Y * gᴴ) (dWord σ (l.map fun X => g * X * gᴴ) (σ g u))
     rw [← ih hl, dAct_conj hσ hg hY (hd _ _ (dWord_mem le_rfl hl hu) Y hY)]
-
-theorem stepSpace_props : GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.StepBound → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (lam : Fin n → ℝ), IsHCParam lam → IsDS ε lam σ → ∀ P : ℕ, FiniteDimensional ℂ (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P) ∧ IsKStableOn ε σ (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P) ∧ (∀ X, inG ε X → ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P, HasDerivAt (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ X w) (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X w) 0 ∧ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ (P + 1)) ∧ ∀ X, inG ε X → ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P, ∀ w' ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P, ∀ c : ℂ, GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X (w + c • w') = GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X w + c • GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X w' := by
-  intro hSB n ε H _ _ _ σ lam hlam hDS P
-  have hb : ∀ a, |lam a| ≤ Real.sqrt (∑ a, |lam a|) ^ 2 := by
-    intro a
-    rw [Real.sq_sqrt (Finset.sum_nonneg fun _ _ => abs_nonneg _)]
-    exact Finset.single_le_sum (f := fun a => |lam a|) (fun _ _ => abs_nonneg _) (Finset.mem_univ a)
-  have hd : ∀ P, ∀ w ∈ stepSpace ε lam σ P, IsDiffVec ε σ w := fun P =>
-    (hSB n ε lam H σ _ P hlam hDS hb).2.1
-  have hσ : IsCRepOn (UJset ε) σ := hDS.2.2.1.1
-  refine ⟨(hSB n ε lam H σ _ P hlam hDS hb).1, ?_, fun X hX w hw => ⟨(hd P w hw X hX).hasDerivAt, ?_⟩,
-    fun X hX w hw w' hw' c => dAct_add_smul (hd P w hw X hX) (hd P w' hw' X hX) c⟩
-  · intro g hg v hv
-    have : stepSpace ε lam σ P ≤ (stepSpace ε lam σ P).comap (σ g : H →ₗ[ℂ] H) := by
-      refine Submodule.span_le.mpr ?_
-      rintro _ ⟨l, u, hl, hX, hu, rfl⟩
-      change σ g (dWord σ l u) ∈ stepSpace ε lam σ P
-      rw [dWord_conj hσ hd hg hu l hX]
-      refine dWord_mem (by simpa using hl) ?_ (lowKSub_stable ε lam σ g hg u hu)
-      intro Y hY
-      obtain ⟨X, hXl, rfl⟩ := List.mem_map.mp hY
-      exact inG_conj hg (hX X hXl)
-    exact this hv
-  · induction hw using Submodule.span_induction with
-    | mem v hv =>
-      obtain ⟨l, u, hl, hl', hu, rfl⟩ := hv
-      refine dWord_mem (l := X :: l) (by simpa using hl) ?_ hu
-      intro Y hY
-      rcases List.mem_cons.mp hY with rfl | h
-      · exact hX
-      · exact hl' Y h
-    | zero => rw [dAct_zero]; exact Submodule.zero_mem _
-    | add x y hx hy ihx ihy =>
-      have := dAct_add_smul (hd P x hx X hX) (hd P y hy X hX) 1
-      rw [one_smul, one_smul] at this
-      rw [this]
-      exact Submodule.add_mem _ ihx ihy
-    | smul c x hx ihx =>
-      have := dAct_add_smul (hd P 0 (Submodule.zero_mem _) X hX) (hd P x hx X hX) c
-      rw [zero_add, dAct_zero, zero_add] at this
-      rw [this]
-      exact Submodule.smul_mem _ c ihx
 
 end GlobalTheory.StepLoc

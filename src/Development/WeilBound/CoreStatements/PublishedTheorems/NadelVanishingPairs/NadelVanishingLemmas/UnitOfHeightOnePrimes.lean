@@ -13,7 +13,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocal
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemRangeOfForallHeightEqOneOfIsReflexive
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.EtaleCoordinateQuotientRegular
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.RegularQuotientPrimeElement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStripFinitelyManyPrimeFactorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStripFinitelyManyPrimeFactors
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.AssociatedOfHeightOneAgree
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -33,8 +33,8 @@ theorem unit_mul_monomial_of_forall_height_one (R K : Type) [CommRing R] [IsDoma
   have hb0K : algebraMap R K b0 ≠ 0 := by
     rw [Ne, IsFractionRing.to_map_eq_zero_iff]; exact hb0'
   have ha0 : a0 ≠ 0 := by rintro rfl; simp at hx
-  obtain ⟨α, a, ha, hna⟩ := GlobalTheory.T.exists_strip_finitely_many_prime_factors R π J a0 ha0
-  obtain ⟨β, b, hb, hnb⟩ := GlobalTheory.T.exists_strip_finitely_many_prime_factors R π J b0 hb0'
+  obtain ⟨α, a, ha, hna⟩ := _root_.GlobalTheory.strip_prime_factors_target R π J a0 ha0
+  obtain ⟨β, b, hb, hnb⟩ := _root_.GlobalTheory.strip_prime_factors_target R π J b0 hb0'
   have hπ0 : ∀ j ∈ J, π j ≠ 0 := fun j hj =>
     (hπ j hj).elim (fun hu => hu.ne_zero) (fun hp => hp.ne_zero)
   have han : a ≠ 0 := by rintro rfl; rw [zero_mul] at ha; exact ha0 ha

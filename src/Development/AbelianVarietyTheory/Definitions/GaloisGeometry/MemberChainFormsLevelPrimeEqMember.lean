@@ -1,6 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.GrowthBounds.BaseLevels.LevelsGEmpty
-import Formalism.SharpRestriction.GrowthBounds.ChartComparison.MemAll
+import Formalism.SharpRestriction.GrowthBounds.ChartComparison.OneChartLev
+import Formalism.SharpRestriction.GrowthBounds.ChartComparison.BadQNotOver
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ClsChartedLabAt
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.CompInjLocJ
 import Formalism.SharpRestriction.GrowthBounds.TwistedLevelAgreement.StepInTwK
@@ -336,30 +337,7 @@ def PsiEx (Fo : FormsIn M (i + 1) hi) (e : D.what₂.LL →+* (D.gat u w hg).Kf)
 
 variable {X0}
 
-def StepD.ofEx {Fo : FormsIn M (i + 1) hi} {e : D.what₂.LL →+* (D.gat u w hg).Kf} (hB : BaseEx X0 u w hg Fo) (hψ : PsiEx Fo e) :
-    StepD X0 u w hg Fo where
-  B := hB.choose
-  B_lat := hB.choose_spec.2
-  ψ := fun β => (hψ β).choose
-  fin := fun β => fin_of Fo β _
-
-theorem StepD.ofEx_std {Fo : FormsIn M (i + 1) hi} {e : D.what₂.LL →+* (D.gat u w hg).Kf} (hB : BaseEx X0 u w hg Fo) (hψ : PsiEx Fo e) :
-    cT (sigD D : D.host.E →+* D.host.E) (reGL (rankN D (i + 1) hi) D.host.E (StepD.ofEx hB hψ).B).1 * gramN D (i + 1) hi *
-      (reGL (rankN D (i + 1) hi) D.host.E (StepD.ofEx hB hψ).B).1 = 1 := by
-  exact hB.choose_spec.1
-
-theorem StepD.ofEx_psi {Fo : FormsIn M (i + 1) hi} {e : D.what₂.LL →+* (D.gat u w hg).Kf} (hB : BaseEx X0 u w hg Fo) (hψ : PsiEx Fo e)
-    (β : Fo.Ch) : UnitCharacterChartCompatibility hi (Fo.K β).lev e ((StepD.ofEx hB hψ).ψ β) := by
-  exact (hψ β).choose_spec
-
 end Step
-
-section Rec
-
-variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Dx : DivX D} {cX : ExtraC}
-  {ex : Extra D L hT Gi Gl K Dx cX}
-
-end Rec
 
 end GlobalTheory.Port
 
@@ -375,9 +353,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-def RatUsed (D : D7) (Tw : TwForms D) : Prop :=
-  ∀ u μ, DV.Used D μ → ∀ j, j < D.R.m → (Tw.fm u μ).KRat j
-
 section One
 
 variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl}
@@ -389,19 +364,12 @@ theorem fillOK_of_empty (hE : ∀ j, D.R.m < j → IsEmpty (Lv.comp j)) : FillOK
   intro j hj a
   exact ((hE j hj).false a).elim
 
-theorem fillOK_of_nonempty (hN : ∀ j, D.R.m < j → Nonempty ((D.chTw u μ).cls j)) : FillOK μ Lv := by
-  intro j hj _
-  exact hN j hj
-
 def fillOf (hF : FillOK μ Lv) : ∀ j, D.R.m < j → Lv.comp j → (D.chTw u μ).cls j := fun j hj a => (hF j hj a).some
 
 structure LabHyp (I : CmpJIn Tw u μ w h Lv) : Prop where
   onCh : OnChain I
   chX : ∀ j hj, ChX (I.at' j hj).st
   fill : FillOK μ Lv
-
-theorem labHyp_of {I : CmpJIn Tw u μ w h Lv} (X : LabIn I) : LabHyp I := by
-  exact ⟨X.onCh, X.chX, fun j hj a => ⟨X.fill j hj a⟩⟩
 
 def labOf {I : CmpJIn Tw u μ w h Lv} (hI : LabHyp I) (fl_t : Fl.t = D.R.t) (fl_m : Fl.mm = D.R.m)
     (c0 : Formalism.L2.G.TwTie0.ClsAt0 D u μ w h Lv) (rat : ∀ j, j < D.R.m → (Tw.fm u μ).KRat j)
@@ -417,43 +385,10 @@ def labOf {I : CmpJIn Tw u μ w h Lv} (hI : LabHyp I) (fl_t : Fl.t = D.R.t) (fl_
 
 end One
 
-section Built
-
-variable {D : D7} {X0 : Formalism.L2.Herm.Herm0 D} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl}
-  {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
-
-structure ChartLocalForms {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {P : PeriodMap D.R C}
-    {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P}
-    (Fo : ∀ j (hj : j + 1 ≤ D.R.m), FormsIn M (j + 1) hj) (Lc : ∀ j (hj : j + 1 ≤ D.R.m), LocIn X0 u w h Lv j (Fo j hj).Ch) : Prop where
-  sameU : ∀ j hj β, SameUlocJ hj ((Fo j hj).K β).lev ((Lc j hj).Uloc β)
-  frRat : ∀ j hj β, FrRatJ ((Lc j hj).t β) (Lc j hj).B
-  hypC : ∀ j hj β, HypTJC ((Lc j hj).t β)
-
-variable (X0 u w h Lv) in
-
-structure AtInM where
-  Fo : ∀ j (hj : j + 1 ≤ D.R.m), FormsIn (D.fm u) (j + 1) hj
-  Lc : ∀ j (hj : j + 1 ≤ D.R.m), LocIn X0 u w h Lv j (Fo j hj).Ch
-
-def AtInM.I (Z : AtInM X0 u w h Lv) (Tw : TwForms D) (Gt : GatTies D) : CmpJIn Tw u D.what₂.mu0 w h Lv :=
-  ⟨fun j hj => StepAt.ofMem (stepInOf hj (Z.Fo j hj) (Z.Lc j hj) (Gt.gat_pos u w h))⟩
-
-theorem labHyp_atInM (Z : AtInM X0 u w h Lv) (Tw : TwForms D) (Gt : GatTies D) (hZ : ChartLocalForms Z.Fo Z.Lc) (hF : FillOK D.what₂.mu0 Lv) :
-    LabHyp (Z.I Tw Gt) where
-  onCh := fun _ _ => (D.memberColumns_twistedChain_base u).symm
-  chX := fun j hj => chX_stepInOf hj (Z.Fo j hj) (Z.Lc j hj) (Gt.gat_pos u w h) (hZ.sameU j hj) (hZ.frRat j hj) (hZ.hypC j hj)
-  fill := hF
-
-end Built
-
 section Rec
 
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Dx : DivX D} {cX : ExtraC}
   {ex : Extra D L hT Gi Gl K Dx cX}
-
-theorem fl_t_eq (ex : Extra D L hT Gi Gl K Dx cX) (u : D.what₂.Word) (w : D.what₂.places.Pl)
-    (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : (Gl.Fl u w hg).t = D.R.t := by
-  exact (ex.ker u w hg).fl_t
 
 theorem fl_mm_eq (ex : Extra D L hT Gi Gl K Dx cX) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : (Gl.Fl u w hg).mm = D.R.m := by
@@ -575,22 +510,6 @@ def ChartBaseLatticeEqSelfDualAtP (Fo : FormsIn M (i + 1) hi) (p : ℕ) : Prop :
 
 end GlobalTheory.Port
 end
-section
 namespace GlobalTheory.Port
-open Formalism Formalism.MainNotions Formalism.MainNotions.G Formalism.BasicNotions Formalism.L2.G Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.UG NumberField IsDedekindDomain Matrix Formalism.MainNotions.G.CmpJ Formalism.MainNotions.G.CmpJ.AgreeLv
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
-
-open Classical in
-set_option maxHeartbeats 2000000 in
-
-def stMem (F : FormsTiedSym D u Ch chOf) (i : ℕ) (hi : i ≤ D.R.m) : GlobalTheory.TwU.StepCharts (D.mem u).C i hi :=
-  if h : i = 0 ∨ i = D.R.m then
-    ⟨(D.mem u).A.T, badG D, (F.val i hi h).eY, Unit, chU u i, clsCrd D u i hi, oneChart (F.cls i hi h)⟩
-  else
-    ⟨(D.mem u).A.T, badG D, F.eYC i (by omega) (by omega), Ch i, chOf i, fun c => clsCrd D u i hi c, F.ch i (by omega) (by omega)⟩
-
 end GlobalTheory.Port
-end
-
 end

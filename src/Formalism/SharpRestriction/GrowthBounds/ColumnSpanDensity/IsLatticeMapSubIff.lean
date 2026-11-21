@@ -119,9 +119,6 @@ theorem mapSub_symm' (L : Submodule R₂ (Fin k → F₂)) : mapSub J (mapSub J.
 theorem mapSub_mono {L L' : Submodule R₁ (Fin k → F₁)} (h : L ≤ L') : mapSub J L ≤ mapSub J L' :=
   fun _ hy => h hy
 
-theorem mapSub_inj {L L' : Submodule R₁ (Fin k → F₁)} (h : mapSub J L = mapSub J L') : L = L' := by
-  rw [← mapSub_symm J L, h, mapSub_symm]
-
 theorem mapSub_span (S : Set (Fin k → F₁)) :
     mapSub J (Submodule.span R₁ S) = Submodule.span R₂ ((fun x i => J.φF (x i)) '' S) := by
   apply le_antisymm

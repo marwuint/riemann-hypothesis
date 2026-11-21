@@ -146,15 +146,6 @@ def GMod.ann0Equiv (F : GMod B R k) (β : B) (m : Deg k) :
 
 end
 
-theorem quots_isGr {k : ℕ} (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod) (hv : Valid X.𝒜 ts)
-    (hF : F.IsGr X.𝒜) : (F.quots ts).IsGr X.𝒜 := by
-  induction ts generalizing F with
-  | nil => exact hF
-  | cons p ts ih =>
-    obtain ⟨d, s⟩ := p
-    exact ih (F.quot s) (fun p hp => hv p (List.mem_cons_of_mem _ hp))
-      ((ruleGr k X F hF).2.2 d s (hv (d, s) List.mem_cons_self).2).1
-
 theorem chi_single0 {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R] (F : GMod B R k)
     (hF : DirectSum.IsInternal F.gr) (β : B) (m : Deg k) :
     chi [((0 : Deg k), algebraMap B R β)] F m =

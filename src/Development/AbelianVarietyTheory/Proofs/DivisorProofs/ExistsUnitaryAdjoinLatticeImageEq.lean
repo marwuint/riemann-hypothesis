@@ -1,9 +1,9 @@
 import Mathlib
 import Formalism.SatakeDualWeyl.Statement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemMatLat
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralAevalEqAevalMapOfCoprimeCharpolyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralMatrixOfMapsToFullRankLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryMulIntegralOfNormMaximalOrderUnitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralAevalEqAevalMapOfCoprimeCharpoly
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralMatrixOfMapsToFullRankLattice
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryMulIntegralOfNormMaximalOrderUnit
 open Polynomial Matrix GlobalTheory.LatOrb
 
 noncomputable section
@@ -181,17 +181,17 @@ theorem exists_unitary_matLat_eq : ∀ {O K : Type} [CommRing O] [IsDomain O] [I
       have := congrArg Subtype.val hcinv
       exact (congrArg (· *ᵥ u) this).trans (Matrix.one_mulVec u)
     rw [e]; exact hu
-  have hi1 : IsIntegral O (τ (x : A) * x) := (hι _).mpr (GlobalTheory.T.isIntegral_matrix_of_mapsTo_fullRankLattice n M hML _ hcM)
+  have hi1 : IsIntegral O (τ (x : A) * x) := (hι _).mpr (_root_.GlobalTheory.LatOrb.isIntegral_of_mapsTo_lattice n M hML _ hcM)
   have hi2 : IsIntegral O (τ ((x⁻¹ : Aˣ) : A) * ((x⁻¹ : Aˣ) : A)) :=
-    (hι _).mpr (GlobalTheory.T.isIntegral_matrix_of_mapsTo_fullRankLattice n M hML _ hc'M)
-  obtain ⟨t, ht1, ht2, ht3⟩ := GlobalTheory.T.exists_unitary_mul_integral_of_norm_maximalOrder_unit σ hσO τ hττ hτk x hi1 hi2
+    (hι _).mpr (_root_.GlobalTheory.LatOrb.isIntegral_of_mapsTo_lattice n M hML _ hc'M)
+  obtain ⟨t, ht1, ht2, ht3⟩ := _root_.GlobalTheory.UnitAdj.exists_unitary_mul_integral σ hσO τ hττ hτk x hi1 hi2
 
   have hkeep : ∀ a : A, IsIntegral O a → ∀ v ∈ M, a.1 *ᵥ v ∈ M := by
     intro a ha
     obtain ⟨q, hq⟩ : ∃ q, aeval γ q = a.1 := by
       exact (Algebra.adjoin_singleton_eq_range_aeval K γ).le a.2
     have ha' : IsIntegral O (aeval γ q) := hq ▸ (hι a).mp ha
-    obtain ⟨r, hr⟩ := GlobalTheory.T.integral_aeval_eq_aeval_map_of_coprime_charpoly n P₀ hcop γ hchar q ha'
+    obtain ⟨r, hr⟩ := _root_.GlobalTheory.MaxOrder.isIntegral_aeval_eq_aeval_map n P₀ hcop γ hchar q ha'
     rw [← hq, hr]
     exact aeval_map_mulVec_mem M γ hMγ r
   have hk1 := hkeep _ ht2

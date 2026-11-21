@@ -55,9 +55,6 @@ def VGeq (w : HeightOneSpectrum (𝓞 K)) (s : ℝ) (z : K) : Prop := z = 0 ∨ 
 
 theorem VGeq.zero (w : HeightOneSpectrum (𝓞 K)) (s : ℝ) : VGeq w s (0 : K) := Or.inl rfl
 
-theorem VGeq.mono {w : HeightOneSpectrum (𝓞 K)} {s s' : ℝ} {z : K} (h : VGeq w s z) (hs : s' ≤ s) : VGeq w s' z :=
-  h.imp id (fun h' => hs.trans h')
-
 private theorem vAdd_le_of_valuation_le {w : HeightOneSpectrum (𝓞 K)} {x y : K} (hx : x ≠ 0) (hy : y ≠ 0)
     (h : w.valuation K y ≤ w.valuation K x) : vAdd w x ≤ vAdd w y := by
   have hx' : w.valuation K x ≠ 0 := (Valuation.ne_zero_iff _).mpr hx

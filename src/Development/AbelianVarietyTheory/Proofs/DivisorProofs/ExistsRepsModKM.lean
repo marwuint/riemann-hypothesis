@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.DefiniteBound
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGensModNsmulOfFgNumberFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeModRepsCardLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeModRepsCardLe
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
 
 open NumberField Matrix GlobalTheory.AdLat GlobalTheory.UCls ReciprocityTheory.ChartRestriction.G.FD
 open scoped TensorProduct
@@ -170,7 +171,7 @@ theorem exists_reps_mod_KM : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   classical
   have hFG : Λ.FG := hSD.2.2.1
   obtain ⟨e, heΛ, he⟩ := GlobalTheory.T.exists_gens_mod_nsmul_of_fg_numberField E r M Λ hM hFG
-  obtain ⟨T, hTc, hTΛ, hT⟩ := GlobalTheory.T.exists_reps_mod_lattice_card_le E r M Λ hM hFG
+  obtain ⟨T, hTc, hTΛ, hT⟩ := _root_.GlobalTheory.lattice_mod_reps_card_le E r M Λ hM hFG
   have hLo : ∀ o : 𝓞 E, ∀ x ∈ (Λ : Set (Fin r → E)), o • x ∈ (Λ : Set (Fin r → E)) :=
     fun o x hx => Λ.smul_mem o hx
   have hLb : ∀ b : 𝓞 (maximalRealSubfield E), ∀ x ∈ (Λ : Set (Fin r → E)),

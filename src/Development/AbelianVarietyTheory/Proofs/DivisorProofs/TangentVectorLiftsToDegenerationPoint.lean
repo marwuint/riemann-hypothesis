@@ -74,10 +74,6 @@ theorem exists_tan (U : UnifPre I D A G) (y : epsR R ⟶ G) (hy : IsTangent y) :
       rw [val_pull hJ, Category.id_comp] at this
       exact this.symm
 
-theorem main : AllV fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ y : epsR V ⟶ G, IsTangent y →
-    ∃ gm : GtPt D.toPre (epsR V), TanRel U.toUnifPre y gm ∧ GtTan gm ∧ IsTangent gm.b :=
-  fun _ _ _ _ _ _ _ _ _ _ _ _ U y hy => exists_tan U.toUnifPre y hy
-
 end GlobalTheory.MBLow.TanLift
 
 end

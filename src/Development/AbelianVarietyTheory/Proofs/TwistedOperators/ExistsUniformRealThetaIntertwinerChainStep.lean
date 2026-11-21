@@ -10,12 +10,17 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SymmetrisationIn
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DoublingIntegralJointHarmonicPosStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockSpaceContainsDiscreteSeriesTensorStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowestTypePositiveAndDecays
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PolarCoordinatesUnitaryPQDoubleCoverStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PolarCoordinatesUnitaryPQDoubleCover
+import Formalism.SharpRestriction.Divisibility.SchurIrreducible
+import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TprodNeZeroOfNe
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChainParIffStepGap
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorsOverVacuumIsometryOfSkeletonDatumStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaVacuumCharactersAtRealPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaModelsEqCoverDiscreteSeriesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorsOverVacuumIsometryOfSkeletonDatum
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.VacuumFockVectors
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaVacuumCharactersAtRealPlaces
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RaisingLoweringOperators
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaModelsEqCoverDiscreteSeries
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.BarMatrix
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.Published GlobalTheory.Chain.RealIt
 
@@ -28,7 +33,7 @@ theorem exists_record (hD : DiscreteSeriesCover) (hH : HarishChandraModules) :
   have a2 : admH2 X := GlobalTheory.JointHarm.fock_polynomials X
   have a3 : DiscreteSeriesBlattner X := GlobalTheory.CoverDS.admissibleDiscreteSeries_of_hasParam hD X hX
   have a5 : admQ5 X := hH.admQ5_of_harishChandraModules X
-  have a6 : CoverHaarIntegration X := GlobalTheory.T.polarCoordinates_unitaryPQ_doubleCover X
+  have a6 : CoverHaarIntegration X := _root_.GlobalTheory.PolarU.polar_coordinates X
   have a7 : admQ7 := GlobalTheory.TensorHW.highestWeight_tensor
   have a8 : admQ8 := GlobalTheory.InducedPBW.pbw_induced
   have a4 : DiscreteSeriesPositivity X := GlobalTheory.SphJet.lowest_type_positive_and_decays X a3 a5 a7 a8
@@ -42,6 +47,6 @@ theorem itPair_of_rows (hD : DiscreteSeriesCover) (hH : HarishChandraModules) (D
   exact itPair D X hX h1 h2 hF hV hB hC
 
 theorem itPair_holds (hD : DiscreteSeriesCover) (hH : HarishChandraModules) (D : D7) : ItPair D :=
-  itPair_of_rows hD hH D (GlobalTheory.T.fockVectorsOverVacuumIsometry_of_skeletonDatum D) (GlobalTheory.T.thetaVacuumCharacters_atRealPlaces D) (GlobalTheory.T.thetaModels_eq_coverDiscreteSeries hD hH D) GlobalTheory.Contr.contraction
+  itPair_of_rows hD hH D (_root_.GlobalTheory.vacuumFock_all_records D) (_root_.GlobalTheory.vacChar_of_record D) (_root_.GlobalTheory.modelsAreCoverSeries_of_hypotheses hD hH D) GlobalTheory.Contr.contraction
 
 end GlobalTheory.Chain.ItPairObj

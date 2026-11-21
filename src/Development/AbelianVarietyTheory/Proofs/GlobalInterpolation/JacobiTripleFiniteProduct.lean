@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MultipliableTpFactor
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QBinomialFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QBinomialFinite
 open Complex
 open scoped Real
 
@@ -70,7 +70,7 @@ theorem finTriple (s x : ℂ) (hs : s ≠ 0) (hs1 : ‖s‖ < 1) (hx : x ≠ 0) 
         rw [hsplit]; ring
     _ = x⁻¹ ^ n * s ^ (n ^ 2) * ∑ k ∈ Finset.range (2 * n + 1),
           qBinom (s ^ 2) (2 * n) k * s ^ (k * (k - 1)) * X ^ k := by
-        rw [GlobalTheory.T.prod_range_one_add_mul_pow_two_mul_eq_sum_qBinom s X hs1 (2 * n)]
+        rw [_root_.GlobalTheory.JacobiTriple.QBinomial.qBinomial_finite s X hs1 (2 * n)]
     _ = ∑ k ∈ Finset.range (2 * n + 1),
           finCoeff (s ^ 2) n ((k : ℤ) - n) * (x ^ ((k : ℤ) - n) * s ^ (((k : ℤ) - n) ^ 2)) := by
         rw [Finset.mul_sum]

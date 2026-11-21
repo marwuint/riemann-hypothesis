@@ -136,35 +136,6 @@ structure Dat (σ : E →ₐ[F] E) {M n d : ℕ} (J : Matrix (Fin M) (Fin M) E) 
   sdW : SdW F E σ M J (AF F) ψ n μ
   sdH : SdHerm F E σ (AF F) ψ n ν
 
-def Factor : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M n d : ℕ)
-    (J : Matrix (Fin M) (Fin M) E) (T : Matrix (Fin n) (Fin n) E) (bs : Module.Basis (Fin d) F E) ψ (ι : Type) [Fintype ι]
-    θ l ε fr g P lam L₁ L₂ Φ Φf Φv μ ν, Dat (ι := ι) σ J T bs ψ θ l ε fr g P lam L₁ L₂ Φ Φf Φv μ ν →
-    ∀ μi νi (μv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E))
-      (νv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (HermR (Fv F v) σ n)),
-      SdW F E σ M J (Ainf F) (psiInf F ψ) n μi → SdHerm F E σ (Ainf F) (psiInf F ψ) n νi →
-      (∀ v, SdW F E σ M J (Fv F v) (psiV F ψ v) n (μv v)) → (∀ v, SdHerm F E σ (Fv F v) (psiV F ψ v) n (νv v)) →
-    ∀ z : ℂ, Integrable (whI (AF F) σ J ψ μ Φ (nuA θ g lam L₁ L₂) (T.map (inclR (AF F))) z) ν →
-      Integrable (whI (Ainf F) σ J (psiInf F ψ) μi (phiInf θ l fr g P) (nuInf θ g) (T.map (inclR (Ainf F))) z) νi →
-      (∀ v, Integrable (whI (Fv F v) σ J (psiV F ψ v) (μv v) (Φv v) (nu2 (lam v) (L₁ v) (L₂ v)) (T.map (inclR (Fv F v))) z)
-        (νv v)) →
-      Tendsto (fun s : Finset (HeightOneSpectrum (𝓞 F)) =>
-          (∫ b, whI (Ainf F) σ J (psiInf F ψ) μi (phiInf θ l fr g P) (nuInf θ g) (T.map (inclR (Ainf F))) z b ∂νi) *
-          ∏ v ∈ s, ∫ b, whI (Fv F v) σ J (psiV F ψ v) (μv v) (Φv v) (nu2 (lam v) (L₁ v) (L₂ v)) (T.map (inclR (Fv F v))) z b
-            ∂(νv v))
-        atTop (nhds (∫ b, whI (AF F) σ J ψ μ Φ (nuA θ g lam L₁ L₂) (T.map (inclR (AF F))) z b ∂ν))
-
-def WhitGen : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M n d : ℕ)
-    (J : Matrix (Fin M) (Fin M) E) (T : Matrix (Fin n) (Fin n) E) (bs : Module.Basis (Fin d) F E) ψ (ι : Type) [Fintype ι]
-    θ l ε fr g P lam L₁ L₂ Φ Φf Φv μ ν, Dat (ι := ι) σ J T bs ψ θ l ε fr g P lam L₁ L₂ Φ Φf Φv μ ν →
-    (∃ t : ℝ, ∀ z : ℂ, t < z.re → Integrable (whI (AF F) σ J ψ μ Φ (nuA θ g lam L₁ L₂) (T.map (inclR (AF F))) z) ν) →
-    ∀ μH 𝓕, IsHaarH F E σ M J μH → IsFDH F E σ M J μH 𝓕 →
-      HolValueAt (fun z => ∫ b, whI (AF F) σ J ψ μ Φ (nuA θ g lam L₁ L₂) (T.map (inclR (AF F))) z b ∂ν) (((M : ℂ) - n) / 2)
-        (meanC μH 𝓕 (thetaS F E σ M J Φ {X | gramE σ J X = T}))
-
-def WhitGenOf : Prop := LocFin2 → UnrWhit → RealWhit → Factor → SiegelDensitiesLow → WhitGen
-
 end PositivityTheory.SiegelWeilFormula.Gen
 
 end

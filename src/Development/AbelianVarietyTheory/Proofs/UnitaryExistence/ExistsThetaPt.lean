@@ -11,8 +11,8 @@ import Development.AbelianVarietyTheory.Statements.HyperbolicHypotheses.Hypothes
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueScaledBaseChangeFibreSection
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsTangentEigenbasisExponentialStatement
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFibreSectionOtherModelSameValuesStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SecValuesComplexFibreAbelianSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ThetaCharHalfDifferentiableNeZeroFamiliesStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SecValuesComplexFibreAbelianScheme
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ThetaCharHalfDifferentiableNeZeroFamilies
 
 noncomputable section
 
@@ -53,7 +53,7 @@ theorem exists_gen (hT : Out.SecTwistSt) (y : Sp ℂ ⟶ Xo.X) {Z : Type} (ex : 
       ⊤ ≤ (ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j →
       valAt' pt ((PPx y).U (fun _ => j)) ((SecPull.scalSec y κ s').f (fun _ => j)) = κ * θ z * fr j z := by
     intro j z pt h1 h2 h3
-    have e1 := (GlobalTheory.T.sec_values_complex_fibre_abelianScheme hT E H Dw l Xo y s').1 κ (fun _ => j) pt h2
+    have e1 := (_root_.GlobalTheory.sec_values_complex_fibre hT E H Dw l Xo y s').1 κ (fun _ => j) pt h2
     have e2 := hs' j pt (pullback.lift (ex z).left (𝟙 _) (hw z)) ((pullback.lift_fst _ _ _).trans h1.symm)
       (pullback.lift_snd _ _ _) h2
     have e3 := hs j z (pullback.lift (ex z).left (𝟙 _) (hw z)) (pullback.lift_fst _ _ _)
@@ -66,7 +66,7 @@ theorem exists_gen (hT : Out.SecTwistSt) (y : Sp ℂ ⟶ Xo.X) {Z : Type} (ex : 
   let pt : Sp ℂ ⟶ Gx y := pullback.lift (f := (Over.mk y).hom) (g := Xo.univ.t.G.hom) (𝟙 _) (ex z).left (hw z).symm
   have h1 : pt ≫ gxFst y = (ex z).left := pullback.lift_snd _ _ _
   have h2 : pt ≫ gxSnd y = 𝟙 (Sp ℂ) := pullback.lift_fst _ _ _
-  refine (GlobalTheory.T.sec_values_complex_fibre_abelianScheme hT E H Dw l Xo y _).2.1.2 ⟨fun _ => j, pt, h2, ?_⟩
+  refine (_root_.GlobalTheory.sec_values_complex_fibre hT E H Dw l Xo y _).2.1.2 ⟨fun _ => j, pt, h2, ?_⟩
   rw [key j z pt h1 h2 hj]
   exact mul_ne_zero (mul_ne_zero hκ hz) (hfr j z hj)
 
@@ -76,7 +76,7 @@ theorem exists_thetaPt : Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberFiel
   obtain ⟨u, hu, htan, heig, hbas⟩ := GlobalTheory.T.exists_tangent_eigenbasis_exponential E H Dw l Xo c σ g e F k _ hP
   obtain ⟨s, hs⟩ := T.fr_sec b hb
   obtain ⟨hdet, hsym, hpos, -⟩ := T.norm b hb
-  obtain ⟨w, hw⟩ := ((GlobalTheory.T.thetaChar_half_differentiable_ne_zero_families g T.c₁ T.c₂ T.half₁ T.half₂).1 _ hsym hpos).2
+  obtain ⟨w, hw⟩ := ((_root_.GlobalTheory.ThetaHalf.thetaChar_holomorphic_ne_zero g T.c₁ T.c₂ T.half₁ T.half₂).1 _ hsym hpos).2
   have hθ : ∃ z, thetaChar (T.ta b) T.c₁ T.c₂ (T.h b *ᵥ z) ≠ 0 :=
     ⟨(T.h b)⁻¹ *ᵥ w, by rwa [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]⟩
   obtain ⟨t, ht, hval⟩ := exists_gen hT (F.u k (T.Pf (T.co b))) (F.ex k (T.Pf (T.co b)))

@@ -106,39 +106,4 @@ theorem rDSCoordAdj_of_p (hp : RDSPAdj) : RDSCoordAdj := by
   · rw [hcb]; exact C1.2
   · rw [hcbi]; exact C2.2
 
-section IpLin
-
-variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
-  [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [FiniteDimensional ℂ Wp]
-  {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
-theorem continuous_hsVec' : Continuous (fun A : Wq →L[ℂ] Wp => B.hsVec A) := by
-  unfold B.hsVec
-  first
-  | fun_prop
-  | continuity
-
-theorem hsVec_add'_RDSCA (A A' : Wq →L[ℂ] Wp) : B.hsVec (A + A') = B.hsVec A + B.hsVec A' := by
-  unfold B.hsVec
-  ext i
-  simp
-
-theorem dxc_compact {C : Set (Fin r → ℂ)} (hC : IsCompact C) (hCO : C ⊆ OmX r) : dxc r C < ⊤ := by
-  have hcont : ContinuousOn (fun c : Fin r → ℂ => ∏ l, (‖c l‖ ^ 2)⁻¹) C := by
-    refine continuousOn_finset_prod _ fun l _ => ?_
-    refine ContinuousOn.inv₀ ((continuous_norm.comp (continuous_apply l)).pow 2).continuousOn fun c hc => ?_
-    exact pow_ne_zero _ (norm_ne_zero_iff.mpr (hCO hc l))
-  obtain ⟨M, hM⟩ := hC.exists_bound_of_continuousOn hcont
-  unfold dxc
-  rw [withDensity_apply' _ C]
-  calc ∫⁻ c in C, ENNReal.ofReal (∏ l, (‖c l‖ ^ 2)⁻¹) ≤ ∫⁻ _ in C, ENNReal.ofReal M :=
-        setLIntegral_mono' hC.measurableSet fun c hc => ENNReal.ofReal_le_ofReal
-          ((Real.le_norm_self _).trans (hM c hc))
-    _ = ENNReal.ofReal M * volume C := setLIntegral_const _ _
-    _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hC.measure_lt_top
-
-end IpLin
-
 end Formalism.FourierDecayAlt.P.CutSE

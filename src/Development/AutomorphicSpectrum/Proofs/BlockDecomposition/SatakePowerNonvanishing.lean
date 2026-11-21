@@ -3,13 +3,13 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsStrictDom
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPermWOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemIwUIff
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryIwasawaBruhatDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BruhatWeightDecreasesStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryIwasawaBruhatDecomposition
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BruhatWeightDecreases
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryIwahoriFactorizationStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryIwahoriIndexFiniteStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantConjugateUnipotentMemStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetRepsOfFactorizationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalZeroOfInjectivePowerStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalZeroOfInjectivePower
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckePowerCosetFormulaStatement
 open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.SphericalProduct
 
@@ -80,7 +80,7 @@ theorem abs_main {G : Type} [Group G] (K I : Subgroup G) (hIK : I ≤ K) (hfin :
     intro a ha
     exact Subtype.ext (hinj a a.2 (congrArg Subtype.val ha))
   have hl0 : l v = 0 := by
-    refine GlobalTheory.T.functional_zero_of_injective_power _ A hAinj l v j₀ fun j hj => ?_
+    refine _root_.GlobalTheory.CompanionTheory.SatPow.functional_eq_zero_of_late_iterates _ A hAinj l v j₀ fun j hj => ?_
     obtain ⟨m, -, hm⟩ := GlobalTheory.T.hecke_power_coset_formula G K I hIK hfin t R h1R hRI hRt hR j
     have := hm φ₀ hK
     rw [hlam, hcon j hj, mul_zero, finsum_eq_sum_of_fintype] at this
@@ -151,7 +151,7 @@ theorem aOp_inj (q : ℕ) (hq : (q : ℂ) ≠ 0) {m : ℕ} (α : Fin m → ℂ) 
     fun b w i hb hi => by rw [hI _ _ hi, hB _ _ hb]
   set S : Finset (Equiv.Perm (Fin n)) := Finset.univ.filter fun π => ∃ w : GU σ n, IsPermW w π ∧ φ w ≠ 0 with hS
   have hSne : S.Nonempty := by
-    obtain ⟨b, w, i, π, hb, hw, hi, e⟩ := GlobalTheory.T.unitary_iwasawa_bruhat_decomposition L σ n hσ hσv g
+    obtain ⟨b, w, i, π, hb, hw, hi, e⟩ := _root_.GlobalTheory.CompanionTheory.BruhatIw.bruhat_iwasawa L σ n hσ hσv g
     refine ⟨π, Finset.mem_filter.2 ⟨Finset.mem_univ _, w, hw, fun h => hg ?_⟩⟩
     rw [e, hdec _ _ _ hb hi, h, mul_zero]
   obtain ⟨π, hπS, hmin⟩ := Finset.exists_min_image S (permWt t) hSne
@@ -162,8 +162,8 @@ theorem aOp_inj (q : ℕ) (hq : (q : ℂ) ≠ 0) {m : ℕ} (α : Fin m → ℂ) 
   have hterm : ∀ r ∈ R, φ (w * r * t) = if φ (w * r * t) = x then x else 0 := fun r hr => by
     split_ifs with h
     · exact h
-    obtain ⟨b, w', i, π', hb, hw', hi, e⟩ := GlobalTheory.T.unitary_iwasawa_bruhat_decomposition L σ n hσ hσv (w * r * t)
-    rcases GlobalTheory.T.bruhat_weight_decreases L σ n t w w' b r i π π' htD htS hw hw' hb (hRI r hr) hi e with hlt | ⟨rfl, hord⟩
+    obtain ⟨b, w', i, π', hb, hw', hi, e⟩ := _root_.GlobalTheory.CompanionTheory.BruhatIw.bruhat_iwasawa L σ n hσ hσv (w * r * t)
+    rcases _root_.GlobalTheory.CompanionTheory.SatPow.cell_triang L σ n t w w' b r i π π' htD htS hw hw' hb (hRI r hr) hi e with hlt | ⟨rfl, hord⟩
     · have hz : φ w' = 0 := by
         by_contra hz
         exact absurd (hmin π' (Finset.mem_filter.2 ⟨Finset.mem_univ _, w', hw', hz⟩)) (not_le.2 hlt)
@@ -204,7 +204,7 @@ theorem finiteDimensional_iwFix (hσ : ∀ x, σ (σ x) = x) (hσv : ∀ x, Valu
   rw [injective_iff_map_eq_zero]
   intro φ hφ
   refine Subtype.ext (funext fun g => ?_)
-  obtain ⟨b, w, i, π, hb, hw, hi, rfl⟩ := GlobalTheory.T.unitary_iwasawa_bruhat_decomposition L σ n hσ hσv g
+  obtain ⟨b, w, i, π, hb, hw, hi, rfl⟩ := _root_.GlobalTheory.CompanionTheory.BruhatIw.bruhat_iwasawa L σ n hσ hσv g
   have h1 : (φ : GU σ n → ℂ) w = 0 := by
     have := congrFun hφ π
     rwa [show F φ π = (φ : GU σ n → ℂ) (wOf π) from rfl, hwOf w π hw] at this

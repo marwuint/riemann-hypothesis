@@ -107,8 +107,6 @@ theorem restWordStep_of (C CLa : ℝ) (hLe : RestLeOfG) (h1 : OneOpStep C CLa) (
     have h0 := wordLoss_nonneg F l jz u
     linarith
 
-def RestLeOfG' : Prop := RestLeOfG
-
 def RestOneOp (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop :=
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → OneOpStep C CLa
 

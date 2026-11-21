@@ -20,37 +20,6 @@ theorem tr_alg_mul (q : ℚ_[l]) (z : K) :
     Algebra.trace ℚ_[l] K (algebraMap ℚ_[l] K q * z) = q * Algebra.trace ℚ_[l] K z := by
   rw [← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul]
 
-theorem norm_l_pos : (0 : ℝ) < ‖(l : ℚ_[l])‖ :=
-  norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)
-
-theorem bound : ∃ m : ℕ, ∀ x : K, P l x → algebraMap ℚ_[l] K ((l : ℚ_[l]) ^ m) * x ∈ 𝒪[K] := by
-  have hn : ((Module.finrank ℚ_[l] K : ℕ) : ℚ_[l]) ≠ 0 := by
-    have : 0 < Module.finrank ℚ_[l] K := Module.finrank_pos
-    exact_mod_cast this.ne'
-  obtain ⟨m, hm⟩ := exists_pow_lt_of_lt_one (norm_pos_iff.mpr hn) (Padic.norm_p_lt_one (p := l))
-  refine ⟨m, fun x hx => ?_⟩
-  by_contra hcx
-  rw [Valuation.mem_integer_iff, not_le] at hcx
-  have hcx0 : algebraMap ℚ_[l] K ((l : ℚ_[l]) ^ m) * x ≠ 0 := by
-    intro h
-    rw [h, map_zero] at hcx
-    exact absurd hcx (not_lt.mpr zero_le)
-  have hb : (algebraMap ℚ_[l] K ((l : ℚ_[l]) ^ m) * x)⁻¹ ∈ 𝒪[K] := by
-    rw [Valuation.mem_integer_iff, map_inv₀]
-    exact inv_le_one_of_one_le₀ hcx.le
-  have hx0 : x ≠ 0 := right_ne_zero_of_mul hcx0
-  have hc0 : algebraMap ℚ_[l] K ((l : ℚ_[l]) ^ m) ≠ 0 := left_ne_zero_of_mul hcx0
-  have h1 := hx ⟨_, hb⟩
-  change ‖Algebra.trace ℚ_[l] K (x * (algebraMap ℚ_[l] K ((l : ℚ_[l]) ^ m) * x)⁻¹)‖ ≤ 1 at h1
-  have e : x * (algebraMap ℚ_[l] K ((l : ℚ_[l]) ^ m) * x)⁻¹ =
-      algebraMap ℚ_[l] K (((l : ℚ_[l]) ^ m)⁻¹) := by
-    rw [map_inv₀]
-    field_simp
-  rw [e, Algebra.trace_algebraMap, nsmul_eq_mul, norm_mul, norm_inv, norm_pow] at h1
-  have hpos : 0 < ‖(l : ℚ_[l])‖ ^ m := pow_pos (norm_l_pos l) m
-  rw [mul_inv_le_iff₀ hpos, one_mul] at h1
-  exact absurd hm (not_lt.mpr h1)
-
 private theorem t2_lemma : T2Space K := by
   refine IsTopologicalAddGroup.t2Space_of_zero_sep ?_
   intro x hx

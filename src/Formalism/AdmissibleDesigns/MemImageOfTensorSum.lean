@@ -398,10 +398,6 @@ theorem u_one (l : K.Col i dc) (hU : UnrHom i dc l) : ∃ g ∈ Γc i dc l, u i 
   obtain ⟨_, g, hg⟩ := uCol_spec i dc l hU
   exact ⟨g, g.2, by rw [u_mem]; exact hg⟩
 
-theorem unrFin (hU : ∀ l, UnrHom i dc l) (hF : ∀ l, UnrFinIn i dc δO l) : KHf.UnrFin i dc δO (uz i dc δO) := by
-  intro l
-  exact hF l (uCol i dc l) (uCol_spec i dc l (hU l)).1
-
 end Unr
 
 end Formalism.MainNotions.N.KFin

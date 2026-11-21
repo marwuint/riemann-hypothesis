@@ -50,16 +50,6 @@ theorem T_cons (l : ι) (w : List ι) (A : PS k 1 d) : T F u (l :: w) A = Dof F 
 theorem T_append (w w' : List ι) (A : PS k 1 d) : T F u (w ++ w') A = T F u w (T F u w' A) := by
   simp [T, List.foldr_append]
 
-theorem T_add (w : List ι) (A B : PS k 1 d) : T F u w (A + B) = T F u w A + T F u w B := by
-  induction w with
-  | nil => rfl
-  | cons l w ih => rw [T_cons, T_cons, T_cons, ih, dof_add]
-
-theorem T_zero (w : List ι) : T F u w (0 : PS k 1 d) = 0 := by
-  induction w with
-  | nil => rfl
-  | cons l w ih => rw [T_cons, ih, dof_zero]
-
 def splits : List ι → List (List ι × List ι)
   | [] => [([], [])]
   | l :: w => (splits w).map (fun p => (l :: p.1, p.2)) ++ (splits w).map (fun p => (p.1, l :: p.2))

@@ -2,12 +2,20 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceOfAt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsNormIsRatScalar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjFunBaseRoot
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteSideRealisationsCoefMapDifferRootOfUnityStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteSideRealisationsCoefMapDifferRootOfUnity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvOfRoot
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatOfOneMapOverL
 import Formalism.LocalToGlobal.IndefiniteReal.FWCentral
 import Development.AbelianVarietyTheory.Counterexamples.DegenerateExamples.PlaceExOfSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjointIntertwines
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugateTuplesConjugateResidueLevelsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugateTuplesConjugateResidueLevels
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ConjTupRefl
+import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
+import Development.AbelianVarietyTheory.Definitions.ThetaValues.ExistsRootNotMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapOfOfExtends
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsConjugateFormsThetaLiftEqThetaSeries
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousCoeffBlockAct
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemOfForallRingEquivFixed
@@ -167,7 +175,7 @@ theorem conjForm_jV {F : Face D A} (hR : GlobalTheory.Hk3.Core R F) {i : Fin D.R
     (hτ : ∀ z ∈ D.what₂.embLL.fieldRange, τ z = z) (y : A.fam.amb.FL i A.μ0) :
     ConjForm R i τ c A.μ0 A.μ0 (R.jV i A.μ0 y) (R.jV i A.μ0 y) := by
   intro h
-  have hZ := (GlobalTheory.T.conjugate_tuples_conjugate_residue_levels D G Pl0 T0 A T R F κ v₀ hR τ A.μ0 A.μ0 (conjTup_base hR τ)).2.2.2 i hfix
+  have hZ := (_root_.GlobalTheory.ConjRes.conj_res D G Pl0 T0 A T R F κ v₀ hR τ A.μ0 A.μ0 (conjTup_base hR τ)).2.2.2 i hfix
   have aux := hpins.2.lift.c0
   obtain ⟨gramR, c0R, c0L, hT, hB⟩ := aux
   have aux2 := GlobalTheory.PlaceValues.ext_val _ _ (R.B.L i A.μ0).pres (hT.mapL i) (hT.coefL i A.μ0) y.1 (Formalism.IndefR.FWT.fin _ h)
@@ -218,7 +226,7 @@ theorem GlobalTheory.PhaseOneOnto.phase_mem_coefField : GlobalTheory.Published.C
   have hs : sg0 D A3.A = D.what₂.embLL := sgAt_mk _ Rl.hv0
 
   obtain ⟨gramR', c0R', c0L', hft', hbc⟩ := hR.pins.2.lift.c0
-  obtain ⟨a, ⟨k, hk, hak⟩, hca⟩ := GlobalTheory.T.definiteSideRealisations_coefMap_differ_rootOfUnity Rl.B Rl.pl _ Rl.Q (labLL D) _ _ gramR gramR' c0R c0R' c0L c0L' hFT hft' j
+  obtain ⟨a, ⟨k, hk, hak⟩, hca⟩ := _root_.GlobalTheory.CoefRoot.coef_root Rl.B Rl.pl _ Rl.Q (labLL D) _ _ gramR gramR' c0R c0R' c0L c0L' hFT hft' j
   have ha0 : a ≠ 0 := fun e => by rw [e, zero_pow hk] at hak; exact zero_ne_one hak
   have hb0 : D.what₂.embLL a ≠ 0 := (map_ne_zero _).2 ha0
   obtain ⟨ph', hph'⟩ : ∃ ph', ph' = (D.what₂.embLL a)⁻¹ * ph := ⟨_, rfl⟩

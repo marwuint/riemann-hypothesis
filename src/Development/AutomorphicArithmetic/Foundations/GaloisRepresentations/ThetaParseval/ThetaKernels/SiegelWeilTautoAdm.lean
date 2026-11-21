@@ -41,7 +41,7 @@ theorem exists_meanAdm_k (hS : GlobalTheory.Published.SiegelSetUnitary) (hP : _r
     fun f => Submodule.subset_span ⟨f, gf, hgf, rfl⟩
   have hTv : ∀ h f, Th h f = thetaSum F (d.S h (pureA F f gf)) := fun h f => by
     rw [← hTh h f, LinearMap.comp_apply, hlθ _ (hpres h _ (hmem f))]
-  haveI : BarrelledSpace ℂ (SchwartzMap (d.κ → mixedEmbedding.mixedSpace F) ℂ) := GlobalTheory.T.schwartzMap_barrelledSpace' _
+  haveI : BarrelledSpace ℂ (SchwartzMap (d.κ → mixedEmbedding.mixedSpace F) ℂ) := _root_.GlobalTheory.schwartzMap_barrelledSpace _
   have hUE : UniformEquicontinuous ((↑) ∘ Th) := (norm_withSeminorms ℂ ℂ).banach_steinhaus fun _ f => by
     obtain ⟨C, hC⟩ := _root_.PositivityTheory.SiegelWeilFormula.Tauto.bdd_S_k hS hP hT d (hmem f)
     refine ⟨C, ?_⟩

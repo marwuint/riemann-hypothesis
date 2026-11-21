@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlkGLMem
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteVolumeAdelicUnitaryQuotient
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmDataIsCMExtAndGramIsHermND
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfiniteHeightTransposeGramUnitaryLeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinprodFiniteHeightTransposeGramUnitaryLeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinprodFiniteHeightTransposeGramUnitaryLe
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
@@ -74,7 +74,7 @@ theorem ht_kapX_le (θ : InfFam D) (hθ : IsInfFam θ) (X : HSp D) {d : ℕ} (e 
     {J : Matrix (Fin d) (Fin d) D.host.E} (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) :
     ∃ C : NNReal, ∀ h : GA D X, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht (kapX X e hJ h) ≤ C * GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X h := by
   obtain ⟨C₁, h₁⟩ := GlobalTheory.T.infiniteHeight_transposeGramUnitary_le D θ hθ X e hJ
-  obtain ⟨C₂, h₂⟩ := GlobalTheory.T.finprod_finiteHeight_transposeGramUnitary_le D X e hJ
+  obtain ⟨C₂, h₂⟩ := _root_.GlobalTheory.SquareAgree.finprod_htFin_kapX_le D X e hJ
   refine ⟨C₁ * C₂, fun h => ?_⟩
   show (∏ w, GlobalTheory.AdelicU.htInf D.host.F w (Formalism.UG.bc (GlobalTheory.AdelicU.compInf D.host.F D.host.E w) (kapX X e hJ h).1)) *
       ∏ᶠ v, GlobalTheory.AdelicU.htFin D.host.F v (Formalism.UG.bc (GlobalTheory.AdelicU.compFin D.host.F D.host.E v) (kapX X e hJ h).1) ≤

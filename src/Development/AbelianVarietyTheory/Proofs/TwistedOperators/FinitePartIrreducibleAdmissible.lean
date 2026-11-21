@@ -13,16 +13,14 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.La
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.LabesseWaldspurger
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RadfordShufflePolynomialHolds
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspidalNoRadicalFixed
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ConstantTermVanishing
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.PseudoCoefficientSeparation
+import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdelicUnitaryClosureLocalComponentsOpen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalFixed
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IrreducibleUnitaryRepEqFiniteSmoothPartTensorDisStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FactorisableRestrictedTensorLevelStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesFactorLocalStableStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IrreducibleUnitaryRepEqFiniteSmoothPartTensorDis
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesFactorLocalStable
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFinsetSumTranslatesFixedCompactSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SpanValuesDenseFinitePartSubrepStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SpanValuesDenseFinitePartSubrep
+
 open MeasureTheory Set Filter NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary GlobalTheory.AutMult Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.Mult
@@ -54,95 +52,12 @@ def stabGroup {G X : Type} [Group G] [AddCommGroup X] [Module ℂ X] (ρ : Repre
         conv_lhs => rw [← ha]
         rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }
 
-theorem isOpen_stab_of_fixed {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup X]
-    [Module ℂ X] (ρ : Representation ℂ G X) {K : Subgroup G} (hK : IsOpen (K : Set G)) {x : X}
-    (hx : ∀ k ∈ K, ρ k x = x) : IsOpen {g | ρ g x = x} :=
-  Subgroup.isOpen_mono (H₂ := stabGroup ρ x) (fun k hk => hx k hk) hK
-
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {H : Type} [NormedAddCommGroup H]
   [InnerProductSpace ℂ H] {π : GA D V →* (H →L[ℂ] H)}
-
-theorem continuous_locFin' (v : HeightOneSpectrum (𝓞 D.host.F)) : Continuous (locFin V v) :=
-  (continuous_emb D.sp.cm.sig V.gram v).subtype_mk _
-
-theorem toFin_embV (v : HeightOneSpectrum (𝓞 D.host.F)) (k : Gv V v) : toFin V (embV V v k) = locFin V v k := by
-  rw [← toFin_coe (locFin V v k)]; rfl
-
-example (Φ : ContinuousMultilinearMap ℂ M.H H) (X : Submodule ℂ H) (h1 : ∀ y, Φ y ∈ X) (h2 : Φ ∈ homDS M π ⊤) : Φ ∈ homDS M π X :=
-  ⟨h1, h2.2⟩
 
 end GlobalTheory.FinPartIrrAdm
 
 namespace GlobalTheory.FinPartIrrAdm
-open GlobalTheory.PRep (fixed smoothPart smoothRep IsSmooth)
-open Formalism.MainNotions.KudlaSiegelWeil (Restr)
-
-variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {H : Type} [NormedAddCommGroup H]
-  [InnerProductSpace ℂ H] {π : GA D V →* (H →L[ℂ] H)}
-
-theorem admissible (hF : GlobalTheory.Published.FlathFactorisation) (hπ : IsIrrUnitary π) (hD : HasDSComp M π)
-    (hU : IsSubrep π ⊤) : IsAdmissible (finPartDSSm M hU) := by
-  classical
-  refine ⟨isSmooth_smoothRep _, fun K hKo hKc => ?_⟩
-  obtain ⟨R, ξ, B, hR, hKξ⟩ := hF.exists_factorisation hπ
-  haveI : Submodule.IsLattice D.host.E (frameLat V) := SelfDual.isLattice_frameLat V
-  obtain ⟨S0, hS0⟩ := GlobalTheory.PlaceGen.exists_levelOff_le D.sp.cm.sig V.gram (frameLat V) (K.comap (toFin V))
-    (hKo.preimage (continuous_toFin V))
-  let Kp : ∀ v, Subgroup (Gv V v) := fun v => K.comap (locFin V v) ⊓ Kv V v
-  have hKpeq : ∀ v ∉ S0, Kp v = Kv V v := fun v hv => inf_eq_right.2 fun k hk => by
-    have h := hS0 (emb_mem_levelOff hv hk)
-    change toFin V (embV V v k) ∈ K at h
-    rw [toFin_embV] at h
-    exact h
-  have hKpo : ∀ v, IsOpen (Kp v : Set (Gv V v)) := fun v =>
-    (hKo.preimage (continuous_locFin' v)).inter (isOpen_stabLoc _ _ _ v)
-  have hKpc : ∀ v, IsCompact (Kp v : Set (Gv V v)) := fun v =>
-    (isCompact_stabLoc _ _ (frameLat V) v).inter_left
-      (Subgroup.isClosed_of_isOpen (K.comap (locFin V v)) (hKo.preimage (continuous_locFin' v)))
-  let Q : ∀ v, Submodule ℂ (R (.inr v)).H := fun v =>
-    (fixed (smRep (Flath.finFactor R v)) (Kp v)).map (smoothPart (toRep (Flath.finFactor R v))).subtype
-  have hQfin : ∀ v, FiniteDimensional ℂ (Q v) := fun v => by
-    haveI := (hR.2.1 v).2.2 (Kp v) (hKpo v) (hKpc v)
-    infer_instance
-  have hQmem : ∀ v (z : (R (.inr v)).H), (∀ k ∈ Kp v, (R (.inr v)).π k z = z) → z ∈ Q v := fun v z hz =>
-    ⟨⟨z, isOpen_stab_of_fixed _ (hKpo v) hz⟩, mem_fixed_iff.2 fun k hk => Subtype.ext (hz k hk), rfl⟩
-  have hQev : ∀ᶠ v in Filter.cofinite, Q v ≤ ℂ ∙ ξ (.inr v) := by
-    have hS : ∀ᶠ v in Filter.cofinite, v ∉ S0 :=
-      Filter.eventually_cofinite.2 (S0.finite_toSet.subset fun v hv => by simpa using hv)
-    refine (hKξ.and hS).mono fun v hv => ?_
-    rintro _ ⟨w, hw, rfl⟩
-    rw [← hv.1]
-    refine mem_fixed_iff.2 fun k hk => ?_
-    exact congrArg Subtype.val (mem_fixed_iff.1 hw k (by rw [hKpeq v hv.2]; exact hk))
-  obtain ⟨X, hX⟩ : ∃ X : Submodule ℂ H,
-      X = (Submodule.span ℂ {z | ∃ y, Restr ξ y ∧ (∀ v, y (.inr v) ∈ Q v) ∧ z = B y}).topologicalClosure := ⟨_, rfl⟩
-  haveI : FiniteDimensional ℂ (homDS M π X) := hX ▸ GlobalTheory.T.finiteDimensional_homDS_closure_span_restricted D V S M H π hπ hD R ξ B hR.1 Q hQfin hQev
-  have hval0 : ∀ Φ0 : ContinuousMultilinearMap ℂ M.H H, Φ0 ∈ homDS M π ⊤ →
-      (∀ v, ∀ k ∈ Kp v, ∀ y, π (emb D.sp.cm.sig V.gram v k) (Φ0 y) = Φ0 y) → Φ0 ∈ homDS M π X := by
-    intro Φ0 hΦ0m hfx
-    refine ⟨fun y => ?_, hΦ0m.2⟩
-    have hev : ∀ᶠ v in Filter.cofinite, ∀ k ∈ Kp v, (R (.inr v)).π k (ξ (.inr v)) = ξ (.inr v) :=
-      (hR.1.eventually_fixed (frameLat V)).mono fun v hv k hk => hv k hk.2
-    have hx := GlobalTheory.T.factorisable_restricted_tensor_level D.sp.cm.sig V.rank V.gram H π hπ R ξ B hR.1 Kp hev (Φ0 y) (fun v k hk => hfx v k hk y)
-    have hsub : {z | ∃ y, Restr ξ y ∧ (∀ v, ∀ k ∈ Kp v, (R (.inr v)).π k (y (.inr v)) = y (.inr v)) ∧ z = B y} ⊆
-        {z | ∃ y, Restr ξ y ∧ (∀ v, y (.inr v) ∈ Q v) ∧ z = B y} := by
-      rintro _ ⟨y', hy', hfix, rfl⟩
-      exact ⟨y', hy', fun v => hQmem v _ (hfix v), rfl⟩
-    rw [hX]
-    exact Submodule.topologicalClosure_mono (Submodule.span_mono hsub) hx
-  have hval : ∀ Φ : fixed (finPartDSSm M hU) K,
-      (((Φ : smoothPart (finPartDS M hU)) : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) ∈ homDS M π X :=
-    fun Φ => hval0 _ ((Φ : smoothPart (finPartDS M hU)) : homDS M π ⊤).2 fun v k hk y =>
-      congrArg (fun Ψ : smoothPart (finPartDS M hU) =>
-        ((Ψ : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) y) (mem_fixed_iff.1 Φ.2 _ hk.1)
-  let f : fixed (finPartDSSm M hU) K →ₗ[ℂ] homDS M π X :=
-    LinearMap.codRestrict (homDS M π X)
-      ((homDS M π ⊤).subtype ∘ₗ (smoothPart (finPartDS M hU)).subtype ∘ₗ (fixed (finPartDSSm M hU) K).subtype) hval
-  have hf : Function.Injective f := fun a b e => by
-    have e' := congrArg Subtype.val e
-    exact Subtype.ext (Subtype.ext (Subtype.ext e'))
-  exact Module.Finite.of_injective f hf
-
 end GlobalTheory.FinPartIrrAdm
 
 namespace GlobalTheory.FinPartIrrAdm
@@ -173,7 +88,7 @@ theorem irreducible [CompleteSpace H] (hπ : IsIrrUnitary π) (hD : HasDSComp M 
     exact inner_eq_bePi (fun τ => isIrrUnitary_dsRep M τ) hunit (Φ : homDS M π ⊤).2 (Φ' : homDS M π ⊤).2 y y'
 
   have hne : ∃ w : smoothPart (finPartDS M hU), w ≠ 0 := by
-    obtain ⟨T, -, -, hTd⟩ := GlobalTheory.T.irreducibleUnitaryRep_eq_finiteSmoothPart_tensor_discreteSeries D V S M H π hπ hD hU
+    obtain ⟨T, -, -, hTd⟩ := _root_.GlobalTheory.TrCopy.isCopyFinDS_finPartDSSm D V S M H π hπ hD hU
     by_contra hc
     push_neg at hc
     have h0 : Submodule.span ℂ {v | ∃ w y, v = T w y} = ⊥ := by
@@ -193,7 +108,7 @@ theorem irreducible [CompleteSpace H] (hπ : IsIrrUnitary π) (hD : HasDSComp M 
   by_cases hN : N = ⊥
   · exact Or.inl hN
   refine Or.inr (Subrepresentation.toSubmodule_injective (eq_top_iff.2 fun Φ _ => ?_))
-  have hdense := GlobalTheory.T.span_values_dense_finitePartSubrep D V S M H π hπ hU N hN
+  have hdense := _root_.GlobalTheory.TrFinDense.span_values_dense D V S M H π hπ hU N hN
   obtain ⟨K0, hK0o, hK0c⟩ := GlobalTheory.CuspDec.exists_compact_open V
   have hΦo : IsOpen ((stabGroup (finPartDSSm M hU) Φ : Subgroup (GfC V)) : Set (GfC V)) := by
     have e : {g : GfC V | finPartDSSm M hU g Φ = Φ} = {g | finPartDS M hU g Φ = Φ} :=
@@ -263,9 +178,5 @@ theorem irreducible [CompleteSpace H] (hπ : IsIrrUnitary π) (hD : HasDSComp M 
 end GlobalTheory.FinPartIrrAdm
 
 namespace GlobalTheory.FinPartIrrAdm
-
-theorem irreducible_admissible : GlobalTheory.Published.FlathFactorisation → ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsIrrUnitary π → HasDSComp M π → ∀ hU : IsSubrep π ⊤, (finPartDSSm M hU).IsIrreducible ∧ IsAdmissible (finPartDSSm M hU) := by
-  intro hF D V S M H _ _ _ π hπ hD hU
-  exact ⟨irreducible hπ hD hU (admissible hF hπ hD hU), admissible hF hπ hD hU⟩
 
 end GlobalTheory.FinPartIrrAdm

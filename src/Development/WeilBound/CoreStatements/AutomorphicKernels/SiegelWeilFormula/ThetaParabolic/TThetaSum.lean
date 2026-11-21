@@ -86,30 +86,6 @@ theorem tPar : TPar := by
   · simp only [SD.T]
     rw [l_rho_S h hψ g _ hΦ, Matrix.mul_assoc]
 
-def TInj : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
-  (d : SD σ), ∀ Φ ∈ d.sch, d.T Φ = 0 → Φ = 0
-
-theorem tInj : TInj := by
-  intro F E _ _ _ _ _ σ d Φ hΦ h0
-  have h := d.ok.dbl
-  have hψ : IsStd d.B.ψ := d.ok.good.std
-  obtain ⟨t0, hB, hBx, -, -⟩ := frameData d
-  refine Box.dbl_inj hψ h hΦ fun w => ?_
-  obtain ⟨P, hP⟩ : ∃ P, P = w * (incM F (d.b⁻¹).1)ᵀ := ⟨_, rfl⟩
-  have hw : w = P.toCols₁ * (incM F t0.1)ᵀ * (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E))ᵀ +
-      P.toCols₂ * (incM F d.b.1.toCols₂)ᵀ :=
-    calc w = P * (incM F d.b.1)ᵀ := by
-          rw [hP, Matrix.mul_assoc, ← Matrix.transpose_mul, ← incM_mul, Units.mul_inv, incM_one, Matrix.transpose_one,
-            Matrix.mul_one]
-      _ = Matrix.fromCols P.toCols₁ P.toCols₂ *
-          (Matrix.fromCols (incM F d.b.1.toCols₁) (incM F d.b.1.toCols₂))ᵀ := by rw [Matrix.fromCols_toCols, ← hB]
-      _ = _ := by
-          rw [Matrix.transpose_fromCols, Matrix.fromCols_mul_fromRows, hBx, Matrix.transpose_mul, Matrix.mul_assoc]
-  rw [hw, l_shift h hψ _ _ hΦ]
-  have e := congrFun h0 P.toCols₂
-  simp only [SD.T, Pi.zero_apply] at e
-  rw [e, mul_zero]
-
 def TThetaSum : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
   (d : SD σ), ∀ Φ ∈ d.sch, HasSum (fun X : Matrix (Fin d.m) (Fin d.n) E => d.T Φ (incM F X)) (thetaSum F Φ)
 
@@ -166,13 +142,6 @@ theorem tThetaSum : TThetaSum := by
   rw [show (fun y : Matrix (Fin d.m) (Fin d.n) E => d.l (d.dd.rho d.B.ψ (incM F (Matrix.fromCols y (-y))) Φ)) =
       (fun X => d.T Φ (incM F X)) ∘ e from funext hterm] at hs
   exact (Equiv.hasSum_iff e).1 hs
-
-theorem tBij_of
-    (h1 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : SD σ),
-      ∀ Φ ∈ d.sch, d.T Φ ∈ d.schM)
-    (h2 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : SD σ),
-      ∀ f ∈ d.schM, ∃ Φ ∈ d.sch, d.T Φ = f) : TBij :=
-  fun F E _ _ _ _ _ σ d => ⟨h1 F E σ d, h2 F E σ d, tInj F E σ d⟩
 
 theorem tTheta_of
     (h2 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : SD σ),

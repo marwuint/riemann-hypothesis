@@ -2,8 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAdmissibleSubalgebra
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusBasicLaws
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerPotentialRelationLinearHeckeStableStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerPotentialRelationTrivialEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerPotentialRelationLinearHeckeStable
+import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerPotentialRelationTrivialEqZero
 
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
@@ -124,7 +125,7 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 theorem rel_sum (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {n : ℕ} (b : Fin n → X.Fn l)
     (F : Fin n → ℂ → MvPolynomial (Fin 2) ℤ_[l]) (hR : ∀ j, Rel X l (b j) (F j)) (c : Fin n → ℤ_[l]) :
     Rel X l (∑ j, c j • b j) (∑ j, c j • F j) := by
-  obtain ⟨hadd, hzero, hsmul, -, -⟩ := GlobalTheory.T.kummerPotentialRelation_linear_hecke_stable Ω ε X l
+  obtain ⟨hadd, hzero, hsmul, -, -⟩ := _root_.GlobalTheory.KZ.H3.rel_ops Ω ε X l
   have : ∀ s : Finset (Fin n), Rel X l (∑ j ∈ s, c j • b j) (∑ j ∈ s, c j • F j) := by
     intro s
     induction s using Finset.induction_on with
@@ -179,7 +180,7 @@ theorem lam_fst_eq_zero_of_triv : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (�
     have hG : (∑ i, c i a • F i) = fun z => G a z := by
       funext z; simp [G, Finset.sum_apply]
     rw [hG] at hR
-    exact GlobalTheory.T.kummerPotentialRelation_trivial_eq_zero Ω ε X l w Γ M₀ hM₀ hΓ _ _ hR (hGT a)
+    exact _root_.GlobalTheory.KZ.H3.rel_triv_eq_zero Ω ε X l w Γ M₀ hM₀ hΓ _ _ hR (hGT a)
   rw [hp1]
   exact tmul_sum_zero f v c hf b hb
 

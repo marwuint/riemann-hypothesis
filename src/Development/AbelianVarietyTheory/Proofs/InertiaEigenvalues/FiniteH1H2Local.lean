@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.GaloisCohomology.LocalTateDualityK
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteOfPerfectPairingZmodStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteOfPerfectPairingZmod
 open Formalism.GaloisCohomology ReciprocityTheory.Gal
 
 namespace GlobalTheory
@@ -12,7 +12,7 @@ theorem finite_H1_H2_of_localTateDuality : LocalTateDualityK → ∀ (l : ℕ) [
   obtain ⟨e⟩ := hC
   haveI hCfin : Finite (H2 ((charRep (cycK l K r)).comp (MonoidHom.id (GK l K)))) :=
     Finite.of_equiv _ e.toEquiv.symm
-  have hAB := GlobalTheory.T.finite_of_bijective_pairing_zmod (l ^ r) _ _ _ _ ⟨e⟩ h11 h11f
+  have hAB := _root_.GlobalTheory.finite_of_perfect_pairing_zmod (l ^ r) _ _ _ _ ⟨e⟩ h11 h11f
   refine ⟨hAB.2, ?_⟩
   haveI : Finite (TDual (ZMod (l ^ r)) M) :=
     Finite.of_injective (fun φ : TDual (ZMod (l ^ r)) M => (φ : M → ZMod (l ^ r)))

@@ -31,13 +31,6 @@ private theorem linearIndependent_smul_basis_pairs {Z Q O L V κ σ : Type*} [Co
   rw [hf]
   exact hQ
 
-private theorem aux {Z Q O L V κ σ : Type*} [CommRing Z] [IsDomain Z] [Field Q] [Algebra Z Q] [IsFractionRing Z Q]
-    [CommRing O] [IsDomain O] [Field L] [Algebra O L] [IsFractionRing O L] [Algebra Z O] [Algebra Q L] [Algebra Z L]
-    [IsScalarTower Z O L] [IsScalarTower Z Q L] [AddCommGroup V] [Module L V] [Module O V] [Module Q V]
-    [IsScalarTower O L V] [IsScalarTower Q L V] (M : Submodule O V) (b : Module.Basis κ O M) (ω : Module.Basis σ Z O) :
-    LinearIndependent Q (fun p : σ × κ => (algebraMap O L (ω p.1)) • ((b p.2 : M) : V)) := by
-  exact linearIndependent_smul_basis_pairs M b ω
-
 theorem _root_.UpperTheory.KN.linearIndependent_Ql_integerBasis_smul_latticeBasis :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (κ σ : Type) [Fintype κ] [Fintype σ] (b : Module.Basis κ ↥(OL LL) ↥T.L.T) (ω : Module.Basis σ ℤ_[l] ↥(OL LL)), LinearIndependent ℚ_[l] (fun p : σ × κ => ((ω p.1 : ↥(OL LL)) : ↥LL.1) • ((b p.2 : ↥T.L.T) : T.V)) := by
   intro l _ LL T κ σ _ _ b ω

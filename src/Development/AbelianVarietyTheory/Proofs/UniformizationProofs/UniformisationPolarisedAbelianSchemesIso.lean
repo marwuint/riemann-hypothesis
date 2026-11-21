@@ -5,7 +5,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRin
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.InvariantFunctionsDescend
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UnifPreAbelianPartIso
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationPolarisationsAgreeAtLevelStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsIsoOfCompatibleAbelianThickeningsStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsIsoOfCompatibleAbelianThickenings
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out
@@ -108,7 +108,7 @@ theorem unifPre_polarised_iso :
     rw [← cancel_epi (U'.gt e).q.left, ← Category.assoc, ← trans_comp_q, Category.assoc, hβl,
       trans_comp_q, ← Category.assoc, hβl]
   obtain ⟨hN, -, -, hC⟩ := hR
-  obtain ⟨Φ, w, hw, H⟩ := T.exists_iso_of_compatible_abelianThickenings hS hA R I D.toPre.P D'.toPre.P β v hvg hc (by
+  obtain ⟨Φ, w, hw, H⟩ := _root_.GlobalTheory.exists_iso_of_compatible_thickenings hS hA R I D.toPre.P D'.toPre.P β v hvg hc (by
     intro e Z r z j j' hj hj'
     have := (U'.gt e).q_flat
     have := (U'.gt e).q_surj

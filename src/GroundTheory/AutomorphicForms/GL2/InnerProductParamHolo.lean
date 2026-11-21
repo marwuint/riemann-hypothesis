@@ -70,37 +70,6 @@ theorem differentiableOn_integral_of_bound {α : Type*} [MeasurableSpace α] {μ
     rw [closure_ball s hr0.ne']
     exact (hF x).mono ((hball s hs).trans hsub)
 
-open GroundTheory.Global.Elliptic in
-
-theorem residue_integral_eq {α : Type*} [MeasurableSpace α] {μ : Measure α} {F A : ℂ → α → ℂ}
-    {R : α → ℂ} {p : ℂ} {ε : ℝ} (hε : 0 < ε) (hR : Integrable R μ)
-    (hA : DifferentiableOn ℂ (fun s => ∫ x, A s x ∂μ) (ball p ε))
-    (hAint : ∀ s ∈ ball p ε, Integrable (A s) μ)
-    (hFA : ∀ s ∈ ball p ε, s ≠ p → ∀ x, F s x = R x * (s - p)⁻¹ + A s x) :
-    residue (fun s => ∫ x, F s x ∂μ) p = ∫ x, R x ∂μ := by
-  refine residue_eq_of_eventuallyEq (u := fun s => ∫ x, A s x ∂μ)
-    (hA.analyticAt (isOpen_ball.mem_nhds (mem_ball_self hε))) ?_
-  rw [EventuallyEq, eventually_nhdsWithin_iff]
-  filter_upwards [isOpen_ball.mem_nhds (mem_ball_self hε)] with s hs hsp
-  rw [show (fun x => F s x) = fun x => R x * (s - p)⁻¹ + A s x from funext (hFA s hs hsp),
-    integral_add (hR.mul_const _) (hAint s hs), integral_mul_const]
-
-open GroundTheory.Global.Elliptic in
-
-theorem residue_mul_eq {Φ H u : ℂ → ℂ} {p c : ℂ} (hH : AnalyticAt ℂ H p) (hu : AnalyticAt ℂ u p)
-    (hΦ : Φ =ᶠ[𝓝[≠] p] fun z => c * (z - p)⁻¹ + u z) :
-    residue (fun z => H z * Φ z) p = H p * c := by
-  have hd : AnalyticAt ℂ (dslope H p) p := by
-    obtain ⟨pf, hpf⟩ := hH
-    exact ⟨_, hpf.has_fpower_series_dslope_fslope⟩
-  refine residue_eq_of_eventuallyEq (u := fun z => c * dslope H p z + H z * u z)
-    ((analyticAt_const.mul hd).add (hH.mul hu)) ?_
-  filter_upwards [hΦ, self_mem_nhdsWithin] with z hz hzp
-  rw [hz, dslope_of_ne _ hzp, slope_def_field]
-  have : z - p ≠ 0 := sub_ne_zero.2 hzp
-  field_simp
-  ring
-
 end PseudoEisenstein
 
 end

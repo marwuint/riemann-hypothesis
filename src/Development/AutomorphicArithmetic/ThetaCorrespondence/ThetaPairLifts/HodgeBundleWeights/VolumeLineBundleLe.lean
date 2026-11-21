@@ -1,5 +1,19 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
-import Development.WeilBound.CoreStatements.NefModelVolumes.VolLLe
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsModelOf
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NefFibOfIsGenerated
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
+import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverMorphismRestrictOfRelAmple
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpecializes
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralProjectiveClosureOfLinearSystemPoi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlatProjectiveModelOverRingOfIntegers
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalArithmeticVarietyModelProjectiveSpac
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackCoordinateCombinationRatioAndVanish
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FubiniStudyCoordinateCombinationsNoCommonZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameConjugateEmbeddingEqConjMulUnitary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefShiftedFubiniStudyOfShortGenerators
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CountingVolumeLeSelfIntersectionNefHermitianBund
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.VolumeEstimateHypotheses
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ExistsNefModelOfImage
@@ -13,7 +27,7 @@ theorem volume_line_bundle_le : _root_.SelfIntersectionVolumeEstimates.VolumeEst
   obtain ⟨k, _, X, _, p, L, A, hV, hN, hS, hA, hinj⟩ :=
     _root_.SelfIntersectionVolumeEstimates.ImageNefG.exists_nef_model_of_image hX hP D T j Y e o hG hE Z u n w abelian₂ t hGood hBir hNo hdg hShort hLam
   have hd : 0 < Module.finrank ℚ Y.d.c₂.F := Module.finrank_pos
-  have h2 := GlobalTheory.T.countingVolume_le_selfIntersection_nefHermitianBundle k X p (dimFlag (T.Q.Dw j)) (Module.finrank ℚ Y.d.c₂.F) 8 L A
+  have h2 := _root_.GlobalTheory.countVol_le_selfInter k X p (dimFlag (T.Q.Dw j)) (Module.finrank ℚ Y.d.c₂.F) 8 L A
     (fun τ => (smallL Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) τ t).encard)
     hP.q9 hV hN hS hd (by norm_num) hinj
   refine h2.trans (ENNReal.ofReal_le_ofReal ?_)

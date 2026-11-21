@@ -4,7 +4,16 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrys
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GrothendieckDeformation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerUniqueValueAbelianSchemeCommRing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKodairaSpencerValueEndomorphismLift
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NsmulEqZeroOfRadical
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveLiftIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatSurjectiveGeomFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetRingMorphismUniqueness
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PeriodComparison
+import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.PolarisationModuleIndex
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ConjugateOrderData
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonHomIdPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeLiftAlongNilpotent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupObjectLiftDividedPowers
 
@@ -22,7 +31,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.KSBijection
 
-open TrivSqZeroExt KSSymm
+open TrivSqZeroExt
 
 section Crystal
 
@@ -39,10 +48,6 @@ theorem Comp.unique (h : Comp d f k) (h' : Comp d f' k') : f = f' ∧ k = k' :=
   ⟨LinearMap.ext fun c ↦ by simpa using congrArg TrivSqZeroExt.fst ((h c).symm.trans (h' c)),
     LinearMap.ext fun c ↦ by simpa using congrArg TrivSqZeroExt.snd ((h c).symm.trans (h' c))⟩
 
-theorem comp_zero : Comp (0 : Crys (epsDP R) (DeRham.epsRed R) A) 0 0 := fun _ ↦ by
-  rw [LinearMap.zero_apply, LinearMap.zero_apply]
-  simp
-
 theorem Comp.add (h : Comp d f k) (h' : Comp d' f' k') : Comp (d + d') (f + f') (k + k') := fun c ↦ by
   rw [LinearMap.add_apply, h, h']
   ext <;> simp
@@ -55,38 +60,7 @@ theorem Comp.smul (h : Comp d f k) (r : DualNumber R) : Comp (r • d) (r.fst �
 theorem Comp.ext (hm : (constMor A).IsBC) (h : Comp d f k) (h' : Comp d' f k) : d = d' :=
   JetIsotropic.ext_of_isBC hm fun c ↦ (h c).trans (h' c).symm
 
-theorem Comp.corr (hm : (constMor A).IsBC) (h : Comp d f k) : (redMor A).Corr d f := fun c ↦ by
-  obtain ⟨z, rfl⟩ := hm.2 c
-  induction z with
-  | zero => simp only [map_zero]
-  | add x y hx hy => simp only [map_add, hx, hy]
-  | tmul r c =>
-    rw [liftSemi_tmul, LinearMap.map_smul, h, LinearMap.map_smulₛₗ, redMor_constMor, LinearMap.map_smul]
-    simp
-
-theorem Comp.push (h : Comp d f k) (u : A ⟶ A) [IsMonHom u] :
-    Comp (push (epsDP R) (DeRham.epsRed R) u d) (push (dp0 R) (𝟙 _) u f) (push (dp0 R) (𝟙 _) u k) := fun c ↦ by
-  have kk := (homMor (dp0 R) (𝟙 _) u).comp (constMor A)
-  have hM := homMor (epsDP R) (DeRham.epsRed R) u
-  have e1 := GrpMor.pull_pull (constMor A) hM kk (fun _ ↦ rfl) (by simp) c
-  have e2 := GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) u) (constMor A) kk (fun _ ↦ rfl) rfl c
-  rw [push_apply]
-  change d (hM.pull ((constMor A).pull c)) = _
-  rw [e1, ← e2, h]
-  rfl
-
 variable [IsCommMonObj A] {O : Type} [CommRing O] {a : OAct O A} (hL : LieExact A)
-
-def graph (κ : Fil A →ₗ[R] Serre.Lie a) : Submodule (DualNumber R) (Crys (epsDP R) (DeRham.epsRed R) A) where
-  carrier := {d | ∃ (f : Fil A) (k : HdR A), Comp d f k ∧ hL.toLie a k = κ f}
-  zero_mem' := ⟨0, 0, comp_zero, by simp⟩
-  add_mem' := by
-    rintro _ _ ⟨f, k, h, e⟩ ⟨f', k', h', e'⟩
-    exact ⟨f + f', k + k', h.add h', by rw [map_add, map_add, e, e']⟩
-  smul_mem' := by
-    rintro r _ ⟨f, k, h, e⟩
-    have z : hL.toLie a f = 0 := (hL.ker_toLie a).ge f.2
-    exact ⟨r.fst • f, _, h.smul r, by rw [map_add, map_smul, map_smul, map_smul, e, z, smul_zero, add_zero]⟩
 
 variable (κ : Fil A →ₗ[R] Serre.Lie a)
 

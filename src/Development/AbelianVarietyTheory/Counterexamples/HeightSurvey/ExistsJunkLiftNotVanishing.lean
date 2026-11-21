@@ -76,44 +76,6 @@ theorem isThetaFun_transpose (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (hne
 
 variable {X : ThetaX D} {T : ThetaTied D X}
 
-def noFact (X : ThetaX D) : ThetaX D := { X with fact := fun _ _ => ∅ }
-
-def allTied_noFact {A : TH.ProvA} (h : AllTied D X A) : AllTied D (noFact X) A where
-  T := { h.T with }
-  sm := h.sm
-  ty := { h.ty with }
-  W := { h.W with om_tw := { h.W.om_tw with } }
-  unr := h.unr
-  kf := { h.kf with }
-  phiUp := h.phiUp
-  B := { h.B with }
-  real := h.real
-  prov := h.prov
-
-open Classical in
-
-def junkLift (T : ThetaTied D X) (J : ∀ V W, X.Sch V W →ₗ[ℂ] X.cusp V →ₗ[ℂ] X.AF W) : ThetaX D :=
-  { X with th := fun V W χ χ' =>
-      if ResEta D (T.eChr χ) V.rank ∧ ResEta D (T.eChr χ') W.rank then X.th V W χ χ' else J V W }
-
-def allTied_junkLift {A : TH.ProvA} (h : AllTied D X A) (J : ∀ V W, X.Sch V W →ₗ[ℂ] X.cusp V →ₗ[ℂ] X.AF W) :
-    AllTied D (junkLift h.T J) A where
-  T := { h.T with }
-  sm := h.sm
-  ty := { h.ty with }
-  W := { h.W with
-    om_tw := { h.W.om_tw with }
-    th := fun V W χ χ' hne h1 h2 hs μ 𝓕 hv Φ F g => by
-      have e : (junkLift h.T J).th V W χ χ' = X.th V W χ χ' := if_pos ⟨h1, h2⟩
-      rw [e]
-      exact h.W.th V W χ χ' hne h1 h2 hs μ 𝓕 hv Φ F g }
-  unr := h.unr
-  kf := { h.kf with }
-  phiUp := h.phiUp
-  B := { h.B with }
-  real := h.real
-  prov := h.prov
-
 end GlobalTheory.WeilTieCheck
 
 end

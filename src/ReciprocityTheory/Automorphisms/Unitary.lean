@@ -147,13 +147,4 @@ variable {L} in
 def TrivOutside {n : ℕ} (T : Set (HeightOneSpectrum (𝓞 L⁺))) (x : GA L n) : Prop :=
   ∀ v, v ∉ T → (x.1 : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) = 1
 
-variable {L} in
-
-noncomputable def Level {n : ℕ} {ι : Type*} (s : ι → SplitPlace L)
-    (H : ∀ a, Subgroup (GL (Fin n) ((s a).v.adicCompletion L⁺))) : Subgroup (GA L n) :=
-  Umax L n ⊓ ⨅ a, (H a).comap ((s a).loc n)
-
-def IsNeat {n : ℕ} (U : Subgroup (GA L n)) : Prop :=
-  ∀ g : GA L n, ∀ γ ∈ GQ L n, g⁻¹ * γ * g ∈ U → γ = 1
-
 end ReciprocityTheory.Aut

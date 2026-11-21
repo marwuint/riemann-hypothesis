@@ -286,10 +286,6 @@ theorem exists_isTorusPtF_of_b {g : GtPtF D F} (hb : g.b = 1) :
     ∃ t : Multiplicative D.X →* Fˣ, IsTorusPtF g fun χ => t (Multiplicative.ofAdd χ) :=
   (exists_torusPt_eq hb).imp fun t h => (isTorusPtF_iff_eq g t).2 h
 
-theorem range_torusPt : (torusPt D F).range = (gtProj D F).ker := by
-  ext g
-  exact ⟨fun ⟨t, e⟩ => e ▸ torusPt_b t, fun h => (exists_torusPt_eq h).elim fun t e => ⟨_, e.symm⟩⟩
-
 section Action
 
 variable {O : Type} [CommRing O] [StarRing O] [Module O D.X] (hG : GlobalFnsSt) (oa : D.OAct O)
@@ -304,11 +300,6 @@ theorem IsTorusPtF.gtSmul {g : GtPtF D F} {t : D.X → F} (h : IsTorusPtF g t) (
   rw [_root_.mul_one, MonObj.one_comp, C.face₃, C.face₃, _root_.mul_one, _root_.one_mul] at e
   rw [gtSmul_val hG oa a g χ hJ, b, mul_eq_left.1 e.symm, _root_.mul_one]
   exact v _ y J hJ
-
-include hG in
-theorem IsTorusPtF.gtAct_iff {g : GtPtF D F} {t : D.X → F} (h : IsTorusPtF g t) (a : O) (g' : GtPtF D F) :
-    GtAct oa a g g' ↔ IsTorusPtF g' fun χ => t (star a • χ) :=
-  (gtAct_iff_eq_gtSmul hG oa a g g').trans ⟨fun e => e ▸ h.gtSmul hG oa a, fun e => e.unique (h.gtSmul hG oa a)⟩
 
 end Action
 
@@ -337,9 +328,6 @@ theorem exists_lift (b : TF (R := R) F ⟶ D.P.A) : ∃ g : GtPtF D F, g.b = b :
     apply Additive.ofMul.injective
     simp only [ofMul_mul, ofMul_inv]
     abel
-
-theorem gtProj_surjective : Function.Surjective (gtProj D F) := fun b =>
-  (exists_lift b.toMul).imp fun _ h => congrArg Additive.ofMul h
 
 section Divisible
 
@@ -377,25 +365,5 @@ theorem exists_qkPt (hM : MulNSt) (hR : IsNoetherianRing R ∨ PolBaseChangeSt) 
   exact ⟨qkMk hB y g h, rfl⟩
 
 end Divisible
-
-theorem torus_lift_divisible (hG : GlobalFnsSt) (hM : MulNSt) {R : Type} [CommRing R] [IsDomain R]
-    (hR : IsNoetherianRing R ∨ PolBaseChangeSt) (D : DegPre R) (hB : D.TauBimult) (F : Type) [Field F] [IsAlgClosed F]
-    [Algebra (FractionRing R) F] :
-    ((∀ t : Multiplicative D.X →* Fˣ, ∃! g : GtPtF D F, IsTorusPtF g fun χ => t (Multiplicative.ofAdd χ)) ∧
-      (∀ (g : GtPtF D F) (t t' : D.X → F), IsTorusPtF g t → IsTorusPtF g t' → t = t') ∧
-      (∀ (g g' g'' : GtPtF D F) (t t' : D.X → F), IsTorusPtF g t → IsTorusPtF g' t' →
-        (g.IsAdd g' g'' ↔ IsTorusPtF g'' (t * t'))) ∧
-      (∀ g : GtPtF D F, g.b = DegPre.zeroF D F →
-        ∃ t : Multiplicative D.X →* Fˣ, IsTorusPtF g fun χ => t (Multiplicative.ofAdd χ)) ∧
-      ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.X] (oa : D.OAct O) (a : O) (g g' : GtPtF D F) (t : D.X → F),
-        IsTorusPtF g t → (GtAct oa a g g' ↔ IsTorusPtF g' fun χ => t (star a • χ))) ∧
-    (∀ b : TF (R := R) F ⟶ D.P.A, ∃ g : GtPtF D F, g.b = b) ∧
-    ∀ n : ℕ, n ≠ 0 → (∀ h : GtPtF D F, ∃ g, GtPtF.IsNsmul n g h) ∧ (∀ y : D.X, ∃ q : QkPt D F n, q.y = y) ∧
-      ∀ b : TF (R := R) F ⟶ D.P.A, b ^ n = 1 → ∃ q : QkPt D F n, q.y = 0 ∧ q.g.b = b :=
-  ⟨⟨fun t => ⟨_, isTorusPtF_torusPt t, fun g h => (isTorusPtF_iff_eq g t).1 h⟩, fun _ _ _ => IsTorusPtF.fun_unique,
-      fun _ _ _ _ _ h h' => (isAdd_iff_eq _ _ _).trans ⟨fun e => e ▸ h.add h', fun e => e.unique (h.add h')⟩,
-      fun _ => exists_isTorusPtF_of_b, fun _ _ _ _ oa a _ g' _ h => h.gtAct_iff hG oa a g'⟩, exists_lift,
-    fun _ hn => ⟨fun h => (exists_nsmul_eq hM hR hn h).imp fun _ e => (isNsmul_iff_eq _ _ _).2 e.symm,
-      exists_qkPt hM hR hB hn, fun _ => exists_qkPt_of_torsion hB hn⟩⟩
 
 end GlobalTheory.TorusExt

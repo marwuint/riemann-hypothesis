@@ -1,10 +1,10 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedLintegralSobolevPointwiseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNormPowMulLeSqrtWeightedSqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedLintegralSobolevPointwise
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNormPowMulLeSqrtWeightedSq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormIteratedFDerivIteratedFDerivStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzIteratedFDerivTendstoZeroCocompactStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableSqPowMulIteratedFDerivSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzWeightedSobolevOfFinrankZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzWeightedSobolevOfFinrankZero
 
 open MeasureTheory Filter Topology Set Module
 open scoped ENNReal
@@ -22,9 +22,9 @@ theorem schwartz_pow_mul_iteratedFDeriv_le_sqrt_sum_weighted_sq :
     rcases Nat.eq_zero_or_pos (finrank ℝ E) with h | h
     · exact Or.inl h
     · exact Or.inr ⟨finrank ℝ E - 1, by omega⟩
-  · exact GlobalTheory.T.schwartz_weighted_sobolev_bound_of_finrank_eq_zero μ hd k n
-  obtain ⟨C5, hC5, h5⟩ := GlobalTheory.T.ofReal_norm_pow_mul_le_lintegral_iteratedFDeriv μ m hm
-  obtain ⟨C6, hC6, h6⟩ := GlobalTheory.T.exists_lintegral_norm_pow_mul_le_sqrt_weighted_sq (F := ContinuousMultilinearMap ℝ (fun _ : Fin (m + 1) => E) (ContinuousMultilinearMap ℝ (fun _ : Fin n => E) ℂ)) μ
+  · exact _root_.GlobalTheory.schwartz_weighted_sobolev_of_finrank_zero μ hd k n
+  obtain ⟨C5, hC5, h5⟩ := _root_.GlobalTheory.weighted_lintegral_sobolev_pointwise μ m hm
+  obtain ⟨C6, hC6, h6⟩ := _root_.GlobalTheory.lintegral_norm_pow_mul_le_sqrt_weighted_sq (F := ContinuousMultilinearMap ℝ (fun _ : Fin (m + 1) => E) (ContinuousMultilinearMap ℝ (fun _ : Fin n => E) ℂ)) μ
   refine ⟨max (n + (m + 1)) (k + finrank ℝ E + 1), (C5 * C6).toReal, ENNReal.toReal_nonneg, ?_⟩
   intro f x
   set G : E → ContinuousMultilinearMap ℝ (fun _ : Fin n => E) ℂ := iteratedFDeriv ℝ n f with hGdef

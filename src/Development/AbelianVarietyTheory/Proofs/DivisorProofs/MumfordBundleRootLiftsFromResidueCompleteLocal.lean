@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpPullbackId
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLiftSquareZeroOfMumfordBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoMumfordLambdaOfLocalQuotientStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLiftSquareZeroOfMumfordBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoMumfordLambdaOfLocalQuotient
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleOfReductions
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalAlgebraisation
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsLocalRingQuotientPow
@@ -10,9 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProjBySmoothIsProp
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfIsGrpPullback
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WedgeOrdVpBaseChangeOfNeBot
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsSquareUnique
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AxisTrivialLineBundleGroupPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleDiagonalPullbackBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleThickeningSquareTheoremStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AxisTrivialLineBundleGroupPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleDiagonalPullbackBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleThickeningSquareTheorem
 
 set_option autoImplicit false
 
@@ -63,7 +63,7 @@ theorem root_of_closedFibre (R : Type) [CommRing R] [IsLocalRing R] [IsNoetheria
         LBIso (abelian₂ (thickObj R (maximalIdeal R) e B) L) (P.pull b₂)
   have step : ∀ e (L : {L // Q e L}), ∃ L' : {L' // Q (e + 1) L'},
       LBIso (L'.1.pull (thickMap R (maximalIdeal R) e B)) L.1 := fun e L => by
-    obtain ⟨L', h1', h2', h3'⟩ := GlobalTheory.T.line_bundle_thickening_square_theorem R B hB P hP g1 g2 e L.1 L.2.1 L.2.2
+    obtain ⟨L', h1', h2', h3'⟩ := _root_.GlobalTheory.TowerStep.step R B hB P hP g1 g2 e L.1 L.2.1 L.2.2
     exact ⟨⟨L', h1', h2'⟩, h3'⟩
   choose F hF using step
   obtain ⟨L₀, hL₀⟩ := h0
@@ -78,7 +78,7 @@ theorem root_of_closedFibre (R : Type) [CommRing R] [IsLocalRing R] [IsNoetheria
     (fun e => (hN e).symm)
   haveI := GlobalTheory.WtTower.isLocalRing_quotient_pow R 0
   obtain ⟨b₂, hb₂⟩ := GlobalTheory.ZM.SiegPull.exists_isSquare (isGrpPullback_pullback B (thick R (maximalIdeal R) 0)).1.w
-  exact ⟨M, hM, GlobalTheory.T.lineBundleIso_mumfordLambda_of_local_quotient R (R ⧸ maximalIdeal R ^ (0 + 1)) (Ideal.Quotient.mk _)
+  exact ⟨M, hM, _root_.GlobalTheory.PolRigid.lbIso_lam_of_quotient R (R ⧸ maximalIdeal R ^ (0 + 1)) (Ideal.Quotient.mk _)
     Ideal.Quotient.mk_surjective B (thickObj R (maximalIdeal R) 0 B) (pullback.fst _ _) b₂ hB
     (isGrpPullback_pullback B _) hb₂ P hP g1 g2 M (N 0).1 hM (N 0).2.1 (HM 0).symm ((N 0).2.2 b₂ hb₂)⟩
 
@@ -88,8 +88,8 @@ theorem root_of_residue : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMo
   have hB : IsAbelianScheme B := GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hβ
   haveI : IsCommMonObj B := hB.comm
   obtain ⟨β₂, hsq⟩ := GlobalTheory.ZM.SiegPull.exists_isSquare hβ.1.w
-  obtain ⟨g1, g2⟩ := GlobalTheory.T.axisTrivial_lineBundle_groupPullback S (Sp R) A P hP h1 h2 t B β β₂ hβ hsq
-  have gamp := GlobalTheory.T.relAmple_diagonal_pullback_baseChange S (Sp R) A hA P hP hamp t B β β₂ hβ.1 hsq
+  obtain ⟨g1, g2⟩ := _root_.GlobalTheory.AxisTriv.axes_pull S (Sp R) A P hP h1 h2 t B β β₂ hβ hsq
+  have gamp := _root_.GlobalTheory.DiagAmpleBC.relAmple_diag_pull S (Sp R) A hA P hP hamp t B β β₂ hβ.1 hsq
   have le : maximalIdeal R ≤ maximalIdeal R ^ (0 + 1) := by rw [zero_add, pow_one]
   have ethick : thick R (maximalIdeal R) 0 =
       spMap (Ideal.Quotient.factor le) ≫ spMap (residue R) := by

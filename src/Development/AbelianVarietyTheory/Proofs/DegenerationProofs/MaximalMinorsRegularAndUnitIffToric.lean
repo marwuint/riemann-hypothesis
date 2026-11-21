@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.ArithBase
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MaximalMinorsDualThetaTestLatticeBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MaximalMinorsDualThetaTestLatticeBound
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -47,7 +47,7 @@ theorem minors_regular_and_unit_iff : ∀ (o Ω : Type) [CommRing o] [Field Ω] 
       obtain ⟨hs, hH⟩ := hsup z p y _ τ hy hAt
       have hδ := (hs x₀).1 hx₀
       have hpos := τ.δ_pos
-      obtain ⟨h1, h2⟩ := GlobalTheory.T.maximal_minors_dual_thetaTest_lattice_bound o Ω S p _ τ hb hcl n (τ.δ ^ a) (fun k j => y' (GG k j)) (pow_pos hpos a)
+      obtain ⟨h1, h2⟩ := _root_.GlobalTheory.ZH.minors_dual_testLattice o Ω S p _ τ hb hcl n (τ.δ ^ a) (fun k j => y' (GG k j)) (pow_pos hpos a)
         (hGG p y' τ hb)
       rw [← pow_mul, ← hm] at h1 h2
       have hpm : 0 < τ.δ ^ m := pow_pos hpos m

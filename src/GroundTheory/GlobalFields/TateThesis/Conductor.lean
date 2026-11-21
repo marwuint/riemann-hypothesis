@@ -169,13 +169,6 @@ theorem exists_finiteLevel_le_ker_circle (χ : (FiniteAdeleRing (𝓞 K) K)ˣ �
       (∀ v ∈ S, 1 ≤ n v) ∧ (∀ v ∉ S, n v = 0) ∧ finiteLevel n ≤ χ.ker :=
   exists_finiteLevel_le_ker Circle.noSmallSubgroups χ hχ
 
-theorem isOpen_ker_of_continuous (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H)
-    (hχ : Continuous χ) : IsOpen (χ.ker : Set (FiniteAdeleRing (𝓞 K) K)ˣ) := by
-  obtain ⟨S, n, -, h0, hn⟩ := exists_finiteLevel_le_ker hH χ hχ
-  refine Subgroup.isOpen_mono hn (isOpen_finiteLevel (S.finite_toSet.subset fun v hv ↦ ?_))
-  by_contra hvS
-  exact hv (h0 v hvS)
-
 def conductorExponentAt (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H) (v : HeightOneSpectrum (𝓞 K)) : ℕ :=
   conductorExponent v (χ.comp (finiteUnitsSingle v))
 

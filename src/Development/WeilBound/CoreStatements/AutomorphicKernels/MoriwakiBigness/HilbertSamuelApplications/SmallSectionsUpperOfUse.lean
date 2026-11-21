@@ -1,6 +1,48 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.MoriwakiBigness.HilbertSamuelApplications.SmallGeneratedCountUpperOfUse
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HilbertSamuelG7sOfStatements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.MoriwakiSt
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsArith
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsPieceDegree
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsEmbeddingPieces
+import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.SmallSectionCountLeOfIntegralMul
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PUnitApprox
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PTwistMetric
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PEmbeddingWeight
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PTwistIntersectionAnyDegree
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeGenericOfDegree
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeOfIsIntersectionSystem
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.EmbeddingPiecesOfIntersectionAndResolutionStatement
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplier
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.ContractMixedFieldStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.TargetSt
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGenDegGeomDeg
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.IsConjInvariantHZcomb
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PUpperNormalisation
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PMonomialShift
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNefOnGenericOfSemipos
+import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PSmallGenHeightsNonneg
+import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.MoriwakiHSFull
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSecEq
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PConductor
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PRootGridLower
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGridSeparation
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNormalLocusRep
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PFibreNormBound
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PProjAvoidingForm
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSegreArith
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PFibreRepresentatives
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PAvoidFormFinite
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PFibreNormMax
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PMetricMaxComparison
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PackingAlt
+
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Filter Topology NumberField
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
@@ -14,7 +56,7 @@ theorem smallSections_upper_of_use :
   have a0 := GroundTheory.Heights₂.Heights.HilbertSamuel.TwistIntersectionAnyDegree.proof (GlobalTheory.T.embedding_pieces_of_intersection_and_resolution hAIS hRes) hDG
   have a1 := GroundTheory.Heights₂.Heights.HilbertSamuel.TwistMetric.proof
     GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingWeight.proof a0
-  exact GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeNefDual.proof hU.g7p GlobalTheory.T.packing'
+  exact GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeNefDual.proof hU.g7p _root_.GlobalTheory.CompanionTheory.Ar.Small.packing
     GroundTheory.Heights₂.Heights.HilbertSamuel.UnitApprox.proof
     GroundTheory.Heights₂.Heights.HilbertSamuel.NonvanishingDense.full a1
 

@@ -181,18 +181,4 @@ end GlobalTheory.EndCusp
 
 namespace GlobalTheory.EndCusp
 
-theorem formTop_isCuspListed : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (y : (R.HX t).H), GlobalTheory.FlipRun.IsCuspListed ch.W.θ (.grid 0 D.R.m) (GlobalTheory.RowClaim.formTop ch t y) := by
-  intro _
-  refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩
-  intro t y
-  have hm := hS.core.models
-  obtain ⟨h1, h2, h3⟩ := formX_props R hm.inf hm.cX hm.prX hm.HX ch.cv t y
-  have hθ : ch.W.θ = R.θ := hch.toIsBase.weil.θ
-  obtain ⟨k1, k2, k3⟩ := props_cast R.θ (fun τ => Node.par D ch.sc.cGap (.grid 0 D.R.m) τ) (columnBlock R.toLevCh D.R.m)
-    (colY_m R.toLevCh) (ch.cv.formX t y) h1 h2 (fun τ => by
-      rw [show Node.par D ch.sc.cGap (.grid 0 D.R.m) τ = (Ptw D).Dpar D.R.m τ from parV_zero D _ le_rfl τ]
-      exact h3 τ)
-  rw [hθ]
-  exact ⟨k1, k2, k3⟩
-
 end GlobalTheory.EndCusp

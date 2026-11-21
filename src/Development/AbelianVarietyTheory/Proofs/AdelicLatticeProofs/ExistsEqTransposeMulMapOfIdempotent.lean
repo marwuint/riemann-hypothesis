@@ -228,13 +228,6 @@ theorem exists_eq_transpose_mul_map [IsLocalRing R₀] (hc : ∀ x, c (c x) = x)
 
 end Base
 
-section Split
-
-variable {R₀ R : Type*} [CommRing R₀] [CommRing R] (c : R →+* R)
-  {ι : Type*} [Fintype ι] [DecidableEq ι]
-
-end Split
-
 section Norm
 
 open Polynomial
@@ -323,24 +316,5 @@ theorem exists_eq_transpose_mul_map_of_henselian (c : R →+* R) (hc : ∀ x, c 
 variable [Module.Free R₀ R] [Algebra.FormallyUnramified R₀ R]
 
 end Norm
-
-example : ∃ P : Matrix (Fin 2) (Fin 2) (QuadraticAlgebra ℤ_[2] (-1) 1), IsUnit P.det ∧
-    !![0, 1; 1, 0] = Pᵀ * P.map (starRingEnd _) := by
-  haveI : Finite (ResidueField ℤ_[2]) :=
-    Finite.of_equiv _ (PadicInt.residueField (p := 2)).symm.toEquiv
-  refine exists_eq_transpose_mul_map_of_henselian (R₀ := ℤ_[2]) _ star_star (fun r => ?_)
-    (fun x hx => ⟨x.re, ?_⟩) ⟨⟨0, 1⟩, ?_⟩ ?_ (by simp [Matrix.det_fin_two])
-  · ext <;> simp [starRingEnd_apply]
-  · have h := congrArg QuadraticAlgebra.re hx
-    have h' : x.im = 0 := by simpa [starRingEnd_apply] using h
-    ext <;> simp [h']
-  · have h3 : IsUnit (3 : ℤ_[2]) := by
-      rw [PadicInt.isUnit_iff]
-      exact_mod_cast PadicInt.norm_natCast_eq_one_iff (p := 2) (n := 3) |>.2 (by norm_num)
-    refine isUnit_of_mul_isUnit_left (y := ⟨1, -2⟩) ?_
-    convert h3.map (algebraMap ℤ_[2] (QuadraticAlgebra ℤ_[2] (-1) 1)) using 1
-    ext <;> simp [starRingEnd_apply] <;> norm_num
-  · intro a b
-    fin_cases a <;> fin_cases b <;> simp
 
 end GlobalTheory.UnramifiedHermitian

@@ -1,7 +1,8 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzEqPureTensorOfFiniteSlicesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzEqPureTensorOfFiniteSlices
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenPtSubset
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergStableRelationOfVacuaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerFixedFunctionsProportionalOfSelfDualStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerFixedFunctionsProportionalOfSelfDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaussianDatumFlippedFiniteTensorBigRoute
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmulMemScLatOfMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatPtLeClosureAndSelfDual
@@ -148,9 +149,9 @@ theorem exists_vac (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {Bs : Base 
     (hv : IsLatVac (heisO Bs.ψ S T) (latA ΛS ΛT) (thM m Mo Bs.ψ Φ)) :
     ∃ f, Φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f Mo.vac := by
   have hstd := hBs.std
-  refine GlobalTheory.T.adelicSchwartz_eq_pureTensor_of_finite_slices Mo.vac (fun v => (hM.vac v).2.1) hM.std Φ hΦ fun v y hy => ?_
+  refine _root_.GlobalTheory.PureGlue.eq_pure_of_slices Mo.vac (fun v => (hM.vac v).2.1) hM.std Φ hΦ fun v y hy => ?_
   obtain ⟨c, hc0, hc⟩ := GlobalTheory.LatBound.locCo_latAtV_bounded Xs Ws v Mo.co hX.lat hW.lat
-  obtain ⟨a, ha⟩ := GlobalTheory.T.schroedinger_fixed_functions_proportional_of_selfDual v (GlobalTheory.LatVac.psiAt Bs.ψ v) (GlobalTheory.VacAny.continuous_psiV hstd.1 v)
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.SchrFixUniq.proportional_of_fixed v (GlobalTheory.LatVac.psiAt Bs.ψ v) (GlobalTheory.VacAny.continuous_psiV hstd.1 v)
     (GlobalTheory.PsiNontriv.psiAt_ne_one Bs.ψ hstd v) (GlobalTheory.LatVac.locCo Mo.co v '' genP m (latA ΛS ΛT) v)
     ((lattice₂ m (latA ΛS ΛT) v).map (GlobalTheory.LatVac.locCo Mo.co v)) c
     (by rw [← AddMonoidHom.map_closure]; exact AddSubgroup.map_mono (localLattice_le_closure_generators m v)) hc0

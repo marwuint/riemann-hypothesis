@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BadShareSizeBoundsAlongFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BadShareSizeBoundsAlongFamily
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
+import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.GreenSeriesSt
+import Formalism.LocalToGlobal.GlobalTheory.IrreducibleOfCountSizes
 
 namespace GlobalTheory.HodgeMultNum
 
@@ -43,7 +46,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheo
 theorem GlobalTheory.HodgeMultNum.hodgeMult_le_TO : Closed FamHyp fun Fm _ => ∃ x0 : ℝ, ∀ (x : ℝ) (hx : Fm.x1 < x), x0 ≤ x →
     ∀ ι : Fm.Ix x, 2 * (Fm.D x ι).R.r + 50 * (Fm.D x ι).R.r ^ 2 * ((Fm.D x ι).R.f * ((Fm.D x ι).R.r * (Fm.D x ι).R.r / 4)) + 2 ≤
       (Fm.parT x hx ι).TO := by
-  refine Closed.imp GlobalTheory.T.badShareSize_bounds_along_family fun Fm _ _ H => ?_
+  refine Closed.imp _root_.GlobalTheory.BadNumOnto.badShare_numbers_onto fun Fm _ _ H => ?_
   obtain ⟨x0, H⟩ := H
   refine ⟨x0, fun x hx h0 ι => ?_⟩
   obtain ⟨hr, -, hE, hk⟩ := H x hx h0 ι

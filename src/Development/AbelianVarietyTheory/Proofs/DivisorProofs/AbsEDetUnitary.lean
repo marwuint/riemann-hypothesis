@@ -7,38 +7,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModulusOfNormEqAbs
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.Doubling
-open GlobalTheory.SWLit GlobalTheory.TowU GlobalTheory.SiegelCoefTheta
+open GlobalTheory.SWLit GlobalTheory.TowU
 open GlobalTheory.WeilEx
 attribute [-instance] CStarMatrix.instHMulOfFintypeOfMulOfAddCommMonoid
 
 noncomputable section
 
 namespace GlobalTheory.WeilEx.Jac
-
-section Alg
-
-variable {R : Type} [CommRing R] {A : Type} [CommRing A] [Algebra R A] {α β ν X : Type} [Fintype β] [DecidableEq β]
-  [AddCommGroup X] [Module R X] {e : ν ⊕ ν ≃ α}
-
-omit [DecidableEq β] in
-
-def lmul [Fintype α] [DecidableEq α] (β : Type) (t : GL α A) : Matrix α β A ≃ₗ[R] Matrix α β A where
-  toFun w := (t : Matrix α α A) * w
-  invFun w := ((t⁻¹ : GL α A) : Matrix α α A) * w
-  map_add' _ _ := Matrix.mul_add _ _ _
-  map_smul' c w := by
-    simp only [RingHom.id_apply]
-    exact Matrix.mul_smul _ c w
-  left_inv w := by
-    simp only [← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]
-  right_inv w := by
-    simp only [← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]
-
-variable [Invertible (2 : R)] {D : Matrix α β A ≃ₗ[R] X × X} (hΔ : ∀ w, LinAct.Del e w → (D w).1 = 0)
-  (hN : ∀ w, LinAct.Nab e w → (D w).2 = 0)
-include hΔ hN
-
-end Alg
 
 section Main
 

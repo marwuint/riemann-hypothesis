@@ -59,23 +59,6 @@ theorem Via.lat_fg {L : Submodule (e.comp (algebraMap R (FractionRing R))).range
 
 variable {V : Type} [AddCommGroup V] [Module (FractionRing R) V] [Module R V] [IsScalarTower R (FractionRing R) V]
 
-def inSpan (L : Submodule R V) : Submodule R (Submodule.span (FractionRing R) (L : Set V)) :=
-  L.comap ((Submodule.span (FractionRing R) (L : Set V)).subtype.restrictScalars R)
-
-theorem inSpan_fg {L : Submodule R V} (h : L.FG) : (inSpan L).FG := by
-  refine Submodule.fg_of_fg_map_injective ((Submodule.span (FractionRing R) (L : Set V)).subtype.restrictScalars R)
-    Subtype.val_injective ?_
-  rwa [inSpan, Submodule.map_comap_eq_self fun x hx => ⟨⟨x, Submodule.subset_span hx⟩, rfl⟩]
-
-theorem span_inSpan (L : Submodule R V) : Submodule.span (FractionRing R)
-    (inSpan L : Set (Submodule.span (FractionRing R) (L : Set V))) = ⊤ := Submodule.span_span_coe_preimage
-
-theorem finiteDimensional_span {L : Submodule R V} (h : L.FG) :
-    FiniteDimensional (FractionRing R) (Submodule.span (FractionRing R) (L : Set V)) := by
-  obtain ⟨S, rfl⟩ := h
-  rw [Submodule.span_span_of_tower]
-  exact FiniteDimensional.span_of_finite _ S.finite_toSet
-
 theorem exists_lift {M : Type} [AddCommGroup M] [Module R M] (g : V →ₛₗ[e] A)
     (r : M →ₛₗ[e.comp (algebraMap R (FractionRing R))] A) (hr : Function.Injective r)
     (hdiv : ∀ a : R, a ≠ 0 → ∀ m : M, ∃ m', a • m' = m) :
@@ -190,14 +173,6 @@ def lat (ρ : Setup X) (i : X.Tw) : ∀ n b k (_ : Finset (Pl D.host.E)) (_ : G 
   | 0, _, _, _, _ => ⊥
   | n + 1, b, k, Q, ψ => if h : n < D.R.m ∧ TwOK i k Q ψ then Via.lat (ρ.mt i ⟨n, h.1⟩ b k Q ψ) else ⊥
 
-theorem lat_fg (hL : ρ.LatFG) (i : X.Tw) : ∀ n b k Q ψ, (lat ρ i n b k Q ψ).FG
-  | 0, _, _, _, _ => Submodule.fg_bot
-  | n + 1, b, k, Q, ψ => by
-    rw [lat]
-    split_ifs with h
-    · exact Via.lat_fg (hL i ⟨n, h.1⟩ b k Q ψ h.2)
-    · exact Submodule.fg_bot
-
 abbrev MtV (ρ : Setup X) (i : X.Tw) (n : ℕ) (b : Bool) (k : ℕ) (Q : Finset (Pl D.host.E))
     (ψ : G D.host.E N.Om →* (X.Ok i k)ˣ) : Type :=
   Submodule.span (FractionRing (X.Ok i k)) (lat ρ i n b k Q ψ : Set (Amb ρ i n b k))
@@ -234,54 +209,6 @@ theorem thPsi_one (i : X.Tw) : ∀ n b k (d : Dat rd i n b),
 end Model
 
 variable (hF : ∀ i j b, Faithful (rd i j b)) (hL : ρ.LatFG)
-
-def withSeries : NExp D.R D.host D.what₂ D.LL0 N X :=
-  { Y with
-    Dat := Model.Dat rd
-    th := Model.th rd
-    lev := Model.lev rd
-    thPsi := Model.thPsi hρ rd
-    thPsi_one := Model.thPsi_one hρ rd hF
-    thU := Model.thU rd
-    MtV := Model.MtV ρ
-    acgMt := fun _ _ _ _ _ _ => inferInstance
-    modMtK := fun _ _ _ _ _ _ => inferInstance
-    modMtO := fun _ _ _ _ _ _ => inferInstance
-    towMt := fun _ _ _ _ _ _ => inferInstance
-    fdMt := fun i n b k Q ψ => finiteDimensional_span (Model.lat_fg hL i n b k Q ψ)
-    MtLat := fun i n b k Q ψ => inSpan (Model.lat ρ i n b k Q ψ)
-    MtLat_fg := fun i n b k Q ψ => inSpan_fg (Model.lat_fg hL i n b k Q ψ)
-    MtLat_span := fun _ _ _ _ _ _ => span_inSpan _
-    thP := Model.thP hρ rd hF }
-
-def tieWithSeries (hU : ρ.LevelOf Y) : Comparison₂ hρ (Y := withSeries hρ rd hF hL) rd := fun i j b =>
-  { supp := fun d => d.2.s
-    cls := fun d => d.2.h
-    coef := fun d => d.2.P
-    rdV := Model.rdV ρ i _ b
-    U_eq := hU.U_eq i j b
-    psiU_eq := hU.psiU_eq i j b
-    dat := fun d => d.2.isDatum
-    dat_onto := fun s h P h1 h2 => ⟨⟨j.2, s, h, P, h1, h2⟩, rfl, rfl, rfl⟩
-    lev_iff := fun _ _ => Set.Finite.mem_toFinset _
-    th_eq := fun d => d.2.rat.choose_spec
-    thPsi_iff := fun _ _ _ _ _ _ => Iff.rfl
-    thU_eq := fun Q M d hQ x hx => by
-      have h : InRange X i Q ∧ ∀ a, ρ.xi i j b Y Q M d.2.h d.2.P a ∈ Set.range (rd i j b) := ⟨hQ, fun a => ⟨x a, hx a⟩⟩
-      refine (dif_pos h).trans (congrArg (grpSum Y (ρ.ch i) Q M) (funext fun a => (hF i j b).injective ?_))
-      exact (h.2 a).choose_spec.trans (hx a).symm
-    thU_off := fun _ _ _ h => dif_neg h
-    rdV_inj := fun _ _ _ _ => Subtype.val_injective
-    mtLat_iff := fun k Q ψ h F => by
-      have e : Model.lat ρ i ((j : ℕ) + 1) b k Q ψ = Via.lat (ρ.mt i j b k Q ψ) := dif_pos ⟨j.2, h⟩
-      refine ⟨fun hF => ?_, fun ⟨f, hf, e'⟩ => ?_⟩
-      · have h1 : F ∈ Model.lat ρ i ((j : ℕ) + 1) b k Q ψ := e ▸ hF
-        exact ⟨⟨F, Submodule.subset_span h1⟩, h1, rfl⟩
-      · have h1 : f.1 ∈ Model.lat ρ i ((j : ℕ) + 1) b k Q ψ := hf
-        exact e' ▸ e.le h1
-    thP_eq := fun k Q ψ _ f hf => by
-      have e : Model.thP hρ rd hF i ((j : ℕ) + 1) b k Q ψ = (Model.exists_thP hρ rd hF i j b k Q ψ).choose := dif_pos j.2
-      exact (congrArg (fun φ => rdK (rd i j b) hρ k (φ f)) e).trans ((Model.exists_thP hρ rd hF i j b k Q ψ).choose_spec f hf) }
 
 end GlobalTheory.SeriesTie
 

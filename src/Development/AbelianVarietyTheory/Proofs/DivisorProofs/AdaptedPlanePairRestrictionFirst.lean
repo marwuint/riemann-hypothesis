@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjLinApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSchwartzNe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAddCharIsStandardCharOfAdmissibleCM
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzConjMemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzConjMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjLocalOperatorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalOperatorLeftPartialPureStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalOperatorLeftPartialPure
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalOperatorRightPartialPureStatement
 
 open scoped TensorProduct NNReal Matrix
@@ -160,7 +160,7 @@ variable {κ κ₁ κ' κ₁' : Type} [Fintype κ] [Fintype κ₁] [Fintype κ']
 
 theorem partL_mem (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ₁ → AF F) → ℂ) (he : IsLocOp e) :
     ∀ Φ ∈ schA F (κ ⊕ κ'), partL e Φ ∈ schA F (κ₁ ⊕ κ') := by
-  obtain ⟨P, hP⟩ := GlobalTheory.T.local_operator_left_partial_pure (κ' := κ') e he
+  obtain ⟨P, hP⟩ := _root_.GlobalTheory.DblEval.PartLStr.exists_partL_pureA (κ' := κ') e he
   intro Φ hΦ
   induction hΦ using Submodule.span_induction with
   | mem Φ h =>
@@ -188,7 +188,7 @@ theorem partR_mem (e : ((κ' → AF F) → ℂ) →ₗ[ℂ] (κ₁' → AF F) �
 
 theorem partL_adm (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ₁ → AF F) → ℂ) (he : IsLocOp e) :
     ∀ l ∈ (adeleClass F).adm (κ₁ ⊕ κ'), l ∘ₗ partLₗ e ∈ (adeleClass F).adm (κ ⊕ κ') := by
-  obtain ⟨P, hP⟩ := GlobalTheory.T.local_operator_left_partial_pure (κ' := κ') e he
+  obtain ⟨P, hP⟩ := _root_.GlobalTheory.DblEval.PartLStr.exists_partL_pureA (κ' := κ') e he
   intro l hl g hg
   obtain ⟨g₁, hg₁, h1⟩ := hP g hg
   obtain ⟨T, hT⟩ := hl g₁ hg₁
@@ -256,7 +256,7 @@ theorem exists_dblEv : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Fi
     have h1 : (fun x => starRingEnd ℂ (M.co.rho B.ψ⁻¹ (incM F H.ι * z) φ x)) =
         M.co.rho B.ψ (incM F H.ι * z) (fun x => starRingEnd ℂ (φ x)) :=
       funext fun x => conj_schr_inv B.ψ hψ _ _ _
-    rw [h1, Heisenberg₂ z _ (GlobalTheory.T.adelic_schwartz_conj_mem φ hφ)]
+    rw [h1, Heisenberg₂ z _ (_root_.GlobalTheory.ConjSch.conj_mem_schA φ hφ)]
     exact conj_schr B.ψ hψ _ _ _
   have inv₁ : ∀ (z : Fin d → AE F E), ∀ φ ∈ schA F (Fin n × Fin d),
       e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) z) φ) = e φ := fun z φ hφ => he.inv _ ⟨z, rfl⟩ φ hφ
@@ -267,7 +267,7 @@ theorem exists_dblEv : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Fi
     have h1 : (fun x => starRingEnd ℂ (M.co.rho B.ψ⁻¹ (Matrix.vecMulVec (incV F H.x) z) φ x)) =
         M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) z) (fun x => starRingEnd ℂ (φ x)) :=
       funext fun x => conj_schr_inv B.ψ hψ _ _ _
-    rw [h1, inv₁ z _ (GlobalTheory.T.adelic_schwartz_conj_mem φ hφ)]
+    rw [h1, inv₁ z _ (_root_.GlobalTheory.ConjSch.conj_mem_schA φ hφ)]
   refine ⟨partRₗ (conjLin e) ∘ₗ partLₗ e, conjLin e, fun Φ hΦ => ?_, fun z Φ hΦ => ?_, fun z Φ hΦ => ?_,
     fun l hl => ?_, fun φ₁ _ φ₂ _ => ?_, fun φ hφ => ?_, ?_⟩
   · exact partR_mem (conjLin e) hL₂ _ (partL_mem e hL Φ hΦ)
@@ -298,9 +298,9 @@ theorem exists_dblEv : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Fi
       simp [mul_comm]
     rw [h1, map_smul]
     rfl
-  · exact GlobalTheory.T.adelic_schwartz_conj_mem _ (he.maps _ (GlobalTheory.T.adelic_schwartz_conj_mem φ hφ))
+  · exact _root_.GlobalTheory.ConjSch.conj_mem_schA _ (he.maps _ (_root_.GlobalTheory.ConjSch.conj_mem_schA φ hφ))
   · obtain ⟨Φ₀, h₀, hne⟩ := hne
-    refine ⟨fun x => starRingEnd ℂ (Φ₀ x), GlobalTheory.T.adelic_schwartz_conj_mem _ h₀, fun h => hne (funext fun y => ?_)⟩
+    refine ⟨fun x => starRingEnd ℂ (Φ₀ x), _root_.GlobalTheory.ConjSch.conj_mem_schA _ h₀, fun h => hne (funext fun y => ?_)⟩
     have := congrFun h y
     simpa [conjLin_apply] using this
 

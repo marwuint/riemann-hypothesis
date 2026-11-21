@@ -148,12 +148,6 @@ private theorem leviTensor_ball_of_notMem {r : ℕ} (hr : 1 ≤ r) {m : levi F n
 
 end
 
-section
-variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
-  [MeasurableSpace F] [BorelSpace F] {n : ℕ} {β : Fin n → ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
-
-end
-
 end UpperTheory.V.Z.Gam
 
 theorem UpperTheory.local_zeta_functional_uniqueness :

@@ -5,7 +5,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwahoriAndMaxim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryIwahoriFacts
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwahoriGlValuedDatum
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsStrictDom
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCharacterExistsUniqueStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCharacterExistsUnique
+import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.TwistedIndependenceLemma.TwistedIndependence
 import GroundTheory.GlobalFields.LocalAtPlace
 
 noncomputable section
@@ -335,7 +337,7 @@ theorem eigInertOf : EigInertOf := by
   have ht' : (p.symm t).1 = b * tdiag ϖ (wexp n l) * b⁻¹ := by rw [p_symm_val p hp, htv]
   have ht'p : p (p.symm t) = t := p.apply_symm_apply t
   generalize p.symm t = t' at ht' ht'p
-  obtain ⟨U, hUH, -⟩ := GlobalTheory.T.hecke_character_exists_unique (UL n w) (iwU n w b) (GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b)
+  obtain ⟨U, hUH, -⟩ := _root_.GlobalTheory.CompanionTheory.HeckeFixed.heckeExistsUnique (UL n w) (iwU n w b) (GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b)
     (GlobalTheory.CompanionTheory.UnitaryWitt.isCompact_iwU hw n b hc) σ.V σ.ρ σ.smooth t'
   have hUy : U (φ.symm y') = chiDeltaU q (fun i => (β i : ℂ)) t • φ.symm y' := by
     have h2 := hecke_transport he hJ t' U hUH

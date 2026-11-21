@@ -1,8 +1,9 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsBisLast
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsGraphGenTwistBundleZero
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsTerAlt
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsTerExtra
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PExtension
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
@@ -29,17 +30,6 @@ theorem twist_sub_eq_mul (F Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) 
     exact ⟨q, hq, w, hw, rfl⟩
   · rintro ⟨q, hq, w, hw, rfl⟩
     exact ⟨q, hq, w, hw, rfl⟩
-
-theorem pow_sub_eq (Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) (b : ℕ) :
-    (Q.pow b).sub I = Q.sub I ^ b := by
-  induction b with
-  | zero =>
-    obtain ⟨i, hi⟩ := I.2.1
-    change Kleiman.twistMod S x 0 I = _
-    rw [Kleiman.twistMod_eq_span 0 I hi, zpow_zero, pow_zero, Submodule.one_eq_span]
-  | succ b ih =>
-    change ((Q.pow b).twist Q).sub I = _
-    rw [twist_sub_eq_mul, ih, pow_succ']
 
 theorem exists_mul_eq_prod_pow {I : Finset (Fin (N + 1))} {s : Kleiman.Poly S N} (hs : s ∈ Kleiman.monos I) :
     ∃ (r d d' : ℕ) (s' : Kleiman.Poly S N), s.IsHomogeneous d ∧ s'.IsHomogeneous d' ∧
@@ -145,81 +135,7 @@ theorem mem_secOver_iff_charts (y : (Σ k, ι k) → Ω) (δ : K → ℤ) (t : �
   simp only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply,
     Subalgebra.mem_toSubmodule]
 
-theorem forall_mem_chartSecOver_iff (y : (Σ k, ι k) → Ω) (k₀ : K) {N : ℕ} (e : ι k₀ ≃ Fin (N + 1))
-    (δ : K → ℤ) (t : Ω) :
-    (∀ I, t ∈ chartSecOver S y k₀ e δ I) ↔ t ∈ secOver S y δ := by
-  constructor
-  · intro h
-    rw [mem_secOver_iff_charts]
-    intro c hc
-    have hxi : (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) (e (c k₀)) ≠ 0 := by
-      simpa [IndefiniteRowSideFullHecke.Kleiman2.blockVec] using hc k₀
-    obtain ⟨n, hn⟩ := h (Kleiman.singleChart hxi)
-    rw [mem_secOver_iff_charts] at hn
-    have h1 := hn c hc
-    have hterm : ∀ k, y ⟨k, c k⟩ ^ (-(δ + (((n * (Kleiman.singleChart hxi).1.card : ℕ) : ℤ)) •
-        IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) k) =
-        y ⟨k, c k⟩ ^ (-δ k) * (if k = k₀ then (y ⟨k, c k⟩ ^ n)⁻¹ else 1) := by
-      intro k
-      simp only [Pi.add_apply, Pi.smul_apply, IndefiniteRowSideFullHecke.Kleiman2.baseDeg, smul_eq_mul, Kleiman.singleChart,
-        Finset.card_singleton, mul_one]
-      by_cases hk : k = k₀
-      · subst hk
-        rw [Pi.single_eq_same, if_pos rfl, mul_one, neg_add, zpow_add₀ (hc _), zpow_neg (y _) (n : ℤ),
-          zpow_natCast]
-      · rw [Pi.single_eq_of_ne hk, if_neg hk, mul_zero, add_zero, mul_one]
-    rw [Finset.prod_congr rfl (fun k _ => hterm k), Finset.prod_mul_distrib, Finset.prod_ite_eq',
-      if_pos (Finset.mem_univ _)] at h1
-    convert h1 using 1
-    have hx : Kleiman.xProd (Kleiman.singleChart hxi) = y ⟨k₀, c k₀⟩ := by
-      simp [Kleiman.xProd, Kleiman.singleChart, IndefiniteRowSideFullHecke.Kleiman2.blockVec]
-    rw [hx]
-    have := pow_ne_zero n (hc k₀)
-    field_simp
-  · intro h I
-    exact mem_chartSecOver_of_mem S y k₀ e δ I h
-
 end SecondTyping
-
-theorem BundlePair.proof (h₁ : BundleOfDeg.Statement) (h₂ : ChartSecMul.Statement)
-    (h₃ : ChartSecGen.Statement) : BundlePair.Statement := by
-  intro S _ K _ _ ι _ Ω _ _ y k₀ N e hM γ β
-  have hsub : ∀ δ : K → ℤ, ∃ Q : Kleiman.LineBundle S (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm),
-      ∀ I, (Q.sub I : Set Ω) = chartSecOver S y k₀ e δ I := by
-    intro δ
-    obtain ⟨Q, hQ⟩ := h₁ S K ι Ω y k₀ N e hM δ
-    refine ⟨Q, fun I => Set.ext fun t => ?_⟩
-    rw [SetLike.mem_coe, mem_sub_iff_gam]
-    refine exists_congr fun n => ?_
-    rw [Kleiman.SubSystem.gam, hQ]
-  have hsecs : ∀ (Q : Kleiman.SubSystem S (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) Ω) (δ : K → ℤ),
-      (∀ I, (Q.sub I : Set Ω) = chartSecOver S y k₀ e δ I) → Q.secs = secOver S y δ := by
-    intro Q δ hQ
-    ext t
-    rw [← forall_mem_chartSecOver_iff]
-    simp only [Kleiman.SubSystem.secs, Submodule.mem_iInf, Submodule.restrictScalars_mem]
-    exact forall_congr' fun I => by rw [← hQ I]; rfl
-  obtain ⟨G, hG⟩ := hsub γ
-  obtain ⟨B, hB⟩ := hsub β
-  have hpow : ∀ (b : ℕ) I, ((G.twist (B.pow b)).sub I : Set Ω) = chartSecOver S y k₀ e (γ + b • β) I := by
-    intro b I
-    rw [twist_sub_eq_mul, pow_sub_eq]
-    induction b with
-    | zero => simp [hG I]
-    | succ b ih =>
-      rw [pow_succ', mul_assoc, Submodule.mul_eq_span_mul_set (B.sub I) (B.sub I ^ b * G.sub I), hB I, ih,
-        h₂ S K ι Ω y k₀ N e hM β (γ + b • β) I]
-      congr 1
-      rw [add_smul, one_smul]
-      abel
-  refine ⟨G, B, fun b => hsecs _ _ (hpow b), fun n η => ?_⟩
-  rw [hsecs B.toSubSystem β hB]
-  constructor
-  · rintro ⟨h, hg⟩
-    exact ⟨h, fun I => SetLike.coe_injective
-      (((h₃ S K ι Ω y k₀ N e hM β n η h).mp hg I).trans (hB I).symm)⟩
-  · rintro ⟨h, hs⟩
-    exact ⟨h, (h₃ S K ι Ω y k₀ N e hM β n η h).mpr fun I => by rw [hs I, hB I]⟩
 
 end
 

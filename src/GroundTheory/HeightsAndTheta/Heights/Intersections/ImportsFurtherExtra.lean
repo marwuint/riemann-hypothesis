@@ -21,10 +21,4 @@ def pullbackDensity_holds.Statement : Prop :=
       logNorm A' (rename v s) (R.lift x x) * pushDens R.A (fun j => potOf R (L' j)) (pullQ R v Ψ) x =
         sheetDensity (imageZ v P') Ψ (pot L) (logNorm A s) y (pullW R v Ψ x)
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

@@ -94,9 +94,6 @@ theorem X_iso {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {x : (VS D).V} (hx : x 
   · intro a c _ _ ha hc; simp [ha, hc]
   · intro c a _ ha; simp [ha]
 
-example (Λ : LV D) (h : Submodule.IsLattice D.host.E Λ) : Λ.FG ∧ Submodule.span D.host.E (Λ : Set (VS D).V) = ⊤ :=
-  ⟨h.fg, h.span_eq_top⟩
-
 set_option maxHeartbeats 1000000 in
 theorem lsub_le (Z : LocDat D) {T : D.host.E} (G : LFlag (VS D) D.R.rS T)
     (f : ∀ p : PlF D, Fin (D.R.rS + 1) → Vp D p)

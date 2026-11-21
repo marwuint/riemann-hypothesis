@@ -8,8 +8,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Howe
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.GaussianBinomialClosedForm
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormIntegralFundamentalDomainEqL2NormSq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtensionOfLowSmoothLines
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockPolynomialLieDerivativeEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HoweDualityCompactPairRealPlacesIrreducibleStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockPolynomialLieDerivativeEquivariant
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HoweDualityCompactPairRealPlacesIrreducible
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef
 open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx Formalism.IndefR.Links
@@ -52,8 +52,8 @@ theorem cvType_mem_of_stable : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl
     apply GlobalTheory.AdTh.IoExtPf.Delta_ne (D := D) i
     rw [← hv, h0]
     rfl
-  have hφM : φ ∈ M := GlobalTheory.T.howeDuality_compactPair_realPlaces_irreducible D G Pl0 T A Ks R F hG hF i t M (fun ψ hψ => hψ.1)
-    (fun ψ hψ τ Y hY ψ' hd => ⟨GlobalTheory.T.fockPolynomial_lieDerivative_equivariant D G Pl0 T A Ks R F hG hF i t τ Y hY ψ ψ' hψ.1 hd,
+  have hφM : φ ∈ M := _root_.GlobalTheory.HoweIrrCompact.howe_irr D G Pl0 T A Ks R F hG hF i t M (fun ψ hψ => hψ.1)
+    (fun ψ hψ τ Y hY ψ' hd => ⟨_root_.GlobalTheory.LieEquivFock.lie_equivariant D G Pl0 T A Ks R F hG hF i t τ Y hY ψ ψ' hψ.1 hd,
       fun w => hlie τ Y hY (ψ w) (ψ' w) (fun z => hd w z) (hψ.2 w)⟩) hne φ hφ
   exact hφM.2 w
 

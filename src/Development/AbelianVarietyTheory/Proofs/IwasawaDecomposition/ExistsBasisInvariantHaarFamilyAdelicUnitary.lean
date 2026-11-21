@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryGroupPointsEquivOfChangeOfBasisStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryGroupPointsEquivOfChangeOfBasis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMulRightInvariantHaarAdelicUnitaryGroupHermiti
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianFormFiniteZerosOnLineCmExt
 
@@ -63,7 +63,7 @@ theorem frame (J J' : Matrix (Fin M) (Fin M) E) (P : GL (Fin M) E) (h : J' = act
     (∃ e : HA (AF F) σ J ≃* HA (AF F) σ J', ∀ g, FrameRel J J' (P : Matrix (Fin M) (Fin M) E) g (e g)) ∧
     ∀ e : HA (AF F) σ J ≃* HA (AF F) σ J', (∀ g, FrameRel J J' (P : Matrix (Fin M) (Fin M) E) g (e g)) →
       Continuous e ∧ Continuous e.symm :=
-  ⟨(GlobalTheory.T.unitary_group_points_equiv_of_change_of_basis F E σ (AF F) M J J' P h).1.exists, (GlobalTheory.T.unitary_group_points_equiv_of_change_of_basis F E σ (AF F) M J J' P h).2⟩
+  ⟨(_root_.GlobalTheory.GaugeFrameBasis.frame_basis F E σ (AF F) M J J' P h).1.exists, (_root_.GlobalTheory.GaugeFrameBasis.frame_basis F E σ (AF F) M J J' P h).2⟩
 
 theorem IsTransport.isHaar {J₀ J : Matrix (Fin M) (Fin M) E} {μ : Measure (HA (AF F) σ J)}
     (h : IsTransport σ J₀ J μ) : μ.IsHaarMeasure := by

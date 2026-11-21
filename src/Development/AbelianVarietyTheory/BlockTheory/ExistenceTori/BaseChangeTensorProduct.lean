@@ -54,15 +54,8 @@ instance instAddCommGroupCf (w : WeightFamilies.Wt D j) : AddCommGroup (Cf T j w
 
 instance instModuleCf (w : WeightFamilies.Wt D j) : Module T.Q.c.F (Cf T j w) := Submodule.module _
 
-abbrev la (w : WeightFamilies.Wt D j) : ∀ k, ReciprocityTheory.ChartRestriction.G.FD.Wt (T.X₀ j k).Ψ D.R.r := laU (T.U j T.σ₀) (wtA w) w.n
-
 def rd (w : WeightFamilies.Wt D j) : Cf T j w →ₛₗ[T.σ₀] FDSec (T.X₀ j) :=
   (rdU (T.U j T.σ₀)).comp (cutR T.C j w).subtype
-
-def RdCusp (w : WeightFamilies.Wt D j) : Prop :=
-  ∀ (F : Cf T j w) k, rd T j w F k ∈ (T.X₀ j k).SS (la T j w k)
-
-def RdIndep (w : WeightFamilies.Wt D j) : Prop := IndepToC (rd T j w)
 
 end Forms
 
@@ -72,16 +65,9 @@ variable (T : Core D) (j N : ℕ)
 
 abbrev KT : Type := FractionRing (MvPolynomial (Gaps.EtaleWeightGaps.Idx D j N) T.Q.c.F)
 
-def tv (p : Gaps.EtaleWeightGaps.Idx D j N) : KT T j N :=
-  algebraMap (MvPolynomial (Gaps.EtaleWeightGaps.Idx D j N) T.Q.c.F) (KT T j N) (MvPolynomial.X p)
-
 variable {T j N}
 
 def IsExt (σ' : KT T j N →+* ℂ) : Prop := ∀ a : T.Q.c.F, σ' (algebraMap T.Q.c.F (KT T j N) a) = T.σ₀ a
-
-variable (T j N) in
-
-def ExtExists : Prop := ∃ σ' : KT T j N →+* ℂ, IsExt σ'
 
 variable (T j N) in
 
@@ -95,71 +81,6 @@ def rdGen {σ' : KT T j N →+* ℂ} (hσ : IsExt σ') (w : WeightFamilies.Wt D 
 theorem rdGen_tmul {σ' : KT T j N →+* ℂ} (hσ : IsExt σ') (w : WeightFamilies.Wt D j) (t : KT T j N) (F : Cf T j w) :
     rdGen hσ w (t ⊗ₜ F) = σ' t • rd T j w F := rfl
 
-def genSec {wL : WeightFamilies.Wt D j} (w : Fin N → Cf T j wL) (i : Fin (WeightFamilies.dimY D j + 1)) : CfT T j N wL :=
-  ∑ k, tv T j N (i, k) ⊗ₜ w k
-
-def rdSec (σ' : KT T j N →+* ℂ) {wL : WeightFamilies.Wt D j} (w : Fin N → Cf T j wL) (i : Fin (WeightFamilies.dimY D j + 1)) :
-    FDSec (T.X₀ j) :=
-  ∑ k, σ' (tv T j N (i, k)) • rd T j wL (w k)
-
-def GenRd {σ' : KT T j N →+* ℂ} (hσ : IsExt σ') (w : WeightFamilies.Wt D j) : Prop :=
-  (∀ (x : CfT T j N w) k, rdGen hσ w x k ∈ (T.X₀ j k).SS (la T j w k)) ∧ IndepToC (rdGen hσ w)
-
 end Generic
-
-section Cusps
-
-variable (T : Core D) (j : ℕ)
-
-def Deep (w : WeightFamilies.Wt D j) (c : ℝ) (P : FDSec (T.X₀ j)) : Prop :=
-  ∀ k ξ, (T.X₀ j k).IsIso ξ → ∀ ν : (T.X₀ j k).Ψ → ℝ, ∑ τ, ν τ ≤ c →
-    ∀ x ∈ (T.X₀ j k).dom, (T.X₀ j k).fj (la T j w k) ξ ν (P k) x = 0
-
-def DualIsLat : Prop :=
-  ∀ (cu : T.Cu j) (v : Fin (WeightFamilies.rho D j) → D.host.E),
-    v ∈ WeightFamilies.dualZ D (T.Xc j cu) ↔ ∑ i, v i • cu.1.2.e i ∈ (T.X₀ j cu.1.1).Λ
-
-def CoefZero (cu : T.Cu j) (χ : Matrix (Fin (WeightFamilies.rho D j)) (Fin (WeightFamilies.rho D j)) D.host.E)
-    (P : FDSec (T.X₀ j)) : Prop :=
-  ∀ x ∈ (T.X₀ j cu.1.1).dom,
-    FJ.coefFn (FJ.zAct (T.X₀ j cu.1.1) cu.1.2) (FJ.phZ (T.X₀ j cu.1.1) cu.1.2 χ) (P cu.1.1) x = 0
-
-def MaxCuspsC (w : WeightFamilies.Wt D j) (c : ℝ) : Prop :=
-  ∀ P : FDSec (T.X₀ j), IsHolCusp (T.X₀ j) (la T j w) P →
-    (Deep T j w c P ↔ ∀ (cu : T.Cu j) (χ : WeightFamilies.ExpoSet D (T.Xc j cu)),
-      (∃ v : Fin (WeightFamilies.rho D j) → D.host.E, v ≠ 0 ∧ ∑ i, v i • cu.1.2.e i ∈ (T.X₀ j cu.1.1).Λ ∧
-        WeightFamilies.trF D (WeightFamilies.hform D χ.1 v v) ≤ c) → CoefZero T j cu χ.1 P) ∧
-    ((∀ k, ∀ x ∈ (T.X₀ j k).dom, P k x = 0) ↔
-      ∀ (cu : T.Cu j) (χ : WeightFamilies.ExpoSet D (T.Xc j cu)), CoefZero T j cu χ.1 P)
-
-variable {T} (h : LawsCore T)
-
-def DeepIff (CR Tn c : ℝ) (ka : WeightFamilies.Wt D j) : Prop :=
-  ∀ F : Cf T j ka, F ∈ WeightFamilies.MggK (recB h) CR Tn c j ka ↔ Deep T j ka (WeightFamilies.c1 D CR Tn c j) (rd T j ka F)
-
-def DeepDescends (CR Tn c : ℝ) (ka : WeightFamilies.Wt D j) : Prop :=
-  ∀ P ∈ Submodule.span ℂ (Set.range (rd T j ka)), Deep T j ka (WeightFamilies.c1 D CR Tn c j) P →
-    P ∈ Submodule.span ℂ (rd T j ka '' {F : Cf T j ka | F ∈ WeightFamilies.MggK (recB h) CR Tn c j ka})
-
-def TieReadAt : Prop :=
-  (∀ w, RdCusp T j w ∧ RdIndep T j w) ∧
-  (∀ N, ExtExists T j N ∧ ∀ (σ' : KT T j N →+* ℂ) (hσ : IsExt σ') w, GenRd hσ w) ∧
-  ∀ CR Tn c ka, DeepIff j h CR Tn c ka
-
-end Cusps
-
-def TieRead : Prop :=
-  ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ), InR D j → TieReadAt j h.toLawsCore
-
-def MaxCusps : Prop :=
-  ∀ (D : D7) (T : Top D), LawsP T → ∀ j, InR D j → DualIsLat T.toCore j ∧ ∀ w c, MaxCuspsC T.toCore j w c
-
-example (T : Core D) (j : ℕ) (w : WeightFamilies.Wt D j) (c : ℝ) (P : FDSec (T.X₀ j)) (hP : IsHolCusp (T.X₀ j) (la T j w) P) :
-    Deep T j w c P ↔ ∀ k, P k ∈ (T.X₀ j k).SSgt (la T j w k) c :=
-  ⟨fun hd k => ⟨hP k, hd k⟩, fun hd k => (hd k).2⟩
-
-example (T : Core D) (j N : ℕ) {σ' : KT T j N →+* ℂ} (hσ : IsExt σ') (w : WeightFamilies.Wt D j) (F : Cf T j w) :
-    rdGen hσ w (1 ⊗ₜ F) = rd T j w F := by
-  rw [rdGen_tmul, map_one, one_smul]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.BaseChangeTensorProduct

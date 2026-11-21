@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankRangeIdempotentLeOfEmbedsInRegularStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankRangeIdempotentLeOfEmbedsInRegular
 import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 
 noncomputable section
@@ -58,7 +58,7 @@ theorem finrank_eig_inf_ker_le : ∀ (Γ V : Type) [Group Γ] [Fintype Γ] [AddC
         _ = b k * (b k * p) * p := by rw [hcomm k]
         _ = (b k * b k) * (p * p) := by simp only [mul_assoc]
         _ = b k * p := by rw [hidem k, Formalism.L2.DIV.lvlIdem_idem]
-    obtain ⟨r, hr, hle⟩ := GlobalTheory.T.finrank_range_idempotent_le_of_embedsInRegular ℂ Γ V ρ (H k) (n k) (hemb k) (b k * p) (hsupp k) hid
+    obtain ⟨r, hr, hle⟩ := _root_.GlobalTheory.BadCount.finrank_range_idem_le_of_embReg ℂ Γ V ρ (H k) (n k) (hemb k) (b k * p) (hsupp k) hid
     rw [hcoeff k] at hr
     have hHb : (0 : ℝ) < Nat.card Hb := by exact_mod_cast Nat.card_pos
     have hH : (0 : ℝ) < Nat.card (H k) := by exact_mod_cast Nat.card_pos

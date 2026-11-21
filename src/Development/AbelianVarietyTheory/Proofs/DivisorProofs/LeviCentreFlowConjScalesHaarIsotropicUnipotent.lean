@@ -11,11 +11,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittFrameLeviNormal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemidirectHaarMeasureProduct
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MulVecCEApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSkewA
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddHaarCharLeftRightMatrixMulAdeleTensorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddHaarCharSkewHermitianNormScaleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddHaarCharLeftRightMatrixMulAdeleTensor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddHaarCharSkewHermitianNormScale
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousChartIsotropicUnipotentRadicalStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviConjScalarIdeleUnipotentCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitSmulOfCentralParabolicLeviStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitSmulOfCentralParabolicLevi
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.ResLine GlobalTheory.ResidueEisenstein
 open GlobalTheory.Doubling (absE)
@@ -34,7 +34,7 @@ theorem modulus_conj_flow : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
   obtain ⟨lv, hlv⟩ := GlobalTheory.SphEis.exists_isLv F E σ n J (r + 1) m X Y Z J₀ hF
   have hlaw := GlobalTheory.SphEis.crd_law F E σ n J (r + 1) m X Y Z J₀ hF lv hlv
   have hmem := hb.mem t
-  obtain ⟨l, hl⟩ := GlobalTheory.T.exists_unit_smul_of_central_parabolicLevi F E σ n J r m X Y Z J₀ hF (b t) hmem (fun k hk => hb.comm t k hk)
+  obtain ⟨l, hl⟩ := _root_.GlobalTheory.CentralLevi.exists_unit_smul_of_central F E σ n J r m X Y Z J₀ hF (b t) hmem (fun k hk => hb.comm t k hk)
   obtain ⟨γ, hγ⟩ : ∃ γ : Matrix (Fin (r + 1)) (Fin (r + 1)) (AF F ⊗[F] E),
       (matHom _ σ J (b t)).1 * adMat F Y = adMat F Y * γ := by
     have h1 := hmem
@@ -301,14 +301,14 @@ theorem modulus_conj_flow : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
   have hsA' : ∀ ν' : Measure (Matrix (Fin (r + 1)) (Fin m) (AF F ⊗[F] E)), ν'.IsAddHaarMeasure → ν'.map sA = kA • ν' := by
     intro ν' hν'
     have e := addEquivAddHaarChar_smul_map ν' (GlobalTheory.ModuLR.lrCE lI δ)
-    rw [GlobalTheory.T.addHaarChar_leftRight_matrixMul_adeleTensor F E σ h (r + 1) m lI δ, hdetlI, hδdet, one_pow, mul_one, map_pow, ← pow_mul] at e
+    rw [_root_.GlobalTheory.ResidueEisenstein.ModMat.addEquivAddHaarChar_lrCE F E σ h (r + 1) m lI δ, hdetlI, hδdet, one_pow, mul_one, map_pow, ← pow_mul] at e
     change ν'.map (GlobalTheory.ModuLR.lrCE lI δ) = kA • ν'
     conv_rhs => rw [← e]
     rw [smul_smul, hkA, inv_mul_cancel₀ (pow_ne_zero _ hl0), one_smul]
   have hsC' : ∀ ν' : Measure (skewA σ (r + 1)), ν'.IsAddHaarMeasure → ν'.map sC = kC • ν' := by
     intro ν' hν'
     have e := addEquivAddHaarChar_smul_map ν' Lc
-    rw [GlobalTheory.T.addHaarChar_skewHermitian_normScale F E σ h (r + 1) l Lc (fun s => rfl)] at e
+    rw [_root_.GlobalTheory.ResidueEisenstein.ModConj.addEquivAddHaarChar_skewA_scale F E σ h (r + 1) l Lc (fun s => rfl)] at e
     change ν'.map Lc = kC • ν'
     conv_rhs => rw [← e]
     rw [smul_smul, hkC, inv_mul_cancel₀ (pow_ne_zero _ hl0), one_smul]

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.SmallUnipotentElements
 import Development.AbelianVarietyTheory.Definitions.UpperBounds.FreeBallIffOfDimXEqZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallUnipotentUnitaryElementIsOneProofStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallUnipotentUnitaryElementIsOneProof
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.MajLactRmul
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantConjugateTransfer
 open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds GlobalTheory.ShareOn
@@ -62,7 +62,7 @@ theorem eq_one_of_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     (∀ γ ∈ G, IsUStab X.Gm X.L' γ) → (∀ γ ∈ G, GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.IsUnipotentModOver X.L' g γ) →
     (X.p0 = 0 ∨ X.p0 = r) → ∀ x ∈ X.dom, GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.NoContraction X x → ∀ γ ∈ G, γ = 1 := by
   intro E _ _ _ r X G g hg hgr hU hUn hp x hx hnc γ hγ
-  refine GlobalTheory.T.smallUnipotentUnitaryElementIsOne_proof E r X g hg hgr G hU hUn x hx hnc γ hγ fun τ u => ?_
+  refine _root_.GlobalTheory.SmallElement.smallElement E r X g hg hgr G hU hUn x hx hnc γ hγ fun τ u => ?_
   rw [maj_mulVec_of_definite X.toData hp hx γ (hU γ hγ).1 τ u]
   have h0 := MajorantConjugateTransfer.maj_nonneg X.toData hx τ u
   have h1 : 1 ≤ Real.exp (1 / (3 * (r : ℝ))) := Real.one_le_exp (by positivity)

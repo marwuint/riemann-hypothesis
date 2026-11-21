@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NewtonPowerSeriesSurjectiveLinearizationSolutionStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowerSeriesTaylorSubstFirstOrderStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NewtonPowerSeriesSurjectiveLinearizationSolution
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowerSeriesTaylorSubstFirstOrder
 
 open Polynomial
 
@@ -39,7 +39,7 @@ lemma iter_eq (f : PowerSeries k) (l : ℕ) :
 
 lemma cc_subst (φ a : PowerSeries k) (ha : PowerSeries.constantCoeff a = 0) :
     PowerSeries.constantCoeff (φ.subst a : PowerSeries k) = PowerSeries.constantCoeff φ :=
-  (GlobalTheory.T.powerSeries_taylor_subst_first_order k φ a 0 1 le_rfl ha).1
+  (_root_.GlobalTheory.taylor_subst_first_order k φ a 0 1 le_rfl ha).1
 
 end GlobalTheory.DeformZeros
 
@@ -180,7 +180,7 @@ theorem deform : ∀ (k J I : Type) [Field k] [CharZero k] [Fintype J] [Fintype 
               PowerSeries.constantCoeff ((PowerSeries.derivativeFun)^[l.1] (s i j))
               + y₀ j * (PowerSeries.constantCoeff b * PowerSeries.coeff 1 ((PowerSeries.derivativeFun)^[l.1] (s i j)))) := by
         intro j
-        have T := GlobalTheory.T.powerSeries_taylor_subst_first_order k ((PowerSeries.derivativeFun)^[l.1] (s i j)) a b m hm ha
+        have T := _root_.GlobalTheory.taylor_subst_first_order k ((PowerSeries.derivativeFun)^[l.1] (s i j)) a b m hm ha
         exact dvd_step hm _ _ _ _ _ _ _ (by simpa using hx0 (Sum.inl j)) T.1 T.2
       have heq : ∑ j, (x (Sum.inl j) + PowerSeries.X ^ m * h (Sum.inl j)) *
             (((PowerSeries.derivativeFun)^[l.1] (s i j)).subst (a + PowerSeries.X ^ m * b) : PowerSeries k)
@@ -200,7 +200,7 @@ theorem deform : ∀ (k J I : Type) [Field k] [CharZero k] [Fintype J] [Fintype 
         refine Finset.sum_congr rfl fun j _ => by ring
       rw [heq]
       exact Finset.dvd_sum fun j _ => key j
-  obtain ⟨x, hx0, hx⟩ := GlobalTheory.T.newton_powerSeries_surjective_linearization_solution k (J ⊕ I) (Option (I × Fin N)) (sys N ξ s) (Sum.elim y₀ 0)
+  obtain ⟨x, hx0, hx⟩ := _root_.GlobalTheory.newton_powerSeries_target k (J ⊕ I) (Option (I × Fin N)) (sys N ξ s) (Sum.elim y₀ 0)
     (lin N ξ s y₀) hsur hbase htay
   refine ⟨fun j => x (Sum.inl j), fun i => x (Sum.inr i), fun j => by simpa using hx0 (Sum.inl j),
     fun i => by simpa using hx0 (Sum.inr i), hx none, ?_⟩

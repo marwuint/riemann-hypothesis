@@ -1,5 +1,6 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.Intersections.StFlagPivotAlgIndep
+import GroundTheory.HeightsAndTheta.Heights.Intersections.FlagPivot
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -53,26 +54,6 @@ theorem spec_pivotMinor (a : Fin (n - 1)) (b : Fin n) (hab : (a : ℕ) ≤ b) :
     have hji' : (j : ℕ) < i := hji
     have hj : (j : ℕ) < a := by have := i.2; omega
     simp [AlgHom.mapMatrix_apply, Matrix.map_apply, genMat, pivotCols, aeval_X, spec, hj, hji']
-
-theorem proof : FlagPivotAlgIndep.Statement := by
-  intro F _ n
-  refine AlgebraicIndependent.of_comp (aeval (spec F n)) ?_
-  have hfun : ⇑(aeval (spec F n)) ∘
-        (fun q : Σ a : Fin (n - 1), {b : Fin n // (a : ℕ) ≤ b} => pivotMinor (genMat F n) q.1 q.2.1) =
-      ⇑(IsScalarTower.toAlgHom F (MvPolynomial (Fin n × Fin n) F) (FractionRing (MvPolynomial (Fin n × Fin n) F))) ∘
-        ((X : Fin n × Fin n → MvPolynomial (Fin n × Fin n) F) ∘
-          fun q : Σ a : Fin (n - 1), {b : Fin n // (a : ℕ) ≤ b} => (Fin.castLE (Nat.sub_le n 1) q.1, q.2.1)) := by
-    funext q
-    exact spec_pivotMinor F n q.1 q.2.1 q.2.2
-  rw [hfun]
-  refine AlgebraicIndependent.map' ?_ (IsFractionRing.injective _ _)
-  refine (algebraicIndependent_X (Fin n × Fin n) F).comp _ ?_
-  rintro ⟨a, b, hb⟩ ⟨a', b', hb'⟩ h
-  simp only [Prod.mk.injEq] at h
-  obtain ⟨h1, h2⟩ := h
-  have h1' : a = a' := Fin.ext (by simpa using congrArg Fin.val h1)
-  subst h1' h2
-  rfl
 
 end FlagPivotAlgIndep
 

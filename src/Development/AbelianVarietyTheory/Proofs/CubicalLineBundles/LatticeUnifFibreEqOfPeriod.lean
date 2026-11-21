@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HolomorphicUniformisationTangentUnimodularRiemanStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HolomorphicUniformizationTangentUnimodularRiemann
 import Development.AbelianVarietyTheory.Statements.PrincipalLattices.LogHermFormOfUnitDiscriminant
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -12,7 +12,7 @@ theorem lattice_unif_fibre_eq_of_period : ThetaUnifAV → ∀ (R : Type) [CommRi
   intro hU R _ P v s L c₀ ω hg hv H hc hL P' φ hφ u
   obtain ⟨v', hv', -⟩ := existsUnique_isVecOver hφ.2.1.1 v
   have htan : IsTangent v' := IsVecOver.isTangent hφ.2.1 hv' hv
-  obtain ⟨w, hw, -⟩ := (GlobalTheory.T.holomorphicUniformisation_tangent_unimodular_riemannForm hU P' u).1 v' htan
+  obtain ⟨w, hw, -⟩ := (_root_.GlobalTheory.AnyUnif.tangent_and_unimodular hU P' u).1 v' htan
   obtain ⟨hw0, hwL⟩ := H P' φ v' u w hφ hv' hw
 
   have hg' : P'.g = 1 := hφ.1.trans hg

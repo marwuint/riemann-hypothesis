@@ -9,8 +9,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPowVan
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SupportPushforwardSubschemeSubset
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TensOfForallIsPsEff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowLeGlobalSectionsDimLineBundlePow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SheafCohomologyDimTwistCutInequalitiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalSectionsPolynomialGrowthStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SheafCohomologyDimTwistCutInequalities
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalSectionsPolynomialGrowth
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter Asymptotics
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
@@ -25,7 +25,7 @@ theorem higherCohomology_bound_twist_neg_of_regular_section : ∀ (k : Type) [Fi
   have h1 : ∃ C : ℕ, ∀ m : ℕ,
       hdim k (twist (cut F hB s) (lbPow L m)) j ≤ C * ((d + 1) * (m + 1) ^ d) := by
     rcases Nat.eq_zero_or_pos j with rfl | hj
-    · obtain ⟨C, hC⟩ := GlobalTheory.T.global_sections_polynomial_growth k X hX d L hL (cut F hB s) hcut
+    · obtain ⟨C, hC⟩ := _root_.GlobalTheory.exists_hdim_twist_lbPow_zero_le k X hX d L hL (cut F hB s) hcut
       exact ⟨C, fun m => (hC m).trans
         (Nat.mul_le_mul_left _ (Nat.le_mul_of_pos_left _ (Nat.succ_pos d)))⟩
     · obtain ⟨C, hC⟩ := ih (cut F hB s) hcut j hj
@@ -38,7 +38,7 @@ theorem higherCohomology_bound_twist_neg_of_regular_section : ∀ (k : Type) [Fi
   have hB' := Twist.isLB_lbZPow hB (-1)
   obtain ⟨M', hM', e'⟩ := cls_surj (cls _ hB' + cls _ hM)
   obtain ⟨e⟩ := nonempty_twist_twist_iso_of_cls_eq F hB' hM hM' e'
-  have key := (GlobalTheory.T.sheafCohomologyDim_twist_cut_inequalities k X hX F B (lbPow L m) M' hB hM hM' s hs (by
+  have key := (_root_.GlobalTheory.hdim_twist_cut_inequalities k X hX F B (lbPow L m) M' hB hM hM' s hs (by
     rw [e', cls_lbZPow hB]; simp)).2.1 j
   have e2 : hdim k (twist (twistZ F B (-1)) (lbPow L m)) (j + 1) = hdim k (twist F M') (j + 1) :=
     hdim_congr k _ e

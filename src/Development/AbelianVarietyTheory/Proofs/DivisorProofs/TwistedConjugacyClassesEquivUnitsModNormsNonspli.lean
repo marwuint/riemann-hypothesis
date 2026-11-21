@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGr
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAevalEqOfSeparable
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SesqAsym
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AntidiagTwistedNorm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramMatrixTraceFormBasisChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianFormDetUnitAndTwistStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormOfEqualGramTraceFormsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraceFormOfTwistedNormCharpolyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramMatrixTraceFormBasisChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianFormDetUnitAndTwist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormOfEqualGramTraceForms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraceFormOfTwistedNormCharpoly
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -127,8 +127,8 @@ theorem twCl_equiv_cl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], 
       exact ⟨u * v, by rw [hv, hu, Units.val_mul, map_mul]; ring⟩
 
   obtain ⟨F0i, F0u⟩ := gram_delta (w.adicCompletion E) a
-  have hF1 := GlobalTheory.T.hermitian_form_det_unit_and_twist K B (w.adicCompletion E) e (cj w) he hcc a Q hP hQs hQd
-  have hF4 := GlobalTheory.T.gramMatrix_traceForm_basis_change K B (w.adicCompletion E) e (cj w) he a
+  have hF1 := _root_.GlobalTheory.GramTwistNorm.gram_twisted_norm_charpoly K B (w.adicCompletion E) e (cj w) he hcc a Q hP hQs hQd
+  have hF4 := _root_.GlobalTheory.GramChange.gram_basis_change K B (w.adicCompletion E) e (cj w) he a
   have hF6 := twConj_gram (w.adicCompletion E) (cj w) a
   have hcl : ∀ k : B.Cl, B.σ (((Quot.out k).1 : B.Aˣ) : B.A) = (Quot.out k).1 := fun k => (Quot.out k).2
   have hG : ∀ k : B.Cl, IsUnit (Matrix.of fun i j => e (B.herm (((β₀ * (Quot.out k).1 : B.Aˣ)) : B.A) (b0 i) (b0 j))).det :=
@@ -153,7 +153,7 @@ theorem twCl_equiv_cl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], 
     have h1 : (Quot.mk _ (δk k) : TwCl (thL a w)) = Quot.mk _ (δk k') := congrArg Subtype.val hkk
     obtain ⟨b', hb'⟩ := hrep k _ (Quot.eqvGen_exact h1)
     rw [hδk k'] at hb'
-    obtain ⟨t, ht⟩ := GlobalTheory.T.exists_norm_of_equal_gram_traceForms K B hPsep _ hε a _ _ (hβx _ (hcl k')) (hβx _ (hcl k)) b0 b' (fun i j => by
+    obtain ⟨t, ht⟩ := _root_.GlobalTheory.UnitLemma.IsometryUnit.isometry_unit K B hPsep _ hε a _ _ (hβx _ (hcl k')) (hβx _ (hcl k)) b0 b' (fun i j => by
       have := congrFun (congrFun hb' i) j
       simpa using e.injective this)
     have hrel : (Quot.mk _ (Quot.out k') : B.Cl) = Quot.mk _ (Quot.out k) := by
@@ -168,7 +168,7 @@ theorem twCl_equiv_cl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], 
     rintro ⟨cl, hclQ⟩
     have hQδ : ((Quot.out cl) * thetaGL a (cj w) (Quot.out cl)).val.charpoly = Q := by
       rw [← hnrm]; exact hclQ
-    obtain ⟨β, hβ, b, hb⟩ := GlobalTheory.T.exists_traceForm_of_twistedNorm_charpoly K B (w.adicCompletion E) e (cj w) he hcc hg a Q hP hQs hQd _ hQδ
+    obtain ⟨β, hβ, b, hb⟩ := _root_.GlobalTheory.TwTraceForm.exists_trace_form K B (w.adicCompletion E) e (cj w) he hcc hg a Q hP hQs hQd _ hQδ
     have hx : B.σ (((β₀⁻¹ * β : B.Aˣ)) : B.A) = ((β₀⁻¹ * β : B.Aˣ) : B.A) := by
       have h1 : B.σ ((β₀⁻¹ : B.Aˣ) : B.A) * ((β₀ : B.A) * ((-1) ^ (a - 1) * B.g)) = 1 := by
         rw [← hβ₀, ← map_mul, Units.inv_mul, map_one]

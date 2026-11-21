@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceAdjoinRootMapStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceAdjoinRootMap
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteFieldExistsGeneratorMinpolyStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanPowersOfUniformizerOfNilpotentStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanPowersOfUniformizerOfNilpotent
 open NumberField IsDedekindDomain Polynomial
 
 namespace GlobalTheory.LocalTraceNonzero
@@ -87,7 +87,7 @@ theorem exists_trace_ne_zero : ∀ (l b e : ℕ) [Fact l.Prime] (B : Type) [Comm
     rw [← Nat.cast_pow, ← map_natCast (algebraMap (ZMod (l ^ b)) B), ZMod.natCast_self, map_zero]
   have hpe : π ^ e ∈ Ideal.span {φ (l : C)} := by
     rw [map_natCast, hspan]; exact Ideal.mem_span_singleton_self _
-  have hE := GlobalTheory.T.exists_sum_mul_pow_of_residue_surjective_of_nilpotent C B φ π (l : C) e b hsurj hpe (by rw [map_natCast]; exact hlb)
+  have hE := _root_.GlobalTheory.span_powers_of_uniformizer_of_nilpotent C B φ π (l : C) e b hsurj hpe (by rw [map_natCast]; exact hlb)
 
   letI : Algebra C B := φ.toAlgebra
   have hsmul : ∀ (c : C) (x : B), c • x = φ c * x := fun c x => Algebra.smul_def c x
@@ -129,7 +129,7 @@ theorem exists_trace_ne_zero : ∀ (l b e : ℕ) [Fact l.Prime] (B : Type) [Comm
       AdjoinRoot.algebraMap_eq]
   have hu : IsUnit (Algebra.trace (ZMod (l ^ b)) C (AdjoinRoot.mk h q')) := by
     apply isUnit_of_cast_ne_zero l b hb
-    rw [← hg, GlobalTheory.T.map_trace_adjoinRoot_eq_trace_map _ _ g h hmon, hmap]; exact hz
+    rw [← hg, _root_.GlobalTheory.trace_adjoinRoot_map _ _ g h hmon, hmap]; exact hz
   refine ⟨φ (AdjoinRoot.mk h q'), ?_⟩
   rw [htr]
   intro h0

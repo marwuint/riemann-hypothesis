@@ -2,12 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.D
 
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
-section SlopeTestRemainingChoices
-
-variable {X : Type} [CommRing X] {n : ℕ}
-
-end SlopeTestRemainingChoices
-
 private theorem dualM_mul_dualM {X : Type} [CommRing X] {n : ℕ} (A B A' B' : Matrix (Fin n) (Fin n) X) :
     dualM A B * dualM A' B' = dualM (A * A') (A * B' + B * A') := by
   ext i j

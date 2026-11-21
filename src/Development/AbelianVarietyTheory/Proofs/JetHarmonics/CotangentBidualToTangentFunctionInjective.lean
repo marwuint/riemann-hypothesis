@@ -264,9 +264,6 @@ def ev : Cotangent G →ₗ[O] (LieG G → O) := cotangentBidualToTangentFunctio
 theorem ev_apply (f : Cotangent G) (v : Lie G) : ev G f (lieEquiv G v) = v f :=
   cotangentBidualToTangentFunction_apply (Module.Dual.eval O (Cotangent G) f) v
 
-theorem ev_mem (f : Cotangent G) : ev G f ∈ omega G :=
-  range_cotangentBidualToTangentFunction.le ⟨Module.Dual.eval O (Cotangent G) f, rfl⟩
-
 theorem ev_injective [Module.IsReflexive O (Cotangent G)] : Function.Injective (ev G) :=
   cotangentBidualToTangentFunction_injective.comp (Module.bijective_dual_eval O (Cotangent G)).1
 
@@ -315,79 +312,6 @@ theorem finite_projective_of_smooth [Smooth G.hom] :
   exact ⟨AugCot.finite (aug G), AugCot.projective (aug G)⟩
 
 end Cotangent
-
-section Characters
-
-variable {O : Type} [CommRing O] {G : Over (Spec (CommRingCat.of O))} [GrpObj G]
-
-theorem torsion_ext {N : ℕ} {T : Over (Spec (CommRingCat.of O))} {x y : T ⟶ torsion G N}
-    (h : x ≫ torsion.ι G N = y ≫ torsion.ι G N) : x = y :=
-  pullback.hom_ext h (toUnit_unique _ _)
-
-theorem comp_ι_pow {N : ℕ} {T : Over (Spec (CommRingCat.of O))} (x : T ⟶ torsion G N) :
-    (x ≫ torsion.ι G N) ^ N = 1 := by
-  rw [← comp_pow, torsion_ι_pow, comp_one]
-
-theorem torsionLift_comp_ι {N : ℕ} {T : Over (Spec (CommRingCat.of O))} (x : T ⟶ torsion G N)
-    (h : (x ≫ torsion.ι G N) ^ N = 1) : torsionLift (x ≫ torsion.ι G N) h = x :=
-  torsion_ext (torsionLift_ι _ _)
-
-variable [IsCommMonObj G]
-
-theorem isCharTors_iff {N : ℕ} (f : torsion G N ⟶ Gm (Spec (CommRingCat.of O))) :
-    IsCharTors G N f ↔ ∃ χ : TorsionChar G N, χ.hom = f := by
-  constructor
-  · intro h
-    exact ⟨⟨f, fun T x y hx hy => h T _ _ _ (by simp only [torsionLift_ι])⟩, rfl⟩
-  · rintro ⟨χ, rfl⟩ T x y z hz
-    have h := χ.map_mul T _ _ (comp_ι_pow x) (comp_ι_pow y)
-    rw [torsionLift_comp_ι, torsionLift_comp_ι] at h
-    rw [← h]
-    congr 1
-    exact torsion_ext (hz.trans (torsionLift_ι _ _).symm)
-
-variable (G) in
-
-def tvEquiv (p : ℕ) : Tv G p ≃ CharSystem G p where
-  toFun χ :=
-    { char := fun n => ⟨χ.χ n, fun T x y hx hy => χ.isChar n T _ _ _ (by simp only [torsionLift_ι])⟩
-      compat := fun n => ((Category.id_comp _).symm.trans (χ.compat n _ (𝟙 _) (torsionIncl G p n)
-        (by rw [Category.id_comp, torsionIncl, torsionLift_ι]))).symm }
-  invFun t :=
-    { χ := fun n => (t.char n).hom
-      isChar := fun n => (isCharTors_iff _).2 ⟨_, rfl⟩
-      compat := fun n T x y h => by
-        have e : x ≫ torsionIncl G p n = y :=
-          torsion_ext (by rw [Category.assoc, torsionIncl, torsionLift_ι, h])
-        rw [← t.compat n, ← Category.assoc, e] }
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-end Characters
-
-section HodgeTate
-
-variable {O : Type} [CommRing O] [IsLocalRing O] {G : Over (Spec (CommRingCat.of O))} [GrpObj G]
-
-theorem dualBC_tangentPt {R R' : Type} [CommRing R] [Algebra O R] [CommRing R'] [Algebra O R']
-    (φ : R →ₐ[O] R') (v : Cotangent G →ₗ[O] R) :
-    ptMap (dualBC φ) ≫ (tangentPt v : specO O (DualNumber R) ⟶ G) =
-      tangentPt (φ.toLinearMap ∘ₗ v) := by
-  rw [tangentPt_eq, tangentPt_eq, ← Category.assoc, ptMap_comp_ptMap]
-  congr 2
-  refine AlgHom.ext fun b => TrivSqZeroExt.ext ?_ ?_
-  · simp [dualBC_fst, tangentAlg_fst]
-  · simp [dualBC_snd, tangentAlg_snd]
-
-variable [IsCommMonObj G] {p : ℕ}
-
-end HodgeTate
-
-section Valued
-
-variable {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C]
-
-end Valued
 
 end
 

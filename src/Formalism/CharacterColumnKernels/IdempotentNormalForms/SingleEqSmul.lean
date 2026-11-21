@@ -85,8 +85,4 @@ def homEquiv (Θ : Matrix m g R) : (Coker Θ →ₗ[R] M) ≃ₗ[O] LinearMap.ke
 
 end HomAux
 
-theorem homCoker : StatHomCoker := by
-  intro R O M _ _ _ _ _ _ m g _ _ _ Θ
-  exact ⟨homEquiv Θ⟩
-
 end Formalism.NG

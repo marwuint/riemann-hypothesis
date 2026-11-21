@@ -55,44 +55,4 @@ def MonoCount : Prop :=
             Module.finrank ℚ_[p] (T.YYsp p LL i ρ n (fw w)) =
           Module.finrank ℚ_[p] (Y p (r := r) (LL.setTies T n) T.J T.thr)
 
-def MeanGam : Prop :=
-  ∃ C₀ : ℝ, 0 < C₀ ∧ ∀ (p : ℕ) [Fact p.Prime] (K r : ℕ) [NeZero r] (LLw : Letters (K + 1)) {q : ℕ}
-    (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (ρ : Fin r) (z : ℕ) (w : Fin r → ℤ) (n₀ : ℕ)
-    (f : Fin n₀ → MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) (ord : Fin n₀ → ℕ) (s d Yw a : ℕ) (E κ : ℝ)
-    (U V : ℕ → Matrix (Fin n₀) (Fin n₀) ℚ_[p]) (dg : ℕ → Fin n₀ → ℚ_[p]),
-    (ρ : ℕ) = r - 1 → 2 ≤ r → LLw.vec (Fin.last K) = true →
-    LinearIndependent ℤ_[p] f → Submodule.span ℤ_[p] (Set.range f) = MMwZ p LLw J M ρ w →
-    (∀ b, HasOrder (Fin.last K, ρ) (ord b) (f b)) →
-    (∀ e, Submodule.span ℤ_[p] (f '' {b | e ≤ ord b}) = FilE p LLw J M ρ w (Fin.last K, ρ) e) →
-    1 ≤ E → 1 ≤ Yw → 0 < d → IsCoprime (d : ℤ) p → LLw.total ≤ s →
-    (∀ x, LLw.deg x ≤ 2 * a) → s + d * (Yw - 1) ≤ 2 * a → z ≤ 2 * a →
-    ((K + 3) * r ^ 2 : ℝ) * lgV2 p a r ≤ κ → GramDeterminantGradedHypothesis p LLw J M ρ κ →
-    (∀ j < Yw, (∀ x y, ‖U j x y‖ ≤ 1) ∧ (∀ x y, ‖V j x y‖ ≤ 1) ∧ ‖(U j).det‖ = 1 ∧ ‖(V j).det‖ = 1 ∧
-      (Matrix.of fun x y => (p : ℚ_[p]) ^ (⌈κ⌉₊) * tieGam p LLw ρ z (s + d * j) (f x) (f y)) =
-        U j * Matrix.diagonal (dg j) * V j) →
-    (∑ j ∈ range Yw, ((univ.filter (fun b => ‖dg j b‖ < (p : ℝ) ^ (-E))).card : ℝ)) / Yw ≤
-      n₀ * (2 * (LLw.total : ℝ) / Yw + (C₀ * κ + 2 * (LLw.total : ℝ) * lgV2 p a r / Yw) / E)
-
-def TheoremM : Prop :=
-  ∃ C₀ : ℝ, 1 ≤ C₀ ∧ ∀ (p : ℕ) [Fact p.Prime] (N r : ℕ) [NeZero N] [NeZero r] (LL : Letters N) (T : TieData)
-    (a : ℕ) (E κ : ℝ) (Yl n₀ dd : Fin T.t → ℕ) (ρ : Fin r),
-    p ≠ 2 → 2 ≤ r → (ρ : ℕ) = r - 1 → T.Admissible LL →
-    1 ≤ E → (∀ i, 1 ≤ Yl i ∧ 0 < dd i ∧ IsCoprime (dd i : ℤ) p) →
-    (∀ i, T.S (LL.setTies T (fun i => n₀ i + dd i * (Yl i - 1))) i ≤ n₀ i) →
-    (∀ x, (LL.setTies T (fun i => n₀ i + dd i * (Yl i - 1))).deg x ≤ 2 * a) → (∀ i, T.z i ≤ 2 * a) →
-    ((N + 2) * r ^ 2 : ℝ) * lgV2 p a r ≤ κ →
-    (∀ n ∈ Fintype.piFinset (fun i => (range (Yl i)).image (fun j => n₀ i + dd i * j)),
-      HypP p (LL.setTies T n) ρ ⌈κ / (N + 2)⌉₊ ∧ HypW p (r := r) (LL.setTies T n) ⌈κ / (N + 2)⌉₊ ∧
-      ∀ i, GramDeterminantGradedHypothesis p ((LL.setTies T n).takeD (T.pos i + 1)) T.J (T.thrUpTo i) ρ κ) →
-    (∑ n ∈ Fintype.piFinset (fun i => (range (Yl i)).image (fun j => n₀ i + dd i * j)),
-        (bad p (fun F G => fockN p (LL.setTies T n) (T.phis p (LL.setTies T n) F) G)
-          (YZ p (r := r) (LL.setTies T n) T.J T.thr) ⌊(T.t : ℝ) * (E + C₀ * κ) + C₀ * κ⌋ : ℝ)) /
-        (Fintype.piFinset (fun i => (range (Yl i)).image (fun j => n₀ i + dd i * j))).card ≤
-      ∑ i, (2 * (T.S (LL.setTies T (fun i => n₀ i + dd i * (Yl i - 1))) i : ℝ) / Yl i +
-          (C₀ * κ + 2 * (T.S (LL.setTies T (fun i => n₀ i + dd i * (Yl i - 1))) i : ℝ) * lgV2 p a r / Yl i) / E) *
-        ((∑ n ∈ Fintype.piFinset (fun i => (range (Yl i)).image (fun j => n₀ i + dd i * j)),
-            (Module.finrank ℚ_[p]
-              (Y p (r := r) (LL.setTies T (Function.update n i (n₀ i + dd i * (Yl i - 1)))) T.J T.thr) : ℝ)) /
-          (Fintype.piFinset (fun i => (range (Yl i)).image (fun j => n₀ i + dd i * j))).card)
-
 end Formalism.GM.M

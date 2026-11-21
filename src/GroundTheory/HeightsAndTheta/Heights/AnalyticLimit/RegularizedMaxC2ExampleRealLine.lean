@@ -321,47 +321,6 @@ theorem RegularizedMaxConvergenceC2.proof : RegularizedMaxConvergenceC2.Statemen
     rw [e1] at this
     linarith
 
-section System
-
-open ReciprocityTheory.AnForm.M (FinHolAtlas)
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChartData)
-
-variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X} {R : RegChartData A}
-
-theorem System.tendstoC2On_chart_symm_compact (S : System R) (k : Fin A.n) {K : Set (Fin D → ℂ)} (hK : IsCompact K)
-    (hKs : K ⊆ (A.chart k).target ∩ (A.chart k).symm ⁻¹' R.Yo) :
-    TendstoC2On (fun t y => S.ph t ((A.chart k).symm y)) (fun y => R.φ ((A.chart k).symm y)) K :=
-  S.c2 k K hK hKs
-
-end System
-
-theorem regularizedMax_c2_example_real_line :
-    TendstoC2On (fun t x => regMax t (fun j : Fin 2 => x ^ 2 + ((j : ℕ) : ℝ) * t) + t / 2)
-      (fun x : ℝ => x ^ 2) (Set.Icc (-1) 1) := by
-  have hd1 : ∀ c : ℝ, fderiv ℝ (fun x : ℝ => x ^ 2 + c) = fderiv ℝ (fun x : ℝ => x ^ 2) :=
-    fun c => funext fun y => fderiv_add_const c
-  refine RegularizedMaxConvergenceC2.proof (Fin 2) Set.univ (Set.Icc (-1) 1) (fun x : ℝ => x ^ 2)
-    (fun t j x => x ^ 2 + ((j : ℕ) : ℝ) * t) (fun t => t) (fun _ => 0) isOpen_univ
-    (Set.subset_univ _) (by fun_prop) ?_ ?_ ?_ ?_ ?_
-  · filter_upwards [self_mem_nhdsWithin] with t (ht : 0 < t)
-    exact ⟨ht, fun j => by fun_prop⟩
-  · exact tendsto_id.mono_left nhdsWithin_le_nhds
-  · intro j
-    refine ⟨Metric.tendstoUniformlyOn_iff.2 fun e he => ?_, ?_, ?_⟩
-    · filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (eventually_lt_nhds he)]
-        with t (ht : 0 < t) hte
-      intro x _
-      have hj : ((j : ℕ) : ℝ) ≤ 1 := by exact_mod_cast Nat.lt_succ_iff.1 j.isLt
-      have hj0 : (0 : ℝ) ≤ ((j : ℕ) : ℝ) := Nat.cast_nonneg _
-      rw [Real.dist_eq, abs_sub_comm, add_sub_cancel_left, abs_of_nonneg (by positivity)]
-      nlinarith
-    · simp only [hd1]
-      exact tendstoUniformlyOn_self _ _ _
-    · simp only [hd1]
-      exact tendstoUniformlyOn_self _ _ _
-  · exact Eventually.of_forall fun t j x _ => by simp
-  · simp
-
 end
 
 end GroundTheory.Heights₂.Heights.AnalyticLimit

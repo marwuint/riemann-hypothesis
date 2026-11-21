@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnipVal
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InCellIffDetNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermitianSplitUnitaryLowerBlockInvertibleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InCellIffDetNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermitianSplitUnitaryLowerBlockInvertible
 
 open MeasureTheory Matrix GlobalTheory.KSp GlobalTheory.SplitUnitary
 open GlobalTheory.WeilM (UG IsQuad IsHerm ResEtaPow)
@@ -42,7 +42,7 @@ theorem exists_herm_transversal (F : Type) [Field F] [CharZero F] (E : Type) [Fi
   | empty => exact ⟨0, by ext i j; simp, by simp⟩
   | insert g s _ ih =>
     obtain ⟨t₀, ht₀, h₀⟩ := ih
-    obtain ⟨t₁, ht₁, h₁⟩ := GlobalTheory.T.exists_hermitian_splitUnitary_lowerBlock_invertible F E c δ hE ν g
+    obtain ⟨t₁, ht₁, h₁⟩ := _root_.GlobalTheory.KSp.exists_herm_transverse F E c δ hE ν g
     have key : ∀ k ∈ insert g s, {r : F | (((mat c k).toBlocks₂₁ + (mat c k).toBlocks₂₂ * t₀) +
         algebraMap F E r • ((mat c k).toBlocks₂₂ * (t₁ - t₀))).det = 0}.Finite := by
       intro k hk
@@ -77,7 +77,7 @@ theorem exists_translate_inCell : ∀ (F : Type) [Field F] [CharZero F] (E : Typ
       have h0 : (0 : Matrix ν ν E).map c = 0 := Matrix.map_zero _ (map_zero c)
       have h1 : (1 : Matrix ν ν E).map c = 1 := Matrix.map_one _ (map_zero c) (map_one c)
       simp [stdJ, fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply, h0, h1, ht]⟩
-  refine ⟨u, fun g hg => (GlobalTheory.T.inCell_iff_det_lower_left_block_ne_zero F E c δ hE ν _).mpr ?_⟩
+  refine ⟨u, fun g hg => (_root_.GlobalTheory.KSp.inCell_iff_det_ne_zero F E c δ hE ν _).mpr ?_⟩
   have e : mat c (g * u) = mat c g * fromBlocks 1 0 t 1 := rfl
   rw [e, ← fromBlocks_toBlocks (mat c g), fromBlocks_multiply, toBlocks_fromBlocks₂₁, Matrix.mul_one]
   exact h g hg

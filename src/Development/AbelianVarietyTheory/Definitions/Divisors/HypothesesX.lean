@@ -19,6 +19,4 @@ structure HypothesesX : Prop where
 
   fsch : GlobalTheory.Published.FubiniStudyChowHeight
 
-example (h : HypothesesX) : GlobalTheory.Published.PointSeparationPair ∧ GlobalTheory.Published.GreenCuspidal := ⟨h.sep, h.green⟩
-
 end GlobalTheory.CovTop

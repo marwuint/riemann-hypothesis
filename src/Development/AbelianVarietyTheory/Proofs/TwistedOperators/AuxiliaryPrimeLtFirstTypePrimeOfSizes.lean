@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOrthogonalSumLatticeSameLatticedSpace
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTestGridFromLevelChoiceGridStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTestGridArrowsVacuaIntertwinersStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTestGridFromLevelChoiceGrid
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NodeAgree
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTestGridArrowsVacuaIntertwiners
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspAlongSmoothRows
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemPrincGLOfCong
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TestGridRowZeroVerticesAgreeWeilData
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SizesOfSizeRows
@@ -137,14 +139,14 @@ theorem exists_gridPre_agree (hDS : GlobalTheory.Published.DiscreteSeriesUpqExis
     (hc : W.cart (.top 0) = W.cart (.core D.R.m)) (hb : W.onb (.top 0) = W.onb (.core D.R.m)) :
     ∃ G : GlobalTheory.Grid.GridPre R, G.Is ∧ Agree G W := by
   obtain ⟨e, he, hcos⟩ := W.cosVec_is
-  obtain ⟨G, rfl, hsp, hch, hag⟩ := GlobalTheory.T.exists_testGrid_from_levelChoiceGrid hDS hH hR hsc W hW hL (pg_under_inj hR) (auxiliaryPrime_splitsCompletely _)
+  obtain ⟨G, rfl, hsp, hch, hag⟩ := _root_.GlobalTheory.GridJoin.exists_gridPre_spaces hDS hH hR hsc W hW hL (pg_under_inj hR) (auxiliaryPrime_splitsCompletely _)
     (auxiliaryPrime_ne_typePrime G') (auxiliaryPrime_ne_levelPrimes_of_lt hq) oV oP oX hc hb e he
   obtain ⟨X, ωT, vacT, ItT, ωC, vacC, ItC, dn, ItU, vC, harr, hdat, hag2⟩ : ∃ X ωT vacT ItT ωC vacC ItC dn ItU vC,
       (withArr G X ωT vacT ItT ωC vacC ItC dn ItU vC).IsArrows ∧ (withArr G X ωT vacT ItT ωC vacC ItC dn ItU vC).IsData ∧
         ArrAgree (withArr G X ωT vacT ItT ωC vacC ItC dn ItU vC) W := by
     first
-      | exact GlobalTheory.T.exists_testGrid_arrows_vacua_intertwiners hDC hHC hH hS hR hsc W hW G hsp hch hag hcos
-      | exact GlobalTheory.T.exists_testGrid_arrows_vacua_intertwiners hDC hHC hH hR hsc W hW G hsp hch hag hcos
+      | exact _root_.GlobalTheory.GridJoin.exists_arrows hDC hHC hH hS hR hsc W hW G hsp hch hag hcos
+      | exact _root_.GlobalTheory.GridJoin.exists_arrows hDC hHC hH hR hsc W hW G hsp hch hag hcos
   obtain ⟨m00, mV, mP, mX, hm⟩ := exists_isMeas (withArr G X ωT vacT ItT ωC vacC ItC dn ItU vC) (isSpaces_withArr hsp)
   exact ⟨withMeas (withArr G X ωT vacT ItT ωC vacC ItC dn ItU vC) m00 mV mP mX,
     ⟨isSpaces_withMeas (isSpaces_withArr hsp), isChars_withMeas (isChars_withArr hch), isArrows_withMeas harr, hm,

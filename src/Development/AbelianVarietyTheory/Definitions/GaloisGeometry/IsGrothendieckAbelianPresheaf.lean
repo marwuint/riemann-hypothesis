@@ -115,28 +115,6 @@ theorem extMap_bijective {Z : A} {Z' : B} (a : Z' ⟶ Φ.obj Z)
       (hn _).surjective (hn _) hx
       (fun y₁ ↦ Ext.covariant_sequence_exact₁ _ (hS.map_of_exact Φ) y₁ (hI I hinj _ _) rfl)
 
-theorem mapExactFunctor_natTrans (Ψ : A ⥤ B) [Ψ.Additive] [PreservesFiniteLimits Ψ] [PreservesFiniteColimits Ψ]
-    (τ : Φ ⟶ Ψ) (n : ℕ) {Z F : A} (x : Ext.{w} Z F n) :
-    (x.mapExactFunctor.{w, w'} Φ).comp (Ext.mk₀ (τ.app F)) (add_zero n) =
-      (Ext.mk₀ (τ.app Z)).comp (x.mapExactFunctor.{w, w'} Ψ) (zero_add n) := by
-  induction n generalizing F with
-  | zero =>
-    obtain ⟨g, rfl⟩ := (Ext.mk₀_bijective Z F).surjective x
-    simp [Ext.mapExactFunctor_mk₀]
-  | succ n hn =>
-    obtain ⟨I, Q, i, q, h, hS, -, hx⟩ := exists_shift.{w} (Z := Z) F n
-    obtain ⟨y, rfl⟩ := hx x
-    obtain ⟨e, he, hnat⟩ : ∃ e : Ext.{w} Q F 1, y.comp hS.extClass rfl = y.comp e rfl ∧
-        (e.mapExactFunctor.{w, w'} Φ).comp (Ext.mk₀ (τ.app F)) (add_zero 1) =
-          (Ext.mk₀ (τ.app Q)).comp (e.mapExactFunctor.{w, w'} Ψ) (zero_add 1) := by
-      refine ⟨hS.extClass, rfl, ?_⟩
-      have h1 := (hS.map_of_exact Φ).extClass_naturality (hS.map_of_exact Ψ)
-        ((ShortComplex.mk i q h).mapNatTrans τ)
-      rw [← Ext.mapExactFunctor_extClass, ← Ext.mapExactFunctor_extClass] at h1
-      exact h1
-    rw [he, Ext.mapExactFunctor_comp, Ext.mapExactFunctor_comp, Ext.comp_assoc_of_third_deg_zero, hnat,
-      ← Ext.comp_assoc _ _ _ (zero_add n) rfl (by omega), ← hn y, Ext.comp_assoc_of_second_deg_zero]
-
 end Abstract
 
 section Site
@@ -349,45 +327,7 @@ def change (u : F ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (n : ℕ) :
     Ext.{1} ((freeSheaf J R).obj T) F n →+ Ext.{1} ((freeSheaf J S).obj T) G n :=
   (cmp J f T G n).symm.toAddMonoidHom.comp ((Ext.mk₀ u).postcomp _ (add_zero n))
 
-theorem cmp_change (u : F ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (n : ℕ) (x : Ext.{1} ((freeSheaf J R).obj T) F n) :
-    cmp J f T G n (change J f u T n x) = x.comp (Ext.mk₀ u) (add_zero n) :=
-  (cmp J f T G n).apply_symm_apply _
-
-theorem change_mk₀ (u : F ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (g : (freeSheaf J R).obj T ⟶ F) :
-    change J f u T 0 (Ext.mk₀ g) = Ext.mk₀ ((resEquiv J f T G).symm (g ≫ u)) := by
-  apply (cmp J f T G 0).injective
-  rw [cmp_change, cmp_apply, Ext.mapExactFunctor_mk₀, Ext.mk₀_comp_mk₀, Ext.mk₀_comp_mk₀, freeUnit_comp,
-    Equiv.apply_symm_apply]
-
-theorem change_postcomp_left (v : F ⟶ F') (u : F' ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (n : ℕ)
-    (x : Ext.{1} ((freeSheaf J R).obj T) F n) :
-    change J f u T n (x.comp (Ext.mk₀ v) (add_zero n)) = change J f (v ≫ u) T n x := by
-  apply (cmp J f T G n).injective
-  rw [cmp_change, cmp_change, Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀]
-
-theorem change_postcomp_right (u : F ⟶ (res J f).obj G) (v : G ⟶ G') (T : Cᵒᵖ ⥤ Type 1) (n : ℕ)
-    (x : Ext.{1} ((freeSheaf J R).obj T) F n) :
-    (change J f u T n x).comp (Ext.mk₀ v) (add_zero n) = change J f (u ≫ (res J f).map v) T n x := by
-  apply (cmp J f T G' n).injective
-  rw [cmp_change, cmp_apply, Ext.mapExactFunctor_comp, Ext.mapExactFunctor_mk₀,
-    ← Ext.comp_assoc_of_third_deg_zero, ← cmp_apply, cmp_change, Ext.comp_assoc_of_third_deg_zero,
-    Ext.mk₀_comp_mk₀]
-
-theorem change_smul (u : F ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (n : ℕ) (r : R)
-    (x : Ext.{1} ((freeSheaf J R).obj T) F n) : change J f u T n (r • x) = f r • change J f u T n x := by
-  rw [Ext.smul_eq_comp_mk₀, Ext.smul_eq_comp_mk₀, change_postcomp_left, change_postcomp_right]
-  have h : (res J f).map (f r • 𝟙 G) = r • 𝟙 _ := rfl
-  rw [h, Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
-
-def resId (f : R →+* R) (hf : f = RingHom.id R) : res J f ⟶ 𝟭 _ where
-  app G := ⟨Functor.whiskerLeft G.obj (ModuleCat.restrictScalarsId' f hf).hom⟩
-  naturality _ _ _ := rfl
-
 variable {S' : Type 1} [CommRing S']
-
-def resComp (g : S →+* S') (gf : R →+* S') (h : gf = g.comp f) : res J g ⋙ res J f ⟶ res J gf where
-  app G := ⟨Functor.whiskerLeft G.obj (ModuleCat.restrictScalarsComp' f g gf h).inv⟩
-  naturality _ _ _ := rfl
 
 end Site
 

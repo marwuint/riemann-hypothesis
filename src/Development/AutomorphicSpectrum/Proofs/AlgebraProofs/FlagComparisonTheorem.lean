@@ -11,9 +11,9 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.StableHopfOrderSubgr
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.StableHopfOrderFundamentalLengthsStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.StableHopfOrderBasisIdealsStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.StableHopfOrderBasisLengthsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TeichmullerCharacterOrderGeneratesStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TeichmullerCharacterOrderGenerates
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.StableHopfOrderBasisColengthStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ProductInequalitiesForceEqualityStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ProductInequalitiesForceEquality
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.StableHopfOrderFundamentalIdealStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalIdealFrobeniusValuationStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NonFundamentalEigenLeSquareAugmentationStatement
@@ -149,7 +149,7 @@ theorem flagStatement_holds : FlagStatement := by
     obtain ⟨k, -, e⟩ := FiniteField.card F p
     exact ⟨k, k.pos, e⟩
   have hpp : p.Prime := Fact.out
-  obtain ⟨hord, -, hfp, hfund, -⟩ := GlobalTheory.T.teichmuller_character_order_generates p C v R hv hp F f hf σ hσ
+  obtain ⟨hord, -, hfp, hfund, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GR.FundGen.main p C v R hv hp F f hf σ hσ
   have hFp : ∀ s, IsFund p (σ ^ p ^ s) := hfp
   have hbK : ∀ i : Fin n, b i ∉ flagSub b i := fun i =>
     b.linearIndependent.notMem_span_image (by simp)
@@ -272,7 +272,7 @@ theorem flagStatement_holds : FlagStatement := by
     have h2 := prod_chars hpp hf0 σ hord (fun m hm => hfund _ hm) L hnf
     have h3 := hasLen_unique hv (hLprod (fun m => L (σ ^ m)) (fun m _ => hL _)) hcO
     exact h1.trans (h2.symm.trans h3)
-  obtain ⟨hDx, hlen⟩ := GlobalTheory.T.product_inequalities_force_equality (Fin n) (Fin f) (Fintype.card N) (p - 1) Fintype.card_pos
+  obtain ⟨hDx, hlen⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GR.grcount (Fin n) (Fin f) (Fintype.card N) (p - 1) Fintype.card_pos
     (Nat.sub_pos_of_lt hpp.one_lt)
     (fun t s => v (algebraMap R C (c t s))) (fun t s => v (algebraMap R C (d t s)))
     (fun t s => v (algebraMap R C (δ t s))) (fun s => L (σ ^ p ^ ((s : ℕ) + 1))) cA cN cO hcN0

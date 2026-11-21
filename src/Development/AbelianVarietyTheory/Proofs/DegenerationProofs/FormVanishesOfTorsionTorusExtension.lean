@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.PullChartIsLB
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFormSec
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsPartPartSec
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsBasisUniqueMinAndSumsSeparated
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PartVanishesOnTorusTorsionFourierStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PartVanishesOnTorusTorsionFourier
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PureEqZeroOfVanishingOnTorsion
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -39,7 +39,7 @@ theorem form_vanishes_of_torsion : Out.Laws → Out.Laws2 → (∀ (k : Type) [F
   choose ψ hψ using hpart φ
   have hψ0 : ∀ α l, (ψ α).f l = 0 := fun α =>
     GlobalTheory.PureZero.pure_eq_zero_of_vanishing_on_torsion L1 L2 k Φ g N N' d π hBig hN' (by omega) hd1 hd α (ψ α) (hψ α).1
-      (GlobalTheory.T.part_vanishes_on_torus_torsion_fourier k Φ d N' hN' φ hdist htor α (ψ α) (hψ α))
+      (_root_.GlobalTheory.TorsionFourier.part_vanishes_on_torsion k Φ d N' hN' φ hdist htor α (ψ α) (hψ α))
   have hφ0 : ∀ l, φ.f l = 0 := fun l => by
     rw [hsum φ (hfin φ).toFinset ψ (by simp) (fun α _ => hψ α) l]
     exact Finset.sum_eq_zero fun α _ => hψ0 α l

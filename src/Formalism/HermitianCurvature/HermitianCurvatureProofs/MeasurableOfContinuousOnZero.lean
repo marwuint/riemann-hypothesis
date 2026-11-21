@@ -21,8 +21,6 @@ theorem measurable_of_continuousOn_zero {X : Type*} [TopologicalSpace X] [Measur
   rw [e]
   exact hf.measurable_piecewise continuousOn_const hs
 
-example (k r : ℕ) : OpensMeasurableSpace (Cf r 0 × Mt k r) := inferInstance
-
 section Meas
 
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]

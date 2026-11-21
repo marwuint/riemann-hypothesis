@@ -1,15 +1,11 @@
 import Mathlib
-import GroundTheory.LocalFields.ArtinConductorDiscriminant
+import GroundTheory.LocalFields.ArtinConductorAbelian
 
 noncomputable section
 
 namespace GroundTheory.LocalField
 
 open ValuativeRel Module Representation
-
-section Separate
-
-end Separate
 
 section Cut
 
@@ -50,12 +46,6 @@ end Cut
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   {Ω : Type*} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω]
   [Algebra K Ω] [ValuativeExtension K Ω] [IsSepClosure K Ω]
-
-section Max
-
-variable (L : IntermediateField K Ω) [FiniteDimensional K L] [IsAbelianGalois K L]
-
-end Max
 
 section Factor
 

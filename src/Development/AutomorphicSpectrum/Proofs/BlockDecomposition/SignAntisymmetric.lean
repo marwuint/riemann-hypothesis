@@ -125,17 +125,8 @@ theorem sg_val (B : Finset (Fin n × Fin n)) (hB : ∀ p ∈ B, p.1 < p.2) {a b 
   · rw [sg_anti B b a]
     rcases key b a h with h' | h' <;> simp [h']
 
-theorem cyc (f : Fin n → Fin n → Fin n → ℝ) : ∑ a, ∑ b, ∑ c, f b c a = ∑ a, ∑ b, ∑ c, f a b c := by
-  rw [sum_comm]
-  refine sum_congr rfl fun b _ => ?_
-  rw [sum_comm]
-
 end GlobalTheory.CompanionTheory.RealMult.Short
 
 namespace GlobalTheory.CompanionTheory.RealMult
-
-open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD
-open Formalism.REAL (dot nsq)
-open Short
 
 end GlobalTheory.CompanionTheory.RealMult

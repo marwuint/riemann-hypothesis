@@ -3,21 +3,21 @@ import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDerivedActionsTensorMembersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryHarishChandraDiscreteSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirstStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockMinimalKTypeSecondMemberStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JointShapeUniqueAndDegWEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeightsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryHarishChandraDiscreteSeries
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockMinimalKTypeSecondMember
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JointShapeUniqueAndDegWEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeights
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommute
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockModelDualPairCasimirApplyStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CasimirNumberIdentityDualPairStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CasimirNumberIdentityDualPair
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowestLeastDegreeMirror
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EmbedsOfLowestTypeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowestKTypesJointHarmonicShapeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockKsetPreservesHomogeneousDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockPolynomialKFiniteBothMembersStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteDimensionalForallMapMemStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjointIntertwinerDiscreteSeriesDescendsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EmbedsOfLowestType
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowestKTypesJointHarmonicShape
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockKsetPreservesHomogeneousDegree
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockPolynomialKFiniteBothMembers
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteDimensionalForallMapMem
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjointIntertwinerDiscreteSeriesDescends
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLinearMapTensorOfPairingStatement
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg
 open TensorProduct
@@ -234,21 +234,21 @@ theorem exists_intw {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r
     (Φ : Pol p q r s) (x₀ : D.U.H) (y₀ : D'.U.H) (h0 : inner ℂ (Tm x₀ y₀) (F.ι Φ) ≠ 0) :
     ∃ f : Pol p q r s →ₗ[ℂ] TensorProduct ℂ D.HK.V D'.HK.V, Intw D.HK D'.HK f ∧ f Φ ≠ 0 := by
   obtain ⟨-, hd1, hd2⟩ := GlobalTheory.T.fock_derived_actions_tensor_members p q r s T0 T1 T2 F
-  have hK := GlobalTheory.T.fock_polynomial_kFinite_both_members p q r s T0 T1 T2 F (GlobalTheory.T.fock_Kset_preserves_homogeneous_degree p q r s T0 T1 T2 F)
-  have h1 := fun y : D'.U.H => GlobalTheory.T.adjoint_intertwiner_discreteSeries_descends p q T1 D F.H (F.π.comp (MonoidHom.inl _ _))
+  have hK := _root_.GlobalTheory.FockKFin.kfin_fock p q r s T0 T1 T2 F (_root_.GlobalTheory.FockDegree.Om_Kset_homog p q r s T0 T1 T2 F)
+  have h1 := fun y : D'.U.H => _root_.GlobalTheory.AdjDescent.adjoint_descends p q T1 D F.H (F.π.comp (MonoidHom.inl _ _))
     (fun g x => F.isom _ x) (Tm.flip y)
     (fun g x => by simpa using hT g 1 x y) _ F.ι (fockAct1 p q r s) (fun P => (hK P).1) hd1
-  have h2 := fun x : D.U.H => GlobalTheory.T.adjoint_intertwiner_discreteSeries_descends r s T2 D' F.H (F.π.comp (MonoidHom.inr _ _))
+  have h2 := fun x : D.U.H => _root_.GlobalTheory.AdjDescent.adjoint_descends r s T2 D' F.H (F.π.comp (MonoidHom.inr _ _))
     (fun g x => F.isom _ x) (Tm x)
     (fun g y => by simpa using hT 1 g x y) _ F.ι (fockAct2 p q r s) (fun P => (hK P).2) hd2
   choose φ hφ hφ' using h1
   choose ψ hψ hψ' using h2
-  have hlie := (GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.1
+  have hlie := (_root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.1
   obtain ⟨f, hf0, hf1, hf2⟩ := GlobalTheory.T.exists_linearMap_tensor_of_pairing _ _ _ _ _ D.ι D'.ι D.ι_inj D'.ι_inj φ ψ
     (fun x y P => by rw [hφ, hψ]; rfl) (fun P => by
-      obtain ⟨W, hW, hP, hst⟩ := ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).1 P).1
-      obtain ⟨E, hE, hE'⟩ := GlobalTheory.T.exists_finiteDimensional_forall_map_mem' p q D.HK hA _ (fockAct1 p q r s) (fun Y Z _ _ => hlie Y Z) W hW hst
-        (fun v _ => ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).1 v).2)
+      obtain ⟨W, hW, hP, hst⟩ := ((_root_.GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 P).1
+      obtain ⟨E, hE, hE'⟩ := _root_.GlobalTheory.KHomFinite.exists_finiteDimensional_forall_map_mem p q D.HK hA _ (fockAct1 p q r s) (fun Y Z _ _ => hlie Y Z) W hW hst
+        (fun v _ => ((_root_.GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 v).2)
       exact ⟨E, hE, fun y => hE' (φ y) (fun Z _ v => hφ' y Z v) P hP⟩)
   refine ⟨f, ⟨fun Z => hf1 _ _ fun y P => hφ' y Z P, fun Z => hf2 _ _ fun x P => hψ' x Z P⟩, fun h => h0 ?_⟩
   have := hφ y₀ Φ x₀
@@ -351,8 +351,8 @@ theorem general (X : ProvA) (h2 : admH2 X) (hD : DiscreteSeriesBlattner X) (h5 :
         Intw (X.ds p q lam).HK M f → f Φ = 0 → f = 0 := by
     intro Φ hΦ M f hf h0
     by_contra hne
-    obtain ⟨⟨μ', P, hJ, hP, hP', hfP⟩, -⟩ := GlobalTheory.T.exists_jointHarm_highestWeight_and_map_mem_genSub p q r s _ M f hI hA hf hne _ ⟨v, hv⟩ hfl
-    have := (GlobalTheory.T.jointShape_unique_and_degW_eq p q r s _ _ _ _ (jointHW_shape X h2 hJ hP hP') hs).1.1 rfl
+    obtain ⟨⟨μ', P, hJ, hP, hP', hfP⟩, -⟩ := _root_.GlobalTheory.FockAlg.min_first p q r s _ M f hI hA hf hne _ ⟨v, hv⟩ hfl
+    have := (_root_.GlobalTheory.JointShapeUniq.jointShape_unique_deg p q r s _ _ _ _ (jointHW_shape X h2 hJ hP hP') hs).1.1 rfl
     subst this
     obtain ⟨c, rfl⟩ := jointHW_line X h2 hJ hP hP' hΦ
     exact hfP (by rw [map_smul, h0, smul_zero])
@@ -361,8 +361,8 @@ theorem general (X : ProvA) (h2 : admH2 X) (hD : DiscreteSeriesBlattner X) (h5 :
         Intw M (X.ds r s lam').HK f → f Φ = 0 → f = 0 := by
     intro Φ hΦ M f hf h0
     by_contra hne
-    obtain ⟨⟨μ, P, hJ, hP, hP', hfP⟩, -⟩ := GlobalTheory.T.fock_minimal_KType_second_member p q r s M _ f hI' hA' hf hne _ ⟨v', hv'⟩ hfl'
-    have := (GlobalTheory.T.jointShape_unique_and_degW_eq p q r s _ _ _ _ (jointHW_shape X h2 hJ hP hP') hs).1.2 rfl
+    obtain ⟨⟨μ, P, hJ, hP, hP', hfP⟩, -⟩ := _root_.GlobalTheory.FockAlg.min_second p q r s M _ f hI' hA' hf hne _ ⟨v', hv'⟩ hfl'
+    have := (_root_.GlobalTheory.JointShapeUniq.jointShape_unique_deg p q r s _ _ _ _ (jointHW_shape X h2 hJ hP hP') hs).1.2 rfl
     subst this
     obtain ⟨c, rfl⟩ := jointHW_line X h2 hJ hP hP' hΦ
     exact hfP (by rw [map_smul, h0, smul_zero])
@@ -371,8 +371,8 @@ theorem general (X : ProvA) (h2 : admH2 X) (hD : DiscreteSeriesBlattner X) (h5 :
   · obtain ⟨u, hu, hfu, hcu⟩ := image_eq_tmul (a₁ := fockAct1 p q r s) (a₂ := fockAct2 p q r s) _ MM.M hr hv
       (hc v) hΦ₀.2.1.2 hΦ₀.2.2.1.2 (GlobalTheory.T.fockModel_dualPair_casimir_apply p q r s Φ₀) f hf.1 hf.2
     have hu0 : u ≠ 0 := fun h0 => hne (keyU Φ₀ hΦ₀ _ f hf (by rw [hfu, h0, TensorProduct.tmul_zero]))
-    obtain ⟨B, hB⟩ := GlobalTheory.T.exists_unitary_harishChandra_discreteSeries r s _ (X.ds r s lam')
-    have hU := GlobalTheory.T.exists_injective_intertwiner_of_lowest_type h7 h8 r s lam' hp' hg' MM B u
+    obtain ⟨B, hB⟩ := _root_.GlobalTheory.DiscreteSeriesUnitary.exists_unitary r s _ (X.ds r s lam')
+    have hU := _root_.GlobalTheory.LowestType.embeds_of_lowest_type h7 h8 r s lam' hp' hg' MM B u
     rw [hB] at hU
     obtain ⟨e, he, hev, hea⟩ := hU v' ⟨hu0, hu⟩ hv' (by rw [hcu, hnumC]) (hc' v') hI'
     refine ⟨LinearMap.range e, ?_, LinearEquiv.ofInjective e he, fun Z x => hea Z x, ?_⟩
@@ -390,8 +390,8 @@ theorem general (X : ProvA) (h2 : admH2 X) (hD : DiscreteSeriesBlattner X) (h5 :
     have hu0 : u ≠ 0 := fun h0 => hne (keyD Φ₀ hΦ₀ _ f hf (by
       rw [h0, TensorProduct.tmul_zero] at hfu
       exact (TensorProduct.comm ℂ _ _).map_eq_zero_iff.1 hfu))
-    obtain ⟨B, hB⟩ := GlobalTheory.T.exists_unitary_harishChandra_discreteSeries p q _ (X.ds p q lam)
-    have hU := GlobalTheory.T.exists_injective_intertwiner_of_lowest_type h7 h8 p q lam hp hg MM B u
+    obtain ⟨B, hB⟩ := _root_.GlobalTheory.DiscreteSeriesUnitary.exists_unitary p q _ (X.ds p q lam)
+    have hU := _root_.GlobalTheory.LowestType.embeds_of_lowest_type h7 h8 p q lam hp hg MM B u
     rw [hB] at hU
     obtain ⟨e, he, hev, hea⟩ := hU v ⟨hu0, hu⟩ hv (by rw [hcu, hnumC]; congr 1; ring) (hc v) hI
     refine ⟨LinearMap.range e, ?_, LinearEquiv.ofInjective e he, fun Z x => hea Z x, ?_⟩
@@ -425,25 +425,25 @@ theorem theta_unique : ∀ X : ProvA, admH1 X → admH2 X → DiscreteSeriesBlat
     ArchimedeanRallisFirst X → ArchimedeanRallisSecond X → ArchimedeanRallisUpDownLine X := by
   intro X _ h2 hD h5 h7 h8 h1 hii
   refine ⟨fun t al be ga de h => ?_, fun t al be ga de h => ?_⟩
-  · obtain ⟨⟨hp, hp', -⟩, hs, -⟩ := GlobalTheory.T.lowestKTypes_jointHarmonicShape t al be ga de h.1
+  · obtain ⟨⟨hp, hp', -⟩, hs, -⟩ := _root_.GlobalTheory.lowestKTypes_jointShape t al be ga de h.1
     obtain ⟨hf, hf'⟩ := GlobalTheory.LeastDegree.lowest_least_degree X hD t al be ga de h.1
     have ht := h.1.1
     have hn := h.1.2.1
     refine general X h2 hD h5 h7 h8 (by omega) (by omega) hp hp' (gapGt_mono h.2.1 (by omega))
       (gapGt_mono h.2.2.1 (by omega)) hs hf hf' ?_ (h1.1 _ _ _ _ _ h) (hii.1 _ _ _ _ _ h)
-    have := (GlobalTheory.T.casimir_number_identity_dualPair t al be ga de h.1).1
+    have := (_root_.GlobalTheory.CasimirNumber.casimir_number_identity t al be ga de h.1).1
     rw [show al.length + de.length + t + (ga.length + be.length) =
         al.length + be.length + ga.length + de.length + t by omega,
       show al.length + be.length + (ga.length + de.length) =
         al.length + be.length + ga.length + de.length by omega, this]
     push_cast; ring
-  · obtain ⟨⟨hp, -, hp'⟩, -, hs⟩ := GlobalTheory.T.lowestKTypes_jointHarmonicShape t al be ga de h.1
+  · obtain ⟨⟨hp, -, hp'⟩, -, hs⟩ := _root_.GlobalTheory.lowestKTypes_jointShape t al be ga de h.1
     obtain ⟨hf, hf'⟩ := GlobalTheory.LeastDegree.lowest_least_degree_mirror X hD t al be ga de h.1
     have ht := h.1.1
     have hn := h.1.2.1
     refine general X h2 hD h5 h7 h8 (by omega) (by omega) hp hp' (gapGt_mono h.2.1 (by omega))
       (gapGt_mono h.2.2.1 (by omega)) hs hf hf' ?_ (h1.2 _ _ _ _ _ h) (hii.2 _ _ _ _ _ h)
-    obtain ⟨h3, h4⟩ := GlobalTheory.T.casimir_number_identity_dualPair t al be ga de h.1
+    obtain ⟨h3, h4⟩ := _root_.GlobalTheory.CasimirNumber.casimir_number_identity t al be ga de h.1
     rw [show al.length + de.length + (ga.length + be.length + t) =
         al.length + be.length + ga.length + de.length + t by omega,
       show al.length + be.length + (ga.length + de.length) =

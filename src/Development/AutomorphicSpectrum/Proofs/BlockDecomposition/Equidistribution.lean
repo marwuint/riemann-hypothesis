@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetOff
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeCosetScaledRiemannSumStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeCosetScaledRiemannSum
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticePointCountScaling
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanFundamentalDomainIntegers
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalingMeasureProductArchimedean
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantBoxApproximationStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetCongruenceRefinementStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetEmptyPlacesLatticeStatement
@@ -71,7 +74,7 @@ theorem claim_empty (hF : IsTotallyReal F) (θ : ℝ →+* Ainf F) (hθ : Contin
     (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)) (ι : Type) [Fintype ι] : Claim θ li lam ι ∅ := by
   intro I hI _ x0 φ ψ hφ hc _
   rw [GlobalTheory.T.coset_empty_places_lattice]
-  have := GlobalTheory.T.lattice_coset_scaled_riemann_sum F hF θ hθ li hli ι I hI x0 φ hφ hc
+  have := _root_.GlobalTheory.CompanionTheory.Equi.lat_sum F hF θ hθ li hli ι I hI x0 φ hφ hc
   simpa [term] using this
 
 theorem mul_pow_prime {S : Finset (HeightOneSpectrum (𝓞 F))} {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) {I : Ideal (𝓞 F)}

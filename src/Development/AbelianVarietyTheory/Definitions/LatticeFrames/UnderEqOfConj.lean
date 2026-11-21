@@ -1,6 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.StepExactNS
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TowerAtPre
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TowerIsChain
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.MiPinnedWithFinIff
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.OntoOfSurjectiveDescents
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCoordLatticeOfSelfDualFrame
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsAtAndSeedFacts
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasInfExpMulZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTupChars
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnderEqOrSmulUnderEq
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
+import Formalism.LocalRingCardinality.PosOfIsomEmb
 import Formalism.LocalToGlobal.IndefiniteReal.IsMultMapUnivZero
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeckeCharTameAtOfFactorsThroughResidue
 
@@ -52,10 +61,6 @@ theorem disjoint_Pg_Q (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) (t : T) : Disjoi
   exact not_two_primes P.isPrime.ne_top (D.host.g_prime i) hq (fun h => hqg i h.symm) (g_mem_of_div L.C hi) (char_mem hcard)
 
 theorem rangeX_iff : RangeX R ↔ Formalism.IndefR.RecTie.TopMultH R := Iff.rfl
-
-theorem comR_S (t : T) : (comR R t).S = GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t := by
-  unfold Com.S GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl comR
-  congr
 
 theorem mem_S (hL : R.toLevCh.Is A.μ0) (t : T) (k : Fin 2) (P : Pl D.host.E)
     (hk : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) : P.under (𝓞 D.host.F) ∈ (comR R t).S := by
@@ -126,31 +131,6 @@ theorem stepX_toCC (h : RangeX R) (t : T) (x : (R.HX t).H) :
 
 theorem toCC_val (h : RangeX R) (t : T) (x : (R.HX t).H) (v) (g) :
     PiLocalization₂.val (toCC R h t x) v g = R.prX (R.cX.ext ((R.HX t).e x) g) v := rfl
-
-theorem toCC_surj (h : RangeX R) (t : T) : Function.Surjective (toCC R h t) :=
-  (LinearEquiv.ofEq _ _ (h t)).surjective.comp (LinearMap.surjective_rangeRestrict _)
-
-theorem isInnerProduct_of_isMet (t : T) (k : ℕ) {ipD ip} (hm : IsMet (comR R t) (stY R t k) ipD ip) (x y : (stY R t k).CC (comR R t)) :
-    GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.IsIP R t k (PiTensorProduct.lift.symm x.1) (PiTensorProduct.lift.symm y.1) (ip y x) := by
-  intro v v'
-  have h1 := hm.integ y x (PiTensorProduct.tprod ℂ v') (PiTensorProduct.tprod ℂ v)
-  have h2 := hm.schur y x (PiTensorProduct.tprod ℂ v') (PiTensorProduct.tprod ℂ v)
-  rw [hm.pure v' v] at h2
-  have e : (fun g => star ((PiTensorProduct.lift.symm x.1) v g) * (PiTensorProduct.lift.symm y.1) v' g) =
-      fun g => PiLocalization₂.val y (PiTensorProduct.tprod ℂ v') g * conj (PiLocalization₂.val x (PiTensorProduct.tprod ℂ v) g) := by
-    funext g; rw [mul_comm]; rfl
-  refine ⟨?_, ?_⟩
-  · exact (congrArg (fun F => IntegrableOn F (stY R t k).fd (stY R t k).ν) e).mpr h1
-  · exact (congrArg (fun F : GA D (stY R t k).V → ℂ => ∫ g in (stY R t k).fd, F g ∂(stY R t k).ν) e).trans h2
-
-theorem ipDict_of (hv : ∀ k < D.R.m, ∃ v : (R.MY k).Vec, ∏ τ, ⟪(v τ : (R.MY k).H τ), (v τ : (R.MY k).H τ)⟫_ℂ ≠ 0) : IPDict R := by
-  intro t k hk ipD ip hm x y a
-  obtain ⟨v, hv⟩ := hv k hk
-  exact ⟨fun h => hasPeterssonInner_unique _ _ _ _ _ v hv h (isInnerProduct_of_isMet R t k hm x y), fun h => h ▸ isInnerProduct_of_isMet R t k hm x y⟩
-
-theorem stepExactNS_of (h : StepExact D) : StepExactNS D :=
-  fun hg c w hw k hk s s' hs hs' p hp ipD ip hm m X hX mR hR φ v hc u₁ u₂ B hB hQ _ =>
-    h hg c w hw k hk s s' hs hs' p hp ipD ip hm m X hX mR hR φ v hc u₁ u₂ B hB hQ
 
 theorem Q_base (hL : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ := by
   ext PP
@@ -306,15 +286,6 @@ theorem zinv_pos (PP : Pl D.host.E) (a b : ℕ) : 0 < zinv PP a b := by
   refine Finset.prod_pos fun n hn => sub_pos.2 (inv_lt_one_of_one_lt₀ (one_lt_pow₀ ?_ ?_))
   · exact_mod_cast HeightOneSpectrum.one_lt_absNorm PP
   · have := (Finset.mem_Ioc.1 hn).1; omega
-
-theorem rVol_zero (h : RVol R) (t : T) :
-    GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.volQ (Yc D 0) (R.νY t 0) = GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.volQ (Yc D 0) (R.νY A.μ0 0) := by
-  have h2 := D.R.two_le_m
-  rw [((h t).1 0 (by omega)).1, Finset.prod_eq_one, mul_one]
-  intro PP _
-  have := (zinv_pos PP 0 D.R.r).ne'
-  simp [idxQ, zinv] at this ⊢
-  exact this
 
 end GlobalTheory.ChainTw.RModel
 

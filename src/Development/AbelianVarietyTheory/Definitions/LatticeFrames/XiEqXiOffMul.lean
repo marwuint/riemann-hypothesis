@@ -15,24 +15,6 @@ namespace GlobalTheory.QTw
 section Sign
 variable {D : D7} {c : Comm D} {t : Tup c}
 
-def twist (w : VTup t) (s : ∀ j, t.Ch j → ℂ) : VTup t :=
-  { w with
-    dQ := fun j α γ => (s j α * s (j + 1) γ) • w.dQ j α γ
-    ε := fun j α => s j α • w.ε j α
-    εT := fun n h β => s n β • w.εT n h β }
-
-def QPinS (v : VCom c) (w : VTup t) : Prop :=
-  ∃ (w₀ : VTup t) (s : ∀ j, t.Ch j → ℂ), (∀ j α, s j α ^ 2 = 1) ∧ QPin v w₀ ∧ w = twist w₀ s
-
-theorem twist_one (w : VTup t) : twist w (fun _ _ => 1) = w := by
-  cases w; simp [twist]
-
-theorem QPinS.of {v : VCom c} {w : VTup t} (h : QPin v w) : QPinS v w :=
-  ⟨w, fun _ _ => 1, fun _ _ => one_pow _, h, (twist_one w).symm⟩
-
-example (w : VTup t) (j α γ) : (twist w fun _ _ => -1).dQ j α γ = w.dQ j α γ ∧ (twist w fun _ _ => -1).ε j α = -w.ε j α := by
-  simp [twist]
-
 variable {v : VCom c} {B : GlobalTheory.Fam.Base c} {PP : Formalism.L2.DIV.Pl D.host.E}
 
 def QGeo.Res (G : QGeo v B PP) (δ : G.kˣ →* ℂˣ) (ξ : (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) : Prop :=
@@ -108,30 +90,11 @@ def xiOff (i : ℕ) (hi : i + 1 ≤ B.R.m) (α : Ch₀ i) (γ : Ch₀ (i + 1))
   B.embLL (Formalism.L2.Col.phiT B.fields.K (A.p0 i α).1.1.deco.1 (A.p0 (i + 1) γ).1.1.deco.1 (homOf I l Z i hi z) *
     ∏ P ∈ Finset.univ.filter (fun P : BadPr I a => P.1 ∈ (B.primes X).vGs), locXi A i α γ P (homOf I l Z i hi z))
 
-theorem xi_eq_xiOff_mul (i : ℕ) (hi : i + 1 ≤ B.R.m) (α : Ch₀ i) (γ : Ch₀ (i + 1)) (z) :
-    A.xi i hi α γ z = xiOff A i hi α γ z *
-      B.embLL (∏ P ∈ Finset.univ.filter (fun P : BadPr I a => ¬ P.1 ∈ (B.primes X).vGs), locXi A i α γ P (homOf I l Z i hi z)) := by
-  rw [xiOff, ← map_mul, mul_assoc, Finset.prod_filter_mul_prod_filter_not, TwDat.xi]
-  congr 1
-  unfold xiAt locXi
-  split_ifs with h1 h2 h3
-  · rfl
-  · rfl
-  · obtain ⟨n, rfl⟩ : ∃ n, i = n + 1 := ⟨i - 1, by have := B.R.two_le_m; omega⟩
-    rfl
-  · omega
-
 def BaseCommon : Prop := ∀ i, i ≤ B.R.m → ∀ β β', (A.p0 i β).1.1 = (A.p0 i β').1.1 ∧ A.kA i β = A.kA i β' ∧ A.xr i β = A.xr i β'
 
 def baseFr (P : BadPr I a) (i : ℕ) (hi : i ≤ B.R.m) (β : Ch₀ i) :
     Matrix (Fin ((I.rec7 l Z).sp.X i).rank) (Fin (B.R.N i)) (I.rec7 l Z).host.E := fun r b =>
   Formalism.L2.Col.frsF I.sel (I.tup a) (A.p0 i β).1.1 P (Pi.single b 1) (finCongr (rankN (I.rec7 l Z) i hi) r)
-
-def BaseMoved : Prop := ∀ i, i ≤ B.R.m → ∀ β β',
-  (A.p0 i β).1.1.deco = (A.p0 i β').1.1.deco ∧ (i + 1 ≠ B.R.m → (A.p0 i β).1.1 = (A.p0 i β').1.1)
-
-theorem BaseCommon.moved (h : BaseCommon A) : BaseMoved A :=
-  fun i hi β β' => ⟨congrArg _ (h i hi β β').1, fun _ => (h i hi β β').1⟩
 
 variable {c : Comm (I.rec7 l Z)} {v : VCom c} {Bs : GlobalTheory.Fam.Base c} {PP : Formalism.L2.DIV.Pl (I.rec7 l Z).host.E} {G : QGeo v Bs PP}
   {χ : ℕ → (AE (I.rec7 l Z))ˣ →* Circle}
@@ -148,12 +111,6 @@ variable (G) in
 def ownVec (P : BadPr I a) (e : XIx (Fin B.R.k) (Fin B.R.t) (G.s + 1) ≃ Fin (B.R.N (G.s + 1))) (β : Ch₀ (G.s + 1)) :
     XIx (Fin B.R.k) (Fin B.R.t) (G.s + 1) → G.k := fun r => (ofSplit G.q).pr
   ((Formalism.L2.Col.frsF I.sel (I.tup a) (A.p0 (G.s + 1) β).1.1 P).symm (Formalism.L2.Col.repY (A.p0 (G.s + 1) β).1.2) (e r))
-
-structure ReadsOrb (P : BadPr I a) (E : QExt G χ) (hψ : Continuous G.ψk) (sg : ℂ) (π : ∀ j, Ch₀ j → E.Ch j) : Prop
-    extends ReadsAt A P E hψ sg π where
-  orb : ∀ β (e : XIx (Fin B.R.k) (Fin B.R.t) (G.s + 1) ≃ Fin (B.R.N (G.s + 1))), GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.xPos e →
-    SameOrb ((G.T E.δ E.tame E.η).lev (G.s + 1) 0 rfl).J (box _ (G.ϖ ^ E.M)) (E.cos (π (G.s + 1) β))
-      (Submodule.Quotient.mk (ownVec A G P e β))
 
 structure MovedAt (P : BadPr I a) (E : QExt G χ) (hψ : Continuous G.ψk) (sg : ℂ) (π : ∀ j, Ch₀ j → E.Ch j) : Prop
     extends ReadsAt A P E hψ sg π where

@@ -1,11 +1,12 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.HypJ
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsCompactForMeasurePreservingEndosStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GroupActionHaarScalingContinuousStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RationalTuplesDiscreteCocompactAdelicStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarScalingUnderFlowStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsCompactForMeasurePreservingEndos
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GroupActionHaarScalingContinuous
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RationalTuplesDiscreteCocompactAdelic
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarScalingUnderFlow
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix Pointwise
 
@@ -69,13 +70,13 @@ theorem core {E : Type} [Field E] [Countable E] [LocallyCompactSpace K] [SecondC
   haveI : SecondCountableTopology Kᵐᵒᵖ :=
     (MulOpposite.opHomeomorph (M := K)).symm.secondCountableTopology
   haveI : SecondCountableTopology Kˣ := Units.isEmbedding_embedProduct.secondCountableTopology
-  obtain ⟨χ, -, hχ⟩ := GlobalTheory.T.group_action_haar_scaling_continuous (Fin 1 → Fin 1 → K) μ Kˣ act continuous_act continuous_inv
+  obtain ⟨χ, -, hχ⟩ := _root_.GlobalTheory.CompanionTheory.Adelic.ModulusAction.exists_continuous_modulus (Fin 1 → Fin 1 → K) μ Kˣ act continuous_act continuous_inv
     (fun y => by simp [act]) (fun s t y => by simp [act, mul_smul])
   let jj : (Fin 1 → Fin 1 → E) →+ (Fin 1 → Fin 1 → K) :=
     { toFun := fun X a i => ι (X a i)
       map_zero' := by ext a i; simp
       map_add' := fun X Y => by ext a i; simp }
-  obtain ⟨ΩV, hΩc, hΩ⟩ := GlobalTheory.T.exists_compact_for_measure_preserving_endos (Fin 1 → Fin 1 → K) μ hinf (Fin 1 → Fin 1 → E) jj C hCc hC
+  obtain ⟨ΩV, hΩc, hΩ⟩ := _root_.GlobalTheory.CompanionTheory.Adelic.lattice_pigeonhole_measure_preserving (Fin 1 → Fin 1 → K) μ hinf (Fin 1 → Fin 1 → E) jj C hCc hC
 
   set Ω : Set K := (fun Y : Fin 1 → Fin 1 → K => Y 0 0) '' ΩV with hΩdef
   have hΩK : IsCompact Ω :=
@@ -183,7 +184,7 @@ theorem units_decomp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   haveI := hLC
   haveI := hSC
   haveI := hT2
-  obtain ⟨hTR, hLCK, hSCK, hT2K, -, -, -, hBor, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (AF F)
+  obtain ⟨hTR, hLCK, hSCK, hT2K, -, -, -, hBor, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (AF F)
   haveI := hTR
   haveI := hLCK
   haveI := hSCK
@@ -191,7 +192,7 @@ theorem units_decomp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   haveI : BorelSpace (Fin 1 → Fin 1 → AF F ⊗[F] E) := hBor 1 1
   haveI : Countable E :=
     ((Module.finBasis ℚ E).equivFun.toEquiv.injective).countable
-  obtain ⟨hcov, hfin, hnc⟩ := GlobalTheory.T.rational_tuples_discrete_cocompact_adelic F E σ hσ 1 1
+  obtain ⟨hcov, hfin, hnc⟩ := _root_.GlobalTheory.CompanionTheory.SW.CocW.main F E σ hσ 1 1
   haveI := hnc one_pos one_pos
   have hinf : (Measure.addHaar : Measure (Fin 1 → Fin 1 → AF F ⊗[F] E)) Set.univ = ⊤ :=
     measure_univ_of_isAddLeftInvariant _
@@ -199,7 +200,7 @@ theorem units_decomp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     have : 0 < Module.finrank ℚ F := Module.finrank_pos
     positivity
   refine core (inclR (AF F)) Measure.addHaar hinf hcov hfin τ hτ.1 _ hD fun x => ?_
-  have h := GlobalTheory.T.haar_scaling_under_flow F E σ hσ τ hτ 1 1 Measure.addHaar inferInstance x
+  have h := _root_.GlobalTheory.CompanionTheory.SW.Flow.modulus_flow F E σ hσ τ hτ 1 1 Measure.addHaar inferInstance x
   simpa using h
 
 end GlobalTheory.CompanionTheory.SW.Fujisaki

@@ -43,8 +43,6 @@ def RingData.δ (D : RingData O X d G t bl) : D.T' := ∏ i ∈ Finset.Ioo 0 t, 
 
 def RingData.δO (D : RingData O X d G t bl) : O := (D.δ : D.X' → O) D.π'
 
-def RingData.τ (D : RingData O X d G t bl) : D.T' := ∑ g ∈ D.sE, D.tE g * ((D.χ g : (D.T')ˣ) : D.T')
-
 end
 
 def RingDef (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X d G : Type}

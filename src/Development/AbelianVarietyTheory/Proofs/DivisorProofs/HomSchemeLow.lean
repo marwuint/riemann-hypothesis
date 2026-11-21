@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyModuliOfRankZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShimuraObjectPullbackCompCancelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ObjMapUniqueOfNilpotentNilradicalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothOfRelativeDimensionShimuraObjectAbelianSchStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyModuliOfRankZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShimuraObjectPullbackCompCancel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ObjMapUniqueOfNilpotentNilradical
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothOfRelativeDimensionShimuraObjectAbelianSch
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorObjDualRepresents
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsModuliSchemePolarizedAbelianLevel
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyFiniteRootsOfBimul
@@ -68,13 +68,13 @@ theorem homScheme_low : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {
   have hXo : Nonempty (Moduli D' (LowDat.lowLevel l)) := by
     by_cases hpq : 1 ≤ D'.p + D'.q
     · exact GlobalTheory.Moduli.moduli_scheme_exists E H D' _ hpq
-    · exact GlobalTheory.T.nonempty_moduli_of_rank_zero H D' _ (by omega)
+    · exact _root_.GlobalTheory.UCanon.RankZero.nonempty_moduli H D' _ (by omega)
   obtain ⟨Xo⟩ := hXo
   set sF : Sp c.F ⟶ Sp (KA (LowDat.lowLevel l)) := lowMap c (RingHom.id c.F) with hsF
-  have P := GlobalTheory.T.shimuraObject_pullback_comp_cancel (D := D') (l := LowDat.lowLevel l)
+  have P := _root_.GlobalTheory.UCanon.obj_pull_comp_cancel (D := D') (l := LowDat.lowLevel l)
   obtain ⟨oY, ⟨mY⟩⟩ := P.1 Xo.s Xo.univ (pullback.fst Xo.s sF) (pullback.snd Xo.s sF ≫ sF) pullback.condition.symm
   have hB : IsAbelianScheme oY.t.G := ⟨inferInstance, oY.t.semi.smooth, oY.proper, oY.t.semi.geomConnected⟩
-  have hg := GlobalTheory.T.smoothOfRelativeDimension_shimuraObject_abelianScheme D' (LowDat.lowLevel l) (pullback.snd Xo.s sF ≫ sF) oY
+  have hg := _root_.GlobalTheory.UObjDim.smoothOfRelativeDimension_obj D' (LowDat.lowLevel l) (pullback.snd Xo.s sF ≫ sF) oY
   haveI : Module.Finite (𝓞 E) X := Module.Finite.of_restrictScalars_finite ℤ _ _
   haveI : Module.Projective (𝓞 E) X := GlobalTheory.Forms.projective_of_int _ _
   obtain ⟨C, _, u, -, hCsm, -, hadd, hlin, huniv⟩ :=
@@ -101,7 +101,7 @@ theorem homScheme_low : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {
     obtain ⟨k₁, hk₁⟩ := (P.2 _ _ s' oY oC o'' C.hom v₁ mC).1 m₁
     obtain ⟨k₂, hk₂⟩ := (P.2 _ _ s' oY oC o'' C.hom v₂ mC).1 m₂
     obtain ⟨k₂', hk₂'⟩ := objMap_congr hw.symm k₂
-    have hφ := GlobalTheory.T.objMap_unique_of_nilpotent_nilradical' A hA s' _ o'' oY (v₁ ≫ C.hom) k₁ k₂'
+    have hφ := _root_.GlobalTheory.ObjMapUnique.objMap_unique_of_nilpotent_nilradical A hA s' _ o'' oY (v₁ ≫ C.hom) k₁ k₂'
     refine key v₁ v₂ hw fun y => ?_
     calc v₁ ≫ (u y).left = z y ≫ k₁.toSABMap.φ := by rw [hk₁, ← Category.assoc, hz₁, Category.assoc, hu'l]
       _ = z y ≫ k₂'.toSABMap.φ := by rw [hφ]

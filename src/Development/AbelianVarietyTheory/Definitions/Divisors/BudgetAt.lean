@@ -42,14 +42,6 @@ def BudgetAt (PP C : ℝ) (u1 : AllWt.Weight (dat p i)) : Prop :=
 
 end Steps
 
-def Short : Prop := Covers fun _ _ _ _ p i Y PP C => ∀ u1, Quo p i PP u1 → ShortAt p i Y PP C u1
-
-def Geom : Prop := Covers fun _ _ _ _ p i Y PP _ => ∀ u1, Quo p i PP u1 → GeomAt p i Y u1
-
-def MultC : Prop := Covers fun _ _ _ _ p i Y PP C => ∀ u1, Quo p i PP u1 → MultAt p i Y PP C u1
-
-def Budget : Prop := Covers fun _ _ _ _ p i Y PP C => ∀ u1, Quo p i PP u1 → BudgetAt p i Y PP C u1
-
 end GlobalTheory.CovHt
 
 end

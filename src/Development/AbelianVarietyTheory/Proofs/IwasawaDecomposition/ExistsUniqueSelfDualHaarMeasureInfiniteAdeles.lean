@@ -2,28 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalComponentsNontrivialAdelicCharacterStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FourierInversionHaarSymmForm
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsUniqueNormed
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralCompContinuousLinearEquiv
 
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal
 
 namespace GlobalTheory.GaugeEx.SdInf
-
-theorem selfDual_map {V W : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
-    [MeasurableSpace V] [BorelSpace V] [AddCommGroup W] [TopologicalSpace W] [IsTopologicalAddGroup W]
-    [MeasurableSpace W] [BorelSpace W] (e : V ≃+ W) (he : Continuous e) (he' : Continuous e.symm)
-    {μ : Measure V} {χ : V → V → ℂ} {χ' : W → W → ℂ} (h : ∀ x y, χ' (e x) (e y) = χ x y)
-    (hμ : SelfDual μ χ) : SelfDual (μ.map e) χ' := by
-  haveI := hμ.1
-  let T : V ≃ₜ W := { e.toEquiv with continuous_toFun := he, continuous_invFun := he' }
-  have hm : MeasurableEmbedding e := T.measurableEmbedding
-  refine ⟨e.isAddHaarMeasure_map μ he he', fun Φ hΦ hsup hI z => ?_⟩
-  obtain ⟨z, rfl⟩ := e.surjective z
-  rw [hm.integrable_map_iff] at hI
-  simp only [hm.integral_map, Function.comp_def, h] at hI ⊢
-  rw [← map_neg]
-  exact hμ.2 (fun x => Φ (e x)) (hΦ.comp he) (hsup.comp_homeomorph T) hI z
 
 theorem existsUnique_of_equiv {V W : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [MeasurableSpace V] [BorelSpace V] [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]

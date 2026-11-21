@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsSemiAbelianOfProperGenericTorusExtensionSpecialFiber
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFiniteSplitTorusExtensionOfTorusExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFiniteSplitTorusExtensionOfTorusExtension
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GeometricallyConnectedOfIsPullbackOfSurjective
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -54,7 +54,7 @@ theorem geometricallyConnected_of_generic_of_special (W L : Type) [CommRing W] [
 
 theorem isSemiAbelian_of_abelian_generic_of_torusExt : NfSt := by
   intro W _ _ _ L _ _ _ A _ hA G _ hc hs hsep hqc ⟨e, _⟩ hT
-  obtain ⟨k, _, _, _, ⟨E⟩⟩ := GlobalTheory.T.exists_finite_splitTorusExtension_of_torusExtension _ _ hT
+  obtain ⟨k, _, _, _, ⟨E⟩⟩ := _root_.GlobalTheory.SS.exists_finite_torusExtension_of_torusExt _ _ hT
   have hw : (baseChange W L G).hom = e.hom.left ≫ A.hom := (Over.w e.hom).symm
   have : IsIso e.hom.left := inferInstanceAs (IsIso ((Over.forget _).map e.hom))
   have := hA.proper

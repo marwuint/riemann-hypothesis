@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowForm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussianMulMultilinearDiagonalMemSchwartzSubmoduStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussianMulMultilinearDiagonalMemSchwartzSubmodu
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumGaussianConvolutionSeriesTermIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableSeminormGaussianConvolutionSeriesTermStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableSeminormGaussianConvolutionSeriesTerm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableSchwartzOfSummableSeminormsStatement
 
 open FourierTransform MeasureTheory Filter Topology
@@ -22,12 +22,12 @@ theorem mem_of_conv_gaussian : ∀ (E : Type) [NormedAddCommGroup E] [InnerProdu
   intro E _ _ _ _ _ M hM hℓ b c hb hc hg h u hu
   have ht : ∀ j, ∃ t ∈ M, ∀ y, t y = term b c h j y := by
     intro j
-    obtain ⟨t, htM, ht⟩ := GlobalTheory.T.gaussian_mul_multilinear_diagonal_mem_schwartzSubmodule E M hℓ c hc hg j (coef b c h j)
+    obtain ⟨t, htM, ht⟩ := _root_.GlobalTheory.ConvSeries.gauss_mul_diag_mem E M hℓ c hc hg j (coef b c h j)
     refine ⟨(((2 * c) ^ j / (j.factorial : ℝ) : ℝ) : ℂ) • t, M.smul_mem _ htM, fun y => ?_⟩
     simp only [SchwartzMap.smul_apply, ht, term, smul_eq_mul]
     ring
   choose t htM hty using ht
-  have hs : Summable t := GlobalTheory.T.summable_schwartz_of_summable_seminorms E t (GlobalTheory.T.summable_seminorm_gaussianConvolutionSeriesTerm E b c hb hc h t hty)
+  have hs : Summable t := GlobalTheory.T.summable_schwartz_of_summable_seminorms E t (_root_.GlobalTheory.ConvSeries.summable_seminorm_term E b c hb hc h t hty)
   have hL := hs.hasSum
   have hev : ∀ y, (∑' j, t j) y = u y := by
     intro y

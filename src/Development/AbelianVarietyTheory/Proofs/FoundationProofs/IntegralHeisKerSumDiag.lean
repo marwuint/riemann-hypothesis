@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsPosHermFormV
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IntMIffInt
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralCharImEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummableExpNegHermStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralCharImEqZero
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummableExpNegHerm
 open Complex MeasureTheory GlobalTheory.UnitaryTheta
 open scoped BigOperators ComplexConjugate Real Classical
 
@@ -79,7 +79,7 @@ theorem integral_heis_kerSum_diag : ∀ (V : Type) [NormedAddCommGroup V] [Norme
     nlinarith
   have hcsum : Summable fun x : Λ => ‖c x‖ :=
     Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hcle
-      ((GlobalTheory.T.summable_exp_neg_herm_add_norm V H hH Λ (π * K)).mul_right _)
+      ((_root_.GlobalTheory.UnitaryTheta.GaussSumm.summable_exp_neg_herm V H hH Λ (π * K)).mul_right _)
   have hFnorm : ∀ x z, ‖F x z‖ = ‖c x‖ := by
     intro x z
     rw [hF, norm_mul, he1, mul_one]
@@ -128,7 +128,7 @@ theorem integral_heis_kerSum_diag : ∀ (V : Type) [NormedAddCommGroup V] [Norme
           apply hx
           rw [eq_neg_iff_add_eq_zero, add_comm]
           exact h
-        rw [GlobalTheory.T.setIntegral_cexp_im_herm_eq_zero V μ H hH Λ' Fd hFd (r + x) hne ?_, mul_zero]
+        rw [_root_.GlobalTheory.UnitaryTheta.setIntegral_char_im_eq_zero V μ H hH Λ' Fd hFd (r + x) hne ?_, mul_zero]
         intro y hy
         obtain ⟨m1, hm1⟩ := hr y hy
         obtain ⟨m2, hm2⟩ := hα.2.1 x x.2 y (hle hy)

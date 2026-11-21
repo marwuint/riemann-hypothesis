@@ -13,18 +13,9 @@ namespace GlobalTheory.Amp.OnePiece
 
 variable {k r : ℕ}
 
-theorem continuous_lmul (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) := by
-  unfold lmulM
-  exact continuous_const.matrix_mul continuous_id.matrixOf
-
 theorem continuous_conj (a : Mat k r) : Continuous (conjM a : Mt k r → Mt k r) := by
   unfold conjM
   exact (continuous_const.matrix_mul continuous_id.matrixOf).matrix_mul continuous_const
-
-theorem continuous_mulPair :
-    Continuous fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2 := by
-  unfold lmulM
-  exact continuous_fst.matrixOf.matrix_mul continuous_snd.matrixOf
 
 def grp (k r : ℕ) : Set (Mt k r) := {x | Matrix.of x ∈ GG k r}
 

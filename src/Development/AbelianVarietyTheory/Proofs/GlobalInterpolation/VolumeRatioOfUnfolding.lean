@@ -15,22 +15,27 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCompactAde
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TopFacts
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsSchwartzBruhatIndicatorLocalLatticeCompletionStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EventuallyLocalLatticeCompletionEqCoordinateLattStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IndicatorCompletedLatticeEqFinprodLocalStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSelfDualLatticeCompletionMaxOrderStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IndicatorCompletedLatticeEqFinprodLocal
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GaugeUnfold
+import Formalism.LocalToGlobal.GlobalTheory.GL5.Statement
+import Development.AbelianVarietyTheory.Definitions.Foundations.HermitianSpaceBaseLatticeEqFrameLattice
+import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SelfDualUnramifiedPlaces
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSelfDualLatticeCompletionMaxOrder
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitPlOfTwoMem
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsBorelSectionUnitaryOrbitQuadric
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DisjointSpanPerpLat
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsLocalComponentAdelicAddCharStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdicIntegersCharacterDualIndexEqResidueCardZpowStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRealAdeleCoordinatesCmTypeStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRealAdelicHermitianSignatureCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SelfDualSumPairingMapEqPiStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsFibreMeasureFamilyMapHomeomorphStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FibreIntegralPiProdEqProdFibreIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsOrthogonalComplementUnitaryFrameOfMatrixStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsLocalComponentAdelicAddChar
+import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdicIntegersCharacterDualIndexEqResidueCardZpow
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRealAdeleCoordinatesCmType
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRealAdelicHermitianSignatureCoordinates
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SelfDualSumPairingMapEqPi
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsFibreMeasureFamilyMapHomeomorph
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FibreIntegralPiProdEqProdFibreIntegral
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsOrthogonalComplementUnitaryFrameOfMatrix
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsUnitarySignatureStabiliserCosetCutoffStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnitaryQuotientIntegralProdOverPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianNormFibreLintegralNeZeroOfPosStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianNormFibreLintegralNeZeroOfPos
 
 noncomputable section
 
@@ -81,8 +86,8 @@ theorem arch (hR3 : ActionCoordinates.RealPlaceMeasures) (c : CDHaar) (hσ : IsC
         ∫⁻ s : LatticeTensorUnfolding.RCosets j, Φi (o s.out) ∂ν = (ActionCoordinates.cM M)⁻¹ ^ Fintype.card T * a := by
   classical
   obtain ⟨hSD, -, hQ⟩ := hR3
-  obtain ⟨r, hr1, hr2, hrθ, hrs, hrn⟩ := GlobalTheory.T.exists_realAdele_coordinates_cmType F E σ hσ T τ θ hτ hθ
-  obtain ⟨e, he, heh⟩ := GlobalTheory.T.exists_realAdelicHermitian_signature_coordinates F E σ hσ T τ θ hτ hθ M P Q hM J hJ A hA
+  obtain ⟨r, hr1, hr2, hrθ, hrs, hrn⟩ := _root_.GlobalTheory.RealAdeleCoord.exists_realCoord F E σ hσ T τ θ hτ hθ
+  obtain ⟨e, he, heh⟩ := _root_.GlobalTheory.RealSpaceCoord.exists_coord F E σ hσ T τ θ hτ hθ M P Q hM J hJ A hA
   haveI : BorelSpace (Fin 1 → Fin M → Ainf F ⊗[F] E) := (GlobalTheory.ArchUnitaryTop.top_facts F E σ M 1 J).2.1
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩
   obtain ⟨fib, hfib⟩ := GlobalTheory.RealPlaceCompare.exists_isDxDq P Q
@@ -143,14 +148,14 @@ theorem arch (hR3 : ActionCoordinates.RealPlaceMeasures) (c : CDHaar) (hσ : IsC
   refine ⟨fun X => ∏ ρ, ENNReal.ofReal (φ ρ (e X ρ)), ∏ ρ, ∫⁻ y, ENNReal.ofReal (φ ρ y) ∂(fib b),
     hΦm.comp hem, ?_, ?_, ?_, ?_⟩
   · exact Finset.prod_ne_zero_iff.2 fun ρ _ =>
-      GlobalTheory.T.hermitianNormFibre_lintegral_ne_zero_of_pos hQ c P Q b hb1 (xr ρ) (hxq ρ) fib hfb (φ ρ) (hφ ρ).1 (hφx ρ)
+      _root_.GlobalTheory.FibrePositive.fibre_lintegral_ne_zero hQ c P Q b hb1 (xr ρ) (hxq ρ) fib hfb (φ ρ) (hφ ρ).1 (hφx ρ)
   · refine ENNReal.prod_ne_top fun ρ _ => ?_
     have hi := (hfib.2.2 (φ ρ) (hφ ρ).1 (hφ ρ).2.1 (hφ ρ).2.2.1).1 b (Set.mem_univ _)
     exact hi.lintegral_lt_top.ne
   · intro μi νi fi hμ hν hfi
     have hdx : (ActionCoordinates.dx P Q).IsAddHaarMeasure := GlobalTheory.RealPlaceCompare.isAddHaar_dx P Q
     have h1 : μi.map e = Measure.pi fun _ : T => ActionCoordinates.dx P Q := by
-      refine GlobalTheory.T.selfDual_sumPairing_map_eq_pi T _ _ e (-1) ActionCoordinates.bil _ hdx
+      refine _root_.GlobalTheory.SelfDualProduct.map_eq_pi T _ _ e (-1) ActionCoordinates.bil _ hdx
         (((hSD (-1) (Or.inr rfl)).1 P Q _ hdx).2 rfl) μi _ (fun X Y => ?_) hμ
       rw [hψ, hrs]
       congr 4
@@ -160,11 +165,11 @@ theorem arch (hR3 : ActionCoordinates.RealPlaceMeasures) (c : CDHaar) (hσ : IsC
       simp
     let r' : Ainf F ≃ₜ+ (T → ℝ) := { r.toAddEquiv with continuous_toFun := hr1, continuous_invFun := hr2 }
     have h2 : νi.map r' = volume := by
-      refine GlobalTheory.T.selfDual_sumPairing_map_eq_pi T _ _ r' (-1) (fun t s : ℝ => t * s) volume inferInstance
+      refine _root_.GlobalTheory.SelfDualProduct.map_eq_pi T _ _ r' (-1) (fun t s : ℝ => t * s) volume inferInstance
         (((hSD (-1) (Or.inr rfl)).2 _ inferInstance).2 rfl) νi _ (fun s t => ?_) hν
       rw [hψ, hrs, map_mul]
       rfl
-    have h3 := GlobalTheory.T.isFibreMeasureFamily_map_homeomorph _ _ _ _ e.toHomeomorph r'.toHomeomorph μi νi _
+    have h3 := _root_.GlobalTheory.isFibreFamily_map_homeomorph _ _ _ _ e.toHomeomorph r'.toHomeomorph μi νi _
       (fun (z : T → ActionCoordinates.Wsp P Q) ρ => ActionCoordinates.qf (z ρ)) _ fi (fun X => funext fun ρ => hq X ρ) hfi
     have h1' : μi.map e.toHomeomorph = Measure.pi fun _ : T => ActionCoordinates.dx P Q := h1
     have h2' : νi.map r'.toHomeomorph = volume := h2
@@ -183,7 +188,7 @@ theorem arch (hR3 : ActionCoordinates.RealPlaceMeasures) (c : CDHaar) (hσ : IsC
       exact isOpen_iInter_of_finite fun ρ => isOpen_ne.preimage (continuous_apply ρ)
     have hfib' : IsFibreFamily (ActionCoordinates.dx P Q) ActionCoordinates.qf id {x | x ≠ 0} (volume : Measure ℝ) Set.univ fib := by
       rw [GlobalTheory.RealPlaceCompare.qf_eq]; exact hfib
-    have h4 := GlobalTheory.T.fibreIntegral_pi_prod_eq_prod_fibreIntegral T _ (ActionCoordinates.dx P Q) ActionCoordinates.qf
+    have h4 := _root_.GlobalTheory.FibreProd.lintegral_fibre_prod T _ (ActionCoordinates.dx P Q) ActionCoordinates.qf
       (by rw [GlobalTheory.RealPlaceCompare.qf_eq]; exact GlobalTheory.RealPlaceCompare.continuous_qf) _ isOpen_ne fib hfib' _ hBo _ h3
       (fun _ => b) (fun _ => hb0) φ hφ
     have h5 : r'.toHomeomorph.symm (fun _ => b) = algebraMap F (Ainf F) β := by
@@ -204,7 +209,7 @@ theorem arch (hR3 : ActionCoordinates.RealPlaceMeasures) (c : CDHaar) (hσ : IsC
       GlobalTheory.UnfoldingCompare.eq_of_frame hM' (hne ρ) (hC ρ).1 (hC ρ).2
         ((hj g ρ).1.trans (hι ρ _).1.symm) ((hj g ρ).2.trans (hι ρ _).2.symm)
     have hfr : ∀ ρ, ActionCoordinates.IsPerpFrame (xr ρ) (Matrix.toLin' (C ρ)) (ι ρ) := fun ρ =>
-      GlobalTheory.T.isOrthogonalComplementUnitaryFrame_of_matrix P Q P' Q' hM' (xr ρ) (by rw [hxq]; exact hb0) (C ρ) (hC ρ).1 (hC ρ).2 (ι ρ) (hι ρ)
+      _root_.GlobalTheory.PerpFrameOfMatrix.isPerpFrame_of_matrix P Q P' Q' hM' (xr ρ) (by rw [hxq]; exact hb0) (C ρ) (hC ρ).1 (hC ρ).2 (ι ρ) (hι ρ)
     choose u hu using fun ρ => GlobalTheory.T.exists_unitarySignatureStabiliserCosetCutoff c P Q P' Q' (xr ρ) (by rw [hxq]; exact hb0) _ (ι ρ) (hfr ρ)
       ((hQ P Q b hb1 (xr ρ) (hxq ρ)).2.2 P' Q' _ _ (hfr ρ)).1
     have h := GlobalTheory.T.unitaryQuotientIntegral_prod_over_places hQ c T P Q P' Q' b hb1 xr hxq _ ι hfr u hu j hjι ν hν fib hfb _ hφm
@@ -231,7 +236,7 @@ theorem local_value (hL5 : PlaceSplittingTypes.SelfDualLatticeDensity) (hσ : Is
     (hfib : IsFibreFamily μ (fun X => qR (Fv F v) σ J (X 0)) id Set.univ ν {c | c ≠ 0} fib)
     (β : Fv F v) (hβ : Valued.v β = 1) :
     fib β {X | X 0 ∈ L} = ENNReal.ofReal (LocalAdditiveCharacterDual.locDens F E ψ M v) := by
-  obtain ⟨χ, hχ, hχψ⟩ := GlobalTheory.T.exists_localComponent_adelicAddChar F ψ hψ v hi
+  obtain ⟨χ, hχ, hχψ⟩ := _root_.GlobalTheory.LocalComponentChar.exists_localChar F ψ hψ v hi
   have hχ' : (χ : Fv F v → ℂ) = psiV F ψ v := funext hχψ
   obtain ⟨η, hη⟩ := GlobalTheory.LocalDensityCompare.exists_eta F E v
   have hEta := (GlobalTheory.LocalDensityCompare.isEtaAt_iff F E v hσ.2.2.1 η).2 ⟨hv, hη⟩
@@ -240,7 +245,7 @@ theorem local_value (hL5 : PlaceSplittingTypes.SelfDualLatticeDensity) (hσ : Is
     (by rw [SdW, hχ']; exact hμ) ν (by rw [SdR, hχ']; exact hν)).2.2 β hβ).1 Set.univ {c | c ≠ 0} fib
     (Set.subset_univ _) subset_rfl hfib
   refine h1.1.trans (congrArg _ ?_)
-  have h2 := GlobalTheory.T.adicIntegersCharacterDualIndex_eq_residue_card_zpow F ψ v c (by simpa only [PlaceSplittingTypes.IsDualExp, hχψ] using hc)
+  have h2 := _root_.GlobalTheory.DualIndexPow.nIdx_eq_zpow F ψ v c (by simpa only [PlaceSplittingTypes.IsDualExp, hχψ] using hc)
   rw [LocalAdditiveCharacterDual.locDens, h2, PlaceSplittingTypes.densityValue, PlaceSplittingTypes.dualIndex, LocalAdditiveCharacterDual.eulerInv, hη]
   rfl
 
@@ -349,7 +354,7 @@ theorem ratio_of_setting (hL5 : PlaceSplittingTypes.SelfDualLatticeDensity) (hR3
     {X | X 0 ∈ latHat D.host.F D.host.E (GlobalTheory.AdelicU.frameLat W : Set (Fin W.rank → D.host.E))}.indicator 1
   have hpure : IsPureFin b Φf Φv :=
     ⟨GlobalTheory.T.isSchwartzBruhat_indicator_localLatticeCompletion _ _ _ _ hlat, (GlobalTheory.T.eventually_localLatticeCompletion_eq_coordinateLattice _ _ _ _ b _ hlat).mono fun v hv => by simp only [Φv, hv],
-      GlobalTheory.T.indicator_completedLattice_eq_finprod_local _ _ _ _ hlat⟩
+      _root_.GlobalTheory.AdelicU.indicator_latHat_eq_finprod _ _ _ _ hlat⟩
   have hsw := hSW _ _ _ hσ _ _ hJ hr β hβ0 _ b (LatticeTensorUnfolding.latTensor (L0c D W) Φi) Φi Φf Φv hΦi hpure
     (fun v Y => by by_cases h : Y 0 ∈ GlobalTheory.AdelicU.latLoc D.host.F (GlobalTheory.AdelicU.frameLat W) v <;> simp [Φv, h])
     (fun X => by
@@ -362,7 +367,7 @@ theorem ratio_of_setting (hL5 : PlaceSplittingTypes.SelfDualLatticeDensity) (hR3
   have hloc : ∀ v, ∫⁻ X, ENNReal.ofReal (Φv v X).re ∂(fv v (algebraMap D.host.F (Fv D.host.F v) β)) =
       ENNReal.ofReal (LocalAdditiveCharacterDual.locDens D.host.F D.host.E ψ W.rank v) := by
     intro v
-    obtain ⟨Lv, hLv, hmem⟩ := GlobalTheory.T.exists_selfDualLattice_completion_maxOrder _ _ _ _ _ _ hJ hlat hsd v
+    obtain ⟨Lv, hLv, hmem⟩ := _root_.GlobalTheory.CompletedSelfDual.exists_isSelfDualLattice _ _ _ _ _ _ hJ hlat hsd v
     have hop := (GlobalTheory.LocalDensityCompare.lattice_compact_open v D.sp.cm.sig hσ Lv hLv.1 hLv.2.1).2
     have hlc := GlobalTheory.LocalDensityCompare.lcs (F := D.host.F) (E := D.host.E) v
     haveI := hlc.2.1

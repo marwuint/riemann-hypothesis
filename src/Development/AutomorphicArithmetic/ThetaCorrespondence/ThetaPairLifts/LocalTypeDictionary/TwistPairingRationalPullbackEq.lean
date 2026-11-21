@@ -1,7 +1,10 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvenRankSelfDualUnitary
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvenRankSelfDualUnitaryStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitOff
+import Formalism.LocalToGlobal.InertKernelTheory.DefsInt
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JetKapIff
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
@@ -19,9 +22,6 @@ open GlobalTheory.RatMoveJets
 noncomputable section
 namespace GlobalTheory.RatMoveIop
 open Formalism.L2.KerInert Formalism.L2.KerInert.PullbackComparison GlobalTheory.ThLoc.AllPlaces
-section Arith
-variable {F : Type} [NormedField F] {lam : Qbar →+* F}
-end Arith
 variable {D : D7} {N N' : ℕ}
 variable (A : Matrix.unitaryGroup (Fin N) D.host.E) (A' : Matrix.unitaryGroup (Fin N') D.host.E)
 variable (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)

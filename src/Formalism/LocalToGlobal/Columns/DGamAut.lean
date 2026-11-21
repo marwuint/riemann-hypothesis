@@ -63,26 +63,6 @@ theorem autLcm_pos (hE : PosStar E) : 0 < autLcm E n := (autLcm_mem (minkM_pos _
 
 theorem card_autU_dvd_autLcm (hE : PosStar E) (N : UniLat E n) : Nat.card (autU E n N) ∣ autLcm E n := (autLcm_mem (minkM_pos _) (card_autU_dvd_minkM hE)).2 N
 
-theorem autLcm_dvd_minkM (hE : PosStar E) : autLcm E n ∣ minkM (Module.finrank ℚ E * n) := autLcm_dvd (minkM_pos _) (card_autU_dvd_minkM hE)
-
-theorem autLcm_eq_lcm (hE : PosStar E) [Fintype (UniCl E n)] :
-    autLcm E n = Finset.univ.lcm fun c : UniCl E n => Nat.card (autU E n (Quotient.out c)) := by
-  classical
-  apply Nat.dvd_antisymm
-  · apply autLcm_dvd
-    · apply Nat.pos_of_ne_zero
-      rw [Ne, Finset.lcm_eq_zero_iff]
-      rintro ⟨c, -, hc⟩
-      haveI := finite_autU hE (Quotient.out c)
-      exact (Nat.card_pos (α := autU E n (Quotient.out c))).ne' hc
-    · intro N
-      have hrel := Quotient.exact (Quotient.out_eq (Quotient.mk'' N : UniCl E n))
-      have hc : Nat.card (autU E n (Quotient.out (Quotient.mk'' N : UniCl E n))) = Nat.card (autU E n N) :=
-        Nat.card_congr (MulAction.stabilizerEquivStabilizerOfOrbitRel hrel).toEquiv
-      rw [← hc]
-      exact Finset.dvd_lcm (Finset.mem_univ _)
-  · exact Finset.lcm_dvd fun c _ => card_autU_dvd_autLcm hE _
-
 def UniLat.til (N : UniLat E n) : UniLat E (n + 1) := ⟨tilN N.1, tilN_lattice N.2.1, tilN_unimodular N.2.2⟩
 
 def autU_til (N : UniLat E n) : autU E n N →* autU E (n + 1) N.til :=
@@ -179,16 +159,6 @@ theorem autLcm_dvd_dGamAut (hX : X.Ok) {n : ℕ} (hn : n ≤ R.N R.m) : autLcm X
 theorem card_autU_dvd_dGamAut (hX : X.Ok) {n : ℕ} (hn : n ≤ R.N R.m) (N : UniLat X.E n) :
     Nat.card (autU X.E n N) ∣ dGamAut X R := (card_autU_dvd_autLcm (posStar_of_ok hX) N).trans (autLcm_dvd_dGamAut hX hn)
 
-theorem dga_finrank (hX : X.Ok) : Module.finrank ℚ X.E = 2 * X.f := by
-  exact hX.finrank_E
-
-theorem dGamAut_dvd_minkM (hX : X.Ok) : dGamAut X R ∣ minkM (2 * X.f * R.N R.m) := by
-  rw [dGamAut_eq hX]
-  have h := autLcm_dvd_minkM (E := X.E) (n := R.N R.m) (posStar_of_ok hX)
-  rwa [dga_finrank hX] at h
-
-theorem dGamAut_prime_le (hX : X.Ok) {p : ℕ} (hp : p.Prime) (h : p ∣ dGamAut X R) : p ≤ 2 * X.f * R.N R.m + 1 := prime_le_of_dvd_minkM hp (h.trans (dGamAut_dvd_minkM hX))
-
 end DGam
 
 section Stab
@@ -226,31 +196,6 @@ theorem dga_frm_stab_inj (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (
     exact mul_left_cancel (ea.trans eb.symm)
   refine Prod.ext hab (Prod.ext (Subtype.ext h2) (Subtype.ext (funext fun P => ?_)))
   exact inv_injective (Subtype.ext (h3 P))
-
-theorem frmGSD_stab_dvd_autU (C : CoefPk X n (DecoF X.E n ST SG Q)) (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q)
-    (p : DecoF X.E n ST SG Q) :
-    Nat.card (MulAction.stabilizer (frmGSD C Λ Θ).G p) ∣ Nat.card (autU X.E n p.deco.lat) := by
-  let φ : MulAction.stabilizer (frmGSD C Λ Θ).G p →* autU X.E n p.deco.lat :=
-    ((MonoidHom.fst (UF X.E n) (↥Λ.grp × ↥Θ.grp)).comp (MulAction.stabilizer (frmGSD C Λ Θ).G p).subtype).codRestrict _ fun a => by
-      rw [MulAction.mem_stabilizer_iff]
-      exact Subtype.ext (congrArg (fun q : DecoF X.E n ST SG Q => q.1.1.1.N) a.2)
-  refine Subgroup.card_dvd_of_injective φ fun a b hab => ?_
-  have h1 : (a.1.1 : UF X.E n) = b.1.1 := congrArg Subtype.val hab
-  exact Subtype.ext (dga_frm_stab_inj Λ Θ p a.2 b.2 h1)
-
-theorem frmGSD_stab_dvd_dGamAut (hX : X.Ok) (hn : n ≤ R.N R.m) (C : CoefPk X n (DecoF X.E n ST SG Q)) (Λ : LevFam X.E X.K n SG)
-    (Θ : LevQFam X.E X.K n Q) (p : DecoF X.E n ST SG Q) :
-    Nat.card (MulAction.stabilizer (frmGSD C Λ Θ).G p) ∣ dGamAut X R := (frmGSD_stab_dvd_autU C Λ Θ p).trans (card_autU_dvd_dGamAut hX hn _)
-
-theorem stab_pair_dvd {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K} (Y : Cpl S) (p : Y.Pts) :
-    Nat.card (MulAction.stabilizer S.G p) ∣ Nat.card (MulAction.stabilizer S.G p.1.1) := by
-  apply Subgroup.card_dvd_of_le
-  intro g hg
-  rw [MulAction.mem_stabilizer_iff] at hg ⊢
-  exact congrArg (fun q => q.1.1) hg
-
-theorem stab_pair_dvd_of {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K} (Y : Cpl S) {D : ℕ}
-    (h : ∀ d : S.D, Nat.card (MulAction.stabilizer S.G d) ∣ D) (p : Y.Pts) : Nat.card (MulAction.stabilizer S.G p) ∣ D := (stab_pair_dvd Y p).trans (h p.1.1)
 
 end Stab
 

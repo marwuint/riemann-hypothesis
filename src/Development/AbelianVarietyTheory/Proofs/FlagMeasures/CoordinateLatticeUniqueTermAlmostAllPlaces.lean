@@ -16,13 +16,19 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Equality
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitEntries
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralOfMulVec
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HmUnit
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalHermitianFramesGoodAlmostAllPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalSameIntegralSpanUnimodularStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalHermitianFramesGoodAlmostAllPlaces
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthonormalBasisAndOneOrbit
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualLatticeUnipotentTranslateStandard
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsGluingHomomorphismDefectGroup
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalExtend
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsIntegralOfQuad
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalSameIntegralSpanUnimodular
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTermSplitsUnimodularComplementStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameLatticeUnimodularGeneratorsExponentZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramesCoordinateLatticeIsTermTrivialWitnessesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StabilizerFramesCoordinateLatticeGoodPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GoodPlaceGramInvariantMinorsValuationZeroStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameLatticeUnimodularGeneratorsExponentZero
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramesCoordinateLatticeIsTermTrivialWitnesses
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StabilizerFramesCoordinateLatticeGoodPlace
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GoodPlaceGramInvariantMinorsValuationZero
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical
@@ -36,12 +42,12 @@ theorem term_orbit {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
     have := L.free
     have : Module.Finite F E := Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)
     exact IsArtinianRing.of_finite F E
-  obtain ⟨u₀, hu₀, hE, hui, hup⟩ := GlobalTheory.T.frameLattice_unimodular_generators_exponent_zero L r k S d Λ hT ha
+  obtain ⟨u₀, hu₀, hE, hui, hup⟩ := _root_.GlobalTheory.HL.FrameUnimod.frame_unimodular L r k S d Λ hT ha
   obtain ⟨b₀, hbW, hΛ, hbi, hbp⟩ := GlobalTheory.T.hermitianTerm_splits_unimodular_complement L r k S d Λ hT ha
   obtain ⟨c₀, hcW, hΛ₁, hci, hcp⟩ := GlobalTheory.T.hermitianTerm_splits_unimodular_complement L r k S d₁ Λ₁ hT₁ ha
-  obtain ⟨u, huo, hus⟩ := GlobalTheory.T.exists_orthonormal_same_integralSpan_unimodular L S.Hm S.herm u₀ hui hup
-  obtain ⟨b, hbo, hbs⟩ := GlobalTheory.T.exists_orthonormal_same_integralSpan_unimodular L S.Hm S.herm b₀ hbi hbp
-  obtain ⟨c, hco, hcs⟩ := GlobalTheory.T.exists_orthonormal_same_integralSpan_unimodular L S.Hm S.herm c₀ hci hcp
+  obtain ⟨u, huo, hus⟩ := _root_.GlobalTheory.HL.SelfDual.exists_orthonormal_same_span L S.Hm S.herm u₀ hui hup
+  obtain ⟨b, hbo, hbs⟩ := _root_.GlobalTheory.HL.SelfDual.exists_orthonormal_same_span L S.Hm S.herm b₀ hbi hbp
+  obtain ⟨c, hco, hcs⟩ := _root_.GlobalTheory.HL.SelfDual.exists_orthonormal_same_span L S.Hm S.herm c₀ hci hcp
   have hsp : ∀ (w : Fin (k - 1) → S.V) (w₀ : Fin (k - 1) → S.V), (∀ i, w₀ i ∈ S.W0) →
       Submodule.span L.O (Set.range w) = Submodule.span L.O (Set.range w₀) → ∀ i, w i ∈ S.W0 := by
     intro w w₀ h0 he i
@@ -130,10 +136,10 @@ theorem good_place {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
       (∀ Λ, S.IsTerm d₀ Λ → ∃ h ∈ S.St, Λ = h • coordLat S) ∧
       (∀ Λ, S.IsTerm d₀ Λ → S.Fr d₀ Λ = S.frameCls S.f S.f' → Λ = coordLat S) ∧
       ∀ d Λ, S.IsTerm d Λ → ∃ h ∈ S.H0, d = h • d₀ := by
-  obtain ⟨hvG, hvD⟩ := GlobalTheory.T.goodPlace_gramInvariant_minors_valuation_zero L r k S hG
+  obtain ⟨hvG, hvD⟩ := _root_.GlobalTheory.HL.StdPlace.vE_G_D_eq_zero L r k S hG
   have hvth : S.vth = 0 := by simp [Frames.vth, hG.gg]
   have ha : S.a = 0 := by simp [Frames.a, hvth, hvG]
-  obtain ⟨d₀, hd₀⟩ := GlobalTheory.T.framesCoordinateLattice_isTerm_trivialWitnesses L r k S hG
+  obtain ⟨d₀, hd₀⟩ := _root_.GlobalTheory.HL.CoordGood.main L r k S hG
   have hT₀ : S.IsTerm d₀ (coordLat S) := ⟨(1, 1), hd₀⟩
   obtain ⟨hom, hM₀, hFr₀, -, -⟩ := GlobalTheory.HL.WitIndep.witness_independence L r k S d₀ _ _ _ hd₀
   have hFr₁ : S.Fr d₀ (coordLat S) = S.frameCls S.f S.f' := hFr₀
@@ -146,7 +152,7 @@ theorem good_place {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
   have hact := GlobalTheory.FrameAct.stabiliser_acts_on_terms L r k S
   have hcom := GlobalTheory.HL.ComplAct.main L r k S
   have hcls := GlobalTheory.HL.FrameClass.frame_classes L r k S
-  refine ⟨(GlobalTheory.HL.GoodPlace.equality L r k S hk hG.gg hvG hvD).2.1, GlobalTheory.T.stabilizer_framesCoordinateLattice_goodPlace L r k S hG ha d₀ hd₀, d₀, hd₀, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨(GlobalTheory.HL.GoodPlace.equality L r k S hk hG.gg hvG hvD).2.1, _root_.GlobalTheory.HL.StdStab.stab_coordLat L r k S hG ha d₀ hd₀, d₀, hd₀, ?_, ?_, ?_, ?_, ?_⟩
   · rw [hom]
     have h1 : ∀ (g : Fin (r + 1) → S.V) (gs : Fin r → S.V),
         (∀ a j, hf L S.Hm (g a) (gs j) = if a = j.castSucc then 1 else 0) → S.psiOf g gs 1 = 1 := by
@@ -196,7 +202,7 @@ theorem good_place {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
 
 theorem coordinate_lattice_standard : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), 4 * r + 7 ≤ k → {p | ¬ ((G.S p).gg = false ∧ (G.S p).Hp = 1 ∧ (G.S p).St ⊓ MulAction.stabilizer (G.S p).GLV (Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : (G.S p).V))) = (G.S p).K0 ∧ ∃ d₀, (G.S p).IsTermW d₀ (Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : (G.S p).V))) 1 1 ∧ (G.S p).om d₀ (Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : (G.S p).V))) = 1 ∧ (G.S p).H0 ⊓ MulAction.stabilizer (G.S p).GLV d₀ = (G.S p).complementReferenceCompactSubgroup ∧ (∀ Λ, (G.S p).IsTerm d₀ Λ → ∃ h ∈ (G.S p).St, Λ = h • (Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : (G.S p).V)))) ∧ (∀ Λ, (G.S p).IsTerm d₀ Λ → (G.S p).Fr d₀ Λ = (G.S p).frameCls (G.S p).f (G.S p).f' → Λ = (Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : (G.S p).V)))) ∧ ∀ d Λ, (G.S p).IsTerm d Λ → ∃ h ∈ (G.S p).H0, d = h • d₀)}.Finite := by
   intro F E _ _ _ _ _ sig A r k G hk
-  refine (GlobalTheory.T.globalHermitianFrames_good_almost_all_places A r k G).subset fun p hp hg => hp ?_
+  refine (_root_.GlobalTheory.HL.StdPlace.good_almost_all A r k G).subset fun p hp hg => hp ?_
   haveI := (A.loc p).lf
   haveI := (A.loc p).char0
   exact ⟨hg.gg, good_place (A.L p) r k (G.S p) hk hg⟩

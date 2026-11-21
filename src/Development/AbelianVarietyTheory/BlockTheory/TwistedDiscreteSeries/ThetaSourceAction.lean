@@ -117,8 +117,6 @@ variable (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
 def IsAdapted {n : ℕ} (G s B : Mat n) : Prop :=
   ∃ ε : Fin n → Bool, Bᴴ * G * B = Formalism.REAL.Jm ε ∧ s * B = B * Formalism.REAL.Jm ε
 
-example (n : ℕ) : IsAdapted (1 : Mat n) 1 1 := ⟨fun _ => true, by simp [Formalism.REAL.Jm], by simp [Formalism.REAL.Jm]⟩
-
 def ptAt (τ : D.what₂.Tau) (sS : Mat S.rank) (sT : Mat T.rank) (BS : Mat S.rank) (BT : Mat T.rank) (f : WO S T → ℂ) :
     MvPolynomial (Fin T.rank × Fin S.rank) ℂ → (WO S T → ℂ) :=
   pureTensorL (fun k : Fin T.rank × Fin S.rank => aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap BS BT k.1 k.2)) f

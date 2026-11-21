@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FamilyUnifExpUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FamilyUnifExpUnique
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.Biextensions.CubicalExtendsSt
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsEqNsmulOfDvdPairing
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
@@ -134,7 +135,7 @@ theorem ex_eq_of_level_group : (∀ (Y : Type) [AddCommGroup Y] [Module.Free ℤ
       hiso, hM, hA, hh⟩
   refine ⟨(Matrix.isUnit_iff_isUnit_det _).1 hu, hpt, ?_⟩
   obtain ⟨h₁, gam₁, hex, hh₁, hiso₁, hM₁, -⟩ :=
-    GlobalTheory.T.familyUnif_exp_unique_alt E H D l Xo σ g ty U i i P P' hP hP' hpt
+    _root_.GlobalTheory.familyUnif_exp_unique E H D l Xo σ g ty U i i P P' hP hP' hpt
   have hM₁' : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) (U.Di i).La),
       ∃ e, gam₁ a = a + l.M • e := by
     intro a ha

@@ -2,7 +2,10 @@ import Mathlib
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutLimE
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqLeShifted
 import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.BesselXiIntegrable
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.EnergyBoundPolynomialWeightPowCapelliEigenStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.EnergyBoundPolynomialWeightPowCapelliEigen
+import Formalism.HermitianCurvature.StatementTBB
+import Formalism.HermitianCurvature.StatementU
+import Formalism.HermitianCurvature.LetterProductDoubleDegreeCount
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Finset
 
 namespace GlobalTheory
@@ -11,12 +14,12 @@ theorem limBd_fpm_and_fpmSh : GlobalTheory.HCXi.BesselXiIntegrable → (∀ (Wp 
   intro hXi
   refine ⟨?_, ?_⟩
   · intro Wp Wq _ _ _ _ _ _ P p lam lam' cs A₀ p₀ nn f Y N h1 h2 h3 h4 h5 h6 h7
-    refine GlobalTheory.T.energyBound_polynomialWeightPow_capelliEigen hXi Wp Wq Wq P p lam lam' cs A₀ p₀ 0 nn f
+    refine _root_.GlobalTheory.energy_bound_gfPow_smul_comp_polyOp hXi Wp Wq Wq P p lam lam' cs A₀ p₀ 0 nn f
       (fun _ => ContinuousLinearMap.id ℂ Wq) Y N ?_ h1 h2 h3 h4 h5 h6 h7
     refine ⟨1, fun _ _ => 1, fun _ => ContinuousLinearMap.id ℂ Wq, fun _ => ?_, fun g => by simp⟩
     exact ⟨1, by simp, fun g => by simp⟩
   · intro Wp Wq _ _ _ _ _ _ Wq' _ _ _ P u u' q lam lam' cs A₀ p₀ dA nn f Aop Y N h0 h1 h2 h3 h4 h5 h6 h7
-    exact GlobalTheory.T.energyBound_polynomialWeightPow_capelliEigen hXi Wp Wq' Wq (Formalism.FourierDecayAlt.P.CutBP2.shP P u u') q lam lam' cs A₀ p₀ dA nn f Aop Y N
+    exact _root_.GlobalTheory.energy_bound_gfPow_smul_comp_polyOp hXi Wp Wq' Wq (Formalism.FourierDecayAlt.P.CutBP2.shP P u u') q lam lam' cs A₀ p₀ dA nn f Aop Y N
       h0 h1 h2 h3 h4 h5 h6 h7
 
 end GlobalTheory

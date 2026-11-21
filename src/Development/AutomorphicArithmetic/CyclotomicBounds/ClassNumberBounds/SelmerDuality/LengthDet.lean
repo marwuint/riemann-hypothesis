@@ -67,9 +67,4 @@ theorem length_cokernel_eq_addVal_det (Φ : Matrix n n O) :
     lengthDet_addVal_prod]
   exact Finset.sum_congr rfl fun i _ => Ring.ord_eq_addVal _
 
-theorem specLength_eq_addVal {Λ : Type*} [CommRing Λ] (ψ : Λ →+* O) (Φ : Matrix n n Λ) :
-    specLength ψ Φ = IsDiscreteValuationRing.addVal O (ψ Φ.det) := by
-  rw [specLength, length_cokernel_eq_addVal_det, RingHom.map_det]
-  rfl
-
 end KStar.Selmer

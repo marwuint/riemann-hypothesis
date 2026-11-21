@@ -4,8 +4,17 @@ import Development.WeilBound.CoreStatements.VolumeEquality.DegPushPullB
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmpPairOfInputs
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ImageCptReflOfGenPt
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.CmpHodgeTied
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AgreementPositiveStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaUniformisationComplexAbelianVarietiesStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AgreementPositive
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.AgreementPos
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaUniformisationComplexAbelianVarieties
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 
 noncomputable section
 
@@ -53,7 +62,7 @@ theorem poly_smul_of_sameSing (hN : SheetDecomposition.NumPull) (hIn : PB.Inputs
   constructor
   · rw [PB.Realis.PB, PB.Realis.PB, ← PB.formPoly_const_mul]
     refine congrArg (PB.formPoly (D + 1)) (funext fun w => ?_)
-    obtain ⟨C₃, s₀, -, h⟩ := GlobalTheory.T.agreement_positive hIn D σ S₁ 0 (S₁.reg (w 0)).1
+    obtain ⟨C₃, s₀, -, h⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.agreementPos hIn D σ S₁ 0 (S₁.reg (w 0)).1
     have c₁ := (h II hII _ _ _ Re₁).1 w
     have c₂ : Tendsto (fun t => Re₂.num II t w) (𝓝[>] 0) (𝓝 (Re₁.limNum II w / m)) := by
       have := (c₁.sub ((hW w).div_const ((e₁ : ℝ) * Re₁.deg))).div_const (m : ℝ)
@@ -78,19 +87,19 @@ theorem stCmp : StCmp := by
     rw [(twistSAB_symm_refl E H Xo.X Xo.univ.t (HostAut.refl H)).2.2]
     exact (exists_sabMap_id E H Xo.X Xo.univ.t).choose
   obtain ⟨K, hK, ι, hι, κ, v, κ', v', Ω, hΩ, hΩ0, y, b, d, hbv, hbv', hP, hP', harith, hmh, hb, hne, hdeg, hiso⟩ :=
-    GlobalTheory.T.twisted_hodge_tie_compare PositivityTheory.UnitarySelfGeneration.cmpHodgeTiedAlt GlobalTheory.T.theta_uniformisation_complex_abelian_varieties E H D l Xo c O β Y (HostAut.refl H) (Iso.refl Xo.X) hsab (Equiv.refl _) S n M M' T T'
+    _root_.PositivityTheory.UnitarySelfGeneration.pair_iso PositivityTheory.UnitarySelfGeneration.cmpHodgeTiedAlt _root_.GlobalTheory.thetaUnifAV_closed E H D l Xo c O β Y (HostAut.refl H) (Iso.refl Xo.X) hsab (Equiv.refl _) S n M M' T T'
       hβ (by simp) (fun τ => by ext; rfl)
       (Indep.imageCpt_refl_of_genPt E H D l Xo c O β Y S _ _ _ _ _ _ _ _ T.A T'.A hβ hgen) hR
-  have hJ := GlobalTheory.T.block_pullback_herm_line M.K M.ι K ι κ v hbv
-  have hJ' := GlobalTheory.T.block_pullback_herm_line M'.K M'.ι K ι κ' v' hbv'
+  have hJ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.hermLine_pull_blockMap M.K M.ι K ι κ v hbv
+  have hJ' := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.hermLine_pull_blockMap M'.K M'.ι K ι κ' v' hbv'
   have hmpp : IsMultiProjPrime (mCoordIdeal y) := harith.2.1
-  obtain ⟨hc1, -, -, hc4⟩ := GlobalTheory.T.iso_line_on_equivalence K ι (mCoordIdeal y)
+  obtain ⟨hc1, -, -, hc4⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.IsoLines.isoLineOn_comb_trans_symm_pull K ι (mCoordIdeal y)
     {z | z ∈ mcPts (mCoordIdeal y) ∧ evC z b ≠ 0} hmpp (fun z hz => hz.1)
   choose Lr hLr using fun r => (hJ.1 (T.sing r)).exists
   choose Lr' hLr' using fun r => (hJ'.1 (T'.sing r)).exists
   refine poly_smul_of_sameSing SheetDecomposition.numPull hIn hC II hII T.Re T'.Re hP hP' hbv hbv' harith hmh hb T.alg T'.alg (fun a => ?_) hne hm
     (by rw [hd, hd', mul_one, hdeg])
-  exact GlobalTheory.T.realisation_fibre_product_compatible K ι M.K M.ι M'.K M'.ι κ v κ' v' (mCoordIdeal y) M.P M'.P _ _ _ T.Sy T'.Sy T.Re T'.Re b a a _ _ _ _ hbv hbv'
+  exact _root_.GlobalTheory.CompanionTheory.Ar.Cmp.sameSing_of_isoLine K ι M.K M.ι M'.K M'.ι κ v κ' v' (mCoordIdeal y) M.P M'.P _ _ _ T.Sy T'.Sy T.Re T'.Re b a a _ _ _ _ hbv hbv'
     (hc4 _ _ κ v _ _ _ _ hbv hLr) (hc4 _ _ κ' v' _ _ _ _ hbv' hLr') (T.ref_deg a) (T'.ref_deg a) (T.sing_eq a)
     (T'.sing_eq a) hmpp (hc1 _ Lr Lr' _ fun r => hiso r _ _ (hLr r) (hLr' r))
 

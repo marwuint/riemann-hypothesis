@@ -91,10 +91,6 @@ variable (v0 : InfinitePlace X.K) (TU : Finset (Tup X.F X.E X.K S))
 def colFam : DefFam X.K (Col.G0 X.E Pr.vGs R.r) (Col.LevOff ∅ Pr.vGs S0) (TupF TU) (Fin R.m) :=
   (colIn W Ch sel hX v0 TU Xg S0 xiVal).fam
 
-def colSide (P : Col.LevFam X.E X.K R.r Pr.vGs) (Zs : DefSub (colFam W Ch sel hX v0 TU Xg S0 xiVal).amb) :
-    DefSide (colFam W Ch sel hX v0 TU Xg S0 xiVal).base :=
-  (colIn W Ch sel hX v0 TU Xg S0 xiVal).side P.grp P.chr Zs
-
 theorem twistPrimes_trivialTuple_empty : Col.QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = ∅ := by
   have h1 : ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1 := by
     simp [mu0]

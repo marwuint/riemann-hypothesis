@@ -240,10 +240,6 @@ def AdmB (D : Formalism.BasicNotions.D7) (C₀ CH CA CE1 CE2 Cm Ckap Ct Cc Cs : 
   PathPairCorrespondence D C₀ CH CA CE1 CE2 Cc ∧ admB2 D C₀ CH CA CE1 CE2 Cm Ckap Ct Cc ∧ admB3 D C₀ CH CE1 CE2 Ckap Cc Cs ∧
     ColumnFamilyLowerSet D C₀ CH CE1 CE2 Ct Cc ∧ AdmT D
 
-def HodgeTateFromSandwich (D : Formalism.BasicNotions.D7) (C₀ CH CA CE1 CE2 Cm Ckap Ct Cc Cs : ℝ) : Prop :=
-  4 ≤ Cc → AdmB D C₀ CH CA CE1 CE2 Cm Ckap Ct Cc Cs →
-    ∃ T C : ℝ, 0 < T ∧ 0 < C ∧ ∀ CH' : ℝ, T ≤ CH' → Conclusion2 D C₀ CH' C
-
 def ClosedA (P : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop) : Prop :=
   ∀ Cc : ℝ, 0 ≤ Cc → ∃ T0 : ℝ, 0 < T0 ∧ ∀ C₀ : ℝ, T0 ≤ C₀ →
     ∃ T1 : ℝ, 0 < T1 ∧ ∀ CE1 CE2 Cm : ℝ, T1 ≤ CE1 → T1 ≤ CE2 → T1 ≤ Cm →
@@ -259,22 +255,8 @@ def projection_lemma_base_level (D : Formalism.BasicNotions.D7) : Prop := Closed
 
 def SecondPartClosed (D : Formalism.BasicNotions.D7) : Prop := AdmBE D → projection_lemma_base_level D
 
-def AdmBF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C₀ CH CA CE1 CE2 Cm Ckap Ct Cc Cs : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), AdmB (Fm.D x i) C₀ CH CA CE1 CE2 Cm Ckap Ct Cc Cs
-
 def Conclusion2Family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C₀ CH C : ℝ) : Prop :=
   ∀ x (i : Fm.Ix x), Conclusion2 (Fm.D x i) C₀ CH C
-
-def SecondPartFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C₀ CH CA CE1 CE2 Cm Ckap Ct Cc Cs : ℝ) : Prop :=
-  4 ≤ Cc → AdmBF Fm C₀ CH CA CE1 CE2 Cm Ckap Ct Cc Cs →
-    ∃ T C : ℝ, 0 < T ∧ 0 < C ∧ ∀ CH' : ℝ, T ≤ CH' → Conclusion2Family Fm C₀ CH' C
-
-def SecondPartFamilyClosed {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ClosedA (AdmBF Fm) → ClosedP (Conclusion2Family Fm)
-
-def UniformEpsilonConclusionClosedOfHypothesesClosed (Fm : Formalism.MainNotions.DFamP) : Prop :=
-  ClosedA (fun C₀ CH CA CE1 CE2 Cm Ckap Ct Cc Cs =>
-      ∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52), AdmBF (Fm ε h0 h1) C₀ CH CA CE1 CE2 Cm Ckap Ct Cc Cs) →
-    ClosedP fun C₀ CH C => ∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52), Conclusion2Family (Fm ε h0 h1) C₀ CH C
 
 end Formalism.MainNotions.flipOneThree
 

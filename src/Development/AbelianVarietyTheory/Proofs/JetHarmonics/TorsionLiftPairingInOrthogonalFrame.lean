@@ -9,28 +9,6 @@ open scoped ComplexConjugate BigOperators
 
 namespace GlobalTheory.MomOne.FramePair
 
-variable {g : ℕ}
-
-lemma beta_sum_left (d : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) {r : ℕ} (c : Fin r → ℂ) (b : Fin r → Fin g → ℂ)
-    (w : Fin g → ℂ) : beta d Hm (∑ j, c j • b j) w = ∑ j, c j * beta d Hm (b j) w := by
-  simp only [beta, hf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  conv_lhs => enter [2, i]; rw [Finset.sum_comm]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [Finset.sum_comm]
-  exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-
-lemma beta_smul_left (d : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℂ) (v w : Fin g → ℂ) :
-    beta d Hm (c • v) w = c * beta d Hm v w := by
-  simp only [beta, hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
-  exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-
-variable {q : ℕ} [Fact q.Prime]
-
-lemma norm_zc (a : ℤ_[q]) : ‖GlobalTheory.MomOne.zc a‖ = ‖a‖ := by
-  rw [GlobalTheory.MomOne.zc, norm_algebraMap']; rfl
-
 end GlobalTheory.MomOne.FramePair
 
 namespace GlobalTheory.MomOne

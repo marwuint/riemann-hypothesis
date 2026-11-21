@@ -576,28 +576,6 @@ theorem size_or_bucket_bound : SizeOr := by
   have := scale2 hm hT key
   linarith
 
-theorem size_bad_orbits_bound : SizeBad := by
-  intro P e K m T hW hL hm hT
-  obtain ⟨z, u, E, X, S, sb, v, w8, F⟩ := facts hW hL
-  unfold tBad unitU
-  have h9 := F.xpos; have h11 := F.Kpos; have hb := F.b0; have hz := F.zpos; have hr0 := F.rpos
-  have c3 : Real.log P.Xp + Real.log 4 ≤ 3 * z := by
-    rw [F.hXp, F.logX]; linarith [F.uz, log_four_le_three_halves, F.z1]
-  have c30 : 0 ≤ Real.log P.Xp + Real.log 4 := by
-    rw [F.hXp, F.logX]; linarith [F.u1, log_four_nonneg]
-  have hβ0 := F.β0
-  have hβ : P.β ≤ K * P.x⁻¹ ^ 2 := by rw [← F.r2]; exact F.βK
-  have key : 32 * P.β * P.a * (Real.log P.Xp + Real.log 4) ≤ sg P K * P.b := by
-    rw [F.ha]
-    calc 32 * P.β * (P.x * P.b) * (Real.log P.Xp + Real.log 4)
-        ≤ 32 * (K * P.x⁻¹ ^ 2) * (P.x * P.b) * (3 * z) := by gcongr
-      _ = P.b * (96 / 100 * (P.x * P.x⁻¹)) * (100 * K * z ^ 1 * P.x⁻¹) := by ring
-      _ ≤ sg P K * P.b := by
-          rw [F.xr]
-          exact F.close_sg (by norm_num) (by norm_num) (F.Kzr0 1) (F.Kzr_sg (by norm_num))
-  have := scale2 hm hT key
-  linarith
-
 theorem size_orders_bucket_bound : SizeOrders := by
   intro P e K m T hW hL hm hT
   obtain ⟨z, u, E, X, S, sb, v, w8, F⟩ := facts hW hL
@@ -739,81 +717,11 @@ theorem size_discriminant_bound : SizeD := by
   have := scale2 hm hT key
   linarith
 
-theorem size_second_io_bound : SizeSecondIo := by
-  intro P e K m T hW hL hm hT
-  obtain ⟨z, u, E, X, S, sb, v, w8, F⟩ := facts hW hL
-  unfold tSecondIo unitU
-  have h9 := F.xpos; have hb := F.b0; have hz := F.zpos; have hr0 := F.rpos; have hz1 := F.z1
-  have hY0 : 0 < P.Y := by linarith [F.Y1]
-  have c3 : Real.log P.Y + Real.log 4 ≤ 4 * z := by
-    have a2 : Real.log P.Y ≤ Real.log (2 * X) := Real.log_le_log hY0 F.YX
-    rw [Real.log_mul (by norm_num) F.Xpos.ne', F.logX] at a2
-    linarith [log_two_le_one_alt, log_four_le_three_halves, F.uz]
-  have c30 : 0 ≤ Real.log P.Y + Real.log 4 := add_nonneg (Real.log_nonneg F.Y1) log_four_nonneg
-  have hs0 := F.s0
-  have hs : P.s₀ ≤ P.x⁻¹ ^ 2 := by rw [← F.r2]; exact F.sx
-  have c4 : P.s₀ / P.θ + P.s₀ ≤ P.x⁻¹ ^ 2 * (2 * z) := by
-    rw [F.hθ, div_inv_eq_mul]
-    have : P.s₀ * z + P.s₀ = P.s₀ * (z + 1) := by ring
-    rw [this]
-    gcongr
-    linarith
-  have c40 : 0 ≤ P.s₀ / P.θ + P.s₀ := by
-    rw [F.hθ, div_inv_eq_mul]; positivity
-  have key : (P.s₀ / P.θ + P.s₀) * (4 * P.a * (Real.log P.Y + Real.log 4)) ≤ sg P K * P.b := by
-    rw [F.ha]
-    calc (P.s₀ / P.θ + P.s₀) * (4 * (P.x * P.b) * (Real.log P.Y + Real.log 4))
-        ≤ (P.x⁻¹ ^ 2 * (2 * z)) * (4 * (P.x * P.b) * (4 * z)) := by gcongr
-      _ = P.b * (32 / 100 * (P.x * P.x⁻¹)) * (100 * z ^ 2 * P.x⁻¹) := by ring
-      _ ≤ sg P K * P.b := by
-          rw [F.xr]
-          exact F.close_sg (by norm_num) (by norm_num) (F.zr0 2) (F.zr_sg (by norm_num))
-  have := scale2 hm hT key
-  linarith
-
-theorem sigma_le_one : SgLeOne := by
-  intro P e K hW hL
-  obtain ⟨z, u, E, X, S, sb, v, w8, F⟩ := facts hW hL
-  exact ⟨F.sg0, F.sg1⟩
-
-theorem size_sharp_bound : WindowSizeBoundSharp := by
-  intro P e K m T hW hL hm hT
-  have a1 := size_floors_bound P e K m T hW hL hm hT
-  have a2 := size_cp_bucket_bound P e K m T hW hL hm hT
-  have a3 := size_prime_low_bound P e K m T hW hL hm hT
-  have a4 := size_prime_high_bound P e K m T hW hL hm hT
-  have a5 := size_or_bucket_bound P e K m T hW hL hm hT
-  have a6 := size_bad_orbits_bound P e K m T hW hL hm hT
-  have a7 := size_orders_bucket_bound P e K m T hW hL hm hT
-  have a8 := size_band_bound P e K m T hW hL hm hT
-  have a9 := size_high_bucket_bound P e K m T hW hL hm hT
-  have a10 := size_discriminant_bound P e K m T hW hL hm hT
-  have a11 := size_second_io_bound P e K m T hW hL hm hT
-  unfold tDet
-  linarith
-
 lemma unitU_nonneg {P : Par} {m T : ℝ} (hm : 0 ≤ m) (hT : 1 ≤ T) : 0 ≤ unitU P m T := by
   have hb : 0 < P.b := Real.exp_pos _
   have : 0 ≤ T := by linarith
   unfold unitU
   positivity
-
-theorem size_total_bound : WindowSizeBound := by
-  intro P e K m T hW hL hm hT
-  have h := size_sharp_bound P e K m T hW hL hm hT
-  obtain ⟨z, u, E, X, S, sb, v, w8, F⟩ := facts hW hL
-  have hU := unitU_nonneg (P := P) hm hT
-  have h1 : 2 * Real.log 4 * P.C + 13 * sg P K ≤ 3 * P.C + 13 := by
-    have := mul_le_mul_of_nonneg_right (show 2 * Real.log 4 ≤ 3 by linarith [log_four_le_three_halves]) F.C0
-    linarith [F.sg1]
-  exact h.trans (mul_le_mul_of_nonneg_right h1 hU)
-
-lemma secondIo_le_unit {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : LargeX P.x P.ε e K)
-    (hm : 0 ≤ m) (hT : 1 ≤ T) : tSecondIo P m T ≤ unitU P m T := by
-  have h := size_second_io_bound P e K m T hW hL hm hT
-  have h1 := (sigma_le_one P e K hW hL).2
-  have := mul_le_mul_of_nonneg_right h1 (unitU_nonneg (P := P) hm hT)
-  linarith
 
 theorem side_condition_of_windows : SideConditionsOfWindows := by
   intro P e K hW hL
@@ -926,18 +834,6 @@ theorem large_x_eventually : LargeXEv := by
     _ = Real.exp (x ^ (ε / 3) + (x ^ (ε / 3) + x ^ (ε / 4))) := (Real.exp_add _ _).symm
     _ ≤ Real.exp (x ^ ε / 2) := Real.exp_le_exp.2 (by linarith)
 
-theorem loss_choice_uniform : LossChoiceU := by
-  intro Ω U _ π Loss s Sig io D Y θ s₀ mTa h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11
-  obtain ⟨o, a1, a2, a3⟩ := loss_choice Ω π
-    (fun o => 0 + ∑ p ∈ s, (if θ < Sig p o then 4 * mTa * Real.log p / p else 0)) s Sig
-    (fun p o => 2 * Sig p o * (2 * mTa / p)) 0 Y θ s₀ mTa
-    h1 h2 h3 h4 h5 h6 h7 h8 h9 (fun o => le_refl _) (fun p _ o => le_refl _)
-  refine ⟨o, a1, fun υ => ?_, fun υ => le_trans ?_ a3⟩
-  · have := h10 υ o
-    linarith
-  · exact Finset.sum_le_sum (fun p hp =>
-      mul_le_mul_of_nonneg_left (h11 υ p hp o) (Real.log_natCast_nonneg p))
-
 theorem second_term_le : SecondLe := by
   intro Ps s cl Sg θ m T a hm hT ha hcl
   rw [← Finset.sum_filter, Finset.mul_sum]
@@ -984,54 +880,6 @@ theorem first_kind_bound : FirstKind := by
         simp only [this]; exact c1
       · have : i - 1 + 1 = i := Nat.sub_add_cancel b2
         simp only [this]; exact c2
-
-lemma bad_le {τ : Type} (P : Par) (Ps sB : Finset ℕ) (cl : ℕ → PClass) (TT : Finset τ)
-    (TTp : ℕ → Finset τ) (BAD : ℕ → τ → Prop) (m : ℝ) (hm : 0 ≤ m) (ha : 0 ≤ P.a) (hβ : 0 ≤ P.β)
-    (hX : 1 ≤ P.Xp) (hsB : ∀ p ∈ sB, p.Prime ∧ (p : ℝ) ≤ P.Xp)
-    (hTops : ∑ p ∈ sB, 4 * m * P.a * (Real.log p / p) * ((TT.filter fun t => BAD p t).card : ℝ) ≤
-      32 * P.β * m * P.a * TT.card * ∑ p ∈ sB, Real.log p / p)
-    (hBad : ∀ p ∈ Ps, cl p = PClass.served → ∀ t ∈ TT \ TTp p, p ∈ sB ∧ BAD p t) :
-    ∑ p ∈ Ps.filter (fun p => cl p = PClass.served),
-      4 * m * P.a * (Real.log p / p) * ((TT \ TTp p).card : ℝ) ≤ tBad P m TT.card := by
-  have hco : ∀ p : ℕ, 0 ≤ 4 * m * P.a * (Real.log p / p) := fun p => by
-    have : 0 ≤ Real.log p / p := div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p)
-    positivity
-  have h1 : ∑ p ∈ Ps.filter (fun p => cl p = PClass.served),
-      4 * m * P.a * (Real.log p / p) * ((TT \ TTp p).card : ℝ) ≤
-      ∑ p ∈ Ps.filter (fun p => cl p = PClass.served),
-        (if p ∈ sB then 4 * m * P.a * (Real.log p / p) * ((TT.filter fun t => BAD p t).card : ℝ)
-          else 0) := by
-    refine Finset.sum_le_sum (fun p hp => ?_)
-    rw [Finset.mem_filter] at hp
-    have hb := hBad p hp.1 hp.2
-    by_cases hps : p ∈ sB
-    · rw [if_pos hps]
-      refine mul_le_mul_of_nonneg_left ?_ (hco p)
-      have hsub : TT \ TTp p ⊆ TT.filter fun t => BAD p t := by
-        intro t ht
-        rw [Finset.mem_filter]
-        exact ⟨(Finset.mem_sdiff.1 ht).1, (hb t ht).2⟩
-      exact_mod_cast Finset.card_le_card hsub
-    · rw [if_neg hps]
-      have hemp : TT \ TTp p = ∅ := by
-        rw [Finset.eq_empty_iff_forall_notMem]
-        intro t ht
-        exact hps (hb t ht).1
-      rw [hemp]; simp
-  have h2 : ∑ p ∈ Ps.filter (fun p => cl p = PClass.served),
-        (if p ∈ sB then 4 * m * P.a * (Real.log p / p) * ((TT.filter fun t => BAD p t).card : ℝ)
-          else 0) ≤
-      ∑ p ∈ sB, 4 * m * P.a * (Real.log p / p) * ((TT.filter fun t => BAD p t).card : ℝ) := by
-    rw [← Finset.sum_filter]
-    refine Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun p _ _ => mul_nonneg (hco p) (Nat.cast_nonneg _))
-    intro p hp
-    exact (Finset.mem_filter.1 hp).2
-  have h3 := prime_log_sum_bound P.Xp sB hX hsB
-  have h4 : 32 * P.β * m * P.a * TT.card * ∑ p ∈ sB, Real.log p / p ≤
-      32 * P.β * m * P.a * TT.card * (Real.log P.Xp + Real.log 4) :=
-    mul_le_mul_of_nonneg_left h3 (by positivity)
-  unfold tBad
-  linarith
 
 lemma first_le {C₁ : ℝ}
     (hC₁ : ∀ (e J : ℕ) (Y X' ρ p₀ : ℝ) (s : Finset ℕ), 1 ≤ e → 1 ≤ J → 1 ≤ Y →
@@ -1098,84 +946,5 @@ lemma first_le {C₁ : ℝ}
   have h3 := mul_le_mul_of_nonneg_left (h.trans (add_le_add_left h2 _)) hco
   unfold tOrders tBand
   linarith
-
-theorem joint_size_bound_alt : WindowLossesBound := by
-  obtain ⟨C₁, hC₁⟩ := first_kind_bound
-  refine ⟨max C₁ 0, le_max_right _ _, ?_⟩
-  intro P e K hCord hW hL ι κ τ U Ω _ π Ps s sB J TT BAD Sig io D hS
-  obtain ⟨hTT, hPs, hπ0, hπ1, hs, hSig0, hSigm, hio, hsB, hTops, hAll⟩ := hS
-  obtain ⟨z, u, E, X, S, sb, v, w8, F⟩ := facts hW hL
-  obtain ⟨s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, -⟩ :=
-    side_condition_of_windows P e K hW hL
-  have hm : (0 : ℝ) ≤ (J.card : ℝ) := Nat.cast_nonneg _
-  have hT : (1 : ℝ) ≤ (TT.card : ℝ) := by exact_mod_cast Finset.card_pos.2 hTT
-  have hT0 : (0 : ℝ) ≤ (TT.card : ℝ) := Nat.cast_nonneg _
-  have ha0 : 0 ≤ P.a := F.apos.le
-  have hdet : ∀ υ o, (D υ o).ASK P.d Ps J TT - (D υ o).Ga J ≤ tDet P J.card TT.card +
-      ∑ p ∈ s, (if P.θ < Sig p o then 4 * ((J.card : ℝ) * TT.card * P.a) * Real.log p / p else 0) := by
-    intro υ o
-    obtain ⟨hLed, hFirst, hSecond, hBad⟩ := hAll υ o
-    obtain ⟨l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11⟩ := hLed
-    have led := loss_bound ι κ τ (D υ o).W (D υ o).below (D υ o).l Ps (D υ o).cl J TT (D υ o).TTp
-      (D υ o).Iex (D υ o).at_ (D υ o).wz (D υ o).Id (D υ o).wd P.d (D υ o).gainW (D υ o).tauW
-      (D υ o).gain (D υ o).tau (D υ o).lo (D υ o).fl P.a P.th P.wpp P.Xpp P.Xp P.C P.f P.N P.Sk P.Q₁ P.Q₂
-      P.lx P.La P.k P.K₀ (D υ o).L₁ P.p₀ l1 (fun p hp => (hPs p hp).1) s1 s2 s3 s4 s5 s6 s7 s8 s9 s10
-      s11 s12 s13 s14 s15 s16 s17 s18 l2 l3 l4 l5 l6 l7 l8 l9 l10 l11
-    have bad := bad_le P Ps sB (D υ o).cl TT (D υ o).TTp BAD J.card hm ha0 F.β0 s7 hsB hTops hBad
-    have first := first_le hC₁ (by rw [hCord]; exact le_max_left _ _) hW hL Ps (D υ o).cl hPs hFirst
-      J.card TT.card hm hT0
-    have second := second_term_le Ps s (D υ o).cl (fun p => Sig p o) P.θ J.card TT.card P.a hm hT0 ha0
-      hSecond
-    unfold LD.ASK LD.Ga tDet tFloors tCp tPrLow tPrHigh tOr tHigh tD
-    linarith
-  have hθ : 0 < P.θ := by rw [F.hθ]; exact inv_pos.2 F.zpos
-  obtain ⟨o, o1, o2, o3⟩ := loss_choice_uniform Ω U π
-    (fun υ o => (D υ o).ASK P.d Ps J TT - (D υ o).Ga J) s Sig io (fun _ => tDet P J.card TT.card)
-    P.Y P.θ P.s₀ ((J.card : ℝ) * TT.card * P.a) hπ0 hπ1 hθ F.s0 (by positivity) F.Y1 hs hSig0 hSigm
-    hdet hio
-  refine ⟨o, o1, fun υ => ?_, fun υ => ?_⟩
-  · have h1 := o2 υ
-    have h2 := size_total_bound P e K J.card TT.card hW hL hm hT
-    unfold tSecondIo at h2
-    linarith
-  · have h1 := o3 υ
-    have h2 := secondIo_le_unit hW hL hm hT
-    unfold tSecondIo at h2
-    linarith
-
-theorem joint_bound_eventually : WindowLossesEventual := by
-  obtain ⟨Cord, h0, h⟩ := joint_size_bound_alt
-  refine ⟨Cord, h0, ?_⟩
-  intro ε e K hε hε4
-  obtain ⟨x₀, hx₀⟩ := large_x_eventually ε e K hε hε4
-  refine ⟨x₀, ?_⟩
-  intro P hPε hPC hx hW
-  exact h P e K hPC hW (by rw [hPε]; exact hx₀ _ hx)
-
-open Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds in
-theorem losses_of_setting : LeadingTermLossesOfWindow := by
-  intro P ι κ τ U U0 Ω Ps s J TT io D o sel W Top _ m f Dd Cc hC hx hε hC0 dx dε db dT dm dA dG dI hc he
-  obtain ⟨c1, c2⟩ := hC
-  have hb : 0 < P.b := Real.exp_pos _
-  have hU : 0 ≤ unitU P J.card TT.card := by unfold unitU; positivity
-  have hy : 1 ≤ P.x ^ (Cc.eLoss * P.ε) := Real.one_le_rpow hx (mul_nonneg he hε)
-  have hLo : Dd.LoP Cc = Cc.cLoss * unitU P J.card TT.card * P.x ^ (Cc.eLoss * P.ε) := by
-    unfold Data.LoP Data.nT unitU
-    rw [dx, dε, db, dT, dm]
-    ring
-  have hc0 : 0 ≤ Cc.cLoss := by linarith
-  have h1 : (3 * P.C + 13) * unitU P J.card TT.card ≤ Dd.LoP Cc := by
-    rw [hLo]
-    calc (3 * P.C + 13) * unitU P J.card TT.card ≤ Cc.cLoss * unitU P J.card TT.card :=
-          mul_le_mul_of_nonneg_right hc hU
-      _ ≤ Cc.cLoss * unitU P J.card TT.card * P.x ^ (Cc.eLoss * P.ε) :=
-          le_mul_of_one_le_right (mul_nonneg hc0 hU) hy
-  have h2 : unitU P J.card TT.card ≤ (3 * P.C + 13) * unitU P J.card TT.card := by
-    have : (1 : ℝ) ≤ 3 * P.C + 13 := by linarith
-    exact le_mul_of_one_le_left hU this
-  intro u0
-  refine ⟨?_, ?_⟩
-  · rw [dA, dG]; exact (c1 (sel u0)).trans h1
-  · rw [dI]; exact (c2 (sel u0)).trans (h2.trans h1)
 
 end Formalism.LFunctionChainParameters.PrimeWindowSizeBounds

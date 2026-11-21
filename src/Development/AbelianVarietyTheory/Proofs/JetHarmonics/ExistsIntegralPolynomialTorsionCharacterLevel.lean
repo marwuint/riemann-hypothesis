@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.PowerSeriesHasSumAt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesIntegralBoundedClosureStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesEvalTsumOpenPolydiscPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesEvalTsumOpenPolydiscProperties
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIntegralPolyOfCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIntegralCoeffInterpolationBivariateSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupTorsionTowerExactOrderStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupNatMulSeriesEvalOpenDiscPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIntegralCoeffInterpolationBivariateSeries
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupTorsionTowerExactOrder
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupNatMulSeriesEvalOpenDiscProperties
 
 open GlobalTheory.ConvSer
 
@@ -14,7 +14,7 @@ namespace GlobalTheory.ConvSer
 theorem ev_pow_of_intg (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     (σ : Type) [Fintype σ] (x : σ → K) (hx : ∀ i, ‖x i‖ < 1) (S : MvPowerSeries σ K)
     (hS : Intg S) (k : ℕ) : ev (S ^ k) x = ev S x ^ k := by
-  obtain ⟨-, halg, hC, -⟩ := GlobalTheory.T.mvPowerSeriesEvalTsum_openPolydisc_properties K σ x hx
+  obtain ⟨-, halg, hC, -⟩ := _root_.GlobalTheory.ConvSer.ev_algebra K σ x hx
   obtain ⟨-, -, hpow, -⟩ := GlobalTheory.T.mvPowerSeries_integral_bounded_closure K σ
   have hB : Bdd S := (hpow S 0).2.2 hS
   induction k with
@@ -29,8 +29,8 @@ theorem exists_intg_polynomial_level (K : Type) [NormedField K] [IsUltrametricDi
       ∀ j : ℕ, g.eval (ev1 (nMul F j) (t n)) = ζ ^ j := by
   classical
   haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ (Fact.out : p.Prime).ne_zero⟩
-  have hord := (GlobalTheory.T.formalGroup_torsionTower_exact_order K p F hF t ht h0 h1 hp).2.2 n
-  obtain ⟨-, -, hnorm, hadd, -⟩ := (GlobalTheory.T.formalGroupNatMulSeries_eval_openDisc_properties K F hF).2 (t n) (ht n)
+  have hord := (_root_.GlobalTheory.ConvSer.tower_exact_order K p F hF t ht h0 h1 hp).2.2 n
+  obtain ⟨-, -, hnorm, hadd, -⟩ := (_root_.GlobalTheory.ConvSer.nMul_point K F hF).2 (t n) (ht n)
   set x : ZMod (p ^ n) → K := fun i => ev1 (nMul F i.val) (t n) with hx
   have hxlt : ∀ i, ‖x i‖ < 1 := fun i => (hnorm i.val).1.trans_lt (ht n)
   have hinj : Function.Injective x := by
@@ -50,7 +50,7 @@ theorem exists_intg_polynomial_level (K : Type) [NormedField K] [IsUltrametricDi
     rw [Finset.card_image_of_injective _ hinj, Finset.card_univ]
   obtain ⟨g, hg, hgx⟩ := GlobalTheory.T.exists_integral_poly_of_character' K (ZMod (p ^ n)) x (fun i => ζ ^ i.val) hinj hχ (by
     intro k
-    have hc := GlobalTheory.T.exists_integral_coeff_interpolation_bivariate_series K (Finset.univ.image x) (F.toPowerSeries ^ (k : ℕ))
+    have hc := _root_.GlobalTheory.ConvSer.exists_integral_interpolation_two K (Finset.univ.image x) (F.toPowerSeries ^ (k : ℕ))
       (by
         intro y hy
         obtain ⟨i, -, rfl⟩ := Finset.mem_image.1 hy

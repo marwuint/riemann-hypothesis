@@ -1,1 +1,0 @@
-import CompanionTheory.AutomorphicTheory.HeckeStandardModules.InvMemRl

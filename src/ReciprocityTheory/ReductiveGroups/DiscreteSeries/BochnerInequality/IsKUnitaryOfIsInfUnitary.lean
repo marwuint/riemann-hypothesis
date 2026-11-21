@@ -24,10 +24,6 @@ theorem isKUnitary_of_isInfUnitary (hU : IsInfUnitary ε A) : IsKUnitary ε A :=
   rw [hU a b x y]
   simp [adjSign, h]
 
-def kUnitNatB (a b : Fin 2) : Module.End ℂ (EuclideanSpace ℂ (Fin 2)) :=
-  LinearMap.smulRight (EuclideanSpace.proj b : EuclideanSpace ℂ (Fin 2) →L[ℂ] ℂ).toLinearMap
-    (EuclideanSpace.single a 1)
-
 theorem kUnit_diag_comm (hA : IsGlRep A) (a c : Fin n) (v : X) :
     A a a (A c c v) = A c c (A a a v) := by
   have h := LinearMap.congr_fun (hA a a c c) v

@@ -53,37 +53,12 @@ theorem rep_injective {Λ : AddSubgroup (WO S T)} {c : AE D} {N : ℕ} :
 
 variable (ψ : AddChar (AF D.host.F) ℂ)
 
-noncomputable def qChar (Λ : AddSubgroup (WO S T)) (c : AE D) (N : ℕ) (t : WO S T)
-    (ht : ∀ g ∈ Λ, ψ (symplO S T t g) = 1) : AddChar (DQ Λ c N) ℂ where
-  toFun q := Quotient.liftOn' q (fun y => ψ (symplO S T t y)) (fun y₁ y₂ h => by
-    have h' := QuotientAddGroup.leftRel_apply.mp h
-    rw [AddSubgroup.mem_addSubgroupOf] at h'
-    have : ((y₂ : ↥(divPts Λ c N)) : WO S T) = y₁ + ((-y₁ + y₂ : ↥(divPts Λ c N)) : WO S T) := by
-      push_cast; abel
-    rw [this, GlobalTheory.PlaceModel.symplO_add_right, AddChar.map_add_eq_mul, ht _ h'.1, mul_one])
-  map_zero_eq_one' := by
-    change ψ (symplO S T t 0) = 1
-    rw [GlobalTheory.PlaceModel.symplO_zero_right, AddChar.map_zero_eq_one]
-  map_add_eq_mul' q₁ q₂ := by
-    induction q₁ using QuotientAddGroup.induction_on with
-    | H y₁ =>
-    induction q₂ using QuotientAddGroup.induction_on with
-    | H y₂ =>
-    change ψ (symplO S T t ((y₁ + y₂ : ↥(divPts Λ c N)) : WO S T)) = ψ (symplO S T t y₁) * ψ (symplO S T t y₂)
-    rw [AddSubgroup.coe_add, GlobalTheory.PlaceModel.symplO_add_right, AddChar.map_add_eq_mul]
-
 end GlobalTheory.DivPtFourier
 
 namespace GlobalTheory.DivPtFourier
 
-open scoped Classical
-
-variable {D : D7} {S T : HSp D} (ψ : AddChar (AF D.host.F) ℂ)
-
 end GlobalTheory.DivPtFourier
 
 namespace GlobalTheory.DivPtFourier
-
-open scoped Classical
 
 end GlobalTheory.DivPtFourier

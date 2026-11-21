@@ -147,22 +147,6 @@ theorem HasVal.unique [Fintype σ] [DecidableEq σ] (h : IsFrame p Q θ) {z : σ
   rw [this, map_zero, sub_eq_zero] at hb
   exact hb
 
-theorem HasVal.var [Fintype σ] [DecidableEq σ] (z : σ → B) (i : σ) :
-    HasVal p z (X i : MvPowerSeries σ Q) (algebraMap B Q (z i)) := by
-  refine fun m => ⟨1, fun N hN => ⟨0, ?_⟩⟩
-  have : trunc' Q (Finsupp.equivFunOnFinite.symm fun _ : σ => N) (X i) =
-      MvPolynomial.X i := by
-    ext α
-    rw [coeff_trunc', coeff_X, MvPolynomial.coeff_X']
-    by_cases h : α = Finsupp.single i 1
-    · subst h
-      rw [if_pos rfl, if_pos]
-      intro j
-      refine le_trans ?_ hN
-      rw [Finsupp.single_apply]; split_ifs <;> simp
-    · simp [h, Ne.symm h]
-  rw [this]; simp
-
 end Frame
 
 structure Chart {p : ℕ} {O : Type} [CommRing O] (G : PDivGroup p O) (d : ℕ) where
@@ -236,12 +220,6 @@ theorem HasPeriod.unique [Algebra B Q] {θ : B →+* O} (h : IsFrame p Q θ) {t 
   obtain ⟨b', hb'⟩ := h2.2 n z q hz hq
   exact ⟨b' - b, by linear_combination h.inj (hb.symm.trans hb')⟩
 
-theorem hasPeriod_X_iff [Algebra B Q] {θ : B →+* O} (h : IsFrame p Q θ) (t : G.Tate) (i : Fin d)
-    (y : B) : c.HasPeriod θ t (X i : MvPowerSeries (Fin d) Q) y ↔ y = 0 := by
-  have h0 : c.HasPeriod θ t (X i : MvPowerSeries (Fin d) Q) (0 : B) :=
-    (c.hasPeriod_iff h t _ 0).2 fun n z _ => ⟨_, HasVal.var z i, z i, by simp⟩
-  exact ⟨fun H => H.unique h h0, fun H => H ▸ h0⟩
-
 theorem isLie_iff [Algebra O Q] (h : Function.Injective (algebraMap O Q))
     (f : MvPowerSeries (Fin d) Q) (l : G.dual.Lie) :
     c.IsLie f l ↔ ∀ n : ℕ, ∃ s : MvPowerSeries (Fin d) O,
@@ -257,20 +235,6 @@ theorem isLie_iff [Algebra O Q] (h : Function.Injective (algebraMap O Q))
       ext α
       exact h (by simpa [coeff_map] using congrArg (coeff α) (hs.trans hs'.symm))
     exact this ▸ H' w φ hφ
-
-variable {c} in
-
-theorem IsLie.unique [Algebra O Q] [IsHausdorff (Ideal.span {(p : O)}) O]
-    {f : MvPowerSeries (Fin d) Q} {l l' : G.dual.Lie} (h1 : c.IsLie f l) (h2 : c.IsLie f l') :
-    l = l' := by
-  refine LinearMap.ext fun w => sub_eq_zero.1
-    (IsHausdorff.haus' (I := Ideal.span {(p : O)}) _ fun n => ?_)
-  rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow,
-    Ideal.mem_span_singleton, sub_zero]
-  obtain ⟨φ, hφ⟩ := AugCot.d_surjective _ (w.1 n)
-  obtain ⟨s, hs⟩ := In.top_iff.1 (h1.1 n)
-  have := dvd_sub (h1.2 n w φ s hφ hs) (h2.2 n w φ s hφ hs)
-  rwa [sub_sub_sub_cancel_right] at this
 
 theorem isLie_zero [Algebra O Q] (h : Function.Injective (algebraMap O Q)) :
     c.IsLie (0 : MvPowerSeries (Fin d) Q) 0 :=
@@ -328,46 +292,5 @@ def blk {R : Type} [CommRing R] (d c : ℕ) (u v : R) : Matrix (Fin d ⊕ Fin c)
 def IsNil {B O ι : Type} [CommRing B] [CommRing O] [Fintype ι] (θ : B →+* O) (σ : B →+* B)
     (M : Matrix ι ι B) : Prop :=
   ∃ N : ℕ, ∀ (v : ι → B) (i : ι), ¬IsUnit (θ ((fun w : ι → B => M.mulVec fun j => σ (w j))^[N] v i))
-
-theorem isFrame_padic (p : ℕ) [Fact p.Prime] : IsFrame p ℚ_[p] (RingHom.id ℤ_[p]) where
-  surj := Function.surjective_id
-  inj := Subtype.val_injective
-  denom q := by
-    obtain ⟨⟨a, ⟨b, hb⟩⟩, h⟩ := IsLocalization.surj (nonZeroDivisors ℤ_[p]) q
-    have hb0 : b ≠ 0 := nonZeroDivisors.ne_zero hb
-    refine ⟨b.valuation, (PadicInt.unitCoeff hb0)⁻¹.val * a, ?_⟩
-    have h1 := congrArg (algebraMap ℤ_[p] ℚ_[p]) (PadicInt.unitCoeff_spec hb0)
-    have h2 : algebraMap ℤ_[p] ℚ_[p] (PadicInt.unitCoeff hb0)⁻¹.val *
-        algebraMap ℤ_[p] ℚ_[p] (PadicInt.unitCoeff hb0).val = 1 := by
-      rw [← map_mul, Units.inv_mul, map_one]
-    simp only [map_mul, map_pow, map_natCast] at h1 h ⊢
-    rw [← h, h1]
-    linear_combination (-(p : ℚ_[p]) ^ b.valuation * q) * h2
-  unit_p := (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero).isUnit
-  unit_coprime n h := by
-    rw [PadicInt.isUnit_iff]
-    refine le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hl => ?_)
-    have := (PadicInt.norm_int_lt_one_iff_dvd (p := p) n).1 (by simpa using hl)
-    exact (Fact.out : p.Prime).coprime_iff_not_dvd.1 h.symm (Int.natCast_dvd_natCast.1 this)
-  pd x hx := ⟨0, rfl, by
-    rw [show x = 0 from hx, zero_pow (Fact.out : p.Prime).ne_zero, mul_zero]⟩
-  sat a h := (mul_eq_zero.1 h).resolve_left (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)
-  complete := PadicInt.maximalIdeal_eq_span_p (p := p) ▸ inferInstance
-
-example (p : ℕ) [hp : Fact p.Prime] (G : PDivGroup p ℤ_[p]) (d : ℕ) (c : Chart G d)
-    (l : G.dual.Lie) : ¬c.IsLie (C (p : ℚ_[p])⁻¹ : MvPowerSeries (Fin d) ℚ_[p]) l := by
-  intro h
-  have hp0 : (p : ℚ_[p]) ≠ 0 := Nat.cast_ne_zero.2 hp.out.ne_zero
-  obtain ⟨b, -, hb⟩ := h.1 1 0
-  rw [defect, subst_C] at hb
-  simp only [pow_one, map_sub, map_smul, coeff_zero_C, smul_eq_mul, mul_inv_cancel₀ hp0] at hb
-  have h1 : (p : ℚ_[p])⁻¹ = algebraMap ℤ_[p] ℚ_[p] (1 - b) := by rw [map_sub, map_one, ← hb]; ring
-  have h2 : ‖((p : ℚ_[p])⁻¹)‖ ≤ 1 := by rw [h1]; exact (1 - b).2
-  rw [norm_inv, Padic.norm_p, inv_inv] at h2
-  exact absurd (by exact_mod_cast h2) hp.out.one_lt.not_ge
-
-example (p : ℕ) [Fact p.Prime] :
-    IsStep p (RingHom.id ℤ_[p]) (Ideal.span {(p : ℤ_[p])}) ⊤ :=
-  ⟨1, p, dvd_rfl, by simp, fun b => by simp [Ideal.mem_span_singleton]⟩
 
 end GlobalTheory.QLog

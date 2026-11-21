@@ -3,8 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ThetaSetupStructure
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonUnitAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotOrdGeOfNotMem
 import Development.AbelianVarietyTheory.Definitions.Divisors.SharpOverIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaModelOpenAbelianEighthPowerWithBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEighthPowerTraitLatticeEquivLocalExtStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaModelOpenAbelianEighthPowerWithBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEighthPowerTraitLatticeEquivLocalExt
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorMatch
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EndCharExistsOfIsMonHom
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPsiCoordOfIsPsiCoord
 
@@ -25,7 +26,7 @@ theorem main : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ
     gm ι hG hpb hL hco hm
   have hBV : GlobalTheory.Mum.Base T.V := ⟨⟨inferInstance, inferInstance, inferInstance, T.complete⟩, inferInstance⟩
   obtain ⟨ξ₀, h1, h2⟩ := hT
-  obtain ⟨c', pr', hs', hmat⟩ := (GlobalTheory.T.thetaModel_open_abelian_eighthPower_with_bundle g n o ζ F W o' Ω S ρ u c pr hsh M U₀ EE FinalForm hov V v hv).2 T.V hBV G' hG
+  obtain ⟨c', pr', hs', hmat⟩ := (_root_.GlobalTheory.Poinc.Eq8.SharpOnV.main g n o ζ F W o' Ω S ρ u c pr hsh M U₀ EE FinalForm hov V v hv).2 T.V hBV G' hG
     D' A' U' (spMap ψ ≫ ξ) gm hpb hL ξ₀ h1
   have e0 : spMap (RingHom.id (FractionRing T.V)) ≫ T.y = ξ₀ ≫ v := by
     have : spMap (RingHom.id (FractionRing T.V)) = 𝟙 _ := Spec.map_id _
@@ -37,7 +38,7 @@ theorem main : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ
         MatEnd pr'' a b f₁ → (Over.pullback (jK T.V)).map f ≫ U'.gen.hom = U'.gen.hom ≫ f₁ → EndChar U' f m →
         ∀ y, MatRel W a b (e y) (e (m y)) := by
     rintro _ rfl c'' pr'' hs''
-    exact GlobalTheory.T.exists_eighthPowerTrait_lattice_equiv_localExt g n o ζ F W hW T T.V hBV inferInstance G' hG D' A' U' (RingHom.id _) (RingHom.id _)
+    exact _root_.GlobalTheory.Poinc.TraitPow.exists_equiv g n o ζ F W hW T T.V hBV inferInstance G' hG D' A' U' (RingHom.id _) (RingHom.id _)
       inferInstance (fun _ => rfl) c'' pr'' hs''
   obtain ⟨e, he1, he2⟩ := key _ e0 c' pr' hs'
   refine ⟨ι.trans e, fun y r hr => ?_, fun a b y => ?_⟩

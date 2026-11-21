@@ -66,11 +66,6 @@ theorem basisAlong_iff [GrpObj G] (hL : L.IsLB) {n : ℕ} {b : Fin n → LB.Sec 
     obtain ⟨r, hr⟩ := (Submodule.mem_span_range_iff_exists_fun _).1 (hsp.ge (Submodule.mem_top : SecM.ofSec G s ∈ ⊤))
     exact ⟨r, hr, fun r' hr' => funext fun i => Fintype.linearIndependent_iffₛ.1 hli _ _ (hr'.trans hr.symm) i⟩
 
-theorem basisAlong_one {n : ℕ} (hn : n = 1) (b : Fin n → LB.Sec (LPow G L (N : ℤ) T)) (k : Fin n)
-    (H : BasisAlong G L N h b) : BasisAlong G L N h (fun _ : Fin 1 => b k) := by
-  subst hn
-  exact (funext fun i => by rw [Subsingleton.elim i k] : b = fun _ => b k) ▸ H
-
 theorem exists_local_basisAlong (hS : SecBaseChangeSt) [IsLocallyNoetherian S] (P : PolAV S) (hN : 1 ≤ N) (p : S) :
     ∃ V : S.Opens, p ∈ V ∧ ∃ b : Fin (N ^ P.g) → LB.Sec (LPow P.A P.L (N : ℤ) (Over.mk V.ι)),
       ∀ (R : Type) [CommRing R] (χ : Sp R ⟶ V.toScheme),
@@ -84,35 +79,6 @@ theorem exists_local_basisAlong (hS : SecBaseChangeSt) [IsLocallyNoetherian S] (
     choose b' hb' _ using fun i => exists_pullSec P.A P.L N (homAt χ) (b i)
     exact (basisAlong_iff P.A P.L N (homAt χ) P.isLB hb').2 (hb R χ b' hb')
   exact ⟨V, hV, key V.ι (Category.comp_id _)⟩
-
-theorem exists_lin_unit [GrpObj G] (hL : L.IsLB) {n : ℕ} (b : Fin n → LB.Sec (LPow G L (N : ℤ) T)) (k : Fin n) :
-    ∃ t, Lin G L N h (fun _ : Fin 1 => b k) (fun _ => 1) t ∧
-      Lin G L N h b (fun k' => (1 : Matrix (Fin n) (Fin n) Γ(T'.left, ⊤)) k k') t := by
-  choose b' hb' _ using fun i => exists_pullSec G L N h (b i)
-  refine ⟨b' k, (lin_iff G L N h hL (b' := fun _ => b' k) (fun _ => hb' k) _ _).2 (by simp),
-    (lin_iff G L N h hL hb' _ _).2 (by simp [Matrix.one_apply])⟩
-
-theorem exists_ampFrames_local (hS : SecBaseChangeSt) (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
-    (P : PolAV (Sp R)) (hN : 1 ≤ N) :
-    ∃ F : AmpFrames P.A P.L N, F.A = Inh.trivLB (Sp R) ∧ F.n = N ^ P.g ∧ F.r = 0 ∧ F.s = 0 := by
-  obtain ⟨U, hU, th, hth⟩ := exists_local_basisAlong 1 hS P le_rfl (IsLocalRing.closedPoint R)
-  obtain rfl : U = ⊤ := eq_top_of_closedPoint_mem U hU
-  obtain ⟨U, hU, b, hb⟩ := exists_local_basisAlong N hS P hN (IsLocalRing.closedPoint R)
-  obtain rfl : U = ⊤ := eq_top_of_closedPoint_mem U hU
-  have hA : IsAmpleLB (Inh.trivLB (Sp R)) := isAmpleLB_of_isAffine (Inh.trivLB_isLB _)
-  have h1 : 1 ^ P.g = 1 := one_pow _
-  let k₀ : Fin (1 ^ P.g) := Fin.cast h1.symm 0
-  refine ⟨⟨Inh.trivLB (Sp R), hA.isLB, fun z => ?_, N ^ P.g, fun _ => th k₀, fun _ => b, 0, 0,
-    fun i j => ⟨1, 1, ?_, fun k => ?_, ?_⟩, fun i V _ _ _ _ χ _ => ⟨?_, hb V χ⟩⟩, rfl, rfl, rfl, rfl⟩
-  · obtain ⟨n, hn, s, hs⟩ := hA.exists_affine z
-    obtain ⟨s', e, -⟩ := exists_sec_oneTerm _ (K' := Fin 1) (e' := (n : ℤ)) rfl s
-    exact ⟨n, s', hn, by rw [← e] at hs; exact hs⟩
-  · obtain ⟨t, ht, -⟩ := exists_lin_unit P.A P.L 1 _ P.isLB th k₀
-    exact ⟨t, ht, ht⟩
-  · exact exists_lin_unit P.A P.L N _ P.isLB b k
-  · rw [zpow_zero, zpow_zero, _root_.mul_one]
-    exact map_one _
-  · exact basisAlong_one P.A P.L 1 _ h1 th k₀ (hth V χ)
 
 end GlobalTheory.LN.PolFrames
 end

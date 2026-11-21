@@ -2,17 +2,18 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.Chapter
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeVOperatorRaisesLevelStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqEqOfPosCoeffEqStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletionStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinPeriodicWeightsIsModularFormStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeVOperatorRaisesLevel
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqEqOfPosCoeffEq
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletion
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinPeriodicWeightsIsModularForm
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffEisensteinSeriesTwistedHeckeUHeckeVStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeUVCauchyProductIdentitiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DirichletCharFiniteFourierTransformPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructureStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqMulAndQExpansionStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ZsEqMulDepEisStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeUVCauchyProductIdentities
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DirichletCharFiniteFourierTransformProperties
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructure
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqMulAndQExpansion
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ZsEqMulDepEis
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -75,7 +76,7 @@ lemma core {l : ℕ} (hl : 0 < l) (B : ℕ) (c : ℕ → ℂ) (α t₀ : ℂ) (F
     (hU : lam B c (Uo l (mul F E)) = α * lam B c (mul F E)) (h0 : lam B c (mul F E) ≠ 0) (hα : α ≠ t₀) (hα0 : α ≠ 0) :
     val B c l α 1 (mul (dep l F) (dep l E)) ≠ 0 := by
   simp only [val, Function.iterate_one, pow_one]
-  rw [(GlobalTheory.T.coeffHecke_UV_cauchyProduct_identities ℂ l hl).2.1, hF, hE, mul_smul_left, lam_sub, lam_smul, hU, ← sub_mul]
+  rw [(_root_.GlobalTheory.EisM.formal_identities ℂ l hl).2.1, hF, hE, mul_smul_left, lam_sub, lam_smul, hU, ← sub_mul]
   exact mul_ne_zero (inv_ne_zero hα0) (mul_ne_zero (sub_ne_zero.mpr hα) h0)
 
 end GlobalTheory.DepletedValue
@@ -85,7 +86,7 @@ namespace GlobalTheory.DepletedValue
 lemma zs_eq (e l : ℕ) (he : 1 ≤ e) {N : ℕ} (θ χ : DirichletCharacter ℂ N) (ψ : DirichletCharacter ℂ l) (c₀ c' : ℂ) :
     Zs (2 * e + 1) l (ch θ) (hat ⇑(θ * χ)) (fun x y => ψ x * ψ⁻¹ y * ((y : ℂ) / x) ^ e) =
       mul (dep l (eis e c₀ (ch ψ) (ch θ))) (dep l (eis (e + 1) c' (fun y => ch ψ⁻¹ y * hat ⇑(θ * χ) y) fun _ => 1)) := by
-  have h := GlobalTheory.T.zs_monomial_ratio_eq_mul_dep_eis (2 * e + 1) l e (ch θ) (hat ⇑(θ * χ)) (ch ψ) (ch ψ⁻¹) c₀ c' (by omega)
+  have h := _root_.GlobalTheory.zs_eq_mul_dep_eis (2 * e + 1) l e (ch θ) (hat ⇑(θ * χ)) (ch ψ) (ch ψ⁻¹) c₀ c' (by omega)
   have hk : 2 * e + 1 - 1 - e = e := by omega
   rw [hk] at h
   rw [← h]
@@ -98,9 +99,9 @@ lemma U_FF (e N l : ℕ) (he : 1 ≤ e) (hN : 0 < N) (hl : l.Prime) (θ : Dirich
     Uo l (eis e c₀ (ch ψ) (ch θ)) = θ l • eis e c₀ (ch ψ) (ch θ) := by
   have hper : ∀ d : ℤ, (fun d => ch ψ d * ch θ d) (d + ((N * l : ℕ) : ℤ)) = (fun d => ch ψ d * ch θ d) d := by
     intro d; simp [ch]
-  have h1 := (GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion e (N * l) l _ _ he hl (dvd_mul_left l N) hper hF).1
-  have h2 := ((GlobalTheory.T.modularFormCoeffSeq_linear_structure e (N * l) _).2.2.1 (θ l) _ hF).1
-  refine GlobalTheory.T.modularFormCoeffSeq_eq_of_pos_coeff_eq e (N * l) _ _ _ he (Nat.mul_pos hN hl.pos) h1 h2 (fun n hn => ?_)
+  have h1 := (_root_.GlobalTheory.depletion_mf e (N * l) l _ _ he hl (dvd_mul_left l N) hper hF).1
+  have h2 := ((_root_.GlobalTheory.EisM.mf_linear e (N * l) _).2.2.1 (θ l) _ hF).1
+  refine _root_.GlobalTheory.EisM.eq_of_coeff_pos_eq e (N * l) _ _ _ he (Nat.mul_pos hN hl.pos) h1 h2 (fun n hn => ?_)
   have h3 := (GlobalTheory.T.coeffEisensteinSeriesTwisted_heckeU_heckeV e l c₀ (θ l) (ch ψ) (ch θ) hl).1 (fun x hx => ch_dvd hl ψ hx) (fun y => by simp [ch]) n hn
   simpa [Uo] using h3
 
@@ -138,7 +139,7 @@ lemma good_ne (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (ψ : DirichletCh
   set κ : ℂ := ch (θ * χ) l * ch ψ N * hat ψ 1 with hκ
   have hhat : ∀ x, hat φ x = κ * (ch ψ⁻¹ x * hat ⇑(θ * χ) x) := by
     intro x
-    rw [(GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).2.1 N l (θ * χ) ψ φ hN hl.pos hcop hφ x, ((GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).2.2 l ψ hl).1 hψ |>.2 x, hκ]
+    rw [(_root_.GlobalTheory.EisM.hat_char_props).2.1 N l (θ * χ) ψ φ hN hl.pos hcop hφ x, ((_root_.GlobalTheory.EisM.hat_char_props).2.2 l ψ hl).1 hψ |>.2 x, hκ]
     ring
   have hEn : ∀ c' : ℂ, ∀ n, n ≠ 0 → (eis (e + 1) c₁ (hat φ) fun _ => 1) n = κ * (eis (e + 1) c' (fun y => ch ψ⁻¹ y * hat ⇑(θ * χ) y) fun _ => 1) n := by
     intro c' n hn
@@ -147,7 +148,7 @@ lemma good_ne (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (ψ : DirichletCh
   have hκ0 : κ ≠ 0 := by
     intro h0
     have hz : (eis (e + 1) c₁ (hat φ) fun _ => 1) = 0 :=
-      GlobalTheory.T.modularFormCoeffSeq_eq_of_pos_coeff_eq (e + 1) (N * l) _ _ _ (by omega) (Nat.mul_pos hN hl.pos) hE (GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).1
+      _root_.GlobalTheory.EisM.eq_of_coeff_pos_eq (e + 1) (N * l) _ _ _ (by omega) (Nat.mul_pos hN hl.pos) hE (_root_.GlobalTheory.EisM.mf_linear (e + 1) (N * l) _).1
         (fun n hn => by rw [hEn 0 n hn, h0, zero_mul]; rfl)
     rw [hz, mul_zero_right, lam_zero] at hlam
     exact hlam rfl
@@ -158,11 +159,11 @@ lemma good_ne (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (ψ : DirichletCh
     · simp [eis, div_eq_inv_mul]
     · rw [Pi.smul_apply, hEn (c₁ / κ) n hn, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hκ0, one_mul]
   · rw [hEE]
-    have h1 := ((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.2.1 κ⁻¹ _ hE).1
+    have h1 := ((_root_.GlobalTheory.EisM.mf_linear (e + 1) (N * l) _).2.2.1 κ⁻¹ _ hE).1
     have h2 := GlobalTheory.T.modularFormCoeffSeq_mul_and_qExpansion.2 _ _ _ _ _ _ _ hF h1
     have hw : e + (e + 1) = 2 * e + 1 := by ring
     rw [hw] at h2
-    exact (GlobalTheory.T.modularFormCoeffSeq_linear_structure (2 * e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => char_eq χ θ ψ φ hφ d hd) h2
+    exact (_root_.GlobalTheory.EisM.mf_linear (2 * e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => char_eq χ θ ψ φ hφ d hd) h2
   · rw [hEE, mul_smul_right, lam_smul]
     exact mul_ne_zero (inv_ne_zero hκ0) hlam
 
@@ -194,9 +195,9 @@ lemma good_one (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (φ : DirichletC
   have hNZ : IsCoprime (N : ℤ) (l : ℤ) := Nat.isCoprime_iff_coprime.mpr hcop
   set θ' := θ * χ with hθ'
   set FF := eis e c₀ (ch (1 : DirichletCharacter ℂ l)) (ch θ) with hFF
-  obtain ⟨hper, htw, hz⟩ := (GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).1 N θ' hN
+  obtain ⟨hper, htw, hz⟩ := (_root_.GlobalTheory.EisM.hat_char_props).1 N θ' hN
 
-  obtain ⟨c'', hBs⟩ := GlobalTheory.T.eisenstein_periodic_weights_isModularForm (e + 1) N 1 (hat ⇑θ') (fun _ => 1) (ch θ'⁻¹) (fun _ => 1) (by omega) hN one_pos
+  obtain ⟨c'', hBs⟩ := _root_.GlobalTheory.eis_periodic_weights (e + 1) N 1 (hat ⇑θ') (fun _ => 1) (ch θ'⁻¹) (fun _ => 1) (by omega) hN one_pos
     (hz hθχ) hper (fun _ => rfl) (fun d hd => ⟨fun x => htw d x (by simpa using hd), fun x => by simp⟩) (by
       have h1 : ch θ (-1) = θ (-1) := by simp [ch]
       have h2 : ch χ (-1) = χ (-1) := by simp [ch]
@@ -206,8 +207,8 @@ lemma good_one (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (φ : DirichletC
       rw [← inv_pow, inv_neg, inv_one])
   rw [Nat.mul_one] at hBs
   set Bs := eis (e + 1) c'' (hat ⇑θ') fun _ => 1 with hBsdef
-  have hBsL : MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) Bs := (GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) N _).2.2.2.2.1 _ _ (dvd_mul_right N l) hBs
-  have hVBs : MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) (Vo l Bs) := (GlobalTheory.T.coeffHeckeVOperator_raises_level (e + 1) N l _ Bs hl.pos).1 hBs
+  have hBsL : MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) Bs := (_root_.GlobalTheory.EisM.mf_linear (e + 1) N _).2.2.2.2.1 _ _ (dvd_mul_right N l) hBs
+  have hVBs : MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) (Vo l Bs) := (_root_.GlobalTheory.Vo_level (e + 1) N l _ Bs hl.pos).1 hBs
   set et := ch θ'⁻¹ (l : ℤ) with het
   have hVpart : ∀ n, n ≠ 0 → eis (e + 1) c'' (fun x => if (l : ℤ) ∣ x then hat ⇑θ' x else 0) (fun _ => 1) n = et * (l : ℂ) ^ e * Vo l Bs n := by
     intro n hn
@@ -229,14 +230,14 @@ lemma good_one (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (φ : DirichletC
       · simp [h, ch_one_of_not_dvd hl h]
 
   have hEEmf : MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) (Bs + (-(et * (l : ℂ) ^ e)) • Vo l Bs) :=
-    ((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.1 _ _ hBsL ((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.2.1 _ _ hVBs).1).1
+    ((_root_.GlobalTheory.EisM.mf_linear (e + 1) (N * l) _).2.1 _ _ hBsL ((_root_.GlobalTheory.EisM.mf_linear (e + 1) (N * l) _).2.2.1 _ _ hVBs).1).1
 
   have hprod : ∀ G, MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) G → MF (2 * e + 1) (N * l) (ch χ⁻¹) (mul FF G) := by
     intro G hG
     have h2 := GlobalTheory.T.modularFormCoeffSeq_mul_and_qExpansion.2 _ _ _ _ _ _ _ hF hG
     have hw : e + (e + 1) = 2 * e + 1 := by ring
     rw [hw] at h2
-    refine (GlobalTheory.T.modularFormCoeffSeq_linear_structure (2 * e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => ?_) h2
+    refine (_root_.GlobalTheory.EisM.mf_linear (2 * e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => ?_) h2
     have h1 := ch_ne_zero θ (coprime_left hd)
     have h3 := ch_ne_zero χ (coprime_left hd)
     simp only [ch_one (coprime_right hd), ch_inv, hθ', ch_mul]
@@ -244,7 +245,7 @@ lemma good_one (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (φ : DirichletC
 
   have hhatE : ∀ x, hat φ x = ch θ' l * (hat ⇑θ' x * ((if (l : ℤ) ∣ x then (l : ℂ) else 0) - 1)) := by
     intro x
-    rw [(GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).2.1 N l θ' 1 φ hN hl.pos hcop hφ x, ((GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).2.2 l 1 hl).2 rfl x, ch_one hNZ, mul_one]
+    rw [(_root_.GlobalTheory.EisM.hat_char_props).2.1 N l θ' 1 φ hN hl.pos hcop hφ x, ((_root_.GlobalTheory.EisM.hat_char_props).2.2 l 1 hl).2 rfl x, ch_one hNZ, mul_one]
   have hEn : ∀ n, n ≠ 0 → (eis (e + 1) c₁ (hat φ) fun _ => 1) n =
       ((ch θ' l * (et * (l : ℂ) ^ (e + 1))) • Vo l Bs + (-ch θ' l) • Bs) n := by
     intro n hn
@@ -257,15 +258,15 @@ lemma good_one (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (φ : DirichletC
     refine Finset.sum_congr rfl (fun p _ => ?_)
     split_ifs <;> ring
   have hRmf : MF (e + 1) (N * l) (ch φ⁻¹) ((ch θ' l * (et * (l : ℂ) ^ (e + 1))) • Vo l Bs + (-ch θ' l) • Bs) := by
-    have h1 := ((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.1 _ _ ((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.2.1 (ch θ' l * (et * (l : ℂ) ^ (e + 1))) _ hVBs).1
-      ((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.2.1 (-ch θ' l) _ hBsL).1).1
-    refine (GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => ?_) h1
+    have h1 := ((_root_.GlobalTheory.EisM.mf_linear (e + 1) (N * l) _).2.1 _ _ ((_root_.GlobalTheory.EisM.mf_linear (e + 1) (N * l) _).2.2.1 (ch θ' l * (et * (l : ℂ) ^ (e + 1))) _ hVBs).1
+      ((_root_.GlobalTheory.EisM.mf_linear (e + 1) (N * l) _).2.2.1 (-ch θ' l) _ hBsL).1).1
+    refine (_root_.GlobalTheory.EisM.mf_linear (e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => ?_) h1
     simp only [ch_inv, hφ, ch_one (coprime_right hd), mul_one]
-  have hEeq := GlobalTheory.T.modularFormCoeffSeq_eq_of_pos_coeff_eq (e + 1) (N * l) _ _ _ (by omega) (Nat.mul_pos hN hl.pos) hE hRmf hEn
+  have hEeq := _root_.GlobalTheory.EisM.eq_of_coeff_pos_eq (e + 1) (N * l) _ _ _ (by omega) (Nat.mul_pos hN hl.pos) hE hRmf hEn
 
   have hUFF := U_FF e N l he hN hl θ 1 c₀ hF
   have hUV : α * lam B c (mul FF (Vo l Bs)) = θ l * lam B c (mul FF Bs) := by
-    rw [← hU _ (hprod _ hVBs), (GlobalTheory.T.coeffHecke_UV_cauchyProduct_identities ℂ l hl.pos).1, hUFF, mul_smul_left, lam_smul]
+    rw [← hU _ (hprod _ hVBs), (_root_.GlobalTheory.EisM.formal_identities ℂ l hl.pos).1, hUFF, mul_smul_left, lam_smul]
   have hlamE : lam B c (mul FF (eis (e + 1) c₁ (hat φ) fun _ => 1)) =
       ch θ' l * (et * (l : ℂ) ^ (e + 1)) * lam B c (mul FF (Vo l Bs)) + (-ch θ' l) * lam B c (mul FF Bs) := by
     rw [hEeq, mul_add_right, mul_smul_right, mul_smul_right, lam_add, lam_smul, lam_smul]

@@ -178,12 +178,6 @@ theorem cupPairing_h0Class (μ : A ⊗ B ⟶ C) (b : B) (hb : ∀ g : K, B.ρ g 
 
 end ZeroClasses
 
-section ZModZero
-
-variable {K : Type u} [Group K] {n : ℕ} [NeZero n] (D' : Rep.{u} (ULift.{u} ℤ) K) (hD : ∀ d : D', n • d = 0)
-
-end ZModZero
-
 section Instances
 
 instance isDiscreteRep_zmodRep_base {W : Type u} [Group W] [TopologicalSpace W] (n : ℕ) :
@@ -468,22 +462,6 @@ theorem T_compactCupRes_localToCompact_one (h : 2 + 1 = 3)
     (fun v => pairingRes (φ v).toMonoidHom (zmodMulPairing n D hD))
     (fun v => resFunctor_map_comp_id (φ v).toMonoidHom (zmodMulPairing n D hD))
     (show 1 + 1 = 2 from rfl) h ξ y
-  exact (congrArg T e).trans (hyp.T_localToCompact _)
-
-omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
-  [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] [NeZero n] in
-
-theorem T_compactCupRes_localToCompact_two (h : 3 + 0 = 3)
-    (ξ : ∀ v, cohomology (Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) 2) (y : cohomology D 0) :
-    T (compactCupRes φ (zmodMulPairing n D hD) h
-        ((localToCompact φ (zmodRep.{u} G n) (fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n))
-          (fun _ => 𝟙 _) 2).hom ξ) y) =
-      ∑ v, t v (cupPairing (pairingRes (φ v).toMonoidHom (zmodMulPairing n D hD)) (show 2 + 0 = 2 from rfl)
-        (ξ v) ((cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 0).hom y)) := by
-  have e := compactCup_localToCompact φ (zmodMulPairing n D hD)
-    (fun v => pairingRes (φ v).toMonoidHom (zmodMulPairing n D hD))
-    (fun v => resFunctor_map_comp_id (φ v).toMonoidHom (zmodMulPairing n D hD))
-    (show 2 + 0 = 2 from rfl) h ξ y
   exact (congrArg T e).trans (hyp.T_localToCompact _)
 
 omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]

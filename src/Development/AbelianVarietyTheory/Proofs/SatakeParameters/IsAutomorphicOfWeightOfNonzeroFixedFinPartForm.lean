@@ -40,8 +40,6 @@ theorem ofType_of_finPart_fixed : ∀ (E : Type) [Field E] [NumberField E] [IsCM
     rw [RU_apply]
     exact hK x hx v g
 
-example : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : AutSub E n) (W : Wt E n) (K : Subgroup (UA E n)) (f : algForms W), f ∈ π.finPart W → f ≠ 0 → (∀ k ∈ K, ∀ v g, f.1 v (g * k) = f.1 v g) → OfType (fun τ => W.at τ) K π.V := ofType_of_finPart_fixed
-
 end GlobalTheory.Cong
 
 end

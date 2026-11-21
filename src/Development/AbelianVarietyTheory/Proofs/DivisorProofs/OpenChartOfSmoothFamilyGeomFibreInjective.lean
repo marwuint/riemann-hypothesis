@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleFamilyParamInjectiveOfGeomFiberInjectiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionOfMonoLiftSmallArtinExtensionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothInjectiveFamilyLiftsSmallArtinianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleFamilyOpenChartAffineFiniteTypeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveFamilyChartAffineOfChartFiniteTypeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleFamilyChartOfAffineParametersStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleFamilyParamInjectiveOfGeomFiberInjecti
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionOfMonoLiftSmallArtinExtensions
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothInjectiveFamilyLiftsSmallArtinian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleFamilyOpenChartAffineFiniteType
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveFamilyChartAffineOfChartFiniteType
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleFamilyChartOfAffineParameters
 
 set_option autoImplicit false
 noncomputable section
@@ -23,14 +23,14 @@ theorem openChart : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (
     haveI := hU
     haveI : Smooth U.hom := SmoothOfRelativeDimension.smooth g _
     infer_instance
-  have hI : Inj A M := GlobalTheory.T.lineBundleFamilyParamInjective_of_geomFiberInjective R A hA U M hUf hM hF
+  have hI : Inj A M := _root_.GlobalTheory.DualInj.inj_of_fibInj R A hA U M hUf hM hF
   refine ⟨hM, hI, ?_⟩
   intro T N hN
-  refine GlobalTheory.T.lineBundleFamilyChart_of_affine_parameters (Sp R) A hA U M hM hI ?_ T N hN
+  refine _root_.GlobalTheory.DualCon.chartAt_of_affine (Sp R) A hA U M hM hI ?_ T N hN
   intro T _ N hN
-  refine GlobalTheory.T.additiveFamily_chart_affine_of_chart_finiteType R A hA U M hM ?_ T N hN
+  refine _root_.GlobalTheory.DualApprox.chartAt_of_finiteType R A hA U M hM ?_ T N hN
   intro T _ hT N hN
-  exact GlobalTheory.T.lineBundleFamily_openChart_affine_finiteType R A hA U M hUf hM hI (fun f _ _ _ h => GlobalTheory.T.isOpenImmersion_of_mono_lift_smallArtinExtensions f h) T hT N hN
-    (GlobalTheory.T.smoothInjectiveFamily_lifts_small_artinian R A g hA hAg U M hU hM hI T N hN)
+  exact _root_.GlobalTheory.DualCon.chartAt_of_lifting R A hA U M hUf hM hI (fun f _ _ _ h => _root_.GlobalTheory.ArtinOpen.isOpenImmersion_of_lift f h) T hT N hN
+    (_root_.GlobalTheory.DualCon.same_lift_small R A g hA hAg U M hU hM hI T N hN)
 
 end GlobalTheory.ChartCrit

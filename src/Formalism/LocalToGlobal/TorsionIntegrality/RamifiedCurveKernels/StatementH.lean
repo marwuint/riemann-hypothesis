@@ -38,10 +38,6 @@ def IntJets : Prop :=
   ∀ (K : Type) [Field K] (R : Subring K) (ι : Type) (f : MvPowerSeries ι K),
     Formalism.L2.Th1.C.IntMv R f → JetsIn R f
 
-def JetsDeriv : Prop :=
-  ∀ (K : Type) [Field K] (R : Subring K) (ι : Type) (f : MvPowerSeries ι K),
-    JetsIn R f ↔ MvPowerSeries.constantCoeff f ∈ R ∧ ∀ i, JetsIn R (MvPowerSeries.pderiv K i f)
-
 def JetsDivPow : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] (R : Subring K) (ι : Type) (a : MvPowerSeries ι K),
     MvPowerSeries.constantCoeff a = 0 → JetsIn R a →

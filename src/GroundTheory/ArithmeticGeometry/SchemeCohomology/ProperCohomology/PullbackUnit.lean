@@ -196,32 +196,6 @@ theorem bijective_unit_app_of_le (ψ : Y ⟶ X) (F : X.Modules) [F.IsQuasicohere
   exact bijective_pullbackUnitApp_of_isClosedImmersion ψ F hV fun a ha m =>
     hkill _ (by rw [hVtop]; exact hV) (hVtop.le.trans hVW) a ha m
 
-theorem isIso_counit_of_isClosedImmersion (j : Y ⟶ X) [IsClosedImmersion j] (G : Y.Modules)
-    [G.IsQuasicoherent] :
-    IsIso ((Scheme.Modules.pullbackPushforwardAdjunction j).counit.app G) := by
-  let adj := Scheme.Modules.pullbackPushforwardAdjunction j
-  let P := (Scheme.Modules.pushforward j).obj G
-  have : P.IsQuasicoherent := isQuasicoherent_pushforward_of_isAffineHom j G
-  have : IsClosedImmersion (j ∣_ ⊤) := inferInstance
-  have hu : IsIso (adj.unit.app P) := by
-    refine isIso_of_bijective_app _ fun V => ?_
-    refine bijective_unit_app_of_le j P ⊤ (fun V _ _ a ha m => ?_) V le_top
-    change j.app V a • (show Γ(G, j ⁻¹ᵁ V) from m) = 0
-    rw [ha, zero_smul]
-  have htri := adj.right_triangle_components G
-  have hp : IsIso ((Scheme.Modules.pushforward j).map (adj.counit.app G)) := by
-    have : (Scheme.Modules.pushforward j).map (adj.counit.app G) = inv (adj.unit.app P) := by
-      rw [← cancel_epi (adj.unit.app P), IsIso.hom_inv_id]
-      exact htri
-    rw [this]
-    infer_instance
-  refine isIso_of_bijective_app _ fun V => ?_
-  obtain ⟨U, rfl⟩ : ∃ U : X.Opens, j ⁻¹ᵁ U = V := by
-    obtain ⟨U, hU, hUV⟩ := j.isClosedEmbedding.isInducing.isOpen_iff.1 V.isOpen
-    exact ⟨⟨U, hU⟩, Opens.ext hUV⟩
-  exact ConcreteCategory.bijective_of_isIso
-    (((Scheme.Modules.pushforward j).map (adj.counit.app G)).app U)
-
 end Unit
 
 end

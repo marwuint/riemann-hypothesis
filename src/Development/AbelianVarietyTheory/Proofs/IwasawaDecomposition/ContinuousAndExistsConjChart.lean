@@ -77,14 +77,4 @@ noncomputable def conjChart (h : σ = (starRingEnd ℂ).comp σ') {d : ℕ} (c :
 
 end
 
-theorem continuous_and_exists_conj_chart :
-    ∀ (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (d : ℕ) [SmoothOfRelativeDimension d p] (σ σ' : k →+* ℂ) (j : CxPts p σ' → CxPts p σ), σ = (starRingEnd ℂ).comp σ' → IsConjMap j → Continuous j ∧ ∀ c' : AlgChart p σ' d, ∃ c : AlgChart p σ d, (∀ z, j z ∈ c.e.source ↔ z ∈ c'.e.source) ∧ ∀ z ∈ c'.e.source, ∀ a, c.e (j z) a = starRingEnd ℂ (c'.e z a) := by
-  intro k _ Y p d _ σ σ' j h hj
-  obtain rfl : j = conjPts p h := funext fun z => Subtype.ext (hj z)
-  refine ⟨(conjPts p h).continuous, fun c => ⟨conjChart h c, fun z => ?_, fun z _ a => ?_⟩⟩
-  · change (conjPts p h).symm (conjPts p h z) ∈ c.e.source ↔ _
-    rw [Homeomorph.symm_apply_apply]
-  · change starRingEnd ℂ (c.e ((conjPts p h).symm (conjPts p h z)) a) = _
-    rw [Homeomorph.symm_apply_apply]
-
 end GlobalTheory.ConjChart

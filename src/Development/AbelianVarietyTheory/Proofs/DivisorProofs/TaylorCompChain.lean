@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GaussManinPeriods
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.MemAnalyticAtZeroOfEventuallyDifferentiableAt
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ConstantCoeffDpolyOfAdditiveTaylorPts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorRemainderIsBigOAndTaylorFlatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraFormalPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraMulOfProdEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorRemainderIsBigOAndTaylorFlat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraFormalProperties
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraMulOfProdEqZero
 
 set_option autoImplicit false
 
@@ -19,10 +19,10 @@ theorem taylor_finset_sum_chain {ι : Type} (S : Finset ι) (f : ι → (I → �
     taylor N t (fun z ↦ ∑ i ∈ S, f i z) = ∑ i ∈ S, taylor N t (f i) := by
   classical
   induction S using Finset.induction_on with
-  | empty => simpa using (GlobalTheory.T.taylorPolynomialEvalAlgebra_formal_properties N t).2.2.1 0
+  | empty => simpa using (_root_.GlobalTheory.PeriodFamily.taylor_formal_properties N t).2.2.1 0
   | insert i S hi ih =>
     simp only [Finset.sum_insert hi]
-    rw [(GlobalTheory.T.taylorPolynomialEvalAlgebra_formal_properties N t).1 (f i) (fun z ↦ ∑ i ∈ S, f i z) (hf i)
+    rw [(_root_.GlobalTheory.PeriodFamily.taylor_formal_properties N t).1 (f i) (fun z ↦ ∑ i ∈ S, f i z) (hf i)
       (Finset.analyticAt_fun_sum S fun j _ ↦ hf j), ih]
 
 theorem taylor_finset_prod_chain (ht : ∀ s : Fin (N + 1) → I, ∏ a, t (s a) = 0) {ι : Type} (S : Finset ι)
@@ -30,10 +30,10 @@ theorem taylor_finset_prod_chain (ht : ∀ s : Fin (N + 1) → I, ∏ a, t (s a)
     taylor N t (fun z ↦ ∏ i ∈ S, f i z) = ∏ i ∈ S, taylor N t (f i) := by
   classical
   induction S using Finset.induction_on with
-  | empty => simpa using (GlobalTheory.T.taylorPolynomialEvalAlgebra_formal_properties N t).2.2.1 1
+  | empty => simpa using (_root_.GlobalTheory.PeriodFamily.taylor_formal_properties N t).2.2.1 1
   | insert i S hi ih =>
     simp only [Finset.prod_insert hi]
-    rw [GlobalTheory.T.taylorPolynomialEvalAlgebra_mul_of_prod_eq_zero N t ht (f i) (fun z ↦ ∏ i ∈ S, f i z) (hf i)
+    rw [_root_.GlobalTheory.PeriodFamily.taylor_mul_of_prod_eq_zero N t ht (f i) (fun z ↦ ∏ i ∈ S, f i z) (hf i)
       (Finset.analyticAt_fun_prod S fun j _ ↦ hf j), ih]
 
 end
@@ -65,17 +65,17 @@ theorem taylor_comp_chain : ∀ {I : Type} [Fintype I] [DecidableEq I] {D : Type
     have := hΦ.differentiableAt.isBigO_sub
     simpa [h0] using this
   have hr : (fun z ↦ h (Φ z) - taylor N (Φ z) h) =O[𝓝 0] fun z : I → ℂ ↦ ‖z‖ ^ (N + 1) :=
-    ((GlobalTheory.T.taylorRemainder_isBigO_and_taylor_flat N h hh).1.comp_tendsto htend).trans (hO.norm_norm.pow (N + 1))
-  have hz : taylor N t (fun z ↦ h (Φ z) - taylor N (Φ z) h) = 0 := (GlobalTheory.T.taylorRemainder_isBigO_and_taylor_flat N _ hra).2 hr t
+    ((_root_.GlobalTheory.PeriodFamily.taylor_remainder_and_flat N h hh).1.comp_tendsto htend).trans (hO.norm_norm.pow (N + 1))
+  have hz : taylor N t (fun z ↦ h (Φ z) - taylor N (Φ z) h) = 0 := (_root_.GlobalTheory.PeriodFamily.taylor_remainder_and_flat N _ hra).2 hr t
   have hsplit : (fun z ↦ h (Φ z)) = fun z ↦ (h (Φ z) - taylor N (Φ z) h) + taylor N (Φ z) h := by
     funext z; ring
-  rw [hsplit, (GlobalTheory.T.taylorPolynomialEvalAlgebra_formal_properties N t).1 _ _ hra hPa, hz, zero_add, hP,
+  rw [hsplit, (_root_.GlobalTheory.PeriodFamily.taylor_formal_properties N t).1 _ _ hra hPa, hz, zero_add, hP,
     taylor_finset_sum_chain N t _ (fun k z ↦ ∑ s : Fin k → K, c k s * ∏ a, Φ z (s a)) hin]
   conv_rhs => rw [taylor]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
   rw [taylor_finset_sum_chain N t _ (fun s z ↦ c k s * ∏ a, Φ z (s a)) (hterm k)]
   refine Finset.sum_congr rfl fun s _ ↦ ?_
-  rw [(GlobalTheory.T.taylorPolynomialEvalAlgebra_formal_properties N t).2.1 _ _ (hprod k s),
+  rw [(_root_.GlobalTheory.PeriodFamily.taylor_formal_properties N t).2.1 _ _ (hprod k s),
     taylor_finset_prod_chain N t ht _ (fun a z ↦ Φ z (s a)) fun a ↦ hk (s a)]
 
 end GlobalTheory.PeriodFamily

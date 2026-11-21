@@ -143,26 +143,6 @@ def SatAE : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (U : Submodule ℂ (UA E a → ℂ)), IsAutRepU U →
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, IsSplitAt w → ∃ B, SatU U w B
 
-def WeakIso : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (U : Submodule ℂ (UA E a → ℂ)), IsAutRepU U → ∀ r r' : G E Ω →* GL (Fin a) (Qbar l), WeakU ι U r → WeakU ι U r' → RepIso r r'
-
-def FrobId : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (d t : ℕ) (r r' : G E Ω →* GL (Fin d) (Qbar l)) (a a' : Fin t → G E Ω →* (Qbar l)ˣ), Continuous r → Continuous r' →
-    (∀ i, Continuous (a i)) → (∀ j, Continuous (a' j)) →
-    (∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, IsSplitAt w → ∃ (S : Multiset ℂ) (c c' : Fin t → ℂ),
-      FrobEig ι r w (S + Finset.univ.val.map c) ∧ FrobEig ι r' w (S + Finset.univ.val.map c') ∧
-      (∀ i, FrobEig ι (rk1 (a i)) w {c i}) ∧ ∀ j, FrobEig ι (rk1 (a' j)) w {c' j}) →
-    ∀ g, cp r g * lin a' g = cp r' g * lin a g
-
-def AtPlace : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ), (∀ d, Odd d → RowAt E Ω ι d) → TwoUp E n →
-    ∀ (U : Submodule ℂ (UA E n → ℂ)), IsAutRepU U → ∀ lam : (E →+* ℂ) → DomWeight n, (∀ τ, HasWeightAt U τ (lam τ)) →
-    ∀ w₀, IsSplitAt w₀ → ∃ r : G E Ω →* GL (Fin n) (Qbar l), WeakU ι U r ∧
-      ∀ B, SatU U w₀ B → Cl ι r w₀ (algSat n (normV w₀) B) (GlobalTheory.GalDef.jumpsOf ι lam)
-
-def SplitEx : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∃ w : HeightOneSpectrum (𝓞 E), IsSplitAt w
-
 def SatPol : Prop :=
   ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E))
     (h : IsPlaceOver A w) (a : ℕ) (B : Multiset ℂˣ) (g : Weil h),
@@ -174,19 +154,6 @@ def TwLoc : Prop :=
       (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (a : ℕ) (r : ↥(Dec (F := E) A) →* GL (Fin a) (Qbar l)) (c : ↥(Dec (F := E) A) →* (Qbar l)ˣ),
     (IsdRAt P Bw r → IsdRAt P Bw (rk1 c) → IsdRAt P Bw (tw r c)) ∧
     (IsCrysAt P Bw r → IsCrysAt P Bw (rk1 c) → IsCrysAt P Bw (tw r c))
-
-def HCharExt : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] (χ : HChar E),
-    (∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ x, χ.loc w x = 1) → χ = 1
-
-theorem subtract_of (h1 : AtPlace) (h2 : SplitEx) (h3 : WeakIso) (h4 : ClConj) : Subtract := by
-  intro E Ω _ _ _ _ _ _ l _ ι n hO hT U hU lam hl
-  refine ⟨?_, fun r hr w hw B hB => ?_⟩
-  · obtain ⟨w, hw⟩ := h2 E
-    obtain ⟨r, hr, -⟩ := h1 E Ω l ι n hO hT U hU lam hl w hw
-    exact ⟨r, hr⟩
-  · obtain ⟨s, hs, hc⟩ := h1 E Ω l ι n hO hT U hU lam hl w hw
-    exact h4 E Ω l ι n s r hs.1 (h3 E Ω l ι n U hU s r hs hr) w _ _ (hc B hB)
 
 end UpperTheory.Gal.TP.Sub
 

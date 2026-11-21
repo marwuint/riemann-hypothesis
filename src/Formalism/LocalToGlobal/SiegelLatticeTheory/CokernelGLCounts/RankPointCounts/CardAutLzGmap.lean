@@ -83,15 +83,6 @@ theorem ind_inv_cancel {δ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hδ : δ ∈ s
   show δ⁻¹ (δ x.1) = x.1
   rw [inv_apply', LinearEquiv.symm_apply_apply]
 
-theorem ind_cancel_inv {δ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hδ : δ ∈ stabF D F0) (q : WbQ D F0) :
-    ind F0 hδ (ind F0 (st_inv F0 hδ) q) = q := by
-  refine Submodule.Quotient.induction_on _ q (fun x => ?_)
-  rw [ind_mk, ind_mk]
-  congr 1
-  apply Subtype.ext
-  show δ (δ⁻¹ x.1) = x.1
-  rw [inv_apply', LinearEquiv.apply_symm_apply]
-
 theorem card_autLz_gmap {δ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hδ : δ ∈ stabF D F0)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
     Nat.card ↥(autLz D F0 (Formalism.HermitianLatticesTheory.gmap δ Λ)) = Nat.card ↥(autLz D F0 Λ) := by

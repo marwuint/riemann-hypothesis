@@ -94,11 +94,4 @@ def TypeDat.Level (D : TypeDat K n) (Kf : Subgroup (AdelicGLn.FiniteAdelicGL K n
     (k : AdelicGLn.AdelicGL K n) ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) → k ∈ D.U) ∧
   ∀ k ∈ D.U, (AdelicGLn.prodEquiv K n k).1 = 1 → ∀ u ∈ D.U, D.e (k * u) = D.e u
 
-def Smooth (f : CC K n) : Prop :=
-  f ∈ Submodule.span ℂ {f' : CC K n | ∃ (ν : Measure (ArchUnits K n)) (_ : ν.IsHaarMeasure) (β : ArchMatrix K n → ℝ)
-    (hβ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) β) (hβc : HasCompactSupport β)
-    (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))
-    (U : Subgroup (AdelicGLn.integralFiniteGL K n)) (hU : IsOpen (U : Set (AdelicGLn.integralFiniteGL K n))) (g : CC K n),
-    f' = archConv ν hβ.continuous hβc hβu (finAvg U hU g)}
-
 end PositivityTheory.Rg.Tf.Adel

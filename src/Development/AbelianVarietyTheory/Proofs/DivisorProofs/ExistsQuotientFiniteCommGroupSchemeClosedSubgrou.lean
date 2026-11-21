@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEqKer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHopfAlgebraEqRangeMulKernelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHopfAlgebraEqRangeMulKernel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveFrobeniusPullbackCotangentModVersc
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Dieu
 
@@ -142,8 +142,8 @@ theorem exists_quotient : ∀ (k : Type) [Field k] (A : Type) [CommRing A] [Hopf
   · have hle : kerIdeal (quotMap π) ≤ RingHom.ker π :=
       (kerIdeal_le_ker_iff _ (π : A →ₐ[k] C)).2 (quotMap_trivial π)
     refine ideal_eq_of_le_of_finrank_eq (k := k) hle ?_
-    have hA := GlobalTheory.T.finrank_hopfAlgebra_eq_range_mul_kernel k A _ (quotMap π)
-    have hD := GlobalTheory.T.finrank_hopfAlgebra_eq_range_mul_kernel k (CartierDual k A) (CartierDual k C) (CartierDual.map π)
+    have hA := _root_.GlobalTheory.Dieu.finrank_eq_range_mul_ker k A _ (quotMap π)
+    have hD := _root_.GlobalTheory.Dieu.finrank_eq_range_mul_ker k (CartierDual k A) (CartierDual k C) (CartierDual.map π)
     rw [LinearMap.finrank_range_of_inj (f := ((quotMap π : CartierDual k (CartierDual k A ⧸ kerIdeal (CartierDual.map π)) →ₐ[k] A)).toLinearMap)
       (by exact hinj),
       finrank_cartierDual] at hA

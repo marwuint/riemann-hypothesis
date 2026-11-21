@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermHyperbolic
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ImportsTer
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNsmulMulVecMem
+
 open NumberField IsDedekindDomain Matrix GlobalTheory.UTrans GlobalTheory.AdLat
 open scoped TensorProduct
 
@@ -26,17 +26,6 @@ theorem exists_split (b : ℕ) (N : ℕ) (hN : 0 < N) :
       refine ⟨N.gcd b * A, B, e + 1, by rw [mul_assoc, ← h1]; exact hM, ?_, h3⟩
       rw [pow_succ']
       exact mul_dvd_mul (Nat.gcd_dvd_right N b) h2
-
-theorem exists_nsmul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
-    (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤)
-    (y : Fin n → E) : ∃ N : ℕ, 0 < N ∧ N • y ∈ L := by
-  first
-  | exact @_root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem
-  | exact _root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem
-  | (apply _root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem <;> assumption)
-  | (intros; apply _root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem ..)
 
 theorem exists_nsmul_mulVec_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)

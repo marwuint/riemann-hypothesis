@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigExtMapRelFrobCompRigOfOmega
 import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowCharEqOfIsReducedFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowCharEqOfIsReducedFinite
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup
 
 namespace GlobalTheory
@@ -35,7 +35,7 @@ theorem exists_perfectPart_algHom : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Fie
     | succ m ih =>
       intro a
       obtain ⟨b, hb⟩ := ih a
-      obtain ⟨c, hc⟩ := GlobalTheory.T.exists_pow_char_eq_of_isReduced_finite' p k (A ⧸ N) b
+      obtain ⟨c, hc⟩ := _root_.GlobalTheory.exists_pow_char_eq_of_isReduced_finite p k (A ⧸ N) b
       exact ⟨c, by rw [hb, hc, ← pow_mul, ← pow_succ']⟩
   have hlift : ∀ a : A, ∃ b : A, a - b ^ q ∈ N := by
     intro a

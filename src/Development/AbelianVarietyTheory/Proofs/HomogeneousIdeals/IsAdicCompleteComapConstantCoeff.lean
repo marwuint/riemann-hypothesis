@@ -107,47 +107,7 @@ theorem algHom_ext_of_isHausdorff (J : Ideal S) [IsHausdorff J S] {φ ψ : A⟦X
   have h3 : φ X ^ n ∣ φ f - ψ f := by simpa using dvd_sub h1 h2
   simpa using Ideal.mem_of_dvd _ h3 (Ideal.pow_mem_pow hφ n)
 
-theorem eq_evalAdic (φ : A⟦X⟧ →ₐ[A] S) (h : φ X = s) : φ = evalAdic A J hs :=
-  algHom_ext_of_isHausdorff J (h ▸ hs) (by simp [h])
-
 end Eval
-
-section Division
-
-variable {A : Type*} [CommRing A]
-
-theorem X_sub_C_dvd_sub_C (φ : A⟦X⟧ →ₐ[A] A) (f : A⟦X⟧) : X - C (φ X) ∣ f - C (φ f) := by
-  have key : ∀ n, φ (mk fun i => coeff (i + n) f) =
-      φ X * φ (mk fun i => coeff (i + (n + 1)) f) + coeff n f := by
-    intro n
-    have h := (mk fun i => coeff (i + n) f).eq_X_mul_shift_add_const
-    have hC : ∀ a, φ (C a) = a := fun a => φ.commutes a
-    rw [h, map_add, map_mul, hC]
-    simp [add_assoc, add_comm 1 n]
-  refine ⟨mk fun n => φ (mk fun i => coeff (i + (n + 1)) f), ?_⟩
-  ext n
-  cases n with
-  | zero =>
-    have h0 := key 0
-    have : (mk fun i => coeff (i + 0) f) = f := by ext; simp
-    rw [this] at h0
-    simp only [sub_mul, map_sub, coeff_zero_C, coeff_C_mul, coeff_mk, coeff_zero_X_mul]
-    rw [h0]; ring
-  | succ n =>
-    simp only [sub_mul, map_sub, coeff_C_mul, coeff_mk, coeff_succ_X_mul, coeff_succ_C]
-    rw [key (n + 1)]; ring
-
-theorem ker_eq_span_X_sub_C (φ : A⟦X⟧ →ₐ[A] A) :
-    RingHom.ker φ = Ideal.span {X - C (φ X)} := by
-  apply le_antisymm
-  · intro f hf
-    have h := X_sub_C_dvd_sub_C φ f
-    rw [RingHom.mem_ker.1 hf] at h
-    simpa [Ideal.mem_span_singleton] using h
-  · rw [Ideal.span_singleton_le_iff_mem, RingHom.mem_ker, map_sub]
-    exact sub_eq_zero.2 (φ.commutes _).symm
-
-end Division
 
 section Complete
 
@@ -248,12 +208,6 @@ theorem map_comap_constantCoeff_le {S : Type*} [CommRing S] [Algebra A S] (J : I
   have : φ (C (constantCoeff f)) = algebraMap A S (constantCoeff f) := φ.commutes _
   rw [this]
   exact hI (Ideal.mem_map_of_mem _ hf)
-
-theorem continuous_adicTopology_of_map_le {S : Type*} [CommRing S] (J : Ideal S) (φ : A →+* S)
-    (h : I.map φ ≤ J) : @Continuous A S I.adicTopology J.adicTopology φ := by
-  letI : WithIdeal A := ⟨I⟩
-  letI : WithIdeal S := ⟨J⟩
-  exact (WithIdeal.uniformContinuous_of_map_le (f := φ) h).continuous
 
 end Complete
 

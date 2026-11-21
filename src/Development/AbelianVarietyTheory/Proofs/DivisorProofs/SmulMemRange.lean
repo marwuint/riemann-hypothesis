@@ -2,80 +2,11 @@ import Mathlib
 import ReciprocityTheory.DualLattices.CotangentSurjective
 import ReciprocityTheory.DualLattices.CyclicRecursionStatement
 import Development.AbelianVarietyTheory.Definitions.Divisors.XiMulNu
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FontaineAinfLocalDomainXiAdicOrderStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FontaineAinfLocalDomainXiAdicOrder
 
 open ReciprocityTheory.PGsh.Up GlobalTheory.Sandwich Matrix
 
 namespace GlobalTheory.Sandwich.HodgeTateBound
-
-section General
-
-variable {A O : Type} [CommRing A] [CommRing O] {h : ℕ}
-
-theorem right_cancel [IsDomain A] {F G : Matrix (Fin h) (Fin h) A} {μ : A} (hμ : μ ≠ 0)
-    (hGF : G * F = μ • (1 : Matrix (Fin h) (Fin h) A)) {X Y : Matrix (Fin h) (Fin h) A}
-    (hX : X * F = Y * F) : X = Y := by
-  have hdet : F.det ≠ 0 := by
-    intro h0
-    have h1 := congrArg Matrix.det hGF
-    rw [Matrix.det_mul, h0, mul_zero, Matrix.det_smul, Matrix.det_one, mul_one] at h1
-    exact pow_ne_zero _ hμ h1.symm
-  have h2 : X * F * F.adjugate = Y * F * F.adjugate := by rw [hX]
-  rw [Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_smul,
-    Matrix.mul_one, Matrix.mul_one] at h2
-  ext i j
-  have h3 := congrFun (congrFun h2 i) j
-  simp only [Matrix.smul_apply, smul_eq_mul] at h3
-  exact mul_left_cancel₀ hdet h3
-
-theorem mul_swap [IsDomain A] {F G : Matrix (Fin h) (Fin h) A} {μ : A} (hμ : μ ≠ 0)
-    (hGF : G * F = μ • (1 : Matrix (Fin h) (Fin h) A)) :
-    F * G = μ • (1 : Matrix (Fin h) (Fin h) A) := by
-  apply right_cancel hμ hGF
-  rw [Matrix.mul_assoc, hGF]
-  simp
-
-theorem range_le_ker (θ : A →+* O) {F G : Matrix (Fin h) (Fin h) A} {μ : A} (hμ : θ μ = 0)
-    (hGF : G * F = μ • (1 : Matrix (Fin h) (Fin h) A)) :
-    LinearMap.range (Matrix.toLin' (F.map θ)) ≤ LinearMap.ker (Matrix.toLin' (G.map θ)) := by
-  rintro _ ⟨x, rfl⟩
-  rw [LinearMap.mem_ker, ← Matrix.toLin'_mul_apply, ← Matrix.map_mul, hGF]
-  have : (μ • (1 : Matrix (Fin h) (Fin h) A)).map θ = 0 := by
-    ext i j
-    simp [hμ]
-  rw [this]
-  simp
-
-theorem smul_mem_range [IsDomain A] (θ : A →+* O) (hs : Function.Surjective θ) {ξ ν μ : A}
-    (hker : RingHom.ker θ = Ideal.span {ξ}) (hξ : ξ ≠ 0) (hμ : ξ * ν = μ)
-    {F G : Matrix (Fin h) (Fin h) A} (hFG : F * G = μ • (1 : Matrix (Fin h) (Fin h) A))
-    (f : Fin h → O) (hf : f ∈ LinearMap.ker (Matrix.toLin' (G.map θ))) :
-    θ ν • f ∈ LinearMap.range (Matrix.toLin' (F.map θ)) := by
-  choose m hm using fun i => hs (f i)
-  have hf' : f = θ ∘ m := by
-    funext i
-    exact (hm i).symm
-  rw [LinearMap.mem_ker, Matrix.toLin'_apply, hf'] at hf
-  have h1 : ∀ i, ∃ x, x * ξ = (G *ᵥ m) i := by
-    intro i
-    rw [← Ideal.mem_span_singleton', ← hker, RingHom.mem_ker, RingHom.map_mulVec, hf]
-    rfl
-  choose x hx using h1
-  have h2 : G *ᵥ m = ξ • x := by
-    funext i
-    rw [← hx i, Pi.smul_apply, smul_eq_mul, mul_comm]
-  have h3 : F *ᵥ (G *ᵥ m) = μ • m := by
-    rw [Matrix.mulVec_mulVec, hFG, Matrix.smul_mulVec, Matrix.one_mulVec]
-  rw [h2, Matrix.mulVec_smul, ← hμ] at h3
-  refine ⟨θ ∘ x, ?_⟩
-  funext i
-  have h4 := congrFun h3 i
-  simp only [Pi.smul_apply, smul_eq_mul, mul_assoc] at h4
-  have h5 := mul_left_cancel₀ hξ h4
-  rw [Matrix.toLin'_apply, ← RingHom.map_mulVec, h5, map_mul, hm]
-  rfl
-
-end General
 
 open Matrix in
 variable {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n] in

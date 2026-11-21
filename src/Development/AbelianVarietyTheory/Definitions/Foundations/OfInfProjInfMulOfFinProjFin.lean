@@ -442,16 +442,6 @@ theorem embAt_mem (S : Finset (HeightOneSpectrum (𝓞 F))) (x : ∀ v : S, GLoc
     (fun _ _ _ _ h => commute_emb σ J _ (proj_emb_ne σ J (fun e => h (Subtype.ext e)) _)) fun v _ => mem_atPts.2 ⟨mem_finPts.2 (by simp), fun u hu => ?_⟩
   exact proj_emb_ne σ J (fun e : u = v.1 => hu (e ▸ v.2)) _
 
-theorem range_embAt (S : Finset (HeightOneSpectrum (𝓞 F))) : (embAt σ J S).range = atPts σ J S := by
-  refine le_antisymm (by rintro _ ⟨x, rfl⟩; exact embAt_mem σ J S x) fun g hg => ⟨projAt σ J S g, ?_⟩
-  have h := mem_atPts.1 (embAt_mem σ J S (projAt σ J S g))
-  have h' := mem_atPts.1 hg
-  refine GAd_ext σ J (fun w => ?_) fun v => ?_
-  · rw [mem_finPts_iff_forall.1 h.1 w, mem_finPts_iff_forall.1 h'.1 w]
-  · by_cases hv : v ∈ S
-    · exact proj_embAt σ J S _ ⟨v, hv⟩
-    · rw [h.2 v hv, h'.2 v hv]
-
 theorem range_emb (v : HeightOneSpectrum (𝓞 F)) : (emb σ J v).range = atPts σ J {v} := by
   ext g
   rw [mem_atPts]
@@ -493,11 +483,6 @@ def atAwayEquiv (S : Finset (HeightOneSpectrum (𝓞 F))) : GAd σ J ≃* (∀ v
 theorem atAwayEquiv_symm_apply (S : Finset (HeightOneSpectrum (𝓞 F))) (p : (∀ v : S, GLoc σ J v) × awayPts σ J S) :
     (atAwayEquiv σ J S).symm p = embAt σ J S p.1 * p.2 := rfl
 
-theorem atAwayEquiv_apply (S : Finset (HeightOneSpectrum (𝓞 F))) (g : GAd σ J) :
-    atAwayEquiv σ J S g = (projAt σ J S g, partAway σ J S g) :=
-  (atAwayEquiv σ J S).symm.injective (by
-    rw [MulEquiv.symm_apply_apply]; exact (embAt_mul_partAway σ J S g).symm)
-
 def embArchPi : (∀ w, GArch σ J w) →* GInf σ J :=
   MonoidHom.noncommPiCoprod (fun w => embArchInf σ J w) fun u w h x y => GInf_ext σ J fun t => by
     by_cases ht : t = u
@@ -538,24 +523,10 @@ theorem continuous_noncommProd {ι X M : Type} [TopologicalSpace X] [Monoid M] [
   | insert i s hi ih =>
     exact ((hf i).mul ih).congr fun x => (Finset.noncommProd_insert_of_notMem s i (fun i => f i x) _ hi).symm
 
-theorem continuous_projAt (S : Finset (HeightOneSpectrum (𝓞 F))) : Continuous (projAt σ J S) :=
-  continuous_pi fun v => continuous_proj σ J v
-
 theorem continuous_embAt (S : Finset (HeightOneSpectrum (𝓞 F))) : Continuous (embAt σ J S) :=
   continuous_noncommProd (fun (v : S) (x : ∀ v : S, GLoc σ J v) => emb σ J v (x v))
     (fun v => (continuous_emb σ J v).comp (continuous_apply v))
     (fun _ _ _ h => commute_emb σ J _ (proj_emb_ne σ J (fun e => h (Subtype.ext e)) _)) Finset.univ
-
-theorem continuous_partAway (S : Finset (HeightOneSpectrum (𝓞 F))) : Continuous (partAway σ J S) :=
-  (((continuous_embAt σ J S).comp (continuous_projAt σ J S)).inv.mul continuous_id).subtype_mk _
-
-def atAwayContEquiv (S : Finset (HeightOneSpectrum (𝓞 F))) :
-    GAd σ J ≃ₜ* (∀ v : S, GLoc σ J v) × awayPts σ J S :=
-  { atAwayEquiv σ J S with
-    continuous_toFun := ((continuous_projAt σ J S).prodMk (continuous_partAway σ J S)).congr fun g =>
-      (atAwayEquiv_apply σ J S g).symm
-    continuous_invFun := ((continuous_embAt σ J S).comp continuous_fst).mul
-      (continuous_subtype_val.comp continuous_snd) }
 
 theorem continuous_embArchPi : Continuous (embArchPi σ J) :=
   continuous_noncommProd (fun w (x : ∀ w, GArch σ J w) => embArchInf σ J w (x w))

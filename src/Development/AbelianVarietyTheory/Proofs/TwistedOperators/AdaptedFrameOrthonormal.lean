@@ -134,7 +134,7 @@ theorem exists_ptTop_conj {μ0 : T} (hL : L.Is μ0) (W : G.Weil) (n : Fin (D.R.m
     exact hc τ _ _ (kappaTop_mul_topFrame hL W g τ)
   · refine ⟨1, fun g τ => ?_⟩
     rw [one_mul, inv_one, mul_one]
-    exact eq_conj_of_inFrame (Matrix.isUnit_det_of_left_inverse (hP τ)) (GlobalTheory.T.compactChainTopRowRealPoint_inOrthonormalBasis hL W g n (fun e => absurd e h) τ)
+    exact eq_conj_of_inFrame (Matrix.isUnit_det_of_left_inverse (hP τ)) (_root_.GlobalTheory.RowReal.ptTop_inOnb hL W g n (fun e => absurd e h) τ)
 
 def trColEquiv (G : GridData L sc) (j : Fin D.R.m) :
     PolF D (G.V (.top (j + 1))).rank (G.V (.top j)).rank ≃ₗ[ℂ] Pol D.what₂.Tau ((rowSizes D).nR j) ((rowSizes D).nR (j + 1)) :=
@@ -172,9 +172,9 @@ theorem om_fock_top_of_mat {μ0 : T} (hL : L.Is μ0) (W : G.Weil) {U : Set T} (S
   have hX : DefNode D.R.m (.top (j : ℕ)) := j.2.le
   have hY : DefNode D.R.m (.top ((j : ℕ) + 1)) := j.2
   have hp : DefPair D.R.m (Pair.top t (j : ℕ)) := j.2
-  obtain ⟨hf, hv⟩ := GlobalTheory.T.movedVector_definitePair_theta_fockVacuum W S t (.top t j) hp d hd
-  have hc := GlobalTheory.T.compactChain_topPair_movedVector_rowCharacter hL W S g t j d hd
-  have key := GlobalTheory.T.weil_compactRealPoint_fockVector_substitution W (.top t j) j.2 (fun _ => (G.V (.top (j : ℕ))).rank) (fun _ => (G.V (.top ((j : ℕ) + 1))).rank)
+  obtain ⟨hf, hv⟩ := _root_.GlobalTheory.RowReal.movedVec_theta_fockVac W S t (.top t j) hp d hd
+  have hc := _root_.GlobalTheory.RowReal.om_ptTop_movedVec hL W S g t j d hd
+  have key := _root_.GlobalTheory.RowReal.om_fock_compact_all W (.top t j) j.2 (fun _ => (G.V (.top (j : ℕ))).rank) (fun _ => (G.V (.top ((j : ℕ) + 1))).rank)
     (fun _ => le_rfl) (fun _ => le_rfl) (fun ρ => (GlobalTheory.T.definiteNode_cartan_orthonormalBasis_allPlaces hL W _ hX ρ).1) (fun ρ => (GlobalTheory.T.definiteNode_cartan_orthonormalBasis_allPlaces hL W _ hY ρ).1)
     (fun ρ => (GlobalTheory.T.definiteNode_cartan_orthonormalBasis_allPlaces hL W _ hX ρ).2.1) (fun ρ => (GlobalTheory.T.definiteNode_cartan_orthonormalBasis_allPlaces hL W _ hY ρ).2.1) _ hf hv
     (fun τ => (u τ).1.submatrix (Fin.cast (rank_top G (j := j) j.2.le)) (Fin.cast (rank_top G (j := j) j.2.le)))

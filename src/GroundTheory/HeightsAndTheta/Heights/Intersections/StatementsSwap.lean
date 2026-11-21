@@ -25,12 +25,6 @@ def GeoNumCut.Statement : Prop :=
     geoNum (n + 1) V (Fin.snoc a fun k => (b k : ℤ)) =
       ∑ᶠ U ∈ divSupp V t, (multAt (V ⊔ Ideal.span {t}) U : ℤ) * geoNum n U a
 
-section Inhabitants
-
-def fibTwo : Ideal (MRing (PBlk 2)) := Ideal.span {C 2}
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.Inter

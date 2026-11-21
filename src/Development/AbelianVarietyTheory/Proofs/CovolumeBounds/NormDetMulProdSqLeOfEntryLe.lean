@@ -120,19 +120,6 @@ theorem det_points_ne_zero_of_basis (P : ι ≃ (S →ₐ[R] E)) (b : Basis ι R
 
 end Split
 
-section General
-
-variable {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] {ι : Type*} [Fintype ι]
-  [DecidableEq ι]
-
-end General
-
-section Hadamard
-
-variable {𝕜 : Type*} [RCLike 𝕜] {ι : Type*} [Fintype ι] [DecidableEq ι]
-
-end Hadamard
-
 section Etale
 
 variable (K A : Type*) [Field K] [CommRing A] [Algebra K A]
@@ -163,12 +150,5 @@ theorem discr_ne_zero_iff_of_etale [Algebra.Etale K A] (h : Fintype.card ι = fi
   simp
 
 end Etale
-
-section DiscrBaseChange
-
-variable {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] [Module.Free R S]
-  [Module.Finite R S] {ι : Type*} [Fintype ι] [DecidableEq ι]
-
-end DiscrBaseChange
 
 end GlobalTheory

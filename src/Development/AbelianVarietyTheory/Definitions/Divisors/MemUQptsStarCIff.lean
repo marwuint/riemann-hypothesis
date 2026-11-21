@@ -132,8 +132,6 @@ def Datum.starC : D.endO →+* D.endOᵐᵒᵖ where
 
 theorem Datum.coe_starC (g : D.endO) : (((D.starC g).unop : D.endO) : Module.End ℚ D.VQ) = D.adjE g := rfl
 
-theorem Datum.starC_starC (g : D.endO) : (D.starC (D.starC g).unop).unop = g := Subtype.ext (D.adjE_adjE g)
-
 def Datum.actInt : 𝓞 D.F →+* D.endO :=
   (D.actQ.comp (algebraMap (𝓞 D.F) D.O)).codRestrict D.endO fun c => D.mem_endO.2 fun b => by
     rw [RingHom.comp_apply, ← map_mul, ← map_mul, Algebra.commutes]
@@ -178,48 +176,5 @@ instance Datum.towerF : IsScalarTower ℚ D.F D.endO :=
   IsScalarTower.of_algebraMap_eq fun q => (D.actF.commutes q).symm
 
 instance Datum.finEndO : FiniteDimensional D.F D.endO := Module.Finite.of_restrictScalars_finite ℚ D.F D.endO
-
-theorem Datum.starC_algebraMap (x : D.F) :
-    (D.starC (algebraMap D.F D.endO x)).unop = algebraMap D.F D.endO (IsCMField.complexConj D.F x) := by
-  let L : D.endO →ₗ[ℚ] D.endO :=
-    { toFun := fun g => (D.starC g).unop
-      map_add' := fun g h => by rw [map_add, MulOpposite.unop_add]
-      map_smul' := fun q g => Subtype.ext (D.adjE_smul q g) }
-  have h : L.comp D.actFL = D.actFL.comp (GlobalTheory.LKTrip.conjQ D.F).toLinearMap := by
-    refine (integralBasis D.F).ext fun i => ?_
-    show (D.starC (D.actFL (integralBasis D.F i))).unop = D.actFL (IsCMField.complexConj D.F (integralBasis D.F i))
-    rw [integralBasis_apply]
-    erw [← D.bar_eq, D.actFL_coe, D.actFL_coe]
-    apply Subtype.ext
-    rw [D.coe_starC, D.coe_actInt, D.coe_actInt, D.adjE_actQ, D.star_F, MulOpposite.unop_op]
-  exact LinearMap.congr_fun h x
-
-theorem Datum.mem_UQpts_starC_iff (x : D.endOˣ × ℚˣ) :
-    x ∈ GlobalTheory.LKTrip.UQpts D.starC ↔ ∀ v w : D.VQ,
-      D.EFQ (((x.1 : D.endO) : Module.End ℚ D.VQ) v) (((x.1 : D.endO) : Module.End ℚ D.VQ) w) =
-        (x.2 : ℚ) * D.EFQ v w := by
-  obtain ⟨g, c⟩ := x
-  rw [GlobalTheory.LKTrip.UQpts, GlobalTheory.LKTrip.mem_uGroup]
-  have e : (g : D.endO) * (D.starC g).unop = algebraMap ℚ D.endO c ↔
-      (D.starC g).unop * (g : D.endO) = algebraMap ℚ D.endO c := by
-    constructor
-    · intro h
-      have : (D.starC g).unop = (g⁻¹ : D.endOˣ) * algebraMap ℚ D.endO c := by
-        rw [← h, Units.inv_mul_cancel_left]
-      rw [this, ← Algebra.commutes, mul_assoc, Units.inv_mul, mul_one]
-    · intro h
-      have : (D.starC g).unop = algebraMap ℚ D.endO c * (g⁻¹ : D.endOˣ) := by
-        rw [← h, Units.mul_inv_cancel_right]
-      rw [this, Algebra.commutes, ← mul_assoc, Units.mul_inv, one_mul]
-  refine e.trans ⟨fun h v w => ?_, fun h => Subtype.ext (D.end_ext fun v w => ?_)⟩
-  · have h' := congrArg (fun k : D.endO => D.EFQ ((k : Module.End ℚ D.VQ) v) w) h
-    simpa [D.coe_starC, D.EFQ_adjE_left, Algebra.algebraMap_eq_smul_one] using h'
-  · simpa [D.coe_starC, D.EFQ_adjE_left, Algebra.algebraMap_eq_smul_one] using h v w
-
-example : ((1, 1) : D.endOˣ × ℚˣ) ∈ GlobalTheory.LKTrip.UQpts D.starC := (GlobalTheory.LKTrip.UQpts D.starC).one_mem
-
-example (x : D.La) : ((algebraMap D.F D.endO (D.ω : D.F) : D.endO) : Module.End ℚ D.VQ) (1 ⊗ₜ x) =
-    1 ⊗ₜ D.smulF D.ω x := by
-  rw [D.algebraMap_endO, D.actF_coe]; rfl
 
 end GlobalTheory.UPel.HT

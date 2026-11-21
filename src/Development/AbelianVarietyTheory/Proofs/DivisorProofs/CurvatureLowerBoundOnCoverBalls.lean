@@ -1,9 +1,13 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviAtWeightAddNsmulLargeOnCompactStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviAtWeightAddNsmulLargeOnCompact
+
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
@@ -14,7 +18,7 @@ theorem curv_cover : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [
   have hk : ∀ a : Fin C.m, ∃ k0 : ℕ, ∀ k ≥ k0, ∀ v ∈ Metric.closedBall (C.c a) (C.r a),
       ∀ ξ : Fin n → ℂ, t * ∑ j, ‖ξ j‖ ^ 2 ≤
         A.leviAt (C.idx a) (A.ph (G + k • H) (C.idx a)) ((A.chart (C.idx a)).symm v) ξ :=
-    fun a => GlobalTheory.T.leviAt_weight_add_nsmul_large_on_compact n Y ι La A H G hH (C.idx a) _ t
+    fun a => _root_.GlobalTheory.OTY.LeviLarge.curv_large n Y ι La A H G hH (C.idx a) _ t
       (isCompact_closedBall (C.c a) (C.r a)) (C.sub a)
   choose k0 hk0 using hk
   refine ⟨Finset.univ.sup k0, fun k hk a v hv ξ => ?_⟩

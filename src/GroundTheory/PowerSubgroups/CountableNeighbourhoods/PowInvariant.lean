@@ -22,8 +22,4 @@ theorem le_powerSubgroup₂ (U : Subgroup Gal(AlgebraicClosure ℚ/ℚ))
     (s : Gal(AlgebraicClosure ℚ/ℚ)) (hU : ∀ (k : ℤ), ∀ x ∈ U, s ^ k * x * (s ^ k)⁻¹ ∈ U) :
     U ≤ mulZPowers U s hU := fun u hu => ⟨0, u, hu, by simp⟩
 
-theorem mem_mulZPowers_self (U : Subgroup Gal(AlgebraicClosure ℚ/ℚ))
-    (s : Gal(AlgebraicClosure ℚ/ℚ)) (hU : ∀ (k : ℤ), ∀ x ∈ U, s ^ k * x * (s ^ k)⁻¹ ∈ U) :
-    s ∈ mulZPowers U s hU := ⟨1, 1, U.one_mem, by simp⟩
-
 end GroundTheory.Variant₂.N1

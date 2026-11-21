@@ -59,17 +59,6 @@ def HasHyperbolicAuxiliaryFrame {R : Ranks} {F E : Type} [Field F] [NumberField 
     (Even j → ∃ z : (S.Y j).V, (S.Y j).hT z z = -(S.T : E) ∧ (∀ x, (S.Y j).hT (S.iXY j x) z = 0) ∧
       ∀ i, (S.Y j).hT z (e i) = 0 ∧ (S.Y j).hT z (f i) = 0)
 
-theorem auxiliary_frame_zero {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
-    [Algebra F E] (S : Spaces R F E) : HasHyperbolicAuxiliaryFrame S 0 := by
-  have h : (R.m - 1 - 0) / 2 = R.rS := by
-    obtain ⟨a, ha⟩ := R.m_even
-    unfold Ranks.rS
-    omega
-  refine ⟨fun i => S.hypE (i.cast h), fun i => S.hypF (i.cast h), fun _ _ => S.hyp_ee _ _, fun _ _ => S.hyp_ff _ _,
-    fun i i' => ?_, fun _ x => S.hyp_orthX _ x, fun _ => ⟨S.zm, S.zm_norm, S.zm_orth, fun _ => S.hyp_orthz _⟩⟩
-  rw [S.hyp_ef]
-  simp [Fin.ext_iff]
-
 structure Pre where
 
   R : Ranks
@@ -161,71 +150,15 @@ theorem T_prime : ∀ u, (B.T u).Prime := fun u => B.level_prime _ (B.T_level u)
 theorem T_cond : ∀ u, B.T u % (B.host.QS * B.host.q * B.host.d) = 1 :=
   fun u => (B.level_cond _ (B.T_level u)).2
 
-theorem auxiliary_frame_exists : letI := B.host.cmStar; ∀ j, j < B.R.m → HasHyperbolicAuxiliaryFrame B.sp j := by
-  letI := B.host.cmStar
-  intro j hj
-  rcases Nat.eq_zero_or_pos j with rfl | h
-  · exact auxiliary_frame_zero _
-  · exact B.auxiliaryFrame j h hj
-
 theorem V_posDef : letI := B.host.cmStar; ∀ j, 1 ≤ j → j ≤ B.R.m → (B.sp.V j).IsPosDef := by
   letI := B.host.cmStar
   intro j h1 h2 τ
   rw [factVSig B.R B.host.F B.sp j h1 h2 τ, B.V_pos j h1 h2, B.sp.V_rank j h1 h2]
   rfl
 
-theorem X_posDef : letI := B.host.cmStar; ∀ j, j ≤ B.R.m → (B.sp.X j).IsPosDef := by
-  letI := B.host.cmStar
-  intro j hj τ
-  have hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a) := B.sp.cm.cmUnram.2.1 τ
-  have hk := B.R.m_add_three_le_k
-  rcases B.sp.X_def j hj τ with h | h
-  · exact h
-  exfalso
-  have hsX := B.sp.X_sig j τ
-  rw [h] at hsX
-  rcases hj.lt_or_eq with hlt | rfl
-  · have hw : (Matrix.of fun a b => (B.sp.Y j).hT (B.sp.iXY j ((B.sp.X j).frame a))
-        (B.sp.iXY j ((B.sp.X j).frame b))) = (B.sp.X j).gram := by
-      refine Matrix.ext fun a b => ?_
-      exact B.sp.iXY_isom j hlt _ _
-    rw [← hw] at hsX
-    have hsY := B.sp.Y_sig j τ
-    have hsum := sig_sum _ (B.sp.Y_sig j) τ
-    rw [B.Y_sigval j hj τ] at hsY hsum
-    have key := (sig_family (B.sp.Y j) τ hτ _ hsX hsY).2
-    rw [B.sp.X_rank j hj] at key
-    simp only [sigYD, Ranks.N] at key hsum
-    omega
-  · have hsY := B.sp.Y_sig B.R.m τ
-    rw [B.Y_sigval _ hj τ] at hsY
-    have hw : (Matrix.of fun a b => (B.sp.X B.R.m).hT (B.sp.iX' (B.sp.eYm.symm ((B.sp.Y B.R.m).frame a)))
-        (B.sp.iX' (B.sp.eYm.symm ((B.sp.Y B.R.m).frame b)))) = (B.sp.Y B.R.m).gram := by
-      refine Matrix.ext fun a b => ?_
-      rw [Matrix.of_apply, B.sp.iX'_isom, ← B.sp.eYm_isom]
-      simp [HSpace.gram]
-    rw [← hw] at hsY
-    have key := (sig_family (B.sp.X B.R.m) τ hτ _ hsY hsX).1
-    simp only [sigYD, Ranks.rankY, Ranks.r] at key
-    omega
-
 def conjF : B.host.E →ₐ[B.host.F] B.host.E := letI := B.host.cmStar; B.sp.cm.sig
 
 theorem conjF_eq (x : B.host.E) : B.conjF x = B.host.conj x := bridge_star_holds B.R B.host x
-
-def zOf (u : B.Word) : letI := B.host.cmStar; (B.sp.X B.R.m).V :=
-  letI := B.host.cmStar; (B.cOf u)⁻¹ • B.sp.z
-
-theorem zOf_norm (u : B.Word) :
-    letI := B.host.cmStar; (B.sp.X B.R.m).hT (B.zOf u) (B.zOf u) = (B.T u : B.host.E) := by
-  letI := B.host.cmStar
-  have hs : ∀ x : B.host.E, star x = B.host.conj x := bridge_star_holds B.R B.host
-  have h0 := B.cOf_ne u
-  have h1 : B.host.conj (B.cOf u) ≠ 0 := by simpa using h0
-  unfold zOf
-  rw [map_smulₛₗ, map_smulₛₗ, LinearMap.smul_apply, B.z_norm, B.sp_T, ← B.cOf_eq u, starRingEnd_apply, star_inv₀,
-    hs, RingHom.id_apply, smul_eq_mul, smul_eq_mul]
-  field_simp
 
 def restRowsFiniteGroupCard : ℕ := ∏ k : Fin 2, (Nat.card (GL (Fin B.R.r) (ZMod (B.host.g k)))) ^ B.R.f
 
@@ -235,26 +168,6 @@ theorem restRowsFiniteGroupCard_pos : 0 < B.restRowsFiniteGroupCard := by
   exact Nat.card_pos
 
 def ramOrder : ℕ := 8 * (∏ l ∈ B.host.small, l) * B.host.q
-
-theorem ramOrder_pos : 0 < B.ramOrder := by
-  unfold ramOrder
-  refine Nat.mul_pos (Nat.mul_pos (by norm_num) (Finset.prod_pos fun l hl => ?_)) B.host.hyp.1.pos
-  exact (Nat.prime_of_mem_primeFactors hl).pos
-
-theorem eight_mul_q_dvd_ramOrder : 8 * B.host.q ∣ B.ramOrder :=
-  Nat.mul_dvd_mul (Dvd.intro _ rfl) dvd_rfl
-
-theorem eight_mul_dvd_ramOrder {l : ℕ} (hl : l ∈ B.host.small) : 8 * l ∣ B.ramOrder :=
-  (Nat.mul_dvd_mul_left 8 (Finset.dvd_prod_of_mem (fun l => l) hl)).mul_right _
-
-example : 0 ∉ B.host.levelPrimes ∧ 1 ∉ B.host.levelPrimes ∧ 2 ∉ B.host.levelPrimes ∧ 4 ∉ B.host.levelPrimes :=
-  ⟨fun h => Nat.not_prime_zero (B.level_prime _ h), fun h => Nat.not_prime_one (B.level_prime _ h),
-    fun h => by simpa using B.level_mod_four _ h, fun h => by simpa using B.level_mod_four _ h⟩
-
-example : letI := B.host.cmStar;
-    (B.sp.X B.R.m).hT B.sp.z B.sp.z + (B.sp.Y 0).hT B.sp.zm B.sp.zm = 0 := by
-  letI := B.host.cmStar
-  rw [B.z_norm, B.sp.zm_norm, add_neg_cancel]
 
 end Pre
 
@@ -339,47 +252,11 @@ theorem embE_conj (x : B.host.E) : B.embE (B.host.conj x) = star (B.embE x) := b
   rw [h, h]
   exact B.host.conjE_apply _ _
 
-theorem roots_of_unity_in_fixed_field {N : ℕ} (hN : N ∣ B.ramOrder) :
-    ∃ z ∈ B.LL0, B.embLL z = Complex.exp (2 * Real.pi * Complex.I / (N : ℕ)) := by
-  obtain ⟨z, hz, h⟩ := B.rootOfUnity_eightQ_mem_coeffGaloisSubfield
-  obtain ⟨k, hk⟩ := hN
-  have h0 := B.ramOrder_pos
-  rw [hk] at h0 h
-  have hN0 : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.2 (by rintro rfl; simp at h0)
-  have hk0 : (k : ℂ) ≠ 0 := Nat.cast_ne_zero.2 (by rintro rfl; simp at h0)
-  refine ⟨z ^ k, pow_mem hz k, ?_⟩
-  rw [map_pow, h, ← Complex.exp_nat_mul]
-  congr 1
-  push_cast
-  field_simp
-
 def embKs : B.host.E →+* B.Ks := B.embE.codRestrict B.Ks B.E_le_Ks
 
 def intE : 𝓞 B.host.E →+* B.O := RingOfIntegers.mapRingHom B.embKs
 
 theorem OtoLL_intE (x : 𝓞 B.host.E) : B.OtoLL (B.intE x) = B.embE (x : B.host.E) := rfl
-
-theorem isPrincipal_map_intE (𝔞 : Ideal (𝓞 B.host.E)) : (𝔞.map B.intE).IsPrincipal := by
-  obtain ⟨β, hβ⟩ := B.capit 𝔞
-  have hinj : Function.Injective (Algebra.linearMap (𝓞 B.Ks) B.Ks) := RingOfIntegers.coe_injective
-  have hmap : Submodule.map (Algebra.linearMap (𝓞 B.Ks) B.Ks) (𝔞.map B.intE) = Submodule.span (𝓞 B.Ks) {β} := by
-    rw [hβ, Ideal.map, Ideal.span, Submodule.map_span]
-    congr 1
-    ext x
-    constructor
-    · rintro ⟨_, ⟨a, ha, rfl⟩, rfl⟩
-      exact ⟨a, ha, rfl⟩
-    · rintro ⟨a, ha, hx⟩
-      exact ⟨_, ⟨a, ha, rfl⟩, Subtype.ext hx.symm⟩
-  obtain ⟨b, -, hb⟩ : β ∈ Submodule.map (Algebra.linearMap (𝓞 B.Ks) B.Ks) (𝔞.map B.intE) :=
-    hmap ▸ Submodule.mem_span_singleton_self β
-  refine ⟨b, Submodule.map_injective_of_injective hinj ?_⟩
-  rw [hmap, Submodule.map_span, Set.image_singleton, hb]
-
-example : ∃ z ∈ B.Ks, IsPrimitiveRoot z 3 := by
-  obtain ⟨z, hz, h⟩ := B.roots_Ks (3 ^ 4) (by simp)
-  have h1 : IsPrimitiveRoot (B.embLL z) (3 ^ 4) := h ▸ Complex.isPrimitiveRoot_exp _ (by norm_num)
-  exact ⟨z ^ 27, pow_mem hz _, (h1.of_map_of_injective B.embLL.injective).pow (by norm_num) (by norm_num)⟩
 
 end Base
 

@@ -84,22 +84,6 @@ theorem sup_top_of_notMem {R : Type*} [CommRing R] {P : Ideal R} (hP : P.IsMaxim
 
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
-theorem mem_of_dv {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {π : K}
-    (h3 : ∀ z : 𝓞 K, Dv (locRing P) π (algebraMap (𝓞 K) K z * π⁻¹) →
-      z ∈ extP K (P.comap (algebraMap (𝓞 F) (𝓞 K))) ^ 2)
-    {z : 𝓞 K} (hz : Dv (locRing P) π (algebraMap (𝓞 K) K z)) : z ∈ P := by
-  have hzz : z * z ∈ extP K (P.comap (algebraMap (𝓞 F) (𝓞 K))) ^ 2 := by
-    apply h3
-    have e : algebraMap (𝓞 K) K (z * z) * π⁻¹ * π⁻¹ =
-        (algebraMap (𝓞 K) K z * π⁻¹) * (algebraMap (𝓞 K) K z * π⁻¹) := by
-      rw [map_mul]; ring
-    show algebraMap (𝓞 K) K (z * z) * π⁻¹ * π⁻¹ ∈ locRing P
-    rw [e]
-    exact (locRing P).mul_mem hz hz
-  have hle : extP K (P.comap (algebraMap (𝓞 F) (𝓞 K))) ^ 2 ≤ P :=
-    (Ideal.pow_le_self two_ne_zero).trans Ideal.map_comap_le
-  exact (hP.isPrime.mem_or_mem (hle hzz)).elim id id
-
 theorem exists_unif_fin (hF : IsFixF K F) {P : Ideal (𝓞 K)} (hP : P.IsMaximal) :
     ∃ π : K, IsUnif (locRing P) π ∧ ∀ a : K, a ≠ 0 → ∃ N : ℕ, a * π⁻¹ ^ N ∉ locRing P := by
   obtain ⟨π, hπ, -, -⟩ := exists_isUnif hF hP

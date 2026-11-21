@@ -82,15 +82,3 @@ theorem ord_fnMap {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocallyNoe
 
 end GlobalTheory.MultPull
 
-open GlobalTheory.MultPull GlobalTheory.TrueGeo.SmallSec in
-
-theorem GlobalTheory.MultPull.exists_isRatSec_pull_mult : ∀ (G Y : Scheme.{0}) [IsIntegral G] [IsIntegral Y] [IsLocallyNoetherian G] [IsLocallyNoetherian Y] (j : G ⟶ Y), j (genericPoint G) = genericPoint Y → (∀ x : G, IsIso (j.stalkMap x)) → ∀ (M : LB Y) (hM : M.IsLB) (r : M.ι → Y.functionFieldˣ) (hr : IsRatSec M r), ∃ (r' : (M.pull j).ι → G.functionFieldˣ) (hr' : IsRatSec (M.pull j) r'), ∀ x : G, (divOfRatSec (LB.isLB_pull hM j) hr').mult x = (divOfRatSec hM hr).mult (j x) := by
-  intro G Y _ _ _ _ j hj hiso M hM r hr
-  have hη : j (genericPoint G) ⤳ genericPoint Y := hj ▸ specializes_rfl
-  refine ⟨_, isRatSec_pull_map j hη hr, fun x => ?_⟩
-  obtain ⟨c, hc⟩ := exists_chart (LB.isLB_pull hM j) x
-  have hc' : j x ∈ M.U (c PUnit.unit) := Set.mem_iInter.1 hc PUnit.unit
-  rw [((presents_divOfRatSec _ _).isEqn c x hc).mult_eq,
-    ((presents_divOfRatSec hM hr).isEqn _ _ hc').mult_eq]
-  have := hiso x
-  exact ord_fnMap j hη x _

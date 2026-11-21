@@ -7,11 +7,6 @@ variable {E : Type} [Field E] [NumberField E]
 
 namespace ChA
 
-def actHom {dim : (E →+* ℂ) → ℕ} (y : Vsp dim) : 𝓞 E →+ Vsp dim where
-  toFun α := act α y
-  map_zero' := by ext i; simp [act_apply]
-  map_add' α β := act_add_left α β y
-
 lemma act_omega_expand {dim : (E →+* ℂ) → ℕ} (ω : Fin (Module.finrank ℚ E) → 𝓞 E)
     (hω : LinearIndependent ℚ (fun j => (ω j : E))) (α : 𝓞 E) (y : Vsp dim) :
     act α y ∈ Submodule.span ℝ (Set.range fun j => act (ω j) y) := by

@@ -120,40 +120,4 @@ def SubQuotCurvature : Prop :=
       (∀ z ∈ U, SecondFormSignAt H z ∧ ExtBlocksAt H z ∧ AnyRankAt H z) ∧
       (Fintype.card m = 1 → Fintype.card l = 1 → ∀ z ∈ U, RankTwoAt H z))
 
-theorem isPosFrame_tautPairGram : IsPosFrame Set.univ tautPairGram := by
-  have hc : ContDiff ℝ ∞ fun z : ℂ => conj z := conjCLE.contDiff
-  refine ⟨isOpen_univ, ?_, fun z _ => posDef_iff.2 ⟨?_, fun v hv => ?_⟩⟩
-  · rintro (a | a) (b | b)
-    · exact (contDiff_const.add (contDiff_id.mul hc)).contDiffOn
-    · exact contDiff_id.contDiffOn
-    · exact hc.contDiffOn
-    · exact contDiff_const.contDiffOn
-  · ext (a | a) (b | b) <;> simp [tautPairGram, mul_comm]
-  · have e : form (tautPairGram z) v v =
-        ((normSq (v (.inl ())) + normSq (v (.inl ()) * z + v (.inr ())) : ℝ) : ℂ) := by
-      simp only [form_eq_sum, ofReal_add, ← mul_conj]
-      simp [tautPairGram]; ring
-    rw [e, ← ofReal_zero, real_lt_real]
-    by_cases h : v (.inl ()) = 0
-    · have h' : v (.inr ()) ≠ 0 := fun h' => hv (by funext a; rcases a with a | a <;> assumption)
-      simpa [h] using h'
-    · exact add_pos_of_pos_of_nonneg (normSq_pos.2 h) (normSq_nonneg _)
-
-example (ξ η : ℂ) : extTrace tautPairGram 0 ξ η = kappa * (ξ * conj η) := by
-  have hf := isPosFrame_tautPairGram.isHermFrame
-  have h : tautPairGram 0 = 1 := by
-    rw [← fromBlocks_one]; ext (a | a) (b | b) <;> simp [tautPairGram]
-  have hb : ∀ ξ : ℂ, secondForm tautPairGram 0 ξ () () = ξ := fun ξ => by
-    rw [secondForm_eq, conn, h, transpose_one, inv_one, Matrix.one_mul]
-    change del (fun x : ℂ => x) 0 ξ = ξ
-    rw [del_eq_fderiv differentiableAt_fun_id]; simp
-  have hs : subGram (tautPairGram 0) = 1 := by rw [h]; ext; simp [subGram, toBlocks₁₁]
-  have hq : quotGram (tautPairGram 0) = 1 := by
-    rw [h]; ext; simp [quotGram, toBlocks₂₂, toBlocks₂₁, mul_apply]
-  have hu : IsUnit (subGram (tautPairGram 0)).det := by simp [hs]
-  rw [extTrace, extFormAdj_eq_neg_secondForm (hf.one trivial) (hf.eventually_herm trivial)
-      (hf.isUnit 0 trivial) hu, extForm_eq_neg_secondFormAdj (hf.one trivial)
-      (hf.eventually_herm trivial) (hf.isUnit 0 trivial) hu, secondFormAdj, adj, hs, hq]
-  simp [trace, mul_apply, hb]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms

@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsTrDataGaussianIntOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDerivationOnExtensionCubeDefectStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KaehlerRelationOfDerivationOnLargeSubalgebraStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTowerUnionZetaDerivationModIntegralClosureStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KaehlerRelationOfDerivationOnLargeSubalgebra
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTowerUnionZetaDerivationModIntegralClosure
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTowerUnionQDerivationModIntegralClosureStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAlmostDualTraceDataTowerUnionAdjoinStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAlmostDualTraceDataTowerUnionAdjoin
 
 open GlobalTheory.AlmostEt GlobalTheory.K5
 open scoped NNReal
@@ -35,8 +35,8 @@ theorem dlog_indep_pow_three : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field �
       KaehlerDifferential.D (O0 p) (integralClosure (O0 p) Ω)
         ((![zS T n, qS T n] : Fin 2 → integralClosure (O0 p) Ω) i) = 0 := by
     simpa [Fin.sum_univ_two] using hrel
-  obtain ⟨F, hF⟩ := GlobalTheory.T.kaehler_relation_of_derivation_on_large_subalgebra (O0 p) (integralClosure (O0 p) Ω) 2 _ _ hrel'
-  obtain ⟨C, tr, m, a, b, hFC, htr⟩ := GlobalTheory.T.exists_almostDualTraceData_towerUnionAdjoin p Ω hp2 hclo T F
+  obtain ⟨F, hF⟩ := _root_.GlobalTheory.AlmostEt.kaehler_rel_local (O0 p) (integralClosure (O0 p) Ω) 2 _ _ hrel'
+  obtain ⟨C, tr, m, a, b, hFC, htr⟩ := _root_.GlobalTheory.AlmostEt.TrTower.exists_trData_towerAlg p Ω hp2 hclo T F
   have hzT : zS T n ∈ towerAlg T := Algebra.subset_adjoin (Or.inl ⟨n, rfl⟩)
   have hqT : qS T n ∈ towerAlg T := Algebra.subset_adjoin (Or.inr ⟨n, rfl⟩)
   have hyC : ∀ i, (![zS T n, qS T n] : Fin 2 → integralClosure (O0 p) Ω) i ∈ C := by
@@ -49,7 +49,7 @@ theorem dlog_indep_pow_three : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field �
     have := congrArg Subtype.val hq; simpa [qS] using this
   obtain ⟨k, rfl⟩ : ∃ k, n = k + 1 := ⟨n - 1, by omega⟩
   constructor
-  · obtain ⟨Dz, hDz, hDzv⟩ := GlobalTheory.T.exists_towerUnion_zetaDerivation_modIntegralClosure p Ω hclo T
+  · obtain ⟨Dz, hDz, hDzv⟩ := _root_.GlobalTheory.AlmostEt.zeta_derivation p Ω hclo T
     obtain ⟨D', hD', hD'v⟩ := GlobalTheory.T.exists_derivationOn_extension_cube_defect (O0 p) (integralClosure (O0 p) Ω) (Frac p Ω)
       (towerAlg T) C tr m a b _ htr Dz hDz
     have h := hF C hFC hyC (Frac p Ω) D' hD'

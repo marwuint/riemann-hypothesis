@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HermSysHypOneLeLambdaZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BertiniSimpleZerosGenericSectionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BertiniSimpleZerosGenericSections
+import Development.AbelianVarietyTheory.Definitions.Divisors.AevalEqZeroOfMemConeIdeal
+import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
 
 set_option autoImplicit false
 
@@ -12,6 +14,6 @@ theorem bertiniNF_of_bertini (h : Bertini) : BertiniNF := by
   exact ⟨hδ, Q, hQ, fun E _ _ _ s hsQ => hs E s hsQ⟩
 
 theorem bertiniNumberField_of_hilbertSamuel : GlobalTheory.HSCore.Quoted → BertiniNF :=
-  fun hq => bertiniNF_of_bertini (GlobalTheory.T.bertini_simple_zeros_generic_sections hq)
+  fun hq => bertiniNF_of_bertini (_root_.GlobalTheory.BertiniTop.bertini hq)
 
 end GlobalTheory.HSShort

@@ -1,7 +1,10 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeSheetGram
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsChartGram
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeIntegralMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsArea
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeChartArea
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
@@ -9,26 +12,6 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial MeasureTheory Matrix Metric Set ComplexSets
 
 noncomputable section
-
-theorem bounded_of_degree_zero {n : ℕ} (g : (Fin n → ℂ) → ℝ)
-    (hdeg : ∀ (t : ℂ) (x : Fin n → ℂ), t ≠ 0 → g (t • x) = g x)
-    (hc : ContinuousOn g {x | x ≠ 0}) : ∃ B : ℝ, ∀ x, |g x| ≤ B := by
-  obtain ⟨B, hB⟩ := (isCompact_sphere (0 : Fin n → ℂ) 1).exists_bound_of_continuousOn
-    (hc.mono fun x hx => by
-      rintro rfl
-      simp at hx)
-  refine ⟨max B |g 0|, fun x => ?_⟩
-  by_cases hx : x = 0
-  · subst hx
-    exact le_max_right _ _
-  · have hn : ‖x‖ ≠ 0 := norm_ne_zero_iff.2 hx
-    have hne : ((‖x‖⁻¹ : ℝ) : ℂ) ≠ 0 := by simpa using hn
-    rw [← hdeg _ x hne]
-    refine le_trans ?_ (le_max_left _ _)
-    have hmem : ((‖x‖⁻¹ : ℝ) : ℂ) • x ∈ sphere (0 : Fin n → ℂ) 1 := by
-      rw [mem_sphere_zero_iff_norm, norm_smul, Complex.norm_real, Real.norm_eq_abs,
-        abs_inv, abs_norm, inv_mul_cancel₀ hn]
-    simpa [Real.norm_eq_abs] using hB _ hmem
 
 theorem le_of_ringKrullDim_quotient {n e : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = ((e + 1 : ℕ) : WithBot ℕ∞)) : e + 1 ≤ n := by
@@ -116,70 +99,6 @@ theorem integral_line_gram {n : ℕ} (e : ℕ) (h : HermNorm n) (g : (Fin n → 
   push_cast
   field_simp
   ring
-
-theorem ConeChartGram.proof (hArea : ConeSheetGram.Statement) (hMF : MassFinite.Statement) :
-    ConeChartGram.Statement := by
-  intro n e h J ℓ g A hJ hdim hℓ hdeg hcont hA
-  set f : EuclideanSpace ℂ (Fin n) → ℝ :=
-    (ball (0 : EuclideanSpace ℂ (Fin n)) 1).indicator (fun z => g (h.pointOf z)) with hf
-  have hset : {z : EuclideanSpace ℂ (Fin n) | ‖z‖ < 1 ∧ ∀ q ∈ J, eval (h.pointOf z) q = 0} =
-      {z : EuclideanSpace ℂ (Fin n) | ∀ q ∈ J, eval (h.pointOf z) q = 0} ∩ ball 0 1 := by
-    ext z
-    simp only [mem_ofPred_eq, mem_inter_iff, mem_ball_zero_iff]
-    exact and_comm
-  have hgm : Measurable g := measurable_of_continuousOn_compl_singleton 0 (hcont.mono fun x hx => hx)
-  have hpm : Continuous fun z : EuclideanSpace ℂ (Fin n) => h.pointOf z := by
-    unfold HermNorm.pointOf
-    exact continuous_const.matrix_mulVec (PiLp.continuous_ofLp 2 _)
-  obtain ⟨B, hB⟩ := bounded_of_degree_zero g hdeg hcont
-  have hfin := coneBall_hausdorff_lt_top hMF h J hJ.isPrime hdim
-  have hint : IntegrableOn f {z : EuclideanSpace ℂ (Fin n) | ∀ q ∈ J, eval (h.pointOf z) q = 0}
-      (Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ)) := by
-    rw [IntegrableOn, hf, integrable_indicator_iff measurableSet_ball, IntegrableOn,
-      Measure.restrict_restrict measurableSet_ball, inter_comm, ← hset]
-    have : IsFiniteMeasure ((Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ)).restrict
-        {z : EuclideanSpace ℂ (Fin n) | ‖z‖ < 1 ∧ ∀ q ∈ J, eval (h.pointOf z) q = 0}) :=
-      isFiniteMeasure_restrict.2 hfin.ne
-    exact Integrable.of_bound (hgm.comp hpm.measurable).aestronglyMeasurable B
-      (Filter.Eventually.of_forall fun z => by simpa [Real.norm_eq_abs] using hB _)
-  have key := hArea n e h J ℓ A f hJ hdim hℓ hA hint
-  have hterm : ∀ y : Fin e → ℂ, sheetSum (J ⊔ Ideal.span {linForm ℓ - 1}) A
-      (fun _ s => ∫ t : ℂ, f (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ s y)) *
-        (‖t‖ ^ (2 * e) * gramVol (fun y' => (h.matᵀ)⁻¹ *ᵥ s y') y)) y =
-      Real.pi ^ (e + 1) / ((e + 1).factorial : ℝ) * sheetSum (J ⊔ Ideal.span {linForm ℓ - 1}) A
-        (fun x s => g x * ((e.factorial : ℝ) / Real.pi ^ e *
-          gramVol (fun y' => (h.matᵀ)⁻¹ *ᵥ s y') y / h.dualNorm x ^ (2 * (e + 1)))) y := by
-    intro y
-    unfold sheetSum
-    rw [mul_finsum_mem]
-    refine finsum_mem_congr rfl fun x hx => ?_
-    split_ifs with hs
-    · obtain ⟨-, -, -, -, hsx, -⟩ := hs.choose_spec
-      have hy : hs.choose y = x := by rw [← hx.2]; exact hsx
-      have hx0 : x ≠ 0 := by
-        rintro rfl
-        have hmem := hx.1 (linForm ℓ - 1) (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))
-        simp [linForm] at hmem
-      beta_reduce
-      rw [hy]
-      exact integral_line_gram e h g hdeg x hx0 _
-    · simp
-  simp_rw [hterm, integral_const_mul] at key
-  obtain ⟨hM0, hMtop⟩ := coordBall_mass (n := n) (m := e + 1) (le_of_ringKrullDim_quotient J hdim)
-  have hM : 0 < (Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ)
-      {z : EuclideanSpace ℂ (Fin n) | ‖z‖ < 1 ∧ ∀ j : Fin n, e + 1 ≤ (j : ℕ) → z j = 0}).toReal :=
-    ENNReal.toReal_pos hM0.ne' hMtop.ne
-  have hc : (0 : ℝ) < Real.pi ^ (e + 1) / ((e + 1).factorial : ℝ) := by positivity
-  have hleft : ∫ z in {z : EuclideanSpace ℂ (Fin n) | ∀ q ∈ J, eval (h.pointOf z) q = 0}, f z
-      ∂(Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ)) =
-      ∫ z in {z : EuclideanSpace ℂ (Fin n) | ‖z‖ < 1 ∧ ∀ q ∈ J, eval (h.pointOf z) q = 0},
-        g (h.pointOf z) ∂(Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ)) := by
-    rw [hf, setIntegral_indicator measurableSet_ball, hset]
-  rw [hleft] at key
-  unfold coneIntegral
-  rw [div_eq_iff hM.ne']
-  rw [mul_left_comm] at key
-  rw [mul_left_cancel₀ hc.ne' key, mul_comm]
 
 end
 

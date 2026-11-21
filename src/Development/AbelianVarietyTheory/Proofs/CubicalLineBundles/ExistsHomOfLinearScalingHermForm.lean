@@ -35,10 +35,6 @@ lemma val_one {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) : valAt' x U 1 = 1 := by
   obtain ⟨e, he⟩ := (valueRules X x).2.1 U h
   simp only [he, map_one]
 
-lemma val_zero {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) : valAt' x U 0 = 0 := by
-  obtain ⟨e, he⟩ := (valueRules X x).2.1 U h
-  simp only [he, map_zero]
-
 lemma val_resG {U V : X.Opens} (hVU : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)) :
     valAt' x V (resG X hVU f) = valAt' x U f :=
   (valueRules X x).2.2.1 U V hVU f h
@@ -79,44 +75,6 @@ section Criterion
 variable {X Y : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduced X] {Z : Type}
   (ex : Z → (Sp ℂ ⟶ X)) (ey : Z → (Sp ℂ ⟶ Y))
   (hon : ∀ x : Sp ℂ ⟶ X, x ≫ p = 𝟙 _ → ∃ z, ex z = x)
-
-include hon in
-
-lemma exists_hom_affine {W : X.Opens} {D : Y.Opens} (hW : IsAffineOpen W) (hD : IsAffineOpen D)
-    (hin : ∀ w, ⊤ ≤ ex w ⁻¹ᵁ W → ⊤ ≤ ey w ⁻¹ᵁ D)
-    (hfn : ∀ f : Γ(Y, D), ∃ h : Γ(X, W), ∀ w, ⊤ ≤ ex w ⁻¹ᵁ W →
-      valAt' (ex w) W h = valAt' (ey w) D f) :
-    ∃ g : W.toScheme ⟶ Y, ∀ w (y : Sp ℂ ⟶ W.toScheme), y ≫ W.ι = ex w → y ≫ g = ey w := by
-  choose ρ hρ using hfn
-  have ext : ∀ a b : Γ(X, W), (∀ w, ⊤ ≤ ex w ⁻¹ᵁ W → valAt' (ex w) W a = valAt' (ex w) W b) →
-      a = b := fun a b h => eq_of_valAt'_eq p W a b fun x hx hxW => by
-    obtain ⟨w, rfl⟩ := hon x hx
-    exact h w hxW
-  let ρ' : Γ(Y, D) →+* Γ(X, W) :=
-    { toFun := ρ
-      map_one' := ext _ _ fun w hw => by rw [hρ _ w hw, val_one _ hw, val_one _ (hin w hw)]
-      map_mul' := fun a b => ext _ _ fun w hw => by
-        rw [hρ _ w hw, val_mul _ hw, val_mul _ (hin w hw), hρ _ w hw, hρ _ w hw]
-      map_zero' := ext _ _ fun w hw => by rw [hρ _ w hw, val_zero _ hw, val_zero _ (hin w hw)]
-      map_add' := fun a b => ext _ _ fun w hw => by
-        rw [hρ _ w hw, val_add _ hw, val_add _ (hin w hw), hρ _ w hw, hρ _ w hw] }
-  refine ⟨hW.isoSpec.hom ≫ Spec.map (CommRingCat.ofHom ρ') ≫ hD.fromSpec, fun w y hy => ?_⟩
-  have hw : ⊤ ≤ ex w ⁻¹ᵁ W := by
-    rw [← hy]
-    intro a _
-    exact (y a).2
-  have h1 := specMap_appLE_fromSpec hW (R := CommRingCat.of ℂ) (ex w) hw
-  have h2 := specMap_appLE_fromSpec hD (R := CommRingCat.of ℂ) (ey w) (hin w hw)
-  have h3 : y ≫ hW.isoSpec.hom =
-      Spec.map ((ex w).appLE W ⊤ hw ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom) := by
-    rw [← cancel_mono hW.fromSpec, h1, ← hy, Category.assoc, ← hW.isoSpec_inv_ι,
-      Iso.hom_inv_id_assoc]
-  rw [← Category.assoc, h3, ← h2, ← Category.assoc, ← Spec.map_comp]
-  congr 2
-  ext f
-  have := hρ f w hw
-  rw [valAt', valAt', dif_pos hw, dif_pos (hin w hw)] at this
-  exact this
 
 include hon in
 

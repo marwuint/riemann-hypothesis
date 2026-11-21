@@ -30,15 +30,6 @@ noncomputable def infPolynomial : R[X][Y] :=
   Y ^ 3 + C (C W.a₂ * X) * Y ^ 2 + C (C W.a₄ * X ^ 2 - C W.a₁ * X) * Y +
     C (C W.a₆ * X ^ 3 - C W.a₃ * X ^ 2 - X)
 
-theorem natDegree_infPolynomial_lt : (C (C W.a₂ * X) * Y ^ 2 + C (C W.a₄ * X ^ 2 - C W.a₁ * X) * Y +
-    C (C W.a₆ * X ^ 3 - C W.a₃ * X ^ 2 - X) : R[X][Y]).degree < 3 := by
-  compute_degree!
-
-theorem monic_infPolynomial : (infPolynomial W).Monic := by
-  unfold infPolynomial
-  rw [add_assoc, add_assoc]
-  exact monic_X_pow_add (by simpa [add_assoc] using natDegree_infPolynomial_lt W)
-
 abbrev InfChart : Type u := AdjoinRoot (infPolynomial W)
 
 noncomputable def xI : InfChart W := AdjoinRoot.root (infPolynomial W)
@@ -87,14 +78,6 @@ noncomputable def infToOverlap : InfChart W →ₐ[R] Overlap W where
     change AdjoinRoot.lift _ _ (eval₂_infPolynomial W) (AdjoinRoot.of _ (C a)) = _
     rw [AdjoinRoot.lift_of]
     simp
-
-theorem infToOverlap_xI : infToOverlap W (xI W) = algebraMap _ (Overlap W) (xC W) * yInv W :=
-  AdjoinRoot.lift_root (eval₂_infPolynomial W)
-
-theorem infToOverlap_zI : infToOverlap W (zI W) = yInv W := by
-  change AdjoinRoot.lift _ _ (eval₂_infPolynomial W) (AdjoinRoot.of _ X) = _
-  rw [AdjoinRoot.lift_of]
-  simp
 
 end Weierstrass
 

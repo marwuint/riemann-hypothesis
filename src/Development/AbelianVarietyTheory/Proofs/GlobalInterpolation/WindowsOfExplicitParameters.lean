@@ -1,8 +1,8 @@
 import Mathlib
 import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ScalePolynomialQuantitiesComparisonStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScaleStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ScalePolynomialQuantitiesComparison
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScale
 import Development.AutomorphicArithmetic.CyclotomicBounds.RootsOfUnity.HostTorsionOrderLe
 
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab GlobalTheory.EX NumberField
@@ -15,8 +15,8 @@ theorem windows_scale_facts (eps ch : ℝ) (he : 0 < eps) (he' : eps < 1 / 52) (
     ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks), s.eps = eps → x0 ≤ s.x → RankVal s R →
       (R.k : ℝ) + 5 ≤ s.b' / s.x ∧ (R.m : ℝ) * (h0v s ch : ℝ) ≤ s.b ∧ s.b' ≤ s.b ∧ 6 ≤ s.b ∧
       (R.t : ℝ) ≤ s.x ^ (401 : ℝ) ∧ (R.n : ℝ) * R.N R.m / R.m ≤ s.x ^ (405 : ℝ) := by
-  obtain ⟨x1, h1⟩ := GlobalTheory.T.scale_polynomial_quantities_comparison eps (ch + 2) (1 / 2) he (by norm_num)
-  obtain ⟨x2, h2⟩ := GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he he'
+  obtain ⟨x1, h1⟩ := _root_.GlobalTheory.scale_poly_comparison eps (ch + 2) (1 / 2) he (by norm_num)
+  obtain ⟨x2, h2⟩ := _root_.GlobalTheory.EX.rank_basic_bounds eps he he'
   refine ⟨max 6 (max x1 x2), fun s R hs hx hR => ?_⟩
   have hx6 : 6 ≤ s.x := le_trans (le_max_left _ _) hx
   have hx1 : x1 ≤ s.x := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx
@@ -99,7 +99,7 @@ theorem ten_ceil_logb_le_Lwv (s : Scale) (y : ℝ) (hy0 : 0 ≤ y) (hy : y ≤ s
 private theorem torsionOrder_le_half_gap (eps ch : ℝ) (he : 0 < eps) (he' : eps < 1 / 52) (hch : 402 ≤ ch) :
     ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks) (H : Host R), s.eps = eps → x0 ≤ s.x → RankVal s R →
       (Units.torsionOrder H.E : ℝ) ≤ (h0v s ch : ℝ) / 2 := by
-  obtain ⟨x2, h2⟩ := GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he he'
+  obtain ⟨x2, h2⟩ := _root_.GlobalTheory.EX.rank_basic_bounds eps he he'
   refine ⟨max 8 x2, fun s R H hs hx hR => ?_⟩
   have hx8 : 8 ≤ s.x := le_trans (le_max_left _ _) hx
   have hx2 : x2 ≤ s.x := le_trans (le_max_right _ _) hx

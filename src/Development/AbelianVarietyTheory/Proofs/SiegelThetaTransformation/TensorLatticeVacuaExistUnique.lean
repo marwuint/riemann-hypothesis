@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsExOfPow
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndexStatement
 
@@ -15,15 +16,15 @@ section Product
 
 variable {κ ι : Type} [Fintype κ] [Fintype ι] {φ φ' ψ : Matrix κ ι ℚ → ℂ}
 
-theorem sb_mul_conj (h : IsSB φ) (h' : IsSB ψ) : IsSB (fun x => φ x * conj (ψ x)) := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι φ (fun x => conj (ψ x)) h (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι ψ ψ h' h').2.2.2.1).2.2.1
+theorem sb_mul_conj (h : IsSB φ) (h' : IsSB ψ) : IsSB (fun x => φ x * conj (ψ x)) := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι φ (fun x => conj (ψ x)) h (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι ψ ψ h' h').2.2.2.1).2.2.1
 
-theorem sb_smul (c : ℂ) (h : IsSB φ) : IsSB (c • φ) := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι φ φ h h).2.1 c
+theorem sb_smul (c : ℂ) (h : IsSB φ) : IsSB (c • φ) := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι φ φ h h).2.1 c
 
 theorem ip_smul_left (c : ℂ) (h : IsSB φ) (h' : IsSB ψ) : SW.ip (c • φ) ψ = c * SW.ip φ ψ := by
   have hm := sb_mul_conj h h'
   have e : (fun x => (c • φ) x * conj (ψ x)) = c • fun x => φ x * conj (ψ x) := by
     funext x; simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
-  unfold SW.ip; rw [e]; exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι _ _ hm hm).2.2.2.2.2.1 c
+  unfold SW.ip; rw [e]; exact (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ hm hm).2.2.2.2.2.1 c
 
 theorem ip_add_left (h : IsSB φ) (h₂ : IsSB φ') (h' : IsSB ψ) :
     SW.ip (φ + φ') ψ = SW.ip φ ψ + SW.ip φ' ψ := by
@@ -32,20 +33,20 @@ theorem ip_add_left (h : IsSB φ) (h₂ : IsSB φ') (h' : IsSB ψ) :
   have e : (fun x => (φ + φ') x * conj (ψ x)) =
       (fun x => φ x * conj (ψ x)) + fun x => φ' x * conj (ψ x) := by
     funext x; simp only [Pi.add_apply, add_mul]
-  unfold SW.ip; rw [e]; exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι _ _ hm hm').2.2.2.2.1
+  unfold SW.ip; rw [e]; exact (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ hm hm').2.2.2.2.1
 
 theorem ip_conj (h : IsSB φ) (h' : IsSB ψ) : SW.ip ψ φ = conj (SW.ip φ ψ) := by
   have hm := sb_mul_conj h h'
   have e : (fun x => ψ x * conj (φ x)) = fun x => conj (φ x * conj (ψ x)) := by
     funext x; simp only [map_mul, RCLike.conj_conj, mul_comm]
-  unfold SW.ip; rw [e]; exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι _ _ hm hm).2.2.2.2.2.2.1
+  unfold SW.ip; rw [e]; exact (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ hm hm).2.2.2.2.2.2.1
 
 theorem ip_smul_right (c : ℂ) (h : IsSB φ) (h' : IsSB ψ) :
     SW.ip φ (c • ψ) = conj c * SW.ip φ ψ := by
   have hm := sb_mul_conj h h'
   have e : (fun x => φ x * conj ((c • ψ) x)) = conj c • fun x => φ x * conj (ψ x) := by
     funext x; simp only [Pi.smul_apply, smul_eq_mul, map_mul]; ring
-  unfold SW.ip; rw [e]; exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι _ _ hm hm).2.2.2.2.2.1 (conj c)
+  unfold SW.ip; rw [e]; exact (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ hm hm).2.2.2.2.2.1 (conj c)
 
 theorem sum_sb_ip (s : Finset (Matrix κ ι ℚ → ℂ)) (hs : ∀ φ ∈ s, IsSB φ) (h' : IsSB ψ) :
     IsSB (∑ φ ∈ s, φ) ∧ SW.ip (∑ φ ∈ s, φ) ψ = ∑ φ ∈ s, SW.ip φ ψ := by
@@ -59,7 +60,7 @@ theorem sum_sb_ip (s : Finset (Matrix κ ι ℚ → ℂ)) (hs : ∀ φ ∈ s, Is
     have ha' := hs a (Finset.mem_insert_self a s)
     obtain ⟨h1, h2⟩ := ih fun φ hφ => hs φ (Finset.mem_insert_of_mem hφ)
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
-    exact ⟨(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι _ _ ha' h1).1, by rw [ip_add_left ha' h1 h', h2]⟩
+    exact ⟨(_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ ha' h1).1, by rw [ip_add_left ha' h1 h', h2]⟩
 
 theorem heisS_fix [DecidableEq ι] {R : ℕ} (h : HasLevel R φ) {a b : Matrix κ ι ℚ} (ha : IntM a)
     (hb : IntM b) : heisS (((2 * R : ℕ) : ℚ) • a) (((2 * R : ℕ) : ℚ) • b) φ = φ := by

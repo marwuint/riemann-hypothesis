@@ -1,5 +1,19 @@
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ProdSqrtLead
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DetLatticeFlagTensorStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
+import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DeterminantLatticeGradedTensor
 
 open AlgebraicGeometry CategoryTheory Limits NumberField Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
@@ -66,8 +80,8 @@ theorem det_pull' {L : Lat ξ V} {r : ℕ} {s : Fin r → V} {U : Submodule Ω V
     have hcf' := hcf _ trivial hU₂
     obtain ⟨T, hT⟩ := exists_mat (Ω := Ω) (b := c) (s := s) fun k => by
       rw [hsU', ← hc]; exact Submodule.subset_span ⟨k, rfl⟩
-    refine ⟨T.det, GlobalTheory.T.det_lattice_frame_gen X Ω ξ V L r s c T _ hs hcf' hT, ?_⟩
-    have h2 := GlobalTheory.T.det_lattice_frame_gen X' Ω' ξ' V' (L.pull ξ' f j) r b₀ (fun k => j (c k)) (T₁ * i.mapMatrix T) q hb₀
+    refine ⟨T.det, _root_.LevelTowerAlt.determinant_lattice_generator X Ω ξ V L r s c T _ hs hcf' hT, ?_⟩
+    have h2 := _root_.LevelTowerAlt.determinant_lattice_generator X' Ω' ξ' V' (L.pull ξ' f j) r b₀ (fun k => j (c k)) (T₁ * i.mapMatrix T) q hb₀
       (FlagPull.pull_isFrameAt hd hj q h hcf') (map_comb hj hT hT₁)
     rwa [Matrix.det_mul, ← RingHom.map_det] at h2
   obtain ⟨t, -, ht⟩ := main g hg
@@ -164,7 +178,7 @@ theorem core (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag) (hB : Birational y) {e : C
       rw [rootIdx_last, rootSgn_last] at h
       exact gen_untens (by norm_num) h
     have g2 := Flag.tens_gen (fun τ => detLat (𝔐.V (.inr τ)) (Fl.b (.inr τ))) (fun _ => -1) q _ fun τ => by
-      rw [GlobalTheory.T.det_lattice_flag_tensor _ _ _ _ _ _ _ (hb₀ _) (Fl.sub _)]
+      rw [_root_.LevelTowerAlt.determinant_lattice_graded_tensor _ _ _ _ _ _ _ (hb₀ _) (Fl.sub _)]
       exact Flag.tens_gen _ _ q _ (g1 τ)
     rw [g2.2, ha, mono_sum _ (chart_ne hch), smul_eq_mul, ← Finset.prod_mul_distrib, Fintype.prod_prod_type]
     simp only [_root_.zpow_neg_one, zpow_one, Finset.prod_inv_distrib, inv_inv]
@@ -174,7 +188,7 @@ theorem core (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag) (hB : Birational y) {e : C
   have hne : ∀ k, ∃ a, y ⟨k, a⟩ ≠ 0 := by
     obtain ⟨ch, hc⟩ := 𝔐.tie.cover ⟨genPt 𝔐.ξ, specializes_rfl⟩
     exact fun k => ⟨ch k, chart_ne hc k⟩
-  obtain ⟨f₁, f₂, hfg, hval⟩ := GlobalTheory.T.degree_lattice_quotient_forms _ Ω 𝔐.ξ K J y Ω _ A.a A'.a _ ρ 𝔐.tie hB hne D1
+  obtain ⟨f₁, f₂, hfg, hval⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LineIso.lineIso_of_two_degrees _ Ω 𝔐.ξ K J y Ω _ A.a A'.a _ ρ 𝔐.tie hB hne D1
     (by rw [smul_eq_mul, hρe]; exact D2)
   refine ⟨f₁, f₂, hfg, ?_⟩
   rintro w ⟨z, hzw, hzI⟩ u₁ u₂ huv hu₁
@@ -239,7 +253,7 @@ theorem core (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag) (hB : Birational y) {e : C
   rw [← e1, ← e2, ← hρe] at s2
   have hνpos : 0 < ∏ a, (ν a)⁻¹ := Finset.prod_pos fun a _ => inv_pos.2 (Real.sqrt_pos.2
     (div_pos (leadMinor_pos_of_posDef (hpd a.1) a.2.2) (leadMinor_pos_of_posDef (hpd a.1) a.2.2.le)))
-  have key := GlobalTheory.T.section_norm_isomorphic_lines _ Ω _ K J y A A' _ ρ _ f₁ f₂ u₁ u₂ _ w _ 𝔐.tie.gen hzw he₁ hfg hval s1 s2 hνpos huv hu₁
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.LineDefect.norm_mul_h_eq _ Ω _ K J y A A' _ ρ _ f₁ f₂ u₁ u₂ _ w _ 𝔐.tie.gen hzw he₁ hfg hval s1 s2 hνpos huv hu₁
   have hA := A.pos w fun k => (hzw.1 k).imp fun _ hc => hc.ne_zero
   have hu' : ‖evC w u₁‖ ≠ 0 := norm_ne_zero_iff.2 hu₁
   show (0 : ℝ) = Real.log (‖evC w u₂‖ / ‖evC w u₁‖ * A'.h w / A.h w)

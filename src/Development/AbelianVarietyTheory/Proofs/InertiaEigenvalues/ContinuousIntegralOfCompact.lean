@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOfMemSmoothSpan
-import Development.AbelianVarietyTheory.Definitions.Divisors.MemMspan
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TsumRsPsiEqTsumNeZero
 import Development.AbelianVarietyTheory.Definitions.Divisors.SmoothSpanLeMspan
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MspanLeBddForms
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemBddFormsOfWithSmoothings
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivariantProj
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ApplyScalar
 
 noncomputable section
@@ -105,8 +106,6 @@ theorem rsHat_zero_props (hω : ω.IsUnitary) {φ φ' : Sm E a} (h : φ.1 ∈ bd
 end GlobalTheory.RSResidue
 
 namespace GlobalTheory.RSResidue
-
-variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 end GlobalTheory.RSResidue
 

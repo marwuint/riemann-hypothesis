@@ -31,10 +31,6 @@ instance (A : Shv R) : ((tF R).obj A).PreservesZeroMorphisms where
     change A.obj ◁ (sheafToPresheaf _ _).map (0 : B ⟶ C) = 0
     rw [Functor.map_zero]; exact MonoidalPreadditive.whiskerLeft_zero
 
-example (I J : Cx R) : HomologicalComplex.HasMapBifunctor I J (tF R) (ComplexShape.up ℤ) := inferInstance
-example (P : PSh1 R) : Presheaf.IsLocallySurjective Scheme.etaleTopology (toSheafify Scheme.etaleTopology P) := inferInstance
-example (P : PSh1 R) : Presheaf.IsLocallyInjective Scheme.etaleTopology (toSheafify Scheme.etaleTopology P) := inferInstance
-
 abbrev P (I J : Cx R) : CochainComplex (PSh1 R) ℤ := HomologicalComplex.mapBifunctor I J (tF R) (ComplexShape.up ℤ)
 
 abbrev T (I J : Cx R) : Cx R := ((presheafToSheaf Scheme.etaleTopology _).mapHomologicalComplex _).obj (P I J)

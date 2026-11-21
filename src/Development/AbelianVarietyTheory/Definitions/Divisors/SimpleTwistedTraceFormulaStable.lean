@@ -50,10 +50,6 @@ def twTr {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V
   if h : ∀ v ∈ fixed ρ K', levOp ρ K K' f A v ∈ fixed ρ K' then
     LinearMap.trace ℂ (fixed ρ K') ((levOp ρ K K' f A).restrict h) else 0
 
-def extT {G' V V' : Type} [Group G'] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
-    (ρ : Representation ℂ G V) (ρ' : Representation ℂ G' V') : Representation ℂ (G × G') (V ⊗[ℂ] V') :=
-  Representation.tprod (ρ.comp (MonoidHom.fst G G')) (ρ'.comp (MonoidHom.snd G G'))
-
 variable [TopologicalSpace G]
 
 def cptPart (T : Subgroup G) : Subgroup G :=
@@ -167,9 +163,6 @@ variable {n : ℕ}
 
 abbrev Term.rep (t : Term E n) (w : Pl E) : Representation ℂ (GLw n w) (t.P w).V := (t.P w).ρ
 
-def Term.HasWt (t : Term E n) (lam : InfinitePlace E → DomWeight n) : Prop :=
-  ∀ v : InfinitePlace E, ∑ i, t.m i v.embedding = infOfWeight (lam v)
-
 def IsLevelFam {H : Pl E → Type} [∀ w, Group (H w)] [∀ w, TopologicalSpace (H w)] (θ : ∀ w, H w →* H w)
     (K K' : ∀ w : Pl E, Subgroup (H w)) : Prop :=
   (∀ w, IsLevel (θ w) (K w) (K' w)) ∧ ∀ᶠ w in cofinite, K' w = K w
@@ -180,51 +173,11 @@ def IsTest {H : Pl E → Type} [∀ w, Group (H w)] [∀ w, TopologicalSpace (H 
 
 abbrev atPl (w : Pl E) (P : E[X]) : (w.adicCompletion E)[X] := P.map (algebraMap E (w.adicCompletion E))
 
-def RegAt (n : ℕ) (w : Pl E) (φ : GLw n w → ℂ) : Prop := ∀ y, φ y ≠ 0 → (nrmL n w y).val.charpoly.Separable
-
 def RegAt2 (a b : ℕ) (w : Pl E) (φ : GLw a w × GLw b w → ℂ) : Prop :=
   ∀ y, φ y ≠ 0 → ((nrmL a w y.1).val.charpoly * (nrmL b w y.2).val.charpoly).Separable
 
 def Unr (E : Type) [Field E] [NumberField E] [IsCMField E] : Prop :=
   ∀ w : Pl E, Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal
-
-def spec {ι : Type} [Fintype ι] (S : Set (Pl E)) (t : ι → Term E n) (C : ι → ℂ) (K' : ∀ w : Pl E, Subgroup (GLw n w))
-    (φ : ∀ w : Pl E, GLw n w → ℂ) : ℂ :=
-  ∑ i, C i * ∏ᶠ w ∈ S, twTr ((t i).rep w) (GlobalTheory.LFun.KGL w n) (K' w) (φ w) ((t i).A w)
-
-def geomRat (S : Set (Pl E)) (lam : InfinitePlace E → DomWeight n) (φ : ∀ w : Pl E, GLw n w → ℂ) : ℂ :=
-  ∑ᶠ c : TwCl (thE E n), if (c.rep * thE E n c.rep).val.charpoly ∈ Ell E n then
-    mass (thF E n) (ratF E n).range (ratF E n c.rep) * chW lam (c.rep * thE E n c.rep).val.charpoly *
-      ∏ᶠ w ∈ S, twOrb (thL n w) (GlobalTheory.LFun.KGL w n) (locEl n w c.rep) (φ w) else 0
-
-def geomSt (S : Set (Pl E)) (lam : InfinitePlace E → DomWeight n) (φ : ∀ w : Pl E, GLw n w → ℂ) : ℂ :=
-  ∑ᶠ P ∈ Ell E n, kap P * chW lam P * ∏ᶠ w ∈ S, stTw n w (atPl w P) (φ w)
-
-def TraceId (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
-    (geo : Set (Pl E) → (InfinitePlace E → DomWeight n) → (∀ w : Pl E, GLw n w → ℂ) → ℂ) : Prop :=
-  ∀ S : Set (Pl E), IsSection S → ∀ (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (GLw n w)),
-    IsLevelFam (thL n) (fun w : Pl E => GlobalTheory.LFun.KGL w n) K' →
-    ∃ (ι : Type) (_ : Fintype ι) (t : ι → Term E n) (C : ι → ℂ), (∀ i, (t i).HasWt lam) ∧
-      ∀ φ, IsTest (fun w : Pl E => GlobalTheory.LFun.KGL w n) K' φ → (∃ w ∈ S, RegAt n w (φ w)) → geo S lam φ = spec S t C K' φ
-
-def STFrat : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n, TraceId E n geomRat
-
-def STF : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n, TraceId E n geomSt
-
-def SimpleTwistedTraceFormulaStable : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (a b : ℕ) (S : Set (Pl E)), IsSection S →
-    ∀ (l₁ : InfinitePlace E → DomWeight a) (l₂ : InfinitePlace E → DomWeight b) (K₁ : ∀ w : Pl E, Subgroup (GLw a w))
-      (K₂ : ∀ w : Pl E, Subgroup (GLw b w)), IsLevelFam (thL a) (fun w : Pl E => GlobalTheory.LFun.KGL w a) K₁ →
-    IsLevelFam (thL b) (fun w : Pl E => GlobalTheory.LFun.KGL w b) K₂ →
-    ∃ (ι : Type) (_ : Fintype ι) (t₁ : ι → Term E a) (t₂ : ι → Term E b) (C : ι → ℂ),
-      (∀ i, (t₁ i).HasWt l₁ ∧ (t₂ i).HasWt l₂) ∧
-      ∀ φ : ∀ w : Pl E, GLw a w × GLw b w → ℂ,
-        IsTest (fun w : Pl E => (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) (fun w : Pl E => (K₁ w).prod (K₂ w)) φ →
-        (∃ w ∈ S, RegAt2 a b w (φ w)) →
-        (∑ᶠ p ∈ {p : E[X] × E[X] | p.1 ∈ Ell E a ∧ p.2 ∈ Ell E b ∧ IsCoprime p.1 p.2},
-          kap p.1 * kap p.2 * chW l₁ p.1 * chW l₂ p.2 * ∏ᶠ w ∈ S, stTw2 a b w (atPl w p.1) (atPl w p.2) (φ w)) =
-        ∑ i, C i * ∏ᶠ w ∈ S, twTr (extT ((t₁ i).rep w) ((t₂ i).rep w)) ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b))
-          ((K₁ w).prod (K₂ w)) (φ w) (TensorProduct.map ((t₁ i).A w) ((t₂ i).A w))
 
 def IsCompU (π : Submodule ℂ (UA E n → ℂ)) (w : Pl E) (σ : SmIrr (UL n w)) : Prop :=
   ∃ p : locU n w →* UL n w, (∀ x, (p x).1 = cLoc w x.1) ∧ IsCompAlong π (locU n w) p σ.ρ
@@ -265,45 +218,5 @@ def Match (n a b : ℕ) (w : Pl E) (μ : (w.adicCompletion E)ˣ →* ℂˣ) (f :
     (φ : GLw a w × GLw b w → ℂ) : Prop :=
   ∀ Q₁ Q₂ : (w.adicCompletion E)[X], Q₁.Monic → Q₂.Monic → Q₁.natDegree = a → Q₂.natDegree = b →
     (Q₁ * Q₂).Separable → IsCsr w Q₁ → IsCsr w Q₂ → stTw2 a b w Q₁ Q₂ φ = delta w μ Q₁ Q₂ * kapOrb n w Q₁ Q₂ f
-
-def HasTransfer (n : ℕ) (w : Pl E) : Prop :=
-  ∀ U : Subgroup (UL n w), IsOpen (U : Set (UL n w)) → ∃ K' ≤ U, IsLevel (MonoidHom.id _) (KL n w) K' ∧
-    ∀ a b, a + b = n → ∃ K₁ K₂ φ, IsLevel (thL a w) (GlobalTheory.LFun.KGL w a) K₁ ∧ IsLevel (thL b w) (GlobalTheory.LFun.KGL w b) K₂ ∧
-      IsHecke (K₁.prod K₂) φ ∧ Match n a b w 1 ((K' : Set (UL n w)).indicator 1) φ
-
-def HasBC (π : Submodule ℂ (UA E n → ℂ)) : Prop :=
-  ∃ (c : ℕ) (N : Fin c → ℕ) (h : ∑ i, N i = n) (V : ∀ i, Submodule ℂ (Sm E (N i)))
-    (σ : ∀ i (w : Pl E), SmIrr (GLw (N i) w)) (m : Fin c → (E →+* ℂ) → Multiset ℂ), UnitaryBC.IsBaseChange π h V σ m
-
-def OddInert (E : Type) [Field E] [NumberField E] [IsCMField E] : Prop :=
-  ∀ w : Pl E, ¬ IsSplitAt w → (2 : 𝓞 E) ∉ w.asIdeal
-
-def BCCore : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
-    ∀ π : Submodule ℂ (UA E n → ℂ), IsAutRepU π → (∀ w, ¬ IsSplitAt w → IsUnramU π w ∨ HasTransfer n w) → HasBC π
-
-def BaseChangeSph : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → OddInert E → ∀ n : ℕ, 1 ≤ n →
-    ∀ π : Submodule ℂ (UA E n → ℂ), IsAutRepU π → (∀ w, ¬ IsSplitAt w → IsUnramU π w) → HasBC π
-
-def TransferInert : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E), ¬ IsSplitAt w → HasTransfer n w
-
-theorem baseChangeSph_of_bcCore : BCCore → BaseChangeSph := fun H E _ _ _ hE _ n hn π hπ hu =>
-  H E hE n hn π hπ fun w hw => Or.inl (hu w hw)
-
-theorem oddInert_iff (E : Type) [Field E] [NumberField E] [IsCMField E] :
-    OddInert E ↔ ∀ w : Pl E, (2 : 𝓞 E) ∈ w.asIdeal → IsSplitAt w :=
-  ⟨fun H w h2 => by_contra fun hs => H w hs h2, fun H w hs h2 => hs (H w h2)⟩
-
-def BCCoreOdd : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → OddInert E → ∀ n : ℕ, 1 ≤ n →
-    ∀ π : Submodule ℂ (UA E n → ℂ), IsAutRepU π → (∀ w, ¬ IsSplitAt w → IsUnramU π w ∨ HasTransfer n w) → HasBC π
-
-theorem bcCoreOdd_of_bcCore : BCCore → BCCoreOdd := fun H E _ _ _ hE _ => H E hE
-
-example (H : BCCore) (T : TransferInert) (E : Type) [Field E] [NumberField E] [IsCMField E] (hE : Unr E) (n : ℕ)
-    (hn : 1 ≤ n) (π : Submodule ℂ (UA E n → ℂ)) (hπ : IsAutRepU π) : HasBC π :=
-  H E hE n hn π hπ fun w hw => Or.inr (T E hE n w hw)
 
 end GlobalTheory.BCT

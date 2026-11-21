@@ -94,16 +94,6 @@ theorem adeleTensorAlgEquivAdele_apply (t : L ⊗[K] 𝔸[K]) :
     adeleTensorAlgEquivAdele K L t = adeleTensorEquiv K L t :=
   rfl
 
-variable (K L) in
-
-def adeleTensorContinuousAlgEquivAdele :
-    letI := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
-    L ⊗[K] 𝔸[K] ≃A[𝔸[K]] 𝔸[L] :=
-  letI := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
-  { adeleTensorAlgEquivAdele K L with
-    continuous_toFun := (adeleTensorHomeomorph K L).continuous_toFun
-    continuous_invFun := (adeleTensorHomeomorph K L).continuous_invFun }
-
 theorem isModuleTopology_adeleRing : IsModuleTopology 𝔸[K] 𝔸[L] := by
   let := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
   have : IsModuleTopology 𝔸[K] (L ⊗[K] 𝔸[K]) := ⟨rfl⟩
@@ -160,15 +150,6 @@ theorem continuous_adeleRetraction : Continuous (adeleRetraction K L) := by
 
 theorem adeleMap_injective : Function.Injective (adeleMap K L) :=
   Function.LeftInverse.injective (g := adeleRetraction K L) adeleRetraction_adeleMap
-
-theorem isClosedEmbedding_adeleMap : IsClosedEmbedding (adeleMap K L) :=
-  haveI : T2Space (FiniteAdeleRing (𝓞 L) L) := inferInstanceAs (T2Space
-    (Πʳ w : HeightOneSpectrum (𝓞 L), [w.adicCompletion L, w.adicCompletionIntegers L]))
-  haveI : T2Space (InfiniteAdeleRing L) :=
-    inferInstanceAs (T2Space ((w : NumberField.InfinitePlace L) → w.Completion))
-  haveI : T2Space 𝔸[L] := inferInstanceAs (T2Space (InfiniteAdeleRing L × FiniteAdeleRing (𝓞 L) L))
-  Function.LeftInverse.isClosedEmbedding (f := adeleRetraction K L) adeleRetraction_adeleMap
-    continuous_adeleRetraction continuous_adeleMap
 
 def finiteTmulLeft (l : L) :
     FiniteAdeleRing (𝓞 K) K →ₗ[FiniteAdeleRing (𝓞 K) K] L ⊗[K] FiniteAdeleRing (𝓞 K) K where

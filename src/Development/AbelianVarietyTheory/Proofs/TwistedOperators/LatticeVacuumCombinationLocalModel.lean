@@ -1,6 +1,7 @@
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EpsVEqOne
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalModelOfSplitPlaceThetaFunStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CombinationProducesDatumAllLocalModelsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalModelOfSplitPlaceThetaFun
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CombinationProducesDatumAllLocalModels
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsNotRelZero
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ExistsDblClosed
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
@@ -30,12 +31,12 @@ theorem GlobalTheory.FlatPlace.eventually_combination_of_lattice : Big fun ch =>
   have hth' : FinDatum.IsTheta ch.W d _ _ f₀ _ := hth
   unfold FinDatum.IsTheta at hth'
   rw [hde] at hsb hth'
-  obtain ⟨Tm, hTm, hO, Φ, hΦ, hTΦ⟩ := GlobalTheory.T.exists_localModel_of_splitPlaceThetaFun D (Kw w) p ch.W.ψ hψ _ _ _ _ sdS sdT _ _
+  obtain ⟨Tm, hTm, hO, Φ, hΦ, hTΦ⟩ := _root_.GlobalTheory.LocMod.Witness.exists_isModel_of_isThetaAt D (Kw w) p ch.W.ψ hψ _ _ _ _ sdS sdT _ _
     (frTop ch.S.toGridChoice t w j hj.le) (frTop ch.S.toGridChoice t w (j + 1) hj) ((hLat t w hw p hp j hj).2) f₀ d.fn _
     hf₀.2.theta hsb hth'
   obtain ⟨O, hO1, -⟩ := GlobalTheory.LocMod.PinModel.exists_isOne (k := Kw w) (Y := Fin (topRank (locGrid ch.G t w) (j + 1))) (Y' := Fin (topRank (locGrid ch.G t w) j))
   have hhalf := hc.2.1
   rw [hde] at hhalf
-  refine ⟨Φ, hΦ, GlobalTheory.T.combination_produces_datum_all_localModels D (Kw w) p ch.W.ψ hψ _ _ _ _ _ _ c hhalf Tm hTm O Φ hO1 ?_ ?_⟩
+  refine ⟨Φ, hΦ, _root_.GlobalTheory.FlatPlace.isCombAt_of_one D (Kw w) p ch.W.ψ hψ _ _ _ _ _ _ c hhalf Tm hTm O Φ hO1 ?_ ?_⟩
   · rw [hO O hO1]; exact hf0
   · rw [hTΦ, hO O hO1]

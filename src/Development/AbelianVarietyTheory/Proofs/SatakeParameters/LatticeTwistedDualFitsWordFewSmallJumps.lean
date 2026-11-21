@@ -1,8 +1,9 @@
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NotDvdCondN
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsCrystallineJumpsOfIsIsoMatrixGaloisRepresentatStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CrystallineHodgeTateMultiplicityNeZeroOfJumpStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUniqueEmbeddingRestrictsToWachLetterUnramiStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualJumpsMemWindowBoxStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CrystallineHodgeTateMultiplicityNeZeroOfJump
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUniqueEmbeddingRestrictsToWachLetterUnrami
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualJumpsMemWindowBox
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.SharpRestriction.ParConsts
@@ -17,21 +18,21 @@ theorem fits_lowCount_of_matRep : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (j 
       u ∈ (recWord L j ε g).win a ∧
         u ∈ Set.Icc (-((recWord L j ε g).Mi a : ℤ)) ((recWord L j ε g).hi a : ℤ) := by
     intro a τ hτ u hu
-    have h0 := GlobalTheory.T.crystalline_hodgeTateMultiplicity_ne_zero_of_jump P K LL T hF τ u hu
+    have h0 := _root_.GlobalTheory.HTW.Rec.jump_multV_ne_zero P K LL T hF τ u hu
     rw [hmu, hJ.mult' τ (g a) (hRd τ a hτ) u] at h0
     have hc : u ∈ jT2 (hcAt D (g a)) j (pos ε (g a)) := by
       by_contra hn
       exact h0 (by simp [Multiset.count_eq_zero.mpr hn])
-    obtain ⟨h1, h2, _⟩ := GlobalTheory.T.twistedDualJumps_mem_window_box L C j ε g hR a
+    obtain ⟨h1, h2, _⟩ := _root_.GlobalTheory.HTW.Rec.recWord_jumps L C j ε g hR a
     exact h1 u (h2 u hc)
   refine ⟨⟨hcr hJ.crys', fun a τ hτ u hu => (hmem a τ hτ u hu).1,
     fun a τ hτ u hu => (hmem a τ hτ u hu).2⟩, ?_⟩
   intro _ft a
-  obtain ⟨τ0, hτ0, huniq⟩ := GlobalTheory.T.existsUnique_embeddingRestrictsToWachLetter_unramified P K LL W hK a
+  obtain ⟨τ0, hτ0, huniq⟩ := _root_.GlobalTheory.HTW.Rec.existsUnique_over P K LL W hK a
   unfold lowCount
   rw [Finset.sum_eq_single_of_mem τ0 (by simpa using hτ0) (fun b hb hne => by
     exact absurd (huniq b (by simpa using hb)) hne)]
-  have h3 := (GlobalTheory.T.twistedDualJumps_mem_window_box L C j ε g hR a).2.2
+  have h3 := (_root_.GlobalTheory.HTW.Rec.recWord_jumps L C j ε g hR a).2.2
   have he : ∀ u, multV (P.PD K) T.ρ τ0 u = (((jT2 (hcAt D (g a)) j (pos ε (g a))).count u : ℕ) : ℤ) := fun u => by
     rw [hmu, hJ.mult' τ0 (g a) (hRd τ0 a hτ0) u]
   simp only [he]

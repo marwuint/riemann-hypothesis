@@ -36,13 +36,6 @@ theorem multHaarOf_eq (μ : Measure K) [μ.IsAddHaarMeasure] :
   conv_lhs => rw [eq_smul_haarIntegers μ]
   rw [multHaarOf_smul, multHaarOf_haarIntegers]
 
-theorem unitsMeasureOf_eq (μ : Measure K) [μ.IsAddHaarMeasure] :
-    unitsMeasureOf μ = ((1 - ((residueCard K : ℝ≥0∞))⁻¹) * μ (𝒪[K] : Set K)) • multHaar K := by
-  have h : unitsMeasureOf μ = (multHaarConst K)⁻¹ • multHaarOf μ := by
-    rw [multHaarOf, smul_smul, ENNReal.inv_mul_cancel multHaarConst_ne_zero multHaarConst_ne_top,
-      one_smul]
-  rw [h, multHaarOf_eq, smul_smul, multHaarConst, inv_inv]
-
 instance (μ : Measure K) [μ.IsAddHaarMeasure] : (multHaarOf μ).IsHaarMeasure := by
   rw [multHaarOf_eq μ]
   have h0 : μ (𝒪[K] : Set K) ≠ 0 := by
@@ -53,30 +46,7 @@ instance (μ : Measure K) [μ.IsAddHaarMeasure] : (multHaarOf μ).IsHaarMeasure 
     exact (isCompact_valBall 0).measure_lt_top.ne
   exact IsHaarMeasure.smul _ h0 ht
 
-theorem multHaarOf_unitFiltrationUnits_zero (μ : Measure K) [μ.IsAddHaarMeasure] :
-    multHaarOf μ (unitFiltrationUnits K 0 : Set Kˣ) = μ (𝒪[K] : Set K) := by
-  rw [multHaarOf_eq, Measure.smul_apply, multHaar_unitFiltrationUnits_zero, smul_eq_mul, mul_one]
-
-theorem multHaarOf_selfDualMeasure (ψ : AddChar K Circle) :
-    multHaarOf (selfDualMeasure ψ) =
-      (((residueCard K : ℝ≥0) ^ ((addCharConductor ψ : ℝ) / 2) : ℝ≥0) : ℝ≥0∞) • multHaar K := by
-  rw [multHaarOf_eq, selfDualMeasure_integers]
-
-theorem unitsMeasureOf_selfDualMeasure (ψ : AddChar K Circle) :
-    unitsMeasureOf (selfDualMeasure ψ) =
-      ((1 - ((residueCard K : ℝ≥0∞))⁻¹) *
-        (((residueCard K : ℝ≥0) ^ ((addCharConductor ψ : ℝ) / 2) : ℝ≥0) : ℝ≥0∞)) • multHaar K := by
-  rw [unitsMeasureOf_eq, selfDualMeasure_integers]
-
 namespace Padic
-
-variable (p : ℕ) [Fact p.Prime] (K) [Algebra ℚ_[p] K] [ValuativeExtension ℚ_[p] K]
-  [FiniteDimensional ℚ_[p] K]
-
-theorem multHaarOf_selfDualMeasure_stdCharOf_units :
-    multHaarOf (selfDualMeasure (stdCharOf p K)) (unitFiltrationUnits K 0 : Set Kˣ) =
-      ((Nat.card (𝒪[K] ⧸ differentIdeal 𝒪[ℚ_[p]] 𝒪[K]) : ℝ≥0) ^ (-(1 / 2 : ℝ)) : ℝ≥0) := by
-  rw [multHaarOf_unitFiltrationUnits_zero, selfDualMeasure_stdCharOf_integers]
 
 end Padic
 

@@ -140,31 +140,5 @@ theorem ord_unif {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (�
       WithZero.exp (-1 : ℤ) := Formalism.L2.Host.unif_spec w
   rw [SphCompletion.ord_completion, h, WithZero.log_exp, neg_neg]
 
-theorem univ_map_two (a b : ℂˣ) : (Finset.univ.val.map ![a, b] : Multiset ℂˣ) = {a, b} := by
-  simp [Fin.univ_val_map, List.ofFn_succ]
-  rfl
-
 end GlobalTheory.PrinSat
 
-theorem GlobalTheory.PrinSat.hasSatGL_prod₂_detRep : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
-    (μ₁ μ₂ : (w.adicCompletion E)ˣ →* ℂˣ), GlobalTheory.SplitWeil.IsUnram μ₁ → GlobalTheory.SplitWeil.IsUnram μ₂ →
-    GlobalTheory.LFun.HasSatGL w (GlobalTheory.SmGL.prod₂ (GlobalTheory.SmGL.detRep (Fin 1) μ₁) (GlobalTheory.SmGL.detRep (Fin 1) μ₂))
-      {μ₁ (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w)), μ₂ (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w))} := by
-  intro E _ _ w μ₁ μ₂ h1 h2
-  have e1 := GlobalTheory.PrinSat.eq_unrChar_of_ord h1 (GlobalTheory.PrinSat.ord_unif w)
-  have e2 := GlobalTheory.PrinSat.eq_unrChar_of_ord h2 (GlobalTheory.PrinSat.ord_unif w)
-  obtain ⟨E1⟩ := GlobalTheory.SmGL.PrinProd.stage_one (fun _ : Fin 1 => μ₁) (fun _ : Fin 1 => μ₂)
-  obtain ⟨E2⟩ := GlobalTheory.SmGL.PrinProd.stage_two (fun _ : Fin 1 => μ₁) (fun _ : Fin 1 => μ₂)
-  let T := (GlobalTheory.LocGL.prod₂Equiv (GlobalTheory.PrinSat.oneEquiv μ₁ (GlobalTheory.SmGL.isSmoothChar_of_isUnram h1))
-    (GlobalTheory.PrinSat.oneEquiv μ₂ (GlobalTheory.SmGL.isSmoothChar_of_isUnram h2))).trans (E1.trans E2)
-  have hA : Fin.append (fun _ : Fin 1 => μ₁) (fun _ : Fin 1 => μ₂) = fun i =>
-      GlobalTheory.SmGL.unrChar (w.adicCompletion E) (![μ₁ (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w)),
-        μ₂ (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w))] i) := by
-    funext i
-    fin_cases i
-    · exact e1
-    · exact e2
-  have key := GlobalTheory.PrinSat.hasSatGL_prinSeries w ![μ₁ (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w)),
-    μ₂ (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w))]
-  rw [GlobalTheory.PrinSat.univ_map_two, ← hA] at key
-  exact GlobalTheory.PrinSat.hasSatGL_of_equiv T key

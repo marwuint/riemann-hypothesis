@@ -3,28 +3,28 @@ import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.FiniteDimKStableSubspaceKFiniteLie
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnalyticOnNhdOrbitPolStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnalyticOnNhdOrbitPol
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoverUpqClosureExpTopAndCartanStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDerivedActionsTensorMembersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsGradedCompactStableStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InnerExpJointHarmPosStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsGradedCompactStable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InnerExpJointHarmPos
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlBlockFiniteDimModuleStructureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeightsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommuteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CasimirCentralAndOnHighestWeightStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeights
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommute
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CasimirCentralAndOnHighestWeight
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesIntegrableCoefficientProjectorStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockModelDualPairCasimirApplyStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CasimirNumberIdentityDualPair
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EmbedsOfLowestTypeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowestKTypesJointHarmonicShapeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EmbedsOfLowestType
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowestKTypesJointHarmonicShape
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DoubleCoverUpqKsetGeneratedByExpStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairKEquivariantOfLieAlgebraCompatStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairKEquivariantOfLieAlgebraCompat
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DoublingCoefficientsVanishOfOneVanishesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfPositiveCoeffOrthogonalEmbeddingsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfPositiveCoeffOrthogonalEmbeddings
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedAdjointStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InnerEqOfIrreducibleStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AnalyticOnNhdOrbitOfDerivSeqNormEqStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InnerCoeffEqOfIsometricAnalyticModulesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AnalyticOnNhdOrbitOfDerivSeqNormEq
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InnerCoeffEqOfIsometricAnalyticModules
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg MeasureTheory Matrix
 open GlobalTheory.RealPar.KStabLie
 
@@ -200,7 +200,7 @@ theorem exists_coeff_ne_zero (hn : 1 ≤ p + q) (T : GrpData p q) (π₁ π₂ :
   have ha : ∀ Z, IsKC Z → ∀ w : E, (a Z w : M₁.V × M₂.V) = prodAct M₁ M₂ Z w := by
     intro Z hZ w
     simp only [a, dif_pos hZ, LinearMap.restrict_coe_apply]
-  have heq := GlobalTheory.T.pair_kEquivariant_of_lieAlgebra_compat p q T (GlobalTheory.T.doubleCoverUpq_Kset_generated_by_exp p q hn T) π₁ π₂ E a i₁ i₂ (by
+  have heq := _root_.GlobalTheory.RealPar.pair_kEquivariant_of_lie p q T (GlobalTheory.T.doubleCoverUpq_Kset_generated_by_exp p q hn T) π₁ π₂ E a i₁ i₂ (by
     intro Y hY hYK w
     simp only [i₁, i₂, LinearMap.comp_apply, Submodule.subtype_apply, ha Y hYK]
     exact ⟨hd₁ Y hY _, hd₂ Y hY _⟩)
@@ -234,7 +234,7 @@ theorem exists_coeff_ne_zero (hn : 1 ≤ p + q) (T : GrpData p q) (π₁ π₂ :
       rw [h, Submodule.map_subtype_top]
   have hvan := GlobalTheory.T.doublingCoefficients_vanish_of_one_vanishes p q T π₁ π₂ E i₁ i₂ hi₂ heq hirr' ⟨_, hv⟩
     (fun h => h₁.1 (congrArg (fun w : E => (w : M₁.V × M₂.V).1) h)) hi hz
-  have h0 := GlobalTheory.T.eq_zero_of_positive_coeff_orthogonal_embeddings p q T (GlobalTheory.T.coverUpq_closure_exp_top_and_cartan p q hn T).2 π₁ π₂ E i₁ i₂ hi₂ heq
+  have h0 := _root_.GlobalTheory.PosTrace.eq_zero_of_pos_of_orth p q T (GlobalTheory.T.coverUpq_closure_exp_top_and_cartan p q hn T).2 π₁ π₂ E i₁ i₂ hi₂ heq
     (fun Y hY w => hp₁ Y hY _
       (hmin (N₁.comap (LinearMap.fst ℂ _ _)) hN (fun Z hZ w hw => hNK Z hZ _ hw) w.2))
     (fun Y hY w => hp₂ Y hY _ (by
@@ -255,9 +255,9 @@ abbrev fockRep (F : FockData T0 T1 T2) : URep T1 where
 abbrev polMod (p q r s : ℕ) : GKMod p q where
   V := Pol p q r s
   act := fockAct1 p q r s
-  lie := (GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.1
-  kfin v := ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).1 v).1
-  wts v := ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).1 v).2
+  lie := (_root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.1
+  kfin v := ((_root_.GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 v).1
+  wts v := ((_root_.GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 v).2
 
 theorem fock_der (F : FockData T0 T1 T2) : ∀ Y ∈ upq p q, ∀ x : (polMod p q r s).V,
     HasDerivAt (fun t : ℝ => (fockRep F).π (T1.expt (t • Y)) (F.ι x)) (F.ι ((polMod p q r s).act Y x)) 0 :=
@@ -300,7 +300,7 @@ theorem fock_analytic (F : FockData T0 T1 T2) {Y : Mat p q} (hY : Y ∈ upq p q)
       fockAct1 p q r s Y := by
     rw [hZd, ← Matrix.reindex_symm, Equiv.symm_apply_apply]
     rfl
-  have := GlobalTheory.T.analyticOnNhd_orbit_of_derivSeq_norm_eq F.H F.H (fun t => F.Om (T0.expt (t • Z))) (fun t => (fockRep F).π (T1.expt (t • Y)))
+  have := _root_.GlobalTheory.OrbitAnalytic.analyticOnNhd_orbit_of_norm_eq F.H F.H (fun t => F.Om (T0.expt (t • Z))) (fun t => (fockRep F).π (T1.expt (t • Y)))
     (fun s t => by simp only [T0.expt_add Z hZ, map_mul])
     (fun s t => by simp only [T1.expt_add Y hY, map_mul])
     (by simp [T0.expt_zero]) (by rw [zero_smul, T1.expt_zero, map_one]) (fun t x => (fockRep F).isom _ x)
@@ -312,7 +312,7 @@ theorem fock_analytic (F : FockData T0 T1 T2) {Y : Mat p q} (hY : Y ∈ upq p q)
     (fun k => by
       have := fock_der F Y hY ((fockAct1 p q r s Y ^ k) P)
       simpa only [pow_succ', Module.End.mul_apply] using this)
-    (fun k => rfl) (by simpa using (GlobalTheory.T.analyticOnNhd_om_expt_and_iteratedDeriv_zero_eq p q r s T0 T1 T2 F Z hZ P).1 0 trivial)
+    (fun k => rfl) (by simpa using (_root_.GlobalTheory.FockAlg.analyticOnNhd_orbit_pol p q r s T0 T1 T2 F Z hZ P).1 0 trivial)
   simpa using this
 
 theorem analytic_of_isom (T : GrpData p q) (π₁ π₂ : URep T) (M : GKMod p q)
@@ -323,7 +323,7 @@ theorem analytic_of_isom (T : GrpData p q) (π₁ π₂ : URep T) (M : GKMod p q
     (hiso : ∀ x y, inner ℂ (j₁ x) (j₁ y) = inner ℂ (j₂ x) (j₂ y)) :
     ∀ Y ∈ upq p q, ∀ x, AnalyticOnNhd ℝ (fun t : ℝ => π₂.π (T.expt (t • Y)) (j₂ x)) Set.univ := by
   intro Y hY x
-  have := GlobalTheory.T.analyticOnNhd_orbit_of_derivSeq_norm_eq π₁.H π₂.H (fun t => π₁.π (T.expt (t • Y))) (fun t => π₂.π (T.expt (t • Y)))
+  have := _root_.GlobalTheory.OrbitAnalytic.analyticOnNhd_orbit_of_norm_eq π₁.H π₂.H (fun t => π₁.π (T.expt (t • Y))) (fun t => π₂.π (T.expt (t • Y)))
     (fun s t => by simp only [T.expt_add Y hY, map_mul])
     (fun s t => by simp only [T.expt_add Y hY, map_mul])
     (by simp [T.expt_zero]) (by simp [T.expt_zero]) (fun t x => π₂.isom _ x)
@@ -350,8 +350,8 @@ theorem casimir_compact (h : r = 0 ∨ s = 0) {V W : Type} [AddCommGroup V] [Mod
     [Module ℂ W] (a : Mat r s →ₗ[ℂ] Module.End ℂ V) (b : Mat r s →ₗ[ℂ] Module.End ℂ W) (ha : IsLieAct a)
     (hb : IsLieAct b) {μ : Ix r s → ℚ} {v : V} {w : W} (hv : v ∈ hwSub a μ) (hw : w ∈ hwSub b μ) (hw0 : w ≠ 0)
     {c : ℂ} (hc : casimir b w = c • w) : casimir a v = c • v := by
-  have h1 := (GlobalTheory.T.casimir_central_and_on_highestWeight r s V a ha).2 μ v hv
-  have h2 := (GlobalTheory.T.casimir_central_and_on_highestWeight r s W b hb).2 μ w hw
+  have h1 := (_root_.GlobalTheory.CasimirHighest.casimir_central_and_highest r s V a ha).2 μ v hv
+  have h2 := (_root_.GlobalTheory.CasimirHighest.casimir_central_and_highest r s W b hb).2 μ w hw
   simp only [sameBlock_of_compact h, if_true] at h1 h2
   simp only [casimir, LinearMap.sum_apply, Module.End.mul_apply] at hc ⊢
   rw [h1]
@@ -367,7 +367,7 @@ theorem main_gen (X : ProvA) (H2 : admH2 X) (DS1 : DiscreteSeriesBlattner X) (Du
     ARi X lam lam' := by
   set F := X.fock p q r s with hF
   set D := X.ds p q lam with hD
-  obtain ⟨hsp, hK1, -, -⟩ := GlobalTheory.T.fockHarmonics_graded_compactStable p q r s (jointHarm p q r s) (Or.inr (Or.inr rfl))
+  obtain ⟨hsp, hK1, -, -⟩ := _root_.GlobalTheory.FockAlg.harm_graded_stable p q r s (jointHarm p q r s) (Or.inr (Or.inr rfl))
   have hspm : ∀ P, P ∈ Submodule.span ℂ (jointHarm p q r s) → P ∈ jointHarm p q r s := fun P hP => by
     rw [← hsp]; exact hP
   constructor
@@ -425,7 +425,7 @@ theorem main_gen (X : ProvA) (H2 : admH2 X) (DS1 : DiscreteSeriesBlattner X) (Du
       (fun Y hY w hw => (DualityBasisChange p q lam hl _ hge le_rfl).1 Y hY _ ⟨w, hw, rfl⟩) hm (fun z => ?_)
     · by_cases hw0 : w = 0
       · simp [hw0]
-      · have := GlobalTheory.T.inner_expt_jointHarm_real_pos p q r s _ _ _ F Y hY w (hspm w hw) hw0
+      · have := _root_.GlobalTheory.HarmCoeff.inner_exp_jointHarm_pos p q r s _ _ _ F Y hY w (hspm w hw) hw0
         exact ⟨this.1, this.2.le⟩
     · have := hop z
       rw [h0, inner_zero_right] at this
@@ -434,7 +434,7 @@ theorem main_gen (X : ProvA) (H2 : admH2 X) (DS1 : DiscreteSeriesBlattner X) (Du
     obtain ⟨hr, hcD, -⟩ := DS1 p q lam hl
     obtain ⟨w, hw, hw0⟩ := exists_isHW hr'
     have h2 : casimir (fockAct2 p q r s) Φ = _ := casimir_compact hc (fockAct2 p q r s) _
-      (GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.2.1 (X.ds r s lam').HK.lie hΦ.2.2.1.2 hw hw0 (hc' w)
+      (_root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.2.1 (X.ds r s lam').HK.lie hΦ.2.2.1.2 hw hw0 (hc' w)
     have h1 : casimir (fockAct1 p q r s) Φ = (((normSq lam - rhoSq (p + q) : ℚ)) : ℂ) • Φ := by
       rw [GlobalTheory.T.fockModel_dualPair_casimir_apply, sub_eq_iff_eq_add, ← add_smul, hnum] at h2
       rw [h2]
@@ -443,7 +443,7 @@ theorem main_gen (X : ProvA) (H2 : admH2 X) (DS1 : DiscreteSeriesBlattner X) (Du
       ring
     have hirr : IrrGK D.HK :=
       (((Q5 p q hn).1 D.U ⟨D.nontriv, D.irred⟩).2.2 D.HK D.ι ⟨D.ι_inj, D.ι_range, D.der⟩).2
-    obtain ⟨e, -, hev, he⟩ := GlobalTheory.T.exists_injective_intertwiner_of_lowest_type Q7 Q8 p q lam hl hgt
+    obtain ⟨e, -, hev, he⟩ := _root_.GlobalTheory.LowestType.embeds_of_lowest_type Q7 Q8 p q lam hl hgt
       (ugk _ (fockRep F) (polMod p q r s) F.ι F.ι_inj (fock_der F)) (ugk _ D.U D.HK D.ι D.ι_inj D.der)
       Φ v hΦ.2.1 hv.1 h1 (hcD v) hirr
     let e' : D.HK.V →ₗ[ℂ] Pol p q r s := e
@@ -462,7 +462,7 @@ theorem main_gen (X : ProvA) (H2 : admH2 X) (DS1 : DiscreteSeriesBlattner X) (Du
     have han : ∀ Y ∈ upq p q, ∀ x, AnalyticOnNhd ℝ
         (fun t : ℝ => (fockRep F).π ((X.grp p q).expt (t • Y)) (j x)) Set.univ :=
       fun Y hY x => fock_analytic F hY _
-    have hco := GlobalTheory.T.inner_coeff_eq_of_isometric_analytic_modules p q _ (GlobalTheory.T.coverUpq_closure_exp_top_and_cartan p q hn _).1 (fockRep F) D.U D.HK j D.ι hdj D.der han
+    have hco := _root_.GlobalTheory.AnalyticVec.inner_apply_eq_of_analytic p q _ (GlobalTheory.T.coverUpq_closure_exp_top_and_cartan p q hn _).1 (fockRep F) D.U D.HK j D.ι hdj D.der han
       (analytic_of_isom _ (fockRep F) D.U D.HK j D.ι hdj D.der han hiso) hiso
     have hZ1 : ∫ g, inner ℂ (F.ι Φ) ((fockRep F).π g (F.ι Φ)) * star (mcoef D v g) ∂(X.grp p q).haar =
         (((D.fdeg)⁻¹ : ℝ) : ℂ) := by
@@ -500,7 +500,7 @@ theorem doubling_pos : ∀ X : ProvA, admH1 X → admH2 X → DiscreteSeriesBlat
   intro X _ H2 DS1 DualityBasisChange Q5 Q6 Q7 Q8
   constructor
   · rintro t al be ga de ⟨hA, hG⟩
-    obtain ⟨⟨h1, h2, -⟩, h3, -⟩ := GlobalTheory.T.lowestKTypes_jointHarmonicShape t al be ga de hA
+    obtain ⟨⟨h1, h2, -⟩, h3, -⟩ := _root_.GlobalTheory.lowestKTypes_jointShape t al be ga de hA
     have h4 := (GlobalTheory.CasimirNumber.casimir_number_identity t al be ga de hA).1
     have e1 : al.length + be.length + (ga.length + de.length) =
       al.length + be.length + ga.length + de.length := by omega
@@ -515,7 +515,7 @@ theorem doubling_pos : ∀ X : ProvA, admH1 X → admH2 X → DiscreteSeriesBlat
       push_cast
       ring
   · rintro t al be ga de ⟨hA, hG⟩
-    obtain ⟨⟨h1, -, h2⟩, -, h3⟩ := GlobalTheory.T.lowestKTypes_jointHarmonicShape t al be ga de hA
+    obtain ⟨⟨h1, -, h2⟩, -, h3⟩ := _root_.GlobalTheory.lowestKTypes_jointShape t al be ga de hA
     obtain ⟨h4, h5⟩ := GlobalTheory.CasimirNumber.casimir_number_identity t al be ga de hA
     have e1 : al.length + be.length + (ga.length + de.length) =
       al.length + be.length + ga.length + de.length := by omega

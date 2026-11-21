@@ -287,55 +287,6 @@ theorem exists_perm_of_map_eq {M : Type} [DecidableEq M] (f g : Fin n → M)
   let e : ∀ c : M, {a // f a = c} ≃ {b // g b = c} := fun c => Fintype.equivOfCardEq (hc c)
   exact ⟨Equiv.ofFiberEquiv e, fun a => Equiv.ofFiberEquiv_map e a⟩
 
-theorem muQ_levB (lam : Fin n → ℤ) : muQ lam (levB n) = m0 lam := by
-  funext a
-  have h1 : (univ.filter fun b : Fin n => levB n a < levB n b).card = n - 1 - (a : ℕ) := by
-    have : (univ.filter fun b : Fin n => levB n a < levB n b) = Finset.Ioi a := by
-      ext b
-      simp only [mem_filter, mem_univ, true_and, mem_Ioi]
-      exact Iff.rfl
-    rw [this, Fin.card_Ioi]
-  have h2 : (univ.filter fun b : Fin n => levB n b < levB n a).card = (a : ℕ) := by
-    have : (univ.filter fun b : Fin n => levB n b < levB n a) = Finset.Iio a := by
-      ext b
-      simp only [mem_filter, mem_univ, true_and, mem_Iio]
-      exact Iff.rfl
-    rw [this, Fin.card_Iio]
-  have hlt := a.2
-  simp only [muQ, rhoU, m0, h1, h2]
-  rw [Nat.sub_sub, Nat.cast_sub (by omega)]
-  push_cast
-  ring
-
-def bOf (B : Finset (Pos n)) : Finset (Fin n × Fin n) := B.map (Function.Embedding.subtype _)
-
-theorem wtB_bOf (B : Finset (Pos n)) : wtB (bOf B) = wt B := by
-  funext c
-  simp only [wtB, wt, bOf, Finset.filter_map, Finset.card_map]
-  rfl
-
-theorem not_weight_of_kostant (lam : Fin n → ℤ) (B : Finset (Pos n)) (hB : B.Nonempty) (ν : Fin n → ℝ)
-    (hdom : ∀ c d : Fin n, c < d → ν d ≤ ν c)
-    (hm : ∀ k, GlobalTheory.Dec.gelfVal (chiHW ν) k = GlobalTheory.Dec.gelfVal (chiOf (m0 lam + (2 : ℝ) • rhoV n - wt B)) k) :
-    IsSecondTypeWeight lam (levB n) ν := by
-  classical
-  obtain ⟨w, hw⟩ := exists_perm_of_map_eq _ _ (GlobalTheory.GelfandInj.gelfVal_multiset_eq n _ _ fun k => hm (k + 1))
-  refine ⟨bOf B, hB.map, fun p hp => ?_, fun c d hcd => ?_, w, ?_⟩
-  · obtain ⟨i, -, rfl⟩ := Finset.mem_map.1 hp
-    exact i.2
-  · have h1 := hdom c d hcd
-    have h2 : ((c : ℕ) : ℝ) < (d : ℕ) := by exact_mod_cast hcd
-    simp only [Pi.add_apply, rhoV]
-    linarith
-  · funext a
-    have h1 : ν a + rhoV n a = (m0 lam + (2 : ℝ) • rhoV n - wt B) (w a) - rhoV n (w a) := by
-      have := hw a
-      simp only [chiOf, chiHW] at this
-      exact (Complex.ofReal_injective this).symm
-    simp only [Function.comp_apply, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, muQ_levB, wtB_bOf] at h1 ⊢
-    rw [h1]
-    ring
-
 section
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
@@ -485,65 +436,5 @@ theorem chain_list (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (j 
     rw [e, hw2, map_add, map_smul, hz1, CompanionTheory.D.LK.lift_bd T E E hTE, map_add, map_smul, smul_add, smul_smul, add_assoc]
 
 end
-
-open CompanionTheory.D.LK (LocFin) in
-
-theorem vanKostant : VanKostant := by
-  intro n lam hlam V _ _ E1 E2 h B j z hB hz hwt hb
-  have hE : GlRel (kF E1 E2) := fun a b c d => by
-    have e1 := h.gl1 a b c d
-    have e2 := h.gl2 a b c d
-    have c1 := h.comm a b c d
-    have c2 := h.comm c d a b
-    have e3 : kF E1 E2 a b * kF E1 E2 c d - kF E1 E2 c d * kF E1 E2 a b =
-        (E1 a b * E1 c d - E1 c d * E1 a b) + (E2 a b * E2 c d - E2 c d * E2 a b) := by
-      simp only [kF, add_mul, mul_add]
-      rw [c1, ← c2]
-      abel
-    rw [e3, e1, e2]
-    simp only [kF]
-    split_ifs <;> abel
-  have hU : KUnit (allT n) (kF E1 E2) := fun a b _ x y => h.unitK a b x y
-  have hF : LocFin (allT n) (kF E1 E2) := fun x => by
-    obtain ⟨S, h1, h2, h3⟩ := h.locFin x
-    exact ⟨S, h1, fun a b _ w hw => h3 a b w hw, h2⟩
-  set τ : Fin n → ℝ := m0 lam + (2 : ℝ) • rhoV n - wt B with hτ
-  have hbad : ∀ (ν : Fin n → ℝ) (y : V), y ≠ 0 → KHighest (allT n) (kF E1 E2) ν y →
-      ∃ m s, s ≠ GlobalTheory.Dec.gelfVal (chiOf τ) m ∧ etr (kF E1 E2) m y = s • y := by
-    intro ν y hy0 hy
-    by_contra hc
-    push Not at hc
-    have hm : ∀ k, GlobalTheory.Dec.gelfVal (chiHW ν) k = GlobalTheory.Dec.gelfVal (chiOf τ) k := fun k => by
-      by_contra hne
-      exact hc k _ hne (etr_hw _ hE ν y hy k)
-    have hdom : ∀ c d : Fin n, c < d → ν d ≤ ν c := fun c d hcd => by
-      have h2 := GlobalTheory.CompanionTheory.KWeightMajor.norm_identity (ε := allT n) (a := c) (b := d) (k_of_glRel hE) hU rfl hy.1
-      rw [hy.2 c d hcd rfl, norm_zero] at h2
-      have h3 : 0 < ‖y‖ ^ 2 := by positivity
-      by_contra h4
-      have h5 : 0 < (ν d - ν c) * ‖y‖ ^ 2 := mul_pos (by linarith [not_le.1 h4]) h3
-      nlinarith [sq_nonneg ‖kF E1 E2 d c y‖]
-    have hbot := h.no_second_type_weight ν (not_weight_of_kostant lam B hB ν hdom hm)
-    have hmem : y ∈ hwSp E1 E2 ν := hy
-    rw [hbot] at hmem
-    exact hy0 ((Submodule.mem_bot ℂ).1 hmem)
-  choose S hS hSt hmem using hF
-  let W : Submodule ℂ V := ⨆ A, S (z A)
-  haveI : ∀ A, FiniteDimensional ℂ (S (z A)) := fun A => hS _
-  have hWs : KStab (allT n) (kF E1 E2) W := fun a b h v hv =>
-    (iSup_le fun A y hy => Submodule.mem_iSup_of_mem A (hSt _ a b h y hy) : W ≤ W.comap (kF E1 E2 a b)) hv
-  obtain ⟨L, hL, hkill⟩ := kill_list (kF E1 E2) hE hU _ hbad W inferInstance hWs
-  obtain ⟨κ, w, hκ, hw1, hw2⟩ := chain_list (kF E1 E2) hE j τ z hz hwt hb L hL
-  have h0 : lift n (L.map fun p => etr (kF E1 E2) p.1 - p.2 • (1 : Module.End ℂ V)).prod z = 0 := by
-    funext A
-    exact hkill _ (Submodule.mem_iSup_of_mem A (hmem _))
-  rw [h0] at hw2
-  have h1 : bd (allT n) (kF E1 E2) (-κ⁻¹ • w) = z := by
-    have e : bd (allT n) (kF E1 E2) w = -(κ • z) := eq_neg_of_add_eq_zero_right hw2.symm
-    rw [map_smul, e, smul_neg, neg_smul, neg_neg, smul_smul, inv_mul_cancel₀ hκ, one_smul]
-  obtain ⟨t, ht1, ht2, ht3⟩ := GlobalTheory.CompanionTheory.LKWtProj.wtProj n (allT n) (allT n) V (kF E1 E2) (k_of_glRel hE) hU
-    (fun x => ⟨S x, hS x, hSt x, hmem x⟩) (bd (allT n) (kF E1 E2))
-    (CompanionTheory.D.LK.differential_commutes_weight_operator n _ _ V _ (fun _ _ _ => rfl) (k_of_glRel hE)) τ _ (h1.symm ▸ hwt)
-  exact ⟨t, CompanionTheory.D.LK.sup_of_supp (sup_smul _ hw1) fun A h => ht3 A (by simpa using h), ht1, ht2.trans h1⟩
 
 end GlobalTheory.CompanionTheory.RealMult.Kost

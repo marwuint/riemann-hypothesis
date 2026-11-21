@@ -3,10 +3,10 @@ import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadicStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElementStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPowStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemDeRhamFiltrationIffXiPowStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsField
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemDeRhamFiltrationIffXiPow
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc
@@ -58,8 +58,8 @@ theorem σD_alg (g : Per.Gq l) (y : Per.BdRp l) :
 theorem σDp_mem_FilP (g : Per.Gq l) (n : ℕ) (y : Per.BdRp l) (hy : y ∈ Per.FilP l n) :
     Per.σDp g y ∈ Per.FilP l n := by
   obtain ⟨e, he⟩ := exists_isEps l
-  obtain ⟨hP, -, -, -⟩ := GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he
-  have hk := GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he
+  obtain ⟨hP, -, -, -⟩ := _root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l e he
+  have hk := _root_.GlobalTheory.MemLoc.ker_localizedTheta_eq_span_xi l e he
   have h1 : algebraMap (Per.Ainf l) (Per.AinfP l) (xi e) ∈ Per.kerP l := by
     rw [hk]; exact Ideal.mem_span_singleton_self _
   have h2 : Per.extP (Per.σA g) (algebraMap (Per.Ainf l) (Per.AinfP l) (xi e)) ∈ Per.kerP l :=
@@ -75,7 +75,7 @@ theorem σDp_mem_FilP (g : Per.Gq l) (n : ℕ) (y : Per.BdRp l) (hy : y ∈ Per.
 
 theorem σDp_xi (e : Per.Fl l) (he : IsEps e) (g : Per.Gq l) :
     ∃ c d : Per.BdRp l, Per.σDp g (aDp l (xi e)) = aDp l (xi e) * c ∧ c * d = 1 := by
-  obtain ⟨hP, hreg, -, -⟩ := GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he
+  obtain ⟨hP, hreg, -, -⟩ := _root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l e he
   have hξ : aDp l (xi e) ∈ Per.FilP l 1 := (hP 1 _).2 (by rw [pow_one])
   have hd : ∀ g : Per.Gq l, aDp l (xi e) ∣ Per.σDp g (aDp l (xi e)) := fun g => by
     have := (hP 1 _).1 (σDp_mem_FilP g 1 _ hξ)
@@ -93,7 +93,7 @@ theorem σDp_xi (e : Per.Fl l) (he : IsEps e) (g : Per.Gq l) :
 
 theorem eq_zero_of_forall_mem_FilP (y : Per.BdRp l) (hy : ∀ n, y ∈ Per.FilP l n) : y = 0 := by
   obtain ⟨e, he⟩ := exists_isEps l
-  obtain ⟨hP, -, hc, -⟩ := GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he
+  obtain ⟨hP, -, hc, -⟩ := _root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l e he
   refine hc.toIsHausdorff.haus y fun n => ?_
   rw [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
   exact (hP n y).1 (hy n)
@@ -105,9 +105,9 @@ open GlobalTheory.MemLoc.FilLaws in
 theorem GlobalTheory.MemLoc.filD_laws : ∀ (l : ℕ) [Fact l.Prime], (∀ a : ℤ, Per.FilD l (a + 1) ≤ Per.FilD l a) ∧ (1 : Per.BdR l) ∈ Per.FilD l 0 ∧ (∀ (a b : ℤ) (x y : Per.BdR l), x ∈ Per.FilD l a → y ∈ Per.FilD l b → x * y ∈ Per.FilD l (a + b)) ∧ (∀ x : Per.BdR l, ∃ a, x ∈ Per.FilD l a) ∧ (∀ x : Per.BdR l, (∀ a, x ∈ Per.FilD l a) → x = 0) ∧ (∀ (g : Per.Gq l) (a : ℤ) (x : Per.BdR l), x ∈ Per.FilD l a → Per.σD g x ∈ Per.FilD l a) ∧ ∀ (n : ℕ) (y : Per.BdRp l), algebraMap (Per.BdRp l) (Per.BdR l) y ∈ Per.FilD l n ↔ y ∈ Per.FilP l n := by
   intro l _
   obtain ⟨e, he⟩ := exists_isEps l
-  obtain ⟨hdom, hinj, hfield, hden⟩ := GlobalTheory.T.bdRPlus_isDomain_bdR_isField l
-  obtain ⟨hP, hreg, -, -⟩ := GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he
-  have hD := GlobalTheory.T.mem_deRhamFiltration_iff_xi_pow l e he
+  obtain ⟨hdom, hinj, hfield, hden⟩ := _root_.GlobalTheory.MemLoc.BdRField.bdR_isField l
+  obtain ⟨hP, hreg, -, -⟩ := _root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l e he
+  have hD := _root_.GlobalTheory.MemLoc.mem_FilD_iff_xi_pow l e he
   have hden := hden e he
   have hσ := σDp_xi e he
   generalize aDp l (xi e) = ξ at hP hreg hD hden hσ

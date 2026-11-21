@@ -19,8 +19,8 @@ import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.FirstMinimumInva
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.NormBcharMulNfacRmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralInvariantChartSetLeMulFundamentalSet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHormanderPeakCutoffSingularWeightsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlurisubharmonicDecreasingLimitExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicWeightedSquareIntegrableVanishesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlurisubharmonicDecreasingLimitExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicWeightedSquareIntegrableVanishes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeakExtensionVanishOtherOrbitPointsStatement
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
 open ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.L2DbarEstimates MeasureTheory
@@ -77,7 +77,7 @@ theorem hormander_peak : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [Numb
       muF X x (Metric.ball 0 (1 / (100 * (r : ℝ) ^ 2)) ∩ OmF X x) :=
     measure_mono (Set.inter_subset_inter_left _ (Metric.ball_subset_ball hρR))
   have hA : A < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hμρ.trans_lt hfin)
-  obtain ⟨F, hFd, hFI⟩ := GlobalTheory.T.plurisubharmonic_decreasing_limit_extension hO (eF X x) (IW.eF_smooth X x ho) (IW.eF_levi X x ho)
+  obtain ⟨F, hFd, hFI⟩ := _root_.GlobalTheory.HormanderLimit.hormander_limit hO (eF X x) (IW.eF_smooth X x ho) (IW.eF_levi X x ho)
     (IW.eF_compact X x ho) φ hφs hφl hφmono F0 hF0s h hhm hdb A hhint
 
   have hexpφ : ∀ k, ∀ z ∈ OmF X x, Real.exp (-φ k z) = Real.exp (-phla X la (cpt X x z)) *
@@ -143,7 +143,7 @@ theorem hormander_peak : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [Numb
           exact (lintegral_mono_set hball2).trans hFI
       _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hA
   have hF0val : F 0 = 1 := by
-    have h0 := GlobalTheory.T.holomorphic_weighted_square_integrable_vanishes hnd (fun z => F0 z - F z) (ρ / 2) (by linarith) hu hint0
+    have h0 := _root_.GlobalTheory.holo_vanish_of_critical_integrable hnd (fun z => F0 z - F z) (ρ / 2) (by linarith) hu hint0
     have h1 := hF01 0 (by rw [norm_zero]; linarith)
     rw [h1] at h0
     exact (sub_eq_zero.1 h0).symm

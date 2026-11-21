@@ -879,10 +879,6 @@ theorem hT_hyp (α β α' β' : Fin D.R.rS → D.host.E) (p p' : (VS D).V)
   congr 1
   congr 1 <;> exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
-theorem decomp_H (v : (VS D).V) :
-    v = ∑ a, (VS D).hT (g a) v • e a + ∑ a, (VS D).hT (e a) v • g a + prH e g v := by
-  simp only [prH]; abel
-
 end
 
 end Hyp

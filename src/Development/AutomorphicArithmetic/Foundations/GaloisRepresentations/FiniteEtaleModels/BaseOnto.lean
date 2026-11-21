@@ -56,18 +56,6 @@ abbrev Ext.site {S : Site gb w q r 𝔴 𝔫} {N₁ : ℕ} {𝔟 : Ideal (𝓞 D
   proj := X.proj
   dim := X.dim
 
-abbrev extSelf (S : Site gb w q r 𝔴 𝔫) : Ext S S.N₀ S.𝔞 where
-  lev := ⟨S.std.three, S.std.cop, S.cop, S.sup, S.upow⟩
-  M := S.M
-  Y := S.Y
-  π := S.π
-  ov := S.ov
-  mπ := S.mπ
-  fin := S.fin
-  et := S.et
-  proj := S.proj
-  dim := S.dim
-
 variable {S : Site gb w q r 𝔴 𝔫} {N₁ N₂ : ℕ} {𝔟₁ 𝔟₂ : Ideal (𝓞 D.F)}
 
 structure Down (X₁ : Ext S N₁ 𝔟₁) (X₂ : Ext S N₂ 𝔟₂) : Type where
@@ -75,8 +63,6 @@ structure Down (X₁ : Ext S N₁ 𝔟₁) (X₂ : Ext S N₂ 𝔟₂) : Type wh
   ov : t ≫ X₂.Y.s = X₁.Y.s
   Φ : X₁.Y.univ.A.left ⟶ X₂.Y.univ.A.left
   w : Φ ≫ X₂.Y.univ.A.hom = X₁.Y.univ.A.hom ≫ t
-
-def Down.id (X₁ : Ext S N₁ 𝔟₁) : Down X₁ X₁ := ⟨𝟙 _, Category.id_comp _, 𝟙 _, by simp⟩
 
 def Down.pw {X₁ : Ext S N₁ 𝔟₁} {X₂ : Ext S N₂ 𝔟₂} (d : Down X₁ X₂) (k : ℕ) :
     (GlobalTheory.KS.pow X₁.Y.univ.A k).left ⟶ (GlobalTheory.KS.pow X₂.Y.univ.A k).left := GlobalTheory.KS.powMap d.t d.Φ d.w k
@@ -143,15 +129,5 @@ def ExtEx : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p), Sc D G → ∀ (E : Type) [Field E] [NumberField E] (gb : GBase D.toG E)
     (w : HeightOneSpectrum (𝓞 E)) (q : ℕ) [Fact q.Prime] (r : ℤ) (𝔴 𝔫 : Ideal (𝓞 D.F)) (S : Site gb w q r 𝔴 𝔫)
     (N₁ : ℕ) (𝔟 : Ideal (𝓞 D.F)), LevAt D q r 𝔴 N₁ 𝔟 → Nonempty (Ext S N₁ 𝔟)
-
-def StepPow : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : Link D G), Sc D G → ∀ (E : Type) [Field E] [NumberField E] (gb : GBase D.toG E)
-    (w : HeightOneSpectrum (𝓞 E)) (q : ℕ) [Fact q.Prime] (r : ℤ) (𝔴 𝔫 : Ideal (𝓞 D.F)) (S : Site gb w q r 𝔴 𝔫) (k : ℕ) (T : KS L gb k)
-    (N₁ N₂ : ℕ) (𝔟₁ 𝔟₂ : Ideal (𝓞 D.F)) (X₁ : Ext S N₁ 𝔟₁) (X₂ : Ext S N₂ 𝔟₂) (h : G.GAf) (M₁ M₂ : Lv p) (c₁ c₂ : ℕ) (a₁ a₂ : 𝓞 D.F)
-    (C₁ : X₁.site.Cl (T.M M₁).univ c₁ a₁) (C₂ : X₂.site.Cl (T.M M₂).univ c₂ a₂) (a b : _),
-    (∀ W : Wit T h M₁ M₂, ∃ d : Down X₁ X₂, d.Extends W C₁ C₂) →
-    ∃ t : (GlobalTheory.KS.pow X₁.Y.univ.A k).left ⟶ (GlobalTheory.KS.pow X₂.Y.univ.A k).left,
-      t ≫ (GlobalTheory.KS.pow X₂.Y.univ.A k).hom ≫ X₂.Y.s = (GlobalTheory.KS.pow X₁.Y.univ.A k).hom ≫ X₁.Y.s ∧
-      X₁.site.pi T C₁ ≫ t = T.X.tr (T.lev M₁) (T.lev M₂) h a b ≫ X₂.site.pi T C₂
 
 end UpperTheory.Gal.FiniteEtaleModels

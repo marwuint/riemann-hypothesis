@@ -4,7 +4,7 @@ import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Development.AbelianVarietyTheory.Definitions.Jets.Imports
 import Development.AbelianVarietyTheory.Definitions.Jets.WigMap
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AdjointMemCapSpSubA
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WignerStepRaisingUnitaryComplementStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WignerStepRaisingUnitaryComplement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WigMapComp
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WigMapZeroOfContraction
 open Matrix Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr
@@ -73,7 +73,7 @@ theorem chain_raise : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace �
         have := hL hj
         omega
     obtain ⟨V₃, j1, j2, j3, π₃, a, hπ₃, ha, haa⟩ :=
-      GlobalTheory.T.wigner_step_raising_unitary_complement V₂ n r z π₂ _ β _ B l hz hT hπ₂ hL' hu' hB hreg'
+      _root_.GlobalTheory.WigSh.wigner_step_raise V₂ n r z π₂ _ β _ B l hz hT hπ₂ hL' hu' hB hreg'
     refine ⟨V₃, j1, j2, j3, π₃, fun ω => (A ω).comp (a ω), ?_,
       wigMap_comp V V₂ V₃ (n + 1) r z π π₂ π₃ m 1 A a hA ha, ?_⟩
     · rw [Function.update_self, Function.update_idem] at hπ₃

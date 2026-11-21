@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EchEqOneIff
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableNormSiegelThetaSeriesTerms
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticSiegelActionMemUpperHalfSpaceAndCocyclStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatIntegralEqSumResidueRepresentativeStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TsumSchwartzBruhatLevelEqSumResidueCosetsStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatIntegralEqSumResidueRepresentative
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TsumSchwartzBruhatLevelEqSumResidueCosets
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PoissonSummationThetaSeriesRowTermCosetStatement
 
 open Matrix Complex GlobalTheory.SW GlobalTheory.SW.FourierJ
@@ -158,7 +159,7 @@ theorem ft_eq [DecidableEq κ] [DecidableEq ι] {R : ℕ} (hR : 0 < R) {φ : Mat
     (h : HasLevel R φ) {y : Matrix κ ι ℚ} (hy : IntM ((R : ℚ) • y)) :
     ft φ y = ((R : ℂ) ^ (Fintype.card κ * Fintype.card ι))⁻¹ *
       ∑ n : κ → ι → Fin (R * R), φ (rep R n) * ech (pr (rep R n) y) :=
-  GlobalTheory.T.schwartzBruhatIntegral_eq_sum_residueRepresentatives κ ι R _ hR (level_ch h hy)
+  _root_.GlobalTheory.SW.FourierJ.haar_eq_sum_rep κ ι R _ hR (level_ch h hy)
 
 theorem ft_supp {R : ℕ} (hR : 0 < R) {φ : Matrix κ ι ℚ → ℂ}
     (h : HasLevel R φ) (y : Matrix κ ι ℚ) (hy : ft φ y ≠ 0) : IntM ((R : ℚ) • y) := by
@@ -168,7 +169,7 @@ theorem ft_supp {R : ℕ} (hR : 0 < R) {φ : Matrix κ ι ℚ → ℂ}
   have hsb : IsSB fun x => φ x * ech (pr x y) := by
     refine ⟨R * S, Nat.mul_pos hR hS, level_ch (level_mul h S) ?_⟩
     rw [Nat.cast_mul, ← smul_smul]; exact intM_nsmul hSy R
-  obtain ⟨-, -, -, -, -, hsm, -, htr⟩ := GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι _ _ hsb hsb
+  obtain ⟨-, -, -, -, -, hsm, -, htr⟩ := _root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ hsb hsb
   set z : Matrix κ ι ℚ := -Matrix.single k i 1 with hz
   have hzi : IntM (-z) := by
     intro k' i'
@@ -219,8 +220,8 @@ theorem plancherel {R : ℕ} (hR : 0 < R) {φ ψ : Matrix κ ι ℚ → ℂ} (h 
     ip (fun y => c * ft φ y) (fun y => c * ft ψ y) = ip φ ψ := by
   classical
   unfold ip
-  rw [GlobalTheory.T.schwartzBruhatIntegral_eq_sum_residueRepresentatives κ ι R _ hR (level_mul_conj (ft_level hR h c) (ft_level hR h' c)),
-    GlobalTheory.T.schwartzBruhatIntegral_eq_sum_residueRepresentatives κ ι R _ hR (level_mul_conj h h')]
+  rw [_root_.GlobalTheory.SW.FourierJ.haar_eq_sum_rep κ ι R _ hR (level_mul_conj (ft_level hR h c) (ft_level hR h' c)),
+    _root_.GlobalTheory.SW.FourierJ.haar_eq_sum_rep κ ι R _ hR (level_mul_conj h h')]
   congr 1
   set V : ℂ := (R : ℂ) ^ (Fintype.card κ * Fintype.card ι) with hV
   have hV0 : V ≠ 0 := pow_ne_zero _ (by exact_mod_cast hR.ne')
@@ -302,7 +303,7 @@ theorem trans_J [DecidableEq ι] {p : ℕ} (hp : Fintype.card κ = p + p) {R : �
   have hsum : Summable fun x : Matrix κ ι ℚ => φ x * ∏ k, gs τ (ζ k) (x k) := by
     have := (GlobalTheory.SW.SiegelSum.summable_norm_thetaTerm κ ι φ ⟨R, hR, h⟩ τ hτ ζ).of_norm
     simpa only [gs, ← Complex.exp_sum, Finset.mul_sum] using this
-  rw [GlobalTheory.T.tsum_schwartzBruhatLevel_eq_sum_residueCosets κ ι R φ _ hR h hsum]
+  rw [_root_.GlobalTheory.SW.FourierJ.tsum_level_eq_sum_cosets κ ι R φ _ hR h hsum]
   set V : ℂ := (R : ℂ) ^ (Fintype.card κ * Fintype.card ι) with hV
   set T : (κ → ι → Fin (R * R)) → κ → (ι → ℤ) → ℂ := fun n k m =>
     ech (rep R n k ⬝ᵥ ((R : ℚ)⁻¹ • zv m)) * gs (-τ⁻¹) (ζ k ᵥ* τ⁻¹) ((R : ℚ)⁻¹ • zv m) with hT

@@ -49,12 +49,6 @@ theorem opApply_van {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace
 
 end van
 
-theorem list_sum_flatMap {α M : Type} [AddCommMonoid M] (l : List α) (f : α → List M) :
-    (l.flatMap f).sum = (l.map fun a => (f a).sum).sum := by
-  induction l with
-  | nil => simp
-  | cons a l ih => simp [List.flatMap_cons, List.sum_append, ih]
-
 theorem list_sum_map_flatMap {α β M : Type} [AddCommMonoid M] (l : List α) (f : α → List β) (g : β → M) :
     ((l.flatMap f).map g).sum = (l.map fun a => ((f a).map g).sum).sum := by
   induction l with

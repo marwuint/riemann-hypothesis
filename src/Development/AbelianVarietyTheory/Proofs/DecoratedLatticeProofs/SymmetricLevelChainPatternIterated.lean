@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.OnesRepresent
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemLevelIffSymmetricPositionEntryPatternStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemLevelIffSymmetricPositionEntryPattern
 
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SymChain
 
@@ -122,4 +122,4 @@ theorem GlobalTheory.SymChain.pattern_iter (k : Type) [Field k] [ValuativeRel k]
     [IsNonarchimedeanLocalField k] (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t] :
     S.Pattern t := by
   intro j g
-  exact IterPattern.iter_iff S.P S.μ S.tame (GlobalTheory.T.mem_level_iff_symmetricPosition_entry_pattern k s κ S) j g
+  exact IterPattern.iter_iff S.P S.μ S.tame (_root_.GlobalTheory.SymChain.SymData.mem_J_iff_pattern k s κ S) j g

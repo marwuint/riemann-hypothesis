@@ -26,10 +26,6 @@ def PlacedP : Prop :=
     (v : VCom f.c) (o : TDat f.c k ι) (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg),
     f.c.Is ∧ v.Is ∧ VTie f v ∧ ShapeOff v o ∧ GPin G ∧ GRead f G pl ∧ BotTie f B v o G ∧ PrimTop (c := f.c) v.tP o.ζ₀
 
-theorem PlacedP.placed (h : PlacedP f B) : Placed f B := by
-  obtain ⟨k, a1, a2, a3, a4, ι, v, o, n, G, pl, h1, h2, h3, h4, h5, h6, h7, -⟩ := h
-  exact ⟨k, a1, a2, a3, a4, ι, v, o, n, G, pl, h1, h2, h3, h4, h5, h6, h7⟩
-
 end GlobalTheory.MiTop
 
 end

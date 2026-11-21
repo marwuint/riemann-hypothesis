@@ -9,7 +9,7 @@ noncomputable section
 namespace period_ring_base
 
 open Formalism.Per6 hiding σB aB
-open GroundTheory.PAdicHodge DeRhamPotentiallySemistable.DRPst PfDRPst Matrix
+open GroundTheory.PAdicHodge DeRhamPotentiallySemistable.DRPst Matrix
 
 theorem base_κ_cont (l : ℕ) [Fact l.Prime] : Continuous (κ : GQ l → ℚ_[l]) := continuous_κ l
 

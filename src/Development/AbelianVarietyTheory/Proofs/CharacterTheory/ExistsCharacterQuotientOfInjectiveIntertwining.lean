@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentationStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentation
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.LinearMapShortExactCommuteStatement
 open GlobalTheory.BI
 namespace GlobalTheory.BI
@@ -13,7 +13,7 @@ theorem exists_isChar_eq_add_of_injective : ∀ (K L : Type) [Field K] [Field L]
     rintro g _ ⟨w, rfl⟩
     exact ⟨σ g w, (LinearMap.congr_fun (hcomm g) w).symm⟩
   refine ⟨fun g => algebraMap K L ((ρ.quotient _ hle).character g),
-    (GlobalTheory.T.isCharacterOverSubfield_of_representation K L G _ (ρ.quotient _ hle)).1, fun g => ?_⟩
+    (_root_.GlobalTheory.BI.isChar_and_isIrrChar_of_rep K L G _ (ρ.quotient _ hle)).1, fun g => ?_⟩
   rw [← map_add]
   congr 1
   refine GlobalTheory.T.linear_map_short_exact_commute K W V _ f.toLinearMap (LinearMap.range f.toLinearMap).mkQ (σ g) (ρ g)

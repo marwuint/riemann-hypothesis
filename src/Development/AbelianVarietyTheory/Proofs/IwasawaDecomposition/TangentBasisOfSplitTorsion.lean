@@ -1,5 +1,8 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasPRatio
+import Development.AbelianVarietyTheory.Statements.HeightBoundStatement.HTBoundSt
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LineModel
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GrNormPush
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MultiplicationLatticeSecond
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniqueIntegralLiftNormPInverseStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTangentPresentationPrimeStatement
@@ -9,7 +12,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFrameCover
 set_option autoImplicit false
 
 open AlgebraicGeometry CategoryTheory Limits NumberField MonObj
-open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM GlobalTheory.ShFam.Pad GlobalTheory.HTLine
+open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM GlobalTheory.ShFam.Pad
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 attribute [local instance] Over.cartesianMonoidalCategory
 
@@ -68,41 +71,8 @@ theorem mem_latDR_iff (hX : X.IsSeparated) {R : Type} [CommRing R] (x : Sp R ⟶
     simp only [bc_bc] at hb'
     exact GlobalTheory.FlagEmb.comb_unique t hv hb' hw
 
-theorem sum_single {R C : Type} [CommRing R] [NontriviallyNormedField C] [IsUltrametricDist C] {g : ℕ}
-    (φ : R →+* ↥(intO C)) (i : Fin g) (a : R) (cf : Fin g → C) :
-    ∑ k, ((φ ((Pi.single i a : Fin g → R) k) : ↥(intO C)) : C) * cf k = (φ a : C) * cf i := by
-  rw [Finset.sum_eq_single i (fun k _ hk => by simp [Pi.single_eq_of_ne hk]) (by simp)]
-  simp
-
 end GlobalTheory.HTPres
 
 namespace GlobalTheory.HTPres
-
-theorem exists_pres : HTBoundSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) [IsLocallyNoetherian X], X.IsSeparated → ∀ (p : ℕ), p.Prime → ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [CharZero R] (x : Sp R ⟶ X), (∃ ζ : R, IsPrimitiveRoot ζ p) → GlobalTheory.LineNorm.SplitTors t x p → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)), GlobalTheory.LineNorm.IsTanBasis t x e → ∀ b : Bool, ∃ (M : ℕ) (h : Fin (M + 1) → Fin g → R), Pres t x p b e h := by
-  intro hB E _ _ _ H X t _ hX p hp R _ _ _ _ x hζ hS g e he b
-  cases b with
-  | false =>
-    refine ⟨g, Fin.cons 0 (fun i => Pi.single i 1), ⟨0, fun i => ?_⟩, fun C φ cf w hw => ?_⟩
-    · rw [pow_zero]
-      exact Submodule.subset_span ⟨i.succ, by simp⟩
-    · change w ∈ latDR t _ ↔ _
-      rw [mem_latDR_iff t hX x he C.S φ cf w hw, Fin.forall_fin_succ]
-      simp only [Fin.cons_zero, Fin.cons_succ, sum_single, map_one]
-      simp
-  | true =>
-    obtain ⟨n, h', hh'⟩ := GlobalTheory.T.exists_tangent_presentation_prime E H X t R x g e he p hp hζ hS
-    refine ⟨n + g, Fin.cons 0 (Fin.append h' fun i => Pi.single i (p : R)), ⟨1, fun i => ?_⟩, fun C φ cf w hw => ?_⟩
-    · rw [pow_one]
-      exact Submodule.subset_span ⟨(Fin.natAdd n i).succ, by simp⟩
-    · haveI := Fact.mk hp
-      have hw' : IsCombAtG t (spMap (intO ↥C.S).subtype ≫ spMap φ ≫ x)
-          (fun i => spMap (dualMap (intO ↥C.S).subtype) ≫ spMap (dualMap φ) ≫ e i) cf w := by
-        simpa only [bc_bc] using hw
-      change w ∈ latHT t p _ ↔ _
-      rw [GlobalTheory.T.unique_integral_lift_norm_p_inverse hB E H X t p ↥C.S C.norm_p (spMap φ ≫ x)
-        (fun x' hx' => ext_uniq hX _ _ _ hx') g _ (isTanBasis_map t he φ) n (fun j i => φ (h' j i))
-        (hh' ↥C.S φ).1 (hh' ↥C.S φ).2 cf w hw', Fin.forall_fin_succ, Fin.forall_fin_add]
-      simp only [Fin.cons_zero, Fin.cons_succ, Fin.append_left, Fin.append_right, sum_single, map_natCast]
-      simp [norm_mul]
 
 end GlobalTheory.HTPres

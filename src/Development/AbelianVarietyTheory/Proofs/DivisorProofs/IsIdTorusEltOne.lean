@@ -43,12 +43,6 @@ variable (F E) in
 
 def archUnit (c : ℝ) : (AF F ⊗[F] E)ˣ := Units.map (algebraMap (AF F) (AF F ⊗[F] E)).toMonoidHom (archUnitF F c)
 
-def torTrans (S : Finset (Fin r)) (φ : GAd σ J → ℂ) : Set (GAd σ J → ℂ) :=
-  {f | ∃ l a, (∀ k ∉ S, l k = 1) ∧ IsIdTorusElt σ J X Y l a ∧ f = fun g => φ (a * g)}
-
-theorem isIdTorusElt_one : IsIdTorusElt σ J X Y 1 1 := by
-  refine ⟨?_, ?_, fun z _ => ?_⟩ <;> simp
-
 @[simp] theorem archUnit_zero : archUnit F E 0 = 1 := by
   have : archUnitF F 0 = 1 := Units.ext (Prod.ext (by
     change (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ = 1

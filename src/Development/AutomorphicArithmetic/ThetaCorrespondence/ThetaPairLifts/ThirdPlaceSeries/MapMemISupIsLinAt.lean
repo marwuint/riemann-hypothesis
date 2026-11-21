@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CharacteristicFunctionIntegralApply
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
@@ -8,32 +8,10 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
-noncomputable section
 namespace GlobalTheory.ThetaTri
-open MeasureTheory Formalism.IndefR.Datum GlobalTheory.ThetaLoc
-variable {D : D7} {V W : Formalism.BasicNotions.TH.HSp D}
-  (om : Formalism.L2.Theta.GA D V × Formalism.L2.Theta.GA D W →* Module.End ℂ (WO V W → ℂ))
-  {TauV Fm C : Type} [AddCommGroup TauV] [Module ℂ TauV]
-  [AddCommGroup Fm] [Module ℂ Fm] [AddCommGroup C] [Module ℂ C]
-  (fV : Fm →ₗ[ℂ] (Formalism.L2.Theta.GA D V → TauV)) (yv : C →ₗ[ℂ] (Formalism.L2.Theta.GA D W → ℂ))
-  (νV : Measure (Formalism.L2.Theta.GA D V)) (𝓕V : Set (Formalism.L2.Theta.GA D V)) (νW : Measure (Formalism.L2.Theta.GA D W)) (𝓕W : Set (Formalism.L2.Theta.GA D W))
-variable (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ℂ) {G : Type} [Monoid G] (ω : G →* Module.End ℂ (WO V W → ℂ))
 end GlobalTheory.ThetaTri
-end
-noncomputable section
 namespace GlobalTheory.ThetaTri
-open MeasureTheory Formalism.IndefR.Datum GlobalTheory.ThetaLoc
-variable {D : D7} {V W : Formalism.BasicNotions.TH.HSp D}
-  (om : Formalism.L2.Theta.GA D V × Formalism.L2.Theta.GA D W →* Module.End ℂ (WO V W → ℂ))
-  {TauV Fm C : Type} [AddCommGroup TauV] [Module ℂ TauV]
-  [AddCommGroup Fm] [Module ℂ Fm] [AddCommGroup C] [Module ℂ C]
-  (fV : Fm →ₗ[ℂ] (Formalism.L2.Theta.GA D V → TauV)) (yv : C →ₗ[ℂ] (Formalism.L2.Theta.GA D W → ℂ))
-  (νV : Measure (Formalism.L2.Theta.GA D V)) (𝓕V : Set (Formalism.L2.Theta.GA D V)) (νW : Measure (Formalism.L2.Theta.GA D W))
-  (𝓕W : Set (Formalism.L2.Theta.GA D W)) (c : ℂ)
-variable (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ℂ) {G : Type} [Monoid G]
-  (ω : G →* Module.End ℂ (WO V W → ℂ))
 end GlobalTheory.ThetaTri
-end
 noncomputable section
 namespace GlobalTheory.ThetaTri
 open MeasureTheory Formalism.IndefR.Datum Formalism.IndefR.Links GlobalTheory.ThetaLoc

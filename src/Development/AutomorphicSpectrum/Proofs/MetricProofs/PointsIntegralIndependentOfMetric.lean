@@ -13,7 +13,7 @@ import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.MetricLocal
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntersectionNumberMetricChange
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSmoothWeightConstNearEmbeddings
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntersectionLocConstTrivial
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PointsIntegralZeroOfLocallyConstantStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PointsIntegralZeroOfLocallyConstant
 set_option maxSynthPendingDepth 1
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Filter Topology NumberField
@@ -70,7 +70,7 @@ theorem position_change (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermL
     exact (hI.1 P (D + 1) _ _ hP (smooth_snoc (smooth_update hW m hX) hB)).symm
   rw [hswap A hA, hswap A' hA',
     GlobalTheory.CompanionTheory.Ar.Tele.step GroundTheory.Heights₂.Heights.ForSecondHalf.MetricLocal.full I hI P D _ A A' hP hM hA hA' hab,
-    GlobalTheory.T.points_integral_zero_of_locally_constant K ι P D (pot (Function.update W m B)) _ m ?_, sub_zero]
+    _root_.GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegral_eq_zero_of_locConst K ι P D (pot (Function.update W m B)) _ m ?_, sub_zero]
   intro z hz
   obtain ⟨c, hc⟩ := hloc z hz
   refine ⟨Real.log c, ?_⟩

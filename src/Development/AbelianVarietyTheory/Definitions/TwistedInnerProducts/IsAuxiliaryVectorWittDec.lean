@@ -68,9 +68,6 @@ structure Cond (ψ : AddChar (AF D.host.F) ℂ) (P : GlobalTheory.FinPl.Pl D →
   iso : ∀ ξ ∈ p.B₁, ∀ ξ' : Mx D σ V₀.rank, MxAt P ξ → mt W h ⬝ dW.incX V₀ ξ = dW.incX V₀ ξ' →
     ψ (symplO V₀ W (dW.incAdj V₀ y) (dW.incX V₀ ξ')) = ψ (symplO V₀ W (dW.incAdj V₀ y) (dW.incX V₀ ξ))
 
-def CondK (ψ : AddChar (AF D.host.F) ℂ) (LW : Lat W) (P : GlobalTheory.FinPl.Pl D → Prop) (h : GA D W) : Prop :=
-  ∀ κ, InK W LW P κ → Cond dW p x y ψ P (h * κ)
-
 def piecesOf (ψ : AddChar (AF D.host.F) ℂ) (Γ Γ' : AddSubgroup (WO V W)) : Pieces V₀ W W₀ ρ σ where
   A₁ := Γ.comap (dV.extX W)
   A₂ := AddSubgroup.closure {a' | MxAt (fun _ => True) a' ∧
@@ -112,8 +109,6 @@ theorem mulVec_idAt {m n : ℕ} (M : Mx D m n) {z : Fin n → AE D} (hz : ∀ j,
   simp only [Matrix.mulVec, dotProduct]
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hz j)
 
-theorem inK_one : InK S LS P 1 := ⟨one_mem _, fun z _ => by rw [mt_one, one_mulVec]⟩
-
 theorem inK_mul {κ κ' : GA D S} (h : InK S LS P κ) (h' : InK S LS P κ') : InK S LS P (κ * κ') :=
   ⟨mul_mem h.1 h'.1, fun z hz => by rw [mt_mul, ← mulVec_mulVec, h'.2 z hz, h.2 _ (mulVec_idAt _ hz)]⟩
 
@@ -122,21 +117,6 @@ theorem inK_inv {κ : GA D S} (h : InK S LS P κ) : InK S LS P κ⁻¹ :=
 
 variable {V₀ W W₀ : HSp D} {ρ σ : ℕ} {dW : HypDec W W₀ σ} {p : Pieces V₀ W W₀ ρ σ} {x : Mx D W.rank ρ} {y : Mx D V₀.rank σ}
   {LW : Lat W} {h κ : GA D W}
-
-theorem CondK.cond (H : CondK dW p x y ψ LW P h) : Cond dW p x y ψ P h := by
-  simpa only [mul_one] using H 1 inK_one
-
-theorem condK_mul (hκ : InK W LW P κ) : CondK dW p x y ψ LW P (h * κ) ↔ CondK dW p x y ψ LW P h :=
-  ⟨fun H k hk => by simpa only [mul_assoc, mul_inv_cancel_left] using H _ (inK_mul (inK_inv hκ) hk),
-    fun H k hk => by simpa only [mul_assoc] using H _ (inK_mul hκ hk)⟩
-
-theorem cosetAt_mul {R : Subgroup (GA D W)} {v : GlobalTheory.FinPl.Pl D} (hκ : InK W LW (· = v) κ) :
-    CosetAt W R LW v (h * κ) ↔ CosetAt W R LW v h :=
-  ⟨fun ⟨r, a, b, k, hk, e⟩ => ⟨r, a, b, _, inK_mul hk (inK_inv hκ), by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩,
-    fun ⟨r, a, b, k, hk, e⟩ => ⟨r, a, b, _, inK_mul hk hκ, by rw [e, mul_assoc]⟩⟩
-
-theorem cosetAt_of_inK {R : Subgroup (GA D W)} {v : GlobalTheory.FinPl.Pl D} (hκ : InK W LW (· = v) κ) : CosetAt W R LW v κ :=
-  ⟨1, one_mem _, one_mem _, κ, hκ, (one_mul κ).symm⟩
 
 end Stab
 
@@ -195,9 +175,6 @@ abbrev yBF (F : Frames G) (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.m) := yZero (F.V₀
 
 def OnStd (Q : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}, G.Weil → Frames G → Prop) : Prop :=
   All fun {_} _ _ _ {G} W _ => ∀ F : Frames G, Std F → Q W F
-
-example {m n : ℕ} : IsBump (0 : Mx D m n → ℂ) :=
-  ⟨continuous_const, HasCompactSupport.zero, ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩, fun _ _ _ _ _ => contDiff_const⟩
 
 end GlobalTheory.AscFin
 

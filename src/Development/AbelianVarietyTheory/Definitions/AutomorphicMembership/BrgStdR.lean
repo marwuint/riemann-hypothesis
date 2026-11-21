@@ -30,16 +30,6 @@ def StdSide {ι : Type} (lam : X.Tau → DomWeight n) (rho : GL (Fin n) X.E →*
     (LinearIndependent ℂ fun i => c (bVV X.K lam i)) ∧
     ∃ hc : CMData X.F X.E, ∀ h : H, ∃ x : Formalism.L2.Col.UAd hc n, MatEq (mat h) (x : GL (Fin n) _)
 
-theorem StdSide.value {ι : Type} {lam : X.Tau → DomWeight n} {rho : GL (Fin n) X.E →* Module.End X.K (VV X.K lam)}
-    {SG : ι → Finset (Pl X.E)} {Fm : ι → Type} {val : ∀ t, Fm t → DecoSet X.E n ∅ (SG t) → VV X.K lam} {ad : ∀ t, Fm t → H → W}
-    (s : StdSide σ mat rat ρ lam rho SG Fm val ad) :
-    ∃ c : VV X.K lam →ₛₗ[σ] W, (LinearIndependent ℂ fun i => c (bVV X.K lam i)) ∧
-      ∀ h t, ∃ d : DecoSet X.E n ∅ (SG t), ∀ φ, ad t φ h = c (val t φ d) := by
-  obtain ⟨c, -, hr, hli, hc, hx⟩ := s
-  refine ⟨c, hli, fun h t => ?_⟩
-  obtain ⟨x, hm⟩ := hx h
-  exact ⟨_, fun φ => hr hc t φ h x hm⟩
-
 end Gen
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

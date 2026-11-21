@@ -62,92 +62,7 @@ instance grpCst : GrpObj (cst S N) := Functor.grpObjObj
 instance isCommMonObj_cst : IsCommMonObj (cst S N) :=
   inferInstanceAs (IsCommMonObj ((Over.pullback (toZ S)).obj (cstAff N)))
 
-def delta (a : ZMod N) : GlobalTheory.CartierDual ZU.{0} (AddMonoidAlgebra ZU.{0} (ZMod N)) :=
-  (GlobalTheory.CartierDual.addMonoidAlgebraEquiv ZU.{0} (ZMod N)).symm (Pi.single a 1)
-
-theorem delta_mul (a b : ZMod N) : delta N a * delta N b = if a = b then delta N a else 0 := by
-  unfold delta
-  rw [← map_mul]
-  split_ifs with h
-  · subst h
-    congr 1
-    funext x
-    simp only [Pi.mul_apply, Pi.single_apply]
-    split_ifs <;> simp
-  · rw [← map_zero (GlobalTheory.CartierDual.addMonoidAlgebraEquiv ZU.{0} (ZMod N)).symm]
-    congr 1
-    funext x
-    simp only [Pi.mul_apply, Pi.single_apply, Pi.zero_apply]
-    split_ifs with h1 h2 <;> simp_all
-
-theorem sum_delta : ∑ a : ZMod N, delta N a = 1 := by
-  unfold delta
-  rw [← map_sum, ← map_one (GlobalTheory.CartierDual.addMonoidAlgebraEquiv ZU.{0} (ZMod N)).symm]
-  congr 1
-  funext x
-  simp [Finset.sum_apply, Pi.single_apply]
-
-abbrev powRing : Type :=
-  AddMonoidAlgebra ZU.{0} (ULift.{0} ℤ) ⊗[ZU.{0}] GlobalTheory.CartierDual ZU.{0} (AddMonoidAlgebra ZU.{0} (ZMod N))
-
-def powElt (k : ℤ) : powRing N :=
-  ∑ a : ZMod N, AddMonoidAlgebra.single (ULift.up (k * (a.val : ℤ))) (1 : ZU.{0}) ⊗ₜ delta N a
-
-theorem powElt_zero : powElt N 0 = 1 := by
-  simp only [powElt, zero_mul]
-  rw [← TensorProduct.tmul_sum, sum_delta]
-  rfl
-
-theorem powElt_add (k l : ℤ) : powElt N (k + l) = powElt N k * powElt N l := by
-  simp only [powElt, Finset.sum_mul_sum, Algebra.TensorProduct.tmul_mul_tmul,
-    AddMonoidAlgebra.single_mul_single, mul_one]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  rw [Finset.sum_eq_single a (fun b _ hb => by rw [delta_mul, if_neg (Ne.symm hb), TensorProduct.tmul_zero])
-    (fun h => (h (Finset.mem_univ a)).elim), delta_mul, if_pos rfl]
-  congr 2
-  ext
-  simp [add_mul]
-
-def powHom : Multiplicative (ULift.{0} ℤ) →* powRing N where
-  toFun x := powElt N (Multiplicative.toAdd x).down
-  map_one' := powElt_zero N
-  map_mul' x y := powElt_add N _ _
-
-def powRingHom : AddMonoidAlgebra ZU.{0} (ULift.{0} ℤ) →ₐ[ZU.{0}] powRing N :=
-  AddMonoidAlgebra.lift _ _ _ (powHom N)
-
-def powAff : splitTorusAff ZU.{0} (ULift.{0} ℤ) ⊗ cstAff N ⟶ splitTorusAff ZU.{0} (ULift.{0} ℤ) :=
-  Over.homMk ((pullbackSpecIso ZU.{0} (AddMonoidAlgebra ZU.{0} (ULift.{0} ℤ))
-      (GlobalTheory.CartierDual ZU.{0} (AddMonoidAlgebra ZU.{0} (ZMod N)))).hom ≫
-    Spec.map (CommRingCat.ofHom (powRingHom N).toRingHom)) (by
-    have h1 := pullbackSpecIso_hom_fst ZU.{0} (AddMonoidAlgebra ZU.{0} (ULift.{0} ℤ))
-      (GlobalTheory.CartierDual ZU.{0} (AddMonoidAlgebra ZU.{0} (ZMod N)))
-    have h2 : Spec.map (CommRingCat.ofHom (powRingHom N).toRingHom) ≫
-        Spec.map (CommRingCat.ofHom (algebraMap ZU.{0} (AddMonoidAlgebra ZU.{0} (ULift.{0} ℤ)))) =
-        Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom (R := ZU.{0})
-          (A := AddMonoidAlgebra ZU.{0} (ULift.{0} ℤ))
-          (B := GlobalTheory.CartierDual ZU.{0} (AddMonoidAlgebra ZU.{0} (ZMod N))))) ≫
-        Spec.map (CommRingCat.ofHom (algebraMap ZU.{0} (AddMonoidAlgebra ZU.{0} (ULift.{0} ℤ)))) := by
-      rw [← Spec.map_comp, ← Spec.map_comp]
-      congr 1
-      ext x
-      change (powRingHom N) (algebraMap _ _ x) =
-        (algebraMap _ _ x) ⊗ₜ[ZU.{0}] (1 : GlobalTheory.CartierDual ZU.{0} (AddMonoidAlgebra ZU.{0} (ZMod N)))
-      rw [AlgHom.commutes, Algebra.TensorProduct.algebraMap_apply]
-    exact (Category.assoc _ _ _).trans ((congrArg _ h2).trans ((Category.assoc _ _ _).symm.trans
-      (congrArg (· ≫ _) h1))))
-
-def powS : Gm S ⊗ cst S N ⟶ Gm S :=
-  (Functor.Monoidal.μIso (Over.pullback (toZ S)) (splitTorusAff ZU.{0} (ULift.{0} ℤ)) (cstAff N)).hom ≫
-    (Over.pullback (toZ S)).map (powAff N)
-
-def ev : torsion (Gm S) N ⊗ cst S N ⟶ Gm S := (torsion.ι (Gm S) N ▷ cst S N) ≫ powS S N
-
 abbrev muCst : Over S := torsion (Gm S) N ⊗ cst S N
-
-def pair : muCst S N ⊗ muCst S N ⟶ Gm S :=
-  (lift (fst _ _ ≫ fst _ _) (snd _ _ ≫ snd _ _) ≫ ev S N) *
-    (lift (snd _ _ ≫ fst _ _) (fst _ _ ≫ snd _ _) ≫ ev S N)⁻¹
 
 def incl : torsion (Gm S) N ⟶ muCst S N := lift (𝟙 _) (toUnit _ ≫ η[cst S N])
 
@@ -171,10 +86,6 @@ instance isMonHom_ι : IsMonHom (torsion.ι (Gm S) N) where
     congr 1
 
 variable [NeZero N]
-
-theorem incl_fst : incl S N ≫ fst _ _ = 𝟙 _ := lift_fst _ _
-
-theorem incl_snd : incl S N ≫ snd _ _ = 1 := (lift_snd _ _).trans (Hom.one_def).symm
 
 instance isMonHom_incl : IsMonHom (incl S N) := by
   unfold incl

@@ -117,23 +117,9 @@ def rectangle (r a : ℕ) : Fin r → ℕ := fun _ => a
 def hookShape (r k l : ℕ) : Fin r → ℕ :=
   fun i => if (i : ℕ) = 0 then k - l else if (i : ℕ) ≤ l then 1 else 0
 
-def FlagIntegralKillsPowerSums.Statement : Prop :=
-  ∀ (f N k : ℕ) (τ : Fin f) (G : RootRing f N), 1 ≤ k → k ≤ N →
-    flagIntegral f N (blockPowerSum f N k τ * G) = 0
-
-def CoinvariantTopDegree.Statement : Prop :=
-  ∀ (f N : ℕ) (H : RootRing f N), H.IsHomogeneous (topDegree f N) →
-    ∃ b : ℚ, H - C b * ∏ τ : Fin f, ∏ i : Fin N, X (τ, i) ^ (i : ℕ) ∈
-      Ideal.span {P | ∃ k τ, 1 ≤ k ∧ k ≤ N ∧ P = blockPowerSum f N k τ}
-
 def DividedDifferenceOfVandermonde.Statement : Prop :=
   ∀ f N : ℕ, dividedDifference f N (blockVandermonde f N) =
     algebraMap ℚ (FractionRing (RootRing f N)) ((N.factorial : ℚ) ^ f)
-
-def IntegralIsDividedDifference.Statement : Prop :=
-  ∀ f N : ℕ, ∃ c : ℚ, c ≠ 0 ∧ ∀ H : RootRing f N, H.IsHomogeneous (topDegree f N) →
-    algebraMap ℚ (FractionRing (RootRing f N)) (flagIntegral f N H) =
-      algebraMap ℚ (FractionRing (RootRing f N)) c * dividedDifference f N H
 
 def LemmaA.Statement : Prop :=
   ∀ f N : ℕ, ∃ c : ℚ, c ≠ 0 ∧
@@ -150,12 +136,6 @@ def LemmaA.Statement : Prop :=
         ∃ S : MvPolynomial (Fin N) ℚ, powerSumHom N S = restrictToBlock f N τ P ∧
           flagIntegral f N (G * Q k τ) =
             c * coeff (Finsupp.single (⟨k - 1, by omega⟩ : Fin N) 1) S
-
-def RestTermWellDefined.Statement : Prop :=
-  ∀ (f N : ℕ) (F : RootRing f N) (Q Q' : ℕ → Fin f → RootRing f N),
-    IsPowerSumDecomposition f N F Q → IsPowerSumDecomposition f N F Q' →
-    ∀ (k : ℕ), 1 ≤ k → k ≤ N → ∀ (τ : Fin f) (G : RootRing f N), G.IsHomogeneous (k - 1) →
-      restTerm f N Q k τ G = restTerm f N Q' k τ G
 
 def LemmaB.Statement : Prop :=
   ∀ (r a : ℕ) (c : SmallBlock), ∃ κ : ℚ,
@@ -190,9 +170,6 @@ def SchurPowerSumCoefficient.Statement : Prop :=
         if ∀ i : Fin r, (i : ℕ) ≠ 0 → nu i ≤ 1 then
           (-1 : ℚ) ^ ((Finset.univ.filter fun i : Fin r => (i : ℕ) ≠ 0 ∧ nu i = 1).card) / k
         else 0
-
-def HookDimensionSum.Statement : Prop :=
-  ∀ k : ℕ, 1 ≤ k → ∑ l ∈ Finset.range k, numStandardTable (hookShape k k l) = 2 ^ (k - 1)
 
 def FrobeniusCharacterFormula.Statement : Prop :=
   ∀ r q m : ℕ, 1 ≤ q →
@@ -282,32 +259,10 @@ def ChebyshevThetaBound.Statement : Prop :=
   ∀ x : ℝ, 0 ≤ x →
     ∑ p ∈ (Finset.range (⌊x⌋₊ + 1)).filter Nat.Prime, Real.log p ≤ x * Real.log 4
 
-def PrimeLogSquareTail.Statement : Prop :=
-  ∀ B : ℝ, 0 < B →
-    Summable (fun p : {p : ℕ // p.Prime ∧ B < p} => Real.log p / (p : ℝ) ^ 2) ∧
-      ∑' p : {p : ℕ // p.Prime ∧ B < p}, Real.log p / (p : ℝ) ^ 2 ≤ 2 * Real.log 4 / B
-
 def RestConstants.Statement : Prop :=
   2 * Real.log 4 ≤ 2.78 ∧
     ∀ f N : ℕ, 1 ≤ f → 2 ≤ N →
       1.5 * (f : ℝ) * (3 / 2 * (N : ℝ) ^ 2) * (2.78 / (4 * f * (N : ℝ) ^ 2)) ≤ 1.6
-
-def IntegerLogSquareTail.Statement : Prop :=
-  ∀ (f N : ℕ) (B₀ : ℝ), 1 ≤ f → 2 ≤ N → 4 * (f : ℝ) * (N : ℝ) ^ 2 ≤ B₀ →
-    Summable (fun m : {m : ℕ // B₀ < m} => Real.log m / (m : ℝ) ^ 2) ∧
-      ∑' m : {m : ℕ // B₀ < m}, Real.log m / (m : ℝ) ^ 2 ≤ 2 * (1 + Real.log B₀) / B₀
-
-def HookCharacterSumIdentity.Statement : Prop :=
-  ∀ r a : ℕ, 1 ≤ r → 1 ≤ a →
-    (a : ℚ) * numStandardTable (fun i : Fin r => a + if (i : ℕ) = 0 then 1 else 0) =
-      ∑ k ∈ Finset.Icc 2 (r + a), ∑ l ∈ Finset.range (min r k),
-        (-1 : ℚ) ^ l * symmetricGroupCharacter (fun i => a + hookShape r k l i)
-          ((k - 1) :: List.replicate (r * a + 1) 1)
-
-def TotalIdentity.Statement : Prop :=
-  ∀ r a : ℕ, 1 ≤ r → 1 ≤ a →
-    (r + a) * numStandardTable (fun i : Fin r => a + if (i : ℕ) = 0 then 1 else 0) =
-      (r * a + 1) * r * numStandardTable (rectangle r a)
 
 def restPrimeModel (f r a : ℕ) (c : SmallBlock) (Q : ℕ → Fin f → RootRing f (r + a))
     (s : ℕ → ℕ → Fin f → Fin f) (e : ℕ → ℕ → Fin f → ℕ → ℚ) (p : ℕ) : ℝ :=
@@ -342,83 +297,6 @@ def RestBound.Statement : Prop :=
         |restPrimeModel f r a c Q s e p|) ∧
       |∑' p : {p : ℕ // p ∈ P ∧ p.Prime ∧ B₀ < p}, restPrimeModel f r a c Q s e p| ≤
         1.6 * ((f * (r * a) + 1 : ℕ) : ℝ) * |(fibreDegree f r a c : ℝ)|
-
-def SmallBlock.jIndex (r a : ℕ) : SmallBlock → ℕ
-  | .last => a
-  | .first => r
-
-def shiftFunctional (f r a : ℕ) (c : SmallBlock) (τ : Fin f) (F : RootRing f (r + a)) : ℚ :=
-  flagIntegral f (r + a)
-    (∑ i ∈ Finset.univ.filter (fun i : Fin (r + a) => (i : ℕ) < c.jIndex r a), pderiv (τ, i) F)
-
-def totalFunctional (f N : ℕ) (τ : Fin f) (F : RootRing f N) : ℚ :=
-  flagIntegral f N (∑ i : Fin N, pderiv (τ, i) F)
-
-def ShiftTotalValues.Statement : Prop :=
-  ∀ (f r a : ℕ) (τ : Fin f),
-    (shiftFunctional f r a .last τ (restPolynomial f r a .last) = 0 ∧
-      totalFunctional f (r + a) τ (restPolynomial f r a .last) =
-        ((f * (r * a) + 1 : ℕ) : ℚ) * r * fibreDegree f r a .last) ∧
-    (shiftFunctional f r a .first τ (restPolynomial f r a .first) =
-        -(((f * (r * a) + 1 : ℕ) : ℚ) * r * fibreDegree f r a .first) ∧
-      totalFunctional f (r + a) τ (restPolynomial f r a .first) =
-        -(((f * (r * a) + 1 : ℕ) : ℚ) * r * fibreDegree f r a .first))
-
-def FibreTranslationInvariance.Statement : Prop :=
-  ∀ (f r a : ℕ) (c : SmallBlock) (τ : Fin f),
-    ∑ i : Fin r, pderiv (yIndex f r a c τ i) (fibreClass f r a c) = 0 ∧
-      ∑ i : Fin a, pderiv (zIndex f r a c τ i) (fibreClass f r a c) = 0
-
-def PlueckerCauchyBinet.Statement : Prop :=
-  ∀ (p q : ℕ) (Z : Matrix (Fin p) (Fin q) ℂ),
-    (1 + Z * Z.conjTranspose).det =
-      ((∑ S : {s : Finset (Fin p ⊕ Fin q) // s.card = p},
-        ‖((Matrix.fromCols (1 : Matrix (Fin p) (Fin p) ℂ) Z).submatrix id
-          (fun i => ((S.1.equivFinOfCardEq S.2).symm i : Fin p ⊕ Fin q))).det‖ ^ 2 : ℝ) : ℂ)
-
-def PlueckerHadamard.Statement : Prop :=
-  ∀ (p q : ℕ) (Z : Matrix (Fin p) (Fin q) ℂ), (∀ i j, ‖Z i j‖ = 1) →
-    ((1 + Z * Z.conjTranspose).det).re ≤ ((1 + q : ℕ) : ℝ) ^ p
-
-def SmallRankBound.Statement : Prop :=
-  ∀ k m j' N : ℕ, 2 ≤ m → m ^ 4 ≤ k → j' ≤ m → N = k + m - 1 →
-    2 * m + 2 ≤ k ∧ 3 * j' ≤ N - 1
-
-def SmallRankWeakHypothesis.Statement : Prop :=
-  ¬ ∀ k m j' N : ℕ, 2 ≤ m → m + 3 ≤ k → j' ≤ m → N = k + m - 1 → 3 * j' ≤ N - 1
-
-theorem LemmaA.hypotheses_inhabited :
-    IsPowerSumDecomposition 1 1 (blockPowerSum 1 1 1 0)
-        (fun k τ => if k = 1 ∧ τ = 0 then 1 else 0) ∧
-      (1 : RootRing 1 1).IsHomogeneous (1 - 1) := by
-  refine ⟨?_, isHomogeneous_one _ _⟩
-  simp [IsPowerSumDecomposition]
-
-theorem rectangle_antitone_inhabited : Antitone (rectangle 2 3) := fun _ _ _ => le_rfl
-
-theorem SchurPowerSumCoefficient.hypotheses_inhabited :
-    1 ≤ 3 ∧ 3 ≤ 3 ∧ Antitone (![2, 1] : Fin 2 → ℕ) ∧ ∑ i, (![2, 1] : Fin 2 → ℕ) i = 3 := by
-  refine ⟨by norm_num, le_rfl, ?_, by simp⟩
-  intro i j hij
-  fin_cases i <;> fin_cases j <;> simp_all
-
-theorem CharacterBound.hypotheses_inhabited :
-    Antitone (![2, 1] : Fin 2 → ℕ) ∧ ∀ q ∈ [2, 1], 1 ≤ q := by
-  refine ⟨?_, by simp⟩
-  intro i j hij
-  fin_cases i <;> fin_cases j <;> simp_all
-
-theorem Section2.hypotheses_inhabited :
-    1 ≤ 2 ∧ 1 ≤ 1 ∧ (1 : Fin 2) ≠ 0 ∧ 2 ≤ 1 + 1 := by decide
-
-theorem Section3.hypotheses_inhabited :
-    4 * ((1 : ℕ) : ℝ) * (((1 + 1 : ℕ)) : ℝ) ^ 2 ≤ 16 ∧ (16 : ℝ) < 17 := by norm_num
-
-theorem PlueckerHadamard.hypotheses_inhabited :
-    ∀ i j, ‖(Matrix.of fun (_ : Fin 2) (_ : Fin 3) => (1 : ℂ)) i j‖ = 1 := by simp
-
-theorem SmallRankBound.hypotheses_inhabited :
-    2 ≤ 2 ∧ 2 ^ 4 ≤ 16 ∧ 2 ≤ 2 ∧ 17 = 16 + 2 - 1 := by decide
 
 end
 

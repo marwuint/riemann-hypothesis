@@ -141,13 +141,6 @@ def HostJ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O
         cloud (D := D) (sg w) (s + S) a) ∧
       a ≠ -1 ∧ a ≠ D.R.t
 
-def SetSQ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) : Prop :=
-  (∀ v : HeightOneSpectrum (𝓞 D.host.E), v ∈ D.nd.S i ∨ v ∈ D.nd.Q i →
-    TameGen D.nd (D.nd.plOm.1 v) (D.nd.gam0 i v) ∧
-    ∀ g ∈ wildSet D.nd (D.nd.plOm.1 v),
-      (∀ x, r x g = 1) ∧ D.nd.chi i 1 g = 1) ∧
-  ∀ q ∈ D.nd.Q i, D.nd.zeta i q ≠ 1
-
 def rhs (C : ℝ) (eta : ℕ) (i : D.nd.Loc) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
     (π : D.nd.X i) : ℝ :=
   4 * D.R.f * D.R.nV * eT (D := D) C eta + 2 * D.R.f * (D.R.r : ℝ) ^ 2 +
@@ -156,51 +149,11 @@ def rhs (C : ℝ) (eta : ℕ) (i : D.nd.Loc) (ρ : D.nd.X i → (GE D.nd →* GL
     (padicValNat (D.nd.l i) (hE D.host) : ℝ) + 4 * D.R.nV * (D.nd.vdel i : ℝ) +
     D.R.t * (∑ q ∈ D.nd.Q i, (vZeta i q : ℝ))
 
-def aux₃ (C : ℝ) (CT : ℕ) : Prop :=
-  ∀ (i : D.nd.Loc) (k k' : Fin 2), k ≠ k' → D.nd.l i = D.host.g k →
-  ∀ (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-    (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))),
-    GoodR D.nd i r → (∀ π ∈ D.nd.Z i, Formalism.MainNotions.TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) →
-  ∀ (eta s S : ℕ) (sg : HeightOneSpectrum (𝓞 D.host.E) → Bool)
-    (U : HeightOneSpectrum (𝓞 D.host.E) → Finset ℤ),
-    eta + D.R.t + 1 < s →
-    Real.log (D.host.g k' : ℝ) ≤ 2 * Real.log (D.host.g k : ℝ) →
-    CT * ((s + S) * (D.R.nV + 1) ^ 2 + (D.R.nV + 1) ^ 3) < D.host.g k →
-    SignOK i sg → HostJ i r eta s S sg U → SetSQ i r →
-    (∀ π ∈ D.nd.Zgood i, Br.sFin D.loc D.nbr i ρ π) →
-    (∀ e ∈ Finset.Ioo 0 D.R.t, Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (e : ℤ) < ⊤) →
-    (D.nd.etaLoc i : ℝ) ≤ ∑ π ∈ D.nd.Zgood i, (D.nd.mult i π : ℝ) * rhs C eta i ρ π
-
 def Conclusion2 (C δ : ℝ) : Prop :=
   0 ≤ C → 0 ≤ δ → ∀ b eta : ℝ, 1 ≤ b → 0 ≤ eta → eta ≤ b ^ δ → (D.R.f : ℝ) ≤ b ^ δ →
     (D.R.nV : ℝ) ≤ b ^ δ →
     4 * D.R.f * D.R.nV * (C * (D.R.nV : ℝ) ^ 2 * ((D.R.nV : ℝ) + eta + D.R.t)) +
       2 * D.R.f * (D.R.r : ℝ) ^ 2 ≤ (12 * C + 2) * b ^ (6 * δ)
-
-theorem second_proposition_every_localisation (C δ : ℝ) : Conclusion2 (D := D) C δ := by
-  intro hC hδ b eta hb he0 he hf hn
-  have hx1 : 1 ≤ b ^ δ := Real.one_le_rpow hb hδ
-  have h6 : b ^ (6 * δ) = (b ^ δ) ^ 6 := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]; congr 1; push_cast; ring
-  rw [h6]
-  generalize b ^ δ = x at *
-  have ht : (D.R.t : ℝ) ≤ D.R.nV := by
-    have : D.R.t ≤ D.R.nV := by unfold Ranks.nV; omega
-    exact_mod_cast this
-  have hr : (D.R.r : ℝ) ≤ D.R.nV := by
-    have : D.R.r ≤ D.R.nV := by unfold Ranks.nV; omega
-    exact_mod_cast this
-  have hx0 : 0 ≤ x := by linarith
-  have A1 : 4 * (D.R.f : ℝ) * D.R.nV * (C * (D.R.nV : ℝ) ^ 2 * ((D.R.nV : ℝ) + eta + D.R.t)) ≤
-      4 * x * x * (C * x ^ 2 * (x + x + x)) := by
-    gcongr
-    exact ht.trans hn
-  have A2 : 2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 ≤ 2 * x * x ^ 2 := by
-    gcongr
-    exact hr.trans hn
-  have p5 : x ^ 5 ≤ x ^ 6 := pow_le_pow_right₀ hx1 (by norm_num)
-  have p3 : x ^ 3 ≤ x ^ 6 := pow_le_pow_right₀ hx1 (by norm_num)
-  nlinarith [mul_le_mul_of_nonneg_left p5 hC]
 
 def admT (CT : ℕ) : Prop := Formalism.MainNotions.ElementDenominator.Conclusion2 D CT
 
@@ -211,8 +164,6 @@ def ResidualAbsIrreducible : Prop :=
     Submodule.span (IsLocalRing.ResidueField (D.nd.O i))
       (Set.range fun g => ((rb g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r)
         (IsLocalRing.ResidueField (D.nd.O i)))) = ⊤
-
-def GlobalIndexAwayFromTypes : Prop := Formalism.MainNotions.TruncatedSeriesCountingIdentities.IntegralityFromMetric D
 
 def CoboundaryLemmaNoColumn (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (S : IdempotentChoiceData D.nd i) : Prop :=
@@ -246,54 +197,15 @@ def TypePrimeChoiceLemmas : Prop :=
       ∀ S : IdempotentChoiceData D.nd i, GoodCongruenceObjects D.nd r ρ π S → WildInertiaElement i S →
         VanishingLemma D.nd π S ∧ QuotientHomNonvanishingBound D.nd r π S ∧ CoboundaryLemmaNoColumn i r ρ π S
 
-def EndomorphismGoodPartBound : Prop :=
-  ∀ (i : D.nd.Loc) (α : Module.End (D.nd.O i) (D.nd.Mt i)) (A : ℤ), A ≠ 0 →
-    (∀ f : D.nd.T i, α * D.nd.act i f = D.nd.act i f * α) →
-    (∀ x ∈ D.nd.Zgood i, ∀ u ∈ heckeEig (D.nd.T i) (D.nd.act i) x,
-      α.baseChange (KK D.nd i) u = (A : KK D.nd i) • u) →
-    (∀ x ∈ D.nd.Z i, x ∉ D.nd.Zgood i → ∀ u ∈ heckeEig (D.nd.T i) (D.nd.act i) x,
-      α.baseChange (KK D.nd i) u = 0) →
-    D.nd.etaLoc i ≤
-      ∑ π ∈ D.nd.Zgood i, (D.nd.mult i π : ℚ) * (D.nd.vcc i π + padicValInt (D.nd.l i) A)
-
-def GaloisFamilyConditions : Prop :=
-  ∀ i r, GoodR D.nd i r →
-    Formalism.MainNotions.SumRepresentations.At.G1 D.nd i r ∧ Formalism.MainNotions.SumRepresentations.At.G2 D.nd D.naut i r ∧ Formalism.MainNotions.SumRepresentations.At.G3 D.nd i r ∧
-      Formalism.MainNotions.SumRepresentations.At.G4 D.nd i r
-
-def ThetaScalarAdmitted : Prop := Formalism.MainNotions.SumRepresentations.Conclusion42 D
-
 def admG5 : Prop := Formalism.MainNotions.SumRepresentations.ConclusionG5 D
 
-def InertiaClauseCoboundary : Prop :=
-  ∀ i, HG D.nd D.naut i → ∀ (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-    (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))), GoodR D.nd i r →
-    ∀ π ∈ D.nd.Z i, ∀ S : IdempotentChoiceData D.nd i, GoodCongruenceObjects D.nd r ρ π S → ∀ v ∈ D.nd.S i,
-      ∀ c : Fin D.R.t, ∀ φ : (S.X' → MatN D.nd i) →ₗ[D.nd.O i] KmodO (D.nd.O i),
-        (∀ a, InR' D.nd r S a → ∀ y, InY D.nd r S y → φ (a * y) = S.ψχ c a • φ y) →
-        ∀ γ ∈ Ine (F := D.host.E) (D.nd.plOm.1 v), φ (yg D.nd r S γ) = 0
-
 def admG6 : Prop := Formalism.MainNotions.SumRepresentations.ConclusionG6 D
-
-def CriticalPointsZ : Prop := Formalism.MainNotions.SumRepresentations.ConclusionZ D
-
-def LocalLiftingAdmitted (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (CLL : ℝ) : Prop := Formalism.MainNotions.LocalSituation.LocalLiftingWachEtale D HW F CLL
-
-def H0ColumnLengthBound (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LocalSituation.Conclusion2 D HW F
 
 def admTB (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LocalSituation.Conclusion4 D HW F
 
 def admBK : Prop := Formalism.MainNotions.LocalSituation.Conclusion5 D
 
 def admBC : Prop := Formalism.MainNotions.SumRepresentations.adm1 D
-
-def LocalGlobalCompatibilityAlt : Prop := Formalism.MainNotions.SumRepresentations.adm2 D
-
-def DensityTheoremThree : Prop := Formalism.MainNotions.ArithmeticCylinders.PointsLemma D
-
-def PropositionFourDensity : Prop := Formalism.MainNotions.ArithmeticCylinders.Conclusion4 D
-
-def DeligneLusztigSeriesSupport : Prop := Formalism.MainNotions.ArithmeticCylinders.adm3 D
 
 def FontaineAtPlacesOverL : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l),
@@ -305,28 +217,6 @@ def tieBr : Prop :=
 
 def tiePH : Prop := LocTie D.nd D.naut D.loc D.nbr
 
-def tiePar : Prop := MtParTie D.nd D.naut D.ntypes
-
-def tieIne : Prop :=
-  ∀ (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
-    (K' : FinExt (D.nd.l i)) (h : (D.nbr i w hw).Kw.1 ≤ K'.1) (hN : (GKin h).Normal)
-    (hF : (GKin h).FiniteIndex)
-    (hS : ∀ (g : ↥(GK (D.nbr i w hw).Kw)) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'),
-      ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw).actB g (algebraMap ↥(K0 K') (D.loc (D.nd.l i)).R.B c) =
-        algebraMap ↥(K0 K') (D.loc (D.nd.l i)).R.B c')
-    (m : ℕ) (r : GE D.nd →* GL (Fin m) (D.nd.O i)),
-    Continuous (fun g => ((r g : GL _ _) : Matrix (Fin m) (Fin m) (D.nd.O i))) →
-    (pc (D.loc (D.nd.l i)) h hN hF hS).IsPotCrys ((D.nbr i w hw).rep (r.comp (decS D.nd w))) →
-    ∀ σ : Gw D.nd w, (σ : GE D.nd) ∈ Ine (F := D.host.E) (D.nd.plOm.1 w) →
-      (D.nbr i w hw).e σ ∈ (pc (D.loc (D.nd.l i)) h hN hF hS).Iner ∧
-      ∀ a : D.nd.O i,
-        ((D.naut.inePol (D.naut.wdOf i (mapRep (iotaOQ D.nd D.naut i) r) w) (σ : GE D.nd)).IsRoot
-            (iotaO D.nd D.naut i a) ↔
-          ∃ d ∈ (pc (D.loc (D.nd.l i)) h hN hF hS).Dpcris ((D.nbr i w hw).rep (r.comp (decS D.nd w))),
-            d ≠ 0 ∧
-            actVB ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw) ((D.nbr i w hw).rep (r.comp (decS D.nd w)))
-              ((D.nbr i w hw).e σ) d = (D.nbr i w hw).toLL a • d)
-
 def tieChi : Prop :=
   ∀ (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k → ∀ v : D.nd.PlG k,
     ∃ u : (ZMod (D.host.g k))ˣ, (u = chiJ D i k v ∨ u = (chiJ D i k v)⁻¹) ∧
@@ -337,10 +227,6 @@ def tieChi : Prop :=
         (IsConjPl D.host (D.naut.plGw k v) w → Br.IsdRW D.loc D.nbr i w hw (chiGL i) ∧
           D.naut.items₂ k w (D.naut.wdOf i (mapRep (iotaOQ D.nd D.naut i) (chiGL i)) w) =
             X - C ((u⁻¹ : (ZMod (D.host.g k))ˣ) : ZMod (D.host.g k)))
-
-def Comparison₂ : Prop :=
-  Formalism.MainNotions.SumRepresentations.tie0 D ∧ tieBr (D := D) ∧ tiePH (D := D) ∧ tiePar (D := D) ∧ tieIne (D := D) ∧
-    tieChi (D := D)
 
 section Pending
 
@@ -372,17 +258,6 @@ def admDZ : Prop :=
         (D.naut.items₂ k w' (D.naut.locV i PI w')).natDegree = D.R.nV ∧
         Formalism.CyclotomicNorms.rootsBar (D.naut.items₂ k w' (D.naut.locV i PI w')) =
           (Formalism.CyclotomicNorms.rootsBar ((P.lz k).lab τ * (X - C (u : ZMod (D.host.g k))) ^ D.R.t)).map (·⁻¹)
-
-def admitted (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (CT : ℕ) (CLL : ℝ) : Prop :=
-  admT (D := D) CT ∧ LocalPushoutProposition (D := D) ∧ ResidualAbsIrreducible (D := D) ∧ GlobalIndexAwayFromTypes (D := D) ∧ TypePrimeChoiceLemmas (D := D) ∧
-    EndomorphismGoodPartBound (D := D) ∧
-    HarishChandraLabels P ∧ admDZ P ∧ GaloisFamilyConditions (D := D) ∧ ThetaScalarAdmitted (D := D) ∧ admG5 (D := D) ∧ InertiaClauseCoboundary (D := D) ∧
-    admG6 (D := D) ∧ CriticalPointsZ (D := D) ∧ DensityTheoremThree (D := D) ∧ PropositionFourDensity (D := D) ∧ DeligneLusztigSeriesSupport (D := D) ∧
-    LocalLiftingAdmitted (D := D) HW F CLL ∧ H0ColumnLengthBound (D := D) HW F ∧ admTB (D := D) HW F ∧ admBK (D := D) ∧ admBC (D := D) ∧
-    LocalGlobalCompatibilityAlt (D := D) ∧ FontaineAtPlacesOverL (D := D) ∧ Comparison₂ (D := D)
-
-def Stmt (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) (CT : ℕ) (CLL : ℝ) : Prop :=
-  8 * (CT : ℝ) ≤ C → admitted P HW F CT CLL → aux₃ (D := D) C CT
 
 end Pending
 

@@ -25,12 +25,6 @@ def IsFibreZ (P tr : PowerSeries K) {ι : Type} [Fintype ι] (c : ι → K)
   (∀ Q, HasSecondLogDeriv (wpShift P (c Q)) (2 * P - wp Q - wm Q)) ∧
     PowerSeries.C (al ^ 2) * PowerSeries.rescale al tr = ∑ Q, (wp Q + wm Q) - PowerSeries.C S
 
-def IsFibreCurve (W : WeierstrassCurve K) (xT yT : K) {ι : Type} [Fintype ι] (xQ yQ : ι → K)
-    (al S : K) : Prop :=
-  (∀ Q, W.toAffine.Equation (xQ Q) (yQ Q)) ∧
-    PowerSeries.C (al ^ 2) * PowerSeries.rescale al (wTr W xT yT) =
-      ∑ Q, (wTr W (xQ Q) (yQ Q) + wTr W (xQ Q) (W.toAffine.negY (xQ Q) (yQ Q))) - PowerSeries.C S
-
 end Alg
 
 end Formalism.L2.Th1.B

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorL
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AddCharTrivialIntegralFiniteAdeleMul
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeStrongApproxOpenCompactStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeStrongApproxOpenCompact
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticCharacterRealFinitePointsMatchStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsSplitIdempotentsOfRelTraceOneModTwoStatement
 
@@ -231,7 +231,7 @@ theorem isLatVac_iff : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ w : D.host.
     rw [← heps y hy]
     exact hG.2
   · intro hv
-    obtain ⟨-, -, hap, hop, -⟩ := GlobalTheory.T.completedTensorLattice_strongApprox_open_compact D S T C Λ L
+    obtain ⟨-, -, hap, hop, -⟩ := _root_.GlobalTheory.Ker.HatLat.hatA_tens D S T C Λ L
       ⟨hΛ.1, DualFamily.span_eq_top Λ hΛ.1 fun x => (hΛ.2.1 x).2⟩ ⟨hL.1, TensLat.span_of_selfD C.X hL⟩
     obtain ⟨U, hU, hUf⟩ := hf.level
     obtain ⟨N, hN, hNU⟩ := hop U hU

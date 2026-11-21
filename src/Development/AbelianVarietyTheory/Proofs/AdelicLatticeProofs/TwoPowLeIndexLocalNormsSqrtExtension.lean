@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TwoPowCardLeIndexIInfStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsApproxModLocalSquaresStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsLocalNonnormOfNonsquareAdicCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexUnitsLocalSquaresFiniteRealPlacesLeStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TwoPowCardLeIndexIInf
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsApproxModLocalSquares
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsLocalNonnormOfNonsquareAdicCompletion
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexUnitsLocalSquaresFiniteRealPlacesLe
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
 
@@ -35,7 +35,7 @@ theorem two_pow_le_index_locNorm :
   intro F _ _ δ S hδ
   classical
   have h0 : (locNorm F δ S).index ≠ 0 :=
-    ne_zero_of_dvd_ne_zero (GlobalTheory.T.index_unitsLocalSquaresFiniteRealPlaces_le F S).1
+    ne_zero_of_dvd_ne_zero (_root_.GlobalTheory.QNorm.index_locSq_le F S).1
       (Subgroup.index_dvd_of_le (locSq_le_locNorm_of_delta F δ S))
   refine ⟨h0, ?_⟩
   set A : Set (HeightOneSpectrum (𝓞 F)) :=
@@ -57,11 +57,11 @@ theorem two_pow_le_index_locNorm :
     rw [Fintype.card_sum, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card]
     rfl
   rw [← hcard]
-  refine le_trans (GlobalTheory.T.two_pow_card_le_index_iInf_of_independent Fˣ (A ⊕ B) K ?_ (ne_zero_of_dvd_ne_zero h0 hdvd))
+  refine le_trans (_root_.GlobalTheory.QNorm.two_pow_card_le_index_iInf Fˣ (A ⊕ B) K ?_ (ne_zero_of_dvd_ne_zero h0 hdvd))
     (Nat.le_of_dvd (Nat.pos_of_ne_zero h0) hdvd)
   rintro (v | σ)
-  · obtain ⟨y, hy0, hy⟩ := GlobalTheory.T.exists_local_nonnorm_of_nonsquare_adicCompletion F v.1 (algebraMap F _ δ) (by simpa using hδ) v.2.2
-    obtain ⟨x, hx0, hxv, hxσ⟩ := GlobalTheory.T.exists_approx_mod_local_squares F S
+  · obtain ⟨y, hy0, hy⟩ := _root_.GlobalTheory.QNorm.exists_local_nonnorm F v.1 (algebraMap F _ δ) (by simpa using hδ) v.2.2
+    obtain ⟨x, hx0, hxv, hxσ⟩ := _root_.GlobalTheory.QNorm.exists_approx_mod_squares F S
       (Function.update (fun w : HeightOneSpectrum (𝓞 F) => (1 : w.adicCompletion F)) v.1 y)
       (fun _ => 1) (by
         intro w
@@ -79,7 +79,7 @@ theorem two_pow_le_index_locNorm :
         rw [Function.update_of_ne hw, mul_one] at h1
         exact sqSub_le_normSub _ _ h1
       · exact mem_normSub_real_of_pos _ _ _ (by simpa using hxσ τ.1)
-  · obtain ⟨x, hx0, hxv, hxσ⟩ := GlobalTheory.T.exists_approx_mod_local_squares F S (fun _ => 1)
+  · obtain ⟨x, hx0, hxv, hxσ⟩ := _root_.GlobalTheory.QNorm.exists_approx_mod_squares F S (fun _ => 1)
       (fun τ => if τ = σ.1 then -1 else 1) (by simp) (by
         intro τ
         split_ifs <;> simp)

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSchwartzTranslate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivedActionIntertwinesOfGroupStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzEqGaussianOfFderivAddEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfOrthogonalSchrodingerGaussianStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfOrthogonalSchrodingerGaussian
 import GroundTheory.GlobalFields.TateThesis.GaussianSchwartz
 
 noncomputable section
@@ -94,7 +94,7 @@ theorem exists_eq_smul_of_commute_rhoFun : ∀ (l : Type) [Fintype l] (S : Sch l
   have key : ∀ f : Sch l, (starRingEnd ℂ c) • S f = f := by
     intro f
     rw [← sub_eq_zero]
-    apply GlobalTheory.T.eq_zero_of_orthogonal_schrodinger_gaussian l
+    apply _root_.GlobalTheory.RealWeil.eq_zero_of_inner_rhoSch_gaussian l
     intro w
     have hsm : ∀ (a : ℂ) (g : Sch l), (a • g).toLp 2 volume = a • g.toLp 2 volume := fun a g =>
       (SchwartzMap.toLpCLM ℂ ℂ 2 volume).map_smul a g

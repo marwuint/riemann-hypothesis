@@ -1,17 +1,19 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.UnitaryExtremality.SatPowNonvan
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShellMeasure
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemWeylCellUnitaryGroupLongSimpleReflectionIffStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalVectorValueUnitaryRankOneGindikinKarpelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralEqRankOneFactorSL2OfGeometricOnShellsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryBorelEqDiagonalMulUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiDeltaUConjLongSimpleReflectionUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryRankOneSphericalIntegrandDiagonalTorusFacStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylCellHaarRightTranslateInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemWeylCellUnitaryGroupLongSimpleReflectionIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalVectorValueUnitaryRankOneGindikinKarpel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralEqRankOneFactorSL2OfGeometricOnShells
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryBorelEqDiagonalMulUnipotent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiDeltaUConjLongSimpleReflectionUnitary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryRankOneSphericalIntegrandDiagonalTorusFac
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylCellHaarRightTranslateInvariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDiagonalConjLastSimpleReflectionCellStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryThreeRankOneSphericalVectorCellValueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDepthPowerLastSimpleReflectionCellStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylSimpleReflectionRevCommSqEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDepthPowerLastSimpleReflectionCell
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylSimpleReflectionRevCommSqEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntertwiningLastEven
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FIwasawa
 open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.SphericalProduct
@@ -55,9 +57,9 @@ theorem spherical_even (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val
       exact Int.self_le_toNat _
   have hshape : ∀ u : cellU y, ∀ i j, ¬ (i = lo k ∧ j = (lo k).rev) →
       ((((u : GU σ n)) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = (1 : Matrix (Fin n) (Fin n) L) i j :=
-    fun u => (GlobalTheory.T.mem_weylCellUnitaryGroup_longSimpleReflection_iff L σ n k hk hn y hy u).1 u.2
+    fun u => (_root_.GlobalTheory.cellU_rankOne_shape L σ n k hk hn y hy u).1 u.2
   have hval := fun u : cellU y =>
-    GlobalTheory.T.sphericalVector_value_unitaryRankOne_gindikinKarpelevich L ϖ σ q h n k hk hn (fun i => (α i : ℂ)) φ hφ hφ1 y hyK hy u (hshape u)
+    _root_.GlobalTheory.GKUnitaryRankOne.value_rankOne L ϖ σ q h n k hk hn (fun i => (α i : ℂ)) φ hφ hφ1 y hyK hy u (hshape u)
   have hF0 : ∀ x ∈ H 0, φ (y⁻¹ * x) = 1 := by
     intro x hx
     rw [hval x, if_pos]
@@ -86,7 +88,7 @@ theorem spherical_even (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val
       show ¬ (((j + 1 : ℕ) : ℤ) ≤ 0)
       omega
     rw [hval x, if_neg hnot, hord, neg_neg, zpow_natCast, zpow_neg, zpow_natCast, div_pow, div_eq_mul_inv]
-  obtain ⟨hInt1, hI1, -⟩ := GlobalTheory.T.integral_eq_rankOneFactorSL2_of_geometric_on_shells μ q hq2 (α k : ℂ) hαk H hHm hmono hcov hHμ (fun x => φ (y⁻¹ * x)) hF0 hF
+  obtain ⟨hInt1, hI1, -⟩ := _root_.GlobalTheory.integral_geometric_shells μ q hq2 (α k : ℂ) hαk H hHm hmono hcov hHμ (fun x => φ (y⁻¹ * x)) hF0 hF
   refine ⟨hInt1, ?_⟩
   rw [hI1]
   simp [cSimpleU, hk, hn]
@@ -99,7 +101,7 @@ theorem spherical_cell (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val
     Integrable (fun u : cellU y => φ (y⁻¹ * u)) μ ∧ ∫ u : cellU y, φ (y⁻¹ * u) ∂μ = cSimpleU q k α := by
   by_cases hn : Even n
   · exact spherical_even h k hk hn y hyK hy μ hμ α hαk φ hφ hφ1
-  · have hA := GlobalTheory.T.integral_depth_power_lastSimpleReflectionCell L ϖ σ q h n k hk hn y hyK hy μ hμ (α k) hαk
+  · have hA := _root_.GlobalTheory.WeylCell.WeylUnipotentShell.integral_depth_cell L ϖ σ q h n k hk hn y hyK hy μ hμ (α k) hαk
     have hpt : ∀ u : cellU y, φ (y⁻¹ * (u : GU σ n)) = ((α k : ℂ) / (q : ℂ) ^ 2) ^ depthU k (u : GU σ n) :=
       GlobalTheory.T.unitaryThreeRankOne_sphericalVector_cell_value L ϖ σ q h n k hk hn y hyK hy (fun i => (α i : ℂ)) φ hφ hφ1
     simp_rw [hpt]
@@ -148,11 +150,11 @@ theorem scale_cell (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val + 1
     ∃ s : ℂ, (∀ F : GU σ n → ℂ, ∫ u : cellU y, F (t⁻¹ * u * t) ∂μ = s * ∫ u : cellU y, F u ∂μ) ∧
       chiDeltaU q (fun i => (α i : ℂ)) (y⁻¹ * t * y) * s = chiDeltaU q (fun i => (actU k α i : ℂ)) t := by
   by_cases hn : Even n
-  · exact ⟨_, (conjScale' L ϖ σ q h n k hk hn y hyK hy μ hμ t ht).1, GlobalTheory.T.chiDeltaU_conj_longSimpleReflection_unitary L ϖ σ q h n k hk hn y hy α t ht⟩
+  · exact ⟨_, (conjScale' L ϖ σ q h n k hk hn y hyK hy μ hμ t ht).1, _root_.GlobalTheory.GKUnitary.chiDeltaU_conj_simpleU_long L ϖ σ q h n k hk hn y hy α t ht⟩
   · refine ⟨_, (GlobalTheory.T.integral_diagonal_conj_lastSimpleReflectionCell L ϖ σ q h n k hk hn y hyK hy μ hμ t ht).1, ?_⟩
     obtain ⟨Φ, hΦ, hΦ1, -⟩ := Formalism.UG.Final.SphericalExistsU L ϖ σ q n (n / 2) h (by omega) (by omega)
       (fun i => (α i : ℂ)) fun i => (α i).ne_zero
-    have e := GlobalTheory.T.unitaryRankOne_sphericalIntegrand_diagonal_torus_factor L ϖ σ q h n k hk hn y hyK hy α Φ hΦ t ht 1 y
+    have e := _root_.GlobalTheory.WeylCell.U21TorusFactor.torus_factor L ϖ σ q h n k hk hn y hyK hy α Φ hΦ t ht 1 y
     have hB := (GlobalTheory.WeylCell.diagConjU L σ n y _ hy t ht).1
     have e2 : Φ (y⁻¹ * t * 1 * y) = chiDeltaU q (fun i => (α i : ℂ)) (y⁻¹ * t * y) := by
       have := hΦ (y⁻¹ * t * y) 1 1 hB (one_mem _)
@@ -178,7 +180,7 @@ theorem shift_cell (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val + 1
       intro u
       simpa using hp u 1
     simp_rw [e]
-    exact (GlobalTheory.T.unitaryWeylCell_haar_rightTranslate_invariant L ϖ σ q h n k hk hn y hyK hy μ hμ p).1 fun w => ψ (y⁻¹ * w)
+    exact (_root_.GlobalTheory.WeylCell.WeylUnipotentShell.cellU_haar_rightInv L ϖ σ q h n k hk hn y hyK hy μ hμ p).1 fun w => ψ (y⁻¹ * w)
 
 theorem integral_law (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val + 1 < n / 2) (y : GU σ n)
     (hyK : y ∈ KU σ n) (hy : IsWeylRep (simpleU k) (y : GL (Fin n) L)) [MeasurableSpace (cellU y)]
@@ -188,7 +190,7 @@ theorem integral_law (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val +
     (β : GU σ n) (hβ : IsBorelU β) :
     ∫ u : cellU y, ψ (y⁻¹ * u * β) ∂μ =
       chiDeltaU q (fun i => (actU k α i : ℂ)) β * ∫ u : cellU y, ψ (y⁻¹ * u) ∂μ := by
-  obtain ⟨t, ν, rfl, hν, htd, htdiag⟩ := GlobalTheory.T.unitaryBorel_eq_diagonal_mul_unipotent L σ n β hβ
+  obtain ⟨t, ν, rfl, hν, htd, htdiag⟩ := _root_.GlobalTheory.UnitaryBorel.borel_eq_diag_mul_unip_sameDiag L σ n β hβ
   have hBt := (GlobalTheory.WeylCell.diagConjU L σ n y _ hy t htd).1
   obtain ⟨s, hs, hchi⟩ := scale_cell h k hk y hyK hy μ hμ α t htd
   have hχ : chiDeltaU q (fun i => (actU k α i : ℂ)) (t * ν) = chiDeltaU q (fun i => (actU k α i : ℂ)) t :=
@@ -241,7 +243,7 @@ theorem invStepU : PositivityTheory.SphericalProduct.InvStepU := by
   have hq2 : 2 ≤ q := h.2.2.2.2.2.1
   have hact : actU j χ = Function.update χ j (χ j)⁻¹ := by simp [actU, hk]
   rw [← hact]
-  obtain ⟨-, ⟨y, hyK, hyw⟩, hμex⟩ := exists_data_U h n χ (simpleU j) (GlobalTheory.T.unitaryWeylSimpleReflection_rev_comm_sq_eq_one n j).1
+  obtain ⟨-, ⟨y, hyK, hyw⟩, hμex⟩ := exists_data_U h n χ (simpleU j) (_root_.GlobalTheory.simpleU_rev_and_sq n j).1
   letI : MeasurableSpace (cellU y) := borel _
   haveI : BorelSpace (cellU y) := ⟨rfl⟩
   obtain ⟨μ, hμH, hμ⟩ := hμex y

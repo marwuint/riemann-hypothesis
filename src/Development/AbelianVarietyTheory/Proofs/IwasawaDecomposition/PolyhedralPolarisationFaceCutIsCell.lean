@@ -149,6 +149,4 @@ theorem isCell_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
       · exact absurd h' hne
     simp [hcj]
 
-example : IsCell id (InvFun.minVal ℤ) ![mulForm] := isCone_mulForm.isCell
-
 end GlobalTheory.PolFan.FaceCutCell

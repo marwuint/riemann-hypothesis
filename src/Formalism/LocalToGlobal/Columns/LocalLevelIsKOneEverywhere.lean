@@ -105,7 +105,4 @@ def hermCols (hS : SpStd d.toColBase) (hP : PtSurj d) (hK : LocalLevelIsKOneEver
   vT := fun u => tieEV d.sp.cm d.hX d.hPr u
   Fv := fun u v => tieFv d.sp.cm d.hX d.hPr u v
 
-theorem stdTied (hS : SpStd d.toColBase) : CH.StdTied (d.colRec a) :=
-  ⟨fun i hi => ⟨(d.sp.X i).frame, hS.X_on i hi, hS.selfDual_span_frame_X i hi⟩, ⟨d.sp.X'.frame, hS.P_on, hS.selfDual_span_frame_auxiliary⟩⟩
-
 end Formalism.L2.Col

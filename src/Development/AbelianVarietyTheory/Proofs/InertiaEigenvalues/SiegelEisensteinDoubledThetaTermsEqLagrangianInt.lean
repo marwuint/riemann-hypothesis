@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.We
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IntegrandPeriodic
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameOfFst
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SiegelWeilDoublingProductRationalTranslateEqFramStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralHermitianAdjointCovolOnePeriodicEqStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralHermitianAdjointCovolOnePeriodicEq
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDoubledLagrangianOfRationalUnitaryFrameStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DoubledLagrangianEqIffSiegelParabolicCosetStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRationalUnitaryDoubledLagrangianFrameWittStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRationalUnitaryDoubledLagrangianFrameWitt
 
 noncomputable section
 
@@ -41,7 +41,7 @@ theorem integral_eq {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {χV χW : (A
   have hψ : ∀ x, ‖ψ x‖ = 1 := hS.weil.std.1.2.1
   simp_rw [GlobalTheory.T.siegelWeilDoublingProduct_rational_translate_eq_frame D V W f₁ f₂ γ g₀ hγ]
   unfold lagTerm
-  exact GlobalTheory.T.integral_hermitianAdjoint_covolOne_periodic_eq D V W ν 𝓖' μ 𝓕 hν hS.covol
+  exact _root_.GlobalTheory.SWChangeVar.integral_adjO_eq D V W ν 𝓖' μ 𝓕 hν hS.covol
     (fun u => f₁ (ratMul (frameOf W g₀).1 u) * star (f₂ (ratMul (frameOf W g₀).2 u)))
     (fun c u => GlobalTheory.RawLift.Model.integrand_periodic hψ hY h₁ h₂ c u)
 
@@ -79,7 +79,7 @@ theorem classes (W : HSp D) :
     simpa using (key a b).1 hpq
   have surj : Function.Surjective f := by
     intro Z
-    obtain ⟨γ, hγQ, g₁, hg₁, hZ⟩ := GlobalTheory.T.exists_rational_unitary_doubledLagrangianFrame_witt D W Z
+    obtain ⟨γ, hγQ, g₁, hg₁, hZ⟩ := _root_.GlobalTheory.SWLagTerms.exists_rat_unitary_lagFrame D W Z
     refine ⟨Quotient.mk _ ⟨γ, hγQ⟩, ?_⟩
     rw [hf]
     have := (GlobalTheory.T.doubledLagrangian_eq_iff_siegelParabolic_coset D W γ γ (g₀ ⟨γ, hγQ⟩) g₁ (hg₀ ⟨γ, hγQ⟩) hg₁ (Y ⟨γ, hγQ⟩) Z (hY ⟨γ, hγQ⟩) hZ).2

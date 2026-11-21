@@ -61,6 +61,4 @@ end GlobalTheory.LKGeo
 
 namespace GlobalTheory.LKGeo
 
-variable {p : ℕ} [Fact p.Prime]
-
 end GlobalTheory.LKGeo

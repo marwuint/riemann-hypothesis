@@ -190,11 +190,6 @@ def massDataOf : Formalism.FourierDecayAlt.S3.MassData (TypP F g1 g2) :=
     n0c := (massDataPre σ J Λ k P P' Kpp Kpp1 Kpp2 MG MW MW' X0 g1 g2 du du' dπ dπ' vH vH' vN vN' L A).AA /
       (massDataPre σ J Λ k P P' Kpp Kpp1 Kpp2 MG MW MW' X0 g1 g2 du du' dπ dπ' vH vH' vN vN' L A).ρ0 }
 
-theorem inMass_massDataOf (h : massH σ J Λ P ≠ 0) :
-    (massDataOf σ J Λ k P P' Kpp Kpp1 Kpp2 MG MW MW' X0 g1 g2 du du' dπ dπ' vH vH' vN vN' L A).InMass := by
-  unfold Formalism.FourierDecayAlt.S3.MassData.InMass
-  exact div_mul_cancel₀ _ h
-
 end Gen
 
 section OfSetting
@@ -271,21 +266,6 @@ def InVolumesAt : Prop :=
       IsCompatT X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J X0 X.measG.μG (X.measG.μB X0) νB →
     covol (X.measW u).μN = 1 → covol (X.measW u').μN = 1 →
     (bOf X hb hK FdN FdN' u u' X0 L A).InVolumes
-
-def InFormAt : Prop :=
-  HypX X hb FdN FdN' u u' → (bOf X hb hK FdN FdN' u u' X0 L A).InForm
-
-def RealInputsAt (jn sd C Th : ℝ) : Prop :=
-  (bOf X hb hK FdN FdN' u u' X0 L A).InNu ∧ (bOf X hb hK FdN FdN' u u' X0 L A).InJacMod ∧
-    (bOf X hb hK FdN FdN' u u' X0 L A).InInfinity ∧
-    Formalism.FourierDecayAlt.PB.EnergyLink (bOf X hb hK FdN FdN' u u' X0 L A) jn sd C Th D.R.rS (Fintype.card (InfinitePlace X.B.I.F))
-
-def LinkAt {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (T : Formalism.FourierDecayAlt.PB.Terms τ Rw I H H₁) {ι : Type} [Fintype ι]
-    (G : Formalism.FourierDecayAlt.Sz.Glob ι) (de : ℕ → ℝ) : Prop :=
-  Formalism.FourierDecayAlt.PB.Link T (bOf X hb hK FdN FdN' u u' X0 L A) G de (D.mem u).A.T
-    (Module.finrank ℂ (Formalism.L2.SG.PoincareInHH.PoincareSetting.Cu X u hK))
-    (Module.finrank ℂ (Formalism.L2.SG.PoincareInHH.PoincareSetting.Cu X u' hK))
 
 end Stmts
 

@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotDvdDiscrI
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.LeOfFiniteSplitNotSplitBauer
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassFieldSplitsInOfIsRayPrimeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSpanEqOneModOfSplitsInRayClassFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMulGaloisConjEqPrimeImagQuadraticStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitsCompletelyOverIntermediateOfSplitsOverRatStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMulGaloisConjEqPrimeImagQuadratic
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitsCompletelyOverIntermediateOfSplitsOverRat
 
 noncomputable section
 
@@ -82,7 +82,7 @@ theorem le_of_rayAdm (D : D7) (jE : D.host.E →+* Qb) (M : Fld) (h : KQbar D jE
     apply hLs
     rw [GlobalTheory.Bauer.ncard_eq_ncard_primesOver] at hRs ⊢
     obtain ⟨π, hπ, hπ1⟩ := key 𝔭 hnd hRs
-    obtain ⟨σ, hσ⟩ := GlobalTheory.T.exists_mul_galois_conj_eq_prime_imagQuadratic D.host.K h3K h2K
+    obtain ⟨σ, hσ⟩ := _root_.GlobalTheory.RayFieldNorm.exists_mul_conj_eq_norm D.host.K h3K h2K
       (jE.comp (algebraMap D.host.K D.host.E)) π (Ideal.absNorm 𝔭.asIdeal) (congrArg Ideal.absNorm hπ).symm
     have hray : IsRayPrime (KQbar D jE) (D.host.QS * D.host.q * D.host.d) (Ideal.absNorm 𝔭.asIdeal) := by
       refine ⟨hpr, jE ((π : D.host.K) : D.host.E), ⟨_, (π : D.host.K).2, rfl⟩, ?_, ?_, σ, hσ⟩
@@ -102,7 +102,7 @@ theorem le_of_rayAdm (D : D7) (jE : D.host.E →+* Qb) (M : Fld) (h : KQbar D jE
     have h1 : ((Ideal.span {((Ideal.absNorm 𝔭.asIdeal : ℕ) : ℤ)}).primesOver (𝓞 L')).ncard = Module.finrank ℚ L' := by
       rw [← GlobalTheory.HostSplit.ncard_placesOver L' hpr, ← finrank_eq_of_equiv eL]
       exact (ncard_places_of_equiv eL _).symm.trans hsp
-    exact GlobalTheory.T.splits_completely_over_intermediate_of_splits_over_rat D.host.K L' _ hpr h1 𝔭 (Ideal.absNorm_mem 𝔭.asIdeal)
+    exact _root_.GlobalTheory.SplitTower.splits_completely_of_intermediate D.host.K L' _ hpr h1 𝔭 (Ideal.absNorm_mem 𝔭.asIdeal)
   exact fun x hx => hle hx
 
 theorem rayField_isRay : GlobalTheory.Published.RayClassFieldSt → ∀ (D : D7) (jE : D.host.E →+* Qb),

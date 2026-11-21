@@ -208,15 +208,6 @@ theorem IsPullConst.eq_one (hL : L.IsLB) {rig : LB.Gen (L.pull (eSec A))} (hrig 
   rw [ex_zero] at hi
   exact fun _ hy => Set.mem_iInter.2 fun _ => hi hy
 
-theorem IsPullConst.unique (hL : L.IsLB) {m : T ⊗ A ⟶ A} {Φ : (Fin g → ℂ) → Fin g → ℂ}
-    (hΦ : ∀ z, exAt u p z ≫ m.left = (u.ex (Φ z)).left) {a b : ℤ}
-    {α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, m.left] ![a, -b])} {c c' : ℂ}
-    (hc : IsPullConst u p Φ a b α c) (hc' : IsPullConst u p Φ a b α c') : c = c' := by
-  obtain ⟨i, hi⟩ := exists_chart u valueRules hL 0
-  obtain ⟨i', hi'⟩ := exists_chart u valueRules hL (Φ 0)
-  have hj := (exAt_mem_pairChart_iff (hΦ 0) ![i, i']).2 ⟨hi, hi'⟩
-  exact mul_right_cancel₀ (zpow_ne_zero a (u.fr_ne i 0 hi)) ((hc _ 0 hj).symm.trans (hc' _ 0 hj))
-
 variable (p) in
 
 theorem exAt_snd_comp {f : A ⟶ A} {z w : Fin g → ℂ} (h : u.ex w = u.ex z ≫ f) :

@@ -3,7 +3,12 @@ import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.StepUnfol
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RationalRowTestKernel
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAtOfSteps
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TermVolumeClassSum
+import Development.AutomorphicArithmetic.LocalEmbeddings.JetsGrid
+import Development.AutomorphicArithmetic.LocalEmbeddings.JetsTest
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOrthogonalSummandEmbeddingHom
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalisedKernelExpansionSumLevelInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CastMulUnitaryAdelicGroupOfEq
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatIntegrandFlippedTensorLocallyConstantCompact
 
 noncomputable section
 
@@ -42,16 +47,6 @@ theorem jetsAt_of_one (ch : Choice R) (hL : R.toLevCh.Is A.μ0) (h : JetsOne ch)
   refine Finsupp.sum_congr fun P _ => ?_
   rw [hκ P t a β hβ M τ hM hτ y]
   ring
-
-theorem jetsOne_all : GlobalTheory.FunPr.Hypotheses₂ → SumOKK → Big fun ch => JetsOne ch := GlobalTheory.T.term_volume_class_sum
-
-theorem stepJets : GlobalTheory.FunPr.Hypotheses₂ → SumOKK → StepJets := by
-  intro hP hS
-  obtain ⟨C0, H⟩ := jetsOne_all hP hS
-  refine ⟨C0, fun ε CF hC => ?_⟩
-  obtain ⟨x₀, H⟩ := H ε CF hC
-  exact ⟨x₀, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j =>
-    jetsAt_of_one ch s.core.lev (H D large₂ e hx Γ Pl0 T A Ks R F s ch i j)⟩
 
 end GlobalTheory.RowClaim.JetsAssembly
 

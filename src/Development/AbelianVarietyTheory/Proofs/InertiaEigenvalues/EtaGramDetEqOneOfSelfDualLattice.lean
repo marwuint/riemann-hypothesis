@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ValIrreducible
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocalRingOfIdem
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualHermitianLatticeBasisExistsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualHermitianLatticeBasisExists
 
 noncomputable section
 
@@ -13,7 +13,7 @@ open GlobalTheory.UnitLemma Polynomial
 theorem eta_gramDet_eq_one : ∀ (K : UQ) (B : InvAlg K) (x : B.A), B.σ x = x → (B.X x).Nonempty →
     K.eta (B.gramDet x) = 1 := by
   intro K B x hx ⟨L, hlat, _, hsd⟩
-  obtain ⟨b, -, hb⟩ := GlobalTheory.T.self_dual_hermitian_lattice_basis_exists K B.A (B.herm x)
+  obtain ⟨b, -, hb⟩ := _root_.GlobalTheory.SelfDualLattice.exists_orthonormal_basis K B.A (B.herm x)
     (fun y y' z => by unfold InvAlg.herm; rw [mul_add, add_mul, map_add])
     (fun e y z => Basic.herm_smul_left B x y z e)
     (fun y z => Basic.herm_symm B x hx y z) L hlat.1 hlat.2 hsd

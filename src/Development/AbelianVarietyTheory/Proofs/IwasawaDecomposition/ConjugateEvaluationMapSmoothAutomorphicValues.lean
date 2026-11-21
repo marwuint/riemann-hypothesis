@@ -235,7 +235,7 @@ theorem conjMap_isAutFunSm_gen {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSet
       rw [this, mul_one, pow_zero, mul_one]
     have hn' : 1 ≤ X.B.I.n := by rw [← rank_eq X h]; exact hn
     have hti : (iotaX X h t⁻¹).1 = 1 := hfst _ ((GfC _).inv_mem ht)
-    obtain ⟨m, hm⟩ := GlobalTheory.T.derivativeClosedClass_bounded_by_inverseLeastSize X.B hn' hg
+    obtain ⟨m, hm⟩ := _root_.GlobalTheory.SobolevBound.derivative_closed_class_bound X.B hn' hg
     refine ⟨m, fun v x => ?_⟩
     obtain ⟨C, hC⟩ := hm (Set.range f) (by
       rintro _ ⟨u, rfl⟩

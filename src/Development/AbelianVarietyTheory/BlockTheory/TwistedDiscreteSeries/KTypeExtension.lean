@@ -82,21 +82,6 @@ theorem kFin_ne_bot (M : DSModel V S) (τ : D.what₂.Tau) : kFin M τ ≠ ⊥ :
   obtain ⟨A, hA, hs, -, ⟨v, hv, h0, -⟩, -⟩ := (M.ds τ).2.2.2.2.2.1
   exact fun h => h0 ((Submodule.mem_bot ℂ).1 (h ▸ (show v ∈ kFin M τ from ⟨A, hA, hv, hs⟩)))
 
-example (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (μ : Measure (GA D V))
-    (𝓕 : Set (GA D V)) : IsGKMap θ M J χ μ 𝓕 0 := by
-  refine ⟨fun _ => ⟨fun _ _ _ => rfl, ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩, continuous_const⟩, fun _ => zero_mem _,
-    fun _ _ _ _ _ _ _ _ _ => by simp, fun _ => MemLp.zero, fun _ => ⟨0, fun l _ => ⟨0, fun g => ?_⟩⟩,
-    fun _ _ _ _ => by simp, fun _ _ _ _ _ _ => rfl, fun _ _ _ _ _ _ => ?_⟩
-  · have : ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ),
-        l.foldr (fun p f => Rder θ V p.1 p.2 f) (0 : GA D V → ℂ) = 0 := fun l => by
-      induction l with
-      | nil => rfl
-      | cons p l ih => rw [List.foldr_cons, ih]; funext g; simp [Rder]
-    rw [MultilinearMap.zero_apply, this]
-    simp
-  · funext g
-    simp [Rder]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension
 
 end

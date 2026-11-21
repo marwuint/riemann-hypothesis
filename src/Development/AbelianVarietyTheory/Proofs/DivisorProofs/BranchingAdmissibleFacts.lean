@@ -5,13 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TransportedLatti
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsBasisAtBlock
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CoefficientSpaceEqSpanOrbitExtremalVector
 import Formalism.BranchSandwichDivisors.DivFromPassageAndNorm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylLeOfHighestVectorRowOperatorStableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylLeOfHighestVectorRowOperatorStable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LastRowTopComponentDualWeylEqMonomialMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeneratorsInDualWeylModuleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylSpannedByInterlacingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylLastZeroInclusionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylLastZeroInclusion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPairingLastRowMonomialReadsCoefficientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingListCharacterProductStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingListCharacterProduct
 
 open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BranchingDeterminantCap Formalism.BasicNotions Formalism.L2.DIV GlobalTheory.Mem.Gelf GlobalTheory.Mem.GelfCheck GlobalTheory.BrCompare
 
@@ -35,7 +33,7 @@ theorem hw_weight {ν : Fin n → ℕ} (hν : Antitone ν) (s : Fin n) :
 theorem capDet_dualWeyl {μ : Fin n → ℕ} (hμ : Antitone μ) (u : ℤ) {f : MvPolynomial (Fin n × Fin n) K}
     (hf : f ∈ dualWeyl K n n μ) :
     capDet (fun i j => rowE K n n i j) u f = ((∏ j : Fin n, (u + ((j : ℕ) : ℤ) - (μ j : ℤ)) : ℤ) : K) • f := by
-  have h := GlobalTheory.T.dualWeyl_le_of_highest_vector_rowOperator_stable K n μ hμ (Module.End.eigenspace (capDet (fun i j => rowE K n n i j) u)
+  have h := _root_.GlobalTheory.BrCompare.dualWeyl_le_of_rowE_stable K n μ hμ (Module.End.eigenspace (capDet (fun i j => rowE K n n i j) u)
     ((∏ j : Fin n, (u + ((j : ℕ) : ℤ) - (μ j : ℤ)) : ℤ) : K)) ?_ ?_ hf
   · exact Module.End.mem_eigenspace_iff.1 h
   · exact Module.End.mem_eigenspace_iff.2 (capDet_eigen _ u _ (fun j => (μ j : ℤ)) (hw_raise μ)
@@ -331,60 +329,6 @@ theorem fock_xi {lam sg : Fin n → ℕ} (hI : Interlace (lamZ lam) (fun i => (s
   simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.flip_apply, fockBL_apply, smul_eq_mul] at h
   linear_combination h
 
-theorem lift_rowE {lam b : Fin n → ℕ} {f : MvPolynomial (Fin n × Fin n) K} {G : BP K n} (h : bmLift K n lam b f G)
-    (i j : Fin n) : bmLift K n lam b (rowE K n n i j f) (rE K n n i j G) := by
-  have h1 := bmK_mem_alt.1 (glOperatorFirstRows_mem_bmW i j (bmK_liftW h))
-  refine ⟨h1.1, h1.2, ?_⟩
-  rw [← rE_lead, ← map_sub, bm_isLow_iff]
-  intro β hβ
-  rw [← Module.End.mul_apply, (zcomp_comm_rE n β i j).eq, Module.End.mul_apply, (bm_isLow_iff _ _).1 h.2.2 β hβ, map_zero]
-
-theorem fock_lift {lam sg : Fin n → ℕ} (hI : Interlace (lamZ lam) (fun i => (sg i : ℤ))) (ℓ : List ℤ)
-    (hℓ : ∀ u ∈ bmList lam sg, u ∈ ℓ) {f : MvPolynomial (Fin n × Fin n) K} (hf : f ∈ dualWeyl K n n sg) {G : BP K n}
-    (hG : bmLift K n lam (fun s => lam s - sg s) f G) (x : BP K n) (hx : x ∈ dualWeyl K (n + 1) n lam) :
-    fockB x ((ℓ.map (rCap K n n)).prod G) * (fockB (hw K le_rfl sg) (hw K le_rfl sg) * (bfact fun s => lam s - sg s : K)) =
-      (((ℓ.map (bmChi lam fun s => ((lam s - sg s : ℕ) : ℤ))).prod : ℤ) : K) * fockB (xiB K lam sg) (xiB K lam sg) *
-        fockB x (zmon K n (fun s => lam s - sg s) * emb K n f) := by
-  have hIL := bm_IL_of lam sg hI
-  let M : Submodule K (MvPolynomial (Fin n × Fin n) K) :=
-    { carrier := {f | ∃ G, bmLift K n lam (fun s => lam s - sg s) f G ∧ ∀ x ∈ dualWeyl K (n + 1) n lam,
-        fockB x ((ℓ.map (rCap K n n)).prod G) *
-          (fockB (hw K le_rfl sg) (hw K le_rfl sg) * (bfact fun s => lam s - sg s : K)) =
-        (((ℓ.map (bmChi lam fun s => ((lam s - sg s : ℕ) : ℤ))).prod : ℤ) : K) * fockB (xiB K lam sg) (xiB K lam sg) *
-          fockB x (zmon K n (fun s => lam s - sg s) * emb K n f)}
-      add_mem' := by
-        rintro f f' ⟨G, hG, e⟩ ⟨G', hG', e'⟩
-        refine ⟨G + G', bmLift_add hG hG', fun x hx => ?_⟩
-        have h1 := e x hx
-        have h2 := e' x hx
-        simp only [map_add, mul_add, ← fockBL_apply] at h1 h2 ⊢
-        linear_combination h1 + h2
-      zero_mem' := ⟨0, bmG_zero _ _ _ _, fun x _ => by simp [← fockBL_apply]⟩
-      smul_mem' := by
-        rintro c f ⟨G, hG, e⟩
-        refine ⟨c • G, bmLift_smul c hG, fun x hx => ?_⟩
-        have h1 := e x hx
-        simp only [map_smul, mul_smul_comm, smul_eq_mul, ← fockBL_apply] at h1 ⊢
-        linear_combination c * h1 }
-  obtain ⟨G', hG', e⟩ : f ∈ M := GlobalTheory.T.dualWeyl_le_of_highest_vector_rowOperator_stable K n sg (bmK_antitone lam sg hIL) M
-    ⟨_, bmLift_xi lam sg hIL, fun x hx => by
-      rw [bm_list_eigen (rCap K n n) (bmChi lam fun s => ((lam s - sg s : ℕ) : ℤ)) _ (fun u => by
-        rw [chi_eq hIL]
-        exact capDet_eigen _ u _ (fun j => (sg j : ℤ)) (xi_raise lam sg) fun s => by
-          rw [rE, (rowWeight_iff _ _).1 (bm_xi_row lam sg hIL)]; simp [bmRho]), ← fockBL_apply, map_smul, fockBL_apply,
-        smul_eq_mul, mul_assoc, fock_xi hI x hx, mul_assoc]⟩
-    (by
-      rintro a b f ⟨G, hG, e⟩
-      refine ⟨_, lift_rowE hG a b, fun x hx => ?_⟩
-      rw [← rE_lead, ← Module.End.mul_apply, ← (bmK_list_comm _ _ (fun u => rE_comm_rCap n n u a b) ℓ).eq,
-        Module.End.mul_apply, rE, ← fockB_rowE, ← fockB_rowE]
-      exact e _ (rowE_mem _ _ hx)) hf
-  have hk := rCap_kill hI ℓ hℓ (G - G') (Submodule.sub_mem _ (bmK_liftW hG) (bmK_liftW hG'))
-    (by rw [map_sub, zcomp_lift hG, zcomp_lift hG', sub_self])
-  rw [map_sub, sub_eq_zero] at hk
-  rw [hk]
-  exact e x hx
-
 end Core
 
 section One
@@ -393,59 +337,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke Formalism.L2.Col
 
 variable {K : Type} [Field K] {n : ℕ}
 
-theorem capelli_eq (u : ℤ) : InterlacingNumerators.capelli K n u = rCap K n (n + 1) (u + 1) := by
-  unfold InterlacingNumerators.capelli rCap capDet bmPi bmM
-  refine Finset.sum_congr rfl fun p _ => ?_
-  congr 3
-  funext j
-  unfold InterlacingNumerators.fOp bmF
-  congr 1
-  simp only [id]
-  split_ifs
-  · rw [zsmul_one]; congr 1; ring
-  · rfl
-
-theorem zOp_eq (lam : DomWeight (n + 1)) (sg : DomWeight n) :
-    InterlacingNumerators.zOp K lam sg = ((zList lam sg).map (rCap K n (n + 1))).prod := by
-  unfold InterlacingNumerators.zOp zList
-  rw [List.map_flatten, List.prod_flatten, List.map_ofFn, List.map_ofFn]
-  congr 2
-  funext i
-  simp only [Function.comp, List.map_map]
-  congr 2
-  funext v
-  rw [capelli_eq, Function.comp]
-  congr 1
-  ring
-
-theorem list_incl (ℓ : List ℤ) (G : BP K n) :
-    (ℓ.map (rCap K n (n + 1))).prod (incl K n G) = incl K n ((ℓ.map (rCap K n n)).prod G) := by
-  induction ℓ with
-  | nil => simp
-  | cons a l ih => simp only [List.map_cons, List.prod_cons, Module.End.mul_apply, ih, rCap_incl]
-
 theorem detShift_succ (lam : DomWeight (n + 1)) : lam.detShift = lam.w (Fin.last n) := by
   unfold DomWeight.detShift
   rw [dif_pos (Nat.succ_pos n)]
   rfl
-
-theorem fock_gen [CharZero K] {lam : DomWeight (n + 1)} {sg : DomWeight n} (hI : InterlacingNumerators.Interlace lam sg)
-    (hE : InterlacingNumerators.EqualLast lam sg) (t : InterlacingNumerators.Gen lam sg) {x : MvPolynomial (Fin (n + 1) × Fin (n + 1)) K}
-    (hx : x ∈ nablaSq K (n + 1) lam) :
-    fockB x (InterlacingNumerators.zOp K lam sg (InterlacingNumerators.phiGen K lam sg t)) * fockB (extremal K n sg) (extremal K n sg) =
-      ((Br.cBr rfl lam sg : ℤ) : K) * fockB (Br.xiBr K rfl lam sg) (Br.xiBr K rfl lam sg) *
-        fockB (coefOne K n (fun s => (Br.bBr rfl lam sg s).toNat) x) (InterlacingNumerators.piGen K lam sg t) := by
-  obtain ⟨h1, h2, h3, h4, h5⟩ := GlobalTheory.T.branching_list_character_product n lam sg hI hE
-  obtain ⟨h6, G, hG, e⟩ := GlobalTheory.T.generators_in_dual_weyl_module K n lam sg hI hE t
-  obtain ⟨x', hx', rfl⟩ := GlobalTheory.T.dual_weyl_last_zero_inclusion K n lam.natW (by simp [DomWeight.natW, detShift_succ]) x hx
-  have h := fock_lift h1 _ h2 h6 hG x' hx'
-  rw [h3, (GlobalTheory.T.fockPairing_lastRow_monomial_reads_coefficient K n _).1] at h
-  have hb : ((bfact fun s => lamN lam s - sg.natW s : ℕ) : K) ≠ 0 :=
-    Nat.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun s _ => Nat.factorial_ne_zero _)
-  rw [e, zOp_eq, list_incl, fockB_incl, h5, fockB_incl, funext h4]
-  refine mul_right_cancel₀ hb ?_
-  unfold extremal
-  linear_combination h
 
 end One
 
@@ -536,79 +431,8 @@ theorem fockB_ten {K ι : Type} [Field K] [Fintype ι] {n : ℕ} (f g : ι → M
 variable {K : Type} [Field K] [CharZero K] {n : ℕ} {ι : Type} [Fintype ι]
   {lam : ι → DomWeight (n + 1)} {sg : ι → DomWeight n}
 
-theorem piAll_mem (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ))
-    (t : (∀ τ, InterlacingNumerators.Gen (lam τ) (sg τ)) →₀ K) : InterlacingNumerators.piAll K lam sg t ∈ VV K sg := by
-  rw [InterlacingNumerators.piAll, Finsupp.linearCombination_apply]
-  exact Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _
-    (Submodule.subset_span ⟨_, fun τ => (GlobalTheory.T.generators_in_dual_weyl_module K n _ _ (hI τ) (hE τ) (g τ)).1, rfl⟩)
-
-theorem piAll_surj (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ)) :
-    VV K sg ≤ LinearMap.range (InterlacingNumerators.piAll K lam sg) := by
-  classical
-  rw [InterlacingNumerators.piAll, Finsupp.range_linearCombination]
-  refine Submodule.span_le.2 ?_
-  rintro _ ⟨f, hf, rfl⟩
-  have h := GlobalTheory.OrbitSpan.prod_mem_span_prod (K := K) Finset.univ
-    (fun τ => Set.range fun g => blockEmb K τ (InterlacingNumerators.piGen K (lam τ) (sg τ) g)) (fun τ => blockEmb K τ (f τ)) fun τ => by
-      have h1 := Submodule.mem_map_of_mem (f := (blockEmb K τ).toLinearMap) (GlobalTheory.T.dual_weyl_spanned_by_interlacing K n _ _ (hI τ) (hE τ) (hf τ))
-      rw [Submodule.map_span, ← Set.range_comp] at h1
-      exact h1
-  refine Submodule.span_mono ?_ h
-  intro y hy
-  obtain ⟨g, hg, rfl⟩ := (Set.mem_fintype_prod _ _).1 hy
-  choose g' hg' using hg
-  exact ⟨g', Finset.prod_congr rfl fun τ _ => hg' τ⟩
-
 theorem fock_extremal_ne (w : DomWeight n) : fockB (extremal K n w) (extremal K n w) ≠ 0 := by
   simpa [extNormB] using pb_extNormB_ne K (fun _ : Unit => w)
-
-theorem pair_gen (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ))
-    {F : Pol K ι (n + 1)} (hF : F ∈ VV K lam) (t : (∀ τ, InterlacingNumerators.Gen (lam τ) (sg τ)) →₀ K) :
-    pairB lam F (InterlacingNumerators.zPhiAll K lam sg t) =
-      pairB sg (brStdP rfl lam sg F : Pol K ι n) (InterlacingNumerators.piAll K lam sg t) := by
-  induction t using Finsupp.induction_linear with
-  | zero => simp
-  | add f g hf hg => simp only [map_add, hf, hg]
-  | single g c =>
-    have hm := piAll_mem (K := K) hI hE (Finsupp.single g 1)
-    simp only [InterlacingNumerators.zPhiAll, InterlacingNumerators.piAll, Finsupp.linearCombination_single, map_smul, one_smul] at hm ⊢
-    congr 1
-    induction hF using Submodule.span_induction with
-    | mem y hy =>
-      obtain ⟨f, hf, rfl⟩ := hy
-      change pairB lam (ten f) _ = pairB sg (brStdP rfl lam sg (ten f) : Pol K ι n) _
-      simp only [pairB_apply, brStdP, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.coe_smul]
-      rw [← fockBL_apply (_ • _), map_smul, LinearMap.smul_apply, fockBL_apply, fockB_projVV sg _ hm, coefLast_ten,
-        fockB_ten, fockB_ten, brConst, extNormB, extNormB, smul_eq_mul, ← Finset.prod_inv_distrib,
-        ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
-      refine Finset.prod_congr rfl fun τ _ => ?_
-      have h := fock_gen (hI τ) (hE τ) (g τ) (hf τ)
-      have h1 := fock_extremal_ne (K := K) (lam τ)
-      have h2 := fock_extremal_ne (K := K) (sg τ)
-      unfold coefOne at h
-      unfold kapBr bExp
-      field_simp
-      linear_combination h
-    | zero => simp
-    | add y z _ _ hy hz => simp only [map_add, LinearMap.add_apply, Submodule.coe_add, hy, hz]
-    | smul a y _ hy => simp only [map_smul, LinearMap.smul_apply, Submodule.coe_smul, hy]
-
-theorem branchT_eq (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ)) :
-    InterlacingNumerators.branchT K lam sg = brStd rfl lam sg := by
-  ext1 x
-  rw [← sub_eq_zero]
-  refine (pairingBNondegenerate_holds K ι n sg).1 _ fun y => ?_
-  obtain ⟨t, ht⟩ := piAll_surj hI hE y.2
-  have h := (InterlacingNumerators.exists_section (InterlacingNumerators.piAll K lam sg)).choose_spec t
-  rw [map_sub, LinearMap.sub_apply, sub_eq_zero, InterlacingNumerators.pair_branchT, pairBK_apply]
-  simp only [InterlacingNumerators.branch, LinearMap.comp_apply, Submodule.subtype_apply]
-  rw [pair_gen hI hE x.2, ← ht, h]
-  rfl
-
-theorem pTilde_eq (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ)) (t : ι → K) :
-    InterlacingNumerators.pTilde lam sg t = brAt rfl lam sg t := by
-  rw [InterlacingNumerators.pTilde, branchT_eq hI hE]
-  rfl
 
 end Tensor
 
@@ -636,11 +460,6 @@ theorem sameShift_iff {n : ℕ} (lam : DomWeight (n + 1)) (sg : DomWeight n) :
 
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 
-theorem extLat_eq (M : Submodule (𝓞 K) (Fin n → K)) (t : K) : InterlacingNumerators.extLat M t = sumLat rfl M t := by
-  ext x
-  rw [InterlacingNumerators.mem_extLat, GlobalTheory.BranchBasis.mem_sumLat]
-  exact and_congr Iff.rfl (exists_congr fun c => eq_comm)
-
 omit [NumberField K] in
 theorem exists_block (B : GL (Fin n) K) {t : K} (ht : t ≠ 0) : ∃ B' : GL (Fin (n + 1)) K,
     IsBlock rfl (B' : Matrix (Fin (n + 1)) (Fin (n + 1)) K) (B : Matrix (Fin n) (Fin n) K) t := by
@@ -655,32 +474,6 @@ theorem exists_block (B : GL (Fin n) K) {t : K} (ht : t ≠ 0) : ∃ B' : GL (Fi
   exact ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ (by
     rw [h.det]; exact mul_ne_zero (Matrix.GeneralLinearGroup.det B).ne_zero ht), h⟩
 
-theorem lattice_guard {lam : ι → DomWeight (n + 1)} {sg : ι → DomWeight n} (P : VV K lam →ₗ[K] VV K sg) {t : ι → K}
-    (ht : ∀ τ, t τ ≠ 0) :
-    (∀ M : ι → Submodule (𝓞 K) (Fin n → K), ∀ x ∈ delK lam fun τ => sumLat rfl (M τ) (t τ), P x ∈ delK sg M) ↔
-    (∀ M : ι → Submodule (𝓞 K) (Fin n → K), (∀ τ, Submodule.IsLattice K (M τ)) →
-      ∀ x ∈ delK lam fun τ => sumLat rfl (M τ) (t τ), P x ∈ delK sg M) := by
-  refine ⟨fun h M _ => h M, fun h M x hx => ?_⟩
-  simp only [delK, delP, transLat, Submodule.mem_comap, Submodule.mem_iInf, LinearMap.coe_restrictScalars,
-    Submodule.subtype_apply] at hx ⊢
-  intro w B hB
-  choose B' hB' using fun τ => exists_block (B τ) (ht τ)
-  obtain ⟨s, hs, h1⟩ := hx w B' fun τ => GlobalTheory.BranchBasis.isBasisAt_block K _ n rfl w (M τ) (t τ) (B τ) _ (hB' τ) (hB τ)
-  have h2 := h (fun τ => colLat (B τ)) (fun τ => GlobalTheory.DualWeyl.isLattice_colLat (B τ)) (s • x) (by
-    simp only [← GlobalTheory.BranchBasis.colLat_block rfl _ _ _ (hB' _)]
-    change ((s • x : VV K lam) : Pol K ι (n + 1)) ∈ delP lam _
-    rw [(GlobalTheory.TransLoc.nabDelLoc_free_leVV.2.1 K ι _ lam B').2]
-    refine ⟨_, h1, ?_⟩
-    rw [map_smul, LinearMap.coe_restrictScalars, ← polyAction_mul, mul_inv_cancel, polyAction_one₂]
-    rfl)
-  change ((P (s • x) : VV K sg) : Pol K ι n) ∈ delP sg _ at h2
-  rw [(GlobalTheory.TransLoc.nabDelLoc_free_leVV.2.1 K ι _ sg B).2] at h2
-  obtain ⟨y, hy, e⟩ := h2
-  refine ⟨s, hs, ?_⟩
-  rw [← LinearMap.map_smul_of_tower, ← Submodule.coe_smul_of_tower, ← LinearMap.map_smul_of_tower, ← e,
-    LinearMap.coe_restrictScalars, ← polyAction_mul, inv_mul_cancel, polyAction_one₂]
-  exact hy
-
 variable (K) in
 
 def PTildeAt (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) : Prop :=
@@ -691,85 +484,6 @@ def PTildeAt (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) : Prop :
 
 theorem pTildeIntegral_iff : InterlacingNumerators.PTildeIntegral ↔ ∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (n : ℕ)
     (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n), PTildeAt K lam sg := Iff.rfl
-
-theorem conclusion_iff {lam : ι → DomWeight (n + 1)} {sg : ι → DomWeight n}
-    (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ)) :
-    (∀ (M' : ι → Submodule (𝓞 K) (Fin n → K)) (t : ι → K), (∀ τ, t τ ≠ 0) →
-      ∀ G ∈ delK lam fun τ => sumLat rfl (M' τ) (t τ), brAt rfl lam sg t G ∈ delK sg M') ↔
-    (∀ (M : ι → Submodule (𝓞 K) (Fin n → K)), (∀ τ, Submodule.IsLattice K (M τ)) →
-      ∀ (t : ι → K), (∀ τ, t τ ≠ 0) →
-      ∀ x : VV K lam, x ∈ delK lam (fun τ => InterlacingNumerators.extLat (M τ) (t τ)) → InterlacingNumerators.pTilde lam sg t x ∈ delK sg M) := by
-  simp only [extLat_eq, pTilde_eq hI hE]
-  exact ⟨fun h M _ t ht => h M t ht, fun h M t ht => (lattice_guard _ ht).2 (fun M hM => h M hM t ht) M⟩
-
-theorem brIntegral_iff_at (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n)
-    (h0 : n = 0 → ∀ τ, (lam τ).w (Fin.last n) = 0) : BrIntegral K rfl lam sg ↔ PTildeAt K lam sg := by
-  unfold BrIntegral PTildeAt
-  simp only [interlace_iff, sameShift_iff]
-  refine forall_congr' fun hI => ⟨fun h hE => (conclusion_iff hI hE).1 (h fun τ => ⟨hE τ, fun e => h0 e τ⟩),
-    fun h hS => (conclusion_iff hI fun τ => (hS τ).1).2 (h fun τ => (hS τ).1)⟩
-
-theorem brIntegral_of_at (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) (h : PTildeAt K lam sg) :
-    BrIntegral K rfl lam sg := fun hI hS =>
-  have hI' := fun τ => (interlace_iff _ _).1 (hI τ)
-  have hE := fun τ => ((sameShift_iff _ _).1 (hS τ)).1
-  (conclusion_iff hI' hE).2 (h hI' hE)
-
-theorem at_of_rank_one (lam : ι → DomWeight (0 + 1)) (sg : ι → DomWeight 0)
-    (h : BrIntegral K rfl (fun _ : ι => (⟨0, antitone_const⟩ : DomWeight (0 + 1))) sg) : PTildeAt K lam sg := by
-  intro hI hE
-  refine (conclusion_iff hI hE).1 fun M t ht x hx => ?_
-  set lam0 : ι → DomWeight (0 + 1) := fun _ => ⟨0, antitone_const⟩ with hl
-  have hn : ∀ τ, (lam0 τ).natW = (lam τ).natW := fun τ => by
-    funext i
-    obtain rfl : i = Fin.last 0 := Subsingleton.elim (α := Fin 1) _ _
-    simp [DomWeight.natW, detShift_succ]
-  have hV : VV K lam0 = VV K lam := by simp only [VV, nablaSq, hn]
-  have hD : delStd K lam0 = delStd K lam := by simp only [delStd, delSq, hn]
-  have hP : brStdP (K := K) rfl lam0 sg = brStdP rfl lam sg := by
-    have e1 : brConst rfl K lam0 sg = brConst rfl K lam sg := by simp [brConst, cBr, kapBr, xiBr, extremal, hn]
-    have e2 : bExp rfl lam0 sg = bExp rfl lam sg := by funext τ s; exact s.elim0
-    rw [brStdP, brStdP, e1, e2]
-  have h1 := h (fun τ i => i.elim0) (fun τ => by simp [SameShift, DomWeight.detShift, hl]) M t ht
-    ⟨(∏ τ, t τ ^ (-nBr (lam τ) (sg τ))) • (x : Pol K ι (0 + 1)), by rw [hV]; exact Submodule.smul_mem _ _ x.2⟩ (by
-      simp only [delK, delP, transLat, Submodule.mem_comap, Submodule.mem_iInf, LinearMap.coe_restrictScalars,
-        Submodule.subtype_apply] at hx ⊢
-      intro w B hB
-      choose B' hB' using fun τ => exists_block (1 : GL (Fin 0) K) (ht τ)
-      have hb : ∀ τ, IsBasisAt w (sumLat rfl (M τ) (t τ)) (B' τ) := fun τ =>
-        GlobalTheory.BranchBasis.isBasisAt_block K _ 0 rfl w (M τ) (t τ) 1 _ (hB' τ) (Subsingleton.elim _ _)
-      rw [GlobalTheory.TestLat.nabIndep_and_delIndep.2 K ι _ lam0 w _ B B' hB hb, hD]
-      convert hx w B' hb using 1
-      simp only [actP, LinearMap.smul_apply, map_smul, smul_smul]
-      congr 1
-      simp only [detTwK, ← Finset.prod_mul_distrib]
-      refine Finset.prod_congr rfl fun τ _ => ?_
-      have hd : (B' τ : Matrix (Fin (0 + 1)) (Fin (0 + 1)) K) 0 0 = t τ := (hB' τ).2.2
-      simp [detPow, detShift_succ, hl, nBr, Matrix.GeneralLinearGroup.val_det_apply, hd])
-  convert h1 using 1
-  simp only [brAt, brStd, hP, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.subtype_apply, map_smul]
-  simp [nBr, hl]
-
-theorem compare :
-    ((∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (N n : ℕ) (hN : N = n + 1)
-      (lam : ι → DomWeight N) (sg : ι → DomWeight n), BrIntegral K hN lam sg) ↔ InterlacingNumerators.PTildeIntegral) ∧
-    (∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (n : ℕ)
-      (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n),
-      (PTildeAt K lam sg → BrIntegral K rfl lam sg) ∧
-      ((n = 0 → ∀ τ, (lam τ).w (Fin.last n) = 0) → (BrIntegral K rfl lam sg ↔ PTildeAt K lam sg)) ∧
-      (∀ τ, Br.Interlace rfl (lam τ) (sg τ) ↔ InterlacingNumerators.Interlace (lam τ) (sg τ)) ∧
-      (∀ τ, SameShift (lam τ) (sg τ) ↔ InterlacingNumerators.EqualLast (lam τ) (sg τ) ∧ (n = 0 → (lam τ).w (Fin.last n) = 0)) ∧
-      (∀ (M : Submodule (𝓞 K) (Fin n → K)) (t : K), InterlacingNumerators.extLat M t = sumLat rfl M t) ∧
-      ((∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) → (∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ)) →
-        ∀ t : ι → K, InterlacingNumerators.pTilde lam sg t = brAt rfl lam sg t)) := by
-  refine ⟨⟨fun h K _ _ ι _ n lam sg => ?_, fun h K _ _ ι _ N n hN lam sg => ?_⟩,
-    fun K _ _ ι _ n lam sg => ⟨brIntegral_of_at lam sg, brIntegral_iff_at lam sg, fun _ => interlace_iff _ _,
-      fun _ => sameShift_iff _ _, extLat_eq, pTilde_eq⟩⟩
-  · rcases n with _ | n
-    · exact at_of_rank_one lam sg (h K ι _ _ rfl _ sg)
-    · exact (brIntegral_iff_at lam sg (by omega)).1 (h K ι _ _ rfl lam sg)
-  · subst hN
-    exact brIntegral_of_at lam sg (h K ι n lam sg)
 
 end Compare
 

@@ -60,15 +60,6 @@ theorem CSm.smul {f : Mx n → ℂ} (h : CSm ε f) (c : ℂ) : CSm ε (c • f) 
 theorem CSm.zero : CSm ε (0 : Mx n → ℂ) :=
   ⟨fun _ _ => 0, fun _ _ => rfl, fun _ _ _ _ _ _ => hasDerivAt_const _ _, fun _ _ => continuousOn_const⟩
 
-theorem CSm.sum {ι : Type} (s : Finset ι) {f : ι → Mx n → ℂ} (h : ∀ i ∈ s, CSm ε (f i)) :
-    CSm ε (∑ i ∈ s, f i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simpa using (CSm.zero (ε := ε))
-  | insert a s ha ih =>
-    rw [Finset.sum_insert ha]
-    exact (h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
-
 theorem CSm.hasDerivAt {f : Mx n → ℂ} (h : CSm ε f) {X : Mx n} (hX : X ∈ lieSet ε) {g : Mx n} (hg : g ∈ UJset ε) :
     HasDerivAt (fun t : ℝ => f (g * NormedSpace.exp (t • X))) (rder X f g) 0 := by
   obtain ⟨F, h1, h2, -⟩ := h

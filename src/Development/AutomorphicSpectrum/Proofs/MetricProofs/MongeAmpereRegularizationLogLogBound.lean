@@ -4,10 +4,33 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
 import ReciprocityTheory.AnalyticForms.LeviForms.Energy
 import ReciprocityTheory.AnalyticForms.LeviForms.TailBoundA
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLineFubiniStudyFacts
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegrableOnTargetOfTsupport
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.MaMeasure
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShift
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Stokes
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LogInt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.SNCAtlas
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialPullbackStatement
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.GreenSt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PLCurveA
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PLLocalStatement
+import ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Pullback
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Measure
+import ReciprocityTheory.AnalyticForms.PotentialTheory.AtlasIndep
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
+import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LoglogQuotNonneg
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FixedMemberBase
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SingularWeightMonotoneRegularizationStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SingularWeightMonotoneRegularization
+
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights
 open scoped ComplexOrder
 
@@ -152,7 +175,7 @@ theorem signed_rate : ConvergenceRateStatement → ∀ (e : ℕ) (σ : Type) [Fi
   have hΘ := S.potΘ
   have hΘp := S.posΘ
   have hΘpsh : IsPsh S.A S.Θ := TailBoundAlt.isPsh_of_isPosPot S.A S.Θ hΘp
-  obtain ⟨h1, -, h3⟩ := GlobalTheory.T.singular_weight_monotone_regularization e S.X S.A S.Θ S.L S.s S.nb S.m S.W S.potL S.sec S.snc S.norm_le hΘ hΘp
+  obtain ⟨h1, -, h3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.enlarging_constants_smooth_members e S.X S.A S.Θ S.L S.s S.nb S.m S.W S.potL S.sec S.snc S.norm_le hΘ hΘp
   obtain ⟨C₀, z1, z2, -⟩ := h3 (LocPot.ofFun 0) 0 (isPotential_ofFun S.A 0 (Rate.smooth_zero S.A))
     (Rate.smooth_zero S.A) (Rate.isPsh_zero S.A)
   obtain ⟨ts, hts⟩ : ∃ ts, ts = min S.t₀ (Real.exp (-Real.exp 1)) := ⟨_, rfl⟩

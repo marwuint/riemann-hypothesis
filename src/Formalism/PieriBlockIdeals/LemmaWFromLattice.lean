@@ -88,49 +88,16 @@ def EvalCong : Prop :=
     (∃ e : O, constantCoeff g = a + lam * e) ∧
     ∀ (k : Type) [CommRing k] (red : O →+* k), red lam = 0 → red (constantCoeff g) = red a
 
-def LinDivisionEval : Prop :=
-  ∀ (O : Type) [CommRing O] [UniformSpace O] [IsUniformAddGroup O] [IsTopologicalRing O]
-    [IsLinearTopology O O] [T2Space O] [CompleteSpace O] (c a : O) (f f₁ : O⟦X⟧),
-    IsTopologicallyNilpotent c → f = (X - C c) * f₁ + C a →
-    PowerSeries.eval₂ (RingHom.id O) c f = a
-
 def GammaModQ : Prop :=
   ∀ (O : Type) [CommRing O] (lam : O) (n : ℕ) (D : Matrix (Fin n) (Fin n) O⟦X⟧)
     (Th : Matrix (Fin n) (Fin n) O), (∀ a b, (X - C lam) ∣ D a b - C (Th a b)) →
     ∀ a b, (X - C lam) ∣ (1 + (X : O⟦X⟧) • D) a b - C ((1 + lam • Th) a b)
-
-def DLinear : Prop :=
-  ∀ (A N : Type) [CommRing A] [AddCommGroup N] [Module A N] (p : A) (γA : A →+* A) (γ d : N → N),
-    (∀ x : N, p • x = 0 → x = 0) → (∀ x y, γ (x + y) = γ x + γ y) →
-    (∀ y x, γ (y • x) = γA y • γ x) → (∀ x, p • d x = γ x - x) →
-    (∀ x y, d (x + y) = d x + d y) ∧ (∀ a x, γA a = a → d (a • x) = a • d x)
-
-def DbarCoord : Prop :=
-  ∀ (k : Type) [CommRing k] (n : ℕ) (un : k⟦X⟧) (D : Matrix (Fin n) (Fin n) k⟦X⟧)
-    (y z : Fin n → k⟦X⟧),
-    (∀ a, X * z a = ((1 + (X : k⟦X⟧) • D).mulVec fun b => gam0 0 un (y b)) a - y a) →
-    ∀ a, constantCoeff (z a) = ((D.map constantCoeff).mulVec fun b => constantCoeff (y b)) a
-
-def DetDvd : Prop :=
-  ∀ (R : Type) [CommRing R] (n h : ℕ) (x : R) (P Q : Matrix (Fin n) (Fin n) R),
-    P * Q = (x ^ h) • (1 : Matrix (Fin n) (Fin n) R) → P.det ∣ x ^ (h * n)
-
-def BlockHeight : Prop :=
-  ∀ (R : Type) [CommRing R] [IsDomain R] (π : R) (n h : ℕ) (Φ Φ' : Matrix (Fin n) (Fin n) R)
-    (b : Fin n → ℕ), π ≠ 0 → Φ.BlockTriangular b →
-    Φ * Φ' = (π ^ h) • (1 : Matrix (Fin n) (Fin n) R) →
-    Φ'.BlockTriangular b ∧ ∀ r, Φ.toSquareBlock b r * Φ'.toSquareBlock b r =
-      (π ^ h) • (1 : Matrix {j // b j = r} {j // b j = r} R)
 
 def BlockHeightLine : Prop :=
   ∀ (R : Type) [CommRing R] [IsDomain R] (π : R) (n h : ℕ) (Φ Φ' : Matrix (Fin n) (Fin n) R)
     (b : Fin n → ℕ) (s : Fin n), π ≠ 0 → Φ.BlockTriangular b →
     Φ * Φ' = (π ^ h) • (1 : Matrix (Fin n) (Fin n) R) → (∀ j, b j = b s → j = s) →
     Φ s s * Φ' s s = π ^ h
-
-def UnitPow : Prop :=
-  ∀ (k : Type) [Field k] (h : ℕ) (x x' : k⟦X⟧), x * x' = X ^ h →
-    ∃ (α : ℕ) (u : (k⟦X⟧)ˣ), α ≤ h ∧ x = (u : k⟦X⟧) * X ^ α
 
 def PhiDiag : Prop :=
   ∀ (k : Type) [Field k] (l s : ℕ) (p : k⟦X⟧) (v w w' : (k⟦X⟧)ˣ) (κ κ' : ℤ), 0 < l →
@@ -146,14 +113,6 @@ def ThetaDiag : Prop :=
         ((1 + X * g : k⟦X⟧) : LaurentSeries k) =
       (c : LaurentSeries k) * ((w : k⟦X⟧) : LaurentSeries k) * ((X : k⟦X⟧) : LaurentSeries k) ^ κ →
     constantCoeff c = 1 ∧ coeff 1 c = (κ : k) * constantCoeff un + constantCoeff g
-
-def SemilinChange : Prop :=
-  ∀ (R : Type) [CommRing R] (n : ℕ) (θ : R →+* R) (M : Matrix (Fin n) (Fin n) R)
-    (g g' : (Matrix (Fin n) (Fin n) R)ˣ) (y : Fin n → R),
-    M.mulVec (fun a => θ ((g' : Matrix (Fin n) (Fin n) R).mulVec y a)) =
-      (g : Matrix (Fin n) (Fin n) R).mulVec
-        ((((g⁻¹ : (Matrix (Fin n) (Fin n) R)ˣ) : Matrix (Fin n) (Fin n) R) * M *
-          (g' : Matrix (Fin n) (Fin n) R).map θ).mulVec fun a => θ (y a))
 
 section Change
 
@@ -286,33 +245,6 @@ def WPropsOfInputs : Prop :=
     (∀ i (J : Finset (Fin n)), J.card = t → (cc i : ℤ) ≤ ∑ j ∈ J, U' i j) →
     WProps (W.toWData l c σ) σ l U' bot kap cc
 
-def LemmaWFromInputs : Prop :=
-  ∀ (ι : Type) [Fintype ι] (σ : Equiv.Perm ι) (l h t n : ℕ) [Fact l.Prime] (O F : Type) [CommRing O]
-    [IsDomain O] [Algebra ℤ_[l] O] [Field F] [CharP F l] (W : WLat ι t n O F) (u : ℤ_[l]ˣ)
-    (c : ℤ_[l]) (U' : ι → Fin n → ℤ) (bot : ι → ℤ) (kap : ι → Fin t → ℤ),
-    l ≠ 2 → WInputs W σ l h u c U' (fun i s => bot i + ((s : ℕ) : ℤ)) kap →
-    (∀ i s, ((l : ℤ) - 1) * |kap i s| ≤ (h : ℤ)) ∧
-    (∀ i, Multiset.map (fun s : Fin t => ((bot i + ((s : ℕ) : ℤ) - kap i s : ℤ) : ZMod l))
-        Finset.univ.val ≤ Multiset.map (fun j => ((U' i j : ℤ) : ZMod l)) Finset.univ.val) ∧
-    (∀ i, ∃ J : Finset (Fin n), J.card = t ∧
-      ∑ j ∈ J, U' i j ≤ ∑ s : Fin t, (bot i + ((s : ℕ) : ℤ) + (l : ℤ) * kap (σ i) s - kap i s))
-
-def LemmaWFull : Prop :=
-  ∀ (ι : Type) [Fintype ι] (σ : Equiv.Perm ι) (l h t n : ℕ) [Fact l.Prime] (O F : Type) [CommRing O]
-    [IsDomain O] [Algebra ℤ_[l] O] [Field F] [CharP F l] (W : WLat ι t n O F) (u : ℤ_[l]ˣ)
-    (c : ℤ_[l]) (U' : ι → Fin n → ℤ) (wt kap : ι → Fin t → ℤ),
-    l ≠ 2 → WInputs W σ l h u c U' wt kap →
-    (∀ i s, ((l : ℤ) - 1) * |kap i s| ≤ (h : ℤ)) ∧
-    (∀ i, Multiset.map (fun s : Fin t => ((wt i s - kap i s : ℤ) : ZMod l))
-        Finset.univ.val ≤ Multiset.map (fun j => ((U' i j : ℤ) : ZMod l)) Finset.univ.val) ∧
-    (∀ (ν : ℕ → ℕ),
-      (∀ r ∈ Finset.univ.image W.b \ Finset.univ.image (fun s => W.b (W.pos s)),
-        ν r ≤ (Finset.univ.filter fun j => W.b j = r).card) →
-      ∀ i, ∃ J : Finset (Fin n),
-        J.card = t + ∑ r ∈ Finset.univ.image W.b \ Finset.univ.image (fun s => W.b (W.pos s)), ν r ∧
-        ∑ j ∈ J, U' i j ≤ ∑ s : Fin t, (wt i s + (l : ℤ) * kap (σ i) s - kap i s) +
-          ((∑ r ∈ Finset.univ.image W.b \ Finset.univ.image (fun s => W.b (W.pos s)), ν r : ℕ) : ℤ) * h)
-
 def WEFromInputs : Prop :=
   ∀ (ι : Type) [Fintype ι] (σ : Equiv.Perm ι) (k j t q l h : ℕ) [Fact l.Prime] (O F : Type)
     [CommRing O] [IsDomain O] [Algebra ℤ_[l] O] [Field F] [CharP F l]
@@ -391,25 +323,6 @@ def WInputsOfN : Prop :=
     (W : WLat ι t n O F) (u : ℤ_[l]ˣ) (c : ℤ_[l]) (U' : ι → Fin n → ℤ) (wt kap : ι → Fin t → ℤ)
     (ζ : O) (em : O →+* L) (jj : ℕ → O⟦X⟧ →+* L⟦X⟧), l ≠ 2 →
     NInputs W σ l h u c U' wt kap I ζ em jj → WInputs W σ l h u c U' wt kap
-
-def LemmaWFromLattice : Prop :=
-  ∀ (ι : Type) [Fintype ι] (σ : Equiv.Perm ι) (l h t n : ℕ) [Fact l.Prime] (O F L : Type) [CommRing O]
-    [IsDomain O] [Algebra ℤ_[l] O] [Field F] [CharP F l] [Field L] (I : Ideal O) [IsAdicComplete I O]
-    (W : WLat ι t n O F) (u : ℤ_[l]ˣ) (c : ℤ_[l]) (U' : ι → Fin n → ℤ) (wt kap : ι → Fin t → ℤ)
-    (ζ : O) (em : O →+* L) (jj : ℕ → O⟦X⟧ →+* L⟦X⟧),
-    l ≠ 2 → NInputs W σ l h u c U' wt kap I ζ em jj →
-    (∀ i s, 0 ≤ (l : ℤ) * kap (σ i) s + wt i s - kap i s ∧
-      (l : ℤ) * kap (σ i) s + wt i s - kap i s ≤ (h : ℤ)) ∧
-    (∀ i s, ((l : ℤ) - 1) * |kap i s| ≤ (h : ℤ)) ∧
-    (∀ i, Multiset.map (fun s : Fin t => ((wt i s - kap i s : ℤ) : ZMod l))
-        Finset.univ.val ≤ Multiset.map (fun j => ((U' i j : ℤ) : ZMod l)) Finset.univ.val) ∧
-    (∀ (ν : ℕ → ℕ),
-      (∀ r ∈ Finset.univ.image W.b \ Finset.univ.image (fun s => W.b (W.pos s)),
-        ν r ≤ (Finset.univ.filter fun j => W.b j = r).card) →
-      ∀ i, ∃ J : Finset (Fin n),
-        J.card = t + ∑ r ∈ Finset.univ.image W.b \ Finset.univ.image (fun s => W.b (W.pos s)), ν r ∧
-        ∑ j ∈ J, U' i j ≤ ∑ s : Fin t, (wt i s + (l : ℤ) * kap (σ i) s - kap i s) +
-          ((∑ r ∈ Finset.univ.image W.b \ Finset.univ.image (fun s => W.b (W.pos s)), ν r : ℕ) : ℤ) * h)
 
 def WEFromLattice : Prop :=
   ∀ (ι : Type) [Fintype ι] (σ : Equiv.Perm ι) (k j t q l h : ℕ) [Fact l.Prime] (O F L : Type)

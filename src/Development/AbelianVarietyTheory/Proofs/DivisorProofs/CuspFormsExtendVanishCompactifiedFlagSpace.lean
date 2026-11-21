@@ -8,9 +8,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInter
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArcZeroZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagSpaceComponentSmoothProjectiveConnectedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionExtensionOfDenseLocalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothAffineChartBoundaryZeroSetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionOfArcVanishingSmoothChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionExtensionOfDenseLocal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothAffineChartBoundaryZeroSet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionOfArcVanishingSmoothChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArcZeroCuspSec
 
 noncomputable section
@@ -27,10 +27,10 @@ theorem ext_of_arcZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     IsVariety₀ TF.X Z → ∀ m : H0 (str₀ TF.X Z) (L₀ TF.X Z la) (U₀ TF.X Z), ArcZero TF.X Z la σ m →
       ∃ s ∈ vanBd TF.X Z la, H0.restr le_top s = m := by
   intro E _ _ _ H Dw l Xo c TF Z la σ hv m hm
-  obtain ⟨s, hs, hz⟩ := GlobalTheory.T.exists_section_extension_of_dense_local (str₀ TF.X Z) (L₀ TF.X Z la) (isLB_L₀ TF.X Z la) (U₀ TF.X Z) (dense_U₀ TF.X Z) m
+  obtain ⟨s, hs, hz⟩ := _root_.GlobalTheory.CompHS.exists_ext_of_dense_local (str₀ TF.X Z) (L₀ TF.X Z la) (isLB_L₀ TF.X Z la) (U₀ TF.X Z) (dense_U₀ TF.X Z) m
     fun y _ => by
-      obtain ⟨W, hW, i, p, hyW, hi, hd, hsm, hp, hb⟩ := GlobalTheory.T.exists_smooth_affine_chart_boundary_zero_set E H Dw l Xo c TF Z la hv y
-      obtain ⟨b, h1, h2⟩ := GlobalTheory.T.exists_extension_of_arc_vanishing_smooth_chart E H Dw l Xo c TF.Y TF.X Z la σ m hm W hW i p hi hd hsm hp hb
+      obtain ⟨W, hW, i, p, hyW, hi, hd, hsm, hp, hb⟩ := _root_.GlobalTheory.CompHS.ChartBd.exists_chart_bd E H Dw l Xo c TF Z la hv y
+      obtain ⟨b, h1, h2⟩ := _root_.GlobalTheory.CompHS.exists_extension_of_arcZero E H Dw l Xo c TF.Y TF.X Z la σ m hm W hW i p hi hd hsm hp hb
       exact ⟨W, i, hi, b, hyW, h1, fun y' h h' => h2 y' h h'⟩
   exact ⟨s, fun y hy i hi => hz y hy i hi, hs⟩
 
@@ -62,8 +62,8 @@ theorem arcZero_cusp : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : �
     show (AllWt.wtOf (T.Q.Dw j) la 0).2 = 0
     rw [AllWt.wtOf_snd, mul_zero]
   intro W hW i hWi ψ r hψ hs hin hout ε hε
-  obtain ⟨φ, x, fr, y, hb, hm, hval⟩ := GlobalTheory.T.exists_eigenFrame_along_arc_flagSpaceChart TF Z la σ hσ W hW i hWi ψ r hψ hs hin hout
-  obtain ⟨ρ, p, q, hρ, hρr, hpq⟩ := GlobalTheory.T.exists_holomorphic_quotient_along_arc (cuspSec TF.X Z Y.U la f) W hW i hWi ψ r hψ hout
+  obtain ⟨φ, x, fr, y, hb, hm, hval⟩ := _root_.GlobalTheory.CompHS.ArcBridge.arc_bridge TF Z la σ hσ W hW i hWi ψ r hψ hs hin hout
+  obtain ⟨ρ, p, q, hρ, hρr, hpq⟩ := _root_.GlobalTheory.Vanishing.exists_quot_along_arc (cuspSec TF.X Z Y.U la f) W hW i hWi ψ r hψ hout
   have hi : ∀ u, ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec)) ⁻¹ᵁ
       (L₀ TF.X Z la).U i := fun u s _ => hWi (hW.range_fromSpec.le ⟨_, rfl⟩)
   let g : AllWt.secZ Y.d.Xo₂ Y.d.c₂ (AllWt.exOf (T.Q.Dw j) la 0) := ⟨f.1, cusp_le_secZ Z Y.U la f.2⟩

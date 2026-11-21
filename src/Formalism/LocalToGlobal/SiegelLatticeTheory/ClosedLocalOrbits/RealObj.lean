@@ -32,13 +32,8 @@ def Zhat (ε : Fin n → Bool) (f f' : Fin (r + 1) → Fin n → ℂ) (g : Matri
 def Dl (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (l : ℕ) : ℂ :=
   if h : l ≤ r + 1 then (Z.submatrix (Fin.castLE h) (Fin.castLE h)).det else 0
 
-def cl (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (l : ℕ) : ℂ := Dl Z l / Dl Z (l - 1)
-
 def Gv (T T' : ℝ) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : ℝ :=
   ‖Dl Z (r + 1)‖ ^ 2 - T * T' * ‖Dl Z r‖ ^ 2
-
-def BigCell (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : Prop :=
-  ∀ l, 1 ≤ l → l ≤ r + 1 → Dl Z l ≠ 0
 
 def IsReg (T T' : ℝ) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : Prop :=
   (∀ l, 1 ≤ l → l ≤ r → Dl Z l ≠ 0) ∧ Gv T T' Z ≠ 0
@@ -90,8 +85,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
-
-def rdOf : ℝ := D.host.rdE
 
 def Tw (u : D.what₂.Word) : ℝ := (((D.mem u).A.T : ℕ) : ℝ)
 
@@ -276,9 +269,6 @@ def unscaledOperatorAtPointRepresentative (u u' : D.what₂.Word) (sc : ℝ) (i0
     (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (w : Point D.host.E (D.R.rS + 1)) : X.Vpi u' →L[ℂ] X.Vpi u :=
   if ∃ γ, IsPtRep X u u' w γ then unscaledFrameConjugatedOperator X u u' sc i0 i0' (νq (gamW X u u' w)) (gamW X u u' w) else 0
 
-def NGPt (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) : ℝ :=
-  ∏ v, GX X u u' D.host.rdE (gamW X u u' w) v
-
 def ptOfL (i : ℕ) (x : Formalism.FourierDecayAlt.TB.Pt D.host.E) : Option (Point D.host.E i) :=
   Formalism.L2.SG.DataInst.ptOfList (D := D) i x
 
@@ -304,46 +294,11 @@ def PtRepExists (u u' : D.what₂.Word) (sc : ℝ) (i0 i0' : ∀ _ : InfinitePla
     (∀ v, 0 < Gv (Tw u) (Tw u') (ZhatO (ptC X v w))) →
       ∃ γ, IsPtRep X u u' w γ ∧ ∃ h h', IsDFrameX X u u' sc i0 i0' γ h h'
 
-def VIndep (u u' : D.what₂.Word) (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
-    (νq : X.B.I.Ginf → Measure X.B.I.Ginf) : Prop :=
-  NuQOK X u u' νq →
-  ∀ γ h₁ h₁' h₂ h₂', IsDFrameX X u u' sc i0 i0' γ h₁ h₁' → IsDFrameX X u u' sc i0 i0' γ h₂ h₂' →
-    (X.piU u h₁⁻¹).comp ((haveI := FiniteDimensional.complete ℂ (X.Vpi u)
-        TermOp.OO (νq γ) Set.univ (X.Wu u) (X.Wu u') γ).comp (X.piU u' h₁')) =
-      (X.piU u h₂⁻¹).comp ((haveI := FiniteDimensional.complete ℂ (X.Vpi u)
-        TermOp.OO (νq γ) Set.univ (X.Wu u) (X.Wu u') γ).comp (X.piU u' h₂'))
-
-def VEquivar (u u' : D.what₂.Word) (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
-    (FdN FdN' : Set X.B.I.Ginf) : Prop :=
-  ∀ γ, RegX X u u' γ → ∀ n ∈ X.NinfU u, ∀ n' ∈ X.NinfU u', ∀ h ∈ HsetU X u, ∀ h' ∈ HsetU X u',
-    VG X u u' sc i0 i0' FdN FdN' (Formalism.L2.SG.ProjRows.muInf X.B.I) (n * h * γ * h'⁻¹ * n') =
-      (X.psiInfU u n * X.psiInfU u' n') • VG X u u' sc i0 i0' FdN FdN' (Formalism.L2.SG.ProjRows.muInf X.B.I) γ
-
-def VNorm (u u' : D.what₂.Word) (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
-    (FdN FdN' : Set X.B.I.Ginf) (νq : X.B.I.Ginf → Measure X.B.I.Ginf) : Prop :=
-  ∀ γ, (∃ h h', IsDFrameX X u u' sc i0 i0' γ h h') →
-    hs2 (VG X u u' sc i0 i0' FdN FdN' (νq γ) γ) =
-      (TermOp.scl FdN FdN' (X := X) (u := u) (u' := u') * X.volK2) ^ 2 *
-        hs2 (haveI := FiniteDimensional.complete ℂ (X.Vpi u); TermOp.OO (νq γ) Set.univ (X.Wu u) (X.Wu u') γ)
-
 def OOtReg (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)) :
     Prop :=
   TermOp.FrameTie X u u' F0 F0' →
   ∀ t : TermOp.GTerm X u u' F0 F0' what₂ rows', RegX X u u' t.pt.1 → TermOp.OOt t = OOinf X u u' t.pt.1
-
-def FormReg (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
-    (F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)) :
-    Prop :=
-  TermOp.FrameTie X u u' F0 F0' →
-  ∀ (t : TermOp.GTerm X u u' F0 F0' what₂ rows') (w : Point D.host.E (D.R.rS + 1))
-    (L U : Formalism.L2.SG.PairVal.MatR D),
-    RegX X u u' t.pt.1 → IsLoUni L → IsUpUni U →
-    (∀ v, ZhatO (ZX X u u' 1 t.pt.1 v) = (L * ptMat w * U).map (fun x => X.B.I.φ v (X.ιE.symm x))) →
-    ∃ γw, IsPtRep X u u' w γw ∧ ∃ h ∈ HsetU X u, ∃ h' ∈ HsetU X u', ∃ n ∈ X.NinfU u, ∃ n' ∈ X.NinfU u',
-      t.pt.1 = n * h * γw * h'⁻¹ * n' ∧
-      TermOp.OOt t = Formalism.L2.SG.PairVal.phasePair (gS D) L U •
-        ((X.piU u h).comp ((OOinf X u u' γw).comp (X.piU u' h'⁻¹)))
 
 end GlobV
 
@@ -479,107 +434,17 @@ def VJoint [∀ x, FiniteDimensional ℂ (Wq x)] (S : Formalism.FourierDecayAlt.
 
 end Built
 
-section Carrier
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat
-
-variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
-
-def CarrierInput (u u' : D.what₂.Word) (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
-    (FdN FdN' : Set X.B.I.Ginf) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
-    (δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp)
-    (M : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (C₄ jn : ℝ)
-    (CA : ℝ) (G0 : Formalism.FourierDecayAlt.Sz.Glob (InfinitePlace D.host.E)) (de de' : ℕ → ℝ) (l : ℕ) : Prop :=
-  ∃ (Wp Wq : InfinitePlace D.host.E → Type) (_ : ∀ x, NormedAddCommGroup (Wp x)) (_ : ∀ x, InnerProductSpace ℂ (Wp x))
-    (_ : ∀ x, NormedAddCommGroup (Wq x)) (_ : ∀ x, InnerProductSpace ℂ (Wq x)) (_ : ∀ x, FiniteDimensional ℂ (Wq x))
-    (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq)
-    (T : ∀ j : Fin S.f, Formalism.FourierDecayAlt.D.LevTower S.G.k S.G.r (Wp (S.pl j)) (Wq (S.pl j)))
-    (f : ∀ j : Fin S.f, Formalism.FourierDecayAlt.B.Mat S.G.k S.G.r → (Wq (S.pl j) →L[ℂ] Wp (S.pl j))) (χ : ℝ → ℝ)
-    (ν' : Fin S.f → Fin (2 * S.G.r + S.G.k + 1) → ℂ) (m₀ : Fin S.f → Formalism.FourierDecayAlt.B.Mat S.G.k S.G.r)
-    (top : ∀ j : Fin S.f, (Formalism.FourierDecayAlt.B.Mat S.G.k S.G.r → (Wq (S.pl j) →L[ℂ] Wp (S.pl j))) → List Formalism.FourierDecayAlt.C.Letter →
-      Formalism.FourierDecayAlt.C.LPt → Formalism.FourierDecayAlt.C.LPt → ℂ) (A₀ : ℝ)
-    (τ : Fin S.f ≃ InfinitePlace X.B.I.F)
-    (Q : ∀ _ : InfinitePlace X.B.I.F, Matrix (Fin X.B.I.n) (Fin (2 * S.G.r + S.G.k + 1)) ℂ)
-    (Qi : ∀ _ : InfinitePlace X.B.I.F, Matrix (Fin (2 * S.G.r + S.G.k + 1)) (Fin X.B.I.n) ℂ)
-    (eP : ∀ v, Wp (S.pl (τ.symm v)) ≃ₗᵢ[ℂ] X.Vloc u v) (eQ : ∀ v, Wq (S.pl (τ.symm v)) ≃ₗᵢ[ℂ] X.Vloc u' v),
-    S.CA = CA ∧ S.G = G0 ∧ S.de = de ∧ S.de' = de' ∧ S.l = l ∧
-    Formalism.L2.SG.DataInst.Compat S u u' ∧ Formalism.FourierDecayAlt.D.IsBuilt S T f χ ν' m₀ top A₀ ∧
-    BuiltFromX X S u u' T f τ Q Qi eP eQ ∧ BaseFromX X S u u' i0 i0' τ Q Qi ν' m₀ ∧
-    TopTie X S u u' sc i0 i0' FdN FdN' νq τ ∧ VJoint X S u u' sc i0 i0' νq T f ν' m₀ τ eP eQ ∧
-    Formalism.FourierDecayAlt.PB.RealInputs (Formalism.L2.SG.DataInst.dOf S δ M u u') C₄ jn (VtPt X u u' sc i0 i0' FdN FdN' νq)
-
-def CarrierInput0 (u u' : D.what₂.Word) (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
-    (FdN FdN' : Set X.B.I.Ginf) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
-    (δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp)
-    (M : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (C₄ jn : ℝ)
-    (CA : ℝ) (G0 : Formalism.FourierDecayAlt.Sz.Glob (InfinitePlace D.host.E)) (de de' : ℕ → ℝ) (l : ℕ) : Prop :=
-  ∃ (Wp Wq : InfinitePlace D.host.E → Type) (_ : ∀ x, NormedAddCommGroup (Wp x)) (_ : ∀ x, InnerProductSpace ℂ (Wp x))
-    (_ : ∀ x, NormedAddCommGroup (Wq x)) (_ : ∀ x, InnerProductSpace ℂ (Wq x)) (_ : ∀ x, FiniteDimensional ℂ (Wq x))
-    (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq)
-    (T : ∀ j : Fin S.f, Formalism.FourierDecayAlt.D.LevTower S.G.k S.G.r (Wp (S.pl j)) (Wq (S.pl j)))
-    (f : ∀ j : Fin S.f, Formalism.FourierDecayAlt.B.Mat S.G.k S.G.r → (Wq (S.pl j) →L[ℂ] Wp (S.pl j))) (χ : ℝ → ℝ)
-    (ν' : Fin S.f → Fin (2 * S.G.r + S.G.k + 1) → ℂ) (m₀ : Fin S.f → Formalism.FourierDecayAlt.B.Mat S.G.k S.G.r)
-    (top : ∀ j : Fin S.f, (Formalism.FourierDecayAlt.B.Mat S.G.k S.G.r → (Wq (S.pl j) →L[ℂ] Wp (S.pl j))) → List Formalism.FourierDecayAlt.C.Letter →
-      Formalism.FourierDecayAlt.C.LPt → Formalism.FourierDecayAlt.C.LPt → ℂ) (A₀ : ℝ)
-    (τ : Fin S.f ≃ InfinitePlace X.B.I.F)
-    (Q : ∀ _ : InfinitePlace X.B.I.F, Matrix (Fin X.B.I.n) (Fin (2 * S.G.r + S.G.k + 1)) ℂ)
-    (Qi : ∀ _ : InfinitePlace X.B.I.F, Matrix (Fin (2 * S.G.r + S.G.k + 1)) (Fin X.B.I.n) ℂ)
-    (eP : ∀ v, Wp (S.pl (τ.symm v)) ≃ₗᵢ[ℂ] X.Vloc u v) (eQ : ∀ v, Wq (S.pl (τ.symm v)) ≃ₗᵢ[ℂ] X.Vloc u' v),
-    S.CA = CA ∧ S.G = G0 ∧ S.de = de ∧ S.de' = de' ∧ S.l = l ∧
-    Formalism.L2.SG.DataInst.Compat S u u' ∧ BaseFromX X S u u' i0 i0' τ Q Qi ν' m₀ ∧
-    TopTie X S u u' sc i0 i0' FdN FdN' νq τ ∧ VJoint X S u u' sc i0 i0' νq T f ν' m₀ τ eP eQ ∧
-    Formalism.FourierDecayAlt.PB.RealInputs (Formalism.L2.SG.DataInst.dOf S δ M u u') C₄ jn (VtPt X u u' sc i0 i0' FdN FdN' νq)
-
-def RowsSumX (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS (Formalism.L2.SG.CntLocal.Tn u))
-    (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
-    (δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp)
-    (M : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-    (κ : Formalism.L2.SG.TermDef.Term D u u' F0 what₂ → ℕ) (nc : ℝ) (sc : ℝ)
-    (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (FdN FdN' : Set X.B.I.Ginf)
-    (νq : X.B.I.Ginf → Measure X.B.I.Ginf) : Prop :=
-  PtRepExists X u u' sc i0 i0' ∧ NuQPin X u u' νq ∧
-    Formalism.L2.SG.DataInst.RowsSum (Formalism.L2.SG.PairVal.vRdef D u u' F0 what₂ δ M) κ nc
-      (VtPt X u u' sc i0 i0' FdN FdN' νq)
-
-end Carrier
-
 section Proofs
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
-theorem hilbert_schmidt_nonneg_alt {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
-    [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V'] (A : V' →L[ℂ] V) : 0 ≤ hs2 A := by
-  unfold hs2
-  exact Finset.sum_nonneg (fun i _ => sq_nonneg _)
-
 theorem cooOf_nonneg (u u' : D.what₂.Word) (sc : ℝ) : 0 ≤ DisintegrationConstant X u u' sc := by
   unfold DisintegrationConstant
   split_ifs with h
   · exact h.choose_spec.1.le
   · exact le_rfl
-
-theorem inNuX_of_meas (u u' : D.what₂.Word) (sc : ℝ) (hm : Measurable (wt X u u')) : InNuX X u u' sc := by
-  have hC := cooOf_nonneg X u u' sc
-  have hf : Measurable (fun c => ENNReal.ofReal (DisintegrationConstant X u u' sc * wt X u u' c)) :=
-    ENNReal.measurable_ofReal.comp (measurable_const.mul hm)
-  have key : ∀ c, ENNReal.ofReal (DisintegrationConstant X u u' sc * wt X u u' c) * ENNReal.ofReal (hilbertSchmidtSqGram X u u' sc c) =
-      ENNReal.ofReal (DisintegrationConstant X u u' sc) * ENNReal.ofReal (wt X u u' c * hilbertSchmidtSqGram X u u' sc c) := by
-    intro c
-    have ho : 0 ≤ hilbertSchmidtSqGram X u u' sc c := hilbert_schmidt_nonneg_alt _
-    rcases le_total 0 (wt X u u' c) with hw | hw
-    · rw [ENNReal.ofReal_mul hC, ENNReal.ofReal_mul hw, mul_assoc]
-    · rw [ENNReal.ofReal_of_nonpos (mul_nonpos_of_nonneg_of_nonpos hC hw),
-        ENNReal.ofReal_of_nonpos (mul_nonpos_of_nonpos_of_nonneg hw ho), zero_mul, mul_zero]
-  unfold InNuX intOOe intCe nuM
-  rw [lintegral_withDensity_eq_lintegral_mul_non_measurable _ hf
-    (ae_of_all _ (fun _ => ENNReal.ofReal_lt_top)), ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
-  congr 1
-  funext c
-  exact key c
 
 end Proofs
 

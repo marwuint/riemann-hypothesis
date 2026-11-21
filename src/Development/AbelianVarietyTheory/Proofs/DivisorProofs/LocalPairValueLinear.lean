@@ -5,8 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAdelicChara
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianFormNegOnOrthogonalOfPositiveIndexOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegDefOfHermitianMatrixPositiveIndexEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLower
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHyperplane
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegDefiniteHyperplaneOfSignatureOne
+
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx
 open scoped TensorProduct Classical
 

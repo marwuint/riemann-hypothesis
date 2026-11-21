@@ -4,17 +4,21 @@ import Formalism.LocalRingCardinality.DataCD
 import Formalism.FormalDegreeBessel.FinalBF
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LongWeylElement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsHaarOnIffGroupsUnitaryUnipotent
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarLieIsHaarOnUnipotentRadicalStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DensityInChartStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LieAlgebraBesselModelMiddleUnitaryEntriesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LieEntriesUnipotentBesselNCharacterizationStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselBigCellCoordinatesUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExpInjectiveStrictUpperTriangularStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarLieIsHaarOnUnipotentRadical
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DensityInChart
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
+import Formalism.PeriodIntegrals.QuotInv
+import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LieAlgebraBesselModelMiddleUnitaryEntries
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LieEntriesUnipotentBesselNCharacterization
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselBigCellCoordinatesUnique
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExpInjectiveStrictUpperTriangular
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BigCellChartDifferentialSkewAndFrobeniusStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BigCellChartDifferentialSurjectiveSkewStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BigCellChartDifferentialSurjectiveSkew
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumeImageOfSqrtTwoIsometricLinearEquivStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BigCellExponentialChartStrictDifferentiableSummaStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoBallMeanBigCellWeightStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BigCellExponentialChartStrictDifferentiableSumma
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoBallMeanBigCellWeight
 
 noncomputable section
 
@@ -67,7 +71,7 @@ theorem um_smul {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} (c : ℝ) (X : 
   (umL m).map_smul _ _
 
 def dL (k r : ℕ) : EE k r →ₗ[ℝ] lieE (GG k r) where
-  toFun v := ⟨(umL _).symm (dchart k r v), (GlobalTheory.T.lieAlgebra_besselModel_middleUnitary_entries k r _).1.2 (by
+  toFun v := ⟨(umL _).symm (dchart k r v), (_root_.GlobalTheory.CellLieAlg.lie_entries k r _).1.2 (by
     have : unrealify ((umL _).symm (dchart k r v)) = dchart k r v := (umL _).apply_symm_apply _
     rw [this]; exact (GlobalTheory.T.bigCellChartDifferential_skew_and_frobenius k r v).1)⟩
   map_add' v v' := by
@@ -108,7 +112,7 @@ theorem dL_bij : Function.Bijective (dL k r) := by
     have e5 : v.2.1 = 0 := funext fun a => by simpa using e4 a (Finset.mem_univ _)
     exact Prod.ext (Prod.ext e1 e2) (Prod.ext e5 e3)
   · intro Z
-    obtain ⟨v, hv⟩ := GlobalTheory.T.bigCellChartDifferential_surjective_skew k r (um Z) ((GlobalTheory.T.lieAlgebra_besselModel_middleUnitary_entries k r _).1.1 Z.2)
+    obtain ⟨v, hv⟩ := _root_.GlobalTheory.CellDens.Onto.dchart_onto k r (um Z) ((_root_.GlobalTheory.CellLieAlg.lie_entries k r _).1.1 Z.2)
     refine ⟨v, Subtype.ext ((umL _).injective ?_)⟩
     exact (um_dL v).trans hv
 
@@ -151,13 +155,13 @@ theorem haarLie_expSet (ρ : ℝ) :
     (meas_expSet _ ρ)).trans ?_
   congr 1
   refine Set.preimage_image_eq _ fun X Y h => Subtype.ext ((umL _).injective ?_)
-  exact GlobalTheory.T.exp_injective_strictUpperTriangular _ _ _ (fun i j h => ((GlobalTheory.T.lieEntries_unipotentBesselN_characterization k r _).1.1 X.2).2 i j (lev_mono h))
-    (fun i j h => ((GlobalTheory.T.lieEntries_unipotentBesselN_characterization k r _).1.1 Y.2).2 i j (lev_mono h)) h
+  exact _root_.GlobalTheory.ExpStrictUpper.exp_inj_strictUpper _ _ _ (fun i j h => ((_root_.GlobalTheory.CellDens.LieN.lieE_Nset k r _).1.1 X.2).2 i j (lev_mono h))
+    (fun i j h => ((_root_.GlobalTheory.CellDens.LieN.lieE_Nset k r _).1.1 Y.2).2 i j (lev_mono h)) h
 
-theorem exp_N (X : lieE (Nset k r)) : NormedSpace.exp (um X) ∈ Nset k r := (GlobalTheory.T.lieEntries_unipotentBesselN_characterization k r _).2 X.2
+theorem exp_N (X : lieE (Nset k r)) : NormedSpace.exp (um X) ∈ Nset k r := (_root_.GlobalTheory.CellDens.LieN.lieE_Nset k r _).2 X.2
 
 theorem exp_lieElementFrobeniusMatrix_mem_besselUWb (X : lieE (Formalism.FourierDecayAlt.B2.UWb k r)) : NormedSpace.exp (um X) ∈ Formalism.FourierDecayAlt.B2.UWb k r :=
-  (GlobalTheory.T.lieAlgebra_besselModel_middleUnitary_entries k r _).2.2 X.2
+  (_root_.GlobalTheory.CellLieAlg.lie_entries k r _).2.2 X.2
 
 theorem bc_mem {x : Fin r → ℂ} (hx : ∀ a, x a ≠ 0) : bigCell k r x 1 ∈ GG k r :=
   Formalism.QuantumDeterminants.bigCellMem k r x 1 hx (by simp)
@@ -183,7 +187,7 @@ theorem chart_mem {v : EE k r} (hv : v ∈ Metric.ball (0 : EE k r) 1) : chart k
 def UU (k r : ℕ) (ρ : ℝ) : Set (Mt k r) := (fun x => Matrix.of.symm (chart k r x)) '' Metric.ball 0 ρ
 
 theorem meas_UU {ρ : ℝ} (hρ : ρ ≤ 1) : MeasurableSet (UU k r ρ) :=
-  meas_img (F := Mt k r) ((GlobalTheory.T.bigCellExponentialChart_strictDifferentiable_summary k r).2.1.mono (Metric.ball_subset_ball hρ))
+  meas_img (F := Mt k r) ((_root_.GlobalTheory.CellDens.Deriv.chart_strict k r).2.1.mono (Metric.ball_subset_ball hρ))
 
 theorem mem_UU {ρ : ℝ} (hρ : ρ ≤ 1) {x : Fin r → ℂ} (hx : ∀ a, x a ≠ 0) {n n' m : Mt k r}
     (hn : Matrix.of n ∈ Nset k r) (hn' : Matrix.of n' ∈ Nset k r) (hm : Matrix.of m ∈ Formalism.FourierDecayAlt.B2.UWb k r) :
@@ -201,7 +205,7 @@ theorem mem_UU {ρ : ℝ} (hρ : ρ ≤ 1) {x : Fin r → ℂ} (hx : ∀ a, x a 
     unfold chart at h'
     rw [Matrix.exp_neg] at h'
     have h'' := (Matrix.isUnit_iff_isUnit_det _).2 hw |>.mul_left_cancel h'
-    obtain ⟨e1, e2, e3, e4⟩ := GlobalTheory.T.besselBigCell_coordinates_unique k r _ _ (one_add_ne ((mem_ball_zero_iff.1 h3).trans_le hρ)) hx
+    obtain ⟨e1, e2, e3, e4⟩ := _root_.GlobalTheory.CellDens.bigCell_coords_unique k r _ _ (one_add_ne ((mem_ball_zero_iff.1 h3).trans_le hρ)) hx
       _ (exp_N _) _ hn _ (exp_N _) _ hn' _ (exp_lieElementFrobeniusMatrix_mem_besselUWb _) _ hm h''
     refine ⟨?_, ⟨⟨_, h1, e1⟩, ⟨_, h2, e4⟩⟩, ⟨_, h4, e3⟩⟩
     rw [← e2, mem_ball_iff_norm]
@@ -302,22 +306,22 @@ theorem mul_ringHom_units_ratio {C I a m b c d : ℝ≥0∞} (ha : a ≠ 0) (ha'
 
 theorem bigCell_integral : ∀ (k r : ℕ) (μG μb : Measure (Mt k r)) (c cb : ℝ), 0 < c → 0 < cb → IsHaarOn (GG k r) μG → HasDens (GG k r) μG (ENNReal.ofReal c) → IsHaarOn (Formalism.FourierDecayAlt.B2.UWb k r) μb → HasDens (Formalism.FourierDecayAlt.B2.UWb k r) μb (ENNReal.ofReal cb) → ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂μG = ENNReal.ofReal (c / cb * 2 ^ r) * ∫⁻ x : Fin r → ℂ, ENNReal.ofReal (Formalism.FourierDecayAlt.B2.cWeight k r x) * ∫⁻ p : (Mt k r × Mt k r) × Mt k r, f ((Matrix.of p.1.1)⁻¹ * bigCell k r x 1 * Matrix.of p.2 * Matrix.of p.1.2) ∂(((haarLie (Nset k r) 1).prod (haarLie (Nset k r) 1)).prod μb) := by
   intro k r μG μb c cb hc hcb hG hdG hb hdb
-  have hN : IsHaarOn (Nset k r) (haarLie (Nset k r) 1) := GlobalTheory.T.haarLie_isHaarOn_unipotentRadical k r 1 one_pos ENNReal.one_lt_top
+  have hN : IsHaarOn (Nset k r) (haarLie (Nset k r) 1) := _root_.GlobalTheory.haarLie_isHaarOn_Nset k r 1 one_pos ENNReal.one_lt_top
   obtain ⟨C, -, hC⟩ := Formalism.FourierDecayAlt.P.iterated_integration_formula k r μG (haarLie (Nset k r) 1) μb
     ((GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μG).1.1 hG)
     ((GlobalTheory.HaarNotions.isHaarOn_iff_groups k r _).2.1.1 hN)
     ((GlobalTheory.HaarNotions.isHaarOn_iff (Formalism.FourierDecayAlt.P.opposite_weyl_subgroup_closed k r) (Formalism.FourierDecayAlt.P.opposite_weyl_haar_exists k r) μb).1 hb)
   suffices h : (C : ℝ≥0∞) = ENNReal.ofReal (c / cb * 2 ^ r) by rw [← h]; exact hC
-  have t1 := GlobalTheory.T.tendsto_measure_image_ball_div_volume _ (GG k r) μG _ (matGroup_of (Formalism.FourierDecayAlt.P.unitary_group_closed k r)) hG hdG (EE k r)
-    (chart k r) (dE k r) (GlobalTheory.T.bigCellExponentialChart_strictDifferentiable_summary k r).1
+  have t1 := _root_.GlobalTheory.ChartDensity.density_in_chart _ (GG k r) μG _ (matGroup_of (Formalism.FourierDecayAlt.P.unitary_group_closed k r)) hG hdG (EE k r)
+    (chart k r) (dE k r) (_root_.GlobalTheory.CellDens.Deriv.chart_strict k r).1
     (Filter.mem_of_superset (Metric.ball_mem_nhds 0 one_pos) fun v hv => chart_mem hv) (fun i j => by
-      obtain ⟨D, h1, h2⟩ := (GlobalTheory.T.bigCellExponentialChart_strictDifferentiable_summary k r).2.2 i j
+      obtain ⟨D, h1, h2⟩ := (_root_.GlobalTheory.CellDens.Deriv.chart_strict k r).2.2 i j
       exact ⟨D, h1, fun v => by rw [h2, ← um_dL]; rfl⟩)
   have h2r : (2 : ℝ≥0∞) ^ r ≠ ⊤ := ENNReal.pow_ne_top ENNReal.ofNat_ne_top
   have h2r0 : (2 : ℝ≥0∞) ^ r ≠ 0 := pow_ne_zero _ two_ne_zero
   have hcb0 : ENNReal.ofReal cb ≠ 0 := by simpa using hcb
   have t2 := ENNReal.Tendsto.const_mul (a := (C : ℝ≥0∞) / 2 ^ r)
-    (ENNReal.Tendsto.mul (GlobalTheory.T.tendsto_ball_mean_bigCellWeight k r) (Or.inl one_ne_zero) hdb (Or.inr ENNReal.one_ne_top))
+    (ENNReal.Tendsto.mul (_root_.GlobalTheory.CellDens.tendsto_mean_cWeight k r) (Or.inl one_ne_zero) hdb (Or.inr ENNReal.one_ne_top))
     (Or.inr (ENNReal.div_ne_top ENNReal.coe_ne_top h2r0))
   have t3 : ENNReal.ofReal c = (C : ℝ≥0∞) / 2 ^ r * (1 * ENNReal.ofReal cb) := by
     refine tendsto_nhds_unique (t1.congr' ?_) t2

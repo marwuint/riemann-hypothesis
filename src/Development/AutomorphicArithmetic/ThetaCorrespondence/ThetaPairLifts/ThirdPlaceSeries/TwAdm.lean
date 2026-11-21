@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiAtComp
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RowAtOfRatStep
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExportSt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
@@ -11,10 +11,8 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions G
 namespace GlobalTheory.BigOn.Exp.TwAdmProof
 end GlobalTheory.BigOn.Exp.TwAdmProof
 namespace GlobalTheory.BigOn.Exp.TwAdmProof
-variable {D : D7}
 end GlobalTheory.BigOn.Exp.TwAdmProof
 namespace GlobalTheory.BigOn.Exp.TwAdmProof
-variable {D : D7}
 end GlobalTheory.BigOn.Exp.TwAdmProof
 open GlobalTheory.BigOn.Exp.TwAdmProof in
 theorem GlobalTheory.BigOn.Exp.twAdm_alt : _root_.GlobalTheory.BigOn.Exp.TwAdmAlt := by

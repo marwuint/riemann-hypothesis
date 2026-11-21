@@ -2,15 +2,19 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VacTheta
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PureTensorLIntertwine
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumRealPlacesFockVacuumCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnramifiedHeckeCharHalfExponentRestrictQuaStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnramifiedHeckeCharHalfExponentRestrictQua
+import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
+import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdeleAt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorBasisChangeEqSubstitutionStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OmPureTensorOOfFinite
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TransposeMemUnitary
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OmPureTensorOReal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubstitutionMaximalMinorProductEqSumCauchyBinetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryTensorPlacesSlotsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalMinorsMatrixMemUnitaryGroupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubstitutionMaximalMinorProductEqSumCauchyBinet
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TotalDegreeSubstFLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryTensorPlacesSlots
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalMinorsMatrixMemUnitaryGroup
 
 open NumberField MeasureTheory
 open scoped Classical ComplexOrder
@@ -27,8 +31,8 @@ theorem GlobalTheory.NormDict.RealB.subst_minorPol_unitary : ∀ (D : D7) {a d N
     simp only [Fin.cast_eq_self, Prod.mk.eta]
     exact MvPolynomial.rename_id
   simp only [hr, AlgHom.id_apply]
-  exact ⟨_, GlobalTheory.T.prod_unitary_mem_unitaryGroup_pi D.what₂.Tau {s : Fin n → Fin N // StrictMono s} m _ fun τ => GlobalTheory.T.maximalMinorsMatrix_mem_unitaryGroup (a := n) (K τ) (hK τ),
-    fun T => by rw [GlobalTheory.T.substitution_maximalMinorProduct_eq_sum_cauchyBinet D K T]; rfl⟩
+  exact ⟨_, _root_.GlobalTheory.unitary_tensor_places_positions D.what₂.Tau {s : Fin n → Fin N // StrictMono s} m _ fun τ => _root_.GlobalTheory.minorsMatrix_mem_unitaryGroup (a := n) (K τ) (hK τ),
+    fun T => by rw [_root_.GlobalTheory.NormDict.substF_minorPol_eq_sum D K T]; rfl⟩
 
 namespace GlobalTheory.NormDict.RealB
 
@@ -48,7 +52,7 @@ theorem real_mix : ∀ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : 
     rw [gramAt, h, Matrix.map_one _ (map_zero _) (map_one _)]
   have cart : ∀ (V : HSp D), V.gram = 1 → ∀ τ, IsCartanInv (gramAt D V τ) 1 := fun V h τ => by
     rw [gr1 V h]; exact ⟨Matrix.mul_one _, by simp, by rw [Matrix.mul_one]; exact Matrix.PosDef.one⟩
-  obtain ⟨η, e1, e2, e3, e4⟩ := GlobalTheory.T.exists_unramifiedHeckeChar_halfExponent_restrict_quadratic D
+  obtain ⟨η, e1, e2, e3, e4⟩ := _root_.GlobalTheory.Mem.EtaTilde.exists_etaTilde D
   obtain ⟨x, hx, -⟩ := GlobalTheory.VacuumCharacter.exists_root hθ X.A (fun τ => by rw [gr1 _ hF.gramA]; simp) 1 (one_mem _)
   obtain ⟨y, hy, -⟩ := GlobalTheory.VacuumCharacter.exists_root hθ X.B (fun τ => by rw [gr1 _ hF.gramB]; simp) k hk
   have hvac := GlobalTheory.T.weilDatum_realPlaces_fockVacuum_character D X.ψ hW.std X.A X.B X.θ hθ X.χA X.χB X.om η ⟨e1, e4, e3, e2⟩ hW (fun _ => 1) (fun _ => 1)

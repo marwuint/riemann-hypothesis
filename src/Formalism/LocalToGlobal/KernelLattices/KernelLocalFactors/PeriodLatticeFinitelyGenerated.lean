@@ -111,10 +111,6 @@ theorem TorS.add {Λ : AddSubgroup V} {x y : V} (hx : TorS Λ S x) (hy : TorS Λ
   · rw [mul_comm, mul_smul]; exact Λ.nsmul_mem hax b
   · rw [mul_smul]; exact Λ.nsmul_mem hby a
 
-theorem TorS.neg {Λ : AddSubgroup V} {x : V} (hx : TorS Λ S x) : TorS Λ S (-x) := by
-  obtain ⟨a, ha, hax⟩ := hx
-  exact ⟨a, ha, by rw [smul_neg]; exact Λ.neg_mem hax⟩
-
 theorem altE_nsmul (H : Sesq V) (a b : ℕ) (x y : V) : altE H (a • x) (b • y) = (a : ℝ) * (b : ℝ) * altE H x y := by
   simp only [altE, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, Complex.mul_im, Complex.natCast_re, Complex.natCast_im, zero_mul, add_zero]
   ring
@@ -591,12 +587,6 @@ theorem unfolding_gl_eval : UnfGEv := by
     z * ((∏ τ, (fr' y' τ).det ^ sD τ)⁻¹ * eval (fun k : ι × Fin b × Fin b => fr' y' k.1 k.2.1 k.2.2) (jetMap (jetC cD Θ) n (map σ P)))
   rw [← eval_map, map_jetMap, funext hJ, jetMap_scal, smul_eval, ← Finset.prod_inv_distrib]
   simp only [zpow_neg]
-  ring
-
-theorem evG_smul {K : Type} [Field K] (fr : Y → ι → Matrix (Fin a) (Fin a) ℂ) (sh : ι → ℤ) (σ : K →+* ℂ) (k : K) (P : Pol K ι a) :
-    evG fr sh σ (k • P) = σ k • evG fr sh σ P := by
-  funext y
-  simp only [evG, smul_eq_C_mul, eval₂_mul, eval₂_C, Pi.smul_apply, smul_eq_mul]
   ring
 
 theorem frPolyG_colSub (fr : Y → ι → Matrix (Fin a) (Fin a) ℂ) (β : ι → Matrix (Fin a) (Fin a) ℂ) (Q : Pol ℂ ι a) (y : Y) :
@@ -1509,12 +1499,6 @@ theorem compatible_lift_exists : TiedLift := by
 
 end Ent
 
-section Tests
-
-variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)}
-
-end Tests
-
 section Cons
 
 theorem first_kernel_law_reading : FirstKernelLawReading := by
@@ -1538,19 +1522,6 @@ theorem ambient_of_hypotheses : AmbOfHyp := by
   rw [Equiv.apply_symm_apply]
 
 end Cons
-
-section Tests2
-
-variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)}
-
-theorem taylor_zero {N N' : ℕ} (Θ : TaylorLogMetric.VC D N N' → ℂ) : TaylorLogMetric.taylor D Θ 0 = Θ 0 := by
-  have h : ∀ (n : ℕ) (_ : n = 0) (m : Fin n → TaylorLogMetric.VC D N N'), iteratedFDeriv ℂ n Θ 0 m = Θ 0 := by
-    intro n hn m; subst hn; simp
-  unfold TaylorLogMetric.taylor
-  rw [h _ (by simp)]
-  simp
-
-end Tests2
 
 section SeamLatS
 
@@ -1840,38 +1811,15 @@ theorem initial_lattice_eq_standard {D : D7} {u : D.what₂.Word} {C : ColumnCha
   rw [← hy]
   exact NumberField.RingOfIntegers.isIntegral_coe y
 
-section JetX
-
-open MvPolynomial Formalism.L2.DIV
-
-end JetX
-
 namespace Test
 
 open MvPolynomial Formalism.L2.DIV
 
 abbrev Fr (n : ℕ) : Type := {f : Unit → Matrix (Fin n) (Fin n) ℂ // ∀ τ, (f τ).det ≠ 0}
 
-def frV (n : ℕ) : Fr n → Unit → Matrix (Fin n) (Fin n) ℂ := Subtype.val
-
-def nu10 : Unit → Fin 2 → ℕ := fun _ r => if r = 0 then 1 else 0
-
-def firstFrameCoordinate : Pol ℂ Unit 2 := X ((), 0, 0)
-
-def Th1 : VCx Unit 2 3 → ℂ := fun z => 1 + z () 0 0
-
-def complementLatticeOfDatum : VCx Unit 2 3 →L[ℂ] ℂ :=
-  (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 2 => ℂ) 0).comp
-    ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 3 => Fin 2 → ℂ) 0).comp
-      (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Unit => Fin 3 → Fin 2 → ℂ) ()))
-
 end Test
 
 namespace Test
-
-def x3 : ℂ := ⟨1 / 3, 0⟩
-
-def y3 : ℂ := ⟨0, 1 / 3⟩
 
 end Test
 

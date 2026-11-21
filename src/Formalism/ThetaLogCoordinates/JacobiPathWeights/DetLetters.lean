@@ -54,12 +54,4 @@ def lam1S {k : Type*} [Field k] (isVec : ι → Bool) (S : Set ι) [DecidablePre
     (G : MvPolynomial (LVar ι ζ n) k) : WithBot ℤ :=
   (genAct k isVec S false G).coeff.support.max
 
-def detLetters (k : Type*) [CommRing k] (A : Fin n → ι) : MvPolynomial (LVar ι ζ n) k :=
-  (Matrix.of fun l a => (X (Sum.inl (A l, a)) : MvPolynomial (LVar ι ζ n) k)).det
-
-def degIn (U : Set ι) [DecidablePred (· ∈ U)] (e : LVar ι ζ n →₀ ℕ) : ℕ :=
-  e.sum fun x d => match x with
-    | Sum.inl (i, _) => if i ∈ U then d else 0
-    | Sum.inr _ => 0
-
 end Formalism.InvariantFactorPaths.GelfandTsetlinBases

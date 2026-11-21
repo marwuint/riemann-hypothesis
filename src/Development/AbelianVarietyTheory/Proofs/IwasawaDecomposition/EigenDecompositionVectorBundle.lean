@@ -32,13 +32,4 @@ theorem isFrame_mkSec (N : Sub F) {U : X.Opens} {ν : Type} [Fintype ν] (e : ν
   have : y' = y := N.incl_app_injective V (by rwa [appLinear_apply] at e')
   exact this ▸ hy'
 
-section Frames
-
-variable {O : Type} [CommRing O] (ρ : O →+* CategoryTheory.End F) {κ : Type} [Fintype κ]
-  (τ : κ → (O →+* Γ(X, ⊤))) {m : κ → ℕ} {U : X.Opens} (B : (Σ i, Fin (m i)) → Γ(F, U))
-  (hB : GlobalTheory.VB.IsFrame B)
-  (hact : ∀ i k a, (act ρ a).app U (B ⟨i, k⟩) = resG X (le_top : U ≤ ⊤) (τ i a) • B ⟨i, k⟩)
-
-end Frames
-
 end GlobalTheory.EigenFrames

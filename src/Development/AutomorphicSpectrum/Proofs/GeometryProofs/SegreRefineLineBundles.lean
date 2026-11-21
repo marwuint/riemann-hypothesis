@@ -5,8 +5,11 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsVBOneOfChartGenerators
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoherentLatticeChartSpanStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinCoordsCoordTieStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoherentLatticeChartSpan
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinCoordsCoordTie
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
@@ -206,7 +209,7 @@ theorem exists_blocks_of_lines : ∀ (o : Type) [CommRing o] (Ω : Type) [Field 
   haveI := Fintype.ofFinite A
   have hs : ∀ a, ∃ (d n : ℕ) (z : Fin n → Ω), ∀ c (p : Cpt M.ξ), InChart M.ξ x c p →
       Λ a p = Submodule.span (regAt M.ξ p) (Set.range fun k => (x c ^ d)⁻¹ • z k) :=
-    fun a => GlobalTheory.T.coherent_lattice_chart_span o Ω κ x M Ω (Λ a) (isCohOn_of_isVBOn (hv a))
+    fun a => _root_.GlobalTheory.CompanionTheory.Ar.lat_twist_globally_generated o Ω κ x M Ω (Λ a) (isCohOn_of_isVBOn (hv a))
   choose d n z H using hs
   let w : ((k : K) → J k) × ((a : A) → Fin (n a)) → Ω := fun q =>
     (∏ k, y ⟨k, q.1 k⟩) * ∏ a, z a (q.2 a)
@@ -215,7 +218,7 @@ theorem exists_blocks_of_lines : ∀ (o : Type) [CommRing o] (Ω : Type) [Field 
     obtain ⟨c₀, h₀⟩ := hy p
     choose l hl using fun a => exists_inChart_of_twist M.tie.cover (H a) (hv a) p
     exact ⟨(c₀, l), inChart_pair h₀ (inChart_pi hl)⟩
-  have ht := coordTie_equiv (blockEquiv J κ n) (GlobalTheory.T.join_coords_coordTie o Ω κ x M _ w hw)
+  have ht := coordTie_equiv (blockEquiv J κ n) (_root_.GlobalTheory.CompanionTheory.Ar.Retie.coordTie_join_of_charts o Ω κ x M _ w hw)
   refine ⟨K ⊕ Option A, inferInstance, BJ J κ n, fintypeBJ J κ n, blockCo J κ n y x z, Sum.inl,
     fun k => Equiv.refl _, fun a => blockDeg d a, Sum.inl_injective, fun _ _ => rfl, ?_,
     fun a => ⟨one_ne_zero, fun p _ c hc => ?_⟩⟩

@@ -11,9 +11,6 @@ open Formalism.L2.Th1.H (Sesq matH alphaQ)
 def hOne (L : PeriodPair) (n : Type) [Fintype n] [DecidableEq n] : Matrix n n ℂ :=
   ((Formalism.L2.Th1.F.area L : ℝ) : ℂ)⁻¹ • (1 : Matrix n n ℂ)
 
-def tensPow {n : Type} (θ : (n → ℂ) → ℂ) (N N' : ℕ) (z : n → Fin N' → Fin N → ℂ) : ℂ :=
-  ∏ i : Fin N', ∏ j : Fin N, θ fun τ => z τ i j
-
 def powLat {n : Type} (ΛM : AddSubgroup (n → ℂ)) (N N' : ℕ) : AddSubgroup (n → Fin N' → Fin N → ℂ) where
   carrier := {z | ∀ i j, (fun τ => z τ i j) ∈ ΛM}
   zero_mem' := fun _ _ => ΛM.zero_mem
@@ -37,11 +34,5 @@ def formV (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) : Sesq (n → Fin N' →
       congr 1
       refine Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
       ring)
-
-def TensSpans : Prop :=
-  ∀ (c : ℝ) (L : PeriodPair) (n : Type) [Fintype n] [DecidableEq n] (ΛM : AddSubgroup (n → ℂ)) (θ : (n → ℂ) → ℂ),
-    (∀ F ∈ Formalism.L2.Th1.H.Th (matH (hOne L n)) (alphaQ c (matH (hOne L n))) ΛM, ∃ a : ℂ, F = a • θ) →
-    ∀ (N N' : ℕ), ∀ F ∈ Formalism.L2.Th1.H.Th (formV (Formalism.L2.Th1.F.area L) n N N')
-      (alphaQ c (formV (Formalism.L2.Th1.F.area L) n N N')) (powLat ΛM N N'), ∃ a : ℂ, F = a • tensPow θ N N'
 
 end PI.KerTens

@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.GaugeGap
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.FrameTransport
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegerSubgroupIntersection.IntInter
 
 noncomputable section

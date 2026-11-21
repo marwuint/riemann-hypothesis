@@ -22,12 +22,6 @@ theorem mem_fixedModule {H : Subgroup G} {a : A} :
 theorem fixedModule_anti {H H' : Subgroup G} (h : H ≤ H') : fixedModule A H' ≤ fixedModule A H :=
   fun _ ha g hg => ha g (h hg)
 
-theorem coe_fixedModule (H : Subgroup G) :
-    (fixedModule A H : Set A) = MulAction.fixedPoints H A := by
-  ext a
-  simp only [SetLike.mem_coe, mem_fixedModule, MulAction.mem_fixedPoints, Subtype.forall,
-    Subgroup.mk_smul]
-
 theorem smul_mem_fixedModule {H : Subgroup G} {a : A} (ha : a ∈ fixedModule A H) (g : G) :
     g • a ∈ fixedModule A (H.map (MulAut.conj g).toMonoidHom) := by
   rintro _ ⟨h, hh, rfl⟩
@@ -54,10 +48,6 @@ theorem isDiscreteModule_iff [ContinuousMul G] :
     refine ⟨fun a => ?_⟩
     obtain ⟨U, hU⟩ := h a
     exact Subgroup.isOpen_mono (H₁ := (U : Subgroup G)) (fun g hg => hU g hg) U.isOpen
-
-theorem exists_openSubgroup_mem_fixedModule [IsDiscreteModule G A] (a : A) :
-    ∃ U : OpenSubgroup G, a ∈ fixedModule A (U : Subgroup G) :=
-  ⟨⟨MulAction.stabilizer G a, IsDiscreteModule.isOpen_stabilizer a⟩, fun _ hg => hg⟩
 
 end Discrete
 
@@ -165,15 +155,6 @@ abbrev tateNegOne : Type _ :=
     (augmentation A K L).comap ((fixedModule A L).subtype.comp (norm A K L).ker.subtype)
 
 variable {A K L}
-
-theorem augmentation_le_map_ker (hLK : L ≤ K) [(L.subgroupOf K).Normal] :
-    augmentation A K L ≤ (norm A K L).ker.map (fixedModule A L).subtype := by
-  rw [augmentation, Subgroup.closure_le]
-  rintro _ ⟨g, hg, a, ha, rfl⟩
-  have hga := smul_mem_fixedModule_of_normal hLK hg ha
-  refine ⟨⟨g • a, hga⟩ / ⟨a, ha⟩, ?_, rfl⟩
-  rw [SetLike.mem_coe, MonoidHom.mem_ker, map_div, div_eq_one]
-  exact norm_smul ⟨g, hg⟩ ⟨a, ha⟩ hga
 
 end Norm
 

@@ -145,12 +145,6 @@ theorem opConv_smul {α : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ) (v : H) 
   funext y
   rw [map_smul, smul_comm]
 
-def opConvL (hσ : IsURepOn (UJset ε) σ) {α : Matrix (Fin n) (Fin n) ℂ → ℂ} (hα : Continuous α)
-    (hαc : HasCompactSupport α) : H →ₗ[ℂ] H where
-  toFun := opConv ε σ α
-  map_add' := opConv_add hσ hα hαc
-  map_smul' := opConv_smul
-
 theorem opConv_comm_K (hσ : IsURepOn (UJset ε) σ) {α : Matrix (Fin n) (Fin n) ℂ → ℂ} (hα : Continuous α)
     (hαc : HasCompactSupport α) (hαK : IsAdKInv ε α) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
     (v : H) : σ k (opConv ε σ α v) = opConv ε σ α (σ k v) := by

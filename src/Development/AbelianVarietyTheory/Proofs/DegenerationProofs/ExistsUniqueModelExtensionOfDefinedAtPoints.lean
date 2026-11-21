@@ -30,12 +30,6 @@ theorem Model.quasiCompact_j (M : Model R A) : QuasiCompact M.j :=
 
 variable [IsDomain R] [IsFractionRing R K]
 
-theorem Model.mono_j (M : Model R A) : Mono M.j := by
-  have : IsPreimmersion (spMap (algebraMap R K)) :=
-    IsPreimmersion.of_isLocalization (nonZeroDivisors R)
-  have : IsPreimmersion M.j := MorphismProperty.of_isPullback M.isPullback_j.flip this
-  infer_instance
-
 theorem Model.dominant_j (M : Model R A) : IsSchemeTheoreticallyDominant M.j := by
   have := schemeTheoreticallyDominant_fractionField R K
   have := M.smooth

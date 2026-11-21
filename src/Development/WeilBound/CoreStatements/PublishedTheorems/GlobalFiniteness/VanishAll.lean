@@ -1,7 +1,11 @@
 import ReciprocityTheory.Hypotheses.GalCoh
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.Dimension
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CohomologicalDimensionTopologicalIsoStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConstantTermFrameKTypeCoefficientsStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CohomologicalDimensionTopologicalIso
+import GroundTheory.ProfiniteCohomology.RestrictedRamification.IsUnramifiedOutsideIffLeMaxUnramifiedOutside
+import GroundTheory.ProfiniteCohomology.ContinuousCochains
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsDiscreteRepResMuROrep
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConstantTermFrameKTypeCoefficients
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.GelfandSpectralNormalisation.NormalisedInvariants.PoitouTateExactSecond
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalFiniteness.Transport
 
@@ -38,7 +42,7 @@ theorem cdp_gal_le_two_gen (F Ω : Type) [Field F] [NumberField F] [Field Ω] [A
     (hS : ContainsAbove S l) (hK : l ≠ 2 ∨ IsTotallyComplex F) :
     cdp l (galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F)))) ≤ 2 := by
   obtain ⟨K, S', hS', ⟨ψ⟩, ⟨e⟩⟩ := exists_gs_transport_field F Ω l S hS
-  rw [GlobalTheory.T.cohomological_dimension_topological_iso _ _ l e]
+  rw [_root_.GlobalTheory.CompanionTheory.GSCd.cdp_eq_of_continuousMulEquiv _ _ l e]
   refine cdp_galUnramifiedOutside_le_two K (S' : Set (HeightOneSpectrum (𝓞 K.1))) Fact.out
     (fun v hv => hS' v hv) (hK.imp id fun h => ?_)
   have : IsTotallyComplex F := h

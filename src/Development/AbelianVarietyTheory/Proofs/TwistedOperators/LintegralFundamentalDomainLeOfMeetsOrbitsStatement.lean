@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LintegralFundamentalDomainLeOfMeetsOrbits
-import Mathlib
+
 open MeasureTheory
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in

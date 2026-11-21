@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.NotP
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothConjugateInverseMemStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalEqTwistNormalisedStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalSatakeAlmostAllStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConjugateInverseRightActionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConjugateInverseRightAction
+import Development.WeilBound.CoreStatements.AbelianHeightsDuality.GelfandKazhdanDuality.IsCuspFormDualMap
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspFormConjugateInverseStatement
 import Development.WeilBound.CoreStatements.AbelianHeightsDuality.GelfandKazhdanDuality.LieSkew
 import Development.WeilBound.CoreStatements.AbelianHeightsDuality.UnitarisableLocalReps.IsUnitarisableLocRep
@@ -31,7 +32,7 @@ theorem dualMapC_dualMapC (φ : Sm E a) : dualMapC E a (dualMapC E a φ) = φ :=
   Subtype.ext (funext fun g => by simp [dualMapC, invA_invA])
 
 theorem act_dualMapC (o : Op E a) (φ : Sm E a) : act o (dualMapC E a φ) = dualMapC E a (act (invTOp o) φ) :=
-  GlobalTheory.T.conjugate_inverse_right_action o φ _ _
+  _root_.GlobalTheory.CompanionTheory.DualMapAct.act_dual o φ _ _
 
 theorem isCuspForm_dualMapC {φ : Sm E a} (h : IsCuspForm φ) : IsCuspForm (dualMapC E a φ) :=
   GlobalTheory.T.cuspForm_conjugate_inverse φ _ h

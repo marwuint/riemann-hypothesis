@@ -128,22 +128,6 @@ theorem cdp_galUnramifiedOutside_le_two_of_dvd {ℓ : ℕ} (hℓ : ℓ.Prime) (h
     rw [h2] at hℓn
     exact (Nat.not_even_iff_odd.2 ho) (even_iff_two_dvd.2 hℓn)
 
-include hn hS hK in
-
-theorem subsingleton_cohomology_gs_of_three_le (U : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S))
-    (M : Rep.{0} (ULift.{0} ℤ) (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) [IsDiscreteRep M]
-    (hM : ∀ m : M, n • m = 0) {r : ℕ} (hr : 3 ≤ r) : Subsingleton (cohomology M r) :=
-  subsingleton_cohomology_of_cdp_le_two hn (fun ℓ hℓ hℓn =>
-    (cdp_openSubgroup_le ℓ U).trans (cdp_galUnramifiedOutside_le_two_of_dvd K S hn hS hK hℓ hℓn)) M hM hr
-
-include hn hS hK in
-
-theorem subsingleton_h3_res_rootsOfUnity_of_odd (U : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S)) :
-    Subsingleton (cohomology (Rep.res (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype
-      (galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) n)) 3) :=
-  subsingleton_cohomology_gs_of_three_le K S hn hS hK U _
-    (fun m => nsmul_rootsOfUnity_eq_zero (E := maxUnramifiedOutside K.1 ℚ̄ S) n m) le_rfl
-
 variable (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))
 
 set_option maxHeartbeats 2000000 in

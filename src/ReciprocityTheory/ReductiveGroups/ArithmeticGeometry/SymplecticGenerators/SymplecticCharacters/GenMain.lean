@@ -181,39 +181,4 @@ theorem spGen : SpGenStatement := by
   rw [← hOM]
   exact hO
 
-theorem closure_spGens_eq (g : ℕ) :
-    Submonoid.closure (spGens g) = symplecticGroup (Fin g) ℤ := by
-  refine le_antisymm ?_ (fun M hM => spGen g M hM)
-  rw [Submonoid.closure_le]
-  intro M hM'
-  rw [SetLike.mem_coe]
-  rcases hM' with ((⟨S, hS, rfl⟩ | ⟨U, rfl⟩) | hJ)
-  · (first | rw [SymplecticGroup.mem_iff] | rw [Matrix.mem_symplecticGroup_iff])
-    rw [spTransl, Matrix.J, Matrix.fromBlocks_transpose,
-      Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]
-    simp [hS.eq]
-  · have hU2 : (U : Matrix (Fin g) (Fin g) ℤ) * (↑U⁻¹ : Matrix (Fin g) (Fin g) ℤ) = 1 := by
-      first
-      | exact Units.mul_inv U
-      | exact Matrix.mul_nonsing_inv _ (Matrix.isUnits_det_units U)
-    have hU : ((↑U⁻¹ : Matrix (Fin g) (Fin g) ℤ)ᵀ) * (U : Matrix (Fin g) (Fin g) ℤ)ᵀ = 1 := by
-      rw [← Matrix.transpose_mul, hU2, Matrix.transpose_one]
-    (first | rw [SymplecticGroup.mem_iff] | rw [Matrix.mem_symplecticGroup_iff])
-    rw [spDiag, Matrix.J, Matrix.fromBlocks_transpose,
-      Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]
-    simp [hU, hU2]
-    rw [← Matrix.transpose_mul]
-    first
-    | rw [Matrix.mul_nonsing_inv _ (Matrix.isUnits_det_units U), Matrix.transpose_one]
-    | rw [← Matrix.coe_units_inv, Units.mul_inv, Matrix.transpose_one]
-  · rw [Set.mem_singleton_iff] at hJ
-    rw [hJ]
-    first
-    | exact SymplecticGroup.J_mem
-    | exact Matrix.J_mem
-    | ((first | rw [SymplecticGroup.mem_iff] | rw [Matrix.mem_symplecticGroup_iff])
-       rw [Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply,
-         Matrix.fromBlocks_multiply]
-       simp)
-
 end ReciprocityTheory.ChartRestriction.G.Key.Chi

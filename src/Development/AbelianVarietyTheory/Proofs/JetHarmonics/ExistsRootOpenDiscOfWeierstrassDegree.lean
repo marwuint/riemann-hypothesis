@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.PowerSeriesHasSumAt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesIntegralBoundedClosureStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PowerSeriesEvalTsumUnitDiscPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PowerSeriesEvalTsumUnitDiscPropertiesAlt
 open GlobalTheory.ConvSer
 
 namespace GlobalTheory.ConvSer.DiscRoot
@@ -174,7 +174,7 @@ theorem GlobalTheory.ConvSer.exists_root_of_weierstrassDegree : ∀ (K : Type) [
   obtain ⟨q, r, hq, hq0, hr, hrc, e⟩ := DiscRoot.division h d hd ((hB h).1.1 hi) h1 hl
   obtain ⟨x, hx, hx0⟩ := DiscRoot.root_small r d hd hr hrc
   refine ⟨x, hx, ?_⟩
-  obtain ⟨-, hmul, -, -, hP, -, hI, -⟩ := GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K x hx
+  obtain ⟨-, hmul, -, -, hP, -, hI, -⟩ := _root_.GlobalTheory.ConvSer.powerSeriesEvalTsum_unitDisc_properties K x hx
   have hq' : Intg q := (hB q).1.2 hq
   have e2 : ((Polynomial.X ^ d - r : Polynomial K) : PowerSeries K) = h * q := by
     rw [Polynomial.coe_sub, Polynomial.coe_pow, Polynomial.coe_X, e]; ring

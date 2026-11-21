@@ -482,13 +482,6 @@ theorem mulB_smul (ho : IsOpen (UU Dc)) {a : Fn k r ℂ} (ha : SmoothFam k r L (
   funext Φ c g
   simp only [mulF, Pi.smul_apply, mul_smul]
 
-theorem mulB_zero (ho : IsOpen (UU Dc)) : mulB E L ho (fun _ _ => 0) = 0 := by
-  show (sfData E L ho).hat (mulF (fun _ _ => 0)) = 0
-  rw [← HatData.hat_zero (H := sfData E L ho)]
-  congr 1
-  funext Φ c g
-  simp [mulF]
-
 theorem mulB_grp_comm (ho : IsOpen (UU Dc)) {α : (Fin r → ℂ) → ℂ} (hα : SmoothFam k r L (UU Dc) (fun c _ => α c))
     {T : (Mx k r → E) → Mx k r → E} (hP : Qx3.Pres L (UU Dc) T) (hLL : ∀ c ∈ OmX r, Qx2.LL k r L (Dc c) T) :
     Commute (mulB E L ho (fun c _ => α c)) ((sfData E L ho).hat (grp T)) := by
@@ -769,12 +762,6 @@ theorem IntQ.smul {T : Module.End ℂ V₀} {T' : Module.End ℂ V₁} (h : IntQ
   show ρ (s • T F) = s • T' (ρ F)
   rw [map_smul, h2 F hF]
 
-theorem IntQ.neg {T : Module.End ℂ V₀} {T' : Module.End ℂ V₁} (h : IntQ ρ VL T T') : IntQ ρ VL (-T) (-T') := by
-  obtain ⟨h1, h2⟩ := h
-  refine And.intro (fun F hF => VL.neg_mem (h1 F hF)) (fun F hF => ?_)
-  show ρ (-T F) = -T' (ρ F)
-  rw [map_neg, h2 F hF]
-
 theorem IntQ.sub {T S : Module.End ℂ V₀} {T' S' : Module.End ℂ V₁} (h : IntQ ρ VL T T') (h' : IntQ ρ VL S S') :
     IntQ ρ VL (T - S) (T' - S') := by
   obtain ⟨h1, h2⟩ := h
@@ -787,30 +774,9 @@ theorem int_one : IntQ ρ VL 1 1 := by
   refine And.intro (fun F hF => hF) (fun F _ => ?_)
   rfl
 
-theorem int_zero : IntQ ρ VL 0 0 := by
-  refine And.intro (fun F _ => VL.zero_mem) (fun F _ => ?_)
-  show ρ 0 = 0
-  exact map_zero ρ
-
 theorem int_algebraMap (s : ℂ) : IntQ ρ VL (algebraMap ℂ _ s) (algebraMap ℂ _ s) := by
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]
   exact IntQ.smul int_one s
-
-theorem int_intCast (n : ℤ) : IntQ ρ VL (n : Module.End ℂ V₀) (n : Module.End ℂ V₁) := by
-  rw [← map_intCast (algebraMap ℂ (Module.End ℂ V₀)) n, ← map_intCast (algebraMap ℂ (Module.End ℂ V₁)) n]
-  exact int_algebraMap _
-
-theorem IntQ.sum {ι : Type*} (s : Finset ι) {T : ι → Module.End ℂ V₀} {T' : ι → Module.End ℂ V₁}
-    (h : ∀ j ∈ s, IntQ ρ VL (T j) (T' j)) : IntQ ρ VL (∑ j ∈ s, T j) (∑ j ∈ s, T' j) := by
-  classical
-  revert h
-  refine Finset.induction_on s ?_ ?_
-  · intro _
-    simp only [Finset.sum_empty]
-    exact int_zero
-  · intro j s hj ih h
-    simp only [Finset.sum_insert hj]
-    exact (h j (Finset.mem_insert_self j s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 end IntGen
 
@@ -1227,13 +1193,6 @@ theorem IntJ.add {T S : Module.End ℂ V₀} {T' S' : Module.End ℂ V₁} (h : 
   refine And.intro (VL.add_mem h1 h1') ?_
   show ρ (T J₀ + S J₀) = T' (ρ J₀) + S' (ρ J₀)
   rw [map_add, h2, h2']
-
-theorem IntJ.neg {T : Module.End ℂ V₀} {T' : Module.End ℂ V₁} (h : IntJ ρ VL J₀ T T') :
-    IntJ ρ VL J₀ (-T) (-T') := by
-  obtain ⟨h1, h2⟩ := h
-  refine And.intro (VL.neg_mem h1) ?_
-  show ρ (-T J₀) = -T' (ρ J₀)
-  rw [map_neg, h2]
 
 theorem IntJ.sub {T S : Module.End ℂ V₀} {T' S' : Module.End ℂ V₁} (h : IntJ ρ VL J₀ T T')
     (h' : IntJ ρ VL J₀ S S') : IntJ ρ VL J₀ (T - S) (T' - S') := by
@@ -1659,11 +1618,6 @@ theorem cell_fvec (z : Fin (2 * r + k + 1) → ℂ) (l : Fin r) : fvec k r z l.c
   unfold fvec
   rw [dif_pos (by simp)]
   rfl
-
-theorem cell_posL_inj {i : Fin (r + 1)} {j j' : Fin (mdim k r i)} (h : posL k r i j = posL k r i j') : j = j' := by
-  have h' := congrArg Fin.val h
-  simp only [posL] at h'
-  exact Fin.ext (by omega)
 
 theorem cell_posL_e (l : Fin r) (j : Fin (mdim k r l.castSucc)) :
     posL k r l.castSucc j = eI k r l ↔ j = e0 k l := by
@@ -2535,8 +2489,6 @@ theorem chain_descent_from_rules : Formalism.FourierDecayAlt.Q.ChainStepFromRule
 theorem qx_chainStepBoth : Formalism.FourierDecayAlt.Q.ChainStepRaw ∧ Formalism.FourierDecayAlt.Q.ChainStep :=
   chain_descent_from_rules border_first_expansion border_last_expansion border_full_expansion generator_gl_level
     generator_action_preserved quantum_minor_left_hermitian right_action_rule left_action_rule torus_action_rule weyl_level_element_properties
-
-theorem chain_descent_relation_raw : Formalism.FourierDecayAlt.Q.ChainStepRaw := qx_chainStepBoth.1
 
 theorem chain_descent_relation : Formalism.FourierDecayAlt.Q.ChainStep := qx_chainStepBoth.2
 

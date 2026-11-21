@@ -4,16 +4,17 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspAlongSmoothRows
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TiltSc
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NormOneHomothetyCarriesSelfDualOfSplitComponentStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NormOneHomothetyCarriesSelfDualOfSplitComponent
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NormOneAtOne
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsFrameFinitePartMulOfCarriesLattice
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatIntegrandFlippedTensorLocallyConstantCompact
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridBasePointTrivialOffTensorPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeOffS0LastLevelIffStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCmSplitPointAtPlaceOverSplitStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridBasePointCarriesLatticeToMovedLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualGridRowMovedLatticeLargeDepthStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridBasePointTrivialOffTensorPlaces
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeOffS0LastLevelIff
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCmSplitPointAtPlaceOverSplit
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridBasePointCarriesLatticeToMovedLattice
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualGridRowMovedLatticeLargeDepth
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal GlobalTheory.FinPl
@@ -27,7 +28,7 @@ theorem moves_of_forall {D : D7} (S : HSp D) (g : GA D S) (L M : GlobalTheory.Fi
     GlobalTheory.FinPl.Moves S g L M (fun _ => True) := by
   intro y hy
   have hT := fun (N : GlobalTheory.FinPl.Lat S) (hN : Submodule.IsLattice D.host.E N) (z : Fin S.rank → AE D) =>
-    ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (fun _ => True)).2 S).2.2.2 N z hN
+    ((_root_.GlobalTheory.FinPl.localComponents D (fun _ => True)).2 S).2.2.2 N z hN
   have hmy : ∀ i, (Formalism.L2.Theta.mt S g *ᵥ y) i ∈ idAt D (fun _ => True) := fun i => by
     simp only [Matrix.mulVec, dotProduct]
     exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)
@@ -56,20 +57,20 @@ theorem moves0_of_selfDual : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch 
   by_cases hv : ∃ w ∈ locPl ch.G t, w.under (𝓞 D.host.F) = v
   · obtain ⟨w, hw, rfl⟩ := hv
     obtain ⟨e, ⟨⟨es, hes, -⟩, -⟩, -, -⟩ := hb.1
-    obtain ⟨p, hpe, hpv, hpr⟩ := GlobalTheory.T.exists_cmSplitPoint_at_place_over_split D w (es w) (hes w hw) s.hF
-    have key := GlobalTheory.T.gridBasePoint_carries_lattice_to_movedLattice hL hde ch.G ch.W Set.univ ch.S.toGridChoice t trivial hc b hb w hw p (hpe ▸ hes w hw) hpr
+    obtain ⟨p, hpe, hpv, hpr⟩ := _root_.GlobalTheory.SplitPtAtPlace.exists_splitPt_cpt D w (es w) (hes w hw) s.hF
+    have key := _root_.GlobalTheory.BaseMoveAt.lat_moves_at_place hL hde ch.G ch.W Set.univ ch.S.toGridChoice t trivial hc b hb w hw p (hpe ▸ hes w hw) hpr
     rw [← hpv, ← GlobalTheory.Core.Mi.LatMatch.sMoves_one]
-    refine GlobalTheory.T.normOneHomothety_carries_selfDual_of_splitComponent D _ p _ _ _ 1 (b 0) hΛ hN (GlobalTheory.Core.Mi.LatMatch.normOneAt_one _) fun x => ?_
+    refine _root_.GlobalTheory.Core.Mi.LatMatch.sMoves_of_wComp D _ p _ _ _ 1 (b 0) hΛ hN (GlobalTheory.Core.Mi.LatMatch.normOneAt_one _) fun x => ?_
     rw [map_one, one_smul]
     exact key x
   · push_neg at hv
     have hv0 : v ∉ ch.G.pl.S0 := fun h0 => hv (ch.G.pl.w v)
       (Finset.mem_union_left _ (by simpa [Places.W0] using ⟨v, h0, rfl⟩)) (ch.G.pl.under_w h0)
     intro y hy
-    rw [GlobalTheory.T.gridBasePoint_trivial_offTensorPlaces ch.G t ch.S.B b hb v hv y hy]
-    exact GlobalTheory.T.lattice_off_S0_last_level_iff ch.G v hv0 y hy
+    rw [_root_.GlobalTheory.RowVal.base_mt_mulVec_off ch.G t ch.S.B b hb v hv y hy]
+    exact _root_.GlobalTheory.RowShape.latV_grid_iff_rowN_zero ch.G v hv0 y hy
 
 theorem moves0 : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ (t : T) (b : Pts ch.G), IsBase t ch.S.B b → GlobalTheory.FinPl.Moves _ (b 0) (ch.G.Λ (.grid D.R.m 0)) (GlobalTheory.RowShape.rowN ch.G 0) fun _ => True :=
-  big_mono (fun _ h => h.1 (h.2 0 (Nat.zero_le _))) (Big.and moves0_of_selfDual GlobalTheory.T.isSelfDual_gridRowMovedLattice_largeDepth)
+  big_mono (fun _ h => h.1 (h.2 0 (Nat.zero_le _))) (Big.and moves0_of_selfDual _root_.GlobalTheory.RowShape.big_isSelfDualC_rowN)
 
 end GlobalTheory.RowShape

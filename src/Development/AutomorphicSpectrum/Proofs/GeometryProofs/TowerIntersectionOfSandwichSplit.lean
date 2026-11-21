@@ -6,8 +6,14 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosur
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatUnitOfSplitRootLinesStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HasReferenceOfSandwichAllPrimesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootModelFlagHeightStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TowerI5OfFibreInputStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootModelFlagHeight
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TowerI5OfFibreInput
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TowerI6OfReferenceStatement
 
 open AlgebraicGeometry CategoryTheory NumberField
@@ -22,7 +28,7 @@ theorem tower_intersection_of_ample_flat (Ψ : Type) [Fintype Ψ] [DecidableEq �
     T.I5 II := by
   obtain ⟨j, rfl⟩ : ∃ j, p = j + 1 := ⟨p - 1, by omega⟩
   obtain ⟨k, rfl⟩ : ∃ k, q = k + 1 := ⟨q - 1, by omega⟩
-  exact GlobalTheory.T.tower_i5_of_fibre_input Ψ j k T II R hII hR h
+  exact _root_.GlobalTheory.CompanionTheory.Ar.Ht.TopLower.i5_of_hasRef_of_fibreInput Ψ j k T II R hII hR h
 
 theorem tower_good_of_sandwich_split : Top.Given → Flat.FlatLineGenerator → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F))
@@ -42,7 +48,7 @@ theorem tower_good_of_sandwich_split : Top.Given → Flat.FlatLineGenerator → 
     GlobalTheory.T.tower_i6_of_reference _ _ T II g.R hII hR⟩
   · exact GlobalTheory.T.flat_unit_of_split_root_lines hA E H D l Xo c Y ∅ (g.R a) (g.refOr a).𝔐 (g.refOr a).Fl (g.refOr a).e hN hsp
       (g.refOr a).lines
-  · exact GlobalTheory.T.root_model_flag_height hab hI hres hext hsl E H D l Xo c Y ∅ (g.R a) (g.refOr a).𝔐 (g.refOr a).Fl (g.refOr a).e hN
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.TopFibre.fibreInput hab hI hres hext hsl E H D l Xo c Y ∅ (g.R a) (g.refOr a).𝔐 (g.refOr a).Fl (g.refOr a).e hN
       (g.refOr a).lines
 
 end GlobalTheory.CompanionTheory.Ar.TopGood

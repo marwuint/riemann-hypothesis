@@ -9,14 +9,21 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.LocalSeparation.ReadSplitOfJoin
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.LocalOperatorSums.LocOp3
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.SphericalEmbeddings.Imports
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealReadLeviStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealReadLevi
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.JoinType
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFixedNonzeroStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusTrivialOnCompactParabolic
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicElementBlockForm
 
 namespace PositivityTheory.Rg.BcB.F
 
 theorem candTOut_holds2 : CandTOut :=
   candTOut_of (candS_of (Tail.rReadS_c RS.reading_module_holds RS.join_module_holds fun E _ _ _ => PositivityTheory.Rg.BcN.F2.LocOpPf.locOp3 E))
     (candT_of (Tail.rReadT RS.reading_module_holds) (Tail.rExpRead' N3.Final.n3) RS.joinSat_holds)
-    (PCandLh.candLev_of (GlobalTheory.T.real_read_levi RS.reading_module_holds RS.join_module_holds) (Tail.rReadT RS.reading_module_holds)
+    (PCandLh.candLev_of (_root_.GlobalTheory.CompanionTheory.ReadLevel.rReadLev RS.reading_module_holds RS.join_module_holds) (Tail.rReadT RS.reading_module_holds)
       (Tail.rExpRead' N3.Final.n3) RS.joinSat_holds)
 
 end PositivityTheory.Rg.BcB.F

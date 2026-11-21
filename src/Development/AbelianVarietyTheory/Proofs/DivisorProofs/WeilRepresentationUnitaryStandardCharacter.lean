@@ -1,5 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryOperatorCommutesSchrodingerStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryOperatorCommutesSchrodinger
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
@@ -79,7 +80,7 @@ theorem splittings_differ_by_character : GlobalTheory.FunPr.Hypotheses₂ →
     swap
     · exact ⟨1, fun h => absurd h hg⟩
     have hgi := at_inv hg
-    obtain ⟨z, hz⟩ := GlobalTheory.T.unitary_operator_commutes_schrodinger hP F κ ψ hψ (om g * ω₀ g⁻¹)
+    obtain ⟨z, hz⟩ := _root_.GlobalTheory.AdelicSchur.schur hP F κ ψ hψ (om g * ω₀ g⁻¹)
       (fun φ hφ => hom.pres g _ ((hω _ hgi).1 φ hφ))
       (fun w φ hφ => by
         have e1 : schr ψ w φ = d.rho ψ (d.e.symm w) φ := by simp [Darboux.rho]

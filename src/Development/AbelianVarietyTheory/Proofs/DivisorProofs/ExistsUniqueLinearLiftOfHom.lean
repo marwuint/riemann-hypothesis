@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.Uniformised
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHeckeMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationAtCorrespondOfCartesian
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexFibreExponentialKernelFullLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexFibreExponentialKernelFullLattice
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueLinearLiftOfHolomorphicAbelianVariet
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.HolPairA
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenMovePow
@@ -28,7 +29,7 @@ theorem existsUnique_linear_lift_of_hom :
       (β : (Fin g → ℂ) → (Over.mk y ⟶ G)), IsExp y e' → (∀ z w, β (z + w) = β z * β w) →
       IsHolTo Set.univ (fun z => (β z).left) → ∃! M : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ z, e' (M z) = β z := by
   intro X G _ _ g hab hsm y e' β he' hβ hholG
-  obtain ⟨Λ, hdisc, -, hker⟩ := GlobalTheory.T.complexFibreExponential_kernel_full_lattice X G g hab hsm y e' he'
+  obtain ⟨Λ, hdisc, -, hker⟩ := _root_.GlobalTheory.ExpKernel.kernel_isFullLattice X G g hab hsm y e' he'
   letI : CommGroup (Over.mk y ⟶ G) := inferInstance
   let ex : (Fin g → ℂ) →+ Additive (Over.mk y ⟶ G) :=
     AddMonoidHom.mk' (fun z ↦ Additive.ofMul (e' z)) he'.1
@@ -123,9 +124,5 @@ theorem eq_zero_of_real_smul_mem {g : ℕ} (A : AddSubgroup (Fin g → ℂ)) (hA
 end GlobalTheory.HeckeUnif
 
 namespace GlobalTheory.UPel.HT.Hecke
-
-open GlobalTheory.UnifPull GlobalTheory.HeckeUnif
-
-variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R}
 
 end GlobalTheory.UPel.HT.Hecke

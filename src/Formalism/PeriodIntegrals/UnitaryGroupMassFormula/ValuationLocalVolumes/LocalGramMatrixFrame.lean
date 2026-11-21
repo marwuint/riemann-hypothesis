@@ -31,8 +31,6 @@ def OmVLat : Prop :=
 
 def OmVSD : Prop := ∀ v : PlX X, IsSDLoc X.B.I.cm.sig X.B.I.J v (abelian₂ X)
 
-def OmVUnram : Prop := ∀ v : PlX X, UnramAt (E := X.B.I.E) v
-
 def OmVPrim : Prop := ∀ v : PlX X, IsPrim v (abelian₂ X) (yTup X u' v)
 
 def OmVGram : Prop := ∀ v : PlX X, gramR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (yTup X u' v) = localGramMatrixFrame X u' v

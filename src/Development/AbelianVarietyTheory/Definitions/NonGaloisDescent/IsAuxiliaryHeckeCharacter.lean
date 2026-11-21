@@ -109,22 +109,4 @@ def IsLamTie0 (Z : LamDat D) : Prop :=
 
 end Record
 
-section Examples
-
-example {R : Ranks} (H : Formalism.BasicNotions.Host R) (g : R.Psi) (x : H.E) : phi H g x = (starRingEnd ℂ) (embPsi H g x) := rfl
-
-example {R : Ranks} (H : Formalism.BasicNotions.Host R) (w0 : HeightOneSpectrum (𝓞 H.E)) : (below w0).asIdeal ∣ cond0 H w0 := Dvd.intro_left _ rfl
-
-example {D : D7} (Z : LamDat D) (l : ℕ) (j a : Fin D.R.m) : Z.lam0 l j a * Z.chi a = Z.C.mu0 j * Z.C.delAt l :=
-  inv_mul_cancel_right _ _
-
-example {D : D7} (Z : LamDat D) (hZ : Z.Ok) (j a : Fin D.R.m) (s : ℕ) (hs : s ≤ BlochKatoReduction.Gen.NFun D.R + 1) (g : D.R.Psi) :
-    (Z.kap j a s g : ℤ) = ⌊eExp D j g⌋ + Z.c a g - s := by
-  have h := hZ.big j a g
-  have h1 : ((BlochKatoReduction.Gen.NFun D.R : ℤ) + 1 - Z.c a g) ≤ ⌊eExp D j g⌋ := Int.le_floor.2 (by push_cast; linarith)
-  have h2 : (s : ℤ) ≤ (BlochKatoReduction.Gen.NFun D.R : ℤ) + 1 := by exact_mod_cast hs
-  exact Int.toNat_of_nonneg (by omega)
-
-end Examples
-
 end GlobalTheory.LamTie

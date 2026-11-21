@@ -1,10 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PointPoly
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNegSqZero
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicLocalInverseOfInjOnStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicFrameSliceComponentUniformisatiStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DimOpenlyImmersedVarietyEqCmTypeCardMulPqStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HolomorphicFrameFamilyChartCoordinatesHolomorphiStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicLocalInverseOfInjOn
+import ReciprocityTheory.L2DbarEstimates.IsLocalHomeomorph
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NotInjOnOfFderivEqZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicFrameSliceComponentUniformisati
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DimOpenlyImmersedVarietyEqCmTypeCardMulPq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HolomorphicFrameFamilyChartCoordinatesHolomorphi
 
 set_option autoImplicit false
 
@@ -56,9 +58,9 @@ theorem exists_holo_frame_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCM
     have h1 : IsLocalRing.closedPoint ℂ ∈ y.1 ⁻¹ᵁ openPart j := hy (Set.mem_univ _)
     exact h1 h
   obtain ⟨k, x₀, hx₀⟩ := exists_un E H Dw l Xo c O β Y T σ _ U hU _ hnb
-  have hn := GlobalTheory.T.dim_openly_immersed_variety_eq_cmType_card_mul_pq E H Dw l Xo c O β Y T F e σ U hσ hU X j hjo hj ⟨y, hy⟩ k
-  obtain ⟨W, a, ψ, hWo, haW, hψd, hψh, hψa, hinj⟩ := GlobalTheory.T.exists_holomorphic_frame_slice_componentUniformisation E H Dw l Xo c σ U hσ hU k x₀ X.dim hn
-  obtain ⟨q, hOo, hq, hqd⟩ := GlobalTheory.T.holomorphic_frameFamily_chart_coordinates_holomorphic E H Dw l Xo c O β Y T F e σ U hσ hU X j hjo hj c' k X.dim W ψ hWo hψd hψh
+  have hn := _root_.GlobalTheory.OpenBaseDim.dim_eq E H Dw l Xo c O β Y T F e σ U hσ hU X j hjo hj ⟨y, hy⟩ k
+  obtain ⟨W, a, ψ, hWo, haW, hψd, hψh, hψa, hinj⟩ := _root_.GlobalTheory.UnifSlice.exists_slice E H Dw l Xo c σ U hσ hU k x₀ X.dim hn
+  obtain ⟨q, hOo, hq, hqd⟩ := _root_.GlobalTheory.LieBase.isHol_chart_framePt E H Dw l Xo c O β Y T F e σ U hσ hU X j hjo hj c' k X.dim W ψ hWo hψd hψh
   haveI := T.Z.jQ_open
   have hxeq : ∀ {z z' : FrPt Xo c (CAt σ)}, cxPt T.Z z = cxPt T.Z z' → z.x = z'.x := by
     intro z z' h
@@ -79,7 +81,7 @@ theorem exists_holo_frame_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCM
     have hqq : q w = q w' := c'.e.injOn h1.1 h2.1 hg
     refine hinj w hw w' hw2 hwd hwd' (hxeq ?_)
     rw [← h1.2, ← h2.2, hqq]
-  obtain ⟨h, hev⟩ := GlobalTheory.T.exists_holomorphic_local_inverse_of_injOn X.dim _ _ a hOo haO hqd hinjg
+  obtain ⟨h, hev⟩ := _root_.GlobalTheory.InjHol.exists_local_inverse_of_injOn X.dim _ _ a hOo haO hqd hinjg
   refine ⟨k, fun u => ψ (h u), ?_⟩
   rw [show c'.e y = c'.e (q a) by rw [hqa]]
   filter_upwards [hev] with u ⟨⟨huW, hud, hux⟩, hgu, hdu⟩

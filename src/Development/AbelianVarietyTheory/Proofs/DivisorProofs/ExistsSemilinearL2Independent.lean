@@ -7,13 +7,39 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanon
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegTwoLeGapKap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TestValueEqConstMulReadingSecZ
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CnormMapConjMulVec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearL2CuspForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RdZeroOfPetAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightLatticeSpanEqTopStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightLatticeFinitelyGeneratedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulNonnegOfPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulNonnegLargeAtThreeFive
+import Formalism.LocalToGlobal.ProjectiveLattices.RulInst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeySectionValuationBoundsDifferent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeySectionFourthRootPerComponent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitSectionThetaKeyRuleWeightFour
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyFamOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdConjDifferentEqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeyRuleValuationNonnegIntegralFramedPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstantSmulIntegralOfFourthPowerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsParallelWeightInvertibleSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyWeightSectionProducts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FgIntOfForallIsIntegral
+import Development.AbelianVarietyTheory.Definitions.CMLattices.IntegralOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodCmPtFrPolyNeZero
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPolyDivDet
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedModuliAlgebraicLawsChartWeightIntegrality
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TestPointValueEqConstMulReading
+import Formalism.LocalToGlobal.ProjectiveLattices.RosatiLatticeNorms.LinkFD
+import Formalism.LocalToGlobal.ProjectiveLattices.ChartWD
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SiegelSpaceAlgebraHolds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodCoverComponentExtendsToRankOneCuspData
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisationFrameReadingNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumberFieldFrameValueNeZeroOfComplex
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDetNeZeroEvalFrNeZero
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeExistsUniqueOfSamePoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedSectionExponentShift
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonDenomFramePolynomialsCmPoint
+
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -146,22 +172,5 @@ theorem hasGram_nrm_of_good (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : 
     intro a x
     refine ((Classical.choose_spec hex).1 a x).trans ?_
     exact congrArg (· • Classical.choose hex x) (congrArg (fun τ : Y.d.c₂.F →+* ℂ => τ a) (if_neg h))
-
-set_option maxHeartbeats 1000000 in
-
-theorem goodAt_of_gapGe : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
-    2 < Module.finrank ℚ D.host.E / 2 → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), GapGe 1 la → Y.GoodAt (wtOf _ la 0) := by
-  intro hP D T j Y e o hY hf la hla
-  have hfd := GlobalTheory.Deep.finiteDimensional_V_of_good D T j Y e o hY (wtOf _ la 0)
-  exact ⟨hasGram_nrm_of_good D T j Y e o hY _, GlobalTheory.T.weight_lattice_finitely_generated hP D T j Y e o hY hf la hla hfd,
-    GlobalTheory.T.weight_lattice_span_eq_top hP D T j Y e o hY hf la hla hfd⟩
-
-theorem goodAt_hs : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
-    2 < Module.finrank ℚ D.host.E / 2 → ∀ P : WtPar (T.Q.Dw j), WtBig P →
-      Y.GoodAt (wtOf _ P.u₁ 0) ∧ Y.GoodAt (wtOf _ P.u₂ 0) ∧ ∀ i ≤ P.T, Y.GoodAt (wtOf _ (P.wt i) 0) := by
-  intro hP D T j Y e o hY hf P hB
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.HSApp.GapArith.gaps_main _ _ _ P hB
-  exact ⟨goodAt_of_gapGe hP D T j Y e o hY hf _ h1, goodAt_of_gapGe hP D T j Y e o hY hf _ h2,
-    fun i _ => goodAt_of_gapGe hP D T j Y e o hY hf _ (h3 i)⟩
 
 end GlobalTheory.HSApp

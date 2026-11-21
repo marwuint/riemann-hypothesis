@@ -45,7 +45,7 @@ theorem algebraMap_inj : Function.Injective (algebraMap (AF F) (AF F ⊗[F] E)) 
 theorem exists_form {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ δ : F, ¬ IsSquare δ ∧
     ∀ a : (AF F)ˣ, a ∈ (normI F E).range ↔
       ∃ x y : AF F, (a : AF F) = x ^ 2 - algebraMap F (AF F) δ * y ^ 2 := by
-  obtain ⟨δ, hδ, hh⟩ := GlobalTheory.T.quadraticExt_norm_form_over_algebra F E σ h.2.2.1 (sig_invol h) (sig_ne h)
+  obtain ⟨δ, hδ, hh⟩ := _root_.GlobalTheory.QuadNormBase.norm_form F E σ h.2.2.1 (sig_invol h) (sig_ne h)
   obtain ⟨h1, h2⟩ := hh (AF F)
   have hN : ∀ z : AF F ⊗[F] E, algebraMap (AF F) (AF F ⊗[F] E) (Algebra.norm (AF F) z) =
       z * sigR (AF F) σ z := fun z => by
@@ -65,12 +65,12 @@ theorem exists_form {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ δ : F, ¬ I
 theorem isOpen_normGrp {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : IsOpen (normGrp F E : Set (AF F)ˣ) := by
   obtain ⟨δ, hδ, hf⟩ := exists_form h
   have h0 : δ ≠ 0 := fun e => hδ (e ▸ IsSquare.zero)
-  refine Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (GlobalTheory.T.quadraticForm_ideleValues_mem_nhds_one F δ h0) fun a ha => ?_)
+  refine Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (_root_.GlobalTheory.QNorm.norm_form_mem_nhds_one F δ h0) fun a ha => ?_)
   exact Subgroup.mem_sup_right ((hf a).2 ha)
 
 theorem normGrp_ne_top {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : normGrp F E ≠ ⊤ := by
   obtain ⟨δ, hδ, hf⟩ := exists_form h
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_idele_ne_algebraMap_mul_norm_of_not_isSquare F δ hδ
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.QNorm.exists_idele_not_mul_norm F δ hδ
   intro e
   have hm : a ∈ normGrp F E := e ▸ Subgroup.mem_top a
   obtain ⟨_, ⟨t, rfl⟩, n, hn, rfl⟩ := Subgroup.mem_sup.1 hm

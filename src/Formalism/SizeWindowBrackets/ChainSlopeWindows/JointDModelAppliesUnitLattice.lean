@@ -1,7 +1,14 @@
 import Formalism.SizeWindowBrackets.FrameTraceRatioFinEquiv
 import Formalism.HarderNarasimhan.ShiftInvariance
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.TraceConjTransposeMulSelf
-import Formalism.SizeWindowBrackets.ChainSlopeWindows.CorollaryModelSideCondition
+import Formalism.SizeWindowBrackets.SlopeExcessBoundExponentZero
+import Formalism.SizeWindowBrackets.RealSlopeBoundsSplit
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
+import Mathlib.Data.Fintype.BigOperators
+import Formalism.RankGapBounds.RankGapProofs.WeightedMeanData
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.ExistsNsmulMem
 
 open Module NumberField Matrix
@@ -155,11 +162,6 @@ theorem second_family_transfer_holds : FrameDeviationFinEquiv := by
   rw [h5]
   simp only [h2, fun i => hilbert_schmidt_transfer_holds I α ι B ga i (hga i)]
   rfl
-
-theorem transfer_conclusion_holds : BridgeConcl := by
-  intro s mu logI δ u HH η e
-  unfold PhiMonotonicityLemmas.ConclF PhiMonotonicityLemmas.ErrF PhiMonotonicityLemmas.phi
-  rw [mul_assoc 4 u]
 
 theorem ramification_linear_case_holds : RamLin := by
   intro I α _ _ ιf ι _ _ _ _ Bf Vr ga Dstar sg η0 η1 e0 de hV hga hD hsg hsg20 hR h0 h0' h1 he0 hse

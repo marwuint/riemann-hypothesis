@@ -2,11 +2,14 @@ import Mathlib
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.ExistsHoloOnOfGerm
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameLUMinorValue
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockLUFactorizationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameMinorValueFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameMinorValueFormula
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsBaseChart
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogPeriodStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseChartHolomorphicCompositionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFlagPointInOrbitStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPointTriangularChangeOrbitStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseVectorPropertiesStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFlagPointInOrbit
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BasePartFlagPt
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPointTriangularChangeOrbit
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseVectorProperties
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartFirst
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
@@ -78,8 +81,8 @@ theorem exists_holo_flags (hp : HoloMap A BM.Rb.A pr) {W : Set X} (hW : IsOpen W
       ∀ x ∈ W', SameOrbit (z x) (FC.flagPt M (BM.F l) (FC.bvec BM l (pr x)) fun τ => h₀ τ * L τ x) := by
   have hj := M.j_le
   have hF := BM.isFrame l
-  have hg := GlobalTheory.T.base_vector_properties K ι Φ y Ψ N j M n BM l
-  have hex := fun x (hx : x ∈ W) => GlobalTheory.T.exists_flag_point_in_orbit K ι Φ y Ψ N j M n BM l (pr x) (hl x hx) (z x) (hm x hx) (hb x hx)
+  have hg := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec_good K ι Φ y Ψ N j M n BM l
+  have hex := fun x (hx : x ∈ W) => _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.exists_flagPt_of_orbit K ι Φ y Ψ N j M n BM l (pr x) (hl x hx) (z x) (hm x hx) (hb x hx)
   obtain ⟨h₀, hh₀, ho₀⟩ := hex x₀ hx₀
   let tw : Fin N → K → Ψ → Finset (Fin N) → X → ℂ := fun i k τ J x =>
     twMinor M (BM.F l) (FC.bvec BM l (pr x)) i k (h₀ τ)⁻¹ (z x) J
@@ -98,7 +101,7 @@ theorem exists_holo_flags (hp : HoloMap A BM.Rb.A pr) {W : Set X} (hW : IsOpen W
         den t x = α * minorIJ ((h₀ t.1.1.1)⁻¹ * h' t.1.1.1) (stepCols N j t.1.1.2) (stepCols N j t.1.1.2) := by
     intro x hx h' hb' ho t
     obtain ⟨α, hα, hzk⟩ := step_of_orbit ho t.1.1 t.1.2 t.2
-    exact ⟨α, hα, GlobalTheory.T.frame_minor_value_formula K ι Φ y Ψ N j M (BM.F l) _ t.1.1 t.1.2 _ _ _ α _ hF (hg _ (hl x hx)).1
+    exact ⟨α, hα, _root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.TwRead.main K ι Φ y Ψ N j M (BM.F l) _ t.1.1 t.1.2 _ _ _ α _ hF (hg _ (hl x hx)).1
       (hg _ (hl x hx)).2.1 t.2 (hb' _) hzk⟩
   refine ⟨{x | x ∈ W ∧ ∀ t, den t x ≠ 0}, isOpen_ne hW fun t => htw _ _ _ _, ⟨hx₀, fun t => ?_⟩, fun x hx => hx.1, h₀,
     fun τ x => lowMat (fun q : LowIdx Ψ N j =>
@@ -139,7 +142,7 @@ theorem exists_holo_flags (hp : HoloMap A BM.Rb.A pr) {W : Set X} (hW : IsOpen W
       rw [Matrix.mul_assoc, ← hLU, Matrix.mul_nonsing_inv_cancel_left _ _ (hh₀ τ).2.isUnit]
     refine orbit_trans ho ?_
     rw [e2]
-    refine GlobalTheory.T.flag_point_triangular_change_orbit K ι Φ y Ψ N j M _ _ (fun τ => h₀ τ * L τ) U fun τ => ⟨hUb τ, hUt τ, ?_⟩
+    refine _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.sameOrbit_flagPt_mul K ι Φ y Ψ N j M _ _ (fun τ => h₀ τ * L τ) U fun τ => ⟨hUb τ, hUt τ, ?_⟩
     rw [Matrix.det_of_upperTriangular (hUt τ)]
     exact Finset.prod_ne_zero_iff.2 fun c _ => hUd τ c
 

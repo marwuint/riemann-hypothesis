@@ -194,36 +194,6 @@ theorem oneDual_span : ⊤ ≤ Submodule.span ℤ (Set.range fun _ : Unit => one
 def dualBasisStandard : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)) :=
   Module.Basis.mk oneDual_linearIndependent oneDual_span
 
-theorem dualBasisStandard_apply (t : Unit) : dualBasisStandard t = oneDual := by
-  simp [dualBasisStandard]
-
-theorem dualEmbMatrix_standard_bijective :
-    Function.Bijective (Matrix.mulVecLin (dualEmbMatrix dualBasisStandard)) := by
-  let hU : Unique ((ℚ →+* ℂ) × Fin 1) :=
-    { default := (Rat.castHom ℂ, 0)
-      uniq := fun p => Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _) }
-  have hM : ∀ (t : Unit) (p : (ℚ →+* ℂ) × Fin 1), dualEmbMatrix dualBasisStandard t p = 1 := by
-    intro t p
-    simp [dualEmbMatrix, dualBasisStandard_apply, oneDual]
-  have hv : ∀ w : (ℚ →+* ℂ) × Fin 1 → ℂ, Matrix.mulVecLin (dualEmbMatrix dualBasisStandard) w =
-      fun _ => w default := by
-    intro w
-    funext t
-    rw [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Fintype.sum_unique, hM, one_mul]
-  constructor
-  · intro w w' h
-    rw [hv, hv] at h
-    have h1 := congrFun h ()
-    funext p
-    rw [Unique.eq_default p]
-    exact h1
-  · intro z
-    refine ⟨fun _ => z (), ?_⟩
-    rw [hv]
-
-example : HermLine (dualBlocks Unit) :=
-  dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective
-
 end
 
 end GroundTheory.Heights₂.Heights

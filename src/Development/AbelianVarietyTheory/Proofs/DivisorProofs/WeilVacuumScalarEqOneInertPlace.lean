@@ -1,14 +1,15 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinMapsOfForall
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemKAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FromBlocksMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplementaryAdelicSchwartzRestFunction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceDoubledFirstFactorMemSiegelClosureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledWeilRepFixesVacuumTensorSiegelParabolicInStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledWeilRepFixesIntegralUnipotentInertPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StarMemAdelicSchwartzSpaceNumberFieldStatement
-open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceDoubledFirstFactorMemSiegelClosure
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledWeilRepFixesVacuumTensorSiegelParabolicIn
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledWeilRepFixesIntegralUnipotentInertPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StarMemAdelicSchwartzSpaceNumberField
+
+open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped TensorProduct Matrix
 
 noncomputable section
@@ -27,7 +28,7 @@ theorem scalar_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   have hRv := hR _ hSB
   set Ψ := tens (evFin F v) (G.M'.vac v) R with hΨdef
   have hΨ : Ψ ∈ schA F _ := hRv.2
-  have hΨ' : (fun x => star (Ψ x)) ∈ schA F _ := GlobalTheory.T.star_mem_adelicSchwartzSpaceNumberField F _ Ψ hΨ
+  have hΨ' : (fun x => star (Ψ x)) ∈ schA F _ := _root_.GlobalTheory.SchAConj.star_mem_schA F _ Ψ hΨ
 
   let H : Subgroup (GlobalTheory.InertDbl.UD σ G.W) :=
     { carrier := {g | omd g (GlobalTheory.InertDbl.dblFun Ψ) = GlobalTheory.InertDbl.dblFun Ψ}
@@ -39,12 +40,12 @@ theorem scalar_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
         simp only [Set.mem_setOf_eq] at *
         conv_lhs => rw [← hx]
         rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }
-  have hgen := GlobalTheory.T.inertPlace_doubledFirstFactor_mem_siegelClosure F E σ B a a' G X om om' hTr v w hin k hk
+  have hgen := _root_.GlobalTheory.InertDblGen.inlD_mem_closure F E σ B a a' G X om om' hTr v w hin k hk
   have hle : Subgroup.closure (GlobalTheory.InertDbl.ParD σ G.W v ∪ GlobalTheory.InertDbl.NabD σ G.W v) ≤ H := by
     rw [Subgroup.closure_le]
     rintro g (hg | hg)
-    · exact GlobalTheory.T.doubledWeilRep_fixes_vacuum_tensor_siegelParabolic_inert F E σ B a a' G X om om' hTr v w hin hT dd omd hdc hws R hR0 hRv g hg
-    · exact GlobalTheory.T.doubledWeilRep_fixes_integralUnipotent_inertPlace F E σ B a a' G X om om' hTr v w hin hT dd omd hdc hws R hR0 hRv g hg
+    · exact _root_.GlobalTheory.InertDblPar.parD_fix F E σ B a a' G X om om' hTr v w hin hT dd omd hdc hws R hR0 hRv g hg
+    · exact _root_.GlobalTheory.NabFix.nab_fix F E σ B a a' G X om om' hTr v w hin hT dd omd hdc hws R hR0 hRv g hg
   have hfix : omd (GlobalTheory.InertDbl.inlD σ G.W k) (GlobalTheory.InertDbl.dblFun Ψ) = GlobalTheory.InertDbl.dblFun Ψ := hle hgen
   have hact : om' (1, k) Ψ = c • Ψ := by
     rw [hΨdef, hc R hRv]

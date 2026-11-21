@@ -84,8 +84,6 @@ theorem goal_of_all (hEx : LeafRelExact) (hNat : LeafRelNat) (hCore : LeafGhostR
   rw [← e1, ← e2]
   exact congrArg _ hc.symm
 
-theorem goal_of (hCore : LeafGhostRel) : LateralTheory.E.E4.LeafGhost := goal_of_all relExact relNat hCore
-
 end LateralTheory.E.LeafGhostCut
 
 end

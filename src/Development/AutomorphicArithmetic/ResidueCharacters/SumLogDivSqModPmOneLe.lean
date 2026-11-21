@@ -506,14 +506,7 @@ theorem two_pow_padicVal_le (o : ℕ) (ho : 0 < o) : 2 ^ padicValNat 2 o ≤ o :
 
 end Formalism.MainNotions.TwistedPlaces.Cong
 
-noncomputable section
-
 namespace Formalism.MainNotions.TwistedPlaces.Asym
-
-open Real
-
-open Asymptotics Filter
 
 end Formalism.MainNotions.TwistedPlaces.Asym
 
-end

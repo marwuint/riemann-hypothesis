@@ -20,10 +20,4 @@ theorem capelli_hat_frame : Qr.ChatFrame := qr_chatFrame_of frame_minor
 theorem determinant_hat : DetHat :=
   qr_detHat_of algebraic_quantum_determinant capelli_hat_frame capelli_right_good left_right_swap
 
-theorem determinant_hat_regular : DetHatRegular := qr_detHatRegular_of determinant_hat
-
-theorem regular_to_smooth : RegularToSmooth := fun _ => determinant_hat
-
-theorem determinant_generic : DetGeneric := qr_detGeneric_of determinant_hat_regular
-
 end Formalism.FourierDecayAlt.P

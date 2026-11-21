@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionComponentsPreimageOfIsPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionComponentsPreimageOfIsPullback
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsValuationRingDominatingSpecializationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionMemComponentGenericOfClosedValuationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionMemComponentGenericOfClosedValuation
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct
 open scoped CategoryTheory.Obj
 
@@ -23,7 +23,7 @@ theorem stableUnderGeneralization_sectionComponents :
   have he'q : e' ≫ pullback.fst f p = p ≫ e := pullback.lift_fst _ _ _
   haveI : Smooth f := hf
   have hf' : Smooth (pullback.snd f p) := inferInstance
-  have key := GlobalTheory.T.preimage_section_connectedComponentIn_of_isPullback X S (pullback f p) (Spec (CommRingCat.of V)) f (pullback.snd f p) p
+  have key := _root_.GlobalTheory.sectionComponents_preimage_of_isPullback X S (pullback f p) (Spec (CommRingCat.of V)) f (pullback.snd f p) p
     (pullback.fst f p) e e' hf hpb hef he'f he'q
   have hc : σ (IsLocalRing.closedPoint V) ∈ {y : ↥(pullback f p) | y ∈ connectedComponentIn
       (pullback.snd f p ⁻¹' {pullback.snd f p y}) (e' (pullback.snd f p y))} := by
@@ -34,7 +34,7 @@ theorem stableUnderGeneralization_sectionComponents :
       rfl
     rw [h1]
     exact hx
-  have hb := GlobalTheory.T.section_mem_component_generic_of_closed_valuation V (pullback f p) (pullback.snd f p) e' σ hf' he'f hσf hc
+  have hb := _root_.GlobalTheory.section_mem_component_generic_of_closed V (pullback f p) (pullback.snd f p) e' σ hf' he'f hσf hc
   rw [← key] at hb
   have : (pullback.fst f p) (σ (⊥ : PrimeSpectrum V)) = x' := by
     rw [← hgb, ← hσq]

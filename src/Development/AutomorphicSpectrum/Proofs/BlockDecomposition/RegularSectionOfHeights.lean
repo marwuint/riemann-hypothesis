@@ -1,16 +1,16 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinFamilyHeightBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightRightTranslateCompactBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzHeightMajorantIntegrableStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightPowerIntegrableWeylOrbitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOnDifferentiableOnIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentreCharacterContinuousUnitStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinFamilyHeightBound
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightRightTranslateCompactBound
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzHeightMajorantIntegrable
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightPowerIntegrableWeylOrbit
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOnDifferentiableOnIntegral
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentreCharacterContinuousUnit
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShiftCommutesLeviEmbeddingStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoefficientLeviEquivarianceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShiftUnipotentLeviCommutatorStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShiftUnipotentLeviCommutator
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoefficientUnipotentLeviInvarianceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentreCharacterQuadraticTraceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicUnipotentLeviFactorStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentreCharacterQuadraticTrace
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicUnipotentLeviFactor
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.ThetaIdempotents.HeckeEta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralMulRight
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct Topology
@@ -111,10 +111,10 @@ theorem wz_family (hψ : IsCharAF D.host.F ψ) {H : G D n → ℝ≥0} (hH : IsH
       ∀ c, DifferentiableOn ℂ (fun z => Wz M m ψ b₀ (fam H φ s₁ z) c) {z : ℂ | ((ρ : ℝ) - p) / 2 < z.re} := by
   haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩
   haveI : BorelSpace (hermA D ρ) := Subtype.borelSpace _
-  obtain ⟨B, hB, hf⟩ := GlobalTheory.T.eisenstein_family_height_bound D n H hH hcpt χ s₁ φ hφ hlaw
-  obtain ⟨hcz, hnz⟩ := GlobalTheory.T.centre_character_continuous_unit D ρ ψ hψ b₀
+  obtain ⟨B, hB, hf⟩ := _root_.GlobalTheory.CompanionTheory.FamMajorant.fam_majorant D n H hH hcpt χ s₁ φ hφ hlaw
+  obtain ⟨hcz, hnz⟩ := _root_.GlobalTheory.CompanionTheory.CentreChar.continuous_and_norm_chz D ρ ψ hψ b₀
   have hU : IsOpen {z : ℂ | ((ρ : ℝ) - p) / 2 < z.re} := isOpen_lt continuous_const Complex.continuous_re
-  refine GlobalTheory.T.continuousOn_differentiableOn_parameter_integral (Y := hermA D ρ) (T := G D n) m.lz _ hU
+  refine _root_.GlobalTheory.CompanionTheory.Param.continuousOn_differentiableOn_integral (Y := hermA D ρ) (T := G D n) m.lz _ hU
     (fun z c ζ => fam H φ s₁ z (M.w * M.nzx ζ 0 * c) * conj (chz ψ b₀ ζ)) ?_ ?_ ?_
   · refine Continuous.continuousOn (Continuous.mul ?_ ?_)
     · refine (continuous_fam hH hφ s₁).comp (continuous_fst.prodMk ?_)
@@ -125,10 +125,10 @@ theorem wz_family (hψ : IsCharAF D.host.F ψ) {H : G D n → ℝ≥0} (hH : IsH
   · intro z₀ hz₀ c₀
     obtain ⟨V, hV, τ₁, τ₂, h1, h12, hτ⟩ := local_tau hn hz₀
     obtain ⟨N, hN, hNm⟩ := exists_compact_mem_nhds c₀
-    obtain ⟨κ, hκ, hκc⟩ := GlobalTheory.T.height_right_translate_compact_bound D n H hH hcpt N hN
+    obtain ⟨κ, hκ, hκc⟩ := _root_.GlobalTheory.CompanionTheory.HtRightTranslate.height_mul_le D n H hH hcpt N hN
     have hρ : (0 : ℝ) ≤ ρ := Nat.cast_nonneg _
-    have I₁ := GlobalTheory.T.height_power_integrable_weyl_orbit D n ρ p hn M m H hH hcpt τ₁ h1
-    have I₂ := GlobalTheory.T.height_power_integrable_weyl_orbit D n ρ p hn M m H hH hcpt τ₂ (h1.trans_le h12)
+    have I₁ := _root_.GlobalTheory.CompanionTheory.HermConv.integrable_height_rpow D n ρ p hn M m H hH hcpt τ₁ h1
+    have I₂ := _root_.GlobalTheory.CompanionTheory.HermConv.integrable_height_rpow D n ρ p hn M m H hH hcpt τ₂ (h1.trans_le h12)
     refine ⟨V, hV, N, hNm, fun ζ => B * κ ^ τ₂ * ((H (M.w * M.nzx ζ 0) : ℝ) ^ τ₁ + (H (M.w * M.nzx ζ 0) : ℝ) ^ τ₂),
       (I₁.add I₂).const_mul _, fun z hz c hc ζ => ?_⟩
     have hx : (0 : ℝ) < H (M.w * M.nzx ζ 0) := NNReal.coe_pos.2 (hH.2.1 _)
@@ -172,10 +172,10 @@ theorem rsec_family (hψ : IsCharAF D.host.F ψ) {χ χ' : (AE D)ˣ →* Circle}
       ∀ h, DifferentiableOn ℂ (fun z => Rsec M m ψ b₀ (fam H φ s₁ z) g Ω h) {z : ℂ | ((ρ : ℝ) - p) / 2 < z.re} := by
   haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩
   obtain ⟨hc1, hd1⟩ := wz_family M m b₀ hψ hH hcpt hφ hlaw
-  obtain ⟨B, hB, hf⟩ := GlobalTheory.T.eisenstein_family_height_bound D n H hH hcpt χ s₁ φ hφ hlaw
-  obtain ⟨hcz, hnz⟩ := GlobalTheory.T.centre_character_continuous_unit D ρ ψ hψ b₀
+  obtain ⟨B, hB, hf⟩ := _root_.GlobalTheory.CompanionTheory.FamMajorant.fam_majorant D n H hH hcpt χ s₁ φ hφ hlaw
+  obtain ⟨hcz, hnz⟩ := _root_.GlobalTheory.CompanionTheory.CentreChar.continuous_and_norm_chz D ρ ψ hψ b₀
   have hU : IsOpen {z : ℂ | ((ρ : ℝ) - p) / 2 < z.re} := isOpen_lt continuous_const Complex.continuous_re
-  refine GlobalTheory.T.continuousOn_differentiableOn_parameter_integral (Y := Mx D ρ p) (T := G D p) m.μ _ hU
+  refine _root_.GlobalTheory.CompanionTheory.Param.continuousOn_differentiableOn_integral (Y := Mx D ρ p) (T := G D p) m.μ _ hU
     (fun z h y => Wz M m ψ b₀ (fam H φ s₁ z) (M.sh y * M.emb h * g) * conj (Ω h y)) ?_ ?_ ?_
   · refine ContinuousOn.mul ?_ (Continuous.continuousOn ?_)
     · refine hc1.comp (f := fun u : ℂ × G D p × Mx D ρ p => (u.1, M.sh u.2.2 * M.emb u.2.1 * g))
@@ -188,13 +188,13 @@ theorem rsec_family (hψ : IsCharAF D.host.F ψ) {χ χ' : (AE D)ˣ →* Circle}
     obtain ⟨V, hV, τ₁, τ₂, h1, h12, hτ⟩ := local_tau hn hz₀
     obtain ⟨N, hN, hNm⟩ := exists_compact_mem_nhds h₀
     have hCc : IsCompact ((fun h => M.emb h * g) '' N) := hN.image (M.emb_cont.mul continuous_const)
-    obtain ⟨κ, hκ, hκc⟩ := GlobalTheory.T.height_right_translate_compact_bound D n H hH hcpt _ hCc
+    obtain ⟨κ, hκ, hκc⟩ := _root_.GlobalTheory.CompanionTheory.HtRightTranslate.height_mul_le D n H hH hcpt _ hCc
     obtain ⟨Φ, hΦ, hmaj⟩ := hΩ.maj N hN
     have hρ : (0 : ℝ) ≤ ρ := Nat.cast_nonneg _
-    obtain ⟨W₁, iW₁, hW₁⟩ := GlobalTheory.T.schwartz_height_majorant_integrable D n ρ p hn M m θ hθ H hH hcpt Φ hΦ τ₁ (by linarith)
-    obtain ⟨W₂, iW₂, hW₂⟩ := GlobalTheory.T.schwartz_height_majorant_integrable D n ρ p hn M m θ hθ H hH hcpt Φ hΦ τ₂ (by linarith)
-    have I₁ := GlobalTheory.T.height_power_integrable_weyl_orbit D n ρ p hn M m H hH hcpt τ₁ h1
-    have I₂ := GlobalTheory.T.height_power_integrable_weyl_orbit D n ρ p hn M m H hH hcpt τ₂ (h1.trans_le h12)
+    obtain ⟨W₁, iW₁, hW₁⟩ := _root_.GlobalTheory.CompanionTheory.ShearGrowth.height_shear_majorant D n ρ p hn M m θ hθ H hH hcpt Φ hΦ τ₁ (by linarith)
+    obtain ⟨W₂, iW₂, hW₂⟩ := _root_.GlobalTheory.CompanionTheory.ShearGrowth.height_shear_majorant D n ρ p hn M m θ hθ H hH hcpt Φ hΦ τ₂ (by linarith)
+    have I₁ := _root_.GlobalTheory.CompanionTheory.HermConv.integrable_height_rpow D n ρ p hn M m H hH hcpt τ₁ h1
+    have I₂ := _root_.GlobalTheory.CompanionTheory.HermConv.integrable_height_rpow D n ρ p hn M m H hH hcpt τ₂ (h1.trans_le h12)
     have IA := I₁.add I₂
     refine ⟨V, hV, N, hNm, fun y => B * κ ^ τ₂ * (W₁ y + W₂ y) *
       ∫ ζ : hermA D ρ, ((H (M.w * M.nzx ζ 0) : ℝ) ^ τ₁ + (H (M.w * M.nzx ζ 0) : ℝ) ^ τ₂) ∂m.lz,
@@ -285,13 +285,13 @@ theorem rsec_unip (hψ : IsCharAF D.host.F ψ) {χ χ' : (AE D)ˣ →* Circle} {
     (hb : mat g₁ = blk4 1 b 0 1) (h : G D p) : Rsec M m ψ b₀ f g Ω (g₁ * h) = Rsec M m ψ b₀ f g Ω h := by
   unfold Rsec
   refine integral_congr_ae (.of_forall fun y => ?_)
-  obtain ⟨z₀, x₀, e1, e2⟩ := GlobalTheory.T.shift_unipotent_levi_commutator D n ρ p hn M g₁ b hb y
+  obtain ⟨z₀, x₀, e1, e2⟩ := _root_.GlobalTheory.CompanionTheory.ShEmbUnip.sh_emb_unip D n ρ p hn M g₁ b hb y
   have e3 : M.sh y * M.emb (g₁ * h) * g = M.nzx z₀ x₀ * M.emb g₁ * (M.sh y * M.emb h * g) := by
     rw [map_mul, ← mul_assoc, e1]
     simp only [mul_assoc]
   show Wz M m ψ b₀ f (M.sh y * M.emb (g₁ * h) * g) * conj (Ω (g₁ * h) y) =
     Wz M m ψ b₀ f (M.sh y * M.emb h * g) * conj (Ω h y)
-  rw [e3, GlobalTheory.T.coefficient_unipotent_levi_invariance D n ρ p hn M m ψ hψ b₀ χ z f hf g₁ b hb, hΩ.unip g₁ b hb h y, GlobalTheory.T.centre_character_quadratic_trace D ρ p ψ b₀ b y z₀ e2, map_mul]
+  rw [e3, GlobalTheory.T.coefficient_unipotent_levi_invariance D n ρ p hn M m ψ hψ b₀ χ z f hf g₁ b hb, hΩ.unip g₁ b hb h y, _root_.GlobalTheory.CompanionTheory.ChzConj.chz_conj D ρ p ψ b₀ b y z₀ e2, map_mul]
   have hu : ψ (halfTr (Matrix.trace (HMul.hMul b (pr b₀ y y) : Mx D p p))) *
       conj (ψ (halfTr (Matrix.trace (HMul.hMul b (pr b₀ y y) : Mx D p p)))) = 1 := by
     rw [Complex.mul_conj', hψ.2.1]; simp
@@ -301,7 +301,7 @@ theorem rsec_law (hψ : IsCharAF D.host.F ψ) {χ χ' : (AE D)ˣ →* Circle} {�
     (hΩ : IsTh ψ χ' θ b₀ m.μ Ω) {z : ℂ} {f : G D n → ℂ} (hf : IsLaw χ z f) (g : G D n) :
     IsLaw (χ * χ'⁻¹) z (Rsec M m ψ b₀ f g Ω) := by
   intro q hq a ha h
-  obtain ⟨g₁, g₂, b, rfl, h1, h2⟩ := GlobalTheory.T.parabolic_unipotent_levi_factor D p q hq a ha
+  obtain ⟨g₁, g₂, b, rfl, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.SiegelNM.unip_mul_levi D p q hq a ha
   rw [mul_assoc, rsec_unip M m b₀ hψ hΩ hf g g₁ b h1, rsec_levi M m b₀ hΩ hf g g₂ a h2]
 
 end Law

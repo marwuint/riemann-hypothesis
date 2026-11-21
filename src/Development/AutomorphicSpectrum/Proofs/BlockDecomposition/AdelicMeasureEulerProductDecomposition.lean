@@ -60,7 +60,7 @@ theorem coordMapN (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (R : Type) [CommRi
     [BorelSpace R] {d : ℕ} (b : Module.Basis (Fin d) F E) (lam : Measure R) (hlam : lam.IsAddHaarMeasure) (n M : ℕ) :
     IsHomeomorph (cvN R b : (Fin n → Fin M → R ⊗[F] E) → _) ∧
       (coordW R b lam n M).map (cvN R b) = Measure.pi fun _ : Fin n × (Fin M × Fin d) => lam := by
-  obtain ⟨-, -, -, -, -, -, hh, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R
+  obtain ⟨-, -, -, -, -, -, hh, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ R
   haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩
   haveI := hlam
   have hSF : SigmaFinite lam := inferInstance
@@ -126,7 +126,7 @@ def gramN (σ : E →ₐ[F] E) {M d : ℕ} (J : Matrix (Fin M) (Fin M) E) (b : M
 theorem exists_coordHomeoN (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (n M : ℕ) {d : ℕ} (b : Module.Basis (Fin d) F E) :
     ∃ e : (Fin n → Fin M → AF F ⊗[F] E) ≃ₜ (Fin n × (Fin M × Fin d) → AF F),
       (∀ X, e X = cvN (AF F) b X) ∧ BorelSpace (Fin n → Fin M → AF F ⊗[F] E) := by
-  have hr := (GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)).2.2.2.2.2.2.2.1 n M
+  have hr := (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)).2.2.2.2.2.2.2.1 n M
   obtain ⟨h1, -⟩ := coordMapN σ hCM (AF F) b (adeleMeasure F) inferInstance n M
   exact ⟨h1.homeomorph, fun _ => rfl, hr⟩
 
@@ -164,7 +164,7 @@ theorem dx_coordN (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M d n : ℕ} (J :
   have hdet : (ξ • gramN σ J b n).det ≠ 0 := by
     rw [Matrix.det_smul, gramN, Matrix.det_kronecker, Matrix.det_one, one_pow, one_mul]
     exact mul_ne_zero (pow_ne_zero _ hξ0) (pow_ne_zero _ (traceGram_det_ne_zero σ hσ J hJ.2 b))
-  obtain ⟨t1, -, -, -, -, -, -, -, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)
+  obtain ⟨t1, -, -, -, -, -, -, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)
   haveI : IsTopologicalAddGroup (Fin n → Fin M → AF F ⊗[F] E) := inferInstance
   refine selfDual_eq _ hs hdet _ (selfDual_transport e ?_ _ _ ?_ dx hdx)
   · intro x y

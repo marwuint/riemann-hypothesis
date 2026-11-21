@@ -83,32 +83,6 @@ theorem lcv_le {A B PP C1 C2 : ℝ} (hx : 0 < L.sc.x) (h1 : 0 ≤ C1) (h2 : 0 �
   rw [mul_assoc] at this
   linarith
 
-theorem covolX_of_steps : Gram → Rec → Cut → Bad → abelian₂ → Size → CoreLe → Low → CovolX := by
-  intro hG hR hC hB hL hS hK hW
-  refine Closed.imp (Closed.and (Closed.and (Closed.and hG hR) (Closed.and hC hB))
-    (Closed.and (Closed.and hL hS) (Closed.and hK hW))) ?_
-  rintro eps Fm CH he ⟨⟨⟨⟨_, -, g⟩, ⟨_, -, r⟩⟩, ⟨⟨_, -, c⟩, ⟨_, -, b⟩⟩⟩, ⟨⟨A, -, l⟩, ⟨B, -, s⟩⟩, ⟨C1, h1, k⟩, ⟨C2, h2, w⟩⟩
-  have hez : 0 < Fm.ez := by
-    obtain ⟨i⟩ := Fm.Ix_zero
-    rw [← Fm.L_ez 0 i]
-    exact (Fm.L 0 i).sc.ez_pos
-  obtain ⟨x0, hx0⟩ := exists_loss_le (show 0 < Fm.ez / 7 by positivity) A B (C1 + C2 + 1)
-  obtain ⟨x1, h⟩ := (((g.and r).and (c.and b)).and ((l.and s).and (k.and w)))
-  refine ⟨C1 + C2 + 1, by linarith, max x0 x1, fun x hx hle ι p hp C hC i => ?_⟩
-  obtain ⟨⟨⟨g, r⟩, c, b⟩, ⟨l, s⟩, k, w⟩ := h x hx ((le_max_right _ _).trans hle) ι p hp
-  have ex := Fm.L_x x ι hx
-  have ee := Fm.L_ez x ι
-  have hs := hx0 x ((le_max_left _ _).trans hle)
-  have hx' : 0 < x := (zero_lt_one.trans Fm.one_lt_family_threshold).trans hx
-  have main := lcv_le p i (ex.symm ▸ hx') h1 h2 (by rw [ex, ee]; exact hs) (g i) (r i) (c i) (b i) (l i) (s i) (k i) (w i)
-  have hE : 0 ≤ unitE p := by
-    obtain ⟨s1, s2, -⟩ := s i
-    linarith
-  refine main.trans ?_
-  show mainT p i + (C1 + C2 + 1) * unitE p ≤ mainT p i + C * unitE p
-  have := mul_le_mul_of_nonneg_right hC hE
-  linarith
-
 end GlobalTheory.CovTop.Assembly
 
 end

@@ -3,7 +3,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalk
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommensurableCosetUnionContentIndependentNonnegStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommensurableCosetUnionContentIndependentNonneg
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
 
@@ -24,10 +24,10 @@ theorem exists_common_goodSub {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) {
     have h2 : (A ⊓ B).relIndex B ≠ 0 := by
       rw [AddSubgroup.inf_relIndex_right]
       exact AddSubgroup.relIndex_ne_zero_trans hA0.1 hB.2.1
-    refine ⟨A ⊓ B, (GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 ∅).2.1 A _ hA0 inf_le_left h1, fun i hi => ?_⟩
+    refine ⟨A ⊓ B, (_root_.GlobalTheory.HL.cont_independent_pos W0 ∅).2.1 A _ hA0 inf_le_left h1, fun i hi => ?_⟩
     rcases Finset.mem_insert.1 hi with rfl | hi
-    · exact (GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 _).2.1 B _ hB inf_le_right h2
-    · exact (GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 _).2.1 A _ (hA i hi) inf_le_left h1
+    · exact (_root_.GlobalTheory.HL.cont_independent_pos W0 _).2.1 B _ hB inf_le_right h2
+    · exact (_root_.GlobalTheory.HL.cont_independent_pos W0 _).2.1 A _ (hA i hi) inf_le_left h1
 
 theorem cont_biUnion : ∀ {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) {ι : Type} (s : Finset ι) (S : ι → Set W), (∀ i ∈ s, IsCO W0 (S i)) → IsCO W0 (⋃ i ∈ s, S i) ∧ ((∀ i ∈ s, ∀ j ∈ s, i ≠ j → Disjoint (S i) (S j)) → cont W0 (⋃ i ∈ s, S i) = ∑ i ∈ s, cont W0 (S i)) := by
   intro W _ W0 ι s S h
@@ -44,8 +44,8 @@ theorem cont_biUnion : ∀ {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) {ι 
     · rw [himg]
       exact Set.Finite.biUnion s.finite_toSet fun i hi => (hA i hi).2.2.2
   refine ⟨⟨A, hU⟩, fun hd => ?_⟩
-  rw [(GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 _).1 A hU,
-    Finset.sum_congr rfl fun i hi => (GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 (S i)).1 A (hA i hi), ← Finset.sum_mul, himg]
+  rw [(_root_.GlobalTheory.HL.cont_independent_pos W0 _).1 A hU,
+    Finset.sum_congr rfl fun i hi => (_root_.GlobalTheory.HL.cont_independent_pos W0 (S i)).1 A (hA i hi), ← Finset.sum_mul, himg]
   congr 1
   have key := Set.Finite.ncard_biUnion (t := (s : Set ι))
     (s := fun i => (QuotientAddGroup.mk : W → W ⧸ A) '' S i) s.finite_toSet

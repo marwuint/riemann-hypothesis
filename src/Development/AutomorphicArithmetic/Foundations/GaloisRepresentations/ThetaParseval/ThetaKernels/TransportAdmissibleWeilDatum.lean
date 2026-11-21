@@ -12,7 +12,6 @@ open scoped TensorProduct Matrix ENNReal Classical
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.WeilAdmCM
-variable {F : Type} [Field F] [NumberField F]
 end GlobalTheory.WeilAdmCM
 namespace GlobalTheory.WeilAdmCM
 theorem transport_admissible_weil_datum : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),

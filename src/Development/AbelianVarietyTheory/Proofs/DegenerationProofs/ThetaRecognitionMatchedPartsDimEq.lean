@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.NotAllMatchRankZero
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataTorsionStructureAlgClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TxCosetCriterionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataTorsionStructureAlgClosed
+import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TxCosetCriterion
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Ex
 open scoped BigOperators
@@ -232,9 +233,9 @@ variable {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteS
 
 theorem norm_le (hn : n.Prime) (ho : Odd n) (h1 : ‖(n : C)‖ = 1) (hI : N.Int q) (hI' : N'.Int q')
     (hT : N.Tors n g) (hT' : N'.Tors n g') (μ : Match N N' n) : ‖μ.c₀‖ ≤ 1 := by
-  obtain ⟨h, -, -, hh⟩ := (GlobalTheory.T.tx_coset_norm_one_and_ne_zero C N q hI n g hn ho h1 hT 1 le_rfl).2.1 1 rfl
+  obtain ⟨h, -, -, hh⟩ := (_root_.GlobalTheory.tx_coset_criterion C N q hI n g hn ho h1 hT 1 le_rfl).2.1 1 rfl
   obtain ⟨p', hp'⟩ := tot' μ ⟨1 * 2, (pow_mul n 1 2).symm⟩ (1 * h)
-  have := ((GlobalTheory.T.tx_coset_norm_one_and_ne_zero C N' q' hI' n g' hn ho h1 hT' 1 le_rfl).1 p').1
+  have := ((_root_.GlobalTheory.tx_coset_criterion C N' q' hI' n g' hn ho h1 hT' 1 le_rfl).1 p').1
   rwa [μ.tx 1 _ _ hp', norm_mul, hh, mul_one] at this
 
 theorem norm_eq (hn : n.Prime) (ho : Odd n) (h1 : ‖(n : C)‖ = 1) (hI : N.Int q) (hI' : N'.Int q')
@@ -249,18 +250,18 @@ theorem inG_imp (hn : n.Prime) (ho : Odd n) (h1 : ‖(n : C)‖ = 1) (hI : N.Int
   have h0 : (n : C) ≠ 0 := fun e => by simp [e] at h1
   refine inG_of_half μ (k' := n ^ (j + 4)) (K := (n ^ (j + 2)) ^ 2) (m := n ^ (j + 2)) (by ring) (by ring)
     (pow_dvd_pow _ (by omega)) (pow_ne_zero _ hn.ne_zero) ⟨_, (pow_mul _ _ _).symm⟩
-    (GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g h0 hT (j + 2)).2.1 ?_ p p' h hp
-  exact half_div μ (j + 2) (by omega) (by simpa using (GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g h0 hT 1).2.1)
-    (norm_eq hn ho h1 hI hI' hT hT' μ) (GlobalTheory.T.tx_coset_norm_one_and_ne_zero C N q hI n g hn ho h1 hT (j + 2) (by omega)).2.1
-    fun p => ((GlobalTheory.T.tx_coset_norm_one_and_ne_zero C N' q' hI' n g' hn ho h1 hT' (j + 2) (by omega)).1 p).2
+    (_root_.GlobalTheory.Ex.QStr.qStructure C N n g h0 hT (j + 2)).2.1 ?_ p p' h hp
+  exact half_div μ (j + 2) (by omega) (by simpa using (_root_.GlobalTheory.Ex.QStr.qStructure C N n g h0 hT 1).2.1)
+    (norm_eq hn ho h1 hI hI' hT hT' μ) (_root_.GlobalTheory.tx_coset_criterion C N q hI n g hn ho h1 hT (j + 2) (by omega)).2.1
+    fun p => ((_root_.GlobalTheory.tx_coset_criterion C N' q' hI' n g' hn ho h1 hT' (j + 2) (by omega)).1 p).2
 
 theorem inT_imp (hn : n.Prime) (ho : Odd n) (h1 : ‖(n : C)‖ = 1) (hI : N.Int q) (hI' : N'.Int q')
     (hT : N.Tors n g) (hT' : N'.Tors n g') (μ : Match N N' n) (j : ℕ) (p : N.QT (n ^ j)) (p' : N'.QT (n ^ j))
     (h : μ.r _ p p') (hp : N.InT p) : N'.InT p' := by
   have h0 : (n : C) ≠ 0 := fun e => by simp [e] at h1
   exact inT_of_inG μ j (fun p p' h => inG_imp hn ho h1 hI' hI hT' hT (flip μ) j p' p h)
-    (fun p => ((GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g h0 hT j).2.2.2.2.1 p).2)
-    (fun p => ((GlobalTheory.T.degenerationData_torsion_structure_algClosed C N' n g' h0 hT' j).2.2.2.2.1 p).1) p p' h hp
+    (fun p => ((_root_.GlobalTheory.Ex.QStr.qStructure C N n g h0 hT j).2.2.2.2.1 p).2)
+    (fun p => ((_root_.GlobalTheory.Ex.QStr.qStructure C N' n g' h0 hT' j).2.2.2.2.1 p).1) p p' h hp
 
 theorem ranks_le (hn : n.Prime) (ho : Odd n) (h1 : ‖(n : C)‖ = 1) (hI : N.Int q) (hI' : N'.Int q')
     (hT : N.Tors n g) (hT' : N'.Tors n g') (μ : Match N N' n) :
@@ -268,9 +269,9 @@ theorem ranks_le (hn : n.Prime) (ho : Odd n) (h1 : ‖(n : C)‖ = 1) (hI : N.In
       2 * g + Module.finrank ℤ N.X ≤ 2 * g' + Module.finrank ℤ N'.X := by
   have h0 : (n : C) ≠ 0 := fun e => by simp [e] at h1
   exact ⟨rank_le μ hn.one_lt rfl (fun p p' h => inG_imp hn ho h1 hI' hI hT' hT (flip μ) 1 p' p h)
-      (GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g h0 hT 1).2.2.1,
+      (_root_.GlobalTheory.Ex.QStr.qStructure C N n g h0 hT 1).2.2.1,
     tors_le μ hn.one_lt rfl (inG_imp hn ho h1 hI hI' hT hT' μ 1)
-      (GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g h0 hT 1).2.2.2.1 (GlobalTheory.T.degenerationData_torsion_structure_algClosed C N' n g' h0 hT' 1).2.2.2.1⟩
+      (_root_.GlobalTheory.Ex.QStr.qStructure C N n g h0 hT 1).2.2.2.1 (_root_.GlobalTheory.Ex.QStr.qStructure C N' n g' h0 hT' 1).2.2.2.1⟩
 
 end Main
 

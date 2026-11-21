@@ -232,14 +232,6 @@ theorem equiv_iff (h₁ : QkRel r p₁ p₁') (h₂ : QkRel r p₂ p₂') :
     QkPt.Equiv (withPsi D ψ hψ) F p₁' p₂' ↔ QkPt.Equiv D F p₁ p₂ :=
   ⟨equiv (D := withPsi D ψ hψ) hw ht.inv hq.symm hr.inv h₁.symm h₂.symm, equiv hw ht hq hr h₁ h₂⟩
 
-theorem qkAdd_iff (h₁ : QkRel r p₁ p₁') (h₂ : QkRel r p₂ p₂') (h₃ : QkRel r p₃ p₃') :
-    QkAdd p₁' p₂' p₃' ↔ QkAdd p₁ p₂ p₃ :=
-  ⟨qkAdd (D := withPsi D ψ hψ) hw ht.inv hq.symm hr.inv h₁.symm h₂.symm h₃.symm, qkAdd hw ht hq hr h₁ h₂ h₃⟩
-
-theorem qkAct_iff {oa : D.OAct O} {oa' : (withPsi D ψ hψ).OAct O} (ho : oa'.onB = oa.onB) {x : O} (h₁ : QkRel r p₁ p₁')
-    (h₂ : QkRel r p₂ p₂') : QkAct oa' x p₁' p₂' ↔ QkAct oa x p₁ p₂ :=
-  ⟨qkAct (D := withPsi D ψ hψ) hw ht.inv hq.symm hr.inv ho.symm h₁.symm h₂.symm, qkAct hw ht hq hr ho h₁ h₂⟩
-
 end QkRel
 
 def qkScaleEquiv (hψ : ∀ χ, (ψ χ).IsGen) : QkPt D F k ≃ QkPt (withPsi D ψ hψ) F k where

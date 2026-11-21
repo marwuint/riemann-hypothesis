@@ -41,27 +41,6 @@ def levelK (L : Set (Fin M → E)) : Subgroup (HA (AF F) σ J) where
     rw [Matrix.mulVec_mulVec, ← finMat_mul, mul_inv_cancel, finMat_one, Matrix.one_mulVec] at this
     exact this.symm
 
-def ratPts : Subgroup (HA (AF F) σ J) := HFinIn (AF F) σ J
-
-def stabAt (K : Subgroup (HA (AF F) σ J)) (g : HA (AF F) σ J) : Subgroup (HA (AF F) σ J) :=
-  ratPts σ J ⊓ K.map (MulAut.conj g).toMonoidHom
-
-def IsDoubleCosetReps (K : Subgroup (HA (AF F) σ J)) {n : ℕ} (g : Fin n → HA (AF F) σ J) : Prop :=
-  ∀ x : HA (AF F) σ J, ∃! i : Fin n, ∃ γ ∈ ratPts σ J, ∃ k ∈ K, x = γ * g i * k
-
-theorem mem_stabAt (K : Subgroup (HA (AF F) σ J)) (g γ : HA (AF F) σ J) :
-    γ ∈ stabAt σ J K g ↔ γ ∈ ratPts σ J ∧ g⁻¹ * γ * g ∈ K := by
-  unfold stabAt
-  rw [Subgroup.mem_inf, Subgroup.mem_map]
-  refine and_congr_right fun _ => ⟨?_, fun h => ⟨_, h, by simp [mul_assoc]⟩⟩
-  rintro ⟨k, hk, rfl⟩
-  simpa [mul_assoc] using hk
-
-theorem IsDoubleCosetReps.pos {K : Subgroup (HA (AF F) σ J)} {n : ℕ} {g : Fin n → HA (AF F) σ J}
-    (h : IsDoubleCosetReps σ J K g) : 0 < n := by
-  obtain ⟨i, -⟩ := h 1
-  exact Fin.pos i
-
 end Level
 
 section Space
@@ -73,44 +52,6 @@ def latCoord (W : HSpace E) : Set (Fin W.rank → E) := {x | ∑ i, x i • W.fr
 def levelW (hc : CMData F E) (W : HSpace E) : Subgroup (HA (AF F) hc.sig W.gram) :=
   levelK hc.sig W.gram (latCoord W)
 
-def DecompAt (hc : CMData F E) (W : HSpace E) : Prop :=
-  IsOpen (levelW hc W : Set (HA (AF F) hc.sig W.gram)) ∧
-  MeasurableSet (levelW hc W : Set (HA (AF F) hc.sig W.gram)) ∧
-  ∃ (n : ℕ) (g : Fin n → HA (AF F) hc.sig W.gram),
-    IsDoubleCosetReps hc.sig W.gram (levelW hc W) g ∧
-    (∀ i, Finite (stabAt hc.sig W.gram (levelW hc W) (g i))) ∧
-    ∑ i, ((Nat.card (stabAt hc.sig W.gram (levelW hc W) (g i)) : ℕ) : ℝ)⁻¹ = Formalism.HermitianLatticesTheory.mass W.hT W.L0
-
-def IsLatticeOf (hc : CMData F E) (W : HSpace E) (g : HA (AF F) hc.sig W.gram)
-    (N : Submodule (𝓞 E) W.V) : Prop :=
-  ∀ x : W.V, x ∈ N ↔ ∃ y ∈ latHat F E (latCoord W),
-    (finMat hc.sig W.gram g).mulVec y = fun j => inclR (Af F) (W.frame.repr x j)
-
-open Classical in
-
-def DecompLatAt (hc : CMData F E) (W : HSpace E) : Prop :=
-  DecompAt hc W ∧
-  IsCompact (levelW hc W : Set (HA (AF F) hc.sig W.gram)) ∧
-  (∀ (n : ℕ) (g : Fin n → HA (AF F) hc.sig W.gram), IsDoubleCosetReps hc.sig W.gram (levelW hc W) g →
-    ∃ N : Fin n → Submodule (𝓞 E) W.V,
-      (∀ i, IsLatticeOf hc W (g i) (N i)) ∧ Function.Injective N ∧
-      Formalism.ThetaLiftIndependence.IsClassReps W.hT W.L0 (Finset.univ.image N) ∧
-      ∀ i, Finite (stabAt hc.sig W.gram (levelW hc W) (g i)) ∧ (Formalism.ThetaLiftIndependence.autL W.hT (N i)).Finite ∧
-        Nat.card (stabAt hc.sig W.gram (levelW hc W) (g i)) = Nat.card (Formalism.ThetaLiftIndependence.autL W.hT (N i))) ∧
-  Formalism.HermitianLatticesTheory.genus W.hT W.L0 = {N | Submodule.IsLattice E N ∧ Formalism.HermitianLatticesTheory.IsUnimodular W.hT N}
-
 end Space
-
-def DecompAll : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
-    (hc : CMData F E) (W : HSpace E), W.SigOK → (∀ τ, W.sig τ = (W.rank, 0)) → DecompAt hc W
-
-def DecompLatAll : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
-    (hc : CMData F E) (W : HSpace E), W.SigOK → (∀ τ, W.sig τ = (W.rank, 0)) → DecompLatAt hc W
-
-def Decomp (D : D7) : Prop :=
-  letI := D.host.cmStar
-  ∀ W : HSpace D.host.E, W.SigOK → (∀ τ, W.sig τ = (W.rank, 0)) → DecompAt D.sp.cm W
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LevelSubgroupStabilizers

@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EmbLLMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PairIntAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HighestWeightBelow
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TaylorCoeffConjugateSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaNormBoundHypothesesSatisfiedStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TaylorCoeffConjugateSeries
+import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+import Formalism.PairingDivisors.StatementH
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaNormBoundHypothesesSatisfied
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeUnitNormSqNonneg
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjTorsionTranslateCombinationEntireGaussianGro
@@ -53,7 +55,7 @@ theorem conj_jet : ∀ (D : D7), GlobalTheory.NormSum.Inp D → ∀ (δ t0 : ℂ
         GL3Theta.applyAt0 D (MvPolynomial.monomial m 1) (fnConj D Qbar ρ' fun z => κ * ∑ i, (r i : ℂ) * U D (tor0 D D.host.ccK δ) (s i)
           (Iop D (tor0 D D.host.ccK δ) (La0 D (tor0 D D.host.ccK δ) _ _) (La D (tor0 D D.host.ccK δ) Ls Lt) e0) z) := by
   intro D _ δ t0 hc ht0 N N' _ e0 he Ls Lt hL₁ hL₁' κ hκ k₀ n hk₀ r s hs ρ m
-  have hG := (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1
+  have hG := (_root_.GlobalTheory.InducedType.induced_type D).1
   have hL := GlobalTheory.MovedVacuum.sd_stdL D N
   have hL' := GlobalTheory.MovedVacuum.sd_stdL D N'
   have hGth := he.1
@@ -62,8 +64,8 @@ theorem conj_jet : ∀ (D : D7), GlobalTheory.NormSum.Inp D → ∀ (δ t0 : ℂ
   have kB : KLat D (tor0 D D.host.ccK δ) (LaB D (tor0 D D.host.ccK δ) b) := Or.inl ⟨_, b, hb, rfl⟩
   have kL : KLat D (tor0 D D.host.ccK δ) (La D (tor0 D D.host.ccK δ) _ _) := Or.inr ⟨_, _, hL, hL', rfl⟩
   obtain ⟨-, -, c1, c2, -⟩ := GlobalTheory.T.coords_along_orthonormal_realSubfield_basis D hG D.host.ccK δ N N' _ b hb
-  obtain ⟨d1, d2⟩ := GlobalTheory.T.halfPeriodTheta_differentiable_and_signedTranslate_invariant D hG D.host.ccK δ hc t0 ht0
-  have hth0 := GlobalTheory.T.orthoProductTheta_mem_thetaSpace_of_lattice D (tor0 D D.host.ccK δ) N N' _ b _ c1 c2 d1 d2
+  obtain ⟨d1, d2⟩ := _root_.GlobalTheory.HalfPeriodTheta.theta_signed_translation D hG D.host.ccK δ hc t0 ht0
+  have hth0 := _root_.GlobalTheory.ProdTheta.pullB_mem_ThSp D (tor0 D D.host.ccK δ) N N' _ b _ c1 c2 d1 d2
   have hCb : Comm D b k (Set.range b) := by simpa using (comm_range D b).mul k
   obtain ⟨m1, -⟩ := conj_iop hc ρ hb (GlobalTheory.T.pullB_th0_mem_tr D _ δ hc t0 ht0 N N' _ b hb) hk
     hCb hC (LaB_eq D _ b ▸ kB) kL (LaB_eq D _ b ▸ hth0)
@@ -76,8 +78,8 @@ theorem conj_jet : ∀ (D : D7), GlobalTheory.NormSum.Inp D → ∀ (δ t0 : ℂ
       (Or.inr ⟨Ls, Lt, hL₁, hL₁', rfl⟩) hGth
   have hsB : ∀ i, (k₀ * k₁) • s i ∈ LaB D (tor0 D D.host.ccK δ) b := fun i => by
     rw [mul_nsmul]
-    exact nsmul_mem_LaB (isTraceCompatibleTorusEmbedding_standardTorus D hG _ δ) (GlobalTheory.T.idealPeriodLattice_of_curveDatum D hG _ δ hc).2.2.2.2 hC₁ (hs i)
-  have m3 := fun i => GlobalTheory.T.torsionTranslate_mem_thetaPullbackSpan D _ δ hc N N' _ b hb _ m2 (s i) _ (Nat.mul_pos hk₀ hk₁) (hsB i)
+    exact nsmul_mem_LaB (isTraceCompatibleTorusEmbedding_standardTorus D hG _ δ) (_root_.GlobalTheory.CurveLattice.lattice_of_curve D hG _ δ hc).2.2.2.2 hC₁ (hs i)
+  have m3 := fun i => _root_.GlobalTheory.TorsionTranslate.translate_mem D _ δ hc N N' _ b hb _ m2 (s i) _ (Nat.mul_pos hk₀ hk₁) (hsB i)
   choose F' hF' using fun i => galRel_all hc ρ hb (m3 i) one_pos
   exact jet_of_cjF ((CjF.sum Finset.univ fun i _ => (hF' i).1.mul (r i).2).mul hκ.1) m
 

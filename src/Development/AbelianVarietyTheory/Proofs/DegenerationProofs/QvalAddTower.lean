@@ -12,24 +12,6 @@ namespace GlobalTheory.NestQVal
 
 attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
-theorem pt_nsmul {R : Type} [CommRing R] [IsDomain R] {D₀ : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
-    {N : NumD F} (ν : NumOf D₀ F N) (h1 : ∀ g, ∃! c, ν.Pt g c)
-    (h2 : ∀ g g' g'' c c' c'', ν.Pt g c → ν.Pt g' c' → ν.Pt g'' c'' → (GtPtF.IsAdd g g' g'' ↔ c'' = c * c'))
-    {g : GtPtF D₀ F} {c : N.Gt} (hc : ν.Pt g c) (m : ℕ) : ν.Pt (m • g) (c ^ m) := by
-  induction m with
-  | zero =>
-    obtain ⟨z, hz, -⟩ := h1 0
-    have e : z = z * z := (h2 0 0 0 z z z hz hz hz).1 ((GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 (add_zero _).symm)
-    have e' : z = 1 := left_eq_mul.1 e
-    rw [zero_nsmul, pow_zero, ← e']
-    exact hz
-  | succ m ih =>
-    obtain ⟨z, hz, -⟩ := h1 ((m + 1) • g)
-    have e : z = c ^ m * c :=
-      (h2 _ _ _ _ _ _ ih hc hz).1 ((GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 (succ_nsmul g m))
-    rw [pow_succ, ← e]
-    exact hz
-
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField in
 open scoped CategoryTheory.Obj BigOperators in
 attribute [local instance] Over.cartesianMonoidalCategory in

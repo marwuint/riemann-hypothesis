@@ -61,21 +61,4 @@ end Formalism.FourierDecayAlt.P.BigCellInversePair
 
 namespace Formalism.FourierDecayAlt.P
 
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
-
-theorem equiv_det_of_onto : Formalism.FourierDecayAlt.JF.EquivDetOfOnto := by
-  intro hOnto k r Wp Wq _ _ _ _ D f f' hf hf' hq g hg
-  obtain ⟨p, hp, q, hqD, rfl⟩ := hOnto k r Wp Wq D g hg
-  have hx := BigCellInversePair.sgs_invP p (WeylGroupFacts.isUnit_of_uh hp.1.1) (WeylGroupFacts.isUnit_of_uh hp.2.1.1)
-    (WeylGroupFacts.isUnit_of_uh hp.2.2.1.1) (WeylGroupFacts.isUnit_of_uh hp.2.2.2.1) (gq D q)
-  have hP := BigCellInversePair.invP_inSS D hp
-  rw [← hf _ hP _ hg, ← hf' _ hP _ hg]
-  unfold rho
-  rw [hx, hq q hqD]
-
-theorem radial_part_intertwines_of_parts : Formalism.FourierDecayAlt.JF.RadialPartIntertwinesFromComponents := by
-  intro hJ hG k r Wp Wq _ _ _ _ _ _ D A m F Θ ho hT hF hC
-  filter_upwards [hG k r Wp Wq D] with q hq
-  exact (hJ k r Wp Wq D A m F Θ ho hT hF hC _ hq).symm
-
 end Formalism.FourierDecayAlt.P

@@ -1,7 +1,20 @@
 import Mathlib
 import Development.DiscreteGroups.GlobalIrreducibility.DzMatchCut
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIneOfUnit
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlobalArtinLocalIdeleInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlobalArtinLocalIdeleInjective
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalLanglandsExists
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroCuspidalLL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalConverseGL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsExhaustionGL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroInduction
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BrauerDegreeZero
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsMultisegments
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StandardCosocleGL
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalArtinInertiaIsUnitAt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqOfRootCongrOfDerivUnit
 
@@ -75,84 +88,5 @@ theorem weil_fix_root (h : IsPlaceOver A v) (s : Weil h) (ζ : Ω) (hζ : ζ ^ (
     (by simp [hζ]) (by simp [hsζ]) hd (by rw [Valuation.map_sub_swap]; exact hc)).symm
 
 end Tame
-
-theorem lTameRec : LTameRec := by
-  intro hA hC M Ω _ _ _ _ _ _ g _ A v h hg1 hg2 a ha π hπ t x hx
-  classical
-  have hq : 1 < normV v := one_lt_normV v
-  have : CharZero Ω := charZero_of_injective_algebraMap (algebraMap M Ω).injective
-  have : NeZero (normV v - 1) := ⟨by omega⟩
-  have hg0 : ((g : ℕ) : Ω) ≠ 0 := by exact_mod_cast (Fact.out : g.Prime).ne_zero
-  have hπ0 : π ≠ 0 := by
-    rintro rfl
-    rw [zero_pow (by omega)] at hπ
-    exact hg0 hπ.symm
-
-  let f : Weil h →* rootsOfUnity (normV v - 1) Ω :=
-    { toFun := fun s => ⟨Units.mk0 ((s : G M Ω) π / π) (div_ne_zero ((_root_.map_ne_zero _).2 hπ0) hπ0), by
-          rw [mem_rootsOfUnity]
-          ext
-          simp only [Units.val_pow_eq_pow_val, Units.val_mk0, Units.val_one]
-          rw [div_pow, ← map_pow, hπ, map_natCast, div_self hg0]⟩
-      map_one' := by
-        ext
-        simp [div_self hπ0]
-      map_mul' := fun s s' => by
-        ext
-        simp only [Subgroup.coe_mul, Units.val_mk0, Units.val_mul, Subgroup.coe_mul, AlgEquiv.mul_apply]
-        have hr : (((s' : G M Ω) π / π)) ^ (normV v - 1) = 1 := by
-          rw [div_pow, ← map_pow, hπ, map_natCast, div_self hg0]
-        have hfix := weil_fix_root h s _ hr
-        have e : (s : G M Ω) ((s' : G M Ω) π) = (s : G M Ω) (((s' : G M Ω) π / π) * π) := by
-          rw [div_mul_cancel₀ _ hπ0]
-        rw [e, map_mul, hfix]
-        field_simp }
-  have hf : ∀ s s' : Weil h, f s = f s' → (s : G M Ω) π = (s' : G M Ω) π := fun s s' hss => by
-    have := congrArg (fun z : rootsOfUnity (normV v - 1) Ω => ((z : Ωˣ) : Ω)) hss
-    simp only [f, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mk0] at this
-    exact (div_left_inj' hπ0).1 this
-  let d := Nat.card (rootsOfUnity (normV v - 1) Ω)
-  have hd : 0 < d := Nat.card_pos
-  have : NeZero d := ⟨hd.ne'⟩
-  let e : rootsOfUnity (normV v - 1) Ω ≃* rootsOfUnity d ℂ :=
-    mulEquivOfCyclicCardEq (Complex.card_rootsOfUnity d).symm
-  let η : Weil h →* ℂˣ := (rootsOfUnity d ℂ).subtype.comp (e.toMonoidHom.comp f)
-  have hη : ∀ s s' : Weil h, η s = η s' → (s : G M Ω) π = (s' : G M Ω) π := fun s s' hss =>
-    hf s s' (e.injective (Subtype.ext hss))
-
-  have hπi : IsIntegral M π := Algebra.IsIntegral.isIntegral π
-  have : FiniteDimensional M (IntermediateField.adjoin M ({π} : Set Ω)) :=
-    IntermediateField.adjoin.finiteDimensional hπi
-  have hηs : IsSmooth η := by
-    let H1 : Subgroup (Ine (F := M) A) :=
-      (IntermediateField.adjoin M ({π} : Set Ω)).fixingSubgroup.comap (Ine (F := M) A).subtype
-    have hH1 : IsOpen (H1 : Set (Ine (F := M) A)) :=
-      (IntermediateField.fixingSubgroup_isOpen _).preimage continuous_subtype_val
-    have hle : H1 ≤ (η.comp (ineIncl h)).ker := fun σ hσ => by
-      have hσπ : (σ : G M Ω) π = π :=
-        (IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ π (IntermediateField.mem_adjoin_simple_self _ _)
-      have h1 : f (ineIncl h σ) = 1 := by
-        ext
-        simp [f, hσπ, div_self hπ0]
-      show η (ineIncl h σ) = 1
-      simp [η, h1]
-    exact Subgroup.isOpen_mono hle hH1
-  obtain ⟨χ, -, hχ⟩ := ha.factor η hηs
-
-  obtain ⟨art, hart⟩ := hA M Ω
-  have hπ' : π ^ (normV v - 1) = algebraMap M Ω (((g : ℕ) : 𝓞 M) : M) := by rw [hπ]; simp
-  obtain ⟨σ, hσI, hσab, hσπ⟩ := GlobalTheory.TameRecip.exists_ine_of_unit hA M Ω art hart v A h ((g : ℕ) : 𝓞 M) hg1 hg2 π
-    hπ' (a (ineIncl h t)) x (GlobalTheory.ArtinInertia.isUnitAt_artin_ine h a ha t) hx
-  let σ' : Ine (F := M) A := ⟨σ, hσI⟩
-  have e1 : art (localIdele M v (a (ineIncl h σ'))) = art (localIdele M v (a (ineIncl h t))) := by
-    rw [ha.glob art hart, ha.glob art hart]
-    exact hσab.trans (ha.glob art hart (ineIncl h t))
-  have e2 : a (ineIncl h σ') = a (ineIncl h t) := GlobalTheory.T.globalArtin_localIdele_injective hC M Ω art hart v e1
-  have e3 : η (ineIncl h σ') = η (ineIncl h t) := by
-    rw [hχ, MonoidHom.comp_apply, MonoidHom.comp_apply, e2]
-  have e4 := hη _ _ e3
-  have e5 : (t : G M Ω) π = σ π := e4.symm
-  rw [e5]
-  exact hσπ
 
 end DiscreteGroups.sglob.DzType

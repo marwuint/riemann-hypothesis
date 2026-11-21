@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ActAApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemPrincipalCongruenceLevelSubgroupIffIntegralCoStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemBlockCongruenceLevelSubgroupIffStabilizerEntrStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitBlockCosetThetaVectorMemThetaFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilFixesCosetVectorCongruentOneModIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockLevelMovesCosetVectorIntegralPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilFixesCosetVectorCongruentOneModIdeal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockLevelMovesCosetVectorIntegralPoint
 
 noncomputable section
 
@@ -105,7 +105,7 @@ theorem om_finsum {δ : ℂ} {a d : ℕ} {e0 : VC D a d → ℂ} (W : WeilO D �
 theorem stdSum_eig : ∀ (D : D7) (δ t0 : ℂ), Crv D ⊤ δ → ∀ {a d : ℕ} (e0 : VC D a d → ℂ), oddE0 D ⊤ δ t0 a d e0 → a ≤ d → ∀ (W : WeilO D ⊤ δ a d e0) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → IsCoprime 𝔪 (D.host.conj • 𝔪) → (∀ u, IntU D u → (u : AE D) - 1 ∈ hatId D (𝔪 * D.host.conj • 𝔪) → W.chV'.f u = 1) → ∀ R : Finset (GA D a), (∀ r ∈ R, r ∈ intG D a) → (∀ k ∈ intG D a, ∃! r, r ∈ R ∧ CongOne D 𝔪 (r⁻¹ * k)) → (∀ k ∈ intG D a, W.Om k 1 (stdSum W 𝔪 0 R) = stdSum W 𝔪 0 R) → ∀ h ∈ blockLev D 𝔪 d a, ∃ c : ℂ, ‖c‖ = 1 ∧ W.Om 1 h (stdSum W 𝔪 0 R) = c • stdSum W 𝔪 0 R := by
   intro D δ t0 hc a d e0 vac had W 𝔪 hm hcop hnu R hR1 hR2 _hfix h hh
   obtain ⟨hhi, hb⟩ := (GlobalTheory.T.mem_blockCongruenceLevelSubgroup_iff_stabilizer_entries D 𝔪 d a h).1 hh
-  obtain ⟨c, hc1, k, hk, hk'⟩ := GlobalTheory.T.blockLevel_moves_cosetVector_integral_point D δ t0 hc e0 vac had W 𝔪 hm hcop hnu h hhi hb
+  obtain ⟨c, hc1, k, hk, hk'⟩ := _root_.GlobalTheory.FunObj.CosetMove.om_cosetV_block D δ t0 hc e0 vac had W 𝔪 hm hcop hnu h hhi hb
   refine ⟨c, hc1, ?_⟩
   have hcv := GlobalTheory.T.unitBlockCosetThetaVector_mem_thetaFunctions D δ hc 𝔪 hm 0 a d e0 vac.1
   have hcong : ∀ x, x ∈ congLev D 𝔪 a ↔ x ∈ intG D a ∧ CongOne D 𝔪 x := GlobalTheory.T.mem_principalCongruenceLevelSubgroup_iff_integral_congruent D 𝔪 a
@@ -129,7 +129,7 @@ theorem stdSum_eig : ∀ (D : D7) (δ t0 : ℂ), Crv D ⊤ δ → ∀ {a d : ℕ
   · obtain ⟨h1, h2⟩ := (hcong κ).1 hκ
     have m4 := W.mul x κ 1 1 _ hcv
     rw [mul_one] at m4
-    rw [m4, GlobalTheory.T.weil_fixes_cosetVector_congruent_one_mod_ideal D δ t0 hc e0 vac W 𝔪 hm hcop hnu 0 (by omega) κ h1 h2]
+    rw [m4, _root_.GlobalTheory.FunObj.FixKey.om_cosetV_of_congOne D δ t0 hc e0 vac W 𝔪 hm hcop hnu 0 (by omega) κ h1 h2]
 
 end GlobalTheory.FunObj.StdDatum.CapelliMinorMembership
 

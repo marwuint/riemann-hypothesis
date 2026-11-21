@@ -105,22 +105,6 @@ theorem stdData_congr {L L' : PeriodPair} (h : L.lattice = L'.lattice) {ω₀ ω
   · rw [hL]; exact S.idx₁
   · rw [hL]; exact S.idx₂
 
-theorem k1ThetaAllBases : FirstKernelThetaAllBases := by
-  intro D cc δ B hcc hδ l _ h5 hj ι
-  obtain ⟨a₀, g, b₀, c₀, ha, hd, hl, B', hcm, -, hIs, hlat, -, -, -, hω, -, hth⟩ := theta_change_of_base D cc δ B hcc
-  have h : B.L.lattice = B'.L.lattice := hlat.symm
-  have hω' : (B.ω₀ - B'.ω₀) / 2 ∈ B'.L.lattice := h ▸ hω
-  obtain ⟨G, hS, hidx, hK⟩ := Kap.K1_theta_inert_prime D cc δ B' hcc hδ a₀ b₀ c₀ ha hd _ hl hcm hIs l h5 hj ι
-  refine ⟨G, ?_, ?_, ?_⟩
-  · have hS' := hS
-    rw [← KS.hOne_congr h, ← KS.stdH_congr h] at hS'
-    exact stdData_congr h hω' (Base.half_not_mem B) hS'
-  · rw [stdLat_congr h]; exact hidx
-  · intro g2 g3 ε s2 hN hg2 hg3 hD hε hth' t N hN0 hlN hNt σ γ B'' hF
-    have := hK g2 g3 ε s2 ((isLTNorm_congr h l ι g2 g3 s2 ε).1 hN) hg2 hg3 hD hε hth' t N hN0 hlN hNt σ γ B'' hF
-    rw [← KS.hOne_congr h, hth] at this
-    exact this
-
 end ReBase
 
 end Formalism.L2.KerInert

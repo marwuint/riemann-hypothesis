@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Measures
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalUnitaryGroupTuplesTopologicalFacts
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FibreFamilyUnique
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalUnitaryGroupTupleHaarInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalUnitaryGroupTupleHaarInvariant
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures
 open scoped TensorProduct ENNReal
 
@@ -53,7 +53,7 @@ theorem fibre_invariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
     refine ⟨fun h => ?_, hli g X⟩
     have := hli g⁻¹ _ h
     rwa [inv_smul_smul] at this
-  have hμT : μ.map Tm = μ := GlobalTheory.T.localUnitaryGroup_tuple_haar_invariant F E σ hCM n J hJ v a μ hμ g
+  have hμT : μ.map Tm = μ := _root_.GlobalTheory.LocalUnitaryHaar.haar_tuple_invariant F E σ hCM n J hJ v a μ hμ g
   let fib' : HermR (Fv F v) σ a → Measure (Fin a → Fin n → Fv F v ⊗[F] E) := fun b => (fib b).map Tm
   have hfib' : IsFibreFamily μ (gramR (Fv F v) σ J) Subtype.val
       {X | LinearIndependent (Fv F v ⊗[F] E) X} ν Set.univ fib' := by

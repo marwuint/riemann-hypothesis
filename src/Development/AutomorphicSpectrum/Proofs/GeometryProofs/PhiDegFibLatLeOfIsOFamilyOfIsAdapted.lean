@@ -7,7 +7,15 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.HeightComparisonGlobalModel
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.Rt0ConjNegNeZero
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatTheoremOfResolutionGagaStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatTheoremOfResolutionGaga
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
+import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNormComparison
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenericCentreSpecializes
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.ThmFlatA
+import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -32,7 +40,7 @@ theorem flat_point_of_principal_sign (hG : Top.Given) (hF : FlatDegree) {E : Typ
       (∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), HasFinNorm U τ φ p κ (N.fin p κ)) ∧ N.IsAdelic ∧
       N.deg = ((p' : ℝ) - q') / 2 * (GlobalTheory.CM.logOm E χ).re := by
   obtain ⟨⟨hP, hN, -, -⟩, -, -, -, hResK, -, -, hGaga, -⟩ := hG
-  obtain ⟨D, rfl, rfl, ⟨I⟩⟩ := GlobalTheory.T.tate_iso_datum_exists E H L t ht σ p' q' fun τ => by
+  obtain ⟨D, rfl, rfl, ⟨I⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SabModel.datum_tate E H L t ht σ p' q' fun τ => by
     have := hs ℂ σ τ
     rwa [hσ] at this
   let Xo : ∀ l : Level H, Moduli D l := fun l => (hN E H D l h1).some
@@ -57,15 +65,15 @@ theorem flat_point_of_principal_sign (hG : Top.Given) (hF : FlatDegree) {E : Typ
     rw [Subsingleton.elim s (IsLocalRing.closedPoint F)]
     exact mem_irreducibleComponent
   obtain ⟨V, hV, -⟩ := GlobalTheory.UnifFamily.exists_unf_family E H D l (Xo l) c h1
-  obtain ⟨g, ty, FU, i, hty, hper⟩ := GlobalTheory.T.exists_family_uniformisation E H D l (Xo l) c Z (D.p + D.q) (V c.F.val.toRingHom).toPj h1
+  obtain ⟨g, ty, FU, i, hty, hper⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.PeriodComp.comp_iff_period E H D l (Xo l) c Z (D.p + D.q) (V c.F.val.toRingHom).toPj h1
     (hV c.F.val.toRingHom (show Formalism.L2.Pj.GoodEmb c c.F.val.toRingHom from rfl)).1 (hc c le_rfl Z)
   have hclo : IsClopen (Z : Set ((Xo l).XF c)) :=
     Formalism.L2.Pj.CompSplitPfB.cspB_isClopen (Formalism.L2.Pj.CompSplitPfD.cspD_comp_disj (Xo l) c) Z
-  obtain ⟨φ, N, hfg, hn, -⟩ := GlobalTheory.T.flat_theorem_of_resolution_gaga hResK hGaga hP E H D Xo l c (Z : Set ((Xo l).XF c)) τ g ty FU i h1 hτ hg
+  obtain ⟨φ, N, hfg, hn, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.thmFlatA_of_resK_gaga_partI hResK hGaga hP E H D Xo l c (Z : Set ((Xo l).XF c)) τ g ty FU i h1 hτ hg
     hty hclo Z.2.1 hper
   let N' : LogNorms c.F := ⟨N.inf, fun p κ => N.fin p κ +
     D.q * (logIdeal (κ.comp (tauIn c τ)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖((H.d : ℕ) : ℂ_[p])‖)⟩
-  obtain ⟨had, hdeg⟩ := GlobalTheory.T.kronecker_character_period_formula hF E H D l (Xo l) c g ty FU i _ τ φ N' χ hχ hty hτ hfg hn.1 hn.2
+  obtain ⟨had, hdeg⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.TopLL.degree_frames hF E H D l (Xo l) c g ty FU i _ τ φ N' χ hχ hty hτ hfg hn.1 hn.2
   exact ⟨D, l, Xo l, c, inferInstance, F, inferInstance, inferInstance, bF, e, F.val.toRingHom, o.t, m, y,
     ReciprocityTheory.ChartRestriction.G.PullbackSections.sabMapCast mf.toSABMap hy1.symm, Z, φ, N', rfl, rfl, fun _ => rfl, he, hy2, hyZ, hfg.line, hn.1,
     hn.2, had, hdeg⟩

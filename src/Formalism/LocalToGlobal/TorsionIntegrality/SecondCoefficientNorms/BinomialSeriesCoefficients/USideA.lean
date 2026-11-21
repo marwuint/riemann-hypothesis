@@ -123,11 +123,6 @@ theorem subst_C' (a : PowerSeries K) (c : K) :
     PowerSeries.subst a (PowerSeries.C c) = PowerSeries.C c :=
   PowerSeries.subst_C c
 
-theorem subst_sum {ι : Type} {a : PowerSeries K} (ha : PowerSeries.HasSubst a) (s : Finset ι)
-    (F : ι → PowerSeries K) :
-    PowerSeries.subst a (∑ i ∈ s, F i) = ∑ i ∈ s, PowerSeries.subst a (F i) := by
-  rw [← PowerSeries.coe_substAlgHom ha, map_sum]
-
 theorem subst_wpShift_zero {a : PowerSeries K} (ha : PowerSeries.HasSubst a) (e : PowerSeries K) :
     PowerSeries.subst a (wpShift e 0) = 1 + a ^ 2 * PowerSeries.subst a e := by
   unfold wpShift

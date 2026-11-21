@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.E8PowerFibreConjugateEvaluationIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerFibreIsoSharpTorsionGivesFactorIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerFibreIsoSharpTorsionGivesFactorIso
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg
@@ -19,5 +19,5 @@ theorem GlobalTheory.Poinc.Sep.conj_fibre_core : ∀ (g l : ℕ), l.Prime → Od
   intro j hj V V₁ _ _ _ _ _ hCN hlu Q hQg ρ hρ D e hSh C u mo hmo hTh K _ _ ev k₀ hk₀ hu σ hσ a p hpf hps
   obtain ⟨f, hf, hL, ht, hc⟩ :=
     hj₀ j (le_of_max_le_left hj) V V₁ hCN hlu Q hQg ρ hρ D e hSh C u mo hmo hTh K ev k₀ hk₀ hu σ hσ
-  exact GlobalTheory.T.eighthPower_fibre_iso_sharp_torsion_gives_factor_iso l hl hlo W hW j (le_of_max_le_right hj) V V₁ hlu Q ρ hρ D e hSh
+  exact _root_.GlobalTheory.Poinc.Sep.conj_fibre_eighth_root l hl hlo W hW j (le_of_max_le_right hj) V V₁ hlu Q ρ hρ D e hSh
     K ev σ f hf hL ht hc a p hpf hps

@@ -1,13 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResInjOfDetermined
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ResidueInjectivityChar
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultiplicitySpaceEqZeroOfLowestKTypesStatement
+import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultiplicitySpaceEqZeroOfLowestKTypes
+import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 
 noncomputable section
 
 namespace GlobalTheory.LowTypeRestriction
 
-theorem determinedByLowTypes : DeterminedByLowTypes := GlobalTheory.T.multiplicitySpace_eq_zero_of_lowestKTypes
+theorem determinedByLowTypes : DeterminedByLowTypes := _root_.GlobalTheory.LowTypeDetermined.eq_zero_of_lowT
 
 theorem resInj : GlobalTheory.IndefiniteRowSideFullHecke.ResidueInjectivityAt.ResInj := resInj_of_determined determinedByLowTypes
 

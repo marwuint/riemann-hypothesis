@@ -117,18 +117,6 @@ structure HubData (D : D7) where
   eta : ℕ
   I : TwIn D
 
-structure HubK where
-  C' : ℝ
-  A : ℝ
-  Ct0 : ℝ
-  CV : ℝ
-  constantFirstHub : ℝ
-  Q : MvPolynomial (Fin 3) ℕ
-  constantSecondHub : ℝ
-  CT : ℕ
-  C1 : ℝ
-  C5 : ℝ
-
 def StarAD (L : SizeData₂ D) (X : HubData D) : Prop :=
   ∀ i, Formalism.MainNotions.TwistedPlaces.TwLoc D i → D.nd.l i ∉ Formalism.MainNotions.TwistedPlaces.gset D → RangeAD L X.exc (D.nd.l i) → ∀ π ∈ D.nd.Zgood i,
     (D.nd.vcc i π : ℝ) ≤ (Br.sPi D.loc D.nbr i (X.ρ i) π : ℝ) + Formalism.MainNotions.TwistedPlaces.sumOver D (D.nd.l i) (X.len0 i π) +
@@ -137,10 +125,6 @@ def StarAD (L : SizeData₂ D) (X : HubData D) : Prop :=
 def BBLe (L : SizeData₂ D) (X : HubData D) (C5 : ℝ) : Prop :=
   ∀ i, Formalism.MainNotions.TwistedPlaces.TwLoc D i → D.nd.l i ∉ Formalism.MainNotions.TwistedPlaces.gset D → RangeAD L X.exc (D.nd.l i) → ∀ π ∈ D.nd.Zgood i,
     X.errorBoundHub i π ≤ C5 * D.R.f * D.R.n * (D.R.t : ℝ) ^ 2 * D.R.nV * (Formalism.MainNotions.TwistedPlaces.large₂ L) ^ 2
-
-def HubK.Le (K : HubK) (C : ℝ) : Prop :=
-  0 ≤ K.constantSecondHub ∧ 0 ≤ K.C5 ∧ K.C5 ≤ C ∧ FamilyRepresentationConstants.CG K.constantFirstHub K.Q ≤ C ∧ FamilyRepresentationConstants.CF K.C' K.A K.CV K.C1 ≤ C ∧
-    FamilyRepresentationConstants.CH K.constantSecondHub K.C1 ≤ C
 
 end Asm
 
@@ -196,14 +180,6 @@ structure StepAD (L : SizeData₂ D) (X : HubData D) : Prop where
       ∀ π ∈ D.nd.Zgood i, Formalism.MainNotions.EmbeddingTypes.admitted i (X.r i) (X.ρ i) π (X.dc i) ep (X.eS i) (X.c0 i) (X.cB i)
 
   goodR : ∀ i, GoodR D.nd i (X.r i)
-
-def InvariantsBoundConditions (L : SizeData₂ D) (X : HubData D) (c : ℝ) : Prop :=
-  ∀ i, Formalism.MainNotions.TwistedPlaces.TwLoc D i → D.nd.l i ∉ Formalism.MainNotions.TwistedPlaces.gset D → RangeAD L X.exc (D.nd.l i) →
-    (X.cB i : ℝ) ≤ c * D.R.t * D.R.n * D.R.nV * Formalism.MainNotions.TwistedPlaces.large₂ L ∧
-    (h0 D.nd i (X.dc i).col : ℝ) ≤ c * D.R.t ∧
-    (Formalism.MainNotions.TwistedPlaces.SplitK D (D.nd.l i) → ∀ u ∈ (X.dc i).col,
-      (X.c0 i u : ℝ) ≤ c * D.R.r * Formalism.MainNotions.TwistedPlaces.large₂ L ∧
-      ∀ π ∈ D.nd.Zgood i, (Br.h0W i u (X.ρ i) π : ℝ) ≤ c * (D.R.r : ℝ) ^ 2 * Formalism.MainNotions.TwistedPlaces.large₂ L)
 
 end Rows
 

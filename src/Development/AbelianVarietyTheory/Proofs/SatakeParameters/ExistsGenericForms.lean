@@ -92,14 +92,6 @@ theorem ev₀_algebraMap (z : ℂ) : ev₀ ι g₀ hy (algebraMap ℂ (Sec p (fO
 theorem ev₀_smul (z : ℂ) (a : Sec p (fOpen ι g₀)) : ev₀ ι g₀ hy (z • a) = z * ev₀ ι g₀ hy a := by
   rw [Algebra.smul_def, map_mul, ev₀_algebraMap]
 
-theorem ev₀_vv (l : Fin (N + 1)) : ev₀ ι g₀ hy (vv ι g₀ hg₀ hy l) = 0 := by
-  unfold vv
-  rw [map_sub, ev₀_algebraMap, sub_self]
-
-theorem ev₀_sum (c : Fin (N + 1) → ℂ) : ev₀ ι g₀ hy (∑ l, c l • vv ι g₀ hg₀ hy l) = 0 := by
-  rw [map_sum]
-  exact Finset.sum_eq_zero fun l _ => by rw [ev₀_smul, ev₀_vv, mul_zero]
-
 theorem mkQ_eq_mkQ (a b : Sec p (fOpen ι g₀)) :
     (sqQ ι g₀ hy).mkQ a = (sqQ ι g₀ hy).mkQ b ↔ a - b ∈ RingHom.ker (ev₀ ι g₀ hy) ^ 2 := by
   rw [Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]
@@ -121,13 +113,5 @@ theorem Lm_apply (hp : ι ≫ PSpace.str ℂ N = p) (c : Fin (N + 1) → ℂ) :
     ev₀_algebraMap, mul_sub]
 
 end Cot
-
-section Range
-
-variable {X : Scheme.{0}} {p : X ⟶ Sp ℂ} (ι : X ⟶ PSpace ℂ N) (g₀ : MvPolynomial (Fin (N + 1)) ℂ)
-  (hg₀ : g₀ ∈ ProjSpace.grading ℂ N 1) {y : CxPts p (RingHom.id ℂ)}
-  (hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) (fOpen ι g₀))
-
-end Range
 
 end GlobalTheory.EtProj.Generic

@@ -1,6 +1,7 @@
 import Mathlib
-import Formalism.PeriodIntegrals.VolSemiDirect
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.RestrProd
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FundamentalEquivalence.LevelIntersectParabolic
+import Formalism.PeriodIntegrals.VolFromSW
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.HformSmulRight
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DensGen
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibDis
@@ -113,18 +114,8 @@ theorem fib_eq (h1 : IsFibreFamily μ f ι U ν univ fib1)
 
 end Gen
 
-section Tens
-
-open scoped TensorProduct
-open PI.VolStabSW PI.VolStabSW.TensAllW
-
-end Tens
-
 end PI.DegenerateSiegelWeil.FibUniq
 
 namespace PI.DegenerateSiegelWeil
-
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes NumberField IsDedekindDomain MeasureTheory PI.VolStabSW
-  PI.VolStabSW.TensAllW
 
 end PI.DegenerateSiegelWeil

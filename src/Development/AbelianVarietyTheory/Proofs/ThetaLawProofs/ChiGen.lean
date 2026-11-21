@@ -7,6 +7,4 @@ namespace GlobalTheory.ThetaInversion
 
 theorem inversion : Chi.InversionStatement := GlobalTheory.inversionStatement_holds
 
-theorem chi : Chi.ChiStatement := Chi.chi_of inversion Chi.spGen
-
 end GlobalTheory.ThetaInversion

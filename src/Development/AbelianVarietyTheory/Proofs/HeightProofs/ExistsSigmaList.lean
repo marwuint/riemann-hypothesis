@@ -5,13 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.HasSmoothLogNearOneO
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmoothInExponentialCoordsIffFirstSecondKindStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommutingAlgebrasFiniteSpanStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitaryLieGeneratorsRepStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsEnvelopingAlgHomUnitaryLieAlgebraStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.EnvelopingMapSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsEnvelopingAlgHomUnitaryLieAlgebra
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.EnvelopingMapSurjective
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitaryAdelicHeightCosetLeNormInfPowStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.NormInfSubmultiplicativeLeAdelicHeightStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitaryLatticeDenominatorHeightBoundProofStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsFiniteCosetsAdelicUnitaryBoundedDenominatoStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.NormInfSubmultiplicativeLeAdelicHeight
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitaryLatticeDenominatorHeightBoundProof
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsFiniteCosetsAdelicUnitaryBoundedDenominato
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitaryReductionPolynomialHeightBoundStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.OrthogonalAnisotropicFrameBoundedCMStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ShortLatticeVectorBoundedSizeOfOrthogonalFrameStatement
@@ -269,7 +269,7 @@ theorem wordDer_eq (R : RealPoints θ V) (l : List (LieInf V)) (φ : SmF θ V) :
 
 theorem exists_envRep (R : RealPoints θ V) (τ : D.what₂.Tau) : ∃ π : EnvAt V τ →ₐ[ℂ] Module.End ℂ (SmF θ V),
     ∀ X, π (UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X)) = opInf R (atPlace V τ X) :=
-  GlobalTheory.T.exists_envelopingAlgHom_unitaryLieAlgebra _ _ _ (fun X => opInf R (atPlace V τ X)) (opAt_add R τ) (opAt_smul R τ) (opAt_bracket R τ)
+  _root_.GlobalTheory.EnvelopingExtension.exists_algHom_unitary _ _ _ (fun X => opInf R (atPlace V τ X)) (opAt_add R τ) (opAt_smul R τ) (opAt_bracket R τ)
 
 def envRep (R : RealPoints θ V) (τ : D.what₂.Tau) : EnvAt V τ →ₐ[ℂ] Module.End ℂ (SmF θ V) := (exists_envRep R τ).choose
 
@@ -294,8 +294,8 @@ theorem envDer_eq (R : RealPoints θ V) (τ : D.what₂.Tau) (w : List (LieAt V 
 
 theorem envRep_comm (R : RealPoints θ V) {τ τ' : D.what₂.Tau} (h : τ ≠ τ') (u : EnvAt V τ) (u' : EnvAt V τ') :
     Commute (envRep R τ u) (envRep R τ' u') := by
-  obtain ⟨w, rfl⟩ := GlobalTheory.T.enveloping_map_surjective D V τ u
-  obtain ⟨w', rfl⟩ := GlobalTheory.T.enveloping_map_surjective D V τ' u'
+  obtain ⟨w, rfl⟩ := _root_.GlobalTheory.EnvWords.envOf_surjective D V τ u
+  obtain ⟨w', rfl⟩ := _root_.GlobalTheory.EnvWords.envOf_surjective D V τ' u'
   rw [envRep_envOf, envRep_envOf]
   refine Commute.sum_left _ _ _ fun l _ => Commute.sum_right _ _ _ fun l' _ => Commute.smul_left (Commute.smul_right ?_ _) _
   refine Commute.list_prod_left _ _ fun a ha => Commute.list_prod_right _ _ fun b hb => ?_
@@ -327,7 +327,7 @@ theorem exists_gelf (R : RealPoints θ V) (τ : D.what₂.Tau) : ∃ c : ℕ →
       have : Z = ⁅X, Y⁆ := Subtype.ext hZ
       rw [this, ← Ring.lie_def, ← LieHom.map_lie, LieAlgebra.ExtendScalars.bracket_tmul, one_mul])
   refine ⟨_, center_eq_adjoin h1 (eq_top_iff.2 fun u _ => ?_), fun k φ => ?_⟩
-  · obtain ⟨w, rfl⟩ := GlobalTheory.T.enveloping_map_surjective D V τ u
+  · obtain ⟨w, rfl⟩ := _root_.GlobalTheory.EnvWords.envOf_surjective D V τ u
     refine Subalgebra.sum_mem _ fun l _ => Subalgebra.smul_mem _ (Subalgebra.list_prod_mem _ fun x hx => ?_) _
     obtain ⟨X, -, rfl⟩ := List.mem_map.1 hx
     exact Algebra.span_le_adjoin ℂ _ (h2 X)
@@ -371,7 +371,7 @@ theorem zfin_iff (R : RealPoints θ V) {φ : GA D V → ℂ} (hφ : IsSmoothInf 
             ψ = envDer V (expInf θ V) τ w φ}) fun x hx => ?_) fun x y hxy => ?_
         · refine Submodule.mem_comap.1 ((Submodule.span_le (p := Submodule.comap (SmF θ V).subtype _)).2 ?_ hx)
           rintro _ ⟨_, ⟨u, hu, rfl⟩, rfl⟩
-          obtain ⟨w, rfl⟩ := GlobalTheory.T.enveloping_map_surjective D V τ u
+          obtain ⟨w, rfl⟩ := _root_.GlobalTheory.EnvWords.envOf_surjective D V τ u
           exact Submodule.subset_span ⟨w, hu, (envDer_eq R τ w ψ).symm⟩
         · have h' := congrArg Subtype.val hxy
           exact Subtype.ext (Subtype.ext h'))
@@ -388,9 +388,9 @@ theorem reduction (hθ : IsInfFam θ) (R : RealPoints θ V) (U : Subgroup (GA D 
     ∃ (S : Finset (GA D V)) (C : ℝ) (M : ℕ), ∀ g, ∃ γ ∈ GQ V, ∃ x ∈ S, ∃ a ∈ GinfC V, ∃ k ∈ U, k ∈ GfC V ∧
       γ * g = x * a * k ∧ normInf θ V a ≤ C * (height θ V g : ℝ) ^ M := by
   obtain ⟨d, C, M, hd, h⟩ := GlobalTheory.T.unitary_reduction_polynomial_height_bound D θ V hθ
-    (GlobalTheory.T.orthogonalFrame_of_anisotropicFiniteLengths _ (GlobalTheory.T.anisotropicFiniteLengths_of_shortLatticeVector _ (GlobalTheory.T.shortLatticeVectorBoundedSize_of_orthogonalFrame _ (GlobalTheory.T.orthogonalAnisotropicFrame_bounded_CM _)))) (GlobalTheory.T.unitaryLatticeDenominatorHeightBound_proof D θ V)
-  obtain ⟨S, hS⟩ := GlobalTheory.T.exists_finite_cosets_adelicUnitary_bounded_denominator D V U hU d hd
-  obtain ⟨hm, C', hC'⟩ := GlobalTheory.T.normInf_submultiplicative_le_adelicHeight D θ V
+    (GlobalTheory.T.orthogonalFrame_of_anisotropicFiniteLengths _ (GlobalTheory.T.anisotropicFiniteLengths_of_shortLatticeVector _ (GlobalTheory.T.shortLatticeVectorBoundedSize_of_orthogonalFrame _ (GlobalTheory.T.orthogonalAnisotropicFrame_bounded_CM _)))) (_root_.GlobalTheory.SmoothForms.denomBound D θ V)
+  obtain ⟨S, hS⟩ := _root_.GlobalTheory.SmoothForms.Cover.exists_finset_cover D V U hU d hd
+  obtain ⟨hm, C', hC'⟩ := _root_.GlobalTheory.SmoothForms.normInf_mul_le_and_le_height D θ V
   obtain ⟨-, -, -, r4, r5, r6, r7, r8⟩ := R
   refine ⟨S, C * C', M + 1, fun g => ?_⟩
   obtain ⟨γ, hγ, h1, h2⟩ := h g
@@ -516,7 +516,7 @@ theorem growth_iff (hθ : IsInfFam θ) (R : RealPoints θ V) {φ : GA D V → �
     exact hN _
 
 theorem isAutFunSm_iff (hθ : IsInfFam θ) (V : HSp D) (φ : GA D V → ℂ) : IsAutFunSm θ V φ ↔ IsSmoothAutForm V φ := by
-  obtain ⟨hu, hR⟩ := GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D
+  obtain ⟨hu, hR⟩ := _root_.GlobalTheory.SmoothForms.RealPts.realPoints D
   have R := hR θ hθ V
   constructor
   · intro h
@@ -531,53 +531,6 @@ theorem isAutFunSm_iff (hθ : IsInfFam θ) (V : HSp D) (φ : GA D V → ℂ) : I
     exact ⟨ha, (smooth_iff R φ).2 hs, (zfin_iff R hs).2 hz, (growth_iff hθ R ha hs).2 hg⟩
 
 variable {X : ThetaX D}
-
-theorem afTiedSm_iff (T : ThetaTied D X) : ThetaSmoothnessCondition T ↔
-    ∀ V : HSp D, V.SigOK → ∀ φ : GA D V → ℂ, (∃ F : X.AF V, T.ev V F = φ) ↔ IsSmoothAutForm V φ := by
-  constructor
-  · rintro ⟨⟨θ, hθ⟩, h⟩ V hV φ
-    rw [← isAutFunSm_iff hθ]
-    exact Set.ext_iff.1 (h θ hθ V hV) φ
-  · intro h
-    exact ⟨T.actR.1, fun θ hθ V hV => Set.ext fun φ => (h V hV φ).trans (isAutFunSm_iff hθ V φ).symm⟩
-
-theorem compare (D : D7) :
-    (∀ θ, IsInfFam (D := D) θ → ∀ V : HSp D, (∃! e, IsExpFam θ V e) ∧ ∀ e, IsExpFam θ V e →
-      (∀ τ, lieAt V τ = lieU (gramAt D V τ)) ∧
-      (∀ τ (Y : LieAt V τ) t, oneP θ V τ Y.1 t = e (t • atPlace V τ Y)) ∧
-      (∀ τ (Y : LieAt V τ) φ, Rder θ V τ Y.1 φ = lieDer V e (atPlace V τ Y) φ) ∧
-      (∀ τ, ∃ c : ℕ → List (LieAt V τ) →₀ ℂ,
-        Subalgebra.center ℂ (EnvAt V τ) = Algebra.adjoin ℂ (Set.range fun k => envOf V τ (c k)) ∧
-        ∀ k φ, IsSmoothInf V e φ → gelf θ V τ k φ = envDer V e τ (c k) φ) ∧
-      (∀ φ : GA D V → ℂ, (∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ),
-        (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g,
-          ContDiff ℝ ∞ fun t : Fin k → ℝ => φ (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)) ↔
-        IsSmoothInf V e φ) ∧
-      (∀ φ, IsSmoothInf V e φ →
-        ((∃ W : Submodule ℂ (GA D V → ℂ), FiniteDimensional ℂ W ∧ φ ∈ W ∧ ∀ τ k, ∀ f ∈ W, gelf θ V τ k f ∈ W) ↔
-          ∀ τ, IsZFiniteAt V e τ φ)) ∧
-      (∀ φ, IsAutFun V φ → IsSmoothInf V e φ →
-        ((∃ N : ℕ, ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) →
-          ∀ x, ∃ C : ℝ, ∀ g ∈ GinfC V,
-            ‖(l.foldr (fun p f => Rder θ V p.1 p.2 f) φ) (x * g)‖ ≤ C * normInf θ V g ^ N) ↔
-          IsUnifModerate θ V e φ))) ∧
-    (∀ θ, IsInfFam (D := D) θ → ∀ (V : HSp D) φ, IsAutFunSm θ V φ ↔ IsSmoothAutForm V φ) ∧
-    ∀ (X : ThetaX D) (T : ThetaTied D X),
-      (ThetaSmoothnessCondition T ↔ ∀ V : HSp D, V.SigOK → ∀ φ : GA D V → ℂ, (∃ F : X.AF V, T.ev V F = φ) ↔ IsSmoothAutForm V φ) ∧
-      (FormsTied T ↔ ThetaSmoothnessCondition T ∧
-        ∀ V : HSp D, ¬ V.SigOK → ∀ φ : GA D V → ℂ, (∃ F : X.AF V, T.ev V F = φ) ↔ IsSmoothAutForm V φ) := by
-  refine ⟨fun θ hθ V => ?_, fun θ hθ => isAutFunSm_iff hθ, fun X T => ⟨afTiedSm_iff T, ?_⟩⟩
-  · have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
-    refine ⟨⟨_, isExpFam_expInf R, fun e he => eq_expInf R he⟩, fun e he => ?_⟩
-    obtain rfl := eq_expInf R he
-    refine ⟨fun _ => rfl, oneP_eq R, Rder_eq R, fun τ => ?_, smooth_iff R, fun φ => zfin_iff R,
-      fun φ => growth_iff hθ R⟩
-    obtain ⟨c, h1, h2⟩ := exists_gelf R τ
-    choose w hw using fun k => GlobalTheory.T.enveloping_map_surjective D V τ (c k)
-    refine ⟨w, by simpa only [hw] using h1, fun k φ hφ => ?_⟩
-    exact (h2 k ⟨φ, hφ⟩).trans (by rw [← hw]; exact (envDer_eq R τ (w k) ⟨φ, hφ⟩).symm)
-  · rw [afTiedSm_iff]
-    exact ⟨fun h => ⟨fun V _ => h V, fun V _ => h V⟩, fun h V => (em V.SigOK).elim (h.1 V) (h.2 V)⟩
 
 end GlobalTheory.SmoothForms
 

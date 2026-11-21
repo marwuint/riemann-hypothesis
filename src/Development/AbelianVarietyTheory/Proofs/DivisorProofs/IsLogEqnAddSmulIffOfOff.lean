@@ -38,5 +38,3 @@ theorem off_add_smul (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p 
 
 end GlobalTheory.PairStep
 
-example : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ) (n : ℕ), ∀ (Γ B : X → ℚ) (c : ℚ) (x : X), Off B x → (KltAt p n (Γ + c • B) x ↔ KltAt p n Γ x) ∧ (LcAt p n (Γ + c • B) x ↔ LcAt p n Γ x) ∧ (IsNkltCentre p n (Γ + c • B) x ↔ IsNkltCentre p n Γ x) ∧ ∀ z, z ⤳ x → Off B z :=
-  fun X _ _ p n Γ B c x hB => GlobalTheory.PairStep.off_add_smul X p n Γ B c x hB

@@ -40,8 +40,6 @@ def PSDKOn {α : Type*} (S : Set α) (K : α → α → ℂ) : Prop :=
 
 def KLEOn {α : Type*} (S : Set α) (K L : α → α → ℂ) : Prop := PSDKOn S (fun p q => L p q - K p q)
 
-theorem PSDKOn_of_PSDK {α : Type*} {K : α → α → ℂ} (h : PSDK K) (S : Set α) : PSDKOn S K := fun X a _ => h X a
-
 def ArithAxF (L : LatticeDataWithDual D) (Kd : KernelData D) : Prop :=
   (∀ p q, Kd.K 0 p q = 1) ∧
   (∀ i, i ≤ D.R.rS + 1 → PSDK (Kd.K i)) ∧
@@ -66,45 +64,7 @@ def ArithAxF (L : LatticeDataWithDual D) (Kd : KernelData D) : Prop :=
 
 variable {D}
 
-theorem _root_.Formalism.MainNotions.S.ArithAx.toF {L : LatticeDataWithDual D} {Kd : KernelData D} (h : ArithAx D L Kd) : ArithAxF D L Kd := by
-  obtain ⟨h0, h1, h2, h3, h4⟩ := h
-  refine ⟨h0, h1, h2, h3, fun Sg => ⟨Kd.Th, fun j s hs hjs => ?_⟩⟩
-  obtain ⟨a, b, c, d⟩ := h4 j s hs hjs
-  exact ⟨fun t ht _ => PSDKOn_of_PSDK (a t ht) _, fun t l hl _ _ _ _ => by rw [b t l hl],
-    fun t => PSDKOn_of_PSDK (c t) _, fun X hX => PSDKOn_of_PSDK (d X hX) _⟩
-
 end Arith
-
-def stThmA (D : D7) (C C' : ℝ) (Kst : ℕ) (Vm : ValMap D.R.k D.R.rS) : Prop :=
-  ∀ (δ : D.host.E) (T T' : ℝ) (x : D.what₂.Tau → LocalDataRealPlace D) (L : LatticeDataWithDual D) (Kd : KernelData D)
-    (B : D.what₂.Tau → LocBessel D.R.k D.R.rS)
-    (f : ∀ v, Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ → ((B v).Wq →L[ℂ] (B v).Wp))
-    (μsec : D.what₂.Tau → ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ)
-    (ι : Type) [Countable ι] (c : ι → Point D.host.E (D.R.rS + 1) → ℂ),
-    4 ≤ Kst → 1 ≤ D.host.v →
-    PsiAx D δ → LatAx D δ L → FrameAx D δ L B → ArithAxF D L Kd →
-    (∀ v, LocMatch D T T' (x v) (B v) ∧ IsKFinCoefH (B v).σ (f v) ∧
-      IsSection D.R.k D.R.rS (B v).z (B v).z' (μsec v)) →
-    (∀ v, InterlaceS (k_le_nS D) (x v).u (x v).lam ∧ InterlaceS (k_le_nS D) (x v).u' (x v).lam) →
-    (∀ v, (x v).u ≠ (x v).u') →
-    (∀ v, GapAtLeast (epsSH D.R) (x v).lam
-      (C * (D.R.m : ℝ) ^ ((9 : ℝ) / 2) * (Nlet D Kst * (D.R.r : ℝ) ^ 2 + (D.R.r : ℝ) ^ 3))) →
-    (∀ v, IsCutS (x v).u (x v).u' (Set.Icc (x v).a (x v).b)) →
-    (∀ v, (x v).a ≤ (x v).a1 ∧ (x v).a1 ≤ (x v).b1 ∧ (x v).b1 ≤ (x v).b ∧
-      Nlet D Kst ^ 3 / 2 ≤ (x v).b1 - (x v).a1) →
-    (∀ v, C * ((D.R.k : ℝ) * Nlet D Kst * ((D.R.rS : ℝ) + 1) ^ 2 +
-        Nlet D Kst ^ 2 * ((D.R.rS : ℝ) + 1) ^ 2 + Nlet D Kst ^ 3) ≤ (x v).b - (x v).a) →
-    ((D.R.rS : ℝ) + 1) * (C / ThS D C C (Nlet D Kst) T T' δ x L) ^ D.R.f ≤ 1 →
-    C' ≤ ThS D C C (Nlet D Kst) T T' δ x L →
-    RowsAx (fun v => (B v).Wq →L[ℂ] (B v).Wp) (fun _ => hsInner) (Kd.K (D.R.rS + 1))
-      (fun h => ptWeightG D L.ρ T T' h.1) c (fun v h => Vm.V (B v) (f v) (locBlocks D L.ρ v h.1)) →
-    SRowForm (fun v => (B v).Wq →L[ℂ] (B v).Wp) (fun _ => hsInner) (fun h => ptWeightG D L.ρ T T' h.1) c
-        (fun v h => Vm.V (B v) (f v) (locBlocks D L.ρ v h.1)) ≤
-      ENNReal.ofReal ((1 + C * ((D.R.rS : ℝ) + 1) *
-          (C / ThS D C C (Nlet D Kst) T T' δ x L) ^ D.R.f) *
-          ∏ i ∈ Finset.Icc 1 (D.R.rS + 1), (1 + Kd.e i)) *
-        jNorm2One (fun v => (B v).Wq →L[ℂ] (B v).Wp) (fun _ => hsNormSq) D.R.k D.R.rS T T' L.κ
-          (fun v p => (B v).J (f v) (bigCell D.R.k D.R.rS p.1 (μsec v p.2)))
 
 end Formalism.MainNotions.S.LocalFrameAxioms
 

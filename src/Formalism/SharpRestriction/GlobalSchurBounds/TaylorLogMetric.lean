@@ -62,21 +62,6 @@ def RelDetPinned (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) : Prop :=
 def chiRec (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) : IdE D → ℂ :=
   fun 𝔞 => if h : ∃ x, idl x = 𝔞 then ((chiQ D h.choose : ℂˣ) : ℂ) else 0
 
-def RelativeDeterminantEquation (D : D7) (T : Tor D) (e : FamE D) : Prop :=
-  letI := D.host.cmStar
-  (∀ N N' (L : SDLat D.host.E N) (L' : SDLat D.host.E N'), Even N → Even N' →
-    ∀ (γ : Matrix.unitaryGroup (Fin N) D.host.E) (γ' : Matrix.unitaryGroup (Fin N') D.host.E),
-      pull D T (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E)
-          (e N N' L.1 L'.1) =
-        e N N' (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) L.1)
-          (SDLat.smulLat (γ' : Matrix (Fin N') (Fin N') D.host.E) L'.1)) ∧
-  (∀ N N' (L : SDLat D.host.E N) (L' L'' : SDLat D.host.E N'), Even N → Even N' →
-    e N N' L.1 L''.1 = fun z => ((chiQ D (D.relDet N' L' L'') ^ (-((N / 2 : ℕ) : ℤ)) : ℂˣ) : ℂ) *
-      Iop D T (La D T L.1 L'.1) (La D T L.1 L''.1) (e N N' L.1 L'.1) z) ∧
-  (∀ N N' (L L₁ : SDLat D.host.E N) (L' : SDLat D.host.E N'), Even N → Even N' →
-    e N N' L₁.1 L'.1 = fun z => ((chiQ D (D.relDet N L L₁) ^ (((N' / 2 : ℕ) : ℤ)) : ℂˣ) : ℂ) *
-      Iop D T (La D T L.1 L'.1) (La D T L₁.1 L'.1) (e N N' L.1 L'.1) z)
-
 theorem chiRec_idl (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : Function.Injective idl) (x : D.Dt ⧸ D.UO) :
     chiRec D idl (idl x) = ((chiQ D x : ℂˣ) : ℂ) := by
   have hx : ∃ y, idl y = idl x := ⟨x, rfl⟩
@@ -242,22 +227,5 @@ def aux₃ (D : D7) (C : ℝ) : Prop :=
       int22 D (tor0 D cc δ) e ∧ mom22 D cc δ e ∧ LargerSupportMomentCondition D cc δ e ∧ str22 D (tor0 D cc δ) e
 
 def Stmt (D : D7) (C : ℝ) : Prop := AdmittedStatements D → aux₃ D C
-
-def CurveIdealTorusProperties (D : D7) (C : ℝ) : Prop :=
-  ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
-    per22 D (tor0 D cc δ) ∧
-    ∃ e : FamE D, vec22 D (tor0 D cc δ) e ∧ th22 D (tor0 D cc δ) C e ∧ RelativeDeterminantEquation D (tor0 D cc δ) e ∧
-      int22 D (tor0 D cc δ) e ∧ mom22 D cc δ e ∧ LargerSupportMomentCondition D cc δ e ∧ str22 D (tor0 D cc δ) e
-
-def AdmF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∀ x (i : Fm.Ix x), AdmittedStatements (Fm.D x i)
-
-def ConclusionOnFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), aux₃ (Fm.D x i) C
-
-def StatementFamilyConstant {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C : ℝ) : Prop :=
-  AdmF Fm → ConclusionOnFamily Fm C
-
-def KudlaFamilyStatement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
-  AdmF Fm → ∃ C : ℝ, ConclusionOnFamily Fm C
 
 end Formalism.MainNotions.TaylorLogMetric

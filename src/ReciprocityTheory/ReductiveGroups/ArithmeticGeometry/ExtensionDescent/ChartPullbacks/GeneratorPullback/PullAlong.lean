@@ -120,18 +120,6 @@ lemma mulGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε 
   exact congrArg₂ (· * ·) (gU_pullAlong L F h φ ε ψ hψ t (jj ∘ Sum.inl) y _).symm
     (gU_pullAlong L F h φ' ε' ψ' hψ' t' (jj ∘ Sum.inr) y _).symm
 
-lemma invGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
-    (ψ : K → (Y' ⟶ X')) (hψ : ∀ k, ψ k ≫ F = h ≫ φ k) (t : LB.Gen (LB.LinComb L φ ε)) :
-    GeneratorPullback.pullAlong L F h φ (fun k => - ε k) ψ hψ (LB.invGen L φ ε t) =
-      LB.invGen (L.pull F) ψ ε (GeneratorPullback.pullAlong L F h φ ε ψ hψ t) := by
-  apply gen_ext
-  intro jj y hy
-  refine (gU_pullAlong L F h φ (fun k => - ε k) ψ hψ _ jj y hy).trans ?_
-  refine ((congrArg (Units.map (h.stalkMap y).hom.toMonoidHom)
-    (map_inv (@gU Y (LB.wchart L φ (fun k => jj k ⟨⟩)) (h.base y) (GeneratorPullback.pullAlong_le L F h φ ψ hψ jj hy)) (t.s (fun k => jj k ⟨⟩)))).trans
-    (map_inv _ _)).trans ?_
-  exact ((map_inv (gU y hy) _).trans (congrArg (·⁻¹) (gU_pullAlong L F h φ ε ψ hψ t jj y hy))).symm
-
 lemma oneGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (hψ : ∀ k : PEmpty, (PEmpty.elim k : Y' ⟶ X') ≫ F =
       h ≫ (PEmpty.elim k : Y ⟶ X)) :
     GeneratorPullback.pullAlong L F h PEmpty.elim PEmpty.elim PEmpty.elim hψ (LB.oneGen L) =
@@ -179,40 +167,6 @@ lemma isGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε :
   refine congrArg₂ (fun a b => a * b) (Finset.prod_congr rfl fun k _ => ?_) rfl
   rw [map_zpow]
   exact congrArg (· ^ ε k) (gU_pull_g_lemma_2 L F h (φ k) (ψ k) (hψ k) (i k) (j k) y _ _).symm
-
-lemma corr_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
-    (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (ψ : K → (Y' ⟶ X')) (ψ' : K' → (Y' ⟶ X'))
-    (hψ : ∀ k, ψ k ≫ F = h ≫ φ k) (hψ' : ∀ k, ψ' k ≫ F = h ≫ φ' k)
-    (hinj : ∀ a b : K ⊕ K', Sum.elim ψ ψ' a ≫ F = Sum.elim ψ ψ' b ≫ F →
-      Sum.elim ψ ψ' a = Sum.elim ψ ψ' b)
-    (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
-    (hc : LB.Gen.Corr L φ ε φ' ε' t t') :
-    LB.Gen.Corr (L.pull F) ψ ε ψ' ε' (GeneratorPullback.pullAlong L F h φ ε ψ hψ t)
-      (GeneratorPullback.pullAlong L F h φ' ε' ψ' hψ' t') := by
-  unfold LB.Gen.Corr at hc ⊢
-  intro j j' hj hj' hjj
-  have c1 : LB.Coh L φ (fun k => j k ⟨⟩) := fun k₁ k₂ e =>
-    congrFun (hj k₁ k₂ (hinj (Sum.inl k₁) (Sum.inl k₂) (by
-      show ψ k₁ ≫ F = ψ k₂ ≫ F
-      rw [hψ, hψ, e]))) ⟨⟩
-  have c2 : LB.Coh L φ' (fun k => j' k ⟨⟩) := fun k₁ k₂ e =>
-    congrFun (hj' k₁ k₂ (hinj (Sum.inr k₁) (Sum.inr k₂) (by
-      show ψ' k₁ ≫ F = ψ' k₂ ≫ F
-      rw [hψ', hψ', e]))) ⟨⟩
-  have c3 : ∀ k k', φ k = φ' k' → j k ⟨⟩ = j' k' ⟨⟩ := fun k k' e =>
-    congrFun (hjj k k' (hinj (Sum.inl k) (Sum.inr k') (by
-      show ψ k ≫ F = ψ' k' ≫ F
-      rw [hψ, hψ', e]))) ⟨⟩
-  have key := hc (fun k => j k ⟨⟩) (fun k => j' k ⟨⟩) c1 c2 c3
-  apply unit_ext
-  intro y hy
-  have hb : h.base y ∈ LB.wchart L φ (fun k => j k ⟨⟩) ⊓ LB.wchart L φ' (fun k => j' k ⟨⟩) :=
-    ⟨GeneratorPullback.pullAlong_le L F h φ ψ hψ j hy.1, GeneratorPullback.pullAlong_le L F h φ' ψ' hψ' j' hy.2⟩
-  have kk := (gU_res _ (h.base y) hb _).symm.trans
-    ((congrArg (gU (h.base y) hb) key).trans (gU_res _ (h.base y) hb _))
-  exact ((gU_res _ y hy _).trans (gU_pullAlong L F h φ ε ψ hψ t j y _)).trans
-    ((congrArg (Units.map (h.stalkMap y).hom.toMonoidHom) kk).trans
-      ((gU_res _ y hy _).trans (gU_pullAlong L F h φ' ε' ψ' hψ' t' j' y _)).symm)
 
 lemma wpl {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (h : Z ⟶ Y)
     (j : K → L.ι) : LB.wchart L (fun k => h ≫ φ k) j ≤ h ⁻¹ᵁ LB.wchart L φ j := fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k

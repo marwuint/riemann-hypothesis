@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.OrderedConst
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTrivialOnUnitsModConductorUnitCharacterValuePr
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeCharacterRankOnePerturbationStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRankOneCornerPrincipalSeriesCongruenceStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeCharacterRankOnePerturbation
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRankOneCornerPrincipalSeriesCongruence
 
 noncomputable section
 
@@ -41,7 +41,7 @@ theorem not_intertwine : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalS
     have : j ∈ T := by simp [T]; exact ⟨lt_trans hab hj, hc⟩
     exact absurd (T.le_max' j this) (not_le.mpr hj)
   obtain ⟨j, hj, u, s, hu, hs, hsu, hne, hθj, hKO, hval⟩ :=
-    GlobalTheory.T.exists_rankOne_corner_principalSeriesCongruence k n ψ hord y hy a b hab hbad_ab hbmax
+    _root_.GlobalTheory.PsType.corner_rankOne k n ψ hord y hy a b hab hbad_ab hbmax
   have hprops := GlobalTheory.PsType.triv_ev_props k
   refine ⟨j, hj, ⟨hKO, ?_⟩, ?_⟩
   · intro i i' hii'
@@ -66,7 +66,7 @@ theorem not_intertwine : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalS
         if_neg (ne_of_lt hii'), add_zero]
       exact hprops.2.2.1 _
   · have hθ : theta ψ (y * j * y⁻¹) = (ψ a u : ℂ) := by
-      refine GlobalTheory.T.principalSeriesTypeCharacter_rankOne_perturbation k n ψ (y * j * y⁻¹) (fun i => s * y.val i b) (Pi.single a 1) a u hu hval ?_
+      refine _root_.GlobalTheory.PsType.theta_rankOne k n ψ (y * j * y⁻¹) (fun i => s * y.val i b) (Pi.single a 1) a u hu hval ?_
       intro i
       by_cases hi : i = a
       · subst hi; simp [hsu]

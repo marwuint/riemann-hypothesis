@@ -1,7 +1,15 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChainFrameSignatureData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChainFrameSignatureDataStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplTupBijective
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ThetaIntegralsAgree
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdMinorsMemInv
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Theta IsDedekindDomain NumberField Finset MeasureTheory
@@ -80,14 +88,14 @@ theorem GlobalTheory.RealQuotBot.real_quotient_invariants_equiv : GlobalTheory.P
     have h2 : (x - x') ⊗ₜ[ℂ] y = 0 := by
       rw [TensorProduct.sub_tmul]; exact sub_eq_zero.2 (e.injective h)
     exact GlobalTheory.RealQuotBot.tmul_ne_zero (sub_ne_zero.2 hne) hy h2
-  have sA := fun τ => GlobalTheory.T.diagonalHermitianFrame_signs_pos_of_definite D A FA τ (hsA τ)
-  have sA' := fun τ => GlobalTheory.T.diagonalHermitianFrame_signs_pos_of_definite D A' FA' τ (hsA' τ)
-  have sW := fun τ => GlobalTheory.T.diagonalHermitianFrame_signs_pos_of_definite D WW FW τ (hsW τ)
+  have sA := fun τ => _root_.GlobalTheory.DefiniteFrame.frame_signs_pos D A FA τ (hsA τ)
+  have sA' := fun τ => _root_.GlobalTheory.DefiniteFrame.frame_signs_pos D A' FA' τ (hsA' τ)
+  have sW := fun τ => _root_.GlobalTheory.DefiniteFrame.frame_signs_pos D WW FW τ (hsW τ)
   obtain ⟨hTA, hcoA, -⟩ := GlobalTheory.RealQuot.oriented_maps D ψ θ hθ true A WW FA FW β (β / α) ωA b (fun τ => b τ - a τ) hm.weilA
     (fun τ => ⟨(hE τ).2, GlobalTheory.RealQuot.hasInfExp_div D α β τ (a τ) (b τ) (hE τ).1 (hE τ).2⟩) Pi rf rl p hm.mapA
   obtain ⟨hTB, hcoB, -⟩ := GlobalTheory.RealQuot.oriented_maps D ψ θ hθ false A' WW FA' FW α (α / β) ωB a (fun τ => a τ - b τ) hm.weilB
     (fun τ => ⟨(hE τ).1, GlobalTheory.RealQuot.hasInfExp_div D β α τ (b τ) (a τ) (hE τ).2 (hE τ).1⟩) Pi rf rl p' hm.mapB
-  obtain ⟨n₀, hn₀⟩ := GlobalTheory.T.definiteBottomTriple_weight_natural D ψ θ A A' WW FA FW a b α β ωA hθ hsA hsW hT hE hm.weilA ⟨f, hf, hf0⟩
+  obtain ⟨n₀, hn₀⟩ := _root_.GlobalTheory.WeightNat.weight_nat D ψ θ A A' WW FA FW a b α β ωA hθ hsA hsW hT hE hm.weilA ⟨f, hf, hf0⟩
   have kA : GlobalTheory.RealQuot.coinv true FA FW (fun τ => b τ - a τ) ≤ LinearMap.ker q := by
     intro P hP
     have h := hcoA f hf P hP
@@ -111,7 +119,7 @@ theorem GlobalTheory.RealQuotBot.real_quotient_invariants_equiv : GlobalTheory.P
     rw [hpB f' hf', hpB f' hf', hfy'] at h2
     refine canc _ _ ?_
     rw [h1, h2, hPP]
-  have hrow := GlobalTheory.T.definite_bottom_row_transport_contragredient D A A' WW FA FA' FW b a n₀ Pr q q' sA sA' sW
+  have hrow := _root_.GlobalTheory.RowTransport.row_transport D A A' WW FA FA' FW b a n₀ Pr q q' sA sA' sW
     (fun τ => by
       have hc : ((A.rank : ℚ) + (A'.rank : ℚ)) = (WW.rank : ℚ) := by exact_mod_cast had
       rw [hn₀ τ, hc]) hrel
@@ -138,8 +146,8 @@ theorem GlobalTheory.RealQuotBot.real_quotient_invariants_equiv : GlobalTheory.P
       rw [LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]
     simp only [σ, dif_pos hk, LinearMap.comp_apply, LinearEquiv.coe_coe, e1, Submodule.liftQ_apply, AlgHom.toLinearMap_apply]
   refine ⟨hPr, n₀, σ, ?_, ?_, ?_, ?_⟩
-  · exact GlobalTheory.T.columnSubstitution_unitary_of_kills_lieCoinvariants D true A WW FA FW (fun τ => b τ - a τ) n₀ Pr q sA sW (fun τ => by simp only [if_true]; exact hn₀ τ) kA
-  · exact GlobalTheory.T.columnSubstitution_unitary_of_kills_lieCoinvariants D false A' WW FA' FW (fun τ => a τ - b τ) n₀ Pr q' sA' sW
+  · exact _root_.GlobalTheory.LieInt.colSub_unitary_of_coinv D true A WW FA FW (fun τ => b τ - a τ) n₀ Pr q sA sW (fun τ => by simp only [if_true]; exact hn₀ τ) kA
+  · exact _root_.GlobalTheory.LieInt.colSub_unitary_of_coinv D false A' WW FA' FW (fun τ => a τ - b τ) n₀ Pr q' sA' sW
       (fun τ => by simp only [Bool.false_eq_true, if_false]; rw [hn₀ τ]; ring) kB
   · intro κ P _
     rw [hσ]

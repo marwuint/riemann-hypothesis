@@ -128,11 +128,4 @@ theorem IsCell.reindex {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (
 
 end CellFacts
 
-example : InRCone (fun i : Fin 2 => (![mulForm, mulForm] : Fin 2 → LinearMap.BilinForm ℤ ℤ) (Equiv.swap 0 1 i))
-    ((2 : ℤ) • mulForm) :=
-  inRCone_trans (δ := ![mulForm]) (fun j => by
-    fin_cases j
-    exact ⟨![1, 0], fun i => by fin_cases i <;> norm_num, LinearMap.ext₂ fun a b => by simp [Fin.sum_univ_two]⟩)
-    ⟨![2], fun i => by fin_cases i; norm_num, LinearMap.ext₂ fun a b => by simp⟩
-
 end GlobalTheory.PolFan

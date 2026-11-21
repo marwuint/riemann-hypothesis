@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OneAddSmulMemOfSqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OneAddSmulMemOfSqZero
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatProjectorOfAutStableMatricesStatement
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
@@ -32,7 +32,7 @@ theorem exists_linExt_corner_proj : ∀ (ι : Type) [Fintype ι] [DecidableEq ι
         rwa [h2] at h1
       smul_mem' := by
         rintro t x ⟨hx1, hx2⟩
-        refine ⟨GlobalTheory.T.one_add_smul_mem_of_sq_zero' ι Γ hΓ x (corner_mul_corner E x x hE hx2 hx2) hx1 t, ?_⟩
+        refine ⟨_root_.GlobalTheory.ClassFin.one_add_smul_mem_of_sq_zero ι Γ hΓ x (corner_mul_corner E x x hE hx2 hx2) hx1 t, ?_⟩
         rw [Matrix.mul_smul, Matrix.smul_mul, hx2] }
   have hS : ∀ σ : ℂ ≃+* ℂ, ∀ x ∈ S, x.map σ ∈ S := by
     rintro σ x ⟨hx1, hx2⟩

@@ -3,7 +3,7 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardAdelicCharacterStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureScalingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AnnihilatorOfAnnihilatorLeStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AnnihilatorOfAnnihilatorLe
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocDensHI
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core
 open scoped ENNReal NNReal MatrixGroups nonZeroDivisors Pointwise
@@ -278,11 +278,6 @@ theorem perp_perp_lat (hψ : IsStdChar F ψ) {c : F} (hc : c ≠ 0) :
   show algebraMap F (A F) c * (algebraMap F (A F) c⁻¹ * y) = y
   rw [← mul_assoc, hcc, one_mul]
 
-theorem natCast_mul_mem_lat (N : ℕ) {z : A F} (hz : z ∈ Oh F) : (N : A F) * z ∈ lat (N : F) :=
-  ⟨z, hz, by
-    show algebraMap F (A F) (N : F) * z = _
-    rw [map_natCast]⟩
-
 theorem mem_lat_inv {N : ℕ} (hN : 0 < N) {x : A F} (h : (N : A F) * x ∈ Oh F) :
     x ∈ lat ((N : F)⁻¹) :=
   ⟨_, h, by
@@ -395,7 +390,7 @@ theorem finiteAdeles_selfDual : ∀ (F : Type) [Field F] [NumberField F] [Measur
     obtain ⟨N₂, hN₂, k₂⟩ := hbd _ hLc
     have a := hl (hNF hN₁)
     have b := hl (inv_ne_zero (hNF hN₂))
-    refine GlobalTheory.T.annihilator_of_annihilator_le (A F) (fun x y => ψ (x * y)) (ENNReal.ofReal (kap F) • lf) hμ hsymm
+    refine _root_.GlobalTheory.CompanionTheory.SW.CofinalDual.selfDual_of_between (A F) (fun x y => ψ (x * y)) (ENNReal.ofReal (kap F) • lf) hμ hsymm
       (fun x y => hnorm _) hadd (lat (N₁ : F)) L (lat (N₂ : F)⁻¹) ?_ ?_ a.2.1 b.1 a.2.2.1 b.2.2.2.1
       a.2.2.2.2.1 b.2.2.2.2.1 a.2.2.2.2.2 b.2.2.2.2.2
     · rintro _ ⟨z, hz, rfl⟩

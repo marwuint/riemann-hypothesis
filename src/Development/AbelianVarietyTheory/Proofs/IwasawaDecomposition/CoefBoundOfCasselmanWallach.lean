@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormDwLeSobNorm
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInnerApprox
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsKFinDRep
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CasselmanWallachExtensionBanachTargetStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAveragedOperatorMappingToKFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CasselmanWallachExtensionBanachTarget
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAveragedOperatorMappingToKFinite
 
 noncomputable section
 
@@ -144,7 +144,7 @@ variable [CompleteSpace H]
 
 theorem orbit_bound (h : Std ε σ) {a : H} (ha : Sm ε σ a) (ha0 : a ≠ 0) (N : ℕ) {v : H} (hv : IsKFin ε σ v) :
     ∃ C, 0 ≤ C ∧ ∀ ℓ : Forms ε σ a N, ∀ g ∈ UJset ε, ‖ℓ.1 (σ g v)‖ ≤ C * wt N g := by
-  obtain ⟨T, ⟨Z, C, hZ, hZG, hC, hT⟩, rfl⟩ := GlobalTheory.T.exists_averaged_operator_mapping_to_KFinite n ε H σ h a ha0 v hv
+  obtain ⟨T, ⟨Z, C, hZ, hZG, hC, hT⟩, rfl⟩ := _root_.GlobalTheory.TypeSum.exists_isAvg_apply_eq n ε H σ h a ha0 v hv
   obtain ⟨B, hB⟩ := (hZ.bddAbove_image (continuous_wt N).continuousOn)
   refine ⟨C * |B|, by positivity, fun ℓ g hg => ?_⟩
   have := avgBd_sobCont n ε H σ h T Z C hZ hZG hC hT Unit (fun _ => ℓ.1 ∘ₗ (σ g : H →ₗ[ℂ] H)) (fun _ => a)
@@ -213,7 +213,7 @@ theorem unit_bound (hCW : GlobalTheory.Published.CasselmanWallach) (h : Std ε �
     rw [rt_apply hy, hT₀ v hv]
     have := wt_ne N (i.2.1 * y)
     field_simp
-  obtain ⟨T, hT1, hT2, S, C, hS, hC⟩ := GlobalTheory.T.casselmanWallach_extension_banach_target hCW n ε H σ h _ _ (modRep_rt ε (Forms ε σ a N) N) T₀
+  obtain ⟨T, hT1, hT2, S, C, hS, hC⟩ := _root_.GlobalTheory.TypeSum.casselmanWallach_banach hCW n ε H σ h _ _ (modRep_rt ε (Forms ε σ a N) N) T₀
     (fun k hk v hv => by
       ext i
       rw [key v hv k (K_le_UJ hk), hT₀ _ (isKFin_translate hv hk), sigma_mul h.1 i.2.2 (K_le_UJ hk)])

@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedCoefficientFieldInComplex
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.JointQ
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CmQuadraticFormEqAlternatingForm
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FieldDatumSizeLogDiscriminantStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassFieldDegreeLeAndRootDiscrBoundStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DegreeRootDiscrBoundKummerFieldOfPowerIdealRootsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FieldDatumSizeLogDiscriminant
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassFieldDegreeLeAndRootDiscrBound
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DegreeRootDiscrBoundKummerFieldOfPowerIdealRoots
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.FieldSizeSupAdd
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SzAdjoinRootOfUnity
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SzFieldRangeEmbedding
@@ -69,11 +69,11 @@ theorem sz_Om_poR : RayField → ∀ (P : Pre) (δ : FieldDat P) (L : ℝ), Host
     rw [abs_neg, abs_of_nonneg (Nat.cast_nonneg _)] at h'
     linarith
 
-  have hM' := GlobalTheory.T.field_datum_size_log_discriminant hR P δ
-  obtain ⟨hdeg_le, hray⟩ := GlobalTheory.T.rayClassField_degree_le_and_rootDiscrBound P.host.E P.host.φ₀ (modulus P) δ.ray δ.isRay (modulus_ne_zero P)
+  have hM' := _root_.GlobalTheory.Mem.Fld.TorsionSize.sz_discField hR P δ
+  obtain ⟨hdeg_le, hray⟩ := _root_.GlobalTheory.Mem.Fld.RaySize.degOver_le_and_sz P.host.E P.host.φ₀ (modulus P) δ.ray δ.isRay (modulus_ne_zero P)
   have hcyc : Sz (cycField (rootOrder P)) (Real.log (rootOrder P)) (Real.log (rootOrder P)) :=
     sz_adjoin_rootOfUnity _ (Nat.pos_of_ne_zero (rootOrder_ne_zero P))
-  have hV : Sz δ.V _ _ := GlobalTheory.T.degreeRootDiscrBound_kummerFieldOfPowerIdealRoots P.host.E P.host.φ₀ δ.hstar δ.hstar_pos
+  have hV : Sz δ.V _ _ := _root_.GlobalTheory.FieldSize.sz_kummerField P.host.E P.host.φ₀ δ.hstar δ.hstar_pos
   have hall := sz_sup _ _ _ _ _ _ (sz_sup _ _ _ _ _ _ (sz_sup _ _ _ _ _ _ hM' hray) hcyc) hV
   change Sz (δ.M' ⊔ δ.ray ⊔ cycField (rootOrder P) ⊔ δ.V) _ _
 

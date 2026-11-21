@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsInnerLatticeVectorAnisotropicStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitriangularChangeFrameUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnipotentAddIsotropicToAnisotropicStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitriangularChangeFrameUnipotent
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnipotentAddIsotropicToAnisotropic
 
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc Formalism.MainNotions.S.LocNG GlobalTheory.LocOver
 open scoped Classical
@@ -74,13 +74,13 @@ theorem integral_change {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace 
     (Fr : FrameD H r) (L : Submodule M.L.O (H.Wb Fr.f)) (hL : Fr.IsInner L)
     (A : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (hA : Uni A) (hAO : ∀ a b, A a b ∈ M.L.O) :
     ∃ k ∈ Fr.N, (∀ b, k (Fr.f b) = ∑ a, A a b • Fr.f a) ∧ img k (Fr.LamStd L) = Fr.LamStd L := by
-  obtain ⟨kl, hkl, hkle, hklz, hklL⟩ := GlobalTheory.T.unitriangular_change_frame_unipotent M hOK H r Fr L A hA hAO
+  obtain ⟨kl, hkl, hkle, hklz, hklL⟩ := _root_.GlobalTheory.LocOver.UnipLevi.levi_integral M hOK H r Fr L A hA hAO
   obtain ⟨y, hyL, hyz, hyes⟩ := GlobalTheory.T.exists_inner_lattice_vector_anisotropic M hOK H r Fr L hL
   have hx : ∑ a : Fin r, A a.castSucc (Fin.last r) • Fr.f a.castSucc ∈
       Submodule.span M.L.O (Set.range fun a : Fin r => Fr.f a.castSucc) :=
     Submodule.sum_mem _ fun a _ =>
       Submodule.smul_mem _ (⟨A a.castSucc (Fin.last r), hAO _ _⟩ : M.L.O) (Submodule.subset_span ⟨a, rfl⟩)
-  obtain ⟨kz, hkz, hkzz, hkzX, hkzL⟩ := GlobalTheory.T.exists_unipotent_add_isotropic_to_anisotropic M hOK H r Fr L hL y hyL hyz hyes _ hx
+  obtain ⟨kz, hkz, hkzz, hkzX, hkzL⟩ := _root_.GlobalTheory.LocOver.ZStep.zstep M hOK H r Fr L hL y hyL hyz hyes _ hx
   refine ⟨kz * kl, mul_mem hkz hkl, fun b => ?_, by rw [img_mul, hklL, hkzL]⟩
   induction b using Fin.lastCases with
   | last =>

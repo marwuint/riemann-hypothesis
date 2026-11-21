@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOfMarkedFormsInSameCellSimplicialFan
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsMatchingPiecesOfCellStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMarkedFormPiecesRaysOfSimplicialCells
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsMatchingPiecesOfCell
 
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.CompanionTheory.Ar.Fan
 
@@ -24,8 +25,8 @@ theorem eq_of_orbMark_of_inRCone_cell : ∀ (O : Type) [CommRing O] [IsDedekindD
   have hcδ : ∀ j, InRCone δ (γ j) := hγδ
   obtain ⟨c, hc, hβc⟩ := inRCone_trans hcδ hin
   obtain ⟨c', hc', hβc'⟩ := inRCone_trans hcδ hin'
-  obtain ⟨p, hp, hpi, hpc⟩ := GlobalTheory.T.exists_matching_pieces_of_cell O bar w0 hb φ hφ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt β hm
-  obtain ⟨p', hp', hpi', hpc'⟩ := GlobalTheory.T.exists_matching_pieces_of_cell O bar w0 hb φ hφ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt β' hm'
+  obtain ⟨p, hp, hpi, hpc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.MatchingPieces.exists_pieces_match O bar w0 hb φ hφ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt β hm
+  obtain ⟨p', hp', hpi', hpc'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.MatchingPieces.exists_pieces_match O bar w0 hb φ hφ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt β' hm'
   have hlabray : ∀ (x : LinearMap.BilinForm ℤ X) (j : Fin m') (d : ℝ), 0 < d → x ∈ balForms bar X →
       (∀ y, 0 ≤ x y y) → toReal x = d • toReal (δ j) → lab.evalZ x = lab.evalZ (δ j) := by
     intro x j d hd hxb hxn hx
@@ -45,7 +46,7 @@ theorem eq_of_orbMark_of_inRCone_cell : ∀ (O : Type) [CommRing O] [IsDedekindD
     subst hjj
     have : toReal (p i) = (d / d') • toReal (p' i) := by
       rw [hpd, hpd', smul_smul, div_mul_cancel₀ _ hd'.ne']
-    exact (GlobalTheory.T.primitive_intBilinForm_eq_of_positive_real_ray (p i) (p' i) (d / d') (div_pos hd hd') hpp hpp' this).1
+    exact (_root_.GlobalTheory.PrimRay.eq_of_toReal_eq_smul (p i) (p' i) (d / d') (div_pos hd hd') hpp hpp' this).1
   apply toReal_injective
   rw [hp, hp']
   refine Finset.sum_congr rfl fun i _ => ?_

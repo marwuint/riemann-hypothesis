@@ -8,7 +8,7 @@ import Formalism.LocalRingCardinality.PosOfIsomEmb
 import Formalism.QuotientMetricDivisors.ReductionLemmaZero
 import Formalism.QuotientMetricDivisors.FinalW
 import Formalism.LocalToGlobal.Divisibility.FramesLemmas
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SlopeStepG
+import Formalism.LocalRingCardinality.DataArith
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HtPsiLeIffExists
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointLatticeIntersectionSelfDualProperties
 

@@ -32,15 +32,6 @@ structure ConcAt0 (D : D7) (T : TermTie D) where
 
 section TransportedAlt
 
-def RowLoopsEv0 {eps : ℝ} (Fm : FamP eps) (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
-    (Cc : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ConcAt0 (Fm.D x i) (At x hx i)) : Prop :=
-  ∀ Cg cb Cw cT CT C0 A : ℝ, ∃ C'₀ Cl₀ : ℝ, OwnEv Fm fun C' Cl x i => C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (hx : Fm.x1 < x) (u u' : (Fm.D x i).what₂.Word),
-      Cnt.Hyp (Fm.D x i) (Fm.L x i) u u' C' Cl Cg cb Cw cT CT C0 A → ConcTie (Cc x hx i).X (Cc x hx i).Y →
-      ((Cc x hx i).Y.tO u u').AbsConv →
-      ((Cc x hx i).Y.tO u u').RowBig (epsL (Fm.D x i)) (ddC (Cc x hx i).X (Cc x hx i).Y u u') ∧
-      ((Cc x hx i).Y.tO u u').RowNotScalar (epsL (Fm.D x i)) (ddC (Cc x hx i).X (Cc x hx i).Y u u')
-
 theorem loop_evaluation_threshold_zero (hLC : PN.LoopCores) (hSub : PB.SubFamily) (hS : Formalism.HermitianLatticesTheory.SiegelMassRatio)
     (Cg cb Cw cT CT C0 A C₀ : ℝ) :
     ∃ C'₀ Cl₀ : ℝ, ∀ {eps : ℝ} (Fm : FamP eps) (C1 : ℝ) (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
@@ -119,77 +110,5 @@ theorem loop_evaluation_threshold_zero (hLC : PN.LoopCores) (hSub : PB.SubFamily
     (Formalism.L2.SG.RowsOther.loopsInput_of_amp _ hA.2.2.le _ _ _ _ _ _ _ _ _ _ _ hAmp)
 
 end TransportedAlt
-
-section Fam5
-
-variable {eps : ℝ} (Fm : FamP eps) (C1 : ℝ)
-  (X : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, HidaSetting (Fm.D x i))
-  (Y : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Full (X x hx i))
-  (hF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), FinX (Y x hx i))
-  (hI : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), SIso (Fm.D x i).s (sOf (hF x hx i)))
-  (hCT : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ConcTie (X x hx i) (Y x hx i))
-
-def W5 : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), WittDat (X x hx i) :=
-  fun x hx i => Classical.choice (Formalism.L2.SG.Pf.WittFlags.WittExists_holds (Fm.D x i) (X x hx i))
-
-theorem H5 : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), TieHyp (W5 Fm X x hx i) (hI x hx i) := fun x hx i =>
-  { lat := Formalism.L2.SG.Pf.WittFlags.LatIso_holds (Fm.D x i)
-    idG := fun u u' => identityCell_vanishes u u'
-    atSome := fun u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds _ _ (Y x hx i) u u'
-    autFin := fun u => Formalism.L2.SG.Pf.autFin_of (automorphism_lattice_finite (Fm.D x i)) ((Fm.D x i).sp.Y_sig 0)
-      (Formalism.MainNotions.BridgeLemma.tie_Tu_pos (Fm.D x i) u)
-      (Formalism.L2.SG.Pf.WittFlags.RowRepsIso_holds (Fm.D x i) ((W5 Fm X x hx i).δ u) ((W5 Fm X x hx i).isom u)
-        ((X x hx i).Fu u) ((Y x hx i).what₂ u) ((Y x hx i).rowsOK u))
-    dim := fun u => Formalism.L2.SG.Pf.dimTie (X x hx i) u
-    pairs := Formalism.L2.SG.Pf.pairTiesAll_holds _ _ (Y x hx i) (hF x hx i) (W5 Fm X x hx i) (hI x hx i) }
-
-def A5 : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), AmpDat (X x hx i) :=
-  fun x hx i => Classical.choose (Formalism.L2.SG.Pf.KernelOfEmbedding.pvalForm_holds (W5 Fm X x hx i) (hI x hx i) (hCT x hx i).2.2.2.2.1)
-
-theorem hV5 : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), PvalForm (W5 Fm X x hx i) (hI x hx i) (A5 Fm X Y hF hI hCT x hx i) :=
-  fun x hx i => Classical.choose_spec (Formalism.L2.SG.Pf.KernelOfEmbedding.pvalForm_holds (W5 Fm X x hx i) (hI x hx i) (hCT x hx i).2.2.2.2.1)
-
-def termRelationsOfFamily : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i) :=
-  AtF Fm X Y hF hI (W5 Fm X) (H5 Fm X Y hF hI) (A5 Fm X Y hF hI hCT) (hV5 Fm X Y hF hI hCT)
-
-def termRelationsBaseData : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ConcAt0 (Fm.D x i) (termRelationsOfFamily Fm X Y hF hI hCT x hx i) :=
-  fun x hx i => ⟨X x hx i, Y x hx i, hF x hx i, hI x hx i,
-    jtPin_of (W5 Fm X x hx i) (hI x hx i) (H5 Fm X Y hF hI x hx i) (A5 Fm X Y hF hI hCT x hx i)
-      (hV5 Fm X Y hF hI hCT x hx i) (Formalism.L2.SG.Pf.FibreCounting.AmpFibreConst_holds (Y x hx i)),
-    Formalism.L2.SG.Pf.WittFlags.WRowPin_holds (hF x hx i) (hI x hx i) (W5 Fm X x hx i) (H5 Fm X Y hF hI x hx i)
-      (A5 Fm X Y hF hI hCT x hx i) (hV5 Fm X Y hF hI hCT x hx i),
-    Formalism.L2.SG.Pf.FibreCounting.FibreCount_holds (Y x hx i)⟩
-
-variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
-
-theorem loop_evaluation_concrete (hFC : FrameChangeC) (hDU : DetUUC)
-    (B : ∀ x (_ : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word), LoopLocDat (Fm.D x i) (Fm.L x i) u u' C1)
-    (M : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word),
-      LoopTermDat (Fm.D x i) (Fm.L x i) (termRelationsOfFamily Fm X Y hF hI hCT x hx i) u u' C1 (B x hx i u u'))
-    (hRk : ∀ Cg cb Cu cT CT C0 : ℝ, PX.RanksF Fm C0 Cg cb Cu cT CT) (hL3 : VanishingOnXAndXPlusMass.Conclusion3Family Fm)
-    (hAdm : AdmRec Fm C1)
-    (hVol : ∀ Cg cb Cu cT CT C0 Aa : ℝ, VanishingOnXAndXPlus.FamilyTermVolumeSmallCellBound Fm C1 (termRelationsOfFamily Fm X Y hF hI hCT)
-      (YtF Fm C1 X Y hF hI (W5 Fm X) (H5 Fm X Y hF hI) (A5 Fm X Y hF hI hCT) (hV5 Fm X Y hF hI hCT)
-        (hFCOf Fm X Y hF hI (W5 Fm X) hFC) B M) Cg cb Cu cT CT C0 Aa)
-    (hAmp : BridgeLemma₂.FamilyAmplitudeBounds Fm C1) :
-    RowLoopsEv0 Fm (termRelationsOfFamily Fm X Y hF hI hCT) (termRelationsBaseData Fm X Y hF hI hCT) := by
-  intro Cg cb Cw cT CT C0 A
-  have hR := BridgeLemma₂.family_gluing_bounds_of_beta Fm C1 (termRelationsOfFamily Fm X Y hF hI hCT)
-    (YtF Fm C1 X Y hF hI (W5 Fm X) (H5 Fm X Y hF hI) (A5 Fm X Y hF hI hCT) (hV5 Fm X Y hF hI hCT)
-      (hFCOf Fm X Y hF hI (W5 Fm X) hFC) B M) (family_admitted_of_parts Fm C1 _ _ hAdm hVol) hAmp
-    (fun x hx i u u' => ⟨normTieC_holds (Fm.D x i) (X x hx i) (Y x hx i) (hF x hx i) (hI x hx i) (W5 Fm X x hx i) (H5 Fm X Y hF hI x hx i) (A5 Fm X Y hF hI hCT x hx i) (hV5 Fm X Y hF hI hCT x hx i) u u',
-      gramDeterminant_of_unipotent_det hDU (Fm.D x i) (X x hx i) (Y x hx i) (hF x hx i) (hI x hx i) (W5 Fm X x hx i) (H5 Fm X Y hF hI x hx i) (A5 Fm X Y hF hI hCT x hx i) (hV5 Fm X Y hF hI hCT x hx i) u u',
-      entryLatC_holds (Fm.D x i) (X x hx i) (Y x hx i) (hF x hx i) (hI x hx i) (W5 Fm X x hx i) (H5 Fm X Y hF hI x hx i) (A5 Fm X Y hF hI hCT x hx i) (hV5 Fm X Y hF hI hCT x hx i) u u',
-      termInjF Fm C1 X Y hF hI (W5 Fm X) (H5 Fm X Y hF hI) (A5 Fm X Y hF hI hCT) (hV5 Fm X Y hF hI hCT)
-        (hFCOf Fm X Y hF hI (W5 Fm X) hFC) B M x hx i u u'⟩)
-    (fun x i => beta_l_unique (Fm.D x i))
-  obtain ⟨C₀, HR⟩ := hR Cg cb Cw cT CT C0 A
-  obtain ⟨C'₀, Cl₀, H⟩ := loop_evaluation_threshold_zero Formalism.FourierDecayAlt.P.loop_kernels Formalism.FourierDecayAlt.P.subfamilyAlt
-    Formalism.HermitianLattices.Ext.L3.siegelMassRatio Cg cb Cw cT CT C0 A C₀
-  exact ⟨C'₀, Cl₀, H Fm C1 _ _ (termRelationsBaseData Fm X Y hF hI hCT) HR
-    (Formalism.MainNotions.BridgeLemma.formAt_family Fm Cg cb Cw cT CT C0 (hRk Cg cb Cw cT CT C0) hL3
-      (hAdm.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 Cg cb Cw cT CT C0 0).2.2.2.2.2.2.2.2.2.2.2.2.1)⟩
-
-end Fam5
 
 end Formalism.L2.SG.LoopsTies

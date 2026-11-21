@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdjoinInverseIsLocalizationAwayStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationKaehlerPrimeIdealStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerBasisTowerStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationKaehlerPrimeIdeal
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerBasisTower
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerFinrankFractionFieldStatement
 
 namespace GlobalTheory.CompanionTheory.Ar.LocalStep
@@ -55,7 +55,7 @@ theorem exists_away_basis (S T K L : Type) [CommRing S] [CommRing T] [Field K] [
     IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (Submonoid.powers g) T' L
   have hm : Module.finrank L (KaehlerDifferential K L) = m := GlobalTheory.T.kaehler_finrank_fraction_field S T' K L m w hli' hsp'
   obtain rfl : r = m := hr.symm.trans hm
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.kaehler_basis_tower_alt ℚ S T' e r z w hli hsp hli' hsp'
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.KaehlerTower.kaehler_basis_tower ℚ S T' e r z w hli hsp hli' hsp'
   exact ⟨_, fun i => by rw [Fin.append_left]; rfl, h1, h2⟩
 
 theorem local_step : ∀ (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω₀] [CharZero Ω] [Algebra Ω₀ Ω] (σ σ' : Type) [Finite σ']
@@ -159,7 +159,7 @@ theorem local_step : ∀ (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω
   have hθ : ∀ s, ((θ s : S') : Ω) = algebraMap Ω₀ Ω s := fun s => hψ s
   have hr₀S : ∀ p, r₀ p ∈ S := fun p => by
     rw [hS]; exact Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)
-  rw [GlobalTheory.T.localization_kaehler_prime_ideal Ω₀ Ω σ σ' r₀ r₁ v hv bd S S' θ hθ hr₀S hr₁S' q, hq (q.comap θ) (hq'.comap θ)]
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.BoundaryPull.vanishing_rename_iff Ω₀ Ω σ σ' r₀ r₁ v hv bd S S' θ hθ hr₀S hr₁S' q, hq (q.comap θ) (hq'.comap θ)]
   constructor
   · rintro ⟨i, hi, hmem⟩
     refine ⟨Fin.castAdd r i, by simpa using hi, ?_⟩

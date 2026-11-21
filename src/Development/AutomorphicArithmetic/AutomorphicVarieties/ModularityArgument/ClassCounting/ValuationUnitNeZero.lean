@@ -50,11 +50,6 @@ theorem ordP_mul (P : HeightOneSpectrum (𝓞 F)) (α β : Fˣ) : ordP P (α * �
   simp only [ordP, Units.val_mul, map_mul]
   rw [WithZero.log_mul (valuation_unit_ne_zero P α) (valuation_unit_ne_zero P β), neg_add]
 
-def ordHom (P : HeightOneSpectrum (𝓞 F)) : Additive Fˣ →+ ℤ where
-  toFun x := ordP P x.toMul
-  map_zero' := ordP_one P
-  map_add' x y := ordP_mul P x.toMul y.toMul
-
 theorem ordP_finite (α : Fˣ) : {P : HeightOneSpectrum (𝓞 F) | ordP P α ≠ 0}.Finite := by
   refine ((HeightOneSpectrum.Support.finite (𝓞 F) (α : F)).union
     (HeightOneSpectrum.Support.finite (𝓞 F) ((α⁻¹ : Fˣ) : F))).subset ?_

@@ -325,54 +325,6 @@ theorem exists_divisorOf_eq_iff (D : CurveDivisor W) :
   · rintro ⟨h1, h2⟩
     exact exists_divisorOf_eq W h1 h2
 
-noncomputable def divisorHom : Additive W.toAffine.FunctionFieldˣ →+ CurveDivisor W where
-  toFun u := divisorOf W (u.toMul : W.toAffine.FunctionFieldˣ)
-  map_zero' := by simp [divisorOf_one]
-  map_add' u v := by
-    simp only [toMul_add, Units.val_mul]
-    exact divisorOf_mul W u.toMul.ne_zero v.toMul.ne_zero
-
-noncomputable def principalDivisors : AddSubgroup (CurveDivisor W) := (divisorHom W).range
-
-theorem mem_principalDivisors_iff (D : CurveDivisor W) :
-    D ∈ principalDivisors W ↔ ∃ f : W.toAffine.FunctionField, f ≠ 0 ∧ divisorOf W f = D := by
-  constructor
-  · rintro ⟨u, rfl⟩
-    exact ⟨_, u.toMul.ne_zero, rfl⟩
-  · rintro ⟨f, hf, rfl⟩
-    exact ⟨Additive.ofMul (Units.mk0 f hf), rfl⟩
-
-noncomputable def degreeZeroDivisors : AddSubgroup (CurveDivisor W) := (divisorDegree W).ker
-
-abbrev PicZero : Type u :=
-  degreeZeroDivisors W ⧸ (principalDivisors W).addSubgroupOf (degreeZeroDivisors W)
-
-noncomputable def divisorSumDegreeZero : degreeZeroDivisors W →+ W.toAffine.Point :=
-  (divisorSum W).comp (degreeZeroDivisors W).subtype
-
-omit [IsAlgClosed F] [W.IsElliptic] [DecidableEq F] in
-theorem single_sub_single_zero_mem (P : W.toAffine.Point) :
-    Finsupp.single P 1 - Finsupp.single 0 1 ∈ degreeZeroDivisors W := by
-  change divisorDegree W _ = 0
-  simp
-
-omit [IsAlgClosed F] [W.IsElliptic] in
-theorem divisorSumDegreeZero_surjective : Function.Surjective (divisorSumDegreeZero W) := by
-  intro P
-  refine ⟨⟨_, single_sub_single_zero_mem W P⟩, ?_⟩
-  simp [divisorSumDegreeZero]
-
-theorem ker_divisorSumDegreeZero :
-    (divisorSumDegreeZero W).ker = (principalDivisors W).addSubgroupOf (degreeZeroDivisors W) := by
-  ext ⟨D, hD⟩
-  rw [AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf, mem_principalDivisors_iff,
-    exists_divisorOf_eq_iff]
-  exact ⟨fun h => ⟨hD, h⟩, fun h => h.2⟩
-
-noncomputable def picZeroEquiv : PicZero W ≃+ W.toAffine.Point :=
-  (QuotientAddGroup.quotientAddEquivOfEq (ker_divisorSumDegreeZero W).symm).trans
-    (QuotientAddGroup.quotientKerEquivOfSurjective _ (divisorSumDegreeZero_surjective W))
-
 end AlgClosed
 
 end GroundTheory.Arith.Abelian

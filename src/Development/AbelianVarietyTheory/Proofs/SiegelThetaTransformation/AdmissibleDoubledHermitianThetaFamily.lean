@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledThetaTestFunctionSesquilinearHeisenbergStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledVacuumEqHermitianCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledVacuumEqHermitianCharacter
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelStructureProperties
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelTestFunctionFiniteSumEquivariantStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeVacuaExistUnique
@@ -386,7 +386,7 @@ theorem dbl_sum (hs : IsSympl X bas) (hn : Even n) {J : Type} (s t : Finset J)
     | empty => exact isSB_zero
     | insert a s ha ih =>
       rw [Finset.sum_insert ha]
-      exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ _ _ _ _ (hχ a) ih).1
+      exact (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ _ _ _ _ (hχ a) ih).1
   have z := fun (φ₁ φ₂ : TF n g) h₁ h₂ => (GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn φ₁ φ₂ h₁ h₂).2.1
   induction s using Finset.induction_on with
   | empty => simpa using z 0 _ isSB_zero (sb ψ hψ t) 0 1
@@ -416,7 +416,7 @@ theorem adm_dbl_phi_of_isVac : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   haveI := Fintype.ofFinite D.J
   have lev := (level_laws E r X g bas idx n hs hev D hn).2.2.2.1
   have phi := GlobalTheory.T.levelTestFunction_finite_sum_equivariant E r X g bas idx n hs hev D hn M hM hMm v₀ hv₀
-  obtain ⟨β, t, -, hu⟩ := GlobalTheory.T.doubledVacuum_eq_hermitian_character E r X g bas idx n hs hev D.w D.w_int D.w_tr _ _ (lev L hL).1
+  obtain ⟨β, t, -, hu⟩ := _root_.GlobalTheory.SW.dbl_vacuum E r X g bas idx n hs hev D.w D.w_int D.w_tr _ _ (lev L hL).1
     (lev L' hL').1 M hM _ _ (hv₀ L hL) (hv₀ L' hL')
   have mono : ∀ (Λ : Lt E n) {K K' : Lt E r}, K ≤ K' → tens Λ K ≤ tens Λ K' := fun Λ K K' h =>
     TensLat.tens_le fun v hv u hu => TensLat.pure_mem hv (h hu)

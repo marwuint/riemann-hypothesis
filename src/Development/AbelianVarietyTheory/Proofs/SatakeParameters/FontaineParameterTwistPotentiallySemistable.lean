@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Charpo
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsFrobSSWdRep
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PotSemistableParameterCoefficientFieldEnlargeStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DpstLetterTwistTensorEquivStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TensorFrobeniusSemisimplificationStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TensorFrobeniusSemisimplification
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open Formalism.BasicNotions.Loc GlobalTheory.Pst GlobalTheory.WeilDeligne
@@ -26,7 +26,7 @@ theorem wdPst_twist_one_field : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (A
   have f1 := isFrobSS_wdRep P ι Bw h hj (Bw.repE L s)
   have f2 := isFrobSS_wdRep P ι Bw h hj (Bw.repE L m)
   have f3 := isFrobSS_wdRep P ι Bw h hj (Bw.repE L (Formalism.MainNotions.SumRepresentations.At.twGL s (Matrix.GeneralLinearGroup.det.comp m)))
-  have f12 := GlobalTheory.T.tensor_frobeniusSemisimplification f1 f2
+  have f12 := _root_.GlobalTheory.WeilDeligne.IsFrobSS.tensor f1 f2
   have hI := IsFrobSS.iso f12 f3 e (fun g v => he1 g v) (fun v => he2 v)
   rw [wdPst_of_isPst ι Bw h hj hs, wdPst_of_isPst ι Bw h hj hm, wdPst_of_isPst ι Bw h hj ht, WD.lpChar_mk]
   exact (WD.sound hI).symm

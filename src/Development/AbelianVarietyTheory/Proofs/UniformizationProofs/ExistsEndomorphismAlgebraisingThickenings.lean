@@ -7,10 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.IsNsmul
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.QkToAkU
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsProperOfIsProjBy
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.OpenEqTopOfContainsSpecialPartUniversallyClosedStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.OpenEqTopOfContainsSpecialPartUniversallyClosed
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.HomogeneousFormSectionsEqZeroOfThickeningsStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsMorphismToProjectiveOfRankOneSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSectionLinearCombinationOfCompatibleThickeStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsMorphismToProjectiveOfRankOneSections
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSectionLinearCombinationOfCompatibleThicke
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCompatibleGeneratingSectionsAllThickeningsStatement
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -112,7 +112,7 @@ theorem exists_end_of_thickenings : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
       ∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e Y).left) (z : Z) (J), Good H z J →
         sval S (r ≫ pullback.fst Y.hom (thick R I e)) z J = sval (w e i j) r z J := by
     intro i j
-    refine GlobalTheory.T.exists_section_linearCombination_of_compatible_thickenings R I hI Y hsm hpr Y.left H PUnit (fun _ => 𝟙 Y.left) (fun _ => t)
+    refine _root_.GlobalTheory.SecAlgLinComb.exists_sec_linComb R I hI Y hsm hpr Y.left H PUnit (fun _ => 𝟙 Y.left) (fun _ => t)
       (fun e _ => pullback.fst Y.hom (thick R I e)) hH (fun e k => Category.comp_id _) (fun e => w e i j) ?_
     intro e z J hJ
     rw [hw (e + 1) i j _ _ z J hJ, hw e i j _ _ z J hJ, hfc e, Category.id_comp, hu e j z J hJ]
@@ -135,7 +135,7 @@ theorem exists_end_of_thickenings : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
   have hcov' : (⨆ i, ⨆ j, nonzeroLocus (S i j)) = ⊤ := by
     have hjac : I ≤ (⊥ : Ideal R).jacobson := by have := hI; exact IsAdicComplete.le_jacobson_bot (I := I)
     have : IsProper Y.hom := GlobalTheory.AbLaw.isProper_of_isProjBy R Y.left Y.hom hpr
-    refine GlobalTheory.T.open_eq_top_of_contains_special_part_universallyClosed R I hjac Y _ fun z => ?_
+    refine _root_.GlobalTheory.Unif.eq_top_of_special_part R I hjac Y _ fun z => ?_
     have hz1 : z ∈ ⨆ j, nonzeroLocus (u 0 j) := by rw [hcov]; trivial
     obtain ⟨j, hj⟩ := TopologicalSpace.Opens.mem_iSup.1 hz1
     unfold nonzeroLocus at hj
@@ -190,7 +190,7 @@ theorem exists_end_of_thickenings : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
     have hz0 : gs (f e) z (H.U (J (f e))) 0 = 0 := by rw [gs_eq _ _ _ hJe, map_zero, map_zero]
     rw [eval₂_scale _ (sval (u e j) (𝟙 _) z J) (fun i => gs (f e) z (H.U (J (f e))) ((s i).f (J (f e)))) hF,
       ← h2, hz0, zero_mul]
-  obtain ⟨φ, hφ, huniq⟩ := GlobalTheory.T.exists_morphism_to_projective_of_rank_one_sections R Y.left Y.hom H n s hH hva Y.left Y.hom _ m S hN hcov' hrel hhom
+  obtain ⟨φ, hφ, huniq⟩ := _root_.GlobalTheory.RankMap.exists_hom_of_rank_one R Y.left Y.hom H n s hH hva Y.left Y.hom _ m S hN hcov' hrel hhom
   refine ⟨Over.homMk φ hφ, fun e => ?_⟩
   refine huniq _ (pullback.fst Y.hom (thick R I e)) (f e) (hf e) ?_
   intro z k k' i i' j hzk hzk'

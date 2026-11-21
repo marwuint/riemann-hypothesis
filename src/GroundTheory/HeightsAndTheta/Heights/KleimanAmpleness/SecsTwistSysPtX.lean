@@ -25,12 +25,6 @@ theorem realises_graph (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω)
 
 end Graph
 
-section Point
-
-variable (k : Type) [Field k]
-
-end Point
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

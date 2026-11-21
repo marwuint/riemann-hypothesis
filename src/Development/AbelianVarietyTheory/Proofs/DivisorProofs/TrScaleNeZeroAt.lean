@@ -27,13 +27,6 @@ theorem typesSep_of_ok {s : ℕ} (hOk : A.fam.Ok s) (h0 : ∀ P, A.heckeR A.μ0 
 
 end General
 
-section Real
-
-open Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.IndefR.Links
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-end Real
-
 end GlobalTheory.FamSep
 
 end

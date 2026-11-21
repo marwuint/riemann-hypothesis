@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanOfPowMul
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EPowXiExtMemMan
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoordEPowBasis
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisElementMovingTiltedUniformizerStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisElementMovingTiltedUniformizer
 import Development.AutomorphicArithmetic.CyclotomicBounds.DeRhamLattices.PhiModCrystallineComparisonOfIsCrisCmp
 import Development.AutomorphicArithmetic.CyclotomicBounds.DeRhamLattices.LatticeTensorDeRhamCrysRelationGaloisStable
 import Development.AutomorphicArithmetic.CyclotomicBounds.DeRhamLattices.LatticeTensorInclDeRhamInjective
@@ -36,5 +36,5 @@ private theorem gen {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {
 
 theorem _root_.GlobalTheory.T.breuilKisin_galois_scales_deRhamPeriods_by_unit_pow : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T) (jB : (ι → OB l ↥(OL LL)) ≃ₗ[OB l ↥(OL LL)] TW (OB l ↥(OL LL)) T) (Pl : LocPrime l) (AI : LocAinf l Pl), IsStd Pl AI → IsCrisCmp I jB → IsHoriz (thetaW a LL) ϖ (sQ l) P jB → ∀ (jD : (ι → OD l ↥(OL LL)) ≃ₗ[OD l ↥(OL LL)] TW (OD l ↥(OL LL)) T), (∀ (c : ι → OA l ↥(OL LL)) (z : TW (OA l ↥(OL LL)) T), I.j (inclV l ↥(OL LL) ι c) = TWincl (inclO l ↥(OL LL)) T z → jD (fun i => toOD l ↥(OL LL) (c i)) = TWincl (toOD l ↥(OL LL)) T z) → ∀ α : ℕ, (∀ v ∈ P.L, E ↥LL.1 l e ^ α • v ∈ P.M) → ∀ g : Gl l, sQ l g ∈ GK (ϖ.field a) → ∀ v : OD l ↥(OL LL), GlobalTheory.GalStep.galOD ↥(OL LL) (sQ l g) (GlobalTheory.GalStep.ED ↥LL.1 (thetaW a LL) ϖ) = GlobalTheory.GalStep.ED ↥LL.1 (thetaW a LL) ϖ * v → ∀ d : P.D, GlobalTheory.GalStep.rhoD T jD g (GlobalTheory.GalStep.YD (thetaW a LL) ϖ (E ↥LL.1 l e ^ α • P.xi d)) = v ^ α • GlobalTheory.GalStep.YD (thetaW a LL) ϖ (E ↥LL.1 l e ^ α • P.xi d) := by
   intro _ l _ a e _ _ ϖ LL _ _ hl2 ι _ _ P T I jB Pl AI _ hCmp hHor jD hjD α hα g hg v hv d
-  obtain ⟨-, ε, -, hε, -⟩ := GlobalTheory.T.exists_galois_element_moving_tilted_uniformizer l a e ϖ hl2
+  obtain ⟨-, ε, -, hε, -⟩ := _root_.GlobalTheory.KummerMove.main l a e ϖ hl2
   exact gen (thetaW a LL) ϖ P T I jB jD ε hε hCmp hHor hjD α hα g hg v hv d

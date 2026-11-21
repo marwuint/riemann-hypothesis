@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDetInt
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemClosedSubgroupOfLocalStabilizerPairsStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOperatorLatticeStabiliserFixesVacuumNonsplitStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceWeilRepLatticeVacuumCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceWeilRepLatticeVacuumCharacter
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOrEqOfPlaceIdem
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMulEqZeroOfOrthogonal
 
@@ -230,7 +230,7 @@ theorem stab_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D
         rw [detAt_val, detAt_val]
         exact idempotentInterpolation_eq_of_mul_supported hee' hb hdT
       rw [hx, hy]
-      exact GlobalTheory.T.splitPlace_weilRep_latticeVacuum_character D ψ S T ΛS ΛT χS χT om hW hS hT e' he' g' h' (hSupp e' hsum').1 (hSupp e' hsum').2
+      exact _root_.GlobalTheory.VecInv.om_latVac_split D ψ S T ΛS ΛT χS χT om hW hS hT e' he' g' h' (hSupp e' hsum').1 (hSupp e' hsum').2
         hlat _ _ (isDetAt_detAt e' he'.1 S g') (isDetAt_detAt e' he'.1 T h') f hf hvac
     ·
       have hx : detAt e he S g' = 1 := by
@@ -256,7 +256,7 @@ theorem stab_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D
         have hb : e'' * algebraMap (AF D.host.F) (AE D) ε = e'' := by
           rw [← hs'']
           exact split_mul he''
-        rw [GlobalTheory.T.splitPlace_weilRep_latticeVacuum_character D ψ S T ΛS ΛT χS χT om hW hS hT e'' he'' g' h' (hSupp e'' hs'').1 (hSupp e'' hs'').2
+        rw [_root_.GlobalTheory.VecInv.om_latVac_split D ψ S T ΛS ΛT χS χT om hW hS hT e'' he'' g' h' (hSupp e'' hs'').1 (hSupp e'' hs'').2
           hlat _ _ (isDetAt_detAt e'' he''.1 S g') (isDetAt_detAt e'' he''.1 T h') f hf hvac]
         simp only [splitFacO, unram_detAt hg' he''.1 hb huT, unram_detAt hh' he''.1 hb huS, inv_one, one_mul,
           Circle.coe_one, one_smul]

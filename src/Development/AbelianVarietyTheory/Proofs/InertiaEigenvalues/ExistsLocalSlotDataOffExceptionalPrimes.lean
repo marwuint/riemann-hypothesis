@@ -7,12 +7,14 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BaseSizes
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemIntPts
 import Formalism.PadicSubsetSums.StableGradedCounts.TOPSgLe
 import Formalism.PadicSubsetSums.StableGradedCounts.TOPSgRange
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ShiftedJumpUpperBoundLeTwistBoundStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JumpSlotConditionsAtLetterStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpecialPrimeThresholdNumericsAlongFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LowJumpsAndCloudInWindowsAlongFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ParametersBaseSizeBoundsAlongFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConductorPrimesLtSpecialPrimeThresholdEventuallyStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ShiftedJumpUpperBoundLeTwistBound
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JumpPositionConditionsAtLetter
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpecialPrimeThresholdNumericsAlongFamily
+import Formalism.SharpRestriction.LevelLetterCocycles.NEqRZeroMulXPow
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LowJumpsAndCloudInWindowsAlongFamily
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BaseSizeBoundsAlongFamily
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConductorPrimesLtSpecialPrimeThresholdEventually
 
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut
 
@@ -20,10 +22,10 @@ namespace GlobalTheory.LocalPositionData
 
 theorem position_data_exist : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ (a : Fm.Ix x), AdmissibleParameterJ.JumpConditions (Fm.L x a) → ∀ l : ℕ, l.Prime → LevelStarExponents.lStar (Fm.L x a) < (l : ℝ) → (5 ≤ l ∧ (Fm.D x a).R.t + 1 < l ∧ l ≠ (Fm.D x a).host.q ∧ l ≠ (Fm.D x a).host.d ∧ l ∉ (Fm.D x a).host.small) ∧ (l ∉ GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.Exc (Fm.L x a) → ∀ j : ℕ, 1 ≤ j → j ≤ (Fm.D x a).R.m → ∀ (n : ℕ) [NeZero n] (up : ZMod n → Bool) (τ : ZMod n → (Fm.D x a).what₂.Tau), ∃ (h w η : ZMod n → ℕ) (typ : ZMod n → Bool) (U : ZMod n → Multiset ℤ), tableLineDegreeTwo.PositionHyps l n (Fm.D x a).R.t h w η typ U ∧ ∀ (c : ZMod n) (b : ℤ), ((U c).count (b + w c) = 1 ↔ (b : ℚ) ∈ AdmissibleParameterJ.JW (Fm.D x a) (up c) j (τ c)) ∧ (U c).count (b + w c) ≤ 1) := by
   intro eps Fm
-  obtain ⟨x0, hx0⟩ := GlobalTheory.T.conductorPrimes_lt_specialPrimeThreshold_eventually Fm
+  obtain ⟨x0, hx0⟩ := _root_.GlobalTheory.LevelBelowStarBound.QdSmall.qd_lt_lStar Fm
   refine ⟨x0, fun x hx hx1 a _ l hl hlS => ?_⟩
   obtain ⟨hqS, hdS, hsS⟩ := hx0 x hx hx1 a
-  obtain ⟨htη, hη, hB, hSc, hls1, hls2, hH⟩ := GlobalTheory.T.specialPrimeThreshold_numerics_along_family Fm x hx1 a
+  obtain ⟨htη, hη, hB, hSc, hls1, hls2, hH⟩ := _root_.GlobalTheory.lStar_numerics_at_record Fm x hx1 a
   have ht1 : 1 ≤ (Fm.D x a).R.t := by
     have := (Fm.D x a).R.rank_add_five_le; omega
   have htR : (0 : ℝ) ≤ (Fm.D x a).R.t := by positivity
@@ -63,15 +65,15 @@ theorem position_data_exist : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀
         (if up c then (z : ℝ) - (((Fm.D x a).R.t : ℝ) - 1) / 2 else (((Fm.D x a).R.t : ℝ) - 1) / 2 - z) ≤
           W0 + (Fm.L x a).Sc + (Fm.L x a).etaSz + 1) := by
     intro c
-    obtain ⟨hlo, W0, hW0, hcl⟩ := GlobalTheory.T.lowJumps_and_cloud_in_windows_along_family Fm x hx1 a j hj1 hjm (up c) (τ c)
+    obtain ⟨hlo, W0, hW0, hcl⟩ := _root_.GlobalTheory.LetterWindows.lows_cloud_windows Fm x hx1 a j hj1 hjm (up c) (τ c)
     refine ⟨W0, hW0, fun z hz => hlo z ((GlobalTheory.PositionData.mem_intPts (hfinL c) z).1 hz),
       fun z hz => hcl z ((GlobalTheory.PositionData.mem_intPts (hfinC c) z).1 hz)⟩
   set hh : ZMod n → ℕ := fun c => GlobalTheory.PositionData.hS (up c) (Fm.D x a).R.t (Fl c) (Fc c) with hhh
   have hhle : ∀ c, (hh c : ℝ) ≤ (Fm.L x a).sc.b + (Fm.L x a).Sc + 2 * (Fm.L x a).etaSz + 3 := by
     intro c
     obtain ⟨W0, hW0, hlo, hcl⟩ := hdat c
-    obtain ⟨hW1, hW2⟩ := GlobalTheory.T.baseSize_bounds_along_family Fm x hx1 a W0 hW0
-    have := GlobalTheory.T.shiftedJumpUpperBound_le_twist_bound (Fm.D x a).R.t (up c) (Fl c) (Fc c) (Fm.L x a).etaSz (Fm.L x a).Sc
+    obtain ⟨hW1, hW2⟩ := _root_.GlobalTheory.Proof.baseSize_bounds_along_family.main Fm x hx1 a W0 hW0
+    have := _root_.GlobalTheory.hS_le_bound (Fm.D x a).R.t (up c) (Fl c) (Fc c) (Fm.L x a).etaSz (Fm.L x a).Sc
       ((Fm.L x a).sc.b / LevelStarExponents.lStar (Fm.L x a)) W0 ht1 htη hB hSc hlo hcl hW1
     show ((GlobalTheory.PositionData.hS (up c) (Fm.D x a).R.t (Fl c) (Fc c) : ℕ) : ℝ) ≤ _
     linarith
@@ -93,7 +95,7 @@ theorem position_data_exist : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀
     up, fun c => GlobalTheory.PositionData.US (up c) (Fl c) (Fc c), ?_, ?_⟩
   · intro c
     obtain ⟨W0, hW0, hlo, hcl⟩ := hdat c
-    obtain ⟨hW1, -⟩ := GlobalTheory.T.baseSize_bounds_along_family Fm x hx1 a W0 hW0
+    obtain ⟨hW1, -⟩ := _root_.GlobalTheory.Proof.baseSize_bounds_along_family.main Fm x hx1 a W0 hW0
     have hex : ∀ m : ℤ, W0 + (-(Fm.L x a).etaSz - 2 * (GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.sgPlus (Fm.L x a) : ℝ) - 3) ≤ (m : ℝ) →
         (m : ℝ) ≤ W0 + ((Fm.L x a).Sc + (Fm.L x a).etaSz + (Fm.L x a).etaSz +
           2 * (GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.sgPlus (Fm.L x a) : ℝ) + 4) → ¬ (l : ℤ) ∣ m :=
@@ -103,7 +105,7 @@ theorem position_data_exist : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀
       apply Int.le_floor.mpr
       rw [mul_div_assoc]; exact hsg c
     have hT1 : 2 * (Fm.L x a).etaSz + 8 * ((Fm.L x a).sc.b / LevelStarExponents.lStar (Fm.L x a)) + 7 < (l : ℝ) := by linarith
-    exact GlobalTheory.T.jump_position_conditions_at_letter l (Fm.D x a).R.t (up c) (Fl c) (Fc c) (Fm.L x a).etaSz (Fm.L x a).Sc
+    exact _root_.GlobalTheory.PositionData.position_conditions l (Fm.D x a).R.t (up c) (Fl c) (Fc c) (Fm.L x a).etaSz (Fm.L x a).Sc
       ((Fm.L x a).sc.b / LevelStarExponents.lStar (Fm.L x a)) W0 (GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.sgPlus (Fm.L x a)) (Formalism.MainNotions.tableLineDegreeTwo.sg n l hh c)
       ht1 htη hB hSc hlo hcl hW1 hex (hsg c) hσP hT1
   · intro c b

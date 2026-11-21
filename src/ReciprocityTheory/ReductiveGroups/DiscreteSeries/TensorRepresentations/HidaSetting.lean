@@ -281,17 +281,6 @@ theorem isGKEndo_eeF {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → 
       · rw [if_pos hbc, if_pos hbc.symm]; abel
       · rw [if_neg hbc, if_neg (Ne.symm hbc)]; abel
 
-theorem isGKEndo_one (dual : Bool) (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
-    (E : Fin n → Fin n → Module.End ℂ D) (S : Submodule ℂ D) : IsGKEndo dual ε σ E S 1 := by
-  refine ⟨fun f hf => hf, fun a b f _ => rfl, fun k _ f _ f' _ h => h⟩
-
-theorem isGKEmb_bot (dual : Bool) (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
-    (E : Fin n → Fin n → Module.End ℂ D) (S : Submodule ℂ D) : IsGKEmb dual ε σ E S ⊥ 0 := by
-  refine ⟨fun x _ => by simp, fun x hx _ => (Submodule.mem_bot ℂ).1 hx, fun a b x _ => by simp, ?_⟩
-  intro k _ x _ x' _ _
-  funext c
-  simp [kDiag]
-
 end Ambient
 
 theorem casVal_shiftF (dual : Bool) (lam : Fin n → ℝ) (s : Fin n) :

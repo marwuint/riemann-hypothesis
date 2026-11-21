@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HermitianDiagonalization.HermDiag
+import Formalism.LocalToGlobal.AdelicCompactOpens.HermDefONFamily
 
 namespace PI.UnitaryGroupMassFormula.HermConj
 

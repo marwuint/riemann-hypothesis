@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsAffineHomOfFlatQuotientOfAffineKernel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenBetweenFinsetAndOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormBasicOpenFiniteFreeBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenBetweenFinsetAndOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormBasicOpenFiniteFreeBaseChange
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -55,13 +56,13 @@ theorem exists_isAffineOpen_of_preimage_le_affine : ∀ (R R₁ : Type) [CommRin
 
   have hfin : (b ⁻¹' (s : Set X)).Finite :=
     s.finite_toSet.preimage' fun x _ => b.finite_preimage_singleton x
-  obtain ⟨f, hfV, hft⟩ := GlobalTheory.T.exists_basicOpen_between_finset_and_open' X₁ W hW (b ⁻¹ᵁ V) hVW hfin.toFinset
+  obtain ⟨f, hfV, hft⟩ := _root_.GlobalTheory.Mum.exists_basicOpen_between_finset_and_open X₁ W hW (b ⁻¹ᵁ V) hVW hfin.toFinset
     (fun z hz => hsV _ ((hfin.mem_toFinset).1 hz))
   let f' : Γ(X₁, b ⁻¹ᵁ V) := X₁.presheaf.map (homOfLE hVW).op f
   have hf' : X₁.basicOpen f' = X₁.basicOpen f := by
     rw [Scheme.basicOpen_res]
     exact inf_eq_right.2 hfV
-  obtain ⟨n, hn⟩ := GlobalTheory.T.exists_norm_basicOpen_finiteFree_baseChange R R₁ X X₁ p p₁ b H V hVc hVq f'
+  obtain ⟨n, hn⟩ := _root_.GlobalTheory.Mum.NormBC.exists_norm_basicOpen R R₁ X X₁ p p₁ b H V hVc hVq f'
   refine ⟨X.basicOpen n, ?_, fun x hx => (hn x).2 ⟨hsV x hx, fun z hz => ?_⟩⟩
   swap
   · rw [hf']

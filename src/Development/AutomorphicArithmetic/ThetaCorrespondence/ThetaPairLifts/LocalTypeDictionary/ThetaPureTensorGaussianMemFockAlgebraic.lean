@@ -31,7 +31,7 @@ theorem theta_pure_tensor_gaussian_mem_fockAlgebraic : GlobalTheory.Published.Ho
           Γ.M'.IsGauss Bs.ψ Bs.emb f₀ → (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = Γ.M'.vac v) →
           GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ φ) ∈ algF ψ θ false A₁ B := by
   intro _ _ D ψ θ _ hθ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hM f₀ φ hg hφ hvac
-  obtain ⟨f, hf, hD⟩ := GlobalTheory.T.thetaTransform_gaussianVacuum_isFiniteDatum D ψ θ hθ false W₁ X A₁ B e.symm Bs hM.triple.base h.ψ Γ.V' Γ.W _ _ _ _
+  obtain ⟨f, hf, hD⟩ := _root_.GlobalTheory.GaussThetaFinite.isFinF_of_isGauss D ψ θ hθ false W₁ X A₁ B e.symm Bs hM.triple.base h.ψ Γ.V' Γ.W _ _ _ _
     (by simpa using h.JW₁) h.JX hM.triple.geo.hV' hM.triple.geo.hW
     (fun w => by
       obtain ⟨τ, h1, -, h3, h4⟩ := h.cart w

@@ -178,69 +178,6 @@ theorem integral_monoInner_self (a : Fin (N + 1) →₀ ℕ) :
 
 end L2MonomialOrthogonality
 
-lemma fsFibreInner_eq {K : Type} [Field K] [NumberField K] {N : ℕ} (n : ℕ) {ρ : 𝓞 K →+* ℂ}
-    (x : (self (𝓞 K) N).complexPoints ρ) (s t : (self (𝓞 K) N).Fibre (twistN (𝓞 K) N n) x) :
-    fsFibreInner n x s t = starRingEnd ℂ (fsFrameCoord n ρ x s) * fsFrameCoord n ρ x t *
-      (((‖x.1.rep (CP.chartIndex x.1)‖ ^ n / norm2 x.1.rep ^ n) ^ 2 : ℝ) : ℂ) := by
-  set κ := ‖x.1.rep (CP.chartIndex x.1)‖ ^ n / norm2 x.1.rep ^ n with hκ
-  have hN : ∀ w, fsFibreNorm n ρ x w = ‖fsFrameCoord n ρ x w‖ * κ := fun w => by
-    rw [fsFibreNorm, hκ, mul_div_assoc]
-  unfold fsFibreInner
-  simp only [hN, map_add, map_sub, map_smul, smul_eq_mul]
-  set p := fsFrameCoord n ρ x s
-  set q := fsFrameCoord n ρ x t
-  push_cast
-  simp only [mul_pow, ← Complex.conj_mul', map_add, map_sub, map_mul, Complex.conj_I]
-  linear_combination ((κ : ℂ) ^ 2 * (starRingEnd ℂ q * p - starRingEnd ℂ p * q) / 2) * Complex.I_sq
-
-theorem fsFibreInner_monomial (h : FSCoord.Statement.{0}) {K : Type} [Field K] [NumberField K]
-    {N : ℕ} (σ : K →+* ℂ) (a b : Fin (N + 1) →₀ ℕ) (hb : b.degree = a.degree)
-    (x : (self (𝓞 K) N).complexPoints (intEmb σ)) :
-    fsFibreInner a.degree x
-        ((self (𝓞 K) N).evalFibre (twistN (𝓞 K) N a.degree) σ x
-          ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] polySection (monomial_mem_grading (A := 𝓞 K) a rfl)))
-        ((self (𝓞 K) N).evalFibre (twistN (𝓞 K) N a.degree) σ x
-          ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] polySection (monomial_mem_grading (A := 𝓞 K) b hb))) =
-      L2MonomialOrthogonality.monoInner a.degree a b x.1.rep := by
-  rw [evalFibre_tmul, evalFibre_tmul, map_one, one_smul, one_smul, fsFibreInner_eq]
-  have hca := h (𝓞 K) N a.degree (intEmb σ) _ (monomial_mem_grading (A := 𝓞 K) a rfl) x
-    (CP.chartIndex x.1) (rep_chartIndex_ne_zero x.1)
-  have hcb := h (𝓞 K) N a.degree (intEmb σ) _ (monomial_mem_grading (A := 𝓞 K) b hb) x
-    (CP.chartIndex x.1) (rep_chartIndex_ne_zero x.1)
-  change fsFrameCoord _ _ x _ * _ = _ at hca hcb
-  have ev : ∀ m : Fin (N + 1) →₀ ℕ, evalAt (intEmb σ) x.1.rep (monomial m (1 : 𝓞 K)) =
-      eval x.1.rep (monomial m (1 : ℂ)) := fun m => by
-    simp [evalAt, eval₂_monomial, eval_monomial]
-  rw [ev] at hca hcb
-  set vj := x.1.rep (CP.chartIndex x.1)
-  have hn : (norm2 x.1.rep : ℂ) ≠ 0 := by exact_mod_cast (euclideanNorm_pos x.1.rep_nonzero).ne'
-  have e : starRingEnd ℂ vj ^ a.degree * vj ^ a.degree = ((‖vj‖ : ℂ) ^ 2) ^ a.degree := by
-    rw [← mul_pow, Complex.conj_mul']
-  rw [L2MonomialOrthogonality.monoInner, ← hca, ← hcb]
-  push_cast
-  rw [map_mul, map_pow]
-  linear_combination (-(starRingEnd ℂ (fsFrameCoord a.degree (intEmb σ) x
-    ((self (𝓞 K) N).evalGlobalSection (twistN (𝓞 K) N a.degree) x
-      (polySection (monomial_mem_grading (A := 𝓞 K) a rfl)))) *
-    fsFrameCoord a.degree (intEmb σ) x ((self (𝓞 K) N).evalGlobalSection (twistN (𝓞 K) N a.degree) x
-      (polySection (monomial_mem_grading (A := 𝓞 K) b hb))) /
-      (norm2 x.1.rep : ℂ) ^ (2 * a.degree))) * e
-
-theorem L2MonomialOrthogonality.proof (h : FSCoord.Statement.{0}) (_h' : FSIndex.Statement.{0}) :
-    L2MonomialOrthogonality.Statement := by
-  intro K _ _ N σ a b hb
-  unfold fubiniStudyL2Inner
-  refine (integral_congr_ae (g := fun v : CP N => L2MonomialOrthogonality.monoInner a.degree a b v.rep)
-    (Filter.Eventually.of_forall fun v => ?_)).trans ?_
-  · have hv : v ∈ (self (𝓞 K) N).complexPoints (intEmb σ) := by
-      rw [complexPoints_self]; trivial
-    simp only [dif_pos hv]
-    exact fsFibreInner_monomial h σ a b hb ⟨v, hv⟩
-  · split_ifs with hab
-    · subst hab
-      exact L2MonomialOrthogonality.integral_monoInner_self a
-    · exact L2MonomialOrthogonality.integral_monoInner_eq_zero hab hb
-
 end SectionsLatticeFS
 
 end

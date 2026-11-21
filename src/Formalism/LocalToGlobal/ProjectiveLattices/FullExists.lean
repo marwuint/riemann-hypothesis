@@ -48,8 +48,4 @@ structure LawsFull (T : Full D) : Prop where
 
   xiVal : ∀ j, InR D j → ∀ n, T.XiVal j n
 
-def FullExists (D : D7) (pb : Fin 2 → IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.K)) (chi₀ : ℕ → (AE D)ˣ →* Circle)
-    (xi : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ →* ℂˣ) (I : Ideal (𝓞 D.host.E)) : Prop :=
-  ∃ T : Full D, LawsFull T ∧ T.pb = pb ∧ (∀ j, T.chiW j T.σ₀ = chi₀ j) ∧ T.xi = xi ∧ T.half₂ = I
-
 end Formalism.L2.Pj

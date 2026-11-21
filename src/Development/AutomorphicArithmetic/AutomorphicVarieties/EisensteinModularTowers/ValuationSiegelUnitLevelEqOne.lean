@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.Letter
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntegralModularTowerJCompGlTwoPosRat
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlTwoInvariantHolomorphicMemAdjoinJInvariantStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OverAffineJLineComapSlGalStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplexStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerNeZero
+import Development.AbelianVarietyTheory.Definitions.Foundations.SgC
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplex
 import Mathlib
 
 open GlobalTheory.KZ GlobalTheory.Glue
@@ -47,13 +49,13 @@ private theorem sgC_ne {c : ℕ} {x : Fin 2 → ℚ} (hx : GlobalTheory.Sieg.adm
 
 private theorem siegel_hol [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {c : ℕ} {x : Fin 2 → ℚ} (hx : GlobalTheory.Sieg.admitted c x) :
     ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an (siegel X c x) = (φ : Mero) :=
-  ⟨sgC c x, sgC_hol hx, GlobalTheory.T.siegelUnitInTower_an_eq_siegelUnitOnComplex Ω ε X c x hx⟩
+  ⟨sgC c x, sgC_hol hx, _root_.GlobalTheory.KZ.SiegelMem.an_siegel_eq Ω ε X c x hx⟩
 
 private theorem siegel_inv_hol [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {c : ℕ} {x : Fin 2 → ℚ} (hx : GlobalTheory.Sieg.admitted c x) :
     ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an (siegel X c x)⁻¹ = (φ : Mero) := by
   refine ⟨fun z => (sgC c x z)⁻¹, (sgC_hol hx).inv fun z _ => sgC_ne hx z, ?_⟩
-  have h1 := GlobalTheory.T.siegelUnitInTower_an_eq_siegelUnitOnComplex Ω ε X c x hx
-  have h0 := GlobalTheory.T.siegelUnitInTower_ne_zero Ω ε X c x hx
+  have h1 := _root_.GlobalTheory.KZ.SiegelMem.an_siegel_eq Ω ε X c x hx
+  have h0 := _root_.GlobalTheory.KZ.siegel_ne_zero Ω ε X c x hx
   have h2 : ((sgC c x : ℂ → ℂ) : Mero) * (((fun z => (sgC c x z)⁻¹) : ℂ → ℂ) : Mero) = 1 :=
     SiegelModel.germ_eq_of_eqOn (φ := fun z => sgC c x z * (sgC c x z)⁻¹) (ψ := fun _ => 1)
       fun z _ => mul_inv_cancel₀ (sgC_ne hx z)
@@ -172,7 +174,7 @@ private theorem val_sl [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {c : ℕ} {x : Fi
   have h1 := mem_of_int X _ hY (int_of_hol X _ (siegel_hol X hx))
   have h2 := mem_of_int X _ hY (int_of_hol X _ (siegel_inv_hol X hx))
   rw [ValuationSubring.mem_comap] at h1 h2
-  refine val_one W ((_root_.map_ne_zero _).2 (GlobalTheory.T.siegelUnitInTower_ne_zero Ω ε X c x hx)) h1 ?_
+  refine val_one W ((_root_.map_ne_zero _).2 (_root_.GlobalTheory.KZ.siegel_ne_zero Ω ε X c x hx)) h1 ?_
   rw [← map_inv₀]
   exact h2
 

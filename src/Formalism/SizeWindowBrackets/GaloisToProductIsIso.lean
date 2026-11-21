@@ -66,8 +66,6 @@ def recMap (e q d : ℕ) [Fact q.Prime] [Fact d.Prime] : (ZMod (hostN e q d))ˣ 
     simp only [map_mul]
     rfl
 
-def hostData (e q d : ℕ) [Fact q.Prime] [Fact d.Prime] : ArithData (HA e) := cftData q d (recMap e q d)
-
 def FrobUnitSpec : Prop :=
   ∀ N p : ℕ, N ≠ 0 → p.Prime → IsFrobUnit N p (frobUnit N p) ∧ ∀ w, IsFrobUnit N p w → w = frobUnit N p
 
@@ -97,72 +95,5 @@ def PrimValPrimitive : Prop :=
     primVal (cftData q1 d r) ψ n = (dirChar r ψ).primitiveCharacter (n : ZMod (dirChar r ψ).conductor)
 
 end
-
-def HostLocalParts : Prop :=
-  ∀ e q d : ℕ, FrobeniusOrbits.HostHyp q d →
-    (ordProj[2] (hostN e q d) = 2 ^ (e + 2) ∧ ordCompl[2] (hostN e q d) = q * d) ∧
-    (ordProj[q] (hostN e q d) = q ∧ ordCompl[q] (hostN e q d) = 2 ^ (e + 2) * d) ∧
-    (ordProj[d] (hostN e q d) = d ∧ ordCompl[d] (hostN e q d) = 2 ^ (e + 2) * q)
-
-def RecKronecker : Prop :=
-  ∀ (e q d : ℕ) [Fact q.Prime] [Fact d.Prime], FrobeniusOrbits.HostHyp q d →
-  ∀ (m : ℕ) (hm : m.Coprime (hostN e q d)) (hm2 : m.Coprime (2 ^ (e + 2))),
-    ((Multiplicative.toAdd (recMap e q d (ZMod.unitOfCoprime m hm))).1.1 = 0 ↔ jacobiSym (-(d : ℤ)) m = 1) ∧
-    ((Multiplicative.toAdd (recMap e q d (ZMod.unitOfCoprime m hm))).1.1 = 1 ↔ jacobiSym (-(d : ℤ)) m = -1) ∧
-    ((Multiplicative.toAdd (recMap e q d (ZMod.unitOfCoprime m hm))).1.2 = 0 ↔ jacobiSym (-(q : ℤ)) m = 1) ∧
-    ((Multiplicative.toAdd (recMap e q d (ZMod.unitOfCoprime m hm))).1.2 = 1 ↔ jacobiSym (-(q : ℤ)) m = -1) ∧
-    (Multiplicative.toAdd (recMap e q d (ZMod.unitOfCoprime m hm))).2
-      = Additive.ofMul (FrobeniusOrbits.hcl e (ZMod.unitOfCoprime m hm2))
-
-def RecSurjective : Prop :=
-  ∀ (e q d : ℕ) [Fact q.Prime] [Fact d.Prime], FrobeniusOrbits.HostHyp q d → Function.Surjective (recMap e q d)
-
-def HostLocal : Prop :=
-  ∀ (e q d : ℕ) [Fact q.Prime] [Fact d.Prime], FrobeniusOrbits.HostHyp q d →
-    (∀ (p : ℕ) (hp : p.Coprime (hostN e q d)), p.Prime → (hostData e q d).inertia p = ⊥ ∧
-      (hostData e q d).frob p = Multiplicative.toAdd (recMap e q d (ZMod.unitOfCoprime p hp))) ∧
-    ((∀ x, x ∈ (hostData e q d).inertia 2 ↔ x.1 = 0) ∧ (hostData e q d).frob 2 = sg) ∧
-    ((∀ x, x ∈ (hostData e q d).inertia q ↔ x = 0 ∨ x = sg) ∧
-      ∀ hq : q.Coprime (2 ^ (e + 2)),
-        (hostData e q d).frob q = ((0, 0), Additive.ofMul (FrobeniusOrbits.hcl e (ZMod.unitOfCoprime q hq)))) ∧
-    ((∀ x, x ∈ (hostData e q d).inertia d ↔ x = 0 ∨ x = sgc0) ∧
-      ∀ hd : d.Coprime (2 ^ (e + 2)),
-        (hostData e q d).frob d = ((0, 1), Additive.ofMul (FrobeniusOrbits.hcl e (ZMod.unitOfCoprime d hd))))
-
-def HostFactsHost : Prop :=
-  ∀ (e q d : ℕ) [Fact q.Prime] [Fact d.Prime], FrobeniusOrbits.HostHyp q d → HostFacts (hostData e q d)
-
-def ChConductor : Prop :=
-  ∀ (e q d : ℕ) [Fact q.Prime] [Fact d.Prime], FrobeniusOrbits.HostHyp q d →
-    (dirChar (recMap e q d) chC).conductor = d ∧
-    ∀ n : ℕ, n ≠ 0 → primVal (hostData e q d) chC n = ((jacobiSym (n : ℤ) d : ℤ) : ℂ)
-
-def BalanceHost : Prop :=
-  ∀ (e q d : ℕ) [Fact q.Prime] [Fact d.Prime], FrobeniusOrbits.HostHyp q d →
-  ∀ (ell : AddChar (E0 × HA e) ℂ → ℂ) (a : ℝ) (t : HA e) (w : E0 × HA e → ℝ),
-    0 < a → (∀ ρ, InPhi ρ → 0 < w ρ) → ∀ N : ℕ, (∀ ρ, InPhi ρ → a / w ρ ≤ N) →
-      (ASK (hostData e q d) N a t w : ℂ) - MAIN ell a w = De (hostData e q d) ell a t w
-
-def galoisToProduct (e : ℕ) (g : FrobeniusOrbits.GG e) : E0 × HA e :=
-  ((Multiplicative.toAdd (sgn2 g.1.2), Multiplicative.toAdd (sgn2 g.1.1)), Additive.ofMul g.2)
-
-def GaloisToProductIsIso : Prop :=
-  ∀ e : ℕ, Function.Bijective (galoisToProduct e) ∧ ∀ g g' : FrobeniusOrbits.GG e, galoisToProduct e (g * g') = galoisToProduct e g + galoisToProduct e g'
-
-open NumberField Ideal in
-
-def HostDataField : Prop :=
-  ∀ (e q d : ℕ) [Fact q.Prime] [Fact d.Prime], FrobeniusOrbits.HostHyp q d →
-  ∀ (L : Type) [Field L] [NumberField L] (ζ a b : L), TwoAdicCyclotomicDecomposition.IsLayer (e + 2) q d ζ a b →
-  ∀ (p : ℕ) [Fact p.Prime] (P : Ideal (𝓞 (FrobeniusOrbits.hostE ζ a b))) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})]
-    (σ : FrobeniusOrbits.hostE ζ a b ≃ₐ[ℚ] FrobeniusOrbits.hostE ζ a b),
-    ((∀ x : 𝓞 (FrobeniusOrbits.hostE ζ a b), σ • x - x ∈ P) ↔
-      galoisToProduct e (FrobeniusOrbits.galE e ζ a b σ) ∈ (hostData e q d).inertia p) ∧
-    (IsArithFrobAt ℤ σ P ↔
-      galoisToProduct e (FrobeniusOrbits.galE e ζ a b σ) - (hostData e q d).frob p ∈ (hostData e q d).inertia p)
-
-def DirCharInjective : Prop :=
-  ∀ (e q d : ℕ) [Fact q.Prime] [Fact d.Prime], FrobeniusOrbits.HostHyp q d →
-    Function.Injective (dirChar (recMap e q d))
 
 end Formalism.LFunctionChainParameters.LHost

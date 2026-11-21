@@ -5,20 +5,20 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableOnOfRa
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaKernelModerateGrowthWithSeminorms
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RankFacGen
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermsRationalUnipotentInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LintegralThetaLiftTermSumNeTopStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LintegralThetaLiftTermSumNeTop
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RationalFrameStabiliserNormalisesUnipotentRadicaStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.NotIsCuspFunOnePlane
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsInfFamAndStdChar
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsotropicDualFrameOfSplitEmbeddingStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaSeriesSummableOnCovolumeDomainStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelThetaSeriesModerateGrowthStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedHeisenbergTermsPermutedRationalUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AnisotropicTermsMeanZeroUnipotentRadicalStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelThetaSeriesModerateGrowth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedHeisenbergTermsPermutedRationalUnitary
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AnisotropicTermsMeanZeroUnipotentRadical
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsotropicTermMeanInvariantUnipotentRadicalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnfoldingZeroMeanNormalizedSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnfoldingZeroMeanNormalizedSubgroup
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TsumSetIntegralFundamentalDomainEqZeroByOrbitsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WittTowerRestrictionUnipotentRadicalInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WittTowerRestrictionUnipotentRadicalInvariant
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictIsotropicQuotientWittTowerPropertieStatement
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum MeasureTheory NumberField Matrix
@@ -142,19 +142,19 @@ theorem GlobalTheory.TowerCT.towerConstTermOfCompatible_holds : ∀ D : D7, Glob
       Formalism.L2.Theta.mt W γ = γ₀.map (incA D) → ∀ y u, IsThetaFunO ψ V W u → tm (γ₀ * y) (ω (1, γ) u) = tm y u := by
     intro γ γ₀ hγ hγ₀ y u hu
     rw [htm, htm]
-    exact GlobalTheory.T.restrictedHeisenbergTerms_permuted_rationalUnitary D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY γ γ₀ hγ hγ₀ y u hu
+    exact _root_.GlobalTheory.TwistEquiRat.res_heisO_rat_equi D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY γ γ₀ hγ hγ₀ y u hu
   have hnon : ∀ y : Matrix (Fin W.rank) (Fin r) D.host.E, adj D y * W.gram * y ≠ 0 → ∀ u, IsThetaFunO ψ V W u →
       ∫ n in 𝓝, tm y (ω ((n : GA D V), 1) u) ∂κ = 0 := by
     intro y hy u hu
     simp only [htm]
-    exact GlobalTheory.T.anisotropicTerms_mean_zero_unipotentRadical D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY κ 𝓝 hκ h𝓝 y hy u hu
+    exact _root_.GlobalTheory.AnisoMean.aniso_mean_zero D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY κ 𝓝 hκ h𝓝 y hy u hu
   have hcuspN : ∀ (s : ℕ) (L : Matrix (Fin W.rank) (Fin s) D.host.E) (m : Matrix (Fin s) (Fin r) D.host.E),
       IsIsoFrame W L → m.rank = s → ∀ (n' : NI W L) u, IsThetaFunO ψ V W u →
       ∫ n in 𝓝, tm (L * m) (ω ((n : GA D V), (n' : GA D W)) u) ∂κ = ∫ n in 𝓝, tm (L * m) (ω ((n : GA D V), 1) u) ∂κ := by
     intro s L m hL hm n' u hu
     simp only [htm]
     exact GlobalTheory.T.isotropicTermMean_invariant_unipotentRadical D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY κ 𝓝 hκ h𝓝 s L m hL hm n' u hu
-  obtain ⟨A, hA⟩ := GlobalTheory.T.mixedModel_thetaSeries_moderate_growth D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY
+  obtain ⟨A, hA⟩ := _root_.GlobalTheory.MixedSeriesGrowth.mixed_series_growth D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY
   obtain ⟨c, hcb⟩ := hA f hf
   have hcont : ∀ y, Continuous fun p : GA D V × GA D W => tm y (ω p f) := by
     intro y
@@ -167,7 +167,7 @@ theorem GlobalTheory.TowerCT.towerConstTermOfCompatible_holds : ∀ D : D7, Glob
     intro y
     exact (StronglyMeasurable.integral_prod_left (μ := κ.restrict 𝓝) (hTm y).stronglyMeasurable).measurable
 
-  have hb0 := GlobalTheory.T.lintegral_thetaLift_termSum_ne_top D V W r C hS.frame κ 𝓝 hκ h𝓝 ν 𝓕 hν h𝓕 F hFd
+  have hb0 := _root_.GlobalTheory.ThetaLiftBound.lintegral_ne_top D V W r C hS.frame κ 𝓝 hκ h𝓝 ν 𝓕 hν h𝓕 F hFd
     (fun p => ∑' y, ‖tm y (ω p f)‖ₑ)
     (by
       intro n hn hnq a b
@@ -205,7 +205,7 @@ theorem GlobalTheory.TowerCT.towerConstTermOfCompatible_holds : ∀ D : D7, Glob
     rw [htm]
     have hiso0 : isoPart V W C' ((0 : Matrix (Fin W.rank) (Fin r) D.host.E).map (incA D)) = 0 := by
       simp [isoPart]
-    rw [hiso0, heis0, hL, GlobalTheory.T.wittTower_restriction_unipotentRadical_invariant D V V' W r C B hS ψ χS χT ω hω μ 𝓨 hY n _ (hfp _)]
+    rw [hiso0, heis0, hL, _root_.GlobalTheory.UnipRes.res_unip D V V' W r C B hS ψ χS χT ω hω μ 𝓨 hY n _ (hfp _)]
     have e2 : ((g, h) : GA D V × GA D W) = (1, h) * (g, 1) := by rw [Prod.mk_mul_mk, one_mul, mul_one]
     rw [e2, hωm, hc μ 𝓨 hY h _ hf₁]
     rfl

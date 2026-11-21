@@ -47,17 +47,6 @@ lemma hasSumLU_zetaExcept (L : PeriodPair) (l₀ : ℂ) :
     positivity
   · exact term_bound r hr x hx l (by rw [hl]; exact hR)
 
-lemma zetaExcept_of_notMem (L : PeriodPair) (l₀ : ℂ) (hl : l₀ ∉ L.lattice) :
-    zetaExcept L l₀ = wZeta L := by
-  funext z
-  simp only [zetaExcept, wZeta]
-  refine tsum_congr fun l => ?_
-  rw [if_neg]
-  intro h
-  apply hl
-  rw [← h]
-  exact l.2
-
 lemma hasSumLU_wZeta (L : PeriodPair) :
     HasSumLocallyUniformly
       (fun (l : L.lattice) (z : ℂ) ↦ 1 / (z - (l : ℂ)) + 1 / (l : ℂ) + z / (l : ℂ) ^ 2)
@@ -213,19 +202,6 @@ theorem zeta_odd : ZetaOdd := by
   simp only [Equiv.neg_apply, Submodule.coe_neg]
   have h1 : -z - -(l : ℂ) = -(z - l) := by ring
   rw [h1, neg_sq, one_div_neg_eq_neg_one_div, one_div_neg_eq_neg_one_div, neg_div]
-  ring
-
-theorem zeta_pole_holds : ZetaPole := by
-  intro L
-  have hU : IsOpen (((L.lattice : Set ℂ) \ {0})ᶜ) := L.isOpen_compl_lattice_diff
-  have h0 : (0 : ℂ) ∈ ((L.lattice : Set ℂ) \ {0})ᶜ := by simp
-  have hc : ContinuousAt (zetaExcept L 0) 0 :=
-    ((differentiableOn_zetaExcept L 0).differentiableAt (hU.mem_nhds h0)).continuousAt
-  have ht := hc.tendsto.mono_left (nhdsWithin_le_nhds (s := {(0 : ℂ)}ᶜ))
-  rw [zetaExcept_zero_zero] at ht
-  refine ht.congr' (Filter.Eventually.of_forall fun z => ?_)
-  show zetaExcept L 0 z = wZeta L z - 1 / z
-  rw [← zetaExcept_zero_add L z]
   ring
 
 end Formalism.L2.Th1.F

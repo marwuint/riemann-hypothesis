@@ -19,11 +19,6 @@ def bil {P : V → V → ℝ} (h : IsPairing P) : LinearMap.BilinForm ℝ V :=
 
 theorem bil_apply {P : V → V → ℝ} (h : IsPairing P) (x y : V) : bil h x y = P x y := rfl
 
-theorem schrF_schwartz [FiniteDimensional ℝ V] {P : V → V → ℝ} (h : IsPairing P) (w : V × V) (f : 𝓢(V, ℂ)) :
-    ∃ g : 𝓢(V, ℂ), ⇑g = schrF P w ⇑f := by
-  obtain ⟨g, hg⟩ := GlobalTheory.SchOp.sch_schwartz (bil h) w.1 w.2 f
-  exact ⟨g, hg⟩
-
 theorem exists_right [FiniteDimensional ℝ V] {P : V → V → ℝ} (h : IsPairing P) (L : V →L[ℝ] ℝ) :
     ∃ b, ∀ y, P y b = L y := by
   have hinj : Function.Injective (bil h).flip := by
@@ -53,17 +48,8 @@ end GlobalTheory.ArchUniqStd
 
 namespace GlobalTheory.ArchUniqStd
 
-def HadamardLemmaSchwartz : Prop :=
-  ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
-    (f : SchwartzMap V ℂ), f 0 = 0 → ∃ (n : ℕ) (L : Fin n → V →L[ℝ] ℝ) (h g : Fin n → SchwartzMap V ℂ),
-      (∀ i x, g i x = (L i x : ℂ) * h i x) ∧ ∀ x, f x = ∑ i, g i x
-
-variable {V₁ : Type} [NormedAddCommGroup V₁] [NormedSpace ℝ V₁] [FiniteDimensional ℝ V₁]
-
 end GlobalTheory.ArchUniqStd
 
 namespace GlobalTheory.ArchUniqStd
-
-variable {V₁ : Type} [NormedAddCommGroup V₁] [NormedSpace ℝ V₁] [FiniteDimensional ℝ V₁]
 
 end GlobalTheory.ArchUniqStd

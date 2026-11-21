@@ -44,12 +44,6 @@ theorem inf_eq_one_of_order [IsTotallyComplex L] {χ : HChar L} {n : ℕ} (hn : 
 
 end HChar
 
-section Frame
-
-variable {D : D7} (C : CharFrame D)
-
-end Frame
-
 section Tup
 
 variable {D : D7} {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch)
@@ -71,64 +65,5 @@ theorem TupTied.tup_unitary (μ : D.what₂.Tup) (j : Fin D.R.m) : (Tp.tup μ j)
   rw [Units.val_mul, norm_mul, (C.isMu0 j).unitary x, Tp.xi_unitary μ x, one_mul]
 
 end Tup
-
-def sCh (R : Ranks) : ℝ := ((R.t : ℝ) - 1) / 2 + (1 - (R.nV : ℝ)) / 2
-
-theorem mul_cc_not_mem_Psi_of_mem_Psi {R : Ranks} {g : R.GG} (hg : g ∈ R.Psi) : g * R.cc ∉ R.Psi := by
-  intro h
-  have h1 : R.chD g = 1 := MonoidHom.mem_ker.mp hg
-  have h2 : R.chD (g * R.cc) = 1 := MonoidHom.mem_ker.mp h
-  rw [map_mul, h1, one_mul] at h2
-  simp only [Formalism.HC.Frame.chD, Formalism.HC.Frame.cc, MonoidHom.comp_apply, MonoidHom.coe_fst,
-    MonoidHom.coe_snd] at h2
-  first
-    | (simp [c0] at h2; done)
-    | (simp only [c0] at h2; revert h2; decide)
-    | (revert h2; unfold c0; decide)
-    | (simp [c0] at h2; exact absurd h2 (by decide))
-
-theorem cc_mul_cc (φ : Formalism.HC.Frame) : φ.cc * φ.cc = 1 :=
-  Prod.ext
-    (by
-      first
-        | decide
-        | exact Prod.ext (Int.units_mul_self _) (Int.units_mul_self _)
-        | (simp [Formalism.HC.Frame.cc]; done))
-    (by
-      show (1 : φ.MA) * 1 = 1
-      exact mul_one 1)
-
-def psiSumEquiv (R : Ranks) : R.Psi ⊕ R.Psi ≃ R.GG :=
-  Equiv.ofBijective (Sum.elim (fun g => (g : R.GG)) (fun g => (g : R.GG) * R.cc)) (by
-    constructor
-    · rintro (x | x) (y | y) hxy
-      · exact congrArg Sum.inl (Subtype.ext hxy)
-      · have h : (x : R.GG) = (y : R.GG) * R.cc := hxy
-        exact ((mul_cc_not_mem_Psi_of_mem_Psi y.2) (h ▸ x.2)).elim
-      · have h : (x : R.GG) * R.cc = (y : R.GG) := hxy
-        exact ((mul_cc_not_mem_Psi_of_mem_Psi x.2) (h ▸ y.2)).elim
-      · exact congrArg Sum.inr (Subtype.ext (mul_right_cancel hxy))
-    · intro g
-      by_cases h : g ∈ R.Psi
-      · exact ⟨Sum.inl ⟨g, h⟩, rfl⟩
-      · refine ⟨Sum.inr ⟨g * R.cc, mul_cc_mem_Psi h⟩, ?_⟩
-        show g * R.cc * R.cc = g
-        rw [mul_assoc, cc_mul_cc, mul_one])
-
-section TupAlg
-
-variable {D : D7} {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch)
-
-end TupAlg
-
-def CsdFin {R : Ranks} (H : Formalism.BasicNotions.Host R) : Prop :=
-  ∀ χ : HChar H.E, χ.TrivOn H.F → ∀ w w', IsConjPl H w w' → ∀ k : H.Eˣ,
-    χ.locK w' (Units.map (MonoidHomClass.toMonoidHom H.conj) k) = (χ.locK w k)⁻¹
-
-section TupCsd
-
-variable {D : D7} {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch)
-
-end TupCsd
 
 end Formalism.L2.Host

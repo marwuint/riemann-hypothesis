@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.SmallUnipotentElements
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBalancedFrameCMUnitaryProofStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCuspFormNonzeroAtOneLiftStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCuspFormNonzeroAtOneLift
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BoundedSectionAlgebra
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.DetSubUpper
 
@@ -195,7 +195,7 @@ theorem independentTranslates : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   have hI : ∀ c : C, ∃ u ∈ M.SS (deMul M.Ψ r M.p0 s), u c (castFrame (M.comp_Ψ c) (xb c)) ≠ 0 ∧
       (∀ h : U, h ≠ 1 → M.pull h u c (castFrame (M.comp_Ψ c) (xb c)) = 0) ∧
       ∀ c', (∀ h : U, h • c ≠ c') → ∀ y, u c' y = 0 := fun c =>
-    GlobalTheory.T.exists_cuspForm_nonzero_at_one_lift E r U C M hL s hs hsle c _ (hnc c) (domOfComp M c (hxb c))
+    _root_.GlobalTheory.LiftInterp.exists_form_one_lift E r U C M hL s hs hsle c _ (hnc c) (domOfComp M c (hxb c))
   choose uc huS hu0 hu1 hu2 using hI
   haveI : Fintype (Quotient (MulAction.orbitRel U C)) := Fintype.ofFinite _
   have hsum : ∀ c' y, (∑ q : Quotient (MulAction.orbitRel U C), uc q.out) c' y =

@@ -14,18 +14,6 @@ namespace GlobalTheory.ULie
 def IsLieHom {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A) : Prop :=
   ∀ M N, ρ (M * N - N * M) = ρ M * ρ N - ρ N * ρ M
 
-def unitAt {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A) (c : GL (Fin n) ℂ)
-    (p q : Fin n) : A := ρ (c.1 * Matrix.single p q 1 * (c⁻¹).1)
-
-def Before {r : ℕ} (S : Finset (Fin r)) (n : ℕ) (p q : Fin n) : Prop :=
-  ∃ k ∈ S, (p.val ≤ k.val ∧ k.val < q.val) ∨ (p.val + k.val + 1 < n ∧ n ≤ q.val + k.val + 1)
-
-theorem Before.trans {r : ℕ} {S : Finset (Fin r)} {n : ℕ} {p q s : Fin n} (h : Before S n p q) (h' : Before S n q s) :
-    Before S n p s := by
-  obtain ⟨k, hk, h⟩ := h
-  obtain ⟨k', -, h'⟩ := h'
-  exact ⟨k, hk, by omega⟩
-
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 

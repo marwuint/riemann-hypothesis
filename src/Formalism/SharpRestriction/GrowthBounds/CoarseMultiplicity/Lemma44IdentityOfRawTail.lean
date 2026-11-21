@@ -216,19 +216,10 @@ theorem lemma44_at_body {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hK : KeptBLAt C0
     exact hK X hD hH hc j (β j) (hβ j)
   exact t44 X O S mm g hRT X.c le_rfl _ _ hσ
 
-theorem lemma44_at_of_raw_tail {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hRT : RawTailAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc)
-    (hK : KeptBLAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : Lemma44At C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
-  intro X _ _ O _ _ _ _ S hSq hD hH hc mm hmm g hg β hβ s hs
-  obtain ⟨F, hF, hcong⟩ := lemma44_at_body hK X O S hD hH hc mm g (hRT X O S hSq hD hH hc mm hmm g hg) β hβ s hs
-  exact ⟨F, hF.1, hF.2.1, hcong, hF.2.2⟩
-
 theorem lemma44_identity_of_raw_tail {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hRT : RawTailAt1 C0 CYb Cde Ck CD Cb CE1 CE2 Cc)
     (hK : KeptBLAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : CoarseMultiplicityAtIdentity C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ _ O _ _ _ _ S hSq hD hH hc mm hmm β hβ s hs
   obtain ⟨F, hF, hcong⟩ := lemma44_at_body hK X O S hD hH hc mm 1 (hRT X O S hSq hD hH hc mm hmm) β hβ s hs
   exact ⟨F, hF.1, hF.2.1, hcong, hF.2.2⟩
-
-theorem lemma44_of_raw_tail_kept (hRT : RestRawTail) (hK : RestKeptBL) : BinomialRatioBeyondThreshold :=
-  TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => lemma44_at_of_raw_tail h.1 h.2) (hRT.and hK)
 
 end Formalism.MainNotions.ColumnSystems.Pf

@@ -18,7 +18,7 @@ theorem jump_restrict : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocA
   have := LL.2
   set τ := τ'.comp (IntermediateField.inclusion hle) with hτ
   have hF := isField_dR T
-  haveI := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ).1
+  haveI := (_root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL V ρ).1
   obtain ⟨m, d, k, hA⟩ := exists_adapted (P.PD K) hF ρ (filSpans T K LL ρ (crys T K LL ρ hc).1) τ
   set e' := idem (K := ↥K'.1) P.R.BdR (LL := ↥LL.1) τ' with he'
   set e := idem (K := ↥K.1) P.R.BdR (LL := ↥LL.1) τ with he

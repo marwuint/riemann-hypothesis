@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPreUOfFibres
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGenericSquare
@@ -117,14 +117,14 @@ theorem GlobalTheory.Mum.exists_preU_even : ∀ (R : Type) [CommRing R] [IsDomai
   have : (maximalIdeal R ^ (0 + 1)).IsPrime := e.symm ▸ hR.2.2.2.1
   have : IsPrincipalIdealRing (R ⧸ maximalIdeal R ^ (0 + 1)) := e.symm ▸ hP
   have amp : RelAmple (T.l 0).Q.B (T.l 0).D.M.L.L :=
-    GlobalTheory.T.cubical_bundle_relAmple_of_ample_fibres hL hL2 (R ⧸ maximalIdeal R ^ (0 + 1)) (GlobalTheory.PreUnifLocal.isAdicComplete_quot hR.2.1 _) _
+    _root_.GlobalTheory.CubicalFibreAmple.relAmple_of_fibres hL hL2 (R ⧸ maximalIdeal R ^ (0 + 1)) (GlobalTheory.PreUnifLocal.isAdicComplete_quot hR.2.1 _) _
       (T.l 0).Q.isAb (T.l 0).D.M fun k _ x => (hf k x).1
-  obtain ⟨a⟩ := GlobalTheory.T.nonempty_algebraisation_formal_tower_ample hL hL2 hE R _ hR G P X T amp
+  obtain ⟨a⟩ := _root_.GlobalTheory.TowerAlg.nonempty_alg hL hL2 hE R _ hR G P X T amp
   have k₀ : KTriv (T.l 0).Q.B (T.l 0).D.M.L.L :=
-    GlobalTheory.T.kTriv_of_closed_fibre_localRing hL hL2 (R ⧸ maximalIdeal R ^ (0 + 1)) _ (T.l 0).Q.isAb _ (T.l 0).D.M.L.isLB amp (hf _ _).2
+    _root_.GlobalTheory.KTrivLocal.kTriv_of_closed_fibre hL hL2 (R ⧸ maximalIdeal R ^ (0 + 1)) _ (T.l 0).Q.isAb _ (T.l 0).D.M.L.isLB amp (hf _ _).2
   obtain ⟨hb, v, hv⟩ := a.b_pb 0
-  have hK : KTriv a.B a.M.L.L := GlobalTheory.T.kTriv_of_closed_fibre_localRing hL hL2 R _ a.isAb _ a.M.L.isLB a.ample
+  have hK : KTriv a.B a.M.L.L := _root_.GlobalTheory.KTrivLocal.kTriv_of_closed_fibre hL hL2 R _ a.isAb _ a.M.L.isLB a.ample
     (GlobalTheory.PreUnifLocal.kTriv_closedFibre (e.symm ▸ hI) hb a.M.L.isLB (T.l 0).D.M.L.isLB hv.gen k₀)
-  obtain ⟨c, hadd, hw⟩ := GlobalTheory.T.exists_additive_weightPoints_of_torusTower hL hL2 hE R _ hR G P X T a hK
-  exact GlobalTheory.PreUnifLocal.exists_preU hL.globalFns (fun D e => GlobalTheory.T.torusCoordinates_compat_of_torus_compat hL.globalFns R _ D e G) hI hs T a hK c hadd
+  obtain ⟨c, hadd, hw⟩ := _root_.GlobalTheory.WeightPoint.exists_weightPoints hL hL2 hE R _ hR G P X T a hK
+  exact GlobalTheory.PreUnifLocal.exists_preU hL.globalFns (fun D e => _root_.GlobalTheory.gtCoord_compat_of_torusCompat hL.globalFns R _ D e G) hI hs T a hK c hadd
     hw A gen hgen hA

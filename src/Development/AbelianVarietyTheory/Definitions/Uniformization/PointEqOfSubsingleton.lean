@@ -206,24 +206,11 @@ def CP.triv : CP G where
 
 instance : Inhabited (CP G) := ⟨CP.triv G⟩
 
-theorem val_sym_triv {Z : Scheme.{0}} (r : Z ⟶ G.left) (z : Z) (J) : val (CP.triv G).sym r z J = 1 := by
-  exact val_unitGen _ _ _ _ _
-
 variable {G} {H : Over S} [GrpObj H]
 
 theorem CP.val_sym_one (P : CP G) {T : Over S} {z : T.left} {J} (hJ : Good P.L.L z J) :
     val P.sym (1 : T ⟶ G).left z J = 1 := by
   rw [one_left, ← val_pull hJ, val_corr hJ P.sym_rig, val_one]
-
-def BiTriv.triv (i : H ⟶ G) : BiTriv (trivCub G) i where
-  s := unitGen _ _
-  gen := unitGen_isGen _ _
-  law1 T t t' x z J _ := by
-    have e : ∀ r, val (L := (trivRig G).L) (unitGen (lamφ i) Oε) r z J = 1 := fun r => val_unitGen _ _ _ _ _
-    simp only [cubV_trivCub, e, _root_.mul_one]
-  law2 T t x x' z J _ := by
-    have e : ∀ r, val (L := (trivRig G).L) (unitGen (lamφ i) Oε) r z J = 1 := fun r => val_unitGen _ _ _ _ _
-    simp only [cubV_trivCub, e, _root_.mul_one]
 
 def CubTriv.triv (i : H ⟶ G) : CubTriv (trivCub G) i where
   s := unitGen _ _
@@ -634,11 +621,6 @@ theorem exists_isLevelCP {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (e :
   obtain ⟨P', w, H⟩ := exists_pull P (toBase_mul_pullback G (thick R I e))
   exact ⟨P', w, H⟩
 
-theorem isLevelCP_triv {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (e : ℕ)
-    (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] :
-    IsLevelCP I e (CP.triv (thickObj R I e G)) (CP.triv G) :=
-  ⟨_, IsCPMap.triv (toBase_mul_pullback G (thick R I e))⟩
-
 section Abelian
 variable {G : Over S} [GrpObj G] [IsCommMonObj G]
 
@@ -888,62 +870,6 @@ theorem CubTriv.val_twist {L : RigLB G} {c : CubicalStr G L} (σ : CubTriv c i) 
   show val (scaleGen (charUnit S X χ) σ.s) x.left z J = _
   rw [val_scaleGen _ _ _ hJ, gm_charUnit]
 
-theorem CubTriv.twist_even_iff {P : CP G} {σ : CubTriv P.c i} (hσ : σ.Even) (χ : X) :
-    (σ.twist χ).Even ↔ ∀ (T : Over S) (t : T ⟶ splitTorus S X), chV t (χ + χ) = 1 := by
-  constructor
-  · intro htw T t
-    apply unit_ext
-    intro z _
-    obtain ⟨J, hJ⟩ := exists_good_pt P.L.isLB z
-    have h1 := htw T t z J hJ
-    have h0 := hσ T t z J hJ
-    rw [CubTriv.val_twist _ _ _ hJ, CubTriv.val_twist _ _ _ hJ, h0, chV_inv, map_inv] at h1
-    have h2 : (gm (𝟙 T.left) z ⊤ (chV t χ))⁻¹ = gm (𝟙 T.left) z ⊤ (chV t χ) :=
-      mul_right_cancel (b := val P.sym (t ≫ i).left z J * val σ.s t.left z J) (by rw [h1, mul_left_comm])
-    rw [chV_add, map_mul, map_one]
-    have h3 := mul_inv_cancel (gm (𝟙 T.left) z ⊤ (chV t χ))
-    rwa [h2] at h3
-  · intro h T x z J hJ
-    have hc : (chV x χ)⁻¹ = chV x χ := inv_eq_of_mul_eq_one_right (by rw [← chV_add]; exact h T x)
-    rw [CubTriv.val_twist _ _ _ hJ, CubTriv.val_twist _ _ _ hJ, hσ T x z J hJ, chV_inv, hc, mul_left_comm]
-
-def CP.twistSym (P : CP (splitTorus S X)) (χ : X) : CP (splitTorus S X) where
-  L := P.L
-  c := P.c
-  sym := scaleGen (charUnit S X χ) P.sym
-  sym_gen := scaleGen_isGen _ P.sym_gen
-  sym_rig := corr_of_val P.L.isLB fun y J hJ => by
-    have e := (val_scaleGen (charUnit S X χ) P.sym (1 : 𝟙_ (Over S) ⟶ splitTorus S X).left hJ).trans
-      (congrArg₂ (· * ·) (gm_charUnit _ y χ) (P.val_sym_one hJ))
-    have o : chV (1 : 𝟙_ (Over S) ⟶ splitTorus S X) χ = 1 := by rw [chV, map_one]; rfl
-    rw [o, map_one, _root_.one_mul, one_left] at e
-    exact (val_pull hJ _ _ _).trans (e.trans (val_one _).symm)
-  sym_cub T x y u z J hJ := by
-    have e := P.sym_cub T x y u z J hJ
-    simp only [val_scaleGen _ _ _ hJ, gm_charUnit, chV_mul, map_mul]
-    apply Additive.ofMul.injective
-    have e' := congrArg Additive.ofMul e
-    simp only [ofMul_mul] at e' ⊢
-    linear_combination (norm := abel) e'
-
-theorem CubTriv.twist_even_twistSym {P : CP (splitTorus S X)} {σ : CubTriv P.c (𝟙 _)} (hσ : σ.Even) (ψ : X) :
-    CubTriv.Even (P := P.twistSym (-(ψ + ψ))) (σ.twist ψ) := by
-  intro T x
-  show ∀ (z : T.left) (J : (T.left ⟶ (splitTorus S X).left) → P.L.L.ι), Good P.L.L z J →
-    val (scaleGen (charUnit S X ψ) σ.s) (x⁻¹).left z J =
-      val (scaleGen (charUnit S X (-(ψ + ψ))) P.sym) (x ≫ 𝟙 _).left z J *
-        val (scaleGen (charUnit S X ψ) σ.s) x.left z J
-  intro z J hJ
-  have hn : chV (x ≫ 𝟙 _) (-(ψ + ψ)) = (chV x ψ * chV x ψ)⁻¹ := by
-    rw [Category.comp_id]
-    exact eq_inv_of_mul_eq_one_left (by rw [← chV_add, ← chV_add, neg_add_cancel, chV_zero])
-  rw [val_scaleGen _ _ _ hJ, val_scaleGen _ _ _ hJ, val_scaleGen _ _ _ hJ, gm_charUnit, gm_charUnit, gm_charUnit,
-    hσ T x z J hJ, chV_inv, hn]
-  simp only [map_inv, map_mul]
-  apply Additive.ofMul.injective
-  simp only [ofMul_mul, ofMul_inv]
-  abel
-
 end Twist
 
 section Wt
@@ -1104,79 +1030,7 @@ def TQ.Desc.triv {G : Over S} [GrpObj G] [IsCommMonObj G] (Q : TQ G X) : Q.Desc 
   w := ⟨fun _ => 1⟩
   map := IsCPMap.triv (have := Q.q_hom; toBase_mul_of_isMonHom Q.q _)
 
-def TQ.Desc.abelian {G : Over S} [GrpObj G] [IsCommMonObj G] (hG : IsAbelianScheme G) [Subsingleton X] (P : CP G) :
-    (TQ.abelian G hG X).Desc P where
-  M := P
-  w := idIso P.L.L
-  map := IsCPMap.id P
-
-theorem TQ.exists_desc {G : Over S} [GrpObj G] [IsCommMonObj G] (Q : TQ G X) (M : CP Q.B) :
-    ∃ (P : CP G) (D : Q.Desc P), D.M = M := by
-  have := Q.q_hom
-  obtain ⟨P, w, hw⟩ := exists_pull (f := 𝟙 S) (F := Q.q.left) (hw := by simp) M (toBase_mul_of_isMonHom Q.q (by simp))
-  exact ⟨P, ⟨M, w, hw⟩, rfl⟩
-
-theorem TQ.genWt_triv {G : Over S} [GrpObj G] (Q : TQ G X) (u : Γ(G.left, ⊤)ˣ) {χ : X} (hu : IsWt Q.i ⊤ u.val χ) :
-    Q.GenWt (Inh.trivLB _) (scaleGen u (unitGen _ _)) χ := by
-  refine ⟨scaleGen_isGen u (unitGen_isGen _ _), fun j => ?_⟩
-  show IsWt Q.i _ (res le_top u * 1).val χ
-  rw [_root_.mul_one]
-  exact hu.res le_top
-
-example (χ : X) : (TQ.torus S X).GenWt (Inh.trivLB _) (scaleGen (charUnit S X χ) (unitGen _ _)) χ :=
-  (TQ.torus S X).genWt_triv _ (isWt_charUnit χ)
-
 end Torus
-
-section Basic₂
-
-theorem exists_point_two : ∃ t : 𝟙_ (Over (Spec (CommRingCat.of ℚ))) ⟶ splitTorus (Spec (CommRingCat.of ℚ)) ℤ,
-    ∀ n : ℤ, chV t n = 1 → n = 0 := by
-  let e : ℚ ≃+* Γ(Spec (CommRingCat.of ℚ), ⊤) := (Scheme.ΓSpecIso (CommRingCat.of ℚ)).symm.commRingCatIsoToRingEquiv
-  let u : Γ(Spec (CommRingCat.of ℚ), ⊤)ˣ := Units.map e.toMonoidHom (Units.mk0 2 two_ne_zero)
-  refine ⟨(splitTorusPointsEquiv _ ℤ _).symm (zpowersHom _ u), fun n hn => ?_⟩
-  have h1 : u ^ n = 1 := by
-    simpa only [chV, MulEquiv.apply_symm_apply, zpowersHom_apply, toAdd_ofAdd] using hn
-  have h2 : (Units.mk0 (2:ℚ) two_ne_zero) ^ n = 1 := by
-    have hu : Units.map e.symm.toMonoidHom u = Units.mk0 2 two_ne_zero := Units.ext (by simp [u])
-    rw [← hu, ← map_zpow, h1, map_one]
-  have h3 : (2:ℚ) ^ n = 1 := by
-    have h4 := congrArg Units.val h2
-    rwa [Units.val_zpow_eq_zpow_val, Units.val_mk0, Units.val_one] at h4
-  exact zpow_right_injective₀ (by norm_num : (0:ℚ) < 2) (by norm_num) (h3.trans (zpow_zero (2:ℚ)).symm)
-
-example : ¬ CubTriv.Even (P := CP.triv (splitTorus (Spec (CommRingCat.of ℚ)) ℤ))
-    ((CubTriv.triv (𝟙 _)).twist (1 : ℤ)) := fun h => by
-  obtain ⟨t, ht⟩ := exists_point_two
-  exact absurd (ht _ ((CubTriv.twist_even_iff (CubTriv.triv_even _) 1).1 h _ t)) (by norm_num)
-
-example : ¬ CubTriv.Even (P := (CP.triv (splitTorus (Spec (CommRingCat.of ℚ)) ℤ)).twistSym 1)
-    (CubTriv.triv (𝟙 _)) := fun h => by
-  obtain ⟨t, ht⟩ := exists_point_two
-  refine absurd (ht 1 (unit_ext fun z _ => ?_)) one_ne_zero
-  obtain ⟨J, hJ⟩ := exists_good_pt (Inh.trivLB_isLB (splitTorus (Spec (CommRingCat.of ℚ)) ℤ).left) z
-  have e := ((val_unitGen _ _ _ _ _).symm.trans (h _ t z J hJ)).trans (congrArg₂ (· * ·)
-    ((val_scaleGen _ _ _ hJ).trans (congrArg₂ (· * ·) (gm_charUnit _ z _) (val_unitGen _ _ _ _ _)))
-    (val_unitGen _ _ _ _ _))
-  rw [_root_.mul_one, _root_.mul_one, Category.comp_id] at e
-  exact e.symm.trans (map_one _).symm
-
-example : IsWt (𝟙 _) ⊤ (charUnit (Spec (CommRingCat.of ℚ)) ℤ 1).val (1 : ℤ) ∧
-    ¬ IsWt (𝟙 _) ⊤ (charUnit (Spec (CommRingCat.of ℚ)) ℤ 1).val (-1 : ℤ) := by
-  refine ⟨isWt_charUnit 1, fun h => ?_⟩
-  obtain ⟨t, ht⟩ := exists_point_two
-  have a := isWt_top_iff.1 h _ t t
-  rw [Category.comp_id, ← chV_val, ← chV_val, chV_mul, ← Units.val_mul, Units.val_inj, mul_left_inj] at a
-  have b : chV t (1 + 1) = 1 := by
-    rw [chV_add]
-    exact (congrArg (· * chV t 1) a).trans (by rw [← chV_add, neg_add_cancel, chV_zero])
-  exact absurd (ht _ b) (by norm_num)
-
-example : Nonempty (TQ (splitTorus S ℤ) ℤ) := ⟨TQ.torus S ℤ⟩
-
-example (G : Over S) [GrpObj G] (hG : IsAbelianScheme G) : Nonempty (TQ G PUnit) := ⟨TQ.abelian G hG PUnit⟩
-
-end Basic₂
 
 end GlobalTheory.UU
 end

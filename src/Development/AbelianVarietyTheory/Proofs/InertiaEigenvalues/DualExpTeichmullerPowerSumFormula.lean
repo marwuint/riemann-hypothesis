@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMulMemLatIf
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusSolutionExpansionModFiltrationStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExpStarOfLowTermsRemovedStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDeRhamElementOfCocycleRecursionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLiftsOfNormLeOneStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLiftsOfNormLeOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfCocycleSolutionTeichmullerEpsilonRootPowStatement
 
 noncomputable section
@@ -67,7 +67,7 @@ theorem expStar_levSum : ∀ (LT : LocTheory) (l : ℕ) [Fact l.Prime] (AI : Loc
   have hw : ∀ i, ∃ w : Ainf l, i ∈ T → Lifts AI K w (c i) := by
     intro i
     by_cases hi : i ∈ T
-    · obtain ⟨w, hw⟩ := GlobalTheory.T.exists_lifts_of_norm_le_one_alt l (LT l) AI hT K (c i) (hc i hi).1
+    · obtain ⟨w, hw⟩ := _root_.GlobalTheory.ExpImage.exists_lifts_of_norm_le_one l (LT l) AI hT K (c i) (hc i hi).1
       exact ⟨w, fun _ => hw⟩
     · exact ⟨0, fun h => absurd h hi⟩
   choose w hw using hw

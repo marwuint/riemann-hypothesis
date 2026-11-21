@@ -1,7 +1,8 @@
 import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.RatProductFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumLogIdealEqLogAbsNormStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.RatProductFormula
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumLogIdealEqLogAbsNorm
 open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 
 namespace GlobalTheory.CompanionTheory.Ar.Fl
@@ -15,10 +16,10 @@ theorem different_sum_eq_neg_finrank_mul_log_rootDiscr : ∀ (E : Type) [Field E
       GlobalTheory.CompanionTheory.Ar.Fl.logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) =
         Real.log ‖((n : ℚ) : ℂ_[p])‖ := by
     intro p
-    rw [GlobalTheory.T.sum_logIdeal_eq_log_absNorm E _ hD p, absNorm_differentIdeal E (𝓞 E), ← hn,
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Fl.sum_logIdeal_eq_log_norm_absNorm E _ hD p, absNorm_differentIdeal E (𝓞 E), ← hn,
       Rat.cast_natCast]
   have hq : (n : ℚ) ≠ 0 := by exact_mod_cast hn0
-  obtain ⟨hfin, hprod⟩ := GlobalTheory.T.rat_product_formula (n : ℚ) hq
+  obtain ⟨hfin, hprod⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.rat_product_formula_complex (n : ℚ) hq
   have h1 : ‖((n : ℚ) : ℂ)‖ = (n : ℝ) := by rw [Rat.cast_natCast, Complex.norm_natCast]
   have hpos : (0 : ℝ) < ((|discr E| : ℤ) : ℝ) := Int.cast_pos.mpr (abs_pos.mpr (discr_ne_zero E))
   have h2 : Real.log (rootDiscr E) = (Module.finrank ℚ E : ℝ)⁻¹ * Real.log (n : ℝ) := by

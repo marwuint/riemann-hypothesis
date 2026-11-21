@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceIsDVRAndResidueEqGroundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceIsDVRAndResidueEqGround
 
 open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef
@@ -180,6 +180,6 @@ theorem GlobalTheory.Nef.local_index : ∀ (k F : Type) [Field k] [IsAlgClosed k
     have := ord_zpow v h.det (-1)
     rw [zpow_neg_one] at this; rw [e, this]; ring
   obtain ⟨N, hN⟩ := Int.eq_ofNat_of_zero_le h0
-  obtain ⟨φ, hφ⟩ := exists_functional_inv_mulVec_integral_of_order v (GlobalTheory.T.functionFieldPlace_isDVR_and_residue_eq_ground k F hF v).2 n N h⁻¹ hd' hi hN
+  obtain ⟨φ, hφ⟩ := exists_functional_inv_mulVec_integral_of_order v (_root_.GlobalTheory.Nef.place_isDVR_residue k F hF v).2 n N h⁻¹ hd' hi hN
   rw [Matrix.nonsing_inv_nonsing_inv h (isUnit_iff_ne_zero.2 hd)] at hφ
   exact ⟨N, φ, by rw [← hN, h1], hφ⟩

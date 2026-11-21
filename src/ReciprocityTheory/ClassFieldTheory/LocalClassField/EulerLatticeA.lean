@@ -1,4 +1,8 @@
-import ReciprocityTheory.ClassFieldTheory.LocalClassField.EulerDefs
+import Mathlib
+import ReciprocityTheory.ClassFieldTheory.LocalClassField.ValUnitsG
+import ReciprocityTheory.ClassFieldTheory.LocalClassField.ExistsDvdQKPowSubOne
+import ReciprocityTheory.ClassFieldTheory.LocalClassField.GalBasic
+import ReciprocityTheory.ClassFieldTheory.LocalClassField.FinCoh
 
 namespace ReciprocityTheory.DiscreteGroups.LocalClassField.Euler
 
@@ -9,38 +13,6 @@ noncomputable section
 section aux
 
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
-
-def OLaddEquiv : OLadd p K ≃+ OK p K where
-  toFun x := ⟨⟨x.1, x.2.1⟩, (mem_OK_iff p K _).2 x.2.2⟩
-  invFun y := ⟨y.1.1, y.1.2, (mem_OK_iff p K _).1 y.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-  map_add' _ _ := rfl
-
-theorem map_range_OLaddEquiv (z : ℤ) :
-    (zmultiplesHom (OLadd p K →+ OLadd p K) (AddMonoidHom.id _) z).range.map (OLaddEquiv p K : OLadd p K →+ OK p K) =
-      (Ideal.span {(z : OK p K)}).toAddSubgroup := by
-  ext y
-  rw [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton']
-  constructor
-  · rintro ⟨_, ⟨x, rfl⟩, rfl⟩
-    refine ⟨OLaddEquiv p K x, ?_⟩
-    have : (zmultiplesHom (OLadd p K →+ OLadd p K) (AddMonoidHom.id _) z) x = z • x := rfl
-    rw [this]
-    show _ = OLaddEquiv p K (z • x)
-    rw [map_zsmul, zsmul_eq_mul, mul_comm]
-  · rintro ⟨a, rfl⟩
-    refine ⟨_, ⟨(OLaddEquiv p K).symm a, rfl⟩, ?_⟩
-    have : (zmultiplesHom (OLadd p K →+ OLadd p K) (AddMonoidHom.id _) z) ((OLaddEquiv p K).symm a) =
-      z • (OLaddEquiv p K).symm a := rfl
-    rw [this]
-    show OLaddEquiv p K (z • (OLaddEquiv p K).symm a) = _
-    rw [map_zsmul, zsmul_eq_mul, mul_comm, AddEquiv.apply_symm_apply]
-
-def quotOLaddEquiv (z : ℤ) :
-    (OLadd p K ⧸ (zmultiplesHom (OLadd p K →+ OLadd p K) (AddMonoidHom.id _) z).range) ≃
-      (OK p K ⧸ Ideal.span {(z : OK p K)}) :=
-  (QuotientAddGroup.congr _ _ (OLaddEquiv p K) (map_range_OLaddEquiv p K z)).toEquiv
 
 attribute [local instance] zpAlgOK
 

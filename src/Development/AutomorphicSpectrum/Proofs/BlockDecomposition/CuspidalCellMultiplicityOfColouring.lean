@@ -1,8 +1,14 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.ZelevinskyCosocles.LUnlinkedComm
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductSingleNonzeroFactorEquivStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicitySublistPaddingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductSingleNonzeroFactorEquiv
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedProductDropZeroFactors
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DropHom
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardBlocksReindexStrictMono
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorProductDropZeroFactorsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JordanHolderMultiplicityJacquetEqBorelJacquetOfS
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicitySublistPadding
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityDropZeroBlocks
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GeometricLemma
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BernsteinZelevinskyFiniteness
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSubquotientCompMulSingle
@@ -40,7 +46,7 @@ theorem jhMult_cell_colour : ∀ {k : Type} [Field k] [ValuativeRel k] [Topologi
     (fun j => stdBlocks (fun i => b i j) (hcol j)) (fun i => (x i).2.rep.V) (fun i => (x i).rep)
     (fun i => (x i).2.rep.smooth) (fun i => (x i).2.rep.hasFiniteLength)
   have hirr : (piTensor fun j => (W.get j).rep).IsIrreducible :=
-    GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => (W.get j).2.rep
+    _root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k _ _ fun j => (W.get j).2.rep
   let τ : IrrRep (Levi k fun j => Fin (W.get j).1) :=
     ⟨_, piTensor fun j => (W.get j).rep, isSmooth_piTensor fun j => (W.get j).2.rep.smooth, hirr⟩
   refine (hT τ).trans ?_
@@ -50,7 +56,7 @@ theorem jhMult_cell_colour : ∀ {k : Type} [Field k] [ValuativeRel k] [Topologi
       ∃ z : IrrCl (GL (Fin (W.get j).1) k), (⟨_, z⟩ : IrrGL k) = ⟨b (c j) j, s (c j) j⟩ ∧
         Nonempty ((multiProd (stdBlocks (fun i => b i j) (hcol j))
           fun i => (s i j).rep.ρ).Equiv z.rep.ρ) := fun s j =>
-    GlobalTheory.T.product_single_nonzero_factor_equiv (fun i => (⟨b i j, s i j⟩ : IrrGL k)) (hcol j) (c j)
+    _root_.GlobalTheory.CompanionTheory.FineProd.ProdSingle.prodIrr_single (fun i => (⟨b i j, s i j⟩ : IrrGL k)) (hcol j) (c j)
       fun i hi => hzero i j (Ne.symm hi)
 
   have hex : ∀ i j, ∃ u : IrrCl (GL (Fin (b i j)) k),
@@ -63,7 +69,7 @@ theorem jhMult_cell_colour : ∀ {k : Type} [Field k] [ValuativeRel k] [Topologi
   choose s₀ hs₀ using hex
   have hfirst : ∀ i, jhMult (piTensor fun j => (s₀ i j).rep.ρ)
       (jac (stdBlocks (b i) (hrow i)) (x i).rep) = jmL (sub W c i) (x i).rep := fun i =>
-    GlobalTheory.T.jacquet_multiplicity_sublist_padding W c i (fun j => (⟨b i j, s₀ i j⟩ : IrrGL k)) (fun j hj => hs₀ i j hj)
+    _root_.GlobalTheory.CompanionTheory.FineProd.jm_row W c i (fun j => (⟨b i j, s₀ i j⟩ : IrrGL k)) (fun j hj => hs₀ i j hj)
       (fun j hj => hzero i j hj) (hrow i) (x i).rep
   rw [Finset.sum_eq_single s₀]
   · choose z hz e using hcolumn s₀
@@ -86,7 +92,7 @@ theorem jhMult_cell_colour : ∀ {k : Type} [Field k] [ValuativeRel k] [Topologi
     refine (jhMult_congr_right _ a).trans ?_
     by_contra hne
     obtain ⟨φ⟩ := (jhMult_ne_zero_iff.1 hne).nonempty_equiv hirr
-      (GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => (z j).rep)
+      (_root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k _ _ fun j => (z j).rep)
     have hcl : ∀ j, (W.get j).2 = z j := fun j => by
       have := GlobalTheory.T.tensor_product_determines_factor_classes _ (fun j => GL (Fin (W.get j).1) k) (fun j => (W.get j).2.rep)
         (fun j => (z j).rep) ⟨φ.symm⟩ j

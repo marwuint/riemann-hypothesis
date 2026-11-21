@@ -6,7 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsClosedNFla
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.GinfCSecondCountable
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulRightInvariantOfFundamentalDomain
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagUnipotentFourierJacobiGroupStructureStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagUnipotentFourierJacobiGroupStructure
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.WittSmallGroupEmbeddingMemPointwiseStabilizerIso
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow
 open scoped TensorProduct
@@ -58,7 +60,7 @@ theorem coords_rat {D : D7} {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (
 
 theorem rat_coords_of_mem_flagN : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (γ : GA D V), γ ∈ GQ V → γ ∈ flagN d → ∃ (c : skewA D ρ) (b : Mx D ρ V₀.rank) (u : UX D ρ), γ = d.nC c * (d.nB b * d.levi u.1) ∧ c.1 ∈ ratMx D ρ ρ ∧ b ∈ ratMx D ρ V₀.rank ∧ u ∈ UXQ D ρ := by
   intro D V V₀ ρ d γ hQ hN
-  obtain ⟨u, hu, b, c, rfl⟩ := ((GlobalTheory.T.flag_unipotent_fourier_jacobi_group_structure D V V₀ ρ d).1 γ).1 hN
+  obtain ⟨u, hu, b, c, rfl⟩ := ((_root_.GlobalTheory.MixPer.flag_jacobi_structure D V V₀ ρ d).1 γ).1 hN
   have hγ : d.levi u * (d.nB b * d.nC c) = d.nC (skewConj u.1 c) * (d.nB (u.1 ⬝ b) * d.levi u) := by
     rw [← mul_assoc, d.levi_mul_nB, mul_assoc, d.levi_mul_nC, ← mul_assoc, ← d.nC_mul_nB, mul_assoc]
   rw [hγ] at hQ ⊢

@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableAbsNormInvS
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueIsStdChar
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsUniqueIsStandardAdeleCharUnramifiedCMBaseStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DualLatticeDifferentIndexStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FinprodLocalDifferentIdealNormEqDiscrStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsEqStandardAdeleCharRationalDilateStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FinprodLocalDifferentIdealNormEqDiscr
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsEqStandardAdeleCharRationalDilate
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HasProdQuadExtLocalEulerFactorInvInvStatement
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex
@@ -203,9 +203,9 @@ theorem density_product : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
   intro F E _ _ _ _ _ _ σ hCM hst hU ψ hψ
   obtain ⟨ψ₀, h₀, -⟩ := GlobalTheory.T.existsUnique_isStandardAdeleChar_unramifiedCM_base F E σ hCM hst hU
   have hd := GlobalTheory.T.dual_lattice_different_index F E σ hCM hst hU ψ₀ h₀
-  obtain ⟨hfin, hprod, -⟩ := GlobalTheory.T.finprod_localDifferentIdealNorm_eq_discr F E σ hCM hst hU
+  obtain ⟨hfin, hprod, -⟩ := _root_.GlobalTheory.LocalDifferentProduct.prod_normDifferentV F E σ hCM hst hU
   refine ⟨fun v => ?_, fun a ha hs M hM => ?_⟩
-  · obtain ⟨a, ha, h⟩ := GlobalTheory.T.exists_eq_standardAdeleChar_rational_dilate F E σ hCM hst hU ψ₀ h₀ ψ hψ
+  · obtain ⟨a, ha, h⟩ := _root_.GlobalTheory.AdelicCharDilate.exists_eq_std_dilate F E σ hCM hst hU ψ₀ h₀ ψ hψ
     exact (dual_scaled ha h v (hd v).1).1
   obtain ⟨hL, hE⟩ := GlobalTheory.T.hasProd_quadExtLocalEulerFactorInv_inv F E σ hCM hst hU M hM
   have hn : ∀ v, dualIndex F ψ v = normDifferentV F v * ‖algebraMap F (Fv F v) a‖⁻¹ := fun v =>

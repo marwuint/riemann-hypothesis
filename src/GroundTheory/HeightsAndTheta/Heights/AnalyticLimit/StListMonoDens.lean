@@ -15,10 +15,4 @@ def ListMonoDens.Statement : Prop :=
       0 ≤ locDens A (fun i => potForm (th i) (u i)) j y ∧
         locDens A (fun i => potForm (th i) (u i)) j y ≤ locDens A (fun i => potForm Om (u i)) j y
 
-section Inhabitants
-
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (projLineChartData)
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.AnalyticLimit

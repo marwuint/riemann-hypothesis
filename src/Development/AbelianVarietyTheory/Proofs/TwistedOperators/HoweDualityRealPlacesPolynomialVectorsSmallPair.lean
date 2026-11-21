@@ -7,9 +7,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualit
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HypothesesAbsDet
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AlgAtLeAlgD
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelInfAlt
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieDerivativePolynomialFockArchimedeanUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactUnitaryPreservesPolynomialFockStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RankPolynomialFockSchrodingerModelLeAleph0Statement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieDerivativePolynomialFockArchimedeanUnitary
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsThetaSubSelf
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactUnitaryPreservesPolynomialFock
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RankPolynomialFockSchrodingerModelLeAleph0
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealLieOperatorThetaQuotientLine
 
@@ -145,9 +146,9 @@ theorem realTransfer' : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   have dW : G.W.J.det ≠ 0 := det_ne_sig_map (Bs.emb w₀).1 Complex.I (hg.hW.sig w₀)
   have hres := resEta_div hc.resα hc.resβ (Nat.add_comm a a')
   have hhk := hecke_div hc.heckeα hc.heckeβ
-  have hLie := GlobalTheory.T.lieDerivative_polynomialFock_archimedeanUnitary F E σ hT.base.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hT.base.std
+  have hLie := _root_.GlobalTheory.RealLieFock.lie_deriv_pol F E σ hT.base.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hT.base.std
     hg.hV'.herm dV' hg.hW.skew dW hc.resα hres hc.heckeα hhk hT.weil' Bs.emb hg.hV'.cartan hg.hW.cartan
-  have hCpt := GlobalTheory.T.compactUnitary_preserves_polynomialFock F E σ hT.base.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hT.base.std
+  have hCpt := _root_.GlobalTheory.FockCompactW.pol_stable_compact F E σ hT.base.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hT.base.std
     hg.hV'.herm dV' hg.hW.skew dW hc.resα hres hc.heckeα hhk hT.weil' Bs.emb hg.hV'.cartan hg.hW.cartan
   set P := G.M'.Pol Bs.ψ Bs.emb with hPdef
 
@@ -206,7 +207,7 @@ theorem realTransfer' : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     apply hN
     apply hinj
     rw [h, Submodule.map_subtype_top]
-  refine ⟨GlobalTheory.T.rank_polynomialFock_schrodingerModel_le_aleph0 Bs G.M' hT.base hg.hV' hg.hW hg.hM', ?_, ?_, ?_, ?_⟩
+  refine ⟨_root_.GlobalTheory.FockCount.rank_pol_le_aleph0 Bs G.M' hT.base hg.hV' hg.hW hg.hM', ?_, ?_, ?_, ?_⟩
   · obtain ⟨L, hL⟩ := hreal.1
     exact ⟨L, fun m N hN hN' => hL m (fun i => (N i).map P.subtype)
       ((Submodule.map_strictMono_of_injective P.injective_subtype).comp hN) fun i => key _ (hN' i).1 (hN' i).2⟩

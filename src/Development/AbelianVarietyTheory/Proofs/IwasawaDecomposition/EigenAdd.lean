@@ -50,15 +50,15 @@ theorem core_form (l : ℕ) [Fact l.Prime] (C : Core l) (b : Per.BdR l) (d : GQ 
     ∃ (a : ℚ_[l]) (v : Per.BdRp l), b = algebraMap (Per.BdRp l) (Per.BdR l)
       (C.o (algebraMap ℚ_[l] (Om l) a) + C.j C.t * v) := by
   have he := GlobalTheory.MemLoc.core_isEps l C
-  obtain ⟨hdom, hinj, -, hfrac⟩ := GlobalTheory.T.bdRPlus_isDomain_bdR_isField l
-  obtain ⟨hfil, hreg, hcompl, -⟩ := GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l C.ε he
-  obtain ⟨-, hker, hunit, -, hθ⟩ := GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l
-  obtain ⟨-, ht1, ht2, -⟩ := GlobalTheory.T.fontaine_t_isUnit_bcris_and_uniformizer_bdRPlus l C
-  obtain ⟨-, hjσ, -⟩ := GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l C.j C.j_cris
+  obtain ⟨hdom, hinj, -, hfrac⟩ := _root_.GlobalTheory.MemLoc.BdRField.bdR_isField l
+  obtain ⟨hfil, hreg, hcompl, -⟩ := _root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l C.ε he
+  obtain ⟨-, hker, hunit, -, hθ⟩ := _root_.GlobalTheory.MemLoc.thetaD_props l
+  obtain ⟨-, ht1, ht2, -⟩ := _root_.GlobalTheory.MemLoc.core_t_unit_fil l C
+  obtain ⟨-, hjσ, -⟩ := _root_.GlobalTheory.MemLoc.crisP_unique_equivariant l C.j C.j_cris
   have hσD := (GlobalTheory.MemLoc.ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.1
   have hact := GlobalTheory.T.acrisGaloisAction_fontaine_t_eq_cyclotomic l C
-  have htate := GlobalTheory.T.eq_zero_of_tateTwist_invariant_finiteExtension l C (botExt l)
-  have hast := GlobalTheory.T.cLTate_invariants_finiteExtension_mem l (botExt l)
+  have htate := _root_.GlobalTheory.MemLoc.tate_twist_invariants l C (botExt l)
+  have hast := _root_.GlobalTheory.MemLoc.invariants_finExt l (botExt l)
   generalize hx : aDp l (xi C.ε) = x at *
   obtain ⟨n, y0, hy0⟩ := hfrac C.ε he b
   rw [hx] at hy0
@@ -105,7 +105,7 @@ theorem core_form (l : ℕ) [Fact l.Prime] (C : Core l) (b : Per.BdR l) (d : GQ 
     (by rw [map_sub, C.o_sec.th, hkθ, sub_self])
   refine ⟨a, v, ?_⟩
   rw [← hv, add_sub_cancel]
-  have : IsDomain (Per.BdR l) := (GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.2.1.isDomain
+  have : IsDomain (Per.BdR l) := (_root_.GlobalTheory.MemLoc.BdRField.bdR_isField l).2.2.1.isDomain
   have ht' : algebraMap (Per.BdRp l) (Per.BdR l) t ^ n ≠ 0 :=
     pow_ne_zero n ((map_ne_zero_iff _ hinj).2 ht0)
   apply mul_right_cancel₀ ht'

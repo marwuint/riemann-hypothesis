@@ -7,9 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSelfDualCHLat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompAtMtMul
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SqNormIntegralFundamentalDomainEqL2NormSq
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsSymplOfSelfDual
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicVacuumReadsMultipleClassicalVacuumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormAdelicClassicalVacuumFactorEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationRealMovesFrameDetCharStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicVacuumReadsMultipleClassicalVacuum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormAdelicClassicalVacuumFactorEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationRealMovesFrameDetChar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepLatticeStabilizerVacuumEqDetCharSmulStatement
 
 open NumberField Matrix Complex MeasureTheory IsDedekindDomain
@@ -222,9 +222,9 @@ theorem exists_vacuum_multiplier : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
     · obtain ⟨b, e⟩ := Submodule.mem_one.1 (h (Set.mem_univ _))
       refine ⟨H.bar b, ?_⟩
       rw [hb, show (b : D.host.E) = star (w j) from e, star_star]
-  obtain ⟨κ₀, hκ₀, hR₀⟩ := GlobalTheory.T.adelicVacuum_reads_multiple_classicalVacuum D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS H hH ΛV L₀
+  obtain ⟨κ₀, hκ₀, hR₀⟩ := _root_.GlobalTheory.AdTh.VacLine.vac_reads D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS H hH ΛV L₀
     _ X.Λ hP.sigV hP.sigW hsV hs₀ hconj hL x₀ s hx hinv _ hf₀ v hv
-  have hN := GlobalTheory.T.norm_adelicClassicalVacuumFactor_eq D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS H hH ΛV L₀
+  have hN := _root_.GlobalTheory.AdTh.norm_factor_eq_of_reads D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS H hH ΛV L₀
     hsV hs₀ hstdV hL x₀ s hx _ hf₀ v hv κ₀ hR₀
   have hmu0 : mu k₀ ≠ 0 := fun h => by
     have := hmu.norm k₀
@@ -257,7 +257,7 @@ theorem exists_vacuum_multiplier : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
   have hR := (GlobalTheory.AdTh.reads_linear_injective D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS x₀ hx
     _ _ _ _ hR₀ hR₀).1 (mu (c * k₀⁻¹)) 0
   rw [zero_smul, zero_smul, add_zero, add_zero, ← hfix] at hR
-  have hR' := GlobalTheory.T.weilRepresentation_real_moves_frame_detChar D ψ θ V W χV χW om hP mu hmu W.rank g rfl X bas idx hX hS x₀ hx _ _ hth hR u hu
+  have hR' := _root_.GlobalTheory.RealMove.om_real_reads D ψ θ V W χV χW om hP mu hmu W.rank g rfl X bas idx hX hS x₀ hx _ _ hth hR u hu
   have e1 : om (1, u) (om (1, c * k₀⁻¹) (om (1, k₀) f)) = om (1, u * c) f := by
     rw [← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk]
     simp only [mul_one, mul_assoc, inv_mul_cancel]

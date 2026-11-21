@@ -51,10 +51,10 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
 theorem hasSupport_transport (i : k ≃+* k') (hi : Continuous i) {x : IrrGL k} {x' : IrrGL k'} (hx : RepRel i x x')
     {s : Multiset (IrrGL k)} (hs : HasSupport x.rep s) :
     ∃ s' : Multiset (IrrGL k'), HasSupport x'.rep s' ∧ ∀ y' ∈ s', ∃ y ∈ s, RepRel i y y' := by
-  have T1 := GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation k k' i hi
+  have T1 := _root_.GlobalTheory.LocalFieldIso.continuous_iso_keeps_valuation k k' i hi
   have hi' : Continuous i.symm := T1.1
-  have T2 := GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation k' k i.symm hi'
-  obtain ⟨T, hT, -⟩ := GlobalTheory.T.transportIrrGL_bijective_degree_charZero k k' i hi
+  have T2 := _root_.GlobalTheory.LocalFieldIso.continuous_iso_keeps_valuation k' k i.symm hi'
+  obtain ⟨T, hT, -⟩ := _root_.GlobalTheory.transport_irrGL_bijective k k' i hi
   have hC := (GlobalTheory.LocLanglands.repRel_isCusp_nu_ofChar k k' i hi).1
   obtain ⟨r, xs, rfl, -, hc, e, hsub⟩ := hs
   let σ' : ∀ a, Representation ℂ (GL (Fin (xs a).1) k') (xs a).2.rep.V := fun a =>
@@ -94,8 +94,8 @@ theorem goodCusp_transport (i : k ≃+* k') (hi : Continuous i)
       GlobalTheory.PRep.fixed z'.rep (GlobalTheory.SplitWeil.KOne k' (Fin z'.1)) ≠ ⊥)
     {y : IrrGL k} {y' : IrrGL k'} (hy : RepRel i y y')
     (h : UpperTheory.Zero.LLC.GoodCusp y) : UpperTheory.Zero.LLC.GoodCusp y' := by
-  have hi' : Continuous i.symm := (GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation k k' i hi).1
-  obtain ⟨T, hT, hTd⟩ := GlobalTheory.T.transportIrrGL_bijective_degree_charZero k k' i hi
+  have hi' : Continuous i.symm := (_root_.GlobalTheory.LocalFieldIso.continuous_iso_keeps_valuation k k' i hi).1
+  obtain ⟨T, hT, hTd⟩ := _root_.GlobalTheory.transport_irrGL_bijective k k' i hi
   obtain rfl : T y = y' := (hT _ _).1 hy
   rcases h with h1 | ⟨⟨g, hg, j, hj⟩, y₀, χ, hχ, hfix, rfl⟩
   · left

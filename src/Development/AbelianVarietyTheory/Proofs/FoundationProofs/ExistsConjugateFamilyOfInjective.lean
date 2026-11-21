@@ -5,14 +5,15 @@ import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModQPrin
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJTau
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSLTwoPermutedModularFamilyAlgebraClosureStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSLTwoPermutedModularFamilyIffValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQMdifferentiableAndIsBoundedAtImInftyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionOfLevelCoeffAndFunctionUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQMdifferentiableAndIsBoundedAtImInfty
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionOfLevelCoeffAndFunctionUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QExpansionsCoeffwiseConjugateRingClosureStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCoeffwiseConjugateOfIntegralQuotientStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneHolomorphicMulEqZeroIffStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormSymmetricFunctionDecompStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsConjLevelOneStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PermutedModularFamilyMonicPolyCoeffInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCoeffwiseConjugateOfIntegralQuotient
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneHolomorphicMulEqZeroIff
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormSymmetricFunctionDecomp
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsConjLevelOne
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PermutedModularFamilyMonicPolyCoeffInvariant
 
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators
 open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
@@ -26,7 +27,7 @@ namespace GlobalTheory.FN.Lag
 theorem mdiff_of_hasQ {N : ℕ} (hN : 0 < N) {f : ℍ → ℂ} (h : ∃ a, HasQ N f a) :
     MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f := by
   obtain ⟨a, ha⟩ := h
-  exact (GlobalTheory.T.mdifferentiable_and_isBoundedAtImInfty_of_hasQ N f a hN ha).1
+  exact (_root_.GlobalTheory.QFam.hasQ_mdifferentiable_and_isBoundedAtImInfty N f a hN ha).1
 
 theorem hasQ_of_qConj {g : ℂ ≃+* ℂ} {N : ℕ} {f f' : ℍ → ℂ} (h : QConj g N f f') :
     (∃ a, HasQ N f a) ∧ ∃ a, HasQ N f' a := by
@@ -46,12 +47,12 @@ theorem qConj_ne_zero {g : ℂ ≃+* ℂ} {N : ℕ} (hN : 0 < N) {f f' : ℍ →
     f' ≠ 0 := by
   obtain ⟨a, ha, hb⟩ := h
   rintro rfl
-  have h1 := (GlobalTheory.T.hasQExpansionOfLevel_coeff_and_function_unique).1 N 0 _ _ hN hb (hasQ_zero N)
+  have h1 := (_root_.GlobalTheory.QFam.hasQ_unique_both).1 N 0 _ _ hN hb (hasQ_zero N)
   have h2 : a = fun _ => 0 := funext fun n => by
     have := congrFun h1 n
     simpa using this
   subst h2
-  exact hf ((GlobalTheory.T.hasQExpansionOfLevel_coeff_and_function_unique).2 N f 0 _ ha (hasQ_zero N))
+  exact hf ((_root_.GlobalTheory.QFam.hasQ_unique_both).2 N f 0 _ ha (hasQ_zero N))
 
 theorem prod_ne_zero {N : ℕ} (hN : 0 < N) {κ : Type} (s : Finset κ) (u : κ → ℍ → ℂ)
     (hu : ∀ l ∈ s, u l ≠ 0 ∧ ∃ a, HasQ N (u l) a) : (fun τ => ∏ l ∈ s, u l τ) ≠ 0 := by
@@ -70,7 +71,7 @@ theorem prod_ne_zero {N : ℕ} (hN : 0 < N) {κ : Type} (s : Finset κ) (u : κ 
     have hprod : ∀ τ, u x τ * (∏ l ∈ s, u l τ) = 0 := fun τ => by
       have := congrFun h τ
       simpa [Finset.prod_insert hx] using this
-    rcases GlobalTheory.T.upperHalfPlane_holomorphic_mul_eq_zero_iff (u x) _ (mdiff_of_hasQ hN (hu x (Finset.mem_insert_self x s)).2)
+    rcases _root_.GlobalTheory.fn_mul_eq_zero_dom (u x) _ (mdiff_of_hasQ hN (hu x (Finset.mem_insert_self x s)).2)
       (mdiff_of_hasQ hN hQ) hprod with h1 | h1
     · exact (hu x (Finset.mem_insert_self x s)).1 h1
     · exact ih hs h1
@@ -88,12 +89,12 @@ theorem conj_family_of_injective : ∀ (g : ℂ ≃+* ℂ) (ι : Type) [Fintype 
   have hRr := GlobalTheory.T.qExpansionsCoeffwiseConjugate_ring_closure (RingEquiv.refl ℂ) N hN
   have hA := GlobalTheory.T.isSLTwoPermutedModularFamily_algebra_closure ι act'
 
-  obtain ⟨c, hc, hlag⟩ := GlobalTheory.T.modular_form_symmetric_function_decomp ι act m k N t F hN hb ht hF (fun i => (hasQ_of_qConj (htt' i)).1) hFq
-  choose c' hc' using fun j => GlobalTheory.T.exists_qConj_level_one_invariant g (k + m * j) N (c j) hN (hc j).1 (hc j).2
+  obtain ⟨c, hc, hlag⟩ := _root_.GlobalTheory.QFam.LagrangeFam.lagrange_fam ι act m k N t F hN hb ht hF (fun i => (hasQ_of_qConj (htt' i)).1) hFq
+  choose c' hc' using fun j => _root_.GlobalTheory.FN.exists_conj_level_one g (k + m * j) N (c j) hN (hc j).1 (hc j).2
 
-  obtain ⟨s, hs, hmin⟩ := GlobalTheory.T.permutedModularFamily_monic_poly_coeff_invariant ι act k N F ⊤ hN hb hF
+  obtain ⟨s, hs, hmin⟩ := _root_.GlobalTheory.QFam.minpoly_coeff_invariant ι act k N F ⊤ hN hb hF
     (fun i => let ⟨a, ha⟩ := hFq i; ⟨a, ha, fun _ => Subring.mem_top _⟩)
-  choose s' hs' using fun j : Fin (Fintype.card ι) => GlobalTheory.T.exists_qConj_level_one_invariant g (k * (Fintype.card ι - j)) N (s j) hN (hs j).1
+  choose s' hs' using fun j : Fin (Fintype.card ι) => _root_.GlobalTheory.FN.exists_conj_level_one g (k * (Fintype.card ι - j)) N (s j) hN (hs j).1
     (let ⟨a, ha, _⟩ := (hs j).2; ⟨a, ha⟩)
 
   obtain ⟨D, hD⟩ : ∃ D : ι → ℍ → ℂ, ∀ i, D i = fun τ => ∏ l ∈ univ.erase i, (t i τ - t l τ) := ⟨_, fun _ => rfl⟩
@@ -126,7 +127,7 @@ theorem conj_family_of_injective : ∀ (g : ℂ ≃+* ℂ) (ι : Type) [Fintype 
         (qConj_refl (hasQ_of_qConj (htt' l)).1))).1
   have hD'ne : ∀ i, D' i ≠ 0 := fun i => qConj_ne_zero hN (hDD i) (hDne i)
 
-  choose F' hF'1 hF'2 using fun i => GlobalTheory.T.exists_coeffwiseConjugate_of_integral_quotient g N (Fintype.card ι) (F i) (D i) (D' i) (A i) (A' i) s s' hN
+  choose F' hF'1 hF'2 using fun i => _root_.GlobalTheory.FN.conj_exists g N (Fintype.card ι) (F i) (D i) (D' i) (A i) (A' i) s s' hN
     (hFq i) (hDD i) (hAA i) (fun j => (hs' j).2) (hDne i)
     (fun τ => by simp only [hD, hAd]; exact hlag i τ) (fun τ => hmin i τ)
   refine ⟨F', ?_, hF'1⟩
@@ -190,7 +191,7 @@ theorem conj_family_of_injective : ∀ (g : ℂ ≃+* ℂ) (ι : Type) [Fintype 
   have hol1 : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (F' i ∣[(k : ℤ)] γ) := by
     rw [ModularForm.SL_slash]
     exact MDifferentiable.slash (mdiff_of_hasQ hN (hasQ_of_qConj (hF'1 i)).2) _ _
-  rcases GlobalTheory.T.upperHalfPlane_holomorphic_mul_eq_zero_iff _ _ (hol1.sub (mdiff_of_hasQ hN (hasQ_of_qConj (hF'1 (act' i γ))).2))
+  rcases _root_.GlobalTheory.fn_mul_eq_zero_dom _ _ (hol1.sub (mdiff_of_hasQ hN (hasQ_of_qConj (hF'1 (act' i γ))).2))
     (mdiff_of_hasQ hN (hasQ_of_qConj (hDD (act' i γ))).2) hz with h | h
   · funext τ
     exact sub_eq_zero.mp (congrFun h τ)

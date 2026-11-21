@@ -80,11 +80,6 @@ theorem isIntegral_fiber_of_smooth (f : X ⟶ S) [Smooth f] [GeometricallyConnec
   have := geometricallyIntegral_of_smooth f
   inferInstance
 
-theorem geometricallyConnected_of_isIso (f : X ⟶ S) [IsIso f] : GeometricallyConnected f := by
-  refine ⟨fun K _ y Z fst snd h ↦ ?_⟩
-  have : IsIso snd := h.isIso_snd_of_isIso
-  exact snd.homeomorph.symm.surjective.connectedSpace snd.homeomorph.symm.continuous
-
 end Morphisms
 
 section Products

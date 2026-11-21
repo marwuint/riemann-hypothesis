@@ -2,11 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGaloisCover
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MemRangeOfIsPullback
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullback
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChange
+import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaConstantsLocallyOnBase
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsUniqueUpToUnit
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaCosetNonvanishingOfHasThStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsSatisfyClosureEquationsOfDenseClasStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaCosetNonvanishingOfHasTh
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsSatisfyClosureEquationsOfDenseClas
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SecCoordBcScaleUnique
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
@@ -48,7 +49,7 @@ theorem exists_thetaMap (hL : Out.Laws) (hL2 : Out.Laws2) (hn : 2 ≤ n) (hd : n
   have hβ' : ∀ p, ∃ β : o →+* R p, x p ≫ s = spMap β := fun p => exists_spMap (x p ≫ s)
   choose β hβ using hβ'
   have hin : ∀ p, InMM n N' (thIdeal em C) (β p) (v p) := fun p =>
-    GlobalTheory.T.thetaConstants_satisfy_closure_equations_of_dense_class hL hL2 o g n N' J b em C S s t (R p) (β p) (x p) (v p) hn hd ho hS hD (hx p) (hβ p) (hth p)
+    _root_.GlobalTheory.ZM.inMM_of_dense_fromSet hL hL2 o g n N' J b em C S s t (R p) (β p) (x p) (v p) hn hd ho hS hD (hx p) (hβ p) (hth p)
   have hpt : ∀ p, ∃ y : Sp (R p) ⟶ Y.MM, y ≫ Y.s = spMap (β p) ∧ SecCoord Y.de Y.th y (v p) :=
     fun p => (Y.pts (R p) (β p) (v p) (hin p)).exists
   choose f hf using hpt
@@ -56,11 +57,11 @@ theorem exists_thetaMap (hL : Out.Laws) (hL2 : Out.Laws2) (hn : 2 ≤ n) (hd : n
     intro i j T _ z z' hz
     obtain ⟨φ, rfl⟩ := exists_spMap z
     obtain ⟨φ', rfl⟩ := exists_spMap z'
-    have h1 := GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t (R i) T φ (x i) (v i) (hth i)
-    have h2 := GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t (R j) T φ' (x j) (v j) (hth j)
+    have h1 := _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b S s t (R i) T φ (x i) (v i) (hth i)
+    have h2 := _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b S s t (R j) T φ' (x j) (v j) (hth j)
     rw [hz] at h1
     have hsp : Ideal.span (Set.range fun a => φ (v i a)) = ⊤ :=
-      span_eq_top_of_coset (n := n) fun q hq => GlobalTheory.T.thetaCosetNonvanishing_of_hasTh hL hL2 o g N' J b S s t n T _ _ q hn hd h1 hq
+      span_eq_top_of_coset (n := n) fun q hq => _root_.GlobalTheory.coset_of_hasTh hL hL2 o g N' J b S s t n T _ _ q hn hd h1 hq
     obtain ⟨u, hu⟩ := GlobalTheory.hasTh_unique_unit hL hL2 o g N' J b S s t T _ _ _ h1 h2 hsp
     have c1 : SecCoord Y.de Y.th (spMap φ ≫ f i) fun a => φ' (v j a) := by
       have e : (fun a => φ' (v j a)) = fun a => (u : T) * φ (v i a) := funext fun a => hu a
@@ -82,7 +83,7 @@ theorem exists_thetaMap (hL : Out.Laws) (hL2 : Out.Laws2) (hn : 2 ≤ n) (hd : n
     obtain ⟨φ, rfl⟩ := exists_spMap z
     subst hz
     refine ⟨fun a => φ (v p a), ?_, ?_⟩
-    · exact GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t (R p) K φ (x p) (v p) (hth p)
+    · exact _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b S s t (R p) K φ (x p) (v p) (hth p)
     · rw [Category.assoc, hF]
       exact GlobalTheory.ZM.Coord.baseChange (hf p).2 φ
 

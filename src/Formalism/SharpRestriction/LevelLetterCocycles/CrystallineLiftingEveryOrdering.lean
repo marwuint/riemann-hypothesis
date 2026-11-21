@@ -150,12 +150,6 @@ theorem realised_of {Cc : ℝ} (H : BrHyp2 W Cc) : Realised W := by
           (Mb₂ + hb₂) hb1 hC
         arcs := P.arcs ϖ hϖ }
 
-theorem brHyp_of {Cc : ℝ} (H : BrHyp2 W Cc) (hnat : W.ClKNat) : BrHyp W where
-  s_one := H.s_one
-  herr := fun T hT => (H.herr T hT).2
-  nat := hnat
-  real := realised_of H
-
 theorem crystalline_lifting_second_form {Cc : ℝ} (H : BrHyp2 W Cc) : ThmELiftAt PD (O := O) n W.emb v := by
   intro _ h5 T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen Mb₁ hb₁ Mb₂ hb₂ hK hJ hg hS hC hT hb1 hb2
     hW
@@ -182,11 +176,5 @@ theorem crystalline_lifting_second_form {Cc : ℝ} (H : BrHyp2 W Cc) : ThmELiftA
         _ _, P.ext⟩ P.wprime P.arcs
   rw [parE_eq_ePar] at key
   exact liftF_ofN D.h H.s_one (by omega) (H.herr T₂ hc₂.2.2.2).2 _ key
-
-theorem crystalline_lifting_every_ordering {Cc : ℝ} (H : BrHyp2 W Cc) (emb : ZMod n → (K₀ →ₐ[Qp] LL)) :
-    ThmELiftAt PD (O := O) n emb v := by
-  intro hL
-  obtain ⟨a, rfl⟩ := exists_rot (PD := PD) W.emb_bij.2 hL.2.2.2.2.1 W.emb_σ
-  exact thmELiftAt_rot W.emb a (crystalline_lifting_second_form H) hL
 
 end Formalism.MainNotions.WachCoordinates.Br

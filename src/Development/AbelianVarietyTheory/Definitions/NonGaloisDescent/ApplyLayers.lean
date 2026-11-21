@@ -92,10 +92,6 @@ set_option maxHeartbeats 1000000 in
 
 def etOf : WEt (ioOf E hs hp hL hI) := { W, E with }
 
-set_option maxHeartbeats 1000000 in
-
-def clOf : WCl (etOf E hs hp hL hI) := { W, E with }
-
 open Classical in
 
 def nOf (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) : Submodule (LetA O n) (W.DD T) :=
@@ -181,17 +177,8 @@ abbrev EtL := etOf (F.E K s LL h).tie (H.W_s K s LL h) (p_prime P K) hL.lev hL.i
 
 set_option maxHeartbeats 400000 in
 
-abbrev ClL := clOf (F.E K s LL h).tie (H.W_s K s LL h) (p_prime P K) hL.lev hL.io
-
-set_option maxHeartbeats 400000 in
-
 abbrev LatL :=
   latOf (F.E K s LL h).tie (H.W_s K s LL h) (p_prime P K) hL.lev hL.io _ hL.one (H.W_proj K s LL h)
-
-set_option maxHeartbeats 400000 in
-
-theorem latL_N {T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)} (hT : IsCrys (P.PD K) T.ρ) :
-    (LatL H F h hL).N T = (H.W K s LL h).N T := nOf_crys _ hT
 
 theorem apply_layers (p : ∀ (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R) (E : WEt I), NS E → Prop)
     (hp : ∀ (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R), IoW I → ∀ (E : WEt I) (Mo : NS E), p Γ R I E Mo) :
@@ -279,17 +266,6 @@ theorem laws : Laws H F h := by
   exact ⟨levLaws H h, ⟨fun e => GlobalTheory.TorsionBoundCompare.ioE_φ _ Subtype.val_injective e,
     fun g e => GlobalTheory.TorsionBoundCompare.ioE_γ _ Subtype.val_injective g e⟩,
     GlobalTheory.TrivCrys.isCrys_lat_of_trivial _ (H.W K s LL h).one_triv⟩
-
-set_option maxHeartbeats 1000000 in
-
-example : (LatL H F h (laws H F h)).N (H.W K s LL h).one = (H.W K s LL h).N (H.W K s LL h).one :=
-  latL_N H F h _ (laws H F h).one
-
-set_option maxHeartbeats 1000000 in
-
-example (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) :
-    (EtL H F h (laws H F h)).φD T = (H.W K s LL h).φD T ∧ (ClL H F h (laws H F h)).cl T = (H.W K s LL h).cl T :=
-  ⟨rfl, rfl⟩
 
 end Holds
 

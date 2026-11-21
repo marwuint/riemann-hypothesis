@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompletedLaurentIsDVRStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePow
 open GlobalTheory.K5 GlobalTheory.KumDlog
 
 namespace GlobalTheory.K5
@@ -25,7 +25,7 @@ theorem one_sub_p_div_zeta_mul_isUnit : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 �
     calc 2 = 1 * 2 := by ring
       _ ≤ p ^ (j - 1) * (p - 1) := Nat.mul_le_mul h1 (by omega)
   have hw : IsIntegral (O0 p) ((p : Ω) / (T.ζ j - 1) ^ 2 * y) :=
-    (GlobalTheory.T.isInt_prime_div_rootOfUnity_sub_one_pow p Ω T j 2 hj htot).mul hy
+    (_root_.GlobalTheory.K5.PDiv.pdiv p Ω T j 2 hj htot).mul hy
   let ζ' : A := ⟨T.ζ j, hζint⟩
   let τ : A := ζ' - 1
   let w : A := ⟨_, hw⟩

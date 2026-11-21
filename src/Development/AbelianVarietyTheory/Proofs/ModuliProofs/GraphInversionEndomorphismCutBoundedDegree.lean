@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.SectionsHaveFin
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsBasisOfIsField
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsHaveFiniteDimensionInvarianceIsomorphism
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalPolarisationVolumeFormSymmetricAmpleStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaSectionsVeryAmplePeriodicStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalPolarisationVolumeFormSymmetricAmple
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaSectionsVeryAmplePeriodic
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MemSubringOfLocalInverse
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianVarietyCutOutBoundedDegreeTorsionStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HilbertFunctionEndomorphismGraphOfTorsionActionStatement
@@ -44,7 +44,7 @@ theorem vol_inv (H1 : Out.Laws) (H2 : Out.Laws2) (K : Type) [Field K] [IsAlgClos
   have hi : ((𝟙 P.A)⁻¹ : P.A ⟶ P.A) = GrpObj.inv := by rw [Hom.inv_def, Category.id_comp]
   rw [hi]
   have hs : cls P.L P.isLB = pull (GrpObj.inv : P.A ⟶ P.A).left (cls P.L P.isLB) :=
-    (cls_eq_iff P.isLB (pull_isLB P.isLB _)).2 (GlobalTheory.T.principalPolarisation_volume_form_symmetric_ample H1 H2 K P).2.2.1
+    (cls_eq_iff P.isLB (pull_isLB P.isLB _)).2 (_root_.GlobalTheory.principal_polarisation_numerics H1 H2 K P).2.2.1
   have hB : (graphLB P.L (GrpObj.inv : P.A ⟶ P.A).left N).IsLB := LB.isLB_linComb P.isLB _ _
   have hc := cls_graphLB P.isLB _ N hB
   rw [← hs] at hc
@@ -127,7 +127,7 @@ theorem cutBy_graphIdeal : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [
     exact (ZMod.natCast_eq_natCast_iff _ _ _).1 this
   obtain ⟨Q, HQ⟩ := Hc δ hδ (Ix g ((n ^ j) ^ 2) × Ix g ((n ^ j) ^ 2)) (Prod.map c c) (hc.prodMap hc)
   refine ⟨Q, d, fun K _ _ β t σ p q f hS hf hE hpq => ?_⟩
-  obtain ⟨hiso, hLB, hVA, hpow, hper, hT, hsurj⟩ := GlobalTheory.T.thetaSections_veryAmple_periodic H1 H2 o g (n ^ j) J b K β t (n ^ 2) σ hodd.pow hdvd
+  obtain ⟨hiso, hLB, hVA, hpow, hper, hT, hsurj⟩ := _root_.GlobalTheory.embSec_veryAmple_periodic H1 H2 o g (n ^ j) J b K β t (n ^ 2) σ hodd.pow hdvd
     (hn2.trans (Nat.le_self_pow two_ne_zero n)) hE
   obtain ⟨hsym, hH⟩ := Hv K β t f hS hf hT
   have ha₂ : (lift (fst _ _) (snd (Over.mk (𝟙 (Sp K))) t.A ≫ f)).left ≫ (fst (Over.mk (𝟙 (Sp K))) t.A).left =

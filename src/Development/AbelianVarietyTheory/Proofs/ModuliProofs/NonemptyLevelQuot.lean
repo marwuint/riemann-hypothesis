@@ -7,11 +7,11 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsQProjOverBaseChangeAndFiniteRestrict
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsGaloisCoverOfIsQProjOver
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsQProjOverTargetOfIsGaloisCoverStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAbelianTripleDescentGaloisCoverStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsQProjOverTargetOfIsGaloisCover
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAbelianTripleDescentGaloisCover
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsTwistOfLowers
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjDescendLowerLevel
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothOfRelativeDimensionDescendsEtaleCoverStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothOfRelativeDimensionDescendsEtaleCover
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -101,7 +101,7 @@ theorem nonempty_levelQuot : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P
       (finite_of_numberField jK) Xo₂.qproj
   obtain ⟨Y, π, sY, hπ, hG, hsep, hft, -⟩ :=
     exists_isGaloisCover_of_isQProjOver (KA l) Xo₂.X (Xo₂.s ≫ spMap jK) Ga ρ hq h1 hmul hover hfree
-  have hqY : IsQProjOver sY := GlobalTheory.T.isQProjOver_target_of_isGaloisCover (KA l) _ Y π sY Ga ρ hG hsep hft (by rw [hπ]; exact hq)
+  have hqY : IsQProjOver sY := _root_.GlobalTheory.GaloisQuotient.isQProjOver_of_isGaloisCover (KA l) _ Y π sY Ga ρ hG hsep hft (by rw [hπ]; exact hq)
   have hsm : SmoothOfRelativeDimension D.dim (π ≫ sY) := by
     rw [hπ]
     haveI := Xo₂.smooth
@@ -109,8 +109,8 @@ theorem nonempty_levelQuot : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P
     haveI : SmoothOfRelativeDimension 0 (spMap jK) := inferInstance
     have := smoothOfRelativeDimension_comp D.dim 0 Xo₂.s (spMap jK)
     rwa [Nat.add_zero] at this
-  have hsY : SmoothOfRelativeDimension D.dim sY := GlobalTheory.T.smoothOfRelativeDimension_descends_etale_cover (KA l) _ Y π sY _ hG.etale hG.onto hft hsm
-  obtain ⟨t', m, hνm, hp, ha, hk⟩ := GlobalTheory.T.exists_abelianTriple_descent_galoisCover hL hL2 hTh E H (KA l) _ Y π sY Ga ρ Xo₂.univ.t _ ν hG hqY
+  have hsY : SmoothOfRelativeDimension D.dim sY := _root_.GlobalTheory.SmoothDescent.smoothOfRelativeDimension_of_etale_cover (KA l) _ Y π sY _ hG.etale hG.onto hft hsm
+  obtain ⟨t', m, hνm, hp, ha, hk⟩ := _root_.GlobalTheory.TripleDescent.exists_sab_descent_of_galoisCover hL hL2 hTh E H (KA l) _ Y π sY Ga ρ Xo₂.univ.t _ ν hG hqY
     Xo₂.univ.proper (obj_isAbelianScheme_dim_rigidified_sym E H D l₂ _ _ _ _ Xo₂.univ).2.1
     Xo₂.univ.ample Xo₂.univ.ktriv hν1 hνmul
   obtain ⟨ob, m', hη, hηA⟩ := obj_descend_lower_level hL hL2 E H D l l₂ _ _ (baseKA l) (baseKA l₂) jK _ Y π sY

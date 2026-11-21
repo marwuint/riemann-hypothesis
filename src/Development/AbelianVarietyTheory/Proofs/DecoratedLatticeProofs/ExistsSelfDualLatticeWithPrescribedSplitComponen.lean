@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualImageAdelicPointWittCoreStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualSplitComponentIsLatticeStabilizerEqStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlaceIdempotentActsOnSupportedAndOffStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlaceIdempotentActsOnSupportedAndOff
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.FinPl GlobalTheory.MixPer GlobalTheory.MixModel ValuativeRel
 open scoped Pointwise
 
@@ -63,7 +63,7 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 theorem e_mem_idAt (p : SplitPt D k) : p.e ∈ idAt D (· = p.v) := by
   obtain ⟨ε, hε, hsum⟩ := p.above
   obtain ⟨hee, hec, -⟩ := p.split
-  refine ((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D p.v ε hε).1 p.e).2 ?_
+  refine ((_root_.GlobalTheory.FinPl.placeIdem_acts D p.v ε hε).1 p.e).2 ?_
   rw [← hsum, add_mul, hee, mul_comm (cA D p.e), hec, add_zero]
 
 theorem sec_eq_mul (p : SplitPt D k) (a : k) : p.sec a = p.e * p.sec a := by
@@ -102,7 +102,7 @@ theorem mt_gl_off {p : SplitPt D k} (β : Frame p S n) (g : GL n k) (y : Fin S.r
     rw [← β.gl_supp g i j, hsum]
     calc algebraMap (AF D.host.F) (AE D) ε * (mt S (β.gl g) - 1) i j * y j
         = (mt S (β.gl g) - 1) i j * (algebraMap (AF D.host.F) (AE D) ε * y j) := by ring
-      _ = 0 := by rw [(GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D p.v ε hε).2 _ (hy j), mul_zero]
+      _ = 0 := by rw [(_root_.GlobalTheory.FinPl.placeIdem_acts D p.v ε hε).2 _ (hy j), mul_zero]
   rw [Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero] at h0
   exact h0
 
@@ -115,7 +115,7 @@ theorem main : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
   obtain ⟨g, hg⟩ := exists_gl_of_lattices Λ₁ Λ hΛ₁ hΛ
   obtain ⟨M, hM, hMv⟩ := (GlobalTheory.T.selfDual_image_adelicPoint_wittCore D S L hL).1 (β.gl g)
   have supp : ∀ (N : Lat S), IsSelfDualC S N → ∀ y, y ∈ latV S N (· ≠ p.v) → ∀ i, y i ∈ idAt D (· ≠ p.v) :=
-    fun N hN y hy => (((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· ≠ p.v)).2 S).2.2.2 N y hN.1 |>.1 hy).1
+    fun N hN y hy => (((_root_.GlobalTheory.FinPl.localComponents D (· ≠ p.v)).2 S).2.2.2 N y hN.1 |>.1 hy).1
   refine ⟨M, hM, fun x => ?_, ?_⟩
   · have hx : x = g.val *ᵥ ((g⁻¹).val *ᵥ x) := by
       rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]

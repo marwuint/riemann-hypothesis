@@ -74,9 +74,6 @@ theorem cj_mul (h : f * fi = 1) (z w : SlopeTestRemainingChoices S A) : cj f fi 
 theorem cj_add (z w : SlopeTestRemainingChoices S A) : cj f fi (z + w) = cj f fi z + cj f fi w := by
   simp only [cj, mul_add, add_mul]
 
-theorem cj_smul (t : ℂ) (z : SlopeTestRemainingChoices S A) : cj f fi (t • z) = t • cj f fi z := by
-  simp only [cj, mul_smul_comm, smul_mul_assoc]
-
 theorem cj_zero : cj f fi (0 : SlopeTestRemainingChoices S A) = 0 := by
   simp only [cj, mul_zero, zero_mul]
 

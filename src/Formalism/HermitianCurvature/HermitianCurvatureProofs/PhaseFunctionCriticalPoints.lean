@@ -228,9 +228,6 @@ theorem hessian_determinant : Formalism.FourierDecayAlt.G.HessDet := by
   simp [dotProduct]
   ring
 
-theorem gradient_small_near_critical : Formalism.FourierDecayAlt.G.GradSmall :=
-  ⟨6, fun m D' hD x hx η hη hη' h => gradSmall6 m D' hD x hx η hη hη' h⟩
-
 theorem gradient_lower_bound : Formalism.FourierDecayAlt.G.GradLower := by
   intro m Kc hK h0 δ hδ
   obtain ⟨R, hR⟩ := hK.isBounded.exists_norm_le

@@ -75,10 +75,6 @@ theorem continuous_of_isTrivialOn {χ : AddChar K Circle} {n : ℤ} (h : IsTrivi
     rw [← e, AddChar.map_add_eq_mul, h _ hz, mul_one]
   exact hlc.continuous
 
-theorem continuous_iff_exists_isTrivialOn (χ : AddChar K Circle) :
-    Continuous χ ↔ ∃ n, IsTrivialOn χ n :=
-  ⟨exists_isTrivialOn χ, fun ⟨_, h⟩ => continuous_of_isTrivialOn h⟩
-
 theorem exists_addChar_isTrivialOn_zero_not_isTrivialOn_neg_one :
     ∃ ψ : AddChar K Circle, IsTrivialOn ψ 0 ∧ ¬ IsTrivialOn ψ (-1) := by
   obtain ⟨x, hx1, hx0⟩ := exists_mem_valBall_neg_one_notMem_valBall_zero (K := K)
@@ -106,27 +102,10 @@ theorem exists_addChar_addCharConductor_eq_zero :
   by_contra hlt
   exact h1 ((isTrivialOn_iff hc hne (-1)).mpr (by omega))
 
-theorem exists_addChar_addCharConductor_eq (n : ℤ) :
-    ∃ ψ : AddChar K Circle, Continuous ψ ∧ ψ ≠ 1 ∧ addCharConductor ψ = n := by
-  obtain ⟨ψ, hc, hne, h0⟩ := exists_addChar_addCharConductor_eq_zero (K := K)
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
-  have h0ϖ : (ϖ : K) ≠ 0 := fun h => hϖ.ne_zero (Subtype.ext h)
-  have ha : (ϖ : K) ^ (-n) ≠ 0 := zpow_ne_zero _ h0ϖ
-  refine ⟨ψ.mulShift ((ϖ : K) ^ (-n)), continuous_mulShift hc _, mulShift_ne_one hne ha, ?_⟩
-  have hord : ord ((ϖ : K) ^ (-n)) = -n := by
-    simp [ord, map_zpow₀, normalizedValuation_uniformizer hϖ]
-  rw [addCharConductor_mulShift hc hne ha, h0, hord]
-  ring
-
 theorem exists_addChar_continuous_ne_one :
     ∃ ψ : AddChar K Circle, Continuous ψ ∧ ψ ≠ 1 := by
   obtain ⟨ψ, hc, hne, -⟩ := exists_addChar_addCharConductor_eq_zero (K := K)
   exact ⟨ψ, hc, hne⟩
-
-theorem nonempty_selfDual :
-    Nonempty (Multiplicative K ≃ₜ* PontryaginDual (Multiplicative K)) := by
-  obtain ⟨ψ, hc, hne⟩ := exists_addChar_continuous_ne_one (K := K)
-  exact ⟨selfDual hc hne⟩
 
 end Existence
 

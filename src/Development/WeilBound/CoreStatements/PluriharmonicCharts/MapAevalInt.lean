@@ -44,7 +44,7 @@ theorem PositivityTheory.Xgp.c_algsq.lc : ∀ (K : Type) [Fintype K] (ι : K →
   let A := regRing M.x zb
   let val : A →+* ℂ := regVal hzb
   obtain ⟨L, R, _, _, φ, θ, U, s, i, ρ, cA, B, sR, hi, hθ, hU, hU0, hθX, hic, hρc, hBb, hBi, hBρ, his, hρs⟩ :=
-    GlobalTheory.T.generic_flag_elementary_twist M.Ω Φ Ψ N j M.g F.T A val hh' t τ ca cb hcb hS M.g_block M.g_indep hF.1 hblk
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.CPts.GenData.gen_data M.Ω Φ Ψ N j M.g F.T A val hh' t τ ca cb hcb hS M.g_block M.g_indep hF.1 hblk
   let am := algebraMap M.Ω Φ
   let φΩ : M.Ω →+* L := φ.comp am
   let uA : (Σ k, ι k) → Finset (Fin N) → A := fun q I => ⟨F.u q I, exists_isValueAt hzb (hG.2.1 q I).1⟩
@@ -74,7 +74,7 @@ theorem PositivityTheory.Xgp.c_algsq.lc : ∀ (K : Type) [Fintype K] (ι : K →
       refine Finset.sum_congr rfl fun I _ => ?_
       rw [map_mul, hρc, ← minorIJ_map]
       rfl
-  obtain ⟨V, hVb, hVt, hVd, hV⟩ := GlobalTheory.T.elementary_factor_commutation L N j ca cb (U τ) (θ RatFunc.X) s hcb hS (hU τ).1 (hU τ).2.1
+  obtain ⟨V, hVb, hVt, hVd, hV⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.MoveTransvection.exists_conj L N j ca cb (U τ) (θ RatFunc.X) s hcb hS (hU τ).1 (hU τ).2.1
     (hU τ).2.2 hU0 hθX
   have hcbS : cb ∉ stepCols N j a := by
     simp only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]

@@ -5,18 +5,25 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceOfAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondLinkOfWeightRowsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReadInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSmallGenerationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelRationalityAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceRationalityAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatDatumSeriesUnitTimesKernelSeriesStatement
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvOfRoot
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LinearIndependentRowsMap
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsKsFormOfAlgebraicFormsIso
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSmallGeneration
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondLinkOfWeightRows
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseTupleThetaKernelTameCharacter
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBaseKernel
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterIdeleCharacterMatchUnique
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ForcedContentEqScaleAtResidueChar
+import Formalism.LocalToGlobal.GroupLattices.JointServices.VwResChar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTraceLevelCompatibleProofStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatDatumSeriesUnitTimesKernelSeries
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralElementMovesCoefficientLatticeByPrimePowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelTraceAlgebraicAtLowestTypesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIntersectionAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComparisonReadableAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OwnPrimeIsUnitAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivativeSubmoduleStableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelTraceAlgebraicAtLowestTypes
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIntersectionAtPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComparisonReadableAtPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OwnPrimeIsUnitAtPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivativeSubmoduleStable
 
 set_option autoImplicit false
 noncomputable section
@@ -163,25 +170,8 @@ theorem baseLat_le_realBase {ρ : Setup D.ntw} {hρ : ρ.Good} {ν : ℂ} {rd : 
 
 end Point
 
-theorem baseGe_of_steps (hI : ReadInj) (hG : LatSmallGen) (h1 : KerOfAt) (h2 : TraceOfAt) (h3 : KerRatAt) (h4 : LatIoAt)
-    (h5 : ReadCmpAt) (hF : FlatKer) (hC : CentLat) (hTr : TraceRat) (hO : OwnUnit) : BaseGe := by
-  unfold BaseGe AtFit ReadInj LatSmallGen KerOfAt TraceOfAt KerRatAt LatIoAt ReadCmpAt AtTw AtPts at *
-  refine ((((((Formalism.MainNotions.Closed.and hI hG).and h1).and h2).and h3).and h4).and h5).imp fun Fm CH _ H => ?_
-  obtain ⟨⟨⟨⟨⟨⟨a1, a2⟩, a3⟩, a4⟩, a5⟩, a6⟩, a7⟩ := H
-  obtain ⟨x0, hx0⟩ := (((((a1.and a2).and a3).and a4).and a5).and a6).and a7
-  refine ⟨x0, fun x hx hle i p hp hm w hw j ρ hρ ν rd hfit hcan => ?_⟩
-  obtain ⟨⟨⟨⟨⟨⟨b1, b2⟩, b3⟩, b4⟩, b5⟩, b6⟩, b7⟩ := hx0 x hx hle i p hp
-  exact baseLat_le_realBase p w j hfit (b1 hm w hw j ρ hρ ν hfit.norm.1) (b2 hm w hw j ρ hρ hfit.pin) fun h hh Q hQ g hg =>
-    tmul_mem_realBase p w j (GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p hp hm.1) (b3 hm w hw j) (b4 hm w hw j) (b5 hm w hw j)
-      (b6 hm w hw j) (b7 hm w hw j) hF hC hTr hO hfit hcan hh hQ hg
-
 end GlobalTheory.BigOn.Exp.SerBase
 
 namespace GlobalTheory.BigOn.Exp
-
-theorem baseGe_of : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
-    GlobalTheory.SerStd.SeriesRatS → BaseGe := fun hP hA hR hS =>
-  SerBase.baseGe_of_steps GlobalTheory.T.ReadInjective GlobalTheory.T.LatticeSmallGeneration GlobalTheory.T.kernel_rationality_at_place GlobalTheory.T.trace_rationality_at_place (GlobalTheory.T.kernel_rationality_of_reciprocity hP hA hR hS) GlobalTheory.T.lattice_intersection_at_place GlobalTheory.T.lagrangian_set_additive_subgroup
-    GlobalTheory.T.flatDatum_series_unit_times_kernel_series GlobalTheory.T.central_element_moves_coefficient_lattice_by_prime_pow GlobalTheory.T.kernelTrace_algebraic_at_lowestTypes GlobalTheory.T.ownPrime_isUnit_at_place
 
 end GlobalTheory.BigOn.Exp

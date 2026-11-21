@@ -131,21 +131,6 @@ theorem rCap_lead (n : ℕ) (u : ℤ) (b : Fin n → ℕ) (f : MvPolynomial (Fin
   capDet_intertwine (fun i j => rowE K n n i j) (rE K n n)
     (LinearMap.mulLeft K (zmon K n b) ∘ₗ (emb K n).toLinearMap) (fun i j x => rE_lead n i j b x) u f
 
-theorem rE_incl (n : ℕ) (i j : Fin n) (f : BP K n) :
-    rE K n (n + 1) i j (incl K n f) = incl K n (rE K n n i j f) := by
-  unfold rE
-  induction f using MvPolynomial.induction_on with
-  | C a => simp [incl, rowE_C]
-  | add p q hp hq => simp only [map_add, hp, hq]
-  | mul_X p v hp =>
-    obtain ⟨a, s⟩ := v
-    have hX : ∀ a s, incl K n (X (a, s)) = X (a, s.castSucc) := fun a s => rename_X _ _
-    rw [map_mul, rowE_mul, rowE_mul, hp, map_add, map_mul, map_mul, hX, rowE_X, rowE_X]
-    by_cases h : j.castSucc = a <;> simp [h, hX]
-
-theorem rCap_incl (n : ℕ) (u : ℤ) (f : BP K n) : rCap K n (n + 1) u (incl K n f) = incl K n (rCap K n n u f) :=
-  capDet_intertwine (rE K n n) (rE K n (n + 1)) (incl K n).toLinearMap (rE_incl n) u f
-
 theorem rowE_eq_deriv {r m : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × Fin m) K) :
     rowE K r m a b f = mkDerivation K (fun v : Fin r × Fin m =>
       if v.1 = b then (X (a, v.2) : MvPolynomial (Fin r × Fin m) K) else 0) f := by

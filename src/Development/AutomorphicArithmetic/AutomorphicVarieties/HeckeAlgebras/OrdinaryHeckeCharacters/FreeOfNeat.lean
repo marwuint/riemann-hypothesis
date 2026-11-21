@@ -128,18 +128,4 @@ theorem res_up (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) {m : ℕ} (�
     cases r
     exact this
 
-variable {Q0} in
-
-def hdUp (hn : 1 ≤ n) (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) {ι : Qbar l ≃+* ℂ} {A : Type} [CommRing A] [Algebra c.O A]
-    [Alg.IsCO c.O A] {κ : ∀ v, Fin n → V0.frame.Iv v →* Aˣ} {hi hu} (R : HD Q0 ι (⟨A, κ, hi, hu⟩ : LamObj r)) :
-    HD Q ι (lamUp h ⟨A, κ, hi, hu⟩) where
-  m := R.m
-  τ₀ := R.τ₀
-  type := typeFor_up h hp ι R.τ₀ R.type
-  θ := R.θ
-  theta := fun v i x g hg y h1 h2 => R.theta v i x g hg y h1 h2
-  isWt := ⟨cont_up Q0 Q R.τ₀ R.θ R.isWt.cont, fun K => free_of_neat _ _ _ _ (neatU l L Ω s n hn V Q c R.m R.τ₀ K)⟩
-  a i := R.a (opUp Q0 Q hS R.τ₀ i)
-  res := res_up h Q0 Q hS hp R.τ₀ R.a R.res
-
 end UpperTheory.V.Hi.LvR

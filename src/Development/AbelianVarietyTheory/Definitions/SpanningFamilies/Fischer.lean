@@ -37,9 +37,6 @@ def IsONFr (x : Frame X.Ψ r) : Prop := ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x τ)
 
 def IdemTwo (w : E) : Prop := ∃ b : E, IsIntegral ℤ b ∧ w * cc w = 2 * b
 
-def fischer {σ : Type} (P Q : MvPolynomial σ ℂ) : ℂ :=
-  ∑ m ∈ P.support, ((m.prod fun _ e => e.factorial : ℕ) : ℂ) * (P.coeff m * conj (Q.coeff m))
-
 theorem zR_embR (x : Frame X.Ψ r) (y : Matrix (Fin n) (Fin r) E) (k : Fin n) :
     zR X idx x (embR X y) k = GlobalTheory.Dict.pv X idx x (y k) := rfl
 

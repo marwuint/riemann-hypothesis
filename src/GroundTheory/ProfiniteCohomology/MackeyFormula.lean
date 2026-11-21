@@ -143,11 +143,6 @@ noncomputable def mackeyEquiv :
   left_inv f := mackeyLift_mackeyProj U ι N f
   right_inv F := funext fun d => mackeyProj_mackeyLift U ι N F d
 
-theorem mackeyEquiv_apply_ρ (f : Rep.coind U.subtype N) (h₀ : H) (d : MackeyDoubleCoset U ι) :
-    mackeyEquiv U ι N ((Rep.coind U.subtype N).ρ (ι h₀) f) d =
-      (mackeySummand U ι N d.out).ρ h₀ (mackeyEquiv U ι N f d) :=
-  Rep.hom_comm_apply (mackeyProj U ι N d.out) h₀ f
-
 theorem mackeyLift_single_ρ [DecidableEq (MackeyDoubleCoset U ι)] (d : MackeyDoubleCoset U ι)
     (F : mackeySummand U ι N d.out) (h₀ : H) :
     mackeyLift U ι N (Pi.single d ((mackeySummand U ι N d.out).ρ h₀ F)) =

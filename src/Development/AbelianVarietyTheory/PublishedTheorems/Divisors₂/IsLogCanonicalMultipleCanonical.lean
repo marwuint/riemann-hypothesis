@@ -271,19 +271,6 @@ theorem exists_isAt_of_coheight_eq_one [LocallyOfFiniteType p] [IsLocallyNoether
   haveI := IsNormalScheme.isDiscreteValuationRing_stalk h
   exists_isAt p z
 
-theorem exists_isAt_affineLine :
-    ∃ (z : Sp (Polynomial k)) (E : DivOver (spMap (algebraMap k (Polynomial k)))),
-    E.IsAt z := by
-  let z : Sp (Polynomial k) := ⟨Ideal.span {Polynomial.X},
-    (Ideal.span_singleton_prime Polynomial.X_ne_zero).mpr Polynomial.prime_X⟩
-  have hz : Order.coheight z = 1 := by
-    rw [← idealHeight_eq_coheight]
-    exact Ideal.height_span_singleton_eq_one_of_mem_nonZeroDivisors (R := Polynomial k)
-      (mem_nonZeroDivisors_of_ne_zero Polynomial.X_ne_zero) Polynomial.prime_X.not_unit
-  haveI : LocallyOfFiniteType (spMap (algebraMap k (Polynomial k))) :=
-    HasRingHomProperty.Spec_iff.2 (RingHom.finiteType_algebraMap.2 inferInstance)
-  exact ⟨z, exists_isAt_of_coheight_eq_one hz⟩
-
 end DivOver
 
 section Pairs
@@ -339,18 +326,6 @@ theorem IsLogEqn.discrep_eq_neg (h : IsLogEqn p Δ η x m g) (hm : 0 < m) (hz : 
   rw [discrep, ← h z hz E hE]
   field_simp
   ring
-
-theorem KltAt.lt_one (h : KltAt p n Δ x) (hz : z ⤳ x) (hE : E.IsAt z) : Δ z < 1 := by
-  obtain ⟨η, m, g, -, hm, hg, h⟩ := h
-  have := h E (hE.through hz)
-  rw [hg.discrep_eq_neg hm hz hE] at this
-  linarith
-
-theorem LcAt.le_one (h : LcAt p n Δ x) (hz : z ⤳ x) (hE : E.IsAt z) : Δ z ≤ 1 := by
-  obtain ⟨η, m, g, -, hm, hg, h⟩ := h
-  have := h E (hE.through hz)
-  rw [hg.discrep_eq_neg hm hz hE] at this
-  linarith
 
 theorem DivOver.ord_pow (E : DivOver p) (f : X.functionFieldˣ) (r : ℕ) :
     E.ord (f ^ r) = r * E.ord f := by
@@ -525,15 +500,6 @@ theorem isEffQDiv_qWeil [CompactSpace X] {D : CartierDiv X} (hD : D.Eff) (m : �
       exact Int.natCast_nonneg _
     · rw [hg.mult_eq, Scheme.ord_eq_zero_of_coheight_neq_one hz]
 
-theorem not_kltAt_of_one_le [LocallyOfFiniteType p] [GlobalTheory.IsNormalScheme X] {Δ : X → ℚ} {x z : X}
-    (hz : z ⤳ x) (h1 : Order.coheight z = 1) (h : 1 ≤ Δ z) : ¬ KltAt p n Δ x := fun hk =>
-  have ⟨_, hE⟩ := DivOver.exists_isAt_of_coheight_eq_one (p := p) h1
-  (hk.lt_one hz hE).not_ge h
-
-example (d : ℕ) (x : (ProjVar.proj ℂ d).X) :
-    KltAt (ProjVar.proj ℂ d).str (ProjVar.proj ℂ d).dim 0 x :=
-  kltAt_zero_of_smooth (ProjVar.Var.topologicalKrullDim_eq _) x
-
 end Checks
 
 end GlobalTheory.Discrepancy
@@ -572,22 +538,5 @@ def IsolatedNonKltDivisor : Prop :=
         (∀ y ∈ U, y ≠ x → KltAt p n (Δ + qWeil D₀ m) y) ∧ ¬ KltAt p n (Δ + qWeil D₀ m) x
 
 def NadelVanishingAndNonKltDivisor : Prop := NadelVanishingPair ∧ IsolatedNonKltDivisor
-
-theorem NadelVanishingPair.of_smooth (h : NadelVanishingPair) (Y : ProjVar.Var ℂ) (N D M : Y.Dv)
-    {m r : ℕ} (hm : 0 < m) (hr : 0 < r) (hD : Y.Eff D) (hM : Y.nef M) (hM' : Y.big M)
-    (e : ∀ C, Y.IsCurve C → (Y.deg C N : ℚ) =
-      Y.deg C (canonical Y.str Y.dim) + Y.deg C D / m + Y.deg C M / r) :
-    ∃ J : Y.X.IdealSheafData, (∀ x, x ∈ J.support ↔ ¬ KltAt Y.str Y.dim (qWeil D m) x) ∧
-      ∀ i, 0 < i → Subsingleton (coh (twist (idealModule J) (Y.lb N)) i) := by
-  haveI := Y.isNormalScheme
-  refine h Y.X Y.str Y.dim Y.isProjOver Y.topologicalKrullDim_eq _ _ m _ r _ (isLB_toLB N)
-    (isEffQDiv_qWeil hD m) hm (isLogCanonicalMultiple_canonical Y.topologicalKrullDim_eq D hm) hr
-    hM hM' fun C hC => ?_
-  have hC' := (Y.isCurve_iff C).2 hC
-  have : (m : ℚ) ≠ 0 := by exact_mod_cast hm.ne'
-  change (Y.deg C N : ℚ) = Y.deg C (m • canonical Y.str Y.dim + D) / m + Y.deg C M / r
-  rw [e C hC', hC'.deg_add, hC'.deg_nsmul]
-  push_cast
-  field_simp
 
 end GlobalTheory.Published

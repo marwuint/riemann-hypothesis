@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
 import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceAdeleRing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDblCoordDblD
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDoubledPairWeilDatumSchrodingerTransportStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitarySplittingTransportedDoubledWeilDatumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelRuleDiagonalDoubledSchroedingerModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealGramHermitianSpaceDoubledBlockDiagonalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDoubledPairWeilDatumSchrodingerTransport
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitarySplittingTransportedDoubledWeilDatum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelRuleDiagonalDoubledSchroedingerModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealGramHermitianSpaceDoubledBlockDiagonal
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta
 open IsDedekindDomain NumberField
@@ -45,10 +45,10 @@ theorem doubledModel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar 
                            ∀ φ₁ ∈ GlobalTheory.WeilM.schA D.host.F κ, ∀ φ₂ ∈ GlobalTheory.WeilM.schA D.host.F κ,
                              omd gd (GlobalTheory.WeilM.boxFun φ₁ φ₂) = GlobalTheory.WeilM.boxFun (om (1, g) φ₁) φ₂ := by
   intro D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ _ co hco ω hω om hom
-  obtain ⟨ωd, hωd, omd₀, homd⟩ := GlobalTheory.T.exists_doubledPairWeilDatum_schrodingerTransport D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco
+  obtain ⟨ωd, hωd, omd₀, homd⟩ := _root_.GlobalTheory.DblSchr.exists_dbl_weilDatum_transport D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco
   refine ⟨dblD _ co, omdOf omd₀, isDblCoord_dblD _ co,
-    ⟨GlobalTheory.WeilM.isLagr_diagCols _ _, GlobalTheory.T.isUnitarySplitting_transportedDoubledWeilDatum D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ωd hωd omd₀ homd,
-      GlobalTheory.T.siegelRule_diagonal_doubledSchroedingerModel D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ωd hωd omd₀ homd⟩,
-    GlobalTheory.T.realGram_hermitianSpaceDoubled_blockDiagonal D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ω hω om hom ωd hωd omd₀ homd⟩
+    ⟨GlobalTheory.WeilM.isLagr_diagCols _ _, _root_.GlobalTheory.DblSchr.isUSplitting_omdOf D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ωd hωd omd₀ homd,
+      _root_.GlobalTheory.DiagSiegel.siegelRule_ddr D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ωd hωd omd₀ homd⟩,
+    _root_.GlobalTheory.DblRestr.restr_boxFun D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ω hω om hom ωd hωd omd₀ homd⟩
 
 end GlobalTheory.DblSchr

@@ -1,5 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NormOneAtOne
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemSecondModelStabilizerIffCarriesRowLatticeStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemSecondModelStabilizerIffCarriesRowLattice
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SupportedStabilizerConjSatisfiesDeepCongruenceStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SecondModelFinitePartFrameActionMatrix
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryAdelicPointInfiniteMatricesEqOneOfFinite
@@ -64,7 +65,7 @@ theorem levrow : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h
       have hN : (grpAt (D.sp.X 0) (· = v)).Normal := by unfold grpAt GlobalTheory.FinPl.congGrp; infer_instance
       exact hN.conj_mem a ha a₀
   have hκ : embA B.d B.o (a₀ * a * a₀⁻¹) ∈ grpAt (D.sp.Y 0) (· = v) := embA_mem_grpAt B.d B.o _ hk
-  have hKs := GlobalTheory.T.mem_secondModelStabilizer_iff_carriesRowLattice X h v _ hκ
+  have hKs := _root_.GlobalTheory.Core.Mi.KsetAt.mem_Kset_iff_moves X h v _ hκ
   change (X.xu u)⁻¹ * (iotaX X h (embA B.d B.o (a₀ * a * a₀⁻¹))).2 * X.xu u ∈ X.K2 ↔ _
   rw [← hKs]
   constructor

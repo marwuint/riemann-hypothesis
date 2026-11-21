@@ -52,7 +52,8 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PHilbertPoint
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSectionCountDropHilbW
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PPrimeFiltrationPoint
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PRestriction
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PLineTwist
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.StatementsStepTwo
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.TwistAlg
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PRestrictTwist
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PVeryAmpleEmbedSections
 import Development.WeilBound.CoreStatements.HodgeTatePoints.Imports

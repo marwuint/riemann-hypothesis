@@ -243,8 +243,6 @@ def actV : O →+* Module.End ℂ A.V where
 
 @[simp] theorem actV_snd (a : O) (v : A.V) : (A.actV a v).2 = A.F a v.2 := rfl
 
-abbrev moduleV : Module O A.V := Module.compHom A.V A.actV
-
 def La : Type := A.X × (A.X →+ ℤ) × A.abelian₂
 
 instance : AddCommGroup A.La := inferInstanceAs (AddCommGroup (A.X × (A.X →+ ℤ) × A.abelian₂))
@@ -427,8 +425,6 @@ def nn : A.La →ₗ[O] A.La where
 
 theorem nn_apply (v : A.La) : A.nn v = La.mk 0 (A.be v.y).toAddMonoidHom 0 := rfl
 
-theorem nn_nn (v : A.La) : A.nn (A.nn v) = 0 := by ext <;> simp [nn_apply]
-
 theorem degeneratingTori_basePeriodMap_nilpotentMap (v : A.La) : A.P0 (A.nn v) = A.N v := by ext <;> simp [nn_apply]
 
 def EF : LinearMap.BilinForm ℤ A.La :=
@@ -437,9 +433,6 @@ def EF : LinearMap.BilinForm ℤ A.La :=
     (fun _ _ _ => by simp; ring)
 
 theorem EF_apply (v v' : A.La) : A.EF v v' = v'.n v.y - v.n v'.y + A.Ef v.l v'.l := rfl
-
-theorem EF_n_y (n : A.X →+ ℤ) (y : A.X) : A.EF (La.mk 0 n 0) (La.mk y 0 0) = -n y := by
-  simp [EF_apply]
 
 theorem EF_n_left (n : A.X →+ ℤ) (v : A.La) : A.EF (La.mk 0 n 0) v = -n v.y := by
   simp [EF_apply]
@@ -715,39 +708,11 @@ theorem tate_Pw (τ₀ w : ℂ) (y : ℤ) (n : ℤ →+ ℤ) :
     w * (beInt y 1 : ℤ) = _
   simp [hermForm]; ring
 
-theorem tate_EF (τ₀ : ℂ) : (tate τ₀).EF (La.mk (A := tate τ₀) 0 (AddMonoidHom.id ℤ) 0)
-    (La.mk (A := tate τ₀) (1 : ℤ) 0 0) = -1 := (tate τ₀).EF_n_y _ _
-
 theorem tate_one_mem_Theta (τ₀ : ℂ) (j : ℕ) (α : (tate τ₀).X) :
     (1 : (Fin (tate τ₀).gB → ℂ) → ℂ) ∈ (tate τ₀).Theta j α :=
   ⟨differentiable_const 1, fun l z => by
     have hl : l = 0 := Subsingleton.elim (α := (⊥ : Submodule ℤ (Fin 0 → ℂ))) _ _
     simp [hl, ah]⟩
-
-theorem tate_exponent (τ₀ : ℂ) (μ : ℤ) : (tate τ₀).exponent 1 (0 : ℤ) μ = μ ^ 2 := by
-  change ((1 : ℕ) : ℤ) * (beInt μ μ / 2) + beInt μ 0 = _
-  simp [mul_assoc, sq]
-
-theorem tate_Sum (τ₀ w : ℂ) (v : (tate τ₀).V) : (tate τ₀).Sum 1 (0 : ℤ) 1 w v =
-    ∑' μ : ℤ, eTwoPi (μ ^ 2 * (τ₀ + 2 * w) / 2 + μ * v.1 (1 : ℤ)) := by
-  refine tsum_congr fun μ : ℤ => ?_
-  obtain ⟨l, z⟩ : (ℤ →+ ℂ) × (Fin 0 → ℂ) := v
-  have h1 : l (@HAdd.hAdd ℤ ℤ ℤ _ 0 ((1 : ℕ) • μ)) = μ * l 1 := by simpa using map_zsmul l μ 1
-  rw [tate_exponent]
-  change (psiInt τ₀ μ : ℂ) ^ 1 * eTwoPi (TInt τ₀ μ 0) * eTwoPi (l (@HAdd.hAdd ℤ ℤ ℤ _ 0 ((1 : ℕ) • μ))) * 1 *
-      eTwoPi (w * ((μ ^ 2 : ℤ) : ℂ)) =
-    eTwoPi (μ ^ 2 * (τ₀ + 2 * w) / 2 + μ * l 1)
-  rw [h1]
-  simp only [coe_psiInt, pow_one, mul_one, TInt_apply, ← e_add]
-  congr 1; push_cast; ring
-
-theorem tate_FSum_coeff_zero (τ₀ : ℂ) (v : (tate τ₀).V) : ((tate τ₀).FSum 1 0 1 v).coeff 0 = 1 := by
-  have h : (tate τ₀).level 1 0 0 = {0} := by
-    ext μ
-    rw [mem_level, Finset.mem_singleton]
-    exact (Eq.congr_left (tate_exponent τ₀ μ)).trans (pow_eq_zero_iff (M₀ := ℤ) two_ne_zero)
-  rw [coeff_FSum, h, Finset.sum_singleton]
-  simp [term]
 
 def gaussEmb : GaussianInt →ₗ[ℤ] (Fin 1 → ℂ) where
   toFun a _ := a
@@ -880,22 +845,6 @@ def gaussInt (c τ₀ : ℂ) : AnArc ℤ where
   be_adj a y x := by simp; ring
   be_even x := ⟨x * x, by simp only [beInt_apply]; ring⟩
 
-theorem gaussInt_ct_zero (τ₀ : ℂ) : (gaussInt 0 τ₀).ct = 0 := by
-  refine AddMonoidHom.ext fun x => funext fun i => ?_
-  exact mul_zero _
-
-theorem gaussInt_EF (c τ₀ : ℂ) : (gaussInt c τ₀).EF (La.mk (A := gaussInt c τ₀) 0 0 (gaussEquiv 1))
-    (La.mk (A := gaussInt c τ₀) 0 0 (gaussEquiv ⟨0, 1⟩)) = -1 := by
-  rw [EF_apply]
-  change (0 : ℤ) - 0 + gaussEf (gaussEquiv 1) (gaussEquiv ⟨0, 1⟩) = -1
-  simp
-
-theorem gaussian_integers_period_component (c τ₀ : ℂ) :
-    ((gaussInt c τ₀).P0 (La.mk (A := gaussInt c τ₀) 0 0 (gaussEquiv 1))).1 (1 : ℤ) = -(c / (2 * Complex.I)) := by
-  change TInt τ₀ 0 1 + ((0 : ℤ) : ℂ) -
-    hermForm 1 (fun _ : Fin 1 => ((1 : ℤ) : ℂ) * c) (gaussEmb 1) / (2 * Complex.I) = _
-  simp [hermForm_one]
-
 def gaussProd : (ℤ × ℤ) ≃ₗ[ℤ] GaussianInt where
   toFun p := ⟨p.1, p.2⟩
   invFun a := (a.re, a.im)
@@ -957,23 +906,6 @@ def gaussCM (c τ₀ : ℂ) : AnArc GaussianInt where
     linarith
   be_adj a y x := by simp; ring
   be_even x := ⟨_, rfl⟩
-
-example (c τ₀ : ℂ) (v : (gaussCM c τ₀).La) :
-    ((⟨0, 1⟩ : GaussianInt) • v).n (1 : GaussianInt) = v.n (⟨0, -1⟩ : GaussianInt) := by
-  refine congrArg v.n ?_
-  show star (⟨0, 1⟩ : GaussianInt) * 1 = ⟨0, -1⟩
-  ext <;> simp
-
-example (τ₀ : ℂ) : Module.finrank ℂ (tate τ₀).V = 1 := by
-  rw [finrank_V]
-  exact congrArg (· + 0) (Module.finrank_self ℤ)
-
-example : (NormedSpace.toModule : Module ℝ A.V) =
-    @Prod.instModule ℝ _ _ _ _ _ AddMonoidHom.instModule (Pi.Function.module _ _ _) := by
-  with_reducible_and_instances rfl
-
-example : CompleteSpace A.V ∧ FiniteDimensional ℂ A.V ∧ FiniteDimensional ℝ A.V ∧ IsScalarTower ℝ ℂ A.V :=
-  ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
 
 end AnArc
 

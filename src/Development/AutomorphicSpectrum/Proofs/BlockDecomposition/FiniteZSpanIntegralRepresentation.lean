@@ -87,7 +87,7 @@ theorem exists_aeval_lapOp_eq_zero_of_finite (φ : Sm E a)
     · simp [h]
     · refine W.smul_mem _ ?_
       have hs := mem_archSkew.1 (hskew i h)
-      exact GlobalTheory.T.compact_span_finite_dim_stable E a φ (b i) hs hk _ (GlobalTheory.T.compact_span_finite_dim_stable E a φ (b i) hs hk _ hw)
+      exact _root_.GlobalTheory.CompanionTheory.HCRep.liB_skew_mem_span E a φ (b i) hs hk _ (_root_.GlobalTheory.CompanionTheory.HCRep.liB_skew_mem_span E a φ (b i) hs hk _ hw)
   have hφW : φ ∈ W := by
     refine Submodule.subset_span ⟨1, ?_⟩
     change cptRep E a 1 φ = φ

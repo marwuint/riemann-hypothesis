@@ -16,14 +16,6 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {A : Type} [CommRing A] [Algebra F A]
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
-def dat0 : PG.Dat (A ⊗[F] E) (Fin M) 0 where
-  σA := sigR A σ
-  JA := JR A J
-  e := Fin.elim0
-  f := Fin.elim0
-  z := 0
-  tz := 0
-
 def Bf (u v : Fin M → A ⊗[F] E) : A := Algebra.trace A (A ⊗[F] E) (hR A σ J u v)
 
 theorem sigR_algebraMap (c : A) :

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedTupleReadingLevelCharacter
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RdLevOn
 
 open scoped TensorProduct

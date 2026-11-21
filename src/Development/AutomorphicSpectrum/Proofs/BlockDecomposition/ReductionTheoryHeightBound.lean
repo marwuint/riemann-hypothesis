@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CvecSurjective
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmallHeightVectorIsotropicStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmallHeightVectorIsotropic
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryPointsHeightBoundCompactStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryPointsHeightBoundFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusSiegelHeightLowerBoundStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusSiegelHeightLowerBound
 
 set_option linter.unusedSectionVars false
 set_option maxSynthPendingDepth 1
@@ -113,9 +113,9 @@ theorem GlobalTheory.CompanionTheory.RedCov.First.exp_neg_le (F E : Type) [Field
     ∃ M : ℝ, 0 < M ∧ ∀ ω ∈ Ω, ∀ s : Fin (r + 1) → ℝ, ∀ κ ∈ C, ∀ e : E, e ≠ 0 →
       NearMin σ J (ω * a s * κ) (e • Xᵀ 0) → Real.exp (- s 0) ≤ M := by
   haveI : Algebra.IsQuadraticExtension F E := ⟨h.2.2.1⟩
-  obtain ⟨C₁, hC₁, hu⟩ := exists_isotropic_le (GlobalTheory.T.small_height_vector_isotropic F E σ h n J hJ) ((GlobalTheory.T.unitary_points_height_bound_finite GlobalTheory.T.unitary_points_height_bound_compact) F E σ h n J hJ)
+  obtain ⟨C₁, hC₁, hu⟩ := exists_isotropic_le (_root_.GlobalTheory.CompanionTheory.RedCov.isotropic_of_hgt_lt F E σ h n J hJ) ((GlobalTheory.T.unitary_points_height_bound_finite GlobalTheory.T.unitary_points_height_bound_compact) F E σ h n J hJ)
     (fun hC _ hv => GlobalTheory.CompanionTheory.RedCov.Bridge.exists_hgt_le σ J hC hv) (first_witt_vector_ne_zero hW) (first_witt_vector_isotropic hW)
-  obtain ⟨P, hP, hlow⟩ := GlobalTheory.T.torus_siegel_height_lower_bound F E σ h n J hJ r X Y hW a ha Ω C hΩ
+  obtain ⟨P, hP, hlow⟩ := _root_.GlobalTheory.CompanionTheory.RedCov.FirstLower.exp_le_hgt F E σ h n J hJ r X Y hW a ha Ω C hΩ
     (hΩP.trans minParOne_subset) hC
   have hd : (0 : ℝ) < Module.finrank ℚ F := Nat.cast_pos.2 Module.finrank_pos
   refine ⟨(2 * P * C₁) ^ (1 / (Module.finrank ℚ F : ℝ)), Real.rpow_pos_of_pos (by positivity) _, ?_⟩

@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueIsPointOfDualNumber
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResV
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalHeatOperatorsAbelianLocusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GluedHeatOperatorsPreserveSectionsUpToConstantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalHeatOperatorValuesRingOperatorFractionFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFractionFieldMapBasicOpenFormalPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalHeatOperatorsAbelianLocus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GluedHeatOperatorsPreserveSectionsUpToConstant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalHeatOperatorValuesRingOperatorFractionField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFractionFieldMapBasicOpenFormalPoint
 
 set_option autoImplicit false
 
@@ -29,14 +29,14 @@ theorem heat_values_of_isKS : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt gam hmon htt hab n v' D Ω _ _ _ φ x' δ dd' hcomp hx' hinv hδ hdd hinj g hg δL hδL
     Θ₁ DV hDV hKS
   have hc : (∏ i, tt i) ≠ 0 := Finset.prod_ne_zero_iff.2 fun i _ => htt i
-  obtain ⟨iota, hiota⟩ := GlobalTheory.T.exists_fractionField_map_basicOpen_formalPoint E H R t (∏ i, tt i) hc Ω φ x' hx' hinj
+  obtain ⟨iota, hiota⟩ := _root_.GlobalTheory.HeatV.fracIotaBasicOpen E H R t (∏ i, tt i) hc Ω φ x' hx' hinj
   obtain ⟨J, W, j, d, u, pf, pf', hW, hcov, hle, hfld, hlift, hglue⟩ :=
-    GlobalTheory.T.exists_local_heatOperators_abelianLocus E H R t P m tt gam hmon htt hab _ rfl n v' D dd' hinv Θ₁ DV hDV hKS
-  obtain ⟨dt, u', p, p', hdt, hval⟩ := GlobalTheory.T.local_heat_operator_values_ring_operator_fraction_field E H R t _ hc n v' D Ω φ x' δ dd' hcomp hx' hinv hδ hdd hinj g hg δL hδL Θ₁ DV hDV
+    _root_.GlobalTheory.HeatV.exists_heat_abLocus E H R t P m tt gam hmon htt hab _ rfl n v' D dd' hinv Θ₁ DV hDV hKS
+  obtain ⟨dt, u', p, p', hdt, hval⟩ := _root_.GlobalTheory.HeatVal.value_opV_ringOp E H R t _ hc n v' D Ω φ x' δ dd' hcomp hx' hinv hδ hdd hinj g hg δL hδL Θ₁ DV hDV
     iota hiota J W j d u pf pf' hW hcov hle hfld hlift hglue
   refine ⟨iota, dt, u', p, p', hiota, hdt, ?_⟩
   rintro k hk s ⟨r0, σ, ω, hr0, hv, hω⟩
-  obtain ⟨r, σ', hr, hσ'⟩ := GlobalTheory.T.glued_heat_operators_preserve_sections_up_to_constant E H R t _ hc n dd' (fun a => (hinv a).1) D Θ₁ DV hDV J W j d u pf pf' hW hcov hle hfld
+  obtain ⟨r, σ', hr, hσ'⟩ := _root_.GlobalTheory.HeatVExt.heat_section E H R t _ hc n dd' (fun a => (hinv a).1) D Θ₁ DV hDV J W j d u pf pf' hW hcov hle hfld
     hlift hglue k σ r0
   obtain ⟨ω', hv', hω'⟩ := hval k hk σ σ' r r0 ω hσ' hv
   refine ⟨r * r0 ^ 2, σ', ω', mul_ne_zero hr (pow_ne_zero _ hr0), hv', ?_⟩

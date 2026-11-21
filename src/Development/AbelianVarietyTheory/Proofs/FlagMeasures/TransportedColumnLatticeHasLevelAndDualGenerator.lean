@@ -1,10 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LevelMatchIff
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.FrLink
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MiddleLatticeSelfDualAnisotropicPairingStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryDatumLevelPrimeSplitDegreeGramFactsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MiddleLatticeSelfDualAnisotropicPairing
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryDatumLevelPrimeSplitDegreeGramFacts
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SelfDualAt
+import Formalism.LocalToGlobal.HermitianForms.TiedStep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalHyperbolicFrameAnisotropicMemSpanTransStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDualVectorNormInvNotMemLocalStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDualVectorNormInvNotMemLocal
 open MeasureTheory NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.ColDict GlobalTheory.St GlobalTheory.St.G
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -111,7 +113,7 @@ theorem mlat_mem_dualL {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (L : Subm
 theorem mlat_inj (hW : WittX X u wt) : Function.Injective (Fintype.linearCombination D.host.E (qFr wt)) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro d hd
-  have hdet := (GlobalTheory.T.unitaryDatum_levelPrime_split_degree_gram_facts D u).2.2.2.2.2.2
+  have hdet := (_root_.GlobalTheory.St.G.record_facts D u).2.2.2.2.2.2
   refine Matrix.eq_zero_of_mulVec_eq_zero hdet ?_
   funext i
   have h := mlat_hT_lc hW (Pi.single i 1) d
@@ -126,7 +128,7 @@ set_option maxHeartbeats 2000000 in
 
 theorem mlat_main (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hW : WittX X u wt) : TLat (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (D.mem u).A.T D.R.f (Mq wt) ∧ ∃ x₀ ∈ X.Lb, (VS D).hT (X.zu u) x₀ = 1 ∧ ∃ d ∈ dualL (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (Mq wt), Fintype.linearCombination D.host.E (qFr wt) d = x₀ + (((D.mem u).A.T : D.host.E))⁻¹ • X.zu u ∧ ∀ y ∈ dualL (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (Mq wt), ∃ a : 𝓞 D.host.E, y - (a : D.host.E) • d ∈ Mq wt := by
-  obtain ⟨hLb, ⟨x₀, hx₀Lb, hx₀z⟩, -⟩ := GlobalTheory.T.middleLattice_selfDual_anisotropic_pairing D X u
+  obtain ⟨hLb, ⟨x₀, hx₀Lb, hx₀z⟩, -⟩ := _root_.GlobalTheory.St.G.midLat_selfDual_pairing D X u
   have hWc := GlobalTheory.T.orthogonal_hyperbolicFrame_anisotropic_mem_span_transported D X u wt hW
   set T : ℕ := (D.mem u).A.T with hTdef
   set φ := Fintype.linearCombination D.host.E (qFr wt) with hφ
@@ -320,9 +322,9 @@ theorem mlat_main (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D)
         refine ⟨c, hinjO ?_⟩
         rw [map_mul, hc, hB y hy, map_natCast, mul_comm]
     rw [AddSubgroup.relIndex, ← hker, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hsurj, AddSubgroup.card_top, mlat_card,
-      (GlobalTheory.T.unitaryDatum_levelPrime_split_degree_gram_facts D u).2.2.2.1]
+      (_root_.GlobalTheory.St.G.record_facts D u).2.2.2.1]
   refine ⟨⟨hLat, hint, hkill, hidx, fun v hv => ?_⟩, x₀, hx₀Lb, hx₀z, d, hdD, hd, fun y hy => ?_⟩
-  · exact GlobalTheory.T.hermitian_dual_vector_norm_inv_not_mem_local D.host.F D.host.E D.sp.cm (D.R.N 0) _ (Mq wt) hint d T (D.mem u).A.T_prime.pos hdD hnorm v hv
+  · exact _root_.GlobalTheory.St.G.dual_not_loc_of_norm_inv D.host.F D.host.E D.sp.cm (D.R.N 0) _ (Mq wt) hint d T (D.mem u).A.T_prime.pos hdD hnorm v hv
   · obtain ⟨⟨b, hb⟩, hyM⟩ := hC y hy
     refine ⟨b, ?_⟩
     have : ((b : 𝓞 D.host.E) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E b := rfl

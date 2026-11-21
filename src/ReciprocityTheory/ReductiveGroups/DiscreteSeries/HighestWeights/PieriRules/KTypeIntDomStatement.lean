@@ -20,15 +20,6 @@ def khwSub {W : Type*} [AddCommGroup W] [Module ℂ W] {n : ℕ} (ε : Fin n →
   (⨅ a, LinearMap.ker (E a a - ((ν a : ℝ) : ℂ) • (1 : Module.End ℂ W))) ⊓
     ⨅ a, ⨅ b, ⨅ (_ : a < b ∧ ε a = ε b), LinearMap.ker (E a b)
 
-def CartanCompStatement : Prop :=
-  ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (n : ℕ) (ε : Fin n → Bool)
-    (A : Fin n → Fin n → Module.End ℂ V) (Λ : Fin n → ℝ) (w : V) (ι : Type) [Fintype ι] [DecidableEq ι]
-    (M : Fin n → Fin n → Matrix ι ι ℂ) (β : Fin n → ℝ) (f : ι → ℂ),
-    Formalism.REAL.KHighest ε A Λ w → w ≠ 0 →
-    (∀ a, M a a *ᵥ f = ((β a : ℝ) : ℂ) • f) → (∀ a b, a < b → ε a = ε b → M a b *ᵥ f = 0) → f ≠ 0 →
-    (WithLp.toLp 2 (fun i => f i • w) : PiLp 2 (fun _ : ι => V)) ≠ 0 ∧
-    Formalism.REAL.KHighest ε (tensAct A M) (Λ + β) (WithLp.toLp 2 (fun i => f i • w) : PiLp 2 (fun _ : ι => V))
-
 def KDom {n : ℕ} (ε : Fin n → Bool) (μ : Fin n → ℝ) : Prop :=
   ∀ a b, a < b → ε a = ε b → μ b ≤ μ a
 
@@ -46,14 +37,6 @@ def dualWt (n : ℕ) : Fin n → Fin n → ℝ := fun i => -Pi.single i 1
 
 abbrev pIdx {n : ℕ} (ε : Fin n → Bool) (β : Bool) : Type :=
   {p : Fin n × Fin n // ε p.1 = β ∧ ε p.2 = !β}
-
-def pAdM {n : ℕ} (ε : Fin n → Bool) (β : Bool) : Fin n → Fin n → Matrix (pIdx ε β) (pIdx ε β) ℂ :=
-  fun a b p q =>
-    (if p.1.1 = a ∧ q.1.1 = b ∧ p.1.2 = q.1.2 then 1 else 0) -
-      (if q.1.2 = a ∧ p.1.2 = b ∧ p.1.1 = q.1.1 then 1 else 0)
-
-def pWt {n : ℕ} (ε : Fin n → Bool) (β : Bool) : pIdx ε β → Fin n → ℝ :=
-  fun p => Pi.single p.1.1 1 - Pi.single p.1.2 1
 
 def LowCompStatement : Prop :=
   ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (n : ℕ) (ε : Fin n → Bool)
@@ -93,11 +76,6 @@ def WeylSumDualStatement : Prop :=
     (∑ s, weylK ε (Λ + dualWt n s) = (n : ℝ) * weylK ε Λ) ∧
     ∀ s, ¬ KDom ε (Λ + dualWt n s) → weylK ε (Λ + dualWt n s) = 0
 
-def WeylSumPStatement : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (β : Bool) (Λ : Fin n → ℝ), (∀ a, ∃ m : ℤ, Λ a = m) → KDom ε Λ →
-    (∑ p : pIdx ε β, weylK ε (Λ + pWt ε β p) = (Nat.card (pIdx ε β) : ℝ) * weylK ε Λ) ∧
-    ∀ p : pIdx ε β, ¬ KDom ε (Λ + pWt ε β p) → weylK ε (Λ + pWt ε β p) = 0
-
 def TensRepStatement : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool) (Λ : Fin n → ℝ) (T : KType ε Λ) (ι : Type) [Fintype ι] [DecidableEq ι]
     (ρ : KG ε →* unitary (Matrix ι ι ℂ)) (dρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix ι ι ℂ),
@@ -115,25 +93,6 @@ def TensRepStatement : Prop :=
       ∀ a b, ((D (Matrix.single a b 1) : PiLp 2 (fun _ : ι => T.V) →L[ℂ] PiLp 2 (fun _ : ι => T.V)) :
         Module.End ℂ (PiLp 2 (fun _ : ι => T.V))) =
           tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1)) a b
-
-def CartanKTypeStatement : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (Λ : Fin n → ℝ) (T : KType ε Λ) (ι : Type) [Fintype ι] [DecidableEq ι]
-    (ρ : KG ε →* unitary (Matrix ι ι ℂ)) (dρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix ι ι ℂ)
-    (β : Fin n → ℝ) (f : ι → ℂ),
-    Continuous (fun k : KG ε => ((ρ k : unitary (Matrix ι ι ℂ)) : Matrix ι ι ℂ)) →
-    (∀ X, inK ε X → ∀ γ : ℝ → KG ε, (∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X)) →
-      ∀ i j, HasDerivAt (fun t : ℝ => ((ρ (γ t) : unitary (Matrix ι ι ℂ)) : Matrix ι ι ℂ) i j)
-        (dρ X i j) 0) →
-    (∀ a, dρ (Matrix.single a a 1) *ᵥ f = ((β a : ℝ) : ℂ) • f) →
-    (∀ a b, a < b → ε a = ε b → dρ (Matrix.single a b 1) *ᵥ f = 0) → f ≠ 0 →
-    ∃ (T' : KType ε (Λ + β))
-      (φ : T'.V ≃ₗᵢ[ℂ] Formalism.REAL.kSpan ε (tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1)))
-        (WithLp.toLp 2 (fun i => f i • T.w) : PiLp 2 (fun _ : ι => T.V))),
-      (∀ a b, ε a = ε b → ∀ v : T'.V, (φ (kunits T' a b v) : PiLp 2 (fun _ : ι => T.V)) =
-        tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1)) a b (φ v)) ∧
-      (φ T'.w : PiLp 2 (fun _ : ι => T.V)) =
-        ((‖(WithLp.toLp 2 (fun i => f i • T.w) : PiLp 2 (fun _ : ι => T.V))‖⁻¹ : ℝ) : ℂ) •
-          (WithLp.toLp 2 (fun i => f i • T.w) : PiLp 2 (fun _ : ι => T.V))
 
 def PieriCountStatement : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool) (Λ : Fin n → ℝ) (T : KType ε Λ) (ι : Type) [Fintype ι] [DecidableEq ι]
@@ -171,14 +130,5 @@ def PieriDualStatement : Prop :=
     (∀ s, Module.finrank ℂ (khwSub ε (tensAct (kunits T) (dualM n)) (Λ + dualWt n s)) ≤ 1) ∧
     ∀ s, KDom ε (Λ + dualWt n s) → ∃ x : PiLp 2 (fun _ : Fin n => T.V), x ≠ 0 ∧
       Formalism.REAL.KHighest ε (tensAct (kunits T) (dualM n)) (Λ + dualWt n s) x
-
-def PPlusStatement : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (β : Bool) (Λ : Fin n → ℝ) (T : KType ε Λ),
-    (∀ (ν : Fin n → ℝ) (x : PiLp 2 (fun _ : pIdx ε β => T.V)), x ≠ 0 →
-      Formalism.REAL.KHighest ε (tensAct (kunits T) (pAdM ε β)) ν x →
-      ∃ p, ν = Λ + pWt ε β p ∧ KDom ε (Λ + pWt ε β p)) ∧
-    (∀ p, Module.finrank ℂ (khwSub ε (tensAct (kunits T) (pAdM ε β)) (Λ + pWt ε β p)) ≤ 1) ∧
-    ∀ p, KDom ε (Λ + pWt ε β p) → ∃ x : PiLp 2 (fun _ : pIdx ε β => T.V), x ≠ 0 ∧
-      Formalism.REAL.KHighest ε (tensAct (kunits T) (pAdM ε β)) (Λ + pWt ε β p) x
 
 end ReciprocityTheory.ChartRestriction.DS.HW

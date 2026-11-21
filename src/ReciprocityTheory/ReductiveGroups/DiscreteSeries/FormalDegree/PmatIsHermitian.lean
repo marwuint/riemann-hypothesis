@@ -70,8 +70,6 @@ def dimVlam (lam : Fin n → ℝ) : ℝ :=
   (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b), |lam a - lam b|) /
     ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))
 
-def lamAbs (lam : Fin n → ℝ) : ℝ := ⨆ a : Fin n, ⨆ b : Fin n, |lam a - lam b|
-
 def cPQ (ε : Fin n → Bool) : ℝ :=
   (∏ i ∈ range n, (i.factorial : ℝ)) /
     (Real.pi ^ (pOf ε * qOf ε) * (∏ i ∈ range (pOf ε), (i.factorial : ℝ)) *

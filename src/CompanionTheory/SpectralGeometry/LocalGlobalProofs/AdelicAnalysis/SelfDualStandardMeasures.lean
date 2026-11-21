@@ -2,7 +2,7 @@ import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import GroundTheory.GlobalFields.TateThesis.RootNumberLocalPlace
 import GroundTheory.LocalFields.LocalFourier
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalFieldSelfdualMeasureExistsStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalFieldSelfdualMeasureExists
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.DiscriminantDifferentProductFormulaStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ArchimedeanSelfdualMeasureDiscriminantScaledStatement
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
@@ -53,6 +53,6 @@ theorem selfDual_std : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F
   · exact GlobalTheory.T.discriminant_different_product_formula F
   · rw [smul_eq_selfDualMeasure F v (lam v) (hlam v)]
     simp only [psiV_std]
-    exact GlobalTheory.T.local_field_selfdual_measure_exists _ _ (continuous_localAdelicChar v) (localAdelicChar_ne_one v)
+    exact _root_.GlobalTheory.CompanionTheory.SW.selfDual_selfDualMeasure _ _ (continuous_localAdelicChar v) (localAdelicChar_ne_one v)
 
 end GlobalTheory.CompanionTheory.SW.SDOne

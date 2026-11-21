@@ -44,7 +44,7 @@ theorem twistOf_good {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin 
       ∀ x, ∃ σ, (((twistOf ρ.rc f (ρ.ch i) Q ψ).chi x : Circle) : ℂ) = f (ψ σ : (D.ntw.Ok i k)ˣ) ∧ ∃ n ≠ 0, ψ σ ^ n = 1 := by
   classical
   obtain ⟨hsplit, hdisj, hopen, hanti, hzk, hram, -⟩ := hψ
-  have hadm : (ρ.B i j b).admitted (half (ρ.ch i) Q) := GlobalTheory.T.chosenPlaces_admissible_goodSetup D D.nd D.ntw ρ hρ i j b Q hsplit hdisj
+  have hadm : (ρ.B i j b).admitted (half (ρ.ch i) Q) := _root_.GlobalTheory.ChoiceAdm.adm_half_of_good_of_split_disjoint D D.nd D.ntw ρ hρ i j b Q hsplit hdisj
   let g : (D.ntw.Ok i k)ˣ →* Circle := unitPart.comp (Units.map f.toMonoidHom)
   have hkey : charOf ρ.rc f ψ = ρ.rc.pull (g.comp ψ) := by
     rw [Recip.pull_comp _ hopen]

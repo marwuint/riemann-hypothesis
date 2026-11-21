@@ -66,10 +66,4 @@ lemma ldrow_weight_rowW {k n : ℕ} (m : Fin k × Fin n →₀ ℕ) (a : Fin k) 
   · intro h
     exact absurd (Finset.mem_univ a) h
 
-lemma ldrow_rowAct_one {R : Type*} [CommRing R] {k n : ℕ} :
-    rowAct R (n := n) (1 : Matrix (Fin k) (Fin k) R) = AlgHom.id R _ := by
-  apply MvPolynomial.algHom_ext
-  intro v
-  simp [rowAct, Matrix.one_apply, apply_ite C, ite_mul]
-
 end Formalism.GradedWeylDivisibility

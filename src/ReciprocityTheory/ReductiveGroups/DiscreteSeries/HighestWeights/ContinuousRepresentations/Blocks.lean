@@ -214,16 +214,4 @@ theorem blk_curve {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : i
   show toMK (γ t) = toMK (blkEmbed ε true (γp t)) * toMK (blkEmbed ε false (γm t))
   rw [toMK_blkEmbed, toMK_blkEmbed, hγ, hp, hm, exp_blk hX', map_smul, map_smul]
 
-def BlockExpCurve : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ), inK ε X →
-    ∀ (γ : ℝ → KG ε), (∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X)) →
-    ∀ (γp : ℝ → KG (fun _ : Fin (blkP ε true) => true)),
-      (∀ t : ℝ, toMK (γp t) = NormedSpace.exp ((t : ℂ) • blkRes ε true X)) →
-    ∀ (γm : ℝ → KG (fun _ : Fin (blkP ε false) => true)),
-      (∀ t : ℝ, toMK (γm t) = NormedSpace.exp ((t : ℂ) • blkRes ε false X)) →
-    ∀ t : ℝ, γ t = blkEmbed ε true (γp t) * blkEmbed ε false (γm t)
-
-theorem blkCurve : BlockExpCurve :=
-  fun _ _ _ hX γ hγ γp hp γm hm t => blk_curve hX γ hγ γp hp γm hm t
-
 end ReciprocityTheory.ChartRestriction.DS.HW

@@ -12,8 +12,4 @@ def AdjoinIndepRelfinrank.Statement : Prop :=
           (L ⊔ IntermediateField.adjoin F (Set.range t)) =
         IntermediateField.relfinrank L₀ L
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

@@ -50,8 +50,6 @@ theorem norm_eq_norm_sh (x : Tl l) : ‖x‖ = ‖sh x‖ := rfl
 
 theorem norm_sh_le_one (x : Tl l) : ‖sh x‖ ≤ 1 := GroundTheory.PAdicHodge.norm_untilt_le_one x
 
-theorem sh_eq_zero {x : Tl l} : sh x = 0 ↔ x = 0 := GroundTheory.PAdicHodge.untilt_eq_zero_iff
-
 theorem norm_sh_add_sub_le (x y : Tl l) : ‖sh (x + y) - (sh x + sh y)‖ ≤ ‖(l : ℂ_[l])‖ := by
   simpa [sh] using GroundTheory.PAdicHodge.norm_untilt_add_sub_le x y
 

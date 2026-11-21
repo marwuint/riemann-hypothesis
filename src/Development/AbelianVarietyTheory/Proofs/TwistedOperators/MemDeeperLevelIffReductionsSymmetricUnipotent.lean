@@ -8,9 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelPlacesNotIs
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.BunExists
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LevelSubgroupCharacterUnitary
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BSlotD
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteMatrixIotaEqFinitePartStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueIdempotentConjAtLevelPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DivisibilityTypeProductReadLevelPlacesStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteMatrixIotaEqFinitePart
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueIdempotentConjAtLevelPlace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DivisibilityTypeProductReadLevelPlaces
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalFrameHermitianIdealStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CongruencesReductionMemSymmetricUnipotentStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.AutomorphicEvaluation Formalism.L2.SG.RowDict Formalism.L2.SG.RowsJoinPinned Formalism.L2.SG.RowLevelMatch Formalism.L2.SG.PoincareInHH.PoincareSetting MeasureTheory NumberField IsDedekindDomain
@@ -33,7 +34,7 @@ theorem GlobalTheory.SeeConjRead.mem_deeperLevel_iff_reductions_symmetricUnipote
   subst g_eq
   have hFH : Formalism.L2.SG.Pf.BunEx.Unip.FH (II D) (D.host.g 0 * D.host.g 1) e0 f0 z0 bw bwd ew :=
     ⟨vectorsInLattice, gramIntegral, formsAtZero, weightVectorsIntegral, ew_orth, bw_w, bwd_w, bw_dual, latticeSpan⟩
-  obtain ⟨hgP, hZ⟩ := GlobalTheory.T.divisibility_typeProduct_read_levelPlaces R F hIs hGrp
+  obtain ⟨hgP, hZ⟩ := _root_.GlobalTheory.SeeConjZMod.main R F hIs hGrp
   have hL : (II D).L = Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0 := by
     ext x
     refine (Formalism.L2.SG.InstExistsPf.mem_Lv D x).trans ?_
@@ -52,7 +53,7 @@ theorem GlobalTheory.SeeConjRead.mem_deeperLevel_iff_reductions_symmetricUnipote
   have hloc : ∀ PP ∈ R.Pg, ∃ w : Bool,
       LocAt (D.host.g 0 * D.host.g 1) e0 f0 z0 bw bwd ew β PP w := by
     intro PP hP
-    obtain ⟨h1, h2, hA1, hA0⟩ := GlobalTheory.T.residue_idempotent_conj_at_levelPlace (D.host.g 0 * D.host.g 1) ew ew_idem ew_orth ew_int ew_full PP (hgP PP hP)
+    obtain ⟨h1, h2, hA1, hA0⟩ := _root_.GlobalTheory.SeeConjIdem.resS_idem_conj (D.host.g 0 * D.host.g 1) ew ew_idem ew_orth ew_int ew_full PP (hgP PP hP)
     have hr : RedIs β PP (if GlobalTheory.StdFrames.cpt PP ew = 1 then
         flagV D.R.rS D.R.k (Yc D 0).rank e0 f0 bw z0
       else flagV D.R.rS D.R.k (Yc D 0).rank e0 f0 (fun i => bwd (Fin.rev i)) z0) := hred PP hP
@@ -61,7 +62,7 @@ theorem GlobalTheory.SeeConjRead.mem_deeperLevel_iff_reductions_symmetricUnipote
       exact ⟨true, hgP PP hP, fun _ => by simpa using (hA1 hc).1, fun _ => by simpa using (hA1 hc).2, hr⟩
     · rw [if_neg hc] at hr
       exact ⟨false, hgP PP hP, fun _ => by simpa using (hA0 hc).1, fun _ => by simpa using (hA0 hc).2, hr⟩
-  have hxM : (II D).fmat ((Formalism.IndefR.RationalEmbedding.iota D) κ).2 = (finE (Yc D 0) κ).val := GlobalTheory.T.finiteMatrix_iota_eq_finitePart κ
+  have hxM : (II D).fmat ((Formalism.IndefR.RationalEmbedding.iota D) κ).2 = (finE (Yc D 0) κ).val := _root_.GlobalTheory.SeeConjGroup.fmat_iota_eq_finE κ
   show _ ∧ _ ↔ _
   constructor
   · rintro ⟨-, hc⟩ PP hP

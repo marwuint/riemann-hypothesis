@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrPairApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueArchimedeanMatrixAdeleExtensionOfComStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueArchimedeanMatrixAdeleExtensionOfCom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealScalarArchimedeanAdeleSmulMatrixRealPlaceStatement
 
 noncomputable section
@@ -206,12 +208,12 @@ theorem exists_bridge : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   have hΨl : ∀ y w, Ψl y w = (mk d y).map (piInf (τ w)) := fun _ _ => rfl
   have hinj : Function.Injective Ψl := by
     intro y y' h
-    have hu := (GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hcm (Ψl y)).unique ⟨at_mk d y, fun w => rfl⟩
+    have hu := (_root_.GlobalTheory.ArchMatCoords.existsUnique_at_map_piInf σ τ hcm (Ψl y)).unique ⟨at_mk d y, fun w => rfl⟩
       ⟨at_mk d y', fun w => (congrFun h w).symm⟩
     rw [← coord_mk d y, ← coord_mk d y', hu]
   have hsurj : Function.Surjective Ψl := by
     intro M
-    obtain ⟨u, ⟨hu, hM⟩, -⟩ := GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hcm M
+    obtain ⟨u, ⟨hu, hM⟩, -⟩ := _root_.GlobalTheory.ArchMatCoords.existsUnique_at_map_piInf σ τ hcm M
     refine ⟨coord d u, funext fun w => ?_⟩
     rw [hΨl, mk_coord d hu]
     exact hM w

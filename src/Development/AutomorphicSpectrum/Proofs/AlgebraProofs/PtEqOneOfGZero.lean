@@ -13,9 +13,12 @@ import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsNilpotentGr
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPowerSeriesReadingGroupHomNilpotentCharts
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HopfPointMem
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalGroupChartFamilyStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HodgeTateDatumReduceScalarsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedVarietyIntegerActionStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AbelianSchemeTorsionRepresentationStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HodgeTateDatumReduceScalars
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.LePreimageOfNil
+import ReciprocityTheory.DualLattices.SubMemOfCompat
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedVarietyIntegerAction
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AbelianSchemeTorsionRepresentation
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TrivialPolarizedAbelianPointEqOneStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry TensorProduct Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
@@ -85,7 +88,7 @@ theorem main : HodgeTateDatumStatement := by
   haveI : IsAdicComplete (Ideal.span {(p : R)}) R := hcomp
   haveI : IsCommMonObj P.A := P.isAb.comm
   have hT : Nonempty (TorsRep P.A p) :=
-    GlobalTheory.T.abelian_scheme_torsion_representation R p (Fact.out : p.Prime).one_le P.A P.L P.isAb P.isLB P.ample
+    _root_.GlobalTheory.CompanionTheory.Ar.GR.torsRep_nonempty_of_relAmple R p (Fact.out : p.Prime).one_le P.A P.L P.isAb P.isLB P.ample
   refine ⟨hT, ?_⟩
   rcases Nat.eq_zero_or_pos P.g with hg | hg
   · obtain ⟨cp, hcp⟩ := exists_cp p hv hp
@@ -104,7 +107,7 @@ theorem main : HodgeTateDatumStatement := by
       | add x y hx hy => rw [map_add, map_add, hx, hy]
     obtain ⟨H⟩ := GlobalTheory.ChF.htd_dim_zero p C v R hv ℤ cp
     rw [← hg] at H
-    obtain ⟨hS', H', -⟩ := GlobalTheory.T.hodge_tate_datum_reduce_scalars p P.g C v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp hS H
+    obtain ⟨hS', H', -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GR.htd_restrict_coefficients p P.g C v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp hS H
     have h1 := pt_eq_one_of_g_zero R P hg
     revert H'
     rw [hg]
@@ -119,13 +122,13 @@ theorem main : HodgeTateDatumStatement := by
       exact ⟨fun _ => ⟨0, (h1 z).symm⟩, fun _ => by rw [h1 z]; exact one_pow p⟩
     · rw [hopf_carrier_g_zero, torsFun_one_eq]
   · obtain ⟨F, X, hX⟩ := GlobalTheory.ChF.exists_nilChart R P.A P.g P.smoothDim
-    obtain ⟨o⟩ := GlobalTheory.T.polarised_variety_integer_action R P
+    obtain ⟨o⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GR.polAV_oAct_int R P
     have hα : ∀ a : ℤ, ∃ φ, Reads X X (o.act a) φ := fun a =>
       GlobalTheory.ChF.exists_reads R P.A P.A _ _ F.F F.F X X hX hX (o.act a) (o.hom a)
     choose α hα using hα
     obtain ⟨cp, hS, H, S, pt, -, -, -, -, -, hpt, hAA, -⟩ :=
       GlobalTheory.T.formal_group_chart_family p C v R hv P hg P.g rfl ℤ o F X hX α hα
-    obtain ⟨hS', H', hAA', -⟩ := GlobalTheory.T.hodge_tate_datum_reduce_scalars p P.g C v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp hS H
+    obtain ⟨hS', H', hAA', -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GR.htd_restrict_coefficients p P.g C v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp hS H
     exact ⟨cp, hS', H', pt, hpt, fun T => by rw [hAA']; exact hAA T⟩
 
 end GlobalTheory.CompanionTheory.Ar.GR.Top

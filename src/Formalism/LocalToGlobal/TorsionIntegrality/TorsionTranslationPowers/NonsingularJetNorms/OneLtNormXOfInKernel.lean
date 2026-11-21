@@ -72,11 +72,6 @@ theorem in_kernel_of_one_lt_norm_x (R : W.toAffine.Point) (h : 1 < ‖px W R‖)
   | zero => trivial
   | some x y hxy => exact h
 
-theorem one_lt_norm_x_of_in_kernel (R : W.toAffine.Point) (hR : R ≠ 0) (h : Formalism.ELL.InFormalGroupPoints R) : 1 < ‖px W R‖ := by
-  cases R with
-  | zero => exact absurd rfl hR
-  | some x y hxy => exact h
-
 theorem py_int [IsUltrametricDist K] (hW : Formalism.ELL.IntegralModel W) (R : W.toAffine.Point)
     (h : ‖px W R‖ ≤ 1) : ‖py W R‖ ≤ 1 := by
   cases R with

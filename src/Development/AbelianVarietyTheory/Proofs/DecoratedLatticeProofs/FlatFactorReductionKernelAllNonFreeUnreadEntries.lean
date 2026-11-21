@@ -8,14 +8,6 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 noncomputable section
 namespace GlobalTheory.FlatFactor.LowStage
 
-section Shear
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-  [MeasurableSpace k] [BorelSpace k]
-
-variable {m m' : Type} [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m']
-
-end Shear
-
 section Transv
 variable {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 

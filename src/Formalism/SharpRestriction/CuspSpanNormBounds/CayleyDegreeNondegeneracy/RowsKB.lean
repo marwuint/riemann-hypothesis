@@ -158,29 +158,6 @@ theorem rows_KBound_of {C' Cl Cg cb Cu cT CT C0 A c : ℝ} (hH : Cnt.Hyp D large
 
 end KB
 
-section Fam
-
-variable {eps : ℝ} (Fm : FamP eps) (C1 : ℝ) (X : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
-  (Y : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word),
-    LoopTie (Fm.D x i) (Fm.L x i) (X x hx i) u u' C1)
-
-theorem rows_KBoundF_of (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) : rows_KBoundF Fm C1 X Y := by
-  intro Cg cb Cu cT CT C0 A
-  obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hall⟩ := hAdm
-  obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h27, _⟩ := hall Cg cb Cu cT CT C0 A
-  obtain ⟨cH, x27, H27⟩ := h27
-  refine ⟨max (max 1 CT) (|cH| + 2), fun c hc => ⟨x27, fun x hx i hx1 u u' hH => ?_⟩⟩
-  have k1 : 1 ≤ c := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hc
-  have k2 : CT ≤ c := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hc
-  have k3 : |cH| + 2 ≤ c := le_trans (le_max_right _ _) hc
-  exact rows_KBound_of _ hH
-    (rows_stHH_mono (by linarith [le_abs_self cH]) (by linarith [neg_abs_le cH]) (H27 x hx i u u')) k1 k2
-
-theorem rows_DegF_of' (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) (hAmp : rows_AmpF Fm C1) (hT : rows_TiesF Fm C1 X Y) :
-    rows_DegF Fm C1 X Y := rows_DegF_of Fm C1 X Y hAdm hAmp hT (rows_KBoundF_of Fm C1 X Y hAdm)
-
-end Fam
-
 end Formalism.MainNotions.BridgeLemma₂
 
 end

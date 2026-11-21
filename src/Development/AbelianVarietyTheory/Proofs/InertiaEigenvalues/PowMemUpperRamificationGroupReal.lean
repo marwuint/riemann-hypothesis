@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
 import GroundTheory.LocalFields.ConductorReciprocity
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMemUpperRamificationGroupAbelianNatStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMemUpperRamificationGroupAbelianNat
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory.LocalField GlobalTheory.PMon.Ram
 
@@ -16,7 +16,7 @@ theorem pow_mem_upperRamificationGroup_real : ∀ (F : Type) [Field F] [Valuativ
   have hσn : σ ∈ upperRamificationGroup F ↥M ((⌈v⌉.toNat : ℕ) : ℝ) := by
     rw [hn, ← upperRamificationGroup_eq_ceil]
     exact hσ
-  have hpow := GlobalTheory.T.pow_mem_upperRamificationGroup_abelian_nat' F M p e ⌈v⌉.toNat hOrd σ hσn
+  have hpow := _root_.GlobalTheory.PMon.Ram.pow_mem_upperRamificationGroup_abelian_nat F M p e ⌈v⌉.toNat hOrd σ hσn
 
   have hvn : v ≤ ((⌈v⌉.toNat : ℕ) : ℝ) := by
     rw [hn]; exact Int.le_ceil v

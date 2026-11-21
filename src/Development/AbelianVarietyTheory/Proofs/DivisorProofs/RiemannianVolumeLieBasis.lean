@@ -220,7 +220,7 @@ theorem riemLie_eq_smul_formLie (E : Type) [Field E] [NumberField E] [IsCMField 
     rw [det_mul, det_mul, det_transpose, h] at h1
     simp [← h1] at h2
   have hsk : ∀ i, (e i)ᵀ * G + G * (e i).map cc = 0 := fun i => skew_matrix G (he i).2
-  have hE : LinearIndependent E e := GlobalTheory.T.real_independent_skew_matrices G hG e hsk hli
+  have hE : LinearIndependent E e := _root_.GlobalTheory.linearIndependent_of_skew_of_real G hG e hsk hli
   have hR : ∀ τ : X.Ψ, LinearIndependent ℝ (fun i => (e i).map τ.1) := fun τ => GlobalTheory.T.linear_independent_complex_map τ.1 e hE
   have hmem : ∀ (τ : X.Ψ) i, ((e i).map τ.1)ᵀ * G.map τ.1 + G.map τ.1 * ((e i).map τ.1).map (starRingEnd ℂ) = 0 ∧
       ((e i).map τ.1).trace = 0 := by

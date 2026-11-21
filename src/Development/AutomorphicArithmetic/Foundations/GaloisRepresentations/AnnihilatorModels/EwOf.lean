@@ -1,7 +1,14 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.SameNormBasic
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.PulledRead
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorObjectPullbackTer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorObjectPullbackBis
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HenselianLocalRingOfIsAdicComplete
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import Development.AbelianVarietyTheory.Definitions.Degenerations.ExistsGenPullTriv
+import Development.AbelianVarietyTheory.Definitions.Uniformization.IsCPPullback
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
+import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
+import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.ES
 open GlobalTheory.IwLevel (InSub IsIsogDeg)
@@ -36,7 +43,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.ew_of :
     simpa [IsLocalRing.maximalIdeal_eq_bot] using h3
   obtain ⟨o₁, ⟨m₁⟩⟩ : ∃ o₁ : Obj b N (spMap β), Nonempty (ObjMap o₁ M.univ (resPt V ≫ x)) := by
     rw [← hβ]
-    exact GlobalTheory.T.exists_harrisTaylorObject_pullback p D O b N M.X (Sp (IsLocalRing.ResidueField V)) M.s (resPt V ≫ x) M.univ
+    exact _root_.GlobalTheory.HTPull.exists_objMap_pull p D O b N M.X (Sp (IsLocalRing.ResidueField V)) M.s (resPt V ≫ x) M.univ
   have hinj : ∀ a a' : 𝟙_ (Over (Sp (IsLocalRing.ResidueField V))) ⟶ o₁.A,
       a.left ≫ m₁.φ = a'.left ≫ m₁.φ → a = a' := by
     intro a a' h

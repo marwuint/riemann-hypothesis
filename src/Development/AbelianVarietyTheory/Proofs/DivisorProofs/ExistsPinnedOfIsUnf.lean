@@ -4,7 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.CoeSelfD
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIsometryOfSabMap
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeExistsUniqueOfSamePoint
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LowerTriIsUnitDet
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeByMatricesReflAndCompStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeByMatricesReflAndComp
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
+import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 
 set_option autoImplicit false
 
@@ -56,35 +60,10 @@ def Pinned (U : Formalism.L2.PjFree.Unf Xo c σ r) {g : ℕ} (e : Fin g ≃ Σ �
       ∀ τ (i : Fin (Dw.mult τ)), IsDerivAt0 (fun z => (F.ex (ik k) Pm z).left) (Pi.single (e.symm ⟨τ, i⟩) 1)
         ((U.un k x).u τ i)
 
-def MarkRel (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) {A A' : Datum H} {Λ Λ' : Submodule (𝓞 E) (Fin r → E)}
-    (φ : A.La ≃ₗ[𝓞 E] Λ) (φ' : A'.La ≃ₗ[𝓞 E] Λ') (t : Dw.La →ₗ[𝓞 E] A.La) (t' : Dw.La →ₗ[𝓞 E] A'.La)
-    (γ : Dw.La →ₗ[𝓞 E] Dw.La) (δ : GL (Fin r) E) : Prop :=
-  ∃ gam : A.La ≃ₗ[𝓞 E] A'.La,
-    (∀ a, (φ' (gam a) : Fin r → E) = (δ : Matrix (Fin r) (Fin r) E) *ᵥ (φ a : Fin r → E)) ∧
-    ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La), ∃ v, gam (t (γ a)) = t' a + l.M • v
-
 def MoveMatch (U U' : Formalism.L2.PjFree.Unf Xo c σ r) (k : U.Comp) (k' : U'.Comp) {δ : GL (Fin r) E}
     (h : GlobalTheory.LevelCusp.IsMatch (U.X k) (U'.X k') δ) (ρ : Xo.X ⟶ Xo.X) (ν : SABMap Xo.univ.t Xo.univ.t ρ) : Prop :=
   ∀ (x : (U.X k).dom) (y' : FrPt Xo c (CAt σ)), FrMove ρ ν (U.un k x) y' →
     y'.x = (U'.un k' ⟨_, h.mem_dom x.2⟩).x ∧ y'.u = (U'.un k' ⟨_, h.mem_dom x.2⟩).u
-
-theorem MarkRel.div {A A' : Datum H} {Λ Λ' : Submodule (𝓞 E) (Fin r → E)}
-    {φ : A.La ≃ₗ[𝓞 E] Λ} {φ' : A'.La ≃ₗ[𝓞 E] Λ'} {t : Dw.La →ₗ[𝓞 E] A.La} {t' : Dw.La →ₗ[𝓞 E] A'.La}
-    {γ : Dw.La →ₗ[𝓞 E] Dw.La} {δ δ' : GL (Fin r) E} (h : MarkRel l φ φ' t t' γ δ) (h' : MarkRel l φ φ' t t' γ δ') :
-    MarkRel l φ' φ' t' t' LinearMap.id (δ' * δ⁻¹) := by
-  obtain ⟨g, hg, hm⟩ := h
-  obtain ⟨g', hg', hm'⟩ := h'
-  refine ⟨g.symm.trans g', fun a => ?_, fun a ha => ?_⟩
-  · obtain ⟨b, rfl⟩ := g.surjective a
-    rw [LinearEquiv.trans_apply, g.symm_apply_apply, hg', hg, Matrix.mulVec_mulVec, Units.val_mul, Matrix.mul_assoc,
-      Units.inv_mul, Matrix.mul_one]
-  · obtain ⟨v, hv⟩ := hm a ha
-    obtain ⟨v', hv'⟩ := hm' a ha
-    refine ⟨v' - g' (g.symm v), ?_⟩
-    have : t' a = g (t (γ a)) - l.M • v := by rw [hv, add_sub_cancel_right]
-    rw [LinearMap.id_apply, LinearEquiv.trans_apply]
-    conv_lhs => rw [this]
-    rw [map_sub, map_sub, g.symm_apply_apply, hv', map_nsmul, map_nsmul, smul_sub, add_sub_assoc]
 
 theorem exists_frBor_gen (z y : FrPt Xo c (CAt σ)) (hx : y.x = z.x) (hu : y.u = z.u) :
     ∃ t₀ : (CAt σ)ˣ, FrBor (fun i => Option.elim i t₀ (fun _ => 1)) z y := by
@@ -92,7 +71,7 @@ theorem exists_frBor_gen (z y : FrPt Xo c (CAt σ)) (hx : y.x = z.x) (hu : y.u =
   refine ⟨a, (GlobalTheory.Frames.frBor_iff_frChg _ _ _).2 ⟨fun _ => 1, fun τ i j hij => Matrix.one_apply_ne hij.ne,
       fun τ i => Matrix.one_apply_eq i, hx, fun τ i => ?_, hbc⟩⟩
   rw [hu]
-  exact (GlobalTheory.T.frameChangeByMatrices_refl_and_comp E H Dw l Xo c (CAt σ) z z z).1.2.1 τ i
+  exact (_root_.GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c (CAt σ) z z z).1.2.1 τ i
 
 theorem exists_pinned_of_isUnf {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.PjFree.IsUnf U) :
     ∃ (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))

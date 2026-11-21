@@ -6,7 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HasSupportOfIsSubquot
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BernsteinZelevinskyFiniteness
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GeometricLemma
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityPos
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportSubschemeEmbeddingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportSubschemeEmbedding
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.PrincipalSeriesSupport.PrinSeriesWord
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSupportOfIsSubquotientProdIrr
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ParabolicInductionPreservesSubquotient
 import CompanionTheory.AutomorphicTheory.HeckeStandardModules.EqZeroOfCompAt
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CardFiber
 
@@ -25,7 +28,7 @@ theorem exists_perm_one_le_jm : ∀ {k : Type} [Field k] [ValuativeRel k] [Topol
     (h : IsSubquotient π (prodIrr x hx)),
     ∃ (e : Equiv.Perm (Fin l)) (he : ∑ a, (x (e a)).1 = N), 1 ≤ jm (fun a => x (e a)) he π := by
   intro k _ _ _ _ hA l N x hx hxc V _ _ π hs hi h
-  obtain ⟨c, y, hy, hyc, φ, hφ⟩ := GlobalTheory.T.support_subscheme_embedding k N V π hs hi
+  obtain ⟨c, y, hy, hyc, φ, hφ⟩ := _root_.GlobalTheory.CompanionTheory.SubEmb.subEmbedding k N V π hs hi
   have h1 : HasSupport π (Finset.univ.val.map x) := hasSupport_of_isSubquotient hi hxc h
   have h2 : HasSupport π (Finset.univ.val.map y) := hasSupport_of_isSubquotient hi hyc (.of_injective φ hφ)
   have hm := GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique GlobalTheory.CompanionTheory.GeoLink.geometricLemma

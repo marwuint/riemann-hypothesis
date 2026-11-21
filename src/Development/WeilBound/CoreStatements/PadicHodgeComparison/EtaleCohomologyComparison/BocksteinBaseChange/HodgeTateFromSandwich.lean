@@ -44,11 +44,4 @@ def DeRhamComparisonSmooth : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K],
     Nonempty (ComparisonOn (Model.Sm (l := l) (K := K)))
 
-def DeRhamComparisonSemistable : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K],
-    Nonempty (ComparisonOn (Model.Good (l := l) (K := K)))
-
-theorem DeRhamComparisonSemistable.dr (h : DeRhamComparisonSemistable) : FilteredDeRhamComparison := fun l _ K _ =>
-  (h l K).elim fun C => ⟨⟨C.c, C.lin, C.lin', C.fin, C.equi, C.inj, C.fil, fun M hM _ => C.strict M hM, C.nat⟩⟩
-
 end CrystallineSemistableComparison

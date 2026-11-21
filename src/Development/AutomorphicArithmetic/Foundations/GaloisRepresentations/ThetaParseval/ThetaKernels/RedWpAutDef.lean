@@ -21,9 +21,6 @@ structure Ctx_k (σ : E →ₐ[F] E) (B : Base F E) {nS nT : ℕ} (JS : Matrix (
   hξ : σ ξ₀ = -ξ₀
   inf : IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ
   chart : IsChartF θ ι
-section Lin
-variable {κ : Type} [Fintype κ]
-end Lin
 variable (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E)
 end PositivityTheory.ThKW
 end

@@ -244,11 +244,4 @@ theorem setLIntegral_average (ι : U →* G) (hι : Function.Injective ι) (hιm
 
 end Average
 
-section Additive
-
-variable {G A : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
-  [AddGroup A] [MeasurableSpace A] [MeasurableAdd₂ A] [MeasurableNeg A]
-
-end Additive
-
 end GlobalTheory.UnipAvg

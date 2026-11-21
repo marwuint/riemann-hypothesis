@@ -36,7 +36,7 @@ theorem rho_lev_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m 
   obtain ⟨s₁, hs₁⟩ := chK_good S hS hC M hM (m + 1)
   obtain ⟨s₂, hs₂⟩ := chK_good S hS hC M hM m
   refine ⟨max s₀ (max s₁ s₂), fun s hs => ?_⟩
-  have h := GlobalTheory.T.realization_functorial (chK S hS hC M (m + 1) s) (chK S hS hC M m s)
+  have h := _root_.GlobalTheory.CompanionTheory.KapRhoHom.rho_hom (chK S hS hC M (m + 1) s) (chK S hS hC M m s)
     (homLev S hS m M s (qb_le (hS.lev (m + 1)) M s) (qb_le (hS.lev m) M s)
       (rHof (dOf S hS hC (m + 1)) (hcOf S hS hC (m + 1)) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s))
     (hs₁ s (by omega)) (hs₂ s (by omega)) (lev_good S hS hC M m s)
@@ -48,7 +48,7 @@ theorem rho_act_of (hG : ∀ (M : Model l K) m s g, (homGal (hS.lev m) g M s (qb
   intro M a hM j m g x f ⟨hM', s₀, hs₀⟩
   obtain ⟨s₁, hs₁⟩ := chK_good S hS hC M hM m
   refine ⟨hM', max s₀ s₁, fun s hs => ?_⟩
-  exact GlobalTheory.T.realization_functorial (chK S hS hC M m s) (chK S hS hC M m s) (homGal (hS.lev m) g M s (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s))
+  exact _root_.GlobalTheory.CompanionTheory.KapRhoHom.rho_hom (chK S hS hC M m s) (chK S hS hC M m s) (homGal (hS.lev m) g M s (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s))
     (hs₁ s (by omega)) (hs₁ s (by omega)) (hG M m s g) (show (M.HS false j).lim from x).1 f (hs₀ s (by omega))
 
 theorem rho_nat_of (hP : ∀ (M N : Model l K) (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) m s,
@@ -59,7 +59,7 @@ theorem rho_nat_of (hP : ∀ (M N : Model l K) (u : M.X ⟶ N.X) (hu : u ≫ N.p
   obtain ⟨s₁, hs₁⟩ := chK_good S hS hC M hM m
   obtain ⟨s₂, hs₂⟩ := chK_good S hS hC N hN m
   obtain ⟨s, e0, e1, e2, e3⟩ : ∃ s, s₀ ≤ s ∧ s₀' ≤ s ∧ s₁ ≤ s ∧ s₂ ≤ s := ⟨s₀ + s₀' + s₁ + s₂, by omega⟩
-  have h := GlobalTheory.T.realization_functorial (chK S hS hC N m s) (chK S hS hC M m s) _ (hs₂ s e3) (hs₁ s e2) (hP M N u hu m s)
+  have h := _root_.GlobalTheory.CompanionTheory.KapRhoHom.rho_hom (chK S hS hC N m s) (chK S hS hC M m s) _ (hs₂ s e3) (hs₁ s e2) (hP M N u hu m s)
     (show (N.HS false j).lim from x).1 f (h₀ s e0)
   have e := GlobalTheory.T.realization_unique (chK S hS hC M m s) (hs₁ s e2) _ f' _ (h₀' s e1) h
   rw [e]
@@ -73,7 +73,7 @@ theorem rho_one_of (hU : ∀ (M : Model l K) m s, (cupOf (hS.lev m) M s (qb_le (
   have h := h₀ s e0
   rw [show (show (M.HS false 0).lim from x).1 = (cupOf (hS.lev m) M s (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s)).oneS from
     funext ((one_iff (hS.lev m) M s (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s) a x).1 hx)] at h
-  exact GlobalTheory.T.realization_unit_class (chK S hS hC M m s) (hs₁ s e1) _ (hU M m s) f h φ
+  exact _root_.GlobalTheory.CompanionTheory.KapUnit.rho_one_eval (chK S hS hC M m s) (hs₁ s e1) _ (hU M m s) f h φ
 
 theorem rho_cup_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ {i j : ℕ} m x y z f g h,
     rhoK S hS hC a i m x f → rhoK S hS hC a j m y g → rhoK S hS hC a (i + j) m z h → ((dat Amp).H a).cup x y z →
@@ -101,11 +101,5 @@ theorem rhoSys_ex : Nonempty (RhoSys S Model.Sm (dat Amp) fun a c => IsFirstCher
      cup := rho_cup_pf S hS hC
      one := rho_one_of S hS hC fun M m s => cupOf_rHof_good _ M s _ _ _
      c1 := rho_firstChern_formula S hS hC }⟩
-
-theorem crystalline_deRham_firstChern_exists : ∃ L : KapL (l := l) (K := K) Amp, LieComplementChartContDiffAt L := by
-  obtain ⟨S, hS, hC⟩ := CrystallineSemistableComparison.HT.levSys_ex (l := l) (K := K)
-  obtain ⟨P⟩ := rhoSys_ex S hS hC
-  obtain ⟨A⟩ := kap_abs (facts l K) (fun c => ⟨_, rfl⟩) hS P
-  exact ⟨⟨A.κ, A.lin, A.lin', A.act, A.nat, A.fil, A.cup, A.one⟩, A.c1⟩
 
 end CrystallineSemistableComparison.Pb.Kap.Mo

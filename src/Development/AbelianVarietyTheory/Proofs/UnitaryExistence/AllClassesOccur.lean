@@ -1,11 +1,11 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniversalFibreUniformisedTripleStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniversalFibreUniformisedTriple
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DatumCommensurablePeriod
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FamilyUnifFibreLatticeEqOfPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FamilyUnifFibreLatticeEqOfPullback
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsObjOfUniformisedTripleComplexStatement
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniformisedQuotientOfCommensurable
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsHermCoordOfDatum
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HermitianFormsSameSignatureSameSpaceStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HermitianFormsSameSignatureSameSpace
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TypeFnPeriodExistModuliNonemptyStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PullCub
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
@@ -56,12 +56,12 @@ theorem GlobalTheory.all_classes_occur :
       simpa using this
     exact H.d_prime.ne_zero (by exact_mod_cast h2)
   obtain ⟨Gm, φ, hφ⟩ := GlobalTheory.exists_herm_coord_of_datum E H (U.Di i₀) (H.rt : E) hξ hξ0 _ rfl
-  obtain ⟨φ', hφ'⟩ := GlobalTheory.T.hermitian_forms_same_signature_same_space hL hN E H (U.Di i₀) D' _ _ Gm φ (hp.trans hp₀.symm) (hq.trans hq₀.symm) hξ hφ
+  obtain ⟨φ', hφ'⟩ := _root_.GlobalTheory.model_in_same_space hL hN E H (U.Di i₀) D' _ _ Gm φ (hp.trans hp₀.symm) (hq.trans hq₀.symm) hξ hφ
   obtain ⟨hg, P₀, hP₀⟩ := (GlobalTheory.T.typeFn_period_exist_moduli_nonempty E H (U.Di i₀)).2.1 g ty (by rw [hp₀, hq₀]; exact hty)
   rw [hp₀, hq₀] at hg
   obtain ⟨N, j, j', P', hj, hP', h₁, h₂⟩ :=
     GlobalTheory.datum_commensurable_period E H (U.Di i₀) D' _ _ Gm φ φ' g ty hξ hφ hφ' P₀ hP₀
-  obtain ⟨t₀, e₀, -, -, ht₀⟩ := GlobalTheory.T.exists_universal_fibre_uniformised_triple E H D l Xo σ g ty U i₀ P₀ hσ hg hP₀
+  obtain ⟨t₀, e₀, -, -, ht₀⟩ := _root_.GlobalTheory.UnivFibre.exists_fibre_uniformised E H D l Xo σ g ty U i₀ P₀ hσ hg hP₀
   obtain ⟨t, e, ht⟩ := GlobalTheory.exists_uniformised_quotient_of_commensurable hLaw hQ E H (U.Di i₀) D' g ty P₀ P' N j j' t₀ e₀
     (hp.trans hp₀.symm) (hq.trans hq₀.symm) hj hP₀ hP' h₁ h₂ ht₀
   obtain ⟨o, m, hm⟩ := GlobalTheory.T.exists_obj_of_uniformised_triple_complex hLaw E H D D' l σ g ty P' t e f hA hσ hp hq hP' ht hf hE
@@ -70,7 +70,7 @@ theorem GlobalTheory.all_classes_occur :
   obtain ⟨n, hn⟩ : ∃ n : SABMap t Xo.univ.t (U.u i P), n.φ = m.φ ≫ om.toSABMap.φ := by
     have := sabComp pullCubComp E H _ _ _ _ _ _ _ _ om.toSABMap m
     rwa [Category.id_comp] at this
-  obtain ⟨h, gam, hh, hgam, hiso⟩ := GlobalTheory.T.familyUnif_fibre_lattice_eq_of_pullback E H D l Xo σ g ty U i P D' P' t e n hP hP' ht
+  obtain ⟨h, gam, hh, hgam, hiso⟩ := _root_.GlobalTheory.familyUnif_fibre_lattice_match E H D l Xo σ g ty U i P D' P' t e n hP hP' ht
   refine ⟨i, gam, hiso, fun a ha => ?_⟩
   have hM : (l.M : ℂ) ≠ 0 := by
     have := l.three_le

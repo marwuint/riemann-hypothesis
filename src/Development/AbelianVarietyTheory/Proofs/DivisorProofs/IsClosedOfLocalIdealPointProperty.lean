@@ -1,9 +1,9 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsKillIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealRepresentsOfAwayCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenCoverIdealRepresentsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealKilledByRingMapsWithPropertyLeKerAppStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealRepresentsOfAwayCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenCoverIdealRepresents
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealKilledByRingMapsWithPropertyLeKerApp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffinePointPropertyOfLeKerAppStatement
 
 noncomputable section
@@ -22,7 +22,7 @@ theorem closed_of_points : ∀ (S : Scheme.{0}) (P : ∀ (R' : Type) [CommRing R
   have hrep : ∀ (V : S.Opens) (hV : IsAffineOpen V),
       Represents (ptQ P V hV) (killIdeal (ptQ P V hV)) := by
     intro V hV
-    obtain ⟨s, hs, hJ⟩ := GlobalTheory.T.exists_basicOpen_cover_idealRepresents S P hCov V hV
+    obtain ⟨s, hs, hJ⟩ := _root_.GlobalTheory.PtClosed.affine_local_represents S P hCov V hV
     have hQbc : ∀ (R' : Type) [CommRing R'] (R'' : Type) [CommRing R''] (g : R' →+* R'')
         (f : Γ(S, V) →+* R'), ptQ P V hV R' f → ptQ P V hV R'' (g.comp f) := by
       intro R' _ R'' _ g f hf
@@ -36,7 +36,7 @@ theorem closed_of_points : ∀ (S : Scheme.{0}) (P : ∀ (R' : Type) [CommRing R
       refine hLoc R' _ t ht fun r hr ↦ ?_
       have := H r hr
       simpa [ptQ, spMap, CommRingCat.ofHom_comp, Spec.map_comp] using this
-    obtain ⟨J, hJ'⟩ := GlobalTheory.T.idealRepresents_of_away_cover Γ(S, V) (ptQ P V hV) hQbc hQloc s hs hJ
+    obtain ⟨J, hJ'⟩ := _root_.GlobalTheory.PtClosed.represents_of_away_cover Γ(S, V) (ptQ P V hV) hQbc hQloc s hs hJ
     exact represents_killIdeal hJ'
   let I : S.IdealSheafData :=
     { ideal := fun V ↦ killIdeal (ptQ P V.1 V.2)
@@ -51,7 +51,7 @@ theorem closed_of_points : ∀ (S : Scheme.{0}) (P : ∀ (R' : Type) [CommRing R
     · intro h
       exact GlobalTheory.T.affinePointProperty_of_le_ker_app S P hLoc hrep R' x fun V hV ↦ h ⟨V, hV⟩
     · intro h V
-      exact GlobalTheory.T.idealKilledByRingMapsWithProperty_le_ker_app S P hBC R' x h V.1 V.2
+      exact _root_.GlobalTheory.PtClosed.killIdeal_le_ker_app S P hBC R' x h V.1 V.2
   rw [← key]
   constructor
   · rintro ⟨y, rfl⟩

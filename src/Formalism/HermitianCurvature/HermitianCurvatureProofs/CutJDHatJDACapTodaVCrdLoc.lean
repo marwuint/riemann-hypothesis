@@ -2,7 +2,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJDHatJDACapTodaV
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.QxChain
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.WRWeyl
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.WRPres
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AlgebraSmulCommClassComplex
+import Mathlib
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 open scoped ContDiff Topology

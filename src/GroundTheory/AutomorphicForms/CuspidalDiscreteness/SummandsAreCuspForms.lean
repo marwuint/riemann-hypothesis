@@ -317,30 +317,6 @@ theorem exists_cuspForm_of_isZKFinite (v : CuspL2 μ) (hv : IsZKFinite μ v) :
   rw [cuspQuot_mk, quotFun_mk]
   exact liftOne_coe Φ y
 
-theorem exists_cuspToL2_eq_of_isZKFinite (v : cuspidalL2 μ) (hv : IsZKFinite μ v) :
-    ∃ φ : cuspForms K n, cuspToL2 μ φ = v ∧
-      ∀ (s : {r : ℝ // 0 < r}) (g : AdelicGLn.AdelicGL K n),
-        (φ : AdelicGLn.AdelicGL K n → ℂ) (centralSection K n s * g) = (φ : AdelicGLn.AdelicGL K n → ℂ) g := by
-  obtain ⟨φ, hφ, hz⟩ := exists_cuspForm_of_isZKFinite μ v hv
-  exact ⟨φ, Subtype.ext hφ, hz⟩
-
-theorem isZKFinite_subset_range_cuspToL2 :
-    {v : CuspL2 μ | IsZKFinite μ v} ⊆
-      (toLp μ) ⁻¹' ((fun φ : cuspForms K n =>
-        ((cuspToL2 μ φ : cuspidalL2 μ) : Lp ℂ 2 (quotientMeasure Γ₁ μ))) '' Set.univ) := by
-  intro v hv
-  obtain ⟨φ, hφ, -⟩ := exists_cuspForm_of_isZKFinite μ v hv
-  exact ⟨φ, Set.mem_univ _, hφ⟩
-
-theorem exists_cuspForm_of_mem_summand (V : Submodule ℂ (CuspL2 μ)) [CompleteSpace V]
-    (hV : (cuspRepT μ).IsInvariant V) (_hirr : ((cuspRepT μ).restrict V hV).IsIrreducible)
-    {v : CuspL2 μ} (_hvV : v ∈ V) (hv : IsZKFinite μ v) :
-    ∃ φ : cuspForms K n,
-      ((cuspToL2 μ φ : cuspidalL2 μ) : Lp ℂ 2 (quotientMeasure Γ₁ μ)) = toLp μ v ∧
-      ∀ (s : {r : ℝ // 0 < r}) (g : AdelicGLn.AdelicGL K n),
-        (φ : AdelicGLn.AdelicGL K n → ℂ) (centralSection K n s * g) = (φ : AdelicGLn.AdelicGL K n → ℂ) g :=
-  exists_cuspForm_of_isZKFinite μ v hv
-
 end CuspidalSpectrum
 
 end

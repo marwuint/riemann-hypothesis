@@ -6,18 +6,18 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
 import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PDiagFibreFubini
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SphereMeasureStereographicIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.XiPotentialHessianDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantCofactorExpansionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.XiPotentialHessianDecomposition
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantCofactorExpansion
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.EvalW
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantLinearFunctionalStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantTwoRowExpansionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantOneRowExpansionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.WordCoefficientSecondDerivativeStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RowProductFirstDerivativeStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ComplexHessianTwoPointCombinationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ComplexHessianBlockCombinationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SpherePairLogSineMomentStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SphereMomentPowerStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantLinearFunctional
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantTwoRowExpansion
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantOneRowExpansion
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.WordCoefficientSecondDerivative
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RowProductFirstDerivative
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ComplexHessianTwoPointCombination
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ComplexHessianBlockCombination
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SpherePairLogSineMoment
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SphereMomentPower
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights
 open scoped ComplexOrder
 open ReciprocityTheory.ChartRestriction.G.AI GroundTheory.Heights₂.Heights.Inter
@@ -55,14 +55,14 @@ theorem densW (d k i : ℕ) (hi : i < k) (hkd : 2 * k ≤ d + 2) (T : Fin 3 → 
     have e : φ r = fun z : Fin (d + 2) → ℂ => uu r 0 * f (Fin.cons (z 0) (Fin.tail (Fin.tail z))) +
         uu r 1 * f (Fin.cons (z 1) (Fin.tail (Fin.tail z))) + vv r * α (Fin.tail (Fin.tail z)) :=
       funext (hφ r)
-    rw [e, GlobalTheory.T.complex_hessian_two_point_combination d f α y p₀ p₁ _ _ _ _ (uu r 0) (uu r 1) (vv r) (hfc _) (hfc _) hα (hfh _) (hfh _), ← hH]
+    rw [e, _root_.GlobalTheory.CompanionTheory.Ar.PB.FibN.hessC_row_square d f α y p₀ p₁ _ _ _ _ (uu r 0) (uu r 1) (vv r) (hfc _) (hfc _) hα (hfh _) (hfh _), ← hH]
     congr 3
     simp only [Finset.smul_sum, smul_smul, ← Finset.sum_add_distrib, ← add_smul]
     refine Finset.sum_congr rfl fun j _ => ?_
     push_cast
     rfl
-  have hB := GlobalTheory.T.mixed_discriminant_two_row_expansion d T H L hL uu vv (nS p₀) (nS p₁) (-(wS p₀ : ℂ)) (-(wS p₁ : ℂ))
-  rw [GlobalTheory.T.word_coefficient_second_derivative d k i hi hkd (nS p₀) (nS p₁)] at hB
+  have hB := _root_.GlobalTheory.CompanionTheory.Ar.PB.FibN.mdisc_extract_two d T H L hL uu vv (nS p₀) (nS p₁) (-(wS p₀ : ℂ)) (-(wS p₁ : ℂ))
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.PB.FibN.WordProd.evalW_pderiv_prod_rows_word d k i hi hkd (nS p₀) (nS p₁)] at hB
   rw [maDens, hrow]
   have hre := congrArg Complex.re hB
   rw [show (((d + 2).factorial : ℕ) : ℂ) = (((d + 2).factorial : ℝ) : ℂ) by push_cast; rfl,
@@ -91,14 +91,14 @@ theorem densY (d k : ℕ) (hk : 1 ≤ k) (hkd : 2 * k ≤ d + 2) (T : Fin 3 → 
         ((∑ j, ((cc r * nS a j : ℝ) : ℂ) • T j) + ((vv r : ℝ) : ℂ) • H) := by
     funext r
     have e : φ r = fun z : Fin (d + 1) → ℂ => cc r * f z + vv r * α (Fin.tail z) := funext (hφ r)
-    rw [e, GlobalTheory.T.complex_hessian_block_combination d f α y a _ _ (cc r) (vv r) (hfc _) hα (hfh _), ← hH]
+    rw [e, _root_.GlobalTheory.CompanionTheory.Ar.PB.FibN.hessC_row_fibre d f α y a _ _ (cc r) (vv r) (hfc _) hα (hfh _), ← hH]
     congr 2
     simp only [Finset.smul_sum, smul_smul]
     refine Finset.sum_congr rfl fun j _ => ?_
     push_cast
     rfl
-  have hB := GlobalTheory.T.mixed_discriminant_one_row_expansion d T H L hL cc vv (nS a) (-(wS a : ℂ))
-  rw [GlobalTheory.T.row_product_first_derivative d k hk hkd (nS a)] at hB
+  have hB := _root_.GlobalTheory.CompanionTheory.Ar.PB.FibN.extract_one d T H L hL cc vv (nS a) (-(wS a : ℂ))
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.PB.FibN.evalW_pderiv_prod_rowW d k hk hkd (nS a)] at hB
   rw [maDens, hrow]
   have hre := congrArg Complex.re hB
   have hR : (-(wS a : ℂ) * L (C (2 * (k : ℝ) - 1) * rename some (lin3 (nS a) ^ (2 * k - 2)) *
@@ -114,8 +114,8 @@ theorem densY (d k : ℕ) (hk : 1 ≤ k) (hkd : 2 * k ≤ d + 2) (T : Fin 3 → 
 
 theorem fibre_integral_normal : GroundTheory.Heights₂.Heights.Inter.FibreLocal.Statement → ∀ (d k : ℕ), 1 ≤ k → 2 * k ≤ d + 2 → ∀ (G : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (α : (Fin d → ℂ) → ℝ) (y : Fin d → ℂ), (∀ᶠ y' in 𝓝 y, (G y').PosDef) → (∀ p q, ContDiffAt ℝ 2 (fun y' => G y' p q) y) → ContDiffAt ℝ 2 α y → G y = 1 → (∀ p q, fderiv ℝ (fun y' => G y' p q) y = 0) → (∑ i ∈ Finset.range k, ∫ p : ℂ × ℂ, logSin (G y) p.1 p.2 * maDens (let u : ℕ → Fin 2 → ℝ := (fun (i : ℕ) (r : ℕ) (c : Fin 2) => if r = 0 then (![1, -1] : Fin 2 → ℝ) c else if r = 1 then (![0, 1] : Fin 2 → ℝ) c else if r < 2 + 2 * i then (![1, 0] : Fin 2 → ℝ) c else (![0, 1] : Fin 2 → ℝ) c) i; (fun (r : Fin (d + 2)) (z : Fin (d + 2) → ℂ) => if (r : ℕ) < 2 * k then u r 0 * xiPot (G (Fin.tail (Fin.tail z))) (z 0) + u r 1 * xiPot (G (Fin.tail (Fin.tail z))) (z 1) else α (Fin.tail (Fin.tail z)))) (Fin.cons p.1 (Fin.cons p.2 y))) = 2 * ReciprocityTheory.ChartRestriction.G.AI.kappa k * ∫ a : ℂ, maDens (fun (r : Fin (d + 1)) (z : Fin (d + 1) → ℂ) => if (r : ℕ) < 2 * k - 1 then xiPot (G (Fin.tail z)) (z 0) else α (Fin.tail z)) (Fin.cons a y) := by
   intro h d k hk hkd G α y hPD hG2 hα hG1 hGd
-  obtain ⟨T, hT⟩ := GlobalTheory.T.xi_potential_hessian_decomposition d G y hPD hG2 hG1 hGd
-  obtain ⟨L, hL⟩ := GlobalTheory.T.mixed_discriminant_linear_functional d T (hessC α y)
+  obtain ⟨T, hT⟩ := _root_.GlobalTheory.CompanionTheory.Relay.xi_potential_hessian_decomposition d G y hPD hG2 hG1 hGd
+  obtain ⟨L, hL⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.FibN.MdiscPoly.exists_functional d T (hessC α y)
   set f : (Fin (d + 1) → ℂ) → ℝ := fun z => xiPot (G (Fin.tail z)) (z 0) with hf
   have hfc : ∀ a : ℂ, ContDiffAt ℝ 2 f (Fin.cons a y) := fun a => (hT a).1
   have hfh : ∀ a : ℂ, hessC f (Fin.cons a y) = blk (-(wS a : ℂ)) (∑ j, ((nS a j : ℝ) : ℂ) • T j) := by
@@ -152,7 +152,7 @@ theorem fibre_integral_normal : GroundTheory.Heights₂.Heights.Inter.FibreLocal
           simp
         · simp [hr]
     simp_rw [hpt]
-    rw [integral_const_mul, GlobalTheory.T.sphere_pair_log_sine_moment, DiagonalFibreFubini.linProd_word k i hik]
+    rw [integral_const_mul, _root_.GlobalTheory.CompanionTheory.Ar.PB.FibN.StereoTwo.integral_eq_moment, DiagonalFibreFubini.linProd_word k i hik]
     rfl
   have hY : ∀ a : ℂ, maDens (fun (r : Fin (d + 1)) (z : Fin (d + 1) → ℂ) => if (r : ℕ) < 2 * k - 1 then xiPot (G (Fin.tail z)) (z 0) else α (Fin.tail z)) (Fin.cons a y) =
       (2 / Real.pi) ^ (d + 1) * (-(2 * (k : ℝ) - 1)) * (wS a * ℓ (lin3 (nS a) ^ (2 * k - 2))) := by
@@ -172,7 +172,7 @@ theorem fibre_integral_normal : GroundTheory.Heights₂.Heights.Inter.FibreLocal
   rw [Finset.sum_congr rfl hword, ← Finset.mul_sum, ← Finset.mul_sum, ← map_sum,
     DiagFibreMoment.sum_diagWordMomentPoly, hfib]
   simp_rw [hY]
-  rw [integral_const_mul, GlobalTheory.T.sphere_moment_power]
+  rw [integral_const_mul, _root_.GlobalTheory.CompanionTheory.Ar.PB.FibN.stereo_one]
   have hp : (-(2 * (k : ℝ) - 1)) * ℓ (momentPoly sphereMeasure (fun _ => 1) (dotPoly (id : S2 → S2) ^ (2 * k - 2))) =
       -ℓ ((∑ i, X i ^ 2) ^ (k - 1)) := by
     rw [← map_neg, ← hpush, pushMomentPoly, map_smul, smul_eq_mul]

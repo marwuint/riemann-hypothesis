@@ -56,17 +56,6 @@ def walkPar (k r : ℕ) (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ) (b : Fin (
     Fin (2 * r + k + 1) → ℝ :=
   fun a => if h : a.val < i ∧ a.val < k then u ⟨a.val, h.2⟩ - 1 / 2 else parLam k r v b a
 
-def AdjGapStatement : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : ℝ), StrictAnti lam →
-    (∀ (a : Fin n) (ha : a.val + 1 < n), ε a ≠ ε ⟨a.val + 1, ha⟩ → h ≤ lam a - lam ⟨a.val + 1, ha⟩) →
-    GapAtLeast ε lam h
-
-def SegStatement : Prop :=
-  ∀ (n : ℕ) (Q : (Fin n → ℝ) → Prop) (x : Fin n → ℝ) (s : Fin n) (d : ℝ) (N : ℕ), Q x →
-    (∀ j : ℕ, j < N → Q (x + ((j : ℝ) * d) • Pi.single s 1) →
-      Q (x + (((j : ℝ) + 1) * d) • Pi.single s 1)) →
-    Q (x + ((N : ℝ) * d) • Pi.single s 1)
-
 def EndsStatement : Prop :=
   ∀ (k r : ℕ) (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ) (t : ℕ),
     lamT k r u b t = raisePar k r u b t 1 ∧ raisePar k r u b t (2 * r + 2) = walkPar k r u v b k ∧

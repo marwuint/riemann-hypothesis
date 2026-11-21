@@ -1,7 +1,10 @@
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitianStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqUnimodularDualStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UltrametricDetNormLeStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitian
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqUnimodularDual
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UltrametricDetNormLe
+import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.PointShiftStOfPlaceShiftSt
 import Development.WeilBound.CoreStatements.SesquilinearFractions.DTrans
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -32,8 +35,8 @@ theorem transition_matrix_unique {I : Type} [Fintype I] [DecidableEq I] (e : I �
       calc ∑ n, (c : 𝓞 E) * C m n * sesq D (e n) y = (c : 𝓞 E) * ∑ n, C m n * sesq D (e n) y := by
             rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun n _ => by ring
         _ = 0 := by rw [hC m y, mul_zero]
-    rw [(GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.2.1 z y, h1, map_zero, neg_zero]
-  have hzz : z = 0 := (GlobalTheory.T.sesq_unimodular_dual E H D).1 z hz0
+    rw [(_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.2.1 z y, h1, map_zero, neg_zero]
+  have hzz : z = 0 := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.unimodularity_sesq E H D).1 z hz0
   have hu0 := (Fintype.linearIndependent_iff.1 he) u (by rw [← hz]; exact hzz)
   have : (c : 𝓞 E) * C m k = 0 := by rw [← huv, hu0 k]; simp
   simpa [hc0] using this
@@ -44,7 +47,7 @@ theorem isTransition_of_coefficients {I : Type} [Fintype I] (x e : I → D.La) (
   intro a y
   have hm0 : (m : E) ≠ 0 := by exact_mod_cast hm.ne'
   have h := congrArg (fun z => sesq D z y) (hS a)
-  rw [sesq_sum_smul_left, ← Nat.cast_smul_eq_nsmul (𝓞 E), (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.1] at h
+  rw [sesq_sum_smul_left, ← Nat.cast_smul_eq_nsmul (𝓞 E), (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.1] at h
   apply mul_left_cancel₀ hm0
   have h' : (m : E) * sesq D (x a) y = ∑ b, (S a b : E) * sesq D (e b) y := by simpa using h
   rw [h', Finset.mul_sum]
@@ -127,7 +130,7 @@ theorem padic_norm_transition_det_one : ∀ (E : Type) [Field E] [NumberField E]
   have hdet : ∀ M : Matrix I I E, (∀ a b, ‖j (M a b)‖ ≤ 1) → ‖j M.det‖ ≤ 1 := by
     intro M hM
     rw [RingHom.map_det]
-    have := GlobalTheory.T.ultrametric_det_norm_le ℂ_[ℓ] I (M.map j) 1 zero_le_one (fun a b => hM a b)
+    have := _root_.GlobalTheory.CompanionTheory.Ar.Fl.norm_det_le_pow_card_of_ultrametric ℂ_[ℓ] I (M.map j) 1 zero_le_one (fun a b => hM a b)
     simpa using this
   have h1 : ‖j T.det‖ ≤ 1 := by rw [hTT1]; exact hdet _ (hentry (Matrix.of S) m0 hm0)
   have h2 : ‖j T2.det‖ ≤ 1 := hdet _ (hentry (Matrix.of R) n0 hn0)

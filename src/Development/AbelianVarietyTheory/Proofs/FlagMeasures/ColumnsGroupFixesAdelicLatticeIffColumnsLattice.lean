@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LinkUnique
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ColumnWittFrameBasisBlockGram
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualLatticeLocalCharacterization
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryDatumLevelPrimeSplitDegreeGramFacts
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MiddleLatticeSelfDualAnisotropicPairingStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MiddleLatticeSelfDualAnisotropicPairing
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TransportedColumnLatticeHasLevelAndDualGeneratorStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicColumnLatticeEqSpanPartTransportedFrameStatement
 
@@ -141,7 +141,7 @@ theorem decomp (hw : WittX X u wt) {x₀ : (VS D).V} (hx₀ : x₀ ∈ X.Lb) (h1
     ∃ (c c' : Fin D.R.rS → D.host.E) (s : X.B.I.E) (w : Fin (D.R.N 0) → D.host.E),
       s ∈ (algebraMap (𝓞 X.B.I.E) X.B.I.E).range ∧ w ∈ Mq wt ∧
       y = ∑ a, c a • X.eX a + ∑ a, c' a • X.fY a + X.ιE s • x₀ + ∑ j, w j • qFr wt j := by
-  obtain ⟨-, -, hsplit⟩ := GlobalTheory.T.middleLattice_selfDual_anisotropic_pairing D X u
+  obtain ⟨-, -, hsplit⟩ := _root_.GlobalTheory.St.G.midLat_selfDual_pairing D X u
   have hLb_L0 : X.Lb ≤ (VS D).L0 := by
     rw [X.Lam_split]
     exact le_sup_right.trans le_sup_left

@@ -96,8 +96,6 @@ def formsBasis (R σ : Type) [CommRing R] (e : ℕ) :
   (basisRestrictSupport R {m : σ →₀ ℕ | m.degree = e}).map
     (LinearEquiv.ofEq _ _ (homogeneousSubmodule_eq_finsupp_supported σ R e).symm)
 
-theorem forms_free (e : ℕ) : Module.Free R (homogeneousSubmodule σ R e) := .of_basis (formsBasis R σ e)
-
 theorem forms_finite [Finite σ] (e : ℕ) : Module.Finite R (homogeneousSubmodule σ R e) :=
   Module.Finite.iff_fg.mpr (homogeneousSubmodule_fg _ _ _)
 

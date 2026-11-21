@@ -24,13 +24,6 @@ def ttL (i j k : Lt n) : ℂ :=
 def IsClosedL (S : Lt n → Prop) : Prop :=
   ∀ l m k : Lt n, S l → S m → l.2.1.2 = m.2.1.1 → k.1 = xor l.1 m.1 → k.2.1 = (l.2.1.1, m.2.1.2) → S k
 
-theorem isClosedL_univ : IsClosedL (fun _ : Lt n => True) := fun _ _ _ _ _ _ _ _ => trivial
-
-theorem isClosedL_isK : IsClosedL (isK (n := n)) := by
-  intro l m k hl hm _ hk _
-  simp only [isK] at hl hm ⊢
-  simp [hk, hl, hm]
-
 theorem cstL_eq (i j k : Lt n) : cstL i j k = ttL i j k - ttL j i k := by
   have e : ∀ p q : Lt n, (p.2.1.2 = q.2.1.1 ∧ k.1 = xor p.1 q.1 ∧ k.2.1.1 = p.2.1.1 ∧ k.2.1.2 = q.2.1.2) ↔
       (k.1 = xor p.1 q.1 ∧ p.2.1.2 = q.2.1.1 ∧ k.2.1 = (p.2.1.1, q.2.1.2)) := by

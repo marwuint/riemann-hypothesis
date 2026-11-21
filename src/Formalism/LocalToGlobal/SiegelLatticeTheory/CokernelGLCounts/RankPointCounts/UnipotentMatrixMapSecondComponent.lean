@@ -49,11 +49,6 @@ def π2 : E →+* F := (RingHom.snd F F).comp g.e.toRingEquiv.toRingHom
 theorem π1_apply (x : E) : π1 M g x = (g.e x).1 := rfl
 theorem π2_apply (x : E) : π2 M g x = (g.e x).2 := rfl
 
-theorem π1_cj (x : E) : π1 M g (M.L.cj x) = π2 M g x := by
-  rw [π1_apply, g.e_cj, π2_apply, Prod.fst_swap]
-theorem π2_cj (x : E) : π2 M g (M.L.cj x) = π1 M g x := by
-  rw [π2_apply, g.e_cj, π1_apply, Prod.snd_swap]
-
 variable {r : ℕ}
 
 def mmG (L P : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : Matrix (Fin (r + 1)) (Fin (r + 1)) E :=

@@ -157,46 +157,6 @@ theorem xH_le_free (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin
   unfold XH XSp at hy
   exact (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp hy).1).1).1).2
 
-private theorem exists_prime_pow_smul_mem_intPol {τ : Type} (x : MvPolynomial τ ℚ_[p]) :
-    ∃ n : ℕ, ((p : ℚ_[p]) ^ n) • x ∈ IntPol p τ := by
-  classical
-  refine MvPolynomial.induction_on' x (fun u a => ?_) (fun f g hf hg => ?_)
-  · obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt ‖a‖
-      (show (1 : ℝ) < p by exact_mod_cast (Fact.out : p.Prime).one_lt)
-    refine ⟨n, ?_⟩
-    have hp0 : (0 : ℝ) < (p : ℝ) := by exact_mod_cast (Fact.out : p.Prime).pos
-    have hpos : (0 : ℝ) < (p : ℝ) ^ n := pow_pos hp0 n
-    have hle : ‖(p : ℚ_[p]) ^ n * a‖ ≤ 1 := by
-      rw [norm_mul, norm_pow, Padic.norm_p, inv_pow]
-      calc ((p : ℝ) ^ n)⁻¹ * ‖a‖ ≤ ((p : ℝ) ^ n)⁻¹ * (p : ℝ) ^ n := by gcongr
-        _ = 1 := inv_mul_cancel₀ hpos.ne'
-    unfold IntPol
-    rw [LinearMap.mem_range]
-    obtain ⟨c, hc⟩ : ∃ c : ℤ_[p], (c : ℚ_[p]) = (p : ℚ_[p]) ^ n * a := ⟨⟨_, hle⟩, rfl⟩
-    refine ⟨monomial u c, ?_⟩
-    rw [smul_monomial, smul_eq_mul, ← hc]
-    show MvPolynomial.map (algebraMap ℤ_[p] ℚ_[p]) _ = _
-    rw [map_monomial]
-    rfl
-  · obtain ⟨a, ha⟩ := hf
-    obtain ⟨b, hb⟩ := hg
-    refine ⟨a + b, ?_⟩
-    have key : ((p : ℚ_[p]) ^ (a + b)) • (f + g) =
-        ((p : ℤ_[p]) ^ b) • (((p : ℚ_[p]) ^ a) • f) + ((p : ℤ_[p]) ^ a) • (((p : ℚ_[p]) ^ b) • g) := by
-      rw [← algebraMap_smul ℚ_[p] ((p : ℤ_[p]) ^ b) (((p : ℚ_[p]) ^ a) • f),
-        ← algebraMap_smul ℚ_[p] ((p : ℤ_[p]) ^ a) (((p : ℚ_[p]) ^ b) • g)]
-      simp only [map_pow, map_natCast, smul_smul, smul_add, ← pow_add, add_comm b a]
-    rw [key]
-    exact Submodule.add_mem _ (Submodule.smul_mem _ _ ha) (Submodule.smul_mem _ _ hb)
-
-theorem resOntoK_of_resSat (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (ρ : Fin r)
-    (h : ResSat p LL J M ρ) : ResOntoK p LL J M ρ := by
-  intro x hx
-  obtain ⟨n, hn⟩ := exists_prime_pow_smul_mem_intPol (p := p) x
-  obtain ⟨h', hY, -, hinit⟩ := h _ (Submodule.smul_mem _ _ hx) hn
-  refine ⟨((p : ℚ_[p]) ^ n)⁻¹ • h', Submodule.smul_mem _ _ hY, ?_⟩
-  rw [initPart_smul, hinit, smul_smul, inv_mul_cancel₀ (p_pow_ne_zero n), one_smul]
-
 theorem grSpan_eq (LLw : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (ρ : Fin r)
     (w : Fin r → ℤ) (e e1 : ℕ) (hr : 2 ≤ r) (hρ : (ρ : ℕ) = r - 1) (hv : LLw.vec (Fin.last K) = true)
     (he : e ≤ LLw.deg (Fin.last K))
@@ -235,15 +195,6 @@ theorem grSpan_eq (LLw : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin
     rwa [initPart_smul, mul_smul_comm, smul_smul, inv_mul_cancel₀ (p_pow_ne_zero n), one_smul] at h3
 
 end Last
-
-theorem saturation_at_holds : SatAtOf := by
-  intro p _ K r _ LLw q J M ρ w e e1 hr hρ hv he hP hE hS x hx hxI
-  obtain ⟨y, hy, rfl⟩ := (grSpan_eq LLw J M ρ w e e1 hr hρ hv he hP hE (resOntoK_of_resSat _ J _ ρ hS) x).mp hx
-  rw [pow_mul_int_iff] at hxI
-  obtain ⟨h, hh, hres⟩ := restriction_min_max_int_holds p K r (setLast LLw (LLw.deg (Fin.last K) - e)) J (shiftLastLetterThresholds K J M e) ρ
-    (shiftWt w ρ e) e1 hr hρ hv hP hE hS y hy hxI
-  refine (graded_eq_holds p K r LLw J M ρ w e hv he _).mpr ⟨h, hh, ?_⟩
-  rw [hres, mul_smul_comm]
 
 theorem projAtOf_of (hX : ProjX) : ProjAtOf := by
   intro p _ K r _ LLw q J M ρ w e e1 h1 h2 h3 h4 h5 h6 h7
@@ -313,24 +264,5 @@ theorem projAtOf_of (hX : ProjX) : ProjAtOf := by
       exact Or.inl (coeff_pow_mul_ne _ _ _ hyf _ hme)
     · right
       rw [coeff_monomial, if_neg (Ne.symm hn)]
-
-theorem gram_bound_of_restriction_of_proj (hX : ProjX) : GramBoundOfRestriction := by
-  intro p _ K r _ LLw q J M ρ e1 κ hr hρ hv hPE hS hκ w e k g hli hspan
-  by_cases he : e ≤ LLw.deg (Fin.last K)
-  · obtain ⟨hP, hE⟩ := hPE (LLw.deg (Fin.last K) - e) (Nat.sub_le _ _)
-    refine graded_piece_bound_holds p K r LLw J M ρ w e ((K + 3) * e1) e1 κ
-      (projAtOf_of hX p K r LLw J M ρ w e e1 hr hρ hv he hP hE (resOntoK_of_resSat _ J _ ρ (hS e he)))
-      (saturation_at_holds p K r LLw J M ρ w e e1 hr hρ hv he hP hE (hS e he)) ?_ k g hli hspan
-    have : (K + 3) * e1 + 2 * e1 = (K + 5) * e1 := by ring
-    rw [this]; exact hκ
-  · rw [graded_bot_holds p K r LLw J M ρ w e (not_le.mp he)] at hspan
-    have hk : k = 0 := by
-      by_contra hk
-      have h0 : g ⟨0, Nat.pos_of_ne_zero hk⟩ ∈ Submodule.span ℤ_[p] (Set.range g) :=
-        Submodule.subset_span ⟨_, rfl⟩
-      rw [hspan, Submodule.mem_bot] at h0
-      exact hli.ne_zero _ h0
-    subst hk
-    simp
 
 end Formalism.InvariantFactorPaths.L4

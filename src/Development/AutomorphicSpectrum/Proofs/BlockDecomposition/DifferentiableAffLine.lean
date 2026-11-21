@@ -128,11 +128,6 @@ theorem Fac_strip {f : ℂ → X} (hf : StripEntire f) (α β γ : ℝ) (Ω : Se
       · rw [aff_re]; exact (hxy _ hl).1
       · rw [aff_re]; exact (hxy _ hl).2
 
-lemma Fac_mono {A : ℂ × ℂ → X} {Ω Ω' : Set (ℝ × ℝ)} (hA : Fac A Ω) (h : Ω' ⊆ Ω) : Fac A Ω' := by
-  have ht : tube Ω' ⊆ tube Ω := fun l hl => h hl
-  exact ⟨fun p v => (hA.hol p v).mono fun τ hτ => ht hτ, hA.cont.mono ht,
-    fun C hC => hA.bdd C (hC.trans h)⟩
-
 theorem Fac_smul {f : ℂ × ℂ → ℂ} {A : ℂ × ℂ → X} {Ω : Set (ℝ × ℝ)} (hf : Fac f Ω) (hA : Fac A Ω) :
     Fac (fun l => f l • A l) Ω := by
   refine ⟨fun p v => (hf.hol p v).smul (hA.hol p v), hf.cont.smul hA.cont, fun C hC hCc => ?_⟩

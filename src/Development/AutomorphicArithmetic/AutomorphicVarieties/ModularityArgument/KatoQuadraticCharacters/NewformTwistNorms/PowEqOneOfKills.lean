@@ -1,11 +1,54 @@
 import Mathlib
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.Imports
+import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.KatoUse
+import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.GalUnitary
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.RepNewform
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.NewformTwistNorms.NewformOfAdmissibleTwist
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.NewformTwistNorms.NewformFlagLocalOfIrreducible
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SemisimpleLevels.FixedAll
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SemisimpleLevels.SsCalcP
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Hypotheses2
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.LevelQ
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SatOfFixed
+import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.ResidueFlagPoints.CycIne
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.NewformTwistNorms.UnramifiedAlgebraicWeights
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.NewformTwistNorms.SatakeRootsLocalCorrespondence
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SemisimpleLevels.FlagPol
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SemisimpleLevels.UntwistS
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SemisimpleLevels.RecMove
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.BcPolar
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LevelIso
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.SelfDualQ
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.IsoOfFrob
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.LocCompR
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.LocCompC
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.SatLoc
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.SatFrob
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.ExQuad
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.ExtReal
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AdTransfer
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.CsdTwist
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.AttTwist
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FontaineParameterTwistPotentiallySemistableStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DeRhamCharacterTwistIffLocalEmbedding
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeilDeligneParameterTensorOneDimInjective
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumSegmentsLanglands
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.ConclusionFinite
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.AlgebraicCharacterWD
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.ExBridge
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.ExPlaceIso
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.PstRes
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.WdRelRes
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.EmbPadic
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.RecTransport
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalLanglandsOfHyp
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeLAdicCharacterAndPrincipalIdealSt
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FontaineParameterInvariantUnderConjugation
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.WDAbove
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.NewformAut
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalAdjoinRange
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.NewformTwistNorms.WeilDeligneFrobeniusEigenvalueOfFullFlag
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.NewformTwistNorms.ExistsCuspidalSatakeAtPrimeToLevelOfNewform
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.NewformTwistNorms.NewformUnitRootNotRootOfUnityOddWeight
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.AdmissibleTwistByDet
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCharInertiaSurjective
@@ -307,98 +350,6 @@ theorem eps_mem [IsAlgClosure ℚ Ω] {W : R2 Ω l} {A A' : ValuationSubring Ω}
 end GlobalTheory.Ord2.SrcForm
 
 namespace GlobalTheory.Ord2
-
-open TwDet SrcForm
-
-theorem src_and_ne_cyc : Af.HypothesesH → Published.RepNewform → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (W : R2 Ω l), l ≠ 2 → 1 ≤ e → admitted ι e W → (∃ g : Newform (2 * e + 1), FinalTheorems ι e W g) ∧ ∀ (A : ValuationSubring Ω) (κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ), OverL l A → IsFlagOn W (Dec (F := ℚ) A) κ → ∃ s : ↥(Dec (F := ℚ) A), κ 0 s ≠ cycBar ℚ Ω l s := by
-  intro P R l hl Ω _ _ _ ι e W hl2 he h
-  have hl0 : 0 < l := hl.out.pos
-  obtain ⟨N, hN, hNk⟩ := UpperTheory.V.CF.kwAbs Ω (dt W).ker (ker_open h.cont h.det2)
-    (Abelianization.commutator_subset_ker (dt W))
-  have hθN : KillsMu N (dt W) := fun s hs => hNk s hs
-  obtain ⟨A, χ, κ, hA, hχ, hfl, hine, hk⟩ := h.flag
-  set φ : G ℚ Ω →* (Qbar l)ˣ := (dt W)⁻¹ * χ⁻¹ with hφdef
-  have hNl : 0 < N * l := Nat.mul_pos hN hl0
-  have hφ : KillsMu (N * l) φ :=
-    killsMu_mul (killsMu_dvd (kills_inv hθN) (dvd_mul_right N l)) (killsMu_dvd (kills_inv hχ) (dvd_mul_left l N))
-  obtain ⟨g, hg⟩ := GlobalTheory.T.newform_of_admissible_twist P R l Ω ι e W hl2 he h (N * l) φ hNl hφ
-  have hVc : Continuous (tw W φ) := tw_cont h.cont (cont_of_kills hNl hφ)
-  have hVi : IsIrr (tw W φ) := irr_tw W φ _ h.irr
-  have hVa : ∃ M : ℕ, 1 ≤ M ∧ LevelAway l M (tw W φ) := by
-    obtain ⟨M, hM, hlev⟩ := h.away
-    refine ⟨M * (N * l), Nat.mul_pos hM hNl, fun w hw => ?_⟩
-    obtain ⟨B, hB, ψ, hψ, hd⟩ := hlev w hw
-    exact ⟨B, hB, fun i => ψ i * φ, fun i => killsMu_mul (killsMu_dvd (hψ i) (dvd_mul_right _ _))
-      (killsMu_dvd hφ (dvd_mul_left _ _)), diag_twist φ hd⟩
-  have hVd : ∃ M : ℕ, 1 ≤ M ∧ KillsMu M (dt (tw W φ)) := by
-    refine ⟨N * l, hNl, ?_⟩
-    rw [dt_tw, pow_two]
-    exact killsMu_mul (killsMu_mul hφ hφ) (killsMu_dvd hθN (dvd_mul_right N l))
-  have hVf := flag_twist φ hfl
-  have hVk : ∀ s : ↥(Dec (F := ℚ) A), (s : G ℚ Ω) ∈ Ine (F := ℚ) A →
-      (κ 0 * φ.comp (Dec (F := ℚ) A).subtype) s = cycBar ℚ Ω l s ^ (e : ℤ) ∧
-      (κ 1 * φ.comp (Dec (F := ℚ) A).subtype) s = cycBar ℚ Ω l s ^ (-(e : ℤ)) := by
-    intro s hs
-    have h1 : dt W (s : G ℚ Ω) = 1 := hine hs
-    obtain ⟨h0, h1'⟩ := hk s hs
-    simp only [hφdef, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, Subgroup.coe_subtype, h1, inv_one,
-      one_mul, h0, h1', mul_inv_cancel_right, and_self]
-  obtain ⟨π, hreg, hatt, hsat⟩ := exists_rep P.toClassicalTheorems (by omega) g ι (tw W φ) (-(e : ℤ)) hg
-  obtain ⟨v, hv, hlv⟩ := id hA
-  have hnv : normV v = l := normV_of_mem hl.out hlv
-  obtain ⟨Bs, hBs⟩ := GlobalTheory.T.newform_flag_local_of_irreducible P.toClassicalTheorems l Ω ι e (tw W φ) A _ g hl2 he hVc hVi hVa hVd hA hVf hVk hg π hreg hatt v hlv
-  have hlev : ¬ l ∣ g.M := hnv ▸ GlobalTheory.NewLevel.newLevel P.toClassicalTheorems P.ssR _ (by omega) g _ π hsat v Bs hBs
-  obtain ⟨σ, hσ⟩ := exists_isFrob (Ω := Ω) hv
-  rw [hnv] at hσ
-  obtain ⟨α, hroot, hα⟩ := GlobalTheory.T.newform_flag_local_of_level P.toClassicalTheorems l Ω ι e (tw W φ) A _ g hl2 he hVc hVi hVa hVd hA hVf hVk hg hlev
-    ⟨σ, hσ.1⟩ hσ
-  set u : (Qbar l)ˣ := (κ 0 * φ.comp (Dec (F := ℚ) A).subtype) ⟨σ, hσ.1⟩ * cycBar ℚ Ω l σ ^ (-(e : ℤ)) with hu
-  have hun : ‖(u : Qbar l)‖ = 1 := by
-    rw [hu, Units.val_mul, norm_mul, norm_flag hVc hVf 0, Units.val_zpow_eq_zpow_val, norm_zpow, norm_cyc, one_zpow, one_mul]
-  have hα' : α = ι (u : Qbar l) ∨ α = (ι (u : Qbar l))⁻¹ := hα.imp id fun h => by rw [← h, inv_inv]
-  have hαn : ‖ι.symm α‖ = 1 := by
-    rcases hα' with h1 | h1
-    · rw [h1, RingEquiv.symm_apply_apply, hun]
-    · rw [h1, map_inv₀, RingEquiv.symm_apply_apply, norm_inv, hun, inv_one]
-  obtain ⟨hal, hpow⟩ := GlobalTheory.T.newform_unit_root_not_root_of_unity_odd_weight l ι e g α hl2 he hlev hroot hαn
-  refine ⟨⟨g, hlev, hal, χ⁻¹, kills_inv hχ, ?_⟩, fun A' κ' hA' hfl' => ?_⟩
-  · rw [tw_tw] at hg
-    rw [mul_assoc]
-    exact hg
-  · by_contra hn
-    push Not at hn
-    obtain ⟨m, hm, hχm⟩ := pow_eq_one_of_kills hl0 hχ
-    obtain ⟨t, ht, htk⟩ := cyc_inf hA
-    obtain ⟨h0, h1⟩ := hk ⟨t, Ine_le_Dec A ht⟩ ht
-    rcases eps_mem hA hA' hfl hfl' hn with hc | hc
-    · rw [← hc] at h0
-      simp only at h0
-      have he1 : e = 1 := by
-        by_contra hne
-        obtain ⟨d, rfl⟩ : ∃ d, e = d + 1 := ⟨e - 1, by omega⟩
-        refine htk (d * m) (Nat.mul_ne_zero (by omega) (by omega)) ?_
-        have h2 : cycBar ℚ Ω l t ^ d * χ t = 1 := by
-          rw [zpow_natCast, pow_succ', mul_assoc] at h0
-          exact (left_eq_mul.1 h0)
-        rw [pow_mul, eq_inv_of_mul_eq_one_left h2, inv_pow, hχm, inv_one]
-      obtain ⟨m', hm', hφm⟩ := pow_eq_one_of_kills hNl hφ
-      have hu' : u = φ σ := by
-        rw [hu, MonoidHom.mul_apply, ← hc, he1]
-        simp [mul_inv_cancel_comm]
-      have hu1 : ι (u : Qbar l) ^ m' = 1 := by
-        rw [← map_pow, ← Units.val_pow_eq_pow_val, hu', hφm, Units.val_one, map_one]
-      refine hpow m' hm' ?_
-      rcases hα' with h1 | h1
-      · rw [h1, hu1]
-      · rw [h1, inv_pow, hu1, inv_one]
-    · rw [← hc] at h1
-      simp only at h1
-      refine htk ((e + 1) * m) (Nat.mul_ne_zero (by omega) (by omega)) ?_
-      have h2 : cycBar ℚ Ω l t ^ (e + 1) = χ t := by
-        rw [pow_succ]
-        nth_rewrite 2 [h1]
-        rw [zpow_neg, zpow_natCast, mul_inv_cancel_left]
-      rw [pow_mul, h2, hχm]
 
 end GlobalTheory.Ord2
 

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GCauchyStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilFormulaDegreeSuccStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilFormulaDegreeSucc
 open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
 open scoped ComplexConjugate ComplexOrder Real Classical
@@ -16,6 +16,6 @@ theorem siegel_weil_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     rw [Base.swd_zero, Base.swDiff_deg_zero]
   | succ N ih =>
     intro h
-    exact GlobalTheory.T.siegelWeil_formula_degree_succ E Ψ hΨ n N hn h (ih (by omega))
+    exact _root_.GlobalTheory.SW.swAt_succ E Ψ hΨ n N hn h (ih (by omega))
 
 end GlobalTheory.SW

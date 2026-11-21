@@ -86,20 +86,6 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [Module O V] [IsScalarTower O LL V]
     {ρ : Representation LL G V} [TopologicalSpace G]
 
-def Z1urQ (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : StableSub L I) (J : Subgroup G) :
-    Submodule O (G → ↥L.T ⧸ I) where
-  carrier := {c | c ∈ quotientCocycles L I hI ∧ ∃ x, ∀ g ∈ J, c g = actQ L I hI g x - x}
-  zero_mem' := ⟨(quotientCocycles L I hI).zero_mem, 0, fun g _ => by simp⟩
-  add_mem' := by
-    rintro a b ⟨ha, x, hx⟩ ⟨hb, y, hy⟩
-    refine ⟨(quotientCocycles L I hI).add_mem ha hb, x + y, fun g hg => ?_⟩
-    simp only [Pi.add_apply, hx g hg, hy g hg, map_add]
-    abel
-  smul_mem' := by
-    rintro c a ⟨ha, x, hx⟩
-    refine ⟨(quotientCocycles L I hI).smul_mem c ha, c • x, fun g hg => ?_⟩
-    simp only [Pi.smul_apply, hx g hg, map_smul, smul_sub]
-
 def actD (L : Lattice (O := O) ρ) (g : G) : (V ⧸ L.T) →ₗ[O] (V ⧸ L.T) :=
   L.T.mapQ L.T ((ρ g).restrictScalars O) (fun x hx => L.stable g x hx)
 
@@ -128,8 +114,6 @@ def HfD (L : Lattice (O := O) ρ) : Submodule O (G → V ⧸ L.T) :=
 
 def divisibleFiniteCohomology (L : Lattice (O := O) ρ) : Submodule O (DivisibleCohomology L) :=
   ((HfD PD L).comap (divisibleCocycles L).subtype).map (Submodule.mkQ _)
-
-def divisibleFiniteCohomologyLength (L : Lattice (O := O) ρ) : ℕ∞ := Module.length O ↥(divisibleFiniteCohomology PD L)
 
 end TorMore
 

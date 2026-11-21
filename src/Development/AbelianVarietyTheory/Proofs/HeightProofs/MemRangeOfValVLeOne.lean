@@ -10,11 +10,15 @@ import Formalism.LocalToGlobal.ProjectiveLattices.RegQFree
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MaxBoundPf
 import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHoldStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsGlobalModelGoodLevelAllPrimesStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHold
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+import Formalism.LocalToGlobal.ProjectiveLattices.GenFrPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.NormOrderStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsGlobalModelGoodLevelAllPrimes
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFiniteIntegralChartCoverFlagSpace
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NaturalRuleValueBaseChangeOfIsReduced
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidProperties
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointBaseChangeUniqueReflIff
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeCommBaseChange
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LowerTriIsUnitDet
@@ -97,7 +101,7 @@ theorem evI_eq_unit_mul (hL : EvLaws Xo c) (hU : IntDiagUnit Xo c) {L : Type} [F
   letI := io.toAlgebra
   rintro ψ ⟨z, t, hz, ht⟩ hint a n f hf
   obtain ⟨w', hw'⟩ := hL.bc _ _ ψ w
-  obtain ⟨-, hmul, hinv, -⟩ := GlobalTheory.T.frameBorel_groupoid_properties E H Dw l Xo c T.Fr
+  obtain ⟨-, hmul, hinv, -⟩ := _root_.GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c T.Fr
   have hb := hmul _ _ _ _ _ (hinv _ _ _ (frBor_map ψ h₀ hz hw')) ht
   refine ⟨_, valV_wchar_eq_one (ex Dw a n) _ (hU T io ⟨w', hL.test _ _, hint w' hw'⟩ y _ hb), ?_⟩
   rw [← GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n f hf _ _ ψ _ _ hw']
@@ -124,8 +128,8 @@ theorem exists_integral_change (hL : EvLaws Xo c) (hM : ∀ la, ModelAt Xo c la)
 
 theorem proportional_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → l.A = 1 → ∀ (h : GenFrEx Xo c) (Z : Comp Xo c) (T₁ T₂ : CDVR) (ψ₁ : Om Z →+* T₁.Fr) (ψ₂ : Om Z →+* T₂.Fr) (y₁ : IntFr Xo c T₁ (ψ₁.comp (algebraMap c.F (Om Z)))) (y₂ : IntFr Xo c T₂ (ψ₂.comp (algebraMap c.F (Om Z)))) (m₁ m₂ : ℕ), 0 < m₁ → 0 < m₂ → (letI := (ψ₁.comp (algebraMap c.F (Om Z))).toAlgebra; ∃ (z : FrPt Xo c T₁.Fr) (t : Ix Dw → (T₁.Fr)ˣ), FrMap ({ ψ₁ with commutes' := fun _ => rfl } : Om Z →ₐ[c.F] T₁.Fr) (genFr h Z) z ∧ FrBor t z y₁.1) → (letI := (ψ₂.comp (algebraMap c.F (Om Z))).toAlgebra; ∃ (z : FrPt Xo c T₂.Fr) (t : Ix Dw → (T₂.Fr)ˣ), FrMap ({ ψ₂ with commutes' := fun _ => rfl } : Om Z →ₐ[c.F] T₂.Fr) (genFr h Z) z ∧ FrBor t z y₂.1) → (∃ a : Om Z, vV T₁.V (ψ₁ a) ≠ 0) → (∀ a : Om Z, (m₂ : ℤ) * vV T₁.V (ψ₁ a) = (m₁ : ℤ) * vV T₂.V (ψ₂ a)) → ∀ a n, ∀ f ∈ sec Xo c a n, (evI y₁ f = 0 ↔ evC h Z f = 0) ∧ (m₂ : ℤ) * vV T₁.V (evI y₁ f) = (m₁ : ℤ) * vV T₂.V (evI y₂ f) := by
   intro E _ _ _ H Dw l Xo c h1 h2 h3 h Z T₁ T₂ ψ₁ ψ₂ y₁ y₂ m₁ m₂ hm₁ hm₂ hy₁ hy₂ _ hv a n f hf
-  obtain ⟨hL, hU, -⟩ := GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c
-  obtain ⟨w, t₀, h₀, hint⟩ := exists_integral_change hL (GlobalTheory.T.exists_global_model_goodLevel_all_primes E H Dw l Xo c h1 h2 h3).1
+  obtain ⟨hL, hU, -⟩ := _root_.GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c
+  obtain ⟨w, t₀, h₀, hint⟩ := exists_integral_change hL (_root_.GlobalTheory.Reg.modelAt_and_nonempty_global_model E H Dw l Xo c h1 h2 h3).1
     ((valV T₁.V).comap ψ₁).valuationSubring (genFr h Z)
   obtain ⟨u₁, hu₁, e₁⟩ := evI_eq_unit_mul hL hU h₀ T₁ _ y₁ _ hy₁
     (hint T₁ _ _ fun x hx => mem_range_of_valV_le_one hx) a n f hf

@@ -86,18 +86,4 @@ theorem differentExponent_eq_sum_card_lowerRamificationGroup {N : ℕ}
   rw [← hswap]
   exact_mod_cast h
 
-theorem differentExponent_eq_finsum_card_lowerRamificationGroup :
-    differentExponent K L = ∑ᶠ i : ℕ, (Nat.card (lowerRamificationGroup K L i) - 1) := by
-  obtain ⟨N, hN⟩ := exists_lowerRamificationGroup_eq_bot K L
-  rw [differentExponent_eq_sum_card_lowerRamificationGroup K L (hN N le_rfl),
-    finsum_eq_sum_of_support_subset _ (s := Finset.range N)]
-  intro i hi
-  rw [Function.mem_support] at hi
-  rw [Finset.coe_range, Set.mem_Iio]
-  by_contra h'
-  have h := not_lt.mp h'
-  apply hi
-  rw [hN i (by exact_mod_cast h)]
-  simp
-
 end GroundTheory.LocalField

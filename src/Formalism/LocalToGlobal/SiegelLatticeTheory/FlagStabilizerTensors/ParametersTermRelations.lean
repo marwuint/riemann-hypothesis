@@ -316,12 +316,6 @@ structure SIso (s s' : Formalism.MainNotions.S.Draft.SData R F E sig Word Tau hc
 
 end Iso
 
-def SConc (D : D7) : Prop :=
-  ∃ (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (Y : Formalism.L2.SG.Full.Full X) (hF : FinX Y),
-    Formalism.MainNotions.S.AutTie D X.B X.pl ∧ X.LevelSubgroupNormalized ∧ (∀ u, ColsLink X u Y.hK) ∧
-    X.MeasTie hb ∧ Formalism.L2.SG.MassDataConc.MeasCompat X ∧ Formalism.L2.SG.WuDecay.WuDecay X ∧
-    Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I) ∧ Nonempty (SIso D.s (sOf hF))
-
 section Ties
 
 open Formalism.L2.SG.Full
@@ -334,12 +328,6 @@ theorem finrank_cols (hI : SIso D.s (sOf hF)) (u : D.what₂.Word) :
 
 def DimTie (u : D.what₂.Word) : Prop :=
   (Module.finrank ℂ (X.Vpi u) : ℝ) = Formalism.MainNotions.S.dimPi (hc := D.hcW) u
-
-def KTie (u u' : D.what₂.Word) : Prop :=
-  DimTie (X := X) u → DimTie (X := X) u' →
-  Formalism.L2.SG.TermOp.KExpansion (X.Fu u) (X.Fu u') (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') Y.hK (Y.Dt u) (Y.Dt u') →
-  Formalism.L2.SG.TermOp.AbsConvT (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') →
-    Formalism.MainNotions.S.KExpansion (sOf hF) u u' ∧ Formalism.MainNotions.S.KAbsConv (sOf hF) u u'
 
 def NormTie (u u' : D.what₂.Word) : Prop :=
   DimTie (X := X) u → DimTie (X := X) u' →

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLv
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSquareIntegrableIffMemL2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicFixatorEqUnipotentRadicalMulCommonFixatorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicFixatorEqUnipotentRadicalMulCommonFixator
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsotropicFrameDecompositionSubgroupPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCovolumeCommonAdelicFixatorOfColumnsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCovolumeCommonAdelicFixatorOfColumns
 
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.EisLine GlobalTheory.SphEis
@@ -42,9 +42,9 @@ theorem semiLat_fixG : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
       domN := by rw [key hN]; exact hDN
       domM := by rw [key inf_le_left]; exact hDM
       finN := by rw [h1]; exact ENNReal.one_ne_top
-      finM := GlobalTheory.T.finiteCovolume_common_adelicFixatorOfColumns F E σ n J j m C D Z J₀ H _ _ inferInstance hDM }⟩
+      finM := _root_.GlobalTheory.SphEis.finCovol_fixG F E σ n J j m C D Z J₀ H _ _ inferInstance hDM }⟩
   rintro γ ⟨hγ, hf⟩
-  obtain ⟨u, hu, x, hx, e, hr⟩ := GlobalTheory.T.adelicFixator_eq_unipotentRadical_mul_commonFixator F E σ n J j m C D Z J₀ H γ hf
+  obtain ⟨u, hu, x, hx, e, hr⟩ := _root_.GlobalTheory.SphEis.fixG_eq_unipRad_mul F E σ n J j m C D Z J₀ H γ hf
   refine ⟨u, hu, x, hx, ⟨?_, hN hu⟩, ⟨hr hγ, hx.1⟩, e⟩
   have : u = γ * x⁻¹ := by rw [e, mul_inv_cancel_right]
   rw [this]

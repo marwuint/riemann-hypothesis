@@ -84,17 +84,9 @@ theorem secValIn_eq (s : LB.Sec (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y} {z : K 
   rw [secValIn, secValIn, e₃]
   exact (congrArg (· / _) e₁).trans (mul_div_mul_left _ _ n)
 
-theorem genValIn_eq {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ}
-    (hz : IsLift u φ y z) {j j' : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) (hj' : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j') :
-    genValIn u t y z j = genValIn u t y z j' := secValIn_eq (genSec t ht) hz hj hj'
-
 theorem secVal_eq (hL : L.IsLB) (s : LB.Sec (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ}
     (hz : IsLift u φ y z) {j : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) : secVal u hL s y z = secValIn u s y z j :=
   secValIn_eq s hz (le_wchart_chartAt hL φ y) hj
-
-theorem genVal_eq (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ}
-    (hz : IsLift u φ y z) {j : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) : genVal u hL t y z = genValIn u t y z j :=
-  genValIn_eq ht hz (le_wchart_chartAt hL φ y) hj
 
 theorem valAt'_sec (hL : L.IsLB) (s : LB.Sec (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ}
     (hz : IsLift u φ y z) {j : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) :

@@ -101,11 +101,6 @@ structure IsRel (𝔮 : Ideal R) : Prop where
   hom : 𝔮.IsHomogeneous 𝒜
   rel : ¬ Irr 𝒜 ≤ 𝔮
 
-def DimLT : ℕ → Ideal R → Prop
-  | 0, J => ∀ 𝔮, IsRel 𝒜 𝔮 → ¬ J ≤ 𝔮
-  | p + 1, J => ∀ 𝔮, IsRel 𝒜 𝔮 → J ≤ 𝔮 → ∀ d σ, σ ∈ 𝒜 d → σ ∉ 𝔮 →
-      DimLT p (𝔮 ⊔ Ideal.span {σ})
-
 end Defs
 
 section Rules
@@ -166,38 +161,9 @@ def RuleDev : Prop :=
       ∀ i < t, (𝔮 i).IsPrime ∧ (𝔮 i).IsHomogeneous X.𝒜 ∧ F.Ann ≤ 𝔮 i ∧
         Nonempty (SES (F.sub (N i)) (F.sub (N (i + 1))) (((GMod.self X.𝒜).quo (𝔮 i)).shift (d i)))
 
-def EulerVanishingBelowDimension : Prop :=
-  ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod), Valid X.𝒜 ts → F.IsGr X.𝒜 →
-    admitted X.𝒜 ts F.Ann → DimLT X.𝒜 ts.length F.Ann → ∀ᶠ m in atTop, chi ts F m = 0
-
-def EulerPositivityInDimension : Prop :=
-  ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod), Valid X.𝒜 ts → F.IsGr X.𝒜 →
-    admitted X.𝒜 ts F.Ann → DimLT X.𝒜 (ts.length + 1) F.Ann → ∀ᶠ m in atTop, 0 ≤ chi ts F m
-
-def RuleTw : Prop :=
-  ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod) (d : Deg k), Valid X.𝒜 ts →
-    F.IsGr X.𝒜 → admitted X.𝒜 ts F.Ann → DimLT X.𝒜 (ts.length + 1) F.Ann →
-    ∀ᶠ m in atTop, chi ts (F.shift d) m = chi ts F m
-
-def EulerAdditivityInSection : Prop :=
-  ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod) (d d' : Deg k) (s s' : X.R),
-    Valid X.𝒜 ((d, s) :: (d', s') :: ts) → F.IsGr X.𝒜 →
-    admitted X.𝒜 ((d + d', s * s') :: ts) F.Ann → DimLT X.𝒜 (ts.length + 2) F.Ann →
-    ∀ᶠ m in atTop, chi ((d + d', s * s') :: ts) F m = chi ((d, s) :: ts) F m + chi ((d', s') :: ts) F m
-
 def RuleNzd : Prop :=
   ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod) (d : Deg k) (s : X.R),
     (∀ x : F.M, s • x = 0 → x = 0) → ∀ m, chi ((d, s) :: ts) F m = chi ts (F.quot s) m
-
-def EulerZeroSectionVanishing : Prop :=
-  ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod) (s : X.R),
-    (∀ x : F.M, s • x = 0) → ∀ m, chi ((0, s) :: ts) F m = 0
-
-def RuleAll0 : Prop :=
-  ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod),
-    (∀ p ∈ ts, ∀ x : F.M, p.2 • x = 0) → ∀ m,
-      chi ts F m = ∑ I ∈ (Finset.univ : Finset (Fin ts.length)).powerset,
-        (-1 : ℤ) ^ I.card * ((Module.length X.B (F.gr (m - ∑ i ∈ I, (ts.get i).1))).toNat : ℤ)
 
 end Rules
 

@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BiadditiveClassEqPoincarePullbackUniqueHomStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMumfordClassEqZeroAmpleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteIffFiniteKerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveOfIsFiniteOfDimEqAbelianVarietyHomStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyMumfordClassMulLeftStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteIffFiniteKer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveOfIsFiniteOfDimEqAbelianVarietyHom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyMumfordClassMulLeft
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -44,13 +44,13 @@ theorem exists_phi : ∀ (K : Type) [Field K] (A A' : AbVar K) (P : LB (A.X ⊗ 
       CechPic.pull (lift (a * a') t).left β = CechPic.pull (lift a t).left β + CechPic.pull (lift a' t).left β := by
     intro Y a a' t
     rw [hpull, hpull, hpull]
-    exact GlobalTheory.T.abelianVarietyMumfordClass_mul_left K A c Y a a' t
+    exact _root_.GlobalTheory.AV.AbVar.lam_mul_left_of_cube K A c Y a a' t
   have hnorm : CechPic.pull (lift (𝟙 A.X) (1 : A.X ⟶ A.X)).left β = 0 := by
     rw [hpull, AbVar.lam, _root_.mul_one, pull_one_eq_zero, sub_self, sub_zero]
   obtain ⟨ψ, hψ, -⟩ := GlobalTheory.T.biadditiveClass_eq_poincarePullback_unique_hom K A A' A P hP β hadd hnorm
   refine ⟨ψ, hψ, fun hc => ?_⟩
   have hfin : IsFinite ψ.hom.left := by
-    refine (GlobalTheory.T.isFinite_iff_finite_ker' K A A' ψ).2 ?_
+    refine (_root_.GlobalTheory.AV.AbVar.isFinite_iff_finite_ker K A A' ψ).2 ?_
     have hF := GlobalTheory.T.finite_mumfordClass_eq_zero_ample K A c hc
     refine Finite.of_injective (β := {x : A.Pt // AbVar.lam c (fst A.X (ptOver K (AlgebraicClosure K)))
       (snd A.X _ ≫ x) = 0}) (fun x => ⟨x.1, ?_⟩) ?_
@@ -62,6 +62,6 @@ theorem exists_phi : ∀ (K : Type) [Field K] (A A' : AbVar K) (P : LB (A.X ⊗ 
       exact AbDual.evc_one_right hP.isLB hP.zero _
     · intro x y h
       exact Subtype.ext (Subtype.mk.inj h)
-  exact ⟨hfin, GlobalTheory.T.surjective_of_isFinite_of_dim_eq_abelianVarietyHom K A A' ψ hdim.symm hfin⟩
+  exact ⟨hfin, _root_.GlobalTheory.AV.AbVar.surjective_of_isFinite_of_dim_eq K A A' ψ hdim.symm hfin⟩
 
 end GlobalTheory.AV.AbVar

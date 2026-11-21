@@ -237,6 +237,4 @@ theorem exists_triangular (k ι : Type) [Field k] [IsAlgClosed k] : ∀ (n : ℕ
 end GlobalTheory.CommTriang
 
 namespace GlobalTheory.CommTriang
-open Matrix
-
 end GlobalTheory.CommTriang

@@ -143,30 +143,6 @@ theorem isUnramifiedOutside_restrictScalars_iff {L : IntermediateField F Ω} [Fi
 
 variable [IsGalois F Ω]
 
-theorem restrictScalars_maxUnramifiedOutside {L : IntermediateField F Ω} [FiniteDimensional F L]
-    (hL : L ≤ maxUnramifiedOutside F Ω S) :
-    (maxUnramifiedOutside L Ω (placesOver S)).restrictScalars F = maxUnramifiedOutside F Ω S := by
-  have := NumberField.of_module_finite F L
-  have hLu : IsUnramifiedOutside S L :=
-    (isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hL
-  ext x
-  rw [IntermediateField.mem_restrictScalars]
-  constructor
-  · intro hx
-    obtain ⟨M, hf, hu, hxM⟩ := (mem_maxUnramifiedOutside_iff (placesOver S)).1 hx
-    have : FiniteDimensional F (M.restrictScalars F) := FiniteDimensional.trans F L M
-    exact le_maxUnramifiedOutside S
-      ((isUnramifiedOutside_restrictScalars_iff S hLu M).2 hu) hxM
-  · intro hx
-    obtain ⟨E, hf, hu, hxE⟩ := (mem_maxUnramifiedOutside_iff S).1 hx
-    let M : IntermediateField L Ω := IntermediateField.extendScalars (le_sup_left : L ≤ L ⊔ E)
-    have : FiniteDimensional F M := (inferInstance : FiniteDimensional F ↥(L ⊔ E))
-    have : FiniteDimensional L M := Module.Finite.of_restrictScalars_finite F L M
-    have hMu : IsUnramifiedOutside S (M.restrictScalars F) := hLu.sup hu
-    exact le_maxUnramifiedOutside (placesOver S)
-      ((isUnramifiedOutside_restrictScalars_iff S hLu M).1 hMu)
-      (le_sup_right (α := IntermediateField F Ω) hxE)
-
 end Relative
 
 end GroundTheory.ProfCoh

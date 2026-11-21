@@ -55,9 +55,6 @@ theorem SameFlag.refl {x : Sp R ⟶ X} {u : Vecs Dw t R} (hu : ∀ τ i, IsTanAt
   fun τ _ _ i hi => ⟨Pi.single i 1, fun _ hj => Pi.single_eq_of_ne (fun h => by subst h; omega) _,
     GlobalTheory.ShFam.isCombAtG_single t x (hu τ) i⟩
 
-theorem SameFlag.mono {x : Sp R ⟶ X} {u u' : Vecs Dw t R} (h : SameFlag ty t x u u') (hle : ∀ σ, ty' σ ⊆ ty σ) :
-    SameFlag ty' t x u u' := fun τ k hk => h τ k (hle τ hk)
-
 theorem SameFlag.trans {x : Sp R ⟶ X} {u u' u'' : Vecs Dw t R} (hu : ∀ τ i, IsTanAtG t x (u τ i))
     (hall : ∀ τ i, ∃ cf, IsCombAtG t x (u τ) cf (u' τ i))
     (h : SameFlag ty t x u u') (h' : SameFlag ty t x u' u'') : SameFlag ty t x u u'' := by
@@ -77,11 +74,6 @@ theorem SameFlag.trans {x : Sp R ⟶ X} {u u' u'' : Vecs Dw t R} (hu : ∀ τ i,
   by_cases hj : (j : ℕ) < k
   · simp [hA j hj j' hj']
   · simp [hc j (not_lt.1 hj)]
-
-theorem SameFlag.push {f : X' ⟶ X} (mu : SABMap t' t f) {x : Sp R ⟶ X'} {u u' : Vecs Dw t' R}
-    (hu : ∀ τ i, IsTanAtG t' x (u τ i)) (hu' : ∀ τ i, IsTanAtG t' x (u' τ i)) (h : SameFlag ty t' x u u') :
-    SameFlag (Dw := Dw) ty t (x ≫ f) (fun σ i => u σ i ≫ mu.φ) (fun σ i => u' σ i ≫ mu.φ) := fun τ k hk i hi =>
-  (h τ k hk i hi).imp fun cf hcf => ⟨hcf.1, (comb_push_iff mu (hu τ) cf (hu' τ i)).2 hcf.2⟩
 
 theorem IsFrame.push {l l' : Level H} {c : Coeff l} {c' : Coeff l'} (hc : c.F ≤ c'.F) {f : X' ⟶ X} (mu : SABMap t' t f)
     {g : c'.F →+* R} {x : Sp R ⟶ X'} {u : Vecs Dw t' R} (h : IsFrame t' g x u) :
@@ -135,35 +127,5 @@ theorem Mdl.exists_chart_fac (Z : Mdl Y i₀) {R : Type} [CommRing R] (w : Sp R 
   show Spec.map (Spec.preimage _) ≫ _ = _
   rw [Spec.map_preimage]
   exact IsOpenImmersion.lift_fac _ _ _
-
-theorem Mdl.exists_chart (Z : Mdl Y i₀) {k : Type} [Field k] (w : Sp k ⟶ Z.X) (h : Set.range w ⊆ Z.opn) :
-    ∃ (a : Fin Z.m) (φ : Γ(Z.X, (Z.U a).1) →+* k), spMap φ ≫ Z.chart a = w := by
-  have h0 := h ⟨IsLocalRing.closedPoint k, rfl⟩
-  rw [← Z.cover] at h0
-  obtain ⟨a, ha⟩ := Set.mem_iUnion.1 h0
-  refine ⟨a, Z.exists_chart_fac w a ?_⟩
-  rintro _ ⟨x, rfl⟩
-  rwa [Subsingleton.elim x (IsLocalRing.closedPoint k)]
-
-theorem exists_isTrans_id (i : Idx H p) :
-    ∃ mu : SABMap (Y i).t (Y i).t (𝟙 _), mu.φ = 𝟙 _ ∧ IsTrans (Y := Y) i i (𝟙 _) mu := by
-  obtain ⟨mu, hmu⟩ := GlobalTheory.ObjMaps.exists_sab_id (Y i).t
-  have e : spMap (RingHom.id (i.c.V W)) = 𝟙 _ := Spec.map_id _
-  have : IsIso (spMap (RingHom.id (i.c.V W))) := by rw [e]; infer_instance
-  have hM : i.l.M / i.l.M = 1 := Nat.div_self (by have := i.l.three_le; omega)
-  refine ⟨mu, hmu, RingHom.id _, inv (pullback.fst _ _), 𝟙 _, fun _ => rfl, IsIso.inv_hom_id _, ?_, inferInstance,
-    by simp, fun a => ?_, fun a => ?_⟩
-  · rw [IsIso.inv_comp_eq, pullback.condition]
-    exact ((congrArg (_ ≫ ·) e).trans (Category.comp_id _)).symm
-  · rw [hM, pow_one, hmu, Category.comp_id, Category.id_comp]
-  · rw [Nat.div_self i.l.A_pos, pow_one, hmu, Category.comp_id, Category.id_comp]
-
-theorem exists_isTrans (h : N2 Y) {i i₂ : Idx H p} (hl : i.l.Dvd i₂.l) (hc : i.c.F ≤ i₂.c.F) :
-    ∃ (τ : (Y i₂).X ⟶ (Y i).X) (mu : SABMap (Y i₂).t (Y i).t τ), IsTrans i i₂ τ mu := by
-  obtain ⟨-, π, hπ, -⟩ := h
-  let b : i.c.V W →+* i₂.c.V W :=
-    ((IntermediateField.inclusion hc).toRingHom.comp (i.c.V W).subtype).codRestrict (i₂.c.V W) fun x => x.2
-  obtain ⟨π', mu, r, h⟩ := hπ i i₂ hl hc b fun _ => rfl
-  exact ⟨_, mu, b, π', r, fun _ => rfl, h⟩
 
 end GlobalTheory.LocM

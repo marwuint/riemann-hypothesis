@@ -32,7 +32,4 @@ def chart (k r : ℕ) (v : EE k r) : Mat k r :=
 def dchart (k r : ℕ) (v : EE k r) : Mat k r :=
   -(wC k r * um v.1.1 * wC k r) + torD k r v.2.1 + um v.2.2 + um v.1.2
 
-example : wC 0 1 = !![0, 0, 1; 0, 1, 0; 1, 0, 0] := by
-  ext i j; fin_cases i <;> fin_cases j <;> simp [wC, bigCell, esI]
-
 end GlobalTheory.CellDens

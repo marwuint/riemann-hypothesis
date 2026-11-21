@@ -11,6 +11,4 @@ def OrbitCurve.Statement : Prop :=
     (x : Cone n (AlgebraicClosure ℚ)), BlockNonzero x →
     Geo.IsArithVar (ι := blockIdx n) (orbitIdeal x) 1
 
-example : BlockNonzero samplePoint := samplePoint_blockNonzero
-
 end GroundTheory.Heights₂.Heights

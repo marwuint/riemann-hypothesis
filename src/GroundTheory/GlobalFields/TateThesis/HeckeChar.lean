@@ -33,10 +33,6 @@ theorem primeIdealUnit_mem_idealsPrimeTo {𝔪 : Ideal (𝓞 K)} {v : HeightOneS
   rintro rfl
   exact hv hw
 
-theorem idealsPrimeTo_top : idealsPrimeTo (⊤ : Ideal (𝓞 K)) = ⊤ := by
-  exact eq_top_iff.2 fun I _ v hv ↦
-    absurd (top_le_iff.1 (Ideal.le_of_dvd hv)) v.isPrime.ne_top
-
 namespace IdeleGroup
 
 theorem exists_uniformizer (v : HeightOneSpectrum (𝓞 K)) :

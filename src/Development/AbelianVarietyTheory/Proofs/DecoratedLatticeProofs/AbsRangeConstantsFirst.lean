@@ -17,7 +17,7 @@ theorem abs_range_constants_first : ∀ Cg cb Cu cT CT C1 CMo : ℝ, ∃ C₀ : 
   obtain ⟨hrd, -, hm4⟩ := hBig
   have hm4' : 4 ≤ D.R.m := by exact_mod_cast hm4
   obtain ⟨-, -, hb, hm, -, -, -, hk, hv, -, hka, hvb, hg, hgb, -⟩ :=
-    GlobalTheory.T.amplitudeSizeConsequences_of_wordIndependentHyps D large₂ C' Cl Cg cb Cu cT CT C0 hrd hZ
+    _root_.GlobalTheory.Amp.SizesProof.sizes_of_hyp D large₂ C' Cl Cg cb Cu cT CT C0 hrd hZ
   have hb2 : 2 ≤ large₂.sc.b := by linarith
   have hb0 : 0 < large₂.sc.b := by linarith
   have hv0 : 0 < D.host.v := by linarith
@@ -32,15 +32,15 @@ theorem abs_range_constants_first : ∀ Cg cb Cu cT CT C1 CMo : ℝ, ∃ C₀ : 
       rw [show D.R.m ^ 4 = D.R.m * D.R.m ^ 3 by ring]
       exact Nat.mul_le_mul_left _ (le_trans (by norm_num) (Nat.pow_le_pow_left hm4' 3))
     omega
-  obtain ⟨hM1, hM2⟩ := GlobalTheory.T.majorantMomentBound_both_sides D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 CMo hm4' hMom hZ τ w w' hTT θ hθ W hW
+  obtain ⟨hM1, hM2⟩ := _root_.GlobalTheory.Amp.MomBoth.momBd_both D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 CMo hm4' hMom hZ τ w w' hTT θ hθ W hW
     lam' hlam S hS
-  obtain ⟨-, -, hμN, hS1, hS2⟩ := GlobalTheory.T.local_data_both_amplitude_sides D τ w w' θ W lam' S hθ0 hv0 hTT hW hS
+  obtain ⟨-, -, hμN, hS1, hS2⟩ := _root_.GlobalTheory.Amp.Side.both_sides D τ w w' θ W lam' S hθ0 hv0 hTT hW hS
   rw [hμN] at hS1 hS2
   have hDr' : Dr D.R.k D.R.rS W.z W.z' γ = ‖DminN W.z W.z' γ D.R.rS‖ := by
     unfold Dr DminN; rw [dif_pos (by omega)]
   have hTF : TwoFl D.R.k D.R.rS W.z W.z' γ :=
     ⟨hS1.1, hS2.1, hS1.2.1, hS2.2.1, hp.1, hp.2.2, by rw [hDr']; exact norm_ne_zero_iff.2 hDr⟩
-  obtain ⟨hends, -, -, -, hD0, -⟩ := GlobalTheory.T.cellPoint_blockEnds_leadingMinors D W.z W.z' γ p hS1.1 hS2.1 hS1.2.1 hS2.2.1 hp
+  obtain ⟨hends, -, -, -, hD0, -⟩ := _root_.GlobalTheory.Amp.PtMinor.blockEnds_minors D W.z W.z' γ p hS1.1 hS2.1 hS1.2.1 hS2.2.1 hp
   set De : ℝ := ((ptBlockEnds p).map fun l => max 1 ‖DminN W.z W.z' γ l‖⁻¹).foldr max 1 with hDe
   have hDe1 : 1 ≤ De := one_le_foldr_max _
   have hOK : DeOK D.R.k D.R.rS W.z W.z' γ De := by

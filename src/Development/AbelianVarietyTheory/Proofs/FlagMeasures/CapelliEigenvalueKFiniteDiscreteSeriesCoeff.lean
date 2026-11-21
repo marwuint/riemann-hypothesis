@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CapelliEigenvalues.Smooth
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CapelliTransportUnitaryConjStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CapelliTransportUnitaryConj
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CapelliOperatorOnUnitaryCoefficientEqDerivedStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CapelliOperatorUnitaryGroupLocalStatement
 
@@ -98,7 +98,7 @@ theorem capEig_of_coefSm (hL : Loc) (hC : CoefSm) (hK : PI.KFinSmooth) : PI.Cape
     _ = Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y • f g := by rw [hrep g hg]
 
 theorem capEig (hK : PI.KFinSmooth) (hD : PI.DSInfCharCap.DSInfCharCap) : PI.CapelliEig.CapEig := by
-  have hCoef : CoefSm := coefSm_of GlobalTheory.T.capelli_transport_unitary_conj GlobalTheory.T.capelli_operator_on_unitary_coefficient_eq_derived hD
+  have hCoef : CoefSm := coefSm_of _root_.GlobalTheory.capelli_transport_conj GlobalTheory.T.capelli_operator_on_unitary_coefficient_eq_derived hD
   exact capEig_of_coefSm GlobalTheory.T.capelli_operator_unitaryGroup_local hCoef hK
 
 end GlobalTheory.CapelliEigenvalue

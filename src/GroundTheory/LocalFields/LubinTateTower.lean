@@ -369,15 +369,6 @@ theorem residueDegree_lubinTateField (hf : IsLubinTateSeries π f) {n : ℕ} (hn
   residueDegree_eq_one_of_ramificationIndex_eq_finrank K _
     (ramificationIndex_lubinTateField hπ hf hn)
 
-theorem exists_isEisensteinAt_lubinTateField (hf : IsLubinTateSeries π f) {n : ℕ} (hn : 0 < n) :
-    ∃ (p : 𝒪[K][X]) (α : Ω), p.IsEisensteinAt (IsLocalRing.maximalIdeal 𝒪[K]) ∧
-      p.natDegree = (Nat.card 𝓀[K] - 1) * Nat.card 𝓀[K] ^ (n - 1) ∧
-      aeval α (p.map (algebraMap 𝒪[K] K)) = 0 ∧ lubinTateField Ω hπ hf n = K⟮α⟯ := by
-  obtain ⟨m, rfl⟩ := Nat.exists_eq_add_one_of_ne_zero hn.ne'
-  obtain ⟨α, hE, hα⟩ := exists_lubinTateField_eq_adjoin_eisenstein (Ω := Ω) hπ hf m
-  exact ⟨ltEisenstein π m, α, isEisensteinAt_ltEisenstein hπ m, (ltEisenstein_monic π m).2, hα,
-    hE⟩
-
 theorem coeff_zero_ltEisenstein (π : 𝒪[K]) (n : ℕ) : (ltEisenstein π n).coeff 0 = π := by
   have hq := one_lt_card_residueField' K
   rw [ltEisenstein, coeff_add, coeff_C_zero, coeff_zero_eq_eval_zero, eval_pow,
@@ -410,25 +401,6 @@ theorem exists_norm_eq_uniformizer (hf : IsLubinTateSeries π f) {n : ℕ} (hn :
     hnorm, ← mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_mul]
 
 end Main
-
-section SeparableClosure
-
-variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-  {π : 𝒪[K]} (hπ : Irreducible π) {f : PowerSeries 𝒪[K]} (hf : IsLubinTateSeries π f)
-
-example {n : ℕ} (hn : 0 < n) :
-    Module.finrank K (lubinTateField (SeparableClosure K) hπ hf n) =
-      (Nat.card 𝓀[K] - 1) * Nat.card 𝓀[K] ^ (n - 1) :=
-  finrank_lubinTateField hπ hf hn
-
-example (n : ℕ) : IsGalois K (lubinTateField (SeparableClosure K) hπ hf n) := inferInstance
-
-example (n : ℕ) :
-    (lubinTateField (SeparableClosure K) hπ hf n ≃ₐ[K] lubinTateField (SeparableClosure K) hπ hf n)
-      ≃* (𝒪[K] ⧸ Ideal.span {π ^ n})ˣ :=
-  lubinTateGalEquiv hπ hf n
-
-end SeparableClosure
 
 end FormalGroup
 

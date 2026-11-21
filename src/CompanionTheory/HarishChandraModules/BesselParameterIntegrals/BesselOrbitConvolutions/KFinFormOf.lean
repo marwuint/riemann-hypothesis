@@ -12,36 +12,6 @@ namespace CompanionTheory.D.Upq.BesselFunctionalConstruction
 
 open Formalism.FourierDecayAlt.ThreeDimData Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.DDSmoothness
 
-def RankOne : Prop :=
-  ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
-    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-    (σ : Mx k r → (H →L[ℂ] H)) (w0 : H) (Wp : Type) [NormedAddCommGroup Wp]
-    [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
-    (z : Fin (2 * r + k + 1) → ℂ) (u : Fin k → ℝ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)),
-    Side k r ε lam h σ w0 z Formalism.QuantumDeterminants.cStd u π μW μN μG νq →
-    ∃ L : H → Wp, ∀ w ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ,
-      ∀ v ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ,
-        be z Formalism.QuantumDeterminants.cStd π σ μW μN w v = (innerSL ℂ (L v)).smulRight (L w)
-
-theorem shape_of (hR : RankOne) (hBB : BeBessel) : Shape := by
-  intro hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z u π μW μN μG νq hS ⟨x0, hx0, y0, hy0, hne⟩
-  have hsm := DD_smooth hIn.2.2.1 hS.1 hS.2.1 hS.2.2.2.2.1
-  obtain ⟨L, hL⟩ := hR k r ε lam h H σ w0 Wp z u π μW μN μG νq hS
-  rw [hL x0 (hsm x0 hx0) y0 (hsm y0 hy0)] at hne
-  have hLx : L x0 ≠ 0 := fun h0 => hne (by ext ξ; simp [h0])
-  have hLy : L y0 ≠ 0 := fun h0 => hne (by ext ξ; simp [h0])
-  have hn : ⟪L y0, L y0⟫_ℂ ≠ 0 := inner_self_ne_zero.2 hLy
-  have hB := bessel_smul
-    (hBB hIn k r ε lam h H σ w0 Wp z _ u π μW μN μG νq hS y0 (Or.inl hy0) (L y0))
-    (⟪L y0, L y0⟫_ℂ)⁻¹
-  have he : ∀ x ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ,
-      (⟪L y0, L y0⟫_ℂ)⁻¹ • be z Formalism.QuantumDeterminants.cStd π σ μW μN x y0 (L y0) = L x := fun x hx => by
-    rw [hL x hx y0 (hsm y0 hy0), ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, smul_smul,
-      inv_mul_cancel₀ hn, one_smul]
-  refine ⟨_, hB, ⟨x0, hx0, by rw [he x0 (hsm x0 hx0)]; exact hLx⟩, fun x hx v hv => ?_⟩
-  rw [he x hx, he v (hsm v hv), hL x hx v (hsm v hv)]
-
 theorem bessel_add {k r : ℕ} {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] {z : Fin (2 * r + k + 1) → ℂ} {ψ : Mx k r → ℂ}
     {σ : Mx k r → (H →L[ℂ] H)} {π : Mx k r → (Wp →L[ℂ] Wp)} {B B' : H → Wp}

@@ -102,28 +102,6 @@ theorem normSq_U_of_full (T : Tor D) (La' : AddSubgroup (VC D N N')) (hL : FullL
   refine normSq_U_of_fd T La' ⟨_, ZLattice.isAddFundamentalDomain
     (Module.Free.chooseBasis ℤ (AddSubgroup.toIntSubmodule La')) volume⟩ G hG x
 
-theorem LinkThU_of_fd
-    (hfd : ∀ D : D7, ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
-      ∀ N N' L L', admitted D N N' L L' →
-        Countable (La D (tor0 D cc δ) (N := N) (N' := N') L L') ∧
-        ∃ Fd : Set (VC D N N'), IsAddFundamentalDomain (La D (tor0 D cc δ) L L') Fd volume) :
-    LinkThU := by
-  intro D cc hcc δ hδ N N' L L' hA G hG x
-  obtain ⟨hc, hfd'⟩ := hfd D cc hcc δ hδ N N' L L' hA
-  haveI := hc
-  exact normSq_U_of_fd (tor0 D cc δ) _ hfd' G hG x
-
-theorem LinkThU_of_full
-    (hfull : ∀ D : D7, ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
-      ∀ N N' L L', admitted D N N' L L' → FullLat (La D (tor0 D cc δ) (N := N) (N' := N') L L')) :
-    LinkThU := by
-  intro D cc hcc δ hδ N N' L L' hA G hG x
-  exact normSq_U_of_full (tor0 D cc δ) _ (hfull D cc hcc δ hδ N N' L L' hA) G hG x
-
-theorem LinkThUFam_of_ThU (h : LinkThU) : LinkThUFam := by
-  intro D cc hcc δ hδ e he N N' L L' hA x
-  exact h D cc hcc δ hδ N N' L L' hA _ (he N N' L L' hA).1 x
-
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL
@@ -747,9 +725,6 @@ theorem theta_unitary_linkage : LinkThU := by
     exact normSq_U_of_fd (tor0 D cc 0) _
       ⟨Set.univ, by rw [FL.La_zero D L L' cc]; exact FL.fd_bot _⟩ G hG x
   · exact normSq_U_of_full (tor0 D cc δ) _ (FL.fullLat D L L' hA cc hcc δ h0) G hG x
-
-theorem theta_unitary_family_linkage : LinkThUFam := by
-  exact LinkThUFam_of_ThU theta_unitary_linkage
 
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 

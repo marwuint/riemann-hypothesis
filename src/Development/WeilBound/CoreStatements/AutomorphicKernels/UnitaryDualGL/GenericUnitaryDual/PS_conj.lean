@@ -72,11 +72,6 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-theorem nonempty_equiv_prodIrr_of_eq {h N : ℕ} {z y : Fin h → IrrGL k} (e : z = y) (hz : ∑ a, (z a).1 = N)
-    (hy : ∑ a, (y a).1 = N) : Nonempty ((prodIrr z hz).Equiv (prodIrr y hy)) := by
-  subst e
-  exact ⟨Representation.Equiv.refl _⟩
-
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 theorem detChar_one (n : ℕ) : detChar (Fin n) (1 : kˣ →* ℂˣ) = 1 := MonoidHom.one_comp _
 

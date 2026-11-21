@@ -20,11 +20,4 @@ theorem secondProj_split_mulVec {K T : Type} [Field K] [CommRing T] [Algebra K T
   ext i
   simp [pr2, Matrix.mulVec, dotProduct, Prod.snd_sum]
 
-section Uni
-
-variable {F E R : Type} [Field F] [Field E] [Algebra F E] [Field R] [Algebra F R]
-  (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (θ : R ⊗[F] E ≃ₐ[R] R × R)
-
-end Uni
-
 end MassDataIdxSpl

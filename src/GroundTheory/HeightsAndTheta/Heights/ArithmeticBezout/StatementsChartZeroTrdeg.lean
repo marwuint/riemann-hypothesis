@@ -16,10 +16,6 @@ def ChartZeroTrdeg.Statement : Prop :=
       (∀ q ∈ Q, aeval y q = 0) → y j ≠ 0 →
         Algebra.trdeg F (Algebra.adjoin F (Set.range fun m => y m * (y j)⁻¹)) ≤ (d : Cardinal)
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights

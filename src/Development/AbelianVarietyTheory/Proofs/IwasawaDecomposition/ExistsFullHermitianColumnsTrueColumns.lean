@@ -4,12 +4,12 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIf
 import Formalism.LocalToGlobal.HilbertRowConditions.TiedEMt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormOneFiniteAdeleDetClassOfIsDetLift
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevOkTwists
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemNormOneIntegralIffConjugateValuationsEqStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalNormOneClassEqFiniteAdelicDetClassStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemNormOneIntegralIffConjugateValuationsEq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalNormOneClassEqFiniteAdelicDetClass
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsOpenKerNormOneFiniteAdeleDetClassStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PointDeterminantEqNormOneClassOfLevelStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemberLevelPrimeNotMemUnderLevelPrimesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistPrimesReferenceTupleEqEmptyStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemberLevelPrimeNotMemUnderLevelPrimes
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistPrimesReferenceTupleEqEmpty
 
 noncomputable section
 
@@ -29,7 +29,7 @@ theorem mem_integralNormOne_of_normOneDetClass_eq_one (x : Formalism.L2.Herm.uni
   obtain ⟨a, ha⟩ := exists_lift H x
   have e : (QuotientGroup.mk a : DtQ H SQ) = 1 := (normOneFiniteAdeleDetClass_of_isDetLift H SQ x a ha).symm.trans h
   have ha' : a ∈ KDq H SQ := (QuotientGroup.eq_one_iff a).1 e
-  refine (GlobalTheory.T.mem_normOneIntegral_iff_conjugate_valuations_eq R H x a ha).2 fun w => ?_
+  refine (_root_.GlobalTheory.Mem.Col2.FullDt.mem_u1int_iff_val R H x a ha).2 fun w => ?_
   exact (GlobalTheory.Mem.Chr.mem_KD_sup_unitIdl_iff R H a).1 (Subgroup.mem_sup_left (KDq_le_KD H SQ ha')) w (conjPrime₂ w)
     ((isConjPl_iff H w _).2 rfl)
 
@@ -39,14 +39,14 @@ theorem unitIdeleImage_eq_map_integralNormOne : UOQ H SQ = ((Formalism.L2.Herm.I
   · rintro ⟨a, ha, rfl⟩
     obtain ⟨x, hx⟩ := exists_of_idele H a
     refine ⟨x, ?_, normOneFiniteAdeleDetClass_of_isDetLift H SQ x a hx⟩
-    refine (GlobalTheory.T.mem_normOneIntegral_iff_conjugate_valuations_eq R H x a hx).2 fun w => ?_
+    refine (_root_.GlobalTheory.Mem.Col2.FullDt.mem_u1int_iff_val R H x a hx).2 fun w => ?_
     exact (ha w).trans (ha (conjPrime₂ w)).symm
   · rintro ⟨x, hx, rfl⟩
     obtain ⟨a, ha⟩ := exists_lift H x
     rw [normOneFiniteAdeleDetClass_of_isDetLift H SQ x a ha, mk_mem_UOQ, KDq_sup_unitIdl]
     refine (GlobalTheory.Mem.Chr.mem_KD_sup_unitIdl_iff R H a).2 fun w w' hw => ?_
     rw [(isConjPl_iff H w w').1 hw]
-    exact (GlobalTheory.T.mem_normOneIntegral_iff_conjugate_valuations_eq R H x a ha).1 hx w
+    exact (_root_.GlobalTheory.Mem.Col2.FullDt.mem_u1int_iff_val R H x a ha).1 hx w
 
 end Gen
 
@@ -67,9 +67,9 @@ theorem detPt_of_reads (hI : I.Ok) (u : B.Word) (i : ℕ) {Ch : Type} {chOf : (I
   obtain ⟨p, hp, hN⟩ := hR.k_std (chOf c)
   refine GlobalTheory.T.pointDeterminant_eq_normOneClass_of_level B.R B.host _ _ _ _ I.SQ _ (y c) (k (chOf c)) x (GlobalTheory.Mem.LevTwist.levOk_twists B X I hI).1 (hR.pt c) hp.uni
     (hN ▸ hp.lat) (fun P hP => ?_) hx
-  refine hR.k_off _ _ (GlobalTheory.T.memberLevelPrime_not_mem_under_levelPrimes B X I hI u P hP) ?_ (Or.inl rfl)
+  refine hR.k_off _ _ (_root_.GlobalTheory.Mem.LevTwist.T_notMem_under_uSG B X I hI u P hP) ?_ (Or.inl rfl)
   rintro ⟨Q, hQ, -⟩
-  rw [GlobalTheory.T.q_mu0_eq_empty B X I] at hQ
+  rw [_root_.GlobalTheory.Mem.Col2.RefTup.twistPrimes_reference_tuple_eq_empty B X I] at hQ
   exact absurd hQ (Finset.notMem_empty Q)
 
 theorem det_reGL {a b : ℕ} (h : a = b) {A : Type} [CommRing A] (g : GL (Fin a) A) :
@@ -124,7 +124,7 @@ def hermS (hI : I.Ok) (hS : I.StdC l Z C) : Formalism.L2.Herm.SymmetricHermitian
     dt_ker := mem_integralNormOne_of_normOneDetClass_eq_one B.host I.SQ
     dt_open := GlobalTheory.T.isOpen_ker_normOneFiniteAdeleDetClass B.R B.host _ I.SQ (GlobalTheory.Mem.LevTwist.levOk_twists B X I hI).1
     dt_UO := unitIdeleImage_eq_map_integralNormOne B.host I.SQ
-    dt_rat := fun z x h => GlobalTheory.T.rationalNormOne_class_eq_finiteAdelic_det_class B.R B.host I.SQ z x h
+    dt_rat := fun z x h => _root_.GlobalTheory.Mem.Col2.FullDt.e1Q_eq_u1Dt_of_det_eq B.R B.host I.SQ z x h
     det0 := fun u c x h => det_normOne_classStepZero_trueColumns I l Z C hI hS u c x h
     detI := fun u i h1 hm c x h => detI_std I l Z C hI hS u i h1 hm c x h }
 

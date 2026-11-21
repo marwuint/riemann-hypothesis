@@ -327,11 +327,6 @@ theorem tateModule_free (hℓF : (ℓ : F) ≠ 0) : Module.Free ℤ_[ℓ] (TateM
   let ⟨b⟩ := tateModule_basis W ℓ hℓF
   Module.Free.of_basis b
 
-theorem finrank_tateModule (hℓF : (ℓ : F) ≠ 0) :
-    Module.finrank ℤ_[ℓ] (TateModule ℓ W.toAffine.Point) = 2 := by
-  obtain ⟨b⟩ := tateModule_basis W ℓ hℓF
-  rw [Module.finrank_eq_card_basis b, Fintype.card_fin]
-
 end Curve
 
 section Topology
@@ -340,13 +335,6 @@ variable {ℓ : ℕ} {A : Type*} [AddCommGroup A]
 
 instance TateModule.instTopologicalSpace : TopologicalSpace (TateModule ℓ A) :=
   TopologicalSpace.induced (fun t => (t : ℕ → A)) (@Pi.topologicalSpace ℕ (fun _ => A) fun _ => ⊥)
-
-theorem TateModule.isOpen_setOf_apply_eq (k : ℕ) (a : A) :
-    IsOpen {t : TateModule ℓ A | (t : ℕ → A) k = a} := by
-  letI : TopologicalSpace A := ⊥
-  have : DiscreteTopology A := ⟨rfl⟩
-  have hc : Continuous (fun f : ℕ → A => f k) := continuous_apply k
-  exact isOpen_induced (hc.isOpen_preimage {a} (isOpen_discrete {a}))
 
 end Topology
 
@@ -382,60 +370,6 @@ theorem tateRep_apply {G : Type*} [Monoid G] (φ : G →* AddMonoid.End A) (g : 
     ((tateRep φ g t : TateModule ℓ A) : ℕ → A) k = φ g ((t : ℕ → A) k) :=
   rfl
 
-theorem continuous_tateRep {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
-    (φ : G →* AddMonoid.End A) (hφ : ∀ a : A, IsOpen {g : G | φ g a = a}) :
-    Continuous (fun p : G × TateModule ℓ A => tateRep φ p.1 p.2) := by
-  letI : TopologicalSpace A := ⊥
-  have : DiscreteTopology A := ⟨rfl⟩
-  apply continuous_induced_rng.2
-  apply continuous_pi
-  intro k
-  rw [continuous_discrete_rng]
-  intro a
-  rw [isOpen_iff_forall_mem_open]
-  rintro ⟨g0, t0⟩ hp
-  change φ g0 ((t0 : ℕ → A) k) = a at hp
-  refine ⟨{p : G × TateModule ℓ A | φ (g0⁻¹ * p.1) ((t0 : ℕ → A) k) = (t0 : ℕ → A) k ∧
-      (p.2 : ℕ → A) k = (t0 : ℕ → A) k}, ?_, ?_, ?_⟩
-  · rintro ⟨g, t⟩ ⟨hg, ht⟩
-    change φ g ((t : ℕ → A) k) = a
-    rw [ht, ← hp]
-    calc φ g ((t0 : ℕ → A) k) = φ (g0 * (g0⁻¹ * g)) ((t0 : ℕ → A) k) := by
-          rw [mul_inv_cancel_left]
-      _ = φ g0 (φ (g0⁻¹ * g) ((t0 : ℕ → A) k)) := by rw [map_mul]; rfl
-      _ = φ g0 ((t0 : ℕ → A) k) := by rw [hg]
-  · exact ((hφ _).preimage (continuous_const.mul continuous_fst)).inter
-      ((TateModule.isOpen_setOf_apply_eq k _).preimage continuous_snd)
-  · refine ⟨?_, rfl⟩
-    show φ (g0⁻¹ * g0) _ = _
-    rw [inv_mul_cancel, map_one]
-    rfl
-
 end Action
-
-section Galois
-
-universe u
-
-variable (K L : Type u) [Field K] [Field L] [Algebra K L] [DecidableEq L] (W : WeierstrassCurve K)
-  (ℓ : ℕ) [hℓ : Fact ℓ.Prime]
-
-noncomputable abbrev galTateRep :
-    Representation ℤ_[ℓ] Gal(L/K) (TateModule ℓ (W.baseChange L).toAffine.Point) :=
-  tateRep (galPointsHom K L W)
-
-theorem continuous_galTateRep [Algebra.IsIntegral K L] :
-    Continuous (fun p : Gal(L/K) × TateModule ℓ (W.baseChange L).toAffine.Point =>
-      galTateRep K L W ℓ p.1 p.2) :=
-  continuous_tateRep _ fun P =>
-    isOpen_stabilizer_point W (GroundTheory.ProfCoh.stabilizer (galPointsZ K L W).ρ P) P fun _ h => h
-
-theorem galTateRep_basis [IsSepClosed L] [W.IsElliptic] (hℓK : (ℓ : K) ≠ 0) :
-    Nonempty (Module.Basis (Fin 2) ℤ_[ℓ] (TateModule ℓ (W.baseChange L).toAffine.Point)) :=
-  tateModule_basis (W.baseChange L) ℓ (by
-    rw [← map_natCast (algebraMap K L)]
-    exact (map_ne_zero_iff _ (algebraMap K L).injective).mpr hℓK)
-
-end Galois
 
 end GroundTheory.Arith.Abelian

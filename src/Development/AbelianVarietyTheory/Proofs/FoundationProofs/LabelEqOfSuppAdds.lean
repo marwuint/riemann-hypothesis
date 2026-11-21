@@ -69,45 +69,6 @@ theorem ext_entN {n : ℕ} {x y : Gn g n} (h : ∀ i j : ℕ, i < n → j < n �
   ext i j
   rw [← ParInd.entN_self x.val, ← ParInd.entN_self y.val, h _ _ i.2 j.2]
 
-def InChain (r t : ℕ) {n s : ℕ} (h : Gn g n) (y : Fin s → Gn g t) : Prop :=
-  tl r h.val = 1 ∧ (∀ i : Fin s, InPar (r + i * t) h.val) ∧ ∀ i : Fin s, br (r + i * t) t h.val = (y i).val
-
-theorem block_le {s t : ℕ} (i : Fin s) : i * t + t ≤ s * t := by
-  rw [← Nat.succ_mul]; exact Nat.mul_le_mul_right _ i.2
-
-theorem InChain.par {r t s : ℕ} {h : Gn g (r + s * t)} {y : Fin s → Gn g t} (H : InChain r t h y)
-    (B : Matrix (Fin (r + s * t)) (Fin t) (ZMod g)) (z : Gn g t) :
-    InChain r t (par finSumFinEquiv h B z) (Fin.snoc y z : Fin (s + 1) → Gn g t) := by
-  obtain ⟨h1, h2, h3⟩ := H
-  refine ⟨?_, fun i a b ha hb => ?_, fun i => ?_⟩
-  · rw [← h1]
-    ext a b
-    have := a.2
-    have := b.2
-    exact (entN_par h B z a b).1 (by omega) (by omega)
-  · have hle : (i : ℕ) * t ≤ s * t := Nat.mul_le_mul_right _ (Nat.lt_succ_iff.1 i.2)
-    rw [← ParInd.entN_self (Opp.par finSumFinEquiv h B z).val]
-    by_cases hc : (a : ℕ) < r + s * t
-    · rw [(entN_par h B z a b).1 hc (by omega), entN, dif_pos ⟨hc, by omega⟩]
-      have hi : (i : ℕ) < s := by
-        by_contra hi
-        have : (i : ℕ) = s := by have := i.2; omega
-        rw [this] at hb; omega
-      exact h2 ⟨i, hi⟩ _ _ ha hb
-    · exact (entN_par h B z a b).2.1 (by omega) (by omega)
-  · refine Fin.lastCases ?_ (fun i => ?_) i
-    · ext a b
-      rw [Fin.snoc_last, br, Fin.val_last, (entN_par h B z a b).2.2.1, ParInd.entN_self]
-    · rw [Fin.snoc_castSucc, ← h3]
-      ext a b
-      have := a.2
-      have := b.2
-      have := block_le (t := t) i
-      exact (entN_par h B z _ _).1 (by simp; omega) (by simp; omega)
-
-def topAlg (r b n : ℕ) (e : MonoidAlgebra ℂ (Gn g r)) : MonoidAlgebra ℂ (Gn g n) :=
-  ∑ x, single (blk r b n x 1) (e.coeff x)
-
 section Local
 
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -260,7 +221,7 @@ theorem label_of_mapsToProd (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) {n : 
   have hsum : ∀ {m : ℕ} (i : Gn g m →* Gn g (a + b)) (u : fixK1 π), T u ≠ 0 →
       ∃ f, T ((repK π).asAlgebraHom (mapDomainAlgHom ℂ ℂ i (eSerC L m f)) u) ≠ 0 := by
     intro m i u hu
-    obtain ⟨S, -, hS⟩ := (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG m).2.2.2.2
+    obtain ⟨S, -, hS⟩ := (_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG m).2.2.2.2
     have e : u = ∑ f ∈ S, (repK π).asAlgebraHom (mapDomainAlgHom ℂ ℂ i (eSerC L m f)) u := by
       rw [← LinearMap.sum_apply, ← map_sum, ← map_sum, hS, map_one, map_one, Module.End.one_apply]
     rw [e, map_sum] at hu

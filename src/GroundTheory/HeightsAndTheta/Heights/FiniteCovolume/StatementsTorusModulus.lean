@@ -25,12 +25,6 @@ def TorusModulus.Statement (h : HermitianForm F E W) (v : Basis ι E W) : Prop :
       Measurable f →
       ∫⁻ x, f (g * x * g⁻¹) ∂ν = (∏ w, ‖a w‖ₑ⁻¹ ^ (2 * (finrank E W - 1))) * ∫⁻ x, f x ∂ν
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

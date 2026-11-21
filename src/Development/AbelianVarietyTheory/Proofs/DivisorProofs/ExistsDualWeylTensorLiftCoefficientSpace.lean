@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LamGApply
 import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VariableMatrixDetPolyPowMulMemDualWeylStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VariableMatrixDetPolyPowMulMemDualWeyl
 import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 
 set_option autoImplicit false
@@ -32,7 +32,7 @@ theorem liftPol_mem {K C : Type} [Field K] [Field C] (e0 : K →+* C) {ι : Type
     {lamW : ι → ℕ → ℕ} {c : ι → ℤ} (h : Shift lam lamW c) (τ : ι) (x : MvPolynomial (Fin n × Fin n) K)
     (hx : x ∈ nablaSq K n (lam τ)) : liftPol e0 (lamW τ (n - 1)) x ∈ dualWeyl C n n (res n (lamW τ)) := by
   rw [res_eq h τ]
-  exact GlobalTheory.T.variableMatrixDetPoly_pow_mul_mem_dualWeyl C n _ _ _ (dualWeylMap K C e0 n n _ x hx)
+  exact _root_.GlobalTheory.FrameRead.detPol_pow_mul_mem_dualWeyl C n _ _ _ (dualWeylMap K C e0 n n _ x hx)
 
 theorem ssB_span (K : Type) [Field K] {n : ℕ} (ν : Fin n → ℕ) :
     Submodule.span K (Set.range (ssB K ν)) = dualWeyl K n n ν :=

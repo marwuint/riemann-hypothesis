@@ -12,12 +12,6 @@ variable (p : ℕ) [hp : Fact p.Prime]
 
 abbrev Lambda : Type := PowerSeries ℤ_[p]
 
-theorem isDomain : IsDomain (Lambda p) := inferInstance
-
-theorem isLocalRing : IsLocalRing (Lambda p) := inferInstance
-
-theorem isNoetherianRing : IsNoetherianRing (Lambda p) := inferInstance
-
 theorem padic_p_not_isUnit : ¬ IsUnit (p : ℤ_[p]) := by
   have hmem : (p : ℤ_[p]) ∈ maximalIdeal ℤ_[p] := by
     rw [PadicInt.maximalIdeal_eq_span_p]; exact Ideal.subset_span rfl
@@ -65,24 +59,6 @@ instance isRegularLocalRing : IsRegularLocalRing (Lambda p) :=
   IsRegularLocalRing.of_spanFinrank_maximalIdeal_le _ (by
     rw [ringKrullDim_eq_two]; exact_mod_cast spanFinrank_maximalIdeal_le_two p)
 
-def IsDistinguished (P : ℤ_[p][X]) : Prop :=
-  P.IsDistinguishedAt (maximalIdeal ℤ_[p])
-
 variable {p}
-
-theorem IsDistinguished.monic {P : ℤ_[p][X]} (hP : IsDistinguished p P) : P.Monic :=
-  Polynomial.IsDistinguishedAt.monic hP
-
-theorem IsDistinguished.mul {P Q : ℤ_[p][X]} (hP : IsDistinguished p P)
-    (hQ : IsDistinguished p Q) : IsDistinguished p (P * Q) :=
-  Polynomial.IsDistinguishedAt.mul hP hQ
-
-theorem IsDistinguished.ne_zero {P : ℤ_[p][X]} (hP : IsDistinguished p P) : P ≠ 0 :=
-  hP.monic.ne_zero
-
-theorem IsDistinguished.map_mk {P : ℤ_[p][X]} (hP : IsDistinguished p P) :
-    (P : Lambda p).map (Ideal.Quotient.mk (maximalIdeal ℤ_[p])) = X ^ P.natDegree := by
-  rw [← Polynomial.polynomial_map_coe, Polynomial.IsDistinguishedAt.map_eq_X_pow hP,
-    Polynomial.coe_pow, Polynomial.coe_X]
 
 end GroundTheory.Arith.Iwasawa

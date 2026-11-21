@@ -57,46 +57,7 @@ def Restriction : Prop :=
     p.Prime → Fintype.card (Fin N) < 2 * p → p + 3 ≤ N → p ∈ π.cycleType →
     ∀ W : Submodule k V, (∀ h ∈ H, ∀ x ∈ W, ρ h x ∈ W) → W = ⊥ ∨ W = ⊤
 
-def IdemHyp {O K A : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
-    [AddCommGroup A] [Module K A] [Module O A] [IsScalarTower O K A] (e : A →ₗ[K] A) (c : O)
-    (M : Submodule O A) : Prop :=
-  e ∘ₗ e = e ∧ c ≠ 0 ∧ ∀ x ∈ M, c • e x ∈ M
-
-def IdempotentLattice : Prop :=
-  ∀ (O K A : Type) [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
-    [AddCommGroup A] [Module K A] [Module O A] [IsScalarTower O K A] (e : A →ₗ[K] A) (c : O)
-    (M : Submodule O A), IdemHyp e c M →
-    (∀ x ∈ M, c • e x ∈ M ∧ c • e x ∈ LinearMap.range e) ∧
-    (∀ y ∈ M, y ∈ LinearMap.range e → ∃ x ∈ M, e x = y) ∧
-    (∀ x ∈ M, ∃ u ∈ M, ∃ w ∈ M, u ∈ LinearMap.range e ∧
-      w ∈ LinearMap.range (LinearMap.id - e) ∧ c • x = u + w)
-
-def IdempotentDrop : Prop :=
-  ∀ (O K A : Type) [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
-    [AddCommGroup A] [Module K A] [Module O A] [IsScalarTower O K A] (e f Z : A →ₗ[K] A) (c : O)
-    (M : Submodule O A), IdemHyp e c M →
-    f ∘ₗ e = e ∘ₗ f → (∀ x ∈ M, f x ∈ M) → Z ∘ₗ Z = Z → Z ∘ₗ e = e ∘ₗ Z → Z ∘ₗ f = f ∘ₗ Z →
-    (∀ x ∈ M, f (Z x) ∈ M ∧ f (Z x) ∈ LinearMap.range Z) →
-    ∀ x ∈ M, c • f (e (Z x)) ∈ M ∧ c • f (e (Z x)) ∈ LinearMap.range (e ∘ₗ Z)
-
-def Discard : Prop :=
-  ∀ (n : ℕ) (Q Pi : Matrix (Fin n) (Fin n) ℂ) (δ Dstar η : ℝ),
-    Q.PosSemidef → Pi.IsHermitian → Pi * Pi = Pi → 0 ≤ δ → 0 < Dstar →
-    (Pi.rank : ℝ) ≤ δ * Dstar → 0 ≤ η → η ≤ 1 →
-    (Q * Q).trace.re ≤ (1 + η) * (Q.trace.re) ^ 2 / Dstar →
-    (Pi * Q).trace.re ≤ Real.sqrt (2 * δ) * Q.trace.re ∧
-    (((1 - Pi) * Q * (1 - Pi)) * ((1 - Pi) * Q * (1 - Pi))).trace.re ≤ (Q * Q).trace.re ∧
-    (1 - Real.sqrt (2 * δ)) * Q.trace.re ≤ ((1 - Pi) * Q * (1 - Pi)).trace.re
-
 def monicOf {K : Type} [Field K] {N : ℕ} (a : Fin N → K) : K[X] :=
   X ^ N + ∑ i : Fin N, C (a i) * X ^ (i : ℕ)
-
-open Classical in
-
-def SquarefreeShare : Prop :=
-  ∀ (K : Type) [Field K] [Fintype K] (N : ℕ),
-    ((univ.filter (fun a : Fin N → K => (monicOf a).coeff 0 ≠ 0 ∧ ¬ Squarefree (monicOf a))).card : ℝ)
-      * Fintype.card K ≤
-      2 * (univ.filter (fun a : Fin N → K => (monicOf a).coeff 0 ≠ 0)).card
 
 end Formalism.CyclotomicNorms

@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalComponentPlacesCharacterized
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TrueW
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TopReadAt
@@ -35,7 +35,7 @@ theorem exists_common_vacua_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies
     · obtain ⟨M, hM, hMv⟩ := _root_.GlobalTheory.T.exists_selfDual_lattice_moves W hpk j (by omega) (b j)
       obtain ⟨M', hM', hM'v⟩ := _root_.GlobalTheory.T.exists_selfDual_lattice_moves W hpk (j + 1) hj (b (j + 1))
       obtain ⟨hvac, hnz⟩ := _root_.GlobalTheory.T.self_dual_lattices_consecutive_step_alt W hpk j hj (b j) (b (j + 1)) (hb j) (hb (j + 1)) M M' hM hM' hMv hM'v
-      obtain ⟨o, ho, hoV⟩ := GlobalTheory.T.exists_combination_rebase_vacuumLattices_injective D (_root_.GlobalTheory.Fam.pk_z W).ψ hc.std (Yc D j) (Yc D (j + 1)) M (v.N j) M' (v.N (j + 1)) v.gP hM
+      obtain ⟨o, ho, hoV⟩ := _root_.GlobalTheory.VacRebase.rebase_vac D (_root_.GlobalTheory.Fam.pk_z W).ψ hc.std (Yc D j) (Yc D (j + 1)) M (v.N j) M' (v.N (j + 1)) v.gP hM
         (hN j (by omega)).1 hM' (hN (j + 1) hj).1 hQ (fun p hp =>
           ⟨latV_eq_of_moves (hMv (· = p)) ((hN j (by omega)).2 (· = p) (fun p' hp' => hp' ▸ hp)),
             latV_eq_of_moves (hM'v (· = p)) ((hN (j + 1) hj).2 (· = p) (fun p' hp' => hp' ▸ hp))⟩)
@@ -53,7 +53,7 @@ theorem exists_common_vacua_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies
     obtain ⟨M', hM', hM'v⟩ := _root_.GlobalTheory.T.exists_selfDual_lattice_moves W hpk (j + 1) hj (b (j + 1))
     obtain ⟨hvac, hnz⟩ := _root_.GlobalTheory.T.self_dual_lattices_top_step_alt W hpk j h (b (j + 1)) a.bT (hb (j + 1)) hbT M' a.LT hM' hLT hM'v hmT
     have hNT' : IsSelfDualC D.sp.X' v.NT := hNT ▸ hLT
-    obtain ⟨o, ho, hoV⟩ := GlobalTheory.T.exists_combination_rebase_vacuumLattices_injective D (_root_.GlobalTheory.Fam.pk_z W).ψ hc.std (Yc D (j + 1)) D.sp.X' M' (v.N (j + 1)) a.LT v.NT v.gP hM'
+    obtain ⟨o, ho, hoV⟩ := _root_.GlobalTheory.VacRebase.rebase_vac D (_root_.GlobalTheory.Fam.pk_z W).ψ hc.std (Yc D (j + 1)) D.sp.X' M' (v.N (j + 1)) a.LT v.NT v.gP hM'
       (hN (j + 1) hj).1 hLT hNT' hQ (fun p hp =>
         ⟨latV_eq_of_moves (hM'v (· = p)) ((hN (j + 1) hj).2 (· = p) (fun p' hp' => hp' ▸ hp)), by rw [hNT]⟩)
     exact ⟨o, ho, fun P => (hoV _ (hvac P)).1, (hoV _ (hvac 1)).2 hnz⟩

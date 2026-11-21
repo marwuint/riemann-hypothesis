@@ -26,11 +26,6 @@ theorem mir_Kset_eq (ε : Fin n → Bool) : Formalism.REAL.Kset ε = Kset ε := 
   | rfl
   | exact Iff.rfl
 
-theorem mir_inP_iff (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : Formalism.REAL.inP ε X ↔ inP ε X := by
-  first
-  | rfl
-  | exact Iff.rfl
-
 theorem mir_lowK_eq (ε : Fin n → Bool) (lam : Fin n → ℝ) : Formalism.QuantumDeterminants.lowK ε lam = lowK ε lam := by
   first
   | rfl

@@ -1,24 +1,26 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapS
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermUnipotentIntegralVariantStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermTranslateFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermLeviParabolicFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermTranslateFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneMemGoodCT
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermLeviParabolicFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermKFiniteCoefficientStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CtGrowthStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermAutomorphicCriterionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermUnseenStatementAStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimCoefficientsFiniteDeterminingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SeparatelyFiniteDimFunctionsFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermCofiniteIdealTransferStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermAuxiliaryStatementA
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimCoefficientsFiniteDetermining
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SeparatelyFiniteDimFunctionsFinite
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermCofiniteIdealTransfer
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermUnseenStatementBStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuantumDeterminantPolynomialCoefficientsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuantumDeterminantPolynomialCoefficients
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CofiniteOfCapelliMonicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CofiniteCenterMonicAnnihilatorStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CofiniteCenterMonicAnnihilator
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapelliLeviFactorizationSumStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapelliOperatorsCommuteStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapelliUnseenStatementStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapelliConstantTermVanishingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapelliPolynomialCoefficientsIdealStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapelliPolynomialCoefficientsIdeal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MonicFactorCoefficientsIntegral
 
 noncomputable section
 
@@ -66,11 +68,11 @@ theorem centre (J : Set (Module.End ℂ (Sm E (r + s)))) (hJ : Cofin J) :
   have key : ∀ τ : E →+* ℂ, (∀ u, ∃ q : Polynomial ℂ, q.Monic ∧ ∀ F ∈ W₀, Polynomial.aeval (capR r s τ u) q F ∈ vanM E r s) ∧
       ∀ u, ∃ q : Polynomial ℂ, q.Monic ∧ ∀ F ∈ W₀, Polynomial.aeval (capS r s τ u) q F ∈ vanM E r s := by
     intro τ
-    obtain ⟨a, a1, a2, a3⟩ := GlobalTheory.T.quantum_determinant_polynomial_coefficients (Module.End ℂ (Sm E (r + s))) r
+    obtain ⟨a, a1, a2, a3⟩ := _root_.GlobalTheory.CompanionTheory.CTFin.QdetCoeff.qdet_shift_coeff (Module.End ℂ (Sm E (r + s))) r
       (fun i j : Fin r => Eop (a := r + s) τ (Fin.castAdd s i) (Fin.castAdd s j)) (((r : ℂ) - 1) / 2)
-    obtain ⟨b, b1, b2, b3⟩ := GlobalTheory.T.quantum_determinant_polynomial_coefficients (Module.End ℂ (Sm E (r + s))) s
+    obtain ⟨b, b1, b2, b3⟩ := _root_.GlobalTheory.CompanionTheory.CTFin.QdetCoeff.qdet_shift_coeff (Module.End ℂ (Sm E (r + s))) s
       (fun i j : Fin s => Eop (a := r + s) τ (Fin.natAdd r i) (Fin.natAdd r j)) (((s : ℂ) - 1) / 2)
-    refine GlobalTheory.T.capelli_polynomial_coefficients_ideal (Sm E (r + s)) (fun u => cap (a := r + s) τ u) (capR r s τ) (capS r s τ) (leftN E r s) (vanM E r s) W₀
+    refine _root_.GlobalTheory.CompanionTheory.Dblock.CentreBlocks.monic_relations_to_blocks (Sm E (r + s)) (fun u => cap (a := r + s) τ u) (capR r s τ) (capS r s τ) (leftN E r s) (vanM E r s) W₀
       (-(s : ℂ) / 2) ((r : ℂ) / 2) r s a b (fun u v => (GlobalTheory.T.capelli_operators_commute E r s τ u v).1)
       (fun u v => (GlobalTheory.T.capelli_operators_commute E r s τ u v).2.1) (fun u v => (GlobalTheory.T.capelli_operators_commute E r s τ u v).2.2)
       (fun u F hF => (GlobalTheory.T.capelli_constant_term_vanishing E r s τ u F).2 hF) (fun u F hF => ((GlobalTheory.T.capelli_constant_term_vanishing E r s τ u F).1 hF).1)
@@ -82,7 +84,7 @@ theorem centre (J : Set (Module.End ℂ (Sm E (r + s)))) (hJ : Cofin J) :
       have e : u + -(s : ℂ) / 2 = u - (s : ℂ) / 2 := by ring
       rw [e]
     · intro u
-      obtain ⟨p, hp, h⟩ := GlobalTheory.T.cofinite_center_monic_annihilator E (r + s) J hJ _ (cap_mem_Zalg τ u)
+      obtain ⟨p, hp, h⟩ := _root_.GlobalTheory.CompanionTheory.CTFin.cofin_monic_on_killed E (r + s) J hJ _ (cap_mem_Zalg τ u)
       exact ⟨p, hp, fun F hF => h F hF.2⟩
   choose q₁ m₁ h₁ using fun τ => (key τ).1
   choose q₂ m₂ h₂ using fun τ => (key τ).2
@@ -122,9 +124,9 @@ theorem exists_mem_goodCT (L : Subgroup (GL (Fin (r + s)) (Af E))) {W : Type} [A
     exact e2 X g
   refine ⟨F, ⟨fun x g => ?_, fun γ g => ?_, fun k hk => ?_, fun g => ?_, fun g => ?_, fun z hz => ?_⟩, hF1⟩
   · rw [hF1, hF1]
-    exact GlobalTheory.T.constant_term_translate_formula E (r + s) r φ hA.left hA.level μ 𝓕 hμ h𝓕 x g
+    exact _root_.GlobalTheory.CompanionTheory.CTFin.constTerm_unip_left E (r + s) r φ hA.left hA.level μ 𝓕 hμ h𝓕 x g
   · rw [hF1, hF1]
-    exact GlobalTheory.T.constant_term_levi_parabolic_formula E r s φ hA.left hA.level μ 𝓕 hμ h𝓕 γ g
+    exact _root_.GlobalTheory.CompanionTheory.CTFin.integral_unip_lev_mul E r s φ hA.left hA.level μ 𝓕 hμ h𝓕 γ g
   · refine Subtype.ext (funext fun g => ?_)
     change F.1 (g * finGL E (r + s) k) = F.1 g
     rw [hF1, hF1]
@@ -148,17 +150,17 @@ theorem finiteDimensional_goodCT (h₁ : GenFin E r) (h₂ : GenFin E s) (L : Su
     (ρ : Representation ℂ (Kinf E (r + s)) W) (hρ : GlobalTheory.Published.AutFin.IsContRep ρ)
     (J : Set (Module.End ℂ (Sm E (r + s)))) (hJ : Cofin J) : FiniteDimensional ℂ (goodCT L ρ J) := by
   obtain ⟨J₁, J₂, c₁, c₂, k₁, k₂⟩ := centre J hJ
-  obtain ⟨T, hT⟩ := GlobalTheory.T.constant_term_unseen_statement_a E r s L hL
-  obtain ⟨S, hS⟩ := GlobalTheory.T.finite_dim_coefficients_finite_determining (Kinf E (r + s)) W ρ
+  obtain ⟨T, hT⟩ := _root_.GlobalTheory.CompanionTheory.CTFin.IwaAd.iwasawa_finite_cosets E r s L hL
+  obtain ⟨S, hS⟩ := _root_.GlobalTheory.CompanionTheory.CTFin.UniSol.coeffSpan_unisolvent (Kinf E (r + s)) W ρ
   have key : ∀ (t : GL (Fin (r + s)) (Af E)) (κ : Kinf E (r + s)),
       ∃ 𝓥 : Submodule ℂ (GA E r × GA E s → ℂ), FiniteDimensional ℂ 𝓥 ∧ ∀ F ∈ goodCT L ρ J,
         (fun m => F.1 (lev (Ad E) r s m * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ))) ∈ 𝓥 := by
     intro t κ
-    obtain ⟨L₁, ρ₁, o₁, q₁, e₁⟩ := GlobalTheory.T.constant_term_cofinite_ideal_transfer E r s L hL W ρ hρ J hJ J₁ c₁ k₁ t κ
+    obtain ⟨L₁, ρ₁, o₁, q₁, e₁⟩ := _root_.GlobalTheory.CompanionTheory.CTFin.Slice1.slice_mem_genSpace E r s L hL W ρ hρ J hJ J₁ c₁ k₁ t κ
     obtain ⟨L₂, ρ₂, o₂, q₂, e₂⟩ := GlobalTheory.T.constant_term_unseen_statement_b E r s L hL W ρ hρ J hJ J₂ c₂ k₂ t κ
     have f₁ := h₁ L₁ o₁ W ρ₁ q₁ J₁ c₁
     have f₂ := h₂ L₂ o₂ W ρ₂ q₂ J₂ c₂
-    obtain ⟨𝓥, fd, hV⟩ := GlobalTheory.T.separately_finite_dim_functions_finite (GA E r) (GA E s)
+    obtain ⟨𝓥, fd, hV⟩ := _root_.GlobalTheory.CompanionTheory.CTFin.ProdTrick.exists_finiteDimensional_of_slices (GA E r) (GA E s)
       ((Submodule.span ℂ (genSpace L₁ ρ₁ J₁)).map (Sm E r).subtype)
       ((Submodule.span ℂ (genSpace L₂ ρ₂ J₂)).map (Sm E s).subtype) inferInstance inferInstance
     refine ⟨𝓥, fd, fun F hF => hV _ (fun m₂ => ?_) (fun m₁ => ?_)⟩

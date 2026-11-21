@@ -11,14 +11,6 @@ section Tools
 
 variable {R : Type} [CommRing R]
 
-theorem constCoeff_subst_zero {g s : PowerSeries R} (hs : constantCoeff s = 0) :
-    constantCoeff (g.subst s) = constantCoeff g := by
-  have ha : HasSubst s := HasSubst.of_constantCoeff_zero hs
-  rw [← coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_subst' ha, finsum_eq_single _ 0]
-  · simp
-  · intro d hd
-    simp [map_pow, hs, zero_pow hd]
-
 theorem coeffOne_subst_zero {f s : PowerSeries R} (hs : constantCoeff s = 0) :
     coeff 1 (f.subst s) = coeff 1 f * coeff 1 s := by
   have ha : HasSubst s := HasSubst.of_constantCoeff_zero hs
@@ -99,19 +91,6 @@ theorem HD.norm_a (h : HD σ lam Φ A a) : ‖a‖ ≤ 1 := by
   rw [← h.coeff_one_A]
   exact h1 1
 
-theorem HD.qcls_lam (h : HD σ lam Φ A a) : QCls l Φ A a lam := by
-  refine ⟨h.lam0, h.toLawD.deriv_integral, ?_, ?_⟩
-  · have h0 : lam.subst Φ - atX lam - atY lam = 0 := by rw [h.log]; ring
-    rw [h0]
-    unfold DivByMv
-    intro e
-    simp
-  · have h0 : lam.subst A - C a * lam = 0 := by rw [h.Alog]; ring
-    rw [h0]
-    unfold DivBy
-    intro n
-    simp
-
 theorem eigen_trick {A : PowerSeries K} {b : K} (hA0 : constantCoeff A = 0) (D : PowerSeries K)
     (hD0 : constantCoeff D = 0) (h : DivBy (l : K) (D.subst A - C b * D))
     (hb : ‖coeff 1 A - b‖ = 1) : ‖coeff 1 D‖ ≤ ‖(l : K)‖ := by
@@ -121,14 +100,6 @@ theorem eigen_trick {A : PowerSeries K} {b : K} (hA0 : constantCoeff A = 0) (D :
   have e : coeff 1 D * coeff 1 A - b * coeff 1 D = coeff 1 D * (coeff 1 A - b) := by ring
   rw [map_sub, coeffOne_subst_zero hA0, coeff_C_mul, e, norm_mul, hb, mul_one] at h1
   exact h1
-
-theorem divBy_C_mul {x c : K} (hc : ‖c‖ ≤ 1) {f : PowerSeries K} (hf : DivBy x f) :
-    DivBy x (C c * f) := by
-  unfold DivBy at *
-  intro n
-  rw [coeff_C_mul, norm_mul]
-  calc ‖c‖ * ‖coeff n f‖ ≤ 1 * ‖x‖ := mul_le_mul hc (hf n) (norm_nonneg _) zero_le_one
-    _ = ‖x‖ := one_mul _
 
 theorem divBy_C_mul' {x c : K} (hc : ‖c‖ ≤ ‖x‖) {f : PowerSeries K} (hf : IntegralPS f) :
     DivBy x (C c * f) := by

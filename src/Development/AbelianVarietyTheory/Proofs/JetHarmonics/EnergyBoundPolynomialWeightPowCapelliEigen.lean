@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.HermitianCurvature.StatementTBB
 import Formalism.HermitianCurvature.StatementU
 import Formalism.HermitianCurvature.LetterProductDoubleDegreeCount
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliEigenfunctionPowSmulCompPolyFamilyEigenSuStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliEigenfunctionPowSmulCompPolyFamilyEigenSu
 import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.BesselXiIntegrable
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevelZeroFormLeNormCOfEigenSum
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Finset
@@ -25,7 +25,7 @@ theorem energy_bound_gfPow_smul_comp_polyOp : GlobalTheory.HCXi.BesselXiIntegrab
       have a2 := abs_sub (lam' s - lam' t) (lam' s - lam s)
       linarith
     linarith
-  have hes := GlobalTheory.T.capelliEigenfunction_pow_smul_comp_polyFamily_eigenSum P.k P.r Wp Wf Wq p.T.base.z p.T.base.z' lam' A₀ p₀ dA f Aop hgap'
+  have hes := _root_.GlobalTheory.gfPow_smul_comp_polyOp_eigenSum P.k P.r Wp Wf Wq p.T.base.z p.T.base.z' lam' A₀ p₀ dA f Aop hgap'
     ⟨hC, hI⟩ hE hA
   refine GlobalTheory.levelZero_form_le_normC_of_eigen_sum hXi Wp Wq P p lam' ((2 * P.r + 2) * p₀ + dA) _ nn _ Y N hAB hes ?_ w hw hN
   intro y

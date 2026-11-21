@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TranslateJets
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelJets
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DifferentiableComb
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTraceCompatibleTorusEmbeddingStandardTorus
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine
@@ -92,8 +92,6 @@ theorem applyAt0_comb {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → V
 end GlobalTheory.LiftTypePrime.Jets
 
 namespace GlobalTheory.LiftTypePrime
-
-open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.GL3Theta GlobalTheory.IndefiniteRowSideFullHecke.IntegralityWeylConditions GlobalTheory.GalTheta Jets
 
 end GlobalTheory.LiftTypePrime
 

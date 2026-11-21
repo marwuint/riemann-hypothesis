@@ -1,16 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonvanishingLocusAmpleSectionIsAffineModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionQuotientsTranscendenceBasisBasepointFreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionFieldBasisOfSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsCoeffLeOfHomogeneousTorusBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralQuotientRingSectionTupleLocusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomogeneousIntTraceSectionTupleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormAevalTraceFormLeFibreValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjArithFunctionFieldCharZeroTrdegStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularNonvanishingLocusSectionPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBounded
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonvanishingLocusAmpleSectionIsAffineModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionQuotientsTranscendenceBasisBasepointFree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionFieldBasisOfSections
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsCoeffLeOfHomogeneousTorusBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralQuotientRingSectionTupleLocus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomogeneousIntTraceSectionTuple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormAevalTraceFormLeFibreValues
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjArithFunctionFieldCharZeroTrdeg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularNonvanishingLocusSectionProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairPowSectionMemAndNormPow
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
@@ -68,12 +68,12 @@ theorem nu_nonneg (P : Pair p) (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (
 theorem sections_eq_sum_aeval_bounded : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∀ a b : ℤ, ∃ (c : ℕ) (w : Fin (Module.finrank (ratF x) X.functionField) → X.functionField) (C : ℝ), 0 < C ∧ ∀ (q : ℕ), ∀ f ∈ P.H (e * q + a) b, ∃ T : Fin (Module.finrank (ratF x) X.functionField) → MvPolynomial (Fin (D + 1)) ℤ, (∀ i, (T i).IsHomogeneous (q + c)) ∧ f = ∑ i, MvPolynomial.aeval x (T i) * w i ∧ ∀ R κ : ℝ, 0 < κ → (∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ l, κ ≤ P.nu e 0 σ y (x l)) → (∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu (e * q + a) b σ y f ≤ R) → ∀ i α, |((MvPolynomial.coeff α (T i) : ℤ) : ℝ)| ≤ C * R / κ ^ (q + c) := by
   intro k _ X _ p D hV P hA e x hG a b
   classical
-  obtain ⟨hx0s, hai, hfd⟩ := GlobalTheory.T.sectionQuotients_transcendenceBasis_basepointFree k X p D hV P hA e x hG
+  obtain ⟨hx0s, hai, hfd⟩ := _root_.GlobalTheory.HSAmp.gens_quot_trBasis k X p D hV P hA e x hG
   haveI := hfd
-  obtain ⟨hch, -⟩ := GlobalTheory.T.projArith_functionField_charZero_trdeg k X p D hV
+  obtain ⟨hch, -⟩ := _root_.GlobalTheory.ArithFnField.charZero_and_trdeg_functionField k X p D hV
   haveI := hch
   set n' := Module.finrank (ratF x) X.functionField with hn'
-  obtain ⟨c0, g0, hg0, hli0⟩ := GlobalTheory.T.exists_functionField_basis_of_sections k X p D hV P hA e x hG (-a) (-b)
+  obtain ⟨c0, g0, hg0, hli0⟩ := _root_.GlobalTheory.HSAmp.exists_linearIndependent_mem_H k X p D hV P hA e x hG (-a) (-b)
 
   have hli : LinearIndependent (ratF x) (fun i => g0 i * x 0) := by
     have hk : LinearMap.ker (LinearMap.mulRight (ratF x) (x 0)) = ⊥ :=
@@ -86,7 +86,7 @@ theorem sections_eq_sum_aeval_bounded : ∀ (k : Type) [CommRing k] (X : Scheme.
   obtain ⟨w, hw⟩ := rep_of_trace x (hx0s 0) g hli
 
   have hbd : ∀ i, ∃ Ci : ℝ, ∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu (e * c0 + -a + e) (-b + 0) σ y (g i) ≤ Ci :=
-    fun i => ((GlobalTheory.T.continuous_hermSectionValue_mul_conj_and_norm_bounded k X p D hV P _ _).2 _ (hgH i)).2
+    fun i => ((_root_.GlobalTheory.HSAmp.continuous_val_and_bounded k X p D hV P _ _).2 _ (hgH i)).2
   choose Ci hCi using hbd
   set Cg : ℝ := ∑ i, |Ci i| + 1 with hCg
   have hCg1 : 1 ≤ Cg := by
@@ -113,39 +113,39 @@ theorem sections_eq_sum_aeval_bounded : ∀ (k : Type) [CommRing k] (X : Scheme.
       P.nu ((N : ℤ) * e) ((N : ℤ) * 0) σ y (x l ^ N) = P.nu e 0 σ y (x l) ^ N := fun l =>
     NuPow.pow_mem_H_and_nu_pow k X p P _ _ (x l) (hG.mem l) N
   have hnv : ∀ l, NV P ((N : ℤ) * e) ((N : ℤ) * 0) (x l ^ N) = NV P e 0 (x l) := fun l =>
-    (GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 (x l) (hG.mem l)).2.2.1 N hN1
+    (_root_.GlobalTheory.HSAmp.nv_rules k X p P e 0 (x l) (hG.mem l)).2.2.1 N hN1
   have hreg : ∀ i l, ∀ z ∈ NV P e 0 (x l), RegAt z (f * g i / x l ^ N) := fun i l z hz =>
-    ((GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P _ _ (x l ^ N) (hxpow l).1).2.2.2.1 _ (hu i).1 z (by rw [hnv l]; exact hz)).1
+    ((_root_.GlobalTheory.HSAmp.nv_rules k X p P _ _ (x l ^ N) (hxpow l).1).2.2.2.1 _ (hu i).1 z (by rw [hnv l]; exact hz)).1
   have hintg : ∀ i l, IsIntegral (ratR x l) (f * g i / x l ^ N) := fun i l =>
-    GlobalTheory.T.isIntegral_quotientRing_sectionTuple_locus k X p D hV P e x hG l _ (hx0s l) (hreg i l)
+    _root_.GlobalTheory.FnInt.main k X p D hV P e x hG l _ (hx0s l) (hreg i l)
   have hTex : ∀ i, ∃ T : MvPolynomial (Fin (D + 1)) ℤ, T.IsHomogeneous N ∧
       (Algebra.trace (ratF x) X.functionField (f * g i / x 0 ^ N) : X.functionField) = aeval (fun l => x l / x 0) T :=
-    fun i => GlobalTheory.T.exists_homogeneous_int_trace_sectionTuple X.functionField D x hx0s hai hfd N (f * g i) (hintg i)
+    fun i => _root_.GlobalTheory.HSAmp.TraceHom.trace_homog X.functionField D x hx0s hai hfd N (f * g i) (hintg i)
   choose T hT htr using hTex
   refine ⟨T, hT, hw N f T hT htr, ?_⟩
   intro R κ hκ hcov hR i α
-  obtain ⟨U, hgen, hU, -, hregU, -, -, hpts⟩ := GlobalTheory.T.nonvanishingLocus_ample_section_isAffine_model k X p D hV P hA e (x 0) hG.pos (hG.mem 0) (hx0s 0)
+  obtain ⟨U, hgen, hU, -, hregU, -, -, hpts⟩ := _root_.GlobalTheory.AffModel.main k X p D hV P hA e (x 0) hG.pos (hG.mem 0) (hx0s 0)
   have hB : ∀ l, x l / x 0 ∈ (fnOf U hgen).range := fun l => (hregU _).1 fun z hz =>
-    ((GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 (x 0) (hG.mem 0)).2.2.2.1 _ (hG.mem l) z (by rw [← hU]; exact hz)).1
+    ((_root_.GlobalTheory.HSAmp.nv_rules k X p P e 0 (x 0) (hG.mem 0)).2.2.2.1 _ (hG.mem l) z (by rw [← hU]; exact hz)).1
   have hBint : ∀ b' ∈ (fnOf U hgen).range, IsIntegral (ratR x 0) b' := fun b' hb =>
-    GlobalTheory.T.isIntegral_quotientRing_sectionTuple_locus k X p D hV P e x hG 0 b' (hx0s 0) fun z hz => (hregU b').2 hb z (show z ∈ (U : Set X) by rw [hU]; exact hz)
+    _root_.GlobalTheory.FnInt.main k X p D hV P e x hG 0 b' (hx0s 0) fun z hz => (hregU b').2 hb z (show z ∈ (U : Set X) by rw [hU]; exact hz)
   have hwB : f * g i / x 0 ^ N ∈ (fnOf U hgen).range := (hregU _).1 fun z hz => hreg i 0 z (by rw [← hU]; exact hz)
-  have key := GlobalTheory.T.norm_aeval_traceForm_le_fibreValues X.functionField D x hx0s hai hfd (fnOf U hgen).range hB hBint ⟨_, hwB⟩ (T i) (htr i)
-  have hcoef := GlobalTheory.T.abs_coeff_le_of_homogeneous_torus_bound D N (T i) (n' * (R * Cg / κ ^ N)) (hT i) ?_ α
+  have key := _root_.GlobalTheory.HSAmp.norm_aeval_trace_le X.functionField D x hx0s hai hfd (fnOf U hgen).range hB hBint ⟨_, hwB⟩ (T i) (htr i)
+  have hcoef := _root_.GlobalTheory.HSAmp.CoefTorus.coeff_le_of_torus_bound D N (T i) (n' * (R * Cg / κ ^ N)) (hT i) ?_ α
   · exact le_of_le_of_eq hcoef (by ring)
   intro z hz0 hz1
   refine key z _ hz0 fun φ hφ => ?_
   obtain ⟨σ, y, hyU, hval⟩ := hpts φ
   have hyNV : under y ∈ NV P e 0 (x 0) := by rw [← hU]; exact hyU
   obtain ⟨l, hl⟩ := hcov σ y
-  have h5 := (GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 (x 0) (hG.mem 0)).2.2.2.2 (x l) (hG.mem l) σ y hyNV
+  have h5 := (_root_.GlobalTheory.HSAmp.nv_rules k X p P e 0 (x 0) (hG.mem 0)).2.2.2.2 (x l) (hG.mem l) σ y hyNV
   have hzl : ‖ratVal (x l / x 0) y‖ = 1 := by
     have := hval ⟨_, hB l⟩
     simp only at this
     rw [this, hφ l, hz1 l]
   have hx0κ : κ ≤ P.nu e 0 σ y (x 0) := by rw [h5.1, hzl, one_mul] at hl; exact hl
   have hyN : under y ∈ NV P ((N : ℤ) * e) ((N : ℤ) * 0) (x 0 ^ N) := by rw [hnv 0]; exact hyNV
-  have h6 := (GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P _ _ (x 0 ^ N) (hxpow 0).1).2.2.2.2 (f * g i) (hu i).1 σ y hyN
+  have h6 := (_root_.GlobalTheory.HSAmp.nv_rules k X p P _ _ (x 0 ^ N) (hxpow 0).1).2.2.2.2 (f * g i) (hu i).1 σ y hyN
   rw [(hu i).2, (hxpow 0).2] at h6
   have hv := hval ⟨_, hwB⟩
   simp only at hv

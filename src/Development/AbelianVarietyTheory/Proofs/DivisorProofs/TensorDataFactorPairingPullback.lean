@@ -2,8 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvTranspose
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LamPtsPull
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLambdaGeneratorZpowWithPeriodsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsoGluedFromLinCombPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBiextensionGeneratorBezoutCombinationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsoGluedFromLinCombPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsFactorNontrivial
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyFiniteNormalising
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBiextensionGeneratorBezoutCombination
 
 noncomputable section
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
@@ -23,7 +26,7 @@ theorem pair_pull : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Ad
     have key := congrFun (congrFun (Units.mul_inv (symUnitOf W h).1) i₀) i₀
     rw [hb, Matrix.mul_apply, Matrix.one_apply_eq] at key
     exact key
-  obtain ⟨u₀, hu₀, hv₀⟩ := GlobalTheory.T.exists_biextension_generator_bezout_combination D.toPre D.tau_bimult (fun j => (W + W.transpose) i₀ j)
+  obtain ⟨u₀, hu₀, hv₀⟩ := _root_.GlobalTheory.Mum.LamComb.exists_gen_lam_comb D.toPre D.tau_bimult (fun j => (W + W.transpose) i₀ j)
     (fun j => TensO.mat _ (TensO.binv (symUnitOf W h)) j i₀) hsum
   obtain ⟨u, hu, hvu⟩ := exists_gen D.toPre.P.isLB
     (φ' := Sum.elim (fun k : (Fin r × Fin r) × Fin 4 => (lift (fst D.toPre.P.A D.toPre.P.A ≫ T.inc i₀) (snd D.toPre.P.A D.toPre.P.A ≫ T.inc i₀ ≫ T.act (TensO.mat _ (TensO.binv (symUnitOf W h)))) : G2 D.toPre.P.A ⟶ G2 D'.toPre.P.A).left ≫ GlobalTheory.PolDeg.lamPts (fst D'.toPre.P.A D'.toPre.P.A ≫ T.pr k.1.1) (snd D'.toPre.P.A D'.toPre.P.A ≫ T.pr k.1.2) k.2) (fun I : ULift (Finset (Fin 2)) => (psum D.toPre.P.A (x2 D.toPre.P.A) I.down).left))
@@ -45,7 +48,7 @@ theorem pair_pull : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Ad
         simp only [ofMul_mul, ofMul_zpow, ofMul_one]
         module)
     u₀ hu₀
-  obtain ⟨w, hw, hvw⟩ := GlobalTheory.T.exists_iso_glued_from_linComb_pullback D.toPre.P.isLB (LB.isLB_linComb D'.toPre.P.isLB _ _) _ _ _ _ _ w₁ hw₁ u hu
+  obtain ⟨w, hw, hvw⟩ := _root_.GlobalTheory.Mum.iso_linComb_pull_glue D.toPre.P.isLB (LB.isLB_linComb D'.toPre.P.isLB _ _) _ _ _ _ _ w₁ hw₁ u hu
   refine ⟨w, hw, fun a b z J J' hJ hJ' => ?_⟩
 
   suffices key : ∀ b' : D'.toPre.X, (∀ j, T.xe b' j = TensO.mat _ (TensO.binv (symUnitOf W h)) j i₀ • b) →

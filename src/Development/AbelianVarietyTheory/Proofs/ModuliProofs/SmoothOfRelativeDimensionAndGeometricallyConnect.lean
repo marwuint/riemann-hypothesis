@@ -15,15 +15,6 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace GlobalTheory.VeryDenseFibres
 
-theorem geometricallyConnected_fiber_iff {X T S : Scheme.{0}} (f : X ⟶ S) (t : T ⟶ S) (y : T) :
-    GeometricallyConnected ((pullback.snd f t).fiberToSpecResidueField y) ↔
-      GeometricallyConnected (f.fiberToSpecResidueField (t y)) := by
-  have hp := isPullback_fiberToSpecResidueField_of_isPullback (IsPullback.of_hasPullback f t) y
-  refine ⟨fun h => ?_, fun h => MorphismProperty.of_isPullback (P := @GeometricallyConnected) hp h⟩
-  have : Surjective (Spec.map (t.residueFieldMap y)) :=
-    ⟨fun z => ⟨default, Subsingleton.elim _ _⟩⟩
-  exact GlobalTheory.geometricallyConnected_of_isPullback_of_surjective hp
-
 theorem smooth_fiber_of_smooth_fiber {X T S : Scheme.{0}} (f : X ⟶ S) (t : T ⟶ S) (y : T)
     (h : Smooth ((pullback.snd f t).fiberToSpecResidueField y)) :
     Smooth (f.fiberToSpecResidueField (t y)) := by
@@ -112,79 +103,5 @@ theorem spMap_apply_asIdeal {R K : Type} [CommRing R] [Field K] (x : R →+* K) 
   change Ideal.comap x y.asIdeal = _
   rw [this]
   rfl
-
-theorem geometricallyConnected_of_veryDense {R : Type} [CommRing R] [IsNoetherianRing R]
-    {Z : Scheme.{0}} (s : Z ⟶ Sp R) [LocallyOfFiniteType s] [QuasiCompact s] (P : Set (Ideal R))
-    (hP : ∀ (q₀ : Ideal R) (f₀ : R), q₀.IsPrime → f₀ ∉ q₀ →
-      ∃ p₀ ∈ P, p₀.IsPrime ∧ q₀ ≤ p₀ ∧ f₀ ∉ p₀)
-    (h : ∀ y : Sp R, y.asIdeal ∈ P → GeometricallyConnected (s.fiberToSpecResidueField y)) :
-    GeometricallyConnected s := by
-  rw [GeometricallyConnected.iff_geometricallyConnected_fiber]
-  intro q
-  have hq : q.asIdeal.IsPrime := PrimeSpectrum.isPrime q
-  let t : Sp (R ⧸ q.asIdeal) ⟶ Sp R := spMap (Ideal.Quotient.mk q.asIdeal)
-  have hd : Dense {y : Sp (R ⧸ q.asIdeal) | (t y).asIdeal ∈ P} := by
-    refine (PrimeSpectrum.isTopologicalBasis_basic_opens (R := R ⧸ q.asIdeal)).dense_iff.2 ?_
-    rintro _ ⟨a, rfl⟩ ⟨z, hz⟩
-    obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a
-    have ha : a ∉ q.asIdeal := fun ha => hz (by
-      rw [Ideal.Quotient.eq_zero_iff_mem.2 ha]; exact Ideal.zero_mem _)
-    obtain ⟨p, hp, hp', hle, hap⟩ := hP _ a hq ha
-    obtain ⟨y, hy⟩ : (⟨p, hp'⟩ : PrimeSpectrum R) ∈
-        Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk q.asIdeal)) := by
-      rw [range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker]
-      exact hle
-    have hy' : Ideal.comap (Ideal.Quotient.mk q.asIdeal) y.asIdeal = p :=
-      congrArg PrimeSpectrum.asIdeal hy
-    refine ⟨y, fun hy2 => hap (hy' ▸ hy2), ?_⟩
-    change Ideal.comap (Ideal.Quotient.mk q.asIdeal) y.asIdeal ∈ P
-    rwa [hy']
-  have H := GlobalTheory.geometricallyConnected_genericFibre_of_dense _ (Sp (R ⧸ q.asIdeal))
-    (pullback.snd s t) _ hd fun y hy => (geometricallyConnected_fiber_iff s t y).2 (h _ hy)
-  rw [geometricallyConnected_fiber_iff] at H
-  have e : t (genericPoint (Sp (R ⧸ q.asIdeal))) = q := by
-    rw [genericPoint_eq_bot_of_affine]
-    exact PrimeSpectrum.ext (Ideal.mk_ker (I := q.asIdeal))
-  rwa [e] at H
-
-theorem smoothOfRelativeDimension_and_geometricallyConnected_of_veryDense :
-    ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (Z : Scheme.{0}) (s : Z ⟶ Sp R) (g : ℕ) (P : Set (Ideal R)), (∀ (q₀ : Ideal R) (f₀ : R), q₀.IsPrime → f₀ ∉ q₀ → ∃ p₀ ∈ P, p₀.IsPrime ∧ q₀ ≤ p₀ ∧ f₀ ∉ p₀) → IsProjOver s → Flat s → (∀ q ∈ P, ∃ (K : Type) (_ : Field K) (x : R →+* K), RingHom.ker x = q ∧ SmoothOfRelativeDimension g (pullback.snd s (spMap x)) ∧ GeometricallyConnected (pullback.snd s (spMap x))) → SmoothOfRelativeDimension g s ∧ GeometricallyConnected s := by
-  intro R _ _ Z s g P hP hs hf h
-  have : IsProper s := by
-    obtain ⟨N, i, hi, rfl⟩ := hs
-    have := isProper_str R N
-    infer_instance
-  have : LocallyOfFinitePresentation s := inferInstance
-  have hP' : ∀ q : Ideal R, q.IsPrime → ∃ p ∈ P, p.IsPrime ∧ q ≤ p := fun q hq => by
-    obtain ⟨p, h1, h2, h3, -⟩ := hP q 1 hq ((Ideal.ne_top_iff_one q).1 hq.ne_top)
-    exact ⟨p, h1, h2, h3⟩
-  have h' : ∀ y : Sp R, y.asIdeal ∈ P → ∃ (T : Scheme.{0}) (t : T ⟶ Sp R) (w : T), t w = y ∧
-      SmoothOfRelativeDimension g (pullback.snd s t) ∧
-      GeometricallyConnected (pullback.snd s t) := fun y hy => by
-    obtain ⟨K, _, x, hx, h1, h2⟩ := h _ hy
-    exact ⟨_, spMap x, (default : PrimeSpectrum K),
-      PrimeSpectrum.ext ((spMap_apply_asIdeal x _).trans hx), h1, h2⟩
-  refine ⟨?_, geometricallyConnected_of_veryDense s P hP fun y hy => ?_⟩
-  · have : Smooth s := by
-      rw [← Scheme.Hom.smoothLocus_eq_top_iff]
-      refine eq_top_of_forall_mem s P hP' _ fun z hz => ?_
-      obtain ⟨T, t, w, hw, h1, -⟩ := h' _ hz
-      refine mem_smoothLocus_of_smooth_fiber s z ?_
-      rw [← hw]
-      have : Smooth (pullback.snd s t) := SmoothOfRelativeDimension.smooth g _
-      exact smooth_fiber_of_smooth_fiber s t w
-        (inferInstanceAs (Smooth (pullback.snd (pullback.snd s t) (T.fromSpecResidueField w))))
-    let V : {W : Z.Opens // SmoothOfRelativeDimension g (W.ι ≫ s)} → Z.Opens := fun W => W.1
-    have htop : iSup V = ⊤ := by
-      refine eq_top_of_forall_mem s P hP' _ fun z hz => ?_
-      obtain ⟨T, t, w, hw, h1, -⟩ := h' _ hz
-      obtain ⟨W, hW, hW'⟩ := exists_opens_smoothOfRelativeDimension s t g h1 z w hw.symm
-      exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨W, hW'⟩, hW⟩
-    have : IsZariskiLocalAtSource (@SmoothOfRelativeDimension.{0} g) :=
-      HasRingHomProperty.instIsZariskiLocalAtSource
-    exact IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension.{0} g) V htop
-      fun W => W.2
-  · obtain ⟨T, t, w, rfl, -, h2⟩ := h' _ hy
-    exact (geometricallyConnected_fiber_iff s t w).1 inferInstance
 
 end GlobalTheory.VeryDenseFibres

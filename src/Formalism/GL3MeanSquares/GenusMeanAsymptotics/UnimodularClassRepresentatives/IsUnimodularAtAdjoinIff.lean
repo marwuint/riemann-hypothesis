@@ -236,60 +236,6 @@ theorem isOrthoLattice_adjoin' (hs : h.IsSymm) (h1 : h S.x₀ S.x₀ = 1)
 
 end VecSplit
 
-theorem exists_vecSplit_ortho' {I : Submodule (𝓞 K) V} {I' : Submodule (𝓞 K) V'} {n : ℕ}
-    (hI : Formalism.HermitianLatticesTheory.IsOrthoLattice h I (n + 1)) (hI' : Formalism.HermitianLatticesTheory.IsOrthoLattice h' I' n) :
-    ∃ S : VecSplit h h', h S.x₀ S.x₀ = 1 ∧ S.adjoin I' = I := by
-  obtain ⟨e, hli, hspan, hIe, horth⟩ := hI
-  obtain ⟨e', hli', hspan', hIe', horth'⟩ := hI'
-  have hsucc : LinearIndependent K (fun j : Fin n => e j.succ) := hli.comp _ (Fin.succ_injective n)
-  let b' : Basis (Fin n) K V' := Basis.mk hli' hspan'.ge
-  let bs : Basis (Fin n) K (Submodule.span K (Set.range fun j : Fin n => e j.succ)) := Basis.span hsucc
-  let ι : V' →ₗ[K] V := (Submodule.subtype _).comp (b'.equiv bs (Equiv.refl _)).toLinearMap
-  have hιe : ∀ j, ι (e' j) = e j.succ := by
-    intro j
-    have h1 : e' j = b' j := (Basis.mk_apply hli' hspan'.ge j).symm
-    rw [h1]
-    simp only [ι, bs, LinearMap.comp_apply, LinearEquiv.coe_coe, Basis.equiv_apply, Equiv.refl_apply,
-      Submodule.subtype_apply, Basis.span_apply]
-  have hinj : Function.Injective ι := Subtype.val_injective.comp (LinearEquiv.injective _)
-  let b : Basis (Fin (n + 1)) K V := Basis.mk hli hspan.ge
-  have hisom : ∀ a c, h (ι a) (ι c) = h' a c := by
-    have hB : (h.comp ι).compl₂ ι = h' := by
-      refine LinearMap.ext_basis b' b' (fun i j => ?_)
-      simp only [LinearMap.compl₂_apply, LinearMap.comp_apply, b', Basis.mk_apply, hιe, horth, horth',
-        Fin.succ_inj]
-    intro a c
-    exact congrArg (fun B : V' →ₗ⋆[K] V' →ₗ[K] K => B a c) hB
-  have horthι : ∀ a, h (e 0) (ι a) = 0 := by
-    have hz : (h (e 0)).comp ι = 0 := by
-      refine b'.ext (fun j => ?_)
-      simp [b', hιe, horth, (Fin.succ_ne_zero j).symm]
-    intro a
-    exact LinearMap.congr_fun hz a
-  have hcover : ∀ v, ∃ (c : K) (a : V'), v = c • e 0 + ι a := by
-    intro v
-    refine ⟨b.repr v 0, ∑ j : Fin n, b.repr v j.succ • e' j, ?_⟩
-    conv_lhs => rw [← b.sum_repr v]
-    rw [Fin.sum_univ_succ, map_sum]
-    simp only [b, Basis.mk_apply, map_smul, hιe]
-  refine ⟨⟨e 0, ι, hinj, ?_, hisom, horthι, hcover⟩, ?_, ?_⟩
-  · rw [horth 0 0]
-    simp
-  · show h (e 0) (e 0) = 1
-    rw [horth 0 0]
-    simp
-  · show Submodule.span (𝓞 K) {e 0} ⊔ I'.map (ι.restrictScalars (𝓞 K)) = I
-    rw [hIe', hIe, Submodule.map_span]
-    have hr : Set.range e = insert (e 0) (Set.range fun j : Fin n => e j.succ) := by
-      ext v
-      simp only [Set.mem_range, Set.mem_insert_iff]
-      rw [Fin.exists_fin_succ]
-      exact or_congr_left eq_comm
-    rw [hr, Submodule.span_insert]
-    congr 2
-    ext v
-    simp [hιe]
-
 namespace VecSplit
 
 variable (S : VecSplit h h')
@@ -327,54 +273,7 @@ theorem comb_mem_loc_adjoin_iff (p : Ideal (𝓞 K)) (L' : Submodule (𝓞 K) V'
     · rw [mul_smul]
       exact L'.smul_mem s₁ h₂
 
-theorem comb_mem_dualAt_iff (hs : h.IsSymm) (h1 : h S.x₀ S.x₀ = 1) (p : Ideal (𝓞 K))
-    (L' : Submodule (𝓞 K) V') (c : K) (a : V') :
-    c • S.x₀ + S.ι a ∈ Formalism.HermitianLatticesTheory.dualAt h p (Formalism.HermitianLatticesTheory.loc (K := K) p (S.adjoin L')) ↔
-      c ∈ Formalism.HermitianLatticesTheory.locR (K := K) p ∧
-        a ∈ Formalism.HermitianLatticesTheory.dualAt h' p (Formalism.HermitianLatticesTheory.loc (K := K) p L') := by
-  rw [mem_dualAt_iff', mem_dualAt_iff']
-  constructor
-  · intro H
-    refine ⟨?_, fun b hb => ?_⟩
-    · have hx : (1 : K) • S.x₀ + S.ι 0 ∈ Formalism.HermitianLatticesTheory.loc (K := K) p (S.adjoin L') :=
-        (S.comb_mem_loc_adjoin_iff p L' 1 0).mpr ⟨one_mem_locR p, Submodule.zero_mem _⟩
-      have := H _ hx
-      rwa [S.h_comb hs h1, map_one, one_mul, map_zero, LinearMap.zero_apply, add_zero] at this
-    · have hy : (0 : K) • S.x₀ + S.ι b ∈ Formalism.HermitianLatticesTheory.loc (K := K) p (S.adjoin L') :=
-        (S.comb_mem_loc_adjoin_iff p L' 0 b).mpr ⟨Submodule.zero_mem _, hb⟩
-      have := H _ hy
-      rwa [S.h_comb hs h1, map_zero, zero_mul, zero_add] at this
-  · rintro ⟨hc, ha⟩ y hy
-    obtain ⟨d, b, rfl⟩ := S.cover y
-    obtain ⟨hd, hb⟩ := (S.comb_mem_loc_adjoin_iff p L' d b).mp hy
-    rw [S.h_comb hs h1]
-    exact Submodule.add_mem _ (mul_mem_locR p (star_mem_locR p hd) hc) (ha b hb)
-
-theorem isUnimodularAt_adjoin_iff' (hs : h.IsSymm) (h1 : h S.x₀ S.x₀ = 1)
-    (L' : Submodule (𝓞 K) V') (p : Ideal (𝓞 K)) :
-    Formalism.HermitianLatticesTheory.IsUnimodularAt h p (S.adjoin L') ↔ Formalism.HermitianLatticesTheory.IsUnimodularAt h' p L' := by
-  unfold Formalism.HermitianLatticesTheory.IsUnimodularAt
-  constructor
-  · intro H
-    ext a
-    have h1' := S.comb_mem_dualAt_iff hs h1 p L' 0 a
-    have h2' := S.comb_mem_loc_adjoin_iff p L' 0 a
-    rw [H, h2'] at h1'
-    simpa [Submodule.zero_mem] using h1'.symm
-  · intro H
-    ext v
-    obtain ⟨c, a, rfl⟩ := S.cover v
-    rw [S.comb_mem_dualAt_iff hs h1, S.comb_mem_loc_adjoin_iff, H]
-
 end VecSplit
-
-theorem exists_vecSplit_ortho {I : Submodule (𝓞 K) V} {I' : Submodule (𝓞 K) V'} {n : ℕ}
-    (hI : Formalism.HermitianLatticesTheory.IsOrthoLattice h I (n + 1)) (hI' : Formalism.HermitianLatticesTheory.IsOrthoLattice h' I' n) :
-    ∃ S : VecSplit h h', h S.x₀ S.x₀ = 1 ∧ S.adjoin I' = I := exists_vecSplit_ortho' hI hI'
-
-theorem VecSplit.isOrthoLattice_adjoin (hs : h.IsSymm) (S : VecSplit h h') (h1 : h S.x₀ S.x₀ = 1)
-    {I' : Submodule (𝓞 K) V'} {n : ℕ} (hI' : Formalism.HermitianLatticesTheory.IsOrthoLattice h' I' n) :
-    Formalism.HermitianLatticesTheory.IsOrthoLattice h (S.adjoin I') (n + 1) := S.isOrthoLattice_adjoin' hs h1 hI'
 
 theorem VecSplit.cut_adjoin (S : VecSplit h h') (L' : Submodule (𝓞 K) V') :
     S.cut (S.adjoin L') = L' := S.cut_adjoin' L'
@@ -391,9 +290,5 @@ theorem VecSplit.isLattice_adjoin_iff (S : VecSplit h h') (L' : Submodule (𝓞 
 theorem VecSplit.isIntegralLat_adjoin_iff (hs : h.IsSymm) (S : VecSplit h h') (h1 : h S.x₀ S.x₀ = 1)
     (L' : Submodule (𝓞 K) V') :
     Formalism.HermitianLatticesTheory.IsIntegralLat h (S.adjoin L') ↔ Formalism.HermitianLatticesTheory.IsIntegralLat h' L' := S.isIntegralLat_adjoin_iff' hs h1 L'
-
-theorem VecSplit.isUnimodularAt_adjoin_iff (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hs : h.IsSymm) (S : VecSplit h h')
-    (h1 : h S.x₀ S.x₀ = 1) (L' : Submodule (𝓞 K) V') (p : Ideal (𝓞 K)) (hp : p.IsMaximal) :
-    Formalism.HermitianLatticesTheory.IsUnimodularAt h p (S.adjoin L') ↔ Formalism.HermitianLatticesTheory.IsUnimodularAt h' p L' := S.isUnimodularAt_adjoin_iff' hs h1 L' p
 
 end Formalism.HermitianLattices.Ext.L3

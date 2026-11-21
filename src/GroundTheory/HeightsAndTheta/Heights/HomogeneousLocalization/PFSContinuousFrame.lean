@@ -89,12 +89,6 @@ theorem FSContinuousFrame.proof (h₁ : FSIndex.Statement.{u})
   exact (continuousOn_chart h₁ h₂ ρ e j).continuousAt
     (hW.mem_nhds (CP.mem_chartDomain_chartIndex y₀.1.1))
 
-example (h₁ : FSIndex.Statement.{0}) (h₂ : ComplexMetric.RegularContinuous.Statement.{0}) :
-    Continuous fun y : {x : (self (NumberField.RingOfIntegers ℚ) 1).complexPoints
-        (intEmb (Rat.castHom ℂ)) // (self _ 1).point x ∈ ProjSpace.stdOpen _ 1 0} =>
-      fsFibreNorm 1 _ y.1 ((self _ 1).sectionValue y.1 y.2 (stdFrame _ 0 1)) :=
-  FSContinuousFrame.proof h₁ h₂ _ _ _ _ _ _ (isBasisOn_frame 0 1)
-
 end SectionsLatticeFS
 
 end

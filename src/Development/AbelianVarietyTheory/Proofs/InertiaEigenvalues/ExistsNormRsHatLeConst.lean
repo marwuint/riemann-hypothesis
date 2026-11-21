@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOfMemSmoothSpan
-import Development.AbelianVarietyTheory.Definitions.Divisors.MemMspan
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TsumRsPsiEqTsumNeZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspFormSmoothSpanNormLeShortRationalVectorStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspFormRapidKernelSmoothSpanSmoothCuspidalBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixSpanLeRapidSpanStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MspanLeBddForms
 import Development.AbelianVarietyTheory.Definitions.Divisors.MeasurableCompInfGL
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemBddFormsOfWithSmoothings
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivariantProj
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InverseTransposeMemCuspFormRapidKernelSpanContraStatement
 
 noncomputable section
@@ -44,13 +44,6 @@ theorem decays_invT_of_mem_rsm {π : CuspSub E a} (hπ : π.IsUnitary) {F : Sm E
   refine ⟨C, fun g c hc ξ hξ hm => ?_⟩
   have := h g c hc ξ hξ hm
   simpa [GlobalTheory.GLFin.word, hψ] using this
-
-theorem mem_rsm {π : CuspSub E a} {φ : Sm E a} (h : φ ∈ π.V ∨ φ.1 ∈ GlobalTheory.JSW.mspan π) : φ ∈ rsm π := by
-  change φ.1 ∈ GlobalTheory.JSW.mspanR π
-  rw [← GlobalTheory.JSW.rspan_eq_mspanR]
-  rcases h with h | h
-  · exact GlobalTheory.JSW.mem_rspan h
-  · exact GlobalTheory.T.matrix_span_le_rapid_span π h
 
 variable {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E)
 variable {π π' : CuspSub E a} {φ φ' : Sm E a}
@@ -140,10 +133,10 @@ theorem partB_entire (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ r
   have hi := GlobalTheory.T.integrableOn_absDet_rpow_le_one_fundamentalDomain E a ℓ.pos μ 𝓕 h𝓕 1 one_pos
   simp only [Real.rpow_one] at hi
   have hb := exists_tsum_norm_rsHat_le J η hπ hπ' hφ hφ' hΦ
-  have h1 := GlobalTheory.T.mellin_integral_rapidDecay_entire_of_le_one _ _ _ _ GlobalTheory.RSThetaLow.continuous_absDet.measurable hδ hi (AEStronglyMeasurable.tsum hm) fun K =>
+  have h1 := _root_.GlobalTheory.integral_mul_cpow_of_rapid_decay_entire _ _ _ _ GlobalTheory.RSThetaLow.continuous_absDet.measurable hδ hi (AEStronglyMeasurable.tsum hm) fun K =>
     (hb K).imp fun C h => hlow.mono fun g hg =>
       (norm_tsum_le_tsum_norm (poisson_rsPsi J η φ φ' hΦ g).2.1).trans (h g hg)
-  have h2 := GlobalTheory.T.mellin_integral_rapidDecay_entire_of_le_one _ _ _ _ GlobalTheory.RSThetaLow.continuous_absDet.measurable hδ hi
+  have h2 := _root_.GlobalTheory.integral_mul_cpow_of_rapid_decay_entire _ _ _ _ GlobalTheory.RSThetaLow.continuous_absDet.measurable hδ hi
     (Complex.continuous_ofReal.comp_aestronglyMeasurable (AEStronglyMeasurable.tsum fun ξ => (hm ξ).norm)) fun K =>
     (hb K).imp fun C h => hlow.mono fun g hg => by
       rw [Complex.norm_real, Real.norm_of_nonneg (tsum_nonneg fun _ => norm_nonneg _)]

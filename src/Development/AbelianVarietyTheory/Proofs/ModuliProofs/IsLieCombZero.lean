@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueInvariantVectorFieldOfTangentStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueInvariantVectorFieldOfTangent
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.InvariantVectorFieldsAlongGroupHomStatement
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsInvDer
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LeISupInfPreimage
@@ -79,7 +79,7 @@ theorem field_pb {v : epsR K ⟶ A₀} {dd : ∀ O : A₀.left.Opens, Γ(A₀.le
     (hv : IsTangent v) (hd : IsInvDer v dd) (hw : IsTangent w) (hdw : IsInvDer w dw) (e : w ≫ f = v)
     (W : A₀.left.Opens) (h : Γ(A₀.left, W)) (O : A₁.left.Opens) (hO : O ≤ f.left ⁻¹ᵁ W) :
     dw O (pbT f.left h O) = pbT f.left (dd W h) O := by
-  obtain ⟨-, hprop⟩ := GlobalTheory.T.exists_unique_invariantVectorField_of_tangent K A₁ w hw
+  obtain ⟨-, hprop⟩ := _root_.GlobalTheory.KS.InvField.main K A₁ w hw
   obtain ⟨-, -, hres, -, -⟩ := hprop dw hdw
   have hkey := GlobalTheory.T.invariantVectorFields_along_groupHom K A₁ A₀ f 1 (fun _ => v) (fun _ => dd) w dw (fun _ => 1) inferInstance
     (fun _ => hv) hw (fun _ => hd) hdw (by rw [e]; exact isLieComb_one v) W h
@@ -90,7 +90,7 @@ theorem field_pb {v : epsR K ⟶ A₀} {dd : ∀ O : A₀.left.Opens, Γ(A₀.le
 theorem field_pb_zero (hw : IsTangent w) (hdw : IsInvDer w dw) (e : w ≫ f = 1)
     (W : A₀.left.Opens) (h : Γ(A₀.left, W)) (O : A₁.left.Opens) (hO : O ≤ f.left ⁻¹ᵁ W) :
     dw O (pbT f.left h O) = 0 := by
-  obtain ⟨-, hprop⟩ := GlobalTheory.T.exists_unique_invariantVectorField_of_tangent K A₁ w hw
+  obtain ⟨-, hprop⟩ := _root_.GlobalTheory.KS.InvField.main K A₁ w hw
   obtain ⟨-, -, hres, -, -⟩ := hprop dw hdw
   have hkey := GlobalTheory.T.invariantVectorFields_along_groupHom K A₁ A₀ f 0 (fun _ => 1) (fun _ _ x => x) w dw (fun _ => 1) inferInstance
     (fun i => i.elim0) hw (fun i => i.elim0) hdw (by rw [e]; exact isLieComb_zero) W h
@@ -112,8 +112,8 @@ theorem main : ∀ (K : Type) [Field K] (A₀ : Over (Sp K)) [GrpObj A₀] [IsCo
   have hm : IsMonHom (fst A₀ A₀ * snd A₀ A₀) := by
     rw [← MonObj.mul_eq_mul]
     infer_instance
-  obtain ⟨-, hprop⟩ := GlobalTheory.T.exists_unique_invariantVectorField_of_tangent K (A₀ ⊗ A₀) w hw
-  obtain ⟨dw, hdw⟩ := (GlobalTheory.T.exists_unique_invariantVectorField_of_tangent K (A₀ ⊗ A₀) w hw).1
+  obtain ⟨-, hprop⟩ := _root_.GlobalTheory.KS.InvField.main K (A₀ ⊗ A₀) w hw
+  obtain ⟨dw, hdw⟩ := (_root_.GlobalTheory.KS.InvField.main K (A₀ ⊗ A₀) w hw).1
   obtain ⟨hadd, hmul, hres, hconst, -⟩ := hprop dw hdw
   refine ⟨dw, hadd, hmul, hres, hconst, ?_, ?_, ?_⟩
   · intro W h O hO

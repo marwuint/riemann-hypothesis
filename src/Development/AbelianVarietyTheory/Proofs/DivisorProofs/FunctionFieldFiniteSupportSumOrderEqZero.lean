@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldZerosFiniteSumOrderEqFinrankStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldZerosFiniteSumOrderEqFinrank
 
 open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef
@@ -31,8 +31,8 @@ theorem finite_support_and_sum_ord_eq_zero : ∀ (k F : Type) [Field k] [IsAlgCl
       apply htr
       have := h.inv
       rwa [inv_inv] at this
-    obtain ⟨hA, hsA⟩ := GlobalTheory.T.functionField_zeros_finite_sum_order_eq_finrank k F hF x htr
-    obtain ⟨hB, hsB⟩ := GlobalTheory.T.functionField_zeros_finite_sum_order_eq_finrank k F hF x⁻¹ htr'
+    obtain ⟨hA, hsA⟩ := _root_.GlobalTheory.Nef.zeros_finite_sum_eq_degree k F hF x htr
+    obtain ⟨hB, hsB⟩ := _root_.GlobalTheory.Nef.zeros_finite_sum_eq_degree k F hF x⁻¹ htr'
     rw [adjoin_simple_inv_eq] at hsB
     set A := {v : Place k F | v.1 x < 1}
     set B := {v : Place k F | v.1 x⁻¹ < 1}

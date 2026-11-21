@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometricIntertwinerOfMatrixCoeffEq
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtremalVectorMatrixCoeffHolomorphicTypeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtremalVectorMatrixCoeffHolomorphicType
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicTypeEqZeroOfTorusLawAtOneStatement
 open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.L2.Pj Formalism.IndefR.FWT Formalism.IndefR GlobalTheory.HolDict
 open scoped TensorProduct InnerProductSpace ContDiff
@@ -311,10 +311,10 @@ theorem holModel_unique : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what�
   have hs' : HolShape M' := fun τ => by rw [hl, he]; exact hs τ
   have hw' : WtIs M' w := fun τ c => by
     rw [hw τ c]; unfold extWt; rw [hl, he]
-  obtain ⟨f1, t1⟩ := GlobalTheory.T.extremalVector_matrixCoeff_holomorphicType D θ V S M w v hθ hs hw hv
-  obtain ⟨f2, t2⟩ := GlobalTheory.T.extremalVector_matrixCoeff_holomorphicType D θ V S M' w v' hθ hs' hw' hv'
-  have m1 := GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M
-  have m2 := GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M'
+  obtain ⟨f1, t1⟩ := _root_.GlobalTheory.HolDict.holFn_coef_extVec D θ V S M w v hθ hs hw hv
+  obtain ⟨f2, t2⟩ := _root_.GlobalTheory.HolDict.holFn_coef_extVec D θ V S M' w v' hθ hs' hw' hv'
+  have m1 := _root_.GlobalTheory.HolDict.ModelRep.model_rep D V S M
+  have m2 := _root_.GlobalTheory.HolDict.ModelRep.model_rep D V S M'
   haveI := fun τ => (m1 τ).1
   haveI := fun τ => (m2 τ).1
   simp only [he] at f2

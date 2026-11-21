@@ -101,17 +101,6 @@ theorem uncurry_comp {φ a : Pt C 1 dd} (ha : ∀ i, MvPowerSeries.constantCoeff
 
 end Rename
 
-def PTFBSt : Prop :=
-  AllFB fun C _ V d I _ _ X => ∀ (g : Fin 2) (a : ZMod d) (w : I g → C), (∀ c, V.Ge 0 (w c)) →
-    (∀ c, X.tyC g (Sum.inl c) ≠ a → w c = 0) →
-    ∃ x ∈ X.TySet V g, x 0 = Sum.elim w 0 ∧ ∀ (i : ℕ) n, X.tyC g n ≠ a + i → x i n = 0
-
-def AddCvFBSt : Prop := AllFB fun _ _ V _ _ _ _ X => X.AddCvSt V
-
-def HStabFBSt : Prop :=
-  AllFB fun _ _ V _ I _ _ X => ∀ (g : Fin 2) (c : I g) (q : JJ I g), X.ty g c ≠ X.ty (1 - g) q →
-    V.Ge 0 (X.sg1 (X.u g c) (X.u (1 - g) q))
-
 section Inst
 
 variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ} {I : Fin 2 → Type}
@@ -122,82 +111,6 @@ theorem FBChart.lg_const (i : Fin dd) : MvPowerSeries.constantCoeff (Y.lg i) = 0
   rw [MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_zero_X] at h
   exact h
 
-theorem FBChart.chart_log_constantCoeff (i : Fin dd) : MvPowerSeries.constantCoeff ((Y.raw p).lg i) = 0 := by
-  rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
-  show MvPowerSeries.coeff ((0 : Fin dd →₀ ℕ).mapDomain fun x : Fin dd => ((0 : Fin 1), x)) (Y.lg i) = 0
-  rw [Finsupp.mapDomain_zero, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
-  exact Y.lg_const i
-
-theorem FBChart.chart_exp_constantCoeff (i : Fin dd) : MvPowerSeries.constantCoeff ((Y.raw p).ex i) = 0 := by
-  rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
-  show MvPowerSeries.coeff ((0 : Fin dd →₀ ℕ).mapDomain fun x : Fin dd => ((0 : Fin 1), x)) (Y.ex i) = 0
-  rw [Finsupp.mapDomain_zero, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
-  exact Y.ex_const i
-
-theorem FBChart.raw_exlg (i : Fin dd) :
-    MvPowerSeries.subst (Y.raw p).lg ((Y.raw p).ex i) = (MvPowerSeries.X i : MvPowerSeries (Fin dd) C) := by
-  show MvPowerSeries.subst (fun j => un1 (Y.lg j)) (un1 (Y.ex i)) = _
-  rw [uncurry_comp (fun j => Y.lg_const j), Y.ex_lg]
-  exact uncurry_X i
-
-theorem FBChart.raw_lgex (i : Fin dd) :
-    MvPowerSeries.subst (Y.raw p).ex ((Y.raw p).lg i) = (MvPowerSeries.X i : MvPowerSeries (Fin dd) C) := by
-  show MvPowerSeries.subst (fun j => un1 (Y.ex j)) (un1 (Y.lg i)) = _
-  rw [uncurry_comp (fun j => Y.ex_const j), Y.lg_ex]
-  exact uncurry_X i
-
-theorem FBChart.raw_lin (i : Fin dd) (μ : Fin dd →₀ ℕ) (hμ : μ.degree ≤ 1) :
-    MvPowerSeries.coeff μ ((Y.raw p).lg i) =
-      MvPowerSeries.coeff μ (MvPowerSeries.X i : MvPowerSeries (Fin dd) C) := by
-  show MvPowerSeries.coeff (μ.mapDomain fun x : Fin dd => ((0 : Fin 1), x)) (Y.lg i) = _
-  rw [Y.lg_lin i _ ?_, ← uncurry_X i]
-  · rfl
-  · have hd : ∀ ν : Fin dd →₀ ℕ, (ν.mapDomain fun x : Fin dd => ((0 : Fin 1), x)).degree = ν.degree := by
-      intro ν
-      refine Finsupp.induction_linear ν ?_ ?_ ?_
-      · simp
-      · intro f g hf hg
-        rw [Finsupp.mapDomain_add, map_add, map_add, hf, hg]
-      · intro a b
-        rw [Finsupp.mapDomain_single]
-        simp
-    rw [hd]
-    exact hμ
-
-theorem FBChart.raw_axis0 (e : Fin 2 × Fin dd →₀ ℕ) (he : ∀ s ∈ e.support, s.1 ≠ 0) :
-    MvPowerSeries.coeff e (Y.raw p).h = 0 := by
-  refine coeff_of_ev_zero Y.h 0 ![0, pt C dd 0] rfl ?_ Y.gauge.ax0 e he
-  intro g' hg'
-  rw [fin_two_eq_one_sub_of_ne' 0 g' hg']
-  rfl
-
 end Inst
-
-theorem cartFB_of (hPT : PTFBSt) (hAdd : AddCvFBSt) (hStab : HStabFBSt) : CartFBSt := by
-  intro C _ _ V O _ _ dd Y d _ I _ p g
-  show RawChart.CartHyp (Y.raw p) V g
-  haveI := Y.algClosed
-  haveI : NeZero (V.l : C) := ⟨Nat.cast_ne_zero.2 V.l_prime.ne_zero⟩
-  obtain ⟨ζ, hζr⟩ := IsAlgClosed.exists_root (Polynomial.cyclotomic V.l C)
-    (Polynomial.degree_cyclotomic_pos V.l C V.l_prime.pos).ne'
-  have hζ : IsPrimitiveRoot ζ V.l := (Polynomial.isRoot_cyclotomic_iff).1 hζr
-  have hA : (Y.raw p).AddCvSt V := hAdd C V O dd Y d I p
-  have h0 : (0 : ℕ → I g ⊕ JJ I g → C) ∈ (Y.raw p).TySet V g :=
-    RawChart.zero_mem (Y.raw p) (Y.chart_log_constantCoeff p) (Y.raw_axis0 p) V g
-  have hadd : ∀ x y, x ∈ (Y.raw p).TySet V g → y ∈ (Y.raw p).TySet V g → x + y ∈ (Y.raw p).TySet V g :=
-    fun x y hx hy => RawChart.add_mem (Y.raw p) V g hA p.u_int x y hx hy
-  exact
-    { zero := h0
-      add := hadd
-      neg := fun x hx => RawChart.neg_mem (Y.raw p) V g Y.l_odd x hx
-      teich := fun c hc x hx => RawChart.teich_mem (Y.raw p) V g c hc x hx
-      Vm := fun x hx => RawChart.Vpow_mem' (Y.raw p) V g 1 x hx
-      Fm := fun x hx => RawChart.F_mem (Y.raw p) V g (Y.chart_log_constantCoeff p) (Y.raw_exlg p) hζ h0 hadd x hx
-      sumV := fun y hy => RawChart.sumV_mem (Y.raw p) V g (Y.chart_log_constantCoeff p) (Y.chart_exp_constantCoeff p) (Y.raw_exlg p)
-        (Y.raw_lgex p) h0 hadd y hy
-      t2 := fun x hx s hs n => RawChart.val_nonneg_leading_coeff_of_mem_tySet (Y.raw p) V g (Y.raw_lin p) (Y.raw_axis0 p) (p.u_sat g)
-        (hStab C V O dd Y d I p g) x hx s hs n
-      t3 := fun ζ' hζ' => RawChart.const_mem_type_set_of_nonneg (Y.raw p) (Y.chart_log_constantCoeff p) (Y.raw_axis0 p) V g ζ' hζ'
-      t4 := hPT C V O dd Y d I p g }
 
 end Formalism.L2.FormalSeriesBounds

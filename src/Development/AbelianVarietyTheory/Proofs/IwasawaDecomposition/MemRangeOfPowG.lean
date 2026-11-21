@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AmbientBaseHeq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NoRamifiedNorm
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeUOperatorRationalInvertibleRamifiedFormsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeUOperatorRationalInvertibleRamifiedForms
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CmQuadraticFormEqAlternatingForm
+import Formalism.LocalToGlobal.HermitianColumns.SymAll
+import Formalism.LocalToGlobal.GroupLattices.DownNaturalLevelZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DGamDvdOfMinkMult
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsDefiniteLaws
 import Formalism.LocalToGlobal.GroupLattices.Joint0
@@ -101,7 +104,7 @@ theorem colLay_of_herm (X : Stages) (hX : Nonempty (PreX X.B.toPre))
       congrArg (fun c => c.DGam) (X.C.memberColumns_twistedChain_base X.B.u₀)
     exact (hDG u μ).trans ((hDG X.B.u₀ X.C.mu0).symm.trans h0)
   mink := dGamChoice_of_lcm X hDG
-  atT := GlobalTheory.T.heckeUOperator_rational_invertible_ramifiedForms X hX H T hJ (fun u => psi0Rat X T u)
+  atT := _root_.GlobalTheory.LevelHecke.commensurable_at_level X hX H T hJ (fun u => psi0Rat X T u)
 
 theorem colLay_of_tied (X : Stages) (hX : Nonempty (PreX X.B.toPre))
     (hDG : ∀ u μ, (X.C.chTw u μ).DGam = GlobalTheory.Mem.Col2.DGam X.B.fields.E X.B.R) (C : ColsTiedSym X.toD7) :

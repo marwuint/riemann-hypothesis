@@ -155,31 +155,6 @@ structure ConjAdjoint (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) : Prop wher
     ∀ om' : Rep T S, IsWeilDatumO ψ T S χT χS om' → ∀ g h f, IsThetaFunO ψ S T f →
       om' (h, g) (cj (dagger T S) f) = cj (dagger T S) (om (g, h) f)
 
-def TensorRule (D : D7) : Prop :=
-  ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) →
-    (∀ (S A B : HSp D) (d : OrthDec S A B) (T : HSp D), TensorSource ψ d T) ∧
-    (∀ (T A B : HSp D) (d : OrthDec T A B) (S : HSp D), TensorTarget ψ d S) ∧
-    ∀ S T : HSp D, ConjAdjoint ψ S T
-
-example {S T : HSp D} (om : Rep S T) (g : GA D S) (h : GA D T) (f : WO S T → ℂ) :
-    conjTarget om (g, negGA T h) (cj id f) = cj id (om (g, h) f) := by
-  have := cjEnd_cj (Equiv.refl (WO S T)) (om (g, h)) f
-  simpa [conjTarget] using this
-
-example {S T : HSp D} (om : Rep S T) (g : GA D S) (h : GA D T) (f : WO S T → ℂ) :
-    conjAdjoint om (h, g) (cj (dagger T S) f) = cj (dagger T S) (om (g, h) f) :=
-  cjEnd_cj (daggerEquiv S T) (om (g, h)) f
-
-example (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) :
-    dagger S T (actO S T g h x) = actO T S h g (dagger S T x) := by
-  simp only [dagger, actO_eq, adj_mul, mt_inv S g, mt_inv T h, adj_adj, adj_gA, adj_giA, Matrix.mul_assoc,
-    giA_gA_cancel, gA_giA_cancel]
-
-example (χA χB χT : Chr D) (x x' y : (AE D)ˣ) :
-    splitFacO (χA * χB) χT (x * x') y = splitFacO χA χT x y * splitFacO χB χT x' y := by
-  simp only [splitFacO, map_mul, MonoidHom.mul_apply, _root_.mul_inv_rev]
-  ac_rfl
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger
 
 end

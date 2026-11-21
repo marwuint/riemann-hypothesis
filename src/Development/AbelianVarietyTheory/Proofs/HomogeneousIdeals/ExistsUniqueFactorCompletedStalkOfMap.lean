@@ -124,13 +124,6 @@ theorem isLocalHom_of_factor_stalk {f : Spec (.of R) ⟶ X} {x : X} (hx : f (clo
     (Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of R) f)]
   exact Scheme.isLocalHom_stalkClosedPointTo' f
 
-theorem range_subset_of_closedPoint_mem (f : Spec (.of R) ⟶ X) {U : X.Opens}
-    (hU : f (closedPoint R) ∈ U) : Set.range f ⊆ U := by
-  rintro _ ⟨y, rfl⟩
-  have : y ∈ f ⁻¹ᵁ U := by
-    rw [Scheme.preimage_eq_top_of_closedPoint_mem (R := .of R) f hU]; trivial
-  exact this
-
 noncomputable def fromSpecCompletedStalk (X : Scheme.{u}) (x : X) :
     Spec (.of (AdicCompletion (maximalIdeal (X.presheaf.stalk x)) (X.presheaf.stalk x))) ⟶ X :=
   Spec.map (CommRingCat.ofHom (algebraMap (X.presheaf.stalk x)
@@ -209,10 +202,6 @@ def IsAdicFamily {X : Scheme.{u}} (f : ∀ n : ℕ, Spec (.of (R ⧸ I ^ (n + 1)
 
 variable {I}
 
-theorem isAdicFamily_restrict {X : Scheme.{u}} (g : Spec (.of R) ⟶ X) :
-    IsAdicFamily I fun n => adicLevelι I (n + 1) ≫ g :=
-  fun _ => adicLevelMap_ι_assoc I _ g
-
 theorem IsAdicFamily.of_le {X : Scheme.{u}} {f : ∀ n : ℕ, Spec (.of (R ⧸ I ^ (n + 1))) ⟶ X}
     (hf : IsAdicFamily I f) {m n : ℕ} (h : m ≤ n) :
     adicLevelMap I (Nat.succ_le_succ h) ≫ f n = f m := by
@@ -261,13 +250,6 @@ theorem IsAdicFamily.closedPoint_eq (hI : I ≠ ⊤) {X : Scheme.{u}}
   rw [← hf.of_le (Nat.zero_le n)]
   refine Eq.trans ?_ (Scheme.Hom.comp_apply _ _ _).symm
   exact congrArg (f n) (adicLevelMap_closedPoint hI _).symm
-
-theorem IsAdicFamily.range_subset (hI : I ≠ ⊤) {X : Scheme.{u}}
-    {f : ∀ n : ℕ, Spec (.of (R ⧸ I ^ (n + 1))) ⟶ X} (hf : IsAdicFamily I f) {U : X.Opens}
-    (hU : haveI := isLocalRing_quotient_pow hI 0; f 0 (closedPoint (R ⧸ I ^ (0 + 1))) ∈ U)
-    (n : ℕ) : Set.range (f n) ⊆ U :=
-  haveI := isLocalRing_quotient_pow hI n
-  range_subset_of_closedPoint_mem (f n) (by rwa [hf.closedPoint_eq hI n])
 
 theorem hom_ext_of_isHausdorff (I : Ideal R) [IsHausdorff I R] {X : Scheme.{u}}
     {g g' : Spec (.of R) ⟶ X}
@@ -325,21 +307,6 @@ theorem existsUnique_over_of_isAdicFamily [IsAdicComplete I R] {X S : Scheme.{u}
   rw [← Category.assoc, hg, hs]
 
 variable (I)
-
-omit [IsLocalRing R] in
-
-noncomputable def adicRestrict (X : Scheme.{u}) (g : Spec (.of R) ⟶ X) :
-    {f : ∀ n : ℕ, Spec (.of (R ⧸ I ^ (n + 1))) ⟶ X // IsAdicFamily I f} :=
-  ⟨fun n => adicLevelι I (n + 1) ≫ g, isAdicFamily_restrict g⟩
-
-omit [IsLocalRing R] in
-
-noncomputable def adicRestrictOver {X S : Scheme.{u}} (s : Spec (.of R) ⟶ S) (p : X ⟶ S)
-    (g : {g : Spec (.of R) ⟶ X // g ≫ p = s}) :
-    {f : ∀ n : ℕ, Spec (.of (R ⧸ I ^ (n + 1))) ⟶ X //
-      IsAdicFamily I f ∧ ∀ n, f n ≫ p = adicLevelι I (n + 1) ≫ s} :=
-  ⟨fun n => adicLevelι I (n + 1) ≫ g.1, isAdicFamily_restrict g.1,
-    fun n => by rw [Category.assoc, g.2]⟩
 
 end Limit
 

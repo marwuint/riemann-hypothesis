@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.PowerSeriesHasSumAt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesIntegralBoundedClosure
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PowerSeriesEvalTsumUnitDiscPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PowerSeriesEvalTsumUnitDiscPropertiesAlt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupNatMulSeriesProperties
 
 open GlobalTheory.ConvSer
@@ -45,7 +45,7 @@ theorem nMul_point : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [Compl
     rw [nMul_zero, nMul_one] at h
     simpa using h
   refine ⟨hI, fun x hx => ?_⟩
-  obtain ⟨-, -, -, hevX, -, -, hnorm, hsub, hpair, -, -⟩ := _root_.GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K x hx
+  obtain ⟨-, -, -, hevX, -, -, hnorm, hsub, hpair, -, -⟩ := _root_.GlobalTheory.ConvSer.powerSeriesEvalTsum_unitDisc_properties K x hx
   refine ⟨by rw [nMul_zero]; exact ev1_zero x, by rw [nMul_one]; exact hevX, fun j => ?_,
     fun i j => ?_, fun i j => ?_, fun y hy => ?_⟩
   · obtain ⟨-, h1, h2⟩ := hnorm (nMul F j) (hI j)
@@ -69,7 +69,7 @@ theorem nMul_point : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [Compl
       (nMul_constantCoeff F i) (nMul_constantCoeff F j), nMul_add]
   · rw [← hsub (nMul F i) (nMul F j) (hI j) (nMul_constantCoeff F j)
       (GlobalTheory.BddAlg.bdd_of_intg (hI i)), nMul_subst_nMul]
-  · obtain ⟨-, -, -, hevXy, -, -, -, -, hpairy, -, -⟩ := _root_.GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K y hy
+  · obtain ⟨-, -, -, hevXy, -, -, -, -, hpairy, -, -⟩ := _root_.GlobalTheory.ConvSer.powerSeriesEvalTsum_unitDisc_properties K y hy
     have hz : Intg (0 : PowerSeries K) := GlobalTheory.BddAlg.intg_zero
     have hc0 : PowerSeries.constantCoeff (0 : PowerSeries K) = 0 := by simp
     have hcX : PowerSeries.constantCoeff (PowerSeries.X : PowerSeries K) = 0 := by simp

@@ -68,10 +68,6 @@ def HeckeFin : Prop :=
       (∀ x, e₀ x = r x * ∏ w ∈ T, (GLnLocal.integralGL (w.adicCompletion K) n : Set _).indicator 1 (cf w x)) →
       (∀ x, e₁ x = r x * ∏ w ∈ T, h w (cf w x)) → Ofin μ m e₁ = ev (map C (∏ w ∈ T, atPl w (p w))) ∘L Ofin μ m e₀
 
-def UiwMul : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (ν ν' : Fin n → ℤ), Antitone ν → Antitone ν' →
-    Uiw μ w (ν + ν') = Uiw μ w ν ∘L Uiw μ w ν'
-
 def UiwFin : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure]
     (w : Pl K) (ν : Fin n → ℤ), Antitone ν → ∀ (j : ℕ) (r : AdelicGLn.FiniteAdelicGL K n → ℂ), Free w r → ∀ e₀ e₁ : TF K n,

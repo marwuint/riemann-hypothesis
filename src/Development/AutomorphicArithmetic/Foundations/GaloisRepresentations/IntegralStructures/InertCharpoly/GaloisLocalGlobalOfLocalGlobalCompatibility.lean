@@ -39,9 +39,6 @@ def LocalGlobalCompatibilityAtPlaceClass (Q : PlaceClass) : Prop :=
           ∀ t : Ine (F := E) A,
             (wdAt P ι Bw h hj (r.comp (Dec (F := E) A).subtype)).charPol (ineIncl h t) = (rc (algNorm σ)).charPol (ineIncl h t))
 
-theorem rank_two_general_of_rank_two (H : R2) : LocalGlobalCompatAtIwahoriFixedPlaces := fun E Ω _ _ _ _ _ _ l _ ι n hn π χ hI r hW w σ hσ hf g =>
-  H E Ω l ι n hn π χ hI r hW w σ hσ hf (g.imp id And.left)
-
 theorem localGlobalAtPlaceClass_of_localGlobal (H : LocalGlobalCompatAtIwahoriFixedPlaces) (Q : PlaceClass) : LocalGlobalCompatibilityAtPlaceClass Q := fun E Ω _ _ _ _ _ _ l _ ι n hn π χ hI r hW w σ hσ hf _ q g =>
   H E Ω l ι n hn π χ hI r hW w σ hσ hf (Or.inr ⟨q, g⟩)
 
@@ -170,29 +167,7 @@ theorem galoisLocalGlobal_of_placeClassCompatibility (C : CoreAll) (H1 : R1) (H2
     have k3 := k1 P AI T A h O Bw hj
     exact ⟨k3.1, k2, fun τ LL' τ' hτ => k3.2 τ LL' τ' hτ _ (w1 τ), k4⟩
 
-theorem galois_realisation_of_rank_two (C : CoreAll) (H1 : R1) (H2 : LocalGlobalCompatibilityAtPlaceClass fun _ _ _ w n => IsQpBig w n) :
-    Row0b (fun h rc => IsRecT h rc) := fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp => by
-  have hI : InScope .all l π χ := ⟨hr, hp, trivial⟩
-  obtain ⟨r, hW⟩ := C.1 E Ω l ι a ha π χ hI
-  obtain ⟨wt, HT, w1, w2⟩ := exists_weights ha hI ι
-  refine ⟨r, wt, HT, hW.1, hW.2.1, fun w hl A h rc hrc σ hσ => ?_, w1, w2, fun P AI T w A h O _ _ _ Bw hj =>
-    ⟨fun σ hσ hs => ?_, fun σ hσ rc hrc g hm => ?_⟩⟩
-  · have k := away H1 H2 ha hI hW hl hrc hσ
-    have d : (rc (algNorm σ)).lpDim = a := by
-      obtain ⟨_, _, L⟩ := hrc
-      exact L.dim _
-    exact ⟨k.1, k.2.1, fun q => k.2.2 (d ▸ q) q.isQp⟩
-  · obtain ⟨k1, k2⟩ := crys C ha hI hW hσ hs
-    have k3 := k2 P AI T A h O Bw hj
-    exact ⟨k1 P AI T A h O Bw hj σ hσ hs, k3.1, fun τ LL' τ' hτ => k3.2 τ LL' τ' hτ _ (w1 τ)⟩
-  · obtain ⟨k1, k2, k4⟩ := above H1 H2 ha hI hW T Bw hj hrc hσ (g.imp (fun q => ⟨q.1, q.1.isQp, q.2⟩) id) hm
-    have k3 := k1 P AI T A h O Bw hj
-    exact ⟨k3.1, k2, fun τ LL' τ' hτ => k3.2 τ LL' τ' hτ _ (w1 τ), k4.big⟩
-
 theorem galoisLocalGlobal_of_localGlobalCompatibility (C : CoreAll) (H1 : R1) (H2 : LocalGlobalCompatAtIwahoriFixedPlaces) : Row0 (fun h rc => IsRecT h rc) :=
   galoisLocalGlobal_of_placeClassCompatibility C H1 (localGlobalAtPlaceClass_of_localGlobal H2 _)
-
-theorem galois_realisation_of_top (C : CoreAll) (H : GlobalTheory.DeRhamOfPlainTorus.Top) : Row0 (fun h rc => IsRecT h rc) :=
-  galoisLocalGlobal_of_localGlobalCompatibility C H.1 (rank_two_general_of_rank_two H.2)
 
 end UpperTheory.Gal.Int.Row

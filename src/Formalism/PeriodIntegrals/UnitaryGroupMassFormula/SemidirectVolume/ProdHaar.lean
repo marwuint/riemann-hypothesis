@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ClosedStep
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.VolumeQuotientHolds
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.FundamentalDomainExists
 
 noncomputable section
 

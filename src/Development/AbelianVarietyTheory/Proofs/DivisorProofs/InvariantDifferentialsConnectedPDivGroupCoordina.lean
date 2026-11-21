@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CounitCotangentClassPowerSeriesEvalAtNilpotentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionsEqSeriesInChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionsEqSeriesInChart
 
 set_option autoImplicit false
 
@@ -95,7 +95,7 @@ theorem omega_coord : ∀ (p : ℕ) (k : Type) [CommRing k] (d : ℕ) (G : PDivG
   refine ⟨fun w n => hres n w, fun u => ?_⟩
   have hu : ∀ n, cotMap (G.res n) (u.1 (n + 1)) = u.1 n := u.2
   obtain ⟨n0, hn0⟩ := c.presents.2 2
-  have hone := (GlobalTheory.T.functions_eq_series_in_chart p k d G c).1
+  have hone := (_root_.GlobalTheory.Katz.Chart.functions_are_series p k d G c).1
   have hker : ∀ j f, c.ev (n0 + j) f = 0 → ∀ α : Fin d →₀ ℕ, α.degree < 2 → coeff α f = 0 := by
     intro j
     induction j with

@@ -46,8 +46,6 @@ def BlockBound : Prop :=
     (∀ τ, ‖cD τ * (r τ : ℂ)‖ ^ 2 = 1 / Om τ) →
     OpNormSqLe lam lam' (jetOp lam lam' (jetC cD G) fun τ => lastEntry (ν τ)) (tmax b ν Om S)
 
-example : Formalism.LatticeIndexTer.ph 0 = 0 := by simp [Formalism.LatticeIndexTer.ph]
-
 theorem natW_eq_padZero {a b : ℕ} (hab : a ≤ b) {lam ν : DomWeight a} {lam' : DomWeight b} {s' s : ℤ}
     (h : IsStepWeight lam ν lam' s' s) (hg : a < b ∨ lastEntry ν = 0) (i : Fin b) :
     ((lam'.natW i : ℕ) : ℤ) = padZero b ν i := by
@@ -86,20 +84,5 @@ theorem natW_eq_padZero {a b : ℕ} (hab : a ≤ b) {lam ν : DomWeight a} {lam'
   rw [hshift]
   have hw : lam'.w i - -s = padZero b ν i := by linarith [h3 i]
   rw [hw, Int.toNat_of_nonneg (hpad i)]
-
-example : ∃ (lam ν : DomWeight 1) (lam' : DomWeight 2) (s' s : ℤ),
-    IsStepWeight lam ν lam' s' s ∧ lastEntry ν = 3 ∧ wtSize ν = 3 := by
-  refine ⟨⟨fun _ => 0, fun _ _ _ => le_rfl⟩, ⟨fun _ => 3, fun _ _ _ => le_rfl⟩,
-    ⟨![2, -1], by decide⟩, 3, 1, ⟨fun _ => rfl, fun _ => by simp, ?_⟩, rfl, rfl⟩
-  intro i
-  fin_cases i <;> rfl
-
-example (z : VCx Unit 1 2) : ‖z () 0 0‖ ≤ 1 * Real.exp (unitNormSq (fun _ => 1) z / 2) := by
-  have h1 : ‖z () 0 0‖ ^ 2 ≤ unitNormSq (fun _ => 1) z := by
-    simp only [unitNormSq, Finset.univ_unique, Finset.sum_singleton, Fin.sum_univ_two, Complex.ofReal_one, one_mul]
-    have := sq_nonneg ‖z () 1 0‖
-    simpa using this
-  have h2 := Real.add_one_le_exp (unitNormSq (fun _ => (1 : ℝ)) z / 2)
-  nlinarith [sq_nonneg (‖z () 0 0‖ - 1)]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.PaddedWittNormSquare

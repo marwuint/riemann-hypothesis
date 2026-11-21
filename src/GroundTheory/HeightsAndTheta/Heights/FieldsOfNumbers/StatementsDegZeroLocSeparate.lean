@@ -19,12 +19,6 @@ def DegZeroLocSeparate.Statement : Prop :=
       ∃ x ∈ degZeroLoc P 𝒲, (¬ ∃ y ∈ degZeroLoc P {W₁}, x * y = 1) ∧
         ∃ y ∈ degZeroLoc P {W₂}, x * y = 1
 
-section Example
-
-abbrev lineOtherPointIdeal : Ideal LineRing := Ideal.span {X ⟨(), (1 : Fin 2)⟩}
-
-end Example
-
 end
 
 end GroundTheory.Heights₂.Heights.FieldNumbers

@@ -23,17 +23,4 @@ def ArithmeticIntersectionDivisorPushforward.Statement : Prop :=
         (multAt (P' ⊔ Ideal.span {rename v s}) W' : ℤ) * E W' =
       J (fibreIdeal κ G) 0 Fin.elim0 * multAt (imageZ v P' ⊔ Ideal.span {s}) W
 
-section Inhabitants
-
-open Classical in
-
-def idDeg (W' : Ideal (MRing (GlobalTheory 2))) : ℤ :=
-  if h : W'.IsPrime then
-    haveI := h
-    noBlockFam (genFibreIdOf W').Φ (fibreIdx (GlobalTheory 2) (id : Unit → Unit))
-      (fibreIdeal id (genFibreIdOf W')) 0 Fin.elim0
-  else 0
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

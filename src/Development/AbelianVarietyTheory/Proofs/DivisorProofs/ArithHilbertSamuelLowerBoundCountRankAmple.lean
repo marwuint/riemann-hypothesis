@@ -3,13 +3,13 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairPowSectionMemAndNormPow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveSectionValueUnitFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionQuotientsTranscendenceBasisBasepointFreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionFieldBasisOfSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardBoundedHomogeneousIntFormFamiliesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousFormCombinationEqZeroIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjArithFunctionFieldCharZeroTrdegStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveSectionValueUnitFrame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBounded
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionQuotientsTranscendenceBasisBasepointFree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionFieldBasisOfSections
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardBoundedHomogeneousIntFormFamilies
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousFormCombinationEqZeroIndependent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjArithFunctionFieldCharZeroTrdeg
 
 set_option autoImplicit false
 
@@ -27,13 +27,13 @@ abbrev Deg (D q : ℕ) : Type := {α : Fin (D + 1) →₀ ℕ // α.degree = q}
 
 scoped instance (D q : ℕ) : Finite (Deg D q) :=
   Nat.finite_of_card_ne_zero <| by
-    rw [(GlobalTheory.T.card_bounded_homogeneous_int_form_families D q 0 0 le_rfl).2.2.1]
+    rw [(_root_.GlobalTheory.HSAmp.card_bounded_forms D q 0 0 le_rfl).2.2.1]
     exact (Nat.choose_pos (Nat.le_add_left D q)).ne'
 
 scoped instance (D q : ℕ) : Fintype (Deg D q) := Fintype.ofFinite _
 
 theorem card_deg (D q : ℕ) : Fintype.card (Deg D q) = (q + D).choose D := by
-  rw [← Nat.card_eq_fintype_card]; exact (GlobalTheory.T.card_bounded_homogeneous_int_form_families D q 0 0 le_rfl).2.2.1
+  rw [← Nat.card_eq_fintype_card]; exact (_root_.GlobalTheory.HSAmp.card_bounded_forms D q 0 0 le_rfl).2.2.1
 
 def xm {K : Type} [CommRing K] {D : ℕ} (x : Fin (D + 1) → K) (α : Fin (D + 1) →₀ ℕ) : K := ∏ l, x l ^ α l
 
@@ -92,7 +92,7 @@ theorem sum_zsmul (P : Pair p) (a b : ℤ) {J : Type} [Fintype J] (f : J → X.f
     (n : J → ℤ) : (∑ j, n j • f j) ∈ P.H a b ∧ ∀ σ y,
       P.nu a b σ y (∑ j, n j • f j) ≤ ∑ j, |(n j : ℝ)| * P.nu a b σ y (f j) := by
   refine ⟨AddSubgroup.sum_mem _ fun j _ => AddSubgroup.zsmul_mem _ (hf j) _, fun σ y => ?_⟩
-  obtain ⟨ℓ, hℓ⟩ := GlobalTheory.T.exists_additive_sectionValueUnitFrame k X p P a b σ y
+  obtain ⟨ℓ, hℓ⟩ := _root_.GlobalTheory.HSAmp.val_additive k X p P a b σ y
   let F : P.H a b := ∑ j, n j • (⟨f j, hf j⟩ : P.H a b)
   have hF : (F : X.functionField) = ∑ j, n j • f j := by simp [F]
   rw [← hF, ← norm_val, ← hℓ, map_sum]
@@ -101,13 +101,13 @@ theorem sum_zsmul (P : Pair p) (a b : ℤ) {J : Type} [Fintype J] (f : J → X.f
 
 theorem count_rank_lower : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∀ a b : ℤ, ∃ (c : ℕ) (C : ℝ), 0 < C ∧ ∀ q : ℕ, (∃ v : Fin (Module.finrank (ratF x) X.functionField * (q + D).choose D) → X.functionField, (∀ i, v i ∈ P.H (e * (q + c : ℕ) + a) b) ∧ LinearIndependent ℤ v) ∧ ∀ R : ℝ, 0 ≤ R → (∀ l (σ : k →+* ℂ) (y : CxPts p σ), P.nu e 0 σ y (x l) ≤ 1) → (((2 * ⌊R⌋₊ + 1) ^ (Module.finrank (ratF x) X.functionField * (q + D).choose D) : ℕ) : ℕ∞) ≤ (P.Bl (e * (q + c : ℕ) + a) b (C * (q + D).choose D * R)).encard := by
   intro k _ X _ p D hX P hA e x hx a b
-  haveI : CharZero X.functionField := (GlobalTheory.T.projArith_functionField_charZero_trdeg k X p D hX).1
-  obtain ⟨hx0, halg, hfin⟩ := GlobalTheory.T.sectionQuotients_transcendenceBasis_basepointFree k X p D hX P hA e x hx
+  haveI : CharZero X.functionField := (_root_.GlobalTheory.ArithFnField.charZero_and_trdeg_functionField k X p D hX).1
+  obtain ⟨hx0, halg, hfin⟩ := _root_.GlobalTheory.HSAmp.gens_quot_trBasis k X p D hX P hA e x hx
   set δ := Module.finrank (ratF x) X.functionField with hδ
   obtain ⟨c, g, hg, hgi⟩ : ∃ (c : ℕ) (g : Fin δ → X.functionField), (∀ i, g i ∈ P.H (e * c + a) b) ∧
-      LinearIndependent (ratF x) g := GlobalTheory.T.exists_functionField_basis_of_sections k X p D hX P hA e x hx a b
+      LinearIndependent (ratF x) g := _root_.GlobalTheory.HSAmp.exists_linearIndependent_mem_H k X p D hX P hA e x hx a b
   have hbd : ∀ i, ∃ M : ℝ, ∀ σ y, P.nu (e * c + a) b σ y (g i) ≤ M := fun i =>
-    ((GlobalTheory.T.continuous_hermSectionValue_mul_conj_and_norm_bounded k X p D hX P _ b).2 (g i) (hg i)).2
+    ((_root_.GlobalTheory.HSAmp.continuous_val_and_bounded k X p D hX P _ b).2 (g i) (hg i)).2
   choose M hM using hbd
   set M' : ℝ := 1 + ∑ i, |M i| with hM'
   have hM'0 : 0 ≤ M' := by positivity
@@ -143,7 +143,7 @@ theorem count_rank_lower : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInteg
       IsHomogeneous.sum _ _ _ fun α _ => isHomogeneous_monomial _ α.2
     have hTe : ∀ i, aeval x (T i) = ∑ α : Deg D q, n (i, α) • xm x α.1 := fun i => by
       simp only [T, map_sum, aeval_monomial, Finsupp.prod_pow, algebraMap_int_eq, eq_intCast, zsmul_eq_mul, xm]
-    have h0 := GlobalTheory.T.homogeneousFormCombination_eq_zero_independent X.functionField D x hx0 halg hfin (Fin δ) g hgi q T hT (by
+    have h0 := _root_.GlobalTheory.HSAmp.homogComb_eq_zero X.functionField D x hx0 halg hfin (Fin δ) g hgi q T hT (by
       rw [← hn, Fintype.sum_prod_type]
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [hTe, Finset.sum_mul]
@@ -156,7 +156,7 @@ theorem count_rank_lower : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInteg
     rw [Finset.sum_congr rfl fun α _ => h2 α] at h1
     simpa using h1
   · intro R hR hxl
-    obtain ⟨hfinS, hcnt, -, -, -⟩ := GlobalTheory.T.card_bounded_homogeneous_int_form_families D q δ R hR
+    obtain ⟨hfinS, hcnt, -, -, -⟩ := _root_.GlobalTheory.HSAmp.card_bounded_forms D q δ R hR
     let Φ : (Fin δ → MvPolynomial (Fin (D + 1)) ℤ) → X.functionField := fun T => ∑ i, aeval x (T i) * g i
     have hΦ : ∀ T : Fin δ → MvPolynomial (Fin (D + 1)) ℤ, (∀ i, (T i).IsHomogeneous q) →
         Φ T = ∑ ia : Fin δ × Deg D q, coeff ia.2.1 (T ia.1) • w ia := by
@@ -169,7 +169,7 @@ theorem count_rank_lower : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInteg
     have hinj : Set.InjOn Φ {T : Fin δ → MvPolynomial (Fin (D + 1)) ℤ | (∀ i, (T i).IsHomogeneous q) ∧
         ∀ i α, |((coeff α (T i) : ℤ) : ℝ)| ≤ R} := by
       intro T hT T' hT' h
-      have := GlobalTheory.T.homogeneousFormCombination_eq_zero_independent X.functionField D x hx0 halg hfin (Fin δ) g hgi q (T - T')
+      have := _root_.GlobalTheory.HSAmp.homogComb_eq_zero X.functionField D x hx0 halg hfin (Fin δ) g hgi q (T - T')
         (fun i => (hT.1 i).sub (hT'.1 i)) (by
           simp only [Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
           exact sub_eq_zero.2 h)

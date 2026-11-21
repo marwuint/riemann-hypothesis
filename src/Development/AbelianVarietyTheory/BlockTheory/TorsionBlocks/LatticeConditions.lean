@@ -12,8 +12,6 @@ namespace GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions
 def nlen {O : Type} [CommRing O] (l : ℕ) (M : Type) [AddCommGroup M] [Module O M] : WithTop ℚ :=
   if Module.length O M = ⊤ then ⊤ else ((lenUnit (O := O) l M : ℚ) : WithTop ℚ)
 
-def addOneIfEqTwo (l : ℕ) (e : ℚ) : ℚ := (if l = 2 then 1 else 0) + e
-
 section Ext
 
 variable {O₀ O' : Type} [CommRing O₀] [IsDomain O₀] [CommRing O'] [IsDomain O']
@@ -55,9 +53,6 @@ def SameChar {O₀ O₁ O₂ Γ : Type} [CommRing O₀] [CommRing O₁] [CommRin
     (f₁ : O₀ →+* O₁) (f₂ : O₀ →+* O₂) (ψ₁ : Γ →* O₁ˣ) (ψ₂ : Γ →* O₂ˣ) : Prop :=
   ∀ F : Γ →₀ O₀, (F.sum fun g c => f₁ c * ((ψ₁ g : O₁ˣ) : O₁)) = 0 ↔
     (F.sum fun g c => f₂ c * ((ψ₂ g : O₂ˣ) : O₂)) = 0
-
-def atSide {Γ A : Type} [Group Γ] [CommGroup A] (b : Bool) (ψ : Γ →* A) : Γ →* A :=
-  if b then ψ else ψ⁻¹
 
 section Tw
 
@@ -134,14 +129,6 @@ def sPiTop (a : D.nd.Loc) (ρ : D.nd.X a → (GE D.nd →* GL (Fin D.R.r) (D.nd.
 def sTLoc (a : D.nd.Loc) (s : D.ntw.Sig (D.ntw.twOf a)) : WithTop ℚ :=
   sT D.loc D.ntwbr (D.ntw.twOf a) s (D.nd.Q a) (D.ntw.twist₂ a) (twO_inj D.ntw a) (D.ntw.psiL a)
 
-def sTBig (i : D.ntw.Tw) (s : D.ntw.Sig i) (Q : Finset (PlE D.host)) (k : ℕ)
-    (ψ : GE D.nd →* (D.ntw.Ok i k)ˣ) : WithTop ℚ :=
-  sT D.loc D.ntwbr i s Q (toOk D.ntw i k) (toOk_inj D.ntw i k) (atSide (D.ntw.side i s) ψ)
-
-def IsTwistOf (a : D.nd.Loc) (k : ℕ) (ψ : GE D.nd →* (D.ntw.Ok (D.ntw.twOf a) k)ˣ) : Prop :=
-  (∀ g, ψ g ∈ Subgroup.zpowers (D.ntw.zk (D.ntw.twOf a) k)) ∧
-  SameChar (D.ntw.twist₂ a) (toOk D.ntw (D.ntw.twOf a) k) (D.ntw.psiL a) (atSide (D.ntw.twSide a) ψ)
-
 def IsRhoPt (a : D.nd.Loc) (π : D.nd.X a) (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O a)) : Prop :=
   Continuous (fun g => ((ρ g : GL (Fin D.R.r) (D.nd.O a)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O a))) ∧
   ∃ r : GE D.nd →* GL (Fin D.R.nV) (D.nd.O a), IsHeckeGalois D.nd a π r ∧
@@ -173,36 +160,7 @@ def Attached (a : D.nd.Loc) (π : D.nd.X a) (s : D.ntw.Sig (D.ntw.twOf a)) : Pro
   ∃ (σ : D.what₂.FT) (Sg : List (Part D.naut.CG)), GoodRowOf D (D.nd.j a) σ ∧
     HasParamW D.nd D.naut a σ Sg ∧ HasParamX D.nd D.naut a π Sg ∧ IsTriple D a s Sg
 
-def TwistA : Prop :=
-  ∀ a : D.nd.Loc, ∃ (k : ℕ) (ψ : GE D.nd →* (D.ntw.Ok (D.ntw.twOf a) k)ˣ), IsTwistOf D a k ψ ∧
-    ∃ ε : D.ntw.Sig (D.ntw.twOf a) → ℚ, (∀ s, 0 ≤ ε s) ∧ ∑ s, ε s ≤ ((D.nd.l a : ℚ) ^ 2)⁻¹ ∧
-      ∀ s, sTBig D _ s (D.nd.Q a) k ψ ≤ ((addOneIfEqTwo (D.nd.l a) (ε s) : ℚ) : WithTop ℚ)
-
-def Corr : Prop :=
-  ∀ (a : D.nd.Loc) (π : D.nd.X a), π ∈ D.nd.Zgood a →
-    (∃ s, Attached D a π s) ∧
-    ∀ s, Attached D a π s →
-      ∀ ρ : D.nd.X a → (GE D.nd →* GL (Fin D.R.r) (D.nd.O a)), IsRhoPt D a π (ρ π) →
-        (∃ P : GL (Fin D.R.r) (D.nd.O a), ∀ g,
-          WpO D.nd a ρ π g * (P : Matrix _ _ _) =
-            (P : Matrix _ _ _) * latTpsi D.ntw _ s (D.ntw.twist₂ a) (D.ntw.psiL a) g) ∧
-        sPiTop D a ρ π = sTLoc D a s ∧
-        ∀ k ψ, IsTwistOf D a k ψ → sPiTop D a ρ π = sTBig D _ s (D.nd.Q a) k ψ
-
-def Bound : Prop :=
-  ∀ (a : D.nd.Loc) (π : D.nd.X a), π ∈ D.nd.Zgood a →
-    ∀ ρ : D.nd.X a → (GE D.nd →* GL (Fin D.R.r) (D.nd.O a)), IsRhoPt D a π (ρ π) →
-      Br.sFin D.loc D.nbr a ρ π ∧
-      Br.sPi D.loc D.nbr a ρ π ≤ addOneIfEqTwo (D.nd.l a) ((D.nd.l a : ℚ) ^ 2)⁻¹
-
-def selmerTie_at : Prop := AllTriples D → Corr D ∧ (TwistA D → Bound D)
-
 end Rec
-
-def selmerTieF {eps : ℝ} (Fm : FamP eps) : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, selmerTie_at (Fm.D x i)
-
-def selmerTie (𝒞 : FamClass) : Prop := Closed 𝒞 (fun Fm _ => selmerTieF Fm)
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions
 

@@ -1,4 +1,4 @@
-import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.CTZeroCut
+import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.NoPiHk
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SatakeParametersOfTwist
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SubsingletonRankZero
 
@@ -36,16 +36,6 @@ theorem absC_val (u : ℂ) (w : HeightOneSpectrum (𝓞 E)) :
   congr 1
   push_cast
   ring
-
-theorem twistSat_holds : TwistSat := by
-  intro E _ _ _ m σ u
-  refine ⟨σ.twist (Model.absC E (-u)), Filter.Eventually.of_forall fun w B hB => ?_⟩
-  refine ⟨B.map (· * (Model.absC E (-u)).val w),
-    GlobalTheory.SphGal.hasSatGL_twist E m σ _ w B (absC_unrAt (-u) w) hB, ?_⟩
-  rw [Multiset.map_map]
-  unfold sclQ
-  refine Multiset.map_congr rfl fun b _ => ?_
-  simp only [Function.comp_apply, Units.val_mul, absC_val, neg_neg]
 
 end DiscreteGroups.T1.G
 

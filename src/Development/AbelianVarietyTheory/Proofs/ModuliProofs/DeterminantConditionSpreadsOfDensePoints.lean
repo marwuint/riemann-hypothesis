@@ -6,7 +6,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UnivChartOfStandardSmooth
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DetCondIffOfFieldExtension
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLieCoordinatesLieMultIff
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmTypeEigenMultiplicityOfDensePrimesStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmTypeEigenMultiplicityOfDensePrimes
+import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.IsLocallyConstantRankAtStalkEigenSub
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -64,7 +65,7 @@ theorem detCond_of_basis {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
     have := congrArg δ₀.hom hρ
     rw [map_pow, map_neg, map_natCast] at this
     exact this
-  have main := GlobalTheory.T.cmType_eigenMultiplicity_of_dense_primes E H D.p D.q n R M (δ₀.hom ρ) hr (by
+  have main := _root_.GlobalTheory.eigenMult_of_dense E H D.p D.q n R M (δ₀.hom ρ) hr (by
     refine (hd.preimage j.isOpenEmbedding.isOpenMap).mono ?_
     rintro q ⟨L, _, _, _, x, β', ⟨y, hy⟩, hx, hdet⟩
     obtain ⟨g, rfl, hg⟩ := exists_factor j x q y hy

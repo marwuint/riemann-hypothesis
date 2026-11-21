@@ -21,10 +21,6 @@ def InnerLaws : Prop :=
   ∀ t k, k + 1 < D.R.m → ∀ κ ∈ levS _ (R.βY k) (R.datYt t k R.triv), κ ∈ GfC (Yc D k) ∧
     R.ωY t k (κ, 1) (R.vY t k) = levChi _ (R.βY k) (R.datYt t k R.triv) κ • R.vY t k
 
-theorem innerSteps_of_stepsOK (h : StepsOK R) : InnerSteps R := h.1
-
-theorem innerLaws_of_lawsOK (h : LawsOK R) : InnerLaws R := h.1
-
 theorem haar_fund (hν : R.models_νY) (hν' : R.models_νY') (t : T) (j : ℕ) (hj : j < D.R.m) :
     (R.νY t j).IsHaarMeasure ∧ MeasureTheory.IsFundamentalDomain (GQ (Yc D j)) (R.fdY t j) (R.νY t j) := by
   by_cases h : j + 1 < D.R.m

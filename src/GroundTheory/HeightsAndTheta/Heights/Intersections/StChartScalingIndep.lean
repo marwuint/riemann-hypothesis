@@ -16,8 +16,4 @@ def ChartScalingIndep.Statement : Prop :=
       AlgebraicIndependent (IntermediateField.adjoin F (Set.range fun q : Σ k, ι k => x q / x ⟨q.1, i q.1⟩))
         (fun k => x ⟨k, i k⟩)
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

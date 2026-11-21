@@ -3,10 +3,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartPrimeExistsUniquePointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtLeIffSpecializesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtLocalOrderFractionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartPrimeExistsUniquePoint
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtLeIffSpecializes
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtLocalOrderFraction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalization
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
 namespace GlobalTheory.CompanionTheory.Ar.Centre
@@ -27,12 +27,12 @@ theorem isUnit_regAt_iff {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (Com
 theorem exists_centre : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (p' : Cpt ξ'), p' ∈ ctrSet o x i ξ' → ∃ p₀ : Cpt M.ξ, ((∀ a ∈ regAt M.ξ p₀, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ p₀, unitAt ξ' p' (i a) → unitAt M.ξ p₀ a) ∧ (∀ p : Cpt M.ξ, (∀ a ∈ regAt M.ξ p, i a ∈ regAt ξ' p') → p₀.1 ⤳ p.1) ∧ ∀ c, x c ≠ 0 → (∀ j, i (x j / x c) ∈ regAt ξ' p') → InChart M.ξ x c p₀ := by
   intro o _ Ω _ _ κ _ x M X' Ω' _ ξ' i p' hp'
   obtain ⟨c, hc, hreg⟩ := hp'
-  haveI : IsLocalRing (regAt ξ' p') := (GlobalTheory.T.regAt_local_order_fraction X' Ω' ξ').1 p'
+  haveI : IsLocalRing (regAt ξ' p') := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_local_mono_frac X' Ω' ξ').1 p'
   let φ : chRing o x c →+* regAt ξ' p' :=
     (i.comp (chRing o x c).val.toRingHom).codRestrict (regAt ξ' p') (fun a => hreg a a.2)
   let P : Ideal (chRing o x c) := (IsLocalRing.maximalIdeal (regAt ξ' p')).comap φ
   haveI hPp : P.IsPrime := Ideal.comap_isPrime _ _
-  obtain ⟨p₀, ⟨hin, hP⟩, -⟩ := GlobalTheory.T.chart_prime_existsUnique_point o Ω κ x M c hc P hPp
+  obtain ⟨p₀, ⟨hin, hP⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_prime_point o Ω κ x M c hc P hPp
   have key : ∀ u : chRing o x c, unitAt M.ξ p₀ (u : Ω) ↔ unitAt ξ' p' (i u) := by
     intro u
     have h := hP u
@@ -42,7 +42,7 @@ theorem exists_centre : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Alge
       rfl
     tauto
   have hloc := fun (c₁ : κ) (p : Cpt M.ξ) (h : InChart M.ξ x c₁ p) =>
-    GlobalTheory.T.regAt_chart_localization o Ω κ x M c₁ p h
+    _root_.GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation o Ω κ x M c₁ p h
   have hch : ∀ a ∈ chRing o x c, a ∈ regAt M.ξ p₀ := (hloc c p₀ hin).1
   have hdom : ∀ a ∈ regAt M.ξ p₀, i a ∈ regAt ξ' p' := by
     intro a ha
@@ -75,7 +75,7 @@ theorem exists_centre : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Alge
     exact mul_mem (hch _ (Algebra.subset_adjoin ⟨j, rfl⟩)) hu.2.2
   refine ⟨p₀, ⟨hdom, hlift⟩, ?_, hchart⟩
   intro p hp
-  rw [← GlobalTheory.T.regAt_le_iff_specializes o Ω κ x M p p₀]
+  rw [← _root_.GlobalTheory.CompanionTheory.Ar.regAt_le_regAt_iff_specializes o Ω κ x M p p₀]
   obtain ⟨c₁, hc₁⟩ := M.tie.cover p
   have hin₁ := hchart c₁ hc₁.1 (fun j => hp _ (hc₁.2 j))
   intro a ha

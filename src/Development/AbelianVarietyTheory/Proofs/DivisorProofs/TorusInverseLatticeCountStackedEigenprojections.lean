@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdMaxOnePowLeOnSiegelTorusConeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeCountSumBoundOfRationalDiagonalisingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeCountSumBoundOfRationalDiagonalising
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.WeilThetaConvergence
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsSmoothModerateOfIsAutFunSm
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RealSizeNonneg
@@ -17,7 +17,7 @@ theorem lattice_count_stack : ∀ (D : D7) (m n r : ℕ) (X Y : Matrix (Fin m) (
       Matrix.fromRows Y' (Matrix.fromRows X' (1 - X * Y' - Y * X')) = 1 := by
     rw [Matrix.fromCols_mul_fromRows, Matrix.fromCols_mul_fromRows, Matrix.one_mul]
     abel
-  obtain ⟨N, C, hC, h⟩ := GlobalTheory.T.latticeCount_sum_bound_of_rational_diagonalising D (Fin r ⊕ Fin r ⊕ Fin m) m n _ _ hST L hL
+  obtain ⟨N, C, hC, h⟩ := _root_.GlobalTheory.lattice_count_diag_mul D (Fin r ⊕ Fin r ⊕ Fin m) m n _ _ hST L hL
   obtain ⟨C', hC', h'⟩ := GlobalTheory.T.prod_max_one_pow_le_on_siegelTorusCone r m (Module.finrank ℚ D.host.F * (2 * n)) c hc
   refine ⟨N, C * C', mul_nonneg hC hC', fun t ht B hB => ?_⟩
   have htpos : ∀ i, 0 < t i := ht.1

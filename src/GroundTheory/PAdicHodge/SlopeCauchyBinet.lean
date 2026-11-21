@@ -101,15 +101,6 @@ theorem det_mul_eq_sum_minors (A : Matrix (Fin k) (Fin n) R) (B : Matrix (Fin n)
   · intro x _
     rfl
 
-theorem det_mul_eq_zero_of_lt (A : Matrix (Fin k) (Fin n) R) (B : Matrix (Fin n) (Fin k) R)
-    (h : n < k) : (A * B).det = 0 := by
-  rw [det_mul_eq_sum_minors]
-  refine Finset.sum_eq_zero fun s _ => ?_
-  exfalso
-  have := s.1.card_le_univ
-  rw [Fintype.card_fin, s.2] at this
-  omega
-
 end CauchyBinet
 
 section Minors
@@ -124,63 +115,6 @@ def compound (k : ℕ) (P : Matrix (Fin m) (Fin n) R) : Matrix (KSubset m k) (KS
 
 theorem compound_apply (k : ℕ) (P : Matrix (Fin m) (Fin n) R) (s : KSubset m k)
     (t : KSubset n k) : compound k P s t = (P.submatrix s.emb t.emb).det := rfl
-
-theorem maxMinor_mul_right (B : Matrix (Fin n) (Fin k) R) (C : Matrix (Fin k) (Fin k) R)
-    (s : KSubset n k) : maxMinor (B * C) s = maxMinor B s * C.det := by
-  unfold maxMinor
-  rw [← det_mul]
-  congr 1
-
-theorem maxMinor_mul_left (P : Matrix (Fin m) (Fin n) R) (B : Matrix (Fin n) (Fin k) R)
-    (s : KSubset m k) :
-    maxMinor (P * B) s = ∑ t : KSubset n k, compound k P s t * maxMinor B t := by
-  unfold maxMinor
-  have : (P * B).submatrix s.emb id = P.submatrix s.emb id * B := by
-    ext i j; simp [mul_apply]
-  rw [this, det_mul_eq_sum_minors]
-  rfl
-
-theorem maxMinor_mul_left_eq_mulVec (P : Matrix (Fin m) (Fin n) R) (B : Matrix (Fin n) (Fin k) R) :
-    maxMinor (P * B) = compound k P *ᵥ maxMinor B := by
-  funext s
-  rw [maxMinor_mul_left]
-  rfl
-
-theorem compound_mul {l : ℕ} (P : Matrix (Fin m) (Fin n) R) (Q : Matrix (Fin n) (Fin l) R) :
-    compound k (P * Q) = compound k P * compound k Q := by
-  ext s u
-  rw [compound_apply, mul_apply]
-  have : (P * Q).submatrix s.emb u.emb = P.submatrix s.emb id * Q.submatrix id u.emb := by
-    ext i j; simp [mul_apply]
-  rw [this, det_mul_eq_sum_minors]
-  rfl
-
-theorem maxMinor_map {S : Type*} [CommRing S] (f : R →+* S) (B : Matrix (Fin n) (Fin k) R)
-    (s : KSubset n k) : maxMinor (B.map f) s = f (maxMinor B s) := by
-  unfold maxMinor
-  rw [RingHom.map_det]
-  rfl
-
-theorem compound_map {S : Type*} [CommRing S] (f : R →+* S) (P : Matrix (Fin m) (Fin n) R) :
-    compound k (P.map f) = (compound k P).map f := by
-  ext s t
-  rw [compound_apply, map_apply, compound_apply, RingHom.map_det]
-  rfl
-
-theorem compound_mulVec_maxMinor_of_mul_eq (A : Matrix (Fin n) (Fin n) R)
-    (B B' : Matrix (Fin n) (Fin k) R) (C : Matrix (Fin k) (Fin k) R) (h : A * B' = B * C) :
-    compound k A *ᵥ maxMinor B' = C.det • maxMinor B := by
-  rw [← maxMinor_mul_left_eq_mulVec, h]
-  funext s
-  rw [maxMinor_mul_right, Pi.smul_apply, smul_eq_mul, mul_comm]
-
-theorem compound_mulVec_map_maxMinor_of_mul_eq (φ : R →+* R) (A : Matrix (Fin n) (Fin n) R)
-    (B : Matrix (Fin n) (Fin k) R) (C : Matrix (Fin k) (Fin k) R) (h : A * B.map φ = B * C) :
-    compound k A *ᵥ (fun s => φ (maxMinor B s)) = C.det • maxMinor B := by
-  rw [← compound_mulVec_maxMinor_of_mul_eq A B (B.map φ) C h]
-  congr 1
-  funext s
-  rw [maxMinor_map]
 
 end Minors
 
@@ -201,31 +135,10 @@ theorem linearIndependent_col_iff_mulVec_eq_zero (B : Matrix (Fin n) (Fin k) R) 
     have := h g (by rw [← key, hg])
     exact congrFun this j
 
-theorem linearIndependent_col_of_maxMinor_ne_zero [IsDomain R] (B : Matrix (Fin n) (Fin k) R)
-    (s : KSubset n k) (hs : maxMinor B s ≠ 0) : LinearIndependent R B.col := by
-  rw [linearIndependent_col_iff_mulVec_eq_zero]
-  intro v hv
-  apply eq_zero_of_mulVec_eq_zero hs
-  have : B.submatrix s.emb id *ᵥ v = fun i => (B *ᵥ v) (s.emb i) := by
-    ext i; simp [mulVec, dotProduct]
-  rw [this, hv]
-  rfl
-
 theorem exists_maxMinor_ne_zero_of_linearIndependent [IsDomain R]
     (B : Matrix (Fin n) (Fin k) R) (hB : LinearIndependent R B.col) :
     ∃ s : KSubset n k, maxMinor B s ≠ 0 :=
   _root_.GroundTheory.Variant₂.N1.exists_maxMinor_ne_zero_of_linearIndependent_alt B hB
-
-theorem exists_maxMinor_ne_zero_iff_linearIndependent [IsDomain R]
-    (B : Matrix (Fin n) (Fin k) R) :
-    (∃ s : KSubset n k, maxMinor B s ≠ 0) ↔ LinearIndependent R B.col :=
-  ⟨fun ⟨s, hs⟩ => linearIndependent_col_of_maxMinor_ne_zero B s hs,
-    exists_maxMinor_ne_zero_of_linearIndependent B⟩
-
-theorem maxMinor_ne_zero_iff_linearIndependent [IsDomain R] (B : Matrix (Fin n) (Fin k) R) :
-    maxMinor B ≠ 0 ↔ LinearIndependent R B.col := by
-  rw [← exists_maxMinor_ne_zero_iff_linearIndependent, Ne, funext_iff, not_forall]
-  rfl
 
 end Independence
 

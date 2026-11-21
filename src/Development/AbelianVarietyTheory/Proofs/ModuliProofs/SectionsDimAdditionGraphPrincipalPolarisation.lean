@@ -7,7 +7,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeQuotientTriple
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsHaveFiniteDimensionInvarianceIsomorphism
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalPolarisationVolumeFormSymmetricAmpleStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalPolarisationVolumeFormSymmetricAmple
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsCountSqEqDetFormOnTorsionStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SqIsPowGrp
 
@@ -139,7 +139,7 @@ theorem sectionsDim_additionGraph_principalPolarisation : Out.Laws → Out.Laws2
   obtain ⟨rig, hrig⟩ := P.rigid
   obtain ⟨cub⟩ := (laws.cube _ P ⟨P.L, rig, hL, hrig⟩ rfl).1
   have hΘ : ∃ t : LB.Gen (Theta P.A P.L), t.IsGen := ⟨cub.t, cub.isGen⟩
-  obtain ⟨-, -, hsym, -, -, htor⟩ := GlobalTheory.T.principalPolarisation_volume_form_symmetric_ample laws laws₂ K P
+  obtain ⟨-, -, hsym, -, -, htor⟩ := _root_.GlobalTheory.principal_polarisation_numerics laws laws₂ K P
   let Φ := pointsEquiv φ
   set p := φ.hom ≫ fst P.A P.A with hpd
   set q := φ.hom ≫ snd P.A P.A with hqd

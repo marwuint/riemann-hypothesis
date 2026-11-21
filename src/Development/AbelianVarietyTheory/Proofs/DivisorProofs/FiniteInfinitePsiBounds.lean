@@ -253,16 +253,6 @@ theorem inf_aux {W : G.Weil} (S : GridChoice W Set.univ) (rp : ClassReps G) (σ 
   · rw [e, show rhoW G γ u = rhoVr (labLL D) (LaP G) γ.1 u from rfl, castVV_rhoVr_mul, nrm_castVV,
       nrm_transport (Xp G) _ σ _ (orth_inv S γ)]
 
-theorem finPsi_infPsi : GlobalTheory.FunPr.Hypotheses₂ → FinPsiK ∧ InfPsiK := by
-  intro _
-  constructor
-  · refine ⟨0, fun CF _ => ⟨0, fun ε C _ => ⟨0, ?_⟩⟩⟩
-    intro D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ w c u hu x
-    exact pullback_fin_relation _ _ w c u hu x
-  · refine ⟨0, fun CF _ => ⟨0, fun ε C _ => ⟨0, ?_⟩⟩⟩
-    intro D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ σ c u x
-    exact inf_aux _ _ σ c u x
-
 end GlobalTheory.CompanionTheory.TestVal
 
 end
@@ -270,9 +260,3 @@ end
 end
 
 end TestFunctionNorms
-section
-open GlobalTheory.SumSize GlobalTheory.RowClaim
-theorem _root_.GlobalTheory.Adopt.finite_infinite_psi_bounds : GlobalTheory.FunPr.Hypotheses₂ → FinPsiK ∧ InfPsiK := by
-  first | exact @TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.finPsi_infPsi | exact TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.finPsi_infPsi | (intros; apply TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.finPsi_infPsi <;> assumption)
-
-end

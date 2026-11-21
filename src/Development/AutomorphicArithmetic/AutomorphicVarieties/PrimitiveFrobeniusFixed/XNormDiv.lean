@@ -5,19 +5,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobenius
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.Stick UpperTheory.V.ML
 open scoped nonZeroDivisors Pointwise
 
-section Tower
-
-variable {M N : ℕ} [NeZero M] [NeZero N] {K K' : Type} [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K]
-  [Field K'] [NumberField K'] [IsCyclotomicExtension {N} ℚ K'] [Algebra K K']
-
-end Tower
-
-section One
-
-variable {M : ℕ} [NeZero M] {K : Type} [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K]
-
-end One
-
 private theorem algebraMap_sgO_eq_sg_algebraMap (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (t : (ZMod M)ˣ) (x : 𝓞 K) :
     algebraMap (𝓞 K) K (sgO M K t x) = sg M K t (algebraMap (𝓞 K) K x) := by
   unfold sgO

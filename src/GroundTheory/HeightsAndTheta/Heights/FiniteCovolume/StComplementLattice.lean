@@ -23,12 +23,6 @@ def ComplementLattice.Statement [FiniteDimensional E W] (h : HermitianForm F E W
 
 end Complement
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

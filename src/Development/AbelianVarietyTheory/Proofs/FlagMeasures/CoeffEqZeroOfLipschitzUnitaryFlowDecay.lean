@@ -12,20 +12,6 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.LipFlow
 
-theorem herm {V : Type} [AddCommGroup V] [Module ℂ V] (I : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ)
-    (h : ∀ x, 0 ≤ I x x) (x y : V) : (starRingEnd ℂ) (I y x) = I x y := by
-  have him : ∀ x, (I x x).im = 0 := fun x => ((Complex.le_def.1 (h x)).2).symm
-  have h1 := him (x + y)
-  have h2 := him (x + Complex.I • y)
-  have hx := him x
-  have hy := him y
-  simp only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply,
-    smul_eq_mul, RingHom.id_apply, Complex.conj_I, Complex.add_im, Complex.add_re, Complex.mul_im,
-    Complex.mul_re, Complex.I_re, Complex.I_im, Complex.neg_re, Complex.neg_im] at h1 h2
-  apply Complex.ext
-  · simp only [Complex.conj_re]; linarith
-  · simp only [Complex.conj_im]; linarith
-
 theorem cauchy {V : Type} [AddCommGroup V] [Module ℂ V] (I : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ)
     (h : ∀ x, 0 ≤ I x x) (x y : V) : ‖I x y‖ ^ 2 ≤ (I x x).re * (I y y).re := by
   first

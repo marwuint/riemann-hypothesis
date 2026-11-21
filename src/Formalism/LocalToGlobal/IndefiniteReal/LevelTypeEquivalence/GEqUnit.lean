@@ -25,20 +25,6 @@ instance (PP : Pl D.host.E) : Finite (kP PP)ˣ := Finite.of_injective _ Units.va
 
 end Norm
 
-section Ip
-
-variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
-  {M : DSModel V S} {β : GL (Fin V.rank) (EAf D)} {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank}
-
-end Ip
-
-section Real
-
-variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
-variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
-
-end Real
-
 end Formalism.IndefR.Eqv.Act
 
 end

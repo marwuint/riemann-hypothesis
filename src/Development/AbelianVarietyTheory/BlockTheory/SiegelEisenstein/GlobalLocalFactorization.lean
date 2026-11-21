@@ -20,8 +20,6 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 def stdL (k : Type) [Field k] [ValuativeRel k] (I : Type) : Set (I → k) := {y | ∀ i, y i ∈ 𝒪[k]}
 
-def scal (a : kˣ) (Λ : Set (I → k)) : Set (I → k) := {y | ((a⁻¹ : kˣ) : k) • y ∈ Λ}
-
 def mono (c : ℕ) (L : Set (n → k)) (b : ℕ → kˣ) : Set (n ⊕ Fin c → k) :=
   {y | (fun l => y (Sum.inl l)) ∈ L ∧ ∀ i : Fin c, (((b (i.val + 1))⁻¹ : kˣ) : k) * y (Sum.inr i) ∈ 𝒪[k]}
 
@@ -29,67 +27,12 @@ def Carries (g : GL I k) (S Λ : Set (I → k)) : Prop := ∀ y, y ∈ S ↔ g.v
 
 def stab (Λ : Set (I → k)) : Set (GL I k) := {g | Carries g Λ Λ}
 
-open Classical in
-
-def ind (S : Set (I' → k)) (Λ : Set (I → k)) (x : Matrix I I' k) : ℂ := if ∀ y ∈ S, x *ᵥ y ∈ Λ then 1 else 0
-
 def InCoset {G : Type} [Group G] (R : Subgroup G) (t : G) (J : Set G) (h : G) : Prop := ∃ r ∈ R, ∃ κ ∈ J, h = r * t * κ
-
-def RFJ (k : Type) [Field k] (n : Type) [Fintype n] [DecidableEq n] (σ : ℕ) : Subgroup (GL (n ⊕ Fin (2 * σ + 1 + 1)) k) :=
-  R k n _ (σ + 1) ⊔ R k n _ (σ + 2)
 
 def prC (J : Set (GL (n ⊕ Fin c) k)) (h : GL (n ⊕ Fin c) k) : Set (GL n k) :=
   {g | ∃ u ∈ N k n c 1, h⁻¹ * (u * embX c g) * h ∈ J}
 
-def tens (Ψ₁ : Matrix n' n'' k → ℂ) (Ψ₂ : Matrix n n' k → ℂ) (x : Matrix n' n'' k × Matrix n n' k) : ℂ := Ψ₁ x.1 * Ψ₂ x.2
-
-def om2 (μ₁ μ₂ : kˣ →* ℂˣ) (g'' : GL n'' k) (g' : GL n' k) (g : GL n k) (Ξ : Matrix n' n'' k × Matrix n n' k → ℂ)
-    (x : Matrix n' n'' k × Matrix n n' k) : ℂ :=
-  om μ₁ g'' g' (fun x₁ => om μ₂ g' g (fun x₂ => Ξ (x₁, x₂)) x.2) x.1
-
-abbrev Rec (k n'' n' n : Type) [Field k] [Fintype n] [DecidableEq n] (σ : ℕ) : Type :=
-  (Matrix n' n'' k × Matrix n n' k → ℂ) →ₗ[ℂ] (GL (n ⊕ Fin (2 * σ + 1)) k → ℂ)
-
-def IsRec (ψ : AddChar k Circle) (μ₁ μ₂ : kˣ →* ℂˣ) {σ : ℕ} (J : Set (GL (n ⊕ Fin (2 * σ + 1)) k))
-    (lam : GL (n ⊕ Fin (2 * σ + 1)) k → ℂ) (L : Rec k n'' n' n σ) : Prop :=
-  ∀ Ξ ∈ SB (Matrix n' n'' k × Matrix n n' k), ∀ h,
-    (∀ u ∈ N k n (2 * σ + 1) (σ + 1), L Ξ (u * h) = (ψ (simpleSum u) : ℂ) * L Ξ h) ∧
-    (∀ g' g, L (om2 μ₁ μ₂ 1 g' g Ξ) (embX _ g * h) = L Ξ h) ∧ ∀ κ ∈ J, L Ξ (h * κ) = lam κ * L Ξ h
-
 variable [MeasurableSpace k] [BorelSpace k]
-
-def dSym (ψ : AddChar k Circle) (ν : Measure k) (σ : ℕ)
-    (Φ₁ : Matrix (n' ⊕ Fin (2 * σ + 1 + 1)) (n'' ⊕ Fin (2 * σ + 1 + 1 + 1)) k → ℂ)
-    (Φ₂ : Matrix (n ⊕ Fin (2 * σ + 1)) (n' ⊕ Fin (2 * σ + 1 + 1)) k → ℂ) (x : Matrix n' n'' k × Matrix n n' k) : ℂ :=
-  ∫ u : n' → k, (∫ β : n' → k, opE ψ ν (σ + 2) (om 1 1 (colE _ (σ + 2) β) Φ₁) x.1 * (ψ (u ⬝ᵥ β) : ℂ) ∂(Measure.pi fun _ => ν)) *
-    opE ψ ν (σ + 1) (om 1 (rowE _ (σ + 1) u) 1 Φ₂) x.2 ∂(Measure.pi fun _ => ν)
-
-def dAt (ψ : AddChar k Circle) (ν : Measure k) (σ : ℕ) (μ₁ μ₂ : kˣ →* ℂˣ)
-    (Φ₁ : Matrix (n' ⊕ Fin (2 * σ + 1 + 1)) (n'' ⊕ Fin (2 * σ + 1 + 1 + 1)) k → ℂ)
-    (Φ₂ : Matrix (n ⊕ Fin (2 * σ + 1)) (n' ⊕ Fin (2 * σ + 1 + 1)) k → ℂ) (g : GL (n'' ⊕ Fin (2 * σ + 1 + 1 + 1)) k)
-    (h₁ : GL (n' ⊕ Fin (2 * σ + 1 + 1)) k) (h₂ : GL (n ⊕ Fin (2 * σ + 1)) k) : Matrix n' n'' k × Matrix n n' k → ℂ :=
-  dSym ψ ν σ (om μ₁ g h₁ Φ₁) (om μ₂ h₁ h₂ Φ₂)
-
-def IsMeas {σ : ℕ} (ρ₁ : Measure (RFJ k n' σ)) (μG₁ : Measure (GL (n' ⊕ Fin (2 * σ + 1 + 1)) k))
-    (ρ₂ : Measure (R k n (2 * σ + 1) (σ + 1))) (μG₂ : Measure (GL (n ⊕ Fin (2 * σ + 1)) k)) (m' : Measure (GL n' k))
-    (m : Measure (GL n k)) : Prop :=
-  ρ₁.IsHaarMeasure ∧ μG₁.IsHaarMeasure ∧ ρ₂.IsHaarMeasure ∧ μG₂.IsHaarMeasure ∧ m'.IsHaarMeasure ∧ m.IsHaarMeasure ∧
-    ρ₁ {r | r.1 ∈ KO k _} = m' (KO k n') ∧ ρ₂ {r | r.1 ∈ KO k _} = m (KO k n)
-
-def OneCell (ψ : AddChar k Circle) (ν : Measure k) (σ : ℕ) (μ₁ μ₂ : kˣ →* ℂˣ)
-    (Φ₁ : Matrix (n' ⊕ Fin (2 * σ + 1 + 1)) (n'' ⊕ Fin (2 * σ + 1 + 1 + 1)) k → ℂ)
-    (Φ₂ : Matrix (n ⊕ Fin (2 * σ + 1)) (n' ⊕ Fin (2 * σ + 1 + 1)) k → ℂ) (J₁ : Set (GL (n' ⊕ Fin (2 * σ + 1 + 1)) k))
-    (J₂ : Set (GL (n ⊕ Fin (2 * σ + 1)) k)) : Prop :=
-  ∀ h₁ h₂, dAt ψ ν σ μ₁ μ₂ Φ₁ Φ₂ 1 h₁ h₂ ≠ 0 → InCoset (RFJ k n' σ) 1 J₁ h₁ ∧ InCoset (R k n _ (σ + 1)) 1 J₂ h₂
-
-def CellValue (ψ : AddChar k Circle) (ν : Measure k) (σ : ℕ) (μ₁ μ₂ : kˣ →* ℂˣ)
-    (Φ₁ : Matrix (n' ⊕ Fin (2 * σ + 1 + 1)) (n'' ⊕ Fin (2 * σ + 1 + 1 + 1)) k → ℂ)
-    (Φ₂ : Matrix (n ⊕ Fin (2 * σ + 1)) (n' ⊕ Fin (2 * σ + 1 + 1)) k → ℂ) (g : GL (n'' ⊕ Fin (2 * σ + 1 + 1 + 1)) k)
-    (J₁ : Set (GL (n' ⊕ Fin (2 * σ + 1 + 1)) k)) (J₂ : Set (GL (n ⊕ Fin (2 * σ + 1)) k)) (C₁ : Set (GL n' k)) (C₂ : Set (GL n k))
-    (L : Rec k n'' n' n σ) (c z : ℂ) : Prop :=
-  ∀ ρ₁ μG₁ ρ₂ μG₂ m' m, IsMeas ρ₁ μG₁ ρ₂ μG₂ m' m →
-    Iter2 ρ₁ μG₁ ρ₂ μG₂ (fun h₁ h₂ => L (dAt ψ ν σ μ₁ μ₂ Φ₁ Φ₂ g h₁ h₂) h₂)
-      (c * ((μG₁.real J₁ * μG₂.real J₂ / (m'.real C₁ * m.real C₂) : ℝ) : ℂ) * z)
 
 def lower (ν : Measure k) (p : ℕ) (l : GL (n ⊕ Fin c) k → ℂ) (i : ℕ) : GL (n ⊕ Fin c) k → ℂ :=
   Nat.rec (motive := fun _ => GL (n ⊕ Fin c) k → ℂ) l
@@ -202,85 +145,7 @@ def IsNF {n : Type} [Fintype n] [DecidableEq n] (q : Unif k) (j : ℕ) (h : GL (
     {y | (fun l => y (Sum.inl l) - y (Sum.inr 0) * z l) ∈ stdL k n ∧
       ∀ i : Fin (c + 1), ((q.unit ^ (-e (i.val + 1)) : kˣ) : k) * y (Sum.inr i) ∈ 𝒪[k]}
 
-def idl (α α' : kˣ) (p j i : ℕ) : kˣ := α ^ (-(j : ℤ)) * (α / α') ^ p * (α * α') ^ ((p : ℤ) - i)
-
 end Data
-
-def GoodFact : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
-    (ψ : AddChar k Circle) (ν : Measure k) (α α' : kˣ), HasConductor ψ (α * α') → IsUnitVol ν →
-    ∀ (n'' n' n : Type) [Fintype n''] [DecidableEq n''] [Fintype n'] [DecidableEq n'] [Fintype n] [DecidableEq n] (σ j : ℕ),
-      Even j →
-      let Λ₀ := mono (2 * σ + 1 + 1 + 1) (stdL k n'') (idl α α' (σ + 2 + j / 2) j)
-      let Λ₁ := mono (2 * σ + 1 + 1) (stdL k n') (idl α α' (σ + 2 + j / 2) (j + 1))
-      let Λ₂ := mono (2 * σ + 1) (stdL k n) (idl α α' (σ + 2 + j / 2) (j + 1 + 1))
-      ∃ e : ℤ, (valuation k (α : k) = 1 → valuation k (α' : k) = 1 → e = 0) ∧ ∀ μ₁ μ₂, IsUnram μ₁ → IsUnram μ₂ →
-        OneCell ψ ν σ μ₁ μ₂ (ind Λ₀ (scal α Λ₁)) (ind Λ₁ (scal α Λ₂)) (stab Λ₁) (stab Λ₂) ∧
-        ∀ L : Rec k n'' n' n σ, IsRec ψ μ₁ μ₂ (stab Λ₂) (fun _ => 1) L →
-          CellValue ψ ν σ μ₁ μ₂ (ind Λ₀ (scal α Λ₁)) (ind Λ₁ (scal α Λ₂)) 1 (stab Λ₁) (stab Λ₂) (KO k n') (KO k n) L
-            (((√(resCard k : ℝ) : ℝ) : ℂ) ^ e)
-            (L (tens (ind (stdL k n'') (scal α (stdL k n'))) (ind (stdL k n') (scal α (stdL k n)))) 1)
-
-def LevelFact : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
-    (ψ : AddChar k Circle) (ν : Measure k) (q : Unif k), HasConductor ψ 1 → IsUnitVol ν → ∀ (κ t σ j : ℕ), Even j →
-      ∃ e : ℤ, ∀ μ : ℕ → kˣ →* ℂˣ, (∀ i, IsTame (μ i)) →
-        let p := σ + 2 + j / 2
-        let Φ₁ := phiG ψ q μ p κ t j (2 * σ + 1 + 1)
-        let Φ₂ := phiG ψ q μ p κ t (j + 1) (2 * σ + 1)
-        let J₁ := JG q p κ t (j + 1) (2 * σ + 1 + 1)
-        let J₂ := JG q p κ t (j + 1 + 1) (2 * σ + 1)
-        let Ξ₁ := entry ψ ν (μ (j + 1)) (stab (latG q _ _ _ _)) J₁ Φ₁ 1 1
-        let Ξ₂ := entry ψ ν (μ (j + 1 + 1)) (stab (latG q _ _ _ _)) J₂ Φ₂ 1 1
-        IsIdx ψ ν (μ (j + 1)) J₁ Φ₁ {1} {1} ∧ IsIdx ψ ν (μ (j + 1 + 1)) J₂ Φ₂ {1} {1} ∧
-        OneCell ψ ν σ (μ (j + 1)) (μ (j + 1 + 1)) Φ₁ Φ₂ J₁ J₂ ∧
-        ∀ L : Rec k _ _ _ σ, IsRec ψ (μ (j + 1)) (μ (j + 1 + 1)) J₂ (lamG ψ q μ) L →
-          CellValue ψ ν σ (μ (j + 1)) (μ (j + 1 + 1)) Φ₁ Φ₂ 1 J₁ J₂ (prC J₁ 1) (prC J₂ 1) L ((resCard k : ℂ) ^ e)
-            (L (tens Ξ₁ Ξ₂) 1)
-
-def GlueFact : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
-    (ψ : AddChar k Circle) (hψ : HasConductor ψ 1) (ν : Measure k) (q : Unif k), IsUnitVol ν →
-    ∀ (n'' n' n : Type) [Fintype n''] [DecidableEq n''] [Fintype n'] [DecidableEq n'] [Fintype n] [DecidableEq n] (σ : ℕ)
-      (P : Pair k n'') (Q : Pair k n') (Rr : Pair k n) (t'' : GL (n'' ⊕ Fin (2 * σ + 1 + 1 + 1)) k)
-      (t' : GL (n' ⊕ Fin (2 * σ + 1 + 1)) k) (t : GL (n ⊕ Fin (2 * σ + 1)) k),
-      let S₀ : Set _ := gluedS q (2 * σ + 1 + 1 + 1) P.ker P.vec
-      let S₁ : Set _ := gluedS q (2 * σ + 1 + 1) Q.ker Q.vec
-      let S₂ : Set _ := gluedS q (2 * σ + 1) Rr.ker Rr.vec
-      Carries t'' S₀ (gluedLat q (2 * σ + 1 + 1 + 1) (σ + 2) P.ker P.vec) →
-      Carries t' S₁ (mono _ Q.lat fun i => if i ≤ σ + 1 then 1 else q.unit⁻¹) →
-      Carries t S₂ (gluedLat q (2 * σ + 1) (σ + 1) Rr.ker Rr.vec) →
-      ∃ e : ℤ, ∀ μ₁ μ₂, IsUnram μ₁ → IsUnram μ₂ →
-        (∀ h₁ h₂, dAt ψ ν σ μ₁ μ₂ (ind S₀ S₁) (ind S₁ S₂) t'' h₁ h₂ ≠ 0 → InCoset (RFJ k n' σ) t' (stab S₁) h₁) ∧
-        ∀ L : Form k n'' (Rec k n'' n' n σ), L ∈ Mram k n'' (Rec k n'' n' n σ) →
-          (∀ P', IsRec ψ μ₁ μ₂ (stab S₂) (fun _ => 1) (L P')) →
-          (∀ (g : GL n'' k) P', ∀ Ξ ∈ SB _, L (g • P') (om2 μ₁ μ₂ g 1 1 Ξ) = L P' Ξ) →
-          (∀ h₁ h₂, L P (dAt ψ ν σ μ₁ μ₂ (ind S₀ S₁) (ind S₁ S₂) t'' h₁ h₂) ≠ 0 → InCoset (R k n _ (σ + 1)) t (stab S₂) h₂) ∧
-          CellValue ψ ν σ μ₁ μ₂ (ind S₀ S₁) (ind S₁ S₂) t'' (stab S₁) (stab S₂) {g | g • Q = Q} {g | g • Rr = Rr} (L P)
-            (((√(resCard k : ℝ) : ℝ) : ℂ) ^ e *
-              ((μ₁ (GeneralLinearGroup.det t'' / GeneralLinearGroup.det t' / q.unit) *
-                μ₂ (GeneralLinearGroup.det t' / GeneralLinearGroup.det t) : ℂˣ) : ℂ))
-            (dia (-1) (FFStar q (resChar ψ hψ q) L) P (tens (phiOne P Q) (phiOne Q Rr)) t)
-
-def RamFact : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
-    (ψ : AddChar k Circle) (ν : Measure k) (q : Unif k), HasConductor ψ 1 → IsUnitVol ν →
-    ∀ (κ t σ j : ℕ) (δ ν₁ ν₂ : kˣ →* ℂˣ) (b₀ b₁ b₂ : ℕ → kˣ), IsTame δ → ¬ IsUnram δ → IsUnram ν₁ → IsUnram ν₂ →
-      (∀ i, valuation k (b₀ i : k) = 1 ∧ valuation k (b₁ i : k) = 1 ∧ valuation k (b₂ i : k) = 1) →
-      let Φ₁ := phiQ δ b₀ b₁ κ t j (2 * σ + 1 + 1)
-      let Φ₂ := phiQ δ b₁ b₂ κ t (j + 1) (2 * σ + 1)
-      let J₁ := JQ k κ t (j + 1) (2 * σ + 1 + 1)
-      let J₂ := JQ k κ t (j + 1 + 1) (2 * σ + 1)
-      ∀ A₀, (∀ h ∈ A₀, IsNF q j h) →
-        (∃ A₁ A₂, IsIdx ψ ν (ν₁ * δ) J₁ Φ₁ A₀ A₁ ∧ IsIdx ψ ν (ν₂ * δ) J₂ Φ₂ A₁ A₂ ∧ (∀ h ∈ A₁, IsNF q (j + 1) h) ∧
-          ∀ h ∈ A₂, IsNF q (j + 1 + 1) h) ∧
-        ∀ A₁ A₂, IsIdx ψ ν (ν₁ * δ) J₁ Φ₁ A₀ A₁ → IsIdx ψ ν (ν₂ * δ) J₂ Φ₂ A₁ A₂ →
-          ∀ L : Rec k _ _ _ σ, IsRec ψ (ν₁ * δ) (ν₂ * δ) J₂ (lamQ δ) L →
-          ∀ ρ₁ μG₁ ρ₂ μG₂ m' m, IsMeas ρ₁ μG₁ ρ₂ μG₂ m' m →
-            ∃ Z, (∀ g, Iter2 ρ₁ μG₁ ρ₂ μG₂ (fun h₁ h₂ => L (dAt ψ ν σ (ν₁ * δ) (ν₂ * δ) Φ₁ Φ₂ g h₁ h₂) h₂) (Z g)) ∧
-              ∀ a ∈ A₀, lower ν (σ + 2) Z (σ + 1) a = ∑ b ∈ A₁, ∑ d ∈ A₂,
-                ((μG₁.real J₁ * μG₂.real J₂ / (m'.real (prC J₁ b) * m.real (prC J₂ d)) : ℝ) : ℂ) *
-                  lower ν (σ + 1) (L (tens (entry ψ ν (ν₁ * δ) (stab (stdL k _)) J₁ Φ₁ a b) (entry ψ ν (ν₂ * δ) (stab (stdL k _)) J₂ Φ₂ b d))) σ d
 
 section Global
 
@@ -354,9 +219,6 @@ def Vert.HasType (v : Vert x V A κ t j c) (Ig IQ : List ι) (p : ℕ) (μ₀ : 
 
 def idxC (y : Pt D) {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (J : Set (GL (n ⊕ Fin c) y.k)) (h : GL (n ⊕ Fin c) y.k) : ℂ :=
   (((volGL y.ν n).real (KO y.k n) / (volGL y.ν n).real (prC J h) : ℝ) : ℂ)
-
-def volJ (y : Pt D) (κ t j c : ℕ) : ℂ :=
-  (((volGL y.ν _).real (JQ y.k κ t j c) / (volGL y.ν (XI κ t j ⊕ Fin c)).real (KO y.k (XI κ t j ⊕ Fin c)) : ℝ) : ℂ)
 
 def Vert.Lowers (v : Vert x V A κ t j c) (ψ : AddChar (AF D.host.F) ℂ) (B : BesAt V A ρ) (Ig IQ : List ι) (p : ℕ)
     (μ₀ : ℕ → (AE D)ˣ →* Circle) (ξ : (AE D)ˣ →* Circle) (L : Lat V) (b : GA D V) (h : ∀ i, GL (XI κ t j ⊕ Fin c) (x i).k)
@@ -508,38 +370,9 @@ structure Site.Pins (ε : ℤˣ) : Prop where
   ram : ∀ s, ∀ ψ ∈ (T s).Ram j, ∀ a y, o.a.Ram ((T s).rd j a ψ y) ∧ (T s).rd j a ((T s).S j ψ) y =
     o.a.sAll o.q (fun i => resChar (o.χ i) (o.hχ i) o.q) (fun _ => sgnRes k ε) o.IT ((T s).rd j a ψ y)
 
-def Site.const (c₀ : ℂ) (a : (AE D)ˣ) (s : 𝒯) : ℂ :=
-  c₀ * (o.ξ s a : ℂ) * ((o.IQ s).map fun i => volJ (x i) κ t (j + 1) (2 * σ + 1 + 1) * volJ (x i) κ t (j + 1 + 1) (2 * σ + 1)).prod
-
-def ValAt (T : 𝒯 → Tup c) (j σ : ℕ) (h : j + 2 * (σ + 1) + 2 = D.R.m) (cV : 𝒯 → ℂ) : Prop :=
-  ∀ P₁ P₂, ∀ a ∈ GinfC (c.V (j + 1)), ∀ a' ∈ GinfC (c.V (j + 1 + 1)),
-    ∃ C, c.IsReal j C ∧ ∀ s, ∀ ψ ∈ (T s).Ram j, ∀ y (G : (T s).CC (j + 1 + 1)) v,
-      Iter2 (c.ρJ j (σ + 1) h) (c.μf (j + 1)) (c.ρB (j + 1 + 1) σ (idx_step h)) (c.μf (j + 1 + 1))
-        (fun q₁ q₂ => (T s).integrand j σ h P₁ P₂ (fun α => (T s).rd j α ψ y) (G.1 v) (a * q₁.1) (a' * q₂.1))
-        (cV s * (T s).perF (j + 1 + 1) σ (idx_step h) ((T s).two j (fun α => (T s).rd j α ((T s).S j ψ) y) C)
-          (rTrans a' (G.1 v)))
-
 end Pins
 
-def GlobalFact (D : D7) : Prop :=
-  ∃ ε : ℤˣ, ∀ (c : Comm D) (𝒯 : Type) (T : 𝒯 → Tup c) (j σ : ℕ) (h : j + 2 * (σ + 1) + 2 = D.R.m)
-    (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ιT ι : Type) (x : ι → Pt D)
-    (κ t : ℕ) (o : Site c T j σ h k ιT ι x κ t), c.Is → (∀ s, (T s).Is) → o.Pins ε →
-    ∃ c₀ : ℂ, c₀ ≠ 0 ∧ ∃ a : (AE D)ˣ, (a : AE D) - 1 ∈ idAt D o.atT ∧ ValAt T j σ h (o.const c₀ a)
-
-def Statement (D : D7) : Prop :=
-  SuppFirst D ∧ SuppSecond D ∧ GoodFact ∧ LevelFact ∧ GlueFact ∧ RamFact ∧ GlobalFact D
-
-example {c : Comm D} {𝒯 : Type} (T : 𝒯 → Tup c) : ValX T ↔ ∀ j σ h, ValAt T j σ h fun s => (T s).cV j := Iff.rfl
-
 end Global
-
-example {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p κ t j c : ℕ) :
-    InPat p (1 : Matrix (XI κ t j ⊕ Fin c) (XI κ t j ⊕ Fin c) k) :=
-  ⟨fun r s => by
-    rw [Matrix.one_apply]
-    split_ifs
-    exacts [one_mem _, zero_mem _], by simp, fun r s _ => by simp⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.StandardLatticeStabilizers
 

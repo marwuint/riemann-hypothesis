@@ -124,12 +124,6 @@ theorem _root_.GlobalTheory.SnMass.VolN.IntG.mem_dInv_two_mul (t : E ≃ₐ[ℚ]
 
 end Field
 
-section Place
-
-variable {E : Type} [Field E]
-
-end Place
-
 open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors Pointwise in
 variable {E : Type} [Field E] in

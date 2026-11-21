@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FourierSeriesProductEqProductSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SummableFourierCoefficientsFamilyFiniteExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SummableFourierCoefficientsFamilyFiniteExtension
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExpansionBijectiveOverFields
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.MeetsOpensOfSeparatesSections
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsSecKIsUnit
@@ -114,7 +114,7 @@ theorem parAt_of_parAt_mul : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing 
     ((FieldBaseChange.expandsG_bijective u.U.toUnifPre (PadicAlgCl p) hL.1.globalFns hd (u.U.expand d hd)).1 σ).exists
   have summ : ∀ s : Fam u.D.toPre (PadicAlgCl p) N,
       HasSum (fun χ => GlobalTheory.UT.coef s g w χ) (∑' χ, GlobalTheory.UT.coef s g w χ) := fun s =>
-    (GlobalTheory.T.summable_fourierCoefficients_family_finite_extension hL o Ω S ρ p y₀ u lab N (by omega) s g w hw).1.hasSum
+    (_root_.GlobalTheory.ZH.SeriesConv.summable_coef hL o Ω S ρ p y₀ u lab N (by omega) s g w hw).1.hasSum
   obtain ⟨σ₀, h₀⟩ : ∃ σ, v N σ ≠ 0 := exists_val_ne_zero u.U.toUnifPre hL.1.ample hN x l hl'
   obtain ⟨s₀, hs₀⟩ := expd N (by omega) σ₀
   have key : ∀ (m d : ℕ), d = N * (m + 1) → ∃ w' : GlobalTheory.UT.Frm u.D.toPre (PadicAlgCl p) d g.b, w'.IsGen ∧

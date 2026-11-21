@@ -188,13 +188,6 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
 
-theorem finiteDimensional_of_le' {E F : IntermediateField K Ω} (h : E ≤ F) [FiniteDimensional K F] :
-    FiniteDimensional K E :=
-  FiniteDimensional.of_injective (IntermediateField.inclusion h).toLinearMap
-    fun x y hxy => Subtype.ext (congrArg (fun z : F => (z : Ω)) hxy)
-
-omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
-
 theorem fixingOpenSubgroup_anti {L F : IntermediateField K Ω} [FiniteDimensional K L]
     [FiniteDimensional K F] (h : L ≤ F) : fixingOpenSubgroup F ≤ fixingOpenSubgroup L :=
   fun _ hx => IntermediateField.fixingSubgroup_antitone h hx
@@ -229,63 +222,12 @@ noncomputable def relReciprocityOfFixingSubgroups (K' L' : OpenSubgroup (Ω ≃�
     (unitsEquivOfForall (K' : Subgroup (Ω ≃ₐ[K] Ω)) E (mem_iff_forall_of_fixingSubgroup_eq _ hK))
     _ (map_unitsEquivOfForall_range_norm h K' L' hK hL)
 
-noncomputable def relLocalReciprocity :
-    Abelianization (IntermediateField.extendScalars h ≃ₐ[E] IntermediateField.extendScalars h) ≃*
-      Eˣ ⧸ (normUnits E (IntermediateField.extendScalars h)).range :=
-  haveI := finiteDimensional_of_le' h
-  relReciprocityOfFixingSubgroups h (fixingOpenSubgroup E) (fixingOpenSubgroup F) rfl rfl
-
 end Relative
-
-section NormSquare
-
-variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-  {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
-  {E F : IntermediateField K Ω} (h : E ≤ F) [FiniteDimensional K F]
-  [IsGalois E (IntermediateField.extendScalars h)]
-  (L : IntermediateField K Ω) [FiniteDimensional K L] [IsGalois K L]
-
-noncomputable def galRestrictField (hLF : L ≤ F) :
-    (IntermediateField.extendScalars h ≃ₐ[E] IntermediateField.extendScalars h) →* (L ≃ₐ[K] L) :=
-  haveI := finiteDimensional_of_le' h
-  haveI := (galoisTateModel (fixingOpenSubgroup E : Subgroup (Ω ≃ₐ[K] Ω)) (fixingOpenSubgroup F)
-    h rfl rfl).normal
-  (baseQuotientEquiv L).toMonoidHom.comp
-    ((galRestrict (le_top : fixingOpenSubgroup E ≤ ⊤)
-      (fixingOpenSubgroup_anti hLF)).comp
-      (galoisTateModel (fixingOpenSubgroup E : Subgroup (Ω ≃ₐ[K] Ω)) (fixingOpenSubgroup F)
-        h rfl rfl).quotientEquiv.symm.toMonoidHom)
-
-end NormSquare
 
 section ConjSquare
 
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
-
-omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
-
-theorem fixingSubgroup_map_conj (σ : Ω ≃ₐ[K] Ω) (E : IntermediateField K Ω) :
-    (E.map (σ : Ω →ₐ[K] Ω)).fixingSubgroup = E.fixingSubgroup.map (MulAut.conj σ).toMonoidHom := by
-  ext τ
-  rw [mem_map_conj, IntermediateField.mem_fixingSubgroup_iff,
-    IntermediateField.mem_fixingSubgroup_iff]
-  constructor
-  · intro hτ y hy
-    have := hτ (σ y) ⟨y, hy, rfl⟩
-    rw [AlgEquiv.mul_apply, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]
-    exact this
-  · rintro hτ _ ⟨y, hy, rfl⟩
-    have := hτ y hy
-    rw [AlgEquiv.mul_apply, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq] at this
-    exact this
-
-omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
-theorem fixingSubgroup_eq_conjOpen (σ : Ω ≃ₐ[K] Ω) {E E₂ : IntermediateField K Ω}
-    [FiniteDimensional K E] (hE : E.map (σ : Ω →ₐ[K] Ω) = E₂) :
-    E₂.fixingSubgroup = (conjOpen σ (fixingOpenSubgroup E) : Subgroup (Ω ≃ₐ[K] Ω)) := by
-  rw [← hE, fixingSubgroup_map_conj]
-  rfl
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
 theorem apply_mem_of_map_eq (σ : Ω ≃ₐ[K] Ω) {E E₂ : IntermediateField K Ω}
@@ -314,53 +256,6 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSep
 @[simp]
 theorem coe_conjUnits (x : Eˣ) : (((conjUnits σ hE x : E₂ˣ) : E₂) : Ω) = σ (x : Ω) :=
   rfl
-
-omit [IsGalois E₂ (IntermediateField.extendScalars h₂)] in
-include hE hF in
-theorem conj_mem_extendScalars (x : IntermediateField.extendScalars h) :
-    σ (x : Ω) ∈ IntermediateField.extendScalars h₂ :=
-  (IntermediateField.mem_extendScalars h₂).2
-    (apply_mem_of_map_eq σ hF ((IntermediateField.mem_extendScalars h).1 x.2))
-
-noncomputable def conjGal :
-    (IntermediateField.extendScalars h ≃ₐ[E] IntermediateField.extendScalars h) →*
-      (IntermediateField.extendScalars h₂ ≃ₐ[E₂] IntermediateField.extendScalars h₂) :=
-  haveI := finiteDimensional_of_le' h
-  haveI := (galoisTateModel (fixingOpenSubgroup E : Subgroup (Ω ≃ₐ[K] Ω)) (fixingOpenSubgroup F)
-    h rfl rfl).normal
-  (galoisTateModel (conjOpen σ (fixingOpenSubgroup E) : Subgroup (Ω ≃ₐ[K] Ω))
-    (conjOpen σ (fixingOpenSubgroup F)) h₂ (fixingSubgroup_eq_conjOpen σ hE)
-    (fixingSubgroup_eq_conjOpen σ hF)).quotientEquiv.toMonoidHom.comp
-    ((galConj σ (fixingOpenSubgroup E) (fixingOpenSubgroup F)).comp
-      (galoisTateModel (fixingOpenSubgroup E : Subgroup (Ω ≃ₐ[K] Ω)) (fixingOpenSubgroup F)
-        h rfl rfl).quotientEquiv.symm.toMonoidHom)
-
-theorem conjGal_apply (τ : IntermediateField.extendScalars h ≃ₐ[E] IntermediateField.extendScalars h)
-    (x : IntermediateField.extendScalars h) :
-    ((conjGal h σ h₂ hE hF τ ⟨σ x, conj_mem_extendScalars h σ h₂ hE hF x⟩ :
-      IntermediateField.extendScalars h₂) : Ω) = σ ((τ x : IntermediateField.extendScalars h) : Ω) := by
-  haveI := finiteDimensional_of_le' h
-  set T := galoisTateModel (fixingOpenSubgroup E : Subgroup (Ω ≃ₐ[K] Ω)) (fixingOpenSubgroup F)
-    h rfl rfl
-  set T₂ := galoisTateModel (conjOpen σ (fixingOpenSubgroup E) : Subgroup (Ω ≃ₐ[K] Ω))
-    (conjOpen σ (fixingOpenSubgroup F)) h₂ (fixingSubgroup_eq_conjOpen σ hE)
-    (fixingSubgroup_eq_conjOpen σ hF)
-  haveI := T.normal
-  obtain ⟨ρ, rfl⟩ := T.surjective_hom τ
-  have e : T.quotientEquiv.symm (T.hom ρ) = (ρ : _ ⧸ _) := by
-    rw [MulEquiv.symm_apply_eq, TateModel.quotientEquiv_mk]
-  have hρ : ∀ y : IntermediateField.extendScalars h,
-      ((T.hom ρ y : IntermediateField.extendScalars h) : Ω) = (ρ : Ω ≃ₐ[K] Ω) y :=
-    fun y => coe_restrictHom_apply _ h rfl ρ y
-  have hρ₂ : ∀ (ρ₂ : (conjOpen σ (fixingOpenSubgroup E) : Subgroup (Ω ≃ₐ[K] Ω)))
-      (y : IntermediateField.extendScalars h₂),
-      ((T₂.hom ρ₂ y : IntermediateField.extendScalars h₂) : Ω) = (ρ₂ : Ω ≃ₐ[K] Ω) y :=
-    fun ρ₂ y => coe_restrictHom_apply _ h₂ (fixingSubgroup_eq_conjOpen σ hE) ρ₂ y
-  rw [hρ]
-  change ((T₂.quotientEquiv (galConj σ (fixingOpenSubgroup E) (fixingOpenSubgroup F)
-    (T.quotientEquiv.symm (T.hom ρ))) ⟨σ x, _⟩ : IntermediateField.extendScalars h₂) : Ω) = _
-  rw [e, galConj_mk, TateModel.quotientEquiv_mk, hρ₂]
-  simp [AlgEquiv.mul_apply]
 
 end ConjSquare
 

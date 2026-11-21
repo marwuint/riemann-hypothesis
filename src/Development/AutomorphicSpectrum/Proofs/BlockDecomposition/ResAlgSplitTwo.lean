@@ -25,36 +25,6 @@ structure ResAlg (E : Type) [CommRing E] (τ : E →+* E) (q : ℕ) (ε : ℤ) :
   card : Nat.card E = q ^ 2
   eps : (ε = -1 ∧ IsField E) ∨ (ε = 1 ∧ ¬ IsField E)
 
-theorem resAlg_split_two :
-    ResAlg (ZMod 2 × ZMod 2) (RingEquiv.prodComm : ZMod 2 × ZMod 2 ≃+* ZMod 2 × ZMod 2).toRingHom 2 1 := by
-  refine ⟨fun a => ?_, ?_, ?_, by norm_num, ?_, ?_⟩
-  · first
-      | rfl
-      | simp
-      | (ext <;> rfl)
-  · rintro ⟨x, y⟩ h hne
-    fin_cases x <;> fin_cases y
-    all_goals first
-      | exact (hne rfl).elim
-      | exact absurd h (by decide)
-      | exact isUnit_one
-      | (convert isUnit_one using 1; decide)
-  · refine ⟨(1, 0), ?_, ?_⟩
-    · convert isUnit_one using 1
-      decide
-    · rintro ⟨p, r⟩
-      refine ⟨(r, r), (p - r, p - r), rfl, rfl, ?_⟩
-      ext <;> first | simp | (simp; ring) | ring
-  · first
-      | simp
-      | (rw [Nat.card_eq_fintype_card]; rfl)
-      | decide
-  · right
-    refine ⟨rfl, fun hF => ?_⟩
-    obtain ⟨b, hb⟩ := hF.mul_inv_cancel (a := ((1, 0) : ZMod 2 × ZMod 2)) (by decide)
-    have h2 := congrArg Prod.snd hb
-    simp at h2
-
 variable {E : Type} [CommRing E] {τ : E →+* E}
 
 structure HermSp (E : Type) [CommRing E] (τ : E →+* E) (V : Type) [AddCommGroup V] [Module E V] where
@@ -73,9 +43,6 @@ variable (B : HermSp E τ V)
 theorem zero_left (w : V) : B.h 0 w = 0 := by
   have h0 := B.smul_left 0 0 w
   rwa [zero_smul, zero_mul] at h0
-
-theorem zero_right (v : V) : B.h v 0 = 0 := by
-  rw [B.symm 0 v, B.zero_left, map_zero]
 
 theorem add_right (v u w : V) : B.h v (u + w) = B.h v u + B.h v w := by
   rw [B.symm (u + w) v, B.add_left, map_add, ← B.symm, ← B.symm]
@@ -164,13 +131,6 @@ theorem norm_perp {w v : V} (hv : B.h v w = 0) (a : E) :
   ring
 
 end HermSp
-
-def HermSp.self (hτ : ∀ a, τ (τ a) = a) : HermSp E τ E where
-  h a b := a * τ b
-  add_left u v w := by ring
-  smul_left a v w := by simp [mul_assoc]
-  symm v w := by simp [hτ, mul_comm]
-  nondeg v hv := by simpa using hv 1
 
 def HermSp.ofMatrix (hτ : ∀ a, τ (τ a) = a) {m : ℕ} (S : Matrix (Fin m) (Fin m) E)
     (hS : cT τ S = S) (hd : IsUnit S.det) : HermSp E τ (Fin m → E) where

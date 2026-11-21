@@ -1,11 +1,18 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.KappaLambdaEmbedding
-import Formalism.ThetaLiftIndependence.FinalThetaLiftAMFKIndep
+import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
+import Formalism.LocalRingCardinality.DataKap
+import Formalism.LocalRingCardinality.DataParams
+import Formalism.ThetaLiftIndependence.Statement
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Ipindep
+import Formalism.ThetaLiftIndependence.ThetaOrbitSums.LatLiftIndep
+import Formalism.ThetaLiftIndependence.ThetaOrbitSums.ClassRepsDefinite
+import Formalism.ThetaLiftIndependence.ThetaOrbitSums.DetSwap
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.RowsOfLevel
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryEqRealMulFiniteSplit
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormGoodRowsFiniteGroupActionStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormGoodRowsFiniteGroupAction
+import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LiftTwistsByLevelCharacter
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChainCompositeLiftIntertwinesFiniteGroupActionsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChainCompositeLiftIntertwinesFiniteGroupActions
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeterssonAdjointHeckeOperatorEqDualLabel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ISupIInfEigenspaceEqTop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeOnMemGoodPart
@@ -16,7 +23,6 @@ noncomputable section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
 open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult
-open GlobalTheory.IndefiniteRowSideFullHecke.KappaLambdaEmbedding
 open scoped TensorProduct InnerProductSpace
 
 namespace GlobalTheory.KappaLevels
@@ -76,20 +82,7 @@ end Abstract
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
 
-def DownIntertwines (t : T) : Prop :=
-  ∀ g κ, IsLevelLift D.sp.X' R.βX (R.datXt t) (R.eG g) κ → ∀ y y' : (R.HX t).H,
-    (∀ h, (R.HX t).e y' h = (levChi _ R.βX (flagL (R.datXt t)) κ)⁻¹ • (R.HX t).e y (h * (finHom _).rangeRestrict κ)) →
-      R.Th t y' = R.gE g (R.Th t y)
-
-def UpKeepsLevel (t : T) : Prop :=
-  ∀ P, ∀ x ∈ rowsAt R P, LinearMap.adjoint (R.Th t) x ∈ goodAt R t P
-
 variable {R F}
-
-def SchurOnChain : Prop :=
-  ∀ (D : D7) (θ : Datum.InfFam D) (j : ℕ), j < D.R.m → ∀ (M : DSModel (Yc D j) (parB (Ptw D) (min j D.R.m)))
-    (β : GL (Fin (Yc D j).rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ (Yc D j).rank) (μ : Measure (GA D (Yc D j))) (𝓕 : Set (GA D (Yc D j))),
-    SchurMult θ M (levS _ β L) (levChi _ β L) μ 𝓕
 
 end GlobalTheory.KappaLevels
 

@@ -1,6 +1,7 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WchartCompLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundlePowerPullbackSectionPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerPullbackSectionExistsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerPullbackSectionExists
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundlePowerIsoReindexedChartsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRescaledLineBundlePowerIsoGeneratorStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoeffPullbackBaseChangeStableSectionBasisStatement
@@ -90,7 +91,7 @@ theorem exists_isMat : ∀ (Rg : Type) [CommRing Rg] [IsNoetherianRing Rg] (A B 
             (inf_le_right.trans (GlobalTheory.HomFixMat.wchart_comp_le L _ _ p.2))).hom ((bA i).f p.2) := by
     intro j
     obtain ⟨σ, hσ⟩ := GlobalTheory.T.exists_lineBundlePowerPullback_section_pullback M (snd (topS Rg) B).left (Φ'.left ≫ ψB) (k : ℤ) (bB j)
-    obtain ⟨s, hs⟩ := GlobalTheory.T.power_pullback_section_exists L M (ψA ≫ (snd (topS Rg) A).left) ((Φ'.left ≫ ψB) ≫ (snd (topS Rg) B).left)
+    obtain ⟨s, hs⟩ := _root_.GlobalTheory.HomFixMat.divSec_exists L M (ψA ≫ (snd (topS Rg) A).left) ((Φ'.left ≫ ψB) ≫ (snd (topS Rg) B).left)
       (k : ℤ) α hα hL hM σ
     obtain ⟨c, hc⟩ := GlobalTheory.T.exists_coeff_pullback_baseChangeStableSectionBasis Rg A L k mA bA hbA R t A' φA' hpA.1 ψA hψA s
     refine ⟨c, fun p => ?_⟩

@@ -53,31 +53,10 @@ def ErrX5at (u0 : U0) : ℝ :=
     + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH) * (UBar5 D C Xpp + D.b)
         + (D.etaBar + 4 * Real.sqrt D.eBar) * (D.x ^ C.cHH * D.b))
 
-def errorTermWith : ℝ :=
-  D.sumA * (C.cCount * (D.La + (m : ℝ) ^ 2 * D.La / D.k))
-    + (C.cDiv * D.nT * D.a * D.La + C.cDiv * (m : ℝ) * (D.B0 + D.Nc) * D.x ^ (C.eDiv * D.ε))
-    + (m : ℝ) * C.cE * D.B0
-    + C.cSlope * D.nT * D.a * D.La * (1 + (m : ℝ) / D.k)
-    + umean (fun u0 => Real.log (Fintype.card (W u0) : ℝ))
-    + D.LoP C
-    + MLo5 D C Xpp
-    + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH) * (UBar5 D C Xpp + D.b)
-        + (D.etaBar + 4 * Real.sqrt D.eBar) * (D.x ^ C.cHH * D.b))
-
-def MeanBoundWith : Prop :=
-  Nonempty U0 → D.HidaSetting C → D.DIV C → EComp5 D C → D.HComp C → Count5 D C → D.Slopes C →
-    QuotientSlopeBoundsWith D C Xpp → LossBounds D C → D.SlopeIneq → D.HHBound C → D.FParams →
-    umean D.ASK ≤ umean D.Main + errorTermWith D C Xpp
-
 def PointwiseBoundVariant : Prop :=
   D.HidaSetting C → D.DIV C → EComp5 D C → D.HComp C → Count5 D C → D.Slopes C →
     QuotientSlopeBoundsWith D C Xpp → LossBounds D C → D.SlopeIneq → D.HHBound C → D.FParams →
     ∀ u0, D.ASK u0 ≤ D.Main u0 + ErrX5at D C Xpp u0
-
-def MeanBoundOfLossBounds : Prop :=
-  Nonempty U0 → D.HidaSetting C → D.DIV C → EComp5 D C → D.HComp C → Count5 D C → D.Slopes C →
-    QuotientSlopeBoundsWith D C Xpp → D.Losses C → D.SlopeIneq → D.HHBound C → D.FParams →
-    umean D.ASK ≤ umean D.Main + errorTermWith D C Xpp
 
 end
 

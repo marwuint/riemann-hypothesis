@@ -9,7 +9,8 @@ import Formalism.EllipticTorsion.EllipticTorsionProofs.IntegralPSBserSubOne
 import Formalism.EllipticTorsion.EllipticTorsionProofs.NDeriv
 import Formalism.EllipticTorsion.EllipticTorsionProofs.JetsCube
 import Formalism.EllipticTorsion.EllipticTorsionProofs.JetsTwo
-import Formalism.EllipticTorsion.EllipticTorsionProofs.JetsOne
+import Formalism.EllipticTorsion.JetsCube
+import Formalism.FormalGroupLog.FormalGroupLogProofs.ConstantCoeffSubstOfZero
 import Formalism.EllipticTorsion.EllipticTorsionProofs.FormalGroupPointsSubgroupHolds
 import Formalism.EllipticTorsion.EllipticTorsionProofs.FormalGroupPointsNoPrimeToPTorsion
 import Formalism.EllipticTorsion.EllipticTorsionProofs.TorInt
@@ -17,7 +18,7 @@ import Formalism.EllipticTorsion.EllipticTorsionProofs.IsogenyExpansion
 import Formalism.EllipticTorsion.EllipticTorsionProofs.Change
 import Formalism.EllipticTorsion.EllipticTorsionProofs.UnitCancel
 import Formalism.EllipticTorsion.EllipticTorsionProofs.LogWeight
-import Formalism.EllipticTorsion.EllipticTorsionProofs.ExpWeight
+import Formalism.EllipticTorsion.UnitCancel
 import Formalism.EllipticTorsion.EllipticTorsionProofs.CompExp
 import Formalism.EllipticTorsion.EllipticTorsionProofs.CoefficientWeightsLemmaTwo
 import Formalism.EllipticTorsion.EllipticTorsionProofs.ExistsSumPowPrimePow
@@ -44,15 +45,9 @@ theorem modelDeuring : ModelDeuring.{u} := deuring_model
 theorem modelUnit : ModelUnit.{u} := by
   apply modelUnit_of <;> first | exact modelLegendre | exact modelDeuring | exact legendreInv | exact deuringInv
 theorem intValuedZp : IntValuedZp.{u} := integer_valued_padic_integers
-theorem padicMult : PadicMult.{u} := by
-  apply padicMult_of <;> first | exact intValuedZp | exact nAddSubgroup | exact nZpSmul | exact nPderiv | exact lwP₂ | exact unitCancel | exact compExpWeight | exact lemma2Weights | exact frobExpand | exact wFormalGroup | exact formal_group_points_subgroup | exact formal_group_points_no_torsion | exact isoExpand | exact isoVanish | exact changeIntegral | exact wPoint | exact wSubstUnique | exact wChordSubst | exact wChordSeries | exact veluIntegralModel | exact veluUSeries | exact modelUnit
 theorem nAddSubgroup : NAddSubgroup.{u} := N_additive_subgroup
 theorem nZpSmul : NZpSmul.{u} := N_padic_integer_smul
 theorem nPderiv : NPderiv.{u} := N_partial_derivative
-
-theorem jetsCube : JetsCube.{u} := jetsCube_of N_partial_derivative
-theorem jetsTwo : JetsTwo.{u} := jetsTwo_of nPderiv
-theorem jetsOne : JetsOne.{u} := jetsOne_of N_partial_derivative
 
 theorem formal_group_points_subgroup : FormalGroupPointsSubgroup'.{u} := formal_group_points_subgroup_holds
 theorem formal_group_points_no_torsion : FormalGroupPointsTorsionFree.{u} := formal_group_points_no_prime_to_p_torsion
@@ -64,8 +59,6 @@ theorem isoVanish : IsoVanish.{u} := isogeny_vanishing
 theorem changeIntegral : ChangeIntegral.{u} := change_of_variables_integral
 
 theorem lwP₂ : LogWeight.{u} := logarithm_coeff_weight
-theorem expWeight : ExpWeight.{u} := by
-  apply expWeight_of <;> first | exact intValuedZp | exact nAddSubgroup | exact nZpSmul | exact nPderiv | exact lwP₂ | exact unitCancel | exact compExpWeight | exact lemma2Weights | exact frobExpand | exact wFormalGroup | exact formal_group_points_subgroup | exact formal_group_points_no_torsion | exact isoExpand | exact isoVanish | exact changeIntegral | exact wPoint | exact wSubstUnique | exact wChordSubst | exact wChordSeries | exact veluIntegralModel | exact veluUSeries | exact modelUnit
 theorem unitCancel : UnitCancel.{u} := unit_cancellation
 
 theorem compExpWeight : CompExpWeight.{u} := comp_exp_coeff_weight

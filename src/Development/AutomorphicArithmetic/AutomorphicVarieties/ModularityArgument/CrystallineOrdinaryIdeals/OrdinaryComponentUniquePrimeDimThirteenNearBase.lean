@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.Imports
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.OrdinaryLocusIdealLeKerOfIsBasePointStatement
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SaturatedOrdinaryIdealTangentFinrankEqTwelveStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.OrdinaryLocusIdealLeKerOfIsBasePoint
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SaturatedOrdinaryIdealTangentFinrankEqTwelve
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.UnivEx
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.FinrankPointDerivationsVanishingEqOfIsCompl
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
@@ -28,7 +28,7 @@ theorem component_basic : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime
   haveI : Module.Finite ℚ_[l] (FractionRing O) :=
     Module.Finite.of_isLocalization ℤ_[l] O (nonZeroDivisors ℤ_[l])
   obtain ⟨x, hx, hxu⟩ := univEx D U
-  obtain ⟨-, n, P, φ, hφ, hIP, ⟨y, hy, hyP⟩, hPI, h0, hdim⟩ := GlobalTheory.T.exists_unique_ordinaryPrime_dim_succ_near_base hP D U (FractionRing O) x hx
+  obtain ⟨-, n, P, φ, hφ, hIP, ⟨y, hy, hyP⟩, hPI, h0, hdim⟩ := _root_.GlobalTheory.OrdLoc.saturatedOrdinaryIdeal_smooth_at_residualRep hP D U (FractionRing O) x hx
   have hmem : P ∈ primesAt0 D U := by rw [h0]; rfl
   have hmin := hmem.1
   have hPx : P ≤ RingHom.ker x := hmem.2 x hx
@@ -48,7 +48,7 @@ theorem component_basic : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime
         · simp only [LinearMap.smul_apply, h2 a ha, smul_zero] }
   have hT : ∀ δ, δ ∈ T ↔ (∀ a b, δ (a * b) = algebraMap O _ (x a) * δ b + algebraMap O _ (x b) * δ a) ∧
       ∀ a ∈ IY D U, δ a = 0 := fun δ => Iff.rfl
-  have h1 := GlobalTheory.T.saturatedOrdinaryIdeal_tangent_finrank_eq_twelve hP D U (FractionRing O) x hx T hT
+  have h1 := _root_.GlobalTheory.OrdLoc.tangent_finrank_eq_twelve hP D U (FractionRing O) x hx T hT
   have h2 : finrank (FractionRing O) ↥T = n := UpperTheory.finrank_pointDerivations_vanishing_eq_of_isCompl n P x φ hφ T fun δ => by
     rw [hT]
     refine and_congr_right fun h => ⟨fun h' a ha => ?_, fun h' a ha => h' a (hIP ha)⟩

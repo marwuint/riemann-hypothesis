@@ -14,20 +14,10 @@ namespace GlobalTheory.CompanionTheory.WaveFc.Asm
 
 variable {n : ℕ}
 
-theorem val_mem (y : G n) : y.val ∈ GLs n :=
-  ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
-
 theorem open_GLs : IsOpen (GLs n) := by
   have : GLs n = (fun g : Mat n => g.det) ⁻¹' {0}ᶜ := rfl
   rw [this]
   exact isOpen_compl_singleton.preimage (Continuous.matrix_det continuous_id)
-
-theorem mul_mem_GLs {y : Mat n} (hy : y ∈ GLs n) (h : G n) : y * h.val ∈ GLs n := by
-  have h1 : h.val.det ≠ 0 := val_mem h
-  have h2 : y.det ≠ 0 := hy
-  show (y * h.val).det ≠ 0
-  rw [Matrix.det_mul]
-  exact mul_ne_zero h2 h1
 
 section Rw
 

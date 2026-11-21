@@ -132,47 +132,10 @@ theorem interNum_eq_sum_length (hf : IsProjOver f) (hL : L.IsLB) (c : X → L.ι
 
 end Sheaf
 
-section Algebra
-
-variable {K R : Type} [Field K] [CommRing R]
-
-def Leibniz (ev : R →+* K) (δ : R →+ K) : Prop := ∀ a b, δ (a * b) = ev a * δ b + ev b * δ a
-
-def Leibniz.kerSubring {ev : R →+* K} {δ : R →+ K} (h : Leibniz ev δ) : Subring R where
-  carrier := {r | δ r = 0}
-  mul_mem' {a b} (ha : δ a = 0) (hb : δ b = 0) := by
-    change δ (a * b) = 0
-    rw [h, ha, hb, mul_zero, mul_zero, add_zero]
-  one_mem' := by
-    have := h 1 1
-    rw [mul_one, ev.map_one, one_mul] at this
-    exact left_eq_add.1 this
-  add_mem' {a b} (ha : δ a = 0) (hb : δ b = 0) := by
-    change δ (a + b) = 0
-    rw [map_add, ha, hb, add_zero]
-  zero_mem' := map_zero δ
-  neg_mem' {a} (ha : δ a = 0) := by
-    change δ (-a) = 0
-    rw [map_neg, ha, neg_zero]
-
-end Algebra
-
 section BaseChange
 
 variable {k K : Type} [Field k] [Field K] {X X' : Scheme.{0}} {f : X ⟶ Sp k} {f' : X' ⟶ Sp K} {π : X' ⟶ X}
   {φ : k →+* K}
-
-def stalkConst (f' : X' ⟶ Sp K) (z : X') : K →+* X'.presheaf.stalk z :=
-  ((Scheme.ΓSpecIso (.of K)).inv ≫ f'.appTop ≫ X'.presheaf.germ ⊤ z trivial).hom
-
-theorem stalkClosedPointTo_stalkConst {p : Sp K ⟶ X'} (hp : p ≫ f' = 𝟙 _) (a : K) :
-    (Scheme.stalkClosedPointTo p).hom (stalkConst f' _ a) = a := by
-  have e : p.appTop (f'.appTop ((Scheme.ΓSpecIso (.of K)).inv a)) = (Scheme.ΓSpecIso (.of K)).inv a := by
-    rw [← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, hp, Scheme.Hom.id_appTop]
-    rfl
-  refine (congrArg (stalkClosedPointIso (.of K)).hom ((Scheme.Hom.germ_stalkMap_apply p ⊤ _ trivial _).trans
-    (congrArg ((Sp K).presheaf.germ ⊤ _ trivial) e))).trans ?_
-  exact (ConcreteCategory.congr_hom (germ_stalkClosedPointIso_hom (.of K)) _).trans (Iso.inv_hom_id_apply _ _)
 
 theorem ringKrullDim_stalk {d : ℕ} (h : SmoothOfRelativeDimension d f') {z : X'} (hz : IsClosed ({z} : Set X')) :
     ringKrullDim (X'.presheaf.stalk z) = d := by
@@ -180,36 +143,6 @@ theorem ringKrullDim_stalk {d : ℕ} (h : SmoothOfRelativeDimension d f') {z : X
   rw [IsLocalRing.maximalIdeal_eq_bot, Ideal.map_bot] at this
   exact (ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _)).symm.trans this
 
-theorem residueDegree_eq_one {p : Sp K ⟶ X'} (hp : p ≫ f' = 𝟙 _) :
-    f'.residueDegree (p (IsLocalRing.closedPoint K)) = 1 := by
-  rw [residueDegree_eq_finrank]
-  letI := algebraΓOfHom f'
-  letI := residueFieldAlgebraOver K (p (IsLocalRing.closedPoint K))
-  let r := (Scheme.descResidueField (Scheme.stalkClosedPointTo p)).hom
-  have h : ∀ a, r (algebraMap K _ a) = a := stalkClosedPointTo_stalkConst hp
-  exact Module.finrank_of_bijective_algebraMap
-    ⟨(algebraMap K _).injective, fun b => ⟨r b, r.injective (h _)⟩⟩
-
 end BaseChange
-
-section Count
-
-variable {K : Type} [Field K] [IsAlgClosed K] {X : Scheme.{0}} {f : X ⟶ Sp K} {L : LB X}
-
-end Count
-
-section Cut
-
-variable {F : Type} [Field F] (Y : Var F) {Δ : Y.Dv} {n : ℕ} (b : Fin n → Y.H0 Δ)
-
-omit Y in
-
-theorem valAt_algebraMap {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z)
-    (a : Z.presheaf.stalk (below y)) :
-    TrueGeo.valAt y (algebraMap _ Z.functionField a) = (Scheme.stalkClosedPointTo y).hom a := by
-  have h : RegAt (below y) (algebraMap _ Z.functionField a) := ⟨a, rfl⟩
-  rw [TrueGeo.valAt, dif_pos h, IsFractionRing.injective _ Z.functionField h.choose_spec]
-
-end Cut
 
 end GlobalTheory.CutDegree

@@ -37,45 +37,6 @@ def heckeKernel (t : SAB H (Sp k)) (p : ℕ) (P : Ideal (𝓞 E)) (C₀ : Subgro
     (KilledByPow t (conjIdeal H P) x₂ ∧ x₂ ^ p ∈ C₀) ∧
     (x₃ ^ p = 1 ∧ KilledByPow t P x₃ ∧ ∀ c ∈ C₀, Out.WeilIs t.G t.PP.L (p : ℤ) x₃ c 1)}
 
-def IsHeckeIsogeny {D : Datum H} {l : Level H} {B : Type} [CommRing B] {b : Base l B} {s : Sp k ⟶ Sp B}
-    (o o'' : Obj D l b s) (p : ℕ) (C : Set (Pts o.t)) (ψ : o.t.G ⟶ o''.t.G) : Prop :=
-  IsMonHom ψ ∧ IsFinite ψ.left ∧ Surjective ψ.left ∧
-    (∀ a, o.t.act.act a ≫ ψ = ψ ≫ o''.t.act.act a) ∧
-    (∀ x : Pts o.t, x ≫ ψ = 1 ↔ x ∈ C) ∧
-    LBIso (cubeLB o''.t.G ![fst o.t.G o.t.G ≫ ψ, snd o.t.G o.t.G ≫ ψ] o''.t.PP.L)
-      (LB.LinComb (abelian₂ o.t.G o.t.PP.L) (K := PUnit) (fun _ => 𝟙 _) (fun _ => (p : ℤ) ^ 2)) ∧
-    (∀ a, o.eta a ≫ ψ = o''.eta a ^ p) ∧
-    (∀ a, o.etaA a ≫ ψ = o''.etaA a ^ p)
-
 end Fibre
-
-def HeckeCorrespondence {D : Datum H} {l : Level H} (Xo : Moduli D l) : Prop :=
-  ∀ (p : ℕ) (P : Ideal (𝓞 E)), IsSplitPrimeOff l p P → ∀ i : ℕ, i ≤ D.p + D.q →
-    ∀ (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ Xo.X) (o : Obj D l (baseKA l) (y ≫ Xo.s)),
-      Nonempty (ObjMap o Xo.univ y) →
-      ∀ C₀ : Subgroup (Pts o.t), IsHeckeDatum o.t P i C₀ →
-        ∃! y'' : Sp k ⟶ Xo.X, y'' ≫ Xo.s = y ≫ Xo.s ∧
-          ∃ (o'' : Obj D l (baseKA l) (y ≫ Xo.s)) (ψ : o.t.G ⟶ o''.t.G),
-            Nonempty (ObjMap o'' Xo.univ y'') ∧ IsHeckeIsogeny o o'' p (heckeKernel o.t p P C₀) ψ
-
-def HeckeCorrespondenceStatement : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l),
-    HeckeCorrespondence Xo
-
-example {k : Type} [Field k] (t : SAB H (Sp k)) (P : Ideal (𝓞 E)) : IsHeckeDatum t P 0 ⊥ := by
-  refine ⟨fun a x hx => ?_, fun x hx a _ => ?_, inferInstance, by simp⟩
-  · have := t.act.hom a
-    rw [Subgroup.mem_bot] at hx ⊢
-    rw [hx, MonObj.one_comp]
-  · have := t.act.hom a
-    rw [Subgroup.mem_bot] at hx
-    rw [hx, MonObj.one_comp]
-
-example {k : Type} [Field k] (t : SAB H (Sp k)) (p : ℕ) (P : Ideal (𝓞 E)) (x : Pts t)
-    (hx : x ∈ heckeKernel t p P ⊥) : x ^ p = 1 := by
-  obtain ⟨x₁, x₂, x₃, rfl, ⟨h₁, -⟩, ⟨-, h₂⟩, ⟨h₃, -⟩⟩ := hx
-  rw [Subgroup.mem_bot] at h₂
-  have hc : ∀ u v : Pts t, Commute u v := fun u v => mul_comm u v
-  rw [(hc _ _).mul_pow, (hc _ _).mul_pow, h₁, h₂, h₃, _root_.mul_one, _root_.mul_one]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.HeckeIsogenyKernels

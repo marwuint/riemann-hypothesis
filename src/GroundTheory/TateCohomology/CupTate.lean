@@ -142,10 +142,6 @@ theorem tateCup_unique_of_agrees (μ : ∀ p q : ℤ, TateCupFam k G p q)
     apply moduleIso_hom_injective (tateIsoH (A ⊗ B) l l rfl)
     rw [hpos n m' l hl, tateIsoH_tateCup rfl rfl rfl h hl]
 
-noncomputable def tateCupTensor (A B : Rep.{u} k G) (p q : ℤ) :
-    TensorProduct k (tateCohomology A p) (tateCohomology B q) →ₗ[k] tateCohomology (A ⊗ B) (p + q) :=
-  TensorProduct.lift (tateCup p q A B (p + q) rfl)
-
 theorem tateCup_δ_left {E : ShortComplex (Rep.{u} k G)} (hE : E.ShortExact) (B : Rep.{u} k G)
     (hEB : (E.map (tensorRight B)).ShortExact) (p q r : ℤ) (h : p + q = r)
     (a : tateCohomology E.X₃ p) (b : tateCohomology B q) :

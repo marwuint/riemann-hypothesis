@@ -56,26 +56,6 @@ lemma sqBall_isClosed (r : ℕ) (R : ℝ) : IsClosed (sqBall r E R) := by
   exact isClosed_le (continuous_finset_sum _ fun k _ => (continuous_apply k).norm.pow 2)
     continuous_const
 
-lemma box_subset_sqBall (r : ℕ) {R : ℝ} :
-    Set.pi Set.univ (fun _ : Fin r => Metric.closedBall (0 : E) (R / Real.sqrt r)) ⊆
-      sqBall r E R := by
-  intro u hu
-  rw [Set.mem_univ_pi] at hu
-  simp only [sqBall, Set.mem_setOf_eq]
-  rcases Nat.eq_zero_or_pos r with rfl | hr
-  · simp
-    positivity
-  have hr' : (0 : ℝ) < r := by exact_mod_cast hr
-  have hb : ∀ k, ‖u k‖ ^ 2 ≤ R ^ 2 / r := by
-    intro k
-    have h := mem_closedBall_zero_iff.mp (hu k)
-    calc ‖u k‖ ^ 2 ≤ (R / Real.sqrt r) ^ 2 := pow_le_pow_left₀ (norm_nonneg _) h 2
-      _ = R ^ 2 / r := by rw [div_pow, Real.sq_sqrt hr'.le]
-  calc ∑ k, ‖u k‖ ^ 2 ≤ ∑ _k : Fin r, R ^ 2 / r := Finset.sum_le_sum fun k _ => hb k
-    _ = R ^ 2 := by
-        rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-        field_simp
-
 variable {V W : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
   [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
   [MeasurableSpace V] [BorelSpace V]

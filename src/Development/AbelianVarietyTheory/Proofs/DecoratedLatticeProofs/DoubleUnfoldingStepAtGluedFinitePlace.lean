@@ -2,19 +2,20 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.T2SpaceMatrixOfIsNonarchimedeanLocalField
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleThetaUnfoldingEquivariantUnitaryGroups
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLinearModelLatticeVacuumBaseStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SourceLiftAtGluedPlaceProofStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeFiniteExpansionsLocalFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLineComponentsContractionStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUnique
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLinearModelLatticeVacuumBase
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SourceLiftAtGluedPlaceProof
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeFiniteExpansionsLocalField
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLineComponentsContraction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.IndicatorFunctionIdentity
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClopenIsCompactMapsPair
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DualLatticeCosetIndicatorIsSchwartzBruhatStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DualLatticeCosetIndicatorIsSchwartzBruhat
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeDatumMainPartMemSchwartzBruhatStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorDualLatticeIndicaStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorDualLatticeIndica
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorCosetIndicatorStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingDualIndicatorAddNonzeroCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingCharIndicatorDualLatticeCosetsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingDualIndicatorAddNonzeroCosets
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingCharIndicatorDualLatticeCosets
 
 noncomputable section
 
@@ -211,7 +212,7 @@ theorem overMap (hψ : IsStdChar D ψ (-1)) {α : Frame p S n'} {β : Frame p T 
       (f' : WO S T → ℂ), Over ψ α β LS LT f₀ Ψ' f' → Over ψ α β LS LT f₀ (c • Ψ + Ψ') (c • f + f')) :
     ∃ U : SB (Matrix n n' k) →ₗ[ℂ] WO S T → ℂ, (∀ Ψ, Over ψ α β LS LT f₀ Ψ.1 (U Ψ)) ∧
       (∀ Ψ f, Over ψ α β LS LT f₀ Ψ.1 f → f = U Ψ) ∧ ∀ Ψ, IsThetaFunO ψ S T (U Ψ) := by
-  obtain ⟨H1, H2, -⟩ := GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n n' ψ hψ S T α β LS LT h.1 h.2.1 f₀ h.2.2.1
+  obtain ⟨H1, H2, -⟩ := _root_.GlobalTheory.FinPl.overBasic D k p n n' ψ hψ S T α β LS LT h.1 h.2.1 f₀ h.2.2.1
   choose U hU hU' using fun Ψ : SB (Matrix n n' k) => H1 Ψ.1 Ψ.2
   exact ⟨mkLin U fun c x y => (hU' _ _ (hlin _ _ (hU x) c _ _ (hU y))).symm, hU, hU', fun Ψ => (H2 _ _ (hU Ψ)).1⟩
 
@@ -249,7 +250,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
   letI : MeasurableSpace k := borel k
   haveI : BorelSpace k := ⟨rfl⟩
   haveI := secondCountable k
-  obtain ⟨e, he, HC⟩ := GlobalTheory.T.splitPlace_lineComponents_contraction D k p ψ χ hIs
+  obtain ⟨e, he, HC⟩ := _root_.GlobalTheory.FinPl.contraction_all D k p ψ χ hIs
   obtain ⟨ν, hν, -⟩ := exists_isUnitVol k
   let ε : 𝓀[k]ˣ := if e = 1 then 1 else -1
   have hεe : (e = 1 ∧ ε = 1) ∨ (e = -1 ∧ ε = -1) := by
@@ -271,16 +272,16 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
     change Continuous (fun a => ((χ a : Circle) : ℂ))
     rw [h2]
     exact h1
-  obtain ⟨lS₁, lT₁, uS₁, uT₁, lin₁⟩ := GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ _ _ _ _ _ s₁.weil₀
-  obtain ⟨lS₂, lT₂, uS₂, uT₂, lin₂⟩ := GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ _ _ _ _ _ s₂.weil₀
+  obtain ⟨lS₁, lT₁, uS₁, uT₁, lin₁⟩ := _root_.GlobalTheory.SplitLinAt.linModelAt D k p ψ _ _ _ _ _ s₁.weil₀
+  obtain ⟨lS₂, lT₂, uS₂, uT₂, lin₂⟩ := _root_.GlobalTheory.SplitLinAt.linModelAt D k p ψ _ _ _ _ _ s₂.weil₀
   have vS₁ := uS₁ hu₁.2
   have vT₁ := uT₁ hu₁.1
   have vS₂ := uS₂ hu₂.2
   have vT₂ := uT₂ hu₂.1
-  obtain ⟨⟨c₀, HS⟩, SG2⟩ := GlobalTheory.T.sourceLiftAtGluedPlace_proof D k p n n' q χ hχ (resChar χ hχ q) rfl ψ B.V₀ B.A B.L J.W₀ B.o B.ζ B.line
+  obtain ⟨⟨c₀, HS⟩, SG2⟩ := _root_.GlobalTheory.FinPl.sourceGlued D k p n n' q χ hχ (resChar χ hχ q) rfl ψ B.V₀ B.A B.L J.W₀ B.o B.ζ B.line
     B.cpt B.vA s₁.χV s₁.χW s₁.om₀ s₁.weil₀ hu₁.1 hu₁.2 α α₀ β hα P P₁ Q.lat
-  obtain ⟨D1, -, -⟩ := GlobalTheory.T.gluedLattice_finite_expansions_localField k n n' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat
-  obtain ⟨-, D2, D3⟩ := GlobalTheory.T.gluedLattice_finite_expansions_localField k n n'' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat
+  obtain ⟨D1, -, -⟩ := _root_.GlobalTheory.GluedExp.finite_expansions k n n' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat
+  obtain ⟨-, D2, D3⟩ := _root_.GlobalTheory.GluedExp.finite_expansions k n n'' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat
   let μ : Measure (n → k) := Measure.pi fun _ => ν
   have I0 : fpair χ e μ (vecInd Q.lat) (dualInd Q.lat) ≠ 0 := Comm.fpair_ne_zero χ hχc e he μ Q.lat
   have hvec := Comm.vecInd_mem Q.lat
@@ -317,7 +318,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
       row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (dualInd Q.lat) hdual
     let y₀ : SB (Matrix (n'' ⊕ Fin 1) n k) := row (latInd Q.lat R.ker) (latInd_mem_SB _ _) (dualInd Q.lat) hdual
     let y : Pair k n → SB (Matrix (n'' ⊕ Fin 1) n k) := fun Q'' =>
-      row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (cosetInd q Q''.lat Q''.red) (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _)
+      row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (cosetInd q Q''.lat Q''.red) (_root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _)
 
     have h2 : hand0 s₁ s₂ l vL (φ P) Ξ₁ Ξ₂ = c₀ • hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ P₁)
         (U₁ (∑ Q' ∈ withLat Q.lat, x Q')) Ξ₂ :=
@@ -334,7 +335,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
     have t0 : ∀ Q' ∈ withLat Q.lat, (Θ v' (x Q') y₀).1 = 0 := fun Q' hQ' => by
       have := key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (latInd Q.lat R.ker) (latInd_mem_SB _ _)
         (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (dualInd Q.lat) (dualInd Q.lat) (charInd_mem' _ Q') hvec hdual hdual
-      have hf := GlobalTheory.T.fourierPairing_pairCharIndicator_dualLatticeIndicator_zero k n q χ hχ e he μ Q'
+      have hf := _root_.GlobalTheory.FinPl.Comm.fpair_charInd_dualInd k n q χ hχ e he μ Q'
       rw [mem_withLat.1 hQ'] at hf
       rw [hf, zero_smul] at this
       exact (smul_eq_zero.1 this).resolve_left I0
@@ -347,14 +348,14 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
       rw [Finset.sum_eq_single_of_mem (ε • Q') hmem]
       · have := key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (phiOne (ε • Q') R)
           (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ R) (charInd (resChar χ hχ q) Q') (vecInd Q.lat)
-          (cosetInd q (ε • Q').lat (ε • Q').red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _) hdual
+          (cosetInd q (ε • Q').lat (ε • Q').red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (_root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _) hdual
         rw [(GlobalTheory.T.fourierPairing_pairCharIndicator_cosetIndicator k n q χ hχ e ε hεe μ Q' (ε • Q') (by rw [Pair.dia_lat])).1 rfl, hQ'l] at this
         exact smul_right_injective _ I0 this
       · intro Q'' hQ'' hne
         have hQ''l : Q''.lat = Q.lat := mem_withLat.1 hQ''
         have := key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (phiOne Q'' R)
           (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ R) (charInd (resChar χ hχ q) Q') (vecInd Q.lat)
-          (cosetInd q Q''.lat Q''.red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _) hdual
+          (cosetInd q Q''.lat Q''.red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (_root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _) hdual
         rw [(GlobalTheory.T.fourierPairing_pairCharIndicator_cosetIndicator k n q χ hχ e ε hεe μ Q' Q'' (hQ''l.trans hQ'l.symm)).2 hne, zero_smul] at this
         exact (smul_eq_zero.1 this).resolve_left I0
 
@@ -520,7 +521,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
       have t0 : ∀ Q' ∈ withLat Q.lat, (Θ v' (x Q') yK).1 = 0 := fun Q' hQ' => by
         have := key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (latInd Q.lat Λ) hL
           (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (dualInd Q.lat) (dualInd Q.lat) (charInd_mem' _ Q') hvec hdual hdual
-        have hf := GlobalTheory.T.fourierPairing_pairCharIndicator_dualLatticeIndicator_zero k n q χ hχ e he μ Q'
+        have hf := _root_.GlobalTheory.FinPl.Comm.fpair_charInd_dualInd k n q χ hχ e he μ Q'
         rw [mem_withLat.1 hQ'] at hf
         rw [hf, zero_smul] at this
         exact (smul_eq_zero.1 this).resolve_left I0
@@ -531,7 +532,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
       rw [← hbdef] at o₂
       have hbtot : btot ∈ SB (n → k) := by
         rw [hbdef]
-        exact add_mem hdual (Submodule.sum_mem _ fun Q'' _ => GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _)
+        exact add_mem hdual (Submodule.sum_mem _ fun Q'' _ => _root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _)
       obtain ⟨U₁, a₁, b₁, t₁⟩ := overMap hψ o₁ fun Ψ f h => (lin₁ _ _ α₀ β L₁ L₂ f₁ Ψ f h).2.2
       obtain ⟨U₂, a₂, b₂, t₂⟩ := overMap hψ o₂ fun Ψ f h => (lin₂ _ _ β γ₀ L₂' L₃ f₂ Ψ f h).2.2
       obtain ⟨Θ, hΘ⟩ := exists_trilinear s₁ s₂ l vL U₁ U₂ t₁ t₂
@@ -581,8 +582,8 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
         intro Q' hQ'
         have := key vP _ (hM Q') (latInd Q.lat Λ) hL (charInd (resChar χ hχ q) Q') (vecInd Q.lat) btot btot
           (charInd_mem' _ Q') hvec hbtot hbtot
-        have f4 := GlobalTheory.T.fourierPairing_charIndicator_dualLattice_cosets k n q χ hχ e he μ Q'
-        have f3 := GlobalTheory.T.fourierPairing_dualIndicator_add_nonzeroCosets k n q χ hχ e he μ Q.lat
+        have f4 := _root_.GlobalTheory.FinPl.Comm.DualCosets.fpair_charInd_dualInd_add_cosets k n q χ hχ e he μ Q'
+        have f3 := _root_.GlobalTheory.FinPl.Comm.fpair_vecInd_dualInd_add_cosets k n q χ hχ e he μ Q.lat
         rw [mem_withLat.1 hQ', ← hbdef] at f4
         rw [← hbdef] at f3
         rw [f3, f4] at this

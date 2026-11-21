@@ -123,23 +123,6 @@ theorem exists_quadraticField_sq_eq_neg {d : ℕ} (hd : 0 < d) : ∃ (K : Interm
   have := congrArg Complex.im hq
   simp [r, eq_comm (a := (0 : ℝ)), hd.ne'] at this
 
-theorem cmCurve_hypotheses :
-    (7 ≤ 7 ∧ Squarefree 7 ∧ 7 % 4 = 3) ∧ (7 ≤ 23 ∧ Squarefree 23 ∧ 23 % 4 = 3) ∧
-    ∀ d : ℕ, 7 ≤ d → Squarefree d → d % 4 = 3 → ∃ (K : Type) (_ : Field K) (_ : NumberField K),
-      Module.finrank ℚ K = 2 ∧ (∃ r : K, r ^ 2 = -(d : K)) ∧ discr K = -d ∧ Nonempty (K →+* ℂ) ∧
-      ∀ σ : K →+* ℂ, ∃ τ : ClassGroup (𝓞 K) → ℍ, ∀ C, IsIdealClassPoint σ C (τ C) := by
-  refine ⟨⟨le_rfl, (by norm_num : Nat.Prime 7).squarefree, rfl⟩,
-    ⟨by norm_num, (by norm_num : Nat.Prime 23).squarefree, rfl⟩, fun d h7 hs h4 => ?_⟩
-  obtain ⟨K, _, h2, r, hr⟩ := exists_quadraticField_sq_eq_neg (d := d) (by omega)
-  have hD := discr_eq_neg_of_sq_eq h2 hs h4 hr
-  refine ⟨K, inferInstance, inferInstance, h2, ⟨r, hr⟩, hD, ⟨algebraMap K ℂ⟩, fun σ => ?_⟩
-  choose τ hτ using exists_isIdealClassPoint h2 hD σ
-  exact ⟨τ, hτ⟩
-
 end Inhabitants
-
-section Sign
-
-end Sign
 
 end GlobalTheory

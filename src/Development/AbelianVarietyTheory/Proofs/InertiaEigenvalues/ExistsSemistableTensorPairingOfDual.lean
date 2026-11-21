@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RTensorPairingEqZeroOfFlipInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RTensorPairingEqZeroOfFlipInjective
 
 noncomputable section
 
@@ -98,7 +98,7 @@ theorem exists_stPairing : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : Fi
     · intro x y y' hy hy'
       simp only [map_add, hy, hy', mul_add]
   · intro y hy
-    refine GlobalTheory.T.eq_zero_of_rTensor_pairing_eq_zero ℚ_[l] (Bst P) V V' m hr y fun v => ?_
+    refine _root_.GlobalTheory.rTensor_pairing_eq_zero_of_flip_injective ℚ_[l] (Bst P) V V' m hr y fun v => ?_
     rw [← tensorPairing_one]
     exact hy v
 

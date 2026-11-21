@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceEq
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
 import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.UnitaryHaarVolume
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogSizeBoundsClassNumberVolume
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LogClassNumberLeLogAbsDiscrDiv
+
 open NumberField MeasureTheory ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates GlobalTheory.LevGeo
 open scoped ENNReal
 
@@ -18,69 +18,9 @@ theorem _root_.GlobalTheory.SupConstSize.finrank_eq_two_fdeg (E : Type) [Field E
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg
   omega
 
-theorem one_le_dE (E : Type) [Field E] [NumberField E] : 1 ≤ dE E := by
-  unfold dE
-  have h := NumberField.discr_ne_zero E
-  have : (1 : ℤ) ≤ |discr E| := Int.one_le_abs h
-  have h2 : ((|discr E| : ℤ) : ℝ) = |((discr E : ℤ) : ℝ)| := Int.cast_abs
-  rw [← h2]; exact_mod_cast this
-
 end GlobalTheory.SupConstSize
 
 namespace GlobalTheory.SupConstSize
-open Real
-
-theorem massLev_size (E : Type) [Field E] [NumberField E] [IsCMField E] (r M : ℕ) (L : ℝ)
-    (hr : 2 ≤ r) (hM : 1 ≤ M) (hL : 1 ≤ L) (hfr : Real.log (fdeg E * r) ≤ L)
-    (hlM : Real.log M ≤ 30 * L) (hdE : Real.log (dE E) ≤ 4 * fdeg E * L) :
-    1 ≤ massLev E r M ∧ Real.log (massLev E r M) ≤ 80 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * L := by
-  have hn := finrank_eq_two_fdeg E
-  have hf1 : 1 ≤ fdeg E := by
-    have : 0 < Module.finrank ℚ E := Module.finrank_pos
-    omega
-  have hfR : (1 : ℝ) ≤ fdeg E := by exact_mod_cast hf1
-  have hrR : (2 : ℝ) ≤ r := by exact_mod_cast hr
-  have hMR : (1 : ℝ) ≤ M := by exact_mod_cast hM
-  have hd1 := one_le_dE E
-  have hd0 : 0 < dE E := by linarith
-  have hh : 1 ≤ classNumber E := classNumber_pos E
-  have hhR : (1 : ℝ) ≤ classNumber E := by exact_mod_cast hh
-  have hrd : rdE E = dE E ^ (1 / (2 * (fdeg E : ℝ))) := by
-    unfold rdE; rw [hn]; push_cast; ring_nf
-  have hrd1 : 1 ≤ rdE E := by
-    rw [hrd]; exact Real.one_le_rpow hd1 (by positivity)
-  have hlrd : Real.log (rdE E) = Real.log (dE E) / (2 * fdeg E) := by
-    rw [hrd, Real.log_rpow hd0]; ring
-  have hexp0 : 0 ≤ (fdeg E : ℝ) * ((r : ℝ) ^ 2 - 1) / 2 := by
-    have : (1:ℝ) ≤ (r:ℝ)^2 := by nlinarith
-    have : 0 ≤ (r:ℝ)^2 - 1 := by linarith
-    positivity
-  have hm : massLev E r M = 2 * ((classNumber E : ℝ) * (M : ℝ) ^ (2 * fdeg E)) * (M : ℝ) ^ (2 * fdeg E * r ^ 2) *
-      rdE E ^ ((fdeg E : ℝ) * ((r : ℝ) ^ 2 - 1) / 2) := by
-    unfold massLev GlobalTheory.UCls.massBd; push_cast; ring
-  have hA : 1 ≤ (classNumber E : ℝ) * (M : ℝ) ^ (2 * fdeg E) := one_le_mul_of_one_le_of_one_le hhR (one_le_pow₀ hMR)
-  have hB : 1 ≤ (M : ℝ) ^ (2 * fdeg E * r ^ 2) := one_le_pow₀ hMR
-  have hC : 1 ≤ rdE E ^ ((fdeg E : ℝ) * ((r : ℝ) ^ 2 - 1) / 2) := Real.one_le_rpow hrd1 hexp0
-  refine ⟨?_, ?_⟩
-  · rw [hm]
-    have := one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hA hB) hC
-    nlinarith
-  · rw [hm, Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity),
-      Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity),
-      Real.log_pow, Real.log_pow, Real.log_rpow (by linarith), hlrd]
-    have hlh := GlobalTheory.log_classNumber_le_log_abs_discr_div E (fdeg E) hn
-    have hfr' : Real.log (fdeg E) + Real.log r ≤ L := by
-      rw [← Real.log_mul (by positivity) (by positivity)]; exact hfr
-    have hlM0 : 0 ≤ Real.log M := Real.log_nonneg hMR
-    have hlrd0 : 0 ≤ Real.log (dE E) / (2 * fdeg E) := div_nonneg (Real.log_nonneg hd1) (by positivity)
-    have hlrd2 : Real.log (dE E) / (2 * fdeg E) ≤ 2 * L := by
-      rw [div_le_iff₀ (by positivity)]; linarith
-    have key := (GlobalTheory.log_size_bounds_class_number_volume (fdeg E) r L (Real.log (dE E) / (2 * fdeg E)) (Real.log M)
-      (Real.log (classNumber E)) 1 1 ((fdeg E : ℝ) * r * (r - 1) / 2) hfR hrR hL hfr' hlrd0 hlrd2 hlM0 hlM
-      (by unfold dE at *; exact hlh) le_rfl (by simp [hlrd0]) one_pos rfl).2.2.1
-    push_cast
-    nlinarith [key]
-
 end GlobalTheory.SupConstSize
 
 namespace GlobalTheory.SupConstSize
@@ -283,79 +223,4 @@ theorem _root_.GlobalTheory.SupConstSize.chart_factor_size (E : Type) [Field E] 
 end GlobalTheory.SupConstSize
 
 namespace GlobalTheory.SupConstSize
-open Real
-
-theorem supConst_size : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r d M : ℕ) (w L : ℝ), 2 ≤ r → 1 ≤ d →
-    1 ≤ M → 1 ≤ L → 1 ≤ w → Real.log (fdeg E * r) ≤ L → Real.log M ≤ 30 * L →
-    Real.log (dE E) ≤ 4 * fdeg E * L → Real.log d ≤ 4 * L → Real.log w ≤ 2 * L →
-    1 ≤ supConst E r d M w ∧ Real.log (supConst E r d M w) ≤ 250 * (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L := by
-  intro E _ _ _ r d M w L hr hd hM hL hw hfr hlM hdE hld hlw
-  have hn := finrank_eq_two_fdeg E
-  have hf1 : 1 ≤ fdeg E := by
-    have : 0 < Module.finrank ℚ E := Module.finrank_pos
-    omega
-  have hfR : (1 : ℝ) ≤ fdeg E := by exact_mod_cast hf1
-  have hrR : (2 : ℝ) ≤ r := by exact_mod_cast hr
-  have hMR : (1 : ℝ) ≤ M := by exact_mod_cast hM
-  have hdR : (1 : ℝ) ≤ d := by exact_mod_cast hd
-  have hfr' : Real.log (fdeg E) + Real.log r ≤ L := by
-    rw [← Real.log_mul (by positivity) (by positivity)]; exact hfr
-  have hf0 : 0 ≤ Real.log (fdeg E) := Real.log_nonneg hfR
-  have hr0 : 0 ≤ Real.log r := Real.log_nonneg (by linarith)
-  obtain ⟨hε0, hε1, hεB⟩ := epsLev_bounds E d M w hfR hd hM hw
-  set B : ℝ := 3 * fdeg E * w * M * Real.sqrt d with hB
-  have sd : 1 ≤ Real.sqrt d := Real.one_le_sqrt.mpr hdR
-  have hB1 : 1 ≤ B := by
-    have a : 1 ≤ (fdeg E : ℝ) * w := one_le_mul_of_one_le_of_one_le hfR hw
-    have b : 1 ≤ (fdeg E : ℝ) * w * M := one_le_mul_of_one_le_of_one_le a hMR
-    have c : 1 ≤ (fdeg E : ℝ) * w * M * Real.sqrt d := one_le_mul_of_one_le_of_one_le b sd
-    rw [hB]; nlinarith
-  have l2b := Real.log_two_lt_d9
-  have l2a := Real.log_two_gt_d9
-  have l3 : Real.log 3 ≤ 2 * Real.log 2 := by
-    rw [← Real.log_rpow (by norm_num)]; exact Real.log_le_log (by norm_num) (by norm_num)
-  have l16 : Real.log 16 = 4 * Real.log 2 := by
-    rw [show (16 : ℝ) = 2 ^ 4 by norm_num, Real.log_pow]; norm_num
-  have hlB : Real.log B ≤ 2 * Real.log 2 + 35 * L := by
-    rw [hB, Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity),
-      Real.log_mul (by positivity) (by positivity), Real.log_mul (by norm_num) (by positivity),
-      Real.log_sqrt (by linarith)]
-    linarith
-  obtain ⟨hm1, hml⟩ := multBd_size E r (epsLev E d M w) B hfR (by linarith) hε0 hB1 hεB
-  obtain ⟨hc1, hcl⟩ := chart_factor_size E r w L hfR hr hw hL hfr' hlw
-  obtain ⟨hM1, hMl⟩ := massLev_size E r M L hr hM hL hfr hlM hdE
-  have hs : supConst E r d M w = (8 * ((dimFl E r).factorial : ℝ) / (Real.pi * chartRad E r w ^ 2) ^ dimFl E r) *
-      multBd E r (epsLev E d M w) * massLev E r M := by
-    unfold supConst locConst; ring
-  rw [hs]
-  refine ⟨one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hc1 hm1) hM1, ?_⟩
-  rw [Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity)]
-  have hX0 : 0 ≤ (fdeg E : ℝ) * (r : ℝ) ^ 2 := by positivity
-  have b1 : (fdeg E : ℝ) * (r : ℝ) ^ 2 / 2 * (12 * L + 16 * Real.log 2) ≤ (fdeg E : ℝ) * (r : ℝ) ^ 2 / 2 * (28 * L) :=
-    mul_le_mul_of_nonneg_left (by linarith) (by positivity)
-  have b2 : 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 *
-      (Real.log 16 + 2 * (Real.log (fdeg E) + Real.log r) + Real.log (dE E) + Real.log B) ≤
-      2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * (43 * L + 4 * fdeg E * L) :=
-    mul_le_mul_of_nonneg_left (by linarith) (by positivity)
-  have hXY : (fdeg E : ℝ) * (r : ℝ) ^ 2 * L ≤ (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L := by
-    have : 0 ≤ (r : ℝ) ^ 2 * L := by positivity
-    have h := mul_le_mul_of_nonneg_right hfR (by positivity : (0:ℝ) ≤ (fdeg E : ℝ) * ((r : ℝ) ^ 2 * L))
-    have e1 : (fdeg E : ℝ) * (r : ℝ) ^ 2 * L = 1 * ((fdeg E : ℝ) * ((r : ℝ) ^ 2 * L)) := by ring
-    have e2 : (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L = (fdeg E : ℝ) * ((fdeg E : ℝ) * ((r : ℝ) ^ 2 * L)) := by ring
-    rw [e1, e2]; exact h
-  have hLY : L ≤ (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L := by
-    have h1 : 1 ≤ (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 := by
-      have a : 1 ≤ (fdeg E : ℝ) ^ 2 := one_le_pow₀ hfR
-      have b : 1 ≤ (r : ℝ) ^ 2 := one_le_pow₀ (by linarith)
-      exact one_le_mul_of_one_le_of_one_le a b
-    have := mul_le_mul_of_nonneg_right h1 (by linarith : (0:ℝ) ≤ L)
-    linarith
-  have c1 : (fdeg E : ℝ) * (r : ℝ) ^ 2 / 2 * (28 * L) = 14 * ((fdeg E : ℝ) * (r : ℝ) ^ 2 * L) := by ring
-  have c2 : 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * (43 * L + 4 * fdeg E * L) =
-      86 * ((fdeg E : ℝ) * (r : ℝ) ^ 2 * L) + 8 * ((fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L) := by ring
-  have c3 : 80 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * L = 80 * ((fdeg E : ℝ) * (r : ℝ) ^ 2 * L) := by ring
-  have c4 : 250 * (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L = 250 * ((fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L) := by ring
-  rw [c4]
-  linarith
-
 end GlobalTheory.SupConstSize

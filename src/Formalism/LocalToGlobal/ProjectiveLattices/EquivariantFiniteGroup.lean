@@ -79,8 +79,6 @@ def jFn {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dict : GA D V �
 def RdHolCusp {X : Comp → Data E r} (la : ∀ c, Wt (X c).Ψ r) (rd : C →ₛₗ[σ] FDSec X) : Prop :=
   ∀ f, IsHolCusp X la (rd f)
 
-def RdInj {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) : Prop := Function.Injective rd
-
 def JMemL2 {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dict : GA D V → Σ c, Frame (X c).Ψ r)
     (mu : GA D V → ℂ) : Prop :=
   ∀ f, MemLp (jFn V σ rd dict mu f) 2 (muQ1 V)
@@ -96,15 +94,6 @@ def uniformisationL2 {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dic
     rw [← MemLp.toLp_const_smul]
     congr 1
     exact map_smulₛₗ _ a f
-
-theorem jL2_mem_span {X : Comp → Data E r} (la : ∀ c, Wt (X c).Ψ r) (rd : C →ₛₗ[σ] FDSec X)
-    (dict : GA D V → Σ c, Frame (X c).Ψ r) (mu : GA D V → ℂ) (h : JMemL2 V σ rd dict mu)
-    (h1 : RdHolCusp σ la rd) (f : C) : uniformisationL2 V σ rd dict mu h f ∈ SS V la dict mu := Submodule.subset_span ⟨rd f, h1 f, h f, rfl⟩
-
-def jSS {X : Comp → Data E r} (la : ∀ c, Wt (X c).Ψ r) (rd : C →ₛₗ[σ] FDSec X)
-    (dict : GA D V → Σ c, Frame (X c).Ψ r) (mu : GA D V → ℂ) (h : JMemL2 V σ rd dict mu)
-    (h1 : RdHolCusp σ la rd) : C →ₛₗ[σ] SS V la dict mu :=
-  (uniformisationL2 V σ rd dict mu h).codRestrict _ (jL2_mem_span V σ la rd dict mu h h1)
 
 def l2NormAlt {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dict : GA D V → Σ c, Frame (X c).Ψ r)
     (mu : GA D V → ℂ) (h : JMemL2 V σ rd dict mu) (f : C) : ℝ :=
@@ -157,10 +146,6 @@ def DictIsUnif {X : Comp → Data E r} (dict : GA D V → Σ c, Frame (X c).Ψ r
 def repOf {X : Comp → Data E r} (dict : GA D V → Σ c, Frame (X c).Ψ r) (c : Comp) : GA D V :=
   Classical.epsilon fun g => (dict g).1 = c
 
-def detGf {X : Comp → Data E r} (dict : GA D V → Σ c, Frame (X c).Ψ r) (c : Comp) :
-    (Af D.host.F ⊗[D.host.F] D.host.E)ˣ :=
-  Matrix.GeneralLinearGroup.det (finHom V (repOf V dict c))
-
 def MuUnit {X : Comp → Data E r} (dict : GA D V → Σ c, Frame (X c).Ψ r) (mu : GA D V → ℂ) : Prop :=
   (∀ g g', mu (g * g') = mu g * mu g') ∧ (∀ g, ‖mu g‖ = 1) ∧ (∀ γ ∈ GQ V, mu γ = 1) ∧
     ∀ g τ i, ‖dmin (X (dict g).1).Gm (dict g).2 τ i‖ = 1
@@ -199,23 +184,9 @@ theorem L2Norm_le_sup_norm {X : Comp → Data E r} (la : ∀ c, Wt (X c).Ψ r) (
   have := Lp.norm_le_of_ae_bound hC hb
   simpa [l2NormAlt, measureUnivNNReal] using this
 
-def DictTie {X : Comp → Data E r} (la : ∀ c, Wt (X c).Ψ r) (dict : GA D V → Σ c, Frame (X c).Ψ r)
-    (mu : GA D V → ℂ) (Kf : Subgroup (GA D V)) (chiK : Kf →* ℂˣ) : Prop :=
-  ∀ P : FDSec X, IsHolCusp X la P →
-    (∀ γ ∈ GQ V, ∀ g, adel V dict mu P (γ * g) = adel V dict mu P g) ∧
-    ∀ k : Kf, ∀ g, adel V dict mu P (g * k) = ((chiK k : ℂˣ) : ℂ) * adel V dict mu P g
-
-def UnifOnto {X : Comp → Data E r} (la : ∀ c, Wt (X c).Ψ r) (rd : C →ₛₗ[σ] FDSec X)
-    (dict : GA D V → Σ c, Frame (X c).Ψ r) (mu : GA D V → ℂ) (h : JMemL2 V σ rd dict mu) : Prop :=
-  Submodule.span ℂ (Set.range (uniformisationL2 V σ rd dict mu h)) = SS V la dict mu
-
 def EquivariantFiniteGroup {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dict : GA D V → Σ c, Frame (X c).Ψ r)
     (mu : GA D V → ℂ) {G0 : Type} [Group G0] (ρ : G0 →* (C →ₗ[K] C)) (chi : G0 →* Kˣ) (ℓ : G0 → GA D V) :
     Prop :=
   ∀ g f x, adel V dict mu (rd (ρ g f)) x = σ ((chi g : Kˣ) : K) * adel V dict mu (rd f) (x * ℓ g)
-
-def HeckeTie {X : Comp → Data E r} (rd : C →ₛₗ[σ] FDSec X) (dict : GA D V → Σ c, Frame (X c).Ψ r)
-    (mu : GA D V → ℂ) {T : Type} (hL : T → C →ₗ[K] C) (R : T → Finset (GA D V)) : Prop :=
-  ∀ t f x, adel V dict mu (rd (hL t f)) x = ∑ γ ∈ R t, adel V dict mu (rd f) (x * γ)
 
 end Formalism.L2.Pj

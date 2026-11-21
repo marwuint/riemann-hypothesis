@@ -14,16 +14,19 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EndCharExistsOfIsMo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLabOntoAndKer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BetaPos
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonHomRescaledRealisationSameGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreConstOfSpecialisationInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusRankEqRankThetaGroupOfPointPerpStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreSemiAbelianEndoTorsionExtendStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreIsoSpecialisesToFieldPointsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvrFactorPointPadicAlgClosureStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonHomRescaledRealisationSameGenericFibre
+import Development.AbelianVarietyTheory.Definitions.Divisors.LabRange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreConstOfSpecialisationInvariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTorPartTorusExtension
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusRankEqRankThetaGroupOfPointPerp
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreSemiAbelianEndoTorsionExtend
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreIsoSpecialisesToFieldPoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvrFactorPointPadicAlgClosure
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EndomorphismMatrixTorsionAdjointOnCharactersStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeOfUniformisationEqModelLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonPullbackSemiAbelianDvrStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGroupOfPointEqAlongModelHomStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonPullbackSemiAbelianDvr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGroupOfPointEqAlongModelHom
 
 noncomputable section
 
@@ -80,7 +83,7 @@ theorem latAt_of_uTest {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [hA 
   choose c hc using fun t : S.perp l.yy.ker => PerpTorus.exists_form S l.yy l.yy_onto t.1 t.2
   refine ⟨m, c, fun i => ⟨F i, eA i, (hF i).1, heA' i, (hF i).2, hm i⟩, hc, ?_⟩
   obtain ⟨V', _, _, _, fV, fK, κ', iV, ξ, hfV, hfK, hκ, hiV, hiκ, hξ⟩ :=
-    GlobalTheory.T.exists_dvr_factor_point_padicAlgClosure o Ω Y p u.V u.complete (algebraMap _ _) u.norm_le y
+    _root_.GlobalTheory.ValPt.exists_dvr_factor o Ω Y p u.V u.complete (algebraMap _ _) u.norm_le y
   let jV := algebraMap V' (FractionRing V')
   have hcl : ξ (closedPoint V') = y (cPt p) := by
     rw [← hξ]
@@ -99,10 +102,10 @@ theorem latAt_of_uTest {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [hA 
     rw [← e₁, ← hg, ← hy₀]
     exact (DFunLike.congr_fun hκ (u.yK x)).trans (DFunLike.congr_fun u.fac x))
   have hα := isGrpPullback_pullback u.A.A (spMap fK)
-  obtain ⟨Ψ, hΨ, hΨe, hΨp⟩ := GlobalTheory.T.genericFibre_iso_specialises_to_fieldPoints o Ω Y hY G hG S.R ρ.P.A (isSemiAbelian_of_isAbelianScheme _ ρ.P.isAb) A₀ a' ψ ha' hψ
+  obtain ⟨Ψ, hΨ, hΨe, hΨp⟩ := _root_.GlobalTheory.Poinc.Spread.spread_fibre o Ω Y hY G hG S.R ρ.P.A (isSemiAbelian_of_isAbelianScheme _ ρ.P.isAb) A₀ a' ψ ha' hψ
     _ _ hR _ hyK _ _ ((hα.comp u.cart).congr (spMap_comp' _ _) rfl)
   have hj : spMap fK ≫ jK u.V = spMap (jV.comp fV) := (spMap_comp' _ _).trans (congrArg spMap (RingHom.ext hfK))
-  obtain ⟨G', _, β, β', ω, hβ, hβ', hω, hωβ, hωβ', hend⟩ := GlobalTheory.T.exists_common_pullback_semiAbelian_dvr Y.Z G hG u.V u.G u.semi V' fV ξ _ _ Ψ
+  obtain ⟨G', _, β, β', ω, hβ, hβ', hω, hωβ, hωβ', hend⟩ := _root_.GlobalTheory.Poinc.FibLat.exists_common_pullback_dvr Y.Z G hG u.V u.G u.semi V' fV ξ _ _ Ψ
     ((hα.comp hgen).congr hj rfl) hΨ
   obtain ⟨a, ha⟩ := exists_spMap (ξ ≫ Y.s)
   rw [← hcl] at hext ⊢
@@ -172,7 +175,7 @@ theorem latAt_of_isLab (X₁ : Setup F W i) (ε₁ : Matrix (Fin 8) (Fin 8) ℤ 
       (∀ t b mu, yy b = QuotientAddGroup.mk mu → cc t mu = eStd X₁.S.g _ t.1 b) ∧
       LatAt f (fun t : X₁.S.perp H => gγ t.1) ζ (X₁.S.r * X₁.S.N) (matAct _) cc (y (cPt p)) := by
   obtain ⟨c₀, hc, R', fg, frac, hth, hev, ρ', ε', hsame, -, hR', y₀, hy₀, u, l, j, hjq, hyy, hmat⟩ := hl
-  have hmon := GlobalTheory.T.isMonHom_rescaled_realisation_same_genericFibre g n F W Z i X₁ ε₁ hε c₀ hc R' fg frac hth hev ρ' ε' hsame
+  have hmon := _root_.GlobalTheory.Poinc.isMonHom_of_same_rechart g n F W Z i X₁ ε₁ hε c₀ hc R' fg frac hth hev ρ' ε' hsame
   obtain ⟨P₀, a, a', ε₀, ha, ha', -, -, hε₀, hpts⟩ := hsame
   have key : ∀ b mu, yy b = QuotientAddGroup.mk mu ↔ l.yy b = QuotientAddGroup.mk (j.symm mu) := fun b mu => by
     refine ⟨fun h => ?_, fun h => by rw [hyy b _ h, j.apply_symm_apply]⟩
@@ -251,12 +254,12 @@ theorem exists_equiv_of_fibre : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W :
     have : NeZero ((X₁.S.r * X₁.S.N : ℕ) : κ) := ⟨by simpa using (X₁.S.unit.map a).ne_zero⟩
     rw [← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic _ a]
     exact (hζp.isRoot_cyclotomic hL).map
-  obtain ⟨A₀, _, a₀, ψ, ha₀, hψ, hend, hpts⟩ := GlobalTheory.T.genericFibre_semiAbelian_endo_torsion_extend _ _ X₁.S X₁.ρ Y U₀ EE FinalForm hO.ne
+  obtain ⟨A₀, _, a₀, ψ, ha₀, hψ, hend, hpts⟩ := _root_.GlobalTheory.Poinc.FibLat.genFibre_endo_torsion _ _ X₁.S X₁.ρ Y U₀ EE FinalForm hO.ne
   choose adj hadj using exists_adj hW
   choose f hf hf' using fun E => hend (ε₁ (adj E)) (Sep.IsAct.isMonHom hε _)
   choose gγ hγ₁ hγ₂ hγ₃ using hpts
   have hHH : ∀ w, q w = z₁ → X₁.S.HH Y w = X₁.S.HH X₁.M z₁ := fun w hw =>
-    hw ▸ GlobalTheory.T.thetaGroupOfPoint_eq_along_modelHom _ _ X₁.S X₁.M Y q hq X₁.div w
+    hw ▸ _root_.GlobalTheory.Poinc.HHFibre.HH_eq_of_hom _ _ X₁.S X₁.M Y q hq X₁.div w
   have hle : X₁.S.perp (X₁.S.HH X₁.M z₁) ≤ X₁.S.HH X₁.M z₁ := by
     obtain ⟨c₀, hc, R', fg, frac, hth, hev, ρ', ε', -, -, -, y₀, -, u, l, j, -, hyy, -⟩ := hl
     have hk : l.yy.ker = X₁.S.HH X₁.M z₁ := by
@@ -283,8 +286,8 @@ theorem exists_equiv_of_fibre : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W :
     hy' yy' hl' ζ rfl _ hker' (hext _ hx')
   haveI := RatModel.noetherianSpace_of_isNoetherianRing Y
   have hrk : ∀ a b, q a = z₁ → q b = z₁ → ∃ r, RkAt FinalForm.G a r ∧ RkAt FinalForm.G b r := fun a b ha hb => by
-    obtain ⟨r, hr, ⟨e⟩⟩ := GlobalTheory.T.torusRank_eq_rank_thetaGroupOfPoint_perp _ _ X₁.S X₁.ρ Y U₀ EE FinalForm X₁.big hO hE a
-    obtain ⟨r', hr', ⟨e'⟩⟩ := GlobalTheory.T.torusRank_eq_rank_thetaGroupOfPoint_perp _ _ X₁.S X₁.ρ Y U₀ EE FinalForm X₁.big hO hE b
+    obtain ⟨r, hr, ⟨e⟩⟩ := _root_.GlobalTheory.ThetaDvr.TorRank.rkAt_tt_equiv _ _ X₁.S X₁.ρ Y U₀ EE FinalForm X₁.big hO hE a
+    obtain ⟨r', hr', ⟨e'⟩⟩ := _root_.GlobalTheory.ThetaDvr.TorRank.rkAt_tt_equiv _ _ X₁.S X₁.ρ Y U₀ EE FinalForm X₁.big hO hE b
     have hT : X₁.S.TT Y b = X₁.S.TT Y a := congrArg X₁.S.perp ((hHH b hb).trans (hHH a ha).symm)
     have := eq_of_equiv_fin hL2 e ((AddEquiv.addSubgroupCongr hT).symm.trans e')
     exact ⟨r, hr, this ▸ hr'⟩
@@ -292,7 +295,7 @@ theorem exists_equiv_of_fibre : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W :
   have hiff := fun a b (hb : q b = z₁) hab r hr hr' => latAt_iff_of_specializes (f := f)
     (gγ := fun t : X₁.S.perp (X₁.S.HH X₁.M z₁) => gγ t.1) FinalForm.semi hL hζ1 X₁.S.unit hf hγ₁' (matAct _) cc (w := a) (w' := b)
     hab (r := r) hr hr' (fun t => hext b hb t.1 t.2)
-  have hmove := GlobalTheory.T.fibre_const_of_specialisation_invariant Y.Z X₁.M.Z q q.continuous z₁ hconn _
+  have hmove := _root_.GlobalTheory.fibre_const_of_specializes_invariant Y.Z X₁.M.Z q q.continuous z₁ hconn _
     (fun a b ha hb hab => (hrk a b ha hb).elim fun r h => hiff a b hb hab r h.1 h.2) (y (cPt p)) (y' (cPt p)) hx hx' hlat
   haveI := FinalForm.semi.separated
   obtain ⟨θ, hθ₁, hθ₂⟩ := LatAt.unique hL hζκ hmove hlat'

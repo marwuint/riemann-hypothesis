@@ -42,12 +42,6 @@ def twRep : Representation LL G (Fin n → LL) where
 omit [Fintype G] in
 theorem twRep_apply (g : G) (x : Fin n → LL) : twRep A g x = (((A.chi g)⁻¹ : LLˣ) : LL) • A.ρ g x := rfl
 
-omit [Fintype G] in
-
-theorem twRep_of_chi_eq_one {g : G} (h : A.chi g = 1) : twRep A g = A.ρ g := by
-  show (((A.chi g)⁻¹ : LLˣ) : LL) • A.ρ g = _
-  rw [h, inv_one, Units.val_one, one_smul]
-
 theorem eOp_eq (a : MonoidAlgebra LL G) : A.eOp (fun g => a.coeff g) = (twRep A).asAlgebraHom a := by
   classical
   have ha : a = ∑ g : G, MonoidAlgebra.single g (a.coeff g) := by
@@ -60,86 +54,9 @@ theorem eOp_eq (a : MonoidAlgebra LL G) : A.eOp (fun g => a.coeff g) = (twRep A)
   rw [Representation.asAlgebraHom_single, mul_smul]
   rfl
 
-omit [Fintype G] in
-
-theorem mem_eigenspace_iff₂ (J : Subgroup G) (lam : J →* LLˣ) (x : Fin n → LL) :
-    x ∈ A.typeP J lam ↔ ∀ p : J, twRep A p x = ((lam p : LLˣ) : LL) • x := by
-  show (∀ p : J, A.ρ p x = ((A.chi p * lam p : LLˣ) : LL) • x) ↔ _
-  refine forall_congr' fun p => ?_
-  rw [twRep_apply, Units.val_mul, mul_smul]
-  constructor
-  · intro h
-    rw [h, smul_smul, Units.inv_mul, one_smul]
-  · intro h
-    rw [← h, smul_smul, Units.mul_inv, one_smul]
-
 def supLat : Submodule (𝓞 LL) (Fin n → LL) := Submodule.span (𝓞 LL) (A.MK : Set (Fin n → LL))
 
-omit [Fintype G] in
-
-theorem supLat_isLatIn (h1 : A.IsKsForm) (h2 : A.MKFull) : IsLatIn ⊤ (supLat A) := by
-  constructor
-  · obtain ⟨s, hs⟩ := h2.1
-    refine ⟨s, le_antisymm (Submodule.span_mono ?_) (Submodule.span_le.2 fun x hx => ?_)⟩
-    · rw [← hs]; exact Submodule.subset_span
-    · rw [← hs] at hx
-      induction hx using Submodule.span_induction with
-      | mem x hx => exact Submodule.subset_span hx
-      | zero => exact Submodule.zero_mem _
-      | add x y _ _ hx hy => exact Submodule.add_mem _ hx hy
-      | smul a x _ hx =>
-        have : a • x = (algebraMap (𝓞 Ks) (𝓞 LL) a) • x := by
-          funext i
-          simp only [Pi.smul_apply, Algebra.smul_def]
-          rfl
-        rw [this]; exact Submodule.smul_mem _ _ hx
-  · obtain ⟨m, b, hb, -, -, -, htop⟩ := h1
-    rw [eq_top_iff, ← htop]
-    refine Submodule.span_le.2 ?_
-    rintro _ ⟨i, rfl⟩
-    have hi := hb i
-    rw [← h2.2] at hi
-    refine Submodule.span_induction (p := fun x _ => x ∈ Submodule.span LL (supLat A : Set (Fin n → LL)))
-      (fun x hx => Submodule.subset_span (Submodule.subset_span hx)) (Submodule.zero_mem _)
-      (fun x y _ _ hx hy => Submodule.add_mem _ hx hy) (fun a x _ hx => ?_) hi
-    rw [← algebraMap_smul LL a x]
-    exact Submodule.smul_mem _ _ hx
-
-theorem supLat_stable (h : A.MKStable) (g : G) :
-    (supLat A).map ((twRep A g).restrictScalars (𝓞 LL)) ≤ supLat A := by
-  unfold supLat
-  rw [Submodule.map_span, Submodule.span_le]
-  rintro _ ⟨x, hx, rfl⟩
-  have e : ((twRep A g).restrictScalars (𝓞 LL)) x =
-      (⟨_, isIntegral_char A.chi⁻¹ g⟩ : 𝓞 LL) • A.ρ g x := rfl
-  rw [e]
-  exact Submodule.smul_mem _ _ (Submodule.subset_span ((h g x).2 hx))
-
 end Twisted
-
-section Block
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
-  {B : BlockDat K G Pl0} {ℓ : Lvl K G} {Z : Submodule K B.S.Forms} {v0 : InfinitePlace K} {s : ℕ}
-
-theorem lPr_mul_lvlOp (h : BlockHyp B ℓ v0 s) :
-    B.lPr ℓ Z * B.S.lvlOp B.r ℓ.P ℓ.ψ (idemOf ℓ.X) = B.lPr ℓ Z := by
-  have hc := idempotent_central K G ℓ.X h.irr
-  have h1 := (level_operator_spec K v0 h.conj B.S (h.ok.hpos v0) G B.r h.ok.act ℓ.P ℓ.ψ (idemOf ℓ.X) (hc.2 _).symm).1
-  obtain ⟨⟨h2, -⟩, h3⟩ := BlockDat.lf_v_proj h
-  have h4 : goodAt ℓ.X ℓ.P ℓ.ψ * idemOf ℓ.X = goodAt ℓ.X ℓ.P ℓ.ψ := by
-    unfold goodAt
-    rw [mul_assoc, hc.2, ← mul_assoc, hc.1]
-  have h5 : B.vPr ℓ * B.S.gaMat B.r (idemOf ℓ.X) = B.vPr ℓ := by
-    calc B.vPr ℓ * B.S.gaMat B.r (idemOf ℓ.X)
-        = B.vPr ℓ * B.vE ℓ * B.vPr ℓ * B.S.gaMat B.r (idemOf ℓ.X) := by rw [h2, Matrix.one_mul]
-      _ = B.vPr ℓ * (B.vE ℓ * B.vPr ℓ * B.S.gaMat B.r (idemOf ℓ.X)) := by simp only [Matrix.mul_assoc]
-      _ = B.vPr ℓ * (B.vE ℓ * B.vPr ℓ) := by rw [h3, ← (group_action_matrix_hom K B.S G B.r).2, h4]
-      _ = B.vPr ℓ := by rw [← Matrix.mul_assoc, h2, Matrix.one_mul]
-  unfold BlockDat.lPr
-  rw [Matrix.mul_assoc, h1, ← Matrix.mul_assoc, Matrix.mul_assoc (B.Pq ℓ Z), h5]
-
-end Block
 
 section Local
 
@@ -309,16 +226,6 @@ theorem mem_base_iff (h : R.grp_levels F) (g : G) : g ∈ F.P0 ↔ ∃ u ∈ uni
   rw [h2, h1, mem_pi_unip_iff]
   refine exists_congr fun u => and_congr_right fun _ => ?_
   rw [← eG_mirIncl, R.eG.injective.eq_iff]
-
-theorem IsLevelChar.unique (h : R.grp_levels F) {χ χ' : ∀ v : R.Pg, AddChar (Res R v) (𝓞 D.what₂.LL)}
-    (h1 : IsLevelChar R F χ) (h2 : IsLevelChar R F χ') : χ = χ' := by
-  classical
-  funext v
-  ext a
-  obtain ⟨u, hu, -, hv⟩ := exists_psiU_eq (K := D.what₂.LL) (rankPred_pos D.R) v a
-  have hm := (mem_base_iff h _).2 ⟨u, hu, rfl⟩
-  rw [← hv χ, ← hv χ']
-  exact (h1.val u hu hm).trans (h2.val u hu hm).symm
 
 theorem exists_isLevelChar (h : R.grp_levels F) : ∃ χ, IsLevelChar R F χ := by
   classical
@@ -552,12 +459,6 @@ theorem tieU : TieU (onOf R F c a) fun v => uniSub (Res R v) (rankPred D.R) := r
 
 theorem tiePsi : TiePsi (onOf R F c a) (levelChar R F) := rfl
 
-theorem tieLevelNum : TieLevelNum (onOf R F c a) (rankPred D.R) D.R.f :=
-  ⟨rfl, by show ((D.R.r : ℕ) : ℝ) = _; rw [rank_eq]; push_cast; rfl⟩
-
-theorem tieProj : TieProj (onOf R F c a) (fun j => twRep (R.FW j)) fun _ => idemOf A.X :=
-  fun j => ⟨eOp_eq (R.FW j) (idemOf A.X), rfl⟩
-
 variable {R F}
 
 theorem goodOp_idem (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (j : Fin D.R.m) : goodOp R j ∘ₗ goodOp R j = goodOp R j := by
@@ -581,110 +482,10 @@ theorem range_coordMap (j : Fin D.R.m) : LinearMap.range (coordMap R F j) = R.WL
   rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp] at h
   exact h
 
-theorem eig_eq (h : R.grp_levels F) (j : Fin D.R.m) :
-    eig ((onOf R F c a).ρ j) (onOf R F c a).U (onOf R F c a).ψ = (R.FW j).typeP F.P0 F.ψ0⁻¹ := by
-  ext x
-  have e1 : x ∈ eig ((onOf R F c a).ρ j) (onOf R F c a).U (onOf R F c a).ψ ↔ ∀ u : uni R,
-      twRep (R.FW j) (mirIncl R u) x =
-        ((psiU (Res R) (rankPred D.R) (levelChar R F) _ (u : Mir R) : 𝓞 D.what₂.LL) : D.what₂.LL) • x := by
-    unfold eig
-    rw [Submodule.mem_iInf]
-    exact forall_congr' fun u => sub_eq_zero
-  refine e1.trans (Iff.trans ?_ (mem_eigenspace_iff₂ (R.FW j) F.P0 F.ψ0⁻¹ x).symm)
-  constructor
-  · rintro hx ⟨g, hg⟩
-    obtain ⟨u, hu, rfl⟩ := (mem_base_iff h g).1 hg
-    rw [← (levelChar_spec h).val u hu hg]
-    exact hx ⟨u, hu⟩
-  · intro hx u
-    have hg := (mem_base_iff h _).2 ⟨u.1, u.2, rfl⟩
-    rw [(levelChar_spec h).val u.1 u.2 hg]
-    exact hx ⟨_, hg⟩
-
-theorem zg_eq (h : R.grp_levels F) (j : Fin D.R.m) : (onOf R F c a).Zg j = R.WL F false j := by
-  unfold OnObj.Zg
-  rw [eig_eq c a h]
-  rfl
-
-theorem cut_eq (h : R.grp_levels F) (j : Fin D.R.m) :
-    cut ((onOf R F c a).Zg j) ((onOf R F c a).Ms j) = (R.FW j).Mj F.P0 F.ψ0⁻¹ fun g => (idemOf A.X).coeff g := by
-  rw [zg_eq c a h]
-  ext x
-  exact and_assoc.symm
-
 variable {s : ℕ}
 
 theorem blockHyp (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T) : BlockHyp (A.fam.L j t) (liftLvl F) A.v0 s :=
   ⟨hOk.conj, hOk.irr, hOk.lifts j t⟩
-
-theorem thetaOp_srcGood (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T) :
-    thetaOp R F j t ∘ₗ srcGood F j t = thetaOp R F j t := by
-  have h := lPr_mul_lvlOp (Z := liftSub R F j t) (blockHyp (F := F) hOk j t)
-  unfold thetaOp srcGood
-  rw [LinearMap.comp_assoc, ← Matrix.mulVecLin_mul, Matrix.mul_assoc]
-  exact congrArg (fun M => coordMap R F j ∘ₗ (thetaMat R F j t * M).mulVecLin) h
-
-theorem thetaOp_srcProj (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T) :
-    thetaOp R F j t ∘ₗ srcProj R F j t = thetaOp R F j t := by
-  have h := BlockDat.lf_lPr_lE (Z := liftSub R F j t) (blockHyp (F := F) hOk j t)
-  unfold thetaOp srcProj
-  rw [LinearMap.comp_assoc, ← Matrix.mulVecLin_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ ((A.fam.L j t).lE _ _), h,
-    Matrix.one_mul]
-
-theorem goodOp_thetaOp (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (j : Fin D.R.m) (t : T) :
-    goodOp R j ∘ₗ thetaOp R F j t = thetaOp R F j t := by
-  refine LinearMap.ext fun x => ?_
-  have hx : thetaOp R F j t x ∈ R.WL F false j := by
-    rw [← range_coordMap]; exact ⟨_, rfl⟩
-  obtain ⟨y, hy⟩ : thetaOp R F j t x ∈ LinearMap.range (goodOp R j) := hx.2
-  rw [LinearMap.comp_apply, ← hy]
-  exact LinearMap.congr_fun (goodOp_idem hX j) y
-
-theorem srcProj_idem (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T) :
-    srcProj R F j t ∘ₗ srcProj R F j t = srcProj R F j t := by
-  have h := BlockDat.lf_lPr_lE (Z := liftSub R F j t) (blockHyp (F := F) hOk j t)
-  unfold srcProj
-  rw [← Matrix.mulVecLin_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ ((A.fam.L j t).lE _ _), h, Matrix.one_mul]
-
-theorem tjId (hOk : A.fam.Ok s) (j : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) :
-    (onOf R F c a).TjId j v (R.mu v) := by
-  have h1 := thetaOp_srcGood (R := R) (F := F) hOk j (R.mu v)
-  have h2 := thetaOp_srcProj (R := R) (F := F) hOk j (R.mu v)
-  have h3 : ∀ x, thetaOp R F j (R.mu v) (srcProj R F j (R.mu v) (srcGood F j (R.mu v) x)) = thetaOp R F j (R.mu v) x :=
-    fun x => (LinearMap.congr_fun h2 _).trans (LinearMap.congr_fun h1 x)
-  have h4 : ∀ x, thetaOp R F j (R.mu v) x = coordMap R F j ((thetaMat R F j (R.mu v)).mulVec
-      (((A.fam.L j (R.mu v)).lPr (liftLvl F) (liftSub R F j (R.mu v))).mulVec x)) := fun x => by
-    rw [Matrix.mulVec_mulVec]; rfl
-  apply le_antisymm
-  · rintro _ ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩
-    exact ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, (h3 x).trans (h4 x)⟩
-  · rintro _ ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩
-    exact ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, ((h3 x).trans (h4 x)).symm⟩
-
-theorem tieCoord (hOk : A.fam.Ok s) (h : R.grp_levels F) (hμ : R.tup_mu_conj) : TieCoord (onOf R F c a) := by
-  refine ⟨fun j => ⟨coordMap_injective j, (range_coordMap j).trans (zg_eq c a h j).symm, ?_⟩,
-    fun w _ j => ⟨tjId c a hOk j w, ?_⟩⟩
-  · rw [cut_eq c a h]
-    refine Submodule.map_comap_eq_self (f := (coordMap R F j).restrictScalars (𝓞 D.what₂.LL)) fun x hx => ?_
-    have hx' : x ∈ LinearMap.range (coordMap R F j) := by
-      rw [range_coordMap]; exact (R.FW j).Mj_sub_Wgood _ _ _ hx
-    exact hx'
-  · have h' := tjId (R := R) (F := F) c a hOk j (conjPl w)
-    rwa [hμ w] at h'
-
-theorem leafProj (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) : LeafProj (onOf R F c a) := fun j => ⟨goodOp_idem hX j, rfl⟩
-
-theorem leafIdentity (hOk : A.fam.Ok s) : LeafIdentity (onOf R F c a) := by
-  have H : ∀ v j, (onOf R F c a).θ' v j ∘ₗ (onOf R F c a).eX v j = (onOf R F c a).e j ∘ₗ (onOf R F c a).θ' v j ∧
-      ∀ x ∈ LinearMap.range ((onOf R F c a).eX v j),
-        x - (onOf R F c a).pr v j x ∈ LinearMap.ker ((onOf R F c a).θ' v j) := fun v j =>
-    ⟨(thetaOp_srcGood hOk j _).trans (goodOp_thetaOp hOk.irr j _).symm, fun x _ => by
-      rw [LinearMap.mem_ker, map_sub, sub_eq_zero]
-      exact (LinearMap.congr_fun (thetaOp_srcProj hOk j (R.mu v)) x).symm⟩
-  exact fun w _ => ⟨H w, H (conjPl w)⟩
-
-theorem leafSup (h : R.LIntegral) : LeafSup (onOf R F c a) :=
-  fun j => ⟨supLat_isLatIn _ (h j).1 (h j).2.1, fun g => supLat_stable _ (h j).2.2 (mirIncl R g)⟩
 
 theorem leafMackey (h : R.grp_levels F) : LeafMackey (onOf R F c a) := by
   classical
@@ -743,20 +544,6 @@ theorem leafYBound {L : SizeData₂ D} (Q : ParameterChoice' D L) : LeafYBound (
   rw [div_le_div_iff₀ (by nlinarith) (by positivity)]
   nlinarith
 
-theorem leafIndexU (h : R.grp_record) (hY : LeafYBound (onOf R F c a)) : LeafIndexU (onOf R F c a) := by
-  classical
-  exact leafIndexU_of _ D.R.f (mirab_levelGroups _ _) (leafLevelSq c a h) hY (tieU R F c a) (tieLevelNum R F c a)
-
-theorem leafUnip (h : R.grp_record) : LeafUnip (onOf R F c a) := by
-  classical
-  exact leafUnip_of _ D.R.f (mirab_levelGroups _ _) (leafLevelSq c a h) (tieU R F c a) (tieLevelNum R F c a)
-
-theorem onOf_leaves (hOk : A.fam.Ok s) (hC : R.Char F) (hI : R.LIntegral) {L : SizeData₂ D} (Q : ParameterChoice' D L) :
-    TieCoord (onOf R F c a) ∧ LeafProj (onOf R F c a) ∧ LeafIdentity (onOf R F c a) ∧ LeafSup (onOf R F c a) ∧
-      LeafMackey (onOf R F c a) ∧ LeafIndexU (onOf R F c a) ∧ LeafUnip (onOf R F c a) :=
-  ⟨tieCoord c a hOk hC.grp.levels hC.tup.mu_conj, leafProj c a hOk.irr, leafIdentity c a hOk, leafSup c a hI,
-    leafMackey c a hC.grp.levels, leafIndexU c a hC.grp.record (leafYBound c a Q), leafUnip c a hC.grp.record⟩
-
 end Objects
 
 section Checks
@@ -798,47 +585,7 @@ theorem j_coordMap (j : Fin D.R.m) (z : Fin (finrank D.what₂.LL (R.WL F false 
     ((((Real.sqrt (RealDat.nP F false))⁻¹ : ℝ) : ℂ) • (R.FW j).j (sg0 D A) (R.bL F false j k)))
   rw [smul_smul _ _ ((R.FW j).j _ _), hsq, one_smul, map_smulₛₗ, emb_eq D.what₂.embLL A.v0, cj_cj]
 
-theorem j_thetaMat (h5 : R.LTheta F) (hr : R.LRatTh F) (j : Fin D.R.m) (t : T)
-    (y : Fin ((A.fam.L j t).dZ (liftLvl F) (liftSub R F j t)) → D.what₂.LL) :
-    (R.FW j).j (sg0 D A) (coordMap R F j ((thetaMat R F j t).mulVec y)) =
-      R.thG j t (R.jV j t ((A.fam.L j t).toF (liftLvl F) (liftSub R F j t) y)) := by
-  have k0 := j_coordMap (R := R) (F := F) j ((thetaMat R F j t).mulVec y)
-  have k1 := (R.toCx F).key_lift F.cr false (h5 false) (hr false) j t y
-  have k2 := tC_cpt (R.toCx F) F.cr false j t y
-  have k3 : (R.toCx F).θ' j t ((R.toCx F).jL j t (F.cr.toL (R.toCx F).zs false j t y)) =
-      Tw.mk (twAt D.what₂.embLL A.v0) (R.thG j t (R.jV j t ((A.fam.L j t).toF (liftLvl F) (liftSub R F j t) y))) := rfl
-  exact k0.trans ((k1.trans k2).trans k3)
-
-theorem j_thetaOp (h5 : R.LTheta F) (hr : R.LRatTh F) (j : Fin D.R.m) (t : T) (x : Fin (srcDim F j t) → D.what₂.LL) :
-    (R.FW j).j (sg0 D A) (thetaOp R F j t x) = R.thG j t (R.jV j t ((A.fam.L j t).toF (liftLvl F) (liftSub R F j t)
-      (((A.fam.L j t).lPr (liftLvl F) (liftSub R F j t)).mulVec x))) := by
-  have h0 : thetaOp R F j t x = coordMap R F j ((thetaMat R F j t).mulVec
-      (((A.fam.L j t).lPr (liftLvl F) (liftSub R F j t)).mulVec x)) := by
-    rw [Matrix.mulVec_mulVec]; rfl
-  exact (congrArg ((R.FW j).j (sg0 D A)) h0).trans (j_thetaMat h5 hr j t _)
-
-theorem range_thetaOp {s : ℕ} (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T)
-    (hb : Function.Surjective (thetaMat R F j t).mulVec) : LinearMap.range (thetaOp R F j t) = R.WL F false j := by
-  rw [← range_coordMap]
-  unfold thetaOp
-  refine LinearMap.range_comp_of_range_eq_top _ (LinearMap.range_eq_top.2 fun z => ?_)
-  obtain ⟨y, rfl⟩ := hb z
-  obtain ⟨x, rfl⟩ := BlockDat.lf_lPr_surj (Z := liftSub R F j t) (blockHyp (F := F) hOk j t) y
-  exact ⟨x, by rw [Matrix.mulVecLin_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec]⟩
-
 variable (c : OnConst) (a : ChainArgs D.what₂.LL (Fin D.R.m) R.nW)
-
-theorem psi_mul_base (h : R.grp_levels F) (u : Mir R) (hu : u ∈ (onOf R F c a).U) (hm : mirIncl R u ∈ F.P0) :
-    (((onOf R F c a).ψ u : 𝓞 D.what₂.LL) : D.what₂.LL) * ((F.ψ0 ⟨mirIncl R u, hm⟩ : D.what₂.LLˣ) : D.what₂.LL) = 1 := by
-  have := (levelChar_spec h).val u hu hm
-  exact (congrArg (· * _) this).trans (Units.inv_mul _)
-
-theorem card_U (h : R.grp_record) : Nat.card (onOf R F c a).U =
-    D.host.g 0 ^ (D.R.r * (D.R.r - 1) / 2 * D.R.f) * D.host.g 1 ^ (D.R.r * (D.R.r - 1) / 2 * D.R.f) := by
-  classical
-  obtain ⟨-, -, h3, h4, h5, h6⟩ := leafLevelSq (F := F) c a h
-  rw [rank_eq, Nat.add_sub_cancel]
-  exact card_piU_level (mirab_levelGroups _ _) _ _ _ h3 h4 h5 h6
 
 variable (R) in
 
@@ -872,21 +619,6 @@ def supArgs : ChainArgs D.what₂.LL (Fin D.R.m) R.nW where
   th _ := 0
   ad _ := 0
 
-example (h : R.LIntegral) : LeafSpan (onOf R F c (supArgs R)) ∧ LeafLemmaS (onOf R F c (supArgs R)) :=
-  have hs := leafSup (F := F) c (supArgs R) h
-  ⟨fun _ _ => ⟨fun j => ⟨(hs j).1, (hs j).1⟩, fun j => ⟨(hs j).1, (hs j).1⟩⟩,
-    fun _ _ => ⟨fun j => ⟨le_rfl, (hs j).2, one_ne_zero, (sc_one' _ _).ge⟩,
-      fun j => ⟨le_rfl, (hs j).2, one_ne_zero, (sc_one' _ _).ge⟩⟩⟩
-
 end Checks
-
-example (K : Type) [Field K] [NumberField K] [StarRing K] (v0 : InfinitePlace K) :
-    ∃ a : ChainArgs K Unit fun _ => 1, ∀ v, IsLatIn ⊤ (a.Th v ()) ∧ a.σ v () = 1 :=
-  ⟨ChainArgs.ofObj (exampleObject K v0 ∅), fun _ => ⟨stdLat_isLatIn K 1, rfl⟩⟩
-
-example (a : ℚ) (h : (!![1, a; 0, 1] : Matrix (Fin 2) (Fin 2) ℚ).det ≠ 0) :
-    edgeSum supEdge (glCast (n := 1) rfl (Matrix.GeneralLinearGroup.mkOfDetNeZero _ h)) = a := by
-  rw [edgeSum_glCast]
-  simp [supd]
 
 end GlobalTheory.OntoChain

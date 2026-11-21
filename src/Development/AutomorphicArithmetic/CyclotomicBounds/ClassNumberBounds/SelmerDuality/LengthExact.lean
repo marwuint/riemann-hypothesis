@@ -28,14 +28,6 @@ theorem length_add_of_exact₄ (f : A →ₗ[R] B) (g : B →ₗ[R] C) (h : C �
       exact y.2
   rw [h1, h2, add_assoc]
 
-theorem length_eq_of_exact₄ (f : A →ₗ[R] B) (g : B →ₗ[R] C) (h : C →ₗ[R] D)
-    (hf : Function.Injective f) (hfg : Function.Exact f g) (hgh : Function.Exact g h)
-    (hh : Function.Surjective h) (hAD : Module.length R A = Module.length R D)
-    (hfin : Module.length R A ≠ ⊤) : Module.length R B = Module.length R C := by
-  have h1 := length_add_of_exact₄ f g h hf hfg hgh hh
-  rw [← hAD, add_comm (Module.length R B)] at h1
-  exact (ENat.add_right_injective_of_ne_top hfin h1).symm
-
 theorem length_ker_eq_length_coker (f : A →ₗ[R] A) (hfin : Module.length R A ≠ ⊤) :
     Module.length R (LinearMap.ker f) = Module.length R (A ⧸ LinearMap.range f) := by
   have h1 := length_add_of_exact₄ (LinearMap.ker f).subtype f (LinearMap.range f).mkQ

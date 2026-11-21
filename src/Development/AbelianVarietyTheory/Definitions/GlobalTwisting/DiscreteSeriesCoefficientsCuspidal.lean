@@ -220,7 +220,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualit
 import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAboveLOfRowPublished
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAboveL
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GoodIdempotentFixesOfOnlySeriesOfLabelActs
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GeometricLemmaOfFiltration
 
 namespace GlobalTheory.Fc.S0
@@ -459,21 +460,5 @@ structure ArithmeticGeometryHyps : Prop where
   greenbergWiles : ReciprocityTheory.Gal.GreenbergWiles
   discreteSeriesExists₂ : GlobalTheory.Mem.Vol.DiscreteSeriesExist
   fdeg₂ : GlobalTheory.Mem.Vol.FormalDegreeFormula₂
-
-theorem ArithmeticGeometryHyps.localGlobalAboveL_of_hypotheses (h : ArithmeticGeometryHyps) : GlobalTheory.GalOfCusp.LocalGlobalAboveL :=
-  GlobalTheory.GalOfCusp.localGlobalAboveL_of_potSemistable_of_purity h.localGlobalAboveLPst h.regularAlgebraicPurity
-
-theorem ArithmeticGeometryHyps.geometricLemma_of_cells (h : ArithmeticGeometryHyps)
-    (hc : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
-      [IsNonarchimedeanLocalField k], GlobalTheory.SmGL.CellSemisimplification k) : GlobalTheory.Published.GeometricLemma :=
-  fun k _ _ _ _ => ⟨h.geometricLemmaFiltration k, hc h.bernsteinZelevinskyFiniteness k⟩
-
-theorem ArithmeticGeometryHyps.geometricLemma (h : ArithmeticGeometryHyps) : GlobalTheory.Published.GeometricLemma :=
-  GlobalTheory.geometricLemma_of_filtration h.bernsteinZelevinskyFiniteness h.geometricLemmaFiltration
-
-example (h : ArithmeticGeometryHyps) : GlobalTheory.TwSys.Cheb := h.chebotarevOpenNormal
-
-example (h : ArithmeticGeometryHyps) : GlobalTheory.Mem.Vol.FormalDegreeFormula₂ ∧ GlobalTheory.Mem.Vol.DiscreteSeriesExist :=
-  ⟨h.formalDegreeCompactDual, h.discreteSeriesUpqExists⟩
 
 end GlobalTheory.Fc.S0

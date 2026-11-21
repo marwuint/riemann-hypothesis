@@ -1,5 +1,5 @@
 import Mathlib
-import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.GelfandEvenSmoothness.GelfEven
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.GelfandEvenSmoothness.IntSmooth
 
 noncomputable section
 
@@ -118,9 +118,6 @@ theorem good_Epow (hR : RCalc) (s : Bool) (m : ℕ) :
 theorem good_gel (hR : RCalc) (s : Bool) (m : ℕ) : Good (n := n) (V := V) (gel s m) :=
   good_sum Finset.univ (fun a => Epow s m a a) (fun a => good_Epow hR s m a a)
 
-theorem good_Om (hR : RCalc) : Good (n := n) (V := V) Om :=
-  good_smul (2 : ℂ) (good_add (good_gel hR true 2) (good_gel hR false 2))
-
 theorem good_zOp (hR : RCalc) (w : List (Bool × ℕ)) : Good (n := n) (V := V) (zOp w) := by
   induction w with
   | nil => exact good_id
@@ -130,29 +127,5 @@ theorem good_zOp (hR : RCalc) (w : List (Bool × ℕ)) : Good (n := n) (V := V) 
     exact good_comp (good_gel hR p.1 p.2) ih
 
 end Good
-
-theorem zOp_mem_CE (hR : RCalc) (E : KMod n) (w : List (Bool × ℕ)) {f : Mat n → E.V}
-    (hf : f ∈ CE E) : zOp w f ∈ CE E := by
-  induction w with
-  | nil => exact hf
-  | cons p w ih => exact (hR n).2.1 E _ ih p.1 p.2
-
-theorem Om_mem_CE (hR : RCalc) (E : KMod n) {f : Mat n → E.V} (hf : f ∈ CE E) : Om f ∈ CE E := by
-  refine ⟨(good_Om hR).1 f hf.1, ?_⟩
-  intro g hg k
-  have h1 := ((hR n).2.1 E f hf true 2).2 g hg k
-  have h2 := ((hR n).2.1 E f hf false 2).2 g hg k
-  simp only [Om, Pi.smul_apply, Pi.add_apply, h1, h2, map_add, map_smul]
-
-theorem zLin : ZLin := by
-  intro hR n
-  refine ⟨?_, ?_, ?_⟩
-  · intro V _ _ w f h a b hf hh
-    exact ⟨(good_zOp hR w).1 f hf, (good_Om hR).1 f hf, fun x hx =>
-      ⟨(good_zOp hR w).2.1 f h a b hf hh x hx, (good_Om hR).2.1 f h a b hf hh x hx⟩⟩
-  · intro V _ _ w f f' hE x hx
-    exact ⟨(good_zOp hR w).2.2 f f' hE hx, (good_Om hR).2.2 f f' hE hx⟩
-  · intro E w f hf
-    exact ⟨zOp_mem_CE hR E w hf, Om_mem_CE hR E hf⟩
 
 end GlobalTheory.CompanionTheory.WaveWords

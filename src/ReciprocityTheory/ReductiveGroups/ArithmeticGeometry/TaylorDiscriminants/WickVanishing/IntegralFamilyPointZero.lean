@@ -70,12 +70,6 @@ theorem ig_liftX [Algebra ℚ k] {d : ℕ} {f : PS k 1 d} (hf : f ∈ Ig R k (Fi
   · intro p
     exact MvPowerSeries.constantCoeff_X _
 
-theorem intAA_of_ig {σ : Type} {G : MvPowerSeries σ k} (hG : G ∈ Ig R k σ) : IntAA (R := R) k G := by
-  unfold IntAA
-  intro n
-  obtain ⟨g, rfl⟩ := RingHom.mem_range.mp hG
-  exact ⟨coeff n g, (MvPowerSeries.coeff_map _ _ _).symm⟩
-
 theorem ig_of_intAA {σ : Type} {G : MvPowerSeries σ k} (hG : IntAA (R := R) k G) : G ∈ Ig R k σ := by
   unfold IntAA at hG
   refine RingHom.mem_range.mpr ⟨(fun n => (hG n).choose : MvPowerSeries σ R), ?_⟩

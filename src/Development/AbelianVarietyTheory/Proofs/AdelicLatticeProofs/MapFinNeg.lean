@@ -4,13 +4,14 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsTopologicalRingAE
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmoothIffRealCoordinatesAndRealLines
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CocompactTensor
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ContinuousBicharacterWeilSetupStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ContinuousBicharacterWeilSetup
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRealPlaceSymplecticFormPositiveComplexStruStatement
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HomSymplecticHalfFormAlgebraicLawsContinuousStatement
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsOpenNsmulCompletedHomLatticeFiniteAdelicStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteRationalPointsCompletedLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteRationalPointsCompletedLattice
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSemicharacterCompletedSelfDualLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormaliseMeanSquareOfCocompactStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormaliseMeanSquareOfCocompact
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.MeanSquareAddFundamentalDomainOfCocompact
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open scoped TensorProduct ContDiff ComplexOrder
@@ -103,7 +104,7 @@ theorem exists_ne_zero (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hψ : I
     rw [map_sub, hp2 l hl, sub_zero] at e
     rw [e]
     abel
-  obtain ⟨f, f0, fc, fq, fl, fs, fv⟩ := GlobalTheory.T.continuous_bicharacter_weil_setup (WO S T) (RW T S) (piW θ T S) (iotaW σ T S)
+  obtain ⟨f, f0, fc, fq, fl, fs, fv⟩ := _root_.GlobalTheory.HeisenbergGaussianSeries.exists_theta (WO S T) (RW T S) (piW θ T S) (iotaW σ T S)
     (fun x y => ψ (symplOH S T x y)) om J (ratL T S) (thick Λ 1) (thick Λ 2) χ
     (continuous_pi' hθ T S) (hσ.continuous_iota T S) (hσ.pi_iota T S)
     (fun x y z => by simp only [aL, AddChar.map_add_eq_mul])
@@ -130,7 +131,7 @@ theorem exists_ne_zero (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hψ : I
       rw [this, map_zero])
     (fun v => ⟨0, Λ.zero_mem, by rw [nsmul_zero, sub_zero]; exact hσ.real_iota T S v⟩)
     (fun R => by
-      refine ((GlobalTheory.T.finite_rational_points_completed_lattice D S T ΛS ΛT dS dT R).image (ratW T S)).subset ?_
+      refine ((_root_.GlobalTheory.CompletedLatticeFinite.finite_rational_points D S T ΛS ΛT dS dT R).image (ratW T S)).subset ?_
       rintro _ ⟨⟨g, rfl⟩, ⟨l, hl, h1⟩, h2⟩
       refine ⟨g, ⟨⟨l, hl, ?_⟩, fun τ i j => ?_⟩, rfl⟩
       · rw [one_nsmul] at h1
@@ -187,7 +188,7 @@ theorem vacExists : ∀ D : D7, VacExistsO D := by
   have : BorelSpace (WO S T) := ⟨rfl⟩
   have h1 := (hf 1).1
   simp only [one_mul] at h1
-  obtain ⟨⟨μ, 𝓕, hμ⟩, c, hc⟩ := GlobalTheory.T.exists_normalise_meanSquare_of_cocompact' (WO S T) (ratL T S) K hK hcov f h1.cont f0 (by
+  obtain ⟨⟨μ, 𝓕, hμ⟩, c, hc⟩ := _root_.GlobalTheory.exists_normalise_meanSquare_of_cocompact (WO S T) (ratL T S) K hK hcov f h1.cont f0 (by
     rintro _ ⟨g, rfl⟩ w
     have e := h1.quasi g w
     have e' := congrArg norm e

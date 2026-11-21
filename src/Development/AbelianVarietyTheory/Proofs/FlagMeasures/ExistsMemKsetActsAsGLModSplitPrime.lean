@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntAfApproxInterUnit
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicLatticeSpec
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicLatticeSelfDualHermitian
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExtIdMulSupNatCastConj
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsPrimeIdempotentIntegralAdelesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsPrimeIdempotentIntegralAdeles
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnitaryStabilizerLiftOfSplitIdempotentStatement
 
 open MeasureTheory Formalism.MainNotions.S GlobalTheory.RowLev NumberField IsDedekindDomain Matrix
@@ -44,7 +44,7 @@ theorem exists_mem_Kset_actsAs_trivial_away : ∀ (I : AutInst) (N p : ℕ) (w :
   intro I N p w fr hN hp hw hw' M
   subst hN
   have : Fact p.Prime := ⟨hp⟩
-  obtain ⟨ε, hεε, h1ε, hεu, hεt, hεσ⟩ := GlobalTheory.T.exists_prime_idempotent_integralAdeles I w
+  obtain ⟨ε, hεε, h1ε, hεu, hεt, hεσ⟩ := _root_.GlobalTheory.RowLev.exists_prime_idempotent I w
   have hA := GlobalTheory.RowLev.intAf_approx_inter_unit_conj I 1 le_rfl
   have hL := GlobalTheory.AdelicLattice.adelicLattice_spec I 1 le_rfl
   have hX := GlobalTheory.RowLev.extId_mul_sup_natCast_conj I

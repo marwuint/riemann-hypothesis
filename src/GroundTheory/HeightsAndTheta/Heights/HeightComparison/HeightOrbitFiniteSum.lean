@@ -17,10 +17,4 @@ def OrbitFiniteSum.Statement : Prop :=
         ∑ᶠ v : FinitePlace (coordField x),
           (finiteTerm A v (coordVec x) - Real.log (v (evalCone (coordVec x) s)))
 
-example : BlockNonzero samplePoint ∧
-    Geo.IsSectionOn (orbitIdeal samplePoint) (HermLine.standard _).toGeo
-      (chartMonomial (fun _ ↦ 0) 1) :=
-  ⟨samplePoint_blockNonzero,
-    isSectionOn_chartMonomial _ _ _ (fun _ ↦ by simp [samplePoint]) 1 (fun _ ↦ rfl)⟩
-
 end GroundTheory.Heights₂.Heights

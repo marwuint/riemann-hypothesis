@@ -5,47 +5,6 @@ open scoped BigOperators ComplexConjugate
 
 namespace Formalism.HermitianLatticeCounting.P
 
-theorem sesqFormSumExpansion : CommonLiftExpand := by
-  intro V _ _ h r e e' l₁ l₂ α α' h1 h2
-  have hA : ∀ x, h (∑ a, α a • e a) x = ∑ a, α a * h (e a) x := by
-    intro x
-    simp [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply]
-  have hB : ∀ x, h x (∑ b, α' b • e' b) = ∑ b, conj (α' b) * h x (e' b) := by
-    intro x
-    simp [map_sum, map_smulₛₗ]
-  simp only [map_add, LinearMap.add_apply, hA, hB, h1, h2, mul_zero, Finset.sum_const_zero,
-    zero_add, add_zero, Finset.mul_sum, mul_assoc]
-
-theorem hermitianDefectBaseChange : PhiBaseChange := by
-  intro n R _ _ _ _ S Y g hg
-  have h1 : ∀ X : Matrix n n R, g⁻¹ * (g * X) = X := by
-    intro X; rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul g hg, Matrix.one_mul]
-  have h2 : ∀ X : Matrix n n R, gᴴ * ((g⁻¹)ᴴ * X) = X := by
-    intro X
-    rw [← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul g hg,
-      Matrix.conjTranspose_one, Matrix.one_mul]
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.Phi
-  simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc, h1, h2]
-  simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
-
-theorem hermitianDefectConjTranspose : PhiInverse := by
-  intro n R _ _ _ _ S Y hS hD
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.Phi at *
-  have e1 : (1 + S * Yᴴ) * (1 + S * Y) = 1 := by
-    have : (1 + S * Yᴴ) * (1 + S * Y) = 1 + S * (Y + Yᴴ + Yᴴ * S * Y) := by noncomm_ring
-    rw [this, hD, Matrix.mul_zero, add_zero]
-  have e2 : (1 + S * Y) * (1 + S * Yᴴ) = 1 := by
-    rw [← Matrix.inv_eq_right_inv e1]
-    exact Matrix.nonsing_inv_mul _ (Matrix.isUnit_det_of_right_inverse e1)
-  have e3 : S * (Yᴴ + Y + Y * S * Yᴴ) = 0 := by
-    have : S * (Yᴴ + Y + Y * S * Yᴴ) = (1 + S * Y) * (1 + S * Yᴴ) - 1 := by noncomm_ring
-    rw [this, e2, sub_self]
-  have key : Yᴴ + Y + Y * S * Yᴴ =
-      (Y + Yᴴ + Yᴴ * S * Y) * (1 + S * Yᴴ) - Yᴴ * (S * (Yᴴ + Y + Y * S * Yᴴ)) := by
-    noncomm_ring
-  rw [Matrix.conjTranspose_conjTranspose, key, hD, e3]
-  simp
-
 theorem hyperbolicRatioSqLe : ChShSq := by
   intro sh ch hsh hch hc
   constructor
@@ -66,152 +25,10 @@ theorem prodMaxLeProdMaxDiv : PThreshold := by
     rw [mul_max_of_nonneg _ _ hH0.le, mul_one, e]
     exact max_le_max hH le_rfl
 
-theorem powSubOneIdentities : PowSubOneIdentities := by
-  intro T k f hT hk
-  have hT1 : (1:ℝ) < T := by exact_mod_cast (by omega : 1 < T)
-  have hTk : (0:ℝ) < (T:ℝ) ^ k := by positivity
-  constructor
-  · rw [mul_comm f k, pow_mul, ← mul_pow, mul_sub, mul_one, mul_inv_cancel₀ hTk.ne']
-  · have key : (T:ℝ) ^ (k - 1) ≤ ((T:ℝ) ^ k - 1) / ((T:ℝ) - 1) := by
-      rw [le_div_iff₀ (by linarith)]
-      have e : (T:ℝ) ^ k = (T:ℝ) ^ (k - 1) * T := by
-        rw [← pow_succ]; congr 1; omega
-      rw [e]
-      nlinarith [one_le_pow₀ hT1.le (n := k - 1)]
-    rw [← pow_mul, mul_comm f (k - 1), pow_mul]
-    exact pow_le_pow_left₀ (by positivity) key f
-
-theorem eichlerTransformIsometry : EichlerIsometry := by
-  intro R V _ _ _ _ h hh u σ τ huu huσ hτ x y
-  have hσu : h σ u = 0 := by rw [hh u σ, huσ, star_zero]
-  have e1 : h u y = star (h y u) := hh y u
-  have e2 : h σ y = star (h y σ) := hh y σ
-  simp only [map_sub, map_add, map_smul, map_smulₛₗ, LinearMap.sub_apply, LinearMap.add_apply,
-    LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, huu, huσ, hσu, e1, e2, star_mul',
-    star_sub, star_add, mul_zero, zero_mul, sub_zero, add_zero]
-  linear_combination (-(h x u) * star (h y u)) * hτ
-
-theorem powLeMaxMulMax : BlockScalarBound := by
-  intro t x y s c ht hx hy hcs hts
-  have hM : 1 ≤ max 1 x * max 1 (1 / y) :=
-    one_le_mul_of_one_le_of_one_le (le_max_left _ _) (le_max_left _ _)
-  rcases le_or_gt 1 t with h1 | h1
-  · calc t ^ c ≤ t ^ s := pow_le_pow_right₀ h1 hcs
-      _ = x * (1 / y) := by rw [hts, div_eq_mul_one_div]
-      _ ≤ max 1 x * max 1 (1 / y) :=
-          mul_le_mul (le_max_right _ _) (le_max_right _ _) (by positivity)
-            (zero_le_one.trans (le_max_left _ _))
-  · calc t ^ c ≤ 1 := pow_le_one₀ ht.le h1.le
-      _ ≤ _ := hM
-
 private theorem one_le_finset_prod_of_forall_one_le {ι : Type*} (s : Finset ι) (y : ι → ℝ) (h : ∀ v ∈ s, 1 ≤ y v) :
     1 ≤ ∏ v ∈ s, y v := by
   calc (1:ℝ) = ∏ v ∈ s, (1:ℝ) := by simp
     _ ≤ ∏ v ∈ s, y v := Finset.prod_le_prod (fun _ _ => zero_le_one) h
-
-theorem ratioPowLeProdMaxPow : Threshold := by
-  intro N p D H₂ l hH hD hDl hlt
-  have hQ1 : 1 < D l / H₂ := by rw [lt_div_iff₀ hH, one_mul]; exact hlt
-  have hN : (0:ℝ) < N := Nat.cast_pos.mpr (Fin.pos l)
-  have hN0 : (N:ℝ) ≠ 0 := hN.ne'
-  have hP1 : 1 ≤ ∏ i, max 1 (D i / H₂) := one_le_finset_prod_of_forall_one_le _ _ (fun i _ => le_max_left _ _)
-  have hPpos : 0 < ∏ i, max 1 (D i / H₂) := lt_of_lt_of_le one_pos hP1
-  have hPQ : ∏ i, max 1 (D i / H₂) ≤ (D l / H₂) ^ N := by
-    calc ∏ i, max 1 (D i / H₂) ≤ ∏ _i : Fin N, D l / H₂ :=
-          Finset.prod_le_prod (fun _ _ => zero_le_one.trans (le_max_left _ _))
-            (fun i _ => max_le hQ1.le (div_le_div_of_nonneg_right (hDl i) hH.le))
-      _ = (D l / H₂) ^ N := by rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
-  have ha : 0 ≤ 2 * (p:ℝ) / N := by positivity
-  rw [Real.rpow_neg hPpos.le]
-  have h2 : (∏ i, max 1 (D i / H₂)) ^ (2 * (p:ℝ) / N) ≤ (D l / H₂) ^ (2 * p) := by
-    calc (∏ i, max 1 (D i / H₂)) ^ (2 * (p:ℝ) / N) ≤ ((D l / H₂) ^ N) ^ (2 * (p:ℝ) / N) :=
-          Real.rpow_le_rpow hPpos.le hPQ ha
-      _ = (D l / H₂) ^ (2 * p) := by
-          rw [← Real.rpow_natCast (D l / H₂) N, ← Real.rpow_mul (by linarith),
-            show (N:ℝ) * (2 * p / N) = ((2 * p : ℕ) : ℝ) by push_cast; field_simp,
-            Real.rpow_natCast]
-  calc (H₂ / D l) ^ (2 * p) = ((D l / H₂) ^ (2 * p))⁻¹ := by rw [← inv_pow, inv_div]
-    _ ≤ ((∏ i, max 1 (D i / H₂)) ^ (2 * (p:ℝ) / N))⁻¹ :=
-        inv_anti₀ (Real.rpow_pos_of_pos hPpos _) h2
-
-theorem oneLeProdInfinitePlace : IntegerProductGeOne := by
-  intro E _ _ a ha
-  rw [NumberField.InfinitePlace.prod_eq_abs_norm, ← Algebra.coe_norm_int]
-  have h : Algebra.norm ℤ a ≠ 0 := Algebra.norm_ne_zero_iff.mpr ha
-  have : (1:ℤ) ≤ |Algebra.norm ℤ a| := Int.one_le_abs h
-  exact_mod_cast this
-
-theorem centralTransvectionIsometry : CentreIsometry := by
-  intro R V _ _ _ _ h hh r e c he hc x y
-  have hc' : ∀ a a', star (c a a') = - c a' a := by
-    intro a a'
-    have := congrFun (congrFun hc a') a
-    simpa [Matrix.conjTranspose_apply] using this
-  have hL : ∀ (k : Fin r → Fin r → R) (z : V),
-      h (∑ a, ∑ a', k a a' • e a) z = ∑ a, ∑ a', k a a' * h (e a) z := by
-    intro k z; simp [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply]
-  have hR : ∀ (k : Fin r → Fin r → R) (z : V),
-      h z (∑ a, ∑ a', k a a' • e a) = ∑ a, ∑ a', star (k a a') * h z (e a) := by
-    intro k z; simp [map_sum, map_smulₛₗ, starRingEnd_apply]
-  have hy : ∀ a, h (e a) y = star (h y (e a)) := fun a => hh y (e a)
-  simp only [map_add, LinearMap.add_apply, hL, hR, he, hy, mul_zero, Finset.sum_const_zero,
-    add_zero]
-  have key : ∑ a, ∑ a', star (c a a' * h y (e a')) * h x (e a) =
-      - ∑ a, ∑ a', c a a' * h x (e a') * star (h y (e a)) := by
-    simp only [star_mul', hc']
-    conv_lhs => rw [Finset.sum_comm]
-    simp only [← Finset.sum_neg_distrib]
-    apply Finset.sum_congr rfl; intro a _; apply Finset.sum_congr rfl; intro a' _; ring
-  linear_combination key
-
-theorem hermitianDefectMulUnit : PhiUnit := by
-  intro n R _ _ _ _ S Y
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.Phi
-  noncomm_ring
-
-theorem hermitianDefectConj : PhiGram := by
-  intro n R _ _ _ _ S Y hS
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.Phi
-  rw [Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.conjTranspose_mul, hS]
-  noncomm_ring
-
-theorem hermitianDefectAdd : PhiDiff := by
-  intro n R _ _ _ _ S Y Z hS
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.Phi
-  simp only [Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_one,
-    Matrix.conjTranspose_conjTranspose, hS]
-  noncomm_ring
-
-theorem hermitianDefectComposition : PhiProduct := by
-  intro n R _ _ _ _ S Y Y' hS
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.Phi
-  simp only [Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_one,
-    Matrix.conjTranspose_conjTranspose, hS]
-  noncomm_ring
-
-theorem absMulLeWeightedMean : WeightedAMGM := by
-  intro a b La hLa
-  have hL0 : La ≠ 0 := hLa.ne'
-  obtain ⟨t, ht⟩ : ∃ t, t = |b| / La := ⟨_, rfl⟩
-  have hbt : |b| = La * t := by rw [ht]; first | (field_simp; ring) | field_simp
-  have hb2 : b ^ 2 = La ^ 2 * t ^ 2 := by rw [← sq_abs b, hbt]; ring
-  have hb2' : b ^ 2 / La = La * t ^ 2 := by
-    rw [hb2, div_eq_iff hL0]; ring
-  rw [abs_mul, hbt, hb2', ← sq_abs a]
-  nlinarith [mul_nonneg hLa.le (sq_nonneg (|a| - t))]
-
-theorem minLeSqrtMul : MinGeom := by
-  intro a b ha hb
-  have hm : 0 ≤ min a b := le_min ha hb
-  have h2 : min a b ^ 2 ≤ a * b := by
-    rw [sq]; exact mul_le_mul (min_le_left _ _) (min_le_right _ _) hm ha
-  calc min a b = Real.sqrt (min a b ^ 2) := (Real.sqrt_sq hm).symm
-    _ ≤ Real.sqrt (a * b) := Real.sqrt_le_sqrt h2
-
-theorem rpowMulRpowNegLe : SizeCancel := by
-  intro sz e q hsz hq
-  rw [← Real.rpow_add (by linarith)]
-  exact Real.rpow_le_rpow_of_exponent_le hsz (by linarith)
 
 theorem traceLowerBound : TraceLower := by
   intro ι _ a ha hprod
@@ -280,107 +97,6 @@ theorem prodMaxInvLeSq : LemmaP := by
           (hB.trans hA) (finset_prod_max_one_nonneg _ _) (finset_prod_max_one_nonneg _ _)
     _ = (∏ v, max 1 (x v)) ^ 2 := (sq _).symm
 
-lemma thresholdSize_eq_prod_comm {ι l : Type*} [Fintype ι] (E : Finset l) (D : l → ι → ℝ) (H₂ : ℝ) :
-    size E D H₂ = ∏ i ∈ E, ∏ v, max 1 (D i v / H₂) := by
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.size
-  exact Finset.prod_comm
-
-lemma prod_prod_max_le_pow_mul_thresholdSize {ι l : Type} [Fintype ι] (E : Finset l) (D : l → ι → ℝ) (H₂ : ℝ) (hH : 1 ≤ H₂)
-    (hD : ∀ i ∈ E, ∀ v, 0 < D i v) :
-    ∏ i ∈ E, ∏ v, max 1 (D i v) ≤ H₂ ^ (Fintype.card ι * E.card) * size E D H₂ := by
-  have h1 : ∀ i ∈ E, ∏ v, max 1 (D i v) ≤ H₂ ^ Fintype.card ι * ∏ v, max 1 (D i v / H₂) :=
-    fun i hi => prodMaxLeProdMaxDiv ι (D i) H₂ hH (fun v => (hD i hi v).le)
-  calc ∏ i ∈ E, ∏ v, max 1 (D i v)
-        ≤ ∏ i ∈ E, (H₂ ^ Fintype.card ι * ∏ v, max 1 (D i v / H₂)) :=
-        Finset.prod_le_prod (fun i _ => finset_prod_max_one_nonneg _ _) h1
-    _ = H₂ ^ (Fintype.card ι * E.card) * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂ := by
-        rw [Finset.prod_mul_distrib, Finset.prod_const, ← pow_mul, thresholdSize_eq_prod_comm]
-
-theorem prodMaxMulMaxInvLe : PiProd := by
-  intro ι l _ E D H₂ hH hD hprod
-  rw [Finset.prod_comm]
-  have h1 : ∀ i ∈ E, ∏ v, (max 1 (D i v) * max 1 (1 / D i v)) ≤ (∏ v, max 1 (D i v)) ^ 2 := by
-    intro i hi
-    rw [Finset.prod_mul_distrib, sq]
-    exact mul_le_mul_of_nonneg_left (prodMaxInvLeSq ι (D i) Finset.univ (hD i hi) (hprod i hi)).2
-      (finset_prod_max_one_nonneg _ _)
-  have hH0 : 0 ≤ H₂ := by linarith
-  calc ∏ i ∈ E, ∏ v, (max 1 (D i v) * max 1 (1 / D i v))
-        ≤ ∏ i ∈ E, (∏ v, max 1 (D i v)) ^ 2 :=
-        Finset.prod_le_prod (fun i _ => Finset.prod_nonneg (fun v _ => mul_nonneg
-          (zero_le_one.trans (le_max_left _ _)) (zero_le_one.trans (le_max_left _ _)))) h1
-    _ = (∏ i ∈ E, ∏ v, max 1 (D i v)) ^ 2 := Finset.prod_pow _ _ _
-    _ ≤ (H₂ ^ (Fintype.card ι * E.card) * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂) ^ 2 :=
-        pow_le_pow_left₀ (Finset.prod_nonneg (fun _ _ => finset_prod_max_one_nonneg _ _))
-          (prod_prod_max_le_pow_mul_thresholdSize E D H₂ hH hD) 2
-    _ = H₂ ^ (2 * Fintype.card ι * E.card) * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂ ^ 2 := by ring
-
-private theorem LatticeSumBounds_size_nonneg {ι l : Type*} [Fintype ι] (E : Finset l) (D : l → ι → ℝ) (H₂ : ℝ) :
-    0 ≤ Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂ :=
-  Finset.prod_nonneg (fun _ _ => finset_prod_max_one_nonneg _ _)
-
-theorem prodLossBound : LossProd := by
-  classical
-  intro ι l _ E D G B H₂ e₁ e₂ l₀ Sg hB hH hl₀ hD hDprod hG hGprod hGD
-  have hB0 : 0 ≤ B := by linarith
-  have hH0 : 0 ≤ H₂ := by linarith
-  have hthr := LatticeSumBounds_size_nonneg E D H₂
-  have P1 : ∏ _v ∈ Sg, B ≤ B ^ Fintype.card ι := by
-    rw [Finset.prod_const]; exact pow_le_pow_right₀ hB (Finset.card_le_univ Sg)
-  have hT : ∏ v, max 1 (D l₀ v) ≤ H₂ ^ Fintype.card ι * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂ := by
-    refine (prodMaxLeProdMaxDiv ι (D l₀) H₂ hH (fun v => (hD l₀ hl₀ v).le)).trans ?_
-    apply mul_le_mul_of_nonneg_left _ (pow_nonneg hH0 _)
-    unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.size
-    apply Finset.prod_le_prod (fun v _ => zero_le_one.trans (le_max_left _ _))
-    intro v _
-    rw [← Finset.mul_prod_erase E _ hl₀]
-    exact le_mul_of_one_le_right (zero_le_one.trans (le_max_left _ _))
-      (one_le_finset_prod_of_forall_one_le _ _ (fun i _ => le_max_left _ _))
-  have hGm : ∏ v, max 1 (G v) ≤ (∏ v, max 1 (D l₀ v)) ^ 2 := by
-    rw [← Finset.prod_pow]
-    apply Finset.prod_le_prod (fun v _ => zero_le_one.trans (le_max_left _ _))
-    intro v _
-    exact max_le (one_le_pow₀ (le_max_left _ _))
-      ((hGD v).trans (pow_le_pow_left₀ (hD l₀ hl₀ v).le (le_max_right _ _) 2))
-  have P2 : ∏ v ∈ Sg, max (G v) (1 / G v) ^ e₁ ≤
-      (H₂ ^ Fintype.card ι * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂) ^ (4 * e₁) := by
-    rw [Finset.prod_pow, pow_mul (H₂ ^ Fintype.card ι * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂) 4 e₁]
-    apply pow_le_pow_left₀ (Finset.prod_nonneg (fun v _ => (hG v).le.trans (le_max_left _ _)))
-    calc ∏ v ∈ Sg, max (G v) (1 / G v) ≤ (∏ v, max 1 (G v)) ^ 2 :=
-          (prodMaxInvLeSq ι G Sg hG hGprod).1
-      _ ≤ ((∏ v, max 1 (D l₀ v)) ^ 2) ^ 2 :=
-          pow_le_pow_left₀ (finset_prod_max_one_nonneg _ _) hGm 2
-      _ ≤ ((H₂ ^ Fintype.card ι * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂) ^ 2) ^ 2 :=
-          pow_le_pow_left₀ (by positivity)
-            (pow_le_pow_left₀ (finset_prod_max_one_nonneg _ _) hT 2) 2
-      _ = (H₂ ^ Fintype.card ι * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂) ^ 4 := by ring
-  have P3 : ∏ v ∈ Sg, ∏ i ∈ E, max (D i v) (1 / D i v) ^ e₂ ≤
-      (H₂ ^ (Fintype.card ι * E.card) * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂) ^ (2 * e₂) := by
-    simp only [Finset.prod_pow]
-    rw [pow_mul (H₂ ^ (Fintype.card ι * E.card) * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂) 2 e₂]
-    apply pow_le_pow_left₀ (Finset.prod_nonneg (fun v _ => Finset.prod_nonneg
-      (fun i hi => (hD i hi v).le.trans (le_max_left _ _))))
-    calc ∏ v ∈ Sg, ∏ i ∈ E, max (D i v) (1 / D i v)
-          ≤ ∏ v ∈ Sg, ∏ i ∈ E, (max 1 (D i v) * max 1 (1 / D i v)) := by
-          apply Finset.prod_le_prod (fun v _ => Finset.prod_nonneg
-            (fun i hi => (hD i hi v).le.trans (le_max_left _ _)))
-          intro v _
-          exact Finset.prod_le_prod (fun i hi => (hD i hi v).le.trans (le_max_left _ _))
-            (fun i hi => max_self_inv_le_max_one_mul_max_one_inv (hD i hi v))
-      _ ≤ ∏ v, ∏ i ∈ E, (max 1 (D i v) * max 1 (1 / D i v)) :=
-          finset_prod_real_mono_of_subset_of_one_le _ _ (Finset.subset_univ _) _ (fun v _ => one_le_finset_prod_of_forall_one_le _ _
-            (fun i _ => one_le_mul_of_one_le_of_one_le (le_max_left _ _) (le_max_left _ _)))
-      _ ≤ H₂ ^ (2 * Fintype.card ι * E.card) * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂ ^ 2 :=
-          prodMaxMulMaxInvLe ι l E D H₂ hH hD hDprod
-      _ = (H₂ ^ (Fintype.card ι * E.card) * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂) ^ 2 := by ring
-  rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib]
-  exact mul_le_mul (mul_le_mul P1 P2
-      (Finset.prod_nonneg (fun v _ => pow_nonneg ((hG v).le.trans (le_max_left _ _)) _))
-      (pow_nonneg hB0 _)) P3
-    (Finset.prod_nonneg (fun v _ => Finset.prod_nonneg
-      (fun i hi => pow_nonneg ((hD i hi v).le.trans (le_max_left _ _)) _)))
-    (mul_nonneg (pow_nonneg hB0 _) (pow_nonneg (mul_nonneg (pow_nonneg hH0 _) hthr) _))
-
 theorem hyperbolicRatioLe : ChShBound := by
   intro sh ch hsh hch hc
   have hch2 : ch ≤ sh + 1 := by nlinarith
@@ -411,21 +127,6 @@ theorem hyperbolicPairRatioLe : ChShPair := by
   nlinarith [mul_le_mul_of_nonneg_right k1 m2.le, mul_le_mul_of_nonneg_right k2 m1.le,
     mul_le_mul_of_nonneg_left l2 h1.le, mul_le_mul_of_nonneg_left l1 h2.le]
 
-theorem expSumLe : ExpSumLe := by
-  intro x hx
-  have hE : Real.exp (-x / 6) * Real.exp (x / 6) = 1 := by
-    rw [← Real.exp_add, show -x / 6 + x / 6 = (0:ℝ) by ring, Real.exp_zero]
-  have h3 : 3 ≤ Real.exp (x / 6) := by linarith [Real.add_one_le_exp (x / 6)]
-  have hpos := Real.exp_pos (-x / 6)
-  have hA : Real.exp (-x / 6) ≤ 1 / 3 := by nlinarith
-  have hsplit : Real.exp (-x / 2) = Real.exp (-x / 3) * Real.exp (-x / 6) := by
-    rw [← Real.exp_add]; congr 1; ring
-  have t1 : Real.exp (-4 * x) ≤ Real.exp (-x / 2) := Real.exp_le_exp.mpr (by linarith)
-  have t2 : Real.exp (-x) ≤ Real.exp (-x / 2) := Real.exp_le_exp.mpr (by linarith)
-  have hp3 := Real.exp_pos (-x / 3)
-  have hm := mul_le_mul_of_nonneg_left hA hp3.le
-  linarith
-
 theorem invSqrtPowLeExp : GainSqrt := by
   intro k f b g hk hb hg
   have hk1 : (1:ℝ) ≤ k := by exact_mod_cast hk
@@ -447,79 +148,6 @@ theorem invSqrtPowLeExp : GainSqrt := by
       push_cast; try ring, Real.exp_nat_mul, Real.exp_neg, e4]
   rw [heq]
   exact pow_le_pow_left₀ (by positivity) hinv _
-
-theorem powTwoDivLeExpLog : GainQuadratic := by
-  intro k N b g hk hb hg
-  have hk1 : (1:ℝ) ≤ k := by exact_mod_cast hk
-  have hb0 : 0 < b := by linarith
-  have hb7 : 0 < b ^ 7 := pow_pos hb0 7
-  have hb8 : b ^ 8 ≤ g := le_trans (pow_le_pow_left₀ hb0.le (by nlinarith) 8) hg
-  have hg0 : 0 < g := lt_of_lt_of_le (pow_pos hb0 8) hb8
-  have h1 : 2 / g ≤ (b ^ 7)⁻¹ := by
-    rw [div_le_iff₀ hg0]
-    have e8 : b ^ 8 = b ^ 7 * b := by ring
-    have h27 : b ^ 7 * 2 ≤ g := by nlinarith
-    calc (2:ℝ) = (b ^ 7)⁻¹ * (b ^ 7 * 2) := (inv_mul_cancel_left₀ hb7.ne' 2).symm
-      _ ≤ (b ^ 7)⁻¹ * g := mul_le_mul_of_nonneg_left h27 (by positivity)
-  have e7 : Real.exp (7 * Real.log b) = b ^ 7 := by
-    rw [show (7:ℝ) * Real.log b = Real.log (b ^ 7) by rw [Real.log_pow]; norm_num,
-      Real.exp_log hb7]
-  have heq : Real.exp (-7 * N * Real.log b) = ((b ^ 7)⁻¹) ^ N := by
-    rw [show -7 * (N:ℝ) * Real.log b = (N:ℝ) * (-(7 * Real.log b)) by ring, Real.exp_nat_mul,
-      Real.exp_neg, e7]
-  rw [heq]
-  exact pow_le_pow_left₀ (by positivity) h1 N
-
-theorem volumeExponentAssembly : SWArith := by
-  intro k f de₀ G₀ NT v cf hk hde hdG hNT hv hcf
-  have hde0 : 0 < de₀ := by linarith
-  have hG0 : 0 < G₀ := by linarith
-  have hNT0 : 0 < NT := by linarith
-  have hde' : de₀ ≠ 0 := hde0.ne'
-  have hNT' : NT ≠ 0 := hNT0.ne'
-  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
-  simp only [Nat.add_sub_cancel]
-  rw [Real.rpow_add (div_pos hG0 hde0), Real.rpow_natCast]
-  have hX0 : 0 ≤ (Real.exp 1 * Real.pi / (((j + 1 : ℕ) : ℝ) * v)) ^ ((j + 1) * f) := by positivity
-  have hc : (G₀ / de₀) ^ cf ≤ G₀ ^ cf := Real.rpow_le_rpow (by positivity) (div_le_self hG0.le hde) hcf
-  have hc0 : 0 ≤ (G₀ / de₀) ^ cf := by positivity
-  have key : (de₀ / NT) ^ j * (G₀ / de₀) ^ (j + 1) = (G₀ / NT) ^ (j + 1) * NT / de₀ := by
-    rw [div_pow, div_pow, div_pow, div_mul_div_comm, div_mul_eq_mul_div, div_div,
-      div_eq_div_iff (by positivity) (by positivity)]
-    ring
-  have hle : (G₀ / NT) ^ (j + 1) * NT / de₀ ≤ (G₀ / NT) ^ (j + 1) * NT :=
-    div_le_self (by positivity) hde
-  calc _ = ((de₀ / NT) ^ j * (G₀ / de₀) ^ (j + 1)) * (G₀ / de₀) ^ cf *
-        (Real.exp 1 * Real.pi / (((j + 1 : ℕ) : ℝ) * v)) ^ ((j + 1) * f) := by ring
-    _ = (G₀ / NT) ^ (j + 1) * NT / de₀ * (G₀ / de₀) ^ cf *
-        (Real.exp 1 * Real.pi / (((j + 1 : ℕ) : ℝ) * v)) ^ ((j + 1) * f) := by rw [key]
-    _ ≤ (G₀ / NT) ^ (j + 1) * NT * G₀ ^ cf *
-        (Real.exp 1 * Real.pi / (((j + 1 : ℕ) : ℝ) * v)) ^ ((j + 1) * f) :=
-        mul_le_mul_of_nonneg_right (mul_le_mul hle hc hc0 (by positivity)) hX0
-    _ = _ := by ring
-
-theorem divPowMulPowLe : DivPowMulPowLe := by
-  intro k de₀ j₀ t₁ t₂ De NT cf hde hj ht1 ht2 hNT hcf hDe
-  have hde0 : 0 < de₀ := by linarith
-  have hP1 : 1 ≤ j₀ * t₁ * t₂ :=
-    one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hj ht1) ht2
-  have hP0 : 0 < j₀ * t₁ * t₂ := by linarith
-  have hPDe : j₀ * t₁ * t₂ ≤ De := by nlinarith
-  have hDe0 : 0 < De := by linarith
-  rw [Real.rpow_add hP0, Real.rpow_natCast]
-  have h1 : (de₀ / NT) ^ k * (j₀ * t₁ * t₂) ^ k ≤ (De / NT) ^ k := by
-    rw [← mul_pow]
-    apply pow_le_pow_left₀ (by positivity)
-    rw [div_mul_eq_mul_div]
-    exact div_le_div_of_nonneg_right (by nlinarith) hNT.le
-  have h2 : (j₀ * t₁ * t₂) ^ cf ≤ De ^ cf := Real.rpow_le_rpow hP0.le hPDe hcf
-  calc _ = ((de₀ / NT) ^ k * (j₀ * t₁ * t₂) ^ k) * (j₀ * t₁ * t₂) ^ cf := by ring
-    _ ≤ (De / NT) ^ k * De ^ cf := mul_le_mul h1 h2 (by positivity) (by positivity)
-
-theorem relIndexMonotone : SublatticeIndex := by
-  intro A _ M Th La hML hne
-  exact ⟨fun h => hne (AddSubgroup.relIndex_eq_zero_of_le_right hML h),
-    AddSubgroup.relIndex_le_of_le_right hML hne⟩
 
 theorem minBoundSecondZero : MinIIZero := by
   intro k r CT G T T' g v t loss JHS dim hr hk hG hT hT' hg hv ht hloss hdim hCT hkt hVF
@@ -556,91 +184,6 @@ theorem minBoundSecondZero : MinIIZero := by
     _ = loss * ((t * T)⁻¹) ^ k := by ring
     _ ≤ loss * (CT / (k * g ^ (2 * r + 2))) ^ k :=
         mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hbase k) hloss
-
-lemma gainExponent_nonneg (k r : ℕ) : 0 ≤ expo k r := by
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.expo
-  exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
-
-lemma gainExponent_le (k r : ℕ) (hk : 1 ≤ k) : expo k r ≤ 2 * r := by
-  have hk0 : (0:ℝ) < k := by exact_mod_cast (show 0 < k by omega)
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.expo
-  rw [div_le_iff₀ hk0]
-  have h : 2 * r * (k - 2 - r) ≤ 2 * r * k := Nat.mul_le_mul_left _ (by omega)
-  calc ((2 * r * (k - 2 - r) : ℕ) : ℝ) ≤ ((2 * r * k : ℕ) : ℝ) := by exact_mod_cast h
-    _ = 2 * r * k := by push_cast; try ring
-
-theorem minGainBaseLe : XTilde := by
-  intro k r C ν T' t g hk hC hν hT' ht hg hkt
-  have hk1 : (1:ℝ) ≤ k := by exact_mod_cast (show 1 ≤ k by omega)
-  have hk0 : (0:ℝ) < k := by linarith
-  rcases le_or_gt ν T' with h | h
-  · rw [min_eq_left h]; exact min_le_right _ _
-  · rw [min_eq_right h.le]
-    apply (min_le_left _ _).trans
-    unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.xv
-    have hge : 0 ≤ Formalism.HermitianLatticeCounting.LatticeSumBounds.expo k r := gainExponent_nonneg k r
-    have hle : Formalism.HermitianLatticeCounting.LatticeSumBounds.expo k r ≤ 2 * r := gainExponent_le k r (by omega)
-    have h1 : ((k:ℝ) ^ (2 * r))⁻¹ ≤ (C / k) ^ Formalism.HermitianLatticeCounting.LatticeSumBounds.expo k r := by
-      calc ((k:ℝ) ^ (2 * r))⁻¹ = (1 / (k:ℝ)) ^ ((2 * r : ℕ) : ℝ) := by
-            rw [Real.rpow_natCast, one_div, inv_pow]
-        _ ≤ (1 / (k:ℝ)) ^ Formalism.HermitianLatticeCounting.LatticeSumBounds.expo k r :=
-            Real.rpow_le_rpow_of_exponent_ge (one_div_pos.mpr hk0)
-              (by rw [div_le_one hk0]; exact hk1) (by push_cast; exact hle)
-        _ ≤ (C / k) ^ Formalism.HermitianLatticeCounting.LatticeSumBounds.expo k r :=
-            Real.rpow_le_rpow (one_div_pos.mpr hk0).le
-              (div_le_div_of_nonneg_right hC hk0.le) hge
-    have h2 : 1 ≤ (k:ℝ) ^ (3 * r) * ((k:ℝ) ^ (2 * r))⁻¹ := by
-      rw [← div_eq_mul_inv, le_div_iff₀ (pow_pos hk0 _), one_mul]
-      exact pow_le_pow_right₀ hk1 (by omega)
-    calc (1:ℝ) ≤ (k:ℝ) ^ (3 * r) * ((k:ℝ) ^ (2 * r))⁻¹ := h2
-      _ ≤ (g⁻¹ ^ (2 * r + 2) * T' * t) * (C / k) ^ Formalism.HermitianLatticeCounting.LatticeSumBounds.expo k r :=
-          mul_le_mul hkt h1 (inv_nonneg.mpr (pow_nonneg hk0.le _)) (by positivity)
-      _ = T' * t * g⁻¹ ^ (2 * r + 2) * (C / k) ^ Formalism.HermitianLatticeCounting.LatticeSumBounds.expo k r := by ring
-
-lemma Icc_eq_Ico_add_one (a b : ℕ) : Finset.Icc a b = Finset.Ico a (b + 1) := by
-  ext x
-  simp only [Finset.mem_Icc, Finset.mem_Ico]
-  constructor <;> intro h <;> omega
-
-theorem unitaryOrderRatioIdentity : ThetaRatio := by
-  intro j e η q hej hq
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.theta
-  obtain ⟨m, rfl⟩ : ∃ m, j = m + e := ⟨j - e, by omega⟩
-  have hm : m + e - e = m := by omega
-  rw [hm]
-  simp only [Icc_eq_Ico_add_one]
-  rw [← Finset.prod_Ico_consecutive _ (show 1 ≤ m + 1 by omega)
-    (show m + 1 ≤ m + e + 1 by omega)]
-  ring
-
-theorem unitaryOrderRatioBound : ThetaBound := by
-  intro j e η q hej hq hη
-  have hfac : ∀ i ∈ Finset.Icc (j - e + 1) j,
-      0 < 1 - η ^ i * (q ^ i)⁻¹ ∧ 1 - η ^ i * (q ^ i)⁻¹ ≤ 3 / 2 := by
-    intro i hi
-    have hi1 : 1 ≤ i := by simp only [Finset.mem_Icc] at hi; omega
-    have hqi : 2 ≤ q ^ i := by
-      calc (2:ℝ) ≤ q := hq
-        _ = q ^ 1 := (pow_one q).symm
-        _ ≤ q ^ i := pow_le_pow_right₀ (by linarith) hi1
-    have hx0 : 0 < (q ^ i)⁻¹ := inv_pos.mpr (by linarith)
-    have hx : (q ^ i)⁻¹ ≤ 1 / 2 := by
-      have := inv_anti₀ (by norm_num : (0:ℝ) < 2) hqi
-      linarith [show (2:ℝ)⁻¹ = 1 / 2 by norm_num]
-    have hs : η ^ i = 1 ∨ η ^ i = -1 := by
-      rcases hη with rfl | rfl
-      · left; exact one_pow i
-      · exact neg_one_pow_eq_or ℝ i
-    rcases hs with h | h <;> rw [h] <;> constructor <;> linarith
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.theta
-  have hcard : (Finset.Icc (j - e + 1) j).card = e := by rw [Nat.card_Icc]; omega
-  have hle : ∏ i ∈ Finset.Icc (j - e + 1) j, (1 - η ^ i * (q ^ i)⁻¹) ≤ (3 / 2) ^ e := by
-    calc ∏ i ∈ Finset.Icc (j - e + 1) j, (1 - η ^ i * (q ^ i)⁻¹)
-          ≤ ∏ _i ∈ Finset.Icc (j - e + 1) j, (3 / 2 : ℝ) :=
-          Finset.prod_le_prod (fun i hi => (hfac i hi).1.le) (fun i hi => (hfac i hi).2)
-      _ = (3 / 2) ^ e := by rw [Finset.prod_const, hcard]
-  refine ⟨Finset.prod_pos (fun i hi => (hfac i hi).1), hle, hle.trans ?_⟩
-  exact pow_le_pow_left₀ (by norm_num) (by norm_num) e
 
 theorem massRatioIdentity : XiIdentity := by
   intro mass mj k s hmj hm2 hrec hs hk
@@ -809,21 +352,6 @@ theorem minBoundFirst' : MinI' := by
           linear_combination (-(loss * (G / T) ^ k * (g⁻¹ ^ (2 * r + 2)) ^ k * loss' ^ 2 *
             (C / k) ^ (2 * r * s) * Dr⁻¹ ^ (2 * k))) * et
 
-theorem minBoundFirst : MinI := by
-  intro k r C G T g v t Dr loss loss' JHS Jop dim hk hC hG hT hg hv ht hDr hl' hdim hJop hJHS
-    heπ hloss hVF hABS hrank
-  have hkR : (0:ℝ) < k := by exact_mod_cast (show 0 < k by omega)
-  have hv0 : 0 < v := by linarith
-  have h1 : Real.exp 1 * Real.pi / (k * v) ≤ 1 := by
-    rw [div_le_one (by positivity)]; nlinarith
-  have h2 : v⁻¹ ≤ 1 := by have := inv_anti₀ one_pos hv; simpa using this
-  have hAV : (Real.exp 1 * Real.pi / (k * v)) ^ k * v⁻¹ ^ (2 * r * (k - 2 - r)) ≤ 1 := by
-    calc _ ≤ 1 * 1 := mul_le_mul (pow_le_one₀ (by positivity) h1) (pow_le_one₀ (by positivity) h2)
-          (by positivity) zero_le_one
-      _ = 1 := one_mul 1
-  exact minBoundFirst' k r C G T g v t Dr loss loss' JHS Jop dim (by omega) hC hG hT hg hv0 ht hDr
-    hl' hdim hJop hJHS hAV hloss hVF hABS hrank
-
 theorem minBoundSecond' : MinII' := by
   intro k r C CT G T T' g v t Dr sh ch loss loss' JHS Jop dim hr hk hC hG hT hT' hg hv ht hDr hl'
     hdim hJop hJHS hAV hloss hsh hch hc hGeq hCT hkt hVF hABS hrank
@@ -896,20 +424,6 @@ theorem minBoundSecond' : MinII' := by
           all_goals first | assumption | positivity | skip
       _ = loss * loss' ^ 2 * (6 * Real.exp 1 * Real.pi * CT / (k * g ^ (2 * r + 2))) ^ k := by
           ring
-
-theorem minBoundSecond : MinII := by
-  intro k r C CT G T T' g v t Dr sh ch loss loss' JHS Jop dim hr hk hC hCk hG hT hT' hg hv ht hDr
-    hl' hdim hJop hJHS hloss hsh hch hc hGeq hCT hkt hVF hABS hrank
-  have hkR : (0:ℝ) < k := by exact_mod_cast (show 0 < k by omega)
-  have hv0 : 0 < v := by linarith
-  have h1 : C / (k * v) ≤ 1 := by rw [div_le_one (by positivity)]; nlinarith
-  have h2 : v⁻¹ ≤ 1 := by have := inv_anti₀ one_pos hv; simpa using this
-  have hAV : v⁻¹ ^ k * (C / (k * v)) ^ (2 * r * (k - 2 - r)) ≤ 1 := by
-    calc _ ≤ 1 * 1 := mul_le_mul (pow_le_one₀ (by positivity) h2) (pow_le_one₀ (by positivity) h1)
-          (by positivity) zero_le_one
-      _ = 1 := one_mul 1
-  exact minBoundSecond' k r C CT G T T' g v t Dr sh ch loss loss' JHS Jop dim hr hk hC hG hT hT' hg
-    hv0 ht hDr hl' hdim hJop hJHS hAV hloss hsh hch hc hGeq hCT hkt hVF hABS hrank
 
 theorem nondegenerateRowBound : NonDegRow := by
   intro k f s g v NT G₁ G₂ Xi W count A₁ A₂ l₁ l₂ τ hk hs hg hv hNT hG₁ hG₂ hXi hW hA₁ hA₂ hτ
@@ -1027,126 +541,6 @@ theorem degenerateRowBound : DegRow := by
           Xi * W * Real.sqrt (lam₁ * lam₂) := by
         rw [hE, ← inv_pow, inv_div]; ring
 
-lemma div_pow_gainExponent_le (k r : ℕ) (C : ℝ) (hk : r + 2 ≤ k) (hC : 1 ≤ C) (h2 : 2 * C ^ 2 ≤ k)
-    (hlog : ((r : ℝ) + 2) * Real.log k ≤ k / 6) : (C / k) ^ expo k r ≤ ((k : ℝ) ^ r)⁻¹ := by
-  have hk2 : (2:ℝ) ≤ k := by exact_mod_cast (show 2 ≤ k by omega)
-  have hk0 : (0:ℝ) < k := by linarith
-  have hC0 : 0 < C := by linarith
-  have hl2 : 0.69 < Real.log 2 := by have := Real.log_two_gt_d9; linarith
-  have hlk : Real.log 2 ≤ Real.log k := Real.log_le_log (by norm_num) hk2
-  have hlogC : 2 * Real.log C ≤ Real.log k - Real.log 2 := by
-    have h := Real.log_le_log (by positivity) (show C ^ 2 ≤ (k:ℝ) / 2 by linarith)
-    rw [Real.log_pow, Real.log_div hk0.ne' (by norm_num)] at h
-    push_cast at h
-    linarith
-  rw [← Real.log_le_log_iff (Real.rpow_pos_of_pos (div_pos hC0 hk0) _) (inv_pos.mpr (pow_pos hk0 r)),
-    Real.log_rpow (div_pos hC0 hk0), Real.log_inv, Real.log_pow, Real.log_div hC0.ne' hk0.ne']
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.expo
-  have hcast : ((2 * r * (k - 2 - r) : ℕ) : ℝ) = 2 * r * ((k:ℝ) - 2 - r) := by
-    rw [Nat.cast_mul, Nat.cast_mul, Nat.cast_sub (show r ≤ k - 2 by omega),
-      Nat.cast_sub (show 2 ≤ k by omega)]
-    push_cast; try ring
-  rw [hcast]
-  have hr0 : (0:ℝ) ≤ r := Nat.cast_nonneg r
-  have hkr : (0:ℝ) ≤ (k:ℝ) - 2 - r := by
-    have : ((r + 2 : ℕ) : ℝ) ≤ k := by exact_mod_cast hk
-    push_cast at this; linarith
-  have hx : ((r:ℝ) + 2) * Real.log 2 ≤ ((r:ℝ) + 2) * Real.log k :=
-    mul_le_mul_of_nonneg_left hlk (by positivity)
-  have hmain : ((r:ℝ) + 2) * Real.log k ≤ ((k:ℝ) - 2 - r) * Real.log 2 := by
-    nlinarith [mul_le_mul_of_nonneg_left hl2.le hk0.le]
-  have hg0 : 0 ≤ 2 * (r:ℝ) * ((k:ℝ) - 2 - r) / k :=
-    div_nonneg (mul_nonneg (mul_nonneg (by norm_num) hr0) hkr) hk0.le
-  calc 2 * (r:ℝ) * ((k:ℝ) - 2 - r) / k * (Real.log C - Real.log k)
-        ≤ 2 * (r:ℝ) * ((k:ℝ) - 2 - r) / k * ((Real.log k - Real.log 2) / 2 - Real.log k) :=
-        mul_le_mul_of_nonneg_left (by linarith) hg0
-    _ = -((r:ℝ) * (((k:ℝ) - 2 - r) * (Real.log k + Real.log 2))) / k := by ring
-    _ ≤ -((r:ℝ) * Real.log k) := by
-        rw [div_le_iff₀ hk0]
-        nlinarith [mul_le_mul_of_nonneg_left hmain hr0]
-
-theorem prodMinGainBaseLe : ProdMinX := by
-  intro ι _ k r C C₁ C₂ T' g ν t hk hC h2 hlog hT' hg hν ht hkt hprodν hprodt
-  have hk0 : (0:ℝ) < k := by exact_mod_cast (show 0 < k by omega)
-  have hCk : (C / k) ^ Formalism.HermitianLatticeCounting.LatticeSumBounds.expo k r ≤ ((k:ℝ) ^ r)⁻¹ :=
-    div_pow_gainExponent_le k r C hk hC h2 hlog
-  have hpt : ∀ v, min 1 (Formalism.HermitianLatticeCounting.LatticeSumBounds.xv k r C (ν v) (t v) g) ≤
-      min (ν v) T' * t v * (g⁻¹ ^ (2 * r + 2) * ((k:ℝ) ^ r)⁻¹) := by
-    intro v
-    refine (minGainBaseLe k r C (ν v) T' (t v) g hk hC (hν v) hT' (ht v) hg (hkt v)).trans ?_
-    unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.xv
-    have hm : 0 < min (ν v) T' := lt_min (hν v) hT'
-    have h0 : 0 ≤ min (ν v) T' * t v * g⁻¹ ^ (2 * r + 2) :=
-      mul_nonneg (mul_nonneg hm.le (ht v).le) (by positivity)
-    calc min (ν v) T' * t v * g⁻¹ ^ (2 * r + 2) * (C / k) ^ Formalism.HermitianLatticeCounting.LatticeSumBounds.expo k r
-          ≤ min (ν v) T' * t v * g⁻¹ ^ (2 * r + 2) * ((k:ℝ) ^ r)⁻¹ :=
-          mul_le_mul_of_nonneg_left hCk h0
-      _ = min (ν v) T' * t v * (g⁻¹ ^ (2 * r + 2) * ((k:ℝ) ^ r)⁻¹) := by ring
-  have hnn : ∀ v, 0 ≤ min 1 (Formalism.HermitianLatticeCounting.LatticeSumBounds.xv k r C (ν v) (t v) g) := by
-    intro v
-    unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.xv
-    have h1 := hν v
-    have h3 := ht v
-    exact le_min zero_le_one (mul_nonneg (mul_nonneg (mul_nonneg h1.le h3.le) (by positivity))
-      (Real.rpow_nonneg (div_nonneg (by linarith) hk0.le) _))
-  have hPmin : 0 ≤ ∏ v, min (ν v) T' :=
-    Finset.prod_nonneg (fun v _ => (lt_min (hν v) hT').le)
-  calc ∏ v, min 1 (Formalism.HermitianLatticeCounting.LatticeSumBounds.xv k r C (ν v) (t v) g)
-        ≤ ∏ v, (min (ν v) T' * t v * (g⁻¹ ^ (2 * r + 2) * ((k:ℝ) ^ r)⁻¹)) :=
-        Finset.prod_le_prod (fun v _ => hnn v) (fun v _ => hpt v)
-    _ = (∏ v, min (ν v) T') * (∏ v, t v) *
-          (g⁻¹ ^ (2 * r + 2) * ((k:ℝ) ^ r)⁻¹) ^ Fintype.card ι := by
-        rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]
-    _ ≤ (C₁ * g) ^ Fintype.card ι * C₂ *
-          (g⁻¹ ^ (2 * r + 2) * ((k:ℝ) ^ r)⁻¹) ^ Fintype.card ι := by
-        apply mul_le_mul_of_nonneg_right _ (by positivity)
-        exact mul_le_mul hprodν hprodt (Finset.prod_nonneg (fun v _ => (ht v).le))
-          (hPmin.trans hprodν)
-    _ = C₂ * (C₁ * g * g⁻¹ ^ (2 * r + 2) * ((k:ℝ) ^ r)⁻¹) ^ Fintype.card ι := by ring
-
-theorem meanBoundAssembly : MeanBoundAssembly := by
-  intro k s de NT lf massk masss massks massFlagLatticeZero mean nM nS mM mS Gl hsk hk hde hNT hlf hmk hms hmks
-    hmean hnM hnS hmM hmS hGl hP hmM' hmS' hnM' hnS' hGl' hL0
-  have hde0 : 0 < de := by linarith
-  have hNT0 : 0 < NT := by linarith
-  have hX0 : 0 < de * NT := mul_pos hde0 hNT0
-  have hM0 : 0 < massk * NT ^ (k - 1) := by positivity
-  have h1 : mean ≤ nM * nS * mM * mS * Gl / (massk * NT ^ (k - 1)) := by
-    rw [le_div_iff₀ hM0]
-    calc mean * (massk * NT ^ (k - 1)) ≤ mean * massFlagLatticeZero := mul_le_mul_of_nonneg_left hL0 hmean
-      _ ≤ _ := hP
-  have h2 : nM * nS * mM * mS * Gl ≤ de ^ (1 + lf) * (de * NT) ^ (2 + lf) *
-      (massks * de ^ (k - s) * de ^ (s + 1)) * (masss * (de * NT) ^ (2 * s)) *
-      (de * NT) ^ (4 * (2 * s + 1)) := by
-    gcongr
-  have hde_le : de ^ (1 + lf) ≤ (de * NT) ^ (1 + lf) :=
-    Real.rpow_le_rpow hde0.le (by nlinarith) (by linarith)
-  have hsplit : (de * NT) ^ (((10 * s + 8 : ℕ) : ℝ) + 2 * lf) =
-      (de * NT) ^ (1 + lf) * (de * NT) ^ (2 + lf) * (de * NT) ^ (10 * s + 5) := by
-    rw [← Real.rpow_natCast (de * NT) (10 * s + 5), ← Real.rpow_add hX0, ← Real.rpow_add hX0]
-    congr 1; push_cast; try ring
-  have e1 : de ^ (k - s) * de ^ (s + 1) = de ^ (k + 1) := by rw [← pow_add]; congr 1; omega
-  have e2 : NT ^ k = NT ^ (k - 1) * NT := by rw [← pow_succ]; congr 1; omega
-  have hpow : de ^ (k - s) * de ^ (s + 1) * (de * NT) ^ (2 * s) * (de * NT) ^ (4 * (2 * s + 1)) /
-      NT ^ (k - 1) = (de / NT) ^ k * (de * NT) ^ (10 * s + 5) := by
-    rw [e1, div_pow, e2, eq_comm, div_mul_eq_mul_div, div_eq_div_iff (by positivity) (by positivity)]
-    ring
-  calc mean ≤ nM * nS * mM * mS * Gl / (massk * NT ^ (k - 1)) := h1
-    _ ≤ (de ^ (1 + lf) * (de * NT) ^ (2 + lf) * (massks * de ^ (k - s) * de ^ (s + 1)) *
-          (masss * (de * NT) ^ (2 * s)) * (de * NT) ^ (4 * (2 * s + 1))) /
-          (massk * NT ^ (k - 1)) := div_le_div_of_nonneg_right h2 hM0.le
-    _ = de ^ (1 + lf) * (de * NT) ^ (2 + lf) *
-          (de ^ (k - s) * de ^ (s + 1) * (de * NT) ^ (2 * s) * (de * NT) ^ (4 * (2 * s + 1)) /
-            NT ^ (k - 1)) * (masss * massks / massk) := by ring
-    _ = de ^ (1 + lf) * (de * NT) ^ (2 + lf) * ((de / NT) ^ k * (de * NT) ^ (10 * s + 5)) *
-          (masss * massks / massk) := by rw [hpow]
-    _ ≤ (de * NT) ^ (1 + lf) * (de * NT) ^ (2 + lf) * ((de / NT) ^ k * (de * NT) ^ (10 * s + 5)) *
-          (masss * massks / massk) :=
-        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right
-          (mul_le_mul_of_nonneg_right hde_le (by positivity)) (by positivity)) (by positivity)
-    _ = (de / NT) ^ k * (de * NT) ^ (((10 * s + 8 : ℕ) : ℝ) + 2 * lf) * (masss * massks / massk) := by
-        rw [hsplit]; ring
-
 theorem prodMinLeOfProdRatio : SmallTerm := by
   intro ι _ sh₁ ch₁ sh₂ ch₂ T T' g hT hT' hg h₁ h₂ hprod
   have hmin : ∀ x : ℝ, 0 < x → min (T' * x ^ 2) T' = T' * (min 1 x) ^ 2 := by
@@ -1216,115 +610,6 @@ theorem prodMinLeOfProdRatio : SmallTerm := by
   have := mul_lt_mul'' ha hb hc0 hc0
   nlinarith
 
-private theorem eighty_one_pow_mul_four_mul_pow_le_six_mul_pow (m : ℕ) (hm : 1 ≤ m) :
-    (81:ℝ) ^ m * ((4 * m : ℕ) : ℝ) ^ (4 * m) ≤ ((6 * m : ℕ) : ℝ) ^ (6 * m) := by
-  have hx : (1:ℝ) ≤ m := by exact_mod_cast hm
-  push_cast
-  rw [pow_mul, pow_mul, ← mul_pow]
-  apply pow_le_pow_left₀ (by positivity)
-  have h4 : (0:ℝ) ≤ (m:ℝ) ^ 4 := by positivity
-  have h2 : (1:ℝ) ≤ (m:ℝ) ^ 2 := by nlinarith
-  nlinarith [mul_le_mul_of_nonneg_left h2 h4]
-
-theorem heightExponentAssembly : HeightExponentAssembly := by
-  intro s r f A cf De NT HH hs hf hA hcf hDe hNT hHH hNT2 hDe3
-  have hHH0 : 0 < HH := by linarith
-  have hDe0 : 0 < De := by linarith
-  have hNT0 : 0 < NT := by linarith
-  have hNTH : NT ≤ HH := by nlinarith
-  have hDN : De * NT ≤ HH ^ 4 := by
-    calc De * NT ≤ HH ^ 3 * HH := mul_le_mul hDe3 hNTH hNT0.le (by positivity)
-      _ = HH ^ 4 := by ring
-  have hs1 : (1:ℝ) ≤ s := by exact_mod_cast hs
-  have hf1 : (1:ℝ) ≤ f := by exact_mod_cast hf
-  have hr0 : (0:ℝ) ≤ r := Nat.cast_nonneg r
-  have B1 : (De * NT) ^ (A * (s + cf)) ≤ HH ^ (4 * (A * (s + cf))) := by
-    calc (De * NT) ^ (A * (s + cf)) ≤ (HH ^ 4) ^ (A * (s + cf)) :=
-          Real.rpow_le_rpow (by positivity) hDN (by positivity)
-      _ = HH ^ (4 * (A * (s + cf))) := by
-          rw [← Real.rpow_natCast HH 4, ← Real.rpow_mul hHH0.le]; norm_num
-  have B2 : De ^ (cf + 4) ≤ HH ^ (3 * (cf + 4)) := by
-    calc De ^ (cf + 4) ≤ (HH ^ 3) ^ (cf + 4) := Real.rpow_le_rpow hDe0.le hDe3 (by positivity)
-      _ = HH ^ (3 * (cf + 4)) := by
-          rw [← Real.rpow_natCast HH 3, ← Real.rpow_mul hHH0.le]; norm_num
-  have B3 : NT ^ (2 * r) * De ^ r * 9 ^ (s * f) * HH ^ (9 * s + 9 * s * r + 16 * r ^ 2) ≤
-      HH ^ (4 * r + (9 * s + 9 * s * r + 16 * r ^ 2)) * 9 ^ (s * f) := by
-    have h1 : NT ^ (2 * r) ≤ HH ^ r := by
-      rw [pow_mul]; exact pow_le_pow_left₀ (by positivity) hNT2 r
-    have h2 : De ^ r ≤ HH ^ (3 * r) := by
-      rw [pow_mul]; exact pow_le_pow_left₀ hDe0.le hDe3 r
-    calc NT ^ (2 * r) * De ^ r * 9 ^ (s * f) * HH ^ (9 * s + 9 * s * r + 16 * r ^ 2)
-          ≤ HH ^ r * HH ^ (3 * r) * 9 ^ (s * f) * HH ^ (9 * s + 9 * s * r + 16 * r ^ 2) :=
-          mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right
-            (mul_le_mul h1 h2 (by positivity) (by positivity)) (by positivity)) (by positivity)
-      _ = HH ^ (4 * r + (9 * s + 9 * s * r + 16 * r ^ 2)) * 9 ^ (s * f) := by ring
-  have hm1 : 1 ≤ s * f := Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))
-  have B45 : (9:ℝ) ^ (s * f) * 9 ^ (s * f) * ((4 * f * s).factorial : ℝ) ≤
-      (6 * (s:ℝ) * f) ^ (6 * s * f) := by
-    have h81 := eighty_one_pow_mul_four_mul_pow_le_six_mul_pow (s * f) hm1
-    have hfac : ((4 * f * s).factorial : ℝ) ≤ ((4 * (s * f) : ℕ) : ℝ) ^ (4 * (s * f)) := by
-      rw [show 4 * f * s = 4 * (s * f) by ring]; exact_mod_cast Nat.factorial_le_pow (4 * (s * f))
-    have e6 : (6 * (s:ℝ) * f) ^ (6 * s * f) = ((6 * (s * f) : ℕ) : ℝ) ^ (6 * (s * f)) := by
-      rw [show 6 * s * f = 6 * (s * f) by ring]; push_cast; try ring
-    rw [e6]
-    calc (9:ℝ) ^ (s * f) * 9 ^ (s * f) * ((4 * f * s).factorial : ℝ)
-          ≤ 81 ^ (s * f) * ((4 * (s * f) : ℕ) : ℝ) ^ (4 * (s * f)) := by
-          rw [← mul_pow, show (9:ℝ) * 9 = 81 by norm_num]
-          exact mul_le_mul_of_nonneg_left hfac (by positivity)
-      _ ≤ _ := h81
-  have hEnat : (HH ^ (4 * r + (9 * s + 9 * s * r + 16 * r ^ 2)) * 9 ^ (s * f)) ^ 2 =
-      HH ^ (((2 * (4 * r + (9 * s + 9 * s * r + 16 * r ^ 2)) : ℕ)) : ℝ) *
-        ((9:ℝ) ^ (s * f) * 9 ^ (s * f)) := by
-    rw [Real.rpow_natCast]; ring
-  have hexp : 4 * (A * (s + cf)) + 3 * (cf + 4) +
-      (((2 * (4 * r + (9 * s + 9 * s * r + 16 * r ^ 2)) : ℕ)) : ℝ) ≤
-      (4 * A + 60) * ((s : ℝ) + (2 * r + 2)) * (2 * r + 2) + (4 * A + 60) * cf := by
-    push_cast
-    have hs0 : (0:ℝ) ≤ s := by linarith
-    nlinarith [mul_nonneg (mul_nonneg hA hr0) hs0, mul_nonneg hA hs0, mul_nonneg hA (mul_nonneg hr0 hr0),
-      mul_nonneg hA hr0, mul_nonneg hr0 hs0, mul_nonneg hr0 hr0, mul_nonneg hA hcf]
-  calc _ ≤ HH ^ (4 * (A * (s + cf))) * HH ^ (3 * (cf + 4)) *
-        (HH ^ (4 * r + (9 * s + 9 * s * r + 16 * r ^ 2)) * 9 ^ (s * f)) ^ 2 *
-        ((4 * f * s).factorial : ℝ) :=
-        mul_le_mul_of_nonneg_right (mul_le_mul (mul_le_mul B1 B2 (by positivity) (by positivity))
-          (pow_le_pow_left₀ (by positivity) B3 2) (by positivity) (by positivity)) (by positivity)
-    _ = HH ^ (4 * (A * (s + cf)) + 3 * (cf + 4) +
-          (((2 * (4 * r + (9 * s + 9 * s * r + 16 * r ^ 2)) : ℕ)) : ℝ)) *
-          ((9:ℝ) ^ (s * f) * 9 ^ (s * f) * ((4 * f * s).factorial : ℝ)) := by
-        rw [hEnat, Real.rpow_add hHH0, Real.rpow_add hHH0]; ring
-    _ ≤ HH ^ ((4 * A + 60) * ((s : ℝ) + (2 * r + 2)) * (2 * r + 2) + (4 * A + 60) * cf) *
-          (6 * (s:ℝ) * f) ^ (6 * s * f) :=
-        mul_le_mul (Real.rpow_le_rpow_of_exponent_le hHH hexp) B45 (by positivity) (by positivity)
-
-theorem normInvEntryLeMinor : InverseEntryMinor := by
-  intro n M P hP hdet i j
-  rw [Matrix.inv_def, Matrix.smul_apply, Matrix.adjugate_fin_succ_eq_det_submatrix, smul_eq_mul,
-    norm_mul, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, Ring.inverse_eq_inv,
-    norm_inv, inv_mul_eq_div]
-  exact div_le_div_of_nonneg_right (hP j i) (norm_nonneg _)
-
-theorem lowerBoundOfProdLengths : LengthLower := by
-  intro r l l' R Dr hl hl' hD b
-  have hR : 0 ≤ R := ((hl' b).1.le).trans (hl' b).2
-  have h1 : ∏ a, l a ≤ R ^ r := by
-    calc ∏ a, l a ≤ ∏ _a : Fin r, R :=
-          Finset.prod_le_prod (fun a _ => (hl a).1.le) (fun a _ => (hl a).2)
-      _ = R ^ r := by simp
-  have h2 : ∏ b', l' b' ≤ l' b * R ^ (r - 1) := by
-    rw [← Finset.mul_prod_erase Finset.univ l' (Finset.mem_univ b)]
-    apply mul_le_mul_of_nonneg_left _ (hl' b).1.le
-    calc ∏ b' ∈ Finset.univ.erase b, l' b' ≤ ∏ _b' ∈ Finset.univ.erase b, R :=
-          Finset.prod_le_prod (fun a _ => (hl' a).1.le) (fun a _ => (hl' a).2)
-      _ = R ^ (r - 1) := by
-          rw [Finset.prod_const, Finset.card_erase_of_mem (Finset.mem_univ b), Finset.card_univ,
-            Fintype.card_fin]
-  have hr : 0 < r := Fin.pos b
-  calc Dr ≤ (∏ a, l a) * ∏ b', l' b' := hD
-    _ ≤ R ^ r * (l' b * R ^ (r - 1)) :=
-        mul_le_mul h1 h2 (Finset.prod_nonneg (fun a _ => (hl' a).1.le)) (pow_nonneg hR _)
-    _ = l' b * R ^ (2 * r - 1) := by
-        rw [show 2 * r - 1 = r + (r - 1) by omega, pow_add]; ring
-
 theorem adjugateLastColumnEqCofactor : CofVecAdjugate := by
   intro R _ r Z b
   rw [Matrix.adjugate_fin_succ_eq_det_submatrix, Fin.succAbove_last]
@@ -1357,10 +642,6 @@ theorem expSumLe' : ExpSumLe' := by
     _ ≤ Real.exp (-x / 3) * 1 := mul_le_mul_of_nonneg_left hA' hp3.le
     _ = Real.exp (-x / 3) := mul_one _
 
-theorem prodMaxDivEqOne : ThresholdBelow := by
-  intro N D H₂ hH hD
-  exact Finset.prod_eq_one (fun i _ => max_eq_left ((div_le_one hH).mpr (hD i)))
-
 theorem maxInvSinhSqLe : ShInvPlace := by
   intro sh G T T' Dr hsh hG hDr hTT hGeq
   have hTT0 : 0 < T * T' := by linarith
@@ -1377,60 +658,6 @@ theorem maxInvSinhSqLe : ShInvPlace := by
     exact mul_le_mul (mul_le_mul_of_nonneg_left (le_max_right _ _) hTT0.le) (le_max_right _ _)
       (by positivity) (by positivity)
 
-theorem thresholdExponentInequality : ThresholdP := by
-  intro k r A cf hA hcf0 hcf hk
-  have hkR : (2 * (r:ℝ) + 2) ^ 3 ≤ k := by exact_mod_cast hk
-  have hr1 : (1:ℝ) ≤ (r:ℝ) + 1 := by have := Nat.cast_nonneg (α := ℝ) r; linarith
-  have hA0 : (0:ℝ) ≤ A := by linarith
-  have ha := mul_le_mul_of_nonneg_left hkR (by positivity : (0:ℝ) ≤ A * ((r:ℝ) + 1) ^ 2)
-  have hb := mul_le_mul_of_nonneg_left hcf (by positivity : (0:ℝ) ≤ A * ((r:ℝ) + 1))
-  have hc : (r:ℝ) + 1 ≤ A * ((r:ℝ) + 1) := by nlinarith
-  have hd : A * ((r:ℝ) + 1) ^ 2 ≤ A * ((r:ℝ) + 1) ^ 5 :=
-    mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hr1 (by norm_num)) hA0
-  have he : A * ((r:ℝ) + 1) ^ 1 ≤ A * ((r:ℝ) + 1) ^ 5 :=
-    mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hr1 (by norm_num)) hA0
-  have hf : (0:ℝ) ≤ A * ((r:ℝ) + 1) ^ 5 := by positivity
-  linarith
-
-theorem eichlerTransformProperties : EichlerFacts := by
-  intro R V _ _ _ _ h hh u σ τ huu huσ hτ
-  have hσu : h σ u = 0 := by rw [hh u σ, huσ, star_zero]
-  have hE : ∀ (σ' : V) (τ' : R) (y : V),
-      Formalism.HermitianLatticeCounting.LatticeSumBounds.eichler h u σ' τ' y = y - h y σ' • u + h y u • σ' - (τ' * h y u) • u :=
-    fun _ _ _ => rfl
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · intro x hxu hxσ
-    rw [hE, hxu, hxσ]; simp
-  · intro p x' hpu hx'u hx'σ
-    rw [hE]
-    simp [hpu, hx'u, hx'σ]
-  · intro x
-    refine ⟨-(h x σ) - τ * h x u, ?_⟩
-    rw [hE]; module
-  · intro x
-    have hyu : h (Formalism.HermitianLatticeCounting.LatticeSumBounds.eichler h u σ τ x) u = h x u := by
-      rw [hE]
-      simp only [map_sub, map_add, map_smul, LinearMap.sub_apply, LinearMap.add_apply,
-        LinearMap.smul_apply, smul_eq_mul, huu, hσu, mul_zero, sub_zero, add_zero]
-    have hyσ : h (Formalism.HermitianLatticeCounting.LatticeSumBounds.eichler h u σ τ x) σ = h x σ + h x u * h σ σ := by
-      rw [hE]
-      simp only [map_sub, map_add, map_smul, LinearMap.sub_apply, LinearMap.add_apply,
-        LinearMap.smul_apply, smul_eq_mul, huσ, mul_zero, sub_zero, add_zero]
-    rw [hE (-σ) (star τ) (Formalism.HermitianLatticeCounting.LatticeSumBounds.eichler h u σ τ x), map_neg, hyσ, hyu, hE σ τ x, ← hτ]
-    module
-
-theorem centralTransvectionProperties : CentreFacts := by
-  intro R V _ _ _ _ h r e c
-  refine ⟨?_, ?_⟩
-  · intro x hx
-    simp [hx]
-  · intro n f' b
-    congr 1
-    apply Finset.sum_congr rfl
-    intro a _
-    rw [Matrix.mul_apply, Finset.sum_smul]
-    simp [Matrix.of_apply]
-
 theorem prodVolumeFactor : NProduct := by
   intro ι _ k r G vt T g v hk hT hg hvt hprod
   unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.nv
@@ -1446,19 +673,6 @@ theorem prodVolumeFactor : NProduct := by
   rw [e, hprod, mul_comm k (Fintype.card ι), pow_mul, ← mul_pow]
   congr 1
   ring
-
-theorem prodUnitaryOrderRatioBound : ThetaProd := by
-  intro ι P j e ep η q h
-  have hb : ∀ p ∈ P, 0 < Formalism.HermitianLatticeCounting.LatticeSumBounds.theta j (ep p) (η p) (q p) ∧
-      Formalism.HermitianLatticeCounting.LatticeSumBounds.theta j (ep p) (η p) (q p) ≤ 2 ^ e := by
-    intro p hp
-    obtain ⟨h1, h2, h3, h4⟩ := h p hp
-    obtain ⟨b1, -, b3⟩ := unitaryOrderRatioBound j (ep p) (η p) (q p) h2 h3 h4
-    exact ⟨b1, b3.trans (pow_le_pow_right₀ (by norm_num) h1)⟩
-  refine ⟨Finset.prod_pos (fun p hp => (hb p hp).1), ?_⟩
-  calc ∏ p ∈ P, Formalism.HermitianLatticeCounting.LatticeSumBounds.theta j (ep p) (η p) (q p) ≤ ∏ _p ∈ P, (2:ℝ) ^ e :=
-        Finset.prod_le_prod (fun p hp => (hb p hp).1.le) (fun p hp => (hb p hp).2)
-    _ = 2 ^ (e * P.card) := by rw [Finset.prod_const, ← pow_mul]
 
 theorem nondegenerateFactorBound : DeNonDegBound := by
   intro f s g G₁ G₂ HH₁ HH₂ hg hG₁ hG₂ h₁ h₂ hH₁ hH₂
@@ -1542,71 +756,6 @@ theorem prodHyperbolicRatioSqLe : DegFactorBound := by
         exact mul_le_mul (mul_le_mul hHH1 hHH2 (finset_prod_max_one_nonneg _ _) hHH0) hHH3
           (finset_prod_max_one_nonneg _ _) (mul_nonneg hHH0 hHH0)
     _ = 9 ^ Fintype.card ι * HH ^ 3 := by ring
-
-theorem splitResidueTrace : ResidueSplit := by
-  intro k A _ _ _ _ ε hε
-  have hsa : ∀ a : A, star a = a ↔ (ε a).1 = (ε a).2 := by
-    intro a
-    constructor
-    · intro h
-      have h0 := hε a
-      rw [h] at h0
-      have h1 := congrArg Prod.fst h0
-      simpa using h1
-    · intro h
-      apply ε.injective
-      rw [hε]
-      ext <;> simp [h]
-  refine ⟨?_, ?_, ?_⟩
-  · rw [Nat.card_congr ε.toEquiv, Nat.card_prod, sq]
-  · apply Nat.card_congr
-    exact {
-      toFun := fun a => (ε a.1).1
-      invFun := fun x => ⟨ε.symm (x, x), (hsa _).mpr (by simp)⟩
-      left_inv := fun a => by
-        apply Subtype.ext
-        apply ε.injective
-        simp only [RingEquiv.apply_symm_apply]
-        ext
-        · rfl
-        · exact (hsa a.1).mp a.2
-      right_inv := fun x => by simp }
-  · intro a ha
-    refine ⟨ε.symm ((ε a).1, 0), ?_⟩
-    apply ε.injective
-    rw [map_add, hε, RingEquiv.apply_symm_apply]
-    ext
-    · simp
-    · simp [(hsa a).mp ha]
-
-theorem cardQuadruplesProdLe : QuadCount := by
-  intro De hDe
-  obtain ⟨N, hN⟩ : ∃ N, N = ⌊De⌋₊ := ⟨_, rfl⟩
-  have hsub : {q : Fin 4 → ℕ | (∀ i, 1 ≤ q i) ∧ ((∏ i, q i : ℕ) : ℝ) ≤ De} ⊆
-      ↑(Fintype.piFinset (fun _ : Fin 4 => Finset.Icc 1 N)) := by
-    intro q hq
-    obtain ⟨h1, h2⟩ := hq
-    rw [Finset.mem_coe, Fintype.mem_piFinset]
-    intro i
-    rw [Finset.mem_Icc]
-    refine ⟨h1 i, ?_⟩
-    rw [hN]
-    apply Nat.le_floor
-    have hpos : 0 < ∏ j, q j := Finset.prod_pos (fun j _ => h1 j)
-    have hqi : q i ≤ ∏ j, q j := Nat.le_of_dvd hpos (Finset.dvd_prod_of_mem q (Finset.mem_univ i))
-    exact le_trans (by exact_mod_cast hqi) h2
-  refine ⟨(Fintype.piFinset (fun _ : Fin 4 => Finset.Icc 1 N)).finite_toSet.subset hsub, ?_⟩
-  have hcard : ({q : Fin 4 → ℕ | (∀ i, 1 ≤ q i) ∧ ((∏ i, q i : ℕ) : ℝ) ≤ De}).ncard ≤
-      (Fintype.piFinset (fun _ : Fin 4 => Finset.Icc 1 N)).card := by
-    rw [← Set.ncard_coe_finset]
-    exact Set.ncard_le_ncard hsub (Finset.finite_toSet _)
-  rw [Fintype.card_piFinset, Finset.prod_const, Nat.card_Icc, Finset.card_univ,
-    Fintype.card_fin, Nat.add_sub_cancel] at hcard
-  have hNDe : (N:ℝ) ≤ De := by rw [hN]; exact Nat.floor_le (by linarith)
-  calc (({q : Fin 4 → ℕ | (∀ i, 1 ≤ q i) ∧ ((∏ i, q i : ℕ) : ℝ) ≤ De}).ncard : ℝ)
-        ≤ ((N ^ 4 : ℕ) : ℝ) := by exact_mod_cast hcard
-    _ = (N:ℝ) ^ 4 := by push_cast; try ring
-    _ ≤ De ^ 4 := pow_le_pow_left₀ (Nat.cast_nonneg _) hNDe 4
 
 lemma summable_one_div_add_one_pow (j : ℕ) (hj : 2 ≤ j) : Summable (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ j) := by
   have h := Real.summable_one_div_nat_pow.mpr (show 1 < j by omega)
@@ -1730,24 +879,6 @@ lemma one_le_zetaSeries (j : ℕ) (hj : 2 ≤ j) : 1 ≤ zetaR j := by
   have : 0 ≤ ∑' n : ℕ, 1 / ((n : ℝ) + 2) ^ j := tsum_nonneg (fun n => by positivity)
   linarith
 
-theorem sumLogZetaSeriesLe : ZetaLogSum := by
-  intro N
-  calc ∑ j ∈ Finset.Icc 3 N, Real.log (Formalism.HermitianLatticeCounting.LatticeSumBounds.zetaR j) ≤ ∑ j ∈ Finset.Icc 3 N, (Formalism.HermitianLatticeCounting.LatticeSumBounds.zetaR j - 1) := by
-        apply Finset.sum_le_sum
-        intro j hj
-        have hj2 : 2 ≤ j := by simp only [Finset.mem_Icc] at hj; omega
-        exact Real.log_le_sub_one_of_pos (lt_of_lt_of_le one_pos (one_le_zetaSeries j hj2))
-    _ ≤ 0.356 := sum_zetaSeries_sub_one_le N
-
-lemma zetaSeries_le (j : ℕ) (hj : 3 ≤ j) : zetaR j ≤ 1.356 := by
-  have hmem : j ∈ Finset.Icc 3 j := Finset.mem_Icc.mpr ⟨hj, le_rfl⟩
-  have hnn : ∀ i ∈ Finset.Icc 3 j, (0:ℝ) ≤ Formalism.HermitianLatticeCounting.LatticeSumBounds.zetaR i - 1 := by
-    intro i hi
-    have : 2 ≤ i := by simp only [Finset.mem_Icc] at hi; omega
-    linarith [one_le_zetaSeries i this]
-  have h := Finset.single_le_sum hnn hmem
-  linarith [sum_zetaSeries_sub_one_le j]
-
 lemma prod_zetaSeries_le (S : Finset ℕ) (hS : ∀ j ∈ S, 3 ≤ j) : ∏ j ∈ S, zetaR j ≤ Real.exp 0.356 := by
   have hpos : ∀ j ∈ S, 0 < Formalism.HermitianLatticeCounting.LatticeSumBounds.zetaR j := fun j hj =>
     lt_of_lt_of_le one_pos (one_le_zetaSeries j (by have := hS j hj; omega))
@@ -1790,56 +921,6 @@ lemma one_le_mul_factorialPiWeight (v : ℝ) (hv : 1 ≤ v) (k : ℕ) (hk : 1 �
     rw [e0]; ring
   rw [e]
   exact (div_le_iff₀ hF).mp hst
-
-theorem invMassFactorLe : InvMk := by
-  intro f k v Lv hv hk hL
-  have hk0 : (0:ℝ) < k := by exact_mod_cast (show 0 < k by omega)
-  have hk3 : (3:ℝ) ≤ k := by exact_mod_cast hk
-  have hv0 : 0 < v := by linarith
-  have hz1 : 1 ≤ Formalism.HermitianLatticeCounting.LatticeSumBounds.zetaR k := one_le_zetaSeries k (by omega)
-  have hzle : Formalism.HermitianLatticeCounting.LatticeSumBounds.zetaR k ≤ 1.356 := zetaSeries_le k hk
-  have hzf : 0 < Formalism.HermitianLatticeCounting.LatticeSumBounds.zetaR k ^ f := pow_pos (by linarith) f
-  have hL0 : 0 < Lv k := lt_of_lt_of_le (inv_pos.mpr hzf) hL
-  have hLi : (Lv k)⁻¹ ≤ Formalism.HermitianLatticeCounting.LatticeSumBounds.zetaR k ^ f := by
-    have := inv_anti₀ (inv_pos.mpr hzf) hL
-    rwa [inv_inv] at this
-  have hW := one_le_mul_factorialPiWeight v hv k (by omega)
-  have hWpos := factorialPiWeight_pos v hv0 k
-  have hWi : (s5bA v k)⁻¹ ≤
-      (Real.exp 1 * Real.pi / (k * v)) ^ k * Real.sqrt (k / (2 * Real.pi)) := by
-    calc (s5bA v k)⁻¹ = (s5bA v k)⁻¹ * 1 := (mul_one _).symm
-      _ ≤ (s5bA v k)⁻¹ * ((Real.exp 1 * Real.pi / (k * v)) ^ k *
-            Real.sqrt (k / (2 * Real.pi)) * s5bA v k) :=
-          mul_le_mul_of_nonneg_left hW (inv_nonneg.mpr hWpos.le)
-      _ = (Real.exp 1 * Real.pi / (k * v)) ^ k * Real.sqrt (k / (2 * Real.pi)) := by
-          rw [mul_comm (s5bA v k)⁻¹, mul_assoc, mul_inv_cancel₀ hWpos.ne', mul_one]
-  have hs1 : Real.sqrt (k / (2 * Real.pi)) * 1.356 ≤ k := by
-    have h1 : (k:ℝ) / (2 * Real.pi) ≤ ((k:ℝ) / 2) ^ 2 := by
-      rw [div_le_iff₀ (by positivity)]
-      nlinarith [mul_le_mul hk3 Real.pi_gt_three.le (by norm_num) hk0.le]
-    have h2 : Real.sqrt (k / (2 * Real.pi)) ≤ k / 2 := by
-      calc Real.sqrt (k / (2 * Real.pi)) ≤ Real.sqrt (((k:ℝ) / 2) ^ 2) := Real.sqrt_le_sqrt h1
-        _ = k / 2 := Real.sqrt_sq (by positivity)
-    nlinarith [Real.sqrt_nonneg (k / (2 * Real.pi))]
-  have hs2 : Real.sqrt ((2 * v) ^ f) ≤ (2 * v) ^ f := by
-    have h1 : 1 ≤ (2 * v) ^ f := one_le_pow₀ (by linarith)
-    calc Real.sqrt ((2 * v) ^ f) ≤ Real.sqrt (((2 * v) ^ f) ^ 2) := Real.sqrt_le_sqrt (by nlinarith)
-      _ = (2 * v) ^ f := Real.sqrt_sq (by positivity)
-  unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.mJ
-  have e : (((k - 1).factorial : ℝ) * (v / Real.pi) ^ k) = s5bA v k := rfl
-  rw [e, mul_inv, mul_inv, inv_inv, ← inv_pow]
-  calc (s5bA v k)⁻¹ ^ f * Real.sqrt ((2 * v) ^ f) * (Lv k)⁻¹
-        ≤ ((Real.exp 1 * Real.pi / (k * v)) ^ k * Real.sqrt (k / (2 * Real.pi))) ^ f *
-            (2 * v) ^ f * (1.356:ℝ) ^ f :=
-        mul_le_mul (mul_le_mul (pow_le_pow_left₀ (by positivity) hWi f) hs2 (by positivity)
-          (by positivity)) (hLi.trans (pow_le_pow_left₀ (by linarith) hzle f)) (by positivity)
-          (by positivity)
-    _ = ((Real.exp 1 * Real.pi / (k * v)) ^ k) ^ f * (Real.sqrt (k / (2 * Real.pi)) * 1.356) ^ f *
-          (2 * v) ^ f := by ring
-    _ ≤ ((Real.exp 1 * Real.pi / (k * v)) ^ k) ^ f * (k:ℝ) ^ f * (2 * v) ^ f :=
-        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left
-          (pow_le_pow_left₀ (by positivity) hs1 f) (by positivity)) (by positivity)
-    _ = (Real.exp 1 * Real.pi / (k * v)) ^ (k * f) * (k * (2 * v)) ^ f := by rw [pow_mul]; ring
 
 lemma prod_massFactor (f : ℕ) (v : ℝ) (Lv : ℕ → ℝ) (S : Finset ℕ) :
     ∏ j ∈ S, mJ f v Lv j =
@@ -2011,112 +1092,5 @@ theorem massRatioBound : XiBound := by
     _ = mass2 * (2 * v) ^ f * Real.exp (0.72 * f) * 17 ^ f * Real.sqrt (k / (2 * Real.pi)) ^ f *
           Real.pi ^ ((s - 2) * (k - s - 2) * f) * (Real.exp 1 * Real.pi / (k * v)) ^ (k * f) := by
         ring
-
-theorem prodDeltaLossBound : LossPrimeProd := by
-  classical
-  intro ι l _ E D De H₁ H₂ e Sg hH₁ hH₂ hD hDprod hDe0 hDe
-  have hH₁0 : 0 ≤ H₁ := by linarith
-  have hDv : ∀ v, De v ≤ ∏ i ∈ E, max 1 (1 / D i v) := by
-    intro v
-    rcases hDe v with h | ⟨i, hi, h⟩
-    · exact h.trans (one_le_finset_prod_of_forall_one_le _ _ (fun i _ => le_max_left _ _))
-    · rw [← Finset.mul_prod_erase E _ hi]
-      calc De v ≤ max 1 (1 / D i v) := h.trans (le_max_right _ _)
-        _ ≤ max 1 (1 / D i v) * ∏ j ∈ E.erase i, max 1 (1 / D j v) :=
-            le_mul_of_one_le_right (zero_le_one.trans (le_max_left _ _))
-              (one_le_finset_prod_of_forall_one_le _ _ (fun j _ => le_max_left _ _))
-  have hinv : ∏ v, ∏ i ∈ E, max 1 (1 / D i v) ≤
-      H₂ ^ (Fintype.card ι * E.card) * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂ := by
-    rw [Finset.prod_comm]
-    calc ∏ i ∈ E, ∏ v, max 1 (1 / D i v) ≤ ∏ i ∈ E, ∏ v, max 1 (D i v) :=
-          Finset.prod_le_prod (fun i _ => finset_prod_max_one_nonneg _ _)
-            (fun i hi => (prodMaxInvLeSq ι (D i) Finset.univ (hD i hi) (hDprod i hi)).2)
-      _ ≤ _ := prod_prod_max_le_pow_mul_thresholdSize E D H₂ hH₂ hD
-  rw [Finset.prod_pow]
-  apply pow_le_pow_left₀ (Finset.prod_nonneg (fun v _ => mul_nonneg hH₁0 (hDe0 v)))
-  calc ∏ v ∈ Sg, H₁ * De v ≤ ∏ v ∈ Sg, (H₁ * ∏ i ∈ E, max 1 (1 / D i v)) :=
-        Finset.prod_le_prod (fun v _ => mul_nonneg hH₁0 (hDe0 v))
-          (fun v _ => mul_le_mul_of_nonneg_left (hDv v) hH₁0)
-    _ = (∏ _v ∈ Sg, H₁) * ∏ v ∈ Sg, ∏ i ∈ E, max 1 (1 / D i v) := Finset.prod_mul_distrib
-    _ ≤ H₁ ^ Fintype.card ι * ∏ v, ∏ i ∈ E, max 1 (1 / D i v) := by
-        apply mul_le_mul _ (finset_prod_real_mono_of_subset_of_one_le _ _ (Finset.subset_univ _) _
-          (fun v _ => one_le_finset_prod_of_forall_one_le _ _ (fun i _ => le_max_left _ _)))
-          (Finset.prod_nonneg (fun v _ => finset_prod_max_one_nonneg _ _)) (pow_nonneg hH₁0 _)
-        rw [Finset.prod_const]
-        exact pow_le_pow_right₀ hH₁ (Finset.card_le_univ Sg)
-    _ ≤ H₁ ^ Fintype.card ι * (H₂ ^ (Fintype.card ι * E.card) * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂) :=
-        mul_le_mul_of_nonneg_left hinv (pow_nonneg hH₁0 _)
-    _ = H₁ ^ Fintype.card ι * H₂ ^ (Fintype.card ι * E.card) * Formalism.HermitianLatticeCounting.LatticeSumBounds.size E D H₂ := by ring
-
-theorem topRowsBound : NonDegTopRows := by
-  intro C k m f b v NT hC hk hm hb hv hvb hkb hNT hNTb
-  have hb0 : 0 < b := by linarith
-  have hC0 : 0 < C := by linarith
-  have hk1 : (1:ℝ) ≤ k := by exact_mod_cast hk
-  have hk0 : (0:ℝ) < k := by linarith
-  have hm1 : (1:ℝ) ≤ m := by exact_mod_cast hm
-  have hf0 : (0:ℝ) ≤ f := Nat.cast_nonneg f
-  have hv0 : 0 < v := by linarith
-  have hNT0 : 0 < NT := by linarith
-  have hL : 0.69 < Real.log b := by
-    have h1 := Real.log_two_gt_d9
-    have h2 := Real.log_le_log (by norm_num) hb
-    linarith
-  have hL0 : 0 ≤ Real.log b := by linarith
-  obtain ⟨H, hH⟩ : ∃ H, H = b ^ (C * (m:ℝ) ^ 2 * f) := ⟨_, rfl⟩
-  rw [← hH]
-  have hH0 : 0 < H := by rw [hH]; exact Real.rpow_pos_of_pos hb0 _
-  have hlogH : Real.log H = C * (m:ℝ) ^ 2 * f * Real.log b := by rw [hH, Real.log_rpow hb0]
-  have hlogk : Real.log k ≤ C * Real.log b := by
-    have h := Real.log_le_log hk0 hkb
-    rwa [Real.log_rpow hb0] at h
-  have hlogv : Real.log v ≤ Real.log b := Real.log_le_log hv0 hvb
-  have hlogNT : Real.log NT ≤ C * m * f * Real.log b := by
-    have h := Real.log_le_log hNT0 hNTb
-    rwa [Real.log_rpow hb0] at h
-  have hlogC : Real.log C ≤ C := by
-    have := Real.log_le_sub_one_of_pos hC0; linarith
-  have hX0 : 0 < H * NT := mul_pos hH0 hNT0
-  have p1 : 0 < (C * (k:ℝ) ^ 2 * v) ^ (k * f) := pow_pos (by positivity) _
-  have p2 : 0 < (H * NT) ^ (C * (k:ℝ)) := Real.rpow_pos_of_pos hX0 _
-  have p3 : 0 < H ^ (C * (k:ℝ) * (m:ℝ) ^ 2) := Real.rpow_pos_of_pos hH0 _
-  have e1 : Real.log ((C * (k:ℝ) ^ 2 * v) ^ (k * f)) =
-      ((k:ℝ) * f) * (Real.log C + 2 * Real.log k + Real.log v) := by
-    rw [Real.log_pow, Real.log_mul (mul_pos hC0 (pow_pos hk0 2)).ne' hv0.ne',
-      Real.log_mul hC0.ne' (pow_pos hk0 2).ne', Real.log_pow]
-    push_cast; try ring
-  have e2 : Real.log ((H * NT) ^ (C * (k:ℝ))) = C * k * (C * (m:ℝ) ^ 2 * f * Real.log b + Real.log NT) := by
-    rw [Real.log_rpow hX0, Real.log_mul hH0.ne' hNT0.ne', hlogH]
-  have e3 : Real.log (H ^ (C * (k:ℝ) * (m:ℝ) ^ 2)) = C * k * (m:ℝ) ^ 2 * (C * (m:ℝ) ^ 2 * f * Real.log b) := by
-    rw [Real.log_rpow hH0, hlogH]
-  have hpos := mul_pos (mul_pos p1 p2) p3
-  rw [← Real.exp_log hpos]
-  apply Real.exp_le_exp.mpr
-  rw [Real.log_mul (mul_pos p1 p2).ne' p3.ne', Real.log_mul p1.ne' p2.ne', e1, e2, e3]
-  have hK : 0 ≤ (k:ℝ) * f := mul_nonneg hk0.le hf0
-  have hu1 : 1 ≤ C ^ 2 * (m:ℝ) ^ 4 := one_le_mul_of_one_le_of_one_le (one_le_pow₀ hC) (one_le_pow₀ hm1)
-  have hCu : C ≤ C ^ 2 * (m:ℝ) ^ 4 := by
-    calc C = C * 1 := (mul_one C).symm
-      _ ≤ C * (C * (m:ℝ) ^ 4) :=
-          mul_le_mul_of_nonneg_left (one_le_mul_of_one_le_of_one_le hC (one_le_pow₀ hm1)) hC0.le
-      _ = C ^ 2 * (m:ℝ) ^ 4 := by ring
-  have hm24 : (m:ℝ) ^ 2 ≤ (m:ℝ) ^ 4 := pow_le_pow_right₀ hm1 (by norm_num)
-  have hm14 : (m:ℝ) ≤ (m:ℝ) ^ 4 := by
-    calc (m:ℝ) = (m:ℝ) ^ 1 := (pow_one _).symm
-      _ ≤ (m:ℝ) ^ 4 := pow_le_pow_right₀ hm1 (by norm_num)
-  have hKu : 0 ≤ (k:ℝ) * f * (C ^ 2 * (m:ℝ) ^ 4) := by positivity
-  have hP5 : 0 ≤ C ^ 2 * (k:ℝ) * f * Real.log b := by positivity
-  have hCk0 : 0 ≤ C * (k:ℝ) := by positivity
-  have F1 := mul_le_mul_of_nonneg_left hlogC hK
-  have KoszulLowersPower := mul_le_mul_of_nonneg_left hCu hK
-  have KoszulImageInIdeal := mul_le_mul_of_nonneg_left hL.le hKu
-  have F3 := mul_le_mul_of_nonneg_left hlogk hK
-  have F3b := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hCu hL0) hK
-  have F4 := mul_le_mul_of_nonneg_left hlogv hK
-  have F4b := mul_le_mul_of_nonneg_left (le_mul_of_one_le_left hL0 hu1) hK
-  have F5 := mul_le_mul_of_nonneg_left hm24 hP5
-  have F6 := mul_le_mul_of_nonneg_left hlogNT hCk0
-  have DiagonalTruncatedIntegralZero := mul_le_mul_of_nonneg_left hm14 hP5
-  linarith
 
 end Formalism.HermitianLatticeCounting.P

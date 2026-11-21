@@ -2,11 +2,19 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentralNilGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlkEquivInl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemKilled
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjInvariantApproxIdentityRealLieSmoothinStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameInvariantKilledSmoothSpaceCentreMemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjInvariantApproxIdentityRealLieSmoothin
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfMemSpanK
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameInvariantKilledSmoothSpaceCentreMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FundamentalDomainMeasureFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalCentreAnnihilatorCompatibleMaps
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CapelliDetEqLinearCombinationNatNodesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameKilledCapelliSpaceFiniteDimensionalOfFinitenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CapelliKilledSlowlyIncreasingSmoothingMemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CapelliKilledSlowlyIncreasingSmoothingMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealLieSmoothingMemSmoothAdelicFunctionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieDerivativeRealLieSmoothingEqDensityStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealLieSmoothingMemSlowlyIncreasing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentreEnvelopingAlgebraCommuteRealLieSmoothingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothingRightTranslateMaxCompactStatement
 
 noncomputable section
 
@@ -24,16 +32,16 @@ theorem GlobalTheory.CapKilled.finite_of_finiteness : ∀ (E : Type) [Field E] [
         (∀ τ u, Polynomial.aeval (cap τ u) (q τ u) ψ = 0) → ψ ∈ V := by
   intro E _ _ _ b hP L hL W hW q hq
   have hfin : FiniteDimensional ℂ (GlobalTheory.CapKilled.space E b L W q) :=
-    GlobalTheory.T.tameKilledCapelliSpace_finiteDimensional_of_finiteness E b hP (GlobalTheory.T.capelliDet_eq_linearCombination_nat_nodes E b) L hL W hW q hq (GlobalTheory.T.tameInvariantKilledSmoothSpace_centre_mem E b L W hW q)
+    GlobalTheory.T.tameKilledCapelliSpace_finiteDimensional_of_finiteness E b hP (GlobalTheory.T.capelliDet_eq_linearCombination_nat_nodes E b) L hL W hW q hq (_root_.GlobalTheory.CapKilled.zalg_mem_space E b L W hW q)
   refine ⟨GlobalTheory.CapKilled.space E b L W q, hfin, fun ψ h1 h2 h3 h4 h5 => ?_⟩
   let ν : Measure (Lie E b) := Measure.addHaar
-  obtain ⟨α, hα, hlim⟩ := GlobalTheory.T.exists_conjInvariant_approxIdentity_realLieSmoothing E b ν
+  obtain ⟨α, hα, hlim⟩ := _root_.GlobalTheory.AutGrowth.ApproxId.exists_approx_identity E b ν
   let V' : Submodule ℂ (GA E b → ℂ) := (GlobalTheory.CapKilled.space E b L W q).map (Sm E b).subtype
   have hc : IsClosed (V' : Set (GA E b → ℂ)) := Submodule.closed_of_finiteDimensional V'
   have hM : ψ ∈ leftInv E b ⊓ fixL E b L ⊓ GlobalTheory.CapKilled.ktype E b W ⊓ GlobalTheory.CapKilled.killed E b q :=
     ⟨⟨⟨h1, h2⟩, h3⟩, GlobalTheory.CapKilled.mem_killed.2 h5⟩
   have hmem : ∀ n, smoothing ν (α n) ψ.1 ∈ V' := fun n => by
-    obtain ⟨h, hv⟩ := GlobalTheory.T.capelliKilled_slowlyIncreasing_smoothing_mem E b ν (α n) (hα n).1 (hα n).2 L W hW q ψ hM h4
+    obtain ⟨h, hv⟩ := _root_.GlobalTheory.CapKilledSmooth.smoothing_mem_space E b ν (α n) (hα n).1 (hα n).2 L W hW q ψ hM h4
     exact ⟨_, hv, rfl⟩
   have hψ : ψ.1 ∈ V' :=
     hc.mem_of_tendsto (tendsto_pi_nhds.2 fun g => hlim ψ.1 ψ.2 g) (Eventually.of_forall hmem)

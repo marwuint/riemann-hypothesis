@@ -108,16 +108,6 @@ theorem symplOH_two (x y : WO S T) : symplOH S T x y + symplOH S T x y = symplO 
   rw [← add_mul, ← map_add]
   norm_num
 
-theorem ratW_add (a b : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
-    ratW T S (a + b) = ratW T S a + ratW T S b := by
-  exact Matrix.map_add _ (map_add (incA D)) a b
-
-theorem ratW_neg (a : Matrix (Fin T.rank) (Fin S.rank) D.host.E) : ratW T S (-a) = -ratW T S a := by
-  exact Matrix.map_neg _ (map_neg (incA D)) a
-
-theorem ratW_zero : ratW T S (0 : Matrix (Fin T.rank) (Fin S.rank) D.host.E) = 0 := by
-  exact Matrix.map_zero _ (map_zero (incA D))
-
 theorem mem_ratL_iff (x : WO S T) : x ∈ ratL T S ↔ ∃ a, ratW T S a = x := by
   unfold ratL
   simp only [AddMonoidHom.mem_range]

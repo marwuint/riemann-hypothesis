@@ -10,7 +10,7 @@ import ReciprocityTheory.DualLattices.MemAugIdeal
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AugmentationQuotientEquivLatticeStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AugmentationLengthColengthBoundStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SymplecticPeriodMatrixIntegralityStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeLengthMonoStrictStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeLengthMonoStrict
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AugmentationLengthsExistStatement
 open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionTheory.Ar.GR
 open scoped Matrix
@@ -130,7 +130,7 @@ theorem polarisedAF : PolarisedAFStatement := by
   obtain ⟨eq⟩ := GlobalTheory.T.augmentation_quotient_equiv_lattice p C v R hv hp1 (Ix g) H.AA
   have hAF : HasLen v R ((Ix g → R) ⧸ AF) cA := hasLen_of_equiv eq.symm hA
   obtain ⟨hle, hLeq⟩ :=
-    GlobalTheory.T.lattice_length_mono_strict C v R hv (Ix g) L AF hLle _ _ (pow_ne_zero _ hvcp) hLlen hAF
+    _root_.GlobalTheory.CompanionTheory.Ar.GR.submodule_eq_of_hasLen_eq C v R hv (Ix g) L AF hLle _ _ (pow_ne_zero _ hvcp) hLlen hAF
   have hn : Fintype.card (Nb p g) * (p - 1) ≠ 0 :=
     Nat.mul_ne_zero Fintype.card_ne_zero (by omega)
   have hOeq : cO ^ Fintype.card (Nb p g) =

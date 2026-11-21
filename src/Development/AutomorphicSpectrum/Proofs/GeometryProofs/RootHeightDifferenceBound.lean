@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.VerticalBoundHeightCompareStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProjectStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.VerticalBoundHeightCompare
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProject
 
 noncomputable section
 
@@ -179,7 +179,7 @@ theorem close_ht (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (M R : Root
     (z) (hz : z ∈ ptsOver L (mCoordIdeal (joinOf M R i))) :
     rootHt M t lam s L (fun p => z (joinInl M.ι R.ι p)) - rootHt R 1 lam s L (fun p => z (joinInr M.ι R.ι p)) ∈
       Set.Icc (lo - (l1 lam + |s|) * c) (hi + (l1 lam + |s|) * c) := by
-  obtain ⟨harith, hbir, -, -⟩ := GlobalTheory.T.join_model_points_project Ψ N M R i
+  obtain ⟨harith, hbir, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Ht.JoinFacts.main Ψ N M R i
   choose val hval0 hval using fun j => hC.unit j L z hz
   have hc : 0 ≤ c := by
     obtain ⟨-, q, m, hq, -, hlog, -, -⟩ := hC.vert none
@@ -193,7 +193,7 @@ theorem close_ht (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (M R : Root
     lineHt (R.line 1 j) L (fun p => z (joinInr M.ι R.ι p))
   have hD : ∀ j, |D j - E j| ≤ c := by
     intro j
-    have := GlobalTheory.T.vertical_bound_height_compare (M.K ⊕ R.K) (joinIdx M.ι R.ι) M.Ω (joinOf M R i) (dimFl Ψ N + 1) harith hbir
+    have := _root_.GlobalTheory.CompanionTheory.Ar.Ht.abs_ptHt_sub_le_of_vertBound (M.K ⊕ R.K) (joinIdx M.ι R.ι) M.Ω (joinOf M R i) (dimFl Ψ N + 1) harith hbir
       (joinDeg M R j) (u j) c (hC.vert j) (lineDefect M R t j) L z hz (val j) (hval0 j) (hval j)
     simp only [D, E]
     rw [lineHt_sub M R t j L z hz.1]

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ValLeOneOfMemKO
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DimPartsAtIffBadAndOff
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsotypicPartSpannedBySplitPlaceLocalComponentStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsotypicPartSpannedBySplitPlaceLocalComponent
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ValuationDetOfMemKO
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdelicUnitaryTrivialOutsideSplitPlaceLocEq
@@ -28,13 +28,6 @@ theorem exists_trivOutside_map_loc {L : Type} [Field L] [NumberField L] [IsCMFie
   rw [e]
   ext i j
   simp
-
-def twist {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
-    (θ : G → ℂ) (h1 : θ 1 = 1) (hm : ∀ a b, θ (a * b) = θ a * θ b) : Representation ℂ G V where
-  toFun g := (θ g)⁻¹ • ρ g
-  map_one' := by simp [h1]
-  map_mul' a b := by
-    rw [hm, map_mul, mul_inv, smul_mul_smul_comm]
 
 theorem exists_eigen_of_sum {G V W ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [Fintype ι]
@@ -72,7 +65,7 @@ theorem exists_eigen_local : ∀ (L : Type) [Field L] [NumberField L] [IsCMField
     rcases smul_eq_zero.1 h4 with h5 | h5
     · rw [sub_eq_zero.1 h5, mul_comm]
     · exact absurd h5 hf0
-  have hmem := GlobalTheory.T.isotypicPart_spanned_by_splitPlace_localComponent L n a S hS s σ hloc c hc hci hf
+  have hmem := _root_.GlobalTheory.SpanLoc.main L n a S hS s σ hloc c hc hci hf
   rw [iSup_subtype'] at hmem
   obtain ⟨F, hF, hFsum⟩ := (Submodule.mem_iSup_iff_exists_finsupp _ _).1 hmem
   choose y hy using fun i => LinearMap.mem_range.1 (hF i)

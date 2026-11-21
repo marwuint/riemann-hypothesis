@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SizeAt
+import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AutomorphicArithmetic.CyclotomicBounds.RamifiedDiscriminants.FourMulQLeCondN
 
@@ -326,11 +327,6 @@ theorem sizeRows_fam {eps : ℝ} (he : 0 < eps) (Fm : FamP eps) (h : FamHyp Fm) 
     rw [← Real.rpow_mul (by norm_num), show 4 / eps * (eps / 4) = 1 by field_simp, Real.rpow_one]
   rw [e1]
   exact Real.rpow_le_rpow (by positivity) (le_of_max_le_right h0) (by positivity)
-
-theorem sizeAt : SizeAt :=
-  ⟨1, one_pos, fun _ he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ hF _ =>
-    let ⟨x₀, h⟩ := sizeRows_fam he Fm hF
-    ⟨x₀, fun x hx h0 i _ _ => h x hx h0 i⟩⟩⟩
 
 end Main
 

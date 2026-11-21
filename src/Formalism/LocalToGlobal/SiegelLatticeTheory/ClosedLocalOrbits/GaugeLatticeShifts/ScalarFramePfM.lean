@@ -181,26 +181,4 @@ end Formalism.L2.SG.Pf.ScalarFramePf
 
 namespace Formalism.L2.SG.Pf
 
-open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.TermLoc
-  Formalism.L2.SG.Pf.ScalarFramePf
-
-theorem scalarFrameCT_explicit (hI : IotaStep) (D : D7) (Z : LocDat D) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
-    {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' F'' : LFlag (VS D) D.R.rS T')
-    (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Tn T'n : ℕ)
-    (hF : FixedHyp D Λ F) (hl' : IsLift Λ F') (hl'' : IsLift Λ F'') (hc' : IsFixedConv Λ (gS D) F')
-    (hc'' : IsFixedConv Λ (gS D) F'') (ha' : IsAdmissible Λ (gS D) F F') (ha'' : IsAdmissible Λ (gS D) F F'')
-    (hP : IsPair Λ F F' F'' β (gS D)) (hg' : IsGeneric Λ (gS D) F F') (hg'' : IsGeneric Λ (gS D) F F'')
-    (hs : Lat.s0 Λ F F' F'' β D.R.k = 1) (hsc : IsScalar Λ F F' F'' β) (hG' : Gval F F' ≠ 0)
-    (hG'' : Gval F F'' ≠ 0) (hT : T ≠ 0) (hT' : T' ≠ 0) (p : PlF D) :
-    (locH Z p).Ident (locTerm Z p Λ F F' Tn T'n) (locTerm Z p Λ F F'' Tn T'n) (LinearEquiv.refl _ _)
-        (phiP Z p Λ (frame F) (frameAct (frame F') (admXi D Λ F F')⁻¹) (frameAct (frame F'') (admXi D Λ F F'')⁻¹) β
-          (gfacts_of Λ F F' F'' β hF hl' hl'' hc' hc'' hP hs hsc hG' hG'' hT hT')) ∧
-      (locH Z p).Respects (locTerm Z p Λ F F' Tn T'n) (locTerm Z p Λ F F'' Tn T'n) (LinearEquiv.refl _ _)
-        (phiP Z p Λ (frame F) (frameAct (frame F') (admXi D Λ F F')⁻¹) (frameAct (frame F'') (admXi D Λ F F'')⁻¹) β
-          (gfacts_of Λ F F' F'' β hF hl' hl'' hc' hc'' hP hs hsc hG' hG'' hT hT')) :=
-  identResp_lt Z p Λ (frame F) (frameAct (frame F') (admXi D Λ F F')⁻¹)
-    (frameAct (frame F'') (admXi D Λ F F'')⁻¹) β Tn T'n
-    (gfacts_of Λ F F' F'' β hF hl' hl'' hc' hc'' hP hs hsc hG' hG'' hT hT')
-    (hI D Z Λ F F' F'' β hF hl' hl'' hc' hc'' ha' ha'' hP hg' hg'' hs hsc hG' hG'' hT hT' p)
-
 end Formalism.L2.SG.Pf

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyBlockAndInvariantUnderStabilizerNilradicStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyBlockAndInvariantUnderStabilizerNilradic
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FinsumSubspaceStabilizerMulBlockFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CardSubspacesMulGeneralLinearGroupCardStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EndomorphismMassEqOfLinearEquivInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CardSubspacesMulGeneralLinearGroupCard
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EndomorphismMassEqOfLinearEquivInvariant
 
 open Polynomial GlobalTheory.CuspGL
 
@@ -94,7 +94,7 @@ theorem stab_sum (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Mo
       ∑ x ∈ T, (if LinearMap.charpoly (g.1.restrict g.2) = x.1 then φ (g.1.restrict g.2) else 0) *
         (if LinearMap.charpoly (W.mapQ W g.1 (fun x hx => g.2 x hx)) = x.2 then (1 : ℂ) else 0) := by
     intro g
-    have hc := (GlobalTheory.T.charpoly_block_and_invariant_under_stabilizerNilradical F V W g.1 g.2).1
+    have hc := (_root_.GlobalTheory.CuspGL.charpoly_block F V W g.1 g.2).1
     exact indicator_split P T hT (LinearMap.charpoly_monic _) (LinearMap.charpoly_monic _) hc _
   rw [finsum_congr key, finsum_eq_sum_of_fintype, Finset.sum_comm]
   refine Finset.sum_congr rfl fun x _ => ?_
@@ -146,11 +146,11 @@ theorem mass_mult : ∀ (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup
     · have hq : Module.finrank F (V ⧸ W) = E.natDegree := by
         have := Submodule.finrank_quotient_add_finrank W
         omega
-      rw [if_pos hW, GlobalTheory.T.endomorphismMass_eq_of_linearEquiv_invariant F W Φ hΦ D hW.symm,
-        GlobalTheory.T.endomorphismMass_eq_of_linearEquiv_invariant F (V ⧸ W) (fun _ _ _ _ _ => (1 : ℂ)) (fun _ _ _ _ _ _ _ _ _ _ => rfl) E hq.symm,
+      rw [if_pos hW, _root_.GlobalTheory.CuspGL.mass_eq_mass_pi_of_invariant F W Φ hΦ D hW.symm,
+        _root_.GlobalTheory.CuspGL.mass_eq_mass_pi_of_invariant F (V ⧸ W) (fun _ _ _ _ _ => (1 : ℂ)) (fun _ _ _ _ _ _ _ _ _ _ => rfl) E hq.symm,
         hW, hq]
     · rw [if_neg hW, mass_eq_zero _ _ hW, zero_mul, mul_zero]
-  have h3 := GlobalTheory.T.card_subspaces_mul_generalLinearGroupCard F V D.natDegree (by omega)
+  have h3 := _root_.GlobalTheory.CuspGL.card_subspaces_mul_glCard F V D.natDegree (by omega)
   have h4 : Module.finrank F V - D.natDegree = E.natDegree := by omega
   rw [h4, Nat.card_eq_fintype_card (α := {W : Submodule F V // Module.finrank F W = D.natDegree}),
     Fintype.card_subtype] at h3

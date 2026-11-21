@@ -5,12 +5,14 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.DedekindZetaEqS
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricSumEqHeckeLValueMulAuxiliaryFactors
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsHeckeLOfHasInf
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsValCharTwist
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeanLogNormConjugatesOverIdealClassesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjugateCmValueCharacterPermutedWeightStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeanLogNormConjugatesOverIdealClasses
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjugateCmValueCharacterPermutedWeight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FractionalIdealNormPowSixMulDiscriminantClassInvStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassMeanLogNormDiscChowlaSelbergStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsImagQuadraticSubfieldOfToricCMFieldDataStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogCmConstantAddLogDerivativeLeSquareTopBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassMeanLogNormDiscChowlaSelberg
+import Formalism.LocalRingCardinality.DataParams₂
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsImagQuadraticSubfieldOfToricCMFieldData
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.VpBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogCmConstantAddLogDerivativeLeSquareTopBound
 
 noncomputable section
 open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport GlobalTheory.SqTop GlobalTheory.FunObj.SqNum
@@ -49,7 +51,7 @@ theorem betaArch_of_transport : GlobalTheory.IndefiniteRowSideFullHecke.LatticeN
   obtain ⟨C1, x1, hF⟩ := hF1 ε CF (le_trans (le_max_left _ _) hCF)
   obtain ⟨C2, x2, hL⟩ := hL2 ε CF (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCF)
   obtain ⟨C3, x3, hT⟩ := hT3 ε CF (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCF)
-  obtain ⟨Cx, x4, hS⟩ := GlobalTheory.T.log_cmConstant_add_logDerivative_le_squareTopBound ε
+  obtain ⟨Cx, x4, hS⟩ := _root_.GlobalTheory.SizesArch.sizes ε
   refine ⟨C2 + Cx, max (max x1 x2) (max x3 x4), fun C hC D large₂ hε hx hR T Lc μ₀ hμ G => ?_⟩
   have hx1 : x1 ≤ large₂.sc.x := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
   have hx2 : x2 ≤ large₂.sc.x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
@@ -65,7 +67,7 @@ theorem betaArch_of_transport : GlobalTheory.IndefiniteRowSideFullHecke.LatticeN
   have hyx : y = x := hy.2.unique hxT.2
   subst hyx
   have hd4 : 4 < D.host.d := hFD.2.1
-  obtain ⟨K, hK2, hKd, φK, hφK, hc, hLat⟩ := GlobalTheory.T.exists_imagQuadratic_subfield_of_toricCMFieldData D.host.d (cmPhi D) hFD (host_d_mod' D) Λ hΛ
+  obtain ⟨K, hK2, hKd, φK, hφK, hc, hLat⟩ := _root_.GlobalTheory.QuadInHost.exists_quadField D.host.d (cmPhi D) hFD (host_d_mod' D) Λ hΛ
   obtain ⟨tt, 𝔞, Λσ, hσ, hEq, hAll⟩ := hTr K D.host.d hd4 hK2 hKd φK Λ hLat
   haveI := iCM
   haveI : IsGalois ℚ D.host.E := inferInstance
@@ -93,7 +95,7 @@ theorem betaArch_of_transport : GlobalTheory.IndefiniteRowSideFullHecke.LatticeN
     rw [GlobalTheory.T.fractionalIdealNorm_pow_six_mul_discriminant_class_invariant φK hK2 hc (𝔞 σ) (𝔞 σ') (Λσ σ) (Λσ σ') (hσ σ h).2.1 (hσ σ' h').2.1 hcl]
   have hB : ∀ σ, Fixes φK σ → Real.log ‖σ β‖ ≤ Fσ σ := by
     intro σ hσf
-    obtain ⟨π, χ', hw, hcc, hv'⟩ := GlobalTheory.T.exists_conjugate_cmValueCharacter_permuted_weight φK (cmPhi D) s (kap D 1 i j s) (condF G.pl) (fam G μ₀ i j c) σ
+    obtain ⟨π, χ', hw, hcc, hv'⟩ := _root_.GlobalTheory.ConjValChar.exists_conj_valChar φK (cmPhi D) s (kap D 1 i j s) (condF G.pl) (fam G μ₀ i j c) σ
       hCM hφK hc hσf hy.1
     obtain ⟨Λ', hΛ'⟩ := GlobalTheory.ToricDistribution.exists_isHeckeL_of_hasInf D.host.E D.what₂.Tau (cmPhi D) _ χ' hCM hv'.1
       hv'.2.2.1 ⟨τ0, by have := hκ (π τ0); simp only [Function.comp]; omega⟩
@@ -116,8 +118,8 @@ theorem betaArch_of_transport : GlobalTheory.IndefiniteRowSideFullHecke.LatticeN
     simp only [Fσ, hM]
     push_cast
     linarith
-  obtain ⟨rep, hrep, hmain⟩ := GlobalTheory.T.mean_log_norm_conjugates_over_ideal_classes φK (jLat Λ) 𝔞 β Fσ hK2 hc hEq halg hβ0 hFcl hB
-  have hmean := GlobalTheory.T.classMean_log_norm_disc_chowlaSelberg D φK hK2 hKd hd4 (fun c => 𝔞 (rep c)) (fun c => Λσ (rep c)) (fun c => (hrep c).2)
+  obtain ⟨rep, hrep, hmain⟩ := _root_.GlobalTheory.GalMean.galmean φK (jLat Λ) 𝔞 β Fσ hK2 hc hEq halg hβ0 hFcl hB
+  have hmean := _root_.GlobalTheory.ClassMeanDisc.classMean_log_norm_disc D φK hK2 hKd hd4 (fun c => 𝔞 (rep c)) (fun c => Λσ (rep c)) (fun c => (hrep c).2)
     (fun c => (hσ _ (hrep c).1).2.1)
   have hh : (0 : ℝ) < classNumber K := by
     rw [show (classNumber K : ℝ) = (Fintype.card (ClassGroup (𝓞 K)) : ℝ) from rfl]

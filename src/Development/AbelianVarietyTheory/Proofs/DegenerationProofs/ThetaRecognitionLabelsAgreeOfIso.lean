@@ -2,9 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.NotAllMatchRankZero
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationWeilPairingPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantTermRepresentativeDependence
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormRepGeneratorsAndThetaSeriesTermStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormRepGeneratorsAndThetaSeriesTerm
+import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataTorsionStructureAlgClosed
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomTransportStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomTransport
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SymmPairingEqOneOfOddOfDiag
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsBasisUniqueMinPairSums
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FourierExtractionTsumClass
@@ -35,10 +36,10 @@ def TR {k : ℕ} (p : N.QT k) (p' : N'.QT k) : Prop :=
   p'.1.1.toAdd = J.e p.1.1.toAdd ∧ J.Rel p.1.2 p'.1.2
 
 theorem rel_unique {g : N.Gt} {a b : N'.Gt} (ha : J.Rel g a) (hb : J.Rel g b) : a = b :=
-  ((GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).1 g).unique ha hb
+  ((_root_.GlobalTheory.Ex.NumD.hom_transport _ _ _ _ _ (toHom J)).1 g).unique ha hb
 
 theorem rel_mul {g h : N.Gt} {a b : N'.Gt} (ha : J.Rel g a) (hb : J.Rel h b) : J.Rel (g * h) (a * b) :=
-  (GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.1 g h a b ha hb
+  (_root_.GlobalTheory.Ex.NumD.hom_transport _ _ _ _ _ (toHom J)).2.1 g h a b ha hb
 
 theorem rel_pow {g : N.Gt} {a : N'.Gt} (ha : J.Rel g a) (k : ℕ) : J.Rel (g ^ k) (a ^ k) := by
   induction k with
@@ -46,10 +47,10 @@ theorem rel_pow {g : N.Gt} {a : N'.Gt} (ha : J.Rel g a) (k : ℕ) : J.Rel (g ^ k
   | succ k ih => rw [pow_succ, pow_succ]; exact rel_mul J ih ha
 
 theorem tr_exists {k : ℕ} (p : N.QT k) : ∃ p', TR J p p' := by
-  obtain ⟨g', hg'⟩ := ((GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).1 p.1.2).exists
+  obtain ⟨g', hg'⟩ := ((_root_.GlobalTheory.Ex.NumD.hom_transport _ _ _ _ _ (toHom J)).1 p.1.2).exists
   have h1 := rel_pow J hg' k
   rw [N.mem_QT.1 p.2] at h1
-  have h2 : J.Rel (N.io p.1.1.toAdd) (N'.io (J.e p.1.1.toAdd)) := (GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.2.1 _
+  have h2 : J.Rel (N.io p.1.1.toAdd) (N'.io (J.e p.1.1.toAdd)) := (_root_.GlobalTheory.Ex.NumD.hom_transport _ _ _ _ _ (toHom J)).2.2.1 _
   exact ⟨⟨(Multiplicative.ofAdd (J.e p.1.1.toAdd), g'), rel_unique J h1 h2⟩, rfl, hg'⟩
 
 theorem tr_unique {k : ℕ} {p : N.QT k} {a b : N'.QT k} (ha : TR J p a) (hb : TR J p b) : a = b :=
@@ -63,11 +64,11 @@ theorem tr_mul {k : ℕ} {p q : N.QT k} {a b : N'.QT k} (ha : TR J p a) (hb : TR
 
 theorem tr_wp {k : ℕ} {p q : N.QT k} {a b : N'.QT k} (ha : TR J p a) (hb : TR J q b) :
     N'.wp a b = N.wp p q :=
-  (GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.2.2.1 k p q a b ha.1 ha.2 hb.1 hb.2
+  (_root_.GlobalTheory.Ex.NumD.hom_transport _ _ _ _ _ (toHom J)).2.2.2.1 k p q a b ha.1 ha.2 hb.1 hb.2
 
 theorem tr_txT {m : ℕ} (hm : Odd m) {p : N.QT (m ^ 2)} {a : N'.QT (m ^ 2)} (ha : TR J p a) (χ : N.X) :
     N'.txT m a (J.e χ) = J.lam * N.txT m p χ :=
-  ((GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.2.2.2 m hm p a ha.1 ha.2 χ).1
+  ((_root_.GlobalTheory.Ex.NumD.hom_transport _ _ _ _ _ (toHom J)).2.2.2.2 m hm p a ha.1 ha.2 χ).1
 
 theorem eq_of_qEq {k : ℕ} (hk : k ≠ 0) {p q : N.QT k} (h : N.QEq p q) (hy : p.1.1 = q.1.1) : p = q := by
   obtain ⟨z, h1, h2⟩ := h
@@ -240,7 +241,7 @@ theorem tendsto_txT {C : Type} [NormedField C] {N : NumD C} {q : QuadraticMap �
   have h2 := Real.tendsto_exp_neg_atTop_nhds_zero.comp
     (h1.atTop_div_const (r := (m : ℝ) ^ 2) (by positivity))
   refine squeeze_zero_norm (fun χ => ?_) h2
-  rw [(GlobalTheory.T.norm_rep_generators_and_thetaSeriesTerm C N q hI).2 m hm p χ]
+  rw [(_root_.GlobalTheory.Ex.norm_QT_s_and_norm_txT C N q hI).2 m hm p χ]
   exact mul_le_of_le_one_right (Real.exp_pos _).le (hI.th _)
 
 theorem norm_char {C X : Type} [NormedField C] [AddCommGroup X] {k : ℕ} (hk : k ≠ 0) {t : Multiplicative X →* Cˣ}
@@ -298,7 +299,7 @@ theorem defect_diag {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
   have hτm : τ ^ m = 1 := MonoidHom.ext fun χ => by
     change (t' (Multiplicative.ofAdd (J.e χ.toAdd)) ^ m) ^ m = 1
     rw [← pow_mul, ← sq, TorsionFourier.apply_pow_eq_one ht'k]
-  have hnorm := (GlobalTheory.T.norm_rep_generators_and_thetaSeriesTerm C N q hI).2 m hm p
+  have hnorm := (_root_.GlobalTheory.Ex.norm_QT_s_and_norm_txT C N q hI).2 m hm p
   have h00 : ‖N.txT m p 0‖ = Real.exp (-(q x / (m : ℝ) ^ 2)) := by
     rw [hnorm, N.c_zero, one_mul, hth, mul_one, smul_zero, add_zero, hp]
   rw [← ht', NumD.torus_generator_apply]

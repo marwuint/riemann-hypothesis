@@ -1,5 +1,4 @@
 import Mathlib
-import Mathlib
 import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExistsX
 import Development.AutomorphicSpectrum.Statements.MetricStatements.ExistsFlagModelBaseMetric
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.RootOnFund
@@ -51,22 +50,6 @@ theorem Btw.inv {a b : ℝ} (ha : 0 < a) (hb : 0 < b) {X : Matrix m m ℂ} (h : 
     rwa [scal_inv hb] at this
   · have := inv_anti (scal_posDef (m := m) ha) hX h1
     rwa [scal_inv ha] at this
-
-theorem Btw.mono {a b a' b' : ℝ} (ha : a' ≤ a) (hb : b ≤ b') {X : Matrix m m ℂ} (h : Btw a b X) : Btw a' b' X := by
-  obtain ⟨h0, h1, h2⟩ := h
-  refine ⟨h0, ?_, ?_⟩
-  · have e : X - (a' : ℂ) • (1 : Matrix m m ℂ) = (X - (a : ℂ) • 1) + ((a - a' : ℝ) : ℂ) • 1 := by
-      push_cast
-      rw [sub_smul]
-      abel
-    rw [e]
-    exact h1.add (scal_psd (by linarith))
-  · have e : (b' : ℂ) • (1 : Matrix m m ℂ) - X = ((b : ℂ) • 1 - X) + ((b' - b : ℝ) : ℂ) • 1 := by
-      push_cast
-      rw [sub_smul]
-      abel
-    rw [e]
-    exact h2.add (scal_psd (by linarith))
 
 theorem Btw.sub {a b : ℝ} {X : Matrix m m ℂ} (h : Btw a b X) (e : m' → m) (he : Function.Injective e) :
     Btw a b (X.submatrix e e) := by

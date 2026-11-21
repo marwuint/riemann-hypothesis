@@ -55,11 +55,6 @@ theorem KDq_le_ker {χ : HChar H.E} (hF : χ.TrivOn H.F) (ht : ∀ v, χ.TameAt 
     rw [map_prod, MonoidHom.finset_prod_apply]
     rfl
 
-theorem tildeQ_mk_of_tame {χ : HChar H.E} (hF : χ.TrivOn H.F) (ht : ∀ v, χ.TameAt v)
-    (hu : ∀ v, (∀ k, ¬ OverP H (H.g k) v) → ¬ AtQ H SQ v → χ.UnrAt v) (a : Ideles H.E) :
-    tildeQ H SQ χ (QuotientGroup.mk a) = χ.1 (finPartI H.E a) :=
-  tildeQ_mk H SQ (KDq_le_ker H SQ hF ht hu) a
-
 theorem KD_le_ker {χ : HChar H.E} (hF : χ.TrivOn H.F) (ht : ∀ v, χ.TameAt v)
     (hu : ∀ v, (∀ k, ¬ OverP H (H.g k) v) → χ.UnrAt v) : KD H ≤ (χ.1.comp (finPartI H.E)).ker :=
   KDq_empty H ▸ KDq_le_ker H ∅ hF ht fun v h _ => hu v h
@@ -74,13 +69,6 @@ variable {H} in
 theorem KD_le_ker_of_isMu0 {P : PiBar H} {W : Omg H} {e : R.Psi → ℚ} {j : ℕ} {χ : HChar H.E} (h : IsMu0 P W e j χ) :
     KD H ≤ (χ.1.comp (finPartI H.E)).ker :=
   KD_le_ker H h.triv h.tame h.unr
-
-theorem norm_muTilQ {mu : Fin R.m → HChar H.E} (hu : ∀ j, (mu j).IsUnitary) (j : ℕ) (x : DtQ H SQ) :
-    ‖((muTilQ H SQ mu j x : ℂˣ) : ℂ)‖ = 1 := by
-  unfold muTilQ
-  split_ifs
-  · exact norm_tildeQ H SQ (hu _) x
-  · simp
 
 end Factor
 
@@ -115,12 +103,6 @@ def trueDtPackQ (C : HFrame H e) : DtPack H :=
 theorem trueDtPackQ_relDet (C : HFrame H e) : letI := H.cmStar
     ∀ (N : ℕ) (L L' : SDLat H.E N), (trueDtPackQ SQ C).relDet N L L' = relDetQ H SQ N L.1 L'.1 :=
   fun _ _ _ => rfl
-
-theorem norm_muTilQ_frame (C : HFrame H e) (j : ℕ) (x : DtQ H SQ) : ‖((muTilQ H SQ C.mu0 j x : ℂˣ) : ℂ)‖ = 1 :=
-  norm_muTilQ H SQ (fun j => (C.isMu0 j).unitary) j x
-
-theorem norm_tildeQ_chiPsi (C : HFrame H e) (x : DtQ H SQ) : ‖((tildeQ H SQ C.chiPsi x : ℂˣ) : ℂ)‖ = 1 :=
-  norm_tildeQ H SQ C.isChi.unitary x
 
 end Pack
 
@@ -319,55 +301,6 @@ theorem normOneIdeleToFinerDeterminantClass_eq_mk (x : (AfE H.F H.E)ˣ) (h : h90
     normOneIdeleToFinerDeterminantClass H SQ σ hσ ι h1 h2 ⟨_, h⟩ = QuotientGroup.mk a :=
   (MonoidHom.liftOfRightInverse_comp_apply (h90U H σ hσ ι h1 h2) _ _ _ x).trans (mk_eq_of_snd_eq H SQ ha.symm)
 
-theorem u1ToDtQ_surjective : Function.Surjective (normOneIdeleToFinerDeterminantClass H SQ σ hσ ι h1 h2) := fun y => by
-  obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective y
-  let x : (AfE H.F H.E)ˣ := Units.map (ι.symm.toRingHom.toMonoidHom.comp
-    (MonoidHom.snd (InfiniteAdeleRing H.E) (FiniteAdeleRing (𝓞 H.E) H.E))) a
-  exact ⟨h90U H σ hσ ι h1 h2 x, normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι h1 h2 x _ a (ι.apply_symm_apply _).symm⟩
-
-theorem eq_u1ToDtQ {f : U1 σ →* DtQ H SQ} (hf : ∀ (x : (AfE H.F H.E)ˣ) (h : h90 σ x ∈ U1 σ) (a : Ideles H.E),
-    (a : AdeleRing (𝓞 H.E) H.E).2 = ι (x : AfE H.F H.E) → f ⟨_, h⟩ = QuotientGroup.mk a) :
-    f = normOneIdeleToFinerDeterminantClass H SQ σ hσ ι h1 h2 := by
-  refine MonoidHom.ext fun y => ?_
-  obtain ⟨x, rfl⟩ := h90U_surjective H σ hσ ι h1 h2 y
-  exact (hf x _ (finIdele ι x) rfl).trans (normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι h1 h2 x _ (finIdele ι x) rfl).symm
-
-theorem tildeQ_u1ToDtQ {χ : HChar H.E} (hχ : KDq H SQ ≤ (χ.1.comp (finPartI H.E)).ker) (x : (AfE H.F H.E)ˣ)
-    (h : h90 σ x ∈ U1 σ) : tildeQ H SQ χ (normOneIdeleToFinerDeterminantClass H SQ σ hσ ι h1 h2 ⟨_, h⟩) = χ.1 (finIdele ι x) := by
-  rw [normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι h1 h2 x h (finIdele ι x) rfl, tildeQ_mk H SQ hχ, finPartI_eq_self fun _ => rfl]
-
 end NormOne
-
-theorem dtQ_main :
-    (∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (SQ : Finset (HeightOneSpectrum (𝓞 H.E))) (e : Fin R.m → R.Psi → ℚ)
-      (C : HFrame H e), ∃ X : DtPack H, X.Dt = DtQ H SQ ∧ HEq X.instDt (inferInstance : CommGroup (DtQ H SQ)) ∧
-        HEq X.muTil (muTilQ H SQ C.mu0) ∧ HEq X.chiD (tildeQ H SQ C.chiPsi) ∧ HEq X.UO (UOQ H SQ) ∧
-        HEq X.e1Dt (e1Q H SQ) ∧
-        HEq X.relDet (letI := H.cmStar; fun N (L L' : SDLat H.E N) => relDetQ H SQ N L.1 L'.1)) ∧
-    (∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (SQ : Finset (HeightOneSpectrum (𝓞 H.E))) (σ : H.E →ₐ[H.F] H.E),
-      (∀ x, σ x = H.conj x) → ∀ ι : Formalism.L2.DIV.AfE H.F H.E ≃+* FiniteAdeleRing (𝓞 H.E) H.E,
-      (∀ x : H.E, ι (x ⊗ₜ[H.F] 1) = algebraMap H.E _ x) →
-      (∀ z, z ∈ Formalism.L2.DIV.RInt H.F H.E ↔ ∀ Q : HeightOneSpectrum (𝓞 H.E), Valued.v (ι z Q) ≤ 1) →
-      ∃ f : Formalism.L2.DIV.U1 σ →* DtQ H SQ, Function.Surjective f ∧
-        ∀ (x : (Formalism.L2.DIV.AfE H.F H.E)ˣ) (h : Formalism.L2.DIV.h90 σ x ∈ Formalism.L2.DIV.U1 σ) (a : Ideles H.E),
-          (a : AdeleRing (𝓞 H.E) H.E).2 = ι (x : Formalism.L2.DIV.AfE H.F H.E) → f ⟨_, h⟩ = QuotientGroup.mk a) ∧
-    (∀ (D : D7) (C : CharFrame D) (SQ : Finset (HeightOneSpectrum (𝓞 D.host.E))) (ε : DtQ D.host SQ ≃* D.Dt),
-      (∀ j, (D.muTil j).comp ε.toMonoidHom = muTilQ D.host SQ C.mu0 j) →
-      D.chiD.comp ε.toMonoidHom = tildeQ D.host SQ C.chiPsi → D.UO = (UOQ D.host SQ).map ε.toMonoidHom →
-      (∀ z, D.e1Dt z = ε (e1Q D.host SQ z)) →
-      ∃ T : DtTied D C, ∀ a, T.eDt a = ε (QuotientGroup.mk a)) ∧
-    (∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (SQ : Finset (HeightOneSpectrum (𝓞 H.E))) (χ : HChar H.E),
-      χ.TrivOn H.F → (∀ v, χ.TameAt v) → (∀ v, (∀ k, ¬ OverP H (H.g k) v) → ¬ AtQ H SQ v → χ.UnrAt v) →
-      KDq H SQ ≤ (χ.1.comp (finPartI H.E)).ker ∧
-        ∀ a, tildeQ H SQ χ (QuotientGroup.mk a) = χ.1 (finPartI H.E a)) ∧
-    (∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (SQ : Finset (HeightOneSpectrum (𝓞 H.E))) (e : Fin R.m → R.Psi → ℚ)
-      (C : HFrame H e) (x : DtQ H SQ),
-      (∀ j, ‖((muTilQ H SQ C.mu0 j x : ℂˣ) : ℂ)‖ = 1) ∧ ‖((tildeQ H SQ C.chiPsi x : ℂˣ) : ℂ)‖ = 1) :=
-  ⟨fun _ _ SQ _ C => ⟨trueDtPackQ SQ C, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩,
-    fun _ H SQ σ hσ ι h1 h2 => ⟨normOneIdeleToFinerDeterminantClass H SQ σ hσ ι h1 h2, u1ToDtQ_surjective H SQ σ hσ ι h1 h2,
-      normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι h1 h2⟩,
-    fun D C SQ ε hmu hchi hUO he => ⟨dtIsoRational D C SQ ε hmu hchi hUO he, fun _ => rfl⟩,
-    fun _ H SQ _ hF ht hu => ⟨KDq_le_ker H SQ hF ht hu, tildeQ_mk_of_tame H SQ hF ht hu⟩,
-    fun _ _ SQ _ C x => ⟨fun j => norm_muTilQ_frame SQ C j x, norm_tildeQ_chiPsi SQ C x⟩⟩
 
 end GlobalTheory.Mem.Col2

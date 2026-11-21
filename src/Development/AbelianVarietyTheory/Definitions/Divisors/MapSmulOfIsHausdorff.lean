@@ -92,9 +92,6 @@ def map {M' : Type} [CommGroup M'] (f : M →* M') : Tate p M →ₗ[ℤ_[p]] Ta
 @[simp] theorem lev_map {M' : Type} [CommGroup M'] (f : M →* M') (t : Tate p M) (n : ℕ) :
     (map p f t).lev n = f (t.lev n) := rfl
 
-theorem map_injective {M' : Type} [CommGroup M'] {f : M →* M'} (hf : Function.Injective f) :
-    Function.Injective (map p f) := fun s t h => Tate.ext fun n => hf (by simpa using congrArg (fun u => Tate.lev u n) h)
-
 theorem map_smul_of_isHausdorff {T O : Type} [AddCommGroup T] [Module ℤ_[p] T] [CommRing O]
     [Algebra ℤ_[p] O] [IsHausdorff (Ideal.span {(p : O)}) O] (f : T →+ O) (a : ℤ_[p]) (t : T) :
     f (a • t) = a • f t := by
@@ -319,11 +316,6 @@ variable {p}
 
 def pairT (ε : Eps p C) : LinearMap.BilinForm ℤ_[p] (TateA A p) :=
   (weilT A p).compr₂ ε.equiv.symm.toLinearMap
-
-theorem pow_pairT (ε : Eps p C) (s t : TateA A p) (n : ℕ) :
-    ε.1.lev n ^ digit n (pairT A ε s t) = weil A (p ^ n) (s.lev n) (t.lev n) := by
-  have h : pairT A ε s t = ε.equiv.symm (weilT A p s t) := rfl
-  rw [h, ← Eps.lev_equiv, LinearEquiv.apply_symm_apply, lev_weilT]
 
 theorem isAlt_pairT (ε : Eps p C) : (pairT A ε).IsAlt := by
   intro s

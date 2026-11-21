@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EvalAtOneExtremalMul
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockSubstitutionIdentitiesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HoweSpanFamiliesOfPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HoweSpanFamiliesOfPlaces
 open MvPolynomial Formalism.BasicNotions Formalism.L2.Forms Formalism.L2.Ker GlobalTheory.KJInf MeasureTheory
 open scoped TensorProduct
 
@@ -143,7 +143,7 @@ theorem avg_span : ∀ (ι : Type) [Fintype ι] (a b : ℕ) (hab : a ≤ b), 0 <
       funext τ; rw [hr.mul, mul_assoc]
     dsimp only
     rw [hev, hcomp, e1, e2, mul_one]
-  obtain ⟨m, y', s, hinv, hspan⟩ := GlobalTheory.T.howeSpan_families_of_places ι a b hab ha lam n Q heq
+  obtain ⟨m, y', s, hinv, hspan⟩ := _root_.GlobalTheory.KJInf.howeSpan_all ι a b hab ha lam n Q heq
   refine ⟨m, y', s, hinv, fun F hF Λ => ?_⟩
   simp_rw [ontoUni_inv hr]
   rw [← hQ, hspan F hF, map_sum]

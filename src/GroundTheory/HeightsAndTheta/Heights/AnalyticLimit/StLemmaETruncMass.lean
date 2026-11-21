@@ -19,10 +19,4 @@ def LemmaETruncMass.Statement : Prop :=
       mInt A (fun i => potForm Om.pot (u i)) ((tail Yo r R₀).indicator 1) ≤
         mInt A (fun i => potForm Om.pot (v R₀ i)) ({x | x ∉ Yo ∨ R₀ ≤ r x}.indicator 1)
 
-section Inhabitants
-
-open ReciprocityTheory.AnForm.M (p1 fsPot projectiveLinePairSection projLine_isSmoothPotential projLine_isHolomorphicSection)
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.AnalyticLimit

@@ -120,21 +120,4 @@ end MassDataMassesW.KCptW
 
 namespace MassDataMassesW
 
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub KCptW
-
-theorem kCompactOpen_of (hO : LatHatOpen) (hC : LatHatCompact) : KCompactOpen := by
-  intro D X
-  have : FiniteDimensional X.B.I.F X.B.I.E := Module.Finite.of_restrictScalars_finite ℚ _ _
-  have hMo := hO (F := X.B.I.F) X.B.I.L X.B.I.L_span X.B.I.L_fg
-  have hMc := hC (F := X.B.I.F) X.B.I.L X.B.I.L_span X.B.I.L_fg
-  have eK : (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) =
-      incAf X.B.I.cm.sig X.B.I.J ⁻¹' stabGLHat (F := X.B.I.F) (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := by
-    ext g
-    exact kf_iff X.B.I.cm.sig X.B.I.J _ g
-  have hinc : Continuous (incAf X.B.I.cm.sig X.B.I.J) := continuous_subtype_val
-  rw [eK]
-  refine ⟨?_, (isOpen_stabGLHat X.B.I.L hMc hMo).preimage hinc⟩
-  exact (PI.AdicCompletionValuation.isClosed_HR (Af X.B.I.F) X.B.I.cm.sig X.B.I.J).isClosedEmbedding_subtypeVal.isCompact_preimage
-    (isCompact_stabGLHat X.B.I.L X.B.I.L_span hMc)
-
 end MassDataMassesW

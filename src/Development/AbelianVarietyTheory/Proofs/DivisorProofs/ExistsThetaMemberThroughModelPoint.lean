@@ -1,6 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZarhinModelGenericFibreIsPullbackThetaSystemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisationAtCompleteTraitOfModelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZarhinModelGenericFibreIsPullbackThetaSystem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDegenerationEndomorphismOfAdmissibleBase
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisationAtCompleteTraitOfModel
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTraitsOnOfHasTraitsP
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
@@ -80,14 +81,14 @@ theorem exists_gMem_of_trait : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z
   obtain ⟨U₀, EE, ⟨O⟩, hO, -, hhom, -⟩ := hY
   have hπ : Y.pt ≫ πY = X₁.M.pt :=
     hhom.trans ((congrArg (· ≫ X₁.M.pt) (Spec.map_id _)).trans (Category.id_comp _))
-  obtain ⟨ψ, hψ, hψL, hψE⟩ := GlobalTheory.T.zarhinModel_genericFibre_isPullback_thetaSystem X₁ Y U₀ EE O hO
+  obtain ⟨ψ, hψ, hψL, hψE⟩ := _root_.GlobalTheory.ZH.GenFib.genFib_pullback X₁ Y U₀ EE O hO
   have hab : (ξ ⁻¹' abLocus O.G).Nonempty := by
     refine ⟨jK V (closedPoint (FractionRing V)), ?_⟩
     have e1 : ξ (jK V (closedPoint (FractionRing V))) = Y.pt (spMap e (closedPoint (FractionRing V))) :=
       congrArg (fun f : Sp (FractionRing V) ⟶ Y.Z => f (closedPoint (FractionRing V))) hjξ
     rw [Set.mem_preimage, e1]
     exact GlobalTheory.Mum.CoverPull.pt_mem_abLocus _ _ X₁.S X₁.ρ Y U₀ EE hO O _
-  obtain ⟨D, A, U, β, hβ, hβL, hβE⟩ := GlobalTheory.T.exists_uniformisation_at_completeTrait_of_model X₁ Y U₀ EE O V hcpl hchar ξ e hjξ hab
+  obtain ⟨D, A, U, β, hβ, hβL, hβE⟩ := _root_.GlobalTheory.Poinc.Sep.exists_unif_trait X₁ Y U₀ EE O V hcpl hchar ξ e hjξ hab
   have hpt : jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ = spMap e ≫ X₁.M.pt := by
     rw [← hξ, ← Category.assoc, hjξ, Category.assoc, hπ]
   have hend : ∀ a, ∃ E : EndU U.toUnifPre, E.aA.left ≫ (β ≫ ψ) = (β ≫ ψ) ≫ (act a).left := by

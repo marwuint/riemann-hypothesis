@@ -132,33 +132,4 @@ theorem cayley_inverse_measurable : CayInvMeas := by
   classical
   exact hcont.measurable_piecewise continuousOn_const hO.measurableSet
 
-theorem cayley_set_measurable : CaySUnivMeas := by
-  intro P Q
-  have hmat : Continuous (UpqT.mat (P := P) (Q := Q)) := (isInducing_mat P Q).continuous
-  set C : Set (UpqT P Q × lieU P Q) := {p | UpqT.mat p.1 *
-    ((1 + 1) - ((p.2 : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)) =
-      (1 + 1) + ((p.2 : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)}
-  have hC : IsClosed C := by
-    have hv : Continuous fun p : UpqT P Q × lieU P Q =>
-        ((p.2 : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :=
-      continuous_subtype_val.comp continuous_snd
-    exact isClosed_eq ((hmat.comp continuous_fst).matrix_mul (continuous_const.sub hv))
-      (continuous_const.add hv)
-  have e : cayS (Set.univ : Set (lieU P Q)) = (fun g => (g, cayInv P Q g)) ⁻¹' C := by
-    ext g
-    constructor
-    · rintro ⟨X, -, h⟩
-      show UpqT.mat g * ((1 + 1) - ((cayInv P Q g : lieU P Q) :
-          Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)) =
-        (1 + 1) + ((cayInv P Q g : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)
-      rw [cayley_inverse_iff P Q g X h]
-      exact h
-    · intro h
-      exact ⟨cayInv P Q g, Set.mem_univ _, h⟩
-  rw [e]
-  exact (measurable_id.prodMk (cayley_inverse_measurable P Q)) hC.measurableSet
-
-theorem cayleyLoc_of_dens (h : CayleyDens) : CayleyLoc :=
-  cayleyLoc_of cayley_inverse_measurable cayley_inverse_iff cayley_set_measurable h
-
 end HcInf

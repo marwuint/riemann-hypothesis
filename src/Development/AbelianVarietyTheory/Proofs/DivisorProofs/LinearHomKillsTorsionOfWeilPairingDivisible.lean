@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLinearHomProd
 import Development.AbelianVarietyTheory.Counterexamples.JetSurvey.PairingIsoPullback
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.LawsFieldsSeparately
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.WeilIsAlternatingSkewNatural
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionCmUnitaryShimuraMemClosureLinearHomImagesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionCmUnitaryShimuraMemClosureLinearHomImages
 
 set_option autoImplicit false
 
@@ -78,7 +78,7 @@ theorem kill : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Recip
     suffices h : Out.WeilIs X.B.pol.A X.B.pol.L n y (u ≫ ψ) 1 by
       have := GlobalTheory.CommPairing.weilIs_symm X.B.pol.isLB h
       rwa [inv_one] at this
-    have hmem := GlobalTheory.T.torsion_cmUnitaryShimura_mem_closure_linearHom_images E H hH K ρ σ₁ p X n hn y hy
+    have hmem := _root_.GlobalTheory.FlatCM.TorsGen.gen E H hH K ρ σ₁ p X n hn y hy
     clear hy
     induction hmem using Submonoid.closure_induction with
     | mem w hw =>

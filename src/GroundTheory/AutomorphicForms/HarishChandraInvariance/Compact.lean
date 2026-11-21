@@ -88,19 +88,6 @@ theorem mulEquivHaarChar_conjCME_eq_one {K : Subgroup G} (hK : IsCompact (K : Se
   rw [h3] at this
   exact lt_irrefl _ this
 
-theorem map_conj_eq_self_of_mem (μ : Measure G) [μ.IsHaarMeasure] [μ.Regular] {K : Subgroup G}
-    (hK : IsCompact (K : Set G)) {k : G} (hk : k ∈ K) : μ.map (conjCME k) = μ := by
-  have e := mulEquivHaarChar_smul_map μ (conjCME k)
-  rwa [mulEquivHaarChar_conjCME_eq_one hK hk, one_smul] at e
-
-theorem integral_conj_eq_self_of_mem (μ : Measure G) [μ.IsHaarMeasure] [μ.Regular]
-    {K : Subgroup G} (hK : IsCompact (K : Set G)) {k : G} (hk : k ∈ K) {E : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] (F : G → E) :
-    ∫ y, F (k * y * k⁻¹) ∂μ = ∫ y, F y ∂μ := by
-  have e := integral_map_equiv (conjCME k).toHomeomorph.toMeasurableEquiv (μ := μ) F
-  conv_rhs => rw [← map_conj_eq_self_of_mem μ hK hk]
-  exact e.symm
-
 end Conj
 
 section Closed
@@ -193,16 +180,6 @@ theorem isCompact_maxCompact_of_isClosed {G : Subgroup (Matrix ι ι 𝕜)ˣ}
     exact ⟨g, g.2, rfl⟩
   have huG : u ∈ G := hG.closure_subset hu
   exact ⟨haS, ⟨u, huG⟩, rfl⟩
-
-theorem IsExpLieAlgebra.isCompact_maxCompact_real {G : Subgroup (Matrix ι ι ℝ)ˣ}
-    {𝔤 : Submodule ℝ (Matrix ι ι ℝ)} (h : IsExpLieAlgebra G 𝔤) :
-    IsCompact ((maxCompact G : Subgroup G) : Set G) :=
-  isCompact_maxCompact_of_isClosed h.isClosed
-
-theorem IsExpLieAlgebra.isCompact_maxCompact_complex {G : Subgroup (Matrix ι ι ℂ)ˣ}
-    {𝔤 : Submodule ℝ (Matrix ι ι ℂ)} (h : IsExpLieAlgebra G 𝔤) :
-    IsCompact ((maxCompact G : Subgroup G) : Set G) :=
-  isCompact_maxCompact_of_isClosed h.isClosed
 
 end MaxCompact
 

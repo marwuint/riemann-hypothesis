@@ -7,12 +7,14 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ResidualConst
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EmbeddingMapsIntoGoodExtension
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitsOfConjugatesMem
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrysIffOfTwist
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineBcrisBasicTheoremsProofStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DirectSumDeRhamCrystallineJumpsAddStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycZpowCrysDRJumpStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegCycPowerBlockCrysDeRhamJumpsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineBcrisBasicTheoremsProof
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DirectSumDeRhamCrystallineJumpsAdd
+import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycZpowCrysDRJump
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegCycPowerBlockCrysDeRhamJumps
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocChiEpsU
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensionalStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensional
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain
 
@@ -186,8 +188,8 @@ theorem local_core (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) 
           multV (P.PD K) (matRep M) τ a - (if 0 ≤ a ∧ a < (t : ℤ) then 1 else 0) ∧
         multV (P.PD K) (matRep T) τ a = multV (P.PD K) (matRep W) τ (-a - 1)) := by
   obtain ⟨Z, hZ⟩ := exists_block t (cycLL (P.PD K) ↥LL.1)
-  obtain ⟨-, -, zm⟩ := GlobalTheory.T.negCycPowerBlock_crys_deRham_jumps l P AI hT K LL t Z hZ
-  obtain ⟨sd, sc, sm⟩ := GlobalTheory.T.directSum_deRham_crystalline_jumps_add l P AI hT K LL _ (matRep M) _ (matRep W) _ Z e
+  obtain ⟨-, -, zm⟩ := _root_.GlobalTheory.negCycBlock_jumps l P AI hT K LL t Z hZ
+  obtain ⟨sd, sc, sm⟩ := _root_.GlobalTheory.Per.DirectSumHT.directSum_hodgeTate l P AI hT K LL _ (matRep M) _ (matRep W) _ Z e
     (fun g v => by
       rw [matRep_apply, he, matRep_apply]
       exact Prod.ext rfl (funext fun c => (hZ g _ c).symm))
@@ -196,7 +198,7 @@ theorem local_core (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) 
     have hW := (sc.1 hM).1
     refine ⟨hW, ?_⟩
     have h := (GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.fontaineFormalism_iff l P).1
-      (GlobalTheory.RegularRing.fontaineFormalism GlobalTheory.T.fontaineBcrisBasicTheorems_proof l P AI ⟨hT⟩) K LL
+      (GlobalTheory.RegularRing.fontaineFormalism _root_.GlobalTheory.MemLoc.fontaineBcris l P AI ⟨hT⟩) K LL
     have hq := h.2.2.2.2.1
     have ht := h.2.2.2.2.2.2.1
     have hd := h.2.2.2.2.2.2.2.1
@@ -206,10 +208,10 @@ theorem local_core (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) 
     exact GlobalTheory.TwistCrys.isCrys_twist (P.PD K) ht hq (matRep (dualM W)) (matRep T)
       (WeaklyAdmissibleFiltrations.charRep (cycLL (P.PD K) ↥LL.1 ^ (1 : ℤ)))
       (fun g => ((cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1)) LinearMap.id 1 rfl
-      (charRep_one_apply _) (twist_dual_apply W T _ hTW) (GlobalTheory.T.cyc_zpow_crys_dR_jump_alt l P AI hT K LL 1).1 hD
+      (charRep_one_apply _) (twist_dual_apply W T _ hTW) (_root_.GlobalTheory.CycPow.cyc_zpow_crys_dR_jump l P AI hT K LL 1).1 hD
   · intro hM
     have hW := (sd.1 hM).1
-    obtain ⟨td, tm⟩ := GlobalTheory.T.galois_representation_hom_finite_dimensional l P AI hT K LL _ (matRep W) _ (matRep T)
+    obtain ⟨td, tm⟩ := _root_.GlobalTheory.DRDual.twisted_dual_deRham l P AI hT K LL _ (matRep W) _ (matRep T)
       _ 1 (LinearEquiv.bijective _) (pairing_twist W T _ hTW) hW
     refine ⟨hW, td, fun τ a => ⟨?_, ?_⟩⟩
     · rw [sm τ a, zm τ a, add_sub_cancel_right]

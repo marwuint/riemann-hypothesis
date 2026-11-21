@@ -1,7 +1,12 @@
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.ResidueVanishing.Leaves
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelWeilDoubledSpaceOfStandardUnitary
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousStandardUnitaryChartAndSymmStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StandardUnitaryChartSiegelLeviDetEqStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousStandardUnitaryChartAndSymm
+import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinPolesStd
+import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinSimplePoleOfDoublingMethod
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HalfData
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StandardUnitaryChartSiegelLeviDetEq
+import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWeilUnitaryConvergent
 noncomputable section
 open scoped ComplexConjugate Matrix NNReal
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField
@@ -16,13 +21,13 @@ namespace PositivityTheory.Rg.Rsw.Kplug
 set_option maxHeartbeats 1000000 in
 theorem continuation_through_chart : ContinuationThroughChart := by
   intro D ψ A B χ omh hW ν 𝓨 hν θ hθ μ hμ κ hκ omS hT lam hlam a ha p hp f hf hK Φ hΦ U d E hU hR hs hd hhol hc hi he
-  obtain ⟨h0, hflat, hact⟩ := GlobalTheory.T.doubledFlatSection_eq_translate_standardSection D ψ A B χ omh hW ν 𝓨 hν θ hθ μ hμ κ hκ omS hT lam hlam a p f hf Φ hΦ
+  obtain ⟨h0, hflat, hact⟩ := _root_.GlobalTheory.StdUnn.flat_swSec_eq_sect D ψ A B χ omh hW ν 𝓨 hν θ hθ μ hμ κ hκ omS hT lam hlam a p f hf Φ hΦ
   have hIw := GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a ha
   have hmem := GlobalTheory.SwSecMem.swSec_mem_degPS GlobalTheory.weilRepresentationUnitaryPair D ψ A B χ omh hW ν 𝓨 hν f hf a hK
-  have hχ := GlobalTheory.T.isHeckeChar_restrictionEta_inv D χ B.rank hW.hecT hW.resT
+  have hχ := _root_.GlobalTheory.StdUnn.isHeckeChar_resEta_inv D χ B.rank hW.hecT hW.resT
   have hP' := GlobalTheory.T.mem_doublingSiegelParabolic_iff_chart_mem_siegelUnn D A μ hμ κ hκ
-  have hG' := GlobalTheory.T.standardUnitaryChart_mem_rational_iff D A μ hμ κ hκ
-  obtain ⟨hκc, hκc'⟩ := GlobalTheory.T.continuous_standardUnitaryChart_and_symm D A μ hμ κ hκ
+  have hG' := _root_.GlobalTheory.StdUnn.chart_mem_GF_iff D A μ hμ κ hκ
+  obtain ⟨hκc, hκc'⟩ := _root_.GlobalTheory.StdUnn.chart_continuous D A μ hμ κ hκ
   have hr : 0 < absA D (aP A p) := hom_pos _ _
   have hfs : ∀ z, fam (hgtStd A a κ p) (fun g => (omS g Φ).1 0) (sZero A B) z = sect omS (hgtStd A a κ p) Φ z := fun z => by
     funext g; simp only [fam, sect, h0]
@@ -41,7 +46,7 @@ theorem continuation_through_chart : ContinuationThroughChart := by
       npow (absA D (aP A p)) (sZero A B - z) * eisS (fam (hgtStd A a κ p) (fun g => (omS g Φ).1 0) (sZero A B) z) (κ (g * p)) :=
     fun z g => by
       rw [hfs]
-      exact ((GlobalTheory.T.cosetSum_along_mulEquiv_subgroups _ _ κ (siegel A) (GQ (dblSp A)) (P D A.rank) (GF D A.rank) hP' hG' _ _ _ _ (fun g => hflat z g) (hL z)).2 g).2
+      exact ((_root_.GlobalTheory.StdUnn.cosetSum_along_mulEquiv _ _ κ (siegel A) (GQ (dblSp A)) (P D A.rank) (GF D A.rank) hP' hG' _ _ _ _ (fun g => hflat z g) (hL z)).2 g).2
   refine ⟨?_, ⟨hU, hR, hs, hd, fun g => ?_, ?_, fun z hz γ hγ g => ?_, fun z hz g => ?_⟩, fun z _ g => h3 z g⟩
   · have e : (fun g => (omS g Φ).1 0) = fun g => swSec A B omh ν 𝓨 f (κ.symm g * (p : GA D (dblSp A))⁻¹) := by
       funext g
@@ -67,14 +72,14 @@ theorem continuation_chart_defined : KillingPolyConst := by
   intro D A μ hμ κ hκ a ha p hp
   have hI := GlobalTheory.Eis.isIwasawa_Khat (GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a ha)
   have hIw := GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a ha
-  obtain ⟨-, hκc'⟩ := GlobalTheory.T.continuous_standardUnitaryChart_and_symm D A μ hμ κ hκ
+  obtain ⟨-, hκc'⟩ := _root_.GlobalTheory.StdUnn.chart_continuous D A μ hμ κ hκ
   haveI := t2Space_adeleRing' (F := D.host.F)
   have h1 : Continuous (hgt A a) := hIw.continuous_hgtH continuous_absE (isCompact_Khat A a)
   refine ⟨⟨(h1.comp (hκc'.mul continuous_const)).mul continuous_const, fun g => mul_pos (hgtH_pos _) (hom_pos _ _),
     fun q hq α hα g => ?_⟩, ?_⟩
   · have hq' : κ.symm q ∈ siegel A := (GlobalTheory.T.mem_doublingSiegelParabolic_iff_chart_mem_siegelUnn D A μ hμ κ hκ (κ.symm q)).2 (by simpa using hq)
     have hdet : aP A ⟨κ.symm q, hq'⟩ = Matrix.GeneralLinearGroup.det α :=
-      GlobalTheory.T.standardUnitaryChart_siegelLeviDet_eq D A μ hμ κ hκ ⟨κ.symm q, hq'⟩ α (by simpa using hα)
+      _root_.GlobalTheory.StdUnn.chart_aP_eq_det D A μ hμ κ hκ ⟨κ.symm q, hq'⟩ α (by simpa using hα)
     have e : hgt A a (κ.symm q * (κ.symm g * (p : GA D (dblSp A))⁻¹)) =
         absA D (aP A ⟨κ.symm q, hq'⟩) * hgt A a (κ.symm g * (p : GA D (dblSp A))⁻¹) := hI.iwAbs_left ⟨κ.symm q, hq'⟩ _
     simp only [hgtStd]
@@ -126,9 +131,9 @@ theorem theta_kernel_identity (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : In
     (omS : G D A.rank →* Module.End ℂ (schwartzA θ W.rank A.rank)) (hT : IsTransport ψ θ A W ν 𝓨 omh κ omS)
     (p : GA D (dblSp A)) (Ψ : schwartzA θ W.rank A.rank) :
     ∃ f, IsThetaFunO ψ (dblSp A) W f ∧ ∀ g h, theta omS Ψ (κ (g * p)) h = thetaKO omh g h f := by
-  obtain ⟨f, hf, e⟩ := (GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ hW.std θ hθ A W ν 𝓨 hν).2.1 Ψ.1 Ψ.2
+  obtain ⟨f, hf, e⟩ := (_root_.GlobalTheory.SchSchwartzAll.schSchwartz D ψ hW.std θ hθ A W ν 𝓨 hν).2.1 Ψ.1 Ψ.2
   refine ⟨omh (p, 1) f, hW.om_pres _ f hf, fun g h => ?_⟩
-  rw [theta, hT (g * p) f hf Ψ e.symm, ← GlobalTheory.T.thetaKernel_eq_tsum_schrodingerFunction D ψ A W χ omh hW ν 𝓨 hν f hf (g * p) h]
+  rw [theta, hT (g * p) f hf Ψ e.symm, ← _root_.GlobalTheory.StdUnn.thetaKO_eq_tsum_sch D ψ A W χ omh hW ν 𝓨 hν f hf (g * p) h]
   unfold thetaKO
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 

@@ -117,15 +117,6 @@ section star
 
 variable {A : Type*} [CommRing A] [StarRing A]
 
-theorem mulVec_eq_star {H : Matrix m m A} (hH : Hᴴ = H) (x : m → A) :
-    H *ᵥ x = star (star x ᵥ* H) := by
-  ext i
-  have hHij : ∀ j, star (H j i) = H i j := fun j => by
-    rw [← Matrix.conjTranspose_apply, hH]
-  simp only [Matrix.mulVec, Matrix.vecMul, dotProduct, Pi.star_apply, star_sum, star_mul',
-    star_star, hHij]
-  exact Finset.sum_congr rfl (fun j _ => mul_comm _ _)
-
 theorem fm_eq (H : Matrix m m A) (x y : m → A) : fm H x y = (star x ᵥ* H) ⬝ᵥ y := Matrix.dotProduct_mulVec (star x) H y
 
 theorem fm_star {H : Matrix m m A} (hH : Hᴴ = H) (x y : m → A) : fm H y x = star (fm H x y) := by

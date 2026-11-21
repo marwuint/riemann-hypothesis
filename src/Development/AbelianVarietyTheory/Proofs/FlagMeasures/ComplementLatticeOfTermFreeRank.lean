@@ -15,18 +15,6 @@ namespace GlobalTheory.HL.CompLat
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
-theorem exists_mul_mem (L : LocE F E) (e : E) :
-    ∃ c : F, c ≠ 0 ∧ algebraMap F E c ∈ L.O ∧ algebraMap F E c * e ∈ L.O := by
-  have := L.free
-  have : Module.Finite F E := Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)
-  have h1 : IsAlgebraic 𝒪[F] e :=
-    (IsFractionRing.isAlgebraic_iff 𝒪[F] F E).2 (Algebra.IsAlgebraic.isAlgebraic e)
-  obtain ⟨c, hc, hi⟩ := h1.exists_integral_multiple
-  refine ⟨c, by simpa using hc, (L.O_def _).2 (isIntegral_algebraMap (R := 𝒪[F]) (x := c)),
-    (L.O_def _).2 ?_⟩
-  rw [Algebra.smul_def] at hi
-  exact hi
-
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
 def diagGraph (Λ : Submodule L.O S.V) : Submodule L.O S.V where

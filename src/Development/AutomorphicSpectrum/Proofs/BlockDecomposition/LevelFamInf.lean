@@ -79,12 +79,6 @@ variable [IsTopologicalGroup H]
 
 end Generic
 
-section Fam
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
-
-end Fam
-
 end GlobalTheory.CompanionTheory.FamClP
 
 end

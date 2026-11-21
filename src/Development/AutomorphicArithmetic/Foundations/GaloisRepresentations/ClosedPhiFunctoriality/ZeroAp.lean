@@ -8,7 +8,7 @@ open UpperTheory.Gal.ClosedPhiFromClosedTrace
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.zeroAp_holds :
     ZeroAp := by
   intro l _ K bk c M
-  obtain ⟨htor, -, -, hphi, -⟩ := GlobalTheory.T.acris_torsionFree_complete_frobenius_properties l K bk
+  obtain ⟨htor, -, -, hphi, -⟩ := _root_.GlobalTheory.AcrisFrobE.main l K bk
   obtain ⟨n₀, hn₀⟩ := GlobalTheory.T.primePow_dvd_tiltUniformizer_pow_acris_eventually l K bk c M
   refine ⟨c * n₀ + M, ?_⟩
   intro d d' D F F' hdiv hcong

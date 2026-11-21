@@ -218,10 +218,6 @@ theorem congW_intCast (c : ℤ) : CongW (w := w) p (c : I.E ⊗[I.F] Af I.F) (c 
 theorem congW_natCast (c : ℕ) : CongW (w := w) p (c : I.E ⊗[I.F] Af I.F) (c : ZMod p) :=
   ⟨c, by simp, by simp⟩
 
-theorem congW_val [NeZero p] {t : I.E ⊗[I.F] Af I.F} {m : ZMod p}
-    (h : t - ((m.val : ℕ) : I.E ⊗[I.F] Af I.F) ∈ Wq I w) : CongW (w := w) p t m :=
-  ⟨m.val, by simp, by simpa using h⟩
-
 theorem congW_add {t t' : I.E ⊗[I.F] Af I.F} {m m' : ZMod p} (h : CongW (w := w) p t m)
     (h' : CongW (w := w) p t' m') : CongW (w := w) p (t + t') (m + m') := by
   obtain ⟨c, rfl, hc⟩ := h

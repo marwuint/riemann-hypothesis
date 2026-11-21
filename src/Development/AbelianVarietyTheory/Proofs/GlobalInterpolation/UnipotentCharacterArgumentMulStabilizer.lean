@@ -80,20 +80,6 @@ theorem intHom_iff {P : HeightOneSpectrum (𝓞 E)} {a b : ℕ} (y : (Fin a → 
 theorem mem_stdAt_iff [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {N : ℕ} (v : Fin N → E) : v ∈ stdAt E N P ↔ IntV P v :=
   mem_localization_standardLattice P v
 
-open Classical in
-
-example (P : HeightOneSpectrum (𝓞 E)) (a b : ℕ) :
-    HomBdd P 0 (fun x : (Fin a → E) →ₗ[E] (Fin b → E) => if IntHom P x then (1 : K) else 0) := by
-  refine ⟨fun x hx => ?_, fun x y hy => ?_⟩
-  · by_contra h
-    rw [pow_zero, one_smul] at h
-    simp [h] at hx
-  · have : IntHom P (x + y) ↔ IntHom P x := by
-      refine ⟨fun h v hv => ?_, fun h v hv => (h v hv).add (hy v hv)⟩
-      have := (h v hv).add (hy v hv).neg
-      simpa using this
-    simp [this]
-
 section Flags
 
 variable {F : Type} [Field F] {n c : ℕ}

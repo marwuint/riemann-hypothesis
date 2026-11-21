@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigOfOmegaInjectiveOfEqZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquarePresentationOfCounitalComulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFactorAtAugmentationCounitalComulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPresentationSquareAtPointOfLocalFactorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftSquarePresentationOfFlatStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquarePresentationOfCounitalComul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFactorAtAugmentationCounitalComul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPresentationSquareAtPointOfLocalFactor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftSquarePresentationOfFlat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CotangentMapInjectiveOfSquarePresentationAtPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulPFlatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupMulPUnitFibreEqLevelOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatCastSmulMemAugIdealSqSupMapMulPStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulPFlat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupMulPUnitFibreEqLevelOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatCastSmulMemAugIdealSqSupMapMulP
 open scoped TensorProduct
 
 theorem GlobalTheory.PDivGroup.mulP_mem_sq_counit : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O], (p : O) ≠ 0 → ¬IsUnit (p : O) → (∀ a : O, ∃ b : O, b ^ p = a) → ∀ (G : GlobalTheory.PDivGroup p O) (n : ℕ) (b : G.A n), G.mulP n b ∈ RingHom.ker (Bialgebra.counitAlgHom O (G.A (n + 1))) ^ 2 → b ∈ RingHom.ker (Bialgebra.counitAlgHom O (G.A n)) ^ 2 := by
@@ -28,7 +28,7 @@ theorem GlobalTheory.PDivGroup.mulP_mem_sq_counit : ∀ (p : ℕ) [Fact p.Prime]
     ((G.mulP n : G.A n →ₐ[O] G.A (n + 1)) : G.A n →+* G.A (n + 1)).toAlgebra
   haveI : IsScalarTower O (G.A n) (G.A (n + 1)) :=
     IsScalarTower.of_algebraMap_eq fun c => ((G.mulP n : G.A n →ₐ[O] G.A (n + 1)).commutes c).symm
-  haveI : Module.Flat (G.A n) (G.A (n + 1)) := GlobalTheory.T.mulP_flat' p O G n
+  haveI : Module.Flat (G.A n) (G.A (n + 1)) := _root_.GlobalTheory.PDivGroup.mulP_flat p O G n
   have hε : ∀ b : G.A n, Bialgebra.counitAlgHom O (G.A (n + 1)) (algebraMap (G.A n) (G.A (n + 1)) b) =
       Bialgebra.counitAlgHom O (G.A n) b := fun b => by
     rw [Bialgebra.counitAlgHom_apply, Bialgebra.counitAlgHom_apply]
@@ -46,7 +46,7 @@ theorem GlobalTheory.PDivGroup.mulP_mem_sq_counit : ∀ (p : ℕ) [Fact p.Prime]
     rw [IsLocalRing.ResidueField.algebraMap_eq]; exact IsLocalRing.residue_surjective
   have hπk : RingHom.ker (algebraMap O (IsLocalRing.ResidueField O)) = IsLocalRing.maximalIdeal O := by
     rw [IsLocalRing.ResidueField.algebraMap_eq, IsLocalRing.ker_residue]
-  have hfib := GlobalTheory.T.pDivGroup_mulP_unit_fiber_eq_level_one p O (IsLocalRing.ResidueField O) hπs G n
+  have hfib := _root_.GlobalTheory.fibre_statement p O (IsLocalRing.ResidueField O) hπs G n
   have hρs : Function.Surjective ρ := fun h => by
     obtain ⟨a, ha⟩ := hfib.1 h
     exact ⟨a, by rw [hρ]; exact ha⟩
@@ -89,8 +89,8 @@ theorem GlobalTheory.PDivGroup.mulP_mem_sq_counit : ∀ (p : ℕ) [Fact p.Prime]
       rw [Bialgebra.comulAlgHom_apply]
       erw [Coalgebra.lTensor_counit_comul]
       simp
-  obtain ⟨e, he1, hei, ε', Δ', hlaws', hnil⟩ := GlobalTheory.T.localFactor_at_augmentation_counital_comul _ _ _ _ hlaws
-  have hpres := GlobalTheory.T.exists_square_presentation_of_counit_isNilpotent_ker p _ _ ε' Δ' hlaws' hnil
+  obtain ⟨e, he1, hei, ε', Δ', hlaws', hnil⟩ := _root_.GlobalTheory.localFactor_counital_descends _ _ _ _ hlaws
+  have hpres := _root_.GlobalTheory.square_presentation_of_counital_comul p _ _ ε' Δ' hlaws' hnil
 
   obtain ⟨r, f₀, hf₀⟩ := Algebra.FiniteType.iff_quotient_mvPolynomial''.1
     (inferInstance : Algebra.FiniteType O (G.A (n + 1)))
@@ -108,7 +108,7 @@ theorem GlobalTheory.PDivGroup.mulP_mem_sq_counit : ∀ (p : ℕ) [Fact p.Prime]
     obtain ⟨y, rfl⟩ := hρs h
     obtain ⟨q, rfl⟩ := hf₀ y
     exact ⟨_, (hmap (fun i => f₀ (MvPolynomial.X i)) q).trans (by rw [← hfa])⟩
-  obtain ⟨s, y, g, hg0, hgker⟩ := GlobalTheory.T.exists_presentation_square_at_point_of_localFactor _ _ _ e he1 hei hpres r _ haH
+  obtain ⟨s, y, g, hg0, hgker⟩ := _root_.GlobalTheory.sqloc_present _ _ _ e he1 hei hpres r _ haH
   choose yt hyt using fun i => hρs (y i)
   obtain ⟨x, hxd⟩ : ∃ x : Fin s ⊕ Fin r → G.A (n + 1), x = Sum.elim yt (fun i => f₀ (MvPolynomial.X i)) := ⟨_, rfl⟩
   have hx : (fun j => ρ (x j)) = Sum.elim y (fun i => ρ (f₀ (MvPolynomial.X i))) := by
@@ -126,7 +126,7 @@ theorem GlobalTheory.PDivGroup.mulP_mem_sq_counit : ∀ (p : ℕ) [Fact p.Prime]
     Algebra.FinitePresentation.of_restrict_scalars_finitePresentation O _ _
   have hFG : (RingHom.ker (MvPolynomial.aeval x : MvPolynomial (Fin s ⊕ Fin r) (G.A n) →ₐ[G.A n] G.A (n + 1))).FG :=
     Algebra.FinitePresentation.ker_fG_of_surjective _ hxs
-  obtain ⟨f, hf0, hfker⟩ := GlobalTheory.T.lift_square_presentation_of_flat_alt O (G.A n) (G.A (n + 1)) (IsLocalRing.ResidueField O) _ (Fin s ⊕ Fin r)
+  obtain ⟨f, hf0, hfker⟩ := _root_.GlobalTheory.lift_square_presentation_of_flat O (G.A n) (G.A (n + 1)) (IsLocalRing.ResidueField O) _ (Fin s ⊕ Fin r)
     (Bialgebra.counitAlgHom O (G.A (n + 1))) (algebraMap O (IsLocalRing.ResidueField O)) ρ
     (Bialgebra.counitAlgHom (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField O ⊗[O] G.A 1)) x
     hπs hπk hρalg hεH hkerρ hxs hFG g (by rw [hx]; exact hg0) (by rw [hx]; exact hgker)
@@ -135,7 +135,7 @@ theorem GlobalTheory.PDivGroup.mulP_mem_sq_counit : ∀ (p : ℕ) [Fact p.Prime]
         ((RingHom.ker (Bialgebra.counitAlgHom O (G.A (n + 1)))).comap (algebraMap (G.A n) (G.A (n + 1)))).map
           (algebraMap (G.A n) (G.A (n + 1))) := by
     rw [hker]
-    exact GlobalTheory.T.natCast_smul_mem_augIdealSq_sup_map_mulP p O G n
+    exact _root_.GlobalTheory.PDivGroup.natCast_smul_mem_augSq_sup_map p O G n
   have := GlobalTheory.T.cotangent_map_injective_of_square_presentation_at_point O (G.A n) (G.A (n + 1)) (Fin s ⊕ Fin r) (Bialgebra.counitAlgHom O (G.A (n + 1))) x f (p : O)
     hp0 hxs hf0 hfker hpt b hb
   rwa [hker] at this

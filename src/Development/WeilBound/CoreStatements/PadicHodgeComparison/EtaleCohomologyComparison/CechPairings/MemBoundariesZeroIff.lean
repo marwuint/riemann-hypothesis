@@ -575,16 +575,3 @@ theorem CrystallineSemistableComparison.P.ses_cochains : ∀ {R : Type} [CommRin
     exact (he _ _).2 ⟨_, rfl⟩
   · exact ⟨fun s => (hs _ (y s)).choose, funext fun s => (hs _ (y s)).choose_spec⟩
 
-theorem CrystallineSemistableComparison.P.ses_sub : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F : C ⥤ ModuleCat.{w} R} (S : SubF F), (∀ n, Function.Injective (S.inc.hom.f n)) ∧ (∀ n, Function.Exact (S.inc.hom.f n) (S.proj.hom.f n)) ∧ ∀ n, Function.Surjective (S.proj.hom.f n) := by
-  intro R _ C _ F S
-  refine ⟨fun n x y hxy => ?_, fun n y => ⟨fun hy => ?_, ?_⟩, fun n y => ?_⟩
-  · funext s
-    exact Subtype.val_injective (congrFun hxy s)
-  · refine ⟨fun s => ⟨y s, (Submodule.Quotient.mk_eq_zero _).1 (congrFun hy s)⟩, ?_⟩
-    funext s
-    rfl
-  · rintro ⟨x, rfl⟩
-    funext s
-    exact (Submodule.Quotient.mk_eq_zero _).2 (x _).2
-  · exact ⟨fun s => (Submodule.Quotient.mk_surjective _ (y s)).choose,
-      funext fun s => (Submodule.Quotient.mk_surjective _ (y s)).choose_spec⟩

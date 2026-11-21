@@ -34,15 +34,6 @@ def FormCoreC : Prop :=
         ∃ U ∈ 𝓝 t₀, ∀ᵐ t ∂(volume.restrict U), β (Φ t) (Φ t) = c t) →
     ∀ x ∈ W, ∀ y ∈ W, β x y = βi x y
 
-def FormCore : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V) (β βi : V → V → ℂ),
-    IsSesq β → IsSesq βi → IsNonneg β → (∀ x, (β x x).re ≤ (βi x x).re) →
-    (∀ x ∈ W, ∃ (Φ : ℝ × ℝ → V) (t₀ : ℝ × ℝ),
-        Φ t₀ = x ∧ ContinuousAt (fun t => βi (Φ t) (Φ t)) t₀ ∧
-        Tendsto (fun t => (βi (Φ t - x) (Φ t - x)).re) (𝓝 t₀) (𝓝 0) ∧
-        ∃ U ∈ 𝓝 t₀, ∀ᵐ t ∂(volume.restrict U), β (Φ t) (Φ t) = βi (Φ t) (Φ t)) →
-    ∀ x ∈ W, ∀ y ∈ W, β x y = βi x y
-
 def Quad : Set (ℝ × ℝ) := Set.Ioi 0 ×ˢ Set.Ioi 0
 
 def IsTest (w : ℝ → ℝ) : Prop := ContDiff ℝ 2 w ∧ HasCompactSupport w ∧ tsupport w ⊆ Set.Ioi 0
@@ -390,10 +381,6 @@ def DiagDom (D : RealPlaceData k r Wp Wq) (A : ℝ) : Prop :=
   ∀ F : Mat k r → (Wq →L[ℂ] Wp), InCC A 4 F → ∀ τ ∈ Quad,
     (betaInfTau D τ F F).im = 0 ∧ normSqTau D τ F ≤ ENNReal.ofReal (betaInfTau D τ F F).re
 
-def DiagEq (D : RealPlaceData k r Wp Wq) (A : ℝ) : Prop :=
-  ∀ F : Mat k r → (Wq →L[ℂ] Wp), InCC A 5 F → ∀ τ ∈ Quad,
-    normSqTau D τ F ≠ ∞ ∧ (((normSqTau D τ F).toReal : ℝ) : ℂ) = betaInfTau D τ F F
-
 end lemmaB
 
 def DilMem : Prop := ∀ (k r : ℕ) (t : ℝ), t ≠ 0 → aDil k r t ∈ GV k r
@@ -488,13 +475,6 @@ def AssembleEq : Prop :=
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : RealPlaceData k r Wp Wq)
     (A : ℝ), 0 ≤ A → RegBound D A → RegAverage D A → Unfold D A → JCont D A → DilBeta D A →
     PairingContinuityBound D A ∧ PairingEqLimitPairing D A
-
-def AssembleDiag : Prop :=
-  FormCoreC → AeFromTests → FatouParam → CCLin → DilCC →
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : RealPlaceData k r Wp Wq)
-    (A : ℝ), 0 ≤ A → RegBound D A → RegAverage D A → Unfold D A → JCont D A → DilBeta D A →
-    DiagDom D A ∧ DiagEq D A
 
 def AssembleAdj : Prop :=
   StepPhAdj → StepRegPh →

@@ -76,19 +76,6 @@ theorem RawChart.mem_tySet_iff (X : RawChart C d I κ) (V : VF C) (g : Fin 2) (x
 
 end Wit
 
-def RankMaximalInitialCoefficient : Prop :=
-  ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ)
-    (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (p : PairData Y d I),
-    (Y.raw p).RankHyp → ∀ Hc : ∀ g, (Y.raw p).CartHyp V g, (Y.raw p).AltC →
-    ∀ (g : Fin 2) (a : ZMod d), (Y.raw p).big g a →
-    ∀ (w : I g → C) (x : ℕ → I g ⊕ JJ I g → C), (RawChart.cart (Hc g)).Good a w x →
-    (∀ q, V.MM ((RawChart.cart (Hc g)).c0' x q)) →
-    ∀ (γ : Fin dd → PowerSeries C) (lam : JJ I g → PowerSeries C), (Y.raw p).TyWit V g x γ lam →
-      ∃ b : PS C 1 dd, IntS V b ∧ ∀ μ, V.MM (MvPowerSeries.coeff μ
-        (Y.chartLinearTerm (fun i => PowerSeries.coeff 1 (γ i)) -
-          (ev (n := 2) ![addOf Y.B.G.F (pt C dd 0) (pt C dd 1)] b - ev (n := 2) ![pt C dd 0] b -
-            ev (n := 2) ![pt C dd 1] b)))
-
 section MM
 
 variable {C : Type} [Field C] {V : VF C}
@@ -184,25 +171,6 @@ theorem tyS_good_coeff {g : Fin 2} {w : I g → C} {x : ℕ → I g ⊕ JJ I g �
 theorem coeffX' (n : ℕ) : PowerSeries.coeff n (MvPowerSeries.X () : PowerSeries C) = if n = 1 then 1 else 0 :=
   PowerSeries.coeff_X n
 
-theorem lgCv_agr (Y : FBChart C V O dd) (p : PairData Y d I) {g : Fin 2} {w : I g → C}
-    {x : ℕ → I g ⊕ JJ I g → C} (h0 : x 0 = Sum.elim w 0) (h1 : ∀ c, x 1 (Sum.inl c) = 0)
-    {γ : Fin dd → PowerSeries C}
-    (hlg : ∀ i, alongCv γ ((Y.raw p).lg i) = ∑ c : I g, (Y.raw p).u g c i • tyS V.l (fun s => x s (Sum.inl c)))
-    (i : Fin dd) :
-    Agr (V.l ^ 2) (alongCv γ ((Y.raw p).lg i))
-      ((∑ c, (Y.raw p).u g c i * w c) • (MvPowerSeries.X () : PowerSeries C)) := by
-  intro e he
-  have hl := V.l_prime.two_le
-  rw [hlg i]
-  obtain ⟨n, rfl⟩ : ∃ n, e = Finsupp.single () n := ⟨e (), Finsupp.unique_single e⟩
-  rw [Finsupp.degree_single] at he
-  change PowerSeries.coeff n _ = PowerSeries.coeff n _
-  rw [map_sum, map_smul, coeffX']
-  simp only [map_smul, smul_eq_mul, tyS_good_coeff h0 h1 hl _ n he]
-  by_cases hn1 : n = 1
-  · simp [hn1]
-  · simp [hn1]
-
 theorem lg_addOf (Y : FBChart C V O dd) {τ : Type} (P : Fin 2 → Fin dd → MvPowerSeries τ C)
     (hP : ∀ k j, MvPowerSeries.constantCoeff (P k j) = 0) (i : Fin dd) :
     MvPowerSeries.subst (fun j => MvPowerSeries.subst (fun q : Fin 2 × Fin dd => P q.1 q.2) (Y.B.G.F j))
@@ -228,127 +196,6 @@ theorem lg_addOf (Y : FBChart C V O dd) {τ : Type} (P : Fin 2 → Fin dd → Mv
   simp only [pt, MvPowerSeries.subst_X hPP] at key
   exact key
 
-theorem ex_lg_at (Y : FBChart C V O dd) (p : PairData Y d I) {τ : Type} (A : Fin dd → MvPowerSeries τ C)
-    (hA : ∀ j, MvPowerSeries.constantCoeff (A j) = 0) (i : Fin dd) :
-    MvPowerSeries.subst (fun j => MvPowerSeries.subst A ((Y.raw p).lg j)) ((Y.raw p).ex i) = A i := by
-  have hA' := MvPowerSeries.hasSubst_of_constantCoeff_zero hA
-  have hL : MvPowerSeries.HasSubst (Y.raw p).lg :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero fun j => Y.chart_log_constantCoeff p j
-  rw [← MvPowerSeries.subst_comp_subst_apply hL hA', Y.raw_exlg p, MvPowerSeries.subst_X hA']
-
-theorem hom_of_good (Y : FBChart C V O dd) (p : PairData Y d I) {g : Fin 2} {w : I g → C}
-    {x : ℕ → I g ⊕ JJ I g → C} (h0 : x 0 = Sum.elim w 0) (h1 : ∀ c, x 1 (Sum.inl c) = 0)
-    {γ : Fin dd → PowerSeries C} (hγ : IsCv V γ)
-    (hlg : ∀ i, alongCv γ ((Y.raw p).lg i) = ∑ c : I g, (Y.raw p).u g c i • tyS V.l (fun s => x s (Sum.inl c)))
-    (i : Fin dd) (μ : Fin 2 →₀ ℕ) (hμ0 : μ 0 < V.l) (hμ1 : μ 1 < V.l) :
-    MvPowerSeries.coeff μ
-      (MvPowerSeries.subst (fun q : Fin 2 × Fin dd => cvAt (MvPowerSeries.X q.1) (γ q.2)) (Y.B.G.F i) -
-        cvAt (MvPowerSeries.X 0 + MvPowerSeries.X 1) (γ i)) = 0 := by
-  have hl := V.l_prime.two_le
-  have hγ0 : ∀ j, PowerSeries.constantCoeff (γ j) = 0 := fun j => (hγ j).1
-  have hX : ∀ k : Fin 2, MvPowerSeries.constantCoeff (MvPowerSeries.X k : MvPowerSeries (Fin 2) C) = 0 :=
-    fun k => MvPowerSeries.constantCoeff_X k
-  have hS : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 + MvPowerSeries.X 1 : MvPowerSeries (Fin 2) C) = 0 := by
-    rw [map_add, hX 0, hX 1, add_zero]
-  have hP0 : ∀ (k : Fin 2) (j : Fin dd), MvPowerSeries.constantCoeff (cvAt (MvPowerSeries.X k) (γ j)) = 0 :=
-    fun k j => const_cvAt (hX k) (hγ0 j)
-  have hQ0 : ∀ j, MvPowerSeries.constantCoeff (cvAt (MvPowerSeries.X 0 + MvPowerSeries.X 1) (γ j)) = 0 :=
-    fun j => const_cvAt hS (hγ0 j)
-  have hPP : MvPowerSeries.HasSubst (fun q : Fin 2 × Fin dd => cvAt (MvPowerSeries.X q.1) (γ q.2)) :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hP0 q.1 q.2
-  have hFP0 : ∀ j, MvPowerSeries.constantCoeff
-      (MvPowerSeries.subst (fun q : Fin 2 × Fin dd => cvAt (MvPowerSeries.X q.1) (γ q.2)) (Y.B.G.F j)) = 0 :=
-    fun j => MvPowerSeries.constantCoeff_subst_eq_zero hPP (fun q => hP0 q.1 q.2) (Y.B.G.const j)
-  have hAt : ∀ (s : MvPowerSeries (Fin 2) C), MvPowerSeries.constantCoeff s = 0 → ∀ j,
-      Agr (V.l ^ 2) (MvPowerSeries.subst (fun j' => cvAt s (γ j')) ((Y.raw p).lg j))
-        ((∑ c, (Y.raw p).u g c j * w c) • s) := by
-    intro s hs j
-    rw [subst_cvAt hs hγ0, ← cvAt_smul_X hs]
-    exact agr_subst_right (a := fun _ : Unit => s) (fun _ => hs) (lgCv_agr Y p h0 h1 hlg j)
-  have hsum : ∀ j, Agr (V.l ^ 2)
-      (MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 0) (γ j')) ((Y.raw p).lg j) +
-        MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 1) (γ j')) ((Y.raw p).lg j))
-      (MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 0 + MvPowerSeries.X 1) (γ j')) ((Y.raw p).lg j)) := by
-    intro j
-    refine ((hAt _ (hX 0) j).add (hAt _ (hX 1) j)).trans ?_
-    rw [← smul_add]
-    exact (hAt _ hS j).symm
-  have e1 := ex_lg_at Y p _ hFP0 i
-  have e1' : (fun j => MvPowerSeries.subst
-      (fun j' => MvPowerSeries.subst (fun q : Fin 2 × Fin dd => cvAt (MvPowerSeries.X q.1) (γ q.2)) (Y.B.G.F j'))
-      ((Y.raw p).lg j)) = fun j =>
-        MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 0) (γ j')) ((Y.raw p).lg j) +
-        MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 1) (γ j')) ((Y.raw p).lg j) := by
-    funext j
-    exact lg_addOf Y (fun k j' => cvAt (MvPowerSeries.X k) (γ j')) hP0 j
-  rw [e1'] at e1
-  have e2 := ex_lg_at Y p _ hQ0 i
-  have hc : ∀ j, MvPowerSeries.constantCoeff
-      (MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 0) (γ j')) ((Y.raw p).lg j) +
-        MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 1) (γ j')) ((Y.raw p).lg j)) = 0 := by
-    intro j
-    rw [map_add, MvPowerSeries.constantCoeff_subst_eq_zero
-        (MvPowerSeries.hasSubst_of_constantCoeff_zero fun j' => hP0 0 j') (fun j' => hP0 0 j') (Y.chart_log_constantCoeff p j),
-      MvPowerSeries.constantCoeff_subst_eq_zero
-        (MvPowerSeries.hasSubst_of_constantCoeff_zero fun j' => hP0 1 j') (fun j' => hP0 1 j') (Y.chart_log_constantCoeff p j),
-      add_zero]
-  have hc' : ∀ j, MvPowerSeries.constantCoeff
-      (MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 0 + MvPowerSeries.X 1) (γ j')) ((Y.raw p).lg j)) = 0 :=
-    fun j => MvPowerSeries.constantCoeff_subst_eq_zero
-      (MvPowerSeries.hasSubst_of_constantCoeff_zero hQ0) hQ0 (Y.chart_log_constantCoeff p j)
-  have hag := agr_subst_left hc hc' hsum ((Y.raw p).ex i)
-  rw [e1, e2] at hag
-  have hdeg : μ.degree < V.l ^ 2 := by
-    rw [Finsupp.degree_eq_sum, Fin.sum_univ_two]
-    nlinarith
-  rw [map_sub, sub_eq_zero]
-  exact hag μ hdeg
-
-theorem coeff1_of_good (Y : FBChart C V O dd) (p : PairData Y d I) {g : Fin 2} {w : I g → C}
-    {x : ℕ → I g ⊕ JJ I g → C} (h0 : x 0 = Sum.elim w 0) (h1 : ∀ c, x 1 (Sum.inl c) = 0)
-    {γ : Fin dd → PowerSeries C} (hγ : IsCv V γ)
-    (hlg : ∀ i, alongCv γ ((Y.raw p).lg i) = ∑ c : I g, (Y.raw p).u g c i • tyS V.l (fun s => x s (Sum.inl c)))
-    (i : Fin dd) : PowerSeries.coeff 1 (γ i) = ∑ c, (Y.raw p).u g c i * w c := by
-  have hl := V.l_prime.two_le
-  have hγ0 : ∀ j, PowerSeries.constantCoeff (γ j) = 0 := fun j => (hγ j).1
-  have hlin : Agr 2 ((Y.raw p).lg i) (MvPowerSeries.X i) := fun e he =>
-    Y.raw_lin p i e (by omega)
-  have h2 := agr_subst_right (a := γ) hγ0 hlin
-  rw [MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ0)] at h2
-  have h3 := (lgCv_agr Y p h0 h1 hlg i).mono (show 2 ≤ V.l ^ 2 by nlinarith)
-  have h4 := (h2.symm.trans h3) (Finsupp.single () 1) (by rw [Finsupp.degree_single]; omega)
-  change PowerSeries.coeff 1 (γ i) = PowerSeries.coeff 1 _ at h4
-  rw [h4, map_smul, coeffX', if_pos rfl, smul_eq_mul, mul_one]
-
 end Step2
-
-theorem rank_maximal_of_nondegenerate (h1 : RankMaximalInitialCoefficient) : RankMaximalOfNondegenerate := by
-  intro C _ _ V O _ _ dd Y d _ I _ p hN hrk Hc hAlt g a hbig w x hG hc0 c
-  by_contra hwc
-  obtain ⟨γ, lam, hW⟩ := ((Y.raw p).mem_tySet_iff V g x).1 hG.1.1
-  obtain ⟨b, hb, hbc⟩ := h1 C V O dd Y d I p hrk Hc hAlt g a hbig w x hG hc0 γ lam hW
-  refine hN γ hW.1 ?_ ?_ ⟨b, hb, hbc⟩
-  · by_contra hall
-    push Not at hall
-    apply hwc
-    obtain ⟨wd, hwd, hsat⟩ := p.u_sat g
-    have hU : ∀ i, V.MM (∑ c', (Y.raw p).u g c' i * w c') := fun i => by
-      rw [← coeff1_of_good Y p hG.1.2.1 hG.2 hW.1 hW.2.2.1 i]
-      exact hall i
-    have e : w c = ∑ i, (∑ c', (Y.raw p).u g c' i * w c') * wd i c := by
-      simp only [Finset.sum_mul]
-      rw [Finset.sum_comm]
-      have : ∀ c', ∑ i, (Y.raw p).u g c' i * w c' * wd i c = w c' * (if c' = c then 1 else 0) := by
-        intro c'
-        rw [← hsat c' c, Finset.mul_sum]
-        refine Finset.sum_congr rfl fun i _ => ?_
-        show p.u g c' i * w c' * wd i c = w c' * (p.u g c' i * wd i c)
-        ring
-      simp only [this, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
-    rw [e]
-    exact mm_sum _ _ fun i _ => mm_mul_ge (hU i) (hwd i c)
-  · intro i μ hμ0 hμ1
-    rw [hom_of_good Y p hG.1.2.1 hG.2 hW.1 hW.2.2.1 i μ hμ0 hμ1]
-    exact mm_zero
 
 end Formalism.L2.FormalSeriesBounds

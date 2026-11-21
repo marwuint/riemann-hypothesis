@@ -24,13 +24,14 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixSDblDec
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.LeftInvOfIsSection
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelWeilSectionIntegrableAndContinuous
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HalfData
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsoluteThetaIntegralLeContinuousSeminormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableThetaKernelWeilRangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsoluteThetaIntegralLeContinuousSeminorm
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.WeilEisensteinSiegelConvergence
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableThetaKernelWeilRange
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.WeilSiegelFormulaUnitary
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinConvergentStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeilSchwartzParabolicEquivariantStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSectionContinuousStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousSymmUnitaryChartStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinConvergent
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeilSchwartzParabolicEquivariant
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSectionContinuous
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousSymmUnitaryChart
 open scoped TensorProduct ENNReal Matrix Classical NNReal
 open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.Doubling GlobalTheory.Eis GlobalTheory GlobalTheory.SiegelFormula
@@ -89,14 +90,14 @@ theorem PositivityTheory.SiegelWeilFormulaUnitary.siegelFormula_theta_of_schwart
         simp only [mul_one, one_mul, MulEquiv.apply_symm_apply] at this
         simp only [Function.comp_apply, this]
       rw [e]
-      exact (GlobalTheory.T.theta_section_continuous D ψ A B χ ω hW f hf ν 𝓖 hcov).comp
-        (GlobalTheory.T.continuous_symm_unitary_chart D A μ hμ κ hκ)
+      exact (_root_.GlobalTheory.CompanionTheory.SiegelWeil.swSection_continuous D ψ A B χ ω hW f hf ν 𝓖 hcov).comp
+        (_root_.GlobalTheory.CompanionTheory.ChartSymm.continuous_symm D A μ hμ κ hκ)
     have hs : (A.rank : ℝ) / 2 < (s0 B A.rank).re := by
       have : (2 * A.rank : ℝ) < B.rank := by exact_mod_cast hB
       simp only [s0, Complex.sub_re, Complex.div_ofNat_re, Complex.natCast_re]
       linarith
-    exact GlobalTheory.T.siegel_eisenstein_convergent D A.rank χ⁻¹ (s0 B A.rank) _ hcφ
-      (GlobalTheory.T.weil_schwartz_parabolic_equivariant D A.rank (shift ψ lam) χ⁻¹ θ B ν omS hWS Φ) hs (κ (g * 1))
+    exact _root_.GlobalTheory.CompanionTheory.Godement.cosetConv_of_continuous_law D A.rank χ⁻¹ (s0 B A.rank) _ hcφ
+      (_root_.GlobalTheory.CompanionTheory.WeilLaw.weil_parabolic_law D A.rank (shift ψ lam) χ⁻¹ θ B ν omS hWS Φ) hs (κ (g * 1))
   · rw [(hg g).2, one_mul]
     have h := hSieg D A.rank B hA hB (shift ψ lam) hψ' χ⁻¹ hχ.1 hχ.2 θ hθ ν 𝓖 hcov omS hWS m hm (omS (κ g) Φ)
     unfold cosetSum at h ⊢
@@ -112,6 +113,6 @@ theorem PositivityTheory.SiegelWeilFormulaUnitary.siegelFormula_theta_of_schwart
 theorem PositivityTheory.SiegelWeilFormulaUnitary.weilSiegelFormulaUnitary_of_two :
     GlobalTheory.Published.WeilThetaConvergence → GlobalTheory.Published.WeilSiegelFormula → GlobalTheory.Published.WeilSiegelFormulaUnitary := by
   intro hT hS D A B m hm hA hW
-  refine ⟨GlobalTheory.T.absoluteThetaIntegral_le_continuousSeminorm hT D A B m hm hA hW, fun ψ χ ω hω f hf => ⟨GlobalTheory.T.integrable_thetaKernel_weilRange hT D A B m hm hA hW ψ χ ω hω f hf, ?_⟩⟩
+  refine ⟨_root_.GlobalTheory.AbsThetaSemi.absThetaInt_le_contSeminorm hT D A B m hm hA hW, fun ψ χ ω hω f hf => ⟨_root_.GlobalTheory.WeilThetaInt.integrable_thetaKO hT D A B m hm hA hW ψ χ ω hω f hf, ?_⟩⟩
   intro hab ν 𝓖 hν
   exact PositivityTheory.SiegelWeilFormulaUnitary.siegelFormula_theta_of_schwartz' hS D A B m hm hA ψ χ ω hω f hf hab ν 𝓖 hν

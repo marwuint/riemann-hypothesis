@@ -147,9 +147,6 @@ theorem pre_toVSys (N₁ : ℕ) (hl : Φ.abelian₂) (hf : Φ.Four N₁) : (Φ.t
 
 end VPre
 
-theorem VSys.pre_lam {N₁ : ℕ} (Φ : VSys bar q W N₁ A) : Φ.pre.abelian₂ := Φ.lam
-
-theorem VSys.pre_four {N₁ : ℕ} (Φ : VSys bar q W N₁ A) : Φ.pre.Four N₁ := Φ.four
 end
 
 namespace Sep
@@ -165,11 +162,6 @@ def IsThetaTerms₀ (D : DegPre V₁) (N₁ : ℕ) {X C : Type} [AddCommGroup X]
     (∀ c, (w c).IsGen ∧ ∀ κ : LB.Gen (kapLB D (𝟙 D.P.A ^ N₁) (N₁ ^ 2) 1), Normd κ → ∀ z J, Good D.P.L z J →
       val (w c) (𝟙 _) z J ^ (N₁ ^ 2) * val κ (g c).b.left z J = 1) ∧
     (∀ mu c, IsCoef 1 (g c) (w c) (e mu) (th.s (e mu)) (algebraMap V₁ (FractionRing V₁) (T mu c)))
-
-theorem IsThetaTerms.zero {D : DegPre V₁} {N₁ : ℕ} {X C : Type} [AddCommGroup X] {e : X ≃+ D.X} {T : X → C → V₁}
-    (h : IsThetaTerms D N₁ e T) : IsThetaTerms₀ D N₁ e T := by
-  obtain ⟨th, g, b, w, h₁, h₂, h₃, h₄, h₅, -⟩ := h
-  exact ⟨th, g, b, w, h₁, h₂, h₃, h₄, h₅⟩
 
 variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
   (X₁ : Setup F W i) (z₁ : X₁.M.Z)
@@ -192,9 +184,6 @@ def IsChartMemberP [IsLocalRing V] (N₁ : ℕ) (Q : Data V) (ξ : Sp V ⟶ Z) {
     (∀ k, Φ.t y k = ρ (t (h k)) ∧ ∀ a b, Φ.δ y k a b = δ (h k) (e a) (e b)) ∧
     ∃ (D : DegPre (Φ.V y)) (e₈ : (Fin 8 → Q.X) ≃+ D.X), SharpRef W Q ρ D e₈ ∧
       IsThetaTerms₀ D N₁ e₈ fun mu c => Φ.term y (fun a => e.symm (mu a)) c
-
-theorem HasTraits.reg {N₁ : ℕ} {Ψ : VSys (id : ℤ → ℤ) g W N₁ (X₁.M.Z.presheaf.stalk z₁)} (h : HasTraits X₁ z₁ Ψ) :
-    HasTraitsR X₁ z₁ Ψ.pre := fun T ev h₁ _ h₂ => h T ev h₁ h₂
 
 end Sep
 

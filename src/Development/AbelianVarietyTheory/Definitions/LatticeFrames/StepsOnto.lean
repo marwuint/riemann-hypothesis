@@ -109,14 +109,6 @@ def thDn : W.CX →ₗ[ℂ] W.CC 0 := Lift.thetaDn W.CC W.ioY (D.R.m - 1) ∘ₗ
 def IsDn (T : SmT W.MX →ₗ[ℂ] (GA D D.sp.X' → ℂ)) (T₀ : SmT (W.MY 0) →ₗ[ℂ] (GA D (Yc D 0) → ℂ)) : Prop :=
   ∃ h : T ∈ W.CX, T₀ = (W.thDn ⟨T, h⟩ : W.CC 0)
 
-def DnLev (P : W.Lv) : Prop := ∀ T ∈ W.CXP P, ∃ T₀ ∈ W.CP P 0, W.IsDn T T₀
-
-def Onto (P : W.Lv) : Prop := ∀ T₀ ∈ W.CP P 0, ∃ T ∈ W.CXP P, W.IsDn T T₀
-
-def Onto1 : Prop := Function.Surjective W.thDn
-
-def StepsOnto : Prop := (∀ k, k + 1 < D.R.m → Function.Surjective (W.ioY k)) ∧ Function.Surjective W.ioX
-
 end Tower
 
 end GlobalTheory.Core.Rk

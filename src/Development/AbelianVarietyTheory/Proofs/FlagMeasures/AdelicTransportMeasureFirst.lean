@@ -477,7 +477,7 @@ theorem constTerm_iff_inst (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure
   obtain ⟨Γ, hΓ, hΓc, hfin, -⟩ := GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain I
   let T' : G' ≃ₜ I.GA := ⟨T.toEquiv, hT.1, hT.2⟩
   have : IsTopologicalGroup G' := T'.isInducing.topologicalGroup T
-  obtain ⟨-, hcl, -, -, K, hK, -, hcov⟩ := GlobalTheory.T.strong_approximation_unitaryUnipotentRadical I W hW
+  obtain ⟨-, hcl, -, -, K, hK, -, hcov⟩ := _root_.GlobalTheory.UnipApprox.strong_approximation I W hW
   have hcl' : IsClosed (N : Set G') := by
     have e : (N : Set G') = T ⁻¹' I.NA W := Set.ext hm
     rw [e]

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.SumGaussianMulProd
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CardSubspacesOfFinrankMulCardBasesStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CardSubspacesOfFinrankMulCardBases
 
 open Polynomial GlobalTheory.CuspGL
 
@@ -17,7 +17,7 @@ theorem sum_oneValue_finrank (F : Type) [Field F] [Finite F] (V : Type) [AddComm
   have hq : 2 ≤ Nat.card F := Finite.one_lt_card
   have h := GlobalTheory.QBinomialSum.sum_gaussian_mul_prod (Nat.card F) (Module.finrank F V)
     (fun a => Nat.card {W : Submodule F V // Module.finrank F W = a}) hq
-    (fun a ha => GlobalTheory.T.card_subspaces_of_finrank_mul_card_bases F V a ha)
+    (fun a ha => _root_.GlobalTheory.SubspaceNumber.card_subspaces_mul F V a ha)
   rw [← h, ← Finset.sum_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.Icc 0 (Module.finrank F V))
     (g := fun W : Submodule F V => Module.finrank F W)
     (fun W _ => Finset.mem_Icc.2 ⟨Nat.zero_le _, W.finrank_le⟩)]

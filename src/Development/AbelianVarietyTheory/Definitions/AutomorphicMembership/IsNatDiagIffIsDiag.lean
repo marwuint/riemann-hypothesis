@@ -35,18 +35,6 @@ def SameFlag (ty : (E →+* ℂ) → Finset ℕ) {X : Scheme.{0}} (t : SAB H X) 
 def ProperLE (Dw : Datum H) (ty' ty : (E →+* ℂ) → Finset ℕ) : Prop :=
   ∀ σ, ∀ k ∈ ty' σ, 0 < k → k < Dw.mult σ → k ∈ ty σ
 
-theorem ProperLE.of_subset {ty' ty : (E →+* ℂ) → Finset ℕ} (h : ∀ σ, ty' σ ⊆ ty σ) : ProperLE Dw ty' ty :=
-  fun σ _ hk _ _ => h σ hk
-
-theorem SameFlag.of_properLE {l : Level H} {c : Coeff l} {X : Scheme.{0}} {t : SAB H X} {R : Type} [CommRing R]
-    {f : c.F →+* R} {x : Sp R ⟶ X} {u u' : Vecs Dw t R} {ty' ty : (E →+* ℂ) → Finset ℕ} (hu : IsFrame t f x u)
-    (hu' : IsFrame t f x u') (hty : ProperLE Dw ty' ty) (h : SameFlag ty t x u u') : SameFlag ty' t x u u' := by
-  intro σ k hk i hi
-  by_cases hlt : k < Dw.mult σ
-  · exact h σ k (hty σ k hk (by omega) hlt) i hi
-  · obtain ⟨cf, hcf, -⟩ := hu.2 σ _ (hu'.1 σ i).1 (hu'.1 σ i).2
-    exact ⟨cf, fun j hj => absurd j.2 (by omega), hcf⟩
-
 def Vecs.bc {X : Scheme.{0}} {t : SAB H X} {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (u : Vecs Dw t R) :
     Vecs Dw t S := fun τ i => spMap (dualMap φ) ≫ u τ i
 
@@ -173,10 +161,6 @@ open Classical in
 def ofMod (F : Z.X.Modules) : Z.Sh :=
   if h : ∃ S : Z.Sh, Nonempty (S.toMod ≅ F) then h.choose else ⟨0, 0, 0, 0, 0⟩
 
-theorem ofMod_iso {F : Z.X.Modules} (h : ∃ S : Z.Sh, Nonempty (S.toMod ≅ F)) : Nonempty ((Z.ofMod F).toMod ≅ F) := by
-  rw [ofMod, dif_pos h]
-  exact h.choose_spec
-
 def Idl : Type := {J : Z.X.IdealSheafData // ∀ x ∈ J.support, x ∉ Z.opn}
 
 def powP (J : Z.Idl) : Prop := ∃ k : ℕ, ∀ U : Z.X.affineOpens, ((p : Γ(Z.X, U.1)) ^ k) ∈ J.1.ideal U
@@ -232,44 +216,6 @@ theorem blowUp_spec {Z : Mdl Y i₀} {J : Z.Idl} (h : ∃ Z', IsNBlow Z J Z') : 
   rw [blowUp, dif_pos h]
   exact h.choose_spec
 
-theorem natDiagCl_spec {Z₁ Z₂ : Mdl Y i₀} (h : ∃ Z', IsNatDiag Z₁ Z₂ Z') : IsNatDiag Z₁ Z₂ (natDiagCl Z₁ Z₂) := by
-  rw [natDiagCl, dif_pos h]
-  exact h.choose_spec
-
-theorem diagCl_spec {Z₁ Z₂ : Mdl Y i₀} (h : ∃ Z', IsDiag Z₁ Z₂ Z') : IsDiag Z₁ Z₂ (diagCl Z₁ Z₂) := by
-  rw [diagCl, dif_pos h]
-  exact h.choose_spec
-
-theorem NatCorr.refl (Z : Mdl Y i₀) : NatCorr Z Z := ⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, le_rfl, fun _ _ hk _ _ => hk⟩
-
-theorem NatCorr.trans {Z₁ Z₂ Z₃ : Mdl Y i₀} (h : NatCorr Z₁ Z₂) (h' : NatCorr Z₂ Z₃) : NatCorr Z₁ Z₃ :=
-  ⟨⟨h'.1.1.trans h.1.1, h.1.2.1.trans h'.1.2.1, h'.1.2.2.trans h.1.2.2⟩, h'.2.1.trans h.2.1,
-    fun σ k hk h₀ h₁ => h.2.2 σ k (h'.2.2 σ k hk h₀ h₁) h₀ h₁⟩
-
-theorem Corr.natCorr {Z₁ Z₂ : Mdl Y i₀} (h : Corr Z₁ Z₂) : NatCorr Z₁ Z₂ := ⟨h.1, h.2.1, .of_subset h.2.2⟩
-
-theorem IsMap.isNatMap {Z₁ Z₂ : Mdl Y i₀} {f : Z₁.X ⟶ Z₂.X} (h : IsMap Z₁ Z₂ f) : IsNatMap Z₁ Z₂ f := ⟨h.1.natCorr, h.2⟩
-
-theorem IsNatMap.isMap {Z₁ Z₂ : Mdl Y i₀} {f : Z₁.X ⟶ Z₂.X} (h : IsNatMap Z₁ Z₂ f) (hty : ∀ σ, Z₂.ty σ ⊆ Z₁.ty σ) :
-    IsMap Z₁ Z₂ f := ⟨⟨h.1.1, h.1.2.1, hty⟩, h.2⟩
-
-theorem isNatDiag_iff_isDiag {Z₁ Z₂ Z' : Mdl Y i₀} (hty : ∀ σ, Z₂.ty σ ⊆ Z₁.ty σ) : IsNatDiag Z₁ Z₂ Z' ↔ IsDiag Z₁ Z₂ Z' :=
-  ⟨fun ⟨a, b, f₁, f₂, c, d, e⟩ => ⟨a, b, f₁, f₂, c, d.isMap (b ▸ hty), e⟩,
-    fun ⟨a, b, f₁, f₂, c, d, e⟩ => ⟨a, b, f₁, f₂, c, d.isNatMap, e⟩⟩
-
-example : ProperLE Dw (fun σ => {0, Dw.mult σ}) (fun _ => ∅) := fun σ k hk h₀ h₁ => by
-  simp only [Finset.mem_insert, Finset.mem_singleton] at hk
-  omega
-
-example (σ : E →+* ℂ) (h : Dw.mult σ = 2) : ¬ ProperLE Dw (fun _ => {1}) (fun _ => ∅) := fun h' =>
-  Finset.notMem_empty 1 (h' σ 1 (Finset.mem_singleton_self 1) one_pos (by omega))
-
-example (Z₁ Z₂ : Mdl Y i₀) (hi : Z₁.i = Z₂.i) (h₂ : ∀ σ, Z₂.ty σ ⊆ {0, Dw.mult σ}) : NatCorr Z₁ Z₂ :=
-  ⟨hi ▸ (NatCorr.refl Z₁).1, hi ▸ le_rfl, fun σ k hk _ _ => by
-    have := h₂ σ hk
-    simp only [Finset.mem_insert, Finset.mem_singleton] at this
-    omega⟩
-
 def IsLvl (i₀ i : Idx H p) : Option ℕ → Prop
   | none => i = i₀
   | some n => i.l.M = i₀.l.M ∧ i.l.Mb = i₀.l.Mb ∧ i.l.A = i₀.l.A * p ^ n ∧
@@ -284,9 +230,5 @@ structure Bases (Y : LocalSystem Xo p W) (i₀ : Idx H p) : Type where
   iso : ∀ b, IsIso (X b).π
 
   ty : ∀ b σ, (X b).ty σ = ∅
-
-theorem Bases.natCorr_base (B : Bases Y i₀) (Z : Mdl Y i₀) : NatCorr Z (B.X none) := by
-  have h : (B.X none).i = i₀ := B.lvl none
-  exact ⟨by rw [h]; exact Z.dvd, by rw [h]; exact Z.le, fun σ k hk => by simp [B.ty none σ] at hk⟩
 
 end GlobalTheory.LocM

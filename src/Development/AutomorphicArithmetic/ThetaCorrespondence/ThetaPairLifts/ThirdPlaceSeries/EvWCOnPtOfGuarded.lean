@@ -1,5 +1,8 @@
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventualPointsOfRowTies
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.RowSideOfCompatibleThetaPair
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamilyHypothesesOfWorkingClassSevenDuties
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ValidForConstructedPointClassesEventuallyWorking
+import Development.AbelianVarietyTheory.Definitions.Divisors.TupleReadBaseTupleEqFamily
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SummandFunctionalBound
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PtOf
@@ -19,7 +22,7 @@ theorem evWC_onPt_of_guarded_alt (prem : ∀ {eps : ℝ}, FamP eps → Prop) (G 
     obtain ⟨a, ha, h⟩ := h
     refine ⟨a, ha, fun e he hle => ?_⟩
     obtain ⟨K, hK⟩ := h e he hle
-    exact ⟨K, fun Fm CH hc hL => hK Fm CH (GlobalTheory.T.familyHypotheses_of_workingClass_sevenDuties 𝒜 _ Fm hc (hd _ Fm (w3_a hc))) hL⟩
+    exact ⟨K, fun Fm CH hc hL => hK Fm CH (_root_.GlobalTheory.BigTop.famHyp_of_working_duty 𝒜 _ Fm hc (hd _ Fm (w3_a hc))) hL⟩
   refine Closed.imp (Closed.and h' (Closed.and hR hG)) ?_
   rintro eps Fm CH - ⟨h1, h2, h3⟩ hc hp
   obtain ⟨C0, hC0, a, ha⟩ := h1 hp

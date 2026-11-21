@@ -18,20 +18,6 @@ theorem _root_.GlobalTheory.GenericFlat.injective_of_apply_eq_genericPoint {O K 
   rw [hpt, ← RingHom.ker_eq_comap_bot] at h2
   exact (RingHom.injective_iff_ker_eq_bot δ).mpr h2
 
-theorem exists_charZero_specializes (O : Type) [CommRing O] [IsDomain O] [CharZero O] (T : Scheme.{0})
-    (s : T ⟶ Sp O) [Flat s] (x : T) : ∃ ξ : T, ξ ⤳ x ∧ CharZero (T.residueField ξ) := by
-  obtain ⟨ξ, hξ, e⟩ := Flat.generalizingMap s (genericPoint_specializes (s x))
-  refine ⟨ξ, hξ, ?_⟩
-  obtain ⟨δ, hδ⟩ := Spec.map_surjective (T.fromSpecResidueField ξ ≫ s)
-  have hi : Function.Injective δ.hom := by
-    refine injective_of_apply_eq_genericPoint (K := T.residueField ξ) δ.hom
-      (⊥ : PrimeSpectrum (T.residueField ξ)) ?_
-    change Spec.map δ _ = _
-    rw [hδ]
-    exact (Scheme.Hom.comp_apply _ _ _).trans
-      ((congrArg s (Scheme.fromSpecResidueField_apply ξ _)).trans e)
-  exact charZero_of_injective_ringHom hi
-
 open AlgebraicGeometry CategoryTheory Limits in
 
 theorem _root_.GlobalTheory.GenericFlat.apply_eq_genericPoint {O : Type} [CommRing O] [IsDomain O]

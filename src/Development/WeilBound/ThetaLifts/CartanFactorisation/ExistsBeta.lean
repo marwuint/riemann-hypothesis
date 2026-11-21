@@ -1,5 +1,5 @@
 import Development.WeilBound.ThetaLifts.CartanFactorisation.RadOfZero
-import Development.WeilBound.ThetaLifts.CartanFactorisation.AdmDef
+import Development.WeilBound.ThetaLifts.CartanFactorisation.CartanConj
 import Development.WeilBound.ThetaLifts.CartanFactorisation.IntegrableOnRight
 import Development.WeilBound.ThetaLifts.CartanFactorisation.Unimod
 import Development.WeilBound.ThetaLifts.ConeHypotheses.PureEqPureA
@@ -29,27 +29,6 @@ theorem maximal_of {Q P : Type} [AddCommGroup Q] [Module ℂ Q] [AddCommGroup P]
       obtain ⟨z, hz, e⟩ : p y ∈ N.map p := h ▸ Submodule.mem_top
       have : y - z ∈ N := hge ⟨by simp [e], sub_mem hy (hle N hN.1 hz)⟩
       simpa using N.add_mem this hz
-
-theorem max_comap {Q : Type} [AddCommGroup Q] [Module ℂ Q] (S : Submodule ℂ Q) (St : Submodule ℂ Q → Prop)
-    (St' : Submodule ℂ S → Prop) (hle : ∀ N, St N → N ≤ S) (h : ∀ P : Submodule ℂ S, St' P ↔ St (P.map S.subtype))
-    (N : Submodule ℂ Q) (hN : Maximal (fun N => St N ∧ N ≠ S) N) (hu : ∀ N', Maximal (fun N => St N ∧ N ≠ S) N' → N' = N) :
-    Maximal (fun P => St' P ∧ P ≠ ⊤) (N.comap S.subtype) ∧
-      ∀ P, Maximal (fun P => St' P ∧ P ≠ ⊤) P → P = N.comap S.subtype := by
-  have mc : ∀ N, N ≤ S → (N.comap S.subtype).map S.subtype = N := fun N hN => by
-    rw [Submodule.map_comap_subtype, inf_eq_right.2 hN]
-  have inj := Submodule.map_injective_of_injective S.injective_subtype
-  have ne : ∀ P : Submodule ℂ S, P ≠ ⊤ ↔ P.map S.subtype ≠ S := fun P => by
-    constructor
-    · intro h e; exact h (inj (e.trans (Submodule.map_subtype_top S).symm))
-    · intro h e; exact h (e ▸ Submodule.map_subtype_top S)
-  refine ⟨⟨⟨(h _).2 (by rw [mc N (hle N hN.prop.1)]; exact hN.prop.1), (ne _).2 (by rw [mc N (hle N hN.prop.1)]; exact hN.prop.2)⟩,
-    fun P hP hge x hx => hN.le_of_ge ⟨(h P).1 hP.1, (ne P).1 hP.2⟩
-      ((mc N (hle N hN.prop.1)).symm.le.trans (Submodule.map_mono hge)) ⟨x, hx, rfl⟩⟩, fun P hP => ?_⟩
-  have := hu (P.map S.subtype) ⟨⟨(h P).1 hP.prop.1, (ne P).1 hP.prop.2⟩, fun N' hN' hge => by
-    have h1 : N'.comap S.subtype ≤ P := hP.le_of_ge ⟨(h _).2 (by rw [mc N' (hle N' hN'.1)]; exact hN'.1),
-      (ne _).2 (by rw [mc N' (hle N' hN'.1)]; exact hN'.2)⟩ (Submodule.map_le_iff_le_comap.1 hge)
-    exact (mc N' (hle N' hN'.1)).symm.le.trans (Submodule.map_mono h1)⟩
-  rw [← this, Submodule.comap_map_eq_of_injective S.injective_subtype]
 
 theorem exists_beta {G : Type} [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G] (𝓕 : Set G) (μ : Measure G)
     {Q : Type} [AddCommGroup Q] [Module ℂ Q] (u : Q →ₗ[ℂ] (G → ℂ)) (hc : ∀ x, Continuous (u x))

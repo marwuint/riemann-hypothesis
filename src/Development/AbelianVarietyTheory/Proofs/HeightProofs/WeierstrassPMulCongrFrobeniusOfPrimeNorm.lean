@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LFunctionPositiveConductorFourEight
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeierstrassPComplexMultiplicationCongruenceModPr
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.TorsionIntegralDistinctOfPosStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.TorsionIntegralDistinctOfPos
 open NumberField IsDedekindDomain Polynomial GlobalTheory.FieldSize
 open scoped IntermediateField
 
@@ -40,7 +40,7 @@ theorem weierstrassP_mul_congr_pow_of_pos : ∀ (L : PeriodPair) (W : ValuationS
         (A₀.map ρ).eval (ρ x) = ρ y * (D₀.map ρ).eval (ρ x) := by
     intro m t hm hmW hmt ht
     have hαt : α * t ∉ L.lattice := fun h => ht (mem_of_mul_mem L h0 hα hN (hcop m hm hmW) hmt h)
-    have T := (GlobalTheory.T.weierstrassP_torsion_mem_and_distinct_mod_nonunits L W m h2 h3 hg₂ hg₃ hΔ hm hmW).1
+    have T := (_root_.GlobalTheory.TorsionIntegralPos.torsion_integral_distinct_of_pos L W m h2 h3 hg₂ hg₃ hΔ hm hmW).1
     refine ⟨⟨_, T t hmt ht⟩, ⟨_, T _ (hmul m t hmt) hαt⟩, rfl, rfl, ?_⟩
     rw [eval_map_apply, eval_map_apply, ← map_mul]
     congr 1
@@ -89,7 +89,7 @@ theorem weierstrassP_mul_congr_pow_of_pos : ∀ (L : PeriodPair) (W : ValuationS
       rw [mul_left_comm, hthird]
       exact hβ3
     refine Function.Injective.of_lt_imp_ne fun i j hij h => ?_
-    have T := (GlobalTheory.T.weierstrassP_torsion_mem_and_distinct_mod_nonunits L W (3 ^ (j + 1)) h2 h3 hg₂ hg₃ hΔ
+    have T := (_root_.GlobalTheory.TorsionIntegralPos.torsion_integral_distinct_of_pos L W (3 ^ (j + 1)) h2 h3 hg₂ hg₃ hΔ
       (hpos _) (h3n _)).2 _ _ (hm i _ (by omega)) (fun h => hn i (hns _ _ h))
       (hm j _ le_rfl) (fun h => hn j (hns _ _ h)) (by
         rw [← hx, ← hx]

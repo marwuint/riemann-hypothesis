@@ -3,12 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormI
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DRhoSumAndSobOLe
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerAlong
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EnormMixedModelTermLeISupStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EnormMixedModelTermLeISup
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermLinearThetaFunctionsStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SupNormWordSumSubLeAndDerivativeCostStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegralMatricesSeparatingRationalPairingStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegralMatricesSeparatingRationalPairing
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TsumLeOfLatticeCoordsQuadraticDecayStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermDerivAlongRationalPairingStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermDerivAlongRationalPairing
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermBoundedDenominatorsMovedLevelStatement
 
 noncomputable section
@@ -55,8 +55,8 @@ theorem term_opAlong {V V' W : HSp D} {r : ℕ} {C C' : Matrix (Fin V.rank) (Fin
   have hG1 := theta_derAlong hψ hθ C x hG
   have hG2 := theta_derAlong hψ hθ C x hG1
   obtain ⟨hadd, hsmul⟩ := GlobalTheory.T.mixedModelTerm_linear_thetaFunctions D V V' W r C C' B ψ hψ μ 𝓨 hμ y
-  have e1 := GlobalTheory.T.mixedModelTerm_derivAlong_rational_pairing D V V' W r C C' B hs h1 ψ hψ θ hθ μ 𝓨 hμ G hG x y
-  have e2 := GlobalTheory.T.mixedModelTerm_derivAlong_rational_pairing D V V' W r C C' B hs h1 ψ hψ θ hθ μ 𝓨 hμ _ hG1 x y
+  have e1 := _root_.GlobalTheory.MixedTerm.DerLaw.term_derAlong D V V' W r C C' B hs h1 ψ hψ θ hθ μ 𝓨 hμ G hG x y
+  have e2 := _root_.GlobalTheory.MixedTerm.DerLaw.term_derAlong D V V' W r C C' B hs h1 ψ hψ θ hθ μ 𝓨 hμ _ hG1 x y
   have hsplit : opAlong ψ θ V W C x G = G + (-(((4 * Real.pi ^ 2 : ℝ)⁻¹ : ℝ) : ℂ)) •
       derAlong ψ θ V W C x (derAlong ψ θ V W C x G) := by
     rw [neg_smul, ← sub_eq_add_neg]
@@ -84,7 +84,7 @@ theorem term_decay {V V' W : HSp D} {r : ℕ} {C C' : Matrix (Fin V.rank) (Fin r
       mul_zero]
     unfold supWord
     rw [GlobalTheory.Size.wordSum_zero]
-    exact GlobalTheory.T.enorm_mixedModelTerm_le_iSup D V V' W r C C' B ψ hψ μ 𝓨 hμ G y
+    exact _root_.GlobalTheory.MixedTerm.enorm_term_le_iSup D V V' W r C C' B ψ hψ μ 𝓨 hμ G y
   | cons a l ih =>
     obtain ⟨K, hK, hb⟩ := ih
     obtain ⟨hsub, hder⟩ := GlobalTheory.T.supNormWordSum_sub_le_and_derivative_cost D V W ψ hψ θ hθ
@@ -140,7 +140,7 @@ theorem term_decay {V V' W : HSp D} {r : ℕ} {C C' : Matrix (Fin V.rank) (Fin r
 theorem mixed_terms_bound : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → adj D C * V.gram * C' = 1 → adj D C' * V.gram * C' = 0 → adj D C' * V.gram * B = 0 → ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∃ A d : ℕ, ∀ U : AddSubgroup (WO V W), IsOpen (U : Set (WO V W)) → ∃ K : ℝ, ∀ (g : GA D V) (h : GA D W) (F : WO V W → ℂ), IsThetaFunO ψ V W F → (∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ V W (actO V W g h u) F = F) → ∑' y : Matrix (Fin W.rank) (Fin r) D.host.E, ‖res V V' W C B μ 𝓨 (heisO ψ V W (isoPart V W C' (Matrix.map y (incA D))) F) 0‖ₑ ≤ ENNReal.ofReal (K * (GlobalTheory.Grow.height V g * GlobalTheory.Grow.height W h) ^ A) * GlobalTheory.Size.wordSum (GlobalTheory.Size.heisDer ψ θ) (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) d F := by
   intro D V V' W r C C' B hs h1 _ _ ψ hψ θ hθ μ 𝓨 hμ
   obtain ⟨e, he⟩ := GlobalTheory.T.mixedModelTerm_bounded_denominators_moved_level D V V' W r C C' B hs h1 ψ hψ θ hθ μ 𝓨 hμ
-  obtain ⟨n, X, hXint, hXsep⟩ := GlobalTheory.T.exists_integral_matrices_separating_rationalPairing D W r
+  obtain ⟨n, X, hXint, hXsep⟩ := _root_.GlobalTheory.RatPairSep.main D W r
   obtain ⟨K₀, hK₀, hdec⟩ := term_decay hs h1 hψ hθ hμ (List.ofFn X)
   refine ⟨2 * e * n, 2 * n, fun U hU => ?_⟩
   obtain ⟨M, _, hN⟩ := he U hU

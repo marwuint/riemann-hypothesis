@@ -60,10 +60,6 @@ instance finiteDimensional_fixedField_openSubgroup (U : OpenSubgroup G) :
     rw [fixingSubgroup_fixedField_openSubgroup]
     exact U.isOpen)
 
-theorem fixedField_fixingOpenSubgroup (L : IntermediateField K Ω) [FiniteDimensional K L] :
-    fixedField (fixingOpenSubgroup L : Subgroup G) = L :=
-  InfiniteGalois.fixedField_fixingSubgroup L
-
 theorem fixingOpenSubgroup_fixedField (U : OpenSubgroup G) :
     fixingOpenSubgroup (fixedField (U : Subgroup G)) = U :=
   OpenSubgroup.ext fun σ => by

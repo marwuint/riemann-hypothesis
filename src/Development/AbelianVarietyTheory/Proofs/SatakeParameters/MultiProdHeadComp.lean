@@ -38,15 +38,6 @@ theorem ind₂_congr_left_prod₂ {a b c d e N M : ℕ} (h : M + e = N) (h₁ : 
       (ind₂ (stdSum h) (extTensor (ind₂ (stdSum h₂) (extTensor ρ₃ ρ₄)) ρ₅))) :=
   ind₂_congr h φ (eqv_refl ρ₅)
 
-theorem ind₂_congr_right_prod₂ {a b c d e N M : ℕ} (h : e + M = N) (h₁ : a + b = M) (h₂ : c + d = M)
-    (ρ₁ : Representation ℂ (GL (Fin a) k) V₁) (ρ₂ : Representation ℂ (GL (Fin b) k) V₂)
-    (ρ₃ : Representation ℂ (GL (Fin c) k) V₃) (ρ₄ : Representation ℂ (GL (Fin d) k) V₄)
-    (ρ₅ : Representation ℂ (GL (Fin e) k) V₅)
-    (φ : Nonempty ((ind₂ (stdSum h₁) (extTensor ρ₁ ρ₂)).Equiv (ind₂ (stdSum h₂) (extTensor ρ₃ ρ₄)))) :
-    Nonempty ((ind₂ (stdSum h) (extTensor ρ₅ (ind₂ (stdSum h₁) (extTensor ρ₁ ρ₂)))).Equiv
-      (ind₂ (stdSum h) (extTensor ρ₅ (ind₂ (stdSum h₂) (extTensor ρ₃ ρ₄))))) :=
-  ind₂_congr h (eqv_refl ρ₅) φ
-
 theorem multiProd_head_comp {s u : ℕ} {d : Fin s → ℕ} (σ : ∀ a, Irr k (d a)) (ι : Fin (u + 1) → Fin s)
     (a₀ : Fin s) (κ : Fin u → Fin s) (h0 : ι 0 = a₀) (hκ : ∀ i, ι i.succ = κ i) {T N : ℕ}
     (e : (Σ i, Fin (d (ι i))) ≃ Fin N) (h : d a₀ + T = N) (e' : (Σ i, Fin (d (κ i))) ≃ Fin T) :

@@ -36,10 +36,6 @@ def PeriodicMod (ϖ : 𝒪[k]) (Ψ : Matrix κ ι k → ℂ) (M' : Submodule �
     (M : Submodule 𝒪[k] (κ → k)) : Prop :=
   ∀ x y, MapsInto y M' M → Ψ (x + (ϖ : k) • y) = Ψ x
 
-def SuppInj (ϖ : 𝒪[k]) (Ψ : Matrix κ ι k → ℂ) (M' : Submodule 𝒪[k] (ι → k))
-    (M : Submodule 𝒪[k] (κ → k)) : Prop :=
-  ∀ x, Ψ x ≠ 0 → InjMod ϖ x M' M
-
 end Lattices
 
 section Chain
@@ -66,13 +62,6 @@ def Yle (k : Type) [Field k] [ValuativeRel k] (n : Type) (c i : ℕ) : Submodule
 def pt (x₀ : Matrix n n' k) (y : Fin c → (n ⊕ Fin c → k)) : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k :=
   basePt c x₀ + Matrix.of fun r s =>
     Sum.elim (fun _ => 0) (fun j : Fin (c + 1) => Fin.cases 0 (fun i => y i r) j) s
-
-def expo (c d : ℕ) : ℕ := ∑ i ∈ Finset.Icc 1 c, (i * d + i * (i - 1) / 2)
-
-def term (ϖ : 𝒪[k]) (ψ : AddChar k Circle) (Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ)
-    (x₀ : Matrix n n' k) (w : Fin c → (n ⊕ Fin c → k)) : ℂ :=
-  Ψ (pt x₀ fun i => ((ϖ : k) ^ (i.val + 2))⁻¹ • w i) *
-    (starRingEnd ℂ) (ψ ((∑ i : Fin c, w i (Sum.inr i) / (ϖ : k) ^ (i.val + 1)) / (ϖ : k)) : ℂ)
 
 variable [MeasurableSpace k] [BorelSpace k]
 
@@ -109,65 +98,6 @@ def OneCoset (ϖ : 𝒪[k]) (ψ : AddChar k Circle) (ν : Measure k) (n : Type) 
             act t (chainLat ϖ c (stdLat k n)) = chainLat ϖ c (stdLat k n) ∧ h = r * t) ↔
           ∃ r ∈ R k n c 1, ∃ t ∈ T, ∃ j ∈ J, h = r * t * j
 
-open Classical in
-
-def FunMod (ϖ : 𝒪[k]) (ψ : AddChar k Circle) (ν : Measure k) (n : Type) [Fintype n] [DecidableEq n]
-    (c : ℕ) (L' : Submodule 𝒪[k] (n' → k)) : Prop :=
-  ∀ (L : Submodule 𝒪[k] (n → k)), Submodule.IsLattice k L →
-    ∀ Ψ ∈ SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k),
-      SuppIn Ψ (chainLat ϖ (c + 1) L') (chainLat ϖ c L) →
-      PeriodicMod ϖ Ψ (chainLat ϖ (c + 1) L') (chainLat ϖ c L) →
-        SuppIn (opE ψ ν 1 Ψ) L' L ∧ PeriodicMod ϖ (opE ψ ν 1 Ψ) L' L ∧
-        (∃ T : Fin c → Finset (n ⊕ Fin c → k),
-          ∀ i, IsReps ϖ (chainLat ϖ c L ⊓ Yle k n c (i.val + 1)) (T i)) ∧
-        (L ≤ stdLat k n →
-          (∀ T : Fin c → Finset (n ⊕ Fin c → k),
-            (∀ i, IsReps ϖ (chainLat ϖ c L ⊓ Yle k n c (i.val + 1)) (T i)) →
-            ∀ x₀ : Matrix n n' k, MapsInto x₀ L' L →
-              opE ψ ν 1 Ψ x₀ =
-                (resCard k : ℂ) ^ expo c (Fintype.card n) /
-                  (L.toAddSubgroup.relIndex (stdLat k n).toAddSubgroup : ℂ) ^ c *
-                ∑ w ∈ Fintype.piFinset T, term ϖ ψ Ψ x₀ w) ∧
-          ∀ x₀ : Matrix n n' k,
-            ∃ z ∈ Subring.closure ({ζ : ℂ | ζ ^ ringChar 𝓀[k] = 1} ∪ Set.range Ψ),
-              opE ψ ν 1 Ψ x₀ =
-                (resCard k : ℂ) ^ expo c (Fintype.card n) /
-                  (L.toAddSubgroup.relIndex (stdLat k n).toAddSubgroup : ℂ) ^ c * z)
-
-def InjSupp (ϖ : 𝒪[k]) (ψ : AddChar k Circle) (ν : Measure k) (n : Type) [Fintype n] [DecidableEq n]
-    (c : ℕ) (L' : Submodule 𝒪[k] (n' → k)) : Prop :=
-  ∀ (L : Submodule 𝒪[k] (n → k)), Submodule.IsLattice k L →
-    ∀ Ψ ∈ SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k),
-      SuppIn Ψ (chainLat ϖ (c + 1) L') (chainLat ϖ c L) →
-      PeriodicMod ϖ Ψ (chainLat ϖ (c + 1) L') (chainLat ϖ c L) →
-      SuppInj ϖ Ψ (chainLat ϖ (c + 1) L') (chainLat ϖ c L) →
-        SuppInj ϖ (opE ψ ν 1 Ψ) L' L
-
 end Chain
-
-def Shape : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    [MeasurableSpace k] [BorelSpace k]
-    (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c : ℕ) (hc : 1 ≤ c)
-    (ϖ : 𝒪[k]) (_ : Irreducible ϖ) (ψ : AddChar k Circle) (_ : HasConductor ψ 1)
-    (ν : Measure k) (_ : IsUnitVol ν)
-    (L' : Submodule 𝒪[k] (n' → k)) (_ : Submodule.IsLattice k L'),
-    OneClass ϖ ψ ν n hc L' ∧ OneCoset ϖ ψ ν n c L' ∧ FunMod ϖ ψ ν n c L' ∧ InjSupp ϖ ψ ν n c L'
-
-example (d : ℕ) : expo 2 d = 3 * d + 1 := by
-  simp [expo, Finset.sum_Icc_succ_top]; ring
-
-open Classical in
-
-example {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ϖ : 𝒪[k])
-    (M' : Submodule 𝒪[k] (ι → k)) (M : Submodule 𝒪[k] (κ → k)) :
-    SuppIn (fun x => if MapsInto x M' M then 1 else 0) M' M ∧
-      PeriodicMod ϖ (fun x => if MapsInto x M' M then 1 else 0) M' M := by
-  refine ⟨fun x hx => by by_contra h; simp [h] at hx, fun x y hy => ?_⟩
-  have : MapsInto (x + (ϖ : k) • y) M' M ↔ MapsInto x M' M := by
-    refine forall₂_congr fun v hv => ?_
-    rw [Matrix.add_mulVec, Matrix.smul_mulVec]
-    exact M.add_mem_iff_left (M.smul_mem ϖ (hy v hv))
-  simp only [this]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms

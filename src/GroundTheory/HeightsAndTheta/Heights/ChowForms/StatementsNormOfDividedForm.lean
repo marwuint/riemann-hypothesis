@@ -16,10 +16,6 @@ def NormOfDividedForm.Statement : Prop :=
         ∀ u : Fin n → O,
           eval u P = eval t P * LinearMap.det (LinearMap.mulLeft O (∑ m, u m • η m))
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights

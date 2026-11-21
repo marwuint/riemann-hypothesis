@@ -349,12 +349,6 @@ theorem DualLatticeIndex.proof : DualLatticeIndex.Statement := by
   rw [← dual_toAddSubgroup, ← dual_toAddSubgroup]
   exact eq_of_le_of_prod a₁ a₂ a₃ hprod hb0
 
-example : (dualLattice (HermLattice.standard ℚ 1)).toAddSubgroup.relIndex
-      (dualLattice HermLattice.twiceStandardExample).toAddSubgroup =
-    HermLattice.twiceStandardExample.lattice.toAddSubgroup.relIndex
-      (HermLattice.standard ℚ 1).lattice.toAddSubgroup :=
-  DualLatticeIndex.proof ℚ 1 _ _ twiceStandardExample_le
-
 end
 
 end GroundTheory.Heights₂.Heights

@@ -62,33 +62,6 @@ theorem beF_tEq (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp
   | linear_combination (⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * (h * m)) w⟫_ℂ *
       star (psi k r z c (Matrix.of p.2))) * hms
 
-theorem conv_equiv (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))
-    (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)
-    (hD : DecayAt μW μN σ) :
-    ∀ h ∈ UWset k r z, ∀ m ∈ Nset k r, ∀ w ∈ smoothVecs (k := k) (r := r) σ, ∀ v : H,
-      IsKFinHpk (k := k) (r := r) σ v →
-      be z c π μW μN σ (σ (h * m) w) v = (psi k r z c m • π h).comp (be z c π μW μN σ w v) := by
-  intro h hh m hm w hw v hv
-  have hint := conv_int z c π μW μN σ hG hπ hM hD w hw v hv
-  obtain ⟨hae, htEq, -, -⟩ := hM
-  have hmp := htEq h hh m hm
-  have hchg : ∫ p, beF z c π σ w v (tEq h m p) ∂(μW.prod μN) = ∫ p, beF z c π σ w v p ∂(μW.prod μN) := by
-    have e := integral_map (μ := μW.prod μN) (f := beF z c π σ w v) hmp.measurable.aemeasurable
-      (by rw [hmp.map_eq]; exact hint.aestronglyMeasurable)
-    rw [hmp.map_eq] at e
-    exact e.symm
-  have hint2 : Integrable (fun p => beF z c π σ w v (tEq h m p)) (μW.prod μN) :=
-    (hmp.integrable_comp hint.aestronglyMeasurable).mpr hint
-  have hL := ContinuousLinearMap.integral_comp_comm
-    (ContinuousLinearMap.compL ℂ Wp Wp Wp (psi k r z c m • π h)) hint2
-  simp only [ContinuousLinearMap.compL_apply] at hL
-  unfold be
-  rw [← hchg, ← hL]
-  apply integral_congr_ae
-  filter_upwards [hae] with p hp
-  exact beF_tEq z c π σ hG hσ hπ hψ h m hh hm w v p hp
-
 def adjR (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] :
     (Wp →L[ℂ] Wp) →ₗᵢ[ℝ] (Wp →L[ℂ] Wp) where
   toFun T := ContinuousLinearMap.adjoint T
@@ -153,36 +126,5 @@ theorem beF_tInv (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (W
   rw [e1, e2, hQ, hψQ, star_star, hσadj, LinearIsometryEquiv.map_smulₛₗ, hπadj]
   congr 1
   simp only [map_mul, inner_conj_symm, Complex.star_def, Complex.conj_conj]
-
-theorem conv_herm (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))
-    (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)
-    (hD : DecayAt μW μN σ) :
-    ∀ w ∈ smoothVecs (k := k) (r := r) σ, ∀ v ∈ smoothVecs (k := k) (r := r) σ,
-      IsKFinHpk (k := k) (r := r) σ w → IsKFinHpk (k := k) (r := r) σ v →
-      ContinuousLinearMap.adjoint (be z c π μW μN σ w v) = be z c π μW μN σ v w := by
-  intro w hw v hv hwK hvK
-  have hint := conv_int z c π μW μN σ hG hπ hM hD v hv w hwK
-  obtain ⟨hae, -, hinvmp, -⟩ := hM
-  have hchg : ∫ p, beF z c π σ v w (tInv p) ∂(μW.prod μN) = ∫ p, beF z c π σ v w p ∂(μW.prod μN) := by
-    have e := integral_map (μ := μW.prod μN) (f := beF z c π σ v w) hinvmp.measurable.aemeasurable
-      (by rw [hinvmp.map_eq]; exact hint.aestronglyMeasurable)
-    rw [hinvmp.map_eq] at e
-    exact e.symm
-  have h1 : ContinuousLinearMap.adjoint (∫ p, beF z c π σ w v p ∂(μW.prod μN)) =
-      ∫ p, ContinuousLinearMap.adjoint (beF z c π σ w v p) ∂(μW.prod μN) :=
-    ((adjR Wp).integral_comp_comm _).symm
-  unfold be
-  rw [h1, ← hchg]
-  apply integral_congr_ae
-  filter_upwards [hae] with p hp
-  exact (beF_tInv z c π σ hG hσ hπ hψ w v p hp).symm
-
-theorem convAt_of (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))
-    (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)
-    (hD : DecayAt μW μN σ) : ConvAt z c π μW μN σ := by
-  exact ⟨conv_int z c π μW μN σ hG hπ hM hD, conv_cont z c π μW μN σ hG hπ hM hD,
-    conv_equiv z c π μW μN σ hG hσ hπ hψ hM hD, conv_herm z c π μW μN σ hG hσ hπ hψ hM hD⟩
 
 end PI.WBL.Cv

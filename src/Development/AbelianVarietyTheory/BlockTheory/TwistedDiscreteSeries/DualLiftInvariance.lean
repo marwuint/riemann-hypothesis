@@ -243,23 +243,4 @@ def LastTwoSteps : Prop :=
     [MeasurableSpace k] [BorelSpace k] (n n' n'' : Type) [Fintype n] [Fintype n'] [Fintype n''] [DecidableEq n'],
     TransformFormula k n n' ∧ Decomposition k n n' ∧ ClassSumFormula k n n' ∧ LastStep k n n' n''
 
-section Examples
-
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-  {n n' n'' : Type} [Fintype n] [Fintype n'] [Fintype n'']
-
-example (q : Unif k) (L : Submodule 𝒪[k] (n'' → k)) [L.IsLattice k] :
-    (lastPair q L).ker = lastKer L ∧ (lastPair q L).HasVal (q.inv • avec k n'' 1 1) 1 :=
-  ⟨glue_ker _, glue_hasVal _⟩
-
-example (q : Unif k) (P : Pair k n') (LY : Submodule 𝒪[k] (n → k)) : datum q P LY 0 0 = 1 :=
-  if_pos ⟨fun _ _ => by simp, by simp⟩
-
-example (q : Unif k) (L : Submodule 𝒪[k] (n → k)) : cosetInd q L 0 0 = 1 :=
-  if_pos ⟨0, fun _ => ⟨0, by simp, by simp⟩, fun _ _ => by simp⟩
-
-example : (resUnit (-1 : 𝒪[k]ˣ) : 𝓀[k]) = -1 := by simp [resUnit]
-
-end Examples
-
 end GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData

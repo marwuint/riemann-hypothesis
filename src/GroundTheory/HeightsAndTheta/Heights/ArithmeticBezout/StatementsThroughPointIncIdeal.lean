@@ -14,10 +14,6 @@ def ThroughPointIncIdeal.Statement : Prop :=
     (∀ u : Fin k × Fin n → AlgebraicClosure F, (∀ i, ∑ j, u (i, j) * x j = 0) → u ∈ incidence Q k) →
       ∀ g ∈ incIdeal Q k, aeval (genSubst (k := k) x c) g = 0
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights

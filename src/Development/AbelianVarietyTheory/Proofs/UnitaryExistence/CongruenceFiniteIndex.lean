@@ -31,12 +31,6 @@ theorem _root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec (γ : GL (Fin r) E
       = v := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
-omit [NumberField E] [IsCMField E] in
-theorem inv_mulVec_mulVec (γ : GL (Fin r) E) (v : Fin r → E) :
-    ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v)
-      = v := by
-  rw [← mul_mulVec, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
-
 open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
@@ -93,14 +87,6 @@ def congruenceSubgroup (Gm : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) 
     refine ⟨-w, Λ.neg_mem hw, ?_⟩
     rw [smul_neg, ← sub_eq_add_neg, eq_sub_iff_add_eq]
     exact e.symm
-
-theorem finite_quotient (hΛ : Λ.FG) {M : ℕ} (hM : 0 < M) :
-    Finite (Λ ⧸ (nsmulAddMonoidHom M : Λ →+ Λ).range) := by
-  haveI : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.2 hΛ
-  haveI : Module.Finite ℤ Λ := Module.Finite.trans (𝓞 E) Λ
-  haveI : AddGroup.FG Λ := Module.Finite.iff_addGroup_fg.1 inferInstance
-  haveI := AddSubgroup.finiteIndex_range_nsmulAddMonoidHom_of_fg Λ hM.ne'
-  infer_instance
 
 open NumberField Matrix in
 open scoped nonZeroDivisors in

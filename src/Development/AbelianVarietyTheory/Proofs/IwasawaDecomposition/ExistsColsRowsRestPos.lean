@@ -177,70 +177,12 @@ end GlobalTheory.Mem.RowsModel
 
 namespace GlobalTheory.Mem
 
-open Formalism.BasicNotions RowsModel in
-
-theorem exists_rowsRest :
-    ∀ (B : Base) (C : Cols B) (n : C.Tup → ℕ) (D : ℕ),
-      (∀ u, Nonempty ((C.mem u).P.Mt ≃ₗ[ℂ] (Fin (n C.mu0) → ℂ))) →
-      (∀ u μ, Nonempty ((C.PTw u μ).Mt ≃ₗ[ℂ] (Fin (n μ) → ℂ))) →
-      (∀ u, ∀ φ ∈ (C.mem u).A.Mram, ∀ ψ ∈ (C.mem u).A.Mram,
-        (C.fm u).ipC 0 ψ φ = starRingEnd ℂ ((C.fm u).ipC 0 φ ψ)) →
-      (∀ u, ∀ φ ∈ (C.mem u).A.Mram, φ ≠ 0 → 0 < ((C.fm u).ipC 0 φ φ).re) →
-      ∃ W : RowsRest B C, W.Drows = D ∧ W.D0 = D ∧ (∀ μ, Module.finrank ℂ (W.Amb μ) = n μ) ∧
-        (∀ μ, W.eOp μ = LinearMap.id) ∧ ∀ μ j, Module.finrank ℂ (W.Mt μ j) = D := by
-  intro B C n D h0 hT h1 h2
-  have hf : ∀ u, ∃ e : Euc (C.mem u).A.du ≃ₗ[ℂ] (C.mem u).A.Mram,
-      ∀ φ ψ, inner ℂ φ ψ = (C.fm u).ipC 0 (e φ).1 (e ψ).1 := fun u =>
-    haveI := mram_fd C u
-    exists_frame (ramCore C u (h1 u) (h2 u))
-  choose eM heM using hf
-  refine ⟨model C n D (fun u => (h0 u).some.trans (WithLp.linearEquiv 2 ℂ _).symm)
-    (fun u μ => (hT u μ).some.trans (WithLp.linearEquiv 2 ℂ _).symm) eM heM, rfl, rfl, fun μ => ?_,
-    fun _ => rfl, fun _ _ => ?_⟩
-  · exact finrank_euclideanSpace_fin
-  · exact finrank_euclideanSpace_fin
-
 theorem RowsModel.ipC_cols (B : Base) (u : B.Word)
     (φ ψ : ((ColsModel.cols B).mem u).C.cls 0 → ((ColsModel.cols B).mem u).C.Y 0 → ℂ) :
     ((ColsModel.cols B).fm u).ipC 0 φ ψ = ∑ c, starRingEnd ℂ (φ c ()) * ψ c () := by
   refine Finset.sum_congr rfl fun c _ => ?_
   show ((Nat.card PUnit : ℕ) : ℂ)⁻¹ * (starRingEnd ℂ (φ c ()) * ψ c ()) = _
   simp
-
-open Formalism.BasicNotions RowsModel in
-
-theorem exists_cols_rowsRest (B : Base) (D : ℕ) :
-    ∃ (C : Cols B) (W : RowsRest B C), W.Drows = D ∧ W.D0 = D ∧ (∀ u, Nontrivial (W.Mu u)) ∧
-      (∀ μ, Module.finrank ℂ (W.Amb μ) = 1) ∧ (∀ μ, W.eOp μ = LinearMap.id) ∧
-      ∀ μ j, Module.finrank ℂ (W.Mt μ j) = D := by
-  classical
-  obtain ⟨W, h1, h2, h3, h4, h5⟩ := exists_rowsRest B (ColsModel.cols B) (fun _ => 1) D
-    (fun _ => ⟨(LinearEquiv.funUnique (Fin 1) ℂ ℂ).symm⟩)
-    (fun _ _ => ⟨(LinearEquiv.funUnique (Fin 1) ℂ ℂ).symm⟩)
-    (fun u φ _ ψ _ => by
-      rw [ipC_cols, ipC_cols, map_sum]
-      exact Finset.sum_congr rfl fun c _ => by simp [mul_comm])
-    (fun u φ _ hφ => by
-      rw [ipC_cols, Complex.re_sum]
-      obtain ⟨c, hc⟩ : ∃ c, φ c () ≠ 0 := by
-        by_contra h
-        exact hφ (funext fun c => funext fun _ => not_not.mp fun hc => h ⟨c, hc⟩)
-      refine Finset.sum_pos' (fun c _ => ?_) ⟨c, Finset.mem_univ _, ?_⟩
-      · rw [Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]
-        positivity
-      · rw [Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]
-        positivity)
-  refine ⟨_, W, h1, h2, fun u => ?_, h3, h4, h5⟩
-  have : Fact (B.T u).Prime := ⟨B.T_prime u⟩
-  have hne : ((ColsModel.cols B).mem u).A.Mram ≠ ⊥ :=
-    MemberTorsor.mram_ne_bot B.R (Tau B.R) (B.hcW u) (B.T u) (card_Tau B.host) (ColsModel.two_lt_alt B.toPre u)
-  have := Submodule.nontrivial_iff_ne_bot.mpr hne
-  exact (W.eMu u).toEquiv.nontrivial
-
-theorem exists_cols_rowsRest_pos (B : Base) :
-    ∃ (C : Cols B) (W : RowsRest B C), 0 < W.Drows ∧ ∀ u, Nontrivial (W.Mu u) := by
-  obtain ⟨C, W, h, -, h', -⟩ := exists_cols_rowsRest B 1
-  exact ⟨C, W, by omega, h'⟩
 
 end GlobalTheory.Mem
 

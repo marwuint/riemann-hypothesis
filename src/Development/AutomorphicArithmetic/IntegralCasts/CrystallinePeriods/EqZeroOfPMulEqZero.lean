@@ -94,9 +94,6 @@ end AcrisZero
 
 namespace Acris
 
-theorem eval_surjective (n : ℕ) : Function.Surjective (eval p R n) :=
-  AdicCompletion.surjective_evalₐ _ n
-
 theorem factorPow_eval {m n : ℕ} (hle : m ≤ n) (x : Acris p R) :
     Ideal.Quotient.factorPow _ hle (eval p R n x) = eval p R m x :=
   factorPow_evalₐ _ hle x
@@ -105,10 +102,6 @@ theorem eval_eq_zero_iff (n : ℕ) (x : Acris p R) : eval p R n x = 0 ↔ (p : A
   have := evalₐ_eq_zero_iff_dvd (p : AcrisZero p R) n x
   rw [map_natCast] at this
   exact this
-
-theorem ker_eval (n : ℕ) : RingHom.ker (eval p R n) = span {(p : Acris p R)} ^ n := by
-  ext x
-  rw [RingHom.mem_ker, eval_eq_zero_iff, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
 theorem exists_eq_add (n : ℕ) (x : Acris p R) :
     ∃ (a : AcrisZero p R) (y : Acris p R), x = algebraMap _ _ a + (p : Acris p R) ^ n * y := by
@@ -139,9 +132,6 @@ theorem eq_zero_of_p_mul_eq_zero {x : Acris p R} (h : (p : Acris p R) * x = 0) :
   simp only [Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]
   rw [Ideal.Quotient.eq_zero_iff_mem, AcrisZero.mem_span_pow_iff]
   exact ⟨b, hab⟩
-
-theorem p_mul_cancel {x y : Acris p R} (h : (p : Acris p R) * x = p * y) : x = y :=
-  sub_eq_zero.1 (eq_zero_of_p_mul_eq_zero (by rw [mul_sub, h, sub_self]))
 
 theorem p_mem_nonZeroDivisors : (p : Acris p R) ∈ nonZeroDivisors (Acris p R) :=
   mem_nonZeroDivisors_iff_left.2 fun _ h => eq_zero_of_p_mul_eq_zero h
@@ -209,16 +199,6 @@ theorem log_mul (u v : Ainf p R) (hu : Ainf.theta p R u = 1) (hv : Ainf.theta p 
 @[simp] theorem log_one (h : Ainf.theta p R 1 = 1) : log (1 : Ainf p R) h = 0 :=
   ext_eval fun n => by rw [eval_log_of_mul_eq _ h n 0 (by simp), map_zero, map_zero]
 
-theorem log_pow (u : Ainf p R) (hu : Ainf.theta p R u = 1) (m : ℕ)
-    (hm : Ainf.theta p R (u ^ m) = 1) : log (u ^ m) hm = m * log u hu := by
-  induction m with
-  | zero => simp only [pow_zero, Nat.cast_zero, zero_mul]; exact log_one _
-  | succ m ih =>
-    have h : Ainf.theta p R (u ^ m) = 1 := by rw [map_pow, hu, one_pow]
-    rw [log_congr hm (by rw [map_mul, h, hu, one_mul]) (pow_succ u m), log_mul _ _ h hu, ih h]
-    push_cast
-    ring
-
 theorem logTeich_mul (η η' : tateModule p R) : logTeich (η * η') = logTeich η + logTeich η' := by
   unfold logTeich
   rw [← log_mul _ _ _ _ (by
@@ -228,13 +208,6 @@ theorem logTeich_mul (η η' : tateModule p R) : logTeich (η * η') = logTeich 
 
 @[simp] theorem logTeich_one : logTeich (1 : tateModule p R) = 0 :=
   (log_congr _ (map_one _) (map_one _)).trans (log_one _)
-
-variable (p R) in
-
-def logTeichHom : tateModule p R →* Multiplicative (Acris p R) where
-  toFun η := Multiplicative.ofAdd (logTeich η)
-  map_one' := by simp
-  map_mul' η η' := by rw [logTeich_mul]; rfl
 
 theorem logTeich_pow (η : tateModule p R) (m : ℕ) : logTeich (η ^ m) = m * logTeich η := by
   induction m with

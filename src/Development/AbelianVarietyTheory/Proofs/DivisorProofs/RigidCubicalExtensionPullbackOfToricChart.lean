@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBaseAlt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullCubicalOfGenericOfExt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendsGenericRigidifiedGeneratorToricChartPowerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendsGenericRigidifiedGeneratorToricChartPower
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UChart
@@ -36,7 +36,7 @@ theorem cube_pull_of_chart : ∀ {E : Type} [Field E] [NumberField E] [IsCMField
   have h₃ : c2.e = a.cm.e ≫ (cubeMapOf hπ).e := by
     show b.cm.e ≫ cm.e = a.cm.e ≫ ξ
     rw [b.base, hce, a.base, hy]
-  exact GlobalTheory.ChartCubExt.isPullCubical_of_generic_of_ext (GlobalTheory.T.extendsGenericRigidifiedGenerator_toricChartPowerSeriesRing k m n) tC.semi cub tC.cub tK.cub
+  exact GlobalTheory.ChartCubExt.isPullCubical_of_generic_of_ext (_root_.GlobalTheory.ChartCubExt.extendGenAt_chartRing k m n) tC.semi cub tC.cub tK.cub
     (cubeMapOf hπ) a.cm c2 a.cart.1 a.base h₁ h₂ h₃ a.lin H2
 
 end GlobalTheory.ChartCubExt

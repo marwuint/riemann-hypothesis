@@ -1,6 +1,5 @@
 import Formalism.CharacterColumnKernels.Statement
 import Formalism.CharacterColumnKernels.CharacterColumnKernelLengthBound
-import Formalism.CharacterColumnKernels.IdempotentNormalForms.ProdEraseZero
 
 open Finset
 
@@ -68,52 +67,5 @@ theorem character_column_kernel_length_bound : characterColumnKernelLengthBound 
   have e : x ^ b - x ^ a = x ^ a * (x ^ (b - a) - 1) := by
     rw [mul_sub, ← pow_add, Nat.add_sub_of_le hab.le, mul_one]
   rw [e, padicValInt.mul hxa hne, padicValInt.eq_zero_of_not_dvd hlx, zero_add, hv]
-
-private lemma prod_univ_erase_zero_eq_prod_succ {M : Type*} [CommMonoid M] (t : ℕ) (f : Fin (t + 1) → M) :
-    ∏ i ∈ univ.erase (0 : Fin (t + 1)), f i = ∏ i : Fin t, f i.succ := by
-  rw [Fin.univ_succ, Finset.erase_cons, Finset.prod_map]
-  rfl
-
-theorem idempotentNormalForms_fact : characterColumnKernelBlockBound := by
-  intro l hl s₀ hs hs2 x hx1 hx2 u hu w t
-  have hlp := Nat.prime_iff_prime_int.mp hl.out
-  have hdvd : (l : ℤ) ∣ x - 1 := (dvd_pow_self (l : ℤ) (by omega)).trans hx1
-  have hlx : ¬ (l : ℤ) ∣ x := by
-    intro h
-    have h1 : (l : ℤ) ∣ 1 := by have := dvd_sub h hdvd; simpa using this
-    exact hlp.not_dvd_one h1
-  have hux : ¬ (l : ℤ) ∣ u * x ^ w := by
-    intro h
-    rcases hlp.dvd_or_dvd h with h | h
-    · exact hu h
-    · exact hlx (hlp.dvd_of_dvd_pow h)
-  have hux0 : u * x ^ w ≠ 0 := fun h ↦ hux (h ▸ dvd_zero _)
-  have hneg : ∀ z : ℤ, padicValInt l (-z) = padicValInt l z := fun z ↦ by simp [padicValInt]
-  have hg : ∀ i : ℕ, u * x ^ w - u * x ^ (w + (i + 1)) ≠ 0 ∧
-      padicValInt l (u * x ^ w - u * x ^ (w + (i + 1))) = s₀ + padicValNat l (i + 1) := by
-    intro i
-    obtain ⟨hne, hv⟩ := padicValInt_pow_sub_one_eq_add l s₀ hs hs2 x hx1 hx2 (i + 1) (by omega)
-    have e : u * x ^ w - u * x ^ (w + (i + 1)) = -((u * x ^ w) * (x ^ (i + 1) - 1)) := by ring
-    have hm : (u * x ^ w) * (x ^ (i + 1) - 1) ≠ 0 := mul_ne_zero hux0 hne
-    refine ⟨by rw [e]; exact neg_ne_zero.mpr hm, ?_⟩
-    rw [e, hneg, padicValInt.mul hux0 hne, padicValInt.eq_zero_of_not_dvd hux, zero_add, hv]
-  have key : ∀ t : ℕ, (∏ i ∈ Finset.range t, (u * x ^ w - u * x ^ (w + (i + 1)))) ≠ 0 ∧
-      padicValInt l (∏ i ∈ Finset.range t, (u * x ^ w - u * x ^ (w + (i + 1)))) =
-        t * s₀ + padicValNat l t.factorial := by
-    intro t
-    induction t with
-    | zero => simp
-    | succ k ih =>
-      rw [Finset.prod_range_succ]
-      refine ⟨mul_ne_zero ih.1 (hg k).1, ?_⟩
-      rw [padicValInt.mul ih.1 (hg k).1, ih.2, (hg k).2, Nat.factorial_succ,
-        padicValNat.mul (by omega) (Nat.factorial_ne_zero k)]
-      ring
-  have hd : delta (fun i : Fin (t + 1) ↦ u * x ^ (w + (i : ℕ))) =
-      ∏ i ∈ Finset.range t, (u * x ^ w - u * x ^ (w + (i + 1))) := by
-    rw [delta, prod_univ_erase_zero_eq_prod_succ]
-    simp only [Fin.val_zero, Fin.val_succ, add_zero]
-    exact Fin.prod_univ_eq_prod_range (fun i ↦ u * x ^ w - u * x ^ (w + (i + 1))) t
-  rw [hd, (key t).2]
 
 end Formalism.NG

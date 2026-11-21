@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsPosHermFormV
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IntMIffInt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsOrthonormalBasisEigenOfInnerMap
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralCexpGaussianPlaneStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralCexpGaussianPlane
 open Complex MeasureTheory GlobalTheory.UnitaryTheta
 open scoped BigOperators ComplexConjugate Real Classical
 
@@ -68,7 +68,7 @@ theorem integral_gaussian_unitary : ∀ (V : Type) [NormedAddCommGroup V] [Norme
   refine ⟨(c : ℝ), by exact_mod_cast hpos.ne', fun y v => ?_⟩
   let g : Fin n → ℂ → ℂ := fun i z => cexp (-(π : ℂ) * (1 - l i) * (z * conj z) +
     π * (((1 - l i) * e.repr y i) * conj z) + π * (z * conj (e.repr v i)))
-  have hg := fun i => GlobalTheory.T.integral_cexp_complex_gaussian_linear (1 - l i) ((1 - l i) * e.repr y i) (e.repr v i) (hre i)
+  have hg := fun i => _root_.GlobalTheory.UnitaryTheta.integral_cexp_gaussian_plane (1 - l i) ((1 - l i) * e.repr y i) (e.repr v i) (hre i)
   have hF : (fun z => cexp (-(π : ℂ) * H (z - a z) z + π * H (y - a y) z + π * H z v)) =
       (fun x : Fin n → ℂ => ∏ i, g i (x i)) ∘ Tm := by
     funext z

@@ -1062,27 +1062,12 @@ def LiftOntoC : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
     LiftOnto X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')
 
-def PsiCondC : Prop := ∀ (D : D7) (X : HidaSetting D), PsiCond X
-
 end Closed2
 
 end Formalism.L2.SG.Pf.SatGram
 
 namespace Formalism.L2.SG.Pf
 
-alias typedRed_exists := SatGram.typedRed_exists
-alias typedRed_exists' := SatGram.typedRed_exists'
-alias corankPos_tO := SatGram.corankPos_tO
-alias idDegenerate_tO := SatGram.idDegenerate_tO
-alias satGram_of := SatGram.satGram_of
-alias satGramC_of := SatGram.satGramC_of
 alias typed_count := SatGram.typed_count
-alias typed_count' := SatGram.typed_count'
-alias tt_eq := SatGram.tt_eq
-alias tt_eq' := SatGram.tt_eq'
 alias gamma_one_eq_prod_typed_places := SatGram.gamma_one_eq_prod_typed_places
-alias gamma_one_typed_places_of_local := SatGram.gamma_one_typed_places_of_local
-alias gsplit_X := SatGram.gsplit_X
-alias one_sub_ew := SatGram.one_sub_ew
-
 end Formalism.L2.SG.Pf

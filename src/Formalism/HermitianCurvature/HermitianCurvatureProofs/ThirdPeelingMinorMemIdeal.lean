@@ -50,14 +50,6 @@ theorem dpsi_e_w (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (p : ℕ) (hp : 
   simp only [dpsiP, pe_val, h1, hw]
   rw [if_neg (by omega), if_pos (by omega)]
 
-theorem dpsi_middle_last_basis (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (l : ℕ) (hl : l < r) (w : Fin (k + 1)) :
-    dpsiP k r z' (wI k r w) (ps k r l) = if l + 1 = r then herm (Hpk k r) (bvec (wI k r w)) z' else 0 := by
-  have hw : (wI k r w).val = r + w.val := rfl
-  have hwk := w.isLt
-  simp only [dpsiP, ps_val, hw]
-  rw [if_neg (by omega), if_neg (by omega), if_pos (by omega)]
-  simp only [show (2 * r + k - l = r + k + 1) ↔ (l + 1 = r) by omega]
-
 theorem dpsi_last_basis_shift (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (a b : ℕ) (ha : a < r) (hb : b < r) :
     dpsiP k r z' (ps k r a) (ps k r b) = if b + 1 = a then 1 else 0 := by
   have c1 : ¬(2 * r + k - a < r ∧ 2 * r + k - b < r) := by omega
@@ -184,46 +176,5 @@ theorem second_peeling_identity : PeelingCovector := by
   have := Ideal.add_mem _ step h2
   rw [smul_sub] at this
   simpa using this
-
-theorem fourth_peeling_identity : PeelingDualCovector := by
-  intro A _ _ k m z' yb E hG i ell hz hy
-  rw [sR_succAbove_eq_ps, sR_eq_ps, sR_eq_ps]
-  have hrow := peel_row (Ideal.span (rgen k (m + 1) z' E)) E hG
-    (fun w : Fin (k + 1) => yb (wI k (m + 1) w))
-    (fun l : Fin m => ps k (m + 1) (if l.val < i.val then l.val else l.val + 1)) (wI k (m + 1))
-    (fun l : Fin (m + 1) => ps k (m + 1) l.val) (ell + (m : ℂ)) (herm (Hpk k (m + 1)) yb z') ?_
-  · have hp := third_peeling_minor_mem_ideal k (m + 1) z' E hG ell m i.val (by have := i.isLt; omega) le_rfl
-    have hsm := smul_mem' (Ideal.span (rgen k (m + 1) z' E)) (herm (Hpk k (m + 1)) yb z') hp
-    simp only [Function.comp_def, Fin.coe_castSucc] at hrow
-    have hsum := (Ideal.span (rgen k (m + 1) z' E)).add_mem hrow hsm
-    rw [smul_sub, sub_add_sub_cancel] at hsum
-    exact hsum
-  · intro l
-    refine hT_of _ _ _ (fun w => dpsiP k (m + 1) z' (wI k (m + 1) w) (ps k (m + 1) l.val)) _ ?_ ?_
-    · intro w
-      have hl := l.isLt
-      have hw : (wI k (m + 1) w).val = m + 1 + w.val := rfl
-      have hwk := w.isLt
-      have hne : wI k (m + 1) w ≠ ps k (m + 1) l.val := by
-        intro e
-        have := congrArg Fin.val e
-        simp only [ps_val, hw] at this
-        omega
-      have hin : InNp k (m + 1) (wI k (m + 1) w) (ps k (m + 1) l.val) := by
-        simp only [InNp, ps_val, hw]
-        omega
-      rw [tm_offdiag _ _ hne]
-      exact mem_gen hin
-    · simp only [dpsi_middle_last_basis k (m + 1) z' l.val l.isLt]
-      by_cases hlm : l = Fin.last m
-      · have hv : l.val + 1 = m + 1 := by rw [hlm, Fin.val_last]
-        rw [if_pos hlm]
-        simp only [hv, if_true]
-        rw [herm_wsum k (m + 1) yb z' hy]
-      · have hv : ¬ (l.val + 1 = m + 1) := fun e => hlm (Fin.ext (by rw [Fin.val_last]; omega))
-        rw [if_neg hlm]
-        simp only [hv, if_false, mul_zero, Finset.sum_const_zero]
-
-theorem peeling_of_parts : PeelOfParts := fun _ => ⟨first_peeling_identity, second_peeling_identity, third_peeling_identity, fourth_peeling_identity⟩
 
 end Formalism.FourierDecayAlt.P.SignAntidiagonal

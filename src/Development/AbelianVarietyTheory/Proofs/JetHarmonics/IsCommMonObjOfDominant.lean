@@ -27,22 +27,4 @@ theorem isCommMonObj_of_dominant {S S' : Scheme.{0}} {f : S' ⟶ S} [QuasiCompac
   exact congrArg (fun z => z.left) (key (Over.mk (pullback.snd (A ⊗ A).hom f))
     (Over.homMk (pullback.fst (A ⊗ A).hom f) (by simpa using pullback.condition)))
 
-theorem isCommMonObj_of_isGt {O C : Type} [CommRing O] [Field C] [Algebra O C]
-    (hinj : Function.Injective (algebraMap O C)) (E : SplitExt (Spec (CommRingCat.of O)))
-    (G : Over (Spec (CommRingCat.of O))) [GrpObj G] (h : E.IsGt G) : IsCommMonObj G := by
-  obtain ⟨hs, -⟩ := UnitRigidity.smooth_geometricallyConnected_of_isGt E G h
-  obtain ⟨d⟩ := h
-  have := d.q_affine
-  have := E.isAbelian.proper
-  have : IsSeparated G.hom := by
-    rw [← Over.w d.q]
-    infer_instance
-  let f : Spec (CommRingCat.of C) ⟶ Spec (CommRingCat.of O) :=
-    Spec.map (CommRingCat.ofHom (algebraMap O C))
-  have : IsSchemeTheoreticallyDominant f :=
-    ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective _ hinj
-  obtain ⟨T⟩ := nonempty_torusExtension_of_isGt _ _ (GtBaseChange.isGt_extBC f E G d)
-  have := SemiAbelianCompare.isCommMonObj_of_torusExtension T
-  exact isCommMonObj_of_dominant (isGrpPullback_pullback G f)
-
 end GlobalTheory.SplitExtComm

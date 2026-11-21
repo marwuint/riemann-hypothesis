@@ -333,15 +333,6 @@ theorem base_lattice_self_dual_of_chain (u : D.what₂.Word) (dt : MemDt (cols.f
 
 end Mem
 
-section Rec
-
-open Formalism.MainNotions
-
-variable {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Dx : DivX D} {cX : ExtraC}
-  {ex : Extra D L hT Gi Gl K Dx cX}
-
-end Rec
-
 end GlobalTheory.Port
 
 end

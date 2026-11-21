@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTraitsOnOfHasTraitsP
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantValuationLeCommonBoundMulMonomialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaConstantNeZeroUniformisedMemberStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantValuationLeCommonBoundMulMonomial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaConstantNeZeroUniformisedMember
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDiscreteValuationCentredCompleteNormalStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -54,7 +54,7 @@ theorem ratio (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) {a : X�
 theorem label_zero_of_mem_supI : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (a : X₁.S.Gam), a ∈ X₁.S.supI X₁.M z₁ → 𝔪.YY a 0 := by
   intro I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 a ha
   have ha' : X₁.M.Div X₁.S.th a z₁ := ha
-  obtain ⟨b₀, hb₀⟩ := GlobalTheory.T.exists_thetaConstant_ne_zero_uniformisedMember I X₁ z₁ act V ev X t δ 𝔪
+  obtain ⟨b₀, hb₀⟩ := _root_.GlobalTheory.GSep.GMem.exists_th_ne_zero I X₁ z₁ act V ev X t δ 𝔪
   have hane : 𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩ ≠ 0 := by
     intro h0
     obtain ⟨v, hv⟩ := ratio 𝔪 ha' b₀
@@ -65,7 +65,7 @@ theorem label_zero_of_mem_supI : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) 
     obtain ⟨v, hv⟩ := ratio 𝔪 ha' b
     rw [hv, map_mul]
     exact mul_le_of_le_one_left' (hν1 v)
-  obtain ⟨w, hw, hle⟩ := GlobalTheory.T.thetaConstant_valuation_le_common_bound_mul_monomial I X₁ z₁ act V ev X t δ 𝔪 ν hν1 hνm _ hmax a
+  obtain ⟨w, hw, hle⟩ := _root_.GlobalTheory.GSep.DivBound.theta_pow_le I X₁ z₁ act V ev X t δ 𝔪 ν hν1 hνm _ hmax a
   have h0 : ν (𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩) ^ ((X₁.S.r * X₁.S.N) ^ 2) ≠ 0 :=
     pow_ne_zero _ ((Valuation.ne_zero_iff ν).2 hane)
   have h1 : 1 ≤ ν (algebraMap V (FractionRing V) (t w)) := by

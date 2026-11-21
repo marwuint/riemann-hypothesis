@@ -5,13 +5,14 @@ import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.MassFormulaConj
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.DegreeEqCardToMultiset
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FractionRingRingEquiv
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsMultiProjPrimeExtTo
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.UniformizerDivisorCycleNumberStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.UniformizerDivisorCycleNumber
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagM3PadicGlobalStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumsVanishAtPlacesStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumsVanishAtPlaces
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootModelGeometricGenericNumberStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootPowerSumMixedExpansionStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumTermDiscreteValuationStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsometricFamilyIntersectionEqStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootPowerSumMixedExpansion
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumTermDiscreteValuation
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsometricFamilyIntersectionEq
 open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.CompanionTheory.Ar.Num GlobalTheory.CompanionTheory.Ar.Top GroundTheory.Heights₂.Heights.ModelLeaves
 open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar IsHorizontal mcPts mCoordIdeal IsIntersectionFamily IsIntersectionSystem IntersectionSystem ptsIntegral geoNum charOf recR arInt ChartBundle chartRing)
 
@@ -86,9 +87,9 @@ theorem power_sum_height_model_change : ∀ (Ψ : Type) [Fintype Ψ] [DecidableE
   have e2 : R.model.arFun II t (toA (pk τ k * Q)) =
       arNum (II M.K M.ι) M.P (R.x t) (pk τ k * Q) / (M.δ : ℝ) :=
     arFun_toA_eq_arNum Ψ N R.model II hII t _ hF
-  obtain ⟨Hs, hHs, hHs0, hexp⟩ := GlobalTheory.T.root_power_sum_mixed_expansion Ψ N (dimFl Ψ N) k hk1 hkd τ Q hQ
+  obtain ⟨Hs, hHs, hHs0, hexp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.rootPs_mul_mixExpansion Ψ N (dimFl Ψ N) k hk1 hkd τ Q hQ
   obtain ⟨hvert, hiso⟩ := hCh
-  have hlink := GlobalTheory.T.isometric_family_intersection_eq M.K M.ι M.P (dimFl Ψ N) M.arith (II M.K M.ι) (hII M.K M.ι) (Ψ × Fin N) S R.pairs
+  have hlink := _root_.GlobalTheory.CompanionTheory.Ar.Num.TopLink.arNum_eq_sum_log_val M.K M.ι M.P (dimFl Ψ N) M.arith (II M.K M.ι) (hII M.K M.ι) (Ψ × Fin N) S R.pairs
     hvert (M.x t) (R.x t) (fun i => M.x_smooth t i) (fun i => R.x_smooth t i) (hiso t ht) _ _ hexp
   obtain ⟨A, i1, i2, i3, i4, hinj, hconst, hloc⟩ := hLoc
   have hdiff : arNum (II M.K M.ι) M.P (M.x t) (pk τ k * Q) - arNum (II M.K M.ι) M.P (R.x t) (pk τ k * Q) =
@@ -99,15 +100,15 @@ theorem power_sum_height_model_change : ∀ (Ψ : Type) [Fintype Ψ] [DecidableE
     obtain ⟨hirr, hmod, hv⟩ := zp_model M.K M.ι M.P (dimFl Ψ N) M.arith p
     have hm3 := GlobalTheory.T.flag_m3_padic_global M.K M.ι M.Ω M.y A hinj hconst (dimFl Ψ N) M.arith p Ψ N j (φ p) S R.pairs hvert
       (fun m _ hm O _ _ _ _ _ _ _ => (hloc p hp m hm O).1)
-    have hz := GlobalTheory.T.power_sums_vanish_at_places M.K M.ι M.Ω M.y A hinj hconst (dimFl Ψ N) M.arith p N (fun i => R.xdeg (τ, i))
+    have hz := _root_.GlobalTheory.CompanionTheory.Ar.Num.powerSumsVanish_extTo_of_atPlacesOver M.K M.ι M.Ω M.y A hinj hconst (dimFl Ψ N) M.arith p N (fun i => R.xdeg (τ, i))
       (fun m _ hm O _ _ _ _ _ _ _ => (hloc p hp m hm O).2 τ)
     have hH : (bracket j (φ p) p k τ * Q : RP Ψ N).IsHomogeneous (dimFl Ψ N) := by
       have h := (bracket_isHomogeneous (N := N) j (φ p) p k τ).mul hQ
       have e : k - 1 + (dimFl Ψ N + 1 - k) = dimFl Ψ N := by omega
       rwa [e] at h
-    have h1 := GlobalTheory.T.power_sum_term_discrete_valuation (ZP p) _ hirr M.K M.ι _ _ hmod p Ψ N j (φ p) k hk1 hkd τ Q Hs hQ hHs hHs0 _
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Num.power_sum_term_dvr (ZP p) _ hirr M.K M.ι _ _ hmod p Ψ N j (φ p) k hk1 hkd τ Q Hs hQ hHs hHs0 _
       (hv _ S R.pairs hvert) hm3 hz
-    have h2 := GlobalTheory.T.uniformizer_divisor_cycle_number (ZP p) _ hirr M.K M.ι _ _ hmod 1 1 (Ψ × Fin N) M.xdeg
+    have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Num.cycNum_divCycle_const (ZP p) _ hirr M.K M.ι _ _ hmod 1 1 (Ψ × Fin N) M.xdeg
       (bracket j (φ p) p k τ * Q) (dimFl Ψ N) hH [] (by simp)
     simp only [Units.val_one, one_mul, pow_one, Nat.cast_one] at h2
     have h3 := genNum_zp_eq_rat M.K M.ι M.P p (Ψ × Fin N) M.xdeg (bracket j (φ p) p k τ * Q) []

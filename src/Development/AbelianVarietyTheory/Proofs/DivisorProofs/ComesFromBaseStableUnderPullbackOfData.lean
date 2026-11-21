@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullDegUniqueAndComp
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TraceFormTwistIsoOfPullback
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OverPullbackMapLeftCompPullbackFstScheme
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsPullDegWholeSpectrumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsPullDegCompOfFirstTopStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsPullDegRescaleBothSidesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsPullDegWholeSpectrum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsPullDegCompOfFirstTop
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsPullDegRescaleBothSides
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UChart GlobalTheory.UCanon
@@ -20,7 +20,7 @@ theorem divFrom_pull : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   intro E _ _ _ H D' l c L R V _ _ _ _ Q _ oQ Q' _ oQ' iw θ I _ s ε e hD e' he' hact hs hdiv
   obtain ⟨g, hD0, hg, hxe, hac⟩ := hdiv
   have ψL : Nonempty (PsiOn (mulDeg L.D l.M') ⊤) := GlobalTheory.ArcPull.nonempty_psiOn_top _ (fun y => L.gen (l.M' • y))
-  obtain ⟨hD1, hW1, hp1, hx1⟩ := GlobalTheory.T.exists_isPullDeg_whole_spectrum hD0 ψL
+  obtain ⟨hD1, hW1, hp1, hx1⟩ := _root_.GlobalTheory.PullDegWhole.exists_isPullDeg_top hD0 ψL
   have ψR : Nonempty (PsiOn (GlobalTheory.PolDeg.rescale Q g) ⊤) := by
     have := GlobalTheory.PullDegUniq.nonempty_psiOn_pull hD1
     rw [hW1] at this
@@ -62,8 +62,8 @@ theorem divFrom_pull : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H
       refine Finset.prod_congr rfl fun k _ => ?_
       rw [map_pow, map_pow, map_pow, map_pow]
       exact key _ (hs0 k) _
-  obtain ⟨h1, hp2, hx2⟩ := GlobalTheory.T.exists_isPullDeg_rescale_both_sides hD g g' ψR hab
-  obtain ⟨r, hpr, hxr⟩ := GlobalTheory.T.exists_isPullDeg_comp_of_first_top hD1 h1 hW1
+  obtain ⟨h1, hp2, hx2⟩ := _root_.GlobalTheory.RescaleBoth.exists_isPullDeg_rescale hD g g' ψR hab
+  obtain ⟨r, hpr, hxr⟩ := _root_.GlobalTheory.PullDegCompTop.exists_isPullDeg_comp_top hD1 h1 hW1
   refine ⟨g', r, fun y => ?_, fun y => ?_, fun x => ?_⟩
   · simp only [g', Units.val_inv_eq_inv_val, inv_inv, Units.val_mk0, map_zpow]
     rfl

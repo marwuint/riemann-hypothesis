@@ -8,16 +8,6 @@ noncomputable section
 
 namespace Formalism.LatticeIndexTer.LatticeIndexDeterminant
 
-theorem addVal_prod {O ι : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    (s : Finset ι) (a : ι → O) :
-    IsDiscreteValuationRing.addVal O (∏ i ∈ s, a i) =
-      ∑ i ∈ s, IsDiscreteValuationRing.addVal O (a i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | insert x s hx ih =>
-    rw [Finset.prod_insert hx, Finset.sum_insert hx, IsDiscreteValuationRing.addVal_mul, ih]
-
 theorem length_quot_range {O M : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [AddCommGroup M] [Module O M] [Module.Free O M] [Module.Finite O M]
     (φ : M →ₗ[O] M) (hφ : Function.Injective φ) :
@@ -43,23 +33,6 @@ theorem arith (x y d va vb ve ve' : ℕ∞) (h1 : ve = x + d) (h2 : ve' = y + d)
   lift va to ℕ using hva
   lift vb to ℕ using hvb
   norm_cast at h3
-  simp only [ENat.toNat_natCast]
-  omega
-
-theorem arith3 (p q p1 q1 p2 q2 p3 q3 : ℕ∞) (h : p + (q1 + q2 + q3) = q + (p1 + p2 + p3))
-    (hp : p ≠ ⊤) (hq : q ≠ ⊤) (hp1 : p1 ≠ ⊤) (hq1 : q1 ≠ ⊤) (hp2 : p2 ≠ ⊤) (hq2 : q2 ≠ ⊤)
-    (hp3 : p3 ≠ ⊤) (hq3 : q3 ≠ ⊤) :
-    (p.toNat : ℤ) - q.toNat =
-      ((p1.toNat : ℤ) - q1.toNat) + ((p2.toNat : ℤ) - q2.toNat) + ((p3.toNat : ℤ) - q3.toNat) := by
-  lift p to ℕ using hp
-  lift q to ℕ using hq
-  lift p1 to ℕ using hp1
-  lift q1 to ℕ using hq1
-  lift p2 to ℕ using hp2
-  lift q2 to ℕ using hq2
-  lift p3 to ℕ using hp3
-  lift q3 to ℕ using hq3
-  norm_cast at h
   simp only [ENat.toNat_natCast]
   omega
 
@@ -228,22 +201,6 @@ section Frac
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
   [Algebra O K] [IsFractionRing O K]
 
-theorem det_frac {X Y ι : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup X] [Module K X]
-    [AddCommGroup Y] [Module K Y] (bX : Basis ι K X) (bY : Basis ι K Y) (f : X ≃ₗ[K] Y) :
-    ∃ a b : O, a ≠ 0 ∧ b ≠ 0 ∧
-      algebraMap O K a = (LinearMap.toMatrix bX bY (f : X →ₗ[K] Y)).det * algebraMap O K b := by
-  obtain ⟨a, b, hb, hab⟩ := IsFractionRing.div_surjective O
-    (LinearMap.toMatrix bX bY (f : X →ₗ[K] Y)).det
-  have hb0 : b ≠ 0 := nonZeroDivisors.ne_zero hb
-  have hbK : algebraMap O K b ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hb0
-  have hdet : (LinearMap.toMatrix bX bY (f : X →ₗ[K] Y)).det ≠ 0 :=
-    (LinearEquiv.isUnit_det f bX bY).ne_zero
-  refine ⟨a, b, ?_, hb0, ?_⟩
-  · rintro rfl
-    apply hdet
-    rw [← hab, map_zero, zero_div]
-  · rw [← hab, div_mul_cancel₀ _ hbK]
-
 theorem index_scalar_multiple_eq {X ι : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup X] [Module K X]
     [Module O X] [IsScalarTower O K X] (bN : Basis ι K X) (u : K) (hu : u ≠ 0) (a b : O)
     (ha : a ≠ 0) (hb : b ≠ 0) (h : algebraMap O K a = u ^ Fintype.card ι * algebraMap O K b) :
@@ -271,34 +228,6 @@ open Module
 theorem lattice_index_eq_det_valuation : IdxDet := by
   intro O K X Y ι _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ bX bY f a b ha hb h
   exact LatticeIndexDeterminant.idxDet_core bX bY f a b ha hb h
-
-theorem lattice_index_three_term : ThreeIdx := by
-  intro O K X₁ X₂ X₃ X₄ ι _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-    b₁ b₂ b₃ b₄ θ' j θ a b ha hb h
-  dsimp only
-  obtain ⟨a1, c1, ha1, hc1, h1⟩ := LatticeIndexDeterminant.det_frac (O := O) b₁ b₂ θ'
-  obtain ⟨a2, c2, ha2, hc2, h2⟩ := LatticeIndexDeterminant.det_frac (O := O) b₂ b₃ j
-  obtain ⟨a3, c3, ha3, hc3, h3⟩ := LatticeIndexDeterminant.det_frac (O := O) b₃ b₄ θ
-  rw [LatticeIndexDeterminant.idxDet_core b₁ b₂ θ' a1 c1 ha1 hc1 h1, LatticeIndexDeterminant.idxDet_core b₂ b₃ j a2 c2 ha2 hc2 h2,
-    LatticeIndexDeterminant.idxDet_core b₃ b₄ θ a3 c3 ha3 hc3 h3]
-  have hcomp : LinearMap.toMatrix b₁ b₄
-      ((θ : X₃ →ₗ[K] X₄) ∘ₗ (j : X₂ →ₗ[K] X₃) ∘ₗ (θ' : X₁ →ₗ[K] X₂)) =
-      LinearMap.toMatrix b₃ b₄ (θ : X₃ →ₗ[K] X₄) *
-        (LinearMap.toMatrix b₂ b₃ (j : X₂ →ₗ[K] X₃) * LinearMap.toMatrix b₁ b₂ (θ' : X₁ →ₗ[K] X₂)) := by
-    rw [LinearMap.toMatrix_comp b₁ b₃ b₄, LinearMap.toMatrix_comp b₁ b₂ b₃]
-  rw [hcomp, Matrix.det_mul, Matrix.det_mul] at h
-  have hinj : Function.Injective (algebraMap O K) := IsFractionRing.injective O K
-  have hrel : a * (c1 * c2 * c3) = b * (a1 * a2 * a3) := by
-    apply hinj
-    simp only [map_mul]
-    rw [h, h1, h2, h3]
-    ring
-  have hv := congrArg (IsDiscreteValuationRing.addVal O) hrel
-  simp only [IsDiscreteValuationRing.addVal_mul] at hv
-  have hne : ∀ x : O, x ≠ 0 → IsDiscreteValuationRing.addVal O x ≠ ⊤ :=
-    fun x hx h => hx (IsDiscreteValuationRing.addVal_eq_top_iff.1 h)
-  exact LatticeIndexDeterminant.arith3 _ _ _ _ _ _ _ _ hv (hne _ ha) (hne _ hb) (hne _ ha1) (hne _ hc1)
-    (hne _ ha2) (hne _ hc2) (hne _ ha3) (hne _ hc3)
 
 theorem idxScale_of (hB : LatBasis) : IdxScale := by
   intro O K X _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ s N hN

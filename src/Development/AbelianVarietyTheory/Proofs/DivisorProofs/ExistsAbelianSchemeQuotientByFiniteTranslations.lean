@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsGlobal
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.QuotientIsAbelianSchemeOfQuotientScheme
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ForallGeometricallyIntegralOfSmoothOfGeometrical
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsProperAndGeometricallyConnectedOfIsNilpotent
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyOfFinitePresentationOfCancelStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyOfFinitePresentationOfCancel
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT
@@ -54,7 +54,7 @@ theorem isAbelianScheme_of_finite_etale {S : Scheme.{0}} (A Q : Over S) [GrpObj 
   have := GlobalTheory.NilProper.isSeparated_of_comp_surjective q.left Q.hom
   have := GlobalTheory.AbelianQuotient.geometricallyReduced_of_comp q.left Q.hom
   have : LocallyOfFinitePresentation Q.hom :=
-    GlobalTheory.T.locallyOfFinitePresentation_of_cancel q.left Q.hom hfin inferInstance inferInstance hsurj inferInstance
+    _root_.GlobalTheory.CompanionTheory.LfpDescent.descends q.left Q.hom hfin inferInstance inferInstance hsurj inferInstance
   exact ⟨hQ, GlobalTheory.AbelianQuotient.smooth_of_grpObj_of_flat Q, ⟨⟩,
     GlobalTheory.AbelianQuotient.geometricallyConnected_of_comp q.left Q.hom⟩
 

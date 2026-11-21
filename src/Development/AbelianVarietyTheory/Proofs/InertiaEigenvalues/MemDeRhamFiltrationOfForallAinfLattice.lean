@@ -6,7 +6,8 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMulMemLatIff
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyThetaOnBdRPlusPeriodData
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamFilQuotientXiPowerAinfStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineXiPowSaturatedQuotientCompleteStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineXiPowSaturatedQuotientComplete
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 
 namespace GlobalTheory.ExpImage
 
@@ -28,7 +29,7 @@ theorem mem_FilB_of_forall_Lat (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : L
     (T : LocTied l P AI) (M : ℕ) (b : P.R.BdR) (hb : ∀ n : ℕ, b ∈ Lat AI M n) :
     b ∈ FilB P (M : ℤ) := by
   obtain ⟨-, h2, -⟩ := GlobalTheory.T.deRham_fil_quotient_xi_power_ainf l P AI T (GlobalTheory.ThetaTie.thetaL T) M
-  obtain ⟨-, h3⟩ := GlobalTheory.T.fontaineXi_pow_saturated_quotient_complete l AI.ε (GlobalTheory.ThetaTie.isEps AI) M
+  obtain ⟨-, h3⟩ := _root_.GlobalTheory.MemLoc.XiSat.xi_sat l AI.ε (GlobalTheory.ThetaTie.isEps AI) M
   obtain ⟨a₀, ha₀⟩ := hb 0
   rw [pow_zero, one_mul] at ha₀
   have hd : AI.ξ ^ M ∣ a₀ := by

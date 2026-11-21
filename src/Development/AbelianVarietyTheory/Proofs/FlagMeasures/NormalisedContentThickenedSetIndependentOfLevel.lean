@@ -3,8 +3,8 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalk
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommensurableCosetUnionContentBiUnionStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TupleJacobianRightMulIsometryStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommensurableCosetUnionContentBiUnion
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TupleJacobianRightMulIsometry
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianMatrixCongruenceContentJacobianStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MatrixCongruentOneModUniformizerPowGroupAndOrbitStatement
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
@@ -50,7 +50,7 @@ theorem cont_nonneg {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) (S : Set W)
 
 theorem cont_mono {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) {S T : Set W}
     (hS : IsCO W0 S) (hT : IsCO W0 T) (h : S ⊆ T) : cont W0 S ≤ cont W0 T := by
-  have h1 := (GlobalTheory.T.commensurableCosetUnionContent_biUnion W0 (Finset.univ : Finset Bool) (fun b => if b then S else T \ S)
+  have h1 := (_root_.GlobalTheory.HL.cont_biUnion W0 (Finset.univ : Finset Bool) (fun b => if b then S else T \ S)
     (by rintro (_ | _) _
         · simpa using isCO_diff W0 hS hT
         · simpa using hS)).2
@@ -76,7 +76,7 @@ theorem finite_pieces {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) {T : Set 
   by_contra hinf
   obtain ⟨N, hN⟩ := exists_nat_gt (cont W0 T / c)
   obtain ⟨s, hs, hcard⟩ := Set.Infinite.exists_subset_card_eq hinf N
-  obtain ⟨h3, h4⟩ := GlobalTheory.T.commensurableCosetUnionContent_biUnion W0 s (fun p => p) (fun p hp => (h1 p (hs hp)).1)
+  obtain ⟨h3, h4⟩ := _root_.GlobalTheory.HL.cont_biUnion W0 s (fun p => p) (fun p hp => (h1 p (hs hp)).1)
   have h5 := h4 (fun p hp q hq => h2 p (hs hp) q (hs hq))
   rw [Finset.sum_congr rfl (fun p hp => (h1 p (hs hp)).2.1), Finset.sum_const, hcard, nsmul_eq_mul] at h5
   have h6 := cont_mono W0 h3 hT (Set.iUnion₂_subset fun p hp => (h1 p (hs hp)).2.2)
@@ -189,7 +189,7 @@ theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
     · exact Set.iUnion₂_subset fun p hp => (hS p (hfin.mem_toFinset.1 hp)).2.2
     · rintro _ ⟨A, hA, rfl⟩
       exact Set.mem_iUnion₂.2 ⟨P A, hfin.mem_toFinset.2 ⟨A, hA, rfl⟩, hself A⟩
-  have hc1 := (GlobalTheory.T.commensurableCosetUnionContent_biUnion (hermLat L m) hfin.toFinset (fun p => p)
+  have hc1 := (_root_.GlobalTheory.HL.cont_biUnion (hermLat L m) hfin.toFinset (fun p => p)
     (fun p hp => (hS p (hfin.mem_toFinset.1 hp)).1)).2
     (fun p hp q hq => hdisj p (hfin.mem_toFinset.1 hp) q (hfin.mem_toFinset.1 hq))
   rw [hU1, Finset.sum_congr rfl (fun p hp => (hS p (hfin.mem_toFinset.1 hp)).2.1), Finset.sum_const,
@@ -208,7 +208,7 @@ theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
       cont (tupLat L Λ m) (T p) = cont (tupLat L Λ m) (thick L ϖ Ω i') := by
     intro p hp
     have ha := (hr p hp).1
-    obtain ⟨j1, j2⟩ := (GlobalTheory.T.tuple_jacobian_rightMul_isometry L ϖ hϖ Hm hH Λ hΛ m).1 _ (hu _ ha) _ hco
+    obtain ⟨j1, j2⟩ := (_root_.GlobalTheory.HL.TupleJac.tuple_jacobian L ϖ hϖ Hm hH Λ hΛ m).1 _ (hu _ ha) _ hco
     rw [(hK _ ha).2.2.1] at j2
     exact ⟨j1, by simpa using j2⟩
   have hgram : ∀ p ∈ S, ∀ x ∈ T p, gramT L Hm x ∈ p := by
@@ -240,7 +240,7 @@ theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
       refine ⟨_, ⟨_, hst y hy _ (hmul _ hA _ (hinv _ hBa)) h5, B, hB, rfl⟩, ?_⟩
       simp only [rmul_rmul]
       rw [Matrix.mul_assoc, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hu _ hBa), Matrix.mul_one]
-  have hc2 := (GlobalTheory.T.commensurableCosetUnionContent_biUnion (tupLat L Λ m) hfin.toFinset T
+  have hc2 := (_root_.GlobalTheory.HL.cont_biUnion (tupLat L Λ m) hfin.toFinset T
     (fun p hp => (hT p (hfin.mem_toFinset.1 hp)).1)).2
     (fun p hp q hq hne => by
       have hp' := hfin.mem_toFinset.1 hp

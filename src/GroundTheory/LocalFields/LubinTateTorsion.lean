@@ -399,20 +399,6 @@ theorem exists_generator_lubinTateTorsion (hf : IsLubinTateSeries π f) (n : ℕ
       ∀ m ∈ lubinTateTorsion Ω (hπ := hπ) hf n, ∃ a : 𝒪[K], a • l = m :=
   exists_generator_torsionBy hπ (card_lubinTateTorsion (hπ := hπ) hf) n
 
-theorem nonempty_linearEquiv_lubinTateTorsion (hf : IsLubinTateSeries π f) (n : ℕ) :
-    Nonempty ((𝒪[K] ⧸ Ideal.span {π ^ n}) ≃ₗ[𝒪[K]] lubinTateTorsion Ω (hπ := hπ) hf n) := by
-  obtain ⟨l, hl, hann, hgen⟩ := exists_generator_lubinTateTorsion (Ω := Ω) (hπ := hπ) hf n
-  let ψ : 𝒪[K] →ₗ[𝒪[K]] lubinTateTorsion Ω (hπ := hπ) hf n :=
-    (LinearMap.toSpanSingleton 𝒪[K] _ l).codRestrict _ fun a => Submodule.smul_mem _ a hl
-  have hker : LinearMap.ker ψ = Ideal.span {π ^ n} := by
-    ext a
-    rw [LinearMap.mem_ker, ← hann a]
-    exact ⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩
-  have hsurj : Function.Surjective ψ := fun ⟨m, hm⟩ => by
-    obtain ⟨a, ha⟩ := hgen m hm
-    exact ⟨a, Subtype.ext ha⟩
-  exact ⟨(Submodule.quotEquivOfEq _ _ hker.symm).trans (ψ.quotKerEquivOfSurjective hsurj)⟩
-
 end Torsion
 
 section Eisenstein

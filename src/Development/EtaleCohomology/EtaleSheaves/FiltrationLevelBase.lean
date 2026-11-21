@@ -80,7 +80,4 @@ theorem Filt_of (h0 : Step0) : LateralTheory.E.FiltrationLevelInjectivity.Filt :
   rw [sub_eq_zero] at hz0
   exact hz0.symm
 
-theorem goal_of (h0 : Step0) : LateralTheory.E.RelDescPf.LevelInj :=
-  LateralTheory.E.FiltrationLevelInjectivity.LevelInj_of (Filt_of h0) LateralTheory.E.TruncationCokernelLevelRelations.LvlRel_of
-
 end LateralTheory.E.FiltrationLevelBase

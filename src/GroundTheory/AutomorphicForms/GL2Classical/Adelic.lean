@@ -45,11 +45,6 @@ theorem realInf_injective : Function.Injective realInf := fun x y hxy => by
     (g : Matrix (Fin 2) (Fin 2) (InfiniteAdeleRing ℚ)) a b) hxy
   exact RationalIdeles.realEquiv.symm.injective this
 
-theorem realEmb_injective : Function.Injective realEmb := fun x y hxy => by
-  have := congrArg (fun g => (prodEquiv ℚ 2 g).1) hxy
-  simp only [prodEquiv_realEmb] at this
-  exact realInf_injective this
-
 theorem realEmb_mul_finEmb_comm (h : GL (Fin 2) ℝ) (y : FiniteAdelicGL ℚ 2) :
     realEmb h * finEmb ℚ 2 y = finEmb ℚ 2 y * realEmb h := by
   apply (prodEquiv ℚ 2).injective

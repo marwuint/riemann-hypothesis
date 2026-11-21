@@ -4,12 +4,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionEtaleCompletionToCompleteLocal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEtaleCompletionResidueEquivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingHomFiniteOfQuasiFiniteCompleteLocalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingKrullDimLeOfIsEtaleCompletionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEtaleCompletionResidueEquiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingHomFiniteOfQuasiFiniteCompleteLocal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingKrullDimLeOfIsEtaleCompletion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InjectiveOfFiniteOfRingKrullDimLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteNormalGaloisCoverOfFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingEquivSubMemMaximalIdealOfPurelyInsepResidueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteNormalGaloisCoverOfFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingEquivSubMemMaximalIdealOfPurelyInsepResidue
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg GlobalTheory.SiegJoin GlobalTheory.Poinc GlobalTheory.TChart
@@ -33,7 +33,7 @@ theorem isEtaleCompletion_of_galRigid : ∀ (O R : Type) [CommRing O] [IsDomain 
   haveI : Algebra.IsSeparable (ResidueField O) M := inferInstance
   haveI : Algebra.FormallyUnramified (ResidueField O) M := Algebra.FormallyUnramified.of_isSeparable _ _
   have hmu : m.FormallyUnramified := RingHom.formallyUnramified_algebraMap.2 inferInstance
-  obtain ⟨A, _, _, _, ψ, hψl, E, hAcn, hψe, hψu, hE⟩ := GlobalTheory.T.exists_etaleCompletion_with_residueField_equiv O M m hmf hmu
+  obtain ⟨A, _, _, _, ψ, hψl, E, hAcn, hψe, hψu, hE⟩ := _root_.GlobalTheory.EtaleCompletionResidue.exists_etaleCompletion_residue_equiv O M m hmf hmu
   obtain ⟨hAn, hAi, hAc, hA0⟩ := hAcn
   let u' : A →+* ResidueField R := (algebraMap M (ResidueField R)).comp ((E.symm : ResidueField A →+* M).comp (residue A))
   have hu' : ∀ a, u' a = 0 ↔ a ∈ maximalIdeal A := by
@@ -58,12 +58,12 @@ theorem isEtaleCompletion_of_galRigid : ∀ (O R : Type) [CommRing O] [IsDomain 
     by_contra h
     exact (mem_maximalIdeal _).1 ((hbm a).2 ((mem_maximalIdeal a).2 h)) ha⟩
   have hbfin : b.Finite := by
-    refine GlobalTheory.T.ringHom_finite_of_quasiFinite_complete_local A R b hAc (fun p hp h => hqf p hp ?_) ?_
+    refine _root_.GlobalTheory.QuasiFiniteLocal.finite_of_quasiFinite A R b hAc (fun p hp h => hqf p hp ?_) ?_
     · rw [← hb1, ← Ideal.map_map, hψe.2.1]; exact h
     · refine RingHom.Finite.of_comp_finite (f := ψ) ?_
       rw [RingHom.comp_assoc, hb1]; exact hfin
-  have hbinj : Function.Injective b := GlobalTheory.T.injective_of_finite_of_ringKrullDim_le' A R b hbfin ((GlobalTheory.T.ringKrullDim_le_of_isEtaleCompletion' O A ψ hψe).trans hdim)
-  obtain ⟨R', _, _, _, θ, hR'cn, hθl, hθi, hθf, hfix⟩ := GlobalTheory.T.exists_completeNormal_galois_cover_of_finite A R b ⟨hAn, hAi, hAc, hA0⟩ hbfin hbinj
+  have hbinj : Function.Injective b := GlobalTheory.T.injective_of_finite_of_ringKrullDim_le' A R b hbfin ((_root_.GlobalTheory.ringKrullDim_le_of_isEtaleCompletion O A ψ hψe).trans hdim)
+  obtain ⟨R', _, _, _, θ, hR'cn, hθl, hθi, hθf, hfix⟩ := _root_.GlobalTheory.GalCover.exists_isCN_galois_of_finite A R b ⟨hAn, hAi, hAc, hA0⟩ hbfin hbinj
   let q := ringExpChar M
   haveI : ExpChar M q := ringExpChar.expChar M
   haveI : ExpChar (ResidueField R) q := expChar_of_injective_algebraMap (algebraMap M (ResidueField R)).injective q
@@ -76,7 +76,7 @@ theorem isEtaleCompletion_of_galRigid : ∀ (O R : Type) [CommRing O] [IsDomain 
     simp only [u', RingHom.comp_apply, RingEquiv.coe_toRingHom, ha, RingEquiv.symm_apply_apply]
   have hbsurj : Function.Surjective b := by
     intro r
-    refine hfix r fun σ hσ hσb => hrig R' θ σ hR'cn hθi hθf hσ (fun o => ?_) (fun r => GlobalTheory.T.ringEquiv_sub_mem_maximalIdeal_of_purelyInsep_residue A R R' b θ q σ hpi hσb r) r
+    refine hfix r fun σ hσ hσb => hrig R' θ σ hR'cn hθi hθf hσ (fun o => ?_) (fun r => _root_.GlobalTheory.ResFix.sigma_fix_mod_max A R R' b θ q σ hpi hσb r) r
     rw [← hb1]; exact hσb (ψ o)
   have hmapsurj : Function.Surjective (ResidueField.map b) := by
     intro y

@@ -113,13 +113,6 @@ theorem exists_tieCoord_base {P : Type} [Group P] [Finite P] {inc : P →* G} {O
 
 end Tied
 
-section Free
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P : Type}
-  [Group P] [Finite P] {c : OnConst}
-
-end Free
-
 end GlobalTheory.BigOnBase
 
 end

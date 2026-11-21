@@ -1,6 +1,8 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.WeightDictionaryLifting
+import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
+import Formalism.SharpRestriction.ParamsHeightRankConstant
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.JumpDictionary
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SecondTwistSmallIffExactlyAtAndFinClause
 
@@ -194,67 +196,6 @@ theorem finrank_ddR_of_one_jump [FiniteDimensional Qp K] (hcard : Fintype.card (
 end Periods
 
 variable (D : D7)
-
-theorem embOver_true (ρ : D.what₂.Tau) :
-    JumpDictionary.embOver D ρ true = (starRingEnd ℂ).comp (WeightDictionaryLifting.embOf D ρ) :=
-  RingHom.ext fun x => D.host.conjE_apply (WeightDictionaryLifting.embOf D ρ) x
-
-theorem conj_conj (φ : D.host.E →+* ℂ) : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp φ) = φ :=
-  RingHom.ext fun x => by simp
-
-theorem conj_mem_iff (φ : D.host.E →+* ℂ) :
-    (starRingEnd ℂ).comp φ ∈ D.host.cmType ↔
-      φ ∉ D.host.cmType := by
-  have h0 : D.host.φ₀ (D.host.sqd) = _ := D.host.φ₀_mem
-  have hd : (0 : ℝ) < Real.sqrt D.host.d := Real.sqrt_pos.2 (by exact_mod_cast D.host.hyp.2.1.pos)
-  have hs : ((Real.sqrt D.host.d : ℝ) : ℂ) ^ 2 = (D.host.d : ℂ) := by
-    rw [← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]; simp
-  have h1 : (D.host.sqd) ^ 2 = -(D.host.d : D.host.E) :=
-    D.host.φ₀.injective (by rw [map_pow, h0, mul_pow, hs, map_neg, map_natCast]; simp)
-  have h2 : φ (D.host.sqd) ^ 2 =
-      (Complex.I * (Real.sqrt D.host.d : ℂ)) ^ 2 := by
-    rw [← map_pow, h1, mul_pow, hs, map_neg, map_natCast]; simp
-  simp only [Formalism.HC.HostRaw.cmType, Set.mem_setOf_eq, RingHom.comp_apply]
-  have hne : Complex.I * (Real.sqrt D.host.d : ℂ) ≠ -(Complex.I * (Real.sqrt D.host.d : ℂ)) := fun h => by
-    have := congrArg Complex.im h
-    simp only [Complex.neg_im, Complex.I_mul_im, Complex.ofReal_re] at this
-    linarith
-  have hc : starRingEnd ℂ (Complex.I * (Real.sqrt D.host.d : ℂ)) = -(Complex.I * (Real.sqrt D.host.d : ℂ)) := by
-    rw [map_mul, Complex.conj_I, Complex.conj_ofReal, neg_mul]
-  rcases sq_eq_sq_iff_eq_or_eq_neg.1 h2 with h | h
-  · rw [h, hc]
-    exact ⟨fun h' => absurd h'.symm hne, fun h' => absurd rfl h'⟩
-  · rw [h, map_neg, hc, neg_neg]
-    exact ⟨fun _ h' => hne h'.symm, fun _ => rfl⟩
-
-theorem exists_embOver (φ : D.host.E →+* ℂ) : ∃ ρ b, φ = JumpDictionary.embOver D ρ b := by
-  have key : ∀ ψ ∈ D.host.cmType, ∃ ρ, ψ = WeightDictionaryLifting.embOf D ρ := by
-    intro ψ hψ
-    obtain ⟨g, rfl⟩ := (factEmb D.R D.host).1.2 ψ
-    refine ⟨D.eTau.symm ⟨g, ((factEmb D.R D.host).2 g).1 hψ⟩, ?_⟩
-    simp [WeightDictionaryLifting.embOf]
-  by_cases h : φ ∈ D.host.cmType
-  · obtain ⟨ρ, hρ⟩ := key φ h
-    exact ⟨ρ, false, hρ⟩
-  · obtain ⟨ρ, hρ⟩ := key _ ((conj_mem_iff D φ).2 h)
-    exact ⟨ρ, true, by rw [embOver_true, ← hρ, conj_conj]⟩
-
-section Local
-
-variable (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
-
-end Local
-
-def EtaParam : Prop :=
-  ∀ (_ : D.nd.Loc) (ρ : D.what₂.Tau),
-    D.naut.infG D.naut.etaTinv (JumpDictionary.embOver D ρ false) = {-(1 / 2 : ℂ)} ∧
-    D.naut.infG D.naut.etaTinv (JumpDictionary.embOver D ρ true) = {(1 / 2 : ℂ)}
-
-section Family
-
-variable {eps : ℝ} (Fm : FamP eps)
-
-end Family
 
 end GlobalTheory.Cmp.JumpDict
 

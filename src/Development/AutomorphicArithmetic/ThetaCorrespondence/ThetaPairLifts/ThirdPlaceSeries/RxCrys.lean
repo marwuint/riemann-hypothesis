@@ -1,5 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.JointConditionOfConstituentConditionSplit
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TrivialLocalCondition
 
@@ -7,19 +7,10 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 noncomputable section
-section
-open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal
-end
-section
-open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 namespace GlobalTheory.CrysFromGTwo
 end GlobalTheory.CrysFromGTwo
-end
-section
-open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module
 namespace GlobalTheory.DualTwistCrys
 end GlobalTheory.DualTwistCrys
-end
 section
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module
 namespace GlobalTheory.CrysChiOne
@@ -36,15 +27,9 @@ theorem rx_crys_alt_alt (h41 : _root_.Formalism.MainNotions.SumRepresentations.p
     D.R.nV _ h2
 end GlobalTheory.CrysChiOne
 end
-section
 namespace Formalism.MainNotions.N
 end Formalism.MainNotions.N
-end
-section
 namespace GlobalTheory.AbsoluteIrreducibilityOfTraceSpan
 end GlobalTheory.AbsoluteIrreducibilityOfTraceSpan
-end
-section
-end
 end
 end

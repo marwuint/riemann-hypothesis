@@ -411,7 +411,4 @@ theorem measurePreserving_of_addEquiv {G : Type*} [AddCommGroup G] [TopologicalS
     (B : Set G) (hB : IsCompact B) (hB' : (interior B).Nonempty) (heB : e ⁻¹' B = B) :
     MeasurePreserving e μ μ := OswLocFin.measurePreserving_of_addEquiv μ e he he' B hB hB' heB
 
-theorem exists_nhds_invariant {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
-    {Φ : G → ℂ} (hΦ : IsSB Φ) : ∃ U ∈ 𝓝 (0 : G), ∀ Y, ∀ Z ∈ U, Φ (Y + Z) = Φ Y := OswLocFin.exists_nhds_invariant hΦ
-
 end PositivityTheory.SiegelWeilFormula.SwLocFin

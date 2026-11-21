@@ -2,7 +2,11 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryLevelSubgroupPropertiesStatement
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.TwistedConjugationNorms.CharpolyConjDiagT
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryIwahoriFactsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedCentralizerCompactPartStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedCentralizerCompactPart
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmFieldStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
 
 noncomputable section
 
@@ -28,7 +32,7 @@ theorem unitary_hecke_orbit_single_coset (hU : Unr E) (w : Pl E) (hw : ¬ IsSpli
     rw [Subgroup.coe_map]
     exact hIc.image ((continuous_const.mul continuous_id).mul continuous_const)
   refine ⟨⟨p₀, h3, h4.le.trans inf_le_right⟩,
-    GlobalTheory.T.twisted_centralizer_compact_part (UL n w) (MonoidHom.id _) continuous_id _ _ _ γ hKc hI.1 hC h4,
+    _root_.GlobalTheory.CompanionTheory.CentOk.centraliser_hyps (UL n w) (MonoidHom.id _) continuous_id _ _ _ γ hKc hI.1 hC h4,
     fun i => (u i : w.adicCompletion E), h5, fun i => ⟨(u i).ne_zero, h1 i⟩⟩
 
 end PositivityTheory.Rg.Bc.ArchbcB.B.M4

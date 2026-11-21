@@ -41,15 +41,6 @@ end
 section
 variable {L : Type} [Field L] [Algebra ℂ L]
 
-private theorem iMulti_mul (p q : ℕ) (u : Fin p → L) (v : Fin q → L) :
-    (ExteriorAlgebra.ιMulti L p fun j => D ℂ L (u j)) * (ExteriorAlgebra.ιMulti L q fun j => D ℂ L (v j)) =
-      ExteriorAlgebra.ιMulti L (p + q) fun j => D ℂ L (Fin.append u v j) := by
-  simp only [ExteriorAlgebra.ιMulti_apply]
-  rw [← List.prod_append, ← List.ofFn_fin_append]
-  congr 2
-  funext j
-  refine Fin.addCases (fun i => ?_) (fun i => ?_) j <;> simp
-
 private theorem om_mul (B : Subalgebra ℂ L) {p q : ℕ} {u w : DR ℂ L} (hu : u ∈ omB ℂ L B p)
     (hw : w ∈ omB ℂ L B q) : u * w ∈ omB ℂ L B (p + q) :=
   _root_.UpperTheory.Reformulated.B.Qe48.om_mul B hu hw

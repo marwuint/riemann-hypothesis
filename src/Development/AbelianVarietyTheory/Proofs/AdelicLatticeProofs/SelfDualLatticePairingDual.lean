@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinTensMemLatO
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteAdeleStrongApproximationModNat
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.StdCharFinitePartRationalEqExpTraceStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AddCharTrivialIntegralFiniteAdeleMulStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsDualFamilySelfDualHermitianSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RationalHermitianRankOneLatticeSelfDualStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.StdCharFinitePartRationalEqExpTrace
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AddCharTrivialIntegralFiniteAdeleMul
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsDualFamilySelfDualHermitianSpace
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RationalHermitianRankOneLatticeSelfDual
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ScaledMatrixMemRationalLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIntegralSplitIdempotentOverTwoStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OneEqSumPlaceIdempotentsOverTwoAddTwoMulStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIntegralSplitIdempotentOverTwo
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OneEqSumPlaceIdempotentsOverTwoAddTwoMul
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ProdLeftEqMaps
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix GlobalTheory.LatVac
@@ -89,7 +89,7 @@ theorem hRat_smul (c : D.host.E) (M N : Matrix (Fin T.rank) (Fin S.rank) D.host.
 theorem char_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (z : D.host.E) :
     ψ (pairA D.host.F 0 (algebraMap D.host.F (Af D.host.F) (Algebra.trace D.host.F D.host.E z))) = 1 ↔
       ∃ n : ℤ, Algebra.trace ℚ D.host.E z = n := by
-  rw [GlobalTheory.T.stdChar_finitePart_rational_eq_exp_trace D ψ hψ, Algebra.trace_trace, Complex.exp_eq_one_iff]
+  rw [_root_.GlobalTheory.StdRat.stdChar_fin_rat D ψ hψ, Algebra.trace_trace, Complex.exp_eq_one_iff]
   refine exists_congr fun n => ?_
   rw [mul_comm, mul_left_inj' Complex.two_pi_I_ne_zero]
   exact_mod_cast Iff.rfl
@@ -108,8 +108,8 @@ theorem char_sympl_eq_one {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ
     · intro β hβ N hN
       change ψ (symplO S T _ _) = 1
       rw [symplO_finTens]
-      refine GlobalTheory.T.addChar_trivial_integralFiniteAdele_mul D.host.F ψ hψ.1.1 _ (fun a => ?_) _ (mul_mem_intAf hα hβ)
-      have h1 := (GlobalTheory.T.rationalHermitianRankOneLattice_selfDual D S T ΛS ΛT hS hT (GlobalTheory.T.exists_dual_family_selfDual_hermitianSpace D S ΛS hS) _).1
+      refine _root_.GlobalTheory.IntDense.addChar_eq_one_of_integral D.host.F ψ hψ.1.1 _ (fun a => ?_) _ (mul_mem_intAf hα hβ)
+      have h1 := (_root_.GlobalTheory.LatVac.latRat_selfDual D S T ΛS ΛT hS hT (_root_.GlobalTheory.LatVacDual.dualFamily D S ΛS hS) _).1
         (smul_mem_latRat (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a) hM) N hN
       rw [hRat_smul, ← char_rat hψ] at h1
       rw [← h1, ← smul_eq_mul, ← map_smul, Algebra.smul_def, mul_left_comm]
@@ -178,7 +178,7 @@ theorem mem_of_char {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
       rfl
   rw [e]
   refine add_mem (finTens_mem_latO (one_mem_intAf _) ?_) hu₀
-  refine (GlobalTheory.T.rationalHermitianRankOneLattice_selfDual D S T ΛS ΛT hS hT (GlobalTheory.T.exists_dual_family_selfDual_hermitianSpace D S ΛS hS) _).2 fun ℓ hℓ => ?_
+  refine (_root_.GlobalTheory.LatVac.latRat_selfDual D S T ΛS ΛT hS hT (_root_.GlobalTheory.LatVacDual.dualFamily D S ΛS hS) _).2 fun ℓ hℓ => ?_
   have hl := finTens_mem_latO (one_mem_intAf _) hℓ
   have h1 := h _ hl
   rw [e, symplO_add_left, ψ.map_add_eq_mul, char_sympl_eq_one hψ hS hT hu₀ hl, mul_one, symplO_finTens,
@@ -224,10 +224,10 @@ theorem le_of_two_of_half {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.
     (hu : u ∈ latO S T LS LT fun _ => True) : u ∈ G := by
   refine latO_induction (p := fun u => u ∈ G) ?_ (zero_mem _) (fun _ _ => add_mem) (fun _ => neg_mem) hu
   intro α hα M hM
-  obtain ⟨P, hP, hs, β, hβ, h1⟩ := GlobalTheory.T.one_eq_sum_placeIdempotents_over_two_add_two_mul D.host.F
+  obtain ⟨P, hP, hs, β, hβ, h1⟩ := _root_.GlobalTheory.LatVac.one_eq_sum_singleV_add_two_mul D.host.F
   have hv : ∀ v ∈ P, finTens (singleV D.host.F v 1 * α) M ∈ G := by
     intro v hv
-    obtain ⟨e, he1, he2, he3, a, ha, b, hb, ω, he⟩ := GlobalTheory.T.exists_integral_split_idempotent_over_two D v (hP v hv)
+    obtain ⟨e, he1, he2, he3, a, ha, b, hb, ω, he⟩ := _root_.GlobalTheory.SplitIdem.exists_split_idempotent D v (hP v hv)
     have hpl : IsPlaceIdem D v (pairA D.host.F 0 (singleV D.host.F v 1)) := ⟨_, rfl, (hs v).2.1, (hs v).2.2⟩
     have hsp : IsSplitIdem D e := ⟨he1, he2, v, _, hpl, he3⟩
     have hsp' : IsSplitIdem D (cA D e) :=

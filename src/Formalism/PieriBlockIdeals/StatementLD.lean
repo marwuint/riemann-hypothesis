@@ -43,22 +43,11 @@ def IsDepthLast (p q w : ℕ) (μ : Fin (q + p) → ℕ) (i : ℕ) : Prop :=
 
 def depth2 {r : ℕ} (ξ : Fin r → ℤ) (lam μ : Fin r → ℕ) : ℤ := ∑ a, ξ a * ((lam a : ℤ) - (μ a : ℤ))
 
-def LemmaDAt (l p q w : ℕ) (lam2 : Fin q → ℕ) : Prop :=
-  ∀ eL : ℕ, (∀ μ2 : Fin q → ℕ, ExpLe l q lam2 μ2 eL) →
-    ∀ (i : ℕ) (μ : Fin (p + q) → ℕ), IsDepth p q w μ i →
-      ExpLe l (p + q) (blockWt p q w lam2) μ (eL + padicValInt l (Dn p w i lam2))
-
 def LemmaDGradedAt (l p q w : ℕ) (lam2 : Fin q → ℕ) (ξ : Fin (p + q) → ℤ) : Prop :=
   ∀ (i' : ℤ) (eL : ℕ),
     (∀ μ2 : Fin q → ℕ, depth2 ξ (blockWt p q w lam2) (blockWt p q w μ2) ≤ i' → ExpLe l q lam2 μ2 eL) →
     ∀ (i : ℕ) (μ : Fin (p + q) → ℕ), IsDepth p q w μ i → depth2 ξ (blockWt p q w lam2) μ ≤ i' →
       ExpLe l (p + q) (blockWt p q w lam2) μ (eL + padicValInt l (Dn p w i lam2))
-
-def BranchingBoundOneRow : Prop :=
-  ∀ (l q w : ℕ) (lam2 : Fin q → ℕ), l.Prime → Antitone lam2 → (∀ b, lam2 b ≤ w) → LemmaDAt l 1 q w lam2
-
-def LemmaD : Prop :=
-  ∀ (l p q w : ℕ) (lam2 : Fin q → ℕ), l.Prime → Antitone lam2 → (∀ b, lam2 b ≤ w) → LemmaDAt l p q w lam2
 
 def LemmaDGraded : Prop :=
   ∀ (l p q w : ℕ) (lam2 : Fin q → ℕ) (ξ : Fin (p + q) → ℤ), l.Prime → Antitone lam2 → (∀ b, lam2 b ≤ w) →
@@ -78,44 +67,11 @@ def MuSupport : Prop :=
   ∀ (p w i q : ℕ) (lam2 : Fin q → ℕ) (c : ℤ), (∀ b, lam2 b ≤ w) → mu p w i lam2 c ≠ 0 →
     -(q : ℤ) ≤ c ∧ c < (w : ℤ) + (i : ℤ)
 
-def ExpLeIffKilled : Prop :=
-  ∀ (l r : ℕ) (ν μ : Fin r → ℕ) (e : ℕ) (D : ℤ), l.Prime → D ≠ 0 →
-    (ExpLe l r ν μ (e + padicValInt l D) ↔ KilledAt l r ν μ ((l : ℤ) ^ e * D))
-
 def ExpLeMono : Prop :=
   ∀ (l r : ℕ) (ν μ : Fin r → ℕ) (e e' : ℕ), e ≤ e' → ExpLe l r ν μ e → ExpLe l r ν μ e'
 
-def ExpBounded : Prop :=
-  ∀ (l r : ℕ) (ν : Fin r → ℕ), l.Prime → Antitone ν → ∃ e : ℕ, ∀ μ : Fin r → ℕ, ExpLe l r ν μ e
-
-def GradedImpliesPlain : Prop := LemmaDGraded → LemmaD
-
-def OneRowOfBound : Prop := LemmaD → BranchingBoundOneRow
-
-def wt2 (w y : ℕ) : Fin 2 → ℕ := ![w, y]
-
 noncomputable def vec2 (w y i : ℕ) : MvPolynomial (Fin 2 × Fin 2) ℤ :=
   X (0, 0) ^ (w - y - i) * X (1, 0) ^ i * (X (0, 0) * X (1, 1) - X (0, 1) * X (1, 0)) ^ y
-
-def Dn2 : Prop :=
-  ∀ (p w y i : ℕ), 1 ≤ p → y + i ≤ w →
-    Dn p w i (fun _ : Fin 1 => y) = ((i.factorial * (w - y).choose i : ℕ) : ℤ)
-
-def Rank2Exact : Prop :=
-  ∀ (w y i : ℕ), y + i ≤ w →
-    nablaWt 2 (wt2 w y) (wt2 (w - i) (y + i)) = Submodule.span ℤ {vec2 w y i} ∧ vec2 w y i ≠ 0 ∧
-      ∀ c : ℤ, c • vec2 w y i ∈ weyl ℤ 2 2 le_rfl (wt2 w y) ↔ (((w - y).choose i : ℕ) : ℤ) ∣ c
-
-def Rank2Other : Prop :=
-  ∀ (w y : ℕ) (μ : Fin 2 → ℕ), y ≤ w → (∀ i : ℕ, y + i ≤ w → μ ≠ wt2 (w - i) (y + i)) →
-    nablaWt 2 (wt2 w y) μ = ⊥
-
-def LemmaD_rank2 : Prop :=
-  ∀ (l w y : ℕ), l.Prime → y ≤ w → LemmaDAt l 1 1 w (fun _ : Fin 1 => y)
-
-def LemmaDGraded_rank2 : Prop :=
-  ∀ (l w y : ℕ) (ξ : Fin (1 + 1) → ℤ), l.Prime → y ≤ w → Antitone ξ →
-    LemmaDGradedAt l 1 1 w (fun _ : Fin 1 => y) ξ
 
 def MuLe : Prop :=
   ∀ (p w i q : ℕ) (lam2 : Fin q → ℕ) (c : ℤ), mu p w i lam2 c ≤ p
@@ -124,9 +80,6 @@ def MuRange : Prop :=
   ∀ (p w i q m : ℕ) (lam2 : Fin q → ℕ) (c : ℤ), (∀ b, m ≤ lam2 b ∧ lam2 b ≤ w) → mu p w i lam2 c ≠ 0 →
     (m : ℤ) - (q : ℤ) < c ∧ c < (w : ℤ)
 
-def DnPos : Prop :=
-  ∀ (p w i q : ℕ) (lam2 : Fin q → ℕ), (∀ b, lam2 b ≤ w) → 0 < Dn p w i lam2
-
 def DnDvd : Prop :=
   ∀ (p w i q m : ℕ) (lam2 : Fin q → ℕ), (∀ b, m ≤ lam2 b ∧ lam2 b ≤ w) →
     Dn p w i lam2 ∣ (((w + q - m - 1).factorial ^ p : ℕ) : ℤ)
@@ -134,13 +87,5 @@ def DnDvd : Prop :=
 def DnVal : Prop :=
   ∀ (l p w i q m : ℕ) (lam2 : Fin q → ℕ), l.Prime → (∀ b, m ≤ lam2 b ∧ lam2 b ≤ w) →
     (l - 1) * padicValInt l (Dn p w i lam2) ≤ p * (w + q - m - 1)
-
-def PeelBound : Prop :=
-  BranchingBoundOneRow → ∀ (l q w m : ℕ) (lam2 : Fin q → ℕ), l.Prime → Antitone lam2 → (∀ b, m ≤ lam2 b ∧ lam2 b ≤ w) →
-    ∀ eL : ℕ, (∀ μ2 : Fin q → ℕ, ExpLe l q lam2 μ2 eL) →
-      ∀ μ : Fin (1 + q) → ℕ, ExpLe l (1 + q) (blockWt 1 q w lam2) μ (eL + (w + q - m - 1) / (l - 1))
-
-def LemmaD_sym : Prop :=
-  ∀ (l q w : ℕ), l.Prime → LemmaDAt l 1 q w (fun _ : Fin q => 0)
 
 end Formalism.CohomologicalDescent.LD

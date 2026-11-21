@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraMapNormCoeff
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyDvdPowFinrankOfAevalEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyDvdPowFinrankOfAevalEqZero
 open CategoryTheory Polynomial GlobalTheory.NormalDescent TensorProduct
 
 namespace GlobalTheory.NormalDescent
@@ -16,7 +16,7 @@ theorem exists_map_eq_charK : ∀ {A B K : Type} [CommRing A] [IsDomain A] [IsIn
     rw [Polynomial.aeval_algHom_apply, Polynomial.aeval_map_algebraMap]
     have : (1 : K) ⊗ₜ[A] b = Algebra.TensorProduct.includeRight b := rfl
     rw [this, Polynomial.aeval_algHom_apply, show aeval b g = 0 from hg, map_zero, map_zero]
-  have hd := GlobalTheory.T.charpoly_dvd_pow_finrank_of_aeval_eq_zero _ _ hT
+  have hd := _root_.GlobalTheory.CharpolyDvd.main _ _ hT
   rw [← Polynomial.map_pow] at hd
   obtain ⟨P, hP⟩ := IsIntegrallyClosed.eq_map_mul_C_of_dvd K (hgm.pow _) hd
   refine ⟨P, ?_⟩

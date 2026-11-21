@@ -106,12 +106,6 @@ theorem weierstrassZetaExcept_add {l₀ : ℂ} (h : l₀ ∈ L.lattice) (z : ℂ
   · simp [hl, Subtype.ext_iff]
   · simp [hl, Subtype.ext_iff]
 
-theorem weierstrassZeta_eq (z : ℂ) : weierstrassZeta L z = 1 / z +
-    ∑' l : L.lattice, if (l : ℂ) = 0 then 0 else (1 / (z - l) + 1 / l + z / l ^ 2) := by
-  rw [← weierstrassZetaExcept_add L (zero_mem _), add_comm, weierstrassZetaExcept]
-  simp only [zetaTerm_eq]
-  simp
-
 theorem hasDerivAt_zetaTerm {l z : ℂ} (h : z ≠ l) :
     HasDerivAt (zetaTerm l) (-(1 / (z - l) ^ 2 - 1 / l ^ 2)) z := by
   have h0 : z - l ≠ 0 := sub_ne_zero.2 h
@@ -156,9 +150,6 @@ theorem hasDerivAt_weierstrassZeta {z : ℂ} (hz : z ∉ L.lattice) :
     ← L.weierstrassPExcept_of_notMem _ L.ω₁_div_two_notMem_lattice]
   exact hasDerivAt_weierstrassZetaExcept L _ fun h => hz h.1
 
-theorem deriv_weierstrassZeta {z : ℂ} (hz : z ∉ L.lattice) :
-    deriv (weierstrassZeta L) z = -℘[L] z := (hasDerivAt_weierstrassZeta L hz).deriv
-
 theorem analyticOnNhd_weierstrassZeta :
     AnalyticOnNhd ℂ (weierstrassZeta L) (L.lattice : Set ℂ)ᶜ :=
   DifferentiableOn.analyticOnNhd
@@ -179,32 +170,6 @@ theorem weierstrassZeta_eq_inv_add (z : ℂ) :
 
 @[simp] theorem weierstrassZetaExcept_zero (l₀ : ℂ) : weierstrassZetaExcept L l₀ 0 = 0 := by
   simp [weierstrassZetaExcept, zetaTerm_eq]
-
-theorem meromorphic_weierstrassZeta : Meromorphic (weierstrassZeta L) := by
-  intro x
-  by_cases hx : x ∈ L.lattice
-  · have e : weierstrassZeta L =
-        fun z => weierstrassZetaExcept L x z + (1 / (z - x) + 1 / x + z / x ^ 2) := by
-      ext z; rw [← weierstrassZetaExcept_add L hx, zetaTerm_eq]
-    have := (analyticAt_weierstrassZetaExcept L x).meromorphicAt
-    rw [e]
-    fun_prop
-  · exact (analyticOnNhd_weierstrassZeta L x hx).meromorphicAt
-
-theorem tendsto_sub_mul_weierstrassZeta {x : ℂ} (hx : x ∈ L.lattice) :
-    Tendsto (fun z => (z - x) * weierstrassZeta L z) (𝓝[≠] x) (𝓝 1) := by
-  have hc : ContinuousAt (fun z => (z - x) * (weierstrassZetaExcept L x z + (1 / x + z / x ^ 2)) + 1)
-      x := by
-    have := (analyticAt_weierstrassZetaExcept L x).continuousAt
-    fun_prop
-  have h := hc.tendsto.mono_left (nhdsWithin_le_nhds (s := {x}ᶜ))
-  simp only [sub_self, zero_mul, zero_add] at h
-  refine h.congr' ?_
-  filter_upwards [self_mem_nhdsWithin] with z hz
-  have : z - x ≠ 0 := sub_ne_zero.2 hz
-  rw [← weierstrassZetaExcept_add L hx, zetaTerm_eq]
-  have : (z - x) * (1 / (z - x)) = 1 := by field_simp
-  linear_combination -this
 
 def quasiPeriod : ℂ →ₗ[ℝ] ℂ :=
   L.basis.constr ℝ ![2 * weierstrassZeta L (L.ω₁ / 2), 2 * weierstrassZeta L (L.ω₂ / 2)]
@@ -262,12 +227,6 @@ theorem weierstrassZeta_add {w : ℂ} (hw : w ∈ L.lattice) {z : ℂ} (hz : z �
       rw [show z + (-(n : ℤ) - 1) • x + x = z + (-(n : ℤ)) • x by module, ihn hz] at h1
       rw [sub_smul (-(n : ℤ)) 1 (quasiPeriod L x), one_smul]
       linear_combination -h1
-
-theorem quasiPeriod_eq_two_mul {w : ℂ} (hw : w ∈ L.lattice) (hw2 : w / 2 ∉ L.lattice) :
-    quasiPeriod L w = 2 * weierstrassZeta L (w / 2) := by
-  have h1 := weierstrassZeta_add L hw hw2
-  rw [weierstrassZeta_add_of_half_notMem L hw hw2 hw2] at h1
-  linear_combination -h1
 
 theorem quasiPeriod_eq_weierstrassZetaExcept {w : ℂ} (hw : w ∈ L.lattice) (h0 : w ≠ 0) :
     quasiPeriod L w = weierstrassZetaExcept L w w + 2 / w := by
@@ -377,10 +336,6 @@ theorem quasiPeriod_mul (h : IsHomothetic c L L') (w : ℂ) :
   exact LinearMap.congr_fun this w
 
 end IsHomothetic
-
-theorem weierstrassZeta_congr {L L' : PeriodPair} (h : L'.lattice = L.lattice) :
-    weierstrassZeta L' = weierstrassZeta L := by
-  ext z; simpa using (isHomothetic_one_iff.2 h).weierstrassZeta_mul z
 
 theorem quasiPeriod_congr {L L' : PeriodPair} (h : L'.lattice = L.lattice) :
     quasiPeriod L' = quasiPeriod L :=
@@ -586,18 +541,6 @@ theorem IsHomothetic.sTwo_eq {L L' : PeriodPair} {c : ℂ} (h : IsHomothetic c L
   simp only [map_one]
   field_simp
 
-theorem sTwo_congr {L L' : PeriodPair} (h : L'.lattice = L.lattice) : sTwo L' = sTwo L := by
-  simp only [sTwo, quasiPeriod_congr h]
-
-theorem sTwo_eq_eisenstein (τ : UpperHalfPlane) (h1 : L.ω₁ = 1) (h2 : L.ω₂ = τ) :
-    sTwo L = EisensteinSeries.G2 τ - (π / τ.im : ℝ) := by
-  have e := quasiPeriod_ω₁_eq_eisenstein L τ (by rw [h1, h2, mul_one])
-  have hA : latticeArea L = τ.im := by
-    rw [latticeArea_eq, h1, h2]; simp [abs_of_pos τ.im_pos]
-  rw [quasiPeriod_eq, h1, hA] at e
-  simp only [mul_one, map_one, inv_one, one_mul] at e
-  linear_combination e
-
 def primaryFactor (w : ℂ) : ℂ := (1 - w) * cexp (w + w ^ 2 / 2)
 
 @[simp] theorem primaryFactor_zero : primaryFactor 0 = 1 := by simp [primaryFactor]
@@ -694,10 +637,6 @@ theorem hasProdLocallyUniformlyOn_sigmaProd :
     (fun l => ((differentiable_sigmaFactor l).continuous.sub continuous_const).continuousOn)
   simpa only [add_sub_cancel] using! this
 
-theorem hasProd_sigmaProd (z : ℂ) :
-    HasProd (fun l : L.lattice => sigmaFactor l z) (sigmaProd L z) :=
-  (hasProdLocallyUniformlyOn_sigmaProd L).hasProd (Set.mem_univ z)
-
 theorem summable_norm_sigmaFactor_sub_one (z : ℂ) :
     Summable fun l : L.lattice => ‖sigmaFactor l z - 1‖ := by
   refine Summable.of_norm_bounded_eventually
@@ -771,11 +710,6 @@ theorem hasDerivAt_weierstrassSigma {z : ℂ} (hz : z ∉ L.lattice) :
     weierstrassSigma]
   field_simp
 
-theorem logDeriv_weierstrassSigma {z : ℂ} (hz : z ∉ L.lattice) :
-    logDeriv (weierstrassSigma L) z = weierstrassZeta L z := by
-  rw [logDeriv_apply, (hasDerivAt_weierstrassSigma L hz).deriv,
-    mul_div_cancel_right₀ _ (weierstrassSigma_ne_zero L hz)]
-
 theorem IsHomothetic.sigmaProd_mul {L L' : PeriodPair} {c : ℂ} (h : IsHomothetic c L L') (z : ℂ) :
     sigmaProd L' (c * z) = sigmaProd L z := by
   simp only [sigmaProd, sigmaFactor_eq]
@@ -785,10 +719,6 @@ theorem IsHomothetic.sigmaProd_mul {L L' : PeriodPair} {c : ℂ} (h : IsHomothet
 theorem IsHomothetic.weierstrassSigma_mul {L L' : PeriodPair} {c : ℂ} (h : IsHomothetic c L L')
     (z : ℂ) : weierstrassSigma L' (c * z) = c * weierstrassSigma L z := by
   rw [weierstrassSigma, h.sigmaProd_mul, weierstrassSigma, mul_assoc]
-
-theorem weierstrassSigma_congr {L L' : PeriodPair} (h : L'.lattice = L.lattice) :
-    weierstrassSigma L' = weierstrassSigma L := by
-  ext z; simpa using (isHomothetic_one_iff.2 h).weierstrassSigma_mul z
 
 open Classical in
 
@@ -817,31 +747,6 @@ def sigmaSignCircle (w : ℂ) : Circle := ⟨sigmaSign L w, by simp [Submonoid.u
   classical
   unfold sigmaSign
   exact if_congr (by rw [neg_div, neg_mem_iff]) rfl rfl
-
-theorem IsHomothetic.sigmaSign_mul {L L' : PeriodPair} {c : ℂ} (h : IsHomothetic c L L') (w : ℂ) :
-    sigmaSign L' (c * w) = sigmaSign L w := by
-  classical
-  unfold sigmaSign
-  exact if_congr (by rw [mul_div_assoc, h (w / 2)]) rfl rfl
-
-theorem sigmaSign_int (m n : ℤ) : sigmaSign L (m * L.ω₁ + n * L.ω₂) = (-1) ^ (m + n + m * n) := by
-  have h : (m * L.ω₁ + n * L.ω₂) / 2 ∈ L.lattice ↔ Even m ∧ Even n := by
-    constructor
-    · intro h
-      obtain ⟨a, b, e⟩ := mem_lattice.1 h
-      have := LinearIndependent.pair_iff.1 L.indep (m - 2 * a) (n - 2 * b) (by
-        simp only [real_smul]; push_cast; linear_combination (-2) * e)
-      simp only [sub_eq_zero] at this
-      norm_cast at this
-      exact ⟨⟨a, by omega⟩, ⟨b, by omega⟩⟩
-    · rintro ⟨⟨a, rfl⟩, ⟨b, rfl⟩⟩
-      exact mem_lattice.2 ⟨a, b, by push_cast; ring⟩
-  by_cases h' : Even m ∧ Even n
-  · rw [sigmaSign_of_mem L (h.2 h'), Even.neg_one_zpow ((h'.1.add h'.2).add (h'.1.mul_right _))]
-  · rw [sigmaSign_of_notMem L (h.not.2 h'), Odd.neg_one_zpow]
-    rw [← Int.not_even_iff_odd]
-    simp only [Int.even_add, Int.even_mul]
-    tauto
 
 theorem exists_weierstrassSigma_add {w : ℂ} (hw : w ∈ L.lattice) : ∃ C : ℂ, C ≠ 0 ∧ ∀ z,
     weierstrassSigma L (z + w) = C * cexp (quasiPeriod L w * (z + w / 2)) * weierstrassSigma L z := by
@@ -915,20 +820,6 @@ theorem weierstrassSigma_add {w : ℂ} (hw : w ∈ L.lattice) (z : ℂ) :
     rw [sigmaSign_of_notMem L h2]
     exact mul_right_cancel₀ (weierstrassSigma_ne_zero L h2) (by linear_combination this)
 
-theorem deriv_weierstrassSigma_of_mem {w : ℂ} (hw : w ∈ L.lattice) :
-    deriv (weierstrassSigma L) w = sigmaSign L w * cexp (quasiPeriod L w * (w / 2)) := by
-  simpa [(hasDerivAt_weierstrassSigma_zero L).deriv] using
-    deriv_weierstrassSigma_add_of_law L (weierstrassSigma_add L hw) (weierstrassSigma_zero L)
-
-theorem analyticOrderAt_weierstrassSigma_of_mem {w : ℂ} (hw : w ∈ L.lattice) :
-    analyticOrderAt (weierstrassSigma L) w = 1 :=
-  (analyticAt_weierstrassSigma L w).analyticOrderAt_eq_one_of_zero_deriv_ne_zero
-    ((weierstrassSigma_eq_zero_iff L).2 hw) (deriv_weierstrassSigma_ne_zero L hw)
-
-theorem analyticOrderAt_weierstrassSigma_of_notMem {z : ℂ} (hz : z ∉ L.lattice) :
-    analyticOrderAt (weierstrassSigma L) z = 0 :=
-  (analyticAt_weierstrassSigma L z).analyticOrderAt_eq_zero.2 (weierstrassSigma_ne_zero L hz)
-
 def latticeForm (u v : ℂ) : ℂ := u * conj v / latticeArea L
 
 theorem latticeForm_add_left (u u' v : ℂ) :
@@ -946,14 +837,8 @@ theorem latticeForm_mul_right (a u v : ℂ) :
     latticeForm L u (a * v) = conj a * latticeForm L u v := by
   simp only [latticeForm, map_mul]; ring
 
-theorem latticeForm_eq_inner (u v : ℂ) : latticeForm L u v = inner ℂ v u / latticeArea L := by
-  simp [latticeForm]
-
 theorem conj_latticeForm (u v : ℂ) : conj (latticeForm L u v) = latticeForm L v u := by
   simp [latticeForm, mul_comm]
-
-theorem latticeForm_self (u : ℂ) : latticeForm L u u = (‖u‖ ^ 2 / latticeArea L : ℝ) := by
-  simp [latticeForm, mul_conj']
 
 theorem im_latticeForm_int (m n m' n' : ℤ) :
     (latticeForm L (m * L.ω₁ + n * L.ω₂) (m' * L.ω₁ + n' * L.ω₂)).im =
@@ -966,15 +851,6 @@ theorem abs_im_latticeForm : |(latticeForm L L.ω₂ L.ω₁).im| = 1 := by
   rw [latticeForm, div_ofReal_im, abs_div, abs_of_pos (latticeArea_pos L), mul_comm,
     ← latticeArea_eq, div_self (latticeArea_pos L).ne']
 
-theorem im_latticeForm_eq_one (h : 0 < (L.ω₂ / L.ω₁).im) : (latticeForm L L.ω₂ L.ω₁).im = 1 := by
-  have h1 : L.ω₁ ≠ 0 := by simpa using L.indep.ne_zero 0
-  rw [← abs_im_latticeForm L, abs_of_pos]
-  rw [latticeForm, div_ofReal_im]
-  refine div_pos ?_ (latticeArea_pos L)
-  rw [div_im, ← sub_div, div_pos_iff_of_pos_right (normSq_pos.2 h1)] at h
-  simp only [mul_im, conj_re, conj_im]
-  linarith
-
 theorem exists_int_im_latticeForm {a b : ℂ} (ha : a ∈ L.lattice) (hb : b ∈ L.lattice) :
     ∃ k : ℤ, (latticeForm L a b).im = k := by
   obtain ⟨m, n, rfl⟩ := mem_lattice.1 ha
@@ -983,15 +859,6 @@ theorem exists_int_im_latticeForm {a b : ℂ} (ha : a ∈ L.lattice) (hb : b ∈
   rcases (abs_eq zero_le_one).1 (abs_im_latticeForm L) with h | h
   · exact ⟨n * m' - m * n', by rw [h, mul_one]⟩
   · exact ⟨-(n * m' - m * n'), by rw [h]; push_cast; ring⟩
-
-theorem IsHomothetic.latticeForm_mul {L L' : PeriodPair} {c : ℂ} (h : IsHomothetic c L L')
-    (u v : ℂ) : latticeForm L' (c * u) (c * v) = latticeForm L u v := by
-  have hc := h.ne_zero
-  have hc' : conj c ≠ 0 := by simpa using hc
-  rw [latticeForm, latticeForm, h.latticeArea_eq, map_mul]
-  push_cast
-  rw [← mul_conj']
-  field_simp
 
 theorem quasiPeriod_mul_eq (z w : ℂ) :
     quasiPeriod L w * z = sTwo L * w * z + π * latticeForm L z w := by
@@ -1019,19 +886,6 @@ theorem hasDerivAt_canonicalSigma' (z : ℂ) : HasDerivAt (canonicalSigma L)
 
 theorem hasDerivAt_canonicalSigma_zero : HasDerivAt (canonicalSigma L) 1 0 := by
   simpa [(hasDerivAt_weierstrassSigma_zero L).deriv] using hasDerivAt_canonicalSigma' L 0
-
-theorem hasDerivAt_canonicalSigma {z : ℂ} (hz : z ∉ L.lattice) : HasDerivAt (canonicalSigma L)
-    ((weierstrassZeta L z - sTwo L * z) * canonicalSigma L z) z :=
-  (hasDerivAt_canonicalSigma' L z).congr_deriv (by
-    rw [(hasDerivAt_weierstrassSigma L hz).deriv, canonicalSigma]; ring)
-
-theorem analyticOrderAt_canonicalSigma_of_mem {w : ℂ} (hw : w ∈ L.lattice) :
-    analyticOrderAt (canonicalSigma L) w = 1 := by
-  refine ((differentiable_canonicalSigma L).analyticAt
-    w).analyticOrderAt_eq_one_of_zero_deriv_ne_zero ((canonicalSigma_eq_zero_iff L).2 hw) ?_
-  rw [(hasDerivAt_canonicalSigma' L w).deriv, (weierstrassSigma_eq_zero_iff L).2 hw, mul_zero,
-    sub_zero]
-  exact mul_ne_zero (deriv_weierstrassSigma_ne_zero L hw) (exp_ne_zero _)
 
 theorem IsHomothetic.canonicalSigma_mul {L L' : PeriodPair} {c : ℂ} (h : IsHomothetic c L L')
     (z : ℂ) : canonicalSigma L' (c * z) = c * canonicalSigma L z := by
@@ -1196,23 +1050,6 @@ theorem weierstrassP_sub_weierstrassP_canonicalSigma {u v : ℂ} (hu : u ∉ L.l
   linear_combination (weierstrassSigma L (u + v) * weierstrassSigma L (u - v) *
     weierstrassSigma L u ^ 2 * weierstrassSigma L v ^ 2) * e
 
-theorem exists_canonicalSigma_eq : ∃ h : ℂ → ℂ, AnalyticAt ℂ h 0 ∧
-    ∀ z, canonicalSigma L z = z + z ^ 3 * h z := by
-  obtain ⟨h, hh, e⟩ := exists_eq_add_sq_mul_of_even
-    (f := fun z => sigmaProd L z * cexp (-(sTwo L * z ^ 2 / 2)))
-    (Differentiable.analyticAt (by fun_prop) 0) (by simp)
-  refine ⟨h, hh, fun z => ?_⟩
-  rw [canonicalSigma, weierstrassSigma, mul_assoc, e z]
-  simp
-  ring
-
-theorem canonicalSigma_sub_isBigO :
-    (fun z => canonicalSigma L z - z) =O[𝓝 0] fun z : ℂ => z ^ 3 := by
-  obtain ⟨h, hh, e⟩ := exists_canonicalSigma_eq L
-  simp only [e, add_sub_cancel_left]
-  simpa using (Asymptotics.isBigO_refl (fun z : ℂ => z ^ 3) _).mul
-    (hh.continuousAt.tendsto.isBigO_one ℂ)
-
 theorem exists_eq_const_of_periodic_of_simple_pole {f N : ℂ → ℂ}
     (hf : DifferentiableOn ℂ f (L.lattice : Set ℂ)ᶜ)
     (hper : ∀ z ∉ L.lattice, ∀ w ∈ L.lattice, f (z + w) = f z)
@@ -1309,43 +1146,5 @@ def periodsOfUpperHalfPlane (τ : UpperHalfPlane) : PeriodPair where
 theorem latticeArea_periodsOfUpperHalfPlane (τ : UpperHalfPlane) :
     latticeArea (periodsOfUpperHalfPlane τ) = τ.im := by
   simp [latticeArea_eq, periodsOfUpperHalfPlane, abs_of_pos τ.im_pos]
-
-theorem isHomothetic_I_gaussian : IsHomothetic I (periodsOfUpperHalfPlane UpperHalfPlane.I)
-    (periodsOfUpperHalfPlane UpperHalfPlane.I) := by
-  intro x
-  simp only [mem_lattice, periodsOfUpperHalfPlane, UpperHalfPlane.coe_I]
-  constructor
-  · rintro ⟨m, n, h⟩
-    exact ⟨n, -m, by push_cast; linear_combination -I * h + (n - x) * I_mul_I⟩
-  · rintro ⟨m, n, h⟩
-    exact ⟨-n, m, by push_cast; linear_combination I * h - n * I_mul_I⟩
-
-theorem sTwo_gaussian : sTwo (periodsOfUpperHalfPlane UpperHalfPlane.I) = 0 := by
-  have := isHomothetic_I_gaussian.sTwo_eq
-  rw [I_sq] at this
-  linear_combination this / 2
-
-example : quasiPeriod (periodsOfUpperHalfPlane UpperHalfPlane.I) 1 = π ∧
-    quasiPeriod (periodsOfUpperHalfPlane UpperHalfPlane.I) I = -(π * I) ∧
-    weierstrassZeta (periodsOfUpperHalfPlane UpperHalfPlane.I) (1 / 2) = π / 2 := by
-  have h : quasiPeriod (periodsOfUpperHalfPlane UpperHalfPlane.I) 1 = π := by
-    simp [quasiPeriod_eq, sTwo_gaussian, latticeArea_periodsOfUpperHalfPlane]
-  refine ⟨h, ?_, ?_⟩
-  · simp [quasiPeriod_eq, sTwo_gaussian, latticeArea_periodsOfUpperHalfPlane]
-  · have h1 := quasiPeriod_ω₁ (periodsOfUpperHalfPlane UpperHalfPlane.I)
-    change quasiPeriod _ 1 = 2 * weierstrassZeta _ (1 / 2) at h1
-    linear_combination (h - h1) / 2
-
-example (z : ℂ) : weierstrassSigma (periodsOfUpperHalfPlane UpperHalfPlane.I) (z + 1) =
-    -cexp (π * (z + 1 / 2)) * weierstrassSigma (periodsOfUpperHalfPlane UpperHalfPlane.I) z := by
-  rw [weierstrassSigma_add _ (w := 1) (ω₁_mem_lattice _),
-    sigmaSign_of_notMem _ (w := 1) (ω₁_div_two_notMem_lattice _)]
-  simp [quasiPeriod_eq, sTwo_gaussian, latticeArea_periodsOfUpperHalfPlane]
-
-example : sigmaSign L L.ω₁ = -1 ∧ sigmaSign L L.ω₂ = -1 ∧ sigmaSign L (L.ω₁ + L.ω₂) = -1 ∧
-    sigmaSign L (2 * L.ω₁) = 1 :=
-  ⟨by simpa using sigmaSign_int L 1 0, by simpa using sigmaSign_int L 0 1,
-    by simpa [show (-1 : ℂ) ^ (3 : ℤ) = -1 by norm_num] using sigmaSign_int L 1 1,
-    by simpa using sigmaSign_int L 2 0⟩
 
 end GlobalTheory

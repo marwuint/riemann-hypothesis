@@ -25,28 +25,6 @@ theorem algebraMap_padic_bCris (q : ℚ_[p]) :
 
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
-theorem gal_smul_algebraMap_padic_plus (σ : Gal(PadicAlgCl p/K)) (q : ℚ_[p]) :
-    σ • algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q = algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q :=
-  iotaPlus_injective (K := ℂ_[p]) (p := p) (by
-    rw [iotaPlus_gal_smul, iotaPlus_algebraMap_padic, gal_smul_algebraMap_bdR])
-
-set_option maxHeartbeats 1600000 in
-
-theorem galB_algebraMap_padic (σ : Gal(PadicAlgCl p/K)) (q : ℚ_[p]) :
-    galB hε σ (algebraMap ℚ_[p] (BCris hε) q) = algebraMap ℚ_[p] (BCris hε) q :=
-  (galB_algebraMap hε σ _).trans (congrArg (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε))
-    (gal_smul_algebraMap_padic_plus σ q))
-
-set_option maxHeartbeats 1600000 in
-
-theorem smulCommClass_galBAction :
-    letI := galBAction (K := K) hε
-    SMulCommClass Gal(PadicAlgCl p/K) ℚ_[p] (BCris hε) :=
-  let _ := galBAction (K := K) hε
-  ⟨fun σ q x => (congrArg (galB hε σ) (Algebra.smul_def q x)).trans
-    ((map_mul (galB hε σ) _ _).trans ((congrArg (· * galB hε σ x) (galB_algebraMap_padic hε σ q)).trans
-      (Algebra.smul_def q (galB hε σ x)).symm))⟩
-
 include hζ in
 
 theorem isDomain_bCris : IsDomain (BCris hε) :=
@@ -64,23 +42,6 @@ theorem algClToBdRField_apply (k : PadicAlgCl p) :
 
 theorem algClToBdRField_injective : Function.Injective (algClToBdRField p) :=
   (algClToBdRField p).injective
-
-include hζ in
-set_option maxHeartbeats 1600000 in
-
-theorem image_iotaB_fixedPoints [FiniteDimensional ℚ_[p] K] :
-    letI := galBAction (K := K) hε
-    iotaB hε hζ '' MulAction.fixedPoints Gal(PadicAlgCl p/K) (BCris hε) =
-      algClToBdRField p '' (maxUnramified p K : Set (PadicAlgCl p)) := by
-  let _ := galBAction (K := K) hε
-  ext b
-  constructor
-  · rintro ⟨x, hx, rfl⟩
-    obtain ⟨k, hk, hxk⟩ := bCris_fixed_mem_maxUnramified hε hζ x hx
-    exact ⟨k, hk, hxk.symm⟩
-  · rintro ⟨k, hk, rfl⟩
-    obtain ⟨x, hx, hxk⟩ := exists_bCris_fixed hε hζ hk
-    exact ⟨x, hx, hxk⟩
 
 include hζ in
 set_option maxHeartbeats 1600000 in

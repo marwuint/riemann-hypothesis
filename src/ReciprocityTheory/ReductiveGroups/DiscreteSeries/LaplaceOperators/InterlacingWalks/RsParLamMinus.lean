@@ -1,6 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.InterlacingWalks.LowerStepStatement
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.InterlacingWalks.AdjGap
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.InterlacingWalks.Imports
 
 noncomputable section
 
@@ -123,21 +121,6 @@ theorem rsParLam_minus (k r : ℕ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2
   have h1 : ¬ a.val < k - 1 := by omega
   have h2 : a.val - (k - 1) < 2 * r + 2 := by have := a.isLt; omega
   simp only [parLam, rsExt, dif_neg h1, dif_pos h2]
-
-theorem rsParEps_same (k r : ℕ) (a : Fin (2 * r + k + 1)) (ha : a.val + 1 < 2 * r + k + 1)
-    (hne : parEps k r a ≠ parEps k r ⟨a.val + 1, ha⟩) : k - 1 ≤ a.val := by
-  by_contra hcon
-  apply hne
-  have e1 : parEps k r a = true := by
-    show (if a.val < k - 1 then true else decide ((a.val - (k - 1)) % 2 = 0)) = true
-    rw [if_pos (show a.val < k - 1 by omega)]
-  have e2 : parEps k r ⟨a.val + 1, ha⟩ = true := by
-    show (if a.val + 1 < k - 1 then true else decide ((a.val + 1 - (k - 1)) % 2 = 0)) = true
-    split_ifs with h1
-    · rfl
-    · have : a.val + 1 - (k - 1) = 0 := by omega
-      simp [this]
-  rw [e1, e2]
 
 private lemma strictAnti_lt_of_succ_lt (g : ℕ → ℝ) (n : ℕ) (hg : ∀ x, x + 1 < n → g (x + 1) < g x) :
     ∀ x y, x < y → y < n → g y < g x := by

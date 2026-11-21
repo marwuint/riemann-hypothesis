@@ -11,10 +11,4 @@ def ListMonoRaise.Statement : Prop :=
     (u : X → ℝ), IsOpen Yo → IsPotential A th → IsPotential A Om → A.SmoothOn Yo u →
     LeviLe A Set.univ 1 th 1 Om → FormNonneg A Yo (potForm th u) → FormNonneg A Yo (potForm Om u)
 
-section Inhabitants
-
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (projLineChartData)
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.AnalyticLimit

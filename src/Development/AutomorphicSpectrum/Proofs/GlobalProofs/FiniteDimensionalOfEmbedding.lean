@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Cu
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspDiscreteDecompositionOfDecay
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMulRightInvariantHaarAdelicUnitaryGroupHermiti
 import Development.WeilBound.CoreStatements.MeasureExistence.ExistsMeas
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteDimensionalOfCompactCoerciveStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteDimensionalOfCompactCoercive
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdelicOpenNeighbourhoodProduct
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HcFiniteAndSchurMult
 import Development.AutomorphicSpectrum.Definitions.TwistedFlags.OneMemOffK
@@ -59,7 +59,7 @@ theorem finiteDimensional_of_coercive (hP : GlobalTheory.Published.CuspDecayBoun
     (h : ∀ g ∈ N, ∀ u ∈ Sb, (1 / 2 : ℝ) * ‖u‖ ^ 2 ≤ (⟪u, Rcusp V μ g u⟫_ℂ).re) : FiniteDimensional ℂ Sb := by
   obtain ⟨φ, hf, h0, hs, hi, hpos⟩ := exists_bump μ hN
   have hrep := GlobalTheory.CuspSpectrum.isRepOp_RcuspOp (μ := μ) hf
-  refine GlobalTheory.T.finiteDimensional_of_isCompactOperator_coercive (L2cusp V μ) (RcuspOp V μ _)
+  refine _root_.GlobalTheory.CompanionTheory.Glob.finiteDimensional_of_compact_coercive (L2cusp V μ) (RcuspOp V μ _)
     (isCompactOperator_of_isHilbertSchmidt (GlobalTheory.CuspHS.isHilbertSchmidt_RcuspOp hP hf)) Sb
     ((1 / 2) * ∫ g, φ g ∂μ) (by positivity) fun u hu => ?_
   have := le_re_inner_of_isRepOp hrep hi h0 hs u ((1 / 2 : ℝ) * ‖u‖ ^ 2) fun g hg => h g hg u hu

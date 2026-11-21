@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.On
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormPowRamifiedUniformizerFieldZpowStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormMinpolyCoeffZeroPowOfPowEqNegStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LeAdjoinCompatibleRootsOfFiniteKummerTowerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankMulMinpolyNatDegreeLeOfPowEqNegStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisDecompOfDisjointStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormMinpolyCoeffZeroPowOfPowEqNeg
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LeAdjoinCompatibleRootsOfFiniteKummerTower
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankMulMinpolyNatDegreeLeOfPowEqNeg
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisDecompOfDisjoint
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 
@@ -27,7 +27,7 @@ theorem galQ_eq_GK_mul_GKinf : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero 
   have hbot : (ϖ.field a).1 ⊓ ϖ.Kinf = ⊥ := by
     set F := (ϖ.field a).1 ⊓ ϖ.Kinf with hF
     haveI : FiniteDimensional ℚ_[l] F := FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : F ≤ (ϖ.field a).1)).toLinearMap (IntermediateField.inclusion (inf_le_left : F ≤ (ϖ.field a).1)).toRingHom.injective
-    obtain ⟨n, hn⟩ := GlobalTheory.T.le_adjoin_compatibleRoots_of_finite_kummerTower l e ϖ F inferInstance inf_le_right
+    obtain ⟨n, hn⟩ := _root_.GlobalTheory.KinfFin.main l e ϖ F inferInstance inf_le_right
     have hN : 0 < l ^ n := pow_pos hl.pos n
     have hx : (ϖ.seq n ^ e) ^ (l ^ n) = -(l : Om l) := by rw [← pow_mul, mul_comm]; exact ϖ.seq_pow_mul n
     have hx0 : ϖ.seq n ^ e ≠ 0 := pow_ne_zero _ (ϖ.seq_ne_zero n)
@@ -37,8 +37,8 @@ theorem galQ_eq_GK_mul_GKinf : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero 
     have hc : (((minpoly F (ϖ.seq n ^ e)).coeff 0 : F) : Om l) ≠ 0 := by
       simpa using hc0
     obtain ⟨j, hj⟩ := GlobalTheory.T.norm_pow_ramifiedUniformizerField_zpow l a e ϖ _ (IntermediateField.mem_inf.1 hcF).1 hc
-    have h2 := GlobalTheory.T.norm_minpoly_coeff_zero_pow_of_pow_eq_neg_prime l F (l ^ n) (ϖ.seq n ^ e) hN hx
-    have h4 := GlobalTheory.T.finrank_mul_natDegree_minpoly_le_of_pow_eq_neg l F (l ^ n) (ϖ.seq n ^ e) hN hx hn
+    have h2 := _root_.GlobalTheory.norm_minpoly_coeff_zero_pow_of_pow_eq_neg l F (l ^ n) (ϖ.seq n ^ e) hN hx
+    have h4 := _root_.GlobalTheory.finrank_mul_minpoly_natDegree_le_of_pow_eq_neg l F (l ^ n) (ϖ.seq n ^ e) hN hx hn
     have hm : 0 < (minpoly F (ϖ.seq n ^ e)).natDegree := minpoly.natDegree_pos hint
     set m := (minpoly F (ϖ.seq n ^ e)).natDegree with hmdef
     set c : Om l := (((minpoly F (ϖ.seq n ^ e)).coeff 0 : F) : Om l) with hcdef
@@ -60,6 +60,6 @@ theorem galQ_eq_GK_mul_GKinf : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero 
       have : 2 * m ≤ Module.finrank ℚ_[l] F * m := Nat.mul_le_mul_right _ (by omega)
       omega
     exact IntermediateField.finrank_eq_one_iff.1 hfr
-  exact GlobalTheory.T.exists_mul_fixingSubgroup_of_inf_eq_bot l (ϖ.field a).1 ϖ.Kinf hK hG hbot g
+  exact _root_.GlobalTheory.InertiaEigenvalues.galois_decomp_of_disjoint l (ϖ.field a).1 ϖ.Kinf hK hG hbot g
 
 end GlobalTheory.NgalDecomp

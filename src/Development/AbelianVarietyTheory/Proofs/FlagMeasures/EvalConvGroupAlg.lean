@@ -125,41 +125,6 @@ theorem top_expand [Fintype (G0g D.nd)] (X : HidaSetting D) {red : X.B.I.Gf → 
     refine integrableOn_const ?_
     rw [(hFb γ).2]; exact (kg_pos_fin X).2.ne
 
-theorem R_star_fibre [Fintype (G0g D.nd)] {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type}
-    {A : FamIn D.what₂.LL G' Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
-    (R : RealDat D A Ks) (F : Face D A) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
-    (t : GA D (D.sp.Y 0)) (v₀ : (MP R).Vec) (σ : G0g D.nd ≃* G') (red : X.B.I.Gf → G0g D.nd)
-    (hB : LevelMatchB R F X h t σ red) (S : MMap (MP R)) (hS : S ∈ MultR R F) (f : L2X X)
-    (hf : f =ᵐ[muX X] fun x => ev (MP R) v₀ S ((iotaX X h).symm x * t))
-    (hGQ : ∀ γ ∈ GQ (D.sp.Y 0), ∀ g, S v₀ (γ * g) = S v₀ g)
-    (s0 : G0g D.nd → X.B.I.Gf) (hs0 : ∀ γ, s0 γ ∈ X.B.I.Kset ∧ red (s0 γ) = γ) :
-    ∀ k ∈ X.B.I.Kset, X.B.R (1, k) (star f) = X.B.R (1, s0 (red k)) (star f) := by
-  intro k hk
-  let a : G0g D.nd → ℂ := fun γ => if γ = red k then 1 else 0
-  let s1 : G0g D.nd → X.B.I.Gf := Function.update s0 (red k) k
-  have hs1 : ∀ γ, s1 γ ∈ X.B.I.Kset ∧ red (s1 γ) = γ := by
-    intro γ
-    by_cases hγ : γ = red k
-    · subst hγ
-      refine ⟨?_, ?_⟩ <;> simp [s1, hk]
-    · simp only [s1, Function.update_of_ne hγ]
-      exact hs0 γ
-  have red_sum : ∀ s : G0g D.nd → X.B.I.Gf,
-      (∑ γ, star (a γ) • star (X.B.R (1, s γ) (star f)) : L2X X) = star (X.B.R (1, s (red k)) (star f)) := by
-    intro s
-    rw [Finset.sum_eq_single (red k)]
-    · simp [a]
-    · intro b _ hb
-      simp [a, hb]
-    · intro h1; exact absurd (Finset.mem_univ _) h1
-  have e1 := GlobalTheory.Mem.SRe.evalAct_intertwines D G' Pl0 T A Ks R F X h t v₀ σ red hB S hS f hf hGQ a s1 hs1
-  have e0 := GlobalTheory.Mem.SRe.evalAct_intertwines D G' Pl0 T A Ks R F X h t v₀ σ red hB S hS f hf hGQ a s0 hs0
-  rw [red_sum] at e1 e0
-  have e2 := Lp.ext (e1.trans e0.symm)
-  have e3 := congrArg star e2
-  simp only [star_star, s1, Function.update_self] at e3
-  exact e3
-
 end GlobalTheory.Mem.SRe.ConvStep
 
 namespace GlobalTheory.Mem.SRe

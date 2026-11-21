@@ -143,6 +143,4 @@ def UnifEvery (hT : LawsJ T) : Prop :=
         AllSome (IsChiDet T σ₀ red) fun χ : G →* LLˣ =>
           ∃ c : Phases T j, UnitPhases T c ∧ UnifWith T hT hj κ c red lev χ
 
-def Unif (D : D7) : Prop := ∀ (T : CoreJ D) (hT : LawsJ T), UnifEvery T hT
-
 end GlobalTheory.IndefiniteRowSideFullHecke.LiftedCharacterResidue

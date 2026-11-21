@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SizeAt
+import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.InfClassAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotLeafMMZero
 import Development.AbelianVarietyTheory.Counterexamples.RotationExamples.SigmaMonoInConstant
@@ -135,31 +136,6 @@ theorem leaf_at {p : PtAt ex Csz} {CF C : ℝ} {d : FunIn p CF} {a : SlopeTestRe
     simp [this]
   · exact sum_clause d hC0 hC hsum _ _ (fun _ => rfl)
 
-theorem fp_tie : SetAt → FinK → AwayK → FP @Comparison₂ := by
-  intro hS hF hA
-  obtain ⟨c1, hF⟩ := hF
-  obtain ⟨c2, hA⟩ := hA
-  refine ⟨max c1 c2, fun CF hCF => ?_⟩
-  obtain ⟨C1, hF⟩ := hF CF ((le_max_left _ _).trans hCF)
-  obtain ⟨C2, hA⟩ := hA CF ((le_max_right _ _).trans hCF)
-  refine hS.imp fun {eps} Fm _ _ a _ => ⟨max (max C1 C2) (max CF 0), fun C hC => ?_⟩
-  obtain ⟨x₁, a⟩ := a
-  have hC1 : C1 ≤ C := ((le_max_left _ _).trans (le_max_left _ _)).trans hC
-  have hC2 : C2 ≤ C := ((le_max_right _ _).trans (le_max_left _ _)).trans hC
-  have hCF' : CF ≤ C := ((le_max_left _ _).trans (le_max_right _ _)).trans hC
-  have hC0 : 0 ≤ C := ((le_max_right _ _).trans (le_max_right _ _)).trans hC
-  obtain ⟨x₂, hF⟩ := hF eps C hC1
-  obtain ⟨x₃, hA⟩ := hA eps C hC2
-  refine ⟨max x₁ (max x₂ x₃), fun x hx hle i p hp d hd => ?_⟩
-  obtain ⟨-, b, hT⟩ := hd
-  have hx₁ : x₁ ≤ x := (le_max_left _ _).trans hle
-  have hx₂ : x₂ ≤ (Fm.L x i).sc.x := ((le_max_left _ _).trans ((le_max_right _ _).trans hle)).trans (Fm.L_x x i hx).ge
-  have hx₃ : x₃ ≤ (Fm.L x i).sc.x := ((le_max_right _ _).trans ((le_max_right _ _).trans hle)).trans (Fm.L_x x i hx).ge
-  have hset := a x hx hx₁ i p hp hT.ok.eser
-  exact leaf_at hT hC0 hCF'
-    (hF _ (Fm.L x i) (Fm.L_eps x i) hx₂ _ _ _ _ _ _ _ hset b.ch hT.ok.is b.atScale hT.ok.field)
-    (hA _ (Fm.L x i) (Fm.L_eps x i) hx₃ _ _ _ _ _ _ _ hset b.ch hT.ok.is b.atScale hT.ok.field)
-
 end GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm
 
 end
@@ -167,9 +143,3 @@ end
 end
 
 end LeafFixedPointPairing
-section
-open GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SumSize
-theorem _root_.GlobalTheory.Adopt.finite_and_away_formula : SetAt → FinK → AwayK → FP @Comparison₂ := by
-  first | exact @LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie | exact LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie | (intros; apply LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie <;> assumption)
-
-end

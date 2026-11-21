@@ -342,9 +342,6 @@ theorem augSES_tensorLeft_shortExact (A B : Rep.{u} k G) :
 
 variable [Fintype G]
 
-theorem tateAcyclic_augSES_X₂ (X : Rep.{u} k G) : TateAcyclic ((augSES k G).obj X).X₂ :=
-  tateAcyclic_leftRegular_tensor X
-
 theorem tateAcyclic_augSES_tensorRight_X₂ (A B : Rep.{u} k G) :
     TateAcyclic (((augSES k G).obj A).map (tensorRight B)).X₂ :=
   (tateAcyclic_leftRegular_tensor (A ⊗ B)).of_iso (α_ (Rep.leftRegular k G) A B)

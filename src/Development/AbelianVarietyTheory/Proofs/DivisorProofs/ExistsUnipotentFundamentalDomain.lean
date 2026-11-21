@@ -2,13 +2,15 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NmatMulVec
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocompactLatticeUnitCovolumeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteRationalPointsSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocompactLatticeUnitCovolume
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsFundamentalDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteRationalPointsSubgroup
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DiscreteTopologyRationalPointsHermitianSpace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentRadicalClosedNonzeroStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdeleQuotientCompactFundamentalSetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergMatrixPreservesFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergMatrixMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HyperbolicPairDecompositionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergMatrixPreservesForm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergMatrixMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HyperbolicPairDecomposition
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
 
 open scoped TensorProduct NNReal Matrix
@@ -118,7 +120,7 @@ theorem mem_unip (h : Hyp σ W H') (g : UA σ W.J) (b : Fin d₁ → AE F E) (c 
 theorem nmat_mul (h : Hyp σ W H') (b b' : Fin d₁ → AE F E) (c c' : AE F E) :
     nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ b) c * nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ b') c' =
       nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ (b + b')) (c + c' - hA σ W.J (incM F H'.ι *ᵥ b') (incM F H'.ι *ᵥ b)) := by
-  rw [GlobalTheory.T.heisenberg_matrix_mul F E σ h.σσ d W.J h.skew _ _ _ c c' h.xx (h.ιx b) (h.ιx b'), Matrix.mulVec_add]
+  rw [_root_.GlobalTheory.UnipMass.nmat_mul_nmat F E σ h.σσ d W.J h.skew _ _ _ c c' h.xx (h.ιx b) (h.ιx b'), Matrix.mulVec_add]
 
 def elt (h : Hyp σ W H') (b : Fin d₁ → AE F E) (c : AE F E)
     (hc : c - cA σ c = -hA σ W.J (incM F H'.ι *ᵥ b) (incM F H'.ι *ᵥ b)) : unip σ W H' :=
@@ -128,7 +130,7 @@ def elt (h : Hyp σ W H') (b : Fin d₁ → AE F E) (c : AE F E)
         (incM F H'.ι *ᵥ b)) - -hA σ W.J (incM F H'.ι *ᵥ b) (incM F H'.ι *ᵥ b) = 0 by ring, Matrix.mulVec_zero, nmat_zero],
     by rw [nmat_mul h, neg_add_cancel, Matrix.mulVec_neg, hA_neg_right', show -c - hA σ W.J (incM F H'.ι *ᵥ b)
         (incM F H'.ι *ᵥ b) + c - -hA σ W.J (incM F H'.ι *ᵥ b) (incM F H'.ι *ᵥ b) = 0 by ring, Matrix.mulVec_zero, nmat_zero]⟩,
-    GlobalTheory.T.heisenberg_matrix_preserves_form F E σ h.σσ d W.J h.skew _ _ c h.xx (h.ιx b) hc⟩,
+    _root_.GlobalTheory.UnipMass.nmat_unitary F E σ h.σσ d W.J h.skew _ _ c h.xx (h.ιx b) hc⟩,
     mem_unip h _ b c rfl⟩
 
 theorem mat_elt (h : Hyp σ W H') (b : Fin d₁ → AE F E) (c : AE F E) (hc) :
@@ -287,7 +289,7 @@ theorem cocompact (h : Hyp σ W H') (hxx : form σ W.J H'.x H'.x = 0) (hyy : for
           (continuous_pi fun i => hs.comp ((continuous_apply i).comp (continuous_const.matrix_mulVec continuous_fst))))
       exact continuous_nmat σ W.J _ (continuous_const.matrix_mulVec continuous_fst.neg) (hcfc.neg.sub hh)
   refine ⟨Q '' (Set.univ.pi (fun _ => KE) ×ˢ KE), ((isCompact_univ_pi fun _ => hKE).prod hKE).image hQ, fun g => ?_⟩
-  obtain ⟨b, c, hc, hg⟩ := GlobalTheory.T.hyperbolic_pair_decomposition F E σ h.σσ d d₁ W H' h.skew hxx hyy hxy horth hspan g g.2
+  obtain ⟨b, c, hc, hg⟩ := _root_.GlobalTheory.UnipMass.StdMat.unip_eq_nmat F E σ h.σσ d d₁ W H' h.skew hxx hyy hxy horth hspan g g.2
   choose e he using fun j => hcov (b j)
   set u₀ := ι *ᵥ incV F (-e) with hu₀
   set c₁E : E := -(2⁻¹ * form σ W.J (H'.ι *ᵥ -e) (H'.ι *ᵥ -e)) with hc₁E
@@ -395,8 +397,8 @@ theorem exists_haar_unip_mass_one : ∀ (F E : Type) [Field F] [NumberField F] [
   haveI : SecondCountableTopology (unip σ G.W H') :=
     hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology
   haveI := countable_ratU' σ G.W.J (unip σ G.W H')
-  haveI := GlobalTheory.T.discrete_rational_points_subgroup F E σ _ G.W.J (unip σ G.W H')
+  haveI := _root_.GlobalTheory.RatUDiscreteSub.discreteTopology_subgroupOf F E σ _ G.W.J (unip σ G.W H')
   obtain ⟨K, hK, hcov⟩ := cocompact h hH.xx hH.yy hH.xy hH.orth hspan
-  exact GlobalTheory.T.cocompact_lattice_unit_covolume _ _ K hK hcov
+  exact _root_.GlobalTheory.HaarFundDom.exists_haar_fundDom_mass_one _ _ K hK hcov
 
 end GlobalTheory.UnipMass

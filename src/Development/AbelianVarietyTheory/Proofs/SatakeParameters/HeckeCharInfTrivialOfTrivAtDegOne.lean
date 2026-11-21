@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DegOneIffSurjective
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CharConstOnTranslatesTrivialStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsResidueClassNearRealEmbeddingsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ResidueDegreeOneOfLinearMemStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CharConstOnTranslatesTrivial
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsResidueClassNearRealEmbeddings
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ResidueDegreeOneOfLinearMem
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ContinuousIdeleCharLocalFactorizationStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.QuadraticExistsIntegralGeneratorCommonDenominatoStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.QuadraticExistsIntegralGeneratorCommonDenominato
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InfinitePlaceEqOfEmbeddingCompAlgebraMapEqStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ImEmbeddingNeZeroOfNotMemRangeOfTotallyRealQuadrStatement
 
@@ -94,7 +94,7 @@ theorem inf_trivial_of_trivAt_degOne : ∀ (F E : Type) [Field F] [NumberField F
   intro F E _ _ _ _ _ _ _ _ χ hχ hdeg
   classical
   obtain ⟨hunr, hcond, hfact⟩ := GlobalTheory.T.continuous_ideleChar_local_factorization E χ hχ.1
-  obtain ⟨θ, hθF, D, hD0, hDspan⟩ := GlobalTheory.T.exists_integral_generator_common_denom_of_isQuadratic F E
+  obtain ⟨θ, hθF, D, hD0, hDspan⟩ := _root_.GlobalTheory.quadratic_exists_integral_generator_common_denominator F E
   have hθ0 : (θ : E) ≠ 0 := fun h => hθF ⟨0, by rw [h, map_zero]⟩
   have hθ0' : θ ≠ 0 := fun h => hθ0 (by rw [h]; rfl)
   have hD0' : algebraMap (𝓞 F) (𝓞 E) D ≠ 0 := by
@@ -124,7 +124,7 @@ theorem inf_trivial_of_trivAt_degOne : ∀ (F E : Type) [Field F] [NumberField F
   set m : Ideal (𝓞 F) := (Ideal.span {θ * P}).comap (algebraMap (𝓞 F) (𝓞 E)) with hm
   have hm0 : m ≠ ⊥ := Ideal.comap_ne_bot_of_integral_mem (mul_ne_zero hθ0' hP0)
     (Ideal.mem_span_singleton_self _) (Algebra.IsIntegral.isIntegral _)
-  obtain ⟨C, hC⟩ := GlobalTheory.T.exists_residueClass_near_real_embeddings F m 0 hm0
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.residueClass_relativelyDense F m 0 hm0
   set t : Eˣ := Units.mk0 (θ : E) hθ0 with ht
   have hxb : ∀ b : 𝓞 F, ((algebraMap (𝓞 F) (𝓞 E) b + θ : 𝓞 E) : E) ≠ 0 := by
     intro b h
@@ -163,7 +163,7 @@ theorem inf_trivial_of_trivAt_degOne : ∀ (F E : Type) [Field F] [NumberField F
         by_cases hmem : algebraMap (𝓞 F) (𝓞 E) b + θ ∈ v.asIdeal
         · haveI := v.isPrime
           haveI := v.isMaximal
-          have hdeg1 : DegOne F v := GlobalTheory.T.residue_degree_one_of_linear_mem' (𝓞 F) (𝓞 E) v.asIdeal θ D b 1
+          have hdeg1 : DegOne F v := _root_.GlobalTheory.residue_degree_one_of_linear_mem (𝓞 F) (𝓞 E) v.asIdeal θ D b 1
             (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal v.asIdeal) hDspan
             (fun h => he0v (Ideal.mul_mem_right _ _ h))
             (by rw [map_one]; exact fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h))
@@ -191,7 +191,7 @@ theorem inf_trivial_of_trivAt_degOne : ∀ (F E : Type) [Field F] [NumberField F
   set ψ : ({w : InfinitePlace E // w.IsComplex} → ℂˣ) →* ℂˣ := (χ.comp (infIdele E)).comp (infUnit E) with hψ
   have hψc : Continuous ψ := hχ.1.comp ((continuous_infIdele E).comp (continuous_infUnit E))
   set T : Set ({w : InfinitePlace E // w.IsComplex} → ℝ) := {y | ∃ b ∈ m, y = fun i => τ i (b : F)} with hT
-  have hψ1 := GlobalTheory.T.eq_one_of_continuous_char_const_on_translates {w : InfinitePlace E // w.IsComplex} ψ (fun i => i.1.embedding (θ : E)) T (max C 0)
+  have hψ1 := _root_.GlobalTheory.charConstOnTranslates_trivial {w : InfinitePlace E // w.IsComplex} ψ (fun i => i.1.embedding (θ : E)) T (max C 0)
     (χ (infIdele E (infPart E (diagUnits E t)))) hψc (fun i => GlobalTheory.T.im_embedding_ne_zero_of_not_mem_range_algebraMap F E i.1 θ hθF) ?_ ?_
   · intro x
     obtain ⟨z, rfl⟩ := infUnit_surj E x

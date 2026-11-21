@@ -25,22 +25,6 @@ theorem stTop : StTop := by
   refine ⟨γ, hγ, s * t, Finset.mem_image.mpr ⟨(s, t), Finset.mem_product.mpr ⟨hs, ht⟩, rfl⟩, u, hgU hu, ?_⟩
   simp only [mul_assoc]
 
-theorem isImg_trans {E : Type} [Field E] [NumberField E] {n : ℕ} {γ γ₀ : GL (Fin n) E}
-    {M₀ M₁ M : Submodule (𝓞 E) (Fin n → E)} (h₁ : IsImg γ₀ M₀ M₁) (h : IsImg γ M₀ M) :
-    IsImg (γ * γ₀⁻¹) M₁ M := by
-  intro v
-  constructor
-  · intro hv
-    obtain ⟨w0, hw0, rfl⟩ := (h v).1 hv
-    refine ⟨(γ₀ : Matrix (Fin n) (Fin n) E) *ᵥ w0, (h₁ _).2 ⟨w0, hw0, rfl⟩, ?_⟩
-    rw [Units.val_mul, Matrix.mulVec_mulVec, mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one,
-      mul_one]
-  · rintro ⟨w, hw, rfl⟩
-    obtain ⟨w0, hw0, rfl⟩ := (h₁ w).1 hw
-    refine (h _).2 ⟨w0, hw0, ?_⟩
-    rw [Units.val_mul, Matrix.mulVec_mulVec, mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one,
-      mul_one]
-
 theorem stGenusOf : StGenusOf := by
   intro hD hH I
   classical

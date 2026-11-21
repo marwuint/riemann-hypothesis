@@ -1,12 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsRigFr
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBilRatio
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsRatioSer
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MixW
+
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open Formalism.L2.Pj GlobalTheory.RayEv GlobalTheory.RayHoriz GlobalTheory.RayRos GlobalTheory.RayRosEx
+open Formalism.L2.Pj GlobalTheory.RayEv GlobalTheory.RayHoriz
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option autoImplicit false
@@ -14,12 +12,6 @@ set_option autoImplicit false
 noncomputable section
 
 namespace GlobalTheory.RayRosEx.ThetaPull
-
-section Jets
-
-variable {S : Type} [CommRing S] {ρ : Type}
-
-end Jets
 
 section Vals
 

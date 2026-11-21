@@ -3,12 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsTrSelf
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.TranslateProduct
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDefs
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationBoundMultiplierSqrtNegDStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationBoundAtRamifiedPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationBoundThreeInertStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFormulaWeierstrassPIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationBoundMultiplierSqrtNegD
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationBoundAtRamifiedPrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationBoundThreeInert
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFormulaWeierstrassPIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationAtLeastBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralWeierstrassPTorsionNonrealMultiplierStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralWeierstrassPTorsionNonrealMultiplier
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate
 open NumberField GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.LatVal ReciprocityTheory.ChartRestriction.L1 Formalism.L2.Th1.F
@@ -52,7 +52,7 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+
   have hsz := (GlobalTheory.T.algebraicValuationAtLeast_basic_properties l lam).1
   have hp : Sz l lam 0 (12 * (L.weierstrassP P / Ω ^ 2)) := by
     refine hsz (M ^ 2) _ (fun h => hM (hlp.dvd_of_dvd_pow h)) ?_
-    have := ((GlobalTheory.T.isIntegral_weierstrassP_torsion_nonreal_multiplier L w Ω M hw him0 hΩ hM0).1 P hMP).1
+    have := ((_root_.GlobalTheory.WpFam.LatTorsVal.main L w Ω M hw him0 hΩ hM0).1 P hMP).1
     convert this using 1
     push_cast; ring
   have key : ∀ (α : ℂ) (n : ℕ), MulStable L α → Complex.normSq α = n → ¬ l ∣ n →
@@ -64,7 +64,7 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+
     · rcases (Nat.Prime.dvd_mul hlp).1 (hlp.dvd_of_dvd_pow h) with h | h
       · exact hM h
       · exact hln h
-    · have := GlobalTheory.T.isogeny_formula_weierstrassP_integral L α w Ω P M n hw him0 hΩ hα hn hn0 hM0 hP hMP
+    · have := _root_.GlobalTheory.IsogFormula.main L α w Ω P M n hw him0 hΩ hα hn hn0 hM0 hP hMP
       rwa [Nat.cast_pow]
   by_cases hld : l = d
   · subst hld
@@ -74,7 +74,7 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+
       have : l ∣ 1 := (Nat.dvd_add_left (dvd_refl l)).1 h
       exact hlp.one_lt.ne' (Nat.dvd_one.1 this)
     have h1 := key (1 + w) (1 + l) (mulStable_one_add hw) hn1 hnd
-    refine GlobalTheory.T.algebraicValuation_bound_at_ramified_prime l lam w _ _ hd4 hw2 hp ?_
+    refine _root_.GlobalTheory.SzRamified.main l lam w _ _ hd4 hw2 hp ?_
     simpa only [Nat.cast_add, Nat.cast_one] using h1
   · rw [if_neg hld]
     by_cases h3 : l = 3 ∧ d % 3 = 1
@@ -83,12 +83,12 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+
       have hnd : ¬ 3 ∣ 1 + d := by omega
       have h1 := key (1 + w) (1 + d) (mulStable_one_add hw) hn1 hnd
       have h2 := key (1 - w) (1 + d) (mulStable_one_sub hw) hn2 hnd
-      refine GlobalTheory.T.valuation_bound_three_inert lam d w _ (L.weierstrassP P / Ω ^ 2) h3 hw2 ?_ ?_
+      refine _root_.GlobalTheory.ArithThreeInert.main lam d w _ (L.weierstrassP P / Ω ^ 2) h3 hw2 ?_ ?_
       · simpa only [Nat.cast_add, Nat.cast_one] using h1
       · simpa only [Nat.cast_add, Nat.cast_one] using h2
     · have hnd : ¬ l ∣ d := fun h => hld ((Nat.prime_dvd_prime_iff_eq hlp hd).1 h)
       have h1 := key w d hw hn0 hnd
-      refine GlobalTheory.T.valuation_bound_multiplier_sqrt_neg_d l lam d _ _ hd hd4 hld hp ?_ ?_
+      refine _root_.GlobalTheory.SzMult.main l lam d _ _ hd hd4 hld hp ?_ ?_
       · convert h1 using 1
         rw [hw2]; ring
       · rintro rfl

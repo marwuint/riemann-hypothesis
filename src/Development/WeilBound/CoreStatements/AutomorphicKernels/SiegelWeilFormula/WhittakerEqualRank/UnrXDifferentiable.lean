@@ -26,12 +26,6 @@ theorem eSp_sq (v : HeightOneSpectrum (𝓞 F)) : eSp E v ^ 2 = 1 := by
 theorem norm_eSp (v : HeightOneSpectrum (𝓞 F)) : ‖eSp E v‖ = 1 := by
   unfold eSp; split_ifs <;> simp
 
-theorem eSp_pow_sub (v : HeightOneSpectrum (𝓞 F)) (N i : ℕ) (hi : i ≤ N) :
-    eSp E v ^ (N + i) = eSp E v ^ (((N - i : ℕ) : ℤ)) := by
-  rw [zpow_natCast]
-  have : N + i = (N - i) + 2 * i := by omega
-  rw [this, pow_add, pow_mul, eSp_sq, one_pow, mul_one]
-
 theorem one_sub_eSp_ne (v : HeightOneSpectrum (𝓞 F)) :
     1 - eSp E v / (Ideal.absNorm v.asIdeal : ℂ) ≠ 0 := by
   have hq : (1 : ℝ) < Ideal.absNorm v.asIdeal := by

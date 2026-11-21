@@ -14,18 +14,18 @@ import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
 import Development.AbelianVarietyTheory.PublishedTheorems.SemistableReduction₂.SemistableReductionSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmplePrincipalOfGenericFibreDvrStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProjOverBaseChangeOfProperQuasiProjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleOfPolarisedAtEveryPointStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KernelTrivialOfEveryPointCoveredStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmplePrincipalOfGenericFibreDvr
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProjOverBaseChangeOfProperQuasiProjective
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleOfPolarisedAtEveryPoint
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KernelTrivialOfEveryPointCovered
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FullLevelObjectOfCoveringPullbacksStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TorsionLevelExtendsFromDenseOpenNormalStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoNearNormalPointOfFiniteBirationalStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TorsionLevelExtendsFromDenseOpenNormal
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoNearNormalPointOfFiniteBirational
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FullObjectOfGenericFibreDvrStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FullLevelObjectPullbackExistsAndFullStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsFiniteOfAmpleDeterminantFramesPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AmpleDeterminantFramesPullbackOfIsAffineHomStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProperOfCompleteDVRLiftGenericStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FullLevelObjectPullbackExistsAndFull
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsFiniteOfAmpleDeterminantFramesPullback
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AmpleDeterminantFramesPullbackOfIsAffineHom
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProperOfCompleteDVRLiftGeneric
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PolPull
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PushEquivSymmLeft
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
@@ -120,9 +120,9 @@ theorem exists_full_through (hE : GlobalTheory.LN.HomExtSt) (h1 : Out.Laws) (h2 
   let lV := fun a => ObjPull.secPull νV.cart (lv a)
   let lK := fun a => ObjPull.secPull κ'.cart (lW a)
   have oK : FullObj D (x ≫ j ≫ s) tK lK :=
-    (GlobalTheory.T.fullLevelObject_pullback_exists_and_full E H D n N W _ (j ≫ s) tW lW x).2 tK κ' lK (fun a => ObjPull.secPull_left _ _) o
+    (_root_.GlobalTheory.fullObj_pull E H D n N W _ (j ≫ s) tW lW x).2 tK κ' lK (fun a => ObjPull.secPull_left _ _) o
   have hpV := isProper_pull νV hp
-  obtain ⟨am, kt⟩ := GlobalTheory.T.relAmple_principal_of_genericFibre_dvr hE h1 h2 E H V K tV tK νK hpV oK.ample oK.ktriv
+  obtain ⟨am, kt⟩ := _root_.GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre hE h1 h2 E H V K tV tK νK hpV oK.ample oK.ktriv
   refine ⟨Sp V, f, tV, νV, lV, ⟨_, hf₁⟩, fun a => ObjPull.secPull_left _ _, ?_⟩
   refine GlobalTheory.T.fullObject_of_genericFibre_dvr h1 h2 E H D n N V K (f ≫ s) tV lV tK νK lK hN hpV am kt (fun a c => ?_) (fun a => ?_)
     (fun a => ?_) ?_
@@ -146,13 +146,13 @@ theorem exists_full (hE : GlobalTheory.LN.HomExtSt) (h1 : Out.Laws) (h2 : Out.La
     ∃ lv : D.La → (𝟙_ (Over S) ⟶ t.G), FullObj D s t lv ∧ ∀ a, (lW a).left ≫ ν.φ = j ≫ (lv a).left := by
   have hu' : IsUnit (N : Γ(S, ⊤)) := by
     simpa using hu.map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of (RZ H n N))).inv.hom)
-  obtain ⟨lv, add, ker, hl⟩ := GlobalTheory.T.torsionLevel_extends_from_dense_open_normal D.La N S W j t.G tW.G ν.φ lW hS ‹_› ‹_› hp hu' ν.cart o.add o.ker
+  obtain ⟨lv, add, ker, hl⟩ := _root_.GlobalTheory.exists_torsion_level_extend D.La N S W j t.G tW.G ν.φ lW hS ‹_› ‹_› hp hu' ν.cart o.add o.ker
   have th := exists_full_through hE h1 h2 hN s t lv hp add ker j tW ν lW hl o
-  have am : Out.RelAmple t.G t.PP.L := GlobalTheory.T.relAmple_of_polarised_at_every_point E H S t hp
-    (fun A _ y B φ h => GlobalTheory.T.isProjOver_baseChange_of_proper_quasiProjective _ A S s t.G y B φ hp hq h) fun p => by
+  have am : Out.RelAmple t.G t.PP.L := _root_.GlobalTheory.AmpleGlobal.relAmple_of_polarised_at_points E H S t hp
+    (fun A _ y B φ h => _root_.GlobalTheory.isProjOver_of_isPullback_of_isProper_of_isQProjOver _ A S s t.G y B φ hp hq h) fun p => by
       obtain ⟨S', f, t', ν', _, a, -, b⟩ := th p
       exact ⟨S', f, t', ν', a, b.ample, b.ktriv⟩
-  have kt : Out.KTriv t.G t.PP.L := GlobalTheory.T.kernelTrivial_of_every_point_covered h1 E H S t hp am fun p => by
+  have kt : Out.KTriv t.G t.PP.L := _root_.GlobalTheory.KTrivGlob.kTriv_of_forall_point h1 E H S t hp am fun p => by
     obtain ⟨S', f, t', ν', _, a, -, b⟩ := th p
     exact ⟨S', f, t', ν', a, b.ktriv⟩
   exact ⟨lv, GlobalTheory.T.fullLevelObject_of_covering_pullbacks h1 E H D n N S s t lv hN hp am kt add ker th, hl⟩
@@ -177,7 +177,7 @@ theorem isProper_of_abLocus (hE : GlobalTheory.LN.HomExtSt) {R : Type} [CommRing
   obtain ⟨_, _⟩ := separated_finiteType_of_isQProjOver hM
   have : IsLocallyNoetherian M := LocallyOfFiniteType.isLocallyNoetherian sM
   have : IsLocallyNoetherian Z := LocallyOfFiniteType.isLocallyNoetherian sZ
-  refine GlobalTheory.T.isProper_of_completeDVR_lift_generic R _ M u sM ‹_› ?_ fun V K _ _ _ _ _ _ _ x y _ hxy => ?_
+  refine _root_.GlobalTheory.ValuativeGeneric.isProper_of_lift_generic R _ M u sM ‹_› ?_ fun V K _ _ _ _ _ _ _ x y _ hxy => ?_
   · obtain ⟨N, i, hi, e⟩ := hZ
     exact ⟨N, U.ι ≫ i, inferInstance, inferInstance, by rw [hu, Category.assoc, e]⟩
   obtain ⟨z, hz, -⟩ := valuative_lift_of_isProper sZ (x ≫ U.ι) (y ≫ sM)
@@ -236,8 +236,8 @@ theorem isFinite_of_isProper (h1 : Out.Laws) (h2 : Out.Laws2) {R : Type} [CommRi
   obtain ⟨a, -⟩ := exists_comp m' mU rfl
   obtain ⟨b, -⟩ := exists_comp m' mM rfl
   obtain ⟨b', -⟩ := exists_cancel mV b (morphismRestrict_ι u V.1)
-  obtain ⟨A', -⟩ := GlobalTheory.T.ampleDeterminantFrames_pullback_of_isAffineHom E H Z _ t t' _ a N A ha
-  exact GlobalTheory.T.isFinite_of_ampleDeterminantFrames_pullback h1 h2 E H _ _ (((u ⁻¹ᵁ V.1).ι ≫ U.ι) ≫ z) t' tV (u ∣_ V.1) b' N A' hN
+  obtain ⟨A', -⟩ := _root_.GlobalTheory.AmpPull.ampFrames_pull_of_isAffineHom E H Z _ t t' _ a N A ha
+  exact _root_.GlobalTheory.FrameFinite.isFinite_of_ampFrames h1 h2 E H _ _ (((u ⁻¹ᵁ V.1).ι ≫ U.ι) ≫ z) t' tV (u ∣_ V.1) b' N A' hN
     (isNormalScheme_of_open ((u ⁻¹ᵁ V.1).ι ≫ U.ι) hn) inferInstance (isProper_pull b hp) ((pol_of_map b hp).1 am)
     ((pol_of_map b hp).2 kt) inferInstance
 
@@ -356,7 +356,7 @@ theorem exists_finite_map : GlobalTheory.LN.HomExtSt → Out.Laws → Out.Laws2 
   obtain ⟨ν, -⟩ := exists_cancel mU C.m₂ hj
   let lW := fun a => ObjPull.secPull C.m₁.cart (lev a)
   have hlW : ∀ a, (lW a).left ≫ C.m₁.φ = C.W.ι ≫ (lev a).left := fun a => ObjPull.secPull_left _ _
-  have oW : FullObj D (C.W.ι ≫ sM) C.tW lW := (GlobalTheory.T.fullLevelObject_pullback_exists_and_full E H D n N MM _ sM tM lev C.W.ι).2 C.tW C.m₁ lW hlW F.obj
+  have oW : FullObj D (C.W.ι ≫ sM) C.tW lW := (_root_.GlobalTheory.fullObj_pull E H D n N MM _ sM tM lev C.W.ι).2 C.tW C.m₁ lW hlW F.obj
   have hjs : j ≫ U.ι ≫ C.s = C.W.ι ≫ sM := by rw [reassoc_of% hj, C.j_over]
   obtain ⟨lv, o, hl⟩ := exists_full hE h1 h2 hN huN hnU (U.ι ≫ C.s) tU hpU hqU j C.tW ν lW (by rwa [hjs])
   obtain ⟨u, ⟨hu, mM, hM⟩, -⟩ := F.rep _ (U.ι ≫ C.s) tU lv inferInstance inferInstance inferInstance o
@@ -378,7 +378,7 @@ theorem exists_finite_map : GlobalTheory.LN.HomExtSt → Out.Laws → Out.Laws2 
     rw [← Set.range_eq_univ, ← u.isClosedMap.isClosed_range.closure_eq]
     exact hd'.closure_eq
   · obtain ⟨a, b⟩ := normal_stalk_of_generic sM F.gen x hx
-    exact GlobalTheory.T.isIso_near_normal_point_of_finite_birational _ MM u C.W hf inferInstance hi C.dense hd x a b
+    exact _root_.GlobalTheory.FiniteBirationalNear.main _ MM u C.W hf inferInstance hi C.dense hd x a b
   · obtain rfl : j' = j := by rw [← cancel_mono U.ι, hj, hj']
     exact hju
 

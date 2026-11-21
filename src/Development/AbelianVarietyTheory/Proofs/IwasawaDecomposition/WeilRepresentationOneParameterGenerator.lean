@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOneP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsQuadOfNormal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOscillatorActionUnitaryPolynomialBoundStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeakWeilRepEqUnitSmulOscillatorRealPointsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeakWeilRepEqUnitSmulOscillatorRealPoints
 
 noncomputable section
 
@@ -86,7 +86,7 @@ theorem exists_generator : ∀ (D : D7) (θ : InfF D) (σ : (D.what₂.Tau → �
     (GA D S × GA D T) (mM θ S T) (mM_unitary h.inf)
   obtain ⟨lam, hlam⟩ := hd γ X hγ0 hX κ c p q hq
   have sm := sm_of_theta (S := S) (T := T) h hψ
-  choose s hs1 hs using fun t => GlobalTheory.T.weakWeilRep_eq_unit_smul_oscillator_real_points D θ σ h ψ hψ S T om hw Ω hΩ (γ t).1 (hinf t).1 (γ t).2 (hinf t).2
+  choose s hs1 hs using fun t => _root_.GlobalTheory.Mem.LiftCmp.weil_eq_smul_osc D θ σ h ψ hψ S T om hw Ω hΩ (γ t).1 (hinf t).1 (γ t).2 (hinf t).2
   replace hs : ∀ t (F : BB ψ S T), IsThetaFunO ψ S T F.1 → om (γ t) F.1 = s t • ((Ω (γ t) F).1 : WO S T → ℂ) := hs
   obtain ⟨-, hsmul, hsm, hone, hmul, -⟩ := hΩ
   have cs : ∀ (a : ℂ) (G : BB ψ S T), ((a • G).1 : WO S T → ℂ) = a • (G.1 : WO S T → ℂ) := fun _ _ => rfl

@@ -573,28 +573,6 @@ theorem idx_coe {b : T.Econ ρ0} (hb : (b : T.RobbaExt ρ0) ≠ 0) {ρ : ℝ} (h
   rw [sub_self, extNorm_zero]
   exact T.extNorm_pos hb σ
 
-theorem idx_single_zero_one {ρ : ℝ} (hρ : 0 < ρ) :
-    lowIndex (Pi.single 0 (1 : L)) ρ = 0 ∧ highIndex (Pi.single 0 (1 : L)) ρ = 0 := by
-  have hc := convergesAt_pi_single (L := L) 0 1 ρ
-  have hne : (Pi.single 0 (1 : L) : ℤ → L) ≠ 0 := by
-    intro h; have := congrFun h 0; simp at this
-  have key : ∀ n : ℤ, (Pi.single 0 (1 : L) : ℤ → L) n ≠ 0 → n = 0 := fun n hn => by
-    by_contra h
-    apply hn
-    rw [Pi.single_apply, if_neg h]
-  exact ⟨key _ (ne_zero_of_mem_domSet hρ hc hne (lowIndex_mem hρ hc hne)),
-    key _ (ne_zero_of_mem_domSet hρ hc hne (highIndex_mem hρ hc hne))⟩
-
-theorem mult_one {ρ : ℝ} (h : 0 < ρ ∧ ρ < ρ0) : T.mult (1 : T.RobbaExt ρ0) ρ = 0 := by
-  have h1 : ((1 : T.Econ ρ0) : T.RobbaExt ρ0) ≠ 0 := by
-    rw [Completion.coe_one]; exact one_ne_zero
-  obtain ⟨hl, hh⟩ := T.idx_coe h1 h
-  rw [Completion.coe_one] at hl hh
-  have hc : T.coeffB ((1 : T.Econ ρ0) : T.B) = Pi.single 0 1 := by
-    show T.coeffB 1 = _
-    rw [← map_one (algebraMap Γ T.B), coeffB_algebraMap, zcoeff_one]
-  rw [mult, hl, hh, hc, (idx_single_zero_one h.1).1, (idx_single_zero_one h.1).2, sub_self]
-
 def breaksR (x : T.RobbaExt ρ0) (a b : ℝ) : Set ℝ :=
   {ρ | ρ ∈ Set.Icc a b ∧ T.lowIdx x ρ < T.highIdx x ρ}
 

@@ -50,18 +50,6 @@ def hWidth (L : SizeData₂ D) : ℝ := L.sc.b + L.Sc + L.etaSz + (D.R.t : ℝ) 
 def lJ (L : SizeData₂ D) : ℝ :=
   (D.R.m : ℝ) * L.sc.b * L.sc.x ^ L.sc.eps / ((D.R.k : ℝ) * ((D.R.m : ℝ) + (D.R.t : ℝ)) * Real.log (3 * hWidth L))
 
-def IsSmallPrime (L : SizeData₂ D) (q0 : ℕ) : Prop :=
-  q0.Prime ∧ q0 ∈ D.host.levelPrimes ∧ q0 ≡ 1 [MOD LevelStarExponents.condE D] ∧
-  (q0 ≠ D.host.pde ∧ q0 ≠ D.host.pde' ∧ ∀ i : Fin 2, q0 ≠ D.host.g i) ∧
-  Real.log q0 ≤ L.sc.L ∧ (q0 : ℝ) ≤ lJ L ∧ (q0 : ℝ) < L.sc.X'
-
-def SmallPrimeAt (L : SizeData₂ D) : Prop := ∃ q0 : ℕ, IsSmallPrime L q0
-
-def SmallPrimeSharpAt (L : SizeData₂ D) (C8 : ℝ) : Prop :=
-  ∃ q0 : ℕ, IsSmallPrime L q0 ∧ Real.log q0 ≤ C8 * Real.log (LevelStarExponents.condE D : ℝ) ∧
-    C8 * Real.log (LevelStarExponents.condE D : ℝ) ≤ 2 * C8 * L.sc.x ^ (L.sc.eps / 5) * Real.log L.sc.x ^ 2 ∧
-    2 * C8 * L.sc.x ^ (L.sc.eps / 5) * Real.log L.sc.x ^ 2 ≤ L.sc.L
-
 def tameList (D : D7) (k : Fin 2) (v : D.nd.PlG k) : Option (Fin D.R.m × Bool) → (ZMod (D.host.g k))ˣ
   | none => 1
   | some (j, true) => D.nd.chiT k v j
@@ -71,74 +59,11 @@ def TameDistinct (D : D7) : Prop := ∀ (k : Fin 2) (v : D.nd.PlG k), Function.I
 
 def TameInjective (D : D7) : Prop := ∀ (k : Fin 2) (v : D.nd.PlG k), Function.Injective (D.nd.chiT k v)
 
-def TameDistinctMod (D : D7) : Prop :=
-  ∀ (k : Fin 2) (v : D.nd.PlG k) (l : ℕ), l.Prime → l ∉ Formalism.CyclotomicNorms.BB D.R.r (D.host.g k) →
-    ∀ (a a' : Option (Fin D.R.m × Bool)) (e : ℕ), (tameList D k v a * (tameList D k v a')⁻¹) ^ l ^ e = 1 → a = a'
-
-def TameEven (D : D7) : Prop := ∀ (k : Fin 2) (v : D.nd.PlG k) (j : Fin D.R.m), IsSquare (D.nd.chiT k v j)
-
-def TameOfGenerator (D : D7) : Prop :=
-  ∀ (k : Fin 2) (v : D.nd.PlG k), ∃ γ : (ZMod (D.host.g k))ˣ, Subgroup.zpowers γ = ⊤ ∧
-    ∀ j : Fin D.R.m, D.nd.chiT k v j = γ ^ (2 * (j.1 + 1)) ∨ D.nd.chiT k v j = (γ ^ (2 * (j.1 + 1)))⁻¹
-
 end Point
-
-section Family
-
-variable {eps : ℝ}
-
-def AtLarge (Fm : FamP eps) (P : ∀ x : ℝ, Fm.Ix x → Prop) : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, P x i
-
-def FixedValues (Fm : FamP eps) : Prop := AtLarge Fm fun x i => FixedAt (Fm.L x i)
-
-def Windows (Fm : FamP eps) : Prop := AtLarge Fm fun x i => WindowsAt (Fm.L x i) Fm.CY
-
-def SmallPrime (Fm : FamP eps) : Prop := AtLarge Fm fun x i => SmallPrimeAt (Fm.L x i)
-
-def DistinctTame (Fm : FamP eps) : Prop := AtLarge Fm fun x i => TameDistinct (Fm.D x i)
-
-def WeightReq (Fm : FamP eps) : Prop :=
-  AtLarge Fm fun x i => Formalism.MainNotions.AuxBlock8.WReq (Fm.Gx x i) Fm.GK (G.aL (Fm.L x i)) (G.bL (Fm.L x i))
-
-def Duties (Fm : FamP eps) : Prop :=
-  FixedValues Fm ∧ Windows Fm ∧ SmallPrime Fm ∧ DistinctTame Fm ∧ WeightReq Fm
-
-def DutiesSharp (Fm : FamP eps) : Prop :=
-  Duties Fm ∧ (Fm.CnW = 10 ∧ Fm.eP = 12 ∧ Fm.Cp = 1 ∧ Fm.cTO = 377) ∧
-  (AtLarge Fm fun x i => SmallPrimeSharpAt (Fm.L x i) Fm.Cpde) ∧
-  AtLarge Fm fun x i => TameDistinctMod (Fm.D x i) ∧ TameEven (Fm.D x i)
-
-def HasConsts (Fm : FamP eps) (C : FC) : Prop :=
-  Fm.Ct = C.Ct ∧ Fm.Cc = C.Cc ∧ Fm.CT2 = C.CT2 ∧ Fm.CGam = C.CGam ∧ Fm.Csz = C.Csz ∧ Fm.Cr = C.Cr ∧ Fm.CTu = C.CTu ∧
-  Fm.GK = C.GK ∧ Fm.cX = C.cX ∧ Fm.PK = C.PK ∧ Fm.PT = C.PT
-
-def IsPoint (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) {C : FC} (p : GlobalTheory.EX.Pt C) : Prop :=
-  p.D = Fm.D x i ∧ HEq p.L (Fm.L x i) ∧ HEq p.gatT (Fm.gatT x i) ∧ HEq p.ta.Gx (Fm.Gx x i) ∧ HEq p.ta.Gy (Fm.Gy x i) ∧
-  HEq p.xa.X (Fm.X x i) ∧ HEq p.xa.ex (Fm.ex x hx i)
-
-end Family
-
-def kitClass (Q : GlobalTheory.EX.PtProp) : FamClass := fun {eps} Fm =>
-  ∃ (C : FC) (cD ch : ℝ), GlobalTheory.EX.Std C ∧ HasConsts Fm C ∧
-    ∀ (x : ℝ) (hx : Fm.x1 < x), Nonempty (Fm.Ix x) → ∃ s : Scale, s.x = x ∧ s.eps = eps ∧ ∃ k : GlobalTheory.EX.Kit C cD ch s,
-      (∀ j, (k.pt j).Has Q) ∧ ∀ i : Fm.Ix x, ∃ j, IsPoint Fm x hx i (k.pt j)
-
-def ClassDuties (𝒞 : FamClass) : Prop := ∀ (eps : ℝ) (Fm : FamP eps), 𝒞 Fm → Duties Fm
-
-def DutyClaim (Q : GlobalTheory.EX.PtProp) : Prop := ClassDuties (kitClass (GlobalTheory.EX.withDuty Q))
-
-def CarriesTame (Q : GlobalTheory.EX.PtProp) : Prop :=
-  ∀ D L gatT Gx Gy K X cX ex, Q D L gatT Gx Gy K X cX ex → TameOfGenerator D
-
-def Claim : Prop := ∀ Q : GlobalTheory.EX.PtProp, CarriesTame Q → DutyClaim Q
 
 theorem TameDistinct.injective {D : D7} (h : TameDistinct D) : TameInjective D := fun k v a b hab => by
   have := h k v (a₁ := some (a, true)) (a₂ := some (b, true)) hab
   simpa using this
-
-theorem SmallPrimeSharpAt.weak {D : D7} {L : SizeData₂ D} {C8 : ℝ} (h : SmallPrimeSharpAt L C8) : SmallPrimeAt L :=
-  h.imp fun _ h => h.1
 
 theorem lJ_den_pos {D : D7} (L : SizeData₂ D) :
     0 < (D.R.k : ℝ) * ((D.R.m : ℝ) + (D.R.t : ℝ)) * Real.log (3 * hWidth L) := by

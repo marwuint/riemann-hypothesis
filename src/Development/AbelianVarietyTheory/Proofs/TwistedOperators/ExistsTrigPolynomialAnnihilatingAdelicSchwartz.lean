@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import GroundTheory.GlobalFields.Adele.Compact
 import GroundTheory.GlobalFields.TateThesis.AdelicChar
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntLevelSchwartzBruhatFiniteAdelicStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntLevelSchwartzBruhatFiniteAdelic
+import GroundTheory.GlobalFields.TateThesis.AdelicCharDual
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StandardCharSeparatesIntegralFiniteAdelesStatement
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
@@ -17,7 +18,7 @@ theorem inv_level : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintyp
     ∃ d : 𝓞 F, d ≠ 0 ∧ ∀ x u : κ → FiniteAdeleRing (𝓞 F) F,
       (∀ i, ∀ v : HeightOneSpectrum (𝓞 F),
         (algebraMap F (FiniteAdeleRing (𝓞 F) F) ((d : F)⁻¹) * u i) v ∈ v.adicCompletionIntegers F) →
-      g (x + u) = g x := GlobalTheory.T.exists_int_level_schwartzBruhat_finiteAdelic
+      g (x + u) = g x := _root_.GlobalTheory.SBLevel.exists_int_level
 
 theorem sep_char : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ b : FiniteAdeleRing (𝓞 F) F, ¬ (∀ v : HeightOneSpectrum (𝓞 F), b v ∈ v.adicCompletionIntegers F) →
@@ -37,10 +38,6 @@ theorem int_mem (r : 𝓞 F) : algebraMap F (FiniteAdeleRing (𝓞 F) F) (r : F)
 
 theorem lev_zero (d : 𝓞 F) : Lev d (0 : κ → FiniteAdeleRing (𝓞 F) F) := fun i => by
   simp only [Pi.zero_apply, mul_zero]; exact zero_mem _
-
-theorem lev_add {d : 𝓞 F} {u u' : κ → FiniteAdeleRing (𝓞 F) F} (h : Lev d u) (h' : Lev d u') :
-    Lev d (u + u') := fun i => by
-  simp only [Pi.add_apply, mul_add]; exact add_mem (h i) (h' i)
 
 theorem lev_of_mul {d e : 𝓞 F} (he : e ≠ 0) {u : κ → FiniteAdeleRing (𝓞 F) F} (h : Lev (d * e) u) :
     Lev d u := fun i => by

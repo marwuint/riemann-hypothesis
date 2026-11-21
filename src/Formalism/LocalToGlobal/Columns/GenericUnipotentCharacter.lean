@@ -54,18 +54,6 @@ theorem fine_lt_of_coarse_lt {a : ℕ} {bl : List ℕ} {i j : ℕ} (h : coarse a
     rw [if_neg hj, if_neg (Nat.not_lt.mpr hi)]
     omega
 
-theorem blkIdx_mono (bl : List ℕ) : Monotone (blkIdx bl) := by
-  induction bl with
-  | nil => intro i j _; simp [blkIdx]
-  | cons b bs ih =>
-    intro i j hij
-    simp only [blkIdx]
-    split_ifs with h1 h2 h2
-    · exact le_rfl
-    · exact Nat.zero_le _
-    · omega
-    · exact Nat.succ_le_succ (ih (by omega))
-
 theorem blkIdx_replicate {t : ℕ} (ht : 0 < t) (j i : ℕ) (h : i < j * t) : blkIdx (List.replicate j t) i = i / t := by
   induction j generalizing i with
   | zero => simp at h
@@ -355,14 +343,6 @@ theorem mem_HK {r : ℕ} {bl : List ℕ} {M : GL (Fin n) κ} :
 theorem HK_le_blockUT (n : ℕ) (κ : Type) [CommRing κ] (r : ℕ) (bl : List ℕ) : HK n κ r bl ≤ blockUT n κ r bl :=
   fun _ h => (mem_HK.mp h).1
 
-theorem HK_le_uniUT (n : ℕ) (κ : Type) [CommRing κ] (r : ℕ) (bl : List ℕ) : HK n κ r bl ≤ uniUT n κ r bl := by
-  intro M h
-  obtain ⟨h1, h2⟩ := mem_HK.mp h
-  refine mem_uniUT.mpr ⟨h1, fun i j hi hji => ?_, fun i hi => ?_⟩
-  · rw [h2 i j hi (by omega)]
-    exact Matrix.one_apply_ne fun e => by rw [e] at hji; omega
-  · rw [h2 i i hi hi, Matrix.one_apply_eq]
-
 def lamK (χ : ℕ → κˣ →* Kˣ) (n r : ℕ) (bl : List ℕ) : ↥(HK n κ r bl) →* Kˣ :=
   (detChar χ n r bl).comp (Subgroup.inclusion (HK_le_blockUT n κ r bl))
 
@@ -462,12 +442,7 @@ def lamJ (ψ : AddChar κ K) (χ : ℕ → κˣ →* Kˣ) (n r t j : ℕ) : ↥(
 
 variable (κ)
 
-def HJsharp (n k r t j : ℕ) : Subgroup (GL (Fin n) κ) := HJ κ n r t j ⊓ fixCol n κ k
-
 variable {κ}
-
-def lamJsharp (ψ : AddChar κ K) (χ : ℕ → κˣ →* Kˣ) (n k r t j : ℕ) : ↥(HJsharp κ n k r t j) →* Kˣ :=
-  (lamJ ψ χ n r t j).comp (Subgroup.inclusion inf_le_left)
 
 variable (κ)
 
@@ -498,12 +473,7 @@ def lamV (ψ : AddChar κ K) (χj : κˣ →* Kˣ) (n r t : ℕ) : ↥(HV κ n r
 
 variable (κ)
 
-def HVsharp (n k r t : ℕ) : Subgroup (GL (Fin n) κ) := HV κ n r t ⊓ fixCol n κ k
-
 variable {κ}
-
-def lamVsharp (ψ : AddChar κ K) (χj : κˣ →* Kˣ) (n k r t : ℕ) : ↥(HVsharp κ n k r t) →* Kˣ :=
-  (lamV ψ χj n r t).comp (Subgroup.inclusion inf_le_left)
 
 variable (κ)
 
@@ -649,13 +619,6 @@ def diagonalEmbeddingProduct (SG : Finset (HeightOneSpectrum (𝓞 E))) {r n : �
   toFun g w := diagEmb _ h (g w)
   map_one' := by funext w; exact map_one _
   map_mul' a b := by funext w; exact map_mul _ _ _
-
-def UpperUnipotentProduct (SG : Finset (HeightOneSpectrum (𝓞 E))) (r : ℕ) : Subgroup (G0 E SG r) :=
-  Subgroup.pi Set.univ fun w => HU (𝓞 E ⧸ w.1.asIdeal) r
-
-def genericUnipotentCharacter (SG : Finset (HeightOneSpectrum (𝓞 E))) (ψ : ∀ w : {w // w ∈ SG}, AddChar (𝓞 E ⧸ w.1.asIdeal) K) (r : ℕ) :
-    ↥(UpperUnipotentProduct SG r) →* Kˣ :=
-  piChar (fun w => HU (𝓞 E ⧸ w.1.asIdeal) r) fun w => psiU (ψ w) r
 
 end Products
 

@@ -9,10 +9,6 @@ namespace GlobalTheory.DeRhamCompare
 
 open Module
 
-section Lin
-
-end Lin
-
 section Period
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct
@@ -57,13 +53,6 @@ theorem _root_.GlobalTheory.DeRhamCompare.comm_mp (b : R) (x : V ⊗[Qp] R) :
     simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.mulPeriod, TensorProduct.smul_tmul', smul_eq_mul]
   | add x y hx hy => simp only [map_add, hx, hy, smul_add]
 
-theorem finite_of_finrank_eq [FiniteDimensional LL V] (S : Submodule LL (V ⊗[Qp] R)) {n : ℕ}
-    (hn : 0 < n) (h : finrank LL S = n * finrank LL V) : FiniteDimensional LL S := by
-  rcases Nat.eq_zero_or_pos (finrank LL V) with h0 | h0
-  · have : Subsingleton V := Module.finrank_zero_iff.1 h0
-    infer_instance
-  · exact Module.finite_of_finrank_pos (h ▸ Nat.mul_pos hn h0)
-
 end Mul
 
 open Module in
@@ -84,10 +73,6 @@ theorem _root_.GlobalTheory.DeRhamCompare.mem_DdR (x : V ⊗[Qp] BdR) :
 
 theorem mem_Dcris (x : V ⊗[Qp] B) : x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
   simp [Dcris, sub_eq_zero]
-
-theorem mem_DdRE (τ : K →ₐ[Qp] LL) (x : V ⊗[Qp] BdR) : x ∈ DdRE PD ρ τ ↔
-    x ∈ DdR PD ρ ∧ ∀ c : K, mulVdR (Qp := Qp) (LL := LL) (V := V) (BdR := BdR) c x = τ c • x := by
-  simp [DdRE, sub_eq_zero]
 
 open Module in
 open TensorProduct in
@@ -157,24 +142,6 @@ theorem _root_.GlobalTheory.DeRhamCompare.finite_DdR [FiniteDimensional LL V] (h
     rw [h]
     exact Nat.mul_pos Module.finrank_pos (Nat.pos_of_ne_zero hV)
 
-theorem finite_Dcris [FiniteDimensional LL V] (h : IsCrys PD ρ) :
-    FiniteDimensional LL (Dcris PD ρ) := by
-  have := PD.finK₀
-  exact finite_of_finrank_eq _ finrank_pos h
-
-theorem tmul_mem_FilV (v : V) {a : ℤ} {b : BdR} (hb : b ∈ PD.Fil a) :
-    v ⊗ₜ[Qp] b ∈ FilV PD (LL := LL) (V := V) a :=
-  ⟨v ⊗ₜ ⟨b, hb⟩, by simp⟩
-
-theorem FilV_induction {a : ℤ} {p : V ⊗[Qp] BdR → Prop} (h0 : p 0)
-    (ht : ∀ v, ∀ b ∈ PD.Fil a, p (v ⊗ₜ b)) (ha : ∀ x y, p x → p y → p (x + y))
-    {x : V ⊗[Qp] BdR} (hx : x ∈ FilV PD (LL := LL) (V := V) a) : p x := by
-  obtain ⟨y, rfl⟩ := hx
-  induction y using TensorProduct.induction_on with
-  | zero => simpa using h0
-  | tmul v b => simpa using ht v b b.2
-  | add x y hx hy => rw [map_add]; exact ha _ _ hx hy
-
 open Module in
 open TensorProduct in
 variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
@@ -197,9 +164,6 @@ theorem _root_.GlobalTheory.DeRhamCompare.FildR_succ_le (τ : K →ₐ[Qp] LL) (
   refine ⟨AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (Submodule.inclusion hle) y, ?_⟩
   rw [← LinearMap.comp_apply, ← AlgebraTensorModule.map_comp]
   rfl
-
-theorem isJumpV_of_multV_ne {τ : K →ₐ[Qp] LL} {a : ℤ} (h : multV PD ρ τ a ≠ 0) :
-    IsJumpV PD ρ τ a := fun h' => h (by rw [multV, h', sub_self])
 
 end Period
 
@@ -268,26 +232,6 @@ def mulβ : BdR →ₗ[K] DdRK PD ρ →ₗ[K] BdR ⊗[Qp] V :=
 
 theorem mulβ_apply (b : BdR) (y : DdRK PD ρ) : mulβ PD ρ b y = b • (y : BdR ⊗[Qp] V) := rfl
 
-def InjPeriods : Prop :=
-  ∀ (m : ℕ) (b : Fin m → BdR) (d : Fin m → V ⊗[Qp] BdR),
-    LinearIndependent K b → (∀ i, d i ∈ DdR PD ρ) →
-    ∑ i, mulPeriod (Qp := Qp) (LL := LL) (V := V) (b i) (d i) = 0 → ∀ i, d i = 0
-
-def InjVectors : Prop :=
-  ∀ (m : ℕ) (x : Fin m → V ⊗[Qp] BdR), (∀ j, x j ∈ DdR PD ρ) →
-    (∀ c : Fin m → K,
-      ∑ j, mulVdR (Qp := Qp) (LL := LL) (V := V) (BdR := BdR) (c j) (x j) = 0 → ∀ j, c j = 0) →
-    ∀ b : Fin m → BdR,
-      ∑ j, mulPeriod (Qp := Qp) (LL := LL) (V := V) (b j) (x j) = 0 → ∀ j, b j = 0
-
-theorem ιV_mp (c : B) (x : V ⊗[Qp] B) :
-    ιV PD (LL := LL) (V := V) (mulPeriod (Qp := Qp) (LL := LL) (V := V) c x) =
-      mulPeriod (Qp := Qp) (LL := LL) (V := V) (PD.ι c) (ιV PD (LL := LL) (V := V) x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul v b => simp [mp_tmul, ιV]
-  | add x y hx hy => simp only [map_add, hx, hy]
-
 end Comparison
 
 section Filtered
@@ -304,15 +248,6 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {LL : Type} [Field LL] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
-
-def LatticeAt : Prop :=
-  FilV PD (LL := LL) (V := V) 0 = ⨆ (a : ℤ) (b : BdR) (_ : b ∈ PD.Fil 0),
-    (filDdR PD ρ a).map
-      (mulPeriod (Qp := Qp) (LL := LL) (V := V) (((tdR PD ^ (-a) : BdRˣ) : BdR) * b))
-
-def FilteredAt (n : ℤ) : Prop :=
-  FilV PD (LL := LL) (V := V) n = ⨆ (a : ℤ) (b : BdR) (_ : b ∈ PD.Fil (n - a)),
-    (filDdR PD ρ a).map (mulPeriod (Qp := Qp) (LL := LL) (V := V) b)
 
 def co (φ : V →ₗ[Qp] Qp) : V ⊗[Qp] BdR →ₗ[Qp] BdR :=
   (TensorProduct.lid Qp BdR).toLinearMap ∘ₗ φ.rTensor BdR

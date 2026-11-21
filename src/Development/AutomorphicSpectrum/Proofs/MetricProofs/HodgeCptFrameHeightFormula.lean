@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ColFlags
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GrGenOfIsFlagVBOn
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsChartOfLineBundle
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorRatioRegularOfInverseStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorRatioRegularOfInverse
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProdIicBlockDiagDetFactorsStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.EqNegSumIicDifferencesStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RatioSuccessiveNonzeroRegularStatement
@@ -64,7 +64,7 @@ theorem step_unit {n r : ℕ} {Fm : Matrix (Fin n) (Fin r) Ω} {U : Matrix (Fin 
       (Fm.submatrix J (Fin.castLE t.2)).det / (Fm.submatrix J₀ (Fin.castLE t.2)).det ∈ regAt ξ p) :
     unitAt ξ p ((∏ l : Fin ((t : ℕ) + 1), U (Fin.castLE t.2 l) (Fin.castLE t.2 l)) *
       (Fm.submatrix J₀ (Fin.castLE t.2)).det / Xb ^ (((t : ℕ) + 1) * mm)) := by
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.minor_ratio_regular_of_inverse Ω (regAt ξ p) n r Fm U C Z hU hB hC hL ((t : ℕ) + 1) t.2 J₀ hne hr
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.CompanionTheory.Metric.UnitMinor.unit_minor Ω (regAt ξ p) n r Fm U C Z hU hB hC hL ((t : ℕ) + 1) t.2 J₀ hne hr
   have hw : unitAt ξ p _ := ⟨h3, h1, h2⟩
   have hb : Xb ≠ 0 := fun hb => hX.1 (by rw [hb, zero_div])
   have hc : Xc ≠ 0 := fun hb => hX.1 (by rw [hb, div_zero])

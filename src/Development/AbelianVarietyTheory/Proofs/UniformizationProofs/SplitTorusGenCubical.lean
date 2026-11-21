@@ -129,12 +129,6 @@ theorem HasVal.inv {F : ∀ (V : Type) [CommGroup V], ((Y ⟶ X) → V) → V} {
   · simp only [zpow_neg, Finset.prod_inv_distrib, a]
   · rw [val_inv, b Z r z J hJ]
 
-theorem hasVal_pull (θ : LB.Gen (L.pull (𝟙 X))) (hθ : θ.IsGen) (p : Y ⟶ X) :
-    HasVal L (fun _ _ k => k p) (fun _ r z J =>
-      val (L := L) (φ := fun _ : PUnit => 𝟙 X) (ε := fun _ => 1) θ (r ≫ p) z J) :=
-  ⟨PUnit, inferInstance, _, _, LB.pullGen L (fun _ : PUnit => 𝟙 X) (fun _ => 1) θ p,
-    DVR.pullGen_isGen _ _ _ _ hθ p, fun V _ k => by simp, fun Z r z J hJ => val_pull hJ _ _ _⟩
-
 theorem HasVal.exists_unit (hL : L.IsLB) {F : ∀ (V : Type) [CommGroup V], ((Y ⟶ X) → V) → V} {f}
     (h : HasVal L F f) (hF : ∀ (V : Type) [CommGroup V] (k : (Y ⟶ X) → V), F V k = 1) :
     ∃ w : Γ(Y, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good L z J →
@@ -153,80 +147,6 @@ theorem HasVal.exists_unit (hL : L.IsLB) {F : ∀ (V : Type) [CommGroup V], ((Y 
 
 end Val
 
-theorem exists_ratio {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L : RigLB G)
-    (c : CubicalStr G L) (θ : LB.Gen (L.L.pull (𝟙 G.left))) (hθ : θ.IsGen) :
-    ∃ w : Γ((G ⊗ G ⊗ G).left, ⊤)ˣ, ∀ (T : Over S) (x y u : T ⟶ G) (z : T.left)
-      (J : (T.left ⟶ G.left) → L.L.ι), Good L.L z J →
-      ∀ v : (T ⟶ G) → (T.left.presheaf.stalk z)ˣ, (∀ a, v a = val (L := L.L)
-        (φ := fun _ : PUnit => 𝟙 G.left) (ε := fun _ => 1) θ a.left z J) →
-      (v (x * y * u) * v x * v y * v u *
-        (cubV c z J x y u * v (x * y) * v (x * u) * v (y * u) * v 1)⁻¹).val =
-        gs (𝟙 T.left) z ⊤ ((lift x (lift y u)).left.appTop.hom w.val) := by
-  let p₀ := x3 G 0
-  let p₁ := x3 G 1
-  let p₂ := x3 G 2
-  have P := fun p : G3 G ⟶ G => hasVal_pull θ hθ p.left
-  have hid : lift p₀ (lift p₁ p₂) = 𝟙 _ := by ext <;> simp [p₀, p₁, p₂, x3]
-  have C : HasVal L.L (fun _ _ h => h (p₀ * p₁ * p₂).left * (h (p₀ * p₁).left)⁻¹ *
-      (h (p₀ * p₂).left)⁻¹ * (h (p₁ * p₂).left)⁻¹ * h p₀.left * h p₁.left *
-        h p₂.left * (h (1 : G3 G ⟶ G).left)⁻¹)
-      (fun _ r z J => val (L := L.L) (φ := thφ G (x3 G)) (ε := thε) c.t r z J) :=
-    ⟨thK, inferInstance, thφ G (x3 G), thε, c.t, c.isGen, fun V _ h => by
-      have := prod_cub p₀ p₁ p₂ h
-      rw [hid] at this
-      simpa using this, fun _ _ _ _ _ => rfl⟩
-  obtain ⟨w, hw⟩ := (((((P (p₀ * p₁ * p₂)).mul (P p₀)).mul (P p₁)).mul (P p₂)).mul
-    ((((C.mul (P (p₀ * p₁))).mul (P (p₀ * p₂))).mul (P (p₁ * p₂))).mul (P 1)).inv).exists_unit
-    L.isLB (fun V _ k => by
-      apply Additive.ofMul.injective
-      simp only [ofMul_mul, ofMul_inv, ofMul_one]
-      abel)
-  refine ⟨w, fun T x y u z J hJ v hv => ?_⟩
-  refine Eq.trans ?_ (hw _ (lift x (lift y u)).left z J hJ)
-  have r₀ : lift x (lift y u) ≫ p₀ = x := by simp [p₀, x3]
-  have r₁ : lift x (lift y u) ≫ p₁ = y := by simp [p₁, x3]
-  have r₂ : lift x (lift y u) ≫ p₂ = u := by simp [p₂, x3]
-  simp only [← Over.comp_left, MonObj.comp_mul, MonObj.comp_one, r₀, r₁, r₂, hv]
-  rfl
-
 end TorusCube
-
-open TorusCube Geo.Tor in
-
-theorem splitTorus_gen_cubical :
-    ∀ (k : Type) [Field k] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (G : Over (Spec (CommRingCat.of k))) [GrpObj G] [IsCommMonObj G] (i : splitTorus (Spec (CommRingCat.of k)) X ≅ G), IsMonHom i.hom → ∀ (L : RigLB G) (c : CubicalStr G L) (θ : LB.Gen (L.L.pull (𝟙 G.left))), θ.IsGen → ∀ (T : Over (Spec (CommRingCat.of k))) (x y u : T ⟶ G) (z : T.left) (J : (T.left ⟶ G.left) → L.L.ι), Geo.Tor.Good L.L z J → let v : (T ⟶ G) → (T.left.presheaf.stalk z)ˣ := fun a => Geo.Tor.val (L := L.L) (φ := fun _ : PUnit => 𝟙 G.left) (ε := fun _ => 1) θ a.left z J; v (x * y * u) * v x * v y * v u = Geo.Tor.cubV c z J x y u * v (x * y) * v (x * u) * v (y * u) * v 1 := by
-  intro k _ X _ _ _ G _ _ i hi L c θ hθ T x y u z J hJ v
-  obtain ⟨w, hw⟩ := exists_ratio L c θ hθ
-  have hT : TwoUniqueSums (X × X × X) := inferInstance
-  let m := i.hom ⊗ₘ i.hom ⊗ₘ i.hom
-  have hm : ∀ (Z : Over (Spec (CommRingCat.of k))) (a b d : Z ⟶ splitTorus (Spec (.of k)) X),
-      (lift a (lift b d)).left.appTop.hom (m.left.appTop.hom w.val) =
-        (lift (a ≫ i.hom) (lift (b ≫ i.hom) (d ≫ i.hom))).left.appTop.hom w.val := by
-    intro Z a b d
-    rw [Rosenlicht.over_appTop_comp]
-    simp [m]
-  have face : ∀ (Z : Over (Spec (CommRingCat.of k))) (a b d : Z ⟶ G),
-      (a = 1 ∨ b = 1 ∨ d = 1) → (lift a (lift b d)).left.appTop.hom w.val = 1 := by
-    intro Z a b d h
-    refine fn_ext fun q _ => ?_
-    choose I hI using fun χ : Z.left ⟶ G.left => exists_chart L.isLB (χ q)
-    have C := isCub_cubV c (show Good L.L q I from hI)
-    rw [← hw Z a b d q I hI (fun a => val (L := L.L) (φ := fun _ : PUnit => 𝟙 G.left)
-      (ε := fun _ => 1) θ a.left q I) (fun _ => rfl), gs_eq _ q ⊤ trivial, map_one, map_one,
-      Units.val_eq_one, mul_inv_eq_one]
-    rcases h with rfl | rfl | rfl
-    · rw [C.face]; simp only [_root_.one_mul, _root_.mul_one]; ac_rfl
-    · rw [C.face₂]; simp only [_root_.one_mul, _root_.mul_one]; ac_rfl
-    · rw [C.face₃]; simp only [_root_.one_mul, _root_.mul_one]
-  have key := unit_eq_one k X (m.left.appTop.hom w.val) (w.isUnit.map _)
-    (by rw [hm]; exact face _ _ _ _ (Or.inr (Or.inl (MonObj.one_comp _))))
-    (by rw [hm]; exact face _ _ _ _ (Or.inl (MonObj.one_comp _)))
-    (by rw [hm]; exact face _ _ _ _ (Or.inl (MonObj.one_comp _)))
-    T (x ≫ i.inv) (y ≫ i.inv) (u ≫ i.inv)
-  rw [hm] at key
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id] at key
-  have := hw T x y u z J hJ v (fun _ => rfl)
-  rw [key, gs_eq _ z ⊤ trivial, map_one, map_one, Units.val_eq_one, mul_inv_eq_one] at this
-  exact this
 
 end GlobalTheory

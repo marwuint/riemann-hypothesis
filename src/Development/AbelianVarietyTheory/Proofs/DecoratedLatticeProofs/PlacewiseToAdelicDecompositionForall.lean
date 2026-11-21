@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualImageAdelicPointWittCoreStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatticesAgreeAlmostEverywhereStatement
 
@@ -61,7 +62,7 @@ theorem congGrp_mono {V : HSp D} {I J : Ideal (AE D)} (h : I ≤ J) : congGrp V 
   exact fun i j => h (hg i j)
 
 theorem eq_zero_of_at_off (P : Pl D → Prop) {a : AE D} (h1 : a ∈ idAt D P) (h2 : a ∈ idOff D P) : a = 0 := by
-  obtain ⟨ε, -, -, -, hA, hO⟩ := (GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).1
+  obtain ⟨ε, -, -, -, hA, hO⟩ := (_root_.GlobalTheory.FinPl.localComponents D P).1
   rw [← (hA a).1 h1]
   exact (hO a).1 h2
 
@@ -95,13 +96,6 @@ theorem moves_mul {S : HSp D} {L : Lat S} {P : Pl D → Prop} {x x' : GA D S} (h
   intro y hy
   rw [mt_mul, ← Matrix.mulVec_mulVec, hx' y hy]
   exact hx _ (supp_mulVec S P x' hy)
-
-theorem moves_inv {S : HSp D} {L : Lat S} {P : Pl D → Prop} {x : GA D S} (hx : Moves S x L L P) :
-    Moves S x⁻¹ L L P := by
-  intro y hy
-  have h1 := hx (mt S x⁻¹ *ᵥ y) (supp_mulVec S P _ hy)
-  rw [Matrix.mulVec_mulVec, ← mt_mul, mul_inv_cancel, mt_one, Matrix.one_mulVec] at h1
-  exact h1.symm
 
 theorem moves_off {S : HSp D} {L : Lat S} {P : Pl D → Prop} {b : GA D S} (hb : b ∈ grpOff S P) :
     Moves S b L L P := by
@@ -154,7 +148,7 @@ theorem placesToAdeles (D : D7) : PlacesToAdeles D := by
         rcases Finset.mem_insert.1 hv with rfl | hv
         · have hroff0 := hroff v hv₀
           have hcomm : r₀⁻¹ * r⁻¹ = r⁻¹ * r₀⁻¹ :=
-            ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)).2 S).2.1 _ (inv_mem hr₀v) _ (inv_mem hroff0)
+            ((_root_.GlobalTheory.FinPl.localComponents D (· = v)).2 S).2.1 _ (inv_mem hr₀v) _ (inv_mem hroff0)
           rw [← mul_assoc, hcomm, mul_assoc]
           exact moves_mul (moves_off (inv_mem hroff0)) hm₀
         · have hne : v ≠ v₀ := fun e => hv₀ (e ▸ hv)
@@ -165,7 +159,7 @@ theorem placesToAdeles (D : D7) : PlacesToAdeles D := by
     by_cases hvT : v ∈ T
     · exact hrm v (Finset.mem_filter.2 ⟨hvT, hv⟩)
     · exact moves_mul (moves_off (inv_mem (hroff v (fun h => hvT (Finset.mem_filter.1 h).1)))) (hfar v hvT)
-  obtain ⟨hdec, hcomm, -, hlat⟩ := (GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 S
+  obtain ⟨hdec, hcomm, -, hlat⟩ := (_root_.GlobalTheory.FinPl.localComponents D P).2 S
   obtain ⟨κ, hκ, g, hg, hx⟩ := hdec (r⁻¹ * h)
   have hκv : ∀ v, P v → Moves S κ L L (· = v) := by
     intro v hv

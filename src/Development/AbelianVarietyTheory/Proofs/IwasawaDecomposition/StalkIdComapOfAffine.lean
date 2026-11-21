@@ -56,27 +56,6 @@ namespace GlobalTheory.VanStalk
 
 variable {X X' : Scheme.{0}}
 
-theorem van_eq_top (Z : Closeds X) {x : X} (hx : x ∉ Z) :
-    stalkId (Scheme.IdealSheafData.vanishingIdeal Z) x = ⊤ := by
-  by_contra hne
-  have h := ((van_spec Z x).2 (IsLocalRing.closedPoint _)).2 (IsLocalRing.le_maximalIdeal hne)
-  rw [Scheme.fromSpecStalk_closedPoint] at h
-  exact hx h
-
-theorem fromSpecStalk_comap (π : X' ⟶ X) (x' : X') (q : PrimeSpectrum (X'.presheaf.stalk x')) :
-    π (X'.fromSpecStalk x' q) = X.fromSpecStalk (π x') (PrimeSpectrum.comap (π.stalkMap x').hom q) := by
-  have h := congrArg (fun g => g q) (Scheme.SpecMap_stalkMap_fromSpecStalk π (x := x'))
-  simp only [Scheme.Hom.comp_apply] at h
-  exact h.symm
-
-theorem van_pre (π : X' ⟶ X) (Z : Closeds X) (x' : X') :
-    stalkId (Scheme.IdealSheafData.vanishingIdeal (GlobalTheory.TorRef.pre π Z)) x' =
-      ((stalkId (Scheme.IdealSheafData.vanishingIdeal Z) (π x')).map (π.stalkMap x').hom).radical := by
-  refine eq_of_forall_prime (van_spec _ _).1 (Ideal.radical_isRadical _) fun q => ?_
-  rw [← (van_spec _ _).2, q.isPrime.radical_le_iff, Ideal.map_le_iff_le_comap, GlobalTheory.TorRef.mem_pre,
-    fromSpecStalk_comap]
-  exact (van_spec Z (π x')).2 _
-
 theorem stalkId_comap_of_affine {T : Scheme.{0}} [IsAffine T] (J : X.IdealSheafData) (χ : T ⟶ X)
     (U : X.affineOpens) (hle : ⊤ ≤ χ ⁻¹ᵁ U.1) (z : T) :
     stalkId (J.comap χ) z = (stalkId J (χ z)).map (χ.stalkMap z).hom := by

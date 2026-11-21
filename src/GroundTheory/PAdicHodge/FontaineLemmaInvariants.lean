@@ -140,20 +140,9 @@ theorem algebraMap_iterate_phiPlus_eq {x : BCris hε} {m : ℕ} {y : BCrisPlus F
   (iterate_phiB_algebraMap hε n y).symm.trans ((congrArg (phiB hε)^[n] hy).trans
     (iterate_pow_mul_eq_of_map_eq (phiB hε) (map_natCast _ p) (phiB_periodTCris hε) x m n))
 
-theorem iterate_phiPlus_periodT (n : ℕ) :
-    (phiPlus F p)^[n] (algebraMap (ACris F p) (BCrisPlus F p) (periodT hε)) =
-      (p : BCrisPlus F p) ^ n * algebraMap (ACris F p) (BCrisPlus F p) (periodT hε) :=
-  iterate_map_eq_pow_mul (phiPlus F p) (map_natCast _ p)
-    ((phiPlus_algebraMap _).trans ((congrArg _ (phi_periodT_eq_mul hε)).trans
-      (by simp only [map_mul, map_natCast]))) n
-
 theorem exists_algebraMap_eq_periodTCris_pow_mul (x : BCris hε) :
     ∃ (m : ℕ) (y : BCrisPlus F p), algebraMap (BCrisPlus F p) (BCris hε) y = periodTCris hε ^ m * x :=
   Localization.Away.exists_algebraMap_eq_pow_mul _ x
-
-theorem iterate_phiPlus_pow (n k : ℕ) (z : BCrisPlus F p) :
-    (phiPlus F p)^[n] (z ^ k) = ((phiPlus F p)^[n] z) ^ k :=
-  iterate_map_pow _ _ _ _
 
 variable [CharZero F]
   (hζ : PreTilt.untilt ((_root_.frobeniusEquiv (PreTilt (normInteger F) p) p).symm ε) ≠ 1)
@@ -188,11 +177,6 @@ local notation "𝔹dR" => BDeRham (normInteger ℂ_[p]) p
 
 variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
   (hζ : PreTilt.untilt ((_root_.frobeniusEquiv (PreTilt (normInteger ℂ_[p]) p) p).symm ε) ≠ 1)
-
-theorem phiB_algebraMap_padic (q : ℚ_[p]) :
-    phiB hε (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) (algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q)) =
-      algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) (algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q) :=
-  (phiB_algebraMap hε _).trans (congrArg _ (phiPlus_algebraMap_padic q))
 
 theorem mem_unramifiedClosure_of_minpoly_eq {β β₁ : PadicAlgCl p}
     (h : minpoly ℚ_[p] β = minpoly ℚ_[p] β₁) (h₁ : β₁ ∈ unramifiedClosure p) :
@@ -398,21 +382,6 @@ theorem exists_bCrisPlus_fixed_eq (x : BCris hε)
   obtain ⟨m, a, hs'⟩ := exists_algebraMap_eq_periodTCris_pow_mul hε x
   obtain ⟨x₁, hx₁⟩ := exists_iterate_phiB_eq hε hζ m x hx ⟨a, hs'⟩
   exact exists_bCrisPlus_fixed_eq_of_iterate hε hζ hx hs' hx₁
-
-include hζ in
-set_option maxHeartbeats 1600000 in
-
-theorem fixed_bCris_eq_image :
-    {x : BCris hε | ∀ σ : Gal(PadicAlgCl p/K), galB hε σ x = x} =
-      algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) ''
-        MulAction.fixedPoints Gal(PadicAlgCl p/K) (BCrisPlus ℂ_[p] p) := by
-  ext x
-  constructor
-  · intro hx
-    obtain ⟨y, hy, hyx⟩ := exists_bCrisPlus_fixed_eq hε hζ x hx
-    exact ⟨y, hy, hyx⟩
-  · rintro ⟨y, hy, rfl⟩ σ
-    exact (galB_algebraMap hε σ y).trans (congrArg _ (hy σ))
 
 include hζ in
 set_option maxHeartbeats 1600000 in

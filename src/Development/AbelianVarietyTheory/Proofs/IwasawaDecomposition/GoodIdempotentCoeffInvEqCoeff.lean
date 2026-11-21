@@ -59,13 +59,3 @@ theorem goodStable_of_coeff {K G : Type} [Field K] [CharZero K] [Group G] [Finty
 
 end GlobalTheory.Mem.R3.GoodDual
 
-open GlobalTheory.Mem.R3.GoodDual in
-
-theorem GlobalTheory.Mem.Top.Bl.goodStable_atDat : GlobalTheory.Published.GreenCuspidal → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Mem.Top.Bl.AtDat fun _ B f T w Z hX Wt z => GoodStable (R3.famR (w.st Z) w.I hX (R3.usedOf w.I T Wt) z.Xg z.tr).A.X := by
-  intro hG _ _ _
-  refine StepW.of_all fun K B f T w _ _ _ Z hX Wt z hT _ _ _ => ?_
-  have hI := GlobalTheory.DimPartsCompare.TameTie.idemTie hG (GlobalTheory.DimPartsCompare.tameTie_of_typesTrue (D := (w.st Z).toD7) hT).2.1
-  show GoodStable z.Xg
-  refine goodStable_of_coeff (w.st Z).B.embLL z.Xg z.good.irr fun g => ?_
-  apply (w.st Z).B.embLL.injective
-  rw [z.good.2, z.good.2, map_inv, goodIdempotent_coeff_inv_eq_coeff hI]

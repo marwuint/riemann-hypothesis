@@ -45,7 +45,7 @@ theorem ct_omg (hS : ScalChar X χ) : qdet (tensE X) (omg χ s) = minorOp X (omg
 
 theorem om_ct (hS : ScalChar X χ) (f : Fin (m + 1) → X.V) :
     om X (qdet (tensE X) (omg χ s) f) = (χ s - cn (m + 1)) • qdet (tensE X) (omg χ s) f := by
-  have h := LinearMap.congr_fun (GlobalTheory.T.OmegaMinor m X (omg χ s)) f
+  have h := LinearMap.congr_fun (_root_.GlobalTheory.CompanionTheory.HeckeCapelli.omMinor m X (omg χ s)) f
   rw [qdet_omg hS, compLeft_zero'] at h
   simp only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply,
     LinearMap.zero_apply] at h

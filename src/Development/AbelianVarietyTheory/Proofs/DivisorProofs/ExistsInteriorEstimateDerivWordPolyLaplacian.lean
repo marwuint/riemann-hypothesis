@@ -6,9 +6,10 @@ import GroundTheory.AutomorphicForms.DixmierMalliavin
 import GroundTheory.AutomorphicForms.GKModules.ParametricIntegral
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZeroMemSolSet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeftInvariantVectorFieldsExpCoordsSmoothFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EllipticWeakSolWordDerivLeConstMulSupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EllipticWeakSolWordDerivLeConstMulSup
+import Formalism.UnipotentAdelicQuotients.EllRegCheck
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEllipticWeakSolOfPolynomialLaplacianZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightDerivWordExpCoordsDifferentialOperatorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightDerivWordExpCoordsDifferentialOperator
 open MeasureTheory GroundTheory.Automorphic
 open scoped ContDiff Manifold
 
@@ -35,11 +36,11 @@ theorem interior_word_bound : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra
   refine ⟨(fun x : E d => h.expG (coordEquiv b x)) '' Metric.closedBall 0 r₁,
     (isCompact_closedBall 0 r₁).image (h.continuous_expG.comp (coordEquiv b).continuous), ?_⟩
   intro l
-  obtain ⟨al, -, hword⟩ := GlobalTheory.T.rightDerivWord_expCoords_differentialOperator 𝔸 G 𝔤 h d b r₂ c hc l
+  obtain ⟨al, -, hword⟩ := _root_.GlobalTheory.WordExp.word_apOp 𝔸 G 𝔤 h d b r₂ c hc l
   have hsup : ∀ w : List (Fin d), ∃ C : ℝ, 0 ≤ C ∧ ∀ u : E d → ℂ, ContinuousOn u (Metric.ball 0 r₁) →
       WeakSol (oneSys m a) (Metric.ball 0 r₁) u → ∀ M : ℝ, (∀ x ∈ Metric.ball (0 : E d) r₁, ‖u x‖ ≤ M) →
       ‖dw w u 0‖ ≤ C * M := fun w =>
-    GlobalTheory.T.elliptic_weakSol_wordDeriv_le_const_mul_sup d Unit (oneSys m a) (Metric.ball 0 r₁) Metric.isOpen_ball (fun _ n w => ha n w)
+    _root_.GlobalTheory.HCA.dw_le_sup d Unit (oneSys m a) (Metric.ball 0 r₁) Metric.isOpen_ball (fun _ n w => ha n w)
       (fun x hx ξ hξ => ⟨(), hell x hx ξ hξ⟩) w 0 (Metric.mem_ball_self hr₁)
   choose Cw hCw0 hCw using hsup
   refine ⟨∑ n ∈ Finset.range (l.length + 1), ∑ w : Fin n → Fin d, ‖al n w 0‖ * Cw (List.ofFn w),

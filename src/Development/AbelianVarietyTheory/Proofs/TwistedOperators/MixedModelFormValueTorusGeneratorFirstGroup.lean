@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPairingSingleNe
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumOpTransversal
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergQuotientOpSumVacuumCommensurableSelfDuStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeisenbergInvariantLinearFormIsotropicVacuStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergQuotientOpSumVacuumCommensurableSelfDu
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeisenbergInvariantLinearFormIsotropicVacu
 open Matrix Formalism.UG GlobalTheory.Hk3 GlobalTheory.FinWeil GlobalTheory.SphTheta ValuativeRel Classical
 open GlobalTheory.LFun (HasSatU IsSatVecU heckeVec)
 open GlobalTheory.LGrp (bcParam extProd)
@@ -299,7 +299,7 @@ theorem value_torus_first : ∀ (L : Type) [Field L] [Valued L (WithZero (Multip
     have := congrArg (fun f => f s) hn
     simp only [Module.End.mul_apply] at this
     refine this.symm.trans (congrArg _ (hS.fixes _ hb))
-  obtain ⟨e, he1, he⟩ := GlobalTheory.T.exists_heisenbergInvariant_linearForm_isotropic_vacuum hH _ hSD s hS.2.1 hS.fixes hS.2.2.2 _ (fun a ha b hb => (hSD a).1 ha b hb)
+  obtain ⟨e, he1, he⟩ := _root_.GlobalTheory.SphTheta.exists_linearForm_invariant_isotropic_vacuum hH _ hSD s hS.2.1 hS.fixes hS.2.2.2 _ (fun a ha b hb => (hSD a).1 ha b hb)
   have hev : e (ω (t, 1) s) = ((-1) ^ n' * (q : ℂ) ^ n') ^ (-1 : ℤ) := by
     obtain ⟨hdet, hint, hord⟩ := cayley_dInv hU hS.v_two k
     have hg : (t⁻¹ : GU σ n).1.1 = diagonal (dInv ϖ n k) := htinv
@@ -311,7 +311,7 @@ theorem value_torus_first : ∀ (L : Type) [Field L] [Valued L (WithZero (Multip
   obtain ⟨hsum, hidx⟩ := (sumOp_transversal hH _ _ hSD').1 s hS.fixes (Fin n' → ResF L) (fT ϖ n n' k)
     (fT_mem hϖ0 k) (fT_unique hU hϖ0 k)
   have hidx0 : idx (intMat L (Fin n') (Fin n)) (latT ϖ n n' k) ≠ 0 := by rw [hidx]; exact Fintype.card_ne_zero
-  have hv := (GlobalTheory.T.heisenbergQuotientOpSum_vacuum_commensurable_selfDualLattice hH _ hSD s hS.2.1 hS.fixes hS.2.2.2 _ hSD' hidx0).2 e he1 he _ hfixv
+  have hv := (_root_.GlobalTheory.SphTheta.sumOp_vacuum_lift hH _ hSD s hS.2.1 hS.fixes hS.2.2.2 _ hSD' hidx0).2 e he1 he _ hfixv
   have hterm : ∀ y : Fin n' → ResF L, ℓ (ρ (fT ϖ n n' k y) s) =
       if ∀ r : Fin n', n' / 2 ≤ r.val → y r = 0 then 1 else 0 := by
     intro y

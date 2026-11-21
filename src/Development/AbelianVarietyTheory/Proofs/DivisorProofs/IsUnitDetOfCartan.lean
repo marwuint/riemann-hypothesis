@@ -79,41 +79,4 @@ theorem mat_liftU (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fi
     (herm : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (hJ : IsUnit (J.map τ).det) (g : GL (Fin n) (Fv F v)) :
     mat (liftU h τ J ε herm hJ g) = 1 + liftMat h τ (pairHom (J.map τ) hJ g - 1) := rfl
 
-theorem liftU_mem_UAt (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (X : Spc F E n) (ε : F)
-    (herm : ∀ i j, σ (X.J j i) = algebraMap F E ε * X.J i j) (hJ : IsUnit (X.J.map τ).det) (g : GL (Fin n) (Fv F v)) :
-    liftU h τ X.J ε herm hJ g ∈ UAt σ X (evFin F v) := by
-  show At (evFin F v) (mat _ - 1)
-  rw [mat_liftU, add_sub_cancel_left]
-  exact at_liftMat h τ _
-
-theorem liftU_piW (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fin n) (Fin n) E) (ε : F)
-    (herm : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (hJ : IsUnit (J.map τ).det) (g : GL (Fin n) (Fv F v)) :
-    (mat (liftU h τ J ε herm hJ g)).map (piW τ) = g.val := by
-  rw [mat_liftU, map_one_add_piW]
-  exact add_sub_cancel _ _
-
-theorem liftU_piW_comp (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fin n) (Fin n) E) (ε : F)
-    (herm : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (hJ : IsUnit (J.map τ).det) (g : GL (Fin n) (Fv F v)) :
-    (mat (liftU h τ J ε herm hJ g)).map (piW (τ.comp σ)) = (J.map τ)⁻¹ * ((g⁻¹ : GL (Fin n) (Fv F v)).val)ᵀ * J.map τ := by
-  rw [mat_liftU, map_one_add_piW_comp]
-  exact add_sub_cancel _ _
-
-theorem isUnit_det_of_cartan (J : Matrix (Fin n) (Fin n) E) (τ : E →ₐ[F] Fv F v) (e : E →+* ℂ) (c : ℂ) (hc : c ≠ 0)
-    (θ : Matrix (Fin n) (Fin n) ℂ) (hθ : IsCartan (c • J.map e) θ) : IsUnit (J.map τ).det := by
-  have h1 : (c • J.map e).det ≠ 0 := by
-    intro h0
-    obtain ⟨y, hy, hMy⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h0
-    have hx : star y ≠ 0 := fun h => hy (by simpa using congrArg star h)
-    have := hθ.2.2 (star y) hx
-    rw [star_star, hMy, dotProduct_zero, Complex.zero_re] at this
-    exact lt_irrefl _ this
-  have h2 : J.det ≠ 0 := by
-    intro h0
-    apply h1
-    have hd : (J.map e).det = e J.det := (RingHom.map_det e J).symm
-    rw [Matrix.det_smul, hd, h0, map_zero, mul_zero]
-  have hd : (J.map τ).det = τ J.det := (AlgHom.map_det τ J).symm
-  rw [isUnit_iff_ne_zero, hd]
-  exact (map_ne_zero τ).2 h2
-
 end GlobalTheory.SplitUnitLift

@@ -1,18 +1,19 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinMapsOfForall
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemKAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AntiCols
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalBlockOfMatrix
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KeepsLatticeAtPlaceOfIntegralLocalBasisConjugateStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralLocalBasisConjugatesOfKeepsLatticeAtPlacStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLeftInverseLiftingSplitPlaceInversesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAdmissibleLiftSplitPlaceConjugatePairStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KeepsLatticeAtPlaceOfIntegralLocalBasisConjugate
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralLocalBasisConjugatesOfKeepsLatticeAtPlac
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLeftInverseLiftingSplitPlaceInverses
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAdmissibleLiftSplitPlaceConjugatePair
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryAtSplitPlaceLocalBasesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralBlocksLeftInverseIsUnitDetSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DoubledVacuumLatticeStabilizerBlocksKeepLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HalfBlockSumExistsInverseIntegralSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HalfBlockSumTwistSubOneSupportedAtPlaceStatement
-open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralBlocksLeftInverseIsUnitDetSplitPlace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DoubledVacuumLatticeStabilizerBlocksKeepLattice
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HalfBlockSumExistsInverseIntegralSplitPlace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HalfBlockSumTwistSubOneSupportedAtPlace
+
+open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped TensorProduct Matrix
 
 namespace GlobalTheory.SplitPlaceBigCell
@@ -52,12 +53,12 @@ theorem splitPlace_bigCell_exists_admissible_inverse : (∀ {R : Type} [CommRing
   intro hLoc F E _ _ _ _ _ σ d W v hskew h2 π₁ π₂ b₁ b₂ hd hSx g hg
   obtain ⟨hc₁, hc₂, ha₁, ha₂, hinj, hsurj, hlat⟩ := hd
   obtain ⟨S, hSdet, hS⟩ := hSx
-  obtain ⟨k11, k12, k21, k22, k11', k12', k21', k22'⟩ := GlobalTheory.T.doubledVacuumLatticeStabilizer_blocks_keep_lattice σ W v g hg
-  have I := fun A hA => GlobalTheory.T.integral_localBasisConjugates_of_keepsLatticeAtPlace W v π₁ π₂ b₁ b₂ hlat hsurj A hA
+  obtain ⟨k11, k12, k21, k22, k11', k12', k21', k22'⟩ := _root_.GlobalTheory.DblVac.KD_blocks_keep σ W v g hg
+  have I := fun A hA => _root_.GlobalTheory.IntKeepConj.conj_integral W v π₁ π₂ b₁ b₂ hlat hsurj A hA
   have hinv : GlobalTheory.DblVac.matD g⁻¹ * GlobalTheory.DblVac.matD g = 1 := g.1.inv_mul
-  obtain ⟨G₁, hG₁, hG₁u⟩ := GlobalTheory.T.integralBlocks_leftInverse_isUnit_det_splitPlace v π₁ b₁ (GlobalTheory.DblVac.matD g) (GlobalTheory.DblVac.matD g⁻¹) hinv
+  obtain ⟨G₁, hG₁, hG₁u⟩ := _root_.GlobalTheory.integralBlocks_leftInverse_isUnit_det v π₁ b₁ (GlobalTheory.DblVac.matD g) (GlobalTheory.DblVac.matD g⁻¹) hinv
     (I _ k11).1 (I _ k12).1 (I _ k21).1 (I _ k22).1 (I _ k11').1 (I _ k12').1 (I _ k21').1 (I _ k22').1
-  obtain ⟨G₂, hG₂, -⟩ := GlobalTheory.T.integralBlocks_leftInverse_isUnit_det_splitPlace v π₂ b₂ (GlobalTheory.DblVac.matD g) (GlobalTheory.DblVac.matD g⁻¹) hinv
+  obtain ⟨G₂, hG₂, -⟩ := _root_.GlobalTheory.integralBlocks_leftInverse_isUnit_det v π₂ b₂ (GlobalTheory.DblVac.matD g) (GlobalTheory.DblVac.matD g⁻¹) hinv
     (I _ k11).2 (I _ k12).2 (I _ k21).2 (I _ k22).2 (I _ k11').2 (I _ k12').2 (I _ k21').2 (I _ k22').2
   have hU := GlobalTheory.T.unitary_at_splitPlace_localBases σ W v π₁ π₂ b₁ b₂ hc₁ g
   have e : ∀ {m n o : Type} [Fintype n] (A : Matrix m n (v.adicCompletionIntegers F))
@@ -74,11 +75,11 @@ theorem splitPlace_bigCell_exists_admissible_inverse : (∀ {R : Type} [CommRing
     exact hU
   obtain ⟨X₁, X₂, hX, hP₁, hP₂⟩ := hLoc h2 S hSdet G₁ G₂ hG₁u hUO
   obtain ⟨Y, hYat, hY₁, hY₂, hYadm⟩ :=
-    GlobalTheory.T.exists_admissible_lift_splitPlaceConjugatePair σ W v hskew π₁ π₂ b₁ b₂ hc₁ hc₂ hinj hsurj S hS X₁ X₂ hX
-  obtain ⟨N₁, hN₁, hN₁i⟩ := GlobalTheory.T.halfBlockSum_exists_inverse_integral_splitPlace v π₁ b₁ ha₁ (GlobalTheory.DblVac.matD g) G₁ hG₁ X₁ hP₁ Y hY₁
-  obtain ⟨N₂, hN₂, hN₂i⟩ := GlobalTheory.T.halfBlockSum_exists_inverse_integral_splitPlace v π₂ b₂ ha₂ (GlobalTheory.DblVac.matD g) G₂ hG₂ X₂ hP₂ Y hY₂
-  have hK := GlobalTheory.T.halfBlockSumTwist_sub_one_supportedAtPlace v (GlobalTheory.DblVac.matD g) Y hg.1 hYat
-  obtain ⟨M, hMK, hM₁, hM₂⟩ := GlobalTheory.T.exists_leftInverse_lifting_splitPlaceInverses v π₁ π₂ hinj hsurj _ hK N₁ N₂ hN₁ hN₂
+    _root_.GlobalTheory.AdmLift.exists_admissible_lift σ W v hskew π₁ π₂ b₁ b₂ hc₁ hc₂ hinj hsurj S hS X₁ X₂ hX
+  obtain ⟨N₁, hN₁, hN₁i⟩ := _root_.GlobalTheory.Twist.halfBlockSum_inv_conj_integral v π₁ b₁ ha₁ (GlobalTheory.DblVac.matD g) G₁ hG₁ X₁ hP₁ Y hY₁
+  obtain ⟨N₂, hN₂, hN₂i⟩ := _root_.GlobalTheory.Twist.halfBlockSum_inv_conj_integral v π₂ b₂ ha₂ (GlobalTheory.DblVac.matD g) G₂ hG₂ X₂ hP₂ Y hY₂
+  have hK := _root_.GlobalTheory.TwistBlockK.atK_sub_one v (GlobalTheory.DblVac.matD g) Y hg.1 hYat
+  obtain ⟨M, hMK, hM₁, hM₂⟩ := _root_.GlobalTheory.MatrixLeftInverseLift.matrix_left_inverse_lift v π₁ π₂ hinj hsurj _ hK N₁ N₂ hN₁ hN₂
   have hYi : ∀ (b : GL (Fin d) (Fv F v)) (X : Matrix (Fin d) (Fin d) (v.adicCompletionIntegers F)),
       ∀ i j, (((b⁻¹ : GL (Fin d) (Fv F v)) : Matrix (Fin d) (Fin d) (Fv F v)) *
         ((b : Matrix (Fin d) (Fin d) (Fv F v)) * X.map (fun x => (x : Fv F v)) *
@@ -92,8 +93,8 @@ theorem splitPlace_bigCell_exists_admissible_inverse : (∀ {R : Type} [CommRing
       simp only [Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]
       rw [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]
     rw [this]; exact (X i j).2
-  refine ⟨Y, hYat, GlobalTheory.T.keepsLatticeAtPlace_of_integral_localBasisConjugates W v π₁ π₂ b₁ b₂ hlat Y ?_ ?_, hYadm, M, hMK,
-    GlobalTheory.T.keepsLatticeAtPlace_of_integral_localBasisConjugates W v π₁ π₂ b₁ b₂ hlat M ?_ ?_⟩
+  refine ⟨Y, hYat, _root_.GlobalTheory.KeepInt.keepLat W v π₁ π₂ b₁ b₂ hlat Y ?_ ?_, hYadm, M, hMK,
+    _root_.GlobalTheory.KeepInt.keepLat W v π₁ π₂ b₁ b₂ hlat M ?_ ?_⟩
   · rw [hY₁]; exact hYi b₁ X₁
   · rw [hY₂]; exact hYi b₂ X₂
   · rw [hM₁]; exact hN₁i

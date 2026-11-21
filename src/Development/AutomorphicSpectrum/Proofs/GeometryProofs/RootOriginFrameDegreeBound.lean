@@ -3,16 +3,16 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LabelSigBijective
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFrameVec
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializesOfUnits
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompleteDvrCoordRatioValueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompleteDvrCoordRatioValue
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializationCoordRatioValueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagEqualChangeLowerTriangularStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginRootIndexBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagEqualChangeLowerTriangular
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginRootIndexBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameLocalBoundStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameRelayBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompleteDvrLieModelLatticeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TriangularSpanCoeffRatioStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteResidueAbsoluteValueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCompleteDvrBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompleteDvrLieModelLattice
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TriangularSpanCoeffRatio
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteResidueAbsoluteValue
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCompleteDvrBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameArchimedeanStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameNonarchimedeanStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameCombinedStatement
@@ -69,7 +69,7 @@ theorem compare : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     hSS EC _ _ _ _ MC ρC hact s σ hσ
   have hpla : (p : 𝓞 c.F) ∈ la.asIdeal := hI.1
   have he : 0 < e := hI.2.1.1
-  obtain ⟨hmul, hone, hpos, hle⟩ := GlobalTheory.T.finite_residue_absolute_value E H l c p la T e he (ram_pos hpla)
+  obtain ⟨hmul, hone, hpos, hle⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.absT_facts E H l c p la T e he (ram_pos hpla)
   have hp1 : (1 : ℝ) ≤ p := by exact_mod_cast (Fact.out : p.Prime).one_lt.le
   have hp0 : (0 : ℝ) < p := by linarith
   have hθ := Small.latExp_nonneg E SS (Fact.out : p.Prime)
@@ -112,8 +112,8 @@ theorem diag_bound : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsC
     hSS s b Tm hT hfl hfr hb hd i
   have hpla : (p : 𝓞 c.F) ∈ la.asIdeal := hI.1
   have he : 0 < e := hI.2.1.1
-  obtain ⟨hmul, hone, hpos, hle⟩ := GlobalTheory.T.finite_residue_absolute_value E H l c p la T e he (ram_pos hpla)
-  obtain ⟨EC, _, _, MC, ρC, hact⟩ := GlobalTheory.T.root_origin_complete_dvr_bound E H Dw l Xo c O β Y SS RM Sys Fx Or T zV
+  obtain ⟨hmul, hone, hpos, hle⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.absT_facts E H l c p la T e he (ram_pos hpla)
+  obtain ⟨EC, _, _, MC, ρC, hact⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.exists_lieModel_act_gen E H Dw l Xo c O β Y SS RM Sys Fx Or T zV
   letI : Module T.V EC := Module.compHom EC (algebraMap T.V T.Fr)
   haveI : IsScalarTower T.V T.Fr EC := IsScalarTower.of_algebraMap_smul fun _ _ => rfl
   obtain ⟨σ, hσ, -⟩ := GlobalTheory.T.root_origin_frame_archimedean E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hval hA la T io e y evT zT t hI
@@ -123,21 +123,21 @@ theorem diag_bound : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsC
   obtain ⟨hli, yb, htri, hspan⟩ := GlobalTheory.T.root_origin_frame_relay_bound hG E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hval hA la T io e y
     evT zT t hI zV hR EC MC ρC hact s u σ hu hσ
   haveI := Or.𝔐.t.semi.smooth
-  have hW := GlobalTheory.T.complete_dvr_lie_model_lattice Or.𝔐.X Or.𝔐.t.G RM.Ω Or.𝔐.ξ Or.𝔐.Li Or.𝔐.M T zV EC MC A evT Or.𝔐.tie.gen inferInstance
+  have hW := _root_.GlobalTheory.CompanionTheory.Relay.complete_dvr_lie_model_lattice Or.𝔐.X Or.𝔐.t.G RM.Ω Or.𝔐.ξ Or.𝔐.Li Or.𝔐.M T zV EC MC A evT Or.𝔐.tie.gen inferInstance
     (Or.𝔐.all _) (Or.𝔐.all _) hR (Or.𝔐.V s) _ b (Or.Fl.b s) Tm u hT hfr hb huv
   obtain ⟨d, d', hd1, hd2, hμ, hμ'⟩ := compare hG E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hval hA la T io e y
     evT zT t hI zV hR hOm hpq hSS EC MC ρC hact s σ hσ
-  have hlow := (GlobalTheory.T.flag_equal_change_lower_triangular RM.Ω Or.𝔐.Li _ b (Or.Fl.b s) Tm hfr.1 hfl hb).2
+  have hlow := (_root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.FlagTri.independent_and_triangular RM.Ω Or.𝔐.Li _ b (Or.Fl.b s) Tm hfr.1 hfl hb).2
   have htri2 : TriIn u (fun i => evT ⟨Tm i i, hT i i⟩) (fun i => ∑ j, evT ⟨Tm i j, hT i j⟩ • u j) := fun i =>
     ⟨fun j => evT ⟨Tm i j, hT i j⟩, rfl, fun j hij => by
       have : (⟨Tm i j, hT i j⟩ : A) = 0 := Subtype.ext (hlow i j hij)
       show evT ⟨Tm i j, hT i j⟩ = 0
       rw [this, map_zero], rfl⟩
-  have c1 := GlobalTheory.T.triangular_span_coeff_ratio T.V T.Fr EC _ u yb _ _ _ d hli htri htri2 hd
+  have c1 := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.diag_compare_of_triIn T.V T.Fr EC _ u yb _ _ _ d hli htri htri2 hd
     (fun x hx => by
       rw [← hW]
       exact hd1 x (hspan ▸ hx)) i
-  have c2 := GlobalTheory.T.triangular_span_coeff_ratio T.V T.Fr EC _ u _ yb _ _ d' hli htri2 htri (fun j => Units.ne_zero _)
+  have c2 := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.diag_compare_of_triIn T.V T.Fr EC _ u _ yb _ _ d' hli htri2 htri (fun j => Units.ne_zero _)
     (fun x hx => by
       rw [← hspan]
       exact hd2 x (hW ▸ hx)) i
@@ -189,7 +189,7 @@ theorem reads_roots : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [Is
   intro hG E _ _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr hOm hSS A p _ z ev hz hval hA hrat la T io e y evT zT t hI
   have hpla : (p : 𝓞 c.F) ∈ la.asIdeal := hI.1
   have he : 0 < e := hI.2.1.1
-  obtain ⟨hmul, hone, hpos, hle⟩ := GlobalTheory.T.finite_residue_absolute_value E H l c p la T e he (ram_pos hpla)
+  obtain ⟨hmul, hone, hpos, hle⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.absT_facts E H l c p la T e he (ram_pos hpla)
   have habs : ∀ x : A, ‖ev x‖ = absT p la T e (evT x) := hI.2.2.2.2.2.1
   have hzp := hz.1
   have hmax : ∀ k, ∃ ck : RM.ι k, z ⟨k, ck⟩ ≠ 0 ∧ ∀ i, ‖z ⟨k, i⟩‖ ≤ ‖z ⟨k, ck⟩‖ := by
@@ -221,7 +221,7 @@ theorem reads_roots : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [Is
     have h1 := habs x
     rw [h0, show absT p la T e (0 : T.Fr) = 0 from if_pos rfl] at h1
     exact hx (norm_eq_zero.1 h1)
-  obtain ⟨zV, h, hch, hRd⟩ := GlobalTheory.T.complete_dvr_coord_ratio_value Or.𝔐.X RM.Ω Or.𝔐.ξ RM.K RM.ι RM.y Or.𝔐.all Or.𝔐.tie A T evT ch hy hr hVr
+  obtain ⟨zV, h, hch, hRd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.chart_point Or.𝔐.X RM.Ω Or.𝔐.ξ RM.K RM.ι RM.y Or.𝔐.all Or.𝔐.tie A T evT ch hy hr hVr
     (fun a => by
       obtain ⟨b, h1, h2, h3⟩ := hden a
       exact ⟨b, hne b h1, h2, h3⟩)
@@ -260,7 +260,7 @@ theorem reads_roots : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [Is
     Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)
   have he0 : Or.e ρ ≠ 0 := (Or.lines ρ).1
   have hM0 : (∏ k, RM.y ⟨k, ch k⟩ ^ RM.xdeg ρ k) * Or.e ρ ≠ 0 := mul_ne_zero hP0 he0
-  obtain ⟨hu1, hu2⟩ := GlobalTheory.T.root_origin_root_index_bound E H Dw l Xo c O β Y SS RM Sys Fx Or ρ ⟨centre zV, h⟩ ch hch b Tm hfl hfr hb
+  obtain ⟨hu1, hu2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.RootUnit.root_unit E H Dw l Xo c O β Y SS RM Sys Fx Or ρ ⟨centre zV, h⟩ ch hch b Tm hfl hfr hb
     (fun j => (hTd j).1)
   have hT0 := (hTd (HodgeCpt.rootIdx Dw ρ).2).1
   have hTi := (hTd (HodgeCpt.rootIdx Dw ρ).2).2

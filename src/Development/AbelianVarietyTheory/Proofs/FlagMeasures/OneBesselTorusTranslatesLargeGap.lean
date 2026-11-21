@@ -13,13 +13,15 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Fo
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.OnePlaceKF
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumPlacesEqTrace
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneBesselTorOfHyps
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBesselCellGapConstantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BigCellTrivialStabiliserAndMeasuresStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PairSpaceMajorantIntegrableBigCellStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmallCellRelevantPointsHaarQuotientMajorantStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBesselCellGapConstant
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.JEqOrbInt
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BigCellTrivialStabiliserAndMeasures
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PairSpaceMajorantIntegrableBigCell
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmallCellRelevantPointsHaarQuotientMajorant
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselAmplitudeIdentityTranslatesKFiniteLargeGapStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBesselMapsLargeGapPeriodIdentitiesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.KFiniteCoefAndTorusTranslateIsBesselCoefLargeGapStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.KFiniteCoefAndTorusTranslateIsBesselCoefLargeGap
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsKFinCoefTorusNe
 
 open MeasureTheory Matrix
@@ -33,7 +35,7 @@ open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.
 
 theorem oneBesselTor_of_gapHyp : GlobalTheory.GapIn.Hyp → ∃ Cgf : ℝ, ∀ D : D7, Formalism.MainNotions.FrameBoundFromBesselTorus.OneBesselTor D Cgf := by
   intro H
-  obtain ⟨Cgf, hCgf⟩ := GlobalTheory.T.exists_besselCell_gap_constant
+  obtain ⟨Cgf, hCgf⟩ := _root_.GlobalTheory.GapConstant.gap_constant_exists
   refine ⟨Cgf, fun D => ?_⟩
   intro L f κ₀ κ τ hκ₀ hκ hτ hc hκN hκNt hε hgap hf
   obtain ⟨h, hg, hok, hgc⟩ := hCgf D L.ε L.lam hgap
@@ -45,17 +47,17 @@ theorem oneBesselTor_of_gapHyp : GlobalTheory.GapIn.Hyp → ∃ Cgf : ℝ, ∀ D
   have hBig : ∀ (c : Fin D.R.rS → ℂ) (μ : Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ), (∀ a, c a ≠ 0) →
       μᴴ * Hb D.R.k * μ = Hb D.R.k → OneAt L l l' (bigCell D.R.k D.R.rS c μ) (pairMeas L) := by
     intro c μ hc' hμ
-    obtain ⟨h1, h2, h3, h4, h5⟩ := GlobalTheory.T.bigCell_trivialStabiliser_and_measures _ _ L μG hok.1 hκNt hκN hc0 hμG c μ hc' hμ
-    obtain ⟨b, hb0, hb, hint⟩ := GlobalTheory.T.pair_space_majorant_integrable_big_cell _ _ L h hok hgc hκNt hκN hc0 c μ hc' hμ
+    obtain ⟨h1, h2, h3, h4, h5⟩ := _root_.GlobalTheory.AmpTK.bigCell_data _ _ L μG hok.1 hκNt hκN hc0 hμG c μ hc' hμ
+    obtain ⟨b, hb0, hb, hint⟩ := _root_.GlobalTheory.BigConv.bigConv _ _ L h hok hgc hκNt hκN hc0 c μ hc' hμ
     exact GlobalTheory.T.besselAmplitude_identity_translates_kFinite_largeGap H _ _ L h μG l l' hg hok hc0 hμG hBe _ _ _ _ h1 h2 h3 h4 h5 b hb0 hb hint
   have hCell : ∀ (γ : Point ℂ (D.R.rS + 1)) (g : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ)
       (μR : Measure (Mt D.R.k D.R.rS)) (ν : Measure (PairSp D.R.k D.R.rS)),
       Formalism.MainNotions.S.ThB.Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ ≠ 0 → IsPtRep L γ g → IsRelStab L g →
       IsRootMeas L γ g μR → IsOrbQuot L g μR ν → OneAt L l l' g ν := by
     intro γ g μR ν h0 h1 h2 h3 h4
-    obtain ⟨hR, ⟨νR, hQ⟩, b, hb0, hb, hint⟩ := GlobalTheory.T.smallCell_relevant_points_haar_quotient_majorant _ _ L h μG hok hgc hκNt hκN hc0 hμG γ g μR ν h0 h1 h2 h3 h4
+    obtain ⟨hR, ⟨νR, hQ⟩, b, hb0, hb, hint⟩ := _root_.GlobalTheory.CellPts.cell_points _ _ L h μG hok hgc hκNt hκN hc0 hμG γ g μR ν h0 h1 h2 h3 h4
     exact GlobalTheory.T.besselAmplitude_identity_translates_kFinite_largeGap H _ _ L h μG l l' hg hok hc0 hμG hBe g μR νR ν h1.1 h2 hR h4 hQ b hb0 hb hint
-  obtain ⟨⟨s, hs⟩, -⟩ := GlobalTheory.T.kFiniteCoef_and_torusTranslate_isBesselCoef_largeGap H _ _ L l l' κ τ hκ hτ f hf
+  obtain ⟨⟨s, hs⟩, -⟩ := _root_.GlobalTheory.AmpTKGap.isCoef_kfin_and_torus_translate H _ _ L l l' κ τ hκ hτ f hf
   by_cases hs0 : s = 0
   · subst hs0
     refine ⟨fun _ => 0, 1, one_ne_zero, ⟨0, 0, fun _ => by simpa using GlobalTheory.AmpTK.kfin_zero L.σ,

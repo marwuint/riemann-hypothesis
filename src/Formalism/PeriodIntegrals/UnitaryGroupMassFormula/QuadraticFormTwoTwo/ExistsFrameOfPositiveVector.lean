@@ -79,18 +79,6 @@ theorem gb_wb_sub {v w : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) (hw : in
   intro i hi
   simp [hv i hi, hw i hi]
 
-theorem gb_sq {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) (hl : v (wI k r (Fin.last k)) = 0) :
-    (herm (Hpk k r) v v).re = ∑ i, Complex.normSq (v i) := by
-  rw [gb_herm hv, Complex.re_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  split_ifs with h
-  · have e : i = wI k r (Fin.last k) := Fin.ext (by simp [wI, h])
-    have h0 : v i = 0 := by rw [e]; exact hl
-    simp [h0]
-  · simp only [one_mul, Complex.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im,
-      Complex.normSq_apply]
-    ring
-
 theorem gb_pos {z v : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) (hv : inWb k r v)
     (hvz : herm (Hpk k r) v z = 0) (hv0 : v ≠ 0) : 0 < (herm (Hpk k r) v v).re := by
   classical

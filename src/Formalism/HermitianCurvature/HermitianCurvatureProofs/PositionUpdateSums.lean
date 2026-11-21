@@ -58,28 +58,6 @@ theorem free_shift {a : S} {G : SlopeTestRemainingChoices S A} (hG : FreeOf a G)
   simp only [Function.update_self, if_true, Function.update_idem] at e
   exact e.symm
 
-theorem freeOf_mul {a : S} {M N : SlopeTestRemainingChoices S A} (hM : FreeOf a M) (hN : FreeOf a N) : FreeOf a (M * N) :=
-  fun i j => (hM i j).mul_right (hN i j)
-
-theorem freeOf_io (a : S) (x : A) : FreeOf a (io x : SlopeTestRemainingChoices S A) := by
-  intro i j
-  refine Matrix.ext fun z z' => ?_
-  rw [Formalism.FourierDecayAlt.P.Wd1.eU_mul_apply, Formalism.FourierDecayAlt.P.Wd1.mul_eU_apply]
-  simp only [io, Matrix.scalar_apply, Matrix.diagonal_apply]
-  by_cases h1 : z a = i <;> by_cases h2 : z' a = j
-  · simp only [h1, h2, if_true]
-    by_cases h3 : Function.update z a j = z'
-    · have h4 : z = Function.update z' a i := by rw [← h3]; simp [← h1]
-      rw [if_pos h3, if_pos h4]
-    · have h4 : z ≠ Function.update z' a i := by
-        intro h4; apply h3; rw [h4]; simp [← h2]
-      rw [if_neg h3, if_neg h4]
-  · have : Function.update z a j ≠ z' := by intro h3; apply h2; rw [← h3]; simp
-    rw [if_pos h1, if_neg h2, if_neg this]
-  · have : z ≠ Function.update z' a i := by intro h3; apply h1; rw [h3]; simp
-    rw [if_neg h1, if_pos h2, if_neg this]
-  · rw [if_neg h1, if_neg h2]
-
 end Slot
 
 section Vec

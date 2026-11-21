@@ -5,7 +5,7 @@ import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExpStar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMulMemLatIff
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicLevelIntegersMemClosureLevelsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicLevelIntegersMemClosureLevels
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCyclotomicFrobeniusTwistedValueEqStatement
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.ExpImage
@@ -62,7 +62,7 @@ theorem exists_cycVal_eq_pow_mul (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : 
     exact (Nat.cast_ne_zero.mpr (by omega : l ≠ 0)) hz
   have hchain : ∀ j, P.ζQ (j + 1) ^ l = P.ζQ j := fun j => by
     simpa using GlobalTheory.ExpImage.Values.zeta_pow P j 1
-  have hmem := GlobalTheory.T.cyclotomicLevel_integers_mem_closure_levels l K P.ζQ h0 h1 hchain s hs α hα hn
+  have hmem := _root_.GlobalTheory.Cyc.integers_mem_closure_levels l K P.ζQ h0 h1 hchain s hs α hα hn
   clear hα hn
   induction hmem using AddSubgroup.closure_induction with
   | mem x hx =>

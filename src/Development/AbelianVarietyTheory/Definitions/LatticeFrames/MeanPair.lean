@@ -17,15 +17,8 @@ variable {D : D7}
 
 def ConjBy {G : Type} [Group G] (q : G) (K K' : Subgroup G) : Prop := ∀ k, k ∈ K ↔ q⁻¹ * k * q ∈ K'
 
-def gelfT (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (k : ℕ) (f : GA D V → ℂ) : GA D V → ℂ :=
-  (-1 : ℂ) ^ (k + 1) • ∑ idx : Fin (k + 1) → Fin V.rank,
-    (List.ofFn fun a : Fin (k + 1) => RderC θ V τ (Matrix.single (idx a) (idx (a + 1)) 1)).reverse.foldr (fun A acc => A acc) f
-
 def wordDer (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (w : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)) (f : GA D V → ℂ) :
     GA D V → ℂ := w.foldr (fun Z g => RderC θ V τ Z g) f
-
-def meanPair (V : HSp D) (m : Measure (GA D V)) (F E : GA D V → ℂ) : ℂ :=
-  ⨍ q, descend (GQ V) (fun h => F h * E h) q ∂autMeasure V m
 
 structure Pass (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B : HSp D) (χ : (AE D)ˣ →* Circle)
     (om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)) (ν : Measure (WO A B)) (𝓨 : Set (WO A B))

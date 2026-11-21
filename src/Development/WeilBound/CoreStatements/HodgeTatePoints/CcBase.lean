@@ -131,11 +131,6 @@ theorem sy_law_at {x z w : Pt R n d} (hx : Z x) (hz : Z z) (hw : Z w) :
   evs at h
   exact h
 
-theorem sy_inv_at {x z : Pt R n d} (hx : Z x) (hz : Z z) : ev ![x, z] B.sy * ev ![z, x] B.sy = 1 := by
-  have h := congrArg (ev ![x, z]) B.sy_inv
-  evs at h
-  exact h
-
 theorem symmetric_zero_right_at {x : Pt R n d} (hx : Z x) : ev ![x, 0] B.sy = 1 := by
   have h := congrArg (ev ![x]) B.symmetry_zero_snd
   evs at h

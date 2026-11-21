@@ -7,21 +7,6 @@ open Finset Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P
 
 noncomputable section
 
-theorem cutWord_iff (P : M.Par) (l0 : ℕ) (w : List C.Letter) :
-    KB.CutWord P l0 w ↔ (∀ l ∈ w, I.OnCut P.u P.u' l0 l.2) ∧ w.Pairwise (fun l l' => 2 < |l.2 - l'.2|) := by
-  unfold KB.CutWord
-  rw [List.pairwise_iff_get]
-  constructor
-  · rintro ⟨h1, h2⟩
-    refine ⟨fun l hl => ?_, fun i j hij => h2 i j hij.ne⟩
-    obtain ⟨i, rfl⟩ := List.get_of_mem hl
-    exact h1 i
-  · rintro ⟨h1, h2⟩
-    refine ⟨fun i => h1 _ (List.get_mem _ _), fun i j hij => ?_⟩
-    rcases lt_or_gt_of_ne hij with h | h
-    · exact h2 i j h
-    · rw [abs_sub_comm]; exact h2 j i h
-
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 

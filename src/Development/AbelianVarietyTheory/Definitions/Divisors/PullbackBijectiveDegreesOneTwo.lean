@@ -325,20 +325,6 @@ variable {R : Type} [CommRing R] (F : C ⥤ CommAlgCat.{0} R)
   map_id := mp_id F
   map_comp := mp_comp F
 
-@[reducible] def Cx.dR : Cx C where
-  M0 := Coef.ofAlg F
-  M1 := ⟨fun T ↦ Ω[F.obj T⁄R], fun φ ↦ (p1 F φ).toAddMonoidHom, fun _ ↦ oneFormsMapOfFunctorMorphism_id F, fun φ ψ ↦ oneFormsMapOfFunctorMorphism_comp F φ ψ⟩
-  M2 := ⟨fun T ↦ Om R (F.obj T) 2, fun φ ↦ (pOm F 2 φ).toAddMonoidHom, fun _ ↦ pOm_id F, fun φ ψ ↦ pOm_comp F φ ψ⟩
-  M3 := ⟨fun T ↦ Om R (F.obj T) 3, fun φ ↦ (pOm F 3 φ).toAddMonoidHom, fun _ ↦ pOm_id F, fun φ ψ ↦ pOm_comp F φ ψ⟩
-  d0 T := (D R (F.obj T)).toLinearMap.toAddMonoidHom
-  d1 T := (dOne R (F.obj T)).toAddMonoidHom
-  d2 T := (dTwo R (F.obj T)).toAddMonoidHom
-  diffZero_natural φ x := (p1_D F φ x).symm
-  diffOne_natural φ x := (pOm_dOne F φ x).symm
-  diffTwo_natural φ x := (pOm_dTwo F φ x).symm
-  diffOne_diffZero _ := dOne_D
-  diffTwo_comp_diffOne _ := dTwo_dOne
-
 end Alg
 
 def JoinedOne.{a, b} : Prop := ∀ {C : Type a} [Category.{0} C] {C' : Type b} [Category.{0} C'] {K : Cx C} {K' : Cx C'}

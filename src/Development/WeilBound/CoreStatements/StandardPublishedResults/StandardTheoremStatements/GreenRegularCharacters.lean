@@ -1,8 +1,11 @@
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GreenCuspidalCharsByRegularCharsProofStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GreenCuspidalCharsByRegularCharsProof
+import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenRegularCharacters
 
 namespace PositivityTheory.Stage1.PM
 
 theorem greenRegularCharacters : GlobalTheory.Published.GreenRegularCharacters :=
-  GlobalTheory.T.greenCuspidalCharsByRegularChars_proof
+  _root_.GlobalTheory.greenRegularCharacters_holds
 
 end PositivityTheory.Stage1.PM

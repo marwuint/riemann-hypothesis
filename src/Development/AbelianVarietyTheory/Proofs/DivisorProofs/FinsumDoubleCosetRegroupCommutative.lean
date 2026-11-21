@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumCompEqFinsumCardFiberMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubleCosetCardDivCardInfCommutativeSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubleCosetCardDivCardInfCommutativeSubgroup
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardFiberDoubleCosetMapEqCardInfConjStatement
 
 open scoped Pointwise
@@ -51,7 +51,7 @@ theorem finsum_doubleCoset_regroup (G : Type) [Group G] (T Γ C K' : Subgroup G)
     intro p
     have e1 := GlobalTheory.T.card_fiber_doubleCoset_map_eq_card_inf_conj T Γ K' (Quotient.out p)
     rw [DoubleCoset.out_eq'] at e1
-    have e2 := GlobalTheory.T.doubleCoset_card_div_card_inf_commutative_subgroup T Γ (T ⊓ K'.map (MulAut.conj (Quotient.out p)).toMonoidHom) C hT (hU _).1 hCT (hU _).2
+    have e2 := _root_.GlobalTheory.DCIndex.index_identity T Γ (T ⊓ K'.map (MulAut.conj (Quotient.out p)).toMonoidHom) C hT (hU _).1 hCT (hU _).2
     show (Nat.card (π ⁻¹' {p}) : ℂ) * (((Nat.card (Γ ⊓ (T ⊓ K'.map (MulAut.conj (Quotient.out p)).toMonoidHom) : Subgroup G) : ℂ))⁻¹ * φ (Quotient.out p)) = _
     rw [e1, ← mul_assoc, ← div_eq_mul_inv, e2, ha_def]
     ring

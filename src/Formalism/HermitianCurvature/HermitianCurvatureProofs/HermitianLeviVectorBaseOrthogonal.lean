@@ -497,12 +497,6 @@ lemma Ff_meas (μP : Measure (Mt k (1 + r'))) [SFinite μP] {f : Mt k (1 + r') �
   unfold Ff
   exact Measurable.lintegral_prod_right' (hf.comp mulM_cont.measurable)
 
-lemma ae_mem {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : ∀ᵐ x : Mt k r ∂μ, x ∈ (U : Set (Mt k r)) := by
-  first
-    | exact ae_iff.2 h.conc
-    | (rw [ae_iff]; exact h.conc)
-    | (rw [ae_iff]; simpa using h.conc)
-
 lemma neg_HPar : (volume : Measure (HPar k r')).map Neg.neg = volume := by
   rw [Measure.volume_eq_prod]
   have : (Neg.neg : HPar k r' → HPar k r') = Prod.map Neg.neg Neg.neg := rfl
@@ -1007,44 +1001,6 @@ end Formalism.FourierDecayAlt.P.B2x9.S1
 
 namespace Formalism.FourierDecayAlt.P.B2x9.S2
 
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
-
-theorem cOf_meas (k r' : ℕ) :
-    Measurable fun g : Mt k (1 + r') => herm (Hpk k (1 + r')) (Matrix.of g *ᵥ e0 k r') (e0 k r') := by
-  exact ((herm_cont _).comp (evalE_cont.prodMk continuous_const)).measurable
-
-theorem sigmaFinite_of_haar {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := by
-  haveI : IsFiniteMeasureOnCompacts μ := ⟨@fun K hK => h.finite_compact K hK⟩
-  infer_instance
-
-theorem oneStepNullFromInt : OneStepNullFromInt := by
-  intro hInt hEx OM k r' μG hG
-  obtain ⟨μG₁, h₁⟩ := hEx k r'
-  haveI := sigmaFinite_of_haar h₁
-  obtain ⟨C, _, hF⟩ := hInt k r' μG μG₁ hG h₁
-  have hSm : MeasurableSet {g : Mt k (1 + r') | herm (Hpk k (1 + r')) (Matrix.of g *ᵥ e0 k r') (e0 k r') = 0} :=
-    measurableSet_eq_fun (cOf_meas k r') measurable_const
-  rw [← lintegral_indicator_one hSm, hF _ (measurable_one.indicator hSm)]
-  refine mul_eq_zero_of_right _ ?_
-  refine (lintegral_congr (fun c => ?_)).trans lintegral_zero
-  try dsimp only
-  by_cases hc : c = 0
-  · subst hc
-    rw [norm_zero, zero_pow (by omega), ENNReal.ofReal_zero, zero_mul]
-  · refine mul_eq_zero_of_right _ ?_
-    have hae : ∀ᵐ p ∂((volume : Measure (HPar k r' × HPar k r')).prod μG₁), p.2 ∈ (GV k r' : Set (Mt k r')) := by
-      rw [ae_iff]
-      refine measure_mono_null (t := Set.univ ×ˢ {g : Mt k r' | g ∉ (GV k r' : Set (Mt k r'))})
-        (fun p hp => ⟨Set.mem_univ _, hp⟩) ?_
-      rw [Measure.prod_prod]
-      exact mul_eq_zero_of_right _ h₁.conc
-    rw [lintegral_congr_ae (g := fun _ => 0) ?_, lintegral_zero]
-    filter_upwards [hae] with p hp
-    have hv := (OM k r' p.1.1 p.1.2 c hc (Matrix.of p.2) hp).2
-    refine Set.indicator_apply_eq_zero.2 (fun hn => ?_)
-    have hn' : herm (Hpk k (1 + r')) (oneStep k r' p.1.1 c (Matrix.of p.2) p.1.2 *ᵥ e0 k r') (e0 k r') = 0 := hn
-    exact absurd (hv.symm.trans hn') hc
-
 end Formalism.FourierDecayAlt.P.B2x9.S2
 
 namespace Formalism.FourierDecayAlt.P
@@ -1065,11 +1021,5 @@ theorem stabilizer_integration_formula : Formalism.FourierDecayAlt.B2.OneStepInt
   exact stabilizer_integration_of_parts haar_measure_unique_up_to_scalar haar_measure_inversion unitary_group_closed heisenberg_action_formula
     heisenberg_inverse stabilizer_one_parameter_mem rank_one_coordinates_formula isotropic_cone_invariance isotropic_cone_finite_measure
     stabilizer_factorization stabilizer_haar_measure
-
-theorem stabilizer_null_of_integrable : Formalism.FourierDecayAlt.B2.OneStepNullFromInt := by
-  exact Formalism.FourierDecayAlt.P.B2x9.S2.oneStepNullFromInt
-
-theorem stabilizer_null_set : Formalism.FourierDecayAlt.B2.OneStepNull := by
-  exact stabilizer_null_of_integrable stabilizer_integration_formula unitary_group_haar_exists stabilizer_one_parameter_mem
 
 end Formalism.FourierDecayAlt.P

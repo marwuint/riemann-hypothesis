@@ -415,22 +415,6 @@ theorem absLe_datum {μ₀ μ₁ : T} (hL : L.Is μ₀) (S : GridChoice W Set.un
   push_cast
   linarith
 
-theorem datK : GlobalTheory.FunPr.Hypotheses₂ → BigC fun _ ch C _ => FlipAt ch (C / 2) → DatAt ch C := by
-  classical
-  intro _
-  refine ⟨0, fun CF _ => ⟨12, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ hok hF σ Φ β hβ w x y => ?_⟩⟩⟩
-  have hL : R.toLevCh.Is A.μ0 := s.core.lev
-  have hP : w.1 ∈ ch.G.pl.W0 := by
-    rcases Finset.mem_union.1 w.2 with h | h
-    · exact h
-    · rw [show R.toLevCh.Q A.μ0 = ∅ from GlobalTheory.BaseScalar.Q_base R hL] at h
-      exact absurd h (Finset.notMem_empty _)
-  have hsz : 0 ≤ (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2 * placeSz ch.G w :=
-    mul_nonneg (by positivity) (placeSz_nonneg ch.G w)
-  refine absLe_mono (absLe_datum hL ch.S.toGridChoice hok A.μ0 Φ (GlobalTheory.FlipIntegrand.pde_ne_q_of_setting s) (hch.guard A.μ0) hP w.2 hβ σ
-    (hF σ Φ w) _ _) ?_
-  nlinarith
-
 end GlobalTheory.ArchTens.Unfold
 
 end

@@ -565,12 +565,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Ch : Ch
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {G : ChGlob X R.m}
 
-theorem muProdLaw_muAt (hX : X.AbelianUnramifiedExtensionConditions) (hPr : Pr.Ok) (hsel : IsSel X sel) (hg : XiOffG Pr (mu : Chr X.F X.E X.K)) (hT : LawTies W Ch sel mu cst G)
-    (i : ℕ) (hi : i < R.m) (e : X.Tau → ℤ) (he : ∀ τ, (e τ : ℚ) = (W.row τ).e ⟨i, hi⟩) (n : ℕ) :
-    MuProdLaw n sel (rowSG Pr sel mu) (mUof Ch mu i) (muAt Ch sel mu cst i) e := by
-  rw [muAt_eq_muAtT Ch sel mu cst hT.1 i hi]
-  exact muProdLaw_of hX hPr hsel hg hT i hi e he n
-
 theorem xiOffG_of_mem (hPr : Pr.Ok) (hS : ∀ i, Pr.g i ∈ S) : XiOffG Pr (mu : Chr X.F X.E X.K) := by
   intro P hP v hv hQ
   obtain ⟨i, hi⟩ := ciVGs_cases hP
@@ -591,33 +585,6 @@ theorem xiOffG_of_mem (hPr : Pr.Ok) (hS : ∀ i, Pr.g i ∈ S) : XiOffG Pr (mu :
     exact CharP.char_is_prime (𝓞 X.F ⧸ v.asIdeal) (ringChar (𝓞 X.F ⧸ v.asIdeal))
   have h3 : plc v = Pr.g i := (Nat.prime_dvd_prime_iff_eq hpp (hPr.g_prime i)).mp h2
   exact (mu.good hQ).2.2 (h3 ▸ hS i)
-
-theorem test_not_oneAt_zero {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) : ¬ OneAt P (0 : E) := by
-  unfold OneAt
-  rw [zero_sub, Valuation.map_neg, map_one]
-  exact lt_irrefl _
-
-theorem test_not_oneAt_unif {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) {a : E}
-    (h : P.valuation E a = WithZero.exp (-1 : ℤ)) : ¬ OneAt P a := by
-  intro h1
-  rw [h1.val_eq_one] at h
-  exact absurd h (by simp)
-
-theorem test_locId_same {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (a : Eˣ) :
-    Formalism.UG.prV (E := E) v ((locId E v a : (AfE F E)ˣ) : AfE F E) = (a : E) ⊗ₜ[F] (1 : v.adicCompletion F) := by
-  show (Algebra.TensorProduct.map (AlgHom.id F E) (Formalism.UG.evalV F v))
-    ((a : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1 + (1 : E) ⊗ₜ[F] (1 - Formalism.L2.G.sgl F v 1)) = _
-  rw [map_add, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, map_sub, Formalism.L2.G.sgl_apply_same, map_one (Formalism.UG.evalV F v), sub_self,
-    TensorProduct.tmul_zero, add_zero]
-  rfl
-
-theorem test_locId_ne {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {v v' : HeightOneSpectrum (𝓞 F)} (h : v' ≠ v) (a : Eˣ) :
-    Formalism.UG.prV (E := E) v' ((locId E v a : (AfE F E)ˣ) : AfE F E) = 1 := by
-  show (Algebra.TensorProduct.map (AlgHom.id F E) (Formalism.UG.evalV F v'))
-    ((a : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1 + (1 : E) ⊗ₜ[F] (1 - Formalism.L2.G.sgl F v 1)) = _
-  rw [map_add, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, map_sub, Formalism.L2.G.sgl_apply_ne F v 1 h, map_one (Formalism.UG.evalV F v'), sub_zero,
-    TensorProduct.tmul_zero, zero_add]
-  rfl
 
 end More
 

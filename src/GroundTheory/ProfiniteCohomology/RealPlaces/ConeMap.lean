@@ -26,12 +26,6 @@ theorem degZeroMap_f_zero_apply {E E' : ModuleCat.{u} k} (f : E ⟶ E') (e : (de
     ((degZeroMap f).f 0).hom e = f.hom e :=
   rfl
 
-theorem degZeroMap_id (E : ModuleCat.{u} k) : degZeroMap (𝟙 E) = 𝟙 _ := by
-  ext n : 1
-  cases n with
-  | zero => rfl
-  | succ n => exact ModuleCat.hom_ext (LinearMap.ext fun _ => Subsingleton.elim _ _)
-
 theorem degZeroMap_comp {E E' E'' : ModuleCat.{u} k} (f : E ⟶ E') (f' : E' ⟶ E'') :
     degZeroMap (f ≫ f') = degZeroMap f ≫ degZeroMap f' := by
   ext n : 1
@@ -84,21 +78,6 @@ theorem prodShortComplex_shortExact {S T : ShortComplex (CochainComplex (ModuleC
       obtain ⟨y1, hy1⟩ := (ModuleCat.epi_iff_surjective _).1 h1.epi_g z.1
       obtain ⟨y2, hy2⟩ := (ModuleCat.epi_iff_surjective _).1 h2.epi_g z.2
       exact ⟨(show (prodComplex S.X₂ T.X₂).X n from (y1, y2)), Prod.ext hy1 hy2⟩
-
-theorem homologyMap_prodMapCx_prodHomologyIso_hom {M N M' N' : CochainComplex (ModuleCat.{u} k) ℕ}
-    (f : M ⟶ M') (g : N ⟶ N') (n : ℕ) :
-    HomologicalComplex.homologyMap (prodMapCx f g) n ≫ (prodHomologyIso M' N' n).hom =
-      (prodHomologyIso M N n).hom ≫ ModuleCat.ofHom
-        ((HomologicalComplex.homologyMap f n).hom.prodMap (HomologicalComplex.homologyMap g n).hom) := by
-  have e1 : prodMapCx f g ≫ prodFst M' N' = prodFst M N ≫ f := prodLift_prodFst _ _
-  have e2 : prodMapCx f g ≫ prodSnd M' N' = prodSnd M N ≫ g := prodLift_prodSnd _ _
-  refine ModuleCat.hom_ext (LinearMap.ext fun z => Prod.ext ?_ ?_)
-  · exact hom_apply_hom_apply_eq_of_comp_eq (by
-      rw [← HomologicalComplex.homologyMap_comp, e1, HomologicalComplex.homologyMap_comp]
-      exact ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)) z
-  · exact hom_apply_hom_apply_eq_of_comp_eq (by
-      rw [← HomologicalComplex.homologyMap_comp, e2, HomologicalComplex.homologyMap_comp]
-      exact ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)) z
 
 end Complexes
 
@@ -258,75 +237,6 @@ theorem tateCompactCohomologyMap_comp (g' : B ⟶ C) (gᵥ' : ∀ v, Bᵥ v ⟶ 
       | succ n => rfl
   exact (congrArg (HomologicalComplex.homologyMap · n) h).trans
     (HomologicalComplex.homologyMap_comp _ _ n)
-
-theorem tateCompactCohomologyMap_tateToGlobal (n : ℕ) :
-    tateCompactCohomologyMap φ ψ g gᵥ gᵣ hg hgr n ≫ tateToGlobal φ ψ B Bᵥ b Bᵣ br n =
-      tateToGlobal φ ψ A Aᵥ a Aᵣ ar n ≫ cohomologyMap g n := by
-  have e : tateCompactCochainsMap φ ψ g gᵥ gᵣ hg hgr ≫
-      (mappingCoconeNat.fst (tateCompactRes φ ψ B Bᵥ b Bᵣ br) ≫ prodFst _ _) =
-      (mappingCoconeNat.fst (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) ≫ prodFst _ _) ≫ cochainsMap g :=
-    HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
-  exact (HomologicalComplex.homologyMap_comp _ _ _).symm.trans
-    ((congrArg (HomologicalComplex.homologyMap · n) e).trans
-      (HomologicalComplex.homologyMap_comp _ _ _))
-
-omit [∀ w, Fintype (F w)] in
-include hg hgr in
-
-theorem cohomologyMap_tateGlobalToLocal (n : ℕ) :
-    cohomologyMap g n ≫ tateGlobalToLocal φ ψ B Bᵥ b Bᵣ br n =
-      tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar n ≫ ModuleCat.ofHom
-        ((LinearMap.pi fun v => (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)).prodMap
-          (LinearMap.pi fun w => (cohomologyMap (gᵣ w) n).hom.comp (LinearMap.proj w))) := by
-  refine ModuleCat.hom_ext (LinearMap.ext fun x => Prod.ext ?_ ?_)
-  · exact hom_apply_hom_apply_eq_of_comp_eq (cohomologyMap_globalToLocal φ g gᵥ hg n) x
-  · exact hom_apply_hom_apply_eq_of_comp_eq (cohomologyMap_globalToLocal ψ g gᵣ hgr n) x
-
-omit [∀ w, Fintype (F w)] in
-
-theorem homologyMap_tateLocalMap_tateLocalCohomologyIso_hom (n : ℕ) :
-    HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n ≫ (tateLocalCohomologyIso Bᵥ Bᵣ n).hom =
-      (tateLocalCohomologyIso Aᵥ Aᵣ n).hom ≫ ModuleCat.ofHom
-        ((LinearMap.pi fun v => (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)).prodMap
-          (LinearMap.pi fun w => (cohomologyMap (gᵣ w) n).hom.comp (LinearMap.proj w))) := by
-  have e1 := homologyMap_prodMapCx_prodHomologyIso_hom (piMap fun v => cochainsMap (gᵥ v))
-    (piMap fun w => cochainsMap (gᵣ w)) n
-  have e2 := homologyMap_piMap_piHomologyIso_hom (fun v => cochainsMap (gᵥ v)) n
-  have e3 := homologyMap_piMap_piHomologyIso_hom (fun w => cochainsMap (gᵣ w)) n
-  refine ModuleCat.hom_ext (LinearMap.ext fun z => Prod.ext ?_ ?_)
-  · have h1 := congrArg Prod.fst (hom_apply_hom_apply_eq_of_comp_eq e1 z)
-    change (localCohomologyIso Bᵥ n).hom.hom (HomologicalComplex.homologyMap (prodFst _ _) n |>.hom
-        ((HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n).hom z)) = _
-    rw [show (HomologicalComplex.homologyMap (prodFst _ _) n).hom
-        ((HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n).hom z) = _ from h1]
-    exact hom_apply_hom_apply_eq_of_comp_eq e2 _
-  · have h2 := congrArg Prod.snd (hom_apply_hom_apply_eq_of_comp_eq e1 z)
-    change (localCohomologyIso Bᵣ n).hom.hom (HomologicalComplex.homologyMap (prodSnd _ _) n |>.hom
-        ((HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n).hom z)) = _
-    rw [show (HomologicalComplex.homologyMap (prodSnd _ _) n).hom
-        ((HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n).hom z) = _ from h2]
-    exact hom_apply_hom_apply_eq_of_comp_eq e3 _
-
-theorem tateLocalToCompact_tateCompactCohomologyMap (n : ℕ) :
-    tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar n ≫ tateCompactCohomologyMap φ ψ g gᵥ gᵣ hg hgr (n + 1) =
-      ModuleCat.ofHom
-          ((LinearMap.pi fun v => (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)).prodMap
-            (LinearMap.pi fun w => (cohomologyMap (gᵣ w) n).hom.comp (LinearMap.proj w))) ≫
-        tateLocalToCompact φ ψ B Bᵥ b Bᵣ br n := by
-  have h2 : (tateLocalCohomologyIso Aᵥ Aᵣ n).inv ≫
-      HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n =
-      ModuleCat.ofHom
-          ((LinearMap.pi fun v => (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)).prodMap
-            (LinearMap.pi fun w => (cohomologyMap (gᵣ w) n).hom.comp (LinearMap.proj w))) ≫
-        (tateLocalCohomologyIso Bᵥ Bᵣ n).inv := by
-    rw [Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
-    exact homologyMap_tateLocalMap_tateLocalCohomologyIso_hom gᵥ gᵣ n
-  have h := congrArg ((tateLocalCohomologyIso Aᵥ Aᵣ n).inv ≫ ·)
-    (mappingCoconeNat.homologyδ_naturality (tateGlobalMap g gᵣ) (tateLocalMap gᵥ gᵣ)
-      (tateCompactRes_naturality φ ψ g gᵥ gᵣ hg hgr) n)
-  simp only [← Category.assoc] at h
-  rw [h2, Category.assoc] at h
-  exact h
 
 end Functoriality
 

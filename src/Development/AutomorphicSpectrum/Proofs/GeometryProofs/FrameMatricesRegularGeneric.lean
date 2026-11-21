@@ -3,9 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUnitOfSumEqOn
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalizedMinorExtendsStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsPermNormalizedMinorsStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LuDecompositionOfMinorsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AlgebraicIndependentOfAdjoinStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationClosureSmoothStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationClosureEqualStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AlgebraicIndependentOfAdjoin
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationClosureSmooth
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationClosureEqual
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagBun GlobalTheory.CompanionTheory.Ar.FlagBun.Sm GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.Cell
 
@@ -138,7 +138,7 @@ theorem big_cell_smooth : ∀ (Ω : Type) [Field Ω] (S : Type) [Fintype S] (r n
       exact mul_mem (Subring.subset_closure (Or.inl (hyA ⟨s, k⟩ _))) (Subring.subset_closure (Or.inr ⟨_, rfl⟩))
 
   have hv : AlgebraicIndependent Ω v := by
-    refine GlobalTheory.T.algebraic_independent_of_adjoin _ v (genU_indep Ω r) fun q => ?_
+    refine _root_.GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.Cell.algebraicIndependent_of_mem_adjoin_range _ v (genU_indep Ω r) fun q => ?_
     rw [← genU_gen]
     have hmem : ∀ s l k, V s l k ∈ IntermediateField.adjoin Ω (Set.range v) := fun s l k => by
       rcases lt_trichotomy l k with h | h | h
@@ -152,7 +152,7 @@ theorem big_cell_smooth : ∀ (Ω : Type) [Field Ω] (S : Type) [Fintype S] (r n
     · rw [← hCV q.1]
       congr 1
 
-  have hL := GlobalTheory.T.localization_closure_equal A B tq htq0 htqA htqB hAB hBA
+  have hL := _root_.GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.Cell.locSub_eq_of_inverse_family A B tq htq0 htqA htqB hAB hBA
   have htA : (∏ q, tq q) ∈ A := A.prod_mem fun q _ => htqA q
   have hinv : (∏ q, tq q)⁻¹ = ∏ q, (tq q)⁻¹ := (Finset.prod_inv_distrib _).symm
   refine ⟨∏ q, tq q, htA, Finset.prod_ne_zero_iff.2 fun q _ => htq0 q, hAO htA, ?_, ?_⟩
@@ -163,7 +163,7 @@ theorem big_cell_smooth : ∀ (Ω : Type) [Field Ω] (S : Type) [Fintype S] (r n
   have gen : ∀ (L : Subring (GenField Ω r)), L = locSub B (∏ q, tq q)⁻¹ → ∀ h : ∀ a ∈ R, i a ∈ L,
       ((i.comp R.subtype).codRestrict L (fun a => h a a.2)).Smooth := by
     rintro _ rfl h
-    refine GlobalTheory.T.localization_closure_smooth R v hv _ ?_ (inv_ne_zero (Finset.prod_ne_zero_iff.2 fun q _ => htq0 q)) h
+    refine _root_.GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.Cell.smooth_locSub_closure R v hv _ ?_ (inv_ne_zero (Finset.prod_ne_zero_iff.2 fun q _ => htq0 q)) h
     rw [hinv]
     exact B.prod_mem fun q _ => htqB q
   exact gen _ hL hR

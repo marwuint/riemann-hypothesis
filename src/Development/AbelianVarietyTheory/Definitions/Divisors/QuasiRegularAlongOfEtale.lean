@@ -63,14 +63,6 @@ theorem VanishesTo.restr {f : H0 p B O} (h : VanishesTo I a f) (e : O' ≤ O) :
   rw [germ_restr]
   exact h y hs _ i hi
 
-theorem VanishesTo.mul {P N : LB Y} (C : ProdChart P B N) {σ : H0 p P O} {f : H0 p B O}
-    (hσ : VanishesTo I a σ) (hf : VanishesTo I b f) : VanishesTo I (a + b) (C.mul σ f) :=
-  vanishesTo_of_exists fun y hs hy => by
-    obtain ⟨t, ha, hb, hc⟩ := C.cover y
-    refine ⟨_, hc, ?_⟩
-    rw [C.germ_mul σ f t y hy ha hb hc, pow_add]
-    exact Ideal.mul_mem_mul (hσ y hs hy _ ha) (hf y hs hy _ hb)
-
 variable (I O) in
 
 def SuppIn : Prop := ∀ y ∈ I.support, y ∈ O
@@ -282,25 +274,6 @@ theorem VanishesTo.mulMono (s : ι → L.Sec) (α : MonoDeg ι a) (h : n + a = l
 theorem vanishesTo_mulMono (s : ι → L.Sec) (α : MonoDeg ι a) (h : n + a = l)
     (m : H0 p (tw M L n) O) : VanishesTo (cutIdeal hL s) a (mulMono hM hL s α h m) :=
   (vanishesTo_zero m).mulMono hM hL s α h
-
-theorem zone_f (j : (lbZPow L 0).ι) : (Twist.zone L).f j = 1 := by
-  rw [Twist.f_eq_zfun, Twist.zfun_zone, map_one]
-
-theorem nonzeroLocus_zone : nonzeroLocus (Twist.zone L) = ⨆ j, L.U j := by
-  refine le_antisymm (fun y hy => ?_) (iSup_le fun j y hj => ?_)
-  · obtain ⟨j, hj⟩ := exists_chart_of_mem_nonzeroLocus hy
-    exact Opens.mem_iSup.2 ⟨_, Twist.zpow_U_le j hj⟩
-  · exact (isUnit_ger_iff (i := fun _ => j) _ (mem_zpow_U.2 hj)).1
-      (zone_f (L := L) _ ▸ isUnit_one.map _)
-
-def toTwZero : H0 p M O ≃ₗ[k] H0 p (tw M L 0) O :=
-  (baseChart hM hL 0).mulEquiv (σ := H0.ofSec p O (Twist.zone L)) fun y hy i hi => by
-    rw [germ_ofSec, isUnit_ger_iff, nonzeroLocus_zone, hL.cover]
-    trivial
-
-def toTwZeroOn : sectionsOnClosedSubscheme p M I ≃ₗ[k] sectionsOnClosedSubscheme p (tw M L 0) I :=
-  ((baseChart hM hL 0).pull I.subschemeι).mulEquiv (σ := secOn p I (Twist.zone L))
-    (nowhereZero_secOn fun y _ => by rw [nonzeroLocus_zone, hL.cover]; trivial)
 
 end Mul
 
@@ -522,18 +495,6 @@ theorem germ_dsOn (z : (cutIdeal hL s).subscheme) (i : K.bundle.ι) (j : L.ι)
       ((cutIdeal hL s).subschemeι.stalkMap z).hom (ger _ (memInf hi hj) (K.jacFun s i j)) :=
   (germ_ofSec _ _ _ _ _).trans (ger_appLE _ _ z _ _)
 
-theorem valOn_dsOn {R : Type} [CommRing R] (x : Sp R ⟶ (cutIdeal hL s).subscheme) (i : K.bundle.ι)
-    (j : L.ι) (hi : ⊤ ≤ (x ≫ (cutIdeal hL s).subschemeι) ⁻¹ᵁ K.bundle.U i)
-    (hj : ⊤ ≤ (x ≫ (cutIdeal hL s).subschemeι) ⁻¹ᵁ L.U j)
-    (h : ⊤ ≤ (x ≫ (cutIdeal hL s).subschemeι) ⁻¹ᵁ (tw K.bundle L D).U (twIdx D i j)) :
-    valOn x (twIdx D i j) h (dsOn K hL s) =
-      K.jacVal s (x ≫ (cutIdeal hL s).subschemeι) i j hi hj := by
-  have h' : ⊤ ≤ x ⁻¹ᵁ ((tw K.bundle L D).pull (cutIdeal hL s).subschemeι).U fun _ => twIdx D i j :=
-    fun z hz => mem_pull.2 (h hz)
-  refine (val_ofSec x _ _ h' _).trans ?_
-  exact congrArg (fun g => (g ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom (K.jacFun s i j))
-    (Scheme.Hom.appLE_comp_appLE x _ _ _ ⊤ _ h')
-
 variable (hS : Etale ((cutIdeal hL s).subschemeι ≫ p))
 
 include hS in
@@ -608,24 +569,6 @@ theorem germ_mulEDs (g : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s))
       ((((adjChart K.isLB hB hL rfl).pull _).germ_mul _ g (i, b, j) z _
         (mem_pull.2 (mem_tw_U.2 ⟨hi, hj⟩)) _ _).trans
           (congrArg (· * _) (germ_dsOn K hL s z i j hi hj))))
-
-theorem valOn_mulEDs {R : Type} [CommRing R] (g : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s))
-    (x : Sp R ⟶ (cutIdeal hL s).subscheme) (i : K.bundle.ι) (a : A.ι) (b : B.ι) (j : L.ι)
-    (hi : ⊤ ≤ (x ≫ (cutIdeal hL s).subschemeι) ⁻¹ᵁ K.bundle.U i)
-    (hj : ⊤ ≤ (x ≫ (cutIdeal hL s).subschemeι) ⁻¹ᵁ L.U j)
-    (h₁ : ⊤ ≤ (x ≫ (cutIdeal hL s).subschemeι) ⁻¹ᵁ
-      (tw (tens K.bundle A) L n).U (twIdx (M := tens K.bundle A) n (i, a) j))
-    (h₂ : ⊤ ≤ (x ≫ (cutIdeal hL s).subschemeι) ⁻¹ᵁ (LB.div A (tw B L D)).U (a, twIdx D b j))
-    (h₃ : ⊤ ≤ (x ≫ (cutIdeal hL s).subschemeι) ⁻¹ᵁ (tw B L n).U (twIdx n b j)) :
-    valOn x (twIdx (M := tens K.bundle A) n (i, a) j) h₁ (mulEDs K hL hA hB s hS n e he g) =
-      evalPt (x ≫ (cutIdeal hL s).subschemeι) _ h₂ (e.f (a, twIdx D b j)) *
-        K.jacVal s (x ≫ (cutIdeal hL s).subschemeι) i j hi hj * valOn x (twIdx n b j) h₃ g := by
-  rw [mul_assoc]
-  exact (valOn_mul (quotChart K.isLB hA hB hL rfl) _ _ (i, a, b, j) x h₂
-    (fun z hz => mem_tw_U.2 ⟨⟨hi hz, (h₃ hz).1⟩, hj hz⟩) h₁).trans
-    (congrArg₂ (· * ·) (valOn_secOn x _ _ e) ((valOn_mul (adjChart K.isLB hB hL rfl) _ g (i, b, j) x
-      (fun z hz => mem_tw_U.2 ⟨hi hz, hj hz⟩) h₃ _).trans
-        (congrArg (· * _) (valOn_dsOn K hL s x i j hi hj _))))
 
 theorem mulEDs_mulSecOn (w : L.Sec) (h : n + 1 = l) (g : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s)) :
     mulEDs K hL hA hB s hS l e he (mulSecOn hB hL w h g) =
@@ -728,11 +671,6 @@ theorem sym_mulMono (α : MonoDeg (Fin D) a) (m : H0 p (tw (tens K.bundle A) L n
   · rw [hf, Finset.sum_eq_single α (fun β _ hβ => by rw [Pi.single_eq_of_ne hβ, map_zero])
       (by simp), Pi.single_eq_same]
 
-variable (V) in
-
-def symGr : gr (cutIdeal hL s) a V →ₗ[k] SymTarget p B hL s a n :=
-  Submodule.liftQ _ (sym K hL hA hB s hS e he hO h V) (ker_sym K hL hA hB s hS e he hO h V).ge
-
 end Symbol
 
 section BaseChange
@@ -819,163 +757,9 @@ theorem germ_pullChart (a : ChartPull B' B r) (hq : r ≫ p = q ≫ spMap φ) (h
       (r.stalkMap z).hom (germ (a.idx i) (r z) (h hz) (a.le i hi) f) :=
   germ_pullChartFun a h f i z hz hi
 
-theorem VanishesTo.pullChart {I : Y.IdealSheafData} {J : T.IdealSheafData} {n : ℕ} {f : H0 p B O}
-    (hf : VanishesTo I n f) (a : ChartPull B' B r) (hq : r ≫ p = q ≫ spMap φ) (h : W ≤ r ⁻¹ᵁ O)
-    (hI : ∀ z, (stalkId I (r z)).map (r.stalkMap z).hom ≤ stalkId J z) :
-    VanishesTo J n (pullChart a hq h f) := fun z _ hz i hi => by
-  rw [germ_pullChart]
-  refine Ideal.pow_right_mono (hI z) n ?_
-  rw [← Ideal.map_pow]
-  exact Ideal.mem_map_of_mem _ (vanishesTo_iff_forall.1 hf _ _ _ _)
-
 end BaseChange
 
 namespace AffineExample
-
-open MvPolynomial CanonLB
-
-variable {D : ℕ}
-
-abbrev triv (k : Type) [CommRing k] (D : ℕ) : LB (Sp (MvPolynomial (Fin D) k)) := Out.Inh.trivLB _
-
-theorem isLB_triv : (triv k D).IsLB :=
-  ⟨iSup_const (ι := PUnit), fun _ => map_one _, fun _ _ _ => by
-    exact (congrArg₂ (· * ·) (map_one _) (map_one _)).trans ((mul_one _).trans (map_one _).symm)⟩
-
-theorem bijective_polyFn : Function.Bijective (polyFn (k := k) (D := D)) :=
-  ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin D) k))).inv
-
-abbrev ideal (g : Fin D → MvPolynomial (Fin D) k) : (Sp (MvPolynomial (Fin D) k)).IdealSheafData :=
-  cutIdeal isLB_triv fun a => polySec (g a)
-
-theorem ideal_top (g : Fin D → MvPolynomial (Fin D) k) :
-    (ideal g).ideal ⟨⊤, isAffineOpen_top _⟩ = (Ideal.span (Set.range g)).map polyFn := by
-  rw [ideal_cutIdeal _ _ _ PUnit.unit le_rfl, Ideal.map_span, ← Set.range_comp]
-  exact congrArg (fun f => Ideal.span (Set.range f)) (funext fun _ => resG_self _ _)
-
-theorem vanishesTo_iff (g : Fin D → MvPolynomial (Fin D) k) (a : ℕ) (f : MvPolynomial (Fin D) k) :
-    VanishesTo (ideal g) a (H0.ofSec (affStr k D) ⊤ (polySec f)) ↔
-      f ∈ Ideal.span (Set.range g) ^ a := by
-  rw [← Ideal.comap_map_of_bijective _ bijective_polyFn (I := _ ^ a), Ideal.mem_comap,
-    Ideal.map_pow, ← ideal_top]
-  refine Iff.trans ?_ (mem_ideal_iff_ger (ideal g ^ a) ⟨⊤, isAffineOpen_top _⟩ _).symm
-  simp only [vanishesTo_iff_forall, germ_ofSec, stalkId_pow]
-  exact ⟨fun h y hy => h y hy PUnit.unit hy, fun h y hy _ _ => h y hy⟩
-
-theorem isIso_of_span {g : Fin D → MvPolynomial (Fin D) k}
-    (hg : Ideal.span (Set.range g) = Ideal.span (Set.range X)) :
-    IsIso ((ideal g).subschemeι ≫ affStr k D) := by
-  have hk (f : MvPolynomial (Fin D) k) :
-      ((ideal g).subschemeι.app ⊤).hom (polyFn f) = 0 ↔ constantCoeff f = 0 := by
-    rw [← RingHom.mem_ker, (ideal g).ker_subschemeι_app ⟨⊤, isAffineOpen_top _⟩, ideal_top, hg,
-      ← Ideal.mem_comap, Ideal.comap_map_of_bijective _ bijective_polyFn, ← pow_one (Ideal.span _)]
-    refine (mem_pow_idealOfVars_iff' 1 f).trans ?_
-    simp [constantCoeff_eq, Finsupp.degree_eq_zero_iff]
-  have hk' (f f' : MvPolynomial (Fin D) k) : ((ideal g).subschemeι.app ⊤).hom (polyFn f) =
-      ((ideal g).subschemeι.app ⊤).hom (polyFn f') ↔ constantCoeff f = constantCoeff f' := by
-    rw [← sub_eq_zero, ← map_sub, ← map_sub, hk, map_sub, sub_eq_zero]
-  have he (c : k) : (((ideal g).subschemeι ≫ affStr k D).appTop).hom
-      ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom c) =
-        ((ideal g).subschemeι.app ⊤).hom (polyFn (C c)) :=
-    congrArg ((ideal g).subschemeι.app ⊤).hom (congrArg (fun q => CommRingCat.Hom.hom q c)
-      (Scheme.ΓSpecIso_inv_naturality
-        (CommRingCat.ofHom (algebraMap k (MvPolynomial (Fin D) k))))).symm
-  have : IsAffine (ideal g).subscheme := isAffine_of_isAffineHom (ideal g).subschemeι
-  suffices IsIso ((ideal g).subschemeι ≫ affStr k D).appTop from
-    (MorphismProperty.arrow_mk_iso_iff (MorphismProperty.isomorphisms _)
-      (arrowIsoSpecΓOfIsAffine _)).mpr (inferInstanceAs (IsIso (Spec.map _)))
-  rw [ConcreteCategory.isIso_iff_bijective, ← Function.Bijective.of_comp_iff _
-    (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of k)).inv)]
-  refine ⟨fun c c' e => ?_, fun b => ?_⟩
-  · simpa using (hk' _ _).1 ((he c).symm.trans (e.trans (he c')))
-  · obtain ⟨b, rfl⟩ := (ideal g).subschemeι_app_surjective ⟨⊤, isAffineOpen_top _⟩ b
-    obtain ⟨f, rfl⟩ := bijective_polyFn.2 b
-    exact ⟨constantCoeff f, (he _).trans ((hk' _ _).2 (by simp))⟩
-
-theorem etale_of_span {g : Fin D → MvPolynomial (Fin D) k}
-    (hg : Ideal.span (Set.range g) = Ideal.span (Set.range X)) :
-    Etale ((ideal g).subschemeι ≫ affStr k D) :=
-  have := isIso_of_span hg
-  inferInstance
-
-def funSec {N : LB Y} (h : ∀ y i j, y ∈ N.U i → y ∈ N.U j → tr N y i j = 1) (f : Γ(Y, ⊤)) :
-    N.Sec where
-  f _ := resG Y le_top f
-  compat i j := fun_ext_ger fun y hy => by
-    rw [map_mul, ← val_tr, h y i j hy.1 hy.2, Units.val_one, one_mul, ger_resG, ger_resG, ger_resG,
-      ger_resG]
-
-theorem tr_triv (y) (i j : (triv k D).ι) : tr (triv k D) y i j = 1 := map_one _
-
-theorem mem_tw_triv (n : ℤ) (y : Sp (MvPolynomial (Fin D) k)) :
-    y ∈ (tw (triv k D) (triv k D) n).U (twIdx n PUnit.unit PUnit.unit) :=
-  mem_tw_U.2 ⟨trivial, trivial⟩
-
-def one : (LB.div (triv k D) (tw (triv k D) (triv k D) D)).Sec :=
-  funSec (fun y i j hi hj => by
-    rw [tr_div _ _ y hi hj, tr_tens _ _ y hi.2 hj.2, tr_zpow _ _ y hi.2.2 hj.2.2]
-    simp only [tr_triv, one_zpow, mul_one, inv_one]) 1
-
-theorem suppIn_one (I) : SuppIn (nonzeroLocus (one (k := k) (D := D))) I := fun y _ =>
-  (isUnit_ger_iff (i := (PUnit.unit, twIdx D PUnit.unit PUnit.unit)) _
-    (memInf (Opens.mem_top y) (mem_tw_triv D y))).1 ((isUnit_one.map _).map _)
-
-def form (n : ℤ) (f : MvPolynomial (Fin D) k) :
-    H0 (affStr k D) (tw (tens (affineSpace k D).bundle (triv k D)) (triv k D) n) ⊤ :=
-  H0.ofSec _ ⊤ (funSec (fun y i j hi hj => by
-    rw [tr_tens _ _ y hi hj, tr_tens _ _ y hi.1 hj.1, tr_zpow _ _ y hi.2 hj.2,
-      show tr (affineSpace k D).bundle y i.1.1 j.1.1 = 1 from
-        gm_self (affineSpace k D).isLB (𝟙 _) y hi.1.1]
-    simp only [tr_triv, one_zpow, mul_one]) (polyFn f))
-
-theorem det_mul_valOn_Res {R : Type} [CommRing R] {g : Fin D → MvPolynomial (Fin D) k}
-    (hS : Etale ((ideal g).subschemeι ≫ affStr k D)) (n : ℤ) (f : MvPolynomial (Fin D) k)
-    (x : Sp R ⟶ (ideal g).subscheme) (φ : MvPolynomial (Fin D) k →+* R)
-    (hx : x ≫ (ideal g).subschemeι = spMap φ) :
-    φ (Matrix.of fun a b => pderiv b (g a)).det *
-      valOn x (twIdx n PUnit.unit PUnit.unit) (fun _ _ => mem_tw_triv _ _)
-        (Res (affineSpace k D) isLB_triv isLB_triv isLB_triv _ hS n one (suppIn_one _) suppIn_top
-          (form n f)) = φ f := by
-  have h₁ : ∀ y, y ∈ (tw (tens (affineSpace k D).bundle (triv k D)) (triv k D) n).U
-      (twIdx (M := tens (affineSpace k D).bundle (triv k D)) n (PUnit.unit, PUnit.unit) PUnit.unit) :=
-    fun _ => mem_tw_U.2 ⟨⟨trivial, trivial⟩, trivial⟩
-  have e := valOn_mulEDs (affineSpace k D) isLB_triv isLB_triv isLB_triv _ hS one (suppIn_one _)
-    (Res _ isLB_triv isLB_triv isLB_triv _ hS n one (suppIn_one _) suppIn_top (form n f)) x
-    PUnit.unit PUnit.unit PUnit.unit PUnit.unit le_top le_top (fun _ _ => h₁ _)
-    (fun _ _ => memInf (Opens.mem_top _) (mem_tw_triv D _))
-    (fun _ _ => mem_tw_triv _ _)
-  rw [mulEDs_Res] at e
-  replace e := (valOn_resTo _ _ _ _ le_top _).symm.trans e
-  have key (y : Sp R ⟶ Sp (MvPolynomial (Fin D) k)) (hy : y = spMap φ) :
-      (affineSpace k D).jacVal (fun a => polySec (g a)) y PUnit.unit PUnit.unit le_top le_top =
-        φ (Matrix.of fun a b => pderiv b (g a)).det ∧ evalPt y ⊤ le_top (polyFn f) = φ f := by
-    subst hy
-    exact ⟨jacVal_affineSpace k D φ g, evalPt_spMap φ f⟩
-  refine Eq.trans ?_ ((e.symm.trans ((val_ofSec _ _ _ _ _).trans
-    (evalPt_res _ le_top le_top _ _))).trans (key _ hx).2)
-  exact congrArg (· * _) ((key _ hx).1.symm.trans ((one_mul _).symm.trans
-    (congrArg (· * _) ((congrArg _ (map_one _)).trans (map_one _)).symm)))
-
-example : VanishesTo (ideal X) 2 (H0.ofSec (affStr ℚ 2) ⊤ (polySec (X 0 * X 1))) ∧
-    ¬ VanishesTo (ideal X) 3 (H0.ofSec (affStr ℚ 2) ⊤ (polySec (X 0 * X 1))) := by
-  simp only [vanishesTo_iff]
-  refine ⟨?_, fun h => ?_⟩
-  · rw [pow_two]
-    exact Ideal.mul_mem_mul (Ideal.subset_span ⟨0, rfl⟩) (Ideal.subset_span ⟨1, rfl⟩)
-  have := (mem_pow_idealOfVars_iff' 3 _).1 h (Finsupp.single 0 1 + Finsupp.single 1 1) (by simp)
-  simp [X, monomial_mul] at this
-
-example {R : Type} [CommRing R] (hS : Etale ((ideal ![X 1, X 0]).subschemeι ≫ affStr k 2))
-    (f : MvPolynomial (Fin 2) k) (x : Sp R ⟶ (ideal ![X 1, X 0]).subscheme)
-    (φ : MvPolynomial (Fin 2) k →+* R) (hx : x ≫ (ideal ![X 1, X 0]).subschemeι = spMap φ) :
-    valOn x (twIdx 0 PUnit.unit PUnit.unit) (fun _ _ => mem_tw_triv _ _)
-      (Res (affineSpace k 2) isLB_triv isLB_triv isLB_triv _ hS 0 one (suppIn_one _) suppIn_top
-        (form 0 f)) = -φ f := by
-  rw [← det_mul_valOn_Res hS 0 f x φ hx]
-  simp [Matrix.det_fin_two]
-
-example : Etale ((ideal ![X 1, X 0]).subschemeι ≫ affStr k 2) :=
-  etale_of_span (congrArg Ideal.span (by simp [Set.pair_comm, Set.ext_iff, Fin.exists_fin_two, eq_comm, or_comm]))
 
 end AffineExample
 

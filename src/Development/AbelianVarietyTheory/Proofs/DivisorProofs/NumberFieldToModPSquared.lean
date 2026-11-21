@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SepIntPolyRootModPrimeSqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SepIntPolyRootModPrimeSq
 open scoped TensorProduct Polynomial
 
 namespace GlobalTheory
@@ -107,7 +107,7 @@ theorem exists_prime_sq_ringHom_of_closure : ∀ (K : Type) [Field K] [NumberFie
       rw [hN, hc]; push_cast; rw [zsmul_eq_mul]; push_cast; ring
     rw [this]
     exact Subalgebra.zsmul_mem _ (hNf s) _
-  obtain ⟨p, hp, hlt, x, hx⟩ := GlobalTheory.T.exists_large_prime_sq_dvd_eval_of_separable (minpoly ℤ θ) hdeg hsep (max n N)
+  obtain ⟨p, hp, hlt, x, hx⟩ := _root_.GlobalTheory.sep_int_poly_root_mod_prime_sq (minpoly ℤ θ) hdeg hsep (max n N)
   refine ⟨p, hp, lt_of_le_of_lt (le_max_left _ _) hlt, ?_⟩
   obtain ⟨ψ⟩ := nonempty_adjoin_ringHom_zmod_of_dvd_eval K θ hθ (p ^ 2) x (by exact_mod_cast hx)
   have hu : IsUnit (N : ZMod (p ^ 2)) := by

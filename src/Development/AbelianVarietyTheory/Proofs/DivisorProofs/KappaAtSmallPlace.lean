@@ -71,10 +71,6 @@ theorem kapAt (j : Fin D.R.m) (P : Par) (w : HeightOneSpectrum (𝓞 D.what₂.L
       (Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E).symm_apply_apply _
     rwa [he] at h
 
-theorem kapSt : InRange fun _ _ _ _ p j P _ w => SmallAt p j P w → KapAt p j P w :=
-  ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ =>
-    ⟨0, fun _ _ _ _ p _ _ j P _ _ _ w _ _ _ => kapAt p j P w⟩⟩⟩
-
 end Pt
 
 end GlobalTheory.FrameOf

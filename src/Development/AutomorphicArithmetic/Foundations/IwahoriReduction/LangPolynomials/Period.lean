@@ -7,18 +7,6 @@ open scoped Matrix
 
 namespace UpperTheory.Kd.C7
 
-section
-variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {A : ValuationSubring Ω} {j : Ω →+* Qbar l}
-  (Φ : Fr l A j) {c : Coef l} (β : Bas c)
-
-end
-
-section
-variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {A : ValuationSubring Ω} {j : Ω →+* Qbar l}
-  (Φ : Fr l A j) {c : Coef l} (β : Bas c)
-
-end
-
 end UpperTheory.Kd.C7
 
 private theorem ringHom_algebraMap_padicInt_eq {l : ℕ} [Fact (Nat.Prime l)] {R : Type} [CommRing R] [Algebra ℤ_[l] R]

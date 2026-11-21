@@ -27,12 +27,6 @@ instance : MulAction H (ConjPair H X) where
 
 @[simp] theorem smul_pt (δ : H) (p : ConjPair H X) : (δ • p).pt = δ • p.pt := rfl
 
-theorem stabilizer_le_pt (p : ConjPair H X) :
-    MulAction.stabilizer H p ≤ MulAction.stabilizer H p.pt := by
-  intro δ hδ
-  rw [MulAction.mem_stabilizer_iff] at hδ ⊢
-  rw [← smul_pt, hδ]
-
 theorem mem_stabilizer_iff (δ : H) (p : ConjPair H X) :
     δ ∈ MulAction.stabilizer H p ↔ δ * p.elt = p.elt * δ ∧ δ • p.pt = p.pt := by
   rw [MulAction.mem_stabilizer_iff, ConjPair.ext_iff, smul_elt, smul_pt]

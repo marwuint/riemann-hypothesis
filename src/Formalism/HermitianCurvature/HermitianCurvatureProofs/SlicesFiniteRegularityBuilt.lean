@@ -1261,11 +1261,6 @@ namespace Formalism.FourierDecayAlt.P.JCTx6.Int
 
 open Formalism.FourierDecayAlt.P.Dx2.SL
 
-lemma cont_Zu (n : ℕ) (t : ℂ) : Continuous (Zu n t) := by
-  refine continuous_pi fun a => continuous_pi fun b => ?_
-  simp only [Zu_apply, G.upper, G.strictUpper, Matrix.add_apply, Matrix.of_apply]
-  split_ifs <;> fun_prop
-
 lemma continuous_slice_integrand {ph n : ℕ} (σ : Equiv.Perm (Fin ph)) (d : Fin ph → ℂ) (t : ℂ) :
     Continuous fun y : U.XiH ph (n + 1) σ × (G.UT (n + 1) → ℂ) => U.ZjH σ d y.1 (Zu n t y.2) := by
   have e : (fun y : U.XiH ph (n + 1) σ × (G.UT (n + 1) → ℂ) => U.ZjH σ d y.1 (Zu n t y.2)) =

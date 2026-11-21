@@ -1,5 +1,6 @@
 import Mathlib
-import GroundTheory.AutomorphicForms.MultiplicityOne.GL2BumpFunctions.Parametrix
+import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.ContinuousMultilinearOfFiniteDimensional
+import GroundTheory.AutomorphicForms.DixmierMalliavinProducts
 import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.Density
 import GroundTheory.AutomorphicForms.DixmierMalliavinHaarCoord
 
@@ -49,13 +50,6 @@ theorem listOp_eq_wordOp (L : List 𝔤) (v : E) :
     rfl
 
 variable [CompleteSpace E] (χ : ContDiffBump (0 : ℝ))
-
-def parWord : {d : ℕ} → (Fin d → 𝔤) → (Fin d → Fin 3) → List 𝔤
-  | 0, _, _ => []
-  | _ + 1, b, α => parWord (Fin.tail b) (Fin.tail α) ++ List.replicate (α 0) (b 0)
-
-def parKernel {d : ℕ} (α : Fin d → Fin 3) (t : Fin d → ℝ) : ℝ :=
-  ∏ i, Parametrix.kernel χ (α i) (t i)
 
 end IsExpLieAlgebra
 

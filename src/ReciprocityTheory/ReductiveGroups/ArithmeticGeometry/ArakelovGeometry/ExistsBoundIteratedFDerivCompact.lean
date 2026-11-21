@@ -141,11 +141,6 @@ theorem cone_metric_weight_nonneg {J : Type} [Fintype J] (m : ConeMetric ℂ J) 
     0 ≤ wgt m n z := by
   exact inv_nonneg.2 (pow_nonneg (m.nonneg z) _)
 
-theorem sectionNormSq_nonneg {J : Type} [Fintype J] {μ : Measure (J → ℂ)} {r : ℕ}
-    (s : Fin r → (J → ℂ) → ℂ) (m : ConeMetric ℂ J) (n : ℕ) (c : Fin r → ℂ) :
-    0 ≤ bNormSq μ s (wgt m n) c := by
-  exact integral_nonneg fun x => mul_nonneg (sq_nonneg _) (cone_metric_weight_nonneg m n x)
-
 theorem isDegreeZero_weightedCombination {J : Type} [Fintype J] (m : ConeMetric ℂ J) {n r : ℕ}
     {b : Fin r → MvPolynomial J ℚ}
     (hb : ∀ k, ∃ f : MvPolynomial J ℤ, f.IsHomogeneous n ∧ b k = map (Int.castRingHom ℚ) f)

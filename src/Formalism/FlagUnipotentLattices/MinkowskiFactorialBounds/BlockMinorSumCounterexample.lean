@@ -31,18 +31,6 @@ theorem prod_max_inv_le_prod_max' : Formalism.HermitianLatticeCounting.Expansion
   · exact Finset.prod_nonneg fun v _ => by positivity
   · exact h1
 
-theorem moment_recursion_iterate : Formalism.HermitianLatticeCounting.ExpansionTerms.MomentRecursionIterate := by
-  intro P ι step d MM c q0 J hd h0 hs q
-  induction q with
-  | zero => intro μ j _ _; simpa using h0 μ j
-  | succ q ih =>
-    intro μ j h1 h2
-    calc MM (q+1) μ j ≤ c * ⨆ s, MM q (step μ s) (j+2) := hs q μ j (by omega) (by omega)
-      _ ≤ c * c^q := by
-          gcongr
-          exact iSup_le fun s => ih _ _ (by have := hd μ s; omega) (by omega)
-      _ = c^(q+1) := by rw [pow_succ, mul_comm]
-
 end G0
 
 section G1
@@ -552,9 +540,6 @@ theorem block_end_minor_fibre_finite' : Formalism.HermitianLatticeCounting.Expan
     _ ≤ ∏ a, s a := Finset.prod_le_prod' fun a _ =>
         (Multiset.toFinset_card_le _).trans (Polynomial.card_nthRoots _ _)
 
-def scalarPoint {E : Type} [Field E] (x : E) : Σ c : Composition (0 + 1), (Fin c.length → E) :=
-  ⟨Composition.ones 1, fun _ => x⟩
-
 end G4
 
 section G5
@@ -736,10 +721,6 @@ theorem integral_norm_application_holds : Formalism.HermitianLatticeCounting.Exp
       · have := sq_nonneg ‖D v‖; linarith
       · have := hD v; linarith
 
-noncomputable def boundPolynomial (r A' : ℕ) : MvPolynomial (Fin (r + 1) ⊕ Fin (r + 1)) NNReal :=
-  (∏ l : Fin (r + 1), (1 + MvPolynomial.X (Sum.inl l) * MvPolynomial.X (Sum.inr l)) ^ 2) *
-    (1 + MvPolynomial.X (Sum.inl (Fin.last r)) * MvPolynomial.X (Sum.inr (Fin.last r))) ^ A'
-
 end G6
 
 section G7
@@ -850,35 +831,6 @@ theorem corollary_upper_estimate_holds : Formalism.HermitianLatticeCounting.Expa
   simp only [B, Nat.add_eq_zero_iff, one_ne_zero, and_false, if_false, if_true, prod_const, card_range]
   rw [← pow_mul, mul_comm]
 
-theorem corollary_lower_estimate_holds : Formalism.HermitianLatticeCounting.ExpansionTerms.MomentDownwardBound := by
-  intro Ω _ μ _ r q l T R hm hpos hT hR hl hc a
-  have ha : a.val ≤ r := Nat.lt_succ_iff.1 a.isLt
-  let M : ℕ → Ω → ℝ := fun i ω => l ⟨min (a.val + i) r, by omega⟩ ω
-  have hq : (r - a.val) * q ≤ (r + 1) * q := Nat.mul_le_mul_right _ (by omega)
-  have key := moment_ratio_telescoping μ M (r - a.val) q (fun _ => R) (fun i => hm _) (fun i ω => hpos _ _) (fun _ => hR)
-    (by
-      intro i hi
-      have hk : a.val + i < r := by omega
-      have e1 : (⟨min (a.val + (i + 1)) r, by omega⟩ : Fin (r + 1)) = (⟨a.val + i, hk⟩ : Fin r).succ :=
-        Fin.ext (by simp; omega)
-      have e2 : (⟨min (a.val + i) r, by omega⟩ : Fin (r + 1)) = (⟨a.val + i, hk⟩ : Fin r).castSucc :=
-        Fin.ext (by simp; omega)
-      simp only [M, e1, e2]
-      exact hc _ _ hq)
-  have ea : (⟨min (a.val + 0) r, by omega⟩ : Fin (r + 1)) = a := Fin.ext (by simp; omega)
-  have er : (⟨min (a.val + (r - a.val)) r, by omega⟩ : Fin (r + 1)) = Fin.last r := Fin.ext (by simp; omega)
-  simp only [M, ea, er, prod_const, card_range] at key
-  rw [← pow_mul] at key
-  refine le_trans (lintegral_mono fun ω => ENNReal.ofReal_le_ofReal ?_) key
-  have h1 : 1 ≤ l (Fin.last r) ω := by
-    have h2 := hl ω
-    have h3 := hpos (Fin.last r) ω
-    nlinarith
-  have h4 := hpos a ω
-  apply pow_le_pow_left₀ (by positivity)
-  rw [div_eq_mul_inv]
-  exact le_mul_of_one_le_left (by positivity) h1
-
 theorem corollary_product_estimate_holds : Formalism.HermitianLatticeCounting.ExpansionTerms.MomentProductBound := by
   intro Ω _ μ _ r q L l H1 hm hpos hH1 hL h
   have hcard : (univ.filter (fun a : Fin (r + 1) => a.val < L)).card = L := by
@@ -907,148 +859,10 @@ theorem corollary_product_estimate_holds : Formalism.HermitianLatticeCounting.Ex
   refine key.trans (le_of_eq ?_)
   rw [prod_const, hcard, ← ENNReal.ofReal_pow (by positivity), ← pow_mul]
 
-lemma chebyshev_moment_bound {Ω : Type} [MeasurableSpace Ω] (μ : Measure Ω) (f : Ω → ℝ) (q : ℕ) (H1 la : ℝ)
-    (hf : Measurable f) (hH1 : 0 < H1) (hla : 0 < la)
-    (h : ∫⁻ ω, ENNReal.ofReal (f ω ^ (2 * q)) ∂μ ≤ ENNReal.ofReal (H1 ^ (2 * q))) :
-    μ {ω | la * H1 ≤ f ω} ≤ ENNReal.ofReal (1 / la ^ (2 * q)) := by
-  have h0 : 0 < (la * H1) ^ (2 * q) := by positivity
-  have h1 : μ {ω | ENNReal.ofReal ((la * H1) ^ (2 * q)) ≤ ENNReal.ofReal (f ω ^ (2 * q))} ≤
-      (∫⁻ ω, ENNReal.ofReal (f ω ^ (2 * q)) ∂μ) / ENNReal.ofReal ((la * H1) ^ (2 * q)) :=
-    meas_ge_le_lintegral_div (ENNReal.measurable_ofReal.comp (hf.pow_const _)).aemeasurable
-      (by simpa using h0) ENNReal.ofReal_ne_top
-  have h2 : {ω | la * H1 ≤ f ω} ⊆
-      {ω | ENNReal.ofReal ((la * H1) ^ (2 * q)) ≤ ENNReal.ofReal (f ω ^ (2 * q))} := by
-    intro ω hω
-    exact ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ (by positivity) hω _)
-  refine (measure_mono h2).trans (h1.trans ?_)
-  calc _ ≤ ENNReal.ofReal (H1 ^ (2 * q)) / ENNReal.ofReal ((la * H1) ^ (2 * q)) := by gcongr
-    _ = ENNReal.ofReal (H1 ^ (2 * q) / (la * H1) ^ (2 * q)) := (ENNReal.ofReal_div_of_pos h0).symm
-    _ = ENNReal.ofReal (1 / la ^ (2 * q)) := by
-        congr 1
-        rw [mul_pow]
-        field_simp
-
-theorem corollary_mass_estimate_holds : Formalism.HermitianLatticeCounting.ExpansionTerms.MomentMassBound := by
-  intro Ω _ μ _ r q l H1 la hm hpos hH1 hla hp hn
-  have hsub : {ω | ∃ a, la * H1 ≤ max (l a ω) (l a ω)⁻¹} ⊆
-      ⋃ a : Fin (r + 1), ({ω | la * H1 ≤ l a ω} ∪ {ω | la * H1 ≤ (l a ω)⁻¹}) := by
-    rintro ω ⟨a, ha⟩
-    rw [Set.mem_iUnion]
-    refine ⟨a, ?_⟩
-    rcases le_max_iff.1 ha with h | h
-    · exact Or.inl h
-    · exact Or.inr h
-  have hone : ∀ a : Fin (r + 1), μ ({ω | la * H1 ≤ l a ω} ∪ {ω | la * H1 ≤ (l a ω)⁻¹}) ≤
-      ENNReal.ofReal (2 / la ^ (2 * q)) := by
-    intro a
-    have h1 := chebyshev_moment_bound μ (l a) q H1 la (hm a) hH1 hla (hp a)
-    have h2 := chebyshev_moment_bound μ (fun ω => (l a ω)⁻¹) q H1 la (hm a).inv hH1 hla (hn a)
-    refine (measure_union_le _ _).trans ((add_le_add h1 h2).trans (le_of_eq ?_))
-    rw [← ENNReal.ofReal_add (by positivity) (by positivity)]
-    congr 1
-    ring
-  refine (measure_mono hsub).trans ((measure_iUnion_fintype_le μ _).trans ?_)
-  refine (Finset.sum_le_sum fun a _ => hone a).trans (le_of_eq ?_)
-  rw [sum_const, card_univ, Fintype.card_fin, nsmul_eq_mul,
-    show ((r + 1 : ℕ) : ℝ≥0∞) = ENNReal.ofReal ((r : ℝ) + 1) by
-      rw [← ENNReal.ofReal_natCast]; push_cast; rfl,
-    ← ENNReal.ofReal_mul (by positivity)]
-  congr 1
-  ring
-
-theorem corollary_consequence_holds : Formalism.HermitianLatticeCounting.ExpansionTerms.MomentBound₂ := by
-  intro Ω _ μ _ r q l H0 R T hm hpos hH0 hR hT h0 hc hl
-  have hH0' : (0:ℝ) ≤ H0 := by linarith
-  have hM1 : (1:ℝ) ≤ max 1 R := le_max_left _ _
-  have hMR : R ≤ max 1 R := le_max_right _ _
-  have hH1 : 0 < H0 * max 1 R ^ r := by positivity
-  have hab : ∀ a, ∫⁻ ω, ENNReal.ofReal (l a ω ^ (2 * q)) ∂μ ≤ ENNReal.ofReal ((H0 * max 1 R ^ r) ^ (2 * q)) ∧
-      ∫⁻ ω, ENNReal.ofReal ((l a ω)⁻¹ ^ (2 * q)) ∂μ ≤ ENNReal.ofReal ((H0 * max 1 R ^ r) ^ (2 * q)) := by
-    intro a
-    have ha : a.val ≤ r := Nat.lt_succ_iff.1 a.isLt
-    constructor
-    · refine (corollary_upper_estimate_holds Ω μ r q l H0 R hm hpos hH0' hR h0 hc a).trans (ENNReal.ofReal_le_ofReal ?_)
-      rw [mul_pow, ← pow_mul]
-      apply mul_le_mul_of_nonneg_left _ (by positivity)
-      calc R ^ (2 * q * a.val) ≤ max 1 R ^ (2 * q * a.val) := pow_le_pow_left₀ hR hMR _
-        _ ≤ max 1 R ^ (r * (2 * q)) := pow_le_pow_right₀ hM1 (by
-            rw [mul_comm r]; exact Nat.mul_le_mul_left _ ha)
-    · refine (corollary_lower_estimate_holds Ω μ r q l T R hm hpos hT hR hl hc a).trans (ENNReal.ofReal_le_ofReal ?_)
-      rw [mul_pow, ← pow_mul]
-      calc R ^ (2 * q * (r - a.val)) ≤ max 1 R ^ (2 * q * (r - a.val)) := pow_le_pow_left₀ hR hMR _
-        _ ≤ max 1 R ^ (r * (2 * q)) := pow_le_pow_right₀ hM1 (by
-            rw [mul_comm r]; exact Nat.mul_le_mul_left _ (by omega))
-        _ ≤ H0 ^ (2 * q) * max 1 R ^ (r * (2 * q)) :=
-            le_mul_of_one_le_left (by positivity) (one_le_pow₀ hH0)
-  refine ⟨hab, fun la hla => ?_⟩
-  exact corollary_mass_estimate_holds Ω μ r q l _ la hm hpos hH1 hla (fun a => (hab a).1) (fun a => (hab a).2)
-
 end G7
 
 section G8
 open Finset Real MeasureTheory Formalism.HermitianLatticeCounting.ExpansionTerms
-
-lemma sum_fin_succ_cons {ι M : Type} [Fintype ι] [AddCommMonoid M] (q : ℕ) (F : (Fin (q + 1) → ι) → M) :
-    ∑ σ, F σ = ∑ τ : Fin q → ι, ∑ i : ι, F (Fin.cons i τ) := by
-  rw [← (Fintype.sum_equiv (Fin.consEquiv (fun _ : Fin (q + 1) => ι)) (fun p => F (Fin.cons p.1 p.2)) F
-    (fun _ => rfl)), Fintype.sum_prod_type_right]
-
-lemma foldr_ofFn_cons {W ι : Type} (Eop : ι → W → W) (q : ℕ) (i : ι) (τ : Fin q → ι) (w : W) :
-    (List.ofFn (Fin.cons i τ : Fin (q + 1) → ι)).foldr Eop w = Eop i ((List.ofFn τ).foldr Eop w) := by
-  simp [List.ofFn_succ]
-
-lemma iterate_sum_lower_bound {R W ι : Type} [CommSemiring R] [PartialOrder R] [IsOrderedRing R] [Fintype ι]
-    (Eop : ι → W → W) (Φ : W → R) (κ : R) (hκ : 0 ≤ κ) (h : ∀ w, κ * Φ w ≤ ∑ i, Φ (Eop i w))
-    (q : ℕ) (w : W) : κ ^ q * Φ w ≤ ∑ σ : Fin q → ι, Φ ((List.ofFn σ).foldr Eop w) := by
-  induction q with
-  | zero => simp
-  | succ q ih =>
-    rw [sum_fin_succ_cons]
-    calc κ ^ (q + 1) * Φ w = κ * (κ ^ q * Φ w) := by ring
-      _ ≤ κ * ∑ τ : Fin q → ι, Φ ((List.ofFn τ).foldr Eop w) := mul_le_mul_of_nonneg_left ih hκ
-      _ = ∑ τ : Fin q → ι, κ * Φ ((List.ofFn τ).foldr Eop w) := Finset.mul_sum _ _ _
-      _ ≤ ∑ τ : Fin q → ι, ∑ i, Φ (Eop i ((List.ofFn τ).foldr Eop w)) :=
-          Finset.sum_le_sum fun τ _ => h _
-      _ = _ := by simp only [foldr_ofFn_cons]
-
-lemma foldr_mem_filtration {W ι : Type} (Eop : ι → W → W) (Fil : ℕ → Set W)
-    (hF : ∀ i j w, w ∈ Fil j → Eop i w ∈ Fil (j + 2)) (j : ℕ) (w : W) (hw : w ∈ Fil j) (l : List ι) :
-    l.foldr Eop w ∈ Fil (j + 2 * l.length) := by
-  induction l with
-  | nil => simpa using hw
-  | cons i l ih =>
-    have := hF i _ _ ih
-    simpa [List.foldr_cons, List.length_cons, mul_add, add_assoc] using this
-
-lemma filtered_iterate_norm_bound {R W ι : Type} [CommSemiring R] [PartialOrder R] [IsOrderedRing R] [Fintype ι]
-    (Eop : ι → W → W) (Nw : W → R) (Fil : ℕ → Set W) (c : ℕ → R) (hc : ∀ j, 0 ≤ c j)
-    (hF : ∀ i j w, w ∈ Fil j → Eop i w ∈ Fil (j + 2))
-    (hN : ∀ j w, w ∈ Fil j → ∑ i, Nw (Eop i w) ≤ c j * Nw w) (q j : ℕ) (w : W) (hw : w ∈ Fil j) :
-    ∑ σ : Fin q → ι, Nw ((List.ofFn σ).foldr Eop w) ≤ (∏ i ∈ range q, c (j + 2 * i)) * Nw w := by
-  induction q with
-  | zero => simp
-  | succ q ih =>
-    rw [sum_fin_succ_cons]
-    calc ∑ τ : Fin q → ι, ∑ i, Nw ((List.ofFn (Fin.cons i τ : Fin (q + 1) → ι)).foldr Eop w)
-        = ∑ τ : Fin q → ι, ∑ i, Nw (Eop i ((List.ofFn τ).foldr Eop w)) := by simp only [foldr_ofFn_cons]
-      _ ≤ ∑ τ : Fin q → ι, c (j + 2 * q) * Nw ((List.ofFn τ).foldr Eop w) := by
-          refine Finset.sum_le_sum fun τ _ => hN _ _ ?_
-          have := foldr_mem_filtration Eop Fil hF j w hw (List.ofFn τ)
-          simpa using this
-      _ = c (j + 2 * q) * ∑ τ : Fin q → ι, Nw ((List.ofFn τ).foldr Eop w) := (Finset.mul_sum _ _ _).symm
-      _ ≤ c (j + 2 * q) * ((∏ i ∈ range q, c (j + 2 * i)) * Nw w) := mul_le_mul_of_nonneg_left ih (hc _)
-      _ = (∏ i ∈ range (q + 1), c (j + 2 * i)) * Nw w := by rw [Finset.prod_range_succ]; ring
-
-theorem abstract_iteration_theorem_holds : Formalism.HermitianLatticeCounting.ExpansionTerms.SuperharmonicMomentBound := by
-  intro Ω W ι _ _ ν Eop Ph κ Nw Fil c hm hI hk hF hN q j w hw
-  calc ∫⁻ g, κ g ^ q * Ph w g ∂ν
-      ≤ ∫⁻ g, ∑ σ : Fin q → ι, Ph ((List.ofFn σ).foldr Eop w) g ∂ν :=
-        lintegral_mono fun g => iterate_sum_lower_bound Eop (fun w => Ph w g) (κ g) zero_le (fun w => hk w g) q w
-    _ = ∑ σ : Fin q → ι, Nw ((List.ofFn σ).foldr Eop w) := by
-        rw [lintegral_finsetSum _ (fun σ _ => hm _)]
-        exact Finset.sum_congr rfl fun σ _ => hI _
-    _ ≤ (∏ i ∈ range q, c (j + 2 * i)) * Nw w :=
-        filtered_iterate_norm_bound Eop Nw Fil c (fun _ => zero_le) hF hN q j w hw
 
 noncomputable def lOneNorm {P : Type} (a : P →₀ ℂ) : ℝ := a.sum fun _ c => ‖c‖
 

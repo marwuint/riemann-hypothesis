@@ -47,10 +47,6 @@ theorem comm_qdet {n : ℕ} {E : Fin n → Fin n → A} {z : A} (h : ∀ a b, Co
   unfold Formalism.REAL.Tm
   exact Commute.add_right (GlobalTheory.CapHC.ite_algebraMap_comm _ _ _).symm (h _ _)
 
-theorem qdet_one (E : Fin 1 → Fin 1 → A) (u : ℂ) : Formalism.REAL.qdet E u = algebraMap ℂ A u + E 0 0 := by
-  unfold Formalism.REAL.qdet Formalism.REAL.qminor Formalism.REAL.Tm
-  simp
-
 theorem glComm {n : ℕ} {X : Fin n → Fin n → A} (hX : Formalism.REAL.GlRel X) {a b c d : Fin n} (hbc : b ≠ c)
     (hda : d ≠ a) : Commute (X a b) (X c d) := by
   have h := hX a b c d
@@ -84,14 +80,5 @@ theorem upperSpan_maps {N K : Submodule ℂ M} {r m : ℕ} (Y : Fin (r + m) → 
   | smul c a _ ha => intro x hx; simpa using K.smul_mem c (ha x hx)
 
 end Stab
-
-section Main
-
-theorem blk_castAdd_lt {n₁ : ℕ} (p : Fin (1 + n₁)) (q : Fin 1) :
-    blk n₁ (Fin.castAdd 1 p) < blk n₁ (Fin.natAdd (1 + n₁) q) := by
-  rw [blk_y]
-  refine Fin.addCases (fun a => ?_) (fun k => ?_) p <;> simp [blk]
-
-end Main
 
 end GlobalTheory.LeviHC.MidBlock

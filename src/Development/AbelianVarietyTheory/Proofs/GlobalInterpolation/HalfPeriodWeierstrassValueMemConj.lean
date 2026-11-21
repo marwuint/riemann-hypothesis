@@ -44,7 +44,7 @@ theorem key_of_fix {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Formali
   obtain ⟨hex, -, -, -, hmul, hord, -⟩ :=
     GlobalTheory.T.galStar_complexMultiplication_points D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top
   obtain ⟨cc', δ', h', -, hL⟩ :=
-    GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top 1 one_pos
+    _root_.GlobalTheory.ConjCurve.galCurve_holds D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top 1 one_pos
   rw [GlobalTheory.ThetaConj.twoTorsionCMPoint_iff] at ht ht'
   obtain ⟨a, ha⟩ := GlobalTheory.NormSum.exists_integer_map_eq_w0 D
   have ha' : D.host.φ₀ ((((1 - a : 𝓞 D.host.K) : D.host.K) : D.host.E)) = 1 - w0 D := by

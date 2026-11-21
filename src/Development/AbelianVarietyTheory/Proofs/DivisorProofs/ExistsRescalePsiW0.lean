@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EvenDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasPolChartOf
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalPolChartsKS
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SecCmp
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TraceFormTwistIsoOfPullback
@@ -50,8 +50,5 @@ end Geometry
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O D.X]
 
 open DVR (cP cPoint_add)
-
-theorem cPoint_smul (oa : D.OAct O) (w : O) (a : D.X) : cP D (TK R) (w • a) = cP D (TK R) a ≫ oa.onB.act w := by
-  rw [cP, cP, oa.c_lin, Category.assoc]
 
 end GlobalTheory.PsiRescale

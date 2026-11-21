@@ -31,9 +31,6 @@ instance upperSupFixing_normal (u : ℝ) : (upperSupFixing K Ω L u).Normal := b
 variable (hL : IsAPF K Ω L)
 include hL
 
-theorem finiteDimensional_upperField' (u : ℝ) : FiniteDimensional K (upperField K Ω L u) :=
-  finiteDimensional_upperField hL u
-
 theorem isGalois_upperField (u : ℝ) : IsGalois K (upperField K Ω L u) := by
   rw [← InfiniteGalois.normal_iff_isGalois, fixingSubgroup_upperField hL]
   infer_instance
@@ -394,8 +391,6 @@ theorem F_succ_le_of_k_eq_zero {m : ℕ} (hk : d.k m = 0) :
   rw [hH, Subgroup.mem_bot] at h
   have := congrArg (fun f ↦ ((f ⟨x, hx⟩ : (d.F (m + 1) : IntermediateField K Ω)) : Ω)) h
   simpa [AlgEquiv.restrictNormalHom_apply] using this
-
-theorem le_F_of_mem (n : ℕ) : (d.F n : IntermediateField K Ω) ≤ L := upperField_le _
 
 theorem frequently_ne_zero (hinf : ¬ FiniteDimensional K L) (n : ℕ) : ∃ m, n ≤ m ∧ d.k m ≠ 0 := by
   by_contra hcon

@@ -56,11 +56,6 @@ structure GKModule (K : Subgroup G) (V : Type*) [AddCommGroup V] [Module ℂ V] 
 
   map_ρ : ∀ (k : K) (X : 𝔤) (v : V), σ k (ρ (h.toLie X) v) = ρ (h.toLie (h.Ad k X)) (σ k v)
 
-def GKModule.IsAdmissible {K : Subgroup G} {V : Type*} [AddCommGroup V] [Module ℂ V]
-    (M : h.GKModule K V) : Prop :=
-  ∀ (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (τ : Representation ℂ K W),
-    τ.IsIrreducible → Representation.HasContinuousCoeff τ → FiniteDimensional ℂ (kHom τ M.σ)
-
 end IsExpLieAlgebra
 
 namespace BanachRep
@@ -82,11 +77,6 @@ noncomputable def restrict (π : BanachRep K' E) (K : Subgroup K') : BanachRep K
 
 @[simp] theorem restrict_apply (π : BanachRep K' E) (K : Subgroup K') (k : K) :
     π.restrict K k = π k := rfl
-
-def IsAdmissible (π : BanachRep K' E) (K : Subgroup K') : Prop :=
-  ∀ (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (τ : Representation ℂ K W),
-    τ.IsIrreducible → Representation.HasContinuousCoeff τ →
-      FiniteDimensional ℂ (kHom τ (π.restrict K).toRepresentation)
 
 variable (π : BanachRep K' E) (K : Subgroup K')
 
@@ -313,22 +303,6 @@ noncomputable def gkModule [CompleteSpace E] : h.GKModule K (h.gkVectors π K) w
 
 @[simp] theorem gkModule_ρ_apply [CompleteSpace E] (X : h.lieSubalgebra) (v : h.gkVectors π K) :
     (((h.gkModule π K).ρ X v : h.gkVectors π K) : E) = h.derivOp π (h.ofLie X) v := rfl
-
-theorem isAdmissible_gkModule [CompleteSpace E] (hπ : π.IsAdmissible K) :
-    (h.gkModule π K).IsAdmissible := by
-  intro W _ _ _ τ hirr hcont
-  haveI := hπ W τ hirr hcont
-  let f : kHom τ (h.gkModule π K).σ →ₗ[ℂ] kHom τ (π.restrict K).toRepresentation :=
-    { toFun := fun T => ⟨(h.gkVectors π K).subtype ∘ₗ T.1, fun k => by
-        ext w
-        have := congrArg Subtype.val (LinearMap.congr_fun (T.2 k) w)
-        simpa using this⟩
-      map_add' := fun S T => by ext; simp
-      map_smul' := fun c T => by ext; simp }
-  refine Module.Finite.of_injective f fun S T hST => ?_
-  ext w
-  have := LinearMap.congr_fun (congrArg Subtype.val hST) w
-  simpa [f] using this
 
 end IsExpLieAlgebra
 

@@ -36,8 +36,6 @@ variable (I : AutInst)
 
 def gaugeU : ℝ := ∏ v : NumberField.InfinitePlace I.F, Gauge.gaugeU (I.ε v)
 
-def volKg (μf : Measure I.Gf) (g : ℕ) : ℝ := (μf (I.Kg g)).toReal * I.gaugeU
-
 end Formalism.MainNotions.S.AutInst
 
 open MeasureTheory Filter Topology
@@ -202,14 +200,6 @@ theorem continuous_expG (ε : Fin n → Bool) : Continuous (expG ε) := by
   rw [this]
   exact continuous_expM.comp (continuous_unrealify.comp continuous_subtype_val)
 
-theorem expSet_eq_image (ε : Fin n → Bool) (A : Set (gLie ε)) : expSet ε A = expG ε '' A := by
-  ext g
-  constructor
-  · rintro ⟨x, hx, e⟩
-    exact ⟨x, hx, uMat_inj ((uMat_expG ε x).trans e.symm)⟩
-  · rintro ⟨x, hx, rfl⟩
-    exact ⟨x, hx, uMat_expG ε x⟩
-
 abbrev MP (n : ℕ) := Fin n → Fin n → ℂ
 
 def realV (X : Matrix (Fin n) (Fin n) ℂ) : EuclideanSpace ℝ (Fin n × Fin n × Bool) := (WithLp.equiv 2 _).symm (realifyFun X)
@@ -234,22 +224,6 @@ def dPart {N : ℕ} (Θ : EuclideanSpace ℝ (Fin N) → MP n) (t : EuclideanSpa
 def chartJac {N : ℕ} (Θ : EuclideanSpace ℝ (Fin N) → MP n) (t : EuclideanSpace ℝ (Fin N)) : ℝ :=
   Real.sqrt (Matrix.det (Matrix.of fun i j : Fin N =>
     @inner ℝ _ _ (realV ((Matrix.of (Θ t))⁻¹ * Matrix.of (dPart Θ t i))) (realV ((Matrix.of (Θ t))⁻¹ * Matrix.of (dPart Θ t j)))))
-
-open Classical in
-
-def toUJ (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) : Formalism.REAL.UJ ε :=
-  if h : ∃ g : Formalism.REAL.UJ ε, uMat g = M then h.choose else 1
-
-theorem toUJ_uMat {ε : Fin n → Bool} {M : Matrix (Fin n) (Fin n) ℂ} (h : ∃ g : Formalism.REAL.UJ ε, uMat g = M) :
-    uMat (toUJ ε M) = M := by
-  unfold toUJ; rw [dif_pos h]; exact h.choose_spec
-
-def GaugeCV (ε : Fin n → Bool) : Prop :=
-  ∃ c : ℝ, 0 < c ∧ ∀ (U : Set (EuclideanSpace ℝ (Fin (dimL ε)))) (Θ : EuclideanSpace ℝ (Fin (dimL ε)) → MP n),
-    IsOpen U → ContDiffOn ℝ 1 Θ U → Set.InjOn Θ U → (∀ t ∈ U, Formalism.REAL.inUJ ε (Matrix.of (Θ t))) →
-    ∀ φ : Formalism.REAL.UJ ε → ℝ≥0∞, Measurable φ →
-      ∫⁻ g in {g : Formalism.REAL.UJ ε | (uMat g : MP n) ∈ Θ '' U}, φ g ∂(Formalism.REAL.muG ε) =
-        ENNReal.ofReal c * ∫⁻ t in U, φ (toUJ ε (Matrix.of (Θ t))) * ENNReal.ofReal (chartJac Θ t)
 
 abbrev obG (ε : Fin n → Bool) := stdOrthonormalBasis ℝ (gLie ε)
 
@@ -344,15 +318,6 @@ end ExpChart
 theorem of_thetaExp_zero (ε : Fin n → Bool) : Matrix.of (thetaExp ε 0) = (1 : Matrix (Fin n) (Fin n) ℂ) := by
   rw [of_thetaExp, map_zero, NormedSpace.exp_zero]
 
-theorem thetaExp_inUJ (ε : Fin n → Bool) (t : EuclideanSpace ℝ (Fin (dimL ε))) :
-    Formalism.REAL.inUJ ε (Matrix.of (thetaExp ε t)) := by
-  obtain ⟨g, hg⟩ := exists_uMat ε ((obG ε).repr.symm t)
-  have h := (Formalism.REAL.isClosedEmbeddingMatrix n ε).2
-  have hm : (uMat g) ∈ Set.range (fun g : Formalism.REAL.UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) := ⟨g, rfl⟩
-  rw [h, hg] at hm
-  rw [of_thetaExp, linT_apply]
-  exact hm
-
 theorem inv_thetaExp (ε : Fin n → Bool) (t : EuclideanSpace ℝ (Fin (dimL ε))) :
     (Matrix.of (thetaExp ε t))⁻¹ = NormedSpace.exp (-(linT ε t)) := by
   rw [Matrix.exp_neg, of_thetaExp]
@@ -408,115 +373,5 @@ theorem volume_ball_gLie (ε : Fin n → Bool) (ρ : ℝ) :
   have h := hmp.measure_preimage (measurableSet_ball (x := (0 : EuclideanSpace ℝ (Fin (dimL ε)))) (ε := ρ)).nullMeasurableSet
   rw [LinearIsometryEquiv.preimage_ball, map_zero] at h
   exact h
-
-theorem muG_expBall_of_CV {ε : Fin n → Bool} {c : ℝ}
-    (hcv : ∀ (U : Set (EuclideanSpace ℝ (Fin (dimL ε)))) (Θ : EuclideanSpace ℝ (Fin (dimL ε)) → MP n),
-      IsOpen U → ContDiffOn ℝ 1 Θ U → Set.InjOn Θ U → (∀ t ∈ U, Formalism.REAL.inUJ ε (Matrix.of (Θ t))) →
-      ∀ φ : Formalism.REAL.UJ ε → ℝ≥0∞, Measurable φ →
-        ∫⁻ g in {g : Formalism.REAL.UJ ε | (uMat g : MP n) ∈ Θ '' U}, φ g ∂(Formalism.REAL.muG ε) =
-          ENNReal.ofReal c * ∫⁻ t in U, φ (toUJ ε (Matrix.of (Θ t))) * ENNReal.ofReal (chartJac Θ t))
-    {ρ : ℝ} (hinj : Set.InjOn (thetaExp ε) (Metric.ball 0 ρ)) :
-    Formalism.REAL.muG ε (expSet ε (Metric.ball (0 : gLie ε) ρ)) =
-      ENNReal.ofReal c * ∫⁻ t in Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ, ENNReal.ofReal (chartJac (thetaExp ε) t) := by
-  have h := hcv (Metric.ball 0 ρ) (thetaExp ε) Metric.isOpen_ball
-    ((contDiff_thetaExp ε).contDiffOn.of_le le_top) hinj (fun t _ => thetaExp_inUJ ε t) (fun _ => 1) measurable_const
-  rw [expSet_ball_eq, setLIntegral_one] at h
-  rw [h]
-  simp only [one_mul]
-
-theorem tendsto_ratioAt_of_CV {ε : Fin n → Bool} {c : ℝ} (hc : 0 < c)
-    (hcv : ∀ (U : Set (EuclideanSpace ℝ (Fin (dimL ε)))) (Θ : EuclideanSpace ℝ (Fin (dimL ε)) → MP n),
-      IsOpen U → ContDiffOn ℝ 1 Θ U → Set.InjOn Θ U → (∀ t ∈ U, Formalism.REAL.inUJ ε (Matrix.of (Θ t))) →
-      ∀ φ : Formalism.REAL.UJ ε → ℝ≥0∞, Measurable φ →
-        ∫⁻ g in {g : Formalism.REAL.UJ ε | (uMat g : MP n) ∈ Θ '' U}, φ g ∂(Formalism.REAL.muG ε) =
-          ENNReal.ofReal c * ∫⁻ t in U, φ (toUJ ε (Matrix.of (Θ t))) * ENNReal.ofReal (chartJac Θ t)) :
-    Tendsto (ratioAt ε) (𝓝[>] (0 : ℝ)) (𝓝 c) := by
-  obtain ⟨ρ₀, hρ₀, hinj⟩ := injOn_thetaExp ε
-  rw [Metric.tendsto_nhdsWithin_nhds]
-  intro e he
-  set δ : ℝ := min (1 / 2) (e / (2 * c)) with hδ
-  have hδpos : 0 < δ := lt_min (by norm_num) (div_pos he (by linarith))
-  have hδ1 : δ ≤ 1 / 2 := min_le_left _ _
-  have hδe : c * δ < e := by
-    have : δ ≤ e / (2 * c) := min_le_right _ _
-    calc c * δ ≤ c * (e / (2 * c)) := mul_le_mul_of_nonneg_left this hc.le
-      _ = e / 2 := by field_simp
-      _ < e := by linarith
-  have hJc := (continuous_chartJac_thetaExp ε).continuousAt (x := 0)
-  obtain ⟨η, hη, hcont⟩ := Metric.continuousAt_iff.1 hJc δ hδpos
-  refine ⟨min η ρ₀, lt_min hη hρ₀, fun ρ hρpos hρd => ?_⟩
-  have hρ0 : 0 < ρ := hρpos
-  have hρd' : ρ < min η ρ₀ := by
-    have : dist ρ 0 < min η ρ₀ := hρd
-    rwa [Real.dist_eq, sub_zero, abs_of_pos hρ0] at this
-  have hρη : ρ ≤ η := (lt_of_lt_of_le hρd' (min_le_left _ _)).le
-  have hρr : ρ ≤ ρ₀ := (lt_of_lt_of_le hρd' (min_le_right _ _)).le
-  have hbound : ∀ t ∈ Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ, |chartJac (thetaExp ε) t - 1| < δ := by
-    intro t ht
-    have := hcont (lt_of_lt_of_le ht hρη)
-    rw [chartJac_thetaExp_zero, Real.dist_eq] at this
-    exact this
-  set V := volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ) with hV
-  have hVpos : 0 < V := Metric.measure_ball_pos volume 0 hρ0
-  have hVfin : V ≠ ⊤ := measure_ball_lt_top.ne
-  set I := ∫⁻ t in Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ, ENNReal.ofReal (chartJac (thetaExp ε) t) with hI
-  have hup : I ≤ ENNReal.ofReal (1 + δ) * V := by
-    calc I ≤ ∫⁻ _ in Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ, ENNReal.ofReal (1 + δ) := by
-          refine lintegral_mono_ae ?_
-          filter_upwards [ae_restrict_mem measurableSet_ball] with x hx
-          exact ENNReal.ofReal_le_ofReal (by linarith [(abs_lt.1 (hbound x hx)).2])
-      _ = ENNReal.ofReal (1 + δ) * V := setLIntegral_const _ _
-  have hlo : ENNReal.ofReal (1 - δ) * V ≤ I := by
-    calc ENNReal.ofReal (1 - δ) * V = ∫⁻ _ in Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ, ENNReal.ofReal (1 - δ) :=
-          (setLIntegral_const _ _).symm
-      _ ≤ I := by
-          refine lintegral_mono_ae ?_
-          filter_upwards [ae_restrict_mem measurableSet_ball] with x hx
-          exact ENNReal.ofReal_le_ofReal (by linarith [(abs_lt.1 (hbound x hx)).1])
-  have hIfin : I ≠ ⊤ := ne_top_of_le_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hVfin) hup
-  have hVr : 0 < V.toReal := ENNReal.toReal_pos hVpos.ne' hVfin
-  have hupR : I.toReal ≤ (1 + δ) * V.toReal := by
-    have := ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hVfin) hup
-    rwa [ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)] at this
-  have hloR : (1 - δ) * V.toReal ≤ I.toReal := by
-    have := ENNReal.toReal_mono hIfin hlo
-    rwa [ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)] at this
-  have hratio : ratioAt ε ρ = c * I.toReal / V.toReal := by
-    unfold ratioAt
-    rw [muG_expBall_of_CV hcv (hinj.mono (Metric.ball_subset_ball hρr)), volume_ball_gLie, ENNReal.toReal_mul,
-      ENNReal.toReal_ofReal hc.le]
-  rw [Real.dist_eq, hratio]
-  have key : |c * I.toReal / V.toReal - c| ≤ c * δ := by
-    rw [abs_le]
-    constructor
-    · have : c * ((1 - δ) * V.toReal) ≤ c * I.toReal := mul_le_mul_of_nonneg_left hloR hc.le
-      rw [le_sub_iff_add_le, le_div_iff₀ hVr]
-      nlinarith
-    · have : c * I.toReal ≤ c * ((1 + δ) * V.toReal) := mul_le_mul_of_nonneg_left hupR hc.le
-      rw [sub_le_iff_le_add, div_le_iff₀ hVr]
-      nlinarith
-  exact lt_of_le_of_lt key hδe
-
-theorem gaugeDens_of_CV {ε : Fin n → Bool} (h : GaugeCV ε) : GaugeDens ε := by
-  obtain ⟨c, hc, hcv⟩ := h
-  have ht := tendsto_ratioAt_of_CV hc hcv
-  have he := gaugeU_eq ht
-  exact ⟨he ▸ ht, he ▸ hc⟩
-
-theorem gaugeCV_gaugeU {ε : Fin n → Bool} (h : GaugeCV ε) :
-    0 < gaugeU ε ∧ ∀ (U : Set (EuclideanSpace ℝ (Fin (dimL ε)))) (Θ : EuclideanSpace ℝ (Fin (dimL ε)) → MP n),
-      IsOpen U → ContDiffOn ℝ 1 Θ U → Set.InjOn Θ U → (∀ t ∈ U, Formalism.REAL.inUJ ε (Matrix.of (Θ t))) →
-      ∀ φ : Formalism.REAL.UJ ε → ℝ≥0∞, Measurable φ →
-        ∫⁻ g in {g : Formalism.REAL.UJ ε | (uMat g : MP n) ∈ Θ '' U}, φ g ∂(Formalism.REAL.muG ε) =
-          ENNReal.ofReal (gaugeU ε) * ∫⁻ t in U, φ (toUJ ε (Matrix.of (Θ t))) * ENNReal.ofReal (chartJac Θ t) := by
-  obtain ⟨c, hc, hcv⟩ := h
-  have he := gaugeU_eq (tendsto_ratioAt_of_CV hc hcv)
-  exact ⟨he ▸ hc, he ▸ hcv⟩
-
-def CdGauge (D : Formalism.BasicNotions.D7) (n : ℕ) (ε : Fin n → Bool) : Prop :=
-  (D.s.cdScale n ε : ℝ) * gaugeU ε * (muGauge (fun _ : Fin n => true) Set.univ).toReal = 1
-
-def VolUn (n : ℕ) : Prop :=
-  (muGauge (fun _ : Fin n => true) Set.univ).toReal = ∏ i ∈ Finset.Icc 1 n, (2 * Real.pi) ^ i / ((i - 1).factorial : ℝ)
 
 end Formalism.MainNotions.S.Gauge

@@ -623,7 +623,4 @@ theorem curve_lattice_self_dual : CurveSelfDualRec := by
 
 theorem self_dual_lattice : SelfDualRec := SelfDualRec_of_curve curve_lattice_self_dual
 
-theorem LinkThIndep_of_arith' (hA : HfArithRec) : LinkThIndep :=
-  LinkThIndep_of_arith hA self_dual_lattice
-
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity

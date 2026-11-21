@@ -184,15 +184,6 @@ instance geometricallyIntegral_smoothOpen :
   have : Nonempty Y := ⟨s (Classical.arbitrary (PrimeSpectrum K))⟩
   exact isIntegral_of_isOpenImmersion g
 
-theorem exists_smoothLocus (R : Type) [CommRing R] (W : WeierstrassCurve R) :
-    ∃ U : (scheme W).Opens, (∀ (k : Type) [Field k] (ρ : R →+* k) (P : Fin 3 → k)
-      (h : IsUnimodularSol (W.map ρ) P),
-        ⊤ ≤ ptHom W ρ P h ⁻¹ᵁ U ↔ (W.map ρ).toProjective.Nonsingular P) ∧
-      SmoothOfRelativeDimension 1 (U.ι ≫ toSpec W) ∧ QuasiCompact (U.ι ≫ toSpec W) ∧
-      GeometricallyIntegral (U.ι ≫ toSpec W) :=
-  ⟨smoothOpen W, fun _ _ ρ P h => top_le_ptHom_preimage_smoothOpen_iff W ρ P h,
-    inferInstance, inferInstance, inferInstance⟩
-
 end WeierstrassCurve
 
 end GlobalTheory

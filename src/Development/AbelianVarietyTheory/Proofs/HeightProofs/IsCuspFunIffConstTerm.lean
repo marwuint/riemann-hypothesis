@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.EqOrConjOfPlaceOf
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsCompactAdeleRingModNumberFieldStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.IntegrableOnFundamentalDomainOfCocompactStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.IntegrableOnFundamentalDomainOfCocompact
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.MemAdelicLatticeIffLocalSelfDualCompletionStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.TwoStepUnipotentCompactModSubringStatement
 
@@ -379,7 +379,7 @@ theorem integrableOn_constTerm (W : Submodule E V.V) (hW : IsIsotropic V W) (f :
   have : BorelSpace (GA hc V) := ⟨rfl⟩
   have := countable_unipRat hc V W
   obtain ⟨K, hK, h⟩ := unipRad_cocompact hc V W hW
-  refine GlobalTheory.T.integrableOn_fundamentalDomain_of_invariant_of_cocompact _ (unipRat hc V W) K hK h μ hμ 𝓕 h𝓕 _
+  refine _root_.GlobalTheory.integrableOn_fundamentalDomain_of_cocompact _ (unipRat hc V W) K hK h μ hμ 𝓕 h𝓕 _
     (hf.comp (continuous_subtype_val.mul continuous_const)) fun γ hγ n => ?_
   rw [Subgroup.coe_mul, mul_assoc]
   exact hl _ hγ _
@@ -476,12 +476,6 @@ section Functions
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   (hc : CMData F E) (V : HSpace E)
 
-theorem range_ofFin : (ofFin hc V).range = finPts hc V :=
-  le_antisymm (by rintro _ ⟨y, rfl⟩; exact projInf_ofFin hc V y) fun g hg => ⟨_, ofFin_projFin hc V hg⟩
-
-theorem range_ofInf : (ofInf hc V).range = realPts hc V :=
-  le_antisymm (by rintro _ ⟨y, rfl⟩; exact projFin_ofInf hc V y) fun g hg => ⟨_, ofInf_projInf hc V hg⟩
-
 theorem embH_spec (B A : HSpace E) (ι : B.V →ₗ[E] A.V) (hι : HSpace.IsIsomEmb B A ι) (R : Type) [CommRing R]
     [Algebra F R] (g' : HA R hc.sig B.gram) :
     (HA.mat _ _ _ (embH hc B A ι hι R g')).1 * (embMat B A ι).map (inclR (F := F) R) =
@@ -516,64 +510,15 @@ open Formalism.BasicNotions.TH Formalism.L2.Theta
 
 variable {D : D7} (V : HSp D)
 
-theorem emb_cc (g : D.R.GG) :
-    D.host.emb (g * D.R.cc) = (D.host.emb g).comp (starRingEnd D.host.E) :=
-  (Formalism.L2.Geo.emb_mul_cc_comp D.host g).trans (RingHom.ext fun x => congrArg (D.host.emb g) (by
-    apply D.host.φ₀.injective
-    show D.host.φ₀ (D.host.conj x) = D.host.φ₀ (star x)
-    rw [D.sp.cm.cmUnram.2.1]
-    exact D.host.toHostAx.conjE_apply _ x))
-
-theorem placeOf_tauE_inj {τ τ' : D.what₂.Tau} (h : placeOf D.host.F (tauE D τ) = placeOf D.host.F (tauE D τ')) :
-    τ = τ' := by
-  rcases eq_or_conj_of_placeOf D.sp.cm h with e | e
-  · exact D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 e))
-  · have := (factEmb D.R D.host).1.1 (e.trans (emb_cc _).symm)
-    exact absurd (this ▸ (D.eTau τ).2) ((Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem _).1 (D.eTau τ').2)
-
-theorem placeOf_tauE_surj (w : InfinitePlace D.host.F) : ∃ τ, placeOf D.host.F (tauE D τ) = w := by
-  have e : placeOf D.host.F (ComplexEmbedding.lift D.host.E w.embedding) = w := by
-    rw [placeOf, ComplexEmbedding.lift_comp_algebraMap, InfinitePlace.mk_embedding]
-  obtain ⟨g, hg⟩ := (factEmb D.R D.host).1.2 (ComplexEmbedding.lift D.host.E w.embedding)
-  rw [← hg] at e
-  by_cases h : g ∈ D.R.Psi
-  · obtain ⟨τ, hτ⟩ := (Formalism.L2.Geo.exists_tauEmb_iff D g).2 h
-    exact ⟨τ, (congrArg _ hτ.symm).trans e⟩
-  · obtain ⟨τ, hτ⟩ := (Formalism.L2.Geo.exists_tauEmb_iff D (g * D.R.cc)).2
-      (by_contra fun h' => h ((Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem _).2 h'))
-    rw [emb_cc] at hτ
-    exact ⟨τ, (congrArg _ hτ.symm).trans ((placeOf_conj D.sp.cm _).trans e)⟩
-
 theorem GQ_eq : GQ V = ratPts D.sp.cm V := (ratPts_eq D.sp.cm V).symm
 
 theorem GfC_eq : GfC V = finPts D.sp.cm V := by
-  ext g; exact ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩
-
-theorem GinfC_eq : GinfC V = realPts D.sp.cm V := by
   ext g; exact ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩
 
 theorem isInfFam_iff (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) :
     IsInfFam θ ↔ θ = fun τ => infEmb D.sp.cm (tauE D τ) :=
   ⟨fun h => funext fun τ => isInfEmb_unique _ _ _ (h τ) (isInfEmb_infEmb _ _),
     fun h _ => h ▸ isInfEmb_infEmb _ _⟩
-
-theorem isAtTau_iff (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ)
-    (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (h : Formalism.L2.Theta.GA D V) :
-    IsAtTau θ V τ g h ↔ ∃ u : UJ (starRingEnd ℂ) (TH.gramAt D V τ), u.1.1 = g ∧ atRealD D V τ u = h := by
-  obtain rfl := (isInfFam_iff θ).1 hθ
-  unfold IsAtTau
-  simp only [infMat_infEmb, GinfC_eq]
-  constructor
-  · rintro ⟨h1, h2, h3⟩
-    refine ⟨realComp D.sp.cm V (tauE D τ) h, h2,
-      eq_of_realComp D.sp.cm V (tauE D) placeOf_tauE_surj ((projFin_ofInf _ _ _).trans (Eq.symm h1)) fun τ' => ?_⟩
-    by_cases e : τ' = τ
-    · subst e; exact realComp_atReal _ _ _ _
-    · exact (realComp_atReal_ne _ _ _ _ (fun e' => e (placeOf_tauE_inj e')) _).trans
-        (Subtype.ext (Units.ext (h3 τ' e))).symm
-  · rintro ⟨u, rfl, rfl⟩
-    exact ⟨projFin_ofInf _ _ _, congrArg (·.1.1) (realComp_atReal D.sp.cm V _ u), fun τ' e =>
-      congrArg (·.1.1) (realComp_atReal_ne D.sp.cm V _ _ (fun e' => e (placeOf_tauE_inj e')) u)⟩
 
 theorem isIsoFrame_iff {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) :
     IsIsoFrame V C ↔ LinearIndependent D.host.E Cᵀ ∧ IsIsotropic V (colSpan V C) :=

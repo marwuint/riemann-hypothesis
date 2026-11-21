@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntDerApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorIsRingHomStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorIsRingHom
 open IsLocalRing GlobalTheory.FormalOrigin MvPowerSeries
 
 noncomputable section
@@ -225,7 +225,7 @@ end Main
 
 theorem taylor_injective : ∀ (R A : Type) [CommRing R] [IsLocalRing R] [Algebra ℚ R] [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (inc : R →+* A) (ev : A →+* R), (∀ r, ev (inc r) = r) → ∀ (n : ℕ) (ds : Fin n → Derivation ℤ A A) (z : Fin n → A), (∀ i, ev (z i) = 0) → (∀ a i, ev (ds a (z i)) = if a = i then 1 else 0) → maximalIdeal A = (maximalIdeal R).map inc ⊔ Ideal.span (Set.range z) → ∀ f, taylor ev (fun i => ⇑(ds i)) f = 0 → f = 0 := by
   intro R A _ _ _ _ _ _ inc ev hev n ds z hz hd hm f hf
-  obtain ⟨T, hT⟩ := GlobalTheory.T.exists_ringHom_eq_taylor A R n ev ds
+  obtain ⟨T, hT⟩ := _root_.GlobalTheory.FormalOrigin.taylor_isRingHom A R n ev ds
   have hker := ker_le_span inc ev hev z hz hm
   have hTf : T f = 0 := by rw [hT]; exact hf
   have hall : ∀ k, f ∈ Ideal.span (Set.range z) ^ k := by

@@ -115,14 +115,6 @@ theorem isOpen_of {X : Type*} [TopologicalSpace X] {f p q : ℕ} (g : X → V (n
   exact Filter.eventually_all.2 fun k => posDef_eventually _ (cont_entry g hg k)
     (fun x => herm_one_sub _) x0 (hx0 k)
 
-theorem zPart_apply {f p q N' : ℕ} (v : V (nD f p q + N')) (j : Fin (nD f p q)) :
-    zPart v j = v (Fin.castAdd N' j) := by
-  simp [zPart]
-
-theorem tPart_apply {f p q N' : ℕ} (v : V (nD f p q + N')) (j : Fin N') :
-    tPart v j = v (Fin.natAdd (nD f p q) j) := by
-  simp [tPart]
-
 theorem isOpen_Dset (f p q : ℕ) : IsOpen (Dset f p q) :=
   isOpen_of (fun v : V (nD f p q) => v) cont_coord
 

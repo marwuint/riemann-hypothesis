@@ -32,10 +32,6 @@ def permRep (G : Type) [Monoid G] (X : Type) [MulAction Gᵐᵒᵖ X] : Represen
   map_one' := by ext f i; simp [LinearMap.funLeft]
   map_mul' g h := by ext f i; simp [LinearMap.funLeft, mul_smul]
 
-def GamInv : Prop :=
-  ∀ (F : Type) [Field F] [Fintype F] (k : ℕ) (ψ₀ : AddChar F ℂ) (x : GL (Fin k) F),
-    gam ψ₀ x⁻¹ = conj (gam ψ₀ x)
-
 def MatrixEq : Prop :=
   ∀ (ι : Type) [Fintype ι] (Fq : ι → Type) [∀ v, Field (Fq v)] [∀ v, Fintype (Fq v)] (k : ℕ)
     (ψ : ∀ v, AddChar (Fq v) ℂ) (X : Type) [Fintype X] [MulAction (∀ v, GL (Fin k) (Fq v))ᵐᵒᵖ X],

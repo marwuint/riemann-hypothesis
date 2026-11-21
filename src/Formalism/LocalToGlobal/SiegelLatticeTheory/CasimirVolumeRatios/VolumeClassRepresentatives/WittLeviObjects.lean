@@ -130,9 +130,6 @@ def colV (v : InfinitePlace I.F) (r : WIdx J (nz I J)) : Fin I.n → ℂ := fun 
 def flag (c : Composition J) (i : Fin c.length) : Submodule I.E (Fin I.n → I.E) :=
   stepLo Fr.col (levW c) ((i : ℕ) + 1)
 
-def parA (c : Composition J) : Subgroup I.GA :=
-  (parGL Fr.colF (levW c)).comap (projF I) ⊓ ⨅ v, (parGL (Fr.colV v) (levW c)).comap (projV I v)
-
 def leviA (c : Composition J) : Subgroup I.GA :=
   (leviGL Fr.colF (levW c)).comap (projF I) ⊓ ⨅ v, (leviGL (Fr.colV v) (levW c)).comap (projV I v)
 
@@ -153,12 +150,6 @@ def blkF (c : Composition J) (x : I.GA) (i : Fin c.length) :
 def blkV (c : Composition J) (x : I.GA) (v : InfinitePlace I.F) (i : Fin c.length) :
     Matrix (Fin (c.blocksFun i)) (Fin (c.blocksFun i)) ℂ := fun p q =>
   Fr.wcV x v (Sum.inl (c.embedding i p)) (Sum.inl (c.embedding i q))
-
-def leadingBlockFiniteAdelic (x : I.GA) : Matrix (Fin (nz I J)) (Fin (nz I J)) (I.E ⊗[I.F] Af I.F) := fun p q =>
-  Fr.wcF x (Sum.inr (Sum.inl p)) (Sum.inr (Sum.inl q))
-
-def leadingBlockAtInfinitePlace (x : I.GA) (v : InfinitePlace I.F) : Matrix (Fin (nz I J)) (Fin (nz I J)) ℂ := fun p q =>
-  Fr.wcV x v (Sum.inr (Sum.inl p)) (Sum.inr (Sum.inl q))
 
 def lam0 (L0 : Submodule (𝓞 I.E) (Fin (nz I J) → I.E)) : Submodule (𝓞 I.E) (Fin I.n → I.E) :=
   Submodule.span (𝓞 I.E) (Set.range (fun s => Fr.col (Sum.inl s)) ∪ Set.range (fun s => Fr.col (Sum.inr (Sum.inr s))) ∪

@@ -1,7 +1,9 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLiftOfRangeSubset
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinitePointsAbelianVarietyOfNoTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinitePointsAbelianVarietyOfNoTorsion
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -67,7 +69,7 @@ theorem finite_of_torsionFree : (∀ (k : Type) [Field k] [IsAlgClosed k] (B : O
     rintro _ ⟨t, rfl⟩
     exact ⟨x.left t, rfl⟩
   have hfin₀ : Finite (𝟙_ (Over (Sp k)) ⟶ N₀) := by
-    refine GlobalTheory.T.finite_points_abelianVariety_of_no_torsion k N₀ hA n hn.two_le hnk fun x hx => ?_
+    refine _root_.GlobalTheory.AbelianNoTorsion.finite_points_of_no_torsion k N₀ hA n hn.two_le hnk fun x hx => ?_
     have h2 : x ≫ ν₀ ≫ ν = 1 := by
       refine htor _ (by rw [← Category.assoc]; exact hmem _) ?_
       rw [← MonObj.pow_comp, hx, MonObj.one_comp]

@@ -1,10 +1,17 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StandardInnerSingleNe
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.ImportsRest
+import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.Slopes
 import GroundTheory.HeightsAndTheta.Heights.ArithDegreeIdeal
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.AssemblyLines
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsLines
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesLatticeBasis
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesGenIndexDet
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesIsLattice
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesGenIndexTrans
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesIdealLatticeFG
+import GroundTheory.HeightsAndTheta.Heights.MatrixCharts.DetIneq
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesLineDegree
 import GroundTheory.PowerSubgroups.CountableNeighbourhoods.CommonDenominator
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kernels
@@ -155,67 +162,15 @@ theorem matrixMetric_inner {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Mod
     ((matrixMetric M H hH hconj).form σ).inner x y =
       star (latticeCoord σ M x) ⬝ᵥ (H σ *ᵥ latticeCoord σ M y) := rfl
 
-theorem matrixMetric_inner_one_tmul {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K))
-    [Module.Finite (𝓞 K) M] (H : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ) (hH : ∀ σ, (H σ).PosDef)
-    (hconj : ∀ σ, H (conjugate σ) = (H σ).map (starRingEnd ℂ)) (σ : K →+* ℂ) (v u : M) :
-    ((matrixMetric M H hH hconj).form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] v)
-        ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] u) =
-      star (embVec σ (v : Fin N → K)) ⬝ᵥ (H σ *ᵥ embVec σ (u : Fin N → K)) := by
-  rw [matrixMetric_inner]
-  congr 2 <;> funext i <;> rw [latticeCoord_tmul] <;> simp [embVec, ofComplex]
-
-def matrixBundle {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M]
-    (H : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ) (hH : ∀ σ, (H σ).PosDef)
-    (hconj : ∀ σ, H (conjugate σ) = (H σ).map (starRingEnd ℂ)) : HermitianBundle.{0} K :=
-  ⟨M, matrixMetric M H hH hconj⟩
-
 instance idealLattice_finite {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) :
     Module.Finite (𝓞 K) (idealLattice a) :=
   Module.Finite.iff_fg.mpr (KLinesIdealLatticeFG.fg K a)
-
-omit [NumberField K] in
-theorem diagMetric_posDef {n : ℕ} {d : (K →+* ℂ) → Fin n → ℝ} (hd : ∀ σ x, 0 < d σ x)
-    (σ : K →+* ℂ) : (diagMetric d σ).PosDef :=
-  Matrix.PosDef.diagonal fun x => Complex.zero_lt_real.mpr (hd σ x)
-
-omit [NumberField K] in
-theorem diagMetric_conj {n : ℕ} {d : (K →+* ℂ) → Fin n → ℝ}
-    (hc : ∀ σ x, d (conjugate σ) x = d σ x) (σ : K →+* ℂ) :
-    diagMetric d (conjugate σ) = (diagMetric d σ).map (starRingEnd ℂ) := by
-  simp only [diagMetric, Matrix.diagonal_map (map_zero _), Complex.conj_ofReal, hc]
-
-def latticeBundle {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (d : (K →+* ℂ) → Fin n → ℝ)
-    (hd : ∀ σ x, 0 < d σ x) (hc : ∀ σ x, d (conjugate σ) x = d σ x) : HermitianBundle.{0} K :=
-  matrixBundle (idealLattice a) (diagMetric d) (diagMetric_posDef hd) (diagMetric_conj hc)
-
-def satSub {N : ℕ} {ι : Type*} (M : Submodule (𝓞 K) (Fin N → K)) (u : ι → Fin N → K) :
-    Submodule (𝓞 K) M :=
-  ((Submodule.span K (Set.range u)).restrictScalars (𝓞 K)).comap M.subtype
-
-def coordLine {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (x : Fin n) :
-    Submodule (𝓞 K) (idealLattice a) :=
-  satSub (idealLattice a) (fun _ : Fin 1 => (Pi.single x 1 : Fin n → K))
 
 def sumBasis {n m k : ℕ} (b : Fin m → Fin n → K) (c : Fin k → Fin n → K)
     (hli : LinearIndependent K (Sum.elim b c)) (hmk : m + k = n) :
     Module.Basis (Fin m ⊕ Fin k) K (Fin n → K) :=
   Module.Basis.mk hli (by
     rw [hli.span_eq_top_of_card_eq_finrank' (by simp [hmk])])
-
-theorem sumBasis_apply {n m k : ℕ} (b : Fin m → Fin n → K) (c : Fin k → Fin n → K)
-    (hli : LinearIndependent K (Sum.elim b c)) (hmk : m + k = n) (i : Fin m ⊕ Fin k) :
-    sumBasis b c hli hmk i = Sum.elim b c i := by
-  simp [sumBasis, Module.Basis.mk_apply]
-
-def subLattice {n m : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (b : Fin m → Fin n → K) :
-    Submodule (𝓞 K) (idealLattice a) :=
-  satSub (idealLattice a) b
-
-def subBundle {n m : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (d : (K →+* ℂ) → Fin n → ℝ)
-    (hd : ∀ σ x, 0 < d σ x) (hc : ∀ σ x, d (conjugate σ) x = d σ x) (b : Fin m → Fin n → K) :
-    HermitianBundle.{0} K :=
-  ⟨subLattice a b, (latticeBundle a d hd hc).metric.comap (subLattice a b).subtype
-    (subLattice a b).injective_subtype⟩
 
 def quotLattice {n m k : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (b : Fin m → Fin n → K)
     (c : Fin k → Fin n → K) (hli : LinearIndependent K (Sum.elim b c)) (hmk : m + k = n) :
@@ -226,105 +181,6 @@ instance quotLattice_finite {n m k : ℕ} (a : Fin n → FractionalIdeal (𝓞 K
     (b : Fin m → Fin n → K) (c : Fin k → Fin n → K) (hli : LinearIndependent K (Sum.elim b c))
     (hmk : m + k = n) : Module.Finite (𝓞 K) (quotLattice a b c hli hmk) :=
   Module.Finite.iff_fg.mpr ((KLinesIdealLatticeFG.fg K a).map _)
-
-def quotProj {n m k : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (b : Fin m → Fin n → K)
-    (c : Fin k → Fin n → K) (hli : LinearIndependent K (Sum.elim b c)) (hmk : m + k = n) :
-    idealLattice a →ₗ[𝓞 K] quotLattice a b c hli hmk :=
-  ((coordProj (sumBasis b c hli hmk)).restrictScalars (𝓞 K)).submoduleMap (idealLattice a)
-
-def schurMetric {n m k : ℕ} (d : (K →+* ℂ) → Fin n → ℝ) (b : Fin m → Fin n → K)
-    (c : Fin k → Fin n → K) (σ : K →+* ℂ) : Matrix (Fin k) (Fin k) ℂ :=
-  let G := gramAt (diagMetric d σ) σ (Sum.elim b c)
-  G.toBlocks₂₂ - G.toBlocks₂₁ * G.toBlocks₁₁⁻¹ * G.toBlocks₁₂
-
-theorem posDef_schur {m k : Type*} [Fintype m] [Fintype k] [DecidableEq m] [DecidableEq k]
-    {G : Matrix (m ⊕ k) (m ⊕ k) ℂ} (hG : G.PosDef) :
-    (G.toBlocks₂₂ - G.toBlocks₂₁ * G.toBlocks₁₁⁻¹ * G.toBlocks₁₂).PosDef := by
-  have hA : G.toBlocks₁₁.PosDef := hG.submatrix Sum.inl_injective
-  have hBC : G.toBlocks₂₁ = G.toBlocks₁₂ᴴ := by
-    ext i j
-    simpa [toBlocks₂₁, toBlocks₁₂] using (congrFun (congrFun hG.1 (Sum.inr i)) (Sum.inl j)).symm
-  have : Invertible G.toBlocks₁₁ := hA.isUnit.invertible
-  have hG' : G = fromBlocks G.toBlocks₁₁ G.toBlocks₁₂ G.toBlocks₁₂ᴴ G.toBlocks₂₂ := by
-    rw [← hBC, fromBlocks_toBlocks]
-  rw [hBC]
-  refine Matrix.PosDef.of_dotProduct_mulVec_pos ?_ fun y hy => ?_
-  · exact (IsHermitian.fromBlocks₁₁ (A := G.toBlocks₁₁) G.toBlocks₁₂ G.toBlocks₂₂ hA.1).mp
-      (hG' ▸ hG.1)
-  · set A := G.toBlocks₁₁
-    set B := G.toBlocks₁₂
-    set x : m → ℂ := -((A⁻¹ * B) *ᵥ y)
-    have hxy : (x ⊕ᵥ y) ≠ 0 := by
-      intro h
-      apply hy
-      funext j
-      simpa using congrFun h (Sum.inr j)
-    have hpos := hG.dotProduct_mulVec_pos hxy
-    rw [dotProduct_mulVec, hG', schur_complement_eq₁₁ B G.toBlocks₂₂ x y hA.1] at hpos
-    simpa [x, ← dotProduct_mulVec] using hpos
-
-omit [NumberField K] in
-theorem gramAt_diagMetric_conj {n : ℕ} {d : (K →+* ℂ) → Fin n → ℝ}
-    (hc : ∀ σ x, d (conjugate σ) x = d σ x) (σ : K →+* ℂ) {ι : Type*} (u : ι → Fin n → K) :
-    gramAt (diagMetric d (conjugate σ)) (conjugate σ) u =
-      (gramAt (diagMetric d σ) σ u).map (starRingEnd ℂ) := by
-  ext i j
-  simp [gramAt, embVec, diagMetric, dotProduct, mulVec_diagonal, conjugate_coe_eq, hc, map_sum]
-
-omit [NumberField K] in
-theorem schurMetric_posDef {n m k : ℕ} {d : (K →+* ℂ) → Fin n → ℝ} (hd : ∀ σ x, 0 < d σ x)
-    {b : Fin m → Fin n → K} {c : Fin k → Fin n → K} (hli : LinearIndependent K (Sum.elim b c))
-    (σ : K →+* ℂ) : (schurMetric d b c σ).PosDef :=
-  posDef_schur (LinesGramPosDef.full K n _ σ _ _ (diagMetric_posDef hd σ) hli)
-
-omit [NumberField K] in
-theorem schurMetric_conj {n m k : ℕ} {d : (K →+* ℂ) → Fin n → ℝ}
-    (hc : ∀ σ x, d (conjugate σ) x = d σ x) (b : Fin m → Fin n → K) (c : Fin k → Fin n → K)
-    (σ : K →+* ℂ) :
-    schurMetric d b c (conjugate σ) = (schurMetric d b c σ).map (starRingEnd ℂ) := by
-  have hmap : ∀ {p q : Type} [Fintype p] [Fintype q] (X : Matrix p q ℂ),
-      X.map (starRingEnd ℂ) = Xᴴᵀ := fun X => by ext; simp
-  have hinv : ∀ {p : Type} [Fintype p] [DecidableEq p] (X : Matrix p p ℂ),
-      (X.map (starRingEnd ℂ))⁻¹ = X⁻¹.map (starRingEnd ℂ) := fun X => by
-    rw [hmap, hmap, ← transpose_nonsing_inv, ← conjTranspose_nonsing_inv]
-  simp only [schurMetric, gramAt_diagMetric_conj hc σ]
-  set G := gramAt (diagMetric d σ) σ (Sum.elim b c)
-  change G.toBlocks₂₂.map (starRingEnd ℂ) - G.toBlocks₂₁.map (starRingEnd ℂ) *
-      (G.toBlocks₁₁.map (starRingEnd ℂ))⁻¹ * G.toBlocks₁₂.map (starRingEnd ℂ) = _
-  rw [hinv, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_sub _ (map_sub _)]
-
-def quotBundle {n m k : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (d : (K →+* ℂ) → Fin n → ℝ)
-    (hd : ∀ σ x, 0 < d σ x) (hc : ∀ σ x, d (conjugate σ) x = d σ x) (b : Fin m → Fin n → K)
-    (c : Fin k → Fin n → K) (hli : LinearIndependent K (Sum.elim b c)) (hmk : m + k = n) :
-    HermitianBundle.{0} K :=
-  matrixBundle (quotLattice a b c hli hmk) (schurMetric d b c) (schurMetric_posDef hd hli)
-    (schurMetric_conj hc b c)
-
-theorem latticeBundle_example :
-    let a : Fin 2 → FractionalIdeal (𝓞 ℚ)⁰ ℚ := fun _ => 1
-    let d : (ℚ →+* ℂ) → Fin 2 → ℝ := fun _ _ => 1
-    ∃ hd : ∀ σ x, 0 < d σ x, ∃ hc : ∀ σ x, d (conjugate σ) x = d σ x,
-    ∃ v : (latticeBundle a d hd hc).carrier,
-      ((latticeBundle a d hd hc).metric.form ratEmbedding).inner
-        ((1 : ComplexAt ratEmbedding) ⊗ₜ[𝓞 ℚ] v) ((1 : ComplexAt ratEmbedding) ⊗ₜ[𝓞 ℚ] v) = 1 := by
-  intro a d
-  have hv : (Pi.single 0 1 : Fin 2 → ℚ) ∈ idealLattice a := by
-    rw [idealLattice, Submodule.mem_pi]
-    intro i _
-    rw [FractionalIdeal.mem_coe, FractionalIdeal.mem_one_iff]
-    by_cases h : i = 0
-    · subst h; exact ⟨1, by simp⟩
-    · exact ⟨0, by simp [h]⟩
-  refine ⟨fun _ _ => one_pos, fun _ _ => rfl, ⟨_, hv⟩, ?_⟩
-  · refine (matrixMetric_inner_one_tmul (idealLattice a) (diagMetric d)
-      (diagMetric_posDef fun _ _ => one_pos) (diagMetric_conj fun _ _ => rfl) ratEmbedding
-      ⟨_, hv⟩ ⟨_, hv⟩).trans ?_
-    simp [embVec, diagMetric, dotProduct, Fin.sum_univ_two, d]
-
-example : HermitianBundle.{0} ℚ :=
-  quotBundle (fun _ : Fin 2 => (1 : FractionalIdeal (𝓞 ℚ)⁰ ℚ)) (fun _ _ => 1) (fun _ _ => one_pos)
-    (fun _ _ => rfl) (fun _ : Fin 1 => (Pi.single 0 1 : Fin 2 → ℚ))
-    (fun _ : Fin 1 => (Pi.single 1 1 : Fin 2 → ℚ)) S6.LatticeAsBundle.hypotheses_inhabited.2.2.2.1 rfl
 
 end
 

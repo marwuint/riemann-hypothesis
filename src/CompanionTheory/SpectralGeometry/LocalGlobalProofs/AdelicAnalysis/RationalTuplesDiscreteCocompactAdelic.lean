@@ -1,8 +1,9 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.HypJ
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdeleRingCocompactDiscreteNumberFieldStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdeleRingCocompactDiscreteNumberField
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -22,8 +23,8 @@ theorem scalar (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] 
     (∀ C : Set (AF F ⊗[F] E), IsCompact C → {e : E | inclR (AF F) e ∈ C}.Finite) ∧
     NoncompactSpace (AF F ⊗[F] E) := by
   obtain ⟨⟨hlc, hsc, ht2⟩, -⟩ := GlobalTheory.CompanionTheory.AdeleTop.adele_top F
-  obtain ⟨hC, hfin, hnc⟩ := GlobalTheory.T.adele_ring_cocompact_discrete_number_field F
-  obtain ⟨-, -, -, -, -, -, hb, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ h (AF F)
+  obtain ⟨hC, hfin, hnc⟩ := _root_.GlobalTheory.CompanionTheory.Adelic.FieldCocompact.discrete_cocompact F
+  obtain ⟨-, -, -, -, -, -, hb, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ h (AF F)
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   have hd : 0 < Module.finrank F E := by rw [h.2.2.1]; norm_num
   let b := Module.finBasis F E

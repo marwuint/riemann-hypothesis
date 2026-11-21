@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
 import GroundTheory.LocalFields.ConductorTransport
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMemUpperRamificationGroupRealStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMemUpperRamificationGroupReal
+import GroundTheory.LocalFields.ConductorReciprocity
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory.LocalField GlobalTheory.PMon.Ram
 
@@ -20,7 +21,7 @@ theorem pow_mem_upperRamificationGroup_of_comm : ∀ (F M : Type) [Field F] [Val
   have h1 : φ.autCongr σ ∈ upperRamificationGroup F f.fieldRange v := by
     rw [← map_upperRamificationGroup_autCongr φ v]
     exact ⟨σ, hσ, rfl⟩
-  have h2 := GlobalTheory.T.pow_mem_upperRamificationGroup_abelian_real F f.fieldRange p e v hv hord _ h1
+  have h2 := _root_.GlobalTheory.PMon.Ram.pow_mem_upperRamificationGroup_real F f.fieldRange p e v hv hord _ h1
   rw [← map_upperRamificationGroup_autCongr φ] at h2
   obtain ⟨τ, hτ, hτσ⟩ := h2
   have hτ' : τ = σ ^ p := φ.autCongr.injective (by simpa [map_pow] using hτσ)

@@ -21,59 +21,7 @@ theorem diag_comm_entry {L : Type*} [CommRing L] {n : ℕ} (D D' H : Matrix (Fin
   rwa [Finset.sum_eq_single i (fun k _ hk => by rw [hD i k (Ne.symm hk), zero_mul]) (by simp),
     Finset.sum_eq_single j (fun k _ hk => by rw [hD' k j hk, mul_zero]) (by simp)] at h
 
-theorem rig_mat {L : Type*} [Field L] {n : ℕ} (ν : L → ℤ) (e e' : Fin n → L) (H : Matrix (Fin n) (Fin n) L)
-    (hH : H.det ≠ 0) (hc : diagonal e * H = H * diagonal e')
-    (he : StrictAnti (ν ∘ e)) (he' : StrictAnti (ν ∘ e')) :
-    e = e' ∧ ∀ i j, i ≠ j → H i j = 0 := by
-  have key : ∀ i j, H i j ≠ 0 → e i = e' j := by
-    intro i j hij
-    have h1 := congrFun (congrFun hc i) j
-    rw [diagonal_mul, mul_diagonal] at h1
-    exact mul_right_cancel₀ hij (by rw [h1, mul_comm])
-  have row : ∀ i, ∃ j, H i j ≠ 0 := by
-    intro i
-    by_contra hne
-    exact hH (Matrix.det_eq_zero_of_row_eq_zero i fun j => by_contra fun h => hne ⟨j, h⟩)
-  choose f hf using row
-  have hfe : ∀ i, e i = e' (f i) := fun i => key i (f i) (hf i)
-  have hmono : StrictMono f := by
-    intro i j hij
-    have h1 : (ν ∘ e) j < (ν ∘ e) i := he hij
-    simp only [Function.comp_apply, hfe] at h1
-    exact lt_of_not_ge fun hge => absurd h1 (not_lt.mpr (he'.antitone hge))
-  have hid : ∀ i, f i = i := fun i => le_antisymm hmono.apply_le hmono.le_apply
-  have hee : e = e' := funext fun i => by rw [hfe i, hid i]
-  refine ⟨hee, fun i j hij => ?_⟩
-  by_contra hne
-  have h2 := key i j hne
-  rw [hee] at h2
-  exact hij (he'.injective (by simp only [Function.comp_apply, h2]))
-
-theorem rig_GL {L : Type*} [Field L] {n : ℕ} (ν : L → ℤ) (e e' : Fin n → L) (d d' h : GL (Fin n) L)
-    (hd : d.val = diagonal e) (hd' : d'.val = diagonal e') (hc : h⁻¹ * d * h = d')
-    (he : StrictAnti (ν ∘ e)) (he' : StrictAnti (ν ∘ e')) :
-    d = d' ∧ ∀ i j, i ≠ j → h.val i j = 0 := by
-  have hc' : d * h = h * d' := by rw [← hc]; group
-  have hm : diagonal e * h.val = h.val * diagonal e' := by
-    rw [← hd, ← hd', ← Units.val_mul, ← Units.val_mul, hc']
-  have hdet : h.val.det ≠ 0 := ((Matrix.isUnit_iff_isUnit_det _).mp h.isUnit).ne_zero
-  obtain ⟨hee, hoff⟩ := rig_mat ν e e' h.val hdet hm he he'
-  exact ⟨Units.ext (by rw [hd, hd', hee]), hoff⟩
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
-
-omit [IsCMField E] in
-
-theorem rig_diagT (w : Pl E) {n : ℕ} (e e' : Fin n → (w.adicCompletion E)ˣ) (h : GLw n w)
-    (he : StrictAnti fun i => ordL (e i : w.adicCompletion E))
-    (he' : StrictAnti fun i => ordL (e' i : w.adicCompletion E))
-    (hc : h⁻¹ * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) e * h = GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) e') :
-    e = e' ∧ ∀ i j, i ≠ j → h.val i j = 0 := by
-  obtain ⟨hdd, hoff⟩ := rig_GL (fun y : w.adicCompletion E => ordL y) (fun i => (e i : w.adicCompletion E))
-    (fun i => (e' i : w.adicCompletion E)) _ _ h (GlobalTheory.SmGL.val_diagT _ e) (GlobalTheory.SmGL.val_diagT _ e') hc he he'
-  refine ⟨funext fun i => Units.ext ?_, hoff⟩
-  have := congrArg (fun g : GLw n w => g.val i i) hdd
-  simpa [GlobalTheory.SmGL.val_diagT] using this
 
 end Rig
 

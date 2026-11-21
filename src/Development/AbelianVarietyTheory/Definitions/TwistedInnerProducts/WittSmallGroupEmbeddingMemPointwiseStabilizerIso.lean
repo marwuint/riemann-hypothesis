@@ -142,10 +142,6 @@ end JacS
 
 abbrev Om (S T : HSp D) : Type := GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)
 
-def thetaJT (ψ : AddChar (AF D.host.F) ℂ) {W W₀ L : HSp D} {ρ : ℕ} (dW : HypDec W W₀ ρ) (ζ : Fin L.rank → D.host.E)
-    (omz : Om L W₀) (Φz : WO L W₀ → ℂ) (n : GA D W) (h : GA D W₀) : ℂ :=
-  jacT ψ dW L (yZero L ρ ζ) n (omz (1, h) Φz) 0
-
 def thetaJS (ψ : AddChar (AF D.host.F) ℂ) {V V₀ L' : HSp D} {ρ : ℕ} (dV : HypDec V V₀ ρ) (ζ' : Fin L'.rank → D.host.E)
     (omz : Om V₀ L') (Φ₀ : WO V₀ L' → ℂ) (n : GA D V) (h : GA D V₀) : ℂ :=
   jacS ψ dV L' (zEll L' ρ ζ') n (omz (h, 1) Φ₀) 0
@@ -185,14 +181,6 @@ end Bessel
 section FJT
 
 variable (ψ : AddChar (AF D.host.F) ℂ) {W W₀ V₀ A L : HSp D} {ρ : ℕ} (dW : HypDec W W₀ ρ)
-
-def fjFun (ζ : Fin L.rank → D.host.E) (omz : Om L W₀) (φ' : GA D W₀ → ℂ) (G' : GA D W → ℂ) (Φz : WO L W₀ → ℂ)
-    (h : GA D W₀) (n : flagN dW) : ℂ :=
-  φ' h * G' (n.1 * dW.emb0 h) * thetaJT ψ dW ζ omz Φz n.1 h * star (psiFlag ψ dW n.1)
-
-def fjPer (ζ : Fin L.rank → D.host.E) (omz : Om L W₀) (μ : Measure (GA D W₀)) (𝓕 : Set (GA D W₀))
-    (ν : Measure (flagN dW)) (𝓝 : Set (flagN dW)) (φ' : GA D W₀ → ℂ) (G' : GA D W → ℂ) (Φz : WO L W₀ → ℂ) : ℂ :=
-  ∫ h in 𝓕, ∫ n in 𝓝, fjFun ψ dW ζ omz φ' G' Φz h n ∂ν ∂μ
 
 variable (o : OrthDec V₀ A L) (ζ : Fin L.rank → D.host.E) (om : Om V₀ W₀)
 
@@ -241,10 +229,6 @@ def contractT {T A B : HSp D} (o : OrthDec T A B) (S : HSp D) (μ : Measure (WO 
     (Φ₀ : WO S B → ℂ) : WO S A → ℂ :=
   fun w => thPair μ 𝓕 (fun v => F ((o.resT S).symm (w, v))) Φ₀
 
-def contractS {S A B : HSp D} (o : OrthDec S A B) (T : HSp D) (μ : Measure (WO B T)) (𝓕 : Set (WO B T)) (F : WO S T → ℂ)
-    (Φ₀ : WO B T → ℂ) : WO A T → ℂ :=
-  fun w => thPair μ 𝓕 (fun v => F ((o.resS T).symm (w, v))) Φ₀
-
 section Flat
 
 variable (ψ : AddChar (AF D.host.F) ℂ) {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ)
@@ -286,15 +270,6 @@ def flatLast (νU : Measure (UX D (σ + 1))) (Ψ : WO V W → ℂ) : WO V₀ W�
   flatAt ψ dV dW μS 𝓕S μT 𝓕T νU (xLast dW (vecB o' ζ')) 0 Ψ
 
 variable (μL : Measure (WO V₀ L')) (𝓕L : Set (WO V₀ L'))
-
-def flatPairFun (Ψ : WO V W → ℂ) (Φ₀ : WO V₀ L' → ℂ) (w : WO V₀ W₁) (u : UX D (σ + 1)) : ℂ :=
-  star (psiUni ψ u.1) *
-    contractT o' V₀ μL 𝓕L (evalAt ψ dV dW μS 𝓕S μT 𝓕T Ψ (xLast dW (vecB o' ζ') ⬝ u.1.1) 0) Φ₀ w
-
-def flatPair (νU : Measure (UX D (σ + 1))) (Ψ : WO V W → ℂ) (Φ₀ : WO V₀ L' → ℂ) : WO V₀ W₁ → ℂ :=
-  fun w => ∫ u, flatPairFun ψ dV dW o' ζ' μS 𝓕S μT 𝓕T μL 𝓕L Ψ Φ₀ w u ∂νU
-
-def stabLast : Subgroup (GA D W) := fixer W (xLast dW (vecB o' ζ'))
 
 end FlatFJ
 
@@ -542,21 +517,6 @@ theorem upSum_add (T T' : Mx D ρ ρ) : upSum (T + T') = upSum T + upSum T' := b
 variable (ψ : AddChar (AF D.host.F) ℂ) (hζ : IsLineVec L ζ) {θ : D.host.E} (hθ : θ ≠ 0) (ι : A.V →ₗ[D.host.E] V.V)
   (hι : frameMat V A ι = d.i₀ * o.iA)
 
-theorem besChar_toBesDat {n : GA D V} (hn : n ∈ flagN d) :
-    besChar ψ (toBesDat d o hζ hθ ι hι) n = psiBes ψ d θ (vecB o ζ) n := by
-  obtain ⟨T, b, -, h1, h2⟩ := GlobalTheory.BesselChar.exists_coords (toBesDat d o hζ hθ ι hι) n hn
-  rw [GlobalTheory.BesselChar.besChar_eq ψ _ n T b h1 h2]
-  have e1 : mt V n ⬝ d.jX = d.jX + d.jX ⬝ (show Mx D ρ ρ from T) := h1
-  have e2 : mt V n *ᵥ ratV (d.i₀ *ᵥ vecB o ζ) = ratV (d.i₀ *ᵥ vecB o ζ) + d.jX *ᵥ (show Fin ρ → AE D from b) := h2
-  have e3 : blockX d n = 1 + (show Mx D ρ ρ from T) := by
-    rw [blockX, e1, Matrix.mul_add, d.pX_jX, cancel₂ d.pX_jX, Matrix.one_mul]
-  have e4 : coefX d (vecB o ζ) n = b := by
-    rw [ratV_mulVec] at e2
-    rw [coefX, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, HypDec.j0, e2, Matrix.mulVec_add, Matrix.mulVec_mulVec,
-      Matrix.mulVec_mulVec, ← HypDec.j0, d.pX_j0, d.pX_jX, Matrix.zero_mulVec, Matrix.one_mulVec, zero_add]
-  rw [psiBes, simpleSum, e3, e4, upSum_add, upSum_one, zero_add]
-  exact congrArg (psiE ψ) (superSum_const (incA D θ) T b)
-
 end Compare
 
 section Struct
@@ -603,27 +563,6 @@ theorem psiFlag_mul {n n' : GA D S} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d) 
   simp only [psiFlag_eq, psiBes_mul d ψ 1 0 hn hn']
 
 end Struct
-
-example (D : D7) : IsLineVec (diagSp D 1 ![true] 0 1) (fun _ => 1) := by
-  refine ⟨rfl, ?_⟩
-  rw [diagSp_gram]
-  change ∑ i : Fin 1, star (1 : D.host.E) * ∑ j : Fin 1, Matrix.diagonal (fun i => Examples₂.sgn (![true] i)) i j * 1 ≠ 0
-  simp [Examples₂.sgn]
-
-example (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} (d : HypDec S S₀ 0) (θ z n) : psiBes ψ d θ z n = 1 := by
-  rw [psiBes, simpleSum, upSum, dotProduct, Finset.sum_of_isEmpty, Finset.sum_of_isEmpty, add_zero, mul_zero, psiE_zero]
-
-example (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} (d : HypDec S S₀ 1) (z) (b : Mx D 1 S₀.rank) :
-    psiBes ψ d 1 z (d.nB b) = psiE ψ ((b *ᵥ ratV z) 0) := by
-  rw [psiBes_nB, map_one, one_mul, dotProduct, Fin.sum_univ_one, show ell D 1 0 = 1 from rfl, one_mul]
-
-example (T : Mx D 2 2) : upSum T = T 0 1 := by simp [upSum, Fin.sum_univ_two]
-
-example (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (x : Mx D T.rank ρ)
-    (c : skewA D ρ) (f : WO S₀ T → ℂ) : jacS ψ d T x (d.nC c) f = ψ (d.qS T c x) • f := by
-  have h := ptS_nB_mul_nC d T x 0 c
-  rw [d.nB_zero, one_mul, Matrix.mul_zero] at h
-  rw [jacS, h, cenS_nC, heisO_zero]
 
 end GlobalTheory.MixPer
 

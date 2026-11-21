@@ -12,7 +12,6 @@ open GlobalTheory.RealWeil GlobalTheory.RealWeilF
 open Classical
 noncomputable section
 namespace GlobalTheory.ThetaOfSmF
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 end GlobalTheory.ThetaOfSmF
 open GlobalTheory.ThetaOfSmF in
 theorem GlobalTheory.ThetaOfSmF.theta_of_smF_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)

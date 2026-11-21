@@ -1,8 +1,13 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AutomorphicSpectrum.Definitions.NonGaloisLines.TopLine
+
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module GlobalTheory.CompanionTheory.LocDual
 
 noncomputable section
@@ -109,28 +114,5 @@ theorem cob_of_left (hd : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LL
   ring
 
 end Cup
-
-theorem cup_flip : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDual1 ((D.loc l).PD K) A.ρ A'.ρ P → IsDual1 ((D.loc l).PD K) A'.ρ A.ρ P.flip ∧ ∀ a ∈ continuousCocycles A.ρ, ∀ b ∈ continuousCocycles A'.ρ, Continuous (cupL A'.ρ P a b) ∧ ReciprocityTheory.Def.d2 (charRep (cycLL ((D.loc l).PD K) LL)) (cupL A'.ρ P a b) = 0 ∧ (CobL ((D.loc l).PD K) (cupL A'.ρ P a b) ↔ CobL ((D.loc l).PD K) (cupL A.ρ P.flip b a)) ∧ ((a ∈ B1 A.ρ ∨ b ∈ B1 A'.ρ) → CobL ((D.loc l).PD K) (cupL A'.ρ P a b)) := by
-  intro D l _ K LL _ _ _ O _ _ hO A A' P hP
-  have : IsTopologicalRing LL := hO.2.2.2.1
-  have hd := hP.1
-  have hdf : ∀ g y x, P.flip (A'.ρ g y) (A.ρ g x) =
-      ((cycLL ((D.loc l).PD K) LL g : LLˣ) : LL) * P.flip y x := fun g y x => hd g x y
-  refine ⟨⟨hdf, hP.2.2.1, hP.2.1, hP.2.2.2.symm⟩, fun a ha b hb => ?_⟩
-  obtain ⟨hac, hacoc⟩ := ha
-  obtain ⟨hbc, hbcoc⟩ := hb
-  have hc : Continuous fun g => P (a g) (b g) := (continuous_pair A A' P).comp (hac.prodMk hbc)
-  have hflip : CobL ((D.loc l).PD K) (cupL A.ρ P.flip b a) →
-      CobL ((D.loc l).PD K) (cupL A'.ρ P a b) := cob_of_flip _ hd hacoc hbcoc hc
-  refine ⟨continuous_cup A A' P hac hbc, d2_cup _ hd hacoc hbcoc, ⟨fun h => ?_, hflip⟩, ?_⟩
-  · refine cob_of_flip _ (P := P.flip) hdf hbcoc hacoc hc ?_
-    rwa [LinearMap.flip_flip]
-  · rintro (h | h)
-    · obtain ⟨x, hx⟩ := LinearMap.mem_range.1 h
-      exact cob_of_left _ hd (x := x) (fun g => by rw [← hx]; rfl) hbcoc
-        ((continuous_pair A A' P).comp (continuous_const.prodMk hbc))
-    · obtain ⟨y, hy⟩ := LinearMap.mem_range.1 h
-      exact hflip (cob_of_left _ (P := P.flip) hdf (x := y) (fun g => by rw [← hy]; rfl) hacoc
-        ((continuous_pair A' A P.flip).comp (continuous_const.prodMk hac)))
 
 end GlobalTheory.CompanionTheory.CupFlip

@@ -5,8 +5,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemKAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceLatticeStabiliserFixesVacuumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationLocalityUnitaryGroupWPairVWStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceLatticeStabiliserFixesVacuum
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationLocalityUnitaryGroupWPairVW
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweDualityGL
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ComplementaryThetaInert
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilOperatorLatticeStabiliserRightPreservesVacuuStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergSelfDualLatticeFixedFunctionsLineStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiUnramifiedAwayDifferent
@@ -75,7 +78,7 @@ theorem vac_fixed_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
       GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.AdelicU.evFin F v) (om (1, k)) (G.M.vac v) (G.M.vac v) := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT v hsp hvT hψ h2 h3 k hk
   obtain ⟨hSB, hne, θ, hθ, heig⟩ := hT.geo.hM.vac v
-  obtain ⟨φ₁, hφ₁, hact⟩ := GlobalTheory.T.weilRepresentationLocality_unitaryGroupW_pairVW F E σ B a a' G X om om' hT v k hk.1 (G.M.vac v) hSB
+  obtain ⟨φ₁, hφ₁, hact⟩ := _root_.GlobalTheory.WeilLocalityW.locality F E σ B a a' G X om om' hT v k hk.1 (G.M.vac v) hSB
   have heig₁ := GlobalTheory.T.weilOperator_latticeStabiliser_right_preserves_vacuumType F E σ B a a' G X om om' hT v k hk θ hθ (G.M.vac v) hSB φ₁ hφ₁ heig hact
   obtain ⟨c, hc⟩ := GlobalTheory.T.heisenbergSelfDualLattice_fixedFunctions_line F E σ B a a' G X om om' hT v hψ
     (GlobalTheory.PsiUnrSelfDual.latAtV_selfDual F E σ B a a' G X om om' hT v hψ) θ hθ (G.M.vac v) hSB hne heig
@@ -100,7 +103,7 @@ theorem vac_fixed_cofinite : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Typ
   obtain ⟨h2, h3⟩ := two_three_of_six v h6
   by_cases hin : ∃ w : HeightOneSpectrum (𝓞 E), Formalism.UG.IsInertAt F E v w
   · obtain ⟨w, hw⟩ := hin
-    exact GlobalTheory.T.inert_place_lattice_stabiliser_fixes_vacuum F E σ B a a' G X om om' hT v w hw hvT k hk
+    exact _root_.GlobalTheory.InertSph.vac_fixed F E σ B a a' G X om om' hT v w hw hvT k hk
   · push_neg at hin
     exact vac_fixed_split F E σ B a a' G X om om' hT v hin hvT hψ h2 h3 k hk
 

@@ -19,11 +19,13 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OmPureTensorOOfF
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNeZeroAtZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisThetaLaws
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAdelicCharacterTrivialRatAndSplit
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharFiniteIdelesIsAlgebraicOfResEtaStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CongruentPairsFixVacuumWeilDatumStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharFiniteIdelesIsAlgebraicOfResEta
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LengthPosOfPosDef
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.CoeSelfDualLatticeInFrameCoordinatesEq
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CongruentPairsFixVacuumWeilDatum
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilDatumFinitePairVacuumAlgebraicCombinationStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAlgebraicInvariantFormVacuumSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteUnitaryPointsMemOfLevelAndSplitPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAlgebraicInvariantFormVacuumSplitPlace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteUnitaryPointsMemOfLevelAndSplitPlace
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteDatumIsAlgebraicCombinationDefiniteBottomStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.VacuumSelfDualLatticesStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
@@ -161,8 +163,8 @@ theorem split_alg {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) {g : GA D
     rw [hy, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, h1, RingHom.map_one, zero_mul, zero_add, sub_zero]
   have hz : ((splitFacO χS χT x y : Circle) : ℂ) ∈ Qb := by
     rw [splitFacO, Circle.coe_mul, Circle.coe_inv]
-    exact mul_mem (inv_mem (mem_algebraicClosure_iff.2 (GlobalTheory.T.heckeChar_finiteIdeles_isAlgebraic_of_resEta hv.2.inf hW.hecT hW.resT x hx1)))
-      (mem_algebraicClosure_iff.2 (GlobalTheory.T.heckeChar_finiteIdeles_isAlgebraic_of_resEta hv.2.inf hW.hecS hW.resS y hy1))
+    exact mul_mem (inv_mem (mem_algebraicClosure_iff.2 (_root_.GlobalTheory.FinValAlg.finite_values_isAlgebraic hv.2.inf hW.hecT hW.resT x hx1)))
+      (mem_algebraicClosure_iff.2 (_root_.GlobalTheory.FinValAlg.finite_values_isAlgebraic hv.2.inf hW.hecS hW.resS y hy1))
   have hz1 : star ((splitFacO χS χT x y : Circle) : ℂ) * (splitFacO χS χT x y : Circle) = 1 := by
     rw [Complex.star_def, ← Circle.coe_inv_eq_conj, ← Circle.coe_mul, inv_mul_cancel, Circle.coe_one]
   generalize ((splitFacO χS χT x y : Circle) : ℂ) = z at hℓ hz hz1
@@ -177,7 +179,7 @@ theorem split_alg {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) {g : GA D
       (mem_algebraicClosure_iff.2 (GlobalTheory.T.vacuum_self_dual_lattices hv hS hT p.1 p.2 hp F F hF hF))
 
   obtain ⟨n, c, w, hc, hw, hFe⟩ := id hF
-  obtain ⟨ℓ, l1, l2, l3⟩ := GlobalTheory.T.exists_algebraicInvariantForm_vacuum_splitPlace hv hS hT e he n w hw
+  obtain ⟨ℓ, l1, l2, l3⟩ := _root_.GlobalTheory.SplitAlgForm.exists_alg_form hv hS hT e he n w hw
   have ha : ℓ F ∈ Qb := by
     rw [hFe, map_sum]
     exact sum_mem fun q _ => by
@@ -210,8 +212,8 @@ theorem mem_algGroup {p : GA D S × GA D T} :
 
 set_option maxHeartbeats 1000000 in
 theorem source_mem {x : GA D S} (hx : x ∈ GfC S) : (x, (1 : GA D T)) ∈ algGroup hv hS hT hcS hcT hW := by
-  obtain ⟨N, hN, hlev⟩ := GlobalTheory.T.congruent_pairs_fix_vacuum_weilDatum hv hS hT hcS hcT hW
-  refine GlobalTheory.T.finiteUnitaryPoints_mem_of_level_and_split_place S ((algGroup hv hS hT hcS hcT hW).comap (MonoidHom.inl _ _)) N hN (fun g hg m hm hp => ?_)
+  obtain ⟨N, hN, hlev⟩ := _root_.GlobalTheory.VacFixPair.pair_fix_vacO hv hS hT hcS hcT hW
+  refine _root_.GlobalTheory.FinPtsGen.mem_of_level_of_split S ((algGroup hv hS hT hcS hcT hW).comap (MonoidHom.inl _ _)) N hN (fun g hg m hm hp => ?_)
     (fun k hk hc => ?_) (fun e he g hg => ?_) x hx
   · rw [Subgroup.mem_comap, map_pow, mem_algGroup] at hp
     rw [Subgroup.mem_comap, MonoidHom.inl_apply, mem_algGroup]
@@ -224,8 +226,8 @@ theorem source_mem {x : GA D S} (hx : x ∈ GfC S) : (x, (1 : GA D T)) ∈ algGr
 
 set_option maxHeartbeats 1000000 in
 theorem target_mem {h : GA D T} (hh : h ∈ GfC T) : ((1 : GA D S), h) ∈ algGroup hv hS hT hcS hcT hW := by
-  obtain ⟨N, hN, hlev⟩ := GlobalTheory.T.congruent_pairs_fix_vacuum_weilDatum hv hS hT hcS hcT hW
-  refine GlobalTheory.T.finiteUnitaryPoints_mem_of_level_and_split_place T ((algGroup hv hS hT hcS hcT hW).comap (MonoidHom.inr _ _)) N hN (fun g hg m hm hp => ?_)
+  obtain ⟨N, hN, hlev⟩ := _root_.GlobalTheory.VacFixPair.pair_fix_vacO hv hS hT hcS hcT hW
+  refine _root_.GlobalTheory.FinPtsGen.mem_of_level_of_split T ((algGroup hv hS hT hcS hcT hW).comap (MonoidHom.inr _ _)) N hN (fun g hg m hm hp => ?_)
     (fun k hk hc => ?_) (fun e he g hg => ?_) h hh
   · rw [Subgroup.mem_comap, map_pow, mem_algGroup] at hp
     rw [Subgroup.mem_comap, MonoidHom.inr_apply, mem_algGroup]
@@ -244,38 +246,6 @@ theorem om_vac_algComb {x : GA D S} (hx : x ∈ GfC S) {h : GA D T} (hh : h ∈ 
   exact h3.2.2
 
 end Gen
-
-theorem ker'_eq_sum_jets : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
-    {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ → IsBottomTri W i j X →
-    ∀ (t : T), ∀ x ∈ GfC A', ∀ h ∈ GfC WW, ∃ (k : ℕ) (c : Fin k → ℂ) (w : Fin k → WO A' WW),
-      (∀ l, IsAlgebraic ℚ (c l)) ∧ (∀ l, (w l).map (infPart D) = 0) ∧
-      (∀ l, ∃ m : ℕ, 0 < m ∧ m • w l ∈ latO A' WW X.rA'.Λ X.rW.Λ fun _ => True) ∧
-      ∀ P : PolF D WW.rank A'.rank, X.ker' W.ψ W.θ t P h x =
-        ∑ l, c l * pureTensorO W.ψ W.θ A' WW X.rA'.s X.rW.s X.rA'.B X.rW.B (heisO W.ψ A' WW (w l) X.vac') P 0 := by
-  intro D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX t x hx h hh
-  have hW : IsWeilDatumO W.ψ A' WW _ _ (X.ω' t) := hX.is.weil' t
-  have hv : IsVacO W.ψ W.θ A' WW X.rA'.s X.rW.s X.rA'.Λ X.rW.Λ X.vac' := hX.is.isVac'
-  have hθ : IsInfFam W.θ := hv.2.inf
-  have hS : IsSelfDualC A' X.rA'.Λ := hX.is.rigA'.1
-  have hT : IsSelfDualC WW X.rW.Λ := hX.is.rigW.1
-  have hf := GlobalTheory.T.finiteDatum_isAlgebraicCombination_definiteBottom hX t
-  obtain ⟨k, c, w, hc, hw, e⟩ := om_alg hv hS hT hW (om_vac_algComb hv hS hT (fun τ => (hX.is.rigA'.2.2 τ).1)
-    (fun τ => (hX.is.rigW.2.2 τ).1) hW hx hh) hf
-  refine ⟨k, c, w, hc, hw, fun l => GlobalTheory.PlaceDatum.exists_nsmul_mem_latO' hS.1 hT.1 _ (hw l), fun P => ?_⟩
-  have e1 := (GlobalTheory.OrientedHeis.om_pureTensorO D W.ψ W.θ A' WW _ _ (X.ω' t) hW hθ X.rA'.s X.rA'.s X.rA'.B X.rA'.B
-    X.rW.s X.rW.s X.rW.B X.rW.B x h
-    (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite W.θ τ hx, Matrix.mul_one, Matrix.one_mul])
-    (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite W.θ τ hh, Matrix.mul_one, Matrix.one_mul])
-    (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite W.θ τ hx, Matrix.one_mul])
-    (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite W.θ τ hh, Matrix.one_mul]) (X.f' t)
-    (theta_of_alg hv.1 hv.2.theta hf) P).2
-  have e2 := (GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D W.ψ W.θ A' WW hv.1 hθ X.rA'.s X.rW.s X.rA'.B X.rW.B X.vac'
-    hv.2.theta k c w hw P).1
-  have ft := (GlobalTheory.FinTranslate.finite_translate D W.ψ W.θ A' WW hv.1 hθ X.vac' hv.2.theta).2
-  unfold GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Tri.ker' thetaKO
-  rw [e1, e, ← e2, Finset.sum_apply]
-  refine Finset.sum_congr rfl fun l _ => ?_
-  rw [(ft (w l) (hw l)).2, Pi.smul_apply, smul_eq_mul]
 
 end GlobalTheory.BotExpand
 

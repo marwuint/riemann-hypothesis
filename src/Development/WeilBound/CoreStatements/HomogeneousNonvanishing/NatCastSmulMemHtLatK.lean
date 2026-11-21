@@ -3,13 +3,18 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHTFormOver
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializes
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValuesStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValues
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+import GroundTheory.PAdicHodge.FiniteFlat
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.HtExists
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumberStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumber
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsStalkFractionOfGenericStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusPointOverFractionFieldStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusPointOverFractionField
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionLiftIsClosedImmersionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionExtendsFromStalkPullbackStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionExtendsFromStalkPullback
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
@@ -68,7 +73,7 @@ theorem tors_pt (h : Γ'.IsTorsionAlong G x N i)
     (g : Over.mk ξ ⟶ G) (hg : g ^ N = 1) : ∃ t, g.left = ptG k i t := by
   subst hk
   obtain ⟨y, hy⟩ := (h.kernel (yO R k) g).1 hg
-  obtain ⟨t, ht⟩ := GlobalTheory.T.torus_point_over_fraction_field R T Γ' Ω k y.left (Over.w y)
+  obtain ⟨t, ht⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_eq_comp_pt R T Γ' Ω k y.left (Over.w y)
   exact ⟨t, by rw [← hy, ht, Category.assoc]⟩
 
 theorem tors_ex (h : Γ'.IsTorsionAlong G x N i)
@@ -259,7 +264,7 @@ theorem lift_sec [IsSeparated G.hom] (p : X) [IsDomain (X.presheaf.stalk p)] {T 
       ∃ (W : G.left.Opens) (f : Γ(G.left, W)), (η[G]).left p ∈ W ∧
       (i'.app W).hom f = Γ'.G.left.presheaf.map (homOfLE (le_top : i' ⁻¹ᵁ W ≤ ⊤)).op s := by
     rintro _ rfl
-    exact GlobalTheory.T.section_extends_from_stalk_pullback G.hom p _ hover _ s
+    exact _root_.GlobalTheory.CompanionTheory.Ggeo.LocalLift.exists_open_extension G.hom p _ hover _ s
   exact key i (pullback.lift_fst _ _ _)
 
 theorem valAt_one {B : Type} [CommRing B] {Y : Scheme.{0}} (y : Spec (CommRingCat.of B) ⟶ Y) (W : Y.Opens)
@@ -526,7 +531,7 @@ theorem core_ge [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (hN : N
     exact (valAt_spec a g₁.left W h h' f).symm.trans h2
   have agree : (i.app W).hom f = Γ'.G.left.presheaf.map (homOfLE (le_top : i ⁻¹ᵁ W ≤ ⊤)).op s := by
     rw [← sub_eq_zero]
-    refine GlobalTheory.T.section_eq_zero_of_values R T Γ' (i ⁻¹ᵁ W) _ (fun t h => ?_)
+    refine _root_.GlobalTheory.CompanionTheory.Ar.BT.section_eq_zero_of_val_generic R T Γ' (i ⁻¹ᵁ W) _ (fun t h => ?_)
     obtain ⟨g₁, hgN, hgl⟩ := tors_ex (kL hg) htor hk t
     have h0 : ⊤ ≤ g₁.left ⁻¹ᵁ W := by
       rw [hgl]
@@ -566,7 +571,7 @@ theorem core_ge [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (hN : N
     exact hg (by rw [e5, map_one])
   obtain ⟨L₀, _, _, M₀, j, w₀, hjl, hwj⟩ := exists_data hkx M hom hg
   refine ⟨inferInstance, T, inferInstance, Γ', i, L₀, inferInstance, inferInstance, M₀, j, χ, w₀, htor, hjl, ⟨s, hs, fun l => ?_⟩, hwj⟩
-  obtain ⟨v', ⟨hv1, hv2⟩, -⟩ := GlobalTheory.T.existsUnique_tangent_dual_number R T Γ' X G x N i htor L₀ M₀ l
+  obtain ⟨v', ⟨hv1, hv2⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion R T Γ' X G x N i htor L₀ M₀ l
   refine ⟨v', hv1, hv2, ?_⟩
   have hl : ⊤ ≤ (M₀.pt l).left ⁻¹ᵁ W := tan_mem x _ (M₀.tan l) W (by rw [hq]; exact hW)
   have h2 : ⊤ ≤ (v' ≫ i) ⁻¹ᵁ W := by
@@ -592,7 +597,7 @@ theorem core_smul [IsDomain R] {T : Type} [CommGroup T] [Finite T] (Γ' : QFGrou
     ⟨1, fun t => ?_, fun l => ?_⟩, fun l => ?_⟩
   · refine (valAt_one (Y := Γ'.G.left) (Γ'.pt t).left ⊤ le_top).trans ?_
     simp
-  · obtain ⟨v', ⟨hv1, hv2⟩, -⟩ := GlobalTheory.T.existsUnique_tangent_dual_number R T Γ' X G x N i htor L₀ M₀ l
+  · obtain ⟨v', ⟨hv1, hv2⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion R T Γ' X G x N i htor L₀ M₀ l
     refine ⟨v', hv1, hv2, (valAt_one v' ⊤ le_top).trans ?_⟩
     have hN : Ideal.Quotient.mk (Ideal.span {(N : R)}) (((N : R) • w₀) l) = 0 :=
       Ideal.Quotient.eq_zero_iff_mem.2 (by
@@ -611,16 +616,6 @@ open GlobalTheory.CompanionTheory.Ar.HTTieK
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {E : Type} [AddCommGroup E] [Module Ω E]
-
-theorem htLat_le_omLatK (M : LieModel G ξ E) (N : ℕ) (p : Cpt ξ) : M.htLat N p ≤ M.omLat p :=
-  Submodule.span_le.2 fun w h => form_mem_omLat M N p w h
-
-theorem natCast_smul_mem_htLatK [IsCommMonObj G] (hξ : IsCptGen ξ) (M : LieModel G ξ E) (N : ℕ) (p : Cpt ξ)
-    [IsDomain (X.presheaf.stalk p.1)] {T : Type} [CommGroup T] [Finite T] (Γ' : QFGroup (X.presheaf.stalk p.1) T)
-    (i : Γ'.G.left ⟶ G.left) (htor : Γ'.IsTorsionAlong G (X.fromSpecStalk p.1) N i) {w : Module.Dual Ω E}
-    (hw : w ∈ M.omLat p) : (N : Ω) • w ∈ M.htLat N p :=
-  Submodule.subset_span (core_smul (hξ.inj p) (hk_stalk ξ p) M Γ' i htor
-    fun e' v a b => hw e' (Submodule.subset_span ⟨v, a, b⟩))
 
 theorem htLat_eq_htOmK [IsCommMonObj G] [IsSeparated G.hom] (hξ : IsCptGen ξ) (M : LieModel G ξ E) (L : LB G.left)
     {N : ℕ} (hN : N ≠ 0) (hfull : FullTorsion G ξ N) {e : (Over.mk ξ ⟶ G) → (Over.mk ξ ⟶ G) → Ωˣ}

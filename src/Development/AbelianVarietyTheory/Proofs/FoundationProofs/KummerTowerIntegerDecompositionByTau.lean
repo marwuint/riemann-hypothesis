@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyConstCochainModPow
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsQRootPolyOfFixedGeometricStabilizerStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntegralCoeffsOfGeometricFixedQExpansionStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsQRootPolyOfFixedGeometricStabilizer
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntegralCoeffsOfGeometricFixedQExpansion
 open GlobalTheory.K5
 
 noncomputable section
@@ -77,8 +77,8 @@ theorem GlobalTheory.K5.Decomp.decomp : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 �
     (∀ g ∈ Ggeo p Ω ⊓ MulAction.stabilizer (Gal p Ω) (T.qq N), g w = w) ∧
     (T.ζ 1 - 1) * y = (T.ζ 1 - 1) * o + (τ w - w) := by
   intro p _ _ Ω _ _ hΩ T τ hτ hτq N y hy hfix
-  obtain ⟨c, hc, rfl⟩ := GlobalTheory.T.exists_qRoot_poly_of_fixed_geometric_stabilizer p Ω hΩ T N y hfix
-  have hci := GlobalTheory.T.isIntegral_coeffs_of_geometric_fixed_qExpansion p Ω hΩ T N c hc hy
+  obtain ⟨c, hc, rfl⟩ := _root_.GlobalTheory.K5.span_fixed_ggeo_stab p Ω hΩ T N y hfix
+  have hci := _root_.GlobalTheory.K5.OrthDecomp.orth p Ω hΩ T N c hc hy
   have hpos : 0 < p ^ N := pow_pos (Fact.out : p.Prime).pos N
   have hs : ∀ j, ∃ s : Ω, IsInt p s ∧ (∀ g ∈ Ggeo p Ω, g s = s) ∧
       (0 < j → j < p ^ N → s * (T.ζ N ^ j - 1) = T.ζ 1 - 1) := by

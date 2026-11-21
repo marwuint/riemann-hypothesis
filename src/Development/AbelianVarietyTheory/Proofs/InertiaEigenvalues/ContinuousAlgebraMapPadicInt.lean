@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTameGenAtOfValuationSubring
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousCohomologyVanishesOfPrimeToLNormalNoInStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousCohomologyVanishesOfPrimeToLNormalNoIn
+import ReciprocityTheory.GaloisValuations.ContinuousConstSMulQuotient
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys
 open scoped TensorProduct Pointwise
 
@@ -328,7 +329,7 @@ theorem vanishing {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E 
       Subsingleton (H2 ((repOn ρ κ B).comp (Dec (F := E) A).subtype)) := by
   have : IsGalois E Ω := {}
   have : CompactSpace (Dec (F := E) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact
-  refine GlobalTheory.T.continuousCohomology_vanishes_of_primeToL_normal_no_invariants (Dec (F := E) A) Λ (Fin r → B) _ l ((primeTo E A l).subgroupOf (Dec (F := E) A)) hl
+  refine _root_.GlobalTheory.PrimeToNormalVanishing.cohomology_vanishes (Dec (F := E) A) Λ (Fin r → B) _ l ((primeTo E A l).subgroupOf (Dec (F := E) A)) hl
     (normal_primeTo A l) ((isClosed_primeTo A l).preimage continuous_subtype_val)
     (fun U _ ho j hj => exists_coprime_pow_mem hA hl hv U ho j hj) ?_ ?_ ?_
   · exact (contAction_repOn hO ρ hρ κ hκ hB).comp

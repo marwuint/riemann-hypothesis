@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
-import Development.EtaleCohomology.TateTwists.AlexanderWhitneyExistence
 import Development.EtaleCohomology.TateTwists.EtaleChainCochainExistsOfEvalData
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
@@ -8,12 +7,6 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.EtaleFoundations.AwExPf
 
 variable {R : Type} [CommRing R]
-
-theorem ev_add {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
-    (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
-    ev (α + β) p s h U x = ev α p s h U x + ev β p s h U x := by
-  simp only [GlobalTheory.EtC.ev, Cochain.add_v, Preadditive.comp_add]
-  rfl
 
 theorem free_ext (P : PSh) (F : Shv R) (φ ψ : (free R).obj P ⟶ F)
     (h : ∀ U x, Sec.map φ (freeGen R P U x) = Sec.map ψ (freeGen R P U x)) : φ = ψ := by

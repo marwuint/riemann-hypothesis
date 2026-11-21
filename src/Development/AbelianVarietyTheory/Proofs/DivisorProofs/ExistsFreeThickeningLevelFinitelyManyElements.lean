@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivPowerCompatTwoFormDerivativeCompOneForm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFreeCrystallineThickeningOneElementLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFreeCrystallineThickeningOneElementLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourTermComplexQuasiIsoAtFormalProperties
 
 set_option autoImplicit false
@@ -50,7 +50,7 @@ theorem exists_free : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPow
   | zero => exact ⟨T, 𝟙 T, Fin.elim0, isFree_id _ T hT, QAtFormal.qAt_ident _ T⟩
   | succ m ih =>
     obtain ⟨F, u, τ, hu, hq⟩ := ih
-    obtain ⟨F', u', τ', hu', hq'⟩ := GlobalTheory.T.exists_freeCrystallineThickening_oneElement_level R I κ X t n F hu.1
+    obtain ⟨F', u', τ', hu', hq'⟩ := _root_.GlobalTheory.PDForm.exists_isFree_one_qAt R I κ X t n F hu.1
     exact ⟨F', u ≫ u', _, isFree_cons (n + 1) m u τ hu u' τ' hu', QAtFormal.qAt_comp _ u u' hq hq'⟩
 
 end GlobalTheory.PDForm.FreeFin

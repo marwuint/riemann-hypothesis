@@ -1,10 +1,12 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPrimeLeNotMemRingKrullDimEqOne
+import ReciprocityTheory.CommutativeAlgebra.PolynomialHeights.HeightAddRingKrullDimQuotientMvPolynomialField
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsValuationSubringLiftOfSpecialFibre
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteIntegralClosureOfIsIntegrallyClosed
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BijectiveAlgebraMapIntegralClosureOfBirational
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap)
@@ -76,17 +78,6 @@ theorem dimensionLEOne_of_injective {k A R : Type} [Field k] [CommRing A] [IsDom
     rw [Ring.krullDimLE_iff, hs1]
     exact_mod_cast h2
   exact ⟨fun {p} hp hp' => Ring.krullDimLE_one_iff_of_noZeroDivisors.mp h3 p hp hp'⟩
-
-theorem exists_prime (k : Type) {B : Type} [Field k] [IsAlgClosed k] [CommRing B] [IsDomain B]
-    [Algebra k B] [Algebra.FiniteType k B] (m : Ideal B) (hm : m.IsMaximal) (h : B) (h0 : h ≠ 0) :
-    ∃ p : Ideal B, p.IsPrime ∧ p ≤ m ∧ h ∉ p ∧ ringKrullDim (B ⧸ p) ≤ 1 := by
-  by_cases hh : h ∈ m
-  · obtain ⟨p, h1, h2, h3, h4⟩ := exists_prime_le_notMem_ringKrullDim_eq_one k B m h hm h0 hh
-    exact ⟨p, h1, h2, h3, h4.le⟩
-  · refine ⟨m, hm.isPrime, le_rfl, hh, ?_⟩
-    letI := Ideal.Quotient.field m
-    rw [ringKrullDim_eq_zero_of_field]
-    exact zero_le_one
 
 section Scheme
 
@@ -212,62 +203,5 @@ theorem isDedekindDomain_sections [PerfectField k] (s : X ⟶ Sp k) [LocallyOfFi
     isIntegrallyClosed_sections_of_stalks (isIntegrallyClosed_stalk f) hU with }
 
 end Scheme
-
-theorem exists_point {k : Type} [Field k] [IsAlgClosed k] {X : Scheme.{0}} [IsIntegral X]
-    (s : X ⟶ Sp k) [LocallyOfFiniteType s] (x : X) (hx : IsClosed ({x} : Set X)) (W : X.Opens)
-    (hW : Nonempty W) : ∃ ξ : X, ξ ∈ W ∧ ξ ⤳ x ∧
-      letI := (constHom (X.fromSpecResidueField ξ ≫ s) ⊤).toAlgebra
-      Algebra.trdeg k Γ(Spec (X.residueField ξ), ⊤) ≤ 1 := by
-  obtain ⟨_, ⟨U, hU, rfl⟩, hxU, -⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open
-    (Set.mem_univ x) isOpen_univ
-  replace hU : IsAffineOpen U := hU
-  haveI : Nonempty U := ⟨⟨x, hxU⟩⟩
-  obtain ⟨w, hw⟩ := hW
-  obtain ⟨y, hyU, hyW⟩ := nonempty_preirreducible_inter U.isOpen W.isOpen ⟨x, hxU⟩ ⟨w, hw⟩
-  obtain ⟨h, hhW, hy⟩ := hU.exists_basicOpen_le ⟨y, hyW⟩ hyU
-  have h0 : h ≠ 0 := by
-    rintro rfl
-    rw [Scheme.basicOpen_zero] at hy
-    exact hy
-  letI := (constHom s U).toAlgebra
-  haveI : Algebra.FiniteType k Γ(X, U) := finiteType_constHom s hU
-  obtain ⟨p, hp, hpm, hhp, hd⟩ := exists_prime k _ (hU.primeIdealOf_isMaximal_of_isClosed
-    ⟨x, hxU⟩ hx) h h0
-  let P : Spec Γ(X, U) := ⟨p, hp⟩
-  have hmem (b : Γ(X, U)) : hU.fromSpec P ∈ X.basicOpen b ↔ b ∉ p := by
-    change P ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen b ↔ _
-    rw [hU.fromSpec_preimage_basicOpen]
-    rfl
-  refine ⟨hU.fromSpec P, hhW ((hmem h).mpr hhp), ?_, ?_⟩
-  · have h1 : P ⤳ hU.primeIdealOf ⟨x, hxU⟩ := (PrimeSpectrum.le_iff_specializes _ _).mp hpm
-    have h2 := h1.map hU.fromSpec.continuous
-    rwa [hU.fromSpec_primeIdealOf] at h2
-  · let f := X.fromSpecResidueField (hU.fromSpec P)
-    have e : ⊤ ≤ f ⁻¹ᵁ U := fun z _ => by
-      change f z ∈ U
-      rw [Scheme.fromSpecResidueField_apply]
-      exact hU.range_fromSpec.le ⟨P, rfl⟩
-    haveI : Nonempty (⊤ : (Spec (X.residueField (hU.fromSpec P))).Opens) :=
-      ⟨⟨Nonempty.some inferInstance, trivial⟩⟩
-    letI := (isField_sections (⊤ : (Spec (X.residueField (hU.fromSpec P))).Opens)).toField
-    letI := (constHom (f ≫ s) ⊤).toAlgebra
-    letI := (f.appLE U ⊤ e).hom.toAlgebra
-    haveI : IsScalarTower k Γ(X, U) Γ(Spec (X.residueField (hU.fromSpec P)), ⊤) :=
-      .of_algebraMap_eq' (appLE_comp_constHom s f U ⊤ e).symm
-    refine (finite_integralClosure k (surjectiveOnStalks_appLE f hU ⊤ e)).2 ?_
-    have hk : RingHom.ker (f.appLE U ⊤ e).hom = p := by
-      ext b
-      rw [RingHom.mem_ker, ← basicOpen_eq_bot_iff, Scheme.basicOpen_appLE, top_inf_eq,
-        ← not_iff_not, ← hmem b, ← Ne, TopologicalSpace.Opens.ne_bot_iff_nonempty]
-      constructor
-      · rintro ⟨z, hz⟩
-        have hz' : f z ∈ X.basicOpen b := hz
-        rwa [Scheme.fromSpecResidueField_apply] at hz'
-      · intro hz
-        refine ⟨Nonempty.some inferInstance, ?_⟩
-        change f _ ∈ X.basicOpen b
-        rwa [Scheme.fromSpecResidueField_apply]
-    rw [RingHom.algebraMap_toAlgebra, hk]
-    exact hd
 
 end GlobalTheory.NormCurve

@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Formalism.LocalToGlobal.IndefiniteReal.CutTuples2
 import Formalism.LocalToGlobal.Divisibility.LiftLatLemmas
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentPreservesLatticeHatStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentPreservesLatticeHat
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
 
 noncomputable section
@@ -183,30 +183,6 @@ theorem swap_unswap (x) : swapAE D (unswap D x) = x :=
 theorem finE_unswap (V : HSp D) (g : GA D V) : (finE V g).val.map (unswap D) = finMat D.sp.cm.sig V.gram g := by
   ext i j
   exact unswap_swap _
-
-theorem isHeckeAt_iff : ∀ {D : D7} (V V' : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ) (β' : GL (Fin V'.rank) (EAf D)) (Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)) (N' : ℕ) (Pg : Finset (Pl D.host.E)) (j : Matrix (Fin V'.rank) (Fin V.rank) (EAf D)) (Φ : GfC V ≃ₜ* GfC V') (PP : Pl D.host.E), IsFinIso V V' β β' Pg j Φ → IsBaseFrame V β Λ N → IsBaseFrame V' β' Λ' N' → ((N : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal → ((N' : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal → ∀ k (α : GfC V), IsHeckeAt V PP k α ↔ IsHeckeAt V' PP k (Φ α) := by
-  intro D V V' β Λ N β' Λ' N' Pg j Φ PP hI hB hB' hN hN' k α
-  obtain ⟨hr, u, hu, -⟩ := hI.frame
-  obtain ⟨⟨j', h1, h2⟩, hlat⟩ := frame_inv (Formalism.L2.Herm.intAf D.host.F D.host.E) β β' (finCongr hr)
-    (intGL D.host.F D.host.E V'.rank u) u.val (u⁻¹).val rfl rfl j hu
-  have h1' := map_mul_one (unswap D) h1
-  have h2' := map_mul_one (unswap D) h2
-  have hc := map_conj (unswap D) (hI.conj α)
-  rw [finE_unswap, finE_unswap] at hc
-  have hc' := conj_inv h1' h2' hc
-  have hL : ∀ e : Formalism.L2.Theta.AE D, Formalism.L2.NTheta.IsIdemAt e PP → ∀ y, finPart D e • y ∈ Formalism.L2.NTheta.LamHat V ↔
-      finPart D e • (j.map (unswap D)).mulVec y ∈ Formalism.L2.NTheta.LamHat V' := by
-    intro e he y
-    refine ((GlobalTheory.T.idempotent_preserves_lattice_hat V β Λ N PP e hB hN he y).2.trans (hlat _)).trans
-      (Iff.trans ?_ (GlobalTheory.T.idempotent_preserves_lattice_hat V' β' Λ' N' PP e hB' hN' he _).2.symm)
-    rw [mulVec_map_inv (unswap D) (swapAE D) swap_unswap]
-  constructor
-  · rintro ⟨e, ϖ, he, hϖ, hϖ2, h⟩
-    exact ⟨e, ϖ, he, hϖ, hϖ2, transfer he.1 _ _ h1' h2' (Φ α).2 hc (hL e he)
-      (fun y => (GlobalTheory.T.idempotent_preserves_lattice_hat V β Λ N PP e hB hN he y).1) (fun y => (GlobalTheory.T.idempotent_preserves_lattice_hat V' β' Λ' N' PP e hB' hN' he y).1) h⟩
-  · rintro ⟨e, ϖ, he, hϖ, hϖ2, h⟩
-    exact ⟨e, ϖ, he, hϖ, hϖ2, transfer he.1 _ _ h2' h1' α.2 hc' (lat_inv h1' (hL e he))
-      (fun y => (GlobalTheory.T.idempotent_preserves_lattice_hat V' β' Λ' N' PP e hB' hN' he y).1) (fun y => (GlobalTheory.T.idempotent_preserves_lattice_hat V β Λ N PP e hB hN he y).1) h⟩
 
 end GlobalTheory.HeckeTrans
 

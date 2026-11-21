@@ -2,8 +2,11 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CmHostRankBounds
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.CuspWeightIntegrableOnFundamentalSetStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspVolumeLeftStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.CuspWeightIntegrableOnFundamentalSet
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GroupDict
+import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsProved
+import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspVolumeLeft
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspVolumeRightStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspVolumeMiddleStatement
 import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.ThreeLeLevel
@@ -49,7 +52,7 @@ theorem top_mean_cusp_weight : Top.Given → ∃ Cu : ℝ, ∀ (E : Type) [Field
   intro hG
   refine ⟨4, ?_⟩
   intro E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B₁ U _ _ hU
-  obtain ⟨Q⟩ := GlobalTheory.T.cusp_volume_left hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or
+  obtain ⟨Q⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.pieces_nonempty hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or
   obtain ⟨κ, hκ, htr⟩ := GlobalTheory.T.ptsIntegral_eq_sum_ballDens_integrals E H D Xo l c Y II K J Ω W Dc Hd S₀ Or Q
   have hw := GlobalTheory.T.cusp_volume_middle E H D Xo l c Y II K J Ω W Dc Hd S₀ Or Q U hU
   obtain ⟨hrd, ⟨τ₀⟩, -⟩ := GlobalTheory.CompanionTheory.Ar.Top.HostNumbers.host_numbers E H
@@ -58,7 +61,7 @@ theorem top_mean_cusp_weight : Top.Given → ∃ Cu : ℝ, ∀ (E : Type) [Field
     have := Dc.j_le; have := Dc.two_le_N
     show Dc.j + (Dc.N - Dc.j) = Dc.N
     omega
-  have hball := fun k => GlobalTheory.T.cusp_weight_integrable_on_fundamental_set E (CMType H) Dc.j Dc.j' Dc.n Q.g (Q.Λ k) H (Q.F k) (Q.Γ k) (Q.FF k)
+  have hball := fun k => _root_.GlobalTheory.CompanionTheory.Ar.Cusp.fund_set_mean_cuspW E (CMType H) Dc.j Dc.j' Dc.n Q.g (Q.Λ k) H (Q.F k) (Q.Γ k) (Q.FF k)
     (Q.arith k) (Q.fund k) hj' (by omega)
   set C : ℝ := (Fintype.card (CMType H) : ℝ) * Dc.j' * (6 + Real.log (2 * Fintype.card (CMType H) * hostRd E) +
     Real.log (2 * Fintype.card (CMType H) * Dc.j' * hostRd E)) with hC

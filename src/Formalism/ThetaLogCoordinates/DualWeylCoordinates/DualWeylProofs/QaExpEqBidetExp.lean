@@ -81,47 +81,6 @@ lemma tableauBideterminant_mem_dualWeyl (R : Type) [CommRing R] {n : ℕ} [NeZer
   rw [tableauBideterminant_eq_bideterminant, ← qa_shape hmu]
   exact bidetMem R n n _ _ _ _
 
-lemma tableauBideterminant_ne_zero (R : Type) [CommRing R] [Nontrivial R] {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) :
-    qa_P R I ≠ 0 := by
-  intro h
-  have := (tableauBideterminant_degree_leadingCoeff R I).2
-  rw [h] at this
-  simp at this
-
-lemma map_tableauBideterminant {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ} [NeZero n] {mu : Fin n → ℤ}
-    (I : TIdx mu) : MvPolynomial.map φ (qa_P R I) = qa_P S I := by
-  unfold qa_P
-  rw [map_prod]
-  refine Finset.prod_congr rfl fun c _ => ?_
-  unfold initMinor
-  rw [RingHom.map_det]
-  congr 1
-  ext p q
-  simp
-
-lemma qa_exp_mem {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) (I : TIdx mu) :
-    qa_exp I ∈ ssIdx n n (qa_nu mu) := by
-  have h1 := leadInterlaced ℤ n n (qa_nu mu) (qa_P ℤ I) (tableauBideterminant_mem_dualWeyl ℤ hmu I) (tableauBideterminant_ne_zero ℤ I)
-  have h2 := colSums ℤ n n (qa_nu mu) (qa_P ℤ I) (tableauBideterminant_mem_dualWeyl ℤ hmu I) _
-    (((colLex n n).degree_mem_support_iff _).mpr (tableauBideterminant_ne_zero ℤ I))
-  rw [(tableauBideterminant_degree_leadingCoeff ℤ I).1] at h1 h2
-  exact ⟨h1, h2⟩
-
-def qa_stdEquiv {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) :
-    {I : TIdx mu // StdT I} ≃ ssIdx n n (qa_nu mu) :=
-  Equiv.ofBijective (fun I => ⟨qa_exp I.1, qa_exp_mem hmu I.1⟩)
-    ⟨fun I J h => Subtype.ext (qa_exp_inj I.1 J.1 I.2 J.2 (congrArg Subtype.val h)),
-     fun m => by
-      obtain ⟨I, hI, he⟩ := qa_exp_surj hmu m.1 m.2
-      exact ⟨⟨I, hI⟩, Subtype.ext he⟩⟩
-
-theorem linearIndependent_standard_tableauBideterminant (R : Type) [CommRing R] [Nontrivial R] {n : ℕ} [NeZero n] (mu : Fin n → ℤ) :
-    LinearIndependent R (fun I : {I : TIdx mu // StdT I} => qa_P R I.1) := by
-  refine ldbasis_linearIndependent (colLex n n) _ ?_ fun I => (tableauBideterminant_degree_leadingCoeff R I.1).2
-  intro I J h
-  simp only [(tableauBideterminant_degree_leadingCoeff R _).1] at h
-  exact Subtype.ext (qa_exp_inj I.1 J.1 I.2 J.2 h)
-
 theorem dualWeyl_eq_span_standard_tableauBideterminant (B : Type) [CommRing B] [IsDomain B] {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) :
     dualWeyl B n n (qa_nu mu) =
       Submodule.span B (Set.range fun I : {I : TIdx mu // StdT I} => qa_P B I.1) := by

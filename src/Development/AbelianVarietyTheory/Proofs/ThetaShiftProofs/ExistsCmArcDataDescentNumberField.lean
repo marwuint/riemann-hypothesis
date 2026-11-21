@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ModelsAt
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcDataDescendsPrincipalIdealSubringStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNumberFieldNormalisedDegenerationDataStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNumberFieldQkPointsComplexDegenerationStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNumberFieldNormalisedDegenerationData
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNumberFieldQkPointsComplexDegeneration
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsRosatiActionWeilPairingBalancedTriple
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.PolFibreIdCompCancel
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.DimSplitPf
@@ -39,10 +39,10 @@ theorem exists_arcIn_numberField : Known → ∀ (E : Type) [Field E] [NumberFie
   obtain ⟨P, φP, hP⟩ := exists_isPolFibre hK.laws.polBaseChange (algebraMap (𝓞 K) K) B.pol
   obtain ⟨φ₁, hφ₁, e₁⟩ := PolFibre.cancel hP hφ
   obtain ⟨K₂, _, _, i₂, σ₂, D₂, p₂, ψ₂, hi₂, hψ₂, e₂⟩ :=
-    GlobalTheory.T.exists_numberField_normalised_degenerationData hK K σ₁ P aC.D₀ φ₁ n hn hφ₁ aC.even aC.bimult htau
+    _root_.GlobalTheory.NormDescent.exists_numberField_pre hK K σ₁ P aC.D₀ φ₁ n hn hφ₁ aC.even aC.bimult htau
   have hM : 0 < l.M' := Nat.lcm_pos (by have := l.three_le; omega) l.A_pos
   obtain ⟨K₃, _, _, i₃, σ₃, D₃, q, p₃, hi₃, e₃, hQ⟩ :=
-    GlobalTheory.T.exists_numberField_qkPoints_complex_degeneration hK K₂ σ₂ D₂ aC.D₀ p₂ n l.M' hn hM aC.bimult htau.1
+    _root_.GlobalTheory.QkNumberField.exists_numberField_qk hK K₂ σ₂ D₂ aC.D₀ p₂ n l.M' hn hM aC.bimult htau.1
   have hψ : IsPolFibre ((i₃.comp i₂).comp (algebraMap (𝓞 K) K)) B.pol D₃.P ((prj q ≫ ψ₂) ≫ φP) :=
     PolFibre.comp hP (PolFibre.comp hψ₂ (DescNum.isPolFibre_of_isPullDeg q))
   have eψ : prj p₃ ≫ (prj q ≫ ψ₂) ≫ φP = φ := by

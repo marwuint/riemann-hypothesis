@@ -60,10 +60,6 @@ theorem matB_zero (lam : Fin n → ℤ) : matB lam 0 = 0 := by
 theorem matB_one (lam : Fin n → ℤ) : matB lam 1 = 1 := by
   ext i j; simp only [matB, Module.End.one_apply]; exact extL_wb lam i j
 
-theorem matB_smul (lam : Fin n → ℤ) (s : ℂ) (F : Module.End ℂ (MvPolynomial (Fin n × Fin n) ℂ)) :
-    matB lam (s • F) = s • matB lam F := by
-  ext i j; simp [matB]
-
 theorem At_eq (lam : Fin n → ℤ) (a b : Fin n) : At lam a b = matB lam (Et lam a b) := rfl
 
 theorem At_pow (lam : Fin n → ℤ) (k : ℕ) (a b : Fin n) : (At lam ^ k) a b = matB lam ((Et lam ^ k) a b) := by

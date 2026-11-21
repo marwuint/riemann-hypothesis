@@ -14,13 +14,6 @@ namespace UpperTheory.Gal.Mod.EtaleTowerBaseChange
 section Lin
 variable {R : Type*} [CommSemiring R] {ι : Type*} {M : ι → Type*} [∀ i, AddCommMonoid (M i)] [∀ i, Module R (M i)]
 
-private theorem lmap_pow_lof [DecidableEq ι] (G : ∀ i, Module.End R (M i)) (m : ℕ) (k : ι) (x : M k) :
-    ((DirectSum.lmap G : Module.End R (DirectSum ι fun i => M i)) ^ m) (DirectSum.lof R ι M k x) =
-      DirectSum.lof R ι M k ((G k ^ m) x) := by
-  induction m with
-  | zero => simp
-  | succ m ih => rw [pow_succ', Module.End.mul_apply, ih, DirectSum.lmap_lof, pow_succ', Module.End.mul_apply]
-
 private theorem directSum_lmap_pow_apply (G : ∀ i, Module.End R (M i)) (m : ℕ) (x : DirectSum ι fun i => M i) (i : ι) :
     ((DirectSum.lmap G : Module.End R (DirectSum ι fun i => M i)) ^ m) x i = (G i ^ m) (x i) := by
   induction m generalizing x with

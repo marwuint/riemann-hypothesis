@@ -3,10 +3,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoherentLatticeClosureStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameOpenNeighbourhoodStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeSubQuotientSplitStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtLocalOrderFractionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoherentLatticeClosure
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameOpenNeighbourhood
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeSubQuotientSplit
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtLocalOrderFraction
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
 namespace GlobalTheory.CompanionTheory.Ar.FlagVB
@@ -193,7 +193,7 @@ namespace GlobalTheory.CompanionTheory.Ar
 theorem isFlagVBOn_inter_of_steps : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat ξ E) (T : Set (Cpt ξ)) (g r : ℕ) (W : Submodule Ω E) (b₀ : Fin r → E), LinearIndependent Ω b₀ → (∀ k, b₀ k ∈ W) → L.IsVBOn T g W → (∀ n : ℕ, ∃ s W', (L.map (flagStep Ω b₀ n).mkQ).IsVBOn T s W') → (L.inter (Submodule.span Ω (Set.range b₀))).IsFlagVBOn T b₀ := by
   intro X Ω _ ξ E _ _ L T g r W b₀ hli hW hL hq p hp
   classical
-  haveI : IsLocalRing (regAt ξ p) := (GlobalTheory.T.regAt_local_order_fraction X Ω ξ).1 p
+  haveI : IsLocalRing (regAt ξ p) := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_local_mono_frac X Ω ξ).1 p
   have hFW : ∀ n, flagStep Ω b₀ n ≤ W := fun n =>
     Submodule.span_le.2 (by
       rintro _ ⟨k, -, rfl⟩
@@ -202,7 +202,7 @@ theorem isFlagVBOn_inter_of_steps : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] 
       ∀ p ∈ T, ∃ Q : Submodule (regAt ξ p) E, Disjoint Q (L.inter (flagStep Ω b₀ n) p) ∧
         Q ⊔ L.inter (flagStep Ω b₀ n) p = L p := fun n => by
     obtain ⟨s, W', h⟩ := hq n
-    exact GlobalTheory.T.lattice_sub_quotient_split X Ω ξ E L T g s W (flagStep Ω b₀ n) W' (hFW n) hL h
+    exact _root_.GlobalTheory.CompanionTheory.Ar.inter_isVBOn_of_map X Ω ξ E L T g s W (flagStep Ω b₀ n) W' (hFW n) hL h
   obtain ⟨c, h1, h2⟩ := FlagVB.exists_adapted (regAt ξ p) (L p) b₀ (fun n hn => by
       obtain ⟨U, hU, d, hd, hfr⟩ := (hv n).1 p hp
       obtain ⟨hd1, hd2⟩ := hfr p hp hU
@@ -239,8 +239,8 @@ theorem isFlagVBOn_inter_of_steps : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] 
   have hcoh : (L.inter (Submodule.span Ω (Set.range b₀))).IsCohOn T := by
     have hvb := (hv r).1
     rw [← hV] at hvb
-    exact (GlobalTheory.T.coherent_lattice_closure X Ω ξ E E (L.inter (Submodule.span Ω (Set.range b₀))) (L.inter (Submodule.span Ω (Set.range b₀))) T).1 _ _ hvb
-  obtain ⟨U, hU, hall⟩ := GlobalTheory.T.frame_open_neighbourhood X Ω ξ E _ T r b p hcoh hp hframe
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.coh_vb_images_sums_multiples X Ω ξ E E (L.inter (Submodule.span Ω (Set.range b₀))) (L.inter (Submodule.span Ω (Set.range b₀))) T).1 _ _ hvb
+  obtain ⟨U, hU, hall⟩ := _root_.GlobalTheory.CompanionTheory.Ar.frame_spread_near X Ω ξ E _ T r b p hcoh hp hframe
   exact ⟨U, hU, b, hflag, hall⟩
 
 end GlobalTheory.CompanionTheory.Ar

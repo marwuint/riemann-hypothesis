@@ -129,44 +129,4 @@ theorem hom_space_is_representation : HomSpaceIsRepresentation := by
   intro n K V V' _ _ _ _ _ _ _ _ E E' hE hE'
   exact homRepresentation_isRep E E' hE hE'
 
-theorem homRep_ell_bounded_by_target : HomRepEllBoundedByTarget := by
-  intro n K W _ _ _ _ _ E hE L hL
-  refine csSup_le' ?_
-  rintro k ⟨a, b, hab, hk⟩
-  have hres := restrictRepresentation_isRep E hE L hL
-
-  have hne : weightSp (homRepresentation (restrictRepresentation E L hL) E) ((k : ℤ) • rootW a b) ≠ ⊥ := by
-    intro h0; apply hk; rw [h0, bot_inf_eq]
-  obtain ⟨g, hg, hg0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne
-  have hex : ∃ nu, ∃ x ∈ weightSp (restrictRepresentation E L hL) nu, g x ≠ 0 := by
-    by_contra hc
-    apply hg0
-    refine linearMap_ext_on_weightSpaces _ hres g 0 fun nu x hx => ?_
-    by_contra h1
-    exact hc ⟨nu, x, hx, h1⟩
-  obtain ⟨nu, x, hx, hgx⟩ := hex
-  have hx' : (x : W) ∈ weightSp E nu := (restrict_mem_weightSpace_iff E L hL nu x).1 hx
-  have hx0 : (x : W) ≠ 0 := by
-    intro h0
-    apply hgx
-    have : x = 0 := Subtype.ext h0
-    rw [this, map_zero]
-  have hgw : g x ∈ weightSp E ((k : ℤ) • rootW a b + nu) := by
-    rw [mem_weightSp_iff_diagonal_apply]
-    intro c
-    have h1 := congrArg (fun f : L →ₗ[K] W => f x) ((mem_weightSp_iff_diagonal_apply _ _ g).1 hg c)
-    simp only [homRepresentation_apply, LinearMap.smul_apply] at h1
-    have h2 : restrictRepresentation E L hL c c x = (nu c : K) • x := (mem_weightSp_iff_diagonal_apply _ _ x).1 hx c
-    rw [h2, map_smul, sub_eq_iff_eq_add] at h1
-    rw [h1, Pi.add_apply, Int.cast_add, add_smul]
-  refine le_csSup (root_differences_bddAbove E hE ⊤) ⟨(k : ℤ) • rootW a b + nu, ?_, nu, ?_, a, b, hab, by abel⟩
-  · intro h0
-    have : g x ∈ weightSp E ((k : ℤ) • rootW a b + nu) ⊓ ⊤ := ⟨hgw, trivial⟩
-    rw [h0] at this
-    exact hgx ((Submodule.mem_bot K).1 this)
-  · intro h0
-    have : (x : W) ∈ weightSp E nu ⊓ ⊤ := ⟨hx', trivial⟩
-    rw [h0] at this
-    exact hx0 ((Submodule.mem_bot K).1 this)
-
 end Formalism.MainNotions.G.GLWeightTheory

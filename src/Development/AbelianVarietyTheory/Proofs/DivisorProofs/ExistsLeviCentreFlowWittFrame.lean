@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousSpl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitTorusElementUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitTorusElementMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitTorusInLeviParabolic
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdelicFrameTorusElementMatrixEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdelicFrameTorusElementMatrixEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIdTorusEltOne
 
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.ResLine GlobalTheory.ResidueEisenstein
@@ -100,7 +101,7 @@ theorem const_centre {X Y : Matrix (Fin n) (Fin (r + 1)) E} (hCM : IsCMExt F E �
         Matrix.mul_assoc (adMat F Y) C, ← dc, ← Matrix.mul_assoc]
     apply matHom_injective
     apply Units.ext
-    simp only [map_mul, Units.val_mul, GlobalTheory.T.idelicFrameTorusElement_matrix_eq hCM hJ hW ha, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul,
+    simp only [map_mul, Units.val_mul, _root_.GlobalTheory.IdTorus.mat_eq_of_isIdTorusElt hCM hJ hW ha, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul,
       Matrix.mul_one, c1, c2]
 
 end GlobalTheory.ResidueFlow

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsLevMeas
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainLevelProperties
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PushforwardHaarRealPointsTimesLevel
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MapRestrictIsHaarOfOpenProductCompactStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MapRestrictIsHaarOfOpenProductCompact
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsCompactFiniteAdelicSubgroupIntegralOpenStatement
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TransferOn
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CartFrSgn
@@ -49,7 +49,7 @@ theorem finE_gAt_mem_St {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Sub
     (hfr : Formalism.L2.DIV.IsFrame β Λ) (g : GA D V) (v : HeightOneSpectrum (𝓞 D.host.F))
     (hv : GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig V.gram Λ v) :
     Lev.finE V (gAt V (.inl v) g) ∈ Formalism.L2.DIV.St β := by
-  refine (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D V β Λ hfr _).2 fun w => ?_
+  refine (_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V β Λ hfr _).2 fun w => ?_
   show GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram w
     (GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v (GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g)) ∈ _
   by_cases e : w = v
@@ -65,7 +65,7 @@ theorem red_local {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule
       Formalism.L2.DIV.redFn β PP (Lev.finE V (gAt V (.inl (PP.under (𝓞 D.host.F))) g)) := by
   set v := PP.under (𝓞 D.host.F)
   set k := gAt V (.inl v) g with hkdef
-  have hk : Lev.finE V k ∈ Formalism.L2.DIV.St β := finE_gAt_mem_St hfr g v ((GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D V β Λ hfr g).1 hg v)
+  have hk : Lev.finE V k ∈ Formalism.L2.DIV.St β := finE_gAt_mem_St hfr g v ((_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V β Λ hfr g).1 hg v)
   have hpk : GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v k = GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g := by
     show GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v
       (GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v (GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g)) = _
@@ -73,7 +73,7 @@ theorem red_local {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule
   have h2 : Lev.finE V (k⁻¹ * g) ∈ Formalism.L2.DIV.St β := by
     rw [map_mul, map_inv]; exact mul_mem (inv_mem hk) hg
   have h3 : Formalism.L2.DIV.redFn β PP (Lev.finE V (k⁻¹ * g)) = 1 :=
-    GlobalTheory.T.latticeReduction_eq_one_of_local_component_one D V β _ PP h2 (by rw [map_mul, map_inv, hpk, inv_mul_cancel])
+    _root_.GlobalTheory.ChainOnto.RedOne.redFn_eq_one D V β _ PP h2 (by rw [map_mul, map_inv, hpk, inv_mul_cancel])
   have e : g = k * (k⁻¹ * g) := by group
   conv_lhs => rw [e]
   rw [map_mul, Formalism.L2.DIV.redFn_mul hk h2, h3, mul_one]
@@ -103,10 +103,10 @@ theorem levLoc : ∀ D : D7, ForStageQ D fun c w _ s => MeasurableSet (levSet s)
   set K := Lev.levG s.V s.β s.L
 
   have h3 : ∀ k ∈ K, ∀ v, GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v k ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig V.gram s.Λ v :=
-    fun k hk v => (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D V s.β s.Λ hfr k).1 (GlobalTheory.ChainOnto.LevelFacts.finE_mem_St hk) v
+    fun k hk v => (_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V s.β s.Λ hfr k).1 (GlobalTheory.ChainOnto.LevelFacts.finE_mem_St hk) v
 
   have h1 : ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧ ∀ k ∈ U, k ∈ GfC V → k ∈ K := by
-    obtain ⟨U, hU, hUk⟩ := GlobalTheory.T.exists_open_principal_congruence_finitely_many_primes D V s.β (s.L.Pg ∪ s.L.Q)
+    obtain ⟨U, hU, hUk⟩ := _root_.GlobalTheory.ChainOnto.LevelOpen.exists_open_princ D V s.β (s.L.Pg ∪ s.L.Q)
     refine ⟨U, hU, fun k hk hkf => ⟨hkf, ?_⟩⟩
     exact GlobalTheory.LevSplit.mem_lev_of_red D.sp.cm V.gram s.β s.L _ (GlobalTheory.LevSplit.finE_mem_UA V k) (hUk k hk).1
       fun PP hPP => (hUk k hk).2 PP (Finset.mem_union.2 hPP)
@@ -116,19 +116,19 @@ theorem levLoc : ∀ D : D7, ForStageQ D fun c w _ s => MeasurableSet (levSet s)
     constructor
     · intro hg
       obtain ⟨-, hS, hl⟩ := (mem_lev_iff V.gram s.β s.L hP _).1 hg
-      refine ⟨fun v _ => (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D V s.β s.Λ hfr g).1 hS v, fun v _ => ?_⟩
-      have hkS := finE_gAt_mem_St hfr g v ((GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D V s.β s.Λ hfr g).1 hS v)
+      refine ⟨fun v _ => (_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V s.β s.Λ hfr g).1 hS v, fun v _ => ?_⟩
+      have hkS := finE_gAt_mem_St hfr g v ((_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V s.β s.Λ hfr g).1 hS v)
       refine ⟨GlobalTheory.ChainOnto.LevelFacts.emb_mem_GfC V v _, ?_⟩
       refine (mem_lev_iff V.gram s.β s.L hP _).2 ⟨GlobalTheory.LevSplit.finE_mem_UA V _, hkS, fun PP => ?_⟩
       by_cases e : PP.under (𝓞 D.host.F) = v
       · subst e
         rw [← red_local hfr g hS PP]
         exact hl PP
-      · rw [GlobalTheory.T.latticeReduction_eq_one_of_local_component_one D V s.β _ PP hkS (GlobalTheory.AdelicU.proj_emb_ne _ _ e _)]
+      · rw [_root_.GlobalTheory.ChainOnto.RedOne.redFn_eq_one D V s.β _ PP hkS (GlobalTheory.AdelicU.proj_emb_ne _ _ e _)]
         exact locOK_one _ _
     · rintro ⟨hI, hK⟩
       have hS : Lev.finE V g ∈ Formalism.L2.DIV.St s.β := by
-        refine (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D V s.β s.Λ hfr g).2 fun v => ?_
+        refine (_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V s.β s.Λ hfr g).2 fun v => ?_
         by_cases hv : v ∈ c.S
         · have := h3 _ (hK v hv) v
           have e : GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v (gAt s.V (.inl v) g) = GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g := by
@@ -178,7 +178,7 @@ theorem levLoc : ∀ D : D7, ForStageQ D fun c w _ s => MeasurableSet (levSet s)
     refine Subgroup.mem_comap.2 ?_
     rw [Subgroup.subtype_apply, GlobalTheory.ChainOnto.HaarInf.finE_of_mem_ginfC V b.2]; exact one_mem _
   have hHaar : (Measure.map (GlobalTheory.AutMult.toInf V) (s.ν.restrict (A : Set (GA D V)))).IsHaarMeasure :=
-    GlobalTheory.T.map_restrict_isHaar_of_open_product_compact (GA D V) (GinfC V) s.ν A (GinfC V).subtype (GlobalTheory.AutMult.toInf V) hAopen
+    _root_.GlobalTheory.ChainOnto.map_restrict_isHaar (GA D V) (GinfC V) s.ν A (GinfC V).subtype (GlobalTheory.AutMult.toInf V) hAopen
       continuous_subtype_val (GlobalTheory.AutMult.continuous_toInf V) hpi hiA (hker ▸ hKc)
   refine ⟨hAopen.measurableSet, hIopen.measurableSet, hloc, fun g hg => ?_, fun κ hκ =>
     ⟨GlobalTheory.ChainOnto.LevelFacts.levChi_norm s.β s.L κ, h3 κ hκ⟩, ?_⟩

@@ -28,9 +28,6 @@ private theorem two_mul_AB_le_aM (k r : ℕ) : 2 * AB k r ≤ aM k r := by
   nlinarith [mul_nonneg hk hr, mul_nonneg (mul_nonneg hk hr) hr, mul_nonneg (mul_nonneg hk hk) hr,
     mul_nonneg (mul_nonneg hr hr) hr, mul_nonneg (mul_nonneg hk hk) hk, mul_nonneg hr hr, mul_nonneg hk hk]
 
-theorem two_AB_le_aM {k r : ℕ} (hk : 1 ≤ k) : 2 * AB k r ≤ aM k r := by
-  exact two_mul_AB_le_aM k r
-
 private theorem exists_bessel_coef_of_mem_Vfl {k r : ℕ} (X : SigData k r) (haM : aM k r ≤ X.a) {u : X.Hs}
     (hu : u ∈ Vfl X) : ∃ C : ℝ, BesselPositivity.Coef (mc X u X.w) C X.a := by
   obtain ⟨C, hC⟩ := hu
@@ -41,10 +38,6 @@ private theorem exists_bessel_coef_of_mem_Vfl {k r : ℕ} (X : SigData k r) (haM
   · intro y hy
     have ht : 0 ≤ gN y ^ (-X.a) := Real.rpow_nonneg (Real.sqrt_nonneg _) _
     exact (hC y hy).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) ht)
-
-theorem bePos_coef {k r : ℕ} (X : SigData k r) (hk : 1 ≤ k) (haM : aM k r ≤ X.a) {u : X.Hs} (hu : u ∈ Vfl X) :
-    ∃ C : ℝ, BesselPositivity.Coef (mc X u X.w) C X.a := by
-  exact exists_bessel_coef_of_mem_Vfl X haM hu
 
 private lemma inner_apply_right_inverse_eq_inner_of_isometry {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (T S : E →L[ℂ] E)
     (hT : ∀ v, ‖T v‖ = ‖v‖) (hTS : T.comp S = 1) (x : E) : ⟪x, S x⟫_ℂ = ⟪T x, x⟫_ℂ := by

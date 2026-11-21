@@ -16,10 +16,6 @@ open scoped GlobalTheory.VacAny
 noncomputable section
 namespace Tw.VacCocycle
 open _root_.GlobalTheory
-section General
-variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
-  {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
-end General
 theorem psi_half_symp_add_k : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ),
     X.IsHerm σ B r s → Y.IsSkew σ B r' s' → ∀ θ : 𝓞 E, (θ : E) + σ θ = 1 → ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F,

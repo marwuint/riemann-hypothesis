@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ISupEigenspaceEqTop
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SumRowDegreeEqOfHarmonicHighestCasimirStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SumRowDegreeEqOfHarmonicHighestCasimir
 
 noncomputable section
 
@@ -264,7 +264,7 @@ theorem column_degrees (σ : Type) [Fintype σ] [DecidableEq σ] (k l n : ℕ)
       rw [ha i, ← ha' i, Int.cast_natCast]
     have hyb : ∀ i, rowOp ℂ y i i v = (b' i : ℂ) • v := fun i => by
       rw [hb i, ← hb' i, Int.cast_natCast]
-    have hT := GlobalTheory.T.sum_row_degree_eq_of_harmonic_highest_casimir σ k l n z y hz hy hzy v a' b' κ hv0 ha'a hb'b hκ hvz hza hvy hyb hvH hvU hvK
+    have hT := _root_.GlobalTheory.HarmRowDegree.sum_row_degree_eq σ k l n z y hz hy hzy v a' b' κ hv0 ha'a hb'b hκ hvz hza hvy hyb hvH hvU hvK
     have hEv : E v = ((∑ i, (a' i : ℤ) : ℤ) : ℂ) • v := by
       rw [hE, LinearMap.sum_apply]
       simp only [hza]

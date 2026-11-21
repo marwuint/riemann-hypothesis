@@ -1,7 +1,9 @@
 import Development.WeilBound.CoreStatements.FlagImmersions.FibSandwich
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackCorrespondence
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelActionBaseChangeStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelActionBaseChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameIffEigenspaceBasisStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.LawsProved
@@ -83,7 +85,7 @@ theorem exists_coords {X : Scheme.{0}} (t : SAB H X) {Ω : Type} [Field Ω] {ξ 
   classical
   let R : Type := X.presheaf.stalk (centre z)
   let fV : R →+* V := (Scheme.stalkClosedPointTo z).hom
-  obtain ⟨g, MR, ρR, -, hbc⟩ := GlobalTheory.T.lie_model_action_base_change E H X t R (X.fromSpecStalk (centre z))
+  obtain ⟨g, MR, ρR, -, hbc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Ggeo.lieModel_coordinates_baseChange E H X t R (X.fromSpecStalk (centre z))
   have hz : spMap fV ≫ X.fromSpecStalk (centre z) = z := spec_centre z
   obtain ⟨MV, ρV, aV, hV, -⟩ := hbc V fV z hz.symm
   obtain ⟨MC, ρC, aC, hC, -⟩ := hbc L ((algebraMap V L).comp fV) (Spec.map (CommRingCat.ofHom (algebraMap V L)) ≫ z)

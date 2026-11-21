@@ -165,8 +165,6 @@ theorem jfCptLocAll : JFCptLocAll := by
     simp only [hxy, hFy, ContinuousLinearMap.comp_zero, ContinuousLinearMap.zero_comp, smul_zero, Pi.zero_apply]
   rw [hJ0, smul_zero]
 
-theorem herCptTopAll : HerCptTopAll := herCptTopAll_of_jf jfCptLocAll
-
 theorem thmPActualCpt_of_stepForm (hSF : StepFormCptAll) : ThmPActualCpt := thmPActualCpt_of_jf jfCptLocAll hSF
 
 end Formalism.FourierDecayAlt.P5.HerC

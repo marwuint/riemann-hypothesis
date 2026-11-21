@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyConstCochainModPow
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmallTracesSubgroupGaloisTowerTopStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmallTracesSubgroupGaloisTowerTop
+import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
+import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InvariantsFromFiniteLevel
 
 open GlobalTheory.K5
@@ -97,7 +99,7 @@ theorem GlobalTheory.K5.geo_invariants_from_finite_level :
     Cong p k ((T.ζ j - 1) * x) y := by
   intro p _ hp2 Ω _ _ hClo T k j hj x hx hfix
   obtain ⟨y₀, E, hy₀, hEH, huniq, hsum⟩ :=
-    GlobalTheory.T.smallTraces_subgroup_galois_towerTop p Ω hp2 hClo T (Ggeo p Ω ⊓ ⨅ n, Gn T n) inf_le_right {x} j hj
+    _root_.GlobalTheory.K5.small_traces_subgroup p Ω hp2 hClo T (Ggeo p Ω ⊓ ⨅ n, Gn T n) inf_le_right {x} j hj
   have hgi : ∀ (g : Gal p Ω) (z : Ω), IsInt p z → IsInt p (g z) := fun g z hz =>
     hz.map (g : Ω →ₐ[O0 p] Ω)
   refine ⟨∑ g ∈ E, g (y₀ * x), ?_, ?_, ?_⟩

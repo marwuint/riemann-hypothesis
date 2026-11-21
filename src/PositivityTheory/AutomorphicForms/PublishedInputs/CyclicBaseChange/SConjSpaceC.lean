@@ -28,10 +28,6 @@ def SSatEx : Prop :=
 def SSatUniq : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] (n : ℕ) (π : Cusp F n) v B B', π.sat v B → π.sat v B' → B = B'
 
-def SSmo : Prop :=
-  GlobalTheory.Mem.LiteralAutomorphy.LitN → StrongMultOneReal → ∀ (F : Type) [Field F] [NumberField F] (n : ℕ), 1 ≤ n → ∀ π π' : Cusp F n,
-    (∀ᶠ w : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∃ B, π.sat w B ∧ π'.sat w B) → π.Iso π'
-
 def SConjSpaceC : Prop :=
   ∀ (M : Type) [Field M] [NumberField M] [IsTotallyComplex M] (σ : M ≃+* M) (s : Ad M ≃+* Ad M), IsGalAd σ s →
     ∀ (n : ℕ) (P : CuspSub M n), ∃ P' : CuspSub M n,

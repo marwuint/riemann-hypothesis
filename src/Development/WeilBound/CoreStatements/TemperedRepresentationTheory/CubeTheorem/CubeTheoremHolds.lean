@@ -1,10 +1,14 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchemeModelsSpreadStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchemeModelsSpread
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.CubeTheorem.SchemeModels
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothSpreadsOutStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsProperSpreadsOutStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LbSpreadsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsProperSpreadsOut
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LbSpreads
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.CubeTheorem.LBSpreads
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProjOverOfIsProjOverBase
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectOfModelsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasModelOfSpreadingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasModelOfSpreading
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CubeTheoremOfPerfectStatement
 
 set_option autoImplicit false
@@ -12,6 +16,6 @@ set_option autoImplicit false
 namespace GlobalTheory.SpreadingModels
 
 theorem cubeTheorem_holds : GlobalTheory.Published.CubeTheorem :=
-  GlobalTheory.T.cube_theorem_of_perfect (GlobalTheory.T.perfect_of_models (GlobalTheory.T.has_model_of_spreading GlobalTheory.T.scheme_models_spread GlobalTheory.T.smooth_spreads_out GlobalTheory.T.isProper_spreads_out GlobalTheory.T.line_bundle_spreads_out'))
+  GlobalTheory.T.cube_theorem_of_perfect (GlobalTheory.T.perfect_of_models (_root_.GlobalTheory.CompanionTheory.CubeModels.hasModel_of_spreads _root_.GlobalTheory.CompanionTheory.NoethApprox.schemeModels GlobalTheory.T.smooth_spreads_out _root_.GlobalTheory.CompanionTheory.SpreadingModels.properSpreads _root_.GlobalTheory.CompanionTheory.LBLimit.lbSpreads))
 
 end GlobalTheory.SpreadingModels

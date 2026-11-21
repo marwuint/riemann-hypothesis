@@ -3,9 +3,9 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoun
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
-import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExists
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeLatticeFlagStatement
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.TrivFlagHodgeStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
@@ -13,11 +13,12 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenOfUnit
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DetLatticeFlagTensor
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NefDegreeScaleInvariant
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsReindexDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCompCoverPrimesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NefOnFibresBlockXdegSumsOfRootLinesStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DeterminantLatticeGradedTensor
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.NefFibresScaledLattice
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.NefFibresBlockEmbedding
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.HodgeCompactCoverPrimes
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NefOnFibresBlockXdegSumsOfRootLines
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -28,10 +29,10 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.hodge_comp_cover_cm_signs : To
   intro hG hW E _ _ _ H D Xo l c Y S Ω _ _ K _ J _ y 𝔐 dg sm m s a e₀ hY hp hq hcov hS hS' hsm hs hdeg
   have hI : PB.Inputs := hG.2.2.2.2.2.2.2.2.2.1
   obtain ⟨M, 𝔐', Fl, e, i, g, bk, bx, j, hbk, hy, hd, hS2, hR, hj, hli, hV⟩ :=
-    GlobalTheory.T.hodge_comp_cover_primes hW E H D Xo l c Y S Ω K J y 𝔐 dg hcov
+    _root_.LevelTowerAlt.hodge_compact_cover_primes hW E H D Xo l c Y S Ω K J y 𝔐 dg hcov
       (fun p hp hdv => by by_contra h; exact (hS' p hp h).1 hdv) hS
   haveI : CharZero M.Ω := charZero_of_injective_ringHom i.injective
-  obtain ⟨n1, n2⟩ := GlobalTheory.T.nefOnFibres_block_xdeg_sums_of_rootLines hG E H D Xo l c Y S M 𝔐' Fl e hY hp hq hS2 hS' hR
+  obtain ⟨n1, n2⟩ := _root_.GlobalTheory.CompanionTheory.Relay.nefOnFibres_block_xdeg_sums_of_rootLines hG E H D Xo l c Y S M 𝔐' Fl e hY hp hq hS2 hS' hR
   have hb₀ : ∀ σ, LinearIndependent M.Ω (Fl.b σ) := by
     obtain ⟨_, _, -, -, -, h, -⟩ := Fl.generic
     exact h
@@ -53,7 +54,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.hodge_comp_cover_cm_signs : To
   have hA : ∃ A e₁, (Lat.tens (fun τ => detLat (𝔐'.V (sm τ)) (Fl.b (sm τ))) fun _ => -1).IsDegOn Set.univ M.y A e₁ ∧
       NefOnFibres (mCoordIdeal M.y) A := by
     have hdet : ∀ σ, detLat (𝔐'.V σ) (Fl.b σ) = Lat.tens (fun k => (𝔐'.V σ).gr (Fl.b σ) k) fun _ => 1 := fun σ =>
-      GlobalTheory.CompanionTheory.Relay.det_lattice_flag_tensor _ _ _ _ _ _ _ (hb₀ σ) (Fl.sub σ)
+      _root_.LevelTowerAlt.determinant_lattice_graded_tensor _ _ _ _ _ _ _ (hb₀ σ) (Fl.sub σ)
     simp only [hdet]
     rcases hsm with rfl | rfl
     · have h1 : ∀ τ (k : Fin D.p), HodgeCpt.rootIdx D (τ, Fin.castAdd D.q k) = ⟨.inl τ, k⟩ := fun τ k => by
@@ -84,7 +85,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.hodge_comp_cover_cm_signs : To
       have h3 := Equiv.sum_comp Fin.revPerm fun k : Fin D.q => M.xdeg (τ, Fin.natAdd D.p k)
       simp [HodgeCpt.rootSgn, h2, ← h3]
   obtain ⟨A, e₁, hA1, hA2⟩ := hA
-  have hN := GlobalTheory.CompanionTheory.Relay.nef_degree_scale_invariant hI _ M.Ω M.K M.ι M.y 𝔐'.ξ _ A a' e₁ _ _ 𝔐'.tie
+  have hN := _root_.LevelTowerAlt.nef_fibres_scaled_lattice hI _ M.Ω M.K M.ι M.y 𝔐'.ξ _ A a' e₁ _ _ 𝔐'.tie
     (Finset.prod_ne_zero_iff.2 fun τ _ => hu0 τ) hA1 hB hA2
   obtain ⟨c₀, hc₀⟩ := 𝔐'.tie.cover ⟨genPt 𝔐'.ξ, specializes_rfl⟩
-  exact GlobalTheory.T.coords_reindex_degree hI Ω M.Ω i K M.K J M.ι y M.y bk bx a a' hbk hy (fun k => ⟨_, GlobalTheory.CompanionTheory.Ar.Cusp.DetNef.chart_ne hc₀ k⟩) ha ha' hN
+  exact _root_.LevelTowerAlt.nef_fibres_block_embedding hI Ω M.Ω i K M.K J M.ι y M.y bk bx a a' hbk hy (fun k => ⟨_, GlobalTheory.CompanionTheory.Ar.Cusp.DetNef.chart_ne hc₀ k⟩) ha ha' hN

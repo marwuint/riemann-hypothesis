@@ -144,7 +144,4 @@ theorem c2_tau_mem : C2.TauMem := by
   rw [htau]
   exact mul_mem_Nset' (HermitianXiVector.nEich_mem hz ξ) (mX_mem vX hvX_mem)
 
-theorem zhat_section_exists : C2.ZhatSection :=
-  zhat_section_of_parts zhat_equivalence unipotent_map_frame c2_tau_mem standard_flag_property
-
 end Formalism.FourierDecayAlt.P

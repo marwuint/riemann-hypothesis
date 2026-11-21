@@ -38,8 +38,6 @@ def eR (S : Finset (Fin n × Fin n)) : Fin n → ℤ := ∑ p ∈ pairs n \ S, P
 
 def sgS (S : Finset (Fin n × Fin n)) : ℂ := (-1) ^ (pairs n \ S).card
 
-example : Dom (0 : LaurentRing n) := fun _ h => by simp at h
-
 end Laurent
 
 variable (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}

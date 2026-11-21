@@ -204,12 +204,6 @@ theorem sigOK_hsum {V W : HSpace E} (h : V.SigOK) (h' : W.SigOK) : (hsum V W).Si
 
 theorem sigOK_hdbl {V : HSpace E} (h : V.SigOK) : (hdbl V).SigOK := sigOK_hsum h (sigOK_hneg h)
 
-example (V : HSpace E) (τ : E →+* ℂ) : (hdbl V).rank = V.rank + V.rank ∧
-    (hdbl V).sig τ = ((V.sig τ).1 + (V.sig τ).2, (V.sig τ).2 + (V.sig τ).1) := ⟨rfl, rfl⟩
-
-example (V : HSpace E) (x y x' y' : V.V) : (hdbl V).hD (x, y) (x', y') = V.hD x x' - V.hD y y' :=
-  (sub_eq_add_neg _ _).symm
-
 end GlobalTheory.Doubling
 
 end

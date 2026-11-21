@@ -1,7 +1,6 @@
 import Mathlib
 import Development.DiscreteGroups.GlobalIrreducibility.DzGenDefs
 import Development.DiscreteGroups.GlobalIrreducibility.DzGenMat
-import Development.DiscreteGroups.GlobalIrreducibility.ValuationUnitriLt
 
 noncomputable section
 
@@ -19,8 +18,6 @@ def dl (p : parab k (eOne m)) : ℂˣ := deltaHalf k (fun _ : Fin m => Fin 1) (l
 
 theorem dl_mul (p q : parab k (eOne m)) : dl (p * q) = dl p * dl q := by
   simp [dl, map_mul]
-
-theorem dl_one : dl (1 : parab k (eOne m)) = 1 := by simp [dl]
 
 theorem dl_eq_one {q : parab k (eOne m)} (hq : ∀ a, valuation k (((q : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) a a) = 1) :
     dl q = 1 := by

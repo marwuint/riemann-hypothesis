@@ -10,67 +10,6 @@ namespace Formalism.L2.Col
 
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV
 
-section Fix
-
-variable {κ : Type} [CommRing κ]
-
-theorem sl_HJsym_col_k {n r k t j rS : ℕ} (h : r ≤ n) (hr : r = k + 2 * rS + 1) {M : GL (Fin n) κ}
-    (hM : M ∈ HJsym κ n k r t j rS h) (i : Fin n) (hk : k < n) :
-    (M : Matrix (Fin n) (Fin n) κ) i ⟨k, hk⟩ = if i.val = k then 1 else 0 := by
-  obtain ⟨hB, h0⟩ := mem_HPar.mp hM
-  have hkr : k < r := by omega
-  by_cases hi : i.val < r
-  · obtain ⟨h1, h2, h3⟩ := (mem_HPsymF_iff (show k + rS ≤ r by omega)).mp h0
-    have e : ∀ a b : Fin r, ((blk0 n κ h (List.replicate j t) ⟨M, hB⟩ : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) a b =
-        (M : Matrix (Fin n) (Fin n) κ) (Fin.castLE h a) (Fin.castLE h b) := fun a b => rfl
-    have ei : i = Fin.castLE h ⟨i.val, hi⟩ := Fin.ext rfl
-    have ek : (⟨k, hk⟩ : Fin n) = Fin.castLE h ⟨k, hkr⟩ := Fin.ext rfl
-    rw [ei, ek, ← e]
-    by_cases hik : i.val = k
-    · rw [if_pos (by simpa using hik)]
-      have : (⟨i.val, hi⟩ : Fin r) = ⟨k, hkr⟩ := Fin.ext hik
-      rw [this]
-      exact h2 _
-    · rw [if_neg (by simpa using hik)]
-      by_cases hrs : rS = 0
-      · subst hrs
-        by_cases hik' : i.val < k
-        · exact h3 ⟨i.val, hi⟩ ⟨k, hkr⟩ hik' (by simp)
-        · apply h1
-          simp only [symIdx]
-          split_ifs <;> omega
-      · apply h1
-        simp only [symIdx]
-        split_ifs <;> omega
-  · rw [if_neg (by omega)]
-    apply hB
-    show coarse r (List.replicate j t) k < coarse r (List.replicate j t) i.val
-    rw [coarse_of_lt hkr, coarse_of_le (by omega)]
-    omega
-
-end Fix
-
-theorem lastLevel_fixes_basisVector_holds : FixESym := by
-  intro X Pr R Ch m2 hm h hh w
-  have hj : m2 + 1 + 1 = R.m := by omega
-  have hw : h w ∈ (colLevSym Ch (m2 + 1) w).H := LevFam.mem_at _ ⟨h, hh⟩ w
-  rw [colLevSym_pred Ch hj] at hw
-  have hk : R.k < R.N (m2 + 1) := by
-    have := r_le_N_of_le (R := R) hj.ge
-    have := r_eq_sym R
-    omega
-  funext i
-  show ∑ l, ((h w : GL (Fin (R.N (m2 + 1))) (𝓞 X.E ⧸ w.1.asIdeal)) : Matrix _ _ (𝓞 X.E ⧸ w.1.asIdeal)) i l *
-      Loc.eN (𝓞 X.E ⧸ w.1.asIdeal) (R.N (m2 + 1)) R.k l = Loc.eN (𝓞 X.E ⧸ w.1.asIdeal) (R.N (m2 + 1)) R.k i
-  rw [Finset.sum_eq_single ⟨R.k, hk⟩]
-  · rw [sl_HJsym_col_k (r_le_N_of_le (R := R) hj.ge) (r_eq_sym R) hw i hk]
-    simp [Loc.eN]
-  · intro l _ hl
-    have : l.val ≠ R.k := fun e => hl (Fin.ext e)
-    simp [Loc.eN, this]
-  · intro hn
-    exact absurd (Finset.mem_univ _) hn
-
 section EntY
 
 variable {κ : Type} [CommRing κ]

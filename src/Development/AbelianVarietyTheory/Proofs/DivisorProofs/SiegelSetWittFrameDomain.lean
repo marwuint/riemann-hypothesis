@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformSchwartzSeminormBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelContinuousFunctionalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelSetWittFrameSchwartzBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformSchwartzSeminormBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelContinuousFunctional
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelSetWittFrameSchwartzBound
 
 open scoped TensorProduct NNReal Matrix ENNReal
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
@@ -55,14 +55,14 @@ theorem theta_le_seminorm_height_torus : ∀ (F E : Type) [Field F] [NumberField
       GAd σ ((1 : E) • X.J.map σ) // q.2.2.1 ∈ Ω ∧ q.2.2.2.1 ∈ GlobalTheory.SiegelSet.cone r₀ c ∧
       GlobalTheory.SiegelSet.IsTorusElt σ ((1 : E) • X.J.map σ) Xf Yf q.2.2.2.1 q.2.2.2.2.1 ∧ q.2.2.2.2.2 ∈ K ∧
       (q.2.1 : GL (Fin n) (AE F E)) = HA.mat (AF F) σ ((1 : E) • X.J.map σ) (q.2.2.1 * q.2.2.2.2.1 * q.2.2.2.2.2)}
-  have hT := fun q : I => GlobalTheory.T.theta_kernel_continuous_functional F E σ B n d X W M χX χW om r s r' s' hP φ hφ q.1.2.1 q.1.1
+  have hT := fun q : I => _root_.GlobalTheory.ThetaKernelCont.theta_pureA_clm F E σ B n d X W M χX χW om r s r' s' hP φ hφ q.1.2.1 q.1.1
   choose T hT using hT
   let P : I → ℝ := fun q => ∏ i, q.1.2.2.2.1 i ^ (Module.finrank ℚ F * d)
   have hP0 : ∀ q : I, 0 < P q := fun q => Finset.prod_pos fun i _ => pow_pos (q.2.2.1.1 i) _
   have hpt : ∀ f : SchwartzMap (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ, ∃ (N : ℕ) (C : ℝ), ∀ q : I,
       ‖((P q)⁻¹ • T q) f‖ ≤ C * (ht q.1.1 : ℝ) ^ N := by
     intro f
-    obtain ⟨C₁, k₁, h₁⟩ := GlobalTheory.T.siegel_set_witt_frame_schwartz_bound F E σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hfr c hc (pureA F f φ)
+    obtain ⟨C₁, k₁, h₁⟩ := _root_.GlobalTheory.TorusTheta.theta_torus_le F E σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hfr c hc (pureA F f φ)
       (Submodule.subset_span ⟨f, φ, hφ, rfl⟩)
     refine ⟨k₁, |C₁| * (max Bd 0) ^ k₁, fun q => ?_⟩
     obtain ⟨⟨h, g, p, t, a, k⟩, hp, htc, ha, hk, hg⟩ := q
@@ -94,7 +94,7 @@ theorem theta_le_seminorm_height_torus : ∀ (F E : Type) [Field F] [NumberField
           mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (mul_nonneg hy0 h0) (mul_le_mul_of_nonneg_right hty h0) _)
             (pow_nonneg (mul_nonneg hy0 h0) _) (abs_nonneg _)
       _ = |C₁| * (max Bd 0) ^ k₁ * (ht h : ℝ) ^ k₁ := by rw [mul_pow]; ring
-  obtain ⟨N, C, S, hN⟩ := GlobalTheory.T.uniform_schwartz_seminorm_bound (Fin n × Fin d → mixedEmbedding.mixedSpace F) I (fun q => (P q)⁻¹ • T q)
+  obtain ⟨N, C, S, hN⟩ := _root_.GlobalTheory.schwartz_family_uniform_bound (Fin n × Fin d → mixedEmbedding.mixedSpace F) I (fun q => (P q)⁻¹ • T q)
     (fun q => (ht q.1.1 : ℝ)) (fun q => NNReal.coe_nonneg _) hpt
   refine ⟨N, C, S, fun f h g p hp t htc a ha k hk hg => ?_⟩
   let q : I := ⟨(h, g, p, t, a, k), hp, htc, ha, hk, hg⟩

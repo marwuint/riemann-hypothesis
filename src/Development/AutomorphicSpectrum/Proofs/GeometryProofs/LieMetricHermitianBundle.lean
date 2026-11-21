@@ -9,8 +9,11 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinear
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChange
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
@@ -135,7 +138,7 @@ theorem lie_universal [IsCommMonObj G] [Smooth G.hom] {R C : Type} [CommRing R] 
     { toFun := g
       map_add' := g.map_add
       map_smul' := fun a e => g.map_smulₛₗ a e }
-  have hb : IsBaseChange C j' := GlobalTheory.T.lie_model_isBaseChange X G R C x E V MB Mz j' hj
+  have hb : IsBaseChange C j' := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_isBaseChange X G R C x E V MB Mz j' hj
   exact ⟨hb.lift g₀, fun e => hb.lift_eq g₀ e, fun g₂ h2 =>
     hb.algHom_ext' _ _ (LinearMap.ext fun e => (h2 e).trans (hb.lift_eq g₀ e).symm)⟩
 end
@@ -240,7 +243,7 @@ open GlobalTheory.CompanionTheory.Ar.LieFibre GroundTheory.Heights₂.Heights in
 theorem GlobalTheory.CompanionTheory.Ar.lie_fibre_exists : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (ξ : Sp Ω ⟶ X), ∀ (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (h : LieMetric M y) (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ X), ∃ (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel G z B.carrier), IsFibre (fun z v w c => c = h.ip z v w) z B MB := by
   intro X Ω _ K _ J _ y ξ G _ _ _ Li _ _ M h L _ _ z
   obtain ⟨E, iA, iM, ⟨MB⟩⟩ := lieModel_exists X G (𝓞 L) z
-  obtain ⟨hf, hp⟩ := GlobalTheory.T.lie_model_finite_projective X G (𝓞 L) z E MB
+  obtain ⟨hf, hp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_finite_projective X G (𝓞 L) z E MB
   choose core P hcore hlift using fun σ : L →+* ℂ => exists_core h MB σ
   have hconj := form_conj_of_pure core (fun σ e f => by
     rw [hcore, hcore]

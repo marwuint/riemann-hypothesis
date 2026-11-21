@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdIPowLe
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemilinearProjectiveModuleComposeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrismCoverReceivingBreuilKisinStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveAndRangeOfPrismCoverStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInjectivePushoutOfPrismCoverStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemilinearProjectiveModuleCompose
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrismCoverReceivingBreuilKisin
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveAndRangeOfPrismCover
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInjectivePushoutOfPrismCover
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 
@@ -22,8 +22,8 @@ theorem eval_transition : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K
     ∃ t : N →ₛₗ[k.f] N', SemiBC t ∧ ∀ (Q : Obj l ↥(OL K)) (a : Hom B' Q) (g : Hom bk.prism Q) (x : N),
       V'.v a g (t x) = V.v (a.comp k) g x := by
   intro l _ K bk d S B B' N _ _ N' _ _ V V' k
-  obtain ⟨C', h', ⟨f'⟩, hc⟩ := GlobalTheory.T.exists_prism_cover_receiving_breuilKisin l K bk B'
-  obtain ⟨hinj, hsurj⟩ := GlobalTheory.T.injective_and_range_of_prism_cover l K bk d S B' C' N' V' h' f' hc
+  obtain ⟨C', h', ⟨f'⟩, hc⟩ := _root_.GlobalTheory.BSP.exists_cover_receiving_bk l K bk B'
+  obtain ⟨hinj, hsurj⟩ := _root_.GlobalTheory.BSP.Eval.effective_of_cover l K bk d S B' C' N' V' h' f' hc
   have hz : ∀ x : N, ∃ y, V'.v h' f' y = V.v (h'.comp k) f' x := by
     intro x
     apply hsurj
@@ -47,10 +47,10 @@ theorem eval_transition : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K
   have hT : ∀ x, V'.v h' f' (t x) = V.v (h'.comp k) f' x := ht0
   refine ⟨t, ?_, ?_⟩
   · haveI := V.fin; haveI := V.proj; haveI := V'.fin; haveI := V'.proj
-    exact GlobalTheory.T.semilinear_projective_module_compose l (↥(OL K)) B' C' h' hc B.A k.f N N' (Fin d → C'.A) t (V'.v h' f')
+    exact _root_.GlobalTheory.BSP.semiBC_of_cover l (↥(OL K)) B' C' h' hc B.A k.f N N' (Fin d → C'.A) t (V'.v h' f')
       (V.v (h'.comp k) f') (fun x => (hT x).symm) (V'.bc h' f') (V.bc (h'.comp k) f')
   · intro Q a g x
-    obtain ⟨Q'', h'', a', hsq, hinj''⟩ := GlobalTheory.T.exists_injective_pushout_of_prismCover l K bk d S B' C' h' hc Q a
+    obtain ⟨Q'', h'', a', hsq, hinj''⟩ := _root_.GlobalTheory.BSP.cover_po_injective l K bk d S B' C' h' hc Q a
     have e2 : h''.comp (a.comp k) = a'.comp (h'.comp k) := by
       rw [eval_transition_comp_assoc, ← hsq, ← eval_transition_comp_assoc]
     have key : V'.v (a'.comp h') (a'.comp f') (t x) = V.v (a'.comp (h'.comp k)) (a'.comp f') x :=

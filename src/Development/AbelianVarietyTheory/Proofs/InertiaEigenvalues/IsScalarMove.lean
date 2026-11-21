@@ -49,8 +49,6 @@ def moveZ (Z : ExportTie YS v₀) : ExportTie (Rl := fullHeckeRealDatMovedReadin
   hecke := fun i j b => (congrArg HeckeTie (realRd_move kap lam YS hw hst v₀ Z.good i j b _)).mpr (Z.hecke i j b)
   univ := Z.univ
 
-theorem rd_moveZ (Z : ExportTie YS v₀) : (moveZ kap lam hw hst Z).rd = Z.rd := rd_move kap lam hw hst Z
-
 end GlobalTheory.Unframe
 
 end

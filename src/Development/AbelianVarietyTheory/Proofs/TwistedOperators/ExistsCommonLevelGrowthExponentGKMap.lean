@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ha
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemKFinOfMemLowT
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSmoothCuspFormFrechetModerateGrowthRepStatement
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsVacFOfIsVacVec
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KFiniteLeOfGKStableDiscreteSeriesModelStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KFiniteLeOfGKStableDiscreteSeriesModel
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ModerateGrowthSobolevSizeRightTranslatePolyBound
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsKFinDRep
 import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.ConjAtFixedIff
@@ -176,7 +176,7 @@ theorem exists_level_exponent : GlobalTheory.Published.HarishChandraModules → 
       have := hmemW _ h0
       rw [hb] at this
       simpa using this))
-    have hall := GlobalTheory.T.kFinite_le_of_gKStable_discreteSeriesModel hHC D V S M τ W hle hlie hK hWne
+    have hall := _root_.GlobalTheory.HCModIrred.kFin_le_of_stable hHC D V S M τ W hle hlie hK hWne
     obtain ⟨y, hy, hyu⟩ := hWk _ (hall (u τ).2)
     have : y = u τ := Subtype.ext hyu
     subst this

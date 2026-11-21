@@ -24,9 +24,6 @@ def IsTw : Prop := ∀ a, I.cst a = twCst I.Ch I.sel (I.tup a) I.glob ∧
 
 theorem canon_isTw : I.canon.IsTw := fun _ => ⟨rfl, rfl⟩
 
-abbrev idxFull (a : I.ι) : ChIdx B.fields (B.primes X) B.R (I.Q a) :=
-  (I.idx a).withTop (B.R.m - 2) (twLt I.Ch) (twTt I.sel (I.tup a))
-
 def Deep : Prop := ∀ a (P : rowSG (B.primes X) I.sel (I.tup a)), P.1 ∉ (B.primes X).vGs → 2 * B.R.m ≤ (I.cst a).D P
 
 variable {I}
@@ -36,20 +33,6 @@ theorem IsTw.cst_eq (h : I.IsTw) (a : I.ι) : I.cst a = twCst I.Ch I.sel (I.tup 
 theorem IsTw.idx_eq (h : I.IsTw) (a : I.ι) :
     I.idx a = twIdx I.Ch I.sel (I.tup a) (twCst I.Ch I.sel (I.tup a) I.glob) (B.R.m - 2) := by
   rw [(h a).2, (h a).1]
-
-theorem IsTw.idxFull_eq (h : I.IsTw) (a : I.ι) :
-    I.idxFull a = twIdxTop I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 2) (twLt I.Ch) (twTt I.sel (I.tup a)) := by
-  unfold idxFull
-  rw [(h a).2]
-  rfl
-
-theorem isTw_iff_canon_eq : I.IsTw ↔ I.canon = I := by
-  refine ⟨fun h => ?_, fun h => h ▸ I.canon_isTw⟩
-  have h1 : (fun a => twCst I.Ch I.sel (I.tup a) I.glob) = I.cst := funext fun a => (h.cst_eq a).symm
-  have h2 : (fun a => twIdx I.Ch I.sel (I.tup a) (twCst I.Ch I.sel (I.tup a) I.glob) (B.R.m - 2)) = I.idx :=
-    funext fun a => (h.idx_eq a).symm
-  unfold canon
-  rw [h2, h1]
 
 theorem IsTw.deep (h : I.IsTw) : I.Deep := fun a P hP => by
   rw [h.cst_eq a, twCst_D_Q hP]
@@ -121,19 +104,6 @@ theorem IsTw.chF_ok (ht : I.IsTw) (h : I.Ok) (W : Wts B.fields (B.primes X).Word
     exact thetaOpen_twIdx I.Ch I.sel (I.tup a) (I.cst a) (h.idx_ok a).cst_ok (Q_notMem_of_ok h a) _ j
   exact chF_ok_of_finIdx W I.sel (I.tup a) _ (base_fields_primes_ok B X).1 u j
     (fun b P => thetaOpen_finIdx _ (ho b) P) (fun b c => thetaOpen_root _ (ho b) c)
-
-theorem IsTw.chF_full_ok (ht : I.IsTw) (h : I.Ok) (W : Wts B.fields (B.primes X).Word B.R) (a : I.ι) (u : (B.primes X).Word) (j : ℕ) :
-    (chF W I.sel (I.tup a) (I.idxFull a) u j).Ok := by
-  rw [ht.idxFull_eq]
-  exact twTop_chF_ok I.Ch I.sel (I.tup a) W (base_fields_primes_ok B X).1 (h.idx_ok a).cst_ok (Q_notMem_of_ok h a) _ u j
-
-example (h : I.IsTw) (a : I.ι) : (I.cst a).sharp = true ∧ (I.cst a).M = B.R.m := by
-  rw [h.cst_eq a]; exact ⟨rfl, rfl⟩
-
-example (a : I.ι) (h : (I.cst a).sharp = false) : ¬ I.IsTw := fun ht => by
-  rw [ht.cst_eq a] at h; exact Bool.noConfusion h
-
-example : I.canon.C = I.C ∧ I.canon.xi = I.xi ∧ I.canon.glob = I.glob := ⟨rfl, rfl, rfl⟩
 
 end GlobalTheory.Mem.Col2.TC
 

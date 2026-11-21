@@ -192,8 +192,6 @@ def UnivTwist.spec (u : UnivTwist D C) (Q : Finset (Pl D.host.E)) (χ : Multipli
       χ.comp ((AddMonoidHom.toMultiplicative (AddMonoidHom.single (fun _ : ↥Q => C) ⟨PP, h⟩)).comp (u.kap PP))
     else 1
 
-theorem UnivTwist.good_empty (u : UnivTwist D C) : u.Good ∅ := ⟨splitSet_empty, fun _ h => absurd h (Finset.notMem_empty _)⟩
-
 theorem UnivTwist.Good.mono {u : UnivTwist D C} {Q Q' : Finset (Pl D.host.E)} (h : u.Good Q) (hQ : Q' ⊆ Q) : u.Good Q' :=
   ⟨h.1.mono hQ, fun PP hPP => h.2 PP (hQ hPP)⟩
 
@@ -255,8 +253,6 @@ def TypeDat.IsFor {r : ℕ} (G : TypeDat D r) (μ : (AE D)ˣ →* Circle) : Prop
 def TypeDat.levT {r : ℕ} (G : TypeDat D r) : LevDat D.host.E ℂ r :=
   { r := r, hr := le_rfl, t := 1, s := 0, Pg := G.Pg, Q := ∅, P := G.P, cg := fun _ _ => 1, xq := fun _ => 1 }
 
-def TypeDat.empty (D : D7) (r : ℕ) : TypeDat D r := ⟨∅, LevelP.triv ∅ r ℂ, fun _ => 1⟩
-
 structure PlacesOK (Pg Q : Finset (Pl D.host.E)) : Prop where
   split : ∃ P, Pg ⊆ P ∧ Q ⊆ P ∧ SplitSet P
   disj : Disjoint Pg Q
@@ -265,9 +261,6 @@ structure PlacesOK (Pg Q : Finset (Pl D.host.E)) : Prop where
 theorem PlacesOK.mono {Pg Q Q' : Finset (Pl D.host.E)} (h : PlacesOK Pg Q) (hQ : Q' ⊆ Q) : PlacesOK Pg Q' :=
   ⟨h.split.imp fun _ hP => ⟨hP.1, hQ.trans hP.2.1, hP.2.2⟩, h.disj.mono_right hQ,
     fun PP hPP => h.prime PP (hPP.imp_right fun h' => hQ h')⟩
-
-theorem placesOK_empty : PlacesOK (∅ : Finset (Pl D.host.E)) ∅ :=
-  ⟨⟨∅, le_rfl, le_rfl, splitSet_empty⟩, Finset.disjoint_empty_left _, fun _ h => by simp at h⟩
 
 def halfIdem (Pg Q : Finset (Pl D.host.E)) : AE D := cA D (idem Pg) + idem Q
 

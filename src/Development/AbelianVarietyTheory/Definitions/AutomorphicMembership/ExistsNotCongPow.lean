@@ -285,9 +285,4 @@ theorem compactSpace_Ine (A : ValuationSubring Ω) : CompactSpace (Ine (F := E) 
   have : IsGalois E Ω := IsAlgClosure.isGalois E Ω
   exact isCompact_iff_compactSpace.mp (isClosed_Ine A).isCompact
 
-example : (frob h : G E Ω) ∉ Ine (F := E) A := by
-  rw [← deg_eq_zero_iff, deg_frob]; exact one_ne_zero
-
-example : deg (frob h)⁻¹ = -1 := by simp
-
 end GlobalTheory.WeilDeligne

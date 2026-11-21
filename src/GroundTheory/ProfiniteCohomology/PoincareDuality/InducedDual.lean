@@ -125,16 +125,6 @@ theorem coindDualInv_hom_apply (l : Rep.coind W.subtype (Rep.trivial k W V) →�
         ((coindSingle (k := k) W V).hom a))) :=
   rfl
 
-theorem res_coindDualInv_comp_coindEvalOne :
-    (Rep.resFunctor W.subtype).map (coindDualInv W V D) ≫
-        coindEvalOne W (dualRep (Rep.res W.subtype D) (Rep.trivial k W V)) =
-      coindDualRestrict W V D := by
-  refine Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun l => ?_))
-  refine LinearMap.ext fun a => ?_
-  change D.ρ 1 (l ((Rep.coind W.subtype (Rep.trivial k W V)).ρ 1⁻¹
-      ((coindSingle (k := k) W V).hom a))) = l ((coindSingle (k := k) W V).hom a)
-  simp only [inv_one, map_one, Module.End.one_apply]
-
 section Sum
 
 variable [W.FiniteIndex]
@@ -254,14 +244,6 @@ theorem coindDualHom_comp_coindDualInv :
     apply hc
     have := W.inv_mem hmem
     rwa [mul_inv_rev, inv_inv, inv_inv] at this
-
-def coindDualIso :
-    Rep.coind W.subtype (dualRep (Rep.res W.subtype D) (Rep.trivial k W V)) ≅
-      dualRep D (Rep.coind W.subtype (Rep.trivial k W V)) where
-  hom := coindDualHom W V D
-  inv := coindDualInv W V D
-  hom_inv_id := coindDualHom_comp_coindDualInv W V D
-  inv_hom_id := coindDualInv_comp_coindDualHom W V D
 
 end Sum
 

@@ -56,36 +56,10 @@ def Adds (G : WTZ D.host.E) : Prop :=
     degW U (xiR D) V dict G = ∑ᶠ Z : Comp Xo c, (degOn U (xiR D) V dict Z G -
       (rankOn U Z G : ℝ) / 2 * ((∑ σ : c.F →+* ℂ, Real.log (mass U V dict Z σ)) / (finrank ℚ c.F : ℝ))))
 
-def OrthSum : Prop :=
-  ∀ (la : Weight Dw) (m : ℤ),
-    Splits U (wtOf Dw la m) ∧ Orthogonal U V dict (wtOf Dw la m) ∧ Adds U V dict (wtOf Dw la m)
-
-def ComponentSum : Prop :=
-  ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)
-    (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (V : (c.F →+* ℂ) → HSp D)
-    (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r), IsComplexData U V dict → OrthSum U V dict
-
-def ComponentSumDeep : Prop :=
-  ∀ (D : D7) (j e : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l)
-    (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r)
-    (dict : ∀ σ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r),
-    InR D j → H.d = D.host.d → (H.rt : D.host.E) = D.host.sqrtMinusD → H.rt0 = D.host.φ₀ D.host.sqrtMinusD →
-    IsDatW D j Dw → l.M = D.host.g 0 * D.host.g 1 * 15 ^ e → FnAlgClosed Xo c →
-    IsComplexData U (fun _ => D.sp.W j) dict → OrthSum U (fun _ => D.sp.W j) dict
-
-theorem ComponentSum.deep (h : ComponentSum) : ComponentSumDeep :=
-  fun D _ _ H Dw l Xo c U dict _ _ _ _ _ _ _ hc => h D H Dw l Xo c _ U _ dict hc
-
 theorem finite_comp : Finite (Comp Xo c) := CompFin.finite_comp Xo c
 
 theorem partLat_le (Z : Comp Xo c) (G : WTZ D.host.E) : partLat U Z G ≤ latW U G := by
   rintro _ ⟨f, hf, rfl⟩
   exact (mem_latOn U).1 hf
-
-theorem isComplexData_of_laws {T : Core D} (h : LawsM T) {j : ℕ} (hj : InR D j) :
-    IsComplexData (T.U j) (T.V j) (T.dict j) :=
-  ⟨h.pins.2.1.2, fun σ hσ => ⟨h.unf j hj σ hσ, by
-    obtain ⟨th, hr, h1, h2⟩ := h.dictU j hj σ hσ
-    exact ⟨T.Kf j σ, th, hr, h.pins.2.1.1 ▸ h.levelK j hj σ hσ, h1, h2⟩, h.finVol j hj σ hσ, h.xiAbs j hj σ hσ⟩⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum

@@ -8,17 +8,20 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFundSkew
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LebesgueCommonStabilizerEqRadicalLeviMap
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordOfMemXa
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsBlockOfFrame
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RefLatticeStabilizerMiddleBottomLayersStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueMulMemBoxTriangularLayersStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RefLatticeStabilizerMiddleBottomLayers
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NormalFormDualOrthogonalLast
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsNormalFormStabilizerMeasure
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsFundOne
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueMulMemBoxTriangularLayers
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerFromCoordinatesProductLawStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurePreservingCommonStabilizerCoordinatesAtPlStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureCommonStabilizerCoordsBoxImageStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealFrameAutomorphismUnitriangularRowsCoordsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelMatrixSkewCoordinatesRationalAutStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurePreservingCommonStabilizerCoordinatesAtPl
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureCommonStabilizerCoordsBoxImage
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealFrameAutomorphismUnitriangularRowsCoords
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelMatrixSkewCoordinatesRationalAut
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealisationMemStandardMiddleSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnimodularTraceOnMiddleSpaceLiftStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFundamentalSetRowsMiddleSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LayerCovolumeProductPowTwoSidedBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnimodularTraceOnMiddleSpaceLift
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFundamentalSetRowsMiddleSpace
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LayerCovolumeProductPowTwoSidedBounds
 
 noncomputable section
 open NumberField MeasureTheory Matrix Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.DegCnt Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.Amp GlobalTheory.DegVol
@@ -105,14 +108,14 @@ theorem covol_ref : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [Add
   obtain ⟨c₀, hc₀⟩ := (hF v₀).2.2.2.2.1
   obtain ⟨m1, -, m3, -⟩ := RealMat.real_points K V H hK r N k ι σ β Φ z z' g hσ hd hF
   obtain ⟨t1, t2⟩ := TopLayer.top_layer K V H hK r N k ι σ β Φ z z' g hσ hd hF L hL hz
-  obtain ⟨d1, d2, d3, d4⟩ := GlobalTheory.T.refLatticeStabilizer_middle_bottom_layers K V H hK r N L hL hz
-  obtain ⟨HW, hB, hdW, hU⟩ := GlobalTheory.T.exists_unimodular_trace_on_middleSpace_lift K V H hK r N L hL
-  have htop := fun v => GlobalTheory.T.realFrame_automorphism_unitriangular_rows_coords K V H r N k (σ v) ρ β (Φ v) (z v) (z' v) (g v) hρ0 (hF v)
-  have hskew := fun v => GlobalTheory.T.besselModelMatrix_skew_coordinates_rational_aut K V H r N k (σ v) ρ β (Φ v) (z v) (z' v) (g v) hρ0 (hF v)
+  obtain ⟨d1, d2, d3, d4⟩ := _root_.GlobalTheory.RowStab.middle_bottom_layers K V H hK r N L hL hz
+  obtain ⟨HW, hB, hdW, hU⟩ := _root_.GlobalTheory.DegCnt.NF.wnUnimod K V H hK r N L hL
+  have htop := fun v => _root_.GlobalTheory.DegVol.RefCovTop.coords_top K V H r N k (σ v) ρ β (Φ v) (z v) (z' v) (g v) hρ0 (hF v)
+  have hskew := fun v => _root_.GlobalTheory.DegVol.RefCovSkew.coords_skew K V H r N k (σ v) ρ β (Φ v) (z v) (z' v) (g v) hρ0 (hF v)
   have hne : ∀ n : ℕ, ∀ v : ι, ((ρ ^ n : ℝ) : ℂ) ≠ 0 := fun n _ => by exact_mod_cast (pow_pos hρ0 n).ne'
   choose F₁ hF₁m hF₁ hF₁v using fun i : UTin β => IdealFund.exists_fund_ipow K hK ι σ hσ N.𝔡
     ((i.1.1.1.val : ℤ) - i.1.1.2.val) (fun _ => ((ρ ^ (i.1.1.2.val - i.1.1.1.val) : ℝ) : ℂ)) N.𝔡_ne (hne _)
-  choose F₂ hF₂m hF₂ hF₂v using fun b : {a : Fin r // N.j ≤ a.val} => GlobalTheory.T.exists_fundamental_set_rows_middleSpace K V H hK N.Wn HW k r ι σ Φ hB hσ
+  choose F₂ hF₂m hF₂ hF₂v using fun b : {a : Fin r // N.j ≤ a.val} => _root_.GlobalTheory.DegVol.RefCov.rowsFund K V H hK N.Wn HW k r ι σ Φ hB hσ
     (by omega) (fun v => (hF v).1) (fun v => GlobalTheory.T.realisation_mem_standard_middle_space K V H r N k (σ v) ρ β (Φ v) (z v) (z' v) (g v) hρ0 (hF v))
     L N.𝔡 (-((r : ℤ) - b.1.val)) (ρ ^ (r - b.1.val)) hU N.𝔡_ne (pow_pos hρ0 _)
   choose F₃ hF₃m hF₃ hF₃v using fun p : {p : UT r // N.j ≤ p.1.1.val} => IdealFund.exists_fund_ipow K hK ι σ hσ N.𝔡
@@ -120,7 +123,7 @@ theorem covol_ref : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [Add
     (fun _ => ((ρ ^ ((r - p.1.1.1.val) + (r - p.1.1.2.val)) : ℝ) : ℂ)) N.𝔡_ne (hne _)
   choose F₄ hF₄m hF₄ hF₄l hF₄u using fun a : {a : Fin r // N.j ≤ a.val} => SkewFund.exists_fund_skew K hK ι σ hσ N.𝔡
     (r - a.1.val) N.𝔡_ne N.𝔡_star hN hv
-  obtain ⟨hΩm, hΩv⟩ := GlobalTheory.T.measure_commonStabilizerCoords_box_image ι k r N.j β hc₀.2.2.2.1 hc₀.2.2.2.2.1 (GlobalTheory.T.measurePreserving_commonStabilizerCoordinatesAtPlace ι k r N.j β) F₁ F₂ F₃ F₄
+  obtain ⟨hΩm, hΩv⟩ := _root_.GlobalTheory.DegVol.RefMeas.box_meas ι k r N.j β hc₀.2.2.2.1 hc₀.2.2.2.2.1 (_root_.GlobalTheory.DegVol.RefCov.atP_measurePreserving ι k r N.j β) F₁ F₂ F₃ F₄
     hF₁m hF₂m hF₃m hF₄m _ rfl
   refine ⟨_, ⟨hΩm, fun x hx => ?_⟩, ?_⟩
   · obtain ⟨q, rfl⟩ := exists_CC hF x hx
@@ -141,7 +144,7 @@ theorem covol_ref : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [Add
       funext fun i => congrFun (congrFun h i) v
     have hcast : ∀ a : Fin r, -(2 * ((r - a.val : ℕ) : ℤ)) = -((r : ℤ) - a.val) - ((r : ℤ) - a.val) := fun a => by
       have := a.2; omega
-    refine GlobalTheory.T.existsUnique_mul_mem_box_triangular_layers (ι → Mat k r) (UTin β) _ _ _ (fun l => l.1.1.2.val - l.1.1.1.val) CC
+    refine _root_.GlobalTheory.DegVol.RefCov.existsUnique_mul_mem_box_of_layers (ι → Mat k r) (UTin β) _ _ _ (fun l => l.1.1.2.val - l.1.1.1.val) CC
       (realPts Φ (N.Gam (N.Ref L) : Set (V ≃ₗ[K] V))) _ F₁ _ (Set.pi Set.univ F₂) _
       (Set.pi Set.univ F₃ ×ˢ Set.pi Set.univ F₄) ?_ ?_ (CC_law hF) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
       (fun i => exu_image (hF₁ i)) (exu_pi fun i => exu_image (hF₂ i))
@@ -283,7 +286,7 @@ theorem covol_ref : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [Add
       omega
     rw [hΩv]
     simp only [e1, e2, e3, Finset.prod_const, Finset.card_univ, card_top]
-    refine GlobalTheory.T.layer_covolume_product_pow_two_sided_bounds _ _ k r _ _ _ _ hv (Nat.sub_le _ _) (card_UT r _) (card_UT r _) ?_ ?_
+    refine _root_.GlobalTheory.DegVol.RefCov.prod_pow_bounds _ _ k r _ _ _ _ hv (Nat.sub_le _ _) (card_UT r _) (card_UT r _) ?_ ?_
     · rw [← card_top, ← Finset.card_univ (α := {a : Fin r // N.j ≤ a.val}), ← Finset.prod_const]
       exact Finset.prod_le_prod' fun i _ => hF₄l i
     · rw [← card_top, ← Finset.card_univ (α := {a : Fin r // N.j ≤ a.val}), ← Finset.prod_const]

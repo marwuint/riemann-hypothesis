@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogReducesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmEqPSmulAddIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesReductionModPrimeRulesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogReduces
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmEqPSmulAddIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesReductionModPrimeRules
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReductionCommutesFormalGroupLawCoboundariesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuasiLogRedStatement
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
@@ -13,11 +13,11 @@ namespace GlobalTheory
 theorem Katz.reductionMap : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k) (h : IsLaw μ) (V : Type) [AddCommGroup V] [Module k V] (ρ : MvPowerSeries (Fin d ⊕ Fin d) k × (Fin d → k) →ₗ[k] V), IsRigOf μ ρ → ∃ r : Mod p h →ₛₗ[(WittVector.constantCoeff : WittVector p k →+* k)] V, (∀ (f : quasiLog p h) c w, Red p (cob1 (fun i => Katz.lift p (μ i)) f.1) c → RedV p (lin f.1) w → r (Submodule.Quotient.mk f) = ρ (c, w)) ∧ Function.Surjective r ∧ ∀ m, r m = 0 ↔ ∃ n, m = p • n := by
   intro p _ k _ _ _ d μ h V _ _ ρ hρ
   have hμ' : ∀ i, constantCoeff (Katz.lift p (μ i)) = 0 := fun i => constantCoeff_lift p (h.const i)
-  have hR1 := GlobalTheory.T.mvPowerSeries_reduction_mod_prime_rules p k (Fin d)
-  have hR2 := GlobalTheory.T.mvPowerSeries_reduction_mod_prime_rules p k (Fin d ⊕ Fin d)
+  have hR1 := _root_.GlobalTheory.Katz.red_rules p k (Fin d)
+  have hR2 := _root_.GlobalTheory.Katz.red_rules p k (Fin d ⊕ Fin d)
   have hC := GlobalTheory.T.reduction_commutes_formalGroupLawCoboundaries p k d μ h.const
-  have hD := GlobalTheory.T.quasiLog_reduces_to_cocycle p k d μ h
-  have hK := GlobalTheory.T.quasiLogarithm_eq_p_smul_add_integral p k d μ h
+  have hD := _root_.GlobalTheory.quasiLog_reduces p k d μ h
+  have hK := _root_.GlobalTheory.Katz.quasiLog_eq_p_smul_add_int p k d μ h
   have hS := GlobalTheory.T.exists_quasiLog_red_coboundary_and_linear p k d μ h
   have hVu : ∀ (v : Fin d → Fr p k) (w w' : Fin d → k), RedV p v w → RedV p v w' → w = w' := by
     intro v w w' h1 h2

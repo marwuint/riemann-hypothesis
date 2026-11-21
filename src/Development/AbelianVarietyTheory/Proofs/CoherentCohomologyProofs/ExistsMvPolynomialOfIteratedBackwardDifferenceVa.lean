@@ -93,15 +93,6 @@ theorem multiDiff_cons' {d : ℕ} (a : G) (g : Fin d → G) (φ : G → M) :
   simp only [multiDiff_eq_shiftAct, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]
   rw [mul_comm, map_mul, Module.End.mul_apply, shiftAct_diffElt]
 
-theorem multiDiff_const {d : ℕ} (a : G) (φ : G → M) :
-    multiDiff (fun _ : Fin d ↦ a) φ = (bwdDiff a)^[d] φ := by
-  induction d with
-  | zero => simp
-  | succ d ih =>
-    rw [Function.iterate_succ_apply', ← ih, ← multiDiff_cons]
-    congr 1
-    ext i; cases i using Fin.cases <;> simp
-
 theorem multiDiff_comp_equiv {ι κ : Type*} [Fintype ι] [Fintype κ] (e : κ ≃ ι) (g : ι → G)
     (φ : G → M) : multiDiff (g ∘ e) φ = multiDiff g φ := by
   simp only [multiDiff_eq_shiftAct, Function.comp]
@@ -184,11 +175,6 @@ theorem DiffVanish.mono {m n : ℕ} {φ : G → M} (h : DiffVanish m φ) (hmn : 
 
 theorem diffVanish_zero_iff {φ : G → M} : DiffVanish 0 φ ↔ φ = 0 := by
   simp [DiffVanish]
-
-theorem diffVanish_succ_iff {n : ℕ} {φ : G → M} :
-    DiffVanish (n + 1) φ ↔ ∀ a, DiffVanish n (bwdDiff a φ) := by
-  refine ⟨fun h a g ↦ by rw [← multiDiff_cons', h], fun h g ↦ ?_⟩
-  rw [← Fin.cons_self_tail g, multiDiff_cons', h]
 
 theorem DiffVanish.map {N : Type*} [AddCommGroup N] {n : ℕ} {φ : G → M} (h : DiffVanish n φ)
     (f : M →+ N) : DiffVanish n (f ∘ φ) := fun g ↦ by
@@ -275,12 +261,6 @@ theorem multiDiff_polynomial_eval {R : Type*} [CommRing R] {d : ℕ} (z : Fin d 
     · rw [Polynomial.natDegree_le_iff_coeff_eq_zero]
       intro m hm
       rw [Polynomial.coeff_sub, hc m hm, sub_self]
-
-theorem diffVanish_polynomial_eval {R : Type*} [CommRing R] {d : ℕ} (p : Polynomial R)
-    (hp : p.natDegree ≤ d) : DiffVanish (d + 1) (fun t ↦ p.eval t) := fun z ↦ by
-  ext y
-  rw [multiDiff_polynomial_eval z p (by omega), Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]
-  simp
 
 theorem multiDiff_pow {R : Type*} [CommRing R] {d : ℕ} (z : Fin d → R) (y : R) :
     multiDiff z (fun t ↦ t ^ d) y = d.factorial * ∏ i, z i := by
@@ -433,13 +413,5 @@ theorem DiffVanish.exists_polynomial_int {d : ℕ} {φ : G → ℤ} (h : DiffVan
   exact ⟨p, h1, h2, by rw [h3, multiDiff_map]; rfl⟩
 
 end Polynomial
-
-theorem diffVanish_pow_int (d : ℕ) :
-    DiffVanish (d + 1) (fun t : ℤ ↦ t ^ d) ∧ ¬ DiffVanish d (fun t : ℤ ↦ t ^ d) := by
-  refine ⟨by simpa using (diffVanish_polynomial_eval (Polynomial.X ^ d : Polynomial ℤ)
-    (Polynomial.natDegree_X_pow_le d)), fun h ↦ ?_⟩
-  have := congrFun (h fun _ ↦ 1) 0
-  rw [multiDiff_pow] at this
-  simp [Nat.factorial_ne_zero] at this
 
 end GlobalTheory

@@ -73,10 +73,6 @@ def PairBSymm : Prop :=
   ∀ (K : Type) [Field K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (F F' : Pol K ι n),
     pairB lam F F' = pairB lam F' F
 
-def PairBStar : Prop :=
-  ∀ (K : Type) [Field K] [StarRing K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (F F' : Pol K ι n),
-    pairB lam F F' = pairP lam (fun _ => 1) (MvPolynomial.map (starRingEnd K) F) F'
-
 def PairBInvK : Prop :=
   ∀ (K : Type) [Field K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (g : ι → GL (Fin n) K)
     (F F' : Pol K ι n), pairB lam (actP lam (invTrK g) F) (actP lam g F') = pairB lam F F'
@@ -88,10 +84,6 @@ def PairBInv : Prop :=
 def PairBNondeg : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n),
     (pairBK (K := K) lam).Nondegenerate
-
-def PairBRat : Prop :=
-  ∀ (K : Type) [Field K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (K0 : Subfield K) (i j : VVIdx lam),
-    pairBK lam (bVV K lam i) (bVV K lam j) ∈ K0
 
 def PairBExtremal : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (B : ι → GL (Fin n) K),
@@ -153,11 +145,6 @@ theorem pairP_trivial (lam : ι → DomWeight n) (F F' : Pol K ι n) :
     one_div]
   rfl
 
-theorem pb_conjTranspose_triv (A : Matrix (Fin n) (Fin n) K) :
-    @Matrix.conjTranspose _ _ K starRingOfComm.toStarAddMonoid.toInvolutiveStar.toStar A = Aᵀ := by
-  ext i j
-  rfl
-
 end Triv
 
 theorem pairingBSymm_holds : PairBSymm := by
@@ -202,16 +189,6 @@ theorem pairingBNondegenerate_holds : PairBNondeg := by
     rw [pairBK_apply, ← pairP_trivial] at hxy
     exact hxy
 
-theorem pairingBRational_holds : PairBRat := by
-  intro K _ ι _ n lam K0 i j
-  have h := @pairingRational_holds K _ starRingOfComm ι _ n lam K0 (fun _ => 1)
-    (fun τ a b => by
-      simp only [Matrix.one_apply]
-      split_ifs
-      exacts [K0.one_mem, K0.zero_mem]) i j
-  rw [pairBK_apply, ← pairP_trivial]
-  exact h
-
 private theorem actP_one' {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (F : Pol K ι n) : actP lam (1 : ι → GL (Fin n) K) F = F := by
   simp [actP, detTwK_one, trAct_one]
@@ -233,13 +210,6 @@ theorem pairingBExtremal_holds : PairBExtremal := by
 section Star
 
 variable {K : Type} [Field K] [StarRing K]
-
-theorem pb_fockS_map_star {σ : Type} (f g : MvPolynomial σ K) :
-    fockS (MvPolynomial.map (starRingEnd K) f) g = fockB f g := by
-  rw [fockS_eq_sum _ g f.support (MvPolynomial.support_map_subset ..)]
-  unfold fockB
-  refine Finset.sum_congr rfl fun m _ => ?_
-  rw [MvPolynomial.coeff_map, starRingEnd_apply, star_star]
 
 theorem pb_fockS_int {σ : Type} (P : MvPolynomial σ ℤ) (g : MvPolynomial σ K) :
     fockS (MvPolynomial.map (Int.castRingHom K) P) g = fockB (MvPolynomial.map (Int.castRingHom K) P) g := by
@@ -264,38 +234,6 @@ theorem pb_extNorm_eq {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight
   rw [extremal_eq_map_intCast, pb_fockS_int]
 
 end Star
-
-theorem pairingBStar_holds : PairBStar := by
-  intro K _ _ ι _ n lam F F'
-  have hf : ∀ a b : Pol K ι n, fockL a b = fockS a b := fun a b => rfl
-  rw [pairB_apply]
-  simp only [pairP, LinearMap.smul_apply, LinearMap.compl₂_apply, AlgHom.toLinearMap_apply, hf,
-    pb_gramTw_one, pb_blockAct_one_tr, pb_fockS_map_star, pb_extNorm_eq, smul_eq_mul, one_div]
-
-theorem pairB_vecP {K : Type} [Field K] (φ v : Fin 2 → K) :
-    pairB (fun _ : Unit => lamVec) (vecP φ) (vecP v) = φ ⬝ᵥ v := by
-  rw [← pairP_trivial, @pairP_vecP K _ starRingOfComm]
-  simp only [Matrix.one_mulVec]
-  rfl
-
-private theorem actP_lamVec_vecP {K : Type} [Field K] (h : Unit → GL (Fin 2) K) (w : Fin 2 → K) :
-    actP (fun _ : Unit => lamVec) h (vecP w) = vecP ((h () : Matrix (Fin 2) (Fin 2) K) *ᵥ w) := by
-  have h0 : (lamVec : DomWeight 2).detShift = 0 := by rfl
-  have hd : detTwK (fun _ : Unit => lamVec) h = 1 := by
-    simp [detTwK, detPow, h0]
-  simp only [actP, LinearMap.smul_apply, hd, one_smul, AlgHom.toLinearMap_apply, trAct, vecP, map_sum, map_mul,
-    Formalism.GradedWeylDivisibility.blockAct, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq,
-    Matrix.transpose_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_two, map_add]
-  ring
-
-theorem actP_invTrK_vecP_and_actP_vecP {K : Type} [Field K] (g : Unit → GL (Fin 2) K) (φ v : Fin 2 → K) :
-    actP (fun _ => lamVec) (invTrK g) (vecP φ) =
-        vecP ((((g ())⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K)ᵀ *ᵥ φ) ∧
-      actP (fun _ => lamVec) g (vecP v) = vecP ((g () : Matrix (Fin 2) (Fin 2) K) *ᵥ v) := ⟨actP_lamVec_vecP (invTrK g) φ, actP_lamVec_vecP g v⟩
-
-theorem pairB_char {K : Type} [Field K] (e : ℤ) : pairB (fun _ : Unit => lamChar e) (1 : Pol K Unit 1) 1 = 1 := by
-  rw [← pairP_trivial, @pairP_char K _ starRingOfComm]
-  simp
 
 theorem pb_invTrK_invTrK {K : Type} [Field K] {ι : Type} {n : ℕ} (g : ι → GL (Fin n) K) : invTrK (invTrK g) = g := by
   funext τ

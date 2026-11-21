@@ -115,15 +115,6 @@ theorem AutF.lam (β : AutF Λ F) : Formalism.HermitianLatticesTheory.gmap (β :
 
 def act (β : AutF Λ F) (F' : LFlag S r T') : LFlag S r T' := mapL β.1 (AutF.isom β) F'
 
-theorem one_mem_AutF : (1 : S.V ≃ₗ[E] S.V) ∈ AutF Λ F := by
-  refine mem_AutF.mpr (And.intro (And.intro (Subgroup.one_mem _) ?_) (And.intro (fun a => rfl) rfl))
-  ext x
-  rw [mem_gmap_iff]
-  exact Iff.rfl
-
-theorem act_one (F' : LFlag S r T') : act (⟨1, one_mem_AutF⟩ : AutF Λ F) F' = F' := by
-  exact mapL_eq_self _ _ _ (fun _ => rfl) rfl
-
 theorem inv_mem_AutF' {β : S.V ≃ₗ[E] S.V} (h : β ∈ AutF Λ F) : β⁻¹ ∈ AutF Λ F := by
   obtain ⟨⟨hiso, hlam⟩, hf, hz⟩ := mem_AutF.mp h
   refine mem_AutF.mpr (And.intro (And.intro (Subgroup.inv_mem _ hiso) ?_) (And.intro (fun a => ?_) ?_))
@@ -158,16 +149,6 @@ theorem gval_act (β : AutF Λ F) (F' : LFlag S r T') : Gval F (act β F') = Gva
   have h := gval_mapL β.1 (AutF.isom β) F F'
   rw [mapL_eq_self β.1 (AutF.isom β) F (mem_AutF.mp β.2).2.1 (mem_AutF.mp β.2).2.2] at h
   exact h
-
-variable (Λ) in
-
-def IotaG (g : ℕ) (F : LFlag S r T) (F' : LFlag S r T') (l' l : S.V) : Prop :=
-  l' ∈ Lrep Λ F' ∧ l ∈ Lrep Λ F ∧ l - l' ∈ NgX Λ g F F'
-
-variable (Λ) in
-
-def IotaRestrictionOrthogonal (g : ℕ) (F : LFlag S r T) (F' : LFlag S r T') (l' l : S.V) : Prop :=
-  IotaG Λ g F F' l' l ∧ S.hT F'.fl.z l' = 0 ∧ S.hT F.fl.z l = 0
 
 variable (Λ) in
 
@@ -211,27 +192,9 @@ def GenIso (g : ℕ) : Prop :=
 
 variable (S r) in
 
-def RelIso (K : Type) [Field K] [Algebra K E] : Prop :=
-  ∀ T T' : E, IsoInv (S := S) (r := r) (T := T) (T' := T') (fun _ F F' => Relevant K F.fl F'.fl)
-
-variable (S r) in
-
 def FeqFIso : Prop :=
   ∀ T T' : E, IsoInv (S := S) (r := r) (T := T) (T' := T')
     (fun Λ F F' => ∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame F' a)
-
-variable (S r) in
-
-def BBIso (g : ℕ) : Prop :=
-  ∀ (T T' : E) (P : HeightOneSpectrum (𝓞 E)),
-    IsoInv (S := S) (r := r) (T := T) (T' := T') (fun Λ F F' => BBneP Λ g F F' P)
-
-variable (S r) in
-
-def IotaIso (g : ℕ) : Prop :=
-  ∀ (T T' : E) (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) (Λ : Submodule (𝓞 E) S.V)
-    (F : LFlag S r T) (F' : LFlag S r T') (l' l : S.V),
-    IotaG (Formalism.HermitianLatticesTheory.gmap β Λ) g (mapL β hβ F) (mapL β hβ F') (β l') (β l) ↔ IotaG Λ g F F' l' l
 
 variable (S r) in
 
@@ -239,12 +202,6 @@ def DCIso : Prop :=
   ∀ (T T' : E) (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) (Λ : Submodule (𝓞 E) S.V)
     (F : LFlag S r T) (F₁ F₂ : LFlag S r T'),
     DCRel (Formalism.HermitianLatticesTheory.gmap β Λ) (mapL β hβ F) (mapL β hβ F₁) (mapL β hβ F₂) ↔ DCRel Λ F F₁ F₂
-
-variable (S r) in
-
-def IotaZ (g : ℕ) : Prop :=
-  ∀ (T T' : E) (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r T'),
-    IsLift Λ F → IsLift Λ F' → IsAdmissible Λ g F F' → IotaG Λ g F F' F'.fl.z F.fl.z
 
 variable {P : LFlag S r T' → Prop}
 
@@ -283,41 +240,8 @@ theorem sat_famOf_compl {Q : LFlag S r T' → Prop} (hQ : Inv Λ F Q) (hF : QFun
   rw [Set.mem_compl_iff, mem_famOf_mk hF] at hx ⊢
   exact fun hq => hx ((hQ β x.1).mp hq)
 
-private theorem gt_mk_lemma_3 (hG : GFun Λ F P) (x : Carrier P) : Gt Λ F P (mk Λ F P x) = Gval F x.1 :=
-  congrArg (Quot.lift (fun y : Carrier P => Gval F y.1) hG) (Quot.out_eq (mk Λ F P x))
-
-theorem saturated_g_zero (hG : GFun Λ F P) : IsSat Λ F P {t | Gt Λ F P t = 0} := by
-  intro β x hp hx
-  have hx' : Gval F x.1 = 0 := by
-    rw [← gt_mk_lemma_3 hG]
-    exact hx
-  show Gt Λ F P (mk Λ F P ⟨act β x.1, hp⟩) = 0
-  rw [gt_mk_lemma_3 hG]
-  show Gval F (act β x.1) = 0
-  rw [gval_act]
-  exact hx'
-
-theorem sat_Gne (hG : GFun Λ F P) : IsSat Λ F P {t | Gt Λ F P t ≠ 0} := by
-  intro β x hp hx
-  have hx' : Gval F x.1 ≠ 0 := by
-    rw [← gt_mk_lemma_3 hG]
-    exact hx
-  show Gt Λ F P (mk Λ F P ⟨act β x.1, hp⟩) ≠ 0
-  rw [gt_mk_lemma_3 hG]
-  show Gval F (act β x.1) ≠ 0
-  rw [gval_act]
-  exact hx'
-
 theorem sat_gen {g : ℕ} (hI : GenIso S r g) (hF : GenFun Λ F P g) :
     IsSat Λ F P {t | IsGen Λ F P g t} ∧ IsSat Λ F P {t | ¬ IsGen Λ F P g t} := by
-  exact ⟨sat_famOf (inv_of_isoInv (hI _ _)) hF, sat_famOf_compl (inv_of_isoInv (hI _ _)) hF⟩
-
-theorem sat_rel {K : Type} [Field K] [Algebra K E] (hI : RelIso S r K) (hF : RelFun Λ F P K) :
-    IsSat Λ F P {t | IsRel Λ F P K t} ∧ IsSat Λ F P {t | ¬ IsRel Λ F P K t} := by
-  exact ⟨sat_famOf (inv_of_isoInv (hI _ _)) hF, sat_famOf_compl (inv_of_isoInv (hI _ _)) hF⟩
-
-theorem sat_feqF (hI : FeqFIso S r) (hF : FeqFFun Λ F P) :
-    IsSat Λ F P {t | IsFeqF Λ F P t} ∧ IsSat Λ F P {t | ¬ IsFeqF Λ F P t} := by
   exact ⟨sat_famOf (inv_of_isoInv (hI _ _)) hF, sat_famOf_compl (inv_of_isoInv (hI _ _)) hF⟩
 
 def latSpan (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (v : Fin r → S.V) :
@@ -381,60 +305,6 @@ theorem pd_act (hPD : PDIso D) {Λ : Submodule (𝓞 D.host.E) (VS D).V} (β : A
   have e := hPD u' β.1 (AutF.isom β) Λ (lf D F0) F'
   rw [AutF.lam β, mapL_eq_self β.1 (AutF.isom β) _ (mem_AutF.mp β.2).2.1 (mem_AutF.mp β.2).2.2] at e
   exact e.mpr h
-
-def TSat (TT : Set (Term D u u' F0 what₂)) : Prop :=
-  ∀ t ∈ TT, ∀ (β : AutF t.lam (lf D F0)) (x : Carrier (PD D t.lam (lf D F0) u'))
-    (h : PD D t.lam (lf D F0) u' (act β x.1)), mk _ _ _ x = t.cls →
-      (⟨t.lam, t.mem, mk _ _ _ ⟨act β x.1, h⟩⟩ : Term D u u' F0 what₂) ∈ TT
-
-theorem tsat_of (fam : ∀ Λ : Submodule (𝓞 D.host.E) (VS D).V, Set (TermsOf D u' F0 Λ))
-    (h : ∀ Λ ∈ what₂, IsSat Λ (lf D F0) (PD D Λ (lf D F0) u') (fam Λ)) :
-    TSat (u' := u') (what₂ := what₂) {t | t.cls ∈ fam t.lam} := by
-  intro t ht β x hp hx
-  exact h t.lam t.mem β x hp (by rw [hx]; exact ht)
-
-theorem sat_BBF (p : HeightOneSpectrum (𝓞 D.host.F)) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
-    (hI : BBIso (VS D) D.R.rS (gS D))
-    (hF : ∀ P, QFun Λ (lf D F0) (PD D Λ (lf D F0) u') (fun F' => BBneP Λ (gS D) (lf D F0) F' P)) :
-    IsSat Λ (lf D F0) (PD D Λ (lf D F0) u') (famOf _ _ _ (fun F' => BBneF D Λ (lf D F0) F' p)) ∧
-      IsSat Λ (lf D F0) (PD D Λ (lf D F0) u') (famOf _ _ _ (fun F' => BBneF D Λ (lf D F0) F' p))ᶜ := by
-  have hQ : Inv Λ (lf D F0) (fun F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) => BBneF D Λ (lf D F0) F' p) := by
-    intro β F'
-    simp only [BBneF]
-    exact exists_congr (fun P => and_congr_right (fun _ => inv_of_isoInv (hI _ _ P) β F'))
-  have hF' : QFun Λ (lf D F0) (PD D Λ (lf D F0) u') (fun F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) => BBneF D Λ (lf D F0) F' p) := by
-    intro x y hxy
-    simp only [BBneF]
-    exact exists_congr (fun P => and_congr_right (fun _ => hF P x y hxy))
-  exact ⟨sat_famOf hQ hF', sat_famOf_compl hQ hF'⟩
-
-theorem saturated_term_classes_of_iso (hrows : IsRowReps D F0 what₂) (hTF : TermFun D u u') (hBF : BBFun D u u')
-    (hGen : GenIso (VS D) D.R.rS (gS D)) (hRel : RelIso (VS D) D.R.rS D.host.F) (hFeq : FeqFIso (VS D) D.R.rS)
-    (hBB : BBIso (VS D) D.R.rS (gS D)) (p : HeightOneSpectrum (𝓞 D.host.F)) :
-    TSat (what₂ := what₂) {t : Term D u u' F0 what₂ | t.G = 0} ∧
-    TSat (what₂ := what₂) {t : Term D u u' F0 what₂ | t.G ≠ 0} ∧
-    TSat (what₂ := what₂) {t : Term D u u' F0 what₂ | t.generic} ∧
-    TSat (what₂ := what₂) {t : Term D u u' F0 what₂ | ¬ t.generic} ∧
-    TSat (what₂ := what₂) {t : Term D u u' F0 what₂ | t.relevant} ∧
-    TSat (what₂ := what₂) {t : Term D u u' F0 what₂ | ¬ t.relevant} ∧
-    TSat (what₂ := what₂) {t : Term D u u' F0 what₂ | t.FeqF} ∧
-    TSat (what₂ := what₂) {t : Term D u u' F0 what₂ | ¬ t.FeqF} ∧
-    TSat (what₂ := what₂) {t : Term D u u' F0 what₂ | termBBne t p} ∧
-    TSat (what₂ := what₂) {t : Term D u u' F0 what₂ | ¬ termBBne t p} := by
-  have hrow : ∀ Λ ∈ what₂, IsRowLat D F0 Λ := hrows.1
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · exact tsat_of (fun Λ => {c | Gt _ _ _ c = 0}) (fun Λ hΛ => saturated_g_zero (hTF F0 Λ (hrow Λ hΛ)).1)
-  · exact tsat_of (fun Λ => {c | Gt _ _ _ c ≠ 0}) (fun Λ hΛ => sat_Gne (hTF F0 Λ (hrow Λ hΛ)).1)
-  · exact tsat_of (fun Λ => {c | IsGen _ _ _ (gS D) c}) (fun Λ hΛ => (sat_gen hGen (hTF F0 Λ (hrow Λ hΛ)).2.2.2.1).1)
-  · exact tsat_of (fun Λ => {c | ¬ IsGen _ _ _ (gS D) c}) (fun Λ hΛ => (sat_gen hGen (hTF F0 Λ (hrow Λ hΛ)).2.2.2.1).2)
-  · exact tsat_of (fun Λ => {c | IsRel _ _ _ D.host.F c}) (fun Λ hΛ => (sat_rel hRel (hTF F0 Λ (hrow Λ hΛ)).2.2.1).1)
-  · exact tsat_of (fun Λ => {c | ¬ IsRel _ _ _ D.host.F c}) (fun Λ hΛ => (sat_rel hRel (hTF F0 Λ (hrow Λ hΛ)).2.2.1).2)
-  · exact tsat_of (fun Λ => {c | IsFeqF _ _ _ c}) (fun Λ hΛ => (sat_feqF hFeq (hTF F0 Λ (hrow Λ hΛ)).2.2.2.2).1)
-  · exact tsat_of (fun Λ => {c | ¬ IsFeqF _ _ _ c}) (fun Λ hΛ => (sat_feqF hFeq (hTF F0 Λ (hrow Λ hΛ)).2.2.2.2).2)
-  · exact tsat_of (fun Λ => famOf _ _ _ (fun F' => BBneF D Λ (lf D F0) F' p))
-      (fun Λ hΛ => (sat_BBF p hBB (fun P => hBF F0 Λ (hrow Λ hΛ) P)).1)
-  · exact tsat_of (fun Λ => (famOf _ _ _ (fun F' => BBneF D Λ (lf D F0) F' p))ᶜ)
-      (fun Λ hΛ => (sat_BBF p hBB (fun P => hBF F0 Λ (hrow Λ hΛ) P)).2)
 
 private theorem rep_iff_lemma_4 {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
     {T T' : E} {Λ : Submodule (𝓞 E) S.V} {F : LFlag S r T} {P : LFlag S r T' → Prop}

@@ -120,64 +120,9 @@ theorem Pi_uni (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) 
     rw [Pi_apply, map_add, pW_pU H, pW_pW H, zero_add]
   rw [h_dec H (D.Pi S x), hp, hp, hq, hq, hW _ _ (isW_pW H x) (isW_pW H y), ← h_dec H]
 
-theorem Pi_of_fix (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S)
-    (hf : ∀ a, S (D.f a) = D.f a) (hU : D.Uni S) (v : n → A) : D.Pi S v = S v := by
-  have h1 : D.pU (S v) = D.pU v := by
-    have a1 : D.pX (S v) = D.pX v := by
-      rw [pX_apply, pX_apply]
-      refine Finset.sum_congr rfl fun a _ => ?_
-      conv_lhs => rw [← hf a]
-      rw [hU]
-    have a2 : D.pXv (S v) = D.pXv v := by
-      rw [pXv_apply, pXv_apply]
-      simp only [h_e_S hS hU]
-    have a3 : D.pz (S v) = D.pz v := by
-      rw [pz_apply, pz_apply, h_z_S hS hU]
-    rw [pU_apply, a1, a2, a3]; rfl
-  have h2 : S (D.pU v) = D.pU v := by
-    rw [pU_apply, map_add, map_add, S_pX hS.1, pXv_apply, pz_apply, map_sum, map_smul, hS.2]
-    simp only [map_smul, hf]
-  have h3 : S (D.pW v) = S v - D.pU v := by rw [pW_apply, map_sub, h2]
-  rw [Pi_apply, h3, pW_apply, map_sub, h1, pU_pU H]
-  abel
-
-theorem pW_span (H : D.Hyp) {x : n → A} (hx : x ∈ Submodule.span A (Set.range D.e)) :
-    D.pW x = 0 := by
-  induction hx using Submodule.span_induction with
-  | mem y hy =>
-    obtain ⟨a, rfl⟩ := hy
-    exact pW_e H a
-  | zero => simp
-  | add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]
-  | smul c x _ hx => rw [map_smul, hx, smul_zero]
-
 theorem pX_mem_span (u : n → A) : D.pX u ∈ Submodule.span A (Set.range D.e) := by
   simp only [Dat.pX.eq_1, LinearMap.sum_apply, LinearMap.smulRight_apply]
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
-
-theorem Pi_of_N (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)}
-    (hN : ∀ v, (∀ a, D.h (D.e a) v = 0) → S v - v ∈ Submodule.span A (Set.range D.e))
-    (v : n → A) : D.Pi S v = v := by
-  have hw := isW_pW H v
-  have h1 : D.pW (S (D.pW v)) = D.pW v := by
-    have e1 : S (D.pW v) = D.pW v + (S (D.pW v) - D.pW v) := by abel
-    rw [e1, map_add, pW_pW H, pW_span H (hN _ hw.1), add_zero]
-  rw [Pi_apply, h1, pW_apply]
-  abel
-
-theorem Pi_N_part (H : D.Hyp) {S Si : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S)
-    (hSi : D.FixEZ Si) (hUi : D.Uni Si) (hSSi : ∀ v, S (Si v) = v) (v : n → A)
-    (hv : ∀ a, D.h (D.e a) v = 0) :
-    S (D.Pi Si v) - v ∈ Submodule.span A (Set.range D.e) := by
-  have hw := isW_pW H v
-  have hpU : S (D.pU v) = D.pU v := by
-    rw [pU_apply, map_add, map_add, S_pX hS.1, pXv_apply, pz_apply, map_smul, hS.2]
-    simp [hv]
-  have key : S (D.Pi Si v) - v = -D.pX (Si (D.pW v)) := by
-    rw [Pi_apply, complement_proj_image hSi hUi hw, map_add, map_sub, hSSi, S_pX hS.1, hpU, pW_apply]
-    abel
-  rw [key]
-  exact Submodule.neg_mem _ (pX_mem_span _)
 
 end Dat
 

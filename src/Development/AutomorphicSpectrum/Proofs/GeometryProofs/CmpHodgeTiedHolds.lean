@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentTwistAutomorphismStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelTwistedComparisonStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentTwistFrameCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentTwistEigenCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentTwistLatticeCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeIsoCompatStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentTwistAutomorphism
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelTwistedComparison
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentTwistFrameCompat
+import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwistedGramMatricesMatch
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentTwistLatticeCompat
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeIsoCompat
 
 noncomputable section
 
@@ -16,18 +16,18 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 theorem cmpHodgeTied : HodgeComparisonCompatibility := by
   intro E _ _ _ H D l Xo c O O' _ _ β β' Y Y' g Φ n S Ω _ K _ J _ y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR
   obtain ⟨t, tΩ, k, m, mA, mA', u, u', M₁, φ, hmA, E1, E2, E3, hk, htie, hT, hL⟩ :=
-    GlobalTheory.T.hodge_component_twist_automorphism E H D l Xo c O O' β β' Y Y' g Φ n S Ω K J y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR
+    _root_.GlobalTheory.CompanionTheory.Ar.FrameRebase.tied_generic_fibre E H D l Xo c O O' β β' Y Y' g Φ n S Ω K J y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR
   have E1' : m.φ ≫ k.φ ≫ A.m.φ = u.φ ≫ Y.m.φ := by rw [← Category.assoc, ← hmA, E1]
   have hact : ∀ a v, φ (A.ρ (g.s a) v) = A'.ρ a (φ v) :=
-    GlobalTheory.T.lie_model_twisted_comparison E H g Ω A.X A'.X A.ξ A'.ξ A.t A'.t tΩ mA mA' A.Li A'.Li A.M A'.M A.ρ A'.ρ φ A.act A'.act
+    _root_.GlobalTheory.CompanionTheory.Ar.LieIntertwining.act_intertwine E H g Ω A.X A'.X A.ξ A'.ξ A.t A'.t tΩ mA mA' A.Li A'.Li A.M A'.M A.ρ A'.ρ φ A.act A'.act
       (fun v => by
         obtain ⟨w, hw, hw'⟩ := htie v
         exact ⟨w, by rw [hmA, ← Category.assoc, hw, hk], hw'⟩)
   refine ⟨φ, fun v => ?_, hact,
-    GlobalTheory.T.hodge_component_twist_lattice_compat E H D l Xo c O O' β β' Y Y' g Φ n S Ω K J y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR t tΩ k m mA' u u' M₁ φ E1' E2 E3 hk htie hT hL hact,
-    fun z => ⟨GlobalTheory.T.hodge_component_twist_frame_compat E H D l Xo c O O' β β' Y Y' g Φ n S Ω K J y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR z, fun hz r b Γ =>
-      (GlobalTheory.T.lie_model_base_change_iso_compat E H A.X A'.X e Ω A.ξ A'.ξ A.t t k A.Li A.M M₁ hξ hk z r b Γ).symm.trans
-        (GlobalTheory.T.hodge_component_twist_eigen_compat E H D l Xo c O O' β β' Y Y' g Φ n S Ω K J y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR t tΩ k m mA' u u' M₁ φ E1' E2 E3 hk htie hT hL z hz r b Γ)⟩⟩
+    _root_.GlobalTheory.CompanionTheory.Ar.CmpBund.bund E H D l Xo c O O' β β' Y Y' g Φ n S Ω K J y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR t tΩ k m mA' u u' M₁ φ E1' E2 E3 hk htie hT hL hact,
+    fun z => ⟨_root_.GlobalTheory.CompanionTheory.Ar.TwistInterior.interior_iff E H D l Xo c O O' β β' Y Y' g Φ n S Ω K J y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR z, fun hz r b Γ =>
+      (_root_.GlobalTheory.CompanionTheory.Ar.GMove.gramAt_move E H A.X A'.X e Ω A.ξ A'.ξ A.t t k A.Li A.M M₁ hξ hk z r b Γ).symm.trans
+        (_root_.PositivityTheory.UnitarySelfGeneration.twisted_gram_matrices_match E H D l Xo c O O' β β' Y Y' g Φ n S Ω K J y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR t tΩ k m mA' u u' M₁ φ E1' E2 E3 hk htie hT hL z hz r b Γ)⟩⟩
   obtain ⟨w, hw, hw'⟩ := htie v
   have h1 : u'.φ ≫ Y'.oF.t.G.hom = (twistSAB tΩ g).G.hom ≫ x' := u'.cart.1.w
   have h2 : u.φ ≫ Y.oF.t.G.hom = tΩ.G.hom ≫ x := u.cart.1.w

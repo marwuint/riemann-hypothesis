@@ -3,8 +3,8 @@ import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DegOneIffSurjective
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HeckeSplitOne
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.AgreementAtAlmostAllSplitPrimes
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeCharCmEqOneOfTrivialDegreeOneStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EventuallyResidueDegreeOnePrimeMovedByGaloisStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeCharCmEqOneOfTrivialDegreeOne
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EventuallyResidueDegreeOnePrimeMovedByGalois
 
 noncomputable section
 
@@ -49,8 +49,8 @@ theorem eq_one_of_split {R : Ranks} (H : Host R) (ν : HChar H.E)
     (h : ∀ᶠ w in Filter.cofinite, IsSplitPl H w → ν.UnrAt w ∧ ν.val w = 1) : ν = 1 := by
   have : IsCMField H.E := H.isCMField_hostE
   apply Subtype.ext
-  refine GlobalTheory.T.heckeChar_cm_eq_one_of_trivial_degree_one (maximalRealSubfield H.E) H.E ν.1 ν.2 ?_
-  filter_upwards [h, GlobalTheory.T.eventually_residueDegreeOne_prime_moved_by_galois (maximalRealSubfield H.E) H.E (IsCMField.complexConj H.E)
+  refine _root_.GlobalTheory.HeckeSplit.heckeChar_eq_one_of_degOne (maximalRealSubfield H.E) H.E ν.1 ν.2 ?_
+  filter_upwards [h, _root_.GlobalTheory.HeckeSplit.eventually_degOne_moved (maximalRealSubfield H.E) H.E (IsCMField.complexConj H.E)
     (IsCMField.complexConj_ne_one H.E)] with w hw hs hd
   obtain ⟨x, hx, hy⟩ := hs hd
   have hsp : IsSplitPl H w := ⟨x, hx, fun y hyx => hy y (by rw [complexConj_eq]; exact hyx)⟩
@@ -75,9 +75,5 @@ theorem heckeCharEqOfSplit_of_tie : ∀ (R : Ranks) (H : Host R) (what₂ : Rows
 theorem heckeSplitOne_of_tie {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)
     (A : NAut N) (h : HeckeCharTie N A) : GlobalTheory.ThetaExh.HeckeSplitOne N A := fun χ χ' hw =>
   heckeCharEqOfSplit_of_tie R H what₂ N A h χ χ' ((GlobalTheory.IndefiniteRowSideFullHecke.AgreementAtAlmostAllSplitPrimes.agreeAtAlmostAllSplit_iff A χ χ').2 hw)
-
-theorem heckeCharEqOfSplit_of_tied {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch}
-    (T : NCharTied D C nch Tp) : GlobalTheory.IndefiniteRowSideFullHecke.AgreementAtAlmostAllSplitPrimes.HeckeCharEqOfSplit D.nd D.naut :=
-  heckeCharEqOfSplit_of_tie _ _ _ _ _ (heckeCharTie_of_tied T)
 
 end GlobalTheory.HeckeSplitRow

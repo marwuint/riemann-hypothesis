@@ -14,21 +14,6 @@ namespace GlobalTheory.LiftRat
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-section Abstract
-
-variable {K : Type} [Field K] {G : Type} [Group G] [Fintype G]
-
-end Abstract
-
-section Forms
-
-variable {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL]
-  {WL : Type} [AddCommGroup WL] [Module LL WL] [Module Ks WL]
-  {W : (LL →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (W σ)] [∀ σ, InnerProductSpace ℂ (W σ)]
-  {G : Type} [Group G] [Fintype G] (A : FormsL LL Ks WL W G)
-
-end Forms
-
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
 section Package

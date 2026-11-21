@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinCoordsCentreChartStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinCoordsCentreChart
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
 namespace GlobalTheory.CompanionTheory.Ar.ChNorm
@@ -115,7 +115,7 @@ theorem join_chart_normalisation : ∀ (o : Type) [CommRing o] (Ω : Type) [Fiel
         rw [Subalgebra.smul_def]
         exact mul_mem (hSle s.2) hb
   · obtain ⟨hctr, l, hl⟩ :=
-      GlobalTheory.T.join_coords_centre_chart o Ω κ (κ ⊕ Fin n) x Ω (RingHom.id Ω) z M' (fun _ => rfl) p'
+      _root_.GlobalTheory.CompanionTheory.Ar.join_points_charts o Ω κ (κ ⊕ Fin n) x Ω (RingHom.id Ω) z M' (fun _ => rfl) p'
     obtain ⟨c', -, hc'⟩ := hctr
     have ho : ∀ r : o, algebraMap o Ω r ∈ regAt M'.ξ p' := fun r =>
       hc' _ (Subalgebra.algebraMap_mem _ r)

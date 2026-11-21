@@ -23,14 +23,6 @@ variable {E}
 
 lemma iota_apply (x : E) (w : CP E) : iota E x w = w.1.embedding x := rfl
 
-lemma emb_cc (φ : E →+* ℂ) (y : E) : φ (cc y) = conj (φ y) := by
-  unfold cc
-  first
-    | exact (IsCMField.isConj_complexConj E φ).eq y
-    | exact ComplexEmbedding.IsConj.eq (IsCMField.isConj_complexConj φ) y
-    | exact IsCMField.complexEmbedding_complexConj E φ y
-    | simp
-
 lemma conj_conj (φ : E →+* ℂ) :
     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ := by
   first

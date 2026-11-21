@@ -23,12 +23,6 @@ theorem rename_mem_ZP {σ τ : Type} (k : σ → τ) {P : MvPolynomial σ C} (h 
   obtain ⟨Q, rfl⟩ := RingHom.mem_range.1 h
   exact RingHom.mem_range.2 ⟨MvPolynomial.rename k Q, MvPolynomial.map_rename _ _ _⟩
 
-theorem coeff_mem_of_ZP {σ : Type} {P : MvPolynomial σ C} (h : P ∈ ZP C σ) (O : Subring C) (m : σ →₀ ℕ) :
-    P.coeff m ∈ O := by
-  obtain ⟨Q, rfl⟩ := RingHom.mem_range.1 h
-  rw [MvPolynomial.coeff_map, eq_intCast]
-  exact intCast_mem O _
-
 theorem det_mem {R : Type} [CommRing R] (S : Subring R) {k : ℕ} (M : Matrix (Fin k) (Fin k) R) (h : ∀ i j, M i j ∈ S) :
     M.det ∈ S := by
   rw [Matrix.det_apply]
@@ -64,9 +58,5 @@ theorem blkProd_mem_ZP {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {Orb
     (pl : (Σ o, Σ i : Fin (L o).length, Fin (rowsAt X L o i)) → Fin n) : blkProd X F n L pl ∈ ZP C _ := by
   unfold blkProd toAll prodAll
   exact prod_mem fun o _ => rename_mem_ZP _ (prod_mem fun i _ => rename_mem_ZP _ (poly_mem_ZP _ _ _))
-
-theorem norm_one_integral : NormOneIntegral := by
-  intro C _ V d _ T r cc a Orb _ tau J _ X F Z ga n L pl _ O m
-  exact coeff_mem_of_ZP (rename_mem_ZP _ (blkProd_mem_ZP _ _ _ _ _)) O m
 
 end Formalism.L2.FormalSeriesBounds.RF

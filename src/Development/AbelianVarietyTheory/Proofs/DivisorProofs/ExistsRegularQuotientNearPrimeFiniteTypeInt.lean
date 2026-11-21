@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericallyRegularQuotientDominatingPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericallyRegularQuotientDominatingPrime
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalizationQuotientComapEquiv
 open IsLocalRing TensorProduct
 
@@ -11,7 +11,7 @@ theorem generically_regular_quotient_of_finiteType_int :
         IsRegularLocalRing (Localization.AtPrime q ⧸ p.map (algebraMap B (Localization.AtPrime q))) := by
   intro B _ _ p hp
   by_cases h : ∀ a : ℤ, algebraMap ℤ B a ∈ p → a = 0
-  · exact GlobalTheory.T.exists_genericallyRegular_quotient_dominating_prime ℤ B p h
+  · exact _root_.GlobalTheory.prime_generically_regular_quotient ℤ B p h
   push_neg at h
   obtain ⟨a, ha, ha0⟩ := h
   have hP : (p.comap (algebraMap ℤ B)) ≠ ⊥ := by
@@ -69,7 +69,7 @@ theorem generically_regular_quotient_of_finiteType_int :
     intro a ha
     by_contra ha0
     exact hp'.ne_top (Ideal.eq_top_of_isUnit_mem _ ha ((IsUnit.mk0 a ha0).map _))
-  obtain ⟨g', hg'p, hg'⟩ := GlobalTheory.T.exists_genericallyRegular_quotient_dominating_prime (ZMod l) (B ⧸ I) p' hdom
+  obtain ⟨g', hg'p, hg'⟩ := _root_.GlobalTheory.prime_generically_regular_quotient (ZMod l) (B ⧸ I) p' hdom
   obtain ⟨g, rfl⟩ := hmk g'
   refine ⟨g, fun hg => hg'p hg, ?_⟩
   intro q hq hpq hgq

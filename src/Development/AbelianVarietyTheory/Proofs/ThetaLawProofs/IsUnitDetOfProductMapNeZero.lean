@@ -161,18 +161,6 @@ variable {R B C : Type} [CommRing R] [CommRing B] [CommRing C] [Algebra R B] [Al
     _root_.GlobalTheory.DiscrJacobian.pairing ρ ψ (u ⊗ₜ w) = ρ u * ψ w := by
   simp [_root_.GlobalTheory.DiscrJacobian.pairing]
 
-theorem exists_socle {V : Type} [AddCommGroup V] [Module R V] (n : Ideal B) (φ : B →ₗ[R] V)
-    (hφ : φ ≠ 0) (N : ℕ) (hN : ∀ w ∈ n ^ N, φ w = 0) :
-    ∃ y, φ y ≠ 0 ∧ ∀ w ∈ n, φ (w * y) = 0 := by
-  induction N with
-  | zero => exact absurd (LinearMap.ext fun w => hN w (by simp)) hφ
-  | succ N ih =>
-    by_cases h : ∀ w ∈ n ^ N, φ w = 0
-    · exact ih h
-    · push Not at h
-      obtain ⟨y, hy, hy'⟩ := h
-      exact ⟨y, hy', fun w hw => hN _ (by rw [pow_succ']; exact Ideal.mul_mem_mul hw hy)⟩
-
 open scoped TensorProduct in
 variable {R B C : Type} [CommRing R] [CommRing B] [CommRing C] [Algebra R B] [Algebra R C] in
 open IsLocalRing in

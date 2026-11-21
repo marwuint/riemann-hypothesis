@@ -233,10 +233,6 @@ def AdmPar : Prop :=
 def AdmJ : Prop :=
   DeRhamFamilyAway D ∧ CrysIffWD D.nd D.naut ∧ DeRhamFamilyTypePrimes D ∧ AdmDict D ∧ AdmRead D ∧ AdmPar L
 
-variable (D) in
-
-def JumpBoundClosedForm : Prop := ∀ L : SizeData₂ D, AdmJ L → JumpConditions L
-
 end admitted
 
 end Formalism.MainNotions.AdmissibleParameterJ

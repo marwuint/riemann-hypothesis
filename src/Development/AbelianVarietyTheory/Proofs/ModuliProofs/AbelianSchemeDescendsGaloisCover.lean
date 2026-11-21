@@ -6,8 +6,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.QuotientDescendGrpObj
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GeometricallyConnectedOfIsPullback
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsGaloisCoverOfIsQProjOverStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GaloisCoverDescentAndCartesianSquaresStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsGaloisCoverOfIsQProjOver
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GaloisCoverDescentAndCartesianSquares
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -42,13 +42,13 @@ theorem isGaloisCover_act (hc : IsGaloisCover Ga ρ π) (T : Over Y) :
     IsGaloisCover Ga (act hc T) (pullback.fst T.hom π) := by
   have hpb : IsPullback (pullback.snd T.hom π) (pullback.fst T.hom π) π T.hom :=
     (IsPullback.of_hasPullback T.hom π).flip
-  exact ((GlobalTheory.T.galoisCover_descent_and_cartesian_squares X Y π Ga ρ hc).2.2 (pullback T.hom π) T.left (pullback.fst T.hom π) (act hc T)
+  exact ((_root_.GlobalTheory.ZM.galoisCover_descent X Y π Ga ρ hc).2.2 (pullback T.hom π) T.left (pullback.fst T.hom π) (act hc T)
     (pullback.snd T.hom π) T.hom (fun a => act_snd hc T a) pullback.condition.symm).2 hpb
     (fun a => act_fst hc T a)
 
 theorem cover_ext (hc : IsGaloisCover Ga ρ π) {Z : Scheme.{0}} {f g : Y ⟶ Z} (h : π ≫ f = π ≫ g) :
     f = g := by
-  obtain ⟨f', -, huniq⟩ := (GlobalTheory.T.galoisCover_descent_and_cartesian_squares X Y π Ga ρ hc).1 Z (π ≫ f)
+  obtain ⟨f', -, huniq⟩ := (_root_.GlobalTheory.ZM.galoisCover_descent X Y π Ga ρ hc).1 Z (π ≫ f)
     (fun a => by rw [← Category.assoc, hc.inv])
   exact (huniq f rfl).trans (huniq g h.symm).symm
 
@@ -82,7 +82,7 @@ theorem exists_up [GrpObj G] (hc : IsGaloisCover Ga ρ π) (H : IsPullback φ G.
     {w : (Over.pullback π).obj T ⟶ G} (hw : w ∈ equivariant hc hν T) : ∃ z : T ⟶ G', up H z = w := by
   have hinv : ∀ a, act hc T a ≫ (w.left ≫ φ) = w.left ≫ φ := fun a => by
     rw [← Category.assoc, (mem_equivariant hc hν).1 hw a, Category.assoc, hφ]
-  obtain ⟨f', hf', -⟩ := (GlobalTheory.T.galoisCover_descent_and_cartesian_squares _ _ _ Ga _ (isGaloisCover_act hc T)).1 G'.left (w.left ≫ φ) hinv
+  obtain ⟨f', hf', -⟩ := (_root_.GlobalTheory.ZM.galoisCover_descent _ _ _ Ga _ (isGaloisCover_act hc T)).1 G'.left (w.left ≫ φ) hinv
   have hw' : w.left ≫ G.hom = pullback.snd T.hom π := by simpa using Over.w w
   have hbase : f' ≫ G'.hom = T.hom := by
     apply cover_ext (isGaloisCover_act hc T)
@@ -173,11 +173,11 @@ theorem abelianScheme_descends_galoisCover :
       rw [Category.assoc, ← hdown, ← Category.assoc, hy]
     have hy1 : (y ≫ G.hom) ≫ ρ 1 = y ≫ G.hom := by rw [hc.one, Category.comp_id]
     exact (hc.fibre k (y ≫ G.hom) (y ≫ G.hom) rfl).unique hya hy1
-  obtain ⟨Y₀, π₀, sY₀, -, hc₀, -, -, -⟩ := GlobalTheory.T.exists_separated_galoisCover_of_free_action K G.left (G.hom ≫ π ≫ sY) Ga ν hq hν1 hνmul
+  obtain ⟨Y₀, π₀, sY₀, -, hc₀, -, -, -⟩ := _root_.GlobalTheory.ZM.exists_isGaloisCover_of_isQProjOver K G.left (G.hom ≫ π ≫ sY) Ga ν hq hν1 hνmul
     (fun a => by rw [← Category.assoc G.hom π sY, ← Category.assoc, hinvG]) hfree
-  obtain ⟨v, hv, -⟩ := (GlobalTheory.T.galoisCover_descent_and_cartesian_squares G.left Y₀ π₀ Ga ν hc₀).1 Y (G.hom ≫ π) hinvG
+  obtain ⟨v, hv, -⟩ := (_root_.GlobalTheory.ZM.galoisCover_descent G.left Y₀ π₀ Ga ν hc₀).1 Y (G.hom ≫ π) hinvG
   have hsq : IsPullback G.hom π₀ π v :=
-    ((GlobalTheory.T.galoisCover_descent_and_cartesian_squares X Y π Ga ρ hc).2.2 G.left Y₀ π₀ ν G.hom v hdown hv.symm).1 hc₀
+    ((_root_.GlobalTheory.ZM.galoisCover_descent X Y π Ga ρ hc).2.2 G.left Y₀ π₀ ν G.hom v hdown hv.symm).1 hc₀
   have H : IsPullback π₀ G.hom (Over.mk v).hom π := hsq.flip
   obtain ⟨inst, hcomm', hgp⟩ := exists_grpObj (G' := Over.mk v) (φ := π₀) hc H hν (fun a => hc₀.inv a)
   have hQ : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme) π :=

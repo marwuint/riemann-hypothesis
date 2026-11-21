@@ -146,35 +146,6 @@ theorem fr_lat_of {k : ℕ} (w : HeightOneSpectrum (𝓞 F))
       simp only [hterm]
       simp [Matrix.mulVec, dotProduct]
 
-theorem fr_lat_LbOf {k : ℕ} (w : HeightOneSpectrum (𝓞 F))
-    (φ : E ⊗[F] w.adicCompletion F ≃+* w.adicCompletion F × w.adicCompletion F)
-    (halg : ∀ a : w.adicCompletion F, φ ((1 : E) ⊗ₜ[F] a) = (a, a))
-    (pz pzc : 𝓞 E) (T : ℕ) (hpz : (pz : E) * (pzc : E) = (T : E)) (hT : (T : 𝓞 F) ∉ w.asIdeal)
-    (t : Fin k → w.adicCompletion F) :
-    (∃ x ∈ Formalism.L2.Herm.locL w (Formalism.MainNotions.Gaps.LG.LbOf k pz), ∀ a, (φ (x a)).1 = t a) ↔
-      ∀ a, (((bc (((RingHom.fst _ _).comp φ.toRingHom).comp (inclE (F := F) (w.adicCompletion F)))
-        (1 : GL (Fin k) E))⁻¹ :
-        GL (Fin k) (w.adicCompletion F)) : Matrix (Fin k) (Fin k) (w.adicCompletion F)).mulVec t a ∈
-          w.adicCompletionIntegers F := by
-  refine fr_lat_of w φ halg _ 1 (fun x hx a => ?_) T hT (fun i => ?_) t
-  · rw [inv_one, Units.val_one, one_mulVec]
-    obtain ⟨y, hy⟩ := Formalism.MainNotions.Gaps.LG.iw_Lb_le_std k pz hx a (Set.mem_univ a)
-    exact ⟨y, hy⟩
-  · rw [Units.val_one, one_mulVec]
-    have h1 : (T : E) • (Pi.single i 1 : Fin k → E) =
-        (if i.1 = 0 then pzc else (T : 𝓞 E)) • Formalism.MainNotions.Gaps.LG.lbVec k pz i := by
-      funext j
-      unfold Formalism.MainNotions.Gaps.LG.lbVec
-      by_cases hj : j = i
-      · subst hj
-        simp only [Pi.smul_apply, Pi.single_eq_same, Algebra.smul_def, mul_one]
-        split_ifs
-        · rw [← hpz, mul_comm]; rfl
-        · simp
-      · simp only [Pi.smul_apply, Pi.single_eq_of_ne hj, smul_zero]
-    rw [h1]
-    exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
-
 end Formalism.MainNotions.Gaps.Loc
 
 end

@@ -81,11 +81,6 @@ def tauInv {r : ℕ} (T T' : ℝ) (ρp : Rho → Fin k0 → ℝ) (P : Rho → (F
     (Y : ℂ) : Op (r + 1) E :=
   mulF (fun x => (GG T T' x)⁻¹) ∘ mulE (xInvFib ρp P Y)
 
-def IsTauInv {r : ℕ} (T T' : ℝ) (ρp : Rho → Fin k0 → ℝ) (P : Rho → (Fin (r + 1) → ℂ) → E →L[ℂ] E)
-    (Q : ℂ → Matrix (Fin 2) (Fin 2) (Op (r + 1) E)) (cls : Set ((Fin (r + 1) → ℂ) → E))
-    (Dom : Set (Fin (r + 1) → ℂ)) (Y : ℂ) : Prop :=
-  ∀ φ ∈ cls, ∀ x ∈ Dom, tauInv T T' ρp P Y (Q Y 1 1 φ) x = φ x
-
 def lOp {r : ℕ} (T T' : ℝ) (ρp : Rho → Fin k0 → ℝ) (P : Rho → (Fin (r + 1) → ℂ) → E →L[ℂ] E)
     (Q : ℂ → Matrix (Fin 2) (Fin 2) (Op (r + 1) E)) (Y : ℂ) : Op (r + 1) E :=
   tauInv T T' ρp P Y ∘ Q Y 1 0
@@ -290,8 +285,6 @@ def bsum {n : ℕ} (φ ψ : (Fin n → Fin 2) → (Fin (r + 1) → ℂ) → E) :
 
 def IsPlus (w : List (Bool × ℝ)) : Prop := ∀ a ∈ w, a.1 = true
 
-def pts (w : List (Bool × ℝ)) : List ℝ := w.map Prod.snd
-
 end Ctx
 
 end Formalism.MainNotions.S.LevR
@@ -414,17 +407,6 @@ def compL (C : Ctx B r) : List (Op (r + 1) E) → Op (r + 1) E
   | [] => one
   | A :: l => A ∘ compL C l
 
-def PiL (x : Fin (r + 1) → ℂ) : E →L[ℂ] E := ∑ᶠ ρ, C.P ρ x
-
-def IsFrameDatum (h : (Fin (r + 1) → ℂ) → E →L[ℂ] E) (SS : Fin B.k0 → (Fin (r + 1) → ℂ) → E →L[ℂ] E) : Prop :=
-  (∀ Y : ℂ, NoPoleRho B Y → C.OpEq (lOp B.T B.T' B.rhoP C.P C.Q Y) (lDec B.T B.T' B.rhoP C.P h SS Y)) ∧
-  (∀ x ∈ C.Dom, ∀ e : E, dZ r (fun y => C.PiL y e) x + h x (C.PiL x e) = C.PiL x (h x e)) ∧
-  (∀ x ∈ C.Dom, ∀ e : E, h x (e - C.PiL x e) - C.PiL x (h x (e - C.PiL x e)) = 0) ∧
-  (∀ l, ∀ x ∈ C.Dom, SS l x = (C.PiL x).comp ((SS l x).comp (C.PiL x)))
-
-def SSnatS (C : Ctx B r) (s : (Fin (r + 1) → ℂ) → E →L[ℂ] E) : Op (r + 1) E :=
-  mulF (fun x => Dr x / star (Dr x)) ∘ mulE (C.fstar s)
-
 end Ctx
 
 namespace Ctx
@@ -433,135 +415,12 @@ section Shape
 
 variable {B : Base E} {r : ℕ} {C : Ctx B r} {SS : Fin B.k0 → (Fin (r + 1) → ℂ) → E →L[ℂ] E} {b : Bool}
 
-theorem IsEePM.smul {n : ℕ} (c : ℂ) {M : C.FM n} (h : IsEePM C SS b n M) : IsEePM C SS b n (c • M) := by
-  have e : c • M = C.fmul (C.fscal (fun _ => c)) M := by
-    funext s t x
-    simp only [Ctx.fmul, Ctx.fscal, Matrix.smul_apply, Pi.smul_apply]
-    rw [Finset.sum_eq_single s]
-    · simp
-    · intro v _ hv
-      simp [Ne.symm hv]
-    · simp
-  rw [e]
-  exact IsEePM.mul (IsEePM.scal c) h
-
-theorem IsEePM.zero {n : ℕ} : IsEePM C SS b n (0 : C.FM n) := by
-  have e : (0 : C.FM n) = C.fscal (fun _ => (0 : ℂ)) := by
-    funext s t x
-    simp [Ctx.fscal]
-  rw [e]
-  exact IsEePM.scal 0
-
-theorem IsEePM.sub {n : ℕ} {M N : C.FM n} (h : IsEePM C SS b n M) (h' : IsEePM C SS b n N) :
-    IsEePM C SS b n (M - N) := by
-  have e : M - N = M + (-1 : ℂ) • N := by simp [sub_eq_add_neg]
-  rw [e]
-  exact IsEePM.add h (IsEePM.smul _ h')
-
-theorem IsEePM.sum {n : ℕ} {ι : Type*} (s : Finset ι) (M : ι → C.FM n) (h : ∀ i ∈ s, IsEePM C SS b n (M i)) :
-    IsEePM C SS b n (∑ i ∈ s, M i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simpa using IsEePM.zero
-  | insert a s ha ih =>
-    rw [Finset.sum_insert ha]
-    exact IsEePM.add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
-
-theorem fmul_sub_mid {n : ℕ} (X M N Z : C.FM n) :
-    C.fmul X (C.fmul M Z) - C.fmul X (C.fmul N Z) = C.fmul X (C.fmul (M - N) Z) := by
-  funext s t x
-  simp only [Ctx.fmul, Matrix.sub_apply, Pi.sub_apply, ContinuousLinearMap.sub_comp, ContinuousLinearMap.comp_sub,
-    Finset.sum_sub_distrib]
-
 theorem fblk_sub {n : ℕ} (K K' : Fin 2 → Fin 2 → C.FM n) :
     C.fblk K - C.fblk K' = C.fblk (fun i j => K i j - K' i j) := rfl
-
-theorem ee_nil_eq (Y : ℂ) :
-    C.ee SS [] Y = ∑ l : Fin B.k0, C.fmul (C.fdiag (fun _ ρ => (Y + (B.rhoP ρ l : ℂ))⁻¹))
-      (fun s t x => if s = t then (zOf x / star (zOf x)) • SS l x else 0) := by
-  funext s t x
-  have sub : ∀ a c : Fin ([] : List (Bool × ℝ)).length → Fin 2, a = c := fun a c => funext fun i => absurd i.2 (by simp)
-  have hst : s = t := sub _ _
-  subst hst
-  simp only [Ctx.ee, Ctx.fmul, Ctx.fdiag, shInv, if_true, Matrix.sum_apply, Finset.sum_apply]
-  rw [Finset.smul_sum]
-  refine Finset.sum_congr rfl fun l _ => ?_
-  rw [Finset.sum_eq_single s]
-  · simp
-  · intro v _ hv
-    exact absurd (sub _ _) hv
-  · intro hs
-    exact absurd (Finset.mem_univ s) hs
-
-theorem ee_nil_mem (Y : ℂ) : IsEePM C SS b 0 (C.ee SS [] Y) := by
-  rw [ee_nil_eq]
-  exact IsEePM.sum _ _ fun l _ => IsEePM.mul (IsEePM.cst _) (IsEePM.ss l)
-
-theorem ee_mem : ∀ (w : List (Bool × ℝ)) (Y : ℂ), IsEePM C SS true w.length (C.ee SS w Y)
-  | [], Y => ee_nil_mem Y
-  | (true, ya) :: w, Y => by
-      rw [Ctx.ee]
-      refine IsEePM.blk _ fun i j => ?_
-      fin_cases i <;> fin_cases j
-      · exact IsEePM.add (IsEePM.sub (ee_mem w Y) (IsEePM.smul _ (IsEePM.sub (ee_mem w Y) (ee_mem w ya))))
-          (IsEePM.tt rfl)
-      · exact IsEePM.scal _
-      · exact IsEePM.zero
-      · exact IsEePM.mul (IsEePM.cst _) (IsEePM.mul (ee_mem w Y) (IsEePM.cst _))
-  | (false, yb) :: w, Y => by
-      rw [Ctx.ee]
-      refine IsEePM.blk _ fun i j => ?_
-      fin_cases i <;> fin_cases j
-      · exact ee_mem w Y
-      · exact IsEePM.zero
-      · exact IsEePM.smul _ (IsEePM.mul (IsEePM.cst _) (IsEePM.cst _))
-      · exact IsEePM.add (IsEePM.sub (IsEePM.mul (IsEePM.cst _) (IsEePM.mul (ee_mem w Y) (IsEePM.cst _)))
-          (IsEePM.smul _ (IsEePM.sub (ee_mem w Y) (ee_mem w yb)))) (IsEePM.tt rfl)
-
-theorem IsEePM.of_eq {n : ℕ} {M N : C.FM n} (h : IsEePM C SS b n M) (e : M = N) : IsEePM C SS b n N := e ▸ h
-
-theorem ee_diff_mem : ∀ (w : List (Bool × ℝ)) (Y Y' : ℂ), IsEePM C SS false w.length (C.ee SS w Y - C.ee SS w Y')
-  | [], Y, Y' => IsEePM.sub (ee_nil_mem Y) (ee_nil_mem Y')
-  | (true, ya) :: w, Y, Y' => by
-      rw [Ctx.ee, Ctx.ee, fblk_sub]
-      refine IsEePM.blk _ fun i j => ?_
-      fin_cases i <;> fin_cases j
-      · refine IsEePM.of_eq (IsEePM.add (IsEePM.sub (ee_diff_mem w Y Y')
-          (IsEePM.smul (Y - ya)⁻¹ (ee_diff_mem w Y ya))) (IsEePM.smul (Y' - ya)⁻¹ (ee_diff_mem w Y' ya))) ?_
-        show _ = (C.ee SS w Y - ((Y - ya)⁻¹ • (C.ee SS w Y - C.ee SS w ya)) + C.fscal _) -
-          (C.ee SS w Y' - ((Y' - ya)⁻¹ • (C.ee SS w Y' - C.ee SS w ya)) + C.fscal _)
-        abel
-      · exact IsEePM.sub (IsEePM.scal _) (IsEePM.scal _)
-      · exact IsEePM.sub IsEePM.zero IsEePM.zero
-      · exact IsEePM.of_eq (IsEePM.mul (IsEePM.cst _) (IsEePM.mul (ee_diff_mem w Y Y') (IsEePM.cst _)))
-          (fmul_sub_mid _ _ _ _).symm
-  | (false, yb) :: w, Y, Y' => by
-      rw [Ctx.ee, Ctx.ee, fblk_sub]
-      refine IsEePM.blk _ fun i j => ?_
-      fin_cases i <;> fin_cases j
-      · exact ee_diff_mem w Y Y'
-      · exact IsEePM.sub IsEePM.zero IsEePM.zero
-      · exact IsEePM.sub (IsEePM.smul _ (IsEePM.mul (IsEePM.cst _) (IsEePM.cst _)))
-          (IsEePM.smul _ (IsEePM.mul (IsEePM.cst _) (IsEePM.cst _)))
-      · refine IsEePM.of_eq (IsEePM.add (IsEePM.sub
-          (IsEePM.mul (IsEePM.cst (fun s ρ => (C.xw w yb s ρ)⁻¹)) (IsEePM.mul (ee_diff_mem w Y Y') (IsEePM.cst (C.xw w yb))))
-          (IsEePM.smul (Y - yb)⁻¹ (ee_diff_mem w Y yb))) (IsEePM.smul (Y' - yb)⁻¹ (ee_diff_mem w Y' yb))) ?_
-        rw [← fmul_sub_mid]
-        show C.fmul (C.xMinv w yb) (C.fmul (C.ee SS w Y) (C.xM w yb)) -
-            C.fmul (C.xMinv w yb) (C.fmul (C.ee SS w Y') (C.xM w yb)) - _ + _ = (C.fmul (C.xMinv w yb) (C.fmul (C.ee SS w Y) (C.xM w yb)) -
-            ((Y - yb)⁻¹ • (C.ee SS w Y - C.ee SS w yb)) + C.fscal _) -
-          (C.fmul (C.xMinv w yb) (C.fmul (C.ee SS w Y') (C.xM w yb)) -
-            ((Y' - yb)⁻¹ • (C.ee SS w Y' - C.ee SS w yb)) + C.fscal _)
-        abel
 
 end Shape
 
 end Ctx
-
-def gw {B : Base E} {r : ℕ} (Cr : Ctx B 0) (C0 : Ctx B r) (lift : Op 1 E → Op (r + 1) E)
-    (h : (Fin 1 → ℂ) → E →L[ℂ] E) (SS : Fin B.k0 → (Fin 1 → ℂ) → E →L[ℂ] E) (w : List (Bool × ℝ)) :
-    (Fin w.length → Fin 2) → Op (r + 1) E :=
-  fun v => ∑ t, lift (Cr.F h SS w v t) ∘ C0.uw w t
 
 def prW (k : ℕ) (zb : Fin (k + 1) → ℂ) (v : Fin (k + 1) → ℂ) : Fin (k + 1) → ℂ :=
   v - (herm (Hb k) v zb / herm (Hb k) zb zb) • zb
@@ -586,14 +445,6 @@ def omG (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r
 def omG' (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Fin (k + 1) → ℂ :=
   omG k r z' z (Hpk k r * g.conjTranspose * Hpk k r)
-
-def OmSlice (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : Prop :=
-  inWb k r z → inWb k r z' → ∀ (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ), (∀ a, c a ≠ 0) → μ ∈ UH (Hb k) →
-    omG k r z z' (bigCell k r c μ) = omF k r z z' c μ ∧ omG' k r z z' (bigCell k r c μ) = omF' k r z z' c μ
-
-def OmNInv (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : Prop :=
-  inWb k r z → inWb k r z' → ∀ g, ∀ n ∈ Nset k r, ∀ n' ∈ Nset k r,
-    omG k r z z' (n * g * n') = omG k r z z' g ∧ omG' k r z z' (n * g * n') = omG' k r z z' g
 
 def evG {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (p : MvPolynomial ((Fin n × Fin n) ⊕ (Fin n × Fin n)) ℂ) : ℂ :=
   MvPolynomial.eval (Sum.elim (fun ij => g ij.1 ij.2) (fun ij => star (g ij.1 ij.2))) p
@@ -657,10 +508,6 @@ def ctx0 (Lt : Lev) (u u' : Fin (Lt.k0 + 1) → ℝ) (I : Set ℝ) (hr : Lt.r + 
     Lt.liftDown Lt.r 0 hr (((Lt.down Lt.r 0 hr).wmod R (sCut u u' I) u u' w).TT Y (a, s) (b, t))
   qw := fun w => ((Lt.down Lt.r 0 hr).wmod R (sCut u u' I) u u' w).q
   uw := fun w => uw (m := Lt.r) w Lt.r le_rfl
-
-def baseLevelContext (Lt : Lev) (u u' : Fin (Lt.k0 + 1) → ℝ) (I : Set ℝ) (hr : Lt.r + 0 = Lt.r)
-    (R : ℂ → Matrix (Fin 2) (Fin 2) (Lt.down Lt.r 0 hr).POp) (clsF : Set Lt.PF) : Ctx (baseOf Lt u u' I) Lt.r :=
-  { ctx0 Lt u u' I hr R with clsF := clsF }
 
 def gctxOf (L : Lev) : GCtx L.Hom L.r where
   nV := 2 * L.r + (L.k0 + 1) + 1

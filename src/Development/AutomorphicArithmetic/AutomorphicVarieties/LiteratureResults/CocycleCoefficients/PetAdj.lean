@@ -1,5 +1,6 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.CoefFieldEq
-import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.Thorne
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.QuotRepMk
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Hypotheses2
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.NewformModel
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.CocycleCoefficients.PetAdjQuot
@@ -134,44 +135,6 @@ private theorem dg_mul (m n : ℕ) (h : m * n ≠ 0) (h' : n * m ≠ 0) (k : ℤ
   congr 2
   ring
 
-private theorem T_exp {M k : ℕ} [NeZero M] (hk : 1 ≤ k) {p : ℕ} (hp : p.Prime) (c : ℂ) (f Tf : CuspForm (Gamma1 M) (k : ℤ))
-    (h : ∀ n, 1 ≤ n → coef Tf n = coef f (p * n) + c * (p : ℂ) ^ (k - 1) * (if p ∣ n then coef f (n / p) else 0))
-    (ha : p * 1 ≠ 0) (hb : 1 * p ≠ 0) (z : ℍ) :
-    Tf z = c * (⇑f ∣[(k : ℤ)] dg p 1 ha) z +
-      ∑ u ∈ Finset.range p, ((⇑f ∣[(k : ℤ)] dg 1 p hb) ∣[(k : ℤ)] (ModularGroup.T ^ (u : ℤ))) z := by
-  have hp0 : (p : ℂ) ≠ 0 := by exact_mod_cast hp.ne_zero
-  have hp1 : (p : ℂ) - 1 ≠ 0 := sub_ne_zero.2 (by exact_mod_cast hp.ne_one)
-  have h1 : (1 : ℝ) ∈ (Gamma1 M : Subgroup (GL (Fin 2) ℝ)).strictPeriods := by simp
-  have hsum : ∀ (f : CuspForm (Gamma1 M) (k : ℤ)) (τ : ℍ),
-      HasSum (fun m => coef f m • Function.Periodic.qParam 1 τ ^ m) (f τ) := fun f τ =>
-    hasSum_qExpansion one_pos (SlashInvariantFormClass.periodic_comp_ofComplex f h1) f.holo'
-      (ModularFormClass.bdd_at_infty f) τ
-  have h0 : ∀ f : CuspForm (Gamma1 M) (k : ℤ), coef f 0 = 0 := fun f => CuspFormClass.qExpansion_coeff_zero f one_pos h1
-  have a1 := hasSum_heckeOne 1 hp.pos (hsum f) z
-  have a2 := hasSum_heckeOne 2 hp.pos (hsum f) z
-  have a3 := a1.add ((a2.sub a1).mul_left ((c * (p : ℂ) ^ (k - 1) - 1) / (p - 1)))
-  have e := (hsum Tf z).unique (cast (congrArg (HasSum · _) (funext fun m => ?_)) a3)
-  · have e1 : ∀ u : ℕ, ((⇑f ∣[(k : ℤ)] dg 1 p hb) ∣[(k : ℤ)] (ModularGroup.T ^ (u : ℤ))) z =
-        (p : ℂ)⁻¹ * f (ofComplex (((z : ℂ) + u) / p)) := fun u => by
-      have hd : denom (ModularGroup.T ^ (u : ℤ) : SL(2, ℤ)) z = 1 := by
-        rw [ModularGroup.denom_apply, ModularGroup.coe_T_zpow]; simp
-      rw [SL_slash_apply, dg_slash, ModularGroup.coe_T_zpow_smul_eq, hd]
-      simp [zpow_sub₀ hp0]
-      left
-      field_simp
-    rw [e, dg_slash]
-    simp only [e1, heckeOne, ← Finset.mul_sum]
-    obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
-    simp
-    field_simp
-    ring
-  · rcases Nat.eq_zero_or_pos m with rfl | hm
-    · simp [h0]
-    · rw [h m hm]
-      simp only [smul_eq_mul]
-      field_simp
-      ring
-
 private theorem B_symm [H.FiniteIndex] : quotInt H (petersson k G F) = conj (quotInt H (petersson k F G)) := by
   haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _
   simp only [quotInt, finsum_eq_sum_of_fintype, map_sum, ← integral_conj, ← petersson_symm]
@@ -200,64 +163,5 @@ private theorem good_cusp {M k : ℕ} [NeZero M] (f : CuspForm (Gamma1 M) (k : �
   ⟨f.holo', CuspFormClass.petersson_bounded_left (k : ℤ) (Gamma1 M) f f,
     fun γ hγ => f.slash_action_eq' _ ⟨γ, h hγ, rfl⟩⟩
 
-private theorem dg_swap {M p : ℕ} (hc : p.Coprime M) (ha : p * 1 ≠ 0) (hb : 1 * p ≠ 0) :
-    ∃ δ ∈ Gamma0 M, ∃ γ ∈ Gamma1 M, δ 1 1 = p ∧ dg p 1 ha * (δ : GL (Fin 2) ℝ) = (γ : GL (Fin 2) ℝ) * dg 1 p hb := by
-  obtain ⟨r, s, h⟩ : IsCoprime (p : ℤ) (M : ℤ) := Nat.isCoprime_iff_coprime.2 hc
-  obtain ⟨δ, hδ⟩ : ∃ δ : SL(2, ℤ), δ.1 = !![r, -s; M, p] :=
-    ⟨⟨_, by rw [Matrix.det_fin_two_of]; linear_combination h⟩, rfl⟩
-  obtain ⟨γ, hγ⟩ : ∃ γ : SL(2, ℤ), γ.1 = !![p * r, -s; M, 1] :=
-    ⟨⟨_, by rw [Matrix.det_fin_two_of]; linear_combination h⟩, rfl⟩
-  refine ⟨δ, by simp [Gamma0_mem, hδ], γ, ?_, by simp [hδ], ?_⟩
-  · have := congrArg (Int.cast : ℤ → ZMod M) h
-    rw [Gamma1_mem]
-    simpa [mul_comm, hγ] using this
-  · apply Units.ext
-    ext i j
-    fin_cases i <;> fin_cases j <;> simp [dg_val, Matrix.mul_apply, Fin.sum_univ_two, mul_comm, hδ, hγ]
-
 end UpperTheory.V.Lit.KT
 
-open UpperHalfPlane ModularForm UpperTheory.V.Lit.KT in
-theorem UpperTheory.V.Lit.KT.petAdj :
-    ∀ (M k : ℕ), 0 < M → 1 ≤ k → ∀ (χ : DirichletCharacter ℂ M) (p : ℕ), p.Prime → ¬ p ∣ M → ∀ f g Tf Tg : CuspForm (Gamma1 M) (k : ℤ), HasChar k χ f → HasChar k χ g →
-    (∀ n, 1 ≤ n → coef Tf n = coef f (p * n) + χ (p : ZMod M) * (p : ℂ) ^ (k - 1) * (if p ∣ n then coef f (n / p) else 0)) →
-    (∀ n, 1 ≤ n → coef Tg n = coef g (p * n) + χ (p : ZMod M) * (p : ℂ) ^ (k - 1) * (if p ∣ n then coef g (n / p) else 0)) →
-    pet M k f Tg = χ (p : ZMod M) * pet M k Tf g := by
-  intro M k hM hk χ p hp hpM f g Tf Tg _ hg hTf hTg
-  haveI : NeZero M := ⟨hM.ne'⟩
-  have hc : p.Coprime M := (Nat.Prime.coprime_iff_not_dvd hp).2 hpM
-  have ha : p * 1 ≠ 0 := by simpa using hp.ne_zero
-  have hb : 1 * p ≠ 0 := by simpa using hp.ne_zero
-  haveI := dg_fin (Gamma1 M) p 1 ha
-  haveI := dg_fin (Gamma1 M) 1 p hb
-  set H := (Gamma1 M ⊓ conjGL (Gamma1 M) (dg p 1 ha) ⊓ conjGL (Gamma1 M) (dg 1 p hb)).normalCore with hH
-  have hle := (Gamma1 M ⊓ conjGL (Gamma1 M) (dg p 1 ha) ⊓ conjGL (Gamma1 M) (dg 1 p hb)).normalCore_le
-  rw [← hH, le_inf_iff, le_inf_iff] at hle
-  obtain ⟨⟨l1, la⟩, lb⟩ := hle
-  have G0 := fun f : CuspForm (Gamma1 M) (k : ℤ) => good_cusp f l1
-  have G1 := fun f : CuspForm (Gamma1 M) (k : ℤ) => good_cusp f le_rfl
-  have Ga := fun f : CuspForm (Gamma1 M) (k : ℤ) => (G1 f).slash _ la
-  have Gb := fun f : CuspForm (Gamma1 M) (k : ℤ) => (G1 f).slash _ lb
-  have hT : ∀ (f : CuspForm (Gamma1 M) (k : ℤ)) (u : ℤ), ⇑f ∣[(k : ℤ)] (ModularGroup.T ^ u) = f := fun f u =>
-    (G1 f).inv _ (by rw [Gamma1_mem]; simp [ModularGroup.coe_T_zpow])
-  have tow : ∀ f g : CuspForm (Gamma1 M) (k : ℤ),
-      quotInt H (petersson k f g) = (H.relIndex (Gamma1 M) : ℂ) * pet M k f g := fun f g =>
-    quotInt_tower l1 _ ((G1 f).pinv (G1 g))
-  have e1 := quotInt_petersson_eq_add_of_hecke_sum (G0 f) (Ga g) (Gb g) (hT f) (T_exp hk hp _ g Tg hTg ha hb)
-  have e2 := congrArg conj (quotInt_petersson_eq_add_of_hecke_sum (G0 g) (Ga f) (Gb f) (hT g) (T_exp hk hp _ f Tf hTf ha hb))
-  rw [map_add, map_mul, map_mul, ← B_symm, ← B_symm, ← B_symm, Complex.conj_natCast] at e2
-  have e3 := B_adj hp.pos (by rw [dg_det, one_mul]) (dg_fin H 1 p hb) (dg_fin' H 1 p hb) (G0 f) (G0 g) (Ga f) (Gb g)
-    (by rw [dg_mul, mul_one])
-  have e4 := B_adj hp.pos (by rw [dg_det, mul_one]) (dg_fin H p 1 ha) (dg_fin' H p 1 ha) (G0 f) (G0 g) (Gb f) (Ga g)
-    (by rw [dg_mul, one_mul])
-  obtain ⟨δ, hδ, γ, hγ, h11, hm⟩ := dg_swap hc ha hb
-  have e5 := B_slashSL δ (Ga f) (G0 g)
-  rw [hg δ hδ, h11, Int.cast_natCast, B_smul_right, SL_slash, ← SlashAction.slash_mul, hm, SlashAction.slash_mul,
-    ← SL_slash, (G1 f).inv γ hγ] at e5
-  have e6 : χ (p : ZMod M) * conj (χ (p : ZMod M)) = 1 := by
-    have := χ.unit_norm_eq_one (ZMod.unitOfCoprime p hc)
-    rw [ZMod.coe_unitOfCoprime] at this
-    rw [Complex.mul_conj', this]; simp
-  refine mul_left_cancel₀ (a := (H.relIndex (Gamma1 M) : ℂ)) (Nat.cast_ne_zero.2 Subgroup.FiniteIndex.index_ne_zero) ?_
-  rw [mul_left_comm, ← tow, ← tow, e1, e2, e3, e4, ← e5]
-  linear_combination (-(χ (p : ZMod M)) * quotInt H (petersson k (⇑f ∣[(k : ℤ)] dg 1 p hb) g)) * e6

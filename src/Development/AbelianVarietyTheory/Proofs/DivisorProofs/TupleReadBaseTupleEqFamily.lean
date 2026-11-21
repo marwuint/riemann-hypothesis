@@ -57,23 +57,4 @@ theorem hasTwistBound_at {eps : ℝ} {Fm : FamP eps} {x : ℝ} {hx : Fm.x1 < x} 
     (fun w hw => ⟨fun j => ((hK w hw).1 j).2.1, fun j => ((hK w hw).2 j).2.1⟩)
     (fun w hw => ⟨tied w hw, tied _ (conj_mem p hw)⟩)
 
-theorem twistSt_of (hE : ExportSt) (hG : GeoSt)
-    (hK : AtRec fun _ _ _ _ _ _ O => GlobalTheory.TraceClassRank.RankAtPlaces O) : TwistSt := by
-  obtain ⟨a, ha, H⟩ := (hE.and hG).and hK
-  refine ⟨a, ha, fun e he hle => ?_⟩
-  obtain ⟨K, hK'⟩ := H e he hle
-  refine ⟨K, fun Fm CH hc hL => ?_⟩
-  obtain ⟨⟨⟨x1, E1⟩, ⟨c1, G1⟩⟩, ⟨c2, K1⟩⟩ := hK' Fm CH hc hL
-  obtain ⟨x0, T0⟩ := hc.2.2.2.2.2.2.2.2.2.2.1
-  refine ⟨max c1 c2, fun c hcC hb => ?_⟩
-  obtain ⟨x2, G2⟩ := G1 c ((le_max_left _ _).trans hcC) hb
-  obtain ⟨x3, K2⟩ := K1 c ((le_max_right _ _).trans hcC) hb
-  refine ⟨max (max x0 x1) (max x2 x3), fun x hx hle i p hp hM r O hR => ?_⟩
-  have h0 : x0 ≤ x := (le_max_left _ _).trans ((le_max_left _ _).trans hle)
-  have h1 : x1 ≤ x := (le_max_right _ _).trans ((le_max_left _ _).trans hle)
-  have h2 : x2 ≤ x := (le_max_left _ _).trans ((le_max_right _ _).trans hle)
-  have h3 : x3 ≤ x := (le_max_right _ _).trans ((le_max_right _ _).trans hle)
-  obtain ⟨-, N0, S, hTG⟩ := T0 x h0 hx i
-  exact hasTwistBound_at p hR (E1 x hx h1 i p hp hM) (G2 x hx h2 i p hp hM r O hR).1 (K2 x hx h3 i p hp hM r O hR) hTG
-
 end GlobalTheory.BigOn.TwistBoundAtPlace

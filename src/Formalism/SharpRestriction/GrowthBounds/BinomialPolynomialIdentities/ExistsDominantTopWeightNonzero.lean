@@ -12,11 +12,6 @@ section basic
 
 variable {L : Type} [CommRing L] {n : ℕ}
 
-theorem partialAct_X (isVec : ℕ → Bool) (i : ℕ) (g gi : Matrix (Fin n) (Fin n) L) (x : ℕ × Fin n) :
-    actI isVec i g gi (X x) = if x.1 < i then
-      (if isVec x.1 then ∑ b, X (x.1, b) * C (g b x.2) else ∑ b, X (x.1, b) * C (gi x.2 b)) else X x := by
-  simp [actI]
-
 theorem partialAct_eq_fullAct_of_vars_lt (isVec : ℕ → Bool) (i : ℕ) (g gi : Matrix (Fin n) (Fin n) L)
     {P : MvPolynomial (ℕ × Fin n) L} (hv : ∀ x ∈ P.vars, x.1 < i) :
     actI isVec i g gi P = actAll isVec g gi P := by

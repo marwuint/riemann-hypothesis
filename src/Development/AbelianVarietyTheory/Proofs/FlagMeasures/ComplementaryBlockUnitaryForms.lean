@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SigmaFiniteOfRealSmul
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalTriangular
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ColumnBlocksSpanFlagOfBlockTriangularStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameOfIsotropicBlocksStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameOfIsotropicBlocks
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMeasurableUnitaryLeviBlockMapStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsConjGaugeInvariant
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurePreservingWithDensity
@@ -10,8 +10,8 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarComplexGLMatrice
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemIsotropicFlagSelfAdjointLeviIffBlockStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocSizeBlocks
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagStabilizerMulInvLeviComponentMemUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeviChartMapHaarCarriedInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsRadialMapUnitaryLeviBlockProductStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeviChartMapHaarCarriedInvariant
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsRadialMapUnitaryLeviBlockProduct
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GaugeMeasureMatrixAlgebraSubgroupLocalAsymptoticStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAlgebraIsotropicFlagSelfAdjointLevi
 
@@ -101,7 +101,7 @@ theorem exists_leviChart : ∀ (n n₀ a : ℕ) (j : Fin a → ℕ) (ε : Fin n 
     rw [hBA k, Matrix.mul_sum]
     refine Finset.sum_eq_zero fun m _ => ?_
     rw [← Matrix.mul_assoc, hAA, Matrix.zero_mul]
-  obtain ⟨B₀, s, d, hF, hA₀⟩ := GlobalTheory.T.exists_orthonormalFrame_of_isotropicBlocks n n₀ a j ε ε₀ B A₀ hn hB1 hB0 hBJB (hBJA _ _ hA0) h00
+  obtain ⟨B₀, s, d, hF, hA₀⟩ := _root_.GlobalTheory.FrameCompletion.exists_isFrame n n₀ a j ε ε₀ B A₀ hn hB1 hB0 hBJB (hBJA _ _ hA0) h00
   obtain ⟨θ₀, hθm, hθ⟩ := GlobalTheory.T.exists_measurable_unitaryLeviBlockMap n n₀ a j ε ε₀ B B₀ hF
   obtain ⟨C₀, hC₀, hC₀m⟩ := exists_conj_gauge_invariant n₀ ε₀ τ₀ hτ₀
   have hp : ∀ i, (p i i).det ≠ 0 := fun i => (Matrix.isUnit_det_of_right_inverse (hpq i)).ne_zero
@@ -167,8 +167,8 @@ theorem exists_leviChart : ∀ (n n₀ a : ℕ) (j : Fin a → ℕ) (ε : Fin n 
       refine MeasurePreserving.prod ?_ ⟨hcont.measurable, hC₀m s c hc⟩
       exact measurePreserving_pi _ _ fun i => (measurePreserving_twist hτ (hp i)).smul_measure _
     rw [← Measure.map_map hθm hRm, hR.map_eq]
-    obtain ⟨g1, g2⟩ := GlobalTheory.T.levi_chart_map_haar_carried_invariant n n₀ a j ε ε₀ B B₀ hF W hspB θ₀ hθm hθ c
-    have g3 := GlobalTheory.T.isRadial_map_unitaryLeviBlockProduct n n₀ a j ε ε₀ B B₀ hF θ₀ hθm hθ c hc
+    obtain ⟨g1, g2⟩ := _root_.GlobalTheory.LeviIso.map_chart_carried_and_invariant n n₀ a j ε ε₀ B B₀ hF W hspB θ₀ hθm hθ c
+    have g3 := _root_.GlobalTheory.LeviIso.MapRadial.isRadial_map_lev n n₀ a j ε ε₀ B B₀ hF θ₀ hθm hθ c hc
     have hν : IsGaugeSub (flagM ε W) (n₀ ^ 2 + 2 * ∑ i, j i ^ 2) _ := ⟨g1, g2, g3⟩
     have hd : n - 2 * ∑ i, j i = n₀ := by omega
     have halg := GlobalTheory.LeviAlgebra.exists_levi_algebra n ε a j W hiso

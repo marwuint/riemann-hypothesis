@@ -11,9 +11,13 @@ import Development.AbelianVarietyTheory.Statements.DiscreteSeriesShifts.ThmBpDS
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FormalDegreeCompactDualIff
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyStatementOfItemsFourSeven
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OpenCellAmplitudeNormEqConstDivDegreeLargeGapStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OpenCellAmplitudeNormEqConstDivDegreeLargeGap
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.OnePlaceKF
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
+import Formalism.SharpRestriction.CuspSpanNormBounds.LeadMinorK
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DegVand
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SizesLargeOfPowerBounds
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeEqKFiniteOrbitalIntegralGapStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeEqKFiniteOrbitalIntegralGap
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.CellConvergence
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
@@ -27,7 +31,7 @@ theorem amplitudeNormDegree_along_family_of_kFiniteIdentity : GlobalTheory.GapIn
       VanishingOnXAndXPlusBranching.admF9 Fm Cg cb Cu cT CT C0 C1 := by
   intro hH hA Cg cb Cu cT CT C0 C1
   refine ⟨1000, fun eps Fm hC' hCl _ Cn => ?_⟩
-  obtain ⟨m₀, hm⟩ := GlobalTheory.T.openCellAmplitudeNorm_eq_const_div_degree_largeGap hH hA cellConv Cg cb Cu cT CT C0 C1 Cn
+  obtain ⟨m₀, hm⟩ := _root_.GlobalTheory.Amp.OpenCellNormGap.norm_eq_const_div_deg_gap hH hA cellConv Cg cb Cu cT CT C0 C1 Cn
   obtain ⟨x0, hx0⟩ := GlobalTheory.family_sizes_eventually_large eps Fm m₀
   refine ⟨x0, fun x hx i hZ => ?_⟩
   obtain ⟨-, hm0, -, -, hrd, -⟩ := hx0 x hx i
@@ -42,6 +46,6 @@ theorem amplitudeNormDegree_along_family_largeGaps : Formalism.HermitianLattices
     ∀ (eps : ℝ) (Fm : FamP eps), thr ≤ sC' Fm → thr ≤ sCl Fm → PX.RanksF Fm C0 Cg cb Cu cT CT →
       VanishingOnXAndXPlusBranching.admF9 Fm Cg cb Cu cT CT C0 C1 := by
   intro _ hH _
-  exact amplitudeNormDegree_along_family_of_kFiniteIdentity hH (GlobalTheory.T.amplitude_eq_kFiniteOrbitalIntegral_gap hH)
+  exact amplitudeNormDegree_along_family_of_kFiniteIdentity hH (_root_.GlobalTheory.AmpOrbGap.ampKF hH)
 
 end GlobalTheory.AmpFamGap

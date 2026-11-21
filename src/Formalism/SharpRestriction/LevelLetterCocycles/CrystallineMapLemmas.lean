@@ -48,18 +48,6 @@ def HidaSetting (PD : PeriodData G Qp K₀ K B BdR) [Fintype (K →ₐ[Qp] LL)]
   (∀ i, ¬ Thick b η size i → size i ≤ w) ∧
   Formalism.MainNotions.LiftingTheory.JumpsLet W T₁ Mi hi
 
-def WachLatticeMapSetting (PD : PeriodData G Qp K₀ K B BdR) [Fintype (K →ₐ[Qp] LL)]
-    (W : LocWach PD LL O v n) (T₁ T₂ : LocLat G Qp LL O)
-    (F : LatHom T₁.L T₂.L) (b w S η m : ℕ) (up : ZMod n → Bool) (size Mi hi : ZMod n → ℕ) : Prop :=
-  Formalism.MainNotions.LiftingTheory.CaseA W ∧ Formalism.MainNotions.LiftingTheory.Sur W F ∧
-  (∀ i, η < size i) ∧
-  (∀ i, JumpsAt W T₁ i (if up i then
-      Set.Icc (size i : ℤ) ((size i : ℤ) + S) ∪ Set.Icc (-(η : ℤ)) η
-    else Set.Icc (-(size i : ℤ) - S) (-(size i : ℤ)) ∪ Set.Icc (-(η : ℤ)) η)) ∧
-  (∀ i, Thick b η size i → lowCount W T₂ i η ≤ m) ∧
-  (∀ i, ¬ Thick b η size i → size i ≤ w) ∧
-  Formalism.MainNotions.LiftingTheory.JumpsLet W T₁ Mi hi
-
 def eLift {PD : PeriodData G Qp K₀ K B BdR} (W : LocWach PD LL O v n) (T₁ : LocLat G Qp LL O)
     (Mi hi : ZMod n → ℕ) : ℕ :=
   Formalism.MainNotions.LiftingTheory.ePA PD.p (Formalism.MainNotions.LiftingTheory.Mmax n Mi) (Formalism.MainNotions.LiftingTheory.Hmax n Mi hi)
@@ -99,21 +87,6 @@ def Clusters (j : ℕ) (thick : ZMod n → Prop) : Prop :=
     (∀ k : ℕ, 1 ≤ k → k ≤ j → ¬ thick (t - k)) ∨
     (∃ d : ℕ, 1 ≤ d ∧ d ≤ j ∧ thick (t - d) ∧
       ∀ k : ℕ, 1 ≤ k → k ≤ d + j → k ≠ d → ¬ thick (t - k))
-
-def CorA (PD : PeriodData G Qp K₀ K B BdR) [Fintype (K →ₐ[Qp] LL)]
-    (W : LocWach PD LL O v n) (C : ℝ) : Prop :=
-  11 ≤ PD.p →
-  ∀ (j : ℕ) (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L) (b w S η m : ℕ) (up : ZMod n → Bool)
-    (size Mi hi : ZMod n → ℕ),
-    WachLatticeMapSetting PD W T₁ T₂ F b w S η m up size Mi hi →
-    1 ≤ j → 1 ≤ S → 1 ≤ η → 1 ≤ w → 1 ≤ b →
-    let l : ℕ := PD.p
-    let Gw : ℕ := w + S + η
-    let h : ℕ := if ∃ i, Thick b η size i then b + η + S else max Gw 1
-    C * ((j : ℝ) + 1) * ((Gw : ℝ) + 1) ≤ b → j + 1 ≤ n → Clusters j (Thick b η size) →
-    ColLeR PD F (C * ((n : ℝ) + 1) * (finrank LL T₂.V : ℝ) *
-        ((h : ℝ) / ((l : ℝ) - 1) ^ (j + 1) + ((Gw : ℝ) + 1) * ((j : ℝ) + 1) + Real.logb l h) +
-      C * (Nat.card {i : ZMod n // Thick b η size i} : ℝ) * m * ((j : ℝ) + 1) * (eLift W T₁ Mi hi : ℝ))
 
 end Core
 
@@ -166,11 +139,6 @@ def DdREqDcris [TopologicalSpace G] (PD : PeriodData G Qp K₀ K Bc BdR) (LL : T
         (FilCris PD ρ a ⊓ DcrisL PD ρ (τ.comp (IsScalarTower.toAlgHom Qp K₀ K))).map
           (ιV PD (LL := LL) (V := V))
 
-def H1fGeneratorDRBound [TopologicalSpace G] (PD : PeriodData G Qp K₀ K Bc BdR) (LL O : Type) [Field LL]
-    [Algebra Qp LL] [TopologicalSpace LL] [Fintype (K →ₐ[Qp] LL)] [CommRing O] [Algebra O LL] :
-    Prop :=
-  ∀ (T : LocLat G Qp LL O) [IsTopologicalAddGroup T.V], FiniteCohomologyGeneratorsBound PD T.L
-
 end Lit
 
 section Theory
@@ -180,11 +148,6 @@ def TheoremBLocal (LT : LocTheory) (A : ∀ (l : ℕ) [Fact l.Prime], LocAinf l 
     ∀ [NeZero (Module.finrank ℚ_[l] ↥(K0 K))] [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)],
       ThmB ((LT l).PD K) ((HW l).W K 1 LL hG) C
 
-def CorollaryALocal (LT : LocTheory) (A : ∀ (l : ℕ) [Fact l.Prime], LocAinf l (LT l)) (HW : HWOf LT) (F : FonOf LT A HW) (C : ℝ) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL), K.1 ≤ MaximalUnramifiedExtension l →
-    ∀ [NeZero (Module.finrank ℚ_[l] ↥(K0 K))] [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)],
-      CorA ((LT l).PD K) ((HW l).W K 1 LL hG) C
-
 def BlochKatoDimensionLocal (LT : LocTheory) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)],
     BlochKatoDim ((LT l).PD K) ↥LL.1
@@ -192,59 +155,17 @@ def BlochKatoDimensionLocal (LT : LocTheory) : Prop :=
 def DcrisExactStrictLocal (LT : LocTheory) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l), DcrisExactStrict ((LT l).PD K) ↥LL.1
 
-def H1fGeneratorDRBoundAll (LT : LocTheory) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)],
-    H1fGeneratorDRBound ((LT l).PD K) ↥LL.1 ↥(OL LL)
-
 def DdREqDcrisAll (LT : LocTheory) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l), DdREqDcris ((LT l).PD K) ↥LL.1
-
-def FontaineDcrisInequality (LT : LocTheory) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l), FontaineLe ((LT l).PD K) ↥LL.1
 
 end Theory
 
 def Conclusion1 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) : Prop := TheoremBLocal D.loc D.locA HW F C
 
-def Conclusion2 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) : Prop := CorollaryALocal D.loc D.locA HW F C
-
-def adm1 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) : Prop := Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm
-
-def adm2 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LiftingTheory.ConclusionL D HW F
-
-def adm3 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LiftingTheory.ConclusionW D HW F
-
-def ArchimedeanSignatureMatching (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) : Prop := Formalism.MainNotions.LiftingTheory.WachAnnihilatorAll D HW F ∧ Formalism.MainNotions.LiftingTheory.WachResultConstant D HW F C
-
-def adm5 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LiftingTheory.ConclusionH D HW F
-
-def adm6 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LiftingTheory.ExistsUnitClasses D HW F
-
-def adm7 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (CA CB CK : ℝ) : Prop := Formalism.MainNotions.LiftingTheory.LiftTheoremAllCases D HW F CA CB CK
-
 def adm8 (D : D7) : Prop := BlochKatoDimensionLocal D.loc
 
 def adm9 (D : D7) : Prop := DcrisExactStrictLocal D.loc
 
-def adm10 (D : D7) : Prop := H1fGeneratorDRBoundAll D.loc
-
-def adm11 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LiftingTheory.adm17 D HW F
-
-def adm12 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LiftingTheory.adm18 D HW F
-
-def adm13 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LiftingTheory.adm19 D HW F
-
-def adm14 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LiftingTheory.adm20 D HW F
-
 def adm15 (D : D7) : Prop := DdREqDcrisAll D.loc
-
-def adm16 (D : D7) : Prop := FontaineDcrisInequality D.loc
-
-def admitted (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (C CA CB CK : ℝ) : Prop :=
-  adm1 D HW F Cm ∧ adm2 D HW F ∧ adm3 D HW F ∧ ArchimedeanSignatureMatching D HW F C ∧ adm5 D HW F ∧ adm6 D HW F ∧ adm7 D HW F CA CB CK ∧ adm8 D ∧ adm9 D ∧
-    adm10 D ∧ adm11 D HW F ∧ adm12 D HW F ∧ adm13 D HW F ∧ adm14 D HW F ∧ adm15 D ∧ adm16 D
-
-def Stmt (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (C₁ C₂ C CA CB CK : ℝ) : Prop :=
-  admitted D HW F Cm C CA CB CK → Conclusion1 D HW F C₁ ∧ Conclusion2 D HW F C₂
 
 end Formalism.MainNotions.TruncatedSeriesCountingBounds

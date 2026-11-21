@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TwTransAlt
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPointsLieOverDistinctPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPointsLieOverDistinctPlaces
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianStepLevelOfChartFormsLevel
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnderTBijective
 
@@ -34,7 +34,7 @@ theorem GlobalTheory.AdForm.level_col_sub_one_mem : ∀ {B : Base} {X : PreX B.t
     rw [hpi]; exact (hA.reads j hj).lb b
   have hx := (((A.K j hj b).lev.U_eq κ'.1).1 κ'.2).2 v
   have hT := (GlobalTheory.Mem.Col2.Lv.uloc_T_iff (sigD (I.rec7 l Z)) (I.rec7 l Z).sp.cm.deg2 (fun x => star_star x) (fun x hx => ((I.rec7 l Z).sp.cm.fixed x).1 hx)
-      (I.rec7 l Z).sp.cm.cmUnram.2.2 hgram (A.K j hj b).lev At.piU (sg At.piU) rfl hpq hTp hL v hv (GlobalTheory.T.levelPrime_dvd_of_adicValuation_lt_one (I.rec7 l Z) u At v hv) _).1 hx
+      (I.rec7 l Z).sp.cm.cmUnram.2.2 hgram (A.K j hj b).lev At.piU (sg At.piU) rfl hpq hTp hL v hv (_root_.GlobalTheory.LevelUnif.dvd_of_val_lt_one (I.rec7 l Z) u At v hv) _).1 hx
   have hsp : Submodule.span (𝓞 (I.rec7 l Z).host.E) (dualSet ((sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →ₐ[(I.rec7 l Z).host.F] (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) j hj) (A.K j hj b).lev.Lb) = Formalism.L2.Col.rll_dLat ((I.rec7 l Z).R.N j) ((sg At.piU : 𝓞 (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E) := by
     rw [hL, hgram]; exact GlobalTheory.uLocDual_eq (sigD (I.rec7 l Z)) (fun x => star_star x) _ At.piU (sg At.piU) hp0 rfl
   have hy : (fun r => Formalism.UG.inclE (F := (I.rec7 l Z).host.F) (v.adicCompletion (I.rec7 l Z).host.F) ((Pi.single s 1 : Fin ((I.rec7 l Z).R.N j) → (I.rec7 l Z).host.E) r)) ∈ Formalism.UG.latS (F := (I.rec7 l Z).host.F) (v.adicCompletion (I.rec7 l Z).host.F) (intV (I.rec7 l Z).host.E v) (Submodule.span (𝓞 (I.rec7 l Z).host.E) (dualSet ((sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →ₐ[(I.rec7 l Z).host.F] (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) j hj) (A.K j hj b).lev.Lb)) := by

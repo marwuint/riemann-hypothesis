@@ -75,26 +75,6 @@ theorem _root_.GlobalTheory.exists_lift_of_smooth_of_isAffineOpen [Smooth f] {U 
     ext r
     exact ψ.commutes r
 
-theorem exists_lift_of_smooth_of_henselian [Smooth f] {B C : CommRingCat.{u}} [IsLocalRing B]
-    (π : B ⟶ C) (hπ : Function.Surjective π) [HenselianRing B (RingHom.ker π.hom)]
-    (s : Spec B ⟶ S) (x₀ : Spec C ⟶ X) (h : x₀ ≫ f = Spec.map π ≫ s) :
-    ∃ x : Spec B ⟶ X, Spec.map π ≫ x = x₀ ∧ x ≫ f = s := by
-  have : IsLocalRing C :=
-    isLocalRing_of_surjective_of_henselian (RingHom.ker π.hom) π.hom hπ fun _ => Iff.rfl
-  have : IsLocalHom π.hom := ⟨fun b hb =>
-    isUnit_of_isUnit_map_of_henselian (RingHom.ker π.hom) π.hom hπ (fun _ => Iff.rfl) hb⟩
-  obtain ⟨U, V, hU, hV, hVU, -, hxV⟩ :=
-    exists_isAffineOpen_pair f (x₀ (closedPoint C)) (O := ⊤) trivial
-  refine exists_lift_of_smooth_of_isAffineOpen f hU hV hVU π s x₀ h
-    (range_subset_opens_of_isLocalRing s ?_) (range_subset_opens_of_isLocalRing x₀ hxV) ?_
-  · have e : f (x₀ (closedPoint C)) = s (Spec.map π (closedPoint C)) :=
-      congr($h (closedPoint C))
-    rw [← Spec_closedPoint (f := π), ← e]
-    exact hVU hxV
-  · intro R A _ _ _ _ _ _ π' hπ' φ
-    exact exists_algHom_lift_of_smooth (RingHom.ker π.hom) π'
-      (fun c => (hπ c).imp fun b hb => (hπ' b).trans hb) (fun b => by rw [hπ']; rfl) φ
-
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing in
 variable {X S : Scheme.{u}} (f : X ⟶ S) in
 
@@ -273,10 +253,6 @@ theorem _root_.GlobalTheory.range_fst_residue {B : Type u} [CommRing B] [IsLocal
 
 end QuasiSection
 
-section Field
-
-end Field
-
 section DiscreteValuation
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing in
@@ -309,17 +285,5 @@ theorem _root_.GlobalTheory.isDiscreteValuationRing_of_etale_of_isLocalHom (V V'
 variable {X S : Scheme.{u}} (f : X ⟶ S) [Smooth f]
 
 end DiscreteValuation
-
-section SpecialFibre
-
-variable {V : Type u} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {X : Scheme.{u}}
-  (f : X ⟶ Spec (.of V)) [Smooth f]
-  (U : (pullback f (Spec.map (CommRingCat.ofHom (residue V)))).Opens)
-
-end SpecialFibre
-
-section Main
-
-end Main
 
 end GlobalTheory

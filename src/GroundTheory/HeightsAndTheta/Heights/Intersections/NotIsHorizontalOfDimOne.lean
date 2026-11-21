@@ -3,7 +3,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivSupp
 import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsArith
 import GroundTheory.HeightsAndTheta.Heights.Intersections.IsMultiHomogTwoXc
-import GroundTheory.HeightsAndTheta.Heights.Intersections.MultAtHorizontalEqZero
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedG
+import GroundTheory.HeightsAndTheta.Heights.Intersections.IsSmoothHermFubiniStudyO1
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Inter
@@ -161,22 +163,6 @@ theorem ptsIntegral_add_of_dimOne (hFF : FibreFiniteStatement) {P : Ideal (MRing
     · simp
   · simp
 
-theorem arInt_mul_of_dimOne (h0 : ArithVarZeroStatement) (hFF : FibreFiniteStatement)
-    {P : Ideal (MRing ι)} (hP : IsArithVar P 1) {A B : HermLine ι} {s t : MRing ι}
-    (hs : IsSectionOn P A s) (ht : IsSectionOn P B t) :
-    arInt P (s * t) (A.tensor B) (Fin.elim0 : Fin 0 → HermLine ι) =
-      arInt P s A (Fin.elim0 : Fin 0 → HermLine ι) + arInt P t B (Fin.elim0 : Fin 0 → HermLine ι) := by
-  unfold arInt
-  refine ptsIntegral_add_of_dimOne hFF hP _ fun z hz => ?_
-  have hs0 := eval_ne_zero_of_dimOne h0 hP hs hz
-  have ht0 := eval_ne_zero_of_dimOne h0 hP ht hz
-  have hA := A.pos z hz.1
-  have hB := B.pos z hz.1
-  unfold logNorm
-  rw [show (A.tensor B).h z = A.h z * B.h z from rfl, map_mul, map_mul, norm_mul, mul_div_mul_comm]
-  exact Real.log_mul (div_ne_zero (norm_ne_zero_iff.mpr hs0) hA.ne')
-    (div_ne_zero (norm_ne_zero_iff.mpr ht0) hB.ne')
-
 end Integral
 
 theorem SpecIntHeightFormula.proof (h0 : ArithVarZeroStatement) : SpecIntHeightFormula.Statement := by
@@ -186,13 +172,6 @@ theorem SpecIntHeightFormula.proof (h0 : ArithVarZeroStatement) : SpecIntHeightF
   unfold cycR vertR
   refine finsum_mem_congr rfl fun W hW => ?_
   simp [not_isHorizontal_of_dimOne h0 hP hs hW]
-
-theorem RegularityAdditive.proof (h0 : ArithVarZeroStatement) (hFF : FibreFiniteStatement) : RegularityAdditive.Statement := by
-  intro K _ ι _ I P A B s t hP _ _ hs ht
-  obtain ⟨_, _, _, hsP⟩ := id hs
-  obtain ⟨_, _, _, htP⟩ := id ht
-  rw [recR_eq, recR_eq, recR_eq, cycR_mul I hP.2.1.1 _ hsP htP, arInt_mul_of_dimOne h0 hFF hP hs ht]
-  ring
 
 theorem cycR_eq_vertR_of_dimOne (h0 : ArithVarZeroStatement) (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ)
     {P : Ideal (MRing ι)} {A : HermLine ι} {s : MRing ι} (hP : IsArithVar P 1) (hs : IsSectionOn P A s) :
@@ -227,10 +206,6 @@ theorem RegularityIndependence.proof (h0 : ArithVarZeroStatement) (hFF : FibreFi
   have hpf := hPF K ι P s t b hP hsa htb hsP htP
   rw [recR_eq, recR_eq, cycR_eq_vertR_of_dimOne h0 I hP hs, cycR_eq_vertR_of_dimOne h0 I hP ht, hsplit]
   linarith
-
-theorem R1.proof (h0 : ArithVarZeroStatement) (hFF : FibreFiniteStatement)
-    (hPF : RegularityProductFormula.Statement) : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.R1.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.R1.of_first ⟨RegularityIndependence.proof h0 hFF hPF, RegularityAdditive.proof h0 hFF⟩
 
 end
 

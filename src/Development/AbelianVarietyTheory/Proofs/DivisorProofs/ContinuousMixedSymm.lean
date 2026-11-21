@@ -101,9 +101,6 @@ theorem continuous_archOut : Continuous (archOut F κ) := by
 def perSet (m : ℕ) : Set (κ → AF F) :=
   {z | ∀ i, ∃ a : AF F, evI F a = 0 ∧ (∀ v, evFin F v a ∈ v.adicCompletionIntegers F) ∧ z i = (m : AF F) * a}
 
-theorem per_iff (m : ℕ) (f : (κ → AF F) → ℂ) : Per F m f ↔ ∀ x, ∀ z ∈ perSet F κ m, f (x + z) = f x :=
-  ⟨fun h x z hz => h x z hz, fun h x z hz => h x z hz⟩
-
 def slab (m : ℕ) : Set (κ → AF F) := {w | w - archIn F κ (archOut F κ w) ∈ perSet F κ m}
 
 def cube (N : ℕ) : Set (Fin N → ℝ) := Set.univ.pi fun _ => Set.Icc (0 : ℝ) 1

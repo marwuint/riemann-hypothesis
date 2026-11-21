@@ -483,48 +483,6 @@ end GSD.Iso
 
 namespace GSD
 
-variable (K) (G D : Type) [Group G] [MulAction G D]
-
-theorem triv_ok (h1 : Finite (MulAction.orbitRel.Quotient G D)) (h2 : ∀ d : D, Finite (MulAction.stabilizer G d)) :
-    (triv K G D).Ok where
-  fin_orb := h1
-  fin_stab := h2
-  nab_smul := by
-    intro g d
-    show (1 : Submodule (𝓞 K) K) = (1 : Submodule (𝓞 K) K).map ((1 : Module.End K K).restrictScalars (𝓞 K))
-    exact (Submodule.map_id _).symm
-  del_smul := by
-    intro g d
-    show (1 : Submodule (𝓞 K) K) = (1 : Submodule (𝓞 K) K).map ((1 : Module.End K K).restrictScalars (𝓞 K))
-    exact (Submodule.map_id _).symm
-  inv := by
-    intro g x y
-    rfl
-
-theorem triv_good (h1 : Finite (MulAction.orbitRel.Quotient G D))
-    (h2 : ∀ d : D, Finite (MulAction.stabilizer G d)) : (triv K G D).Good 1 where
-  ok := triv_ok K G D h1 h2
-  symm := (CSD.one_good K).symm
-  nondeg := (CSD.one_good K).nondeg
-  nab_lat := fun _ => (CSD.one_good K).nab_lat ()
-  del_le := fun _ => le_rfl
-  s_pos := Nat.one_pos
-  dual_le := fun _ => (CSD.one_good K).dual_le ()
-  del_dual := fun _ => (CSD.one_good K).del_dual ()
-
-def trivOne : (triv K G D).EqFun := ⟨fun _ => (1 : K), fun _ _ => rfl⟩
-
-theorem trivOne_mem : trivOne K G D ∈ (triv K G D).intDel := by
-  intro d
-  show (1 : K) ∈ (1 : Submodule (𝓞 K) K)
-  exact Submodule.one_le.mp le_rfl
-
-theorem trivOne_ne_zero [Nonempty D] : trivOne K G D ≠ 0 := by
-  intro h
-  obtain ⟨d⟩ := ‹Nonempty D›
-  have h' := congrArg (fun φ : (triv K G D).EqFun => (φ : D → K) d) h
-  simp [trivOne] at h'
-
 end GSD
 
 namespace GSD
@@ -631,10 +589,6 @@ def Ok : Prop := ∀ b, (F.mem b).Ok
 
 abbrev Forms : Type := ∀ b, (F.mem b).EqFun
 
-def intNab : Submodule (𝓞 K) F.Forms := Submodule.pi Set.univ fun b => (F.mem b).intNab
-
-def intDel : Submodule (𝓞 K) F.Forms := Submodule.pi Set.univ fun b => (F.mem b).intDel
-
 abbrev Cl : Type := Σ b, (F.mem b).Cl
 
 variable {F} in
@@ -670,9 +624,6 @@ def resOf (h : F.Ok) (s : ∀ b, (F.mem b).Sec) : F.Forms ≃ₗ[K] (F.toCSDOf h
 
 theorem resOf_apply (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ : F.Forms) (c : F.Cl) :
     (F.resOf h s φ).1 c = ((φ c.1 : (F.mem c.1).EqFun) : F.D c.1 → F.V) ((s c.1).rep c.2) := rfl
-
-def ipOf (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ ψ : F.Forms) : K :=
-  ∑ b, (F.mem b).ipOf (h b) (s b) (φ b) (ψ b)
 
 abbrev Mat (F F' : GFam K) : Type := ∀ (b : F.β) (b' : F'.β), ClsKer (F.mem b) (F'.mem b')
 

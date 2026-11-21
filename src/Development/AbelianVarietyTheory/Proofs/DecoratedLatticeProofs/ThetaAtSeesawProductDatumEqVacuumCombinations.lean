@@ -6,17 +6,21 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsPlaceModelTensorIntegralIndicator
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceIntegralMatrixIndicatorMemSchwartzBruh
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationDisjointPlacesCommuteVacua
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralIndicatorGivesLocalVacuumSplitPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralIndicatorGivesLocalVacuumSplitPlace
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.AllPositions
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilCharacterSplitPlaceExistsContinuousNontrivia
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceCharacterConductorIntegers
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceIdempotentMulEqZeroOfNePlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsThetaFunOSplitPlacesSchrodingerModelSumStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatHalfTensorSplitPlaceSelfDualStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsPlaceModelTensorSplitPlaceLatticeIndicatorStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IndicatorLocalHomLatticeMemSchwartzBruhatStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceIdempotentMulEqZeroOfNePlace
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TensorOneApply
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsThetaFunOSplitPlacesSchrodingerModelSum
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatHalfTensorSplitPlaceSelfDual
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsPlaceModelTensorSplitPlaceLatticeIndicator
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IndicatorLocalHomLatticeMemSchwartzBruhat
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomLatticeAtPlacesCongrLocalLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixSupportedSplitPlaceOfIsHalfConjSumStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSplitPointWeilCharConductorOneOfUnitsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixSupportedSplitPlaceOfIsHalfConjSum
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSplitPointWeilCharConductorOneOfUnits
 
 noncomputable section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
@@ -172,7 +176,7 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {M : Lat S} {M'
 
 theorem orth_succ {n : ℕ} (L : Fin (n+1) → LocPl ψ S T M M') (hinj : Function.Injective fun i => (L i).q.v)
     (i : Fin n) : (L 0).q.e * (L i.succ).q.e = 0 :=
-  GlobalTheory.T.splitPlaceIdempotent_mul_eq_zero_of_ne_place D _ _ (L 0).q (L i.succ).q fun h => Fin.succ_ne_zero i (hinj h).symm
+  _root_.GlobalTheory.SplitOrth.split_mul_split D _ _ (L 0).q (L i.succ).q fun h => Fin.succ_ne_zero i (hinj h).symm
 
 theorem orth_sum {n : ℕ} (L : Fin (n+1) → LocPl ψ S T M M') (hinj : Function.Injective fun i => (L i).q.v) :
     (∑ i : Fin n, (L i.succ).q.e) * (L 0).q.e = 0 := by
@@ -230,7 +234,7 @@ theorem prodDat_isSBHalf (hM : IsSelfDualC S M) (hM' : IsSelfDualC T M') (n : �
   | succ n ih =>
     intro L hinj
     rw [prodDat_succ L hinj, Fin.sum_univ_succ, add_comm]
-    exact GlobalTheory.T.schwartzBruhatHalf_tensor_split_place_selfDual D ψ S T M M' hM hM' (L 0) _ (orth_sum L hinj) _
+    exact _root_.GlobalTheory.TensorLatO.isSBHalf_tensorAt_latO D ψ S T M M' hM hM' (L 0) _ (orth_sum L hinj) _
       (ih (fun i => L i.succ) (hinj.comp (Fin.succ_injective n))) _ (L 0).Φ.2
 
 end Fam
@@ -263,14 +267,14 @@ theorem step (hψ : IsStdChar D ψ (-1)) (hM : IsSelfDualC S M) (hM' : IsSelfDua
       IsThetaFunO ψ S T (T' Φ') := by
     intro Φ' h
     rw [← hsum] at h
-    exact GlobalTheory.T.isThetaFunO_splitPlaces_schrodingerModel_sum D ψ hψ S T M M' hM hM' (n+1) L hinj f₀ T' hf₀ hT Φ' h
+    exact _root_.GlobalTheory.PlaceSumTheta.isThetaFunO_sum_placeModel D ψ hψ S T M M' hM hM' (n+1) L hinj f₀ T' hf₀ hT Φ' h
   have hsbL := prodDat_isSBHalf hM hM' n (fun i => L i.succ) (hinj.comp (Fin.succ_injective n))
   have hsb : ∀ Ψ ∈ SB (Matrix (L 0).Y (L 0).Y' (L 0).k), IsSBHalf ((∑ i : Fin n, (L i.succ).q.e) + (L 0).q.e) (latO S T (M : Set _) (M' : Set _) fun _ => True)
       ((ofSplit (L 0).q).tensorAt (L 0).FS (L 0).FT (prodDat fun i : Fin n => L i.succ) Ψ) :=
-    fun Ψ hΨ => GlobalTheory.T.schwartzBruhatHalf_tensor_split_place_selfDual D ψ S T M M' hM hM' (L 0) _ horth _ hsbL Ψ hΨ
+    fun Ψ hΨ => _root_.GlobalTheory.TensorLatO.isSBHalf_tensorAt_latO D ψ S T M M' hM hM' (L 0) _ horth _ hsbL Ψ hΨ
   have hmodel := tensorL_isModel (ofSplit (L 0).q) ψ (L 0).FS (L 0).FT _ horth _
     (prodDat fun i : Fin n => L i.succ) hsbL.1 f₀ T' hT2 hθ hsb
-  obtain ⟨T'', hT'', hT''eq⟩ := GlobalTheory.T.isPlaceModel_tensor_splitPlaceLatticeIndicator D ψ S T M M' hM hM' (L 0) _ horth f₀ T' hT2
+  obtain ⟨T'', hT'', hT''eq⟩ := _root_.GlobalTheory.LatIdemVac.isPlaceModel_tensorLat D ψ S T M M' hM hM' (L 0) _ horth f₀ T' hT2
   refine ⟨T' ∘ₗ (ofSplit (L 0).q).tensorL (L 0).FS (L 0).FT (prodDat fun i : Fin n => L i.succ), hmodel, ?_,
     T'', hT'', ?_⟩
   · rw [LinearMap.comp_apply, Place.tensorL_apply, prodDat_succ L hinj]
@@ -298,8 +302,8 @@ theorem core (hψ : IsStdChar D ψ (-1)) (hM : IsSelfDualC S M) (hM' : IsSelfDua
     intro L hinj T' hT
     obtain ⟨Tm, hTm, hTmΦ, T'', hT'', hT''eq⟩ := step hψ hM hM' L hinj f₀ hf₀ T' hT
     have h1 := (L 0).e_is.2 Tm hTm _ (L 0).Φ (isOne_intInd (L 0)) rfl
-    have h2 := (L 0).o_is Tm hTm ⟨_, GlobalTheory.T.indicator_localHomLattice_mem_schwartzBruhat D ψ S T M M' hM hM' (L 0)⟩ _ (isOne_intInd (L 0)) rfl
-    have h3 := hT''eq ⟨_, GlobalTheory.T.indicator_localHomLattice_mem_schwartzBruhat D ψ S T M M' hM hM' (L 0)⟩ rfl
+    have h2 := (L 0).o_is Tm hTm ⟨_, _root_.GlobalTheory.LatIndSB.indicator_latO_mem_SB D ψ S T M M' hM hM' (L 0)⟩ _ (isOne_intInd (L 0)) rfl
+    have h3 := hT''eq ⟨_, _root_.GlobalTheory.LatIndSB.indicator_latO_mem_SB D ψ S T M M' hM hM' (L 0)⟩ rfl
     rw [← hTmΦ, h1, h2, h3, ih _ (hinj.comp (Fin.succ_injective n)) T'' hT'', List.finRange_succ,
       List.foldr_cons, List.foldr_map]
 
@@ -357,8 +361,8 @@ theorem vac_at_of_model (hψ : IsStdChar D ψ (-1)) (P : LocPl ψ S T M M') (N :
     (g : WO S T → ℂ) (Tm : SB (Matrix P.Y P.Y' P.k) →ₗ[ℂ] (WO S T → ℂ))
     (hTm : (ofSplit P.q).IsModel ψ P.FS P.FT Tm)
     (hg : Tm ⟨Place.intInd P.Y P.Y', Place.intInd_mem_SB _ _ _⟩ = g) : Vac ψ S T N N' (· = P.q.v) g := by
-  obtain ⟨ψk, hch, hcond⟩ := GlobalTheory.T.exists_splitPoint_weilChar_conductor_one_of_units D P.k P.q ψ hψ P.unit
-  have h := (GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D P.k P.q P.unit P.Y P.Y' S T P.FS P.FT ψ ψk hψ hch hcond N N' hN hN' hI.1 hI.2).1
+  obtain ⟨ψk, hch, hcond⟩ := _root_.GlobalTheory.SplitWeilChar.weil_char_conductor_one D P.k P.q ψ hψ P.unit
+  have h := (_root_.GlobalTheory.LocMod.indicator_vac D P.k P.q P.unit P.Y P.Y' S T P.FS P.FT ψ ψk hψ hch hcond N N' hN hN' hI.1 hI.2).1
     Tm _ hTm (isOne_intInd P)
   rwa [hg] at h
 
@@ -424,7 +428,7 @@ theorem thetaAt_prodDat : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdCh
       | cons i l ih =>
         rw [List.foldr_cons]
         have hdisj : ∀ p, p = (L i).q.v → ¬ ∀ i', p ≠ (L i').q.v := fun p hp h => h i hp
-        have hc : CombAt (· = (L i).q.v) (L i).o := fun u hu => GlobalTheory.T.matrixSupported_splitPlace_of_isHalf_conjSum D _ (L i).q u ((L i).o_at u hu)
+        have hc : CombAt (· = (L i).q.v) (L i).o := fun u hu => _root_.GlobalTheory.FinPl.SplitHalfSuppImp.mxAt_of_isHalf D _ (L i).q u ((L i).o_at u hu)
         exact ((GlobalTheory.DisjComb.main D ψ hψ S T (· = (L i).q.v) _ hdisj).2.1 _ hc).2 N N' _ ih
     exact hl _
 

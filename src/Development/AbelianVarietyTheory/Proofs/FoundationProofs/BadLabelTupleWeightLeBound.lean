@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.StandardFiveNontrivial
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExteriorTensorProductConvolutionCalculus
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassDivisorBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassDivisorBound
+import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GoodSquarefreeLabelTuplesWeightGeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SeriesRepresentationWeightLowerBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SeriesRepresentationWeightLowerBound
 
 noncomputable section
 open Polynomial Classical GlobalTheory.BadShare
@@ -29,7 +30,7 @@ theorem sum_goodSet_le_one (g : ℕ) [Fact g.Prime] (N m : ℕ) (ι : Type) [Fin
     exact Finset.prod_nonneg fun v _ => inv_nonneg.2 (Nat.cast_nonneg _)
   refine h1.trans ?_
   rw [← Finset.prod_univ_sum (fun _ : ι => sqSet g N) fun _ f => ((torusCard g f : ℝ))⁻¹]
-  have h2 := (GlobalTheory.T.squarefreeLabelTorusMass_divisor_bound g).1 N
+  have h2 := (_root_.GlobalTheory.BadShare.divisor_bound g).1 N
   have h3 := mass_nonneg (g := g) N fun _ => True
   simp only [mass, Finset.filter_true] at h2 h3
   exact Finset.prod_le_one (fun _ _ => h3) fun _ _ => h2
@@ -41,7 +42,7 @@ theorem badWeight_le : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ (m q d : ℕ)
   have hS1 := sum_goodSet_le_one g N m ι ch
   have hS0 : 0 ≤ ∑ F ∈ goodSet g N ch, ∏ v, ((torusCard g (F v) : ℝ))⁻¹ :=
     Finset.sum_nonneg fun F _ => Finset.prod_nonneg fun v _ => inv_nonneg.2 (Nat.cast_nonneg _)
-  choose! w hw1 hw2 using fun v => GlobalTheory.T.series_representation_weight_lower_bound g N (L v) (τ v) (hτ v)
+  choose! w hw1 hw2 using fun v => _root_.GlobalTheory.BadShare.series_weight_lower_bound g N (L v) (τ v) (hτ v)
   have hmem : ∀ F ∈ goodSet g N ch, ∀ v, F v ∈ sqSet g N := fun F hF =>
     (good_iff.1 (mem_goodSet_iff_good.1 hF)).1
   refine ⟨1 - ∑ F ∈ goodSet g N ch, ∏ v, w v (F v), ?_, ?_⟩

@@ -183,13 +183,6 @@ def TBeAt : Prop :=
     (e = 0 → ∀ c : S.G → Ve.V ⧸ Ve.L.T, c ∈ HfD S.PD Ve.L ↔
       (c ∈ divisibleCocycles Ve.L ∧ ∃ x, ∀ g ∈ S.IK, c g = actD Ve.L g x - x))
 
-theorem TBeAt.len {S : Sit} (h : TBeAt S) (e n : ℕ) (Ve : LocLat S.G S.Qp S.LL S.O)
-    (h1 : finrank S.LL Ve.V = 1)
-    (hχ : ∀ g x, Ve.ρ g x = ((algebraMap S.Qp S.LL (S.PD.χ g : S.Qp))⁻¹) ^ e • x) :
-    Module.length S.O ↥(Submodule.torsionBy S.O (DivisibleCohomology Ve.L ⧸ divisibleFiniteCohomology S.PD Ve.L) ((ell S : S.O) ^ n)) ≤
-      (((finrank S.Qp S.K + 1) * n : ℕ) : ℕ∞) * lenOl S.PD (O := S.O) :=
-  (h e Ve h1 hχ).1 n
-
 def c0 (T : LocLat S.G S.Qp S.LL S.O) (τ : S.K →ₐ[S.Qp] S.LL) (M0 h0 : ℕ) : ℕ :=
   2 + ∑ᶠ (u : ℤ) (_ : IsJumpV S.PD T.ρ τ u), (mN (ell S) S.W.s (M0 + h0) + vZ (ell S) u)
 
@@ -215,23 +208,7 @@ def HerrAsat : Prop :=
       ∀ w : ↥(S.W.divisibleCocycles T), S.W.cl T w = 0 ↔
         ∃ m : S.W.DD T, (w : S.W.DD T × S.W.DD T) = (S.W.φD T m - m, S.W.γ T m - m)
 
-def HerrBat : Prop :=
-  ∀ (M0 h0 : ℕ) (T : LocLat S.G S.Qp S.LL S.O),
-    NBasis S E T (S.W.N T) →
-    (∀ x ∈ S.W.N T, S.W.Q ^ M0 • S.W.φD T x ∈ S.W.N T) →
-    (∀ y ∈ S.W.N T, S.W.Q ^ h0 • y ∈ S.W.φpull T) →
-    (∀ x ∈ S.W.N T, ∃ x' ∈ S.W.N T, S.W.γ T x - x = (letπ : LetA S.O S.n) • x') →
-      (∀ x ∈ S.W.N T, ∃ x' ∈ S.W.N T, S.W.γ T x - x = S.W.X • x') ∧
-      ∀ pr : S.W.divisibleCocycles T, S.W.Q ^ M0 • (pr : S.W.DD T × S.W.DD T).1 ∈ S.W.N T →
-        (∃ n' ∈ S.W.N T, (pr : S.W.DD T × S.W.DD T).2 = S.W.X • n') →
-        S.W.cl T pr = 0 →
-        ∃ m ∈ S.W.N T, (pr : S.W.DD T × S.W.DD T) = (S.W.φD T m - m, S.W.γ T m - m)
-
 def Hker : Subgroup S.G := S.W.resΓ.ker
-
-def DDeq (AT : ∀ T : LocLat S.G S.Qp S.LL S.O, Submodule S.O (TW S.RW T)) : Prop :=
-  ∀ T, Set.range (E.jD T) =
-    {x | x ∈ AT T ∧ ∀ g : S.G, g ∈ Hker S → TWact (S.gR g) T g x = x}
 
 def FNat (AT : ∀ T : LocLat S.G S.Qp S.LL S.O, Submodule S.O (TW S.RW T)) : Prop :=
   ∀ T : LocLat S.G S.Qp S.LL S.O,
@@ -552,41 +529,6 @@ def logZl (l : ℕ) [Fact l.Prime] (u : ℚ_[l]) : ℚ_[l] :=
 def logChi {l : ℕ} [Fact l.Prime] (LT : LocTheory) (g : GQ l) : ℤ_[l] :=
   if h : ‖logZl l ((LT l).χQ g : ℚ_[l])‖ ≤ 1 then ⟨logZl l ((LT l).χQ g : ℚ_[l]), h⟩ else 0
 
-def LLat (LT : LocTheory) (HW : HWOf LT) (AI : ∀ (l : ℕ) [Fact l.Prime], AinfL LT l) (C : ℝ) (l : ℕ)
-    [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL)
-    (E : EtSit (LT l) (AI l) K s LL h ((HW l).W K s LL h)) : Prop :=
-  let S := sit LT HW l (AI l) K s LL h
-  ∀ (M0 h0 : ℕ) (T : LocLat S.G S.Qp S.LL S.O) (a b : ℤ), HypW S E.tie T M0 h0 → a < b →
-    letI := zlMod LL T
-    letI : TopologicalSpace (↥T.L.T ⊗[ℤ_[l]] Qab (AinfSub l) (xiU (AI l)) a b) :=
-      (Ideal.span {(l : ℤ_[l])}).adicModuleTopology _
-    let ρX := repX (actTZ LL T) (xiOK_res (AI l) K) a b
-    let m := mN l s (M0 + h0)
-    let c := cLL l m (padicValNat l (S.degKj m) - padicValNat l S.degK) (Jset S T) a b
-    TorsKilledBy ρX (l : ℤ_[l]) ((l : ℤ_[l]) ^ c) ∧
-    (∀ hh : ℕ, (∀ u ∈ Jset S T, -(hh : ℤ) ≤ u ∧ u ≤ hh) → -(hh : ℤ) ≤ a → b ≤ hh → M0 + h0 ≤ 2 * hh →
-      (c : ℝ) ≤ m + ((b - a : ℤ) : ℝ) * (3 + (Jset S T).ncard * (m + Real.logb l (2 * hh))) ∧
-      (m : ℝ) ≤ 2 * s + Real.logb l (2 * hh) + 2) ∧
-    ∀ y : S.G → ↥T.L.T ⊗[ℤ_[l]] Qab (AinfSub l) (xiU (AI l)) a b, IsCoc ρX y →
-      ∃ z, (∀ g, ρX g z = z) ∧ ∃ k : ℕ, IsCob ρX ((l : ℤ_[l]) ^ k •
-        (((l : ℤ_[l]) ^ ⌈C * c * Real.log (2 * ((b - a : ℤ) : ℝ))⌉₊) • y -
-          fun g : S.G => logChi LT (Subtype.val (show ↥(GK K) from g)) • z))
-
-def LocalLiftingAinfEtale (D : Formalism.BasicNotions.D7) (AI : ∀ (l : ℕ) [Fact l.Prime], AinfL D.loc l) (HW : HWOf D.loc)
-    (E : FonOf D.loc AI HW) (C : ℝ) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
-    LLat D.loc HW AI C l K s LL h ((E l).E K s LL h)
-
-def Conclusion1 (D : Formalism.BasicNotions.D7) (AI : ∀ (l : ℕ) [Fact l.Prime], AinfL D.loc l) (C : ℝ) : Prop :=
-  ∀ (HW : HWOf D.loc) (E : FonOf D.loc AI HW), LocalLiftingAinfEtale D AI HW E C
-
-def LocalLiftingWachEtale (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) : Prop :=
-  LocalLiftingAinfEtale D D.locA HW F C
-
-def Conclusion2 (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
-    H0at (sit D.loc HW l (D.locA l) K s LL h) ((F l).E K s LL h).tie
-
 def Conclusion4 (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
     TBat (sit D.loc HW l (D.locA l) K s LL h) ((F l).E K s LL h).tie ∧
@@ -594,12 +536,6 @@ def Conclusion4 (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.l
 
 def Conclusion5 (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l), bkAll ((D.loc l).PD K)
-
-def Conclusion6 (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
-    HerrAat (sit D.loc HW l (D.locA l) K s LL h) ∧ HerrAsat (sit D.loc HW l (D.locA l) K s LL h) ∧
-      ((HW l).W K s LL h).ClNat ∧
-      HerrBat (sit D.loc HW l (D.locA l) K s LL h) ((F l).E K s LL h).tie
 
 def adm1 (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (u : (D.loc l).R.B) (w : (D.loc l).R.BdR),
@@ -628,14 +564,5 @@ def adm9 (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.lo
 
 def admitted (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   adm1 D ∧ adm2 D ∧ adm3 D ∧ ArchimedeanSignatureMatching D ∧ adm5 D ∧ adm6 D ∧ adm7 D ∧ adm8 D ∧ adm9 D HW F
-
-def Stmt (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
-  admitted D HW F → Conclusion2 D HW F ∧ Conclusion4 D HW F ∧ Conclusion5 D ∧ Conclusion6 D HW F
-
-def LocalLiftingPackage (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) : Prop :=
-  admitted D HW F → LocalLiftingWachEtale D HW F C ∧ Conclusion2 D HW F ∧ Conclusion4 D HW F ∧ Conclusion5 D ∧ Conclusion6 D HW F
-
-def LocalLiftingUniformConstant : Prop :=
-  ∃ C : ℝ, ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), LocalLiftingPackage D HW F C
 
 end Formalism.MainNotions.LocalSituation

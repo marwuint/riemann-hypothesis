@@ -55,40 +55,11 @@ theorem _root_.GlobalTheory.FlagBase.PoissonV.norm_sq_coords (x : EuclideanSpace
   rw [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]
   rfl
 
-theorem inner_coords (x y : EuclideanSpace ℂ (ι × κ)) :
-    ∑ w, (coords ι κ x w ⬝ᵥ star (coords ι κ y w)).re = inner ℝ x y := by
-  rw [PiLp.inner_apply, Fintype.sum_prod_type]
-  refine Finset.sum_congr rfl fun w _ => ?_
-  rw [dotProduct, Complex.re_sum]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  simp [coords_apply, Complex.inner]
-  ring
-
 end GlobalTheory.FlagBase.PoissonV
 
 namespace GlobalTheory.FlagBase
 
 open PoissonV
-
-theorem mem_dualAt (E : Type) [Field E] [NumberField E] (j : ℕ) (L : Submodule ℤ (VecInf E j))
-    (y : VecInf E j) : y ∈ dualAt E j L ↔ ∀ x ∈ L, ∃ z : ℤ, ∑ w, (x w ⬝ᵥ y w).re = z := by
-  refine ⟨fun h => ?_, fun h => Submodule.subset_span h⟩
-  induction h using Submodule.span_induction with
-  | mem y hy => exact hy
-  | zero => exact fun x _ => ⟨0, by simp⟩
-  | add a b _ _ ha hb =>
-    intro x hx
-    obtain ⟨m, hm⟩ := ha x hx
-    obtain ⟨n, hn⟩ := hb x hx
-    exact ⟨m + n, by simp [dotProduct_add, Finset.sum_add_distrib, hm, hn]⟩
-  | smul c a _ ha =>
-    intro x hx
-    obtain ⟨m, hm⟩ := ha x hx
-    refine ⟨c * m, ?_⟩
-    rw [Int.cast_mul, ← hm, Finset.mul_sum]
-    refine Finset.sum_congr rfl fun w _ => ?_
-    rw [Pi.smul_apply, dotProduct_smul]
-    simp
 
 open MeasureTheory NumberField Matrix Finset in
 variable (ι κ : Type) [Fintype ι] [Fintype κ] in

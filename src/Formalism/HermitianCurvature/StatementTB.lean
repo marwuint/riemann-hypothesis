@@ -281,22 +281,8 @@ def LimitStep : Prop :=
       D.Sf ε (D.r + 1) D.emp (T.X (D.r + 1)) ≤ B * σ₀) →
     ∀ R : Finset ℕ, ∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2 ≤ B * jn
 
-def TheoremA : Prop :=
-  ∀ C₁ C₄ : ℝ, 1 ≤ C₁ → 1 ≤ C₄ → ∃ C C' : ℝ,
-  ∀ (E W : Type) [Field E] (D : Data E W) (Θ jn : ℝ) (H : Type) [NormedAddCommGroup H]
-    [InnerProductSpace ℂ H] [CompleteSpace H] (Vt : Pt E → H) (c : ℕ → Pt E → ℂ),
-    4 ≤ D.K → 1 ≤ D.f → 0 < Θ → C' ≤ Θ → (D.r : ℝ) * (C / Θ) ^ D.f ≤ 1 → D.SizesBelow Θ →
-    D.GramPSD → D.KernelPSD → D.WordsPos → D.KernelSupport → D.ThetaDomination → D.EstWave → D.PoissonStep →
-    D.EstLift → D.EstBlock C₄ → D.LatticeSums ((C₁ * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f) →
-    D.EstE jn → D.Cutoff Vt → D.LeadingDomination Vt c →
-    ∀ R : Finset ℕ, ∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2 ≤
-      (1 + C * ((D.r : ℝ) + 1) * (C / Θ) ^ D.f) * (∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i)) * jn
-
 def OneLevelOfSteps : Prop :=
   SplitBySize → SchurStep → DiagStep → OneStep → MultiStep → OneLevel
-
-def TheoremAOfSteps : Prop :=
-  OneLevel → LimitStep → Formalism.FourierDecayAlt.K.JointTheoremA → TheoremA
 
 end
 

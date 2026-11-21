@@ -2,23 +2,23 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 import Formalism.PairingDivisors.StatementH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DifferentiableComb
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTorsionTranslatesOddThetaProductStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTorsionTranslatesOddThetaProduct
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalStarComplexMultiplicationPointsStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TaylorCoeffConjugateSeries
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsComplexEndomorphismEqOnCountableStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ImaginaryQuadraticFieldStructureStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TaylorConjugateTangentSpacePadZeroColumnsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TaylorConjugateTangentSpacePadZeroColumns
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SignedTranslationAddSelfDualLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNonzeroThetaOfFiniteLevelAverageStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TranslateLevelFourStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNsmulPaddedLatticeMemBasisProductStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdaptedTorsionLiftDeeperLevelStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdaptedPointChangeOfRationalBasisStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNonzeroThetaOfFiniteLevelAverage
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TranslateLevelFour
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNsmulPaddedLatticeMemBasisProduct
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdaptedTorsionLiftDeeperLevel
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdaptedPointChangeOfRationalBasis
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationCombPeriodicTwiceLevelStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaOddPrimePhaseConjInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaOddPrimePhaseConjInvariant
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.GalTheta
 open scoped BigOperators
 
@@ -58,18 +58,18 @@ theorem exists_restriction (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc 
     (hGe : IsTr D (tor0 D cc δ) (La D (tor0 D cc δ) L L') e₀ G) :
     ∃ G₁, IsTr D (tor0 D cc δ) (LaB D (tor0 D cc δ) b) (pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ))) G₁ ∧
       G = fun z => G₁ (pad D m z) := by
-  have hG : admG1 D := (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1
+  have hG : admG1 D := (_root_.GlobalTheory.InducedType.induced_type D).1
   obtain ⟨hline, -, hint, hdual, hfg, -, hq⟩ :=
     GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hG cc δ hc N N' (La D (tor0 D cc δ) L L') (Or.inr ⟨L, L', hL, hL', rfl⟩)
-  obtain ⟨hS, t, ht2, ht0, ht4⟩ := GlobalTheory.T.U_pullB_ne_zero_and_invariant_four_smul D hG cc δ hc (N + m) N' r b hb
-  obtain ⟨R, hR, hRA⟩ := GlobalTheory.T.exists_nsmul_padded_lattice_mem_basis_product D hG cc δ hc N N' m r L L' b hb hfg
+  obtain ⟨hS, t, ht2, ht0, ht4⟩ := _root_.GlobalTheory.OddThetaTranslate.translate_level_four D hG cc δ hc (N + m) N' r b hb
+  obtain ⟨R, hR, hRA⟩ := _root_.GlobalTheory.PadCommensurable.nsmul_pad_mem D hG cc δ hc N N' m r L L' b hb hfg
   set S := pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ)) with hSdef
   have hF0 : (fun z : VC D N N' => U D (tor0 D cc δ) t S (pad D m z)) ≠ 0 := by
     intro h
     have := congrFun h 0
     rw [pad_zero] at this
     exact ht0 this
-  obtain ⟨P, hPt, hP, hP0⟩ := GlobalTheory.T.exists_nonzero_theta_of_finite_level_average D (tor0 D cc δ) N N' _ hfg hint hdual hq
+  obtain ⟨P, hPt, hP, hP0⟩ := _root_.GlobalTheory.GalTheta.exists_theta_of_level D (tor0 D cc δ) N N' _ hfg hint hdual hq
     (GlobalTheory.T.signedTranslation_add_selfDual_lattice D _ N N' _ hint hq (weilElement_smul_mem_thetaLattice D hG cc δ L L'))
     (fun z : VC D N N' => U D (tor0 D cc δ) t S (pad D m z))
     ((differentiable_U D _ t hS).comp (differentiable_pad D m)) hF0 (4 * R) (by omega) (by
@@ -95,7 +95,7 @@ theorem gal_top (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc 
     fnConj D ⊤ σ (U D (tor0 D cc δ) x (comb D (tor0 D cc δ) c t e₀)) =
         U D (torConj D (tor0 D cc δ) ⊤ σ) x' (fnConj D ⊤ σ (comb D (tor0 D cc δ) c t e₀)) ∧
       cj ⊤ σ (wdPh D (tor0 D cc δ) x) = wdPh D (torConj D (tor0 D cc δ) ⊤ σ) x' := by
-  have hG : admG1 D := (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1
+  have hG : admG1 D := (_root_.GlobalTheory.InducedType.induced_type D).1
   have hSt : galStar D := GlobalTheory.T.galStar_complexMultiplication_points D
   have hD : DataIn D (tor0 D cc δ) ⊤ := ⟨fun _ _ => trivial, trivial, trivial⟩
   obtain ⟨-, -, hint, -, hfg, -, hq⟩ :=
@@ -103,10 +103,10 @@ theorem gal_top (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc 
   obtain ⟨m, r, B, hB⟩ := GlobalTheory.T.exists_orthonormal_frame_var D N N'
   obtain ⟨G₁, ⟨k₁, c₁, t₁, m₁, hm₁, ht₁, rfl⟩, hGG⟩ :=
     exists_restriction D cc δ hc L L' hL hL' B hB e₀ _ he ⟨k, c, t, m₀, hm, ht, rfl⟩
-  obtain ⟨R, hR, hRA⟩ := GlobalTheory.T.exists_nsmul_padded_lattice_mem_basis_product D hG cc δ hc N N' m r L L' B hB hfg
+  obtain ⟨R, hR, hRA⟩ := _root_.GlobalTheory.PadCommensurable.nsmul_pad_mem D hG cc δ hc N N' m r L L' B hB hfg
   obtain ⟨s, b, a, a', hb, ha, hxa, hxa', haa⟩ := hA
-  obtain ⟨R', hR', hchg⟩ := GlobalTheory.T.adapted_point_change_of_rational_basis D hG hSt cc δ hc ⊤ σ hK hD (N + m) N' r s B (fun j => padM D m (b j)) hB
-  have hl := fun j => GlobalTheory.T.adapted_torsion_lift_deeper_level D hSt cc δ hc σ hK (a j) (a' j) (2 * m₀) (R * m₁ * R') (by omega) (by positivity)
+  obtain ⟨R', hR', hchg⟩ := _root_.GlobalTheory.AdaptedBasis.adpB_of_family D hG hSt cc δ hc ⊤ σ hK hD (N + m) N' r s B (fun j => padM D m (b j)) hB
+  have hl := fun j => _root_.GlobalTheory.GalTheta.adapted_lift_deeper D hSt cc δ hc σ hK (a j) (a' j) (2 * m₀) (R * m₁ * R') (by omega) (by positivity)
     (ha j) (haa j)
   choose ω hω hωa using hl
   set l : VC D N N' := ∑ j, ω j • embV D (tor0 D cc δ) (b j) with hldef
@@ -142,16 +142,16 @@ theorem gal_top (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc 
       exact AddSubgroup.add_mem _ hna (AddSubgroup.nsmul_mem _ (hω j) _)
     · have : 2 * (m₀ * R * m₁) * R' = 2 * m₀ * (R * m₁ * R') := by ring
       rw [this]; exact hωa j
-  obtain ⟨hg1, hg2⟩ := GlobalTheory.T.galois_conj_torsionTranslates_oddThetaProduct D cc δ hc ⊤ σ hK hD (N + m) N' r B hB k₁ c₁ t₁
+  obtain ⟨hg1, hg2⟩ := _root_.GlobalTheory.ProdThetaConj.galB_all D cc δ hc ⊤ σ hK hD (N + m) N' r B hB k₁ c₁ t₁
     (pad D m (x + (2 * m₀) • l)) (pad D m x') (m₀ * R * m₁) (by positivity) (by
       have : (m₀ * R * m₁) • pad D m (x + (2 * m₀) • l) = m₁ • R • pad D m (m₀ • (x + (2 * m₀) • l)) := by
         rw [pad_nsmul, smul_smul, smul_smul]; congr 1; ring
       rw [this]
       exact AddSubgroup.nsmul_mem _ (hRA _ hy) _)
     (fun i => by rw [mul_smul]; exact AddSubgroup.nsmul_mem _ (ht₁ i) _) hAd (fun _ => trivial) (fun _ => trivial)
-  have hd := differentiable_comb D (tor0 D cc δ) c₁ t₁ (GlobalTheory.T.U_pullB_ne_zero_and_invariant_four_smul D hG cc δ hc (N + m) N' r B hB).1
+  have hd := differentiable_comb D (tor0 D cc δ) c₁ t₁ (_root_.GlobalTheory.OddThetaTranslate.translate_level_four D hG cc δ hc (N + m) N' r B hB).1
   refine ⟨?_, ?_⟩
-  · rw [← hp1, hGG, U_pad, GlobalTheory.T.taylorConjugate_tangentSpacePadZeroColumns D N N' m ⊤ σ _ (differentiable_U D _ _ hd), hg1, GlobalTheory.T.taylorConjugate_tangentSpacePadZeroColumns D N N' m ⊤ σ _ hd, U_pad]
+  · rw [← hp1, hGG, U_pad, _root_.GlobalTheory.ConjRestrict.fnConj_pad D N N' m ⊤ σ _ (differentiable_U D _ _ hd), hg1, _root_.GlobalTheory.ConjRestrict.fnConj_pad D N N' m ⊤ σ _ hd, U_pad]
   · have := (hg2 trivial).1
     rwa [wdPh_pad, wdPh_pad, hp2] at this
 
@@ -249,7 +249,7 @@ theorem gal_all : ∀ D : D7, gal D := by
     refine ⟨h3, ?_⟩
     unfold Wd
     rw [fnConj_mul D M ρ _ hw _ hd hU, h1, h3]
-  · obtain ⟨-, -, -, -, -, -, hq⟩ := GlobalTheory.T.theta_space_selfDual_pair_at_most_line D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc N N' (La D (tor0 D cc δ) L L')
+  · obtain ⟨-, -, -, -, -, -, hq⟩ := GlobalTheory.T.theta_space_selfDual_pair_at_most_line D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hc N N' (La D (tor0 D cc δ) L L')
       (Or.inr ⟨L, L', hL, hL', rfl⟩)
     obtain ⟨m, hmq⟩ := hq _ hj
     have hpq : (p : ℝ) ^ (2 * j) * qH D (tor0 D cc δ) x = (m : ℝ) := by
@@ -258,7 +258,7 @@ theorem gal_all : ∀ D : D7, gal D := by
       rw [Hf_nsmul_left, Hf_nsmul_right, ← Complex.ofReal_natCast, Complex.re_ofReal_mul, Complex.re_ofReal_mul]
       push_cast
       ring
-    obtain ⟨h4, h5⟩ := GlobalTheory.T.thetaOddPrimePhase_conj_invariant D _ _ N N' x x' σ p (2 * j) m hp hp2 hpq h2
+    obtain ⟨h4, h5⟩ := _root_.GlobalTheory.GalThetaSign.wPh_conj D _ _ N N' x x' σ p (2 * j) m hp hp2 hpq h2
     unfold Wop
     rw [h4, h5, fnConj_mul D M ρ _ (cj_neg_one_zpow M ρ m).1 _ hd hU, h1, (cj_neg_one_zpow M ρ m).2]
 

@@ -373,12 +373,6 @@ theorem mulO_inv (l s l' : D.host.E) (e : ℕ) (hl : star l * l = -1 + ((4 * e :
     simp only [nsmul_eq_mul, map_mul, map_neg, map_ofNat]
     linear_combination x τ i j * this
 
-theorem mulO_la' (T : TaylorLogMetric.Tor D) (hT : ∀ τ x, T.emb τ x = TaylorLogMetric.embT D τ x)
-    {M : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {M' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
-    (r : 𝓞 D.host.E) {r' : D.host.E} (hr : (r : D.host.E) = r') {z : TaylorLogMetric.VC D N N'} (hz : z ∈ TaylorLogMetric.La D T M M') :
-    J.mulO N N' r' z ∈ TaylorLogMetric.La D T M M' := by
-  rw [← hr]; exact mulO_la T hT r hz
-
 end Mult
 
 end Formalism.L2.Ker.Cd.PairingIndexBounds.Eq.Mu

@@ -81,7 +81,4 @@ def trRow (G : GridData L sc) (i : Fin D.R.m) :
       Pol D.what₂.Tau ((rowSizes D).nC i) ((rowSizes D).nC (i + 1)) :=
   MvPolynomial.rename fun x => (x.1, Fin.cast (rank_gridM G (by omega)) x.2.2, Fin.cast (rank_gridM G i.2.le) x.2.1)
 
-example (G : GridData L sc) : PolCol G = ∀ j : Fin D.R.m, PolF D (G.V (.top ((j : ℕ) + 1))).rank (G.V (.top j)).rank := rfl
-example (G : GridData L sc) : PolRow G = ∀ i : Fin D.R.m, PolF D (G.V (.grid i D.R.m)).rank (G.V (.grid ((i : ℕ) + 1) D.R.m)).rank := rfl
-
 end GlobalTheory.RowReal

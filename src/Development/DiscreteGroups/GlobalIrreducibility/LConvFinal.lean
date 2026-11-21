@@ -19,6 +19,4 @@ theorem localConverseGL : GlobalTheory.Published.LocalConverseGL :=
   localConverseGL_of_leaves cuspGen kirBump bigCell extremeExists extremeIrred sepOfExtreme commBound unifOfComm
     altIdentity finiteOfAlt unitOfUnif glue
 
-theorem unitAdmGL : UnitAdmGL := unitOfUnif altIdentity finiteOfAlt (unifOfComm commBound)
-
 end DiscreteGroups.sglob.LConv

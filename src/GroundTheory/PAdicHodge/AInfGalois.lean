@@ -73,31 +73,6 @@ theorem map_frobeniusEquiv_symm (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x
   rw [map_coeff, WittVector.frobeniusEquiv_symm_coeff, WittVector.frobeniusEquiv_symm_coeff,
     map_coeff, RingHom.map_frobeniusEquiv_symm]
 
-omit [IsUltrametricDist K] in
-
-theorem norm_toRingHom_apply (σ : K ≃+* K) (hσ : ∀ x, ‖σ x‖ = ‖x‖) (x : K) :
-    ‖(σ : K →+* K) x‖ = ‖x‖ :=
-  hσ x
-
-omit [IsUltrametricDist K] in
-
-theorem norm_symm_toRingHom_apply (σ : K ≃+* K) (hσ : ∀ x, ‖σ x‖ = ‖x‖) (x : K) :
-    ‖(σ.symm : K →+* K) x‖ = ‖x‖ := by
-  change ‖σ.symm x‖ = ‖x‖
-  rw [← hσ, RingEquiv.apply_symm_apply]
-
-variable (p) in
-
-def mapEquiv (σ : K ≃+* K) (hσ : ∀ x, ‖σ x‖ = ‖x‖) : AInf K p ≃+* AInf K p :=
-  RingEquiv.ofRingHom (map p (σ : K →+* K) (norm_toRingHom_apply σ hσ))
-    (map p (σ.symm : K →+* K) (norm_symm_toRingHom_apply σ hσ))
-    (by
-      rw [← map_comp, ← map_id]
-      exact map_congr (RingHom.ext fun x => σ.apply_symm_apply x) _ _)
-    (by
-      rw [← map_comp, ← map_id]
-      exact map_congr (RingHom.ext fun x => σ.symm_apply_apply x) _ _)
-
 end Functor
 
 section Galois

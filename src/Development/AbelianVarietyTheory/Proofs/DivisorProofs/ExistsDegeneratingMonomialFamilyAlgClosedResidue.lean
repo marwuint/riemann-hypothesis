@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMonoFamThrough
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MonomialBoundaryFamilyPullUnitaryTraitForm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteDvrAlgClosedResidueInjectiveLocalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OpenPartClassifiedMonomialBoundaryFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteDvrAlgClosedResidueInjectiveLocal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OpenPartClassifiedMonomialBoundaryFamily
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UChart GlobalTheory.UCanon
@@ -27,7 +27,7 @@ theorem nontrivial_of_not_mem_range {V : Type} [CommRing V] [IsDomain V] [IsLoca
     C.cone.linearIndependent.ne_zero i (LinearMap.ext₂ fun a b => by
       rw [Subsingleton.elim a 0]; simp)⟩
   have hprod : ∏ i, C.s i = 1 := by simp [Finset.univ_eq_empty]
-  obtain ⟨yo, -, -, -, hg⟩ := GlobalTheory.T.openPart_classified_monomialBoundaryFamily Xo c φ V hV C
+  obtain ⟨yo, -, -, -, hg⟩ := _root_.GlobalTheory.UCanon.OpenPart.openCls Xo c φ V hV C
   let A := Localization.Away (∏ i, C.s i)
   let e : V ≃ₐ[V] A := IsLocalization.atUnit V A (∏ i, C.s i) (by rw [hprod]; exact isUnit_one)
   let h : A →+* V := e.symm.toRingEquiv.toRingHom
@@ -78,7 +78,7 @@ theorem exists_monoFam_algClosed : ∀ {E : Type} [Field E] [NumberField E] [IsC
     exact C.s_ne_zero i0 hm
   haveI : IsNoetherianRing V := hV.1.1
   haveI : CharZero V := hV.2
-  obtain ⟨W, _, _, _, ρ, hcomp, hac, hinj, hloc⟩ := GlobalTheory.T.exists_complete_dvr_algClosed_residue_injective_local V hnf ⟨C.b.comp (algebraMap ℚ c.F)⟩
+  obtain ⟨W, _, _, _, ρ, hcomp, hac, hinj, hloc⟩ := _root_.GlobalTheory.CompleteClosedDvr.exists_complete_dvr_isAlgClosed V hnf ⟨C.b.comp (algebraMap ℚ c.F)⟩
   haveI : CharZero W := charZero_of_injective_ringHom hinj
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible W
   have hne : ∀ k, ρ (C.s k) ≠ 0 := fun k h0 => C.s_ne_zero k (hinj (h0.trans (map_zero ρ).symm))

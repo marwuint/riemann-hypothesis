@@ -7,7 +7,11 @@ import Formalism.LocalToGlobal.KernelLattices.ColumnData
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.BaseLinkOfNonzeroDelta
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.BaseExP
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ProvisionExtensionLink
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.Imports
+import Mathlib
+import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardTrivialFirstComponent
+import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
+import Development.AutomorphicArithmetic.WeightCongruences.IsRootOfIntegral
+import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.MuCardLeTwo
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.DetIdealsKernelNormOne
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsAdmissibleFlagPairOfUnitriangularLeftAutomorph
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.GMConjTranspose
@@ -40,7 +44,6 @@ import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqL
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqLMain
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqLMat
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqLTop
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.PolFamInhabited
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.RightMoveTrianglesOfUnit
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.Family
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.HfArith
@@ -52,7 +55,6 @@ import Formalism.LocalToGlobal.KernelLattices.ColumnData.IopIso
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IopNorm
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsometryLinkageTrivialLevel
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsometryLinkageAtSplitPrime
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.LinkChi
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.LinkThIndep
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.LinkThU
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.SelfDual

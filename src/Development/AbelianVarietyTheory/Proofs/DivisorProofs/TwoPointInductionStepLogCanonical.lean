@@ -3,12 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PointSeparationPair
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmallAmpleThroughOffStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotLcAtAddOfIsNkltCentreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmallAmpleThroughOff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotLcAtAddOfIsNkltCentre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonKltCentreOfNotKltAfterAddingStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLcCutPointOfNotLcOtherStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LcCutTwoClosedPointsOneCentreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTopologicalKrullDimClosurePointLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTopologicalKrullDimClosurePointLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotKltAtOfIsNkltCentre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogEqnAddSmulIffOfOff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultNsmulOfQadd
@@ -95,7 +95,7 @@ theorem twoPoint_step : GlobalTheory.Published.Principalisation → GlobalTheory
   have hwne : w ≠ x := by
     rintro rfl
     exact hzne (eq_of_closedPt_specializes hx hwz)
-  obtain ⟨e, -, hdw, he1⟩ := GlobalTheory.T.exists_topologicalKrullDim_closure_point_le X n w hn
+  obtain ⟨e, -, hdw, he1⟩ := _root_.GlobalTheory.closure_point_topologicalKrullDim X n w hn
   have he1' : 1 ≤ e := he1 x hwx hwne.symm
   have hkw : ¬ KltAt p n (Δ + D) w :=
     not_kltAt_of_isNkltCentre X p n hp hn (Δ + D) w w hw (specializes_refl w)
@@ -112,7 +112,7 @@ theorem twoPoint_step : GlobalTheory.Published.Principalisation → GlobalTheory
     ·
       have hkw' : ¬ KltAt p n (Δ + D) w' :=
         not_kltAt_of_isNkltCentre X p n hp hn (Δ + D) w' w' hw' (specializes_refl w')
-      obtain ⟨e', -, hdw', he1''⟩ := GlobalTheory.T.exists_topologicalKrullDim_closure_point_le X n w' hn
+      obtain ⟨e', -, hdw', he1''⟩ := _root_.GlobalTheory.closure_point_topologicalKrullDim X n w' hn
       have h1e' : 1 ≤ e' := by
         by_cases hxw : x = w'
         · refine he1'' x' hw'x' ?_
@@ -132,7 +132,7 @@ theorem twoPoint_step : GlobalTheory.Published.Principalisation → GlobalTheory
         hdw' (by linarith [hpos (i' + 1)]) hnum.1
       exact ⟨i', D', d', by omega, hd'0, hd'le, hD', hfin⟩
     ·
-      obtain ⟨b, A, hb0, hbε, hA, hAx, hAw'⟩ := GlobalTheory.T.exists_small_ample_through_off' X p hp N x w' ε hN hw'x hε
+      obtain ⟨b, A, hb0, hbε, hA, hAx, hAw'⟩ := _root_.GlobalTheory.PairStep.exists_small_ample_through_off X p hp N x w' ε hN hw'x hε
       have hAq : IsQCart A := hA.isQCart
       have hsum : Δ + D + (1 : ℚ) • A = Δ + (D + A) := by
         rw [one_smul, add_assoc]
@@ -150,7 +150,7 @@ theorem twoPoint_step : GlobalTheory.Published.Principalisation → GlobalTheory
         rw [hsum] at h3
         exact h3.mpr hw
       have hnlc : ¬ LcAt p n (Δ + (D + A)) x' := by
-        have h4 := GlobalTheory.T.not_lcAt_add_of_isNkltCentre' X p n hp hn (Δ + D) A w' x' hw' hAq hAw' hw'x'
+        have h4 := _root_.GlobalTheory.PairStep.not_lcAt_add_of_isNkltCentre X p n hp hn (Δ + D) A w' x' hw' hAq hAw' hw'x'
         rw [add_assoc] at h4
         exact h4
       have hDA : QNum p N (d + b) (D + A) := qNum_add X p hp N d b D A hD hA

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.FlagMinor
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeFiniteProjectiveBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeOfFiniteProjectiveStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeOfFiniteProjective
 
 open GlobalTheory.CompanionTheory.Ar.Num TensorProduct
 
@@ -119,6 +119,6 @@ theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Sub
     rw [LinearMap.range_eq_top.2 hq, finrank_top, ← hex, LinearMap.finrank_range_of_inj hi,
       hrk, hrk₂] at h1
     omega
-  exact GlobalTheory.T.locally_free_of_finite_projective R r₁ M₁ hfin₁ hproj₁ hrk₁ hbc₁
+  exact _root_.GlobalTheory.CompanionTheory.Ar.Num.LocFreeProj.locFree_of_projective R r₁ M₁ hfin₁ hproj₁ hrk₁ hbc₁
 
 end GlobalTheory.CompanionTheory.Ar.Num.LocFreeKernel

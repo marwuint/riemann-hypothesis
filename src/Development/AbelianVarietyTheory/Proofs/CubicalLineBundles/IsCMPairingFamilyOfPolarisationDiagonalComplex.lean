@@ -6,8 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HermFormPullEq
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EqZeroOfSumEmbeddingMul
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SubsingletonPrimeSpectrum
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmCurveLieCharacterOfAdjoinGenerator
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeilEqIffHermFormEqComplexStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LambdaBundleIsoOfWeilPairingCompatibleStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeilEqIffHermFormEqComplex
+import Development.AbelianVarietyTheory.Definitions.CMLattices.IsDiffOf
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LambdaBundleIsoOfWeilPairingCompatible
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
@@ -265,9 +266,9 @@ theorem isFam_of_isHomFamily : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Fiel
     rw [lhs, ← Category.assoc, ← hGex, ← hFex a, rhs]
   · intro a b
     obtain ⟨G, hGex, hGw⟩ := hG (h a b)
-    have hW := (GlobalTheory.T.weilEq_iff_hermForm_eq_complex hTh hLaws C.P C.P T.pol C.P uC uC uT uC HT HC χT χC hAHT hAHC (ψ a) (ψ b)
+    have hW := (_root_.GlobalTheory.CM.weilEq_iff_hermForm_eq hTh hLaws C.P C.P T.pol C.P uC uC uT uC HT HC χT χC hAHT hAHC (ψ a) (ψ b)
       (C.act.act (h a b)) (𝟙 C.P.A) (F a) (F b) G LinearMap.id (hFex a) (hFex b) hGex (fun z => by simp)).mpr ?_
-    · exact GlobalTheory.T.lambdaBundleIso_of_weilPairing_compatible hLaws ℂ C.P C.P T.pol C.P (ψ a) (ψ b) (C.act.act (h a b)) (𝟙 C.P.A) (hmon a) (hmon b)
+    · exact _root_.GlobalTheory.CM.lamEq_of_weilEq hLaws ℂ C.P C.P T.pol C.P (ψ a) (ψ b) (C.act.act (h a b)) (𝟙 C.P.A) (hmon a) (hmon b)
         (C.act.hom _) inferInstance hW
     intro z w
     obtain ⟨s, rfl⟩ := span z

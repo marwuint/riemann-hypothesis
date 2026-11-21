@@ -16,18 +16,4 @@ theorem rt_mem_isoTyp {L : Type} [Field L] [NumberField L] [IsCMField L] {n : �
     exact hU' (hU.1.1.stable h a ha)
   exact hle hf
 
-theorem main : ∀ (D : D7) (M : MtFam D), AVTied D M → CenReal D M → OnMtPreservesTypeV D := by
-  intro D M A hC i PI z F hF
-  by_cases hz : z ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))
-  · obtain ⟨L, -, hL⟩ := hC (D.nd.mu i) (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2
-    rw [NTypes.onMt, dif_pos hz]
-    rw [A.typeV, Submodule.mem_comap] at hF ⊢
-    have e : (M.loc i).real (D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) ⟨z, hz⟩ F) =
-        actSum D L z ((M.loc i).real F) := hL ⟨z, hz⟩ F
-    rw [e]
-    unfold actSum Finsupp.sum
-    exact Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (rt_mem_isoTyp _ _ _ _ hF)
-  · rw [NTypes.onMt, dif_neg hz]
-    exact Submodule.zero_mem _
-
 end GlobalTheory.CenKeepsType

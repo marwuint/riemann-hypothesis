@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLinearHomProd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGramMatricesCmUnitaryShimuraObject
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingCompatibleAddFirstSlotComplexStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingCompatibleAddSecondSlotComplexStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingAddLeftComplex
+import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingAddRightComplex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingCompatibleScalarSecondSlotConjStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalarEqOfWeilPairingEqPrincipalCMTripleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalarEqOfWeilPairingEqPrincipalCMTriple
 
 set_option autoImplicit false
 
@@ -47,7 +48,7 @@ theorem weilEq_prod_right {I₀ : Type} (f : A.t.G ⟶ B.t.G) (hf : GlobalTheory
   | singleton a => simpa using h a
   | cons a s has hs ih =>
     rw [Finset.prod_cons, Finset.sum_cons]
-    exact GlobalTheory.T.weilPairingCompatible_add_second_position_complex E H K σ₁ A B f (G a) _ hf.isMonHom (hG a).isMonHom
+    exact _root_.GlobalTheory.weilEq_mul_right_add E H K σ₁ A B f (G a) _ hf.isMonHom (hG a).isMonHom
       (isLinearHom_finprod s G hG).isMonHom _ _ (h a) ih
 
 theorem weilEq_prod_prod {I₀ J₀ : Type} (F : I₀ → (A.t.G ⟶ B.t.G)) (hF : ∀ i, GlobalTheory.Serre.IsLinearHom A.t.act B.t.act (F i))
@@ -60,7 +61,7 @@ theorem weilEq_prod_prod {I₀ J₀ : Type} (F : I₀ → (A.t.G ⟶ B.t.G)) (hF
   | singleton a => simpa using weilEq_prod_right (F a) (hF a) G hG (r a) (h a) hT
   | cons a s has hs ih =>
     rw [Finset.prod_cons, Finset.sum_cons]
-    exact GlobalTheory.T.weilPairingCompatible_add_first_position_complex E H K σ₁ A B (F a) _ _ (hF a).isMonHom (isLinearHom_finprod s F hF).isMonHom
+    exact _root_.GlobalTheory.CM.WeilAddLeft.weilEq_mul_left E H K σ₁ A B (F a) _ _ (hF a).isMonHom (isLinearHom_finprod s F hF).isMonHom
       (isLinearHom_finprod T G hG).isMonHom _ _ (weilEq_prod_right (F a) (hF a) G hG (r a) (h a) hT) ih
 
 theorem weilEq_pow_pow (f g : A.t.G ⟶ B.t.G) (hf : GlobalTheory.Serre.IsLinearHom A.t.act B.t.act f)
@@ -114,7 +115,7 @@ theorem integral_of_coords (X : CMObj H K ρ σ₁ p 0) (gP : Matrix (Fin p) (Fi
       ((X.A true).t.act.act (∑ a, ∑ b, x a * gP a b * H.bar (y b))) (𝟙 _)
       (spMap (σ₁.comp (algebraMap (𝓞 K) K))) := fun k u v e hk hu hv =>
     (h1 k u v e hk hu hv).symm.trans (h2 k u v e hk hu hv)
-  have h4 := GlobalTheory.T.scalar_eq_of_weilPairing_eq_principalCMTriple E H K ρ σ₁ (X.A true) X.ρ_sq X.typeP _ _ h3
+  have h4 := _root_.GlobalTheory.TwistScalarUnique.eq_of_weilEq E H K ρ σ₁ (X.A true) X.ρ_sq X.typeP _ _ h3
   refine ⟨r, ?_⟩
   have h5 := congrArg (fun z : 𝓞 E => (z : E)) h4
   simp only [map_mul, map_natCast, map_sum] at h5

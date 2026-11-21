@@ -113,15 +113,4 @@ end GlobalTheory.FlatLine
 
 namespace GlobalTheory.CovTop
 
-theorem koecher_unit_const : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (g h : Rul Y.d.Xo₂ Y.d.c₂), g ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ 0 → h ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ 0 → GlobalTheory.FlatLine.idem Z * g = g → GlobalTheory.FlatLine.idem Z * h = h → g * h = GlobalTheory.FlatLine.idem Z → (∀ σ, GoodEmb Y.d.c₂ σ → ∃ C : ℝ, ∀ z ∈ framesOn (Y.U σ) Z, GlobalTheory.AllWt.homN (Y.U σ) (xiR D) 0 g z ≤ C ∧ GlobalTheory.AllWt.homN (Y.U σ) (xiR D) 0 h z ≤ C) → ∃ a : Y.d.c₂.F, g = a • GlobalTheory.FlatLine.idem Z := by
-  intro _ D T j Y e o hY _ Z g h hg _ hgi _ _ hB
-  have hσ := goodEmb_goodOf Y.d.c₂ Y.d.c₂.F.val.toRingHom
-  obtain ⟨C, hC⟩ := hB _ hσ
-  have hs : g ∈ GlobalTheory.AllWt.suppOn Z := by
-    rw [← hgi, mul_comm]
-    exact GlobalTheory.AllWt.mul_mem_suppOn _ (GlobalTheory.FlatLine.idem_mem_suppOn Z)
-  exact GlobalTheory.FlatLine.exists_eq_smul_idem_of_bdd (Y.U _) hσ (hY.unf _ hσ) hY.geo hg hs (C := C) fun z hz => by
-    have h1 := (hC z hz).1
-    rwa [GlobalTheory.FlatLine.homN_zero] at h1
-
 end GlobalTheory.CovTop

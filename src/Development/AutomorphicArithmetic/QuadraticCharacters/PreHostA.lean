@@ -53,15 +53,8 @@ variable (T : HostType)
 def SM (l : ℕ) : Prop :=
   l.Prime ∧ l ∣ 2 * T.P0 * ∏ᶠ (χ : PrimChar) (_ : χ ∈ T.kept), χ.1
 
-noncomputable def aStar : ℝ := 1 / (3 * (T.o : ℝ) + 1)
-
 def TopSized : Prop :=
   (∃ j : ℕ, T.J = j) ∧ ∀ X : ℝ, T.zp X = X ^ (T.eps / (5 * T.J)) * Real.log X ^ 2
-
-def BottomSized : Prop :=
-  ∀ X : ℝ, T.zp X = X ^ (T.eps / (5 * T.J)) * Real.log (X ^ (1 / T.J)) ^ 2
-
-def StandardT : Prop := T.Ct = 401 ∧ ∀ x : ℝ, T.t x = ⌊x ^ (401 : ℝ)⌋₊
 
 end HostType
 
@@ -74,18 +67,6 @@ def IsRangeText (T : HostType) (x : ℝ) (e : ℕ) : Prop :=
 
 def IsRangeN (T : HostType) (x : ℝ) (e : ℕ) : Prop :=
   2 ≤ e ∧ x ^ (2 + 8 * T.eps) / (2 * T.o) ≤ (2 ^ e : ℝ) ∧ (2 ^ e : ℝ) ≤ 2 * x ^ (2 + 8 * T.eps)
-
-theorem IsRangeText.isRangeN {T : HostType} {x : ℝ} {e : ℕ} (h : IsRangeText T x e) (hx : 3 ≤ x) :
-    IsRangeN T x e := by
-  have h1 : x ^ (2 : ℝ) ≤ x ^ (2 + 8 * T.eps) :=
-    Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith [T.eps_pos])
-  rw [Real.rpow_two] at h1
-  have h2 := h.1
-  have ho : (1 : ℝ) ≤ T.o := by exact_mod_cast T.o_pos
-  refine ⟨?_, le_trans (div_le_div_of_nonneg_left (by positivity) (by norm_num) (by linarith)) h2, h.2⟩
-  by_contra hlt
-  have h4 : (2 : ℝ) ^ e ≤ 2 ^ 1 := pow_le_pow_right₀ (by norm_num) (by omega)
-  nlinarith
 
 abbrev GalRealCyclotomic (n : ℕ) : Type := (ZMod (4 * n))ˣ ⧸ Subgroup.zpowers (-1 : (ZMod (4 * n))ˣ)
 

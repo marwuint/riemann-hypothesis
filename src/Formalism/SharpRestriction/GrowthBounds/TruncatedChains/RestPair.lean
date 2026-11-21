@@ -1,4 +1,4 @@
-import Formalism.SharpRestriction.GrowthBounds.RootWeights.ExtremalProjectorOfReducibility
+import Formalism.SharpRestriction.GrowthBounds.RootWeights.FiltrationAdjointStable
 
 noncomputable section
 

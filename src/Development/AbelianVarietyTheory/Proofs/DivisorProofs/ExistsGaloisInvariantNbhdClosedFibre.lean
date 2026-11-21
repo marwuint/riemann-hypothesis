@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupClosedFibreFinsetInAffineOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupClosedFibreFinsetInAffineOpen
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -90,7 +90,7 @@ theorem exists_invariant_nbhd_closedFibre : ∀ (R : Type) [CommRing R] [IsDomai
   have hZ : IsClosed {g : G'.left | spMap ρ (G'.hom g) = closedPoint R} :=
     (isClosed_singleton_closedPoint R).preimage ((spMap ρ).continuous.comp G'.hom.continuous)
   refine exists_invariant_nbhd_of_orbits a.act a.act_one a.act_mul _ hZ.isCompact fun z hz => ?_
-  obtain ⟨O, hO, h⟩ := GlobalTheory.T.uniformisedGroup_closedFibre_finset_in_affineOpen R' hR' D' A' G' hS U' (Finset.univ.image fun σ => a.act σ z) (fun x hx => by
+  obtain ⟨O, hO, h⟩ := _root_.GlobalTheory.Mum.finite_closedFibre_subset_isAffineOpen R' hR' D' A' G' hS U' (Finset.univ.image fun σ => a.act σ z) (fun x hx => by
     obtain ⟨σ, -, rfl⟩ := Finset.mem_image.1 hx
     exact eq_closedPoint_of_finite hρ.2.2 _ ((hover σ z).trans hz))
   exact ⟨O, hO, fun σ => h _ (Finset.mem_image.2 ⟨σ, Finset.mem_univ _, rfl⟩)⟩

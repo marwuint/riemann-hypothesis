@@ -109,22 +109,6 @@ theorem keyLA_of (hE : KeyEigSt) (hR : KeyResSt) (hD : KeyDeltaSt) (C : Type) [F
   have := congrFun (hv (Pi.single j 1)) i
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using this
 
-theorem key_of (hE : KeyEigSt) (hR : KeyResSt) (hD : KeyDeltaSt) : KeySt := by
-  intro C _ _ V O _ _ dd Y d _ I _ p g ε hε hε1 hεx e he x
-  let K : KeyData C V O dd d :=
-    { ρ := linHom Y
-      ρ_int := fun x i j => Y.intAct x i _
-      P := linM e
-      em := fun a => p.em g a
-      em_int := fun a x => p.em_int g a x
-      em_frob := fun a x => p.em_frob g a x
-      ε := ε
-      ε_idem := hε
-      ε_one := hε1
-      ε_ann := hεx
-      P_lim := fun N i j => he N i _ }
-  exact keyLA_of hE hR hD C V Y.algClosed Y.cpl O dd d K x
-
 end Top
 
 end RowTiePKey

@@ -27,14 +27,6 @@ theorem oddExponentCount : JCount := by
   push_cast at h3
   linarith
 
-section DegProdSec
-
-variable {σ κ : Type} [DecidableEq κ] (blk : σ → Option κ)
-
-def bdeg (k : κ) (mono : σ →₀ ℕ) : ℕ := (mono.support.filter (fun v => blk v = some k)).sum mono
-
-end DegProdSec
-
 section BasisSec
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZeroMemSolSet
 import Formalism.UnipotentAdelicQuotients.EllRegCheck
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AestronglyMeasurableExtendByZeroOffSubset
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousFunctionalIterPartialDerivStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousFunctionalIterPartialDeriv
 open ZetaZeros.D.EllReg GlobalTheory.HCA MeasureTheory
 open scoped ContDiff BoundedContinuousFunction
 
@@ -46,5 +46,5 @@ theorem GlobalTheory.HCA.dw_solSet_continuous_functional : ∀ (d : ℕ) (ι : T
     intro u
     have hu : (u : U →ᵇ ℂ) ∈ solSet P U := by rw [← hS]; exact u.2
     exact ZetaZeros.D.EllReg.elliptic_regularity_of_parts d ι P U _ ⟨hU, ha, hell, continuousOn_extendByZeroOffSubset _, hu⟩
-  obtain ⟨l, hl⟩ := GlobalTheory.T.exists_continuous_functional_iterPartialDeriv d U hU S (extLin S) (fun y _ => continuous_extLin_apply S y) hsm w x hx
+  obtain ⟨l, hl⟩ := _root_.GlobalTheory.HCA.dw_continuousFunctional d U hU S (extLin S) (fun y _ => continuous_extLin_apply S y) hsm w x hx
   exact ⟨l, fun u => hl u⟩

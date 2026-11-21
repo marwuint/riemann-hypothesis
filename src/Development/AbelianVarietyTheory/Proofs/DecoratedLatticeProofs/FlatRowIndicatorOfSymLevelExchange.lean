@@ -1,12 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ContrFactor
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.AllPositions
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatRowMapEqRootExchangeOperatorTranslateStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RootExchangeRowUnipotentLatticeFrameConjApplyStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RootExchangeRowUnipotentMemSourceLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatRowMapEqRootExchangeOperatorTranslate
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RootExchangeRowUnipotentLatticeFrameConjApply
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.StandardOrderExtendedBasisApplyLowBlock
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RootExchangeRowUnipotentMemSourceLevel
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IteratedDepthOneLevelCharOfOneRowFirstBlockStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymmetricPositionLevelCharacterEqOneSingleRowStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapRowEqZeroUnlessRowMemDualLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymmetricPositionLevelCharacterEqOneSingleRow
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapRowEqZeroUnlessRowMemDualLattice
 
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SymChain
 
@@ -20,7 +22,7 @@ theorem lam_rowE_symLevel : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologic
       ((S.T t).lev j (c + 1 + 1) (by omega)).lam ⟨_, hm⟩ = 1 := by
   intro k _ _ _ _ s κ S t _ _ j c H r hc u hm
   have hodd := S.odd
-  have hsh := GlobalTheory.T.rootExchangeRowUnipotent_latticeFrame_conj_apply k (Fin κ) t S.ϖ j (c + 1 + 1) (s + 1) (by omega) r (by omega) u
+  have hsh := _root_.GlobalTheory.typeFrame_conj_symm_rowE_apply k (Fin κ) t S.ϖ j (c + 1 + 1) (s + 1) (by omega) r (by omega) u
   obtain ⟨g, hg, hl⟩ := GlobalTheory.T.iteratedDepthOneLevel_char_of_one_row_first_block k _ t S.P S.μ S.tame j (Sum.inr ⟨r, by omega⟩) ⟨_, hm⟩
     (fun a b ha => by
       have := hsh a b
@@ -34,7 +36,7 @@ theorem lam_rowE_symLevel : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologic
       rw [e] at this
       simpa using this)
   have hsym : S.P.lam g = 1 := by
-    refine GlobalTheory.T.symmetricPositionLevel_character_eq_one_single_row k S.ψ S.ϖ S.ρ κ (s + 1) S.P S.sym ⟨r, by omega⟩ g (fun a b ha => ?_) (fun i hi => ?_)
+    refine _root_.GlobalTheory.lam_purerow k S.ψ S.ϖ S.ρ κ (s + 1) S.P S.sym ⟨r, by omega⟩ g (fun a b ha => ?_) (fun i hi => ?_)
     · rw [hg, submatrix_apply]
       have := hsh (Sum.inl a) (Sum.inl b)
       rw [if_neg (fun e => ha (Sum.inl_injective e)), add_zero] at this
@@ -73,7 +75,7 @@ theorem pureRow_of_exchange : ∀ (k : Type) [Field k] [ValuativeRel k] [Topolog
   refine ⟨C * V, mul_pos hC hVpos, fun x => ?_⟩
   by_cases hu : x (Sum.inr ()) ∈ box (XIx (Fin κ) t j) (S.ϖ ^ (r + 1))
   · rw [if_pos hu, mul_one, hentry]
-    have hm := GlobalTheory.T.rootExchangeRowUnipotent_mem_sourceLevel k s κ S t hP j c H r hc _ hu
+    have hm := _root_.GlobalTheory.SymChain.rowE_mem_symLev_of_box k s κ S t hP j c H r hc _ hu
     have hl := lam_rowE_symLevel k s κ S t j c H r hc _ hm
     have hdet : Matrix.GeneralLinearGroup.det (rowE (c + 1 + 1) (r + 1) (x (Sum.inr ()))) = 1 := by
       ext; simp [rowE, lowU, Matrix.det_fromBlocks_zero₁₂]
@@ -83,13 +85,13 @@ theorem pureRow_of_exchange : ∀ (k : Type) [Field k] [ValuativeRel k] [Topolog
       funext z
       have := congrFun hT z
       simpa [om, hdet, nabs] using this
-    rw [GlobalTheory.T.flatRowMap_eq_rootExchangeOperator_translate k S.ψ ν S.cond.continuous inferInstance (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t j) (c + 1)
+    rw [_root_.GlobalTheory.LocFlat.flRow_eq_opE_rowE k S.ψ ν S.cond.continuous inferInstance (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t j) (c + 1)
       (r + 1) (by omega) (by omega) Φ (HR.1 j (c + 1) (by omega)) x]
     erw [hfun]
     rw [congrFun hEq]
     have hV0 : (V : ℂ) ≠ 0 := by exact_mod_cast hVpos.ne'
     rw [Pi.smul_apply, smul_eq_mul, Complex.ofReal_mul, Complex.ofReal_inv]
     field_simp
-  · rw [if_neg hu, mul_zero, GlobalTheory.T.flatMapRow_eq_zero_unless_row_mem_dualLattice k ν s κ S t j c H r hc x hu]
+  · rw [if_neg hu, mul_zero, _root_.GlobalTheory.LocFlat.flRow_eq_zero_of_not_mem_box k ν s κ S t j c H r hc x hu]
 
 end GlobalTheory.LocFlat

@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueIsPullForm
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechHyperCohomologyAffineLatticeCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechHyperCohomologyAffineLatticeCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAffineCoverInfClosed
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamHypercohomologyOneBaseChangeFlatBijectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamHypercohomologyOneBaseChangeFlatBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveLiftSemiSecPull
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsRestTail
 
@@ -54,7 +54,7 @@ theorem main : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] [Modu
   haveI : Finite Jᵒᵖ := Finite.of_equiv J Opposite.equivToOpposite
   haveI : ∀ T T' : Jᵒᵖ, Finite (T ⟶ T') := fun T T' ↦
     Finite.of_injective (β := T'.unop ⟶ T.unop) Quiver.Hom.unop Quiver.Hom.unop_inj
-  have hb := GlobalTheory.T.deRhamHypercohomologyOne_baseChange_flat_bijective R R' Jᵒᵖ (hU.functor.op ⋙ OAff s) (hU'.functor.op ⋙ OAff s')
+  have hb := _root_.GlobalTheory.liftSemi_pullHyp1_bijective_of_finite R R' Jᵒᵖ (hU.functor.op ⋙ OAff s) (hU'.functor.op ⋙ OAff s')
     (fun T ↦ GlobalTheory.CechDR.secPull s s' ⟨(U' T.unop, U T.unop), le_rfl⟩)
     (fun a b ↦ (pairPull h.w).naturality (hp.functor.op.map a) b)
     (fun T ↦ semiHom_secPull h.w ⟨(U' T.unop, U T.unop), le_rfl⟩)
@@ -68,6 +68,6 @@ theorem main : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] [Modu
   exact (GlobalTheory.Div.BaseChangeIso.main R R' (HH1 s) (Hyp1 (hU.functor.op ⋙ OAff s)) (HH1 s')
     (Hyp1 (hU'.functor.op ⋙ OAff s')) (pullHyp1 (CoefMap.restrict (OAff s) hU.functor.op))
     (pullHyp1 (CoefMap.restrict (OAff s') hU'.functor.op)) (pullHH1 h.w) _
-    (GlobalTheory.T.cech_hyper_cohomology_affine_lattice_cover R X s J U hU hinf hcov) (GlobalTheory.T.cech_hyper_cohomology_affine_lattice_cover R' X' s' J U' hU' hinf' hcov') hsq).2 hb
+    (_root_.GlobalTheory.CoverHyp.restrict_bijective R X s J U hU hinf hcov) (_root_.GlobalTheory.CoverHyp.restrict_bijective R' X' s' J U' hU' hinf' hcov') hsq).2 hb
 
 end GlobalTheory.Div.HypFlatBaseChange

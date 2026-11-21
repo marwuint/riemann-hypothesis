@@ -108,18 +108,6 @@ def ZN (B : Box F 3 O) (k : ℕ) : Set (F.Γ → Matrix (Fin 3) (Fin 3) (Ok l O 
 
 end Pt
 
-def TAN : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O]
-    (F : Frame l (ResidueField O)) (C₀ : ℕ), F.Ok C₀ → (l : O) ≠ 0 → GWL F → LocE F → ∀ (S : Space O F 3) (ξ : S.R →ₐ[O] O)
-    (v : F.V) (i : Fin 2), UnitAt (S.ρ.map (ξ : S.R →+* O)) v i →
-    ∃ δ ∈ WDer S.ρ ξ O, ∃ δ' ∈ WDer S.ρ ξ O, LinearIndependent O ![δ, δ']
-
-open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal in
-
-def CountsOf : Prop :=
-  GC.Hypotheses₂ → ∀ (l : ℕ) [Fact l.Prime] (κ : Type) [Field κ] (Φ : Frame l κ) (F Ω : Type) [Field F] [NumberField F] [Field Ω]
-    [Algebra F Ω] [IsAlgClosure F Ω] S K π ι A pl e c, GC.FLink (F := F) (Ω := Ω) l Φ S K π ι A pl e c → GWL Φ ∧ LocE Φ
-
 end UpperTheory.V.Z.J
 
 end

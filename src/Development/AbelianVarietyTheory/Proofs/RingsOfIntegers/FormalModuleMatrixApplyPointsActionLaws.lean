@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MvPowerSeriesSubstConstTermsLocalAlgHomSpecStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MaximalIdealFormalPointsFormModuleStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MvPowerSeriesSubstConstTermsLocalAlgHomSpec
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MaximalIdealFormalPointsFormModule
 
 set_option autoImplicit false
 noncomputable section
@@ -31,41 +31,41 @@ variable (B : FB V d O) {m : ℕ}
 
 instance : Zero (SP B m) := ⟨⟨0, sm_zero⟩⟩
 instance : Add (SP B m) :=
-  ⟨fun x y => ⟨addV B.G.F x.val y.val, (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val y.val x.val x.sm y.sm x.sm).1⟩⟩
+  ⟨fun x y => ⟨addV B.G.F x.val y.val, (_root_.GlobalTheory.PlaceInt.smallPts_module V d O B m x.val y.val x.val x.sm y.sm x.sm).1⟩⟩
 instance : SMul O (SP B m) :=
   ⟨fun a x => ⟨compV (B.A.act a) x.val,
-    ((GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.2 a a).1⟩⟩
+    ((_root_.GlobalTheory.PlaceInt.smallPts_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.2 a a).1⟩⟩
 
 lemma val_zero : (0 : SP B m).val = 0 := rfl
 lemma val_add (x y : SP B m) : (x + y).val = addV B.G.F x.val y.val := rfl
 lemma val_smul (a : O) (x : SP B m) : (a • x).val = compV (B.A.act a) x.val := rfl
 
 lemma add_comm' (x y : SP B m) : x + y = y + x :=
-  SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val y.val x.val x.sm y.sm x.sm).2.1
+  SP.ext (_root_.GlobalTheory.PlaceInt.smallPts_module V d O B m x.val y.val x.val x.sm y.sm x.sm).2.1
 lemma add_zero' (x : SP B m) : x + 0 = x :=
-  SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.1
+  SP.ext (_root_.GlobalTheory.PlaceInt.smallPts_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.1
 
 instance : AddCommMonoid (SP B m) where
-  add_assoc x y z := SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val y.val z.val x.sm y.sm z.sm).2.2.1
+  add_assoc x y z := SP.ext (_root_.GlobalTheory.PlaceInt.smallPts_module V d O B m x.val y.val z.val x.sm y.sm z.sm).2.2.1
   add_comm := add_comm' B
   add_zero := add_zero' B
   zero_add x := by rw [add_comm', add_zero']
   nsmul := nsmulRec
 
 lemma zero_smul' (x : SP B m) : (0 : O) • x = 0 :=
-  SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.1
+  SP.ext (_root_.GlobalTheory.PlaceInt.smallPts_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.1
 lemma mul_smul' (a b : O) (x : SP B m) : (a * b) • x = a • b • x :=
-  SP.ext ((GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.2 a b).2.2.2
+  SP.ext ((_root_.GlobalTheory.PlaceInt.smallPts_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.2 a b).2.2.2
 
 instance : Module O (SP B m) where
-  one_smul x := SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.1
+  one_smul x := SP.ext (_root_.GlobalTheory.PlaceInt.smallPts_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.1
   mul_smul := mul_smul' B
   smul_zero a := by
     have h := mul_smul' B a 0 (0 : SP B m)
     rw [mul_zero, zero_smul'] at h
     exact h.symm
-  smul_add a x y := SP.ext ((GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val y.val x.val x.sm y.sm x.sm).2.2.2.2.2.2.2 a a).2.1
-  add_smul a b x := SP.ext ((GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.2 a b).2.2.1
+  smul_add a x y := SP.ext ((_root_.GlobalTheory.PlaceInt.smallPts_module V d O B m x.val y.val x.val x.sm y.sm x.sm).2.2.2.2.2.2.2 a a).2.1
+  add_smul a b x := SP.ext ((_root_.GlobalTheory.PlaceInt.smallPts_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.2 a b).2.2.1
   zero_smul := zero_smul' B
 
 lemma foldr_val (l : List (SP B m)) : (l.map SP.val).foldr (addV B.G.F) 0 = l.sum.val := by
@@ -84,18 +84,18 @@ variable {B}
 
 lemma evV_comp {k n : ℕ} (a : Fin k → Pt V n d) (x : Fin n → Pt V m d) (ha : ∀ b, Sm (a b)) (hx : ∀ b, Sm (x b))
     (f : PS V k d) : evV x (evV a f) = evV (fun b i => evV x (a b i)) f :=
-  (GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V (Fin k × Fin d) (Fin n × Fin d) (Fin m × Fin d) (fun p => a p.1 p.2)
+  (_root_.GlobalTheory.PlaceInt.evC_spec V (Fin k × Fin d) (Fin n × Fin d) (Fin m × Fin d) (fun p => a p.1 p.2)
     (fun p => ha p.1 p.2)).2.2.2 (fun q => x q.1 q.2) (fun q => hx q.1 q.2) f
 
 lemma evV_alg {n : ℕ} (x : Fin n → Pt V m d) (hx : ∀ b, Sm (x b)) :
     ∃ ψ : PS V n d →ₐ[V] PS V m d, (∀ j, ψ (MvPowerSeries.X j) = x j.1 j.2) ∧ ∀ f, evV x f = ψ f :=
-  (GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V (Fin n × Fin d) (Fin m × Fin d) (Fin m × Fin d) (fun q => x q.1 q.2)
+  (_root_.GlobalTheory.PlaceInt.evC_spec V (Fin n × Fin d) (Fin m × Fin d) (Fin m × Fin d) (fun q => x q.1 q.2)
     (fun q => hx q.1 q.2)).1
 
 lemma evV_sm {n : ℕ} (x : Fin n → Pt V m d) (hx : ∀ b, Sm (x b)) (f : PS V n d)
     (hf : MvPowerSeries.constantCoeff f ∈ maximalIdeal V) :
     MvPowerSeries.constantCoeff (evV x f) ∈ maximalIdeal V :=
-  (GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V (Fin n × Fin d) (Fin m × Fin d) (Fin m × Fin d) (fun q => x q.1 q.2)
+  (_root_.GlobalTheory.PlaceInt.evC_spec V (Fin n × Fin d) (Fin m × Fin d) (Fin m × Fin d) (fun q => x q.1 q.2)
     (fun q => hx q.1 q.2)).2.1 f hf
 
 lemma evV_const {n : ℕ} (x : Fin n → Pt V m d) (hx : ∀ b i, MvPowerSeries.constantCoeff (x b i) = 0) (f : PS V n d)
@@ -103,7 +103,7 @@ lemma evV_const {n : ℕ} (x : Fin n → Pt V m d) (hx : ∀ b i, MvPowerSeries.
   have ha : ∀ q : Fin n × Fin d, MvPowerSeries.constantCoeff (x q.1 q.2) = 0 := fun q => hx q.1 q.2
   have hm : ∀ q : Fin n × Fin d, MvPowerSeries.constantCoeff (x q.1 q.2) ∈ maximalIdeal V := fun q => by
     rw [ha q]; exact Ideal.zero_mem _
-  have h := (GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V (Fin n × Fin d) (Fin m × Fin d) (Fin m × Fin d) (fun q => x q.1 q.2) hm).2.2.1 ha f
+  have h := (_root_.GlobalTheory.PlaceInt.evC_spec V (Fin n × Fin d) (Fin m × Fin d) (Fin m × Fin d) (fun q => x q.1 q.2) hm).2.2.1 ha f
   show MvPowerSeries.constantCoeff (evC (fun q : Fin n × Fin d => x q.1 q.2) f) = 0
   rw [h]
   exact MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) ha hf

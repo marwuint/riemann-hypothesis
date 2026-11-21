@@ -116,85 +116,6 @@ section Row
 
 variable {D : D7} (Y : NTw D.R D.host D.what₂ D.LL0 D.nd)
 
-theorem charpoly_cConj (hD : FrobDense D) {n : ℕ} {π : D.naut.CG n} (hπ : D.naut.csd π) {l : ℕ} [Fact l.Prime]
-    {ι : Qbar l ≃+* ℂ} {r : GalE D →* GL (Fin n) (Qbar l)} (hr : IsGaloisRepOf D π l ι r) (g : GalE D) :
-    ((r (cConj Y g) : GL _ _) : Matrix (Fin n) (Fin n) (Qbar l)).charpoly =
-      ((((cyc D.host.E D.nd.Om l g : (Qbar l)ˣ) : Qbar l) ^ (1 - (n : ℤ))) •
-        ((r g⁻¹ : GL _ _) : Matrix (Fin n) (Fin n) (Qbar l))).charpoly := by
-  have : Algebra.IsAlgebraic D.host.E D.nd.Om := IsAlgClosure.isAlgebraic
-  obtain ⟨bar, hinj, hbar⟩ := GlobalTheory.ConjPoly.exists_conj D
-  obtain ⟨hcont, -, hfr⟩ := hr
-  have hl := (GlobalTheory.ConjPoly.finite_placesOver D.host.E l (Fact.out : l.Prime).ne_zero).compl_mem_cofinite
-  have hall := (D.naut.locG_unr_ae π).and hl
-  have hcc : Continuous (cConj Y) := GlobalTheory.AntiLAdic.continuous_conjHom Y.cc (cc_symm_mem Y)
-  refine GlobalTheory.TypeLeaf.charpoly_eq_of_dense (GalE D) (Qbar l) n
-    (fun g => ((r (cConj Y g) : GL _ _) : Matrix (Fin n) (Fin n) (Qbar l)))
-    (fun g => (((cyc D.host.E D.nd.Om l g : (Qbar l)ˣ) : Qbar l) ^ (1 - (n : ℤ))) •
-        ((r g⁻¹ : GL _ _) : Matrix (Fin n) (Fin n) (Qbar l))) _ (hD _ (Filter.eventually_cofinite.1 hall))
-    (hcont.comp hcc)
-    (((GlobalTheory.ConjPoly.continuous_cyc_val D.host.E D.nd.Om l).zpow₀ (1 - (n : ℤ))
-      fun g => Or.inl (Units.ne_zero _)).fun_smul (hcont.comp continuous_inv)) ?_ g
-  rintro σ ⟨w, hw, -, B, hB, hσ⟩
-  obtain ⟨hu, hwl⟩ := not_not.1 hw
-  obtain ⟨hcj, hn, -⟩ := hbar w
-  obtain ⟨hu', he⟩ := D.naut.csd_unr π w (bar w) hπ hcj hu
-  have e1 := (hfr w hwl).2.2 hu B σ hB hσ
-  have e2 := (hfr (bar w) fun h => hwl (mem_placesOver_conj (isConjPl_symm hcj) h)).2.2 hu' _ _
-    (isPlaceOver_moveVal_cc Y hcj hB) (by rw [hn]; exact isFrob_cConj Y hσ)
-  rw [galPol, D.naut.frobEig_tw _ _ hu, ← Matrix.charpoly_map] at e1
-  rw [galPol, D.naut.frobEig_tw _ _ hu', he, hn, ← Matrix.charpoly_map] at e2
-  have hq : ((normV w : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.2 (GlobalTheory.ConjPoly.normV_ne_zero w)
-  have e3 := GlobalTheory.ConjPoly.charpoly_smul_inv _
-    (((r σ⁻¹ : GL _ _) : Matrix (Fin n) (Fin n) (Qbar l)).map ι.toRingHom)
-    (by rw [← Matrix.map_mul, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one,
-      Matrix.map_one _ (map_zero _) (map_one _)]) _ (((normV w : ℕ) : ℂ) ^ (1 - (n : ℤ))) e1
-  apply Polynomial.map_injective ι.toRingHom ι.injective
-  rw [← Matrix.charpoly_map, ← Matrix.charpoly_map, GlobalTheory.ConjPoly.cyc_val_frob hwl hB hσ]
-  refine e2.trans (Eq.trans ?_ (e3.symm.trans ?_))
-  · rw [Multiset.map_map, Multiset.map_map, Multiset.map_map]
-    congr 1
-    refine Multiset.map_congr rfl fun a _ => ?_
-    simp only [Function.comp_apply]
-    rw [GlobalTheory.ConjPoly.cpow_sq hq ((1 - (n : ℝ)) / 2) _ (by push_cast; ring)]
-    have : ((normV w : ℕ) : ℂ) ^ (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) ≠ 0 := by
-      simp [hq]
-    rw [mul_inv_rev, ← mul_assoc, mul_inv_cancel_right₀ this, mul_comm a⁻¹]
-  · congr 1
-    ext a b
-    simp
-
-theorem charpoly_cConj_red (hD : FrobDense D) {n : ℕ} {π : D.naut.CG n} (hπ : D.naut.csd π) {l : ℕ} [Fact l.Prime]
-    {ι : Qbar l ≃+* ℂ} {red : Zbar l →+* Formalism.CyclotomicNorms.Fbar l} {r : GalE D →* GL (Fin n) (Qbar l)}
-    {ρ : GalE D →* GL (Fin n) (Formalism.CyclotomicNorms.Fbar l)} (hr : IsGaloisRepOf D π l ι r) (hρ : IsReduction D red r ρ)
-    {v : PlE D.host} (hv : v ∉ placesOver D.host.E l) {A : ValuationSubring D.nd.Om} (hA : IsPlaceOver A v)
-    {s : GalE D} (hs : s ∈ Ine (F := D.host.E) A) :
-    ((ρ (cConj Y s) : GL _ _) : Matrix (Fin n) (Fin n) (Formalism.CyclotomicNorms.Fbar l)).charpoly =
-      ((ρ s⁻¹ : GL _ _) : Matrix (Fin n) (Fin n) (Formalism.CyclotomicNorms.Fbar l)).charpoly := by
-  have h := charpoly_cConj Y hD hπ hr s
-  rw [cyc_eq_one_of_mem_Ine hv hA hs, Units.val_one, one_zpow, one_smul] at h
-  obtain ⟨p, p1, p2⟩ := hρ.2.2 (cConj Y s)
-  obtain ⟨q, q1, q2⟩ := hρ.2.2 s⁻¹
-  rw [← p2, ← q2, Polynomial.map_injective _ Subtype.val_injective (p1.trans (h.trans q1.symm))]
-
-theorem wild_fixed (hW : WildOne D) {k : Fin 2} {v : D.nd.PlG k} {π : D.naut.CG D.R.r}
-    (hf : (D.naut.items₂ k _ (D.naut.locG π (D.naut.plGw k v))).natDegree = D.R.r)
-    {l : ℕ} [Fact l.Prime] (hl : l ≠ D.host.g k) {ι : Qbar l ≃+* ℂ} {red : Zbar l →+* Formalism.CyclotomicNorms.Fbar l}
-    {r : GalE D →* GL (Fin D.R.r) (Qbar l)} {ρ : GalE D →* GL (Fin D.R.r) (Formalism.CyclotomicNorms.Fbar l)}
-    (hr : IsGaloisRepOf D π l ι r) (hρ : IsReduction D red r ρ) {u : GalE D}
-    (hu : WildAt (D.nd.plOm.1 (D.naut.plGw k v)) u) : ρ u = 1 := by
-  have hw := not_mem_of_ne (v := v) (Fact.out : l.Prime) hl
-  have huI := mem_ine_of_wildAt hu
-  have h1 := (hr.2.2 _ hw).1 u huI
-  rw [D.naut.inePol_tw _ _ _ huI, hW k v _ (by rw [hf, D.naut.locG_dim]) u huI hu, D.naut.locG_dim] at h1
-  obtain ⟨p, hp1, hp2⟩ := hρ.2.2 u
-  have hp : p = (X - 1) ^ D.R.r := by
-    apply Polynomial.map_injective (ι.toRingHom.comp (Zbar l).subtype) (ι.injective.comp Subtype.val_injective)
-    rw [← Polynomial.map_map, hp1, h1]
-    simp
-  refine eq_one_of_wildAt (D.nd.plOm.2 _) hw ρ hρ.1 hu ?_
-  rw [← hp2, hp]
-  simp
-
 theorem tameOff_all {l : ℕ} [Fact l.Prime] {k : Fin 2} (hl : l ≠ D.host.g k)
     {ρ : GalE D →* GL (Fin D.R.r) (Formalism.CyclotomicNorms.Fbar l)} {χ : GalE D →* (Formalism.CyclotomicNorms.Fbar l)ˣ}
     (ho : IsOpen (ρ.ker : Set (GalE D)))
@@ -245,9 +166,6 @@ def IsRowOfTriple (i : Y.Tw) (s : Y.Sig i) (σ : D.what₂.FT) (w : D.what₂.pl
       u = (D.nd.chiT k v ⟨Y.jS i s - 1, by have := Y.jS_range i s; omega⟩)⁻¹) ∧
     κ (IsLocalRing.residue (Y.O0 i) ((BlochKatoReduction.Gen.chiS i s (D.ntypes.tg k v) : (Y.O0 i)ˣ) : Y.O0 i)) =
       D.ntypes.iota k v w (toFb D k u)
-
-def TriplesAreRows : Prop :=
-  ∀ i, Y.NonzeroIndexPlace i → ∀ s : Y.Sig i, ∃ σ w κ, IsRowOfTriple Y i s σ w κ
 
 def BlockCharConj : Prop :=
   ∀ i, Y.NonzeroIndexPlace i → ∀ j b, 1 ≤ j → j ≤ D.R.m → ∀ k, D.host.g k ≠ Y.l i → ∀ v ∈ placesOver D.host.E (D.host.g k),

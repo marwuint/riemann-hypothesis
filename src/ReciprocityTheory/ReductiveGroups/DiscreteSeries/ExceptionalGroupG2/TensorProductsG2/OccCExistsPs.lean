@@ -43,30 +43,6 @@ theorem occC_pairing (dual : Bool) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam 
           (fun c => ((f c : smD ε (rreg ε)) : L2 ε)))) ((x' : smD ε (rreg ε)) : L2 ε) ≠ 0 := by
   exact occurrence_pairing dual hgap hP hv₀ hP' hW hB
 
-theorem occC_proj_smD (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0) (x : L2 ε)
-    (hx : x ∈ smD ε (rreg ε)) : ((Hlam ε Ψ' v₀').orthogonalProjectionOnto x : L2 ε) ∈ smD ε (rreg ε) := by
-  exact projection_preserves_smooth hgap' hP' hv₀' x hx
-
-theorem occC_proj_smE (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0) (x : smD ε (rreg ε))
-    (a b : Fin n) :
-    ((smE ε (rreg ε) a b ⟨((Hlam ε Ψ' v₀').orthogonalProjectionOnto (x : L2 ε) : L2 ε),
-        occC_proj_smD hgap' hP' hv₀' x x.2⟩ : smD ε (rreg ε)) : L2 ε) =
-      ((Hlam ε Ψ' v₀').orthogonalProjectionOnto ((smE ε (rreg ε) a b x : smD ε (rreg ε)) : L2 ε) : L2 ε) := by
-  exact projection_commutes_derived_action hgap' hP' hv₀' x (projection_preserves_smooth hgap' hP' hv₀' _ x.2) a b
-
-theorem occC_proj_mem (dual : Bool) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
-    (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0)
-    (hW : ∀ v ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀), ∀ w ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀),
-      MemLp (fun g : Formalism.REAL.UJ ε => ((Real.sqrt (S7.hs (Formalism.MainNotions.S.umat g)) : ℝ) : ℂ) *
-        inner ℂ ((w : smD ε (rreg ε)) : L2 ε) (rreg ε (Formalism.MainNotions.S.umat g) ((v : smD ε (rreg ε)) : L2 ε))) 2 (Formalism.REAL.muG ε))
-    (η f : Fin n → smD ε (rreg ε)) (hη : η ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)))
-    (hf : f ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀))) :
-    ∃ y ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀'), (y : L2 ε) =
-      ((Hlam ε Ψ' v₀').orthogonalProjectionOnto (toL2 ε (occCoef dual (rreg ε) (fun c => ((η c : smD ε (rreg ε)) : L2 ε))
-        (fun c => ((f c : smD ε (rreg ε)) : L2 ε)))) : L2 ε) := by
-  obtain ⟨y, hy, e⟩ := occurrence_projection_mem dual hP hv₀ hgap' hP' hv₀' hW η f hη hf
-  exact ⟨y, hy, e⟩
-
 theorem occC_exists_ps (dual : Bool) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0)
     (hW : ∀ v ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀), ∀ w ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀),

@@ -11,9 +11,6 @@ private theorem sigL_mul' (x y : EL Δ τ) : sigL (x * y) = sigL x * sigL y := b
 private theorem sigL_sigL' (x : EL Δ τ) : sigL (sigL x) = x := by
   ext <;> simp [sigL]
 
-private theorem sigL_star' (x : EL Δ τ) : sigL (star x) = star (sigL x) := by
-  ext <;> simp [sigL]
-
 private theorem sigL_one' : sigL (1 : EL Δ τ) = 1 := by
   ext <;> simp [sigL, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 

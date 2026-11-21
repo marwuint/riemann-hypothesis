@@ -3,7 +3,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsMultOfFintype
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EventuallyEqOfAgreeGLs
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrETransposeEqPhiSeq
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandValueNegationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandValueNegation
 
 noncomputable section
 
@@ -360,7 +360,7 @@ theorem transposed_invariants : ∀ (n m : ℕ), ∃ (N : ℕ) (c : Fin N → �
   intro n m
   obtain ⟨N, c, w, h⟩ := phiSeq_words n m
   refine ⟨N, c, w, fun cc => ?_, fun hR s V _ _ f hf x hx => ?_⟩
-  · rw [GlobalTheory.T.gelfand_value_negation, h (A := ℂ)]
+  · rw [_root_.GlobalTheory.CompanionTheory.WaveMult.ValPhi.gelfVal_neg_eq_phiSeq, h (A := ℂ)]
     simp
   · let F : Sm n V := ⟨(GLs n).indicator f, indicator_mem hf⟩
     have hF : ∀ g ∈ GLs n, f g = F.1 g := fun g hg => by simp [F, hg]

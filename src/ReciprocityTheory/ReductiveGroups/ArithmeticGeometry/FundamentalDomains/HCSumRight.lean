@@ -13,24 +13,6 @@ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 variable {r : ℕ} (X : Data E r)
 
-theorem sum_split' {M : Type*} [AddCommMonoid M] (f : Fin r → M) :
-    ∑ j, f j = ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) +
-      ∑ m : Fin (r - X.p0), f ⟨X.p0 + m, by have := m.isLt; have := X.p0_le; omega⟩ := by
-  obtain ⟨g, hg⟩ : ∃ g : ℕ → M, ∀ j (h : j < r), g j = f ⟨j, h⟩ :=
-    ⟨fun j => if h : j < r then f ⟨j, h⟩ else 0, fun j h => dif_pos h⟩
-  have h1 : ∑ j, f j = ∑ j : Fin r, g j :=
-    Finset.sum_congr rfl fun j _ => (hg j j.isLt).symm
-  have h2 : ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) = ∑ a : Fin X.p0, g a :=
-    Finset.sum_congr rfl fun a _ => (hg a (lt_of_lt_of_le a.isLt X.p0_le)).symm
-  have h3 : ∑ m : Fin (r - X.p0), f ⟨X.p0 + m, by have := m.isLt; have := X.p0_le; omega⟩ =
-      ∑ m : Fin (r - X.p0), g (X.p0 + m) :=
-    Finset.sum_congr rfl fun m _ =>
-      (hg (X.p0 + m) (by have := m.isLt; have := X.p0_le; omega)).symm
-  rw [h1, h2, h3, Fin.sum_univ_eq_sum_range g r, Fin.sum_univ_eq_sum_range g X.p0,
-    Fin.sum_univ_eq_sum_range (fun m => g (X.p0 + m)) (r - X.p0)]
-  conv_lhs => rw [← Nat.add_sub_of_le X.p0_le]
-  exact Finset.sum_range_add g X.p0 (r - X.p0)
-
 theorem hC_sum_right' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Type*} (s : Finset ι)
     (u : Fin r → ℂ) (f : ι → Fin r → ℂ) : hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) := by
   simp only [hermC, Finset.sum_apply, map_sum, Finset.mul_sum]
@@ -78,11 +60,6 @@ theorem comb_comb {x0 : Frame X.Ψ r} (ho : X.IsOrtho x0) (τ : X.Ψ) (c d : Fin
   rw [hC_sum_right']
   simp only [hermC_smul_right_eq_conj_mul, comb_col X ho τ c]
   exact Finset.sum_congr rfl fun a _ => by ring
-
-def extP (g : Fin X.p0 → ℂ) : Fin r → ℂ := fun a => if h : (a : ℕ) < X.p0 then g ⟨a, h⟩ else 0
-
-def extN (g : Fin (r - X.p0) → ℂ) : Fin r → ℂ :=
-  fun a => if h : X.p0 ≤ (a : ℕ) then g ⟨a - X.p0, by have := a.isLt; omega⟩ else 0
 
 end
 

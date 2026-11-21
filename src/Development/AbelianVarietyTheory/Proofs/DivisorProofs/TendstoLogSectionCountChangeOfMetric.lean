@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothVolumeDensityChartProjArithStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SupNormBallCountAsymptoticGramDeterminantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TendstoLogDetGramChangeSemiPositiveMetricStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaiseFirstWeightSectionsLociValuesNormsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothVolumeDensityChartProjArith
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SupNormBallCountAsymptoticGramDeterminant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TendstoLogDetGramChangeSemiPositiveMetric
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaiseFirstWeightSectionsLociValuesNorms
 
 set_option autoImplicit false
 
@@ -42,10 +42,10 @@ theorem tendsto_logCount_sub_up : GlobalTheory.Published.ArCalc → ∀ (k : Typ
   haveI : CharZero X.functionField :=
     charZero_of_injective_ringHom (germ_injective_of_isIntegral X (U := ⊤) _ trivial)
   choose f hli hcl hmemΛ using fun m => exists_intBasis (Λ m) (hΛ.fg m)
-  let ω : ∀ σ, VolDens p σ D := fun σ => Classical.choice (GlobalTheory.T.exists_smoothVolumeDensityChart_projArith k X p D hX hS σ)
+  let ω : ∀ σ, VolDens p σ D := fun σ => Classical.choice (_root_.GlobalTheory.HSAmp.exists_volDens k X p D hX hS σ)
   have hmem : ∀ (m : ℕ) i, f m i ∈ P.H m 1 := fun m i => hΛ.le m (hmemΛ m i)
   have hmem' : ∀ (m : ℕ) i, f m i ∈ (upperParabolic P u).H m 1 := fun m i => by
-    rw [(GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P u m 1).1]; exact hmem m i
+    rw [(_root_.GlobalTheory.HSAmp.upAtPrime_groups_values_norms k X p P u m 1).1]; exact hmem m i
   have hC1' : 1 ≤ C * Real.exp B := one_le_mul_of_one_le_of_one_le hC1 (Real.one_le_exp hB)
   have hlog : Real.log (C * Real.exp B) = Real.log C + B := by
     rw [Real.log_mul (by positivity) (Real.exp_pos B).ne', Real.log_exp]
@@ -59,7 +59,7 @@ theorem tendsto_logCount_sub_up : GlobalTheory.Published.ArCalc → ∀ (k : Typ
     refine (hCs m hm).trans (AddSubgroup.closure_mono ?_)
     rintro x ⟨hx, hb⟩
     refine ⟨hx, fun σ y => ?_⟩
-    rw [((GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P u m 1).2.2 σ y x).2]
+    rw [((_root_.GlobalTheory.HSAmp.upAtPrime_groups_values_norms k X p P u m 1).2.2 σ y x).2]
     have h0 : 0 ≤ P.nu m 1 σ y x := by rw [← norm_val]; exact norm_nonneg _
     rw [mul_pow, ← Real.exp_nat_mul]
     refine mul_le_mul (hb σ y) (Real.exp_le_exp.2 ?_) (Real.exp_pos _).le (by positivity)
@@ -67,10 +67,10 @@ theorem tendsto_logCount_sub_up : GlobalTheory.Published.ArCalc → ∀ (k : Typ
     have hm0 : (0 : ℝ) ≤ m := Nat.cast_nonneg m
     push_cast
     nlinarith [mul_le_mul_of_nonneg_left (neg_le.1 hu') hm0, mul_nonneg hm0 hB]
-  have h1 := GlobalTheory.T.supNormBall_count_asymptotic_gramDeterminant k X p D hX hS P hP ω _ f hmem hli _ hΛ.rank C hC1 hs t (by linarith)
-  have h2 := GlobalTheory.T.supNormBall_count_asymptotic_gramDeterminant k X p D hX hS (upperParabolic P u) hup ω _ f hmem' hli _ hΛ.rank (C * Real.exp B) hC1' hs' t
+  have h1 := _root_.GlobalTheory.HSAmp.count_ball_asymp k X p D hX hS P hP ω _ f hmem hli _ hΛ.rank C hC1 hs t (by linarith)
+  have h2 := _root_.GlobalTheory.HSAmp.count_ball_asymp k X p D hX hS (upperParabolic P u) hup ω _ f hmem' hli _ hΛ.rank (C * Real.exp B) hC1' hs' t
     (by rw [hlog]; linarith)
-  have h3 := GlobalTheory.T.tendsto_logDet_gram_change_semiPositive_metric HA k X p D hX hS P hP ω _ f hmem hli hΛ.rank u a a' hup ha ha'
+  have h3 := _root_.GlobalTheory.HSAmpDet.tendsto_logDet_gram_sub HA k X p D hX hS P hP ω _ f hmem hli hΛ.rank u a a' hup ha ha'
   simp only [hcl] at h1 h2
   have key := (h2.sub h1).add (h3.div_const 2)
   convert key using 1

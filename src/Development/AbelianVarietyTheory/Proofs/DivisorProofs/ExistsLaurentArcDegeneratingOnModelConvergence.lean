@@ -71,7 +71,7 @@ theorem hasSum_evR_arc_natural : Out.Laws → Out.Laws2 → ∀ (E : Type) [Fiel
     simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
     congr 2
     exact RingHom.ext fun x => (hK (β x)).symm
-  obtain ⟨p, j, y₀, hch, hmem⟩ := GlobalTheory.T.exists_openChart_framedPoint_testRing hL1.secBaseChange E H Dw l Xo c (pt (IsLocalRing.closedPoint ℂ⸨X⸩))
+  obtain ⟨p, j, y₀, hch, hmem⟩ := _root_.GlobalTheory.Frames.exists_openChart_testRing hL1.secBaseChange E H Dw l Xo c (pt (IsLocalRing.closedPoint ℂ⸨X⸩))
   haveI := hch.1
   obtain ⟨φ, hφ⟩ := GlobalTheory.ArcQ.exists_algHom_of_mem_range j hch.2.2 pt hpt3 hmem
   obtain ⟨y₁, hy₁⟩ := hL.bc _ _ φ y₀
@@ -135,10 +135,10 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 theorem evR_frChg_one_secZ {S : Type} [CommRing S] [Algebra c.F S] [IsLocalRing S] {ex : Ix Dw → ℤ}
     (hex : ex none = 0) {F : Rul Xo c} (hF : F ∈ GlobalTheory.AllWt.secZ Xo c ex) {s : S} {y y' : FrPt Xo c S}
     (h : FrChg (fun _ => 1) s y y') : evR Xo c F y' = evR Xo c F y := by
-  obtain ⟨u, rfl⟩ := ((GlobalTheory.T.frameChange_exists_unique_invertible E H Dw l Xo c S _ s y).2.2.1 y' h).2
+  obtain ⟨u, rfl⟩ := ((_root_.GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c S _ s y).2.2.1 y' h).2
   let t : Ix Dw → Sˣ := fun i => i.elim u fun _ => 1
   have hb : FrBor t y y' :=
-    ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c S).2.2.2 t y y').2
+    ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c S).2.2.2 t y y').2
       ⟨fun _ => 1, fun τ i => by simp [t], fun τ i j hij => Matrix.one_apply_ne hij.ne, h⟩
   rw [GlobalTheory.FlagTan.evR_frBor hF hb]
   simp [t, Fintype.prod_option, hex]
@@ -173,7 +173,7 @@ theorem exists_arc_secZ' [Algebra c.F ℂ⸨X⸩]
   obtain ⟨T, s, d, z, hd, hz, hflow⟩ := htie _ _ Y χ W Ha
   obtain ⟨-, v₂, -, -⟩ := GlobalTheory.ExpTan.anVec_bijective h1.globalFns E H Dw l Xo c _ _ _ Y _ _ W _ _ Uw.F Ha
   choose e he using fun τ i => (v₂ (z τ i)).exists
-  have hB := GlobalTheory.T.constant_vectors_lieBasis_of_complex_arc E H Dw l Xo c σ r U Uw _ _ Y _ χ W Ha e z hσ hz he
+  have hB := _root_.GlobalTheory.CuspFromBasis.main E H Dw l Xo c σ r U Uw _ _ Y _ χ W Ha e z hσ hz he
   obtain ⟨-, -, th, hth⟩ := GlobalTheory.ThetaOverField.nonzero_generates h1 h2 ℂ (aC.restrict (c.V Wp).subtype).D₀
     DVR.SecOps.secZero
   obtain ⟨Θ⟩ := GlobalTheory.ArcTheta.nonempty_thetaDat h1 h2 E H Dw l Xo c σ _ _ Y _ χ W _ _ Uw.F Ha hty th hth

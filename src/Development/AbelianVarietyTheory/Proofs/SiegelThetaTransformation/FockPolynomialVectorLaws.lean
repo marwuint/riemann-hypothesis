@@ -1,5 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelOrthonormalFrameInDomainPeriodLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelOrthonormalFrameInDomainPeriodLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsWeakOfDatum
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaFunctionSpaceHeisenbergLawsStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeisenbergDerivativeThetaFunctionLaws
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RealPeriodMapHomeomorphRiemannFormDensity
@@ -199,7 +201,7 @@ noncomputable abbrev eDir (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.r
 theorem eDir_cplx {B : C.Bas} (hB : C.IsB B) (τ' : D.what₂.Tau) (z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     eDir C τ (cplxO 1 (C.sB B τ) z) τ' (cplxO 1 (C.sB B τ') z') = eDir C τ z τ' z' ∧
     eDir C τ (cplxO 1 (C.sB B τ) z) τ' z' = -eDir C τ z τ' (cplxO 1 (C.sB B τ') z') := by
-  obtain ⟨-, hmem, -, hz, -⟩ := (GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB
+  obtain ⟨-, hmem, -, hz, -⟩ := (_root_.GlobalTheory.Ker.onBasis_frame_period D S T C).2 B hB
   have hE := (zR_laws D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even (C.xB B) hmem).2.1
   simp only [eDir]
   rw [← hE, ← hE, ← hE, ← hE, hz, hz]

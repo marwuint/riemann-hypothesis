@@ -144,7 +144,7 @@ theorem flag_fwd_kept (M : FlagModel y Ψ N j) (keep : Ψ × Fin N → Prop) {κ
   have hAgD : ∀ τ, (Ag τ).det ≠ 0 := fun τ => by
     rw [Matrix.det_mul]
     exact mul_ne_zero (hinvD τ) (M.isUnit_det_g τ).ne_zero
-  choose b hbB hbT hbd hbV hbdet hbinv using fun τ => GlobalTheory.T.block_diag_valuation_normalization Φ V N j (Ag τ) (hAgB τ) (hAgD τ)
+  choose b hbB hbT hbd hbV hbdet hbinv using fun τ => _root_.GlobalTheory.CompanionTheory.Ar.PB.IwBlock.main Φ V N j (Ag τ) (hAgB τ) (hAgD τ)
   let H : Ψ → Matrix (Fin N) (Fin N) Φ := fun τ => Ag τ * b τ
   have hHB : ∀ τ, IsBlockDiag j (H τ) := fun τ => (hAgB τ).mul (hbB τ)
   let wf : ∀ (p : Ψ × Fin N) (k : K), ι k → Φ := fun p k m =>
@@ -176,7 +176,7 @@ theorem flag_fwd_kept (M : FlagModel y Ψ N j) (keep : Ψ × Fin N → Prop) {κ
         ⟨am (detFac j p.2 (F.T p.1)) * (∏ c ∈ stepCols N j p.2, b p.1 c c) / am (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k'),
           div_ne_zero (mul_ne_zero hdet hB) hE, fun m => by
             rw [div_mul_eq_mul_div, rel m, mul_div_cancel_left₀ _ hE]⟩
-      obtain ⟨m₀, hm₀, hm₀i⟩ := GlobalTheory.T.step_rows_inverse_nonzero_entry Φ V N j p.2 (H p.1) (ι (κ k₁)) (fun m I => am (F.u ⟨κ k₁, m⟩ I))
+      obtain ⟨m₀, hm₀, hm₀i⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.UnitComb.unit_comb Φ V N j p.2 (H p.1) (ι (κ k₁)) (fun m I => am (F.u ⟨κ k₁, m⟩ I))
         (fun I m => am (F.u' I ⟨κ k₁, m⟩)) M.j_le (hHB p.1) (hbV p.1) (hbdet p.1) (hbinv p.1)
         (fun I m => hOV _ (hO (hG.2.1 _ I).2)) (fun m I => hOV _ (hO (hG.2.1 _ I).1)) (fun I I' hI hI' => by
           have := congrArg am (hF.2.2.1 p (κ k₁) hp I I' hI hI')

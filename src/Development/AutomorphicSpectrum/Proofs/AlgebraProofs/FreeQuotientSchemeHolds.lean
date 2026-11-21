@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.RegularHypothesesAndConclusion
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HasAffineChartId
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.QuotientOfAffineChartCoverStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FreeActionAffineChartStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.QuotientOfAffineChartCover
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FreeActionAffineChart
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.OrbitAffineNeighbourhoodStatement
 
 noncomputable section
@@ -17,12 +17,12 @@ open FreeQuot GlobalTheory.CompanionTheory.FreeQuotProof
 theorem FreeQuotientScheme_holds : FreeQuotientScheme := by
   intro S G X _ _ hG hfree horb
   obtain ⟨Y₀, q₀, hfin, hflat, hfp, hsurj, hpb⟩ :=
-    GlobalTheory.T.quotient_of_affine_chart_cover _ _ (fun x => by
+    _root_.GlobalTheory.CompanionTheory.FreeQuotGlue.exists_of_affineCharts _ _ (fun x => by
       obtain ⟨U, hU, hxU⟩ := horb x
       obtain ⟨V, W, hxV, hV, hW, hVW, hinv⟩ :=
         GlobalTheory.T.orbit_affine_neighbourhood G X hG x U hU hxU
       exact ⟨V, hxV,
-        GlobalTheory.T.free_action_affine_chart G X hG hfree V W hV hW hVW hinv⟩)
+        _root_.GlobalTheory.CompanionTheory.FreeQuotProof.Chart.hasAffineChart_of_stable G X hG hfree V W hV hW hVW hinv⟩)
   haveI : IsFinite q₀ := hfin
   haveI : Flat q₀ := hflat
   haveI : LocallyOfFinitePresentation q₀ := hfp

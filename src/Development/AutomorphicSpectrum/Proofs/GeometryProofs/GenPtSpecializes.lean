@@ -7,36 +7,7 @@ namespace GlobalTheory.CompanionTheory.Ar.CptInh
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar
 
-theorem spec_inj (X : Scheme.{0}) [IsIntegral X] {x y : X} (h : x ⤳ y) :
-    Function.Injective (X.presheaf.stalkSpecializes h).hom := by
-  rw [injective_iff_map_eq_zero]
-  intro t ht
-  obtain ⟨U, hyU, s, rfl⟩ := X.presheaf.germ_exist t
-  have hxU : x ∈ U := h.mem_open U.isOpen hyU
-  have e : ConcreteCategory.hom (X.presheaf.stalkSpecializes h) (ConcreteCategory.hom (X.presheaf.germ U y hyU) s) =
-      ConcreteCategory.hom (X.presheaf.germ U x hxU) s := by
-    rw [← CommRingCat.comp_apply, TopCat.Presheaf.germ_stalkSpecializes]
-  have hs : s = 0 := by
-    apply germ_injective_of_isIntegral X x hxU
-    rw [map_zero, ← e]
-    exact ht
-  rw [hs, map_zero]
-
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
-
-theorem unit_iff (ξ : Spec (CommRingCat.of Ω) ⟶ X) (h : IsCptGen ξ) (p : Cpt ξ) (a : Ω) :
-    unitAt ξ p a ↔ ∃ u, IsUnit u ∧ genMap ξ p u = a := by
-  simp only [unitAt, regAt, RingHom.mem_range]
-  constructor
-  · rintro ⟨ha, ⟨u, rfl⟩, ⟨v, hv⟩⟩
-    refine ⟨u, ?_, rfl⟩
-    have e : genMap ξ p (u * v) = genMap ξ p 1 := by
-      rw [map_mul, hv, map_one, mul_inv_cancel₀ ha]
-    exact IsUnit.of_mul_eq_one v (h.inj p e)
-  · rintro ⟨u, ⟨w, rfl⟩, rfl⟩
-    have key : genMap ξ p ↑w * genMap ξ p ↑w⁻¹ = 1 := by
-      rw [← map_mul, Units.mul_inv, map_one]
-    exact ⟨left_ne_zero_of_mul_eq_one key, ⟨↑w, rfl⟩, ⟨↑w⁻¹, eq_inv_of_mul_eq_one_right key⟩⟩
 
 theorem dom (ξ : Spec (CommRingCat.of Ω) ⟶ X) (h : IsCptGen ξ) (p : Cpt ξ) :
     IsDomain (X.presheaf.stalk p.1) := by

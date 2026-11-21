@@ -48,11 +48,6 @@ end DualPair
 def hext (B : BX R₀) {R : LAlg R₀} (h : B.gg →ₗ[R₀] (R : Type u)) : B.gg ⊗[R₀] (R : Type u) →ₗ[R₀] (R : Type u) :=
   LinearMap.mul' R₀ (R : Type u) ∘ₗ TensorProduct.map h LinearMap.id
 
-def LinPairStatement (B : BX R₀) (O : LAlg R₀) : Prop :=
-  ∀ (A : OAdj B O) (R : LAlg R₀) (s : LHom O R) (N : ℕ) (x z : B.G R) (w : (R : Type u)ˣ),
-    N • x = 0 → N • z = 0 →
-    (B.IsPairing N (A.a.f s x) z w ↔ B.IsPairing N x (A.ab.f s z) w)
-
 def LinHtStatement (B : BX R₀) (O : LAlg R₀) : Prop :=
   ∀ (A : OAdj B O) (R : LAlg R₀) (s : LHom O R) (Dp : DualPair R) (N : ℕ) (y : B.G R)
     (h : B.gg →ₗ[R₀] (R : Type u)) (δ : B.gg →ₗ[R₀] B.gg ⊗[R₀] (R : Type u)),
@@ -60,17 +55,5 @@ def LinHtStatement (B : BX R₀) (O : LAlg R₀) : Prop :=
     (∀ v, A.ab.f (Dp.σ.comp s) (B.tg Dp.π Dp.sqZero (v ⊗ₜ Dp.ηk)) =
       B.tg Dp.π Dp.sqZero (LinearMap.lTensor B.gg Dp.ηmap (δ v))) →
     B.IsHeight Dp N (A.a.f s y) (hext B h ∘ₗ δ)
-
-def OEnd.idE (B : BX R₀) (O : LAlg R₀) : OEnd B O where
-  f _ := AddMonoidHom.id _
-  nat _ _ _ := rfl
-
-def OAdj.idA (B : BX R₀) (O : LAlg R₀) : OAdj B O where
-  a := OEnd.idE B O
-  ab := OEnd.idE B O
-  e _ _ _ := Equiv.refl _
-  e_smul _ _ _ _ _ := rfl
-  equiv_addFst _ _ _ _ _ _ := rfl
-  equiv_addSnd _ _ _ _ _ _ := rfl
 
 end ReciprocityTheory.PGsh

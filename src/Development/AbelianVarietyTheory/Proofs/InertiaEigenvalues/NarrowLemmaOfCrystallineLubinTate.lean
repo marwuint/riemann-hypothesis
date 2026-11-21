@@ -1,11 +1,18 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Statements.WeilDeligneCrystalline.LTCrys
-import Development.AbelianVarietyTheory.Statements.WeilDeligneCrystalline.EqNegOneOfJumpAt
-import Development.AbelianVarietyTheory.Statements.WeilDeligneCrystalline.ConradLocalTied
+import CompanionTheory.AutomorphicTheory.PadicUnitaryWeights.CrystallineUnitParts.ConradLocalTiedness
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.HeckeLAdicCharacterDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.AlgebraicCharacterWD
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLubinTateChar
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ExistsCoprimePowOfMemIneKer
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRootOfUnityFixedDvdWeilGroupDegree
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.ConclusionFinite
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsOpenKerOfInfConn
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPadicAlgClRingEquivComplexCompEqOfCountabl
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LevGapTop
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalArtinExistsHolds
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlobalArtinReciprocityHolds
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousExtensionAdicCompletion
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormEmbeddingIntegerLeOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedCharIsCrystallineHodgeTateZero
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsCrystallineJumpsOfIsIsoMatrixGaloisRepresentat
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineTwistCrystallineCharacterJumpsShift
@@ -99,20 +106,6 @@ theorem Eig.gen {AI : LocAinf l P} (T : LocTied l P AI) (hc : IsCrys (P.PD K) (F
   rw [GlobalTheory.TwistJump.map_mulLeft]
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨hd i, h _ (hd i)⟩)
 
-theorem phi_ιA (AI : LocAinf l P) (k : ℕ) (x : Ainf l) :
-    (P.φB ^ k) (AI.ιA x) = AI.ιA (WittVector.map (iterateFrobenius _ l k) x) := by
-  induction k with
-  | zero =>
-    change AI.ιA x = _
-    congr 1
-    ext i
-    simp
-  | succ k ih =>
-    rw [pow_succ', AlgHom.mul_apply, ih, ← AI.ιA_φ, WittVector.frobenius_eq_map_frobenius]
-    congr 1
-    ext i
-    simp [iterateFrobenius_def, frobenius_def, pow_succ, pow_mul]
-
 variable (P) in
 
 def Good (f : ℕ) (χ : ↥(GK K) →* (↥L.1)ˣ) (a : (↥K.1 →ₐ[ℚ_[l]] ↥L.1) → ℤ) (c : (↥L.1)ˣ) : Prop :=
@@ -128,22 +121,6 @@ theorem Good.inv (h : Good P f χ a c) : Good P f χ⁻¹ (-a) c⁻¹ :=
     (h.2.2.gen T h.1).eig_inv h1⟩
 
 end Local
-
-section Bridge
-
-variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime]
-  (P : LocPrime l) {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
-  {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O)
-  {L L' : FinExt l} (hL : L.1 ≤ L'.1)
-
-def tr : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] P.R.B →ₗ[ℚ_[l]] ↥L'.1 ⊗[ℚ_[l]] P.R.B :=
-  LinearMap.rTensor P.R.B ((IntermediateField.inclusion hL).toLinearMap ∘ₗ LinearMap.proj 0)
-
-variable (ψ : ↥(Dec (F := E) A) →* GL (Fin 1) ↥L.1) (χ : ↥(GK Bw.Kw) →* (↥L'.1)ˣ)
-  (hχ : ∀ g, (((χ g : (↥L'.1)ˣ) : ↥L'.1) : Qbar l) = ent ψ (Bw.e.symm g))
-include hχ
-
-end Bridge
 
 end GlobalTheory.PY.LocAlgCrys
 

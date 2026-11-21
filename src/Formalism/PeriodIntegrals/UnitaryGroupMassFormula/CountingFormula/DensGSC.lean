@@ -36,13 +36,6 @@ theorem latBasis_exists (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace 
     have := S.smul_mem (⟨b.repr v k, h k⟩ : 𝒪[F]) (show b k ∈ S by rw [hb]; exact (b0 k).2)
     exact this
 
-section Herm
-
-variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
-variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
-
-end Herm
-
 section Coord
 
 variable {F : Type} [Field F] {E : Type} [CommRing E] [Algebra F E]

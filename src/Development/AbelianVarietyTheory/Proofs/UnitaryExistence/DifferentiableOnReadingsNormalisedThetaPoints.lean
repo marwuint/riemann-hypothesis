@@ -12,11 +12,11 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPoin
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeExistsUniqueOfSamePoint
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedModuliAlgebraicLawsChartWeightIntegralityStatement
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsThetaPtStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ThetaPointsFrameRatioStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsChartHolomorphicCoordinatesNearFrameStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DifferentiableOnExponentialFrameMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DifferentiableOnThetaAlgebraicGeneratorFactorStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DifferentiableOnNaturalRuleHolomorphicFramesStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ThetaPointsFrameRatio
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsChartHolomorphicCoordinatesNearFrame
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DifferentiableOnExponentialFrameMatrix
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DifferentiableOnThetaAlgebraicGeneratorFactor
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DifferentiableOnNaturalRuleHolomorphicFrames
 
 open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.L2.PjFree
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
@@ -62,7 +62,7 @@ theorem differentiableOn_thetaPt (hbc : Out.SecBaseChangeSt) (htw : Out.SecTwist
     DifferentiableOn ℂ (fun b => toC (evR Xo c f (y b))) (T.co ⁻¹' (M.X k).dom) := by
   intro b₀ hb₀
   obtain ⟨p, y₀, B, ψ, hBo, hb₀B, hBd, hψu, hψd⟩ :=
-    GlobalTheory.T.exists_chart_holomorphic_coordinates_near_frame hbc E H Dw l Xo c σ g e F r M k T b₀ hb₀
+    _root_.GlobalTheory.HolChart.exists_chart_holomorphic hbc E H Dw l Xo c σ g e F r M k T b₀ hb₀
   choose z hz using fun b =>
     GlobalTheory.Frames.FramedBaseChange.exists_frMap hbc E H Dw l Xo c p.R (CAt σ) (ψ b) y₀
   have hx : ∀ b ∈ B, (y b).x = (z b).x := by
@@ -80,11 +80,11 @@ theorem differentiableOn_thetaPt (hbc : Out.SecBaseChangeSt) (htw : Out.SecTwist
   choose gch sch hgs using hch
   have hall : ∀ b ∈ B, FrMap (ψ b) y₀ (z b) ∧ FrChg (gch b) (sch b) (z b) (y b) ∧
       IsThetaPt T b 1 (y b) := fun b hb => ⟨hz b, hgs b hb, hy b (hBd hb)⟩
-  have hG := GlobalTheory.T.differentiableOn_exponential_frame_matrix E H Dw l Xo c σ g e F r M k T p.R y₀ B ψ (fun _ => 1) z y gch sch
+  have hG := _root_.GlobalTheory.HolFrameMatrix.differentiableOn_frameMatrix E H Dw l Xo c σ g e F r M k T p.R y₀ B ψ (fun _ => 1) z y gch sch
     hBo hBd hψd hall
-  have hS := GlobalTheory.T.differentiableOn_theta_algebraic_generator_factor htw E H Dw l Xo c σ g e F r M k T p.R y₀ B ψ (fun _ => 1) z y gch sch
+  have hS := _root_.GlobalTheory.HolGen.differentiableOn_generator_factor htw E H Dw l Xo c σ g e F r M k T p.R y₀ B ψ (fun _ => 1) z y gch sch
     hBo hBd hψd hall (differentiableOn_const 1)
-  have hB := GlobalTheory.T.differentiableOn_natural_rule_holomorphic_frames hbc E H Dw l Xo c σ (Fin T.m → ℂ) B p y₀ ψ z y gch sch
+  have hB := _root_.GlobalTheory.HolEval.differentiableOn_evR hbc E H Dw l Xo c σ (Fin T.m → ℂ) B p y₀ ψ z y gch sch
     (fun b hb => ⟨hz b, hgs b hb⟩) hψd hG hS a n f hf
   exact (hB.differentiableAt (hBo.mem_nhds hb₀B)).differentiableWithinAt
 
@@ -126,7 +126,7 @@ theorem differentiableOn_rdU : Out.SecBaseChangeSt → Out.SecTwistSt → ∀ (E
         ring
       rw [h1]
       exact hθ
-    have hbor := GlobalTheory.T.thetaPoints_frame_ratio htw E H Dw l Xo c σ g e F r M k T (T.co.symm x) hb 1 t₀ _ _
+    have hbor := _root_.GlobalTheory.frBor_of_isThetaPt htw E H Dw l Xo c σ g e F r M k T (T.co.symm x) hb 1 t₀ _ _
       (hy _ hb) hθ'
     have hred : IsReduced (CAt σ) := by
       show IsReduced ℂ

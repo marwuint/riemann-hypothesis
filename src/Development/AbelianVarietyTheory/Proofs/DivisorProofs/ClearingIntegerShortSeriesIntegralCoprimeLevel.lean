@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralFourierCo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulShortNonneg
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IndexRangeMatrix
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.TotalDegreeLeOfRowDeg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectedLatticeDetIdealTypeNormIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectedLatticeDetIdealTypeNormIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShortSeriesBoundCoprimeTorsionMulStatement
 open CategoryTheory AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Theta
@@ -94,7 +94,7 @@ theorem smul_intZ_nonneg_coprime : ∀ (D : D7) (H : Host D.host.E) (Dw : Datum 
   have hsA : ∀ A : GlobalTheory.PlaceInt.Adapt Λ N ℓ, 0 ≤ nval T'.V (r * e)
       (io₂ (d.eF s * ∏ τ : D.host.E →+* ℂ, embK d.c₂ τ A.p.det ^ Dw.mult τ)) := by
     intro A
-    have h := GlobalTheory.T.intersectedLattice_detIdeal_typeNorm_integral D.host.E H Dw l c n Λ N d.l₂.M ℓ hN hℓ A s hs T'
+    have h := _root_.GlobalTheory.LatticeIndex.intersected_integral D.host.E H Dw l c n Λ N d.l₂.M ℓ hN hℓ A s hs T'
       (io₂.comp (d.eF : c.F →+* d.c₂.F)) hu (r * e)
     simpa [embK, map_prod, map_pow, GlobalTheory.PlaceInt.eF_embF] using h
   obtain ⟨t1, -⟩ := GlobalTheory.TorsFac.factorisation D.host.E H Dw d.l₂ d.Xo₂ N ℓ hN.1 hN.2.1 hℓ

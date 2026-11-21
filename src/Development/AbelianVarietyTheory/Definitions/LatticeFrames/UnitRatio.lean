@@ -40,10 +40,6 @@ open Classical in
 
 def Base.S (B : Base c) : Finset (GlobalTheory.FinPl.Pl D) := B.Pg.image fun PP => PP.under (𝓞 D.host.F)
 
-def Base.offS (B : Base c) (v : GlobalTheory.FinPl.Pl D) : Prop := v ∉ B.S
-
-def Base.onS (B : Base c) (v : GlobalTheory.FinPl.Pl D) : Prop := v ∈ B.S
-
 section Off
 
 open GlobalTheory.FinPl
@@ -86,54 +82,7 @@ variable {B : Base c} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
 
 namespace Off
 
-def atT (v : Pl D) : Prop := ∃ i, v = (o.p i).v
-
-def pair (j ρ : ℕ) (h : j + 2 * ρ + 2 = D.R.m) : PairDat o.p (c.X j) (c.bes j ρ h).V₀ (Fin (c.X j).rank) :=
-  ⟨o.β j, o.β₀ j ρ h, o.Q j⟩
-
-def mid (j : ℕ) : MidDat o.p (c.X j) (Fin (c.X j).rank) := ⟨o.β j, o.Q j⟩
-
-def Ram (j : ℕ) (φ : GA D (c.X j) → ℂ) : Prop := IsContAut (c.X j) φ ∧ ∀ i, RamAt (o.β j i) (o.Q j i) φ
-
-def dbl (j σ : ℕ) (h : j + 2 * (σ + 1) + 2 = D.R.m) :
-    DblLat (c.B j (σ + 1) h) (c.J j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) :=
-  ⟨o.L j, o.M j (σ + 1) h, o.L (j + 1), (c.x (j + 1)).L, o.L (j + 1 + 1), o.M (j + 1 + 1) σ (idx_step h)⟩
-
 end Off
-
-structure PinOff : Prop where
-  nodup : o.I.Nodup
-  all : ∀ i, i ∈ o.I
-  inj : Function.Injective fun i => (o.p i).v
-  off : ∀ i, B.offS (o.p i).v
-  char : ∀ i, (o.p i).IsChar c.ψ (o.χ i) ∧ (o.p i).UnitAA
-  moves : ∀ j, j < D.R.m → IsSelfDualC (c.V j) (o.L j) ∧ ∀ P, Moves (c.V j) (B.b j) (B.Λ j) (o.L j) P
-  latT : ∀ j, j ≤ D.R.m → ∀ i, (o.β j i).IsLat (c.x j).L (o.Q j i).lat
-  core : ∀ j ρ h v, B.offS v → ¬ o.atT v → ∃ LL, IsSelfDualC (c.bes j ρ h).L LL ∧ OrthAt (c.bes j ρ h).o (o.M j ρ h) (c.x j).L LL v
-  rep : ∀ j, j < D.R.m → ∀ f, Vac c.ψ _ _ (c.x j).L (c.x (j + 1)).L o.atT f →
-    OverAll c.ψ (o.β j) (o.β (j + 1)) (c.x j).L (c.x (j + 1)).L (fun i => phiOne (o.Q j i) (o.Q (j + 1) i)) o.I f
-      (comb c.ψ _ _ (o.cT j) f)
-  line : IsLineVec c.Lz o.ζ₀
-
-  tau : ∀ j h, (o.τ j h)ᴴ ⬝ ((c.bes j 0 h).L.gram ⬝ o.τ j h) = (-(D.host.xi0 * star D.host.xi0)) • c.Lz.gram ∧
-    ∃ lam : D.host.E, o.τ j h *ᵥ o.ζ₀ = lam • (c.bes j 0 h).ζ ∧ ∀ i, valuation k ((o.p i).pr (incA D lam)) = 1
-
-  top : ∀ j (h : j + 2 * 0 + 2 = D.R.m) v, B.offS v → ¬ o.atT v → ∃ (LL : Lat (c.bes j 0 h).L) (LZ : Lat c.Lz),
-    IsSelfDualC _ LL ∧ IsSelfDualC _ LZ ∧ OrthAt (c.bes j 0 h).o (o.M j 0 h) (c.x j).L LL v ∧
-    OrthAt (c.oT (j + 1 + 1) h) (c.x (j + 1 + 1)).L B.LT LZ v ∧
-    ∀ w ∈ latO (c.X (j + 1)) c.Lz ((c.x (j + 1)).L : Set _) (LZ : Set _) (· = v),
-      kap (o.τ j h) (c.X (j + 1)) w ∈ latO (c.bes j 0 h).L (c.X (j + 1)) (LL : Set _) ((c.x (j + 1)).L : Set _) (· = v)
-  topT : ∀ n (h : n = D.R.m) i, IsSumFrame (c.oT n h) o.ζ₀ (o.γ i) (o.γ₀ n h i) ∧
-    ∃ (Λ : Submodule 𝒪[k] (Fin c.T.rank → k)) (s : 𝓀[k]ˣ), (o.γ i).IsLat B.LT Λ ∧
-      (∀ y, y ∈ (o.Q n i).ker ↔ ((o.γ₀ n h i).b' * (o.β n i).b) *ᵥ y ∈ lastKer Λ) ∧
-      (o.Q n i).HasVal (((o.β n i).b' * (o.γ₀ n h i).b) *ᵥ (o.q.inv • avec k (Fin c.T.rank) 1 1)) s
-  fin : (∀ j, B.b j ∈ GfC (c.V j)) ∧ B.bT ∈ GfC c.T
-  movesT : IsSelfDualC c.T B.LT ∧ ∀ P, Moves c.T B.bT B.ΛT B.LT P
-  good : ∀ j ρ h v, B.offS v → GoodBF c.ψ (c.B j ρ h) (c.J j ρ h) (o.L j) (o.M j ρ h) (o.L (j + 1)) (c.x (j + 1)).L v
-  adapt : ∀ j σ h v, B.offS v → AdaptFB c.ψ (c.J j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (o.L (j + 1)) (c.x (j + 1)).L
-    (o.L (j + 1 + 1)) (o.M (j + 1 + 1) σ (idx_step h)) v
-  glued : ∀ j ρ h i, GluedCore (c.B j ρ h) (o.M j ρ h) o.q (o.β j i) (o.β₀ j ρ h i) (o.Q j i)
-  supp : ∀ j, j < D.R.m → CombAt o.atT (o.cT j) ∧ CombAt B.onS (o.cG j)
 
 end Off
 
@@ -200,12 +149,6 @@ def GAt.Red {PP : Formalism.L2.DIV.Pl D.host.E} (G : GAt B τ PP) (x : G.S.P.J) 
     b'.val = GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos _ _ b → ∀ z : 𝓞 D.host.E, Ideal.Quotient.mk PP.asIdeal z = g.val a' b' →
       valuation G.k ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val a b - (ofSplit G.q).pr (z : D.host.E)) < 1
 
-structure PinG (G : ∀ PP : B.Pg, GAt B τ PP.1) (cG : ∀ j, WO (c.X j) (c.X (j + 1)) →₀ ℂ) : Prop where
-  grp : ∀ g : ∀ PP : B.Pg, GL (Fin D.R.r) (Formalism.L2.DIV.kP PP.1), g ∈ B.P.H ↔ ∀ PP, ∃ x, (G PP).Red x (g PP)
-  chr : ∀ (g : B.P.H) (x : ∀ PP, (G PP).S.P.J), (∀ PP, (G PP).Red (x PP) (g.1 PP)) → B.P.chi g = ∏ PP, (G PP).S.P.lam (x PP)
-  prod : ∀ j, j < D.R.m → ∀ f, IsThetaFunO c.ψ _ _ f → comb c.ψ _ _ (cG j) f =
-    B.Pg.attach.toList.foldr (fun PP f' => comb c.ψ _ _ ((G PP).cg j) f') f
-
 end AtLevel
 
 structure Reformulated (B : Base c) (t : Tup c) where
@@ -217,25 +160,6 @@ structure Reformulated (B : Base c) (t : Tup c) where
   cQ : ∀ j, t.Ch j → t.Ch (j + 1) → WO (c.X j) (c.X (j + 1)) →₀ ℂ
   eQ : ∀ j, t.Ch j → GA D (c.V j) →₀ ℂ
   eQT : ∀ n, n = D.R.m → t.Ch n → GA D c.T →₀ ℂ
-
-open Classical in
-
-def Reformulated.atQ {B : Base c} {t : Tup c} (w : Reformulated B t) (v : GlobalTheory.FinPl.Pl D) : Prop := ∃ PP ∈ w.Q, v = PP.under (𝓞 D.host.F)
-
-open GlobalTheory.FinPl in
-
-structure PinTup {B : Base c} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
-    (o : Off B k ι) {t : Tup c} (w : Reformulated B t) : Prop where
-  offQ : ∀ v, w.atQ v → B.offS v ∧ ¬ o.atT v
-  dd : ∀ j, j < D.R.m → ∀ α γ, CombAt w.atQ (w.cQ j α γ) ∧
-    ∀ f, comb c.ψ _ _ (t.dd j α γ) f = comb c.ψ _ _ (w.cQ j α γ) (comb c.ψ _ _ (o.cG j) (comb c.ψ _ _ (o.cT j) f))
-  e : ∀ j α, (∀ g ∈ (w.eQ j α).support, g ∈ grpAt (c.V j) w.atQ) ∧ t.e j α = (w.eQ j α).mapDomain (· * B.b j)
-  eT : ∀ n h β, (∀ g ∈ (w.eQT n h β).support, g ∈ grpAt c.T w.atQ) ∧ t.eT n h β = (w.eQT n h β).mapDomain (· * B.bT)
-  kom : ∀ j, j < D.R.m → IsWeilDatumO c.ψ _ _ (w.μ (j + 1)) (w.μ (j + 1)) (t.kom j)
-  chBF : ∀ j ρ h, (t.sBF j ρ h).χV = w.μ (j + 1) * w.η⁻¹ ∧ (t.sBF j ρ h).χW = w.μ (j + 1)
-  chFB : ∀ j σ h, (t.sFB j σ h).χV = w.μ (j + 1 + 1) ∧ (t.sFB j σ h).χW = w.μ (j + 1 + 1) * w.η⁻¹
-  chT : ∀ j h, IsWeilDatumO c.ψ _ _ (w.μ (j + 1 + 1)) (w.μ (j + 1 + 1) * w.η⁻¹) (t.omT j h)
-  unr : ∀ v, B.offS v → CharUnramAt D w.η v ∧ (¬ w.atQ v → ∀ j, 1 ≤ j → j ≤ D.R.m → CharUnramAt D (w.μ j) v)
 
 end GlobalTheory.Fam
 

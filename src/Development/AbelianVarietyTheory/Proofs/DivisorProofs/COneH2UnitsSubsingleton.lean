@@ -1,7 +1,8 @@
 import Mathlib
 import GroundTheory.TateCohomology.CohTrivial
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.C1FieldNormSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.COnePropertyFiniteExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.C1FieldNormSurjective
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.COnePropertyFiniteExtension
 open IsLocalRing
 
 open CategoryTheory Limits groupCohomology GroundTheory.GroupCoh IntermediateField
@@ -18,9 +19,9 @@ theorem c_one_h2_units_subsingleton : ∀ (K L : Type) [Field K] [Field L] [Alge
     refine isZero_tateCohomology_zero_of_forall _ fun m hm => ?_
     let u : Lˣ := Additive.toMul m
     have hu : (u : L) ∈ fixedField S := fun s => congrArg Units.val (hm s)
-    have hCF := GlobalTheory.T.c_one_property_finite_extension K (fixedField S) hC
+    have hCF := _root_.GlobalTheory.c_one_of_finite_extension K (fixedField S) hC
     have hne : (⟨(u : L), hu⟩ : fixedField S) ≠ 0 := fun h => u.ne_zero (congrArg Subtype.val h)
-    obtain ⟨x, hx⟩ := GlobalTheory.T.exists_algebra_norm_eq_of_isFirstChernClass (fixedField S) L hCF _ hne
+    obtain ⟨x, hx⟩ := _root_.GlobalTheory.norm_surjective_of_is_c1 (fixedField S) L hCF _ hne
     have hx0 : x ≠ 0 := by
       rintro rfl
       rw [Algebra.norm_zero] at hx

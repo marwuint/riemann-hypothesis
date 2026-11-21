@@ -1,7 +1,8 @@
 import Formalism.HermitianCurvature.StatementTC
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OneLevelInequality
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OneLevelInequalitySplitBySize
+import Formalism.HermitianCurvature.StatementTA
+import Mathlib
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.AntidiagMulDiagonal
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.OneLevelInequalitySplitBySize
 
 namespace Formalism.FourierDecayAlt.P.RecursionWithDensities.A1
 
@@ -12,478 +13,16 @@ open Classical
 section gen
 variable {α : Type}
 
-lemma psd_congr {P : Finset α} {k k' : α → α → ℂ} (h : ∀ x ∈ P, ∀ y ∈ P, k x y = k' x y)
-    (hk : PSDOn P k) : PSDOn P k' := by
-  unfold TA.PSDOn at hk ⊢
-  refine ⟨fun x hx y hy => ?_, fun a => ?_⟩
-  · rw [← h x hx y hy, ← h y hy x hx]
-    exact hk.1 x hx y hy
-  · have e : ∑ x ∈ P, ∑ y ∈ P, conj (a x) * k' x y * a y =
-        ∑ x ∈ P, ∑ y ∈ P, conj (a x) * k x y * a y :=
-      Finset.sum_congr rfl fun x hx => Finset.sum_congr rfl fun y hy => by rw [h x hx y hy]
-    rw [e]
-    exact hk.2 a
-
-lemma psd_mono {P Q : Finset α} {k : α → α → ℂ} (hQ : Q ⊆ P) (hk : PSDOn P k) : PSDOn Q k := by
-  unfold TA.PSDOn at hk ⊢
-  refine ⟨fun x hx y hy => hk.1 x (hQ hx) y (hQ hy), fun a => ?_⟩
-  obtain ⟨b, hbQ, hb0⟩ : ∃ b : α → ℂ, (∀ x ∈ Q, b x = a x) ∧ ∀ x, x ∉ Q → b x = 0 :=
-    ⟨fun x => if x ∈ Q then a x else 0, fun x hx => by simp [hx], fun x hx => by simp [hx]⟩
-  have h := hk.2 b
-  have e1 : ∀ x ∈ P, ∑ y ∈ P, conj (b x) * k x y * b y = ∑ y ∈ Q, conj (b x) * k x y * b y :=
-    fun x _ => (Finset.sum_subset (f := fun y => conj (b x) * k x y * b y) hQ
-      (fun y _ hy => by simp [hb0 y hy])).symm
-  rw [Finset.sum_congr rfl e1] at h
-  rw [← Finset.sum_subset (f := fun x => ∑ y ∈ Q, conj (b x) * k x y * b y) hQ
-    (fun x _ hx => by simp [hb0 x hx])] at h
-  have e2 : ∑ x ∈ Q, ∑ y ∈ Q, conj (b x) * k x y * b y =
-      ∑ x ∈ Q, ∑ y ∈ Q, conj (a x) * k x y * a y :=
-    Finset.sum_congr rfl fun x hx => Finset.sum_congr rfl fun y hy => by rw [hbQ x hx, hbQ y hy]
-  rw [e2] at h
-  exact h
-
-noncomputable def restr (X : Finset α) (k : α → α → ℂ) : α → α → ℂ :=
-  fun x y => if x ∈ X ∧ y ∈ X then k x y else 0
-
-lemma psd_restr (X Y : Finset α) {k : α → α → ℂ} (hk : PSDOn X k) : PSDOn Y (restr X k) := by
-  have hU : PSDOn (X ∪ Y) (restr X k) := by
-    unfold TA.PSDOn at hk ⊢
-    refine ⟨fun x _ y _ => ?_, fun a => ?_⟩
-    · unfold restr
-      by_cases hx : x ∈ X
-      · by_cases hy : y ∈ X
-        · simp [hx, hy, hk.1 x hx y hy]
-        · simp [hx, hy]
-      · simp [hx]
-    · have e : ∑ x ∈ X ∪ Y, ∑ y ∈ X ∪ Y, conj (a x) * restr X k x y * a y =
-          ∑ x ∈ X, ∑ y ∈ X, conj (a x) * k x y * a y := by
-        rw [← Finset.sum_subset (f := fun x => ∑ y ∈ X ∪ Y, conj (a x) * restr X k x y * a y)
-          (fun z hz => Finset.mem_union_left _ hz) (fun x _ hx => by simp [restr, hx])]
-        refine Finset.sum_congr rfl fun x hx => ?_
-        rw [← Finset.sum_subset (f := fun y => conj (a x) * restr X k x y * a y)
-          (fun z hz => Finset.mem_union_left _ hz) (fun y _ hy => by simp [restr, hy])]
-        refine Finset.sum_congr rfl fun y hy => ?_
-        simp [restr, hx, hy]
-      rw [e]
-      exact hk.2 a
-  exact psd_mono (P := X ∪ Y) (fun z hz => Finset.mem_union_right _ hz) hU
-
-lemma psd_zero (P : Finset α) : PSDOn P (fun _ _ => (0 : ℂ)) := by
-  unfold TA.PSDOn
-  exact ⟨fun _ _ _ _ => by simp, fun a => by simp⟩
-
-lemma psd_add {P : Finset α} {k k' : α → α → ℂ} (hk : PSDOn P k) (hk' : PSDOn P k') :
-    PSDOn P (fun x y => k x y + k' x y) := by
-  unfold TA.PSDOn at hk hk' ⊢
-  refine ⟨fun x hx y hy => ?_, fun a => ?_⟩
-  · simp only [hk.1 x hx y hy, hk'.1 x hx y hy, map_add]
-  · have e : ∑ x ∈ P, ∑ y ∈ P, conj (a x) * (k x y + k' x y) * a y =
-        (∑ x ∈ P, ∑ y ∈ P, conj (a x) * k x y * a y) +
-          ∑ x ∈ P, ∑ y ∈ P, conj (a x) * k' x y * a y := by
-      rw [← Finset.sum_add_distrib]
-      refine Finset.sum_congr rfl fun x _ => ?_
-      rw [← Finset.sum_add_distrib]
-      refine Finset.sum_congr rfl fun y _ => ?_
-      ring
-    rw [e, Complex.add_re]
-    exact add_nonneg (hk.2 a) (hk'.2 a)
-
 variable {E : Type} [AddCommGroup E]
-
-lemma mk_eq_iff (L : AddSubgroup E) (x y : E) : ((x : E ⧸ L) = (y : E ⧸ L)) ↔ x - y ∈ L := by
-  exact QuotientAddGroup.eq_iff_sub_mem
 
 noncomputable def G (L : AddSubgroup E) (S : Finset E) (Th : E → α → α → ℂ) (c : E ⧸ L) : α → α → ℂ :=
   if hc : ∃ t₁ ∈ S, (t₁ : E ⧸ L) = c then Th hc.choose else fun _ _ => 0
 
-lemma G_cases (L : AddSubgroup E) (S : Finset E) (Th : E → α → α → ℂ) (c : E ⧸ L) :
-    ((¬ ∃ t₁ ∈ S, (t₁ : E ⧸ L) = c) ∧ G L S Th c = fun _ _ => 0) ∨
-      ∃ t₁ ∈ S, (t₁ : E ⧸ L) = c ∧ G L S Th c = Th t₁ := by
-  by_cases hc : ∃ t₁ ∈ S, (t₁ : E ⧸ L) = c
-  · right
-    refine ⟨hc.choose, hc.choose_spec.1, hc.choose_spec.2, ?_⟩
-    unfold G
-    rw [dif_pos hc]
-  · left
-    refine ⟨hc, ?_⟩
-    unfold G
-    rw [dif_neg hc]
-
-lemma G_sum (L : AddSubgroup E) (S : Finset E) (Th : E → α → α → ℂ) (R : Finset E)
-    (hR : ∀ x ∈ R, ∀ y ∈ R, x - y ∈ L → x = y) :
-    ∃ S' : Finset E, S' ⊆ S ∧ (∀ x ∈ S', ∃ t ∈ R, x - t ∈ L) ∧
-      (∀ x ∈ S', ∀ y ∈ S', x - y ∈ L → x = y) ∧
-      ∀ h h', ∑ t ∈ R, G L S Th (t : E ⧸ L) h h' = ∑ t₁ ∈ S', Th t₁ h h' := by
-  let f : E → E := fun t => if hc : ∃ t₁ ∈ S, (t₁ : E ⧸ L) = (t : E ⧸ L) then hc.choose else t
-  have hf : ∀ t : E, (∃ t₁ ∈ S, (t₁ : E ⧸ L) = (t : E ⧸ L)) → f t ∈ S ∧ (f t : E ⧸ L) = (t : E ⧸ L) := by
-    intro t hc
-    simp only [f, dif_pos hc]
-    exact hc.choose_spec
-  have hG : ∀ (t : E) (h h' : α), G L S Th (t : E ⧸ L) h h' =
-      if (∃ t₁ ∈ S, (t₁ : E ⧸ L) = (t : E ⧸ L)) then Th (f t) h h' else 0 := by
-    intro t h h'
-    by_cases hc : ∃ t₁ ∈ S, (t₁ : E ⧸ L) = (t : E ⧸ L)
-    · rw [if_pos hc]
-      unfold G
-      simp only [f, dif_pos hc]
-    · rw [if_neg hc]
-      unfold G
-      simp only [dif_neg hc]
-  let R' := R.filter fun t : E => ∃ t₁ ∈ S, (t₁ : E ⧸ L) = (t : E ⧸ L)
-  have hinj : Set.InjOn f R' := by
-    intro x hx y hy hxy
-    have hx' := Finset.mem_filter.mp hx
-    have hy' := Finset.mem_filter.mp hy
-    have e1 := (hf x hx'.2).2
-    have e2 := (hf y hy'.2).2
-    have : (x : E ⧸ L) = (y : E ⧸ L) := by rw [← e1, ← e2, hxy]
-    exact hR x hx'.1 y hy'.1 ((mk_eq_iff L x y).mp this)
-  refine ⟨R'.image f, ?_, ?_, ?_, ?_⟩
-  · intro x hx
-    obtain ⟨t, ht, rfl⟩ := Finset.mem_image.mp hx
-    exact (hf t (Finset.mem_filter.mp ht).2).1
-  · intro x hx
-    obtain ⟨t, ht, rfl⟩ := Finset.mem_image.mp hx
-    exact ⟨t, (Finset.mem_filter.mp ht).1, (mk_eq_iff L _ _).mp (hf t (Finset.mem_filter.mp ht).2).2⟩
-  · intro x hx y hy hxy
-    obtain ⟨t, ht, rfl⟩ := Finset.mem_image.mp hx
-    obtain ⟨t', ht', rfl⟩ := Finset.mem_image.mp hy
-    have e1 := (hf t (Finset.mem_filter.mp ht).2).2
-    have e2 := (hf t' (Finset.mem_filter.mp ht').2).2
-    have hc : (f t : E ⧸ L) = (f t' : E ⧸ L) := (mk_eq_iff L _ _).mpr hxy
-    rw [e1, e2] at hc
-    rw [hR t (Finset.mem_filter.mp ht).1 t' (Finset.mem_filter.mp ht').1 ((mk_eq_iff L t t').mp hc)]
-  · intro h h'
-    rw [Finset.sum_image hinj]
-    simp only [hG]
-    rw [Finset.sum_filter]
-
 end gen
-
-section ta
-variable {E : Type} [Field E] [DecidableEq E]
-
-lemma ext_inj {h h' : Pt E} {s : ℕ} {t t' : E} (e : TA.ext h s t = TA.ext h' s t') :
-    h = h' ∧ t = t' := by
-  unfold TA.ext at e
-  obtain ⟨h1, h2⟩ := List.append_inj' e rfl
-  exact ⟨h1, by simpa using h2⟩
-
-lemma mem_ext (Sg : ℕ → ℕ → Finset E) (i s : ℕ) (hs : 1 ≤ s) (hsi : s ≤ i) (h : Pt E) (t : E) :
-    TA.ext h s t ∈ PT Sg i ↔ h ∈ PT Sg (i - s) ∧ t ∈ Sg i s := by
-  obtain ⟨n, rfl⟩ : ∃ n, i = n + 1 := ⟨i - 1, by omega⟩
-  simp only [PT, Finset.mem_biUnion, Finset.mem_attach, true_and, Finset.mem_image]
-  constructor
-  · rintro ⟨a, h', hh', t', ht', he⟩
-    have hlt := Finset.mem_range.mp a.2
-    unfold TA.ext at he
-    obtain ⟨h1, h2⟩ := List.append_inj' he rfl
-    have h3 : n + 1 - a.1 = s ∧ t' = t := by simpa using h2
-    have ha : a.1 = n + 1 - s := by omega
-    rw [← h1, ← h3.2, ← ha, ← h3.1]
-    exact ⟨hh', ht'⟩
-  · rintro ⟨hh, ht⟩
-    have ha : n + 1 - s ∈ Finset.range (n + 1) := Finset.mem_range.mpr (by omega)
-    have e : n + 1 - (n + 1 - s) = s := by omega
-    refine ⟨⟨n + 1 - s, ha⟩, h, hh, t, ?_, ?_⟩
-    · simp only [e]
-      exact ht
-    · simp only [e]
-
-private theorem isPt_of_mem_pt (Sg : ℕ → ℕ → Finset E) (hNZ : NZSg Sg) :
-    ∀ n, ∀ h ∈ PT Sg n, IsPt n h := by
-  intro n
-  induction n using Nat.strong_induction_on with
-  | _ n ih =>
-    intro h hh
-    cases n with
-    | zero =>
-      simp only [PT, Finset.mem_singleton] at hh
-      subst hh
-      simp [TA.IsPt, TA.lvl]
-    | succ n =>
-      simp only [PT, Finset.mem_biUnion, Finset.mem_attach, true_and, Finset.mem_image] at hh
-      obtain ⟨a, h0, hh0, t, ht, he⟩ := hh
-      subst he
-      have hm := Finset.mem_range.mp a.2
-      obtain ⟨hl, hb⟩ := ih a.1 hm h0 hh0
-      unfold TA.IsPt
-      refine ⟨?_, ?_⟩
-      · simp [TA.ext, TA.lvl] at hl ⊢
-        omega
-      · intro b hbm
-        simp only [TA.ext, List.mem_append, List.mem_singleton] at hbm
-        rcases hbm with hbm | rfl
-        · exact hb b hbm
-        · refine ⟨?_, hNZ _ _ t ht⟩
-          show 1 ≤ n + 1 - a.1
-          omega
-
-lemma blk_psd (D : TA.Data E) (Sg : ℕ → ℕ → Finset E) (hNZ : NZSg Sg) (hK : AxK D) (i s : ℕ)
-    (hs : 1 ≤ s) (hsi : s ≤ i) (hi : i ≤ D.r + 1) (t : E) (ht : t ≠ 0) :
-    PSDOn (PT Sg (i - s)) (fun h h' => D.K i (TA.ext h s t) (TA.ext h' s t)) := by
-  obtain ⟨_, hK2⟩ := hK
-  have hP : ∀ p ∈ (PT Sg (i - s)).image (fun h => TA.ext h s t), IsPt i p := by
-    intro p hp
-    obtain ⟨h, hh, rfl⟩ := Finset.mem_image.mp hp
-    obtain ⟨hl, hb⟩ := isPt_of_mem_pt Sg hNZ (i - s) h hh
-    unfold TA.IsPt
-    refine ⟨?_, ?_⟩
-    · simp [TA.ext, TA.lvl] at hl ⊢
-      omega
-    · intro b hbm
-      simp only [TA.ext, List.mem_append, List.mem_singleton] at hbm
-      rcases hbm with hbm | rfl
-      · exact hb b hbm
-      · exact ⟨hs, ht⟩
-  have hk := hK2 i hi _ hP
-  have hinj : Set.InjOn (fun h => TA.ext h s t) (PT Sg (i - s)) := fun x _ y _ e => (ext_inj e).1
-  unfold TA.PSDOn at hk ⊢
-  refine ⟨fun x hx y hy => hk.1 _ (Finset.mem_image_of_mem _ hx) _ (Finset.mem_image_of_mem _ hy),
-    fun a => ?_⟩
-  have h := hk.2 (fun p => a p.dropLast)
-  simp only [Finset.sum_image hinj] at h
-  simpa [TA.ext] using h
-
-theorem domMinOfTextA : TC.DomMinOfTextA := by
-  intro E _ _ D Sg Th hNZ hT i s hs hsi hi
-  obtain ⟨_, h2, h3, h4⟩ := hT i s hs hsi hi
-  refine ⟨fun t ht => h3 t (hNZ i s t ht), fun t _ t' _ hl h hh h' hh' => ?_,
-    fun R _ hR => h4 R hR⟩
-  have := h2 t' (t - t') hl h hh h' hh'
-  simpa using this
-
-theorem afterOfOldA : TC.AfterOfOldA := by
-  intro E _ _ D hA
-  have hT : ∀ Sg : ℕ → ℕ → Finset E, NZSg Sg → TC.DomTextA D Sg D.Th := by
-    intro Sg hNZ i s hs hsi hi
-    obtain ⟨h1, h2, h3, h4⟩ := hA i s hs hsi hi
-    have hP : ∀ h ∈ PT Sg (i - s), IsPt (i - s) h := isPt_of_mem_pt Sg hNZ (i - s)
-    exact ⟨fun t => h1 t _ hP, fun t l hl h _ h' _ => by rw [h2 t l hl],
-      fun t ht => h3 t _ ht hP, fun R hR => h4 R _ hR hP⟩
-  exact ⟨hT, fun Sg hNZ => ⟨D.Th, domMinOfTextA E D Sg D.Th hNZ (hT Sg hNZ)⟩⟩
-
-theorem majorantPSDA : TC.MajorantPSDA := by
-  intro E _ _ D Sg Th hNZ hK hD i s hs hsi hi t ht
-  have h1 := (hD i s hs hsi hi).1 t ht
-  have h2 := blk_psd D Sg hNZ hK i s hs hsi hi t (hNZ i s t ht)
-  refine psd_congr ?_ (psd_add h1 h2)
-  intro x _ y _
-  exact sub_add_cancel _ _
-
-end ta
-
-section main
-variable {E : Type} [Field E] [DecidableEq E]
-
-noncomputable def D' (D : TA.Data E) (Sg : ℕ → ℕ → Finset E)
-    (Th : ℕ → ℕ → E → TA.Pt E → TA.Pt E → ℂ) : TA.Data E :=
-  { D with
-    K := fun i => restr (PT Sg i) (D.K i)
-    Th := fun i s t => restr (PT Sg (i - s)) (G (D.La i s) (Sg i s) (Th i s) (t : E ⧸ D.La i s)) }
-
-lemma slev_eq {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {W : Type}
-    (D : TA.Data E) (Sg : ℕ → ℕ → Finset E) (Th) (Φ : W → Pt E → H) (w : W) (j : ℕ) :
-    Slev (D' D Sg Th) Sg Φ w j = Slev D Sg Φ w j := by
-  unfold TA.Slev TA.gram
-  congr 1
-  refine Finset.sum_congr rfl fun x hx => Finset.sum_congr rfl fun y hy => ?_
-  show restr (PT Sg j) (D.K j) x y * _ = _
-  unfold restr
-  rw [if_pos ⟨hx, hy⟩]
-
-lemma lsup_eq {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {W : Type} [Fintype W]
-    (D : TA.Data E) (Sg : ℕ → ℕ → Finset E) (Th) (len : W → ℕ) (Kl : ℕ) (Φ : W → Pt E → H) (j : ℕ) :
-    lsup (D' D Sg Th) len Kl Sg Φ j = lsup D len Kl Sg Φ j := by
-  unfold TA.lsup
-  simp only [slev_eq]
-  try rfl
-
-lemma G_psd (D : TA.Data E) (Sg : ℕ → ℕ → Finset E) (Th) (hNZ : NZSg Sg) (hK : AxK D)
-    (hD : TC.DomMinA D Sg Th) (i s : ℕ) (hs : 1 ≤ s) (hsi : s ≤ i) (hi : i ≤ D.r + 1)
-    (c : E ⧸ D.La i s) : PSDOn (PT Sg (i - s)) (G (D.La i s) (Sg i s) (Th i s) c) := by
-  rcases G_cases (D.La i s) (Sg i s) (Th i s) c with ⟨_, h0⟩ | ⟨t₁, ht₁, _, h1⟩
-  · rw [h0]
-    exact psd_zero _
-  · rw [h1]
-    exact majorantPSDA E D Sg Th hNZ hK hD i s hs hsi hi t₁ ht₁
-
-theorem axK' (D : TA.Data E) (Sg : ℕ → ℕ → Finset E) (Th) (hNZ : NZSg Sg) (hK : AxK D) :
-    AxK (D' D Sg Th) := by
-  obtain ⟨hK1, hK2⟩ := hK
-  unfold TA.AxK
-  refine ⟨?_, fun i hi P hP => ?_⟩
-  · show restr (PT Sg 0) (D.K 0) [] [] = 1
-    have h0 : ([] : Pt E) ∈ PT Sg 0 := by simp [PT]
-    unfold restr
-    rw [if_pos ⟨h0, h0⟩]
-    exact hK1
-  · show PSDOn P (restr (PT Sg i) (D.K i))
-    exact psd_restr (PT Sg i) P (hK2 i hi _ (isPt_of_mem_pt Sg hNZ i))
-
-theorem axA2' (D : TA.Data E) (Sg : ℕ → ℕ → Finset E) (Th) (hA : KernelSupport D) : KernelSupport (D' D Sg Th) := by
-  intro i s hs hsi hi h h' t t' hh hh' ht ht' hc
-  have := hA i s hs hsi hi h h' t t' hh hh' ht ht' hc
-  show restr (PT Sg i) (D.K i) (TA.ext h s t) (TA.ext h' s t') = 0
-  unfold restr
-  split_ifs <;> simp [this]
-
-theorem thetaDomination_d_of_axK_of_domMinA (D : TA.Data E) (Sg : ℕ → ℕ → Finset E) (Th) (hNZ : NZSg Sg) (hK : AxK D)
-    (hD : TC.DomMinA D Sg Th) : ThetaDomination (D' D Sg Th) := by
-  intro i s hs hsi hi
-  have hG := G_psd D Sg Th hNZ hK hD i s hs hsi hi
-  obtain ⟨h1, h2, h3⟩ := hD i s hs hsi hi
-  refine ⟨fun t Hd _ => psd_restr (PT Sg (i - s)) Hd (hG (t : E ⧸ D.La i s)),
-    fun t l hl => ?_, fun t Hd ht _ => ?_, fun R Hd hR _ => ?_⟩
-  · show restr (PT Sg (i - s)) (G (D.La i s) (Sg i s) (Th i s) ((t + l : E) : E ⧸ D.La i s)) =
-      restr (PT Sg (i - s)) (G (D.La i s) (Sg i s) (Th i s) (t : E ⧸ D.La i s))
-    rw [(mk_eq_iff (D.La i s) (t + l) t).mpr (by have hl' : l ∈ D.La i s := hl; simpa using hl')]
-  · by_cases htS : t ∈ Sg i s
-    · obtain ⟨t₁, ht₁, hc₁, hG₁⟩ : ∃ t₁ ∈ Sg i s, ((t₁ : E ⧸ D.La i s) = (t : E ⧸ D.La i s)) ∧
-          G (D.La i s) (Sg i s) (Th i s) (t : E ⧸ D.La i s) = Th i s t₁ := by
-        rcases G_cases (D.La i s) (Sg i s) (Th i s) (t : E ⧸ D.La i s) with ⟨hn, _⟩ | h
-        · exact absurd ⟨t, htS, rfl⟩ hn
-        · exact h
-      have hl : t₁ - t ∈ D.La i s := (mk_eq_iff _ _ _).mp hc₁
-      refine psd_congr (fun h _ h' _ => ?_) (psd_restr (PT Sg (i - s)) Hd (h1 t htS))
-      show restr _ _ h h' =
-        restr (PT Sg (i - s)) (G (D.La i s) (Sg i s) (Th i s) (t : E ⧸ D.La i s)) h h' -
-          restr (PT Sg i) (D.K i) (TA.ext h s t) (TA.ext h' s t)
-      unfold restr
-      by_cases hm : h ∈ PT Sg (i - s) ∧ h' ∈ PT Sg (i - s)
-      · have he : TA.ext h s t ∈ PT Sg i ∧ TA.ext h' s t ∈ PT Sg i :=
-          ⟨(mem_ext Sg i s hs hsi h t).mpr ⟨hm.1, htS⟩, (mem_ext Sg i s hs hsi h' t).mpr ⟨hm.2, htS⟩⟩
-        rw [if_pos hm, if_pos hm, if_pos he, hG₁, h2 t₁ ht₁ t htS hl h hm.1 h' hm.2]
-      · have he : ¬ (TA.ext h s t ∈ PT Sg i ∧ TA.ext h' s t ∈ PT Sg i) := fun he =>
-          hm ⟨((mem_ext Sg i s hs hsi h t).mp he.1).1, ((mem_ext Sg i s hs hsi h' t).mp he.2).1⟩
-        rw [if_neg hm, if_neg hm, if_neg he, sub_zero]
-    · refine psd_congr (fun h _ h' _ => ?_)
-        (psd_restr (PT Sg (i - s)) Hd (hG (t : E ⧸ D.La i s)))
-      have he : ¬ (TA.ext h s t ∈ PT Sg i ∧ TA.ext h' s t ∈ PT Sg i) := fun he =>
-        htS ((mem_ext Sg i s hs hsi h t).mp he.1).2
-      show _ = restr (PT Sg (i - s)) (G (D.La i s) (Sg i s) (Th i s) (t : E ⧸ D.La i s)) h h' -
-        restr (PT Sg i) (D.K i) (TA.ext h s t) (TA.ext h' s t)
-      unfold restr
-      rw [if_neg he, sub_zero]
-  · obtain ⟨S', hS', -, hSd, hsum⟩ := G_sum (D.La i s) (Sg i s) (Th i s) R hR
-    refine psd_congr (fun h _ h' _ => ?_) (psd_restr (PT Sg (i - s)) Hd (h3 S' hS' hSd))
-    show _ = ((1 + (D' D Sg Th).e i : ℝ) : ℂ) * restr (PT Sg (i - s)) (D.K (i - s)) h h' -
-      ∑ t ∈ R, restr (PT Sg (i - s)) (G (D.La i s) (Sg i s) (Th i s) (t : E ⧸ D.La i s)) h h'
-    unfold restr
-    by_cases hm : h ∈ PT Sg (i - s) ∧ h' ∈ PT Sg (i - s)
-    · simp only [if_pos hm]
-      rw [hsum h h']
-      try rfl
-    · simp only [if_neg hm, mul_zero, Finset.sum_const_zero, sub_zero]
-
-theorem oneLevelAfterOfOldA : TC.OneLevelAfterOfOldA := by
-  intro hO E _ _ H _ _ W _ len Kl D Sg Φ tr Pat1 Pat3 _ pat1 pat3 c1 c3 ep1 ep3 bd4 ep a i hNZ hi1 hi hep ha
-    hK hA2 hTh hE hLE hLS
-  obtain ⟨Th, hD⟩ := hTh
-  have h := hO E H W len Kl (D' D Sg Th) Sg Φ tr Pat1 Pat3 pat1 pat3 c1 c3 ep1 ep3 bd4 ep a i hNZ hi1 hi
-    hep ha (axK' D Sg Th hNZ hK) (axA2' D Sg Th hA2) (thetaDomination_d_of_axK_of_domMinA D Sg Th hNZ hK hD) hE hLE hLS
-  simp only [lsup_eq] at h
-  exact h
-
-theorem oneLevelAfterA : TC.OneLevelAfterA := oneLevelAfterOfOldA one_level_inequality
-
-end main
 
 end Formalism.FourierDecayAlt.P.RecursionWithDensities.A1
 
 namespace Formalism.FourierDecayAlt.P.RecursionWithDensities.A2
-
-open Formalism.FourierDecayAlt.TA Finset Filter Topology
-open scoped ComplexConjugate InnerProductSpace
-open Formalism.FourierDecayAlt.P.BudgetLiftBounds Formalism.FourierDecayAlt.TC
-
-theorem reductionAfterOfSteps : ReductionAfterOfSteps := by
-  intro hOL hEps hA4 hJ C₀ hC₀
-  obtain ⟨C', C, hJ'⟩ := hJ C₀ hC₀
-  refine ⟨max C' 1, C, ?_⟩
-  intro E _ _ H _ _ _ W _ len Kl f Θ D Pat1 Pat3 _ pat1 pat3 c1 c3 ep1 ep3 bd4 Φ tr w0 V jn ρ c
-    hKl hf hΘ hr hK hA2 hDA hE hLS hLE hlim hw0 hV hPSD hsum
-  have hΘ1 : 1 ≤ Θ := le_trans (le_max_right _ _) hΘ
-  have hΘ0 : 0 < Θ := by linarith
-  have hep : 0 ≤ (C₀ * Θ ^ (-((Kl : ℝ) - 5 / 2))) ^ f := by
-    apply pow_nonneg
-    apply mul_nonneg (by linarith)
-    first
-    | exact Real.rpow_nonneg hΘ0.le _
-    | exact Real.rpow_nonneg_of_nonneg hΘ0.le _
-  have ha : 0 ≤ (C₀ / Θ) ^ f := pow_nonneg (div_nonneg (by linarith) hΘ0.le) _
-  have hG : ∀ Sg : ℕ → ℕ → Finset E, NZSg Sg → (gram (D.K (D.r + 1)) V (PT Sg (D.r + 1))).re ≤
-      (1 + C * ((D.r : ℝ) + 1) * (C₀ / Θ) ^ f) * (∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i)) * jn := by
-    intro Sg hNZ
-    obtain ⟨Th, hD⟩ := hDA Sg hNZ
-    refine hEps E H W len (D.K (D.r + 1)) (PT Sg (D.r + 1)) Φ V w0 (4 * Kl * (D.r + 1))
-      ((1 + C * ((D.r : ℝ) + 1) * (C₀ / Θ) ^ f) * (∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i))) jn
-      (by omega) (fun eps heps => ?_) hlim (fun p hp => hV p (A1.isPt_of_mem_pt Sg hNZ _ p hp))
-    let σ : ℕ → ℝ := fun i => √(lsup D len Kl Sg (Φ eps) i)
-    let e' : ℕ → ℝ := fun i => max (D.e i) 0
-    have hstep : ∀ i, 1 ≤ i → i ≤ D.r + 1 → σ i ≤
-        (1 + (C₀ * Θ ^ (-((Kl : ℝ) - 5 / 2))) ^ f) * √(1 + e' i) * σ (i - 1) +
-          ∑ t ∈ Icc 2 i, ((C₀ / Θ) ^ f) ^ (t - 1) * σ (i - t) := by
-      intro i hi1 hi
-      have he : e' i = D.e i := max_eq_left (hE i hi1 hi).1
-      simp only [σ, he]
-      exact hOL E H W len Kl D Sg (Φ eps) (tr eps i) Pat1 Pat3 (pat1 i) (pat3 i) (c1 i) (c3 i) (ep1 i)
-        (ep3 i) (bd4 i) _ _ i hNZ hi1 hi hep ha hK hA2 ⟨Th, hD⟩ hE
-        (hLE eps heps i (Finset.mem_Icc.mpr ⟨hi1, hi⟩)) (hLS i (Finset.mem_Icc.mpr ⟨hi1, hi⟩))
-    have hrec := hJ' (Kl : ℝ) Θ f D.r e' σ (by exact_mod_cast hKl) hf (le_trans (le_max_left _ _) hΘ) hr
-      (fun i => le_max_right _ _) (fun i => Real.sqrt_nonneg _) hstep
-    have hprod : ∏ i ∈ Icc 1 (D.r + 1), (1 + e' i) = ∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i) :=
-      Finset.prod_congr rfl fun i hi => by
-        show 1 + max (D.e i) 0 = 1 + D.e i
-        rw [max_eq_left (hE i (Finset.mem_Icc.mp hi).1 (Finset.mem_Icc.mp hi).2).1]
-    rw [hprod] at hrec
-    have h0 : ∀ w, TA.Slev D Sg (Φ eps) w 0 = ‖Φ eps w []‖ ^ 2 := by
-      intro w
-      obtain ⟨hK1, -⟩ := hK
-      simp only [TA.Slev, TA.gram, PT, Finset.sum_singleton, hK1, one_mul]
-      first
-      | exact inner_self_eq_norm_sq (𝕜 := ℂ) _
-      | simp
-    have hl0 : lsup D len Kl Sg (Φ eps) 0 =
-        wsup len (4 * Kl * (D.r + 1)) (fun w => ‖Φ eps w []‖ ^ 2) := by
-      unfold TA.lsup
-      simp only [Nat.sub_zero, h0]
-    have hnn : 0 ≤ lsup D len Kl Sg (Φ eps) 0 := by
-      rw [hl0]
-      unfold TA.wsup
-      exact Real.iSup_nonneg fun _ => sq_nonneg _
-    have hσ0 : σ 0 ^ 2 = wsup len (4 * Kl * (D.r + 1)) (fun w => ‖Φ eps w []‖ ^ 2) := by
-      simp only [σ]
-      rw [Real.sq_sqrt hnn, hl0]
-    have hg : (gram (D.K (D.r + 1)) (Φ eps w0) (PT Sg (D.r + 1))).re ≤
-        lsup D len Kl Sg (Φ eps) (D.r + 1) := by
-      unfold TA.lsup TA.wsup
-      have hw : len w0 ≤ 4 * Kl * (D.r + 1 - (D.r + 1)) := by omega
-      exact le_ciSup (f := fun w : {w // len w ≤ 4 * Kl * (D.r + 1 - (D.r + 1))} =>
-        TA.Slev D Sg (Φ eps) w.1 (D.r + 1)) (Set.finite_range _).bddAbove ⟨w0, hw⟩
-    have hsq : lsup D len Kl Sg (Φ eps) (D.r + 1) ≤ σ (D.r + 1) ^ 2 := by
-      simp only [σ]
-      by_cases h : 0 ≤ lsup D len Kl Sg (Φ eps) (D.r + 1)
-      · rw [Real.sq_sqrt h]
-      · exact le_trans (le_of_lt (not_le.mp h)) (sq_nonneg _)
-    calc (gram (D.K (D.r + 1)) (Φ eps w0) (PT Sg (D.r + 1))).re ≤ σ (D.r + 1) ^ 2 := le_trans hg hsq
-      _ ≤ (1 + C * ((D.r : ℝ) + 1) * (C₀ / Θ) ^ f) * (∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i)) * σ 0 ^ 2 :=
-        hrec
-      _ = _ := by rw [hσ0]
-  exact hA4 E H (D.r + 1) (D.K (D.r + 1)) V ρ c _ hG hPSD hsum
-
-theorem domAfterA_of_old {E : Type} [Field E] [DecidableEq E] (D : Data E) (h : ThetaDomination D) :
-    DomAfterA D := by
-  exact (A1.afterOfOldA E D h).2
-
-theorem reductionOfAfter : ReductionOfAfter := by
-  intro hR C₀ h0
-  obtain ⟨C', C, hC⟩ := hR C₀ h0
-  refine ⟨C', C, ?_⟩
-  intro E _ _ H _ _ _ W _ len Kl f Θ D Pat1 Pat3 _ pat1 pat3 c1 c3 ep1 ep3 bd4 Φ tr w0 V jn ρ c
-    hKl hf hΘ hr hK hA2 hA13 hE
-  exact hC E H W len Kl f Θ D Pat1 Pat3 pat1 pat3 c1 c3 ep1 ep3 bd4 Φ tr w0 V jn ρ c
-    hKl hf hΘ hr hK hA2 (domAfterA_of_old D hA13) hE
 
 end Formalism.FourierDecayAlt.P.RecursionWithDensities.A2
 
@@ -558,18 +97,6 @@ theorem domMinOfText : DomMinOfText := by
   rintro rfl
   exact T.zero_not_mem _ _ ht
 
-theorem afterOfOld : AfterOfOld := by
-  intro E W _ D hKer hA
-  obtain ⟨hKr, hTh⟩ := hKer
-  have hT : ∀ T : Tower E, DomText D T D.Th := by
-    intro T i s hs hsi hi
-    obtain ⟨_, h2, h3, h4⟩ := hA i s hs hsi hi
-    have hL : ∀ h ∈ T.X (i - s), level h = i - s := fun h hh => ((T.isTower (i - s) h).mp hh).1
-    exact ⟨fun t => hTh i s t _, fun t ht => h2 t ht _ hL,
-      fun t t' hl h _ h' _ => by rw [h3 t t' hl], fun S hS => h4 S hS _ hL⟩
-  exact ⟨hKr, fun i hi1 hi => (hA i 1 le_rfl hi1 hi).1, hT,
-    fun T => ⟨D.Th, domMinOfText E W D T D.Th (hT T)⟩⟩
-
 theorem majorantPSD : MajorantPSD := by
   intro E W _ D T Th hK hD i s hs hsi hi t ht
   have h1 := (hD i s hs hsi hi).1 t ht
@@ -584,17 +111,6 @@ theorem majorantPSD : MajorantPSD := by
   refine psd_congr ?_ (psd_add h1 h2)
   intro x _ y _
   exact sub_add_cancel _ _
-
-theorem domMonoE : DomMonoE := by
-  intro E W _ D T Th e' hK he hD i s hs hsi hi
-  obtain ⟨h1, h2, h3⟩ := hD i s hs hsi hi
-  refine ⟨h1, h2, fun S hS hSd => ?_⟩
-  have ha := psd_add (h3 S hS hSd)
-    (psd_smul (e' i - D.e i) (by linarith [he i]) (hK (i - s) (T.X (i - s))))
-  refine psd_congr (fun x _ y _ => ?_) ha
-  dsimp only
-  push_cast
-  ring
 
 theorem psd_restrict' {α : Type} {X : Finset α} (Y : Finset α) {k k' : α → α → ℂ} (hk : PSDOn X k)
     (h1 : ∀ x y, x ∈ X ∧ y ∈ X → k' x y = k x y) (h0 : ∀ x y, ¬ (x ∈ X ∧ y ∈ X) → k' x y = 0) :
@@ -960,30 +476,12 @@ theorem theoremAAfterOfSteps : TC.TheoremAAfterOfSteps := by
     _ ≤ (1 + C * ((D.r : ℝ) + 1) * (C / Θ) ^ D.f) * (∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i)) * σ₀ :=
         mul_le_mul_of_nonneg_left hσ00 (mul_nonneg hB0 hprod0)
 
-theorem theoremAOfAfter : TC.TheoremAOfAfter := by
-  intro hA C₁ C₄ h1 h4
-  obtain ⟨C, C', hC⟩ := hA C₁ C₄ h1 h4
-  refine ⟨C, C', ?_⟩
-  intro E W _ D Θ jn H _ _ _ Vt c hK hf hΘ hC' hr hS hG hKer hWd hA2 hA13 hEW hP hEL hEB hLS hEE
-    hCut hA4
-  obtain ⟨hKr, hEb, -, hDA⟩ := B1.afterOfOld E W D hKer hA13
-  exact hC E W D Θ jn H Vt c hK hf hΘ hC' hr hS hG hKr hWd hA2 hEb hDA hEW hP hEL hEB hLS hEE hCut hA4
-
 end Formalism.FourierDecayAlt.P.RecursionWithDensities.B2
 
 namespace Formalism.FourierDecayAlt.P.RecursionWithDensities.J1
 
 open Finset Formalism.FourierDecayAlt Formalism.FourierDecayAlt.TC
 open scoped ComplexOrder ComplexConjugate
-theorem t_EOfDens : EOfDens := by
-  intro r e sd h0 h1 h2 i hi1 hi2
-  rcases Nat.lt_or_ge i (r + 1) with h | h
-  · have := h0 i (Finset.mem_Icc.mpr ⟨hi1, by omega⟩)
-    constructor <;> linarith
-  · have hi : i = r + 1 := by omega
-    subst hi
-    constructor <;> linarith [le_max_right sd 1, max_le h2 (one_le_two : (1 : ℝ) ≤ 2)]
-
 theorem t_ProductOfEMax : ProductOfEMax := by
   intro r e sd h0 h1
   rw [Finset.prod_Icc_succ_top (by omega : 1 ≤ r + 1),
@@ -1017,61 +515,6 @@ theorem t_SumBoundMax : SumBoundMax := by
   push_cast
   ring
 
-theorem t_OnceOnlyMax : OnceOnlyMax := by
-  intro hO P _ B hpos hk hA
-  have h := hO P B hpos hk hA
-  have hA' := hA
-  unfold S3.MassData.InTheoremA S3.MassData.Smod at hA'
-  have hp := hpos.2
-  have hvN : 0 < B.volN := by tauto
-  have hvH : 0 < B.volH := by tauto
-  have hvN' : 0 < B.volN' := by tauto
-  have hvH' : 0 < B.volH' := by tauto
-  have hd : 0 < B.dimπ := by tauto
-  have hd' : 0 < B.dimπ' := by tauto
-  have hn : 0 < B.n0c := by tauto
-  have hδ : 0 ≤ B.δ := by tauto
-  have c0 : 0 ≤ B.c0 * B.c0' := by unfold S3.MassData.c0 S3.MassData.c0'; positivity
-  have h5 : 0 ≤ (1 + B.δ) * B.IntN := le_trans (mul_nonneg c0 hk.2) hA'
-  refine h.trans ?_
-  have h6 : (1 + B.δ) * B.supdens * (B.n0c * B.IntN) = B.supdens * (B.n0c * ((1 + B.δ) * B.IntN)) := by ring
-  have h7 : (1 + B.δ) * max B.supdens 1 * (B.n0c * B.IntN) = max B.supdens 1 * (B.n0c * ((1 + B.δ) * B.IntN)) := by ring
-  rw [h6, h7]
-  exact mul_le_mul_of_nonneg_right (le_max_left _ _) (mul_nonneg hn.le h5)
-
-theorem densityData_covers : MassDataCovers := by
-  intro P _ B r e hD h1 h0 hmax
-  rw [t_ProductOfEMax r e B.supdens h0 hmax]
-  exact max_le hD h1
-
-theorem t_DomTextOfSystems : DomTextOfSystems := by
-  intro E W _ D T Th hS i s hs hsi hi
-  obtain ⟨_, _, h3, h4, h5, h6⟩ := hS i s hs hsi hi
-  exact ⟨h4, h5, h3, h6⟩
-
-theorem t_RecHypAfterOfOld : RecHypAfterOfOld := by
-  intro hAO E W _ D C₁ C₄ Θ jn H _ _ Vt c hR
-  obtain ⟨h1, h2, h3, h4, h5, hKer, h7, h8, hA13, h10, h11, h12, h13, h14, h15, h16, h17⟩ := hR
-  obtain ⟨hKr, hEb, -, hDA⟩ := hAO E W D hKer hA13
-  unfold RecHypAfter
-  exact ⟨h1, h2, h3, h4, h5, hKr, h7, h8, hEb, hDA, h10, h11, h12, h13, h14, h15, h16, h17⟩
-
-theorem recursion_gives_densityData_after : RecursionGivesUniformBoundsAfter := by
-  intro hA C₁ C₄ h1 h4
-  obtain ⟨C, C', hC⟩ := hA C₁ C₄ h1 h4
-  refine ⟨C, C', ?_⟩
-  intro E W _ D Θ jn H _ _ _ Vt c hR hC' hr h0 P _ B hI hδ hS
-  unfold RecHypAfter at hR
-  obtain ⟨hK, hf, hΘ, hSz, hG, hKr, hWd, hA2, hEb, hDA, hEW, hP, hEL, hEB, hLS, hEE, hCut, hA4⟩ := hR
-  have hp : ∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i) = 1 :=
-    Finset.prod_eq_one (fun i hi => by rw [h0 i hi, add_zero])
-  have hb := hC E W D Θ jn H Vt c hK hf hΘ hC' hr hSz hG hKr hWd hA2 hEb hDA hEW hP hEL hEB hLS hEE
-    hCut hA4
-  rw [hp, mul_one] at hb
-  unfold S3.MassData.InTheoremA
-  rw [hI, hδ]
-  exact hS _ hb
-
 theorem t_RecursionWithDens : RecursionWithDens := by
   intro hA C₁ C₄ h1 h4
   obtain ⟨C, C', hC⟩ := hA C₁ C₄ h1 h4
@@ -1084,23 +527,6 @@ theorem t_RecursionWithDens : RecursionWithDens := by
     hCut hA4 R
   rwa [hp] at hb
 
-theorem t_DomAgree : DomAgree := by
-  intro hAg hTr hTw E W _ _ D T Th hD i s hs hsi hi
-  obtain ⟨h1, h2, h3⟩ := hD i s hs hsi hi
-  have hX : TA.PT (fun j s => T.Sg (j - s + 1) s) (i - s) = T.X (i - s) := (hTw E T (i - s)).symm
-  refine ⟨fun t ht => ?_, fun t ht t' ht' hl h hh h' hh' => ?_, fun R hR hRd => ?_⟩
-  · rw [hX]
-    apply ((hAg _ _ _).1).mp
-    refine B1.psd_congr (fun x _ y _ => ?_) (hTr _ _ _ (h1 t ht))
-    rfl
-  · rw [hX] at hh hh'
-    exact h2 t ht t' ht' hl h' hh' h hh
-  · rw [hX]
-    apply ((hAg _ _ _).1).mp
-    refine B1.psd_congr (fun x _ y _ => ?_) (hTr _ _ _ (h3 R hR hRd))
-    push_cast
-    rfl
-
 end Formalism.FourierDecayAlt.P.RecursionWithDensities.J1
 
 namespace Formalism.FourierDecayAlt.P
@@ -1109,49 +535,7 @@ open RecursionWithDensities
 
 theorem domination_minimum_of_text : Formalism.FourierDecayAlt.TC.DomMinOfText := RecursionWithDensities.B1.domMinOfText
 
-theorem after_of_old : Formalism.FourierDecayAlt.TC.AfterOfOld := RecursionWithDensities.B1.afterOfOld
-
-theorem majorant_positive_semidefinite : Formalism.FourierDecayAlt.TC.MajorantPSD := RecursionWithDensities.B1.majorantPSD
-
-theorem domination_monotone : Formalism.FourierDecayAlt.TC.DomMonoE := RecursionWithDensities.B1.domMonoE
-
-theorem one_level_after : Formalism.FourierDecayAlt.TC.OneLevelAfter := RecursionWithDensities.B1.oneLevelAfter
-
-theorem one_level_after_of_old : Formalism.FourierDecayAlt.TC.OneLevelAfterOfOld := RecursionWithDensities.B1.oneLevelAfterOfOld
-
 theorem theorem_a_after : Formalism.FourierDecayAlt.TC.TheoremAAfter := RecursionWithDensities.B2.theoremAAfterOfSteps RecursionWithDensities.B1.oneLevelAfter limitStep joint_theorem_A'
-
-theorem theorem_a_after_of_parts : Formalism.FourierDecayAlt.TC.TheoremAAfterOfSteps := RecursionWithDensities.B2.theoremAAfterOfSteps
-
-theorem theorem_a_of_after : Formalism.FourierDecayAlt.TC.TheoremAOfAfter := RecursionWithDensities.B2.theoremAOfAfter
-
-theorem domMinOfTextA_statement : Formalism.FourierDecayAlt.TC.DomMinOfTextA := RecursionWithDensities.A1.domMinOfTextA
-
-theorem afterOfOldA_statement : Formalism.FourierDecayAlt.TC.AfterOfOldA := RecursionWithDensities.A1.afterOfOldA
-
-theorem majorantPSDA_statement : Formalism.FourierDecayAlt.TC.MajorantPSDA := RecursionWithDensities.A1.majorantPSDA
-
-theorem oneLevelAfterA_statement : Formalism.FourierDecayAlt.TC.OneLevelAfterA := RecursionWithDensities.A1.oneLevelAfterA
-
-theorem oneLevelAfterOfOldA_statement : Formalism.FourierDecayAlt.TC.OneLevelAfterOfOldA := RecursionWithDensities.A1.oneLevelAfterOfOldA
-
-theorem reduction_after : Formalism.FourierDecayAlt.TC.ReductionAfter := RecursionWithDensities.A2.reductionAfterOfSteps RecursionWithDensities.A1.oneLevelAfterA epsilon_limit domination_limit joint_theorem_A'
-
-theorem reduction_after_of_parts : Formalism.FourierDecayAlt.TC.ReductionAfterOfSteps := RecursionWithDensities.A2.reductionAfterOfSteps
-
-theorem reduction_of_after_inequality : Formalism.FourierDecayAlt.TC.ReductionOfAfter := RecursionWithDensities.A2.reductionOfAfter
-
-theorem domination_agree : Formalism.FourierDecayAlt.TC.DomAgree := RecursionWithDensities.J1.t_DomAgree
-
-theorem domination_text_of_systems : Formalism.FourierDecayAlt.TC.DomTextOfSystems := RecursionWithDensities.J1.t_DomTextOfSystems
-
-theorem recursion_hypothesis_after_of_old : Formalism.FourierDecayAlt.TC.RecHypAfterOfOld := RecursionWithDensities.J1.t_RecHypAfterOfOld
-
-theorem recursion_gives_explicit_after : Formalism.FourierDecayAlt.TC.RecursionGivesUniformBoundsAfter := RecursionWithDensities.J1.recursion_gives_densityData_after
-
-theorem exponent_of_densities : Formalism.FourierDecayAlt.TC.EOfDens := RecursionWithDensities.J1.t_EOfDens
-
-theorem product_of_exponent_max : Formalism.FourierDecayAlt.TC.ProductOfEMax := RecursionWithDensities.J1.t_ProductOfEMax
 
 theorem density_le_two : Formalism.FourierDecayAlt.TC.DensLeTwo := RecursionWithDensities.J1.t_DensLeTwo
 
@@ -1160,9 +544,5 @@ theorem density_size : Formalism.FourierDecayAlt.TC.DensSize := RecursionWithDen
 theorem sum_bound_max : Formalism.FourierDecayAlt.TC.SumBoundMax := RecursionWithDensities.J1.t_SumBoundMax
 
 theorem recursion_with_densities : Formalism.FourierDecayAlt.TC.RecursionWithDens := RecursionWithDensities.J1.t_RecursionWithDens
-
-theorem once_only_max : Formalism.FourierDecayAlt.TC.OnceOnlyMax := RecursionWithDensities.J1.t_OnceOnlyMax
-
-theorem massData_covers : Formalism.FourierDecayAlt.TC.MassDataCovers := RecursionWithDensities.J1.densityData_covers
 
 end Formalism.FourierDecayAlt.P

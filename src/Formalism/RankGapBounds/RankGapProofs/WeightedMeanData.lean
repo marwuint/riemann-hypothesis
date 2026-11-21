@@ -45,37 +45,6 @@ lemma sub_wmean_le [Nonempty ι] {d X Y : ι → ℝ} (hd : ∀ i, 0 < d i) (c :
   have h3 := wmean_const hd c
   linarith
 
-lemma umean_mono {X Y : ι → ℝ} (h : ∀ i, X i ≤ Y i) : umean X ≤ umean Y := by
-  unfold umean
-  rw [div_eq_mul_inv, div_eq_mul_inv]
-  exact mul_le_mul_of_nonneg_right (Finset.sum_le_sum fun i _ => h i)
-    (inv_nonneg.mpr (Nat.cast_nonneg _))
-
-lemma umean_add (X Y : ι → ℝ) : umean (fun i => X i + Y i) = umean X + umean Y := by
-  simp only [umean, Finset.sum_add_distrib, add_div]
-
-lemma umean_mul (c : ℝ) (X : ι → ℝ) : umean (fun i => c * X i) = c * umean X := by
-  simp only [umean, ← Finset.mul_sum, mul_div_assoc]
-
-lemma umean_const [Nonempty ι] (c : ℝ) : umean (fun _ : ι => c) = c := by
-  have hc : (Fintype.card ι : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Fintype.card_ne_zero
-  simp only [umean, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
-  rw [div_eq_iff hc]
-  ring
-
-lemma umean_le_comb [Nonempty ι] {X A B P E : ι → ℝ} (p q K : ℝ)
-    (h : ∀ i, X i ≤ A i + B i + p * P i + q * E i + K) :
-    umean X ≤ umean A + umean B + p * umean P + q * umean E + K := by
-  have h1 := umean_mono (X := X) (Y := fun i => A i + B i + p * P i + q * E i + K) h
-  have h2 := umean_add (fun i => A i + B i + p * P i + q * E i) (fun _ => K)
-  have h3 := umean_add (fun i => A i + B i + p * P i) (fun i => q * E i)
-  have h4 := umean_add (fun i => A i + B i) (fun i => p * P i)
-  have h5 := umean_add A B
-  have h6 := umean_mul p P
-  have h7 := umean_mul q E
-  have h8 := umean_const (ι := ι) K
-  linarith
-
 end Means
 
 lemma phi_bound {u H X b U : ℝ} (hu : 0 ≤ u) (hH : 0 < H) (hHX : H ≤ X * b) (hb : 0 < b)
@@ -131,16 +100,8 @@ def SDiv : ℝ := ∑ t, (m : ℝ) * (ph (D.aT t) - D.aT t * D.logOm)
 def EDiv : ℝ :=
   C.cDiv * D.nT * D.a * D.La + C.cDiv * (m : ℝ) * (D.B0 + D.Nc) * D.x ^ (C.eDiv * D.ε)
 
-def K5 (u0 : U0) : ℝ :=
-  C.cSlope * D.nT * D.a * D.La * (1 + (m : ℝ) / D.k) + (m : ℝ) * (D.sumA * D.lg + C.cE * D.B0)
-    + D.SDiv - D.sumA * D.abelian₂ C u0 + D.EDiv C
-
 def K3 : ℝ :=
   C.cSlope * D.nT * D.a * D.La * (2 + (m : ℝ) / D.k) + D.Vvar C + C.cSl1 * (m : ℝ) * D.B0
-
-def K7 : ℝ :=
-  C.cSl1 * D.nT * (m : ℝ) * (D.a / D.k + D.b') * (C.cCount * (m : ℝ) * D.L)
-    + C.cSl1 * (m : ℝ) * D.B0
 
 def K0 : ℝ :=
   D.sumA * (C.cCount * (D.L + (m : ℝ) ^ 2 * D.L / D.k) + 2 * D.logGam / ((f : ℝ) * D.k))

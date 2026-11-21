@@ -70,10 +70,6 @@ variable {n : ℕ}
 
 def revM (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := g.submatrix Fin.rev Fin.rev
 
-def revE (ε : Fin n → Bool) : Fin n → Bool := fun a => ε (Fin.rev a)
-
-def revP (lam : Fin n → ℝ) : Fin n → ℝ := fun a => - lam (Fin.rev a)
-
 def sigC (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) : Matrix (Fin n) (Fin n) ℂ → (Cj H →L[ℂ] Cj H) :=
   fun g => cjOp (σ (revM g))
 

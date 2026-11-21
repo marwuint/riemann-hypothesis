@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DescentDataChainStep
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TopReadAt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TrueW
@@ -27,12 +27,12 @@ theorem moved_datum_eq_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (
     apply hPin.inj
     simpa only [hq] using h
   have hP : ∀ i, (Lp i).q.v ∈ v.gP := fun i => (hPin.places _).2 ⟨i, hq i⟩
-  obtain ⟨o', ho', hcomb⟩ := GlobalTheory.T.localCombinations_compose_finitely_many_places D f.c.ψ hstd _ _ M M' hM hM' n Lp hinj (· ∈ v.gP) hP
+  obtain ⟨o', ho', hcomb⟩ := _root_.GlobalTheory.LocComp.main D f.c.ψ hstd _ _ M M' hM hM' n Lp hinj (· ∈ v.gP) hP
   have hN : IsSelfDualC (Yc D j) (v.N j) := hv.sd j (by omega)
   have hN' : IsSelfDualC (Yc D (j + 1)) (v.N (j + 1)) := hv.sd (j + 1) hj
   have hoff := _root_.GlobalTheory.T.descent_data_step_self_dual_alt D L hT Gi Gl Kc Yd cX ex W u f hPk hRow v hv hVT n G pl hPin hRead j hj M M' hmv hmv'
   obtain ⟨F₀, hF₀t, hF₀at, -⟩ := hdat d₀ hd₀
-  have hV := (GlobalTheory.T.thetaAt_seesawProductDatum_eq_vacuumCombinations D f.c.ψ hstd _ _ M M' hM hM' n Lp hinj _ F₀ hvac hF₀at hF₀t).2 (v.N j) (v.N (j + 1)) hN hN' hint
+  have hV := (_root_.GlobalTheory.VecProd.thetaAt_prodDat D f.c.ψ hstd _ _ M M' hM hM' n Lp hinj _ F₀ hvac hF₀at hF₀t).2 (v.N j) (v.N (j + 1)) hN hN' hint
     (fun p hp => hoff p (by
       rw [hPin.places]
       rintro ⟨i, rfl⟩
@@ -46,7 +46,7 @@ theorem moved_datum_eq_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (
     obtain ⟨F, hFt, hFat, hFeq⟩ := hdat d hd
     rw [hFeq]
     congr 1
-    rw [(GlobalTheory.T.thetaAt_seesawProductDatum_eq_vacuumCombinations D f.c.ψ hstd _ _ M M' hM hM' n Lp hinj _ F hvac hFat hFt).1, GlobalTheory.T.heisenbergCombinations_distinct_split_places_collect D f.c.ψ hstd _ _ M M' hM hM' n Lp hinj, ← hcomb,
+    rw [(_root_.GlobalTheory.VecProd.thetaAt_prodDat D f.c.ψ hstd _ _ M M' hM hM' n Lp hinj _ F hvac hFat hFt).1, _root_.GlobalTheory.CollectComb.main D f.c.ψ hstd _ _ M M' hM hM' n Lp hinj, ← hcomb,
       hPin.eG j hj _ hth]
     simp only [he]
 end GlobalTheory.MidDatum

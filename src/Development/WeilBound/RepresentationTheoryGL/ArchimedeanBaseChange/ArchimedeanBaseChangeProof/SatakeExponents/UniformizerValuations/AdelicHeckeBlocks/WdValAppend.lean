@@ -144,18 +144,6 @@ theorem blkWord (h : BlockOperatorsProductAdjoint) : BlockWordOperators := by
         rw [hop.2.2.2.2.2.2.1, h5]
         simp [mul_assoc]
 
-theorem blockEx (h1 : CompatEx) (h2 : SizeBasic) : BlockEx := by
-  intro E _ _ _ a b D Ma Mb κ _ μa μb ha hb
-  have : BorelSpace (G a) := ⟨rfl⟩
-  have : BorelSpace (G b) := ⟨rfl⟩
-  have : BorelSpace (Hf E a b) := ⟨rfl⟩
-  obtain ⟨ν, hν, hν', hc⟩ := h1 E a b D μa μb
-  obtain ⟨ca, hca⟩ := (h2 E a).2.2.2
-  obtain ⟨cb, hcb⟩ := (h2 E b).2.2.2
-  refine ⟨ν, ha, hb, hν, hν', hc, max 0 (max ca cb), le_max_left _ _, fun g h => ?_, fun g h => ?_, rfl⟩
-  · linarith [hca g h, le_max_left ca cb, le_max_right 0 (max ca cb)]
-  · linarith [hcb g h, le_max_right ca cb, le_max_right 0 (max ca cb)]
-
 end PositivityTheory.Rg.BcB.F
 
 end

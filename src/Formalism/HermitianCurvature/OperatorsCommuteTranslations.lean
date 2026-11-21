@@ -59,20 +59,6 @@ def PeelingDualColumn : Prop :=
         (ell + ((i.val : ℕ) : ℂ) - 1) ∈
       Ideal.span (rgen k r z' E)
 
-def PeelingDualCovector : Prop :=
-  ∀ (A : Type) [Ring A] [Algebra ℂ A] (k m : ℕ) (z' yb : Fin (2 * (m + 1) + k + 1) → ℂ)
-    (E : Fin (2 * (m + 1) + k + 1) → Fin (2 * (m + 1) + k + 1) → A), GlRel E →
-    ∀ (i : Fin (m + 1)) (ell : ℂ), inWb k (m + 1) z' → inWb k (m + 1) yb →
-    (∑ w : Fin (k + 1), yb (wI k (m + 1) w) •
-        qminor E
-          (Fin.snoc (α := fun _ => Fin (2 * (m + 1) + k + 1))
-            (fun l : Fin m => sR k (m + 1) (m + 1) le_rfl (i.succAbove l)) (wI k (m + 1) w))
-          (sR k (m + 1) (m + 1) le_rfl) (ell + (m : ℂ))) -
-      herm (Hpk k (m + 1)) yb z' •
-        qminor E (sR k (m + 1) i.val (by have := i.isLt; omega)) (sR k (m + 1) i.val (by have := i.isLt; omega))
-          (ell + ((i.val : ℕ) : ℂ) - 1) ∈
-      Ideal.span (rgen k (m + 1) z' E)
-
 def Zb (i0 s : ℕ) (h : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (a b : ℕ) : ℂ :=
   if ha : a < i0 then (if hb : b < i0 then h ⟨a, ha⟩ ⟨b, hb⟩ else 0)
   else if i0 ≤ b ∧ a < i0 + s ∧ b < i0 + s ∧ (a - i0) + (b - i0) + 1 = s then t else 0
@@ -81,9 +67,6 @@ def Dlead (i0 s : ℕ) (h : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (n : ℕ) : 
   (Matrix.of fun a b : Fin n => Zb i0 s h t a.val b.val).det
 
 def sgnW (m : ℕ) : ℂ := (-1) ^ (m * (m - 1) / 2)
-
-def AntiDiagDet : Prop :=
-  ∀ m : ℕ, (Matrix.of fun a b : Fin m => if a.val + b.val + 1 = m then (1 : ℂ) else 0).det = sgnW m
 
 def DleadZb : Prop :=
   ∀ (i0 s : ℕ) (h : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ),
@@ -158,30 +141,6 @@ def ExpansionCovector : Prop :=
     (Dlead i0 s h t (r + 1))⁻¹ • La (AAx k r E xi r le_rfl u) =
       ((-1 : ℂ) ^ (s - 1) * t⁻¹) • ((Dlead i0 s h t i0)⁻¹ • La (AAx k r E xi i0 (by omega) u))
 
-def ExpansionDualCovector : Prop :=
-  ∀ (A : Type) [Ring A] [Algebra ℂ A] (M : Type) [AddCommGroup M] [Module ℂ M] (k r : ℕ)
-    (z' yb : Fin (2 * r + k + 1) → ℂ) (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (La : A →ₗ[ℂ] M)
-    (y : Fin r → Fin (2 * r + k + 1) → ℂ) (i0 s : ℕ) (h : Matrix (Fin i0) (Fin i0) ℂ) (t ell : ℂ)
-    (hs : 2 ≤ s) (hj : i0 + s = r + 1),
-    GlRel E → RightRuleFn k r z' E La → h.det ≠ 0 → t ≠ 0 → inWb k r z' → inWb k r yb →
-    herm (Hpk k r) z' yb = t →
-    (∀ (a : Fin r) (p : Fin (2 * r + k + 1)), a.val ≠ i0 →
-      y a p = if r + k < p.val ∧ 2 * r + k - p.val ≠ i0 then star (Zb i0 s h t a.val (2 * r + k - p.val))
-        else 0) →
-    (∀ (a : Fin r), a.val = i0 → y a = yb) →
-    (star (Dlead i0 s h t (r + 1)))⁻¹ • La (AAv k r E y r le_rfl ell) =
-      ((-1 : ℂ) ^ (s - 1) * (star t)⁻¹) • ((star (Dlead i0 s h t i0))⁻¹ • La (AAv k r E y i0 (by omega) ell))
-
-def ExpansionFirstCaseFromComponents : Prop := PeelingOmittedColumn → MinorsFirstCase → DleadZb → SignE → ExpansionOmittedColumn
-
-def ExpansionSecondCaseFromComponents : Prop := Formalism.FourierDecayAlt.Q.RowForm → PeelingDualColumn → MinorsFirstCase → DleadZb → SignE → ExpansionDualColumn
-
-def ExpansionThirdCaseFromComponents : Prop := PeelingOmittedColumn → PeelingCovector → MinorsThirdCase → DleadZb → SignE → ExpansionCovector
-
-def ExpansionFourthCaseFromComponents : Prop := PeelingDualColumn → PeelingDualCovector → MinorsThirdCase → DleadZb → SignE → ExpansionDualCovector
-
-def PeelOfParts : Prop := Formalism.FourierDecayAlt.Q.RowForm → PeelingOmittedColumn ∧ PeelingCovector ∧ PeelingDualColumn ∧ PeelingDualCovector
-
 def LeftRuleBig {A M : Type*} [Ring A] [Algebra ℂ A] [AddCommGroup M] [Module ℂ M] (k r : ℕ) (c : Fin r → ℂ)
     (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (La : A →ₗ[ℂ] M) : Prop :=
   ∀ (x : A) (a b : Fin r), b.val < a.val →
@@ -196,15 +155,6 @@ def LastColumnChain : Prop :=
         La (qminor E (xR k r (m + 1) (by omega)) (xR k r (m + 1) (by omega)) u *
             Tm E (u - ((m + 1 : ℕ) : ℂ)) (eI k r ⟨m + 1, by omega⟩) (eI k r ⟨m + 1, by omega⟩)) -
           (c ⟨m + 1, by omega⟩ / c ⟨m, by omega⟩) • La (qminor E (xR k r m (by omega)) (xR k r m (by omega)) u)
-
-def LastColumnChainFromComponents : Prop := Formalism.FourierDecayAlt.Q.ExpLastCol → Formalism.FourierDecayAlt.Q.RowForm → LastColumnChain
-
-def RuleRightDpsi : Prop :=
-  ∀ (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (l : Fin r) (j : Fin (Formalism.FourierDecayAlt.Q.mdim k r l.succ)), inWb k r z' →
-    InNp k r (eI k r l) (Formalism.FourierDecayAlt.Q.posL k r l.succ j) ∧
-    Formalism.FourierDecayAlt.Q.xv k r z' l.succ j = dpsiP k r z' (eI k r l) (Formalism.FourierDecayAlt.Q.posL k r l.succ j) ∧
-    InNp k r (Formalism.FourierDecayAlt.Q.posL k r l.succ j) (esI k r l) ∧
-    Formalism.FourierDecayAlt.Q.xbv k r z' l.succ j = dpsiP k r z' (Formalism.FourierDecayAlt.Q.posL k r l.succ j) (esI k r l)
 
 def dEll (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (hr : 1 ≤ r) : ℂ :=
@@ -270,17 +220,6 @@ def N0set (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) : Set (Matrix (Fin (2 *
   {g | g ∈ UH (Hpk k r) ∧ (∀ a : Fin r, g *ᵥ bvec (eI k r a) = bvec (eI k r a)) ∧ g *ᵥ z' = z' ∧
     (∀ p q : Fin (2 * r + k + 1), r ≤ q.val → q.val ≤ r + k → r ≤ p.val → g p q = if p = q then 1 else 0) ∧
     (∀ p q : Fin (2 * r + k + 1), r + k < q.val → r + k < p.val → g p q = if p = q then 1 else 0)}
-
-def IsotropicNormalFormPartial : Prop :=
-  ∀ (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ),
-    inWb k r z' →
-    (∀ (a : Fin j) (b : Fin r), j ≤ b.val → y a (esI k r b) = 0) →
-    (Matrix.of fun a b : Fin j => y a (sR k r j hj b)).det ≠ 0 →
-    (∀ a, herm (Hpk k r) z' (y a) = 0) →
-    (∀ a a', herm (Hpk k r) (y a) (y a') = 0) →
-    ∃ n0 ∈ N0set k r z', ∃ y' : Fin j → Fin (2 * r + k + 1) → ℂ, ∀ a,
-      n0 *ᵥ y' a = y a ∧ (∀ p : Fin (2 * r + k + 1), p.val ≤ r + k → y' a p = 0) ∧
-      (∀ p : Fin (2 * r + k + 1), r + k < p.val → y' a p = y a p)
 
 def IsotropicNormalFormFull : Prop :=
   ∀ (k m : ℕ) (z' : Fin (2 * (m + 1) + k + 1) → ℂ) (i : Fin (m + 1)) (y : Fin (m + 1) → Fin (2 * (m + 1) + k + 1) → ℂ)

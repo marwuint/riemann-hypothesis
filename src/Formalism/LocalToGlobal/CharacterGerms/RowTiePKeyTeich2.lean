@@ -76,19 +76,6 @@ theorem tends_shift {s : ℕ → C} {x : C} (h : Tends V s x) : Tends V (fun k =
   obtain ⟨n0, hn0⟩ := h w
   exact ⟨n0, fun k hk => hn0 (k + 1) (by omega)⟩
 
-def IntM (V : VF C) (n : ℕ) : Subring (Matrix (Fin n) (Fin n) C) where
-  carrier := {M | ∀ i j, V.Ge 0 (M i j)}
-  mul_mem' := fun {a b} ha hb i j => by
-    simp only [Matrix.mul_apply]
-    exact VF.Ge.sum fun m _ => ((ha i m).mul (hb m j)).mono (by norm_num)
-  one_mem' := fun i j => by
-    by_cases h : i = j
-    · simp only [Matrix.one_apply, h, if_true]; exact VF.Ge.one
-    · simp only [Matrix.one_apply, h, if_false]; exact VF.Ge.zero 0
-  add_mem' := fun {a b} ha hb i j => (ha i j).add (hb i j)
-  zero_mem' := fun _ _ => VF.Ge.zero 0
-  neg_mem' := fun {a} ha i j => (ha i j).neg
-
 end Lim
 
 private theorem l_cast_ne_zero {C : Type} [Field C] (V : VF C) : (V.l : C) ≠ 0 := by

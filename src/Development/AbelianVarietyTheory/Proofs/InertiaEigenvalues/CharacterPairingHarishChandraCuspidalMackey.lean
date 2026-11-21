@@ -2,10 +2,10 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraFrobeniusReciprocityStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraRestrictionTwoBlockCuspidalEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraRestrictionTwoBlockCuspidalEqZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraRestrictionCuspidalProductSumSubsetStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentralStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvariStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentral
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvari
 
 noncomputable section
 open GlobalTheory.GLq Formalism.MainNotions.ArithmeticCylinders Polynomial
@@ -47,9 +47,6 @@ theorem isChar_of_isCusp {d : ℕ} {χ : Gn g d → ℂ} (h : IsCusp χ) : IsCha
   exact ⟨V, hV⟩
 
 theorem degL_cons (p : Pc g) (L : List (Pc g)) : degL (p :: L) = p.1 + degL L := by
-  simp [degL]
-
-theorem degL_append (L L' : List (Pc g)) : degL (L ++ L') = degL L + degL L' := by
   simp [degL]
 
 theorem degL_perm {L L' : List (Pc g)} (h : L.Perm L') : degL L = degL L' := by
@@ -133,7 +130,7 @@ theorem ip_long_cusp (a : ℕ) (ψ : Gn g a → ℂ) (hψ : IsCusp ψ) (K : List
     rw [hcL_cons, ip_comm]
     show ip ψ (hcT p.1 (degL r) (fun x y => p.2 x * hcL r (degL r) y) _) = 0
     rw [GlobalTheory.T.harishChandra_frobenius_reciprocity g p.1 (degL r) _ rfl ψ _ (isClass_of_isChar (isChar_of_isCusp hψ))]
-    have h := GlobalTheory.T.harishChandraRestrictionTwoBlock_cuspidal_eq_zero g (p.1 + degL r) p.1 ψ hψ hp (by omega)
+    have h := _root_.GlobalTheory.GLq.res_cusp_eq_zero g (p.1 + degL r) p.1 ψ hψ hp (by omega)
     rw [Nat.add_sub_cancel_left] at h
     simp [ip, h]
 
@@ -142,7 +139,7 @@ theorem ip_single_cusp (a : ℕ) (ψ : Gn g a → ℂ) (hψ : IsCusp ψ) (p : Pc
   obtain ⟨d, χ⟩ := p
   dsimp only at hd hp
   subst hd
-  rw [hcL_single d χ (isClass_of_isChar (isChar_of_isCusp hp)), (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ ψ hp.2.1 hψ.2.1).2.2]
+  rw [hcL_single d χ (isClass_of_isChar (isChar_of_isCusp hp)), (_root_.GlobalTheory.GLq.ZOrth.zorth _ χ ψ hp.2.1 hψ.2.1).2.2]
   by_cases h : χ = ψ
   · subst h; simp
   · simp [h]
@@ -196,7 +193,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card : ∀ (L' L : List (Pc g)) (n : ℕ)
     have hψ : IsCusp ψ := hc' ⟨a, ψ⟩ (by simp)
     have hcM : ∀ p ∈ M, IsCusp p.2 := fun p hp => hc' p (by simp [hp])
     have hclass : IsClass (hcL L (a + degL M)) :=
-      isClass_of_isChar (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g L L _ hL.symm (fun p hp => isChar_of_isCusp (hc p hp))).1
+      isClass_of_isChar (_root_.GlobalTheory.gl_list_product_perm_char g L L _ hL.symm (fun p hp => isChar_of_isCusp (hc p hp))).1
     have key : ip (hcL L (a + degL M)) (hcL (⟨a, ψ⟩ :: M) (a + degL M)) =
         ∑ I ∈ (Finset.univ : Finset (Finset (Fin L.length))).filter (fun I => ∑ i ∈ I, (L.get i).1 = a),
           ip (hcL ((I.sort (· ≤ ·)).map L.get) a) ψ *

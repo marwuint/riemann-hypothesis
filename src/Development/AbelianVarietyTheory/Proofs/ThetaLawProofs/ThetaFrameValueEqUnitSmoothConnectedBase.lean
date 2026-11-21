@@ -7,7 +7,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.MapsAtLeA
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.SymplecticCharacters.OneEqSpTranslZero
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ContinuousOnThetaFrameValueHolomorphicFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ContinuousOnThetaFrameValueHolomorphicFamily
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HasAlgebraicChartsOfIsStandardSmooth
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.IsConnectedAndDenseComplHypersurface
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsMvPolynomialOfPolyBoundOffHypersurface
@@ -78,7 +78,7 @@ theorem value_eq_unit_of_pow_eq : Out.Laws → ThetaUnifAV → Key.Chi.Inversion
   intro hL hT hI S _ _ _ _ y N r t s₀ hN hx hpow h0 s
   have := preconnectedSpace_algHom S
   have ht : Continuous t := continuous_of_holomorphic_families S t fun m B σ hB hσ =>
-    GlobalTheory.T.continuousOn_thetaFrameValue_holomorphicFamily hL hT hI S y m B σ (fun p => t (σ p)) hB hσ fun p _ => hx (σ p)
+    _root_.GlobalTheory.ThetaValueCont.continuousOn_value hL hT hI S y m B σ (fun p => t (σ p)) hB hσ fun p _ => hx (σ p)
   have hr : ∀ q : S →ₐ[ℂ] ℂ, q r ≠ 0 := fun q => (r.isUnit.map q).ne_zero
   have hu : Continuous fun q : S →ₐ[ℂ] ℂ => t q / q r := ht.div (continuous_eval _) hr
   have h1 := eq_of_pow_eq_one hu hN

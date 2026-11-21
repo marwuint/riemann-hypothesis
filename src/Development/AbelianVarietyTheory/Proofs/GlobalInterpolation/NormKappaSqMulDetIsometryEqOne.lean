@@ -5,9 +5,9 @@ import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.IsAdmissibleFla
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.BaseEx
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RelativeDeterminantIsometryNormOneStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuadraticAtMostTwoPrimesOverStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjugateEmbeddingsInduceDifferentPrimesSplitStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjugateEmbeddingsInduceDifferentPrimesSplit
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ValuationOfGeneratorOfPowStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ComplexPadicNormKappaSplitPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ComplexPadicNormKappaSplitPrime
 open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker GlobalTheory.MomN
 
 namespace GlobalTheory.KapVal
@@ -153,7 +153,7 @@ theorem norm_kappa_sq_mul_det : ∀ (D : D7) (γ₀ γ : IsoK D) (k : KapChoice 
     yIndep D γ₀ q (k.pp q) γ (k.gaP q) hqp hs (k.pp_over q hqp hs) hat (k.gaP_at q hqp hs)
   have hπv : (k.pp q).valuation D.host.K ((k.pi q : 𝓞 D.host.K) : D.host.K) = WithZero.exp (-(h : ℤ)) :=
     GlobalTheory.T.valuation_eq_exp_neg_of_pow_eq_span_singleton D.host.K (k.pp q) h (k.pi q) (k.pi_gen q hqp hs)
-  have hkap := GlobalTheory.T.complexPadic_norm_kappa_splitPrime D γ₀ k q hs ι
+  have hkap := _root_.GlobalTheory.KapSplitNorm.norm_kappa_split D γ₀ k q hs ι
   have hrt := k.rt_pow q hqp hs
   have hrt0 := k.rt_ne_zero q hqp hs
   set y : ℤ := k.yP q with hydef
@@ -169,7 +169,7 @@ theorem norm_kappa_sq_mul_det : ∀ (D : D7) (γ₀ γ : IsoK D) (k : KapChoice 
   obtain ⟨w', hqw', hw'⟩ := exists_place jK'
   have hne : w ≠ w' := by
     intro heq
-    obtain ⟨y0, h1, h2⟩ := GlobalTheory.T.conjugate_embeddings_induce_different_primes_split D q hq2 hj ι
+    obtain ⟨y0, h1, h2⟩ := _root_.GlobalTheory.ConjPlace.conj_place_ne D q hq2 hj ι
     have a1 : y0 ∈ w.asIdeal := (hw y0).2 (by rw [ejK]; exact h1)
     rw [heq, hw', ejK'] at a1
     exact absurd a1 (not_lt.2 h2)

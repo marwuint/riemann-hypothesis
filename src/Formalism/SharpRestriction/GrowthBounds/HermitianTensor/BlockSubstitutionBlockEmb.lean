@@ -14,13 +14,6 @@ private theorem coeff_lcoef_eq (L : MvPolynomial ρ K →ₗ[K] K) (f : MvPolyno
     (w : σ →₀ ℕ) : coeff w (lcoef L f) = L (coeff w f) :=
   coeff_sum_monomial_linear L f w
 
-theorem qa_lcoef_monomial (L : MvPolynomial ρ K →ₗ[K] K) (u : σ →₀ ℕ) (b : MvPolynomial ρ K) :
-    lcoef L (monomial u b) = monomial u (L b) := by
-  classical
-  ext w
-  rw [coeff_lcoef_eq, coeff_monomial, coeff_monomial]
-  split_ifs <;> simp
-
 theorem qa_lcoef_C (L : MvPolynomial ρ K →ₗ[K] K) (b : MvPolynomial ρ K) :
     lcoef L (C b : MvPolynomial σ (MvPolynomial ρ K)) = C (L b) := by
   classical

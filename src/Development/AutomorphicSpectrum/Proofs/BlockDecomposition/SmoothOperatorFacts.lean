@@ -3,7 +3,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusJointCurve
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SobolevOperatorFacts
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Lap
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SobolevSpaceCompleteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SobolevSpaceComplete
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightWordLaplacianPowerBoundStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LaplacianCasimirRelationStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LaplacianPowerCasimirBoundStatement
@@ -143,7 +143,7 @@ theorem smoothOp : SmoothOp := by
     have h2 := hdiff w k l
     rw [lt_div_iff₀ hpos] at h1
     nlinarith [norm_nonneg (xs k - xs l), abs_nonneg (Cw w)]
-  obtain ⟨b, hbS, hbt, hbp⟩ := (GlobalTheory.T.sobolev_space_complete) n μ E.V hS a haS hcau
+  obtain ⟨b, hbS, hbt, hbp⟩ := (_root_.GlobalTheory.CompanionTheory.SobComplete.sob_complete) n μ E.V hS a haS hcau
   refine ⟨b, hbS, ?_, ?_, ?_⟩
   · intro g hg k
     have hgk : g * k.1 ∈ GLs n := by

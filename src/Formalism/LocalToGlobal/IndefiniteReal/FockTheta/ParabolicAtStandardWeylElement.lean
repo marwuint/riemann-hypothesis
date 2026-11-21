@@ -1,5 +1,9 @@
-import Formalism.LocalToGlobal.IndefiniteReal.FockTheta.IoExist
-import Formalism.LocalToGlobal.IndefiniteReal.MultGood
+import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
+import Formalism.LocalToGlobal.IndefiniteReal.WeilFull
+import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.ContinuousSplitInv
+import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+import Formalism.LocalToGlobal.HeckeThetaElements.DefsWt
 import Formalism.LocalToGlobal.IndefiniteReal.ConjLemmas
 
 noncomputable section

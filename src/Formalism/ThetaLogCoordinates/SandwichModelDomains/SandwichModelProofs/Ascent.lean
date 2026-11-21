@@ -90,23 +90,4 @@ theorem ascent_domain_holds : AscentDomain := by
   | add y z _ _ hy hz => rw [smul_add]; exact Submodule.add_mem _ hy hz
   | smul c y _ hy => rw [smul_comm]; exact Submodule.smul_mem _ _ hy
 
-theorem units_of_local_ring : UnitsOfLocal := by
-  unfold UnitsOfLocal PrimeToPUnits
-  intro p hp O _ _ hpu c hc
-  have hpZ : Prime (p : ℤ) := Nat.prime_iff_prime_int.mp hp.out
-  have hcop : IsCoprime (p : ℤ) c := by
-    first
-      | exact (Irreducible.coprime_iff_not_dvd hpZ.irreducible).mpr hc
-      | exact (Prime.coprime_iff_not_dvd hpZ).mpr hc
-      | exact Int.isCoprime_iff_gcd_eq_one.mpr
-          ((Nat.Prime.coprime_iff_not_dvd hp.out).mpr (fun h => hc (Int.natCast_dvd.mpr h)))
-  obtain ⟨a, b, hab⟩ := hcop
-  have h1 : (a : O) * (p : O) + (b : O) * (c : O) = 1 := by
-    have h2 := congrArg (fun z : ℤ => (z : O)) hab
-    push_cast at h2
-    exact h2
-  rcases IsLocalRing.isUnit_or_isUnit_of_add_one h1 with h | h
-  · exact absurd (isUnit_of_mul_isUnit_right h) hpu
-  · exact isUnit_of_mul_isUnit_right h
-
 end Formalism.InvariantFactorPaths.INST

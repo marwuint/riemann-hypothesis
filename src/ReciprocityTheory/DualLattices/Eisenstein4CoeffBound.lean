@@ -23,6 +23,4 @@ theorem qExpansion_E₆_eq : qExpansion 1 E₆ = PowerSeries.map (Int.castRingHo
   · subst hn; norm_num [E_qExpansion_coeff _ ⟨3, rfl⟩]
   · norm_num [E_qExpansion_coeff _ ⟨3, rfl⟩, hn, show bernoulli 6 = 1 / 42 by decide +kernel]
 
-def CoeffBd (P : PowerSeries ℤ) (A e : ℕ) : Prop := ∀ n, |P.coeff n| ≤ (A : ℤ) * ((n : ℤ) + 1) ^ e
-
 end ReciprocityTheory.PGsh

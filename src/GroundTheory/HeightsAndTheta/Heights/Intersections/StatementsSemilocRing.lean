@@ -184,8 +184,4 @@ theorem exists_form_notMem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fint
   obtain ⟨k, -, hk⟩ := hWp.prod_mem_iff.mp h
   exact hi k (hWp.mem_of_pow_mem _ hk)
 
-section Example
-
-end Example
-
 end GroundTheory.Heights₂.Heights.Inter

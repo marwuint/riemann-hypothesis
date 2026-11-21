@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoIffBijectiveOverAlgClosed
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FormallyUnramifiedMulInvertibleInteger
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFlatFinrankStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFlatFinrank
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -26,8 +26,6 @@ theorem comp_pow_id (T G : Over S) [GrpObj G] (x : T ⟶ G) (n : ℕ) : x ≫ (�
 
 end GlobalTheory.AV.DegSep
 
-example (K : Type) [Field K] (X : Scheme) (f : X ⟶ Sp K) [IsFinite f] : LocallyOfFinitePresentation f := inferInstance
-
 namespace GlobalTheory.AV.DegSep
 
 theorem isUnit_natCast_Γ (K : Type) [Field K] (n : ℕ) (hn : (n : K) ≠ 0) : IsUnit (n : Γ(Sp K, ⊤)) := by
@@ -38,7 +36,7 @@ theorem isUnit_natCast_Γ (K : Type) [Field K] (n : ℕ) (hn : (n : K) ≠ 0) : 
 theorem deg_eq_card_ker (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B) (n : ℕ) (hn : (n : K) ≠ 0)
     (hiso : IsIsogeny f) (hker : ∀ (T : Over (Sp K)) (x : T ⟶ A.X), x ≫ f.hom = 1 → x ^ n = 1) :
     deg f = Nat.card (ptMap f).ker := by
-  have hfl : Flat f.hom.left := (GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B f hiso).2.1
+  have hfl : Flat f.hom.left := (_root_.GlobalTheory.AV.AbVar.isogeny_flat_finrank K A B f hiso).2.1
   have hfin : IsFinite f.hom.left := hiso.1
   have hprop : IsProper B.X.hom := B.ab.proper
   let e : Sp K ⟶ B.X.left := η[B.X].left

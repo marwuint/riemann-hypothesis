@@ -2,8 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
 import Development.AbelianVarietyTheory.Definitions.Divisors.ProjectiveNotIsUnit
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveAlgebraisationFormalCompleteLoca
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TowerSquaresStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeQuotientClosedImmersionIdealSheafStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TowerSquares
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeQuotientClosedImmersionIdealSheaf
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLbOfGeneratedSystem
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.FormalAlg GlobalTheory.Degen.FormalEmb
@@ -42,8 +43,8 @@ theorem mem_of_appLE_mem (R : Type) [CommRing R] (I : Ideal R)
     x ∈ towerIdeal Y (e + 1) I V := by
   subst hW
   rw [Scheme.Hom.appLE_eq_app] at hx
-  obtain ⟨-, -, hk⟩ := GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R (I ^ (e + 1)) _ _ ((Y (e + 1)).hom ≫ thick R I (e + 1)) (β e) (Y e).hom
-    ((GlobalTheory.T.isPullback_thick_tower_squares R I Y β hβ).1 e)
+  obtain ⟨-, -, hk⟩ := _root_.GlobalTheory.FormalAlg.baseChange_quotient R (I ^ (e + 1)) _ _ ((Y (e + 1)).hom ≫ thick R I (e + 1)) (β e) (Y e).hom
+    ((_root_.GlobalTheory.FormalAlg.towerSquares R I Y β hβ).1 e)
   obtain ⟨hs, hker⟩ := hk V hV
   have hc : β e ≫ (Y (e + 1)).hom ≫ thick R I (e + 1) = (Y e).hom ≫ thick R I e := by
     rw [← Category.assoc, (hβ e).w, Category.assoc, thickTrans_comp]

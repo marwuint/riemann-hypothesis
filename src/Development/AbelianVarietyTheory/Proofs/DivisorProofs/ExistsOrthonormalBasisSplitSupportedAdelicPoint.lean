@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.KernelNormConstantSpec
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOrthonormalBasisDefiniteHermitianSpaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOrthonormalBasisDefiniteHermitianSpace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicUnitaryMovesSelfDualLatticeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentSupportHermitianDecompositionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalUnitaryConjSplitSupportedFiniteAdelicPoiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalUnitaryConjSplitSupportedFiniteAdelicPoi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCompletedLatticeColumnLatticeMulIffStatement
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links
@@ -26,7 +26,7 @@ theorem exists_std_vertex : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.hos
       ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat fr) ↔
         (Formalism.IndefR.Lev.finE V u.1).1 *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := by
   intro D V Λ hsig hpos hΛ S hS
-  obtain ⟨fr0, hfr0⟩ := GlobalTheory.T.exists_orthonormalBasis_definite_hermitianSpace D V hsig hpos
+  obtain ⟨fr0, hfr0⟩ := _root_.GlobalTheory.DefiniteFrame.exists_unitary_frame D V hsig hpos
   obtain ⟨x, hxx⟩ := GlobalTheory.T.exists_finiteAdelicUnitary_moves_selfDualLattice D V fr0 Λ hfr0 hΛ
   have hx : x ∈ GfC V := hxx.1
   have hxL := hxx.2
@@ -36,7 +36,7 @@ theorem exists_std_vertex : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.hos
   have hsupp := hr.2.2.1
   have hkL := hr.2.2.2.2.1
   have hxe := hr.2.2.2.2.2
-  obtain ⟨u, hur⟩ := GlobalTheory.T.rationalUnitary_conj_splitSupported_finiteAdelicPoint D V S γ h hγ hh hsupp
+  obtain ⟨u, hur⟩ := _root_.GlobalTheory.ConjSplit.conj_supp D V S γ h hγ hh hsupp
   have hu : u ∈ GfC V := hur.1
   have hue := hur.2.2
   refine ⟨γ * fr0, ⟨u, hu⟩, ?_, hur.2.1, ?_⟩

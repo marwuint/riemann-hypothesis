@@ -3,17 +3,17 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsThetaMeanSqu
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.ZhangDimensionPushDownGrassmannianHeightBounds
 import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsBundles
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrameStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrame
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaMultiplierQuadraticCharacterStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PolarizedDataFieldExtensionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PolarizedDataFieldExtension
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionSupNormFieldExtension
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionValueUniqueBaseChangeStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFullTorsionNumberFieldStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionValueIntegral
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionDivisibleByDenominatorStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionFieldExtensionExistsStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionDivisibleByDenominator
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionFieldExtensionExists
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TorsionValueNormEqThetaNorm
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaFunctionSupBoundStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaFunctionSupBound
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.MeetsOpensOfSeparatesSections
@@ -217,7 +217,7 @@ theorem exists_div (D : PPData H L) (D' : PPData H L') (e : D.Ext D') (th : Out.
     (x : Over.mk (baseF L (RingHom.id L')) ⟶ D.t.G) (hx : x ^ m = 1) (s : Out.H0 D'.t.PP.L (m ^ 2)) (d : 𝓞 L')
     (hd : d ≠ 0) (hrel : Rel D D' e th m x s d) :
     ∃ s' : Out.H0 D'.t.PP.L (m ^ 2), ∀ j, s.f j = constFn D'.t.G.hom _ d * s'.f j := by
-  refine GlobalTheory.T.section_divisible_by_denominator _ H L' D' (m ^ 2) s d hd ?_
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Sl.Reg.section_dvd_of_torsVal _ H L' D' (m ^ 2) s d hd ?_
   intro K _ _ c y N T hT
   obtain ⟨f, rfl⟩ : ∃ f : L' →+* K, c = f.comp (algebraMap (𝓞 L') L') := by
     refine ⟨IsFractionRing.lift (IntTors.injective_of_charZero c), ?_⟩
@@ -352,7 +352,7 @@ theorem core (D : PPData H L) (D' : PPData H L') (e : D.Ext D') (th : Out.H0 D.t
     exact hS _ a θ h w
   have hne : θ ≠ 0 := theta_ne_zero a0 (hL2 hg a0 θ hθ)
   choose r hr using fun i => exists_param' a0 (baseF_eq σ') (ptAt D (x i) σ')
-  have h := GlobalTheory.T.theta_function_sup_bound a' u1 u2 u3 m θ Ix r f hm hθ' hne ?_ ?_ hf' ?_
+  have h := _root_.GlobalTheory.CompanionTheory.ThetaSpan.theta_span a' u1 u2 u3 m θ Ix r f hm hθ' hne ?_ ?_ hf' ?_
   · refine ⟨fun i w => ?_, h.2⟩
     rw [h.1 i w, ← nrm_congr a0 a' hHm]
     exact hSup hg a0 θ hθ _
@@ -404,7 +404,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
   intro E _ _ _ H L _ _ D th Φ M m hm hΘ hS
   obtain ⟨b, hb, -⟩ := hΘ
   obtain ⟨K, _, _, _, x, hxm, hxu⟩ := GlobalTheory.T.exists_full_torsion_number_field E H L D m hm
-  have ht := fun i => GlobalTheory.T.torsion_field_extension_exists E H L D th m K (x i) hm (hxm i)
+  have ht := fun i => _root_.GlobalTheory.CompanionTheory.Ar.Sl.Transl.transl_main E H L D th m K (x i) hm (hxm i)
   choose K' fK nK aK aL tw hK' using ht
   letI := fK
   haveI := nK
@@ -416,8 +416,8 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
   have hLL : ∀ a : L, algebraMap L L' a = algebraMap K L' (algebraMap L K a) := fun _ => rfl
   haveI hTow : ∀ i, IsScalarTower L (K' i) L' := fun i => IsScalarTower.of_algebraMap_eq fun a => by
     rw [hLL, IsScalarTower.algebraMap_apply L K (K' i) a, ← IsScalarTower.algebraMap_apply K (K' i) L']
-  obtain ⟨⟨D', e⟩⟩ := (GlobalTheory.T.polarized_data_field_extension E H L D L').1
-  have hg : D'.g = D.g := ((GlobalTheory.T.polarized_data_field_extension E H L D L').2 D' e).1
+  obtain ⟨⟨D', e⟩⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Sl.ext_baseChange E H L D L').1
+  have hg : D'.g = D.g := ((_root_.GlobalTheory.CompanionTheory.Ar.Sl.ext_baseChange E H L D L').2 D' e).1
   have h2 := fun i => hK' i L' D' e
   choose s0 d hd hraw using h2
   have hbase : spMap (algebraMap K L') ≫ spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L)) =
@@ -446,7 +446,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
         ∀ F, a'.IsTheta (m ^ 2) F → ∃ c : Fin (m ^ (2 * D.g)) → ℂ, F = ∑ i, c i • f i := by
     intro σ' a' f hf
     obtain ⟨a0, hΛ, hHm, hpt, hiff⟩ := hth' σ' a'
-    obtain ⟨-, hfr⟩ := GlobalTheory.T.theta_function_archimedean_frame E H L' D' σ'
+    obtain ⟨-, hfr⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.frames_main E H L' D' σ'
     obtain ⟨hu, hth, -⟩ := hfr a'
     obtain ⟨θ, hθ, -⟩ := hu 1 th'
     refine core D D' e th hm hg xL hxL s0 s d hd hs hrel b hb M hS σ' a' ?_ a0 hΛ hHm hpt θ ((hiff θ).2 hθ) (hth 1 th' θ hθ)
@@ -460,7 +460,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
     rfl
   refine ⟨L', inferInstance, inferInstance, inferInstance, D', e, s, ?_, fun σ' a f hf => (key σ' a f hf).2⟩
   intro i σ' a θ hθ w
-  obtain ⟨-, hfr⟩ := GlobalTheory.T.theta_function_archimedean_frame E H L' D' σ'
+  obtain ⟨-, hfr⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.frames_main E H L' D' σ'
   obtain ⟨hu, -, -⟩ := hfr a
   choose f hf hfu using fun j => hu _ (s j)
   have : θ = f i := hfu i θ hθ

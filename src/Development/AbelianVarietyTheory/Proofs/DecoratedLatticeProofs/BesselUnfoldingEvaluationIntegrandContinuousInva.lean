@@ -4,13 +4,15 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaA
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnfoldingBasePointFourierJacobiGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleMixedModelBaseValueEquivariantStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleMixedModelBaseValueEquivariant
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilMixedCoordinatesContinuousBoundedSupNormStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousIntegralCompactAutomorphicQuotientParaStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SemidirectHaarMeasureFundamentalDomainStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousIntegralCompactAutomorphicQuotientPara
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsQuasiFam
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SemidirectHaarMeasureFundamentalDomain
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlagSubgroupsClosedNormalCocompactStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedCoordinatesOfThetaFunctionAreThetaFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierJacobiBesselGroupsClosedHaarProductStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedCoordinatesOfThetaFunctionAreThetaFunctions
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierJacobiBesselGroupsClosedHaarProduct
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.WittSmallGroupEmbeddingMemPointwiseStabilizerIso
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagUnipotentFourierJacobiGroupStructure
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagUnipotentBesselCharacterLaws
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsotropicUnipotentRadicalsRationalCocompact
@@ -146,9 +148,9 @@ theorem jac_mean {ρ : ℕ} (J : JacLev D ρ) (K : GA D J.W → GA D J.W → ℂ
   obtain ⟨_, _, _, _, _, _, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W
   have dec := flag_jacobi_structure D J.W J.W₀ ρ J.d
   have base := GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d
-  obtain ⟨⟨hcl, hhaar⟩, -⟩ := GlobalTheory.T.fourierJacobi_bessel_groups_closed_haar_product D J.W J.W₀ J.W₀ _ ρ J.d (orthZero J.W₀) J.vN.ν J.vN.𝓝 J.vN.unit
+  obtain ⟨⟨hcl, hhaar⟩, -⟩ := _root_.GlobalTheory.MixPer.jacGrp_besGrp_haar D J.W J.W₀ J.W₀ _ ρ J.d (orthZero J.W₀) J.vN.ν J.vN.𝓝 J.vN.unit
   have hμ := hhaar J.v0.μ J.v0.haar
-  obtain ⟨𝓡, h𝓡, hint⟩ := GlobalTheory.T.semidirect_haar_measure_fundamental_domain D J.W J.W₀ (flagN J.d) J.d.emb0 J.d.continuous_embed
+  obtain ⟨𝓡, h𝓡, hint⟩ := _root_.GlobalTheory.Unf.semiFd_iterated D J.W J.W₀ (flagN J.d) J.d.emb0 J.d.continuous_embed
     (GlobalTheory.T.flag_subgroups_closed_normal_cocompact' D J.W J.W₀ ρ J.d).1 dec.2.2.2.2.1 dec.2.2.2.2.2.1 base.2.2.2.2.2 J.v0 J.vN.ν J.vN.𝓝 J.vN.unit.1
     J.vN.unit.2.1 hμ
   obtain ⟨C, hC, hcov⟩ := jac_cocompact J.d J.cpt
@@ -214,8 +216,8 @@ abbrev ev (Ψ : WO B.V J.W → ℂ) (x : Mx D J.W.rank ρ) : WO B.V₀ J.W₀ �
 
 theorem ev_theta {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) (x : Mx D J.W.rank ρ) :
     IsThetaFunO ψ B.V₀ J.W₀ (ev s Ψ x) :=
-  (GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ s.weil.std).2 _ _ _ _ J.d _ _ s.vT.covol _
-    ((GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ s.weil.std).1 _ _ _ _ B.d _ _ s.vS.covol _ hΨ x) _
+  (_root_.GlobalTheory.MixValues.mixed_values D ψ s.weil.std).2 _ _ _ _ J.d _ _ s.vT.covol _
+    ((_root_.GlobalTheory.MixValues.mixed_values D ψ s.weil.std).1 _ _ _ _ B.d _ _ s.vS.covol _ hΨ x) _
 
 theorem om_mul (a b : GA D B.V) (g h : GA D J.W) (Ψ : WO B.V J.W → ℂ) :
     s.om (a * b, g * h) Ψ = s.om (a, g) (s.om (b, h) Ψ) := by
@@ -236,10 +238,10 @@ theorem ev_om {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) (u : U
     rw [← Matrix.mul_assoc, mt_mul, mt_mul, mt_mul, Matrix.mul_assoc _ _ J.d.jX, J.d.wittDecomp_anisotropicEmbedding_inclX,
       Matrix.mul_assoc _ _ J.d.jX, Matrix.mul_assoc _ _ J.d.jX, J.d.nC_jX, J.d.nB_jX, J.d.levi_jX, Matrix.mul_assoc]
     rfl
-  have e2 := (GlobalTheory.T.doubleMixedModel_baseValue_equivariant D ψ ρ B J s om' hom _
+  have e2 := (_root_.GlobalTheory.Unf.evalAt_xZero_yZero D ψ ρ B J s om' hom _
     (s.weil.om_pres (embA B.d B.o h₀, J.d.nB b * J.d.nC c * J.d.emb0 h') _ hΨ)).2 ((⟨v, hv⟩ : UX D ρ) * u) ⟨v, hv⟩
   rw [inv_mul_cancel_left, ← om_mul, one_mul, ← mul_assoc,
-    (GlobalTheory.T.doubleMixedModel_baseValue_equivariant D ψ ρ B J s om' hom _ hΨ).1 u h₀ _ hr h'] at e2
+    (_root_.GlobalTheory.Unf.evalAt_xZero_yZero D ψ ρ B J s om' hom _ hΨ).1 u h₀ _ hr h'] at e2
   rw [e1, opA, jacT_levi_mul ψ J.d B.V₀ _ (yZero_mul _ _ hv)]
   exact e2
 
@@ -344,7 +346,7 @@ theorem evalIntegrand_continuous_invariant : ∀ (D : D7) (ψ : AddChar (AF D.ho
   have hK : Continuous fun q : jacGrp J.d × GA D J.W => K q.1 q.2 := by
     have hr : Continuous fun q : jacGrp J.d × GA D J.W => (q.1 : GA D J.W) := continuous_subtype_val.comp continuous_fst
     exact ((hG.continuous.comp (hr.mul continuous_snd)).mul (hpsi.comp hr).star).mul
-      (GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D B.A B.cpt B.vA (jacGrp J.d × GA D J.W) (fun h₀ q => ker s φ Φ h₀ q.1 q.2) (ker_cont s hφ hΦ)
+      (_root_.GlobalTheory.CocompactParam.continuous_integral_param D B.A B.cpt B.vA (jacGrp J.d × GA D J.W) (fun h₀ q => ker s φ Φ h₀ q.1 q.2) (ker_cont s hφ hΦ)
         fun γ hγ h₀ q => ker_left s hom hφ hΦ hγ q.1.2 h₀ q.2).2.1
   obtain ⟨h1, h2⟩ := jac_mean J K hK fun γ hγ hγ' r hr p => by
     simp only [K, mul_assoc γ r p, hG.left hγ, psiFlag_jac s.weil.std J.d hγ hγ' hr, ker_jac s hom hΦ hγ hγ' hr]

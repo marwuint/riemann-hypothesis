@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.OntoAlong
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.NormChoiceOfExtension
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
@@ -14,7 +14,6 @@ open GlobalTheory.AtMember GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem G
 namespace GlobalTheory.PlugPt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace Side
-variable {D : D7} {nch : NChoice D} (s : Side D nch)
 end Side
 section Wit
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)}

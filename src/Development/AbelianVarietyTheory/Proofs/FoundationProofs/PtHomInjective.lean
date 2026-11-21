@@ -69,11 +69,4 @@ theorem La0_eq_map (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a d : ℕ) 
     refine sum_mem fun j _ => ?_
     simpa using single_mem D cc δ a d i j (hz i j) 1
 
-theorem pt_mem_iff : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a d : ℕ), Crv D cc δ → ∀ z : Matrix (Fin d) (Fin a) D.host.E, pt D (tor0 D cc δ) δ z ∈ La0 D (tor0 D cc δ) a d ↔ z ∈ lat0 D cc a d := by
-  intro D cc δ a d h z
-  have hδ : δ ≠ 0 :=
-    (GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ h).2.1
-  rw [La0_eq_map, ← ptHom_apply]
-  exact AddSubgroup.mem_map_iff_mem (ptHom_injective D cc hδ a d)
-
 end GlobalTheory.ThetaLatticePoints

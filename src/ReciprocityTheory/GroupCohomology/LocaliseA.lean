@@ -87,47 +87,4 @@ theorem isLocalized_of_cx (j : Hom A B) (t : R) (hj : ∀ n, Injective (j.f n))
 
 end Alg
 
-section Trunc
-
-variable {R : Type u} [CommRing R] (A : Cx R) (L : Submodule R (A.H 1))
-
-def truncW : (n : ℕ) → Submodule R (A.X n)
-  | 0 => ⊤
-  | 1 => (L.comap ((A.B 1).comap (A.Z 1).subtype).mkQ).map (A.Z 1).subtype
-  | _ + 2 => ⊥
-
-theorem mem_truncW_one {x : A.X 1} :
-    x ∈ truncW A L 1 ↔ ∃ hx : A.d 1 x = 0, A.cls 1 x hx ∈ L := by
-  constructor
-  · rintro ⟨z, hz, rfl⟩
-    exact ⟨z.2, hz⟩
-  · rintro ⟨hx, h⟩
-    exact ⟨⟨x, hx⟩, h, rfl⟩
-
-theorem truncW_d (n : ℕ) (x : A.X n) (hx : x ∈ truncW A L n) : A.d n x ∈ truncW A L (n + 1) := by
-  match n, x, hx with
-  | 0, x, _ =>
-    rw [mem_truncW_one]
-    refine ⟨A.dd 0 x, ?_⟩
-    rw [cls_d]; exact L.zero_mem
-  | 1, x, hx =>
-    obtain ⟨hx0, _⟩ := (mem_truncW_one A L).1 hx
-    show A.d 1 x ∈ (⊥ : Submodule R _)
-    rw [hx0]; exact Submodule.zero_mem _
-  | n + 2, x, hx =>
-    have : x = 0 := (Submodule.mem_bot R).1 hx
-    subst this
-    rw [map_zero]; exact Submodule.zero_mem _
-
-def truncCx : Cx R where
-  X n := truncW A L n
-  d n := (A.d n).restrict fun x hx => truncW_d A L n x hx
-  dd n x := Subtype.ext (A.dd n x.1)
-
-def truncHom : Hom (truncCx A L) A where
-  f n := (truncW A L n).subtype
-  comm _ _ := rfl
-
-end Trunc
-
 end ReciprocityTheory.Coh

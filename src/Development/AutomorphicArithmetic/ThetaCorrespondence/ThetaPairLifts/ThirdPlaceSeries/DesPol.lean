@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialDescentEstimate
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LeafInfinitePlaceBound
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 
@@ -10,7 +10,6 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField Formalism.L2.Indef
 namespace GlobalTheory.BigTop.Fun.PolBound
 end GlobalTheory.BigTop.Fun.PolBound
 namespace GlobalTheory.BigTop.Fun.PolBound
-open Formalism.BasicNotions Formalism.MainNotions NumberField
 end GlobalTheory.BigTop.Fun.PolBound
 namespace GlobalTheory.BigTop.Fun
 open Formalism.BasicNotions Formalism.MainNotions NumberField GlobalTheory.BigTop.Fun.PolBound

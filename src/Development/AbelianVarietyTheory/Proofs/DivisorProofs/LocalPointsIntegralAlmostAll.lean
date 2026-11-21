@@ -62,37 +62,4 @@ theorem mem_GLint_of_entries {K : Type} [Field K] {O : Subring K} {x : GL (Fin n
     rw [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
     exact x.inv_mul
 
-theorem eventually_mem_KL (hU : Unr E) (γ : UE E n) :
-    ∀ᶠ w in (cofinite : Filter (Pl E)), locPt w γ ∈ KL n w := by
-  have h1 : ∀ᶠ w in (cofinite : Filter (Pl E)), ∀ i j, w.valuation E ((γ.1 : GL (Fin n) E).1 i j) ≤ 1 ∧
-      w.valuation E (((γ.1 : GL (Fin n) E)⁻¹).1 i j) ≤ 1 := by
-    simp only [Filter.eventually_all]
-    intro i j
-    exact (eventually_valuation_le_one _).and (eventually_valuation_le_one _)
-  filter_upwards [h1] with w hw
-  rw [KL, Subgroup.mem_subgroupOf, locPt_val hU]
-  refine mem_GLint_of_entries (fun i j => algebraMap_mem_Ov (hw i j).1) (fun i j => ?_)
-  rw [← map_inv]
-  exact algebraMap_mem_Ov (hw i j).2
-
-theorem norm_eq_one_of_root (γ : UE E n) (τ : E →+* ℂ) (z : ℂ)
-    (hz : z ∈ ((γ.1 : GL (Fin n) E).val.charpoly.map τ).roots) : ‖z‖ = 1 := by
-  first
-  | (rename_i h_1 h_2 h_3; revert E h_1 h_2 h_3 n γ τ z hz; exact @_root_.GlobalTheory.UnitaryCharpolyRootNorm.norm_root_charpoly)
-  | exact @_root_.GlobalTheory.UnitaryCharpolyRootNorm.norm_root_charpoly
-  | exact _root_.GlobalTheory.UnitaryCharpolyRootNorm.norm_root_charpoly
-  | (apply _root_.GlobalTheory.UnitaryCharpolyRootNorm.norm_root_charpoly <;> assumption)
-  | (intros; apply _root_.GlobalTheory.UnitaryCharpolyRootNorm.norm_root_charpoly <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.UnitaryCharpolyRootNorm.norm_root_charpoly <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.UnitaryCharpolyRootNorm.norm_root_charpoly ..)
-
-theorem charpoly_mem_Ell (γ : UE E n) (hs : (γ.1 : GL (Fin n) E).val.charpoly.Separable) :
-    (γ.1 : GL (Fin n) E).val.charpoly ∈ Ell E n :=
-  ⟨Matrix.charpoly_monic _, by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin], hs,
-    fun τ z hz => norm_eq_one_of_root γ τ z hz⟩
-
-theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (γ : UE E n), (∀ w : Pl E, (locPt w γ).1 = GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ.1) ∧ (∀ᶠ w in (cofinite : Filter (Pl E)), locPt w γ ∈ KL n w) ∧ (γ.1.val.charpoly.Separable → γ.1.val.charpoly ∈ Ell E n) := by
-  intro E _ _ _ hU n γ
-  exact ⟨fun w => locPt_val hU w γ, eventually_mem_KL hU γ, charpoly_mem_Ell γ⟩
-
 end GlobalTheory.LocRatPt

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HasPartAnd
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KerEntTiedTrueEnt
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ErrorDataGeneratorsEqColumnPreDatumStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ErrorDataGeneratorsEqColumnPreDatum
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsStdFStdLvC
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Ker Formalism.L2.Forms GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Svd NumberField IsDedekindDomain
 
@@ -16,7 +16,7 @@ theorem GlobalTheory.Svd.Part.kerTie : ∀ (B : GlobalTheory.Mem.Base) (f : Fr B
   dsimp only [ofObj, extraObj] at hErr ker_eq qp kt
   cases ker_eq
   subst hErr
-  have hpi := GlobalTheory.T.errorData_generators_eq_columnPreDatum B f T w Z col
+  have hpi := _root_.GlobalTheory.Svd.errXS_pi_of_colT B f T w Z col
   refine ⟨rfl, hpi.1, hpi.2, qp, ?_⟩
   refine Exists.imp (by intro t h; exact ⟨(StdModel.stdKer_iff w.I w.l Z t).2 h.1, h.2.2.2.1, h.2.2.2.2⟩)
     (GlobalTheory.Mem.Col2.TC.kerEntTied_true_ent w.I w.ok w.pins w.l Z _ _ _ _ _ _ _ _ kt.O kt.E qp kt.std kt.unf kt.ok (by exact kt.served))

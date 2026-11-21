@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleOfEtaleAtHeigh
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeOfIsIntegrallyClosed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AtPrimeTensorIsDomainIsIntegrallyClosedFaithfulS
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalizationAtPrimeOfHeightOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeOfEtalePuncturedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeOfEtalePunctured
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleFractionFieldOfEtaleHeightOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocalRingNormalDomain
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsRegularLocalRingOfFlatOfMapEqMaximalIdeal
@@ -48,7 +48,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card : ∀ (n : ℕ) (R A : Type) [CommRi
   have hfree : Module.Free R A := by
     by_cases h2 : ringKrullDim R ≤ 2
     · exact GlobalTheory.PurFree.free_of_isIntegrallyClosed R A hR h2
-    · refine GlobalTheory.T.free_of_etale_on_punctured_spectrum R A hR ?_ ?_
+    · refine _root_.GlobalTheory.PurityStep.free_of_etale_punctured R A hR ?_ ?_
       · rw [not_le] at h2
         have h2' : ((2 : ℕ) : WithBot ℕ∞) < ringKrullDim R := by exact_mod_cast h2
         rw [← hR] at h2' ⊢

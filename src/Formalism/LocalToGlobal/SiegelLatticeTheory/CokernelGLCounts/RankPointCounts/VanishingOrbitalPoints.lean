@@ -21,20 +21,4 @@ theorem stepPoints_of_ooVanish
     Formalism.L2.SG.NGCut.StepPoints :=
   Formalism.L2.SG.NGCut.PtPf.stepPoints_of hOV fun D X Y u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u'
 
-open Formalism.L2.SG.TermOp.Vanish in
-
-theorem stepNormOne_of_vanishLeaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC)
-    (hG : PsiInfChar) (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC) :
-    Formalism.L2.SG.NGCut.StepNormOne :=
-  Formalism.L2.SG.NGCut.LeadingMinorIntegrality.stepNormOne_of_leaves hA hU hN hC hG h1 h2 h3 h4
-    fun D X Y u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u'
-
-open Formalism.L2.SG.TermOp.Vanish in
-
-theorem stepPoints_of_vanishLeaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC)
-    (hG : PsiInfChar) (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC) :
-    Formalism.L2.SG.NGCut.StepPoints :=
-  Formalism.L2.SG.NGCut.PtPf.stepPoints_of_leaves hA hU hN hC hG h1 h2 h3 h4
-    fun D X Y u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u'
-
 end Formalism.L2.SG.NGCut.VanishingOrbitalPoints

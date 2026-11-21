@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Statements.HyperbolicHypotheses.Hypothes
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ZMatEInjective
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SpanCuspCentreArithmeticGroupFgStatement
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SkewMatrixMultipleInLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinrankRatSkewHermitianMatricesCmFieldStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinrankRatSkewHermitianMatricesCmField
 open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.L2.PjFree
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
 open scoped Matrix nonZeroDivisors
@@ -46,7 +46,7 @@ theorem latZ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : �
     have := Submodule.span_eq (AddSubgroup.toIntSubmodule (zGamSub (X c) cu))
     exact congrArg (fun S : Submodule ℤ (Matrix (Fin ρ) (Fin ρ) E) =>
       (S : Set (Matrix (Fin ρ) (Fin ρ) E))) this
-  have hdim := GlobalTheory.T.finrank_rat_skewHermitian_matrices_cmField E ρ (X c).Ψ (X c).cmType
+  have hdim := _root_.GlobalTheory.finrank_skewHermitian_eq E ρ (X c).Ψ (X c).cmType
     (Submodule.span ℚ (Submodule.span ℤ (FJ.zGam (X c) cu) : Set (Matrix (Fin ρ) (Fin ρ) E))) (by
       rw [hZ]
       intro β

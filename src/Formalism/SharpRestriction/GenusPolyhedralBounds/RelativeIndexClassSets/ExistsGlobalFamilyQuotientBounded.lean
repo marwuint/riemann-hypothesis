@@ -111,22 +111,9 @@ theorem exists_global_family_quotient_bounded {X : PJ D B P j} {ka wL wF : Weigh
   obtain ⟨e, he, hsup⟩ := hex
   exact ⟨fun i => ⟨e i, hM (hSh (he i))⟩, rfl, fun i => hSh (he i), hsup, fun i => (hshort _ (he i)).trans hbe⟩
 
-theorem exists_global_family_quotient {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G0 : GlobalFamilyData X ka wL wF) (large₂ : SizeData₂ D) (S : Scal B)
-    (CRm : ℝ) (T : ℕ) (c Gc Ch Ah : ℝ)
-    (hS4 : ShortG X ka (X.Thc S.sK ka) (Gc * ka.size))
-    (hM : X.Thc S.sK ka ≤ B.Mlat j ka)
-    (hG : Gc ≤ WeightFamilies.PPv D large₂ Ch Ah) :
-    ∃ (rq : ℕ) (th : Fin rq → B.Mlat j ka),
-      ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF).TiedQ large₂ S CRm T c Ch Ah :=
-  ⟨_, exists_global_family_quotient_bounded G0 large₂ S CRm T c (Gc * ka.size) Ch Ah hS4 hM
-    (mul_le_mul_of_nonneg_right hG (by linarith [ka.one_le_size]))⟩
-
 section Unchanged
 
 variable {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G0 : GlobalFamilyData X ka wL wF) (rq : ℕ) (th : Fin rq → B.Mlat j ka)
-
-example : ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) =
-    ⟨G0.N, G0.w, G0.del, G0.th', G0.rz, G0.alz, G0.th0, G0.zc, rq, th, G0.iet, G0.et, G0.mx⟩ := rfl
 
 theorem tiedW_reQ (S : Scal B) (Gc Prw : ℝ) :
     ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF).TiedW S Gc Prw ↔ G0.TiedW S Gc Prw := Iff.rfl
@@ -151,9 +138,6 @@ theorem inContainM_reQ (la : HeightOneSpectrum (𝓞 B.KO)) (CRm : ℝ) (T : ℕ
 
 theorem combBound_reQ (S : Scal B) (c : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) :
     CombBound ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) S c nus ↔ CombBound G0 S c nus := Iff.rfl
-
-example (la : HeightOneSpectrum (𝓞 B.KO)) :
-    PtsG ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) la = PtsG G0 la := rfl
 
 def LocalPointData.reQ {G0 : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G0 la) (rq : ℕ) (th : Fin rq → B.Mlat j ka) :
     LocalPointData ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) la :=

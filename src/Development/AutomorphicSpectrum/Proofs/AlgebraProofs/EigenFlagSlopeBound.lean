@@ -4,8 +4,8 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExa
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualLatticeDegreeNeg
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LmuNumNonneg
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ConjugateEigenSubDegreeEqStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LieSubDegreeBoundByDualStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeSumEigenSubDegreesStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LieSubDegreeBoundByDual
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeSumEigenSubDegrees
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubDegreeBotAndMaxExistsStatement
 
 open GlobalTheory.CompanionTheory.Ar.Crv
@@ -47,10 +47,10 @@ theorem lmuNum_nonneg_of_conjData : ∀ (K : Type) [Field K] (C : ACurve K) (p :
   intro K _ C p _ _ O k S T _ _ _ _ _ _ χ d D ι κ j q μ W L hp hs hc hbij hconj hj hq hW0 hL0 hWj hLq hgap
   classical
   obtain ⟨hbot, W₀, hW₀⟩ := GlobalTheory.T.sub_degree_bot_and_max_exists K C (Fin d → K) D.lie D.lie_bun
-  obtain ⟨he0, hC2⟩ := GlobalTheory.T.lie_sub_degree_bound_by_dual K C p O d D hp
+  obtain ⟨he0, hC2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.FrobEst.frob_estimate K C p O d D hp
   have hsplit : deg C D.lie = ∑ s, subDeg C D.lie
       (eig (fun a => Matrix.toLin' (D.ρ a)) (fun a => algebraMap k K (χ s a))) :=
-    GlobalTheory.T.degree_sum_eigen_sub_degrees K C (Fin d → K) D.lie O k S χ hs hc (endAct D.ρ) D.lie_bun (isHom_lie D)
+    _root_.GlobalTheory.CompanionTheory.Ar.Crv.degree_eq_sum_eigen K C (Fin d → K) D.lie O k S χ hs hc (endAct D.ρ) D.lie_bun (isHom_lie D)
   have hdual : deg C (dotDual C D.lie) = - deg C D.lie :=
     (GlobalTheory.CompanionTheory.Ar.Crv.DegDual.deg_dual K C (Fin d → K) (Fin d → K) D.lie (dotProductBilin K K)
       D.lie_bun (dot_bijective K d)).2.1

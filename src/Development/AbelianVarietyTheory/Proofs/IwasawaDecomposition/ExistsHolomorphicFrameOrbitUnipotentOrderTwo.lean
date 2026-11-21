@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegersAlt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MajorantHarnackHolomorphicHalfPlaneStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MajorantHarnackHolomorphicHalfPlane
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.MajLactRmul
 
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ShFam GlobalTheory.ShFam.BdArc Filter Topology
@@ -195,7 +195,7 @@ theorem linGrowth (h : IsOrbit X T M γ x) (τ : X.Ψ) : LinGrowth ((γ : Matrix
   have h1 : X.maj (x (w + (k * M : ℕ))) τ (((γ : Matrix (Fin N) (Fin N) E).map τ.1) ^ k *ᵥ v) = X.maj (x w) τ v := by
     rw [e, MajInv.maj_rmul X (MajInv.lact_mem_dom X hst hx) hb, ← hpow]
     exact MajInv.maj_lact X hst _ τ v
-  have h2 := GlobalTheory.T.majorant_harnack_holomorphic_half_plane E N X T x h.2.2.1 h.2.2.2.1 (w + (k * M : ℕ)) w (by simpa using hw) hw τ
+  have h2 := _root_.GlobalTheory.maj_harnack E N X T x h.2.2.1 h.2.2.2.1 (w + (k * M : ℕ)) w (by simpa using hw) hw τ
     (((γ : Matrix (Fin N) (Fin N) E).map τ.1) ^ k *ᵥ v)
   rw [h1, add_sub_cancel_left, Complex.norm_natCast, Complex.add_im, Complex.natCast_im, hwi] at h2
   have h3 := ReciprocityTheory.ChartRestriction.G.FD.MajorantConjugateTransfer.cs X hx τ (((γ : Matrix (Fin N) (Fin N) E).map τ.1) ^ k *ᵥ v) u

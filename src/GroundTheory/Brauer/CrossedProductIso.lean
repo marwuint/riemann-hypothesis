@@ -269,31 +269,7 @@ theorem exists_isBrauerEquivalent_finrank_eq_of_mem_relBrauer (A : CSA.{u, u} K)
 
 end Representative
 
-theorem isMulCoboundary₂_pow_card {G M : Type*} [Group G] [Fintype G] [CommGroup M]
-    [MulDistribMulAction G M] {f : G × G → M} (hf : IsMulCocycle₂ f) :
-    IsMulCoboundary₂ (f ^ Fintype.card G) := by
-  classical
-  refine ⟨fun g => ∏ j, f (g, j), fun g h => ?_⟩
-  have H : (∏ j, f (g * h, j)) * f (g, h) ^ Fintype.card G =
-      g • (∏ j, f (h, j)) * ∏ j, f (g, j) := by
-    calc (∏ j, f (g * h, j)) * f (g, h) ^ Fintype.card G = ∏ j, (f (g * h, j) * f (g, h)) := by
-          rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]
-      _ = ∏ j, (g • f (h, j) * f (g, h * j)) := Finset.prod_congr rfl fun j _ => hf g h j
-      _ = (∏ j, g • f (h, j)) * ∏ j, f (g, h * j) := Finset.prod_mul_distrib
-      _ = g • (∏ j, f (h, j)) * ∏ j, f (g, j) := by
-          rw [Finset.smul_prod']
-          congr 1
-          exact Equiv.prod_comp (Equiv.mulLeft h) (fun j => f (g, j))
-  rw [Pi.pow_apply, div_mul_eq_mul_div, div_eq_iff_eq_mul, ← H, mul_comm]
-
 namespace H2mul
-
-theorem pow_card_eq_one {G M : Type*} [Group G] [Fintype G] [CommGroup M]
-    [MulDistribMulAction G M] (x : H2mul G M) : x ^ Fintype.card G = 1 := by
-  induction x using H2mul.induction_on with
-  | h c =>
-  rw [← map_pow, mk_eq_one_iff, SubmonoidClass.coe_pow]
-  exact isMulCoboundary₂_pow_card (isMulCocycle₂_of_mem c)
 
 end H2mul
 

@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BoundedAndEven
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfMuFrobeniusEquationSolvableAndTendstoStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemDeRhamFiltrationOfForallAinfLatticeStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerEpsilonRootPowSubZetaExpMemFiltrationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLiftsOfNormLeOneStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLiftsOfNormLeOne
 
 noncomputable section
 
@@ -94,7 +94,7 @@ theorem tail (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : 
   have hD : ∀ j, ∃ D : Ainf l, j < M → Lifts AI K D (d j) := by
     intro j
     by_cases hj : j < M
-    · obtain ⟨D, hD⟩ := GlobalTheory.T.exists_lifts_of_norm_le_one_alt l P AI hT K (d j) (hd j hj).1
+    · obtain ⟨D, hD⟩ := _root_.GlobalTheory.ExpImage.exists_lifts_of_norm_le_one l P AI hT K (d j) (hd j hj).1
       exact ⟨D, fun _ => hD⟩
     · exact ⟨0, fun h => absurd h hj⟩
   choose D hD using hD

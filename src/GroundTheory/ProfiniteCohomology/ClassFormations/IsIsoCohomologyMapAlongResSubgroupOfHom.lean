@@ -212,11 +212,6 @@ noncomputable def invEquiv (U : OpenSubgroup G) : H2Open C U ≃+ QZ :=
 theorem invEquiv_apply (U : OpenSubgroup G) (x : H2Open C U) : F.invEquiv U x = F.inv U x :=
   rfl
 
-def toClassFormationAt (P : Set Nat.Primes) : ClassFormationAt P C where
-  toPreClassFormation := F.toPreClassFormation
-  inv_injective U := (F.inv_bijective U).1
-  primaryComponent_le_range U _ _ x _ := (F.inv_bijective U).2 x
-
 end ClassFormation
 
 end GroundTheory.ProfCoh

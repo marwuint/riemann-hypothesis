@@ -96,22 +96,6 @@ open Ideal
 
 variable {p : ℕ} [Fact p.Prime]
 
-theorem norm_eq_val (x : ℂ_[p]) : ‖x‖ = ((Valued.v x : ℝ≥0) : ℝ) := by
-  first | exact GlobalTheory.RingBasics.norm_eq_val .. | exact GlobalTheory.RingBasics.norm_eq_val | exact @GlobalTheory.RingBasics.norm_eq_val _ _ | simpa using GlobalTheory.RingBasics.norm_eq_val .. | (intros; exact GlobalTheory.RingBasics.norm_eq_val ..)
-
-theorem mem_OC (x : ℂ_[p]) : x ∈ 𝓞_ℂ_[p] ↔ ‖x‖ ≤ 1 := by
-  first | exact GlobalTheory.RingBasics.mem_OC .. | exact GlobalTheory.RingBasics.mem_OC | exact @GlobalTheory.RingBasics.mem_OC _ _ | simpa using GlobalTheory.RingBasics.mem_OC .. | (intros; exact GlobalTheory.RingBasics.mem_OC ..)
-
-theorem norm_p_lt : ‖(p : ℂ_[p])‖ < 1 := by
-  first | exact GlobalTheory.RingBasics.norm_p_lt .. | exact GlobalTheory.RingBasics.norm_p_lt | exact @GlobalTheory.RingBasics.norm_p_lt _ _ | simpa using GlobalTheory.RingBasics.norm_p_lt .. | (intros; exact GlobalTheory.RingBasics.norm_p_lt ..)
-
-theorem p_ne_zero : (p : ℂ_[p]) ≠ 0 := by
-  first | exact GlobalTheory.RingBasics.p_ne_zero .. | exact GlobalTheory.RingBasics.p_ne_zero | exact @GlobalTheory.RingBasics.p_ne_zero _ _ | simpa using GlobalTheory.RingBasics.p_ne_zero ..
-
-theorem mem_span_pow_OC (n : ℕ) (x : OC p) :
-    x ∈ (span {(p : OC p)}) ^ n ↔ ‖(x : ℂ_[p])‖ ≤ ‖(p : ℂ_[p])‖ ^ n := by
-  first | exact GlobalTheory.RingBasics.mem_span_pow_OC .. | exact GlobalTheory.RingBasics.mem_span_pow_OC | exact @GlobalTheory.RingBasics.mem_span_pow_OC _ _ | simpa using GlobalTheory.RingBasics.mem_span_pow_OC .. | (intros; exact GlobalTheory.RingBasics.mem_span_pow_OC ..)
-
 theorem isAdicComplete_OC : IsAdicComplete (span {(p : OC p)}) (OC p) := by
   first | infer_instance | exact Formalism.Per.instIsAdicCompleteOCSpanSingletonSetCast _
 
@@ -125,10 +109,5 @@ theorem tiltDiv : PI.ArtSch.TiltDiv := by
 end GlobalTheory.ArtinSchreierTilt
 
 namespace GlobalTheory
-
-theorem frobSubOne_onto : Formalism.MainNotions.ElementDenominator.ArtinSchreierWittOnto := by
-  intro l _ x
-  exact PI.ArtSch.main_of witt_lift
-    (tiltSurjectiveOfParts rootModP_holds ArtinSchreierTilt.tiltDiv smallSurjective) l x
 
 end GlobalTheory

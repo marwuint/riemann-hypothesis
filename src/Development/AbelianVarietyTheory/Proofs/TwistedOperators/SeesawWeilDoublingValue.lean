@@ -1,8 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilTripleNormStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilTripleNorm
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DarbouxModelAlgebraicVectorsLeAdelicSchwartzStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilFactorization
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLineOperatorPolynomial
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictionLineOperatorSumStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictionLineOperatorSum
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTransformDarbouxModelLinearInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinPartNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEq
@@ -52,7 +58,7 @@ theorem exists_pure_lieDer_left : GlobalTheory.Published.HoweDualityReal → Glo
   have hψ' : Bs.ψ = ψ := h.ψ
   have hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ := hψ' ▸ hm.triple.base.std
   have hG : Γ.M.IsGood ψ := hψ' ▸ hg.hM
-  obtain ⟨Ψ, hΨ, rfl⟩ := (GlobalTheory.T.seesaw_weil_triple_norm hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB
+  obtain ⟨Ψ, hΨ, rfl⟩ := (_root_.GlobalTheory.TripleInv.theta_surj hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB
     R Rf hm).1 Φ hΦ
   obtain ⟨n, c, g, hsum⟩ := Submodule.mem_span_set'.1 hΨ
   choose f0 φ hf0 hφ hvac hpure using fun i => (g i).2
@@ -92,7 +98,7 @@ theorem exists_pure_lieDer_left : GlobalTheory.Published.HoweDualityReal → Glo
     have h3 := tA _ hmem 1 (oneP θ X τ Y t)
     rw [hone, ← hγt t] at h3
     exact congrFun h3 x
-  have h4 := GlobalTheory.T.restriction_line_operator_sum hP Bs Γ Xc om om' hm.triple γ hγ n f (fun i => δ (f i)) (fun i => GlobalTheory.EvZeroInf.finPart (φ i))
+  have h4 := _root_.GlobalTheory.ThetaLineDeriv.main hP Bs Γ Xc om om' hm.triple γ hγ n f (fun i => δ (f i)) (fun i => GlobalTheory.EvZeroInf.finPart (φ i))
     hrest (fun i => (hδ _ (hfP i)).2) (GlobalTheory.TripleRead.ptO (sgn true W).gram e x)
   rw [← hsum', ← hsum', hψ'] at h4
   exact (h4.unique h1).symm

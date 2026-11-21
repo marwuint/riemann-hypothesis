@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BsLApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDegreeDensityBaseFormMulFibreVolumeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DzWedgeDzbarSumPowCardEqFactorialDetProdStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DzWedgeDzbarSumPowCardEqFactorialDetProd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDegreeDensityBlockTriangularDiagonalBlocksStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DdcLeviFormEqZeroOfComplexLineInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GradedSquaredLengthUpperUnitriangularGramEqOfAgrStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DdcLeviFormEqZeroOfComplexLineInvariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GradedSquaredLengthUpperUnitriangularGramEqOfAgr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GradedLinePotentialHessianDetOwnRowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdFubiniStudyDensitiesEqFlagCellInvariantDensiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffAtFlagCellGradedLinePotentialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdFubiniStudyDensitiesEqFlagCellInvariantDensi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffAtFlagCellGradedLinePotential
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.L2DbarEstimates (V)
@@ -35,7 +35,7 @@ theorem dens_blocks (n d : ℕ) (J T : Type) [Fintype J] [Fintype T] (ε : Fin n
       ((r t).factorial / (Real.pi : ℂ) ^ r t *
         (Matrix.of fun a b : {j // lev j = t} => K t (ε.symm (.inr a.1)) (ε.symm (.inr b.1))).det) •
         ∏ a : {j // lev j = t}, (Complex.I / 2) • sym (ε.symm (.inr a.1), ε.symm (.inr a.1)) := by
-    have h := GlobalTheory.T.dzWedgeDzbar_sum_pow_card_eq_factorial_det_prod n {j // lev j = t} (fun a => ε.symm (.inr a.1))
+    have h := _root_.GlobalTheory.FlagCell2.pow_card_sum_sym n {j // lev j = t} (fun a => ε.symm (.inr a.1))
       (fun a b hab => Subtype.ext (Sum.inr_injective (ε.symm.injective hab)))
       (kappa • Matrix.of fun a b : {j // lev j = t} => K t (ε.symm (.inr a.1)) (ε.symm (.inr b.1)))
     rw [Matrix.det_smul, ← hr t] at h
@@ -62,7 +62,7 @@ theorem cellPot_add {ι : Type} {m : ι → ℕ} {n d : ℕ} (ε : Fin n ≃ Fin
   unfold cellPot
   rw [hb]
   congr 2
-  refine GlobalTheory.T.gradedSquaredLength_upperUnitriangular_gram_eq_of_agree _ _ _ _ _ fun s hs => hf _ ?_
+  refine _root_.GlobalTheory.FlagCell2.grD_upU_gram_eq _ _ _ _ _ fun s hs => hf _ ?_
   rintro rfl
   exact h1 (Sigma.ext rfl (heq_of_eq (le_antisymm hs h2)))
 
@@ -81,7 +81,7 @@ theorem dens_cellForm : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (n d : ℕ
   · congr 1
     rw [fibDens, Fintype.prod_sigma, Complex.ofReal_prod]
     refine Finset.prod_congr rfl fun τ _ => ?_
-    rw [← GlobalTheory.T.prod_fubiniStudy_densities_eq_flagCell_invariant_density _ _ (hG τ), Complex.ofReal_prod]
+    rw [← _root_.GlobalTheory.FlagCellDens.main _ _ (hG τ), Complex.ofReal_prod]
     refine Finset.prod_congr rfl fun i _ => ?_
     rw [Complex.ofReal_mul]
     congr 1
@@ -89,8 +89,8 @@ theorem dens_cellForm : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (n d : ℕ
       rfl
     · convert (GlobalTheory.T.gradedLine_potential_hessian_det_own_row ι m n d ε G w ⟨τ, i⟩ (hG _) (hC _)).2 <;> rfl
   · intro x j h1 h2 b
-    have h := GlobalTheory.T.ddcLeviForm_eq_zero_of_complexLine_invariant n (cellPot ε G x) w (coordVec (ε.symm (.inr j))) (coordVec b)
-      (GlobalTheory.T.contDiffAt_flagCellGradedLinePotential ι m n d ε G w x (hG _) (hC _)).1 (cellPot_add ε G x j h1 h2)
+    have h := _root_.GlobalTheory.ddc_eq_zero_of_invariant n (cellPot ε G x) w (coordVec (ε.symm (.inr j))) (coordVec b)
+      (_root_.GlobalTheory.CellPotSmooth.cellPot_contDiffAt ι m n d ε G w x (hG _) (hC _)).1 (cellPot_add ε G x j h1 h2)
     simp only [ddc, mul_eq_zero, hk, false_or] at h
     simp [h.1, h.2]
 

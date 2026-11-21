@@ -38,10 +38,6 @@ theorem exists_teichmuller (hK : FiniteDimensional ℚ_[p] K) {x : PadicAlgCl p}
     ∃ ζ ∈ K, ζ ^ (qK p K - 1) = 1 ∧ ‖x - ζ‖ < 1 :=
   UnramifiedExtensions.exists_teichmuller K hK hx h1
 
-theorem mem_of_pow_qK_sub_one (hK : FiniteDimensional ℚ_[p] K) {ζ : PadicAlgCl p}
-    (hζ : ζ ^ (qK p K - 1) = 1) : ζ ∈ K :=
-  UnramifiedExtensions.mem_of_pow_qK_sub_one K hK hζ
-
 theorem le_Kn (n : ℕ) : K ≤ Kn p K n :=
   UnramifiedExtensions.le_Kn K n
 

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PerCEmb
 import Development.AbelianVarietyTheory.Definitions.Divisors.MarkAd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonSplitPlaceStabilizerFixesLatticeVacuumStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonSplitPlaceStabilizerFixesLatticeVacuum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCartanInvOneSplitStab
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalVCutIdemOfNotMem
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnitaryAdelicCharOfHeckeChar
@@ -136,7 +136,7 @@ theorem om_vacuum_eq_smul : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : 
   have hsu := suppPl_locPart W hε k
   change om (1, locPart W v k) f = mu (locPart W v k) • f
   by_cases hv : GlobalTheory.WeilParts.NonSplitAt D v (pairA D.host.F 0 (GlobalTheory.AdelicU.singleFin v 1))
-  · obtain ⟨a1, a2⟩ := GlobalTheory.T.nonSplitPlace_stabilizer_fixes_latticeVacuum D ψ θ V W χV χW om hP mu hmu H ΛV ΛW hV hW f hf.2.theta hf.2.lat v _ _ hv hsu hst
+  · obtain ⟨a1, a2⟩ := _root_.GlobalTheory.AdTh.nonSplit_fixes_latVac D ψ θ V W χV χW om hP mu hmu H ΛV ΛW hV hW f hf.2.theta hf.2.lat v _ _ hv hsu hst
     rw [a1, a2 hV0, one_smul]
   · obtain ⟨e, he, hee⟩ := not_not.1 (fun h => hv ⟨hε, h⟩)
     exact GlobalTheory.AdTh.om_vacuum_split_stab D ψ θ V W χV χW om hP mu hmu ΛV ΛW hV hW s hs f hf e _ he (fun i j => by rw [hee]; exact hsu i j) hst

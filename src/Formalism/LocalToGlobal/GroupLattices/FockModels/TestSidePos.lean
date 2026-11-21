@@ -178,13 +178,6 @@ private theorem leAt_eq_colSpan_la_tw_mul_lb_D_of_edgeBasis {p n' : ℕ} {W Qq O
     · rw [Rcol c, if_neg hc, one_smul]
       exact Submodule.mem_sup_left (Submodule.subset_span ⟨c, rfl⟩)
 
-theorem leAt_of_basis_G {p : ℕ} (G : GAtP p) (v : Fin G.P.nV) (e : Edge (G.P.W v) (G.P.Qq v) (G.P.m + 1))
-    (g : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)) (hgb : IsEdgeBasis p G.P.r e g) :
-    ∀ s, LeAt p (G.P.ι v) (G.P.σ v) G.P.w s e =
-      colSpan G.O (la_tw (G.P.ι v) (G.P.σ v) s g * lb_D (G.P.m + 1) G.P.r (algebraMap G.O G.Kf G.P.w)) := by
-  intro s
-  exact leAt_eq_colSpan_la_tw_mul_lb_D_of_edgeBasis (G.P.setting v) G.P.m G.P.r e g hgb s
-
 section
 variable {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
   [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]

@@ -4,7 +4,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.PsiEDef
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemFlagUnipotentIffOrderedEichlerProductStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemFlagUnipotentIffOrderedEichlerProduct
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EichlerIsometry
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical
@@ -68,7 +68,7 @@ theorem GlobalTheory.HL.nof_normal_form_rescaled : ∀ {F : Type} [Field F] [Val
     rw [← hX i, ← hX j, Eichler.hf_smul_l, Eichler.hf_smul_r, hgg]; simp
   · simp only [Frames.h]
     rw [hY' i, hY' j, Eichler.hf_smul_l, Eichler.hf_smul_r, hss]; simp
-  rw [GlobalTheory.T.mem_flagUnipotent_iff_orderedEichlerProduct L r k S g gs hsel n]
+  rw [_root_.GlobalTheory.FlagEich.main L r k S g gs hsel n]
   constructor
   · rintro ⟨u, s, e, he, hn⟩
     refine ⟨fun i => algebraMap F E ((a i)⁻¹ : Fˣ) • u i,

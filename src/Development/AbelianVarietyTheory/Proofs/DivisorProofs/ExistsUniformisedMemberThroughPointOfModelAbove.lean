@@ -3,9 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZHAbove
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitExistsAfterFiniteExtensionOfCompleteDVRStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisedMemberOfRefinedUniformisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelModuliTraitPeriodsMonomialPosDefStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitExistsAfterFiniteExtensionOfCompleteDVR
+import Development.AbelianVarietyTheory.Definitions.Divisors.NotOrdGeOfNotMem
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegPull
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisedMemberOfRefinedUniformisation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelModuliTraitPeriodsMonomialPosDef
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PolOfSecondQuotient
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -90,7 +93,7 @@ theorem exists_uMem_thru : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matr
     Scheme.SpecMap_stalkMap_fromSpecStalk πY
   haveI hsl : IsLocalHom s := inferInstanceAs (IsLocalHom (πY.stalkMap y).hom)
   let y₀ : Sp (FractionRing V₀) ⟶ F.X := spMap emb ≫ spMap X₁.S.R.val.toRingHom ≫ X₁.u
-  obtain ⟨T, f, fK, hf, hfl, hff, hfK, hTy⟩ := GlobalTheory.T.traitExistsAfterFiniteExtension_of_completeDVR g n _ (zetaAway n) F V₀ hB hdvr y₀
+  obtain ⟨T, f, fK, hf, hfl, hff, hfK, hTy⟩ := _root_.GlobalTheory.Poinc.traitExtSt g n _ (zetaAway n) F V₀ hB hdvr y₀
   haveI := hfl
   let ψ : Y.Z.presheaf.stalk y →+* T.V := f.comp φ₀
   let ev : X₁.M.Z.presheaf.stalk (πY y) →+* T.V := ψ.comp s
@@ -117,10 +120,10 @@ theorem exists_uMem_thru : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matr
     simp only [Category.assoc] at this
     rw [this, hTy, X₁.comp]
     simp only [y₀, Category.assoc]
-  obtain ⟨hmono, hnn, -, -⟩ := GlobalTheory.T.siegelModuliTrait_periods_monomial_posDef g n _ (zetaAway n) F T
+  obtain ⟨hmono, hnn, -, -⟩ := _root_.GlobalTheory.Poinc.TraitTau.main g n _ (zetaAway n) F T
   have hCN : IsCN T.V := ⟨inferInstance, inferInstance, T.complete, inferInstance⟩
   haveI hψ : IsLocalHom ψ := RingHom.isLocalHom_comp _ _
-  obtain ⟨𝔪, -⟩ := GlobalTheory.T.exists_uniformised_member_of_refined_uniformisation g X₁.one_le n X₁.three_le X₁.odd F Z X₁.z i X₁.proj
+  obtain ⟨𝔪, -⟩ := _root_.GlobalTheory.Poinc.Sep.MkMember.exists_uMem g X₁.one_le n X₁.three_le X₁.odd F Z X₁.z i X₁.proj
     (fun x => ⟨X₁.normalZ.isDomain_stalk x, X₁.normalZ.isIntegrallyClosed_stalk x⟩) X₁.thetaSetup_structureMap_comp X₁.dense W X₁.e8
     X₁.thetaInt X₁ (πY y) act hact T.V
     (Wit.ofDeg T.D.toPre T.D.tau_bimult) 1 ![T.ϖ] ![T.β] (fun k => by fin_cases k; exact T.irr.ne_zero)

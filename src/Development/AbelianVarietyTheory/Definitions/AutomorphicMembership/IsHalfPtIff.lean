@@ -54,12 +54,6 @@ def trueGx (emb : LL →+* ℂ) (embE : H.E →+* LL) {I : Type} (e : I ≃ R.Ps
   thOne s := posOr1 (thAt H emb s)
   thOne_pos _ := posOr1_pos _
 
-def dlogK : ℝ :=
-  haveI : Fact H.d.Prime := ⟨H.hyp.2.1⟩
-  haveI : NeZero H.d := ⟨H.hyp.2.1.ne_zero⟩
-  (deriv (DirichletCharacter.LFunction ((quadraticChar (ZMod H.d)).ringHomComp (Int.castRingHom ℂ))) 1 /
-    DirichletCharacter.LFunction ((quadraticChar (ZMod H.d)).ringHomComp (Int.castRingHom ℂ)) 1).re
-
 theorem isHalfPt_iff (D : D7) (Λ : AddSubgroup ℂ) (t : ℂ) : IsHalfPt D.host.d Λ t ↔ GL3Theta.IsTwoTorsionPointUnkilled D Λ t := Iff.rfl
 
 end GlobalTheory.Mem.Per

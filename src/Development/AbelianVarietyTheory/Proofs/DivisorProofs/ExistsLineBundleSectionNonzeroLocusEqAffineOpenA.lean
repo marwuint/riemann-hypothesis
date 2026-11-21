@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpenMeetingFibresIsNonvanishingLocusStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpenMeetingFibresIsNonvanishingLocus
+import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.EqOfAgreeOnTorsion
+import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
 open scoped CategoryTheory.Obj
@@ -15,7 +17,7 @@ theorem exists_lineBundle_section_nonzeroLocus_eq_affineOpen :
       (∀ s : Sp R, ∃ x ∈ V, A.hom x = s) →
       ∃ M : LB A.left, M.IsLB ∧ ∃ s : LB.Sec M, Out.nonzeroLocus s = V := by
   intro R _ _ _ _ A _ hA V hV hs
-  obtain ⟨c, L, hL, s, -, e⟩ := GlobalTheory.T.affineOpen_meeting_fibres_is_nonvanishingLocus R A hA V hV hs
+  obtain ⟨c, L, hL, s, -, e⟩ := _root_.GlobalTheory.AffineLocus.isLocus_of_isAffineOpen_of_meets_fibres R A hA V hV hs
   exact ⟨L, hL, s, e⟩
 
 end GlobalTheory

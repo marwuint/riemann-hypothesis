@@ -91,54 +91,6 @@ theorem scal_b {ι K : Type} [Fintype ι] [Field K] (d : ι → K) (hd : ∀ τ,
   have := hw τ
   omega
 
-theorem thEquivP_of (e : X.Tau → ℤ) (hV : JetInVV X.K lam lam' n) (hrat : A.JetsRat a b Sall D) (hAn : A.IndOmega a b Sall D)
-    (hInd : A.ThIndEq a b Sall D) (hChi : A.ChiLaw a b) (hMa : MuProdLaw a sel SB mU mI e) (hMb : MuProdLaw b sel SB mU mI e)
-    (hW : WtLaw lam lam' n e) :
-    ThEquivP (thDistC A Sall SB D sel mU mI lam lam' n) Sall D ((rhoVr X.emb lam).comp (ufGL X.E a)) ((rhoVr X.emb lam').comp (ufGL X.E b)) := by
-  intro γ γ' N fr N' fr' c x hR
-  have hR' : InRange Sall D c (gmap γ.1 N) (gmap γ'.1 N') (γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) :=
-    ⟨isSdLat_gmap hR.1 γ, isSdLat_gmap hR.2.1 γ', hR.2.2.1, hR.2.2.2.1, (divLat_gmap_iff Sall D γ.1 γ'.1 N N' x).2 hR.2.2.2.2⟩
-  unfold thDistC
-  rw [if_pos ⟨hR'.2.2.2.1, hR'.2.2.2.2⟩, if_pos ⟨hR.2.2.2.1, hR.2.2.2.2⟩]
-  apply LinearMap.ext
-  intro P
-  apply Subtype.ext
-  obtain ⟨d, hd⟩ : ∃ d : X.Tau → X.K, d = fun τ => X.emb τ ((LinearEquiv.det γ.1 : X.Eˣ) : X.E) := ⟨_, rfl⟩
-  obtain ⟨d', hd'⟩ : ∃ d' : X.Tau → X.K, d' = fun τ => X.emb τ ((LinearEquiv.det γ'.1 : X.Eˣ) : X.E) := ⟨_, rfl⟩
-  have hdτ : ∀ τ, X.emb τ ((LinearEquiv.det γ.1 : X.Eˣ) : X.E) = d τ := fun τ => by rw [hd]
-  have hdτ' : ∀ τ, X.emb τ ((LinearEquiv.det γ'.1 : X.Eˣ) : X.E) = d' τ := fun τ => by rw [hd']
-  have hd0 : ∀ τ, d τ ≠ 0 := fun τ => by rw [← hdτ]; exact (map_ne_zero (X.emb τ)).2 (Units.ne_zero _)
-  have hd0' : ∀ τ, d' τ ≠ 0 := fun τ => by rw [← hdτ']; exact (map_ne_zero (X.emb τ)).2 (Units.ne_zero _)
-  have hinv : ∀ τ, X.emb τ ((LinearEquiv.det (γ⁻¹ : UF X.E a).1 : X.Eˣ) : X.E) = (d τ)⁻¹ := by
-    intro τ
-    rw [← hdτ, InvMemClass.coe_inv, map_inv, Units.val_inv_eq_inv_val, map_inv₀]
-  have hpull := TE.jetMap_pull A.σ₀ A.cD (A.thInd Sall N N' c x) (hAn N N' c x hR) (TE.matT X.emb γ) (TE.matT X.emb γ'⁻¹)
-    (TE.mulL (fun τ => (TE.matT X.emb γ'⁻¹ τ).map A.σ₀) (fun τ => (TE.matT X.emb γ τ).map A.σ₀))
-    (fun k => TE.mulL_coordX _ _ k)
-    (A.jetK Sall N N' c x) (A.jetK Sall (gmap γ.1 N) (gmap γ'.1 N') c (γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap))
-    (A.chiF a b N N')⁻¹ (A.chiF a b (gmap γ.1 N) (gmap γ'.1 N'))⁻¹ (jetK_spec A Sall D hrat N N' c x hR)
-    (by
-      intro m
-      rw [jetK_spec A Sall D hrat _ _ c _ hR' m]
-      congr 2
-      funext z
-      rw [hInd γ γ' N N' c x hR z, pullV_eq])
-    ((∏ τ, d τ) ^ ((b / 2 : ℕ) : ℤ) * (∏ τ, d' τ) ^ (-((a / 2 : ℕ) : ℤ)))
-    (by
-      rw [hChi γ γ' N N' hR.1 hR.2.1, mul_inv, mul_inv, ← zpow_neg, neg_neg, ← zpow_neg, map_mul, map_zpow₀, map_zpow₀, map_prod, map_prod]
-      simp only [hd, hd']
-      rfl)
-    n (P : Pol X.K X.Tau a)
-  rw [LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.smul_apply, map_smul, Submodule.coe_smul,
-    Submodule.coe_smul, jetOp_coe lam lam' n hV, TE.rho_coe, jetOp_coe lam lam' n hV, TE.rho_coe, inv_inv, hpull,
-    hMa γ N fr hR.1, hMb γ' N' fr' hR.2.1]
-  simp only [map_smul, smul_smul, TE.det_matT, hinv, hdτ, hdτ']
-  congr 1
-  have A1 := scal_a d hd0 e (fun τ => (lam τ).detShift) n (b / 2) hW.1
-  have A2 := scal_b d' hd0' e (fun τ => (lam' τ).detShift) (a / 2) hW.2
-  rw [← A1, ← A2, mul_inv]
-  ring
-
 end Main
 
 end Formalism.L2.Ker

@@ -21,30 +21,6 @@ def thetaS {n : ℕ} (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ) (S : Set
 def SWa1 : Prop :=
   AllSome (IsHaarH F E σ M J) fun μ => AllSome (IsFDH F E σ M J μ) fun 𝓕 => μ 𝓕 < ⊤
 
-def SWc1 : Prop :=
-  ∀ (n : ℕ), n + 2 ≤ M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b),
-    T.det ≠ 0 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E)
-    (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ) (Φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ)
-    (Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ)
-    (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ),
-    Continuous Φinf → RapidDecay b Φinf → IsPureFin b Φf Φv → IsProdInfFin Φ Φinf Φf →
-    AllSome (IsHaarH F E σ M J) fun μ => AllSome (IsFDH F E σ M J μ) fun 𝓕 =>
-    AllSome (IsCharAF F) fun ψ =>
-    AllSome (SdW F E σ M J (Ainf F) (psiInf F ψ) n) fun μinf =>
-    AllSome (SdHerm F E σ (Ainf F) (psiInf F ψ) n) fun νinf =>
-    AllSome (fun μv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E) =>
-      ∀ v, SdW F E σ M J (Fv F v) (psiV F ψ v) n (μv v)) fun μv =>
-    AllSome (fun νv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (HermR (Fv F v) σ n) =>
-      ∀ v, SdHerm F E σ (Fv F v) (psiV F ψ v) n (νv v)) fun νv =>
-    ∃ (ginf : HermR (Ainf F) σ n → ℂ) (gv : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ n → ℂ),
-      IsContDensityOn μinf (gramR (Ainf F) σ J) Subtype.val νinf
-        {S | IsUnit (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det} Φinf ginf ∧
-      (∀ v, IsContDensityOn (μv v) (gramR (Fv F v) σ J) Subtype.val (νv v)
-        {S | IsUnit (S : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det} (Φv v) (gv v)) ∧
-      Multipliable (fun v => gv v (hermOf (Fv F v) σ T hT)) ∧
-      meanC μ 𝓕 (thetaS F E σ M J Φ {X | gramE σ J X = T}) =
-        ginf (hermOf (Ainf F) σ T hT) * ∏' v, gv v (hermOf (Fv F v) σ T hT)
-
 end SW
 
 section Ext
@@ -100,17 +76,6 @@ def VolStabAt {a : ℕ} (X0 : Fin a → Fin M → E)
     IsFundamentalDomain (ratIn F E σ M J (stabT (AF F) σ J X0)) 𝓕' μ') fun 𝓕' =>
     μ' 𝓕' = μ 𝓕
 
-def VolStab : Prop :=
-  IsHermND σ J → ∀ (a : ℕ), 1 ≤ a → a + 2 ≤ M → ∀ (X0 : Fin a → Fin M → E)
-    (hT : ∀ i j, σ (gramE σ J X0 j i) = gramE σ J X0 i j),
-    (gramE σ J X0).det ≠ 0 → VolStabAt F E σ M J X0 hT
-
-def VolumeIsotropicTuple : Prop :=
-  IsHermND σ J → ∀ (r : ℕ), 2 * (r + 1) + 1 ≤ M → ∀ (X0 : Fin (r + 1) → Fin M → E) (β : F), β ≠ 0 →
-    LinearIndependent E X0 →
-    (∀ i j, gramE σ J X0 i j = if i = Fin.last r ∧ j = Fin.last r then algebraMap F E β else 0) →
-    ∀ hT : ∀ i j, σ (gramE σ J X0 j i) = gramE σ J X0 i j, VolStabAt F E σ M J X0 hT
-
 end Ext
 
 def ForAllCM (P : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
@@ -118,20 +83,5 @@ def ForAllCM (P : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Algebra 
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
       P F E σ M J
-
-def VolumesFromSW : Prop :=
-  ForAllCM fun F E _ _ _ _ σ M J =>
-    SWa1 F E σ M J → SWc1 F E σ M J →
-      VolStab F E σ M J ∧ VolumeIsotropicTuple F E σ M J
-
-def VolStabFromSW : Prop :=
-  ForAllCM fun F E _ _ _ _ σ M J => SWa1 F E σ M J → SWc1 F E σ M J → VolStab F E σ M J
-
-def VolumeDegenerateFromSiegelWeil : Prop :=
-  ForAllCM fun F E _ _ _ _ σ M J => SWa1 F E σ M J → SWc1 F E σ M J → VolumeIsotropicTuple F E σ M J
-
-theorem volumesFromSW_of (h1 : VolStabFromSW) (h2 : VolumeDegenerateFromSiegelWeil) : VolumesFromSW := by
-  intro F E _ _ _ _ _ σ hE M J hJ ha hc
-  exact ⟨h1 F E σ hE M J hJ ha hc, h2 F E σ hE M J hJ ha hc⟩
 
 end PI.VolFromSW

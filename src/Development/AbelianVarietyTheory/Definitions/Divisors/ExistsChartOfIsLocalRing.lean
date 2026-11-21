@@ -504,9 +504,6 @@ theorem isLB_pushPP [IsNoetherianRing O] (hP : PushInvertible Y.t.G Y.t.PP.L) : 
       TopologicalSpace.Opens.mem_iSup.2 ⟨M, hM⟩)
     fun i j k _ _ z => ev_thRat_mul i j k z
 
-theorem isLB_de [IsNoetherianRing O] (hP : PushInvertible Y.t.G Y.t.PP.L) : (de Y).IsLB :=
-  GlobalTheory.CechPic.isLB_dual (isLB_pushPP hP)
-
 end Lines
 
 end GlobalTheory.FlagMod

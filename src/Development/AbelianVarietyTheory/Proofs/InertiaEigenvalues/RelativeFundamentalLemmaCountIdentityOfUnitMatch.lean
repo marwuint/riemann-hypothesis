@@ -6,20 +6,20 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ValIrreduci
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ToMatrixTwRight
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCompactIntMatrix
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralRightCosetFunEqFinsum
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeAlgebraMapOfStarEqStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeAlgebraMapOfStarEq
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormLeIffValuationLe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFixedBasis
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SgnLatSpanBasis
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanSelfDual
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowerBasisOfCharpolySeparable
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DetTracePowAddMulUnitNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DetTracePowAddMulUnitNeZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HermBasisOrthonormal
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OrthonormalIffUnitary
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryGroupPositiveCharacterTrivialAndUnimodulaStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeneralLinearHaarIsMulRightInvariantUnramified
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisBorderedMatrixNormalFormInvariants
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisTransferFactorKrylovDet
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualHermitianLatticeBasisExistsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualHermitianLatticeBasisExists
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocallyCompactOfComplete
 
 open Matrix Module MeasureTheory
@@ -84,7 +84,7 @@ theorem c_iota {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y)) (x : F)
 
 theorem exists_iota {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y)) {a : K.E} (h : K.c a = a) :
     ∃ x : F, iota F φ x = a := by
-  obtain ⟨x, hx⟩ := GlobalTheory.T.mem_range_algebraMap_of_star_eq F E (φ a) (by rw [← hs, h])
+  obtain ⟨x, hx⟩ := _root_.GlobalTheory.JR.Unram.mem_range_of_star_eq F E (φ a) (by rw [← hs, h])
   exact ⟨x, by rw [iota_apply, hx, RingEquiv.symm_apply_apply]⟩
 
 open Classical in
@@ -236,7 +236,7 @@ theorem exists_orth {x : B.A} (hx : B.σ x = x) (L : Submodule K.O B.A) (hL : Is
     (hd : ∀ y, y ∈ L ↔ ∀ z ∈ L, B.herm x y z ∈ (algebraMap K.O K.E).range) :
     ∃ b : Basis (Fin (finrank K.E B.A)) K.E B.A, lat K.O b = L ∧
       ∀ i j, B.herm x (b i) (b j) = if i = j then 1 else 0 :=
-  GlobalTheory.T.self_dual_hermitian_lattice_basis_exists K B.A (B.herm x) (herm_add_left B x) (fun c y z => herm_smul_left B x y z c)
+  _root_.GlobalTheory.SelfDualLattice.exists_orthonormal_basis K B.A (B.herm x) (herm_add_left B x) (fun c y z => herm_smul_left B x y z c)
     (herm_symm B x hx) L hL.1 hL.2 hd
 
 theorem range_piU {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y)) {x : B.A} (hx : B.σ x = x)
@@ -367,7 +367,7 @@ theorem countIdentity_of_unitMatch (hUM : ∀ r : ℕ, GlobalTheory.JR.UnitMatch
   have hΔE : Delta ((JR.inv Y).map (iota F φ)) ≠ 0 := by
     rw [← inv_mapGl, hY, Delta_inv, Cm_mul_Bm]
     simp only [mom_Yb, hT, LinearMap.pow_mulLeft, LinearMap.mulLeft_apply]
-    exact GlobalTheory.T.det_trace_pow_add_mul_unit_ne_zero K B hreg.2 u huu
+    exact _root_.GlobalTheory.UnitLemma.TraceDet.det_trace_pow_mul_ne_zero K B hreg.2 u huu
   have hΔ : Delta (JR.inv Y) ≠ 0 := by
     intro h0
     apply hΔE

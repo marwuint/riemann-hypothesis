@@ -64,10 +64,6 @@ theorem rorth_functional_eq_zero (hE : IsGlRep E) (hU : IsInfUnitary ε E)
 
 end Alg
 
-section Mat
-
-end Mat
-
 section Rep
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}

@@ -6,11 +6,11 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaA
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyWeilMatrixCoeffFinitePointInvariant
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteAnnihilatorOpenSubgroupInBoxStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedCoordinateDecayRealEntriesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TsumAdelicMatrixSchwartzMajorantRationalNeTopStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorThetaFunctionalMixedSourceModeStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsOpenAddSubgroupFinitePointsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteAnnihilatorOpenSubgroupInBox
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedCoordinateDecayRealEntries
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TsumAdelicMatrixSchwartzMajorantRationalNeTop
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorThetaFunctionalMixedSourceMode
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsOpenAddSubgroupFinitePoints
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow
 open scoped TensorProduct
@@ -41,7 +41,7 @@ theorem finite_points_in_nhds (D : D7) (m n : ℕ) (K₀ : Set (Mx D m n)) (hK�
   choose J s hs hJs using h2
   set V : Set (AE D) := ⋂ i, ⋂ j, s i j with hVdef
   have hV : V ∈ nhds (0 : AE D) := Filter.iInter_mem.2 fun i => Filter.iInter_mem.2 fun j => hs i j
-  obtain ⟨U, hUo, hU⟩ := GlobalTheory.T.exists_openAddSubgroup_finite_points_alt D V hV
+  obtain ⟨U, hUo, hU⟩ := _root_.GlobalTheory.FinSubgroup.exists_openAddSubgroup_finite_points D V hV
   let U' : AddSubgroup (Mx D m n) :=
     { carrier := {u | ∀ i j, u i j ∈ U}
       add_mem' := fun ha hb i j => U.add_mem (ha i j) (hb i j)
@@ -87,11 +87,11 @@ namespace GlobalTheory.MixSumBound
 
 theorem mixS_tsum_le : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ), ∃ k : ℕ, ∀ K₀ ∈ nhds (0 : WO S T), ∃ C : ℝ≥0, ∀ n : ℕ, 0 < n → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → (∀ u ∈ K₀, u.map (infPart D) = 0 → heisO ψ S T (n • u) f = f) → ∀ w, (∑' x : ratMx D T.rank ρ, ‖d.mixS T ψ v.μ v.𝓕 f x w‖ₑ) ≤ C * (n : ℝ≥0∞) ^ k * supSob ψ θ k f := by
   intro D ψ hψ θ hθ S S₀ T ρ d v
-  obtain ⟨k, hk⟩ := GlobalTheory.T.tsum_adelicMatrixSchwartzMajorant_rational_ne_top D θ hθ T.rank ρ
+  obtain ⟨k, hk⟩ := _root_.GlobalTheory.MajSum.tsum_maj_ne_top D θ hθ T.rank ρ
   refine ⟨k, fun K₀ hK₀ => ?_⟩
   obtain ⟨U, hUo, hU⟩ := finite_points_in_nhds D T.rank S.rank K₀ hK₀
-  obtain ⟨K, hKc, hK⟩ := GlobalTheory.T.finiteAnnihilator_open_subgroup_in_box D ψ hψ S S₀ T ρ d U hUo
-  obtain ⟨C₁, hC₁⟩ := GlobalTheory.T.mixedCoordinate_decay_realEntries D ψ hψ θ hθ S S₀ T ρ d v k
+  obtain ⟨K, hKc, hK⟩ := _root_.GlobalTheory.AnnihBox.annihilator_inBox D ψ hψ S S₀ T ρ d U hUo
+  obtain ⟨C₁, hC₁⟩ := _root_.GlobalTheory.Unf.mixS_decay D ψ hψ θ hθ S S₀ T ρ d v k
   have hM := hk K hKc
   refine ⟨C₁ * (∑' y : ratMx D T.rank ρ, ENNReal.ofReal (maj θ K k y)).toNNReal, fun n hn f hf hfix w => ?_⟩
   have hpt : ∀ x : Mx D T.rank ρ, ‖d.mixS T ψ v.μ v.𝓕 f x w‖ₑ ≤
@@ -105,7 +105,7 @@ theorem mixS_tsum_le : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar 
       have hfin : (d.extY T a).map (infPart D) = 0 := by
         rw [HypDec.extY_apply, Matrix.map_mul, ha, Matrix.zero_mul]
       have hfix' := hfix _ (hU _ haU hfin) hfin
-      have h2 := congrFun ((GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v f hf).2.1 x (n • a)) w
+      have h2 := congrFun ((_root_.GlobalTheory.HeisMixSource.heis_mixS D ψ hψ S S₀ T ρ d v f hf).2.1 x (n • a)) w
       rw [map_nsmul, hfix', Pi.smul_apply, smul_eq_mul] at h2
       have h3 : ψ (symplO S T (d.extX T x) (n • d.extY T a)) = 1 :=
         mul_right_cancel₀ h0 (h2.symm.trans (one_mul _).symm)

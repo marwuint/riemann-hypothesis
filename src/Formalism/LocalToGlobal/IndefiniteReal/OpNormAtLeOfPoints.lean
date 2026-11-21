@@ -49,16 +49,6 @@ theorem maj_sum_right {α : Type} (s : Finset α) (c : α → K) (f : α → V) 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
-theorem maj_add_left (x x' y : V) :
-    Formalism.HermitianLatticesTheory.majAt b X v (x + x') y = Formalism.HermitianLatticesTheory.majAt b X v x y + Formalism.HermitianLatticesTheory.majAt b X v x' y := by
-  simp only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord_add, Pi.add_apply, star_add, add_mul,
-    Finset.sum_add_distrib]
-
-theorem maj_add_right (x y y' : V) :
-    Formalism.HermitianLatticesTheory.majAt b X v x (y + y') = Formalism.HermitianLatticesTheory.majAt b X v x y + Formalism.HermitianLatticesTheory.majAt b X v x y' := by
-  simp only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord_add, Pi.add_apply, mul_add,
-    Finset.sum_add_distrib]
-
 theorem maj_smul_left (a : K) (x y : V) :
     Formalism.HermitianLatticesTheory.majAt b X v (a • x) y = starRingEnd ℂ (v.embedding a) * Formalism.HermitianLatticesTheory.majAt b X v x y := by
   simp only [Formalism.HermitianLatticesTheory.majAt, fc_smul, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]
@@ -176,45 +166,6 @@ theorem opNormAt_le_of_points {K V ι : Type} [Field K] [NumberField K] [StarRin
     rw [hT, ← normAt_eq_norm, ← normAt_eq_norm]
     exact h f
 
-theorem sesq_ext {K V : Type} [Field K] [AddCommGroup V] [Module K V] {F G : V → V → ℂ}
-    {σ : K →+* ℂ} (hσ : ∃ a : K, (σ a).im ≠ 0)
-    (hF : (∀ x x' y, F (x + x') y = F x y + F x' y) ∧ (∀ x y y', F x (y + y') = F x y + F x y') ∧
-      (∀ (a : K) x y, F (a • x) y = starRingEnd ℂ (σ a) * F x y) ∧
-      (∀ (a : K) x y, F x (a • y) = σ a * F x y))
-    (hG : (∀ x x' y, G (x + x') y = G x y + G x' y) ∧ (∀ x y y', G x (y + y') = G x y + G x y') ∧
-      (∀ (a : K) x y, G (a • x) y = starRingEnd ℂ (σ a) * G x y) ∧
-      (∀ (a : K) x y, G x (a • y) = σ a * G x y))
-    (h : ∀ x, F x x = G x x) (x y : V) : F x y = G x y := by
-  obtain ⟨a, ha⟩ := hσ
-  obtain ⟨F1, F2, F3, F4⟩ := hF
-  obtain ⟨G1, G2, G3, G4⟩ := hG
-  have e1 := h (x + y)
-  have e2 := h (a • x + y)
-  simp only [F1, F2, F3, F4, G1, G2, G3, G4] at e1 e2
-  rw [h x, h y] at e1 e2
-  have hne : starRingEnd ℂ (σ a) - σ a ≠ 0 := by
-    intro h0
-    apply ha
-    have := congrArg Complex.im h0
-    simp only [Complex.sub_im, Complex.conj_im, Complex.zero_im] at this
-    linarith
-  have key : (starRingEnd ℂ (σ a) - σ a) * (F x y - G x y) = 0 := by
-    linear_combination e2 - σ a * e1
-  rcases mul_eq_zero.1 key with h0 | h0
-  · exact absurd h0 hne
-  · exact sub_eq_zero.1 h0
-
-theorem exists_im_ne_zero {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
-    (v : InfinitePlace K) : ∃ a : K, (v.embedding a).im ≠ 0 := by
-  have hv := IsTotallyComplex.isComplex v
-  rw [InfinitePlace.isComplex_iff, ComplexEmbedding.isReal_iff] at hv
-  by_contra hcon
-  push_neg at hcon
-  apply hv
-  ext a
-  rw [ComplexEmbedding.conjugate_coe_eq]
-  exact Complex.conj_eq_iff_im.2 (hcon a)
-
 end BlockMetrics
 
 open BlockMetrics
@@ -289,22 +240,5 @@ theorem metric : Metric := by
       map_inv₀, map_natCast, norm_inv, Complex.norm_natCast]
     rw [Fintype.card_eq_nat_card, ← mul_assoc,
       inv_mul_cancel₀ (Nat.cast_ne_zero.2 (Nat.card_pos (α := H)).ne'), one_mul]
-
-theorem unitOfNorm : UnitOfNorm := by
-  intro K _ _ _ _ G _ _ V _ _ _ _ ι _ _ b X ρ hn v g x y
-  refine sesq_ext (F := fun x y => Formalism.HermitianLatticesTheory.majAt b X v (ρ g x) (ρ g y))
-    (G := Formalism.HermitianLatticesTheory.majAt b X v) (σ := v.embedding) (exists_im_ne_zero v)
-    ⟨?_, ?_, ?_, ?_⟩ ⟨?_, ?_, ?_, ?_⟩ ?_ x y
-  · intro x x' y; simp only [map_add]; exact maj_add_left b X v _ _ _
-  · intro x y y'; simp only [map_add]; exact maj_add_right b X v _ _ _
-  · intro a x y; simp only [map_smul]; exact maj_smul_left b X v _ _ _
-  · intro a x y; simp only [map_smul]; exact maj_smul_right b X v _ _ _
-  · exact fun x x' y => maj_add_left b X v _ _ _
-  · exact fun x y y' => maj_add_right b X v _ _ _
-  · exact fun a x y => maj_smul_left b X v _ _ _
-  · exact fun a x y => maj_smul_right b X v _ _ _
-  · intro z
-    show Formalism.HermitianLatticesTheory.majAt b X v (ρ g z) (ρ g z) = Formalism.HermitianLatticesTheory.majAt b X v z z
-    rw [maj_self, maj_self, hn]
 
 end Formalism.IndefR.LatticeTransfer

@@ -6,7 +6,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
 import Formalism.LocalToGlobal.IndefiniteReal.CutTuples2
 import Formalism.LocalToGlobal.Divisibility.ProjLemmas
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSphericalDoubleCosetLabelIffDecreasingStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSphericalDoubleCosetLabelIffDecreasing
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues Polynomial
@@ -33,7 +34,7 @@ theorem isLab_W_iff : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Typ
   have hY : (Yc D 0).rank = D.R.r := by
     rw [D.sp.Y_rank _ (min_le_right _ _)]
     simp [Ranks.rankY]
-  rw [GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing, GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing, GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing, hW, hY, dualLab_length', dualLab_pairwise', dualLab_dualLab']
+  rw [_root_.GlobalTheory.LabChar.labels_char, _root_.GlobalTheory.LabChar.labels_char, _root_.GlobalTheory.LabChar.labels_char, hW, hY, dualLab_length', dualLab_pairwise', dualLab_dualLab']
   refine ⟨?_, Iff.rfl⟩
   constructor
   · rintro ⟨h1, h2, h3⟩

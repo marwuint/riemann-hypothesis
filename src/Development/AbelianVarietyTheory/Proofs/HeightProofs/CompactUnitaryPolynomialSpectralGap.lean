@@ -13,10 +13,10 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.FiniteDimensionalPol
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ContDiffMatrixRightInvariantDerivative
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.L2normLeIntegralKernelMulTranslateDiffStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.OrthogonalLowerDegreeKernelTranslatesStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSpanningLieAlgebraCoefSqBoundStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSpanningLieAlgebraCoefSqBound
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CompactUnitaryRightDerivRealLinearDirectionStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.PolyTranslationL2BoundStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsCompactUnitaryKernelConcentratedNearOneStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.PolyTranslationL2Bound
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsCompactUnitaryKernelConcentratedNearOne
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Matrix
 open Formalism.REAL GlobalTheory.SmoothGlob GlobalTheory.TypeSum
 open scoped TensorProduct
@@ -47,7 +47,7 @@ theorem sq_dist_right_translate_le {n : ℕ} (ε : Fin n → Bool) {r : ℕ} (X 
     show toMK (expK ε Y 1) = toMK k
     rw [toMK_expK hY, Complex.ofReal_one, one_smul, hexp]
   obtain ⟨c, rfl, hc⟩ := hcoef Y hY
-  have h1 := GlobalTheory.T.poly_translation_l2_bound ε d p hp _ hY
+  have h1 := _root_.GlobalTheory.KFourier.norm_sub_expK_sq_le ε d p hp _ hY
   rw [hk, GlobalTheory.T.compactUnitaryRightDeriv_real_linear_direction ε d p hp X c hX] at h1
   have hcont : ∀ j, Continuous (rder ε [X j] p) := fun j =>
     continuous_of_mem (rder_mem_and_hasDerivAt ε d p hp (X j) (hX j)).1
@@ -83,8 +83,8 @@ theorem spectral_gap_rder : ∀ {n : ℕ} (ε : Fin n → Bool) {r : ℕ} (X : F
     ∀ i : ℕ, 1 ≤ i → ∀ p ∈ polyV ε i, (∀ q ∈ lowV ε i, ∫ k, q k * p k ∂(muK ε) = 0) →
     c * (i : ℝ) ^ α * ∫ k, ‖p k‖ ^ 2 ∂(muK ε) ≤ ∑ j, ∫ k, ‖rder ε [X j] p k‖ ^ 2 ∂(muK ε) := by
   intro n ε r X hX hspan
-  obtain ⟨C3, hC3, hcoef⟩ := GlobalTheory.T.exists_spanning_lieAlgebra_coef_sq_bound ε X hspan
-  obtain ⟨C4, hC4, hker⟩ := GlobalTheory.T.exists_compactUnitaryKernel_concentrated_near_one ε
+  obtain ⟨C3, hC3, hcoef⟩ := _root_.GlobalTheory.KGap.spanning_coef_bound ε X hspan
+  obtain ⟨C4, hC4, hker⟩ := _root_.GlobalTheory.KFourier.kernel_near_one ε
   set A : ℝ := 3 * C3 * C4 ^ 2 with hA
   have hA0 : 0 ≤ A := by positivity
   refine ⟨1 / (A + 1), 1 / 2, by positivity, by norm_num, ?_⟩

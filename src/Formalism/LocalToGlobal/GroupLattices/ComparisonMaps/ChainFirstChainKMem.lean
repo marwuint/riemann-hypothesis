@@ -36,15 +36,6 @@ def CmpUp.ofRat (cmpS : ∀ j, ((Tw.fm u (D.what₂.muAt w)).lat (j + 1)).V →�
 
 end Rat
 
-section Forced
-
-variable {D : D7} {c : LatCmp D} {Tw : TwForms D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
-  {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
-
-variable [Fact (D.what₂.places.resChar w).Prime] {Gt : GatTies D} {Ch : Chain Lv}
-
-end Forced
-
 end Formalism.L2.G.Cmp
 
 end

@@ -1,4 +1,4 @@
-import Formalism.LocalToGlobal.Columns.TwQTop
+import Formalism.LocalToGlobal.Columns.TwQRec
 import Formalism.LocalToGlobal.Columns.MemLocPOfSmul
 
 open NumberField IsDedekindDomain Matrix
@@ -66,11 +66,6 @@ theorem qdf_phi_intAt (q : QLoc hc n Q Θ) (P : Q) {a : E} (h : IntAt P.1 a) : q
     exact hm
   rw [ha]
   exact mul_mem (qdf_phi_int q P r) hu.2
-
-theorem qdf_gl_inv_val {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (A : GL (Fin n) R) :
-    (((bc f A)⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) = ((A⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).map f := by
-  rw [← map_inv]
-  rfl
 
 theorem qdf_frLat (q : QLoc hc n Q Θ) : FrLat ST SG q := by
   intro x p hx P
@@ -183,11 +178,6 @@ theorem qdf_frLat (q : QLoc hc n Q Θ) : FrLat ST SG q := by
     exact mul_mem hinv (qdf_pi_int q P (hpull i))
 
 variable {H : Subgroup (GLG E n SG)}
-
-def recClsFOf' (hS : DecoPtSurj hc n ST SG) (hQ : QOff (F := F) ST SG Q) (q : QLoc hc n Q Θ)
-    (s : DecoFCl (K := K) n ST SG Q H Θ → DecoF E n ST SG Q)
-    (hs : ∀ c, (Quotient.mk'' (s c) : DecoFCl (K := K) n ST SG Q H Θ) = c) : RecClsF hc n ST SG Q H q s :=
-  recClsFOf hS hQ q (qdf_frLat q) qdf_frExists s hs
 
 end QLat
 

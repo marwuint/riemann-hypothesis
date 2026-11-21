@@ -47,11 +47,6 @@ def mass (D : D7) (N : ℕ) : ℂ := ∑ᶠ x : Cls D N (intG D N), ((gam D (int
 def fockSum (D : D7) (a d : ℕ) (n : D.what₂.Tau → ℕ) : ℂ :=
   ∑ T : Tup D a d n, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockIp (minorPol D T) (minorPol D T)
 
-theorem goodMod_top (D : D7) : GoodMod D ⊤ ∅ := by
-  refine ⟨top_ne_bot, top_sup_eq _, by rw [← Ideal.one_eq_top]; exact isCoprime_one_left, fun v => ?_⟩
-  simp only [Finset.notMem_empty, false_iff, not_exists, not_and]
-  exact fun w h => absurd (top_le_iff.1 h) w.isPrime.ne_top
-
 theorem goodMod_modT {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} (hL : L.Is μ₀) (hpq : Nat.Coprime D.host.pde (D.host.QS * D.host.q))
     (hpq' : Nat.Coprime D.host.pde' (D.host.QS * D.host.q)) (G : GridData L sc) (t : T) : GoodMod D (modT G t) (sfB G t) := by
   refine ⟨GlobalTheory.FunObj.StdDatum.TwBig.modT_ne_bot G t, GlobalTheory.SqTop.modT_sup_conj hL G t,

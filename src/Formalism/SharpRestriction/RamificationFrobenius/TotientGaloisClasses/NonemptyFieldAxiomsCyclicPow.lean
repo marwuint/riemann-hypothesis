@@ -650,30 +650,9 @@ theorem hostDer : HostDer (hostRaw φ hinj hH he h) := by
 
 def hostAx : HostAx φ := ⟨hostRaw φ hinj hH he h, hostDer φ hinj hH he h⟩
 
-include hinj in
-theorem twoGroup : φ.TwoGroup := ⟨φ.e, ord_eq φ hinj⟩
-
 theorem muPM (hq : q ≠ 3) : (hostRaw φ hinj hH he h).MuPM := fun x hx => Formalism.FrobeniusOrbits.Final.host_field.2.2.2.2.2.2.2.2.2.2.1 φ.e q d hH hq L ζ a b h x hx
 
-theorem coprimeFifteen_of_coprime : (hostRaw φ hinj hH he h).CoprimeFifteen := by
-  show Nat.Coprime (2 ^ (φ.e + 2)) 15
-  exact Nat.Coprime.pow_left _ (by norm_num)
-
-include hinj he in
-theorem qs_le : 2 ^ (φ.e + 2) ≤ φ.ord ^ 2 := by
-  rw [ord_eq φ hinj, ← pow_mul]
-  exact Nat.pow_le_pow_right (by norm_num) (by omega)
-
 end D7
-
-theorem exists_hostAx (φ : Frame) (hinj : Function.Injective φ.h) (he : 2 ≤ φ.e) {q d : ℕ} (hH : FrobeniusOrbits.HostHyp q d) :
-    ∃ H : HostAx φ, H.q = q ∧ H.d = d ∧ H.QS = 2 ^ (φ.e + 2) ∧ φ.TwoGroup ∧ H.toHostRaw.CoprimeFifteen ∧
-      (q ≠ 3 → H.toHostRaw.MuPM) ∧ H.toHostRaw.PsQ ∧ H.toHostRaw.Exact ∧
-      ∃ s : H.E, s ^ 2 = -(H.q : H.E) ∧ ∀ σ : H.E ≃ₐ[ℚ] H.E, σ s = ((((H.gal σ).1.1 : ℤˣ) : ℤ) : H.E) * s := by
-  obtain ⟨L, hF, hN, ζ, a, b, h⟩ := Formalism.TwoAdicCyclotomicDecomposition.layerExists (φ.e + 2) q d
-  exact ⟨D7.hostAx φ hinj hH he h, rfl, rfl, rfl, D7.twoGroup φ hinj, D7.coprimeFifteen_of_coprime φ hinj hH he h,
-    fun hq => D7.muPM φ hinj hH he h hq, D7.psQ φ hinj hH he h, D7.exact φ hinj hH he h,
-    D7.sqq φ hinj hH he h, D7.sqq_sq φ hinj hH he h, fun σ => D7.gal_sqq φ hH h σ⟩
 
 end Formalism.HC
 

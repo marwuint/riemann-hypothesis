@@ -7,16 +7,6 @@ namespace Formalism.L2.Pj
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD
 open scoped Matrix
 
-section Sums
-
-end Sums
-
-section Tri
-
-variable {n : ℕ}
-
-end Tri
-
 section Per
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
@@ -77,21 +67,10 @@ theorem relab_rt_iff (hσ : GoodEmb c σ) (τ' : E →+* ℂ) :
       Subtype.ext (by rw [hcoe, h]; rfl)
     rw [e, map_neg, hσρ, h]
 
-theorem conjEmb_eq' (τ : E →+* ℂ) : conjEmb τ = NumberField.ComplexEmbedding.conjugate τ := by
-  ext x
-  simp [conjEmb, NumberField.ComplexEmbedding.conjugate_coe_eq]
-
 variable (M) in
 
 def AM (k : Fin F.n) (b : Frame (M.X k).Ψ r) : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ :=
   fun τ i l => Ablk (M.X k) b (relab c σ τ) i l
-
-theorem bor_diag_ne (X : Data E r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ' : X.Ψ) (j : Fin r) :
-    b τ' j j ≠ 0 := by
-  have h1 := (hb τ').1
-  have ht : (mat b τ').BlockTriangular id := fun a c hca => (hb τ').2 a c hca
-  rw [Matrix.det_of_upperTriangular ht] at h1
-  exact (Finset.prod_ne_zero_iff.1 h1) j (Finset.mem_univ _)
 
 end Main
 

@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFactorPureTen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertSphericalStabilizerPreservesLattice
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemAdelicLatticeAtPlaceOfTensorWithLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoUnitaryGroupIdempotentLocalizationFiniteSStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoUnitaryGroupIdempotentLocalizationFiniteS
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
@@ -150,7 +150,7 @@ theorem GlobalTheory.SphGlob.fixes_pure : ∀ (F E : Type) [Field F] [NumberFiel
   have hc := hcont _ (ev_mem_adm x) Φ hΦA
   have ht : Filter.Tendsto (fun T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) =>
       ((1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ X.J), loc (idemS F T) (idemS_mul_self T) k)) Filter.atTop (nhds (1, k)) :=
-    tendsto_const_nhds.prodMk_nhds (GlobalTheory.T.tendsto_unitaryGroupIdempotentLocalization_finiteSets F E σ d W.J k hinf)
+    tendsto_const_nhds.prodMk_nhds (_root_.GlobalTheory.FinDecompLim.tendsto_loc_idemS F E σ d W.J k hinf)
   have hlim : Filter.Tendsto (fun T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) =>
       (LinearMap.proj x : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ) (om (1, loc (idemS F T) (idemS_mul_self T) k) Φ))
       Filter.atTop (nhds ((LinearMap.proj x : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ) (om (1, k) Φ))) :=

@@ -25,15 +25,6 @@ def frameMat (W₁ W₂ : HSpace E) (e : W₁.V →ₗ[E] W₂.V) : Matrix (Fin 
 
 def CarriesLat (W₁ W₂ : HSpace E) (e : W₁.V ≃ₗ[E] W₂.V) : Prop := ∀ x : W₁.V, x ∈ W₁.L0 ↔ e x ∈ W₂.L0
 
-example (W : HSpace E) (L : Submodule (𝓞 E) W.V) (hL : Submodule.IsLattice E L)
-    (hU : Formalism.HermitianLatticesTheory.IsUnimodular W.hT L) : (withLat W L hL hU).gram = W.gram := rfl
-
-example (W : HSpace E) : withLat W W.L0 W.standardTuple_isLattice W.baseLattice_isUnimodular = W := rfl
-
-example (W₁ W₂ : HSpace E) (e : W₁.V →ₗ[E] W₂.V) (x : W₁.V) :
-    (frameMat W₁ W₂ e).mulVec (W₁.frame.repr x) = W₂.frame.repr (e x) :=
-  LinearMap.toMatrix_mulVec_repr _ _ _ _
-
 end Spaces
 
 def IsConjBy {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M₁ M₂ : ℕ}

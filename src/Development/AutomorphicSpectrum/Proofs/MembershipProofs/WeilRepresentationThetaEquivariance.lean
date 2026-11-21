@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaSumAdmissibilityStatement
-import Development.AutomorphicSpectrum.Proofs.MembershipProofs.HeisenbergCommutingOperatorScalarStatement
+import Development.AutomorphicSpectrum.Proofs.MembershipProofs.HeisenbergCommutingOperatorScalar
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissibleStatement
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.AdelicCharacterRationalDualStatement
 
@@ -32,7 +32,7 @@ theorem schur : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompactSpace (A
     ring
   have hmem : T Φ - a • Φ ∈ GlobalTheory.WeilM.schA F κ :=
     Submodule.sub_mem _ (hTS Φ hΦ) (Submodule.smul_mem _ a hΦ)
-  refine sub_eq_zero.mp (GlobalTheory.T.theta_heisenberg_translates_separate F κ ψ hψc hψ1
+  refine sub_eq_zero.mp (_root_.GlobalTheory.CompanionTheory.ThetaInj.theta_inj F κ ψ hψc hψ1
     hψF _ hmem fun w => ?_)
   rw [← hl₀ _ (hρS w _ hmem), hlin w, map_sub, map_smul, ← hTcomm w Φ hΦ,
     ha' _ (hρS w Φ hΦ), hl₀ _ (hρS w Φ hΦ), smul_eq_mul, sub_self]

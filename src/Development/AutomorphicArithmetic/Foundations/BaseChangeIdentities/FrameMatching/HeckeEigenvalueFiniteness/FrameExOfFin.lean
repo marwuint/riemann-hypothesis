@@ -15,8 +15,10 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.ShuffleChoices.SumPairSignEqRho
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.PTarget
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SphericalOneOfLocalAlgebraStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpectralTraceOfModelAlgebraStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryModelHoldsStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpectralTraceOfModelAlgebra
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.SetupEig
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryModelHolds
 
 noncomputable section
 
@@ -41,7 +43,7 @@ theorem gcHecke : GcHecke := by
   exact isHecke_fsum _ _ _ _ fun x => GlobalTheory.CompanionTheory.MatchPow.fU_hecke hw b ϖ _ (GlobalTheory.LocFinU.continuous_cj w)
 
 theorem frameEx_of_fin (hUS : USide) (hCF : CandFin) : FrameEx :=
-  frameEx_of hUS (GlobalTheory.T.spherical_one_of_local_algebra GlobalTheory.CompanionTheory.LocHecke.locAlg) (GlobalTheory.T.spectral_trace_of_model_algebra GlobalTheory.T.unitary_model_holds GlobalTheory.CompanionTheory.LocHecke.locAlg)
+  frameEx_of hUS (GlobalTheory.T.spherical_one_of_local_algebra GlobalTheory.CompanionTheory.LocHecke.locAlg) (_root_.GlobalTheory.CompanionTheory.SpecModel.specTrace _root_.GlobalTheory.CompanionTheory.UMod.uModel GlobalTheory.CompanionTheory.LocHecke.locAlg)
     GlobalTheory.CompanionTheory.LocHecke.locAlg (exTbOf Inert.frameInert_all.1 Inert.frameInert_all.2.1 inertInSec) Inert.frameInert_all.2.2.2.1
     Inert.frameInert_all.2.2.2.2.1 (coneEigOf eigInert LemB.bcWeyl) satCompAt candIndep hCF
     (fun _ _ _ _ _ _ _ _ _ _ F₀ => mok0 F₀) IndefiniteRowSideFullHecke.coneTwo' gcHecke

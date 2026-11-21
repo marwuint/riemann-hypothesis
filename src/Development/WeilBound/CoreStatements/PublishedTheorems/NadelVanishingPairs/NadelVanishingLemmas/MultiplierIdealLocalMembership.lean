@@ -7,12 +7,12 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPair
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.DiscrepancyFormulaDivisor
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.CartierDivisorMultCharacterize
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.FormOrderBirationalPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverSourceBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdFunctionFieldPullbackPrimeDivisorOverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackBijectiveBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularAtIffForallSpecializesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverTargetBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeDivisorCentreThroughImageStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverSourceBirational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdFunctionFieldPullbackPrimeDivisorOver
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackBijectiveBirational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularAtIffForallSpecializes
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverTargetBirational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeDivisorCentreThroughImage
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.DivisorCenterProperLift
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -59,29 +59,29 @@ theorem GlobalTheory.Discrepancy.inMultAt_iff_regularAt_logRes : ∀ (k : Type) 
   set Γ := pullCart s G - m • K with hΓ
   set η' := EtaleKlt.ratPull p s n η with hη'def
   have hη' : η' ≠ 0 := fun h =>
-    hη ((GlobalTheory.T.rationalTopFormPullback_bijective_birational k X Y p s hres.bir n).1 (h.trans (map_zero _).symm))
+    hη ((_root_.GlobalTheory.EtaleKlt.ratPull_bijective_of_birational k X Y p s hres.bir n).1 (h.trans (map_zero _).symm))
   have hdisc : ∀ (E' : DivOver (s ≫ p)) (E : DivOver p), DivOver.Over s E' E →
       ∀ g : X.functionFieldˣ, discrep E' η' m (fnPull s g) = discrep E η m g := by
     intro E' E hO g
     simp only [discrep, hη'def, GlobalTheory.T.form_order_birational_pullback k X Y p s hres.bir E' E hO n η hη,
-      GlobalTheory.T.ord_functionField_pullback_primeDivisor_over k X Y p s hres.bir E' E hO g]
+      _root_.GlobalTheory.Discrepancy.DivOver.Over.ord_fnPull_of_bijective k X Y p s hres.bir E' E hO g]
   have hmq : (0 : ℚ) < m := by exact_mod_cast hm
   have hmz : (0 : ℤ) < m := by exact_mod_cast hm
   have eu : functionFieldMap s (u : X.functionField) = ((fnPull s u : Y.functionFieldˣ) : Y.functionField) := rfl
   constructor
   · intro hu y hy
-    rw [eu, GlobalTheory.T.regularAt_iff_forall_specializes_ord_add_mult_nonneg Y (-F) y (fnPull s u)]
+    rw [eu, _root_.GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes Y (-F) y (fnPull s u)]
     intro z hz
     rw [mult_neg', hF z]
     by_cases hc : Order.coheight z = 1
     · obtain ⟨E', hE'⟩ : ∃ E' : DivOver (s ≫ p), E'.IsAt z :=
         DivOver.exists_isAt_of_coheight_eq_one hc
-      obtain ⟨E, hO⟩ := GlobalTheory.T.exists_primeDivisor_over_target_birational k X Y p s hres.bir E'
-      have hEx : E.Through x := hy ▸ GlobalTheory.T.primeDivisorCentre_through_image k X Y p s E' E hO y (hE'.through hz)
+      obtain ⟨E, hO⟩ := _root_.GlobalTheory.Discrepancy.DivOver.exists_over_of_bijective k X Y p s hres.bir E'
+      have hEx : E.Through x := hy ▸ _root_.GlobalTheory.Discrepancy.DivOver.Over.through_image k X Y p s E' E hO y (hE'.through hz)
       obtain ⟨g, hg⟩ := G.exists_isEqn x
       have h1 := hu g hg E hEx
       have h2 : E.ord u = Scheme.ord ((fnPull s u : Y.functionFieldˣ) : Y.functionField) z := by
-        rw [← GlobalTheory.T.ord_functionField_pullback_primeDivisor_over k X Y p s hres.bir E' E hO u, hE'.ord_eq]
+        rw [← _root_.GlobalTheory.Discrepancy.DivOver.Over.ord_fnPull_of_bijective k X Y p s hres.bir E' E hO u, hE'.ord_eq]
       have hgy : (pullCart s G).IsEqn y (fnPull s g) := isEqn_pullCart s (by rw [hy]; exact hg)
       obtain ⟨V, hV, hgV⟩ := hgy.exists_nhds
       have h3 := GlobalTheory.T.discrepancy_formula_divisor k Y (s ≫ p) n η' hη' K (pullCart s G) m hm hres.div E' z
@@ -100,7 +100,7 @@ theorem GlobalTheory.Discrepancy.inMultAt_iff_regularAt_logRes : ∀ (k : Type) 
       rw [Scheme.ord_eq_zero_of_coheight_neq_one hc, h0]
       simp
   · intro hR g hg E hE
-    obtain ⟨E', hO⟩ := GlobalTheory.T.exists_primeDivisor_over_source_birational k X Y p s hres.bir E
+    obtain ⟨E', hO⟩ := _root_.GlobalTheory.Discrepancy.DivOver.exists_over k X Y p s hres.bir E
     obtain ⟨y, hy, hE'y⟩ := GlobalTheory.T.divisor_center_proper_lift k X Y p s hres.bir inferInstance E' E hO x hE
     obtain ⟨f, hf⟩ := F.exists_isEqn y
     have hreg := hf.neg.regularAt_iff.1 (hR y hy)
@@ -130,5 +130,5 @@ theorem GlobalTheory.Discrepancy.inMultAt_iff_regularAt_logRes : ∀ (k : Type) 
       ring
     rw [hd] at hcrit
     have h6 : (E'.ord f : ℚ) ≤ E.ord u := by
-      rw [← GlobalTheory.T.ord_functionField_pullback_primeDivisor_over k X Y p s hres.bir E' E hO u]; exact_mod_cast hord
+      rw [← _root_.GlobalTheory.Discrepancy.DivOver.Over.ord_fnPull_of_bijective k X Y p s hres.bir E' E hO u]; exact_mod_cast hord
     linarith

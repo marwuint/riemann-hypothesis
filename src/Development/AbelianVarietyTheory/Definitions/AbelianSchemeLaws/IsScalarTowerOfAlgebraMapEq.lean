@@ -188,12 +188,6 @@ theorem pullLE_restrict (π : X' ⟶ X) {W' : X'.Opens} (h : W ≤ V) (e : W' �
     pullLE M π W W' e (restrict M h s) = pullLE M π V W' (e.trans (π.preimage_mono h)) s :=
   (congrArg (restrict (M.pull π) e) (pull_restrict π h s)).trans (restrict_restrict _ _ _)
 
-theorem chart_pullLE (hM : M.IsLB) (π : X' ⟶ X) {V' : X'.Opens} (e : V' ≤ π ⁻¹ᵁ V)
-    (j : (M.pull π).ι) (h : V ≤ M.U (j PUnit.unit)) (h' : V' ≤ (M.pull π).U j) (s : SecOn M V) :
-    chart (LB.isLB_pull hM π) j h' (pullLE M π V V' e s) =
-      (π.appLE V V' e).hom (chart hM (j PUnit.unit) h s) := by
-  rw [chart_apply, chart_apply, coord_pullLE, resG_appLE, appLE_resG]
-
 variable {t : ℤ}
 
 def twCoord (x : SecOn (tw M H t) V) (p : M.ι) (k : H.ι) : Γ(X, V ⊓ (M.U p ⊓ H.U k)) :=
@@ -398,10 +392,6 @@ instance isScalarTower :
   letI := cstAlgebra f V
   ⟨fun r a s => mul_smul (cst f V r) a s⟩
 
-theorem isScalarTower_of_algebraMap_eq [Algebra R Γ(X, V)] (h : algebraMap R Γ(X, V) = cst f V) :
-    IsScalarTower R Γ(X, V) (SecOnR f M V) :=
-  ⟨fun r a s => by rw [Algebra.smul_def, h, mul_smul, smul_def]⟩
-
 instance : SMulCommClass R Γ(X, V) (SecOnR f M V) := ⟨fun r a s => smul_comm (cst f V r) a s⟩
 
 instance : SMulCommClass Γ(X, V) R (SecOnR f M V) := SMulCommClass.symm _ _ _
@@ -420,11 +410,6 @@ variable {f}
 
 @[ext] theorem ext {s t : SecOnR f M V} (h : ∀ i, coord s i = coord t i) : s = t :=
   GlobalTheory.LB.sec_ext h
-
-theorem compat (s : SecOnR f M V) (i j : M.ι) {O : X.Opens} (hi : O ≤ V ⊓ M.U i)
-    (hj : O ≤ V ⊓ M.U j) (hij : O ≤ M.U i ⊓ M.U j) :
-    rs X hi (coord s i) = rs X hij (M.g i j).val * rs X hj (coord s j) :=
-  SecOn.compat _ i j hi hj hij
 
 @[simp] theorem coord_zero (i : M.ι) : coord (0 : SecOnR f M V) i = 0 := rfl
 
@@ -458,10 +443,6 @@ def restrict (h : W ≤ V) : SecOnR f M V →ₗ[R] SecOnR f M W where
 
 @[simp] theorem coord_restrict (h : W ≤ V) (s : SecOnR f M V) (i : M.ι) :
     coord (restrict f M h s) i = rs X (inf_le_inf_right _ h) (coord s i) := rfl
-
-theorem restrict_smul (h : W ≤ V) (a : Γ(X, V)) (s : SecOnR f M V) :
-    restrict f M h (a • s) = rs X h a • restrict f M h s :=
-  (SecOn.restrict M h).map_smulₛₗ a s
 
 @[simp] theorem restrict_self (h : V ≤ V) (s : SecOnR f M V) : restrict f M h s = s :=
   SecOn.restrict_self h _
@@ -519,9 +500,6 @@ def mulSec (t : ℤ) (s : LB.Sec H) (V : X.Opens) :
 theorem mulSec_bijective (t : ℤ) (s : LB.Sec H) (h : V ≤ nonzeroLocus s) :
     Function.Bijective (mulSec f M t s V) := SecOn.mulSec_bijective s h
 
-def twZeroEquiv (hM : M.IsLB) (hH : H.IsLB) (V : X.Opens) :
-    SecOnR f M V ≃ₗ[R] SecOnR f (tw M H 0) V := linEquiv f (SecOn.twZeroEquiv hM hH V)
-
 section Pull
 
 variable {f} {f' : X' ⟶ Spec (CommRingCat.of R')} {π : X' ⟶ X} {g : R →+* R'}
@@ -538,10 +516,6 @@ def pull (V : X.Opens) (V' : X'.Opens) (e : V' ≤ π ⁻¹ᵁ V) :
 
 @[simp] theorem pull_of {V' : X'.Opens} (e : V' ≤ π ⁻¹ᵁ V) (s : SecOn M V) :
     pull M w V V' e (of f M V s) = of f' _ V' (SecOn.pullLE M π V V' e s) := rfl
-
-theorem pull_smul {V' : X'.Opens} (e : V' ≤ π ⁻¹ᵁ V) (a : Γ(X, V)) (s : SecOnR f M V) :
-    pull M w V V' e (a • s) = (π.appLE V V' e).hom a • pull M w V V' e s :=
-  (SecOn.pullLE M π V V' e).map_smulₛₗ a s
 
 theorem pull_restrict {V' W' : X'.Opens} (h : W ≤ V) (h' : W' ≤ V') (e : V' ≤ π ⁻¹ᵁ V)
     (e' : W' ≤ π ⁻¹ᵁ W) (s : SecOnR f M V) :
@@ -569,10 +543,6 @@ theorem secCube_obj (s : Finset κ) :
 
 theorem res_secCube {s t : Finset κ} (h : s ⊆ t) :
     GlobalTheory.Cube.res (secCube f M D) h = SecOnR.restrict f M (iInf_le_iInf_of_subset D h) := rfl
-
-theorem secCube_empty_bijective : Function.Bijective fun s : LB.Sec M =>
-    (SecOnR.of f M _ (GlobalTheory.LB.ofSec s _) : (secCube f M D).obj ∅) :=
-  SecOn.ofSec_bijective (by simp)
 
 def cechLB [LinearOrder κ] : CochainComplex (ModuleCat.{0} R) ℕ := cechComplex (secCube f M D)
 
@@ -648,51 +618,5 @@ end Cech
 
 def secOnTrivEquiv (V : X.Opens) : SecOn (Inh.trivLB X) V ≃ₗ[Γ(X, V)] Γ(X, V) :=
   SecOn.chart (Inh.trivLB_isLB X) PUnit.unit le_top
-
-def secOnRTrivEquiv (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] {V : X.Opens} (hV : V = ⊤) :
-    R ≃ₗ[R] SecOnR f (Inh.trivLB X) V :=
-  LinearEquiv.ofBijective
-    (LinearMap.toSpanSingleton R _ (SecOnR.of f _ V ((secOnTrivEquiv V).symm 1)))
-    (by
-      have e : ⇑(LinearMap.toSpanSingleton R _ (SecOnR.of f _ V ((secOnTrivEquiv V).symm 1))) =
-          (secOnTrivEquiv V).symm ∘ cst f V := funext fun r =>
-        (((secOnTrivEquiv V).symm.map_smul (cst f V r) 1).symm).trans
-          (congrArg (secOnTrivEquiv V).symm (_root_.mul_one _))
-      rw [e]
-      exact (secOnTrivEquiv V).symm.bijective.comp (cst_bijective f hV))
-
-theorem coord_secOnRTrivEquiv (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] {V : X.Opens}
-    (hV : V = ⊤) (r : R) (i : (Inh.trivLB X).ι) :
-    SecOnR.coord (secOnRTrivEquiv f hV r) i = cst f _ r := by
-  refine (SecOnR.coord_base_smul r _ i).trans ?_
-  have e := SecOn.coord_chart_symm (Inh.trivLB_isLB X) PUnit.unit i (le_top : V ≤ ⊤) 1
-  have e₂ : rs X (inf_le_left : V ⊓ ⊤ ≤ V) 1 *
-      rs X (le_inf le_top le_top : V ⊓ ⊤ ≤ ⊤ ⊓ ⊤) 1 = 1 := by
-    rw [map_one, map_one, _root_.one_mul]
-  exact (congrArg (cst f _ r * ·) (e.trans e₂)).trans (_root_.mul_one _)
-
-example : Nonempty (ℤ ≃ₗ[ℤ]
-    (secCube (𝟙 (Spec (CommRingCat.of ℤ))) (Inh.trivLB _) (fun _ : Fin 2 => ⊤)).obj {0, 1}) :=
-  ⟨secOnRTrivEquiv (𝟙 (Spec (CommRingCat.of ℤ))) (by simp)⟩
-
-example : ¬ IsZero ((cechLB (𝟙 (Spec (CommRingCat.of ℚ))) (Inh.trivLB _)
-      (fun _ : Fin 1 => ⊤)).X 0) ∧
-    IsZero ((cechLB (𝟙 (Spec (CommRingCat.of ℚ))) (Inh.trivLB _) (fun _ : Fin 1 => ⊤)).X 1) := by
-  refine ⟨fun h => ?_, isZero_cechLB_X _ _ _ (by simp)⟩
-  have hs := ModuleCat.isZero_iff_subsingleton.1 h
-  let e (s : {s : Finset (Fin 1) // s.card = 0 + 1}) :=
-    secOnRTrivEquiv (𝟙 (Spec (CommRingCat.of ℚ))) (V := ⨅ _i ∈ s.1, ⊤) (by simp)
-  have := congrFun (hs.elim (fun s => e s 1) (fun s => e s 0)) ⟨{0}, rfl⟩
-  exact one_ne_zero ((e _).injective this)
-
-example (M : LB X) (t : ℤ) (V : X.Opens) : Function.Bijective (SecOn.mulSec M t (oneSec X) V) :=
-  SecOn.mulSec_bijective _ ((nonzeroLocus_oneSec X).symm ▸ le_top)
-
-example {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (u : Γ(X, U₀ ⊓ U₁)ˣ) :
-    GlobalTheory.LB.coord ((SecOn.chart (GlobalTheory.LB.twoChart_isLB h u) false (le_rfl : U₁ ≤ U₁)).symm 1) true =
-      rs X (le_inf inf_le_right inf_le_left : U₁ ⊓ U₀ ≤ U₀ ⊓ U₁) u.val :=
-  (SecOn.coord_chart_symm (GlobalTheory.LB.twoChart_isLB h u) false true le_rfl 1).trans
-    ((congrArg (· * rs X (le_inf inf_le_right inf_le_left : U₁ ⊓ U₀ ≤ U₀ ⊓ U₁) u.val)
-      (map_one (rs X (inf_le_left : U₁ ⊓ U₀ ≤ U₁)))).trans (_root_.one_mul _))
 
 end GlobalTheory.AbLaw

@@ -46,20 +46,6 @@ theorem tau_ne_conj (τ τ' : Pl R) : tau H τ ≠ (starRingEnd ℂ).comp (tau H
 
 end Host
 
-section Forms
-
-variable {R : Ranks} {H : Host R} {n : ℕ}
-
-def mulR (c : Pl R → ℂ) (u : XR R n) : XR R n := fun τ i => c τ * u τ i
-
-open Classical in
-theorem sum_single_left (b : Pl R → Matrix (Fin n) (Fin n) ℂ) (τ : Pl R) (z : Fin n → ℂ) (v : XR R n) :
-    ∑ τ', 2 * (star ((Pi.single τ z : XR R n) τ') ⬝ᵥ b τ' *ᵥ v τ').re = 2 * (star z ⬝ᵥ b τ *ᵥ v τ).re := by
-  rw [Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]
-  simp
-
-end Forms
-
 end GlobalTheory.CuspAlgComparison
 
 end

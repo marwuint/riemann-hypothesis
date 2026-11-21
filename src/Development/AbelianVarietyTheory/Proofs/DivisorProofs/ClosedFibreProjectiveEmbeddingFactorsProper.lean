@@ -1,13 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteOpenImmersionNbhdIsolatedFibrePointsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SteinFactorisationConnectedFibresStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNoetherianProjectiveSpaceAndPullbackProperStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedFibreEmbeddingLiftSeparatedFiniteTypeQuasiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftToProjectiveBaseInjectiveOverClosedFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictProperSectionsBijectiveToFibreOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SteinFibreClosedFibrePointSubsetOpenPartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftGeometricPointOverClosedFibreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteOpenImmersionNbhdIsolatedFibrePoints
+import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SteinFactorisationConnectedFibres
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNoetherianProjectiveSpaceAndPullbackProper
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedFibreEmbeddingLiftSeparatedFiniteTypeQuasi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftToProjectiveBaseInjectiveOverClosedFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictProperSectionsBijectiveToFibreOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SteinFibreClosedFibrePointSubsetOpenPart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftGeometricPointOverClosedFibre
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -21,18 +22,18 @@ theorem closedFibre_chart : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRin
   intro R _ _ _ hR M G' _ _ hG E
   haveI : IsNoetherianRing R := hR.1
   haveI := M.proper
-  obtain ⟨hPn, hTn⟩ := GlobalTheory.T.isNoetherian_projectiveSpace_and_pullback_proper R M.S M.π M.proper E.N
-  obtain ⟨hs, hl, hq⟩ := GlobalTheory.T.closedFibreEmbedding_lift_separated_finiteType_quasiCompact R hR M G' hG E
-  obtain ⟨H', X'', ν, i, hZ, hν, hi, hiν, -, -⟩ := GlobalTheory.T.exists_finite_openImmersion_nbhd_isolatedFibrePoints E.H.toScheme _
+  obtain ⟨hPn, hTn⟩ := _root_.GlobalTheory.Mum.pspace_noeth_and_pullback R M.S M.π M.proper E.N
+  obtain ⟨hs, hl, hq⟩ := _root_.GlobalTheory.Mum.emb_lift_sep_loft_qc R hR M G' hG E
+  obtain ⟨H', X'', ν, i, hZ, hν, hi, hiν, -, -⟩ := _root_.GlobalTheory.ZmtNbhd.exists_finite_openImmersion_nbhd E.H.toScheme _
     (pullback.lift E.f (E.H.ι ≫ G'.hom) E.f_over) hTn hs hl hq
-    {z | M.π (G'.hom (E.H.ι z)) = closedPoint R} (fun z hz => ⟨⊤, trivial, fun w _ hw => GlobalTheory.T.lift_to_projective_base_injective_over_closedFibre R hR M G' hG E z w hz hw⟩)
+    {z | M.π (G'.hom (E.H.ι z)) = closedPoint R} (fun z hz => ⟨⊤, trivial, fun w _ hw => _root_.GlobalTheory.Mum.Emb.chart_injective R hR M G' hG E z w hz hw⟩)
   haveI := hν; haveI := hi; haveI := hPn
   have hprop : IsProper (ν ≫ pullback.fst (PSpace.str R E.N) M.π) := inferInstance
   obtain ⟨P'', a'', b'', hab, hb'', ha'', hsurj, hbij, hconn⟩ :=
-    GlobalTheory.T.stein_factorisation_connected_fibres X'' (PSpace R E.N) _ inferInstance hprop
+    _root_.GlobalTheory.SteinFact.stein_factorisation X'' (PSpace R E.N) _ inferInstance hprop
   haveI := hb''
   obtain ⟨P', c, X, k, a, hc, hP', hpa, hsa, hba, hk, hac, hsat, -⟩ :=
-    GlobalTheory.T.exists_proper_surjective_sections_bijective_over_fibre_open (PSpace R E.N) E.H.toScheme X'' P'' H' i a'' b'' hPn hi ha'' hsurj hbij hb''
+    _root_.GlobalTheory.restrict_proper_sections_bijective_to_fibre_open (PSpace R E.N) E.H.toScheme X'' P'' H' i a'' b'' hPn hi ha'' hsurj hbij hb''
   haveI := hc
   have hf : a ≫ c ≫ b'' = X.ι ≫ E.f := by
     rw [← Category.assoc, hac, Category.assoc, Category.assoc, hab, ← Category.assoc i, hiν, ← hk]
@@ -42,8 +43,8 @@ theorem closedFibre_chart : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRin
     intro z hz
     have hz' : z ∈ H' := hZ hz
     obtain ⟨z', rfl⟩ : z ∈ Set.range H'.ι := by rwa [Scheme.Opens.range_ι]
-    exact hsat z' (GlobalTheory.T.steinFibre_closedFibre_point_subset_open_part R hR M G' hG E H' X'' ν i P'' a'' b'' hν hi hiν hab hb'' ha'' hconn (fun h hh => hZ hh) z' hz)
+    exact hsat z' (_root_.GlobalTheory.Mum.steinFibre_subset_range R hR M G' hG E H' X'' ν i P'' a'' b'' hν hi hiν hab hb'' ha'' hconn (fun h hh => hZ hh) z' hz)
   refine ⟨P', c ≫ b'', X, a, hP', inferInstance, inferInstance, hpa, hsa, hba, hf, hX, ?_⟩
-  exact GlobalTheory.T.lift_geometricPoint_over_closed_fibre R hR M G' hG E P' (c ≫ b'') X a inferInstance hsa hf hX
+  exact _root_.GlobalTheory.Mum.Emb.lift_closedPoint R hR M G' hG E P' (c ≫ b'') X a inferInstance hsa hf hX
 
 end GlobalTheory.Mum

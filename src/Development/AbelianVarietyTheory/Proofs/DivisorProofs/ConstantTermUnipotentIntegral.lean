@@ -46,29 +46,6 @@ theorem topFacts (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
   exact ⟨inferInstance, hc.isClosedEmbedding_subtypeVal.locallyCompactSpace,
     hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology, inferInstance⟩
 
-theorem setIntegral_fd_eq {N : Type} [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N]
-    [SecondCountableTopology N] [T2Space N] [MeasurableSpace N] [BorelSpace N] (Γ : Subgroup N) [Countable Γ]
-    (g : N → ℂ) (hg : ∀ γ ∈ Γ, ∀ x, g (γ * x) = g x)
-    (μ μ₀ : Measure N) [μ.IsHaarMeasure] [μ₀.IsHaarMeasure] (𝓕 𝓕₀ : Set N)
-    (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (h𝓕₀ : IsFundamentalDomain Γ 𝓕₀ μ₀) (h1 : μ 𝓕 = 1) (h₀ : μ₀ 𝓕₀ = 1) :
-    ∫ x in 𝓕, g x ∂μ = ∫ x in 𝓕₀, g x ∂μ₀ := by
-  letI : MeasurableSpace Γ := ⊤
-  haveI : MeasurableSMul Γ N :=
-    { measurable_const_smul := fun γ => measurable_const_mul (γ : N)
-      measurable_smul_const := fun _ => measurable_from_top }
-  have hs := Measure.isMulLeftInvariant_eq_smul μ μ₀
-  have hc : Measure.haarScalarFactor μ μ₀ ≠ 0 := (Measure.haarScalarFactor_pos_of_isHaarMeasure μ μ₀).ne'
-  have h𝓕' : IsFundamentalDomain Γ 𝓕 μ₀ := by
-    refine h𝓕.mono ?_
-    rw [hs]; exact Measure.absolutelyContinuous_smul (by exact_mod_cast hc)
-  have hm : μ₀ 𝓕 = 1 := (h𝓕'.measure_eq h𝓕₀).trans h₀
-  have hc1 : Measure.haarScalarFactor μ μ₀ = 1 := by
-    have h2 := h1; rw [hs, Measure.smul_apply, hm] at h2
-    simpa using h2
-  have hμ : μ = μ₀ := by rw [hs, hc1, one_smul]
-  subst hμ
-  exact h𝓕'.setIntegral_eq h𝓕₀ (fun γ x => hg γ γ.2 x)
-
 theorem mat_mul' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g h : UA σ J) : mat (g * h) = mat g * mat h := rfl
 
 theorem mat_inv_mul' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : mat g⁻¹ * mat g = 1 := by
@@ -171,21 +148,6 @@ theorem countable_ratU {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Countable (rat
       apply Subtype.ext; apply Subtype.ext
       simpa using congrArg Subtype.val hgh
 
-theorem isCT_of_fundamentalDomain : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ f : UA σ G.W.J → ℂ, (∀ γ ∈ ratU σ G.W.J, ∀ h, f (γ * h) = f h) → ∀ (μ₀ : Measure (unip σ G.W H')) (𝓕₀ : Set (unip σ G.W H')), μ₀.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕₀ μ₀ → μ₀ 𝓕₀ = 1 → IsCT H' f (fun h => ∫ u in 𝓕₀, f (u.1 * h) ∂μ₀) := by
-  intro F E _ _ _ _ _ σ B a a' G X om om' _ d₁ W₁ H' i₀ i₁ _ f hf μ₀ 𝓕₀ hμ₀ h𝓕₀ h₀ μ 𝓕 hμ h𝓕 h1 h
-  obtain ⟨i1, i2, i3, i4⟩ := topFacts (F := F) σ G.W.J
-  haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩
-  haveI : LocallyCompactSpace (unip σ G.W H') := (isClosed_unip σ G.W H').isClosedEmbedding_subtypeVal.locallyCompactSpace
-  haveI := countable_ratU (σ := σ) G.W.J
-  haveI : Countable ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) :=
-    Function.Injective.countable (f := fun g : (ratU σ G.W.J).subgroupOf (unip σ G.W H') => (⟨g.1.1, g.2⟩ : ratU σ G.W.J))
-      fun g h hgh => by
-        apply Subtype.ext; apply Subtype.ext
-        simpa using congrArg Subtype.val hgh
-  refine (setIntegral_fd_eq ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) (fun u => f (u.1 * h)) ?_ μ μ₀ 𝓕 𝓕₀ h𝓕 h𝓕₀ h1 h₀).symm
-  intro γ hγ x
-  show f ((γ.1 * x.1) * h) = f (x.1 * h)
-  rw [mul_assoc]; exact hf _ (Subgroup.mem_subgroupOf.1 hγ) _
 end GlobalTheory.UnipCT
 
 end

@@ -377,6 +377,3 @@ theorem CrystallineSemistableComparison.P.initial : ∀ {R : Type} [CommRing R] 
 
 theorem CrystallineSemistableComparison.P.el_iso : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {E' E : C ⥤ Type t} (p : E' ⟶ E) (F : C ⥤ ModuleCat.{w} R), (∀ T, Function.Bijective (p.app T)) → ∀ n, Function.Bijective ((elMor p F).hom.f n) := GlobalTheory.T.elements_bijective_of_bijective_app
 
-theorem CrystallineSemistableComparison.P.pi_H : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {ι : Type w} (F : ι → (C ⥤ ModuleCat.{w} R)) (n : ℕ), Function.Bijective fun (x : H (piF F) n) (i : ι) => (piProj F i).pull n x := GlobalTheory.CompanionTheory.CatCohProd.piH_bijective
-
-theorem CrystallineSemistableComparison.P.sigma_H : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R) {ι : Type t} (c : C → ι), (∀ {T T' : C}, (T ⟶ T') → c T = c T') → ∀ n, Function.Bijective fun (x : H F n) (i : ι) => (Mor.restrict F (ObjectProperty.ι fun T => c T = i)).pull n x := GlobalTheory.CompanionTheory.CatPieces.sigmaH

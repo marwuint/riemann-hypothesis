@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TCoefMInMMul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScaledKoszulTestFamilyHasDerivAtScaleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSmoothEventuallyZeroCutoffIntervalIntegralDeriStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugationDerivCutoffPolynomialMemUnitarySpanStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScaledKoszulTestFamilyHasDerivAtScale
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSmoothEventuallyZeroCutoffIntervalIntegralDeri
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugationDerivCutoffPolynomialMemUnitarySpan
 
 open MvPolynomial GlobalTheory.PsCo.Pc1 GlobalTheory.PsCo.Pc1.A
 open scoped ContDiff
@@ -47,7 +47,7 @@ theorem stHomot : GlobalTheory.PsCo.Pc1.StHomot := by
   have hI : ∀ j, IsCutFn (fun y => ∫ s in (1:ℝ)..t, scF G j s y) ∧
       ∀ y, deriv (fun y => ∫ s in (1:ℝ)..t, scF G j s y) y = ∫ s in (1:ℝ)..t, deriv (scF G j s) y := by
     intro j
-    refine GlobalTheory.T.isSmoothEventuallyZeroCutoff_intervalIntegral_deriv (scF G j) 1 t (scF_contDiff hG j) ⟨2, ?_⟩
+    refine _root_.GlobalTheory.PsCo.Pc1.isCutFn_intervalIntegral_and_deriv (scF G j) 1 t (scF_contDiff hG j) ⟨2, ?_⟩
     intro s hs y hy
     rw [Set.uIcc_of_le ht] at hs
     have : 1 < s * y := by nlinarith [hs.1]
@@ -64,7 +64,7 @@ theorem stHomot : GlobalTheory.PsCo.Pc1.StHomot := by
       intro s hs
       rw [Set.uIcc_of_le ht] at hs
       have hs0 : 0 < s := by linarith [hs.1]
-      have h := GlobalTheory.T.scaledKoszulTestFamily_hasDerivAt_scale ε G p q hG hK s hs0 g
+      have h := _root_.GlobalTheory.PsCo.HomotDeriv.famF_hasDerivAt ε G p q hG hK s hs0 g
       convert h using 1
       rw [hD, Finset.mul_sum]
       refine Finset.sum_congr rfl fun x _ => ?_
@@ -100,6 +100,6 @@ theorem stHomot : GlobalTheory.PsCo.Pc1.StHomot := by
     rw [← hint, hftc]
     ring
   rw [key]
-  exact neg_mem (Submodule.sum_mem _ fun x _ => Submodule.sum_mem _ fun j _ => GlobalTheory.T.conjugationDerivCutoffPolynomial_mem_unitarySpan ε _ _ _ (hI j).1)
+  exact neg_mem (Submodule.sum_mem _ fun x _ => Submodule.sum_mem _ fun j _ => _root_.GlobalTheory.PsCo.Pc1.adBas_mem_adSpanM ε _ _ _ (hI j).1)
 
 end GlobalTheory.PsCo.Pc1.Homot

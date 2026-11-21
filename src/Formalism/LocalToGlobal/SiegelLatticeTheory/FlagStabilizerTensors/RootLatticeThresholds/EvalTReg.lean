@@ -56,23 +56,6 @@ theorem reg_toLp_X (f0 : X.B.I.GA → ℂ) (hinv : ∀ γ ∈ X.B.I.GFset, ∀ y
 
 end X
 
-section Polar
-
-variable {α : Type*} [MeasurableSpace α] {ν : Measure α}
-
-end Polar
-
-section Transfer
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.AutomorphicEvaluation Formalism.L2.SG.RowDict
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : D7} {μ : Measure (GA D (D.sp.Y 0))} {𝓕 : Set (GA D (D.sp.Y 0))} {X : Formalism.L2.SG.HidaSetting.HidaSetting D}
-  {ι : GA D (D.sp.Y 0) ≃* X.B.I.GA} {t : GA D (D.sp.Y 0)} {c : ℝ}
-
-end Transfer
-
 end Formalism.L2.SG.EvalTReg
 
 end

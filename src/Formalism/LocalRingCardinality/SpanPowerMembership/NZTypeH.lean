@@ -20,19 +20,6 @@ structure Lbl where
   good : ∀ k (PP J : Type) (t : PP → Bool), (∃ v, t v = true) → (∃ v, t v = false) →
     Formalism.CyclotomicNorms.IsGood R.r (H.g k) (fun v => if t v then fA k else fB k) (fun (_ : PP) (_ : J) => (1 : (ZMod (H.g k))ˣ))
 
-theorem lbl_nonempty (ht : THyp H) (p : ℕ) (hp : p.Prime) (h1 : R.r < 2 * p) (h2 : p + 3 ≤ R.r) :
-    Nonempty (Lbl H) := by
-  have hd : ∀ k, H.QS * H.q * H.d ∣ H.g k - 1 := fun k => by
-    have h := Nat.div_add_mod (H.g k) (H.QS * H.q * H.d)
-    rw [ht.cond k] at h
-    exact ⟨H.g k / (H.QS * H.q * H.d), by omega⟩
-  have hq2 : H.q ≠ 2 := fun e => by have := H.hyp.2.2.1; omega
-  have key := fun k => exists_good (g := H.g k) R.r p H.q hp h1 h2 H.hyp.1 hq2
-    (((((dvd_pow_self 2 (by omega)).trans H.tower_dvd : 2 ∣ H.QS).mul_right H.q).mul_right H.d).trans (hd k))
-    ((Dvd.intro (H.QS * H.d) (by ring)).trans (hd k))
-  choose fA fB h using key
-  exact ⟨⟨fA, fB, fun k => (h k).1, fun k => (h k).2.1, fun k => (h k).2.2.1, fun k => (h k).2.2.2⟩⟩
-
 variable {H} (Lb : Lbl H)
 
 def tupL (k : Fin 2) (v : Fin R.f) : (ZMod (H.g k))[X] := if decide (v.1 ≠ 0) then Lb.fA k else Lb.fB k
@@ -83,8 +70,6 @@ theorem goodT_tupL : GoodT (ndG H Lb what₂ h) (tupL Lb) := fun k =>
       funext _ _; exact inv_one
     show Formalism.CyclotomicNorms.IsGood R.r (H.g k) (tupL Lb k) (fun (v : Fin R.f) (j : Fin R.m) => ((1 : (ZMod (H.g k))ˣ))⁻¹)
     rw [e]; exact tupL_good Lb _ k⟩
-
-theorem goodRow_ndG (σ : what₂.FT) : (ndG H Lb what₂ h).goodRow σ := goodT_tupL H Lb what₂ h
 
 section Field
 
@@ -190,9 +175,6 @@ def ntypesL (ht : THyp H) (htm : TameHyp H) : NTypes (nautL H what₂ h (labL Lb
   AmbPar := fun _ σ => σ.elim
 
 theorem labelNewtypes_idempotent_eq (ht htm) : (ntypesL H Lb what₂ h ht htm).e0 = e0L H Lb what₂ h ℂ := e0_eq _
-
-theorem labelNewtypes_idempotent_ne_zero (ht htm) : (ntypesL H Lb what₂ h ht htm).e0 ≠ 0 := by
-  rw [labelNewtypes_idempotent_eq]; exact labelIdempotent_ne_zero H Lb what₂ h ℂ ht
 
 theorem ntypesL_E0Tie (ht htm) (hA : ∀ μ, what₂.eOp μ = 1) (hM : ∀ μ j, what₂.eMt μ j = 1) :
     (ntypesL H Lb what₂ h ht htm).IdempotentMatchesAction := by

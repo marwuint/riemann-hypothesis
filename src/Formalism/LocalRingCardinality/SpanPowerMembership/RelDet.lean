@@ -71,14 +71,6 @@ def inverseEmbeddingProduct : unitary E →* ℂˣ :=
 theorem inverseEmbeddingProduct_apply (z : unitary E) : ((inverseEmbeddingProduct emb z : ℂˣ) : ℂ) = ∏ τ : Tau, (emb τ (z : E))⁻¹ := by
   simp [inverseEmbeddingProduct]
 
-theorem inverseEmbeddingProduct_sign_eq_one (hcard : Even (Fintype.card Tau)) (z : unitary E) (hz : (z : E) = 1 ∨ (z : E) = -1) :
-    inverseEmbeddingProduct emb z = 1 := by
-  apply Units.ext
-  rw [inverseEmbeddingProduct_apply, Units.val_one]
-  rcases hz with hz | hz
-  · simp [hz]
-  · simp [hz, hcard.neg_one_pow]
-
 def potGen {N : ℕ} (L : SDLat E N) : ℂˣ := inverseEmbeddingProduct emb (detU (orbGam L))
 
 def relDetGen (N : ℕ) (L L' : SDLat E N) : ℂˣ := (potGen emb L)⁻¹ * potGen emb L'
@@ -147,35 +139,6 @@ def embTau : Tau → (H.E →+* ℂ) := fun τ => H.emb ((eTau τ : R.Psi) : R.G
 
 theorem prod_embTau_eq_one_of_torsion : ∀ x : H.E, (∃ m : ℕ, 0 < m ∧ x ^ m = 1) → ∏ τ : Tau, embTau H eTau τ x = 1 :=
   fun _ hx => UpperTheory.Mu.prod_emb H eTau hx
-
-theorem eq_one_or_neg_one_of_torsionOrder_two (h2 : Units.torsionOrder H.E = 2) :
-    ∀ x : H.E, (∃ m : ℕ, 0 < m ∧ x ^ m = 1) → x = 1 ∨ x = -1 := by
-  rintro x ⟨m, hm, hx⟩
-  have hi : IsIntegral ℤ x := IsIntegral.of_pow hm (by rw [hx]; exact isIntegral_one)
-  let y : 𝓞 H.E := ⟨x, hi⟩
-  have hy : y ^ m = 1 := by
-    apply RingOfIntegers.coe_injective
-    rw [map_pow, map_one]
-    exact hx
-  let u : (𝓞 H.E)ˣ := Units.ofPowEqOne y m hy hm.ne'
-  have hu : u ∈ Units.torsion H.E := by
-    rw [Units.torsion, CommGroup.mem_torsion, isOfFinOrder_iff_pow_eq_one]
-    exact ⟨m, hm, Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hy)⟩
-  have hc : Nat.card (Units.torsion H.E) = 2 := by
-    rw [← h2, Units.torsionOrder]
-    try simp
-  have h1 : (⟨u, hu⟩ : Units.torsion H.E) ^ 2 = 1 := by rw [← hc]; exact pow_card_eq_one'
-  have h3 : u ^ 2 = 1 := congrArg Subtype.val h1
-  have h4 : y ^ 2 = 1 := congrArg Units.val h3
-  have h5 : x ^ 2 = 1 := by
-    have := congrArg (algebraMap (𝓞 H.E) H.E) h4
-    rwa [map_pow, map_one] at this
-  exact sq_eq_one_iff.mp h5
-
-theorem even_card_Tau {R : Ranks} {Tau : Type} [Fintype Tau] (eTau : Tau ≃ ↥(R.Psi)) :
-    Even (Fintype.card Tau) := by
-  rw [← Nat.card_eq_fintype_card, Nat.card_congr eTau, R.toFrame.natCard_Psi]
-  exact even_two_mul _
 
 def exampleInverseEmbeddingProduct : letI := H.cmStar; unitary H.E →* ℂˣ := letI := H.cmStar; inverseEmbeddingProduct (embTau H eTau)
 

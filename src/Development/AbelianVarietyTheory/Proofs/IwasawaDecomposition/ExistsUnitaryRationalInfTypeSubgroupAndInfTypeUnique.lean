@@ -99,16 +99,6 @@ theorem hasInf_unique {L I : Type} [Field L] [NumberField L] [Fintype I] (φ : I
   have := congrFun this (Sum.inl i)
   simpa [sub_eq_zero] using this
 
-theorem hasInfQ_mul {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I → L →+* ℂ} {χ χ' : HChar L} {a a' : I → ℚ}
-    (h : χ.HasInfQ φ a) (h' : χ'.HasInfQ φ a') : (χ * χ').HasInfQ φ (a + a') := by
-  obtain ⟨n, hn, h⟩ := h
-  obtain ⟨n', hn', h'⟩ := h'
-  refine ⟨n + n', fun i => by simp [hn, hn', mul_add], fun k => ?_⟩
-  rw [HChar.inf_mul, Units.val_mul, h k, h' k, ← Finset.prod_mul_distrib]
-  refine Finset.prod_congr rfl fun i _ => ?_
-  have hne : φ i k ≠ 0 := by simp
-  rw [Pi.add_apply, zpow_add₀ (div_ne_zero hne (by exact_mod_cast norm_ne_zero_iff.2 hne))]
-
 theorem hasInfQ_inv {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I → L →+* ℂ} {χ : HChar L} {a : I → ℚ}
     (h : χ.HasInfQ φ a) : (χ⁻¹).HasInfQ φ (-a) := by
   obtain ⟨n, hn, h⟩ := h
@@ -133,24 +123,5 @@ theorem embPsi_ne_conj {R : Ranks} (H : Formalism.BasicNotions.Host R) (i j : R.
   have hd : 0 < H.d := H.hyp.2.1.pos
   have : (0 : ℝ) < Real.sqrt H.d := Real.sqrt_pos.2 (by exact_mod_cast hd)
   exact this.ne' (by exact_mod_cast h0)
-
-def halfInt {R : Ranks} (H : Formalism.BasicNotions.Host R) : Subgroup (HChar H.E) where
-  carrier := {χ | χ.IsUnitary ∧ ∃ a : R.Psi → ℚ, χ.HasInfQ (embPsi H) a}
-  one_mem' := ⟨isClsF_one.unitary, 0, 0, fun _ => by simp, fun k => by
-    show ((1 : ℂˣ) : ℂ) = _
-    simp⟩
-  mul_mem' := fun ⟨h, a, ha⟩ ⟨h', a', ha'⟩ => ⟨h.mul h', a + a', hasInfQ_mul ha ha'⟩
-  inv_mem' := fun ⟨h, a, ha⟩ => ⟨h.inv, -a, hasInfQ_inv ha⟩
-
-open Classical in
-
-theorem exists_unitary_rational_infType_subgroup_and_infType_unique : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R), (∃ G : Subgroup (HChar H.E), ∀ χ, χ ∈ G ↔ χ.IsUnitary ∧ ∃ a : R.Psi → ℚ, χ.HasInfQ (embPsi H) a) ∧ ∀ (χ : HChar H.E) (a b : R.Psi → ℚ), χ.HasInfQ (embPsi H) a → χ.HasInfQ (embPsi H) b → a = b := by
-  intro R H
-  refine ⟨⟨halfInt H, fun _ => Iff.rfl⟩, ?_⟩
-  rintro χ a b ⟨n, hn, h⟩ ⟨n', hn', h'⟩
-  obtain rfl := hasInf_unique _ (embPsi_inj H) (embPsi_ne_conj H) h h'
-  funext i
-  have := (hn i).symm.trans (hn' i)
-  linarith
 
 end GlobalTheory.HalfIntChars

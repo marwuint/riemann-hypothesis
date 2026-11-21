@@ -4,9 +4,9 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.CardZBasisEqMulFinrank
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspDataOfFamily
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeEigenProjectionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicEigencomponentConjugateFormStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicSublatticeCovolumePositiveStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.RiemannLatticeEigenProjections
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.EigenProjectionConjugateInner
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.IsotropicSubmoduleNonzeroFamily
 
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.Regular
 open NumberField.ComplexEmbedding GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.NineStatements GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.Lin
@@ -23,7 +23,7 @@ theorem ip_act_act (R : RiemLat E g Λ) (ω ω' : 𝓞 E) (x y : Fin g → ℂ) 
       R.ip (eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x) (eigComp R.B (s.comp (algebraMap (𝓞 E) E)) y) *
       s (algebraMap (𝓞 E) E ω') := by
   classical
-  obtain ⟨-, -, h3, h4, h5⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
+  obtain ⟨-, -, h3, h4, h5⟩ := _root_.LevelTowerAlt.riemann_lattice_eigen_projections E g Λ Unit R
   have ex : ∀ (a : 𝓞 E) (x : Fin g → ℂ), R.B a x = ∑ s : E →+* ℂ,
       (s.comp (algebraMap (𝓞 E) E)) a • eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x := fun a x => by
     conv_lhs => rw [← h4 (R.B a x)]
@@ -137,7 +137,7 @@ theorem prod_det_gram (R : RiemLat E g Λ) {σ : Ψ → (𝓞 E →+* ℂ)} (hσ
   set G := R.gram fun a => eigComp R.B (σ τ) (R.P (v a)) with hGdef
   have hconj : (R.gram fun a => eigComp R.B ((starRingEnd ℂ).comp (σ τ)) (R.P (v a))) = G.map (starRingEnd ℂ) := by
     ext a b
-    exact (GlobalTheory.T.isotropic_eigencomponent_conjugate_form E g Λ Ψ R I hI (σ τ)).1 _ (hv a) _ (hv b)
+    exact (_root_.LevelTowerAlt.eigen_projection_conjugate_inner E g Λ Ψ R I hI (σ τ)).1 _ (hv a) _ (hv b)
   have htr : G.map (starRingEnd ℂ) = Gᵀ := by
     ext a b
     exact ip_conj R _ _
@@ -289,12 +289,12 @@ theorem det_re_gram_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       (R.nz σ I * (|(discr E : ℝ)| ^ (1 / (Module.finrank ℚ E : ℝ))) ^
         (Fintype.card Ψ * Module.finrank (𝓞 E) I)) ^ 2 := by
   intro E _ _ _ g Λ _ _ Ψ _ R σ I hσ hI hne m b
-  obtain ⟨⟨r, v, hv⟩, hall⟩ := GlobalTheory.T.isotropic_sublattice_covolume_positive E g Λ Ψ R σ I hσ hI hne
+  obtain ⟨⟨r, v, hv⟩, hall⟩ := _root_.LevelTowerAlt.isotropic_submodule_nonzero_family E g Λ Ψ R σ I hσ hI hne
   obtain ⟨hnz, -, hr⟩ := hall r v hv
   have hf := finrank_eq_two_card hσ
   have htf : ∀ (n : ℕ) (x : Λ), n ≠ 0 → n • x = 0 → x = 0 := by
     intro n x hn hx
-    obtain ⟨hinj, -⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
+    obtain ⟨hinj, -⟩ := _root_.LevelTowerAlt.riemann_lattice_eigen_projections E g Λ Unit R
     apply hinj
     have h1 : n • R.P x = 0 := by rw [← map_nsmul, hx, map_zero]
     rw [map_zero]

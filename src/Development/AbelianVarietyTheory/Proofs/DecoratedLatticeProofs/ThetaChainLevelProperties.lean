@@ -1,8 +1,9 @@
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ChainParSucc
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelHyperspecialTrivialCharacterSplitsOffPlaces
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsOpenPrincipalCongruenceFinitelyManyPrimesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatticeReductionEqOneOfLocalComponentOneStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FinitePartMemFrameStabilizerIffLocalStabilizerStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsOpenPrincipalCongruenceFinitelyManyPrimes
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatticeReductionEqOneOfLocalComponentOne
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FinitePartMemFrameStabilizerIffLocalStabilizer
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
 open scoped TensorProduct InnerProductSpace ComplexConjugate
@@ -69,11 +70,11 @@ theorem levFacts : ∀ D : D7, LevFacts D := by
     unfold Com.S
     exact Finset.mem_image_of_mem _ hPP
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
-  · obtain ⟨U, hU, hUk⟩ := GlobalTheory.T.exists_open_principal_congruence_finitely_many_primes D s.V s.β c.Pg
+  · obtain ⟨U, hU, hUk⟩ := _root_.GlobalTheory.ChainOnto.LevelOpen.exists_open_princ D s.V s.β c.Pg
     exact ⟨U, hU, fun k hk hkf => mem_levG_of_red hs hkf (hUk k hk).1 (hUk k hk).2⟩
   · intro v hv k hk
     have hSt : Lev.finE s.V (GlobalTheory.AdelicU.emb D.sp.cm.sig s.V.gram v k) ∈ St s.β := by
-      refine (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D s.V s.β s.Λ hfr _).2 fun w => ?_
+      refine (_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D s.V s.β s.Λ hfr _).2 fun w => ?_
       by_cases e : w = v
       · subst e
         rw [GlobalTheory.AdelicU.proj_emb_self]
@@ -81,18 +82,18 @@ theorem levFacts : ∀ D : D7, LevFacts D := by
       · rw [GlobalTheory.AdelicU.proj_emb_ne _ _ e]
         exact one_mem _
     refine mem_levG_of_red hs (emb_mem_GfC s.V v k) hSt fun PP hPP => ?_
-    · refine GlobalTheory.T.latticeReduction_eq_one_of_local_component_one D s.V s.β _ PP hSt ?_
+    · refine _root_.GlobalTheory.ChainOnto.RedOne.redFn_eq_one D s.V s.β _ PP hSt ?_
       have hne : PP.under (𝓞 D.host.F) ≠ v := fun e => hv (e ▸ hPS PP hPP)
       exact GlobalTheory.AdelicU.proj_emb_ne _ _ hne k
   · intro k hk v
-    exact (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D s.V s.β s.Λ hfr k).1 (finE_mem_St hk) v
+    exact (_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D s.V s.β s.Λ hfr k).1 (finE_mem_St hk) v
   · intro k hkf hint h1
     have hSt : Lev.finE s.V k ∈ St s.β := by
-      refine (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D s.V s.β s.Λ hfr k).2 fun v => ?_
+      refine (_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D s.V s.β s.Λ hfr k).2 fun v => ?_
       by_cases hv : v ∈ c.S
       · rw [h1 v hv]; exact one_mem _
       · exact hint v hv
-    exact mem_levG_of_red hs hkf hSt fun PP hPP => GlobalTheory.T.latticeReduction_eq_one_of_local_component_one D s.V s.β k PP hSt (h1 _ (hPS PP hPP))
+    exact mem_levG_of_red hs hkf hSt fun PP hPP => _root_.GlobalTheory.ChainOnto.RedOne.redFn_eq_one D s.V s.β k PP hSt (h1 _ (hPS PP hPP))
   · intro k hk k' hk'
     exact levChi_mul hk hk'
   · intro k _

@@ -194,32 +194,6 @@ theorem ffMap_aeval (p : F[X]) (z : E.toAffine.FunctionField) :
   ext a
   simp [ffMap_algebraMap]
 
-theorem _root_.GroundTheory.Arith.Abelian.Isogeny.degree_map (φ : Isogeny E E') :
-    (φ.map σ).degree = φ.degree := by
-  obtain ⟨r, hr⟩ := φ.exists_ratEmb_eq_x
-  have hcop : IsCoprime (r.num.map σ) (r.denom.map σ) := by
-    simpa using r.isCoprime_num_denom.map (mapRingHom σ)
-  obtain ⟨h1, h2⟩ := num_denom_div_of_isCoprime (r.monic_denom.map σ) hcop
-  have hx : ratEmb (E.map σ) (algebraMap _ _ (r.num.map σ) / algebraMap _ _ (r.denom.map σ)) =
-      (φ.map σ).x := by
-    rw [Isogeny.map_x, ← hr, ratEmb_div]
-    conv_rhs => rw [← RatFunc.num_div_denom r]
-    rw [ratEmb_div, map_div₀, ffMap_aeval, ffMap_aeval, ffMap_genX]
-  rw [φ.degree_eq_max_natDegree hr, (φ.map σ).degree_eq_max_natDegree hx, h1, h2,
-    natDegree_map_eq_of_injective σ.injective, natDegree_map_eq_of_injective σ.injective]
-
-theorem _root_.GroundTheory.Arith.Abelian.Isogeny.degree_mapOf {D D' : WeierstrassCurve F'}
-    [D.IsElliptic] [D'.IsElliptic] (hE : E.map σ = D) (hE' : E'.map σ = D') (φ : Isogeny E E') :
-    (φ.mapOf σ hE hE').degree = φ.degree := by
-  rw [Isogeny.mapOf, Isogeny.degree_congr, Isogeny.degree_map]
-
-theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_dual [IsAlgClosed F] [DecidableEq F]
-    [IsAlgClosed F'] [DecidableEq F'] (φ : Isogeny E E') : (φ.map σ).dual = φ.dual.map σ := by
-  symm
-  apply (φ.map σ).eq_dual_of_comp
-  rw [← Isogeny.map_comp, Isogeny.dual_comp, Isogeny.map_mulIsogeny]
-  exact mulIsogeny_congr (by rw [Isogeny.degree_map]) _ _
-
 end Degree
 
 end GroundTheory.Global

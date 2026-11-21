@@ -2,15 +2,15 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DltEqZero
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlternatingDifferenceTermWindowStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TendstoBadWindowDivRhoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumStableLatticesProductEqQPowMulStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlternatingDifferenceTermWindow
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TendstoBadWindowDivRho
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumStableLatticesProductEqQPowMul
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteStableLatticesDifferenceTermNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUniformizerIdempotentFrameProdStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUniformizerIdempotentFrameProd
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RhoProdFiniteAlgebraWithInvolutionStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLatticeIdempotentPositionInvolutionStableStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SgnLatProdEqEtaResultantMulStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProductLatticePositionsAndTermsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SgnLatProdEqEtaResultantMul
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProductLatticePositionsAndTerms
 
 noncomputable section
 
@@ -73,17 +73,17 @@ theorem GlobalTheory.UnitLemma.Desc.hh_prod_tendsto : ∀ (K : UQ) (B₁ B₂ : 
   have hsB : (B₁.prod B₂).P.Separable := hP ▸ hsep
   have hs₁ : B₁.P.Separable := hL₁.2
   have hs₂ : B₂.P.Separable := hL₂.2
-  have hF := GlobalTheory.T.isUniformizerIdempotentFrame_prod K B₁ B₂ ι₁ ι₂ e₁ π₁ e₂ π₂ S₁ S₂ hF₁ hF₂
+  have hF := _root_.GlobalTheory.UnitLemma.Desc.isFrame_prod K B₁ B₂ ι₁ ι₂ e₁ π₁ e₂ π₂ S₁ S₂ hF₁ hF₂
   obtain ⟨N, hN⟩ := GlobalTheory.T.exists_lattice_idempotent_position_involution_stable K (B₁.prod B₂) (ι₁ ⊕ ι₂) _ _ _ a hsB ha hF
   have hIS : S₁.map Function.Embedding.inl ⊆ S₁.disjSum S₂ := by intro x; cases x <;> simp
   have hI'S : S₂.map Function.Embedding.inr ⊆ S₁.disjSum S₂ := by intro x; cases x <;> simp
   have hcov : ∀ i ∈ S₁.disjSum S₂, i ∈ S₁.map Function.Embedding.inl ∨ i ∈ S₂.map Function.Embedding.inr := by
     rintro (i | j) h <;> simp_all
-  obtain ⟨L₀, hL₀⟩ := GlobalTheory.T.alternatingDifference_term_window K (B₁.prod B₂) (ι₁ ⊕ ι₂) _ _ _ a hsB ha hF _ _ hIS hI'S hcov N 1 1
+  obtain ⟨L₀, hL₀⟩ := _root_.GlobalTheory.UnitLemma.Desc.term_window K (B₁.prod B₂) (ι₁ ⊕ ι₂) _ _ _ a hsB ha hF _ _ hIS hI'S hcov N 1 1
     isUnit_one isUnit_one
-  obtain ⟨L₁, hL₁'⟩ := GlobalTheory.T.alternatingDifference_term_window K B₁ ι₁ e₁ π₁ S₁ a hs₁ ha hF₁ S₁ ∅ subset_rfl (Finset.empty_subset _)
+  obtain ⟨L₁, hL₁'⟩ := _root_.GlobalTheory.UnitLemma.Desc.term_window K B₁ ι₁ e₁ π₁ S₁ a hs₁ ha hF₁ S₁ ∅ subset_rfl (Finset.empty_subset _)
     (fun i hi => Or.inl hi) N 1 1 isUnit_one isUnit_one
-  obtain ⟨L₂, hL₂'⟩ := GlobalTheory.T.alternatingDifference_term_window K B₂ ι₂ e₂ π₂ S₂ a hs₂ ha hF₂ ∅ S₂ (Finset.empty_subset _) subset_rfl
+  obtain ⟨L₂, hL₂'⟩ := _root_.GlobalTheory.UnitLemma.Desc.term_window K B₂ ι₂ e₂ π₂ S₂ a hs₂ ha hF₂ ∅ S₂ (Finset.empty_subset _) subset_rfl
     (fun i hi => Or.inr hi) N 1 1 isUnit_one isUnit_one
   obtain ⟨φ₁, hφ₁⟩ : ∃ φ₁ : ℕ → Submodule K.O B₁.A → ℚ, ∀ k M,
       φ₁ k M = B₁.sgnLat M * term B₁ π₁ S₁ ∅ (algebraMap K.O B₁.A a ^ (2 * k)) 1 M := ⟨_, fun _ _ => rfl⟩
@@ -117,7 +117,7 @@ theorem GlobalTheory.UnitLemma.Desc.hh_prod_tendsto : ∀ (K : UQ) (B₁ B₂ : 
       (-(K.q : ℚ)) ^ val K.O (resultant B₁.P B₂.P) *
         (HH B₁ π₁ S₁ ∅ (algebraMap K.O B₁.A a ^ (2 * k)) 1 * HH B₂ π₂ ∅ S₂ (algebraMap K.O B₂.A a ^ (2 * k)) 1) := by
     intro k
-    obtain ⟨hfinP, hfib⟩ := GlobalTheory.T.sum_stableLattices_product_eq_q_pow_mul K B₁ B₂ hL₁.1 hL₂.1 hsep (φ₁ k) (φ₂ k) (hfin₁ k) (hfin₂ k)
+    obtain ⟨hfinP, hfib⟩ := _root_.GlobalTheory.UnitLemma.FibSum.fibsum K B₁ B₂ hL₁.1 hL₂.1 hsep (φ₁ k) (φ₂ k) (hfin₁ k) (hfin₂ k)
     have e1 : ∀ M, f k M = g k M + (-K.eta (resultant B₁.P B₂.P)) *
         (φ₁ k (M.comap (LinearMap.inl K.O B₁.A B₂.A)) * φ₂ k (M.map (LinearMap.snd K.O B₁.A B₂.A))) := by
       intro M; rw [hf]; ring
@@ -152,7 +152,7 @@ theorem GlobalTheory.UnitLemma.Desc.hh_prod_tendsto : ∀ (K : UQ) (B₁ B₂ : 
         ¬ Mid (S₁.disjSum S₂) (max L₀ (max L₁ L₂)) k p := by
     intro k hk M hM p hp hne
     set L := max L₀ (max L₁ L₂) with hL
-    have tp := GlobalTheory.T.latticeTerm_prod_eq_mul_components K B₁ B₂ ι₁ ι₂ e₁ π₁ e₂ π₂ S₁ S₂ a N M p (algebraMap K.O B₁.A a ^ (2 * k))
+    have tp := _root_.GlobalTheory.UnitLemma.Desc.pos_term_prod K B₁ B₂ ι₁ ι₂ e₁ π₁ e₂ π₂ S₁ S₂ a N M p (algebraMap K.O B₁.A a ^ (2 * k))
       (algebraMap K.O B₂.A a ^ (2 * k))
     obtain ⟨hp₁, hp₂⟩ := tp.1 hp
     have a0 := hL₀ L (le_max_left _ _) k hk M p hp
@@ -186,9 +186,9 @@ theorem GlobalTheory.UnitLemma.Desc.hh_prod_tendsto : ∀ (K : UQ) (B₁ B₂ : 
       rw [e1, e2]
       refine Eq.trans e0 (Eq.trans ?_ tp.2)
       congr 2
-    rw [hf, hg, hφ₁, hφ₂, key, GlobalTheory.T.sgnLat_prod_eq_eta_resultant_mul K B₁ B₂ hsep M hM]
+    rw [hf, hg, hφ₁, hφ₂, key, _root_.GlobalTheory.UnitLemma.SgnProd.sgnLat_prod K B₁ B₂ hsep M hM]
     ring
-  have hc := GlobalTheory.T.tendsto_finsum_div_rho_pow_zero K (B₁.prod B₂) (ι₁ ⊕ ι₂) _ _ _ a hsB ha hF (S₁.map Function.Embedding.inl)
+  have hc := _root_.GlobalTheory.UnitLemma.Desc.tendsto_badWindow_div_rho K (B₁.prod B₂) (ι₁ ⊕ ι₂) _ _ _ a hsB ha hF (S₁.map Function.Embedding.inl)
     (S₂.map Function.Embedding.inr) hcov N (max L₀ (max L₁ L₂)) _ f hN hbound hsupp
   refine hc.congr (fun k => ?_)
   rw [hsum k]

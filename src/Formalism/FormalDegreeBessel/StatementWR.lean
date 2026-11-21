@@ -62,10 +62,4 @@ def CommFun : Prop :=
     (f : (Fin m → ℂ) → E), f ∈ WSm m E → (l ≠ k ∨ (holoIdx i ↔ ¬ holoIdx j)) →
       opL l i (opL k j f) = opL k j (opL l i f)
 
-def AdjFun : Prop :=
-  ∀ (m : ℕ) (l : Fin m) (f g : (Fin m → ℂ) → ℂ), f ∈ WSm m ℂ → g ∈ WSm m ℂ →
-    HasCompactSupport f → HasCompactSupport g → tsupport f ⊆ OmX m → tsupport g ⊆ OmX m →
-      (∫ x, pOp l f x * star (g x) * ((∏ k, Complex.normSq (x k))⁻¹ : ℝ)) =
-        -(∫ x, f x * star (pbOp l g x) * ((∏ k, Complex.normSq (x k))⁻¹ : ℝ))
-
 end Formalism.QuantumDeterminants

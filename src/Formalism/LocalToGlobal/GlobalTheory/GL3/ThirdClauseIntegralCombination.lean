@@ -30,21 +30,6 @@ theorem integralMv_mul {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG 
   rw [MvPowerSeries.coeff_mul]
   exact isPadicIntegral_sum _ _ fun x _ => isPadicIntegral_mul (hF _) (hG _)
 
-theorem integralMv_C {c : ℂ_[p]} (hc : IsIntP c) :
-    IntegralMv (algebraMap ℂ_[p] (MvPowerSeries σ ℂ_[p]) c) := fun n => by
-  classical
-  have e : MvPowerSeries.coeff n (algebraMap ℂ_[p] (MvPowerSeries σ ℂ_[p]) c) = if n = 0 then c else 0 := by
-    first
-      | exact MvPowerSeries.coeff_C n c
-      | exact MvPowerSeries.coeff_C (σ := σ) n c
-      | (rw [MvPowerSeries.algebraMap_apply']; exact MvPowerSeries.coeff_C n c)
-      | simp [MvPowerSeries.coeff_C]
-      | simp [MvPowerSeries.coeff_C, MvPowerSeries.algebraMap_apply']
-  rw [e]
-  split_ifs
-  · exact hc
-  · unfold IsIntP; simp
-
 end Int
 
 section Subst
@@ -82,25 +67,5 @@ theorem atLog_eq (F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) 
   rw [MvPowerSeries.coe_substAlgHom]; rfl
 
 end Subst
-
-section Clauses
-
-variable {D : D7} (T : Tor D) {N N' : ℕ} {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
-  (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
-
-def Cl1 (F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) : Prop :=
-  ∀ (C : WeierstrassCurve.VariableChange ℂ_[p]) (wq : PowerSeries ℂ_[p]) (r : ℕ)
-      (b : Fin r → Matrix (Fin N') (Fin N) D.host.E),
-    IsModel lam T.abelian₂ C → IsWq (C • wModel lam T.abelian₂) wq → LocBasis D p (YYl D L L') b →
-    Orthonormal D b →
-    IntegralMv (atLog D lam T.abelian₂ C wq b F * ePh lam T.abelian₂ C wq r)
-
-def Cl3 (F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) : Prop :=
-  ∀ (C : WeierstrassCurve.VariableChange ℂ_[p]) (wq : PowerSeries ℂ_[p]) (r : ℕ)
-      (b : Fin r → Matrix (Fin N') (Fin N) D.host.E),
-    IsModel lam T.abelian₂ C → IsWq (C • wModel lam T.abelian₂) wq → LocBasis D p (YYl D L L') b →
-    IntegralMv (atLog D lam T.abelian₂ C wq b F)
-
-end Clauses
 
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC

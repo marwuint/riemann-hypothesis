@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
 import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCmEndomorphismCommConjugationStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCmCurveHomOfPureTypeVectorStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCmCurveHomOfPureTypeVector
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CmEllipticCurveHomExistsPureTypeVectorStatement
 
 noncomputable section
@@ -171,7 +171,7 @@ theorem exists_lin (h₁ : 1 ≤ D.p + D.q) (h₂ : σ (baseKA l).ρ = H.rt0) (h
   have key : ∀ a : lat hP (((ε : ℤ) : ℂ) * H.rt0), ∃ a' ∈ lat hP' (((ε : ℤ) : ℂ) * H.rt0),
       ∀ z : ℂ, U ≫ F.ex i P (f z • P a) = F.ex i' P' (z • P' a') := by
     rintro ⟨a, ha⟩
-    obtain ⟨φ, -, hφ⟩ := GlobalTheory.T.exists_cmCurve_hom_of_pureType_vector E H D l Xo σ g ty F h₁ h₂ h₃ h₄ C i P hP ε a ha
+    obtain ⟨φ, -, hφ⟩ := _root_.GlobalTheory.CompRat.exists_hom_of_pureType E H D l Xo σ g ty F h₁ h₂ h₃ h₄ C i P hP ε a ha
     have hx : ∀ z w, F.ex i P (f (z + w) • P a) = F.ex i P (f z • P a) * F.ex i P (f w • P a) := fun z w => by
       rw [ex_congr_type F hP ε ha (hadd z w), add_smul, F.ex_add i P hP]
     refine GlobalTheory.T.cmEllipticCurve_hom_exists_pure_type_vector E H D l Xo σ g ty F h₁ h₂ h₃ h₄ C i' P' hP' (io ≫ φ) (fun z => U ≫ F.ex i P (f z • P a)) ε

@@ -4,12 +4,12 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DeltaStruct
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RegularAndBoundedTorsionOfAdicTopologicalBasisStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitDeltaOfPrismIdealEqSpanStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBreuilKisinHomOfUniformizerFrameStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBreuilKisinHomOfUniformizerFrame
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinHomImageXDeltaZeroLiftsUniformizerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPrismHomExtOfXStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemNonZeroDivisorsOfInvertibleSpanSingletonStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EnvRingExistsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeltaRingHomUniqueOfAdicTopologicalBasisStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPrismHomExtOfX
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemNonZeroDivisorsOfInvertibleSpanSingleton
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EnvRingExists
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeltaRingHomUniqueOfAdicTopologicalBasis
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrismHomMapIdealEqStatement
 
 noncomputable section
@@ -111,7 +111,7 @@ theorem facts : ∃ N : ℕ, En.i d ∈ nonZeroDivisors En.Q ∧ ∀ (x : En.Q) 
     (l : En.Q) ^ m * x ∈ Ideal.span {En.i d} → (l : En.Q) ^ N * x ∈ Ideal.span {En.i d} := by
   obtain ⟨N, hN⟩ := B.bdd
   have hnz : d ∈ nonZeroDivisors B.A := by
-    have h := B.inv; rw [hI] at h; exact GlobalTheory.T.mem_nonZeroDivisors_of_invertible_span_singleton' _ d h
+    have h := B.inv; rw [hI] at h; exact _root_.GlobalTheory.BSP.mem_nonZeroDivisors_of_invertible_span_singleton _ d h
   have hb : ∀ (x : B.A) (m : ℕ), (l : B.A) ^ m * x ∈ Ideal.span {d} → (l : B.A) ^ N * x ∈ Ideal.span {d} := by
     rw [← hI]; exact pow_mul_mem_of_pow_mul_mem B.I N hN
   have tb : TopBasis En.i (Ideal.span {(l : B.A)} ⊔ Ideal.span {d}) (Digits l) := by
@@ -186,7 +186,7 @@ theorem univ (hF : IsFrame bk B d p) (g0 : Hom bk.prism (obj hF.1 En))
   have hCI : C.I = Ideal.span {f.f d} :=
     (GlobalTheory.T.prism_hom_map_ideal_eq l _ B C f).symm.trans (map_eq_span f.f B.I d hF.1)
   have hnz : f.f d ∈ nonZeroDivisors C.A := by
-    have h := C.inv; rw [hCI] at h; exact GlobalTheory.T.mem_nonZeroDivisors_of_invertible_span_singleton' _ _ h
+    have h := C.inv; rw [hCI] at h; exact _root_.GlobalTheory.BSP.mem_nonZeroDivisors_of_invertible_span_singleton _ _ h
   obtain ⟨hgδ, hgs⟩ := GlobalTheory.T.breuilKisinHom_image_X_delta_zero_lifts_uniformizer l K bk C g
   have hfp := f.f_str _ p hF.2
   have hmem : BK.hf g X - f.f p ∈ Ideal.span {f.f d} := by
@@ -200,7 +200,7 @@ theorem univ (hF : IsFrame bk B d p) (g0 : Hom bk.prism (obj hF.1 En))
     En.lift C.A C.D (JJ C) C.complete f.f f.f_δ hJ v' hrel
   obtain ⟨h0, h0δ, h0i, h0w⟩ := hlift
   have h0a : ∀ a, h0 (En.i a) = f.f a := fun a => RingHom.congr_fun h0i a
-  refine ⟨lift En hF.1 f h0 h0δ h0a, ⟨Hom.ext' h0i, GlobalTheory.T.breuilKisin_prism_hom_ext_of_X l K bk C _ _ ?_⟩, ?_⟩
+  refine ⟨lift En hF.1 f h0 h0δ h0a, ⟨Hom.ext' h0i, _root_.GlobalTheory.BSP.BK.hom_ext_of_hf_X l K bk C _ _ ?_⟩, ?_⟩
   · exact (eval_lin h0 _ _ _ _ _ _ _ hg0 (h0a p) (h0a d) h0w).trans hgX.symm
   · rintro h' ⟨h1, h2⟩
     have e1 : h'.f.comp En.i = f.f := congrArg Hom.f h1
@@ -209,11 +209,11 @@ theorem univ (hF : IsFrame bk B d p) (g0 : Hom bk.prism (obj hF.1 En))
     have e3 : h'.f En.w = v' :=
       cancel_of hnz ((eval_lin h'.f (BK.hf g0 X) (En.i p) (En.i d) En.w (f.f p) (f.f d) (h'.f En.w) hg0 (e1a p) (e1a d) rfl).symm.trans (e2.trans hgX))
     have hJ' : (JJ B).map (h'.f.comp En.i) ≤ JJ C := (congrArg (fun φ => (JJ B).map φ ≤ JJ C) e1).mpr hJ
-    exact Hom.ext' (GlobalTheory.T.deltaRingHom_unique_of_adicTopologicalBasis l B.A En.Q C.A En.DQ C.D (JJ B) (JJ C) En.i En.w En.tb En.tb_b
+    exact Hom.ext' (_root_.GlobalTheory.BSP.deltaHom_unique_of_base l B.A En.Q C.A En.DQ C.D (JJ B) (JJ C) En.i En.w En.tb En.tb_b
       C.complete.toIsHausdorff h'.f h0 h'.f_δ h0δ hJ' (e1.trans h0i.symm) (e3.trans h0w.symm))
 
 def env (hF : IsFrame bk B d p) : Env bk B d p :=
-  have hex := GlobalTheory.T.exists_breuilKisinHom_of_uniformizerFrame l K bk (obj hF.1 En) (En.i d) (En.i p + En.i d * En.w) (frame En hF) En.rel
+  have hex := _root_.GlobalTheory.BSP.exists_hom_of_frame l K bk (obj hF.1 En) (En.i d) (En.i p + En.i d * En.w) (frame En hF) En.rel
   { Q := obj hF.1 En
     inl := inl hF.1 En
     inr := hex.choose
@@ -233,6 +233,6 @@ theorem GlobalTheory.BSP.nonempty_env : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt
   intro l _ K bk B d p hF
   have hd : d ∈ JJ B := Ideal.mem_sup_right (by rw [hF.1]; exact Ideal.mem_span_singleton_self d)
   have hEn : Nonempty (EnvRing B.D (JJ B) d p) :=
-    GlobalTheory.T.nonempty_envRing l B.A B.D (JJ B) d p (fg_sup_span B.I d hF.1)
+    _root_.GlobalTheory.BSP.envRing_exists l B.A B.D (JJ B) d p (fg_sup_span B.I d hF.1)
       (Ideal.mem_sup_left (Ideal.mem_span_singleton_self (l : B.A))) hd (GlobalTheory.T.isUnit_delta_of_prism_ideal_eq_span l _ B d hF.1) B.complete
   exact ⟨env hEn.some hF⟩

@@ -5,7 +5,9 @@ import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CuspidalProductMultiplicity
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodFamilyGivenCharactersMultiplicityOneStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodCharacterPlacewiseCuspidalParabolicProductStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultiplicityLinearCharacterEqCharacterSumStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultiplicityLinearCharacterEqCharacterSum
+import Formalism.LocalToGlobal.IndefiniteReal.CxPass
+import Formalism.LocalToGlobal.Divisibility.GoodPartHermitianSpec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RatMuPOfRowTest
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCuspIndProdCharOfIsProdCuspChar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReordEqConj
@@ -35,7 +37,7 @@ theorem passIn3_of_rows : ∀ (D : D7) [IsTotallyComplex D.what₂.LL] (G : Type
   · exact_mod_cast GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.nbar_pos R.Pg D.R.k
   · intro s
     obtain ⟨n, hn, hb⟩ := hcol (Formalism.IndefR.TransferLatticeStatement.charOf (τ s)) ((hchars _).2 ⟨s, rfl⟩)
-    have hnOf := GlobalTheory.T.multiplicity_linearCharacter_eq_characterSum D.what₂.LL G (Ws s) (τ s) F.P1 F.ψ1
+    have hnOf := _root_.GlobalTheory.multiplicity_linearCharacter_eq_characterSum.nOf_eq_charSum D.what₂.LL G (Ws s) (τ s) F.P1 F.ψ1
     have heq : Formalism.IndefR.IndefiniteEpsilonOperator.nOf (τ s) ⟨F.P1, F.ψ1⟩ = n := by
       apply Nat.cast_injective (R := D.what₂.LL)
       rw [hnOf]

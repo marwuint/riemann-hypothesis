@@ -1,12 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryDatumStandardLatticeTensorUnimodulaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryDatumStandardLatticeTensorUnimodula
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieMultiplicityAndRankTensorDataLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompatibleSymplecticBasesLevelPointsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompatibleSymplecticBasesLevelPoints
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankDvdOfRingOfIntegersToIntMatrixStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDegenerationDataTorsionIsometryOntoStatement
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -18,7 +19,7 @@ theorem GlobalTheory.Mum.tens_pelOK : ∀ (R : Type) [CommRing R] [IsDomain R] [
   have hB := GlobalTheory.T.tensorDegenerationData_torsion_isometry_onto
   intro R _ _ _ hR E _ _ _ H D D' r W hpos hdet T ρ hadj hw0 hX hr _ o hact hpsi
   obtain ⟨s, hs⟩ := hA E ρ
-  obtain ⟨Dm, e, hp, hq, he, hEF⟩ := GlobalTheory.T.exists_unitary_datum_standardLattice_tensor_unimodular E H W hpos hdet ρ hadj hw0
+  obtain ⟨Dm, e, hp, hq, he, hEF⟩ := _root_.GlobalTheory.UnitaryStd.exists_datum E H W hpos hdet ρ hadj hw0
     (D.toPre.P.g + Module.finrank ℤ D.toPre.X) s hs
   obtain ⟨hrk, hlie⟩ := GlobalTheory.T.lieMultiplicity_and_rank_tensorData_lattice R hR E H D D' W hpos hdet T ρ o hact s hs
   have hs0 : s ≠ 0 := by rintro rfl; omega
@@ -26,5 +27,5 @@ theorem GlobalTheory.Mum.tens_pelOK : ∀ (R : Type) [CommRing R] [IsDomain R] [
   refine ⟨Dm, hp.trans hq.symm, ?_, hpsi, fun F _ _ _ => ⟨fun τ => ⟨s * D.toPre.P.g, hlie F τ, ?_⟩, fun ζ hζ hζ' => ?_⟩⟩
   · rw [hp]; exact Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hs0 (by omega))
   · rw [hrk, hp]; ring
-  · obtain ⟨ev, h1, h2, h3, h4, h5⟩ := GlobalTheory.T.exists_compatible_symplectic_bases_levelPoints R hR D F ζ hζ hζ' _ rfl
+  · obtain ⟨ev, h1, h2, h3, h4, h5⟩ := _root_.GlobalTheory.SympQ.compatible_symplectic_bases R hR D F ζ hζ hζ' _ rfl
     exact hB R hR E H D D' W hpos hdet T ρ hadj hw0 o hact hpsi Dm _ e rfl he hEF F ζ hζ hζ' ev h1 h2 h3 h4 h5

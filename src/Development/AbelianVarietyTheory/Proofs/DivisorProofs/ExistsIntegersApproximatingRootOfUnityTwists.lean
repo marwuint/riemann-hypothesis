@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueEqZeroIffV
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeBelowComplexEmbeddingLabelIsMaximalCard
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsValuationPowPrimePowSubGeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsValuationPowPrimePowSubGe
 
 set_option autoImplicit false
 
@@ -107,7 +107,7 @@ theorem exists_approx_root_twists : ∀ (E : Type) [Field E] [NumberField E] [Is
   have hs : ∀ s : ZMod h, ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → (r : WithTop ℝ) ≤
       vX_vp X (embX io X (lab s) (e * a₀) ^ p ^ N - (z ^ p ^ s.val) ^ p ^ N) := by
     intro s
-    exact GlobalTheory.T.exists_valuation_pow_primePow_sub_ge X.C (vX_vp X) p hp (vX_vp_p X) _ _ ((isIntV_iff X _).2 (hv1 _ _))
+    exact _root_.GlobalTheory.PowLim.pow_prime_pow_close X.C (vX_vp X) p hp (vX_vp_p X) _ _ ((isIntV_iff X _).2 (hv1 _ _))
       ((isIntV_iff X _).2 (hvzs _)) ((vX_vp_pos_iff X _).2 (hlabb s)) r
   have hσ : ∀ σ : E →+* ℂ, ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → primeBelow io X σ ≠ primeBelow io X τ →
       (r : WithTop ℝ) ≤ vX_vp X (embX io X σ (e * a₀) ^ p ^ N) := by
@@ -115,7 +115,7 @@ theorem exists_approx_root_twists : ∀ (E : Type) [Field E] [NumberField E] [Is
     by_cases hne : primeBelow io X σ = primeBelow io X τ
     · exact ⟨0, fun _ _ h' => absurd hne h'⟩
     · have hlt : X.v (embX io X σ (e * a₀) - 0) < 1 := by rw [sub_zero]; exact hoth σ hne
-      obtain ⟨N₀, hN₀⟩ := GlobalTheory.T.exists_valuation_pow_primePow_sub_ge X.C (vX_vp X) p hp (vX_vp_p X) _ 0 ((isIntV_iff X _).2 (hv1 _ _))
+      obtain ⟨N₀, hN₀⟩ := _root_.GlobalTheory.PowLim.pow_prime_pow_close X.C (vX_vp X) p hp (vX_vp_p X) _ 0 ((isIntV_iff X _).2 (hv1 _ _))
         ((isIntV_iff X _).2 (by simp)) ((vX_vp_pos_iff X _).2 hlt) r
       refine ⟨N₀, fun N hN _ => ?_⟩
       have := hN₀ N hN

@@ -1,17 +1,20 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistAtOfNe
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldOneVariableTranscendentalFiniteAndEStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceRestrictionExistsPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleAdelicMatrixFamilyPullbackExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldOneVariableTranscendentalFiniteAndE
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceRestrictionExistsPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleAdelicMatrixFamilyPullbackExtension
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionOfLargeAdelicDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BinaryFormSplitsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BinaryFormSplits
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleDegreeSymmetricPowerFamily
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleDegreeTwistFamilyAtPlaceByScalar
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineDegreeGeOfTwistedSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussLemmaSymPowMatrixUpperTriangularPlaceOrderStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineDegreeEqSumOfScalarSplitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineDegreeGeOfTwistedSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleAdelicMatrixFamilyOrdersFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussLemmaSymPowMatrixUpperTriangularPlaceOrder
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NrmCoeffProdLinear
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineDegreeEqSumOfScalarSplit
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZero
 
 set_option autoImplicit false
 
@@ -33,7 +36,7 @@ theorem GlobalTheory.Nef.deg_le_two_mul_of_triangular : ∀ (k F : Type) [Field 
   rw [not_isEmpty_iff] at hne
   obtain ⟨v₀⟩ := hne
   obtain ⟨γ, hγ⟩ := GlobalTheory.T.exists_section_of_large_adelic_degree k F hFF
-  obtain ⟨π, hπ0, hπ⟩ := (GlobalTheory.T.functionFieldPlaceOrder_calculus k F v₀).2.2.2.2.2.1
+  obtain ⟨π, hπ0, hπ⟩ := (_root_.GlobalTheory.Nef.ord_calculus k F v₀).2.2.2.2.2.1
   have key : ∀ m : ℕ, ((m * (m + 1) / 2 : ℕ) : ℝ) * (deg g : ℝ) ≤ (m + 1) * (m * b + 1 + γ) := by
     intro m
     set N : ℕ := m * (m + 1) / 2 with hN
@@ -52,25 +55,25 @@ theorem GlobalTheory.Nef.deg_le_two_mul_of_triangular : ∀ (k F : Type) [Field 
       have hc1 : ((m + 1 : ℕ) : ℤ) = (m : ℤ) + 1 := by push_cast; ring
       rw [hTdeg, hSdeg, hc1]; linarith
     obtain ⟨p, hp0, hpint⟩ := hγ (m + 1) _ hTadm hdegT
-    have hep : e ≤ degLine S p := GlobalTheory.T.lineDegree_ge_of_twisted_section k F hFF (m + 1) S hSadm v₀ π hπ0 hπ e p hp0 hpint
-    obtain ⟨E, _, _, _, c, s, t, hc, hst, hid⟩ := GlobalTheory.T.exists_binary_form_eq_mul_prod_linear F m p hp0
+    have hep : e ≤ degLine S p := _root_.GlobalTheory.Nef.degLine_ge_of_twist k F hFF (m + 1) S hSadm v₀ π hπ0 hπ e p hp0 hpint
+    obtain ⟨E, _, _, _, c, s, t, hc, hst, hid⟩ := _root_.GlobalTheory.Nef.binary_form_splits F m p hp0
     letI : Algebra k E := ((algebraMap F E).comp (algebraMap k F)).toAlgebra
     haveI : IsScalarTower k F E := IsScalarTower.of_algebraMap_eq (fun _ => rfl)
-    obtain ⟨ρ, hρ⟩ := (GlobalTheory.T.functionFieldPlace_restriction_exists_pow k F E).1
-    have hEFF : IsFF k E := (GlobalTheory.T.functionFieldOneVariable_transcendental_finite_and_ext k F hFF).2 E
-    have pS := GlobalTheory.T.isAdmissibleAdelicMatrixFamily_pullback_extension k F E hFF ρ hρ (m + 1) S hSadm
-    have pg := GlobalTheory.T.isAdmissibleAdelicMatrixFamily_pullback_extension k F E hFF ρ hρ 2 g hg
+    obtain ⟨ρ, hρ⟩ := (_root_.GlobalTheory.Nef.place_res_exists_pow k F E).1
+    have hEFF : IsFF k E := (_root_.GlobalTheory.Nef.isFF_main k F hFF).2 E
+    have pS := _root_.GlobalTheory.Nef.PullAd.adm_pullAd_and_deg_mul_finrank k F E hFF ρ hρ (m + 1) S hSadm
+    have pg := _root_.GlobalTheory.Nef.PullAd.adm_pullAd_and_deg_mul_finrank k F E hFF ρ hρ 2 g hg
     have hpull : pullAd ρ S = fun P => symMat m (pullAd ρ g P) := by
       funext P; simp only [pullAd, hS, symMat_map]
     have htriE : ∀ P, pullAd ρ g P 1 0 = 0 := by intro P; simp [pullAd, htri]
     set q : Fin (m + 1) → E := fun i => algebraMap F E (p i) with hq
     have hpt : ∀ P, ordVec P ((symMat m (pullAd ρ g P)).mulVec q) =
         ord P c + ∑ j, ordVec P ((pullAd ρ g P).mulVec ![s j, t j]) := fun P =>
-      GlobalTheory.T.gaussLemma_symPowMatrix_upperTriangular_placeOrder k E P m _ (htriE P) (pg.1.1 P) q c s t hc hst (by
+      _root_.GlobalTheory.Nef.ordVec_symMat_mulVec_triangular k E P m _ (htriE P) (pg.1.1 P) q c s t hc hst (by
         have h3 := hid E[X] (C ((pullAd ρ g P) 0 0)) (C ((pullAd ρ g P) 0 1) + C ((pullAd ρ g P) 1 1) * X)
         rw [Polynomial.algebraMap_eq] at h3
         exact h3)
-    have h6 := GlobalTheory.T.lineDegree_eq_sum_of_scalar_split k E hEFF m (m + 1) (pullAd ρ g) pg.1 (fun P => symMat m (pullAd ρ g P)) q c
+    have h6 := _root_.GlobalTheory.Nef.degLine_eq_sum_of_split k E hEFF m (m + 1) (pullAd ρ g) pg.1 (fun P => symMat m (pullAd ρ g P)) q c
       (fun j => ![s j, t j]) hc hst hpt
     have h2 := pS.2.2.1 p hp0
     rw [hpull] at h2

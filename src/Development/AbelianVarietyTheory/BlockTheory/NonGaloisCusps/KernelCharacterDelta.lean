@@ -35,10 +35,6 @@ def IsCyclotomic (R : RingPG k l) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) : Prop :=
   (∀ x, ι (R.φ x) = frobπ k l (ι x)) ∧
   (∀ x, ι (R.γ x) = gamπ k l (ι x))
 
-def IsPsi (l : ℕ) [Fact l.Prime] [CharP k l] (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) (ψ₀ : k⸨X⸩ →ₗ[k] k⸨X⸩) : Prop :=
-  ∀ (a : k⸨X⸩) (x : ℕ → k⸨X⸩),
-    ι a = ∑ j ∈ Finset.range l, (1 + vv k) ^ j * frobπ k l (x j) → ι (ψ₀ a) = x 0
-
 def PsiRing (R : RingPG k l) (ψ₀ : k⸨X⸩ →ₗ[k] k⸨X⸩) : Prop :=
   (∀ a b, ψ₀ (R.φ a * b) = a * ψ₀ b) ∧ ψ₀ 1 = 1 ∧ (∀ a, ψ₀ (R.γ a) = R.γ (ψ₀ a)) ∧
   ∀ a : ℤ, 2 - (l : ℤ) ≤ a → a ≤ 1 →
@@ -56,36 +52,6 @@ def PsiShift (l : ℕ) (g ψ : V →ₗ[k] V) (M : Submodule k⟦X⟧ V) : Prop 
   ∀ a : ℤ, 2 - (l : ℤ) ≤ a → a ≤ 0 → (fun x => g x - x) '' kerPsi ψ M a = kerPsi ψ M (a + 1)
 
 end Modules
-
-def LemmaPsi : Prop :=
-  ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l], 5 ≤ l →
-  ∀ (R : RingPG k l) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩), IsCyclotomic R ι →
-  ∃ ψ₀ : k⸨X⸩ →ₗ[k] k⸨X⸩, IsPsi l ι ψ₀ ∧ PsiRing R ψ₀ ∧
-    ∀ {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
-      [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V]
-      [FiniteDimensional k⸨X⸩ V] (D : ModPG R n V),
-      ∃ ψ : ZMod n → V →ₗ[k] V,
-        (∀ i a x, ψ i (a • D.φ i x) = ψ₀ a • x) ∧
-        (∀ i x, ψ i (D.γ i x) = D.γ (i - 1) (ψ i x)) ∧
-        ∀ (i : ZMod n) (M₀ : Submodule k⟦X⟧ V), IsLat M₀ → CondC (D.γ (i - 1)) M₀ →
-          PsiShift l (D.γ i) (ψ i) (pull (D.φ i) M₀)
-
-def LemmaPsiStep : Prop :=
-  ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l], 5 ≤ l →
-  ∀ (R : RingPG k l) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩), IsCyclotomic R ι →
-  ∃ ψ₀ : k⸨X⸩ →ₗ[k] k⸨X⸩, IsPsi l ι ψ₀ ∧ PsiRing R ψ₀ ∧
-    ∀ {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
-      [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V]
-      [FiniteDimensional k⸨X⸩ V] (f g₀ g₁ : V →ₗ[k] V),
-      Semi R.φ f → Submodule.span k⸨X⸩ (Set.range f) = ⊤ → Semi R.γ g₀ → Semi R.γ g₁ →
-      (∀ x, f (g₀ x) = g₁ (f x)) →
-      ∃ ψ : V →ₗ[k] V,
-        (∀ a x, ψ (a • f x) = ψ₀ a • x) ∧ (∀ x, ψ (g₁ x) = g₀ (ψ x)) ∧
-        ∀ M₀ : Submodule k⟦X⟧ V, IsLat M₀ → CondC g₀ M₀ → PsiShift l g₁ ψ (pull f M₀)
-
-def CyclotomicExists : Prop :=
-  ∀ (k : Type) [Field k] (l : ℕ) [Fact l.Prime] [CharP k l], 5 ≤ l →
-    ∃ (R : RingPG k l) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩), IsCyclotomic R ι
 
 theorem binomPow_natCast (k : Type) [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (m : ℕ) :
     binomPow k l (m : ℤ_[l]) = (1 + PowerSeries.X) ^ m := by

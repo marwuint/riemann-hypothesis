@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsPureTensorBaseVectorAndLocalFactorStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOperatorPureTensorPlaceByPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PureTensorLinearInFactorAndHeisenbergDerivRealStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatHalfSpanModulatedTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatHalfSpanModulatedTranslates
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SingleMulSingle
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting GlobalTheory.PlaceTensor
 open scoped TensorProduct ComplexOrder
@@ -18,5 +18,5 @@ theorem GlobalTheory.PlaceTensor.SplitProduct.thetaAt_sum_isPure : ∀ (D : D7) 
     (GlobalTheory.T.pureTensor_linear_in_factor_and_heisenbergDeriv_real D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ).1
     (fun a h1 h2 h3 =>
       ⟨fun x y hx hy Tm hTm =>
-        ((GlobalTheory.T.schwartzBruhatHalf_span_modulated_translates D ψ S T ΛS ΛT (base_std hB) hB.2.2.1 hB.2.2.2.1 a h1 h2 h3).1 x y hx hy).2 f₀ Tm hTm,
-        (GlobalTheory.T.schwartzBruhatHalf_span_modulated_translates D ψ S T ΛS ΛT (base_std hB) hB.2.2.1 hB.2.2.2.1 a h1 h2 h3).2⟩)
+        ((_root_.GlobalTheory.PlaceTensor.halfWaves_span D ψ S T ΛS ΛT (base_std hB) hB.2.2.1 hB.2.2.2.1 a h1 h2 h3).1 x y hx hy).2 f₀ Tm hTm,
+        (_root_.GlobalTheory.PlaceTensor.halfWaves_span D ψ S T ΛS ΛT (base_std hB) hB.2.2.1 hB.2.2.2.1 a h1 h2 h3).2⟩)

@@ -3,17 +3,20 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.RowsExhaust
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverEta
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormalizedLengthLatticeQuotientBaseChangeEqStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeProjectionBaseChangeDvrCommStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeInfSubspaceBaseChangeDvrStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CongruenceLengthFinsetSupEqSumStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeInfSubspaceBaseChangeDvr
+import Formalism.LocalToGlobal.Columns.AlgebraMapMemMaximalIdealPowIff
+import Formalism.SharpRestriction.LevelLetterCocycles.DataN
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverAlg
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CongruenceLengthFinsetSupEqSum
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralFormLatticeEqSumLocalisedLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeEigenspaceSumDisjointComplStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffEmbeddingIntegersResCharUnitStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteLengthLatticeProjectionQuotientStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodEigSumSupComplEigSumEqTopStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RationalFormEqSumLocalisationProjectionsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeEigenspaceSumDisjointCompl
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffEmbeddingIntegersResCharUnit
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteLengthLatticeProjectionQuotient
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodEigSumSupComplEigSumEqTop
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RationalFormEqSumLocalisationProjections
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FgInfSupOfIsComplStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanImageSemilinearLatticeEqStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DisjointFinsetSupOfSupIndepSupStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DisjointFinsetSupOfSupIndepSup
 
 open Formalism.BasicNotions Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef NumberField IsDedekindDomain GlobalTheory.EtaJoin
 
@@ -135,10 +138,10 @@ theorem sum_etaLoc_eq_etaRat : ∀ (D : D7) (M : MtFam D) (T : NormalizedLocalCo
         rw [e]
         exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)
       | add x y hx hy => exact Submodule.add_mem _ hx hy
-    exact (GlobalTheory.T.finiteLength_lattice_projection_quotient (D.nd.O i.1) (FractionRing (D.nd.O i.1)) _ (D.nd.MtIn i.1) _ _ hfg (GlobalTheory.T.heckeEigenspaceSum_disjoint_compl D i.1 _)).resolve_right
-      (not_not.2 ⟨hspan, GlobalTheory.T.goodEigSum_sup_compl_eigSum_eq_top D i.1 hZi (hSP i.1 i.2)⟩)
+    exact (_root_.GlobalTheory.finiteLength_projection_quotient (D.nd.O i.1) (FractionRing (D.nd.O i.1)) _ (D.nd.MtIn i.1) _ _ hfg (_root_.GlobalTheory.EtaJoin.eigSum_disjoint_compl D i.1 _)).resolve_right
+      (not_not.2 ⟨hspan, _root_.GlobalTheory.EtaJoin.eigSum_good_sup_compl_eq_top D i.1 hZi (hSP i.1 i.2)⟩)
 
-  obtain ⟨hint, hlw, hunit⟩ := GlobalTheory.T.coeffEmbedding_integers_resChar_unit D M T.B j w
+  obtain ⟨hint, hlw, hunit⟩ := _root_.GlobalTheory.NLocPlace.ec_int_resChar_unit D M T.B j w
   have hfinI := finite_chooseBasisIndex (D := D) j w
   haveI := Fintype.ofFinite (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j))
   let b := Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)
@@ -164,7 +167,7 @@ theorem sum_etaLoc_eq_etaRat : ∀ (D : D7) (M : MtFam D) (T : NormalizedLocalCo
       (lat D (D.what₂.muTw w) j) U U' hc
   have hlow : Submodule.span (T.B.Oc j w) (T.B.iV j w '' (low D (D.what₂.muTw w) j : Set _)) =
       Submodule.span (T.B.Oc j w) (T.B.iV j w '' (lat D (D.what₂.muTw w) j : Set _)) ⊓ G'.restrictScalars (T.B.Oc j w) :=
-    GlobalTheory.T.lattice_inf_subspace_baseChange_dvr D.what₂.LL (T.B.Oc j w) (T.B.ec j w) _ (T.B.V j w) (T.B.iV j w) _ b hb.1 hint
+    _root_.GlobalTheory.LatticeInterBaseChange.span_inf_baseChange D.what₂.LL (T.B.Oc j w) (T.B.ec j w) _ (T.B.V j w) (T.B.iV j w) _ b hb.1 hint
       (lat D (D.what₂.muTw w) j) U
   have hlatFG : (lat D (D.what₂.muTw w) j).FG := by
     have hfs : (genSet D (D.what₂.muTw w) j).Finite :=
@@ -217,17 +220,17 @@ theorem sum_etaLoc_eq_etaRat : ∀ (D : D7) (M : MtFam D) (T : NormalizedLocalCo
     obtain ⟨y, hy, rfl⟩ := (mem_gK T i _ z).1 hz
     obtain ⟨y', hy', e⟩ := (mem_gK T i _ _).1 hz'
     have e' := T.Psi_inj j w i.1 i.2 e
-    have h0 : y = 0 := Submodule.disjoint_def.1 (GlobalTheory.T.heckeEigenspaceSum_disjoint_compl D i.1 _) y hy (e' ▸ hy')
+    have h0 : y = 0 := Submodule.disjoint_def.1 (_root_.GlobalTheory.EtaJoin.eigSum_disjoint_compl D i.1 _) y hy (e' ▸ hy')
     rw [h0, map_zero]
-  have hdS := GlobalTheory.T.disjoint_finset_sup_of_supIndep_sup' (FractionRing (T.B.Oc j w)) (T.B.V j w) _ F GK BK hindGB hdisGB
+  have hdS := _root_.GlobalTheory.disjoint_finset_sup_of_supIndep_sup (FractionRing (T.B.Oc j w)) (T.B.V j w) _ F GK BK hindGB hdisGB
   have hGle : G' ≤ F.sup GK := Submodule.span_le.2 (by
     rintro _ ⟨y, hy, rfl⟩
-    rw [GlobalTheory.T.rationalForm_eq_sum_localisation_projections D M T j w h1 h2 hw hstd y]
+    rw [_root_.GlobalTheory.NSideDecomp.iV_eq_sum_Psi D M T j w h1 h2 hw hstd y]
     refine Submodule.sum_mem _ fun i hi => Finset.le_sup (f := GK) hi ?_
     exact (mem_gK T i _ _).2 ⟨_, (hSP i.1 i.2).1 _ ((castInv_mem i.2 y).1 hy), rfl⟩)
   have hBle : B' ≤ F.sup BK := Submodule.span_le.2 (by
     rintro _ ⟨y, hy, rfl⟩
-    rw [GlobalTheory.T.rationalForm_eq_sum_localisation_projections D M T j w h1 h2 hw hstd y]
+    rw [_root_.GlobalTheory.NSideDecomp.iV_eq_sum_Psi D M T j w h1 h2 hw hstd y]
     refine Submodule.sum_mem _ fun i hi => Finset.le_sup (f := BK) hi ?_
     exact (mem_gK T i _ _).2 ⟨_, (hSP i.1 i.2).2 _ ((castInv_mem i.2 y).2 hy), rfl⟩)
   have htop : G' ⊔ B' = ⊤ := by
@@ -273,7 +276,7 @@ theorem sum_etaLoc_eq_etaRat : ∀ (D : D7) (M : MtFam D) (T : NormalizedLocalCo
     unfold lO at hz
     obtain ⟨y, -, rfl⟩ := Submodule.mem_map.1 hz
     have hy : y ∈ D.nd.eigSum i.1 ↑(D.nd.Zgood i.1) ⊔ D.nd.eigSum i.1 (↑(D.nd.Zgood i.1))ᶜ := by
-      rw [GlobalTheory.T.goodEigSum_sup_compl_eigSum_eq_top D i.1 (zrat_loc i.2 hZ) (hSP i.1 i.2)]; exact Submodule.mem_top
+      rw [_root_.GlobalTheory.EtaJoin.eigSum_good_sup_compl_eq_top D i.1 (zrat_loc i.2 hZ) (hSP i.1 i.2)]; exact Submodule.mem_top
     obtain ⟨a, ha, c, hc', e⟩ := Submodule.mem_sup.1 hy
     rw [← Submodule.restrictScalars_sup, Submodule.restrictScalars_mem, psiO_apply, ← e, map_add]
     exact Submodule.add_mem_sup ((mem_gK T i _ _).2 ⟨a, ha, rfl⟩) ((mem_gK T i _ _).2 ⟨c, hc', rfl⟩)
@@ -306,7 +309,7 @@ theorem sum_etaLoc_eq_etaRat : ∀ (D : D7) (M : MtFam D) (T : NormalizedLocalCo
   have asum : qLen (F.sup (fun i => (GK i).restrictScalars (T.B.Oc j w))) (F.sup (lO T))
       (F.sup (fun i => (BK i).restrictScalars (T.B.Oc j w))) =
       ∑ i ∈ F, qLen ((GK i).restrictScalars (T.B.Oc j w)) (lO T i) ((BK i).restrictScalars (T.B.Oc j w)) :=
-    GlobalTheory.T.congruenceLength_finset_sup_eq_sum (T.B.Oc j w) (T.B.V j w) _ F (lO T) (fun i => (GK i).restrictScalars (T.B.Oc j w))
+    _root_.GlobalTheory.congruence_length_finset_sup (T.B.Oc j w) (T.B.V j w) _ F (lO T) (fun i => (GK i).restrictScalars (T.B.Oc j w))
       (fun i => (BK i).restrictScalars (T.B.Oc j w)) hindO hdisO hLle
   rw [← hEG, ← hEB, ← hEL, asum] at hglob
   rw [hglob, ← Finset.sum_attach (D.nd.locs j w) D.nd.etaLoc, ← hF, ENat.toNat_sum hfin, Nat.cast_sum,

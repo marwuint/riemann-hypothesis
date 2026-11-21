@@ -121,9 +121,6 @@ instance isPrincipal_map_different {l : Level H} (c : Coeff l) (W : ValuationSub
 def diffGen {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (σ : E →+* ℂ) : c.V W :=
   Submodule.IsPrincipal.generator ((differentIdeal ℤ (𝓞 E)).map (embV c W σ))
 
-theorem span_diffGen {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (σ : E →+* ℂ) :
-    Ideal.span {diffGen c W σ} = (differentIdeal ℤ (𝓞 E)).map (embV c W σ) := Ideal.span_singleton_generator _
-
 def Descends {B : Mdl Y i₀} (Z : Mdl Y i₀) (L : Lat B) (l : Level H) (e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → ℤ)
     (b : (E →+* ℂ) → ℤ) : Prop :=
   HasLatFlags Z L ∧ ∃ (m : ℕ) (Q : Mdl Y i₀) (π : Z.X ⟶ Q.X) (N : LB Q.X) (f : ∀ i a, Γ(Q.X, N.U i ⊓ (Q.U a).1)ˣ),

@@ -9,8 +9,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsMultIPOfMod
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormOfClassSums
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormIntegralFundamentalDomainEqL2NormSq
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralGoodProjectorMovePeterssonStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaKernelLeftInvariantRationalUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralGoodProjectorMovePetersson
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaKernelLeftInvariantRationalUnitaryAlt
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExtendRestrictionFinitePointsEqStatement
 open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.L2.Pj Formalism.IndefR.FWT Formalism.IndefR
 open scoped TensorProduct InnerProductSpace
@@ -127,7 +127,7 @@ theorem adjoint_eq_upLift : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T
       thP ((c.ext ∘ₗ H.e).rangeRestrict u) (PiTensorProduct.tprod ℂ v) g := by
     intro u γ hγ g
     refine (hcls u (γ * g)).trans (Eq.trans (Finset.sum_congr rfl fun j _ => ?_) (hcls u g).symm)
-    exact congrArg _ (GlobalTheory.T.thetaKO_mul_left_invariant_of_mem_GQ R i _ _ ω hω _ (hφ _) _ γ hγ g)
+    exact congrArg _ (_root_.GlobalTheory.ThetaLeftW.thetaKernel_leftInvariant_rationalUnitary R i _ _ ω hω _ (hφ _) _ γ hγ g)
   have eF : ∀ u (y' : (R.HW i σ).H), (fun g => star (thP ((c.ext ∘ₗ H.e).rangeRestrict u) (PiTensorProduct.tprod ℂ v) g) *
       (R.HW i σ).e y' (fun ρ => v ρ) g) = fun g =>
       ∑ j, ((Nat.card (Bridge.stab (Bridge.ratF (Vc D i)) (grpOf (Vc D i) (R.βV i) (datV i R.Pg (R.Q A.μ0) R.triv m)) ((R.B.L i A.μ0).pres.y j)) : ℂ))⁻¹ *
@@ -173,7 +173,7 @@ theorem adjoint_eq_upLift : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T
     refine Eq.trans ?_ (inner_smul_right _ _ _).symm
     refine congrArg _ (Eq.trans ?_ (hpair u))
     refine (congrArg (fun F : GA D (Wc D i) → ℂ => ∫ g in R.fdW i, F g ∂(R.νW i)) e1).trans ?_
-    exact GlobalTheory.T.integral_goodProjector_move_petersson R F hC hX i σ v _ (hinv u) (hintF u) y
+    exact _root_.GlobalTheory.EwfMove.integral_eWf_move R F hC hX i σ v _ (hinv u) (hintF u) y
   have e3 : c.ext (H.e (LinearMap.adjoint th y)) h = (∏ ρ, ((dimK _ _ (kapAt (Wc D i) σ ρ) : ℚ) : ℂ)) • hex.choose h := by
     refine (congrArg (fun x => c.ext (H.e x) h) hadj).trans ?_
     simp only [map_smul, Pi.smul_apply]

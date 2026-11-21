@@ -157,14 +157,6 @@ def ChartComparison.Statement : Prop :=
         |R.phReg ρ K t j x - R.phReg ρ K t k x| ≤
           C * Real.log (Real.log t⁻¹) / Real.log t⁻¹ + C * t
 
-def MollifiedNearSmooth.Statement : Prop :=
-  ∀ (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (D : ℕ) (A : FinHolAtlas D X)
-    (R : RegChartData A) (ρ : Mollifier D), ∃ C t₀ : ℝ, 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t < t₀ →
-      ∀ K : ℝ, C * Real.log (Real.log t⁻¹) ≤ K → ∀ j : Fin R.N, ∀ x ∈ R.mid j ∩ R.Yo,
-        R.r x ≤ Real.log t⁻¹ →
-        R.smoothed ρ K t j (R.chart j x) - R.u j (R.chart j x) ≤
-          C * Real.log t⁻¹ ^ C * t ^ (1 / 2 : ℝ)
-
 def CutoffsExist.Statement : Prop :=
   ∀ (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (D : ℕ) (A : FinHolAtlas D X)
     (P : PotentialCharts A), ∃ (η : Fin P.N → X → ℝ) (Cη : ℝ), P.IsCutoffFamily η Cη
@@ -178,33 +170,6 @@ def GlueRegularised.Statement : Prop :=
     A.Smooth (R.regularised ρ K t ε η) ∧
       ∀ k : Fin R.N, ∀ x ∈ R.mid k, ∀ w : Fin D → ℂ,
         -(4 * Cη * ε) * ‖w‖ ^ 2 ≤ levi (R.chartFun (R.regularised ρ K t ε η) k) (R.chart k x) w
-
-def LogLogRegularisation.Statement : Prop :=
-  ∀ (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (D : ℕ) (A : FinHolAtlas D X)
-    (R : RegChartData A), ∃ C ℓ₀ : ℝ, ∀ t : ℝ, 0 < t → ℓ₀ ≤ Real.log t⁻¹ →
-      ∃ φt : X → ℝ, A.Smooth φt ∧
-        (∀ x ∈ R.Yo, R.ph x ≤ φt x) ∧ (∀ x, φt x ≤ C) ∧
-        (∀ x, -C * Real.log (Real.log t⁻¹) ≤ φt x) ∧
-        (∀ k : Fin R.N, ∀ x ∈ R.mid k, ∀ w : Fin D → ℂ,
-          -(C * Real.log (Real.log t⁻¹) / Real.log t⁻¹) * ‖w‖ ^ 2 ≤
-            levi (R.chartFun φt k) (R.chart k x) w) ∧
-        (∀ x ∈ R.Yo, R.r x ≤ Real.log t⁻¹ →
-          φt x ≤ R.ph x + t ^ (1 / 3 : ℝ) + C * Real.log (Real.log t⁻¹) / Real.log t⁻¹) ∧
-        (∀ x ∈ R.Yo,
-          φt x ≤ R.ph x + t ^ (1 / 3 : ℝ) + C * Real.log (Real.log t⁻¹) / Real.log t⁻¹ * R.r x)
-
-def BoundedRegularisation.Statement : Prop :=
-  ∀ (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (D : ℕ) (A : FinHolAtlas D X)
-    (B : BoundedPshData A), ∃ (C t₀ : ℝ) (φt : ℝ → X → ℝ), 0 < t₀ ∧
-      (∀ t : ℝ, 0 < t → t < t₀ → A.Smooth (φt t) ∧ (∀ x, B.ph x ≤ φt t x ∧ φt t x ≤ C) ∧
-        ∀ k : Fin B.N, ∀ x ∈ B.mid k, ∀ w : Fin D → ℂ,
-          -(C / Real.log t⁻¹) * ‖w‖ ^ 2 ≤ levi (B.chartFun (φt t) k) (B.chart k x) w) ∧
-      (∀ k : Fin B.N,
-        (∀ t : ℝ, 0 < t → t < t₀ → IntegrableOn
-          (fun y => φt t ((B.chart k).symm y) - B.ph ((B.chart k).symm y)) (B.chartMid k)) ∧
-        Tendsto (fun t => ∫ y in B.chartMid k, |φt t ((B.chart k).symm y) - B.ph ((B.chart k).symm y)|)
-          (𝓝[>] 0) (𝓝 0)) ∧
-      ∀ x, ContinuousAt B.ph x → Tendsto (fun t => φt t x) (𝓝[>] 0) (𝓝 (B.ph x))
 
 def logCover {n a : ℕ} (h : a ≤ n) : Set (Fin n → ℂ) :=
   {w | (∀ i : Fin a, (w (Fin.castLE h i)).re < 0) ∧ ∀ k : Fin n, a ≤ k.val → ‖w k‖ < 1}
@@ -302,10 +267,6 @@ theorem isPsh_mono {D : ℕ} {U V : Set (Fin D → ℂ)} {u : (Fin D → ℂ) �
     (hVU : V ⊆ U) : IsPsh V u :=
   ⟨h.1.mono hVU, fun z w hz => h.2 z w fun ζ hζ => hVU (hz ζ hζ)⟩
 
-theorem isPsh_normSq_ball (D : ℕ) :
-    IsPsh (ball (0 : Fin D → ℂ) 2) (fun z => ∑ j, ‖z j‖ ^ 2) :=
-  isPsh_mono (ReciprocityTheory.AnForm.A.isPshInhabit_thm D).1 (Set.subset_univ _)
-
 theorem mollifier_exists_bound {D : ℕ} (ρ : Mollifier D) : ∃ b : ℝ, ∀ w, ρ.toFun w ≤ b := by
   have hc : Continuous ρ.toFun := ρ.contDiff.continuous
   have hs : HasCompactSupport ρ.toFun :=
@@ -314,22 +275,6 @@ theorem mollifier_exists_bound {D : ℕ} (ρ : Mollifier D) : ∃ b : ℝ, ∀ w
       exact hx (ball_subset_closedBall (ρ.support_subset (Function.mem_support.mpr h)))
   obtain ⟨C, hC⟩ := hc.bounded_above_of_compact_support hs
   exact ⟨C, fun w => (le_abs_self _).trans (by simpa [Real.norm_eq_abs] using hC w)⟩
-
-theorem polyMaxOscillation_hyp (D : ℕ) :
-    IsOpen (ball (0 : Fin D → ℂ) 2) ∧ IsPsh (ball (0 : Fin D → ℂ) 2) (fun z => ∑ j, ‖z j‖ ^ 2) ∧
-      closedBall (0 : Fin D → ℂ) 1 ⊆ ball 0 2 ∧ (0 : ℝ) < 1 / 4 ∧ (1 : ℝ) ≤ 1 ∧
-      (1 : ℝ) * (1 / 4) < 1 :=
-  ⟨isOpen_ball, isPsh_normSq_ball D, closedBall_subset_ball (by norm_num), by norm_num, le_rfl,
-    by norm_num⟩
-
-theorem mollifiedLowerBound_hyp (D : ℕ) : ∃ (ρ : Mollifier D) (b : ℝ),
-    IsOpen (ball (0 : Fin D → ℂ) 2) ∧ IsPsh (ball (0 : Fin D → ℂ) 2) (fun z => ∑ j, ‖z j‖ ^ 2) ∧
-      (0 : ℝ) < 1 / 2 ∧ closedBall (0 : Fin D → ℂ) (2 * (1 / 2)) ⊆ ball 0 2 ∧
-      ∀ w, ρ.toFun w ≤ b := by
-  obtain ⟨ρ⟩ := ReciprocityTheory.AnForm.A.mollifierInhabit_thm D
-  obtain ⟨b, hb⟩ := mollifier_exists_bound ρ
-  exact ⟨ρ, b, isOpen_ball, isPsh_normSq_ball D, by norm_num,
-    closedBall_subset_ball (by norm_num), hb⟩
 
 def pointChart : OpenPartialHomeomorph Unit (Fin 0 → ℂ) :=
   (Homeomorph.homeomorphOfUnique Unit (Fin 0 → ℂ)).toOpenPartialHomeomorph
@@ -393,35 +338,6 @@ def pointReg : RegChartData pointAtlas where
   Cgrad := 0
   grad_le _ _ _ := by simp [pointCharts]
 
-def pointBounded : BoundedPshData pointAtlas where
-  toPotentialCharts := pointCharts
-  ph _ := 0
-  bdd := ⟨0, fun _ => by simp⟩
-  u_psh _ := by simpa [pointCharts] using isPsh_const _ (0 : ℝ)
-
-theorem levi_fin_zero (φ : (Fin 0 → ℂ) → ℝ) (z w : Fin 0 → ℂ) : levi φ z w = 0 := by
-  rw [Subsingleton.elim w 0]
-  simp only [levi, smul_zero, map_zero, _root_.zero_apply]
-  norm_num
-
-theorem pointCutoff : pointCharts.IsCutoffFamily (fun _ _ => 0) 1 where
-  smooth _ _ := contDiffOn_const
-  bounds _ _ _ := ⟨by norm_num, le_rfl⟩
-  eq_zero _ _ _ := rfl
-  eq_neg_one _ := ⟨Set.univ, isClosed_univ, subset_rfl, fun x hx => absurd (Set.mem_univ x) hx.2⟩
-  levi_ge _ _ _ _ w := by rw [levi_fin_zero]; simp [Subsingleton.elim w 0]
-
-theorem glueRegularised_hyp : ∃ ρ : Mollifier 0,
-    pointReg.IsCutoffFamily (fun _ _ => 0) 1 ∧ (0 : ℝ) < 1 ∧ (0 : ℝ) < 1 ∧
-    (∀ j, ∀ x ∈ closure (pointReg.mid j), closedBall (pointReg.chart j x) 1 ⊆ (pointReg.chart j).target) ∧
-    (∀ j k, ∀ x ∈ pointReg.mid j ∩ pointReg.mid k,
-      |pointReg.phReg ρ 0 1 j x - pointReg.phReg ρ 0 1 k x| ≤ 1) := by
-  obtain ⟨ρ⟩ := ReciprocityTheory.AnForm.A.mollifierInhabit_thm 0
-  refine ⟨ρ, pointCutoff, by norm_num, by norm_num, fun _ _ _ y _ => ?_, fun j k _ _ => ?_⟩
-  · simp [pointReg, pointCharts, pointChart]
-  · obtain rfl : j = k := Subsingleton.elim (α := Fin 1) j k
-    simp
-
 theorem im_div_two_pi_I (z : ℂ) : (z / (2 * Real.pi * Complex.I)).im = -z.re / (2 * Real.pi) := by
   have hπ : (Real.pi : ℝ) ≠ 0 := Real.pi_ne_zero
   simp [Complex.div_im, Complex.normSq_apply]
@@ -439,76 +355,6 @@ theorem analyticAt_coord_div_add {n : ℕ} (k : Fin n) (c d : ℂ) (w : Fin n �
 
 theorem two_pi_I_ne_zero : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := by
   simp [Real.pi_ne_zero, Complex.I_ne_zero]
-
-def periodOne : PeriodPolydisc 1 1 1 where
-  a_le := le_rfl
-  τ w := diagonal fun _ => w 0 / (2 * Real.pi * Complex.I) + Complex.I
-  analytic p q := by
-    fin_cases p; fin_cases q
-    simp only [diagonal_apply_eq]
-    intro w _
-    exact analyticAt_coord_div_add 0 _ _ w
-  symm _ _ := diagonal_transpose _
-  im_posDef w hw := by
-    rw [diagonal_map (by simp), posDef_diagonal_iff]
-    intro _
-    have h0 := hw.1 0
-    simp only [Fin.castLE_refl] at h0
-    rw [Complex.add_im, im_div_two_pi_I, Complex.I_im]
-    have : 0 < -(w 0).re / (2 * Real.pi) := div_pos (by linarith) (by positivity)
-    linarith
-  B _ := 1
-  B_symm _ := transpose_one
-  periodic i w _ := by
-    fin_cases i
-    ext p q
-    fin_cases p; fin_cases q
-    simp [diagonal_apply_eq, add_div, div_self two_pi_I_ne_zero]
-    ring
-
-def periodTwo : PeriodPolydisc 1 1 2 where
-  a_le := le_rfl
-  τ w := diagonal ![w 0 / (2 * Real.pi * Complex.I) + Complex.I, Complex.I]
-  analytic p q := by
-    intro w _
-    fin_cases p <;> fin_cases q <;> simp <;>
-      first | exact analyticAt_coord_div_add 0 _ _ w | exact analyticAt_const
-  symm _ _ := diagonal_transpose _
-  im_posDef w hw := by
-    rw [diagonal_map (by simp), posDef_diagonal_iff]
-    intro i
-    have h0 := hw.1 0
-    simp only [Fin.castLE_refl] at h0
-    fin_cases i
-    · simp only [Function.comp_apply, Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]
-      rw [Complex.add_im, im_div_two_pi_I, Complex.I_im]
-      have : 0 < -(w 0).re / (2 * Real.pi) := div_pos (by linarith) (by positivity)
-      linarith
-    · simp
-  B _ := diagonal ![1, 0]
-  B_symm _ := diagonal_transpose _
-  periodic i w _ := by
-    fin_cases i
-    ext p q
-    fin_cases p <;> fin_cases q <;> simp [diagonal_apply, add_div, div_self two_pi_I_ne_zero] <;> ring
-
-theorem periodTwo_kernel_hyp :
-    periodTwo.IsTau0Ext (fun _ => diagonal ![Complex.I, Complex.I]) ∧ (![0, 1] : Fin 2 → ℝ) ≠ 0 ∧
-      ∀ i, (periodTwo.B i).map (Int.cast : ℤ → ℝ) *ᵥ ![0, 1] = 0 := by
-  refine ⟨⟨fun p q => analyticOnNhd_const, fun w _ => ?_⟩, ?_, fun i => ?_⟩
-  · ext p q
-    fin_cases p <;> fin_cases q <;>
-      simp [PeriodPolydisc.tau0, periodTwo, diagonal_apply, div_self two_pi_I_ne_zero]
-  · intro h
-    have := congrFun h 1
-    simp at this
-  · ext k
-    fin_cases k <;> simp [periodTwo, diagonal_map, mulVec, dotProduct, Fin.sum_univ_two]
-
-theorem identity_frame_hyp (n g : ℕ) :
-    (∀ p q, AnalyticOnNhd ℂ (fun _ : Fin n → ℂ => (1 : Matrix (Fin g) (Fin g) ℂ) p q) (ball 0 1)) ∧
-      ∀ _z ∈ ball (0 : Fin n → ℂ) 1, (1 : Matrix (Fin g) (Fin g) ℂ).rank = g :=
-  ⟨fun _ _ => analyticOnNhd_const, fun _ _ => by simp [Matrix.rank_one]⟩
 
 end Inhabitants
 

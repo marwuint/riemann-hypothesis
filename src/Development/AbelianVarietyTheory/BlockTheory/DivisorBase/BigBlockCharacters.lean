@@ -71,8 +71,6 @@ section Prime
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
-def UnramIn (E : Type) [Field E] [NumberField E] (p : ℕ) : Prop := ¬ (p : ℤ) ∣ discr E
-
 def SplitInK (H : Host E) (p : ℕ) : Prop := (H.d : ZMod p) ≠ 0 ∧ IsSquare (-(H.d : ZMod p))
 
 def InertInK (H : Host E) (p : ℕ) : Prop := ¬ IsSquare (-(H.d : ZMod p))
@@ -82,37 +80,6 @@ variable {H : Host E} {l : Level H} (c : Coeff l) {T : CDVR} (io : c.F →+* T.F
 
 def embX (τ : E →+* ℂ) : 𝓞 E →+* X.C := X.ιF.comp (io.comp (embK c τ))
 
-def vd_vp (τ : E →+* ℂ) : EReal :=
-  ⨅ a ∈ differentIdeal ℤ (𝓞 E), toE (vX_vp X (embX c io X τ a))
-
 end Prime
-
-def BigBlockChars : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
-    (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) →
-    ∀ (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y)
-      (X : ValExt T p) (f : Lt1 Dw), f.1 (H.rt : E) = H.rt0 →
-      (p ≠ 2 → UnramIn E p → SplitInK H p →
-        HasChars (fgl Ch X) (frame Ch X f) (((Dw.q : ℝ) / ((p : ℝ) - 1) : ℝ) : EReal)) ∧
-      (p ≠ 2 → UnramIn E p → InertInK H p →
-        HasChars (fgl Ch X) (frame Ch X f)
-          (((Dw.q : ℝ) / ((p : ℝ) - 1) +
-            (((Dw.p + Dw.q : ℕ) : ℝ) - 2 * (Dw.q : ℝ)) * (p : ℝ) / ((p : ℝ) ^ 2 - 1) : ℝ) : EReal)) ∧
-      (p = 2 ∨ SplitInK H p →
-        HasChars (fgl Ch X) (frame Ch X f)
-          (min (((rk f : ℝ) / ((p : ℝ) - 1) : ℝ) : EReal)
-            (((Dw.q : ℝ) : EReal) * ((((1 : ℝ) / ((p : ℝ) - 1) : ℝ) : EReal) + vd_vp c io X f.1))))
-
-example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
-    {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)] {p : ℕ} [Fact p.Prime] {T : CDVR} {io : c.F →+* T.Fr}
-    {y : IntFr Xo c T io} (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p) (f : Lt1 Dw) :
-    IsFrameOf (vX_vp X) (frame Ch X f) (frame Ch X f) :=
-  isFrameOf_self (isSatFrame_frame Ch X f)
-
-example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H) (τ : E →+* ℂ)
-    (h : τ (H.rt : E) = H.rt0) : Dw.mult τ + Dw.q = Dw.p + Dw.q := by
-  simp [Datum.mult, h]
-
-example : ¬ IsSquare (-((7 : ℕ) : ZMod 3)) ∧ IsSquare (-((7 : ℕ) : ZMod 11)) := by decide
 
 end GlobalTheory.IndefiniteRowSideFullHecke.BigBlockCharacters

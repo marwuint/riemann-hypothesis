@@ -35,9 +35,6 @@ theorem evalYZero_add (g h : MvPowerSeries (Fin 2) K) : ev0 (g + h) = ev0 g + ev
 theorem eval_second_zero_sub (g h : MvPowerSeries (Fin 2) K) : ev0 (g - h) = ev0 g - ev0 h := by
   rw [eval_second_zero_eq_algHom, eval_second_zero_eq_algHom, eval_second_zero_eq_algHom, map_sub]
 
-theorem eval_second_zero_neg (h : MvPowerSeries (Fin 2) K) : ev0 (-h) = -ev0 h := by
-  rw [eval_second_zero_eq_algHom, eval_second_zero_eq_algHom, map_neg]
-
 theorem evalYZero_mul (g h : MvPowerSeries (Fin 2) K) : ev0 (g * h) = ev0 g * ev0 h := by
   rw [eval_second_zero_eq_algHom, eval_second_zero_eq_algHom, eval_second_zero_eq_algHom, map_mul]
 

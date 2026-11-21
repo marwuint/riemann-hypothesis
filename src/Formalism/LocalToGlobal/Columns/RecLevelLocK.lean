@@ -115,31 +115,6 @@ theorem rll_p_mul_pinv (x : Rv) : ιv pE * (ιv pE⁻¹ * x) = x := by
 theorem rll_cp_mul (x : Rv) : ιv (star pE / pE) * (ιv pE * x) = ιv (star pE) * x := by
   rw [← mul_assoc, ← map_mul, div_mul_cancel₀ _ (pE_ne_zero h)]
 
-theorem rll_Row_maps_L {g : GL (Fin n) Rv} (hg : rowLocalCondition n π v g) (z : Fin n → Rv)
-    (hz : z ∈ Formalism.L2.Herm.locL v (rll_dLat n pE⁻¹)) :
-    (g : Matrix (Fin n) (Fin n) Rv) *ᵥ z ∈ Formalism.L2.Herm.locL v (rll_dLat n pE⁻¹) := by
-  rw [rll_mem_loc_dLat n v _ (inv_ne_zero h.coe_ne_zero)] at hz ⊢
-  obtain ⟨h1, h2⟩ := hz
-  have hzi : ∀ j, z j ∈ 𝒪v := fun j => by
-    by_cases hj : j = lastIdx n
-    · subst hj
-      rw [← rll_p_mul_pinv v h (z (lastIdx n))]
-      exact mul_mem (rll_incl_int v π) h2
-    · exact h1 j hj
-  refine ⟨fun i _ => ?_, ?_⟩
-  · show ∑ j, (g : Matrix (Fin n) (Fin n) Rv) i j * z j ∈ 𝒪v
-    exact sum_mem fun j _ => mul_mem (hg.1 i j) (hzi j)
-  show ιv pE⁻¹ * ∑ j, (g : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j * z j ∈ 𝒪v
-  rw [Finset.mul_sum]
-  refine sum_mem fun j _ => ?_
-  by_cases hj : j = lastIdx n
-  · subst hj
-    rw [mul_left_comm]; exact mul_mem (hg.1 _ _) h2
-  · obtain ⟨s, hs, e⟩ := hg.2 j
-    rw [Matrix.one_apply_ne (Ne.symm hj), sub_zero] at e
-    rw [e, mul_assoc, rll_pinv_mul v h]
-    exact mul_mem hs (h1 j hj)
-
 theorem rll_maps_Sh {g : GL (Fin n) Rv} (hg : ∀ i j, (g : Matrix (Fin n) (Fin n) Rv) i j ∈ 𝒪v)
     (hcol : ∀ i, i ≠ lastIdx n → ∃ s ∈ 𝒪v, (g : Matrix (Fin n) (Fin n) Rv) i (lastIdx n) = ιv (star pE) * s)
     (z : Fin n → Rv) (hz : z ∈ Formalism.L2.Herm.locL v (rll_dLat n (star pE))) :

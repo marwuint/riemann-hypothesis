@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCoType
 import Formalism.LocalToGlobal.Columns.HeckeSp
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BlockDetLowUEmb
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnramifiedHeightLatticeIndexIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsFinsetRepsMaximalIdealMatrixModMulStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LowerUnipotentDiagDoubleCosetRepresentativesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ParahoricBiTransformingLowerUnipotentDiagValueStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnramifiedHeightLatticeIndexIdentity
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsFinsetRepsMaximalIdealMatrixModMul
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LowerUnipotentDiagDoubleCosetRepresentatives
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ParahoricBiTransformingLowerUnipotentDiagValue
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CardFilterLowerHeckeRepsEqRelIndexPowStatement
 
 noncomputable section
@@ -114,8 +114,8 @@ theorem coeff_isEigen : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     choose! κc hκc κ'c hκ'c hgκ using hR.1
     have hdec : ∀ g ∈ R, ∃ κ ∈ KO k D, ∃ κ' ∈ KO k D, g = κ * w * κ' :=
       fun g hg => ⟨_, hκc g hg, _, hκ'c g hg, hgκ g hg⟩
-    choose! N hN using fun g hg => GlobalTheory.T.exists_finset_reps_maximalIdealMatrix_mod_mul k A D ϖ hϖ s g (hdec g hg)
-    obtain ⟨R', hrep, hsum⟩ := GlobalTheory.T.lowerUnipotent_diag_doubleCoset_representatives k A D ϖ hϖ s R hR κc κ'c
+    choose! N hN using fun g hg => _root_.GlobalTheory.LowerHecke.exists_finset_reps_maxLat_mod_mul k A D ϖ hϖ s g (hdec g hg)
+    obtain ⟨R', hrep, hsum⟩ := _root_.GlobalTheory.LowerHecke.repsBuild k A D ϖ hϖ s R hR κc κ'c
       (fun g hg => ⟨hκc g hg, hκ'c g hg, hgκ g hg⟩) N hN
     have heig := hgen.2.2 s R' blockDet hrep
     set E := fun m : GL D k => emb₂ k (Equiv.refl (A ⊕ D)) (1, m) with hE
@@ -150,7 +150,7 @@ theorem coeff_isEigen : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
       simp only [hb, e1]
       have hs : ∀ (ν : Matrix D A k) (y : GL D k), φ (lowU ν * E y) = if ∃ ν₁ ν₂ : Matrix D A k, (∀ i a, valuation k (ν₁ i a) < 1) ∧
           (∀ i a, valuation k (ν₂ i a) < 1) ∧ ν = ν₁ + y.1 * ν₂ then φ (E y) else 0 :=
-        fun ν y => GlobalTheory.T.parahoricBiTransforming_lowerUnipotent_diag_value k A D ξ hξt hξu φ hbi ν y
+        fun ν y => _root_.GlobalTheory.LowerHeckeSupp.biType_lowU_emb k A D ξ hξt hξu φ hbi ν y
       simp only [hs, mul_ite, mul_zero]
       rw [Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul, hcnt]
       rw [hy, hφR' _ (inv_mem (hκ'c g hg))]
@@ -162,7 +162,7 @@ theorem coeff_isEigen : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
           ((ξ (GeneralLinearGroup.det (κ'c g)⁻¹) : ℂ) * φ (E (m * g)))) :=
       h1.trans ((hsum _).trans (Finset.sum_congr rfl hterm))
     have hqc : ∀ g ∈ R, ((c g : ℕ) : ℝ) ^ 2 * H (m * g) = (resCard k : ℝ) ^ s.card * H m := fun g hg =>
-      GlobalTheory.T.unramifiedHeight_lattice_index_identity k D ϖ hϖ H hH m g s (hdec g hg) (mLat k D) (preLat m.1) (preLat (g⁻¹).1) (fun _ => Iff.rfl)
+      _root_.GlobalTheory.HeckeLatIndex.index_identity k D ϖ hϖ H hH m g s (hdec g hg) (mLat k D) (preLat m.1) (preLat (g⁻¹).1) (fun _ => Iff.rfl)
         (fun _ => Iff.rfl) (fun _ => Iff.rfl)
     have hcpos : ∀ g ∈ R, (0 : ℝ) < c g := by
       intro g hg

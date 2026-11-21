@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EllFamNontrivial
 import Development.AbelianVarietyTheory.Definitions.Divisors.FstTszeSec
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsParameterFunctionOfFibreDerivZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsParameterFunctionOfFibreDerivZero
 
 set_option autoImplicit false
 
@@ -21,7 +21,7 @@ theorem exists_param_of_deg_zero {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [A
     have e1 : G (K.jet k) = tszeSec dw (a k) := hG _ _ (jet1 k) rfl
     have e2 := congrArg (fun x : TrivSqZeroExt (Hol (K.W k)) (Fin g → Hol (K.W k)) ↦ x.snd i) (e1.symm.trans e0)
     exact (snd_tszeSec dw (a k) i).symm.trans e2
-  obtain ⟨p, hp⟩ := GlobalTheory.T.exists_parameter_function_of_fibreDeriv_zero K hK a h1 h2
+  obtain ⟨p, hp⟩ := _root_.GlobalTheory.AnPer.Charts.exists_cst_of_dw_eq_zero K hK a h1 h2
   refine ⟨p, fun T ↦ ?_⟩
   have e : G T = T.ρ (sh (K.le_refl T.k) (a T.k)) := hG _ _ (ptHom T (K.le_refl T.k)) rfl
   rw [e, sh_refl, hp, T.ρ_cst]

@@ -66,12 +66,6 @@ theorem scale_smul (a : ℚ) (t : R) (φ : HahnSeries ℚ R) : scale a (t • φ
   · ext r; simp [coeff_scale ha]
   · simp [scale, ha]
 
-theorem scale_mul (a : ℚ) (φ ψ : HahnSeries ℚ R) : scale a (φ * ψ) = scale a φ * scale a ψ := by
-  by_cases ha : 0 < a
-  · simp only [scale, dif_pos ha]
-    exact HahnSeries.embDomain_mul _ (fun x y => mul_add a x y) φ ψ
-  · simp [scale, ha]
-
 @[local simp] theorem scale_one (φ : HahnSeries ℚ R) : scale 1 φ = φ := by
   ext r; rw [coeff_scale one_pos, div_one]
 
@@ -102,8 +96,6 @@ def sub (ε : Ω →+* ℂ) (a b d : ℚ) (φ : HahnSeries ℚ Ω) : HahnSeries 
 
 def hq (ε : Ω →+* ℂ) (q : ℕ) (φ : HahnSeries ℚ Ω) : HahnSeries ℚ Ω :=
   ((q : Ω)⁻¹) • ∑ j ∈ Finset.range q, sub ε 1 (j : ℚ) (q : ℚ) φ
-
-def dlogQ (X : Tower Ω ε) (f : X.K) : HahnSeries ℚ Ω := qD (X.exp f) * (X.exp f)⁻¹
 
 namespace Api
 
@@ -218,32 +210,6 @@ omit [Algebra ℚ Ω] in
 
 theorem hq_eq_uq_of_isAlgClosed [IsAlgClosed Ω] {q : ℕ} (hq0 : 0 < q) {φ : HahnSeries ℚ Ω} (hφ : IsLat 1 φ) :
     hq ε q φ = uq q φ := hq_eq_uq hq0 (exists_root_of_isAlgClosed ε hq0) hφ
-
-example : uq 2 (HahnSeries.single (1 : ℚ) (1 : ℤ)) = 0 := by
-  ext r
-  rw [coeff_uq two_pos, HahnSeries.coeff_zero]
-  split_ifs with h
-  · refine HahnSeries.coeff_single_of_ne fun h2 => ?_
-    have : r = 1 / 2 := by push_cast at h2; linarith
-    subst this; norm_num at h
-  · rfl
-
-example : (uq 2 (HahnSeries.single (6 : ℚ) (5 : ℤ))).coeff 3 = 5 := by
-  rw [coeff_uq two_pos]; norm_num
-
-example : (vq 2 (HahnSeries.single (3 : ℚ) (5 : ℤ))).coeff 6 = 5 := by
-  rw [coeff_vq two_pos]; norm_num
-
-example : (qD (HahnSeries.single (-1 / 2 : ℚ) (1 : ℚ))).coeff (-1 / 2) = -1 / 2 := by simp
-
-example : (hq (Rat.castHom ℂ) 2 (HahnSeries.single (1 : ℚ) (1 : ℚ))).coeff (1 / 2) = 0 := by
-  rw [hq_eq_uq two_pos ⟨-1, ?_⟩, coeff_uq two_pos]
-  · norm_num
-  · intro r hr
-    have : r = 1 := by by_contra h; exact hr (HahnSeries.coeff_single_of_ne h)
-    subst this; norm_num
-  · rw [show (2 * Real.pi * Complex.I / ((2 : ℕ) : ℂ)) = Real.pi * Complex.I by push_cast; ring,
-      Complex.exp_pi_mul_I]; simp
 
 end Api
 

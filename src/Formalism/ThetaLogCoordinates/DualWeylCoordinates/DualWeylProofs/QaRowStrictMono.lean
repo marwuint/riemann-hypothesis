@@ -37,48 +37,6 @@ lemma qa_emb_le_iff {n h : ℕ} (J : Finset (Fin n)) (hJ : J.card = h) (p : Fin 
   exact qa_lower_iff (fun q : Fin h => J.orderEmbOfFin hJ q ≤ a)
     (fun q q' hqq hq => ((J.orderEmbOfFin hJ).monotone hqq).trans hq) p
 
-lemma qa_seg (L U : ℤ) (Q : ℤ → Prop) [DecidablePred Q] (hQ : ∀ c, L < c → c + 1 ≤ U → Q (c + 1) → Q c)
-    (c : ℤ) (hc : c ∈ Finset.Ioc L U) : Q c ↔ c - L ≤ ((Finset.Ioc L U).filter Q).card := by
-  rw [Finset.mem_Ioc] at hc
-  have hdown : ∀ k : ℕ, ∀ d, L < d → d + k ≤ U → Q (d + k) → Q d := by
-    intro k
-    induction k with
-    | zero => intro d _ _ h; simpa using h
-    | succ k ih =>
-      intro d hd hU h
-      apply ih d hd (by push_cast at hU; omega)
-      apply hQ _ (by omega) (by push_cast at hU; omega)
-      have : d + (k : ℤ) + 1 = d + ((k + 1 : ℕ) : ℤ) := by push_cast; ring
-      rw [this]; exact h
-  have hdown' : ∀ d e, L < d → d ≤ e → e ≤ U → Q e → Q d := by
-    intro d e hd hde he h
-    have := hdown (e - d).toNat d hd (by omega)
-    apply this
-    have h3 : d + ((e - d).toNat : ℤ) = e := by omega
-    rw [h3]; exact h
-  constructor
-  · intro h
-    have : Finset.Ioc L c ⊆ (Finset.Ioc L U).filter Q := by
-      intro d hd
-      rw [Finset.mem_Ioc] at hd
-      rw [Finset.mem_filter, Finset.mem_Ioc]
-      exact ⟨⟨hd.1, hd.2.trans hc.2⟩, hdown' d c hd.1 hd.2 hc.2 h⟩
-    have h2 := Finset.card_le_card this
-    rw [Int.card_Ioc] at h2
-    omega
-  · intro h
-    by_contra hn
-    have : (Finset.Ioc L U).filter Q ⊆ Finset.Ioo L c := by
-      intro d hd
-      rw [Finset.mem_filter, Finset.mem_Ioc] at hd
-      rw [Finset.mem_Ioo]
-      refine ⟨hd.1.1, ?_⟩
-      by_contra hle
-      exact hn (hdown' c d hc.1 (not_lt.mp hle) hd.1.2 hd.2)
-    have h2 := Finset.card_le_card this
-    rw [Int.card_Ioo] at h2
-    omega
-
 def qa_cnt {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) (c : ↥(TCols mu)) (a : Fin n) : ℕ :=
   ((I c).1.filter (· ≤ a)).card
 
@@ -141,41 +99,5 @@ lemma qa_card_sub {T : Finset ℤ} (P : ↥T → Prop) [DecidablePred P]
   constructor
   · rintro ⟨h, hp⟩; exact ⟨h, h, hp⟩
   · rintro ⟨_, h, hp⟩; exact ⟨h, hp⟩
-
-lemma qa_std_iff {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) (hI : StdT I) (c : ↥(TCols mu))
-    (a p : Fin n) :
-    p.val < qa_cnt I c a ↔
-      (c : ℤ) - mu (lastIdx n) ≤ ((∑ b : Fin n with b ≤ a, qa_exp I (b, p) : ℕ) : ℤ) := by
-  classical
-  rw [qa_cum, qa_card_sub]
-  have := qa_seg (mu (lastIdx n)) (mu 0) (fun d => ∃ h : d ∈ TCols mu, p.val < qa_cnt I ⟨d, h⟩ a) ?_ c c.2
-  · rw [← TCols] at this
-    rw [← this]
-    exact ⟨fun h => ⟨c.2, h⟩, fun ⟨_, h⟩ => h⟩
-  · rintro d hd hU ⟨h, hp⟩
-    have hd' : d ∈ TCols mu := Finset.mem_Ioc.mpr ⟨hd, by omega⟩
-    exact ⟨hd', hp.trans_le (hI ⟨d, hd'⟩ h a)⟩
-
-theorem qa_exp_inj {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I J : TIdx mu) (hI : StdT I) (hJ : StdT J)
-    (h : qa_exp I = qa_exp J) : I = J := by
-  funext c
-  apply Subtype.ext
-  have hrow : ∀ q, qa_row I c q = qa_row J c q := by
-    intro q
-    have hq : q.val < n := q.2.trans_le (colH_le mu c)
-    have key : ∀ a, qa_row I c q ≤ a ↔ qa_row J c q ≤ a := by
-      intro a
-      rw [qa_row_le_iff, qa_row_le_iff]
-      have h1 := qa_std_iff I hI c a ⟨q.val, hq⟩
-      have h2 := qa_std_iff J hJ c a ⟨q.val, hq⟩
-      rw [h] at h1
-      exact h1.trans h2.symm
-    exact le_antisymm ((key _).mpr le_rfl) ((key _).mp le_rfl)
-  rw [← Finset.map_orderEmbOfFin_univ (I c).1 (I c).2, ← Finset.map_orderEmbOfFin_univ (J c).1 (J c).2]
-  ext x
-  simp only [mem_map, mem_univ, true_and]
-  constructor
-  · rintro ⟨q, rfl⟩; exact ⟨q, (hrow q).symm⟩
-  · rintro ⟨q, rfl⟩; exact ⟨q, hrow q⟩
 
 end Formalism.InvariantFactorPaths.ColumnFamilies

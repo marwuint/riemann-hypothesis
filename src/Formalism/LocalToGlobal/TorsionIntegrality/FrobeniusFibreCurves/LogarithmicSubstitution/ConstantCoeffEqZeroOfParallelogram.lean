@@ -244,11 +244,6 @@ theorem cube_simeq_subst2 {q : MvPowerSeries (Fin 2) K} (hq : Simeq q 0) (U V : 
     (fun j => by fin_cases j <;> simpa) hq
   rwa [subst_zero' (hs2 hU hV)] at e
 
-theorem cube_simeq_subst1 {f g : PowerSeries K} (hq : Simeq (ι := Unit) f g)
-    (U : MvPowerSeries ι K) (hU : MvPowerSeries.constantCoeff U = 0) (iU : Integral U) :
-    Simeq (PowerSeries.subst U f) (PowerSeries.subst U g) :=
-  (equivalence_rules K Unit).2.2.2.2 ι f g (fun _ => U) (fun _ => hU) (fun _ => iU) hq
-
 end Ultra
 
 theorem Cube_of (hH : HalfExists) (hI : SimeqInt) : Cube := by
@@ -295,59 +290,5 @@ theorem Cube_of (hH : HalfExists) (hI : SimeqInt) : Cube := by
   have s2 := (equivalence_rules K (Fin 3)).2.2.2.1 _ _ _ _ s1 qBC
   have s3 := (hI K (Fin 3) _ _ _ _ s2 qBB).1
   exact cube_simeq_congr (by ring) s3
-
-theorem diagonal_two_variable_identity : DiagTwo := by
-  intro K _ _ _ F l i f h hi hq
-  have hf0 := constantCoeff_eq_zero_of_parallelogram h hi hq
-  have cX : MvPowerSeries.constantCoeff (PowerSeries.X : PowerSeries K) = 0 :=
-    PowerSeries.constantCoeff_X
-  have iX : Integral (ι := Unit) (PowerSeries.X : PowerSeries K) := integral_mvPowerSeries_X ()
-  have fX : PowerSeries.subst (PowerSeries.X : PowerSeries K) f = f := by
-    rw [← PowerSeries.map_algebraMap_eq_subst_X]; simp
-  have lz : PowerSeries.subst (0 : PowerSeries K) l = 0 :=
-    PowerSeries.subst_zero_of_constantCoeff_zero h.2.2.1
-  have fz : PowerSeries.subst (0 : PowerSeries K) f = 0 :=
-    PowerSeries.subst_zero_of_constantCoeff_zero hf0
-  have q := cube_simeq_subst2 hq _ _ cX cX iX iX
-  rw [cube_par_subst F h.1 i f hi.1 _ _ cX cX,
-    cube_sub_eq h hi _ _ 0 cX cX (by simp) (by rw [lz]; ring), fz, fX] at q
-  refine ⟨cube_simeq_congr (by ring) q, ?_⟩
-  rw [cube_cob_subst F h.1 f _ _ cX cX, fX]
-  exact cube_simeq_congr (by ring) q
-
-theorem DiagTwo_of (_hI : SimeqInt) : DiagTwo := diagonal_two_variable_identity
-
-theorem CobEven_of (hI : SimeqInt) : CobEven := by
-  intro K _ _ _ F l i f h hi hq
-  have c0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) = 0 := by simp
-  have c1 : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) = 0 := by simp
-  have i0 := integral_mvPowerSeries_X (K := K) (0 : Fin 2)
-  have i1 := integral_mvPowerSeries_X (K := K) (1 : Fin 2)
-  have hs : PowerSeries.HasSubst i := PowerSeries.HasSubst.of_constantCoeff_zero' hi.1
-  have comp : ∀ U : MvPowerSeries (Fin 2) K, MvPowerSeries.constantCoeff U = 0 →
-      PowerSeries.subst U (PowerSeries.subst i f) = PowerSeries.subst (PowerSeries.subst U i) f :=
-    fun U hU => PowerSeries.subst_comp_subst_apply hs (PowerSeries.HasSubst.of_constantCoeff_zero hU) f
-  have n0 := constantCoeff_subst_one_variable i hi.1 _ c0
-  have n1 := constantCoeff_subst_one_variable i hi.1 _ c1
-  have lF : PowerSeries.subst F l = PowerSeries.subst (MvPowerSeries.X 0) l +
-      PowerSeries.subst (MvPowerSeries.X 1) l := by
-    have e := h.2.2.2.2
-    unfold cob at1 at e
-    linear_combination e
-  have eF : MvPowerSeries.subst ![PowerSeries.subst (MvPowerSeries.X 0) i,
-      PowerSeries.subst (MvPowerSeries.X 1) i] F = PowerSeries.subst F i :=
-    cube_add_eq h _ _ _ n0 n1 (constantCoeff_subst_one_variable i hi.1 F h.1)
-      (by rw [cube_log_inv hi _ c0, cube_log_inv hi _ c1, cube_log_inv hi F h.1, lF]; ring)
-  have qF := cube_simeq_subst1 hq F h.1 h.2.1
-  have q0 := cube_simeq_subst1 hq _ c0 i0
-  have q1 := cube_simeq_subst1 hq _ c1 i1
-  rw [comp F h.1] at qF
-  rw [comp _ c0] at q0
-  rw [comp _ c1] at q1
-  have s1 := (hI K (Fin 2) _ _ _ _ qF q0).1
-  have s2 := (hI K (Fin 2) _ _ _ _ s1 q1).1
-  unfold at1
-  rw [cube_cob_subst F h.1 f _ _ n0 n1, eF]
-  exact s2
 
 end Formalism.L2.Th1.B

@@ -471,14 +471,6 @@ def LemmaGs [NeZero n] (W : LocWach PD LL O v n) : Prop :=
         ((PD.p : LL) ^ (⌈(E : ℝ) + Formalism.MainNotions.CrystallineLiftingInputs.sig2 PD.p (hpar n b S + η) +
           ((b (i - 1) + S : ℕ) : ℝ) - (b i : ℝ)⌉ : ℤ)) • x ∈ Formalism.MainNotions.CrystallineLiftingInputs.DlatImg W F i
 
-theorem lemmaG_of_sharp [NeZero n] (W : LocWach PD LL O v n) (h : LemmaGs W) :
-    Formalism.MainNotions.CrystallineLiftingInputs.LemmaG W := by
-  intro d T₁ T₂ F b S η m hS i hi
-  obtain ⟨E, hE, hx⟩ := h d T₁ T₂ F b S η m hS i hi
-  have hl : 11 ≤ PD.p := hS.2.1
-  have hlam := one_le_lam PD.p (hpar n b S + η) (by omega)
-  exact ⟨E, by linarith, hx⟩
-
 def NDl (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) : Submodule O (W.DD T) where
   carrier := {x | x ∈ W.N T ∧ Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x}
   zero_mem' := ⟨(W.N T).zero_mem, by simp [Formalism.MainNotions.CrystallineLiftingInputs.DL]⟩
@@ -576,12 +568,6 @@ def wachVectorLiftingBoundAtGoodExtensions (D : D7) (HW : HWOf D.loc) (F : FonOf
 def steps6 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l) (hg : Loc.Good K 1 LL)
     [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))], LatticeBoundSix ((HW l).W K 1 LL hg)
-
-theorem lattice_bounds_of_four_parts (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
-    (h12 : cocyclesToWachVectorsBoundAtGoodExtensions D HW F) (h345 : wachVectorLiftingBoundAtGoodExtensions D HW F) (h6 : steps6 D HW F) (hR : rhoLift D HW F) :
-    localLiftingConditionsGlobal D HW F := by
-  intro l _ K LL hg _
-  exact lattice_bounds_of_local _ (h12 l K LL hg) (lattice_bound_three_six_of _ (h345 l K LL hg) (h6 l K LL hg)) (hR l K LL hg)
 
 theorem lattice_bounds_of_admissible (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CR CA CB CK : ℝ)

@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BaseSizes
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterValuesInjectiveLength
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInertiaCyclotomicGeneratesUnitsModStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitSubCharValuesOfCyclotomicGeneratorStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HenselRootsOfLocalFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HenselRootsOfLocalFamily
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut
 
 noncomputable section
@@ -60,7 +60,7 @@ theorem exists_good_gen (rep : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
       · have := hinjχ (x₁ := (a : ℕ) + 1) (by simp) (x₂ := (b : ℕ) + 1) (by simp) hab
         exact Fin.ext (by omega)
       · apply Polynomial.map_injective (toK N i) (IsFractionRing.injective _ _)
-        rw [blockPol_map, (GlobalTheory.T.rank_idempotentBlockCharPoly_of_projection e _ _ _ heB hXπ).2, Polynomial.map_prod]
+        rw [blockPol_map, (_root_.GlobalTheory.CharBlock.rank_blockPol_proj e _ _ _ heB hXπ).2, Polynomial.map_prod]
         simp
     · obtain ⟨β, h1, h2⟩ := hβ x
       exact ⟨β, h1, h2, fun h => absurd h hx⟩
@@ -103,7 +103,7 @@ theorem exists_good_gen (rep : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
   refine ⟨{ eB := eB, e1 := e1, g0 := g0, X0 := X0, X' := N.X i × Equiv.Perm (Fin R.t), p := Prod.fst,
             T' := T', rr := root β, π' := (π, 1), e := e, ψρ := ψρ, ψχ := ψχ }, rfl,
     hid, hd, hψ, hψs, hw, hord, ⟨hX, hX1, hX2, hXπ⟩, ⟨hTT, ?_, rfl, ?_, ?_⟩, hpol, ⟨rfl, hrπ⟩,
-    ⟨fun x' => (hE x').1, fun x' => (hE x').2, ?_, ?_⟩, GlobalTheory.T.coeff_det_generic_sum_mem_heckeAlgebra T' _ hT', GlobalTheory.T.blockDet_mem_heckeAlgebra_of_heckeSpan T' _ hT'⟩
+    ⟨fun x' => (hE x').1, fun x' => (hE x').2, ?_, ?_⟩, _root_.GlobalTheory.SpanRing.coeff_det_generic_sum_mem_of_inRing T' _ hT', _root_.GlobalTheory.SpanRing.blockDet_mem T' _ hT'⟩
   · exact fun c hc => Algebra.subset_adjoin (Or.inr ⟨c, hc, rfl⟩)
   · have := GlobalTheory.SplittingAlgebra.main (N.T i) R.t β hβi (N.T_sep i) (fun j => by
       simpa only [hβp] using blockPol_coeff_mem hT hid.1 hX j)
@@ -151,7 +151,7 @@ theorem objects_globalStep_gen : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (
     intro u
     rw [Matrix.map_mul, Matrix.map_mul]
     exact corner_act e heB (hd g0) u
-  have hat := GlobalTheory.T.rank_idempotentBlockCharPoly_of_projection e _ _ _ heB hXπ
+  have hat := _root_.GlobalTheory.CharBlock.rank_blockPol_proj e _ _ _ heB hXπ
   have hrB : ∀ x, ((eB x).map (toK D.nd i)).rank = D.R.t := fun x => by
     rw [rank_const hl hT hB hBB x π]; exact hat.1
   have hr1 : ∀ x, ((e1 x).map (toK D.nd i)).rank = 1 := fun x => by
@@ -164,7 +164,7 @@ theorem objects_globalStep_gen : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (
   have hX2 : (fun x => eB x * mat (r x) g0 * eB x) * eB = fun x => eB x * mat (r x) g0 * eB x := by
     funext x; simp only [Pi.mul_apply, mul_assoc, hBx]
   haveI := D.nd.O_complete i
-  have hβ := GlobalTheory.T.exists_injective_roots_of_distinct_units_roots (t := D.R.t) (D.nd.T i) hl (fun x => blockPol (eB x) (eB x * mat (r x) g0 * eB x))
+  have hβ := _root_.GlobalTheory.hensel_roots_of_local_family (t := D.R.t) (D.nd.T i) hl (fun x => blockPol (eB x) (eB x * mat (r x) g0 * eB x))
     (blockPol_coeff_mem hT hB hX)
     (fun x => by
       have hm := blockPol_monic (congrFun hBB x) (hrB x) (congrFun hX1 x) (congrFun hX2 x)

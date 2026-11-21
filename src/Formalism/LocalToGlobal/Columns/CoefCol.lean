@@ -90,10 +90,6 @@ def colVal (u : Pr.Word) (j : ℕ) (ST SG : Finset (HeightOneSpectrum (𝓞 X.E)
     CoefPk X (R.N j) (DecoSet X.E (R.N j) ST SG) :=
   roundPk X (W.lamTrue u j) fun d => d.1.Lsh
 
-def colNabL (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
-    (d : DecoSet X.E (R.N j) ST SG) : Submodule (𝓞 X.K) (VV X.K (W.lamTrue u j)) :=
-  nabAtr X.emb (W.lamTrue u j) d.1.L
-
 def rowVal (SG : Finset (HeightOneSpectrum (𝓞 X.E))) :
     CoefPk X (R.N R.m - 1) (DecoSet X.E (R.N R.m - 1) ∅ SG) :=
   squarePk X W.sgTrue fun d => d.1.N
@@ -105,10 +101,6 @@ def mtVal (j : ℕ) (SG : Finset (HeightOneSpectrum (𝓞 X.E))) :
 def BvLat (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (P : ST) (d : DecoSet X.E (R.N j) ST SG) : Submodule (𝓞 X.K) (VV X.K (W.lamTrue u j)) :=
   delAtr X.emb (W.lamTrue u j) (d.1.LshKer P)
-
-def BvLatF (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
-    (τ₀ : X.Tau) (P : ST) (d : DecoSet X.E (R.N j) ST SG) : Submodule (𝓞 X.K) (VV X.K (W.lamTrue u j)) :=
-  delK (W.lamTrue u j) fun τ => dualFr (tauLat X.emb τ (if τ = τ₀ then d.1.LshKer P else d.1.Lsh))
 
 end Vals
 

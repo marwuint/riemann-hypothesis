@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAdmissibleSubalgebra
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerPotentialRelationLinearHeckeStableStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerPotentialRelationLinearHeckeStable
+import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ
 
@@ -57,6 +58,6 @@ theorem GlobalTheory.KZ.H3.lam_stable : ∀ {Ω : Type} [Field Ω] [Algebra ℚ 
     rw [Submodule.span_le]
     rintro q ⟨b, F, hR, rfl⟩
     refine Submodule.subset_span ⟨X.op N l T b, opL ℤ_[l] N l T F,
-      (GlobalTheory.T.kummerPotentialRelation_linear_hecke_stable Ω ε X l).2.2.2.2 N T b F hR, ?_⟩
+      (_root_.GlobalTheory.KZ.H3.rel_ops Ω ε X l).2.2.2.2 N T b F hR, ?_⟩
     simp only [Φ, LinearMap.prodMap_apply, Tower.opV, LinearMap.baseChange_tmul, opL_map]
   exact key hp

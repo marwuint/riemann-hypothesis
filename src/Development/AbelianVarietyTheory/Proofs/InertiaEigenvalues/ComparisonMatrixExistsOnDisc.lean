@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Imports
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinTwoHomsERegularAssociatedStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinTwoHomsERegularAssociated
 
 noncomputable section
 
@@ -119,7 +119,7 @@ theorem rel_exists : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d 
     intro Ff Fg hF hG
     exact (hex ⟨Ff, Fg, hF, hG⟩).elim
   obtain ⟨Ff, Fg, hF, hG⟩ := hex
-  obtain ⟨hreg, ⟨w, hw⟩, -⟩ := GlobalTheory.T.breuilKisin_two_homs_E_regular_associated l K bk B f g
+  obtain ⟨hreg, ⟨w, hw⟩, -⟩ := _root_.GlobalTheory.BSP.hf_E_pair l K bk B f g
   obtain ⟨k, hk⟩ := s.nopole f g
   choose G hGc using hk
   have hXX : s.X.map (BK.hf f) * s.X'.map (BK.hf f) = ((l : B.A) ^ s.c₂ * BK.hf f bk.E ^ (2 * s.N)) • 1 := by

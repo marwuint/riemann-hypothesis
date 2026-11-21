@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.WithISelf
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusTorsionPointsCorrespondValues
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistIsoTorsionRepresentativeMulEquivStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistIsoTorsionRepresentativeMulEquiv
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj BigOperators
@@ -22,7 +22,7 @@ theorem exists_tateIsoQ_twJ : BrGtSt → BrWpSt → AllD fun {E} _ _ _ {H} D => 
   have hG' := hGt R' D' hE' hB' F N' ν'
   have hW := hWp R A.D₀ A.even A.bimult F A.N A.ν
   have hW' := hWp R' D' hE' hB' F N' ν'
-  have hI := GlobalTheory.T.twist_iso_torsionRepresentative_mulEquiv F A.N N' k β u J
+  have hI := _root_.GlobalTheory.Relabel.twJ_mulEquiv F A.N N' k β u J
   choose τ hτ using fun n (hn : 0 < n) => hI.1 (r n) n (hr.pow hn)
   have hex : ∀ n (a : D.La), ∃ p : QkPt D' F n, ∀ hn : 0 < n, ν'.QPt p (τ n hn (A.q n a)) := by
     intro n a

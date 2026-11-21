@@ -16,10 +16,6 @@ attribute [local instance] PositivityTheory.Rg.BcB.F.borelF
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
-private def fac {κ : Pl E → Type} {a b : ℕ} (P : Finset (Pl E)) (L : LM κ a b) (x y : ∀ w : P, κ w) (h : Hf E a b)
-    (w : Pl E) : ℂ :=
-  L.ent P x y w (atW w h) * if IsSplitAt w then L.t w (atW w (thP E a b h)) else 1
-
 theorem levCof {n : ℕ} (d : LocData E n) (a : ℕ) :
     ∀ᶠ w : Pl E in cofinite, d.lev a w = K2 a (n - a) w ∧ d.lev₂ a w = K2 a (n - a) w := by
   refine Filter.eventually_cofinite.2 ((d.T ∪ d.S₀ ∪ d.Bad).finite_toSet.subset fun w hw => ?_)

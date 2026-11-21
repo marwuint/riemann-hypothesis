@@ -222,13 +222,6 @@ theorem matrix_redOf (m : ℕ) (t ρ₁ : ℂ) (p : XY m) :
       rw [if_neg hne, zero_add]
       rfl
 
-theorem strictUpper_injective {d : ℕ} {y y' : UT d → ℂ} {a b : Fin d → ℂ}
-    (h : Matrix.diagonal a + strictUpper y = Matrix.diagonal b + strictUpper y') : y = y' := by
-  funext q
-  obtain ⟨⟨i, j⟩, hij⟩ := q
-  have h' := congrArg (fun M : Matrix (Fin d) (Fin d) ℂ => M i j) h
-  simpa [strictUpper, hij, Matrix.diagonal_apply_ne _ hij.ne] using h'
-
 theorem diag_const (m : ℕ) (z : ℂ) :
     Matrix.diagonal (Fin.cons z (fun _ : Fin (m + 1) => z) : Fin (m + 2) → ℂ) =
       z • (1 : Matrix (Fin (m + 2)) (Fin (m + 2)) ℂ) := by
@@ -253,18 +246,5 @@ theorem split_xy_coordinates : Formalism.FourierDecayAlt.G.SplitXY := by
 
 theorem split_xy_matrix : Formalism.FourierDecayAlt.G.SplitXYMatrix :=
   fun m t ρ₁ p => ⟨xOf_redOf m p, matrix_redOf m t ρ₁ p⟩
-
-theorem limit_coordinates : Formalism.FourierDecayAlt.G.LimitCoords := by
-  intro m z y
-  refine ⟨redOf m (fun _ => z, y), ⟨fun k => xOf_redOf m _ k, ?_⟩, ?_⟩
-  · rw [matrix_redOf, zero_smul, zero_add]
-    dsimp only
-    rw [diag_const]
-  · rintro q ⟨hx, hM⟩
-    obtain ⟨p', rfl⟩ := (redOf_bijective m).2 q
-    have h1 : p'.1 = fun _ => z := funext fun k => (xOf_redOf m p' k).symm.trans (hx k)
-    rw [matrix_redOf, zero_smul, zero_add, ← diag_const] at hM
-    have h2 : p'.2 = y := strictUpper_injective hM
-    rw [show p' = (fun _ => z, y) from Prod.ext h1 h2]
 
 end Formalism.FourierDecayAlt.P

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsProjective
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRelAmpleOfIsProjBy
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.VeryAmpleByPwOfAffineLoci
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormChart
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormChartLineBundleBaseChangeFieldExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormChartLineBundleBaseChangeFieldExtension
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -130,7 +130,7 @@ theorem isProjBy_of_isAbelianScheme : ∀ (K : Type) [Field K] (A : Over (Sp K))
       smooth := MorphismProperty.of_isPullback (P := @Smooth) sqB hA.smooth
       proper := MorphismProperty.of_isPullback (P := @IsProper) sqB hA.proper
       geomConnected := MorphismProperty.of_isPullback (P := @GeometricallyConnected) sqB hA.geomConnected }
-  obtain ⟨I, t, hcov, ha⟩ := exists_affine_loci_of_normChart Ω B hB _ (pull_isLB hN₀ _) (GlobalTheory.T.normChartLineBundle_baseChange_field_extension K Ω A hA N₀ hN₀ hc)
+  obtain ⟨I, t, hcov, ha⟩ := exists_affine_loci_of_normChart Ω B hB _ (pull_isLB hN₀ _) (_root_.GlobalTheory.ProjField.normChart_baseChange K Ω A hA N₀ hN₀ hc)
   exact isProjBy_of_cover_baseChange _ A sqB hN₀ t hcov ha
 end GlobalTheory.ProjField
 end

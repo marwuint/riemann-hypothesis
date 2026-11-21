@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsCompletelyReducibleKroneckerOfSpanEqTopStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsCompletelyReducibleKroneckerOfSpanEqTop
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SpanRangeEqTopOfIsIrreducible
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CompletelyReducibleToMatrixIffIsSemisimpleRepres
 open Matrix GlobalTheory.ClassFin
@@ -26,7 +26,7 @@ theorem isSemisimpleRepresentation_tprod_of_isIrreducible :
   intro G _ V _ _ ρ W _ _ ρ' _ _ h h'
   let b := Module.finBasis ℂ V
   let b' := Module.finBasis ℂ W
-  have key := GlobalTheory.T.isCompletelyReducible_kronecker_of_span_eq_top _ _ G _ _ (span_range_toMatrix_eq_top_of_isIrreducible ρ b h)
+  have key := _root_.GlobalTheory.ClassFin.ss_kronecker_of_span_top _ _ G _ _ (span_range_toMatrix_eq_top_of_isIrreducible ρ b h)
     (span_range_toMatrix_eq_top_of_isIrreducible ρ' b' h')
   rw [← ss_range_toMatrix_iff_isSemisimpleRepresentation _ G _ _ (b.tensorProduct b')]
   convert key using 3 with g

@@ -2,8 +2,15 @@ import Development.WeilBound.CoreStatements.FlagImmersions.FibSandwich
 import Development.WeilBound.CoreStatements.VolumeEquality.OnePieceB
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RingOfIntegersHomInjective
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InducedModelMorphismCompStructureMap
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericOfSmoothSurjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FamilyUniformisationLocalPeriodStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericOfSmoothSurjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FamilyUniformisationLocalPeriod
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AbelianVarietyTheory.Statements.HyperbolicHypotheses.HypothesesInhabitedHyperbolic
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RegularFunctionConstOfFiniteValuesAnyLevel
 
@@ -102,7 +109,7 @@ theorem periodOf : PeriodOf := by
   haveI : IsPreimmersion Y.j := by
     show IsPreimmersion (Y.jQ ≫ pullback.fst _ _)
     infer_instance
-  have hξ : IsCptGen Z.ξ₀ := GlobalTheory.T.generic_of_smooth_surjective c.F _ _ _ _ _ Y.j s hsm' rfl Z.gen (Y.j.stalkMap_surjective _)
+  have hξ : IsCptGen Z.ξ₀ := _root_.GlobalTheory.CompanionTheory.Ar.CptLift.isCptGen_of_smooth_of_surjective c.F _ _ _ _ _ Y.j s hsm' rfl Z.gen (Y.j.stalkMap_surjective _)
   letI : Algebra c.F Z.Ω := Z.inc.toAlgebra
   have hcl : ConstClosed c.F Z.Ω := by
     rintro a ⟨f, hf, hfa⟩
@@ -126,7 +133,7 @@ theorem periodOf : PeriodOf := by
     intro m T y hT hc hy _ b₁ hb₁ b₂ hb₂
     have hall : ∀ b ∈ T, y b ≫ s = y b₁ ≫ s := fun b hb => over_const hc hy hb hb₁
     by_cases h : y b₁ ≫ s = spMap (algebraMap c.F ℂ)
-    · obtain ⟨i, hi⟩ := GlobalTheory.T.family_uniformisation_local_period E H D l Xo _ g ty FU m T (fun b => under (y b)) hT hc ⟨b₁, hb₁⟩
+    · obtain ⟨i, hi⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_index_of_isPreconnected E H D l Xo _ g ty FU m T (fun b => under (y b)) hT hc ⟨b₁, hb₁⟩
         (fun b hb => hover _ ((hall b hb).trans h)) (GagaRat.isHolTo_comp _ hy)
       have key : ∀ b ∈ T, F (y b) = ((i : ℕ) : ℂ) := fun b hb => by
         obtain ⟨B', P, -, m1, -, hP, e⟩ := hi b hb

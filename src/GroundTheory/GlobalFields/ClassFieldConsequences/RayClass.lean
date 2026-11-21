@@ -25,9 +25,6 @@ abbrev RayClassGroup : Type _ :=
 theorem diagonal_range_le_rayGroup : (diagonal K).range ≤ 𝔪.rayGroup :=
   le_sup_left
 
-theorem congruenceSubgroup_le_rayGroup : 𝔪.congruenceSubgroup ≤ 𝔪.rayGroup :=
-  le_sup_right
-
 theorem map_rayGroup :
     𝔪.rayGroup.map (QuotientGroup.mk' (diagonal K).range) =
       𝔪.congruenceSubgroup.map (IdeleClassGroup.mk K) := by

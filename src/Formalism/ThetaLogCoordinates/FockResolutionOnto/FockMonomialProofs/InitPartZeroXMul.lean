@@ -88,36 +88,4 @@ theorem smul_int (c : ℚ_[p]) (hc : ‖c‖ ≤ 1) (a : MvPolynomial σ ℚ_[p]
   rw [coeff_smul, smul_eq_mul, norm_mul]
   exact mul_le_one₀ hc (norm_nonneg _) (ha m)
 
-theorem norm_p_pow_le (n : ℕ) : ‖((p : ℚ_[p]) ^ n)‖ ≤ 1 := by
-  have h1 : ‖(p : ℚ_[p])‖ ≤ 1 := by simpa using (p : ℤ_[p]).2
-  rw [norm_pow]
-  exact pow_le_one₀ (norm_nonneg _) h1
-
-theorem exists_div (v : σ) (h : MvPolynomial σ ℚ_[p]) :
-    ∃ a, h = initPart v 0 h + X v * a ∧ (h ∈ IntPol p σ → a ∈ IntPol p σ) := by
-  classical
-  refine ⟨MvPolynomial.divMonomial h (Finsupp.single v 1), ?_, ?_⟩
-  · have hmod : MvPolynomial.modMonomial h (Finsupp.single v 1) = initPart v 0 h := by
-      ext m
-      rw [coeff_initPart]
-      by_cases hm : m v = 0
-      · rw [if_pos hm, MvPolynomial.coeff_modMonomial_of_not_le]
-        rw [Finsupp.single_le_iff]
-        omega
-      · rw [if_neg hm, MvPolynomial.coeff_modMonomial_of_le]
-        rw [Finsupp.single_le_iff]
-        omega
-    have hdm := MvPolynomial.divMonomial_add_modMonomial h (Finsupp.single v 1)
-    rw [← hmod]
-    calc h = monomial (Finsupp.single v 1) 1 * (MvPolynomial.divMonomial h (Finsupp.single v 1)) +
-          MvPolynomial.modMonomial h (Finsupp.single v 1) := hdm.symm
-      _ = MvPolynomial.modMonomial h (Finsupp.single v 1) + X v * (MvPolynomial.divMonomial h (Finsupp.single v 1)) := by
-        rw [add_comm]
-        rfl
-  · intro hh
-    rw [intPol_iff_norm] at hh ⊢
-    intro m
-    rw [MvPolynomial.coeff_divMonomial]
-    exact hh _
-
 end Formalism.InvariantFactorPaths.L4

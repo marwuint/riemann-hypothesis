@@ -124,8 +124,4 @@ theorem clsU_of (a : ℕ) (Y : TupV (E := E) v n a) (hR : RedU σ J ψ v Λ a Y)
     push_cast
     exact split_prod (qv v) hq n a ha
 
-theorem countU_of_red (a : ℕ) (Y : TupV (E := E) v n a) (hM : MeasU σ J ψ v Λ a Y)
-    (hI : IdxU σ J ψ v Λ a Y) (hR : RedU σ J ψ v Λ a Y) : CountU σ J ψ v Λ a Y :=
-  countU_of σ J ψ v Λ a Y hM hI (clsU_of σ J ψ v Λ a Y hR)
-
 end PI.OmLocU

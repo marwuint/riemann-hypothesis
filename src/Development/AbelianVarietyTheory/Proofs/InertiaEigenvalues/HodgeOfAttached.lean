@@ -28,18 +28,6 @@ theorem not_mem_pD (D : D7) (i : D.ntw.Tw) {v : HeightOneSpectrum (𝓞 D.host.E
   · exact not_mem_placesOver_of_ne D.host.pde'_prime hl (h ▸ D.host.pde_ne.symm) v hv' hv
   · exact not_mem_placesOver_of_ne D.host.pde_prime hl (Ne.symm h) v hv' hv
 
-theorem hodgeL_of_tripleAtt : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i),
-    TripleAtt D.naut bkP i s → HodgeL bkP i s := by
-  rintro D bkP i s ⟨ι, π₁, π, h₁, h, hR, -⟩ v hv r hr
-  have hg : (∀ k, D.ntw.l i ≠ D.host.g k) → ∀ k, v ∉ placesOver D.host.E (D.host.g k) := fun hk k =>
-    not_mem_placesOver_of_ne (D.ntw.lPrime i).out (D.host.g_prime k) (hk k) v hv
-  rcases hr with rfl | hr
-  · exact ⟨(h₁.hodge v hv).1, fun hk => (h₁.hodge v hv).2.1 (hR.unr₁ v (hg hk)),
-      (h₁.hodge v hv).2.2 (hR.mono₁ v)⟩
-  · obtain rfl : r = Tgl i s := hr
-    exact ⟨(h.hodge v hv).1, fun hk => (h.hodge v hv).2.1 (hR.unr v (hg hk) (by
-      simpa using not_mem_pD D i hv)), (h.hodge v hv).2.2 (hR.mono v)⟩
-
 end GlobalTheory.TripleGal.HodgeOfAtt
 
 end

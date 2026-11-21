@@ -16,10 +16,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 noncomputable section
 namespace GlobalTheory.BottomRallis
-variable {D : D7}
 end GlobalTheory.BottomRallis
 namespace GlobalTheory.BottomRallis
-variable {D : D7}
 end GlobalTheory.BottomRallis
 namespace GlobalTheory.BottomRallis
 variable {D : D7}
@@ -42,18 +40,18 @@ theorem rallis_inner_product_bottom_norm_eq (hP : _root_.GlobalTheory.FunPr.Thet
   have hLZ := localZetaOn_all_of_split_inert D (GlobalTheory.T.unramifiedDoublingIntegral_splitPlace_adelic hP.unramifiedDoublingGL D)
     (GlobalTheory.T.unramified_doubling_integral_inert_adelic hU19 D (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU19 D))
   have hE : EulerRight D :=
-    GlobalTheory.T.doubling_eulerProduct_farRight hP.cuspRapidDecay D (GlobalTheory.T.doublingSphericalFactorization_of_weilDualPair hP.weilRepresentationUnitaryPair D) hLZ hPB
+    _root_.GlobalTheory.Core.Rk.EulerProd.eulerRight hP.cuspRapidDecay D (GlobalTheory.T.doublingSphericalFactorization_of_weilDualPair hP.weilRepresentationUnitaryPair D) hLZ hPB
   have hG : GlobalFormAniso D := _root_.GlobalTheory.T.theta_tower_compatibility hP.weilRepresentationUnitaryPair hP.cuspRapidDecay hP.doublingMethod D
     (_root_.UpperTheory.Lit.Sw47.siegelWeil_fock_anisotropic_unconditional D)
   have hH := heckeFormAniso_of_global_euler D hG hE
-  have h1 : (fun _ : GA D A => (1 : ℂ)) ∈ A0 θ A cA := GlobalTheory.T.one_mem_A0_of_wittIndex_eq_zero hPair.setting hA
+  have h1 : (fun _ : GA D A => (1 : ℂ)) ∈ A0 θ A cA := _root_.GlobalTheory.constant_one_mem_cuspForms_of_wittIndex_zero hPair.setting hA
   have hpar := GlobalTheory.T.constantFunction_has_trivialRep_satakeParameters A LA Sf hU.sdA hU.two
   have hsph : SphFun A LA Sf (fun _ : GA D A => (1 : ℂ)) := fun _ _ _ _ _ => rfl
   obtain ⟨-, -, -, hfin⟩ := hH ψ θ A B χA χB sA sB t cA a om ν 𝓕 hPair hB LA LB Sf Φ Φ hF hF hU m mH
     inferInstance inferInstance _ h1 _ h1 (trivPar A.rank) hpar hsph hint
   have hL : HolValueAt (fun s => LFun.LSD D Sf (trivPar A.rank) χB (s + 1 / 2)) ((t : ℂ) / 2)
       (∏ i ∈ Finset.range A.rank, l i) := by
-    refine HolValueAt.congr (holValueAt_prod (Finset.range A.rank) fun i hi => ?_) (GlobalTheory.T.partial_L_trivial_rep_twist_eq_prod_hecke_L χB Sf A.rank hU.unr)
+    refine HolValueAt.congr (holValueAt_prod (Finset.range A.rank) fun i hi => ?_) (_root_.GlobalTheory.RallisEuler.trivPar_euler χB Sf A.rank hU.unr)
     have h2 := hl i (Finset.mem_range.1 hi)
     rw [show (t : ℂ) / 2 + (A.rank : ℂ) / 2 - i = (t : ℂ) / 2 + ((A.rank : ℂ) / 2 - i) by ring] at h2
     have h3 := h2.comp_add

@@ -68,40 +68,6 @@ theorem chiC_smooth {i : ι} {β : V n → ℝ} (hβ : ContDiff ℝ ∞ β) {K0 
 def F0 (la' : La) (Sf : Finset Y) (idx : Y → ι) (χ : Y → Y → ℝ) (c : Y → ℂ) (j : ι) (y : Y) : ℂ :=
   ∑ P ∈ Sf, c P * (χ P y : ℂ) * A.g la' j (idx P) y
 
-theorem isSmoothSection_localizedSection (la' : La) (Sf : Finset Y) (idx : Y → ι) (χ : Y → Y → ℝ) (c : Y → ℂ)
-    (K : Y → Set Y) (hχ : ∀ P ∈ Sf, A.SmoothFn (χ P)) (hχs : ∀ P ∈ Sf, ∀ y, χ P y ≠ 0 → y ∈ K P)
-    (hKc : ∀ P ∈ Sf, IsCompact (K P)) (hKs : ∀ P ∈ Sf, K P ⊆ (A.chart (idx P)).source) :
-    A.IsSSec la' (A.F0 la' Sf idx χ c) := by
-  refine ⟨fun j => ?_, fun i j y hi hj => ?_⟩
-  · have : (A.F0 la' Sf idx χ c j ∘ (A.chart j).symm) = fun v => ∑ P ∈ Sf,
-        c P * (χ P ((A.chart j).symm v) : ℂ) * A.g la' j (idx P) ((A.chart j).symm v) := by
-      funext v; rfl
-    rw [this]
-    refine ContDiffOn.sum fun P hP => contDiffOn_of_locally_contDiffOn fun v hv => ?_
-    by_cases hx : (A.chart j).symm v ∈ (A.chart (idx P)).source
-    · refine ⟨ovl A.chart j (idx P), A.isOpen_ovl j _, ⟨hv, hx⟩, ?_⟩
-      have hg : ContDiffOn ℝ ∞ (A.g la' j (idx P) ∘ (A.chart j).symm) (ovl A.chart j (idx P)) :=
-        contDiffOn_of_holo (A.isOpen_ovl j _) (A.holo_g la' j (idx P))
-      have hc : ContDiffOn ℝ ∞ (fun v => (χ P ((A.chart j).symm v) : ℂ)) (A.chart j).target :=
-        Complex.ofRealCLM.contDiff.comp_contDiffOn (hχ P hP j)
-      exact ((contDiffOn_const.mul hc).mono Set.inter_subset_left).mul
-        (hg.mono Set.inter_subset_right)
-    · have hKc' := (hKc P hP).isClosed
-      have hxK : (A.chart j).symm v ∉ K P := fun h => hx (hKs P hP h)
-      refine ⟨(A.chart j).target ∩ (A.chart j).symm ⁻¹' (K P)ᶜ,
-        (A.chart j).isOpen_inter_preimage_symm hKc'.isOpen_compl, ⟨hv, hxK⟩, ?_⟩
-      refine (contDiffOn_const (c := (0 : ℂ))).congr fun v' hv' => ?_
-      have h0 : χ P ((A.chart j).symm v') = 0 := by
-        by_contra h; exact hv'.2.2 (hχs P hP _ h)
-      simp [h0]
-  · unfold F0
-    rw [Finset.mul_sum]
-    refine Finset.sum_congr rfl fun P hP => ?_
-    by_cases hy : y ∈ (A.chart (idx P)).source
-    · rw [A.g_cocycle la' i j (idx P) y hi hj hy]; ring
-    · have h0 : χ P y = 0 := by by_contra h; exact hy (hKs P hP (hχs P hP y h))
-      simp [h0]
-
 end WeightedAtlas
 
 end

@@ -30,22 +30,6 @@ end Formalism.MainNotions.TwistedPlaces
 
 namespace Formalism.MainNotions.ExportFamilies
 
-open Formalism.BasicNotions Formalism.MainNotions
-
-abbrev FamilyThinScalesBound {eps : ℝ} (Fm : FamP eps) (C : ℝ) : Prop := TwistedPlaces.FamilyThinScalesBound Fm C
-
-abbrev OrbitValuationBound {eps : ℝ} (Fm : FamP eps) : Prop := TwistedPlaces.OrbitValuationBound Fm
-
-abbrev AdmFC {eps : ℝ} (Fm : FamP eps) (C : ℝ) : Prop := TwistedPlaces.AdmFC Fm C
-
-abbrev AdmF {eps : ℝ} (Fm : FamP eps) : Prop := TwistedPlaces.AdmF Fm
-
-abbrev KudlaFamilyStatement {eps : ℝ} (Fm : FamP eps) : Prop := TwistedPlaces.KudlaFamilyStatement Fm
-
-abbrev UniformExportStatement (eps : ℝ) : Prop := TwistedPlaces.UniformExportStatement eps
-
-theorem stmtF_of_stmtU {eps : ℝ} (h : UniformExportStatement eps) (Fm : FamP eps) : KudlaFamilyStatement Fm := TwistedPlaces.stmtF_of_stmtU h Fm
-
 end Formalism.MainNotions.ExportFamilies
 
 end

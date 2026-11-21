@@ -35,12 +35,6 @@ theorem orthoRows_eq (d n : ℕ) :
     GroundTheory.Heights₂.Heights.ComplexSets.orthoRows d n = unitaryRows d n :=
   rfl
 
-section Degree
-
-variable (J : Ideal (MvPolynomial (Fin n) ℂ)) [J.IsPrime]
-
-end Degree
-
 end Objects
 
 end

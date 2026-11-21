@@ -80,14 +80,4 @@ def TwistC : Prop :=
     (∀ p, Agree δ M p) → Odd (gS D) → ∀ (w : Point D.host.E (D.R.rS + 1)) (y : FreeE w → D.host.E),
       CondX w (Xmat w y) ↔ ∀ q, y q - τA w q y ∈ Λq w q
 
-variable (D) in
-
-def SelfIdxC : Prop :=
-  ∀ (w : Point D.host.E (D.R.rS + 1)) (q : FreeE w), selfP w q →
-    (Λq w q).relIndex ((Iq w q : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup) ≠ 0
-
-variable (D) in
-
-def OddC : Prop := Odd (gS D)
-
 end Formalism.L2.SG.Pf.StabIntLat

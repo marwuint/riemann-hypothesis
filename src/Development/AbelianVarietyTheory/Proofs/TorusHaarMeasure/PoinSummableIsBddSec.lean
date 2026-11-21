@@ -14,16 +14,6 @@ open scoped ContDiff ENNReal Matrix
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
-theorem differentiable_lact (X : Data E r) (γ : GL (Fin r) E) :
-    Differentiable ℂ fun x : Frame X.Ψ r => lact γ x := by
-  refine differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun c => ?_
-  have e : (fun x : Frame X.Ψ r => lact γ x τ a c) = fun x =>
-      ∑ d, (γ : Matrix (Fin r) (Fin r) E).map τ.1 a d * x τ d c := by
-    funext z
-    rfl
-  rw [e]
-  exact Differentiable.fun_sum fun d _ => (differentiable_const _).mul (by fun_prop)
-
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in

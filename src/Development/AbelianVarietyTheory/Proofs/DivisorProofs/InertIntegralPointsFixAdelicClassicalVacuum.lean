@@ -6,9 +6,12 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAdelicCharac
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsEtaTildeUnramified
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOperatorLatticeStabiliserFixesVacuumNonsplit
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumUnderAdelicPairUnitModulusFactor
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeOIffScaleMulFinitePartMemIdealLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartRationalTensorZeroAtPrimeIffPlaceIdemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPrimeIffNonSplitPlaceIdempotentStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeOIffScaleMulFinitePartMemIdealLattice
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLsB
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardLatticeDoubleCosetClassesStabilisers
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteWeilRepEqLatticeIntertwinerMulCharacter
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartRationalTensorZeroAtPrimeIffPlaceIdem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPrimeIffNonSplitPlaceIdempotent
 
 open NumberField MeasureTheory IsDedekindDomain
 open scoped Classical
@@ -189,11 +192,11 @@ theorem unramAt_of_hasFinPart {χ : (AE D)ˣ →* Circle} {N : ℕ} {c : HeckeU 
     refine c.unr _ ⟨(finQ_mem_iff _).2 h1, (finQ_mem_iff _).2 h2⟩ fun q hq hn => ?_
     have e1 : ((Units.map (finQ D).toMonoidHom x : (Formalism.MainNotions.StandardLatticesGL3.AE D)ˣ) : Formalism.MainNotions.StandardLatticesGL3.AE D) - 1 = finQ D ((x : AE D) - 1) := by
       rw [RingHom.map_sub, RingHom.map_one]; rfl
-    rw [e1, GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem D q hq]
+    rw [e1, _root_.GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff D q hq]
     intro w η hη hw
     have hne : w ≠ v := by
       rintro rfl
-      exact hn ((GlobalTheory.T.inertPrime_iff_nonSplitPlaceIdempotent D q hq w ε hv.1 hw).2 hv)
+      exact hn ((_root_.GlobalTheory.InertPlace.inertQ_iff_nonSplitAt D q hq w ε hv.1 hw).2 hv)
     rw [← hx, ← mul_assoc, place_orth hΦ hη hv.1 hne, zero_mul]
   have := h x (Units.map (finQ D).toMonoidHom x) ⟨hi, by
     rw [← GlobalTheory.BotClassDict.finAdEquiv_toAfE]
@@ -224,8 +227,8 @@ theorem actO_mem_iff {S T : HSp D} (hS : S.gram = 1) {cc : Ideal (𝓞 D.host.K)
       latO S T (lsB D cc r S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) (fun _ => True) := by
     intro g hg h hh u hu
     have h0 := GlobalTheory.VacUnique.latO_inf S T _ _ _ hu
-    have h1 := (GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice D S T hS cc r hc hr u h0).1 hu
-    refine (GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice D S T hS cc r hc hr _ ?_).2 fun i j => ?_
+    have h1 := (_root_.GlobalTheory.SplitLatDict.mem_latO_iff_ihE D S T hS cc r hc hr u h0).1 hu
+    refine (_root_.GlobalTheory.SplitLatDict.mem_latO_iff_ihE D S T hS cc r hc hr _ ?_).2 fun i j => ?_
     · rw [actO, Matrix.map_mul, Matrix.map_mul, h0, Matrix.mul_zero, Matrix.zero_mul]
     · have e : finQ D (actO S T g h u i j) = ∑ l, (∑ k, finQ D (mt T h i k) * finQ D (u k l)) * finQ D (mt S g⁻¹ l j) := by
         have e1 : (actO S T g h u).map (finQ D) = (mt T h).map (finQ D) * u.map (finQ D) * (mt S g⁻¹).map (finQ D) := by
@@ -268,8 +271,8 @@ theorem mem_congrGroup {V : HSp D} (hV : V.gram = 1) {g : GA D V} {x : Formalism
   have sp : ∀ v ε, IsPlaceIdem D v ε → ¬ NonSplitAt D v ε →
       g ∈ suppGroup V (1 - algebraMap (AF D.host.F) (AE D) ε) := fun v ε hε hn i j => by
     obtain ⟨q, hq, hqv⟩ := exists_prime_mem v
-    have h1 := hs q hq (fun h => hn ((GlobalTheory.T.inertPrime_iff_nonSplitPlaceIdempotent D q hq v ε hε hqv).1 h)) i j
-    rw [← e1, Matrix.map_apply, ← one, ← RingHom.map_sub, GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem D q hq] at h1
+    have h1 := hs q hq (fun h => hn ((_root_.GlobalTheory.InertPlace.inertQ_iff_nonSplitAt D q hq v ε hε hqv).1 h)) i j
+    rw [← e1, Matrix.map_apply, ← one, ← RingHom.map_sub, _root_.GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff D q hq] at h1
     rw [sub_mul, one_mul, Matrix.sub_apply, h1 v ε hε hqv, sub_zero]
   have sp' : ∀ (k : GA D V) (a : AE D), k ∈ suppGroup V (1 - a) → ∀ i j, a * (mt V k - 1) i j = 0 := fun k a hk i j => by
     have := hk i j
@@ -299,7 +302,7 @@ theorem latVac_of_reads {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : 
   have hT1 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin T.rank) D.host.E).1 * T.gram *
       (1 : GL (Fin T.rank) D.host.E).1 = 1 := by
     rw [gT]; simp [Formalism.UG.cT]
-  have hLs : Formalism.MainNotions.StandardLatticesGL3.SD D (lsB D cc r S.rank) := GlobalTheory.T.invDifferentLatticeProductHermitian_isSelfDual D cc r S.rank hc sc
+  have hLs : Formalism.MainNotions.StandardLatticesGL3.SD D (lsB D cc r S.rank) := _root_.GlobalTheory.VacRead.lsB_selfDual D cc r S.rank hc sc
   have hLt : Formalism.MainNotions.StandardLatticesGL3.SD D (stdL D T.rank) := GlobalTheory.MovedVacuum.sd_stdL D T.rank
   obtain ⟨ΛS, hΛS, hSd⟩ := GlobalTheory.MovedDict.isSelfDualC_inV S 1 hS1 _ hLs
   obtain ⟨ΛT, hΛT, hTd⟩ := GlobalTheory.MovedDict.isSelfDualC_inV T 1 hT1 _ hLt
@@ -318,7 +321,7 @@ theorem latVac_of_reads {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : 
       (fun τ i j => x τ i j / embT D τ r) ∈ Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK δ) (lsB D cc r S.rank) (stdL D T.rank) := by
     intro x hx
     obtain ⟨z, hz, rfl⟩ := GlobalTheory.ThetaLatImage.La_sub hx
-    have h2 := GlobalTheory.ThetaLatImage.pt_mem_La (δ := δ) (GlobalTheory.T.inv_smul_mem_rationalHomLatticeScaled_of_normScale D cc r S.rank T.rank hc sc z hz) 1
+    have h2 := GlobalTheory.ThetaLatImage.pt_mem_La (δ := δ) (_root_.GlobalTheory.VacRead.rl_div_scale D cc r S.rank T.rank hc sc z hz) 1
     convert h2 using 1
     funext τ i j
     rw [one_smul, GlobalTheory.ThetaLatImage.pt_apply, GlobalTheory.ThetaLatImage.pt_apply]
@@ -333,7 +336,7 @@ theorem latVac_of_reads {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : 
     have ht : embT D τ r ≠ 0 := (map_ne_zero _).2 hr
     simp only [Pi.smul_apply, smul_eq_mul]
     field_simp
-  obtain ⟨c, hc'⟩ := (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ crv _ _ _ (GlobalTheory.NormSum.VacMove.klat (tor0 D cc δ)
+  obtain ⟨c, hc'⟩ := (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ crv _ _ _ (GlobalTheory.NormSum.VacMove.klat (tor0 D cc δ)
     (GlobalTheory.NormSum.VacMove.moves_one D S.rank) (GlobalTheory.NormSum.VacMove.moves_one D T.rank))).1 _ he _ hG (by
       intro h0
       apply GlobalTheory.StepMove.vacO_ne_zero hf

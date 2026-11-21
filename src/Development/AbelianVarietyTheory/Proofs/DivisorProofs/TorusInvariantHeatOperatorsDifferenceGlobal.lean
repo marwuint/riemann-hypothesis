@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusInvariantHeatOperatorOfSymmetricRelat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusInvariantLiftAddInvariantCombination
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusInvariantLiftsSubEqSumInvariantFieldsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudExtensionInvariantFieldCoeffsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudWeightZeroCompatibleFunctionsEqBaseConstaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantFieldCombKillsWeightZeroOfCoboundaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusInvariantLiftsSubEqSumInvariantFields
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudExtensionInvariantFieldCoeffsUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudWeightZeroCompatibleFunctionsEqBaseConsta
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantFieldCombKillsWeightZeroOfCoboundary
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
@@ -149,7 +149,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoeth
 
   have ex : ∀ k : K, ∃ c : Fin n → Γ(Y.H.left, Wk k), (∀ a, IsWt Y 0 _ (c a)) ∧ ∀ Wo, Wo ≤ Wk k → ∀ f,
       h.d k.1 Wo f - h'.d k.2 Wo f = ∑ a, rsT (c a) Wo * dd a Wo f := fun k =>
-    GlobalTheory.T.torusInvariant_lifts_sub_eq_sum_invariantFields R Q O oa Y n v dd hinv (V k.1 ⊓ V' k.2) D (h.d k.1) (h'.d k.2) (isLift_mono (h.lift _) (l1 k))
+    _root_.GlobalTheory.VertCoeff.lifts_sub_eq_sum_invFields R Q O oa Y n v dd hinv (V k.1 ⊓ V' k.2) D (h.d k.1) (h'.d k.2) (isLift_mono (h.lift _) (l1 k))
       (isLift_mono (h'.lift _) (l2 k))
       (fun α V'' hV'' f hf => (hB k.1).2.2.2 α V'' ((Y.q.left.preimage_mono hV'').trans (l1 k)) f hf)
       (fun α V'' hV'' f hf => (hB' k.2).2.2.2 α V'' ((Y.q.left.preimage_mono hV'').trans (l2 k)) f hf)
@@ -180,7 +180,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoeth
     intro k k' Wo hWo
     have hk : Wo ≤ Wk k := hWo.trans inf_le_left
     have hk' : Wo ≤ Wk k' := hWo.trans inf_le_right
-    have z := GlobalTheory.T.raynaudExtension_invariantField_coeffs_unique R Q O oa Y n v dd hinv Wo (fun a => rsT (E k a) Wo - rsT (E k' a) Wo) (fun Wo' hWo' f => by
+    have z := _root_.GlobalTheory.HxUniq.raynaud_coeff_eq_zero R Q O oa Y n v dd hinv Wo (fun a => rsT (E k a) Wo - rsT (E k' a) Wo) (fun Wo' hWo' f => by
       have h1 : Wo' ≤ Wk k := hWo'.trans hk
       have h2 : Wo' ≤ Wk k' := hWo'.trans hk'
       simp only [rsT_sub, rsT_rsT hk hWo', rsT_rsT hk' hWo', sub_mul, Finset.sum_sub_distrib]
@@ -200,7 +200,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoeth
       linear_combination -p1 + p2 + w1 - w2)
     exact fun a => sub_eq_zero.1 (z a)
   have ce : ∀ a, ∃ r : R, ∀ k, E k a = constFn Y.H.hom _ r := fun a =>
-    GlobalTheory.T.raynaud_weight_zero_compatible_functions_eq_base_constant R Q O oa Y K Wk (fun k => ⟨_, rfl⟩) hcov (fun k => E k a) (fun k => wE k a)
+    _root_.GlobalTheory.Heat.AbConstGlob.main R Q O oa Y K Wk (fun k => ⟨_, rfl⟩) hcov (fun k => E k a) (fun k => wE k a)
       (fun k k' Wo hWo => cE k k' Wo hWo a)
   choose e he using ce
   have G2 : ∀ (i : h.J) (i' : h'.J) (Wo : Y.H.left.Opens), Wo ≤ h.W i ⊓ h'.W i' → ∀ f,
@@ -293,7 +293,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoeth
     simp only [c1 _ (hdd _ Wo), c2 _ (hdd _ Wo)]
     rw [q1, q2]
     linear_combination -w1.2.1 + w2.2.1 - 2 * KSx + 2 * KSz
-  have G1 := GlobalTheory.T.invariantField_comb_kills_weightZero_of_coboundary R Q O oa Y n v dd hinv K Wk (fun k => h'.j k.2) (fun k => ⟨_, rfl⟩) hcov
+  have G1 := _root_.GlobalTheory.HeatUniq.comb_kills_weight_zero R Q O oa Y n v dd hinv K Wk (fun k => h'.j k.2) (fun k => ⟨_, rfl⟩) hcov
     (fun k => (hWU k).trans (Y.q.left.preimage_mono inf_le_right))
     (fun k => constFn Y.H.hom (Wk k) (algebraMap ℚ R (1 / 2)) * P k (Wk k)) e
     (fun k => isWt_zero_mul (isWt_zero_constFn _ _) (wP k)) (fun k k' Wo hWo => by
@@ -320,7 +320,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoeth
     rw [← this]
     exact Finset.sum_congr rfl fun a _ => by ring
 
-  obtain ⟨r₂, hr₂⟩ := GlobalTheory.T.raynaud_weight_zero_compatible_functions_eq_base_constant R Q O oa Y K Wk (fun k => ⟨_, rfl⟩) hcov (fun k => P k (Wk k)) wP
+  obtain ⟨r₂, hr₂⟩ := _root_.GlobalTheory.Heat.AbConstGlob.main R Q O oa Y K Wk (fun k => ⟨_, rfl⟩) hcov (fun k => P k (Wk k)) wP
     (fun k k' Wo hWo => by
       rw [rP k Wo (hWo.trans inf_le_left), rP k' Wo (hWo.trans inf_le_right)]
       have := rel k k' Wo hWo
@@ -353,7 +353,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoeth
       (GlobalTheory.Heat.Adjust.isWt_rsT Y (l2 k) (hB' k.2).2.2.1)))
       (isWt_zero_mul w2 (isWt_sum _ _ fun a _ => isWt_zero_mul (isWt_zero_constFn _ _) (wb a))))
       (isWt_sum _ _ fun a _ => isWt_sum _ _ fun b _ => isWt_zero_mul (isWt_zero_constFn _ _) (isWt_inv (hinv a) (wb b)))
-  obtain ⟨r₁, hr₁⟩ := GlobalTheory.T.raynaud_weight_zero_compatible_functions_eq_base_constant R Q O oa Y K Wk (fun k => ⟨_, rfl⟩) hcov (fun k => Pq k (Wk k)) wQ
+  obtain ⟨r₁, hr₁⟩ := _root_.GlobalTheory.Heat.AbConstGlob.main R Q O oa Y K Wk (fun k => ⟨_, rfl⟩) hcov (fun k => Pq k (Wk k)) wQ
     (fun k k' Wo hWo => by
       rw [rQ k Wo (hWo.trans inf_le_left), rQ k' Wo (hWo.trans inf_le_right)]
       have h1 : Wo ≤ Wk k := hWo.trans inf_le_left

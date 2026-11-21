@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ActAtApply
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolEval
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOneParameterSubgroupUnitaryOfRealPlaceLieAStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOneParameterSubgroupUnitaryOfRealPlaceLieA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIndefiniteUnitaryLieAlgAddISmulEqStatement
 
 noncomputable section
@@ -49,7 +49,7 @@ theorem stab_comap_of_thetaSubInf : ∀ (F E : Type) [Field F] [NumberField F] [
       by_cases hv : v = w
       · subst hv; rw [hYw]; exact hZ
       · rw [hYv v hv]; simp [upq]
-    obtain ⟨γ, hγ, hgen⟩ := GlobalTheory.T.exists_oneParameterSubgroup_unitary_of_realPlace_lieAlg F E σ (Fin d) R S τ (incM F W.J) Complex.I C hCM hC Y hY
+    obtain ⟨γ, hγ, hgen⟩ := _root_.GlobalTheory.HoweD.exists_line_of_upqD F E σ (Fin d) R S τ (incM F W.J) Complex.I C hCM hC Y hY
     have hSD := hact γ hγ Y hgen y
     have hD := (actsLaws F (Fin n × Fin d) _ _ (Φ y)).1 _ (fun t => map_zero _) hSD
     have hmem := hN.2.2.2.1 γ hγ (Φ y) hy _ hD

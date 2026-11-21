@@ -1,9 +1,11 @@
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.AdmissibleSignatures
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NumericalConditionsTheoremTLargePrimeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxFrobeniusOrbitLengthDiffBoundsZmodStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimePowSmulDescentPhiMemLatticeOfOrbitBoundStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimePowSmulPhiMemLatticeOfMemFiltrationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinLpowEisensteinPowTwistedDecompStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NumericalConditionsTheoremTLargePrime
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxFrobeniusOrbitLengthDiffBoundsZmod
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsAlgebraMapEqRoot
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimePowSmulDescentPhiMemLatticeOfOrbitBound
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimePowSmulPhiMemLatticeOfMemFiltration
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinLpowEisensteinPowTwistedDecomp
 open PowerSeries GlobalTheory.BK
 
 namespace GlobalTheory.ZetaDenominator
@@ -15,13 +17,13 @@ theorem zetaBound : GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleSignatures
     exact FiniteDimensional.complete ℚ_[l] K
   have hl : l.Prime := Fact.out
   have ha : 1 ≤ a := NeZero.one_le
-  obtain ⟨hr1, hrN, hrper⟩ := GlobalTheory.T.maxFrobeniusOrbitLengthDiff_bounds_zmod l e a hl ha (TameDescentExponentData.succ_eq (K := K)) Sig N
+  obtain ⟨hr1, hrN, hrper⟩ := _root_.GlobalTheory.BK.maxPeriod_bounds l e a hl ha (TameDescentExponentData.succ_eq (K := K)) Sig N
     hA.frob_mem hA.zero_mem_Sig hA.card_Sig hA.two_le
-  obtain ⟨-, n2, n3, -, -, n6⟩ := GlobalTheory.T.numerical_conditions_theorem_T_large_prime l H N η (maxPeriod l Sig) hA.two_le hA.one_le hA.lt hrN hA.large
+  obtain ⟨-, n2, n3, -, -, n6⟩ := _root_.GlobalTheory.numerical_bounds_of_forty_mul_lt l H N η (maxPeriod l Sig) hA.two_le hA.one_le hA.lt hrN hA.large
   have hl2 : l ≠ 2 := by have := hA.lt; have := hA.one_le; omega
-  have hφm := GlobalTheory.T.prime_pow_smul_descent_phi_mem_lattice_of_orbit_bound O K l e a ι η H D (maxPeriod l Sig) hr1
+  have hφm := _root_.GlobalTheory.BK.l_pow_smul_zeta_phi_mem_MM O K l e a ι η H D (maxPeriod l Sig) hr1
     (fun τ c hc => hrper c (hT.chars_subset τ hc)) n6 hl2 m hm
-  obtain ⟨P0, hP0, F0, hF0, hQF, hdec⟩ := GlobalTheory.T.breuilKisin_lpow_eisensteinPow_twisted_decomp O K l e a ι η H D (η * (maxPeriod l Sig + 1)) hA.one_le hA.lt
+  obtain ⟨P0, hP0, F0, hF0, hQF, hdec⟩ := _root_.GlobalTheory.BK.lpow_Epow_twistedMon_decomp O K l e a ι η H D (η * (maxPeriod l Sig + 1)) hA.one_le hA.lt
     (by have := hA.one_le; omega) (by omega) y' hy' m hm hφm
   show (l : K) ^ (η * (maxPeriod l Sig + 1)) • D.zeta (y' + D.phi m) ∈ D.MM
   set c₁ := η * (maxPeriod l Sig + 1)
@@ -59,7 +61,7 @@ theorem zetaBound : GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleSignatures
     exact D.upper _ hP0
   have hX0M : X0 ∈ D.M := PhiMod.mem_M_of_mem_Man _ hX0E hX0
   have hφX0 : D.phi X0 ∈ D.MM := PhiMod.ext_mono _ (A_le_S l e) (D.phi_mem_L hX0M)
-  obtain ⟨v', hv', hv'eq⟩ := GlobalTheory.T.prime_pow_smul_phi_mem_lattice_of_mem_filtration O K l e a ι η H D (10 * H) (by omega) F0 hF0
+  obtain ⟨v', hv', hv'eq⟩ := _root_.GlobalTheory.BK.phi_FilMM_mem O K l e a ι η H D (10 * H) (by omega) F0 hF0
   have hl0 : (l : K) ≠ 0 := l_ne_zero (K := K) l
   have hF : D.phi F0 = (l : K) ^ (3 * H) • ((l : K) ^ (2 * H) • ((l : K) ^ (5 * H - η) • v')) := by
     apply smul_right_injective _ (pow_ne_zero η hl0)

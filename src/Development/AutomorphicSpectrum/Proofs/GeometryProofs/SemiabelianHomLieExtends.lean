@@ -11,7 +11,7 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackEqu
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFunctorialMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorExtendsDvrStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorExtendsDvr
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsUniqueHomExtensionSemiAbelian
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
@@ -262,7 +262,7 @@ theorem hom_maps_lie : ∀ (O K : Type) [CommRing O] [IsDedekindDomain O] [Field
         (N'.pt (D (j e))) (N'.tan _) ?_
       · rw [hMK, ← hjj, lifts_id _ _ _ _ (hjT e), ← Category.assoc, ← spMap_dualMap_comp, hcP]
       · rw [← hD, hMK']
-    obtain ⟨e', he'⟩ := GlobalTheory.T.tangent_vector_extends_dvr O K (Sp O) (𝟙 _) G' E' M' (N'.pt (D (j e))) (N'.tan _) hloc
+    obtain ⟨e', he'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_lifts_of_local O K (Sp O) (𝟙 _) G' E' M' (N'.pt (D (j e))) (N'.tan _) hloc
     have he'' := lifts_id _ _ _ _ he'
     rw [hj''] at he''
     exact ⟨e', N'.inj (Over.OverMorphism.ext he'').symm⟩

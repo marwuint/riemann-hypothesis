@@ -42,11 +42,4 @@ def chartPullPullPull {X Y Z Y' Z' : Scheme.{0}} (M : LB X) (F : Y ⟶ X) (G : Z
     have e : (𝟙 _ ≫ G') ≫ F' = (h ≫ G) ≫ F := by simp [hc]
     rw [e]
 
-section
-variable {S : Scheme.{0}}
-
-variable (A B : Over S) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB B.left)
-
-end
-
 end GlobalTheory.EndLoc.HomFixGlue

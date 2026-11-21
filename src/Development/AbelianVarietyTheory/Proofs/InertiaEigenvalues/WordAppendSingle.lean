@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecaysOfMemSmoothSpan
-import Development.AbelianVarietyTheory.Definitions.Divisors.MemMspan
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
 
 noncomputable section
 
@@ -16,12 +16,6 @@ def Growth (F : GA E a → ℂ) : Prop :=
 def Good (F : GA E a → ℂ) : Prop :=
   ∃ h : F ∈ Sm E a, ∀ l : List (Lie E a),
     GlobalTheory.ShortVecDecay.Decays (GlobalTheory.GLFin.word l ⟨F, h⟩).1 ∧ Growth (GlobalTheory.GLFin.word l ⟨F, h⟩).1
-
-variable (E a) in
-
-def ccSpan : Submodule ℂ (GA E a → ℂ) :=
-  Submodule.span ℂ {F | ∃ (r : ℕ) (f : SchwartzMap (Fin a → Cinf E) ℂ) (G : GA E a → ℂ),
-    Good G ∧ F = GlobalTheory.JSW.colConv r f G}
 
 theorem Growth.zero : Growth (0 : GA E a → ℂ) := fun _ => ⟨0, 0, fun _ => by simp⟩
 

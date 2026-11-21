@@ -74,37 +74,6 @@ theorem isRoot_charpoly_of_isRoot_minpoly {F C E : Type} [Field F] [Ring C] [Alg
   | (intros; apply @_root_.GlobalTheory.SumScalarVanishing.isRoot_charpoly_of_isRoot_minpoly <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SumScalarVanishing.isRoot_charpoly_of_isRoot_minpoly ..)
 
-theorem exists_emb_isRoot {F C E : Type} [Field F] [NumberField F] [Ring C] [IsDomain C] [Algebra F C]
-    [Algebra ℚ C] [IsScalarTower ℚ F C] [FiniteDimensional F C] [Field E] [Algebra ℚ E] [IsAlgClosed E]
-    (y : C) (μ : E) (h : ((minpoly ℚ y).map (algebraMap ℚ E)).IsRoot μ) :
-    ∃ τ : F →+* E, ((minpoly F y).map τ).IsRoot μ := by
-  have hyi : IsIntegral F y := IsIntegral.of_finite F y
-  haveI : Fact (Irreducible (minpoly F y)) := ⟨minpoly.irreducible hyi⟩
-  haveI : FiniteDimensional F (AdjoinRoot (minpoly F y)) :=
-    (AdjoinRoot.powerBasis (minpoly.ne_zero hyi)).finite
-  haveI : FiniteDimensional ℚ (AdjoinRoot (minpoly F y)) := Module.Finite.trans F _
-  haveI : Algebra.IsAlgebraic ℚ (AdjoinRoot (minpoly F y)) := Algebra.IsAlgebraic.of_finite ℚ _
-  set r := AdjoinRoot.root (minpoly F y)
-  have hdvd : minpoly ℚ y ∣ minpoly ℚ r := by
-    apply minpoly.dvd
-    have h1 : minpoly F y ∣ (minpoly ℚ r).map (algebraMap ℚ F) := by
-      rw [← AdjoinRoot.mk_eq_zero, ← AdjoinRoot.aeval_eq, aeval_map_algebraMap, minpoly.aeval]
-    obtain ⟨k, hk⟩ := h1
-    rw [← aeval_map_algebraMap F, hk, map_mul, minpoly.aeval, zero_mul]
-  have hne : minpoly ℚ r ≠ 0 := minpoly.ne_zero (Algebra.IsIntegral.isIntegral r)
-  have hμ' : μ ∈ (minpoly ℚ r).rootSet E := by
-    rw [mem_rootSet]
-    refine ⟨hne, ?_⟩
-    obtain ⟨k, hk⟩ := hdvd
-    rw [hk, map_mul, aeval_def, eval₂_eq_eval_map, h.eq_zero, zero_mul]
-  rw [← Algebra.IsAlgebraic.range_eval_eq_rootSet_minpoly] at hμ'
-  obtain ⟨ψ, hψ⟩ := hμ'
-  refine ⟨(ψ : AdjoinRoot (minpoly F y) →+* E).comp (algebraMap F _), ?_⟩
-  rw [← hψ, IsRoot.def, eval_map]
-  change eval₂ ((ψ : AdjoinRoot (minpoly F y) →+* E).comp (algebraMap F _))
-    ((ψ : AdjoinRoot (minpoly F y) →+* E) r) (minpoly F y) = 0
-  rw [← hom_eval₂, ← aeval_def, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self, map_zero]
-
 end GlobalTheory.GlobEig
 
 namespace GlobalTheory.GlobEig
@@ -313,49 +282,5 @@ theorem isRoot_inv (G : HTGroup p) (i : Fin G.m) (β y : G.Cˣ) (c : ℚˣ)
 end GlobalTheory.GlobEig
 
 namespace GlobalTheory.GlobEig
-
-theorem root_norm_le : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), IsSimple G → ∀ (β y : G.Cˣ) (c : ℚˣ),
-    (y : G.C) * β * sh G y = algebraMap ℚ G.C c * β → ∀ B : ℝ, ‖((c : ℚ) : ℚ_[p])‖ ≤ B →
-    ‖(((c⁻¹ : ℚˣ) : ℚ) : ℚ_[p])‖ ≤ B →
-    (∀ (w : Fin G.m) (μ : PadicAlgCl p),
-      ((G.rho w (y : G.C)).charpoly.map (algebraMap (G.Fw w) (PadicAlgCl p))).IsRoot μ → ‖μ‖ ≤ B) →
-    (∀ (w : Fin G.m) (μ : PadicAlgCl p),
-      ((G.rho w ((y⁻¹ : G.Cˣ) : G.C)).charpoly.map (algebraMap (G.Fw w) (PadicAlgCl p))).IsRoot μ → ‖μ‖ ≤ B) →
-    ∀ μ : PadicAlgCl p, ((LinearMap.mulLeft ℚ (y : G.C)).charpoly.map (algebraMap ℚ (PadicAlgCl p))).IsRoot μ →
-      ‖μ‖ ≤ B * B := by
-  intro p _ G hS β y c hyc B hc hc' hy hyi μ hμ
-  haveI : NoZeroDivisors G.C := ⟨fun {a b} hab => by
-    by_contra h
-    push_neg at h
-    obtain ⟨u, hu⟩ := hS.1 a h.1
-    apply h.2
-    calc b = (((u⁻¹ : G.Cˣ) : G.C) * a) * b := by rw [← hu, Units.inv_mul, one_mul]
-      _ = 0 := by rw [mul_assoc, hab, mul_zero]⟩
-  haveI : IsDomain G.C := NoZeroDivisors.to_isDomain _
-  have h0 := isRoot_minpoly_of_isRoot_charpoly (y : G.C) μ hμ
-  obtain ⟨τ, hτ⟩ := exists_emb_isRoot (F := G.F) (y : G.C) μ h0
-  have hcpos : 0 < ‖((c : ℚ) : ℚ_[p])‖ := norm_pos_iff.2 (by simp)
-  have hprod : ‖((c : ℚ) : ℚ_[p])‖ * ‖(((c⁻¹ : ℚˣ) : ℚ) : ℚ_[p])‖ = 1 := by
-    rw [← norm_mul, ← Rat.cast_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Rat.cast_one, norm_one]
-  have hB0 : 0 ≤ B := hcpos.le.trans hc
-  have hB1 : 1 ≤ B := by
-    have h1 : 1 ≤ B * B := by
-      rw [← hprod]
-      exact mul_le_mul hc hc' (norm_nonneg _) hB0
-    nlinarith
-  rcases liesOver_or_conj G τ with hu | hu
-  · obtain ⟨i, ν, hνμ, hν⟩ := exists_root_rho G τ hu y μ hτ
-    have h1 := hy i ν hν
-    rw [hνμ] at h1
-    nlinarith
-  · have h2 := isRoot_minpoly_sh G y τ μ hτ
-    obtain ⟨i, ν, hνμ, hν⟩ := exists_root_rho G _ hu (sh G y) μ h2
-    have h3 := isRoot_inv G i β y c hyc ν hν
-    have h4 := hyi i _ h3
-    have hs : ‖((c : ℚ) : PadicAlgCl p)‖ = ‖((c : ℚ) : ℚ_[p])‖ := by
-      rw [← PadicAlgCl.norm_extends, map_ratCast]
-    rw [norm_mul, norm_inv, hs, hνμ, ← div_eq_mul_inv, div_le_iff₀ hcpos] at h4
-    calc ‖μ‖ ≤ B * ‖((c : ℚ) : ℚ_[p])‖ := h4
-      _ ≤ B * B := mul_le_mul_of_nonneg_left hc hB0
 
 end GlobalTheory.GlobEig

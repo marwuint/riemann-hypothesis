@@ -25,21 +25,6 @@ theorem exists_chart : ∃ e : OpenPartialHomeomorph (Matrix n n ℂ) (Matrix n 
   open scoped Matrix.Norms.Operator in
   exact ⟨h.toOpenPartialHomeomorph _, rfl, h.mem_toOpenPartialHomeomorph_source⟩
 
-theorem exists_ball_subset {W : Set (Matrix n n ℂ)} (hW : W ∈ 𝓝 (0 : Matrix n n ℂ)) :
-    ∃ δ : ℝ, 0 < δ ∧ ∀ Z : Matrix n n ℂ, ∑ i, ∑ j, ‖Z i j‖ < δ → Z ∈ W := by
-  open scoped Matrix.Norms.Elementwise in
-  obtain ⟨δ, hδ, h⟩ := Metric.mem_nhds_iff.1 hW
-  refine ⟨δ, hδ, fun Z hZ => h ?_⟩
-  open scoped Matrix.Norms.Elementwise in
-  rw [mem_ball_zero_iff, Matrix.norm_lt_iff hδ]
-  intro i j
-  refine lt_of_le_of_lt ?_ hZ
-  calc ‖Z i j‖ ≤ ∑ j, ‖Z i j‖ :=
-        Finset.single_le_sum (f := fun j => ‖Z i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)
-    _ ≤ ∑ i, ∑ j, ‖Z i j‖ :=
-        Finset.single_le_sum (f := fun i => ∑ j, ‖Z i j‖)
-          (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)
-
 theorem exp_mul_exp_neg (X : Matrix n n ℂ) : NormedSpace.exp X * NormedSpace.exp (-X) = 1 := by
   rw [← Matrix.exp_add_of_commute X (-X) (Commute.refl X).neg_right, add_neg_cancel,
     NormedSpace.exp_zero]
@@ -82,14 +67,5 @@ theorem mat_unitary {P Q : ℕ} (g : UpqT P Q) :
 
 theorem continuous_mat {P Q : ℕ} : Continuous (UpqT.mat : UpqT P Q → _) :=
   Units.continuous_val.comp continuous_subtype_val
-
-def expU (P Q : ℕ) (X : lieU P Q) : UpqT P Q :=
-  (⟨⟨NormedSpace.exp X.1, NormedSpace.exp (-X.1), exp_mul_exp_neg _, exp_neg_mul_exp _⟩,
-    exp_unitary (jpq_sq P Q) X.2⟩ : Formalism.UG.Upq P Q)
-
-theorem continuous_expU (P Q : ℕ) : Continuous (expU P Q) := by
-  refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
-  · exact continuous_matExp.comp continuous_subtype_val
-  · exact continuous_matExp.comp continuous_subtype_val.neg
 
 end GlobalTheory.UpqExpChart

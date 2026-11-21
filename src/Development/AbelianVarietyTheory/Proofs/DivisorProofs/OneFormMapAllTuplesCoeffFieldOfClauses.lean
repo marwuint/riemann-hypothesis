@@ -8,7 +8,9 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TupPrim
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsSpanOfOnto
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneMapOfOfPtIdent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReferenceTupleLiftsSpanAllTuples
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CovarianceAtConstantXiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CovarianceAtConstantXi
+import Formalism.LocalToGlobal.IndefiniteReal.FWTie
+import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 
 noncomputable section
 
@@ -39,7 +41,7 @@ theorem oneMapOverL_of_clauses (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0
     (w.kap i (D.eTau.symm 1)).2.2.trans (D.sp.V_rank ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2).symm
   have hP : (O i).Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) T.σ₀) := hO.2
   obtain ⟨gramR, c0R, c0L, hFT, hc⟩ := hP.lift.c0
-  obtain ⟨lam, z₀, hlam, hU⟩ := GlobalTheory.T.adelicLift_eq_factor_mul_geometricClassSum D G Pl0 T0 A T R F κ v₀ hC h1 h2 hW hpb hio i (O i).lev gramR c0R c0L hFT
+  obtain ⟨lam, z₀, hlam, hU⟩ := _root_.GlobalTheory.PtIdCore.point_identity_core D G Pl0 T0 A T R F κ v₀ hC h1 h2 hW hpb hio i (O i).lev gramR c0R c0L hFT
   obtain ⟨O₀, hF₀, hP₀⟩ := hex
   obtain ⟨O₁, e₁, hP₁, hlev₁, hc₁⟩ := GlobalTheory.LiftSpanClauses.exists_retie_core O₀ hC
     (show O₀.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) T.σ₀) from hP₀) (O i).lev hP.lift.lev hP.act.1 hFT

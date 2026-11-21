@@ -1,24 +1,13 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DataBoundOfHalfFlip
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DataBoundOfHalfFlipStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceSzNonneg
 
 section
 open MeasureTheory ValuativeRel Matrix
 noncomputable section
 namespace GlobalTheory.ArchTens.Unfold
-open GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.RootEx GlobalTheory.FunObj GlobalTheory.SumSize Formalism.BasicNotions
-section Integral
-variable {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
-end Integral
-section Local
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-end Local
-section Grid
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-variable {D : D7} (σ : D.what₂.LL →+* ℂ)
-variable [MeasurableSpace k] [BorelSpace k]
-end Grid
 end GlobalTheory.ArchTens.Unfold
 namespace GlobalTheory.ArchTens.Unfold
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV

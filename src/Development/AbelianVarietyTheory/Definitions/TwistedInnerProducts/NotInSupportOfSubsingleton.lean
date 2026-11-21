@@ -148,13 +148,6 @@ theorem not_inSupport_zero (π : Representation ℂ (GL (Fin 0) k) V) (ψ : kˣ 
   rintro ⟨s, d, e, a, ha, -⟩
   exact (e ⟨a, ⟨0, by omega⟩⟩).elim0
 
-theorem not_inSupport_of_subsingleton [Subsingleton V] (π : Representation ℂ (GL n k) V)
-    (ψ : kˣ →* ℂˣ) : ¬ InSupport π ψ := by
-  rintro ⟨s, d, e, a, ha, Y, _, _, σ, hσ, ⟨S, f, hf⟩, -⟩
-  have := nontrivial_of_isIrreducible hσ
-  have : Subsingleton (Jacquet π (unipRad k e)) := (Submodule.Quotient.mk_surjective _).subsingleton
-  exact not_subsingleton Y hf.subsingleton
-
 theorem jhMult_ofChar_ne {G : Type} [Group G] {χ ψ : G →* ℂˣ} (h : χ ≠ ψ) :
     jhMult (ofChar χ) (ofChar ψ) = 0 := by
   refine le_antisymm (iSup₂_le fun r ⟨S, T, _, _, hr⟩ => ?_) bot_le
@@ -173,22 +166,6 @@ theorem jhMult_ofChar_ne {G : Type} [Group G] {χ ψ : G →* ℂˣ} (h : χ ≠
     have hx' : φ.toLinearMap (Submodule.Quotient.mk v) = 1 := hx
     rw [hx'] at h1
     simpa using h1.symm
-
-theorem modulus_two (ϖ : 𝒪[k]) (x : kˣ) (h : Irreducible ϖ) (hx : (x : k) = ϖ) :
-    modulus k (fun _ : Fin 2 => Unit) (leviTorus k (Fin 2) ![x, 1]) = (resCard k : ℝ)⁻¹ := by
-  rw [modulus_torus, ← (nabs_properties k).2.2.2.2.1 ϖ x h hx]
-  simp [Fin.prod_univ_two, Finset.prod_filter]
-
-open NumberField IsDedekindDomain in
-
-theorem completion (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
-    letI := GlobalTheory.LocalData.complRel v
-    haveI := GlobalTheory.LocalData.isLocalField v
-    IsSpherical (detRep (Fin 2) (1 : (v.adicCompletion F)ˣ →* ℂˣ)) ∧
-      ¬ IsCuspidal (detRep (Fin 2) (1 : (v.adicCompletion F)ˣ →* ℂˣ)) := by
-  letI := GlobalTheory.LocalData.complRel v
-  haveI := GlobalTheory.LocalData.isLocalField v
-  exact ⟨isSpherical_detRep fun _ _ => rfl, not_isCuspidal_detRep_two _⟩
 
 theorem not_inSupport_of_isCuspidal [Nontrivial n] {π : Representation ℂ (GL n k) V} (h : IsCuspidal π)
     (ψ : kˣ →* ℂˣ) : ¬ InSupport π ψ := by
@@ -222,55 +199,5 @@ theorem not_inSupport_of_isCuspidal [Nontrivial n] {π : Representation ℂ (GL 
     · exact key (e ⟨b, j⟩) (e ⟨a, ⟨0, by omega⟩⟩) (by simpa using hab)
   have := h.2 s d e hne
   exact not_subsingleton Y hf.subsingleton
-
-theorem isCuspSupport_detRep {N : ℕ} {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
-    IsCuspSupport (detRep (Fin N) χ) (fun _ : Fin N => 1)
-      fun i => detRep (Fin 1) (χ * absPow k (((i : ℕ) : ℂ) - ((N : ℂ) - 1) / 2)) := by
-  let e : (Σ _ : Fin N, Fin 1) ≃ Fin N := Equiv.sigmaUnique _ _
-  refine ⟨isIrreducible_ofChar _, fun i => ⟨one_pos, isIrreducible_ofChar _, isCuspidal_detRep_one
-    (hχ.mul (isSmoothChar_of_isUnram (isUnram_absPow k _)))⟩, e, ?_⟩
-  let f : (ofChar (detLevi e χ)).IntertwiningMap (piTensor fun i : Fin N =>
-      detRep (Fin 1) (χ * absPow k (((i : ℕ) : ℂ) - ((N : ℂ) - 1) / 2))) :=
-    ⟨LinearMap.toSpanSingleton ℂ _ (PiTensorProduct.tprod ℂ fun _ => 1), fun g => by
-      ext
-      simp only [LinearMap.comp_apply, LinearMap.toSpanSingleton_apply, one_smul, piTensor_tprod,
-        ofChar_apply, mul_one, detRep]
-      rw [detLevi_apply, Units.coe_prod, ← MultilinearMap.map_smul_univ]
-      congr 1
-      funext i
-      rw [modExp_fin _ (fun _ => by simp), smul_eq_mul, mul_one, detChar_apply]
-      congr 4
-      push_cast
-      ring⟩
-  have hf : Function.Injective f := by
-    refine LinearMap.ker_eq_bot.1 (LinearMap.ker_toSpanSingleton ℂ fun h => ?_)
-    have := congrArg (PiTensorProduct.lift (MultilinearMap.mkPiAlgebra ℂ (Fin N) ℂ)) h
-    simp at this
-  refine (isSubquotient_detRep_parInd e hχ).trans (.of_injective (parIndMap e f) fun φ ψ h => ?_)
-  ext x
-  exact hf (congrFun (congrArg (fun t => t.1.1) h) x)
-
-theorem hasSatake_one_unique {π : Representation ℂ (GL (Fin 1) k) V} {a b : Fin 1 → ℂˣ}
-    (ha : HasSatake π a) (hb : HasSatake π b) {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :
-    a = b := by
-  have key : ∀ {a : Fin 1 → ℂˣ}, HasSatake π a → ∀ v, π (diagT k (Fin 1) fun _ => ϖ) v = (a 0 : ℂ) • v := by
-    intro a ha
-    refine scalar_of_isSubquotient ha.2.2 fun f => ?_
-    ext x
-    have h1 := parInd_law (points (Fin 1)) _ f ⟨_, leviEmb_mem_parab k _ (leviTorus k _ fun _ => ϖ)⟩ x
-    rw [leviProj_leviEmb] at h1
-    have hc : x * (diagT k (Fin 1) fun _ => ϖ) = (diagT k (Fin 1) fun _ => ϖ) * x := by
-      ext i j
-      simp [Matrix.mul_apply, mul_comm, Subsingleton.elim i 0, Subsingleton.elim j 0]
-    show f.1.1 (x * (diagT k (Fin 1) fun _ => ϖ)) = (a 0 : ℂ) • f.1.1 x
-    rw [hc]
-    refine h1.trans ?_
-    have hm : modExp (fun _ : Fin 1 => Unit) 0 = 0 := by rw [modExp_fin _ (fun _ => by simp)]; simp
-    simp [deltaHalf_apply, hm, unrChar_uniformizer k _ hϖ]
-  have := nontrivial_of_isIrreducible ha.1
-  obtain ⟨y, hy⟩ := exists_ne (0 : V)
-  funext i
-  rw [Subsingleton.elim i 0]
-  exact Units.ext (smul_left_injective ℂ hy ((key ha y).symm.trans (key hb y)))
 
 end GlobalTheory.SmGL.Model

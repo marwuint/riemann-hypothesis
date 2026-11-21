@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechGluingOfKodaira
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateUnique
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedFibreIsAbelianSchemeRelDimOfFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianCechH1TrivialBundleRankBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianCechH1TrivialBundleRankBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechFirstCohomologyDimensionBoundCocyclesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCocycleCoboundaryOfCoveringSubfamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimageQuotientFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibrePullbackAffineFunctionEqQuotientConstStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCocycleCoboundaryOfCoveringSubfamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimageQuotientFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibrePullbackAffineFunctionEqQuotientConst
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LogKS Formalism.L2.Pj
 
@@ -38,11 +38,11 @@ theorem fieldDep : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (g : �
     obtain ⟨i, hi, hx⟩ := Set.mem_iUnion₂.1 (ht (Set.mem_univ x))
     rw [TopologicalSpace.Opens.mem_iSup]
     exact ⟨t.equivFin ⟨i, hi⟩, by simpa [σ] using hx⟩
-  obtain ⟨hfin, hrk⟩ := GlobalTheory.T.abelian_cech_h1_trivial_bundle_rank_bound K A g hA hsm (Fin t.card) (fun k => W (σ k)) (fun k => hW _) hσ
+  obtain ⟨hfin, hrk⟩ := _root_.GlobalTheory.AbCoh.FDimField.cechLB_triv_finite_finrank_one_le K A g hA hsm (Fin t.card) (fun k => W (σ k)) (fun k => hW _) hσ
   obtain ⟨c, hc, h', hh'⟩ := GlobalTheory.T.cech_first_cohomology_dimension_bound_cocycles K A.left A.hom g (Fin t.card) (fun k => W (σ k)) hfin hrk
     (fun b k k' => e b (σ k) (σ k')) (fun b k k' k'' => he b _ _ _)
   refine ⟨c, hc, ?_⟩
-  exact GlobalTheory.T.cechCocycle_coboundary_of_coveringSubfamily A.left J W (Fin t.card) σ hσ
+  exact _root_.GlobalTheory.CechCobGlue.cocycle_coboundary_of_subcover A.left J W (Fin t.card) σ hσ
     (fun i i' => ∑ b, (A.hom.appLE ⊤ (W i ⊓ W i') le_top).hom
       ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (c b)) * e b i i') (by
       intro i i' i''
@@ -68,7 +68,7 @@ theorem fibre_dim : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     rw [TopologicalSpace.Opens.mem_iSup] at hx' ⊢
     exact hx'
   have haff : ∀ i, IsAffineOpen (ι ⁻¹ᵁ W i) := fun i =>
-    GlobalTheory.T.isAffineOpen_preimage_quotientFibre X t.G.left t.G.hom U m A.left A.hom ι hsq (W i) (hWa i) (hWU i)
+    _root_.GlobalTheory.AffinePreimageFibre.isAffineOpen_preimage_fibre X t.G.left t.G.hom U m A.left A.hom ι hsq (W i) (hWa i) (hWU i)
   obtain ⟨c, hc, h, hh⟩ := fieldDep (Γ(X, U.1) ⧸ m) A n hA hsm J (fun i => ι ⁻¹ᵁ W i) haff htop e he
   choose r hr using fun b => Ideal.Quotient.mk_surjective (c b)
   refine ⟨r, ?_, h, fun i i' => ?_⟩
@@ -78,7 +78,7 @@ theorem fibre_dim : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     exact Ideal.Quotient.eq_zero_iff_mem.2 hmem
   · rw [← hh i i']
     refine Finset.sum_congr rfl fun b _ => ?_
-    rw [GlobalTheory.T.fibre_pullback_affineFunction_eq_quotientConst X t.G.left t.G.hom U m A.left A.hom ι hw (W i ⊓ W i') (inf_le_left.trans (hWU i))
+    rw [_root_.GlobalTheory.fibre_restrict_scalar_compat X t.G.left t.G.hom U m A.left A.hom ι hw (W i ⊓ W i') (inf_le_left.trans (hWU i))
       (ι ⁻¹ᵁ W i ⊓ ι ⁻¹ᵁ W i') (fun _ hx => hx), hr b]
 
 end GlobalTheory.FibreH1

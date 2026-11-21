@@ -110,8 +110,6 @@ end GlobalTheory.SupremumSobolevWords
 
 namespace GlobalTheory.SupremumSobolevWords
 
-open GlobalTheory.Size
-
 end GlobalTheory.SupremumSobolevWords
 
 end

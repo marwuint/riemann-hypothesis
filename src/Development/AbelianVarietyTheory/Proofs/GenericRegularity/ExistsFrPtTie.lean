@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.RegularCharts.MatrixTwoByTwo
 import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsChartGeneratorPullbackGeneratesFibreStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LieBasisCoordinatesBijectiveTangentStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsChartGeneratorPullbackGeneratesFibre
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LieBasisCoordinatesBijectiveTangent
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.IsCombAtIffCoordinateCombinationStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.IsEigenvectorIffLieBasisCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.IsEigenvectorIffLieBasisCoordinates
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
@@ -19,11 +19,11 @@ theorem exists_frPt_tie : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt �
     rw [← Λ.xF_fst, Category.assoc, pullback.condition, ← Category.assoc, Λ.xF_snd]
     unfold sOf spMap
     rw [CommRingCat.ofHom_comp, Spec.map_comp]
-  have hV := GlobalTheory.T.lieBasis_coordinates_bijective_tangent E H Dw l Xo c O β Y M R f x Λ
+  have hV := _root_.GlobalTheory.Reg.vec_bijective E H Dw l Xo c O β Y M R f x Λ
   choose w hw _ using fun τ (i : Fin (Dw.mult τ)) => hV.1 (fun j => u τ j i)
-  obtain ⟨s, hs, hgen⟩ := GlobalTheory.T.exists_chart_generator_pullback_generates_fibre hT E H Dw l Xo c O β Y M R f x Λ
+  obtain ⟨s, hs, hgen⟩ := _root_.GlobalTheory.Reg.ChartGenerator.exists_thTie_generator hT E H Dw l Xo c O β Y M R f x Λ
   refine ⟨⟨x, hover, w, fun τ i => hV.2.1 _ _ (hw τ i),
-    fun τ i => (GlobalTheory.T.isEigenvector_iff_lieBasis_coordinates E H Dw l Xo c O β Y M R f x Λ τ _ _ (hw τ i)).2 (hu τ i), ?_, s, hgen⟩,
+    fun τ i => (_root_.GlobalTheory.Reg.isEigAt_iff_eig E H Dw l Xo c O β Y M R f x Λ τ _ _ (hw τ i)).2 (hu τ i), ?_, s, hgen⟩,
     rfl, Λ, fun τ i => hw τ i, hs⟩
   intro τ v hvt hve
   obtain ⟨cv, hcv, hcvu⟩ := hV.2.2 v hvt
@@ -33,7 +33,7 @@ theorem exists_frPt_tie : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt �
       funext j
       simp [Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
     rw [GlobalTheory.T.isCombAt_iff_coordinate_combination E H Dw l Xo c O β Y M R f x Λ _ (fun i j => u τ j i) (w τ) a v (hw τ), hsum]
-  have hcve : M.Eig f τ cv := (GlobalTheory.T.isEigenvector_iff_lieBasis_coordinates E H Dw l Xo c O β Y M R f x Λ τ cv v hcv).1 hve
+  have hcve : M.Eig f τ cv := (_root_.GlobalTheory.Reg.isEigAt_iff_eig E H Dw l Xo c O β Y M R f x Λ τ cv v hcv).1 hve
   obtain ⟨a, ha, hau⟩ := huniq τ cv hcve
   refine ⟨a, (hcomb a).2 (ha ▸ hcv), fun a' ha' => hau a' ?_⟩
   exact hcvu _ ((hcomb a').1 ha')

@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DoubleCosetAdjointOfInvariantWeightStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlashIntMatrixPosDetPropertiesStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DoubleCosetAdjointOfInvariantWeight
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlashIntMatrixPosDetProperties
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -46,7 +47,7 @@ lemma K_left (k L N : ℕ) (ε : DirichletCharacter ℂ N) (h f : ℍ → ℂ) (
     (hf : Inv k L (ch ε) f) (γ : SL(2, ℤ)) (hγ : (L : ℤ) ∣ γ 1 0) (δ : M2) (hδ : 0 < δ.det)
     (hδN : (N : ℤ) ∣ δ 1 0) (τ : ℍ) :
     K k N ε h f ((γ : M2) * δ) τ = K k N ε h f δ τ := by
-  obtain ⟨hcoc, -, hinv, -, -⟩ := GlobalTheory.T.slashIntMatrixPosDet_properties k f hk
+  obtain ⟨hcoc, -, hinv, -, -⟩ := _root_.GlobalTheory.EisM.slz_props k f hk
   have hγN : (N : ℤ) ∣ γ 1 0 := dvd_trans (Int.natCast_dvd_natCast.mpr hNL) hγ
   have h1 : slz k ((γ : M2) * δ) f τ = ch ε (γ 1 1) * slz k δ f τ := by
     rw [hcoc _ _ (by simp) hδ, (hinv L (ch ε)).mp hf γ hγ]
@@ -63,8 +64,8 @@ lemma K_left (k L N : ℕ) (ε : DirichletCharacter ℂ N) (h f : ℍ → ℂ) (
 lemma K_right (k L N : ℕ) (ε : DirichletCharacter ℂ N) (h f : ℍ → ℂ) (hk : 1 ≤ k) (hNL : N ∣ L)
     (hh : Inv k L (ch ε) h) (γ : SL(2, ℤ)) (hγ : (L : ℤ) ∣ γ 1 0) (δ : M2) (hδ : 0 < δ.det) (τ : ℍ) :
     K k N ε h f (δ * (γ : M2)) τ = K k N ε h f δ (γ • τ) := by
-  have hcoc := (GlobalTheory.T.slashIntMatrixPosDet_properties k f hk).1
-  have hsl := (GlobalTheory.T.slashIntMatrixPosDet_properties k (slz k δ f) hk).2.1
+  have hcoc := (_root_.GlobalTheory.EisM.slz_props k f hk).1
+  have hsl := (_root_.GlobalTheory.EisM.slz_props k (slz k δ f) hk).2.1
   have hγN : (N : ℤ) ∣ γ 1 0 := dvd_trans (Int.natCast_dvd_natCast.mpr hNL) hγ
   have e2 := hh γ hγ τ
   have e1 := (congrFun (hcoc δ (γ : M2) hδ (by simp)) τ).trans (hsl γ τ)
@@ -145,7 +146,7 @@ open GlobalTheory.EisM.PetAdj in
 
 theorem GlobalTheory.EisM.pet_hsum_adjoint : ∀ (k L N q : ℕ) (ε : DirichletCharacter ℂ N) (ρ : ℍ → ℝ) (Δ : Set M2) (ι κ : Type) [Fintype ι] [Fintype κ] (β : ι → M2) (α : κ → M2) (h f : ℍ → ℂ), 1 ≤ k → 0 < N → N ∣ L → 0 < q → q.Coprime N → Wt L ρ → (∀ δ ∈ Δ, δ.det = q ∧ (N : ℤ) ∣ δ 1 0) → LRep L Δ β → RRep L Δ α → Inv k L (ch ε) h → Inv k L (ch ε) f → Continuous h → Continuous f → (∀ i, Integrable (fun τ : ℍ => (ρ τ : ℂ) * (conj (h τ) * slz k (β i) f τ * (τ.im : ℂ) ^ k))) → pet k ρ h (hsum k (ch ε) β f) = pet k ρ (fun τ => ∑ j, ch ε⁻¹ (α j 0 0) * slz k (α j).adjugate h τ) f := by
   intro k L N q ε ρ Δ ι κ _ _ β α h f hk _ hNL hq _ hρ hΔ hL hR hh hf hhc hfc hint
-  have hcont := (GlobalTheory.T.slashIntMatrixPosDet_properties k f hk).2.2.2.1
+  have hcont := (_root_.GlobalTheory.EisM.slz_props k f hk).2.2.2.1
   have hβ : ∀ i, β i ∈ Δ := fun i => by
     simpa using hL.mapsTo (Set.mem_univ ((1 : Gamma0 L), i))
   have hα : ∀ j, α j ∈ Δ := fun j => by
@@ -166,7 +167,7 @@ theorem GlobalTheory.EisM.pet_hsum_adjoint : ∀ (k L N q : ℕ) (ε : Dirichlet
     simp only [K]; ring
   haveI : Countable SL(2, ℤ) := by
     unfold Matrix.SpecialLinearGroup Matrix; infer_instance
-  obtain ⟨hQ, key⟩ := GlobalTheory.T.double_coset_adjoint_of_invariant_weight (GL (Fin 2) ℝ) ℍ (Gamma0 L) ι κ volume φ ρ (fun i => toG (β i))
+  obtain ⟨hQ, key⟩ := _root_.GlobalTheory.EisM.abstract_double_coset_adjoint (GL (Fin 2) ℝ) ℍ (Gamma0 L) ι κ volume φ ρ (fun i => toG (β i))
     (fun j => toG (α j)) e (fun i => K k N ε h f (β i)) (fun j => K k N ε h f (α j))
     hρ.meas hρ.nonneg hρ.sum
     (fun p => by

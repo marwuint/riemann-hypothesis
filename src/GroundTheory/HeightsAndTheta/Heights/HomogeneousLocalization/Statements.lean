@@ -32,20 +32,6 @@ def FSIndex.Statement : Prop :=
         ‖fibreEquivComplex ((self A N).evalAtPoint x) (point_mem_stdOpen x hj)
             (isBasisOn_frame (A := A) j n) s‖ * ‖x.1.rep j‖ ^ n / norm2 x.1.rep ^ n
 
-lemma pointQ_rep_ne_zero : pointQ.1.rep 0 ≠ 0 := by
-  obtain ⟨a, ha⟩ := Projectivization.exists_smul_eq_mk_rep ℂ (Pi.single (0 : Fin 2) (1 : ℂ) : Fin 2 → ℂ)
-    (by simp [funext_iff, Pi.single_apply])
-  change (basePoint 1).rep 0 ≠ 0
-  rw [basePoint, ← ha]
-  simp [Units.smul_def]
-
-example : (self (𝓞 ℚ) 1).H0 (twistN (𝓞 ℚ) 1 1) := polySection (ProjSpace.X_mem (A := 𝓞 ℚ) 0)
-
-example : ℂ :=
-  fibreEquivComplex ((self (𝓞 ℚ) 1).evalAtPoint pointQ) (point_mem_stdOpen pointQ pointQ_rep_ne_zero)
-    (isBasisOn_frame (A := 𝓞 ℚ) 0 1)
-    ((self (𝓞 ℚ) 1).evalGlobalSection (twistN (𝓞 ℚ) 1 1) pointQ (polySection (ProjSpace.X_mem (A := 𝓞 ℚ) 0)))
-
 end SectionsLatticeFS
 
 end

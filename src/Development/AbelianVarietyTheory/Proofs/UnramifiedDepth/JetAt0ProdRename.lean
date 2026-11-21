@@ -216,17 +216,6 @@ theorem _root_.GlobalTheory.JetProd.jetAt0_prod_rename (hd : ∀ i j x y, e i x 
     Nat.cast_prod, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
   rfl
 
-theorem mvExp_zero' {σ : Type} : mvExp (0 : MvPowerSeries σ C) = 1 := by
-  classical
-  ext m
-  show (∑ k ∈ Finset.range (m.degree + 1),
-    MvPowerSeries.coeff m ((0 : MvPowerSeries σ C) ^ k) / (k.factorial : C)) = _
-  rw [Finset.sum_eq_single 0]
-  · simp
-  · intro k _ hk
-    simp [zero_pow hk]
-  · simp
-
 end General
 
 section Rows

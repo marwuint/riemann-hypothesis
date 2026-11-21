@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInter
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechGluingOfKodairaSpencerRelation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubmoduleEqTopOfSupMaximalSmulEqTop
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechH1FiniteGenerationAffineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCocycleEqCoboundaryAddLogDerivativesModStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechH1FiniteGenerationAffine
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCocycleEqCoboundaryAddLogDerivativesMod
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LogKS Formalism.L2.Pj
 
@@ -67,7 +67,7 @@ theorem exists_dlog_add_coboundary : ∀ (E : Type) [Field E] [NumberField E] [I
   let S : Submodule Γ(X, U.1) (∀ p : J × J, Γ(t.G.left, W p.1 ⊓ W p.2)) :=
     Bd ⊔ Submodule.span Γ(X, U.1) (Set.range κ)
   let S' : Submodule Γ(X, U.1) Z := S.comap Z.subtype
-  obtain ⟨N, e, he, hAe⟩ := GlobalTheory.T.cech_h1_finite_generation_affine E H X t hP hA U J W hWa hcov hWU
+  obtain ⟨N, e, he, hAe⟩ := _root_.GlobalTheory.CechFin.cech_h1_finite E H X t hP hA U J W hWa hcov hWU
   let ek : Fin N → Z := fun k => ⟨fun p => e k p.1 p.2, he k⟩
   have hspan : Submodule.span Γ(X, U.1) (Set.range fun k => S'.mkQ (ek k)) = ⊤ := by
     refine eq_top_iff.2 fun q _ => ?_
@@ -93,7 +93,7 @@ theorem exists_dlog_add_coboundary : ∀ (E : Type) [Field E] [NumberField E] [I
     refine eq_top_iff.2 fun q _ => ?_
     obtain ⟨z, rfl⟩ := S'.mkQ_surjective q
     obtain ⟨θ, h, N', r, e', hr, he', hz⟩ :=
-      GlobalTheory.T.cechCocycle_eq_coboundary_add_logDerivatives_mod E H X t hP hA hK U n v hv hb δ hδ hδU hδv J W j hWa hcov hWU hj m hm
+      _root_.GlobalTheory.CechFibre.exists_dlog_add_coboundary_mod E H X t hP hA hK U n v hv hb δ hδ hδU hδv J W j hWa hcov hWU hj m hm
         (fun i i' => z.1 (i, i')) z.2
     let ek' : Fin N' → Z := fun k => ⟨fun p => e' k p.1 p.2, he' k⟩
     have hmem : z - ∑ k, r k • ek' k ∈ S' := by

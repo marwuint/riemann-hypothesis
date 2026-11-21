@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Geometrica
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLocModelIsPrimeOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotDominatesTopPlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrPlaceTopFormOrdersApi
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPolynomialIdealEqBotOfPderivStableNoConstantsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPolynomialIdealEqBotOfPderivStableNoConstants
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicIndependentEtaleTowerCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAlgebraicOverMvPolynomialRangeEtaleTowerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAlgebraicOverMvPolynomialRangeEtaleTower
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAlgebraicMvPolynomialEvalAdjoinEtaleTowerCoordStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAlgebraicOfSubringIsAlgebraicStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace
@@ -55,7 +55,7 @@ theorem IsEtTower.eval₂Hom_injective {K L : Type} [Field K] [Field L] {cK : �
     {τ : Fin r → T} (h : IsEtTower cK R cL T ι ψ τ) :
     Function.Injective (MvPolynomial.eval₂Hom ι τ) := by
   haveI := charZero_subring_of_complex cK R
-  have hI := GlobalTheory.T.mvPolynomial_ideal_eq_bot_of_pderiv_stable_no_constants r (RingHom.ker (MvPolynomial.eval₂Hom ι τ))
+  have hI := _root_.GlobalTheory.mvPolynomial_ideal_eq_bot_of_pderiv_stable r (RingHom.ker (MvPolynomial.eval₂Hom ι τ))
     (fun P hP i => h.eval₂Hom_pderiv_eq_zero P i hP)
     (fun a ha => by
       rw [RingHom.mem_ker, MvPolynomial.eval₂Hom_C] at ha
@@ -73,7 +73,7 @@ theorem isFreeGen_dForm_tower : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ �
   have hind := GlobalTheory.T.algebraicIndependent_etaleTower_coordinates cK cL n r R T ι ψ τ x h hx hinj
   have halg : Algebra.IsAlgebraic
       (Algebra.adjoin ℂ (Set.range (Fin.append (fun i => (τ i : L)) (fun i => (ι (x i) : L))))) L := by
-    refine ⟨fun z => GlobalTheory.T.isAlgebraic_of_isAlgebraic_over_algebraic_subring _ _ z ?_ (GlobalTheory.T.isAlgebraic_over_mvPolynomial_range_etaleTower cK cL r R T ι ψ τ h hinj z)⟩
+    refine ⟨fun z => GlobalTheory.T.isAlgebraic_of_isAlgebraic_over_algebraic_subring _ _ z ?_ (_root_.GlobalTheory.FieldPair.isAlgebraic_range_eval₂Hom_of_isEtTower cK cL r R T ι ψ τ h hinj z)⟩
     rintro b ⟨a, rfl⟩
     exact GlobalTheory.T.isAlgebraic_mvPolynomialEval_adjoin_etaleTowerCoords cK cL n r R T ι ψ τ x h hx a
   have htr : TrBasis cL (Fin.append (fun i => (τ i : L)) (fun i => (ι (x i) : L))) :=

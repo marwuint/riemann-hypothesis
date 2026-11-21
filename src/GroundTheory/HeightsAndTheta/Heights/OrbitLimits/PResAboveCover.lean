@@ -1,6 +1,16 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StatementsResAboveCover
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivPushA
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.KerEqBotOfCoord
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedC
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterGood
+import ReciprocityTheory.AnalyticForms.PotentialTheory.SNCAtlas
+import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsArith
+import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.IsIntersectionFamily
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsNonvanishingDense
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -128,46 +138,5 @@ theorem ResAboveCover.surj_all (hND : HilbertSamuel.NonvanishingDense.Statement)
   obtain ⟨-, -, x₀, -, -, h, -⟩ := ResAboveCover.exists_limit R (v := fun w => w)
     (tendsto_id.mono_left nhdsWithin_le_nhds) hv.1 hex
   exact ⟨x₀, h⟩
-
-theorem ResAboveCover.mem_resAbove {P J : Ideal (MRing ι)} {e n : ℕ} (R : AnLogRes P J e)
-    (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) {y : Fin n → ℂ} {z : (Σ k, ι k) → ℂ}
-    (hz : Ψ (segre z) = Fin.cons 1 y) {x : R.X} (h : SameOrbit z (R.lift x x)) :
-    x ∈ resAbove R Ψ y (segre z) := by
-  obtain ⟨c, hc, hl⟩ := ResAboveCover.sameOrbit_symm h
-  have ht : (∏ k, c k) ≠ 0 := Finset.prod_ne_zero_iff.2 fun k _ => hc k
-  have hseg : segre (R.lift x x) = (∏ k, c k) • segre z := by
-    rw [hl]
-    funext i
-    simp [segre, Finset.prod_mul_distrib]
-  have hΨ : Ψ (segre (R.lift x x)) = (∏ k, c k) • (Fin.cons 1 y : Fin (n + 1) → ℂ) := by
-    rw [hseg, map_smul, hz]
-  refine ⟨funext fun i => ?_, ?_⟩
-  · simp only [projCoord, hΨ, Pi.smul_apply, smul_eq_mul, Fin.cons_succ, Fin.cons_zero, mul_one]
-    field_simp
-  · show (Ψ (segre (R.lift x x)) 0)⁻¹ • segre (R.lift x x) = segre z
-    rw [hΨ, hseg, smul_smul]
-    simp only [Pi.smul_apply, Fin.cons_zero, smul_eq_mul, mul_one, inv_mul_cancel₀ ht, one_smul]
-
-theorem ResAboveCover.proof (hND : HilbertSamuel.NonvanishingDense.Statement) :
-    ResAboveCover.Statement := by
-  intro K _ ι _ P J n R Ψ hP y z hz hzy V' hV'
-  by_contra hcon
-  let T : Set ((Σ k, ι k) → ℂ) := {v | v ∈ mcPts P ∧ ¬ ∃ x ∈ resAbove R Ψ y (segre z),
-    ∃ y₁ ∈ V' x ∩ R.U x, SameOrbit v (R.lift x y₁)}
-  have : (𝓝[T] z).NeBot := by
-    rw [← mem_closure_iff_nhdsWithin_neBot, mem_closure_iff_nhds]
-    intro N hN
-    by_contra hN'
-    refine hcon ⟨N, hN, fun v hv => ?_⟩
-    by_contra hbad
-    exact hN' ⟨v, hv.2, hv.1, hbad⟩
-  obtain ⟨F, x, x₀, hFl, hx, hz₀, hev⟩ := ResAboveCover.exists_limit R (l := 𝓝[T] z)
-    (v := fun w => w) (tendsto_id.mono_left nhdsWithin_le_nhds) hz.1
-    (eventually_nhdsWithin_of_forall fun w hw => ResAboveCover.surj_all hND P J R hP w hw.1)
-  have hx₀ : x₀ ∈ resAbove R Ψ y (segre z) := ResAboveCover.mem_resAbove R Ψ hzy hz₀
-  have hV : ∀ᶠ a in (F : Filter _), x a ∈ V' x₀ := hx (hV' x₀ hx₀)
-  have hT : ∀ᶠ a in (F : Filter _), a ∈ T := hFl self_mem_nhdsWithin
-  obtain ⟨a, ⟨hU₁, hso⟩, hVa, haT⟩ := (hev.and (hV.and hT)).exists
-  exact haT.2 ⟨x₀, hx₀, x a, ⟨hVa, hU₁⟩, hso⟩
 
 end GroundTheory.Heights₂.Heights.Targets

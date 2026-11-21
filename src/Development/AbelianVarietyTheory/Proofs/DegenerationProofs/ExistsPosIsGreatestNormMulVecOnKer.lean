@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ValUnitNeZero
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitWeightZeroIntegralCoordsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitWeightZeroIntegralCoords
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveModel
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
@@ -224,7 +224,7 @@ theorem exists_pos_isGreatest_norm_mulVec_on_ker : GlobalTheory.UT.LL → ∀ (o
     hsm hgi gj.1 _ _ _ ψ ω ρ.P.isLB u.U.LG.isLB hω _ _ ψ' hψ' S.N S.J ρ.s σ b
     (fun x v hx hv => hlink (Over.homMk x hx) v ⟨x ≫ ψ', by rw [Category.assoc, hψ']; rfl, hv⟩)
     (fun c w hc hw => by
-      obtain ⟨⟨i, -, hi⟩, -⟩ := GlobalTheory.T.exists_unit_weightZero_integral_coords hLL.1 hLL.2.1 p u.V u.j u.G S.g S.N (S.r * S.N) _ l.q _ _ σ cls md
+      obtain ⟨⟨i, -, hi⟩, -⟩ := _root_.GlobalTheory.ZH.ModPrim.exists_unit_and_residue_point hLL.1 hLL.2.1 p u.V u.j u.G S.g S.N (S.r * S.N) _ l.q _ _ σ cls md
         ⟨four_le ρ, hbig.1, hbig.2.1⟩ c w hc hw
       exact ⟨i, hi⟩)
 

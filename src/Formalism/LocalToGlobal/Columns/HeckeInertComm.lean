@@ -87,11 +87,6 @@ theorem hi_isCoprime {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) : IsCoprim
 theorem hi_sup_inert_split {P Q : HeightOneSpectrum (𝓞 E)} (h1 : P ≠ Q) (h2 : P ≠ conjPrime₂ Q) (k : ℕ) :
     P.asIdeal ^ k ⊔ Q.asIdeal * (conjPrime₂ Q).asIdeal = ⊤ := Ideal.isCoprime_iff_sup_eq.1 ((hi_isCoprime h1).mul_right (hi_isCoprime h2)).pow_left
 
-theorem hi_sup_split_inert {P Q : HeightOneSpectrum (𝓞 E)} (h1 : P ≠ Q) (h2 : P ≠ conjPrime₂ Q) (k : ℕ) :
-    Q.asIdeal * (conjPrime₂ Q).asIdeal ⊔ P.asIdeal ^ k = ⊤ := by
-  rw [sup_comm]
-  exact hi_sup_inert_split h1 h2 k
-
 theorem hi_sup_inert_inert {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) (k l : ℕ) :
     P.asIdeal ^ k ⊔ Q.asIdeal ^ l = ⊤ := Ideal.isCoprime_iff_sup_eq.1 (hi_isCoprime h).pow
 

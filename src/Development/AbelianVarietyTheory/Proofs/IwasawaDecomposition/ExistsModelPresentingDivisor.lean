@@ -2,12 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FromModelAddStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FromModelNegStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FromModelZeroLogConstantStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FromModelZeroLogConstant
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FromModelOfLocMaxStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNormalModelOverProjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TangentSectionsOnNormalModelStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNormalModelOverProjective
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TangentSectionsOnNormalModel
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FrameCombinationCoeffUnique
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFrameComposeRingHomBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFrameComposeRingHomBaseChange
+import Development.AbelianVarietyTheory.Statements.HeightBoundStatement.HTBoundSt
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LineModel
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IoOfLeOneIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpecializes
 
@@ -44,7 +46,7 @@ theorem Good.neg {Δ : Y.Dv} {t : Y.X → Y.Fnˣ} {φ : PtFn Y} (h : Good Y Δ t
 
 theorem good_const (a : F) (n : ℕ) (ha : a ≠ 0) (hn : n ≠ 0) :
     Good Y 0 (fun _ => 1) (fun _ e _ => Real.log (e.w (algebraMap F (AlgebraicClosure F) a)) / n) :=
-  ⟨fun y => CartierDiv.isEqn_zero y, GlobalTheory.T.fromModel_zero_log_constant F Y a n ha hn⟩
+  ⟨fun y => CartierDiv.isEqn_zero y, _root_.GlobalTheory.LineNorm.fromModel_const F Y a n ha hn⟩
 
 theorem good_zero : Good Y 0 (fun _ => 1) (fun _ _ _ => 0) :=
   (good_const 1 1 one_ne_zero one_ne_zero).congr rfl (fun _ => rfl) (fun _ _ _ => by simp)
@@ -124,7 +126,7 @@ theorem good_step (hB : HTBoundSt) [IsLocallyNoetherian X] (hX : X.IsSeparated) 
       (fun v e y => ∑ l : Fin k, stepLog t ρ f q (Fin.castLE hk l) v e y) := fun k hk => by
     have he : ∀ y, (∑ l : Fin k, Δ (Fin.castLE hk l)).IsEqn y (∏ l : Fin k, d y (Fin.castLE hk l)) := fun y =>
       isEqn_sum _ y fun l => hΔ y _
-    exact ⟨he, GlobalTheory.T.fromModel_of_locMax' F Y M _ _ _ he (GlobalTheory.T.tangent_sections_on_normal_model hB E H X t hX F Y M ρ' ρ hM hρ m u₀ f d h q k hk)⟩
+    exact ⟨he, GlobalTheory.T.fromModel_of_locMax' F Y M _ _ _ he (_root_.GlobalTheory.LineNorm.Chart.locMax_flag hB E H X t hX F Y M ρ' ρ hM hρ m u₀ f d h q k hk)⟩
   have hi : Fin.castLE (Nat.succ_le_of_lt i.2) (Fin.last i) = i := rfl
   refine ((key (i + 1) i.2).add (key i i.2.le).neg).congr ?_ (fun y => ?_) (fun v e y => ?_)
   · rw [Fin.sum_univ_castSucc, hi]
@@ -216,7 +218,7 @@ omit [NumberField F] in
 theorem isFrame_fr (y : C.Y.X) {k : Type} [CommRing k] (ψ : C.Y.X.presheaf.stalk y →+* k) :
     GlobalTheory.LocM.IsFrame Z.t (ψ.comp (C.gr_spec y).choose) (spMap ψ ≫ stalkPt C.Y y ≫ C.π ≫ genι Z)
       (Vecs.bc ψ (fr C y).v) :=
-  GlobalTheory.T.isFrame_compose_ringHom_baseChange E H Dw l c Z.X Z.t _ k _ ψ _ (fr C y).v
+  _root_.GlobalTheory.ShFam.Pad.isFrame_baseChange E H Dw l c Z.X Z.t _ k _ ψ _ (fr C y).v
     ⟨fun τ i => ⟨(fr C y).tan τ i, (fr C y).eig τ i⟩, (fr C y).basis⟩
 
 attribute [local instance] Over.cartesianMonoidalCategory in
@@ -354,15 +356,5 @@ theorem fromModel_lgOf (hB : HTBoundSt) [IsLocallyNoetherian Z.X] (hX : Z.X.IsSe
   exact h₃
 
 end Flags
-
-theorem exists_model_lgOf : HTBoundSt → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (fl : s.Flag), AdmEx S κ → ∀ (k : s.Comp) (w : Sym D.host.E →₀ ℤ), (∀ a ∈ w.support, {q | a.1 q = true}.Finite) → ∃ (M : GlobalTheory.TrueGeo.Model (fl.C k).Y) (L : LB M.X) (m : ℕ+) (r : (L.pull M.j).ι → (fl.C k).Y.Fnˣ), L.IsLB ∧ Presents ((m : ℕ) • divOf (fl.C k) (expo S.Dw w)) (L.pull M.j) r ∧ ∀ (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (e : Ext v) (y : AlgPt (fl.C k).Y) (yt : Sp e.O ⟶ M.X) (i : (L.pull M.j).ι), spMap e.O.subtype ≫ yt = y.1 ≫ M.j → ⊤ ≤ yt ⁻¹ᵁ L.U (i PUnit.unit) → ((m : ℕ) : ℝ) * lgOf (fl.C k) w v e y = Real.log (e.w (valAt y.1 (((eqn (divOf (fl.C k) (expo S.Dw w)) (below y.1))⁻¹ ^ (m : ℕ) * r i : (fl.C k).Y.Fnˣ) : (fl.C k).Y.Fn))) := by
-  intro hB D A N j S κ s fl _ k w hw
-  obtain ⟨hX, hN, M, ρ', hM, hρ⟩ := GlobalTheory.T.exists_normal_model_over_projective D.what₂.LL (fl.C k).Y (𝓞 κ.c.F) (RingOfIntegers.mapRingEquiv κ.e)
-    s.T.Z.X s.T.Z.s ((fl.C k).π ≫ genι s.T.Z) s.T.Z.proj (by
-      rw [← (fl.C k).π_str]
-      simp only [Category.assoc]
-      rw [pullback.condition_assoc, ← Spec.map_comp, ← Spec.map_comp]
-      rfl)
-  exact fromModel_lgOf (fl.C k) hB hX M ρ' hM hρ w hw
 
 end GlobalTheory.LineNorm

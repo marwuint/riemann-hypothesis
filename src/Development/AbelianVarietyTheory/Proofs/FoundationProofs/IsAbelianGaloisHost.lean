@@ -152,59 +152,6 @@ theorem exists_eigenBasis {S : Scheme.{0}} {T : SAB H S} {R : Type} [CommRing R]
 
 variable {Y : Model Xo c β} {Xc : (Xo.XF c).Opens} {τ : E →+* ℂ}
 
-def LiesOver {R : Type} [CommRing R] {j : c.F →+* R} (a : FramedFlatCoordinates.Framed Y Xc τ R j) (y : Sp R ⟶ Xo.XF c) : Prop :=
-  a.x = y ≫ Y.jQ ∧ ∀ z, y z ∈ Xc
-
-def IsFibre {R : Type} [CommRing R] {j : c.F →+* R} (a : FramedFlatCoordinates.Framed Y Xc τ R j) (t : SAB H (Sp R))
-    (v : Fin Dw.p → (epsR R ⟶ t.G)) (w : Fin Dw.q → (epsR R ⟶ t.G)) : Prop :=
-  ∃ n : SABMap t Y.t (a.x ≫ pullback.fst _ _),
-    (∀ i, (v i).left ≫ n.φ = (a.v i).left) ∧ ∀ i, (w i).left ≫ n.φ = (a.w i).left
-
-def NormAtAlgebraic (sig : FramedFlatCoordinates.Rule Y Xc τ) (R : (c.F →+* ℂ) → ℝ) : Prop :=
-  ∀ (L : Type) [Field L] [NumberField L] (j : c.F →+* L) (a : FramedFlatCoordinates.Framed Y Xc τ L j) (y : Sp L ⟶ Xo.XF c)
-    (t : SAB H (Sp L)) (v : Fin Dw.p → (epsR L ⟶ t.G)) (w : Fin Dw.q → (epsR L ⟶ t.G)) (σ : L →+* ℂ) (N N' : ℝ),
-    LiesOver a y → IsFibre a t v w → EigenvectorLieDegree.IsArchSq t.G t.PP.L v σ N → EigenvectorLieDegree.IsArchSq t.G t.PP.L w σ N' →
-    ‖σ (sig L j a)‖ ^ 2 * (N / N') = R (σ.comp j) ^ 2
-
-def ValAtAlgebraic (sig : FramedFlatCoordinates.Rule Y Xc τ) (ρ : HeightOneSpectrum (𝓞 c.F) → ℝ) : Prop :=
-  ∀ (L : Type) [Field L] [NumberField L] (j : c.F →+* L) (a : FramedFlatCoordinates.Framed Y Xc τ L j) (y : Sp L ⟶ Xo.XF c)
-    (t : SAB H (Sp L)) (v : Fin Dw.p → (epsR L ⟶ t.G)) (w : Fin Dw.q → (epsR L ⟶ t.G))
-    (𝔭 : HeightOneSpectrum (𝓞 c.F)) (𝔓 : HeightOneSpectrum (𝓞 L)) (e : ℕ) (r r' : ℝ),
-    LiesOver a y → IsFibre a t v w → (∀ z, 𝔓.valuation L (j z) = 𝔭.valuation c.F z ^ e) →
-    EigenvectorLieDegree.IsLocOrd t.G v 𝔓 r → EigenvectorLieDegree.IsLocOrd t.G w 𝔓 r' →
-    (vAdd 𝔓 (sig L j a) : ℝ) + (r - r' - Dw.q * (EigenvectorLieDegree.ordTwist H (EigenvectorLieDegree.embIn c j τ) 𝔓 : ℝ)) = e * ρ 𝔭
-
-theorem adDeg_sq {K : Type} [Field K] [NumberField K] (ρ : HeightOneSpectrum (𝓞 K) → ℝ) (R : (K →+* ℂ) → ℝ) :
-    EigenvectorLieDegree.adDeg ρ (fun σ => R σ ^ 2) = FlatLine.lineDeg R ρ := by
-  simp only [EigenvectorLieDegree.adDeg, FlatLine.lineDeg, lw, Real.log_pow, ← Finset.mul_sum, div_eq_mul_inv, ← _root_.mul_assoc]
-  rw [← finsum_mul]
-  push_cast
-  ring
-
-theorem adDeg_mul {K : Type} [Field K] [NumberField K] {s : K} (hs : s ≠ 0) {ρ : HeightOneSpectrum (𝓞 K) → ℝ}
-    (hρ : (Function.support ρ).Finite) {N : (K →+* ℂ) → ℝ} (hN : ∀ σ, 0 < N σ) :
-    EigenvectorLieDegree.adDeg (fun 𝔭 => (vAdd 𝔭 s : ℝ) + ρ 𝔭) (fun σ => ‖σ s‖ ^ 2 * N σ) = EigenvectorLieDegree.adDeg ρ N := by
-  have h := FlatLine.lineDeg_mul (r := fun σ : K →+* ℂ => ‖σ s‖) (r' := fun σ => √(N σ))
-    (fun σ => norm_pos_iff.2 ((map_ne_zero σ).2 hs)) (fun σ => Real.sqrt_pos.2 (hN σ)) (FlatLine.finite_vAdd hs) hρ
-  rw [FlatLine.lineDeg_num hs, zero_add, ← adDeg_sq, ← adDeg_sq] at h
-  simp only [Pi.mul_apply, mul_pow, Real.sq_sqrt (hN _).le] at h
-  exact h
-
 end Point
-
-section Record
-
-theorem finite_up {k k' : Type} [Field k] [NumberField k] [Field k'] [NumberField k'] {i : k →+* k'}
-    {π : HeightOneSpectrum (𝓞 k') → HeightOneSpectrum (𝓞 k)} {ε : HeightOneSpectrum (𝓞 k') → ℕ}
-    (h : IsUnder i π ε) {ρ : HeightOneSpectrum (𝓞 k) → ℝ} (hρ : (Function.support ρ).Finite) :
-    (Function.support (up π ε ρ)).Finite := by
-  choose s hs _ using h.sum
-  refine (hρ.biUnion fun 𝔭 _ => (s 𝔭).finite_toSet).subset fun 𝔓 h𝔓 => ?_
-  simp only [Set.mem_iUnion, Finset.mem_coe]
-  exact ⟨π 𝔓, right_ne_zero_of_mul h𝔓, (hs _ _).2 rfl⟩
-
-variable {D : D7} (large₂ : SizeData₂ D) {X : DivX D} (Lc : placeRankTwoOne.Loc D X)
-
-end Record
 
 end GlobalTheory.FlatRow

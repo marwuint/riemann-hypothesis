@@ -67,65 +67,6 @@ theorem cycZ_eq_χQ (g : ↥(GK Bw.Kw)) :
 
 end Cyc
 
-section TopPi
-
-variable {O : Type} [CommRing O] [IsDomain O] [TopologicalSpace (FractionRing O)]
-  {LL : Type} [Field LL] [TopologicalSpace LL] [IsTopologicalRing LL] (e : FractionRing O ≃+* LL)
-  (n : Type) [Fintype n]
-
-def coordLL (a : n) : TrV e (n → FractionRing O) →ₗ[LL] LL where
-  toFun v := e ((v : n → FractionRing O) a)
-  map_add' u v := by
-    show e ((u : n → FractionRing O) a + (v : n → FractionRing O) a) = _
-    rw [map_add]
-  map_smul' c v := by
-    show e (e.symm c * (v : n → FractionRing O) a) = c * e ((v : n → FractionRing O) a)
-    rw [map_mul, RingEquiv.apply_symm_apply]
-
-def fromLL : (n → LL) →ₗ[LL] TrV e (n → FractionRing O) where
-  toFun u := (fun a => e.symm (u a) : n → FractionRing O)
-  map_add' u v := by
-    funext a
-    show e.symm (u a + v a) = e.symm (u a) + e.symm (v a)
-    rw [map_add]
-  map_smul' c u := by
-    funext a
-    show e.symm (c * u a) = e.symm c * e.symm (u a)
-    rw [map_mul]
-
-theorem topMatch_pi (hK : HomeoK e) : TopMatch e (n → FractionRing O) := by
-  unfold TopMatch
-  haveI : IsModuleTopology LL (TrV e (n → FractionRing O)) := ⟨rfl⟩
-  have hcoord : ∀ a : n, Continuous (fun v : TrV e (n → FractionRing O) => (v : n → FractionRing O) a) := by
-    intro a
-    have h1 : Continuous (coordLL e n a) := IsModuleTopology.continuous_of_linearMap _
-    have h2 := hK.2.comp h1
-    have h3 : ((e.symm : LL → FractionRing O) ∘ (coordLL e n a)) =
-        (fun v : TrV e (n → FractionRing O) => (v : n → FractionRing O) a) := by
-      funext v
-      show e.symm (e ((v : n → FractionRing O) a)) = (v : n → FractionRing O) a
-      exact RingEquiv.symm_apply_apply e _
-    rw [h3] at h2
-    exact h2
-  apply le_antisymm
-  · refine continuous_id_iff_le.mp ?_
-    exact continuous_pi hcoord
-  · refine continuous_id_iff_le.mp ?_
-    have hf : Continuous (fromLL e n) := IsModuleTopology.continuous_of_linearMap _
-    have hg : Continuous (fun v : n → FractionRing O => fun a => e (v a)) :=
-      continuous_pi (fun a => hK.1.comp (continuous_apply a))
-    have hc := hf.comp hg
-    have heq : ((fromLL e n : (n → LL) → TrV e (n → FractionRing O)) ∘ fun v : n → FractionRing O => fun a => e (v a)) =
-        fun v => v := by
-      funext v
-      show (fun a => e.symm (e (v a)) : n → FractionRing O) = v
-      funext a
-      exact RingEquiv.symm_apply_apply e (v a)
-    rw [heq] at hc
-    exact hc
-
-end TopPi
-
 section RecC
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)

@@ -316,32 +316,11 @@ theorem finite_cos {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host
     Module.Finite.of_restrictScalars_finite (𝓞 D.host.E) _ _
   exact Module.finite_of_finite (𝓞 D.host.E ⧸ 𝔪) (M := homLat Λ Λ' ⧸ (𝔪 • ⊤ : Submodule (𝓞 D.host.E) (homLat Λ Λ')))
 
-example : antiDiagonalSignGramMatrix 3 (-1 : ℤ) = !![0, 0, 1; 0, -1, 0; 1, 0, 0] := by decide
-
-example : antiDiagonalSignGramMatrix 4 (-1 : ℤ) = !![0, 0, 0, 1; 0, 0, 1, 0; 0, 1, 0, 0; 1, 0, 0, 0] := by decide
-
 abbrev diagSp (D : D7) (n : ℕ) (neg : Fin n → Bool) (p q : ℕ) : HSp D := Examples₂.stdSpace Examples₂.star_isIntegral n neg p q
 
 theorem diagSp_gram (n : ℕ) (neg : Fin n → Bool) (p q : ℕ) :
     (diagSp D n neg p q).gram = Matrix.diagonal fun i : Fin n => (Examples₂.sgn (neg i) : D.host.E) :=
   Matrix.ext fun i j => Examples₂.stdSpace_gram_apply _ n neg p q i j
-
-def exDec (D : D7) : HermitianOrthogonalExtensionData (diagSp D 0 ![] 0 0) (diagSp D 3 ![false, true, true] 1 2) 3 (-1) where
-  ι := 0
-  isom := fun x y => by
-    have : x = 0 := funext fun i => i.elim0
-    subst this; simp
-  a := (!![1, 0, 1 / 2; 1, 0, -1 / 2; 0, 1, 0] : Matrix (Fin 3) (Fin 3) D.host.E)
-  gram := by
-    rw [diagSp_gram]
-    show Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (!![1, 0, 1 / 2; 1, 0, -1 / 2; 0, 1, 0] : Matrix (Fin 3) (Fin 3) D.host.E) *
-      (Matrix.diagonal fun i : Fin 3 => (Examples₂.sgn (![false, true, true] i) : D.host.E)) *
-      (!![1, 0, 1 / 2; 1, 0, -1 / 2; 0, 1, 0] : Matrix (Fin 3) (Fin 3) D.host.E) = _
-    refine Matrix.ext fun i j => ?_
-    simp only [Matrix.mul_apply, Fin.sum_univ_three, Formalism.UG.cT, transpose_apply, map_apply]
-    fin_cases i <;> fin_cases j <;> simp [antiDiagonalSignGramMatrix, Examples₂.sgn, Matrix.diagonal, map_ofNat] <;> norm_num
-  perp := Matrix.ext fun i => i.elim0
-  rank := rfl
 
 end GlobalTheory.ChiGrid
 

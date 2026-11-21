@@ -157,39 +157,7 @@ abbrev jFR : Spec (CommRingCat.of F) ⟶ Spec (CommRingCat.of R) := jFK (R := R)
 
 abbrev BFo : Over (Spec (CommRingCat.of F)) := (Over.pullback (jFR (R := R) F)).obj D.P.A
 
-abbrev prBo : (BFo D F).left ⟶ D.P.A.left := pullback.fst _ _
-
-abbrev overR (Y : Over (Spec (CommRingCat.of F))) : Over (Spec (CommRingCat.of R)) :=
-  Over.mk (Y.hom ≫ jFR (R := R) F)
-
-def ptOfBFo {Y : Over (Spec (CommRingCat.of F))} (e : Y ⟶ BFo D F) : overR (R := R) F Y ⟶ D.P.A :=
-  Over.homMk (e.left ≫ prBo D F) (by
-    simp only [overR, Over.mk_hom, Category.assoc, prBo, pullback.condition]
-    rw [← Over.w e]
-    rfl)
-
-def oFφ {Y : Over (Spec (CommRingCat.of F))} (e : Y ⟶ BFo D F) (χ : D.X) :
-    Fin 4 → (Y.left ⟶ D.P.A.left) :=
-  ![(padd D.P.A (ptOfBFo D F e) (toUnit _ ≫ D.c χ)).left, (toUnit (overR (R := R) F Y) ≫ D.c χ).left,
-    (ptOfBFo D F e).left, (toUnit (overR (R := R) F Y) ≫ η[D.P.A]).left]
-
-def oFε : Fin 4 → ℤ := ![1, -1, -1, 1]
-
 end DegPre
-
-structure SplitExtIsD (E : SplitExt (Spec (CommRingCat.of F))) where
-  e : E.B ≅ DegPre.BFo D F
-  hom : IsMonHom e.hom
-  chi : D.X ≃+ E.X
-  oIso : ∀ χ : D.X,
-    ∃ t : LB.Iso (LB.LinComb D.P.L (DegPre.oFφ D F e.hom χ) DegPre.oFε) (E.O (chi χ)).L, t.IsGen
-
-def GtPtBridgeSt : Prop :=
-  ∀ (E : SplitExt (Spec (CommRingCat.of F))) (h : SplitExtIsD D F E)
-    (G : Over (Spec (CommRingCat.of F))) [GrpObj G] (Dat : E.GtDatum G),
-    ∃ φ : (𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ G) ≃ GtPtF D F,
-      (∀ x x', GtPtF.IsAdd (φ x) (φ x') (φ (x * x'))) ∧
-      ∀ x, (φ x).b.left = (x ≫ Dat.q ≫ h.e.hom).left ≫ DegPre.prBo D F
 
 end Bridge
 

@@ -194,8 +194,4 @@ theorem permAt (p : PtAt ex Csz) (j : Fin D.R.m) (P : Formalism.CohomologicalDes
 
 end Point
 
-theorem permSt : InRange fun _ _ _ _ p j P _ w => SmallAt p j P w → PermAt p j P w := by
-  unfold InRange AtPts
-  exact ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p _ _ j P W _ _ w _ _ _ => permAt p j P w⟩⟩⟩
-
 end GlobalTheory.FramePerm

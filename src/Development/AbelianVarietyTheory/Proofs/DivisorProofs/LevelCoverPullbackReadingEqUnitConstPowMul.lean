@@ -123,12 +123,6 @@ section Flag
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
-@[reducible] def fieldAt {K : Type} [Field K] (σ : K →+* ℂ) : Field (CAt σ) :=
-  { (inferInstance : CommRing (CAt σ)), (inferInstanceAs (Field ℂ) : Field (CAt σ)) with }
-
-theorem algClosedAt {K : Type} [Field K] (σ : K →+* ℂ) : @IsAlgClosed (CAt σ) (fieldAt σ) :=
-  inferInstanceAs (IsAlgClosed ℂ)
-
 theorem exists_pow_of_pointwise (X₂ X : Data E r) (δ : GL (Fin r) E) (hΨ : ∀ τ : E →+* ℂ, τ ∈ X₂.Ψ ↔ τ ∈ X.Ψ) {ι : Type}
     (m : ι → ℕ) (la₂ : ι → Wt X₂.Ψ r) (la : ι → Wt X.Ψ r)
     (hla : ∀ i (τ : E →+* ℂ) (h₂ : τ ∈ X₂.Ψ) (h₁ : τ ∈ X.Ψ) (a : Fin r), la₂ i ⟨τ, h₂⟩ a = la i ⟨τ, h₁⟩ a)

@@ -26,8 +26,6 @@ instance instDVR (l : ℕ) [Fact l.Prime] : IsDiscreteValuationRing (V.Ol l) := 
   rw [V.Ol_unram l]
   exact ⟨⟨_, rfl⟩⟩
 
-def vL (l : ℕ) [Fact l.Prime] (x : QbarL l) : ℝ := - Real.log ‖x‖ / Real.log l
-
 def dK (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] : ℕ := (discr K).natAbs
 
 structure FrobAt (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] (p : ℕ) where
@@ -45,11 +43,6 @@ structure FrobAt (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] (p 
   h_le : h ≤ 2
 
 namespace FrobAt
-variable {K : IntermediateField ℚ QbarQ} [FiniteDimensional ℚ K] {p : ℕ} (Fr : FrobAt K p)
-
-def q : ℕ := Formalism.ConjugateSelfDual.normV Fr.v
-
-def φ : K.fixingSubgroup := Fr.σ⁻¹
 end FrobAt
 
 def Sig2 (M e : ℕ) : Set (V.spec ℚ 2).Rep :=
@@ -99,15 +92,6 @@ def Ord3 {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ QbarQ} [FiniteDimen
   l ≠ 2 ∧ Formalism.ConjugateSelfDual.Irred (VData.toRecRep ρ) ∧ IsCSDOne (VData.toRecRep ρ) ∧
     OrdFixAbove (VData.toRecRep ρ) ![(e : ℤ), 0, -(e : ℤ)] M
 
-theorem strictAnti_wts {e : ℕ} (he : 1 ≤ e) : StrictAnti ![(e : ℤ), 0, -(e : ℤ)] := by
-  have he' : (0 : ℤ) < e := by exact_mod_cast he
-  intro i j hij
-  fin_cases i <;> fin_cases j <;> simp_all <;> omega
-
-theorem wts_eq (e : ℕ) (i : Fin 3) :
-    ![(e : ℤ) + 1, 1, 1 - (e : ℤ)] i = -(![(e : ℤ), 0, -(e : ℤ)] i.rev) - (-1) := by
-  fin_cases i <;> simp [Fin.rev] <;> ring
-
 def Sig3G (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] (e : ℕ) : Set (V.spec K 3).Rep :=
   {π | π ∈ Formalism.MainNotions.UnitaryThreeHeightBounds.Sig3 V K (3 * condV D) e ∧
     ∃ (l : ℕ) (_ : Fact l.Prime) (ι : QbarL l ≃+* ℂ) (χ : Chi D) (g1 : GQ) (ξ : V.S3 l e χ K g1 →+* QbarL l),
@@ -139,54 +123,6 @@ instance (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] (e : ℕ) :
 
 instance (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] (e : ℕ) : Fintype (Lab V K e) :=
   Fintype.ofFinite _
-
-section Num
-
-variable {K : IntermediateField ℚ QbarQ} [FiniteDimensional ℚ K] {p : ℕ} (e : ℕ) (χ : Chi D) (Fr : FrobAt K p)
-
-def t3 (π : (V.spec K 3).Rep) : ℂ := ((V.spec K 3).hecke π Fr.v).roots.sum / (Fr.q : ℂ)
-
-def t2 (π : (V.spec ℚ 2).Rep) : ℂ :=
-  1 + ((Fr.q : ℂ) ^ e)⁻¹ * (((V.spec ℚ 2).hecke π Fr.vp).roots.map (· ^ Fr.h)).sum
-
-def tt : Lab V K e → ℂ := Sum.elim (fun π => t3 V Fr π.1) (fun π => t2 V e Fr π.1)
-
-def zetaP : ℂ := ((V.chiGQ χ (Fr.φ : GQ) : ℂˣ) : ℂ)
-
-def EisC : ℂ := ((Fr.q : ℂ) ^ e)⁻¹ * zetaP V χ Fr + 1 + (Fr.q : ℂ) ^ e * (zetaP V χ Fr)⁻¹
-
-def fac (τ : Lab V K e) : ℂ := (Fr.q : ℂ) ^ e * (tt V e Fr τ - EisC V e χ Fr)
-
-def prodChi : ℂ := ∏ τ : Lab V K e, fac V e χ Fr τ
-
-open Classical in
-
-def NNc : ℂ := ∏ χ'' ∈ Finset.univ.filter (Formalism.MainNotions.UnitaryThreeHeightBounds.ChiConj D χ), prodChi V e χ'' Fr
-
-end Num
-
-section Ring
-
-variable {V}
-variable {l : ℕ} [Fact l.Prime] {e : ℕ} {χ : Chi D} {K : IntermediateField ℚ QbarQ} {g1 : GQ}
-
-def NegNZ3 (ξ : V.S3 l e χ K g1 →+* QbarL l) : Prop := ∃ j : ℤ, j < 0 ∧ ∃ x ∈ V.S3gr l e χ K g1 j, ξ x ≠ 0
-
-def PosNZ3 (ξ : V.S3 l e χ K g1 →+* QbarL l) : Prop := ∃ j : ℤ, 0 < j ∧ ∃ x ∈ V.S3gr l e χ K g1 j, ξ x ≠ 0
-
-def Both3 (ξ : V.S3 l e χ K g1 →+* QbarL l) : Prop := NegNZ3 ξ ∧ PosNZ3 ξ
-
-def SameOrbit3 (ξ ξ' : V.S3 l e χ K g1 →+* QbarL l) : Prop :=
-  ∃ t : (QbarL l)ˣ, ∀ (j : ℤ), ∀ x ∈ V.S3gr l e χ K g1 j, ξ' x = (t : QbarL l) ^ j * ξ x
-
-variable (V l e χ g1) in
-
-def aP [FiniteDimensional ℚ K] {p : ℕ} (Fr : FrobAt K p) : V.S3 l e χ K g1 :=
-  ((V.unitaryGaloisRepresentation l e χ K g1 Fr.φ : GL (Fin 3) (V.S3 l e χ K g1)) : Matrix (Fin 3) (Fin 3) (V.S3 l e χ K g1)).trace -
-    algebraMap (V.Ol l) (V.S3 l e χ K g1)
-      (V.psi l e χ (Fr.φ : GQ) + 1 + V.psi l e χ ((Fr.φ : GQ)⁻¹))
-
-end Ring
 
 open Formalism.MainNotions.GradedPowerSeriesLemmas in
 

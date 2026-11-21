@@ -1,9 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMinAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTautologicalChartAtSiegelBlowupPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TautologicalChartCentreIsCompletedEtaleLocalMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartSeparationDataDefinedOverCentreFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTautologicalChartAtSiegelBlowupPoint
+import Development.AbelianVarietyTheory.Definitions.Divisors.GalRigidOfSurjective
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TautologicalChartCentreIsCompletedEtaleLocalMap
+import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartSeparationDataDefinedOverCentreField
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
+import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularLocalRingAndIsRelParam
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothOfRelativeDimensionOfIsEtaleCompletion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTypeCycAway
@@ -162,10 +168,10 @@ theorem smoothOfRelativeDimension_blowup : ∀ g : ℕ, 1 ≤ g → ∀ φ : Inv
     rw [← Scheme.Hom.smoothLocus_eq_top_iff, ← top_le_iff]
     rintro x -
     obtain ⟨C, G₁, _, y, α₁, ξ, hfam, hy, rfl⟩ :=
-      GlobalTheory.T.exists_tautological_chart_at_siegel_blowup_point g hg φ hφ hns n hn hodd F Z z i OZ d S π j BD hmin hblow x
+      _root_.GlobalTheory.TChart.exists_chart_at g hg φ hφ hns n hn hodd F Z z i OZ d S π j BD hmin hblow x
     have : IsCommMonObj G₁ := hfam.1.comm
     obtain ⟨het, -⟩ :=
-      GlobalTheory.T.tautologicalChart_centre_isCompletedEtaleLocalMap GlobalTheory.T.chartSeparation_data_defined_over_centre_field g hg φ hφ hns n hn hodd F Z z i OZ d S π j BD hmin hblow C G₁ y α₁ ξ hfam hy
+      _root_.GlobalTheory.TChartEt.isEtaleCompletion_tautChart _root_.GlobalTheory.Poinc.Sep.sepSt g hg φ hφ hns n hn hodd F Z z i OZ d S π j BD hmin hblow C G₁ y α₁ ξ hfam hy
     obtain ⟨-, -, hinj, -, -, hreg⟩ := TChart.Taut.isRegularLocalRing_and_isRelParam g n φ hn C
     have hξ : ξ ≫ π ≫ z = spMap C.b := by
       have h1 : jK C.R ≫ ξ ≫ π ≫ z = jK C.R ≫ spMap C.b := by

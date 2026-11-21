@@ -48,16 +48,4 @@ def Cusp.ConjIso {n : ℕ} (P : Cusp M n) (σ : M ≃+* M) : Prop :=
   ∀ s : Ad M ≃+* Ad M, IsGalAd σ s → ∃ P' : Cusp M n,
     P'.space = (fun f : GA M n → ℂ => fun g => f (Matrix.GeneralLinearGroup.map s.toRingHom g)) '' P.space ∧ P'.Iso P
 
-def LitCBC : Prop :=
-  ∀ (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M] [IsGalois K M],
-    (Module.finrank K M).Prime → (IsTotallyReal K ∨ IsTotallyComplex K) → (IsTotallyReal M ∨ IsTotallyComplex M) →
-    ∀ n : ℕ, 1 ≤ n →
-      (∀ π : Cusp K n, (∃ η : HChar K, IsNormChar M η ∧ (π.twist η).Iso π) ∨
-        ∃ P : Cusp M n, WeakBC π.sat P.sat ∧ ∀ τ m, π.inf (τ.comp (algebraMap K M)) m → P.inf τ m) ∧
-      (∀ P : Cusp M n, (∀ σ : M ≃ₐ[K] M, P.ConjIso σ.toRingEquiv) →
-        ∃ π : Cusp K n, WeakBC π.sat P.sat ∧ ∀ τ m, P.inf τ m → π.inf (τ.comp (algebraMap K M)) m) ∧
-      ∀ (π : Cusp K n) (P : Cusp M n), (∀ σ : M ≃ₐ[K] M, P.ConjIso σ.toRingEquiv) → WeakBC π.sat P.sat →
-        (∀ η : HChar K, IsNormChar M η → ¬ (π.twist η).Iso π) ∧
-        ∀ π₁ : Cusp K n, WeakBC π₁.sat P.sat → ∃ η : HChar K, (η = 1 ∨ IsNormChar M η) ∧ (π.twist η).Iso π₁
-
 end UpperTheory.CBC

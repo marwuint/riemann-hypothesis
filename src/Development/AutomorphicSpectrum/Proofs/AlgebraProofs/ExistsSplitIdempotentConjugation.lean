@@ -3,8 +3,8 @@ import ReciprocityTheory.DualLattices.CotangentSurjective
 import ReciprocityTheory.DualLattices.ImportsAlt
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsTight
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderRes
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TeichmullerCharacterOrderGeneratesStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussSumValuationTeichmullerStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TeichmullerCharacterOrderGenerates
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussSumValuationTeichmuller
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalCharacterIdealPowersStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualHopfOrderGaussSumStatement
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsExtraFurther
@@ -54,7 +54,7 @@ theorem rank_one_sum : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgC
   · intro cN cD hN hD
     rw [hcol cN cD hN hD, hcard, Nat.cast_pow, map_pow, ← pow_mul]
   · intro τ hτ c cD hc hcD
-    have hord := (GlobalTheory.T.teichmuller_character_order_generates p C v R hv hvp F f hcard τ hτ).1
+    have hord := (_root_.GlobalTheory.CompanionTheory.Ar.GR.FundGen.main p C v R hv hvp F f hcard τ hτ).1
     by_cases h2 : Fintype.card F = 2
     · have hpf : p ^ f = 2 := hcard.symm.trans h2
       obtain ⟨rfl, rfl⟩ := (Nat.Prime.pow_eq_iff Nat.prime_two).1 hpf
@@ -77,6 +77,6 @@ theorem rank_one_sum : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgC
         have : 1 ≤ p ^ f := Nat.one_le_pow _ _ (Fact.out : p.Prime).pos
         omega
       rw [hdual τ hne c cD hc hcD]
-      exact GlobalTheory.T.gauss_sum_valuation_teichmuller p C v R hv hvp F f hcard h2 τ hτ ψ hψ
+      exact _root_.GlobalTheory.CompanionTheory.Ar.GR.gauss_value p C v R hv hvp F f hcard h2 τ hτ ψ hψ
 
 end GlobalTheory.CompanionTheory.Ar.GR

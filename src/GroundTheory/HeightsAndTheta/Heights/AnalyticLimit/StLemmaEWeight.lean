@@ -13,10 +13,4 @@ def LemmaEWeight.Statement : Prop :=
       (∀ x ∈ secOpen s, min (c₀ * rSec L s x) l ≤ -w x ∧ -w x ≤ c₀ * rSec L s x + 1) ∧
       (∀ x, x ∉ secOpen s → l ≤ -w x)
 
-section Inhabitants
-
-open ReciprocityTheory.AnForm.M (p1 fsPot projectiveLinePairSection projLine_isSmoothPotential projLine_isHolomorphicSection)
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.AnalyticLimit

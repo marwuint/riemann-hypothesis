@@ -9,7 +9,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.PiBasic
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.DeterminantRepresentations.BnRepLin
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.MemIsotypicOfInjective
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecOfRecLiteralStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecOfRecLiteral
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalLanglandsExists
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroCuspidalLL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalConverseGL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsExhaustionGL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroInduction
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BrauerDegreeZero
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsMultisegments
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StandardCosocleGL
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Polynomial ValuativeRel IsLocalRing GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V UpperTheory.V.Hi
 open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -93,7 +107,7 @@ private theorem piPts_iso (Lit : GlobalTheory.Mem.LiteralAutomorphy.LitN) (hH : 
   obtain ⟨B, hB⟩ : ∃ B : ValuationSubring Ω, IsPlaceOver B (H.wq q) := exists_isPlaceOver Ω _
   have Lo := Lit.loc
   obtain ⟨rc, hrc0⟩ := Lo.llc L Ω B _ hB
-  have hrc : IsRec hB rc := GlobalTheory.T.rec_of_rec_literal Lo.dzc Lo.dzi Lo.exh Lo.multi Lo.cos Lo.zel Lo.geo Lo.bz L Ω B _ hB rc hrc0
+  have hrc : IsRec hB rc := _root_.GlobalTheory.LocLanglands.isRec_of_isRecLit Lo.dzc Lo.dzi Lo.exh Lo.multi Lo.cos Lo.zel Lo.geo Lo.bz L Ω B _ hB rc hrc0
   have h1 := (Y'.atQ q B hB rc hrc).of_conj (hH.Q_away q) (r' := Y.r.comp H.prj) P fun g => Units.ext (hP _)
   have h2 := (Y.atQ q B hB rc hrc).unique (hH.Q_away q) h1
   obtain ⟨a, ha, ε, -, hL⟩ := hrc

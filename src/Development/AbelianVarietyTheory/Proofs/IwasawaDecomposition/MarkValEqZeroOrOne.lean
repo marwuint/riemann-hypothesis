@@ -56,10 +56,6 @@ theorem markVal_int (n : ℕ) (β : LinearMap.BilinForm ℤ (Fin n → O)) :
     exact_mod_cast this.symm
   rw [e]
 
-example : InFace (id : ℤ → ℤ) (zeroFun ℤ) (zeroFun ℤ) mulForm mulForm :=
-  ⟨mem_balForms_int.2 fun y z => by simp [mul_comm], fun y => by simp [mul_self_nonneg], fun y h => h,
-    by simp, by simp⟩
-
 end Basic
 
 end Mark

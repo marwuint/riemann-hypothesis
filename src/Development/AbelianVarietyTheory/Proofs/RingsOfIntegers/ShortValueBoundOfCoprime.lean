@@ -4,17 +4,17 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.Pla
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.ChartValJ
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.TorsionIsotropicCommutatorPairing
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsAdaptedSimilitudeDataAtPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValueChainRuleNormalizedPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValueChainRuleNormalizedPullback
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SumHvPrimaryKernelStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.CardPrimaryTorsionTuplesKilledByMatrixStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.CardPrimaryTorsionTuplesKilledByMatrix
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IndexRangeMatrix
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymmetricTranslateMulOfCoprimeOrdersStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymmetricTranslateMulOfCoprimeOrders
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsUniqueSymmetricTranslateOddLevel
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsUniqueNormalisedPullbackRationalNorm
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.NormalisedPullbackCommutesSymmetricTranslations
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MemRangeOfIsIntegral
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymmetricTranslatesMultiplicationPullbackDescrip
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IsotropicGroupPrimaryDecompositionStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IsotropicGroupPrimaryDecomposition
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.InZhIffKillsAdapted
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
@@ -125,9 +125,9 @@ theorem moves_comm {k : ℕ} (hk : Odd k) {u t : ptO Xo x ⟶ Xo.univ.t.G} {m �
     (hc : Nat.Coprime m ℓ) (hul : ∃ j : ℕ, u ^ (ℓ ^ j) = 1) (htm : t ^ m = 1) {A A' B B' : SecN Xo x k}
     (h1 : Moves Xo u A A') (h2 : Moves Xo t A B) (h3 : Moves Xo t A' B') : Moves Xo u B B' := by
   obtain ⟨j, hj⟩ := hul
-  have h4 := (GlobalTheory.T.symmetricTranslate_mul_of_coprime_orders E H Dw l Xo S x k hk t u m (ℓ ^ j) ht hu (hc.pow_right j) htm hj A A' B' h1).1 h3
+  have h4 := (_root_.GlobalTheory.PlaceInt.moves_mul_of_coprime E H Dw l Xo S x k hk t u m (ℓ ^ j) ht hu (hc.pow_right j) htm hj A A' B' h1).1 h3
   rw [_root_.mul_comm] at h4
-  exact (GlobalTheory.T.symmetricTranslate_mul_of_coprime_orders E H Dw l Xo S x k hk u t (ℓ ^ j) m hu ht (hc.pow_right j).symm hj htm A B B' h2).2 h4
+  exact (_root_.GlobalTheory.PlaceInt.moves_mul_of_coprime E H Dw l Xo S x k hk u t (ℓ ^ j) m hu ht (hc.pow_right j).symm hj htm A B B' h2).2 h4
 end Pts
 
 section Base
@@ -158,7 +158,7 @@ theorem exists_base {N ℓ m m' : ℕ} (hN : Odd N) (s : SecN Xo x 1) (a' t : pt
       (by rw [mul_pow, haN, ha', _root_.one_mul]) ht).1 hF
     obtain rfl := hG₀u G hG
     obtain ⟨j, hj⟩ := ha
-    have h4 := (GlobalTheory.T.symmetricTranslate_mul_of_coprime_orders E H Dw l Xo S x _ hN2 a a' (ℓ ^ j) m haN ha' (hm.pow_right j).symm hj ham
+    have h4 := (_root_.GlobalTheory.PlaceInt.moves_mul_of_coprime E H Dw l Xo S x _ hN2 a a' (ℓ ^ j) m haN ha' (hm.pow_right j).symm hj ham
       G F₁ F₂ hF₁).2 h2
     exact moves_comm Xo hN2 haN ht hm' ⟨j, hj⟩ htm h4 hF₀ h3
 
@@ -263,11 +263,11 @@ theorem ell_part (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (hst : ∀
     (by rw [A.prod, hhom, ← _root_.mul_assoc, ← map_mul, inv_mul_cancel₀ hkN0, map_one, _root_.one_mul]; exact hff)
   have hch : ∀ i, hv Xo c nab y.1 ((A.k * N) ^ 2) (fun b => pl (F (π i) b)) P =
       io (nrm Dw c w (A.k : 𝓞 E)) * hv Xo c nab y.1 (N ^ 2) (F (π i)) P := fun i =>
-    GlobalTheory.T.harmonic_value_chain_rule_normalized_pullback E H Dw l Xo c hst nab hnab T.Fr y.1 (A.k : 𝓞 E) (A.k ^ 2) (N ^ 2) _ (nat_mul_bar A.k) hlev n
+    _root_.GlobalTheory.PlaceInt.hv_pulls E H Dw l Xo c hst nab hnab T.Fr y.1 (A.k : 𝓞 E) (A.k ^ 2) (N ^ 2) _ (nat_mul_bar A.k) hlev n
       (F (π i)) _ (fun b => hpl _) w P hP.1
   obtain ⟨hi1, hi2, hi3⟩ := GlobalTheory.LatticeIndex.latidx E H Dw l c n Λ N M ℓ hU hL hp A
   obtain ⟨hi4, hi5⟩ := hi3 β hβ0 hβ T io hl
-  have hcnt := GlobalTheory.T.card_primaryTorsionTuples_killed_by_matrix E H Dw l Xo T.Fr (xOf y) ℓ hp n A.q ((N : 𝓞 E) • A.g) A.k₁ (N ^ 2) A.cop₁
+  have hcnt := _root_.GlobalTheory.card_kills_primary E H Dw l Xo T.Fr (xOf y) ℓ hp n A.q ((N : 𝓞 E) • A.g) A.k₁ (N ^ 2) A.cop₁
     (pow_pos hN.pos 2) (by rw [Matrix.smul_mul, A.gq, smul_smul]; congr 1; push_cast; ring) hR
   rw [card_kills Xo A.p A.q a hinj ha', hcnt, hi1, Finset.sum_congr rfl fun i _ => hch i, ← Finset.mul_sum,
     Equiv.sum_comp π fun i => hv Xo c nab y.1 (N ^ 2) (F i) P] at hz2
@@ -300,7 +300,7 @@ theorem GlobalTheory.short_value_bound_of_coprime : ∀ (E : Type) [Field E] [Nu
     htp hF hR ⟨m', hm', htm⟩
   letI := io.toAlgebra
   obtain ⟨J, J', _, _, a, a', σ, hinj, ha, ⟨m, hm, ham⟩, hσ, -⟩ :=
-    GlobalTheory.T.isotropic_group_primary_decomposition E H Dw l Xo T.Fr (xOf y) n Λ N M ℓ hU hL hp z hz hg
+    _root_.GlobalTheory.isotropic_primary_decomposition E H Dw l Xo T.Fr (xOf y) n Λ N M ℓ hU hL hp z hz hg
   rw [← Equiv.sum_comp σ, Fintype.sum_prod_type_right, Finset.mul_sum]
   refine GlobalTheory.ShortPrime.le_nval_sum _ _ _ _ fun i' _ => ?_
   choose F₀ h1 h2 h3 using fun b => GlobalTheory.ShortPrime.exists_base Xo hL.1 (sOf1 y) (a' i' b) (tp b) (ham i' b).2 (htp b)

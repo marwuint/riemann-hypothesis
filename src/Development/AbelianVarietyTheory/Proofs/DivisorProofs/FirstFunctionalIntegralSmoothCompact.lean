@@ -6,10 +6,10 @@ import GroundTheory.AutomorphicForms.HarishChandraInvariance.Compact
 import GroundTheory.AutomorphicForms.DixmierMalliavin
 import GroundTheory.AutomorphicForms.GKModules.ParametricIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralMulConvolutionEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvSmoothCompactSupportStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDixmierMalliavinDecompProdExpStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousLeftTranslateBoundedDerivFunctionalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegrableDensityOfBoundByIntegralCompactAStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvSmoothCompactSupport
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDixmierMalliavinDecompProdExp
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousLeftTranslateBoundedDerivFunctional
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegrableDensityOfBoundByIntegralCompactA
 open GlobalTheory.HCA MeasureTheory GroundTheory.Automorphic
 open scoped ContDiff
 
@@ -21,15 +21,15 @@ theorem smFn_nil_eq_integral_smooth : ∀ (𝔸 : Type) [NormedRing 𝔸] [Norme
   haveI : LocallyCompactSpace G := h.locallyCompactSpace
   haveI : SecondCountableTopology G := h.secondCountableTopology
   obtain ⟨ε, hε, hdens⟩ := h.exists_smooth_density_prodExp_tsupport μ b
-  obtain ⟨N, Λ', κ, hκ, hsum⟩ := GlobalTheory.T.exists_dixmierMalliavin_decomp_prodExp 𝔸 G 𝔤 h d b μ hμ S hSc hSt K hK ε hε d id Λ hΛ
+  obtain ⟨N, Λ', κ, hκ, hsum⟩ := _root_.GlobalTheory.HCA.SmFn.exists_decomp_prodExp 𝔸 G 𝔤 h d b μ hμ S hSc hSt K hK ε hε d id Λ hΛ
   choose κ' hκ'sm hκ'cs _ hκ'int using fun m => hdens (κ m) (hκ m).2.1 (hκ m).2.2
   have hKμ : μ K < ⊤ := hK.measure_lt_top
   choose C hC using fun m => (hκ m).1.bdd []
-  choose a ha using fun m => GlobalTheory.T.exists_integrable_density_of_bound_by_integral_on_compact G μ K hK hKμ S hSc (Λ' m []) (C m) ((hκ m).1.lin []) (hC m)
+  choose a ha using fun m => _root_.GlobalTheory.exists_integrable_density_of_bound_by_integral_compact G μ K hK hKμ S hSc (Λ' m []) (C m) ((hκ m).1.lin []) (hC m)
   have hκ'is : ∀ m, h.IsSmoothFun (κ' m) := fun m => hκ'sm m
   have hκ'c : ∀ m, Continuous (κ' m) := fun m => by
     letI := h.chartedSpace; exact (hκ'sm m).continuous
-  have hconv := fun m => GlobalTheory.T.smooth_hasCompactSupport_conv_of_integrable_compact 𝔸 G 𝔤 h μ hμ K hK (κ' m) (a m) (hκ'is m) (hκ'cs m) (ha m).1 (ha m).2.1 (ha m).2.2.1
+  have hconv := fun m => _root_.GlobalTheory.ConvSmooth.conv_smooth_compactSupport 𝔸 G 𝔤 h μ hμ K hK (κ' m) (a m) (hκ'is m) (hκ'cs m) (ha m).1 (ha m).2.1 (ha m).2.2.1
   refine ⟨fun z => ∑ m, ∫ x, κ' m x * a m (x⁻¹ * z) ∂μ, ?_, ?_, ?_⟩
   · have e : (fun z => ∑ m, ∫ x, κ' m x * a m (x⁻¹ * z) ∂μ) =
         ∑ m, (fun z => ∫ x, κ' m x * a m (x⁻¹ * z) ∂μ) := by
@@ -59,7 +59,7 @@ theorem smFn_nil_eq_integral_smooth : ∀ (𝔸 : Type) [NormedRing 𝔸] [Norme
           rw [hx]
       _ = ∑ m, ∫ t, κ m t * Λ' m [] (fun y => f (h.prodExp (fun k => b (id k)) t * y)) := by
           refine Finset.sum_congr rfl fun m _ => ?_
-          exact hκ'int m _ (GlobalTheory.T.continuous_leftTranslate_boundedDerivFunctional 𝔸 G 𝔤 h d b μ hμ S hSc hSt K hK (Λ' m) (hκ m).1 [] f hf)
+          exact hκ'int m _ (_root_.GlobalTheory.HCA.SmFn.continuous_leftTranslate 𝔸 G 𝔤 h d b μ hμ S hSc hSt K hK (Λ' m) (hκ m).1 [] f hf)
       _ = Λ [] f := (hsum f hf).symm
 
 end GlobalTheory.HCA

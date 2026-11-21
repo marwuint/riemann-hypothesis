@@ -74,13 +74,6 @@ theorem OL_adic : IsAdic (maximalIdeal ↥(OL LL)) := by
       rw [key]
       exact (Set.preimage_mono ((Metric.closedBall_subset_ball hn).trans h)).trans hts⟩
 
-def toC : ↥(OL LL) →+* ℂ_[l] := (algebraMap (PadicAlgCl l) ℂ_[l]).comp (toOm LL)
-
-theorem toC_injective : Function.Injective (toC LL) := fun a b h =>
-  toOm_injective LL ((algebraMap (PadicAlgCl l) ℂ_[l]).injective h)
-
-theorem norm_toC (a : ↥(OL LL)) : ‖toC LL a‖ = nrm LL a := PadicComplex.norm_extends l _
-
 def toFrac : ↥LL.1 →+* FractionRing ↥(OL LL) := (FractionRing.algEquiv ↥(OL LL) ↥LL.1).symm.toRingEquiv.toRingHom
 
 theorem toFrac_coe (a : ↥(OL LL)) : toFrac LL (a : ↥LL.1) = algebraMap ↥(OL LL) (FractionRing ↥(OL LL)) a := by

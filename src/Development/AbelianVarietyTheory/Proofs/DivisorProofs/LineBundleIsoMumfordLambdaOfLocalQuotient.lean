@@ -9,11 +9,15 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelStructurePullb
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSiegelObjectOfDescendedData
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeQuotientTriple
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectOfModelsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasModelOfSpreadingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchemeModelsSpreadStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasModelOfSpreading
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.CubeTheorem.LBSpreads
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProjOverOfIsProjOverBase
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchemeModelsSpread
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.CubeTheorem.SchemeModels
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothSpreadsOutStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsProperSpreadsOutStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LbSpreadsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsProperSpreadsOut
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LbSpreads
 
 set_option autoImplicit false
 
@@ -72,7 +76,7 @@ theorem lbIso_lam_of_quotient : ∀ (R R₀ : Type) [CommRing R] [IsLocalRing R]
   have ht₀ : GlobalTheory.AbLaw.Triv ((LB.div (abelian₂ B L) P).pull (pullback.fst (G2 B₀).hom (spMap (residue R₀)) ≫ i₂)) :=
     triv_of _ (by rw [pull_comp, pull_comp, hsq₀])
   have hPf : GlobalTheory.SpreadingModels.PerfAll :=
-    GlobalTheory.T.perfect_of_models (GlobalTheory.T.has_model_of_spreading GlobalTheory.T.scheme_models_spread GlobalTheory.T.smooth_spreads_out GlobalTheory.T.isProper_spreads_out GlobalTheory.T.line_bundle_spreads_out')
+    GlobalTheory.T.perfect_of_models (_root_.GlobalTheory.CompanionTheory.CubeModels.hasModel_of_spreads _root_.GlobalTheory.CompanionTheory.NoethApprox.schemeModels GlobalTheory.T.smooth_spreads_out _root_.GlobalTheory.CompanionTheory.SpreadingModels.properSpreads _root_.GlobalTheory.CompanionTheory.LBLimit.lbSpreads)
   haveI := hA.smooth
   haveI := hA.proper
   have sm : Smooth (B ⊗ B).hom := by

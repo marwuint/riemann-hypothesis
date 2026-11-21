@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCovolOne
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerProductLintegralLimitStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PureAdelicFunctionMeasurableStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerProductLintegralLimit
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PureAdelicFunctionMeasurable
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ISupFiniteProductTailLimit
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureZero
 
@@ -188,7 +189,7 @@ theorem finite_case (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {M d : ℕ} (J :
   let f : ℕ → (Fin 1 → Fin (M + 2) → AF F ⊗[F] E) → ℝ≥0∞ :=
     fun k => pureL b (T k) Ψinf (phi σ J b S Ψ)
   have hfm : ∀ k, Measurable (f k) := fun k =>
-    GlobalTheory.T.pure_adelic_function_measurable F E σ hσ d b 1 (M + 2) (T k) Ψinf _ hΨinf hφ
+    _root_.GlobalTheory.CompanionTheory.SW.PureMeas.measurable_pureL F E σ hσ d b 1 (M + 2) (T k) Ψinf _ hΨinf hφ
   have hfeq : ∀ k y, f k y = (cut σ J b S (T k)).indicator A y := fun k y =>
     pureL_phi σ J b (hST k) Ψinf Ψ y
   have hcut : ∀ k l, k ≤ l → cut σ J b S (T l) ⊆ cut σ J b S (T k) := by
@@ -284,7 +285,7 @@ theorem prim_formula : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   let G : ℕ → (Fin 1 → Fin (M + 2) → AF F ⊗[F] E) → ℝ≥0∞ :=
     fun k => purePr σ J b S (gi k) (fun v => g v k)
   have hGm : ∀ k, Measurable (G k) := fun k =>
-    GlobalTheory.T.euler_product_lintegral_limit F E σ hσ M J hJ d b S _ _ (gim k) (fun v => gm v k)
+    _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.PrimMeas.measurable_purePr F E σ hσ M J hJ d b S _ _ (gim k) (fun v => gm v k)
   have hpm : ∀ (a : Fin 1 → Fin (M + 2) → AF F ⊗[F] E), Monotone fun k =>
       ∏ v ∈ S, g v k (projV v (projFin a)) := fun a k l hkl =>
     Finset.prod_le_prod' fun v _ => gmono v _ hkl

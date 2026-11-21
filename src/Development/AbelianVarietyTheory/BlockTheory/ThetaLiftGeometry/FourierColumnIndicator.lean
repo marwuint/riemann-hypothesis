@@ -58,35 +58,6 @@ theorem colFn_indicator (P : HeightOneSpectrum (𝓞 E)) {n : ℕ} (y₀ : Sp E 
 
 end Notions
 
-section Padic
-
-variable {g : ℕ} [Fact g.Prime] {n : ℕ}
-
-def stdP (g : ℕ) [Fact g.Prime] (n : ℕ) : Set (Fin n → ℚ_[g]) := {y | ∀ i, ‖y i‖ ≤ 1}
-
-def InDualP (ξ : (Fin n → ℚ_[g]) →ₗ[ℚ_[g]] ℚ_[g]) : Prop := ∀ y ∈ stdP g n, ‖ξ y‖ ≤ 1
-
-def repP (t : Fin n → Fin g) : Fin n → ℚ_[g] := fun i => ((t i : ℕ) : ℚ_[g]) / (g : ℚ_[g])
-
-def fourierP [MeasurableSpace (Fin n → ℚ_[g])] (μ : Measure (Fin n → ℚ_[g])) (ψ : AddChar ℚ_[g] ℂ)
-    (f : (Fin n → ℚ_[g]) → ℂ) (ξ : (Fin n → ℚ_[g]) →ₗ[ℚ_[g]] ℚ_[g]) : ℂ :=
-  ∫ y, f y * (starRingEnd ℂ) (ψ (ξ y)) ∂μ
-
-end Padic
-
-def FourierLattice : Prop :=
-  ∀ (g : ℕ) [Fact g.Prime] (n : ℕ) [MeasurableSpace (Fin n → ℚ_[g])] [BorelSpace (Fin n → ℚ_[g])]
-    (μ : Measure (Fin n → ℚ_[g])) [μ.IsAddHaarMeasure] (ψ : AddChar ℚ_[g] ℂ),
-    (∀ a : ℚ_[g], ‖a‖ ≤ 1 → ψ a = 1) → (∃ a : ℚ_[g], ‖(g : ℚ_[g]) * a‖ ≤ 1 ∧ ψ a ≠ 1) →
-    ∀ f : (Fin n → ℚ_[g]) → ℂ,
-      (∀ y, f y ≠ 0 → (g : ℚ_[g]) • y ∈ stdP g n) → (∀ y z, z ∈ stdP g n → f (y + z) = f y) →
-      (∀ ξ : (Fin n → ℚ_[g]) →ₗ[ℚ_[g]] ℚ_[g], Integrable (fun y => f y * (starRingEnd ℂ) (ψ (ξ y))) μ) ∧
-      (∀ ξ, fourierP μ ψ f ξ ≠ 0 → InDualP ξ) ∧
-      (∀ ξ ξ', InDualP ξ' → fourierP μ ψ f (ξ + (g : ℚ_[g]) • ξ') = fourierP μ ψ f ξ) ∧
-      (∀ ξ, InDualP ξ → fourierP μ ψ f ξ =
-        (μ.real (stdP g n) : ℂ) * ∑ t : Fin n → Fin g, f (repP t) * (starRingEnd ℂ) (ψ (ξ (repP t)))) ∧
-      ((∀ y, f y ∈ Zmu ℂ g) → ∀ ξ, ∃ z ∈ Zmu ℂ g, fourierP μ ψ f ξ = (μ.real (stdP g n) : ℂ) * z)
-
 section Chain
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
@@ -124,24 +95,5 @@ def SplitAt (m2 : ℕ) (P : rowSG Pr sel mu) (hal : AutY X R m2) : Prop :=
     ∀ x₀ y, PsiAt Ch sel mu cst m2 P hal x₀ y = ∑ a, Ψ a x₀ * f a y
 
 end Chain
-
-def ChainData : Prop :=
-  ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m)
-    (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S)
-    (cst : LocCst X (rowSG Pr sel mu)) (m2 : ℕ), Pr.Ok → cst.Ok → R.m = m2 + 2 →
-    ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs →
-      (∀ hal ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) m2 P.1), SplitAt Ch sel mu cst m2 P hal) ∧
-      (∀ f : Sp X.E (R.N (m2 + 1)) → X.K, ColFn P.1 f → DualFn P.1 (fhat sel mu cst P f)) ∧
-      (∀ f : Sp X.E (R.N (m2 + 1)) → X.K, ColFn P.1 f → FnMod P.1 (topDatum Ch sel mu cst m2 P f)) ∧
-      (∀ (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (al : L.β m2),
-        L.h m2 al P ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) m2 P.1) →
-        ∀ (u : Pr.Word) (p₀ : ChPt (R := R) sel mu u m2) (p : ChPt (R := R) sel mu u (m2 + 1)),
-        ∀ Y ∈ ybSet sel mu cst p.deco.1.N,
-          FnModAt P.1 p₀.deco.1.N p.deco.1.N (facPen Ch sel mu cst L m2 al p₀ p Y P)) ∧
-      (∀ (u : Pr.Word) (p : ChPt (R := R) sel mu u (m2 + 1)) (d : RowPt Pr R sel mu),
-        ∀ Y ∈ ybSet sel mu cst p.deco.1.N,
-          FnModAt P.1 p.deco.1.N (tilQ sel mu u d).1.N (facTop Ch sel mu cst m2 p Y d P))
-
-def LastTwoSteps : Prop := FourierLattice ∧ ChainData
 
 end GlobalTheory.IndefiniteRowSideFullHecke.FourierColumnIndicator

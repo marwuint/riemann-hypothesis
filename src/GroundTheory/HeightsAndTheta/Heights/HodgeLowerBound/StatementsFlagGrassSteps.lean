@@ -79,38 +79,4 @@ def FsInvPow.Statement : Prop :=
     (d : ℕ), IsIntersectionSystem II → IsArithVar P d →
     II K ι P d (fun _ => fsHerm ι (fun _ => -1)) = (-1) ^ d * II K ι P d (fun _ => GroundTheory.Heights₂.Heights.fsMulti ι)
 
-def FlagGrassFibreDeg.Statement : Prop :=
-  ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N j : ℕ) (hj : 1 ≤ j) (hjN : j ≤ N - 1),
-    ∃ (G : GenFibre (grFlV Ψ N j hj hjN) (PFl Ψ N))
-      (J : IFamily G.Φ (fibreIdx (FlIdx Ψ N) (grFlKappa Ψ N j hj hjN))),
-      IsFieldIntersection J ∧
-        ((J (fibreIdeal (grFlKappa Ψ N j hj hjN) G) (vandCount Ψ N j)
-          (fun i => fibreDeg (grFlKappa Ψ N j hj hjN) (vandLine Ψ N j i).a) : ℤ) : ℚ) = fdeg Ψ N j
-
-def GrassDegFlagInt.Statement : Prop :=
-  ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N j : ℕ), 2 ≤ N → 1 ≤ j → j ≤ N - 1 →
-    ((flagInt Ψ N (muPoly Ψ N j ^ dimN Ψ N j * vandBlocks Ψ N j) : ℚ) : ℝ) =
-      (-1) ^ dimN Ψ N j * (fdeg Ψ N j : ℝ) *
-        geomDeg (grassIdeal (Fintype.card Ψ) j (N - j))
-          (GroundTheory.Heights₂.Heights.fsMulti (plBlocks (Fintype.card Ψ) j (N - j))) (dimN Ψ N j)
-
-example : Nonempty Unit ∧ 2 ≤ 2 ∧ 1 ≤ 1 ∧ 1 ≤ 2 - 1 ∧ vandCount Unit 2 1 = 0 ∧ dimFl Unit 2 + 1 = 2 := by
-  refine ⟨⟨()⟩, le_rfl, le_rfl, le_rfl, ?_, rfl⟩
-  unfold vandCount
-  rw [Fintype.card_eq_zero_iff]
-  constructor
-  rintro ⟨⟨u, a, b⟩, hab, hh⟩
-  fin_cases a <;> fin_cases b <;> simp_all
-
-example : IsArithVar (⊥ : Ideal (MRing (PBlk 2))) 2 := Inter.isArithVar_projLine
-
-example : Nonempty Unit ∧ 2 ≤ 2 ∧ (2 = dimFl Unit 2 + 1) ∧
-    linForm Unit 2 (fun p => if p = ((), 1) then 1 else 0) = X ((), 1) := by
-  refine ⟨⟨()⟩, le_rfl, rfl, ?_⟩
-  unfold linForm
-  rw [Fintype.sum_eq_single ((), 1)]
-  · simp
-  · intro p hp
-    simp [hp]
-
 end GroundTheory.Heights₂.Heights.LowerBoundFree

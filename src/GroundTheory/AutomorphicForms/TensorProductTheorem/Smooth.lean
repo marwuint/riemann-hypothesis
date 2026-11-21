@@ -248,15 +248,6 @@ theorem windowEmbed_tprod [DecidableEq ι] (S : Finset ι)
   rfl
 
 include hπ hK'c hK'o in
-omit [∀ v, IsTopologicalGroup (G v)] [∀ v, LocallyCompactSpace (G v)] [∀ v, T2Space (G v)]
-  [∀ v, TotallyDisconnectedSpace (G v)] hKo hKc in
-theorem finiteDimensional_range_windowEmbed [DecidableEq ι] (S : Finset ι) :
-    FiniteDimensional ℂ (LinearMap.range (windowEmbed (π := π) (K' := K') ξ S)) := by
-  have : ∀ v : S, FiniteDimensional ℂ (fixedVectors (π v) (K' v)) :=
-    fun v => (hπ v).2 _ (hK'c v) (hK'o v)
-  exact LinearMap.finiteDimensional_range _
-
-include hπ hK'c hK'o in
 
 theorem le_range_windowEmbed [DecidableEq ι] (hK'e : ∀ᶠ v in cofinite, K' v = K v)
     (S : Finset ι) (hSK : ∀ v ∉ S, K' v = K v)
@@ -326,32 +317,6 @@ theorem le_range_windowEmbed [DecidableEq ι] (hK'e : ∀ᶠ v in cofinite, K' v
     exact Submodule.smul_mem _ _ ha
 
 end Admissible
-
-theorem isAdmissible_restrictedTensorRep (hπ : ∀ v, IsAdmissible (π v))
-    (hξ : ∀ᶠ v in cofinite, ξ v ∈ fixedVectors (π v) (K v))
-    (hgel : ∀ᶠ v in cofinite, ∀ u ∈ fixedVectors (π v) (K v), ∃ c : ℂ, u = c • ξ v) :
-    IsAdmissible (restrictedTensorRep π ξ hξ) := by
-  classical
-  have hπs : ∀ v, IsSmooth (π v) := fun v => (hπ v).1
-  refine ⟨isSmooth_restrictedTensorRep hπs hξ, fun H hHc hHo => ?_⟩
-  obtain ⟨K', hK'c, hK'o, -, hK'e, hsub⟩ := exists_boxSubgroup_subset
-    (fun v => isCompact_iff_compactSpace.2 (hKc v)) (hHo.mem_nhds H.one_mem)
-  set S : Finset ι := ((Filter.eventually_cofinite.1 ((hK'e.and hgel).and hξ))).toFinset
-  have hS : ∀ v ∉ S, K' v = K v ∧ (∀ u ∈ fixedVectors (π v) (K v), ∃ c : ℂ, u = c • ξ v) ∧
-      ξ v ∈ fixedVectors (π v) (K v) := fun v hv => by simpa [S] using hv
-  have hle := le_range_windowEmbed hπ hξ hK'c hK'o hK'e S (fun v hv => (hS v hv).1)
-    (fun v hv => (hS v hv).2.1) (fun v hv => (hS v hv).2.2)
-  have hfin := finiteDimensional_range_windowEmbed hπ hK'c hK'o (ξ := ξ) S
-  have hbox : FiniteDimensional ℂ (fixedVectors (restrictedTensorRep π ξ hξ) (boxSubgroup K K')) := by
-    let f := ((restrictedTensor ξ).subtype ∘ₗ
-      (fixedVectors (restrictedTensorRep π ξ hξ) (boxSubgroup K K')).subtype)
-    have hf : ∀ a b, f a = f b → a = b := fun a b h => Subtype.ext (Subtype.ext h)
-    let f' := LinearMap.codRestrict (LinearMap.range (windowEmbed (π := π) (K' := K') ξ S)) f
-      (fun t => hle ⟨t, t.2, rfl⟩)
-    exact Module.Finite.of_injective f' (fun a b h => hf a b (by
-      have := congrArg Subtype.val h
-      simpa [f'] using this))
-  exact Submodule.finiteDimensional_of_le (fixedVectors_antitone _ hsub)
 
 end RestrictedTensor
 

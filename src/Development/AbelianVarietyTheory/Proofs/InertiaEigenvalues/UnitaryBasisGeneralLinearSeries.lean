@@ -19,9 +19,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIrreducibleO
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockInnerProductPosDefCompactMatrixUnitAdjointStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockTargetMatrixUnitCompactTotalDegreeLeStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryRepresentativesExistVectorStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHighestWeightKTypeMapStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSourceHighestWeightFockStableSubspaceStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JointHarmonicHighestWeightMultiplicityOneStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHighestWeightKTypeMap
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSourceHighestWeightFockStableSubspace
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JointHarmonicHighestWeightMultiplicityOne
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef
 open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx Formalism.IndefR.Links
@@ -54,7 +54,7 @@ theorem lowestKType_irreducible : ∀ (D : D7) (n m : ℕ) (w : GlobalTheory.Exp
       GlobalTheory.LowestKType.sop w τ a b P ∈ LinearMap.range s := by
     rintro _ ⟨x, rfl⟩ τ a b
     exact ⟨A τ a b x, by simpa using LinearMap.congr_fun (hA τ a b s hseq) x⟩
-  obtain ⟨P0, ⟨w0, rfl⟩, hP0, lam, hlam⟩ := GlobalTheory.T.exists_sourceHighestWeight_fock_stable_subspace D n m w _ inferInstance hV0 hVst
+  obtain ⟨P0, ⟨w0, rfl⟩, hP0, lam, hlam⟩ := _root_.GlobalTheory.exists_nHw_of_fockS_stable D n m w _ inferInstance hV0 hVst
   have hw0 : w0 ≠ 0 := by rintro rfl; exact hP0 (map_zero s)
   have hN : ∀ φ' : W →ₗ[ℂ] PolF D m n,
       (∀ (k : K) (x : W), φ' (ρ k x) = GlobalTheory.ExportSeries.fockGL m w BS (r k) (φ' x)) →
@@ -154,9 +154,9 @@ theorem lowestKType_irreducible : ∀ (D : D7) (n m : ℕ) (w : GlobalTheory.Exp
     (fun x _ => hBMani x) hBMadj (fun j => rfl)
     (fun T hTU hT0 hTst => by
       haveI : FiniteDimensional ℂ T := Submodule.finiteDimensional_of_le hTU
-      exact GlobalTheory.T.exists_highest_weight_K_type_map D n m w W T inferInstance hT0 (fun ψ hψ τ a b hab => hTst ⟨(τ, a, b), hab⟩ ψ hψ))
+      exact _root_.GlobalTheory.KHwExist.exists_kHwMap D n m w W T inferInstance hT0 (fun ψ hψ τ a b hab => hTst ⟨(τ, a, b), hab⟩ ψ hψ))
     (fun x y hx hy hxh hyh hx0 => by
-      obtain ⟨c, hc⟩ := GlobalTheory.T.jointHarmonic_highestWeight_multiplicity_one D n m w lam (x w0) (y w0)
+      obtain ⟨c, hc⟩ := _root_.GlobalTheory.HarmLine.joint_line D n m w lam (x w0) (y w0)
         (fun h => hw0 (hinj x hx.1 hx0 (h.trans (map_zero x).symm))) (hx.2.1 w0) (hy.2.1 w0)
         (hN x hx.1) (hN y hy.1) (hKHw x hxh) (hKHw y hyh)
       refine ⟨c, ?_⟩

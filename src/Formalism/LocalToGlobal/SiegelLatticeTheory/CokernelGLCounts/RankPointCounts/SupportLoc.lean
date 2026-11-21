@@ -245,19 +245,6 @@ section LocLemmas
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
-theorem kk_ne (Mo : Loc.Model F E) {m : ℕ} (a b : Loc.Pt E (m + 1)) (h : Mo.Kk (m + 1) a b ≠ 0) :
-    ∃ c, Mo.BB a c ≠ 0 ∧ Mo.BB b c ≠ 0 := by
-  rw [Loc.Model.Kk_succ] at h
-  by_contra hc
-  push_neg at hc
-  apply h
-  have e : (fun c => Mo.BB a c * (starRingEnd ℂ) (Mo.BB b c) / (Mo.nAut c : ℂ)) = fun _ => 0 := by
-    funext c
-    by_cases h1 : Mo.BB a c = 0
-    · simp [h1]
-    · simp [hc c h1]
-  rw [e, tsum_zero]
-
 theorem det_uLow {n : ℕ} (x : Loc.IL n → E) : (Loc.uLow x).det = 1 := by
   have hlt : Matrix.BlockTriangular (Loc.uLow x) OrderDual.toDual := by
     intro i j hij
@@ -310,24 +297,6 @@ theorem modK_mul_unit (Mo : Loc.Model F E) (x : E) (u : (Mo.R)ˣ) : Mo.modK (x *
     calc x * ((u : Mo.R) : E) * ((((u⁻¹ : (Mo.R)ˣ) : Mo.R) : E) * y)
         = x * (((u : Mo.R) : E) * (((u⁻¹ : (Mo.R)ˣ) : Mo.R) : E)) * y := by ring
       _ = x * y := by rw [e, mul_one]
-
-theorem det_assoc_pts (Mo : Loc.Model F E) {m : ℕ} (a b : Loc.Pt E (m + 1)) (h : Mo.Kk (m + 1) a b ≠ 0) :
-    IsUnit a.mat.det ∧ ∃ u : (Mo.R)ˣ, b.mat.det = a.mat.det * ((u : Mo.R) : E) := by
-  obtain ⟨c, hc1, hc2⟩ := kk_ne Mo a b h
-  obtain ⟨Z1, hZ1, i1⟩ := bb_ne Mo a c hc1
-  obtain ⟨Z2, hZ2, i2⟩ := bb_ne Mo b c hc2
-  have hreg : ∀ x, Z1.Z.det * x = 0 → x = 0 := by
-    intro x hx
-    have e := congrArg Mo.R.subtype hx
-    rw [map_mul, RingHom.map_det, map_zero] at e
-    have e2 := (Z1.unit.mul_right_eq_zero).1 e
-    exact Subtype.val_injective (e2.trans (map_zero Mo.R.subtype).symm)
-  obtain ⟨u, hu⟩ := det_assoc_of_cok Z1.Z Z2.Z ((Classical.choice i1).1.trans (Classical.choice i2).1.symm) hreg
-  refine ⟨hZ1 ▸ Z1.unit, u, ?_⟩
-  have e := congrArg Mo.R.subtype hu
-  rw [map_mul, RingHom.map_det, RingHom.map_det] at e
-  rw [← hZ1, ← hZ2]
-  exact e
 
 end LocLemmas
 
@@ -544,78 +513,5 @@ theorem zeta_snoc (w : Point D.host.E (D.R.rS + 1)) (h0 : Dmin w D.R.rS ≠ 0) (
   rw [dmin_snoc w l0 t hb hs, mul_div_cancel_left₀ t h0]
 
 end Spec
-
-theorem localSupport_holds (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.SupportG.SupportLoc D := by
-  intro δ M p _hA T T' w w' hk hK
-  have hl : locK M δ T T' p (D.R.rS + 1) w w' ≠ 0 := by
-    intro h0
-    apply hK
-    unfold KtopP
-    rw [h0, mul_zero, zero_mul]
-  unfold locK at hl
-  split at hl
-  · rename_i a b ha hb
-    obtain ⟨haU, u, hdet⟩ := det_assoc_pts (M p) a b hl
-    have ea := det_amat δ T T' p w a ha
-    have eb := det_amat δ T T' p w' b hb
-    by_cases h0 : Dmin w D.R.rS = 0
-    · have h0' : Dmin w' D.R.rS = 0 := by
-        unfold kind at hk
-        rw [if_pos h0] at hk
-        by_contra hne
-        rw [if_neg hne] at hk
-        exact absurd hk (by simp)
-      rw [h0, map_zero, mul_zero, mul_zero, add_zero] at ea
-      rw [h0', map_zero, mul_zero, mul_zero, add_zero] at eb
-      have hL : IsUnit ((∏ x : Fin (D.R.rS + 1), rho δ p x) ^ 2 * kap p ^ (D.R.rS + 1)) :=
-        isUnit_of_mul_isUnit_left (ea ▸ haU)
-      have hX : (D.s.atP p).ιE (Dmin w' (D.R.rS + 1)) =
-          (D.s.atP p).ιE (Dmin w (D.R.rS + 1)) * (((u : (M p).R)) : (D.s.atP p).Ep) := by
-        apply hL.mul_left_cancel
-        rw [← eb, hdet, ea]
-        ring
-      refine ⟨?_, by rw [h0, h0']⟩
-      rw [hX, modK_mul_unit]
-    · have h0' : Dmin w' D.R.rS ≠ 0 := by
-        unfold kind at hk
-        rw [if_neg h0] at hk
-        intro hne
-        rw [if_pos hne] at hk
-        exact absurd hk (by simp)
-      have hz : zetaOf w = zetaOf w' := by
-        unfold kind at hk
-        rw [if_neg h0, if_neg h0'] at hk
-        exact Option.some.inj hk
-      obtain ⟨l0, t, hb0, hs0⟩ := last_one w h0
-      obtain ⟨l0', t', hb0', hs0'⟩ := last_one w' h0'
-      have htt : t' = t := by
-        rw [← zeta_snoc w h0 l0 t hb0 hs0, ← zeta_snoc w' h0' l0' t' hb0' hs0', hz]
-      subst htt
-      have hL1 : (∏ x : Fin (D.R.rS + 1), rho δ p x) ^ 2 * kap p ^ (D.R.rS + 1) =
-          ((∏ x : Fin D.R.rS, rho δ p x) ^ 2 * kap p ^ D.R.rS) * (rho δ p D.R.rS * rho δ p D.R.rS * kap p) := by
-        rw [Fin.prod_univ_castSucc]
-        simp only [Fin.val_castSucc, Fin.val_last]
-        ring
-      rw [amat_last δ T T' p w a ha l0 t' hb0 hs0, ptMat_last w l0 t' hb0 hs0, dmin_snoc w l0 t' hb0 hs0, hL1,
-        map_mul] at ea
-      rw [amat_last δ T T' p w' b hb l0' t' hb0' hs0', ptMat_last w' l0' t' hb0' hs0', dmin_snoc w' l0' t' hb0' hs0',
-        hL1, map_mul] at eb
-      have ea' : a.mat.det = (((∏ x : Fin D.R.rS, rho δ p x) ^ 2 * kap p ^ D.R.rS) * blkTop δ T T' p (D.R.rS + 1) 1 t') *
-          (D.s.atP p).ιE (Dmin w D.R.rS) := by rw [ea]; ring
-      have eb' : b.mat.det = (((∏ x : Fin D.R.rS, rho δ p x) ^ 2 * kap p ^ D.R.rS) * blkTop δ T T' p (D.R.rS + 1) 1 t') *
-          (D.s.atP p).ιE (Dmin w' D.R.rS) := by rw [eb]; ring
-      have hL : IsUnit (((∏ x : Fin D.R.rS, rho δ p x) ^ 2 * kap p ^ D.R.rS) * blkTop δ T T' p (D.R.rS + 1) 1 t') :=
-        isUnit_of_mul_isUnit_left (ea' ▸ haU)
-      have hY : (D.s.atP p).ιE (Dmin w' D.R.rS) =
-          (D.s.atP p).ιE (Dmin w D.R.rS) * (((u : (M p).R)) : (D.s.atP p).Ep) := by
-        apply hL.mul_left_cancel
-        rw [← eb', hdet, ea']
-        ring
-      refine ⟨?_, by rw [hY, modK_mul_unit]⟩
-      rw [dmin_snoc w l0 t' hb0 hs0, dmin_snoc w' l0' t' hb0' hs0', map_mul, map_mul, hY]
-      rw [show (D.s.atP p).ιE (Dmin w D.R.rS) * (((u : (M p).R)) : (D.s.atP p).Ep) * (D.s.atP p).ιE t' =
-        (D.s.atP p).ιE (Dmin w D.R.rS) * (D.s.atP p).ιE t' * (((u : (M p).R)) : (D.s.atP p).Ep) by ring,
-        modK_mul_unit]
-  · exact absurd rfl hl
 
 end Formalism.L2.SG.Pf

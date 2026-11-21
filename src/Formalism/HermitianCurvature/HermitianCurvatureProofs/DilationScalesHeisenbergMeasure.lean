@@ -394,9 +394,6 @@ theorem dilJacRaw_of (hU : HaarUnique) (hN : ClosedN) (hR : NRecHaar) (hE : Haar
 
 theorem dilJacAll_of (h : DilJacRaw) : DilJacAll := fun k r _ _ _ _ _ _ D t ht => h k r D.μN D.haarN t ht
 
-theorem assembleDilJac : AssembleDilJac := fun hU hN hR _ hE _ _ _ =>
-  ⟨dilJacRaw_of hU hN hR hE, dilJacAll_of (dilJacRaw_of hU hN hR hE)⟩
-
 end B2x7
 
 theorem dilation_jacobian_unipotent : Formalism.FourierDecayAlt.B2.DilJacRaw :=

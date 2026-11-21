@@ -1,8 +1,15 @@
 import Mathlib
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.PieriTensorDecompositionStatement
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.PieriTensorDecomposition
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
+import Formalism.PeriodIntegrals.DSInfCharCap
+import Formalism.PeriodIntegrals.LowCyc
+import Formalism.PeriodIntegrals.UpqRep
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorDecompositionParametersStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DiscreteSeriesParameterUniqueStatement
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DiscreteSeriesParameterUnique
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorDecompositionInjectiveParameters
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ChainRuleSmooth.ExpIntertwine
 
@@ -117,7 +124,7 @@ theorem isInvForm_of_smMap (hK : PI.KFinSmooth) {ε : Fin (2 * r + k + 1) → Bo
     {R R' : Rep k r} (hR' : R'.IsDG ε m') {T : R.H → R'.H} (hT : SmMap R R' T)
     (hTg : ∀ g ∈ GG k r, ∀ y ∈ R.sm, T (R.σ g y) = R'.σ g (T y)) :
     IsInvForm R R' (fun y y' => ⟪y', T y⟫_ℂ) := by
-  have hu := (Gp91.GlobalTheory.T.discreteSeries_unitary_smooth_basic hK k r ε m' R' hR').2.2.1
+  have hu := (_root_.Gp91.GlobalTheory.rep_basic_of_isDS hK k r ε m' R' hR').2.2.1
   obtain ⟨C, Ws, hWs, hb⟩ := hT.cont [] (by simp)
   refine ⟨fun x hx x' hx' y _ => ?_, fun a x hx y _ => ?_, fun x _ y _ y' _ => ?_, fun a x _ y _ => ?_,
     fun g hg x hx y _ => ?_, C, Ws, [[]], ?_, fun x hx y _ => ?_⟩
@@ -187,8 +194,8 @@ theorem exists_equiv (hH : HypsG) {ε : Fin (2 * r + k + 1) → Bool} {κ ι : T
     · by_cases hs : s = a
       · subst hs
         exact absurd ⟨U, hU⟩ hno
-      · exact absurd (Gp91.GlobalTheory.T.discrete_series_parameter_unique hH k r ε _ _ _ _ (hd1 a) (hd2 s) U hU) (hne s hs)
-  obtain ⟨-, -, -, -, h5, -, h7, ⟨w, hw, hwK, -⟩, -⟩ := Gp91.GlobalTheory.T.discreteSeries_unitary_smooth_basic hK k r ε _ _ (hd1 a)
+      · exact absurd (_root_.Gp91.GlobalTheory.DSInequiv.param_eq_of_equiv hH k r ε _ _ _ _ (hd1 a) (hd2 s) U hU) (hne s hs)
+  obtain ⟨-, -, -, -, h5, -, h7, ⟨w, hw, hwK, -⟩, -⟩ := _root_.Gp91.GlobalTheory.rep_basic_of_isDS hK k r ε _ _ (hd1 a)
   have hwsm : w ∈ (RI1 a).sm := h5 w (h7 w hwK)
   have hx : ∀ c, io1 a c w ∈ S.sm := fun c => (h1.io_sm a c).mem w hwsm
   have hio : ∀ c, io1 a c w = 0 := by

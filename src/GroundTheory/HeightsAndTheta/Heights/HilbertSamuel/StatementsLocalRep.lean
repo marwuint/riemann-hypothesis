@@ -16,12 +16,6 @@ def LocalRep.Statement : Prop :=
       (∀ k, (dg k : ℤ) = dh k + n * a k) ∧ aeval y g = s * aeval y h ∧
       eval z (map (Int.castRingHom ℂ) h) ≠ 0
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntOIsLocalRing
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsBlockMetricDiagForm
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SuccessiveMinimaPositiveNormsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SuccessiveMinimaPositiveNorms
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniqueIntegralLiftNormPInverseStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTangentPresentationPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHomogeneousInvariantsNormsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteExtensionSplittingTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHomogeneousInvariantsNorms
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteExtensionSplittingTorsion
 
 set_option autoImplicit false
 
@@ -32,7 +32,7 @@ theorem exists_poly (A A' : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed 
         ((d : ℕ) : ℝ) * ∑ l : Fin k, Real.log (N (Fin.castLE hk l)) =
           Real.log (⨆ i, ‖MvPolynomial.eval₂ x (minor a hk) (B i)‖) := by
   classical
-  obtain ⟨d, n, B, hB, hN⟩ := GlobalTheory.T.exists_homogeneous_invariants_norms A A' hinj (Fin k → Fin g) (Fin k → J) fun σ s => ∏ i, h (σ i) (s i)
+  obtain ⟨d, n, B, hB, hN⟩ := _root_.GlobalTheory.NormFam.norm_of_family A A' hinj (Fin k → Fin g) (Fin k → J) fun σ s => ∏ i, h (σ i) (s i)
   let e := Fintype.equivFin (Fin n ⊕ (Fin k → Fin g))
   let B' : Fin n ⊕ (Fin k → Fin g) → MvPolynomial (Fin k → Fin g) A :=
     Sum.elim B fun s => MvPolynomial.C (((c ^ k) ^ (d : ℕ) : ℕ) : A) * MvPolynomial.X s ^ (d : ℕ)
@@ -49,7 +49,7 @@ theorem exists_poly (A A' : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed 
       (hN C x (minor a hk) 1 fun y hy => absurd ⟨y, hy⟩ h0).symm
     simp at h1
   have cov := fun (y : A' →+* C) (hy : y.comp (algebraMap A A') = x) =>
-    GlobalTheory.T.successive_minima_positive_norms C g J (fun j i => y (h j i)) (fun b hb => funext fun i => by
+    _root_.GlobalTheory.LineNorm.Covol.prod_grNorm_eq_iSup_minor C g J (fun j i => y (h j i)) (fun b hb => funext fun i => by
       obtain ⟨j, hj⟩ := hh i
       have := hb j
       rw [Finset.sum_eq_single i (fun i' _ hi => by simp [hj, Pi.single_eq_of_ne hi]) (by simp)] at this
@@ -210,7 +210,7 @@ theorem norm_sum_single {g : ℕ} {A' : Type} [CommRing A'] (y : A' →+* ↥(in
 theorem wedge_norm_max : HTBoundSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X), X.IsSeparated → ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [CharZero A] (x₀ : Sp A ⟶ X) (g : ℕ) (e : Fin g → (Sp (DualNumber A) ⟶ t.G.left)), IsTanBasis t x₀ e → ∀ q k : ℕ, ∃ (d : ℕ+) (n : ℕ) (B : Fin n → MvPolynomial (Fin k → Fin g) A), (∀ i, (B i).IsHomogeneous d) ∧ (∀ s, ∃ (i : Fin n) (c : ℕ), c ≠ 0 ∧ B i = MvPolynomial.C (c : A) * (MvPolynomial.X s : MvPolynomial (Fin k → Fin g) A) ^ (d : ℕ)) ∧ ∀ (p : ℕ) [Fact p.Prime] (x : A →+* ℂ_[p]), (∀ a, ‖x a‖ ≤ 1) → ∀ (m : ℕ) (hk : k ≤ m) (u : Fin m → (Sp (DualNumber ℂ_[p]) ⟶ t.G.left)) (a : Fin m → Fin g → ℂ_[p]), LinearIndependent ℂ_[p] a → (∀ l, IsCombAtG t (spMap x ≫ x₀) (fun i => spMap (dualMap x) ≫ e i) (a l) (u l)) → ((d : ℕ) : ℝ) * ∑ l : Fin k, Real.log (GlobalTheory.ShFam.Pad.grNorm t (spMap x ≫ x₀) (lat t p (spMap x ≫ x₀) (decide (p = q))) u (Fin.castLE hk l)) = Real.log (⨆ i, ‖MvPolynomial.eval₂ x (minor a hk) (B i)‖) := by
   intro hHT E _ _ _ H X _ t hX A _ _ _ _ _ x₀ g e he q k
   by_cases hq : q.Prime
-  · obtain ⟨A', _, _, _, _, hinj, _, hζ, hsp⟩ := GlobalTheory.T.exists_finite_extension_splitting_torsion E H X t A x₀ q hq.ne_zero
+  · obtain ⟨A', _, _, _, _, hinj, _, hζ, hsp⟩ := _root_.GlobalTheory.TorsSplitField.splitTors_finite_extension E H X t A x₀ q hq.ne_zero
     have : CharZero A' := charZero_of_injective_algebraMap hinj
     have he' := isTanBasis_map t (algebraMap A A') he
     obtain ⟨n, h, hh⟩ := GlobalTheory.T.exists_tangent_presentation_prime E H X t A' _ g _ he' q hq hζ hsp

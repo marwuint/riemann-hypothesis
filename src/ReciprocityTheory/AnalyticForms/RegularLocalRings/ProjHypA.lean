@@ -98,21 +98,6 @@ theorem eval₂_smul_of_isMultiHomog' {R : Type} [CommRing R] (g : ℂ →+* R)
   simp only [hk]
   ring
 
-theorem eval₂_smul_of_isHomogeneous' {σ R : Type} [Fintype σ] [CommRing R] (g : ℂ →+* R)
-    {f : MvPolynomial σ ℂ} {d : ℕ} (hf : f.IsHomogeneous d) (t : R) (y : σ → R) :
-    eval₂ g (fun i => t * y i) f = t ^ d * eval₂ g y f := by
-  classical
-  rw [f.as_sum, MvPolynomial.eval₂_sum, MvPolynomial.eval₂_sum, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun mo hmo => ?_
-  have hd : ∑ i, mo i = d := by
-    have := hf (MvPolynomial.mem_support_iff.1 hmo)
-    simpa [Finsupp.weight_apply, Finsupp.sum_fintype] using this
-  rw [MvPolynomial.eval₂_monomial, MvPolynomial.eval₂_monomial,
-    Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]
-  simp_rw [mul_pow, Finset.prod_mul_distrib]
-  rw [Finset.prod_pow_eq_pow_sum, hd]
-  ring
-
 theorem isUnit_mapId_mk_iff {A : Type} [CommRing A] [Algebra ℂ A]
     (𝒜 : ℕ → Submodule ℂ A) [GradedAlgebra 𝒜] (f : A) (x : ProjectiveSpectrum 𝒜)
     (H : Submonoid.powers f ≤ x.asHomogeneousIdeal.toIdeal.primeCompl)

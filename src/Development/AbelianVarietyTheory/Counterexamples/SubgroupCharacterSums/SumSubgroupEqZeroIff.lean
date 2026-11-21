@@ -55,13 +55,6 @@ theorem sum_subgroup_eq_zero_iff [Fintype G] (V : FDRep ℂ G) (U : Subgroup G) 
   rw [Representation.mem_invariants]
   exact ⟨fun h u hu => h ⟨u, hu⟩, fun h u => h u.1 u.2⟩
 
-theorem zero_isChar : IsChar (fun _ : G => (0 : ℂ)) := ⟨0, 1, fun _ => by simp⟩
-
-theorem zero_not_isIrrChar [Fintype G] : ¬ IsIrrChar (fun _ : G => (0 : ℂ)) := by
-  rintro ⟨-, h⟩
-  simp only [zero_mul, Finset.sum_const_zero] at h
-  exact (Nat.cast_ne_zero.2 Fintype.card_ne_zero) h.symm
-
 end Group
 
 variable {F : Type} [Field F] [Fintype F] [DecidableEq F]
@@ -108,14 +101,6 @@ def unipSubgroup (d a : ℕ) : Subgroup (GL (Fin d) F) where
       Units.inv_eq_of_mul_eq_one_right h1
     rw [h2, sub_sub_cancel_left, Matrix.neg_apply, hu i j hij, neg_zero]
 
-theorem exists_mem_unipBlock (d a : ℕ) (X : Matrix (Fin d) (Fin d) F)
-    (hX : ∀ i j : Fin d, ¬ (i.val < a ∧ a ≤ j.val) → X i j = 0) :
-    ∃ u ∈ (unipBlock d a : Set (GL (Fin d) F)), (u : Matrix (Fin d) (Fin d) F) = 1 + X := by
-  have h0 := block_mul_eq_zero hX hX
-  refine ⟨⟨1 + X, 1 - X, ?_, ?_⟩, (mem_unipBlock_iff d a _).2 (by simpa using hX), rfl⟩
-  · rw [← sub_eq_zero, ← neg_eq_zero, ← h0]; noncomm_ring
-  · rw [← sub_eq_zero, ← neg_eq_zero, ← h0]; noncomm_ring
-
 theorem isCuspChar_iff {d : ℕ} (χ : GL (Fin d) F → ℂ) :
     IsCuspChar χ ↔ ∃ V : FDRep ℂ (GL (Fin d) F), Simple V ∧ V.character = χ ∧
       ∀ a, 0 < a → a < d → ∀ v : V, (∀ u ∈ (unipSubgroup d a : Subgroup (GL (Fin d) F)), V.ρ u v = v) → v = 0 := by
@@ -131,77 +116,5 @@ theorem isCuspChar_iff {d : ℕ} (χ : GL (Fin d) F → ℂ) :
     refine ⟨⟨V, hV, rfl⟩, fun a h0 h1 => ?_⟩
     convert (sum_subgroup_eq_zero_iff V _).2 (h a h0 h1) using 3
     rfl
-
-theorem isCuspChar_iff_of_le_one {d : ℕ} (hd : d ≤ 1) (χ : GL (Fin d) F → ℂ) : IsCuspChar χ ↔ IsIrrChar χ :=
-  ⟨fun h => h.1, fun h => ⟨h, fun a h0 h1 => by omega⟩⟩
-
-theorem isIrrChar_of_hom {G : Type} [Group G] [Fintype G] (c : G →* ℂˣ) : IsIrrChar (fun x => (c x : ℂ)) := by
-  have hc : IsChar (fun x => (c x : ℂ)) :=
-    ⟨1, (Units.map (Matrix.scalar (Fin 1) : ℂ →+* _).toMonoidHom).comp c, fun x => by simp⟩
-  refine ⟨hc, ?_⟩
-  obtain ⟨V, hV⟩ := (isChar_iff _).1 hc
-  have : ∀ x, (c x : ℂ) * star (c x : ℂ) = 1 := fun x => by
-    have h := GlobalTheory.BadShare.ZCalc.character_inv V x
-    rw [hV, starRingEnd_apply] at h
-    rw [← h, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
-  rw [Finset.sum_congr rfl fun x _ => this x]
-  simp
-
-theorem isCuspChar_rank_one (c : GL (Fin 1) F →* ℂˣ) : IsCuspChar (fun x => (c x : ℂ)) :=
-  (isCuspChar_iff_of_le_one le_rfl _).2 (isIrrChar_of_hom c)
-
-theorem not_isCuspChar_one {d : ℕ} (hd : 2 ≤ d) : ¬ IsCuspChar (fun _ : GL (Fin d) F => (1 : ℂ)) := by
-  classical
-  rintro ⟨-, h⟩
-  have h1 := h 1 one_pos (by omega)
-  rw [Finset.sum_boole, Nat.cast_eq_zero, Finset.card_eq_zero, Finset.filter_eq_empty_iff] at h1
-  exact h1 (Finset.mem_univ 1) (unipSubgroup d 1 : Subgroup (GL (Fin d) F)).one_mem
-
-theorem isCuspChar_of_hom {d : ℕ} (c : GL (Fin d) F →* ℂˣ)
-    (hc : ∀ a, 0 < a → a < d → ∃ t ∈ (unipBlock d a : Set (GL (Fin d) F)), (c t : ℂ) ≠ 1) :
-    IsCuspChar (fun x => (c x : ℂ)) := by
-  classical
-  refine ⟨isIrrChar_of_hom _, fun a h0 h1 => ?_⟩
-  obtain ⟨t, ht, hs⟩ := hc a h0 h1
-  let U : Subgroup (GL (Fin d) F) := unipSubgroup d a
-  let f : U →* ℂ := ((Units.coeHom ℂ).comp c).comp U.subtype
-  have h := sum_hom_units_eq_zero f (fun h => hs (by
-    have h2 := DFunLike.congr_fun h (⟨t, ht⟩ : U)
-    exact h2))
-  rw [← Finset.sum_filter]
-  refine Eq.trans ?_ h
-  exact Finset.sum_subtype (p := (· ∈ U)) _ (fun x => by rw [Finset.mem_filter]; exact and_iff_right (Finset.mem_univ _))
-    (fun g => ((c g : ℂˣ) : ℂ))
-
-def permOfGL (d : ℕ) : GL (Fin d) F →* Equiv.Perm (Fin d → F) :=
-  MonoidHom.toHomPerm
-    { toFun := fun (g : GL (Fin d) F) => (fun v => (g : Matrix (Fin d) (Fin d) F).mulVec v : Function.End (Fin d → F))
-      map_one' := funext fun v => Matrix.one_mulVec v
-      map_mul' := fun g h => funext fun v => (Matrix.mulVec_mulVec v _ _).symm }
-
-def signChar : GL (Fin 2) (ZMod 2) →* ℂˣ :=
-  (Units.map (Int.castRingHom ℂ).toMonoidHom).comp (Equiv.Perm.sign.comp (permOfGL 2))
-
-def transv : GL (Fin 2) (ZMod 2) := ⟨!![1, 1; 0, 1], !![1, 1; 0, 1], by decide, by decide⟩
-
-theorem transv_mem : transv ∈ (unipBlock 2 1 : Set (GL (Fin 2) (ZMod 2))) := by
-  intro i j
-  fin_cases i <;> fin_cases j <;> simp [transv]
-
-theorem signChar_transv : signChar transv = -1 := by
-  have hp : permOfGL 2 transv = Equiv.swap ![0, 1] ![1, 1] := by
-    ext v i
-    revert v i
-    decide
-  show Units.map _ (Equiv.Perm.sign (permOfGL 2 transv)) = -1
-  rw [hp, Equiv.Perm.sign_swap (by decide)]
-  ext; simp
-
-theorem isCuspChar_signChar : IsCuspChar (fun x => (signChar x : ℂ)) := by
-  refine isCuspChar_of_hom _ fun a h0 h1 => ?_
-  obtain rfl : a = 1 := by omega
-  refine ⟨transv, transv_mem, ?_⟩
-  rw [signChar_transv]
-  norm_num
 
 end GlobalTheory.CuspCharCheck

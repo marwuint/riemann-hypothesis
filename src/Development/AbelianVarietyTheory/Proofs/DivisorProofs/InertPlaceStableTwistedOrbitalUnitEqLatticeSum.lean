@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnramifiedQuadraticDatumAtInertPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitLemmaUnramifiedProductUnitaryGroupsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSelfReciprocalInvAlgWithPolyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitLemmaUnramifiedProductUnitaryGroups
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSelfReciprocalInvAlgWithPoly
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasePointTwistedHermUnimodularEqSelfDualStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralUnitGLEqHermitianLatticeCoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjugacyClassesEquivUnitsModNormsNonspliStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralUnitGLEqHermitianLatticeCo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjugacyClassesEquivUnitsModNormsNonspli
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -48,14 +48,14 @@ theorem twisted_unit_eq_stSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
       exact RingHom.congr_fun hcomm (Q.coeff 0)
     rw [Polynomial.map_mul, Polynomial.map_C, h0] at h1
     rw [h1, hrev, Polynomial.map_map, hcomm, ← Polynomial.map_map]
-  obtain ⟨B, hg, hP⟩ := GlobalTheory.T.exists_selfReciprocalInvAlg_with_poly K (Q.map e.symm.toRingHom) (hm.map _) hPr
+  obtain ⟨B, hg, hP⟩ := _root_.GlobalTheory.UnitLemma.exists_invAlg_root K (Q.map e.symm.toRingHom) (hm.map _) hPr
   have hsep : B.P.Separable := by
     rw [hP]
     exact hs.map
   refine ⟨B, hg, hP, ?_⟩
   have hε : (-1 : B.A) ^ (a - 1) = 1 ∨ (-1 : B.A) ^ (a - 1) = -1 := neg_one_pow_eq_or B.A (a - 1)
   obtain ⟨β₀, hβ₀, hX⟩ := GlobalTheory.T.exists_basePoint_twistedHerm_unimodular_eq_selfDual K B hg hsep _ hε
-  obtain ⟨F, hF⟩ := GlobalTheory.T.twistedConjugacyClasses_equiv_unitsModNorms_nonsplit E hU w hw K e hc hr a Q hm hd hs B hg hP β₀ hβ₀
+  obtain ⟨F, hF⟩ := _root_.GlobalTheory.TwClassForms.twCl_equiv_cl E hU w hw K e hc hr a Q hm hd hs B hg hP β₀ hβ₀
   have hterm : ∀ k : B.Cl, twOrb (thL a w) (GlobalTheory.LFun.KGL w a) (F k).1.rep
       ((GlobalTheory.LFun.KGL w a : Set (GLw a w)).indicator 1) = ((B.N k.rep : ℚ) : ℂ) := by
     intro k
@@ -65,7 +65,7 @@ theorem twisted_unit_eq_stSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
         (β₀ * (Quot.out k).1 : B.Aˣ) * ((-1) ^ (a - 1) * B.g) := by
       rw [Units.val_mul, map_mul, hβ₀, hu]
       ring
-    have h := GlobalTheory.T.twistedOrbitalIntegral_unitGL_eq_hermitianLatticeCount E hU w hw K e hc hr a B hsep (β₀ * (Quot.out k).1) _ hε hβ b (F k).1.rep
+    have h := _root_.GlobalTheory.TwOrbLat.twOrb_unit_eq_orbSum E hU w hw K e hc hr a B hsep (β₀ * (Quot.out k).1) _ hε hβ b (F k).1.rep
       (fun i j => by rw [Units.val_mul]; exact hb i j)
     rw [h, Units.val_mul, hX _ hu]
     rfl

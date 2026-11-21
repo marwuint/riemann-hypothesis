@@ -168,17 +168,6 @@ theorem clear_one (p : HeightOneSpectrum (𝓞 F)) (z : (A p).Ep) :
     rw [e]
     exact Subring.mul_mem _ (ιF_mem_O_of_mem_integers A p _ h2) h1
 
-theorem clear (S : Finset (HeightOneSpectrum (𝓞 F))) {ι : Type} [Fintype ι] (z : ∀ p, ι → (A p).Ep) :
-    ∃ c : 𝓞 F, c ≠ 0 ∧ ∀ p ∈ S, ∀ k,
-      algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F c)) * z p k ∈ (A p).O := by
-  classical
-  choose t ht0 ht using fun q : S × ι => clear_one A q.1.1 (z q.1 q.2)
-  refine ⟨∏ q, t q, Finset.prod_ne_zero_iff.2 (fun q _ => ht0 q), fun p hp k => ?_⟩
-  rw [← Finset.mul_prod_erase Finset.univ t (Finset.mem_univ (⟨⟨p, hp⟩, k⟩ : S × ι))]
-  simp only [map_mul]
-  rw [mul_comm (algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F (t ⟨⟨p, hp⟩, k⟩)))), mul_assoc]
-  exact Subring.mul_mem _ (algebraMap_ιF_mem_O A p _) (ht ⟨⟨p, hp⟩, k⟩)
-
 end Clear
 
 section Mat

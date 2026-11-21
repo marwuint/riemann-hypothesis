@@ -88,24 +88,5 @@ theorem inK_of_push {S' : Scheme.{0}} {f : S' ⟶ S} {B' : Over S'} [GrpObj B'] 
     {Z : Over S'} (x : Z ⟶ B') (hx : InK B L (pushPt h.1.w x)) : InK B' L' x :=
   memKL_of_push h hL hL' hw x hx
 
-variable (B) in
-
-theorem inK_triv (x : T ⟶ B) : InK B (Inh.trivLB B.left) x := by
-  intro p
-  refine ⟨⊤, trivial, ?_⟩
-  refine gen_chartPull (chartPullPull _ _ _ rfl)
-    (⟨fun _ => 1⟩ : LB.Gen (translDiff B (Inh.trivLB B.left) x)) ?_
-  intro i j
-  exact (map_one _).trans
-    ((congrArg₂ (· * ·) (Inh.linComb_triv_g _ _ i j) (map_one _)).trans (_root_.one_mul _)).symm
-
-example (T : Over S) : kSubgroup B (Inh.trivLB_isLB B.left) T = ⊤ :=
-  eq_top_iff.2 fun x _ => inK_triv B x
-
-example (P : PolAV S) (T : Over S) : kSubgroup P.A P.isLB T = ⊥ :=
-  (Subgroup.eq_bot_iff_forall _).2 fun _ hx => InK.eq_one P.ktriv hx
-
-example (P : PolAV S) (x : T ⟶ P.A) (hx : x ≠ 1) : ¬ InK P.A P.L x := fun h => hx (h.eq_one P.ktriv)
-
 end GlobalTheory.UU
 end

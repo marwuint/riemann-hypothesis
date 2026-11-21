@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.OneMemH0WeightZero
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuaternionSplitOfIsotropicNormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrongApproximationSL2AdelesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuaternionSplitOfIsotropicNorm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrongApproximationSL2Adeles
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.QSA GlobalTheory.Published
 open Matrix
 open scoped Quaternion Topology TensorProduct
@@ -159,9 +159,9 @@ open GlobalTheory.QSA.Split in
 
 theorem GlobalTheory.QSA.strongApprox_split : ∀ (F : Type) [Field F] [NumberField F] (a b : F), a ≠ 0 → b ≠ 0 → (∃ x : ℍ[F, a, b], x ≠ 0 ∧ nrm x = 0) → ∀ (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F), IsPlacesIdem S₁ S₂ ε → (S₁.Nonempty ∨ S₂.Nonempty) → ∀ g : DA F a b, nrm g = 1 → g ∈ closure (H0 (a := a) (b := b) ε) := by
   intro F _ _ a b ha hb hiso S₁ S₂ ε hε hS g hg
-  obtain ⟨φ, hφ⟩ := GlobalTheory.T.quaternion_split_of_isotropic_norm F a b ha hb hiso
+  obtain ⟨φ, hφ⟩ := _root_.GlobalTheory.quaternion_split_of_isotropic F a b ha hb hiso
   have hdet : (Φ φ g).det = 1 := by rw [det_Φ φ hφ, hg]
-  have hcl := GlobalTheory.T.strong_approximation_SL2_adeles F S₁ S₂ ε hε hS (Φ φ g) hdet
+  have hcl := _root_.GlobalTheory.StrongApproximationSL2.strongApprox_SL2 F S₁ S₂ ε hε hS (Φ φ g) hdet
   rw [← Ψ_Φ φ g]
   refine map_mem_closure (Ψ_cont φ) hcl ?_
   rintro _ ⟨γ, hγ, h, hh, hεh, rfl⟩

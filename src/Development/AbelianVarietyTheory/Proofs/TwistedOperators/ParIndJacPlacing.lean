@@ -130,36 +130,6 @@ theorem Moves.symm {ι : Type} {e e' : ι ≃ n} {w : GL n R} (h : Moves e e' w)
 
 variable {e e' : (Σ a, m a) ≃ n} {w : GL n R}
 
-omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
-
-theorem Moves.parab (h : Moves e e' w) {g : GL n R} (hg : g ∈ parab R e) :
-    w * g * w⁻¹ ∈ parab R e' :=
-  mem_parab_iff.2 fun a b i j hab => (h g _ _).trans (mem_parab_iff.1 hg a b i j hab)
-
-theorem Moves.unipRad (h : Moves e e' w) {g : GL n R} (hg : g ∈ unipRad R e) :
-    w * g * w⁻¹ ∈ unipRad R e' :=
-  mem_unipRad.2 ⟨h.parab (mem_unipRad.1 hg).1,
-    fun a i j => (h g _ _).trans ((mem_unipRad.1 hg).2 a i j)⟩
-
-theorem Moves.leviProj (h : Moves e e' w) (p : SmGL.parab R e) :
-    leviProj R e' ⟨_, h.parab p.2⟩ = leviProj R e p := by
-  funext a
-  ext i j
-  exact h p _ _
-
-omit [LinearOrder α] in
-
-theorem Moves.leviEmb (h : Moves e e' w) (g : Levi R m) :
-    w * leviEmb R e g * w⁻¹ = leviEmb R e' g := by
-  ext i j
-  obtain ⟨⟨a, i⟩, rfl⟩ := e'.surjective i
-  obtain ⟨⟨b, j⟩, rfl⟩ := e'.surjective j
-  rw [h]
-  by_cases hab : a = b
-  · subst hab
-    rw [leviEmb_apply_same, leviEmb_apply_same]
-  · rw [leviEmb_apply_ne R e g hab, leviEmb_apply_ne R e' g hab]
-
 end Blocks
 
 open ValuativeRel MeasureTheory in

@@ -60,13 +60,6 @@ theorem mulVec_pairVec (M : Matrix ι ι A) (x : m → A) (y : n → A) : M *ᵥ
   obtain ⟨i | i, rfl⟩ := e.surjective j <;>
     simp [mulVec, dotProduct, ← e.sum_comp, toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂]
 
-theorem pairVec_vecMul (M : Matrix ι ι A) (x : m → A) (y : n → A) : pairVec e x y ᵥ* M =
-    pairVec e (x ᵥ* (M.submatrix e e).toBlocks₁₁ + y ᵥ* (M.submatrix e e).toBlocks₂₁)
-      (x ᵥ* (M.submatrix e e).toBlocks₁₂ + y ᵥ* (M.submatrix e e).toBlocks₂₂) := by
-  funext j
-  obtain ⟨i | i, rfl⟩ := e.surjective j <;>
-    simp [vecMul, dotProduct, ← e.sum_comp, toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂]
-
 theorem blkMat_mulVec (x : Matrix m m A) (y : Matrix n n A) (u : m → A) (v : n → A) :
     blkMat e x y *ᵥ pairVec e u v = pairVec e (x *ᵥ u) (y *ᵥ v) := by
   simp [mulVec_pairVec, submatrix_blkMat]
@@ -86,10 +79,6 @@ def blkGL : GL m A × GL n A →* GL ι A where
   map_mul' _ _ := Units.ext (blkMat_mul e _ _ _ _).symm
 
 @[simp] theorem val_blkGL (g : GL m A × GL n A) : (blkGL e g).1 = blkMat e g.1.1 g.2.1 := rfl
-
-theorem blkGL_injective : Function.Injective (blkGL (A := A) e) := fun _ _ h =>
-  have := (blkMat_inj e).1 (congrArg Units.val h)
-  Prod.ext (Units.ext this.1) (Units.ext this.2)
 
 theorem bc_blkGL (f : A →+* B) (x : GL m A) (y : GL n A) : bc f (blkGL e (x, y)) = blkGL e (bc f x, bc f y) :=
   Units.ext (blkMat_map e f (map_zero f) _ _)
@@ -156,37 +145,11 @@ def antiSub : Submodule A (ι → A) :=
 theorem pairVec_mem_diagSub {x y : n → A} : pairVec e x y ∈ diagSub A e ↔ x = y := by
   simp [diagSub, funext_iff, LinearMap.funLeft_apply]
 
-theorem pairVec_mem_antiSub {x y : n → A} : pairVec e x y ∈ antiSub A e ↔ x = -y := by
-  simp [antiSub, funext_iff, LinearMap.funLeft_apply]
-
 theorem mem_diagSub {w : ι → A} : w ∈ diagSub A e ↔ ∃ x, w = pairVec e x x := by
   refine ⟨fun h => ⟨fun i => w (e (.inl i)), ?_⟩, by rintro ⟨x, rfl⟩; exact (pairVec_mem_diagSub e).2 rfl⟩
   rw [← pairVec_eta e w, pairVec_mem_diagSub] at h
   nth_rewrite 2 [h]
   exact (pairVec_eta e w).symm
-
-theorem mem_antiSub {w : ι → A} : w ∈ antiSub A e ↔ ∃ x, w = pairVec e x (-x) := by
-  refine ⟨fun h => ⟨fun i => w (e (.inl i)), ?_⟩, by rintro ⟨x, rfl⟩; exact (pairVec_mem_antiSub e).2 (neg_neg _).symm⟩
-  rw [← pairVec_eta e w, pairVec_mem_antiSub] at h
-  nth_rewrite 2 [h]
-  rw [neg_neg]
-  exact (pairVec_eta e w).symm
-
-theorem isCompl_diagSub_antiSub [Invertible (2 : A)] : IsCompl (diagSub A e) (antiSub A e) := by
-  have h2 : ⅟(2 : A) * 2 = 1 := invOf_mul_self _
-  refine ⟨Submodule.disjoint_def.2 fun w h h' => ?_, codisjoint_iff.2 (eq_top_iff.2 fun w _ => ?_)⟩
-  · obtain ⟨x, rfl⟩ := (mem_diagSub e).1 h
-    have h3 := (pairVec_mem_antiSub e).1 h'
-    have : x = 0 := funext fun i => by
-      have := congrFun h3 i
-      simp only [Pi.neg_apply, Pi.zero_apply] at this ⊢
-      linear_combination ⅟(2 : A) * this - x i * h2
-    rw [this]; funext j; obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp
-  · refine Submodule.mem_sup.2 ⟨_, (mem_diagSub e).2 ⟨fun i => ⅟(2 : A) * (w (e (.inl i)) + w (e (.inr i))), rfl⟩,
-      _, (mem_antiSub e).2 ⟨fun i => ⅟(2 : A) * (w (e (.inl i)) - w (e (.inr i))), rfl⟩, funext fun j => ?_⟩
-    obtain ⟨i | i, rfl⟩ := e.surjective j
-    · simp only [Pi.add_apply, pairVec_inl]; linear_combination w (e (.inl i)) * h2
-    · simp only [Pi.add_apply, pairVec_inr, Pi.neg_apply]; linear_combination w (e (.inr i)) * h2
 
 def leviMat (M : Matrix ι ι A) : Matrix n n A := (M.submatrix e e).toBlocks₁₁ + (M.submatrix e e).toBlocks₁₂
 
@@ -299,13 +262,6 @@ theorem quot_levi {σ : A →+* A} {J : Matrix n n A} {M : Matrix ι ι A} (hM :
   refine Eq.trans ?_ ((congrArg₂ (· + ·) h1.1 h1.2.1).trans (add_zero J))
   abel
 
-def rightAct (l : ι → A) (M : Matrix ι ι A) : ι → A := l ᵥ* (blkMat e 1 (-1) * M * blkMat e 1 (-1))
-
-def rowEval (l w : ι → A) : A := l ⬝ᵥ (blkMat e (1 : Matrix n n A) (-1) *ᵥ w)
-
-theorem sgn_mul_sgn : blkMat e (1 : Matrix n n A) (-1) * blkMat e (1 : Matrix n n A) (-1) = 1 := by
-  simp [blkMat_mul, blkMat_one]
-
 end Siegel
 
 section Levi
@@ -333,75 +289,6 @@ def cayley : GL ι A :=
 theorem cayley_mulVec (x y : n → A) : (cayley e).1 *ᵥ pairVec e x y = pairVec e (x + y) (x - y) := by
   simp [mulVec_pairVec, cayley, neg_mulVec, sub_eq_add_neg]
 
-def leviElt : GL n A × GL n A →* GL ι A := (MulAut.conj (cayley e)).toMonoidHom.comp (blkGL e)
-
-theorem leviElt_mulVec (g : GL n A × GL n A) (x y : n → A) : (leviElt e g).1 *ᵥ pairVec e (x + y) (x - y) =
-    pairVec e (g.1.1 *ᵥ x + g.2.1 *ᵥ y) (g.1.1 *ᵥ x - g.2.1 *ᵥ y) := by
-  rw [← cayley_mulVec, ← cayley_mulVec, ← blkMat_mulVec, mulVec_mulVec, mulVec_mulVec, ← val_blkGL, ← Units.val_mul,
-    ← Units.val_mul]
-  simp [leviElt]
-
-theorem leviElt_diag (g : GL n A × GL n A) (x : n → A) :
-    (leviElt e g).1 *ᵥ pairVec e x x = pairVec e (g.1.1 *ᵥ x) (g.1.1 *ᵥ x) := by
-  simpa using leviElt_mulVec e g x 0
-
-theorem leviElt_anti (g : GL n A × GL n A) (y : n → A) :
-    (leviElt e g).1 *ᵥ pairVec e y (-y) = pairVec e (g.2.1 *ᵥ y) (-(g.2.1 *ᵥ y)) := by
-  simpa using leviElt_mulVec e g 0 y
-
-theorem leviElt_mem_diag (g : GL n A × GL n A) : leviElt e g ∈ stabGL (diagSub A e) :=
-  mem_stabGL_diagSub.2 (keepsDiag_of_mulVec fun w hw => by
-    obtain ⟨x, rfl⟩ := (mem_diagSub e).1 hw
-    rw [leviElt_diag, pairVec_mem_diagSub])
-
-theorem leviElt_mem_anti (g : GL n A × GL n A) : leviElt e g ∈ stabGL (antiSub A e) := by
-  have h : ∀ g : GL n A × GL n A, ∀ w ∈ antiSub A e, (leviElt e g).1 *ᵥ w ∈ antiSub A e := fun g w hw => by
-    obtain ⟨x, rfl⟩ := (mem_antiSub e).1 hw
-    rw [leviElt_anti, pairVec_mem_antiSub, neg_neg]
-  refine fun w => ⟨h g w, fun hw => ?_⟩
-  have := h g⁻¹ _ hw
-  rwa [mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_mulVec] at this
-
-theorem leviMat_leviElt (g : GL n A × GL n A) : leviMat e (leviElt e g).1 = g.1.1 := by
-  refine Matrix.ext_of_mulVec_single fun j => funext fun i => ?_
-  have := congrFun ((mem_stabGL_diagSub.1 (leviElt_mem_diag e g)).mulVec_diag (Pi.single j 1)) (e (.inl i))
-  rw [leviElt_diag, pairVec_inl, pairVec_inl] at this
-  exact this.symm
-
-theorem leviElt_mem_UJ {σ : A →+* A} {J : Matrix n n A} {α β : GL n A} (h1 : cT σ β.1 * J * α.1 = J)
-    (h2 : cT σ α.1 * J * β.1 = J) : leviElt e (α, β) ∈ UJ σ (dblGram e J) := by
-  have hT : cT σ (cayley (A := A) e).1 = (cayley e).1 := by
-    change ((fromBlocks 1 1 1 (-1) : Matrix (n ⊕ n) (n ⊕ n) A).map σ)ᵀ.submatrix e.symm e.symm = _
-    simp [cayley, fromBlocks_map, fromBlocks_transpose, Matrix.map_neg _ (map_neg σ), Matrix.map_one _ (map_zero σ) (map_one σ)]
-  have hQ : cT σ (cayley (A := A) e).1 * dblGram e J * (cayley e).1 =
-      (fromBlocks 0 (J + J) (J + J) 0).submatrix e.symm e.symm := by
-    rw [hT]
-    simp [cayley, dblGram, blkMat, submatrix_mul_equiv, fromBlocks_multiply]
-  have hB : cT σ (blkMat e α.1 β.1) * (cT σ (cayley (A := A) e).1 * dblGram e J * (cayley e).1) * blkMat e α.1 β.1 =
-      cT σ (cayley (A := A) e).1 * dblGram e J * (cayley e).1 := by
-    rw [hQ, cT_blkMat]
-    simp [blkMat, submatrix_mul_equiv, fromBlocks_multiply, Matrix.mul_add, Matrix.add_mul, h1, h2]
-  change cT σ ((cayley e).1 * blkMat e α.1 β.1 * (cayley e)⁻¹.1) * _ * ((cayley e).1 * blkMat e α.1 β.1 * (cayley e)⁻¹.1) = _
-  calc _ = cT σ (cayley (A := A) e)⁻¹.1 * (cT σ (blkMat e α.1 β.1) *
-        (cT σ (cayley (A := A) e).1 * dblGram e J * (cayley e).1) * blkMat e α.1 β.1) * (cayley e)⁻¹.1 := by
-        simp only [cT_mul, Matrix.mul_assoc]
-    _ = cT σ ((cayley (A := A) e).1 * (cayley (A := A) e)⁻¹.1) * dblGram e J * ((cayley e).1 * (cayley e)⁻¹.1) := by
-        rw [hB]; simp only [cT_mul, Matrix.mul_assoc]
-    _ = _ := by rw [Units.mul_inv, cT_one, Matrix.one_mul, Matrix.mul_one]
-
-theorem exists_leviElt_mem_UJ {σ : A →+* A} (hσ : ∀ x, σ (σ x) = x) {J : Matrix n n A} (hJ : cT σ J = J)
-    (hu : IsUnit J.det) (α : GL n A) : ∃ β : GL n A, leviElt e (α, β) ∈ UJ σ (dblGram e J) := by
-  have hc : ∀ X : Matrix n n A, cT σ (cT σ X) = X := fun X => by ext i j; exact hσ _
-  obtain ⟨U, rfl⟩ := (isUnit_iff_isUnit_det J).2 hu
-  let γ : GL n A := U * α⁻¹ * U⁻¹
-  let β : GL n A := ⟨cT σ γ.1, cT σ γ⁻¹.1, by rw [← cT_mul, Units.inv_mul, cT_one], by rw [← cT_mul, Units.mul_inv, cT_one]⟩
-  have h1 : cT σ β.1 * U.1 * α.1 = U.1 := by
-    rw [show cT σ β.1 = γ.1 from hc _, ← Units.val_mul, ← Units.val_mul]
-    simp [γ]
-  refine ⟨β, leviElt_mem_UJ e h1 ?_⟩
-  have := congrArg (cT σ) h1
-  rwa [cT_mul, cT_mul, hc, hJ, ← Matrix.mul_assoc] at this
-
 end Levi
 
 section Group
@@ -417,17 +304,12 @@ def aOf : siegelOf e mat →* Aˣ := GeneralLinearGroup.det.comp (leviOf e mat)
 
 def unipOf : Subgroup G := (leviOf e mat).ker.map (siegelOf e mat).subtype
 
-def leviSubOf : Subgroup G := siegelOf e mat ⊓ (stabGL (antiSub A e)).comap mat
-
 variable {e mat}
 
 theorem mem_siegelOf {g : G} : g ∈ siegelOf e mat ↔ KeepsDiag e (mat g).1 := mem_stabGL_diagSub
 
 @[simp] theorem val_leviOf (p : siegelOf e mat) : (leviOf e mat p).1 = leviMat e (mat p).1 := rfl
 @[simp] theorem val_aOf (p : siegelOf e mat) : (aOf e mat p).1 = (leviMat e (mat p).1).det := rfl
-
-theorem mem_unipOf {g : G} : g ∈ unipOf e mat ↔ g ∈ siegelOf e mat ∧ leviMat e (mat g).1 = 1 :=
-  ⟨by rintro ⟨p, hp, rfl⟩; exact ⟨p.2, congrArg Units.val hp⟩, fun h => ⟨⟨g, h.1⟩, Units.ext h.2, rfl⟩⟩
 
 variable [TopologicalSpace A] [IsTopologicalRing A] [TopologicalSpace G]
 
@@ -528,11 +410,6 @@ theorem coe_ioU (e : n ⊕ n ≃ ι) {J : Matrix n n A} {Q : Matrix ι ι A} (h 
     (ioU σ e h g : GL ι A) = blkGL e (g.1, g.2) := rfl
 
 end Io
-
-example (g : ℤ) : leviMat (Equiv.refl (Unit ⊕ Unit)) (blkMat (Equiv.refl _) (of fun _ _ => g) (of fun _ _ => g)) () () = g ∧
-    leviMat (Equiv.refl (Unit ⊕ Unit)) (fromBlocks (0 : Matrix Unit Unit ℤ) 1 1 0) = 1 ∧
-    quotMat (Equiv.refl (Unit ⊕ Unit)) (fromBlocks (0 : Matrix Unit Unit ℤ) 1 1 0) = -1 := by
-  simp [leviMat, quotMat, blkMat]
 
 end GlobalTheory.Doubling
 

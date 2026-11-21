@@ -47,19 +47,6 @@ def IsKS (ω : H0 M.str (LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.�
         (Matrix.of fun a b => (evalPt (zv (tanOrd Dw b)) O (hzv _) (g a)).snd).det =
       (∏ ix, t ix ^ exOf Dw (FlagTan.kap Dw) 0 ix).val * evalPt z O hz (M.K.jacobian i hO g)
 
-theorem IsKS.val_eq {ω ω' : H0 M.str (LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)) M.off} (h : IsKS M ω)
-    (h' : IsKS M ω') {K : Type} [Field K] [Algebra c.F K] {P Q : FrPt Xo c K} {t : Ix Dw → Kˣ}
-    {v : TIx Dw (psiSet H) → FrPt Xo c (DualNumber K)} {z : Sp K ⟶ M.X}
-    {zv : TIx Dw (psiSet H) → (Sp (DualNumber K) ⟶ M.X)} {i : M.K.bundle.ι} {k : X.F.J} {O : M.X.Opens}
-    (hO : O ≤ M.K.bundle.U i) {g : Fin (dimFlag Dw) → Γ(M.X, O)} (hz : ⊤ ≤ z ⁻¹ᵁ O) {hzv : ∀ b, ⊤ ≤ zv b ⁻¹ᵁ O}
-    {hk : ⊤ ≤ (z ≫ toFlag M) ⁻¹ᵁ X.F.U k} (ho : ⊤ ≤ z ⁻¹ᵁ M.off) (hi) (hQ : X.F.ChartFr k (z ≫ toFlag M) hk Q)
-    (ht : FrBor t Q P) (hv : IsTanFrame (psiSet H) P v) (hl : ∀ b, zv b ≫ toFlag M = X.ptY (v b))
-    (hd : (Matrix.of fun a b => (evalPt (zv (tanOrd Dw b)) O (hzv _) (g a)).snd).det ≠ 0) :
-    H0.val (B := LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)) z (i, flagIdx M _ k) ho hi ω =
-      H0.val (B := LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)) z (i, flagIdx M _ k) ho hi ω' :=
-  mul_right_cancel₀ hd ((h K P Q t v z zv i k O hO g hz hzv hk ho hi hQ ht hv hl).trans
-    (h' K P Q t v z zv i k O hO g hz hzv hk ho hi hQ ht hv hl).symm)
-
 structure CanId where
 
   ω : H0 M.str (LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)) M.off
@@ -155,11 +142,6 @@ theorem data_numbers : (h.data f₁ f₂ th k).D = dimFlag Dw ∧ (h.data f₁ f
     (h.data f₁ f₂ th k).LamD = k.LamD ∧ (h.data f₁ f₂ th k).LamT = k.LamT ∧ (h.data f₁ f₂ th k).J = k.J :=
   ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
 
-example : (h.data f₁ f₂ th k).U = R.off ∧ (h.data f₁ f₂ th k).L = LB.div ((L₀ X Z P.u₁).pull R.σ) R.Δ₁.P ∧
-    (h.data f₁ f₂ th k).L₂ = LB.div ((L₀ X Z P.u₂).pull R.σ) R.Δ₂.P ∧
-    (h.data f₁ f₂ th k).LA = (L₀ X Z (P.u₂ + dimFlag Dw • P.u₁)).pull R.σ ∧ (h.data f₁ f₂ th k).e = R.e :=
-  ⟨rfl, rfl, rfl, rfl, rfl⟩
-
 def equivV {j : ℕ} (hj : j ≤ P.T) : Cusp Z U (P.wt j) ≃ₗ[c.F] (h.data f₁ f₂ th k).V j :=
   dataEquiv (S := fun j => Cusp Z U (P.wt j)) (Nm := fun j => normOn U x V dict Z (wtOf Dw (P.wt j) 0))
     (M := fun j => latOn U Z (wtOf Dw (P.wt j) 0)) (h.geo f₁ f₂ th k) P.T h.le_T (adjSec R ω h.free₁) (adjSec_injective R ω h.free₁)
@@ -193,17 +175,6 @@ theorem mem_lattice (w : Cusp Z U P.u₁) :
 theorem normAt_eq (σ : c.F →+* ℂ) (w : Cusp Z U P.u₁) :
     (h.data f₁ f₂ th k).normAt σ (f₁.b.equivFun w) = petOn U x V dict Z (wtOf Dw P.u₁ 0) σ w := f₁.isFrame.norm σ w
 
-theorem ofSec_comb₂ (w : Cusp Z U P.u₂) : H0.ofSec R.str ⊤ ((h.data f₁ f₂ th k).second.comb (f₂.b.equivFun w)) =
-    R.Δ₂.lift (h.ext₂.equiv w) :=
-  (R.ofSec_comb R.Δ₂ h.ext₂.equiv f₂ k.abelian₂ _).trans (by rw [LinearEquiv.symm_apply_apply])
-
-theorem mem_lattice₂ (w : Cusp Z U P.u₂) :
-    f₂.b.equivFun w ∈ (h.data f₁ f₂ th k).second.lattice ↔ w ∈ latOn U Z (wtOf Dw P.u₂ 0) := f₂.mem_span_iff w
-
-theorem normAt_eq₂ (σ : c.F →+* ℂ) (w : Cusp Z U P.u₂) :
-    (h.data f₁ f₂ th k).second.normAt σ (f₂.b.equivFun w) = petOn U x V dict Z (wtOf Dw P.u₂ 0) σ w :=
-  f₂.isFrame.norm σ w
-
 theorem d_eq : (h.data f₁ f₂ th k).d = Module.finrank c.F (Cusp Z U (P.wt P.T)) :=
   (h.data f₁ f₂ th k).d_eq_finrank.trans (h.equivV f₁ f₂ th k le_rfl).finrank_eq.symm
 
@@ -229,16 +200,5 @@ theorem mulW_adjSec (j : ℕ) (w : Cusp Z U P.u₁) (f : Cusp Z U (P.wt j)) (g :
 end Ready
 
 end Data
-
-def be (N : OT.Num) : ℝ := Real.exp N.lbe
-
-theorem log_be (N : OT.Num) : Real.log (be N) = N.P7 + 2 * (N.D : ℝ) * Real.log ((N.D : ℝ) * N.ka) + N.V :=
-  Real.log_exp _
-
-def Consts.ofTable (N : OT.Num) (h : 0 ≤ N.lbe) (lam lamD lamT J : ℝ) (hD : 0 ≤ lamD) (hT : 0 ≤ lamT) : Consts :=
-  ⟨Real.exp lam, be N, Real.exp lamD, Real.exp lamT, J, Real.one_le_exp h, Real.one_le_exp hD, Real.one_le_exp hT⟩
-
-example (N : OT.Num) (h : 0 ≤ N.lbe) : (Consts.ofTable N h 0 0 0 0 le_rfl le_rfl).beta = be N ∧ 1 ≤ be N :=
-  ⟨rfl, Real.one_le_exp h⟩
 
 end GlobalTheory.CompHS

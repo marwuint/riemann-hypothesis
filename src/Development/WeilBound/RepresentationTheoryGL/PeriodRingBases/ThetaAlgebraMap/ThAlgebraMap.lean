@@ -7,7 +7,7 @@ noncomputable section
 namespace period_ring_base
 
 open Formalism.Per6 hiding σB aB
-open GroundTheory.PAdicHodge DeRhamPotentiallySemistable.DRPst PfDRPst Matrix
+open GroundTheory.PAdicHodge DeRhamPotentiallySemistable.DRPst Matrix
 
 namespace EstT
 
@@ -37,10 +37,6 @@ theorem qB_mem_ainf (q : ℚ_[l]) : qB l q ∈ Ainf' l := by
   show qB l (IsLocalization.mk' ℚ_[l] z s) ∈ _
   rw [e, map_mul, map_pow]
   exact (Ainf' l).mul_mem (key _) ((Ainf' l).pow_mem (Subring.subset_closure (Or.inr rfl)) _)
-
-theorem σC_coe (g : GQ l) (y : PadicAlgCl l) : σC g (y : ℂ_[l]) = ((g y : PadicAlgCl l) : ℂ_[l]) := by
-  rw [σC, galCp_coe]
-  rfl
 
 end EstT
 

@@ -2,10 +2,14 @@ import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.CoverRefinementHodge.BridgeLApply
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GrCechFin
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechFormsAddSmulStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormsToCechBijectiveStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormsToCechBijective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormsToCechSmulStatement
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.CechDifferentialPullback.FormCochPullPf
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.CechDifferentialPullback.PfPull
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.CechDifferentialPullback.Bridge
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InjectiveResolutionLiftPushforward
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechShortExactPullCompat
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafPullConnectingCompatStatement
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.CechDifferentialPullback.PfOmega
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -124,7 +128,7 @@ theorem hdg_iso_of_ing (hG : type_of% (@CrystallineSemistableComparison.Om.Glob.
   rw [← e1]
   exact isoI_nat hG hB hS hA hP hC q p u hu U' (covX p) (fun α => (k α).2) (fun α => (hk α).trans inf_le_right) a j x
 
-theorem formToCO_bijective_i : type_of% (@CrystallineSemistableComparison.Om.Cech.formToCO_bijective _) := GlobalTheory.T.forms_to_cech_bijective
+theorem formToCO_bijective_i : type_of% (@CrystallineSemistableComparison.Om.Cech.formToCO_bijective _) := _root_.GlobalTheory.CompanionTheory.OmCech.formToCO_bijective
 theorem formToCO_smul_i : type_of% (@CrystallineSemistableComparison.Om.Cech.formToCO_smul _) := GlobalTheory.T.forms_to_cech_smul
 theorem cechOmAdd_smul_i : type_of% (@CrystallineSemistableComparison.Om.Cech.cechOmAdd_smul _) := GlobalTheory.T.cech_forms_add_smul
 theorem formCoch_pull_i : type_of% (@CrystallineSemistableComparison.Om.Cech.formCoch_pull _) := CrystallineSemistableComparison.Om.Cech.formCoch_pull_pf

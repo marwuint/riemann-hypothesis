@@ -4,12 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.CharacterTheory.AdditiveEqPolynom
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ConjOfPrimaryFinrankKerPowEq
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyLinearEqui
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.AdditiveEqPolynomialVonMangoldtConvolutionOneStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ConjOfPrimaryFinrankKerPowEqStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyLinearEquiStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EndomorphismMassMobiusInverseMonicEqStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EqZeroOfNotPrimaryStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.PrimitiveEndClassFunctionEqZeroOfPrimaryStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveEndClassFunctionInvariantSubspaceMobiStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EndomorphismMassMobiusInverseMonicEq
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EqZeroOfNotPrimary
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.PrimitiveEndClassFunctionEqZeroOfPrimary
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveEndClassFunctionInvariantSubspaceMobi
 
 open Polynomial GlobalTheory.CuspGL
 
@@ -39,15 +38,15 @@ theorem eq_zero_of_mass_charpoly_eq_zero (F : Type) [Field F] [Finite F] (V : Ty
     exact hm
   by_cases hprim : ∃ (f : F[X]) (m : ℕ), f.Monic ∧ Irreducible f ∧ 0 < m ∧ LinearMap.charpoly g = f ^ m
   swap
-  · exact GlobalTheory.T.classFn_eq_zero_of_charpoly_not_irreducible_pow F V φ hc hp hpos g hprim
+  · exact _root_.GlobalTheory.CuspGL.eq_zero_of_not_primary F V φ hc hp hpos g hprim
   obtain ⟨f, m, hfm, hf, hm0, hg⟩ := hprim
   set s : F[X] → ℂ := fun P => (P.natDegree : ℂ) with hs
   have hsa : IsAdditive s := isAdditive_natDegree
   have hπc : IsClassFn (psi s V) := fun e x => GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_linearEquiv_conj F s V V e x
-  have hπp : IsPrimitive (psi s V) := GlobalTheory.T.isPrimitiveEndClassFunction_invariantSubspaceMobiusInverse F V s hsa
+  have hπp : IsPrimitive (psi s V) := _root_.GlobalTheory.CuspGL.isPrimitive_psi F V s hsa
   have hdeg : (LinearMap.charpoly g).natDegree = Module.finrank F V := LinearMap.charpoly_natDegree g
   have hmass : mass (psi s V) (LinearMap.charpoly g) ≠ 0 := by
-    rw [GlobalTheory.T.endomorphismMass_mobiusInverse_monic_eq F V s hsa _ (LinearMap.charpoly_monic g) hdeg, hdeg, hg,
+    rw [_root_.GlobalTheory.CuspGL.mass_psi_eq_glCard_mul_mangoldt_div F V s hsa _ (LinearMap.charpoly_monic g) hdeg, hdeg, hg,
       (GlobalTheory.T.additive_eq_polynomialVonMangoldt_convolution_one F s hsa).2.1 f m hfm hf hm0]
     have h1 : glCard F (Module.finrank F V) ≠ 0 := by
       rw [glCard]
@@ -67,11 +66,11 @@ theorem eq_zero_of_mass_charpoly_eq_zero (F : Type) [Field F] [Finite F] (V : Ty
     apply hmass
     rw [mass]
     refine finsum_mem_eq_zero_of_forall_eq_zero fun x hx => ?_
-    exact GlobalTheory.T.primitiveEndClassFunction_eq_zero_of_primary F V _ hπc hπp f m hf hne x (hg ▸ hx)
+    exact _root_.GlobalTheory.CuspGL.primitive_eq_zero_of_primary F V _ hπc hπp f m hf hne x (hg ▸ hx)
   obtain ⟨g₀, hg₀, hfg₀, hπ₀⟩ := hex
   have hconj : ∀ g₁ : Module.End F V, aeval g₁ f = 0 → ∃ e : V ≃ₗ[F] V, e.conj g₀ = g₁ := by
     intro g₁ h₁
-    refine GlobalTheory.T.conj_of_primary_finrank_ker_pow_eq F V g₀ g₁ f 1 hf (by simpa using hfg₀) (by simpa using h₁) fun j => ?_
+    refine _root_.GlobalTheory.CuspGL.primary_conj_of_finrank_ker_eq F V g₀ g₁ f 1 hf (by simpa using hfg₀) (by simpa using h₁) fun j => ?_
     rw [map_pow, map_pow, hfg₀, h₁]
   set φ' : Module.End F V → ℂ := fun x => psi s V g₀ * φ x - φ g₀ * psi s V x with hφ'
   have hc' : IsClassFn φ' := fun e x => by simp only [hφ', hc e x, hπc e x]
@@ -81,7 +80,7 @@ theorem eq_zero_of_mass_charpoly_eq_zero (F : Type) [Field F] [Finite F] (V : Ty
       hp A h1 h2 x hx, hπp A h1 h2 x hx]
     simp
   have hz : ∀ x : Module.End F V, LinearMap.charpoly x = f ^ m → φ' x = 0 := by
-    refine GlobalTheory.T.primitiveEndClassFunction_eq_zero_of_primary F V φ' hc' hp' f m hf fun x _ hx => ?_
+    refine _root_.GlobalTheory.CuspGL.primitive_eq_zero_of_primary F V φ' hc' hp' f m hf fun x _ hx => ?_
     obtain ⟨e, rfl⟩ := hconj x hx
     simp only [hφ', hc e g₀, hπc e g₀]
     ring

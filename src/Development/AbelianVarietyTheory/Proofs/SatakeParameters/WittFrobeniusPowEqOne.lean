@@ -41,11 +41,4 @@ theorem isPrecomplete_pi {R : Type*} [CommRing R] (I : Ideal R) [IsPrecomplete I
   have := hL i n
   rwa [SModEq.sub_mem] at this
 
-section
-
-variable {p : ℕ} [Fact p.Prime] {k k' : Type} [Field k] [CharP k p] [PerfectRing k p]
-  [Field k'] [CharP k' p] [PerfectRing k' p]
-
-end
-
 end GlobalTheory

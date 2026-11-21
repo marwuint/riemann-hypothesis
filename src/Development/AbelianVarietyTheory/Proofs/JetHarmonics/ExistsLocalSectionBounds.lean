@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Statements.DiscreteSeriesShifts.ThmBpDS
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Admissible
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ThresholdProductsBounded
 import Formalism.SharpRestriction.CuspSpanNormBounds.OnePlaceEstimates
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsPlaceOfLocalBesselDatumInterlacingStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsPlaceOfLocalBesselDatumInterlacing
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UpqRepVocabularyAgree
 open BpJoin Formalism.FourierDecayAlt Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.BasicNotions Formalism.QuantumDeterminants GlobalTheory.ThA
 
@@ -18,7 +18,7 @@ theorem pointwiseBound_at_place_of_locBessel : ThmBpDS → ∀ Ch : ℝ, ∃ C�
   obtain ⟨-, hε, -, -, -, hS, -⟩ := hL
   have hk : 2 ≤ D.R.k := by have := D.R.m_add_three_le_k; omega
   obtain ⟨U, U', p, hU, hstd⟩ :=
-    GlobalTheory.T.exists_place_of_localBesselDatum_interlacing D.R.k D.R.rS L μsec lam0 (by omega) hk hsec hS.2.1 hS.2.2.1
+    _root_.GlobalTheory.exists_place_of_locBessel D.R.k D.R.rS L μsec lam0 (by omega) hk hsec hS.2.1 hS.2.2.1
   have hu : (fun i : Fin D.R.k => U (i.val + 1)) = L.u := funext fun i => (hU i).1
   have hu' : (fun i : Fin D.R.k => U' (i.val + 1)) = L.u' := funext fun i => (hU i).2
   have he : L.ε = PI.BesselPeriodGGP.eps48 D.R.k D.R.rS := by

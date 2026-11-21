@@ -10,10 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsHermitian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAmpleNefHermitianSmallSection
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLineBundleIsNefShiftOfNonneg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PairSectionMemBallExpOfProjArithVarietyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PairSectionMemBallExpOfProjArithVariety
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClearDenominatorsAmpleHermLineBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLineBundlePositivityPreservedIsometricStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermPairSectionsChangeOfIsometricCombinatiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLineBundlePositivityPreservedIsometric
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermPairSectionsChangeOfIsometricCombinati
 
 set_option autoImplicit false
 
@@ -69,7 +69,7 @@ theorem exists_twist : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRin
   obtain ⟨A, hA, hAn, -⟩ := GlobalTheory.AmpleNefSmall.exists_ample_nef_smallSec hC k X p D hX
   obtain ⟨P, rfl, rfl⟩ := exists_pair N A
   obtain ⟨c, g, -, hg, -, hgf⟩ := GlobalTheory.T.exists_clear_denominators_ampleHermLineBundle k X p D hX P hA (-1) (Finset (Fin D)) fun S => ∏ i ∈ S, x i
-  choose v hv0 hv using fun S => GlobalTheory.T.pairSection_mem_ball_exp_of_projArithVariety k X p D hX P (-1) c _ (hgf S)
+  choose v hv0 hv using fun S => _root_.GlobalTheory.HSNef.bounded_norm k X p D hX P (-1) c _ (hgf S)
   let u : ℝ := ∑ S, v S
   have hu : 0 ≤ u := Finset.sum_nonneg fun S _ => hv0 S
   have hvu (S) : v S ≤ u := Finset.single_le_sum (fun S _ => hv0 S) (Finset.mem_univ S)
@@ -77,12 +77,12 @@ theorem exists_twist : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRin
   obtain ⟨h₁, h₂, -⟩ := Pair.rep_base k X p P
   have hM : P.Rep (-1) c M := by
     simpa using Pair.rep_tens k X p P _ _ _ _ _ _ (Pair.rep_dual k X p P _ _ _ h₁) (Pair.rep_pow k X p P _ _ _ c h₂)
-  obtain ⟨Q, -, hQ, hB⟩ := GlobalTheory.T.exists_hermPairSections_change_of_isometric_combinations k X p P _ _ _ _ M M hM hM
+  obtain ⟨Q, -, hQ, hB⟩ := _root_.GlobalTheory.HSNef.change_pair k X p P _ _ _ _ M M hM hM
   have hi : (P.A.pow c).Isometric (P.L.tens M) :=
     HermLB.icls_eq_iff.1 (by simp only [M, HermLB.icls_tens, HermLB.icls_dual]; abel)
   have hn : (P.L.tens M).IsNef D :=
-    (GlobalTheory.T.hermitianLineBundle_positivity_preserved_isometric hC k X p D hX _ _ hi).2.1 (GlobalTheory.NefPow.isNef_pow hC k X p D hX _ c hAn)
-  refine ⟨M.shift (fun _ => u) fun _ => rfl, (GlobalTheory.T.hermitianLineBundle_positivity_preserved_isometric hC k X p D hX _ _ (isometric_shift_tens _ _ u)).2.1
+    (_root_.GlobalTheory.HSNef.isometric_keeps hC k X p D hX _ _ hi).2.1 (GlobalTheory.NefPow.isNef_pow hC k X p D hX _ c hAn)
+  refine ⟨M.shift (fun _ => u) fun _ => rfl, (_root_.GlobalTheory.HSNef.isometric_keeps hC k X p D hX _ _ (isometric_shift_tens _ _ u)).2.1
     (GlobalTheory.NefShift.isNef_shift_nonneg k X p D hX _ u hu hn), fun W => ?_⟩
   obtain ⟨R, hR, hR', h⟩ := exists_pair_small Q W g hg u
   refine ⟨R, hR, by rw [hR', hQ], fun S => h _ ?_⟩

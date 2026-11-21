@@ -4,9 +4,10 @@ import ReciprocityTheory.AnalyticForms.LeviForms.TailCutA
 import ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LoglogQuotNonneg
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceStatementHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalDensityInclusionExclusionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDensityNonnegOffNullSetStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceStatementHolds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalDensityInclusionExclusion
+import ReciprocityTheory.AnalyticForms.LeviForms.ConvExpandStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDensityNonnegOffNullSet
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas
 open scoped ContDiff
 
@@ -25,7 +26,7 @@ theorem expand_mInt : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpac
     refine measure_mono_null (fun y hy => ?_) (hnull j)
     simp only [Set.mem_ofPred_eq, Classical.not_imp] at hy
     refine ⟨hy.1, fun hyU => hy.2 ?_⟩
-    exact GlobalTheory.T.local_density_inclusion_exclusion A U P f Θ hU hP hΘ hf j y ⟨hy.1, hyU⟩
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Giv.locDens_expand_ofFun A U P f Θ hU hP hΘ hf j y ⟨hy.1, hyU⟩
   refine ⟨?_, ?_⟩
   · intro j K hK hKc
     have hsum : IntegrableOn (fun y => ∑ T : Finset (Fin e), (-1 : ℝ) ^ (e - T.card) *

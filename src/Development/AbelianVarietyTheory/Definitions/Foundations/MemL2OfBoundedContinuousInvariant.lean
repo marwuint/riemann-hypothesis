@@ -25,36 +25,6 @@ section Span
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   {hc : CMData F E} {V : HSpace E} {R : Type} [CommRing R] [Algebra F R]
 
-omit [NumberField F] in
-
-theorem mem_extSub_span_lt {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) E} (i : ℕ) (y : Fin V.rank → R ⊗[F] E) :
-    y ∈ extSub (F := F) V R (Submodule.span E ((fun k => vecOf V (Cᵀ k)) '' {j | j.val < i})) ↔
-      ∃ a : Fin r → R ⊗[F] E, (∀ j, i ≤ j.val → a j = 0) ∧ y = (C.map (inclR (F := F) R)).mulVec a := by
-  let C' : Matrix (Fin V.rank) (Fin r) E := fun a j => if j.val < i then C a j else 0
-  have e : Submodule.span E ((fun k => vecOf V (Cᵀ k)) '' {j | j.val < i}) = colSpan V C' := by
-    refine le_antisymm (Submodule.span_mono ?_) (Submodule.span_le.2 ?_)
-    · rintro _ ⟨j, hj, rfl⟩
-      exact ⟨j, congrArg (vecOf V) (funext fun a => if_pos hj)⟩
-    · rintro _ ⟨j, rfl⟩
-      by_cases hj : j.val < i
-      · exact Submodule.subset_span ⟨j, hj, congrArg (vecOf V) (funext fun a => (if_pos hj).symm)⟩
-      · have : C'ᵀ j = 0 := funext fun a => if_neg hj
-        simp [this, vecOf]
-  rw [e, AutFunCompare.mem_extSub_colSpan]
-  constructor
-  · rintro ⟨a, rfl⟩
-    refine ⟨fun j => if j.val < i then a j else 0, fun j hj => if_neg (not_lt.2 hj), funext fun b => ?_⟩
-    simp only [Matrix.mulVec, dotProduct, Matrix.map_apply]
-    refine Finset.sum_congr rfl fun j _ => ?_
-    by_cases hj : j.val < i <;> simp [C', hj]
-  · rintro ⟨a, ha, rfl⟩
-    refine ⟨a, funext fun b => ?_⟩
-    simp only [Matrix.mulVec, dotProduct, Matrix.map_apply]
-    refine Finset.sum_congr rfl fun j _ => ?_
-    by_cases hj : j.val < i
-    · simp [C', hj]
-    · rw [ha j (not_lt.1 hj), mul_zero, mul_zero]
-
 theorem act_sub_mem_of_mem_span {S : Set V.V} {A : Submodule E V.V} {g : HA R hc.sig V.gram}
     (h : ∀ x ∈ S, act hc V g (coordR V R x) - coordR V R x ∈ extSub (F := F) V R A) {x : V.V}
     (hx : x ∈ Submodule.span E S) : act hc V g (coordR V R x) - coordR V R x ∈ extSub (F := F) V R A := by
@@ -85,8 +55,6 @@ abbrev PA : Subgroup (GA D V) := 𝔉.par D.sp.cm (AF D.host.F)
 
 abbrev NA : Subgroup (GA D V) := 𝔉.unip D.sp.cm (AF D.host.F)
 
-abbrev PQ : Subgroup (PA 𝔉) := (GQ V).subgroupOf (PA 𝔉)
-
 abbrev NQ : Subgroup (NA 𝔉) := (GQ V).subgroupOf (NA 𝔉)
 
 abbrev PLoc (v : HeightOneSpectrum (𝓞 D.host.F)) : Subgroup (AdelicU.GLoc D.sp.cm.sig V.gram v) :=
@@ -94,10 +62,6 @@ abbrev PLoc (v : HeightOneSpectrum (𝓞 D.host.F)) : Subgroup (AdelicU.GLoc D.s
 
 abbrev NLoc (v : HeightOneSpectrum (𝓞 D.host.F)) : Subgroup (AdelicU.GLoc D.sp.cm.sig V.gram v) :=
   𝔉.unip D.sp.cm (Fv D.host.F v)
-
-abbrev PArch (w : InfinitePlace D.host.F) : Subgroup (AdelicU.GArch D.sp.cm.sig V.gram w) := 𝔉.par D.sp.cm w.Completion
-
-abbrev NArch (w : InfinitePlace D.host.F) : Subgroup (AdelicU.GArch D.sp.cm.sig V.gram w) := 𝔉.unip D.sp.cm w.Completion
 
 theorem map_unipRat : (𝔉.unipRat D.sp.cm).map (AdelicU.ratEmb D.sp.cm.sig V.gram) = GQ V ⊓ NA 𝔉 := by
   have : Nontrivial (AF D.host.F) := inferInstanceAs (Nontrivial (Ainf D.host.F × Af D.host.F))
@@ -209,15 +173,6 @@ theorem toL2_mem_cuspidal [μ.IsMulLeftInvariant] (h : MemL2Quotient (GQ V) μ �
 
 theorem mem_L2cusp_of_ae_eq [μ.IsMulLeftInvariant] {F : DividedPowerChartLift V μ} (hφ : φ ∈ cuspCont V) (e : lift (GQ V) F =ᵐ[μ] φ) :
     F ∈ L2cusp V μ := Submodule.le_topologicalClosure _ ⟨φ, hφ, e⟩
-
-theorem L2cusp_le [μ.IsMulLeftInvariant] {U : Submodule ℂ (DividedPowerChartLift V μ)} (hU : IsClosed (U : Set (DividedPowerChartLift V μ)))
-    (h : ∀ φ ∈ cuspCont V, ∀ h : MemL2Quotient (GQ V) μ φ, h.toL2 ∈ U) : L2cusp V μ ≤ U := by
-  refine Submodule.topologicalClosure_minimal _ ?_ hU
-  rintro F ⟨φ, hφ, e⟩
-  have hd := isFundamentalDomain_stdDom (GQ V) μ
-  have h2 : MemL2Quotient (GQ V) μ φ :=
-    (memL2_iff_fundamental_domain hd).2 ⟨hφ.2.1, ((memL2_iff_fundamental_domain hd).1 (memL2_lift F)).2.ae_eq (ae_restrict_of_ae e)⟩
-  exact l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (h2.lift_toL2_ae_eq.trans e.symm) ▸ h φ hφ h2
 
 variable (V μ) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
@@ -369,9 +324,6 @@ theorem petersson_inner_eq_integral_quotient (hP : Published.CuspRapidDecay) (h�
 theorem petersson_eq [μ.IsMulLeftInvariant] {𝓕 : Set (GA D V)} (h : IsFundamentalDomain (GQ V) 𝓕 μ)
     (hφ : LeftInv (GQ V) φ) (hψ : LeftInv (GQ V) ψ) : petersson V μ φ ψ = ∫ g in 𝓕, φ g * conj (ψ g) ∂μ := pet_eq h hφ hψ
 
-theorem petersson_conj_symm (φ ψ : GA D V → ℂ) : conj (petersson V μ ψ φ) = petersson V μ φ ψ :=
-  integral_conj.symm.trans (integral_congr_ae (.of_forall fun _ => by simp [mul_comm]))
-
 theorem petersson_smul_left (c : ℂ) (φ ψ : GA D V → ℂ) : petersson V μ (c • φ) ψ = c * petersson V μ φ ψ :=
   (integral_congr_ae (.of_forall fun _ => mul_assoc _ _ _)).trans (integral_const_mul c _)
 
@@ -421,39 +373,7 @@ def minusHyp (i : ℕ) (h : i ≤ wittIndex V) : HSp D := (exists_isWittLower_if
 theorem isWittLower_minusHyp {i : ℕ} (h : i ≤ wittIndex V) : IsWittLower V (minusHyp V i h) i :=
   (exists_isWittLower_iff.2 h).choose_spec.1
 
-theorem rank_minusHyp {i : ℕ} (h : i ≤ wittIndex V) : (minusHyp V i h).rank + 2 * i = V.rank :=
-  (isWittLower_minusHyp h).1
-
-variable (V) in
-
-theorem two_mul_wittIndex_le : 2 * wittIndex V ≤ V.rank := Nat.le_add_left _ _ |>.trans (rank_minusHyp le_rfl).le
-
 end Witt
-
-section Examples
-
-open CuspDecay.Model
-
-def planeFlag (D : D7) : IsoFlag (plane D) := frameFlag (isIsoFrame_plane D)
-
-theorem wittIndex_plane (D : D7) : wittIndex (plane D) = 1 := by
-  have h1 : 2 * wittIndex (plane D) ≤ 2 := two_mul_wittIndex_le (plane D)
-  have h2 : 1 ≤ wittIndex (plane D) := (planeFlag D).k_le_wittIndex
-  omega
-
-example (D : D7) (c : ℂ) (x : GA D (plane D)) : constTerm (planeFlag D) (fun _ => c) x = c :=
-  (cocompact_single ((AutFunCompare.isIsoFrame_iff _ _).1 (isIsoFrame_plane D)).2).constTermOn_const c x
-
-example (θ : InfF D) (K : Subgroup (GA D V)) : (fun _ => (1 : ℂ)) ∈ cuspForms θ V K ↔ wittIndex V = 0 := by
-  rw [wittIndex_eq_zero_iff_isAniso, mem_cuspForms]
-  exact ⟨fun h r C hC => not_isCuspFun_const V hC one_ne_zero h.1.2,
-    fun h => ⟨⟨isAutFunSm_const θ V 1, fun r C hC => absurd hC (h r C)⟩, .of_invariant fun _ _ _ => rfl⟩⟩
-
-example (μ : Measure (GA D V)) (φ ψ : GA D V → ℂ) :
-    petersson V μ φ (Complex.I • ψ) = -Complex.I * petersson V μ φ ψ := by
-  rw [← petersson_conj_symm, petersson_smul_left, map_mul, Complex.conj_I, petersson_conj_symm]
-
-end Examples
 
 end GlobalTheory.Cusp
 

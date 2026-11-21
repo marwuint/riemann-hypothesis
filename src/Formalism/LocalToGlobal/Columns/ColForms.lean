@@ -107,10 +107,6 @@ abbrev ColV (u : Pr.Word) (j : ℕ) : Submodule X.K ((colGSD W Ch u j).D → (co
 
 def ColL (u : Pr.Word) (j : ℕ) : Submodule (𝓞 X.K) (ColV W Ch u j) := (colGSD W Ch u j).intDel
 
-def ColLnab (u : Pr.Word) (j : ℕ) : Submodule (𝓞 X.K) (ColV W Ch u j) := (colGSD W Ch u j).intNab
-
-@[reducible] def ColCSD (u : Pr.Word) (j : ℕ) (h : (colGSD W Ch u j).Ok) : CSD X.K := (colGSD W Ch u j).toCSD h
-
 abbrev MfV (u : Pr.Word) : Submodule X.K ((colGSD W Ch u 0).D → (colGSD W Ch u 0).V) := ColV W Ch u 0
 
 def MfL (u : Pr.Word) : Submodule (𝓞 X.K) (MfV W Ch u) := ColL W Ch u 0

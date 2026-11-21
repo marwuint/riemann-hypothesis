@@ -97,10 +97,6 @@ macro "fin_order" : tactic =>
   `(tactic| (apply Fin.ext; simp only [OrderHom.comp_coe, Function.comp_apply, val_dl, val_fr, cst_apply,
     Fin.val_succ, Fin.val_zero, Fin.val_one]; grind))
 
-theorem face_projection_cup1 {n m : ℕ} (e : Fin (n + 2) →o Fin (m + 1)) (x : Cn F 1) (z : Cn F n) :
-    pr F e (cup1 F n x z) = pr F (e.comp (fr n)) x * pr F (e.comp (dl 0)) z := by
-  rw [cup1_apply, map_mul, pr_pr, pr_pr]
-
 theorem coboundary_cup1 (n : ℕ) {x : Cn F 1} (hx : dn F 1 x = 0) (z : Cn F n) :
     dn F (n + 1) (cup1 F n x z) = -cup1 F (n + 1) x (dn F n z) := by
   let E : Fin 3 →o Fin (n + 3) := (Fin.castLEOrderEmb (by omega)).toOrderHom
@@ -245,10 +241,6 @@ theorem pulln_mul (m : CoefMap (RingHom.id R) F G) (n : ℕ) (f f' : Cn F n) :
     pulln m n (f * f') = pulln m n f * pulln m n f' := by
   funext c
   exact map_mul (m.α (c.obj (Fin.last n))) _ _
-
-theorem pulln_one (m : CoefMap (RingHom.id R) F G) (n : ℕ) : pulln m n (1 : Cn F n) = 1 := by
-  funext c
-  exact map_one (m.α (c.obj (Fin.last n)))
 
 theorem pulln_dn (m : CoefMap (RingHom.id R) F G) (n : ℕ) (f : Cn F n) :
     pulln m (n + 1) (dn F n f) = dn G n (pulln m n f) := by

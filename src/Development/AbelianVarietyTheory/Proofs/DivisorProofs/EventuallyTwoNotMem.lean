@@ -30,14 +30,4 @@ structure GoodPlace {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F E) (
 
   unr : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → UnrAt χX w
 
-theorem eventually_two_not_mem : ∀ (F : Type) [Field F] [NumberField F], ∀ᶠ v : Pl F in Filter.cofinite, (2 : 𝓞 F) ∉ v.asIdeal := by
-  intro F _ _
-  have h0 : (Ideal.span {(2 : 𝓞 F)}) ≠ ⊥ := by
-    rw [Ne, Ideal.span_singleton_eq_bot]; exact two_ne_zero
-  have hf := Ideal.finite_factors h0
-  refine hf.subset ?_
-  intro v hv
-  have hv' : (2 : 𝓞 F) ∈ v.asIdeal := by simpa using hv
-  exact Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hv')
-
 end GlobalTheory.PairVac

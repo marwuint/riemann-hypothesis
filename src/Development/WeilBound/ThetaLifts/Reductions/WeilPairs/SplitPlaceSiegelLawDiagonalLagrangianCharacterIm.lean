@@ -1,9 +1,10 @@
 import Mathlib
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.ImportsAlt
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.WeilDatumDoubledTargetSiegelRuleImports
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReindexDblIncM
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LagrInt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNsmulFix
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.ThetaFunctionHeisenbergInvariant
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.ImportsMore
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFunctionHeisenbergInvariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHalfAbstract
+
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels

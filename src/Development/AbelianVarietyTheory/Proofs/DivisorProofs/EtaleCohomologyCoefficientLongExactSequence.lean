@@ -10,8 +10,6 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 noncomputable section
 namespace GlobalTheory.EtC.CoefSeq
 
-variable {R : Type} [CommRing R]
-
 end GlobalTheory.EtC.CoefSeq
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in

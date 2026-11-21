@@ -7,15 +7,6 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace UpperTheory.V.Th
 
-structure InpU : Prop extends U3.CohInp where
-  lemM : LemmaM
-  lemM' : LemmaM'
-  lemP : LemmaP
-  kato : Z.Kato.KatoTwo
-  rigI : RigI
-  rigII : RigII
-  number : Af.CongruenceNumberRankThree
-
 open UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws in
 
 def SpPt : Prop :=

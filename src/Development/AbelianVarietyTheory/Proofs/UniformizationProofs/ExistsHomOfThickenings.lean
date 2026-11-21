@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsProperOfIs
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.VeryAmpleByPull
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsHomOfVeryAmpleBy
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.HomEqOfPullSections
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsProjectiveAlgebraisationFormalEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsProjectiveAlgebraisationFormalEmbedding
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsIsoOfIsClosedImmersion
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -163,7 +163,7 @@ theorem exists_section (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuation
       (v₁₃ := Y.hom) ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)
     rw [thickTrans_comp, pullback.lift_fst, Category.comp_id]
     exact IsPullback.of_hasPullback _ _
-  obtain ⟨B, H', s', b, w, hH', hs', hb, -, hw, heq⟩ := GlobalTheory.T.exists_projective_algebraisation_formal_embedding V (fun e => thickObj V (IsLocalRing.maximalIdeal V) e Y)
+  obtain ⟨B, H', s', b, w, hH', hs', hb, -, hw, heq⟩ := _root_.GlobalTheory.Unif.exists_projective_of_formal_embedding V (fun e => thickObj V (IsLocalRing.maximalIdeal V) e Y)
     (fun e => thickMap V (IsLocalRing.maximalIdeal V) e Y) hpb (fun e => inferInstanceAs (Flat (pullback.snd Y.hom (thick V (IsLocalRing.maximalIdeal V) e))))
     (fun e => H.pull (j e)) v (fun e => ⟨hL e, hv e⟩) n t cv hva
   obtain ⟨φ, u, hφ, hu, cu⟩ := GlobalTheory.exists_hom_of_veryAmpleBy V P.left P.hom H n s hH hs B.left B.hom H' s' hH' hs'.1

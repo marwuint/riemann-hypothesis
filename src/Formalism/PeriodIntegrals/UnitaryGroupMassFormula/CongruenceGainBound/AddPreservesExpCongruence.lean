@@ -1,4 +1,4 @@
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CongruenceGainBound.SubstitutionBound
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CongruenceGainBound.Struct
 
 noncomputable section
 
@@ -15,11 +15,5 @@ def Agree (D : ℕ) (F G : MvPowerSeries σ A) : Prop :=
   ∀ n : σ →₀ ℕ, n.degree ≤ D → MvPowerSeries.coeff n F = MvPowerSeries.coeff n G
 
 end Agree
-
-section Gen
-
-variable {σ τ ι Kc : Type} [Field Kc] (p : ℕ) (Oc : Subring Kc) (T : ι → MvPowerSeries σ (MvPolynomial τ Kc))
-
-end Gen
 
 end PI.UnitaryGroupMassFormula.PadicGainBound

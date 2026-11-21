@@ -27,9 +27,6 @@ def sgn : DR R B →ₐ[B] DR R B := CliffordAlgebra.involute
 
 @[simp] theorem sgn_sgn (x : DR R B) : sgn (sgn x) = x := CliffordAlgebra.involute_involute x
 
-theorem sgn_smul (r : R) (x : DR R B) : sgn (r • x) = r • sgn x := by
-  rw [← algebraMap_smul B r x, map_smul, algebraMap_smul]
-
 theorem ι_mul_ι_swap (a b : Ω[B⁄R]) : ι1 a * ι1 b = -(ι1 b * ι1 a) :=
   eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap a b)
 
@@ -296,9 +293,6 @@ def dTwo : Om R B 2 →ₗ[R] Om R B 3 := dOm R B 2
 @[simp] theorem coe_dTwo (x : Om R B 2) : (dTwo R B x : DR R B) = dDR R B x := rfl
 
 theorem dOne_eq_dOm (ω : Ω[B⁄R]) : dOne R B ω = dOm R B 1 ⟨ι1 ω, ι_mem ω⟩ := rfl
-
-theorem dOm_zero (b : B) (h : algebraMap B (DR R B) b ∈ ⋀[B]^0 Ω[B⁄R]) :
-    dOm R B 0 ⟨_, h⟩ = ⟨ι1 (D R B b), ι_mem _⟩ := Subtype.ext (dDR_algebraMap b)
 
 variable (R B) in
 

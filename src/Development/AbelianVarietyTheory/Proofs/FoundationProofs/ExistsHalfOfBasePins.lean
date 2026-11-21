@@ -136,11 +136,6 @@ def IsCoverLevel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recipro
   l.Dvd l₂ ∧ l₂.M = l.M * pd ∧ Nat.Coprime pd l.M ∧ l₂.Mb = l.Mb * I ∧
     I ⊔ I.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ ∧ l₂.A = 1
 
-theorem isCoverLevel_of_covPin {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
-    {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} {Tup : Type} {dδ : Tup → DeltaDat Xo c n}
-    (h : CovPin Xo c dδ) (t : Tup) : IsCoverLevel l (dδ t).pd (dδ t).I (dδ t).l₂ :=
-  ⟨(h t).1.1, (h t).1.2.1, (h t).1.2.2.1, (h t).1.2.2.2.1, (h t).1.2.2.2.2.1, (h t).2.1⟩
-
 theorem exists_coverLevel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (l : Level H)
     (hA : l.A = 1) (pd : ℕ) (I : Ideal (𝓞 E)) (hodd : Odd pd) (hc : Nat.Coprime pd l.M)
     (hK : ∃ G : Set (𝓞 E), I = Ideal.span G ∧ G ⊆ Algebra.adjoin ℤ {H.w0})
@@ -243,10 +238,6 @@ theorem coverHalf_spec {Q : Finset (Pl D.host.E)} (hQ : IsTwistPlaces D.host.g Q
       exact QE_cop_self D _ _ (hqe a ha).2.2.2.2.1
     · exact QE_cop_ne D (hqe a ha).1.1 (hqe b hb).1.1 (hinj a ha b hb hab) _ _
 
-def Oriented {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (l : Level H)
-    (pb : Fin 2 → 𝓞 E) : Prop :=
-  pb 0 * pb 1 ∈ l.Mb
-
 variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
@@ -279,43 +270,6 @@ theorem exists_cover_of_places (Q : Par D) (R : RealDat D A Ks) (hH : Q.PinHost)
       rw [← Ideal.span_singleton_le_iff_mem, ← hprod]
       exact Ideal.mul_le_left
     · exact hG.2 t PP h
-
-theorem half_eq_span (Q : Par D) (hl : Q.PinLevel) {pb : Fin 2 → 𝓞 D.host.E} (hT : IsTypeDatum D.host.g pb)
-    (hO : Oriented Q.l pb) : Q.l.Mb = Ideal.span {pb 0 * pb 1} := by
-  set b := (Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) with hbdef
-  have hn : ∀ i, pb i * b (pb i) = (D.host.g i : 𝓞 D.host.E) := fun i => by
-    apply RingOfIntegers.ext
-    have h1 := hT.norm i
-    have h2 : ((b (pb i) : 𝓞 D.host.E) : D.host.E) = star (pb i : D.host.E) := Q.H.bar_eq (pb i)
-    rw [← h2] at h1
-    exact h1
-  have hprod := Q.l.prod
-  obtain ⟨C, hC⟩ := Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hO)
-  have h1 : Ideal.span {pb 0 * pb 1} * (Ideal.span {pb 0 * pb 1}).map b = Ideal.span {(Q.l.M : 𝓞 D.host.E)} := by
-    rw [Ideal.map_span, Set.image_singleton, Ideal.span_singleton_mul_span_singleton, map_mul, mul_mul_mul_comm, hn, hn, hl.1,
-      Nat.cast_mul]
-  rw [hC, Ideal.map_mul, mul_mul_mul_comm, hprod] at h1
-  have h0 : Ideal.span {(Q.l.M : 𝓞 D.host.E)} ≠ 0 := by
-    rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    have := Q.l.three_le
-    exact_mod_cast (by omega : Q.l.M ≠ 0)
-  have h2 : C * C.map b = 1 := mul_left_cancel₀ h0 (h1.trans (mul_one _).symm)
-  have h3 : C = ⊤ := top_le_iff.1 (by rw [← Ideal.one_eq_top, ← h2]; exact Ideal.mul_le_left)
-  rw [hC, h3, Ideal.mul_top]
-
-theorem exists_half (Q : Par D) (R : RealDat D A Ks) (pb : Fin 2 → 𝓞 D.host.E) (hH : Q.PinHost) (hl : Q.PinLevel)
-    (hO : Oriented Q.l pb) (hP : IsTypePlaces D.host.g pb R.Pg) (hQ : ∀ t, IsTwistPlaces D.host.g (R.Q t))
-    (hG : QGuard R) (t : T0) :
-    ∃ (pd : ℕ) (l₂ : Level Q.H), IsCoverLevel Q.l pd (coverHalf D (R.Q t)) l₂ ∧
-      HalfIs R t Q.l.Mb (coverHalf D (R.Q t)) := by
-  refine exists_cover_of_places Q R hH hl (fun PP => ?_) hG t (hQ t)
-  have h := half_eq_span Q hl hP.1 hO
-  rw [hP.2, mem_primesOf, h, Ideal.span_singleton_le_iff_mem]
-  refine and_iff_right fun h0 => ?_
-  have hprod := Q.l.prod
-  rw [h, h0, Ideal.span_singleton_zero, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot] at hprod
-  have := Q.l.three_le
-  exact (by omega : Q.l.M ≠ 0) (by exact_mod_cast hprod)
 
 theorem prod_map_le_iff (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K)) (PP : Pl D.host.E) :
     ∏ k, (pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) ≤ PP.asIdeal ↔ ∃ k, PP.under (𝓞 D.host.K) = pb k := by

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CdScaleTieIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCMFamHost
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryAdelicQuotientVolumeIsVolumeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryAdelicQuotientVolumeIsVolume
 
 open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix GlobalTheory.Mem.Vol
 open scoped TensorProduct
@@ -16,6 +16,6 @@ theorem volTieG_of_trueVol : ∀ D : D7, letI := D.host.cmStar;
   rw [volTieG_iff]
   intro W hW
   rw [h W]
-  exact GlobalTheory.T.unitaryAdelicQuotientVolume_is_volume _ _ D.sp.cm _ _ D.cd W (isCMFam_host _ D.host _ D.eTau) hW
+  exact _root_.GlobalTheory.Mem.Vol.volIs_trueVol _ _ D.sp.cm _ _ D.cd W (isCMFam_host _ D.host _ D.eTau) hW
 
 end GlobalTheory.Mem.Vol

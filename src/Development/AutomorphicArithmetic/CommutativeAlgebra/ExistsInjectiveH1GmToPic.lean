@@ -2,8 +2,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafSectionsExactStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PositiveDegreeClassesDieOnEtaleCoverStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSec
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PositiveDegreeClassesDieOnEtaleCover
 import Development.AutomorphicArithmetic.CommutativeAlgebra.PicMain
 import Development.AutomorphicArithmetic.CommutativeAlgebra.PicUnit
 import Development.AutomorphicArithmetic.CommutativeAlgebra.ExistsUniqueSectionOfEtaleFaithfullyFlatDescent
@@ -107,7 +108,7 @@ theorem UpperTheory.exists_injective_h1_gm_to_pic :
     ((SFd ((res ℤ Gm).d 1 2)).app (CommRingCat.of A)).hom.ker
   have hZ : ∀ z ∈ Z, PD.LocEx z := fun z hz => UpperTheory.multiplicativeGroup_oneCocycle_etaleLocally_coboundary A z hz
   obtain ⟨ψ, hψ⟩ := PD.main A Z hZ
-  have hT := GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff ℤ X (res ℤ Gm) 0 1 2 (by norm_num) (by norm_num)
+  have hT := _root_.GlobalTheory.EtC.sch_cls_cocycle_sec ℤ X (res ℤ Gm) 0 1 2 (by norm_num) (by norm_num)
   let e : Cocycle ((chains ℤ).obj (sp A)) (res ℤ Gm) 1 → Sec ((res ℤ Gm).X 1) X :=
     fun α => ev (α : Cochain ((chains ℤ).obj (sp A)) (res ℤ Gm) 1) 0 1 (by norm_num) X (𝟙 X)
   have hmem : ∀ α, e α ∈ Z := fun α => AddMonoidHom.mem_ker.mpr (hT.2 α).1

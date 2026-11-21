@@ -147,6 +147,3 @@ theorem LateralTheory.E.TruncationPieces.Filt_of_tower (hT : Tower) : LateralThe
   intro R _ F U E u n h
   exact hT R F ((chains R).map u) n (fun i hi => ⟨chains_X_isZero R U i hi, chains_X_isZero R E i hi⟩) h
 
-open LateralTheory.E.FiltPf in
-theorem LateralTheory.E.TruncationPieces.Filt_of (hB : TowerFin) (hT : Trunc) : LateralTheory.E.TruncationPieces.Filt :=
-  LateralTheory.E.TruncationPieces.Filt_of_tower (tower_of hB hT)

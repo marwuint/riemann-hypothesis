@@ -28,24 +28,6 @@ def evAt {Hs : Type} [NormedAddCommGroup Hs] [InnerProductSpace ℂ Hs]
 
 end Defs
 
-def RowsProj : Prop :=
-  ∀ (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] (fund : Set I.GA),
-    I.IsFundDom (I.muA μf) fund →
-    ∀ R : I.GA → (I.L2 μf fund →L[ℂ] I.L2 μf fund), I.IsRightReg μf fund R →
-    ∀ (e : I.Gf → ℂ) (Re : I.L2 μf fund →L[ℂ] I.L2 μf fund),
-      IsLocallyConstant e → I.convF μf e e = e → (∀ x, e x⁻¹ = star (e x)) →
-      I.IsRConvF μf fund R e Re →
-    ∀ (H : InfinitePlace I.F → Type) [∀ v, NormedAddCommGroup (H v)] [∀ v, InnerProductSpace ℂ (H v)]
-      (σ : ∀ v, Matrix (Fin I.n) (Fin I.n) ℂ → (H v →L[ℂ] H v)) (dv : InfinitePlace I.F → ℝ) (w : ∀ v, H v),
-      (∀ v, IsURepOn (UJset (I.ε v)) (σ v)) → (∀ v, IsFdeg (Formalism.REAL.muG (I.ε v)) (σ v) (dv v)) →
-      (∀ v, ‖w v‖ = 1) → (∀ v, Integrable (phLoc (ε := I.ε v) (σ v) (w v) (dv v)) (Formalism.REAL.muG (I.ε v))) →
-      ∀ T : I.L2 μf fund →L[ℂ] I.L2 μf fund,
-        IsOpInt (muInf I) (fun g => R (g, 1)) (phInf I σ w dv) T →
-        Re.comp T = T.comp Re ∧
-        I.IsRConv μf fund R (fun g => phInf I σ w dv g.1 * e g.2) (Re.comp T) ∧
-        (∀ x y : I.L2 μf fund, ⟪(Re.comp T) x, y⟫_ℂ = ⟪x, (Re.comp T) y⟫_ℂ) ∧
-        (Re.comp T).comp (Re.comp T) = Re.comp T
-
 def RowsBij : Prop :=
   ∀ (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] (fund : Set I.GA),
     I.IsFundDom (I.muA μf) fund →
@@ -97,28 +79,11 @@ theorem finrank_HH_eq_Dcount (hinj : Function.Injective (evAt I μf fund σs R R
     Module.finrank ℂ (HH I μf fund Re T) = I.Dcount σs μf fund R Re :=
   ((eHomEquivHH hinj hran).finrank_eq).symm
 
-theorem rank_HH_eq (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
-    (hran : LinearMap.range (evAt I μf fund σs R Re w₀) = HH I μf fund Re T) :
-    Module.rank ℂ (HH I μf fund Re T) = Module.rank ℂ (I.eHom σs μf fund R Re) :=
-  ((eHomEquivHH hinj hran).rank_eq).symm
-
 theorem finiteDimensional_eHom (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
     (hran : LinearMap.range (evAt I μf fund σs R Re w₀) = HH I μf fund Re T)
     [hfin : FiniteDimensional ℂ (HH I μf fund Re T)] :
     FiniteDimensional ℂ (I.eHom σs μf fund R Re) :=
   LinearEquiv.finiteDimensional (eHomEquivHH hinj hran).symm
-
-theorem Dcount_pos_iff (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
-    (hran : LinearMap.range (evAt I μf fund σs R Re w₀) = HH I μf fund Re T)
-    [hfin : FiniteDimensional ℂ (HH I μf fund Re T)] :
-    0 < I.Dcount σs μf fund R Re ↔ HH I μf fund Re T ≠ ⊥ := by
-  rw [← finrank_HH_eq_Dcount hinj hran, Nat.pos_iff_ne_zero, Ne, Submodule.finrank_eq_zero]
-
-theorem finiteDimensional_HH_of_eHom (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
-    (hran : LinearMap.range (evAt I μf fund σs R Re w₀) = HH I μf fund Re T)
-    [hfin : FiniteDimensional ℂ (I.eHom σs μf fund R Re)] :
-    FiniteDimensional ℂ (HH I μf fund Re T) :=
-  LinearEquiv.finiteDimensional (eHomEquivHH hinj hran)
 
 end Count
 

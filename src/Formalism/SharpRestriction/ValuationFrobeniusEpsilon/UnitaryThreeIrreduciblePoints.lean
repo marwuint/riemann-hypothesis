@@ -27,27 +27,8 @@ def twistRep {H R : Type} [Group H] [CommRing R] {n : ℕ} (ρ : H →* GL (Fin 
     congr 1
     exact (scalarGL_commute R n (χ a) (ρ b)).symm.left_comm _
 
-def IsDirSum {H R : Type} [Group H] [CommRing R] {m k : ℕ} (ρ : H →* GL (Fin (m + k)) R)
-    (ρ₁ : H →* GL (Fin m) R) (ρ₂ : H →* GL (Fin k) R) : Prop :=
-  ∃ P : GL (Fin (m + k)) R, ∀ g : H,
-    ((P⁻¹ * ρ g * P : GL (Fin (m + k)) R) : Matrix (Fin (m + k)) (Fin (m + k)) R) =
-      Matrix.reindex finSumFinEquiv finSumFinEquiv
-        (Matrix.fromBlocks (ρ₁ g : Matrix (Fin m) (Fin m) R) 0 0 (ρ₂ g : Matrix (Fin k) (Fin k) R))
-
 def charRep {H R : Type} [Group H] [CommRing R] (χ : H →* Rˣ) : H →* GL (Fin 1) R :=
   (scalarGL R 1).comp χ
-
-def dualRep {H R : Type} [Group H] [CommRing R] {n : ℕ} (σ : H →* GL (Fin n) R) :
-    H →* GL (Fin n) R where
-  toFun g :=
-    ⟨Matrix.transpose (((σ g)⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R),
-      Matrix.transpose ((σ g : GL (Fin n) R) : Matrix (Fin n) (Fin n) R),
-      by rw [← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one],
-      by rw [← Matrix.transpose_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.transpose_one]⟩
-  map_one' := by ext1; simp
-  map_mul' a b := by
-    ext1
-    simp only [map_mul, mul_inv_rev, Units.val_mul, Matrix.transpose_mul]
 
 def IsIsoRep {H R : Type} [Group H] [CommRing R] {n : ℕ} (ρ ρ' : H →* GL (Fin n) R) : Prop :=
   ∃ P : GL (Fin n) R, ∀ g : H, P⁻¹ * ρ g * P = ρ' g
@@ -55,10 +36,6 @@ def IsIsoRep {H R : Type} [Group H] [CommRing R] {n : ℕ} (ρ ρ' : H →* GL (
 def ChiConj (D : D7) (χ χ'' : Chi D) : Prop := ∃ k : ℕ, Nat.Coprime k (orderOf χ) ∧ χ'' = χ ^ k
 
 def degQ (D : D7) (χ : Chi D) : ℕ := Nat.totient (orderOf χ)
-
-open Classical in
-
-def chiOrbit (D : D7) (χ : Chi D) : Finset (Chi D) := Finset.univ.filter (ChiConj D χ)
 
 theorem ChiConj.refl (D : D7) (χ : Chi D) : ChiConj D χ χ := ⟨1, Nat.coprime_one_left _, (pow_one χ).symm⟩
 
@@ -126,49 +103,6 @@ def UnitaryThreeIrreduciblePoints (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D
   ∀ ξ : V.S3 l e χ K g1 →+* QbarL l, V.IsPt3 ξ → Formalism.ConjugateSelfDual.Irred (VData.toRecRep (V.rho3 ξ)) →
     AttachedGL3 V K (twistRep (V.rho3 ξ) ((epsL l).comp K.fixingSubgroup.subtype)⁻¹)
 
-def UnitaryThreeAutomorphy : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (K : IntermediateField ℚ QbarQ)
-    [FiniteDimensional ℚ K], UnitaryThreeData V l e χ K →
-    ∃ g1 : GQ, IsNormElt V l e χ K g1 ∧ UnitaryThreeFiniteness V l e χ K g1 ∧ UnitaryThreeIrreduciblePoints V l e χ K g1
-
-structure GSp4BaseConditions (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) : Prop where
-  l_ne_two : l ≠ 2
-  e_mem : e ∈ eRange D
-  psi_even : V.PsiEven l e χ
-  psibar_sq : ∀ g : GQ, V.psiBar l e χ g ^ 2 = 1
-  psibar_ne : ∃ g : GQ, V.psiBar l e χ g ≠ 1
-  chi_ne : χ ≠ 1
-  two_le_e : 2 ≤ e
-  l_coprime : Nat.Coprime l (condV D)
-  two_l_lt : 2 * l < D.host.q ∧ 2 * l < D.host.d
-
-structure GSp4Data (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (n' : ℕ)
-    (ξ' : DirichletCharacter ℂ (2 ^ n')) : Prop where
-  base : GSp4BaseConditions V l e χ
-  n'_ge : 12 * l ^ 7 * (D.host.q * D.host.d) ≤ 2 ^ n'
-  n'_least : ∀ m < n', 2 ^ m < 12 * l ^ 7 * (D.host.q * D.host.d)
-  xi_odd : ξ'.Odd
-  xi_cond : ξ'.conductor = 2 ^ n'
-
-def AttachedGL4 {l : ℕ} [Fact l.Prime] (ρ : GQ →* GL (Fin 4) (QbarL l)) : Prop :=
-  ∃ π : (V.spec ℚ 4).Rep, V.IsRA ℚ 4 π ∧ V.IsRi π ρ
-
-def IsSigmaSum {l : ℕ} [Fact l.Prime] (ρ : GQ →* GL (Fin 4) (QbarL l)) (θ α : GQ →* (QbarL l)ˣ) :
-    Prop :=
-  ∃ σ : GQ →* GL (Fin 2) (QbarL l), Formalism.ConjugateSelfDual.Irred σ ∧
-    (∀ g : GQ, ‖(σ g : Matrix (Fin 2) (Fin 2) (QbarL l)).trace - ((θ g : QbarL l) + (α g : QbarL l))‖ < 1 ∧
-      ‖(σ g : Matrix (Fin 2) (Fin 2) (QbarL l)).det - (θ g : QbarL l) * (α g : QbarL l)‖ < 1) ∧
-    IsDirSum (m := 2) (k := 2) ρ σ (twistRep (dualRep σ) θ)
-
-def GSp4Automorphy : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (n' : ℕ) (ξ' : DirichletCharacter ℂ (2 ^ n')),
-    GSp4Data V l e χ n' ξ' →
-    Module.Finite (V.Ol l) (V.SS4inv l e χ n' ξ') ∧
-    (∀ ξ : V.symplecticHeckeAlgebra l e χ n' ξ' →+* QbarL l, V.IsPt4 ξ → Formalism.ConjugateSelfDual.Irred (V.rho4 ξ) →
-      AttachedGL4 V (V.rho4 ξ)) ∧
-    (∀ ξ : V.symplecticHeckeAlgebra l e χ n' ξ' →+* QbarL l, V.IsPt4 ξ →
-      ¬ IsSigmaSum (V.rho4 ξ) (V.thL l e χ n' ξ') (V.alL l n' ξ'))
-
 def phiL (l : ℕ) [Fact l.Prime] (φ : DirichletCharacter ℂ l) : GQ →* (QbarL l)ˣ :=
   (toLu (V.iotaC l)).comp
     ((φ.toUnitHom).comp ((Units.map (PadicInt.toZMod : ℤ_[l] →+* ZMod l).toMonoidHom).comp (eps l)))
@@ -215,11 +149,6 @@ def LemmaWAt (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (K : IntermediateFi
       (((Wr V.cc : GL (Fin 2) (QbarL l)) : Matrix (Fin 2) (Fin 2) (QbarL l)) = !![-1, 0; 0, 1] ∨
         ((Wr V.cc : GL (Fin 2) (QbarL l)) : Matrix (Fin 2) (Fin 2) (QbarL l)) = !![1, 0; 0, -1]) →
     ∃ π : (V.spec ℚ 2).Rep, IsWeight2 V π (2 * e + 1) ∧ IsVg V π (twistRep Wr ((epsL l) ^ e)⁻¹)
-
-def LemmaW : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (K : IntermediateField ℚ QbarQ)
-    [FiniteDimensional ℚ K], UnitaryThreeData V l e χ K → ∀ g1 : GQ, IsNormElt V l e χ K g1 →
-    LemmaWAt V l e χ K g1
 
 def UnitaryThreeAutomorphyWeights : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (K : IntermediateField ℚ QbarQ)

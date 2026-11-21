@@ -43,27 +43,6 @@ lemma jetPairPoly_monomial (κ : ι →₀ ℕ) (c : MvPolynomial σ K) (Th : Mv
 
 end Pair
 
-section Exps
-
-variable {ι₁ ι₂ : Type}
-
-def jn (a : ι₁ →₀ ℕ) (b : ι₂ →₀ ℕ) : ι₁ ⊕ ι₂ →₀ ℕ :=
-  a.mapDomain Sum.inl + b.mapDomain Sum.inr
-
-end Exps
-
-section Along
-
-variable {K : Type} [Field K] {ι₁ ι₂ σ₁ σ₂ : Type} [Finite ι₁] [Finite ι₂]
-
-end Along
-
-section Trunc
-
-variable {K : Type} [Field K] {σ ι : Type} [Finite ι]
-
-end Trunc
-
 section Norm
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K] {σ₁ σ₂ : Type}

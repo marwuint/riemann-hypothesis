@@ -130,27 +130,6 @@ theorem coeff_eval_second_zero (G : PS C 2 dd) (μ : Fin dd →₀ ℕ) :
 
 end Kill
 
-section SgSec
-
-variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ} {I : Fin 2 → Type}
-  [∀ g, Fintype (I g)] (Y : FBChart C V O dd) (p : PairData Y d I)
-
-theorem FBChart.raw_sg (v : Fin dd → C) : (Y.raw p).sg v = un1 (Y.sgP v) := by
-  ext μ
-  show -∑ i, v i * MvPowerSeries.coeff (μ.mapDomain (fun x : Fin dd => ((0 : Fin 2), x)) +
-      Finsupp.single ((1 : Fin 2), i) 1) Y.h =
-    MvPowerSeries.coeff (μ.mapDomain fun x : Fin dd => ((0 : Fin 1), x)) (Y.sgP v)
-  simp only [FBChart.sgP, map_neg, map_sum, MvPowerSeries.coeff_C_mul, coeff_eval_second_zero]
-  congr 1
-  refine Finset.sum_congr rfl fun i _ => ?_
-  congr 1
-  rw [MvPowerSeries.coeff_pderiv, Finsupp.mapDomain_notin_range]
-  · simp
-  · rintro ⟨x, hx⟩
-    simp at hx
-
-end SgSec
-
 section AddSec
 
 variable {dd : ℕ}
@@ -167,72 +146,5 @@ theorem addOf_pts (F : Fin dd → PS C 2 dd) (j : Fin dd) :
   rfl
 
 end AddSec
-
-theorem addCvFB_of
-    (hG : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ)
-      (Y : FBChart C V O dd), GermISt Y) : AddCvFBSt := by
-  intro C _ _ V O _ _ dd Y d _ I _ p γ γ' hγ hγ'
-  set ρ : Fin 2 × Fin dd → PowerSeries C := fun q => ![γ, γ'] q.1 q.2 with hρ
-  have hρ0 : ∀ q, MvPowerSeries.constantCoeff (ρ q) = 0 := by
-    rintro ⟨b, j⟩
-    fin_cases b
-    · exact (hγ j).1
-    · exact (hγ' j).1
-  have hρI : ∀ q, IntS V (ρ q) := by
-    rintro ⟨b, j⟩
-    fin_cases b
-    · exact intS_ps.2 (hγ j).2
-    · exact intS_ps.2 (hγ' j).2
-  have hρS := MvPowerSeries.hasSubst_of_constantCoeff_zero hρ0
-  set γ'' : Fin dd → PowerSeries C := fun j => MvPowerSeries.subst ρ (Y.B.G.F j) with hγ''
-  have hγ''0 : ∀ j, MvPowerSeries.constantCoeff (γ'' j) = 0 := fun j =>
-    constantCoeff_subst_zero hρ0 (Y.B.G.const j)
-  have hγ''I : IsCv V γ'' := fun j => ⟨hγ''0 j, intS_ps.1 (IntS.subst hρ0 hρI (Y.intF j))⟩
-
-  have hev : ∀ (a : Pt C 2 dd), (∀ j, MvPowerSeries.constantCoeff (a j) = 0) → ∀ f : PS C 1 dd,
-      MvPowerSeries.subst ρ (ev ![a] f) = alongCv (fun j => MvPowerSeries.subst ρ (a j)) (un1 f) := by
-    intro a ha f
-    unfold alongCv
-    rw [eval_single_eq_subst, MvPowerSeries.subst_comp_subst_apply
-      (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q : Fin 1 × Fin dd => ha q.2) hρS,
-      subst_singlePointUncurry (fun j => constantCoeff_subst_zero hρ0 (ha j))]
-  have hp0 : (fun j => MvPowerSeries.subst ρ (pt C (n := 2) dd 0 j)) = γ := by
-    funext j
-    show MvPowerSeries.subst ρ (MvPowerSeries.X ((0 : Fin 2), j)) = γ j
-    rw [MvPowerSeries.subst_X hρS]
-    rfl
-  have hp1 : (fun j => MvPowerSeries.subst ρ (pt C (n := 2) dd 1 j)) = γ' := by
-    funext j
-    show MvPowerSeries.subst ρ (MvPowerSeries.X ((1 : Fin 2), j)) = γ' j
-    rw [MvPowerSeries.subst_X hρS]
-    rfl
-  have hpa : (fun j => MvPowerSeries.subst ρ (addOf Y.B.G.F (pt C (n := 2) dd 0) (pt C (n := 2) dd 1) j)) = γ'' := by
-    funext j
-    rw [addOf_pts]
-  have hc0 : ∀ j, MvPowerSeries.constantCoeff (pt C (n := 2) dd 0 j) = 0 := fun j => MvPowerSeries.constantCoeff_X _
-  have hc1 : ∀ j, MvPowerSeries.constantCoeff (pt C (n := 2) dd 1 j) = 0 := fun j => MvPowerSeries.constantCoeff_X _
-  have hca : ∀ j, MvPowerSeries.constantCoeff (addOf Y.B.G.F (pt C (n := 2) dd 0) (pt C (n := 2) dd 1) j) = 0 :=
-    fun j => by rw [addOf_pts]; exact Y.B.G.const j
-  refine ⟨γ'', hγ''I, ?_, ?_⟩
-  · intro i
-    have h := congrArg (MvPowerSeries.subst ρ) (Y.lg_add i)
-    rw [← MvPowerSeries.coe_substAlgHom hρS, map_add, MvPowerSeries.coe_substAlgHom hρS, hev _ hca, hev _ hc0,
-      hev _ hc1, hpa, hp0, hp1] at h
-    exact h
-  · intro v hv
-    have hsg0 : MvPowerSeries.constantCoeff ((Y.raw p).sg v) = 0 := (Y.raw p).constantCoeff_sg (Y.raw_axis0 p) v
-    refine ⟨?_, ?_⟩
-    · rw [map_sub, map_sub]
-      have e1 : PowerSeries.constantCoeff (alongCv γ'' ((Y.raw p).sg v)) = 0 := constantCoeff_subst_zero hγ''0 hsg0
-      have e2 : PowerSeries.constantCoeff (alongCv γ ((Y.raw p).sg v)) = 0 :=
-        constantCoeff_subst_zero (fun i => (hγ i).1) hsg0
-      have e3 : PowerSeries.constantCoeff (alongCv γ' ((Y.raw p).sg v)) = 0 :=
-        constantCoeff_subst_zero (fun i => (hγ' i).1) hsg0
-      rw [e1, e2, e3]
-      simp
-    · have h := IntS.subst hρ0 hρI (hG C V O dd Y v hv)
-      rw [← MvPowerSeries.coe_substAlgHom hρS, map_sub, map_sub, MvPowerSeries.coe_substAlgHom hρS, hev _ hca,
-        hev _ hc0, hev _ hc1, hpa, hp0, hp1, ← Y.raw_sg p v] at h
-      exact intS_ps.1 h
 
 end Formalism.L2.FormalSeriesBounds

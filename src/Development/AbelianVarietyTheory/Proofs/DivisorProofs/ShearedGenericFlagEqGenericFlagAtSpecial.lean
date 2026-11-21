@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsDominantOfSection
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FullFlagCommonClosedPointOfGeneric
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockMatrixElementaryShearPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockMatrixElementaryShearProperties
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -24,8 +24,8 @@ open GlobalTheory.FlagBundle.ClosedPt in
 theorem meet : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ B ∈ E'.S (genericPoint Y.X), ∀ A ∈ E.S (f (genericPoint Y.X)), ∀ (τ : ι) (a b : Fin (m τ)), a < b → ∀ (K : Type) [Field K] (V : ValuationSubring K) (c : Y.Fn →+* V) (t : V), IsLocalRing.residue V t = 0 → ∀ v₂ : Sp V ⟶ Y.X, v₂ ≫ f = spMap c ≫ (ratOf Y).pt ≫ f → Bears E' φ A (shear τ a b (t : K) * (B * (A.map φ)⁻¹).map ((algebraMap V K).comp c)) (spMap (algebraMap V K) ≫ v₂) → spMap (IsLocalRing.residue V) ≫ spMap c ≫ (ratOf Y).pt = spMap (IsLocalRing.residue V) ≫ v₂ := by
   intro F _ X Y ι _ m E E' φ f hf B hB A hA τ a b hab K _ V c t ht v₂ e hbear
   have hM := hf.sub _ B hB A hA
-  obtain ⟨-, -, -, hsm⟩ := GlobalTheory.T.blockMatrixElementaryShear_properties ι m τ a b hab V t
-  obtain ⟨-, -, hs0, -⟩ := GlobalTheory.T.blockMatrixElementaryShear_properties ι m τ a b hab (IsLocalRing.ResidueField V) 0
+  obtain ⟨-, -, -, hsm⟩ := _root_.GlobalTheory.FlagPush.shear_props ι m τ a b hab V t
+  obtain ⟨-, -, hs0, -⟩ := _root_.GlobalTheory.FlagPush.shear_props ι m τ a b hab (IsLocalRing.ResidueField V) 0
   have hpt : ∀ (R : Type) [CommRing R] (g : Y.Fn →+* R) (w : Sp R),
       (spMap g ≫ (ratOf Y).pt) w = genericPoint Y.X := fun R _ g w =>
     (Scheme.Hom.comp_apply _ _ _).trans ((ratOf Y).pt_apply _)

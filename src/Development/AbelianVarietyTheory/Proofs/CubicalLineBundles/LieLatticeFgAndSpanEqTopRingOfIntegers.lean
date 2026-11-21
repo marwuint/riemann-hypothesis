@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeLocalBasisDescriptionStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeLocalBasisDescription
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
@@ -58,7 +58,7 @@ theorem lieLat_fg_and_span_eq_top :
     ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P),
       F.lieLat.FG ∧ Submodule.span K (F.lieLat : Set (Fin F.P₀.g → K)) = ⊤ := by
   intro K _ _ P F
-  obtain ⟨n, r, M, hr, hM, hL, -⟩ := GlobalTheory.T.lie_lattice_local_basis_description K P F
+  obtain ⟨n, r, M, hr, hM, hL, -⟩ := _root_.GlobalTheory.CM.LieGlue.exists_cover_lieLat K P F
   exact fg_and_span_eq_top F.lieLat r M hr (fun i => (hM i).2) hL
 
 end GlobalTheory.CM.LieLattice

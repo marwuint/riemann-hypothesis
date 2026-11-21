@@ -1,5 +1,13 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTowerFrameCompat
+import Mathlib
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatInOfUnit
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegIdxOfIsStd
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ThetaIntegralsAgree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEquivOfKer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TowerStageSeesawDictionaryFramesSignatures
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.MemKerIffPolarizationMatchEqZero
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DerivativeEqZeroIffPolarizationMatch
@@ -42,7 +50,7 @@ theorem stage_unique_of_archimedean_triple (hH : GlobalTheory.Published.HoweDual
     (hm : IsMatch ψ θ FA FA' FW α β ω ω' Pi rf rl p p') :
     ∃ (E : Pi₀ ≃ₗ[ℂ] Pi) (c : ℂ), c ≠ 0 ∧ (∀ Φ ∈ algF ψ θ true FA FW, p Φ = c • E (p₀ Φ)) ∧
       ∀ Φ' ∈ algF ψ θ false FA' FW, p' Φ' = E (p₀' Φ') := by
-  obtain ⟨e, Bs, Γ, Xc, om, om', cA, cB, hO, hTD⟩ := GlobalTheory.T.exists_placewise_seesaw_triple_over_hermitian D ψ θ hθ A A' WW FA FA' FW _ _ hT m fd m' fd'
+  obtain ⟨e, Bs, Γ, Xc, om, om', cA, cB, hO, hTD⟩ := _root_.GlobalTheory.SquareAgree.exists_isOver D ψ θ hθ A A' WW FA FA' FW _ _ hT m fd m' fd'
     hme hme' ω ω' hm.weilA hm.weilB
   obtain ⟨R, Rf, hR⟩ := hL D.host.F D.host.E D.sp.cm.sig Bs A.rank A'.rank Γ Xc om om' hTD
   have kA : ∀ Φ ∈ algF ψ θ true FA FW, p₀ Φ = 0 ↔ p Φ = 0 := fun Φ hΦ => by

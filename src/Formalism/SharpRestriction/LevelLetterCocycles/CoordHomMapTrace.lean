@@ -324,17 +324,6 @@ theorem mem_Zf (C : Coord W I T) (κ : (ZMod n → C.V) × (ZMod n → C.V)) :
   · rintro ⟨w, hw, he⟩
     exact ⟨w, hw, he⟩
 
-theorem Zf_smul (C : Coord W I T) (m : O) (κ : (ZMod n → C.V) × (ZMod n → C.V)) (h : κ ∈ Zf C) :
-    (PowerSeries.C m • κ.1, PowerSeries.C m • κ.2) ∈ Zf C := by
-  rw [mem_Zf] at h ⊢
-  obtain ⟨w, hw, he⟩ := h
-  refine ⟨m • w, ?_, ?_⟩
-  · have e : W.clK T (m • w) = m • W.clK T w := (W.clK T).map_smul m w
-    rw [e]
-    exact Submodule.smul_mem _ m hw
-  · simp only [tot_smulC]
-    rw [Submodule.coe_smul, he, Prod.smul_mk]
-
 structure CoordHom {T T' : LocLat G Qp LL O} (C : Coord W I T) (C' : Coord W I T')
     (F : LatHom T.L T'.L) where
   f : C.V →ₗ[PowerSeries O] C'.V

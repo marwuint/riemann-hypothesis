@@ -201,14 +201,6 @@ theorem second_level_lt_good_of_log {D : D7} (L : SizeData₂ D) (hS : Formalism
 def CStar (eps : ℝ) (K : Consts) (C31 : ℝ) : ℝ :=
   3 + K.tII * (rE eps : ℝ) + (2 * (3 : ℝ) + 4 * K.tII + 160 * C31 + 7) + K.Pr1 * C31 + K.kappaThresholdOne * |cNE eps|
 
-theorem CStar_nonneg (eps : ℝ) (K : Consts) (hK : K.Nonneg) (C31 : ℝ) (hC31 : 0 < C31) : 0 ≤ CStar eps K C31 := by
-  obtain ⟨-, -, -, htII, -, -, -, -, htI1, -, -, -, -, hPr1, -⟩ := hK
-  unfold CStar
-  have a := mul_nonneg htII (Nat.cast_nonneg (α := ℝ) (rE eps))
-  have b := mul_nonneg hPr1 hC31.le
-  have c := mul_nonneg htI1 (abs_nonneg (cNE eps))
-  linarith
-
 def SmallB (D : D7) (L : SizeData₂ D) (K : Consts) (C31 bo : ℝ) : Prop :=
   (∀ p : ℕ, p.Prime → (p : ℝ) < L.sc.p0 D.R.k → (D.R.k : ℝ) * Qp L.sc p ≤ L.sc.b') ∧
   (∀ p : ℕ, p.Prime →

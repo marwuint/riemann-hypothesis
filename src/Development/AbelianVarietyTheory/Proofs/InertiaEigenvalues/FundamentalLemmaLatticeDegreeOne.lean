@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FiltrationZeroMembership
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamPeriodRingFieldTPowFiltrationUnitsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MooreDeterminantEqUnramifiedMulPeriodStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIndependentFrobSolutionsCrisProofStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSecondKindMatrixMooreDetNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MooreDeterminantCrisPlusNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamPeriodRingFieldTPowFiltrationUnits
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MooreDeterminantEqUnramifiedMulPeriod
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIndependentFrobSolutionsCrisProof
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSecondKindMatrixMooreDetNeZero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MooreDeterminantCrisPlusNeZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BcrisPlusFrobeniusStableSubringInFilZeroStatement
 
 noncomputable section
@@ -60,7 +60,7 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {n : Type} [Fintype n] [Decid
 theorem det_mem_one {AI : LocAinf l P} (T : LocTied l P AI) (M : Matrix n n P.R.BdR) (v : n → P.R.BdR)
     (hM : ∀ i j, M i j ∈ Fil P 0) (hv : ∀ j, v j ∈ Fil P 0) (k : n) (hk : v k ∉ Fil P 1)
     (h : ∀ i, (M *ᵥ v) i ∈ Fil P 1) : M.det ∈ Fil P 1 := by
-  obtain ⟨y, hy, hky⟩ := (GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T).2.2.2.1 (v k) (hv k) hk
+  obtain ⟨y, hy, hky⟩ := (_root_.GlobalTheory.PMon.bdR_tied l P AI T).2.2.2.1 (v k) (hv k) hk
   have e : (M.adjugate *ᵥ (M *ᵥ v)) k = M.det * v k := by
     rw [Matrix.mulVec_mulVec, Matrix.adjugate_mul]
     simp [Matrix.smul_mulVec]
@@ -143,7 +143,7 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l}
 
 theorem tz_inv_mem {AI : LocAinf l P} (T : LocTied l P AI) {x : P.R.BdR} (hx : x ∈ Fil P 1) :
     tz P (-1) * x ∈ Fil P 0 := by
-  have := ((GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T).2.2.1 1 (-1) x).1 hx
+  have := ((_root_.GlobalTheory.PMon.bdR_tied l P AI T).2.2.1 1 (-1) x).1 hx
   simpa using this
 
 theorem kd_alg' (q : ℚ_[l]) : kd P (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) q) = algebraMap ℚ_[l] P.R.BdR q := by
@@ -172,7 +172,7 @@ theorem flAt_one : FLAt 1 := by
   have hh : 2 ≤ h := Fintype.one_lt_card_iff.2 ⟨x2, y2, h2⟩
   let e : n ≃ Fin h := Fintype.equivFin n
   set U0 : Matrix n n P.R.BdR := (U 0 : Matrix n n P.R.BdR) with hU0
-  have hI := GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T
+  have hI := _root_.GlobalTheory.PMon.bdR_tied l P AI T
 
   let lam : Fin h → P.R.BdR := fun k => U0 (e.symm k) x2
   have hlam0 : ∀ k, lam k ∈ Fil P 0 := fun k => (hU 0).1 _ _
@@ -193,7 +193,7 @@ theorem flAt_one : FLAt 1 := by
     have := hind (Pi.single ⟨0, by omega⟩ 1) (Fil_sum fun j _ => by
       rw [Algebra.smul_def]; exact Fil_mul_left (q_mem_Fil P _) (hne j))
     simpa using congrFun this ⟨0, by omega⟩
-  obtain ⟨a, ha_phi, ha_fil, ha_sum, ha_det⟩ := GlobalTheory.T.exists_secondKind_matrix_moore_det_ne_zero l P AI T h hh lam hlam0 hind
+  obtain ⟨a, ha_phi, ha_fil, ha_sum, ha_det⟩ := _root_.GlobalTheory.SecondKind.exists_secondKind l P AI T h hh lam hlam0 hind
   have hdetι : P.ιB (Matrix.of fun i j : Fin h => P.φB^[i] (a j)).det ∈ Fil P 1 := by
     obtain ⟨k, hk⟩ := hunit
     change (P.ιB : P.R.B →+* P.R.BdR) _ ∈ _
@@ -203,7 +203,7 @@ theorem flAt_one : FLAt 1 := by
     simp only [mulVec, dotProduct]
     convert this using 2 with j
     rw [mul_comm]; rfl
-  obtain ⟨κ, hκ, hdetA⟩ := GlobalTheory.T.mooreDeterminant_eq_unramified_mul_period l P AI T h (by omega) a ha_phi ha_fil ha_det hdetι
+  obtain ⟨κ, hκ, hdetA⟩ := _root_.GlobalTheory.PMon.mooreDeterminant_eq_unramified_mul_period_alt l P AI T h (by omega) a ha_phi ha_fil ha_det hdetι
 
   set Ma : Matrix (Fin h) (Fin h) P.R.B := Matrix.of fun i j : Fin h => P.φB^[i] (a j) with hMa
   set A : Matrix n n P.R.B := Ma.submatrix e e with hA
@@ -252,8 +252,8 @@ theorem flAt_one : FLAt 1 := by
       exact Fil_sum fun j _ => Fil_mul_right (by simpa [μ] using hne (e j)) (hUm0 j y2)
     rw [hVU, Matrix.one_apply_eq] at h1
     exact one_not_mem h1
-  obtain ⟨b, hb_plus, hb_phi, hb_ind, hb_sum⟩ := GlobalTheory.T.existsIndependentFrobSolutionsCris_proof l P AI T h hh μ hμ0 hμu
-  have hb_det := GlobalTheory.T.mooreDeterminant_crisPlus_ne_zero l P AI T h h le_rfl b hb_plus hb_phi hb_ind
+  obtain ⟨b, hb_plus, hb_phi, hb_ind, hb_sum⟩ := _root_.GlobalTheory.PMon.exI_main l P AI T h hh μ hμ0 hμu
+  have hb_det := _root_.GlobalTheory.PMon.moore_statement l P AI T h h le_rfl b hb_plus hb_phi hb_ind
   have hb_fil : ∀ (i : ℕ) j, ev P i (b j) ∈ Fil P 0 := fun i j => (GlobalTheory.T.bcrisPlus_frobeniusStable_subring_in_filZero l P AI T).2.1 _ (hb_plus j) i
   have hdetιb : P.ιB (Matrix.of fun i j : Fin h => P.φB^[i] (b j)).det ∈ Fil P 1 := by
     obtain ⟨k, hk⟩ := hμu
@@ -262,7 +262,7 @@ theorem flAt_one : FLAt 1 := by
     refine det_mem_one' T _ μ (fun i j => hb_fil i j) hμ0 k hk fun j => ?_
     change ∑ i, μ i * ev P i (b j) ∈ Fil P 1
     exact hb_sum j
-  obtain ⟨κ', hκ', hdetB⟩ := GlobalTheory.T.mooreDeterminant_eq_unramified_mul_period l P AI T h (by omega) b hb_phi hb_fil hb_det hdetιb
+  obtain ⟨κ', hκ', hdetB⟩ := _root_.GlobalTheory.PMon.mooreDeterminant_eq_unramified_mul_period_alt l P AI T h (by omega) b hb_phi hb_fil hb_det hdetιb
 
   set Mb : Matrix (Fin h) (Fin h) P.R.B := Matrix.of fun i j : Fin h => P.φB^[i] (b j) with hMb
   set Bm : Matrix n n P.R.B := Mb.submatrix e e with hBm

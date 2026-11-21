@@ -38,16 +38,6 @@ theorem cntPair_of (h : RatProper) (ht : ThetaBasic) : CntPair := by
     have e' := congrArg Subtype.val e
     exact Prod.ext ((h E a).1 (congrArg Prod.fst e')) ((h E b).1 (congrArg Prod.snd e'))
 
-theorem wtDiag_of (h : RatProper) (h1 : CntBasic) (h2 : WtCount) : WtDiag := by
-  intro E _ _ _ a b D φ hφ M hM
-  obtain ⟨B, hB⟩ := hφ.1.bounded_above_of_compact_support hφ.2
-  have c₀ : ∀ x, ‖kerH φ x x‖ₑ ≤ ENNReal.ofReal B * cnt (ratH E a b) (tsupport φ) x := (h1 (ctx h D)).2.2.2 φ B hφ hB
-  have c := h2 E a b D _ hφ.2 M hM
-  refine lt_of_le_of_lt (lintegral_mono fun x => mul_le_mul_right (c₀ x) _) ?_
-  simp only [mul_left_comm _ (ENNReal.ofReal B)]
-  rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
-  exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top c.lt_top
-
 theorem zpow_aux {r x C : ℝ} (M : ℕ) (hr : 0 ≤ r) (hx : 0 ≤ x) (hC : 0 ≤ C) (h : x ≤ C * (1 + r)) :
     ((1 + r) ^ M)⁻¹ ≤ (1 + C) ^ M * (1 + x) ^ (-(M : ℤ)) := by
   rw [_root_.zpow_neg, zpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (by positivity), inv_mul_le_iff₀ (by positivity), ← mul_pow]

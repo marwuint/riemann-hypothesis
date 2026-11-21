@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.CMModuli.DVRSplitting
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.FlagBasis
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DvrLem
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigIsoCongr
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueAlgEquivOfCompatibleQuotient
@@ -15,34 +16,6 @@ namespace GlobalTheory.DvrDataCompare
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
-open GlobalTheory.IndefiniteRowSideFullHecke
-
-section Ext
-
-variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
-
-theorem isFinUnram_of (W : UnramExt V) : DVRSplitting.IsFinUnram V W.W := ⟨W.inj, W.fin, W.unram⟩
-
-theorem complete_of (hV : IsAdicComplete (maximalIdeal V) V) {W : Type} [CommRing W] [IsDomain W]
-    [IsDiscreteValuationRing W] [Algebra V W] (h : DVRSplitting.IsFinUnram V W) : IsAdicComplete (maximalIdeal W) W := by
-  have := h.2.1
-  rw [← h.map_maximalIdeal.2]
-  exact isAdicComplete_map_of_finite (maximalIdeal V) W
-
-def bundle (hV : IsAdicComplete (maximalIdeal V) V) (W : Type) [CommRing W] [IsDomain W]
-    [IsDiscreteValuationRing W] [Algebra V W] (h : DVRSplitting.IsFinUnram V W) : UnramExt V :=
-  { W := W, fin := h.2.1, inj := h.1, unram := h.2.2, complete := complete_of hV h }
-
-def extEquiv (hV : IsAdicComplete (maximalIdeal V) V) : UnramExt V ≃
-    Σ' (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W) (_ : Algebra V W),
-      DVRSplitting.IsFinUnram V W where
-  toFun W := ⟨W.W, W.ring, W.dom, W.dvr, W.alg, isFinUnram_of W⟩
-  invFun x := @bundle V _ _ _ hV x.1 x.2.1 x.2.2.1 x.2.2.2.1 x.2.2.2.2.1 x.2.2.2.2.2
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-end Ext
-
 section Move
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
@@ -91,12 +64,5 @@ end Move
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
-
-theorem exists_pull (P : ValPt Y) (W : UnramExt P.V) : ∃ t : SAB H (Sp W.W), Nonempty (SABMap t Y.t (P.ξ W)) := by
-  obtain ⟨_, _, _, _, _, m, -⟩ := sabPull allSixLaws.2.2.1.cubePull (P.ξ W) Y.t
-  exact ⟨_, ⟨m⟩⟩
-
-def DataWhereSplit (Y : Model Xo c β) : Prop :=
-  ∀ (P : ValPt Y) (W : UnramExt P.V) (t : SAB H (Sp W.W)) (_ : SABMap t Y.t (P.ξ W)), SplitOver W t → DvrDataOver P W t
 
 end GlobalTheory.DvrDataCompare

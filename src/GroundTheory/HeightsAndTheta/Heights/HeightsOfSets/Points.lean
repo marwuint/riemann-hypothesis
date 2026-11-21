@@ -45,28 +45,6 @@ def ZariskiDense (P : ArithVariety n) (S : Set (Cone n (AlgebraicClosure ℚ))) 
   ∀ (m : ι → ℕ) (f : MvPolynomial (Coord n) ℤ), IsWeightedHomogeneous (coordDeg n) f m →
     (∀ z ∈ S, evalCone z f = 0) → f ∈ P.ideal
 
-variable (n) in
-
-def whole : ArithVariety n where
-  ideal := ⊥
-  isPrime := Ideal.isPrime_bot
-  homogeneous f hf m := by
-    rw [Submodule.mem_bot] at hf ⊢
-    rw [hf, map_zero]
-  relevant k := ⟨0, by rw [Submodule.mem_bot]; exact X_ne_zero _⟩
-  horizontal a ha := by
-    rw [Submodule.mem_bot] at ha
-    exact C_eq_zero.mp ha
-
-omit [Fintype ι] in
-
-theorem mem_points_whole {F : Type*} [CommRing F] {z : Cone n F} (hz : BlockNonzero z) :
-    z ∈ (whole n).points F := by
-  refine ⟨hz, fun f hf ↦ ?_⟩
-  change f ∈ (⊥ : Ideal _) at hf
-  rw [Submodule.mem_bot] at hf
-  rw [hf, evalCone, eval₂_zero]
-
 end ArithVariety
 
 variable (n) in
@@ -96,10 +74,6 @@ theorem vectorL2Norm_const_mul {m : ℕ} (c : ℂ) (w : Fin m → ℂ) :
   simp only [l2Norm, norm_mul, mul_pow, ← Finset.mul_sum]
   rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
 
-theorem vectorL2Norm_conj {m : ℕ} (w : Fin m → ℂ) :
-    l2Norm (fun i ↦ starRingEnd ℂ (w i)) = l2Norm w := by
-  simp only [l2Norm, Complex.norm_conj]
-
 omit [DecidableEq ι] in
 theorem contDiffOn_l2Norm_block (k : ι) :
     ContDiffOn ℝ ∞ (fun z : Cone n ℂ ↦ l2Norm (z k)) {z | BlockNonzero z} := by
@@ -121,15 +95,6 @@ def standard : HermLine n where
   metric_smul c z _ _ := by
     simp only [vectorL2Norm_const_mul, zpow_one, Finset.prod_mul_distrib]
   metric_smooth := contDiffOn_prod fun k _ ↦ contDiffOn_l2Norm_block k
-
-def scale (A : HermLine n) (t : ℝ) (ht : 0 < t) : HermLine n where
-  deg := A.deg
-  metric z := t * A.metric z
-  metric_pos z hz := mul_pos ht (A.metric_pos z hz)
-  metric_smul c z hc hz := by
-    rw [A.metric_smul c z hc hz]
-    ring
-  metric_smooth := contDiffOn_const.mul A.metric_smooth
 
 def project {ι' : Type} {n' : ι' → ℕ} (j : ι → ι') {F : Type*} (z : Cone n' F) :
     Cone (n' ∘ j) F :=
@@ -183,10 +148,6 @@ def height (A : HermLine n) (x : Cone n (AlgebraicClosure ℚ)) : ℝ :=
         ∑ k, (A.deg k : ℝ) * Real.log (⨆ i, v (coordVec x k i))) +
       ∑ σ : coordField x →+* ℂ, Real.log (A.metric fun k i ↦ σ (coordVec x k i)))
 
-def coordIn (L : IntermediateField ℚ (AlgebraicClosure ℚ)) (z : Cone n (AlgebraicClosure ℚ))
-    (hz : ∀ k i, z k i ∈ L) : Cone n L :=
-  fun k i ↦ ⟨z k i, hz k i⟩
-
 def finiteTerm {L : Type*} [Field L] [NumberField L] (A : HermLine n) (v : FinitePlace L)
     (y : Cone n L) : ℝ :=
   ∑ k, (A.deg k : ℝ) * Real.log (⨆ i, v (y k i))
@@ -230,24 +191,6 @@ theorem isWeightedHomogeneous_chartMonomial (c : (k : ι) → Fin (n k + 1)) (d 
 namespace IntegralSection
 
 variable {P : ArithVariety n} {a : ι → ℤ}
-
-variable (P) in
-
-def chartSection (c : (k : ι) → Fin (n k + 1)) : IntegralSection P (fun _ ↦ 1) where
-  num := chartMonomial c 1
-  den := 1
-  numDeg := 1
-  denDeg := 0
-  num_isHomogeneous := isWeightedHomogeneous_chartMonomial c 1
-  den_isHomogeneous := isWeightedHomogeneous_one ℤ (coordDeg n)
-  deg_eq k := by simp
-  den_not_mem := (Ideal.ne_top_iff_one _).mp P.isPrime.ne_top
-  regular _ _ := ⟨0, chartMonomial c 1,
-    ⟨⟨1, isWeightedHomogeneous_chartMonomial c 1, fun k ↦ by simp⟩, by simp [chartMonomial]⟩⟩
-
-def NonzeroAt (s : IntegralSection P a) (x : Cone n (AlgebraicClosure ℚ)) : Prop :=
-  ∃ (c : (k : ι) → Fin (n k + 1)) (d : ι → ℕ) (e : MvPolynomial (Coord n) ℤ),
-    IsChartForm P a s.num s.den c d e ∧ (∀ k, x k (c k) ≠ 0) ∧ evalCone x e ≠ 0
 
 def SupNormLE (A : HermLine n) (s : IntegralSection P A.deg) (C : ℝ) : Prop :=
   ∀ z ∈ P.points ℂ, ∀ (c : (k : ι) → Fin (n k + 1)) (d : ι → ℕ) (e : MvPolynomial (Coord n) ℤ),

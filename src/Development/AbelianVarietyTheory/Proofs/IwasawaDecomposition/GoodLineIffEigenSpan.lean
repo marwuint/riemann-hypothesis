@@ -107,21 +107,6 @@ theorem mem_goodL_iff_iotaR (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.P
 
 end Core
 
-set_option maxHeartbeats 4000000 in
-
-theorem mem_goodL_iff_of_state : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), LA hL x →
-    ∀ θ : (∀ kk : Fin 2, Multiplicative (ZMod ((Dof x).host.g kk)) →* (↥(Dof x).LL0)ˣ), (∀ kk, θ kk ≠ 1) →
-      LvlPsi x.m.z.R x.m.z.F x.m.z.cG θ → ∀ j, 1 ≤ j → j ≤ (Dof x).R.m → ∀ v : (SOf x).WL j,
-        (v ∈ goodL (Dof x) (SOf x) θ j ↔
-          GlobalTheory.EigSpanDesc.iotaR x.m.z.R (idxOf (Dof x) j) v ∈
-            GlobalTheory.EigRows.goodW x.m.z.R.toRealDat x.m.z.F.lv2 (idxOf (Dof x) j)) := by
-  intro hL
-  refine StepW.of_all fun K B f T w _ _ _ => ?_
-  intro P x _ θ _ hlv j _ _ v
-  obtain ⟨_, _, -, hidem, -, -⟩ := x.m.z.pins.keep.grp
-  exact mem_goodL_iff_iotaR x.m.z.R x.m.z.F x.m.z.cG (kKsOf x) (hkOf x) θ x.m.intersectionNumber_baseChange.prim.unif
-    x.m.z.pins.char.base.models.HW hidem hlv j v
-
 end GlobalTheory.EigSpanTie
 
 end

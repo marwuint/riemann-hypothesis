@@ -160,28 +160,10 @@ theorem exists_isAbove (R K Ω : Type) [CommRing R] [IsDomain R] [ValuationRing 
   obtain ⟨V, -, -, -, h⟩ := exists_valuationSubring_dominating (V := R) (algebraMap K Ω)
   exact ⟨V, Subring.ext h⟩
 
-theorem hasGoodReduction_genericFibre (R K : Type) [CommRing R] [Field K] [Algebra R K] (G : Over (Sp R))
-    [GrpObj G] (hG : IsAbelianScheme G) :
-    HasGoodReduction R K ((Over.pullback (spMap (algebraMap R K))).obj G) :=
-  ⟨G, inferInstance, hG, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 _))⟩
-
 theorem hasGoodReduction_baseChange_iff {K W L : Type} [Field K] [CommRing W] [Field L] [Algebra K L] [Algebra W L]
     (A : Over (Sp K)) [GrpObj A] :
     HasGoodReduction W L ((Over.pullback (spMap (algebraMap K L))).obj A) ↔
       ∃ (G : Over (Sp W)) (_ : GrpObj G), IsAbelianScheme G ∧ GlobalTheory.SS.IsModel (L := L) A G := Iff.rfl
-
-theorem HasGoodReduction.potential {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K]
-    [Algebra R K] [IsFractionRing R K] {A : Over (Sp K)} [GrpObj A] (h : HasGoodReduction R K A) :
-    HasPotentialGoodReduction R K A := by
-  obtain ⟨G, _, hG, e, he⟩ := h
-  refine ⟨K, R, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance,
-    inferInstance, inferInstance, Subring.ext fun _ => Iff.rfl, G, inferInstance, hG, ?_⟩
-  have hh : spMap (algebraMap K K) = 𝟙 (Sp K) := by
-    rw [← Spec.map_id]
-    congr 1
-  obtain ⟨e', he', -⟩ := grpPullback_iso ((isGrpPullback_of_iso e).congr hh.symm rfl)
-    (isGrpPullback_pullback A (spMap (algebraMap K K)))
-  exact ⟨e', he'⟩
 
 theorem tateUnramified_of_torsionUnramified {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {A : Over (Sp K)}
     [GrpObj A] [IsCommMonObj A] {V : ValuationSubring Ω} {l : ℕ} [Fact l.Prime]
@@ -206,80 +188,15 @@ theorem NeronOggShafarevichSt.iff_tateUnramified (h : NeronOggShafarevichSt) [Pe
   exact ⟨fun hg => tateUnramified_of_torsionUnramified fun n =>
     t01.1 hg (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl), fun ht => t03.2 ⟨l, _, hl, ht⟩⟩
 
-theorem SerreTateGoodReductionSt.finite_image_of_hasCMBy (h : SerreTateGoodReductionSt)
-    [Finite (ResidueField R)] (hV : IsAbove R K V.toSubring) (hA : IsAbelianScheme A) {F : Type} [Field F]
-    [NumberField F] (hF : HasCMBy A F) (l : ℕ) [Fact l.Prime] (hl : (l : ResidueField R) ≠ 0) :
-    (galTate A l '' (inertia K V : Set (Ω ≃ₐ[K] Ω))).Finite :=
-  (h.2.1 R K Ω V hV A hA l hl).1 (h.2.2 R K A hA F hF)
-
 end Consequences
 
 namespace AbVarRed
 
 open GlobalTheory.CMCurve GlobalTheory.WeierstrassCurve
 
-def gaussEquiv : (ℤ × ℤ) ≃ₗ[ℤ] GaussianInt :=
-  ({ toFun := fun p => ⟨p.1, p.2⟩, invFun := fun z => (z.re, z.im), map_add' := fun _ _ => rfl,
-      left_inv := fun _ => rfl, right_inv := fun _ => rfl } : (ℤ × ℤ) ≃+ GaussianInt).toIntLinearEquiv
-
-theorem finrank_eq_of_isFractionRing (O F : Type) [CommRing O] [Field F] [CharZero F] [Algebra O F]
-    [IsFractionRing O F] : Module.finrank ℚ F = Module.finrank ℤ O :=
-  IsFractionRing.finrank_eq ℤ ℚ O F
-
-theorem finrank_gaussField : Module.finrank ℚ (FractionRing GaussianInt) = 2 := by
-  rw [finrank_eq_of_isFractionRing GaussianInt, ← gaussEquiv.finrank_eq]
-  simp
-
-theorem numberField_gaussField : NumberField (FractionRing GaussianInt) where
-  to_finiteDimensional := Module.finite_of_finrank_pos (by rw [finrank_gaussField]; norm_num)
-
 theorem factPrimeFive : Fact (Nat.Prime 5) := ⟨by norm_num⟩
 
 attribute [local instance] factPrimeFive
-
-theorem exists_sq_eq_neg_one : ∃ i : ℤ_[5], i ^ 2 = -1 := by
-  have h5 : ‖(5 : ℤ_[5])‖ < 1 := by
-    have := PadicInt.norm_p (p := 5)
-    rw [show (5 : ℤ_[5]) = ((5 : ℕ) : ℤ_[5]) by norm_num, this]
-    norm_num
-  have h4 : ‖(4 : ℤ_[5])‖ = 1 := by
-    have h := (PadicInt.norm_natCast_eq_one_iff (p := 5) (n := 4)).2 (by norm_num)
-    exact_mod_cast h
-  obtain ⟨z, hz, -⟩ := hensels_lemma (p := 5) (R := ℤ) (F := Polynomial.X ^ 2 + 1) (a := 2) (by
-    have e1 : Polynomial.aeval (2 : ℤ_[5]) (Polynomial.X ^ 2 + 1 : Polynomial ℤ) = 5 := by simp; norm_num
-    have e2 : Polynomial.aeval (2 : ℤ_[5]) (Polynomial.derivative (Polynomial.X ^ 2 + 1 : Polynomial ℤ)) = 4 := by
-      simp [map_ofNat]; norm_num
-    rw [e1, e2, h4]
-    simpa using h5)
-  exact ⟨z, eq_neg_of_add_eq_zero_left (by simpa using hz)⟩
-
-theorem exists_cm_curve :
-    Finite (ResidueField ℤ_[5]) ∧ ((2 : ℕ) : ResidueField ℤ_[5]) ≠ 0 ∧
-    (∃ V : ValuationSubring (AlgebraicClosure ℚ_[5]), IsAbove ℤ_[5] ℚ_[5] V.toSubring) ∧
-    IsSepClosure ℚ_[5] (AlgebraicClosure ℚ_[5]) ∧
-    ∃ (A : Over (Sp ℚ_[5])) (_ : GrpObj A) (F : Type) (_ : Field F) (_ : NumberField F),
-      IsAbelianScheme A ∧ SmoothOfRelativeDimension 1 A.hom ∧ HasCMBy A F ∧
-      HasGoodReduction ℤ_[5] ℚ_[5] A ∧ HasPotentialGoodReduction ℤ_[5] ℚ_[5] A := by
-  have h2 : IsUnit (2 : ℤ_[5]) := by
-    rw [PadicInt.isUnit_iff]
-    have h := (PadicInt.norm_natCast_eq_one_iff (p := 5) (n := 2)).2 (by norm_num)
-    exact_mod_cast h
-  refine ⟨Finite.of_equiv _ (PadicInt.residueField (p := 5)).symm.toEquiv, ?_, exists_isAbove _ _ _,
-    inferInstance, ?_⟩
-  · have := (h2.map (residue ℤ_[5])).ne_zero
-    rwa [map_ofNat] at this
-  obtain ⟨i, hi⟩ := exists_sq_eq_neg_one
-  have := isElliptic_gaussianCurve h2
-  have hG := isAbelianScheme_schemeOver _ (gaussianCurve ℤ_[5]) (gaussianCurve ℤ_[5]).isUnit_Δ inferInstance
-  have hd : SmoothOfRelativeDimension 1
-      ((Over.pullback (spMap (algebraMap ℤ_[5] ℚ_[5]))).obj (schemeOver (gaussianCurve ℤ_[5]))).hom :=
-    (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _)
-      (smoothOfRelativeDimension_toSpec_of_isUnit _ (gaussianCurve ℤ_[5]).isUnit_Δ)
-  have := numberField_gaussField
-  have hg := hasGoodReduction_genericFibre ℤ_[5] ℚ_[5] _ hG
-  exact ⟨_, _, FractionRing GaussianInt, inferInstance, inferInstance, isAbelianScheme_pullback_obj _ _ hG, hd,
-    ⟨⟨1, hd, finrank_gaussField⟩, GaussianInt, inferInstance, inferInstance, inferInstance,
-      ⟨(gaussianAct hi).pullback _⟩⟩, hg, hg.potential⟩
 
 end AbVarRed
 

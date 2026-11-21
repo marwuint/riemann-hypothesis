@@ -1,7 +1,29 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.WeightsConjBis
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.PowEqOneOfRoots
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.InePolOfUnr
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.CuspOfPair
+import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.WeightsConj
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSpanFormsNeBot
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspContragredientIsCMConjTwistOfPairedInvTranspStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalGlobalOfGelfandKazhdan
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.PolarizedGaloisRepPublished
+import Mathlib
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.GaloisRepOfPolarizedPair
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalLanglandsExists
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalConverseGL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsExhaustionGL
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.StandardFunctorsFiniteLength
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReciprocityUniqueOf
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTheRecOfIsRec
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsAlgebraicHeckeCharOfRegularAlgebraicPolarizedP
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasInfCharInfCharOfCommute
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CommuteCapOfCommuteEop
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CapCommuteRtInfGL
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilDeligneParamMonodromyEqZeroIff
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeLAdicCharacterAndPrincipalIdealSt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlobalArtinReciprocityHolds
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.BernsteinZelevinskyGL.TopAdm
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.BernsteinZelevinskyGL.TopStd
 import Development.AutomorphicArithmetic.NaturalDivisibility.ExistsContinuousRingEquivPadicOfTotallySplit
 
 noncomputable section
@@ -46,47 +68,5 @@ end
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
   [IsAlgClosure E Ω] [IsCMField E]
-
-omit [IsCMField E] [Fact l.Prime] in
-theorem star_guard' {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
-    {rc : IrrGL (w.adicCompletion E) → WD h} (hrc : IsRec h rc) {σ : SmIrr (GL (Fin a) (w.adicCompletion E))}
-    (k : NcW (rc (algNorm σ))) :
-    (IsQpBig w a ∧ TmW (rc (algNorm σ)) ∧ UpperTheory.GalStar.Sqf (rc (algNorm σ))) ∨ Tor (rc (algNorm σ)) := by
-  obtain ⟨_, _, _, -, H⟩ := hrc
-  have e : (rc (algNorm σ)).lpDim = a := H.dim _
-  have := star_guard k
-  rwa [e] at this
-
-theorem isGalU_of_props {π : CuspSub E a} (χ : HChar (maximalRealSubfield E)) {ι : Qbar l ≃+* ℂ}
-    {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ} (H : PropsB recFull π ι r wt HT) :
-    IsGalU π χ ι r wt HT :=
-  ⟨H.cont, H.ss, fun w hl A h rc hrc σ hσ => aw_of_away (H.away w hl A h rc hrc σ hσ), H.weights, H.weights_conj,
-    fun P AI T w A h O _ _ _ Bw hj =>
-      have k := H.above P AI T w A h O Bw hj
-      ⟨fun ⟨σ, hσ, rc, hrc, n⟩ => (k.nice σ hσ rc hrc (star_guard' hrc n) n.2.1).1,
-        fun ⟨σ, hσ, rc, hrc, n⟩ => (k.nice σ hσ rc hrc (star_guard' hrc n) n.2.1).2.2.1, fun σ hσ hs => (k.crys σ hσ hs).1⟩⟩
-
-theorem pairU_of_star (H : Row0b recFull) : PairU := fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp => by
-  obtain ⟨r, wt, HT, k⟩ := H E Ω l ι a ha π χ hr hp
-  exact ⟨r, wt, HT, isGalU_of_props χ k⟩
-
-theorem carU_of_star (hGK : GlobalTheory.Published.GelfandKazhdanDual) (H : Row0b recFull) : CarU := by
-  intro E Ω _ _ _ _ _ _ l _ ι a ha π hc hr
-  have hpol := isPolarized_of_isCsd hc
-  obtain ⟨r, wt, HT, k⟩ := H E Ω l ι a (by omega) π _ hr
-    ⟨hpol.sign, GlobalTheory.T.cuspContragredientIsCMConjTwist_of_paired_invTranspose E a π (GlobalTheory.GalOfCusp.compNorm E _) (hGK E a _) hpol.dual⟩
-  refine ⟨r, wt, HT, isGalU_of_props _ k, fun P AI T w _ A h O _ _ _ Bw hj σ hσ rc hrc n => ?_⟩
-  have b := ((k.above P AI T w A h O Bw hj).nice σ hσ rc hrc (star_guard' hrc n) n.2.1).2.2.2
-  exact ⟨b.dim, fun _ => (away_nice b n).1, fun _ _ => (away_nice b n).2⟩
-
-theorem field_of_star (_ : GlobalTheory.Published.LocalLanglandsExists) (_ : GlobalTheory.Published.LocalConverseGL)
-    (_ : GlobalTheory.Published.LanglandsExhaustionGL) (H : Row0b recFull) : PairU := pairU_of_star H
-
-def StarFull : Prop := Row0b recFull
-
-theorem field_of_starFull (_ : GlobalTheory.Published.LocalLanglandsExists) (_ : GlobalTheory.Published.LocalConverseGL)
-    (_ : GlobalTheory.Published.LanglandsExhaustionGL) (H : StarFull) : PairU := pairU_of_star H
-
-theorem ofDual_star (hGK : GlobalTheory.Published.GelfandKazhdanDual) (H : StarFull) : CarU := carU_of_star hGK H
 
 end UpperTheory.GalS

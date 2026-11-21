@@ -1,6 +1,6 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.StrictDominanceCasselman.IsStrictlyDominant
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFixedVectorProjectionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFixedVectorProjection
 open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 
 namespace GlobalTheory.CompanionTheory.CompactAvg
@@ -11,7 +11,7 @@ theorem invariant_forms_separate_fixed :
       (π : Representation ℂ G V), IsSmooth π → ∀ u ∈ fixed π J,
       (∀ l : Module.Dual ℂ V, (∀ x ∈ J, l ∘ₗ π x = l) → l u = 0) → u = 0 := by
   intro G _ _ _ J hJ V _ _ π hπ u hu hl
-  obtain ⟨E, -, hfix, -, hinv, -⟩ := GlobalTheory.T.compact_fixed_vector_projection G J hJ V π hπ
+  obtain ⟨E, -, hfix, -, hinv, -⟩ := _root_.GlobalTheory.CompanionTheory.CompactAvg.exists_average G J hJ V π hπ
   by_contra hne
   have hex : ∃ l0 : Module.Dual ℂ V, l0 u ≠ 0 := by
     by_contra hall

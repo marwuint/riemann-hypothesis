@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InjectiveWedgeHighestCoefficient
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.SumOfLevelSizesEqStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.StandardBlocksLevelSumStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.SumOfLevelSizesEq
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.Bdy
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.StandardBlocksLevelSum
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FreeAlgebraActionOnSubquotientStatement
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsBisSide
 
@@ -79,66 +80,5 @@ theorem level_sum (lev : Fin n → ℕ) (hm : Monotone lev) (c : ℕ) :
       omega
   rw [← twice_sum_Ico, ← hmap, Finset.sum_map]
   rfl
-
-section Alg
-
-variable {W : Type} [AddCommGroup W] [Module ℂ W]
-
-end Alg
-
-section Spaces
-
-variable {V : Type} [AddCommGroup V] [Module ℂ V]
-
-def cycQ (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (j : ℕ) : Submodule ℂ (Cq n V) where
-  carrier := {x | SuppQ (inUL lev) x ∧ DegQ j x ∧ bdq E1 E2 x = 0}
-  add_mem' := by
-    rintro x y ⟨h1, h2, h3⟩ ⟨g1, g2, g3⟩
-    refine ⟨fun A hA i hi => ?_, fun A hA => ?_, by rw [map_add, h3, g3, add_zero]⟩
-    · by_cases hx : x A = 0
-      · have hy : y A ≠ 0 := fun hy => hA (by simp [hx, hy])
-        exact g1 A hy i hi
-      · exact h1 A hx i hi
-    · by_cases hx : x A = 0
-      · have hy : y A ≠ 0 := fun hy => hA (by simp [hx, hy])
-        exact g2 A hy
-      · exact h2 A hx
-  zero_mem' := ⟨fun A hA => absurd rfl hA, fun A hA => absurd rfl hA, map_zero _⟩
-  smul_mem' := by
-    rintro c x ⟨h1, h2, h3⟩
-    have hne : ∀ A, (c • x) A ≠ 0 → x A ≠ 0 := fun A hA hx => hA (by simp [hx])
-    exact ⟨fun A hA => h1 A (hne A hA), fun A hA => h2 A (hne A hA), by rw [map_smul, h3, smul_zero]⟩
-
-def bdyQ (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (j : ℕ) : Submodule ℂ (Cq n V) where
-  carrier := {x | ∃ w : Cq n V, SuppQ (inUL lev) w ∧ DegQ (j + 1) w ∧ bdq E1 E2 w = x}
-  add_mem' := by
-    rintro _ _ ⟨x, h1, h2, rfl⟩ ⟨y, g1, g2, rfl⟩
-    refine ⟨x + y, fun A hA i hi => ?_, fun A hA => ?_, map_add _ _ _⟩
-    · by_cases hx : x A = 0
-      · have hy : y A ≠ 0 := fun hy => hA (by simp [hx, hy])
-        exact g1 A hy i hi
-      · exact h1 A hx i hi
-    · by_cases hx : x A = 0
-      · have hy : y A ≠ 0 := fun hy => hA (by simp [hx, hy])
-        exact g2 A hy
-      · exact h2 A hx
-  zero_mem' := ⟨0, fun A hA => absurd rfl hA, fun A hA => absurd rfl hA, map_zero _⟩
-  smul_mem' := by
-    rintro c _ ⟨x, h1, h2, rfl⟩
-    have hne : ∀ A, (c • x) A ≠ 0 → x A ≠ 0 := fun A hA hx => hA (by simp [hx])
-    exact ⟨c • x, fun A hA => h1 A (hne A hA), fun A hA => h2 A (hne A hA), map_smul _ _ _⟩
-
-abbrev HQ (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (j : ℕ) : Type :=
-  cycQ lev E1 E2 j ⧸ (bdyQ lev E1 E2 j).comap (cycQ lev E1 E2 j).subtype
-
-abbrev levL (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (x : Bool × Fin n × Fin n) :
-    Module.End ℂ (Cq n V) :=
-  if lev x.2.1 = lev x.2.2 then (if x.1 then c1 E1 E2 x.2.1 x.2.2 else c2 E1 E2 x.2.1 x.2.2) else 0
-
-abbrev fam {W : Type} [AddCommGroup W] [Module ℂ W]
-    (ρ : FreeAlgebra ℂ (Bool × Fin n × Fin n) →ₐ[ℂ] Module.End ℂ W) (s : Bool) (p q : Fin n) : Module.End ℂ W :=
-  ρ (FreeAlgebra.ι ℂ (s, p, q))
-
-end Spaces
 
 end GlobalTheory.CompanionTheory.PairMult.Asm

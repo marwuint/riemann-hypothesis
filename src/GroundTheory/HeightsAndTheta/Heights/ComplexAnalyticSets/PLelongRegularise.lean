@@ -76,15 +76,6 @@ theorem abs_half_log_le {t ε : ℝ} (ht : 0 < t) (hε : 0 < ε) (hε1 : ε ≤ 
     linarith
   · linarith
 
-theorem tendsto_logReg {n : ℕ} (u x : Fin n → ℂ) (hx : linEval u x ≠ 0) :
-    Tendsto (fun ε => logReg u ε x) (𝓝[>] 0) (𝓝 (Real.log ‖linEval u x‖)) := by
-  rw [← logReg_zero]
-  have hc : ContinuousAt (fun ε => logReg u ε x) 0 := by
-    unfold logReg
-    refine ContinuousAt.div_const (ContinuousAt.log (continuousAt_const.add continuousAt_id) ?_) _
-    simp [hx]
-  exact hc.tendsto.mono_left nhdsWithin_le_nhds
-
 theorem exists_poly_of_linEval_eq_zero {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} {u : Fin n → ℂ} (hJ : J.IsPrime) (hA : IsFiniteProjection J A)
     (hu : linForm u ∉ J) :
@@ -178,60 +169,7 @@ theorem norm_chartDens_le {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
   · simp only [dif_neg hs]
     simp
 
-theorem tendsto_chartDens {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
-    {A : Matrix (Fin d) (Fin n) ℂ} (hA : IsFiniteProjection J A) {u : Fin n → ℂ}
-    (ψ : Fin d → (Fin n → ℂ) → ℝ) {y : Fin d → ℂ} (hy : ∀ x ∈ fibre J A y, linEval u x ≠ 0) :
-    Tendsto (fun ε => chartDens J A (logReg u ε) ψ y) (𝓝[>] 0)
-      (𝓝 (chartDens J A (fun x => Real.log ‖linEval u x‖) ψ y)) := by
-  have hfin := IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y
-  unfold chartDens sheetSum
-  simp only [finsum_mem_eq_finite_toFinset_sum _ hfin]
-  refine tendsto_finsetSum _ fun x hx => ?_
-  rw [Set.Finite.mem_toFinset] at hx
-  by_cases hs : ∃ s, IsSheetAt J A x s
-  · simp only [dif_pos hs]
-    exact (tendsto_logReg u x (hy x hx)).mul_const _
-  · simp only [dif_neg hs]
-    exact tendsto_const_nhds
-
 end LelongRegularise
-
-theorem LelongRegularise.proof (h : LogIntegrable.Statement) : LelongRegularise.Statement := by
-  intro n d J u f φ hJ hdim hu hf hfc hφ
-  unfold varInt
-  split_ifs with hA
-  swap
-  · exact tendsto_const_nhds
-  have hAf := hA.choose_spec
-  unfold chartInt
-  obtain ⟨R, hR⟩ := hfc.isCompact.isBounded.subset_closedBall (0 : Fin n → ℂ)
-  have hψ : ∀ i, SmoothNear (zeroSet J) (vecCons f φ i) := by
-    intro i
-    refine Fin.cases ?_ (fun i => ?_) i
-    · simpa using smoothNear_of_contDiff (S := zeroSet J) hf
-    · simpa using hφ i
-  have hu2 : linForm ((2 : ℂ) • u) ∉ J := by
-    have he : linForm ((2 : ℂ) • u) = C 2 * linForm u := by
-      simp [linForm, Finset.mul_sum, ← mul_assoc, C_mul]
-    intro hm
-    apply hu
-    have := J.mul_mem_left (C (1 / 2 : ℂ)) (he ▸ hm)
-    rwa [← mul_assoc, ← C_mul, show (1 / 2 : ℂ) * 2 = 1 by norm_num, C_1, one_mul] at this
-  obtain ⟨P, hP, hPy⟩ := LelongRegularise.exists_poly_of_linEval_eq_zero hJ hAf hu
-  have hgood : ∀ᵐ y : Fin (d + 1) → ℂ, ∀ x ∈ fibre J hA.choose y, linEval u x ≠ 0 := by
-    filter_upwards [LelongRegularise.ae_eval_ne_zero P hP] with y hy x hx h0
-    exact hy (hPy y x hx h0)
-  refine tendsto_integral_filter_of_dominated_convergence _ ?_ ?_
-    ((h n (d + 1) J hA.choose u (vecCons f φ) R hJ hdim hAf hu hψ).add
-      (h n (d + 1) J hA.choose ((2 : ℂ) • u) (vecCons f φ) R hJ hdim hAf hu2 hψ)) ?_
-  · filter_upwards [self_mem_nhdsWithin] with ε hε
-    exact (SheetSumMeasurable.proof n (d + 1) J hA.choose (logReg u ε) (vecCons f φ) hJ hdim hAf
-      (contDiff_logReg u hε).continuous.measurable hψ).1.aestronglyMeasurable
-  · filter_upwards [Ioc_mem_nhdsGT one_pos] with ε hε
-    filter_upwards [hgood] with y hy
-    exact LelongRegularise.norm_chartDens_le hAf φ hR hε.1 hε.2 hy
-  · filter_upwards [hgood] with y hy
-    exact LelongRegularise.tendsto_chartDens hAf _ hy
 
 end
 

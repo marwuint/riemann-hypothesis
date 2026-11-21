@@ -4,13 +4,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapeOfGenericPointStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LbIsoGenericSpreadsOutStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapePrimitivityPullbackDescentStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaConstantsLocallyOnBaseStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsUniqueUpToUnitStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapeOfGenericPoint
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LbIsoGenericSpreadsOut
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapePrimitivityPullbackDescent
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullback
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChange
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaConstantsLocallyOnBase
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsUniqueUpToUnit
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LineBundleSymmetryHypothesisBaseChange
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsSchemeTheoreticallyDominantSpecOfInjective
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
@@ -120,7 +120,7 @@ theorem spread_lbIso (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R]
     (H : LBIso (M.pull U) (N.pull U)) :
     ∃ f : R, f ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R'), IsUnit (φ f) → ∀ {B' : Scheme.{0}} {U' : B' ⟶ B}
       {p' : B' ⟶ Sp R'}, U' ≫ pB = p' ≫ spMap φ → LBIso (M.pull U') (N.pull U') := by
-  obtain ⟨f, hf, Hf⟩ := GlobalTheory.T.lbIso_generic_spreads_out_alt R K B pB M N inferInstance inferInstance hM hN
+  obtain ⟨f, hf, Hf⟩ := _root_.GlobalTheory.lbIso_generic_spreads_out R K B pB M N inferInstance inferInstance hM hN
     (lbIso_pull_of_comp h.isoPullback.inv h.isoPullback_inv_fst.symm H)
   exact ⟨f, hf, fun R' _ φ hu B' U' p' e =>
     lbIso_pull_of_comp (pullback.lift U' p' e) (pullback.lift_fst _ _ _).symm (Hf R' φ hu)⟩
@@ -185,10 +185,10 @@ theorem exists_eq_mul_of_field (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [Com
     (Ideal.eq_bot_or_top (Ideal.span (Set.range z))).symm.imp id fun h a =>
       Ideal.span_eq_bot.1 h _ (Set.mem_range_self a)
   rcases key v with h | h
-  · obtain ⟨u, hu⟩ := GlobalTheory.T.thetaConstants_unique_up_to_unit hL hL2 o g N' J b S s t K x v v' H H' h
+  · obtain ⟨u, hu⟩ := _root_.GlobalTheory.hasTh_unique_unit hL hL2 o g N' J b S s t K x v v' H H' h
     exact ⟨(u : K), u.ne_zero, hu⟩
   rcases key v' with h' | h'
-  · obtain ⟨u, hu⟩ := GlobalTheory.T.thetaConstants_unique_up_to_unit hL hL2 o g N' J b S s t K x v' v H' H h'
+  · obtain ⟨u, hu⟩ := _root_.GlobalTheory.hasTh_unique_unit hL hL2 o g N' J b S s t K x v' v H' H h'
     exact ⟨(u⁻¹ : Kˣ), (u⁻¹).ne_zero, fun a => by rw [hu, Units.inv_mul_cancel_left]⟩
   · exact ⟨1, one_ne_zero, fun a => by rw [h, h', mul_zero]⟩
 
@@ -197,7 +197,7 @@ theorem exists_hasTh_away (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing
     (hN : Odd N') : ∃ f : R, f ≠ 0 ∧ ∃ w : Ix g (N' ^ 2) → Localization.Away f,
       t.HasTh (spMap (algebraMap R (Localization.Away f))) w := by
   let p : Sp R := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)
-  obtain ⟨R₁, _, x, w, hx, hp, H⟩ := GlobalTheory.T.exists_thetaConstants_locally_on_base hL hL2 o g N' J b _ s t hN p
+  obtain ⟨R₁, _, x, w, hx, hp, H⟩ := _root_.GlobalTheory.ThetaLocal.exists_hasTh hL hL2 o g N' J b _ s t hN p
   obtain ⟨_, ⟨f, rfl⟩, hf, hsub⟩ := (PrimeSpectrum.isTopologicalBasis_basic_opens (R := R)).exists_subset_of_mem_open
     hp x.isOpenEmbedding.isOpen_range
   have hr : Set.range (spMap (algebraMap R (Localization.Away f))) ⊆ Set.range x := by
@@ -210,7 +210,7 @@ theorem exists_hasTh_away (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing
     exact Spec.map_preimage y
   refine ⟨f, fun h => hf (by subst h; exact Ideal.zero_mem _), fun a => (Spec.preimage y).hom (w a), ?_⟩
   rw [← hy]
-  exact GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ s t R₁ _ _ x w H
+  exact _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b _ s t R₁ _ _ x w H
 
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -225,7 +225,7 @@ theorem spread_hasTh (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing o] {
   obtain ⟨f, hf, w, Hw⟩ := exists_hasTh_away hL hL2 t H.1
   have pull : ∀ (R' : Type) [CommRing R'] (φ : R →+* R') (hu : IsUnit (φ f)),
       t.HasTh (spMap φ) (fun a => IsLocalization.Away.lift f hu (w a)) := fun R' _ φ hu => by
-    have := GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ s t _ R' (IsLocalization.Away.lift f hu) _ w Hw
+    have := _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b _ s t _ R' (IsLocalization.Away.lift f hu) _ w Hw
     rwa [spMap_comp, IsLocalization.Away.lift_comp] at this
   have inj := IsFractionRing.injective R K
   have hK : IsUnit (algebraMap R K f) := ((map_ne_zero_iff _ inj).2 hf).isUnit
@@ -275,15 +275,15 @@ theorem range_spMap_fractionRing (R K : Type) [CommRing R] [IsDomain R] [Field K
 theorem exists_ne_zero_hasTh_shape_prim : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) Mat κ (w w' : J) (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (s : Sp R ⟶ Sp o) (s' : Sp K ⟶ Sp o) (t' : TObj g (N' ^ 2) J b s) (t : TObj g (N' ^ 2) J b s') (v : Ix g (N' ^ 2) → R), TMap t t' (spMap (algebraMap R K)) → t.HasTh (𝟙 _) (fun a => algebraMap R K (v a)) → t.Shape Mat κ → t.Prim w w' → ∃ f : R, f ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R') (s'' : Sp R' ⟶ Sp o) (t'' : TObj g (N' ^ 2) J b s''), IsUnit (φ f) → TMap t'' t' (spMap φ) → t''.HasTh (𝟙 _) (fun a => φ (v a)) ∧ t''.Shape Mat κ ∧ t''.Prim w w' := by
   intro hL hL2 o _ g N' J b Mat κ w w' R K _ _ _ _ _ _ s s' t' t v hm hT hS hP
   have hS' : t'.Shape Mat κ :=
-    GlobalTheory.T.thetaLevelShape_of_generic_point hL hL2 o g _ J b Mat κ _ s t' K _ s' t (range_spMap_fractionRing R K) hm hS
-  have hT' := (GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ s t' _ s' t _ K _ _ hm).1 hT
+    _root_.GlobalTheory.shape_of_generic hL hL2 o g _ J b Mat κ _ s t' K _ s' t (range_spMap_fractionRing R K) hm hS
+  have hT' := (_root_.GlobalTheory.hasTh_iff_of_tmap o g N' J b _ s t' _ s' t _ K _ _ hm).1 hT
   rw [Category.id_comp] at hT'
   obtain ⟨f₁, hf₁, H₁⟩ := spread_hasTh hL hL2 R K t' v hT'
   obtain ⟨f₂, hf₂, H₂⟩ := spread_prim R K t' t hm hP
   refine ⟨f₁ * f₂, mul_ne_zero hf₁ hf₂, fun R' _ φ s'' t'' hu hm' => ?_⟩
   rw [map_mul] at hu
-  refine ⟨(GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ s t' _ s'' t'' _ R' _ _ hm').2 ?_,
-    (GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g _ J b Mat κ w w' _ _ s s'' _ t' t'' hm').1 hS',
+  refine ⟨(_root_.GlobalTheory.hasTh_iff_of_tmap o g N' J b _ s t' _ s'' t'' _ R' _ _ hm').2 ?_,
+    (_root_.GlobalTheory.shape_prim_pull_and_descend o g _ J b Mat κ w w' _ _ s s'' _ t' t'' hm').1 hS',
     H₂ R' φ s'' t'' (isUnit_of_mul_isUnit_right hu) hm'⟩
   rw [Category.id_comp]
   exact H₁ R' φ (isUnit_of_mul_isUnit_left hu)

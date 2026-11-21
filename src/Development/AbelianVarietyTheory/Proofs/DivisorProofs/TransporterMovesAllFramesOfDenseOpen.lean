@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranspOfMovesAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransporterMovesNearbyFramesOfDenseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransporterMovesAtOfMovesAtOpenSetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransporterMovesAtOfMovesAtOpenSet
 
 set_option autoImplicit false
 
@@ -20,7 +20,7 @@ theorem movesAt_of_dense : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi
   obtain ⟨o, ho⟩ := hOn
   obtain ⟨h1, k'', c, hc, hM⟩ := GlobalTheory.T.transporter_moves_nearby_frames_of_dense p hp r h hr i v γ k k' a hm o (hOd ho)
   obtain ⟨N, hN, hNM⟩ := h1 (Filter.mem_of_superset (hO.mem_nhds ho) hOc)
-  exact GlobalTheory.T.transporter_movesAt_of_movesAt_open_set p hp r h hr i v γ k k' k'' a c hm hc (interior N ∩ O) (isOpen_interior.inter hO)
+  exact _root_.GlobalTheory.ShareOn.movesAt_of_movesAt_open p hp r h hr i v γ k k' k'' a c hm hc (interior N ∩ O) (isOpen_interior.inter hO)
     ⟨o, mem_interior_iff_mem_nhds.2 hN, ho⟩ (fun w hw => hOd hw.2)
     (fun w hw hwW => ⟨hNM w hw (interior_subset hwW.1), hM w hw⟩) x hx (hM x hx)
 

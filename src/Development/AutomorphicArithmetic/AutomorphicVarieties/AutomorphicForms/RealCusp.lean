@@ -344,9 +344,6 @@ def locRep (w : HeightOneSpectrum (𝓞 E)) : Representation ℂ (GL (Fin a) (w.
 def IsLocComp (w : HeightOneSpectrum (𝓞 E)) (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) : Prop :=
   ∃ f : σ.V →ₗ[ℂ] π.V, f ≠ 0 ∧ ∀ g v, f (σ.ρ g v) = π.locRep w g (f v)
 
-def IsFinComp (σ : SmIrr (GL (Fin a) (Af E))) : Prop :=
-  ∃ f : σ.V →ₗ[ℂ] π.V, f ≠ 0 ∧ ∀ g v, f (σ.ρ g v) = π.finPart g (f v)
-
 def HasSat (w : HeightOneSpectrum (𝓞 E)) (B : Multiset ℂˣ) : Prop := GlobalTheory.LFun.HasSatGL w (π.locRep w) B
 
 def IsSelfDualBy (χ : HChar E) : Prop :=

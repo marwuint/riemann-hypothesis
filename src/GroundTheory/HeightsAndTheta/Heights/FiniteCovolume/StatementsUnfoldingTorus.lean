@@ -22,12 +22,6 @@ def UnfoldingTorus.Statement (h : HermitianForm F E W) (v : Basis ι E W) : Prop
             {b : InfinitePlace E → ℂ | M.len (fun w => b w • vecAt v x₀ w) < t}.indicator
               (fun b => ∏ w, ‖b w‖ₑ ^ (2 * (finrank E W - 2))) b
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

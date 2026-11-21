@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TrivAtOfCfEqOne
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EulerOperatorInjectiveEigenvectorStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EulerOperatorInjectiveEigenvector
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHeckeRepresentativesRightTranslateIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSumInnerEulerProductQuotientInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSumLocalEulerFactorHeckeOperatorsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RightInvariantMulEqFinprodComponentsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientEquivRestrictedComponentFamiliesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSumInnerEulerProductQuotientInjective
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSumLocalEulerFactorHeckeOperators
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RightInvariantMulEqFinprodComponents
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientEquivRestrictedComponentFamilies
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaPairingInvariant
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LatIndexEqOneOfMem
 
@@ -108,7 +108,7 @@ theorem upInj_holds : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Typ
     fun v g => GlobalTheory.UpInj.cf_cf (Wc D i) v g
   have horth : ∀ v w g, v ≠ w → GlobalTheory.UpInj.cf (Wc D i) w (GlobalTheory.UpInj.cf (Wc D i) v g) = 1 :=
     fun v w g h => GlobalTheory.UpInj.cf_orth (Wc D i) h g
-  obtain ⟨e, he⟩ := GlobalTheory.T.quotient_equiv_restrictedComponentFamilies _ (GlobalTheory.UpInj.KR R i) _ (GlobalTheory.UpInj.cf (Wc D i)) hmem hfin hidem horth
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.quotient_equiv_restrictedFamilies _ (GlobalTheory.UpInj.KR R i) _ (GlobalTheory.UpInj.cf (Wc D i)) hmem hfin hidem horth
   have ha_bi : ∀ g k k', k ∈ GlobalTheory.UpInj.KR R i → k' ∈ GlobalTheory.UpInj.KR R i → a (k * g * k') = a g := by
     intro g k k' hk hk'
     exact hinv g k k' (Subgroup.mem_subgroupOf.1 hk) (Subgroup.mem_subgroupOf.1 hk')
@@ -116,10 +116,10 @@ theorem upInj_holds : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Typ
     intro g k hk
     have := ha_bi g 1 k (Subgroup.one_mem _) hk
     rwa [one_mul] at this
-  have hfac := GlobalTheory.T.rightInvariant_mul_eq_finprod_components _ _ _ _ a hmem hfin hidem horth ha_right h1 hmul
-  have hloc := fun v => GlobalTheory.T.hasSum_localEulerFactor_heckeOperators _ (GlobalTheory.UpInj.KR R i) (GlobalTheory.UpInj.cf (Wc D i) v) _ a B (s v) (hidem v) ha_bi hBK hBn
+  have hfac := _root_.GlobalTheory.finprod_components_of_rightInvariant_mul _ _ _ _ a hmem hfin hidem horth ha_right h1 hmul
+  have hloc := fun v => _root_.GlobalTheory.UpInj.localSum_hasSum _ (GlobalTheory.UpInj.KR R i) (GlobalTheory.UpInj.cf (Wc D i) v) _ a B (s v) (hidem v) ha_bi hBK hBn
     (hsm v) (hrep v) (hhk v)
-  obtain ⟨W, hWi, hW⟩ := GlobalTheory.T.hasSum_inner_eulerProduct_quotient_injective _ (GlobalTheory.UpInj.KR R i) _ (GlobalTheory.UpInj.cf (Wc D i)) _ a B s e he hmem hidem horth ha_right h1 hfac
+  obtain ⟨W, hWi, hW⟩ := _root_.GlobalTheory.hasSum_inner_quotient_eulerProduct_injective _ (GlobalTheory.UpInj.KR R i) _ (GlobalTheory.UpInj.cf (Wc D i)) _ a B s e he hmem hidem horth ha_right h1 hfac
     hBn hB1 hBK hs hs1 hsm hloc
   intro th hth
   obtain ⟨a0, ha0, hsum⟩ := hFS th hth p.1 p.2 hp

@@ -16,30 +16,6 @@ open Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV
 def normSqAt {K : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K) (h : S.Ok) (s : K →+* ℂ) (φ : S.D → S.V) : ℝ :=
   (S.ipAt h (InfinitePlace.mk s) φ φ).re
 
-section Comparison₂
-
-variable {X : Fields} {Word : Type} (Nd : NumDatum) (W : Wts X Word Nd.R)
-
-structure NumTie (pl : X.Tau ≃ RPl Nd.R) : Prop where
-  tops : ∀ τ, τ ∈ W.tops ↔ (pl τ).1 = false ∧ (pl τ).2 ∈ Nd.TT
-  row : ∀ τ, W.row τ = RowPar.of (Nd.hc (pl τ))
-  u_first : ∀ u τ (h : 0 < Nd.R.k), (W.hc u τ).u ⟨0, h⟩ = (Nd.hc (pl τ)).u ⟨0, h⟩
-  u_last : ∀ u τ (h : Nd.R.k - 1 < Nd.R.k), (W.hc u τ).u ⟨Nd.R.k - 1, h⟩ = (Nd.hc (pl τ)).u ⟨Nd.R.k - 1, h⟩
-
-structure WtRows (u : Word) (T : ℕ) : Prop where
-  cloud : ∀ τ (i : Fin (Nd.R.k - 1)), 0 ≤ (((W.hc u τ).v i : ℚ) : ℝ) ∧ (((W.hc u τ).v i : ℚ) : ℝ) ≤ Nd.Sc
-  nodes : ∀ τ (i j : Fin Nd.R.m), |(((W.hc u τ).b i - (W.hc u τ).e j : ℚ) : ℝ)| ≤ Nd.eta
-  top_bottom : ∀ τ ∈ W.tops, ∀ h : Nd.R.k - 1 < Nd.R.k,
-    ((-(W.hc u τ).u ⟨Nd.R.k - 1, h⟩ - ((Nd.R.k : ℚ) - 1) / 2 : ℚ) : ℝ) ≤ 2 * Nd.sc.b'
-  off_last : ∀ τ ∉ W.tops, ∀ (h : Nd.R.k - 1 < Nd.R.k) (h' : Nd.R.k - 2 < Nd.R.k - 1),
-    (W.hc u τ).u ⟨Nd.R.k - 1, h⟩ = (W.hc u τ).v ⟨Nd.R.k - 2, h'⟩ - 1 / 2
-  off_first : ∀ τ ∉ W.tops, ∀ (h : 0 < Nd.R.k) (h' : 0 < Nd.R.k - 1),
-    Nd.Sc ≤ (((W.hc u τ).u ⟨0, h⟩ - (W.hc u τ).v ⟨0, h'⟩ : ℚ) : ℝ) ∧ (((W.hc u τ).u ⟨0, h⟩ : ℚ) : ℝ) ≤ 3 * Nd.Sc
-  spread : ∀ τ, (((W.lamTrue u Nd.R.m τ).spread : ℤ) : ℝ) ≤ 2 * Nd.sc.a
-  level : 2 * Nd.sc.a < (T : ℝ)
-
-end Comparison₂
-
 section Ev
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
@@ -108,33 +84,11 @@ theorem evOk (hX : X.Ok) (hPr : Pr.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.W
     show (star _ * _) • _ = _
     rw [star_mul_root hX.conjK hm hc, one_smul]
 
-def PeriodBound (hX : X.Ok) (hPr : Pr.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.Word) (A : ℝ) : Prop :=
-  ∀ (s : X.K →+* ℂ) (ψ : (evGSD W Ch sel (mu0 X.F X.E X.K Sg) P u).EqFun) (F : MtildeV W Ch sel (mu0 X.F X.E X.K Sg) P),
-    ‖s (PtilE W Ch sel (mu0 X.F X.E X.K Sg) P (mtildeOk W Ch sel (mu0 X.F X.E X.K Sg) hX P) u ψ F)‖ ^ 2 ≤
-      Real.exp A *
-        normSqAt (evGSD W Ch sel (mu0 X.F X.E X.K Sg) P u) (evOk W Ch sel Sg hX hPr P u) s ψ *
-        normSqAt (mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P) (mtildeOk W Ch sel (mu0 X.F X.E X.K Sg) hX P) s F
-
 end Ev
-
-def LastMapBoundWith (CT C : ℝ) : Prop :=
-  ∀ (Nd : NumDatum) (X : Fields) (hX : X.Ok) (Pr : Primes X) (hPr : Pr.Ok) (W : Wts X Pr.Word Nd.R) (_ : W.Ok)
-    (Ch : Chars X Pr Nd.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ)
-    (pl : X.Tau ≃ RPl Nd.R) (_ : NumTie Nd W pl) (u : Pr.Word) (_ : WtRows Nd W u (Pr.T u))
-    (_ : Real.log (Pr.T u : ℝ) ≤ CT * (Nd.R.m : ℝ) * Nd.sc.L) (P : LevFam X.E X.K Nd.R.r Pr.vGs),
-    PeriodBound W Ch sel Sg hX hPr P u (Nd.hA C (Pr.T u))
-
-def LastMapBound : Prop :=
-  ∀ CT : ℝ, ∃ C₀ : ℝ, 1 ≤ C₀ ∧ ∀ C, C₀ ≤ C → LastMapBoundWith CT C
 
 theorem card_eq_f (Nd : NumDatum) (X : Fields) (pl : X.Tau ≃ RPl Nd.R) : X.f = Nd.R.f := by
   unfold Fields.f Ranks.f Ranks.n
   rw [Fintype.card_congr pl, Fintype.card_prod, Fintype.card_bool, Formalism.HC.Frame.card_A]
-
-def wtsOfNum (Nd : NumDatum) (X : Fields) (Word : Type) (pl : X.Tau ≃ RPl Nd.R) : Wts X Word Nd.R where
-  row τ := RowPar.of (Nd.hc (pl τ))
-  hc _ τ := Nd.hc (pl τ)
-  tops := Finset.univ.filter fun τ => (pl τ).1 = false ∧ (pl τ).2 ∈ Nd.TT
 
 end GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors
 

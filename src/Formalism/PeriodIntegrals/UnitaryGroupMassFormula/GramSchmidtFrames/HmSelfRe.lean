@@ -118,52 +118,8 @@ lemma posV {z u : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hu : inWb k
     funext i
     simp [Formalism.FourierDecayAlt.P.TwoByOneBlock.jV]
 
-def pOut (k r : ℕ) (z v : Fin (2 * r + k + 1) → ℂ) : Fin (2 * r + k + 1) → ℂ :=
-  v - (herm (Hpk k r) v z / herm (Hpk k r) z z) • z
-
 def nz (k r : ℕ) (p : Fin (2 * r + k + 1) → ℂ) : Fin (2 * r + k + 1) → ℂ :=
   (((Real.sqrt (herm (Hpk k r) p p).re)⁻¹ : ℝ) : ℂ) • p
-
-lemma hzz_ne {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) : herm (Hpk k r) z z ≠ 0 := by
-  intro h
-  have h2 : 0 < Tz k r z := by
-    unfold C2.StdZ at hz
-    exact hz.2
-  unfold Tz at h2
-  rw [h] at h2
-  simp at h2
-
-lemma z_ne {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) : z ≠ 0 := by
-  intro h
-  apply hzz_ne hz
-  rw [h]
-  simp [herm]
-
-lemma pOut_orth {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (v : Fin (2 * r + k + 1) → ℂ) :
-    herm (Hpk k r) (pOut k r z v) z = 0 := by
-  unfold pOut
-  rw [hm_sub_l, hm_smul_l, div_mul_cancel₀ _ (hzz_ne hz), sub_self]
-
-lemma pOut_inWb {z v : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hv : inWb k r v) : inWb k r (pOut k r z v) := by
-  unfold pOut
-  intro i hi
-  simp [hv i hi, hz i hi]
-
-lemma pOut_herm (u z v : Fin (2 * r + k + 1) → ℂ) :
-    herm (Hpk k r) u (pOut k r z v) =
-      herm (Hpk k r) u v - star (herm (Hpk k r) v z / herm (Hpk k r) z z) * herm (Hpk k r) u z := by
-  unfold pOut
-  rw [hm_sub_r, hm_smul_r]
-
-lemma nz_inWb {p : Fin (2 * r + k + 1) → ℂ} (hp : inWb k r p) : inWb k r (nz k r p) := by
-  unfold nz
-  intro i hi
-  simp [hp i hi]
-
-lemma nz_herm_l (p w : Fin (2 * r + k + 1) → ℂ) :
-    herm (Hpk k r) (nz k r p) w = (((Real.sqrt (herm (Hpk k r) p p).re)⁻¹ : ℝ) : ℂ) * herm (Hpk k r) p w := by
-  unfold nz
-  rw [hm_smul_l]
 
 lemma nz_orth {p : Fin (2 * r + k + 1) → ℂ} (hp : 0 < (herm (Hpk k r) p p).re) (u : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) u (nz k r p) = 0 ↔ herm (Hpk k r) u p = 0 := by
@@ -188,73 +144,5 @@ lemma nz_unit {p : Fin (2 * r + k + 1) → ℂ} (hp : 0 < (herm (Hpk k r) p p).r
   linarith
 
 end vec
-
-theorem gfBase : GfBase := by
-  intro k r z z' hk hr hz hz'
-  have hz0 := z_ne hz
-  have hz0' := z_ne hz'
-  by_cases hc : ∃ c : ℂ, z' = c • z
-  · obtain ⟨c, hcz⟩ := hc
-    have hc0 : c ≠ 0 := by rintro rfl; apply hz0'; rw [hcz, zero_smul]
-    set e0 : Fin (2 * r + k + 1) → ℂ := Formalism.FourierDecayAlt.P.TwoByOneBlock.jV k r (Pi.single (0 : Fin (k + 1)) (1 : ℂ)) with he0d
-    have he0 : inWb k r e0 := Formalism.FourierDecayAlt.P.TwoByOneBlock.inWb_jV _
-    have hne : (0 : Fin (k + 1)) ≠ Fin.last k := by
-      intro h; have := congrArg Fin.val h; simp at this; omega
-    have he0u : herm (Hpk k r) e0 e0 = 1 := by
-      rw [he0d, Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_jV]
-      simp [herm, Hb, Matrix.mulVec_diagonal, dotProduct, Pi.single_apply, hne]
-    set p := pOut k r z e0 with hpd
-    have hp0 : p ≠ 0 := by
-      intro h
-      have e : e0 = (herm (Hpk k r) e0 z / herm (Hpk k r) z z) • z := sub_eq_zero.1 h
-      set α := herm (Hpk k r) e0 z / herm (Hpk k r) z z
-      rw [e, hm_smul_l, hm_smul_r, Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_self_eq, Complex.star_def, ← mul_assoc,
-        Complex.mul_conj] at he0u
-      have := congrArg Complex.re he0u
-      simp only [Complex.one_re] at this
-      rw [← Complex.ofReal_neg, ← Complex.ofReal_mul, Complex.ofReal_re] at this
-      nlinarith [Complex.normSq_nonneg α, hz.2]
-    have hpp : 0 < (herm (Hpk k r) p p).re := posV hz (pOut_inWb hz.1 he0) (pOut_orth hz e0) hp0
-    have hνz : herm (Hpk k r) (nz k r p) z = 0 := by rw [nz_herm_l, pOut_orth hz, mul_zero]
-    have hWiff : ∀ u, u ∈ Wsp k r z ↔ u ∈ Wsp k r z' := by
-      intro u
-      show (inWb k r u ∧ _) ↔ (inWb k r u ∧ _)
-      rw [hcz, hm_smul_r]
-      constructor
-      · rintro ⟨h1, h2⟩; exact ⟨h1, by rw [h2, mul_zero]⟩
-      · rintro ⟨h1, h2⟩
-        exact ⟨h1, (mul_eq_zero.1 h2).resolve_left (star_ne_zero.2 hc0)⟩
-    refine ⟨GfBaseD.mk (nz k r p) (nz k r p) {u | u ∈ Wsp k r z ∧ herm (Hpk k r) u (nz k r p) = 0}
-      ⟨nz_inWb (pOut_inWb hz.1 he0), hνz⟩ (nz_unit hpp) ((hWiff _).1 ⟨nz_inWb (pOut_inWb hz.1 he0), hνz⟩)
-      (nz_unit hpp) (fun u => Iff.rfl) ?_⟩
-    intro u
-    show (u ∈ Wsp k r z ∧ _) ↔ (u ∈ Wsp k r z' ∧ _)
-    rw [hWiff u]
-  · set p := pOut k r z z' with hpd
-    set p' := pOut k r z' z with hpd'
-    have hp0 : p ≠ 0 := by
-      intro h; exact hc ⟨_, sub_eq_zero.1 h⟩
-    have hp0' : p' ≠ 0 := by
-      intro h
-      have e : z = (herm (Hpk k r) z z' / herm (Hpk k r) z' z') • z' := sub_eq_zero.1 h
-      set β := herm (Hpk k r) z z' / herm (Hpk k r) z' z'
-      have hβ : β ≠ 0 := by rintro hb; apply hz0; rw [e, hb, zero_smul]
-      exact hc ⟨β⁻¹, by rw [e, smul_smul, inv_mul_cancel₀ hβ, one_smul]⟩
-    have hpp : 0 < (herm (Hpk k r) p p).re := posV hz (pOut_inWb hz.1 hz'.1) (pOut_orth hz z') hp0
-    have hpp' : 0 < (herm (Hpk k r) p' p').re := posV hz' (pOut_inWb hz'.1 hz.1) (pOut_orth hz' z) hp0'
-    refine ⟨GfBaseD.mk (nz k r p) (nz k r p') {u | u ∈ Wsp k r z ∧ herm (Hpk k r) u (nz k r p) = 0}
-      ⟨nz_inWb (pOut_inWb hz.1 hz'.1), by rw [nz_herm_l, pOut_orth hz, mul_zero]⟩ (nz_unit hpp)
-      ⟨nz_inWb (pOut_inWb hz'.1 hz.1), by rw [nz_herm_l, pOut_orth hz', mul_zero]⟩ (nz_unit hpp')
-      (fun u => Iff.rfl) ?_⟩
-    intro u
-    show ((inWb k r u ∧ _) ∧ _) ↔ ((inWb k r u ∧ _) ∧ _)
-    rw [nz_orth hpp, nz_orth hpp', pOut_herm, pOut_herm]
-    constructor
-    · rintro ⟨⟨h1, h2⟩, h3⟩
-      rw [h2, mul_zero, sub_zero] at h3
-      exact ⟨⟨h1, h3⟩, by rw [h2, h3, mul_zero, sub_zero]⟩
-    · rintro ⟨⟨h1, h2⟩, h3⟩
-      rw [h2, mul_zero, sub_zero] at h3
-      exact ⟨⟨h1, h3⟩, by rw [h2, h3, mul_zero, sub_zero]⟩
 
 end PI.UnitaryGroupMassFormula.GsFr

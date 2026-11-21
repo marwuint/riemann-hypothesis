@@ -2,19 +2,21 @@ import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.AbelianDeRham.AbelianHodgeDeRham.H1DimGeAbelianDim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LiftSemiTmul
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSplittingGlobalGeneralizedInverseStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmallLiftBaseChangeLocalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGeneralizedInverseOfUnitKernelStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmallLiftBaseChangeLocal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGeneralizedInverseOfUnitKernel
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExactAndKerBaseChangeOfForallResidueField
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitComplexHomotopyDataStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HomotopyDataCohomologyBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantFibreRankStalkRankStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModelComplexUnitElementStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantFibreRankStalkRank
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModelComplexUnitElement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComparisonMapsBijectiveFiniteStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModelComparisonDegreeOneBijectiveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModelSteinOfComparisonStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModelSteinOfComparison
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BaseChangeMapCompositionStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BaseChangeMapIdentityStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComparisonDegreeOneTowerFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneralizedInverseOfLiftLocalStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneralizedInverseOfLiftLocal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LiftReductionZeroOfMaximalStatement
 
 set_option autoImplicit false
 
@@ -43,19 +45,19 @@ theorem vb_pure {R P₀ P₁ P₂ : Type} [CommRing R] [AddCommGroup P₀] [AddC
     (hG : ∀ (k : Type) [Field k] [Algebra R k],
       Module.finrank k (Hc (a₀.baseChange k) (a₁.baseChange k)) = g)
     (hL : SmallLift a₀ a₁) : VB R (Hc (a₀.baseChange R) (a₁.baseChange R)) g := by
-  obtain ⟨t, ht⟩ := GlobalTheory.T.exists_generalized_inverse_of_unit_kernel R P₀ P₁ a₀ e he hE
+  obtain ⟨t, ht⟩ := _root_.GlobalTheory.CompanionTheory.PerfVB.exists_generalisedInverse_of_fibre_ker_span R P₀ P₁ a₀ e he hE
   obtain ⟨s, hs⟩ := GlobalTheory.T.local_splitting_global_generalized_inverse R P₁ P₂ a₁ (fun m _ => by
     haveI : Module.Free (Localization.AtPrime m) (TensorProduct R (Localization.AtPrime m) P₁) :=
       Module.free_of_flat_of_isLocalRing
     haveI : Module.Free (Localization.AtPrime m) (TensorProduct R (Localization.AtPrime m) P₂) :=
       Module.free_of_flat_of_isLocalRing
-    exact GlobalTheory.T.generalized_inverse_of_lift_local _ _ _ _ (GlobalTheory.T.small_lift_base_change_local R P₀ P₁ P₂ _ a₀ a₁ hc hL))
+    exact _root_.GlobalTheory.CompanionTheory.PerfVB.exists_generalised_inverse_of_lift _ _ _ _ (_root_.GlobalTheory.CompanionTheory.PerfVB.lift_of_smallLift R P₀ P₁ P₂ _ a₀ a₁ hc hL))
   obtain ⟨j, π, h, h', hπj, haj, hπa, hsum⟩ := GlobalTheory.T.split_complex_homotopy_data R P₀ P₁ P₂ a₀ a₁ t s hc ht hs
   have hP := Module.Projective.of_split j π hπj
   have hsurj : Function.Surjective π := fun x => ⟨j x, by simpa using LinearMap.congr_fun hπj x⟩
   have hF := Module.Finite.of_surjective π hsurj
   obtain ⟨eR⟩ := GlobalTheory.T.homotopy_data_cohomology_base_change R P₀ P₁ P₂ _ R a₀ a₁ j π h h' hc hπj haj hπa hsum
-  refine vb_of_equiv (eR.trans (TensorProduct.lid R _)).symm ⟨hF, hP, GlobalTheory.T.constant_fibre_rank_stalk_rank R _ g ?_⟩
+  refine vb_of_equiv (eR.trans (TensorProduct.lid R _)).symm ⟨hF, hP, _root_.GlobalTheory.CompanionTheory.PerfVB.rankAtStalk_eq_of_finrank_fibres R _ g ?_⟩
   intro k _ _
   obtain ⟨ek⟩ := GlobalTheory.T.homotopy_data_cohomology_base_change R P₀ P₁ P₂ _ k a₀ a₁ j π h h' hc hπj haj hπa hsum
   rw [← ek.finrank_eq]
@@ -121,7 +123,7 @@ theorem perfVB : PerfVBSt := by
   obtain ⟨P₀, P₁, P₂, P₃, a₀, a₁, a₂, ψ₀, ψ₁, ψ₂, ⟨f0, p0⟩, ⟨f1, p1⟩, ⟨f2, p2⟩, ⟨f3, p3⟩, h10, h21, hψ1, hψ2,
     ⟨ψ₃, hψ3⟩, hQ⟩ := hPerf
   have hMod : IsModel F a₀ a₁ ψ₀ ψ₁ ψ₂ := ⟨h10, hψ1, hψ2, fun M => ⟨(hQ M).1, (hQ M).2.1⟩⟩
-  obtain ⟨e, he, hψe⟩ := GlobalTheory.T.model_complex_unit_element R Pᵒᵖ P₀ P₁ P₂ F a₀ a₁ ψ₀ ψ₁ ψ₂ hMod
+  obtain ⟨e, he, hψe⟩ := _root_.GlobalTheory.CompanionTheory.PerfVB.unit_of_model R Pᵒᵖ P₀ P₁ P₂ F a₀ a₁ ψ₀ ψ₁ ψ₂ hMod
   have hbij : ∀ (S : Type) [CommRing S] [Algebra R S] (F : Pᵒᵖ ⥤ CommAlgCat.{0} R)
       (F' : Pᵒᵖ ⥤ CommAlgCat.{0} S) (m : BC F F'), Function.Bijective (th0 m) ∧
         Function.Bijective (th1 m) ∧ Function.Bijective (th2 m) := by
@@ -131,7 +133,7 @@ theorem perfVB : PerfVBSt := by
       ∃ c : k, x = c • ((1 : k) ⊗ₜ[R] e) := by
     intro k _ _ x hx
     obtain ⟨F', m, hS⟩ := hSt k
-    exact GlobalTheory.T.model_stein_of_comparison R k Pᵒᵖ P₀ P₁ P₂ F F' a₀ a₁ ψ₀ ψ₁ ψ₂ m e hMod (hbij k F F' m).1 hS he hψe x hx
+    exact _root_.GlobalTheory.CompanionTheory.PerfVB.const_on_fibre R k Pᵒᵖ P₀ P₁ P₂ F F' a₀ a₁ ψ₀ ψ₁ ψ₂ m e hMod (hbij k F F' m).1 hS he hψe x hx
   have hG : ∀ (k : Type) [Field k] [Algebra R k],
       Module.finrank k (Hc (a₀.baseChange k) (a₁.baseChange k)) = g := by
     intro k _ _

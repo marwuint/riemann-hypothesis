@@ -3,14 +3,22 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsStokesLimi
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PNbarLeviChartReg
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PNbarSmooth
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffAtLogNorm
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralTendstoOffDivisorStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsMeasurableDominatingFunctionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalSectionOfPotentialOnModelStatement
+import Development.AbelianVarietyTheory.Definitions.Divisors.FirstChernLeviEqConstant
+import ReciprocityTheory.AnalyticForms.LeviForms.TailBoundA
+import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IntegrableOnOfNormLeSumAbsLogAddLogLog
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralTendstoOffDivisor
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
+import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsMeasurableDominatingFunction
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalSectionOfPotentialOnModel
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularChartDataPropertiesStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicSectionOfPotentialStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightPshAndBoundsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicSectionOfPotential
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormula
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPtsBddConv
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StLemmaETailMass
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightPshAndBounds
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightTendstoC2Statement
 
 set_option maxSynthPendingDepth 1
@@ -376,11 +384,11 @@ theorem stokesLimitTVb : StokesLimitTVb.Statement := by
       rw [dif_neg hΨ]
     rw [h0]
     exact tendsto_const_nhds
-  obtain ⟨Θ, hΘ, hΘs⟩ := GlobalTheory.T.local_holomorphic_section_of_potential K ι (mCoordIdeal D.y) D.n X.M D.A' D.A'_pos.1
-  have hΘp : IsPosPot X.M.atlas Θ := GlobalTheory.T.local_section_of_potential_on_model II Ψ K ι Ω E D X.M Θ hΘ hΘs
-  obtain ⟨-, ⟨C₁, hC₁⟩, hε⟩ := GlobalTheory.T.regularized_weight_psh_and_bounds K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S Θ X.S_tied hΘ hΘp
+  obtain ⟨Θ, hΘ, hΘs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.exists_potential_of_smoothHerm K ι (mCoordIdeal D.y) D.n X.M D.A' D.A'_pos.1
+  have hΘp : IsPosPot X.M.atlas Θ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.potential_pos_of_section II Ψ K ι Ω E D X.M Θ hΘ hΘs
+  obtain ⟨-, ⟨C₁, hC₁⟩, hε⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.tied_regularisation_weak K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S Θ X.S_tied hΘ hΘp
   obtain ⟨hYo, hnull, -, -⟩ := GlobalTheory.T.regular_chart_data_properties D.n X.M.Xc X.M.atlas X.S.R
-  obtain ⟨G, Cg, hGm, hGb, hGe⟩ := GlobalTheory.T.cuspWeight_factors_through_measurable_log_bounded II Ψ K ι Ω E D O Lt X
+  obtain ⟨G, Cg, hGm, hGb, hGe⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.cuspWeight_descends II Ψ K ι Ω E D O Lt X
   set R := X.S.R with hR
   set c : ℝ := (p : ℝ) / q with hc
   have hc0 : 0 ≤ c := by positivity
@@ -407,13 +415,13 @@ theorem stokesLimitTVb : StokesLimitTVb.Statement := by
     simp only [hCdef]
     linarith
   have hC0 : 0 ≤ C := (abs_nonneg _).trans hC1
-  have hconv := GlobalTheory.T.mixed_integral_tendsto_off_divisor D.n X.M.Xc X.M.atlas R Θ hΘ hΘp (fun _ => Pp) (fun _ => R.ph)
+  have hconv := _root_.GlobalTheory.CompanionTheory.Ar.Giv.mixed_integral_tendsto_of_C2_off_divisor D.n X.M.Xc X.M.atlas R Θ hΘ hΘp (fun _ => Pp) (fun _ => R.ph)
     (fun _ t => X.S.regWeight t) G₀ (fun _ => G₀) C (fun _ => hPpot) (fun _ => R.ph_smooth) ?_ ?_ ?_ ?_
   · obtain ⟨-, hMI, hT⟩ := hconv
     refine ⟨_, hT.congr' ?_⟩
     filter_upwards [hMI, hC₁] with t hMIt hC₁t
     obtain ⟨hsm, -⟩ := hC₁t
-    have hpush := GlobalTheory.T.mixed_integral_model_formula K ι (mCoordIdeal D.y) D.n X.M hΨ.choose R.Yo ∅ ∅ (fun _ => (q : ℝ)⁻¹)
+    have hpush := _root_.GlobalTheory.CompanionTheory.Ar.Giv.push_chart_integrals K ι (mCoordIdeal D.y) D.n X.M hΨ.choose R.Yo ∅ ∅ (fun _ => (q : ℝ)⁻¹)
       (fun _ => X.NbarQ B p q t) (fun _ => Pp + LocPot.ofFun (X.S.regWeight t))
       (fun z => X.Cd.cuspWeight z / 2) G₀ D.arith hΨ.choose_spec hYo
       (fun j => by simpa using (hnull j))

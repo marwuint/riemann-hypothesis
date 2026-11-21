@@ -85,8 +85,6 @@ def stA_signs : Prop :=
         0 < s * (xPoly ρ (Y : ℂ)).re ∧ 0 < s * (xPoly ρ ((Y : ℂ) + 1)).re ∧ 0 < s * (xPoly ρ ((Y : ℂ) - 1)).re) ∧
       ∀ Y ∈ I, 0 < (qPoly T T' u u' (Y : ℂ)).re
 
-def stA (C : ℝ) : Prop := stA_gauge ∧ stA_herm C ∧ stA_capelli ∧ cuspSpanTopCondition ∧ stA_signs
-
 def stB_rtt : Prop :=
   ∀ (L : Lev) (u u' : Fin (L.k0 + 1) → ℝ), L.Std → L.HC u u' → ∀ R, L.IsRadQQ R →
     ∀ Y Y' : ℂ, Y' - Y ≠ 1 →
@@ -97,8 +95,6 @@ def stB_det : Prop :=
   ∀ (L : Lev) (u u' : Fin (L.k0 + 1) → ℝ), L.Std → L.HC u u' → ∀ R, L.IsRadQQ R → ∀ Y : ℂ,
     EqOn' L.Img L.BD (omMul (omMul (R (Y + 1)).transpose (smat J2)) (R Y)) (smat (qPoly L.T L.T' u u' Y • J2)) ∧
     EqOn' L.Img L.BD (omMul (omMul (R Y) (smat J2)) (R (Y + 1)).transpose) (smat (qPoly L.T L.T' u u' Y • J2))
-
-def stB : Prop := stB_rtt ∧ stB_det
 
 def stC_module (C : ℝ) : Prop :=
   ∀ (L : Lev) (u u' : Fin (L.k0 + 1) → ℝ) (I : Set ℝ), HypC L u u' I →
@@ -160,53 +156,6 @@ def cuspSpanWaveCondition : Prop :=
       ∀ Y : ℂ, OffPoles w Y →
         EqOn' L.Img L.BD (omMul (omMul (actOnPositions (VopInv s w)) ((L.wmod R (sCut u u' I) u u' w).TT Y)) (actOnPositions (Vop s w)))
           (omMul (omMul (onPosition0 (Us s)ᴴ) ((L.wmod R (sCut u u' I) u u' w).TT Y)) (onPosition0 (Us s)))
-
-def stC (C : ℝ) : Prop := stC_module C ∧ stC_rrherm C ∧ stC_tele ∧ stC_entry ∧ stC_dual C ∧ cuspSpanWaveCondition
-
-def stD (C : ℝ) : Prop :=
-  ∀ (Lt : Lev) (u u' : Fin (Lt.k0 + 1) → ℝ) (I : Set ℝ) (hr : Lt.r + 0 = Lt.r),
-    HypC Lt u u' I → HypC (Lt.down Lt.r 0 hr) u u' I →
-    ∀ w : Word, Admissible I w →
-      ∃ (F : Matrix (AuxiliarySlotStates w.length) (AuxiliarySlotStates w.length) (Lt.down Lt.r 0 hr).POp)
-        (c : AuxiliarySlotStates w.length → (Fin Lt.k0 → ℝ) → ℝ),
-        (Lt.down Lt.r 0 hr).IsTriDiff F ∧ (∀ α ρ, 0 < c α ρ) ∧
-        (∀ R, (Lt.down Lt.r 0 hr).IsRadQQ R → ∀ (h : (Lt.down Lt.r 0 hr).Haar) (A : ℝ) (mm : ℕ), h.Ok →
-          Big C Lt w.length A mm →
-          ∀ x x' : AuxiliarySlotStates w.length → (Lt.down Lt.r 0 hr).PF,
-            (∀ α, x α ∈ (Lt.down Lt.r 0 hr).ImgK h A mm) → (∀ α, x' α ∈ (Lt.down Lt.r 0 hr).ImgK h A mm) →
-            (Lt.down Lt.r 0 hr).form ((Lt.down Lt.r 0 hr).wmod R (sCut u u' I) u u' w).RR x x' =
-              ∫ p, ∑ α, Formalism.MainNotions.S.hsInner ((Lt.down Lt.r 0 hr).dw w.length c α p (omApply F x α p))
-                (omApply F x' α p) ∧
-            ∃ φt : ℂ → ℂ, Continuous φt ∧ Integrable φt ∧
-              (∀ p ∈ (Lt.down Lt.r 0 hr).Dom, φt (zOf p) = ∑ α, Formalism.MainNotions.S.hsInner
-                ((Lt.down Lt.r 0 hr).dw w.length c α p (omApply F x α p)) (omApply F x' α p)) ∧
-              ∀ s : ℂ, ∫ ζ, fsC s ζ * φt ζ =
-                (Lt.down Lt.r 0 hr).form ((Lt.down Lt.r 0 hr).wmod R (sCut u u' I) u u' w).RR
-                  (omApply (Vop s w) x) x') ∧
-        ∀ α, ∃ Θ ∈ Lt.AA, Lt.Rad Θ (fun φ => ∑ β, Lt.liftDown Lt.r 0 hr (F α β)
-          (bTprod (m := Lt.r) w Lt.r le_rfl β (e1s _) φ))
-
-def stE (C : ℝ) : Prop :=
-  (∀ (L : Lev) (u u' : Fin (L.k0 + 1) → ℝ) (I : Set ℝ), HypC L u u' I →
-    ∀ R, L.IsRadQQ R → ∀ (h : L.Haar) (A : ℝ) (mm : ℕ), h.Ok → ∀ w : Word, Admissible I w →
-      Big C L w.length A mm → L.PosOn (L.ImgK h A mm) (L.wmod R (sCut u u' I) u u' w).RR) ∧
-  ∀ (L : Lev) (pb : Mat L.k0 (L.r + 1) → (L.Wp →L[ℂ] L.Wp)) (pb' : Mat L.k0 (L.r + 1) → (L.Wq →L[ℂ] L.Wq))
-    (u u' : Fin (L.k0 + 1) → ℝ) (I : Set ℝ),
-    L.Std → L.Compat pb pb' → HypC (L.up pb pb') u u' I →
-    ∀ Rs, L.IsRadQQ Rs → ∀ Rb, (L.up pb pb').IsRadQQ Rb →
-    ∀ (h : (L.up pb pb').Haar) (A : ℝ) (mm : ℕ), h.Ok → ∀ w : Word, Admissible I w →
-      Big C (L.up pb pb') w.length A mm →
-      ∀ x x' : AuxiliarySlotStates w.length → (L.up pb pb').PF,
-        (∀ α, x α ∈ (L.up pb pb').ImgK h A mm) → (∀ α, x' α ∈ (L.up pb pb').ImgK h A mm) →
-        ∃ φt : ℂ → ℂ, Continuous φt ∧ Integrable φt ∧
-          (∀ c : ℂ, c ≠ 0 → φt c = ((Complex.normSq c)⁻¹ : ℂ) *
-            L.form (L.wmod Rs (sCut u u' I) u u' w).RR
-              (fun β y => omApply (bT (0 : Fin (L.r + 1 + 1)) w) x β (Fin.cons c y))
-              (fun β y => omApply (bT (0 : Fin (L.r + 1 + 1)) w) x' β (Fin.cons c y))) ∧
-          ∀ s : ℂ, ∫ c, fsC s c * φt c =
-            (L.up pb pb').form ((L.up pb pb').wmod Rb (sCut u u' I) u u' w).RR (omApply (Vop s w) x) x'
-
-def stGauge (C : ℝ) : Prop := stA C ∧ stB ∧ stC C ∧ stD C ∧ stE C
 
 end Gauge
 
@@ -486,16 +435,6 @@ def IsKFinCoefT {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpac
 def ncGap {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) : ℝ :=
   sInf {d | ∃ a b : Fin n, ε a ≠ ε b ∧ d = |lam a - lam b|}
 
-def thrCap {n : ℕ} (ε : Fin n → Bool) : ℝ :=
-  max ((n : ℝ) * ((Finset.univ.filter fun a => ε a = true).card : ℝ) * ((Finset.univ.filter fun a => ε a = false).card : ℝ) + 1)
-    (120 * (n : ℝ) * ((min (Finset.univ.filter fun a => ε a = true).card (Finset.univ.filter fun a => ε a = false).card : ℕ) : ℝ) ^
-      ((3 : ℝ) / 2))
-
-def stCapEig : Prop :=
-  ∀ (k r : ℕ) (L : LocBessel k r), thrCap L.ε < ncGap L.ε L.lam →
-    ∀ (f : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (L.Wq →L[ℂ] L.Wp)), IsKFinCoefT L.σ f →
-    ∀ Y : ℂ, ∀ g ∈ UH (Hpk k r), capC (k := k) (r := r) Y f g = capP (fun s => (L.lam s : ℂ)) Y • f g
-
 def DiagonalEntryIdentity : Prop :=
   ∀ (L : Lev) (pb : Mat L.k0 (L.r + 1) → (L.Wp →L[ℂ] L.Wp)) (pb' : Mat L.k0 (L.r + 1) → (L.Wq →L[ℂ] L.Wq))
     (u u' : Fin (L.k0 + 1) → ℝ),
@@ -587,59 +526,15 @@ def stSmooth (CB : ℝ) : Prop :=
       ∃ CM : ℝ, ∀ s : ℂ,
         ‖s‖ ^ M * ‖lbeta L h (fun g => fsC s (Zhat (L.k0 + 1) L.r L.z L.z' g 0 0) • F g) F'‖ ≤ CM
 
-def stDecay (D : Formalism.BasicNotions.D7) (c C₁ : ℝ) : Prop :=
-  0 < c ∧ c ≤ Real.sqrt 2 / 8 ∧ 120 ≤ C₁ ∧ ∀ (k0 : ℕ) (_hk : k0 + 1 = D.R.k) (L : LocBessel (k0 + 1) D.R.rS),
-    C₁ * (D.R.r : ℝ) * ((D.R.m : ℝ) / 2) ^ ((3 : ℝ) / 2) ≤ ncGap L.ε L.lam →
-    ∀ f : Matrix (Fin (2 * D.R.rS + (k0 + 1) + 1)) (Fin (2 * D.R.rS + (k0 + 1) + 1)) ℂ → (L.Wq →L[ℂ] L.Wp),
-      IsKFinCoefT L.σ f → ∀ mm : ℕ,
-      IsCC (k0 + 1) D.R.rS (c * ncGap L.ε L.lam * (D.R.m : ℝ) ^ (-(1 : ℝ) / 2)) mm f
-
-def stMarkov : Prop :=
-  ∀ (n k : ℕ) (p : ℝ[X]), p.natDegree ≤ n → k ≤ n → ∀ x ∈ Set.Icc (-1 : ℝ) 1,
-    |(derivative^[k] p).eval x| ≤
-      (∏ j ∈ Finset.range k, (((n : ℝ) ^ 2 - (j : ℝ) ^ 2) / (2 * (j : ℝ) + 1))) *
-        sSup ((fun y => |p.eval y|) '' Set.Icc (-1 : ℝ) 1)
-
 def IsPosDefZ {d : ℕ} (φ : (Fin d → ℤ) → ℂ) : Prop :=
   ∀ a : (Fin d → ℤ) →₀ ℂ,
     0 ≤ (∑ m ∈ a.support, ∑ n ∈ a.support, star (a m) * a n * φ (n - m)).re ∧
     (∑ m ∈ a.support, ∑ n ∈ a.support, star (a m) * a n * φ (n - m)).im = 0
 
-def stHerglotz : Prop :=
-  ∀ (d : ℕ) (φ : (Fin d → ℤ) → ℂ), IsPosDefZ φ ↔
-    ∃ μ : Measure (Fin d → UnitAddCircle), IsFiniteMeasure μ ∧
-      ∀ n : Fin d → ℤ, φ n = ∫ x, ∏ j, fourier (n j) (x j) ∂μ
-
 def zpt {d : ℕ} (n : Fin d → ℤ) : EuclideanSpace ℝ (Fin d) := (WithLp.equiv 2 _).symm (fun j => (n j : ℝ))
 
 def fhat {d : ℕ} (f : EuclideanSpace ℝ (Fin d) → ℂ) (w : EuclideanSpace ℝ (Fin d)) : ℂ :=
   ∫ x, Complex.exp (-(2 * Real.pi * Complex.I * (inner ℝ x w : ℝ))) * f x
-
-def stPoisson : Prop :=
-  ∀ (d : ℕ) (f : SchwartzMap (EuclideanSpace ℝ (Fin d)) ℂ),
-    Summable (fun n : Fin d → ℤ => f (zpt n)) ∧
-    Summable (fun m : Fin d → ℤ => fhat (fun x => f x) (zpt m)) ∧
-    ∑' n : Fin d → ℤ, f (zpt n) = ∑' m : Fin d → ℤ, fhat (fun x => f x) (zpt m)
-
-def stStatPhase : Prop :=
-  ∀ (a : ℝ → ℂ) (φ : ℝ → ℝ) (x₀ : ℝ), ContDiff ℝ ∞ a → HasCompactSupport a → ContDiff ℝ ∞ φ →
-    deriv φ x₀ = 0 → deriv (deriv φ) x₀ ≠ 0 → (∀ x ∈ tsupport a, x ≠ x₀ → deriv φ x ≠ 0) →
-    (fun l : ℝ => (∫ x, Complex.exp (Complex.I * (l * φ x)) * a x) -
-        Complex.exp (Complex.I * (l * φ x₀ + Real.pi * (SignType.sign (deriv (deriv φ) x₀) : ℝ) / 4)) *
-          ((Real.sqrt (2 * Real.pi / (l * |deriv (deriv φ) x₀|)) : ℝ) : ℂ) * a x₀) =O[atTop]
-      (fun l : ℝ => l ^ (-(3 : ℝ) / 2))
-
-def stJSZ1 : Prop :=
-  ∀ (k r : ℕ) (L : LocBessel k r) (B₁ B₂ : L.Hs → L.Wp), L.c = cStd →
-    IsBesselMapSm (k := k) (r := r) L.z (psi k r L.z L.c) L.σ L.π B₁ →
-    IsBesselMapSm (k := k) (r := r) L.z (psi k r L.z L.c) L.σ L.π B₂ →
-    ∃ a b : ℂ, (a ≠ 0 ∨ b ≠ 0) ∧ ∀ v ∈ smoothVecs (k := k) (r := r) L.σ, a • B₁ v + b • B₂ v = 0
-
-def stJSZ : Prop :=
-  ∀ (k r : ℕ) (L : LocBessel k r) (B₁ B₂ : L.Hs → L.Wp), L.c ≠ 0 →
-    IsBesselMapSm (k := k) (r := r) L.z (psi k r L.z L.c) L.σ L.π B₁ →
-    IsBesselMapSm (k := k) (r := r) L.z (psi k r L.z L.c) L.σ L.π B₂ →
-    ∃ a b : ℂ, (a ≠ 0 ∨ b ≠ 0) ∧ ∀ v ∈ smoothVecs (k := k) (r := r) L.σ, a • B₁ v + b • B₂ v = 0
 
 def levOf {k0 r : ℕ} (L : LocBessel (k0 + 1) r) (μsec : ℂ → Matrix (Fin (k0 + 1 + 1)) (Fin (k0 + 1 + 1)) ℂ) : Lev where
   k0 := k0
@@ -673,21 +568,6 @@ def Std (D : Formalism.BasicNotions.D7) {k0 : ℕ} (hk : k0 + 1 = D.R.k) (L : Lo
   (∀ i, L.ε i = epsSH D.R (Fin.cast (by rw [hk]) i)) ∧ L.c = cStd ∧
     IsSection (k0 + 1) D.R.rS L.z L.z' μsec ∧ IsCutS L.u L.u' I ∧
     ∃ ρ : Fin k0 → ℝ, Interlace L.u ρ ∧ Interlace L.u' ρ
-
-def stLemE' (D : Formalism.BasicNotions.D7) (C0 CA : ℝ) : Prop :=
-  ∀ (k0 : ℕ) (hk : k0 + 1 = D.R.k) (L : LocBessel (k0 + 1) D.R.rS)
-    (μsec : ℂ → Matrix (Fin (k0 + 1 + 1)) (Fin (k0 + 1 + 1)) ℂ) (I : Set ℝ) (N : ℕ) (A : ℝ) (p : ℕ)
-    (F0 : Matrix (Fin (2 * D.R.rS + (k0 + 1) + 1)) (Fin (2 * D.R.rS + (k0 + 1) + 1)) ℂ → (L.Wq →L[ℂ] L.Wp))
-    (χ : ℝ → ℝ) (w : Word),
-    Std D hk L μsec I → D.R.rS + 1 ≤ N →
-    CA * ((D.R.rS : ℝ) + 1) ^ 3 * ((N : ℝ) * (D.R.r : ℝ) ^ 2 + (D.R.r : ℝ) ^ 3) + (2 * (D.R.rS : ℝ) + 2) * p ≤ A →
-    (∀ mm : ℕ, IsCC (k0 + 1) D.R.rS A mm F0) →
-    C0 * N ≤ p →
-    IsCutoff χ → Admissible I w → w.length ≤ N →
-    Tendsto (fun ε : ℝ => energy L μsec I w
-        (cutF L.z L.z' χ ε (fun g => ((Gf (k0 + 1) D.R.rS L.z L.z' g ^ p : ℝ) : ℂ) • F0 g)))
-      (𝓝[>] 0)
-      (𝓝 (energy L μsec I w (fun g => ((Gf (k0 + 1) D.R.rS L.z L.z' g ^ p : ℝ) : ℂ) • F0 g)))
 
 abbrev Msq (s : ℕ) := Fin s → Fin s → ℂ
 

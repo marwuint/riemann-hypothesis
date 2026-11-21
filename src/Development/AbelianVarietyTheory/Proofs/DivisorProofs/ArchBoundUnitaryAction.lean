@@ -88,10 +88,3 @@ theorem norm_piInf_actAB_le (σ : E →ₐ[F] E) (n d : ℕ)
 
 end GlobalTheory.WeilDirBound
 
-theorem GlobalTheory.WeilDirBound.norm_piInf_actAB_le_target : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ)
-    (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E) (p : UA σ J × UA σ J')
-    (x : Matrix (Fin n) (Fin d) (AE F E)) (B : ℝ), 0 ≤ B →
-    (∀ (w : InfinitePlace F) (τ : EmbOver E w) k l, ‖piInf τ (x k l)‖ ≤ B) →
-    ∀ (w : InfinitePlace F) (τ : EmbOver E w) i j,
-      ‖piInf τ (actAB (cA σ) p x i j)‖ ≤ n * d * ((ht p.1 : ℝ) * ht p.2) * B :=
-  fun F E _ _ _ _ _ σ n d J J' p x B hB hx => GlobalTheory.WeilDirBound.norm_piInf_actAB_le σ n d J J' p x B hB hx

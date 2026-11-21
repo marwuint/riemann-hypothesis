@@ -13,12 +13,6 @@ def RankOneMinors : Prop :=
     (∀ x y x' y', κ x y * κ x' y' = κ x y' * κ x' y) →
     ∃ f : X → ℂ, ∀ x y, κ x y = f x * star (f y)
 
-def TransposeUnitary : Prop :=
-  ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
-    (c : E ≃ₗᵢ⋆[ℂ] E) (w₁ : E) (y : E ≃ₗᵢ[ℂ] E),
-    (∀ v, c (c v) = v) → c w₁ = w₁ →
-    ∃ u₀ : E ≃ₗᵢ[ℂ] E, u₀ w₁ = w₁ ∧ ∀ v, u₀ (y (u₀.symm v)) = c (y.symm (c v))
-
 def SchurDichotomy : Prop :=
   ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsInvInvariant] [μ.IsOpenPosMeasure]

@@ -23,7 +23,7 @@ theorem perModule {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Mod
     rintro s t ⟨ht, hpt, p, r, hp, hr, he⟩ t' ⟨ht', hpt', p', r', hp', hr', he'⟩
     have key : (r' * p) • t = (r * p') • t' := by
       rw [mul_smul, he, mul_smul, he', smul_comm]
-    have := GlobalTheory.T.primitiveBalancedForm_eq_of_same_ray bar ⟨t, ht⟩ ⟨t', ht'⟩ (r' * p) (r * p') hpt hpt' (by positivity) (by positivity)
+    have := _root_.GlobalTheory.PolFan.isPrim_ray_eq bar ⟨t, ht⟩ ⟨t', ht'⟩ (r' * p) (r * p') hpt hpt' (by positivity) (by positivity)
       (Subtype.ext (by simpa using key))
     exact congrArg Subtype.val this
   refine ⟨⋃ s ∈ S, U s, hS.biUnion fun s _ => (hU s).finite, fun m δ h hli hprim => ?_⟩
@@ -39,7 +39,7 @@ theorem perModule {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Mod
   refine ⟨e, fun i => ?_⟩
   obtain ⟨k, a, hk, hka⟩ := GlobalTheory.T.cell_generators_smul_mem_other_cellCone bar φ δ γ' c h hγ' hc hsum' i
   obtain ⟨j, p, r, hp, hr, hpr⟩ :=
-    GlobalTheory.T.exists_pos_smul_eq_of_linearIndependent_cone' δ γ' i k a hli hk hka (GlobalTheory.T.cell_generator_mem_cone_of_smul_combination bar φ δ γ' i k a h hγ' hk hka)
+    GlobalTheory.T.exists_pos_smul_eq_of_linearIndependent_cone' δ γ' i k a hli hk hka (_root_.GlobalTheory.PolFan.cell_gen_mem_cone_of_smul bar φ δ γ' i k a h hγ' hk hka)
   refine Set.mem_biUnion (hγS j) ⟨pull_mem _ (h.mem i), isPrim_pull_equiv e (h.mem i) (hprim i), p, r, hp, hr, ?_⟩
   refine LinearMap.ext₂ fun y z => ?_
   have := LinearMap.congr_fun₂ hpr (e y) (e z)

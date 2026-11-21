@@ -39,54 +39,6 @@ theorem orb_of_sub {LL : Type} [Field LL] [TopologicalSpace LL] [IsTopologicalRi
 
 end Gen
 
-section Fin
-
-variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X' d : Type} [Fintype d] [DecidableEq d]
-  {R' : Subalgebra O (X' → Matrix d d (FractionRing O))}
-
-theorem r_free [Module.Finite O R'] : Module.Free O R' := by
-  haveI h1 : NoZeroSMulDivisors O (FractionRing O) := ⟨fun {c x} h => by
-    rw [Algebra.smul_def] at h
-    rcases mul_eq_zero.1 h with hc | hx
-    · exact Or.inl ((IsFractionRing.injective O (FractionRing O)) (by rw [hc, map_zero]))
-    · exact Or.inr hx⟩
-  haveI h2a : NoZeroSMulDivisors O (d → FractionRing O) := Pi.noZeroSMulDivisors _
-  haveI h2 : NoZeroSMulDivisors O (Matrix d d (FractionRing O)) := Pi.noZeroSMulDivisors _
-  haveI h3 : NoZeroSMulDivisors O (X' → Matrix d d (FractionRing O)) := Pi.noZeroSMulDivisors _
-  haveI h4 : NoZeroSMulDivisors O R' := ⟨fun {c x} h => by
-    have h' : c • (x : X' → Matrix d d (FractionRing O)) = 0 := congrArg Subtype.val h
-    rcases smul_eq_zero.1 h' with hc | hx
-    · exact Or.inl hc
-    · exact Or.inr (Subtype.ext hx)⟩
-  exact Module.free_of_finite_type_torsion_free'
-
-theorem idempotent_part_finite [Module.Finite O R'] (e₁ : R') : Module.Finite O (FirstSummandSubmodule O e₁) := by
-  exact Module.Finite.of_injective (FirstSummandSubmodule O e₁).subtype Subtype.val_injective
-
-theorem idempotent_part_free [Module.Finite O R'] (e₁ : R') : Module.Free O (FirstSummandSubmodule O e₁) := by
-  haveI := idempotent_part_finite (O := O) (R' := R') e₁
-  haveI h1 : NoZeroSMulDivisors O (FractionRing O) := ⟨fun {c x} h => by
-    rw [Algebra.smul_def] at h
-    rcases mul_eq_zero.1 h with hc | hx
-    · exact Or.inl ((IsFractionRing.injective O (FractionRing O)) (by rw [hc, map_zero]))
-    · exact Or.inr hx⟩
-  haveI h2a : NoZeroSMulDivisors O (d → FractionRing O) := Pi.noZeroSMulDivisors _
-  haveI h2 : NoZeroSMulDivisors O (Matrix d d (FractionRing O)) := Pi.noZeroSMulDivisors _
-  haveI h3 : NoZeroSMulDivisors O (X' → Matrix d d (FractionRing O)) := Pi.noZeroSMulDivisors _
-  haveI h4 : NoZeroSMulDivisors O R' := ⟨fun {c x} h => by
-    have h' : c • (x : X' → Matrix d d (FractionRing O)) = 0 := congrArg Subtype.val h
-    rcases smul_eq_zero.1 h' with hc | hx
-    · exact Or.inl hc
-    · exact Or.inr (Subtype.ext hx)⟩
-  haveI h5 : NoZeroSMulDivisors O (FirstSummandSubmodule O e₁) := ⟨fun {c x} h => by
-    have h' : c • (x : R') = 0 := congrArg Subtype.val h
-    rcases smul_eq_zero.1 h' with hc | hx
-    · exact Or.inl hc
-    · exact Or.inr (Subtype.ext hx)⟩
-  exact Module.free_of_finite_type_torsion_free'
-
-end Fin
-
 section Rec
 
 attribute [local instance 2000] K.Topo.fracTopology K.Topo.rTopology

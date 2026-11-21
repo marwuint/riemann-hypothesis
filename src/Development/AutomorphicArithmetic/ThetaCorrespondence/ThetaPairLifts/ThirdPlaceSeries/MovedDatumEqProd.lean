@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DescentDataStepExponents
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TopReadAt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TrueW
@@ -16,9 +16,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Fam
 noncomputable section
 namespace GlobalTheory.MovedDat
-open GlobalTheory.LocMod.StepVec
-variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-variable {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] {S T : HSp D}
 end GlobalTheory.MovedDat
 namespace GlobalTheory.MovedDat
 open GlobalTheory.LocMod.StepVec
@@ -51,7 +48,7 @@ theorem moved_datum_eq_prod_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies
   intro D L hT Gi Gl Kc Yd cX ex W u f hP hRow v hv hVT n G pl hGP hGR j hj a ha
   refine ⟨1, one_ne_zero, fun x => ?_⟩
   rw [one_mul, isHalf_actO_iff]
-  choose π' hπ hred hint hres using fun i => GlobalTheory.T.exists_finiteAdele_projection_integral_reduction D (G i).k (G i).q (pl i).1 (hGR.idem i).1
+  choose π' hπ hred hint hres using fun i => _root_.GlobalTheory.FinPl.SplitPt.exists_lift_isRed D (G i).k (G i).q (pl i).1 (hGR.idem i).1
   choose ea hea mS using fun i => hGR.frame i j (a i + 1) (by have := ha i; omega)
   choose eb heb mT using fun i => hGR.frame i (j + 1) (a i) (by have := ha i; omega)
   have hC := fun i => _root_.GlobalTheory.MovedDat.phi_down_eq_alt D L hT Gi Gl Kc Yd cX ex W f v (G i) (π' i) (hπ i) j (a i) (ha i) (ea i) (eb i) (mS i) (mT i) x
@@ -66,7 +63,7 @@ theorem moved_datum_eq_prod_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies
       (actO _ _ (f.g.b j)⁻¹ (f.g.b (j + 1))⁻¹ x))
     · rw [if_pos ⟨hx, hI⟩, hQ, mul_one, _root_.GlobalTheory.T.local_groups_matrix_reading_alt D L hT Gi Gl Kc Yd cX ex W u f v n G pl hGR j]
       refine Finset.prod_congr rfl fun i _ => ?_
-      rw [hC i, GlobalTheory.LocMod.StepVec.redM_eq_map (pl i).1 hI, GlobalTheory.T.seeSaw_local_factor_eq_iterated_chain_datum D f.c v (G i) (pl i).1 (π' i) (hπ i) (hred i) (_root_.GlobalTheory.Fam.pk_z W).chi j
+      rw [hC i, GlobalTheory.LocMod.StepVec.redM_eq_map (pl i).1 hI, _root_.GlobalTheory.MovedDat.locF_eq_iterPhi D f.c v (G i) (pl i).1 (π' i) (hπ i) (hred i) (_root_.GlobalTheory.Fam.pk_z W).chi j
         (fun c hc => _root_.GlobalTheory.T.reduction_at_level_place_alt D L hT Gi Gl Kc Yd cX ex W hP (G i).k (G i).q (pl i).1 (pl i).2 (hGR.idem i).1 (π' i) (hπ i) (hred i)
           (c + 1) (by omega) (by omega) _ ((G i).S.tame _) (hGR.mu i (c + 1) (by omega) (by omega)))
         _ _ (r_le_Y j) (ea i) (eb i) (hea i) (heb i)]
@@ -77,7 +74,7 @@ theorem moved_datum_eq_prod_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies
       apply hI
       have hnz := fun i h => hne (Finset.prod_eq_zero (Finset.mem_univ i) h)
       intro r s
-      refine GlobalTheory.T.integral_finiteAdele_of_split_place_components D n (fun i => (G i).k) (fun i => (G i).q) (fun i => (pl i).1) (fun i => (hGR.idem i).1)
+      refine _root_.GlobalTheory.IntPlaces.mem_intAf_of_split D n (fun i => (G i).k) (fun i => (G i).q) (fun i => (pl i).1) (fun i => (hGR.idem i).1)
         (fun i l h => pl.injective (Subtype.ext h)) π' hπ hint _ ?_ fun i => ?_
       · rw [← GlobalTheory.LocMod.StepVec.frMapO_smul]
         congr 1

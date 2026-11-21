@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HeckeFormNSOfHeckeForm
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubledThetaEqSumSchrodingerFunctionPeriodisatioStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubledPairSchrodingerFunctionContinuousIntegrabStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubledThetaEqSumSchrodingerFunctionPeriodisatio
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubledPairSchrodingerFunctionContinuousIntegrab
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RationalSourceActsOnOrientedThetaBySubstitution
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictionInvariantRationalLeviGL
 open scoped ComplexConjugate Matrix NNReal ENNReal
@@ -83,7 +83,7 @@ theorem swSec_weyl : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D)
   simp only [h1]
   refine (GlobalTheory.LeviGLRes.covolOne_integral_mul_right hν (lowC A w) n (mul_eq_one_comm.1 hmn) hmn hm hn
     (fun a => f ((dblDec A).extX B a)) hper).trans ?_
-  exact integral_periodise hν _ _ (GlobalTheory.T.doubledPairSchrodingerFunction_continuous_integrable D ψ hω.std A B ν 𝓨 hν f hf).2
-    fun x => (GlobalTheory.T.doubledTheta_eq_sum_schrodingerFunction_periodisation D ψ hω.std A B ν 𝓨 hν f hf x).2
+  exact integral_periodise hν _ _ (_root_.GlobalTheory.Core.Rk.SchInt.sch_continuous_integrable D ψ hω.std A B ν 𝓨 hν f hf).2
+    fun x => (_root_.GlobalTheory.Core.Rk.SchPeriod.theta_eq_sum_sch D ψ hω.std A B ν 𝓨 hν f hf x).2
 
 end GlobalTheory.Core.Rk.WeylValue

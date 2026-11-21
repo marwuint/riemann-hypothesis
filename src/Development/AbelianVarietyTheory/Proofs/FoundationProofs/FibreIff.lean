@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsAbelianGaloisHost
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.GeometricComponentEmbedding
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.EigLatBasis
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.RamifiedPlacesSplitEigen
 
 set_option autoImplicit false
@@ -90,25 +92,5 @@ def EigStable {S : Scheme.{0}} (T : SAB H S) (c : Coeff l) : Prop :=
 
 variable {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
   {U : (Xo.XF c).Opens} {τ : E →+* ℂ}
-
-def IsSqNorm (sig : FramedFlatCoordinates.Rule Y U τ) (s : c.F →+* ℂ) (κ : ℝ) : Prop :=
-  ∃ (a : FramedFlatCoordinates.Framed Y U τ ℂ s) (y : Sp ℂ ⟶ Xo.XF c) (t : SAB H (Sp ℂ)) (v : Fin Dw.p → (epsR ℂ ⟶ t.G))
-    (w : Fin Dw.q → (epsR ℂ ⟶ t.G)) (g : ℕ) (u : HolUnif t.G t.PP.L g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ)
-    (zv : Fin Dw.p → Fin g → ℂ) (zw : Fin Dw.q → Fin g → ℂ),
-    LiesOver a y ∧ IsFibre a t v w ∧ u.IsAH Hm χ ∧ (∀ i, u.IsDiff (zv i) (v i)) ∧ (∀ i, u.IsDiff (zw i) (w i)) ∧
-    0 < EigenbasisGramSquares.gramSq Hm zv ∧ 0 < EigenbasisGramSquares.gramSq Hm zw ∧
-    κ = ‖sig ℂ s a‖ ^ 2 * (EigenbasisGramSquares.gramSq Hm zv / EigenbasisGramSquares.gramSq Hm zw)
-
-def IsValue (sig : FramedFlatCoordinates.Rule Y U τ) {ℓ : ℕ} [Fact ℓ.Prime] {K : Type} [Field K] (i : K →+* ℂ_[ℓ]) (φ : c.F →+* K)
-    (x : ℝ) : Prop :=
-  ∃ (V : ValuationSubring K) (a : FramedFlatCoordinates.Framed Y U τ K φ) (y : Sp K ⟶ Xo.XF c) (t : SAB H (Sp K))
-    (v : Fin Dw.p → (epsR K ⟶ t.G)) (w : Fin Dw.q → (epsR K ⟶ t.G)) (𝒢 : Over (Sp V)) (_ : GrpObj 𝒢)
-    (b : OAct (𝓞 E) 𝒢) (ψ : t.G.left ⟶ 𝒢.left) (χ χ' : 𝓞 E →+* V) (u : Fin Dw.p → (epsR V ⟶ 𝒢))
-    (u' : Fin Dw.q → (epsR V ⟶ 𝒢)),
-    (∀ z : K, z ∈ V ↔ ‖i z‖ ≤ 1) ∧ LiesOver a y ∧ IsFibre a t v w ∧ IsSemiAbelian 𝒢 ∧
-    IsGrpPullback t.G 𝒢 (spMap (algebraMap V K)) ψ ∧ (∀ z, (t.act.act z).left ≫ ψ = ψ ≫ (b.act z).left) ∧
-    (algebraMap V K).comp χ = FramedFlatCoordinates.chr c τ φ ∧ (algebraMap V K).comp χ' = FramedFlatCoordinates.chr c (conjEmb τ) φ ∧
-    EigenvectorLieDegree.IsEigBasis b χ u ∧ EigenvectorLieDegree.IsEigBasis b χ' u' ∧ (∀ k, IsVecOver (algebraMap V K) ψ (u k) (v k)) ∧
-    (∀ k, IsVecOver (algebraMap V K) ψ (u' k) (w k)) ∧ ‖i (sig K φ a)‖ = (ℓ : ℝ) ^ (-x)
 
 end GlobalTheory.FlatRow

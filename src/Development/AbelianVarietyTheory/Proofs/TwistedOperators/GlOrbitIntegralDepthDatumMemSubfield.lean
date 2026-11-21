@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportFl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationLeOneOfMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnderMemAndPlaceAboveEqOfMem
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatIntegrandFlippedTensorLocallyConstantCompact
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralRamifiedCharDetSingularMatrixCosetEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralDetCharInvertibleMatrixBallMemSubfieldStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralRamifiedCharDetSingularMatrixCosetEqZero
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralDetCharInvertibleMatrixBallMemSubfield
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeDepthCompFrameBlockBoundedPeriodicStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest Formalism.IndefR.WeilFull GlobalTheory.RowClaim
@@ -90,10 +90,10 @@ theorem smallF_mem : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
     by_cases hs : ∃ y : Matrix A' A' k, (∀ i j, valuation k (y i j - x i j) ≤ valuation k (cN : k)) ∧ y.det = 0
     · obtain ⟨y, hy, hy0⟩ := hs
       rw [hCs_eq x y hy]
-      rw [GlobalTheory.T.integral_ramifiedChar_det_singularMatrixCoset_eq_zero (haarVol J) ν z hram cN y hy0]
+      rw [_root_.GlobalTheory.CosetVanish.integral_coset_singular_eq_zero (haarVol J) ν z hram cN y hy0]
       exact F.zero_mem
     · push_neg at hs
-      exact GlobalTheory.T.integral_detChar_invertibleMatrixBall_mem_subfield F hJo hJK ν z hϖ hcond hνF hzF cN x hs
+      exact _root_.GlobalTheory.GLBallInt.integral_glBall_mem F hJo hJK ν z hϖ hcond hνF hzF cN x hs
 
   let L : AddSubgroup (Matrix A' A' k) :=
     { carrier := {Z | ∀ i j, valuation k (Z i j) ≤ valuation k (cN : k)}

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUlSqSubMemOldformsGamma1Statement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUlSemisimpleOnLOldSpaceStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUlSqSubMemOldformsGamma1
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUlSemisimpleOnLOldSpace
 open GlobalTheory.HeckeFamilyMatrices Polynomial UpperHalfPlane
 open scoped MatrixGroups ModularForm
 open scoped Manifold
@@ -80,7 +80,7 @@ theorem GlobalTheory.HeckeFamilyMatrices.ul_semisimple : ∀ (N l k : ℕ), 5 �
   set O := oldSp N l (k : ℤ) χ hl0 with hOdef
   have hUO : ∀ F ∈ O, U F ∈ O := by
     rintro F ⟨f₁, f₂, h₁, h₂, rfl⟩
-    obtain ⟨g₁, g₂, hg₁, hg₂, he⟩ := (GlobalTheory.T.heckeUl_semisimple_on_lOldSpace N l k hN hl hlN hk χ α hα1 f₁ f₂ h₁ h₂).1
+    obtain ⟨g₁, g₂, hg₁, hg₂, he⟩ := (_root_.GlobalTheory.OldSpace.ul_oldSpace N l k hN hl hlN hk χ α hα1 f₁ f₂ h₁ h₂).1
     exact ⟨g₁, g₂, hg₁, hg₂, he⟩
   set c : ℂ := χ l * (l : ℂ) ^ (k - 2) with hc
   have hcop : IsCoprime ((X - C α) ^ n) (X ^ 2 - C c) := by
@@ -98,7 +98,7 @@ theorem GlobalTheory.HeckeFamilyMatrices.ul_semisimple : ∀ (N l k : ℕ), 5 �
     funext F
     simp [hUdef, ulLin_apply, Module.algebraMap_end_apply]
   have h2 : aeval U (X ^ 2 - C c) ⇑f ∈ O := by
-    obtain ⟨f₁, f₂, h₁, h₂, he⟩ := GlobalTheory.T.hecke_Ul_sq_sub_mem_oldforms_Gamma1 N l k hN hl hlN hk χ f hf
+    obtain ⟨f₁, f₂, h₁, h₂, he⟩ := _root_.GlobalTheory.HeckeFamilyMatrices.ulSq_old N l k hN hl hlN hk χ f hf
     refine ⟨f₁, f₂, h₁, h₂, ?_⟩
     rw [← he, map_sub, aeval_C, map_pow, aeval_X, LinearMap.sub_apply, Module.algebraMap_end_apply,
       pow_two, Module.End.mul_apply]
@@ -107,7 +107,7 @@ theorem GlobalTheory.HeckeFamilyMatrices.ul_semisimple : ∀ (N l k : ℕ), 5 �
     rw [← key, h1, map_zero, zero_add]
     exact aeval_mem U O hUO B _ h2
   obtain ⟨f₁, f₂, h₁, h₂, he⟩ := hfO
-  have hss := (GlobalTheory.T.heckeUl_semisimple_on_lOldSpace N l k hN hl hlN hk χ α hα1 f₁ f₂ h₁ h₂).2 n
+  have hss := (_root_.GlobalTheory.OldSpace.ul_oldSpace N l k hN hl hlN hk χ α hα1 f₁ f₂ h₁ h₂).2 n
   rw [he] at hn ⊢
   exact hss hn
 

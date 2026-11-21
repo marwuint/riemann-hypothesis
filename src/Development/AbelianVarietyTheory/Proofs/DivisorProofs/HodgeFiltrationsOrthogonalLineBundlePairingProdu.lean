@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBi
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrystallinePull2SumCup
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnPointsIsCocycleAndEvalEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemHodgeFiltrationIffPointwiseCoboundary
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPointwiseCochainCoboundaryEqChernCocycleAlStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CupPullbackCocyclesPointValueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnTrivialThickeningsAdditiveLiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPointwiseCochainCoboundaryEqChernCocycleAl
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CupPullbackCocyclesPointValue
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnTrivialThickeningsAdditiveLi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoboundaryOfMemHodgeFiltrationStatement
 
 set_option autoImplicit false
@@ -32,8 +32,8 @@ theorem fv_sum {R : Type} [CommRing R] {X : Over (Sp R)} {J : Type} (s : Finset 
   induction s using Finset.induction_on with
   | empty => rw [Finset.sum_empty, Finset.sum_empty]; rfl
   | insert i s hi ih =>
-    rw [Finset.sum_insert hi, Finset.sum_insert hi, (GlobalTheory.T.crystallineCocycleOnTrivialThickenings_additive_linear R X).1, ← ih, mul_comm,
-      ← (GlobalTheory.T.crystallineCocycleOnTrivialThickenings_additive_linear R X).2.1]
+    rw [Finset.sum_insert hi, Finset.sum_insert hi, (_root_.GlobalTheory.PtExt.fv_linear R X).1, ← ih, mul_comm,
+      ← (_root_.GlobalTheory.PtExt.fv_linear R X).2.1]
     rfl
 
 theorem commAlgFunctorCocyclesTwo_finsetSum_apply {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) {J : Type}
@@ -64,10 +64,10 @@ theorem exists_isCupCob {R : Type} [CommRing R] {A B : Over (Sp R)} {N : ℕ} (P
   have m₂ : IsMor (dp0 R) (B.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (snd A B).left :=
     IsMor.of_over _ (by rw [← Category.assoc, Over.w])
   rw [sum_cup_eq_mk m₁ m₂] at hc
-  obtain ⟨n, hn⟩ := GlobalTheory.T.exists_pointwiseCochain_coboundary_eq_chernCocycle' R (A ⊗ B) P _ hc
+  obtain ⟨n, hn⟩ := _root_.GlobalTheory.PtExt.exists_pointwiseCochain_coboundary_eq_chernCocycle R (A ⊗ B) P _ hc
   refine ⟨n, fun E _ _ E' _ _ E'' _ _ φ ψ z hz ↦ ?_⟩
   rw [hn E E' E'' φ ψ z hz, commAlgFunctorCocyclesTwo_finsetSum_apply]
-  exact Finset.sum_congr rfl fun k _ ↦ GlobalTheory.T.cup_pullback_cocycles_pointValue R A B m₁ m₂ _ _ E E' E'' φ ψ z
+  exact Finset.sum_congr rfl fun k _ ↦ _root_.GlobalTheory.PtExt.cupZ_pull_apply_fv R A B m₁ m₂ _ _ E E' E'' φ ψ z
 
 theorem sum_mem_F1prim {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {N : ℕ} (a : Fin N → primDR A)
     (α : Fin N → Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))) (hα : ∀ i, CatCoh.H1.mk _ (α i) = (a i).1) (c : Fin N → R)

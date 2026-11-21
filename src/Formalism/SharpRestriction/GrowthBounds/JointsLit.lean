@@ -1,7 +1,7 @@
 import Formalism.SharpRestriction.GrowthBounds.ValuationLowestDegreeRename
 import Formalism.SharpRestriction.GrowthBounds.BinomialPolynomialIdentities.IndexOffRange
 import Formalism.ThetaLogCoordinates.JacobiPathWeights.FinalP
-import Formalism.LocalToGlobal.GroupLattices.FockModels.WeylDim
+import Formalism.PeriodIntegrals.AdmissibleModel.WeylDim
 import Formalism.SharpRestriction.GrowthBounds.LatticeSystems
 import Formalism.LocalRingCardinality.Lemmas
 import Formalism.SharpRestriction.GrowthBounds.CornerGLContinuity
@@ -345,178 +345,9 @@ theorem NPDesc_of (c : LatCmp D) {L : SizeData₂ D} (hT : GatTies D) (X : Inst 
       rw [hNP]
       exact Submodule.subset_span ⟨y, hy, rfl⟩
 
-def YvRatU (c : LatCmp D) : Prop :=
-  ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
-    (v : Fin (D.gat u w hg).P.nV),
-    ∃ (yL : ((D.fm u).lat 0).V →ₗ[D.what₂.LL] ((D.fm u).lat 0).V) (ε : (D.gat u w hg).Oˣ),
-      ∀ x, (D.gat u w hg).yv v (c.cmp u w hg x) = (ε : (D.gat u w hg).O) • c.cmp u w hg (yL x)
-
-theorem yProdL_ratU {p : ℕ} (G : GAtP p) {V : Type*} (φ : V → G.Fn) (yL : Fin G.P.nV → V → V)
-    (ε : Fin G.P.nV → G.Oˣ) (h : ∀ v x, G.yv v (φ x) = (ε v : G.O) • φ (yL v x)) (m : ℕ) (vs : List (Fin G.P.nV))
-    (x : V) :
-    yProdL G vs m (φ x) = (((vs.map (fun v => ε v ^ m)).prod : G.Oˣ) : G.O) •
-      φ ((vs.map (fun v => (yL v)^[m])).foldr (fun f g => f ∘ g) id x) := by
-  have hstep : ∀ (v : Fin G.P.nV) (k : ℕ) (y : V),
-      (G.yv v)^[k] (φ y) = (((ε v ^ k : G.Oˣ)) : G.O) • φ ((yL v)^[k] y) := by
-    intro v k
-    have hlin : ∀ (c : G.O) (F : G.Fn), G.yv v (c • F) = c • G.yv v F :=
-      fun c F => map_smul (yEnd G v) c F
-    induction k with
-    | zero => intro y; simp
-    | succ k ih =>
-      intro y
-      rw [Function.iterate_succ_apply', ih, Function.iterate_succ_apply', hlin, h, smul_smul,
-        pow_succ, Units.val_mul]
-  rw [yProdL_apply]
-  induction vs with
-  | nil => simp
-  | cons v vs ih =>
-    simp only [List.map_cons, List.foldr_cons, Function.comp_apply, List.prod_cons]
-    rw [ih]
-    have hi : ∀ (c : G.O) (F : G.Fn), (G.yv v)^[m] (c • F) = c • (G.yv v)^[m] F :=
-      fun c F => iter_smul (yEnd G v) m c F
-    rw [hi, hstep, smul_smul, Units.val_mul, mul_comm]
-set_option maxHeartbeats 1000000 in
-open Classical in
-
-theorem NPDesc_ofU (c : LatCmp D) {L : SizeData₂ D} (hT : GatTies D) (X : Inst D L) (Y : LatInst D) (K : Consts)
-    (hv : c.VramDef Y) (hy : YvRatU c) : c.NPDesc X Y K := by
-  intro u w hg _
-  haveI := LatCmp.frac_of_ties hT u w hg
-  choose yL ε hyL using hy u w hg
-  have hpow : ∀ (k : ℕ) (x : ((D.fm u).lat 0).V),
-      c.cmp u w hg (((D.what₂.places.resChar w : D.what₂.LL) ^ k) • x) =
-        (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ k)) • c.cmp u w hg x := by
-    intro k x
-    rw [c.cmp_smul, ← algebraMap_smul (D.gat u w hg).Kf ((D.what₂.places.resChar w : (D.gat u w hg).O) ^ k)]
-    congr 1
-    simp
-  let yLP : Finset (HH D) → ((D.fm u).lat 0).V → ((D.fm u).lat 0).V := fun VV' =>
-    (VV'.toList.map (fun t0 => (⇑(yL (Y.vOf u w hg t0)))^[D.R.m])).foldr (fun f g => f ∘ g) id
-  have hyLsmul : ∀ VV' (a : D.what₂.LL) x, yLP VV' (a • x) = a • yLP VV' x := fun VV' a x =>
-    foldr_smul (fun t0 => yL (Y.vOf u w hg t0)) D.R.m VV'.toList a x
-  have hyP : ∀ VV' F, yProd Y u w hg VV' F = yProdL (D.gat u w hg) (VV'.toList.map (Y.vOf u w hg)) D.R.m F := by
-    intro VV' F
-    rw [yProdL_apply, List.map_map]
-    rfl
-  let E : Finset (HH D) → (D.gat u w hg).Oˣ := fun VV' =>
-    ((VV'.toList.map (Y.vOf u w hg)).map (fun v => ε v ^ D.R.m)).prod
-  have hrat : ∀ VV' x, yProd Y u w hg VV' (c.cmp u w hg x) = ((E VV' : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) •
-      c.cmp u w hg (yLP VV' x) := by
-    intro VV' x
-    rw [hyP, yProdL_ratU (D.gat u w hg) (c.cmp u w hg) (fun v => ⇑(yL v)) ε hyL D.R.m]
-    simp only [E, yLP, List.map_map, Function.comp_def]
-  have hM : (D.gat u w hg).M =
-      Submodule.span (D.gat u w hg).O (c.cmp u w hg '' (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V)) :=
-    (c.cmp_M u w hg).symm
-  let s : Finset (HH D) → ℕ := fun VV' =>
-    ∑ t0 ∈ VV X K (aL L) (bL L) (D.what₂.places.resChar w) \ VV', ⌈Sv X K (aL L) (bL L) (D.what₂.places.resChar w) t0⌉.toNat
-  let τ : ℕ := ⌈tauP X K (aL L) (bL L) (D.what₂.places.resChar w)⌉.toNat
-  let T1 : Set ((D.fm u).lat 0).V := {z | ∃ VV' ⊆ VV X K (aL L) (bL L) (D.what₂.places.resChar w),
-    ∃ x ∈ ((D.fm u).lat 0).L, z = yLP VV' (((D.what₂.places.resChar w : D.what₂.LL) ^ s VV') • x)}
-  let T2 : Set ((D.fm u).lat 0).V := {z | ∃ x ∈ ((D.fm u).lat 0).L, z = ((D.what₂.places.resChar w : D.what₂.LL) ^ τ) • x}
-  have hS1 : Submodule.span (D.gat u w hg).O {F' | ∃ VV' ⊆ VV X K (aL L) (bL L) (D.what₂.places.resChar w),
-      ∃ F ∈ (D.gat u w hg).M,
-      F' = yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • F)} =
-      Submodule.span (D.gat u w hg).O (c.cmp u w hg '' T1) := by
-    apply le_antisymm
-    · rw [Submodule.span_le]
-      rintro _ ⟨VV', hVV', F, hF, rfl⟩
-      let Q : Module.End (D.gat u w hg).O (D.gat u w hg).Fn :=
-        ((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') •
-          yProdL (D.gat u w hg) (VV'.toList.map (Y.vOf u w hg)) D.R.m
-      have hQ : yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • F) = Q F := by
-        rw [hyP, map_smul]; rfl
-      rw [SetLike.mem_coe, hQ]
-      rw [hM] at hF
-      have := Submodule.mem_map_of_mem (f := Q) hF
-      rw [Submodule.map_span] at this
-      refine (Submodule.span_le.2 ?_) this
-      rintro _ ⟨_, ⟨x, hx, rfl⟩, rfl⟩
-      have hQx : Q (c.cmp u w hg x) = ((E VV' : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) •
-          c.cmp u w hg (yLP VV' (((D.what₂.places.resChar w : D.what₂.LL) ^ s VV') • x)) := by
-        show ((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') •
-          yProdL (D.gat u w hg) (VV'.toList.map (Y.vOf u w hg)) D.R.m (c.cmp u w hg x) = _
-        rw [← hyP, hrat, hyLsmul, hpow, smul_comm]
-      rw [SetLike.mem_coe, hQx]
-      exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨VV', hVV', x, hx, rfl⟩, rfl⟩)
-    · rw [Submodule.span_le]
-      rintro _ ⟨z, ⟨VV', hVV', x, hx, rfl⟩, rfl⟩
-      have hx' : c.cmp u w hg x ∈ (D.gat u w hg).M := by rw [hM]; exact Submodule.subset_span ⟨x, hx, rfl⟩
-      have hmem : yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • c.cmp u w hg x) ∈
-          Submodule.span (D.gat u w hg).O {F' | ∃ VV' ⊆ VV X K (aL L) (bL L) (D.what₂.places.resChar w),
-            ∃ F ∈ (D.gat u w hg).M,
-            F' = yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • F)} :=
-        Submodule.subset_span ⟨VV', hVV', c.cmp u w hg x, hx', rfl⟩
-      have he : yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • c.cmp u w hg x) =
-          ((E VV' : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) •
-            c.cmp u w hg (yLP VV' (((D.what₂.places.resChar w : D.what₂.LL) ^ s VV') • x)) := by
-        rw [hyP, map_smul, ← hyP, hrat, hyLsmul, hpow, smul_comm]
-      rw [he] at hmem
-      have := Submodule.smul_mem _ (((E VV')⁻¹ : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) hmem
-      rwa [smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul] at this
-  have hS2 : (D.gat u w hg).M.map (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ τ) • LinearMap.id) =
-      Submodule.span (D.gat u w hg).O (c.cmp u w hg '' T2) := by
-    rw [hM, Submodule.map_span]
-    congr 1
-    ext F
-    constructor
-    · rintro ⟨_, ⟨x, hx, rfl⟩, rfl⟩
-      exact ⟨_, ⟨x, hx, rfl⟩, by rw [hpow]; rfl⟩
-    · rintro ⟨_, ⟨x, hx, rfl⟩, rfl⟩
-      exact ⟨_, ⟨x, hx, rfl⟩, by rw [hpow]; rfl⟩
-  have hVr : Y.Vram u w hg = (Submodule.span (D.gat u w hg).Kf
-      (c.cmp u w hg '' ((D.fm u).ramSub : Set ((D.fm u).lat 0).V))).restrictScalars (D.gat u w hg).O :=
-    SetLike.coe_injective (hv u w hg)
-  have hflat := FBC.flat_ext (D.plEq w) (c.embW u w hg) (c.embW_val u w hg) (c.cmp u w hg) (c.cmp_smul u w hg)
-    ((D.fm u).lat 0).b (c.cmp_li u w hg)
-  have hinf := span_inf_span (D.plEq w) (c.embW u w hg) (c.embW_val u w hg) (c.cmp u w hg) (c.cmp_smul u w hg)
-    ((D.fm u).lat 0).b (c.cmp_li u w hg) (Submodule.span (𝓞 D.what₂.LL) T1) (Submodule.span (𝓞 D.what₂.LL) T2)
-  have hNP : NP X Y K u w hg = Submodule.span (D.gat u w hg).O (c.cmp u w hg ''
-      (((Submodule.span (𝓞 D.what₂.LL) T1 ⊓ Submodule.span (𝓞 D.what₂.LL) T2) ⊓
-        (D.fm u).ramSub.restrictScalars (𝓞 D.what₂.LL) : Submodule (𝓞 D.what₂.LL) ((D.fm u).lat 0).V) :
-          Set ((D.fm u).lat 0).V)) := by
-    show Submodule.span (D.gat u w hg).O _ ⊓ _ ⊓ _ = _
-    rw [hS1, hS2, hVr, ← span_image_spanA c u w hg T1, ← span_image_spanA c u w hg T2, hinf]
-    exact hflat.2 _ _
-  calc NP X Y K u w hg = _ := hNP
-    _ ≤ _ := by
-      apply Submodule.span_mono
-      rintro _ ⟨y, hy, rfl⟩
-      refine ⟨y, ⟨hy.2, ?_⟩, rfl⟩
-      rw [hNP]
-      exact Submodule.subset_span ⟨y, hy, rfl⟩
-
 end Formalism.MainNotions.G.Joints.Lit
 
 namespace Formalism.MainNotions.G.Joints.Lit
-
-theorem pNonUnit {D : D7} (c : LatCmp D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
-    (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
-    ¬ IsUnit ((D.what₂.places.resChar w : ℕ) : (D.gat u w hg).O) := by
-  rintro ⟨t, ht⟩
-  have hp0 : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0 :=
-    Nat.cast_ne_zero.mpr (D.what₂.places.resChar_prime w).ne_zero
-  have hmem : c.embW u w hg ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)⁻¹ ∈
-      Set.range (algebraMap (D.gat u w hg).O (D.gat u w hg).Kf) := by
-    refine ⟨((t⁻¹ : (D.gat u w hg).Oˣ) : (D.gat u w hg).O), ?_⟩
-    rw [map_inv₀, map_natCast]
-    apply eq_inv_of_mul_eq_one_left
-    rw [← map_natCast (algebraMap (D.gat u w hg).O (D.gat u w hg).Kf), ← ht, ← map_mul, Units.inv_mul,
-      map_one]
-  have h0 := (c.embW_int u w hg _).mpr hmem
-  have h2 : D.what₂.places.val w (((D.what₂.places.resChar w : ℕ) : D.what₂.LL) *
-      ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)⁻¹) = 0 := by
-    rw [mul_inv_cancel₀ hp0, AddValuation.map_one]
-  rw [AddValuation.map_mul, D.what₂.places.val_resChar w] at h2
-  have h3 : ((((D.what₂.places.ramIdx w : ℕ) : ℤ)) : WithTop ℤ) ≤ 0 := by
-    calc ((((D.what₂.places.ramIdx w : ℕ) : ℤ)) : WithTop ℤ)
-        ≤ ((((D.what₂.places.ramIdx w : ℕ) : ℤ)) : WithTop ℤ) +
-          D.what₂.places.val w ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)⁻¹ := le_add_of_nonneg_right h0
-      _ = 0 := h2
-  have h4 := D.what₂.places.ramIdx_pos w
-  have h5 : ((D.what₂.places.ramIdx w : ℕ) : ℤ) ≤ 0 := by exact_mod_cast h3
-  omega
 
 end Formalism.MainNotions.G.Joints.Lit
 
@@ -565,10 +396,5 @@ theorem mertens_bound (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.Co
             le_trans (Finset.card_filter_le _ _) (by simpa using hc)
           exact_mod_cast hcard
       _ = 2 * Real.log y := by ring
-
-theorem mertens_bound_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Formalism.MainNotions.CornerGLContinuity.FamilyMertensBound Fm :=
-  by
-    intro x i
-    exact mertens_bound _
 
 end Formalism.MainNotions.G.Joints.Lit

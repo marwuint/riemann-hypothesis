@@ -221,9 +221,6 @@ theorem integral_tsum_vecMul {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ
 
 end Stabiliser
 
-theorem continuous_vecMul (y : Fin a → Ad E) : Continuous fun g : GA E a => y ᵥ* g.val :=
-  continuous_const.matrix_vecMul Units.continuous_val
-
 end Concrete
 
 end GlobalTheory.ThetaUnfold

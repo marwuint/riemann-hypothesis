@@ -2,9 +2,8 @@ import Mathlib
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoeffZeroNeOfMonicIrr
 import Formalism.PadicSubsetSums.CentralIdempotents.HCDisjointO
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DetCharacterMemPrincipalCongruenceFixedVectors
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwoBlockEqZeroIff
 
-open Formalism.IrreducibleCountingLemmas.TYPES Formalism.L2.NT GlobalTheory.SerOSys
+open Formalism.IrreducibleCountingLemmas.TYPES Formalism.L2.NT
 open Polynomial CategoryTheory
 
 noncomputable section
@@ -84,7 +83,5 @@ theorem labO_transp {C : LabelConv K} (O : LabelMap K C) {α β : Type} [Fintype
 end GlobalTheory.SerOSys.TranspLabel
 
 namespace GlobalTheory.SerOSys.TranspLabel
-
-variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 
 end GlobalTheory.SerOSys.TranspLabel

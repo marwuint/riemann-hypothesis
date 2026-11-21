@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixOneAddPowSubEntryLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixOneAddPowSubEntryLe
 
 namespace GlobalTheory
 
@@ -19,7 +19,7 @@ theorem pow_prime_sub_one_norm_le : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fin
   rw [hrhs]
   set Y := X - 1 with hY
   have hXY : X = 1 + Y := by rw [hY]; abel
-  have hR := GlobalTheory.T.norm_one_add_pow_sub_one_sub_smul_le_sq ℚ_[l] n Y t t0 t1 hX l i j
+  have hR := _root_.GlobalTheory.matrix_one_add_pow_sub_entry_le ℚ_[l] n Y t t0 t1 hX l i j
   have hsplit : (X ^ l - 1) i j = ((1 + Y) ^ l - 1 - ((l : ℕ) : ℚ_[l]) • Y) i j + (((l : ℕ) : ℚ_[l]) • Y) i j := by
     rw [hXY]; simp
   rw [hsplit]

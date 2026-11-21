@@ -20,102 +20,7 @@ theorem natCast_le_withTop {a b : ℕ} (h : ((a : ℕ) : WithTop ℚ) ≤ ((b : 
 theorem v_pow_nat {p : ℕ} (hvp : v (p : LL) = 1) (k : ℕ) : v ((p : LL) ^ k) = ((k : ℕ) : WithTop ℚ) := by
   rw [AddValuation.map_pow, hvp]; simp
 
-theorem assoc_of_v {p : ℕ} (hinj : Function.Injective (algebraMap O LL)) (hvp : v (p : LL) = 1)
-    (hO : ∀ x : LL, 0 ≤ v x → ∃ a : O, algebraMap O LL a = x) (x : O) (k : ℕ)
-    (hx : v (algebraMap O LL x) = ((k : ℕ) : WithTop ℚ)) : Associated x ((p : O) ^ k) := by
-  have hk : ((k : ℕ) : WithTop ℚ) ≠ ⊤ := by
-    have : ((k : ℕ) : WithTop ℚ) = (((k : ℚ)) : WithTop ℚ) := by simp
-    rw [this]; exact WithTop.coe_ne_top
-  have hp0 : ((p : LL) ^ k) ≠ 0 := by
-    intro h0
-    have := v_pow_nat v hvp k
-    rw [h0, AddValuation.map_zero] at this
-    exact hk this.symm
-  set y : LL := algebraMap O LL x / (p : LL) ^ k with hy
-  have hyx : y * (p : LL) ^ k = algebraMap O LL x := by rw [hy]; field_simp
-  have hvy : v y = 0 := by
-    have h1 : v y + ((k : ℕ) : WithTop ℚ) = 0 + ((k : ℕ) : WithTop ℚ) := by
-      rw [← v_pow_nat v hvp k, ← AddValuation.map_mul, hyx, hx, v_pow_nat v hvp k, zero_add]
-    exact (WithTop.add_right_inj hk).1 h1
-  have hy0 : y ≠ 0 := by
-    intro h0
-    rw [h0, AddValuation.map_zero] at hvy
-    exact WithTop.top_ne_zero hvy
-  have hvyi : v y⁻¹ = 0 := by
-    have h1 : v y⁻¹ + v y = 0 := by
-      rw [← AddValuation.map_mul, inv_mul_cancel₀ hy0, AddValuation.map_one]
-    rwa [hvy, add_zero] at h1
-  obtain ⟨u, hu⟩ := hO y hvy.ge
-  obtain ⟨w, hw⟩ := hO y⁻¹ hvyi.ge
-  have huw : u * w = 1 := hinj (by rw [map_mul, hu, hw, map_one, mul_inv_cancel₀ hy0])
-  have hxu : x = (p : O) ^ k * u := hinj (by
-    rw [map_mul, map_pow, map_natCast, hu, ← hyx, mul_comm])
-  have hunit : IsUnit u := IsUnit.of_mul_eq_one w huw
-  obtain ⟨uu, rfl⟩ := hunit
-  exact (Associated.symm ⟨uu, hxu.symm⟩)
-
-theorem v_prod (S : Finset ℤ) (f : ℤ → O) (k : ℤ → ℕ)
-    (h : ∀ b ∈ S, v (algebraMap O LL (f b)) = ((k b : ℕ) : WithTop ℚ)) :
-    v (algebraMap O LL (∏ b ∈ S, f b)) = ((∑ b ∈ S, k b : ℕ) : WithTop ℚ) := by
-  classical
-  induction S using Finset.induction_on with
-  | empty => simp
-  | insert a s ha ih =>
-    rw [Finset.prod_insert ha, Finset.sum_insert ha, map_mul, AddValuation.map_mul,
-      h a (Finset.mem_insert_self a s), ih (fun b hb => h b (Finset.mem_insert_of_mem hb))]
-    push_cast; rfl
-
-theorem lagrange_of_val (p : ℕ) [Fact p.Prime] [IsDomain O]
-    (hinj : Function.Injective (algebraMap O LL)) (hvp : v (p : LL) = 1)
-    (hO : ∀ x : LL, 0 ≤ v x → ∃ a : O, algebraMap O LL a = x)
-    (S₁ S₂ : Finset ℤ) (sg : ℕ) (c : ℤ → O) (hd : Disjoint S₁ S₂)
-    (hc : ∀ a ∈ S₁ ∪ S₂, ∀ b ∈ S₁ ∪ S₂, a ≠ b →
-      v (algebraMap O LL (c a - c b)) = ((sg + padicValInt p (a - b) : ℕ) : WithTop ℚ))
-    (E : ℕ) (hE : ∀ a ∈ S₁,
-      v (algebraMap O LL ((∏ b ∈ S₂, (Polynomial.X - Polynomial.C (c b))).eval (c a))) +
-        v (algebraMap O LL ((Polynomial.derivative
-          (∏ b ∈ S₁, (Polynomial.X - Polynomial.C (c b)))).eval (c a))) ≤ (E : WithTop ℚ)) :
-    Polynomial.C (((p : ℕ) : O) ^ E) ∈
-        Ideal.span ({∏ b ∈ S₁, (Polynomial.X - Polynomial.C (c b)),
-          ∏ b ∈ S₂, (Polynomial.X - Polynomial.C (c b))} : Set (Polynomial O)) := by
-  classical
-  have hL := Formalism.ZetaNonvanishing.LIFTV.lagrangeIdealSg_proof p O sg S₁ S₂ c hd (fun a ha b hb hab =>
-    assoc_of_v v hinj hvp hO _ _ (hc a (Finset.mem_union_left _ ha) b hb hab))
-  set Em : ℕ := S₁.sup fun a =>
-        (∑ b ∈ S₂, (sg + padicValInt p (a - b))) + ∑ a' ∈ S₁.erase a, (sg + padicValInt p (a - a'))
-    with hEm
-  have hle : Em ≤ E := by
-    refine Finset.sup_le fun a ha => ?_
-    have h1 : (∏ b ∈ S₂, (Polynomial.X - Polynomial.C (c b))).eval (c a) =
-        ∏ b ∈ S₂, (c a - c b) := by
-      rw [Polynomial.eval_prod]; simp
-    have h2 : (Polynomial.derivative (∏ b ∈ S₁, (Polynomial.X - Polynomial.C (c b)))).eval (c a) =
-        ∏ b ∈ S₁.erase a, (c a - c b) := by
-      have := Lagrange.eval_nodal_derivative_eval_node_eq (s := S₁) (v := c) ha
-      rw [Lagrange.nodal, Lagrange.nodal] at this
-      rw [this, Polynomial.eval_prod]; simp
-    have h3 := hE a ha
-    rw [h1, h2, v_prod v S₂ (fun b => c a - c b) (fun b => sg + padicValInt p (a - b))
-      (fun b hb => hc a (Finset.mem_union_left _ ha) b (Finset.mem_union_right _ hb)
-        (fun hab => (Finset.disjoint_left.1 hd ha) (hab ▸ hb))),
-      v_prod v (S₁.erase a) (fun b => c a - c b) (fun b => sg + padicValInt p (a - b))
-      (fun b hb => hc a (Finset.mem_union_left _ ha) b
-        (Finset.mem_union_left _ (Finset.mem_of_mem_erase hb)) (Finset.ne_of_mem_erase hb).symm),
-      ← Nat.cast_add] at h3
-    exact natCast_le_withTop h3
-  obtain ⟨j, rfl⟩ := Nat.exists_eq_add_of_le hle
-  rw [pow_add, mul_comm, Polynomial.C_mul]
-  exact Ideal.mul_mem_left _ _ hL
-
 end Lagrange
-
-theorem exists_pos_const_Lagrange_condition (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : adm5 D HW F := by
-  intro l _ K s LL h S₁ S₂ sg c hd hc E hE
-  have hp : ((D.loc l).PD K).p = l := (D.loc l).PD_p K
-  have : Fact ((D.loc l).PD K).p.Prime := ⟨((D.loc l).PD K).hp⟩
-  refine lagrange_of_val ((D.loc l).v LL) ((D.loc l).PD K).p Subtype.val_injective
-    (by rw [hp]; exact (D.loc l).v_l LL)
-    (fun x hx => ⟨⟨x, ((D.loc l).v_O LL x).1 hx⟩, rfl⟩) S₁ S₂ sg c hd hc E hE
 
 theorem lam_eq (l H : ℕ) : lam l H = Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.lam l H := rfl
 
@@ -149,46 +54,6 @@ theorem floor_a_le (l H η bi : ℕ) (hl : 2 ≤ l) (h : 2 * aR l H + (η : ℝ)
 theorem add_le_hpar (n : ℕ) [NeZero n] (b : ZMod n → ℕ) (S : ℕ) (i : ZMod n) :
     b i + S ≤ hpar n b S :=
   Nat.add_le_add_right (Finset.le_sup (f := b) (Finset.mem_univ i)) S
-
-theorem eBd_parts (l : ℕ) (hl : 11 ≤ l) (h η S b a : ℕ) (s₁ E e₂ t : ℝ) (ht : 0 ≤ t) (hb : b ≤ h)
-    (ha : (a : ℝ) ≤ aR l (h + η) + 1)
-    (hs₁ : s₁ ≤ (2 * (a : ℝ) + 2 * (η : ℝ) + (S : ℝ)) / ((l : ℝ) - 1) + 2 * lam l (h + η))
-    (hE : E ≤ (3 * (a : ℝ) + (S : ℝ) + 2 * (η : ℝ)) / ((l : ℝ) - 1) + 3 * lam l (h + η))
-    (he₂ : e₂ ≤ (b : ℝ) / ((l : ℝ) * ((l : ℝ) - 1)) + E + 2 * Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ l (h + η)
-      + 2 * (S : ℝ) + 5 + lam l (h + η)) :
-    s₁ + 2 * Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig l h η + e₂ + (S : ℝ) + E + Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ l (h + η) + t ≤
-      eBd 32 4 10 (24 + t) l (h + η) S η := by
-  have h1 := Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.ramified_coefficient_chain_bounds.2.1 l hl h η S b a s₁ E e₂ hb ha hs₁ hE he₂
-  have h2 := one_le_lam l (h + η) (by omega)
-  have h3 : t ≤ t * lam l (h + η) := le_mul_of_one_le_right ht h2
-  unfold eBd
-  rw [← lam_eq] at h1
-  linarith
-
-theorem exists_e (l : ℕ) (hl : 11 ≤ l) (h η S b a : ℕ) (s₁ E e₂ : ℝ) (hb : b ≤ h)
-    (ha : (a : ℝ) ≤ aR l (h + η) + 1)
-    (hs₁ : s₁ ≤ (2 * (a : ℝ) + 2 * (η : ℝ) + (S : ℝ)) / ((l : ℝ) - 1) + 2 * lam l (h + η))
-    (hE : E ≤ (3 * (a : ℝ) + (S : ℝ) + 2 * (η : ℝ)) / ((l : ℝ) - 1) + 3 * lam l (h + η))
-    (he₂ : e₂ ≤ (b : ℝ) / ((l : ℝ) * ((l : ℝ) - 1)) + E + 2 * Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ l (h + η)
-      + 2 * (S : ℝ) + 5 + lam l (h + η)) :
-    ∃ e : ℕ, s₁ + 2 * Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig l h η + e₂ + (S : ℝ) + E + Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ l (h + η) ≤ e ∧
-      (e : ℝ) ≤ eBd 32 4 10 25 l (h + η) S η := by
-  have h1 := eBd_parts l hl h η S b a s₁ E e₂ 1 zero_le_one hb ha hs₁ hE he₂
-  norm_num at h1
-  set x := s₁ + 2 * Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig l h η + e₂ + (S : ℝ) + E + Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ l (h + η) with hx
-  refine ⟨⌈x⌉₊, Nat.le_ceil x, ?_⟩
-  rcases le_or_gt 0 x with h0 | h0
-  · exact (Nat.ceil_lt_add_one h0).le.trans h1
-  · rw [Nat.ceil_eq_zero.2 h0.le]
-    have h2 := one_le_lam l (h + η) (by omega)
-    have hl' : (11 : ℝ) ≤ l := by exact_mod_cast hl
-    unfold eBd
-    have t1 : 0 ≤ 32 * (((h + η : ℕ) : ℝ)) / (l : ℝ) ^ 2 := by positivity
-    have t2 : 0 ≤ 10 * (η : ℝ) / ((l : ℝ) - 1) :=
-      div_nonneg (by positivity) (by linarith)
-    have t3 : 0 ≤ 4 * (S : ℝ) := by positivity
-    push_cast at t1 ⊢
-    linarith
 
 section MassData
 

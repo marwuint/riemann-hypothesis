@@ -29,11 +29,6 @@ def AddCvSt (V : VF C) : Prop :=
         PowerSeries.constantCoeff (alongCv γ'' (X.sg v) - alongCv γ (X.sg v) - alongCv γ' (X.sg v)) = 0 ∧
         ∀ n, V.Ge 0 (PowerSeries.coeff n (alongCv γ'' (X.sg v) - alongCv γ (X.sg v) - alongCv γ' (X.sg v)))
 
-private theorem ge_add_lemma (V : VF C) {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) :
-    V.Ge 0 (a + b) := by
-  unfold VF.Ge at *
-  exact le_trans (le_min ha hb) (V.v.map_add a b)
-
 theorem add_mem (V : VF C) (g : Fin 2) (hA : X.AddCvSt V) (hu : ∀ g c i, V.Ge 0 (X.u g c i))
     (x y : ℕ → I g ⊕ JJ I g → C) (hx : x ∈ X.TySet V g) (hy : y ∈ X.TySet V g) : x + y ∈ X.TySet V g := by
   have hl2 := V.l_prime.two_le

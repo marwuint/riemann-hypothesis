@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKr
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RatIsom
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValAtAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ModelFunctionFieldCompatibilityStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexPointsLiftModelStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexPointsLiftModel
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularOfValuationBoundedAtPointsStatement
 
 set_option autoImplicit false
@@ -103,7 +103,7 @@ theorem ratIsom_of_induced : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt 
         (hr'.isEqn _ _ (le_chart N L'.B e y yt h (i := fun _ => j) h₂ trivial))
         (hr.isEqn _ _ (le_chart N L.B e y yt h (i := fun _ => i) h₁ trivial)) ?_).le
       linarith [hf v e y yt (fun _ => i) h h₁, hf' v e y yt (fun _ => j) h h₂]
-  · obtain ⟨σ, rfl, y, hy⟩ := GlobalTheory.T.complex_points_lift_model F Y N τ y'
+  · obtain ⟨σ, rfl, y, hy⟩ := _root_.GlobalTheory.model_cxPts_from_generic_fibre F Y N τ y'
     have hu : under y' = N.j (under y) := by
       change y'.1 _ = _
       rw [hy]

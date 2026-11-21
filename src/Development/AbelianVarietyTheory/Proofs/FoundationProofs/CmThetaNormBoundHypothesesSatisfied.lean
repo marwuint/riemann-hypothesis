@@ -1,25 +1,26 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
+import Formalism.PairingDivisors.StatementH
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdmissibleCharactersExistStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslateGaloisRationalityCmPointsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisDataExistsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslateGaloisRationalityCmPoints
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisDataExists
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaComplexConjugationCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTwoTorsionCMPointAllConjugatesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugateStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTwoTorsionCMPointAllConjugates
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugate
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTaylorCoeffsAlgebraicAtComplexMultiplicatioStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaVacuaConjugatesCmPointsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumNormConjCmPointsAllEmbeddingsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilRepresentationVacuumSignInertPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddnessConditionHoldsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUnitaryClassRepTrivialAtCmStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DatumCurveIntegralUnitDiscModelStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTorsionTranslateIntegralSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaValuesVanishAtOddSplitPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaFunctionsOverTwoUnitAndIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmNormalizedThetaJetsIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumNormConjCmPointsAllEmbeddings
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilRepresentationVacuumSignInertPlaces
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddnessConditionHolds
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUnitaryClassRepTrivialAtCm
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DatumCurveIntegralUnitDiscModel
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTorsionTranslateIntegralSeries
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaValuesVanishAtOddSplitPrime
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaFunctionsOverTwoUnitAndIntegral
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmNormalizedThetaJetsIntegral
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InertPrimeOrderParitySignRadicalIntegralForm
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
@@ -27,27 +28,27 @@ open scoped BigOperators
 namespace GlobalTheory.NormSum
 
 theorem inp_all : ∀ D, Inp D := fun D =>
-  { g1 := (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1
-    perm := (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).2
-    uni := GlobalTheory.T.intertwinerUnitary_all D
+  { g1 := (_root_.GlobalTheory.InducedType.induced_type D).1
+    perm := (_root_.GlobalTheory.InducedType.induced_type D).2
+    uni := _root_.GlobalTheory.theta_translation_intertwiner_unitary D
     mu := GlobalTheory.T.admissible_characters_exist D
-    curve := GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D
-    gal := GlobalTheory.T.thetaTranslate_galoisRationality_cmPoints D
-    galEx := GlobalTheory.T.galois_data_exists D
-    t0Ex := GlobalTheory.T.exists_twoTorsionCMPoint_all_conjugates D
-    use1 := GlobalTheory.T.forall_use1 D
+    curve := _root_.GlobalTheory.ConjCurve.galCurve_holds D
+    gal := _root_.GlobalTheory.GalTheta.gal_all D
+    galEx := _root_.GlobalTheory.GalExist.galEx_all D
+    t0Ex := _root_.GlobalTheory.TwoTorsionPt.exists_point D
+    use1 := _root_.GlobalTheory.ThetaConj.cmTheta_taylorCoeff_algebraic_and_conjugate D
     alg := GlobalTheory.T.thetaTaylorCoeffs_algebraic_at_complexMultiplication D
     conj := GlobalTheory.T.thetaVacua_conjugates_cmPoints D
-    nrm := GlobalTheory.T.vacuumNorm_conj_cmPoints_all_embeddings D
+    nrm := _root_.GlobalTheory.ConjNorm.useNorm_all D
     bar := GlobalTheory.T.cmTheta_complexConjugation_compatible D
-    odd3 := GlobalTheory.T.weilRepresentation_vacuum_sign_inert_places D
-    odd4 := GlobalTheory.T.oddness_condition_holds D
-    rep := GlobalTheory.T.exists_unitaryClass_rep_trivial_at_cm D
-    model := GlobalTheory.T.datum_curve_integral_unitDisc_model D
-    transl := GlobalTheory.T.cm_theta_torsion_translate_integral_series D
-    two := GlobalTheory.T.cm_theta_functions_over_two_unit_and_integral D
-    jets := GlobalTheory.T.cm_normalized_theta_jets_integral D
-    split := GlobalTheory.T.cm_theta_values_vanish_at_odd_split_prime D
+    odd3 := _root_.GlobalTheory.InertSign.vacuum_inert D
+    odd4 := _root_.GlobalTheory.VacuumScalar.vacuum_scalar D
+    rep := _root_.GlobalTheory.NormSum.exists_rep_trivial_at D
+    model := _root_.GlobalTheory.UnitModel.modelEx_holds D
+    transl := _root_.GlobalTheory.ThetaTransl.transl_holds D
+    two := _root_.GlobalTheory.EvenTheta.atTwo D
+    jets := _root_.GlobalTheory.ThetaJets.jetsPh_all D
+    split := _root_.GlobalTheory.ThetaSplit.splitZero D
     eqv := GlobalTheory.OddRank.exact_equivariance D }
 
 end GlobalTheory.NormSum

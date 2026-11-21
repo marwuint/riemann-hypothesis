@@ -27,10 +27,6 @@ structure TiesB {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL
   phs : ∀ i, R.phs i = 1
   nV : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV
 
-theorem TiesA.toB {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3}
-    (h : TiesA R F) : TiesB R F :=
-  ⟨h.ok, h.char, h.ex, h.host, h.params, h.ccK, h.guard, h.types, h.ser, h.junk, h.trSem, h.std, h.phs, h.nV⟩
-
 end GlobalTheory.PrimIn
 
 end

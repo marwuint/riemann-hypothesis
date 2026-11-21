@@ -125,23 +125,5 @@ theorem sameSS_of_charpoly_eq (hBN : GlobalTheory.ConstituentsCompare.BrauerNesb
 
 end Factors
 
-section Distinct
-open Matrix
-
-end Distinct
-
-section BaseChange
-open GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices GlobalTheory.SpanRing
-
-variable {Γ X A B : Type} [Group Γ] [CommRing A] [CommRing B] {n r t : ℕ}
-
-variable [Algebra A B]
-
-variable [IsDomain A] [IsDomain B]
-
-variable [IsLocalRing A] [IsLocalRing B]
-
-end BaseChange
-
 end GlobalTheory.ConsCompare
 end

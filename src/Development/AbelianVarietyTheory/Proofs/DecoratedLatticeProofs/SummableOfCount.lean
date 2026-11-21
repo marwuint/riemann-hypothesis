@@ -68,7 +68,7 @@ theorem cover_adele (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
         z = inclR (F := F) (AF F) x + y + (halfE F E).1 ^ m * ω := by
   classical
   haveI := hσ.1
-  obtain ⟨Ω₀, C₀, hΩ₀, hcov⟩ := GlobalTheory.T.exists_adele_cover_mod_field_shrunk_compact F
+  obtain ⟨Ω₀, C₀, hΩ₀, hcov⟩ := _root_.GlobalTheory.Eis.ConvCover.exists_cover F
   obtain ⟨δ, -, hsp⟩ := exists_delta F E σ hσ
   have : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   have : IsTopologicalRing (AF F ⊗[F] E) := isTopologicalRing_tens
@@ -98,88 +98,6 @@ theorem cover_adele (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
     · linear_combination (-v) * h2
 
 variable {D : D7} {T T₀ : HSp D} {r : ℕ}
-
-abbrev hf (D : D7) : (AE D)ˣ := halfE D.host.F D.host.E
-
-abbrev bs (D : D7) : ℝ := 4 ^ Fintype.card (InfinitePlace D.host.F)
-
-theorem one_lt_bs : 1 < bs D := one_lt_pow₀ (by norm_num) Fintype.card_ne_zero
-
-theorem val_dg (m : Fin r → ℕ) : (dg (hf D) fun i => (m i : ℤ)).1 = diagonal fun i => (hf D).1 ^ m i := by
-  simp [dg]
-
-theorem adj_dg (l : Fin r → ℤ) : adj (dg (hf D) l)⁻¹.1 = (dg (hf D) l)⁻¹.1 :=
-  congrArg Units.val (cti_dg (σ := cA D) (sigR_halfE D.sp.cm.sig) l)
-
-theorem adj_dg' (l : Fin r → ℤ) : adj (dg (hf D) l).1 = (dg (hf D) l).1 :=
-  congrArg Units.inv (cti_dg (σ := cA D) (sigR_halfE D.sp.cm.sig) l)
-
-theorem cover_rect (D : D7) (r n : ℕ) : ∃ (K : Set (Mx D r n)) (C : ℝ), IsCompact K ∧ ∀ m : Fin r → ℕ,
-    ∃ Y : Finset (Mx D r n), (Y.card : ℝ) ≤ C * ∏ i, bs D ^ (n * m i) ∧ ∀ x : Mx D r n, ∃ x₀ ∈ ratMx D r n, ∃ y ∈ Y,
-      ∃ ω ∈ K, x = x₀ + (y + (dg (hf D) fun i => (m i : ℤ)).1 ⬝ ω) := by
-  classical
-  obtain ⟨Ω, C, hΩ, h⟩ := cover_adele _ _ _ (AdelicU.isCMExt_host D)
-  choose Y hY h using h
-  refine ⟨Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Ω, (C ^ n) ^ r,
-    isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hΩ, fun m =>
-    ⟨Fintype.piFinset fun i => Fintype.piFinset fun _ => Y (m i), ?_, fun x => ?_⟩⟩
-  · have h1 : (Fintype.piFinset fun i => Fintype.piFinset fun _ : Fin n => Y (m i)).card = ∏ i, (Y (m i)).card ^ n := by
-      simp only [Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
-    refine (Nat.cast_le.2 h1.le).trans ?_
-    push_cast
-    refine (Finset.prod_le_prod (fun _ _ => by positivity) fun i _ =>
-      pow_le_pow_left₀ (Nat.cast_nonneg _) (hY (m i)) n).trans (le_of_eq ?_)
-    simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul _ (m _),
-      mul_comm n]
-  · choose x₀ y hy ω hω e using fun i j => h (m i) (x i j)
-    refine ⟨_, rat_mem (of x₀), of y, Fintype.mem_piFinset.2 fun i => Fintype.mem_piFinset.2 (hy i), of ω,
-      fun i _ j _ => hω i j, ?_⟩
-    ext i j
-    rw [val_dg, Matrix.add_apply, Matrix.add_apply, diagonal_mul, ← add_assoc]
-    exact e i j
-
-def sk (x : Mx D r r) : skewA D r :=
-  ⟨half D • (x - adj x), by rw [mem_skewA, adj_smul, cA_half, adj_sub, adj_adj, ← smul_neg, neg_sub]⟩
-
-theorem continuous_sk : Continuous (sk : Mx D r r → _) := by
-  have := (lattice_Mx D r r).1
-  have : ContinuousSub (Mx D r r) := IsTopologicalAddGroup.to_continuousSub
-  exact ((continuous_id.sub continuous_adj).const_smul (half D)).subtype_mk _
-
-theorem sk_add (x y : Mx D r r) : sk (x + y) = sk x + sk y := Subtype.ext (by
-  change half D • (x + y - adj (x + y)) = half D • (x - adj x) + half D • (y - adj y)
-  rw [adj_add, ← smul_add, add_sub_add_comm])
-
-theorem sk_coe (x : skewA D r) : sk x.1 = x := Subtype.ext (by
-  change half D • (x.1 - adj x.1) = x.1
-  rw [mem_skewA.1 x.2, sub_neg_eq_add, smul_add, half_smul_add])
-
-theorem sk_conj (a x : Mx D r r) : sk (a ⬝ x ⬝ adj a) = skewConj a (sk x) := Subtype.ext (by
-  change half D • (a ⬝ x ⬝ adj a - adj (a ⬝ x ⬝ adj a)) = a ⬝ (half D • (x - adj x)) ⬝ adj a
-  rw [adj_mul, adj_mul, adj_adj, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul,
-    Matrix.mul_assoc a (adj x)])
-
-theorem cover_skewA (D : D7) (r : ℕ) : ∃ (K : Set (skewA D r)) (C : ℝ), IsCompact K ∧ ∀ m : Fin r → ℕ,
-    ∃ Y : Finset (skewA D r), (Y.card : ℝ) ≤ C * ∏ i, bs D ^ (r * m i) ∧ ∀ x : skewA D r, ∃ x₀ : skewA D r,
-      x₀.1 ∈ ratMx D r r ∧ ∃ y ∈ Y, ∃ ω ∈ K, x = x₀ + (y + skewConj (dg (hf D) fun i => (m i : ℤ)).1 ω) := by
-  classical
-  have hc := AdelicU.isCMExt_host D
-  haveI := hc.1
-  obtain ⟨Ω₀, C₀, hΩ₀, hcov⟩ := GlobalTheory.T.exists_adele_cover_mod_field_shrunk_compact D.host.F
-  obtain ⟨Ω, C, hΩ, h⟩ := GlobalTheory.T.skewHermitian_adelic_cover_of_adele_cover _ _ _ hc _ _ _ hΩ₀ hcov r
-  have hK : IsCompact (Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Ω : Set (Mx D r r)) :=
-    isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hΩ
-  refine ⟨_, C, hK.image continuous_sk, fun m => ?_⟩
-  obtain ⟨Y, hY, h⟩ := h m
-  refine ⟨Finset.image (α := Mx D r r) sk Y, (Nat.cast_le.mpr Finset.card_image_le).trans (hY.trans (le_of_eq ?_)),
-    fun x => ?_⟩
-  · simp only [bs, ← pow_mul, mul_comm _ 2, show (4 : ℝ) = 2 ^ 2 by norm_num]
-  · obtain ⟨S, y, hy, ω, hω, e⟩ := h x.1 x.2
-    refine ⟨sk (rat S), ratMx_smul _ (sub_mem (rat_mem _) (ratMx_adj (rat_mem _))), _, Finset.mem_image_of_mem _ hy, _,
-      ⟨ω, fun i _ j _ => hω i j, rfl⟩, ?_⟩
-    rw [← val_dg] at e
-    replace e : x.1 = rat S + y + (dg (hf D) fun i => (m i : ℤ)).1 ⬝ ω ⬝ (dg (hf D) fun i => (m i : ℤ)).1 := e
-    rw [← sk_conj, adj_dg', ← sk_add, ← sk_add, ← add_assoc, ← e, sk_coe]
 
 end GlobalTheory.GodementSectionReduction
 

@@ -1,4 +1,4 @@
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightDualExistence.Development
+import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAut
 
 noncomputable section
 
@@ -28,27 +28,5 @@ instance nontrivial_AFplus : Nontrivial (AFplus L) := by
 instance nontrivial_AL : Nontrivial (AL L) :=
   Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_flat_left _ _ _
     (algebraMap (L⁺) (AFplus L)).injective
-
-theorem include_injective :
-    Function.Injective (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L) :=
-  (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L).injective
-
-theorem unitaryOfMatch : UnitaryOfMatch L n := by
-  intro γ γ₀ hm
-  have hγ : ((γ : GAf L n) : GL (Fin n) (AL L)) ∈ (GQ0 L n).map (Matrix.GeneralLinearGroup.map
-      (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L)) := γ.2
-  obtain ⟨γ₁, h₁, he⟩ := hγ
-  have hmat : (γ₀ : Matrix (Fin n) (Fin n) L) = (γ₁ : Matrix (Fin n) (Fin n) L) := by
-    ext i j
-    apply include_injective L
-    have e1 := congrFun (congrFun hm i) j
-    have e2 := congrArg (fun g : GL (Fin n) (AL L) => (g : Matrix (Fin n) (Fin n) (AL L)) i j) he
-    simp only [Matrix.map_apply] at e1 e2
-    rw [← e1]
-    rw [← e2]
-    rfl
-  have : γ₀ = γ₁ := Units.ext hmat
-  rw [this]
-  exact h₁
 
 end PI.UnitaryGroupMassFormula.AlgWtDualEx

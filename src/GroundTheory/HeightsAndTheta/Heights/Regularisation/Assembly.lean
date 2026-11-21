@@ -21,34 +21,11 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Regular
 
-theorem PolyMaxOscillation.full : PolyMaxOscillation.Statement :=
-  PolyMaxOscillation.proof_closed
-
-theorem MollifiedLowerBound.full : MollifiedLowerBound.Statement :=
-  MollifiedLowerBound.closed
-
-theorem CutoffsExist.full : CutoffsExist.Statement :=
-  CutoffsExist.proof
-
 theorem GlueRegularised.full : GlueRegularised.Statement :=
   GlueRegularised.proof
 
 theorem KernelPositive.full : KernelPositive.Statement :=
   kernelPositive_statement
-
-theorem ChartComparison.cond (hLow : PolyMaxLowerBound.Statement) (hTP : TruncPsh.Statement)
-    (hTT : TruncTransfer.Statement) : ChartComparison.Statement :=
-  ChartComparison.proof MollifiedLowerBound.full PolyMaxOscillation.full hLow hTP hTT
-
-theorem LogLogRegularisation.cond (hLow : PolyMaxLowerBound.Statement) (hTP : TruncPsh.Statement)
-    (hTT : TruncTransfer.Statement) (hMNS : MollifiedNearSmooth.Statement)
-    (hCMB : ChartMollifiedBounds.Statement) : LogLogRegularisation.Statement :=
-  LogLogRegularisation.proof GlueRegularised.full (ChartComparison.cond hLow hTP hTT) hMNS
-    CutoffsExist.full hCMB
-
-theorem BoundedRegularisation.cond (hBC : BoundedChartComparison.Statement)
-    (hBG : BoundedGlue.Statement) : BoundedRegularisation.Statement :=
-  BoundedRegularisation.proof hBC hBG CutoffsExist.full ReciprocityTheory.AnForm.A.mollify_thm
 
 theorem Tau0Holomorphic.cond (hE : RiemannExtensionSlices.Statement)
     (hO : PuncturedExpOrder.Statement) (hD : LogCoverDescent.Statement) :

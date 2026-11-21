@@ -30,8 +30,6 @@ instance isSimpleRing_baseChange [Algebra.IsCentral K A] [IsSimpleRing A] :
 theorem finrank_baseChange_eq : Module.finrank L (L ⊗[K] A) = Module.finrank K A :=
   Module.finrank_baseChange
 
-example [FiniteDimensional K A] : FiniteDimensional L (L ⊗[K] A) := inferInstance
-
 end CentralSimple
 
 section CSA
@@ -121,11 +119,6 @@ section CSAIso
 universe u v w w'
 
 variable {K : Type u} [Field K]
-
-noncomputable def baseChangeCSATower (L : Type w) (M : Type w') [Field L] [Field M] [Algebra K L]
-    [Algebra K M] [Algebra L M] [IsScalarTower K L M] (A : CSA.{u, v} K) :
-    baseChangeCSA M (baseChangeCSA L A) ≃ₐ[M] baseChangeCSA M A :=
-  baseChangeTower K L M A
 
 noncomputable def baseChangeCSATensor (L : Type w) [Field L] [Algebra K L] (A B : CSA.{u, v} K) :
     baseChangeCSA L (tensorCSA A B) ≃ₐ[L] tensorCSA (baseChangeCSA L A) (baseChangeCSA L B) :=

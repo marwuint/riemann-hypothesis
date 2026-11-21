@@ -236,12 +236,6 @@ theorem fin_cA (x : Formalism.L2.Theta.AE D) : finPart D (cA D x) = cf D (finPar
   | tmul r e => rfl
   | add a b ha hb => simp only [map_add, ha, hb]
 
-theorem cf_cf (x : RF D) : cf D (cf D x) = x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul r e => simp [sigR, CMData.sig]
-  | add a b ha hb => simp only [map_add, ha, hb]
-
 theorem cA_incA (x : D.host.E) : cA D (incA D x) = incA D (star x) := rfl
 
 theorem cf_mem {x : RF D} (hx : x ∈ intAE D) : cf D x ∈ intAE D := by

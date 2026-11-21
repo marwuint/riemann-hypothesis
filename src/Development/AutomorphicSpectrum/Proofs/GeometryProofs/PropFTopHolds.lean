@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.PropFTop
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DeltaTermLogDegreeBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DeltaTermLogDegreeBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HBBound
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootFlatPushforwardGeoFunStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SumLogPrimeDivPredBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootFlatPushforwardGeoFun
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SumLogPrimeDivPredBound
 open MvPolynomial NumberField Filter Topology ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Flat
 
 noncomputable section
@@ -12,13 +12,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 def propFTopE {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (T : RootTower Ψ N)
     (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (p : ℕ) (τ : Ψ) : ℝ :=
-  if hp : 2 ≤ p then Classical.choose (GlobalTheory.T.delta_term_log_degree_bound Ψ N T.j p τ (frob p τ) T.j_lt.le hp) else 0
+  if hp : 2 ≤ p then Classical.choose (_root_.GlobalTheory.CompanionTheory.Ar.Flat.deltaTerm_one Ψ N T.j p τ (frob p τ) T.j_lt.le hp) else 0
 
 theorem propFTopE_spec {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (T : RootTower Ψ N)
     (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (p : ℕ) (τ : Ψ) (hp : 2 ≤ p) :
     |propFTopE T frob p τ| ≤ N / ((p : ℝ) - 1) ∧
       ∀ Q : RP Ψ N, deltaTerm T.j p τ (frob p τ) 1 Q = propFTopE T frob p τ * Real.log p * degFl Q := by
-  have h := Classical.choose_spec (GlobalTheory.T.delta_term_log_degree_bound Ψ N T.j p τ (frob p τ) T.j_lt.le hp)
+  have h := Classical.choose_spec (_root_.GlobalTheory.CompanionTheory.Ar.Flat.deltaTerm_one Ψ N T.j p τ (frob p τ) T.j_lt.le hp)
   simp only [propFTopE, dif_pos hp]
   exact ⟨h.1, h.2.2.2⟩
 
@@ -32,7 +32,7 @@ theorem propFTop : PropFTop := by
     have hN : 1 ≤ N := by have := T.j_pos; have := T.j_lt; omega
     have hQ' : Q.IsHomogeneous (dimFl Ψ N + 1 - 1) := by rwa [Nat.add_sub_cancel]
     have h6 := hP6 2 B le_rfl hB c τ 1 le_rfl hN Q hQ'
-    have hroot := GlobalTheory.T.root_flat_pushforward_geoFun hPI hML hDS Ψ N (T.M 2 c) II τ (R c τ) Q hII (hConv 2 c) hQ
+    have hroot := _root_.GlobalTheory.CompanionTheory.Ar.Flat.root_flat_pushforward_eq hPI hML hDS Ψ N (T.M 2 c) II τ (R c τ) Q hII (hConv 2 c) hQ
     have hgeo := hProp.2.1 2 c Q
     have hd : ∀ p ∈ good B, deltaTerm T.j p τ (frob p τ) 1 Q = propFTopE T frob p τ * Real.log p * degFl Q :=
       fun p hp => (propFTopE_spec T frob p τ (Finset.mem_filter.mp hp).2.1.two_le).2 Q
@@ -89,7 +89,7 @@ theorem propFTop : PropFTop := by
           exact mul_le_mul_of_nonneg_right
             (propFTopE_spec T frob p τ (hS p hp).1.two_le).1 hlog)
       (by rw [hvb]; exact hvsum)
-      (GlobalTheory.T.sum_log_prime_div_pred_bound B T.bad (T.bad ∪ good B) hB hcard hS)
+      (_root_.GlobalTheory.CompanionTheory.Ar.Flat.sum_log_div_pred_SB B T.bad (T.bad ∪ good B) hB hcard hS)
     have hBpos : (0 : ℝ) < B := by exact_mod_cast (show 0 < B by omega)
     have hrdpos : (0 : ℝ) < rd := by linarith
     simp only [bigLam]

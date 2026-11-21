@@ -2,12 +2,12 @@ import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.EulerFactorLevels.EulerFinOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedGLMassFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralPointsOpenCompactStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPositiveHermitianFormStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPositiveHermitianForm
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryGroupCompactQuotientStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedCentralizerUnitaryIffStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwCentRatFCommStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTorsionCentralizerStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTorsionLatticeCompactStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwCentRatFComm
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTorsionCentralizer
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTorsionLatticeCompact
 
 open NumberField IsDedekindDomain Matrix Polynomial Filter
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
@@ -87,7 +87,7 @@ theorem factor (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (δ 
     {γ : GL (Fin n) (Af E) | γ ∈ gam1 E n δ ∧ IsOfFinOrder γ}.Finite := by
   have hs : (δ * thE E n δ).val.charpoly.Separable := hδ.2.2.1
   have hr : ∀ τ : E →+* ℂ, ∀ z ∈ ((δ * thE E n δ).val.charpoly.map τ).roots, ‖z‖ = 1 := hδ.2.2.2
-  obtain ⟨H, hu, hh, hN, hp⟩ := GlobalTheory.T.exists_positive_hermitian_form E n _ hs hr
+  obtain ⟨H, hu, hh, hN, hp⟩ := _root_.GlobalTheory.CompanionTheory.TraceHerm.exists_posDef_herm E n _ hs hr
   obtain ⟨⟨C₀, hC₀, hcov⟩, hfin⟩ := GlobalTheory.T.unitary_group_compact_quotient E n H hu hh hp
   have hc := GlobalTheory.T.twisted_centralizer_unitary_iff E n δ H hs hu hN
   set U := UJ (conjFin (IsCMField.complexConj E).toRingEquiv) (H.map (algebraMap E (Af E))) with hU
@@ -110,7 +110,7 @@ theorem factor (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (δ 
     obtain ⟨γ, hγ, hcm, c, hc', e⟩ := hsel t h1 h2
     obtain ⟨γ₀, hγ₀, rfl⟩ := hγ
     exact ⟨ratF E n γ₀, ⟨⟨γ₀, rfl⟩, (hc _).2 ⟨(ratF_mem_UJ E n H γ₀).2 hγ₀, hcm⟩⟩, c, hc', e⟩
-  · refine ((GlobalTheory.T.finite_torsion_centralizer_alt E n _ hs).image (ratF E n)).subset ?_
+  · refine ((_root_.GlobalTheory.CompanionTheory.TorCent.finite_torsion_centralizer E n _ hs).image (ratF E n)).subset ?_
     rintro y ⟨hy, hfo⟩
     obtain ⟨⟨γ, rfl⟩, ht⟩ := hy
     refine ⟨γ, ⟨ratF_injective E n ?_, ?_⟩, rfl⟩
@@ -159,7 +159,7 @@ theorem ratFin : PositivityTheory.Rg.BcB.G8.Fin.RatFin := by
   set T := twCent (thP E a b) (ratF E a δ₁, ratF E b δ₂) with hTdef
   have hcomm : ∀ p ∈ T, ∀ q ∈ T, p * q = q * p := fun p hp q hq => by
     rw [hTdef, mem_twCent_thP] at hp hq
-    exact Prod.ext (GlobalTheory.T.twCent_comm_of_charpoly_separable E a δ₁ hs₁ _ hp.1 _ hq.1) (GlobalTheory.T.twCent_comm_of_charpoly_separable E b δ₂ hs₂ _ hp.2 _ hq.2)
+    exact Prod.ext (_root_.GlobalTheory.CompanionTheory.RatCentComm.twCent_ratF_comm E a δ₁ hs₁ _ hp.1 _ hq.1) (_root_.GlobalTheory.CompanionTheory.RatCentComm.twCent_ratF_comm E b δ₂ hs₂ _ hp.2 _ hq.2)
   have hle : gam δ₁ δ₂ ≤ T := fun p hp => hp.2
   have hcov : ∀ t ∈ T, ∃ γ ∈ gam δ₁ δ₂, ∃ c ∈ C₁ ×ˢ C₂, t = γ * c := fun t ht => by
     rw [hTdef, mem_twCent_thP] at ht
@@ -180,7 +180,7 @@ theorem ratFin : PositivityTheory.Rg.BcB.G8.Fin.RatFin := by
     obtain ⟨k, hk, e⟩ := isOfFinOrder_iff_pow_eq_one.1 hfo
     have e' : p.1 ^ k = 1 ∧ p.2 ^ k = 1 := Prod.ext_iff.1 e
     exact ⟨⟨hp'.1, isOfFinOrder_iff_pow_eq_one.2 ⟨k, hk, e'.1⟩⟩, hp'.2, isOfFinOrder_iff_pow_eq_one.2 ⟨k, hk, e'.2⟩⟩
-  have hmain := GlobalTheory.T.finite_torsion_lattice_compact (Gf E a b) ((Kf E a).prod (Kf E b)) T (gam δ₁ δ₂)
+  have hmain := _root_.GlobalTheory.CompanionTheory.CountClosedComm.main (Gf E a b) ((Kf E a).prod (Kf E b)) T (gam δ₁ δ₂)
     (C₁ ×ˢ C₂) hKo hKcp hcl hcomm hle (hC₁.prod hC₂) hcov hfin htor
   exact ⟨⟨hcomm, hmain.1⟩, hmain.2.1, hmain.2.2.1, hmain.2.2.2⟩
 

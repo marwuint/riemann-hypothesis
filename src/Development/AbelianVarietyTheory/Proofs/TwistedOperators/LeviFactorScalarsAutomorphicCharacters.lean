@@ -3,13 +3,16 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Compat
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.WittDecompSymplInclIsotropicInclAnisotropic
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictionWittTowerIntertwinesLeviWeilRepStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWittDecompositionIsotropicSplitUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WittTowerRestrictionUnipotentRadicalInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWittDecompositionIsotropicSplitUnipotent
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.WittDecompProjAnisotropicAnisotropicEmbedding
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WittTowerRestrictionUnipotentRadicalInvariant
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictIsotropicQuotientWittTowerPropertie
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictIsotropicIndepCovolumeMeasureStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictionInvariantRationalLeviGLStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RationalUnitaryActsOnThetaRestrictionSmallerStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousRestrictedWeilFirstFactorApplyStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictIsotropicIndepCovolumeMeasure
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictionInvariantRationalLeviGL
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisOApplyZero
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RationalUnitaryActsOnThetaRestrictionSmaller
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousRestrictedWeilFirstFactorApply
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousMovPair
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum MeasureTheory NumberField Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -47,10 +50,10 @@ open GlobalTheory.MixModel in
 
 theorem levi_scalars_autChar : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B → ∀ (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → ∀ (χS' χT' : (AE D)ˣ →* Circle) (ω' : GA D V' × GA D W →* Module.End ℂ (WO V' W → ℂ)), IsWeilDatumO ψ V' W χS' χT' ω' → ∃ (μa : GL (Fin r) (AE D) →* Circle) (ξ : GA D V' →* Circle), GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.IsAutCharGL r μa ∧ GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.IsAutCharU V' ξ ∧ ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D W.rank r) μ 𝓨 → ∀ (a : GL (Fin r) (AE D)) (g' : GA D V') (m : GA D V), HMul.hMul (Formalism.L2.Theta.mt V m) (C.map (incA D)) = HMul.hMul (C.map (incA D)) a.val → HMul.hMul (Formalism.L2.Theta.mt V m) (B.map (incA D)) = HMul.hMul (B.map (incA D)) (Formalism.L2.Theta.mt V' g') → ∀ f, IsThetaFunO ψ V W f → GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 (ω (m, 1) f) = ((μa a : ℂ) * (GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a W.rank : ℂ) * (ξ g' : ℂ)) • ω' (g', 1) (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 f) := by
   intro D V V' W r C B hs ψ χS χT ω hω χS' χT' ω' hω'
-  obtain ⟨d, hdC, hdB, hker⟩ := GlobalTheory.T.exists_wittDecomposition_isotropicSplit_unipotent D V V' r C B hs
+  obtain ⟨d, hdC, hdB, hker⟩ := _root_.GlobalTheory.WittSect.exists_hypDec_mem_NI D V V' r C B hs
   obtain ⟨μ₀, 𝓨₀, h₀⟩ := GlobalTheory.MixModel.exists_isCovolOne D W.rank r
   have hind := fun f hf μ 𝓨 (hμ : IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D W.rank r) μ 𝓨) =>
-    GlobalTheory.T.thetaRestrictIsotropic_indep_covolume_measure D V V' W r C B hs d hdC hdB ψ f hf μ₀ μ 𝓨₀ 𝓨 h₀ hμ
+    _root_.GlobalTheory.TowerRestrict.res_indep_covol D V V' W r C B hs d hdC hdB ψ f hf μ₀ μ 𝓨₀ 𝓨 h₀ hμ
 
   let s : GL (Fin r) (AE D) → GA D V' → GA D V := fun a g' => d.levi a * d.emb0 g'
   have hsC : ∀ a g', HMul.hMul (mt V (s a g')) (C.map (incA D)) = HMul.hMul (C.map (incA D)) a.val := by
@@ -138,7 +141,7 @@ theorem levi_scalars_autChar : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matr
   refine ⟨μa, ξ, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩
   ·
     obtain ⟨x₁, hx₁⟩ := Function.ne_iff.1 hne
-    have hΦ := GlobalTheory.T.continuous_restrictedWeilFirstFactor_apply D V V' W r C B ψ χS χT ω hω μ₀ 𝓨₀ h₀ f₀ hf₀ x₁
+    have hΦ := _root_.GlobalTheory.ResFirstCont.continuous_res_left D V V' W r C B ψ χS χT ω hω μ₀ 𝓨₀ h₀ f₀ hf₀ x₁
     have heq : ∀ a, ((μa a : Circle) : ℂ) = R (ω (d.levi a, 1) f₀) x₁ /
         ((GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a W.rank : ℂ) * R f₀ x₁) := by
       intro a
@@ -158,7 +161,7 @@ theorem levi_scalars_autChar : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matr
       rw [← hK _ _ f₀ hf₀, one_smul, ← Prod.one_eq_mk, map_one, Module.End.one_apply,
         show s (Matrix.GeneralLinearGroup.map (incA D) a₀) 1 = d.levi (Matrix.GeneralLinearGroup.map (incA D) a₀) by
           simp [s]]
-      exact GlobalTheory.T.thetaRestriction_invariant_rationalLeviGL D V V' W r C B hs d hdC hdB ψ χS χT ω hω μ₀ 𝓨₀ h₀ a₀ f₀ hf₀)
+      exact _root_.GlobalTheory.LeviGLRes.res_levi_GL D V V' W r C B hs d hdC hdB ψ χS χT ω hω μ₀ 𝓨₀ h₀ a₀ f₀ hf₀)
     simp only [K] at h
     have hn := congrArg norm h
     rw [norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_of_nonneg (dpos _).le, norm_one] at hn
@@ -171,7 +174,7 @@ theorem levi_scalars_autChar : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matr
     intro g₀
     have hw : ω' (g₀, 1) (R f₀) ≠ 0 := fun h0 => hne (hinj g₀ _ h0)
     obtain ⟨x₁, hx₁⟩ := Function.ne_iff.1 hw
-    have hΦ := (GlobalTheory.T.continuous_restrictedWeilFirstFactor_apply D V V' W r C B ψ χS χT ω hω μ₀ 𝓨₀ h₀ f₀ hf₀ x₁).comp d.continuous_embed
+    have hΦ := (_root_.GlobalTheory.ResFirstCont.continuous_res_left D V V' W r C B ψ χS χT ω hω μ₀ 𝓨₀ h₀ f₀ hf₀ x₁).comp d.continuous_embed
     have hΨ : Continuous fun g : GA D V' => ω' (g, 1) (R f₀) x₁ :=
       (hω'.om_cont (R f₀) hRth x₁).comp (continuous_id.prodMk continuous_const)
     have heq : ∀ g, ω' (g, 1) (R f₀) x₁ ≠ 0 → ((ξ g : Circle) : ℂ) =
@@ -188,7 +191,7 @@ theorem levi_scalars_autChar : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matr
     intro γ hγ
     have h := huniq γ (K 1 γ) 1 (by
       rw [← hK _ _ f₀ hf₀, one_smul, show s 1 γ = d.emb0 γ by simp [s]]
-      exact GlobalTheory.T.rational_unitary_acts_on_thetaRestriction_smaller D V V' W r C B hs d hdC hdB ψ χS χT ω hω χS' χT' ω' hω' μ₀ 𝓨₀ h₀ γ hγ f₀ hf₀)
+      exact _root_.GlobalTheory.TowerEmbRat.rational_unitary_acts_on_thetaRestriction_smaller_alt D V V' W r C B hs d hdC hdB ψ χS χT ω hω χS' χT' ω' hω' μ₀ 𝓨₀ h₀ γ hγ f₀ hf₀)
     simp only [K, d1, Complex.ofReal_one, mul_one] at h
     exact Circle.coe_inj.1 (by rw [Circle.coe_one]; exact h)
   ·
@@ -203,7 +206,7 @@ theorem levi_scalars_autChar : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matr
     have hnf := hω.om_pres (n, 1) f hf
     have key : ω (m, 1) f = ω (s a g', 1) (ω (n, 1) f) := by
       rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, hmn]
-    have hk : R (ω (n, 1) f) = R f := GlobalTheory.T.wittTower_restriction_unipotentRadical_invariant D V V' W r C B hs ψ χS χT ω hω μ₀ 𝓨₀ h₀ ⟨n, hnI⟩ f hf
+    have hk : R (ω (n, 1) f) = R f := _root_.GlobalTheory.UnipRes.res_unip D V V' W r C B hs ψ χS χT ω hω μ₀ 𝓨₀ h₀ ⟨n, hnI⟩ f hf
     rw [hind _ (hω.om_pres _ f hf) μ 𝓨 hμ, hind f hf μ 𝓨 hμ, key, hK a g' _ hnf, hk]
     simp only [K, csplit, Circle.coe_mul]
     congr 1

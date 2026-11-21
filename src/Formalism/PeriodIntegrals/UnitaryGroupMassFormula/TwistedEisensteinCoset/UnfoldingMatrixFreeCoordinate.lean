@@ -70,12 +70,6 @@ theorem unfolding_matrix_sub {n' c' n c : ℕ} (y : (Fin n' → E) →ₗ[E] (Fi
 
 end Vec
 
-section Bd
-
-variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
-
-end Bd
-
 theorem character_argument_bounded : ChArgBddP := by
   intro E _ _ P n' c' n c j x hx
   unfold chArg

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AutomorphicRepEqOfEqAtAlmostAllSplitPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AutomorphicRepEqOfEqAtAlmostAllSplitPlaces
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
 namespace GlobalTheory.PtOfLocSplit
@@ -17,7 +17,7 @@ theorem eventually_splitOut {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N 
 
 theorem main : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N) (i : N.Loc), GlobalTheory.RowTie.BCEx N A i → GlobalTheory.RowTie.SplitBC N A i → GlobalTheory.RowTie.RepOfLoc N A i → GlobalTheory.ThetaExh.PtOfLoc N A i := by
   intro R H what₂ N A i hBC hSp hRep P P' x hx hloc
-  have hPP : P = P' := GlobalTheory.T.automorphicRep_eq_of_eq_at_almost_all_split_places R H what₂ N A i hBC hSp hRep P P' <| by
+  have hPP : P = P' := _root_.GlobalTheory.RowTie.repDet_split R H what₂ N A i hBC hSp hRep P P' <| by
     filter_upwards [eventually_splitOut N i] with w hw hs using hloc w (hw hs)
   rw [hPP]; exact hx
 

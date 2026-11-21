@@ -1,4 +1,5 @@
-import Formalism.LocalToGlobal.GlobalTheory.GL5.VolumeAndDsigCompatOfCompatibleData
+import Formalism.LocalToGlobal.GlobalTheory.GL5.Statement
+import Formalism.LocalToGlobal.BesselHermitianTheta.Lemmas
 import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
 
 noncomputable section
@@ -205,56 +206,6 @@ theorem fdegHC_nonneg {N : ℕ} (lam : Fin N → ℝ) (hlam : Formalism.QuantumD
   have := (Finset.mem_filter.1 hb).2
   rw [sub_nonneg, Nat.cast_le]
   exact this.le
-
-theorem theorem_three_all_unitary (D : D7) (C3 : ℝ) (hC3 : 1 ≤ C3) (hc : cdScaleTie D) (hHC : HCFormalDegree D)
-    (hT : FamilyMassLastLine D) : RepresentationDimensionGeneral D C3 := by
-  unfold Formalism.MainNotions.StandardLattice.RepresentationDimensionGeneral
-  intro N ε lam ep0 h0 H _ _ σ w p q hlam hgap hexp hep hh hDS hw
-  haveI : CompleteSpace H := hDS.1
-  have hF := hHC hc N ε lam hlam H σ w hDS hw
-  rw [hF]
-  have hF0 := fdegHC_nonneg lam hlam
-  have hep0 : 0 ≤ ep0 := le_trans (Real.exp_pos _).le hexp
-  refine ⟨by nlinarith, ?_⟩
-  have hdim := hT N ε lam hlam H σ hDS
-  have hp : p = (nPlus ε : ℝ) := rfl
-  have hq : q = (nMinus ε : ℝ) := rfl
-  have hk : p * q = ((nPlus ε * nMinus ε : ℕ) : ℝ) := by rw [hp, hq]; push_cast; ring
-  have hd0 : (0 : ℝ) ≤ (Module.finrank ℂ (MainNotions.S.lowKSub ε lam σ) : ℝ) := Nat.cast_nonneg _
-  rw [hk, Real.rpow_natCast]
-  calc Formalism.QuantumDeterminants.fdegHC lam ≤ dTau ε lam * lamAbs lam ^ (nPlus ε * nMinus ε) :=
-        fdegHC_le_dTau ε lam hlam
-    _ = (Module.finrank ℂ (MainNotions.S.lowKSub ε lam σ) : ℝ) * lamAbs lam ^ (nPlus ε * nMinus ε) := by
-        simp only [hdim.2]
-    _ ≤ 4 * (Module.finrank ℂ (MainNotions.S.lowKSub ε lam σ) : ℝ) *
-        (C3 * p * q * N * lamAbs lam) ^ (nPlus ε * nMinus ε) := by
-        rcases Nat.eq_zero_or_pos (nPlus ε * nMinus ε) with hk0 | hk0
-        · rw [hk0, pow_zero, pow_zero]
-          linarith
-        · have hP : 0 < nPlus ε := Nat.pos_of_ne_zero fun h => by simp [h] at hk0
-          have hM : 0 < nMinus ε := Nat.pos_of_ne_zero fun h => by simp [h] at hk0
-          obtain ⟨a, ha⟩ := Finset.card_pos.1 hP
-          obtain ⟨b, hb⟩ := Finset.card_pos.1 hM
-          have ha' := (Finset.mem_filter.1 ha).2
-          have hb' := (Finset.mem_filter.1 hb).2
-          have hab : a ≠ b := fun h => by rw [h, hb'] at ha'; exact Bool.noConfusion ha'
-          have hN : 2 ≤ N := by
-            have := a.isLt
-            have := b.isLt
-            have : a.val ≠ b.val := fun h => hab (Fin.ext h)
-            omega
-          have hL := lamAbs_ge_one lam hlam hN
-          have hp1 : (1 : ℝ) ≤ p := by rw [hp]; exact_mod_cast hP
-          have hq1 : (1 : ℝ) ≤ q := by rw [hq]; exact_mod_cast hM
-          have hN1 : (1 : ℝ) ≤ N := by exact_mod_cast (show 1 ≤ N by omega)
-          have hc1 : 1 ≤ C3 * p * q * N := by
-            have h1 : 1 ≤ C3 * p := by nlinarith
-            have h2 : 1 ≤ C3 * p * q := by nlinarith
-            nlinarith
-          have hX : lamAbs lam ≤ C3 * p * q * N * lamAbs lam := by nlinarith
-          have hpow := pow_le_pow_left₀ (by linarith) hX (nPlus ε * nMinus ε)
-          have hpos : 0 ≤ lamAbs lam ^ (nPlus ε * nMinus ε) := by positivity
-          nlinarith
 
 end Formalism.L2.GlobalTheoryTheory.GenusMassVolumes
 

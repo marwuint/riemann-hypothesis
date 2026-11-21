@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TranscendenceTraces.IsolateSpec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPrimitiveRootAndRootsOfUnityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlue
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPropertyCalculusRulesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocallyIffAffineEtalePointCoverStatement
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.RingSec
@@ -83,7 +85,7 @@ theorem UpperTheory.Gal.TranscendenceTraces.sumEx_of :
       rw [hLf]
     rw [h2] at h1
     exact huniq _ _ _ _ h1 (hs W (k ≫ g) (T.downward_closed hg k))
-  obtain ⟨b, hb⟩ := (GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) (tw q i) A.U).2 T hT s hcomp
+  obtain ⟨b, hb⟩ := (_root_.GlobalTheory.EtC.sec_ext_glue (ZMod q) (tw q i) A.U).2 T hT s hcomp
   refine ⟨b, fun Ω _ _ x => ?_⟩
   have hx : T.arrows x := by
     have hl : Loc (gp Ω) fun V g => T.arrows (g ≫ x) :=

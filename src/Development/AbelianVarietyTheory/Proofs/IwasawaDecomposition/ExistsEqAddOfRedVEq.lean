@@ -155,28 +155,6 @@ def fineMean (M : ℕ) : InvFun ℤ where
     rw [Fintype.sum_unique, e]
     simp
 
-example : (fineMean 1).toFun 1 (fun a b => ((a 0 * b 0 : ℤ) : ℝ)) = 1 / 2 := by
-  have h0 : classMin 1 (fun a b : Fin 1 → ℤ => ((a 0 * b 0 : ℤ) : ℝ)) (fun _ => 0) = 0 := by
-    refine IsLeast.csInf_eq ⟨⟨0, funext fun i => by simp [redV], by simp⟩, ?_⟩
-    rintro x ⟨a, -, rfl⟩
-    show (0 : ℝ) ≤ ((a 0 * a 0 : ℤ) : ℝ)
-    exact_mod_cast mul_self_nonneg (a 0)
-  have h1 : classMin 1 (fun a b : Fin 1 → ℤ => ((a 0 * b 0 : ℤ) : ℝ)) (fun _ => 1) = 1 := by
-    refine IsLeast.csInf_eq ⟨⟨1, funext fun i => by simp [redV], by simp⟩, ?_⟩
-    rintro x ⟨a, ha, rfl⟩
-    have h2 : a 0 ≠ 0 := fun h => by
-      have := congrFun ha 0
-      simp [redV, h] at this
-    have : (1 : ℤ) ≤ a 0 * a 0 := mul_self_pos.2 h2
-    show (1 : ℝ) ≤ ((a 0 * a 0 : ℤ) : ℝ)
-    exact_mod_cast this
-  have hs : ∀ f : (Fin 1 → ZMod (1 + 1)) → ℝ, ∑ y, f y = f (fun _ => 0) + f (fun _ => 1) := fun f => by
-    rw [← (Equiv.funUnique (Fin 1) (ZMod (1 + 1))).symm.sum_comp f]
-    exact Fin.sum_univ_two _
-  show ((((1 : ℕ) : ℝ) + 1) ^ 1)⁻¹ * ∑ y, classMin 1 _ y - _ = _
-  rw [hs, h0, h1]
-  norm_num
-
 end Mean
 
 section Base
@@ -255,25 +233,6 @@ variable {bar φ X}
 
 theorem IsCone.isCell {γ : Fin m → LinearMap.BilinForm ℤ X} (h : IsCone bar φ γ) : IsCell bar φ γ :=
   ⟨h.mem, h.nonneg, h.linear, h.strict⟩
-
-theorem IsPolFanOn.isPolyFanOn (h : IsPolFanOn bar φ X) : IsPolyFanOn bar φ X where
-  homog := h.homog
-  superadd := h.superadd
-  integral := h.integral
-  pos := h.pos
-  finite := by
-    obtain ⟨S, hS, h1⟩ := h.finite
-    refine ⟨S, hS, fun B hB => ?_⟩
-    obtain ⟨m, γ, c, hγ, hc, rfl⟩ := h.cover B hB
-    obtain ⟨e, he⟩ := h1 m γ hγ
-    refine ⟨e, m, _, c, (hγ.pull_equiv e).isCell, he, hc, LinearMap.ext₂ fun a b => ?_⟩
-    simp [LinearMap.sum_apply]
-
-theorem isPolyFanOn_minVal_int : IsPolyFanOn id (InvFun.minVal ℤ) ℤ := isPolFanOn_minVal_int.isPolyFanOn
-
-theorem isPolyFan_minVal_one : IsPolyFan id 1 (InvFun.minVal ℤ) := fun X _ _ _ _ hX => (isPolFan_minVal_one X hX).isPolyFanOn
-
-example : IsCell id (InvFun.minVal ℤ) ![mulForm] := isCone_mulForm.isCell
 
 end Poly
 

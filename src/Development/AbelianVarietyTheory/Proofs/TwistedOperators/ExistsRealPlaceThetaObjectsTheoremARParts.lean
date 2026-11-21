@@ -9,9 +9,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockStructure
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HighestWeightTensor
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SymmetrisationInjective
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowestTypePositiveAndDecays
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PolarCoordinatesUnitaryPQDoubleCoverStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NoIntertwinerSmallerFockToDiscreteSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaCorrespondenceFockDsUniquenessStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PolarCoordinatesUnitaryPQDoubleCover
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NoIntertwinerSmallerFockToDiscreteSeries
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaCorrespondenceFockDsUniqueness
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DoublingIntegralJointHarmonicPosStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockSpaceContainsDiscreteSeriesTensorStatement
 
@@ -31,14 +31,14 @@ theorem exists_record_theta :
   have hH2 : admH2 X := GlobalTheory.FockAlg.fock_structure X
   have hD1 : DiscreteSeriesBlattner X := GlobalTheory.CoverDS.admissibleDiscreteSeries_of_hasParam hDS X hX
   have hQ5 : admQ5 X := GlobalTheory.Published.HarishChandraModules.admQ5_of_harishChandraModules hHC X
-  have hQ6 : CoverHaarIntegration X := GlobalTheory.T.polarCoordinates_unitaryPQ_doubleCover X
+  have hQ6 : CoverHaarIntegration X := _root_.GlobalTheory.PolarU.polar_coordinates X
   have hQ7 : admQ7 := TensorHW.highestWeight_tensor
   have hQ8 : admQ8 := GlobalTheory.InducedPBW.pbw_induced
   have hD2 : DiscreteSeriesPositivity X := GlobalTheory.SphJet.lowest_type_positive_and_decays X hD1 hQ5 hQ7 hQ8
   have hA1 : ArchimedeanRallisFirst X := GlobalTheory.T.doublingIntegral_jointHarmonic_pos X hH1 hH2 hD1 hD2 hQ5 hQ6 hQ7 hQ8
   have hA2 : ArchimedeanRallisSecond X := GlobalTheory.T.fockSpace_contains_discreteSeriesTensor X hH1 hH2 hD1 hD2 hQ5 hQ6 hQ7 hQ8 hA1
-  have hA3 : ArchimedeanRallisUpDownLine X := GlobalTheory.T.theta_correspondence_fock_ds_uniqueness X hH1 hH2 hD1 hQ5 hQ7 hQ8 hA1 hA2
-  have hA5 : ArchimedeanRallisFifth X := GlobalTheory.T.no_intertwiner_smaller_fock_to_discrete_series X hH1 hH2 hD1 hQ5
+  have hA3 : ArchimedeanRallisUpDownLine X := _root_.GlobalTheory.ThetaUnique.theta_unique X hH1 hH2 hD1 hQ5 hQ7 hQ8 hA1 hA2
+  have hA5 : ArchimedeanRallisFifth X := _root_.GlobalTheory.SmallerSource.no_map_smaller_source X hH1 hH2 hD1 hQ5
   exact ⟨X, hX, hD1, hQ5, hA1, hA2, hA3, hA5⟩
 
 end GlobalTheory.RealPlaceTheta

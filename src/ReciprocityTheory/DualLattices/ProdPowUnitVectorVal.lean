@@ -35,14 +35,6 @@ theorem prod_pow_unitVector_val {M : Type} [CommMonoid M] (f : Ix g → M) (l : 
   rw [Finset.prod_eq_single l (fun j _ hj => by rw [if_neg hj, pow_zero]) (by simp), if_pos rfl,
     pow_one]
 
-theorem unitVector_injective : Function.Injective (e1 (p := p) (g := g)) := by
-  intro l l' h
-  have h1 := congrFun h l
-  simp only [e1, Pi.single_eq_same] at h1
-  by_contra hne
-  rw [Pi.single_eq_of_ne hne] at h1
-  exact one_ne_zero h1
-
 theorem liftScalePow_unitVector (D : Lifts H U X) (l : Ix g) : epow D (e1 (p := p) l) = D.ε l := by
   exact prod_pow_unitVector_val D.ε l
 

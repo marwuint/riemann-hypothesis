@@ -14,7 +14,7 @@ theorem PositivityTheory.Xgp.t_c_bm_exists_period : Given → ∀ (E : Type) [Fi
   intro hG E _ _ _ H D Xo l c Y S K _ ι _ Φ _ y M 𝔐 tie hp1 _ n Rb s hInt hcl F hF τ x hx hg
   have hpq : 1 ≤ D.p + D.q := by omega
   obtain ⟨j, r, p, hr, hj, hw, hp⟩ := exists_family (𝔐 := 𝔐) Rb hcl hx
-  have hhol : IsHolTo (Metric.ball 0 1) p := GlobalTheory.T.holomorphic_coords_of_generic_point 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie 𝔐.all n _ _ p
+  have hhol : IsHolTo (Metric.ball 0 1) p := _root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie 𝔐.all n _ _ p
     Metric.isOpen_ball hw fun u hu => (hp u hu).2.1
   haveI : FiniteDimensional ℚ c.F := c.fin
   haveI : NumberField c.F := ⟨⟩
@@ -55,10 +55,10 @@ theorem PositivityTheory.Xgp.t_c_bm_exists_period : Given → ∀ (E : Type) [Fi
       ext x
       simp
     set p' : (Fin n → ℂ) → (Sp ℂ ⟶ 𝔐.X) := fun u => spMap (starRingEnd ℂ) ≫ p (star u) with hp'
-    have hcen : ∀ u, centre (p' u) = centre (p (star u)) := fun u => (GlobalTheory.T.conjugate_point_same_centre 𝔐.X M.Ω 𝔐.ξ _ _ M.x _ 0).1
-    have hhol' : IsHolTo (Metric.ball 0 1) p' := GlobalTheory.T.holomorphic_coords_of_generic_point 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie 𝔐.all n _ _ p'
+    have hcen : ∀ u, centre (p' u) = centre (p (star u)) := fun u => (_root_.GlobalTheory.CompanionTheory.Ar.CoordConj.centre_and_coords_conj 𝔐.X M.Ω 𝔐.ξ _ _ M.x _ 0).1
+    have hhol' : IsHolTo (Metric.ball 0 1) p' := _root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie 𝔐.all n _ _ p'
       Metric.isOpen_ball (diffOn_star' hw)
-      fun u hu => (GlobalTheory.T.conjugate_point_same_centre 𝔐.X M.Ω 𝔐.ξ _ _ M.x _ _).2 (hp _ (star_mem_ball' hu)).2.1
+      fun u hu => (_root_.GlobalTheory.CompanionTheory.Ar.CoordConj.centre_and_coords_conj 𝔐.X M.Ω 𝔐.ξ _ _ M.x _ _).2 (hp _ (star_mem_ball' hu)).2.1
     have hτ' : ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, p' u ≫ 𝔐.f ≫ Y.s =
         spMap (((starRingEnd ℂ).comp τ₀).comp (algebraMap (𝓞 c.F) c.F)) := fun u hu => by
       rw [hp', Category.assoc, hτ _ (star_mem_ball' hu)]

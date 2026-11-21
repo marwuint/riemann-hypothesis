@@ -59,10 +59,6 @@ theorem IsMumfordFam.unif [IsLocalRing R] {Q : Data R} (h : IsMumfordFam F y α�
 
 end Family
 
-example {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) (y : Sp (FractionRing (PowerSeries ℚ)) ⟶ F.X)
-    (G₁ : Over (Sp (PowerSeries ℚ))) [GrpObj G₁] (α₁ : pullback G₁.hom (jK (PowerSeries ℚ)) ⟶ F.univ.A.left) :
-    ¬ IsMumfordFam F y α₁ (Wit.tate 0) := fun h => Wit.not_isPos_tate_zero h.isPos
-
 section Charts
 
 variable {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) {S : Scheme.{0}} (s : S ⟶ Sp o) (j : F.X ⟶ S)

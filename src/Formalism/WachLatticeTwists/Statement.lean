@@ -24,16 +24,4 @@ def SubmoduleLengthBound : Prop :=
     Module.length O N ≤
       (Fintype.card d : ℕ∞) * ((c : ℕ∞) * Module.length O (O ⧸ Ideal.span {(ℓ : O)}))
 
-def StatJumpsColumn : Prop :=
-  ∀ (ι : Type*) [Fintype ι] (cloud lows : ι → Multiset ℤ) (m j h0 : ℕ),
-    (∀ τ, ∀ u ∈ cloud τ, 0 < u) → (∀ τ, Multiset.card (lows τ) ≤ m) →
-    j = h0 + ∑ τ, negCount (cloud τ + lows τ) → h0 = 0 →
-    j ≤ Fintype.card ι * m
-
-def StatJumpsRow : Prop :=
-  ∀ (ι : Type*) [Fintype ι] (cloud lows : ι → Multiset ℤ) (m j h0 : ℕ),
-    (∀ τ, ∀ u ∈ cloud τ, u < 0) → (∀ τ, Multiset.card (lows τ) ≤ m) →
-    j = h0 + ∑ τ, negCount ((cloud τ + lows τ).map (fun u => -u - 1)) → h0 = 0 →
-    j ≤ Fintype.card ι * m
-
 end Formalism.RepresentationBoundsCohomology

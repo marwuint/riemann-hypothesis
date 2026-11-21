@@ -103,10 +103,6 @@ end GlobalTheory.LiftAbsPow
 
 namespace GlobalTheory.LiftAbsPow
 
-open GlobalTheory.CuspRep.InfType GlobalTheory.HeckeGal.Model
-
-variable {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M]
-
 end GlobalTheory.LiftAbsPow
 
 namespace GlobalTheory.LiftAbsPow

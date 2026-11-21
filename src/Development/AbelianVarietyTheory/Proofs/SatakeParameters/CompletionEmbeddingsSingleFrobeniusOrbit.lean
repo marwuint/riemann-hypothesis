@@ -3,8 +3,8 @@ import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBou
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicAlgClFiniteDenseEqAdjoinStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsPlaceOverPrimeOfPadicAlgClEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicAlgClFiniteDenseEqAdjoin
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsPlaceOverPrimeOfPadicAlgClEmbedding
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FinrankLocalFieldEqCardDecompositionGroupStatement
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbits Formalism.MainNotions.N
 open scoped Pointwise
@@ -38,7 +38,7 @@ theorem embeddings_orbit : ∀ {R : Ranks} (H : Host R) (l : ℕ) [Fact l.Prime]
     rw [H.dvd_condN_iff_small Fact.out]; tauto
   have hF := H.der.frob l hN0
   have hco : Nat.Coprime l H.condN := (Fact.out : l.Prime).coprime_iff_not_dvd.2 hN0
-  obtain ⟨v, hvl, hv⟩ := GlobalTheory.T.exists_place_over_prime_of_padicAlgCl_embedding l H.E c
+  obtain ⟨v, hvl, hv⟩ := _root_.GlobalTheory.LocPlace.exists_place_of_emb l H.E c
   have hp : l.Prime := Fact.out
   have hpz : Prime (l : ℤ) := Nat.prime_iff_prime_int.mp hp
   haveI := v.isPrime
@@ -56,7 +56,7 @@ theorem embeddings_orbit : ∀ {R : Ranks} (H : Host R) (l : ℕ) [Fact l.Prime]
   have hNpos : 0 < N := hord ▸ orderOf_pos s
   haveI : NeZero N := ⟨hNpos.ne'⟩
   refine ⟨?_, ?_⟩
-  · have hK : K.1 = IntermediateField.adjoin ℚ_[l] (Set.range c) := GlobalTheory.T.padicAlgCl_finite_dense_eq_adjoin' l H.E c K.1 hc K.2 hcl
+  · have hK : K.1 = IntermediateField.adjoin ℚ_[l] (Set.range c) := _root_.GlobalTheory.padicAlgCl_finite_dense_eq_adjoin l H.E c K.1 hc K.2 hcl
     have hdeg := GlobalTheory.T.finrank_local_field_eq_card_decomposition_group l H.E c v hv
     rw [← hord, ← Nat.card_zpowers, ← hstab, ← hdeg, hK]
   · intro τ

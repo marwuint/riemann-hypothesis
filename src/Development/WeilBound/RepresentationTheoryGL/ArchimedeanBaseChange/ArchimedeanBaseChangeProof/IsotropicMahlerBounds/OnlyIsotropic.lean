@@ -115,15 +115,6 @@ def ClassVanish : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (φ : GA E n → ℂ) (d : GL (Fin n) E), IsTest φ → SizeLE φ r → (∀ v, VCAt v φ) → C * (1 + r) ≤ τ →
     IsRegD d → ¬ IsRegEll d → cutTerm μ τ φ d = 0
 
-def TwoPlaces : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E],
-  (∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) →
-    Nontrivial (InfinitePlace E)
-
-def EllFormula : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Nontrivial (InfinitePlace E)] (n : ℕ),
-  ∃ C : ℝ, 0 ≤ C ∧ ∀ [MeasurableSpace (GA E n)] [BorelSpace (GA E n)] (μ : Measure (GA E n)) [μ.IsHaarMeasure]
-    (F : Set (GA E n)) (τ r : ℝ) (φ : GA E n → ℂ), IsFundamentalDomain (ratGL E n).range F μ → IsTest φ → SizeLE φ r →
-    0 ≤ r → RegSupp φ → (∀ v, VCAt v φ) → C * (1 + r) ≤ τ → cutTr μ F τ φ = ellSum μ φ
-
 def orbTerm2 {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} [MeasurableSpace (GA E a)]
     [MeasurableSpace (GA E b)] (μ₁ : Measure (GA E a)) (μ₂ : Measure (GA E b)) (φ : GA E a × GA E b → ℂ)
     (d₁ : GL (Fin a) E) (d₂ : GL (Fin b) E) : ℂ :=
@@ -142,41 +133,6 @@ structure IsTest2 {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
   size : ∀ g, φ g ≠ 0 → logSize g.1 ≤ r ∧ logSize g.2 ≤ r
   test₁ : ∀ g₂, IsTest (fun g => φ (g, g₂)) ∧ RegSupp (fun g => φ (g, g₂)) ∧ ∀ v, VCAt v fun g => φ (g, g₂)
   test₂ : ∀ g₁, IsTest (fun g => φ (g₁, g)) ∧ RegSupp (fun g => φ (g₁, g)) ∧ ∀ v, VCAt v fun g => φ (g₁, g)
-
-def EllFormula2 : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Nontrivial (InfinitePlace E)] (a b : ℕ),
-  ∃ C : ℝ, 0 ≤ C ∧ ∀ [MeasurableSpace (GA E a)] [BorelSpace (GA E a)] [MeasurableSpace (GA E b)] [BorelSpace (GA E b)]
-    (μ₁ : Measure (GA E a)) [μ₁.IsHaarMeasure] (μ₂ : Measure (GA E b)) [μ₂.IsHaarMeasure] (F₁ : Set (GA E a))
-    (F₂ : Set (GA E b)) (τ r : ℝ) (φ : GA E a × GA E b → ℂ), IsFundamentalDomain (ratGL E a).range F₁ μ₁ →
-    IsFundamentalDomain (ratGL E b).range F₂ μ₂ → IsTest2 φ r → 0 ≤ r → C * (1 + r) ≤ τ →
-    cutTr2 μ₁ μ₂ F₁ F₂ τ φ = ellSum2 μ₁ μ₂ φ
-
-theorem ellFormula_of (hU : Unfold) (hE : EllTerm) (hV : ClassVanish) (hS : SizeBasic) : EllFormula := by
-  classical
-  intro E _ _ _ _ n
-  obtain ⟨C₁, h₁⟩ := hE E n
-  obtain ⟨C₂, h₂⟩ := hV E n
-  refine ⟨max 0 (max C₁ C₂), le_max_left _ _, fun μ _ F τ r φ hF hφ hr hr0 hreg hvc hτ => ?_⟩
-  have l₁ : C₁ ≤ max 0 (max C₁ C₂) := (le_max_left _ _).trans (le_max_right _ _)
-  have l₂ : C₂ ≤ max 0 (max C₁ C₂) := (le_max_right _ _).trans (le_max_right _ _)
-  rw [(hU E n μ F τ φ hF hφ).2, ellSum]
-  refine finsum_congr fun c => ?_
-  by_cases he : IsRegEll (Quot.out c)
-  · rw [finsum_eq_if, if_pos he, cutTerm, orbTerm]
-    congr 1
-    funext x
-    by_cases h0 : φ (twConj (thetaA E n) x (ratGL E n (Quot.out c))) = 0
-    · simp [h0]
-    · have hx : x ∈ cutSet E n τ := by
-        refine h₁ τ x _ he (le_trans ?_ hτ)
-        have a0 := (hS E n).2.1 (twConj (thetaA E n) x (ratGL E n (Quot.out c)))
-        have a1 := hr _ h0
-        exact mul_le_mul l₁ (by linarith) (by linarith) (le_max_left _ _)
-      simp [chiT, hx]
-  · rw [finsum_eq_if, if_neg he]
-    by_cases hd : IsRegD (Quot.out c)
-    · exact h₂ μ τ r φ _ hφ hr hvc (le_trans (mul_le_mul_of_nonneg_right l₂ (by linarith)) hτ) hd he
-    · have : ∀ x, φ (twConj (thetaA E n) x (ratGL E n (Quot.out c))) = 0 := fun x => by_contra fun h => hd (hreg _ x h)
-      simp [cutTerm, this, quotIntegral]
 
 end PositivityTheory.Rg.BcB
 

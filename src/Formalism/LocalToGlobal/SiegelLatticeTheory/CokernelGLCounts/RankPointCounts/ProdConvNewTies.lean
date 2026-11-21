@@ -63,10 +63,4 @@ theorem prodConvNew_gen (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (hψ :
   · exact (local_factors_pos_typical_general X hb ψ hψ hs hloc u u' v h).2
   · exact (hpos v).1 h
 
-theorem prodConvNew_ties (T : Formalism.L2.SG.SpectralTiesReal.STies D) (u u' : D.what₂.Word)
-    (hpos : ∀ v, (¬ TypAt T.X v → 0 < localVolumeUnit T.X T.ψ v) ∧ 0 < ZZX T.X u u' T.ψ v ∧ (∀ l, 0 < PPX T.X u u' T.ψ l v) ∧
-      0 < jacX T.X v) :
-    ProdConvNew T.X u u' T.ψ := by
-  exact prodConvNew_gen T.X u u' T.ψ T.hb T.ψ_char T.ψ_std T.locCompat hpos
-
 end Formalism.L2.SG.Pf.ProdConvCut2

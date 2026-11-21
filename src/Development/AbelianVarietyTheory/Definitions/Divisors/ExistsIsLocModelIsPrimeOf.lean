@@ -96,19 +96,6 @@ theorem ring_ne_top : E.ring ≠ ⊤ := by
   have ha' : (a : K) ≠ 0 := fun e => ha (Subtype.ext e)
   exact ⟨⟨(a : K)⁻¹, h.ge trivial⟩, Subtype.ext (mul_inv_cancel₀ ha')⟩
 
-theorem Contains.mono {E : Place c} {R R' : Subring K} (h : E.Contains R') (hR : R ≤ R') :
-    E.Contains R := fun f hf => h f (hR hf)
-
-theorem contains_ring_iff (F : Place c) : F.Contains E.ring.toSubring ↔ F = E :=
-  ⟨fun h => ext (ValuationSubring.eq_of_le_of_ne_top E.ring h F.ring_ne_top).symm,
-    fun h => h ▸ fun _ hf => hf⟩
-
-theorem isPrimeOf_self : E.IsPrimeOf E.ring.toSubring :=
-  ⟨fun _ h => h, fun f hf => ⟨f, hf, 1, one_mem _, one_ne_zero, E.ord_one, mul_one f⟩⟩
-
-theorem isPrimeOf_ring_iff (F : Place c) : F.IsPrimeOf E.ring.toSubring ↔ F = E :=
-  ⟨fun h => (E.contains_ring_iff F).1 h.1, fun h => h ▸ F.isPrimeOf_self⟩
-
 theorem isFreeGen_toRat {ω : Forms E.const n} (hω : IsFreeGen E.ring ω) :
     IsFreeGen K (E.toRat n ω) := by
   letI := E.const.toAlgebra
@@ -173,43 +160,12 @@ theorem Klt.apply_zero (h : Klt c n R η φ) : φ 0 = 0 := h.2.1
 theorem Klt.lt_disc (h : Klt c n R η φ) {E : Place c} (hE : E.Contains R) : -1 < E.disc η φ :=
   h.2.2 E hE
 
-theorem Klt.mono (h : Klt c n R η φ) (hR : R ≤ R') : Klt c n R' η φ :=
-  ⟨h.1, h.2.1, fun _ hE => h.lt_disc (hE.mono hR)⟩
-
 theorem EffAt.form_ne_zero (h : EffAt c n R η φ) : η ≠ 0 := h.1
 
 theorem EffAt.apply_zero (h : EffAt c n R η φ) : φ 0 = 0 := h.2.1
 
 theorem EffAt.disc_le (h : EffAt c n R η φ) {E : Place c} (hE : E.IsPrimeOf R) :
     E.disc η φ ≤ 0 := h.2.2 E hE
-
-theorem klt_ring_iff (E : Place c) (hη : η ≠ 0) (hφ : φ 0 = 0) :
-    Klt c n E.ring.toSubring η φ ↔ -1 < E.disc η φ :=
-  ⟨fun h => h.lt_disc E.isPrimeOf_self.1,
-    fun h => ⟨hη, hφ, fun F hF => (E.contains_ring_iff F).1 hF ▸ h⟩⟩
-
-theorem effAt_ring_iff (E : Place c) (hη : η ≠ 0) (hφ : φ 0 = 0) :
-    EffAt c n E.ring.toSubring η φ ↔ E.disc η φ ≤ 0 :=
-  ⟨fun h => h.disc_le E.isPrimeOf_self,
-    fun h => ⟨hη, hφ, fun F hF => (E.isPrimeOf_ring_iff F).1 hF ▸ h⟩⟩
-
-theorem klt_uniformiser_iff (E : Place c) {ω : Forms E.const n} (hω : IsFreeGen E.ring ω)
-    {t : E.ring} (ht : Irreducible t) (s : ℚ) :
-    Klt c n E.ring.toSubring (E.toRat n ω) (Finsupp.single (t : K) s) ↔ s < 1 := by
-  have h0 : (0 : K) ≠ t := fun h => ht.ne_zero (Subtype.ext h.symm)
-  rw [klt_ring_iff E (E.toRat_ne_zero hω) (Finsupp.single_eq_of_ne h0), Place.disc,
-    Place.ordQ_single, E.ord_irreducible ht, E.formOrd_toRat hω]
-  push_cast
-  constructor <;> intro <;> linarith
-
-theorem effAt_uniformiser_iff (E : Place c) {ω : Forms E.const n} (hω : IsFreeGen E.ring ω)
-    {t : E.ring} (ht : Irreducible t) (s : ℚ) :
-    EffAt c n E.ring.toSubring (E.toRat n ω) (Finsupp.single (t : K) s) ↔ 0 ≤ s := by
-  have h0 : (0 : K) ≠ t := fun h => ht.ne_zero (Subtype.ext h.symm)
-  rw [effAt_ring_iff E (E.toRat_ne_zero hω) (Finsupp.single_eq_of_ne h0), Place.disc,
-    Place.ordQ_single, E.ord_irreducible ht, E.formOrd_toRat hω]
-  push_cast
-  constructor <;> intro <;> linarith
 
 end KltApi
 
@@ -309,11 +265,6 @@ theorem disc_placeEquiv (E : DivOver p) (η : RatForms p n) (m : ℕ) (g : X.fun
   rw [Place.disc, Place.ordQ_single, discrep, formOrd_placeEquiv, ord_placeEquiv]
   ring
 
-theorem nonempty_place_affineLine :
-    Nonempty (Place (Cartier.constFn (spMap (algebraMap k (Polynomial k))))) :=
-  have ⟨_, E, _⟩ := DivOver.exists_isAt_affineLine (k := k)
-  ⟨placeEquiv _ E⟩
-
 theorem isLocModel_locRing [LocallyOfFiniteType p] (z : X) :
     IsLocModel (Cartier.constFn p) (locRing z) := by
   let e : X.presheaf.stalk z ≃+* locRing z := RingEquiv.ofBijective
@@ -368,52 +319,5 @@ theorem kltAt_iff_klt [PerfectField k] [LocallyOfFiniteType p] [IsLocallyNoether
   exact (h.kltAt_iff hn hη hm).1 h' E hE
 
 end Scheme
-
-theorem exists_isLocModel_isPrimeOf :
-    ∃ (R : Subring _) (E : Place (Cartier.constFn (spMap (algebraMap k (Polynomial k))))),
-      IsLocModel (Cartier.constFn (spMap (algebraMap k (Polynomial k)))) R ∧ E.IsPrimeOf R :=
-  have ⟨E⟩ := nonempty_place_affineLine (k := k)
-  ⟨_, E, E.isLocModel, E.isPrimeOf_self⟩
-
-theorem exists_threshold_affineLine [PerfectField k] :
-    ∃ (R : Subring (Sp (Polynomial k)).functionField)
-      (η : Forms (Cartier.constFn (spMap (algebraMap k (Polynomial k)))) 1)
-      (t : (Sp (Polynomial k)).functionField),
-      IsLocModel (Cartier.constFn (spMap (algebraMap k (Polynomial k)))) R ∧
-      ∀ s : ℚ, (Klt _ 1 R η (Finsupp.single t s) ↔ s < 1) ∧
-        (EffAt _ 1 R η (Finsupp.single t s) ↔ 0 ≤ s) := by
-  obtain ⟨z, E, -⟩ := DivOver.exists_isAt_affineLine (k := k)
-  haveI : LocallyOfFiniteType (spMap (algebraMap k (Polynomial k))) :=
-    HasRingHomProperty.Spec_iff.2 (RingHom.finiteType_algebraMap.2 inferInstance)
-  have hn : topologicalKrullDim (Sp (Polynomial k)) = (1 : ℕ) := by
-    change topologicalKrullDim (PrimeSpectrum (Polynomial k)) = _
-    rw [PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim,
-      Polynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]
-    norm_num
-  obtain ⟨ω, hω⟩ := E.exists_isFreeGen hn
-  obtain ⟨t, ht⟩ := IsDiscreteValuationRing.exists_irreducible (placeEquiv _ E).ring
-  exact ⟨_, _, _, (placeEquiv _ E).isLocModel, fun s =>
-    ⟨klt_uniformiser_iff (placeEquiv _ E) hω ht s, effAt_uniformiser_iff (placeEquiv _ E) hω ht s⟩⟩
-
-theorem trBasis_fractionRing (n : ℕ) :
-    TrBasis (algebraMap k (FractionRing (MvPolynomial (Fin n) k)))
-      fun i => algebraMap (MvPolynomial (Fin n) k) _ (MvPolynomial.X i) := by
-  haveI : Algebra.IsAlgebraic (MvPolynomial (Fin n) k) (FractionRing (MvPolynomial (Fin n) k)) :=
-    IsLocalization.isAlgebraic _ (nonZeroDivisors _)
-  have h : IsTranscendenceBasis k
-      (algebraMap (MvPolynomial (Fin n) k) (FractionRing (MvPolynomial (Fin n) k)) ∘
-        MvPolynomial.X) := (IsTranscendenceBasis.mvPolynomial (Fin n) k).algebraMap_comp
-  have e : (algebraMap k (FractionRing (MvPolynomial (Fin n) k))).toAlgebra =
-      (inferInstance : Algebra k (FractionRing (MvPolynomial (Fin n) k))) :=
-    Algebra.algebra_ext _ _ fun _ => rfl
-  unfold TrBasis
-  rw [e]
-  exact h
-
-example (c : k →+* K) (n : ℕ) (R : Subring K) (φ : K →₀ ℚ) :
-    ¬ Klt c n R 0 φ ∧ ¬ EffAt c n R 0 φ := ⟨fun h => h.1 rfl, fun h => h.1 rfl⟩
-
-example (c : k →+* K) (n : ℕ) (R : Subring K) (η : Forms c n) :
-    ¬ Klt c n R η (Finsupp.single 0 1) := fun h => by simpa using h.apply_zero
 
 end GlobalTheory.FieldPair

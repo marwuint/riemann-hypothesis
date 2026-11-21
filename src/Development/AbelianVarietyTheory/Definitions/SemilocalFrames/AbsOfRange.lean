@@ -7,34 +7,8 @@ open MeasureTheory Matrix Formalism.BasicNotions Formalism.QuantumDeterminants F
 open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp.RangeModel
 
-example : @HypZ = @Formalism.MainNotions.S.Cnt.Hyp0 := rfl
-example : @MomIn = @Formalism.MainNotions.S.UnitaryVolumeMass.stMOM := rfl
-example : @SchurSt = @Formalism.MainNotions.S.UnitaryVolumeMass.stSchur := rfl
-
-theorem abs_of_range (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 A Cn C1 C : ℝ) (hn : 0 ≤ Cn)
-    (h : ABSr D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 C) :
-    Formalism.MainNotions.S.UnitaryVolumeMass.stABS D large₂ C' Cl Cg cb Cu cT CT C0 A C1 C ∧
-      Formalism.MainNotions.S.UnitaryVolumeMass.stABSconv D large₂ C' Cl Cg cb Cu cT CT C0 A C1 := by
-  have h0 : ∀ τ, l1dist (lamD D τ) (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 := fun τ => by
-    simp only [l1dist, sub_self, abs_zero, Finset.sum_const_zero]; positivity
-  constructor
-  · intro τ w w' hT θ hθ W hW S hS _ γ p hp θ' hθ' ν hν hH hD
-    exact (h hH.1 τ w w' hT θ hθ W hW _ (h0 τ) S hS γ p hp θ' hθ' ν hν hD).2
-  · intro τ w w' hT θ hθ W hW S hS _ γ p hp θ' hθ' ν hν hH hD
-    exact (h hH.1 τ w w' hT θ hθ W hW _ (h0 τ) S hS γ p hp θ' hθ' ν hν hD).1
-
 theorem vand_pos {n : ℕ} {x : Fin n → ℝ} (h : StrictAnti x) : 0 < Formalism.MainNotions.S.vand x :=
   Finset.prod_pos fun _ _ => Finset.prod_pos fun _ hb => sub_pos.2 (h (Finset.mem_filter.1 hb).2)
-
-theorem deg_eq (D : D7) (h : DegVand D) (W : LocW D.R.k D.R.rS) (l) (A₁ A₂ : LocS W)
-    (h₁ : GoodS D l A₁) (h₂ : GoodS D l A₂) : A₂.deg = A₁.deg :=
-  mul_right_cancel₀ (vand_pos h₁.1.1).ne' (h W l l A₁ A₂ h₁ h₂)
-
-theorem deg_ratio (D : D7) (h : DegVand D) (W : LocW D.R.k D.R.rS) (l₁ l₂) (A₁ A₂ : LocS W)
-    (h₁ : GoodS D l₁ A₁) (h₂ : GoodS D l₂ A₂) :
-    A₂.deg / A₁.deg = Formalism.MainNotions.S.vand l₂ / Formalism.MainNotions.S.vand l₁ := by
-  obtain ⟨P, -, hd, -⟩ := h₁.2.2.2.2.2.2.2.2.2.2
-  rw [div_eq_div_iff hd.ne' (vand_pos h₁.1.1).ne', h W l₁ l₂ A₁ A₂ h₁ h₂, mul_comm]
 
 theorem sizes_of (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) (hb : D.host.rdE ≤ large₂.sc.b)
     (h : HypZ D large₂ C' Cl Cg cb Cu cT CT C0) : Sizes D large₂ Cl Cg CT := by

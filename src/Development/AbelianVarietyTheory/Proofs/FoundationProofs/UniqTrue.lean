@@ -420,45 +420,4 @@ theorem uniq_true (hl2 : l ≠ 2) : ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Alg
   rw [e, pow_succ' _ n, norm_mul, norm_mul]
   exact mul_le_mul_of_nonneg_left h3 (norm_nonneg _)
 
-theorem main : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ c : Coef l, ∃ c₁ : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
-    (A : ValuationSubring Ω) (j : Ω →+* Qbar l)
-    (Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) (m c₀ : ℕ) (y : (ZMod (l ^ m))ˣ) (h h' : Qbar l),
-    GlobalTheory.LambdaValuationPowers.HTCoIn c A j Z m c₀ y h → GlobalTheory.LambdaValuationPowers.HTCoIn c A j Z m c₀ y h' → Cg (m - c₀ - c₁) h h' := by
-  intro l _ hl2 c
-  have hp1 := norm_natCast_lt_one (l := l)
-  obtain ⟨c', hc'⟩ := uniq_true hl2
-  obtain ⟨c₁, hc₁⟩ := core (K := Qbar l) c.O (fun a ha => norm_le_one_of_mem ha)
-    (fun φ a => norm_le_one_of_isIntegral ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a).map φ))
-    natCast_ne_zero hp1 c'
-  refine ⟨c₁, ?_⟩
-  intro Ω _ _ _ A j Z m c₀ y h h' H H'
-  obtain ⟨hj, f, hf, hyp⟩ := H.sub H'
-  obtain ⟨x, hx, hfx⟩ := exists_eq_sub_of_mem_cob hj (neg_mem hf)
-  have hyp' : ∀ s ∈ Ine (F := ℚ) A, cycMod ℚ Ω l m s = 1 →
-      (h - h') * lamv l m s + f s ∈ ball ((l : Qbar l) ^ (m - c₀)) := fun s hs hm => by
-    have := hyp s hs hm
-    simp only [Cg, sub_self, zero_sub, norm_neg] at this
-    exact this
-  obtain ⟨s₀, hs₀, hm₀, hu₀⟩ := exists_norm_lamv_eq_one hl2 (valuation_lt_one hj) m
-  have hd : ‖h - h'‖ ≤ 1 := by
-    have h1 : f s₀ ∈ ball ((l : Qbar l) ^ 0) := by
-      obtain ⟨q, o, w, how, e⟩ := mem_cob_iff.1 hf
-      rw [e]
-      refine sum_mem fun i _ => mul_mem_ball (norm_le_one_of_mem (how i).1) (sub_mem ?_ ?_)
-      · simpa [mem_ball] using (hj _).1 ((apply_mem_iff_of_mem_Dec (Ine_le_Dec A hs₀) _).2 (how i).2)
-      · simpa [mem_ball] using (hj _).1 (how i).2
-    have h2 := sub_mem (ball_pow_mono hp1 (Nat.zero_le _) (hyp' s₀ hs₀ hm₀)) h1
-    simpa [mem_ball, hu₀] using h2
-  obtain ⟨t, rfl⟩ := exists_grp hj hs₀ hm₀
-  refine hc₁ (grp A j m) (fun g x => norm_map_GK j g.1 x) (fun g a => smul_algebraMap g.1 a)
-    (fun σ => lamv l m (res j σ.1)) m (m - c₀) (Nat.sub_le _ _) (fun σ => norm_lamv_le_one σ.2.2)
-    (fun g σ => smul_lamv g.1 σ.2.2) (fun s t => by simpa using lamv_add_mem s.2.2 t.2.2) t hu₀
-    (fun k hk T X hT hX hh => hc' Ω A j hj m k hk T X hT hX hh) (h - h') x hd hx fun σ hσ => ?_
-  have h1 := hfx σ.1.toRingEquiv (res j σ.1) (fun w => res_spec j σ.1 w) hσ
-  have h2 := hyp' _ σ.2.1 σ.2.2
-  convert h2 using 1
-  rw [Pi.neg_apply] at h1
-  show _ - (σ.1.toRingEquiv x - x) = _
-  rw [← h1]; ring
-
 end GlobalTheory.LambdaValuationPowers.HTCoUniq

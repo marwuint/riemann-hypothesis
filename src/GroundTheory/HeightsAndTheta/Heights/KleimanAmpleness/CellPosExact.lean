@@ -26,15 +26,4 @@ def CellContract.Statement : Prop :=
       G (Function.update I k (insert (c k) (I k))) = G I) →
     CellPosExact S y G
 
-theorem CellContract.hyps :
-    (∀ k, (fun _ : (Σ _ : Unit, Fin 2) => (1 : ℚ)) ⟨k, (fun _ => (0 : Fin 2) : ∀ _ : Unit, Fin 2) k⟩ ≠ 0) ∧
-    (∀ I : ∀ _ : Unit, Finset (Fin 2), (∀ k, (I k).Nonempty) →
-      ¬ CellMeets (fun _ : (Σ _ : Unit, Fin 2) => (1 : ℚ)) I → (⊤ : Submodule ℚ ℚ) = ⊥) ∧
-    (∀ I I' : ∀ _ : Unit, Finset (Fin 2), (∀ k, (I k).Nonempty) → (∀ k, I k ⊆ I' k) →
-      CellMeets (fun _ : (Σ _ : Unit, Fin 2) => (1 : ℚ)) I' → (⊤ : Submodule ℚ ℚ) ≤ ⊤) ∧
-    (∀ I : ∀ _ : Unit, Finset (Fin 2), (∀ k, (I k).Nonempty) → ∀ _ : Unit,
-      (⊤ : Submodule ℚ ℚ) = ⊤) :=
-  ⟨fun _ => one_ne_zero, fun _ _ h => absurd (fun _ _ _ => one_ne_zero) h, fun _ _ _ _ _ => le_rfl,
-    fun _ _ _ => rfl⟩
-
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

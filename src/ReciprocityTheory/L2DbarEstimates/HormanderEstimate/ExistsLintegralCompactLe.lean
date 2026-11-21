@@ -209,12 +209,6 @@ theorem integral_holo_mul_db (n : ℕ) {M : Type*} [TopologicalSpace M] [T2Space
   rw [h0, integral_zero] at h
   exact neg_eq_zero.mp h.symm
 
-theorem sq_eLpNorm_two {α : Type*} [MeasurableSpace α] (μ : Measure α) (g : α → ℂ) :
-    eLpNorm g 2 μ ^ 2 = ∫⁻ x, ‖g x‖ₑ ^ 2 ∂μ := by
-  have h := MeasureTheory.eLpNorm_nnreal_pow_eq_lintegral (f := g) (μ := μ) (p := (2 : NNReal)) two_ne_zero
-  norm_num at h
-  simpa [ENNReal.rpow_two] using h
-
 end
 
 end ReciprocityTheory.L2DbarEstimates.F

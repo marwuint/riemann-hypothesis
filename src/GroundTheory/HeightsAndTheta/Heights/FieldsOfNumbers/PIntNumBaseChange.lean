@@ -330,9 +330,6 @@ theorem IntNumBaseChange.intersectionNumber_baseChange : IntNumBaseChange.Statem
     exact ⟨isPrime_map_ratFunc P, isMultiHomogIdeal_map hP.multiHomog,
       isRelevant_map hP.relevant⟩
 
-theorem IntNumBaseChange.proof (_h1 : MixedDiffConst.Statement) : IntNumBaseChange.Statement :=
-  IntNumBaseChange.intersectionNumber_baseChange
-
 end
 
 end GroundTheory.Heights₂.Heights.FieldNumbers

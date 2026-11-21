@@ -41,19 +41,6 @@ lemma chartVec_chartCoord_chartInv {m j : Fin (N + 1)} {z : Fin N → ℂ} (hz :
     chartVec j (chartCoord j (chartInv m z)) = (chartVec m z j)⁻¹ • chartVec m z :=
   chartVec_transition m j hz
 
-lemma mem_chartDomain_iff {j k : Fin (N + 1)} {x : CP N} (hx : x ∈ chartDomain j) :
-    x ∈ chartDomain k ↔ chartVec j (chartCoord j x) k ≠ 0 := by
-  conv_lhs => rw [← chartInv_chartCoord j hx]
-  rfl
-
-lemma chartVec_chartCoord_of_mem {j k : Fin (N + 1)} {x : CP N} (hx : x ∈ chartDomain j)
-    (hk : x ∈ chartDomain k) :
-    chartVec k (chartCoord k x) =
-      (chartVec j (chartCoord j x) k)⁻¹ • chartVec j (chartCoord j x) := by
-  have h := (mem_chartDomain_iff hx).1 hk
-  conv_lhs => rw [← chartInv_chartCoord j hx]
-  exact chartVec_chartCoord_chartInv h
-
 end ProjFS
 
 open ProjFS
@@ -63,64 +50,6 @@ def projAtlas (N : ℕ) : FinHolAtlas N (CP N) where
   chart := chart
   cover := exists_mem_chartDomain
   holo j k := fun _z hz => analyticAt_transition j k hz.2
-
-def tautologicalTransition (j k : Fin (N + 1)) (x : CP N) : ℂ := chartVec j (chartCoord j x) k
-
-def tautologicalLineBundle (N : ℕ) : HolLineBundle (projAtlas N) where
-  g := tautologicalTransition
-  holo (j k m : Fin (N + 1)) := by
-    intro z hz
-    have hj : chartVec m z j ≠ 0 := hz.2.1
-    have hk : chartVec m z k ≠ 0 := hz.2.2
-    refine ((analyticAt_chartVec_apply m k z).div (analyticAt_chartVec_apply m j z) hj).congr ?_
-    filter_upwards [eventually_chartVec_ne hj] with w hw
-    change chartVec m w k / chartVec m w j = chartVec j (chartCoord j (chartInv m w)) k
-    rw [chartVec_chartCoord_chartInv hw, Pi.smul_apply, smul_eq_mul, div_eq_inv_mul]
-  ne_zero (j k : Fin (N + 1)) x hx := (mem_chartDomain_iff hx.1).1 hx.2
-  cocycle (j k l : Fin (N + 1)) x hx := by
-    have hk := (mem_chartDomain_iff hx.1.1).1 hx.1.2
-    change chartVec j (chartCoord j x) l =
-      chartVec j (chartCoord j x) k * chartVec k (chartCoord k x) l
-    rw [chartVec_chartCoord_of_mem hx.1.1 hx.1.2, Pi.smul_apply, smul_eq_mul]
-    field_simp
-
-def fsPhi (j : Fin (N + 1)) (x : CP N) : ℝ := Real.log (normSq2 (chartVec j (chartCoord j x)))
-
-lemma contDiff_normSq2_chartVec (m : Fin (N + 1)) :
-    ContDiff ℝ ∞ (fun z : Fin N → ℂ => normSq2 (chartVec m z)) := by
-  unfold normSq2
-  exact ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_chartVec_apply ℝ m i)
-
-def fsWeight (N : ℕ) : Weight (tautologicalLineBundle N) where
-  φ := fsPhi
-  smooth (j m : Fin (N + 1)) := by
-    have hF : ContDiffOn ℝ ∞ (fun z : Fin N → ℂ =>
-        Real.log ((‖chartVec m z j‖ ^ 2)⁻¹ * normSq2 (chartVec m z)))
-        {z | chartVec m z j ≠ 0} := by
-      refine ContDiffOn.log ?_ ?_
-      · refine ContDiffOn.mul ?_ (contDiff_normSq2_chartVec m).contDiffOn
-        refine ContDiffOn.inv ((contDiff_norm_sq ℝ).comp
-          (contDiff_chartVec_apply ℝ m j)).contDiffOn ?_
-        intro z hz; exact pow_ne_zero _ (norm_ne_zero_iff.2 hz)
-      · intro z hz
-        have h1 : 0 < ‖chartVec m z j‖ := norm_pos_iff.2 hz
-        have h2 := normSq2_pos (chartVec_ne_zero m z)
-        positivity
-    refine (hF.mono fun z hz => hz.2).congr fun z hz => ?_
-    have hz' : chartVec m z j ≠ 0 := hz.2
-    change Real.log (normSq2 (chartVec j (chartCoord j (chartInv m z)))) = _
-    rw [chartVec_chartCoord_chartInv hz', normSq2_smul, norm_inv, inv_pow]
-  compat (j k : Fin (N + 1)) x hx := by
-    have hk := (mem_chartDomain_iff hx.1).1 hx.2
-    change Real.log (normSq2 (chartVec j (chartCoord j x))) =
-      Real.log (normSq2 (chartVec k (chartCoord k x))) +
-        Real.log (‖chartVec j (chartCoord j x) k‖ ^ 2)
-    rw [chartVec_chartCoord_of_mem hx.1 hx.2, normSq2_smul, norm_inv]
-    have hN := normSq2_pos (chartVec_ne_zero j (chartCoord j x))
-    have hc : 0 < ‖chartVec j (chartCoord j x) k‖ := norm_pos_iff.2 hk
-    rw [← Real.log_mul (by positivity) (by positivity)]
-    congr 1
-    field_simp
 
 def projMatrix : CP N → (Fin (N + 1) → Fin (N + 1) → ℂ) :=
   Projectivization.lift

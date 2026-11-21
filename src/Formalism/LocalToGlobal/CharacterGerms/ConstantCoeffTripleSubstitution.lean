@@ -83,11 +83,6 @@ theorem cc_actAt (x : O) {a : Fin dd → MvPowerSeries τ C} (ha : ∀ i, MvPowe
   unfold actAt
   exact VP.cc_subst (fun q : Fin 1 × Fin dd => ha q.2) (Y.B.A.const x i)
 
-theorem int_actAt (x : O) {a : Fin dd → MvPowerSeries τ C} (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0)
-    (hai : ∀ i, IntS V (a i)) (i : Fin dd) : IntS V (actAt Y x a i) := by
-  unfold actAt
-  exact IntS.subst (fun q : Fin 1 × Fin dd => ha q.2) (fun q : Fin 1 × Fin dd => hai q.2) (Y.intAct x i)
-
 theorem eval_two_points_eq_subst {n m : ℕ} (a b : Pt C n dd) (f : PS C 2 dd) (_hm : m = 2) : ev ![a, b] f = MvPowerSeries.subst (P2 a b) f := by
   unfold ev
   congr 1

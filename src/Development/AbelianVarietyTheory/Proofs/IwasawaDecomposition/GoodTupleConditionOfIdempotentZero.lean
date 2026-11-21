@@ -977,10 +977,6 @@ theorem exists_nStage_adapt (B : Base) (C : Cols B) (W : RowsRest B C) (L : LocS
     ∃ N : NStage B C (adapt W), N.toLocStage = L :=
   exists_nStage_of_rows B C (adapt W) L (fun _ _ => rfl) (fun _ _ _ _ => rfl) (fun _ => rfl) (fun _ _ => rfl)
 
-theorem exists_nStage : ∀ (B : Base) (C : Cols B) (W : RowsRest B C) (L : LocStage),
-    ∃ W' : RowsRest B C, W' = adapt W ∧ ∃ N : NStage B C W', N.toLocStage = L :=
-  fun B C W L => ⟨adapt W, rfl, exists_nStage_adapt B C W L⟩
-
 end GlobalTheory.Mem.GaloisStage
 
 end

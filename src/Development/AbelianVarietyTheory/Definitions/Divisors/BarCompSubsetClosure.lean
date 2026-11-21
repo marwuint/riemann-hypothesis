@@ -75,9 +75,6 @@ theorem gap_remGaps (a : ℕ) {n : ℤ} (hn : 0 < n) (v : Fin N → ℤ) (k : �
     exact ⟨Int.emod_nonneg _ hn.ne', Int.emod_lt_of_pos _ hn⟩
   · rw [gap, dif_neg h]; exact ⟨le_rfl, hn⟩
 
-example : floorGaps 1 3 ![7, 0, -8] = ![2, 0, -2] ∧ remGaps 1 3 ![7, 0, -8] = ![1, 0, -2] ∧
-    floorGaps 0 3 ![0, 1] = ![0, 1] := by decide
-
 end Gaps
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
@@ -108,8 +105,6 @@ def rem : AllWt.Weight Dw := fun τ => remGaps P.a P.T₁ ((P.uMinus - FlagTan.k
 def u₂ : AllWt.Weight Dw := P.u₁ + P.rem
 
 def uc : AllWt.Weight Dw := FlagTan.kap Dw + P.u₂ + dimFlag Dw • P.u₁
-
-def u' : AllWt.Weight Dw := uPrime Dw P.u₁
 
 def ub : AllWt.Weight Dw := fun τ => floorGaps P.a (dimFlag Dw + 3) (P.u₁ τ)
 
@@ -443,12 +438,6 @@ theorem Extends.space_le (h : Extends X Z U la) : space X Z U la ≤ vanBd X Z l
   rintro s ⟨f, hf⟩
   obtain ⟨s', hs', e⟩ := h f
   exact restr_injective_of_dense le_top (dense_U₀ X Z) (e.trans hf) ▸ hs'
-
-def Extends.toVanBd (h : Extends X Z U la) : Cusp Z U la →ₗ[c.F] vanBd X Z la :=
-  Submodule.inclusion h.space_le ∘ₗ h.equiv.toLinearMap
-
-theorem Extends.toVanBd_injective (h : Extends X Z U la) : Function.Injective h.toVanBd :=
-  (Submodule.inclusion_injective h.space_le).comp h.equiv.injective
 
 end Component
 

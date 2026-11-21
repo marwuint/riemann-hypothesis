@@ -39,18 +39,6 @@ def ExistsPerpOver (E : Type) [Field E] [NumberField E] [StarRing E] : Prop :=
     ∀ (β : E) (P' Q' : ℕ), Step β P Q P' Q' →
       ∃ x : W.V, W.hD x x = β ∧ HasComplement W x (M - 1) P' Q'
 
-def ForallPerpOver (E : Type) [Field E] [NumberField E] [StarRing E] : Prop :=
-  ∀ (W : HSpace E) (M P Q : ℕ), OfKind W M P Q → 3 ≤ M →
-    ∀ (β : E) (P' Q' : ℕ), Step β P Q P' Q' →
-      (∃ x : W.V, W.hD x x = β) ∧ ∀ x : W.V, W.hD x x = β → HasComplement W x (M - 1) P' Q'
-
-theorem ForallPerpOver.exists (h : ForallPerpOver E) : ExistsPerpOver E := by
-  intro W M P Q hW hM β P' Q' hs
-  obtain ⟨⟨x, hx⟩, hall⟩ := h W M P Q hW hM β P' Q' hs
-  exact ⟨x, hx, hall x hx⟩
-
-example (W : HSpace E) : IsSelfDualLattice W W.L0 := ⟨W.standardTuple_isLattice, W.baseLattice_isUnimodular⟩
-
 theorem injective_of_isIsomEmb {W' W : HSpace E} {ι : W'.V →ₗ[E] W.V}
     (h : HSpace.IsIsomEmb W' W ι) : Function.Injective ι := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -59,19 +47,10 @@ theorem injective_of_isIsomEmb {W' W : HSpace E} {ι : W'.V →ₗ[E] W.V}
   rw [← h y z, hy]
   simp
 
-example (W : HSpace E) (x : W.V) (hx : W.hD x x = 1) : x ∉ perp W x := by
-  rw [mem_perp, hx]; exact one_ne_zero
-
 end General
 
 def UnitVectorPerp (D : D7) : Prop :=
   @ExistsPerpOver D.host.E _ _ D.host.cmStar
-
-def UnitVectorPerpAll (D : D7) : Prop :=
-  @ForallPerpOver D.host.E _ _ D.host.cmStar
-
-theorem UnitVectorPerpAll.unitVectorPerp {D : D7} (h : UnitVectorPerpAll D) : UnitVectorPerp D :=
-  @ForallPerpOver.exists D.host.E _ _ D.host.cmStar h
 
 end GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeComplements
 

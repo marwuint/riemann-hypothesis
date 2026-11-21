@@ -17,7 +17,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.GlobalTraceComparison.TraceAsymptotics.EvaluationCombinedTestFunction
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsUnitaryTwistAbsPow
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.GlobalTraceComparison.TraceAsymptotics.ConstantTermParabolicAverage
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAutFormsWeightLevelFiniteSumFixedVectorsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAutFormsWeightLevelFiniteSumFixedVectors
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLocCompIffEquiv
 open UpperTheory.V.Z.Mult UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 open NumberField IsDedekindDomain Matrix Polynomial Filter Topology
@@ -115,7 +117,7 @@ theorem UpperTheory.V.Z.Mult.rMult :
       · rw [hK₁o w h]
         exact hZK w hw h
     have hDec₁ : IsDec S lam K₁ σ := isDec_of_globLev hg1 hDec
-    obtain ⟨-, ι₂, _, σ₂, d1, d2, d3, -⟩ := GlobalTheory.T.unitaryAutForms_weight_level_finite_sum_fixed_vectors E hU n hn S hS lam K₂ hK₂L
+    obtain ⟨-, ι₂, _, σ₂, d1, d2, d3, -⟩ := _root_.GlobalTheory.BCT.forms_decomp E hU n hn S hS lam K₂ hK₂L
     have hDec₂ : IsDec S lam K₂ σ₂ := ⟨d1, d2, d3⟩
     have hfx : ∀ w ∈ Z, fixed ((τ w).ρ.comp (UL n w).subtype) (K₁ w) ≠ ⊥ := fun w hw => by
       obtain ⟨t, ht, hne⟩ := hfix w (hZ w hw).1 (hZ w hw).2

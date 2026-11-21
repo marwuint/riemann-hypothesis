@@ -143,13 +143,4 @@ def PolOfSat : Prop :=
     (∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ψ.UnrAt w ∧ ∃ B B', (CG.mk P).HasSat w B ∧ (CG.mk P).HasSat (cPl w) B' ∧
       B'.map (·⁻¹) = B.map (· * (ψ.val w)⁻¹)) → GlobalTheory.ContraPair.DualIsConjBy P ψ
 
-def BcPolar : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [IsCMField K], Module.finrank ℚ K = 2 → ∀ (n : ℕ), 1 ≤ n →
-    ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [Algebra K Ω] [IsScalarTower ℚ K Ω] [IsAlgClosure K Ω]
-      (ι : Qbar l ≃+* ℂ) (r : G ℚ Ω →* GL (Fin n) (Qbar l)) (wt : ℤ) (θ : G ℚ Ω →* (Qbar l)ˣ) (π : TR.CuspSub ℚ n),
-      Continuous r → AttR ι r π → IsCycWt l wt θ → DualTw r θ → IsIrr (r.comp (res ℚ Ω K)) →
-      ∃ (P : CuspSub K n) (χ : HChar (maximalRealSubfield K)) (μ : G (maximalRealSubfield K) Ω →* (Qbar l)ˣ),
-        IsBC π P ∧ AttC ι (r.comp (res ℚ Ω K)) P ∧ GlobalTheory.ContraPair.PolarizedPair P χ ∧ IsLAdicCharOf ι χ μ ∧
-        μ.comp (res (maximalRealSubfield K) Ω K) = θ.comp (res ℚ Ω K) * cycBar K Ω l ^ ((n : ℤ) - 1)
-
 end UpperTheory.V.Af.Bc

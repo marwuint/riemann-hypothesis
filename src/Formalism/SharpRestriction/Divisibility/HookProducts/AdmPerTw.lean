@@ -46,28 +46,4 @@ theorem card_stabilizer_dvd₂ (hD : DGamDef D) (T : TwForms D) (u : D.what₂.W
   rw [Nat.card_congr (MonoidHom.ofInjective ((T.fm u μ).stabMap_inj c)).toEquiv]
   exact Subgroup.card_subgroup_dvd_card _
 
-theorem twisted_period_of_class_decomposition {Dx : DivX D} {T : TwForms D}
-    (h : ∀ u μ, μ ≠ D.what₂.mu0 → Formalism.MainNotions.RT.PeriodPointConditions.PerDecTw D Dx T u μ) : Formalism.MainNotions.WeightDegreeSizes.TwistedPeriodIntegral D Dx T := by
-  intro hD u μ hμ x hx F hF _
-  obtain ⟨pc, hs, hi⟩ := h u μ hμ
-  choose y hy hv using hi x hx F hF
-  refine ⟨∑ c, ((Nat.card ((T.fm u μ).stabilizer₂ c) : ℕ) : D.what₂.LL)⁻¹ * y c, ?_, fun w hw => ?_⟩
-  · rw [hs, map_sum]
-    refine Finset.sum_congr rfl fun c _ => ?_
-    rw [map_mul, map_inv₀, map_natCast, hy c]
-  · refine Finset.sum_induction _ (fun t => t = 0 ∨ -ur D w (Formalism.MainNotions.WeilJacquetShalikaLaw.vDG D u w) ≤ (vAdd (D.plEq w) t : ℝ))
-      (fun a b ha hb => Formalism.MainNotions.WeightDegreeSizes.pair_add_ge D w ha hb) (Or.inl rfl) fun c _ => ?_
-    rcases hv c w hw with h0 | h0
-    · left; rw [h0, mul_zero]
-    by_cases hy0 : y c = 0
-    · left; rw [hy0, mul_zero]
-    right
-    have hn0 : ((Nat.card ((T.fm u μ).stabilizer₂ c) : ℕ) : D.what₂.LL) ≠ 0 := Nat.cast_ne_zero.2 Nat.card_pos.ne'
-    rw [OrbitPlaces.vAdd_mul w (inv_ne_zero hn0) hy0, OrbitPlaces.vAdd_inv w hn0]
-    have hb := vAdd_dvd_le (D := D) w (D.mem u).C.DGam_pos.ne' (card_stabilizer_dvd₂ hD T u μ c)
-    have h0' : (0 : ℝ) ≤ (vAdd (D.plEq w) (y c) : ℝ) := by exact_mod_cast h0
-    unfold Formalism.MainNotions.WeilJacquetShalikaLaw.vDG
-    push_cast
-    linarith
-
 end Formalism.MainNotions.DIV.HookProducts.AdmPerTw

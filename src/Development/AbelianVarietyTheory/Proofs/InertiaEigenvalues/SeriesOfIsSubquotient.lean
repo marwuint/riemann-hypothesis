@@ -49,7 +49,7 @@ theorem eSerC_laws (L : LabelDatum g) (hg : 5 ≤ g) (hA : AllLab L) (n : ℕ) :
     exact ⟨f, hf, fun f' hf' => Label.label_unique L hg χ hχ f' f hf' hf⟩
   have hmon := label_mon L (n := n)
   obtain ⟨hfin, hsum⟩ := GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one (Gn g n)
-  have horth := GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central (Gn g n)
+  have horth := _root_.GlobalTheory.GLq.ZOrth.zorth (Gn g n)
   have hmem : ∀ f χ, χ ∈ hfin.toFinset.filter (fun χ => HasLabel L χ f) ↔ IsIrr χ ∧ HasLabel L χ f := by
     intro f χ; simp
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
@@ -179,10 +179,10 @@ theorem eSerC_mul_zOf (L : LabelDatum g) {n : ℕ} {χ : Gn g n → ℂ} {f : (Z
     (hf : HasLabel L χ f) : eSerC L n f * zOf χ = zOf χ := by
   have hfin := (GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one (Gn g n)).1
   rw [eSerC_eq_sum L n hfin, Finset.sum_mul, Finset.sum_eq_single_of_mem χ (by simp [hχ, hf])]
-  · simpa using (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ χ hχ hχ).1
+  · simpa using (_root_.GlobalTheory.GLq.ZOrth.zorth _ χ χ hχ hχ).1
   · intro b hb hne
     have hb' : IsIrr b := by simpa using (Finset.mem_filter.1 hb).1
-    rw [(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ b χ hb' hχ).1, if_neg hne]
+    rw [(_root_.GlobalTheory.GLq.ZOrth.zorth _ b χ hb' hχ).1, if_neg hne]
 
 end Finite
 

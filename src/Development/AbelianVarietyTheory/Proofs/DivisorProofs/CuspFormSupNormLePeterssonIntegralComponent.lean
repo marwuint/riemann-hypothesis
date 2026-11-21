@@ -10,9 +10,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.F
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.MajLactRmul
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsProbabilityMeasureAutQuotientNormalized
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustFStatementPfD
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardGroupElementsChartReturnLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubMeanValueFlagChartInvariantMeasureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralInvariantChartSetLeMulFundamentalSetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardGroupElementsChartReturnLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubMeanValueFlagChartInvariantMeasure
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralInvariantChartSetLeMulFundamentalSet
 open NumberField MeasureTheory ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates GlobalTheory.LevGeo
 open scoped ENNReal
 
@@ -112,8 +112,8 @@ theorem GlobalTheory.supLoc_component : ∀ (E : Type) [Field E] [NumberField E]
     have h2 : 0 < w + fdeg E := by linarith
     rw [mul_one_div, div_le_div_iff₀ (by positivity) (by norm_num)]
     nlinarith [mul_le_mul hr1 (show (1:ℝ) ≤ w + fdeg E by linarith) zero_le_one h1.le]
-  have hmult := GlobalTheory.T.card_group_elements_chart_return_le E r X x ε ρ hr hxo hε hρ hΓL hshort
-  have hsub := GlobalTheory.T.subMeanValue_flagChart_invariantMeasure E r X.toData la w x P hr hxo hw hsec.1
+  have hmult := _root_.GlobalTheory.chart_mult_le E r X x ε ρ hr hxo hε hρ hΓL hshort
+  have hsub := _root_.GlobalTheory.SubmeanChart.submean_chart E r X.toData la w x P hr hxo hw hsec.1
 
   set P' : Frame X.Ψ r → ℂ := X.dom.piecewise P 0 with hP'def
   set Φ : Frame X.Ψ r → ℝ≥0∞ := fun u => ENNReal.ofReal (X.pnorm la P' u ^ 2) with hΦdef
@@ -145,7 +145,7 @@ theorem GlobalTheory.supLoc_component : ∀ (E : Type) [Field E] [NumberField E]
     refine le_trans (ENat.toENNReal_le.2 (Set.encard_le_encard ?_)) hmult
     rintro γ ⟨hγ, z, hz, z', hz', c, hc, he⟩
     exact ⟨hγ, z, z', (mem_ball_zero_iff.1 hz.1).le, (mem_ball_zero_iff.1 hz'.1).le, c, hc, he⟩
-  have hunf := GlobalTheory.T.lintegral_invariant_chartSet_le_mul_fundamentalSet E r X.toData x0 x FF A _ Φ hx0 hxo hFF hA hAsub hΦm hΦΓ hΦB hmA
+  have hunf := _root_.GlobalTheory.Unfold.lintegral_chart_le_mul_fundSet E r X.toData x0 x FF A _ Φ hx0 hxo hFF hA hAsub hΦm hΦΓ hΦB hmA
 
   have hae : ∀ᵐ z ∂(muF X.toData x), z ∈ OmF X.toData x := by
     have h1 : ∀ᵐ z ∂(volume.restrict (OmF X.toData x)), z ∈ OmF X.toData x :=

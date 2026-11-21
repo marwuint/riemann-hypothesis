@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PrincipalLattices.LogHermFormOfUnitDiscriminant
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsLieCombOneIffComp
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CurveHomExtOfDerivativeLieBasisStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CurveHomExtOfDerivativeLieBasis
 
 noncomputable section
 
@@ -40,7 +40,7 @@ theorem quadratic_equation_of_derivative : ThetaUnifAV → Out.PolBaseChangeSt �
   have h1 := isMonHom_id_pow (G := P.A) n
   have h2 : IsMonHom ((W ≫ W) * (𝟙 P.A) ^ n) :=
     inferInstanceAs (IsMonHom (lift (W ≫ W) ((𝟙 P.A) ^ n) ≫ μ[P.A]))
-  refine GlobalTheory.T.curve_hom_ext_of_derivative_lieBasis hT hB k s P P v _ _ hb h2 hW ?_
+  refine _root_.GlobalTheory.HomUnique.hom_ext_of_lieBasis hT hB k s P P v _ _ hb h2 hW ?_
   have h3 : IsLieComb ![w] ![v ≫ W] ((v ≫ W) ≫ W) :=
     (lieMultiple_calculus k P.A P.A v _ v w w).2.2.2.1 W hw
   have h4 : IsLieComb ![w * w] ![v] ((v ≫ W) ≫ W) :=

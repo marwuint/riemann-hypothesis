@@ -10,11 +10,6 @@ namespace ReciprocityTheory.ChartRestriction.G.TB.G2
 
 variable {k : Type} [CommRing k] {d : ℕ}
 
-section Mon
-variable (F : Fin d → PS k 2 d) {ι : Type} (u : ι → Fin d → k)
-
-end Mon
-
 section abelian₂
 variable {ι : Type} [Fintype ι] [DecidableEq ι] (ψ : List ι → k)
 

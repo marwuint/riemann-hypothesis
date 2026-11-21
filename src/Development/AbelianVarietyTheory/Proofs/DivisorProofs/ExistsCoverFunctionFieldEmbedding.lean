@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMem
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProjOverCompFinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemNonzeroLocusFormMap
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpecializes
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericPointMorphismFactorizationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericPointMorphismFactorization
 open CategoryTheory AlgebraicGeometry Limits NumberField IsDedekindDomain TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.Mean4 GlobalTheory.Mean4O
@@ -98,7 +98,7 @@ theorem exists_cover (F : Type) [Field F] [NumberField F] (Y : Var F) (M : TrueG
     rw [HasRingHomProperty.Spec_iff (P := @Flat)]
     exact RingHom.flat_algebraMap_iff.mpr (inferInstance : Module.Flat ℤ (𝓞 F))
   have : GlobalTheory.IsNormalScheme f.normalization := GlobalTheory.IsNormalScheme.normalization_of_isIntegral f
-  obtain ⟨hη, ψ, hψ⟩ := GlobalTheory.T.generic_point_morphism_factorization Y.X K g rfl
+  obtain ⟨hη, ψ, hψ⟩ := _root_.GlobalTheory.NormFnField.normalization_functionField Y.X K g rfl
   let V : Cover Y :=
     { X := f.normalization
       p := f.fromNormalization ≫ M.p

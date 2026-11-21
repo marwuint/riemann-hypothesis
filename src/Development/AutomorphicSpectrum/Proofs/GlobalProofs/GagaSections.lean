@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SerreHolomorphicSectionsHolds
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompactSpacePts
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SmoothSchemeDecomposeRelativeDimensionStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HolomorphicLocalSectionsCompatibleStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SmoothSchemeDecomposeRelativeDimension
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HolomorphicLocalSectionsCompatible
 open CategoryTheory AlgebraicGeometry TopologicalSpace Set
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CxPts
@@ -103,7 +103,7 @@ theorem exists_factor {X : Scheme.{0}} (W : ℕ → X.Opens) (hc : ⨆ D, W D = 
 
 theorem gagaSections : GlobalTheory.CompanionTheory.Ar.Flat.GagaSections := by
   intro X s hp hs L hL h hhol hcomp
-  obtain ⟨W, hcl, hdim, hc, hd⟩ := GlobalTheory.T.smooth_scheme_decompose_relative_dimension X s hs
+  obtain ⟨W, hcl, hdim, hc, hd⟩ := _root_.GlobalTheory.CompanionTheory.Gaga.exists_clopen_smoothOfRelativeDimension X s hs
   have hprop : ∀ D, IsProper ((W D).ι ≫ s) := fun D => by
     haveI : IsClosedImmersion (W D).ι :=
       IsClosedImmersion.of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact hcl D)
@@ -111,7 +111,7 @@ theorem gagaSections : GlobalTheory.CompanionTheory.Ar.Flat.GagaSections := by
   have key : ∀ D, ∃ σ : (resLB (W D).ι L).Sec, ∀ (i : L.ι) (x : Sp ℂ ⟶ (W D).toScheme),
       x ≫ (W D).ι ≫ s = 𝟙 _ → ⊤ ≤ x ⁻¹ᵁ ((W D).ι ⁻¹ᵁ L.U i) →
       valAt' x ((W D).ι ⁻¹ᵁ L.U i) (σ.f i) = h i (x ≫ (W D).ι) := fun D => by
-    refine GlobalTheory.T.holomorphic_local_sections_compatible (W D).toScheme ((W D).ι ≫ s) D (hprop D) (hdim D) (resLB (W D).ι L)
+    refine _root_.GlobalTheory.CompanionTheory.Gaga.gagaSections_pure (W D).toScheme ((W D).ι ≫ s) D (hprop D) (hdim D) (resLB (W D).ι L)
       (isLB_resLB _ hL) (fun i x => h i (x ≫ (W D).ι)) ?_ ?_
     · intro i m B y hB hy hcond
       refine hhol i m B (fun b => y b ≫ (W D).ι) hB ?_ ?_

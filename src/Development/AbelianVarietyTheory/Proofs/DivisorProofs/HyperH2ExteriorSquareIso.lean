@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStructureSheafDegOne
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalOneFormFrameCoordinatesConstantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumCupOneFormsZeroImpCoordinatesZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalOneFormFrameCoordinatesConstant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumCupOneFormsZeroImpCoordinatesZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CupSumClosedGlobalOneFormsEqZeroIffSumWedgeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HyperH2GeneratedByCupsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumWedgeGlobalOneFormsEqZeroIffStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HyperH2GeneratedByCups
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumWedgeGlobalOneFormsEqZeroIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExteriorSquareKerOfSurjectiveStatement
 
 set_option autoImplicit false
@@ -132,7 +132,7 @@ theorem exists_wedge_hyp_equiv : ∀ (R : Type) [CommRing R] (C : Type) [Categor
   have e₀_ι : ∀ a b, e₀ (ιTwo a b) = cupHyp F a b := cupWedge_ιTwo F halt
   have hsurj : Function.Surjective e₀ := by
     intro z
-    obtain ⟨n, a, b, rfl⟩ := GlobalTheory.T.hyper_h2_generated_by_cups R C F hF h0 hc hs hw z
+    obtain ⟨n, a, b, rfl⟩ := _root_.GlobalTheory.AbCoh.hyp2_eq_sum_cupHyp R C F hF h0 hc hs hw z
     exact ⟨∑ k, ιTwo (a k) (b k), by simp only [map_sum, e₀_ι]⟩
   have hex := exact_clAll_toO F hc
   have hinj : Function.Injective e₀ := by
@@ -158,7 +158,7 @@ theorem exists_wedge_hyp_equiv : ∀ (R : Type) [CommRing R] (C : Type) [Categor
     have hsum : ∑ k, cupHyp F (a k) (clAll F hc (w k)) = 0 := by
       simpa only [map_sum, e₀_ι] using ht
     obtain ⟨N, ⟨Φ⟩⟩ := hF
-    obtain ⟨l, -, hl⟩ := GlobalTheory.T.globalOneFormFrame_coordinates_constant R C F h0 N Φ
+    obtain ⟨l, -, hl⟩ := _root_.GlobalTheory.AbCoh.frame_coord R C F h0 N Φ
     let x : Fin N → Hyp1 F := fun i ↦ clAll F hc (Φ.w i)
     have hcl : ∀ v : Glob1 F, clAll F hc v = ∑ i, l i v • x i := by
       intro v
@@ -171,7 +171,7 @@ theorem exists_wedge_hyp_equiv : ∀ (R : Type) [CommRing R] (C : Type) [Categor
       exact Finset.sum_comm
     have hM0 : ∀ i, toO F (Mi i) = 0 := by
       intro i
-      have := GlobalTheory.T.sum_cup_oneForms_zero_imp_coordinates_zero R C F ⟨N, ⟨Φ⟩⟩ h0 hc hs m a w hsum (l i)
+      have := _root_.GlobalTheory.AbCoh.sum_toO_eq_zero_of_sum_cup R C F ⟨N, ⟨Φ⟩⟩ h0 hc hs m a w hsum (l i)
       simpa only [Mi, map_sum, map_smul] using this
     have hMu : ∀ i, ∃ u, clAll F hc u = Mi i := fun i ↦ (hex (Mi i)).1 (hM0 i)
     choose u hu using hMu
@@ -181,7 +181,7 @@ theorem exists_wedge_hyp_equiv : ∀ (R : Type) [CommRing R] (C : Type) [Categor
       rw [← ht, ht1]
       simp only [← hu, map_sum, e₀_ι, x]
     have hw2 := (GlobalTheory.T.cupSum_closedGlobalOneForms_eq_zero_iff_sumWedge R C F hc hs N u Φ.w).1 hcup
-    have hsym := (GlobalTheory.T.sumWedgeGlobalOneForms_eq_zero_iff R C F ⟨N, ⟨Φ⟩⟩ h0 N u Φ.w).1 hw2
+    have hsym := (_root_.GlobalTheory.AbCoh.wsum_eq_zero_iff R C F ⟨N, ⟨Φ⟩⟩ h0 N u Φ.w).1 hw2
     let c : Fin N → Fin N → R := fun p q ↦ ∑ i, l p (u i) * l q (Φ.w i)
     have hc' : ∀ p q, c p q = c q p := by
       intro p q

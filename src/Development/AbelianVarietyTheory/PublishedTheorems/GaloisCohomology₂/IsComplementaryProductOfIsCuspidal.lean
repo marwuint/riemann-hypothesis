@@ -70,30 +70,6 @@ theorem isUnitarisable_of_equiv {G : Type} [Group G] {π : Representation ℂ G 
   rw [e, e, h3]
   rfl
 
-theorem isUnitaryLSeg_of_isCusp {ρ : IrrGL k} (hρ : ρ.IsCusp) (hu : IsUnitarisable ρ.rep) : IsUnitaryLSeg ρ :=
-  ⟨⟨_, (single_spec hρ).2.1⟩, hu⟩
-
-theorem IsUnitaryLSeg.isComplementaryProduct {δ : IrrGL k} (h : IsUnitaryLSeg δ) : IsComplementaryProduct δ.rep :=
-  ⟨[δ], [], by simpa using h, by simp, 1, fun _ => δ, by simp, rfl, nonempty_equiv_prodIrr_one δ _⟩
-
-theorem IsComplementaryProduct.of_equiv {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W}
-    (H : IsComplementaryProduct π) (φ : π.Equiv σ) : IsComplementaryProduct σ := by
-  obtain ⟨δ, τ, hδ, hτ, h, x, hd, hx, ⟨ψ⟩⟩ := H
-  exact ⟨δ, τ, hδ, hτ, h, x, hd, hx, ⟨φ.symm.trans ψ⟩⟩
-
-theorem isComplementaryProduct_of_isCuspidal {π : Representation ℂ (GL (Fin N) k) V} (hN : 0 < N)
-    (hi : π.IsIrreducible) (hc : IsCuspidal π) (hu : IsUnitarisable π) : IsComplementaryProduct π :=
-  (isUnitaryLSeg_of_isCusp (IrrGL.isCusp_of.2 ⟨hN, hc⟩)
-    (isUnitarisable_of_equiv (IrrGL.equivOf π hc.1 hi) hu)).isComplementaryProduct.of_equiv
-    (IrrGL.equivOf π hc.1 hi).symm
-
-theorem unitaryChar_spec {χ : kˣ →* ℂˣ} (hs : IsSmoothChar χ) (hu : IsUnitaryChar χ) :
-    IsSmooth (detRep (Fin 1) χ) ∧ (detRep (Fin 1) χ).IsIrreducible ∧ IsUnitarisable (detRep (Fin 1) χ) ∧
-      IsGeneric (detRep (Fin 1) χ) ∧ IsComplementaryProduct (detRep (Fin 1) χ) :=
-  have h : IsUnitarisable (detRep (Fin 1) χ) := (isUnitarisable_ofChar_iff _).2 fun _ => hu _
-  ⟨(isCuspidal_detRep_one hs).1, isIrreducible_ofChar _, h, isGeneric_detRep_one χ,
-    isComplementaryProduct_of_isCuspidal one_pos (isIrreducible_ofChar _) (isCuspidal_detRep_one hs) h⟩
-
 end GlobalTheory.GenericUnitary
 
 namespace GlobalTheory.Published

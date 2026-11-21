@@ -97,10 +97,6 @@ theorem jetSubstP_scale (m : ℕ) (s : ι → R) (f : MvPowerSeries ι R) :
   refine psJet_eq_mk m _ _ (fun e he => ?_)
   rw [coeff_aeval_scale, GermFun.coeff_psTrunc m f e he, MvPowerSeries.coeff_rescale]
 
-theorem jetTrunc_psJet (m : ℕ) (f : MvPowerSeries ι R) : jetTrunc (psJet (m + 1) f) = psJet m f := by
-  show Ideal.Quotient.mk _ (psTrunc (m + 1) f) = psJet m f
-  exact (psJet_eq_mk m f _ (fun e he => GermFun.coeff_psTrunc (m + 1) f e (by omega))).symm
-
 theorem jetAug_psJet (m : ℕ) (f : MvPowerSeries ι R) :
     jetAug (psJet m f) = MvPowerSeries.constantCoeff f := by
   show (MvPolynomial.aeval fun _ => (0 : R)) (psTrunc m f) = _

@@ -252,8 +252,6 @@ def Nsub {r : ℕ} (P : Frame E n r) : Subgroup (HA R σ J) where
     rw [lin_lin_inv] at this
     simpa using this
 
-def FrameUnipotentSubgroup {r : ℕ} (P : Frame E n r) : Subgroup (HA R σ J) := Nsub R σ J P ⊓ S0 R σ J P
-
 end Frames
 
 section Level
@@ -296,9 +294,6 @@ def KH {r : ℕ} (P : Frame E n r) (Λ : Set (Fin n → E)) : Subgroup (HA (Af F
 
 def NO {r : ℕ} (P : Frame E n r) (Λ : Set (Fin n → E)) : Subgroup (HA (Af F) σ J) :=
   Nsub (Af F) σ J P ⊓ Kf σ J Λ
-
-def levelIntersectParabolic {r : ℕ} (P : Frame E n r) (Λ : Set (Fin n → E)) : Subgroup (HA (Af F) σ J) :=
-  S0 (Af F) σ J P ⊓ Kf σ J Λ
 
 end Level
 

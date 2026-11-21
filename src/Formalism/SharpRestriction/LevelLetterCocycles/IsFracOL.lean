@@ -28,8 +28,6 @@ def jO {LL LL' : FinExt l} (hLL : LL.1 ≤ LL'.1) : ↥(OL LL) →+* ↥(OL LL')
   map_zero' := by ext; simp
   map_add' a b := by ext; simp
 
-example (LL : FinExt l) : IsTopologicalRing ↥LL.1 := inferInstance
-example (LL : FinExt l) : IsDomain ↥(OL LL) := inferInstance
 theorem isFrac_OL (LL : FinExt l) : IsFractionRing ↥(OL LL) ↥LL.1 := by
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   haveI : IsIntegralClosure ↥(OL LL) ℤ_[l] ↥LL.1 := integralClosure.isIntegralClosure ℤ_[l] ↥LL.1

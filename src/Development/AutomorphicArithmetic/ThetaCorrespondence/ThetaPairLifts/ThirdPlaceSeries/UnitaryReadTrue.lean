@@ -1,5 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.UnitaryReadTrue
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RecT
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.EventuallyUnr
@@ -21,12 +21,12 @@ theorem unitaryRead_true_alt (sw : _root_.UpperTheory.One.M.TrivialCondition) : 
     _root_.GlobalTheory.HeightCounting.AutomorphicSideRealised hL D T A → Ud.UnitaryReadS D.nbc (_root_.GlobalTheory.FormDict.recT_alt T hL) := by
   intro hL D T A hA j h1 h2 π
   obtain ⟨π₀, rfl⟩ := A.surj j h1 h2 π
-  obtain ⟨F⟩ := GlobalTheory.T.unitaryFiniteAdeleIdentification_nonempty_presentations D.host.E D.R.nV
+  obtain ⟨F⟩ := _root_.GlobalTheory.FinIsoProof.finIso_nonempty D.host.E D.R.nV
   obtain ⟨U, hU⟩ := GlobalTheory.T.exists_dictionary_cm_field_automorphic D.host.E D.R.nV F π₀
   refine ⟨U, hU.1, ?_, ?_, ?_⟩
   · intro w hw σ hσ
     obtain ⟨s, rfl⟩ := exists_splitPlace_w D w hw
-    obtain ⟨τ, hτ, ⟨e⟩⟩ := GlobalTheory.T.localComponents_agree_splitPlace_dictionary _ _ F π₀ U hU s σ hσ
+    obtain ⟨τ, hτ, ⟨e⟩⟩ := _root_.GlobalTheory.SplitDict.locComp_agree _ _ F π₀ U hU s σ hσ
     have h := hA j h1 h2 π₀ s τ hτ
     show _ = (T.e s.w).symm _
     have hc : GlobalTheory.LocLanglands.cls τ = GlobalTheory.LocLanglands.cls (ParLaws.toRep σ) := by
@@ -45,7 +45,7 @@ theorem unitaryRead_true_alt (sw : _root_.UpperTheory.One.M.TrivialCondition) : 
     obtain ⟨α', hα', hS⟩ := hI2 Dv α hDs hDϖ hα
     refine ⟨fun w' hw' σ hσ => ?_, α', ⟨s, ϖ, q, hs, hq, hS⟩, ?_⟩
     · obtain ⟨t, rfl⟩ := exists_splitPlace_w D w' hw'
-      obtain ⟨τ, hτ, ⟨e⟩⟩ := GlobalTheory.T.localComponents_agree_splitPlace_dictionary _ _ F π₀ U hU t σ hσ
+      obtain ⟨τ, hτ, ⟨e⟩⟩ := _root_.GlobalTheory.SplitDict.locComp_agree _ _ F π₀ U hU t σ hσ
       have hc : GlobalTheory.LocLanglands.cls τ = GlobalTheory.LocLanglands.cls (ParLaws.toRep σ) := by
         unfold GlobalTheory.LocLanglands.cls
         rw [(GlobalTheory.SmGL.IrrRep.cl_eq_iff (σ := τ) (τ := ParLaws.toRep σ)).2 ⟨e⟩]

@@ -1,7 +1,6 @@
 import Mathlib
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.UniNilp
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsNilpotentOfTracePow
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TraceMulEq
 
 namespace GlobalTheory.UnipNormalTrace
 

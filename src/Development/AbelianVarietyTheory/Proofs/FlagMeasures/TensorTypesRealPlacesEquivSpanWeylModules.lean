@@ -1,9 +1,9 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsConjLinearIsometryCompactUnitaryTypeWeylMoStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalizedFockFormPureTensorPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsConjLinearOfGramEqStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsConjLinearIsometryCompactUnitaryTypeWeylMo
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalizedFockFormPureTensorProperties
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsConjLinearOfGramEq
 
 open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.Forms Formalism.UG Matrix NumberField IsDedekindDomain
 open scoped InnerProductSpace TensorProduct
@@ -86,10 +86,10 @@ theorem factor_eq {n : ℕ} (m o a b : Matrix (Fin n) (Fin n) ℂ) (hm : m ∈ M
 
 theorem tensor_dict : ∀ (ι : Type) [Fintype ι] (k n : ℕ) (h : k = n) (lam : ι → DomWeight n) (u : ι → Fin k → ℝ), (∀ τ (i : Fin k), u τ i = ((lam τ).w (Fin.cast h i) : ℝ) + ((rhoVec k i : ℚ) : ℝ)) → ∀ (Vl : ι → Type) [∀ τ, NormedAddCommGroup (Vl τ)] [∀ τ, InnerProductSpace ℂ (Vl τ)] (πl : ∀ τ, Matrix (Fin k) (Fin k) ℂ → (Vl τ →L[ℂ] Vl τ)), (∀ τ, IsHCTypeU k (u τ) (πl τ)) → ∀ (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] (tens : (∀ τ, Vl τ) → W), (∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ τ, ⟪x τ, y τ⟫_ℂ) → Submodule.span ℂ (Set.range tens) = ⊤ → ∃ Jp : W →ₗ⋆[ℂ] MvPolynomial (ι × Fin n × Fin n) ℂ, (∀ ξ, Jp ξ ∈ CSpan lam) ∧ (∀ p ∈ CSpan lam, ∃ ξ, Jp ξ = p) ∧ (∀ ξ η, nfAll lam (Jp η) (Jp ξ) = ⟪η, ξ⟫_ℂ) ∧ ∀ (m : ι → Matrix (Fin n) (Fin n) ℂ), (∀ τ, m τ ∈ Matrix.unitaryGroup (Fin n) ℂ) → ∀ A : W →L[ℂ] W, (∀ x, A (tens x) = tens (fun τ => πl τ ((m τ).submatrix (Fin.cast h) (Fin.cast h)) (x τ))) → ∀ (G o : ι → Matrix (Fin n) (Fin n) ℂ), (∀ τ, IsUnit (o τ).det) → ∀ (ξ : W) (y y' : Frames G), IsTr (fun τ => o τ * m τ * (o τ)⁻¹) y' y → fnOf G (shiftOf lam) (fun τ => (o τ)⁻¹) (Jp (A ξ)) y = fnOf G (shiftOf lam) (fun τ => (o τ)⁻¹) (Jp ξ) y' := by
   intro ι _ k n h lam u hu Vl _ _ πl hπ W _ _ tens htens hspan
-  have hj := fun τ => GlobalTheory.T.exists_conjLinear_isometry_compact_unitary_type_weyl_module k n h (lam τ) (u τ) (hu τ) (Vl τ) (πl τ) (hπ τ)
+  have hj := fun τ => _root_.GlobalTheory.WeylConjType.exists_conj_weyl k n h (lam τ) (u τ) (hu τ) (Vl τ) (πl τ) (hπ τ)
   choose j hjmem hjonto hjnorm hjeq using hj
-  obtain ⟨hten, hdef, hfn⟩ := GlobalTheory.T.normalizedFockForm_pureTensor_properties ι n lam
-  obtain ⟨Jp, hJa, hJn⟩ := GlobalTheory.T.exists_conjLinear_of_gram_eq' W (MvPolynomial (ι × Fin n × Fin n) ℂ) (nfAll lam)
+  obtain ⟨hten, hdef, hfn⟩ := _root_.GlobalTheory.FockTen.nfAll_ten ι n lam
+  obtain ⟨Jp, hJa, hJn⟩ := _root_.GlobalTheory.exists_conjLinear_of_gram_eq W (MvPolynomial (ι × Fin n × Fin n) ℂ) (nfAll lam)
     (∀ τ, Vl τ) tens (fun x => ten fun τ => j τ (x τ)) (nfAll_add_left lam) (nfAll_smul_left lam)
     (nfAll_symm lam) hdef hspan (fun x x' => by
       show nfAll lam (ten fun τ => j τ (x' τ)) (ten fun τ => j τ (x τ)) = _

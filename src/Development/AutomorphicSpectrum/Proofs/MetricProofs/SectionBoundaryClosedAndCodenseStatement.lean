@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SectionBoundaryClosedAndCodense
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncBoundaryCoordinateChartStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.DenseCoordinateTorusStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncBoundaryCoordinateChart
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.DenseCoordinateTorus
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegralAngMeas
 import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P Filter Topology

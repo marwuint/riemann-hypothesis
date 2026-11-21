@@ -95,33 +95,6 @@ theorem char_mulU_of_int (u : (AEf I)ˣ) (hu : (u : AEf I) ∈ IntAf I.F I.E) :
     field_simp at h6
     linarith
 
-theorem char_mulU (u : (AEf I)ˣ) : (addEquivAddHaarChar (mulU I u) : ℝ) = nrmF I u := by
-  obtain ⟨N, hN, hNu, -⟩ := exists_nat_two I u
-  set n : (AEf I)ˣ := (AfT.isUnit_natCast I N hN).unit with hn0
-  have hn : (n : AEf I) = N := IsUnit.unit_spec _
-  have hnI : (n : AEf I) ∈ IntAf I.F I.E := by rw [hn]; exact natCast_mem _ _
-  have hnuI : ((n * u : (AEf I)ˣ) : AEf I) ∈ IntAf I.F I.E := by rw [Units.val_mul, hn]; exact hNu
-  have htr : mulU I (n * u) = (mulU I u).trans (mulU I n) := by
-    refine ContinuousAddEquiv.ext fun x => ?_
-    show ((n * u : (AEf I)ˣ) : AEf I) * x = (n : AEf I) * ((u : AEf I) * x)
-    rw [Units.val_mul, mul_assoc]
-  have e1 := char_mulU_of_int I (n * u) hnuI
-  rw [htr, addEquivAddHaarChar_trans, NNReal.coe_mul, char_mulU_of_int I n hnI, nrmF_mul] at e1
-  exact mul_left_cancel₀ (nrmF_pos I n).ne' ((mul_comm _ _).trans e1)
-
-theorem addHaar_map_mulU' (u : (AEf I)ˣ) :
-    (addHaar : Measure (AEf I)).map (mulU I u) = ENNReal.ofReal (nrmF I u)⁻¹ • addHaar := by
-  have hc := addEquivAddHaarChar_smul_map (addHaar : Measure (AEf I)) (mulU I u)
-  have hpos := addEquivAddHaarChar_pos (mulU I u)
-  have hn := char_mulU I u
-  have hm : (addHaar : Measure (AEf I)).map (mulU I u) = (addEquivAddHaarChar (mulU I u))⁻¹ • addHaar := by
-    conv_rhs => rw [← hc]
-    rw [smul_smul, inv_mul_cancel₀ hpos.ne', one_smul]
-  rw [hm, ← hn, ← NNReal.coe_inv, ENNReal.ofReal_coe_nnreal]
-  first
-  | rfl
-  | rw [ENNReal.smul_def]
-
 end
 
 end PI.IwaMeasEx.MFI

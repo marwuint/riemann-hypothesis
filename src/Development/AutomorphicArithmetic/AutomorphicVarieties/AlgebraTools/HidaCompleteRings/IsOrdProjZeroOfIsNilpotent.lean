@@ -136,11 +136,6 @@ def towerMap (t : ∀ b, P (b + 1) →ₗ[R] P b) (s : ∀ b, Q (b + 1) →ₗ[R
     (f : ∀ b, P b →ₗ[R] Q b) (h : ∀ b x, s b (f (b + 1) x) = f b (t b x)) (b : ℕ) (x : towerLim t) :
     towerProj s b (towerMap t s f h x) = f b (towerProj t b x) := rfl
 
-structure IsTowerComplete (I : ℕ → Ideal R) : Prop where
-  anti : Antitone I
-  sep : ⨅ b, I b = ⊥
-  lim : ∀ a : ℕ → R, (∀ b, a (b + 1) - a b ∈ I b) → ∃ L : R, ∀ b, L - a b ∈ I b
-
 end Lim
 
 end UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite

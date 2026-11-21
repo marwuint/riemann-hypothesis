@@ -10,7 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankMulLeFi
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinBasisSubsetOfIsField
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanDOfFixed
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamComparisonIsFilteredStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConcretePeriodDeRhamModuleFinrankLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConcretePeriodDeRhamModuleFinrankLe
+import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
+import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveTensorBcrisToBdR
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyThetaOnBdRPlusPeriodData
 
@@ -171,7 +174,7 @@ variable (K LL : FinExt l) {V : Type} [AddCommGroup V] [Module ↥LL.1 V] [Modul
 theorem isDR_of_spans (h : Spans (P.PD K) ρ) : IsDR (P.PD K) ρ := by
   have := K.2
   have := LL.2
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL V ρ
   exact le_antisymm h2 (GlobalTheory.DRFil.finrank_mul_le_finrank_DdR_of_spans (P.PD K) ρ h1 h)
 
 theorem filSpans (h : IsDR (P.PD K) ρ) : FilSpans (P.PD K) ρ := GlobalTheory.T.deRham_comparison_isFiltered l P AI T K LL V ρ h
@@ -180,7 +183,7 @@ theorem crys (h : IsCrys (P.PD K) ρ) : IsDR (P.PD K) ρ ∧ ∀ y ∈ DdR (P.PD
     ∃ (m : ℕ) (c : Fin m → ↥K.1) (x : Fin m → V ⊗[ℚ_[l]] P.R.B), (∀ i, x i ∈ Dcris (P.PD K) ρ) ∧
       y = ∑ i, mulR ℚ_[l] P.R.BdR ↥LL.1 V (algebraMap ↥K.1 P.R.BdR (c i))
         (ιV (P.PD K) (LL := ↥LL.1) (V := V) (x i)) := by
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL V ρ
   exact isDR_of_isCrys (P.PD K) (tensInj T K) ρ h2 h
 
 end Rep
@@ -198,9 +201,6 @@ theorem ddRSpanAt : DdRSpanAt P K LL := by
     exact Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨c i, x i, hx i, rfl⟩
   · rintro _ ⟨c, x, hx, rfl⟩
     exact mulR_mem_DdR (P.PD K) L.ρ c (ιV_mem_DdR (P.PD K) L.ρ hx)
-
-theorem ddRInjAt : DdRInjAt P K LL := fun _ _ m c x hc _ h =>
-  (tensInj T K).tensor (LL := ↥LL.1) m c hc x h
 
 theorem componentIsoAt : ComponentIsoAt P K LL := by
   intro L h τ
@@ -246,7 +246,7 @@ theorem strictAt : StrictAt P K LL := by
   rintro L₀ L₁ L₂ f g ⟨hf, hg, hi, hex, hs⟩ - h₁ - τ a
   have := K.2
   have := LL.2
-  have := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL L₂.V L₂.ρ).1
+  have := (_root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL L₂.V L₂.ρ).1
   refine ⟨fun x _ hx => ext_injective f hi (hx.trans (map_zero _).symm), fun y => ⟨?_, ?_⟩, fun z => ?_⟩
   · rintro ⟨x, hx, rfl⟩
     exact ⟨ext_mem_FildR _ _ _ f hf τ hx, (ext_exact f g hex hs _).2 ⟨x, rfl⟩⟩
@@ -261,7 +261,7 @@ theorem dualJumpsAt : DualJumpsAt P K LL := by
   rintro L L' β ⟨hβ, hβ'⟩ h
   have := K.2
   have := LL.2
-  have := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL L.V L.ρ).1
+  have := (_root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL L.V L.ρ).1
   have hs := filSpans T K LL L.ρ h
   refine ⟨isDR_of_spans T K LL L'.ρ
     (GlobalTheory.DRFil.spans_dual_of_spans (P.PD K) L.ρ L'.ρ β (isField_dR T) hβ hβ' (hs.spans _)), fun τ a => ?_⟩
@@ -274,8 +274,8 @@ theorem tensorJumpsAt : TensorJumpsAt P K LL := by
   intro L₁ L₂ L₃ e he h₁ h₂
   have := K.2
   have := LL.2
-  have := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL L₁.V L₁.ρ).1
-  have := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL L₂.V L₂.ρ).1
+  have := (_root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL L₁.V L₁.ρ).1
+  have := (_root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL L₂.V L₂.ρ).1
   have hs₁ := filSpans T K LL L₁.ρ h₁
   have hs₂ := filSpans T K LL L₂.ρ h₂
   refine ⟨isDR_of_spans T K LL L₃.ρ (Spans.tensor _ e he (hs₁.spans _) (hs₂.spans _)), fun τ c => ?_⟩

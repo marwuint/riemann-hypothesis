@@ -1,9 +1,13 @@
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.IsThBIff
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamOfLSmulIff
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerSlActionRowVectorStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisActionSiegelUnitInTowerStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitIndexAddIntVectorStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerNeZero
+import Development.AbelianVarietyTheory.Definitions.Foundations.SgC
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerSlActionRowVector
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisActionSiegelUnitInTower
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitIndexAddIntVector
+import Development.AbelianVarietyTheory.Definitions.Foundations.Imports
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLogDerivQExpansionModPrimePowRescale
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L
@@ -70,7 +74,7 @@ private theorem siegel_per {ε : Ω →+* ℂ} (X : Tower Ω ε) {c : ℕ} {x y 
   have e : sgC c y = sgC c x := by
     funext z
     rw [hy]
-    exact GlobalTheory.T.smoothedSiegelUnit_index_add_intVector c x _ _ hx
+    exact _root_.GlobalTheory.Sieg.Per.sg_add_int c x _ _ hx
   unfold siegel
   rw [e]
 
@@ -100,7 +104,7 @@ private theorem sl_dg_siegel [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Towe
     (h0 : y 0 = x 0 * en γ 0 0 + x 1 * k + p) (h1 : y 1 = x 0 * (N * en γ 0 1) + x 1 * en γ 1 1 + q) :
     X.sl (ofSL γ) (X.sl (toGQ !![(N : ℤ), 0; 0, 1]) (siegel X c x)) = X.sl (toGQ !![(N : ℤ), 0; 0, 1]) (siegel X c y) := by
   obtain ⟨δ, h00, h01, h10, h11, e⟩ := exists_conj hN γ k hk
-  rw [← X.sl_mul, e, X.sl_mul, GlobalTheory.T.siegelUnitInTower_sl_action_rowVector Ω ε X c x δ hx]
+  rw [← X.sl_mul, e, X.sl_mul, _root_.GlobalTheory.KZ.SiegelSL.sl_siegel Ω ε X c x δ hx]
   congr 1
   simp only [en] at h00 h01 h10 h11 h0 h1
   refine (siegel_per X (admissible_act_SL2 hx δ) p q ?_ ?_).symm
@@ -134,7 +138,7 @@ private theorem gal_siegel_fix [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : To
     rw [Int.cast_neg]; field_simp; linear_combination -eb
   have hy := isAdmissibleSmoothingFactor_add_intVector hx _ _ f0 f1
   rw [← siegel_per X hx _ _ f0 f1]
-  have := GlobalTheory.T.galois_action_siegelUnitInTower Ω ε X c D a' b' 1 s hD hlt
+  have := _root_.GlobalTheory.KZ.gal_siegel Ω ε X c D a' b' 1 s hD hlt
     (by rw [Nat.cast_one]; exact hs _ (isPrimitiveRoot_eOm ε hD.ne').pow_eq_one) hy (by rwa [one_mul])
   rwa [one_mul] at this
 
@@ -168,7 +172,7 @@ private theorem sgN_mem [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω 
   · refine gal_dg X hN s (gal_siegel_fix X hD hx s fun z hz => (mem_fixMu_iff s).1 hs z ?_)
     obtain ⟨e, rfl⟩ := (Dvd.intro_left N rfl : D ∣ N * D).trans hM
     rw [pow_mul, hz, one_pow]
-  · exact (map_ne_zero _).2 (GlobalTheory.T.siegelUnitInTower_ne_zero Ω ε X c _ hx)
+  · exact (map_ne_zero _).2 (_root_.GlobalTheory.KZ.siegel_ne_zero Ω ε X c _ hx)
 
 end UpperTheory.Kd.L.AdmissibleUnits
 

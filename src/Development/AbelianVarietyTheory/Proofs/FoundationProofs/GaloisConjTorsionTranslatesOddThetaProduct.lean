@@ -4,12 +4,12 @@ import Formalism.PairingDivisors.StatementH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LineDerivListCompForm
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilPairingGaloisEquivariantCmTorsionStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilPairingGaloisEquivariantCmTorsion
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalStarComplexMultiplicationPointsStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTaylorThetaTranslateStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticPhaseEquivariantEmbeddingsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticPhaseEquivariantEmbeddings
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
@@ -162,13 +162,13 @@ theorem adp_mem (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n m : ℕ} (hn 
 theorem sgStar_law (hc : Crv D cc δ) :
     Differentiable ℂ (sgStar (lamOf D cc δ)) ∧ OddLaw (lamOf D cc δ) (sgStar (lamOf D cc δ)) := by
   have h := (GlobalTheory.OddTheta.sgStar_laws _
-    (GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc).1).1
+    (GlobalTheory.CurveLattice.lattice_of_curve D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hc).1).1
   exact ⟨h.1, h.2.1, h.2.2.2⟩
 
 theorem sgStar_conj_law (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) :
     Differentiable ℂ (sgStar (lamConj ⊤ (topHom s) (lamOf D cc δ))) ∧
       OddLaw (lamConj ⊤ (topHom s) (lamOf D cc δ)) (sgStar (lamConj ⊤ (topHom s) (lamOf D cc δ))) := by
-  obtain ⟨cc', δ', hc', -, h⟩ := GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ hc ⊤ _ hK trivial trivial 1 one_pos
+  obtain ⟨cc', δ', hc', -, h⟩ := _root_.GlobalTheory.ConjCurve.galCurve_holds D cc δ hc ⊤ _ hK trivial trivial 1 one_pos
   rw [h]
   exact sgStar_law hc'
 
@@ -200,7 +200,7 @@ theorem coef_translate₂ (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {m : �
     coef_translate hc hK hm (by rw [mul_add]; exact AddSubgroup.add_mem _ hx ht) (adp_add hc hK hy ha),
     ← cj_topHom]
   congr 1
-  refine GlobalTheory.T.weilPairing_galois_equivariant_cm_torsion D cc δ hc ⊤ _ hK trivial trivial t (x / 2) t' (y / 2) (2 * m) (by positivity)
+  refine _root_.GlobalTheory.WeilPairingGalois.weilPairingGalois_all D cc δ hc ⊤ _ hK trivial trivial t (x / 2) t' (y / 2) (2 * m) (by positivity)
     ?_ ?_ (adp_half hc hK ha) ?_ trivial
   · rw [show ((2 * m : ℕ) : ℂ) * t = m * t + m * t by push_cast; ring]
     exact AddSubgroup.add_mem _ ht ht
@@ -323,7 +323,7 @@ theorem emb_conj (φ : D.host.E →+* ℂ) (x : D.host.E) :
 
 theorem sum_emb_pair (hb : OnB D b) (i j : Fin r) :
     ∑ τ, embT D τ (∑ a, ∑ c, b i a c * D.host.conj (b j a c)) = if i = j then 1 else 0 := by
-  rw [(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1.2]
+  rw [(_root_.GlobalTheory.InducedType.induced_type D).1.2]
   have h := hb.1 i j
   rw [hYY] at h
   rw [h]
@@ -401,7 +401,7 @@ theorem exists_conjPair (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) (hb : On
   · rw [wdPh_sum (frameCoordinate_orthonormal_baseTorus hb), wdPh_sum (ortho_torConj hb), map_prod]
     refine Finset.prod_congr rfl fun j _ => ?_
     rw [← cj_topHom]
-    exact (GlobalTheory.T.cmQuadraticPhase_equivariant_embeddings D cc δ hc).2 ⊤ _ hK trivial trivial _ _ m hm (hum j) (hu j) trivial
+    exact (_root_.GlobalTheory.QuadPhase.galPh1_all D cc δ hc).2 ⊤ _ hK trivial trivial _ _ m hm (hum j) (hu j) trivial
 
 end Main
 

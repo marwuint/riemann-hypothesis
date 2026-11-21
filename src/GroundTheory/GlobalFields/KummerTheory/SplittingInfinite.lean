@@ -33,12 +33,6 @@ theorem splitsCompletely_iff_forall_finrank :
 
 variable [NumberField K] [NumberField L]
 
-theorem splitsCompletely_iff_isFiniteSplit :
-    SplitsCompletely L v ↔ Algebra.IsFiniteSplit v.Completion (v.Completion ⊗[K] L) := by
-  rw [splitsCompletely_iff_forall_finrank, ← isFiniteSplit_pi_iff]
-  exact ⟨fun h ↦ .of_algEquiv (tensorPiEquiv (L := L) v).symm,
-    fun h ↦ .of_algEquiv (tensorPiEquiv (L := L) v)⟩
-
 variable (L) in
 
 theorem nonempty_placesOver : Nonempty (v.placesOver L) := by

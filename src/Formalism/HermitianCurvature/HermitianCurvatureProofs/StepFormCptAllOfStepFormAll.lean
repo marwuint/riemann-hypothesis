@@ -1,7 +1,9 @@
 import Formalism.HermitianCurvature.HerGenC
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.QQMemAdjAlgCpt
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.HerAnalyticFAllOfTop
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ThmPActualOfAnalytic
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.IntegrablePairOfSquareIntegrable
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.SfiniteOfIsHaarOn
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.MeasurableOfContinuousOnZero
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormalFormOrderZeroOfParts
 
 open MeasureTheory
 
@@ -19,17 +21,6 @@ variable {S : Type} [Fintype S] [DecidableEq S]
 variable {P : M.Par} {z z' : Fin (2 * P.r + P.k + 1) → ℂ} {π : Mx P.k P.r → (Wp →L[ℂ] Wp)}
   {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)} {L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r}
   {st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))} {l0 : ℕ} {D : B.RealPlaceData P.k P.r Wp Wq}
-
-theorem herGenC_herGen {i : Fin (P.r + 1)} {Φ : RadSp P.k P.r z z' π π'}
-    (h : HerGenC S P z z' π π' L st l0 D i Φ) : HerGen S P z z' π π' L st l0 D i Φ := by
-  induction h with
-  | jf F Φ hF hΦ => exact HerGen.jf F Φ hF.1 hΦ
-  | slice l w a b Φ hw _ ih => exact HerGen.slice l w a b Φ hw ih
-  | waveC l w s Wv Wv' a b Φ hw h1 h2 _ ih => exact HerGen.waveC l w s Wv Wv' a b Φ hw h1 h2 ih
-  | waveZ w s Wv Wv' a b Φ hw h1 h2 _ ih => exact HerGen.waveZ w s Wv Wv' a b Φ hw h1 h2 ih
-
-theorem herKc_le_herK (i : Fin (P.r + 1)) : herKc S P z z' π π' L st l0 D i ≤ herK S P z z' π π' L st l0 D i :=
-  Submodule.span_le.mpr fun _ hΦ => Submodule.subset_span (herGenC_herGen hΦ)
 
 theorem herKc_sliceIn : SliceIn (S := S) P z z' π π' L st (herKc S P z z' π π' L st l0 D) l0 := by
   intro w hw l x hx
@@ -75,14 +66,6 @@ def StepFormCptAll : Prop :=
     StepDens (S := S) P z z' π π' μ L st (herKc S P z z' π π' L st l0 D) l0 ∧
       FormInt S P z z' π π' μ L st l0 (herKc S P z z' π π' L st l0 D)
 
-theorem stepFormCptAll_of_stepFormAll (h : StepFormAll) : StepFormCptAll := by
-  intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ'
-  obtain ⟨hSD, hFI⟩ := h Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ'
-  have hle : ∀ i (x : Ix S → RadSp P.k P.r z z' π π'), InK (herKc S P z z' π π' L st l0 D i) x →
-      InK (herK S P z z' π π' L st l0 D i) x := fun i x hx a => herKc_le_herK i (hx a)
-  exact ⟨fun w hw l x y hx hy c hc => hSD w hw l x y (hle _ x hx) (hle _ y hy) c hc,
-    fun w hw i c hc x y hx hy => hFI w hw i c hc x y (hle _ x hx) (hle _ y hy)⟩
-
 theorem thmPActualCpt_of_herClassesCpt (hHer : HerClassesCpt) (hWC : WaveCommQQAll) : ThmPActualCpt := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm
   obtain ⟨K, hAdj, hTD, hTT, hSl, hSD, hWK, hFS, hCor, hJ⟩ :=
@@ -117,13 +100,5 @@ theorem herClassesCpt_of_parts (hT : HerCptTopAll) (hSF : StepFormCptAll) : HerC
 
 theorem thmPActualCpt_of_parts (hT : HerCptTopAll) (hSF : StepFormCptAll) : ThmPActualCpt :=
   thmPActualCpt_of_herClassesCpt (herClassesCpt_of_parts hT hSF) waveCommQQAll
-
-theorem thmPActualCpt_of_top (hT : HerCptTopAll) (hSF : StepFormAll) : ThmPActualCpt :=
-  thmPActualCpt_of_parts hT (stepFormCptAll_of_stepFormAll hSF)
-
-theorem thmPActualCpt_of_thmPActual (h : ThmPActual) : ThmPActualCpt := by
-  intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm
-  obtain ⟨K, h1, h2, h3, h4⟩ := h Wp Wq S P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm
-  exact ⟨K, h1, h2, h3, fun F ε hε hF _ hG => h4 F ε hε hF hG⟩
 
 end Formalism.FourierDecayAlt.P5.HerC

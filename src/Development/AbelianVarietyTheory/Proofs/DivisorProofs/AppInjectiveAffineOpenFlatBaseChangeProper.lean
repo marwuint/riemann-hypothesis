@@ -50,7 +50,4 @@ theorem app_injective_of_isPullback (R : Type) [CommRing R] (S Y Z : Scheme.{0})
   rw [h2, ← h1, CommRingCat.hom_comp, RingHom.coe_comp]
   exact hσ.comp hinr
 
-example : ∀ (R : Type) [CommRing R] (S Y Z : Scheme.{0}) (π : S ⟶ Sp R) (y : Y ⟶ Sp R) (p : Z ⟶ Y) (q : Z ⟶ S), IsProper π → Flat y → IsPullback p q y π → Function.Injective π.appTop.hom → ∀ V : Y.Opens, IsAffineOpen V → Function.Injective (p.app V).hom :=
-  @app_injective_of_isPullback
-
 end GlobalTheory.AffInj

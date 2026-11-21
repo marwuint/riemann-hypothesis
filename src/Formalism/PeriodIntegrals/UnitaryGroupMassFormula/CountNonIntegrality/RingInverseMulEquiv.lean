@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountNonIntegrality.Development
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountNonIntegrality.Reduce
 
 noncomputable section
 
@@ -74,50 +74,5 @@ theorem frame_mem {D : Formalism.BasicNotions.D7} {T : D.host.E} (Λ : Submodule
     unfold FlagG.fvec
     rw [Fin.snoc_castSucc]
     exact hXS hmem
-
-theorem intL_of (hG : LocGen) : IntL := by
-  intro D δ M hA u u' hT F0 what₂ hR Λ hΛ Z F' hF' p hs a b
-  obtain ⟨hTerm, -, -, hOK, hZ⟩ := hF'
-  obtain ⟨-, -, hreps, -⟩ := hR
-  obtain ⟨-, ⟨-, hU, hz0, -⟩, hX0⟩ := hreps.1 Λ hΛ
-  have hz' : F'.fl.z ∈ Λ := hTerm.1.1
-  obtain ⟨xa, hxa, hsa, wa, hwa, hfa⟩ := hG D δ M hA p (D.R.rS - a.val)
-  obtain ⟨xb, hxb, -, wb, hwb, hfb⟩ := hG D δ M hA p (D.R.rS - b.val)
-  have ma : xa • F0.fvec a ∈ Λ := frame_mem Λ (lf D F0) hX0 hz0.1 a xa hxa
-  have mb : xb • F'.fl.fvec b ∈ Λ := frame_mem Λ F' hOK.2 hz' b xb hxb
-  have hd : xb • F'.fl.fvec b ∈ Formalism.HermitianLatticesTheory.dual (VS D).hT Λ := by
-    have hU' : Formalism.HermitianLatticesTheory.dual (VS D).hT Λ = Λ := hU
-    rw [hU']
-    exact mb
-  unfold Formalism.HermitianLatticesTheory.dual Formalism.E.hdual at hd
-  rw [Submodule.mem_iInf] at hd
-  have hd2 := hd (xa • F0.fvec a)
-  rw [Submodule.mem_iInf] at hd2
-  have hint := hd2 ma
-  rw [Submodule.mem_comap] at hint
-  obtain ⟨o, ho⟩ := Submodule.mem_one.1 hint
-  have hpair : (VS D).hT (xa • F0.fvec a) (xb • F'.fl.fvec b) = xa * xb * Z a b := by
-    rw [← hZ]
-    simp only [LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul]
-    rw [starRingEnd_apply, hsa]
-    show xb * (xa * (VS D).hT (F0.fvec a) (F'.fl.fvec b)) = xa * xb * brS (VS D) (F'.fl.fvec b) (F0.fvec a)
-    simp only [brS]
-    ring
-  have hO : (M p).L.O = (D.s.atP p).O := (hA p).2.2.2.1
-  have hcj : (M p).L.cj = (D.s.atP p).cj := (hA p).2.2.1
-  show frFac δ p b * (M p).L.cj (frFac δ p a) * (D.s.atP p).ιE (Z a b) ∈ (M p).L.O
-  rw [hcj, cj_frFac, hO]
-  have e2 : frFac δ p b * frFac δ p a * (D.s.atP p).ιE (Z a b) =
-      (wb * wa) * (D.s.atP p).ιE (xa * xb * Z a b) := by
-    unfold frFac
-    rw [hfa, hfb, map_mul, map_mul]
-    ring
-  rw [e2, ← hpair]
-  simp only [LinearMap.coe_restrictScalars] at ho
-  rw [← ho]
-  exact (D.s.atP p).O.mul_mem ((D.s.atP p).O.mul_mem hwb hwa) (iE_mem_O D p o)
-
-theorem notIntAll_of_gen (hL : LocGen) (hG : IntG) : PI.CntLocalParts.NotIntAll :=
-  notIntAll_of_LG (intL_of hL) hG
 
 end PI.CntNotIntW

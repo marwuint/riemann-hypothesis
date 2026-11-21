@@ -1,5 +1,14 @@
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.RowETiesB
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.EventuallyAllScaleContextsAndOfBoth
+import Development.AbelianVarietyTheory.Definitions.HeightFunctions.OntoAlong
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.RayClassFieldsInCoefficientFieldConstructedPoint
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SideWeightRaysOfRayRec
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.WPtFrame
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CoreFrameCompatibleConstructedPoint
+import Development.AbelianVarietyTheory.Definitions.HeightFunctions.RunsAlong
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.TwDatPsiValuesInLL
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmallFrameAtColumn
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SeriesUpdatePreservesParamFreeConditionsRayField
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SideOf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SideWTiesStatement
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RaysOfRayRecStatement
@@ -16,12 +25,12 @@ theorem rowE_tiesB_alt : GlobalTheory.NT.RayField → ∀ (hL : _root_.UpperTheo
   intro hR hL 𝒮 ν Q hC
   refine RowE.of_all ?_
   intro κ K β c b _ hq hl
-  have hray : RayRec β.D β.O.ex.nch := GlobalTheory.T.rayClassFieldsInCoefficientField_constructedPoint K β hq.2
+  have hray : RayRec β.D β.O.ex.nch := _root_.GlobalTheory.PlugPt.rayClassFields_in_coefficients K β hq.2
   obtain ⟨p, b', ⟨kap, lam, err, hs⟩, heq⟩ := hl
   let F : (Σ (D : D7) (O : Obj D), BdPt D O c) → Prop := fun x => RayRec x.1 x.2.1.ex.nch → TiesB x.1 x.2.1 c x.2.2
   have hp : F ⟨p.w.D p.Z, p.O, b'⟩ := by
     intro hr
-    have hu := GlobalTheory.T.seriesUpdate_preserves_parameterFreeConditions_rayFields _ _ (_root_.GlobalTheory.PlugPt.sideOfWeightedPoint ν p) p.O.ex.errX p.O.ex.xd kap lam err
+    have hu := _root_.GlobalTheory.PlugPt.side_upd_ties_rays _ _ (_root_.GlobalTheory.PlugPt.sideOfWeightedPoint ν p) p.O.ex.errX p.O.ex.xd kap lam err
     show (sidePt b').Ties p.O.ex.errX p.O.ex.xd ∧ (sidePt b').Rays
     rw [hs]
     exact ⟨hu.1 (_root_.GlobalTheory.T.side_weight_ties_err_of_ray_field_core_slot hR hL 𝒮 ν hC K p), hu.2 (_root_.GlobalTheory.T.side_weight_rays_of_ray_rec' hL 𝒮 ν K p hr)⟩

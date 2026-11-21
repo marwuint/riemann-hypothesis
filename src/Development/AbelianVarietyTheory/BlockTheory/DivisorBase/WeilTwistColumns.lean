@@ -122,55 +122,6 @@ variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : 
   (dict₂ : ∀ t, GA D (Wc D i) → Σ k, Frame ((U₂ t).X k).Ψ D.R.r)
   (xi : T0 → (Af D.host.F ⊗[D.host.F] D.host.E)ˣ →* ℂˣ)
 
-def Ties : Prop :=
-  R.toLevCh.Is A.μ0 ∧ R.thP_ωP ∧ R.thP_vP ∧ VStd D i ∧
-    (∀ k, ModelW (Wc D i) (rank_Wc i) (U.X k)) ∧
-    (∀ k (τ : D.host.E →+* ℂ), τ ∈ (U.X k).Ψ ↔ ∃ ρ, τ = tauE D ρ) ∧
-    (∀ k τ, Formalism.MainNotions.StandardLattice.IsInfEmb τ.1 (th k τ)) ∧
-    IsModelBaseFrameFamily (R.MW i (sg0 D A)) (rank_Wc i) x₀ ∧ LatEmb (Wc D i) ι ∧
-    DictLat U (Wc D i) (rank_Wc i) dict ι e F ik φ th x₀ ∧
-    CovPin Xo c dδ ∧ (∀ t, XiIs R i t (xi t)) ∧
-    CXiVal (Wc D i) (rank_Wc i) σ dδ U₂ dict₂ ι x₀ xi
-
-abbrev IsConstOf (t : T0) (cst : GA D (Wc D i) → ℂ) : Prop :=
-  IsFrameConst U (Vc D i) (Wc D i) (rank_Wc i) dict ι e F ik φ th x₀ (R.ωP i t) (R.vacP i) cst
-
-def TwistFactorAt : Prop :=
-  Ties R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi →
-    ∀ c0 cb : GA D (Wc D i) → ℂ, IsConstOf R i U dict ι e F ik φ th x₀ A.μ0 c0 →
-      (∀ h, c0 h = cb h * cXi (dδ A.μ0) (U₂ A.μ0) (dict₂ A.μ0) h) →
-      ∀ (t : T0) (ct : GA D (Wc D i) → ℂ), IsConstOf R i U dict ι e F ik φ th x₀ t ct →
-        ∃ ζ : D.what₂.LL, (∃ m : ℕ, 0 < m ∧ ζ ^ m = 1) ∧
-          ∀ h, ct h = D.what₂.embLL ζ * cb h * cXi (dδ t) (U₂ t) (dict₂ t) h
-
-def TwistFactorNormAt : Prop :=
-  Ties R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi →
-    (∀ h, cXi (dδ A.μ0) (U₂ A.μ0) (dict₂ A.μ0) h = 1) →
-    ∀ c0 : GA D (Wc D i) → ℂ, IsConstOf R i U dict ι e F ik φ th x₀ A.μ0 c0 →
-      ∀ (t : T0) (ct : GA D (Wc D i) → ℂ), IsConstOf R i U dict ι e F ik φ th x₀ t ct →
-        ∃ ζ : D.what₂.LL, (∃ m : ℕ, 0 < m ∧ ζ ^ m = 1) ∧
-          ∀ h, ct h = D.what₂.embLL ζ * c0 h * cXi (dδ t) (U₂ t) (dict₂ t) h
-
-theorem TwistFactorAt.norm (hT : TwistFactorAt R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi) :
-    TwistFactorNormAt R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi :=
-  fun hTi h1 c0 hc0 t ct hct => hT hTi c0 c0 hc0 (fun h => by rw [h1 h, mul_one]) t ct hct
-
 end Row
-
-def TwistFactor {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m}
-    {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) : Prop :=
-  ∀ (i : Fin D.R.m) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l)
-    (c : Coeff l) (σ : c.F →+* ℂ) (U : Unf Xo c σ D.R.r) (dict : GA D (Wc D i) → Σ k, Frame (U.X k).Ψ D.R.r)
-    (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)) (g : ℕ)
-    (e : Fin g ≃ Σ τ : D.host.E →+* ℂ, Fin (Dw.mult τ))
-    (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
-    (ik : U.Comp → Fin F.n) (φ : ∀ k, (F.Di (ik k)).La ≃ₗ[𝓞 D.host.E] (U.X k).Λ)
-    (th : ∀ k, (U.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
-    (x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ)
-    (dδ : T0 → DeltaDat Xo c (Vc D i).rank)
-    (U₂ : ∀ t, Unf (dδ t).Xo₂ (dδ t).c₂ (σ.comp ((dδ t).eF.symm : (dδ t).c₂.F →+* c.F)) D.R.r)
-    (dict₂ : ∀ t, GA D (Wc D i) → Σ k, Frame ((U₂ t).X k).Ψ D.R.r)
-    (xi : T0 → (Af D.host.F ⊗[D.host.F] D.host.E)ˣ →* ℂˣ),
-    TwistFactorAt R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi
 
 end GlobalTheory.IndefiniteRowSideFullHecke.WeilTwistColumns

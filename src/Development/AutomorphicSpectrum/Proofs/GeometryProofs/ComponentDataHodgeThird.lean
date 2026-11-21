@@ -4,7 +4,8 @@ import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyInt
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsPeriodAtRestrict
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarisedStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarised
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairSumFrameAtPointStatement
 
 namespace GlobalTheory.CompanionTheory.Ar
@@ -28,7 +29,7 @@ theorem gramAt_posDef_of_isFrameAt_blocks : ∀ (E : Type) [Field E] [NumberFiel
       exact x.2
     obtain ⟨w, hw⟩ := hx
     exact ⟨w, Subtype.ext hw⟩
-  have hpol := GlobalTheory.T.interior_point_polarised E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 z hi
+  have hpol := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.polarisedAt_of_interior E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 z hi
   have hframe : (Lat.comap (fun p => Or.𝔐.V (Or.bg τ) p ⊔ Or.𝔐.V (Or.sm τ) p)
       (Or.𝔐.Vgen (Or.bg τ) ⊔ Or.𝔐.Vgen (Or.sm τ)).subtype).IsFrameAt (fun k => φ (b k)) ⟨centre z, h⟩ := by
     refine ⟨hf.1.map' φ (LinearMap.ker_eq_bot.2 hφi), ?_⟩

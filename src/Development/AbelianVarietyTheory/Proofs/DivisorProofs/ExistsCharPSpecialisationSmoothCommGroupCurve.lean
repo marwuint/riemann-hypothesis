@@ -1,8 +1,8 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalPrimeCharNotMemFiniteTypeIntStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenSmoothOfRelativeDimensionOfGeneriStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenGeometricallyConnectedFibresOfGenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenSectionsDistinctInFibresStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalPrimeCharNotMemFiniteTypeInt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenSmoothOfRelativeDimensionOfGeneri
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenGeometricallyConnectedFibresOfGen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenSectionsDistinctInFibres
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurveBaseChangeTwoDistinctPointsOfFieldStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFgSubringDescentGroupSectionsCurveStatement
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
@@ -31,9 +31,9 @@ theorem exists_charP_specialization : ∀ (k : Type) [Field k] [IsAlgClosed k] [
   haveI : Algebra.FiniteType ℤ R := hfg
   haveI : IsNoetherianRing R := Algebra.FiniteType.isNoetherianRing ℤ R
   have hinj : Function.Injective R.subtype := Subtype.val_injective
-  obtain ⟨f₁, hf₁, H₁⟩ := GlobalTheory.T.exists_basicOpen_smoothOfRelativeDimension_of_generic R G₁ hsm hqc k R.subtype hinj g hrd
-  obtain ⟨f₂, hf₂, H₂⟩ := GlobalTheory.T.exists_basicOpen_geometricallyConnected_fibres_of_generic R G₁ hsm hqc k R.subtype hinj hgc
-  obtain ⟨f₃, hf₃, H₃⟩ := GlobalTheory.T.exists_basicOpen_sections_distinct_in_fibres R G₁ hsep k R.subtype hinj (s₁.image fun x => x.left)
+  obtain ⟨f₁, hf₁, H₁⟩ := _root_.GlobalTheory.SmoothRelDim.exists_basicOpen R G₁ hsm hqc k R.subtype hinj g hrd
+  obtain ⟨f₂, hf₂, H₂⟩ := _root_.GlobalTheory.SpreadConn.geometricallyConnected_of_generic R G₁ hsm hqc k R.subtype hinj hgc
+  obtain ⟨f₃, hf₃, H₃⟩ := _root_.GlobalTheory.SectionsSpread.pairs R G₁ hsep k R.subtype hinj (s₁.image fun x => x.left)
     (by
       intro x hx
       obtain ⟨y, -, rfl⟩ := Finset.mem_image.mp hx
@@ -53,7 +53,7 @@ theorem exists_charP_specialization : ∀ (k : Type) [Field k] [IsAlgClosed k] [
       rw [RingHom.comp_apply, IsScalarTower.algebraMap_apply R (Polynomial R) (Localization.Away P₁),
         IsLocalization.Away.lift_eq]
       simp
-  obtain ⟨f₄, hf₄, H₄⟩ := GlobalTheory.T.exists_basicOpen_sections_distinct_in_fibres R G₁ hsep k R.subtype hinj
+  obtain ⟨f₄, hf₄, H₄⟩ := _root_.GlobalTheory.SectionsSpread.pairs R G₁ hsep k R.subtype hinj
     {spMap (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hα) ≫ u₁,
       spMap (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hβ) ≫ u₁}
     (by
@@ -78,7 +78,7 @@ theorem exists_charP_specialization : ∀ (k : Type) [Field k] [IsAlgClosed k] [
     rw [map_zero, hfdef] at this
     simp only [map_mul] at this
     exact (mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero hf₁ hf₂) hf₃) hf₄) hlc) this
-  obtain ⟨M, hM, hfM, p, hp, hpM⟩ := GlobalTheory.T.exists_maximal_prime_char_not_mem_finiteType_int R f hf
+  obtain ⟨M, hM, hfM, p, hp, hpM⟩ := _root_.GlobalTheory.closedPt_of_finiteType_int R f hf
   letI := Ideal.Quotient.field M
   let ψ : R →+* AlgebraicClosure (R ⧸ M) := (algebraMap (R ⧸ M) _).comp (Ideal.Quotient.mk M)
   have hψ : ∀ r, r ∉ M → IsUnit (ψ r) := by

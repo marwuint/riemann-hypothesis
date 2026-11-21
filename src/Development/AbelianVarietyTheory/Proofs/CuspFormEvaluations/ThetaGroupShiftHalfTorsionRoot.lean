@@ -3,9 +3,9 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
 import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.VtUniq
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalSymLiftExistsUniqueGlobalStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalSymLiftExistsUniqueGlobal
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsTranslationSectionsUniversalObject
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalSymLiftMulOddStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalSymLiftMulOdd
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ThetaGrpActsLinearly
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -65,7 +65,7 @@ theorem isUUOver_shift : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCM
       SymLift Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (N ^ 2) (t * u) Utu := by
     obtain ⟨-, -, -, -, Uz, Utu, -, -, -, -, h₁, -, h₂, -⟩ := hF
     exact ⟨Uz, Utu, h₁, h₂⟩
-  obtain ⟨⟨Uu, hUu⟩, -⟩ := GlobalTheory.T.universal_symLift_exists_unique_global hLaw E H Dw l Xo N hN _ u hu
+  obtain ⟨⟨Uu, hUu⟩, -⟩ := _root_.GlobalTheory.moduli_univ_symLift_global hLaw E H Dw l Xo N hN _ u hu
   obtain ⟨p, hp⟩ := exists_isActOf hL Uz s₁
   obtain ⟨q, hq⟩ := exists_isActOf hL Uu p
   obtain ⟨w, hw⟩ := exists_isActOf hL Ut q
@@ -73,8 +73,8 @@ theorem isUUOver_shift : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCM
   obtain rfl : G = F :=
     ((exists_isVtOver_and_existsUnique_isUUOver hLaw E H Dw l Xo N hN _ s).2 z (t * u) hz htu).unique
       ⟨α₀, α, s₁, p, Uz, Utu, g₀, n₀, cα, tw, hUz, hp, hUtu, hG⟩ hF
-  obtain ⟨r₀, r₀2, r₀N, h₀⟩ := GlobalTheory.T.universal_symLift_mul_odd hLaw E H Dw l Xo N hN _ t u Ut Uu Utu 1 hUt hUu hUtu wtu
-  obtain ⟨r, r2, rN, h₁⟩ := GlobalTheory.T.universal_symLift_mul_odd hLaw E H Dw l Xo N hN _ u z Uu Uz Uuz e hUu hUz hUuz wuz
+  obtain ⟨r₀, r₀2, r₀N, h₀⟩ := _root_.GlobalTheory.moduli_univ_symLift_mul hLaw E H Dw l Xo N hN _ t u Ut Uu Utu 1 hUt hUu hUtu wtu
+  obtain ⟨r, r2, rN, h₁⟩ := _root_.GlobalTheory.moduli_univ_symLift_mul hLaw E H Dw l Xo N hN _ u z Uu Uz Uuz e hUu hUz hUuz wuz
   obtain rfl : r₀ = 1 := by
     obtain ⟨m, hm⟩ : Odd (N ^ 2) := hN.pow
     rwa [hm, pow_succ, pow_mul, r₀2, one_pow, _root_.one_mul] at r₀N

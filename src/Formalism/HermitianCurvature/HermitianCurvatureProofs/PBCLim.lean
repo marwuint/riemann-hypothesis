@@ -79,21 +79,6 @@ theorem phiG_conj_tendsto (Y : Finset H) (κ : H → H → ℂ) (hκ : TB.PSDOn 
     refine tendsto_finset_prod _ (fun v _ => ?_)
     exact (hlim v h hh h' hh' (σ v)).comp (tendsto_coord v)
 
-section mean
-
-variable (Λ : AddSubgroup (crystallineComparison.V f)) (LIM : (Λ → ℂ) → ℂ)
-
-theorem bdd_add {α : Type} {g k : α → ℂ} (hg : crystallineComparison.Bdd g) (hk : crystallineComparison.Bdd k) : crystallineComparison.Bdd (g + k) := by
-  obtain ⟨B1, h1⟩ := hg
-  obtain ⟨B2, h2⟩ := hk
-  exact ⟨B1 + B2, fun x => (norm_add_le _ _).trans (add_le_add (h1 x) (h2 x))⟩
-
-theorem mean_smul (hL : crystallineComparison.IsMean LIM) (c : ℂ) {g : Λ → ℂ} (hg : crystallineComparison.Bdd g) :
-    LIM (fun x => c * g x) = c * LIM g := by
-  exact hL.2.1 c g hg
-
-end mean
-
 end
 
 end Formalism.FourierDecayAlt.P.PBC

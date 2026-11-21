@@ -1,11 +1,16 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.CubeOfTwoIdentities
-import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.LevelRestrictionOfGroupLawAlt
+import Formalism.SharpRestriction.GlobalSchurBounds.StatementTranslationInvariantSeventh
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.CubeRelationOfParallelogram
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.PhGram
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.GramUnit
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.GramIso
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.PhDualGram
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FglPhSplit
+import Mathlib
+import Formalism.PeriodIntegrals.FglGram
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DualGramSubstitution.BeMulByZero
+import Formalism.PeriodIntegrals.FglPhSplit
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.Development
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.AddPreservesExpCongruence
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.OrthogonalSplitPolarizationVanishes
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.ExpCongruenceExtendsToSum
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.JetsPhW
 
 namespace Formalism.MainNotions.Ext.CutA
@@ -37,20 +42,6 @@ theorem gramUnitEq_holds : GramUnitEq := by
   | exact gramExpansion_orthonormal
   | (intro p _ g; intros; apply gramExpansion_orthonormal <;> first | exact fglData g ‹_› | assumption)
   | (unfold GramUnitEq; done)
-
-theorem gramIsoEq_holds : GramIsoEq := by
-  first
-  | exact flag_gram_iso
-  | (intro p _ g; intros; apply flag_gram_iso <;> first | exact fglData g ‹_› | assumption)
-  | (unfold GramIsoEq; done)
-
-theorem phDualOfGram_holds : PhDualOfGram := by
-  intro p hp g S hOk; exact PI.Final.PhDualGram.phase_dual_gram p g.l g.ex g.ph S (fglData g hOk)
-
-theorem level_restriction_of_group_law_holds : LevelRestrictionOfGroupLaw := by
-  intro p _ g S hg H1 H2 κ ι ι' _ _ _ b b' b'' hb hb' hb'' hd h1 h2
-  exact PI.Final.FglPhSplit.norm_units_of_calculation ℂ_[p] (Wp p) ⟨g.l, g.ex, g.ph⟩ S hg.2.2.1 hg.2.2.2 (ph0 g) H1 H2 κ ι ι' b b' b'' hb hb' hb''
-    hd h1 h2
 
 theorem jetsHigh_holds : JetsHigh :=
   fun p _ g hOk => jets_high p g.W g.wq g.ex g.ph hOk.1.1 hOk.1.2.1 hOk.1.2.2.1 hOk.1.2.2.2.1 hOk.1.2.2.2.2.1 hOk.2.1 hOk.2.2.1

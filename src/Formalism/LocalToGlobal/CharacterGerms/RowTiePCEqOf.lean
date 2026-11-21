@@ -16,22 +16,6 @@ def RawChart.expG {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Ty
     (i : κ) : MvPowerSeries (I g) C :=
   MvPowerSeries.subst (fun j : κ => ∑ c : I g, X.u g c j • (MvPowerSeries.X c : MvPowerSeries (I g) C)) (X.ex i)
 
-def CEqSumSt : Prop :=
-  AllFB fun C _ V _ I _ dd X => ∀ (g : Fin 2) (H : X.CartHyp V g) (S : Sys (RawChart.cart H))
-    (t : I g → MvPowerSeries (I g) C), S.IsT t →
-    ∃ Φ : Fin dd → MvPowerSeries (I g) C, (∀ i, MvPowerSeries.constantCoeff (Φ i) = 0) ∧ (∀ i, IntS V (Φ i)) ∧
-      (∀ i, MvPowerSeries.subst t (Φ i) = X.expG g i) ∧
-      ∀ q : JJ I g, ∃ Λ : MvPowerSeries (I g) C, IntS V Λ ∧
-        MvPowerSeries.subst (X.expG g) (X.sg (X.u (1 - g) q)) =
-          S.ze t q + MvPowerSeries.subst t Λ + ∑ c : I g, if X.ty g c = X.ty (1 - g) q then
-            X.sg1 (X.u g c) (X.u (1 - g) q) • (MvPowerSeries.X c : MvPowerSeries (I g) C) else 0
-
-def CEqDerSt : Prop :=
-  AllFB fun C _ V _ I _ dd X => ∀ (g : Fin 2) (k : I (1 - g)), ∃ J : MvPowerSeries (Fin 2 × Fin dd) C, IntS V J ∧
-    dVar (⟨1 - g, k⟩ : WV I) X.hRow =
-      (X.k : C) • (MvPowerSeries.subst (fun q : Fin 2 × Fin dd => X.expPt q.1 q.2) J -
-        MvPowerSeries.subst (X.expPt g) (X.sg (X.u (1 - g) k)))
-
 namespace RowTiePCEq
 
 variable {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)]
@@ -158,82 +142,5 @@ theorem dVar_hLf {κ : Type} [Fintype κ] {V : VF C} (X : RawChart C d I κ) (H 
 end RowTiePCEq
 
 open RowTiePCEq
-
-theorem cEqFB_of (hS : CEqSumSt) (hD : CEqDerSt) : CEqFBSt := by
-  intro C _ _ V O _ _ dd Y d _ I _ p _ H _ g a a' hodd S t ht k hk
-  set X := Y.raw p with hX
-  have ht0 : ∀ g' c, MvPowerSeries.constantCoeff (t g' c) = 0 := fun g' => (ht g').1
-  have hT := MvPowerSeries.hasSubst_of_constantCoeff_zero (tW_const ht0)
-  have hne : a ≠ a' := by
-    intro h
-    subst h
-    rw [sub_self, ZMod.val_zero] at hodd
-    have := Nat.odd_iff.mp hodd
-    omega
-  have hSg := fun g' => hS C V O dd Y d I p g' (H g') (S g') (t g') (ht g')
-  choose Φ hΦ0 hΦI hΦt hΛ using hSg
-  obtain ⟨Λ, hΛI, hσ⟩ := hΛ g k
-  obtain ⟨J, hJI, hder⟩ := hD C V O dd Y d I p g k
-  set Φ' : Fin 2 × Fin dd → MvPowerSeries (WV I) C := fun q => upG q.1 (Φ q.1 q.2) with hΦ'
-  have hΦ'0 : ∀ q, MvPowerSeries.constantCoeff (Φ' q) = 0 := fun q => upG_const _ (hΦ0 q.1 q.2)
-  have hΦ'I : ∀ q, IntS V (Φ' q) := fun q => intS_upG _ (hΦI q.1 q.2)
-  have hΨ : (fun q : Fin 2 × Fin dd => X.expPt q.1 q.2) = fun q => MvPowerSeries.subst (tW t) (Φ' q) := by
-    funext q
-    rw [expPt_eq, ← hΦt q.1 q.2, subst_tW_upG ht0]
-  have hJ' : MvPowerSeries.subst (fun q : Fin 2 × Fin dd => X.expPt q.1 q.2) J =
-      MvPowerSeries.subst (tW t) (MvPowerSeries.subst Φ' J) := by
-    rw [hΨ, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hΦ'0) hT]
-  have hexG0 : ∀ i, MvPowerSeries.constantCoeff (X.expG g i) = 0 := fun i => by
-    rw [← hΦt g i]
-    exact constantCoeff_subst_zero (ht0 g) (hΦ0 g i)
-  have hsg : MvPowerSeries.subst (X.expPt g) (X.sg (X.u (1 - g) k)) =
-      upG g (MvPowerSeries.subst (X.expG g) (X.sg (X.u (1 - g) k))) := by
-    rw [upG_subst g hexG0]
-    congr 1
-    funext i
-    exact expPt_eq X g i
-  set sig0 : MvPowerSeries (I g) C := ∑ c : I g, if X.ty g c = X.ty (1 - g) k then
-    X.sg1 (X.u g c) (X.u (1 - g) k) • (MvPowerSeries.X c : MvPowerSeries (I g) C) else 0 with hsig0
-  set L := toLeafL (fun g => RawChart.cart (H g)) g a a' with hL
-  have hsig : L (upG g sig0) = 0 := by
-    rw [hsig0, upG_eq, map_sum, map_sum]
-    refine Finset.sum_eq_zero fun c _ => ?_
-    split_ifs with hc
-    · rw [map_smul, map_smul, ← upG_eq, upG_X]
-      have : L (MvPowerSeries.X (⟨g, c⟩ : WV I)) = 0 := by
-        refine toLeaf_X_off _ g a a' _ ?_
-        rintro (⟨-, h2⟩ | ⟨h1, -⟩)
-        · exact hne (h2.symm.trans (hc.trans hk))
-        · fin_cases g <;> simp at h1
-      rw [this, smul_zero]
-    · rw [map_zero, map_zero]
-  refine ⟨MvPowerSeries.subst (tW t) ((X.k : C) • (MvPowerSeries.subst Φ' J - upG g Λ)),
-    ⟨(X.k : C) • (MvPowerSeries.subst Φ' J - upG g Λ), fun μ => ?_, rfl⟩, ?_⟩
-  · have hI : IntS V ((X.k : C) • (MvPowerSeries.subst Φ' J - upG g Λ)) := by
-      intro ν
-      rw [MvPowerSeries.coeff_smul, map_sub]
-      exact (ge_natCast _).mul_int ((IntS.subst hΦ'0 hΦ'I hJI ν).sub (intS_upG g hΛI ν))
-    exact hI μ
-  · have hpair : (∑ q : JJ I g, X.pairK g q k • upG g ((S g).ze (t g) q)) =
-        (-(X.k : C)) • upG g ((S g).ze (t g) k) := by
-      rw [Finset.sum_eq_single k]
-      · simp [RawChart.pairK]
-      · intro q _ hq
-        simp [RawChart.pairK, hq]
-      · intro h
-        exact absurd (Finset.mem_univ k) h
-    have hw : X.OnLf g a a' (⟨1 - g, k⟩ : WV I) := Or.inr ⟨rfl, hk⟩
-    rw [dVar_hLf X H g a a' _ hw, hpair, hder, hJ', hsg, hσ]
-    have e1 : upG g ((S g).ze (t g) k + MvPowerSeries.subst (t g) Λ + sig0) =
-        upG g ((S g).ze (t g) k) + MvPowerSeries.subst (tW t) (upG g Λ) + upG g sig0 := by
-      rw [upG_eq, map_add, map_add, ← upG_eq, ← upG_eq, ← upG_eq, subst_tW_upG ht0]
-    have e2 : MvPowerSeries.subst (tW t) ((X.k : C) • (MvPowerSeries.subst Φ' J - upG g Λ)) =
-        (X.k : C) • (MvPowerSeries.subst (tW t) (MvPowerSeries.subst Φ' J) -
-          MvPowerSeries.subst (tW t) (upG g Λ)) := by
-      rw [← MvPowerSeries.coe_substAlgHom hT, map_smul, map_sub]
-    rw [e1, e2]
-    show L _ - L _ = L _
-    simp only [map_smul, map_sub, map_add, hsig]
-    module
 
 end Formalism.L2.FormalSeriesBounds

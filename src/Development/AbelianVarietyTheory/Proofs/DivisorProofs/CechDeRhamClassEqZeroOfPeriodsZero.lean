@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRules
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedOneFormEvaluationRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KaehlerOneFormEqZeroOfUniformisedValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegOfPeriodicOfIsRegSubStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularOnOpenUniformisedOfLocallyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KaehlerOneFormEqZeroOfUniformisedValues
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegOfPeriodicOfIsRegSub
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularOnOpenUniformisedOfLocally
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZero
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.CechDR GlobalTheory.CechPer
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -25,7 +25,7 @@ theorem eq_zero_of_isPer_zero : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L 
     exact (he (a - b : Sec (str A) U)).trans ((map_sub e a b).trans (congrArg₂ (· - ·) (he a).symm (he b).symm))
   have hreg : ∀ U V : A.left.affineOpens, IsReg u.ex (U.1 ⊓ V.1) (h U - h V) := by
     intro U V
-    apply GlobalTheory.T.isRegularOnOpenUniformised_of_locally A g L u hA
+    apply _root_.GlobalTheory.CechPer.isReg_of_locally A g L u hA
     intro z hz
     obtain ⟨W, hW, hzW⟩ := hloc _ z hz
     have hWU : W ≤ U := (le_inf_iff.1 hW).1
@@ -38,7 +38,7 @@ theorem eq_zero_of_isPer_zero : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L 
     refine Eq.trans ?_ e0.symm
     rw [Pi.sub_apply]
     linear_combination e2 - e1
-  have hb := GlobalTheory.T.isReg_of_periodic_of_isReg_sub' A g L u hA A.left.affineOpens (fun U ↦ U.1) h
+  have hb := _root_.GlobalTheory.CechPer.isReg_of_periodic_of_isReg_sub A g L u hA A.left.affineOpens (fun U ↦ U.1) h
     (iSup_affineOpens_eq_top A.left) hd (fun U l z hz ↦ by simpa using hp U l z hz) hreg
   choose b hb using hb
   let b' : ∀ U : A.left.affineOpens, Sec (str A) U.1 := b
@@ -46,7 +46,7 @@ theorem eq_zero_of_isPer_zero : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L 
   · obtain ⟨U⟩ := T
     obtain ⟨V⟩ := T'
     have hVU : V.1 ≤ U.1 := leOfHom a.unop
-    have hz0 := GlobalTheory.T.eq_zero_of_val_eq_zero_abelian A g L u hA V.1
+    have hz0 := _root_.GlobalTheory.ValInj.eq_zero_of_val_eq_zero A g L u hA V.1
       ((b' V - Sec.res (str A) hVU (b' U) - c.1.1 (op U) (op V) a : Sec (str A) V.1)) (fun z hz ↦ by
         have e0 := vsub V.1 (b' V - Sec.res (str A) hVU (b' U)) (c.1.1 (op U) (op V) a) z hz
         have e1 := vsub V.1 (b' V) (Sec.res (str A) hVU (b' U)) z hz
@@ -60,7 +60,7 @@ theorem eq_zero_of_isPer_zero : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L 
   · obtain ⟨U⟩ := T
     change KaehlerDifferential.D ℂ (Sec (str A) U.1) (b' U) = c.1.2 (op U)
     apply sub_eq_zero.1
-    apply GlobalTheory.T.kaehlerOneForm_eq_zero_of_uniformised_values A g L u hA U
+    apply _root_.GlobalTheory.form_eq_zero_of_evForm_eq_zero A g L u hA U
     intro z hz
     rw [map_sub, (GlobalTheory.T.uniformisedOneFormEvaluation_rules A g L u U.1 z hz).2.2 (b' U), ← hω U z hz, sub_eq_zero]
     refine (Filter.EventuallyEq.fderiv_eq ?_).symm

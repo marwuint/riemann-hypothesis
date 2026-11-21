@@ -20,10 +20,6 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.Dbl GlobalTheory.PRep Formalism.BasicNotions
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.TP
-section Gen
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
-  {X : Spc F E n} {W : Spc F E d}
-end Gen
 structure Tools_k : Prop where
   swFull : _root_.GlobalTheory.ThK.Dbl.SWFullX_k
   boxSec : _root_.GlobalTheory.ThK.Dbl.BoxSecX_k
@@ -39,9 +35,6 @@ structure Tools_k : Prop where
   acts : _root_.GlobalTheory.ThK.ActsEx_k
   lie1 : GlobalTheory.RealLift.LieFirst
   lie2 : GlobalTheory.RealLift.LieSecond
-section CM
-variable {E : Type} [Field E] [NumberField E] [IsCMField E]
-end CM
 def TLift_k : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (B : Base (maximalRealSubfield E) E), _root_.UpperTheory.TP.W.GoodK (cj E) B →
     ∀ (n : ℕ), 1 ≤ n → ∀ X : Spc (maximalRealSubfield E) E n, X.J = 1 → X.IsHerm (cj E) B n 0 →

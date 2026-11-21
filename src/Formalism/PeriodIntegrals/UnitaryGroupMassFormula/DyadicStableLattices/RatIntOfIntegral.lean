@@ -38,8 +38,6 @@ variable (m : ℕ) [Fact (∀ r : ℚ, r ^ 2 ≠ -(m : ℚ) + 1 * r)]
 
 instance : NumberField (Kq m) := {}
 
-example : Fintype (ClassGroup (𝓞 (Kq m))) := inferInstance
-
 theorem isIntegral_omega : IsIntegral ℤ (ω : Kq m) := by
   refine ⟨Polynomial.X ^ 2 + (Polynomial.C (m : ℤ) - Polynomial.X), Polynomial.monic_X_pow_add ?_, ?_⟩
   · exact lt_of_le_of_lt (Polynomial.degree_le_of_natDegree_le (by compute_degree!)) (by norm_num)

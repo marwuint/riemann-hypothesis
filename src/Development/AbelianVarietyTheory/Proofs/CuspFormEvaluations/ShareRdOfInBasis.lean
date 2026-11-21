@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.TheoremZeroOfReducedInputs
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.CombBound4Of
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.DescentStatementPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.Rationality.DescSt
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CardExponentsAndChooseRatioBoundsPair
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GenericSectionsPolynomialDictionaryStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InBasisIffPointValuesLinearIndependentSpanStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GenericSectionsPolynomialDictionary
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InBasisIffPointValuesLinearIndependentSpan
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.Gaps.EtaleWeightGaps GlobalTheory.Shares
 
@@ -59,8 +59,8 @@ theorem shareRd_of_inBasis : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : Modul
   intro D B P j X ka wL wF G R t T Mg δ xs hgen hfac hka hDT _ hlat hex
   obtain ⟨la, hla⟩ := hex
 
-  have hI := (GlobalTheory.T.inBasis_iff_pointValues_linearIndependent_span D B P j X ka wL wF G R t T Mg δ xs hgen hfac hka la).1 hla
-  obtain ⟨-, -, -, -, -, hmul, -, hfin⟩ := GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la G.N wL G.w t
+  have hI := (_root_.GlobalTheory.Shares.inBasis_iff_vals D B P j X ka wL wF G R t T Mg δ xs hgen hfac hka la).1 hla
+  obtain ⟨-, -, -, -, -, hmul, -, hfin⟩ := _root_.GlobalTheory.Shares.polyDictionary D B P j X R la G.N wL G.w t
   have hθ : ∀ i, R.ev (X.inc wF (G.th' i)) ∈ R.sp wF Set.univ := fun i =>
     Submodule.subset_span ⟨G.th' i, Set.mem_univ _, rfl⟩
 

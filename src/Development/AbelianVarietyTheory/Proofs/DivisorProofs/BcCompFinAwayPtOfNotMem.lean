@@ -31,6 +31,4 @@ end GlobalTheory.AwayFix.Chart
 
 namespace GlobalTheory.AwayFix
 
-open GlobalTheory.AwayFix.Chart
-
 end GlobalTheory.AwayFix

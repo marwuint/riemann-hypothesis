@@ -11,13 +11,8 @@ namespace UpperTheory.V.Cj.R
 def IsRegInt (a : ℕ) (m : Multiset ℂ) : Prop :=
   Multiset.card m = a ∧ m.Nodup ∧ ∀ z ∈ m, ∃ n : ℤ, z = (n : ℂ) + ((a : ℂ) - 1) / 2
 
-theorem isRegInt_zero : IsRegInt 0 0 := ⟨rfl, Multiset.nodup_zero, fun _ h => absurd h (Multiset.notMem_zero _)⟩
-
 def IsConjRep {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (σ : ℂ ≃+* ℂ) (Ξ Ξ' : AlgRep E a) : Prop :=
   ∃ h : Ξ.d = Ξ'.d, ∀ γ i j, ratC Ξ' γ (Fin.cast h i) (Fin.cast h j) = σ (ratC Ξ γ i j)
-
-theorem isConjRep_refl {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (Ξ : AlgRep E a) :
-    IsConjRep (RingEquiv.refl ℂ) Ξ Ξ := ⟨rfl, fun _ _ _ => rfl⟩
 
 def ExAlgRep : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (m : (E →+* ℂ) → Multiset ℂ),

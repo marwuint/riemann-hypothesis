@@ -316,27 +316,6 @@ theorem congr_of_levIs {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → 
   congr_of_lifts (L := R.datWp i R.triv) hβ (rank_Wc i) hι (by have := l.three_le; omega) hMb l.prod l.coprime
     R.eG.toMonoidHom hlev
 
-theorem actLev_of_levIs (Xo : Moduli Dw l) (c : Coeff l) (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A = 1)
-    {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)} (hι : LatEmb (Wc D i) ι)
-    (hβ : IsSDFrame (Wc D i) (R.βW i) (R.ΛW i) 1) (hMb : l.Mb = ∏ PP ∈ R.Pg, PP.asIdeal)
-    {lev : G → Dw.La →ₗ[𝓞 D.host.E] Dw.La} (hlev : LevIs R i ι l.M (Mfr l) lev) :
-    ActLev (Xo := Xo) c (fun g => (lev g, (LinearMap.id : Dw.La →ₗ[𝓞 D.host.E] Dw.La))) :=
-  GlobalTheory.LevelActionOfLifts.actLev_of_lifts_of_eq_one D H Dw l Xo c G lev hpq hA (congr_of_levIs R i hι hβ hMb hlev).1 (congr_of_levIs R i hι hβ hMb hlev).2
-
 end Record
-
-theorem actLev_record {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m}
-    (C : Core D) [Algebra C.Q.c.F D.what₂.LL] (R : RealDat D A C.Q.c.F) (i : Fin D.R.m) {Tp : Type} {tup : Tp → T0}
-    (O : OMDat C R i Tp tup) {μ₀ t : T0} {I : Ideal (𝓞 D.host.E)}
-    {ι : (C.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)}
-    (hQ : C.Q.Pins) (hR : R.toLevCh.Is μ₀) (hι : LatEmb (Wc D i) ι) (hh : HalfIs R t C.Q.l.Mb I)
-    (hlev : LevIs R i ι C.Q.l.M (Mfr C.Q.l) O.lev) :
-    ActLev (Xo := C.Q.Xo ((i : ℕ) + 1)) C.Q.c O.lev2 ∧ ActLev (Xo := C.Q.Xo ((i : ℕ) + 1)) O.c' O.lev2 := by
-  have hpq : 1 ≤ (C.Q.Dw ((i : ℕ) + 1)).p + (C.Q.Dw ((i : ℕ) + 1)).q := by
-    have h : (C.Q.Dw ((i : ℕ) + 1)).p = D.R.k + ((i : ℕ) + 1) - 1 := (hQ.2.2.2 _ ⟨Nat.le_add_left _ _, i.2⟩).1
-    have := D.R.m_add_three_le_k
-    omega
-  exact ⟨actLev_of_levIs R i _ _ hpq hQ.2.1.2 hι (hR.βW i) hh.1 hlev,
-    actLev_of_levIs R i _ _ hpq hQ.2.1.2 hι (hR.βW i) hh.1 hlev⟩
 
 end GlobalTheory.LevelActionPinned

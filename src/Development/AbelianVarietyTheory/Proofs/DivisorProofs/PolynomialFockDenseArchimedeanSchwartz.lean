@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeisenbergLineDerivativeFormula
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsArchSchwartzDerivativeHeisenbergLine
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TracePairingNondegenerate
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaussVacuumNondegenerateGaussianDualPairStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzSubmoduleEqTopOfGaussianMemDerivStableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaussVacuumNondegenerateGaussianDualPair
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzSubmoduleEqTopOfGaussianMemDerivStable
 
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
@@ -44,8 +44,8 @@ theorem pol_dense : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
     IsPair B M χX χW om r s r' s' → Dense (M.Pol B.ψ B.emb : Set (SInf F (Fin n × Fin d))) := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP
   have hψ : IsStd B.ψ := hP.base.std
-  obtain ⟨g, hg, Q, c, hc, hQ, hgQ⟩ := GlobalTheory.T.exists_gaussVacuum_nondegenerate_gaussian_dualPair F E σ B n d X W M χX χW om r s r' s' hP
-  refine GlobalTheory.T.schwartzSubmodule_eq_top_of_gaussian_mem_derivStable _ _ g Q c hc hQ hgQ (mem_pol_of_isGauss M B.ψ B.emb hg) ?_ ?_
+  obtain ⟨g, hg, Q, c, hc, hQ, hgQ⟩ := _root_.GlobalTheory.GaussVacPair.exists_gauss_vacuum F E σ B n d X W M χX χW om r s r' s' hP
+  refine _root_.GlobalTheory.SchwartzGaussDense.dense_of_gaussian_mem _ _ g Q c hc hQ hgQ (mem_pol_of_isGauss M B.ψ B.emb hg) ?_ ?_
   · intro v f f₁ hf h₁
     refine pol_stable M B.ψ hψ B.emb v 0 hf fun y => ?_
     rw [h₁ y]

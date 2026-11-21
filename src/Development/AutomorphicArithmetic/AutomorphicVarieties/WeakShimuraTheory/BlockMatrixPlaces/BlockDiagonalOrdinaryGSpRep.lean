@@ -185,17 +185,6 @@ structure BlockDiagonalOrdinaryGSpRep (S : Finset ℕ) (c s : G ℚ Ω) (B : Val
 
 end Gal
 
-example {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] (ρ : Γ → M →+ M) (c : Γ) (N : Set Γ) (H : Subgroup Γ) :
-    (0 : Γ → M) ∈ Zc (fun g x => ρ g x) c N H {0} :=
-  ⟨0, IsLocallyConstant.const 0, by simp, rfl, by simp, by simp⟩
-
-example {R : Type} [CommRing R] : Matrix.single 1 2 (1 : R) ∈ uM R := by
-  refine ⟨fun i j h => ?_, ?_⟩
-  · fin_cases i <;> fin_cases j <;> simp_all [lamW]
-  · show adj _ = -_
-    ext i j
-    fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.single_apply]
-
 end UpperTheory.V.Ws.Bl
 
 end

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPowDivPrimeZpowIntegralClosureUnitStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPowDivPrimeZpowIntegralClosureUnit
 open GlobalTheory.K5
 
 namespace GlobalTheory.K5.ResidueIndep
@@ -84,7 +84,7 @@ theorem isInt_inv (h : IsClo p Ω) (x : Ω)
     rintro rfl
     exact hx ⟨1, one_pos, by simpa [IsInt] using isIntegral_zero⟩
   refine ⟨hx0, ?_⟩
-  obtain ⟨a, b, hb, h1, h2⟩ := GlobalTheory.T.exists_pow_div_prime_zpow_integralClosure_unit p Ω h x hx0
+  obtain ⟨a, b, hb, h1, h2⟩ := _root_.GlobalTheory.K5.exists_pow_div_p_zpow_isInt p Ω h x hx0
   by_cases ha : 0 < a
   · exfalso
     obtain ⟨n, rfl⟩ : ∃ n : ℕ, a = (n + 1 : ℕ) := ⟨(a - 1).toNat, by push_cast; omega⟩

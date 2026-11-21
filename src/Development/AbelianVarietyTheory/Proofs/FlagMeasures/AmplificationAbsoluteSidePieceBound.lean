@@ -2,15 +2,15 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsIsFolnerUWset
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnimodularBesselSubgroupsUWNStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TailMassLeOfMajorantLengthMomentBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TailMassLeOfMajorantLengthMomentBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CutoffComputesBesselQuotientIntegral
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousOnMajorantFlagLengths
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantFlagLengthsInvarianceTorusPositivity
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselUnipotentMulVecMiddleVec
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalFormRootMeasureHaarUnimodularStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalFormRootMeasureHaarUnimodular
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeOneSideUnfoldingStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FibreVolumeTwoFlagsGeneralPositionStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TwoFlagsGramNumberAndFibreSetsMeasurableStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TwoFlagsGramNumberAndFibreSetsMeasurable
 
 noncomputable section
 
@@ -152,10 +152,10 @@ theorem abs_side : ∀ (k r : ℕ) {Wq : Type} [NormedAddCommGroup Wq] [InnerPro
   obtain ⟨hz', hT', hnt, hU, -, hG, hW, hW1, hN, hq, hψ, hE, hΦ, hc, hl2⟩ := hO'
   have hz := hF.1
   have hγ : γ ∈ GG k r := hF.2.2.2.2.1
-  obtain ⟨hRc, hRh, hRu, -⟩ := GlobalTheory.T.normalFormRootMeasure_haar_unimodular k r γ s μR hs hR
+  obtain ⟨hRc, hRh, hRu, -⟩ := _root_.GlobalTheory.Amp.RootMeas.normR_facts k r γ s μR hs hR
   obtain ⟨-, hnull, φ, hφ, hcut⟩ := GlobalTheory.Amp.CutQuot.cut_quotient k r _ μG μR νR hRc hG hRh hRu hQ
   have hP := GlobalTheory.T.fibreVolume_twoFlags_generalPosition k r z z' γ De s μR hr hk hF hD hs hR
-  obtain ⟨hYm, hEm⟩ := GlobalTheory.T.twoFlagsGramNumber_and_fibre_sets_measurable k r z z' γ hγ
+  obtain ⟨hYm, hEm⟩ := _root_.GlobalTheory.Amp.YMeas.yv_measurable k r z z' γ hγ
   refine ⟨?_, ?_⟩
   · have hAm : MeasurableSet {x : Mt k r | Matrix.of x ∉ GG k r ∨ Yv k r z z' γ (Matrix.of x) = 0} := by
       convert hYm (measurableSet_singleton 0) using 1
@@ -226,7 +226,7 @@ theorem abs_side : ∀ (k r : ℕ) {Wq : Type} [NormedAddCommGroup Wq] [InnerPro
     (ENNReal.ofReal κ * ENNReal.ofReal (fibVol k r R₀ De y / s)) hfm hQm hQS (fun g hg => by
       rw [lintegral_smul_measure, smul_eq_mul]
       exact mul_le_mul_right ((hP g hg).2 φ hφ R₀ y hR₀ hy) _) w hw
-  have hcheb := GlobalTheory.T.tail_mass_le_of_majorantLengthMomentBound k r z' νS' Φ' q H₁ hH (quot_conc hG hW hW1 hN hq) hΦ hM i
+  have hcheb := _root_.GlobalTheory.Amp.Cheb.tail_mass_le k r z' νS' Φ' q H₁ hH (quot_conc hG hW hW1 hN hq) hΦ hM i
   have hd : (0 : ℝ) < Module.finrank ℂ Wq := by exact_mod_cast Module.finrank_pos
   have hV : 0 ≤ fibVol k r R₀ De y := by
     have := hD.1

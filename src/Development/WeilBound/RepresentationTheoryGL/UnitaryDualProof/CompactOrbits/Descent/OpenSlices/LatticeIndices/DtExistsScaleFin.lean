@@ -51,8 +51,6 @@ instance (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : Module.IsTorsionFree �
     · exact Or.inl (Subtype.ext h1)
     · exact Or.inr (Subtype.ext h1)
 
-example (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : Module.Free 𝒪[k] (LatO Z) := inferInstance
-
 theorem LatO_le (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {x : Matrix (Fin n) (Fin n) k} (hx : x ∈ LatO Z) :
     x ∈ Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)) :=
   (Subalgebra.mem_centralizer_iff k).2 fun a ha => hx.1 a ha

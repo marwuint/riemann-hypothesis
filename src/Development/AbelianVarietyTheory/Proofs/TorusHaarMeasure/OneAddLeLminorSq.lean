@@ -263,6 +263,4 @@ open scoped Matrix
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 namespace GlobalTheory.Up
-open BallExPf
-
 end GlobalTheory.Up

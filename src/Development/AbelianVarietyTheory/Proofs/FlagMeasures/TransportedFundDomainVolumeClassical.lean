@@ -1,17 +1,19 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Direct
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeIntegralUnipotentRadicalRealPointsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeIntegralUnipotentRadicalRealPoints
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NCoords
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.IdMeetVolEqPf
 import Development.AbelianVarietyTheory.Definitions.Foundations.HermitianSpaceBaseLatticeEqFrameLattice
 import Formalism.LocalToGlobal.ProjectiveLattices.UnramBridgeHolds
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConcreteGramHermitianNondegenerateLatticeSelfDuaStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WordFrameDualTupleGramIntegralityStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselTransportIsometryFrameAdaptedStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FundamentalDomainNormalisingConstantsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurePiPointsAtInfinitePlacesCMTypeImageStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConcreteGramHermitianNondegenerateLatticeSelfDua
+import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.PoincareInHH
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WordFrameDualTupleGramIntegrality
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselTransportIsometryFrameAdapted
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FundamentalDomainNormalisingConstants
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurePiPointsAtInfinitePlacesCMTypeImage
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableSetTransportedRealPointsImageStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentEqLatticeUnipotentCoordsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TransportRealPointsBijectiveMultiplicativeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentEqLatticeUnipotentCoords
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TransportRealPointsBijectiveMultiplicative
 
 noncomputable section
 open scoped Classical ENNReal
@@ -46,13 +48,13 @@ theorem isDomN (D : D7) (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (�
     GlobalTheory.SnMass.IsDomN (D.sp.cm.sig : D.host.E →+* D.host.E) (Jc X) (Lc X) (Pc X u) (Ac X C)
       (Gm D '' (trX X C '' Y.FN u)) := by
   obtain ⟨hmeas, hex, huniq⟩ := Y.FN_fund u
-  obtain ⟨hsurj, hinj, hmul⟩ := GlobalTheory.T.transport_real_points_bijective_multiplicative D X θ C
-  obtain ⟨h8a, h8b⟩ := GlobalTheory.T.integralUnipotent_eq_latticeUnipotent_coords D X θ C u
+  obtain ⟨hsurj, hinj, hmul⟩ := _root_.GlobalTheory.CovDom.transport_real_points D X θ C
+  obtain ⟨h8a, h8b⟩ := _root_.GlobalTheory.CovDomGrp.nO_eq_nLam_coords D X θ C u
   have hgrp := Formalism.L2.SG.Pf.IdMeet.noinfEqC_holds D X u Y.hK
   have hA : ∀ w, IsUnit (Ac X C w).det := by
     intro w
-    have h1 := (GlobalTheory.T.bessel_transport_isometry_frame_adapted D X θ C u).1 w
-    have h2 := (GlobalTheory.T.concrete_gram_hermitian_nondegenerate_lattice_selfDual D X).1.2
+    have h1 := (_root_.GlobalTheory.CovDom.ModelIso.model_adapted D X θ C u).1 w
+    have h2 := (_root_.GlobalTheory.CovDom.herm_selfDual D X).1.2
     have e : ((Jc X).map w.embedding).det = w.embedding (Jc X).det := by rw [RingHom.map_det]; rfl
     have h3 : ((Jc X).map w.embedding).det ≠ 0 := by rw [e]; exact (map_ne_zero _).2 h2
     rw [← h1, Matrix.det_mul, Matrix.det_mul] at h3
@@ -88,15 +90,15 @@ theorem isDomN (D : D7) (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (�
 
 theorem main : ∀ (D : D7) (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (θ : ℝ) (C : Choice X θ) (u : D.what₂.Word), (Measure.pi (fun _ : D.what₂.Tau => haarLie (Formalism.QuantumDeterminants.Nset D.R.k D.R.rS) 1) ((fun (x : X.B.I.Ginf) (τ : D.what₂.Tau) => (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ))) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)) '' Y.FN u)).toReal = (2 * D.host.v) ^ (((D.R.rS : ℝ) ^ 2 + (D.R.rS : ℝ) * D.R.k + (D.R.rS : ℝ) / 2) * Fintype.card D.what₂.Tau) := by
   intro D X Y θ C u
-  obtain ⟨hs, hnum⟩ := GlobalTheory.T.fundamental_domain_normalising_constants D
-  obtain ⟨hH, hSD⟩ := GlobalTheory.T.concrete_gram_hermitian_nondegenerate_lattice_selfDual D X
-  obtain ⟨hF, hDu, hT⟩ := GlobalTheory.T.wordFrame_dualTuple_gram_integrality D X u
-  obtain ⟨hM, hAd⟩ := GlobalTheory.T.bessel_transport_isometry_frame_adapted D X θ C u
-  have hI := GlobalTheory.T.covolume_integral_unipotentRadical_real_points D.host.F D.host.E D.sp.cm.sig D.R.k D.R.rS (Jc X) (Lc X) (Pc X u) (fc X) (Tc u)
+  obtain ⟨hs, hnum⟩ := _root_.GlobalTheory.CovDom.normalising_constants D
+  obtain ⟨hH, hSD⟩ := _root_.GlobalTheory.CovDom.herm_selfDual D X
+  obtain ⟨hF, hDu, hT⟩ := _root_.GlobalTheory.CovDom.frame_dual_lat D X u
+  obtain ⟨hM, hAd⟩ := _root_.GlobalTheory.CovDom.ModelIso.model_adapted D X θ C u
+  have hI := _root_.GlobalTheory.SnMass.VolN.covolume_N D.host.F D.host.E D.sp.cm.sig D.R.k D.R.rS (Jc X) (Lc X) (Pc X u) (fc X) (Tc u)
     (Ac X C) (sc D) (GlobalTheory.AdelicU.isCMExt_host D) (formallyUnramified_host D) hH hSD hF hDu hT hM hs hAd
   have h1 := hI.2 _ (isDomN D X Y θ C u)
   have hv : 0 ≤ 2 * D.host.v := by unfold Host.v Host.rdE; positivity
   change (Measure.pi _ (trX X C '' Y.FN u)).toReal = _
-  rw [← GlobalTheory.T.measurePi_pointsAtInfinitePlacesCMType_image D, h1, hnum, ENNReal.toReal_ofReal (Real.rpow_nonneg hv _)]
+  rw [← _root_.GlobalTheory.CovDom.measure_Gm_image D, h1, hnum, ENNReal.toReal_ofReal (Real.rpow_nonneg hv _)]
 
 end GlobalTheory.CovDom

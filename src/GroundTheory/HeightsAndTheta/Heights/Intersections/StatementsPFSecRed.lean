@@ -25,14 +25,6 @@ def PFSecAt (I : AllFam) (r : ℕ) : Prop :=
 def PFSecRed.Statement : Prop :=
   ∀ (I : AllFam), I.IsFamily → ∀ r : ℕ, PFSecAt I r → PFAt I (r + 1)
 
-section Inhabitants
-
-def fibreLineDeg : Unit ⊕ Unit → ℕ := Sum.elim (fun _ => 0) fun _ => 1
-
-def fibreCoord : MRing PointLineBlocks := X ⟨Sum.inr (), (0 : Fin 2)⟩
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.Inter

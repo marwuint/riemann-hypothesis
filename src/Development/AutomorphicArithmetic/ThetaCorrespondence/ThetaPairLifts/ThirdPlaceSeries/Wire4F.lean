@@ -1,5 +1,7 @@
-import Formalism.LocalToGlobal.Wire4F
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Formalism.LocalToGlobal.FiniteTOf
+import Formalism.LocalToGlobal.PtKOfReal
+import Formalism.LocalToGlobal.Divisibility.SumLeEtaSumNum
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TSelF
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.IndefiniteRealisationChoice
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ClassOfRecordOfChoice

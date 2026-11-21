@@ -31,50 +31,6 @@ def IsModerateForm (μ : (GAd σ J → ℂ) →ₗ[ℂ] ℂ) : Prop :=
         ∃ B : ℝ, ∀ g, ‖l.foldr lineDer f g‖ ≤ B * (height σ J g : ℝ) ^ N) →
       (∀ l ∈ S, ∀ g, ‖l.foldr lineDer f g‖ ≤ (height σ J g : ℝ) ^ N) → ‖μ f‖ ≤ C
 
-theorem isModerateForm_proj (g : GAd σ J) : IsModerateForm σ J (LinearMap.proj g) := fun N =>
-  ⟨[[]], (height σ J g : ℝ) ^ N, by simp, fun _ _ _ h => h [] (by simp) g⟩
-
-theorem exists_isAdapted_plane : ∃ L a,
-    IsAdapted σ !![0, 1; 1, 0] (!![1; 0] : Matrix (Fin 2) (Fin 1) E) !![0; 1] L a := by
-  let b : GL (Fin 2) E := ⟨!![1, 1; 2⁻¹, -2⁻¹], !![2⁻¹, 1; 2⁻¹, -1],
-    by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> norm_num,
-    by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> norm_num⟩
-  have h0 : ∀ (w : InfinitePlace F) (u : GL (Fin 2) E), (bc (compInf F E w) (bc (inclR (F := F) (AF F)) u)).1 =
-      u.1.map (inclR (F := F) w.Completion) := fun w u => Matrix.ext fun i j => by
-    change evInf F w 1 ⊗ₜ[F] _ = 1 ⊗ₜ[F] _
-    rw [map_one]; rfl
-  have h1 : ∀ (w : InfinitePlace F) (M : Matrix (Fin 2) (Fin 2) E),
-      cT (sigR _ σ) (M.map (inclR (F := F) w.Completion)) = (cT (σ : E →+* E) M).map (inclR (F := F) w.Completion) :=
-    fun w M => rfl
-  refine ⟨stdLattice E 2, bc (inclR (F := F) (AF F)) b, isLattice_stdLattice, fun v => ?_, fun z hz i => ?_,
-    fun w => ⟨![true, false], ?_⟩, fun w => ⟨fun _ => inclR (F := F) w.Completion 2⁻¹, ?_⟩⟩
-  · have e : ∀ y x : Fin 2 → Fv F v ⊗[F] E,
-        hLin σ !![0, 1; 1, 0] (Fv F v) y x = sigR _ σ (x 0) * y 1 + sigR _ σ (x 1) * y 0 := fun y x => by
-      simp [hLin, hR, Formalism.UG.hform, JR, Fin.sum_univ_two]
-    ext y
-    rw [mem_latLoc_stdLattice]
-    refine ⟨fun hy x hx => ?_, fun hy => Fin.forall_fin_two.2 ⟨?_, ?_⟩⟩
-    · rw [e]
-      exact add_mem (mul_mem (sigR_mem_intLoc σ (mem_latLoc_stdLattice.1 hx 0)) (hy 1))
-        (mul_mem (sigR_mem_intLoc σ (mem_latLoc_stdLattice.1 hx 1)) (hy 0))
-    · simpa [e] using hy ![0, 1] (mem_latLoc_stdLattice.2 (Fin.forall_fin_two.2 ⟨zero_mem _, one_mem _⟩))
-    · simpa [e] using hy ![1, 0] (mem_latLoc_stdLattice.2 (Fin.forall_fin_two.2 ⟨one_mem _, zero_mem _⟩))
-  · constructor <;> intro j _ <;> fin_cases j
-    · simpa [cT, mulVec, dotProduct, Matrix.mul_apply, Fin.sum_univ_two] using hz 0 trivial
-    · simp
-    · simp
-    · simpa [cT, mulVec, dotProduct, Matrix.mul_apply, Fin.sum_univ_two] using hz 1 trivial
-  · rw [h0, h1, JR, ← Matrix.map_mul, ← Matrix.map_mul]
-    have : cT (σ : E →+* E) b.1 * !![0, 1; 1, 0] * b.1 = diagonal fun i => if ![true, false] i then 1 else -1 := by
-      ext i j; fin_cases i <;> fin_cases j <;> simp [b, cT, Matrix.mul_apply, Fin.sum_univ_two, map_ofNat] <;> norm_num
-    rw [this, diagonal_map (map_zero _)]
-    exact congrArg diagonal (funext fun i => by split_ifs <;> simp)
-  · have : cT (σ : E →+* E) (b⁻¹).1 * (b⁻¹).1 * (!![1; 0] : Matrix (Fin 2) (Fin 1) E) =
-        (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) E) * (!![0; 1] : Matrix (Fin 2) (Fin 1) E) * diagonal fun _ : Fin 1 => (2⁻¹ : E) := by
-      ext i j; rw [mul_diagonal]; fin_cases i <;> fin_cases j <;> simp [b, cT, Matrix.mul_apply, Fin.sum_univ_two, map_ofNat] <;> norm_num
-    rw [← map_inv, h0, h1, JR, ← Matrix.map_mul, ← Matrix.map_mul, this]
-    exact Matrix.map_mul.trans (congrArg₂ (· * ·) Matrix.map_mul (diagonal_map (map_zero _)))
-
 end GlobalTheory.EisLine
 
 namespace GlobalTheory.Published

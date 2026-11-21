@@ -165,10 +165,6 @@ noncomputable def indShiftIso (A : Rep.{u} k G) (n : ℤ) :
   @asIso _ _ _ _ (TateCohomology.δ (indSES_shortExact A) n)
     (isIso_δ_of_tateAcyclic (indSES_shortExact A) (tateAcyclic_indSES_X₂ A) n)
 
-theorem isIso_δ_indSES (A : Rep.{u} k G) (n : ℤ) :
-    IsIso (TateCohomology.δ (indSES_shortExact A) n) :=
-  isIso_δ_of_tateAcyclic _ (tateAcyclic_indSES_X₂ A) n
-
 end Ind
 
 end GroundTheory.GroupCoh

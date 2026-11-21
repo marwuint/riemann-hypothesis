@@ -32,8 +32,4 @@ theorem goodAt_iff (l : Level H) {p : ℕ} (hp : p.Prime) : l.GoodAt p ↔ ∀ k
     obtain ⟨t, ht⟩ := hodd
     omega
 
-theorem trace_sign (t : ℂ) :
-    Algebra.trace ℝ ℂ t = 2 * t.re ∧ Algebra.trace ℝ ℂ (Complex.I * t) = -2 * t.im := by
-  simp [Algebra.trace_complex_apply]
-
 end GlobalTheory.HostProbe

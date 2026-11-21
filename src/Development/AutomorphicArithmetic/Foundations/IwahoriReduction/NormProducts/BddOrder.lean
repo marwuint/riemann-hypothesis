@@ -106,7 +106,7 @@ private theorem onto (φ : ℂ → ℂ) (hd : DifferentiableOn ℂ φ Hs)
   by_contra hc
   push Not at hc
   have hne : ∀ τ ∈ Hs, φ τ - a ≠ 0 := fun τ hτ => sub_ne_zero.2 (hc τ hτ)
-  obtain ⟨c, hcc⟩ := GlobalTheory.T.const_of_slTwoInt_invariant_bounded_upperHalfPlane (fun w => (φ w - a)⁻¹) ((hd.sub_const a).inv hne)
+  obtain ⟨c, hcc⟩ := _root_.GlobalTheory.KZ.LevelOne.const_of_invariant_bounded (fun w => (φ w - a)⁻¹) ((hd.sub_const a).inv hne)
     (fun γ z hz => by simp only [hinv γ z hz]) ⟨1, max t (‖a‖ + 1), fun z hz hzt => by
       rw [max_lt_iff] at hzt
       have h1 := h z hzt.1

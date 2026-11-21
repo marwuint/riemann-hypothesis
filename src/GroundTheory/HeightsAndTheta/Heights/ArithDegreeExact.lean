@@ -317,10 +317,6 @@ end HermitianExtension
 theorem HermitianBundle.arithDegree_integers : (HermitianBundle.integers K).arithDegree = 0 :=
   GroundTheory.Heights₂.Heights.arithDegree_integers
 
-theorem HermitianBundle.arithDegree_standard_two : (HermitianBundle.standard K 2).arithDegree = 0 := by
-  rw [(HermitianExtension.standardSplit K).arithDegree_eq_add,
-    HermitianBundle.arithDegree_integers, add_zero]
-
 end
 
 end GroundTheory.Heights₂.Heights

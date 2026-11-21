@@ -26,19 +26,6 @@ theorem locC_rTwO (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fi
     rw [map_mul, map_mul]
   exact key _ _
 
-theorem LiftWin_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-    (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
-    (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
-    (C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw) (M h : ℕ)
-    (hFont : Formalism.MainNotions.TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL (D := D) i) (hG2 : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG2 (D := D) i r ρ π)
-    (hc : ∀ x v, Continuous fun g => (Formalism.MainNotions.TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r x) g).mulVec v)
-    (hwin : ∀ x τ, JumpsInV (Br.PD D.loc D.nbr i w hw) (matRep (Formalism.MainNotions.TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r x))) τ
-      (Set.Icc (-(M : ℤ)) h)) : LiftWin D i r w hw C M h := by
-  intro T hT
-  refine subquot_crys (fun x => Formalism.MainNotions.TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r x)) hc (hFont w hw C) (fun x => ?_) hwin T hT
-  rw [locC_rTwO]
-  exact (hG2 w hw C).2 x
-
 theorem locC_cont (D : D7) (i : D.nd.Loc) {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
     (hM : Continuous fun g => M g)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
@@ -66,25 +53,5 @@ theorem rTwO_cont (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fi
     rw [e]
     exact (D.nd.chi_cont i 1).comp continuous_inv
   exact h1.smul (hr x)
-
-theorem lifting_condition_of_windows (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D.nd.Loc)
-    (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-    (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (dc : Formalism.MainNotions.TruncatedSeriesCountingIdentities.Decl D i)
-    (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (M h : ℕ) (CA CB CK : ℝ) (hCA : 0 ≤ CA)
-    (h54 : Formalism.MainNotions.LiftingTheory.LiftTheoremAllCases D HW F CA CB CK) (hl : D.nd.l i ≠ 2)
-    (hur : ∀ w (hw : w ∈ placesOver D.host.E (D.nd.l i)), w ∈ dc.col →
-      (D.nbr i w hw).Kw.1 ≤ MaximalUnramifiedExtension (D.nd.l i))
-    (hFont : Formalism.MainNotions.TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL (D := D) i) (hG2 : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG2 (D := D) i r ρ π)
-    (hr : Formalism.MainNotions.TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r)
-    (hwin : ∀ w (hw : w ∈ placesOver D.host.E (D.nd.l i)), w ∈ dc.col →
-      ∀ C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw, C.IsGood → ∀ x τ,
-        JumpsInV (Br.PD D.loc D.nbr i w hw) (matRep (Formalism.MainNotions.TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r x))) τ
-          (Set.Icc (-(M : ℤ)) h))
-    (he : ∀ w ∈ dc.col, CA * (1 + ((M + h : ℕ) : ℝ) / (D.nd.l i : ℝ) +
-      (1 + Real.logb (D.nd.l i) (((M + h : ℕ) : ℝ) + 1))) ≤ (e' w : ℝ)) :
-    Formalism.MainNotions.TruncatedSeriesCountingIdentities.LiftExponentAtPlaces (D := D) i r dc e' :=
-  lifting_condition_of_crystalline_lift D HW F i r dc e' M h CA CB CK hCA h54 hl hur
-    (fun w hw hcol C hC => LiftWin_of D i r ρ π w hw C M h hFont hG2
-      (fun x v => locC_cont D i _ (rTwO_cont D i r hr x) w hw C v) (hwin w hw hcol C hC)) he
 
 end Formalism.MainNotions.N

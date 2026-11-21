@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEqKer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthGeFinrankOfSemilinearSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaDieudonneModFrobeniusDifferentialsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaDieudonneModFrobeniusDifferentials
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Dieu
 
 namespace GlobalTheory.Dieu
@@ -16,7 +16,7 @@ theorem colength_range_map_ge (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type)
         Module.length (WittVector p k) (T.M G ⧸ LinearMap.range (T.map q)) := by
   have hp : (p : k) = 0 := CharP.cast_eq_zero k p
   obtain ⟨hfin, -⟩ := rigExt_field_of_charP p k hp G
-  obtain ⟨θ, hθ⟩ := GlobalTheory.T.exists_theta_dieudonne_mod_frobenius_differentials p T k
+  obtain ⟨θ, hθ⟩ := _root_.GlobalTheory.Dieu.theta_exists p T k
   have hred : ∀ m : T.M H, T.red G (T.map q m) = rigExtMap q (T.red H m) := fun m => by
     show T.base.red G trivial (T.base.smap trivial trivial (SemiHom.ofHom q) m) = _
     rw [T.base.red_smap, SemiHom.ofHom_rig]

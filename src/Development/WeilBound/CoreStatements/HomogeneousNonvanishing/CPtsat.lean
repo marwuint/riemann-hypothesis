@@ -1,7 +1,8 @@
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexConjugationHermCompatStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexConjugationHermCompat
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.CMadens
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 ReciprocityTheory.AnForm.M GlobalTheory.CompanionTheory.Ar.Cmp Filter Topology
 open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
@@ -21,7 +22,7 @@ theorem ptsat_cons (y : Fin e → ℂ) : star (Fin.cons 1 y : Fin (e + 1) → �
   refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
 theorem ptsat_mem {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) : star z ∈ mcPts P :=
-  ((GlobalTheory.T.complex_conjugation_herm_compat K ι).1 P z).2 hz
+  ((_root_.GlobalTheory.CompanionTheory.Ar.Cmp.conj_basic K ι).1 P z).2 hz
 
 theorem ptsat_symm (h : ∀ w, Ψ' w = star (Ψ (star w))) (w) : Ψ w = star (Ψ' (star w)) := by
   rw [h, star_star, star_star]
@@ -61,7 +62,7 @@ theorem c_ptsat : SheetIndepStatement → ∀ (K : Type) [Fintype K] (ι : K →
   by_cases h1 : ∃ γ, IsSheet P Ψ' y w γ
   · have h2 : ∃ γ, IsSheet P Ψ (star y) (star w) γ := ⟨_, ptsat_sheet h h1.choose_spec⟩
     rw [dif_pos h1, dif_pos h2, hy _ _ _ h2.choose_spec (ptsat_sheet h h1.choose_spec),
-      (GlobalTheory.T.complex_conjugation_herm_compat K ι).2.2.2.1]
+      (_root_.GlobalTheory.CompanionTheory.Ar.Cmp.conj_basic K ι).2.2.2.1]
     have h3 := c_madens e (fun j y' => pot L j ((star ∘ h1.choose ∘ star) y')) y
     congr 1
     · simp only [Function.comp_apply, star_star]

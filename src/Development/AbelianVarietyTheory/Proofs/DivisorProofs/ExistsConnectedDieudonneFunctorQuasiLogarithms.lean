@@ -3,13 +3,16 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubstLiftXPowFrob
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConnectedPDivGroupChartOfIsConnStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectedPDivGroupFormalLawCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCommFormalGroupLawOfIsLawOfStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMapOfAddFormalGroupLawEvalPointsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCommFormalGroupLawOfIsLawOf
+import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
+import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMapOfAddFormalGroupLawEvalPoints
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRigidifiedExtensionOfSeriesPairStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedExtensionPresentationOfSeriesPairsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfFormalGroupLawCoboundaryOneEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedExtensionPresentationOfSeriesPairs
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfFormalGroupLawCoboundaryOneEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalAtNilpotentXEqCoordinate
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogReducesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogReduces
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmPullbackTeichmullerLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffSubstZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapExists
@@ -20,7 +23,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModNoPTorsion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankRigidExtensionsEqHeightAndDimAddDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCommFormalGroupLawMapStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniquePowerSeriesSemilinearPDivGroupHomChaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemilinearPDivGroupHomChartConstantCoeffSubstStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemilinearPDivGroupHomChartConstantCoeffSubst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectedPDivGroupChartSemilinearHomIsFormalGrouStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedExtensionPresentationNaturalSemilinearStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapFormalGroupLawQuasiLogarithmsStatement
@@ -115,8 +118,8 @@ theorem chartPull_comp {k k' k'' : Type} [Field k] [CharP k p] [PerfectRing k p]
   induction x using Submodule.Quotient.induction_on with | _ f => ?_
   obtain ⟨φs, hφs, -⟩ := GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k k' σ d e G G' c c' s
   obtain ⟨φt, hφt, -⟩ := GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k' k'' τ e e' G' G'' c' c'' t
-  have h3s := GlobalTheory.T.semilinearPDivGroupHom_chart_constantCoeff_subst p k k' σ d e G G' c c' s φs hφs
-  have h3t := GlobalTheory.T.semilinearPDivGroupHom_chart_constantCoeff_subst p k' k'' τ e e' G' G'' c' c'' t φt hφt
+  have h3s := _root_.GlobalTheory.Katz.semiHom_constantCoeff_and_ev p k k' σ d e G G' c c' s φs hφs
+  have h3t := _root_.GlobalTheory.Katz.semiHom_constantCoeff_and_ev p k' k'' τ e e' G' G'' c' c'' t φt hφt
   let ψ : Fin d → MvPowerSeries (Fin e) k'' := fun j => MvPowerSeries.map τ (φs j)
   have hψ0 : ∀ j, constantCoeff (ψ j) = 0 := fun j => by
     simp only [ψ, constantCoeff_map, h3s.1 j, map_zero]
@@ -164,10 +167,10 @@ theorem chartPull_add {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G H : 
   induction x using Submodule.Quotient.induction_on with | _ y => ?_
   obtain ⟨φf, hφf, -⟩ := GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k k (RingHom.id k) e d H G cH cG (SemiHom.ofHom f)
   obtain ⟨φg, hφg, -⟩ := GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k k (RingHom.id k) e d H G cH cG (SemiHom.ofHom g)
-  have c1 := (GlobalTheory.T.semilinearPDivGroupHom_chart_constantCoeff_subst p k k (RingHom.id k) e d H G cH cG _ φf hφf).1
-  have c2 := (GlobalTheory.T.semilinearPDivGroupHom_chart_constantCoeff_subst p k k (RingHom.id k) e d H G cH cG _ φg hφg).1
+  have c1 := (_root_.GlobalTheory.Katz.semiHom_constantCoeff_and_ev p k k (RingHom.id k) e d H G cH cG _ φf hφf).1
+  have c2 := (_root_.GlobalTheory.Katz.semiHom_constantCoeff_and_ev p k k (RingHom.id k) e d H G cH cG _ φg hφg).1
   have hsum : cG.IsMapOf cH (f + g) (op ν φf φg) :=
-    GlobalTheory.T.isMapOf_add_formalGroupLawEvalPoints p k d e G H cG cH ν f g φf φg hcH (fun n j => hφf n j) (fun n j => hφg n j)
+    _root_.GlobalTheory.Katz.Chart.isMapOf_add p k d e G H cG cH ν f g φf φg hcH (fun n j => hφf n j) (fun n j => hφg n j)
   obtain ⟨a, ha, hma⟩ := hf φf hφf y
   obtain ⟨b, hb, hmb⟩ := hg φg hφg y
   obtain ⟨s, hs, hms⟩ := hfg (op ν φf φg) (fun n j => hsum n j) y
@@ -198,7 +201,7 @@ theorem chartPull_red {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Fie
   obtain ⟨φ, hφ, -⟩ := GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k k' σ d e G G' c c' s
   have hhom := GlobalTheory.T.connectedPDivGroupChart_semilinearHom_isFormalGroupHom p k k' σ d e G G' c c' s μ ν φ hc hc' hφ
   obtain ⟨g, hg, hmg⟩ := hm φ hφ f
-  have hD := GlobalTheory.T.quasiLog_reduces_to_cocycle p k d μ hμ
+  have hD := _root_.GlobalTheory.quasiLog_reduces p k d μ hμ
   obtain ⟨t, w, ht, hw⟩ := hD.1 f.1 f.2
   have hcoc := hD.2 f.1 f.2 t ht
   have hσμ := GlobalTheory.T.isCommFormalGroupLaw_map k k' σ d μ hμ
@@ -264,12 +267,12 @@ theorem exists_base_isConn_katz : ∀ (p : ℕ) [Fact p.Prime],
     exact ⟨d, c, μ, hμ⟩
   choose d c μ hc using hch
   have hlaw : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (hG : G.IsConn),
-      IsLaw (μ k G hG) := fun k _ _ _ G hG => GlobalTheory.T.isCommFormalGroupLaw_of_isLawOf p k _ G _ _ (hc k G hG)
+      IsLaw (μ k G hG) := fun k _ _ _ G hG => _root_.GlobalTheory.Katz.Chart.isLaw_of_isLawOf p k _ G _ _ (hc k G hG)
   choose ρ hρ using fun (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k)
     (hG : G.IsConn) => GlobalTheory.T.exists_rigidifiedExtension_of_series_pair p k (d k G hG) G (c k G hG)
   choose r hr hsurj hker using fun (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k)
     (hG : G.IsConn) => GlobalTheory.Katz.reductionMap p k (d k G hG) (μ k G hG) (hlaw k G hG) G.RigExt (ρ k G hG)
-      (GlobalTheory.T.rigidifiedExtension_presentation_of_series_pairs p k _ G _ _ _ (hc k G hG) (hρ k G hG))
+      (_root_.GlobalTheory.Katz.isRigOf_rigMk p k _ G _ _ _ (hc k G hG) (hρ k G hG))
   choose P hP using fun (k k' : Type) [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p]
     [PerfectRing k' p] (σ : k →+* k') (G : PDivGroup p k) (G' : PDivGroup p k') (d e : ℕ) (cc : Chart G d)
     (cc' : Chart G' e) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k)
@@ -284,7 +287,7 @@ theorem exists_base_isConn_katz : ∀ (p : ℕ) [Fact p.Prime],
     exact GlobalTheory.wittModule_free_finite_of_reduction p k _ G.RigExt (r k G hG)
       (GlobalTheory.Katz.WittHaus.haus p k _ _ (hlaw k G hG))
       (GlobalTheory.Katz.mod_noPTorsion p k _ _ (hlaw k G hG)
-        (GlobalTheory.T.eq_zero_of_formalGroupLawCoboundaryOne_eq_zero p k (CharP.cast_eq_zero k p) _ G _ _ (hc k G hG)))
+        (_root_.GlobalTheory.Katz.eq_zero_of_cob1_eq_zero p k (CharP.cast_eq_zero k p) _ G _ _ (hc k G hG)))
       (hsurj k G hG) (fun x => (hker k G hG x).1)
   let B : GlobalTheory.Dieu.Base p (fun _ _ G => G.IsConn) :=
     { M := @fun k _ _ _ G hG => ModuleCat.of (WittVector p k) (Mod p (hlaw k G hG))

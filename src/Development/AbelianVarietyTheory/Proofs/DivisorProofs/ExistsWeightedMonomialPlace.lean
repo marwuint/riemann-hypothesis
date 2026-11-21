@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NotDominatesTopPlac
 import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.IsQuasiRegularSeqSelfIffLocalizationMaximal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffMemSpanOfWeightedHomogeneousRelationQuasiReStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeightedHomogenisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrLocPrincipalPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrLocPrincipalPrime
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -112,7 +112,7 @@ theorem exists_weightedMonomialPlace : ∀ {L : Type} [Field L] (c : ℂ →+* L
     obtain ⟨a, ha, b, hb, hb0, hab⟩ := hQ.frac f
     exact ⟨a, hQA a ha, b, hQA b hb, hb0, hab⟩
   obtain ⟨V, hAV, hdvr, hirr, hunit, hfrV, hess⟩ :=
-    GlobalTheory.T.isDVR_of_principal_prime_localization A t hNA hz0 hprime hfracA
+    _root_.GlobalTheory.dvr_loc_principal_prime A t hNA hz0 hprime hfracA
   have hQAf : (Q.subtype.codRestrict A fun q => hQA _ q.2).FiniteType := by
     have h1 : (Q.subtype.codRestrict A fun q => hQA _ q.2) = eA.comp C := by
       ext q; simp [heA_val, he]

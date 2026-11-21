@@ -40,24 +40,6 @@ lemma freeSheafHomEquiv_comp {U : C} {F G : Sheaf J AddCommGrpCat.{v}} (f : free
     (g : F ⟶ G) :
     freeSheafHomEquiv U G (f ≫ g) = g.hom.app (op U) (freeSheafHomEquiv U F f) := rfl
 
-lemma freeSheafMap_gen {V U : C} (i : V ⟶ U) :
-    (freeSheafMap J i).hom.app (op V) (freeSheafGen J V) =
-      (freeSheaf J U).obj.map i.op (freeSheafGen J U) := by
-  have h1 := congr(($(toSheafify_naturality J
-    (Functor.whiskerRight (yoneda.map i) AddCommGrpCat.free)).app (op V)) (FreeAbelianGroup.of (𝟙 V)))
-  have h2 := congr($((toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free)).naturality i.op)
-    (FreeAbelianGroup.of (𝟙 U)))
-  refine h1.symm.trans (Eq.trans ?_ h2)
-  change (toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free)).app (op V) (FreeAbelianGroup.of (𝟙 V ≫ i)) =
-    (toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free)).app (op V) (FreeAbelianGroup.of (i ≫ 𝟙 U))
-  simp
-
-lemma freeSheafHomEquiv_freeSheafMap_comp {V U : C} (i : V ⟶ U) {F : Sheaf J AddCommGrpCat.{v}}
-    (f : freeSheaf J U ⟶ F) :
-    freeSheafHomEquiv V F (freeSheafMap J i ≫ f) = F.obj.map i.op (freeSheafHomEquiv U F f) := by
-  rw [freeSheafHomEquiv_comp, freeSheafHomEquiv_apply, freeSheafMap_gen, freeSheafHomEquiv_apply]
-  exact congr($(f.hom.naturality i.op) (freeSheafGen J U))
-
 variable [HasExt.{w} (Sheaf J AddCommGrpCat.{v})]
 
 noncomputable def sectionsEquiv (F : Sheaf J AddCommGrpCat.{v}) (U : C) :
@@ -74,14 +56,6 @@ lemma sectionsEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (U : C) 
   obtain ⟨g, rfl⟩ := (Ext.mk₀_bijective (freeSheaf J U) F).2 x
   refine (congrArg (sectionsEquiv G U) (Ext.mk₀_comp_mk₀ g f)).trans ?_
   rw [sectionsEquiv_mk₀, sectionsEquiv_mk₀, freeSheafHomEquiv_comp]
-
-lemma sectionsEquiv_restrict (F : Sheaf J AddCommGrpCat.{v}) {V U : C} (i : V ⟶ U)
-    (x : F.H' 0 U) :
-    sectionsEquiv F V ((F.cohomologyPresheaf 0).map i.op x) =
-      F.obj.map i.op (sectionsEquiv F U x) := by
-  obtain ⟨g, rfl⟩ := (Ext.mk₀_bijective (freeSheaf J U) F).2 x
-  refine (congrArg (sectionsEquiv F V) (Ext.mk₀_comp_mk₀ (freeSheafMap J i) g)).trans ?_
-  rw [sectionsEquiv_mk₀, sectionsEquiv_mk₀, freeSheafHomEquiv_freeSheafMap_comp]
 
 open CategoryTheory Abelian Opposite Limits TopologicalSpace in
 variable {C : Type u} [Category.{v} C] (J : GrothendieckTopology C)
@@ -111,22 +85,6 @@ lemma exact_connecting_map (n : ℕ) (U : C) :
       (((Sheaf.cohomologyPresheafFunctor J (n + 1)).map S.f).app (op U)) :=
   (ShortComplex.ab_exact_iff_function_exact _).1
     (Ext.covariant_sequence_exact₁' (freeSheaf J U) hS n (n + 1) rfl)
-
-lemma connecting_naturality {T : ShortComplex (Sheaf J AddCommGrpCat.{v})} (hT : T.ShortExact)
-    (φ : S ⟶ T) (n : ℕ) (U : C) (x : S.X₃.H' n U) :
-    connecting hT n U (((Sheaf.cohomologyPresheafFunctor J n).map φ.τ₃).app (op U) x) =
-      ((Sheaf.cohomologyPresheafFunctor J (n + 1)).map φ.τ₁).app (op U) (connecting hS n U x) := by
-  have key (y : Ext (freeSheaf J U) S.X₃ n) :
-      (y.comp (Ext.mk₀ φ.τ₃) (add_zero n)).comp hT.extClass rfl =
-        (y.comp hS.extClass rfl).comp (Ext.mk₀ φ.τ₁) (add_zero (n + 1)) := by
-    rw [Ext.comp_assoc_of_second_deg_zero, Ext.comp_assoc_of_third_deg_zero,
-      hS.extClass_naturality hT φ]
-  exact key x
-
-lemma connecting_restrict (n : ℕ) {V U : C} (i : V ⟶ U) (x : S.X₃.H' n U) :
-    connecting hS n V ((S.X₃.cohomologyPresheaf n).map i.op x) =
-      (S.X₁.cohomologyPresheaf (n + 1)).map i.op (connecting hS n U x) :=
-  Ext.comp_assoc (Ext.mk₀ (freeSheafMap J i)) x hS.extClass (zero_add n) rfl (by lia)
 
 lemma connecting_injective (n : ℕ) (U : C) (h : Subsingleton (S.X₂.H' n U)) :
     Function.Injective (connecting hS n U) := by
@@ -167,39 +125,12 @@ lemma exact_app_connecting₀ (U : C) :
     obtain ⟨y, rfl⟩ := (sectionsEquiv S.X₂ U).surjective t
     exact ⟨y, (sectionsEquiv S.X₃ U).injective ((sectionsEquiv_map S.g U y).trans ht)⟩
 
-lemma exact_connecting₀_map (U : C) :
-    Function.Exact (connecting₀ hS U)
-      (((Sheaf.cohomologyPresheafFunctor J 1).map S.f).app (op U)) := by
-  intro x
-  refine (exact_connecting_map hS 0 U x).trans ⟨?_, ?_⟩
-  · rintro ⟨y, rfl⟩
-    exact ⟨sectionsEquiv S.X₃ U y, by rw [connecting₀_apply, AddEquiv.symm_apply_apply]⟩
-  · rintro ⟨y, rfl⟩
-    exact ⟨_, rfl⟩
-
 lemma connecting₀_surjective (U : C) (h : Subsingleton (S.X₂.H' 1 U)) :
     Function.Surjective (connecting₀ hS U) :=
   (connecting_surjective hS 0 U h).comp (sectionsEquiv S.X₃ U).symm.surjective
 
 lemma ker_connecting₀ (U : C) : (connecting₀ hS U).ker = (S.g.hom.app (op U)).hom.range :=
   AddSubgroup.ext fun s ↦ exact_app_connecting₀ hS U s
-
-lemma connecting₀_naturality {T : ShortComplex (Sheaf J AddCommGrpCat.{v})} (hT : T.ShortExact)
-    (φ : S ⟶ T) (U : C) (s : S.X₃.obj.obj (op U)) :
-    connecting₀ hT U (φ.τ₃.hom.app (op U) s) =
-      ((Sheaf.cohomologyPresheafFunctor J 1).map φ.τ₁).app (op U) (connecting₀ hS U s) := by
-  obtain ⟨x, rfl⟩ := (sectionsEquiv S.X₃ U).surjective s
-  rw [← sectionsEquiv_map, connecting₀_apply, connecting₀_apply, AddEquiv.symm_apply_apply,
-    AddEquiv.symm_apply_apply]
-  exact connecting_naturality hS hT φ 0 U x
-
-lemma connecting₀_restrict {V U : C} (i : V ⟶ U) (s : S.X₃.obj.obj (op U)) :
-    connecting₀ hS V (S.X₃.obj.map i.op s) =
-      (S.X₁.cohomologyPresheaf 1).map i.op (connecting₀ hS U s) := by
-  obtain ⟨x, rfl⟩ := (sectionsEquiv S.X₃ U).surjective s
-  rw [← sectionsEquiv_restrict, connecting₀_apply, connecting₀_apply, AddEquiv.symm_apply_apply,
-    AddEquiv.symm_apply_apply]
-  exact connecting_restrict hS 0 i x
 
 noncomputable def cokerEquiv (U : C) (h : Subsingleton (S.X₂.H' 1 U)) :
     (S.X₃.obj.obj (op U) ⧸ (S.g.hom.app (op U)).hom.range) ≃+ S.X₁.H' 1 U :=
@@ -294,10 +225,6 @@ theorem _root_.GlobalTheory.Flasque.isFlasque_of_injective (I : TopCat.Sheaf Add
 instance isFlasque_injectiveShortComplex_X₂ (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     (injectiveShortComplex F).X₂.IsFlasque :=
   isFlasque_of_injective _
-
-lemma isFlasque_injectiveShortComplex_X₃ (F : TopCat.Sheaf AddCommGrpCat.{u} X) [F.IsFlasque] :
-    (injectiveShortComplex F).X₃.IsFlasque :=
-  TopCat.Sheaf.IsFlasque.of_shortExact_of_isFlasque₁₂ (injectiveShortComplex_shortExact F)
 
 variable [HasExt.{w} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})]
 

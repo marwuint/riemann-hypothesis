@@ -331,12 +331,6 @@ theorem twistRecord_rowDimension_zero :
 theorem twistRecord_lowerLevel (u) : ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.Tstar =
     (Dst / du) ^ ((1 : ℝ) / (R.f * R.k)) * Gam ^ (-(2 : ℝ) / (R.f * R.k)) := rfl
 
-omit kb ks in
-
-theorem twistRecord_weights_defined : ∃ kb ks, DV.KapDef (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) := by
-  obtain ⟨kb, ks, h⟩ := DV.exists_blocks (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G (fun _ _ _ => 0) (fun _ _ _ => 0) tw htw)
-  exact ⟨kb, ks, fun j _ _ τ => h j τ⟩
-
 theorem twistRecord_baseTwist :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.mu0 = false := rfl
 theorem twistRecord_twistAt :

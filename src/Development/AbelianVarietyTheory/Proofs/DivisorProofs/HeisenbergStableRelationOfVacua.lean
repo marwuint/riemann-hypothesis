@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenPtSubset
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisenbergActsByLocalSchrodinger
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPreservesSchwartzBruhat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAdelicCharacterNontrivialAtPlaces
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerIrreducibleFinitePlaceCompletionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerIrreducibleFinitePlaceCompletion
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix
@@ -210,7 +210,7 @@ theorem rel_of_vac : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
       rw [map_add]
       exact schr_add_mem _ N _ _ (hstA x hx) (hstA' y hy) χ hχ
     have hN : N = GlobalTheory.WeilM.SB _ :=
-      GlobalTheory.T.schroedinger_irreducible_finitePlaceCompletion (pl w) (GlobalTheory.LatVac.psiAt ψ (pl w)) (GlobalTheory.SchrSB.continuous_psiAt ψ hstd.1 _)
+      _root_.GlobalTheory.SchrIrred.schr_irreducible (pl w) (GlobalTheory.LatVac.psiAt ψ (pl w)) (GlobalTheory.SchrSB.continuous_psiAt ψ hstd.1 _)
         (GlobalTheory.PsiNontriv.psiAt_ne_one ψ hstd _) N inf_le_left hst (M.vac (pl w)) hvacN (hM.vac _).2.1
     have hmem : φ (pl w) ∈ N := hN ▸ hφ1 (pl w)
     have h2 : L (φ (pl w)) ∈ R := hmem.2

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsProjCoordRepresentationHomogeneousIdealFlaStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsNonzeroCoordinateAffineChartStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinatesPullIsoNonzeroLocusStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DehomogenisationIsRadicalAndTorsionFreeStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsProjCoordRepresentationHomogeneousIdealFla
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsNonzeroCoordinateAffineChart
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinatesPullIsoNonzeroLocus
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DehomogenisationIsRadicalAndTorsionFree
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
@@ -63,7 +63,7 @@ theorem flat_spMap_of_torsionFree {o σ : Type} [CommRing o] [IsDedekindDomain o
 theorem nonempty_MMPre : ∀ (o : Type) [CommRing o] [IsDedekindDomain o] (g n N' : ℕ) (I : Ideal (MvPolynomial (Ix g (N' ^ 2)) o)), 0 < N' → I.IsRadical → (∀ F ∈ I, ∀ e, MvPolynomial.homogeneousComponent e F ∈ I) → (∀ (c : o) F, c ≠ 0 → MvPolynomial.C c * F ∈ I → F ∈ I) → Nonempty (MMPre n N' I) := by
   intro o _ _ g n N' I hN hrad hhom htf
   haveI : NeZero (N' ^ 2) := ⟨by positivity⟩
-  obtain ⟨Z, s, M, th, hproj, hrep, hfp, -⟩ := GlobalTheory.T.exists_projCoordRepresentation_homogeneousIdeal_flat o (Ix g (N' ^ 2)) I 0 hhom
+  obtain ⟨Z, s, M, th, hproj, hrep, hfp, -⟩ := _root_.GlobalTheory.ProjFlat.exists_projRep_flat o (Ix g (N' ^ 2)) I 0 hhom
   obtain ⟨N, j, hj, hjs⟩ := hproj ⟨0⟩
   haveI := hfp (IsNoetherian.noetherian I)
   haveI : IsLocallyNoetherian Z := LocallyOfFiniteType.isLocallyNoetherian s
@@ -72,19 +72,19 @@ theorem nonempty_MMPre : ∀ (o : Type) [CommRing o] [IsDedekindDomain o] (g n N
   have hU : ∀ z : Z, z ∈ U ↔ ∀ a, ∃ c, z ∈ Out.nonzeroLocus (th (a + (N' / n) • c)) := fun z => by
     change z ∈ ⋂ a, ⋃ c, (Out.nonzeroLocus (th (a + (N' / n) • c)) : Set Z) ↔ _
     simp only [Set.mem_iInter, Set.mem_iUnion, SetLike.mem_coe]
-  choose x hxo hxr hxs _ using fun i => GlobalTheory.T.exists_nonzeroCoordinate_affineChart o _ I Z s M th i hrep
+  choose x hxo hxr hxs _ using fun i => _root_.GlobalTheory.ZM.CoordChart.exists_chart o _ I Z s M th i hrep
   obtain ⟨hred, hflat⟩ := reduced_flat_of_charts s U _ x hxo
     (fun i => by
       haveI : _root_.IsReduced (MvPolynomial (Ix g (N' ^ 2)) o ⧸ (I ⊔ Ideal.span {MvPolynomial.X i - 1})) :=
-        (Ideal.isRadical_iff_quotient_reduced _).1 ((GlobalTheory.T.sup_span_X_sub_one_isRadical_and_torsionFree o _ I i hhom).1 hrad)
+        (Ideal.isRadical_iff_quotient_reduced _).1 ((_root_.GlobalTheory.dehomogenisation_isRadical_and_torsionFree o _ I i hhom).1 hrad)
       infer_instance)
     (fun i => by
       rw [hxs i]
-      exact flat_spMap_of_torsionFree _ ((GlobalTheory.T.sup_span_X_sub_one_isRadical_and_torsionFree o _ I i hhom).2 htf))
+      exact flat_spMap_of_torsionFree _ ((_root_.GlobalTheory.dehomogenisation_isRadical_and_torsionFree o _ I i hhom).2 htf))
     (fun z hz => by
       obtain ⟨c, hc⟩ := (hU z).1 hz 0
       exact ⟨_, by rw [hxr]; exact hc⟩)
-  obtain ⟨hpull, -, hnz⟩ := GlobalTheory.T.sectionCoordinates_pull_iso_nonzeroLocus Z M _ th hrep.1
+  obtain ⟨hpull, -, hnz⟩ := _root_.GlobalTheory.ZM.CoordMove.secCoord_pull_iso_locus Z M _ th hrep.1
   obtain ⟨th', hth'⟩ := hpull U.toScheme U.ι
   refine ⟨{ MM := U.toScheme, s := U.ι ≫ s, qproj := ⟨N, U.ι ≫ j, inferInstance, inferInstance, by rw [Category.assoc, hjs]⟩
             flat := hflat, reduced := hred, de := M.pull U.ι, isLB := pull_isLB hrep.1 _, th := th', loc := ?_, pts := ?_ }⟩

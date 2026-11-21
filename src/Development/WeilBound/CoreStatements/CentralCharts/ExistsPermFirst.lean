@@ -1,5 +1,10 @@
 import Development.WeilBound.CoreStatements.CentralCharts.PshAt0
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSncAdaptedChartAtPointStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSncAdaptedChartAtPoint
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncAdaptedChartSectionFormStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFubiniStudyPositive
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SameOrbitRefl
@@ -75,7 +80,7 @@ theorem exists_nchart (A : FinHolAtlas n X) (L : LocPot X) (s : X → X → ℂ)
     (hU : IsOpen U) (hx : x₀ ∈ U) : ∃ ψ a M, NChart A U L s x₀ ψ a M := by
   classical
   obtain ⟨φ, S, μ, v, hφ, hx0, hball2, hφ0, hsrc, hμ, hv, hv0, hsv⟩ :=
-    GlobalTheory.T.exists_snc_adapted_chart_at_point n X A L s nb m W snc x₀
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.LocalForm.exists_local_form n X A L s nb m W snc x₀
   obtain ⟨hbd, M, hM⟩ := GlobalTheory.T.snc_adapted_chart_section_form n X A L s hL hs x₀ φ S μ v hφ hball2 hsrc hμ hv hv0 hsv
   have h0t : (0 : Fin n → ℂ) ∈ φ.target := hball2 (by simp)
   have hs0 : φ.symm 0 = x₀ := by rw [← hφ0]; exact φ.left_inv hx0

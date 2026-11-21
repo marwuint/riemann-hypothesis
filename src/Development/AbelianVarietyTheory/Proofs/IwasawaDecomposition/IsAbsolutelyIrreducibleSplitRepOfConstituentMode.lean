@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SplitRep
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SemisimpleMatrixRepIsInternalIrreducible
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AbsIrrSubOfIsIrrSubMapStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AbsIrrSubOfIsIrrSubMap
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MatrixSystemNonzeroSolutionDescendsStatement
 open Formalism.ConjugateSelfDual Formalism.MainNotions.N Polynomial
 
@@ -128,6 +128,6 @@ theorem splitRep_of_models : ∀ {k Γ L : Type} [Field k] [Group Γ] [Field L] 
   have hVeq : V = ext f W :=
     Submodule.eq_of_le_of_finrank_le hVle ((finrank_ext_le f W).trans (hWb.trans hVb.ge))
   have hV' : IsIrrSub (mapRep f ρ) (ext f W) := hVeq ▸ hV
-  exact GlobalTheory.T.absIrrSub_of_isIrrSub_span_map f ρ W hWi hV'
+  exact _root_.GlobalTheory.AbsIrrOfAlgClosed.absIrrSub_of_isIrrSub_map f ρ W hWi hV'
 
 end GlobalTheory.SplitCrit

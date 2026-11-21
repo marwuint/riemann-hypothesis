@@ -183,16 +183,6 @@ theorem Good.inv {F : ℂ → ℂ} (hF : Good R F) (h0 : ∀ z : ℂ, ‖z‖ < 
       have := Finset.HasAntidiagonal.mem_antidiagonal.mp hp
       omega
 
-theorem tc_mul_lin {F : ℂ → ℂ} (hF : DifferentiableOn ℂ F (Metric.ball 0 1)) (w : ℂ) {e n : ℕ}
-    (h : n < e) : tc (fun z => F z * (1 - w * z ^ e)) n = tc F n := by
-  rw [tc_mul hF (by fun_prop), tc_lin, conv, Finset.sum_eq_single (n, 0)]
-  · simp [show (0 : ℕ) ≠ e by omega]
-  · intro p hp hne
-    have := Finset.HasAntidiagonal.mem_antidiagonal.mp hp
-    have h2 : p.2 ≠ 0 := fun h2 => hne (Prod.ext (by simp; omega) h2)
-    simp [h2, show p.2 ≠ e by omega]
-  · simp
-
 open scoped UpperHalfPlane MatrixGroups Manifold Topology in
 open Filter in
 variable {R : Subring ℂ} in
@@ -222,11 +212,6 @@ theorem _root_.GlobalTheory.SiegQ.norm_term_le {M : ℕ} (hM : 0 < M) {w : ℂ} 
   rw [norm_neg, norm_mul, norm_pow]
   calc ‖w‖ * ‖z‖ ^ (e + m * M) ≤ 1 * r ^ (e + m * M) := by gcongr
     _ ≤ r ^ (m + 1) := by rw [one_mul]; exact pow_le_pow_of_le_one hr0 hr.le hm
-
-theorem summable_term {M : ℕ} (hM : 0 < M) {w : ℂ} (hw : ‖w‖ ≤ 1) {e : ℕ} (he : 0 < e) {z : ℂ}
-    (hz : ‖z‖ < 1) : Summable fun m : ℕ => ‖-(w * z ^ (e + m * M))‖ :=
-  Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (norm_term_le hM hw he le_rfl hz)
-    ((summable_nat_add_iff 1).mpr (summable_geometric_of_lt_one (norm_nonneg _) hz))
 
 open scoped UpperHalfPlane MatrixGroups Manifold Topology in
 open Filter in
@@ -433,10 +418,6 @@ def unitPart (c M a : ℕ) (v z : ℂ) : ℂ :=
       ((∏ m ∈ Finset.range (c * a / M), -v ^ c * (1 - v ^ c * z ^ (c * a - (m + 1) * M))⁻¹) *
         (ep M (v ^ c)⁻¹ ((c * a / M + 1) * M - c * a) z)⁻¹))
 
-theorem lt_succ_div_mul {M : ℕ} (hM : 0 < M) (k : ℕ) : k < (k / M + 1) * M := by
-  have := Nat.lt_div_mul_add (a := k) hM
-  linarith
-
 open scoped UpperHalfPlane MatrixGroups Manifold Topology in
 open Filter in
 variable {R : Subring ℂ} in
@@ -541,15 +522,6 @@ theorem _root_.GlobalTheory.SiegQ.cth_eq {c M a : ℕ} (hM : 0 < M) (ha : a < M)
     zpow_add₀ hz0, zpow_add₀ hz0, zpow_natCast, zpow_natCast, ← pow_mul]
   simp only [_root_.GlobalTheory.SiegQ.kk, Nat.cast_mul]
   ring
-
-theorem dvd_of_mem {c M a m : ℕ} (hm : m ∈ Finset.range (c * a / M)) (h : c * a - (m + 1) * M = 0) :
-    0 < a ∧ M ∣ c * a := by
-  have hm0 := Finset.mem_range.mp hm
-  have hm' : (m + 1) * M ≤ c * a :=
-    (Nat.mul_le_mul_right M hm0).trans (Nat.div_mul_le_self _ _)
-  refine ⟨Nat.pos_of_ne_zero ?_, ⟨m + 1, by rw [mul_comm M]; omega⟩⟩
-  rintro rfl
-  simp at hm0
 
 open scoped UpperHalfPlane MatrixGroups Manifold Topology in
 open Filter in
@@ -706,24 +678,6 @@ theorem _root_.GlobalTheory.SiegQ.unitPart_zero_ne {c M a : ℕ} (hc : 0 < c) (h
       exact ⟨m + 1, by rw [heq, mul_comm]⟩
     · rw [zero_pow h0.ne']
       simp
-
-theorem cyclo_mem {c M : ℕ} (hc : 0 < c) (hM : 0 < M) (hcM : Nat.Coprime c M) {v : ℂ} (hv : v ^ M = 1)
-    (h1 : v ^ c ≠ 1) (hR : v ∈ R) : (1 - v) ^ (c ^ 2) * (1 - v ^ c)⁻¹ ∈ R := by
-  obtain ⟨k, hk⟩ : ∃ k : ℕ, (v ^ c) ^ k = v := by
-    obtain ⟨k, -, hk⟩ := Nat.exists_mul_mod_eq_of_coprime 1 hcM hM.ne'
-    refine ⟨k, ?_⟩
-    have e : ∀ n : ℕ, v ^ n = v ^ (n % M) := fun n => by
-      conv_lhs => rw [← Nat.div_add_mod n M, pow_add, pow_mul, hv, one_pow, one_mul]
-    rw [← pow_mul, e, hk, ← e, pow_one]
-  have h2 : 1 - v ^ c ≠ 0 := sub_ne_zero.mpr h1.symm
-  have h3 : (1 - v) * (1 - v ^ c)⁻¹ = ∑ i ∈ Finset.range k, (v ^ c) ^ i := by
-    have := mul_neg_geom_sum (v ^ c) k
-    rw [hk] at this
-    rw [← this]
-    field_simp
-  obtain ⟨j, hj⟩ : ∃ j, c ^ 2 = j + 1 := ⟨c ^ 2 - 1, by have := pow_pos hc 2; omega⟩
-  rw [hj, pow_succ, mul_assoc, h3]
-  exact R.mul_mem (R.pow_mem (R.sub_mem R.one_mem hR) _) (R.sum_mem fun i _ => R.pow_mem (R.pow_mem hR _) _)
 
 open scoped UpperHalfPlane MatrixGroups Manifold Topology in
 open Filter in
@@ -897,13 +851,5 @@ theorem _root_.GlobalTheory.SiegQ.sg_expansion_int : ∀ (c M a : ℕ), 0 < M �
       (fun _ hd => absurd (by rw [hv1', one_pow]) (hv1 hd))
     obtain ⟨t, ht⟩ := RingHom.mem_range.mp (hZ.2 n)
     exact ⟨t, by rw [← ht]; simp⟩
-
-theorem sg_expansion : ∀ (c M a : ℕ), 0 < M → a < M → ∃ κ : ℚ, ∀ b : ℕ, admitted c ![(a : ℚ) / M, (b : ℚ) / M] → ∃ A : ℕ → ℂ, HasQ M (fun τ => sg c ![(a : ℚ) / M, (b : ℚ) / M] τ * ee (-(κ : ℂ) * (τ : ℂ))) A ∧ A 0 ≠ 0 ∧ (∀ n, A n ∈ IntermediateField.adjoin ℚ {ee (1 / (M : ℂ))}) ∧ (Nat.Coprime c M → ∀ n, A n ∈ Subring.closure {ee (1 / (M : ℂ))}) ∧ (b = 0 → ∀ n, ∃ k : ℤ, A n = k) := by
-  intro c M a hM ha
-  obtain ⟨k, hk⟩ := sg_expansion_int c M a hM ha
-  refine ⟨(k : ℚ) / M, fun b hb => ?_⟩
-  have e : (((k : ℚ) / M : ℚ) : ℂ) = (k : ℂ) / M := by push_cast; rfl
-  rw [e]
-  exact hk b hb
 
 end GlobalTheory.SiegQ

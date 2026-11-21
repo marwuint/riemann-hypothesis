@@ -7,10 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntAddConjEqOneOfBaseGood
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqAdeleSupportedAtFinitePlaceOfSupportedAtStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchrodingerTensorEqLocalOfSupportedAtStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchrodingerTensorEqLocalOfSupportedAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddCharHalfTraceTensorLatticeHeisenbergCocycleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSchroedingerEigenvectorCompactCocycleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorLatticeAtFinitePlaceEqIntegralSpanGeneratoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSchroedingerEigenvectorCompactCocycle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorLatticeAtFinitePlaceEqIntegralSpanGenerato
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAddCharSymplecticSelfPairingPlaceCoordStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAdelicAddCharLocalComponentNeOneStatement
 
@@ -35,7 +35,7 @@ theorem exists_isVac_any_darboux : ∀ {F E : Type} [Field F] [NumberField F] [F
     ∃ φ, Model.IsVac (Model.mk (σ := σ) (X := X) (W := Y) co (fun _ => 0) 0 ∅) B.ψ v φ := by
   intro F E _ _ _ _ _ σ B hB n d X Y r s r' s' hX hY co v
   obtain ⟨θ, hθ⟩ := GlobalTheory.exists_int_add_conj_eq_one_of_base_good B hB
-  obtain ⟨M, _, g, hΓ⟩ := GlobalTheory.T.tensorLatticeAtFinitePlace_eq_integral_span_generators X Y hX.lat hY.lat v
+  obtain ⟨M, _, g, hΓ⟩ := _root_.GlobalTheory.LatParam.latAtV_param X Y hX.lat hY.lat v
   let γf : (M → v.adicCompletionIntegers F) → Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) :=
     fun a => ∑ m, GlobalTheory.EmbChart.atPlace v (a m : Fv F v) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F (g m)
   let u : M → (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v) := fun m =>
@@ -110,13 +110,13 @@ theorem exists_isVac_any_darboux : ∀ {F E : Type} [Field F] [NumberField F] [F
     have hz := GlobalTheory.VacAny.at_neg (GlobalTheory.VacAny.at_mul_left (⅟(2 : AF F))
       (GlobalTheory.VacAny.at_sub (hdot a b).1 (hdot b a).1))
     rw [hψ _ hz, map_neg, map_mul, map_sub, (hdot a b).2, (hdot b a).2, GlobalTheory.VacAny.evFin_invOf_two]
-  obtain ⟨φ, hφSB, hφ0, hφ⟩ := GlobalTheory.T.exists_schroedinger_eigenvector_compact_cocycle v (GlobalTheory.VacAny.psiV B.ψ v) (GlobalTheory.VacAny.continuous_psiV hB.std.1 v)
+  obtain ⟨φ, hφSB, hφ0, hφ⟩ := _root_.GlobalTheory.VacLoc.exists_schr_eigen v (GlobalTheory.VacAny.psiV B.ψ v) (GlobalTheory.VacAny.continuous_psiV hB.std.1 v)
     (GlobalTheory.T.standardTraceAdelicAddChar_localComponent_ne_one B.ψ hB.std v) u χ (GlobalTheory.T.continuous_addChar_symplecticSelfPairing_placeCoordinates σ B.ψ hB.std.1 X.J Y.J (θ : E) v g) hker hcoc
   refine ⟨φ, hφSB, hφ0, θ, hθ, ?_⟩
   intro γ hγ
   obtain ⟨a, rfl⟩ := (hΓ γ).1 hγ
   intro rr hrr
   show GlobalTheory.WeilM.schr B.ψ (co.e (γf a)) _ = _
-  rw [GlobalTheory.T.adelicSchrodinger_tensor_eq_local_of_supportedAt B.ψ v (co.e (γf a)) (fun i => (hAt a i).1) (fun i => (hAt a i).2) φ rr hrr.1, hev a, hφ a]
+  rw [_root_.GlobalTheory.SchrLoc.schr_tens_of_at B.ψ v (co.e (γf a)) (fun i => (hAt a i).1) (fun i => (hAt a i).2) φ rr hrr.1, hev a, hφ a]
 
 end GlobalTheory.VacAny

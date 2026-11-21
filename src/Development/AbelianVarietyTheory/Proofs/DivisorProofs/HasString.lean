@@ -38,12 +38,6 @@ def HasString (l : ℕ) (π : Submodule ℂ (UA E n → ℂ)) (t : ℕ) : Prop :
         (Multiset.range t).map (fun c : ℕ => ν * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (((t : ℂ) - 1) / 2 - c)) ≤
           T.map fun z : ℂˣ => (z : ℂ)
 
-example : IsRunAt (n := 3) ⟨![1, 1, 0], by
-    intro a b h; fin_cases a <;> fin_cases b <;> simp_all [Fin.le_def]⟩ 0 2 := by
-  refine ⟨by norm_num, fun k h1 h2 => ?_, fun h => absurd h (by norm_num), fun _ => ?_⟩
-  · interval_cases k <;> simp [wAt]
-  · simp [wAt]
-
 end GlobalTheory.GalDef
 
 end

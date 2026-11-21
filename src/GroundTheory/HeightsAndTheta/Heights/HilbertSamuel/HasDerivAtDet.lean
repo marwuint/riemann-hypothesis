@@ -61,18 +61,6 @@ theorem LogDetDerivative.intersectionNumber_baseChange : LogDetDerivative.Statem
   rw [Complex.mul_re, ← him0, zero_mul, sub_zero]
   field_simp
 
-theorem LogDetDerivative.equiv :
-    GroundTheory.Heights₂.Heights.HilbertSamuel.LogDetDerivative.Statement ↔
-      GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HilbertSamuel.LogDetDerivative.Statement := by
-  constructor
-  · intro h m F t
-    refine h m F.G (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HilbertSamuel.entryDeriv F.G) F.posDef
-      (fun s i j ↦ ?_) t
-    have hd := ((F.smooth i j).differentiable (by norm_num) s).hasDerivAt
-    simpa [GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HilbertSamuel.entryDeriv] using hd
-  · intro _
-    exact LogDetDerivative.intersectionNumber_baseChange
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

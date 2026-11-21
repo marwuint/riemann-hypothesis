@@ -80,22 +80,7 @@ structure LLData (ℓ : ℕ) [Fact ℓ.Prime] (n : ℕ) where
 
 namespace LLData
 
-variable {ℓ : ℕ} [Fact ℓ.Prime] {n : ℕ} (D : LLData ℓ n)
-
-def LES : Prop := (∀ x : D.Hm 0, x = 0) ∧ ∀ k, Function.Exact (D.f k) (D.p k)
-
-def T5 : Prop := ∀ k, ∀ x : D.Gr k, D.f k x = 0 → ∃ j : ℕ, ((ℓ : ℤ_[ℓ]) ^ j) • x = 0
-
-def CorRes (d : ℕ) : Prop := ∀ x, D.cor (D.res x) = d • x
-
 end LLData
-
-def StatLL : Prop :=
-  ∀ (ℓ : ℕ) [Fact ℓ.Prime] (w : ℤ_[ℓ]ˣ) (m : ℕ), 1 ≤ m → (ℓ = 2 → 2 ≤ m) →
-    PadicInt.valuation ((w : ℤ_[ℓ]) - 1) = m →
-    ∀ (U : Finset ℤ) (a : ℤ) (n d : ℕ) (D : LLData ℓ n), d ≠ 0 →
-    (∀ k, (D.piece k).Inputs w U (a + k)) → D.LES → D.T5 → D.CorRes d →
-      TorsKilled ℓ D.HK (cLL ℓ m U a (a + n) d)
 
 structure InvariantsCohomologyData (ℓ : ℕ) [Fact ℓ.Prime] where
 
@@ -205,40 +190,6 @@ structure TBData (ℓ : ℕ) [Fact ℓ.Prime] where
 
 namespace TBData
 
-variable {ℓ : ℕ} [Fact ℓ.Prime] (D : TBData ℓ)
-
-def Comm : Prop :=
-  (∀ x, D.ir (D.f1 x) = D.fL (D.iY x)) ∧ (∀ z, D.qL (D.iZ z) = D.ir (D.q z)) ∧
-  (∀ z, D.bZ (D.iZ z) = D.ex (D.jZ z)) ∧ (∀ x, D.bZ (D.kL x) = D.bW x) ∧
-  (∀ x, D.pr (D.jW x) = 0) ∧ (∀ z, D.aR (D.q z) = D.pr (D.jZ z)) ∧
-  D.res D.yK = D.aR (D.f1 D.y)
-
-def LES : Prop :=
-  Function.Exact D.q D.bd ∧ Function.Exact D.kL D.qL ∧ Function.Exact D.gE D.pE
-
-def DeRham : Prop := ∃ k : ℕ, ((ℓ : ℤ_[ℓ]) ^ k) • D.iY D.y = 0
-
-def tateDualityKillsH2 (s e : ℕ) : Prop := ∀ x : D.secondCohomologyTwist, ((ℓ : ℤ_[ℓ]) ^ (s + padicValNat ℓ (e + 1))) • x = 0
-
-def Kill3 (s e : ℕ) : Prop := ∀ x : D.HWe, ((ℓ : ℤ_[ℓ]) ^ cPrime ℓ s e) • x = 0
-
-def Free3 (s e : ℕ) : Prop :=
-  ∀ x : D.HGe, ((ℓ : ℤ_[ℓ]) ^ (1 + s + ceilE ℓ e)) • D.bW (D.gE x) ∈ D.La0
-
-def Recip (β : ℤ) : Prop :=
-  ∀ (x : D.HB) (k n : ℕ), ((ℓ : ℤ_[ℓ]) ^ k) • x ∈ D.La0 → (n : ℤ) = k + β →
-    ∃ z : D.HW, ((ℓ : ℤ_[ℓ]) ^ n) • x = D.ex (D.jW z)
-
-def Cor (d : ℕ) : Prop :=
-  (∀ x, D.cor (D.res x) = d • x) ∧ ∀ z : D.HV, D.ex z = 0 → D.cor (D.pr z) ∈ D.HfK
-
 end TBData
-
-def StatTB : Prop :=
-  ∀ (ℓ : ℕ) [Fact ℓ.Prime] (s m e d : ℕ) (U : Finset ℤ) (D : TBData ℓ), d ≠ 0 →
-    D.Comm → D.LES → D.DeRham →
-    TorsKilled ℓ D.HYL (cLL ℓ m U 0 ((e : ℤ) + 1) (ℓ ^ (m - s))) →
-    D.tateDualityKillsH2 s e → D.Kill3 s e → D.Free3 s e → D.Recip (beta ℓ s e) → D.Cor d →
-      ((ℓ : ℤ_[ℓ]) ^ cTB ℓ s m e (padicValNat ℓ d) U) • D.yK ∈ D.HfK
 
 end Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic

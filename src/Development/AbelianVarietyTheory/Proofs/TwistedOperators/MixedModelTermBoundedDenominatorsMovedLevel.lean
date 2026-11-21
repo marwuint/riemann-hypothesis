@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerAlong
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermHeisenbergIsotropicCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelHeisenbergPhaseEqCexpRealPointsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpenSubgroupTranslateHeightBoundStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermHeisenbergIsotropicCharacter
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelHeisenbergPhaseEqCexpRealPoints
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpenSubgroupTranslateHeightBound
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SymplecticAdelicFormBiadditiveAlternatingRationa
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.StdCharFinitePartRationalEqExpTrace
 
@@ -123,7 +123,7 @@ theorem ratPair_nat_smul (W : HSp D) {r : ℕ} (y x : Matrix (Fin W.rank) (Fin r
 
 theorem integral : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → adj D C * V.gram * C' = 1 → ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∃ e : ℕ, ∀ U : AddSubgroup (WO V W), IsOpen (U : Set (WO V W)) → ∃ M : ℕ, 0 < M ∧ ∀ (g : GA D V) (h : GA D W), ∃ N : ℕ, 0 < N ∧ (N : ℝ) ≤ M * (GlobalTheory.Grow.height V g * GlobalTheory.Grow.height W h) ^ e ∧ ∀ F : WO V W → ℂ, IsThetaFunO ψ V W F → (∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ V W (actO V W g h u) F = F) → ∀ y : Matrix (Fin W.rank) (Fin r) D.host.E, term ψ V V' W C C' B μ 𝓨 F y ≠ 0 → ∀ x : Matrix (Fin W.rank) (Fin r) D.host.E, (∀ a b, IsIntegral ℤ (x a b)) → ∃ c : ℤ, (N : ℝ) * ratPair W y x = c := by
   intro D V V' W r C C' B hs hCC ψ hψ θ hθ μ 𝓨 hY
-  obtain ⟨e, he⟩ := GlobalTheory.T.openSubgroup_translate_height_bound D V W r (adj D C * V.gram)
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.LevelHeight.levelheight D V W r (adj D C * V.gram)
   refine ⟨e, fun U hU => ?_⟩
   obtain ⟨M, hM, hMN⟩ := he U hU
   refine ⟨M, hM, fun g h => ?_⟩
@@ -134,7 +134,7 @@ theorem integral : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fin V
     have := hinv u huU hufin
     rw [hact] at this
     exact this
-  have h2 := GlobalTheory.T.mixedModelTerm_heisenbergIsotropic_character D V V' W r C C' B hs ψ hψ μ 𝓨 hY F hF y (finLift ((N : D.host.E) • x))
+  have h2 := _root_.GlobalTheory.MixedTermTranslate.term_heisO_isoPart D V V' W r C C' B hs ψ hψ μ 𝓨 hY F hF y (finLift ((N : D.host.E) • x))
   rw [h1] at h2
   have hph : phase ψ V W C C' y (finLift ((N : D.host.E) • x)) = 1 :=
     mul_right_cancel₀ hy (by rw [one_mul]; exact h2.symm)
@@ -142,7 +142,7 @@ theorem integral : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fin V
     have := phase_rat ψ hψ.1 V W C C' y ((N : D.host.E) • x)
     rw [map_incA_eq, phase_add, hph, one_mul] at this
     exact this
-  rw [GlobalTheory.T.mixedModelHeisenbergPhase_eq_cexp_realPoints D V W r C C' hCC ψ hψ θ hθ y _ (infLift_finPart _)] at hinf
+  rw [_root_.GlobalTheory.PhaseReal.phase_eq D V W r C C' hCC ψ hψ θ hθ y _ (infLift_finPart _)] at hinf
   obtain ⟨n, hn⟩ := Complex.exp_eq_one_iff.1 hinf
   have hsum : (∑ τ, 2 * (Matrix.trace ((pairQ W y).map (tauE D τ) *
       compAt θ τ (infLift ((N : D.host.E) • x)))).re : ℝ) = (N : ℝ) * ratPair W y x := by

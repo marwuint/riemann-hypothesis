@@ -26,11 +26,6 @@ theorem chartSection_eq_chartSubst [Fintype K] [∀ k, Fintype (ι k)] {m : ℕ}
     (i : (k : K) → ι k) (s : MRing ι) :
     chartSection σ i s = chartSubst σ i (map (Int.castRingHom ℂ) s) := rfl
 
-example : chartSubst (Fintype.equivFin ((k : Unit) → PBlk 3 k)).symm (fun _ => 0) (X ⟨(), 0⟩) =
-    X ((Fintype.equivFin ((k : Unit) → PBlk 3 k)).symm.symm (fun _ => 0)) := by
-  rw [chartSubst_X]
-  congr 2
-
 def ChartConeComponent.Statement : Prop :=
   ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (W : Ideal (MRing ι)) (m : ℕ)
     (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k),

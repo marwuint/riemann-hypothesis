@@ -187,16 +187,6 @@ variable {N : ℕ} [NeZero N] (D : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep D]
   (tp : ∀ p, compactCohomologyRes φ (Dp p) 3 →+ ZMod (p ^ N.factorization p))
   (jp : ∀ p, Dp p ⟶ D)
 
-end Primary
-
-section Primary
-
-variable {N : ℕ} [NeZero N] (D : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep D]
-  (t : compactCohomologyRes φ D 3 →+ ZMod N)
-  (Dp : ℕ → Rep.{u} (ULift.{u} ℤ) G) [∀ p, IsDiscreteRep (Dp p)]
-  (tp : ∀ p, compactCohomologyRes φ (Dp p) 3 →+ ZMod (p ^ N.factorization p))
-  (jp : ∀ p, Dp p ⟶ D)
-
 theorem bijective_compactDualityMap_of_primePow (hD : Nonempty (D ≃+ ZMod N))
     (hDp : ∀ p ∈ N.primeFactors, Nonempty (Dp p ≃+ ZMod (p ^ N.factorization p)))
     (hjp : ∀ p ∈ N.primeFactors, Function.Injective (jp p).hom)

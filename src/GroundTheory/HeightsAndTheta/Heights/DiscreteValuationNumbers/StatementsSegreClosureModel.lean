@@ -59,15 +59,6 @@ def GenericProjClosureModel.Statement : Prop :=
           (zetaFirst a₀ - zetaSecond a₀') f₀ g₀ ∧
         aeval (pairProjCoord y e φ φ' t) f₀ = aeval (pairProjCoord y e φ φ' t) g₀
 
-section Examples
-
-abbrev GenericCoordField (N : ℕ) : Type := FractionRing (MvPolynomial (Fin N) LineFieldDyadic)
-
-def genericCoords (N : ℕ) : Fin N → GenericCoordField N :=
-  fun i => algebraMap (MvPolynomial (Fin N) LineFieldDyadic) (GenericCoordField N) (X i)
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

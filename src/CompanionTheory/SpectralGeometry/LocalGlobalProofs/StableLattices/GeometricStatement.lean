@@ -1,11 +1,11 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HsConjTranspose
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.IwasawaParabolicCompactFactorizationStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.UnitaryMaximalCompactIsCompactStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.IwasawaParabolicCompactFactorization
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.UnitaryMaximalCompactIsCompact
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HilbertSchmidtProjectionBoundStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ExistsGradedMatrixEigenBoundStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ExistsGradedMatrixEigenBound
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.InverseGramEigenvaluesSumHsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.EigenvalueGapExistsStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.EigenvalueGapExists
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FiniteNetOfGradedProjectionsStatement
 
 noncomputable section
@@ -296,7 +296,7 @@ theorem gap (g : S7.UJ ε) (hn : (n : ℝ) < hs (S7.toM g)) :
       _ ≤ l i₁ := le_abs_self _
       _ ≤ L := hmax _ (Finset.mem_univ _)
   have hLpos : 0 < L := lt_of_lt_of_le (Real.log_pos hq) hLlog
-  obtain ⟨r, hr, hgap⟩ := GlobalTheory.T.exists_gap_interval_avoiding_finite_family n l L hLpos (fun i => ⟨abs_nonneg _, hmax i (Finset.mem_univ _)⟩) ⟨i₀, rfl⟩
+  obtain ⟨r, hr, hgap⟩ := _root_.GlobalTheory.CompanionTheory.UGeoGap.exists_gap_of_mem_Icc_top n l L hLpos (fun i => ⟨abs_nonneg _, hmax i (Finset.mem_univ _)⟩) ⟨i₀, rfl⟩
   set w := L / ((n : ℝ) + 1) with hw
   have hwpos : 0 < w := div_pos hLpos (by positivity)
   have hLw : L = ((n : ℝ) + 1) * w := by rw [hw]; field_simp
@@ -356,7 +356,7 @@ theorem gap (g : S7.UJ ε) (hn : (n : ℝ) < hs (S7.toM g)) :
       norm_num at hi
     · simp only [f, if_neg hc, if_neg h2] at hi
       norm_num at hi
-  obtain ⟨A', hA', hy⟩ := GlobalTheory.T.exists_graded_matrix_eigen_bound n ε g hT f α β hf
+  obtain ⟨A', hA', hy⟩ := _root_.GlobalTheory.CompanionTheory.UGeo.SpecGrad.grading_of_spectral n ε g hT f α β hf
     (fun i hi => hneg _ hi)
     (fun i hi => by
       have h1 := hzero i hi
@@ -392,7 +392,7 @@ theorem cover (n : ℕ) (ε : Fin n → Bool) :
   have hn1 : (n : ℝ) < hs (S7.toM g) := by linarith
   obtain ⟨A', α, β, hA', hβ1, hβα, hlog, hy⟩ := gap g hn1
   obtain ⟨j, h1, h2⟩ := hnet A' hA'
-  obtain ⟨x, k, hxk⟩ := GlobalTheory.T.iwasawa_parabolic_compact_factorization n ε (A j) (hA j) g
+  obtain ⟨x, k, hxk⟩ := _root_.GlobalTheory.CompanionTheory.UGeo.iwasawa_psub n ε (A j) (hA j) g
   have hn0 : 0 < n := by
     rcases Nat.eq_zero_or_pos n with h | h
     · subst h
@@ -458,7 +458,7 @@ theorem geo : Geo := by
         have hx : S7.toM x * Pm (A j) ≠ 0 := toM_mul_ne_zero x (Pm_ne_zero (hA j))
         intro h0
         exact hx (by rw [hs_eq_zero h0, Matrix.zero_mul])
-      exact (hcl.mul_right_of_isCompact (GlobalTheory.T.unitary_maximal_compact_is_compact n ε)).measurableSet
+      exact (hcl.mul_right_of_isCompact (_root_.GlobalTheory.CompanionTheory.UGeo.isCompact_KG_set n ε)).measurableSet
     · rintro j g k ⟨x, hx, k', hk', rfl⟩
       exact ⟨x, hx, k' * k, (S7.KG ε).mul_mem hk' k.2, by simp [mul_assoc]⟩
     · intro g hg

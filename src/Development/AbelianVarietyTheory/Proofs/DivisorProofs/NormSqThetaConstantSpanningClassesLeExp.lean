@@ -21,15 +21,15 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CardLevGrpAnd
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaNullValueExistsUniqueNaturalLinear
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FullLinearLevelCoverBaseChangeTorsor
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.EtaValAtExistsUniqueNatural
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.NormNullValEqNormThetaStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.AhFrameFactorEqNegOnePowRiemannFormStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsTorusOfPeriodHermitianStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.AppellHumbertSectionEntireWithFactorStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ThetaFunctionTorusL2NormStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.FullLinearLevelEqExpPeriodsComplexPointStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.RelabellingGoodEmbeddingIsTypeFnStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.PeriodTorusIsTorusAtFrameStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsBorelOrthonormalFlagFrameStatement
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.NormNullValEqNormTheta
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.AhFrameFactorEqNegOnePowRiemannForm
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsTorusOfPeriodHermitian
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.AppellHumbertSectionEntireWithFactor
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ThetaFunctionTorusL2Norm
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.FullLinearLevelEqExpPeriodsComplexPoint
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.RelabellingGoodEmbeddingIsTypeFn
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.PeriodTorusIsTorusAtFrame
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsBorelOrthonormalFlagFrame
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.NormProdSumThetaLeExpTorusStatement
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.NormEtaProductFormLeAtUnitFrame
 
@@ -60,13 +60,13 @@ theorem norm_pow_le_at_unit_frame (E : Type) [Field E] [NumberField E] [IsCMFiel
   have hfn : IsFnOf Uw.F (Uw.ik k) (Uw.Pm k x) fr (U.un k x).x (U.un k x).s θ := a₉
   have hAH : AHFrame Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr :=
     ⟨a₁, a₂, a₃, a₄, a₅, a₆, fun j hj => by rw [← hy]; exact a₇ j hj, a₈⟩
-  have hty := (GlobalTheory.T.relabelling_goodEmbedding_isTypeFn E H Dw l Xo c σ hσ).2.2 Uw.g Uw.e
+  have hty := (_root_.GlobalTheory.EtaAn.relab_isTypeFn E H Dw l Xo c σ hσ).2.2 Uw.g Uw.e
   have hty' : IsTypeFn H (Uw.F.Di (Uw.ik k)).p (Uw.F.Di (Uw.ik k)).q
       (fun j => Formalism.L2.PjFree.relab c σ (Uw.e j).1) := by
     rw [(Uw.F.sig _).1, (Uw.F.sig _).2]
     exact hty
-  obtain ⟨T, ψ, hT⟩ := GlobalTheory.T.exists_torus_of_period_hermitian E H _ _ _ _ Hm hty' hP a₁ a₂ a₃
-  obtain ⟨-, hr, hph, hdim⟩ := GlobalTheory.T.periodTorus_isTorusAt_frame E H Dw l Xo c σ r U hσ hU Uw k x Hm T ψ ⟨a₁, a₂, a₃⟩ hT
+  obtain ⟨T, ψ, hT⟩ := _root_.GlobalTheory.PeriodTorus.exists_torusOf E H _ _ _ _ Hm hty' hP a₁ a₂ a₃
+  obtain ⟨-, hr, hph, hdim⟩ := _root_.GlobalTheory.PeriodTorus.isTorusAt_of_isTorusOf E H Dw l Xo c σ r U hσ hU Uw k x Hm T ψ ⟨a₁, a₂, a₃⟩ hT
   have hhol : Differentiable ℂ θ ∧ ∀ a z, θ (z + Uw.Pm k x a) = χl (Uw.Pm k x a) *
       Complex.exp (Real.pi * hermForm Hm z (Uw.Pm k x a) + Real.pi / 2 * hermForm Hm (Uw.Pm k x a) (Uw.Pm k x a)) *
         θ z := by
@@ -76,10 +76,10 @@ theorem norm_pow_le_at_unit_frame (E : Type) [Field E] [NumberField E] [IsCMFiel
             Real.pi / 2 * hermForm Hm (Uw.Pm k x a) (Uw.Pm k x a)) * θ z := by
       intro x₀ s h₀ hs
       subst h₀
-      exact GlobalTheory.T.appellHumbert_section_entire_with_factor E H Dw l Xo _ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr hP hAH s θ hs
+      exact _root_.GlobalTheory.EtaAn.isFnOf_entire_factor E H Dw l Xo _ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr hP hAH s θ hs
     exact key _ _ hy hfn
-  have hchi := GlobalTheory.T.ahFrame_factor_eq_negOnePow_riemannForm E H Dw l Xo _ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr hP hAH
-  obtain ⟨hsec, hl2', hpt⟩ := GlobalTheory.T.theta_function_torus_l2_norm E H _ _ _ _ Hm T ψ θ Fd hT hhol.1
+  have hchi := _root_.GlobalTheory.ahFrame_factor_eq_negOnePow E H Dw l Xo _ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr hP hAH
+  obtain ⟨hsec, hl2', hpt⟩ := _root_.GlobalTheory.EtaAn.ThetaTorus.theta_section_l2_torus E H _ _ _ _ Hm T ψ θ Fd hT hhol.1
     (fun a z => by rw [hhol.2 a z, hchi a]) hFd
   rw [hl2] at hl2'
   have hR4 : 0 < R ^ 4 := pow_pos hR.pos 4
@@ -89,7 +89,7 @@ theorem norm_pow_le_at_unit_frame (E : Type) [Field E] [NumberField E] [IsCMFiel
   haveI : IsAlgClosed (CAt σ) := inferInstanceAs (IsAlgClosed ℂ)
   obtain ⟨ev, hevL⟩ := GlobalTheory.ThetaConst.exists_isLevOf_geometric Xo c hval₀.dvd (U.un k x).x
   have hev : IsFullLev Xo (R ^ 4) (U.un k x).x ev := hevL.2.1
-  obtain ⟨a, ha, hgen⟩ := GlobalTheory.T.fullLinearLevel_eq_exp_periods_complexPoint E H Dw l Xo c σ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) (U.un k x) hP hy (R ^ 4) hR4 ev hev
+  obtain ⟨a, ha, hgen⟩ := _root_.GlobalTheory.fullLevel_eq_exp_periods E H Dw l Xo c σ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) (U.un k x) hP hy (R ^ 4) hR4 ev hev
   have hR2 : Odd (R ^ 2) := hR.pow
   have htors : ∀ q, ev q ^ ((R ^ 2) ^ 2) = 1 := fun q => by rw [← pow_mul]; exact (ha q).2
   choose w hw using fun q =>
@@ -109,7 +109,7 @@ theorem norm_pow_le_at_unit_frame (E : Type) [Field E] [NumberField E] [IsCMFiel
   have hwn : ∀ q, ‖Formalism.L2.PjFree.toC (w q)‖ =
       Real.sqrt (T.ptN2 1 (fun v : Fin 1 → I2.Vsp T.dim => θ (ψ.symm (v 0))) (fun _ => ψ (z q))) := fun q => by
     rw [hpt]
-    exact GlobalTheory.T.norm_nullVal_eq_norm_theta_alt E H Dw l Xo c σ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr θ (U.un k x) hP hAH hy hfn (R ^ 2) hR2
+    exact _root_.GlobalTheory.norm_nullVal_eq_norm_theta E H Dw l Xo c σ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr θ (U.un k x) hP hAH hy hfn (R ^ 2) hR2
       (ev q) _ (w q) (htors q) (ha q).1 (hw q)
 
   have hval : evR Xo c f (U.un k x) = ∏ b, w (xs b) := by
@@ -166,7 +166,7 @@ theorem normSq_thetaConst_le_exp : ∀ (E : Type) [Field E] [NumberField E] [IsC
     rwa [sq]
   have hS : (U.X k).IsSec (laU U 0 (2 * (Dw.p + Dw.q)) k) (rdU U (f ^ 2) k) :=
     hU.2.2.2.2.1 0 _ ⟨fun _ => antitone_const, even_two_mul _⟩ (f ^ 2) hsec k
-  obtain ⟨b, -, hb, hun, -, hphi, hp⟩ := GlobalTheory.T.exists_borel_orthonormal_flag_frame E _ (U.X k) y hz
+  obtain ⟨b, -, hb, hun, -, hphi, hp⟩ := _root_.GlobalTheory.EtaAn.exists_unit_frame E _ (U.X k) y hz
   have hN : homN U x (wtZ 0 (2 * (Dw.p + Dw.q))) (f ^ 2) ⟨k, y⟩ = ‖rdU U f k (rmul y b)‖ ^ 2 := by
     have h1 : lieFacZ Dw x (wtZ 0 (2 * (Dw.p + Dw.q))) = 1 := by simp [lieFacZ, wtZ]
     unfold homN ptN

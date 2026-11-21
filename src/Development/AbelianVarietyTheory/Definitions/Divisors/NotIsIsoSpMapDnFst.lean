@@ -49,8 +49,6 @@ def SmallLift : Prop :=
 
 variable {A M}
 
-theorem FieldChart.of_isChart (h : IsChart A M) : FieldChart A M := fun _ _ _ _ T _ N hN ↦ h.chart T N hN
-
 theorem Milnor.id (T : Scheme.{0}) [IsAffine T] : Milnor (𝟙 T) (𝟙 T) (𝟙 T) (𝟙 T) :=
   ⟨inferInstance, inferInstance, inferInstance, inferInstance, rfl, by
     simpa using IsPullback.of_id_fst (f := 𝟙 Γ(T, ⊤))⟩
@@ -65,54 +63,5 @@ theorem Milnor.of_isPullback {R R₁ R₂ R₀ : CommRingCat.{0}} {a : R ⟶ R�
   w := by rw [← Spec.map_comp, ← Spec.map_comp, h.w]
   cart := h.of_iso (Scheme.ΓSpecIso R).symm (Scheme.ΓSpecIso R₁).symm (Scheme.ΓSpecIso R₂).symm
     (Scheme.ΓSpecIso R₀).symm (by simp) (by simp) (by simp) (by simp)
-
-theorem dnFst_surjective (k : Type) [CommRing k] : Function.Surjective (dnFst k) :=
-  fun x ↦ ⟨TrivSqZeroExt.inl x, rfl⟩
-
-theorem dnFst_not_injective (k : Type) [CommRing k] [Nontrivial k] : ¬ Function.Injective (dnFst k) := fun h ↦ by
-  have h1 : (DualNumber.eps : DualNumber k) = 0 := h (by rw [map_zero]; rfl)
-  have h2 := congrArg TrivSqZeroExt.snd h1
-  simp at h2
-
-theorem Milnor.dualNumber (k : Type) [CommRing k] :
-    Milnor (Spec.map (pullback.fst (CommRingCat.ofHom (dnFst k)) (CommRingCat.ofHom (dnFst k))))
-      (Spec.map (pullback.snd (CommRingCat.ofHom (dnFst k)) (CommRingCat.ofHom (dnFst k))))
-      (spMap (dnFst k)) (spMap (dnFst k)) :=
-  Milnor.of_isPullback (IsPullback.of_hasPullback _ _) (dnFst_surjective k)
-
-omit [GrpObj A] in
-
-theorem lift_of_chartAt {C C' : Type} [CommRing C] [IsLocalRing C] [CommRing C'] [Nontrivial C'] (s : Sp C ⟶ S)
-    (φ : C →+* C') (hφ : Function.Surjective φ) (N : LB (A ⊗ Over.mk s).left) (h : ChartAt A M N)
-    (u₀ : Over.mk (spMap φ ≫ s) ⟶ U) (h₀ : Same A N M (ptMap s φ) u₀) :
-    ∃ u : Over.mk s ⟶ U, Same A N M (𝟙 _) u := by
-  obtain ⟨W, hW⟩ := h
-  refine (hW _ (𝟙 _)).2 fun z ↦ ?_
-  haveI : IsLocalRing C' := IsLocalRing.of_surjective' φ hφ
-  haveI : IsLocalHom φ := IsLocalHom.of_surjective φ hφ
-  have h1 := (hW _ (ptMap s φ)).1 ⟨u₀, h₀⟩ (IsLocalRing.closedPoint C')
-  have h2 : IsLocalRing.closedPoint C ∈ (W : TopologicalSpace.Opens (PrimeSpectrum C)) := by
-    rw [← IsLocalRing.comap_closedPoint φ]; exact h1
-  have h3 := (IsLocalRing.closedPoint_mem_iff (R := C) W).1 h2
-  rw [h3]; trivial
-
-theorem TanLift.of_isChart (h : IsChart A M) : TanLift A M := fun k _ _ N hN u₀ h₀ ↦
-  lift_of_chartAt _ (dnFst k) (dnFst_surjective k) N (h.chart _ N hN) u₀ h₀
-
-theorem SmallLift.of_isChart (h : IsChart A M) : SmallLift A M := fun C _ _ e he _ s N hN u₀ h₀ ↦ by
-  haveI : Nontrivial (C ⧸ Ideal.span {e}) := Ideal.Quotient.nontrivial_iff.2 (by
-    rw [Ne, Ideal.span_singleton_eq_top]; exact he)
-  exact lift_of_chartAt s _ Ideal.Quotient.mk_surjective N (h.chart _ N hN) u₀ h₀
-
-theorem not_isIso_spMap_dnFst (k : Type) [CommRing k] [Nontrivial k] : ¬ IsIso (spMap (dnFst k)) := by
-  intro h
-  have : IsIso (CommRingCat.ofHom (dnFst k)).op := by
-    have : IsIso (Scheme.Spec.map (CommRingCat.ofHom (dnFst k)).op) := h
-    exact isIso_of_reflects_iso _ Scheme.Spec
-  have : IsIso (CommRingCat.ofHom (dnFst k)) := (isIso_op_iff _).1 this
-  exact dnFst_not_injective k (ConcreteCategory.bijective_of_isIso (CommRingCat.ofHom (dnFst k))).1
-
-theorem dnFst_comp_dnInl (k : Type) [CommRing k] : (dnFst k).comp (dnInl k) = RingHom.id k := by
-  ext x; rfl
 
 end GlobalTheory.DualOpen

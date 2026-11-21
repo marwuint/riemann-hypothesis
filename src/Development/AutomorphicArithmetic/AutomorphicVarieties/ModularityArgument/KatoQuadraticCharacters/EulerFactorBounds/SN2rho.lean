@@ -9,19 +9,6 @@ open scoped Matrix MatrixGroups Classical
 
 namespace UpperTheory.V.Z.Kato.Nb.SquareNormRepresentation
 
-private def ZM {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) :
-    Submodule ℤ_[l] (X.Fn l) where
-  carrier := {a | ∀ u, AdicCompletion.eval (idl l) (X.Kl l) n (a u) = 0}
-  add_mem' {a b} ha hb u := by
-    show AdicCompletion.eval (idl l) (X.Kl l) n (a u + b u) = 0
-    rw [map_add, ha u, hb u, add_zero]
-  zero_mem' u := by
-    show AdicCompletion.eval (idl l) (X.Kl l) n 0 = 0
-    exact map_zero _
-  smul_mem' c a ha u := by
-    show AdicCompletion.eval (idl l) (X.Kl l) n (c • a u) = 0
-    rw [map_smul, ha u, smul_zero]
-
 private def Sm {l : ℕ} [Fact l.Prime] (n : ℕ) (x : Fin 2 → Qbar l) : Prop := ∀ i, ‖x i‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖
 
 private theorem Sm.add {l : ℕ} [Fact l.Prime] {n : ℕ} {x y : Fin 2 → Qbar l} (hx : Sm n x) (hy : Sm n y) : Sm n (x + y) := by

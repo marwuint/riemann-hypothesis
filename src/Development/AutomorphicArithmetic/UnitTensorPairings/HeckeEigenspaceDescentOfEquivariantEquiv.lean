@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingSpecNorm
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsSameData
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodTwistSideFormsLeSpanGoodLiftForms
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemilinearDescentToBaseChangeOfFormStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemilinearDescentToBaseChangeOfForm
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.HeightCounting GlobalTheory.TwInputs.Move GlobalTheory.HeightCounting.SideCopy
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
@@ -54,7 +54,7 @@ private theorem desc_exists (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (i : D.
       (∀ k P x, Φ (In.hL j k P x) = hkF D S i j b (In.hL j) (In.hs j h1 h2) k P (Φ x)) ∧
       Submodule.span (FractionRing (D.ntw.O i)) (Set.range Φ) = ⊤ := by
   obtain ⟨n, bs, hb, -, hKs, hLi, hLs⟩ := In.ks j h1 h2
-  obtain ⟨Φ, hc, hf, hw⟩ := GlobalTheory.T.exists_semilinear_descent_to_baseChange_of_form D.LL0 S.kKs S.kKs_spec (S.A j).WK bs hb hKs hLi hLs
+  obtain ⟨Φ, hc, hf, hw⟩ := _root_.GlobalTheory.exists_semilinear_descent_to_baseChange D.LL0 S.kKs S.kKs_spec (S.A j).WK bs hb hKs hLi hLs
     (KT := KB S i b) (readLL0 S i b) (fun s => rfl)
   refine ⟨readLL0 S i b, Φ, fun _ => rfl, hc, fun g x => ?_, fun k P x => ?_, ?_⟩
   · have e1 : actL D S j g x = (((chiL S j (In.chi j h1 h2) (S.eG.symm g))⁻¹ : ↥D.LL0) : D.what₂.LL) •

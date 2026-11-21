@@ -31,9 +31,4 @@ theorem of_three (hD : HeckeLAdicCharacterDeRham) (hB : DeRhamPotSemistable) (hW
     GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff ha' hξ.1]
   exact (isUnram_iff χ w).2 hu
 
-theorem of_classicalTheorems_m (hD : HeckeLAdicCharacterDeRham) (hB : DeRhamPotSemistable) (hW : AlgebraicCharacterWD)
-    (_hL : LocalLanglandsGL) : HeckeLAdicCharacterCrystalline := of_three hD hB hW
-
-example : type_of% @of_classicalTheorems := @of_classicalTheorems_m
-
 end GlobalTheory.Published.CharCrysModel

@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import Formalism.PeriodIntegrals.QuotSetU
 import Formalism.PeriodIntegrals.QuotInv
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LintegralInvEqOfBiInvariantMatGroupStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsNormalisedCutoffStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LintegralInvEqOfBiInvariantMatGroup
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsNormalisedCutoff
 
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
@@ -74,8 +74,8 @@ theorem exists_isQuotM : ∀ (m : ℕ) (G S : Set (Matrix (Fin m) (Fin m) ℂ)) 
     PI.IsMatGroup G → PI.IsMatGroup S → S ⊆ G → PI.IsHaarOnM G μG → PI.IsHaarOnM S μS →
     PI.IsRightInvM S μS → ∃ ν, PI.IsQuotM μG μS ν := by
   intro m G S μG μS hG hS hSG hμG hμS hR
-  obtain ⟨φ, hφ, hφ1⟩ := GlobalTheory.T.exists_normalised_cutoff' m G S μS hG hS hSG hμS hR
-  have hinv := GlobalTheory.T.lintegral_inv_eq_of_biInvariant_matGroup m S μS hS hμS hR
+  obtain ⟨φ, hφ, hφ1⟩ := _root_.GlobalTheory.exists_normalised_cutoff m G S μS hG hS hSG hμS hR
+  have hinv := _root_.GlobalTheory.HaarInversion.lintegral_inv_eq m S μS hS hμS hR
   haveI := hμG.1
   haveI := hμS.1
   have haeS : ∀ᵐ s ∂μS, Matrix.of s ∈ S := by rw [ae_iff]; exact hμS.2.2.1

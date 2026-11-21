@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStableGauss
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StableQuadraticGaussIntegralTransformWeilStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStableQuadraticGaussIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormGroupSignMulAndNegOneStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StableQuadraticGaussIntegralTransformWeil
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStableQuadraticGaussIntegral
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormGroupSignMulAndNegOne
 
 open GlobalTheory.JR GlobalTheory.JR.WeilQuad Matrix MeasureTheory Filter Topology
 
@@ -27,10 +27,10 @@ theorem stableGauss_neg_one : ∀ (F E : Type) [NontriviallyNormedField F] [Nont
     (μ : Measure A.L) (ω : A.K → ℂ), Hyp A ψ x μ ω → ∀ G₁ : ℂ, IsStableGauss A ψ x μ 1 G₁ →
     IsStableGauss A ψ x μ (-1) G₁ := by
   intro F E _ _ _ _ _ A ψ x μ ω h G₁ h1
-  obtain ⟨G, hG⟩ := GlobalTheory.T.exists_stable_quadraticGaussIntegral F E A ψ x μ ω h (-1)
-  have hω := (GlobalTheory.T.normGroupSign_mul_and_neg_one F E A ψ x μ ω h).2
+  obtain ⟨G, hG⟩ := _root_.GlobalTheory.JR.WeilQuad.exists_stableGauss F E A ψ x μ ω h (-1)
+  have hω := (_root_.GlobalTheory.JR.WeilQuad.NormSign.omega_mul_neg_one F E A ψ x μ ω h).2
   have h1' : IsStableGauss A ψ x μ ((1 : A.Kˣ) : A.K) G₁ := by simpa using h1
-  have key := GlobalTheory.T.stableQuadraticGaussIntegral_transform_weil F E A ψ x μ ω h (-1) G G₁ hG h1'
+  have key := _root_.GlobalTheory.JR.WeilQuad.gauss_transform F E A ψ x μ ω h (-1) G G₁ hG h1'
   rw [hω, absK_units_neg_one] at key
   simp at key
   subst key

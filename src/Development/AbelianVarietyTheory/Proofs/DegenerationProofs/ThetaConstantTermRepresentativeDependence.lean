@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLawsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLaws
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataPsiQuadraticGeneratorsLinearStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormalisingFactorStatement
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Ex
@@ -54,7 +54,7 @@ theorem txT_mul_qTriv {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (z χ : N.X) :
   rw [txT, txT, N.wQ_mul_qTriv_odd hm.pow, e, mul_pow, ← N.io_nsmul, ← N.vt_mul_io_shift, ← mul_assoc,
     ← Units.val_mul]
   congr 2
-  have h₁ := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB m 0 p.1.2.b (N.c z)).2.1
+  have h₁ := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB m 0 p.1.2.b (N.c z)).2.1
   obtain ⟨-, h₂, h₃⟩ := GlobalTheory.T.degenerationData_psi_quadratic_generators_linear O N m z
   have h₄ := congrArg (· ^ m) (h₃ p.1.2).1
   have h₅ := Gt.pow_s p.1.2 m (m • z)

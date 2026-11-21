@@ -1,30 +1,30 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffFrob
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPDivGroupFormalChartOfConnectedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartDimAddFinrankDualLieEqHeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTorsionFreePDThickeningFrameValuationIntegersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrobeniusMatrixQuasiLogarithmBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusMatrixIsUnitAdaptedBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusNilpotentModMaximalConnectedPDivGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNilDualFrobeniusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdaptedQuasiLogBasisPDivGroupLieDualStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuasiLogarithmOfDualCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalChartHasPeriodLinearIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PdDivGroupChartFormsBasisAndDifferentialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPDivGroupFormalChartOfConnected
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartDimAddFinrankDualLieEqHeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTorsionFreePDThickeningFrameValuationIntegers
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrobeniusMatrixQuasiLogarithmBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusMatrixIsUnitAdaptedBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusNilpotentModMaximalConnectedPDivGroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNilDualFrobenius
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdaptedQuasiLogBasisPDivGroupLieDual
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuasiLogarithmOfDualCharacter
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalChartHasPeriodLinearIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PdDivGroupChartFormsBasisAndDifferential
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocalizationAway
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvEqOneOfForallPairing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeTateSandwichOfPrismaticDieudonne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedInOfQuasiLogarithm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundaryOneMapEqZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniquePeriodQuasiLogarithmPDivGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmPeriodFrobeniusTwistStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPeriodReduceAlongThetaToIntegersStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniquePeriodQuasiLogarithmPDivGroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmPeriodFrobeniusTwist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPeriodReduceAlongThetaToIntegers
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmPeriodEqTangentHodgeTateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormalGroupLawLiftOfSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftAdaptedBasisQuasiLogarithmsFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogarithmIntegersAdaptedBasisNoLieComponentsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentEqZeroOfFormalGroupLawCoboundaryOneEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormalGroupLawLiftOfSurjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftAdaptedBasisQuasiLogarithmsFrame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogarithmIntegersAdaptedBasisNoLieComponents
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentEqZeroOfFormalGroupLawCoboundaryOneEqZero
 
 set_option autoImplicit false
 
@@ -49,16 +49,16 @@ theorem hasPeriod_add_smul (t : G.Tate) {f g : MvPowerSeries (Fin d) F.Q} {y y' 
     (hg : DIn (⊤ : Ideal F.B) g) (h1 : c.HasPeriod F.θ t f y) (h2 : c.HasPeriod F.θ t g y') :
     c.HasPeriod F.θ t (f + algebraMap F.B F.Q b • g) (y + b * y') := by
   first
-  | exact (GlobalTheory.T.formalChart_hasPeriod_linear_integral p C v O hv ε hε F G d c μ' hL hμ f g t y y' b hg h1 h2).1
-  | exact (GlobalTheory.T.formalChart_hasPeriod_linear_integral p C v O hv ε hε F G d c μ' hL hμ f g t y y' b h1 h2).1
+  | exact (_root_.GlobalTheory.QLog.hasPeriod_linear p C v O hv ε hε F G d c μ' hL hμ f g t y y' b hg h1 h2).1
+  | exact (_root_.GlobalTheory.QLog.hasPeriod_linear p C v O hv ε hε F G d c μ' hL hμ f g t y y' b h1 h2).1
 
 theorem hasPeriod_map_zero (t : G.Tate) (s : MvPowerSeries (Fin d) F.B) (hs : constantCoeff s = 0) :
     c.HasPeriod F.θ t (map (algebraMap F.B F.Q) s) 0 := by
   have hz := hasPeriod_zero c F.frame t
   have hd : DIn (⊤ : Ideal F.B) (0 : MvPowerSeries (Fin d) F.Q) := din_of_in (in_zero ⊤)
   first
-  | exact (GlobalTheory.T.formalChart_hasPeriod_linear_integral p C v O hv ε hε F G d c μ' hL hμ 0 0 t 0 0 0 hd hz hz).2 s hs
-  | exact (GlobalTheory.T.formalChart_hasPeriod_linear_integral p C v O hv ε hε F G d c μ' hL hμ 0 0 t 0 0 0 hz hz).2 s hs
+  | exact (_root_.GlobalTheory.QLog.hasPeriod_linear p C v O hv ε hε F G d c μ' hL hμ 0 0 t 0 0 0 hd hz hz).2 s hs
+  | exact (_root_.GlobalTheory.QLog.hasPeriod_linear p C v O hv ε hε F G d c μ' hL hμ 0 0 t 0 0 0 hz hz).2 s hs
 
 theorem hasPeriod_comb (t : G.Tate) {ι : Type} [Fintype ι] (e : ι → MvPowerSeries (Fin d) F.Q)
     (hd : ∀ i, DIn (⊤ : Ideal F.B) (e i)) (y : ι → F.B) (hy : ∀ i, c.HasPeriod F.θ t (e i) (y i))
@@ -94,17 +94,17 @@ end Frame
 
 theorem window_matrices : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ G : PDivGroup p O, PDivLat.IsConn G → PDivLat.IsConn G.dual → ∀ F : BFrame ε, ∃ (d k : ℕ) (U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) (Y : Matrix (Fin d ⊕ Fin k) (Fin G.height) F.B) (Gm : Matrix (Fin G.height) (Fin d ⊕ Fin k) F.B) (tb : Module.Basis (Fin G.height) ℤ_[p] G.Tate) (χ : Fin G.height → G.dual.Tate) (w : Module.Basis (Fin d) O G.omega) (lb : Module.Basis (Fin k) O G.dual.Lie), d + k = G.height ∧ IsUnit U ∧ Y.map F.σ = blk d k (p : F.B) 1 * U.transpose * Y ∧ U * blk d k (p : F.B) 1 * (Gm.transpose.map F.σ) = (p : F.B) • Gm.transpose ∧ Gm * Y = F.a (Sandwich.mu ε) • (1 : Matrix (Fin G.height) (Fin G.height) F.B) ∧ (∀ i m, F.θ (Y (Sum.inl i) m) = 0) ∧ (∀ m j, F.θ (Gm m (Sum.inr j)) = 0) ∧ IsNil F.θ F.σ (U * blk d k (p : F.B) 1) ∧ IsNil F.θ F.σ (U.transpose⁻¹ * blk d k 1 (p : F.B)) ∧ (∀ m m', epsPairing hε G (tb m) (χ m') = if m = m' then 1 else 0) ∧ (∀ j m, F.θ (Y (Sum.inr j) m) = lb j (hodgeTate G (tb m))) ∧ ∀ m, dlog G (χ m) = ∑ i, F.θ (Gm m (Sum.inl i)) • w i := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hG hGd F
-  obtain ⟨d, ⟨c⟩⟩ := GlobalTheory.T.exists_pDivGroupFormalChart_of_connected p C v O hv G hG
-  have hdk := GlobalTheory.T.chartDim_add_finrank_dual_lie_eq_height p C v O hv G d c
-  have hCf := GlobalTheory.T.isTorsionFreePDThickeningFrame_valuation_integers p C v O hv
-  obtain ⟨k, e0, lb, hB0, hA0, hcob0, hLie0⟩ := GlobalTheory.T.exists_adapted_quasiLog_basis_pDivGroup_lieDual p C v O hv G d c C hCf
-  obtain ⟨μ', hL, hμ⟩ := GlobalTheory.T.exists_formalGroupLawLift_of_surjective F.B O F.θ F.frame.surj d c.μ c.isLaw
+  obtain ⟨d, ⟨c⟩⟩ := _root_.GlobalTheory.ChartEx.chart_exists p C v O hv G hG
+  have hdk := _root_.GlobalTheory.PDivGroup.chart_dim_add_finrank_dual_lie p C v O hv G d c
+  have hCf := _root_.GlobalTheory.FrameIntegers.isFrame_integers p C v O hv
+  obtain ⟨k, e0, lb, hB0, hA0, hcob0, hLie0⟩ := _root_.GlobalTheory.QLogBasis.adapted_basis p C v O hv G d c C hCf
+  obtain ⟨μ', hL, hμ⟩ := _root_.GlobalTheory.LiftLaw.exists_isLift F.B O F.θ F.frame.surj d c.μ c.isLaw
   obtain ⟨Θ, hΘ⟩ := frame_fraction_map p F.B O F.Q F.θ F.frame C hCf
-  obtain ⟨e, he0, hB, hA⟩ := GlobalTheory.T.exists_lift_adapted_basis_quasi_logarithms_frame p C v O hv ε hε F G d c μ' hL hμ Θ hΘ k e0 hB0 hA0
-  obtain ⟨U, hU⟩ := GlobalTheory.T.exists_frobenius_matrix_quasiLogarithm_basis p C v O hv ε hε F G d c μ' hL hμ k e hB hA
-  have hUu := GlobalTheory.T.frobenius_matrix_isUnit_adapted_basis p C v O hv ε hε F G d c μ' hL hμ k e hB hA U hU
-  have hN1 := GlobalTheory.T.frobenius_nilpotent_mod_maximal_connected_pDivGroup p C v O hv ε hε F G d c μ' hL hμ k e hB hA U fun i => (hU i).1
-  have hN2 := GlobalTheory.T.isNil_dual_frobenius_alt p C v O hv ε hε F G d c μ' hL hμ k e hB hA hGd U hUu hU
+  obtain ⟨e, he0, hB, hA⟩ := _root_.GlobalTheory.QLog.LiftBasis.exists_lift_isAdapted p C v O hv ε hε F G d c μ' hL hμ Θ hΘ k e0 hB0 hA0
+  obtain ⟨U, hU⟩ := _root_.GlobalTheory.QLog.exists_frob_matrix p C v O hv ε hε F G d c μ' hL hμ k e hB hA
+  have hUu := _root_.GlobalTheory.FrobUnit.frob_matrix_isUnit p C v O hv ε hε F G d c μ' hL hμ k e hB hA U hU
+  have hN1 := _root_.GlobalTheory.QLog.isNil_frobenius_chart p C v O hv ε hε F G d c μ' hL hμ k e hB hA U fun i => (hU i).1
+  have hN2 := _root_.GlobalTheory.DualFrobNil.isNil_dual_frobenius p C v O hv ε hε F G d c μ' hL hμ k e hB hA hGd U hUu hU
   haveI := integers_isIntegrallyClosedIn hv
   haveI := G.finite_tate C
   haveI := G.free_tate C
@@ -126,10 +126,10 @@ theorem window_matrices : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsA
   have hDe : ∀ l, DIn (⊤ : Ideal F.B) (e l) := fun l =>
     GlobalTheory.QLogDiff.dIn_of_QL p F.B O F.Q F.θ F.frame d μ' hL ⊤ (e l) (hQLe l)
   choose Y hY using fun l m =>
-    (GlobalTheory.T.exists_unique_period_quasiLogarithm_pDivGroup p C v O hv ε hε F G d c μ' hL hμ (e l) (tb m) (hQLe l)).exists
-  choose fχ wχ hfχ using fun m => GlobalTheory.T.exists_quasiLogarithm_of_dualCharacter p C v O hv ε hε F G d c μ' hL hμ (χ m)
+    (_root_.GlobalTheory.PeriodExists.main p C v O hv ε hε F G d c μ' hL hμ (e l) (tb m) (hQLe l)).exists
+  choose fχ wχ hfχ using fun m => _root_.GlobalTheory.CharLog.exists_log_char_period p C v O hv ε hε F G d c μ' hL hμ (χ m)
   choose g hg using fun m => (hB.2 (fχ m) (hfχ m).1).exists
-  obtain ⟨hbij, -⟩ := GlobalTheory.T.pdDivGroupChart_forms_basis_and_differential p C v O hv G d c
+  obtain ⟨hbij, -⟩ := _root_.GlobalTheory.chart_form_basis p C v O hv G d c
   let w : Module.Basis (Fin d) O G.omega :=
     Module.Basis.ofEquivFun (LinearEquiv.ofBijective (Fintype.linearCombination O c.form) hbij).symm
   have hw : ∀ i, w i = c.form i := by
@@ -140,14 +140,14 @@ theorem window_matrices : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsA
 
   have hred : ∀ m, (∀ j, F.θ (g m (Sum.inr j)) = 0) ∧
       ∀ i, lin (map Θ (fχ m)) i = algebraMap O C (F.θ (g m (Sum.inl i))) := fun m => by
-    refine GlobalTheory.T.logarithm_integers_adapted_basis_no_lie_components p C v O hv G d c k e0 lb hB0 hA0 hLie0 (map Θ (fχ m))
+    refine _root_.GlobalTheory.QLog.RedO.main p C v O hv G d c k e0 lb hB0 hA0 hLie0 (map Θ (fχ m))
       (ql_map F.θ Θ hΘ hμ hL.const (hfχ m).1)
       (formalGroupLawCoboundaryOne_map_eq_zero F.θ Θ hΘ hμ hL.const (hfχ m).2.1) (fun l => F.θ (g m l)) ?_
     have := in_map_top F.θ Θ hΘ (hg m)
     rwa [map_sub, map_comb F.θ Θ hΘ, show (fun l => map Θ (e l)) = e0 from funext he0] at this
 
   have hperO : ∀ l m, c.HasPeriod (RingHom.id O) (tb m) (e0 l) (F.θ (Y l m)) := fun l m => by
-    have h := GlobalTheory.T.hasPeriod_reduce_along_theta_to_integers p C v O hv ε hε F G d c μ' hL hμ C hCf Θ hΘ (e l) (tb m) (Y l m)
+    have h := _root_.GlobalTheory.QLog.hasPeriod_reduce p C v O hv ε hε F G d c μ' hL hμ C hCf Θ hΘ (e l) (tb m) (Y l m)
       (hQLe l) (hY l m)
     rwa [he0] at h
   refine ⟨d, k, U, Matrix.of Y, Matrix.of g, tb, χ, w, lb, ?_, hUu, ?_, ?_, ?_, ?_, ?_, hN1, hN2,
@@ -160,7 +160,7 @@ theorem window_matrices : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsA
     have key : F.σ (Y i m) = ∑ l, (U * blk d k (p : F.B) 1) l i * Y l m := by
       have hc := hasPeriod_comb hv hε F c hL hμ (tb m) e hDe (fun l => Y l m) (fun l => hY l m)
         (fun l => (U * blk d k (p : F.B) 1) l i)
-      have hf := GlobalTheory.T.quasiLogarithm_period_frobenius_twist p C v O hv ε hε F G d c μ' hL hμ (e i) (tb m) (Y i m) (hQLe i)
+      have hf := _root_.GlobalTheory.QLog.hasPeriod_frob p C v O hv ε hε F G d c μ' hL hμ (e i) (tb m) (Y i m) (hQLe i)
         (hY i m)
       refine hasPeriod_unique hv hε F c hL hμ (tb m)
         (hasPeriod_of_in hv hε F c hL hμ (tb m) hf (hU i).1 ?_) hc
@@ -211,7 +211,7 @@ theorem window_matrices : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsA
     · simp [h, Ne.symm h]
   ·
     intro i m
-    have hlie := GlobalTheory.T.tangent_eq_zero_of_formalGroupLawCoboundaryOne_eq_zero p C v O hv G d c (e0 (Sum.inl i)) (hB0.1 (Sum.inl i)).1 (hcob0 i)
+    have hlie := _root_.GlobalTheory.QLog.Chart.isLie_zero_of_cob1_eq_zero p C v O hv G d c (e0 (Sum.inl i)) (hB0.1 (Sum.inl i)).1 (hcob0 i)
     have h2 := GlobalTheory.T.quasiLogarithm_period_eq_tangent_hodgeTate p C v O hv G d c C hCf (e0 (Sum.inl i)) 0 (hB0.1 _) hlie (tb m)
     simpa using (hperO _ m).unique hCf h2
   · intro m j

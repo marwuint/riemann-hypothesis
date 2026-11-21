@@ -25,10 +25,5 @@ def Charts.KerIs (C : Charts H.left) {d : ℕ} (a : {i // C.wt i = C.c₀}) (j :
       (h₁ : ⊤ ≤ (1 : Y ⟶ H).left ⁻¹ᵁ C.W a), ((t ≫ i).left.appLE _ ⊤ h).hom (C.r a (j n)) =
         t.left.appTop.hom (charUnit S (Fin d → ℤ) (Pi.single n 1)).val * ((1 : Y ⟶ H).left.appLE _ ⊤ h₁).hom (C.r a (j n))
 
-private theorem appLE_univ_univ_apply_eq_appTop {X Y : Scheme.{0}} (g : Y ⟶ X) (h : ⊤ ≤ g ⁻¹ᵁ (⊤ : X.Opens)) :
-    g.appLE ⊤ ⊤ h = g.appTop := by
-  rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
-  rfl
-
 end GlobalTheory.ZJ
 end

@@ -8,11 +8,13 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RderMemAutFormsC
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsCompactKinfAndConj
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ModerateGrowthSobolevSizeRightTranslatePolyBoundStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GrowthSobolevCauchyTendstoSmoothLimitStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsCuspFunOfTendstoModerateGrowthSizeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsCuspFunOfTendstoModerateGrowthSize
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsModGrowthExpLeNormInfPow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemSmoothFunctionsOfClosedRightDerivatives
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryAdelicHeightRealFrameElementLeHsPowStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ComplexDerivativeRightDerivativeCommutatorStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoModerateGrowthSizeTranslateNearOneStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoModerateGrowthSizeDifferenceQuotientStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoModerateGrowthSizeDifferenceQuotient
 
 noncomputable section
 
@@ -96,8 +98,8 @@ theorem Rder_mem_cuspSub (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (F
     have ht : Tendsto (fun n : ℕ => 1 / ((n : ℝ) + 1)) atTop (𝓝[≠] 0) :=
       tendsto_nhdsWithin_iff.2 ⟨tendsto_one_div_add_atTop_nhds_zero_nat, .of_forall fun n =>
         (Nat.one_div_pos_of_nat (α := ℝ)).ne'⟩
-    exact GlobalTheory.T.isCuspFun_of_tendsto_moderateGrowthSize D V N _ _ (fun n => ⟨(hm _).1, (hm _).2.1, (hm _).2.2.2.2.1⟩) b1 b2
-      ((GlobalTheory.T.tendsto_moderateGrowthSize_differenceQuotient D θ hθ V τ N X hX φ a4 (a6 2)).comp ht)
+    exact _root_.GlobalTheory.CuspLimit.isCuspFun_of_tendsto D V N _ _ (fun n => ⟨(hm _).1, (hm _).2.1, (hm _).2.2.2.2.1⟩) b1 b2
+      ((_root_.GlobalTheory.Size.DiffQuot.tendsto_growthSize_diffQuot D θ hθ V τ N X hX φ a4 (a6 2)).comp ht)
   · rw [← GlobalTheory.SmoothAutCheck.RderC_eq θ V τ hX]
     exact ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.sum_ne_top.2 fun _ _ => enorm_ne_top) (a6 _))
       (growthSob_RderC_le hθ a4 τ X d)
@@ -188,7 +190,7 @@ theorem completeSpace (hθ : IsInfFam θ) : CompleteSpace (Sp θ N hU) := by
   have l : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g := fun γ hγ g =>
     tendsto_nhds_unique (p _) ((p g).congr fun n => ((incl_mem _).2.1 γ hγ g).symm)
   refine ⟨⟨f, f1, l, fun k h1 h2 g => tendsto_nhds_unique (p _) ((p g).congr fun n => ((incl_mem _).2.2.1 k h1 h2 g).symm),
-    f2, GlobalTheory.T.isCuspFun_of_tendsto_moderateGrowthSize D V N _ f (fun n => ⟨(incl_mem _).1, (incl_mem _).2.1, (incl_mem _).2.2.2.2.1⟩) f1 l f0,
+    f2, _root_.GlobalTheory.CuspLimit.isCuspFun_of_tendsto D V N _ f (fun n => ⟨(incl_mem _).1, (incl_mem _).2.1, (incl_mem _).2.2.2.2.1⟩) f1 l f0,
     fun d => ?_⟩, tendsto_iff.2 f3⟩
   obtain ⟨n, hn⟩ := ((f3 d).eventually (gt_mem_nhds ENNReal.zero_lt_top)).exists
   have e : f = incl θ N hU (u n) + (-1 : ℂ) • (incl θ N hU (u n) - f) := by simp
@@ -364,7 +366,7 @@ theorem tendsto_quot (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V
   refine tendsto_zero_of_comm hθ (fun (t : ℝ) x => ((t : ℂ)⁻¹) • (act N hU hθ (pt θ τ (NormedSpace.exp (t • X))) x - x) -
       derL N hU hθ τ X x) (fun x => ?_) (fun τ' Z x => ?_) x
   · simp only [map_sub, eX]
-    exact GlobalTheory.T.tendsto_moderateGrowthSize_differenceQuotient D θ hθ V τ N X hX _ (incl_sm x) (incl_fin x 2)
+    exact _root_.GlobalTheory.Size.DiffQuot.tendsto_growthSize_diffQuot D θ hθ V τ N X hX _ (incl_sm x) (incl_fin x 2)
   obtain ⟨B, hB, hb⟩ : ∃ B, Tendsto (fun t : ℝ => ((t : ℂ)⁻¹) • (adAt θ (oneP θ V τ X t) τ' Z - Z)) (𝓝[≠] 0) (𝓝 B) ∧
       derL N hU hθ τ' Z (derL N hU hθ τ X x) = derL N hU hθ τ X (derL N hU hθ τ' Z x) + derL N hU hθ τ' B x := by
     have hi : ∀ t, (oneP θ V τ X t)⁻¹ = oneP θ V τ X (-t) := fun t => inv_eq_of_mul_eq_one_right (by

@@ -73,24 +73,4 @@ theorem glRel_conj {A : Type} [Ring A] [Algebra ℂ A] (N : ℕ) (Q : Matrix (Fi
   rw [lie_of_glRel Q h, key, key, ← sub_mul, ← mul_sub, single_comm]
   split_ifs <;> simp [mul_sub, sub_mul]
 
-theorem gelfA_conj {A : Type} [Ring A] [Algebra ℂ A] (N : ℕ) (Q : Matrix (Fin N) (Fin N) ℂ →ₗ[ℂ] A)
-    (g : GL (Fin N) ℂ) :
-    GlobalTheory.SmoothForms.gelfA (fun i j => Q (g.1 * Matrix.single i j 1 * (g⁻¹).1)) =
-      GlobalTheory.SmoothForms.gelfA (fun i j => Q (Matrix.single i j 1)) := by
-  have hGH : g.1 * (g⁻¹).1 = 1 := g.mul_inv
-  funext k
-  rw [GlobalTheory.SmoothForms.gelfA_eq_sum_pow, GlobalTheory.SmoothForms.gelfA_eq_sum_pow]
-  have hE' : (fun a b => Q (g.1 * Matrix.single a b 1 * (g⁻¹).1)) =
-      fun a b => ∑ c, ∑ d, ((g.1)ᵀ a c * ((g⁻¹).1)ᵀ d b) • Q (Matrix.single c d 1) := by
-    funext a b
-    simp only [← map_smul, ← map_sum]
-    congr 1
-    rw [Matrix.matrix_eq_sum_single (g.1 * _ * (g⁻¹).1)]
-    refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_
-    rw [Matrix.smul_single, smul_eq_mul, mul_one]
-    congr 1
-    simp [Matrix.mul_apply, Matrix.single, ite_and]
-  rw [hE', GlobalTheory.RegSch.GChart.trace_pow_conj _ (g.1)ᵀ ((g⁻¹).1)ᵀ
-    (by rw [← Matrix.transpose_mul, hGH, Matrix.transpose_one])]
-
 end GlobalTheory.CapelliLowest

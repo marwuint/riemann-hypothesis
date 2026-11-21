@@ -1,15 +1,20 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JetLeftMem
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrobeniusGeneratorCorrespondenceStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermTorsionLiftCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermFrobeniusTorsionSectionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermJetUnitOnChartStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermTorsionLiftCompat
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermJetPointComposition
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TranslDiffEq
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermFrobeniusTorsionSection
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermFrobeniusTorsionJet
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermJetUnitOnChart
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JetSectionGeneratorValueStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrobeniusTorsionGeneratorRelationStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermJetQuotientFormulaStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JetAugmentationOnePthPowerStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleSectionDifferenceGeneratorStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleGeneratorCorrespondenceStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleGeneratorCorrespondence
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1 GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj GlobalTheory.CompanionTheory.Ar.Coc
 open scoped CategoryTheory.Obj
@@ -27,7 +32,7 @@ set_option maxHeartbeats 4000000 in
 
 theorem pfold : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0) (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X0) (d : ℕ) (g : GermAt t x d) (w : Fin d → k) (gs : Germ.PS k 2 d), AxOne gs → pow1 g.B p = Germ.ev (n := 2) ![ptPow k d p 0, Germ.pt k d 1] gs → ∀ y : Tm x p ⟶ t.G, y = homAt x (jetSubstP p fun q : Fin 1 × Fin d => MvPolynomial.C (w q.2) * MvPolynomial.X ()) ≫ g.x p → homAt x (jetAug : Jet k Unit p →ₐ[k] k) ≫ y = 1 → y ^ p = 1 → ∃ C : LB.Gen (LB.LinComb t.PP.L (K := Fin 2) ![pa t.G x y, pb t.G x p] ![(p : ℤ), -(p : ℤ)]), C.IsGen ∧ (∀ (j : t.PP.L.ι) (h : pullback.fst t.G.hom x ⁻¹ᵁ t.PP.L.U j ≤ secZ t.G x p ⁻¹ᵁ LB.wchart t.PP.L (K := Fin 2) ![pa t.G x y, pb t.G x p] (fun _ => j)), ((secZ t.G x p).appLE _ _ h).hom (C.s fun _ => j).val = 1) ∧ ∀ j₀ : t.PP.L.ι, ⊤ ≤ (1 : overAt x k ⟶ t.G).left ⁻¹ᵁ t.PP.L.U j₀ → ∀ m : ℕ, ∃ v : Jet k (Fin 1 × Fin d) m, ∀ h : ⊤ ≤ rQ t.G x p (g.x m) ⁻¹ᵁ LB.wchart t.PP.L (K := Fin 2) ![pa t.G x y, pb t.G x p] (fun _ => j₀), ((rQ t.G x p (g.x m)).appLE _ ⊤ h).hom (C.s fun _ => j₀).val = toΓ _ (1 + dQ _ p ^ p * algebraMap _ _ (v ^ p - psJet m (dSer gs fun i => w i ^ p))) := by
   intro E _ _ _ H _ hstar X0 t k _ p _ _ x d g w gs hax hpow y hy hy0 hyp
-  obtain ⟨κ, hκ, hκ2, hκ3⟩ := GlobalTheory.T.line_bundle_generator_correspondence E H hstar X0 t p
+  obtain ⟨κ, hκ, hκ2, hκ3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Nfold.nfold_first_law E H hstar X0 t p
   have hy1 : spMap ((jetAug : Jet k Unit p →ₐ[k] k) : Jet k Unit p →+* k) ≫ y.left =
       spMap ((jetAug : Jet k Unit p →ₐ[k] k) : Jet k Unit p →+* k) ≫ (1 : Tm x p ⟶ t.G).left := by
     have e₁ := congrArg (fun q => q.left) hy0
@@ -37,7 +42,7 @@ theorem pfold : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host
   obtain ⟨C, hC, hCv⟩ := GlobalTheory.T.frobenius_torsion_generator_relation E H X0 t k x p y hyp κ hκ τ hτ
   refine ⟨C, hC, GlobalTheory.T.frobenius_generator_correspondence E H X0 t k x p y hy0 κ hκ2 τ hτ1 C hCv, fun j₀ hj₀ m => ?_⟩
   obtain ⟨u, hu, hκ3'⟩ := hκ3 k x d g (p + m + 1)
-  obtain ⟨e₀, he₀, hve⟩ := GlobalTheory.T.germ_jet_unit_on_chart E H X0 t k p x d g w m j₀ hj₀
+  obtain ⟨e₀, he₀, hve⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Coc.Pf.frame_test_unit E H X0 t k p x d g w m j₀ hj₀
   obtain ⟨τ₀, hτ₀, hvτ⟩ := GlobalTheory.T.jet_section_generator_value E H X0 t k x p y (Jet k (Fin 1 × Fin d) m) hy0 τ hτ1 j₀ hj₀
   have hp0 : ((p : ℕ) : Jet k (Fin 1 × Fin d) m) = 0 := by
     have : ((p : ℕ) : k) = 0 := CharP.cast_eq_zero k p
@@ -69,11 +74,11 @@ theorem pfold : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host
         gm (𝟙 _) z ⊤ (unitΓ ν) * (gm (𝟙 _) z ⊤ (unitΓ e₀) ^ p)⁻¹ := by
       have e₁ : val κ (rQ t.G x p (g.x m) ≫ (lift (fst (Tm x p) t.G ≫ y) (snd (Tm x p) t.G)).left) z J =
           val (LB.pullGen t.PP.L _ _ κ (lift (jptG t x d g.x (p + m + 1) (0 : Fin 2)) (jptG t x d g.x (p + m + 1) (1 : Fin 2))).left) (homAt x (jq w p m)).left z J := by
-        rw [GlobalTheory.T.germ_torsion_lift_compat E H X0 t k p x d g w m y hy]
+        rw [_root_.GlobalTheory.CompanionTheory.Ar.Coc.TestPair.main E H X0 t k p x d g w m y hy]
         exact (val_pull hJ _ _ _).symm
       refine e₁.trans ((val_corr hJ hκ3' _).trans ((Pf.val_scale t _ _ _ _ _ z hJ).trans ?_))
       refine (congrArg (gm (spMap f) z ⊤ (unitΓ u) * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·)
-        (GlobalTheory.T.germ_frobenius_torsion_section E H hstar X0 t k p x d g w m (hy ▸ hyp) z J hJ) ((val_inv _ _).trans (congrArg (·⁻¹)
+        (_root_.GlobalTheory.CompanionTheory.Ar.Coc.Pf.peG_act_one E H hstar X0 t k p x d g w m (hy ▸ hyp) z J hJ) ((val_inv _ _).trans (congrArg (·⁻¹)
           ((Pf.val_genPow t _ _ _ p _ z J).trans (congrArg (· ^ p) (hve z J hJ hJ₀)))))))).trans ?_
       rw [_root_.one_mul]
       exact congrArg (· * _) (Pf.gm_spMap f u z)

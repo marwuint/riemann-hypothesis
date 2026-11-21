@@ -15,12 +15,6 @@ def SectionSpanStep.Statement : Prop :=
     ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n →
       chartLat y a (n + 1) ≤ AddSubgroup.closure {t | ∃ s ∈ chartLat y a n, ∃ j, t = s * w j}
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

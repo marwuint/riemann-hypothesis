@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.GeneratorSectionExpansionNuNonnegStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.NormalisedPullbackSectionNuNonnegStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymmetricTorsionTranslateSectionNuNonnegStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SectionRegularOnModelOfNuNonnegStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.GeneratorSectionExpansionNuNonneg
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.NormalisedPullbackSectionNuNonneg
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymmetricTorsionTranslateSectionNuNonneg
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SectionRegularOnModelOfNuNonneg
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsAlgClosedValuedFieldOverCompleteDVR
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsTwistPullBaseChange
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsThetaGrpPullback
@@ -85,18 +85,18 @@ theorem regular_of_reach : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
       IsPullSec Xo.univ.t.G Xo.univ.t.PP.L ((k : ℕ) : ℤ) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F₀ G →
       ∀ σ s, SecTieF C.I P F xF k σ G → P.U.toUnifPre.ExpandsG F k σ s → NuGe P.D Q F v k s 0 := by
     induction hR with
-    | base => exact ⟨le_rfl, GlobalTheory.T.generator_section_expansion_nu_nonneg E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh⟩
+    | base => exact ⟨le_rfl, _root_.GlobalTheory.GeneratorNu.main E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh⟩
     | pull k N k' a F₁ F₂ _ hk hN ha hk' hp ih =>
       refine ⟨hk' ▸ Nat.mul_pos ih.1 hN.pos, fun G hG => ?_⟩
       obtain ⟨G₁, hG₁⟩ := exists_isPullSec Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F₁
-      exact GlobalTheory.T.normalised_pullback_section_nu_nonneg E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh k N k' a G₁ G hk hN.pos ha hk'
+      exact _root_.GlobalTheory.NuPull.nuGe_zero_of_pulls E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh k N k' a G₁ G hk hN.pos ha hk'
         (isNormPull_baseChange _ h _ _ _ hp hG₁ hG) (ih.2 G₁ hG₁)
     | move k b F₁ F₂ _ hm ih =>
       refine ⟨ih.1, fun G hG => ?_⟩
       obtain ⟨G₁, hG₁⟩ := exists_isPullSec Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F₁
-      exact GlobalTheory.T.symmetric_torsion_translate_section_nu_nonneg E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh k (h ≫ b) G₁ G ih.1
+      exact _root_.GlobalTheory.PlaceInt.nuGe_zero_of_moves E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh k (h ≫ b) G₁ G ih.1
         (isSymAct_baseChange _ h _ b hm hG₁ hG) (ih.2 G₁ hG₁)
   obtain ⟨G, hG⟩ := exists_isPullSec Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F₀
-  exact GlobalTheory.T.section_regular_on_model_of_nu_nonneg E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh k F₀ G main.1 hG (main.2 G hG)
+  exact _root_.GlobalTheory.NuRegular.main E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh k F₀ G main.1 hG (main.2 G hG)
 
 end GlobalTheory.ReachRegular

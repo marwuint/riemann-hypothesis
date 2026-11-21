@@ -4,10 +4,12 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KchMul
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.FibreFramesOnModels
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SupremumOnGoodPlaces
+import Formalism.LocalToGlobal.ProjectiveLattices.CuspidalL2Subspace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulMemCuspFormsOfBoundedSectionComponent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntOffOfUnramPts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsLogRootDiscSubLogHostPrimeLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsLogRootDiscSubLogHostPrimeLe
+import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsFlatSecRankZero
+import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
 
 set_option synthInstance.maxHeartbeats 400000
 
@@ -111,7 +113,7 @@ theorem twSec_of_flat (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Re
       rw [lineDeg, finsum_sum_flDefect]; simp
     rw [TwSec.degLo, h2, h3, key, h1, ← hdeg, ConstSec.deg]; ring
   refine ⟨t, h5, hd, ?_⟩
-  have hA := GlobalTheory.T.abs_logRootDisc_sub_log_hostPrime_le E H
+  have hA := _root_.GlobalTheory.abs_lrd_sub_log_d_le_lrd E H
   have hs : (lrd E - Real.log H.d) * ∑ τ, (w τ : ℝ) ≤ lrd E * ∑ τ, |(w τ : ℝ)| := by
     rw [Finset.mul_sum, Finset.mul_sum]
     refine Finset.sum_le_sum fun τ _ => (le_abs_self _).trans ?_

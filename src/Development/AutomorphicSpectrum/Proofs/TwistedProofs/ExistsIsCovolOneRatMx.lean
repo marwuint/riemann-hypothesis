@@ -1,9 +1,10 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.TwistedProofs.IsOrthogonalSlopeTestFamily
+import Development.AutomorphicSpectrum.ParallelStatements.FiniteSums.BesselPeriodFreeData
+import Formalism.LocalToGlobal.IndefiniteReal.AutomorphicFormsHyp
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictIsotropicQuotientWittTowerPropertie
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFundamentalDomainMassOneCocompactLattice
 
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Eqv Formalism.IndefR.Mi Formalism.IndefR.Mult MeasureTheory Matrix GlobalTheory.CompanionTheory.IndefiniteRowSideFullHecke.BesselPeriodFreeData GlobalTheory.CompanionTheory.SepInhab
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Eqv Formalism.IndefR.Mi Formalism.IndefR.Mult MeasureTheory Matrix GlobalTheory.CompanionTheory.IndefiniteRowSideFullHecke.BesselPeriodFreeData
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 

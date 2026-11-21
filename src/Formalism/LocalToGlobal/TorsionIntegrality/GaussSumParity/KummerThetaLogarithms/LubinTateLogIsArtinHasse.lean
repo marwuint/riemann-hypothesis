@@ -13,18 +13,6 @@ open Formalism.InvariantFactorPaths.G7 (lgF at1 Simeq cob UnrOK IsLawOfLog BetaH
 open Formalism.L2.Th1.A (shortW logSer expSer fgl wpReg iSer xS IntModel)
 open Formalism.L2.Th1.B (fLog lU sigS phO)
 
-theorem lubin_tate_log_is_artin_hasse : LtLogIsLgF := by
-  intro K _ l hl
-  ext n
-  unfold Formalism.L2.Th1.CM.ltLog
-  rw [PowerSeries.coeff_mk]
-  split_ifs with h
-  · have hs := Nat.find_spec h
-    conv_rhs => rw [hs]
-    rw [Formalism.InvariantFactorPaths.G7.coeff_lgF_pow K hl]
-  · by_contra hc
-    exact h (Formalism.InvariantFactorPaths.G7.coeff_lgF_ne_zero (Ne.symm hc))
-
 namespace EAux
 
 section Alg
@@ -246,10 +234,5 @@ theorem first_level_curve_holds : CurveExponentCoboundaryCocycle := by
   exact transport_first_level K l hl hn F hF (fgl (shortW g2 g3)) (thetaS l g2 g3 ε) (phCurve g2 g3 s2)
     (phFF l g2 g3 s2 ε) hLaw.1 hθ (theta_homomorphism K l hl hn F hF g2 g3 ε).2
     ⟨hO.1, hO.2.2.1, hO.2.2.2⟩ (phi_comparison K l hl g2 g3 s2 ε hε hθ)
-
-theorem biextension_hypotheses_curve : BHypCurve := by
-  intro K _ _ _ l d _ σ hU hd hev F hF g2 g3 s2 ε hg2 hg3 hε hθ ι _ om oms hO ζ hζ
-  exact biextension_hypotheses_of_level_one K l d σ hU hd hev F hF _
-    (first_level_curve_holds K l hU.1 hU.2.1 hU.2.2.1 F hF g2 g3 s2 ε hg2 hg3 hε hθ) ι om oms hO ζ hζ
 
 end Formalism.L2.Th1.D

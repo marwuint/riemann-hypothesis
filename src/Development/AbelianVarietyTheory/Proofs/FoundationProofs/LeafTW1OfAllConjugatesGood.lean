@@ -129,17 +129,6 @@ theorem relLength_read (h : Induces emb v) (rd : V →ₛₗ[emb] W) {ι : Type}
   · rw [hsp, hsp, relLength_map_of_injective g hinj]
     exact length_baseChange_subquotient_dvr (Ow v) O' _ _
 
-omit [NumberField K] [IsDomain O'] [IsDiscreteValuationRing O'] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Module O' W]
-  [IsScalarTower O' (FractionRing O') W] in
-
-theorem exists_read {ι : Type} [Fintype ι] (b : Module.Basis ι K V) (x : ι → W) :
-    ∃ rd : V →ₛₗ[emb] W, ∀ a, rd (b a) = x a := by
-  classical
-  refine ⟨⟨⟨fun y => ∑ a, emb (b.repr y a) • x a, fun y z => ?_⟩, fun r y => ?_⟩, fun a => ?_⟩
-  · simp [add_smul, Finset.sum_add_distrib]
-  · simp [mul_smul, Finset.smul_sum]
-  · simp [Finsupp.single_apply, apply_ite emb]
-
 variable [StarRing K]
 
 theorem plc_eq_prW (v : HeightOneSpectrum (𝓞 K)) : plc v = prW v := eq_prW_of_mem v (plc_prime v) (plc_mem v)
@@ -418,23 +407,7 @@ theorem isLatIn_eTh {I : TwIn D} {i : D.ntw.Tw} (h : I.Ok i) {j : ℕ} (hj : j �
 
 theorem succ_mem_Icc (ι : Fin D.R.m) : (ι : ℕ) + 1 ∈ Finset.Icc 1 D.R.m := Finset.mem_Icc.2 ⟨Nat.le_add_left _ _, ι.2⟩
 
-def ExportInputs (bkP : BlochKatoReduction.BK D) (I : TwIn D) : Prop :=
-  ∀ i, D.ntw.NonzeroIndexPlace i → BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.pin bkP) i ∧ I.Ok i
-
 abbrev Twist (i : D.ntw.Tw) : Type := Σ (Q : Finset (PlE D.host)) (k : ℕ), D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ
-
-def ChosenFrom (c : NChoice D) (w : D.what₂.places.Pl) (i : D.ntw.Tw) (b : Bool) (t : Twist i) : Prop :=
-  D.ntw.NonzeroIndexPlace i ∧ D.ntw.NonzeroIndexPlace (c.twI w) ∧ SamePlace i b (c.twI w) (c.sd w) ∧ Disjoint (c.Q w) (D.ntw.S0 (c.twI w)) ∧
-    ∃ ψ' : D.ntw.RCG i (c.Q w) →* (D.ntw.Ok i (c.k' w))ˣ, (⟨c.Q w, c.k' w, ψ'⟩ : Twist i) = t ∧
-      IsReading i (c.twI w) (c.k' w) (ψ'.comp (D.ntw.art i (c.Q w))) (chosenChar c w)
-
-def IsErrorFamily (E : IntegralHeckeForms.XD D) (i : D.ntw.Tw) (t : Twist i) (ε : ℕ → Bool → ℝ) : Prop :=
-  (∀ j b, 0 ≤ ε j b) ∧ ∑ j ∈ Finset.Icc 1 D.R.m, ∑ b : Bool, ε j b ≤ twEps D i ∧
-    ∀ (b : Bool) (i' : D.ntw.Tw) (b' : Bool), SamePlace i b i' b' → Disjoint t.1 (D.ntw.S0 i') →
-      ∀ φ : G D.host.E D.nd.Om →* (D.ntw.Ok i' t.2.1)ˣ, IsReading i i' t.2.1 (t.2.2.comp (D.ntw.art i t.1)) φ →
-        ∀ j ∈ Finset.Icc 1 D.R.m,
-          IntegralHeckeForms.IsLatIn (IntegralHeckeForms.eTh D.nexp i' j b' (IntegralHeckeForms.SgJ D.nexp E i' j b')) ((IntegralHeckeForms.V0 D.nexp i' j b').restrictScalars (D.ntw.O i')) →
-          PartBAt D.nexp E i' j b' t.2.1 t.1 φ (ε j b)
 
 theorem exists_leafTW1_of_twGoodAt (A : FamIn D.what₂.LL Γ Pl0 T0 D.R.m) (c : NChoice D) (I : TwIn D) (hG : TwGoodAt D c I)
     (O : OnObj S P oc) (ι : Bs.J → Fin D.R.m) (hι : Function.Injective ι) (hM : GoodPartLattice O) (hΘ : ThetaFullRank O)

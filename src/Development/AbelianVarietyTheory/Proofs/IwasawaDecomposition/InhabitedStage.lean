@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ResCha
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsAllLifts
 import Development.AbelianVarietyTheory.Definitions.Foundations.CdScaleTieIff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConstMapInjective
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NonemptyCompactDualHaarStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NonemptyCompactDualHaar
+import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
 
 noncomputable section
 
@@ -84,7 +85,7 @@ theorem exists_oneJet (B : Base) (C : Cols B) (cd : CDHaar) (hm : 1 ≤ B.R.m) (
   exact ⟨J, hcd, by rw [hv, hcd], hj, ⟨i, hi1, hil, hid, (J.jetW_l i).trans hil⟩, hf⟩
 
 theorem nonempty_stage (B : Base) (C : Cols B) : Nonempty (GJStage B C) := by
-  obtain ⟨cd⟩ := GlobalTheory.T.nonempty_compactDualHaar
+  obtain ⟨cd⟩ := _root_.GlobalTheory.CompactDualExists.nonempty_cdHaar
   obtain ⟨J, -⟩ := exists_noJet B C cd
   exact ⟨J⟩
 
@@ -97,7 +98,7 @@ theorem inhabited_stage (B : Base) (C : Cols B) :
             B.places.resChar (J.jetW i) = l) ∧
     (Nonempty ((C.mem B.u₀).C.cls 0) → Nonempty ((C.mem B.u₀).C.cls 1) →
       ∃ J : GJStage B C, J.vol = baseVol B J.cd ∧ Nonempty J.jet.Sit) := by
-  obtain ⟨cd⟩ := GlobalTheory.T.nonempty_compactDualHaar
+  obtain ⟨cd⟩ := _root_.GlobalTheory.CompactDualExists.nonempty_cdHaar
   refine ⟨?_, fun hm h0 h1 l hl h5 hc => ?_, fun h0 h1 => ?_⟩
   · obtain ⟨J, -, hv, -⟩ := exists_noJet B C cd
     exact ⟨J, hv⟩

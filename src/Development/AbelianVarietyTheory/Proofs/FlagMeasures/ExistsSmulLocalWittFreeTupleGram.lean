@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Measures
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExtendFreeTupleGramHermitianFrameStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExtendFreeTupleGramHermitianFrame
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StandardFrameGramDetNeZero
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSmulRatTupEq
 
@@ -12,7 +12,7 @@ namespace GlobalTheory.LocalWittFree
 theorem exists_smul_ratTup_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (r : ℕ) (P : Frame E n r) (T : F), P.IsStd σ J T → ∀ y : Fin (r + 1) → Fin n → Fv F v ⊗[F] E, LinearIndependent (Fv F v ⊗[F] E) y → gramR (Fv F v) σ J y = (gramE σ J (F0 P)).map (inclR (Fv F v)) → ∃ g : HA (Fv F v) σ J, g • ratTup (Fv F v) (F0 P) = y := by
   intro F E _ _ _ _ _ σ hcm n J hJ v r P T hP y hy hgram
 
-  obtain ⟨f, hf⟩ := GlobalTheory.T.extend_free_tuple_gram_hermitian_frame F E σ hcm n J hJ v r P T hP y hy hgram
+  obtain ⟨f, hf⟩ := _root_.GlobalTheory.FrameExtend.extend_frame F E σ hcm n J hJ v r P T hP y hy hgram
 
   have hdet := (GlobalTheory.FrameGram.std_frame_gram F E σ hcm n J hJ r P T hP).1
 

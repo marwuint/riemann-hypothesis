@@ -23,16 +23,6 @@ def sw (q : Formalism.FourierDecayAlt.C2.Lstidx W) : Formalism.FourierDecayAlt.C
     · rw [← w_symm, ← w_symm]; exact h.2
     · rw [w_symm, w_symm, wPt_invol, wPt_invol]; exact h.1⟩
 
-theorem sw_sw (q : Formalism.FourierDecayAlt.C2.Lstidx W) : sw pN (sw pN q) = q := by
-  apply Subtype.ext
-  exact Prod.ext (wPt_invol pN _) (wPt_invol pN _)
-
-def swE : Formalism.FourierDecayAlt.C2.Lstidx W ≃ Formalism.FourierDecayAlt.C2.Lstidx W where
-  toFun := sw pN
-  invFun := sw pN
-  left_inv := sw_sw pN
-  right_inv := sw_sw pN
-
 variable (d : Fin (r + 1) → ℂ)
 
 def Rm (x' : Formalism.FourierDecayAlt.C2.Lstidx W → ℂ) : Formalism.FourierDecayAlt.C2.Lstidx W → ℂ :=

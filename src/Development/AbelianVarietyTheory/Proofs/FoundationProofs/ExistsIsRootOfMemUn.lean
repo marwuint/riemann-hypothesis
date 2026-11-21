@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTowerPlaceAtUpperHalfPlanePointStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHolomorphicRootUpperHalfPlaneStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTowerPlaceAtUpperHalfPlanePoint
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHolomorphicRootUpperHalfPlane
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
 open Filter Topology
@@ -77,7 +77,7 @@ theorem exists_isRoot_of_mem_Un : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (�
     fun hc τ hτ => hc.analyticOnNhd isOpen_Hs τ hτ
   have hord : ∀ τ ∈ Hs, ∃ k : ℕ, analyticOrderAt (a0 * b0 ^ m') τ = (((m' + 1) * k : ℕ) : ℕ∞) := by
     intro τ hτ
-    obtain ⟨W, hW, hWmem⟩ := GlobalTheory.T.exists_tower_place_at_upperHalfPlane_point Ω ε X hj τ hτ
+    obtain ⟨W, hW, hWmem⟩ := _root_.GlobalTheory.KZ.H3.exists_place_at_point Ω ε X hj τ hτ
     obtain ⟨g, hg⟩ := hf W hW
     set u : X.K := (f : X.K) / (g : X.K) ^ (m' + 1) with hu
     have hgm : (g : X.K) ^ (m' + 1) ≠ 0 := pow_ne_zero _ g.ne_zero
@@ -133,7 +133,7 @@ theorem exists_isRoot_of_mem_Un : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (�
     simp only [nsmul_eq_mul]
     push_cast
     ring
-  obtain ⟨r, hr, hrm⟩ := GlobalTheory.T.exists_holomorphic_root_upperHalfPlane (a0 * b0 ^ m') (m' + 1) hm (ha0.mul (hb0.pow _)) hord
+  obtain ⟨r, hr, hrm⟩ := _root_.GlobalTheory.KZ.H3.uhp_root (a0 * b0 ^ m') (m' + 1) hm (ha0.mul (hb0.pow _)) hord
   refine ⟨r, b0, hr, hb0, hb0ne, ?_⟩
   have e1 : ((r ^ (m' + 1) : ℂ → ℂ) : Mero) = ((a0 * b0 ^ m' : ℂ → ℂ) : Mero) :=
     germ_eq_of_eqOn fun z hz => by simpa using hrm z hz

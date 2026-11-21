@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsDominantOfSection
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsValuationSubringRatFuncXResidueZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftValuativeCriterionVarietiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShearedGenericFlagEqGenericFlagAtSpecialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagOfDominantPointAsTriangularMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockMatrixElementaryShearPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsValuationSubringRatFuncXResidueZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftValuativeCriterionVarieties
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShearedGenericFlagEqGenericFlagAtSpecial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagOfDominantPointAsTriangularMatrix
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockMatrixElementaryShearProperties
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FullFlagCommonClosedPointOfGeneric
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAlgHomFunctionFieldOfSpecializesGenericPoi
 
@@ -26,7 +26,7 @@ theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : A 
 
 theorem exists_genPair : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ B ∈ E'.S (genericPoint Y.X), ∀ (τ : ι) (a b : Fin (m τ)), a < b → ∃ ψ₂ : Y.Fn →+* RatFunc Y.Fn, GenPair Y (algebraMap Y.Fn (RatFunc Y.Fn)) ψ₂ ∧ (∀ u : X.Fn, algebraMap Y.Fn (RatFunc Y.Fn) (φ u) = ψ₂ (φ u)) ∧ Par m ⊤ (shear τ a b (RatFunc.X : RatFunc Y.Fn) * (B.map (algebraMap Y.Fn (RatFunc Y.Fn)) * (B.map ψ₂)⁻¹)) := by
   intro F _ X Y ι _ m E E' φ f hf B hB τ a b hab
-  obtain ⟨V, c, t, hc, ht, hr⟩ := GlobalTheory.T.exists_valuationSubring_ratFunc_X_residue_zero Y.Fn
+  obtain ⟨V, c, t, hc, ht, hr⟩ := _root_.GlobalTheory.FlagPush.exists_valuationSubring_ratFunc_residue_X_eq_zero Y.Fn
   obtain ⟨A, hA⟩ := E.nonempty (f (genericPoint Y.X))
   have hM : Par 0 ((ratOf Y).O (genericPoint Y.X)).toSubring (B * (A.map φ)⁻¹) := hf.sub _ B hB A hA
   obtain ⟨pt, hpt⟩ : ∃ pt : Sp Y.Fn ⟶ Y.X, pt = (ratOf Y).pt := ⟨_, rfl⟩
@@ -37,7 +37,7 @@ theorem exists_genPair : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fin
   have hh : Par 0 ⊤ (shear τ a b (RatFunc.X : RatFunc Y.Fn) *
       (B * (A.map φ)⁻¹).map (algebraMap Y.Fn (RatFunc Y.Fn))) := by
     refine Par.mul (ClosedPt.par_zero_top fun σ => ?_) (hM.map _ fun _ _ => trivial)
-    rw [(GlobalTheory.T.blockMatrixElementaryShear_properties ι m τ a b hab _ _).1 σ]
+    rw [(_root_.GlobalTheory.FlagPush.shear_props ι m τ a b hab _ _).1 σ]
     exact one_ne_zero
   have hx : ((spMap (algebraMap Y.Fn (RatFunc Y.Fn)) ≫ pt) ≫ f)
       (IsLocalRing.closedPoint (RatFunc Y.Fn)) = f (genericPoint Y.X) :=
@@ -48,11 +48,11 @@ theorem exists_genPair : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fin
       q₂ ≫ f = (spMap (algebraMap Y.Fn (RatFunc Y.Fn)) ≫ pt) ≫ f ∧ Bears E' φ A (shear τ a b (RatFunc.X : RatFunc Y.Fn) *
       (B * (A.map φ)⁻¹).map (algebraMap Y.Fn (RatFunc Y.Fn))) q₂ := (hf.lifts (RatFunc Y.Fn) _ A hA' _ hh).exists
   have hs : f ≫ X.str = Y.str := hf.hom.inducedModelMorphism_comp_structureMap
-  obtain ⟨v₂, hv₂, hv₂f⟩ := GlobalTheory.T.exists_lift_valuative_criterion_varieties F X Y f hs _ V (spMap c ≫ pt) q₂ (by
+  obtain ⟨v₂, hv₂, hv₂f⟩ := _root_.GlobalTheory.FlagPush.exists_lift_of_var F X Y f hs _ V (spMap c ≫ pt) q₂ (by
     rw [hq₂, ← hq]; simp only [Category.assoc])
   have hmeet : spMap (IsLocalRing.residue V) ≫ spMap c ≫ pt = spMap (IsLocalRing.residue V) ≫ v₂ := by
     subst hpt
-    exact GlobalTheory.T.shearedGenericFlag_eq_genericFlag_at_special F X Y ι m E E' φ f hf B hB A hA τ a b hab _ V c t hr v₂
+    exact _root_.GlobalTheory.FlagPush.Meet.meet F X Y ι m E E' φ f hf B hB A hA τ a b hab _ V c t hr v₂
       (hv₂f.trans (Category.assoc _ _ _)) (by subst hv₂; rw [hc, ht]; exact hb)
   have h1 : (spMap c ≫ pt) (IsLocalRing.closedPoint V) = genericPoint Y.X := hpa _
   have h2 : v₂ (IsLocalRing.closedPoint V) = genericPoint Y.X := by
@@ -65,7 +65,7 @@ theorem exists_genPair : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fin
     rw [← hs, ← Category.assoc, hq₂, Category.assoc, hs, Category.assoc, ← spMap_comp, hps]
   obtain ⟨ψ, hψ⟩ := exists_algHom_of_specializes_genericPoint F Y (RatFunc Y.Fn) q₂ hsp hstr
   subst hpt
-  have hcv := GlobalTheory.T.flag_of_dominant_point_as_triangular_matrix F X Y ι m E E' φ f hf B hB A hA _ (algebraMap Y.Fn (RatFunc Y.Fn)) ψ.toRingHom
+  have hcv := _root_.GlobalTheory.FlagPush.flag_conv F X Y ι m E E' φ f hf B hB A hA _ (algebraMap Y.Fn (RatFunc Y.Fn)) ψ.toRingHom
     (shear τ a b RatFunc.X) (by
       subst hψ
       exact (Category.assoc _ _ _).symm.trans (hq₂.symm.trans (Category.assoc _ _ _))) (by subst hψ; exact hb)

@@ -12,7 +12,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Cocycle
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCocTmulOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContractEquivariant
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsExpStarZeroNear
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoboundaryBcrisOfDualExponentialZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoboundaryBcrisOfDualExponentialZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowSmulMemHfDOfRestriction
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemLayerIff
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
@@ -185,7 +185,7 @@ theorem scalar_step (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (h4 : Archimed
       convert this using 1
       simp only [hu, map_add, map_mul, map_pow, map_natCast, hι]
       ring⟩
-  obtain ⟨x, hx⟩ := GlobalTheory.T.coboundary_bcris_of_dualExponential_zero D h2 h4 l K s hs e z' hz'
+  obtain ⟨x, hx⟩ := _root_.GlobalTheory.KerExpCrys.cob_cris_of_expStar_zero D h2 h4 l K s hs e z' hz'
   refine ⟨z', x, hz'.1, hx, fun σ hσ => ?_⟩
   have h1 : z' σ - (l : ℚ_[l]) ^ (N + (e + 2) * s + padicValNat l e + e / (l - 1) + 1 +
         (s + padicValNat l (e + 1))) * c σ =

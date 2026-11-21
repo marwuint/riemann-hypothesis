@@ -258,9 +258,6 @@ theorem off_mul (a b : AF F) : off v (a * b) = a * off v b := by
 
 theorem off_off (a : AF F) : off v (off v a) = off v a := by rw [off, ev_off, map_zero, sub_zero]
 
-theorem at_mul_off (t : Fv F v) (a : AF F) : atPlace v t * off v a = 0 := by
-  rw [atPlace_mul_right, ev_off, mul_zero, map_zero]
-
 theorem off_add_at (a : AF F) : off v a + atPlace v (evFin F v a) = a := sub_add_cancel _ _
 
 theorem off_dot (x y : κ → AF F) : off v (x ⬝ᵥ y) = x ⬝ᵥ fun i => off v (y i) := by
@@ -372,14 +369,6 @@ theorem schr_tens (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F))
   simp only [Pi.add_apply, map_add]
   show _ = _ * φ (fun i => evFin F v (x i) + evFin F v (w.1 i)) * _
   ring
-
-theorem Indep.schr (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) {r : (κ → AF F) → ℂ}
-    (h : Indep v r) : Indep v (schr ψ (offP v w) r) := by
-  intro x t
-  simp only [GlobalTheory.WeilM.schr]
-  rw [add_right_comm, h, add_dotProduct]
-  congr 3
-  refine add_eq_left.2 (Finset.sum_eq_zero fun i _ => at_mul_off v _ _)
 
 theorem schr_zero {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (φ : (κ → R) → ℂ) :
     schr ψ 0 φ = φ := funext fun x => by simp [schr]

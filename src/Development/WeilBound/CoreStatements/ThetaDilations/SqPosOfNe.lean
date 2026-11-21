@@ -16,10 +16,6 @@ theorem bsym {B : Matrix ι ι R} (hB : B.IsSymm) (x y : ι → R) : x ⬝ᵥ (B
 
 variable [TopologicalSpace R] [MeasurableSpace R] {ψ : AddChar R ℂ} {h : R} {B : Matrix ι ι R} {μ : Measure (ι → R)}
 
-theorem impl_one : Impl ψ h B μ 1 id :=
-  ⟨fun _ hφ => hφ, fun φ hφ => ⟨φ, hφ, rfl⟩, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ => rfl,
-    fun x y φ _ => by simp⟩
-
 variable (H : NAQuad ψ h B μ)
 include H
 

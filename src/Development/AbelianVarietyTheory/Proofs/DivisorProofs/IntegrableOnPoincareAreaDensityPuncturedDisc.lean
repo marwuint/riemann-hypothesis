@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EndValuedForm11Coeffs
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnInvMulLogSqNearZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnInvMulLogSqNearZero
 open MeasureTheory Filter Topology
 
 namespace GlobalTheory.GoodTop
 
 theorem integrableOn_poincare_disc :
     IntegrableOn (fun z : ℂ => (‖z‖ * |Real.log ‖z‖|)⁻¹ ^ 2) (Metric.closedBall 0 (1 / 2)) := by
-  have h := GlobalTheory.T.integrableOn_inv_mul_log_sq_near_zero
+  have h := _root_.GlobalTheory.GoodTop.integrableOn_inv_mul_log_sq
   have key : Integrable (fun z : ℂ =>
       (Set.Iic (1 / 2 : ℝ)).indicator (fun t : ℝ => (t * |Real.log t|)⁻¹ ^ 2) ‖z‖) := by
     rw [integrable_fun_norm_addHaar (volume : Measure ℂ)

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.MemPowSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsPlaceNotPowAdicCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CyclicKummerNormFixedHilbert90Statement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsPlaceNotPowAdicCompletion
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CyclicKummerNormFixedHilbert90
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsKum
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsEqPowMulPthPowAdicCompletionUnit
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRingHomAdicCompletionUnder
@@ -18,7 +18,7 @@ theorem exists_place_pow_and_not_pow :
   classical
   intro p F _ _ _ ζ δ u S₀ hp hζ hδ hu hδs huδ
   obtain ⟨E, _, _, θ, σ, hq⟩ := exists_isKum p F ζ δ hp hζ hδs
-  obtain ⟨hfd, -, -, -, -, hpow, -⟩ := GlobalTheory.T.cyclic_hilbert90_kummer_and_mem_kNorm_iff p F E ζ δ θ σ hq
+  obtain ⟨hfd, -, -, -, -, hpow, -⟩ := _root_.GlobalTheory.CNorm.kummer_basic p F E ζ δ θ σ hq
   haveI : NumberField E := NumberField.of_module_finite F E
   haveI : IsTotallyComplex E := isTotallyComplex_of_algebra F E
   have huE : ∀ y : E, y ^ p ≠ algebraMap F E u := by
@@ -29,7 +29,7 @@ theorem exists_place_pow_and_not_pow :
   obtain ⟨S, hS, hSu⟩ := exists_superset_mem_sUnits F
     {Units.mk0 (p : F) h2, Units.mk0 δ hδ, Units.mk0 u hu} S₀
   obtain ⟨SE, hSE⟩ := (places_over F E).1 S
-  obtain ⟨w, hw, hwu⟩ := GlobalTheory.T.exists_place_not_pow_adicCompletion p E (algebraMap F E ζ) (algebraMap F E u) SE hp
+  obtain ⟨w, hw, hwu⟩ := _root_.GlobalTheory.CNorm.exists_not_mem_not_pow_completion p E (algebraMap F E ζ) (algebraMap F E u) SE hp
     (hζ.map_of_injective (algebraMap F E).injective) (by simpa using hu) huE
   obtain ⟨φ, hφ⟩ := exists_ringHom_adicCompletion_under F E w
   have hv : w.under (𝓞 F) ∉ S := fun h => hw ((hSE w).2 h)

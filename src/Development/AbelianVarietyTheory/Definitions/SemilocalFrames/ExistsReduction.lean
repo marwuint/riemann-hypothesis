@@ -26,14 +26,6 @@ def tensAlg {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] [∀
     (a : ∀ i, MonoidAlgebra ℂ (G i)) : MonoidAlgebra ℂ (∀ i, G i) :=
   MonoidAlgebra.ofCoeff (Finsupp.equivFunOnFinite.symm fun h : ∀ i, G i => ∏ i, (a i).coeff (h i))
 
-def zSet {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, Finite (G i)] {Lab : ι → Type}
-    (z : ∀ i, Lab i → MonoidAlgebra ℂ (G i)) (S : Set (∀ i, Lab i)) : MonoidAlgebra ℂ (∀ i, G i) :=
-  ∑ᶠ t ∈ S, tensAlg fun i => z i (t i)
-
-def IsSeries {Q Lab : Type} [Group Q] (z : Lab → MonoidAlgebra ℂ Q) : Prop :=
-  (∀ f, z f * z f = z f) ∧ (∀ f a, z f * a = a * z f) ∧ (∀ f f', f ≠ f' → z f * z f' = 0) ∧
-    ∃ T : Finset Lab, (∀ f, f ∉ T → z f = 0) ∧ ∑ f ∈ T, z f = 1
-
 def extId (I : AutInst) (𝔞 : Ideal (𝓞 I.E)) : Ideal (IntAf I.F I.E) :=
   Ideal.span {z : IntAf I.F I.E | ∃ a ∈ 𝔞, (z : TensorProduct I.F I.E (Af I.F)) = Formalism.UG.inclE (F := I.F) (Af I.F) (a : I.E)}
 
@@ -119,23 +111,6 @@ instance (I : AutInst) (g : ℕ) : (KgSub I g).Normal := ⟨fun x hx k => by
   simp only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_sub,
     h1, mul_assoc, sub_mul, one_mul, mul_sub]⟩
 
-open Classical in
-
-def quotRed (I : AutInst) (g : ℕ) : Red I g (Ksub I ⧸ KgSub I g) where
-  toFun x := if h : x ∈ Ksub I then QuotientGroup.mk ⟨x, h⟩ else 1
-  map_mul x hx y hy := by
-    have hx' : x ∈ Ksub I := hx
-    have hy' : y ∈ Ksub I := hy
-    rw [dif_pos hx', dif_pos hy', dif_pos (mul_mem hx' hy')]
-    rfl
-  ker x hx := by
-    have hx' : x ∈ Ksub I := hx
-    rw [dif_pos hx', QuotientGroup.eq_one_iff]
-    rfl
-  surj q := by
-    obtain ⟨x, rfl⟩ := QuotientGroup.mk_surjective q
-    exact ⟨x, x.2, dif_pos x.2⟩
-
 end Inhab
 
 open Inhab
@@ -150,13 +125,6 @@ theorem map_one : ρ.toFun 1 = 1 := ρ.toHom.map_one
 
 theorem map_inv {x : I.Gf} (hx : x ∈ I.Kset) : ρ.toFun x⁻¹ = (ρ.toFun x)⁻¹ := ρ.toHom.map_inv ⟨x, hx⟩
 
-def quotEquiv : (Ksub I ⧸ KgSub I g) ≃* Q :=
-  (QuotientGroup.quotientMulEquivOfEq (M := KgSub I g) (N := ρ.toHom.ker)
-    (Subgroup.ext fun x : Ksub I => (ρ.ker x x.2).symm)).trans
-    (QuotientGroup.quotientKerEquivOfSurjective ρ.toHom fun q => by
-      obtain ⟨x, hx, e⟩ := ρ.surj q
-      exact ⟨⟨x, hx⟩, e⟩)
-
 theorem lift_of_mem (μf : Measure I.Gf) (a : MonoidAlgebra ℂ Q) {x : I.Gf} (hx : x ∈ I.Kset) :
     ρ.lift μf a x = a.coeff (ρ.toFun x) / ((μf (I.Kg g)).toReal : ℂ) := by
   unfold Red.lift
@@ -166,28 +134,6 @@ theorem lift_of_notMem (μf : Measure I.Gf) (a : MonoidAlgebra ℂ Q) {x : I.Gf}
     ρ.lift μf a x = 0 := by
   unfold Red.lift
   exact if_neg hx
-
-theorem lift_one (μf : Measure I.Gf) (x : I.Gf) :
-    ρ.lift μf 1 x = (I.Kg g).indicator (fun _ => (((μf (I.Kg g)).toReal : ℂ))⁻¹) x := by
-  classical
-  by_cases hx : x ∈ I.Kset
-  · rw [ρ.lift_of_mem μf _ hx]
-    by_cases h : x ∈ I.Kg g
-    · rw [Set.indicator_of_mem h, (ρ.ker x hx).2 h]
-      simp [MonoidAlgebra.one_def]
-    · rw [Set.indicator_of_notMem h]
-      have : ρ.toFun x ≠ 1 := fun e => h ((ρ.ker x hx).1 e)
-      simp [MonoidAlgebra.one_def, this.symm]
-  · rw [ρ.lift_of_notMem μf _ hx, Set.indicator_of_notMem (fun h => hx h.1)]
-
-theorem lift_inv (μf : Measure I.Gf) (a : MonoidAlgebra ℂ Q) (ha : IsSA a) (x : I.Gf) :
-    ρ.lift μf a x⁻¹ = star (ρ.lift μf a x) := by
-  by_cases hx : x ∈ I.Kset
-  · have hx' : x⁻¹ ∈ I.Kset := (Ksub I).inv_mem hx
-    rw [ρ.lift_of_mem μf a hx, ρ.lift_of_mem μf a hx', ρ.map_inv hx, ha]
-    simp
-  · have hx' : x⁻¹ ∉ I.Kset := fun h => hx (by have := (Ksub I).inv_mem h; rwa [inv_inv] at this)
-    rw [ρ.lift_of_notMem μf a hx, ρ.lift_of_notMem μf a hx', star_zero]
 
 end Red
 
@@ -204,58 +150,6 @@ theorem levelafC_nat (N : ℕ) : levelafC (F := F) E (N : 𝓞 F) = (N : E ⊗[F
 
 def psi (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] : 𝓞 E →+* IntAf F E :=
   ((inclE (F := F) (Af F)).comp (algebraMap (𝓞 E) E)).codRestrict _ fun y => adelstab_incl_int y
-
-theorem exists_reduction (p : ℕ) (hp : p.Prime) (w : HeightOneSpectrum (𝓞 E)) (hw : Ideal.absNorm w.asIdeal = p) :
-    ∃ r : IntAf F E →+* ZMod p, ∀ a, r (psi F E a) = 0 ↔ a ∈ w.asIdeal := by
-  classical
-  have hfin : Finite (𝓞 E ⧸ w.asIdeal) := (Ideal.absNorm_ne_zero_iff _).1 (by rw [hw]; exact hp.ne_zero)
-  letI := Fintype.ofFinite (𝓞 E ⧸ w.asIdeal)
-  have hc : Fintype.card (𝓞 E ⧸ w.asIdeal) = p := by
-    rw [← Nat.card_eq_fintype_card, ← hw, Ideal.absNorm_apply, Submodule.cardQuot_apply]
-  let e := ZMod.ringEquivOfPrime (𝓞 E ⧸ w.asIdeal) hp hc
-  let ρ : 𝓞 E →+* ZMod p := e.symm.toRingHom.comp (Ideal.Quotient.mk _)
-  have hρ : ∀ a, ρ a = 0 ↔ a ∈ w.asIdeal := fun a => by
-    show e.symm (Ideal.Quotient.mk _ a) = 0 ↔ _
-    rw [map_eq_zero_iff _ e.symm.injective, Ideal.Quotient.eq_zero_iff_mem]
-  let P : Ideal (IntAf F E) := Ideal.span {(p : IntAf F E)}
-  let θ : 𝓞 E →+* IntAf F E ⧸ P := (Ideal.Quotient.mk P).comp (psi F E)
-  have hp0 : ((p : ℕ) : 𝓞 F) ≠ 0 := by exact_mod_cast hp.ne_zero
-  have hθ : Function.Surjective θ := by
-    intro q
-    obtain ⟨s, rfl⟩ := Ideal.Quotient.mk_surjective q
-    obtain ⟨b, t, ht, hs⟩ := csGlob_approx integral_adele_approximation_holds (p : 𝓞 F) hp0 s.1 s.2
-    refine ⟨b, ?_⟩
-    show Ideal.Quotient.mk P _ = _
-    rw [eq_comm, Ideal.Quotient.eq, Ideal.mem_span_singleton']
-    refine ⟨⟨t, ht⟩, Subtype.ext ?_⟩
-    rw [levelafC_nat] at hs
-    show t * ((p : IntAf F E) : E ⊗[F] Af F) = s.1 - inclE (F := F) (Af F) (algebraMap (𝓞 E) E b)
-    rw [hs]
-    simp [mul_comm]
-  have hker : RingHom.ker θ ≤ RingHom.ker ρ := by
-    intro a ha
-    rw [RingHom.mem_ker] at ha ⊢
-    have ha' : psi F E a ∈ P := Ideal.Quotient.eq_zero_iff_mem.1 ha
-    obtain ⟨t, ht⟩ := Ideal.mem_span_singleton'.1 ha'
-    have ht' : (t : E ⊗[F] Af F) * (p : E ⊗[F] Af F) = inclE (F := F) (Af F) (algebraMap (𝓞 E) E a) := by
-      have : (t : E ⊗[F] Af F) * (p : E ⊗[F] Af F) = (psi F E a : E ⊗[F] Af F) := by
-        simpa using congrArg Subtype.val ht
-      exact this
-    have hpE : (p : E) ≠ 0 := by exact_mod_cast hp.ne_zero
-    have h2 : inclE (F := F) (Af F) (algebraMap (𝓞 E) E a / p) = t := by
-      rw [div_eq_mul_inv, map_mul, ← ht', mul_assoc, ← map_natCast (inclE (F := F) (E := E) (Af F)) p, ← map_mul,
-        mul_inv_cancel₀ hpE, map_one, mul_one]
-    have h3 := csGlob_int (F := F) _ (h2 ▸ t.2)
-    obtain ⟨b, hb⟩ : ∃ b : 𝓞 E, algebraMap (𝓞 E) E b = algebraMap (𝓞 E) E a / p := ⟨⟨_, h3⟩, rfl⟩
-    have h4 : a = (p : 𝓞 E) * b := by
-      apply RingOfIntegers.coe_injective
-      rw [map_mul, map_natCast, hb]
-      field_simp
-    rw [h4, map_mul, map_natCast, ZMod.natCast_self, zero_mul]
-  refine ⟨(RingHom.liftOfSurjective θ hθ ⟨ρ, hker⟩).comp (Ideal.Quotient.mk P), fun a => ?_⟩
-  rw [← hρ]
-  have := RingHom.liftOfSurjective_comp_apply θ hθ ⟨ρ, hker⟩ a
-  exact Eq.congr this rfl
 
 theorem exists_approx {p : ℕ} (hp : p ≠ 0) (s : IntAf F E) :
     ∃ (b : 𝓞 E) (t : IntAf F E), s = psi F E b + (p : IntAf F E) * t := by
@@ -350,23 +244,6 @@ theorem c_eq_zero_iff (y : I.Lf) :
     fr.c y = 0 ↔ y ∈ extId I w.asIdeal • (⊤ : Submodule (IntAf I.F I.E) I.Lf) :=
   (fr.c_ker y).trans (Submodule.mem_smul_top_iff _ _ y).symm
 
-include fr in
-
-theorem card_quot :
-    Nat.card (I.Lf ⧸ (extId I w.asIdeal • (⊤ : Submodule (IntAf I.F I.E) I.Lf))) = p ^ N := by
-  have hk : (extId I w.asIdeal • (⊤ : Submodule (IntAf I.F I.E) I.Lf)).toAddSubgroup = fr.c.toAddMonoidHom.ker :=
-    AddSubgroup.ext fun y => (fr.c_eq_zero_iff y).symm
-  have e : (I.Lf ⧸ (extId I w.asIdeal • (⊤ : Submodule (IntAf I.F I.E) I.Lf)).toAddSubgroup) ≃ (Fin N → ZMod p) :=
-    ((QuotientAddGroup.quotientAddEquivOfEq hk).trans
-      (QuotientAddGroup.quotientKerEquivOfSurjective fr.c.toAddMonoidHom fr.c_surj)).toEquiv
-  show Nat.card (I.Lf ⧸ (extId I w.asIdeal • (⊤ : Submodule (IntAf I.F I.E) I.Lf)).toAddSubgroup) = _
-  rw [Nat.card_congr e, Nat.card_fun, Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin]
-
-include fr in
-
-theorem rank_unique {N' : ℕ} (fr' : PlFrame I N' p w) : N = N' :=
-  Nat.pow_right_injective fr.prime.two_le (fr.card_quot.symm.trans fr'.card_quot)
-
 def ActsAs (x : I.Gf) (M : Matrix (Fin N) (Fin N) (ZMod p)) : Prop :=
   ∀ (y : I.Lf) (h : I.fmat x *ᵥ (y : Fin I.n → _) ∈ I.Lf), fr.c ⟨_, h⟩ = M *ᵥ fr.c y
 
@@ -439,52 +316,6 @@ theorem ActsBy.unique {ρ ρ' : I.Gf → GProd N g Pl} (h : ActsBy fr ρ) (h' : 
 end Acts
 
 namespace Inhab
-
-theorem exists_frame (I : AutInst) (hI : ∀ y, y ∈ I.Lf ↔ ∀ i, y i ∈ IntAf I.F I.E) (p : ℕ) (hp : p.Prime)
-    (w : HeightOneSpectrum (𝓞 I.E)) (hw : Ideal.absNorm w.asIdeal = p) :
-    ∃ fr : PlFrame I I.n p w, ∀ (y : I.Lf) (i : Fin I.n), fr.c y i = fr.r ⟨y.1 i, (hI y.1).1 y.2 i⟩ := by
-  classical
-  obtain ⟨r, hr⟩ := exists_reduction (F := I.F) p hp w hw
-  have hk := ker_eq_extId hp.ne_zero r hr
-  let c : I.Lf →ₛₗ[r] (Fin I.n → ZMod p) :=
-    { toFun := fun y i => r ⟨y.1 i, (hI y.1).1 y.2 i⟩
-      map_add' := fun x y => funext fun i => by
-        rw [Pi.add_apply, ← map_add]; rfl
-      map_smul' := fun a x => funext fun i => by
-        have e : (⟨(a • x).1 i, (hI _).1 (a • x).2 i⟩ : IntAf I.F I.E) =
-          a * ⟨x.1 i, (hI x.1).1 x.2 i⟩ := rfl
-        show r _ = r a * r _
-        rw [e, _root_.map_mul] }
-  refine ⟨⟨r, fun a _ => hr a, c, ?_, fun y => ?_⟩, fun _ _ => rfl⟩
-  · intro t
-    choose s hs using ZMod.ringHom_surjective r
-    exact ⟨⟨fun i => (s (t i) : I.E ⊗[I.F] Af I.F), (hI _).2 fun i => (s (t i)).2⟩, funext fun i => hs (t i)⟩
-  rw [← Submodule.mem_smul_top_iff, ← hk]
-  refine ⟨fun h => ?_, fun h => ?_⟩
-  · have he : ∀ k, (Pi.single k 1 : Fin I.n → I.E ⊗[I.F] Af I.F) ∈ I.Lf := fun k => (hI _).2 fun i => by
-      by_cases h : i = k
-      · subst h; rw [Pi.single_eq_same]; exact one_mem _
-      · rw [Pi.single_eq_of_ne h]; exact zero_mem _
-    have e : y = ∑ k, (⟨y.1 k, (hI y.1).1 y.2 k⟩ : IntAf I.F I.E) • (⟨_, he k⟩ : I.Lf) := by
-      apply Subtype.ext
-      rw [Submodule.coe_sum]
-      funext j
-      rw [Finset.sum_apply, Finset.sum_eq_single j]
-      · show _ = y.1 j * (Pi.single j 1 : Fin I.n → I.E ⊗[I.F] Af I.F) j
-        rw [Pi.single_eq_same, mul_one]
-      · intro b _ hb
-        show y.1 b * (Pi.single b 1 : Fin I.n → I.E ⊗[I.F] Af I.F) j = 0
-        rw [Pi.single_eq_of_ne (Ne.symm hb), mul_zero]
-      · exact fun h => absurd (Finset.mem_univ j) h
-    rw [e]
-    exact sum_mem fun k _ => Submodule.smul_mem_smul (congrFun h k) Submodule.mem_top
-  · refine Submodule.smul_induction_on h (fun a ha x _ => ?_) (fun x y hx hy => ?_)
-    · rw [map_smulₛₗ, RingHom.mem_ker.1 ha, zero_smul]
-    · rw [map_add, hx, hy, add_zero]
-
-theorem rank_eq_of_std {I : AutInst} (hI : ∀ y, y ∈ I.Lf ↔ ∀ i, y i ∈ IntAf I.F I.E) {N p : ℕ}
-    {w : HeightOneSpectrum (𝓞 I.E)} (fr : PlFrame I N p w) : N = I.n :=
-  fr.rank_unique (exists_frame I hI p fr.prime w fr.absNorm_eq).choose
 
 theorem exists_choice (I : AutInst) (g : Fin 2 → ℕ) (hg : ∀ k, (g k).Prime) (hne : g 0 ≠ g 1)
     (hsp : ∀ k (v : HeightOneSpectrum (𝓞 I.E)), ((g k : ℕ) : 𝓞 I.E) ∈ v.asIdeal →
@@ -581,21 +412,5 @@ theorem actsAs_negOne {I : AutInst} {N p : ℕ} {w : HeightOneSpectrum (𝓞 I.E
     rw [fmat_negOne, Matrix.neg_mulVec, Matrix.one_mulVec]))
 
 end Inhab
-
-example {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, Finite (G i)] :
-    tensAlg (fun i => (1 : MonoidAlgebra ℂ (G i))) = 1 := by
-  classical
-  ext h
-  simp only [tensAlg_coeff, MonoidAlgebra.one_def, MonoidAlgebra.coeff_single, Finsupp.single_apply]
-  rw [Finset.prod_ite_zero]
-  simp [funext_iff]
-
-example (Q : Type) [Group Q] : IsSeries (fun _ : Unit => (1 : MonoidAlgebra ℂ Q)) :=
-  ⟨fun _ => mul_one _, fun _ a => by simp, fun _ _ h => absurd rfl h, {()}, fun _ h => absurd (by simp) h, by simp⟩
-
-example {I : AutInst} {N : ℕ} {g : Fin 2 → ℕ} {Pl : Fin 2 → Type} {w : ∀ k, Pl k → HeightOneSpectrum (𝓞 I.E)}
-    (fr : ∀ k v, PlFrame I N (g k) (w k v)) (ρ : I.Gf → GProd N g Pl) (h : ActsBy fr ρ) (kv : Σ k, Pl k) :
-    ρ (negOne I) kv = -1 :=
-  Units.ext (PlFrame.ActsAs.unique (fr kv.1 kv.2) (negOne_mem I) (h _ (negOne_mem I) kv.1 kv.2) (actsAs_negOne _))
 
 end GlobalTheory.RowLev

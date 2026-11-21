@@ -36,22 +36,4 @@ def twAbs (χ : Chr F E) (s : ℝ) : (AE F E)ˣ →* ℂˣ where
 @[simp] theorem coe_twAbs (χ : Chr F E) (s : ℝ) (t : (AE F E)ˣ) :
     ((twAbs χ s t : ℂˣ) : ℂ) = (χ t : ℂ) * (((absE F E t : ℝ) ^ s : ℝ) : ℂ) := rfl
 
-example : twAbs (1 : Chr F E) 0 = 1 := by ext t; simp
-
-theorem norm_twAbs (χ : Chr F E) (s : ℝ) (t : (AE F E)ˣ) : ‖((twAbs χ s t : ℂˣ) : ℂ)‖ = (absE F E t : ℝ) ^ s := by
-  rw [coe_twAbs, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_eq_abs,
-    abs_of_pos (Real.rpow_pos_of_pos (absE_pos t) s)]
-
-theorem log_absE_mul (x y : (AE F E)ˣ) :
-    Real.log (absE F E (x * y) : ℝ) = Real.log (absE F E x : ℝ) + Real.log (absE F E y : ℝ) := by
-  rw [map_mul, NNReal.coe_mul, Real.log_mul (absE_pos x).ne' (absE_pos y).ne']
-
-theorem log_absE_eq_zero {t : (AE F E)ˣ} : Real.log (absE F E t : ℝ) = 0 ↔ absE F E t = 1 := by
-  constructor
-  · intro h
-    have := Real.exp_log (absE_pos t)
-    rw [h, Real.exp_zero] at this
-    exact_mod_cast this.symm
-  · intro h; rw [h]; simp
-
 end GlobalTheory.CtTyp

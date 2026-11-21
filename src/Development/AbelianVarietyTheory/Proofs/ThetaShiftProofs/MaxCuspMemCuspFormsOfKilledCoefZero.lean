@@ -1,10 +1,10 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.MaximalCuspKernels.MaxCuspsSt
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.MaximalCuspKernels.MaxCuspsPfA
-import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.MaximalCuspKernels.MaxCuspsPfB
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SublatticeCoefficients
 import Formalism.LocalToGlobal.ProjectiveLattices.RdOrbIntOfLatZ
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CountableOfIsAddFundamentalDomain
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.HermitianMatrixRealizesCuspCoordsStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.HermitianMatrixRealizesCuspCoords
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CuspFlowEqTorusActionStatement
 
 open ReciprocityTheory.ChartRestriction.G.FD NumberField Formalism.L2.Pj.FJ Formalism.L2.Pj.QAt
@@ -87,7 +87,7 @@ theorem maxCusps_mem_SSgt_of_coef_eq_zero : ∀ (E : Type) [Field E] [NumberFiel
       ?_ (maxCuspsA_periodic X cu hb la (hchi cu) P hsec x hx) (hLint la) ν hfreq fun m hm => ?_
     · exact hsec.1.continuousOn.comp_continuous (continuous_zAct X cu x)
         fun t => zAct_mem_dom X cu (zBas_skew X cu (hbas cu)) t x hx
-    · obtain ⟨χ, hχ, hχm⟩ := GlobalTheory.T.hermitian_matrix_realizes_cusp_coords E r ρ X cu hb m
+    · obtain ⟨χ, hχ, hχm⟩ := _root_.GlobalTheory.exists_isHermE_phZ_eq E r ρ X cu hb m
       have hνχ : ∀ τ : X.Ψ, (τ.1 (hq χ η)).re = ν τ := fun τ => by
         classical
         have h2 := hph χ hχ (Pi.single τ 1)

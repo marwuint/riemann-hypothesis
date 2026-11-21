@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormalGroupLawLogWithLinearPartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentOfQuasiLogarithmStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentLinearKillsIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormalGroupLawLogWithLinearPart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentOfQuasiLogarithm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentLinearKillsIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowEqOfIntegers
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuasiLogarithmLieAddPSmulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupChartIntegralAdditiveSeriesEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmGenerationOfDivisionStepPadicStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuasiLogarithmLieAddPSmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupChartIntegralAdditiveSeriesEqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmGenerationOfDivisionStepPadic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmDivisionStepDecompositionStatement
 
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
@@ -83,17 +83,6 @@ theorem ql_add_smul (h : ∀ i, constantCoeff (μ i) = 0) {f g : MvPowerSeries (
   · rw [← cobL_apply μ h, map_add, map_smul, cobL_apply, cobL_apply]
     exact in_top_add hf.2.2 (in_top_smul a hg.2.2)
 
-theorem ql_comb (h : ∀ i, constantCoeff (μ i) = 0) {ι : Type} [Fintype ι]
-    {e : ι → MvPowerSeries (Fin d) E} (he : ∀ i, QL μ ⊤ (e i)) (b : ι → O) :
-    QL μ ⊤ (comb b e) := by
-  classical
-  unfold comb
-  induction (Finset.univ : Finset ι) using Finset.induction_on with
-  | empty => simpa using ql_zero h
-  | @insert a s ha ih =>
-    rw [Finset.sum_insert ha, add_comm]
-    exact ql_add_smul h ih (he a) (b a)
-
 theorem comb_sub {ι : Type} [Fintype ι] (e : ι → MvPowerSeries (Fin d) E) (b b' : ι → O) :
     comb (b - b') e = comb b e - comb b' e := by
   simp only [comb, Pi.sub_apply, map_sub, sub_smul, Finset.sum_sub_distrib]
@@ -112,18 +101,18 @@ include hv hE
 theorem isLie_add {f g : MvPowerSeries (Fin d) E} {l l' : G.dual.Lie} (hf : QL c.μ ⊤ f)
     (hg : QL c.μ ⊤ g) (hl : c.IsLie f l) (hl' : c.IsLie g l') (a : O) :
     c.IsLie (f + algebraMap O E a • g) (l + a • l') :=
-  (GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hE f g l l' a hl hl').1 hf hg
+  (_root_.GlobalTheory.LieLin.main p C v O hv G d c E hE f g l l' a hl hl').1 hf hg
 
 theorem isLie_int {f : MvPowerSeries (Fin d) E} {l : G.dual.Lie} (hl : c.IsLie f l)
     (hs : ∃ s : MvPowerSeries (Fin d) O, f = map (algebraMap O E) s) : l = 0 :=
-  (GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hE f f l l 0 hl hl).2.1 hs
+  (_root_.GlobalTheory.LieLin.main p C v O hv G d c E hE f f l l 0 hl hl).2.1 hs
 
 theorem isLie_log {f : MvPowerSeries (Fin d) E} {l : G.dual.Lie} (hl : c.IsLie f l)
     (h : cob1 (up E c.μ) f = 0) : l = 0 :=
-  (GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hE f f l l 0 hl hl).2.2 h
+  (_root_.GlobalTheory.LieLin.main p C v O hv G d c E hE f f l l 0 hl hl).2.2 h
 
 theorem isLie_zero : c.IsLie (0 : MvPowerSeries (Fin d) E) 0 := by
-  obtain ⟨l, hl, -⟩ := GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c E hE 0 (ql_zero c.isLaw.const)
+  obtain ⟨l, hl, -⟩ := _root_.GlobalTheory.QLogTangent.main p C v O hv G d c E hE 0 (ql_zero c.isLaw.const)
   rwa [isLie_int hv c hE hl ⟨0, (map_zero _).symm⟩] at hl
 
 theorem isLie_comb {ι : Type} [Fintype ι] {e : ι → MvPowerSeries (Fin d) E} {L : ι → G.dual.Lie}
@@ -165,7 +154,7 @@ theorem exists_isLie (l : G.dual.Lie) : ∃ f : MvPowerSeries (Fin d) E, QL c.μ
       (Fact.out : ¬IsUnit (p : O)))).trans (IsLocalRing.maximalIdeal_le_jacobson _)
   have htop : (⊤ : Submodule O G.dual.Lie) ≤ M := by
     refine Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top hp fun x _ => ?_
-    obtain ⟨f, l', l'', hf, hl', rfl⟩ := GlobalTheory.T.exists_quasiLogarithm_lie_add_p_smul p C v O hv G d c E hE x
+    obtain ⟨f, l', l'', hf, hl', rfl⟩ := _root_.GlobalTheory.QLog.exists_isLie_add_smul p C v O hv G d c E hE x
     exact Submodule.add_mem_sup ⟨f, hf, hl'⟩
       (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top)
   exact htop Submodule.mem_top
@@ -182,7 +171,7 @@ theorem adapted_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlg
   haveI : Module.Free O G.dual.omega := Module.free_of_flat_of_isLocalRing
   let lb := Module.finBasis O G.dual.Lie
   choose F hF using fun j => exists_isLie hv c hE (lb j)
-  choose large₂ hLg using fun i : Fin d => GlobalTheory.T.exists_formalGroupLaw_log_with_linearPart p O E hE d c.μ c.isLaw (Pi.single i 1)
+  choose large₂ hLg using fun i : Fin d => _root_.GlobalTheory.QLog.exists_log_of_lin p O E hE d c.μ c.isLaw (Pi.single i 1)
   have hlin : ∀ i, lin (large₂ i) = Pi.single i 1 := fun i => funext fun i' => by
     rw [(hLg i).2.1 i', Pi.single_apply, Pi.single_apply]
     split_ifs <;> simp
@@ -199,7 +188,7 @@ theorem adapted_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlg
   let L : Fin d ⊕ Fin (Module.finrank O G.dual.Lie) → G.dual.Lie := Sum.elim 0 lb
   have hL : ∀ i, c.IsLie (e i) (L i) := by
     rintro (i | j)
-    · obtain ⟨l, hl, -⟩ := GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c E hE _ (hQ (Sum.inl i))
+    · obtain ⟨l, hl, -⟩ := _root_.GlobalTheory.QLogTangent.main p C v O hv G d c E hE _ (hQ (Sum.inl i))
       rw [isLie_log hv c hE hl (hcob i)] at hl
       exact hl
     · exact hlie j
@@ -213,7 +202,7 @@ theorem adapted_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlg
     have hc : cob1 (up E c.μ) (map (algebraMap O E) s) = 0 := by
       rw [← hs, ← cobL_apply c.μ h0]
       simp [comb, map_sum, map_smul, Fintype.sum_sum_type, cobL_apply, hcob, hr]
-    have hs0 := GlobalTheory.T.pDivGroupChart_integral_additive_series_eq_zero p C v O hv G d c E hE s hc
+    have hs0 := _root_.GlobalTheory.QLog.IntAdd.eq_zero_of_cob1_eq_zero p C v O hv G d c E hE s hc
     have hc0 : comb b e = 0 := by rw [hs, hs0, map_zero]
     have hl : ∀ i, b (Sum.inl i) = 0 := fun i => by
       have h1 := congrArg (coeff (Finsupp.single i 1)) hc0
@@ -228,7 +217,7 @@ theorem adapted_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlg
   refine ⟨Module.finrank O G.dual.Lie, e, lb, ⟨hQ, fun f hf => ?_⟩,
     fun i => ⟨fun α => ⟨0, (RingHom.mem_ker).2 (map_zero _), by rw [hcob i, map_zero, map_zero]⟩,
       hlin' i⟩, hcob, hlie⟩
-  obtain ⟨b, hb⟩ := GlobalTheory.T.quasiLogarithm_generation_of_division_step_padic p O E hE d c.μ c.isLaw _ e hQ
+  obtain ⟨b, hb⟩ := _root_.GlobalTheory.QLog.Conv.generate_of_step p O E hE d c.μ c.isLaw _ e hQ
     (GlobalTheory.T.quasiLogarithm_division_step_decomposition p C v O hv G d c E hE _ e lb hQ hcob hlin' hlie) f hf
   refine ⟨b, hb, fun b' hb' => ?_⟩
   have h1 : In (⊤ : Ideal O) (comb (b' - b) e) := by

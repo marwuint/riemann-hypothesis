@@ -1,5 +1,8 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FamAllQ
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PairForm
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TailRd
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.NotBadPrimeBase
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValuationEqZeroOfRootOfSUnitRatio
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FrameTopAlt
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ThetaIdentityOfMapsAll
 
@@ -40,11 +43,6 @@ structure BotTie {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
     ((F0 W u).cls0.lev.Lb.map ((LinearEquiv.funCongrLeft D.host.E D.host.E
       (finCongr (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)))).toLinearMap.restrictScalars (𝓞 D.host.E))) (· = p)
   trace : LevTrace f B
-
-def ChartZero : Prop :=
-  ∀ t, ∃ α₀ : (f.t t).Ch 0, (∀ α, α = α₀) ∧ (f.t t).e 0 α₀ = Finsupp.single (f.g.b 0) 1 ∧
-    (∀ φ, col0 f t φ ∈ (f.t t).Ram 0 ∧ ∀ y, (f.t t).rd 0 α₀ (col0 f t φ) y = (chart0 (F0 W u)).rd W.Q.Rl.θ (D.eMu u φ).1 y) ∧
-    ∀ ψ ∈ (f.t t).Ram 0, ∃ φ, ψ = col0 f t φ
 
 end GlobalTheory.MiTop
 

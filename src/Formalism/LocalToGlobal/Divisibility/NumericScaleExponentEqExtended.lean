@@ -31,15 +31,6 @@ def ZscOfNum3 (A3 : FamIn3 K G Pl0 I0 Ty T m) (P0 : Subgroup G) (ψ0 : P0 →* K
 variable (A3 : FamIn3 K G Pl0 I0 Ty T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (Nd : NumDatum)
   (eJ : A3.fam3.base3.J ≃ Fin Nd.R.m) (Nc : ℝ)
 
-theorem ZscOfNum3_units (Zs : DefSub A3.fam3.amb3) :
-    (ZscOfNum3 A3 P0 ψ0 Nd eJ Nc Zs).E1u = Nd.unitE Nc ∧
-      (ZscOfNum3 A3 P0 ψ0 Nd eJ Nc Zs).l3u = Nd.B0 * Real.log (Real.log Nd.sc.x) ∧
-      (ZscOfNum3 A3 P0 ψ0 Nd eJ Nc Zs).l6u = (Nd.R.f : ℝ) * (Nd.R.nV : ℝ) ^ 2 * Nd.Lp ∧
-      (ZscOfNum3 A3 P0 ψ0 Nd eJ Nc Zs).x = Nd.sc.x ∧ (ZscOfNum3 A3 P0 ψ0 Nd eJ Nc Zs).b = Nd.sc.b ∧
-      (ZscOfNum3 A3 P0 ψ0 Nd eJ Nc Zs).la = Real.log (Fintype.card G) ∧
-      (ZscOfNum3 A3 P0 ψ0 Nd eJ Nc Zs).de = 8 * (Nd.R.f : ℝ) * (Nd.R.r : ℝ) / ((min (Nd.g 0) (Nd.g 1) : ℕ) : ℝ) :=
-  ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
-
 end Scale3
 
 end Formalism.L2.DIV

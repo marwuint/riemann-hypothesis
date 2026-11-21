@@ -4,12 +4,13 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StabFiniteIndexOfSmooth
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsStrictDom
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormHeckeVecDosetInd
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SatakePowerNonvanishingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SatakePowerNonvanishing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NilpotentOfProjectionZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsDomMonoid
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CasselmanFirstPropertyStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCharacterExistsUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwahoriUnipotentDatumStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCharacterExistsUnique
+import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.TwistedIndependenceLemma.TwistedIndependence
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwahoriUnipotentDatum
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantUnipotentContractionStatement
 
 open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.SphericalProduct
@@ -35,7 +36,7 @@ theorem jacNeU : JacNeU := by
   obtain ⟨v₀, hv₀⟩ := hsat.exists_vec
   have hfixK : v₀ ∈ fixed ρ (KU σ n) := hv₀.2.1
   refine ⟨v₀, fun hjac => ?_, fun k hk _ => ?_⟩
-  · obtain ⟨D, hJ, hN, hNm, hT⟩ := GlobalTheory.T.iwahori_unipotent_datum L ϖ σ q hu n
+  · obtain ⟨D, hJ, hN, hNm, hT⟩ := _root_.GlobalTheory.CompanionTheory.IwUnit.iwahoriU L ϖ σ q hu n
     obtain ⟨hKo, hKc, hIK, t₀, ht₀d, ht₀s⟩ := GlobalTheory.CompanionTheory.KUFactsU.kuFacts L ϖ σ q n hu
     have hstr : D.IsStrDom ⟨t₀, (hT _).2 ht₀d⟩ :=
       (GlobalTheory.T.dominant_unipotent_contraction L ϖ σ q hu n D hJ hN hNm hT ⟨t₀, (hT _).2 ht₀d⟩).2 ht₀s
@@ -47,11 +48,11 @@ theorem jacNeU : JacNeU := by
     have hJK : ∀ x ∈ D.J, x ∈ KU σ n := fun x hx => hIK (hJ ▸ hx)
     have hfixJ : v₀ ∈ fixed ρ D.J :=
       GlobalTheory.LGrp.mem_fixed.2 fun x hx => GlobalTheory.LGrp.mem_fixed.1 hfixK x (hJK x hx)
-    obtain ⟨U, hU, -⟩ := GlobalTheory.T.hecke_character_exists_unique (GU σ n) D.J D.isOpen_J D.isCompact_J V ρ hadm.1 t₀
+    obtain ⟨U, hU, -⟩ := _root_.GlobalTheory.CompanionTheory.HeckeFixed.heckeExistsUnique (GU σ n) D.J D.isOpen_J D.isCompact_J V ρ hadm.1 t₀
     obtain ⟨j₀, hj₀⟩ := GlobalTheory.CompanionTheory.Cass.hecke_pow_kills_of_proj_eq_zero (GU σ n) D V ρ hadm.1 _ hstr U hU
       ⟨v₀, hfixJ⟩ hproj0
     obtain ⟨l, hlK, hl1⟩ := GlobalTheory.CompanionTheory.KAvg.kInvForm (GU σ n) (KU σ n) hKo hKc V ρ hadm.1 v₀ hfixK hv₀.1
-    obtain ⟨j, hj, hS⟩ := GlobalTheory.T.satake_power_nonvanishing L ϖ σ q n hu α t₀ ht₀d ht₀s j₀
+    obtain ⟨j, hj, hS⟩ := _root_.GlobalTheory.CompanionTheory.SatPow.satPowNonvan L ϖ σ q n hu α t₀ ht₀d ht₀s j₀
     have hUj : (U ^ j) ⟨v₀, hfixJ⟩ = 0 := by
       obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hj
       rw [add_comm, pow_add, Module.End.mul_apply, hj₀, map_zero]

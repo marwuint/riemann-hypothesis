@@ -5,15 +5,16 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalInteg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PLocPrjGOfNotMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousInvolutiveLocalTransposeInverse
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSupportFacts
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeIntegralFiniteSumStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeIntegralFiniteSum
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDiagonalDoubleCosetsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactPartDiagonalMapStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactConjugacyTransversalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeConvolutionSupportStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RelIndexNeZeroOfOpenLeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SwapTwistedCentralizerDiagonalStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactPartDiagonalMap
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactConjugacyTransversal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeConvolutionSupport
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RelIndexNeZeroOfOpenLe
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SwapTwistedCentralizerDiagonal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedOrbitalSwapConvolutionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightStabilizerConjBiinvariantFiniteIndexStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightStabilizerConjBiinvariantFiniteIndex
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StabilizerIndexNeZero
 open GlobalTheory.BCT PositivityTheory.Rg.BcB.G8.Fin
 open scoped Classical
@@ -92,6 +93,6 @@ theorem splitConv_of_finite : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsT
   rw [he] at step₂
   rw [step₂]
   exact GlobalTheory.T.twisted_orbital_swap_convolution H K K' (d * σ d') f₁ f₂ hKo hKc hK'o hK'K h₁ h₂ hG
-    (GlobalTheory.T.exists_compact_conjugacy_transversal H K (d * σ d') hKc hfin)
+    (_root_.GlobalTheory.CompanionTheory.OrbitalCount.exists_compact_reps_of_finite_doubleCosets H K (d * σ d') hKc hfin)
 
 end GlobalTheory.CompanionTheory.SplitConvF

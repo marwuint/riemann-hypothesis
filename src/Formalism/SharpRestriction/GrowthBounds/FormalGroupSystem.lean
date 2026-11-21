@@ -1,7 +1,8 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.SharpRestriction.ParConsts
-import Formalism.SharpRestriction.GrowthBounds.Imports
+import Formalism.SharpRestriction.GrowthBounds.UnramifiedQuadraticSetting
+import Formalism.SharpRestriction.GrowthBounds.ObjPol
 import Formalism.SharpRestriction.GrowthBounds.DataG
 import Formalism.SharpRestriction.GrowthBounds.DataGChain
 import Formalism.SharpRestriction.GrowthBounds.SelectionLemmas
@@ -753,20 +754,12 @@ def SmallResidueCharComparison (D : Formalism.BasicNotions.D7) (L : SizeData₂ 
                 ((Y.Fl u w hg).w (Y.vOf u w hg t0)) j ≤
         Formalism.MainNotions.G.Pr X K (bL L) (D.what₂.places.resChar w) j t0
 
-theorem NumCmp.k5 {D : Formalism.BasicNotions.D7} {L : SizeData₂ D} {X : Inst D L} {Y : LatInst D} {K : Consts}
-    (h : NumCmp D L X Y K) : SmallResidueCharComparison D L X Y K := fun hT hL u w hg _ => h hT hL u w hg
-
 def NumericalComparisonAt (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (C₀ : ℝ) : Prop :=
   ∀ K : Consts, C₀ ≤ K.dl1 → C₀ ≤ K.dl2 → C₀ ≤ K.Pr1 → Formalism.MainNotions.G.rG L.sc < D.R.k → 2 ≤ L.sc.x → Formalism.MainNotions.SizesAt L →
     SmallResidueCharComparison D L X Y K
 
-def NumericalComparison (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) : Prop := ∃ C₀, NumericalComparisonAt D L X Y C₀
-
 def NumericalComparisonUniform : Prop :=
   ∃ C₀ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D), NumericalComparisonAt D L X Y C₀
-
-def NumericalComparisonFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C₀ : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), NumericalComparisonAt (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (Fm.Gy x i) C₀
 
 def admitted (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) : Prop :=
   adm1 D ∧ adm2 D X Y ∧ adm2b D X Y ∧ adm2c D X Y ∧ adm3 D X Y ∧ adm3b D X ∧ ArchimedeanSignatureMatching D X Y ∧ adm5 D X Y ∧ MinkowskiCounting D X Y ∧ adm6 D X Y ∧
@@ -779,55 +772,17 @@ def Conclusion₂ (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : 
 def Stmt (D : Formalism.BasicNotions.D7) : Prop :=
   (∀ (p : ℕ) [Fact p.Prime] (X : Sys p) (Y : Pend X), admitted D X Y → Conclusion₂ D X Y) ∧ RelativePresentationLiterature D
 
-def DegreeDichotomyWithModelBounds (D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (X : Sys p) (Y : Pend X), admitted D X Y → KernelCommutationUpToUnits D X
-
 def ErrorExponentStatement (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl) [Fact (D.what₂.places.resChar w).Prime]
     (h : Formalism.BasicNotions.GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (X : Sys (D.what₂.places.resChar w)) (Y : Pend X),
     X.G = D.gat u w h → admitted D X Y → Conclusion₂ D X Y
 
-def ClosedFormOfAdmitted (D : Formalism.BasicNotions.D7) : Prop := Stmt D
-
-def KudlaFamilyStatement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∀ x (i : Fm.Ix x), Stmt (Fm.D x i)
-
-def FamilyClosedForm {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := KudlaFamilyStatement Fm
-
-def DegreeDichotomyWithModelBoundsFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∀ x (i : Fm.Ix x), DegreeDichotomyWithModelBounds (Fm.D x i)
-
 def adm9 (D : Formalism.BasicNotions.D7) {p : ℕ} (G : GAtP p) : Prop := Formalism.MainNotions.SelectionLemmas.Conclusion1 D G
-
-def adm10 (_D : Formalism.BasicNotions.D7) {p : ℕ} (G : GAtP p) : Prop := G.Sandwich
 
 def adm12 (_D : Formalism.BasicNotions.D7) {p : ℕ} (G : GAtP p) : Prop :=
   (∀ v, ∀ F ∈ G.Mna, G.yv v F ∈ G.Mna) ∧ ∀ v, ∀ F ∈ G.M, G.yv v F ∈ G.M
 
 def adm13 (D : Formalism.BasicNotions.D7) {p : ℕ} (G : GAtP p) : Prop := Formalism.MainNotions.SelectionLemmas.adm2 D G
-
-def Adm6 (D : Formalism.BasicNotions.D7) {p : ℕ} (G : GAtP p) : Prop :=
-  adm9 D G ∧ adm10 D G ∧ adm12 D G ∧ adm13 D G ∧ Formalism.MainNotions.SelectionLemmas.adm3 D G
-
-def Conclusion6 (_D : Formalism.BasicNotions.D7) {p : ℕ} (G : GAtP p) : Prop :=
-  ∀ (VV : Finset (Fin G.P.nV)) (t Sv : Fin G.P.nV → ℕ) (Dd cStar S m : ℕ) (κ : Fin G.P.nV → ℝ)
-    (V' : Submodule G.O G.Fn),
-    1 ≤ m → (∀ v ∈ VV, Sv v ≤ S) →
-    (∀ v ∈ VV, LPprime (W := G.P.W v) (Qq := G.P.Qq v) (O := G.O) (Kf := G.Kf) p (G.P.n' v) (G.P.ι v) (G.P.σ v) G.P.w
-      G.P.r (G.P.lam0 v) (t v) Dd (κ v) cStar) →
-    Formalism.MainNotions.SelectionLemmas.IsSaturatedIn (G.M ⊓ V') G.M →
-    (m : ℝ) * ∑ v ∈ VV, κ v ≤ 1 / 2 →
-    let tauP : ℕ := G.e + Formalism.MainNotions.SelectionLemmas.tau VV m Dd t
-    let Mp := G.M ⊓ V'
-    let NPp := Formalism.MainNotions.SelectionLemmas.prodIdeal G VV m Sv G.M ⊓ (Ideal.span {(p : G.O) ^ tauP}) • G.M ⊓ V'
-    NPp ≤ (Ideal.span {(p : G.O) ^ tauP}) • Mp ∧
-    ∃ ℓ : ℕ, Module.length G.O (↥Mp ⧸ Submodule.comap Mp.subtype NPp) = ℓ ∧
-      (ℓ : ℝ) ≤ ((Module.length G.O (G.O ⧸ Ideal.span {(p : G.O)})).toNat : ℝ) *
-        ((G.d : ℝ) * ((tauP : ℝ) + 2 * S * ((m : ℝ) * ∑ v ∈ VV, κ v)))
-
-def ShareFromInputs (D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : Formalism.BasicNotions.GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
-    0 < (D.gat u w h).P.nV → Adm6 D (D.gat u w h) → Conclusion6 D (D.gat u w h)
-
-def LocalServiceStatement (D : Formalism.BasicNotions.D7) : Prop := ∀ (p : ℕ) (G : GAtP p), 0 < G.P.nV → Adm6 D G → Conclusion6 D G
 
 def LemmaVVolumeGeneral (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) : Prop :=
   ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl)
@@ -850,7 +805,5 @@ def RamifiedSublatticeVolumeOfAdmissible (D : Formalism.BasicNotions.D7) (L : Si
   (∀ (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : Formalism.BasicNotions.GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
     adm9 D (D.gat u w h) ∧ adm12 D (D.gat u w h) ∧ adm13 D (D.gat u w h) ∧ Formalism.MainNotions.SelectionLemmas.adm3 D (D.gat u w h)) →
     LemmaVVolumeGeneral D L X Y K
-
-def ShareFromInputsFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∀ x (i : Fm.Ix x), ShareFromInputs (Fm.D x i)
 
 end Formalism.MainNotions.FormalGroupSystem

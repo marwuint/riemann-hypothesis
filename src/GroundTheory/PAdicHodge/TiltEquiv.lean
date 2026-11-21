@@ -4,9 +4,10 @@ import GroundTheory.PAdicHodge.UntiltApprox
 import GroundTheory.PAdicHodge.UntiltGalois
 import GroundTheory.PAdicHodge.UntiltGaloisCorr
 import GroundTheory.PAdicHodge.CompletedAlgClosure
-import GroundTheory.PAdicHodge.PerfectoidCharP
+import GroundTheory.PAdicHodge.PerfectoidField
 import GroundTheory.PAdicHodge.PerfectoidCriterion
 import GroundTheory.PAdicHodge.TiltAlgClosed
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -51,15 +52,6 @@ variable {p : ℕ} [Fact p.Prime] [IsPerfectoidField K p]
 local notation "K♭" => Tilt K NormedField.valuation (normInteger K) normInteger_integers p
 local notation "C♭" => Tilt C NormedField.valuation (normInteger C) normInteger_integers p
 
-variable (K C p) in
-include K in
-
-theorem isPerfectoidField_of_isAlgClosed_of_normedAlgebra [CompleteSpace C] :
-    IsPerfectoidField C p :=
-  IsPerfectoidField.of_isAlgClosed p (by
-    rw [← map_natCast (algebraMap K C), norm_algebraMap']
-    exact IsPerfectoidField.norm_natCast_lt_one)
-
 variable [IsPerfectoidField C p]
 
 theorem exists_eq_untiltField (L : IntermediateField K C) [FiniteDimensional K L] :
@@ -77,56 +69,6 @@ instance isPerfectoidField_of_finiteDimensional (L : IntermediateField K C) [Fin
   exact IsPerfectoidField.of_ringEquiv p (IntermediateField.equivOfEq hML).toRingEquiv
     fun _ => rfl
 
-theorem untiltField_tiltIntermediateField (L : IntermediateField K C) [FiniteDimensional K L] :
-    ∃ _ : FiniteDimensional K♭ (tiltIntermediateField p L),
-      untiltField K C p (tiltIntermediateField p L) = L := by
-  obtain ⟨M, hM, rfl⟩ := exists_eq_untiltField (p := p) L
-  have h : tiltIntermediateField p (untiltField K C p M) = M :=
-    tiltIntermediateField_untiltField M
-  rw [h]
-  exact ⟨hM, rfl⟩
-
-theorem finrank_tiltIntermediateField (L : IntermediateField K C) [FiniteDimensional K L] :
-    Module.finrank K♭ (tiltIntermediateField p L) = Module.finrank K L := by
-  obtain ⟨M, hM, rfl⟩ := exists_eq_untiltField (p := p) L
-  have h : tiltIntermediateField p (untiltField K C p M) = M :=
-    tiltIntermediateField_untiltField M
-  rw [h, finrank_untiltField]
-
-theorem existsUnique_tiltIntermediateField_eq (M : IntermediateField K♭ C♭)
-    [FiniteDimensional K♭ M] :
-    ∃! L : IntermediateField K C, ∃ _ : FiniteDimensional K L, tiltIntermediateField p L = M := by
-  refine ⟨untiltField K C p M, ⟨inferInstance, tiltIntermediateField_untiltField M⟩, ?_⟩
-  rintro L ⟨hL, hLM⟩
-  obtain ⟨M', hM', rfl⟩ := exists_eq_untiltField (p := p) L
-  have h : tiltIntermediateField p (untiltField K C p M') = M' :=
-    tiltIntermediateField_untiltField M'
-  rw [h] at hLM
-  rw [hLM]
-
 end InC
-
-section Abstract
-
-variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
-
-theorem IsPerfectoidField.of_finiteDimensional (p : ℕ) [Fact p.Prime] [IsPerfectoidField K p]
-    (L : Type*) [NontriviallyNormedField L] [IsUltrametricDist L] [NormedAlgebra K L]
-    [FiniteDimensional K L] : IsPerfectoidField L p := by
-  rcases IsPerfectoidField.charZero_or_charP (K := K) p with h0 | hp
-  · have := IsPerfectoidField.completeSpace (K := K) p
-    have : IsPerfectoidField (CompletedAlgClosure K) p :=
-      isPerfectoidField_of_isAlgClosed_of_normedAlgebra K (CompletedAlgClosure K) p
-    set j := CompletedAlgClosure.embedding K L
-    let e : L ≃ₐ[K] j.fieldRange := AlgEquiv.ofInjectiveField j
-    have : FiniteDimensional K j.fieldRange := LinearEquiv.finiteDimensional e.toLinearEquiv
-    refine IsPerfectoidField.of_ringEquiv p e.symm.toRingEquiv fun y => ?_
-    have h1 : ((e (e.symm y) : j.fieldRange) : CompletedAlgClosure K) = j (e.symm y) := rfl
-    rw [AlgEquiv.apply_symm_apply] at h1
-    change ‖e.symm y‖ = ‖(y : CompletedAlgClosure K)‖
-    rw [h1, CompletedAlgClosure.norm_embedding]
-  · exact IsPerfectoidField.of_finiteDimensional_of_charP (K := K) p L
-
-end Abstract
 
 end GroundTheory.PAdicHodge

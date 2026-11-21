@@ -104,13 +104,6 @@ theorem finite_integralClosure_of_perfectField (k B F L : Type*) [Field k] [Perf
   haveI : Module.Finite P (integralClosure B L) := h
   exact Module.Finite.of_restrictScalars_finite P B _
 
-example : let k := AlgebraicClosure (ZMod 2)
-    let B := Algebra.adjoin k ({Polynomial.X ^ 2, Polynomial.X ^ 3} : Set (Polynomial k))
-    Module.Finite B (integralClosure B (FractionRing B)) := by
-  intro k B
-  haveI : Algebra.FiniteType k B := .adjoin_of_finite (Set.toFinite _)
-  exact finite_integralClosure_of_perfectField k B (FractionRing B) (FractionRing B)
-
 theorem finite_integralClosure_of_isAlgClosed :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Type) [CommRing B] [IsDomain B] [Algebra k B]
       [Algebra.FiniteType k B] (F : Type) [Field F] [Algebra B F] [IsFractionRing B F],

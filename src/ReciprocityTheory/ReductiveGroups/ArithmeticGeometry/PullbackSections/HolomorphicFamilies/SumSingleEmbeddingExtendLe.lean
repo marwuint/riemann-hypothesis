@@ -59,22 +59,6 @@ lemma DF_wtA_le {D : D7} {j : ℕ} {H : ReciprocityTheory.ChartRestriction.G.Geo
   exact add_le_add (by convert sum_single_embedding_extend_le (DV.tauEmb D t) Dw.mult (w.aP t))
     (by convert sum_single_embedding_extend_le (conjEmb (DV.tauEmb D t)) Dw.mult (w.aM t))
 
-theorem deg : DegSt := by
-  intro D T h j hj w P hP
-  have hrow := hP.1.2.2
-  have h1 : P.totalDegree ≤ DF (T.Q.Dw j) (wtA w) := by
-    refine Finset.sup_le (fun m hm => ?_)
-    rw [Finsupp.sum_fintype _ _ (by simp)]
-    rw [Fintype.sum_sigma]
-    refine le_of_eq (Finset.sum_congr rfl (fun σ _ => ?_))
-    rw [Fintype.sum_prod_type]
-    exact Finset.sum_congr rfl (fun i _ => hrow m hm σ i)
-  have h2 := DF_wtA_le (T.Q.Dw j) w
-  have h3 : (((∑ t, ((∑ i, w.aP t i) + ∑ i, w.aM t i) : ℕ)) : ℝ) = absA w := by
-    simp [absA]
-  rw [← h3]
-  exact_mod_cast h1.trans h2
-
 theorem dimPos_fr (D : D7) : 1 ≤ D.R.f ∧ 1 ≤ D.R.r := by
   refine ⟨?_, ?_⟩
   · have h1 := D.R.two_le_m

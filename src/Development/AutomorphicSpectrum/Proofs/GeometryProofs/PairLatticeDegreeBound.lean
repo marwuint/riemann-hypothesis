@@ -8,21 +8,24 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoun
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAtStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarisedStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSegreChartFramesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameDomainInSegreChartStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundle
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarised
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSegreChartFrames
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameDomainInSegreChart
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairSumFrameAtPointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixChangeFrameStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixChangeFrame
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixTwoFramesStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixConjugationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConjugatePointSameCentreStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GlobalPairSumGramBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConjugatePointSameCentre
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GlobalPairSumGramBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramSmoothPuncturedStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramComparisonBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramComparisonBound
 
 namespace GlobalTheory.CompanionTheory.Ar
 
@@ -34,10 +37,10 @@ open scoped Matrix ComplexOrder
 theorem exists_hermMetric_hodge : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)), Top.IsGlobal Xo l c Y → ∀ (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (a b : CMType H ⊕ CMType H) (N : ℕ) (Wb : ChartBundle ℤ (segreCoord y) N ↥(𝔐.Vgen a ⊔ 𝔐.Vgen b)) (n nc : ℕ) (Bd : Set ((Σ k, J k) → ℂ)) (χ : Fin nc → SncChart (mCoordIdeal y) n Bd), (Lat.comap (fun p => 𝔐.V a p ⊔ 𝔐.V b p) (𝔐.Vgen a ⊔ 𝔐.Vgen b).subtype).IsVB N ⊤ → (Lat.comap (fun p => 𝔐.V a p ⊔ 𝔐.V b p) (𝔐.Vgen a ⊔ 𝔐.Vgen b).subtype).IsChartOf (segreCoord y) Wb.lat → (∀ (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) w, CoordsAt 𝔐.ξ y z w → (w ∈ Bd ↔ ¬ 𝔐.Interior z)) → ∃ hm : HermMetric y Wb (mcPts (mCoordIdeal y) \ Bd) χ, ∀ e (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) w, CoordsAt 𝔐.ξ y z w → 𝔐.Interior z → InFrameDomain y (hm.chart e) (hm.fr e) w → 𝔐.M.GramAt 𝔐.t.PP.L z (fun k => ((hm.b e k : ↥(𝔐.Vgen a ⊔ 𝔐.Vgen b)) : 𝔐.Li)) (hm.gram e w) := by
   intro hG E _ _ _ H D Xo l c Y hGl S Ω _ _ K _ J _ y 𝔐 a b N Wb n nc Bd χ hVB hCh hBd
   classical
-  obtain ⟨m, ch, fr, bb, hfr, hcov⟩ := GlobalTheory.T.exists_segre_chart_frames 𝔐.X Ω 𝔐.ξ K J y _ N Wb _ 𝔐.tie hVB hCh
-  have tp := GlobalTheory.T.local_ring_points_existsUnique 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie ℂ
+  obtain ⟨m, ch, fr, bb, hfr, hcov⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_frames_cover_mcPts 𝔐.X Ω 𝔐.ξ K J y _ N Wb _ 𝔐.tie hVB hCh
+  have tp := _root_.GlobalTheory.CompanionTheory.Ar.tie_points 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie ℂ
   have hpol : ∀ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, 𝔐.Interior z → HodgeMetric.PolarisedAt 𝔐.t z :=
-    fun z hz => GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S Ω K J y 𝔐 z hz
+    fun z hz => _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.polarisedAt_of_interior E H D l (Xo l) c Y S Ω K J y 𝔐 z hz
   have gfn : ∀ {r : ℕ} (b' : Fin r → 𝔐.Li) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (w : (Σ k, J k) → ℂ)
       (Γ : Matrix (Fin r) (Fin r) ℂ), CoordsAt 𝔐.ξ y z w → 𝔐.Interior z → 𝔐.M.GramAt 𝔐.t.PP.L z b' Γ →
       HodgeMetric.gramFn 𝔐 b' w = Γ := by
@@ -49,10 +52,10 @@ theorem exists_hermMetric_hodge : Top.Given → ∀ (E : Type) [Field E] [Number
     obtain ⟨z₀, hw₀, hi₀, hΓ₀⟩ := hex.choose_spec
     have hz : z₀ = z := (tp.1 w hw.1 (tp.2.2 z w (𝔐.all _) hw).1).unique ⟨𝔐.all _, hw₀⟩ ⟨𝔐.all _, hw⟩
     rw [hz] at hΓ₀
-    exact GlobalTheory.T.gram_matrix_change_frame E H D l (Xo l) c Y S Ω K J y 𝔐 z r b' _ _ (hpol z hi) hΓ₀ hΓ
+    exact _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.gramAt_unique_of_polarisedAt E H D l (Xo l) c Y S Ω K J y 𝔐 z r b' _ _ (hpol z hi) hΓ₀ hΓ
   have frameAt : ∀ (i : Fin m) (p : Cpt 𝔐.ξ), InChart 𝔐.ξ (segreCoord y) (ch i) p → unitAt 𝔐.ξ p (fr i) →
       (Lat.comap (fun p => 𝔐.V a p ⊔ 𝔐.V b p) (𝔐.Vgen a ⊔ 𝔐.Vgen b).subtype).IsFrameAt (bb i) p :=
-    fun i p h1 h2 => (GlobalTheory.T.segre_chart_bundle 𝔐.X Ω 𝔐.ξ K J y _ N Wb _ 𝔐.tie hVB hCh (ch i) (fr i) (bb i) (hfr i).1 (hfr i).2.1
+    fun i p h1 h2 => (_root_.GlobalTheory.CompanionTheory.Ar.isFrameOver_iff_forall_isFrameAt 𝔐.X Ω 𝔐.ξ K J y _ N Wb _ 𝔐.tie hVB hCh (ch i) (fr i) (bb i) (hfr i).1 (hfr i).2.1
       (hfr i).2.2.1).1 (hfr i) p h1 h2
   obtain ⟨gr, hgr⟩ : ∃ gr : Fin m → ((Σ k, J k) → ℂ) → Matrix (Fin N) (Fin N) ℂ,
       ∀ i, gr i = HodgeMetric.gramFn 𝔐 (fun k => ((bb i k : ↥(𝔐.Vgen a ⊔ 𝔐.Vgen b)) : 𝔐.Li)) := ⟨_, fun _ => rfl⟩
@@ -60,14 +63,14 @@ theorem exists_hermMetric_hodge : Top.Given → ∀ (E : Type) [Field E] [Number
       𝔐.Interior z → InFrameDomain y (ch i) (fr i) w →
       𝔐.M.GramAt 𝔐.t.PP.L z (fun k => ((bb i k : ↥(𝔐.Vgen a ⊔ 𝔐.Vgen b)) : 𝔐.Li)) (gr i w) ∧ (gr i w).PosDef := by
     intro i z w hw hi hd
-    have hc := GlobalTheory.T.frame_domain_in_segre_chart 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie z w (ch i) (fr i) (𝔐.all _) hw hd
+    have hc := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.inChart_unitAt_of_inFrameDomain 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie z w (ch i) (fr i) (𝔐.all _) hw hd
     obtain ⟨Γ, h1, h2⟩ := GlobalTheory.T.pair_sum_frame_at_point E H D l (Xo l) c Y S Ω K J y 𝔐 a b N (bb i) z (𝔐.all _) (hpol z hi)
       (frameAt i _ hc.1 hc.2)
     have h3 : gr i w = Γ := (congrFun (hgr i) w).trans (gfn _ z w Γ hw hi h1)
     rw [h3]
     exact ⟨h1, h2⟩
   have pts : ∀ w ∈ mcPts (mCoordIdeal y), ∃ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z w := fun w hw => by
-    obtain ⟨z, -, hz⟩ := (GlobalTheory.T.complex_points_iff_centres 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie w).1 hw
+    obtain ⟨z, -, hz⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie w).1 hw
     exact ⟨z, hz⟩
   have intr : ∀ (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (w : (Σ k, J k) → ℂ), CoordsAt 𝔐.ξ y z w → w ∉ Bd → 𝔐.Interior z :=
     fun z w hz hn => by_contra fun h => hn ((hBd z w hz).2 h)
@@ -75,7 +78,7 @@ theorem exists_hermMetric_hodge : Top.Given → ∀ (E : Type) [Field E] [Number
       InFrameDomain y (ch i) (fr i) ((χ e).γ t₀) → ∃ (a₀ g : ℕ) (Λ : Type) (_ : AddCommGroup Λ)
         (L : Flat.LogPeriods n a₀ g Λ) (π : Equiv.Perm (Fin n)) (ρ : ℝ) (U : Fin N → (Fin n → ℂ) → Fin g → ℂ),
         HodgeMetric.IsFramePeriods 𝔐 (fun k => ((bb i k : ↥(𝔐.Vgen a ⊔ 𝔐.Vgen b)) : 𝔐.Li)) (χ e) t₀ (ch i) (fr i) L π ρ U :=
-    fun e i t₀ ht hd => GlobalTheory.T.global_pair_sum_gram_bound hG E H D Xo l c Y S Ω K J y 𝔐 hGl a b N (bb i) n Bd (χ e) t₀ (ch i) (fr i) hBd ht
+    fun e i t₀ ht hd => _root_.GlobalTheory.CompanionTheory.Ar.FramePeriods.exists_isFramePeriods hG E H D Xo l c Y S Ω K J y 𝔐 hGl a b N (bb i) n Bd (χ e) t₀ (ch i) (fr i) hBd ht
       (frameAt i) hd
   have pg : ∀ (e : Fin nc) (i : Fin m) (t₀ : Fin n → ℂ) {a₀ g : ℕ} {Λ : Type} [AddCommGroup Λ]
       (L : Flat.LogPeriods n a₀ g Λ) (π : Equiv.Perm (Fin n)) (ρ : ℝ) (U : Fin N → (Fin n → ℂ) → Fin g → ℂ),
@@ -108,7 +111,7 @@ theorem exists_hermMetric_hodge : Top.Given → ∀ (E : Type) [Field E] [Number
       (key l₂ z w hz hi hd₂).1 (fun q => ?_) (fun p q => ?_)
     · rw [hT q]
       simp
-    · exact (GlobalTheory.T.valAt_iff_value_at 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie z w (𝔐.all _) hz _ _).2 (hTz p q)
+    · exact (_root_.GlobalTheory.CompanionTheory.Ar.valAt_iff_isValueAt_coords 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie z w (𝔐.all _) hz _ _).2 (hTz p q)
   have htorus : ∀ l₁, ∀ z ∈ mcPts (mCoordIdeal y) \ Bd, InFrameDomain y (ch l₁) (fr l₁) z → ∀ cv : K → ℂ,
       (∀ k, cv k ≠ 0) → gr l₁ (torusSmul cv z) = gr l₁ z := by
     intro i w hw hd cv hc
@@ -122,7 +125,7 @@ theorem exists_hermMetric_hodge : Top.Given → ∀ (E : Type) [Field E] [Number
     intro i w hw hd
     obtain ⟨z, hz⟩ := pts w hw.1
     have hi := intr z w hz hw.2
-    have hcc := GlobalTheory.T.conjugate_point_same_centre 𝔐.X Ω 𝔐.ξ K J y z w
+    have hcc := _root_.GlobalTheory.CompanionTheory.Ar.CoordConj.centre_and_coords_conj 𝔐.X Ω 𝔐.ξ K J y z w
     have hi' : 𝔐.Interior (spMap (starRingEnd ℂ) ≫ z) := by
       show centre _ ∈ _
       rw [hcc.1]
@@ -162,7 +165,7 @@ theorem exists_hermMetric_hodge : Top.Given → ∀ (E : Type) [Field E] [Number
       linarith
     obtain ⟨i, hi⟩ := hcov _ ((χ e).mem t₀ htb)
     obtain ⟨a₀, g, Λ, _, L, π, ρ, U, hP⟩ := per e i t₀ htb hi
-    obtain ⟨ε, c₀, C, hε, hερ, hc₀, hC, hb⟩ := GlobalTheory.T.period_gram_comparison_bound n a₀ g N (χ e).a Λ L U t₀ π ρ hP.1 hP.2.1 hP.2.2.1
+    obtain ⟨ε, c₀, C, hε, hερ, hc₀, hC, hb⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.logBound_recentred n a₀ g N (χ e).a Λ L U t₀ π ρ hP.1 hP.2.1 hP.2.2.1
       hP.2.2.2.1 hP.2.2.2.2.1
     refine ⟨i, hi, ε, hε, c₀, hc₀, C, hC, fun t ht ht1 hX hd => ?_⟩
     have hub := HodgeMetric.uncentre_mem_ball hP.1 π (ht.trans_le hερ)

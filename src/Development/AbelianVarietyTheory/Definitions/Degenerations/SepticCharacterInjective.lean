@@ -257,8 +257,6 @@ def torHom : (Multiplicative N.X →* Oˣ) →* N.Gt := MonoidHom.mk' N.tor N.to
 
 @[simp] theorem tor_one : N.tor 1 = 1 := N.torHom.map_one
 
-theorem tor_inv (t : Multiplicative N.X →* Oˣ) : N.tor t⁻¹ = (N.tor t)⁻¹ := N.torHom.map_inv t
-
 theorem tor_pow (t : Multiplicative N.X →* Oˣ) (k : ℕ) : N.tor (t ^ k) = N.tor t ^ k := N.torHom.map_pow t k
 
 theorem tor_injective : Function.Injective N.tor := fun t t' h =>
@@ -271,10 +269,6 @@ theorem exists_tor_iff (g : N.Gt) : (∃ t, N.tor t = g) ↔ g.b = 1 := by
     refine ⟨MonoidHom.mk' (fun χ => g.s χ.toAdd) fun a b => ?_, Gt.ext h.symm rfl⟩
     have := g.mult a.toAdd b.toAdd
     rwa [h, N.cub.face₃, mul_one] at this
-
-theorem range_tor : Set.range N.tor = {g | g.b = 1} := Set.ext fun g => N.exists_tor_iff g
-
-theorem range_torHom : N.torHom.range = N.projB.ker := Subgroup.ext fun g => N.exists_tor_iff g
 
 theorem tor_mul_s_apply (t : Multiplicative N.X →* Oˣ) (g : N.Gt) (χ : N.X) :
     (N.tor t * g).s χ = t (Multiplicative.ofAdd χ) * g.s χ := by
@@ -412,22 +406,6 @@ def regauge (B : NumB O) (h : B.A → Oˣ) (h₁ : h 1 = 1) : NumB O where
     linear_combination (norm := abel) a
   th x := ((h x)⁻¹ : Oˣ) * B.th x
 
-def regaugeIso (B : NumB O) (h : B.A → Oˣ) (h₁ : h 1 = 1) : Iso (B.regauge h h₁) B where
-  φ := MulEquiv.refl B.A
-  h := h
-  h_one := h₁
-  θ_eq (x y u : B.A) := by
-    change B.θ x y u * h (x * y) * h (x * u) * h (y * u) =
-      B.θ x y u * h (x * y) * h (x * u) * h (y * u) / (h (x * y * u) * h x * h y * h u) * h (x * y * u) * h x * h y * h u
-    apply Additive.ofMul.injective
-    simp only [ofMul_mul, ofMul_div]
-    abel
-  σ_eq (x : B.A) := (div_mul_cancel _ _).symm
-  lam := 1
-  th_eq (x : B.A) := by
-    change B.th x = ((1 * h x : Oˣ) : O) * (((h x)⁻¹ : Oˣ) * B.th x)
-    rw [one_mul, Units.mul_inv_cancel_left]
-
 def triv (A : Type) [CommGroup A] (f : A → O) : NumB O where
   A := A
   θ _ _ _ := 1
@@ -459,11 +437,6 @@ def regauge (N : NumD O) (h : N.A → Oˣ) (h₁ : h 1 = 1) : NumD O where
     simp only [N.c_add, ofMul_mul, ofMul_div] at e ⊢
     linear_combination (norm := abel) e
 
-def regaugeIso (N : NumD O) (h : N.A → Oˣ) (h₁ : h 1 = 1) : Iso (N.regauge h h₁) N where
-  toIso := N.toNumB.regaugeIso h h₁
-  e := AddEquiv.refl N.X
-  c_eq _ := rfl
-  ψ_eq _ := rfl
 end NumD
 
 def tate (q : Oˣ) : NumD O where
@@ -481,53 +454,6 @@ def tate (q : Oˣ) : NumD O where
     congr 1
     ring
 
-theorem tate_τ (q : Oˣ) (a b : ℤ) : (tate q).τ a b = q ^ (2 * a * b) := by
-  change q ^ (a + b) ^ 2 / q ^ a ^ 2 / q ^ b ^ 2 = _
-  simp only [div_eq_mul_inv, ← zpow_neg, ← zpow_add]
-  congr 1
-  ring
-
-theorem tate_vt (q : Oˣ) (t : Multiplicative ℤ →* Oˣ) (n : ℤ) :
-    (tate q).vt ((tate q).tor t) n = (q ^ n ^ 2 * t (Multiplicative.ofAdd n) : Oˣ) := mul_one _
-
-def tateQ (r : Oˣ) (k : ℕ) (y : ℤ) : (tate (r ^ k)).QT k :=
-  ⟨(Multiplicative.ofAdd y, (tate (r ^ k)).tor (zpowersHom Oˣ (r ^ (2 * y)))), by
-    refine ((tate (r ^ k)).tor_pow _ k).symm.trans ?_
-    refine NumD.Gt.ext rfl (funext fun (χ : ℤ) => ?_)
-    refine Eq.trans ?_ (tate_τ (r ^ k) y χ).symm
-    change ((r ^ (2 * y)) ^ χ) ^ k = _
-    simp only [← zpow_natCast, ← zpow_mul]
-    congr 1
-    ring⟩
-
-def tateForm {C : Type} [NormedField C] (q : Cˣ) : QuadraticMap ℤ ℤ ℝ :=
-  (LinearMap.toSpanSingleton ℤ ℝ (-Real.log ‖(q : C)‖)).compQuadraticMap QuadraticMap.sq
-
-theorem tateForm_apply {C : Type} [NormedField C] (q : Cˣ) (n : ℤ) :
-    tateForm q n = (n : ℝ) ^ 2 * (-Real.log ‖(q : C)‖) := by
-  simp [tateForm, sq]
-
-theorem tate_int {C : Type} [NormedField C] (q : Cˣ) (hq : ‖(q : C)‖ < 1) : (tate q).Int (tateForm q) where
-  θ _ _ _ := norm_one
-  σ _ := norm_one
-  th _ := norm_one.le
-  ψ (n : ℤ) := by
-    have h0 : 0 < ‖(q : C)‖ := norm_pos_iff.2 q.ne_zero
-    change ‖((q ^ n ^ 2 : Cˣ) : C)‖ = Real.exp (-tateForm q n)
-    rw [tateForm_apply, Units.val_zpow_eq_zpow_val, norm_zpow, ← Real.rpow_intCast, Real.rpow_def_of_pos h0]
-    congr 1
-    push_cast
-    ring
-  pos := by
-    have h0 : 0 < ‖(q : C)‖ := norm_pos_iff.2 q.ne_zero
-    have hl : 0 < -Real.log ‖(q : C)‖ := neg_pos.2 (Real.log_neg h0 hq)
-    have e : (tateForm q : ℤ → ℝ) = fun n : ℤ => ‖(n : ℝ)‖ ^ 2 * (-Real.log ‖(q : C)‖) :=
-      funext fun n => by rw [tateForm_apply, Real.norm_eq_abs, sq_abs]
-    change Filter.Tendsto (tateForm q : ℤ → ℝ) Filter.cofinite Filter.atTop
-    rw [e]
-    exact ((Filter.tendsto_pow_atTop two_ne_zero).comp
-      ((tendsto_norm_cocompact_atTop (E := ℝ)).comp Int.tendsto_coe_cofinite)).atTop_mul_const hl
-
 theorem tate_tors {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) : (tate q).toNumB.Tors n 0 where
   div x := ⟨x, rfl⟩
   str j := by
@@ -541,95 +467,7 @@ theorem tate_tors {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) : (tate q).toNu
 
 namespace Level3
 
-abbrev A₃ := Multiplicative (ZMod 3 × ZMod 3)
-
-def carry (a : ℕ) : ZMod 3 := ((a / 3 : ℕ) : ZMod 3)
-
-def cube (x y u : A₃) : Multiplicative (ZMod 3) := Multiplicative.ofAdd
-  (- carry (x.toAdd.1.val + y.toAdd.1.val + u.toAdd.1.val) * (x.toAdd.2 + y.toAdd.2 + u.toAdd.2)
-    + carry (x.toAdd.1.val + y.toAdd.1.val) * (x.toAdd.2 + y.toAdd.2)
-    + carry (x.toAdd.1.val + u.toAdd.1.val) * (x.toAdd.2 + u.toAdd.2)
-    + carry (y.toAdd.1.val + u.toAdd.1.val) * (y.toAdd.2 + u.toAdd.2))
-
-def sym (x : A₃) : Multiplicative (ZMod 3) :=
-  Multiplicative.ofAdd (- carry (x.toAdd.1.val + (-x.toAdd.1).val) * x.toAdd.2)
-
-theorem isCub_cube : IsCub cube := ⟨by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel⟩
-
-theorem sym_one : sym 1 = 1 := by decide +kernel
-
-theorem sym_mul : ∀ x y, sym (x * y) * cube x x⁻¹ y⁻¹ = sym x * sym y * cube y y⁻¹ x := by decide +kernel
-
-theorem cube_nondeg : ∀ b : A₃, (∀ b', cubN cube 3 1 b' b / cubN cube 3 1 b b' = 1) → b = 1 := by
-  simp only [cubN, Finset.prod_range_succ, Finset.prod_range_zero]
-  decide +kernel
-
-def bun (f : Multiplicative (ZMod 3) →* Oˣ) (s : A₃ → O) : NumB O where
-  A := A₃
-  θ x y u := f (cube x y u)
-  cub := ⟨fun x y => by rw [isCub_cube.face, map_one], fun x y z => by rw [isCub_cube.s01],
-    fun x y z => by rw [isCub_cube.s12], fun x x' x'' y => by rw [← map_mul, ← map_mul, isCub_cube.coc]⟩
-  σ x := f (sym x)
-  σ_one := by rw [sym_one, map_one]
-  σ_mul x y := by rw [← map_mul, sym_mul, map_mul, map_mul]
-  th := s
-
-theorem bun_nondeg (f : Multiplicative (ZMod 3) →* Oˣ) (hf : Function.Injective f) (s : A₃ → O) (b : A₃)
-    (hb : ∀ b' : A₃, (bun f s).weil 3 b b' = 1) : b = 1 := by
-  refine cube_nondeg b fun b' => hf ?_
-  rw [map_one, map_div, cubN, cubN, map_prod, map_prod]
-  exact hb b'
-
-def pt (n : ℤ) : A₃ := Multiplicative.ofAdd ((n : ZMod 3), (0 : ZMod 3))
-
-def dat (f : Multiplicative (ZMod 3) →* Oˣ) (s : A₃ → O) (q : Oˣ) : NumD O where
-  toNumB := bun f s
-  X := ℤ
-  c := pt
-  c_add a b := by
-    change pt (a + b) = pt a * pt b
-    simp only [pt, ← ofAdd_add, Prod.mk_add_mk, add_zero, Int.cast_add]
-  ψ n := q ^ n ^ 2
-  even n := by
-    have e : sym (pt n) = 1 := by simp [sym, pt]
-    change q ^ (-n) ^ 2 * f (sym (pt n)) = _
-    rw [e, map_one, neg_sq, mul_one]
-  bimult a a' b := by
-    have e : cube (pt a) (pt a') (pt b) = 1 := by simp [cube, pt]
-    change _ * f (cube (pt a) (pt a') (pt b)) = _
-    rw [e, map_one]
-    simp only [mul_one, div_eq_mul_inv, ← zpow_neg, ← zpow_add]
-    congr 1
-    ring
-
-def chi7 : Multiplicative (ZMod 3) →* (ZMod 7)ˣ :=
-  MonoidHom.mk' (fun a => (⟨2, 4, by decide, by decide⟩ : (ZMod 7)ˣ) ^ a.toAdd.val) (by decide +kernel)
-
-theorem septicCharacter_injective : Function.Injective chi7 := by
-  intro a b
-  revert a b
-  decide +kernel
-
-theorem exists_weil_ne_one : ∃ (N : NumD (ZMod 7)) (b b' : N.A), b ^ 3 = 1 ∧ b' ^ 3 = 1 ∧ N.weil 3 b b' ≠ 1 := by
-  have t : ∀ b : A₃, b ^ 3 = 1 := by decide +kernel
-  by_contra h
-  have := bun_nondeg chi7 septicCharacter_injective (fun _ => 1) (Multiplicative.ofAdd (1, 0)) fun b' =>
-    not_not.1 fun e => h ⟨dat chi7 (fun _ => 1) 1, _, b', t _, t _, e⟩
-  revert this
-  decide
 end Level3
 
-example (r ζ : Oˣ) (k : ℕ) (hζ : zpowersHom Oˣ ζ ^ k = 1) (y : ℤ) :
-    (tate (r ^ k)).wp ((tate (r ^ k)).qTor (zpowersHom Oˣ ζ) hζ) (tateQ r k y) = ζ ^ y :=
-  NumD.wp_qTor _ _ _ _
-
-example (A : Type) [CommGroup A] (f : A → O) (h : A → Oˣ) (h₁ : h 1 = 1) (x : A) :
-    dbl ((NumB.triv A f).regauge h h₁).θ ((NumB.triv A f).regauge h h₁).σ x = h (x * x) / h x ^ 4 := by
-  change 1 * h (x * x⁻¹) * h (x * x) * h (x⁻¹ * x) / (h (x * x⁻¹ * x) * h x * h x⁻¹ * h x) / (1 * h x / h x⁻¹) = _
-  apply Additive.ofMul.injective
-  simp only [mul_inv_cancel, inv_mul_cancel, one_mul, h₁, ofMul_mul, ofMul_div, ofMul_one, ofMul_pow]
-  abel
-
-example (q : Oˣ) : ((tate q).io (1 : ℤ)).s (1 : ℤ) = q ^ (2 : ℤ) := tate_τ q 1 1
 end GlobalTheory.Ex
 end

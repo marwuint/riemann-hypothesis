@@ -221,8 +221,6 @@ def unitsF : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} ℤ) where
 
 def Gm : Shv ℤ := ofRings ℤ unitsF
 
-def muSheaf (n : ℕ) [NeZero n] (i : ℕ) : Shv (ZMod n) := (presheafToSheaf _ _).obj (GlobalTheory.Et.muPre n i)
-
 variable {R} in
 
 def restr {S : Type} [CommRing S] (φ : R →+* S) : Shv S ⥤ Shv R :=
@@ -292,17 +290,6 @@ theorem _root_.GlobalTheory.EtC.galMap_mul (σ τ : Ω ≃ₐ[k] Ω) :
       _root_.GlobalTheory.Et.galMap_snd_assoc]
     rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
     rfl
-
-def gal (F : Shv R) (n : ℤ) : Representation R (Ω ≃ₐ[k] Ω) (H R (sch.obj (geom Ω p)) F n) where
-  toFun σ := pullL R (sch.map (galMap Ω p σ)) F n
-  map_one' := by
-    ext x
-    change pull R (sch.map (galMap Ω p 1)) F n x = x
-    rw [galMap_one, CategoryTheory.Functor.map_id, pull_id]
-  map_mul' σ τ := by
-    ext x
-    change pull R (sch.map (galMap Ω p (σ * τ))) F n x = pull R _ F n (pull R _ F n x)
-    rw [galMap_mul, Functor.map_comp, pull_comp]
 
 end Galois
 

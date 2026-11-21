@@ -2,8 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.FamilyGroupSumFactorsWeightAmplitude
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnfoldingIdentityMatchedFamilyClosedTermsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NonGenericGenericTermsClosedUnderLocalUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnfoldingIdentityMatchedFamilyClosedTerms
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FamDefs
+import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NonGenericGenericTermsClosedUnderLocalUnitary
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalisedBaseFramesRelevantPairStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermAtBasePointOfFramesStatement
 
@@ -26,7 +29,7 @@ theorem setQ_locClosed {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what�
     GlobalTheory.Unfold.LocClosed F F' (zOf Y) FP (setQ Y u u' S) := by
   have hRel : ∀ p, (FP p).RelG (LocNG.theta ((zOf Y).M p)) := fun p =>
     (GlobalTheory.T.localisedBaseFrames_relevantPair D (zOf Y) u u' w F F' hw hG p).2 (FP p) (hB p)
-  obtain ⟨hng, hgen, -, -⟩ := GlobalTheory.T.nonGeneric_generic_terms_closed_under_localUnitary D X Y u u' F F' w hw hG (zOf Y) FP hB hRel
+  obtain ⟨hng, hgen, -, -⟩ := _root_.GlobalTheory.LocOrbit.closed_ng_gen D X Y u u' F F' w hw hG (zOf Y) FP hB hRel
   intro t t' Λ Λ' hΛ hΛ' hloc ht
   have hGt : ∀ s : TauC Y u u', s.G ≠ 0 → (Y.tO u u').G s ≠ 0 := fun s hs => by
     show Formalism.L2.SG.TermOp.Gt s ≠ 0
@@ -49,7 +52,7 @@ theorem familyRowWeightSumUnfoldingIdentity_proof : FamilyWeightSumUnfoldingIden
   intro C' Cl _ _ D large₂ X Y u u' _ K S TS cls hF γ _ Fm hT
   obtain ⟨hTS, hCR, -⟩ := hF
   subst hTS
-  exact GlobalTheory.T.unfolding_identity_matched_family_closed_terms D X Y u u' _ cls hCR
+  exact _root_.GlobalTheory.Unfold.Tied.unfold_tied D X Y u u' _ cls hCR
     (fun F F' w hw hG FP hB => setQ_locClosed Y u u' S F F' w hw hG FP hB) γ Fm hT
 
 end GlobalTheory.SnFam

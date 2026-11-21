@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.UnipotentAdelicQuotients.SWXSDefs
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.DisintegrationDensityContinuousStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.DisintegrationDensityContinuous
 open MeasureTheory Topology Matrix
 open scoped ENNReal NNReal
 
@@ -220,7 +220,7 @@ theorem isContDensityOn_fibreIntegral : ∀ (V X Y : Type) [TopologicalSpace V]
     HeckeCharacterZeroLocus.SiegelWeilU.IsContDensityOn μ f ι ν B φ (fun b => ∫ v, φ v ∂(fib b)) ∧
       ∀ b, Integrable φ (fib b) := by
   intro V X Y _ _ _ _ _ _ _ _ _ _ _ _ μ ν _ _ _ f g ι hι hg hf B hB fib h φ hc hs
-  have hfin := (GlobalTheory.T.fibre_family_locallyFinite_measurable_bdd_on_compact V X Y μ ν f g ι hι hg hf B hB fib h).1
+  have hfin := (_root_.GlobalTheory.CompanionTheory.SW.FibreFam.fibre_family_basic V X Y μ ν f g ι hι hg hf B hB fib h).1
   have hcongr : ∀ {ψ : V → ℂ} {K : Set X}, (∀ v, g v ∈ K → ψ v = φ v) → ∀ b ∈ K,
       ∫ v, ψ v ∂(fib b) = ∫ v, φ v ∂(fib b) := by
     intro ψ K hψ b hb

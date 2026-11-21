@@ -21,14 +21,6 @@ lemma rinv (ρ : Γ →* GL (Fin N) C) (g : Γ) : (ρ g : Mat C N) * ρ g⁻¹ =
 lemma rinv' (ρ : Γ →* GL (Fin N) C) (g : Γ) : (ρ g⁻¹ : Mat C N) * ρ g = 1 := by
   rw [← rmul, inv_mul_cancel, rone]
 
-lemma gen_mul (ρ : Γ →* GL (Fin N) C) (A : Subalgebra C (Mat C N)) (hN : Normd ρ A)
-    {x y : Mat C N} (hx : x ∈ gens ρ A) (hy : y ∈ gens ρ A) : x * y ∈ gens ρ A := by
-  obtain ⟨a, ha, g, rfl⟩ := hx
-  obtain ⟨b, hb, h, rfl⟩ := hy
-  refine ⟨a * ((ρ g : Mat C N) * b * ρ g⁻¹), A.mul_mem ha (hN g b hb), g * h, ?_⟩
-  have key : (ρ g⁻¹ : Mat C N) * (ρ g * ρ h) = ρ h := by rw [← mul_assoc, rinv', one_mul]
-  rw [rmul]; simp only [mul_assoc, key]
-
 lemma span_mul (ρ : Γ →* GL (Fin N) C) (A : Subalgebra C (Mat C N)) (hN : Normd ρ A)
     (x y : Mat C N) (hx : x ∈ Submodule.span C (gens ρ A)) (hy : y ∈ Submodule.span C (gens ρ A)) :
     x * y ∈ Submodule.span C (gens ρ A) :=

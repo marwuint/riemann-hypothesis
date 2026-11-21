@@ -23,11 +23,4 @@ theorem boxFun_mem_SB {R : Type} [TopologicalSpace R] [T2Space R] {κ κ' : Type
   funext i
   rcases i with i | i <;> rfl
 
-section
-
-variable {R : Type} [CommRing R] {E : Type} [CommRing E] [Algebra R E] (c : E →ₐ[R] E)
-variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
-
-end
-
 end GlobalTheory.CompanionTheory.VacDbl

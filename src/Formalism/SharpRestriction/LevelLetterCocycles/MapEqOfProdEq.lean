@@ -1,4 +1,5 @@
-import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.ChainWithExtensionOfSplit
+import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CompositeOfChainHolds
+import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.SplitExt
 
 noncomputable section
 
@@ -53,18 +54,6 @@ theorem eG_mulVec (M : Matrix (Fin (r + t)) (Fin (r + t)) K)
     rw [Finset.sum_eq_single a (fun c _ hc => by rw [h2 c hc, zero_mul]) (by simp)]
 
 end GlobalTheory
-
-section Pts
-
-variable {O Y : Type} [CommRing O] [IsDomain O] (t : ℕ) (P : Y → O[X])
-
-end Pts
-
-section EE
-
-variable {A : Type} [CommRing A] {d : Type} [Fintype d] [DecidableEq d]
-
-end EE
 
 section Gen2
 

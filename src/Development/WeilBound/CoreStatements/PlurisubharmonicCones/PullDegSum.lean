@@ -2,10 +2,29 @@ import Development.WeilBound.CoreStatements.PlurisubharmonicCones.LevelFree
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.RootIdxLast
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.HtLabelCongr
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.JoinNormal
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompactDatumIntersectionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionDatumDegreeSumStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptMultihomogFormStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BlockPullbackHermLineStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
+import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ComponentDataHeightIdentity
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DetLatticeTensorIsDegOnMuTwDeg
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptMultihomogForm
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpPair
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BlockPullbackHermLine
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CmHostRankBoundsStatement
 
 open AlgebraicGeometry CategoryTheory Limits NumberField Matrix
@@ -63,7 +82,7 @@ theorem common (h₁ : LevelFree) (h₂ : MuHodge) : Common := by
   subst hS
   have hmono : Mono (spMap (algebraMap (𝓞 c.F) c.F)) := OrLinked.mono_int' c
   have czR : CharZero RM.Ω := charZero_of_injective_ringHom oR.𝔐.cst.injective
-  obtain ⟨a1, a2, a3, a4⟩ := GlobalTheory.T.compact_datum_intersection E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B
+  obtain ⟨a1, a2, a3, a4⟩ := _root_.LevelTowerAlt.component_data_height_identity E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B
   have hfree : ∀ p ∈ S₀ ∪ Dc.SB B, HT.HTFree Or.𝔐 p := fun p hp' => by
     rcases Finset.mem_union.1 hp' with h | h
     · exact hgood.1 p h
@@ -92,8 +111,8 @@ theorem common (h₁ : LevelFree) (h₂ : MuHodge) : Common := by
     exact Module.finrank_pos)
   obtain ⟨K₃, _, ρ, _, κ₁, v₁, κ, v, y, Z, ξ, g₁, g₂, bm₁, bm₂, hy₁, hy₂, I1, I2, har, hbir, hall, htie, hnorm, hd₁, hd₂, hrk⟩ :=
     join_normal i₁ i₂ RM.y Dc.y _ oR.𝔐.ξ Or.𝔐.ξ RM.arith RM.birational fd₁ oR.𝔐.all Or.𝔐.all oR.𝔐.tie Or.𝔐.tie
-  obtain ⟨x₁, hx₁'⟩ := GlobalTheory.T.hodge_component_factor_point E H D l (Xo l) c _ _ Y _ RM.Ω RM.K RM.ι RM.y oR.𝔐 hmono
-  obtain ⟨x₂, hx₂'⟩ := GlobalTheory.T.hodge_component_factor_point E H D l (Xo l) c _ _ Y _ Ω K J Dc.y Or.𝔐 hmono
+  obtain ⟨x₁, hx₁'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GenOpen.gen_open E H D l (Xo l) c _ _ Y _ RM.Ω RM.K RM.ι RM.y oR.𝔐 hmono
+  obtain ⟨x₂, hx₂'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GenOpen.gen_open E H D l (Xo l) c _ _ Y _ Ω K J Dc.y Or.𝔐 hmono
   have hx₁ : oR.𝔐.ξ ≫ oR.𝔐.f = (spMap oR.𝔐.fn ≫ x₁) ≫ Y.j := by
     rw [Category.assoc, ← hx₁']; exact oR.𝔐.fn_over
   have hx₂ : Or.𝔐.ξ ≫ Or.𝔐.f = (spMap Or.𝔐.fn ≫ x₂) ≫ Y.j := by
@@ -101,7 +120,7 @@ theorem common (h₁ : LevelFree) (h₂ : MuHodge) : Common := by
   have hdisc' : ∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr E → p ∈ S₀ ∪ Dc.SB B := fun p h1 h2 =>
     Finset.mem_union_left _ (hdisc p h1 h2)
   obtain ⟨𝔐, a, j₁, m₁, q1, q2, q3, q4, q5, q6, q7, -, q9⟩ :=
-    GlobalTheory.T.hodge_cpt_field_extension E H D l (Xo l) c _ _ Y _ RM.Ω Ω₃ i₁ RM.K K₃ RM.ι ρ RM.y y oR.𝔐 _ Z ξ g₁ hx₁ hdisc'
+    _root_.GlobalTheory.CompanionTheory.Ar.HcptPull.hodgeCpt_pull E H D l (Xo l) c _ _ Y _ RM.Ω Ω₃ i₁ RM.K K₃ RM.ι ρ RM.y y oR.𝔐 _ Z ξ g₁ hx₁ hdisc'
       (fun p hp s => (hvR p hp).2 s) hall htie hnorm hd₁
   have hdom₁ : GlobalTheory.CompanionTheory.Ar.Dominates 𝔐.ξ oR.𝔐.ξ (a.hom ≫ g₁) i₁ := by
     show 𝔐.ξ ≫ a.hom ≫ g₁ = _
@@ -134,7 +153,7 @@ theorem common (h₁ : LevelFree) (h₂ : MuHodge) : Common := by
     have e1 : 𝔐.ξ ≫ a.hom ≫ g₁ = spMap i₁ ≫ oR.𝔐.ξ := hdom₁
     rw [hf𝔐, ← Category.assoc, e1, Category.assoc, hx₁]
     simp only [Category.assoc]
-  obtain ⟨β, d, hβ, hβn, hint⟩ := GlobalTheory.T.hodge_cpt_multihomog_form E H D l (Xo l) c _ _ Y _ Ω₃ K₃ ρ y 𝔐 _ hx hmono
+  obtain ⟨β, d, hβ, hβn, hint⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.HInterior.exists_form_interior E H D l (Xo l) c _ _ Y _ Ω₃ K₃ ρ y 𝔐 _ hx hmono
   have hdown : ∀ (z : Sp ℂ ⟶ 𝔐.X) (w : (Σ k, ρ k) → ℂ), CoordsAt 𝔐.ξ y z w → 𝔐.Interior z →
       CoordsAt Or.𝔐.ξ Dc.y (z ≫ a.hom ≫ g₂) (fun p => w (v p)) ∧ Or.𝔐.Interior (z ≫ a.hom ≫ g₂) := fun z w hw hz =>
     ⟨HodgePull.coordsAt_pull hdom₂ 𝔐.tie.gen Or.𝔐.tie.cover bm₂ hy₂ (𝔐.all _) (Or.𝔐.all _) hw,
@@ -156,7 +175,7 @@ theorem common (h₁ : LevelFree) (h₂ : MuHodge) : Common := by
       (Or.i_range τ ▸ LinearMap.mem_range_self (Or.i τ) (bb τ (tailIdx Dc.j_le_N k)))
     exact ⟨z, hz, by rw [← h, add_sub_cancel_right]; exact ha⟩
   choose s hs using hs
-  obtain ⟨hsi, hdeg⟩ := GlobalTheory.T.intersection_datum_degree_sum E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B bb s _ hs hΛ
+  obtain ⟨hsi, hdeg⟩ := _root_.LevelTowerAlt.det_lattice_tensor_isDegOn_muTwDeg E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B bb s _ hs hΛ
   have hmet := h₂ hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B bb s _ hs hΛ
   have hn : Dc.N - Dc.j = D.q := by
     rcases Or.side with ⟨-, -, h⟩ | ⟨h, -, -⟩
@@ -165,7 +184,7 @@ theorem common (h₁ : LevelFree) (h₂ : MuHodge) : Common := by
       obtain ⟨τ⟩ : Nonempty (CMType H) := (GlobalTheory.T.cm_host_rank_bounds E H).2.1
       exact absurd (congrFun h τ) (by simp)
   simp only [hsm] at hs hdeg hmet
-  choose Lp hLp using fun r => ((GlobalTheory.T.block_pullback_herm_line RM.K RM.ι K₃ ρ κ₁ v₁ bm₁).1 (oR.sing r)).exists
+  choose Lp hLp using fun r => ((_root_.GlobalTheory.CompanionTheory.Ar.Cmp.hermLine_pull_blockMap RM.K RM.ι K₃ ρ κ₁ v₁ bm₁).1 (oR.sing r)).exists
   have hroot : Fl.RootLines (fun r => (Lp r).a) fun r => i₁ (oR.e r) := by
     have h := hlF _ _ oR.lines
     have e : (fun r => (Lp r).a) = fun r => pullDeg κ₁ (RM.xdeg r) := funext fun r => by rw [(hLp r).1, oR.sing_deg]

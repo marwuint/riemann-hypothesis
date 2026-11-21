@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.GeoDefs
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvalZeroOfMemHomogeneousIdeal
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HomogeneousIdealNeTopStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HomogeneousIdealNeTop
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HomogeneousIdealComponentMemStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemHomogeneousIdealOfEvalZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BasicOpenNonemptyOfNeZeroStatement
@@ -26,8 +26,8 @@ theorem homIdeal_homog : ∀ f ∈ homIdeal i, ∀ n : ℕ, MvPolynomial.homogen
 
 theorem homIdeal_ne_top [Nonempty X] : homIdeal i ≠ ⊤ := by
   first
-    | exact GlobalTheory.T.homogeneous_ideal_ne_top ..
-    | (intros; apply GlobalTheory.T.homogeneous_ideal_ne_top <;> assumption)
+    | exact _root_.GlobalTheory.CompanionTheory.GeoNetop.homIdeal_ne_top ..
+    | (intros; apply _root_.GlobalTheory.CompanionTheory.GeoNetop.homIdeal_ne_top <;> assumption)
 
 theorem preimage_basicOpen_nonempty [IsIntegral X] {g : MvPolynomial (Fin (N + 1)) K} {e : ℕ} (he : 0 < e)
     (hg : g ∈ grK K N e) (hg0 : Ideal.Quotient.mk (homIdeal i) g ≠ 0) :

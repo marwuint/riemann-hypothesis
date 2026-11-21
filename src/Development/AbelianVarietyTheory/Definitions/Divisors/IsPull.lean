@@ -15,9 +15,6 @@ variable (k) in
 
 def sig : Fr p k →+* Fr p k := (WittVector.FractionRing.frobenius p k : Fr p k →+* Fr p k)
 
-def twist {ι : Type} (μ : ι → MvPowerSeries σ k) : ι → MvPowerSeries σ k :=
-  fun i => MvPowerSeries.map (frobenius k p) (μ i)
-
 def powX (R : Type) [CommRing R] (σ : Type) (n : ℕ) : σ → MvPowerSeries σ R := fun i => X i ^ n
 
 def frobS (f : MvPowerSeries (Fin d) (Fr p k)) : MvPowerSeries (Fin d) (Fr p k) :=

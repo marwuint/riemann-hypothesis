@@ -1,37 +1,26 @@
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IrreducibleCharacterSeries.ConjugateCharacterFormula
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleIffIrreducibleStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SeparableIrreducibleStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralIdempotentPropertiesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntertwinerInnerProductStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrobeniusReciprocityInnerProductStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MackeyInnerProductStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HarishChandraCharacterStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HarishChandraDimensionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardParabolicSubgroupStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SquarefreeDimensionFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PermutationMatrixPropertiesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BruhatDecompositionTwoBlocksStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BruhatDecompositionUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalVanishingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SamePartitionStatementStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InnerProductCuspidalIsoStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MackeyFormulaAllStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceCompLeftFunLeft
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IrreducibleCharacterSeries.FrobeniusSumFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PermutationMatrixProperties
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BruhatDecompositionTwoBlocks
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GreenLabelSurjective.Transp
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalIsomorphismPropertiesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConsequenceOfMackeyStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductSimpleAllStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalSupportExistsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirrorPartitionsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PatternGroupStatementStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerSymmetryStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RootExchangeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChainIndependenceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GoodWordCount
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HarishChandraWhittaker
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClauseAToL
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalOfUnipotentSumsVanishStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCuspidalWithLabelStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalIsomorphismProperties
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleIffIrreducible
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductSimpleAll
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetModuleAll
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GreenLabelSurjective.Simple
+import Formalism.PadicSubsetSums.CentralIdempotents.IsConstituent
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PatternGroupStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasLabelTransportEquiv
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalWhittaker
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RowToColumnReduction
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalOfUnipotentSumsVanish
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCuspidalWithLabel
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalLabelUniqueStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalParametrization
 
@@ -68,24 +57,6 @@ theorem CuspIso.trans {α β γ : Type} [Fintype α] [DecidableEq α] [Fintype �
     [DecidableEq γ] {lam : FDRep ℂ (GL α K)} {mu : FDRep ℂ (GL β K)} {nu : FDRep ℂ (GL γ K)}
     (h : CuspIso K lam mu) (h' : CuspIso K mu nu) : CuspIso K lam nu :=
   (GlobalTheory.T.cuspidal_isomorphism_properties K α β γ lam lam mu nu (Classical.choose h)).2.1 h h'
-
-variable (K) in
-theorem mackey_cuspidal : MackeyCusp K := GlobalTheory.T.mackey_formula_all K
-
-variable (K) in
-theorem supportUnique_of_mackey (h : MackeyCusp K) : SupportUnique K := (GlobalTheory.T.consequence_of_mackey K h).1
-
-variable (K) in
-theorem HC.hcSupportExists_holds : HC.HCSupportExists K := GlobalTheory.T.cuspidal_support_exists K
-
-variable (K) in
-theorem A2.sqfreeCore_of (h : MackeyCusp K) : SqfreeCore K :=
-  ⟨(GlobalTheory.T.consequence_of_mackey K h).2.1, GlobalTheory.T.squarefree_dimension_formula K, (GlobalTheory.T.consequence_of_mackey K h).2.2⟩
-
-variable (K) in
-theorem HCLabelO_mirror (C : LabelConv K) (O : LabelMap K C) : HCLabelO O :=
-  (GlobalTheory.T.mirror_partitions K C O (HC.hcSupportExists_holds K) (supportUnique_of_mackey K (mackey_cuspidal K))
-    (A2.sqfreeCore_of K (mackey_cuspidal K))).1
 
 end GeneralLinearIntegers
 

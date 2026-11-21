@@ -1590,21 +1590,9 @@ end Formalism.MainNotions.BridgeLemma
 
 end
 
-noncomputable section
-
 namespace Formalism.MainNotions.BridgeLemma
 
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
-
-section Assembly
-
-variable {eps : ℝ} (Fm : FamP eps)
-
-end Assembly
-
 end Formalism.MainNotions.BridgeLemma
-
-end
 
 noncomputable section
 
@@ -2169,12 +2157,6 @@ theorem abs_decay_mono_constants (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg c
   have : 0 ≤ lossP large₂.sc.b C D.R.m W.z W.z' γ p := by linarith
   positivity
 
-section Fam
-
-variable {eps : ℝ} (Fm : FamP eps)
-
-end Fam
-
 end Formalism.MainNotions.BridgeLemma
 
 end
@@ -2494,34 +2476,11 @@ end Formalism.MainNotions.BridgeLemma
 
 end
 
-noncomputable section
-
 namespace Formalism.MainNotions.BridgeLemma
-
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
-
-section Final
-
-variable {eps : ℝ} (Fm : FamP eps)
-
-end Final
 
 end Formalism.MainNotions.BridgeLemma
 
-end
-
-noncomputable section
-
 namespace Formalism.MainNotions.BridgeLemma
-
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
-
-section Final
-
-variable {eps : ℝ} (Fm : FamP eps)
-
-end Final
 
 end Formalism.MainNotions.BridgeLemma
 
-end

@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.HarderNarasimhan.ShiftInvariance
-import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.SaturatedDuality
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
 import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.SaturatedPerpDuality
 
 open NumberField
@@ -53,21 +53,5 @@ theorem htQ_pos (I : AutInst) (x : I.GA) (hfg : (lamX I x).FG) (S S' : Submodule
     (frm I x) (frm_det I x) (lamX I x) S hfg hS
   rw [(hq S' h hS').1]
   exact (Formalism.HN.plLat I.E _ κ b'' X'' hX'' _ ((fg_of_le_lamX I x hfg hS').map _)).2.2
-
-theorem lamX_ne_bot (I : AutInst) (x : I.GA) (hn : 1 ≤ I.n)
-    (h : ∀ S : Submodule (𝓞 I.E) (Fin I.n → I.E), GlobalTheory.IndefiniteRowSideFullHecke.SaturatedPerpDuality.SatIn I x S →
-      Formalism.HN.rkK (perpIn I x S) + Formalism.HN.rkK S = I.n) : lamX I x ≠ ⊥ := by
-  intro hb
-  have hsat : GlobalTheory.IndefiniteRowSideFullHecke.SaturatedPerpDuality.SatIn I x ⊥ := by
-    unfold GlobalTheory.IndefiniteRowSideFullHecke.SaturatedPerpDuality.SatIn Formalism.HN.IsSat Formalism.F.IsSaturated
-    rw [hb]
-    exact ⟨le_rfl, le_rfl, fun y hy _ => hy⟩
-  have hz : Formalism.HN.rkK (⊥ : Submodule (𝓞 I.E) (Fin I.n → I.E)) = 0 := by
-    unfold Formalism.HN.rkK
-    rw [Submodule.bot_coe, Submodule.span_singleton_eq_bot.mpr rfl]
-    simp
-  have h1 := h ⊥ hsat
-  rw [GlobalTheory.IndefiniteRowSideFullHecke.SaturatedPerpDuality.perpIn_bot, hb, hz] at h1
-  omega
 
 end GlobalTheory.StepDualityCompare

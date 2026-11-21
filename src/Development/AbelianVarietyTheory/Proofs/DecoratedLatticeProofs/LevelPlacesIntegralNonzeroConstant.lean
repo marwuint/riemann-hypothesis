@@ -4,9 +4,10 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SkewGr
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HeckeLPartialContinuationHolds
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilCoefficientExternalProductEqMulOrthogonalSumStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilCoefficientExternalProductEqMulOrthogonalSum
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PrincipalCongruenceRealPointsIntegrationHeightOnStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DefiniteUnitaryQuotientCompactFundamentalDomainStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DefiniteUnitaryQuotientCompactFundamentalDomain
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumThetaJointlyContinuous
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelWeilSectionIntegrableAndContinuous
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormIntegralFundamentalDomainEqL2NormSq
@@ -40,7 +41,7 @@ theorem continuous_wcoef {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT
 theorem continuous_rcoef {θ : InfFam D} {A : HSp D} {cA : CptF A} (hA : HSpace.SigOK A) (hP : HSpace.IsPosDef A)
     {m : Measure (GA D A)} (hm : m.IsHaarMeasure) {u : GA D A → ℂ} (hu : u ∈ A0 θ A cA) :
     Continuous (rcoef m u u) := by
-  obtain ⟨⟨K₀, hK₀, hK₀c⟩, X, K, -, hX, hK, hXK⟩ := GlobalTheory.T.definite_unitary_quotient_compact_fundamentalDomain D A hA hP m hm
+  obtain ⟨⟨K₀, hK₀, hK₀c⟩, X, K, -, hX, hK, hXK⟩ := _root_.GlobalTheory.DefFund.coCpt_and_fundamentalDomain_subset_compact D A hA hP m hm
   have hu' := (Submodule.mem_inf.1 hu).2
   have huc : Continuous u := hu'.1
   have hul : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ A) u := hu'.2.1
@@ -88,7 +89,7 @@ theorem integral_const : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
   set F : GA D A → ℂ := fun g => wcoef omW νW 𝓕W Φ Φ g * wcoef omH νH 𝓕H f f g * rcoef m u u g with hFdef
   have hFc : Continuous F := ((continuous_wcoef hW hνW hΦ hΦ).mul (continuous_wcoef hH hνH hf hf)).mul
     (continuous_rcoef hD.sig hD.pos hm hu)
-  have hbox := GlobalTheory.T.weilCoefficient_externalProduct_eq_mul_orthogonalSum D ψ A B W H o χA χW omB omW omH hB hW hH νB 𝓕B νW 𝓕W νH 𝓕H hνB hνW hνH Φ f hΦ hf
+  have hbox := _root_.GlobalTheory.Core.Rk.BoxCoef.wcoef_boxT D ψ A B W H o χA χW omB omW omH hB hW hH νB 𝓕B νW 𝓕W νH 𝓕H hνB hνW hνH Φ f hΦ hf
   have hFκ : ∀ (b : GinfC A), ∀ κ ∈ prin A β Z, F ((b : GA D A) * κ) = F b := fun b κ hκ => by
     simp only [hFdef, wcoef_mul_fix omW νW 𝓕W Φ Φ _ κ (hOcc.fix κ hκ), wcoef_mul_fix omH νH 𝓕H f f _ κ (hfκ κ hκ),
       rcoef_mul_fix m u _ κ (hufix κ hκ)]

@@ -44,9 +44,6 @@ def Tcrit (u : D.what₂.Word) (τ : D.what₂.Tau) : ℝ :=
 
 def Tr (u : D.what₂.Word) : ℝ := ((D.mem u).A.T : ℝ)
 
-def beUU (κ : ℝ) (u u' : D.what₂.Word) (τ : D.what₂.Tau) (Y : ℝ) : ℝ :=
-  beS κ D.R.rS (lamS D.R (D.hc τ)) (Tr D u) (Tr D u') (uS D u τ) (uS D u' τ) Y
-
 def tV (u u' : D.what₂.Word) (τ : D.what₂.Tau) : ℝ :=
   Real.sqrt (Tcrit D u τ * Tcrit D u' τ / (Tr D u * Tr D u'))
 
@@ -67,19 +64,9 @@ def genScal (u u' : D.what₂.Word) : ℝ :=
           D.s.Gterm (D.s.pfst P) ≠ 0 ∧ D.s.Gterm (D.s.psnd P) ≠ 0
       then D.s.pval P else 0).re
 
-def hsDiagAllD (u : D.what₂.Word) : ℝ := hsNormSq (KD D u u - ContinuousLinearMap.id ℂ (D.s.Cu u))
-
-def f3G : ℝ := ∏ᶠ p ∈ typedPl D, (1 + 3 / (Ideal.absNorm p.asIdeal : ℝ))
-
 def IsSat {u u' : D.what₂.Word} (Φ : Set (D.s.Term u u')) : Prop :=
   Φ = famG D.s ∨ Φ = famNG D.s ∨ Φ = {t | D.s.Gterm t = 0 ∧ ¬ D.s.isId t} ∨
     Φ = {t | D.s.relevant t ∧ D.s.Gterm t = 0 ∧ ¬ D.s.isId t}
-
-def Line2a : Prop :=
-  ∀ (u u' : D.what₂.Word) (Φ : Set (D.s.Term u u')), IsSat D Φ → Summable (fun p : pairsIn D.s Φ => ‖D.s.pval p.1‖) →
-    hsNormSq (KOf D.s u u' Φ) ≤ f3G D * gaG D * (∑' p : pairsIn D.s Φ, D.s.pval p.1).re
-
-def HostFactorProductPowerIdentity : Prop := f3G D = (∏ i : Fin 2, (1 + 3 / (D.host.g i : ℝ))) ^ D.R.f
 
 def StandingNumericalData (C0 : ℝ) : Prop :=
   let k : ℝ := D.R.k
@@ -162,9 +149,5 @@ def NA : ℝ := 4 * 5 * ((D.R.rS : ℝ) + 1)
 
 def ThA (CA : ℝ) (u u' : D.what₂.Word) (x : D.what₂.Tau → LocalDataRealPlace D) (L : LatticeDataWithDual D) : ℝ :=
   ThS D CA CA (NA D) (Tr D u) (Tr D u') (gE D) x L
-
-def IsLocC (u u' : D.what₂.Word) (l : ℕ) (x : D.what₂.Tau → LocalDataRealPlace D) : Prop :=
-  IsLocA D u u' x ∧ ∀ τ, (x τ).a = 5 / 2 - vOne D τ l ∧ (x τ).b = (D.s.Del : ℝ) / 2 - vOne D τ l ∧
-    (x τ).a1 = 5 / 2 - vOne D τ l ∧ (x τ).b1 = NA D ^ 3 - vOne D τ l
 
 end Formalism.MainNotions.S

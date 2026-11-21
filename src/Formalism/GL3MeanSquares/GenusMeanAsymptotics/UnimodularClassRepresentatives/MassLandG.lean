@@ -76,12 +76,6 @@ theorem orthBasisPos_holds : OrthBasisPos := by
   · exact hs.eq (e i) (e i)
   · exact hpos (e i) (e.ne_zero i)
 
-section
-
-variable {K V : Type*} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
-
-end
-
 namespace GramDeterminantPositive
 
 end GramDeterminantPositive

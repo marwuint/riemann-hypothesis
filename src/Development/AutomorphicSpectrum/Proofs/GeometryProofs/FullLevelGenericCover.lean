@@ -5,8 +5,8 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.MemEigSpOfMemH
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFullLevelAt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ModuliFiniteSurjectiveOverGenericFamily
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FullLevelStructurePullbackStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FullLevelStructurePropertiesStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FullLevelStructurePullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FullLevelStructureProperties
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.XR
@@ -25,10 +25,10 @@ theorem exists_full_level_over : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     rw [hf]
     have : spMap (RingHom.id Ω) = 𝟙 _ := by simp [spMap]
     rw [this, Category.id_comp]
-  obtain ⟨ev', hev', -⟩ := GlobalTheory.T.full_level_structure_pullback E H D Y.X X Y.t t f m Ω Ω (RingHom.id Ω) (spMap i ≫ y ≫ Y.j) ξ hid N z ev hlev
+  obtain ⟨ev', hev', -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.XR.isFullLevelAt_move E H D Y.X X Y.t t f m Ω Ω (RingHom.id Ω) (spMap i ≫ y ≫ Y.j) ξ hid N z ev hlev
   have hz : Units.map (RingHom.id Ω).toMonoidHom z = z := by ext; rfl
   rw [hz] at hev'
-  obtain ⟨hprim, -, -, -, -, hfull, -⟩ := GlobalTheory.T.full_level_structure_properties E H D X t Ω ξ N hN z ev' hev'
+  obtain ⟨hprim, -, -, -, -, hfull, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.XR.fullLevel_props E H D X t Ω ξ N hN z ev' hev'
   refine ⟨t, m, ev', hev', hfull, fun q => ?_⟩
   have hpow : (z : Ω) ^ N = 1 := by
     have := congrArg Units.val hprim.pow_eq_one

@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeisOAdd
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegrableOnDownwardThetaLiftIntegrandStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DownwardLiftLevelActsByInverseCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaFunctionMemSpanLevelTypeDifferencesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegrableOnDownwardThetaLiftIntegrand
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DownwardLiftLevelActsByInverseCharacter
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaFunctionMemSpanLevelTypeDifferences
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevelAveragesThetaPairZeroWithoutCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaFunctionLevelTypeMemSpanAveragesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaFunctionLevelTypeMemSpanTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaFunctionLevelTypeMemSpanAverages
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaFunctionLevelTypeMemSpanTranslates
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef
@@ -66,7 +66,7 @@ theorem genFin : GlobalTheory.Hk3.HoweUnram → ∀ (D : D7) (G : Type) [Group G
     fun p φ hφ => (hP i t).datum.om_pres p φ hφ
   let Pr : (WO (Vc D i) (Wc D i) → ℂ) → Prop := fun φ =>
     IsThetaFunO R.ψ (Vc D i) (Wc D i) φ ∧ ∀ (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)), downInt R i t y φ l g = 0
-  have hint := GlobalTheory.T.integrableOn_downwardThetaLift_integrand D G Pl0 T A Ks R F hG hP i t y
+  have hint := _root_.GlobalTheory.DownLift.GenFinite.integrableOn_downIntegrand D G Pl0 T A Ks R F hG hP i t y
   have hadd : ∀ φ φ', Pr φ → Pr φ' → Pr (φ + φ') := by
     intro φ φ' h1 h2
     refine ⟨theta_add h1.1 h2.1, fun l g => ?_⟩
@@ -94,9 +94,9 @@ theorem genFin : GlobalTheory.Hk3.HoweUnram → ∀ (D : D7) (G : Type) [Group G
     exact theta_sum _ _ f' hf' fun k _ => theta_smul _ (hθ _ _ hf')
   have hType : ∀ φ, TypeVec R i t φ → Pr φ := by
     intro φ hφ
-    refine hspan _ ?_ φ (GlobalTheory.T.thetaFunction_levelType_mem_span_averages D G Pl0 T A Ks R F hG hP i t φ hφ)
+    refine hspan _ ?_ φ (_root_.GlobalTheory.DownLift.GenFinite.cleanSpan D G Pl0 T A Ks R F hG hP i t φ hφ)
     rintro x (hx | hx)
-    · exact hspan _ hGen x (GlobalTheory.T.thetaFunction_levelType_mem_span_translates hH D G Pl0 T A Ks R F hG hP i t x hx.1 hx.2)
+    · exact hspan _ hGen x (_root_.GlobalTheory.DownLift.GenFinite.gen_of_type_clean hH D G Pl0 T A Ks R F hG hP i t x hx.1 hx.2)
     · exact hAvg x hx
   have hDiff : ∀ φ ∈ TypeDiff R i t, Pr φ := by
     rintro φ ⟨κ, hκ, f', hf', rfl⟩
@@ -106,9 +106,9 @@ theorem genFin : GlobalTheory.Hk3.HoweUnram → ∀ (D : D7) (G : Type) [Group G
       rw [neg_smul, sub_eq_add_neg]
     rw [e, downInt_add R i t y _ _ l g (hint _ l g (hθ _ _ hf'))
       (hint _ l g (theta_smul _ hf')), downInt_smul,
-      GlobalTheory.T.downwardLift_level_acts_by_inverse_character D G Pl0 T A Ks R F hG hP i t y f' hf' κ hκ l g]
+      _root_.GlobalTheory.DownLift.TypeLaw.downInt_level D G Pl0 T A Ks R F hG hP i t y f' hf' κ hκ l g]
     ring
-  refine (hspan _ ?_ f (GlobalTheory.T.thetaFunction_mem_span_levelType_differences D G Pl0 T A Ks R F hG hP i t f hf)).2 l g
+  refine (hspan _ ?_ f (_root_.GlobalTheory.DownLift.GenFinite.typeSpan D G Pl0 T A Ks R F hG hP i t f hf)).2 l g
   rintro x (hx | hx)
   · exact hType x hx
   · exact hDiff x hx

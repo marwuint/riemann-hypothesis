@@ -27,7 +27,7 @@ theorem exists_sqOf_of_dim (hL : Out.Laws) (h k : ℕ) (o : Type) [CommRing o] (
   have h2 : IsUnit ((2 : ℕ) : R) := by
     have := (IsUnit.mk0 ((2 : ℕ) : ℚ) (by norm_num)).map (algebraMap ℚ R)
     rwa [map_natCast] at this
-  obtain ⟨R', _, _, ⟨f₁, e₁, l₁⟩, H₁⟩ := GlobalTheory.T.exists_finiteEtale_cover_constant_torsion R c₀.A h 2 c₀.ab hd h2
+  obtain ⟨R', _, _, ⟨f₁, e₁, l₁⟩, H₁⟩ := _root_.GlobalTheory.TorsionCover.exists_torsion_basis_cover R c₀.A h 2 c₀.ab hd h2
   obtain ⟨c', m', hc'⟩ := pull_sieg (spMap ((algebraMap R R').comp β)) (spMap (algebraMap R R'))
     (SiegelRingChange.spMap_comp' _ _).symm c₀ hc₀
   have m'' := m'
@@ -62,7 +62,7 @@ theorem exists_sqOf_of_dim (hL : Out.Laws) (h k : ℕ) (o : Type) [CommRing o] (
   have hd₁ : SmoothOfRelativeDimension h c₁.A.hom :=
     (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (g₁.comp g').1 hd
   obtain ⟨P, φ, hP⟩ := GlobalTheory.T.exists_principalPolarization_symmetric_squareRoot hL h k o ζ R₁ _ c₁ M hc₁ hd₁ hM
-    (GlobalTheory.T.lam_iso_of_doubling_pullback_eq_diagonal_sq hL h k o ζ R₁ _ c₁ M hc₁ hM iM') sM
+    (_root_.GlobalTheory.LamOfDouble.lam_iso_of_pull_two hL h k o ζ R₁ _ c₁ M hc₁ hM iM') sM
   obtain ⟨ψ, hψ'⟩ := sqOf_of_pb hP (pb_comp m' m₁)
   letI : Algebra R R₁ := ((algebraMap R' R₁).comp (algebraMap R R')).toAlgebra
   haveI : IsScalarTower R R' R₁ := IsScalarTower.of_algebraMap_eq fun _ => rfl

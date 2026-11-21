@@ -2,7 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PullRigIsSymmetric
 import Development.AbelianVarietyTheory.Definitions.Foundations.MemUnitaryGroupIffIsIsometry
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.KTrivOfUnimodular
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLeftInverse
+import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.PowObjGeometricallyConnected
+import Development.AbelianVarietyTheory.Statements.PrincipalLattices.LogHermFormOfUnitDiscriminant
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLbHermitian
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.TensorMapFiniteOfSplit
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RelAmpleExternalTensorPowerGroupPower
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSecImageNonzeroLocus
 
 noncomputable section
 
@@ -144,11 +150,6 @@ theorem isLinearHom_crd (i : Fin P.n) : IsLinearHom b a (crd t P i) := t.isLinea
 
 instance isMonHom_crd (i : Fin P.n) : IsMonHom (crd t P i) := IsTensor.isMonHom_mapLeft _ _ _
 
-omit [StarRing O] in
-
-@[reassoc] theorem tmul_crd (m : M) (i : Fin P.n) : t.tmul m ≫ crd t P i = a.act (P.incl m i) := by
-  simp [crd]
-
 abbrev BIx (n : ℕ) : Type := (Fin n × Fin n) × ULift.{0} (Finset (Fin 2))
 
 def biExp (n : ℕ) (q : BIx n) : ℤ := (-1) ^ (2 - q.2.down.card)
@@ -166,8 +167,6 @@ instance isMonHom_biMap [GrpObj T] (x z : T ⟶ A) [IsMonHom x] [IsMonHom z] (q 
 
 def biLB (L : LB G.left) (x z : T ⟶ A) : LB T.left :=
   LB.LinComb L (fun q => (biMap t P h x z q).left) (biExp P.n)
-
-theorem isLB_biLB {L : LB G.left} (hL : L.IsLB) (x z : T ⟶ A) : (biLB t P h L x z).IsLB := LB.isLB_linComb hL _ _
 
 def bi (c : Pic G.left) (x z : T ⟶ A) : Pic T.left :=
   ∑ i, ∑ j, lam c (x ≫ crd t P i) (z ≫ crd t P j ≫ a.act (gram P h i j))
@@ -238,24 +237,6 @@ theorem bi_act (x z : T ⟶ A) (c : O) :
 
 include hΘ hadj in
 
-theorem bi_tmul (x z : T ⟶ G) (m n : M) :
-    bi t P h (cls L hL) (x ≫ t.tmul m) (z ≫ t.tmul n) = lam (cls L hL) (x ≫ a.act (h m n)) z := by
-  let φ : O →+ Pic T.left := AddMonoidHom.mk' (fun c => lam (cls L hL) (x ≫ a.act c) z) fun c d => by
-    simp only [a.add, MonObj.comp_mul, lam_mul_left hL hΘ]
-  have hφ : ∀ c d, lam (cls L hL) (x ≫ a.act c) (z ≫ a.act d) = φ (c * star d) := fun c d => by
-    have := lam_act hL hadj (x ≫ a.act c) z (star d)
-    rw [star_star, Category.assoc, ← a.mul] at this
-    exact this.symm
-  simp only [bi, Category.assoc, tmul_crd, tmul_crd_assoc, ← a.mul, hφ, ← map_sum]
-  change _ = φ (h m n)
-  congr 1
-  rw [herm_expand (starRingEnd O) (fun m n => h m n) h.add_left h.smul_left (fun m n => (h.star_apply m n).symm) P m n]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  rw [star_mul', gram, h.star_apply, _root_.mul_assoc]
-  rfl
-
-include hΘ hadj in
-
 theorem lam_bi {w : O} (hw : w + star w = 1) (x z : T ⟶ A) :
     lam (bi t P h (cls L hL) (𝟙 A) (b.act w)) x z = bi t P h (cls L hL) x z := by
   have := b.hom w
@@ -266,57 +247,6 @@ theorem lam_bi {w : O} (hw : w + star w = 1) (x z : T ⟶ A) :
   simp only [pull_bi, Category.comp_id, MonObj.mul_comp, bi_one_left, bi_mul_left t P h hL hΘ,
     bi_mul_right t P h hL hΘ]
   abel
-
-omit [StarRing O] in
-include t in
-
-theorem biadd_ext {V : Type 1} [AddCommGroup V] (β κ : (T ⟶ A) → (T ⟶ A) → V)
-    (β₁ : ∀ x y z, β (x * y) z = β x z + β y z) (β₂ : ∀ x y z, β x (y * z) = β x y + β x z)
-    (κ₁ : ∀ x y z, κ (x * y) z = κ x z + κ y z) (κ₂ : ∀ x y z, κ x (y * z) = κ x y + κ x z)
-    (e : ∀ m n (x z : T ⟶ G), β (x ≫ t.tmul m) (z ≫ t.tmul n) = κ (x ≫ t.tmul m) (z ≫ t.tmul n)) (x z : T ⟶ A) :
-    β x z = κ x z := by
-  have o₁ : ∀ δ : (T ⟶ A) → (T ⟶ A) → V, (∀ x y z, δ (x * y) z = δ x z + δ y z) → ∀ z, δ 1 z = 0 := fun δ hδ z => by
-    have := hδ 1 1 z
-    rwa [_root_.mul_one, left_eq_add] at this
-  have o₂ : ∀ δ : (T ⟶ A) → (T ⟶ A) → V, (∀ x y z, δ x (y * z) = δ x y + δ x z) → ∀ x, δ x 1 = 0 := fun δ hδ x => by
-    have := hδ x 1 1
-    rwa [_root_.mul_one, left_eq_add] at this
-  refine t.induction_on (P := fun x => β x z = κ x z) x (by rw [o₁ β β₁, o₁ κ κ₁]) (fun m x => ?_)
-    (fun x y hx hy => by rw [β₁, κ₁, hx, hy])
-  exact t.induction_on (P := fun z => β (x ≫ t.tmul m) z = κ (x ≫ t.tmul m) z) z (by rw [o₂ β β₂, o₂ κ κ₂])
-    (fun n z => e m n x z) (fun y z hy hz => by rw [β₂, κ₂, hy, hz])
-
-include hΘ hadj in
-
-theorem bi_mapLeft {A' : Over S} [GrpObj A'] [IsCommMonObj A'] {b' : OAct O A'} {M' : Type} [AddCommGroup M']
-    [Module O M'] (t' : IsTensor A' b' G a M') (P' : Summand O M') (h' : HermForm O M') (f : M' →ₗ[O] M)
-    (hf : h'.IsIsometry h f) (x z : T ⟶ A') :
-    bi t' P' h' (cls L hL) x z = bi t P h (cls L hL) (x ≫ t'.mapLeft t f) (z ≫ t'.mapLeft t f) :=
-  biadd_ext t' _ (fun x z => bi t P h (cls L hL) (x ≫ t'.mapLeft t f) (z ≫ t'.mapLeft t f))
-    (bi_mul_left t' P' h' hL hΘ) (bi_mul_right t' P' h' hL hΘ)
-    (fun x y z => by rw [MonObj.mul_comp, bi_mul_left t P h hL hΘ])
-    (fun x y z => by rw [MonObj.mul_comp, bi_mul_right t P h hL hΘ])
-    (fun m n x z => by
-      rw [Category.assoc, Category.assoc, IsTensor.tmul_mapLeft, IsTensor.tmul_mapLeft, bi_tmul t P h hL hΘ hadj,
-        bi_tmul t' P' h' hL hΘ hadj, hf]) x z
-
-include hΘ hadj in
-
-theorem bi_eq_sum {I : Type} [Fintype I] (l : I → (M →ₗ[O] O)) (hl : ∀ m n, h m n = ∑ i, l i m * star (l i n))
-    (x z : T ⟶ A) : bi t P h (cls L hL) x z =
-      ∑ i, lam (cls L hL) (x ≫ t.mapLeft (IsTensor.self a) (l i)) (z ≫ t.mapLeft (IsTensor.self a) (l i)) := by
-  refine biadd_ext t _ (fun x z => ∑ i, lam (cls L hL) (x ≫ t.mapLeft (IsTensor.self a) (l i))
-    (z ≫ t.mapLeft (IsTensor.self a) (l i))) (bi_mul_left t P h hL hΘ) (bi_mul_right t P h hL hΘ)
-    (fun x y z => by simp only [MonObj.mul_comp, lam_mul_left hL hΘ, Finset.sum_add_distrib])
-    (fun x y z => by simp only [MonObj.mul_comp, lam_mul_right hL hΘ, Finset.sum_add_distrib]) (fun m n x z => ?_) x z
-  let φ : O →+ Pic T.left := AddMonoidHom.mk' (fun c => lam (cls L hL) (x ≫ a.act c) z) fun c d => by
-    simp only [a.add, MonObj.comp_mul, lam_mul_left hL hΘ]
-  have hφ : ∀ c d, lam (cls L hL) (x ≫ a.act c) (z ≫ a.act d) = φ (c * star d) := fun c d => by
-    have := lam_act hL hadj (x ≫ a.act c) z (star d)
-    rw [star_star, Category.assoc, ← a.mul] at this
-    exact this.symm
-  simp only [bi_tmul t P h hL hΘ hadj, Category.assoc, IsTensor.tmul_mapLeft, IsTensor.self_tmul, hφ, ← map_sum, ← hl]
-  rfl
 
 end Laws
 
@@ -344,46 +274,18 @@ theorem theta_isSymmetric (w : O) {L : RigLB G} (c : CubicalStr G L) (hs : L.IsS
     (theta t P h w L).IsSymmetric :=
   haveI := b.hom w; biRig_isSymmetric t P h (𝟙 A) (b.act w) c hs
 
-theorem cls_poi (L : RigLB G) : cls _ (poi t P h L).isLB = bi t P h (cls L.L L.isLB) (fst A A) (snd A A) :=
-  cls_biLB t P h L.isLB _ _ _
-
 theorem cls_theta (w : O) (L : RigLB G) :
     cls _ (theta t P h w L).isLB = bi t P h (cls L.L L.isLB) (𝟙 A) (b.act w) :=
   cls_biLB t P h L.isLB _ _ _
-
-theorem biLB_iso_pull (L : RigLB G) (x z : T ⟶ A) :
-    LBIso (biLB t P h L.L x z) ((poi t P h L).L.pull (lift x z).left) := by
-  refine (cls_eq_iff (isLB_biLB t P h L.isLB x z) (LB.isLB_linComb (poi t P h L).isLB _ _)).1 ?_
-  rw [cls_biLB t P h L.isLB, cls_pull (poi t P h L).isLB, cls_poi, pull_bi, lift_fst, lift_snd]
-
-theorem theta_iso_pull (w : O) (L : RigLB G) :
-    LBIso (theta t P h w L).L ((poi t P h L).L.pull (lift (𝟙 A) (b.act w)).left) :=
-  biLB_iso_pull t P h L _ _
-
-def lamPt (c : Pic G.left) (z : T ⟶ A) : Pic (A ⊗ T).left := bi t P h c (fst A T) (snd A T ≫ z)
 
 section ThetaLaws
 
 variable {L : RigLB G} (c : CubicalStr G L) (hadj : IsAdj a L.L) {w : O} (hw : w + star w = 1)
 
-include c in
-
-theorem lamPt_mul (z z' : T ⟶ A) :
-    lamPt t P h (cls L.L L.isLB) (z * z') = lamPt t P h (cls L.L L.isLB) z + lamPt t P h (cls L.L L.isLB) z' := by
-  rw [lamPt, MonObj.comp_mul, bi_mul_right t P h L.isLB ⟨c.t, c.isGen⟩]; rfl
-
 include c hadj hw
 
 theorem lam_theta (x z : T ⟶ A) : lam (cls _ (theta t P h w L).isLB) x z = bi t P h (cls L.L L.isLB) x z := by
   rw [cls_theta, lam_bi t P h L.isLB ⟨c.t, c.isGen⟩ hadj hw]
-
-theorem cube_theta_iso (x z : T ⟶ A) : LBIso (cubeLB A ![x, z] (theta t P h w L).L) (biLB t P h L.L x z) := by
-  refine (cls_eq_iff (LB.isLB_linComb (theta t P h w L).isLB _ _) (isLB_biLB t P h L.isLB x z)).1 ?_
-  exact ((cls_cube_two (theta t P h w L).isLB _ _ _).trans (lam_theta t P h c hadj hw x z)).trans
-    (cls_biLB t P h L.isLB _ _ _).symm
-
-theorem lam_theta_iso : LBIso (abelian₂ A (theta t P h w L).L) (poi t P h L).L :=
-  cube_theta_iso t P h c hadj hw _ _
 
 theorem theta_isAdj : IsAdj b (theta t P h w L).L := fun d => by
   have hN := (theta t P h w L).isLB
@@ -395,47 +297,6 @@ theorem theta_prim : LBIso (theta t P h w L).L (cubeLB A ![𝟙 A, b.act w] (the
   have hN := (theta t P h w L).isLB
   refine (cls_eq_iff hN (LB.isLB_linComb hN _ _)).1 (Eq.trans ?_ (cls_cube_two hN _ _ _).symm)
   rw [lam_theta t P h c hadj hw, cls_theta]
-
-theorem theta_tmul (m n : M) :
-    LBIso (cubeLB A ![fst G G ≫ t.tmul m, snd G G ≫ t.tmul n] (theta t P h w L).L)
-      (cubeLB G ![fst G G ≫ a.act (h m n), snd G G] L.L) := by
-  have hN := (theta t P h w L).isLB
-  refine (cls_eq_iff (LB.isLB_linComb hN _ _) (LB.isLB_linComb L.isLB _ _)).1 ?_
-  refine (cls_cube_two hN _ _ _).trans (Eq.trans ?_ (cls_cube_two L.isLB _ _ _).symm)
-  rw [lam_theta t P h c hadj hw, bi_tmul t P h L.isLB ⟨c.t, c.isGen⟩ hadj]
-
-theorem theta_kTriv [Module.Finite O M] [Module.Projective O M] (hu : h.Unimodular) (hK : Out.KTriv G L.L) :
-    Out.KTriv A (theta t P h w L).L :=
-  GlobalTheory.HermTensorKernel.kTriv_of_unimodular S G L.L O (starRingEnd O) M (fun m n => h m n) A a b t _ L.isLB (theta t P h w L).isLB
-    ⟨_, (thetaCub t P h w c).isGen⟩ (theta_tmul t P h c hadj hw)
-    ⟨star_star, h.add_left, h.smul_left, fun m n => (h.star_apply m n).symm⟩
-    (fun l => by
-      obtain ⟨n, hn⟩ := hu.exists_eq l
-      exact ⟨n, fun m => (hn m).symm, fun n' hn' => hu.nondegenerate.ext_right fun m => (hn' m).symm.trans (hn m).symm⟩) hK
-
-omit hw in
-
-theorem theta_iso_mapLeft {A' : Over S} [GrpObj A'] [IsCommMonObj A'] {b' : OAct O A'} {M' : Type} [AddCommGroup M']
-    [Module O M'] (t' : IsTensor A' b' G a M') (P' : Summand O M') (h' : HermForm O M') (f : M' →ₗ[O] M)
-    (hf : h'.IsIsometry h f) : LBIso (theta t' P' h' w L).L ((theta t P h w L).L.pull (t'.mapLeft t f).left) := by
-  refine (cls_eq_iff (theta t' P' h' w L).isLB (LB.isLB_linComb (theta t P h w L).isLB _ _)).1 ?_
-  rw [cls_pull (theta t P h w L).isLB, cls_theta, cls_theta, pull_bi,
-    bi_mapLeft t P h L.isLB ⟨c.t, c.isGen⟩ hadj t' P' h' f hf, Category.comp_id, Category.id_comp,
-    (t'.isLinearHom_mapLeft t f).comm]
-
-omit hw in
-
-theorem theta_iso_box {k : ℕ} (l : Fin k → (M →ₗ[O] O)) (hl : ∀ m n, h m n = ∑ i, l i m * star (l i n))
-    (hprim : LBIso L.L (cubeLB G ![𝟙 G, a.act w] L.L)) :
-    LBIso (theta t P h w L).L (Out.boxLB L.L fun i => t.mapLeft (IsTensor.self a) (l i)) := by
-  have e : cls L.L L.isLB = lam (cls L.L L.isLB) (𝟙 G) (a.act w) :=
-    ((cls_eq_iff L.isLB (LB.isLB_linComb L.isLB _ _)).2 hprim).trans (cls_cube_two L.isLB _ _ _)
-  refine (cls_eq_iff (theta t P h w L).isLB (LB.isLB_linComb L.isLB _ _)).1 ?_
-  rw [cls_linComb L.isLB, cls_theta, bi_eq_sum t P h L.isLB ⟨c.t, c.isGen⟩ hadj l hl]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [one_smul, Category.id_comp, (t.isLinearHom_mapLeft _ (l i)).comm]
-  refine Eq.trans ?_ (congrArg (pull _) e).symm
-  rw [pull_lam, Category.comp_id]
 
 end ThetaLaws
 

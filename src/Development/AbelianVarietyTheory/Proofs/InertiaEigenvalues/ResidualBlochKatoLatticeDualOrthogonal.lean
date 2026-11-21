@@ -1,5 +1,9 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftBlochKatoCocycleIffOrthogonalLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftBlochKatoCocycleIffOrthogonalLattice
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFCocIff
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNineTermTransgressionZeroApply
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.CohDimTwoLocalOfLocalFiniteness
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CobOfGen
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousAlgebraMapPadicInt
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun GlobalTheory.Published GlobalTheory.ResSel GlobalTheory.ResDual
@@ -183,7 +187,7 @@ theorem bkOn_orthogonal : LocalTateDuality → ∀ (D : Formalism.BasicNotions.D
     filter_upwards [(hopen.preimage (hca.sub (continuous_const (y := d' g a)))).mem_nhds (x := g) (by simp)] with h hh
     rw [← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]
     exact hh
-  obtain ⟨f, hf, ef⟩ := (GlobalTheory.T.lift_blochKatoCocycle_iff_orthogonal_lattice D N X bkP i s hG ρ hρ v hv ϖ hϖ d' hlc (fun g h a => by
+  obtain ⟨f, hf, ef⟩ := (_root_.GlobalTheory.BKLatticeCochain.lift_iff_orthogonal D N X bkP i s hG ρ hρ v hv ϖ hϖ d' hlc (fun g h a => by
     rw [hd'.cocycle, hρ]; simp)).1 ⟨d', hd', fun g a => by simp⟩ d hd
   obtain ⟨ι, hι, eι⟩ := exists_residue_embedding hϖ
   have := X.twistBaseCoefficientRing_residueField_finite i

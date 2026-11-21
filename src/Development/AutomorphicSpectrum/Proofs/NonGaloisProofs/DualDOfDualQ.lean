@@ -1,12 +1,17 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AutomorphicSpectrum.Definitions.NonGaloisLines.TopLine
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.GoodOAdicCompleteCompactBasisStatement
-import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LatticeOpenCompactNhdsBasisStatement
+import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LatticeOpenCompactNhdsBasis
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsAdicCompleteSpanAlgebraMapOfFreeFinite
 import ReciprocityTheory.ClassFieldTheory.PadicCompatibleSequences.ExistsPadicIntOfCompatibleSeq
+
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module GlobalTheory.CompanionTheory.LocDual
 
 noncomputable section
@@ -380,44 +385,5 @@ theorem core [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V] [
   exact (hCob _ _ (cup_congr1 hP _ _ s hkill (hclose N))).2 ((hfX N).2.1 s hs hkill)
 
 end Gen
-
-open GlobalTheory.CompanionTheory.LocDual in
-
-theorem dualD_of_dualQ : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), FinZQ ((D.loc l).PD K) →
-    DualQ ((D.loc l).PD K) → DualD ((D.loc l).PD K) := by
-  intro D l _ K hF hQ LL _ _ _ O _ _ hG L1 hL1 A A' LA LA' P hP S hBS hSZ c hc H
-  obtain ⟨⟨hdom, hdvr, hfrac⟩, -⟩ := id hG
-  haveI := hdom
-  haveI := hdvr
-  haveI := hfrac
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  have hne : algebraMap O LL ϖ ≠ 0 := fun h =>
-    hϖ.ne_zero ((IsFractionRing.injective O LL) (by rw [h, map_zero]))
-  obtain ⟨hO, -⟩ := GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hG ϖ hϖ
-  obtain ⟨-, hb, -, -, -⟩ := GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hG A LA ϖ hϖ
-  obtain ⟨-, -, -, hbd', -⟩ := GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hG A' LA' ϖ hϖ
-  haveI : CompactSpace ↥(GK K) :=
-    haveI := K.2
-    isCompact_iff_compactSpace.1 (InfiniteGalois.fixingSubgroup_isClosed K.1).isCompact
-  haveI : Module.Free O ↥LA.T := LA.free
-  haveI : Module.Finite O ↥LA.T := Module.Finite.iff_fg.2 LA.fg
-  refine core (Cob := CobO ((D.loc l).PD K) L1) ?_ (fun x hx y hy => (hP.2 y).1 hy x hx) hne
-    (GlobalTheory.CNorm.isAdicComplete_of_free_finite _ hO) hb ?_
-    (fun r => hF LL O hG A LA ϖ hϖ r (Ip_stable LA ϖ r))
-    (fun r => (hQ LL O hG L1 hL1 A A' LA LA' P hP ϖ hϖ r (Ip_stable LA ϖ r) (Ip_stable LA' ϖ r)).2)
-    hBS hSZ hc H
-  · intro z z' h
-    have : (fun x => (Submodule.Quotient.mk (z x) : LL ⧸ L1.T)) =
-        fun x => (Submodule.Quotient.mk (z' x) : LL ⧸ L1.T) := by
-      funext x
-      obtain ⟨a, ha⟩ := h x
-      refine (Submodule.Quotient.eq _).2 ?_
-      rw [ha, hL1]
-      exact ⟨a, rfl⟩
-    unfold CobO
-    rw [this]
-  · intro v
-    obtain ⟨n, hn⟩ := hbd' (fun _ => v) continuous_const
-    exact ⟨n, hn 1⟩
 
 end GlobalTheory.CompanionTheory.TdDualD

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.PowerSeriesHasSumAt
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesConvergentSubstHasSumAndBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesConvergentSubstHasSumAndBounds
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesIntegralBoundedClosureStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConvergentSubstOneVariableAndFormalAgreementStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesConvergentSubstIsRingHomOnBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesConvergentSubstAssocStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesConvergentSubstIsRingHomOnBounded
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesConvergentSubstAssoc
 
 open GlobalTheory.ConvSer
 
@@ -29,11 +29,11 @@ theorem ev_algebra : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [Compl
     intro i
     subst hc
     exact ((GlobalTheory.T.mvPowerSeries_integral_bounded_closure K Unit).2.2.2.1 (x i)).2.2 (hx i)
-  have R := GlobalTheory.T.mvPowerSeriesConvergentSubst_isRingHom_on_bounded K σ Unit c hcs
+  have R := _root_.GlobalTheory.ConvSer.csub_ring_map K σ Unit c hcs
 
   have p1 : ∀ S : MvPowerSeries σ K, Bdd S → HS S x (ev S x) := by
     intro S hS
-    have h := (GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ Unit c S hcs hS).1 0
+    have h := (_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ Unit c S hcs hS).1 0
     rw [E' S] at h
     have hm : ∀ ν : σ →₀ ℕ, MvPowerSeries.coeff 0 (∏ i, c i ^ ν i) = ∏ i, x i ^ ν i := by
       intro ν
@@ -64,7 +64,7 @@ theorem ev_algebra : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [Compl
   have p5 : ∀ S : MvPowerSeries σ K, Intg S → ‖ev S x‖ ≤ 1 ∧ (Small S → ‖ev S x‖ < 1) := by
     intro S hS
     have hSB : Bdd S := (B.2.2.1 S 0).2.2 hS
-    have hI := (GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ Unit c S hcs hSB).2.2.1 hS
+    have hI := (_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ Unit c S hcs hSB).2.2.1 hS
     rw [E'] at hI
     refine ⟨by simpa using hI 0, fun hSm => ?_⟩
 
@@ -75,7 +75,7 @@ theorem ev_algebra : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [Compl
     have hT : Intg (S - MvPowerSeries.C c0) := (B.1 S _ hS hCI).2.1
     have hT0 : MvPowerSeries.constantCoeff (S - MvPowerSeries.C c0) = 0 := by simp [hc0d]
     have hTB : Bdd (S - MvPowerSeries.C c0) := (B.2.2.1 _ 0).2.2 hT
-    have hsm := (GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ Unit c _ hcs hTB).2.2.2 hT hT0
+    have hsm := (_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ Unit c _ hcs hTB).2.2.2 hT hT0
     rw [E'] at hsm
     have hlt : ‖ev (S - MvPowerSeries.C c0) x‖ < 1 := by simpa using hsm.2
     have hadd : ev S x = ev (S - MvPowerSeries.C c0) x + c0 := by
@@ -89,7 +89,7 @@ theorem ev_algebra : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [Compl
   have p6 : ∀ (ρ : Type) [Fintype ρ] (s : ρ → MvPowerSeries σ K) (S : MvPowerSeries ρ K),
       (∀ j, Small (s j)) → Bdd S → ev (csub s S) x = ev S (fun j => ev (s j) x) := by
     intro ρ _ s S hs hS
-    have h := (GlobalTheory.T.mvPowerSeriesConvergentSubst_assoc K ρ σ Unit s c S hs hcs hS).2
+    have h := (_root_.GlobalTheory.ConvSer.csub_assoc K ρ σ Unit s c S hs hcs hS).2
     have hf : (fun j => csub c (s j)) = fun j => (MvPowerSeries.C (ev (s j) x) : MvPowerSeries Unit K) :=
       funext fun j => E' (s j)
     rw [hf, E'] at h

@@ -25,18 +25,4 @@ theorem hasCones_iff (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [
       (Fin m → LinearMap.BilinForm ℤ X) → Prop) (Z : Model Xo c β) : HasCones Cn Z ↔ ∀ z, ConeAt Cn Z z :=
   Iff.rfl
 
-theorem exists_of_id (Y : Model Xo c (RingHom.id c.F)) (z : Y.X) :
-    (∃ x ∈ genBd Y, genι Y x = z) ∨ z ∈ Set.range Y.j := by
-  have : IsIso (spMap (RingHom.id c.F)) := by
-    show IsIso (Spec.map (CommRingCat.ofHom (RingHom.id c.F)))
-    rw [show CommRingCat.ofHom (RingHom.id c.F) = 𝟙 (CommRingCat.of c.F) from rfl, Spec.map_id]
-    infer_instance
-  have : IsIso (genι Y) := inferInstance
-  set x := inv (genι Y) z with hx
-  have hz : genι Y x = z := by rw [hx, ← Scheme.Hom.comp_apply, IsIso.inv_hom_id]; rfl
-  by_cases h : x ∈ genBd Y
-  · exact Or.inl ⟨x, h, hz⟩
-  · obtain ⟨w, hw⟩ := not_not.1 h
-    exact Or.inr ⟨w, by rw [← hz, ← hw]; rfl⟩
-
 end GlobalTheory.GenFan

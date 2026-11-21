@@ -19,10 +19,6 @@ variable {p : ℕ} [Fact p.Prime]
 
 abbrev powO (D : Datum p) (w : Ideal (𝓞 D.F)) (m : ℕ) : Ideal D.O := (w ^ m).map (algebraMap (𝓞 D.F) D.O)
 
-def IsRankOneIdem (D : Datum p) (w : Ideal (𝓞 D.F)) (m : ℕ) (e : D.O) : Prop :=
-  e * e - e ∈ powO D w m ∧ (∀ x : D.O, ∃ c : 𝓞 D.F, e * x * e - algebraMap (𝓞 D.F) D.O c * e ∈ powO D w m) ∧
-    e ∉ powO D w 1
-
 variable {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {S S' : Scheme.{0}}
 
 def IsEpsTors {s : S ⟶ Sp R} (o : Obj b N s) (w : Ideal (𝓞 D.F)) (m : ℕ) (e : D.O) {T : Over S} (x : T ⟶ o.A) :
@@ -36,12 +32,6 @@ structure SubRep (A : Over S) (P : ∀ {T : Over S}, (T ⟶ A) → Prop) where
   incl : Z ⟶ A
   mono : Mono incl
   pts : ∀ (T : Over S) (x : T ⟶ A), P x ↔ ∃ y, y ≫ incl = x
-
-def SubRep.unit (A : Over S) [GrpObj A] : SubRep A (fun x => x = 1) where
-  Z := 𝟙_ (Over S)
-  incl := 1
-  mono := ⟨fun g h _ => toUnit_unique g h⟩
-  pts T x := ⟨fun h => ⟨toUnit T, by rw [MonObj.comp_one, h]⟩, fun ⟨y, hy⟩ => hy ▸ MonObj.comp_one y⟩
 
 structure HTLevel {s : S ⟶ Sp R} (o : Obj b N s) (w : Ideal (𝓞 D.F)) (m : ℕ) (e : D.O) where
 
@@ -91,23 +81,5 @@ structure LevModel (M₀ : Model b N) (w : Ideal (𝓞 D.F)) (m : ℕ) (e : D.O)
   proj : toLevRep.Proj
   regular : toLevRep.Regular
   finFlat : toLevRep.FinFlat M₀.toRepFam
-
-section Basic₂
-
-example (D : Datum p) (w : Ideal (𝓞 D.F)) (e : D.O) (he : e ∉ powO D w 1) : IsRankOneIdem D w 0 e := by
-  have h : powO D w 0 = ⊤ := by
-    rw [powO, pow_zero, Ideal.one_eq_top]
-    exact (Ideal.eq_top_iff_one _).2 (by simpa using Ideal.mem_map_of_mem (algebraMap (𝓞 D.F) D.O) (Submodule.mem_top (x := (1 : 𝓞 D.F))))
-  refine ⟨?_, fun x => ⟨0, ?_⟩, he⟩ <;> simp [h]
-
-example {s : S ⟶ Sp R} (o : Obj b N s) (w : Ideal (𝓞 D.F)) (m : ℕ) (e : D.O) :
-    IsEpsTors o w m e (1 : 𝟙_ (Over S) ⟶ o.A) := by
-  have := o.act.hom e
-  refine ⟨fun a _ => ?_, ?_⟩
-  · have := (htAct o).hom a
-    exact MonObj.one_comp _
-  · exact MonObj.one_comp _
-
-end Basic₂
 
 end GlobalTheory.DrinLev.HT

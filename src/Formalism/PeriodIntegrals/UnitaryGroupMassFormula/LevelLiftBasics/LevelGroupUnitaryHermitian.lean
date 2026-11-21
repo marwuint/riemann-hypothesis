@@ -207,8 +207,4 @@ theorem level_group_ellipticity : LevEll := by
       simp only [eI, Fin.val_mk, Fin.coe_natAdd]
       omega
 
-theorem qnLevBasics_main :
-    LevHom ∧ LevUH ∧ LevN ∧ LevUW ∧ LevWb ∧ LevEll :=
-  ⟨level_group_homomorphism, level_group_unitary_hermitian, level_group_nilpotent, level_group_unitary_weyl, level_group_isotropic_vector, level_group_ellipticity⟩
-
 end PI.QnLevBasicsW

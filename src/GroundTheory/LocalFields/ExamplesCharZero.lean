@@ -188,13 +188,4 @@ end Embedding
 
 end CharZero
 
-theorem exists_padic_finiteDimensional_of_charZero (K : Type*) [Field K] [ValuativeRel K]
-    [TopologicalSpace K] [IsNonarchimedeanLocalField K] [CharZero K] :
-    ∃ (p : ℕ) (_ : Fact p.Prime) (_ : Algebra ℚ_[p] K), p = ringChar 𝓀[K] ∧
-      ValuativeExtension ℚ_[p] K ∧ FiniteDimensional ℚ_[p] K ∧
-        Continuous (algebraMap ℚ_[p] K) := by
-  let alg := (CharZero.padicHom K (ringChar 𝓀[K])).toAlgebra
-  exact ⟨ringChar 𝓀[K], inferInstance, alg, rfl, ⟨CharZero.padicHom_vle_iff K _⟩,
-    CharZero.finiteDimensional_padicHom K _, CharZero.continuous_padicHom K _⟩
-
 end GroundTheory.LocalField

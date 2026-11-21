@@ -20,6 +20,4 @@ theorem isHermND_J : IsHermND X.B.I.cm.sig X.B.I.J := by
 
 theorem omVStd_holds : OmVStd X ψ := fun h1 h2 => ⟨isCMExt_sig X, isHermND_J X, h1, h2⟩
 
-theorem omVLat_holds : OmVLat X := ⟨X.B.I.L, ⟨X.B.I.L_fg, X.B.I.L_span⟩, rfl⟩
-
 end Formalism.L2.SG.Pf.NcVal.OmVSt.OmW

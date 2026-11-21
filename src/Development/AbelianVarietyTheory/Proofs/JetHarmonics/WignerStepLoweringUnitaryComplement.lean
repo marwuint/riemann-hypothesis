@@ -6,7 +6,8 @@ import Development.AbelianVarietyTheory.Definitions.Jets.Imports
 import Development.AbelianVarietyTheory.Definitions.Jets.WigMap
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormSqContractLe
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HypAndAdj
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PieriLoweringStepGlTensorDualStandardStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PieriLoweringStepGlTensorDualStandard
+import Formalism.HermitianCurvature.CapelliDeterminantAndBranching
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsTypeOfIrreducibleStable
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HermExpHasDeriv
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TensorOpContinuousOn
@@ -38,7 +39,7 @@ theorem wigner_step_lowering : ∀ (V : Type) [NormedAddCommGroup V] [InnerProdu
   have hR : IsRepW (n + 1) r z π := ⟨hty.2.1, hty.2.2.1⟩
   obtain ⟨πt, hRt, hnt, hft⟩ := GlobalTheory.tensor_dual_standard V (n + 1) r z π B hz hT hR hty.2.2.2.1 hB
   have hE := GlobalTheory.TensorDualDifferential.EB_tensor V (n + 1) r z π B πt hz hT hR hRt hB hft
-  obtain ⟨S, hS, hS0, hirr, hcap, hw⟩ := GlobalTheory.T.pieri_lowering_step_gl_tensor_dual_standard V n (EB π B) (EB πt B) β L l hH hadj hE hl
+  obtain ⟨S, hS, hS0, hirr, hcap, hw⟩ := _root_.GlobalTheory.WigSh.pieri_step_lowering V n (EB π B) (EB πt B) β L l hH hadj hE hl
   obtain ⟨π₂, hty₂, hπ₂⟩ := GlobalTheory.isType_of_irreducible_stable _ (n + 1) r z πt B S
     (Function.update u ((l : ℕ) + 1) (u ((l : ℕ) + 1) - 1)) hz hT hRt hnt hB hS hS0 hirr (by
       intro w y hy

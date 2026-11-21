@@ -20,12 +20,6 @@ open Classical in
 noncomputable def Pr (ty : Fin g → (E →+* ℂ)) (t : E →+* ℂ) : Matrix (Fin g) (Fin g) ℂ :=
   diagonal fun i => if ty i = t then 1 else 0
 
-theorem Pr_conjT (ty : Fin g → (E →+* ℂ)) (t : E →+* ℂ) : (Pr ty t)ᴴ = Pr ty t := by
-  rw [Pr, diagonal_conjTranspose]
-  congr 1
-  funext i
-  simp [apply_ite]
-
 theorem Pr_map (ty : Fin g → (E →+* ℂ)) (t : E →+* ℂ) : (Pr ty t).map (starRingEnd ℂ) = Pr ty t := by
   ext a b
   simp only [Pr, Matrix.map_apply, diagonal_apply]

@@ -59,13 +59,6 @@ theorem antisymmetrize_smul (f N : ℕ) (b : ℚ) (H : RootRing f N) :
     antisymmetrize f N (b • H) = b • antisymmetrize f N H := by
   simp [antisymmetrize, map_smul, Finset.smul_sum, smul_comm b]
 
-theorem antisymmetrize_sum {ι : Type*} (s : Finset ι) (f N : ℕ) (H : ι → RootRing f N) :
-    antisymmetrize f N (∑ i ∈ s, H i) = ∑ i ∈ s, antisymmetrize f N (H i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp [antisymmetrize]
-  | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, antisymmetrize_add, ih]
-
 theorem hasDD_add {f N : ℕ} {H H' P P' : RootRing f N} (h : HasDD f N H P) (h' : HasDD f N H' P') :
     HasDD f N (H + H') (P + P') := by
   rw [HasDD, antisymmetrize_add, h, h', mul_add]

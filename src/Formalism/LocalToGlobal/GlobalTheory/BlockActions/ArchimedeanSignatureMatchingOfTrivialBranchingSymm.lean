@@ -14,16 +14,6 @@ theorem beOn_closedS (Tf : FormsTiedSym D u Ch chOf) (h : Formalism.L2.Ker.BeOnT
   rw [h τ]
   exact Formalism.L2.Ker.beOnEq D u τ (interlaceTr D u (sg_interlace Tf.valP) τ)
 
-theorem beOn_posS (Tf : FormsTiedSym D u Ch chOf) (h : Formalism.L2.Ker.BeOnTie D u) (τ : D.what₂.Tau) :
-    0 < (D.fm u).beOn τ := by
-  rw [beOn_closedS Tf h τ]
-  have hI0 := interlaceTr D u (sg_interlace Tf.valP) τ
-  have hI := (Formalism.L2.Ker.interlace_iff _ _ (Nm_succ D.R)).1 hI0
-  unfold Formalism.L2.Ker.beOnVal
-  apply mul_pos
-  · exact abs_pos.mpr (by exact_mod_cast Formalism.L2.Ker.cBr_ne_zero (Nm_succ D.R).symm _ _ hI)
-  · exact Real.sqrt_pos.mpr (Formalism.L2.Ker.nm_kapR_pos _ _ _ hI (Formalism.L2.Ker.sameShiftTr D u τ hI0))
-
 def LowerMapTieSym (Tf : FormsTiedSym D u Ch chOf) : Prop :=
   IsUnit (bZ u Tf.til.z0).det → ∀ (ψ : (D.mem u).P.Wz) (c : (D.fm u).clsP)
     (P : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ),
@@ -48,16 +38,6 @@ theorem archimedeanSignatureMatching_of_trivial_branching_symm (Tf : FormsTiedSy
   intro τ
   rw [hP τ]
   exact Formalism.L2.Ker.brOneIsBr D u τ (interlaceTr D u (sg_interlace Tf.valP) τ)
-
-theorem rep_uniqueS (Tf : FormsTiedSym D u Ch chOf) (hB : IsUnit (bZ u Tf.til.z0).det)
-    (P P' : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)
-    (h : ∀ s, fnOf (gramC (gramN D D.R.m le_rfl) (embT D)) (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) P ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s) =
-      fnOf (gramC (gramN D D.R.m le_rfl) (embT D)) (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) P' ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s)) :
-    P = P' := by
-  apply fnOf_injective _ _ _ (mZ_isUnit hB)
-  funext y
-  obtain ⟨s, rfl⟩ := (Tf.val D.R.m le_rfl (Or.inr rfl)).eY.surjective y
-  exact h s
 
 theorem quotient_not_in_range_symmetric (Tf : FormsTiedSym D u Ch chOf) (x : Fin (D.R.N D.R.m - 1) → D.host.E) :
     iXm D *ᵥ x ≠ fun i => Tf.til.z0 i / ((D.mem u).A.T : D.host.E) := by
@@ -118,31 +98,6 @@ theorem trEv_eqS (Tf : FormsTiedSym D u Ch chOf) (φ : Fn D u D.R.m) (c : (D.fm 
     show y.1 τ = atInf (embT D) (Tf.til.ga c).1.1 τ *
       (atInf (embT D) ((((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ * y.1 τ)
     rw [← Matrix.mul_assoc, atInf_mul_inv, Matrix.one_mul]
-
-theorem coPTS_Pt_eq_brTen_coMTS (Tf : FormsTiedSym D u Ch chOf) (hB : IsUnit (bZ u Tf.til.z0).det) (hL : LowerMapTieSym Tf) (φ : Fn D u D.R.m)
-    (c : (D.fm u).clsP) (P : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)
-    (hP : P ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m))
-    (hv : ∀ s, Tf.eWz ((D.mem u).P.evz φ) c s =
-      fnOf _ (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) P ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s)) (w : D.what₂.places.Pl) :
-    coPTS Tf (fun _ _ => 1) w (Pt D u φ) c = Formalism.L2.Ker.brTen D u (coMTS Tf (fun _ _ => 1) w c (φ ((D.fm u).til c))) := by
-  have hM : trEvS Tf c (φ ((D.fm u).til c)) =
-      fnOf _ (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) P := by
-    funext y
-    rw [trEv_eqS, hv, Equiv.apply_symm_apply]
-  simp only [coPTS, coMTS, LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj,
-    Function.eval, LinearEquiv.coe_coe]
-  rw [hL.pt_eq hB φ c P hP hv, hM, bZg_one]
-  have e2 : fnInv (gramC (gramN D D.R.m le_rfl) (embT D)) (shiftOf (lamT u D.R.m)) (atInf (embT D) (bZ u Tf.til.z0)⁻¹)
-      (fnOf (gramC (gramN D D.R.m le_rfl) (embT D)) (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) P) = P :=
-    fnInv_fnOf _ _ _ (mZ_isUnit hB) P
-  have h1 : atInf (embT D) ((1 : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)⁻¹) =
-      (1 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) := by
-    funext τ; simp [atInf]
-  have e1 : fnInv (gramC (gramP D) (embT D)) (shiftOf (sgT u))
-      (atInf (embT D) ((1 : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)⁻¹))
-      (fnOf (gramC (gramP D) (embT D)) (shiftOf (sgT u)) 1 (Formalism.L2.Ker.brTen D u P)) = Formalism.L2.Ker.brTen D u P := by
-    rw [h1]; exact fnInv_fnOf _ _ _ (fun τ => by simp) _
-  rw [e1, e2]
 
 set_option maxHeartbeats 2000000 in
 

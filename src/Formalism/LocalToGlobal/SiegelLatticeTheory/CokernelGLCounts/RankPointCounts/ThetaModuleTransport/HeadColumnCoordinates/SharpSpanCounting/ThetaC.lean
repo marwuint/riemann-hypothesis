@@ -97,9 +97,6 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
-theorem R_eq_O (hs : M.split = none) : M.R = M.L.O := by
-  unfold Model.R; rw [hs]
-
 theorem dl_full (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) :
     H.Dl f f' (r + 1) = (H.Zhat f f').det := by
   unfold HermSp.Dl

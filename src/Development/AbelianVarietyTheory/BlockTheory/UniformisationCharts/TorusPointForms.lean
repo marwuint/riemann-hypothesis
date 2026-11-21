@@ -27,12 +27,7 @@ def oφ {T : Over (Spec (CommRingCat.of R))} (b : T ⟶ D.P.A) (χ : D.X) :
     Fin 4 → (T.left ⟶ D.P.A.left) :=
   ![(padd D.P.A b (cPt D T χ)).left, (cPt D T χ).left, b.left, (pzero D.P.A T).left]
 
-def oε : Fin 4 → ℤ := ![1, -1, -1, 1]
-
 def oεInv : Fin 4 → ℤ := ![-1, 1, 1, -1]
-
-abbrev oLB {T : Over (Spec (CommRingCat.of R))} (b : T ⟶ D.P.A) (χ : D.X) : LB T.left :=
-  LB.LinComb D.P.L (oφ D b χ) oε
 
 abbrev oInvLB {T : Over (Spec (CommRingCat.of R))} (b : T ⟶ D.P.A) (χ : D.X) : LB T.left :=
   LB.LinComb D.P.L (oφ D b χ) oεInv
@@ -83,100 +78,8 @@ def QPair (k : ℕ) : Type :=
 def QRel (k : ℕ) (p p' : QPair D F k) : Prop :=
   ∃ (z : D.X) (w : GtPt D F), GtPt.IsIo z w ∧ p'.1.1 = p.1.1 + k • z ∧ GtPt.IsAdd p.1.2 w p'.1.2
 
-def Qk (k : ℕ) : Type := Quot (QRel D F k)
-
 namespace Qk
 
-variable {D F} {k : ℕ}
-
-def mk (p : QPair D F k) : Qk D F k := Quot.mk _ p
-
-def IsAdd (a b c : Qk D F k) : Prop :=
-  ∃ p p' p'' : QPair D F k, mk p = a ∧ mk p' = b ∧ mk p'' = c ∧
-    p''.1.1 = p.1.1 + p'.1.1 ∧ GtPt.IsAdd p.1.2 p'.1.2 p''.1.2
-
-def IsZero (a : Qk D F k) : Prop :=
-  ∃ p : QPair D F k, mk p = a ∧ p.1.1 = 0 ∧ p.1.2.IsZero
-
-def toQuot : Qk D F k → D.X ⧸ (nsmulAddMonoidHom (α := D.X) k).range :=
-  Quot.lift (fun p => QuotientAddGroup.mk p.1.1) (by
-    rintro p p' ⟨z, -, -, hz, -⟩
-    refine QuotientAddGroup.eq.2 ⟨z, ?_⟩
-    rw [hz]; simp)
-
 end Qk
-
-def GroupLawSt : Prop :=
-  ∃ _ : AddCommGroup (GtPt D F),
-    (∀ g g' h : GtPt D F, g.IsAdd g' h ↔ g + g' = h) ∧
-    (∀ g : GtPt D F, g.IsZero ↔ g = 0) ∧
-    (∀ (k : ℕ) (g h : GtPt D F), g.IsNsmul k h ↔ k • g = h)
-
-def IoQSt : Prop :=
-  D.TauBimult →
-    (∀ y : D.X, ∃! g : GtPt D F, GtPt.IsIo y g) ∧
-    (∀ (y y' : D.X) (g g' h : GtPt D F), GtPt.IsIo y g → GtPt.IsIo y' g' →
-      GtPt.IsIo (y + y') h → g.IsAdd g' h) ∧
-    ∀ k : ℕ, Equivalence (QRel D F k) ∧
-      ∃ _ : AddCommGroup (Qk D F k),
-        (∀ a b c : Qk D F k, a.IsAdd b c ↔ a + b = c) ∧ (∀ a : Qk D F k, a.IsZero ↔ a = 0)
-
-abbrev baseF : Over (Spec (CommRingCat.of F)) :=
-  (Over.pullback (jFK (R := R) F ≫ jK R)).obj D.P.A
-
-def toB {B' : Over (Spec (CommRingCat.of F))} (β : B' ≅ baseF D F) :
-    Over.mk (B'.hom ≫ jFK (R := R) F ≫ jK R) ⟶ D.P.A :=
-  Over.homMk (β.hom.left ≫ pullback.fst D.P.A.hom (jFK (R := R) F ≫ jK R)) (by
-    have h : β.hom.left ≫ pullback.snd D.P.A.hom (jFK (R := R) F ≫ jK R) = B'.hom := Over.w β.hom
-    simp only [Over.mk_hom, Category.assoc]
-    erw [pullback.condition]
-    exact (Category.assoc _ _ _).symm.trans (congrArg (· ≫ jFK (R := R) F ≫ jK R) h))
-
-def IsDatumIso (E : SplitExt (Spec (CommRingCat.of F))) (β : E.B ≅ baseF D F)
-    (ξ : E.X ≃+ D.X) : Prop :=
-  IsMonHom β.hom ∧
-    ∀ χ : E.X, ∃ t : LB.Iso (E.O χ).L (oLB D (toB D F β) (ξ χ)), t.IsGen
-
-def IsPointCorr {E : SplitExt (Spec (CommRingCat.of F))} (β : E.B ≅ baseF D F)
-    {G : Over (Spec (CommRingCat.of F))} [GrpObj G] (q : G ⟶ E.B)
-    (e : (𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ G) ≃ GtPt D F) : Prop :=
-  (∀ x x', (e x).IsAdd (e x') (e (padd G x x'))) ∧
-    (e η[G]).IsZero ∧
-    ∀ x, (e x).base.left = (x ≫ q).left ≫ (toB D F β).left
-
-def PointsOfGtSt : Prop :=
-  ∀ (E : SplitExt (Spec (CommRingCat.of F))) (β : E.B ≅ baseF D F) (ξ : E.X ≃+ D.X),
-    IsDatumIso D F E β ξ →
-    ∀ (G : Over (Spec (CommRingCat.of F))) [GrpObj G] (d : E.GtDatum G),
-      ∃ e : (𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ G) ≃ GtPt D F, IsPointCorr D F β d.q e
-
-def PointsOfGtCoordSt : Prop :=
-  ∀ (E : SplitExt (Spec (CommRingCat.of F))) (β : E.B ≅ baseF D F) (ξ : E.X ≃+ D.X),
-    IsDatumIso D F E β ξ →
-    ∀ (G : Over (Spec (CommRingCat.of F))) [GrpObj G] (d : E.GtDatum G),
-      ∃ (e : (𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ G) ≃ GtPt D F)
-        (t : ∀ k, LB.Iso (E.O (E.basis k)).L (oLB D (toB D F β) (ξ (E.basis k)))),
-        IsPointCorr D F β d.q e ∧ (∀ k, (t k).IsGen) ∧
-        ∀ (x : 𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ G) (j : E.ChartIdx) (j' : Fin 4 → D.P.L.ι)
-          (k : Module.Free.ChooseBasisIndex ℤ E.X) (W : (Spec (CommRingCat.of F)).Opens)
-          (h₁ : W ≤ (oInvLB D (e x).base (ξ (E.basis k))).U j')
-          (h₂ : W ≤ (x ≫ d.q).left ⁻¹ᵁ
-            (LB.div (oLB D (toB D F β) (ξ (E.basis k))) (E.O (E.basis k)).L).U (j', j k))
-          (h₃ : W ≤ x.left ⁻¹ᵁ (d.q.left ⁻¹ᵁ E.chart j)),
-          res (X := Spec (CommRingCat.of F)) h₁ (((e x).form (ξ (E.basis k))).s j') *
-              res (X := Spec (CommRingCat.of F)) h₂ (pullU (x ≫ d.q).left _ ((t k).s (j', j k))) =
-            res (X := Spec (CommRingCat.of F)) h₃ (pullU x.left _ (d.u j k))
-
-example (g h : GtPt D F) : g.IsNsmul 0 h ↔ h.IsZero :=
-  ⟨fun H => by cases H; assumption, GtPt.IsNsmul.zero h⟩
-
-example (k : ℕ) (g h : GtPt D F) (H : g.IsNsmul k h) : h.base = g.base ^ k := by
-  induction H with
-  | zero h hz => rw [hz.1, pow_zero]; rfl
-  | succ k h h' _ ha ih => rw [ha.1, ih, pow_succ]; rfl
-
-example (h : PointsOfGtCoordSt D F) : PointsOfGtSt D F := fun E β ξ hi G _ d => by
-  obtain ⟨e, -, he, -⟩ := h E β ξ hi G d
-  exact ⟨e, he⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.TorusPointForms

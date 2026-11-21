@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelEisensteinSumModerateGrowthConvergentStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelEisensteinSumModerateGrowthConvergent
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinContinuationOfDoublingMethod
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.EisRegularAtOfEisPoleLE
@@ -16,6 +16,6 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.SphGrowth
 
 theorem spherical_eisenstein_modGrowth : ∀ (D : D7) (V : HSp D), 0 < V.rank → ∀ a : GL (Fin V.rank) (AE D), IsMaj V a → HasIwasawa D.sp.cm.sig (dblSp V).gram (Khat V a) → ∀ σ : ℝ, (V.rank : ℝ) / 2 < σ → GlobalTheory.Grow.ModGrowth (dblSp V) (GlobalTheory.Eis.eis V (GlobalTheory.Eis.sph V a (σ : ℂ))) :=
-  fun D V _ a ha hI σ hσ => GlobalTheory.T.siegelEisensteinSum_moderateGrowth_convergent D V a ha hI 1 σ _ (GlobalTheory.Eis.sph_mem hI (σ : ℂ)) (by simpa using hσ)
+  fun D V _ a ha hI σ hσ => _root_.GlobalTheory.EisConvGrowth.eis_modGrowth D V a ha hI 1 σ _ (GlobalTheory.Eis.sph_mem hI (σ : ℂ)) (by simpa using hσ)
 
 end GlobalTheory.Core.Rk.SphGrowth

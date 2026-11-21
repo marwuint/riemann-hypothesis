@@ -1,6 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Foundations.NotZeroChi
-import Development.AbelianVarietyTheory.Definitions.Foundations.ZetaSysUOfHalves
+import Development.AbelianVarietyTheory.Definitions.Foundations.HTLawAt
+import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ZetaUr
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsLocallyConstantCycMod
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteIndexStabilizer
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DepthZeroLabelsOfLabelLaws
 
@@ -11,13 +12,6 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.KumUnit
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
-
-def ValPres (A : ValuationSubring Ω) (m r : ℕ) (ζ : Ω) (z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) : Prop :=
-  ∃ (ι : Type) (_ : Fintype ι) (o : ι → Qbar l) (u : ι → Ω) (n : ι → ℤ) (k : ι → G ℚ Ω → ZMod (l ^ m)),
-    (∀ i, ‖o i‖ ≤ 1) ∧ (∀ i, u i ≠ 0 ∧ A.valuation (u i) ^ (l ^ r).totient = A.valuation (l : Ω) ^ n i) ∧
-    (∀ s ∈ Ine (F := ℚ) A, cycMod ℚ Ω l r s = 1 →
-      (∀ i, GlobalTheory.Col.KumVal (l := l) m ζ (u i) s (k i s)) ∧ Cg m (z s 1) (∑ i, o i * ((k i s).val : Qbar l))) ∧
-    Cg m (∑ i, o i * (((n i : ZMod (l ^ m))).val : Qbar l)) 0
 
 theorem cg_trans {m : ℕ} {x y z : Qbar l} (h : Cg m x y) (h' : Cg m y z) : Cg m x z := by
   unfold Cg at *

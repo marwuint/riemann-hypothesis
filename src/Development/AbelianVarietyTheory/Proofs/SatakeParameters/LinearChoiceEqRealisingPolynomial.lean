@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EvalModelPolynomialOnStdFramesInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EvalModelPolynomialOnStdFramesInjective
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RkLe
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SecondKernelProjection
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Formalism.MainNotions Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F Formalism.L2.KerInert Formalism.UG Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.L2.KerInert.SecondKernelProjection Formalism.L2.KerInert.QuadraticBaseChangeGL3 Formalism.L2.KerInert.SecondKernelDifference Formalism.L2.KerInert.SecondKernelHermitian GlobalTheory.TwV.DelA
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -12,7 +13,7 @@ theorem phiC_eq_of_realises : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) 
     Submodule.mem_map.2 ⟨(Q, R), hR, rfl⟩
   have hsel : Realises X D pos i h a Q (phiC X D pos i h a Q) := selOf_mem (relPhi X D pos i h a) Q hmem
   have hz : phiC X D pos i h a Q - R = 0 := by
-    apply GlobalTheory.T.evalModelPolynomialOnStdFrames_injective X D pos i h
+    apply _root_.GlobalTheory.TwV.DelA.eq_zero_of_ev1_eq_zero_on_frames X D pos i h
     intro f
     rw [map_sub, Pi.sub_apply, hsel f, hR f, sub_self]
   exact sub_eq_zero.1 hz

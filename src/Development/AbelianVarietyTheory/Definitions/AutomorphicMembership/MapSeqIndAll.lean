@@ -144,12 +144,6 @@ variable (Z : ReadL R F X0 Y)
 theorem mjH_succ (i : Fin D.R.m) : mjH Z ((i : ℕ) + 1) = HLat.ofCoord ((s0Of R F).M i) ((s0Of R F).XW i) :=
   latSeq_succ _ _ _ i
 
-theorem mjH_off {j : ℕ} (h : j = 0 ∨ D.R.m < j) : mjH Z j = unitLat D.what₂.LL (Module.finrank ℂ (D.what₂.Mj j)) :=
-  latSeq_off _ _ _ h
-
-def mjCoord (i : Fin D.R.m) : (Fin ((s0Of R F).dW i) → D.what₂.LL) ≃ₗ[D.what₂.LL] (mjH Z ((i : ℕ) + 1)).V :=
-  castV (mjH_succ Z i).symm
-
 theorem mjH_good (hH : Holds R F) (j : ℕ) : (mjH Z j).Good :=
   mapSeq_ind_all _ _ D.what₂.Mj Z.jW (fun _ A _ => A.Good)
     (fun i => ofCoord_good (hH.prim.mLat i) fun v => frame_gram_unit _ (RealDat3.kForm_of (F := F) hH.prim.unif false i v).1)
@@ -195,42 +189,6 @@ theorem mjHTie_of_eq (Xd : DivX D) (h : Xd.MjH = mjH Z) (hj : HEq Xd.jM (jM Z)) 
 theorem exists_mjHTie (Xd : DivX D) (h : Xd.MjH = mjH Z) (hj : HEq Xd.jM (jM Z)) :
     ∃ JM, MjHTie D A3.A Xd (A3.indefDown (s0Of R F)) Z.jW JM :=
   ⟨_, mjHTie_of_eq Z Xd h hj⟩
-
-def withMj (hP : Pins R F cG) (hH : Holds R F) (Xd : DivX D)
-    (iM : ∀ j c, (mjH Z j).V →ₗ[D.what₂.LL] Xd.geo.Fn (Xd.Yv j c))
-    (hiM : ∀ j c x, iM j c x ∈ Xd.geo.H0 (Xd.Yv j c) (Xd.Lw j c (DV.kapW D j))) : DivX D :=
-  { Xd with
-    MjH := mjH Z
-    MjH_good := mjH_good Z hH
-    jM := jM Z
-    jM_basis := jM_basis Z hH
-    jM_lat := jM_lat Z hP hH
-    MjLat_sub := mjLat_sub Z hP hH
-    jM_metric := jM_metric Z hH
-    iMj := iM
-    iMj_mem := hiM }
-
-theorem mjHTie_withMj (hP : Pins R F cG) (hH : Holds R F) (Xd : DivX D)
-    (iM : ∀ j c, (mjH Z j).V →ₗ[D.what₂.LL] Xd.geo.Fn (Xd.Yv j c))
-    (hiM : ∀ j c x, iM j c x ∈ Xd.geo.H0 (Xd.Yv j c) (Xd.Lw j c (DV.kapW D j))) :
-    MjHTie D A3.A (withMj Z hP hH Xd iM hiM) (A3.indefDown (s0Of R F)) Z.jW (mjIds Z _ rfl) :=
-  mjHTie_of_eq Z _ rfl HEq.rfl
-
-section Reface
-
-variable {Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 F.P1 F.ψ1 Zs)} {Sp : ∀ Zs, SPer (Dc Zs)}
-  {Zsc : DefSub A3.fam3.amb3 → IndefScale A3.fam3.base3} {kap : ℝ} {lam : type_of% R.lam3} {err : type_of% (R.updS kap lam).err0}
-  {Y' : Read (A3 := A3) ((R.updS kap lam).withErr err).toRealDat (reFace F Dc Sp Zsc).lv2 X0}
-  (Z' : ReadL ((R.updS kap lam).withErr err) (reFace F Dc Sp Zsc) X0 Y')
-
-end Reface
-
-example : Module.finrank ℚ (unitLat ℚ 1).V = 1 := Module.finrank_fin_fun ℚ
-
-example : Subsingleton (unitLat ℚ 0).V := inferInstanceAs (Subsingleton (Fin 0 → ℚ))
-
-example (M : Submodule (𝓞 ℚ) (Fin 3 → ℚ)) : Module.finrank ℚ
-    (latSeq (m := 1) (d := fun _ => 3) (fun _ => M) (fun _ _ => 1) (fun _ => ℂ) 1).V = 3 := Module.finrank_fin_fun ℚ
 
 end GlobalTheory.Mem.R3
 

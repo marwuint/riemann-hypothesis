@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.No
 import GroundTheory.AutomorphicForms.AdelicUnitaryGroups.Anisotropic
 import GroundTheory.GlobalFields.IdeleGroups.UnitBound
 import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompactSetUnitaryHermitianRealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactSpecialUnitarySupportedAtPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalVectorIsotropicNondegeneratePlanesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompactSetUnitaryHermitianReal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactSpecialUnitarySupportedAtPlaces
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalVectorIsotropicNondegeneratePlanes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormSolutionAdelicFromArchimedeanStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentAdelicNormEqOfLocalNormEqStatement
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Published
@@ -32,16 +32,16 @@ theorem exists_isotropic_places : ∀ (F E : Type) [Field F] [NumberField F] [Fi
     by_contra hno
     push_neg at hno
     apply hnc
-    apply GlobalTheory.T.isCompact_specialUnitary_supportedAtPlaces F E σ hσ M J hJ S₁ S₂ ε hε
+    apply _root_.GlobalTheory.SUSuppCompact.isCompact_SUSupp_of_bounded F E σ hσ M J hJ S₁ S₂ ε hε
     · intro w hw
       letI := GroundTheory.Automorphic.completionNontriviallyNormedField (K := F) w
-      exact GlobalTheory.T.exists_compact_set_unitary_hermitian_real F E σ hσ w.Completion M J hJ (fun u hu => by
+      exact _root_.GlobalTheory.AnisoCpt.exists_isCompact_entries_of_anisotropic F E σ hσ w.Completion M J hJ (fun u hu => by
         by_contra h
         exact hno.1 w hw u h hu)
     · intro v hv
       letI : NontriviallyNormedField (v.adicCompletion F) := Valued.toNontriviallyNormedField _ _
       haveI := Formalism.BasicNotions.Examples₂.LocF.proper v
-      exact GlobalTheory.T.exists_compact_set_unitary_hermitian_real F E σ hσ (Fv F v) M J hJ (fun u hu => by
+      exact _root_.GlobalTheory.AnisoCpt.exists_isCompact_entries_of_anisotropic F E σ hσ (Fv F v) M J hJ (fun u hu => by
         by_contra h
         exact hno.2 v hv u h hu)
   rcases key with ⟨w, hw, u, hu0, hu⟩ | ⟨v, hv, u, hu0, hu⟩
@@ -51,7 +51,7 @@ theorem exists_isotropic_places : ∀ (F E : Type) [Field F] [NumberField F] [Fi
     intro x y hx hy
     letI := GroundTheory.Automorphic.completionNontriviallyNormedField (K := F) w
     obtain ⟨z, hz, ⟨h1, ht1⟩, ⟨h2, ht2⟩⟩ :=
-      GlobalTheory.T.exists_rational_vector_isotropic_nondegenerate_planes_at_place F E σ hσ w.Completion (denseRange_algebraMap_completion F w) M J hM hJ ⟨u, hu0, hu⟩ x y hx hy
+      _root_.GlobalTheory.PlaneNorm.exists_rational_middle_vector F E σ hσ w.Completion (denseRange_algebraMap_completion F w) M J hM hJ ⟨u, hu0, hu⟩ x y hx hy
     exact ⟨z, hz, ⟨h1, GlobalTheory.T.exists_norm_solution_adelic_from_archimedean F E σ w ε' hε' _ ht1⟩, ⟨h2, GlobalTheory.T.exists_norm_solution_adelic_from_archimedean F E σ w ε' hε' _ ht2⟩⟩
   · obtain ⟨ε', hε'⟩ := GlobalTheory.Published.StrongApprox.exists_isPlacesIdem (F := F) ∅ {v}
     refine ⟨∅, {v}, ε', Finset.empty_subset _, Finset.singleton_subset_iff.2 hv,
@@ -59,6 +59,6 @@ theorem exists_isotropic_places : ∀ (F E : Type) [Field F] [NumberField F] [Fi
     intro x y hx hy
     letI : NontriviallyNormedField (v.adicCompletion F) := Valued.toNontriviallyNormedField _ _
     obtain ⟨z, hz, ⟨h1, ht1⟩, ⟨h2, ht2⟩⟩ :=
-      GlobalTheory.T.exists_rational_vector_isotropic_nondegenerate_planes_at_place F E σ hσ (Fv F v) (HeightOneSpectrum.denseRange_algebraMap F v) M J hM hJ ⟨u, hu0, hu⟩ x y hx hy
+      _root_.GlobalTheory.PlaneNorm.exists_rational_middle_vector F E σ hσ (Fv F v) (HeightOneSpectrum.denseRange_algebraMap F v) M J hM hJ ⟨u, hu0, hu⟩ x y hx hy
     exact ⟨z, hz, ⟨h1, GlobalTheory.T.idempotent_adelic_norm_eq_of_local_norm_eq F E σ v ε' hε' _ ht1⟩, ⟨h2, GlobalTheory.T.idempotent_adelic_norm_eq_of_local_norm_eq F E σ v ε' hε' _ ht2⟩⟩
 end GlobalTheory.PlaceIso

@@ -56,15 +56,6 @@ theorem awayMap_comp {E : Type} [CommRing E] [Algebra R E] (φ : D →ₐ[R] E) 
     | simp [Localization.awayMapₐ, IsLocalization.Away.mapₐ, IsLocalization.Away.map, IsLocalization.map_eq]
     | (show _ = IsLocalization.map _ (φ : D →+* E) _ _; exact (IsLocalization.map_eq _ _).symm)
 
-theorem sm_comp {X : Over (Sp R)} {K : Type} {W : K → X.left.Opens} (y : Pt X D) {E E' : Type} [CommRing E]
-    [Algebra R E] [CommRing E'] [Algebra R E'] (ψ : D →ₐ[R] E) (θ : E →ₐ[R] E') (h : Sm W (spOver ψ ≫ y)) :
-    Sm W (spOver (θ.comp ψ) ≫ y) := by
-  obtain ⟨i, h⟩ := h
-  refine ⟨i, ?_⟩
-  rw [← spOver_comp, Category.assoc]
-  intro p _
-  exact h (Set.mem_univ _)
-
 theorem existsUnique_of_natural : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (K : Type) (W : K → X.left.Opens),
     ⨆ i, W i = ⊤ → ∀ (D : Type) [CommRing D] [Algebra R D] (y : Pt X D)
     (τ : ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E),

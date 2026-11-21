@@ -134,11 +134,6 @@ noncomputable instance instGradedAlgebraReesGrading (I : Ideal R) :
   left_inv := leftInverse_coeAddMonoidHom_reesGrading I
   right_inv := rightInverse_coeAddMonoidHom_reesGrading I
 
-theorem algebraMap_mem_reesGrading_zero (I : Ideal R) (r : R) :
-    algebraMap R ↥(reesAlgebra I) r ∈ reesGrading I 0 := by
-  rw [Algebra.algebraMap_eq_smul_one]
-  exact Submodule.smul_mem _ r (reesGrading_one_mem I)
-
 noncomputable def reesMonomial (I : Ideal R) (n : ℕ) (r : R) (hr : r ∈ I ^ n) :
     ↥(reesAlgebra I) :=
   ⟨Polynomial.monomial n r, reesAlgebra.monomial_mem.mpr hr⟩

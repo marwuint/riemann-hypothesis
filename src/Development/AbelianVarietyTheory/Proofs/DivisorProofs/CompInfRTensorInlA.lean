@@ -4,12 +4,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsGenericI
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviBlockSizesSum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittRankLeSkewSignature
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSplitChartSplitChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasureFundDomLtTop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TripSizesSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBlockEmb
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColSum
+
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.LeviBlockExponent GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -36,72 +36,6 @@ theorem mem_span_cols_iff (C : Matrix (Fin n) (Fin r) A) (I : Set (Fin r)) (y : 
 
 variable (P : Fin r → Fin r → Prop) (hPt : ∀ i l j, P i l → P l j → P i j) (hPlt : ∀ i l, P i l → i < l)
 include hPt
-
-theorem supp_mulVec (Q : Matrix (Fin r) (Fin r) A) (hQ : ∀ i l, Q i l ≠ 0 → P i l) (j : Fin r) (a : Fin r → A)
-    (ha : ∀ l, ¬ P l j → a l = 0) : ∀ i, ¬ P i j → (Q *ᵥ a) i = 0 := by
-  intro i hi
-  show ∑ l, Q i l * a l = 0
-  refine Finset.sum_eq_zero fun l _ => ?_
-  by_cases hq : Q i l = 0
-  · rw [hq, zero_mul]
-  · rw [ha l (fun h => hi (hPt i l j (hQ i l hq) h)), mul_zero]
-
-include hPlt in
-theorem supp_of_add (Q : Matrix (Fin r) (Fin r) A) (hQ : ∀ i l, Q i l ≠ 0 → P i l) (j : Fin r) (c : Fin r → A)
-    (hd : ∀ i, ¬ P i j → (c + Q *ᵥ c) i = 0) : ∀ i, ¬ P i j → c i = 0 := by
-  intro i
-  induction i using WellFoundedGT.induction with
-  | _ i ih =>
-  intro hi
-  have h1 : (Q *ᵥ c) i = 0 := by
-    show ∑ l, Q i l * c l = 0
-    refine Finset.sum_eq_zero fun l _ => ?_
-    by_cases hq : Q i l = 0
-    · rw [hq, zero_mul]
-    · have hil := hQ i l hq
-      rw [ih l (hPlt i l hil) (fun h => hi (hPt i l j hil h)), mul_zero]
-  have := hd i hi
-  rwa [Pi.add_apply, h1, add_zero] at this
-
-include hPlt in
-
-theorem core (C : Matrix (Fin n) (Fin r) A) (N : Matrix (Fin r) (Fin n) A) (T : Set (Fin r))
-    (hN : ∀ i v, N i v ≠ 0 → i ∈ T) (hQ : ∀ i l, (N * C) i l ≠ 0 → P i l) :
-    (∀ y, (1 + C * N) *ᵥ y - y ∈ Submodule.span A ((fun i => Cᵀ i) '' T)) ∧
-    (∀ j, (1 + C * N) *ᵥ Cᵀ j - Cᵀ j ∈ Submodule.span A ((fun i => Cᵀ i) '' {i | P i j})) ∧
-    (∀ j y, y ∈ Submodule.span A ((fun i => Cᵀ i) '' {i | P i j}) ↔
-      (1 + C * N) *ᵥ y ∈ Submodule.span A ((fun i => Cᵀ i) '' {i | P i j})) := by
-  have hD : ∀ y, (1 + C * N) *ᵥ y = y + C *ᵥ (N *ᵥ y) := fun y => by
-    rw [add_mulVec, one_mulVec, mulVec_mulVec]
-  have hcol : ∀ j, N *ᵥ Cᵀ j = fun i => (N * C) i j := fun j => by
-    funext i
-    simp [mulVec, dotProduct, mul_apply]
-  refine ⟨fun y => ?_, fun j => ?_, fun j y => ?_⟩
-  · rw [hD, add_sub_cancel_left]
-    refine (mem_span_cols_iff C T _).2 ⟨N *ᵥ y, fun l hl => ?_, rfl⟩
-    show ∑ v, N l v * y v = 0
-    refine Finset.sum_eq_zero fun v _ => ?_
-    by_cases h : N l v = 0
-    · rw [h, zero_mul]
-    · exact absurd (hN l v h) hl
-  · rw [hD, add_sub_cancel_left, hcol]
-    refine (mem_span_cols_iff C _ _).2 ⟨_, fun l hl => ?_, rfl⟩
-    by_contra h
-    exact hl (hQ l j h)
-  · rw [mem_span_cols_iff, mem_span_cols_iff]
-    constructor
-    · rintro ⟨a, ha, rfl⟩
-      refine ⟨a + (N * C) *ᵥ a, fun l hl => ?_, ?_⟩
-      · rw [Pi.add_apply, ha l hl, supp_mulVec P hPt _ hQ j a (fun l h => ha l h) l hl, add_zero]
-      · rw [hD]
-        simp only [mulVec_add, mulVec_mulVec, Matrix.mul_assoc]
-    · rintro ⟨b, hb, hy⟩
-      have hd : N *ᵥ y + (N * C) *ᵥ (N *ᵥ y) = (N * C) *ᵥ b := by
-        rw [← mulVec_mulVec, ← mulVec_add, ← hD, ← hy, mulVec_mulVec]
-      have hc := supp_of_add P hPt hPlt _ hQ j (N *ᵥ y) (fun i hi => by
-        rw [hd]; exact supp_mulVec P hPt _ hQ j b (fun l h => hb l h) i hi)
-      refine ⟨b - N *ᵥ y, fun l hl => by rw [Pi.sub_apply, hb l hl, hc l hl, sub_zero], ?_⟩
-      rw [mulVec_sub, hy, hD, add_sub_cancel_right]
 
 end Lin
 
@@ -197,9 +131,5 @@ theorem tens_ext {z z' : AF F ⊗[F] E} (h1 : ∀ w, compInf F E w z = compInf F
   rw [hz z, hz z', h2, GlobalTheory.AutFunCompare.infTens_ext (fun w => (hc w z).symm.trans ((h1 w).trans (hc w z')))]
 
 end Glue
-
-section Main
-
-end Main
 
 end GlobalTheory.StdPar.UnipArch

@@ -311,10 +311,6 @@ theorem icls_dual (L : HermLB p) : L.dual.icls = -L.icls := rfl
 
 theorem icls_triv : (triv p).icls = 0 := rfl
 
-theorem nontrivial_isomClass_int : Nontrivial (IsomClass (𝟙 (Sp ℤ))) :=
-  ⟨(ArithBase.trivShift 0).icls, (ArithBase.trivShift 1).icls, fun h =>
-    zero_ne_one (eq_of_isometric_trivShift (icls_eq_iff.1 h))⟩
-
 theorem icls_pow (L : HermLB p) (m : ℕ) : (L.pow m).icls = m • L.icls := by
   induction m with
   | zero => rw [zero_nsmul]; exact icls_eq_iff.2 L.isometric_pow_zero

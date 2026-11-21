@@ -31,17 +31,8 @@ theorem isGreatest_posIndex (G : Matrix n n ℂ) : IsGreatest (posDims G) (posIn
   have hb : BddAbove (posDims G) := ⟨_, fun _ hd => le_card_of_mem_posDims hd⟩
   exact ⟨Nat.sSup_mem ⟨0, zero_mem_posDims G⟩ hb, fun _ hd => le_csSup hb hd⟩
 
-theorem isGreatest_negIndex (G : Matrix n n ℂ) :
-    IsGreatest {d | ∃ W : Submodule ℂ (n → ℂ), finrank ℂ W = d ∧
-      ∀ x ∈ W, x ≠ 0 → (x ⬝ᵥ G *ᵥ star x).re < 0} (negIndex G) := by
-  have h := isGreatest_posIndex (-G)
-  simpa only [negIndex, posDims, neg_mulVec, dotProduct_neg, Complex.neg_re, Left.neg_pos_iff] using h
-
 theorem posIndex_le_card (G : Matrix n n ℂ) : posIndex G ≤ Fintype.card n :=
   le_card_of_mem_posDims (isGreatest_posIndex G).1
-
-theorem negIndex_le_card (G : Matrix n n ℂ) : negIndex G ≤ Fintype.card n :=
-  posIndex_le_card _
 
 @[simp] theorem posIndex_neg (G : Matrix n n ℂ) : posIndex (-G) = negIndex G := rfl
 
@@ -206,51 +197,6 @@ theorem posIndex_add_negIndex {G : Matrix n n ℂ} (hG : G.IsHermitian) (hG0 : G
   rw [posIndex_add_negIndex_eq_rank hG,
     rank_of_isUnit G ((isUnit_iff_isUnit_det G).2 hG0.isUnit)]
 
-theorem posIndex_neg_eq_sub {G : Matrix n n ℂ} (hG : G.IsHermitian) (hG0 : G.det ≠ 0) :
-    posIndex (-G) = Fintype.card n - posIndex G := by
-  have := posIndex_add_negIndex hG hG0
-  rw [posIndex_neg]
-  omega
-
-theorem exists_congr_diagonal_eigenvalues {G : Matrix n n ℂ} (hG : G.IsHermitian) :
-    ∃ P : Matrix n n ℂ, P.det ≠ 0 ∧
-      Pᵀ * G * P.map conj = diagonal fun k => (hG.eigenvalues k : ℂ) := by
-  have h := hG.conjStarAlgAut_star_eigenvectorUnitary
-  rw [Unitary.conjStarAlgAut_star_apply] at h
-  set U : Matrix n n ℂ := (hG.eigenvectorUnitary : Matrix n n ℂ) with hU
-  have hdet : U.det ≠ 0 := by
-    have h1 : star U * U = 1 := Unitary.coe_star_mul_self _
-    have h2 := congrArg det h1
-    rw [det_mul, det_one] at h2
-    exact right_ne_zero_of_mul_eq_one h2
-  have hm : (U.map conj).det = conj U.det := (RingHom.map_det (starRingEnd ℂ) U).symm
-  refine ⟨U.map conj, hm ▸ (map_ne_zero _).2 hdet, ?_⟩
-  have h3 : (U.map conj).map conj = U := by
-    ext a b
-    simp
-  rw [h3]
-  exact h
-
-theorem posIndex_eq_card_eigenvalues {G : Matrix n n ℂ} (hG : G.IsHermitian) :
-    posIndex G = (Finset.univ.filter fun k => 0 < hG.eigenvalues k).card := by
-  obtain ⟨P, hP, hd⟩ := exists_congr_diagonal_eigenvalues hG
-  rw [posIndex_eq_card_of_congr_diagonal hP hd]
-  simp
-
-theorem negIndex_eq_card_eigenvalues {G : Matrix n n ℂ} (hG : G.IsHermitian) :
-    negIndex G = (Finset.univ.filter fun k => hG.eigenvalues k < 0).card := by
-  obtain ⟨P, hP, hd⟩ := exists_congr_diagonal_eigenvalues hG
-  rw [negIndex_eq_card_of_congr_diagonal hP hd]
-  simp
-
-open scoped ComplexOrder in
-
-theorem posDef_iff_posIndex_eq_card {G : Matrix n n ℂ} (hG : G.IsHermitian) :
-    G.PosDef ↔ posIndex G = Fintype.card n := by
-  rw [hG.posDef_iff_eigenvalues_pos, posIndex_eq_card_eigenvalues hG, ← Finset.card_univ,
-    Finset.card_filter_eq_iff]
-  simp
-
 theorem posIndex_map_conj {G : Matrix n n ℂ} (hG : G.IsHermitian) :
     posIndex (G.map conj) = posIndex G := by
   obtain ⟨P, d, hP, hd, -⟩ := exists_congr_diagonal_real hG
@@ -393,18 +339,6 @@ theorem congr_sgn_iff {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.IsHermitian) (hG0
   · rintro rfl
     exact ⟨posIndex_le G, exists_congr_sgn hG hG0⟩
 
-theorem existsUnique_congr_sgn {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.IsHermitian)
-    (hG0 : G.det ≠ 0) :
-    ∃! p : ℕ, p ≤ r ∧ ∃ P : Matrix (Fin r) (Fin r) ℂ, P.det ≠ 0 ∧
-      Pᵀ * G * P.map conj = diagonal fun a : Fin r => ((FD.sgn p a : ℝ) : ℂ) :=
-  ⟨posIndex G, (congr_sgn_iff hG hG0 _).2 rfl, fun p hp => (congr_sgn_iff hG hG0 p).1 hp⟩
-
-theorem posIndex_reindex_fromBlocks {G : Matrix (Fin r) (Fin r) ℂ} {H : Matrix (Fin s) (Fin s) ℂ}
-    (hG : G.IsHermitian) (hH : H.IsHermitian) :
-    posIndex (reindex finSumFinEquiv finSumFinEquiv (fromBlocks G 0 0 H)) =
-      posIndex G + posIndex H := by
-  rw [reindex_apply, posIndex_submatrix_equiv, posIndex_fromBlocks hG hH]
-
 end NormalForm
 
 section CM
@@ -442,14 +376,6 @@ theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P : Matrix (F
   ext a b
   rw [HermDiag.transpose_mul_mul_map_apply]
   exact hermC_eq_dotProduct τ G _ _
-
-omit [NumberField E] [IsCMField E] in
-
-theorem isGreatest_posIndex_map (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) :
-    IsGreatest {d | ∃ W : Submodule ℂ (Fin r → ℂ), finrank ℂ W = d ∧
-      ∀ x ∈ W, x ≠ 0 → 0 < (FD.hermC τ G x x).re} (posIndex (G.map τ)) := by
-  simp only [hermC_eq_dotProduct]
-  exact isGreatest_posIndex _
 
 theorem gram_eq_sgn_iff (τ : E →+* ℂ) {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, FD.cc (G a b) = G b a) (hG0 : G.det ≠ 0) (p : ℕ) :
@@ -489,56 +415,6 @@ theorem posIndex_map_eq_card_of_congr_diagonal (τ : E →+* ℂ) {G P : Matrix 
     posIndex (G.map τ) = (Finset.univ.filter fun k => 0 < (τ (d k)).re).card := by
   rw [← posIndex_map_congr τ G hP, hd, diagonal_map (map_zero τ), posIndex_diagonal]
 
-theorem posIndex_map_data (X : FD.Data E r) (τ : E →+* ℂ) : posIndex (X.Gm.map τ) = X.p0 := by
-  have key : ∀ σ ∈ X.Ψ, posIndex (X.Gm.map σ) = X.p0 := fun σ hσ =>
-    ((gram_eq_sgn_iff σ X.Gm_herm X.Gm_det X.p0).1 ⟨X.p0_le, X.signature ⟨σ, hσ⟩⟩).symm
-  by_cases h : τ ∈ X.Ψ
-  · exact key τ h
-  · rw [← posIndex_map_conjugate τ X.Gm_herm]
-    refine key _ ?_
-    by_contra h'
-    exact h ((X.cmType τ).2 h')
-
-theorem negIndex_map_data (X : FD.Data E r) (τ : E →+* ℂ) :
-    negIndex (X.Gm.map τ) = r - X.p0 := by
-  rw [← posIndex_neg,
-    posIndex_neg_eq_sub (isHermitian_map τ X.Gm_herm) (det_map_ne_zero τ X.Gm_det),
-    posIndex_map_data, Fintype.card_fin]
-
 end CM
-
-open NumberField in
-
-theorem law_of_inertia :
-    (∀ (r : ℕ) (G : Matrix (Fin r) (Fin r) ℂ), G.IsHermitian → G.det ≠ 0 →
-      (∃! p : ℕ, p ≤ r ∧ ∃ P : Matrix (Fin r) (Fin r) ℂ, P.det ≠ 0 ∧
-        Pᵀ * G * P.map conj = diagonal fun a : Fin r => ((FD.sgn p a : ℝ) : ℂ)) ∧
-      (∀ p : ℕ, (p ≤ r ∧ ∃ P : Matrix (Fin r) (Fin r) ℂ, P.det ≠ 0 ∧
-        Pᵀ * G * P.map conj = diagonal fun a : Fin r => ((FD.sgn p a : ℝ) : ℂ)) ↔
-          p = posIndex G) ∧
-      (∀ (P : Matrix (Fin r) (Fin r) ℂ) (d : Fin r → ℂ), P.det ≠ 0 →
-        Pᵀ * G * P.map conj = diagonal d →
-          posIndex G = (Finset.univ.filter fun k => 0 < (d k).re).card) ∧
-      IsGreatest {d | ∃ W : Submodule ℂ (Fin r → ℂ), finrank ℂ W = d ∧
-        ∀ x ∈ W, x ≠ 0 → 0 < (x ⬝ᵥ G *ᵥ star x).re} (posIndex G) ∧
-      (∀ (s : ℕ) (H : Matrix (Fin s) (Fin s) ℂ), H.IsHermitian →
-        posIndex (fromBlocks G 0 0 H) = posIndex G + posIndex H ∧
-        posIndex (reindex finSumFinEquiv finSumFinEquiv (fromBlocks G 0 0 H)) =
-          posIndex G + posIndex H) ∧
-      posIndex (-G) = r - posIndex G) ∧
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ),
-      (∀ (G : Matrix (Fin r) (Fin r) E), (∀ a b, FD.cc (G a b) = G b a) → G.det ≠ 0 →
-        ∀ τ : E →+* ℂ,
-          (∀ p : ℕ, (p ≤ r ∧ ∃ P : Matrix (Fin r) (Fin r) ℂ, P.det ≠ 0 ∧
-            FD.gram τ G P = diagonal fun a : Fin r => ((FD.sgn p a : ℝ) : ℂ)) ↔
-              p = posIndex (G.map τ)) ∧
-          posIndex (G.map (ComplexEmbedding.conjugate τ)) = posIndex (G.map τ)) ∧
-      ∀ (X : FD.Data E r) (τ : E →+* ℂ), posIndex (X.Gm.map τ) = X.p0 :=
-  ⟨fun _ G hG hG0 => ⟨existsUnique_congr_sgn hG hG0, congr_sgn_iff hG hG0,
-      fun _ _ hP hd => posIndex_eq_card_of_congr_diagonal hP hd, isGreatest_posIndex G,
-      fun _ _ hH => ⟨posIndex_fromBlocks hG hH, posIndex_reindex_fromBlocks hG hH⟩,
-      by simpa only [Fintype.card_fin] using posIndex_neg_eq_sub hG hG0⟩,
-    fun _ _ _ _ _ => ⟨fun _ hG hG0 τ => ⟨gram_eq_sgn_iff τ hG hG0, posIndex_map_conjugate τ hG⟩,
-      posIndex_map_data⟩⟩
 
 end GlobalTheory.Inertia

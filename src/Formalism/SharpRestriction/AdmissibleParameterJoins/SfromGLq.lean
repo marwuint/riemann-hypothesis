@@ -129,19 +129,6 @@ theorem idxRowTie_of (D : D7) (h : ∀ i, StandardLattice.SplitsF D (D.host.g i)
     idxRowLoc_eq _ _ _ D.R.m_even D.R.two_le_m, idxRowLoc_eq _ _ _ D.R.m_even D.R.two_le_m]
   rfl
 
-theorem column_row_ranks_of_columns (D : D7) (Lv : LevelData D) (h4 : StandardLattice.Conclusion4f D Lv) (h2 : StandardLattice.VolumeEqMass₂ D)
-    (hD : StandardLattice.FactDstar D) (hc : ColHyp D) : LocalBesselAndTopKernel.FamilyMidVolume D :=
-  column_row_ranks D Lv h4 h2 hD hc (idxColTie_of D hc.2.1) (idxRowTie_of D hc.2.1)
-
-theorem family_column_row_ranks_of_columns {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C0 Cg cb Cu cT CT : ℝ)
-    (h : S.OwnEv Fm fun C' Cl x i => LocalBesselAndTopKernel.hyp (Fm.D x i) (Fm.L x i) C0 C' Cl Cg cb Cu cT CT →
-      (∃ Lv : LevelData (Fm.D x i), StandardLattice.Conclusion4f (Fm.D x i) Lv) ∧ StandardLattice.VolumeEqMass₂ (Fm.D x i) ∧ StandardLattice.FactDstar (Fm.D x i) ∧
-        ColHyp (Fm.D x i)) :
-    LocalBesselAndTopKernel.FamilyRanksHypothesis Fm C0 Cg cb Cu cT CT := by
-  refine family_column_row_ranks Fm C0 Cg cb Cu cT CT (S.OwnEv.mono (fun C' Cl x i hxi hh => ?_) h)
-  obtain ⟨h4, h2, hD, hc⟩ := hxi hh
-  exact ⟨h4, h2, hD, hc, idxColTie_of _ hc.2.1, idxRowTie_of _ hc.2.1⟩
-
 end Formalism.MainNotions.J
 
 end

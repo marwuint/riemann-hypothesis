@@ -1,19 +1,19 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteIndexOfGammaLe
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPointSlashEvaluationsIndependentGammaStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsEisensteinSlashNeOutsideGammaStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPointSlashEvaluationsIndependentGamma
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsEisensteinSlashNeOutsideGamma
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsOddWeightFrameDetNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsOddFrameNotReducesToSmallerOddWeightStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ReducesOfDetEvMEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ReducesToSmallerOddWeightOfLeadingCoeffMatrixDetStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsOddFrameNotReducesToSmallerOddWeight
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ReducesOfDetEvMEqZero
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ReducesToSmallerOddWeightOfLeadingCoeffMatrixDet
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTendstoSlashEvaluationMatrixMulStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDualOddFrameCuspFormsStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TendstoSmulInvOfMulTendstoInvertibleMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LevelOneTwelveMulFinrankModularFormLowerBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalOfGammaLeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPlusMinusCosetRepresentativesTwoMulCardStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumFinrankLevelOneLeFinrankOfFrameStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LevelOneTwelveMulFinrankModularFormLowerBound
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalOfGammaLe
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPlusMinusCosetRepresentativesTwoMulCard
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumFinrankLevelOneLeFinrankOfFrame
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumFinrankLevelOneLeFinrankCuspFormOfFrameStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThreeMulCardOddFrameWeightsDvdThreeStatement
 
@@ -47,11 +47,11 @@ theorem exists_frame (M : ℕ) (Γ : Subgroup SL(2, ℤ)) (hM : 0 < M) (hΓ : Co
   have hM3 : 3 ≤ M := by
     by_contra h
     exact h1 (hΓ (neg_one_mem_Gamma hM (by omega)))
-  obtain ⟨τ₀, hτ₀⟩ := GlobalTheory.T.exists_point_slashEvaluations_independent_gamma M hM (GlobalTheory.T.exists_eisenstein_slash_ne_outside_gamma M hM3)
+  obtain ⟨τ₀, hτ₀⟩ := _root_.GlobalTheory.CosetEval.evals_independent M hM (_root_.GlobalTheory.EisSep.exists_isMF_slash_ne M hM3)
   obtain ⟨w₀, F₀, hF₀, hd₀⟩ := GlobalTheory.T.exists_odd_weight_frame_det_ne_zero M Γ r s τ₀ hM hΓ h1 hs hτ₀
-  obtain ⟨w, F, hF, -, hred⟩ := GlobalTheory.T.exists_oddFrame_not_reducesToSmallerOddWeight Γ r s w₀ F₀ hfi hF₀ ⟨τ₀, hd₀⟩
-  have hdet : ∀ τ, (evM s w F τ).det ≠ 0 := fun τ h => hred (GlobalTheory.T.reduces_of_det_evM_eq_zero' Γ r s w F τ hs hF h)
-  have hlead : (leadM M s w F).det ≠ 0 := fun h => hred (GlobalTheory.T.reducesToSmallerOddWeight_of_leadingCoeffMatrix_det_zero M Γ r s w F hM hΓ hs hF h)
+  obtain ⟨w, F, hF, -, hred⟩ := _root_.GlobalTheory.OddFrame.descent Γ r s w₀ F₀ hfi hF₀ ⟨τ₀, hd₀⟩
+  have hdet : ∀ τ, (evM s w F τ).det ≠ 0 := fun τ h => hred (_root_.GlobalTheory.OddFrame.reduces_of_det_evM_eq_zero Γ r s w F τ hs hF h)
+  have hlead : (leadM M s w F).det ≠ 0 := fun h => hred (_root_.GlobalTheory.OddFrame.reduces_of_det_leadM_eq_zero M Γ r s w F hM hΓ hs hF h)
   obtain ⟨U, hU1, hU2⟩ := GlobalTheory.T.exists_tendsto_slashEvaluationMatrix_mul M Γ r s w F hM hΓ hs hF hlead
   obtain ⟨G, hG, hGd⟩ := GlobalTheory.T.exists_dual_oddFrame_cuspForms Γ r s w F h1 hs hF hdet (GlobalTheory.T.tendsto_smul_inv_of_mul_tendsto_invertible_matrix r _ U _ _ hlead hU1 hU2)
   exact ⟨w, F, G, hF, hdet, hG, hGd⟩
@@ -60,8 +60,8 @@ theorem levelOne_pair (k j : ℤ) (hk : Odd k) (hj : Odd j) :
     2 * k - 2 + 4 * (if k % 3 = 0 then 1 else if k % 3 = 2 then -1 else 0) * (3 * (if (3 : ℤ) ∣ j then 1 else 0) - 1)
       ≤ 12 * ((Module.finrank ℂ (ModularForm 𝒮ℒ (k - j)) : ℤ) +
         (Module.finrank ℂ (ModularForm 𝒮ℒ (k - (12 - j))) : ℤ)) := by
-  have ha := GlobalTheory.T.levelOne_twelve_mul_finrank_modularForm_lower_bound (k - j) (hk.sub_odd hj)
-  have hb := GlobalTheory.T.levelOne_twelve_mul_finrank_modularForm_lower_bound (k - (12 - j)) (hk.sub_odd (Even.sub_odd (by decide) hj))
+  have ha := _root_.GlobalTheory.OddFrame.levelOne_twelve_mul_finrank_lower_bound (k - j) (hk.sub_odd hj)
+  have hb := _root_.GlobalTheory.OddFrame.levelOne_twelve_mul_finrank_lower_bound (k - (12 - j)) (hk.sub_odd (Even.sub_odd (by decide) hj))
   rw [Int.odd_iff] at hk hj
   generalize (Module.finrank ℂ (ModularForm 𝒮ℒ (k - j)) : ℤ) = a at *
   generalize (Module.finrank ℂ (ModularForm 𝒮ℒ (k - (12 - j))) : ℤ) = b at *
@@ -80,13 +80,13 @@ theorem dim_lower_bound : ∀ (N M : ℕ) (Γ : Subgroup SL(2, ℤ)) (k : ℕ), 
       (k - 1) * Γ.index ≤
         12 * (Module.finrank ℂ (ModularForm Γ (k : ℤ)) + Module.finrank ℂ (CuspForm Γ (k : ℤ))) := by
   intro N M Γ k hN hM hΓ hΓ1 hk hk3
-  obtain ⟨hfM, hfS⟩ := GlobalTheory.T.finiteDimensional_modularForm_cuspForm_of_gamma_le M Γ k hM hΓ
+  obtain ⟨hfM, hfS⟩ := _root_.GlobalTheory.OddFrame.finiteDimensional_of_Gamma_le M Γ k hM hΓ
   refine ⟨hfM, hfS, ?_⟩
   have hfi := finiteIndex_of_Gamma_le hM hΓ
   have h1 : (-1 : SL(2, ℤ)) ∉ Γ := fun h => neg_one_not_mem_Gamma1 hN (hΓ1 h)
-  obtain ⟨r, s, hs, hr⟩ := GlobalTheory.T.exists_plusMinusCosetRepresentatives_two_mul_card Γ hfi h1
+  obtain ⟨r, s, hs, hr⟩ := _root_.GlobalTheory.OddFrame.reps_index Γ hfi h1
   obtain ⟨w, F, G, hF, hd, hG, hGd⟩ := exists_frame M Γ hM hΓ h1 hs
-  have hcM := GlobalTheory.T.sum_finrank_levelOne_le_finrank_of_frame Γ r s w F k hfi hfM (fun j => (hF j).2) hd
+  have hcM := _root_.GlobalTheory.OddFrame.finrank_sum_le_of_frame Γ r s w F k hfi hfM (fun j => (hF j).2) hd
   have hcS := GlobalTheory.T.sum_finrank_levelOne_le_finrank_cuspForm_of_frame Γ r s (fun j => 12 - w j) G k hfi hfS hG hGd
   have h3 := GlobalTheory.T.three_mul_card_oddFrame_weights_dvd_three N Γ r s w F hN hΓ1 hs hF (hd _)
   have hkz : Odd (k : ℤ) := by exact_mod_cast hk

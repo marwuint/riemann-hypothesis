@@ -8,9 +8,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRin
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PsiScal
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EigenTensorFullLeftSupport
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SvalOfIsTwistPull
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AbelianSectionsIrreducibleThetaGroupStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AdditionTensorEigenDiagonalThetaOrderTwoStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AdditionFormulaTensorNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AbelianSectionsIrreducibleThetaGroup
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AdditionTensorEigenDiagonalThetaOrderTwo
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AdditionFormulaTensorNeZero
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -25,15 +25,15 @@ theorem full_left_support : Laws → Laws2 → ∀ (S : Scheme.{0}) [IsLocallyNo
   refine GlobalTheory.eigenTensor_full_left_support F (EA P p 2) (EA P p 2)
     {θ : ThetaGrp P.A P.L ((2 : ℕ) : ℤ) (Over.mk p) // θ.pt ^ 2 = 1}
     (fun θ => (Φ θ.1 : EA P p 2 →ₗ[F] EA P p 2)) (fun θ => Φ θ.1) ?_ _
-    (GlobalTheory.T.additionFormula_tensor_ne_zero S P F p th n t t' hadd hth) ?_
+    (_root_.GlobalTheory.addition_tensor_ne_zero S P F p th n t t' hadd hth) ?_
   · intro U hU
-    refine (GlobalTheory.T.abelian_sections_irreducible_theta_group h1 h2 S P F p 2 (by exact_mod_cast h2F)).2 U ?_
+    refine (_root_.GlobalTheory.ThetaIrred.main h1 h2 S P F p 2 (by exact_mod_cast h2F)).2 U ?_
     intro θ hθ v v' hvv' hv
     have e : v' = Φ θ v := hΦu θ v.sec v'.sec hvv'
     rw [e]
     exact hU ⟨θ, hθ⟩ v hv
   · intro θ
-    obtain ⟨r, hr⟩ := GlobalTheory.T.additionTensor_eigen_diagonal_theta_order_two h1.globalFns S P F p th n t t' (fun i => Φ θ.1 (t i)) (fun i => Φ θ.1 (t' i))
+    obtain ⟨r, hr⟩ := _root_.GlobalTheory.AddEig.main h1.globalFns S P F p th n t t' (fun i => Φ θ.1 (t i)) (fun i => Φ θ.1 (t' i))
       hadd θ.1 θ.2 (fun i => ⟨hΦ θ.1 (t i), hΦ θ.1 (t' i)⟩)
     refine ⟨r, Eq.trans ?_ hr⟩
     rw [map_sum]

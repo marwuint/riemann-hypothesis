@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajPos
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.HermLinApply
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RiemannFormFramePeriodsEqMajorantStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RiemannFormFramePeriodsEqMajorant
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsLineBasis
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField
@@ -137,7 +137,7 @@ theorem key (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityT
   rw [hrange] at hspan
   refine ⟨hcard, b, hspan, ?_⟩
   obtain ⟨Hm, hR⟩ := (Uw.period k x).2.2.2.2
-  have hmaj := (GlobalTheory.T.riemann_form_frame_periods_eq_majorant E H Dw l Xo c σ r U Uw k x Hm hG hU hR).1
+  have hmaj := (_root_.GlobalTheory.RiemMaj.riemann_eq_majorant E H Dw l Xo c σ r U Uw k x Hm hG hU hR).1
   let p : Fin Uw.g → Fin Uw.g → ℂ := fun j => Uw.Pm k x (γ (Θ.bas (Pi.single (.inl j) 1)))
   let q : Fin Uw.g → Fin Uw.g → ℂ := fun j => Uw.Pm k x (γ (Θ.bas (Pi.single (.inr j) 1)))
   have hq : ∀ j, q j = ∑ i, Θ.τ w i j • p i := fun j => by

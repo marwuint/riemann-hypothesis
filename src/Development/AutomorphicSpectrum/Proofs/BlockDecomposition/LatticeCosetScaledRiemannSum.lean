@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetOff
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticePointCountScalingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanFundamentalDomainIntegersStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalingMeasureProductArchimedeanStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticePointCountScaling
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanFundamentalDomainIntegers
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalingMeasureProductArchimedean
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology Filter GlobalTheory.CompanionTheory.Equi
 open scoped Classical
@@ -89,7 +89,7 @@ theorem GlobalTheory.CompanionTheory.Equi.lat_sum : ∀ (F : Type) [Field F] [Nu
   haveI := hSC
   haveI := hT2
   haveI : li.IsAddHaarMeasure := hli.1
-  obtain ⟨D₀, K₀, hDm, hK, hDK, hD1, htile⟩ := GlobalTheory.T.archimedean_fundamental_domain_integers F hF li hli
+  obtain ⟨D₀, K₀, hDm, hK, hDK, hD1, htile⟩ := _root_.GlobalTheory.CompanionTheory.Equi.exists_bounded_infDomain F hF li hli
   have hg : Function.Injective (algebraMap F (Ainf F)) := (algebraMap F (Ainf F)).injective
   let j : 𝓞 F →+ Ainf F := ((algebraMap F (Ainf F)).comp (algebraMap (𝓞 F) F)).toAddMonoidHom
   have hj : Function.Injective j := hg.comp (IsFractionRing.injective (𝓞 F) F)
@@ -115,7 +115,7 @@ theorem GlobalTheory.CompanionTheory.Equi.lat_sum : ∀ (F : Type) [Field F] [Nu
   have hjoint : Continuous fun p : ℝ × (ι → Ainf F) => T p.1 p.2 :=
     continuous_pi fun i => (hθ.comp continuous_fst).mul ((continuous_apply i).comp continuous_snd)
   have hθ0 : θ 0 = 0 := map_zero θ
-  have key := GlobalTheory.T.lattice_point_count_scaling (ι → Ainf F) (Measure.pi fun _ => li) Λ (Set.pi Set.univ fun _ => D₀)
+  have key := _root_.GlobalTheory.CompanionTheory.RiemannCore.main (ι → Ainf F) (Measure.pi fun _ => li) Λ (Set.pi Set.univ fun _ => D₀)
     (Set.pi Set.univ fun _ => K₀) (reps (ι := ι) j rep) T (Module.finrank ℚ F * Fintype.card ι)
     (MeasurableSet.univ_pi fun _ => hDm) (isCompact_univ_pi fun _ => hK)
     (Set.pi_mono fun _ _ => hDK)
@@ -132,7 +132,7 @@ theorem GlobalTheory.CompanionTheory.Equi.lat_sum : ∀ (F : Type) [Field F] [Nu
       · funext i
         show θ ε * (θ ε⁻¹ * y i) = y i
         rw [← mul_assoc, h2, one_mul])
-    (fun ε hε => GlobalTheory.T.scaling_measure_product_archimedean F hF θ hθ li hli.1 ι ε hε)
+    (fun ε hε => _root_.GlobalTheory.CompanionTheory.Equi.InfScale.map_theta_mul_pi F hF θ hθ li hli.1 ι ε hε)
     (fun B hB U hU => by
       have h0 : ∀ b ∈ B, ∀ᶠ z : ℝ × (ι → Ainf F) in 𝓝 ((0 : ℝ), b), T z.1 z.2 ∈ U := by
         intro b _

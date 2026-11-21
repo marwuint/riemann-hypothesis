@@ -26,8 +26,6 @@ namespace MU
 
 variable {φ : ι → E →+* K} {e e' : ι → ℤ}
 
-theorem zero : MU φ 0 := fun _ _ => by simp
-
 theorem add (h : MU φ e) (h' : MU φ e') : MU φ (e + e') := by
   intro z hz
   have hne : ∀ i, φ i z ≠ 0 := fun i => (map_ne_zero (φ i)).2 (root_ne_zero hz)
@@ -53,14 +51,6 @@ theorem const (h : MU φ (fun _ => 1)) (c : ℤ) : MU φ (fun _ => c) := by
 theorem add_const (h : MU φ e) (h1 : MU φ (fun _ => 1)) (c : ℤ) : MU φ (fun i => e i + c) :=
   h.add (h1.const c)
 
-theorem equiv_iff (s : ι' ≃ ι) : MU (fun i => φ (s i)) (fun i => e (s i)) ↔ MU φ e := by
-  refine forall_congr' fun z => forall_congr' fun _ => ?_
-  rw [Equiv.prod_comp s (fun i => φ i z ^ e i)]
-
-theorem aut (h : MU φ e) (g : E →+* E) : MU (fun i => (φ i).comp g) e := fun z hz => by
-  obtain ⟨m, hm, hzm⟩ := hz
-  exact h (g z) ⟨m, hm, by rw [← map_pow, hzm, map_one]⟩
-
 theorem even [CharZero K] (h : MU φ e) : Even (∑ i, e i) := by
   have h1 := h (-1) ⟨2, by norm_num, by norm_num⟩
   simp only [map_neg, map_one] at h1
@@ -75,8 +65,6 @@ end MU
 namespace MUQ
 
 variable {φ : ι → E →+* K} {e : ι → ℚ}
-
-theorem int (h : MUQ φ e) (i : ι) : ∃ z : ℤ, e i = z := let ⟨a, ha, _⟩ := h; ⟨a i, ha i⟩
 
 theorem even [CharZero K] (h : MUQ φ e) : ∃ z : ℤ, ∑ i, e i = 2 * (z : ℚ) := by
   obtain ⟨a, ha, hm⟩ := h
@@ -94,15 +82,6 @@ theorem mu (h : MUQ φ e) {a : ι → ℤ} (ha : ∀ i, e i = a i) : MU φ a := 
     exact_mod_cast h3
   subst hab
   exact hm
-
-theorem equiv_iff (s : ι' ≃ ι) : MUQ (fun i => φ (s i)) (fun i => e (s i)) ↔ MUQ φ e := by
-  constructor
-  · rintro ⟨a, ha, hm⟩
-    refine ⟨fun i => a (s.symm i), fun i => by simpa using ha (s.symm i), ?_⟩
-    rw [← MU.equiv_iff s]
-    simpa using hm
-  · rintro ⟨a, ha, hm⟩
-    exact ⟨fun i => a (s i), fun i => ha _, (MU.equiv_iff s).2 hm⟩
 
 theorem add_const (h : MUQ φ e) (h1 : MU φ (fun _ => 1)) (c : ℤ) : MUQ φ (fun i => e i + c) := by
   obtain ⟨a, ha, hm⟩ := h

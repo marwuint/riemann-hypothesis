@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FieldValuesMemFixedField
 import Formalism.LocalToGlobal.Columns.PathCountSymmetricHolds
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAlgebraicRootsCoeffFieldContainsTwistValueStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowsLiftsHeckeOperatorsCommuteStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCoefficientFieldContainsHeckeEigenvaluesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAlgebraicRootsCoeffFieldContainsTwistValue
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowsLiftsHeckeOperatorsCommute
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCoefficientFieldContainsHeckeEigenvalues
 
 noncomputable section
 
@@ -26,8 +26,8 @@ theorem ev_of_forall {p : Top.Ctx → Prop} (h : ∀ K, p K) : Top.Ev p :=
 
 theorem large_coefficientField_contains_twist_values : Top.EvLg fun _ B f T => ∀ (px : PreX B.toPre) (I : Col2.ColIn B px) (hX : B.fields.Ok), I.Ok → I.C = f →
     Set.range I.xi = T.set f → ValsIn I ∧ ∀ U Xg tr, (∀ χ ∈ Xg, IsAbsIrrChar χ) → (famC I hX U Xg tr).fam3.Ok3 1 := by
-  obtain ⟨Sv, hSv, hV⟩ := GlobalTheory.T.exists_algebraicRoots_coeffFieldContainsTwistValues
-  obtain ⟨So, hSo, hF⟩ := GlobalTheory.T.exists_coefficientField_contains_heckeEigenvalues
+  obtain ⟨Sv, hSv, hV⟩ := _root_.GlobalTheory.Mem.Col2.exists_roots_valsIn
+  obtain ⟨So, hSo, hF⟩ := _root_.GlobalTheory.Mem.HFld.heckeFields
   unfold Top.EvLg
   refine ev_of_forall fun _ => ?_
   unfold Top.large₂
@@ -43,7 +43,7 @@ theorem large_coefficientField_contains_twist_values : Top.EvLg fun _ B f T => �
     exact hH.2
   refine ⟨hV B px I hOk fun z hz => hL z (Finset.mem_union_left _ hz), fun U Xg tr hirr => ?_⟩
   have hFI := hF B px I hX hOk fun z hz => hL z (Finset.mem_union_right _ hz)
-  have hC2 := GlobalTheory.T.rowsLifts_heckeOperators_commute B px I hX hOk
+  have hC2 := _root_.GlobalTheory.Mem.R3.Comm.rows_lifts_comm B px I hX hOk
   have key : ∀ τ : TupU I U, ∃ a : I.ι, I.tup a = τ.1 := fun τ => ⟨_, tup_ixOf I τ⟩
 
   have hH3 : ColHyp3 B.wts I.Ch I.sel (InfinitePlace.mk B.embLL) (tuOf I U) Xg ∅ := by

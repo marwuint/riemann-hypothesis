@@ -45,29 +45,6 @@ theorem projective [Module.Finite A' (A' ⊗[A] M)] [Module.Projective A' (A' �
   have : Module.Flat A M := flat A'
   exact Module.Flat.projective_of_finitePresentation
 
-theorem rankAtStalk_eq [Module.Finite A' (A' ⊗[A] M)] [Module.Flat A' (A' ⊗[A] M)] {r : ℕ}
-    (h : ∀ q : PrimeSpectrum A', Module.rankAtStalk (A' ⊗[A] M) q = r) (p : PrimeSpectrum A) :
-    Module.rankAtStalk M p = r := by
-  have : Module.Finite A M := finite A'
-  have : Module.Flat A M := flat A'
-  obtain ⟨q, rfl⟩ := PrimeSpectrum.comap_surjective_of_faithfullyFlat (A := A) (B := A') p
-  rw [← Module.rankAtStalk_baseChange, h]
-
-theorem one_tmul_injective : Function.Injective fun m : M ↦ (1 : A') ⊗ₜ[A] m :=
-  Module.FaithfullyFlat.tensorProduct_mk_injective (A := A) (B := A') M
-
-theorem linearIndependent_iff {ι : Type*} (v : ι → M) :
-    LinearIndependent A v ↔ LinearIndependent A' fun i ↦ (1 : A') ⊗ₜ[A] v i := by
-  refine ⟨fun h ↦ Module.Flat.linearIndependent_one_tmul h, fun h ↦ ?_⟩
-  have h' : LinearIndependent A fun i ↦ (1 : A') ⊗ₜ[A] v i :=
-    h.restrict_scalars' A
-  exact LinearIndependent.of_comp (TensorProduct.mk A A' M 1) h'
-
-theorem algebraMap_dvd_iff (a b : A) : algebraMap A A' a ∣ algebraMap A A' b ↔ a ∣ b := by
-  rw [← Ideal.mem_span_singleton, ← Ideal.mem_span_singleton,
-    ← Ideal.comap_map_eq_self_of_faithfullyFlat (B := A') (Ideal.span {a}), Ideal.mem_comap,
-    Ideal.map_span, Set.image_singleton]
-
 end Algebra
 
 section IsBaseChange

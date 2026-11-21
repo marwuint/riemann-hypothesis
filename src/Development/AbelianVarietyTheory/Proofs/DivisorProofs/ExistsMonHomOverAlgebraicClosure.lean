@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchem
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTateIsoOfLevel
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.FormallyUnramifiedOfTangentMapInjective
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniversalTorsionPairPolAV
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointFactorIntegralSubalgebraStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointFactorIntegralSubalgebra
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -21,7 +21,7 @@ theorem factor_finite (K B E : Type) [Field K] [CommRing B] [CommRing E] [Algebr
     (i : E →ₐ[K] B) (hι : Function.Injective i) (hint : ∀ b : B, _root_.IsIntegral K b → b ∈ i.range)
     (T : Scheme.{0}) (p : T ⟶ Sp K) [IsFinite p] (t : Sp B ⟶ T) (ht : t ≫ p = spMap (algebraMap K B)) :
     ∃ u : Sp E ⟶ T, u ≫ p = spMap (algebraMap K E) ∧ t = spMap i.toRingHom ≫ u :=
-  GlobalTheory.T.exists_factor_through_integral_subalgebra K B E i hι hint T p t ht
+  _root_.GlobalTheory.point_factor_integral_subalgebra K B E i hι hint T p t ht
 
 theorem torsion_factor (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A)
     (n : ℕ) (hn : 0 < n) (B E : Type) [CommRing B] [CommRing E] [Algebra K B] [Algebra K E]

@@ -48,8 +48,6 @@ theorem frameLat_unimod (V : HSp D) (hV : V.gram = 1) : Formalism.HermitianLatti
 def stdLatSp (V : HSp D) (hV : V.gram = 1) : HSp D :=
   { V with L0 := frameLat V, standardTuple_isLattice := frameLat_isLattice V, baseLattice_isUnimodular := frameLat_unimod V hV }
 
-example (V : HSp D) (hV : V.gram = 1) : GA D (stdLatSp V hV) = GA D V := rfl
-
 theorem mem_frameLattice_iff_integral_coords (V : HSp D) (hV : V.gram = 1) (y : Fin V.rank → D.host.E) :
     y ∈ L0c D (stdLatSp V hV) ↔ ∀ i, ∃ b : 𝓞 D.host.E, (b : D.host.E) = y i := by
   change ∑ i, y i • V.frame i ∈ frameLat V ↔ _

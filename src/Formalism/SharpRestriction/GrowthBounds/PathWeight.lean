@@ -34,15 +34,4 @@ theorem stmtE_proved (D : Formalism.BasicNotions.D7) : ClosedFormOfAdmitted D :=
   intro CLa Ck Crk Cdeg hA
   exact ⟨C, C + 1, C, by linarith, by linarith, by linarith, H D CLa Ck Crk Cdeg hA⟩
 
-theorem stmtEF_proved {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : FamilyClosedForm Fm := by
-  obtain ⟨C, hC, H⟩ := export_bound_of_admissible
-  intro CLa Ck Crk Cdeg hA
-  exact ⟨C, C + 1, C, by linarith, by linarith, by linarith, 0, fun x _ i => H _ CLa Ck Crk Cdeg (hA x i)⟩
-
-theorem stmtEDF_proved (Fm : Formalism.MainNotions.DFamP) : DerivativeStatementClosedDesign Fm := by
-  obtain ⟨C, hC, H⟩ := export_bound_of_admissible
-  intro CLa Ck Crk Cdeg hA
-  exact ⟨C, C + 1, C, by linarith, by linarith, by linarith,
-    fun ε h0 h1 => ⟨0, fun x _ i => H _ CLa Ck Crk Cdeg (hA ε h0 h1 x i)⟩⟩
-
 end Formalism.MainNotions.G.symbolGeneratorData

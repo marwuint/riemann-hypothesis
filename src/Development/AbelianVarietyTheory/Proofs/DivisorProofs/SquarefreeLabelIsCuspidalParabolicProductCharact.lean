@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoeffZeroNeOfMonicIrr
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HarishChandraLabels.Basics
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIrrRepHarishChandraDistinctCuspidalLabelsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraInductionCuspidalParabolicProductStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMonotoneBlocksSameHarishChandraCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMonotoneBlocksSameHarishChandraCharacter
 
 open CategoryTheory Polynomial Formalism.IrreducibleCountingLemmas.TYPES
 
@@ -73,7 +73,7 @@ theorem isCuspProdChar_of_squarefree : ∀ (K : Type) [Field K] [Fintype K] [Dec
     exact labO_irreducible O (hl c).1 (hl c).2
   have hinj := injective_of_squarefree _ hirrF hsq
   have hirr := GlobalTheory.T.isIrrRep_harishChandra_distinct_cuspidal_labels K r s b lam hb hl C O hinj
-  obtain ⟨b', lam', hb', hl', hmono, htr⟩ := GlobalTheory.T.exists_monotone_blocks_same_harishChandra_character K r s b lam hb hl
+  obtain ⟨b', lam', hb', hl', hmono, htr⟩ := _root_.GlobalTheory.HCSort.exists_monotone_same_trace K r s b lam hb hl
   have hcp := GlobalTheory.T.harishChandraInduction_cuspidalParabolicProduct K r s b' lam' hb' hl' hmono
   have hfun : (fun x : GL (Fin r) K => τ.character x) =
       fun x => LinearMap.trace ℂ (hcSpace K b' lam') (hcRep K b' lam' x) := by

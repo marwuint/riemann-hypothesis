@@ -44,9 +44,6 @@ theorem dc_smul {m : ℕ} (r : ℝ) (F : (Fin (m + 1) → Y) → ℝ) : dc (r �
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
-theorem dc_zero {m : ℕ} : dc (0 : (Fin (m + 1) → Y) → ℝ) = 0 := by
-  funext y; simp [dc]
-
 theorem dc_comp {Z : Type} {m : ℕ} (F : (Fin (m + 1) → Z) → ℝ) (ψ : Y → Z) (y : Fin (m + 2) → Y) :
     dc (fun w => F (fun i => ψ (w i))) y = dc F (fun i => ψ (y i)) := rfl
 
@@ -138,15 +135,6 @@ theorem prism_eq_zero_of_set (φ : Y → Y) (S : Set Y) (hφ : ∀ z ∈ S, φ z
       (fun z hz => hF _ (fun i => Fin.cases (by simpa using hy 0) (fun k => by simpa using hz k) i))
       (fun i => hy _)
     rw [h1, h2, sub_zero]
-
-theorem prism_eq_zero_of_head (φ : Y → Y) : ∀ {n : ℕ} (F : (Fin (n + 2) → Y) → ℝ) (y : Fin (n + 1) → Y),
-    (∀ z : Fin (n + 2) → Y, z 0 = y 0 → F z = 0) → prism φ F y = 0
-  | 0, F, y, hF => by
-    rw [prism_succ, hF _ (by simp)]; simp [prism]
-  | n + 1, F, y, hF => by
-    rw [prism_succ, hF _ (by simp)]
-    rw [prism_eq_zero_of_head φ (n := n) (fun w => F (Fin.cons (y 0) w)) (Fin.tail y)
-      (fun z _ => hF _ (by simp)), sub_zero]
 
 end PositivityTheory.KB.SplitAffineSpectral.PrismSpan
 

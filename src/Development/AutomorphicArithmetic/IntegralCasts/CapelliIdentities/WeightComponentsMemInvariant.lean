@@ -5,12 +5,6 @@ import Mathlib
     fun (n : ℕ) (K : Type u_2) (V : Type u_3) [Field K] [AddCommGroup V] [_root_.Module K V] ↦
       Fin n → Fin n → Module.End K V
 
-theorem UpperTheory.Reformulated.B.Qf7.aux2.{u_1, u_2} :
-    ∀ {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V],
-      SMulCommClass K K V := by
-  intro K V _ _ _
-  infer_instance
-
 noncomputable def UpperTheory.Reformulated.B.Qf7.weightSp.{u_2, u_3} :
     {n : ℕ} →
       {K : Type u_2} →

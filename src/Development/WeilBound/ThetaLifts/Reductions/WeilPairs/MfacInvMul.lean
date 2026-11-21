@@ -32,12 +32,6 @@ theorem nrm_zero (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin n
   unfold nrm
   rw [Matrix.mul_zero, heisOF_zero, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
-theorem mfac_inv_mul {nT : ℕ} (nS : ℕ) (t : GL (Fin nT) (AF F ⊗[F] E)) :
-    mfac F E nS t⁻¹ * mfac F E nS t = 1 := by
-  unfold mfac
-  rw [← Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), ← NNReal.coe_mul, ← map_mul, ← map_mul, ← map_mul,
-    inv_mul_cancel, map_one, map_one, map_one, NNReal.coe_one, Real.one_rpow]
-
 theorem mfac_pos' {nT : ℕ} (nS : ℕ) (t : GL (Fin nT) (AF F ⊗[F] E)) : 0 < mfac F E nS t := by
   unfold mfac
   refine Real.rpow_pos_of_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 fun h0 => ?_)) _

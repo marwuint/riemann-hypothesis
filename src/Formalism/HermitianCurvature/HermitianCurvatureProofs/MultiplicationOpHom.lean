@@ -4,20 +4,6 @@ open Formalism.FourierDecayAlt.M Formalism.FourierDecayAlt Finset
 
 namespace Formalism.FourierDecayAlt.P.Mx1
 
-theorem coord_ne (r : ℕ) (v : Var r) : coord v ≠ 0 := by
-  simp [coord]
-
-theorem vz_ne {r : ℕ} : (vz : Var r) ≠ vzb := by
-  simp [vz, vzb]
-
-theorem euler_support {r : ℕ} (v : Var r) (f : Fn r) : (euler v f).support ⊆ f.support := by
-  intro γ hγ
-  rw [HahnSeries.mem_support] at hγ ⊢
-  intro h
-  apply hγ
-  show ((ofLex γ v : ℤ) : ℂ) * f.coeff γ = 0
-  rw [h, mul_zero]
-
 theorem star_sc (P : Par) (w : Pr P.r) : star (sc P w) = sc P (star w) := by
   unfold sc
   ext i j
@@ -32,84 +18,6 @@ end Formalism.FourierDecayAlt.P.Mx1
 namespace Formalism.FourierDecayAlt.P
 
 open Mx1
-
-theorem multiplication_op_hom : Formalism.FourierDecayAlt.M.MulOpHom := by
-  intro r f g z
-  refine ⟨?_, ?_, ?_, ?_⟩ <;> refine LinearMap.ext fun x => ?_ <;>
-    simp [mulOp, mul_assoc, add_mul, Algebra.smul_def]
-
-theorem euler_leibniz : Formalism.FourierDecayAlt.M.EulerLeibniz := by
-  intro r v f g
-  have hc : ∀ (v : Var r) (h : Fn r) (γ : Expo r), (euler v h).coeff γ = ((ofLex γ v : ℤ) : ℂ) * h.coeff γ :=
-    fun _ _ _ => rfl
-  ext γ
-  rw [hc, HahnSeries.coeff_add, HahnSeries.coeff_mul_left' f.isPWO_support (Mx1.euler_support v f),
-    HahnSeries.coeff_mul_right' g.isPWO_support (Mx1.euler_support v g), HahnSeries.coeff_mul,
-    Finset.mul_sum, ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun ij hij => ?_
-  obtain ⟨-, -, hsum⟩ := Finset.mem_addAntidiagonal.1 hij
-  rw [hc, hc, ← hsum, ofLex_add, Pi.add_apply]
-  push_cast
-  ring
-
-theorem euler_coordinates : Formalism.FourierDecayAlt.M.EulerCoord := by
-  intro r v w z
-  have hc : ∀ (v : Var r) (h : Fn r) (γ : Expo r), (euler v h).coeff γ = ((ofLex γ v : ℤ) : ℂ) * h.coeff γ :=
-    fun _ _ _ => rfl
-  constructor
-  · ext γ
-    rw [hc]
-    by_cases hvw : v = w
-    · subst hvw
-      rw [if_pos rfl]
-      simp only [coord, HahnSeries.coeff_single]
-      split_ifs with hγ
-      · subst hγ
-        simp
-      · simp
-    · rw [if_neg hvw]
-      simp only [coord, HahnSeries.coeff_single, HahnSeries.coeff_zero]
-      split_ifs with hγ
-      · subst hγ
-        simp [Pi.single_apply, hvw]
-      · simp
-  · ext γ
-    rw [hc]
-    simp only [HahnSeries.algebraMap_apply, HahnSeries.C_apply, HahnSeries.coeff_single,
-      HahnSeries.coeff_zero, Algebra.algebraMap_self, RingHom.id_apply]
-    split_ifs with hγ
-    · subst hγ
-      simp
-      left
-      rfl
-    · simp
-
-theorem euler_commute : Formalism.FourierDecayAlt.M.EulerComm := by
-  intro r v w
-  have hc : ∀ (v : Var r) (h : Fn r) (γ : Expo r), (euler v h).coeff γ = ((ofLex γ v : ℤ) : ℂ) * h.coeff γ :=
-    fun _ _ _ => rfl
-  refine LinearMap.ext fun f => ?_
-  ext γ
-  simp only [Module.End.mul_apply, hc]
-  ring
-
-theorem eulerMul_statement : Formalism.FourierDecayAlt.M.EulerMul := by
-  intro r v f
-  refine LinearMap.ext fun g => ?_
-  simp only [Module.End.mul_apply, LinearMap.add_apply, mulOp, LinearMap.mulLeft_apply]
-  rw [euler_leibniz r v f g, add_comm]
-
-theorem function_nonzero : Formalism.FourierDecayAlt.M.FnNonzero := by
-  intro r v TT
-  refine ⟨coord_ne r v, fun h => ?_⟩
-  have he : (toLex (Pi.single vz 1) + toLex (Pi.single vzb 1) : Expo r) ≠ 0 := by
-    intro h0
-    have := congrFun (congrArg ofLex h0) vz
-    change ((Pi.single vz (1 : ℤ) + Pi.single vzb 1 : Var r → ℤ) vz) = (0 : Var r → ℤ) vz at this
-    simp [Pi.single_apply, vz_ne (r := r)] at this
-  have hc := congrArg (fun s : Fn r => s.coeff (toLex (Pi.single vz 1) + toLex (Pi.single vzb 1))) h
-  simp [gg, coord, HahnSeries.single_mul_single, HahnSeries.algebraMap_apply, HahnSeries.C_apply,
-    HahnSeries.coeff_single, he] at hc
 
 theorem model_nontrivial : Formalism.FourierDecayAlt.M.ModelNontrivial := by
   intro P
@@ -163,17 +71,5 @@ theorem star_generators : Formalism.FourierDecayAlt.M.StarGens := by
     congr 1
     funext π
     rw [Pi.star_apply, star_add, star_smul, star_mul, e1, e2, e3, e4, Complex.star_def, Complex.conj_ofReal]
-
-theorem level_star : Formalism.FourierDecayAlt.M.LevelStar := by
-  intro P L hL
-  obtain ⟨-, -, -, -, -, -, hz, -, hzb, -, -, -, hn, hns, hT⟩ := hL
-  have hS := star_generators P
-  refine ⟨?_, ?_, ?_⟩
-  · rw [hz, hzb]
-    exact hS.2.1
-  · rw [hn, hns]
-    exact hS.2.2.2.2.2
-  · rw [hT]
-    simp [Complex.star_def, Complex.conj_ofReal]
 
 end Formalism.FourierDecayAlt.P

@@ -49,13 +49,6 @@ section Frame
 
 variable {D : D7}
 
-def IsRealPt (V W : HSp D) (X : Matrix (Fin W.rank) (Fin V.rank) D.host.E) (w : WO V W) : Prop :=
-  (∀ a b, finPart D (w a b) = 0) ∧ ∀ a b, infPart D (w a b) = infPart D (incA D (X a b))
-
-def eFrame (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))
-    (f₀ : WO V W → ℂ) (g : GA D W) (w : WO V W) : ℂ :=
-  heisO ψ V W w (om (1, g) f₀) 0
-
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
   {σ : c.F →+* ℂ} {r : ℕ}
 
@@ -72,27 +65,6 @@ variable {U : Unf Xo c σ r} (W : HSp D) (hr : W.rank = r) (dict : GA D W → Σ
 
 def DictDat.Is (d : DictDat U) : Prop :=
   (∀ k τ, IsInfEmb τ.1 (d.th k τ)) ∧ DictLat U W hr dict ι d.e d.F d.ik d.φ d.th x₀
-
-def DictDat.At (d : DictDat U) (h γ : GA D W) : Prop :=
-  MarkBy U W hr dict ι d.F d.ik d.φ h γ ∧
-    ∀ τ : (U.X (dict h).1).Ψ, mat (dict h).2 τ =
-      Matrix.reindex (finCongr hr) (finCongr hr) (archM W (d.th (dict h).1 τ) (γ * h)) * x₀ τ.1
-
-def DictDat.coord (d : DictDat U) (h : GA D W) (v : Fin r → D.host.E) : Fin d.g → ℂ :=
-  fun j => perFr (U.X (dict h).1) (dict h).2 v (relab c σ (d.e j).1) (d.e j).2
-
-def IsFrameConst (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))
-    (f₀ : WO V W → ℂ) (mu : GA D W → ℂ) (cc : U.Comp → ℂ) : Prop :=
-  AllSome (DictDat.Is W hr dict ι x₀) fun d => ∀ h : GA D W, ∃ hx : (dict h).2 ∈ (U.X (dict h).1).dom,
-    AllSome (d.At W hr dict ι x₀ h) fun γ =>
-    AllSome (fun Pm : (d.F.Di (d.ik (dict h).1)).La →+ (Fin d.g → ℂ) =>
-        ∀ a, Pm a = d.coord W dict h (d.φ (dict h).1 a : Fin r → D.host.E)) fun Pm =>
-    AllSome (fun p : Matrix (Fin d.g) (Fin d.g) ℂ × ((Fin d.g → ℂ) → ℂ) =>
-        IsCanTheta d.F (d.ik (dict h).1) Pm (U.un (dict h).1 ⟨(dict h).2, hx⟩) p.1 p.2) fun p =>
-    ∀ X : Matrix (Fin W.rank) (Fin V.rank) D.host.E, AllSome (IsRealPt V W X) fun w =>
-      let z : Fin V.rank → Fin d.g → ℂ := fun b => d.coord W dict h fun a => X (Fin.cast hr.symm a) b
-      Complex.exp (((Real.pi * ∑ b, (hermForm p.1 (z b) (z b)).re) / 2 : ℝ) : ℂ) * eFrame ψ V W om f₀ (γ * h) w =
-        cc (dict h).1 * mu h * ∏ b, p.2 (z b)
 
 end Frame
 
@@ -123,9 +95,6 @@ variable {T : CoreJ D} {i : Fin D.R.m} (Y : RowDat T G i)
 abbrev σ' : Y.c'.F →+* ℂ := Y.c'.F.val.toRingHom
 
 abbrev σ : T.Q.c.F →+* ℂ := Y.σ'.comp (incF T.Q.c Y.c' Y.hle)
-
-omit [Group G] [Fintype G] in
-theorem σ_eq : Y.σ = T.σ₀ := RingHom.ext fun _ => rfl
 
 abbrev U : Unf (T.Q.Xo ((i : ℕ) + 1)) T.Q.c Y.σ D.R.r := T.U ((i : ℕ) + 1) Y.σ
 
@@ -171,61 +140,8 @@ def LevelEquiv (cc : Y.U.Comp → ℂ) : Prop :=
   ∀ a, Dom a (Vc D i).rank → ∀ g : G, ∀ f ∈ Y.cusp' a, Y.act' g f ∈ Y.cusp' a ∧
     ∀ κ, IsLift R i g κ → ∀ x, Y.phi cc (Y.act' g f) x = chiDetW R i g * Y.phi cc f (x * κ)
 
-def FrameConst (cc : Y.U.Comp → ℂ) : Prop :=
-  IsFrameConst (U := Y.U) (Wc D i) (rank_Wc i) Y.dict Y.ι (T.x₀ ((i : ℕ) + 1) Y.σ) R.ψ (Vc D i) (R.ωP i A.μ0) (R.vacP i) Y.mu cc
-
-def EquivAt : Prop := ∃ cc : Y.U.Comp → ℂ, CUnit cc ∧ Y.LevelEquiv R cc
-
-def EquivFrameAt : Prop := ∃ cc : Y.U.Comp → ℂ, CUnit cc ∧ Y.FrameConst R cc ∧ Y.LevelEquiv R cc
-
-theorem EquivFrameAt.equivAt (h : Y.EquivFrameAt R) : Y.EquivAt R :=
-  h.imp fun _ hc => ⟨hc.1, hc.2.2⟩
-
-theorem LevelEquiv.smul {cc : Y.U.Comp → ℂ} (h : Y.LevelEquiv R cc) (u : ℂ) : Y.LevelEquiv R fun k => u * cc k := by
-  intro a ha g f hf
-  refine ⟨(h a ha g f hf).1, fun κ hκ x => ?_⟩
-  have := (h a ha g f hf).2 κ hκ x
-  simp only [phi_apply] at this ⊢
-  linear_combination u * this
-
-def ofField (h : LawsM T.toCore) (c' : Coeff T.Q.l) (hle : T.Q.c.F ≤ c'.F)
-    (lev : G → ((T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (T.Q.Dw ((i : ℕ) + 1)).La) ×
-      ((T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (T.Q.Dw ((i : ℕ) + 1)).La)) : RowDat T G i where
-  c' := c'
-  hle := hle
-  lev := lev
-  hV := h.spaceW _ ⟨Nat.le_add_left _ _, i.2⟩ _ T.toCore.good_σ₀
-
-omit [Group G] [Fintype G] in
-
-theorem exists_dictDat (h : LawsJ T) :
-    ∃ d : DictDat Y.U, d.Is (Wc D i) (rank_Wc i) Y.dict Y.ι (T.x₀ ((i : ℕ) + 1) Y.σ) := by
-  obtain ⟨hr, g, e, F, ik, φ, th, -, -, h3, h4⟩ :=
-    h.adPin ((i : ℕ) + 1) ⟨Nat.le_add_left _ _, i.2⟩ Y.σ T.toCore.good_σ₀
-  have key : ∀ (W : HSp D) (hV : T.V ((i : ℕ) + 1) Y.σ = W) (hW : W.rank = D.R.r),
-      DictLat Y.U W hW (castDict hV (T.dict ((i : ℕ) + 1) Y.σ))
-        (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hW) ∘ₗ T.iota ((i : ℕ) + 1)) e F ik φ th
-        (T.x₀ ((i : ℕ) + 1) Y.σ) := by
-    intro W hV hW
-    subst hV
-    exact h4
-  exact ⟨⟨g, e, F, ik, φ, th⟩, h3, key _ Y.hV _⟩
-
 end RowDat
 
 end Row
-
-def EquivRow : Prop :=
-  ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
-    (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
-    (T : CoreJ D) (i : Fin D.R.m) (Y : RowDat T G i), Y.Ties R F → Y.EquivFrameAt R
-
-def EquivRowBare : Prop :=
-  ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
-    (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
-    (T : CoreJ D) (i : Fin D.R.m) (Y : RowDat T G i), Y.Ties R F → Y.EquivAt R
-
-theorem EquivRow.bare (h : EquivRow) : EquivRowBare :=
-  fun D G _ _ Pl0 T0 A Ks _ _ _ R F T i Y hY => (h D G Pl0 T0 A Ks R F T i Y hY).equivAt
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ColumnDataLaws

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardRootsClosedBallEqDominantIndexStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardRootsClosedBallEqDominantIndex
 open Polynomial
 open Classical
 
@@ -16,7 +16,7 @@ theorem card_roots_le_radius_bounds :
   have hf : f ≠ 0 := by
     rintro rfl
     exact hd (by simp)
-  obtain ⟨hA, hB⟩ := GlobalTheory.T.card_roots_closedBall_dominant_coeff K f ρ hρ hf
+  obtain ⟨hA, hB⟩ := _root_.GlobalTheory.card_roots_closedBall_eq_dominantIndex K f ρ hρ hf
   set e := Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ) with he
   refine ⟨fun H => ?_, fun H => ?_⟩
   · by_contra hlt

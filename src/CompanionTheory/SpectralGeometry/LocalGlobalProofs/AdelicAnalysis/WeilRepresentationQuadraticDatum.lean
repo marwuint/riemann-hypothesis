@@ -2,9 +2,9 @@ import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardAdelicCharacterStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureLinearChangeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesSelfDualStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AnnihilatorOfAnnihilatorLeStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureLinearChange
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesSelfDual
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AnnihilatorOfAnnihilatorLe
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core
 open scoped ENNReal NNReal MatrixGroups
 
@@ -152,7 +152,7 @@ lemma pi_Gs (lf : Measure (A F)) (hlf : lf.IsAddHaarMeasure) (h1 : lf (Oh F) = 1
   haveI := hlc
   haveI := hsc
   haveI : SigmaFinite lf := inferInstance
-  have h := (GlobalTheory.T.adelic_haar_measure_linear_change F lf hlf h1 ι).1 g hg (Set.univ.pi fun _ => S)
+  have h := (_root_.GlobalTheory.CompanionTheory.SW.Core.PiScale.pi_scale F lf hlf h1 ι).1 g hg (Set.univ.pi fun _ => S)
     (MeasurableSet.univ_pi fun _ => hS)
   rw [Gs, h, Measure.pi_pi]
   simp
@@ -303,7 +303,7 @@ theorem naQuad : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)
   haveI := ht2
   haveI : SigmaFinite lf := inferInstance
   obtain ⟨hnorm, -, -⟩ := (GlobalTheory.T.standard_adelic_character F).2 ψ hψ
-  obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, hL⟩ := GlobalTheory.T.adeles_self_dual F lf hlf h1 ψ hψ
+  obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, hL⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.SelfDual.finiteAdeles_selfDual F lf hlf h1 ψ hψ
   have hO : IsCompact (perp (fun x y => ψ (x * y)) (Oh F)) ∧
       IsOpen (perp (fun x y => ψ (x * y)) (Oh F)) ∧
       perp (fun x y => ψ (x * y)) (perp (fun x y => ψ (x * y)) (Oh F)) ⊆ Oh F ∧
@@ -364,7 +364,7 @@ theorem naQuad : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)
     have hM' : ((M : F)⁻¹) ≠ 0 := inv_ne_zero (Nat.cast_ne_zero.2 hM.ne')
     obtain ⟨-, h1o, h1c, -, h1p, h1m⟩ := good hN'
     obtain ⟨h2c, -, -, h2o, h2p, h2m⟩ := good hM'
-    exact GlobalTheory.T.annihilator_of_annihilator_le (ι → A F) (chiB ψ (Bf B)) (muF B lf) hhaar
+    exact _root_.GlobalTheory.CompanionTheory.SW.CofinalDual.selfDual_of_between (ι → A F) (chiB ψ (Bf B)) (muF B lf) hhaar
       hsym (fun _ _ => hnorm _) hadd (LL ι (N : F)) L (LL ι ((M : F)⁻¹))
       hNU hMK h1o h2c h1c h2o h1p h2p h1m h2m
 

@@ -119,7 +119,7 @@ theorem sum_reps (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even
       simpa using this
     | insert a s ha ih =>
       rw [Finset.sum_insert ha, ip_add_left (hsb a) ih.1 hv'.1, ih.2, Finset.card_insert_of_notMem ha]
-      refine ⟨(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ _ _ _ _ (hsb a) ih.1).1, ?_⟩
+      refine ⟨(_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ _ _ _ _ (hsb a) ih.1).1, ?_⟩
       have := rho_ip (w := w) idx hs hn (u a) hv.1 hv'.1
       rw [hv'.2.2 _ (h1 a)] at this
       rw [this]

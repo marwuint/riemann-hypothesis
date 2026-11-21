@@ -67,12 +67,6 @@ theorem satEig_add {q r s N : ℕ} (hq : q ≠ 0) (h : r + s = N) {C B : Multise
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {v : HeightOneSpectrum (𝓞 E)} {N r s : ℕ}
 
-section Lin
-
-variable {m : ℕ} {u : List (Letter E)} {f : Vec u} {h : wsize u + m = N}
-
-end Lin
-
 variable {ϖ : v.adicCompletion E}
 
 variable (v) in

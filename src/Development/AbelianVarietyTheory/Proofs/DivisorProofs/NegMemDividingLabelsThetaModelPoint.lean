@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealisedThetaSystemThetaConstantNegEvenUpToRootStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealisedThetaSystemThetaConstantNegEvenUpToRoot
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkZeta
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
@@ -63,4 +63,4 @@ open GlobalTheory.Poinc.Sep.SupISymm in
 
 theorem GlobalTheory.Poinc.Sep.neg_mem_supI : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (a : X₁.S.Gam), a ∈ X₁.S.supI X₁.M z₁ → -a ∈ X₁.S.supI X₁.M z₁ := by
   intro g n F W Z i X₁ z₁ a ha
-  exact neg_mem_supI_of_parity X₁.S X₁.M (fun a => GlobalTheory.T.realisedThetaSystem_thetaConstant_neg_even_upToRoot X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ a) z₁ a ha
+  exact neg_mem_supI_of_parity X₁.S X₁.M (fun a => _root_.GlobalTheory.ThetaParity.theta_neg X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ a) z₁ a ha

@@ -7,7 +7,7 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsEmbeddingPie
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGenDegGeomDeg
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNefOnGenericOfSemipos
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.SmallSectionCountMonoLattice
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PackingStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PackingAlt
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.Small Filter Topology
 
@@ -18,7 +18,7 @@ theorem selfIntersection_le_volNm_of_moriwakiBig : MoriwakiBigStatement → Bira
   have hN : NefOnGeneric (mCoordIdeal y) A :=
     GroundTheory.Heights₂.Heights.HilbertSamuel.NefOnGenericOfSemipos.proof K ι (mCoordIdeal y) P0 A hP hS
   have hb := h K ι Ω y D A P0 II hII hV hB hP hS hC hF hN
-  obtain ⟨hfin, C, hC'⟩ := GlobalTheory.T.packing' K ι Ω y D A (chartLatNm y A.a) hV hB hS.1 (fun _ => le_rfl)
+  obtain ⟨hfin, C, hC'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Small.packing K ι Ω y D A (chartLatNm y A.a) hV hB hS.1 (fun _ => le_rfl)
   refine hb.trans ?_
   unfold arVolP
   have h0 : ∀ (La : ℕ → AddSubgroup Ω) (τ : ℕ), 0 ≤ smallSectionCount (IsSmallH (mCoordIdeal y) y A) La τ := by

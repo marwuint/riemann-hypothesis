@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasTypeVec
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenCuspidalIff
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitaryPart
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalUnitaryGroupIsoConjIsometryStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemLocalLatticeCompletionIffCommMemStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemLocalLatticeCompletionIffCommMem
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinitePartLocalToFiniteAdelicComponentSelfStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinitePartLocalToFiniteAdelicComponentNeStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteAdelicUnitaryPointExtLocalComponentsStatement
@@ -117,7 +117,7 @@ theorem locData (σ : E →ₐ[F] E) {r r' : ℕ} (J : Matrix (Fin r) (Fin r) E)
     have ecb : ∀ {m : ℕ} (z : Fin m → Fv F v ⊗[F] E),
         (fun i => Algebra.TensorProduct.comm F (Fv F v) E (z i)) = cb ∘ z := by
       intro m z; subst hcb; rfl
-    rw [GlobalTheory.T.mem_localLatticeCompletion_iff_comm_mem, GlobalTheory.T.mem_localLatticeCompletion_iff_comm_mem, ecb, ecb]
+    rw [_root_.GlobalTheory.TwistLat.mem_latLoc_iff_comm_mem_locL, _root_.GlobalTheory.TwistLat.mem_latLoc_iff_comm_mem_locL, ecb, ecb]
     have e : cb ∘ (jv.map cm).mulVec y = jv.mulVec (cb ∘ y) := by
       funext i
       rw [Function.comp_apply, RingHom.map_mulVec, hA]

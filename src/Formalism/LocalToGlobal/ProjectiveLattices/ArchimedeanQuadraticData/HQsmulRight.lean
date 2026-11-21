@@ -20,10 +20,6 @@ theorem sgn_conj (p : ℕ) (a : Fin r) : conj (sgn p a) = sgn p a := by
   unfold sgn
   split_ifs <;> simp
 
-theorem sgn_norm (p : ℕ) (a : Fin r) : ‖sgn p a‖ = 1 := by
-  unfold sgn
-  split_ifs <;> simp
-
 theorem embVec_add (τ : K →+* ℂ) (x y : Fin r → K) : embVec τ (x + y) = embVec τ x + embVec τ y := by
   ext a
   simp [embVec]
@@ -45,16 +41,6 @@ theorem Phi_qsmul (σ : ι → K →+* ℂ) (Q : ι → Matrix (Fin r) (Fin r) �
     Phi σ Q (q • x) = ((q : ℝ) : ℂ) • Phi σ Q x := by
   ext i a
   simp [Phi, embVec_qsmul, Matrix.mulVec_smul, Complex.ofReal_ratCast]
-
-theorem Phi_smul (σ : ι → K →+* ℂ) (Q : ι → Matrix (Fin r) (Fin r) ℂ) (c : K) (x : Fin r → K) :
-    Phi σ Q (c • x) = fun i => σ i c • Phi σ Q x i := by
-  funext i
-  simp [Phi, embVec_smul, Matrix.mulVec_smul]
-
-theorem Phi_zero (σ : ι → K →+* ℂ) (Q : ι → Matrix (Fin r) (Fin r) ℂ) : Phi σ Q (0 : Fin r → K) = 0 := by
-  have h : ∀ i, embVec (σ i) (0 : Fin r → K) = 0 := fun i => by ext a; simp [embVec]
-  ext i a
-  simp [Phi, h]
 
 theorem Phi_sum (σ : ι → K →+* ℂ) (Q : ι → Matrix (Fin r) (Fin r) ℂ) {κ : Type} (s : Finset κ)
     (x : κ → Fin r → K) : Phi σ Q (∑ j ∈ s, x j) = ∑ j ∈ s, Phi σ Q (x j) := by
@@ -87,9 +73,6 @@ theorem h_qsmul_left (q : ℚ) (x y : Fin r → K) : S.h (q • x) y = (q : K) *
 theorem h_qsmul_right (q : ℚ) (x y : Fin r → K) : S.h x (q • y) = (q : K) * S.h x y := by
   have hq : q • y = (q : K) • y := by ext a; simp [Rat.smul_def]
   rw [hq, h_smul_right]
-
-theorem h_zero_left (y : Fin r → K) : S.h 0 y = 0 := by
-  simp [HermForm.h]
 
 theorem h_sum_left {κ : Type} (s : Finset κ) (x : κ → Fin r → K) (y : Fin r → K) :
     S.h (∑ j ∈ s, x j) y = ∑ j ∈ s, S.h (x j) y := by

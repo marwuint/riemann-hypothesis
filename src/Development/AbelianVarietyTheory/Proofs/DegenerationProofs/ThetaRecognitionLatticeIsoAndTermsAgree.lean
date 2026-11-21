@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.NotAllMatchRankZero
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaMatchingExistsRightTorusTorsion
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantTermRepresentativeDependenceStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantTermRepresentativeDependence
+import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationSeriesTermsNestStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormRepGeneratorsAndThetaSeriesTermStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataTorsionStructureAlgClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormRepGeneratorsAndThetaSeriesTerm
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataTorsionStructureAlgClosed
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Ex Filter
 open scoped BigOperators Topology
 
@@ -15,7 +16,7 @@ theorem txT_tendsto {C : Type} [NormedField C] {N : NumD C} {q : QuadraticMap �
   have h0 : (m : ℝ) ≠ 0 := by exact_mod_cast hm.pos.ne'
   refine squeeze_zero_norm (a := fun χ => Real.exp (-q χ)) (fun χ => ?_)
     (Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp hq.pos))
-  rw [(GlobalTheory.T.norm_rep_generators_and_thetaSeriesTerm C N q hq).2 m hm p χ, hp, toAdd_one, zero_add, ← natCast_zsmul, QuadraticMap.map_smul]
+  rw [(_root_.GlobalTheory.Ex.norm_QT_s_and_norm_txT C N q hq).2 m hm p χ, hp, toAdd_one, zero_add, ← natCast_zsmul, QuadraticMap.map_smul]
   have : (((m : ℤ) * (m : ℤ)) • q χ) / (m : ℝ) ^ 2 = q χ := by
     rw [zsmul_eq_mul]; push_cast; field_simp
   rw [this]
@@ -26,13 +27,13 @@ theorem exists_txT_ne {C : Type} [NormedField C] [IsAlgClosed C] {N : NumD C} {q
     ∃ p : N.QT ((n ^ 1) ^ 2), p.1.1 = 1 ∧ N.txT (n ^ 1) p x ≠ 0 := by
   obtain ⟨t, ht, hx⟩ := hT.good (N.c x)
   obtain ⟨b, rfl⟩ := hT.div t
-  obtain ⟨γ, rfl⟩ := (GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g hC hT 0).1 b
+  obtain ⟨γ, rfl⟩ := (_root_.GlobalTheory.Ex.QStr.qStructure C N n g hC hT 0).1 b
   obtain ⟨s, hs⟩ := (N.exists_tor_iff (γ ^ (n ^ 1) ^ 2)).2 (by rw [NumD.Gt.pow_b, pow_one, sq, pow_mul, ht])
   obtain ⟨s, rfl⟩ := exists_char_pow (k := (n ^ 1) ^ 2) (pow_ne_zero _ (pow_ne_zero _ hn.pos.ne')) s
   refine ⟨⟨(1, γ * (N.tor s)⁻¹), ?_⟩, rfl, ?_⟩
   · rw [NumD.mem_QT, mul_pow, inv_pow, ← N.tor_pow, hs, mul_inv_cancel]
     exact N.io_zero.symm
-  · rw [← norm_ne_zero_iff, (GlobalTheory.T.norm_rep_generators_and_thetaSeriesTerm C N q hq).2 _ hn.pow]
+  · rw [← norm_ne_zero_iff, (_root_.GlobalTheory.Ex.norm_QT_s_and_norm_txT C N q hq).2 _ hn.pow]
     refine mul_ne_zero (Real.exp_pos _).ne' ?_
     simp [hx]
 
@@ -41,7 +42,7 @@ theorem tx_twist {C : Type} [NormedField C] {N : NumD C} {M m : ℕ} (hM : Odd M
     (s : Multiplicative N.X →* Cˣ) (hs : s ^ (M * m) ^ 2 = 1) :
     N.tx (M * m) (P * N.qTor s hs) = ∑' β, N.txT m p β * ((s ^ (M * m)) (Multiplicative.ofAdd β) : C) := by
   refine tsum_congr fun β => ?_
-  rw [(GlobalTheory.T.thetaConstantTerm_representative_dependence C N (M * m) (hM.mul hm) P (P * N.qTor s hs) β).2 s (mul_one _) rfl,
+  rw [(_root_.GlobalTheory.Ex.txT_shift C N (M * m) (hM.mul hm) P (P * N.qTor s hs) β).2 s (mul_one _) rfl,
     GlobalTheory.T.degenerationSeriesTerms_nest C N M m hM hm P p (by rw [hP, hp, one_pow]) h, hP, map_one, one_pow, one_mul, toAdd_one, zero_add,
     ofAdd_nsmul, map_pow, mul_comm]
   rfl
@@ -63,7 +64,7 @@ theorem twisted_eq (hn : Odd n) (hC : (n : C) ≠ 0) (hT : N.Tors n g) (hA : μ.
   have h0 : ∀ a, n ^ a ≠ 0 := fun a => pow_ne_zero _ hn.pos.ne'
   have hL0 : n ^ i * n ^ j ≠ 0 := mul_ne_zero (h0 _) (h0 _)
   have hL : ∃ a, (n ^ i * n ^ j) ^ 2 = n ^ a := ⟨(i + j) * 2, by ring⟩
-  obtain ⟨γ, hγ⟩ := (GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g hC hT i).2.1 p.1.2
+  obtain ⟨γ, hγ⟩ := (_root_.GlobalTheory.Ex.QStr.qStructure C N n g hC hT i).2.1 p.1.2
   have hp1 : p.1.2 ^ (n ^ j) ^ 2 = 1 := by rw [N.mem_QT.1 p.2, hp]; exact N.io_zero
   have hp1' : p'.1.2 ^ (n ^ j) ^ 2 = 1 := by rw [N'.mem_QT.1 p'.2, hp']; exact N'.io_zero
   let P : N.QT ((n ^ i * n ^ j) ^ 2) := ⟨(1, γ), by
@@ -111,11 +112,11 @@ theorem main : AllMatch fun μ _ _ => μ.A → ∃ e, μ.B e ∧ μ.Term e := by
       (txT_tendsto hq' hn.pow p' hp') _ α α' E hE (fun t => hα.tor μ (hr t))
       fun t => twisted_eq μ hn hC hT hA i j h hp hp' (hr t)
   have tot : ∀ j x, ∃ x', Cl μ j x x' := fun j x => by
-    obtain ⟨p, hp⟩ := (GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g hC hT j).2.2.1 x
+    obtain ⟨p, hp⟩ := (_root_.GlobalTheory.Ex.QStr.qStructure C N n g hC hT j).2.2.1 x
     obtain ⟨p', h⟩ := μ.tot j p
     exact ⟨_, p, p', h, hp, rfl⟩
   have cotot : ∀ j x', ∃ x, Cl μ j x x' := fun j x' => by
-    obtain ⟨p', hp⟩ := (GlobalTheory.T.degenerationData_torsion_structure_algClosed C N' n g' hC hT' j).2.2.1 x'
+    obtain ⟨p', hp⟩ := (_root_.GlobalTheory.Ex.QStr.qStructure C N' n g' hC hT' j).2.2.1 x'
     obtain ⟨p, h⟩ := μ.cotot j p'
     exact ⟨_, p, p', h, rfl, hp⟩
   have hL : ∃ a, (n ^ 1) ^ 2 = n ^ a := ⟨2, by ring⟩

@@ -118,10 +118,6 @@ def ReductionComplex.Statement : Prop :=
     (∀ (n : ℕ) (w : KH.CechC ℤ ι (MRingOver ℤ ι ⧸ GenOnFibres.idealOver y ℤ) n),
       FibreReduction.redCoch y p n ((p : ℤ) • w) = 0)
 
-theorem ReductionComplex.hyps_inhabited :
-    IsArithVar (mCoordIdeal (ι := PtIdx) unitPoint) (0 + 1) ∧ Nat.Prime 2 :=
-  ⟨FibreSectionLift.hyps_inhabited.1, FibreSectionLift.hyps_inhabited.2.1⟩
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

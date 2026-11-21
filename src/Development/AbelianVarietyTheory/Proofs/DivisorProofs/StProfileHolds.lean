@@ -42,6 +42,4 @@ theorem stProfile_holds : StProfile := by
     · rw [iteratedDeriv_succ', hd]
       exact h4
 
-example : GlobalTheory.PsCo.Pc1.StProfile := stProfile_holds
-
 end GlobalTheory.PsCo.Pc1

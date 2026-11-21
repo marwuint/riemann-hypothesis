@@ -86,10 +86,6 @@ theorem _root_.GlobalTheory.TorusCoord.pr_add (X : _root_.ReciprocityTheory.Char
   simp only [_root_.GlobalTheory.TorusCoord.pr, Pi.add_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_add_left]
   ring
 
-theorem pr_smul (X : Data E r) (e : X.Ψ → Fin r → (Fin r → ℂ)) (t : X.Ψ → ℂ) (y : X.Ψ → Fin r → ℂ)
-    (τ : X.Ψ) (b : Fin r) : pr X e (fun τ => t τ • y τ) τ b = t τ * pr X e y τ b := by
-  simp only [pr, hermC_smul_left]; ring
-
 open NumberField in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
@@ -138,118 +134,12 @@ def coordMap (X : Data E r) (e : X.Ψ → Fin r → (Fin r → ℂ)) :
     · rw [pr_real_smul]
     · rw [pr_real_smul, map_mul, Complex.conj_ofReal]; ring
 
-theorem coordMap_pos (X : Data E r) (e : X.Ψ → Fin r → (Fin r → ℂ)) (y : X.Ψ → Fin r → ℂ) (τ : X.Ψ)
-    (a : Fin (dimOf X τ.1)) :
-    coordMap X e y ⟨τ.1, a⟩ = pr X e y τ ⟨a.1, lt_pos X τ.2 a⟩ := by
-  show coord X e y ⟨τ.1, a⟩ = _
-  unfold coord
-  rw [dif_pos τ.2]
-
-theorem coordMap_neg (X : Data E r) (e : X.Ψ → Fin r → (Fin r → ℂ)) (y : X.Ψ → Fin r → ℂ) (τ : X.Ψ)
-    (a : Fin (dimOf X (ComplexEmbedding.conjugate τ.1))) :
-    coordMap X e y ⟨ComplexEmbedding.conjugate τ.1, a⟩ =
-      - conj (pr X e y τ ⟨X.p0 + a.1, lt_neg X ((X.cmType _).mp τ.2) a⟩) := by
-  show coord X e y ⟨ComplexEmbedding.conjugate τ.1, a⟩ = _
-  unfold coord
-  rw [dif_neg ((X.cmType _).mp τ.2)]
-  have : (⟨ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ.1),
-      conj_mem X ((X.cmType _).mp τ.2)⟩ : X.Ψ) = τ := Subtype.ext (conj_conj_X _)
-  simp only [this]
-
-theorem coordMap_injective (X : Data E r) (e : X.Ψ → Fin r → (Fin r → ℂ))
-    (he : ∀ τ a b, hermC τ.1 X.Gm (e τ a) (e τ b) =
-      if a = b then ((ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a : ℝ) : ℂ) else 0) :
-    Function.Injective (coordMap X e) := by
-  rw [injective_iff_map_eq_zero]
-  intro y hy
-  funext τ
-  have hb : ∀ b, pr X e y τ b = 0 := by
-    intro b
-    by_cases h : b.1 < X.p0
-    · have := coordMap_pos X e y τ ⟨b.1, by rw [dimOf_mem X τ.2]; exact h⟩
-      rw [hy] at this
-      exact this.symm
-    · have := coordMap_neg X e y τ ⟨b.1 - X.p0, by
-        rw [dimOf_not_mem X ((X.cmType _).mp τ.2)]; have := b.2; omega⟩
-      rw [hy] at this
-      have h2 : (⟨X.p0 + (b.1 - X.p0), by have := b.2; omega⟩ : Fin r) = b := Fin.ext (by simp only; omega)
-      simp only [h2] at this
-      have h3 : - conj (pr X e y τ b) = 0 := this.symm
-      simpa using h3
-  have hs : (Real.sqrt (X.c τ) : ℂ) ≠ 0 := by
-    exact_mod_cast (Real.sqrt_pos.mpr (c_pos X τ)).ne'
-  have hb' : ∀ b, hermC τ.1 X.Gm (y τ) (e τ b) = 0 := fun b =>
-    (mul_eq_zero.mp (hb b)).resolve_left hs
-  rw [expand X τ (e τ) (he τ) (y τ)]
-  simp [hb']
-
 theorem finrank_eq (X : Data E r) :
     Module.finrank ℝ (X.Ψ → Fin r → ℂ) = Module.finrank ℝ (Vsp (dimOf X)) := by
   rw [(WithLp.linearEquiv 2 ℝ (Idx (dimOf X) → ℂ)).finrank_eq]
   simp only [Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const,
     Finset.card_univ, card_idx, smul_eq_mul, Fintype.card_coe, Fintype.card_fin]
   ring
-
-theorem parseval (X : Data E r) (τ : X.Ψ) (e : Fin r → Fin r → ℂ)
-    (he : ∀ a b, hermC τ.1 X.Gm (e a) (e b) =
-      if a = b then ((ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a : ℝ) : ℂ) else 0) (u v : Fin r → ℂ) :
-    hermC τ.1 X.Gm u v = ∑ a : Fin r, ((ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a : ℝ) : ℂ) *
-      (hermC τ.1 X.Gm u (e a) * conj (hermC τ.1 X.Gm v (e a))) := by
-  conv_lhs => arg 4; rw [expand X τ e he v]
-  rw [hermC_sum_right]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  rw [hermC_smul_right, map_mul, Complex.conj_ofReal]
-  ring
-
-theorem im_eq (X : Data E r) (e : X.Ψ → Fin r → (Fin r → ℂ))
-    (he : ∀ τ a b, hermC τ.1 X.Gm (e τ a) (e τ b) =
-      if a = b then ((ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a : ℝ) : ℂ) else 0) (y y' : X.Ψ → Fin r → ℂ) :
-    (Hf (coordMap X e y) (coordMap X e y')).im =
-      ∑ τ : X.Ψ, X.c τ * (hermC τ.1 X.Gm (y τ) (y' τ)).im := by
-  rw [Hf, Fintype.sum_sigma, sum_emb_split X, Complex.im_sum]
-  refine Finset.sum_congr rfl fun τ _ => ?_
-  let g : Fin r → ℝ := fun b => X.c τ * (((ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 b : ℝ) : ℂ) *
-      (hermC τ.1 X.Gm (y τ) (e τ b) * conj (hermC τ.1 X.Gm (y' τ) (e τ b)))).im
-  have hsq : Real.sqrt (X.c τ) * Real.sqrt (X.c τ) = X.c τ := Real.mul_self_sqrt (c_pos X τ).le
-  have hle : dimOf X τ.1 ≤ r := by rw [dimOf_mem X τ.2]; exact X.p0_le
-  have hn := (X.cmType _).mp τ.2
-  rw [parseval X τ (e τ) (he τ), Complex.im_sum, Finset.mul_sum, Complex.add_im, Complex.im_sum,
-    Complex.im_sum]
-  show _ = ∑ b, g b
-  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun b : Fin r => (b : ℕ) < X.p0)]
-  congr 1
-  · have h := sum_castLE_eq hle g
-    rw [show (Finset.univ.filter (fun b : Fin r => (b : ℕ) < X.p0)) =
-      Finset.univ.filter (fun b : Fin r => (b : ℕ) < dimOf X τ.1) by rw [dimOf_mem X τ.2], ← h]
-    refine Finset.sum_congr rfl fun a _ => ?_
-    have ha : a.1 < X.p0 := lt_of_lt_of_eq a.2 (dimOf_mem X τ.2)
-    rw [coordMap_pos, coordMap_pos]
-    have hc : (⟨a.1, lt_pos X τ.2 a⟩ : Fin r) = Fin.castLE hle a := rfl
-    simp only [g, pr, hc, ReciprocityTheory.ChartRestriction.G.FD.sgn, Fin.val_castLE, if_pos ha]
-    generalize hermC τ.1 X.Gm (y τ) (e τ (Fin.castLE hle a)) = A
-    generalize hermC τ.1 X.Gm (y' τ) (e τ (Fin.castLE hle a)) = B
-    simp
-    linear_combination (A.im * B.re - A.re * B.im) * hsq
-  · rw [← sum_shift_eq X.p0_le (dimOf_not_mem X hn) g (fun a => ⟨X.p0 + a.1, lt_neg X hn a⟩)
-      (fun a => rfl)]
-    refine Finset.sum_congr rfl fun a _ => ?_
-    have ha : ¬ (X.p0 + a.1 < X.p0) := by omega
-    rw [coordMap_neg, coordMap_neg]
-    simp only [g, pr, ReciprocityTheory.ChartRestriction.G.FD.sgn, if_neg ha]
-    generalize hermC τ.1 X.Gm (y τ) (e τ ⟨X.p0 + a.1, _⟩) = A
-    generalize hermC τ.1 X.Gm (y' τ) (e τ ⟨X.p0 + a.1, _⟩) = B
-    simp
-    linear_combination (A.re * B.im - A.im * B.re) * hsq
-
-theorem act_eq (X : Data E r) (e : X.Ψ → Fin r → (Fin r → ℂ)) (α : 𝓞 E) (y : X.Ψ → Fin r → ℂ) :
-    coordMap X e (fun τ => τ.1 (α : E) • y τ) = act α (coordMap X e y) := by
-  ext i
-  show coord X e _ i = i.1 (α : E) * coord X e y i
-  unfold coord
-  split_ifs
-  · rw [pr_smul X e (fun τ => τ.1 (α : E))]
-  · rw [pr_smul X e (fun τ => τ.1 (α : E)), map_mul]
-    simp
 
 end
 

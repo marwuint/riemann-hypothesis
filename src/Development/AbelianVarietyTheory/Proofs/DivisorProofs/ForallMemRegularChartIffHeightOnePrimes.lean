@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussPropertyCodimOneChartHeightOnePrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussPropertyCodimOneChartHeightOnePrime
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.RegularSmooth
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -46,7 +46,7 @@ theorem Setup.forall_mem_W_iff : ∀ (σ : Setup) (u : σ.A.left.functionField),
   intro σ u
   refine ⟨fun h p _ _ => h p, fun h x z hz => ?_⟩
   have h1 := h _ (σ.height_under_vert x z hz) hz.2
-  rw [← (GlobalTheory.T.gaussProperty_codimOne_chart_heightOnePrime σ x z hz).2] at h1
+  rw [← (_root_.GlobalTheory.Desc.GaussPt.gaussAt_vert σ x z hz).2] at h1
   exact h1
 
 end GlobalTheory.Desc

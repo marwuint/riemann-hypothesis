@@ -17,8 +17,6 @@ def ordH {n : ℕ} (h : ZMod n) : ℕ := addOrderOf h
 
 def rho (D : D7) (τ g : D.R.GG) : D.R.GG := D.R.cc * g * τ
 
-def placeBelow {e : ℕ} (g : GG e) : GG e := if g.1.2 = 1 then g else cc e * g
-
 open Classical in
 
 def frob (D : D7) (p : ℕ) : D.R.GG :=
@@ -33,11 +31,7 @@ def hOf (e l : ℕ) : ZMod (2 ^ e) :=
 
 abbrev ch (e : ℕ) : GG e →* ℤˣ := chD e
 
-abbrev ps (e : ℕ) : GG e →* ℤˣ := chQ e
-
 def sgc0 : G0 := ((-1 : ℤˣ), (1 : ℤˣ)) * c0
-
-def chCx (e : ℕ) : GG e →* ℂˣ := (Units.map (Int.castRingHom ℂ).toMonoidHom).comp (ch e)
 
 def PhiEmb (D : D7) : Set (D.host.E →+* ℂ) := D.host.emb '' (D.R.Psi : Set (D.R.GG))
 

@@ -27,16 +27,7 @@ theorem _root_.GlobalTheory.IsSmoothBlowupSeq.mono {S Y Y' : Scheme.{0}} {f : Y 
   | step J π _ hsm hsupp hbl ih =>
     exact .step J π ih hsm (hsupp.trans (Set.preimage_mono hB)) hbl
 
-theorem IsSmoothBlowupSeq.single {S Y Y' : Scheme.{0}} {f : Y ⟶ S} {B : Set Y} (J : Y.IdealSheafData) (π : Y' ⟶ Y)
-    (h₁ : Smooth (J.subschemeι ≫ f)) (h₂ : (J.support : Set Y) ⊆ B) (h₃ : FinalTheorems.Blowup π J) :
-    IsSmoothBlowupSeq f B π := by
-  simpa using IsSmoothBlowupSeq.step (f := f) (B := B) J π .id (by simpa using h₁) (by simpa using h₂) h₃
-
 namespace Principalise
-
-theorem effCartier_top (X : Scheme.{0}) : FinalTheorems.EffCartier (⊤ : X.IdealSheafData) := fun x => by
-  obtain ⟨_, ⟨U, hU, rfl⟩, hx, -⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ
-  exact ⟨⟨U, hU⟩, 1, hx, one_mem _, by simp⟩
 
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace in
 
@@ -52,9 +43,6 @@ theorem _root_.GlobalTheory.Principalise.effCartier_comap_of_disjoint {W X : Sch
   refine ⟨⟨V, hV⟩, 1, hwV, one_mem _, ?_⟩
   rw [htop, Ideal.span_singleton_one]
   simp [Scheme.IdealSheafData.ideal_top]
-
-theorem blowup_id {X : Scheme.{0}} {J : X.IdealSheafData} (h : FinalTheorems.EffCartier J) : FinalTheorems.Blowup (𝟙 X) J :=
-  ⟨by rwa [Scheme.IdealSheafData.comap_id], fun _ g _ => ⟨g, Category.comp_id g, fun _ e => by simpa using e⟩⟩
 
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace in
 

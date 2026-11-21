@@ -226,11 +226,6 @@ theorem HasNonzeroSec.pow [IsIntegral X] (h : HasNonzeroSec L) (hL : L.IsLB) (n 
   · obtain ⟨s, hs⟩ := hasNonzeroSec_iff.1 h
     exact hasNonzeroSec_iff.2 ⟨secToPow s n, (nonzeroLocus_secToPow s hn).ge hs⟩
 
-theorem EffCartierData.hasNonzeroSec [Nonempty X] (D : EffCartierData X) :
-    HasNonzeroSec D.lb := by
-  obtain ⟨x, hx⟩ := D.dense_nonzeroLocus_canonical.nonempty
-  exact ⟨_, sec_ne_zero_of_mem hx⟩
-
 end Sections
 
 section Curve
@@ -420,12 +415,6 @@ theorem IsNef.pow (h : IsNef k L) (hH : IsAmpleLB H) (n : ℕ) : IsNef k (lbPow 
   ⟨isLB_lbPow h.isLB n, fun Z hZ => (mul_nonneg (Nat.cast_nonneg n) (h.2 Z hZ)).trans_eq
     (hZ.interNumRed_lbPow hH h.isLB n).symm⟩
 
-theorem isNef_pow_iff (hH : IsAmpleLB H) (hL : L.IsLB) {n : ℕ} (hn : 1 ≤ n) :
-    IsNef k (lbPow L n) ↔ IsNef k L :=
-  ⟨fun h => ⟨hL, fun Z hZ => nonneg_of_mul_nonneg_right
-      ((h.2 Z hZ).trans_eq (hZ.interNumRed_lbPow hH hL n)) (Nat.cast_pos.2 hn)⟩,
-    fun h => h.pow hH n⟩
-
 theorem IsNef.of_cls_eq_sum {ι : Type*} (s : Finset ι) {P : ι → LB X} (hP : ∀ i, IsNef k (P i))
     (n : ι → ℕ) (hH : IsAmpleLB H) (hN : N.IsLB)
     (e : cls N hN = ∑ i ∈ s, n i • cls (P i) (hP i).isLB) : IsNef k N := by
@@ -458,13 +447,6 @@ theorem IsNef.pull_of_isClosedImmersion [Algebra k Γ(Y, ⊤)] (h : IsNef k L) (
   refine this.trans_eq (congrArg _ (funext fun j => ?_))
   fin_cases j
   rfl
-
-theorem IsAmpleLB.not_isNef_dual (h : IsAmpleLB A) {Z : Closeds X} (hZ : IsCompleteCurve k Z) :
-    ¬ IsNef k (dual A) := fun h' => by
-  have h₁ := h'.2 Z hZ
-  have h₂ := h.interNumRed_pos hZ
-  rw [hZ.interNumRed_dual h h.isLB] at h₁
-  omega
 
 end Nef
 
@@ -514,11 +496,6 @@ theorem IsPsEff.of_cls_eq (h : IsPsEff M) (hL : L.IsLB) (e : cls L hL = cls M h.
     (isLB_lbPow (isLB_tens (isLB_lbPow h.1 m) hA.isLB) r)
     (by rw [cls_lbPow_tens_lbPow hL hA.isLB, cls_lbPow_tens_lbPow h.1 hA.isLB, e])⟩
 
-omit [IsIntegral X] in
-
-theorem IsPsEff.of_lbIso (h : IsPsEff M) (hL : L.IsLB) (e : LBIso L M) : IsPsEff L :=
-  h.of_cls_eq hL ((cls_eq_iff hL h.isLB).2 e)
-
 theorem isPsEff_of_hasNonzeroSec_pow (hH : IsAmpleLB H) (hL : L.IsLB) {n : ℕ} (hn : 1 ≤ n)
     (h : HasNonzeroSec (lbPow L n)) : IsPsEff L := by
   obtain ⟨q, hq, hg⟩ := hH.exists_isGenerated_pow
@@ -529,20 +506,6 @@ theorem isPsEff_of_hasNonzeroSec_pow (hH : IsAmpleLB H) (hL : L.IsLB) {n : ℕ} 
   rw [cls_lbPow_tens_lbPow hL hH.isLB, cls_lbPow (isLB_lbPow hL n), cls_lbPow hL,
     cls_lbPow hg.isLB, cls_lbPow hH.isLB]
   module
-
-theorem HasNonzeroSec.isPsEff (h : HasNonzeroSec L) (hL : L.IsLB) (hH : IsAmpleLB H) :
-    IsPsEff L :=
-  isPsEff_of_hasNonzeroSec_pow hH hL le_rfl (h.pow hL 1)
-
-theorem EffCartierData.isPsEff (D : EffCartierData X) (hH : IsAmpleLB H) : IsPsEff D.lb :=
-  D.hasNonzeroSec.isPsEff D.isLB_lb hH
-
-theorem IsGenerated.isPsEff (h : IsGenerated L) (hH : IsAmpleLB H) : IsPsEff L :=
-  h.hasNonzeroSec.isPsEff h.isLB hH
-
-theorem IsAmpleLB.isPsEff (h : IsAmpleLB A) : IsPsEff A :=
-  have ⟨_, hn, hg⟩ := h.exists_isGenerated_pow
-  isPsEff_of_hasNonzeroSec_pow h h.isLB hn hg.hasNonzeroSec
 
 theorem IsPsEff.of_cls_eq_add (hL : IsPsEff L) (hM : IsPsEff M) (hN : N.IsLB)
     (e : cls N hN = cls L hL.isLB + cls M hM.isLB) : IsPsEff N := by
@@ -566,14 +529,6 @@ theorem IsPsEff.of_cls_eq_add (hL : IsPsEff L) (hM : IsPsEff M) (hN : N.IsLB)
 
 theorem IsPsEff.tens (hL : IsPsEff L) (hM : IsPsEff M) : IsPsEff (tens L M) :=
   hL.of_cls_eq_add hM (isLB_tens hL.isLB hM.isLB) rfl
-
-theorem IsPsEff.exists_of_dual [IsLocallyNoetherian X] (hA : IsAmpleLB A) (h : IsPsEff (dual A)) :
-    ∃ r : ℕ, 1 ≤ r ∧ HasNonzeroSec (lbZPow A (-r)) := by
-  obtain ⟨r, hr, hr'⟩ := h.exists_hasNonzeroSec hA (m := 2) one_le_two
-  refine ⟨r, hr, hr'.of_cls_eq (Twist.isLB_lbZPow hA.isLB _)
-    (isLB_lbPow (isLB_tens (isLB_lbPow h.1 2) hA.isLB) r) ?_⟩
-  rw [cls_lbPow_tens_lbPow h.1 hA.isLB, cls_lbZPow hA.isLB, cls_dual hA.isLB]
-  module
 
 end PsEff
 
@@ -651,10 +606,6 @@ theorem IsBig.frequently_hasNonzeroSec (h : IsBig k L) :
   (hm.and_eventually (eventually_ge_atTop 1)).mono fun _ hm =>
     hasNonzeroSection_of_le_sectionBound hc hm.2 hm.1
 
-theorem IsBig.isPsEff [IsIntegral X] (h : IsBig k L) (hH : IsAmpleLB H) : IsPsEff L :=
-  have ⟨_, hm, hm'⟩ := (h.frequently_hasNonzeroSec.and_eventually (eventually_ge_atTop 1)).exists
-  isPsEff_of_hasNonzeroSec_pow hH h.1 hm' hm
-
 theorem IsBig.of_pow {n : ℕ} (h : IsBig k (lbPow L n)) (hL : L.IsLB) (hn : 1 ≤ n)
     (hfin : ∀ m : ℕ, Module.Finite k (coh (twist (structureModule X) (lbPow L m)) 0)) :
     IsBig k L := by
@@ -705,10 +656,6 @@ theorem IsBig.pow (h : IsBig k L) {n : ℕ} (hn : 1 ≤ n) : IsBig k (lbPow L n)
     Nat.add_sub_cancel]
   module
 
-theorem isBig_pow_iff (hL : L.IsLB) {n : ℕ} (hn : 1 ≤ n) : IsBig k (lbPow L n) ↔ IsBig k L :=
-  ⟨fun h => h.of_pow hL hn fun m => finite_coh_zero_twist_of_isProjOver hf hp (isLB_lbPow hL m),
-    fun h => h.pow hf hp hn⟩
-
 end Proj
 
 end Big
@@ -738,67 +685,6 @@ theorem algebraMap_top_eq (r : k) : algebraMap k Γ(PSpace k N, ⊤) r =
 theorem isProjOver_str : IsProjOver (PSpace.str k N) :=
   have := isProper_str k N
   (isAmple_projective_O_one k N).isProjOver _
-
-theorem sectionDim_twistingSheaf_pow (m : ℕ) : lbH0 k (lbPow (O1 k N) m) = (m + N).choose N := by
-  have h := (chi_eq_hdim_zero k fun _ hp => ProjCoh.subsingleton_coh_of_neg_le k N (n := m)
-    (by omega) hp).symm.trans (ProjCoh.chi_sheafO k N m)
-  rw [← Nat.cast_add, Ring.choose_natCast] at h
-  exact Nat.cast_injective h
-
-theorem isNef_twistingSheaf : IsNef k (O1 k N) := (isAmple_projective_O_one k N).isNef
-
-theorem isBig_twistingSheaf : IsBig k (O1 k N) := by
-  refine (isBig_iff (algebraMap_top_eq k N) (isProjOver_str k N) (topologicalKrullDim_eq k N)).2
-    ⟨O1_isLB k N, (N.factorial : ℝ)⁻¹, by positivity, Frequently.of_forall fun m => ?_⟩
-  rw [sectionDim_twistingSheaf_pow, ← div_eq_inv_mul]
-  refine le_trans ?_ (Nat.pow_le_choose N (m + N))
-  gcongr
-  omega
-
-theorem isPsEff_twistingSheaf : IsPsEff (O1 k N) := (isAmple_projective_O_one k N).isPsEff
-
-theorem triv_nef_not_big : IsNef k (LB.triv (PSpace k (N + 1))) ∧
-    IsPsEff (LB.triv (PSpace k (N + 1))) ∧ ¬ IsBig k (LB.triv (PSpace k (N + 1))) := by
-  refine ⟨isNef_triv k _, (isGenerated_triv _).isPsEff (isAmple_projective_O_one k _), fun h => ?_⟩
-  obtain ⟨-, c, hc, hm⟩ := (isBig_iff (algebraMap_top_eq k _) (isProjOver_str k _)
-    (topologicalKrullDim_eq k _)).1 h
-  have ht : Tendsto (fun m : ℕ => c * (m : ℝ) ^ (N + 1)) atTop atTop :=
-    ((tendsto_pow_atTop N.succ_ne_zero).comp tendsto_natCast_atTop_atTop).const_mul_atTop hc
-  obtain ⟨m, h₁, h₂⟩ := (hm.and_eventually (ht.eventually_gt_atTop 1)).exists
-  rw [lineBundleGlobalSectionsDim_congr_picardClass (isLB_lbPow h.1 m) (isLB_lbPow (O1_isLB k _) 0)
-    (by rw [cls_lbPow h.1, cls_lbPow (O1_isLB k _), cls_triv, zero_nsmul, nsmul_zero]),
-    sectionDim_twistingSheaf_pow, zero_add, Nat.choose_self, Nat.cast_one] at h₁
-  exact h₂.not_ge h₁
-
-theorem not_isPsEff_dual_twistingSheaf :
-    ¬ IsPsEff (dual (O1 k (N + 1))) ∧ ¬ IsBig k (dual (O1 k (N + 1))) := by
-  have := isNoetherian_of_isProjOver (isProjOver_str k (N + 1))
-  have h : ¬ IsPsEff (dual (O1 k (N + 1))) := fun h => by
-    obtain ⟨r, hr, hs⟩ := h.exists_of_dual (isAmple_projective_O_one k _)
-    have := ProjCoh.subsingleton_coh_zero k (N := N + 1) (by omega) (n := -r) (by omega)
-    exact not_nontrivial _ (hasNonzeroSec_iff_nontrivial.1 hs)
-  exact ⟨h, fun h' => h (h'.isPsEff (isAmple_projective_O_one k _))⟩
-
-theorem isCompleteCurve_top : IsCompleteCurve k (⊤ : Closeds (PSpace k 1)) :=
-  have := isProper_str k 1
-  (isCompleteCurve_iff (algebraMap_top_eq k 1)).2 ⟨IrreducibleSpace.isIrreducible_univ _,
-    (topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id).trans
-      (topologicalKrullDim_eq k 1)⟩
-
-theorem not_isNef_dual_twistingSheaf : ¬ IsNef k (dual (O1 k 1)) :=
-  (isAmple_projective_O_one k 1).not_isNef_dual (isCompleteCurve_top k)
-
-example : lbH0 ℚ (lbPow (O1 ℚ 2) 2) = 6 := sectionDim_twistingSheaf_pow ℚ 2 2
-
-example : 0 < interNumRed k (⊤ : Closeds (PSpace k 1)) ![O1 k 1] ∧
-    interNumRed k (⊤ : Closeds (PSpace k 1)) ![dual (O1 k 1)] < 0 := by
-  have h := (isAmple_projective_O_one k 1).interNumRed_pos (isCompleteCurve_top k)
-  rw [(isCompleteCurve_top k).interNumRed_dual (isAmple_projective_O_one k 1) (O1_isLB k 1)]
-  omega
-
-example : IsNef k (lbPow (O1 k 2) 3) ∧ IsBig k (lbPow (O1 k 2) 3) ∧ IsPsEff (lbPow (O1 k 2) 3) :=
-  have h := (isBig_twistingSheaf k 2).pow (algebraMap_top_eq k 2) (isProjOver_str k 2) (n := 3) (by norm_num)
-  ⟨(isNef_twistingSheaf k 2).pow (isAmple_projective_O_one k 2) 3, h, h.isPsEff (isAmple_projective_O_one k 2)⟩
 
 end ProjSpace
 

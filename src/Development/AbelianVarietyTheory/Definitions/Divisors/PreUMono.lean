@@ -37,6 +37,4 @@ def preCoef (h : φ ≫ s = s' ≫ spMap σ) : CoefMap σ (OAff s) (OPre φ s') 
       ⟨preU_mono φ (leOfHom a.unop), leOfHom a.unop⟩)).op b
   smul U := semiHom_secPull h (prePair φ U.unop)
 
-example (U : X.affineOpens) : preU (𝟙 X) U = U := rfl
-
 end GlobalTheory.AbCoh

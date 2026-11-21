@@ -117,41 +117,6 @@ lemma q_eq (L : LevelData A r) (st : Start A) (w : List (Letter ℂ S)) : (ofWor
     · funext Y; simp [ofWord, qw, hp, FrameData.plus, ih]
     · funext Y; simp [ofWord, qw, hp, FrameData.minus, ih]
 
-lemma mem_invB (L : LevelData A r) (st : Start A) (w : List (Letter ℂ S)) (Y : ℂ)
-    (h0 : Y ∈ st.inv) (h : ∀ l ∈ w, Y - ypt l ≠ 0 ∧ Y - ypt l ≠ 1) :
-    Y ∈ (ofWord L st w).inv := by
-  induction w with
-  | nil => exact h0
-  | cons l w ih =>
-    have hl := h l (by simp)
-    have ih' := ih (fun l' hl' => h l' (by simp [hl']))
-    by_cases hp : l.plus
-    · simp only [ypt, hp, if_true] at hl
-      simp only [ofWord, hp, if_true, FrameData.plus]
-      exact ⟨ih', hl.1, hl.2⟩
-    · simp only [ypt, hp] at hl
-      simp only [ofWord, hp, FrameData.minus]
-      refine ⟨ih', ?_, ?_⟩
-      · intro e; apply hl.2; simp only [Bool.false_eq_true, if_false]; linear_combination -e
-      · intro e; apply hl.1; simp only [Bool.false_eq_true, if_false]; linear_combination -e
-
-lemma qw_neB (q : ℂ → ℂ) (w : List (Letter ℂ S)) (Y : ℂ) (h0 : q Y ≠ 0)
-    (h : ∀ l ∈ w, Y - ypt l ≠ 0 ∧ Y - ypt l ≠ 1 ∧ Y - ypt l ≠ -1) : qw q w Y ≠ 0 := by
-  induction w with
-  | nil => exact h0
-  | cons l w ih =>
-    have hl := h l (by simp)
-    have ih' := ih (fun l' hl' => h l' (by simp [hl']))
-    by_cases hp : l.plus
-    · simp only [ypt, hp, if_true] at hl
-      simp only [qw, hp, if_true]
-      refine mul_ne_zero ih' (div_ne_zero ?_ hl.1)
-      intro e; apply hl.2.2; linear_combination e
-    · simp only [ypt, hp] at hl
-      simp only [qw, hp]
-      refine mul_ne_zero ih' (div_ne_zero ?_ ?_)
-      · intro e; apply hl.2.1; simp only [Bool.false_eq_true, if_false]; linear_combination -e
-      · intro e; apply hl.1; simp only [Bool.false_eq_true, if_false]; linear_combination -e
 end
 
 theorem admissible_rec_of_admissible_word : AdmRecOfAdm := by
@@ -192,48 +157,6 @@ theorem admissible_rec_of_admissible_word : AdmRecOfAdm := by
       exact qw_ne _ _ _ qm1 (fun l' hl' =>
         ⟨fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e),
          fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e)⟩)
-
-theorem admissible_rec_of_base : AdmRecOfBase := by
-  intro A S _ _ _ _ _ _ r L st w hA
-  induction w with
-  | nil => trivial
-  | cons l w ih =>
-    obtain ⟨hnd, hre, hpt, hpw⟩ := hA
-    have hnd' : l.intersection_update_fsHerm_neg_one ∉ w.map Letter.intersection_update_fsHerm_neg_one ∧ (w.map Letter.intersection_update_fsHerm_neg_one).Nodup :=
-      List.nodup_cons.mp (by simpa only [List.map_cons] using hnd)
-    have hpw' := List.pairwise_cons.mp hpw
-    have hAw : AdmBase st w :=
-      ⟨hnd'.2, fun l' h => hre l' (by simp [h]), fun l' h => hpt l' (by simp [h]), hpw'.2⟩
-    obtain ⟨p0, p1, p2, q0⟩ := hpt l (by simp)
-    have hd := hpw'.1
-    have m0 : ypt l ∈ (ofWord L st w).inv := mem_invB L st w _ p0 (fun l' hl' =>
-      ⟨fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e),
-       fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e)⟩)
-    have m1 : ypt l + 1 ∈ (ofWord L st w).inv := mem_invB L st w _ p1 (fun l' hl' =>
-      ⟨fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combination e),
-       fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e)⟩)
-    have m2 : l.plus = false → ypt l + 2 ∈ (ofWord L st w).inv := fun hf => mem_invB L st w _ (p2 hf) (fun l' hl' =>
-      ⟨fun e => hd l' hl' (-2) (by norm_num) (by push_cast; linear_combination e),
-       fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combination e)⟩)
-    have qq : (ofWord L st w).q (ypt l) ≠ 0 := by
-      rw [q_eq]
-      exact qw_neB _ _ _ q0 (fun l' hl' =>
-        ⟨fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e),
-         fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e),
-         fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combination e)⟩)
-    by_cases hp : l.plus
-    · simp only [ypt, hp, if_true] at m0 m1 qq
-      refine ⟨ih hAw, hnd'.1, hre l (by simp), m0, m1, ?_⟩
-      simp only [hp, if_true]; exact qq
-    · have hf : l.plus = false := by simpa using hp
-      have m2' := m2 hf
-      simp only [ypt, hf, Bool.false_eq_true, if_false] at m0 m1 m2' qq
-      refine ⟨ih hAw, hnd'.1, hre l (by simp), ?_, ?_, ?_⟩
-      · have : l.pt - 1 + 1 = l.pt := by ring
-        rwa [this] at m1
-      · have : l.pt - 1 + 2 = l.pt + 1 := by ring
-        rwa [this] at m2'
-      · simp only [hf, Bool.false_eq_true, if_false]; exact ⟨m0, qq⟩
 
 theorem frameRecAssemble : FrameRecAssemble := by
   intro h0 hm hp hn hf A S _ _ _ _ _ _ r L st w hL hs
@@ -444,82 +367,6 @@ theorem cPos : CPos := by
     · exact pos_div (qw_pos q0 w _ (by simp [hl]) q2 dm) (xs_pos x0 w e _ (by simp [hl]) x3 dm)
     · exact xs_pos x0 w e _ hl x1 d0
 
-section
-variable {S : Type} [Fintype S] [DecidableEq S]
-
-lemma phi_posB (l : Letter ℂ S) (Y : ℂ) (hY : Y.im = 0) (hl : l.pt.im = 0)
-    (h : 0 < (Y.re - (ypt l).re) * (Y.re - (ypt l).re - 1)) : Pos (phiL l Y) := by
-  unfold phiL
-  unfold ypt at h
-  split_ifs at h ⊢
-  · have := frac (Y - l.pt) (by simp [hY, hl]) 0 (-1) (by simp; nlinarith)
-    simpa [sub_eq_add_neg] using this
-  · have := frac (l.pt - Y) (by simp [hY, hl]) 0 (-1) (by simp at h ⊢; nlinarith)
-    simpa [sub_eq_add_neg] using this
-
-lemma xs_posB (x0 : ℂ → ℂ) (w : List (Letter ℂ S)) (e : Ix S) (Y : ℂ) (hY : Y.im = 0) (h0 : Pos (x0 Y))
-    (h : ∀ l ∈ w, l.pt.im = 0 ∧ 0 < (Y.re - (ypt l).re) * (Y.re - (ypt l).re - 1)) : Pos (xs x0 w e Y) := by
-  induction w with
-  | nil => exact h0
-  | cons l w ih =>
-    have hl := h l (by simp)
-    have ih' := ih (fun l' hl' => h l' (by simp [hl']))
-    simp only [xs]
-    apply pos_mul ih'
-    split_ifs
-    · exact phi_posB l Y hY hl.1 hl.2
-    · exact ⟨by simp, by simp⟩
-
-lemma qw_posB (q0 : ℂ → ℂ) (w : List (Letter ℂ S)) (Y : ℂ) (hY : Y.im = 0) (h0 : Pos (q0 Y))
-    (h : ∀ l ∈ w, l.pt.im = 0 ∧ 0 < (Y.re - (ypt l).re) * (Y.re - (ypt l).re - 1) ∧
-      0 < (Y.re - (ypt l).re) * (Y.re - (ypt l).re + 1)) : Pos (qw q0 w Y) := by
-  induction w with
-  | nil => exact h0
-  | cons l w ih =>
-    obtain ⟨hl, g1, g2⟩ := h l (by simp)
-    have ih' := ih (fun l' hl' => h l' (by simp [hl']))
-    simp only [qw]
-    unfold ypt at g1 g2
-    split_ifs at g1 g2 ⊢
-    · apply pos_mul ih'
-      have := frac (Y - l.pt) (by simp [hY, hl]) 1 0 (by simp; nlinarith)
-      simpa [sub_eq_add_neg] using this
-    · apply pos_mul ih'
-      have := frac (l.pt - Y) (by simp [hY, hl]) 0 (-1) (by simp at g1 g2 ⊢; nlinarith)
-      simpa [sub_eq_add_neg] using this
-end
-
-theorem cPosBase : CPosBase := by
-  intro S _ _ x0 q0 w him hpw hpos e
-  induction w with
-  | nil => exact ⟨by simp [cs], by simp [cs]⟩
-  | cons l w ih =>
-    have hpw' := List.pairwise_cons.mp hpw
-    have ih' := ih (fun l' h => him l' (by simp [h])) hpw'.2 (fun l' h => hpos l' (by simp [h]))
-    obtain ⟨x1, x2, q1⟩ := hpos l (by simp)
-    have hl := him l (by simp)
-    have hy : (ypt l).im = 0 := by unfold ypt; split_ifs <;> simp [hl]
-    have d0 : ∀ l' ∈ w, l'.pt.im = 0 ∧ 0 < ((ypt l).re - (ypt l').re) * ((ypt l).re - (ypt l').re - 1) ∧
-        0 < ((ypt l).re - (ypt l').re) * ((ypt l).re - (ypt l').re + 1) := fun l' h =>
-      ⟨him l' (by simp [h]), by
-        rcases lt_abs.mp (hpw'.1 l' h) with g | g <;> constructor <;> nlinarith⟩
-    have d1 : ∀ l' ∈ w, l'.pt.im = 0 ∧
-        0 < ((ypt l + 1).re - (ypt l').re) * ((ypt l + 1).re - (ypt l').re - 1) := fun l' h =>
-      ⟨him l' (by simp [h]), by
-        simp only [Complex.add_re, Complex.one_re]
-        rcases lt_abs.mp (hpw'.1 l' h) with g | g <;> nlinarith⟩
-    have X0 := xs_posB x0 w e _ hy x1 (fun l' h => ⟨(d0 l' h).1, (d0 l' h).2.1⟩)
-    have X1 := xs_posB x0 w e _ (by simp [hy]) x2 d1
-    have Q0 := qw_posB q0 w _ hy q1 d0
-    simp only [cs]
-    apply pos_mul ih'
-    unfold ypt at X0 X1 Q0
-    split_ifs at X0 X1 Q0 ⊢
-    · exact pos_div Q0 X1
-    · exact X0
-    · exact pos_div Q0 X0
-    · simpa using X1
-
 lemma q_core' (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ l) (hlk : l ≤ k)
     (h : Interlaces k u u' ρ) (hA : u l + 2 ≤ -Y ∧ -Y ≤ u' l - 2) :
     ∏ i ∈ Icc 1 k, ((Y - 1 + 1/2 + u i) * (Y - 1 + 1/2 + u' i)) < 0 := by
@@ -590,45 +437,6 @@ theorem cPosCut : CPosCut := by
   · exact hq y (hQ k u u' ρ l y T T' hl1 hlk hint hcut' hT hT')
   · have := hq (y - 1) (hQs k u u' ρ l y T T' hl1 hlk hint hcut' hT hT'); simpa using this
 
-theorem cPosCutBase : CPosCutBase := by
-  intro hI hQ hQs hC S _ _ k u u' ρ l T T' w hl1 hlk hint hT hT' hpts hpw e
-  apply hC S _ _ w (fun a ha => (hpts a ha).1) hpw
-  intro a ha
-  obtain ⟨him, hcut⟩ := hpts a ha
-  have himy : (ypt a).im = 0 := by unfold ypt; split_ifs <;> simp [him]
-  obtain ⟨y, hy⟩ : ∃ y : ℝ, ypt a = (y : ℂ) := ⟨(ypt a).re, by apply Complex.ext <;> simp [himy]⟩
-  have hcut' : OnCut u u' l y ∨ OnCut u u' l (y + 1) := by simpa [hy] using hcut
-  have hx : ∀ z : ℝ, 0 < (-1 : ℝ) ^ (k - l) * xpoly k ρ z →
-      Pos ((-1 : ℂ) ^ (k - l) * ∏ i ∈ Finset.Icc 1 (k - 1), (((z : ℝ) : ℂ) + (ρ i : ℂ))) := by
-    intro z hz
-    have c : ((-1 : ℂ) ^ (k - l) * ∏ i ∈ Finset.Icc 1 (k - 1), (((z : ℝ) : ℂ) + (ρ i : ℂ))) =
-        (((-1 : ℝ) ^ (k - l) * xpoly k ρ z : ℝ) : ℂ) := by
-      unfold xpoly; push_cast; ring
-    rw [c]; exact pos_ofReal hz
-  have hq : ∀ z : ℝ, 0 < qpoly k T T' u u' z →
-      Pos (-((T : ℂ) * T') * ∏ i ∈ Finset.Icc 1 k, (((z : ℝ) : ℂ) + 1 / 2 + (u i : ℂ)) * (((z : ℝ) : ℂ) + 1 / 2 + (u' i : ℂ))) := by
-    intro z hz
-    have c : (-((T : ℂ) * T') * ∏ i ∈ Finset.Icc 1 k, (((z : ℝ) : ℂ) + 1 / 2 + (u i : ℂ)) * (((z : ℝ) : ℂ) + 1 / 2 + (u' i : ℂ))) =
-        ((qpoly k T T' u u' z : ℝ) : ℂ) := by
-      unfold qpoly; push_cast; ring
-    rw [c]; exact pos_ofReal hz
-  rw [hy]
-  rcases hcut' with hc | hc
-  · have a0 := hI k u u' ρ l y hl1 hlk hint hc 0 (by simp)
-    have a1 := hI k u u' ρ l y hl1 hlk hint hc 1 (by simp)
-    rw [add_zero] at a0
-    refine ⟨hx y a0, ?_, hq y (hQ k u u' ρ l y T T' hl1 hlk hint hc hT hT')⟩
-    have := hx (y + 1) a1; simpa using this
-  · have a0 := hI k u u' ρ l (y + 1) hl1 hlk hint hc 0 (by simp)
-    have a1 := hI k u u' ρ l (y + 1) hl1 hlk hint hc (-1) (by simp)
-    have b := hQs k u u' ρ l (y + 1) T T' hl1 hlk hint hc hT hT'
-    rw [add_zero] at a0
-    have e1 : y + 1 + -1 = y := by ring
-    have e2 : y + 1 - 1 = y := by ring
-    rw [e1] at a1; rw [e2] at b
-    refine ⟨hx y a1, ?_, hq y b⟩
-    have := hx (y + 1) a0; simpa using this
-
 end Formalism.FourierDecayAlt.P.Fr2
 
 namespace Formalism.FourierDecayAlt.P
@@ -643,14 +451,8 @@ theorem q_positive_shift : Formalism.FourierDecayAlt.Fr.QPositiveShift := Fr2.qP
 
 theorem c_pos_truncated : Formalism.FourierDecayAlt.Fr.CPosCut := Fr2.cPosCut
 
-theorem c_pos_base : Formalism.FourierDecayAlt.Fr.CPosBase := Fr2.cPosBase
-
 theorem admissible_rec_of_admissible : Formalism.FourierDecayAlt.Fr.AdmRecOfAdm := Fr2.admissible_rec_of_admissible_word
 
-theorem admissible_rec_of_base_case : Formalism.FourierDecayAlt.Fr.AdmRecOfBase := Fr2.admissible_rec_of_base
-
 theorem frame_rec_of_steps : Formalism.FourierDecayAlt.Fr.FrameRecAssemble := Fr2.frameRecAssemble
-
-theorem c_pos_truncated_base : Formalism.FourierDecayAlt.Fr.CPosCutBase := Fr2.cPosCutBase
 
 end Formalism.FourierDecayAlt.P

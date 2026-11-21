@@ -429,7 +429,7 @@ theorem lam_int {η : (AE D)ˣ →* Circle} (hη : IsEtaTilde D η) {lam : ℕ �
         zero_add]
     · rw [← map_inv]
       exact hint _ fun Q hQ => by rw [map_inv, hy Q hQ, inv_one]
-  · obtain ⟨t, B, ht0, htc, e⟩ := GlobalTheory.T.exists_real_span_eq_conjFixedPrime_mul_relNorm D P.asIdeal P.isPrime P.ne_bot hP
+  · obtain ⟨t, B, ht0, htc, e⟩ := _root_.GlobalTheory.FixedPrimeNorm.exists_span_eq_prime_mul_norm D P.asIdeal P.isPrime P.ne_bot hP
     have htE : (t : D.host.E) ≠ 0 := by simpa using ht0
     exact ⟨t, Units.mk0 _ htE, B, rfl, e,
       inertChar_real hη hε _ htc (GlobalTheory.NormSignInert.norm_neg D t P.asIdeal B ht0 htc P.isMaximal hP e)⟩

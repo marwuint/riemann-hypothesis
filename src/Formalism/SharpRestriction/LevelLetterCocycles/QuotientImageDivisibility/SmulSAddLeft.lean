@@ -44,10 +44,6 @@ theorem LB_smul {m : ℤ} {f : ℤ → V} (hf : LB m f) (c : LL) : LB m (c • f
   intro k hk
   simp [hf k hk]
 
-theorem LB_min {m m' : ℤ} {f f' : ℤ → V} (hf : LB m f) (hf' : LB m' f') :
-    LB (min m m') f ∧ LB (min m m') f' := by
-  exact ⟨LB_mono hf (min_le_left _ _), LB_mono hf' (min_le_right _ _)⟩
-
 private theorem exists_nat_gt_int_sub (k m : ℤ) : ∃ N : ℕ, k - m < N := by
   first
   | exact exists_nat_gt (k - m)
@@ -81,15 +77,6 @@ theorem smulS_smul {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL) 
   refine Finset.sum_congr rfl fun j _ => ?_
   simp only [Pi.smul_apply]
   exact smul_comm _ _ _
-
-theorem smulS_add_left {m : ℤ} {f : ℤ → V} (hf : LB m f) (g h : PowerSeries LL) :
-    smulS (g + h) f = smulS g f + smulS h f := by
-  funext k
-  obtain ⟨N, hN⟩ := exists_nat_gt_int_sub k m
-  rw [Pi.add_apply, smulS_eq_sum hf (g + h) k N hN, smulS_eq_sum hf g k N hN,
-    smulS_eq_sum hf h k N hN, ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  simp only [map_add, add_smul]
 
 private theorem smulS_C_eq_smul_of_LB {m : ℤ} {f : ℤ → V} (hf : LB m f) (c : LL) :
     smulS (PowerSeries.C c) f = c • f := by
@@ -191,24 +178,6 @@ theorem Dg_smulS {Fil : ℤ → Submodule LL V} (hF : Antitone Fil) {m s : ℤ} 
   refine sum_mem fun j _ => Submodule.smul_mem _ _ ?_
   exact hF (by omega : s - k ≤ s - (k - (j : ℤ))) (hD (k - j))
 
-theorem Dg_add {Fil : ℤ → Submodule LL V} {s : ℤ} {f f' : ℤ → V} (h : Dg Fil s f)
-    (h' : Dg Fil s f') : Dg Fil s (f + f') := by
-  intro k
-  rw [Pi.add_apply]
-  exact add_mem (h k) (h' k)
-
-theorem Dg_sub {Fil : ℤ → Submodule LL V} {s : ℤ} {f f' : ℤ → V} (h : Dg Fil s f)
-    (h' : Dg Fil s f') : Dg Fil s (f - f') := by
-  intro k
-  rw [Pi.sub_apply]
-  exact sub_mem (h k) (h' k)
-
-theorem Dg_smul {Fil : ℤ → Submodule LL V} {s : ℤ} {f : ℤ → V} (h : Dg Fil s f) (c : LL) :
-    Dg Fil s (c • f) := by
-  intro k
-  rw [Pi.smul_apply]
-  exact Submodule.smul_mem _ c (h k)
-
 def resc (χ : LL) (f : ℤ → V) : ℤ → V := fun k => (χ ^ k) • f k
 
 theorem LB_resc {m : ℤ} {f : ℤ → V} (hf : LB m f) (χ : LL) : LB m (resc χ f) := by
@@ -231,11 +200,5 @@ theorem smulS_rescale {m : ℤ} {f : ℤ → V} (hf : LB m f) (χ : LL) (hχ : �
   show PowerSeries.coeff j (PowerSeries.rescale χ g) • (χ ^ (k - (j : ℤ)) • f (k - j)) =
     χ ^ k • (PowerSeries.coeff j g • f (k - j))
   rw [PowerSeries.coeff_rescale, smul_smul, smul_smul, mul_right_comm, e]
-
-theorem Dg_resc {Fil : ℤ → Submodule LL V} {s : ℤ} {f : ℤ → V} (h : Dg Fil s f) (χ : LL) :
-    Dg Fil s (resc χ f) := by
-  intro k
-  show (χ ^ k) • f k ∈ Fil (s - k)
-  exact Submodule.smul_mem _ _ (h k)
 
 end Formalism.MainNotions.N.Pv.LocalLengthBound.Ser

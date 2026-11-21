@@ -1,4 +1,5 @@
-import Formalism.ThickAverageLoss.Statement
+import Formalism.JacobiWeightFamilies.Statement
+import Formalism.StatementU
 import Formalism.CorankShare.StatementFR
 import Mathlib.Analysis.Fourier.FiniteAbelian.PontryaginDuality
 
@@ -8,7 +9,7 @@ noncomputable section
 
 namespace Formalism.D5
 
-open Formalism Formalism.CMTypeGaloisData Formalism.WT Formalism.WeightedSieveThreeParameter
+open Formalism Formalism.WT
 
 abbrev E0 := ZMod 2 × ZMod 2
 
@@ -52,21 +53,10 @@ def vonMangoldtClassSum (Hs : CycHost H) (g : E0 × H) (a w : ℝ) : ℝ :=
   ((1 / (Fintype.card (E0 × H) : ℂ)) * ∑ ψ : AddChar (E0 × H) ℂ,
     ψ (-g) * ∑ n ∈ Icc 1 ⌊a / w⌋₊, (Λ n : ℂ) * Hs.cv ψ n * ((a / n - w : ℝ) : ℂ)).re
 
-def askTop (Hs : CycHost H) (a : ℝ) (t : H) (w : E0 × H → ℝ) : ℝ :=
-  ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi (g + topPl t)), 2 * vonMangoldtClassSum Hs g a (w (cconj + g + topPl t))
-
-def ledTop (Hs : CycHost H) (a : ℝ) (w : E0 × H → ℝ) : ℝ :=
-  a * (Real.log a - 1 - Real.eulerMascheroniConstant + (Hs.ell Hs.chC).re
-    - (1 / ((PhiSet (H := H)).card : ℝ)) * ∑ ρ ∈ PhiSet (H := H), Real.log (w ρ))
-
 def balTop (Hs : CycHost H) (a : ℝ) (t : H) (w : E0 × H → ℝ) : ℝ :=
   ((1 / ((PhiSet (H := H)).card : ℂ)) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi (g + topPl t)),
     ∑ ψ : AddChar (E0 × H) ℂ, ψ (-g) * ((w (cconj + g + topPl t) : ℝ) : ℂ)
       * GC Hs ψ (a / w (cconj + g + topPl t))).re
-
-def Balance : Prop :=
-  ∀ (Hs : CycHost H) (a : ℝ) (t : H) (w : E0 × H → ℝ), 0 < a → (∀ ρ, 0 < w ρ) →
-    askTop Hs a t w - ledTop Hs a w = balTop Hs a t w
 
 end
 
@@ -84,136 +74,11 @@ structure Nodes (H : Type) [AddCommGroup H] [Fintype H] [DecidableEq H] (m : ℕ
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-def asked {m : ℕ} (Hs : CycHost H) (Nd : Nodes H m) (u0 : H) : ℝ :=
-  ∑ t ∈ Nd.T, ∑ j : Fin m, askTop Hs (Nd.a t) t (Nd.w u0 j)
-def sizeData₂ {m : ℕ} (Hs : CycHost H) (Nd : Nodes H m) (u0 : H) : ℝ :=
-  ∑ t ∈ Nd.T, ∑ j : Fin m, ledTop Hs (Nd.a t) (Nd.w u0 j)
-
-def signal {m : ℕ} (Hs : CycHost H) (Nd : Nodes H m) : ℝ :=
-  ((Nd.T2.card : ℝ) / Fintype.card H) / 2 * ∑ t ∈ Nd.T, ∑ j : Fin m, Nd.bj j *
-    (GC Hs 0 (Nd.a t / Nd.bj j) + GC Hs Hs.psC (Nd.a t / Nd.bj j) - GC Hs Hs.chC (Nd.a t / Nd.bj j)
-      - GC Hs Hs.chpsC (Nd.a t / Nd.bj j)).re
-
 def IsThickAt (T2 : Finset H) (u0 : H) (ρ : E0 × H) : Prop := ρ ∈ T2.image (fun t => thickPl (t + u0))
 
 instance (T2 : Finset H) (u0 : H) : DecidablePred (IsThickAt T2 u0) :=
   fun ρ => inferInstanceAs (Decidable (ρ ∈ T2.image (fun t => thickPl (t + u0))))
 
-def restAvg {m : ℕ} (Hs : CycHost H) (Nd : Nodes H m) : ℝ :=
-  (1 / (Fintype.card H : ℝ)) * ∑ u0 : H, ∑ t ∈ Nd.T, ∑ j : Fin m,
-    ((1 / ((PhiSet (H := H)).card : ℂ)) * ∑ g ∈ univ.filter (fun g : E0 × H =>
-        ¬ InPhi (g + topPl t) ∧ ¬ IsThickAt Nd.T2 u0 (cconj + g + topPl t)),
-      ∑ ψ : AddChar (E0 × H) ℂ, ψ (-g) * ((Nd.w u0 j (cconj + g + topPl t) : ℝ) : ℂ)
-        * GC Hs ψ (Nd.a t / Nd.w u0 j (cconj + g + topPl t))).re
-
-def ThickAverage : Prop :=
-  ∀ {m : ℕ} (Hs : CycHost H) (Nd : Nodes H m),
-    (1 / (Fintype.card H : ℝ)) * ∑ u0 : H, ∑ t ∈ Nd.T, ∑ j : Fin m, balTop Hs (Nd.a t) t (Nd.w u0 j)
-      = signal Hs Nd + restAvg Hs Nd
-
 end
-
-def SpreadRepair : Prop :=
-  ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (ϖ : R), Irreducible ϖ →
-  ∀ (d : ℕ) (e : Fin d → ℕ) (τ : ℕ),
-    ({v : Fin d → R | ∀ i, ϖ ^ e i ∣ v i} ∩ {v : Fin d → R | ∀ i, ϖ ^ τ ∣ v i})
-        = {v : Fin d → R | ∀ i, ϖ ^ max (e i) τ ∣ v i} ∧
-    (∑ i, max (e i) τ = d * τ + ∑ i, (e i - τ)) ∧
-    ∀ (β S V g : ℕ), ((univ.filter (fun i => τ + β * S < e i)).card ≤ g) → (∀ i, e i ≤ V * S) →
-      ∑ i, (e i - τ) ≤ d * (β * S) + g * (V * S)
-
-structure PartnersToFactorsAt (C ε x : ℝ) (P : SizeParameters) {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
-    (Hs : CycHost H) (Nd : Nodes H P.m) (u0 : H) where
-  ι : Type
-  fι : Fintype ι
-  ω : ι → ℝ
-  ω_nonneg : ∀ i, 0 ≤ ω i
-  ω_sum : (∑ i, ω i) = 1
-
-  D : ℕ
-  D_pos : 0 < D
-  slope : Fin D → ℝ
-
-  muM : ι → ℝ
-  muMax : ι → ℝ
-  topS : ι → ℝ
-  lowS : ι → ℝ
-  ix : ι → ℝ
-  tau : ι → ℝ
-  lev : ι → ℝ
-  hB : ι → ℝ
-  logT : ι → ℝ
-  muNmax : ι → ℝ
-
-  uMin : ℝ
-  uF : ℝ
-  HH : ℝ
-  eta : ℝ
-  e : ℝ
-  Ll : ℝ
-  uMin_pos : 0 < uMin
-  HH_nonneg : 0 ≤ HH
-  eta_nonneg : 0 ≤ eta
-  e_nonneg : 0 ≤ e
-  Ll_nonneg : 0 ≤ Ll
-
-  EM : ℝ
-  Ediv : ℝ
-  Elow : ℝ
-  Eserv : ℝ
-  Ephic : ℝ
-  Eram : ℝ
-  Ekap : ℝ
-  firstMomentError : ℝ
-  Enet : ℝ
-  Eh : ℝ
-  Esize : ℝ
-  Elev : ℝ
-  Ecnt : ℝ
-  lowC : ℝ
-
-  GGlog : ℝ
-  Egg : ℝ
-  ElevTh : ℝ
-  Emax : ℝ
-  Emax_nonneg : 0 ≤ Emax
-
-  bottomSize_nonneg : 0 ≤ P.b1
-  logOm : ℝ
-  logv : ℝ
-
-  fr_low : ∀ j, (∑ i, ω i * (muM i + topS i + lowS i - ix i - lev i - hB i)) - HH ≤ slope j
-  fr_share : ∀ τ ∈ Set.Icc (0 : ℝ) HH,
-    ((univ.filter (fun j => slope j < (∑ i, ω i * (muM i + topS i + lowS i - ix i - lev i - hB i)) - τ - Ll)).card : ℝ)
-      ≤ (2 * eta + 4 * (uF / (uF + τ)) + 4 * Real.sqrt e) * D
-
-  u_ge_min : uMin ≤ uF
-  u_ge_spread : ∀ i, muNmax i - hB i - (∑ i, ω i * (muM i + topS i + lowS i - ix i - lev i - hB i)) ≤ uF
-  u_least : uF = uMin ∨ ∃ i, uF = muNmax i - hB i - (∑ i, ω i * (muM i + topS i + lowS i - ix i - lev i - hB i))
-
-  div : (∑ j, slope j) / D ≤ lowC + Ediv
-  low_match : lowC - Elow ≤ ∑ i, ω i * lowS i
-
-  gains : asked Hs Nd u0 - (Eserv + Ephic + Eram + Egg) - (P.m : ℝ) * (∑ t ∈ Nd.T, Nd.a t) * GGlog
-    ≤ ∑ i, ω i * (topS i - tau i)
-
-  rep_max : ∀ i, muNmax i ≤ muMax i + topS i + lowS i - tau i + Emax
-  rep_ix : ∀ i, ix i ≤ tau i + Ekap
-
-  var_M : ∀ i i', muMax i - muM i' ≤ firstMomentError
-
-  muM_le : ∀ i, muM i ≤ muMax i
-  var_net : ∀ i i', (topS i + lowS i - tau i) - (topS i' + lowS i' - tau i') ≤ Enet
-  var_h : ∀ i i', hB i' - hB i ≤ Eh
-
-  size : ∀ i, hB i ≤ (∑ t ∈ Nd.T, ∑ _j : Fin P.m, (Nd.a t * Real.log (Nd.a t) - Nd.a t - Nd.a t * logOm))
-    - (∑ t ∈ Nd.T, Nd.a t * logT i) + Esize
-  muM_low : ∀ i, -EM ≤ muM i
-  level : ∀ i, lev i ≤ (∑ t ∈ Nd.T, (P.m : ℝ) * (Nd.a t / P.k + P.b1) * logT i) + ElevTh + Elev
-  count_lo : ∀ i, ((∑ j : Fin P.m, (1 / ((PhiSet (H := H)).card : ℝ)) *
-    ∑ ρ ∈ PhiSet (H := H), (Real.log (Nd.w u0 j ρ) + logv - Real.log Real.pi)) + (P.m : ℝ) * GGlog) - Ecnt ≤ logT i
-
-  count_hi : ∀ i, logT i ≤ C * P.m * P.Lrd
-  period : logOm = Real.eulerMascheroniConstant + Real.log Real.pi - logv - (Hs.ell Hs.chC).re
 
 end Formalism.D5

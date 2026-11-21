@@ -40,11 +40,6 @@ lemma vV_unit_alg (u : Vˣ) : vV V (algebraMap V F (u : V)) = 0 := by
   rw [valV_unit_lemma]
   simp
 
-lemma vV_unif_alg {ϖ : V} (hϖ : Irreducible ϖ) : vV V (algebraMap V F ϖ) = 1 := by
-  unfold vV valV
-  rw [valV_unif_lemma_2 hϖ]
-  simp
-
 lemma vV_pow_gen {x : F} (hx : x ≠ 0) (k : ℕ) : vV V (x ^ k) = k * vV V x := by
   unfold vV valV
   rw [map_pow]

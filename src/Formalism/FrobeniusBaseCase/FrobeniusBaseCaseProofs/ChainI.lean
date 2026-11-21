@@ -215,21 +215,10 @@ theorem m_closed (s : ℕ) (hs : s < D.K) :
       simp only [map_mul, map_neg, map_pow]
       ring
 
-theorem chainI_holds : D.ChainI := fun s hs => ⟨D.m_closed s hs, D.wt_m s⟩
-
 theorem m_eq_zero {s : ℕ} (hs : s < D.K) {c : C} (hc : D.lev c ≠ s) : D.m s c = 0 := by
   obtain ⟨P, _, hP2, hP3⟩ := D.m_closed s hs
   rw [hP3 c]
   simp [hP2 c hc]
-
-theorem ord_m {s : ℕ} (hs : s < D.K) (c : C) : OrdGE 1 (D.m s c) := by
-  obtain ⟨P, _, _, hP3⟩ := D.m_closed s hs
-  rw [hP3 c]
-  apply OrdGE.C_mul
-  apply OrdGE.sum
-  intro d _
-  apply OrdGE.C_mul
-  exact OrdGE.mono (Nat.one_le_pow _ _ D.q_pos) (OrdGE.pow (OrdGE.X d) _)
 
 theorem wt_m_pow_sub_frob {s : ℕ} (hs : s < D.K) (c : C) :
     D.Wt (1 + qnum D.l * rho D.l) (D.m s c ^ D.q - frob D.q (D.m s c)) := by

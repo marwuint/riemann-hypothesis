@@ -1,10 +1,22 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PairingMulFirstChern
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.RegularAlteration
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousOnLogNorm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalisationGenericSmoothCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogNormRationalSectionArchIntegrableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogNormRationalSectionArchIntegrable
+import Development.AbelianVarietyTheory.Definitions.Divisors.LineSCShortExact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPartOverProperClosedEqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithVarComplexPointsCompact
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsFlagBundleRankOne
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OfSwap2
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalEqOfNonneg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictChernPart
+import Development.AbelianVarietyTheory.Definitions.Divisors.GenericPointAsIdeal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolyIntEqZeroOfIsHomogeneous
+
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points
@@ -24,7 +36,7 @@ theorem archIntegrable : Published.Principalisation → ∀ (k : Type) [CommRing
   obtain ⟨Y', ρ, _, hcov, hgs⟩ := GlobalTheory.GenSmoothCover.exists_isCov_genSmooth hP k Y q e hY
   have hη : ρ (genericPoint Y') ⤳ genericPoint Y := hcov.2.1 ▸ specializes_rfl
   have hr' := MultPull.isRatSec_pull_map ρ hη hr
-  have hup := GlobalTheory.T.logNorm_rationalSection_archIntegrable hcov.1 hgs (N.restr ρ) (M.restr ρ) hr' σ
+  have hup := _root_.GlobalTheory.LogNormIntGen.archIntegrable hcov.1 hgs (N.restr ρ) (M.restr ρ) hr' σ
   have hsub : ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl) ⊆
       offSupp (ρ ≫ q) σ ((M.restr ρ).div hr') := fun y hy =>
     GlobalTheory.ArchIntAlter.mem_offSupp_pull M ρ hη hr hy
@@ -35,7 +47,7 @@ theorem archIntegrable : Published.Principalisation → ∀ (k : Type) [CommRing
       (fun y => logNorm (M.φ σ) r (PtsOver.map ρ rfl _ y))
       (ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl)) := fun y hy =>
     GlobalTheory.ArchIntAlter.logNorm_pull M ρ hη hr hy
-  exact GlobalTheory.T.chernIntegrableOn_descend_genericallyFinite k Y q e hY Y' ρ hcov.1 hcov.2.1 hcov.2.2 N σ _ _
+  exact _root_.GlobalTheory.ChernDescend.chernIntegrableOn_descend k Y q e hY Y' ρ hcov.1 hcov.2.1 hcov.2.2 N σ _ _
     (GlobalTheory.ArchIntAlter.continuousOn_logNorm (M.φ σ) hr (M.cInf σ))
     ⟨(hup.1.mono_set hsub).congr_fun heq hm, (hup.2.mono_set hsub).congr_fun heq hm⟩
 

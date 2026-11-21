@@ -17,16 +17,4 @@ def HtRowsS {D : D7} (L : SizeData₂ D) (CY : ℝ) : Prop :=
     ∀ t, (L.bT t : ℝ) ≤ 2 * L.sc.b') ∧
   DelNat D ∧ ThickUp L
 
-def hRecS {D : D7} (L : SizeData₂ D) (u : D.what₂.Word) (c : ℝ) : ℝ :=
-  DV.SZbP D L c u + (∑ j ∈ SizeData₂.lifts D, DV.kernelPlaceMeanBound D L c u j) +
-    c * (((D.host.TT.card : ℝ) * L.sc.b' +
-      (D.R.f : ℝ) * (L.Sc + (D.R.m : ℝ) * L.etaSz + (D.R.N D.R.m : ℝ)) +
-      (D.R.f : ℝ) * (D.R.m : ℝ) ^ 3 * (D.R.N D.R.m : ℝ) ^ 2) * Real.log ((D.mem u).A.T : ℝ))
-
-def RecHeightSWith (CY c : ℝ) : Prop :=
-  ∀ (D : D7) (L : SizeData₂ D) (u : D.what₂.Word), OverTC D L.sc.a → HtRowsS L CY → (∀ v, IsUnit ((D.div.Nu u).X v).det) →
-    GlobalTheory.Core.HtLe (D.div.Nu u) (GlobalTheory.Core.Rk.Pt D u) (GlobalTheory.Core.Rk.Psi D u) (hRecS L u c)
-
-def RecHeightS : Prop := ∀ CY : ℝ, ∃ c : ℝ, 0 ≤ c ∧ RecHeightSWith CY c
-
 end GlobalTheory.CoreHt

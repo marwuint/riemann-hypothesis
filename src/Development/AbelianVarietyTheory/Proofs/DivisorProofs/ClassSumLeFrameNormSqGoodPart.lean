@@ -1,10 +1,10 @@
 import Mathlib
 import Formalism.LocalToGlobal.Divisibility.HeckeCSDICommTrRep
 import Development.AbelianVarietyTheory.Definitions.Divisors.FactorBounds
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodPartLevelFormInfinitePlaceEqClassSumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelIdempotentMulLevelProjMulGoodPartEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassSumMetricEqGramAtInfinitePlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassSumPrincipalLevelEqCardMulClassSumStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodPartLevelFormInfinitePlaceEqClassSum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelIdempotentMulLevelProjMulGoodPartEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassSumMetricEqGramAtInfinitePlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassSumPrincipalLevelEqCardMulClassSum
 open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Col Matrix
 open scoped ComplexOrder
 
@@ -31,7 +31,7 @@ theorem GlobalTheory.ClassSumLevel.classSum_le_normAt_sq : ∀ (X : Fields) [IsT
   intro X _ Pr R W Ch sel S hX v0 TU Xg S0 xiVal trIv P Zs t hP hOk F F' hF' hEq v X0 hdet hframe
   set A := colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv with hA
   have hBH : BlockHyp (A.A.fam.R t) (A.A.fam.lvl P.grp P.chr) A.A.fam.v0 1 := ⟨hOk.ok2.conj, hOk.ok2.irr, hOk.ok2.what₂ t⟩
-  have hC := GlobalTheory.T.levelIdempotent_mul_levelProj_mul_goodPart_eq _ _ _ _ hBH
+  have hC := _root_.GlobalTheory.GoodPartLevelForms.lvlE_lvlPr_vE _ _ _ _ hBH
   have hres : (mtildeKGSD W Ch sel t.1).res (mtildeKOk W Ch sel t.1 hX) F' =
       (A.A.fam.R t).S.basis.equivFun.symm ((A.A.fam.R t).vE (A.A.fam.lvl P.grp P.chr) *ᵥ F) := by
     have h1 := eq_of_heq hEq
@@ -43,11 +43,11 @@ theorem GlobalTheory.ClassSumLevel.classSum_le_normAt_sq : ∀ (X : Fields) [IsT
       exact congrArg (· *ᵥ F) hC
     rw [h1]
     exact congrArg _ h2
-  have hD := GlobalTheory.T.classSumMetric_eq_gram_at_infinitePlace (mtildeKGSD W Ch sel t.1) (mtildeKOk W Ch sel t.1 hX)
+  have hD := _root_.GlobalTheory.ClassSumCoord.ipAt_eq_gram (mtildeKGSD W Ch sel t.1) (mtildeKOk W Ch sel t.1 hX)
     (mtildeK_rat W Ch sel t.1 hX) v F'
-  have hE := GlobalTheory.T.classSum_principalLevel_eq_card_mul_classSum W Ch sel t.1 P hX v F' hF'
+  have hE := _root_.GlobalTheory.change_of_level_classSum W Ch sel t.1 P hX v F' hF'
   have hN := GlobalTheory.ClassSumLevel.normAt_sq_of_frame _ X0 v F hframe
-  have hV := GlobalTheory.T.goodPart_levelForm_infinitePlace_eq_classSum _ _ _ _ hBH v
+  have hV := _root_.GlobalTheory.hv_map_embedding _ _ _ _ hBH v
   have hcard : (Nat.card (A.A.fam.lvl P.grp P.chr).P : ℂ) = (Nat.card P.grp : ℂ) := rfl
   have hne : (Nat.card P.grp : ℂ) ≠ 0 := by
     rw [← hcard]

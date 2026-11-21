@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentiableOfIsS
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemNilRad
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommuteGelfandInvariantMatrixUnitsOfGlRel
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracedQminorComatrixTruncatedInverseStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetAddOneSubEqSumQminorStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracedQminorComatrixTruncatedInverse
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetAddOneSubEqSumQminor
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetPolyMapMonicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffMemSubmoduleOfComplexPolyValuesMemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffMemSubmoduleOfComplexPolyValuesMem
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QminorPolyMap
 
 open Matrix Formalism.REAL GlobalTheory.TorFin
@@ -70,12 +70,12 @@ private theorem etr_mem_adjoin_range_qdet (A : Type) [Ring A] [Algebra ℂ A] (m
         qminor E j.succAbove i.succAbove u * epow E (N + 1) j i
       - qdet E u * (algebraMap ℂ A ((-1) ^ N) * etr E N) ∈ S := by
     intro u
-    have key := GlobalTheory.T.traced_qminor_comatrix_truncated_inverse A m E hE u N
+    have key := _root_.GlobalTheory.TracedComatrix.traced_comatrix A m E hE u N
     rw [Finset.sum_range_succ, Nat.sub_self, pow_zero, mul_one, mul_add] at key
     rw [eq_sub_of_add_eq' key, sub_right_comm, add_sub_cancel_right]
     refine S.sub_mem (S.mul_mem (hq u) (S.sum_mem fun k hk => S.mul_mem (S.algebraMap_mem _)
       (ih k (Finset.mem_range.mp hk)))) (S.mul_mem (S.algebraMap_mem _) ?_)
-    rw [← GlobalTheory.T.qdet_add_one_sub_eq_sum_qminor' A m E u]
+    rw [← _root_.GlobalTheory.qdet_add_one_sub_eq_sum_qminor A m E u]
     exact S.sub_mem (hq _) (hq _)
   have h1 : ∀ i j : Fin (m + 1), ∃ v : ℕ → A, v (m + 1) = 0 ∧ ∀ u : ℂ,
       (((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ)) : ℤ) : A) * qminor E j.succAbove i.succAbove u * epow E (N + 1) j i
@@ -96,7 +96,7 @@ private theorem etr_mem_adjoin_range_qdet (A : Type) [Ring A] [Algebra ℂ A] (m
       rw [smul_sub, smul_mul_assoc]
     rw [e]
     exact hgS u
-  have hm := GlobalTheory.T.coeff_mem_submodule_of_complex_poly_values_mem A (Subalgebra.toSubmodule S) (m + 1 + 1) _ hall (m + 1) (by omega)
+  have hm := _root_.GlobalTheory.coeff_mem_of_poly_values_mem A (Subalgebra.toSubmodule S) (m + 1 + 1) _ hall (m + 1) (by omega)
   simp only [hv0, hc1, zero_sub, one_mul] at hm
   have hm' : algebraMap ℂ A ((-1) ^ N) * etr E N ∈ S := by
     have h := (Subalgebra.toSubmodule S).neg_mem hm

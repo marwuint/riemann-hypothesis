@@ -1,11 +1,12 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LongWConjApply
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsGenericIffIsGenericFor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParIndJacPlacing
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCompactSubgroup
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyDeepSubset
 
 noncomputable section
 
-open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.WhitHered Matrix GlobalTheory.InertSupp
+open GlobalTheory.PRep GlobalTheory.SmGL Matrix GlobalTheory.InertSupp
 
 namespace GlobalTheory.UnipCptSub
 

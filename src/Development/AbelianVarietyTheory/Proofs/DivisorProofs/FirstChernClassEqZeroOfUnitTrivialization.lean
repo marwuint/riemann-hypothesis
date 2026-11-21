@@ -135,13 +135,6 @@ theorem firstChernClass_eq_zero_of_unit_trivialization (q : ℕ) [NeZero q] {E :
       exact Z2 U x
     · exact ChernSpec.sec_neg _ t (by omega) _ _
 
-def vtx {N : ℕ} {U : Scheme.{0}} (x : Sx (ofCat (tuCat (N + 1) (lastU N) (lastU_map N))) 0 U) :
-    TU (N + 1) (lastU N) Γ(U, ⊤) :=
-  (show ComposableArrows (TU (N + 1) (lastU N) Γ(U, ⊤)) 0 from x).obj 0
-
-def lastUnit {N : ℕ} {U : Scheme.{0}} (x : Sx (ofCat (tuCat (N + 1) (lastU N) (lastU_map N))) 0 U) : (Γ(U, ⊤))ˣ :=
-  (vtx x).2.unit
-
 end GlobalTheory.EtC.ChartChern
 
 end

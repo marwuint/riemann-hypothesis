@@ -1,4 +1,4 @@
-import Development.EtaleCohomology.WeilConjectures.PurityCut
+import Development.EtaleCohomology.WeilConjectures.GysinSeqCut
 
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainComplex.HomComplex

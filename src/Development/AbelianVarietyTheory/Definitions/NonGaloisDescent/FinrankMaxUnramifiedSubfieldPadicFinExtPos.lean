@@ -20,11 +20,6 @@ section Local
 
 open Formalism.BasicNotions.Loc Polynomial
 
-theorem dickson_hom {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (x : A) (N : ℕ) :
-    (dickson 1 (1 : B) N).eval (f x) = f ((dickson 1 (1 : A) N).eval x) := by
-  have h : dickson 1 (1 : B) N = (dickson 1 (1 : A) N).map f := by rw [map_dickson, map_one]
-  rw [h, eval_map, eval₂_hom]
-
 variable {l : ℕ} [Fact l.Prime] {R : Ranks} (H : Host R) (J : H.E →+* Om l)
 
 def thL (p : ℕ) : H.E := H.toHostRaw.thM (ordCompl[p] H.condN)
@@ -349,17 +344,6 @@ theorem finrank_sup_adjoin (F : IntermediateField ℚ_[l] (Om l)) (y : Om l) :
   have hint : IsIntegral F y := (Algebra.IsIntegral.isIntegral (R := ℚ_[l]) y).tower_top
   rw [← IntermediateField.restrictScalars_adjoin_eq_sup, ← IntermediateField.adjoin.finrank hint]
   exact (Module.finrank_mul_finrank ℚ_[l] ↥F ↥(IntermediateField.adjoin F {y})).symm
-
-theorem Ks_eq (K : FinExt l) (s : ℕ) {z : Om l} (hz : IsPrimitiveRoot z (l ^ s)) :
-    Ks K s = K0 K ⊔ IntermediateField.adjoin ℚ_[l] {z} := by
-  have : NeZero (l ^ s) := ⟨(pow_pos (Fact.out : l.Prime).pos _).ne'⟩
-  unfold Ks
-  congr 1
-  apply le_antisymm
-  · refine IntermediateField.adjoin_le_iff.2 fun x hx => ?_
-    obtain ⟨i, -, rfl⟩ := hz.eq_pow_of_pow_eq_one (show x ^ (l ^ s) = 1 from hx)
-    exact pow_mem (IntermediateField.mem_adjoin_simple_self _ _) _
-  · exact IntermediateField.adjoin.mono _ _ _ (by rintro x rfl; exact hz.pow_eq_one)
 
 theorem finrank_maxUnramifiedSubfield_padicFinExt_pos (K : FinExt l) : 0 < finrank ℚ_[l] ↥(K0 K) := by
   have := K.2

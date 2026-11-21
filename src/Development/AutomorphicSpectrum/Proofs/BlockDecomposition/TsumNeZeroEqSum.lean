@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncSum
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsIntegralMultipleBoundedPlacesStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsIntegralMultipleBoundedPlaces
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalTheory.CompanionTheory.Mass.MeanV PositivityTheory.Rg.Mass NumberField IsDedekindDomain MeasureTheory Topology Filter
 open scoped ENNReal NNReal Classical
 noncomputable section
@@ -13,7 +13,7 @@ theorem support_finite (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF :
     (δ : ℝ) (hδ : 0 < δ) :
     {x : F | x ≠ 0 ∧ x ∈ IntOut T ∧ θ δ * algebraMap F (Ainf F) x ∈ K ∧
       ∀ v ∈ T, algebraMap F (Fv F v) x ∈ Kv v}.Finite := by
-  obtain ⟨N, hN, hNx⟩ := GlobalTheory.T.exists_integral_multiple_bounded_places F T Kv hKv
+  obtain ⟨N, hN, hNx⟩ := _root_.GlobalTheory.CompanionTheory.Mass.MeanV.exists_common_denominator F T Kv hKv
   obtain ⟨C0, h⟩ := hC F hF θ hθ K hK N hN
   refine ((h δ hδ ⊤ top_ne_bot).1).subset ?_
   rintro x ⟨h0, h1, h2, h3⟩

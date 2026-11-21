@@ -249,14 +249,4 @@ theorem exists_gen_of_fibre {R k : Type} [CommRing R] [IsDedekindDomain R] [Fiel
     exact (congrArg IsUnit (gs_eq (𝟙 X) x (N.U i) hx _)).mp (IsUnit.of_mul_eq_one w h1.symm)
   exact ⟨⟨fun i => (hu i).unit⟩, fun i i' => Units.ext (s.compat i i')⟩
 
-theorem exists_gen_of_generic_fibre : Out.Laws → ∀ (R : Type) [CommRing R] [IsDedekindDomain R] (A : Over (Sp R)) [GrpObj A] (N : LB A.left) (k : Type) [Field k] (j : R →+* k), IsAbelianScheme A → N.IsLB → Function.Injective j → (∃ t : (N.pull (eSec A)).Gen, t.IsGen) → (∃ t : (N.pull (pullback.fst A.hom (spMap j))).Gen, t.IsGen) → ∃ t : N.Gen, t.IsGen := by
-  intro hL R _ _ A _ N k _ j hA hN hj ⟨ρ, hρ⟩ ⟨t, ht⟩
-  have := hA.smooth
-  have := hA.proper
-  have := forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ A.hom hA.smooth hA.geomConnected
-  have : CompactSpace A.left := QuasiCompact.compactSpace_of_compactSpace A.hom
-  have : QuasiSeparatedSpace A.left := quasiSeparatedSpace_of_quasiSeparated A.hom
-  exact exists_gen_of_fibre j hj A.hom (eSec A) (Over.w η[A]) _ _ (IsPullback.of_hasPullback A.hom (spMap j))
-    (Out.TLinPf.const_pullback hL.globalFns (spMap j) A hA) hN ρ hρ t ht
-
 end GlobalTheory.GenericTriv

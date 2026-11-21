@@ -1,4 +1,14 @@
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalGaloisRepInducedMatches
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FiniteDimensionalWdSpace
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalFilDR
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfWdMkPhiDPow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinrankLetterHomComp
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CommuteIsNilpotentOfUnipotent
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KummerNotFrac
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsPotentiallySemistableCoefficientFieldEnlarge
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CharpolyWeilDelignePotSemistableEnlargeCoefficieStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FinrankDpstUnramifiedLeDimRepresentation
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DpstRankLeDimension
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamRepresentationTensorComparison
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PadicHodgePropertiesConjInvariant
@@ -115,8 +125,8 @@ theorem isPst_exact {AI : LocAinf l P} (T : LocTied l P AI) (h1 : Function.Injec
   haveI : FiniteDimensional ℚ_[l] V₀ := Module.Finite.trans ↥LL.1 V₀
   haveI : FiniteDimensional ℚ_[l] V₁ := Module.Finite.trans ↥LL.1 V₁
   haveI : FiniteDimensional ℚ_[l] V₂ := Module.Finite.trans ↥LL.1 V₂
-  have b₀ := GlobalTheory.T.finrank_dpst_unramified_le_dim_representation P hdom hfrac ρ₀
-  have b₂ := GlobalTheory.T.finrank_dpst_unramified_le_dim_representation P hdom hfrac ρ₂
+  have b₀ := _root_.GlobalTheory.PstRank.rank_DpstUr_le P hdom hfrac ρ₀
+  have b₂ := _root_.GlobalTheory.PstRank.rank_DpstUr_le P hdom hfrac ρ₂
   haveI f₀ : FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ₀) :=
     Module.rank_lt_aleph0_iff.mp (b₀.trans_lt (Cardinal.natCast_lt_aleph0))
   haveI f₂ : FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ₂) :=
@@ -297,8 +307,8 @@ theorem charPol_model {n : ℕ} {r : ↥(Dec (F := E) A) →* GL (Fin n) (Om l)}
   have h₁ : L₁.1 ≤ (supExt L₁ LL).1 := le_sup_left
   have h₂ : LL.1 ≤ (supExt L₁ LL).1 := le_sup_right
   have e := IsModel.unique Bw r (hm₁.enlarge h₁) (hm₂.enlarge h₂)
-  rw [e₁, ← GlobalTheory.T.charpoly_weilDeligne_potSemistable_enlarge_coefficients P ι Bw h hj h₁ r₁ hV₁ (GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge P Bw h₁ r₁ hV₁),
-    ← GlobalTheory.T.charpoly_weilDeligne_potSemistable_enlarge_coefficients P ι Bw h hj h₂ r₂ hV₂ (GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge P Bw h₂ r₂ hV₂), e]
+  rw [e₁, ← GlobalTheory.T.charpoly_weilDeligne_potSemistable_enlarge_coefficients P ι Bw h hj h₁ r₁ hV₁ (_root_.GlobalTheory.PstExt.isPst_enlarge P Bw h₁ r₁ hV₁),
+    ← GlobalTheory.T.charpoly_weilDeligne_potSemistable_enlarge_coefficients P ι Bw h hj h₂ r₂ hV₂ (_root_.GlobalTheory.PstExt.isPst_enlarge P Bw h₂ r₂ hV₂), e]
 
 theorem exists_diag {n : ℕ} {r : ↥(Dec (F := E) A) →* GL (Fin n) (Om l)}
     {c : Fin n → ↥(Dec (F := E) A) →* GL (Fin 1) (Om l)} (hc : ∀ g i, (r g).val i i = (c i g).val 0 0)
@@ -348,7 +358,7 @@ theorem flag {n : ℕ} (r : ↥(Dec (F := E) A) →* GL (Fin n) (Om l))
     exact_mod_cast this
   · obtain ⟨L, hL, r₂, hm, e, he⟩ := GlobalTheory.ConjLocal.exists_conj_model M hr' hm₁
     obtain ⟨c₂, hm', hc₂⟩ := exists_diag Bw (r := r') hc hm
-    have q₁ := GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge P Bw hL r₁ hV₁
+    have q₁ := _root_.GlobalTheory.PstExt.isPst_enlarge P Bw hL r₁ hV₁
     obtain ⟨q₂, H⟩ := charPol_equiv T ι Bw h hj e he q₁
     obtain ⟨q₃, H'⟩ := (tri T ι Bw h hj n r₂ c₂ (htri hm) hc₂).2 q₂
     refine ⟨fun i => ⟨L, c₂ i, hm' i, q₃ i⟩, fun σ => ?_⟩

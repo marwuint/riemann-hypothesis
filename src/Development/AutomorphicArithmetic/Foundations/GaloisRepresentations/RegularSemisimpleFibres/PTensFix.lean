@@ -1,7 +1,7 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.ResEmbCompat
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Stabilizer
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SmoothOf
+import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SmoothTensorFactor
+
 open NumberField IsDedekindDomain ValuativeRel Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.L2.Host
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.Shin
 open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published UpperTheory.CBC UpperTheory.Gal.InertialTypesAlt
@@ -15,9 +15,6 @@ namespace UpperTheory.Gal.InertialTypesAlt.TensorFixedVectors
 section Rep
 
 variable {Γ X : Type} [Group Γ] [AddCommGroup X] [Module ℂ X]
-
-private noncomputable def stab (π : Representation ℂ Γ X) (x : X) : Subgroup Γ :=
-  _root_.UpperTheory.Reformulated.B.RepresentationVectorStabilizer.stab π x
 
 private theorem idem_comm [TopologicalSpace Γ] [IsTopologicalGroup Γ] {π : Representation ℂ Γ X}
     (hπ : GlobalTheory.PRep.IsSmooth π) {H : Subgroup Γ} (hH : IsCompact (H : Set Γ)) {g : Γ}

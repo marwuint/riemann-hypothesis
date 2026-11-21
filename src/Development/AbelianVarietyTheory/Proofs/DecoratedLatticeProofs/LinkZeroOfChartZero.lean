@@ -18,20 +18,4 @@ theorem besLev_per_congr {D : D7} {ρ : ℕ} {B B' : BesLev D ρ} (h : B = B') (
   subst h
   rw [eq_of_heq h1, eq_of_heq h2]
 
-theorem linkZero_of_chartZero : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), ∀ u (f : FamCh W u) (d : BotDat W u), ChartZero f → (∀ h₀ : 0 + 2 * D.R.rS + 2 = D.R.m, d.B.lev = f.c.B 0 D.R.rS h₀) → d.b = (show GA D (D.sp.Y 0) from f.g.b 0) → LinkZero f d := by
-  intro D L hT Gi Gl Kc Yd cX ex W u f d hc hl hb n h₀ t φ
-  obtain ⟨α₀, h1, h2, h3, -⟩ := hc t
-  refine ⟨(h3 φ).1, fun G y v => ?_⟩
-  obtain rfl : n = D.R.rS := by
-    have : D.R.rS = D.R.m / 2 - 1 := rfl
-    omega
-  have e : ∀ g : GA D (Yc D 0) → ℂ, trc (Finsupp.single (f.g.b 0) 1) g = rTrans (f.g.b 0) g := fun g => by
-    unfold trc
-    rw [Finsupp.support_single _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]
-  unfold BotDat.per Tup.per Tup.perF
-  rw [Finset.sum_eq_single α₀ (fun b _ hb => absurd (h1 b) hb) (by simp)]
-  beta_reduce
-  rw [h2, (h3 φ).2 y, hb]
-  exact besLev_per_congr (hl h₀).symm _ HEq.rfl (heq_of_eq (e _))
-
 end GlobalTheory.MiTop

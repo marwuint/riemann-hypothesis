@@ -14,12 +14,6 @@ open scoped ContDiff
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
-section Pt
-
-variable {K : Type} [Field K] {ι : Type} {m : ℕ}
-
-end Pt
-
 section PullSec
 
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left) (a : ℤ) {T T' : Over S} (h : T' ⊗ A ⟶ T ⊗ A)
@@ -47,33 +41,5 @@ def pullSecLP (s : LB.Sec (LPow A L a T)) : LB.Sec (LPow A L a T') where
 theorem isPullSec_pullSecLP (s : LB.Sec (LPow A L a T)) : IsPullSec A L a h hh s (pullSecLP A L a h hh s) := fun _ => rfl
 
 end PullSec
-
-section Fam
-
-variable {X : Scheme.{0}} {G : Over X} [GrpObj G] (L : LB G.left) {x0 : Sp ℂ ⟶ X} {g : ℕ}
-variable (e : (Fin g → ℂ) → (Sp ℂ ⟶ G.left)) (hol : IsHolFam e) (he : ∀ z, e z ≫ G.hom = x0)
-
-def jB (m : ℕ) : overAt x0 (Jet ℂ (Fin 1 × Fin g) m) ⟶ Over.mk x0 :=
-  Over.homMk (spMap (algebraMap ℂ (Jet ℂ (Fin 1 × Fin g) m))) rfl
-
-def xJ (m : ℕ) : overAt x0 (Jet ℂ (Fin 1 × Fin g) m) ⟶ G :=
-  Over.homMk (jetPt e hol m) (jetPt_over e hol G.hom x0 he m)
-
-def ePt (z : Fin g → ℂ) : Over.mk x0 ⟶ G := Over.homMk (e z) (he z)
-
-def lftJ (z : Fin g → ℂ) : Sp ℂ ⟶ (Over.mk x0 ⊗ G).left := (ptSecT G (ePt e he z)).left
-
-open Classical in
-
-def frU (fr : L.ι → (Fin g → ℂ) → ℂ) (m k : ℕ) (j : L.ι) : (Jet ℂ (Fin 1 × Fin g) m)ˣ :=
-  if hu : IsUnit (jetOf m (fun z => fr j z ^ k)) then hu.unit else 1
-
-def frGen (fr : L.ι → (Fin g → ℂ) → ℂ) (m k : ℕ) :
-    LB.Gen (LB.LinComb L (Y := (overAt x0 (Jet ℂ (Fin 1 × Fin g) m)).left) (K := Fin 1)
-      (fun _ => (xJ e hol he m).left) (fun _ => (k : ℤ))) where
-  s j := Units.map (((overAt x0 (Jet ℂ (Fin 1 × Fin g) m)).left.presheaf.map (homOfLE le_top).op).hom.comp
-        (toΓ (Jet ℂ (Fin 1 × Fin g) m))).toMonoidHom (frU L fr m k (j 0))
-
-end Fam
 
 end ReciprocityTheory.ChartRestriction.G.PullbackSections

@@ -187,22 +187,6 @@ theorem toCForm_span_of_span (hX : X.Ok) {J : Type*} {φ : J → (formGSD (squar
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul a x _ hx => rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ hx
 
-def basisCForm (hX : X.Ok) {J : Type*} (b : Module.Basis J X.K (formGSD (squarePk X lam L) Λ).EqFun) :
-    Module.Basis J ℂ (cForms ST σ lam Λ) :=
-  Module.Basis.mk (toCForm_linearIndependent σ lam L Λ b.linearIndependent) (toCForm_span_of_span σ lam L Λ hX b.span_eq).ge
-
-theorem basisCForm_apply (hX : X.Ok) {J : Type*} (b : Module.Basis J X.K (formGSD (squarePk X lam L) Λ).EqFun) (j : J) :
-    basisCForm σ lam L Λ hX b j = toCForm σ lam L Λ (b j) := Module.Basis.mk_apply _ _ _
-
-theorem rank_cForms (hX : X.Ok) :
-    Module.rank ℂ (cForms ST σ lam Λ) = Module.rank X.K (formGSD (squarePk X lam L) Λ).EqFun := by
-  let b := Module.Basis.ofVectorSpace X.K (formGSD (squarePk X lam L) Λ).EqFun
-  rw [← b.mk_eq_rank'', ← (basisCForm σ lam L Λ hX b).mk_eq_rank'']
-
-theorem finrank_cForms (hX : X.Ok) :
-    Module.finrank ℂ (cForms ST σ lam Λ) = Module.finrank X.K (formGSD (squarePk X lam L) Λ).EqFun :=
-  congrArg Cardinal.toNat (rank_cForms σ lam L Λ hX)
-
 end CForms
 
 section Rows
@@ -215,9 +199,6 @@ theorem toMtilde_linearIndependent {J : Type*} {φ : J → MtildeV W Ch sel mu P
     LinearIndependent ℂ fun j => toMtP W Ch sel mu P σ (φ j) := toCForm_linearIndependent σ W.sgTrue _ _ h
 
 theorem toMtilde_span (hX : X.Ok) : Submodule.span ℂ (Set.range (toMtP W Ch sel mu P σ)) = ⊤ := toCForm_span σ W.sgTrue _ _ hX
-
-theorem finrank_MtP (hX : X.Ok) : Module.finrank ℂ (MtP W Ch sel mu P σ) = Module.finrank X.K (MtildeV W Ch sel mu P) :=
-  finrank_cForms σ W.sgTrue _ _ hX
 
 end Rows
 

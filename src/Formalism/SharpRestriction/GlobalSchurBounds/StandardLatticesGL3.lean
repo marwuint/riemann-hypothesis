@@ -100,12 +100,6 @@ def gal1 (D : D7) : Prop :=
         ∀ n, cj M ρ (coef1 (U1 (lamOf D cc δ) x (sgStar (lamOf D cc δ))) n) =
           coef1 (U1 (lamConj M ρ (lamOf D cc δ)) x' (sgStar (lamConj M ρ (lamOf D cc δ)))) n
 
-def transInv (D : D7) : Prop :=
-  ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ →
-    ∀ (x ω : ℂ) (m : ℕ), 0 < m → (m : ℂ) * (x / 2) ∈ lamOf D cc δ → ω ∈ lamOf D cc δ →
-      U1 (lamOf D cc δ) (x + 2 * (m : ℂ) * ω) (sgStar (lamOf D cc δ)) =
-        U1 (lamOf D cc δ) x (sgStar (lamOf D cc δ))
-
 def WeilPairingGaloisAlt (D : D7) : Prop :=
   ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ →
     ∀ (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ), FixK D M ρ →
@@ -292,45 +286,6 @@ def useNorm (D : D7) : Prop :=
             (fnConj D M ρ (U D (tor0 D cc δ) x G)) =
           nrm1Sq (lamConj M ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj M ρ (lamOf D cc δ)) t0') ^ (fF D * N * N')
 
-def phiNormSq {p r : ℕ} [Fact p.Prime] (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (n : ℕ)
-    (Φ : LocallyConstant (Fin r → ℤ_[p]) ℂ) : ℝ :=
-  ((p : ℝ) ^ (n * r))⁻¹ * ∑ a : Fin r → Fin (p ^ n), ‖cj M ρ (Φ (fun i => (((a i : ℕ) : ℤ_[p]))))‖ ^ 2
-
-def useXi (D : D7) : Prop :=
-  ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ t0, GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 →
-    ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
-      (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), SD D L → SD D L' → Even (N * N') →
-    ∀ G, ThetaVectorUpToUnits D (tor0 D cc δ) t0 L L' G →
-    ∀ (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), (p = 2 ∨ jacobiSym (-(D.host.d : ℤ)) p = 1) →
-      Nat.Coprime (Ideal.absNorm cc) p →
-    ∀ (r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (n : ℕ) (ε : 𝓞 D.host.K)
-      (Φ : LocallyConstant (Fin r → ℤ_[p]) ℂ), NNBasis D (tor0 D cc δ) δ p L L' b →
-      IsIdem D lam (2 * n + 2) ε → FactorsMod n Φ →
-    ∀ (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ), DataIn D (tor0 D cc δ) M → CoefIn D G M →
-      (∀ a, Φ a ∈ M) → CoefIn D (XiF D (tor0 D cc δ) δ p n ε b Φ G) M →
-      normSq D (torConj D (tor0 D cc δ) M ρ) (subLa (p ^ n) (La D (torConj D (tor0 D cc δ) M ρ) L L'))
-          (fnConj D M ρ (XiF D (tor0 D cc δ) δ p n ε b Φ G)) =
-        phiNormSq M ρ n Φ *
-          normSq D (torConj D (tor0 D cc δ) M ρ) (La D (torConj D (tor0 D cc δ) M ρ) L L') (fnConj D M ρ G) ∧
-      ((∀ a, Φ a = 0 ∨ ∃ (ζ s : ℂ) (m : ℕ) (k : ℤ), 0 < m ∧ ζ ^ m = 1 ∧ s ^ 2 = (p : ℂ) ∧ Φ a = ζ * s ^ k) →
-        phiNormSq M ρ n Φ =
-          ((p : ℝ) ^ (n * r))⁻¹ * ∑ a : Fin r → Fin (p ^ n), ‖Φ (fun i => (((a i : ℕ) : ℤ_[p])))‖ ^ 2)
-
-def usePsi : Prop :=
-  ∀ (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (m : ℕ), 0 < m → (∀ ζ : ℂ, ζ ^ m = 1 → ζ ∈ M) →
-    ∃ c : ℕ, Nat.Coprime c m ∧ ∀ ψ : AddChar (ZMod m) ℂ, ∀ a, cj M ρ (ψ a) = ψ a ^ c
-
-def useLine (D : D7) : Prop :=
-  ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ →
-    ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
-      (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), SD D L → SD D L' →
-    ∃ G ∈ Th D (tor0 D cc δ) L L', G ≠ 0 ∧ CoefIn D G Qbar ∧
-      ∀ (ρ : Qbar →ₐ[ℚ] ℂ) t0', GL3Theta.IsTwoTorsionPointUnkilled D (lamConj Qbar ρ (lamOf D cc δ)) t0' →
-        fnConj D Qbar ρ G ∈ Th D (torConj D (tor0 D cc δ) Qbar ρ) L L' ∧
-        normSq D (torConj D (tor0 D cc δ) Qbar ρ) (La D (torConj D (tor0 D cc δ) Qbar ρ) L L')
-            (fnConj D Qbar ρ G) =
-          nrm1Sq (lamConj Qbar ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj Qbar ρ (lamOf D cc δ)) t0') ^ (fF D * N * N')
-
 def torBar (D : D7) (T : Tor D) : Tor D :=
   ⟨fun τ x => (starRingEnd ℂ) (T.emb τ x), T.abelian₂.map (starRingEnd ℂ).toAddMonoidHom⟩
 
@@ -469,14 +424,6 @@ structure WeilO (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (N N' : ℕ) (e
     Om g g' e0 = fun z => ((chV.f x' ^ ep * chV'.f x ^ ep' : ℂˣ) : ℂ) *
       Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') (La D (tor0 D cc δ) L₁ L₁') e0 z
 
-def DatS (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (e0 : VC D N N' → ℂ) (S : Finset ℕ) {p : ℕ}
-    [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (F : VC D N N' → ℂ) : Prop :=
-  ∃ (k : ℕ) (r : Fin k → ℂ) (z : Fin k → Matrix (Fin N') (Fin N) D.host.E),
-    (∀ i, r i ∈ Qbar ∧ ‖lamC lam (r i)‖ ≤ 1) ∧
-    (∀ i, ∃ m : ℕ, 0 < m ∧ (∀ q : ℕ, q.Prime → q ∣ m → q ∈ S) ∧
-      m • pt D (tor0 D cc δ) δ (z i) ∈ La0 D (tor0 D cc δ) N N') ∧
-    F = fun y => ∑ i, r i * Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ (z i)) e0 y
-
 def lenQ (D : D7) {N : ℕ} (L₀ L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) : ℕ :=
   (Module.length (𝓞 D.host.E) (L₀ ⧸ Submodule.comap L₀.subtype L₁)).toNat
 
@@ -498,19 +445,6 @@ def oddE0 (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) (N N' : ℕ) (e0 :
   normSq D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') e0 =
     nrm1Sq (lamOf D cc δ) (GL3Theta.th0 (lamOf D cc δ) t0) ^ (fF D * N * N') ∧
   ThetaVectorUpToUnits D (tor0 D cc δ) t0 (stdL D N) (stdL D N') e0 ∧ LocForm D cc δ t0 N N' e0
-
-def oddKer (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) (N N' : ℕ) (e0 : VC D N N' → ℂ) : Prop :=
-  ∀ (W : WeilO D cc δ N N' e0) (S : Finset ℕ), (∀ q ∈ S, q.Prime ∧ AllSplit D q) →
-    ∀ (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), p ∉ S → Nat.Coprime (Ideal.absNorm cc) p →
-    ∀ F, DatS D cc δ e0 S lam F → ∀ (g : GA D N) (g' : GA D N'),
-      TrivAt D p (g : GL (Fin N) (AE D)) → TrivAt D p (g' : GL (Fin N') (AE D)) →
-      ∃ (u : ℂ) (b : Fin (fF D * N * N') → Matrix (Fin N') (Fin N) D.host.E) (k : ℕ) (r : Fin k → ℂ)
-        (s : Fin k → VC D N N'),
-        u ∈ Qbar ∧ ‖lamC lam u‖ = 1 ∧ OnB D b ∧ LocBasis D p (YYl D (stdL D N) (stdL D N')) b ∧
-        (∀ i, r i ∈ Qbar ∧ ‖lamC lam (r i)‖ ≤ 1) ∧
-        (∀ i, TorsPrime D p (La0 D (tor0 D cc δ) N N') (s i)) ∧
-        W.Om g g' F = fun z => u * ∑ i, r i *
-          U D (tor0 D cc δ) (s i) (pullB D (tor0 D cc δ) b (GL3Theta.th0 (lamOf D cc δ) t0)) z
 
 def odd3 (D : D7) : Prop :=
   ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ N N' : ℕ, Even (N * N') →
@@ -567,43 +501,6 @@ def IntAt (D : D7) (T : Tor D) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p
           ∃ F₀, F = expMv (-(algebraMap ℂ_[p] _ S) * QdB D lam u P P') * F₀ ∧
             JetsInt D lam (YYl D L L') F₀)
 
-def IsCombO (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} {e0 : VC D N N' → ℂ}
-    (W : WeilO D cc δ N N' e0) (S : Finset ℕ) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
-    (F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) : Prop :=
-  ∃ (m : ℕ) (r : Fin m → ℂ_[p]) (t : Fin m → VC D N N') (g : Fin m → GA D N) (g' : Fin m → GA D N')
-    (Φ : Fin m → VC D N N' → ℂ),
-    (∀ k, IsIntP (r k)) ∧ (∀ k, TorsPrime D p (La0 D (tor0 D cc δ) N N') (t k)) ∧
-    (∀ k, TrivAt D p (g k : GL (Fin N) (AE D)) ∧ TrivAt D p (g' k : GL (Fin N') (AE D))) ∧
-    (∀ k, DatS D cc δ e0 S lam (Φ k)) ∧
-    F = ∑ k, algebraMap ℂ_[p] (MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) (r k) *
-      pSer D lam (U D (tor0 D cc δ) (t k) (W.Om (g k) (g' k) (Φ k)))
-
-def oddInt (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (N N' : ℕ) (e0 : VC D N N' → ℂ) : Prop :=
-  ∀ (W : WeilO D cc δ N N' e0) (S : Finset ℕ), (∀ q ∈ S, q.Prime ∧ AllSplit D q) →
-    ∀ (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), p ∉ S → Nat.Coprime (Ideal.absNorm cc) p →
-      IntAt D (tor0 D cc δ) lam (stdL D N) (stdL D N') (IsCombO D cc δ W S lam)
-
-def MomAt (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Ω : ℂ_[p])
-    {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (G : VC D N N' → ℂ) : Prop :=
-  ∃ μ : C(Fin r → ℤ_[p], ℂ_[p]) →L[ℂ_[p]] ℂ_[p], ‖μ‖ ≤ 1 ∧
-    (∀ (m : ℕ) (y : Fin m → Matrix (Fin N') (Fin N) D.host.E) (g : C(Fin r → ℤ_[p], ℂ_[p])),
-      (∀ a, g a = ∏ j, pairN D lam Ω b (y j) a) →
-      jet D lam y (pSer D lam G) = μ g) ∧
-    ∀ (n : ℕ) (ε : 𝓞 D.host.K) (Φ : LocallyConstant (Fin r → ℤ_[p]) ℂ),
-      IsIdem D lam (2 * n + 2) ε → (∀ a, Φ a ∈ Qbar) → FactorsMod n Φ →
-      ∀ (m : ℕ) (y : Fin m → Matrix (Fin N') (Fin N) D.host.E) (g : C(Fin r → ℤ_[p], ℂ_[p])),
-        (∀ a, g a = lamC lam (Φ a) * ∏ j, pairN D lam Ω b (y j) a) →
-        jet D lam y (pSer D lam (XiF D (tor0 D cc δ) δ p n ε b Φ G)) = μ g
-
-def oddMom (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (N N' : ℕ) (e0 : VC D N N' → ℂ) : Prop :=
-  ∀ (W : WeilO D cc δ N N' e0) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]),
-    (p = 2 ∨ jacobiSym (-(D.host.d : ℤ)) p = 1) → Nat.Coprime (Ideal.absNorm cc) p →
-    ∃ Ω : ℂ_[p], IsOmP lam (tor0 D cc δ).abelian₂ Ω ∧
-      ∀ (g : GA D N) (g' : GA D N') L₁ L₁' (r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E),
-        TrivAt D p (g : GL (Fin N) (AE D)) → TrivAt D p (g' : GL (Fin N') (AE D)) →
-        Moves D (g : GL (Fin N) (AE D)) L₁ → Moves D (g' : GL (Fin N') (AE D)) L₁' →
-        NNBasis D (tor0 D cc δ) δ p L₁ L₁' b → MomAt D cc δ lam Ω b (W.Om g g' e0)
-
 def oddRep (D : D7) : Prop :=
   ∀ (N p : ℕ), p.Prime → ∀ g : GA D N, ∃ (γA k : GA D N) (γ : Matrix (Fin N) (Fin N) D.host.E),
     IsRat D (γA : GL (Fin N) (AE D)) γ ∧ IntG D (k : GL (Fin N) (AE D)) ∧
@@ -617,12 +514,6 @@ def oddEq (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (N N' : ℕ) (e0 : VC
     ∀ F ∈ TT D (tor0 D cc δ) N N',
       W.Om γA γA' F = fun z => (∏ τ, embT D τ γ.det ^ (-(a τ)) * embT D τ γ'.det ^ (-(a' τ))) *
         pull D (tor0 D cc δ) γ γ' F z
-
-def odd (D : D7) : Prop :=
-  ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ t0, GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 →
-    ∀ N N' : ℕ, Even (N * N') → ∃ e0 : VC D N N' → ℂ,
-      oddE0 D cc δ t0 N N' e0 ∧ oddKer D cc δ t0 N N' e0 ∧ oddInt D cc δ N N' e0 ∧ oddMom D cc δ N N' e0 ∧
-        oddEq D cc δ N N' e0
 
 def KLat (D : D7) (T : Tor D) {N N' : ℕ} (A : AddSubgroup (VC D N N')) : Prop :=
   (∃ (r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E), OnB D b ∧ A = LaB D T b) ∨
@@ -657,84 +548,9 @@ def TraceMapNormalisation (D : D7) : Prop :=
 
 def admG1 (D : D7) : Prop := GL3Theta.InducedCMType D ∧ TraceMapNormalisation D
 
-def admissible_poisson (D : D7) : Prop :=
-  ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ N N' : ℕ, Even (N * N') →
-    ∀ e0 ∈ Th D (tor0 D cc δ) (stdL D N) (stdL D N'), ∀ W : WeilO D cc δ N N' e0,
-    ∃ a a' : D.what₂.Tau → ℤ, ∀ (γA : GA D N) (γA' : GA D N') (γ : Matrix (Fin N) (Fin N) D.host.E)
-      (γ' : Matrix (Fin N') (Fin N') D.host.E),
-      IsRat D (γA : GL (Fin N) (AE D)) γ → IsRat D (γA' : GL (Fin N') (AE D)) γ' →
-      ∀ F ∈ TT D (tor0 D cc δ) N N',
-        W.Om γA γA' F = fun z => (∏ τ, embT D τ γ.det ^ (-(a τ)) * embT D τ γ'.det ^ (-(a' τ))) *
-          pull D (tor0 D cc δ) γ γ' F z
-
 def EmbeddingPermutesTypes (D : D7) : Prop :=
   ∀ (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ), FixK D M ρ → (∀ τ x, embT D τ x ∈ M) →
     ∃ π : Equiv.Perm D.what₂.Tau, ∀ τ x, cj M ρ (embT D τ x) = embT D (π τ) x
-
-def StatementGaloisCurve (D : D7) : Prop := galCurve D
-def StatementGaloisStar (D : D7) : Prop := galStar D
-def StatementGaloisSubgroup (D : D7) : Prop := galStar D → galSg D
-def StatementTranslationInvariant (D : D7) : Prop := transInv D
-def StatementGaloisFirst (D : D7) : Prop := galStar D → galSg D → transInv D → gal1 D
-def StatementGaloisPhase (D : D7) : Prop := galStar D → WeilPairingGaloisAlt D → galPh1 D
-
-def StatementGaloisBase (D : D7) : Prop := WeilPairingGaloisAlt D → admG1 D → galStar D → gal1 D → galPh1 D → galB D
-
-def StatementGaloisTheta (D : D7) : Prop := WeilPairingGaloisAlt D → admG1 D → galStar D → galB D → gal D
-def StatementGaloisExtension (D : D7) : Prop := galStar D → galEx D
-def StatementBasePointExists (D : D7) : Prop := galCurve D → useBar D → t0Ex D
-def StatementFirstUse (D : D7) : Prop := galStar D → gal1 D → use1 D
-def StatementAlgebraicUse (D : D7) : Prop := admG1 D → gal D → galB D → galEx D → use1 D → useAlg D
-def StatementConjugateUse (D : D7) : Prop := admG1 D → gal D → galB D → galEx D → use1 D → useAlg D → useBar D → useConj D
-def StatementNormUse (D : D7) : Prop :=
-  admG1 D → galCurve D → EmbeddingPermutesTypes D → useConj D → gal D → galEx D → useBar D → IntertwinerUnitary D → useNorm D
-def StatementXiUse (D : D7) : Prop :=
-  admG1 D → galCurve D → EmbeddingPermutesTypes D → useConj D → gal D → galEx D → WeilPairingGaloisAlt D → useBar D → IntertwinerUnitary D → useXi D
-def StatementInducedType : Prop := usePsi
-def StatementLineUse (D : D7) : Prop :=
-  admG1 D → galCurve D → EmbeddingPermutesTypes D → gal D → galB D → galEx D → use1 D → useBar D → IntertwinerUnitary D → useLine D
-def StatementBarUse (D : D7) : Prop := GL3Theta.InducedCMType D → useBar D
-def StatementOddFirst (D : D7) : Prop := odd1 D
-
-def StatementOddVectorExists (D : D7) : Prop :=
-  admG1 D → odd1 D → IntertwinerUnitary D → GaussSumTripleConstant D → LemmaCGaussConstant D → useAlg D →
-    ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ t0, GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 →
-      ∀ N N' : ℕ, Even (N * N') → ∃ e0 : VC D N N' → ℂ, oddE0 D cc δ t0 N N' e0
-def StatementOddThird (D : D7) : Prop := admG1 D → IntertwinerUnitary D → GaussSumTripleConstant D → odd3 D
-def StatementOddFourth (D : D7) : Prop := admG1 D → IntertwinerUnitary D → odd3 D → odd4 D
-def StatementOddKernel (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) (N N' : ℕ) (e0 : VC D N N' → ℂ) : Prop :=
-  Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → Even (N * N') → oddE0 D cc δ t0 N N' e0 → admG1 D → IntertwinerUnitary D → GaussSumTripleConstant D →
-    odd3 D → odd4 D → oddKer D cc δ t0 N N' e0
-
-def StatementOddIntegrality (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) (N N' : ℕ) (e0 : VC D N N' → ℂ) : Prop :=
-  Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → Even (N * N') → oddKer D cc δ t0 N N' e0 →
-    GL3Theta.transl D → GL3Theta.atTwo D → GL3Theta.jetsPh D → GL3Theta.PhUnitary D → oddInt D cc δ N N' e0
-def StatementOddMoments (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) (N N' : ℕ) (e0 : VC D N N' → ℂ) : Prop :=
-  Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → Even (N * N') → oddE0 D cc δ t0 N N' e0 → oddKer D cc δ t0 N N' e0 →
-    GL3Theta.transl D → GL3Theta.atTwo D → GL3Theta.splitZero D → oddMom D cc δ N N' e0
-def StatementOddRepresentation (D : D7) : Prop := oddRep D
-
-def StatementOddExactness (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) (N N' : ℕ) (e0 : VC D N N' → ℂ) : Prop :=
-  Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → Even (N * N') → oddE0 D cc δ t0 N N' e0 → admissible_poisson D → admG1 D → IntertwinerUnitary D → GaussSumTripleConstant D → LemmaCGaussConstant D → odd3 D →
-    odd4 D → oddEq D cc δ N N' e0
-
-def GaloisThetaProperties (D : D7) : Prop :=
-  galCurve D ∧ galStar D ∧ galSg D ∧ transInv D ∧ gal1 D ∧ galPh1 D ∧ galB D ∧ gal D ∧ galEx D ∧ t0Ex D ∧ use1 D ∧ useAlg D ∧
-    useConj D ∧ useNorm D ∧ useXi D ∧ usePsi ∧ useLine D ∧ useBar D
-
-def OddThetaProperties (D : D7) : Prop := odd1 D ∧ odd3 D ∧ odd4 D ∧ oddRep D ∧ odd D
-
-def aux₃ (D : D7) : Prop := GaloisThetaProperties D ∧ OddThetaProperties D
-
-def AdmDext (D : D7) : Prop :=
-  WeilPairingGaloisAlt D ∧ admG1 D ∧ EmbeddingPermutesTypes D ∧ IntertwinerUnitary D ∧ GaussSumTripleConstant D ∧ LemmaCGaussConstant D ∧ admissible_poisson D
-
-def ThetaInputsCDE (D : D7) : Prop :=
-  GL3Theta.transl D ∧ GL3Theta.atTwo D ∧ GL3Theta.jetsPh D ∧ GL3Theta.PhUnitary D ∧ GL3Theta.splitZero D
-
-def AdmD (D : D7) : Prop := AdmDext D ∧ ThetaInputsCDE D
-
-def Stmt (D : D7) : Prop := AdmD D → aux₃ D
 
 def natTie (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) : Prop :=
   ∀ t0, GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → ∀ N N' L L', admitted D N N' L L' →
@@ -745,40 +561,5 @@ theorem admissible_self_dual_even {D : D7} {N N' : ℕ} {L : Submodule (𝓞 D.h
     SD D L ∧ SD D L' ∧ Even (N * N') := by
   obtain ⟨hN, hN', hL, hL'⟩ := h
   exact ⟨hL, hL', hN.mul_right _⟩
-
-theorem normConj_indep (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (hc : Crv D cc δ)
-    (h0 : t0Ex D) (hn : useNorm D) (ht : natTie D cc δ e) :
-    ∀ N N' L₁ L₁' L₂ L₂', admitted D N N' L₁ L₁' → admitted D N N' L₂ L₂' →
-    ∀ (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M], DataIn D (tor0 D cc δ) M →
-      CoefIn D (e N N' L₁ L₁') M → CoefIn D (e N N' L₂ L₂') M → ∀ ρ : M →ₐ[ℚ] ℂ,
-        normSq D (torConj D (tor0 D cc δ) M ρ) (La D (torConj D (tor0 D cc δ) M ρ) L₁ L₁')
-            (fnConj D M ρ (e N N' L₁ L₁')) =
-          normSq D (torConj D (tor0 D cc δ) M ρ) (La D (torConj D (tor0 D cc δ) M ρ) L₂ L₂')
-            (fnConj D M ρ (e N N' L₂ L₂')) := by
-  intro N N' L₁ L₁' L₂ L₂' h1 h2 M _ hM hc1 hc2 ρ
-  obtain ⟨hL₁, hL₁', hE⟩ := admissible_self_dual_even h1
-  obtain ⟨hL₂, hL₂', -⟩ := admissible_self_dual_even h2
-  obtain ⟨⟨t0, ht0⟩, hconj⟩ := h0 cc δ hc
-  obtain ⟨t0', ht0'⟩ := hconj M ρ hM.2.1 hM.2.2
-  rw [(hn cc δ hc t0 ht0 N N' L₁ L₁' hL₁ hL₁' hE _ (ht t0 ht0 N N' L₁ L₁' h1) M ρ hM hc1 t0' ht0').1,
-    (hn cc δ hc t0 ht0 N N' L₂ L₂' hL₂ hL₂' hE _ (ht t0 ht0 N N' L₂ L₂' h2) M ρ hM hc2 t0' ht0').1]
-
-theorem nat_alg (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (hc : Crv D cc δ)
-    (h0 : t0Ex D) (ha : useAlg D) (ht : natTie D cc δ e) :
-    ∀ N N' L L', admitted D N N' L L' → CoefIn D (e N N' L L') Qbar := by
-  intro N N' L L' hA
-  obtain ⟨hL, hL', hE⟩ := admissible_self_dual_even hA
-  obtain ⟨⟨t0, ht0⟩, -⟩ := h0 cc δ hc
-  exact (ha cc δ hc t0 ht0 N N' L L' hL hL' hE _ (ht t0 ht0 N N' L L' hA)).1
-
-def kRat (D : D7) : Prop := ∀ u, ∀ i < D.R.m, (D.fm u).KRat i
-
-def AdmF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := GL3Theta.Fam AdmD Fm
-def AdmExtF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := GL3Theta.Fam AdmDext Fm
-def GaloisThetaPropertiesOnFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := GL3Theta.Fam GaloisThetaProperties Fm
-def OddThetaPropertiesOnFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := GL3Theta.Fam OddThetaProperties Fm
-def ConclusionOnFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := GL3Theta.Fam aux₃ Fm
-def KudlaFamilyStatement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := AdmF Fm → ConclusionOnFamily Fm
-def kRatF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := GL3Theta.Fam kRat Fm
 
 end Formalism.MainNotions.StandardLatticesGL3

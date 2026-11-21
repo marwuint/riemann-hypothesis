@@ -45,9 +45,6 @@ theorem mul_contDiffOn {F H : E → Mat n} (hF : ContDiffOn ℝ ∞ F s) (hH : C
   simp only [Matrix.mul_apply]
   exact ContDiffOn.sum fun c _ => (entry_of hF a c).mul (entry_of hH c b)
 
-theorem isOpen_GLs' : IsOpen (GLs n) :=
-  isOpen_ne.preimage (continuous_id.matrix_det (n := Fin n) (R := ℂ))
-
 theorem inv_contDiffOn : ContDiffOn ℝ ∞ (fun y : Mat n => y⁻¹) (GLs n) := by
   refine mat_contDiffOn fun a b => ?_
   have hd : ContDiffOn ℝ ∞ (fun y : Mat n => y.det) (GLs n) := det_contDiff.contDiffOn
@@ -79,11 +76,6 @@ theorem inv_mem {y : Mat n} (hy : y ∈ GLs n) : y⁻¹ ∈ GLs n := by
 theorem mul_mem {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   simp only [GLs, Set.mem_ofPred_eq, Matrix.det_mul] at *
   exact mul_ne_zero hx hy
-
-theorem invSmooth : InvSmooth := by
-  intro n
-  refine ⟨isOpen_GLs', inv_contDiffOn, ?_, det_contDiff, star_contDiff⟩
-  exact inv_contDiffOn.comp star_contDiff.contDiffOn fun y hy => conjT_mem hy
 
 theorem coneGL : ConeGL := by
   intro n σ hσ v hv

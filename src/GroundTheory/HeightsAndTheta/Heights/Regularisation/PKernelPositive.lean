@@ -126,9 +126,6 @@ theorem kernelPositive_statement : KernelPositive.Statement := by
   have := im_pos_of_punctured hG hpos
   simpa only [hL0] using this
 
-theorem KernelPositive.proof (_h0 : Tau0Holomorphic.Statement) : KernelPositive.Statement :=
-  kernelPositive_statement
-
 end
 
 end GroundTheory.Heights₂.Heights.Regular

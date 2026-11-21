@@ -5,10 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValMulSqrtUnit
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNumerator
 import ReciprocityTheory.GaloisValuations.GlobalA
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharLocPowEqOneOnLocalUnitsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationEmbeddingGeneratorEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationSqrtAbsNormEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationEmbeddingGeneratorEqOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationSqrtAbsNormEqOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharOnIdMulSqrtAbsNormInvMemSubringStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsElemStdLatticeSandwichSplitSupportStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsElemStdLatticeSandwichSplitSupport
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsInertTop
 open NumberField Matrix Complex IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level Host
@@ -228,9 +229,9 @@ theorem val_mul_sqrt_unit (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2
     have e : (tauE D τ (k : D.host.E) / ((‖tauE D τ (k : D.host.E)‖ : ℝ) : ℂ)) ^ 2 =
         tauE D τ (k : D.host.E) / starRingEnd ℂ (tauE D τ (k : D.host.E)) := by
       rw [div_pow, hn]; field_simp
-    have h1 : A.valuation (tauE D τ (k : D.host.E)) = 1 := GlobalTheory.T.valuation_embedding_generator_eq_one' _ A p hp hpA P hpP α h hα (tauE D τ)
+    have h1 : A.valuation (tauE D τ (k : D.host.E)) = 1 := _root_.GlobalTheory.valuation_embedding_generator_eq_one _ A p hp hpA P hpP α h hα (tauE D τ)
     have h2 : A.valuation (starRingEnd ℂ (tauE D τ (k : D.host.E))) = 1 :=
-      GlobalTheory.T.valuation_embedding_generator_eq_one' _ A p hp hpA P hpP α h hα ((starRingEnd ℂ).comp (tauE D τ))
+      _root_.GlobalTheory.valuation_embedding_generator_eq_one _ A p hp hpA P hpP α h hα ((starRingEnd ℂ).comp (tauE D τ))
     rw [e, map_div₀, h1, h2, div_one]
   have hinfv : A.valuation ((χ.inf k : ℂˣ) : ℂ) = 1 := by
     rw [hχinf k, map_prod]
@@ -250,7 +251,7 @@ theorem val_mul_sqrt_unit (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2
     refine val_eq_one_of_pow A (m := M) (by have h3 := hN; rw [hM] at h3; omega) ?_
     rw [map_pow]; exact key
   have hfinal : A.valuation (((χ.val P : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm P.asIdeal) : ℝ) : ℂ)) = 1 := by
-    rw [map_mul, hvalP, GlobalTheory.T.valuation_sqrt_absNorm_eq_one' _ A p hp hpA P hpP, one_mul]
+    rw [map_mul, hvalP, _root_.GlobalTheory.valuation_sqrt_absNorm_eq_one _ A p hp hpA P hpP, one_mul]
   exact ⟨(A.valuation_le_one_iff _).1 hfinal.le, (A.valuation_le_one_iff _).1 (by rw [map_inv₀, hfinal, inv_one])⟩
 
 end GlobalTheory.LevelSeriesScal
@@ -310,7 +311,7 @@ theorem GlobalTheory.LevelSeries.clsScal_mem_valRing : ∀ (D : D7) (ψ : AddCha
   let H := Formalism.L2.Pj.hostOfRecord D
   have hbar : (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E) :=
     RingHom.ext fun a => RingOfIntegers.ext (H.bar_eq a)
-  obtain ⟨m, m0, m1, m2, m3⟩ := GlobalTheory.T.exists_elem_stdLattice_sandwich_splitSupport D V hg hL h e' Ps bad he hPs hsupp
+  obtain ⟨m, m0, m1, m2, m3⟩ := _root_.GlobalTheory.SuppLatStd.lat_std_of_suppAt D V hg hL h e' Ps bad he hPs hsupp
   have hS : GenLat.SplitSupp H (⟨L⟩ : GenLat D.host.E V.rank) :=
     ⟨m, m0, m1, m2, fun P hP hm => by rw [hbar]; exact (m3 P hP hm).1⟩
   have hU := GlobalTheory.ClassScalarIn.unimod_hLat V hg (GlobalTheory.ExportSeries.finPt V h)

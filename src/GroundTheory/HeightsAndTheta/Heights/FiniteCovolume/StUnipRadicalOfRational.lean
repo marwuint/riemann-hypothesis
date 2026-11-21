@@ -16,12 +16,6 @@ def UnipRadicalOfRational.Statement (h : HermitianForm F E W) (v : Basis ι E W)
     (∀ z : W, h.toSesq x₀ z = 0 → ∃ a : E, γ • z = z + a • x₀) →
     archEmbed h v γ ∈ unipRadical h v x₀
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

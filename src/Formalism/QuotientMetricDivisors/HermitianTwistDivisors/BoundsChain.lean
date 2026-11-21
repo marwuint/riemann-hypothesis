@@ -1,5 +1,6 @@
 import Formalism.QuotientMetricDivisors.ProdFormula
-import Formalism.QuotientMetricDivisors.BoundsChain
+import Mathlib
+import Formalism.QuotientMetricDivisors.StatementJ
 import Formalism.QuotientMetricDivisors.ReductionLemmaZero
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsSum
 

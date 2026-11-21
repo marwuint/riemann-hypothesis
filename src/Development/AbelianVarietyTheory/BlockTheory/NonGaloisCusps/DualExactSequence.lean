@@ -81,12 +81,6 @@ def DdRSpanAt : Prop :=
     DdR (P.PD K) T.ρ = Submodule.span ↥LL.1
       {z | ∃ (c : ↥K.1), ∃ x ∈ Dcris (P.PD K) T.ρ, z = mulK P T c (iota P T x)}
 
-def DdRInjAt : Prop :=
-  ∀ T : Lat K LL, IsCrys (P.PD K) T.ρ →
-    ∀ (m : ℕ) (c : Fin m → ↥K.1) (x : Fin m → T.V ⊗[ℚ_[l]] P.R.B),
-      LinearIndependent ↥(K0 K) c → (∀ i, x i ∈ Dcris (P.PD K) T.ρ) →
-      ∑ i, mulK P T (c i) (iota P T (x i)) = 0 → ∀ i, x i = 0
-
 def ComponentIsoAt : Prop :=
   ∀ T : Lat K LL, IsCrys (P.PD K) T.ρ → ∀ τ : Emb K LL,
     ∃ e : ↥(DcrisL (P.PD K) T.ρ (embeddingRestrictMaxUnramified τ)) ≃ₗ[↥LL.1] ↥(DdRE (P.PD K) T.ρ τ),
@@ -135,25 +129,6 @@ def PotCrysDeRhamAt : Prop :=
   ∀ (T : Lat K LL) (K' : FinExt l) (hK : K.1 ≤ K'.1),
     IsCrys (P.PD K') (T.ρ.comp (Subgroup.inclusion (GK_le hK))) → IsDR (P.PD K) T.ρ
 
-def FilteredIsoAt : Prop :=
-  ∀ T : Lat K LL, IsDR (P.PD K) T.ρ →
-    (∀ (m : ℕ) (b : Fin m → P.R.BdR) (d : Fin m → T.V ⊗[ℚ_[l]] P.R.BdR),
-      LinearIndependent ↥K.1 b → (∀ i, d i ∈ DdR (P.PD K) T.ρ) →
-      ∑ i, mulVR T (b i) (d i) = 0 → ∀ i, d i = 0) ∧
-    Submodule.span ↥LL.1 {z | ∃ (b : P.R.BdR), ∃ d ∈ DdR (P.PD K) T.ρ, z = mulVR T b d} = ⊤ ∧
-    ∀ n : ℤ, filV P T n = Submodule.span ↥LL.1
-      {z | ∃ (a : ℤ), ∃ b ∈ (P.PD K).Fil (n - a), ∃ d ∈ filD P T a, z = mulVR T b d}
-
-def StrictWholeAt : Prop :=
-  ∀ (T₀ T₁ T₂ : Lat K LL) (f : T₀.V →ₗ[↥LL.1] T₁.V) (g : T₁.V →ₗ[↥LL.1] T₂.V), IsSES f g →
-    IsDR (P.PD K) T₀.ρ → IsDR (P.PD K) T₁.ρ → IsDR (P.PD K) T₂.ρ →
-    ∀ a : ℤ, SubSES P f g (filD P T₀ a) (filD P T₁ a) (filD P T₂ a)
-
-def GradedHodgeTateAt : Prop :=
-  ∀ T : Lat K LL, IsDR (P.PD K) T.ρ → ∀ (a : ℤ), ∀ x ∈ filV P T a,
-    (∀ σ, actVdR (P.PD K) T.ρ σ x - x ∈ filV P T (a + 1)) →
-    ∃ d ∈ filD P T a, x - d ∈ filV P T (a + 1)
-
 end At
 
 def OverGood (C : FinExt l → FinExt l → Prop) : Prop :=
@@ -165,7 +140,6 @@ variable (l) (P : LocPrime l)
 
 def CrysDeRham : Prop := OverGood (CrysDeRhamAt P)
 def DdRSpan : Prop := OverGood (DdRSpanAt P)
-def DdRInj : Prop := OverGood (DdRInjAt P)
 def ComponentIso : Prop := OverGood (ComponentIsoAt P)
 def UnramOnto : Prop := OverGood (UnramOntoAt P)
 def FilZero : Prop := OverGood (FilZeroAt P)
@@ -174,41 +148,10 @@ def DualJumps : Prop := OverGood (DualJumpsAt P)
 def TensorJumps : Prop := OverGood (TensorJumpsAt P)
 def TwistJumps : Prop := OverGood (TwistJumpsAt P)
 def PotCrysDeRham : Prop := OverGood (PotCrysDeRhamAt P)
-def FilteredIso : Prop := OverGood (FilteredIsoAt P)
-def StrictWhole : Prop := OverGood (StrictWholeAt P)
-def GradedHodgeTate : Prop := OverGood (GradedHodgeTateAt P)
-
 def DeRhamComparison : Prop :=
   CrysDeRham l P ∧ DdRSpan l P ∧ ComponentIso l P ∧ UnramOnto l P ∧ FilZero l P ∧ Strict l P ∧
     DualJumps l P ∧ TensorJumps l P ∧ TwistJumps l P ∧ PotCrysDeRham l P
 
-def DeRhamComparisonFull : Prop :=
-  DeRhamComparison l P ∧ DdRInj l P ∧ FilteredIso l P ∧ StrictWhole l P ∧ GradedHodgeTate l P
-
-def DeRhamComparisonAllFields : Prop :=
-  ∀ K LL : FinExt l, CrysDeRhamAt P K LL ∧ DdRSpanAt P K LL ∧ ComponentIsoAt P K LL ∧
-    UnramOntoAt P K LL ∧ FilZeroAt P K LL ∧ StrictAt P K LL ∧ DualJumpsAt P K LL ∧
-    TensorJumpsAt P K LL ∧ TwistJumpsAt P K LL ∧ PotCrysDeRhamAt P K LL ∧ DdRInjAt P K LL ∧
-    FilteredIsoAt P K LL ∧ StrictWholeAt P K LL ∧ GradedHodgeTateAt P K LL
-
 end Good
-
-example (P : LocPrime l) {K LL : FinExt l} (T : Lat K LL) (τ : Emb K LL) (a : ℤ) :
-    FildR (P.PD K) T.ρ τ a ≤ filD P T a :=
-  inf_le_inf_right _ inf_le_left
-
-example (P : LocPrime l) {K LL : FinExt l} (T : Lat K LL) :
-    (Dcris (P.PD K) T.ρ).map (iota P T) ≤ DdR (P.PD K) T.ρ := by
-  rintro _ ⟨x, hx, rfl⟩
-  have key : ∀ g y, actVdR (P.PD K) T.ρ g (iota P T y) = iota P T (actVB (P.PD K) T.ρ g y) := by
-    intro g y
-    induction y using TensorProduct.induction_on with
-    | zero => simp
-    | tmul v b => simp [actVdR, actVB, ιV, (P.PD K).ι_comm]
-    | add a b ha hb => simp only [map_add, ha, hb]
-  simp only [Dcris, DdR, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
-    LinearMap.id_apply, sub_eq_zero] at hx ⊢
-  intro g
-  rw [key, hx]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence

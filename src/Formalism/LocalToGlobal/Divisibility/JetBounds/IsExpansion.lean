@@ -1,7 +1,11 @@
 import Mathlib
 import Formalism.LocalToGlobal.Divisibility.Inputs
 import Formalism.MirabolicMackeyTheory.MirabolicIsMackey
-import Formalism.GaussJetBounds.ThmAEntryFull
+import Formalism.GaussJetBounds.StatementS
+import Formalism.GaussJetBounds.OneLetterGauss
+import Formalism.GaussJetBounds.GenLogInverse
+import Formalism.GradedWeylDivisibility.FinalD
+import Formalism.GaussJetBounds.GaussJetProofs.OrbMul
 import Formalism.GaussJetBounds.OneLetterGaussJets.GainDominatesOddLevelSum
 
 open Module NumberField IsDedekindDomain
@@ -35,9 +39,6 @@ def OrbSys.mul {k : Type} [NormedField k] (S₁ S₂ : OrbSys k) : OrbSys k wher
   g := Sum.elim (fun x => serAlong Sum.inl (S₁.g x)) (fun x => serAlong Sum.inr (S₂.g x))
   E := serAlong Sum.inl S₁.E * serAlong Sum.inr S₂.E
   P := opAlong Sum.inl Sum.inl S₁.P * opAlong Sum.inr Sum.inr S₂.P
-
-def OrbSys.jet {k : Type} [NormedField k] (S : OrbSys k) (U : MvPowerSeries S.ι k) : MvPolynomial S.σ k :=
-  jetPairPoly S.P (MvPowerSeries.subst S.g U * S.E)
 
 def sysA (l : ℕ) [Fact l.Prime] (d N0 N1 : ℕ) [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l])
     (g : ZV d N0 N1 → MvPowerSeries (ZV d N0 N1) ℂ_[l]) (ε : ℂ_[l]) (colN : ZMod d → ℕ) (p : ∀ s, Fin (colN s) → ℕ)
@@ -74,12 +75,6 @@ def sysB (l : ℕ) [Fact l.Prime] (N0 N1 C : ℕ) (be : MvPowerSeries (ZMod 2) �
 def expB (l N0 N1 C : ℕ) (p : Fin C → ℕ) : ℝ :=
   rho l * ((∑ c, p c : ℕ) : ℝ) - ((N0 : ℝ) * N1) * (Real.logb l (C : ℝ) + 1)
 
-def KnownOk (l : ℕ) [Fact l.Prime] (Q : OrbSys ℂ_[l] → ℝ → Prop) : Prop :=
-  ∀ (S : OrbSys ℂ_[l]) (β : ℝ), Q S β → Finite S.ι ∧ (∀ x, MvPowerSeries.constantCoeff (S.g x) = 0) ∧
-    HasJetBound S.g S.E S.P (‖(l : ℂ_[l])‖ ^ β)
-
-def noQ (l : ℕ) [Fact l.Prime] : OrbSys ℂ_[l] → ℝ → Prop := fun _ _ => False
-
 inductive IsSys7 (l : ℕ) [Fact l.Prime] (Q : OrbSys ℂ_[l] → ℝ → Prop) : OrbSys ℂ_[l] → ℝ → Prop
   | caseA (d N0 N1 : ℕ) [NeZero d] (h3 : 3 ≤ l) (h2 : 2 ≤ d) (he : Even d) (hN0 : 0 < N0) (K0 : Subfield ℂ_[l])
       (hK : Unram l K0) (ζ : ℂ_[l]) (hζ : IsPrimitiveRoot ζ (l ^ d - 1)) (be : MvPowerSeries (ZMod d) ℂ_[l])
@@ -109,26 +104,6 @@ inductive IsSys7 (l : ℕ) [Fact l.Prime] (Q : OrbSys ℂ_[l] → ℝ → Prop) 
 
 def MonInt {k : Type} [NormedField k] {σ : Type} (δ : MvPolynomial σ k →ₗ[k] k) : Prop :=
   ∀ n : σ →₀ ℕ, ‖δ (MvPolynomial.monomial n 1)‖ ≤ 1
-
-inductive IsEntry7 (l : ℕ) [Fact l.Prime] (Q : OrbSys ℂ_[l] → ℝ → Prop) : ℝ → ℂ_[l] → Prop
-  | gauss (S : OrbSys ℂ_[l]) (β : ℝ) (hS : IsSys7 l Q S β) (U : MvPowerSeries S.ι ℂ_[l]) (hU : Integral U)
-      (δ : MvPolynomial S.σ ℂ_[l] →ₗ[ℂ_[l]] ℂ_[l]) (hδ : MonInt δ) : IsEntry7 l Q β (δ (S.jet U))
-  | weyl (d N0 N1 : ℕ) [NeZero d] (h3 : 3 ≤ l) (h2 : 2 ≤ d) (he : Even d) (hN0 : 0 < N0) (K0 : Subfield ℂ_[l])
-      (hK : Unram l K0) (ζ : ℂ_[l]) (hζ : IsPrimitiveRoot ζ (l ^ d - 1)) (be : MvPowerSeries (ZMod d) ℂ_[l])
-      (hb : BHyp l d K0 ζ be) (g : ZV d N0 N1 → MvPowerSeries (ZV d N0 N1) ℂ_[l])
-      (hg0 : ∀ y, MvPowerSeries.constantCoeff (g y) = 0)
-      (hg : ∀ y, MvPowerSeries.subst g (entLog (K := ℂ_[l]) l y) = MvPowerSeries.X y)
-      (U : MvPowerSeries (ZV d N0 N1) ℂ_[l]) (hU : Integral U)
-      (ε : ℂ_[l]) (hε : ε = 1 ∨ ε = -1)
-      (TT : Finset (ZMod d)) (colN : ZMod d → ℕ) (p : ∀ s, Fin (colN s) → ℕ)
-      (hp : ∀ s c, p s c ≤ N0) (hp1 : ∀ s c, 1 ≤ p s c) (I : ∀ s c, Fin (p s c) → Fin N1)
-      (nu1 nu2 size : ZMod d → ℕ) (h1 : ∀ s, nu1 s = colN s)
-      (h22 : ∀ s, nu2 s = (Finset.univ.filter (fun c => 2 ≤ p s c)).card)
-      (hs : ∀ s, size s = ∑ c, p s c)
-      (hJ : ∀ s, JnumOneLetter l d TT nu1 size s + (if s ∈ TT then 1 else 0) ≤ N0)
-      (δ : MvPolynomial (ZMod d × Fin N0 × Fin N0) ℂ_[l] →ₗ[ℂ_[l]] ℂ_[l])
-      (hδ : ∀ R ∈ nablaO (K := ℂ_[l]) colN p hp, ‖δ R‖ ≤ 1) :
-      IsEntry7 l Q (expA l d N0 N1 TT nu1 nu2 size) (δ (frameJet colN p hp I (thetaZ g U ε be)))
 
 structure PathData (K : Type) [Field K] (l : ℕ) [Fact l.Prime] (J A B : Type) [AddCommGroup A] [Module K A]
     [AddCommGroup B] [Module K B] where
@@ -172,9 +147,6 @@ def UnitsInt (X : PathData K l J A B) : Prop := ∀ π j, ‖X.eps π j‖ ≤ 1
 def StabDvd (X : PathData K l J A B) (D : ℕ) (j1 : J) : Prop :=
   D ≠ 0 ∧ (∀ π j, X.gam π j ∣ D) ∧ (∀ π, X.gamP π ∣ D) ∧ ∀ π, X.gam π j1 = 1
 
-def EntriesA (Q : OrbSys ℂ_[l] → ℝ → Prop) (X : PathData K l J A B) (s : J → ℝ) : Prop :=
-  ∀ π j, ∃ β : ℝ, s j ≤ β ∧ IsEntry7 l Q β (X.e π j)
-
 end Paths
 
 section PathsW
@@ -189,10 +161,5 @@ def RowsInt (X : PathData K l J A B) (w : HeightOneSpectrum (𝓞 K)) (NB : Set 
   ∀ π, ∀ F ∈ NB, X.y π F = 0 ∨ 0 ≤ vw w (X.y π F)
 
 end PathsW
-
-def recA (l d N0 N1 : ℕ) [NeZero d] (TT : Finset (ZMod d)) (nu1 nu2 size : ZMod d → ℕ) (k : ℕ) (w : ZMod d → ℝ) : ℝ :=
-  (∑ s ∈ TT, oddLevelGainSum l d TT nu1 nu2 s) + Fnum l d (fun s => ((k : ℝ) - 1) * w s) -
-    11 / (l : ℝ) * (∑ s : ZMod d, w s) - gam l * (∑ s ∈ TT, (WcapOneLetter l d TT nu1 nu2 size s : ℝ)) -
-    ((d : ℝ) * N0 * N1) * (Real.logb l (kaMaxOneLetter d TT nu1 nu2 : ℝ) + 1)
 
 end Formalism.L2.DIV

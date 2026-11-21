@@ -7,8 +7,8 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGeneric
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ClassListMapDomainPerm
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleBaseExtension
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleBaseExtensionUnique
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparisonStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBundleChainStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparison
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBundleChain
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagDifferenceStatement
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
@@ -89,7 +89,7 @@ theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   have hEE : SameGeneric O x E E := fun s _ =>
     ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩, fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩
   obtain ⟨K', _, _, ι', _, z, EB, w, b, hW', hfn, hj⟩ :=
-    GlobalTheory.T.same_generic_bundle_chain O Ω K ι x d hW N 1 V ![E, E'] (by
+    _root_.GlobalTheory.CompanionTheory.Ar.CommonFlag.main O Ω K ι x d hW N 1 V ![E, E'] (by
       intro j
       fin_cases j
       · exact hEE
@@ -98,7 +98,7 @@ theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   have hp1 : IsPull O x z E' (EB 1) := (hj 1).1
   have hB : SameGeneric O (joinCoord x z) (EB 0) (EB 1) :=
     (GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve O Ω K ι x N V E E' K' ι' z (EB 0) (EB 1) hp0 hp1).2.1 hEE'
-  obtain ⟨-, f, g, hfp⟩ := GlobalTheory.T.same_generic_flag_comparison O Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) ϖ hϖ d
+  obtain ⟨-, f, g, hfp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagPairOfFrames.main O Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) ϖ hϖ d
     ((GroundTheory.Heights₂.Heights.NumbersDVR.BundleExamples.isModelOver_iff O _ d).1 hW').2 N V (EB 0) (EB 1) hB w w (b 0) (b 1) (hj 0).2 (hj 1).2
     (fun i j hij => by simp [Finsupp.single_apply, hij.ne])
   obtain ⟨FB, hF⟩ := (GlobalTheory.CompanionTheory.Ar.Num.PullExists.main O Ω K ι x N V₁ F).1 K' ι' z

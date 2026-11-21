@@ -2,12 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SelNZero
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisCocycleIntegralAfterScalingStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NonzeroClassBoundedTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NonzeroClassBoundedTorsion
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CocycleVanishesOnKerToGSOfInertiaCoboundaryStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NotCongruentZeroIntCastMulPrimePowStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardDualCocyclesModPrimePowUnramifiedOutsideSBouStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardPrimePowTorsionSelmerClassesModPrimePowBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GreenbergWilesDualSelmerLowerBoundModPrimePowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardPrimePowTorsionSelmerClassesModPrimePowBound
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GreenbergWilesDualSelmerLowerBoundModPrimePow
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2
 open scoped Matrix
 
@@ -42,15 +42,15 @@ theorem dual_classes_unbounded : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → �
     have h1 := hx g
     rw [hYs] at h1
     rw [map_smul, ← smul_sub, ← h1, smul_smul, inv_mul_cancel₀ hl0, one_smul]
-  obtain ⟨k0, hk0⟩ := GlobalTheory.T.nonzero_class_bounded_torsion l Ω W c Y hW hYZ hYI hYB
+  obtain ⟨k0, hk0⟩ := _root_.GlobalTheory.Ord2.GwCount.closed_multiplier l Ω W c Y hW hYZ hYI hYB
   have hY0 : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, Y a = 0 := by
     refine GlobalTheory.T.cocycle_vanishes_on_ker_toGS_of_inertia_coboundary l Ω e S A W Y hN hYZ fun q hq B hB => ?_
     have hlq : ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal := fun h => hq (hN.above q h)
     obtain ⟨x, -, hx⟩ := hYu q hlq B hB
     exact ⟨x, fun s hs => by rw [hYs]; exact hx s hs⟩
   refine ⟨c, hW, fun m => ?_⟩
-  obtain ⟨C, hC⟩ := GlobalTheory.T.greenbergWiles_dualSelmer_lower_bound_mod_prime_pow hL l Ω e S A W hN c hW
-  obtain ⟨B, hB⟩ := GlobalTheory.T.card_primePowTorsion_selmerClassesModPrimePow_bounded l Ω e S A W hN c hW (GlobalTheory.T.card_dualCocyclesModPrimePow_unramifiedOutsideS_bounded_alt hL l Ω e S A W hN c hW) m
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.Ord2.GwIneq.gw_ineq hL l Ω e S A W hN c hW
+  obtain ⟨B, hB⟩ := _root_.GlobalTheory.Ord2.TorsBound.tors_bound l Ω e S A W hN c hW (GlobalTheory.T.card_dualCocyclesModPrimePow_unramifiedOutsideS_bounded_alt hL l Ω e S A W hN c hW) m
   obtain ⟨t, ht⟩ : ∃ t : ℕ, t = C * B + 1 := ⟨_, rfl⟩
   have hlt : C * B < l ^ t := by
     have := Nat.lt_pow_self (Fact.out : l.Prime).one_lt (n := t)

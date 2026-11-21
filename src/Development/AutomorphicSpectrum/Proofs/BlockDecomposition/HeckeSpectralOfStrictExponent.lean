@@ -3,9 +3,9 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.SquareI
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.StandardFunctorsFiniteLength
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeOperatorJacquetEigenLeftStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeOperatorJacquetEigenRightStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeOperatorJacquetEigenRight
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetQuotientEigenvectorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerPowTendstoZeroStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerPowTendstoZero
 
 open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult ValuativeRel
 
@@ -48,7 +48,7 @@ theorem heckeSpectral_of_maxExpStrict (k : Type) [Field k] [ValuativeRel k] [Top
     obtain ⟨r, hr⟩ := GlobalTheory.T.hecke_operator_jacquet_eigen_left k N V π hs m hm d hd hd0 hd1 T hT' w h0
     rw [hw.pow_apply r] at hr
     exact (smul_ne_zero (pow_ne_zero r hμ0) hw.2) hr
-  have hjac := GlobalTheory.T.hecke_operator_jacquet_eigen_right k N V π hs m hm d hd hd0 hd1 T hT' w
+  have hjac := _root_.GlobalTheory.CompanionTheory.HeckeJacquet.hecke_omega_jacquet k N V π hs m hm d hd hd0 hd1 T hT' w
   have heig : (Submodule.Quotient.mk (π (Zls.diagPow k N (Zls.omegaVec N (d 0))) (w : V)) :
       Jacquet π (unipRad k (stdBlocks d hd))) =
       μ • (Submodule.Quotient.mk (w : V) : Jacquet π (unipRad k (stdBlocks d hd))) := by
@@ -63,7 +63,7 @@ theorem heckeSpectral_of_maxExpStrict (k : Type) [Field k] [ValuativeRel k] [Top
     · exact hd0
     · exact hd1
   have hE := hM x hx hpos hjm
-  have hc := (hE (Zls.unifU k) (GlobalTheory.T.uniformizer_pow_tendsto_zero k)
+  have hc := (hE (Zls.unifU k) (_root_.GlobalTheory.CompanionTheory.UnifPow.tendsto_unifU_pow k)
     ![μ * (Nat.card 𝓀[k] : ℂ) ^ (((d 0 * d 1 : ℕ) : ℂ) / 2), c1]
     (by
       intro i

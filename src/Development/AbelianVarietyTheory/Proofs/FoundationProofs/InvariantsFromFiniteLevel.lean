@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegralTraceEqZetaSubOneTopStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegralTraceEqZetaSubOneTop
 
 open GlobalTheory.K5
 
@@ -41,93 +41,14 @@ namespace GlobalTheory.K5.FinLevel
 
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
-theorem zeta_eq_pow (T : Tower p Ω) (i d : ℕ) : T.ζ i = T.ζ (i + d) ^ (p ^ d) := by
-  induction d with
-  | zero => simp
-  | succ d ih => rw [ih, ← T.ζpow (i + d), ← pow_mul, ← pow_succ', add_assoc]
-
 theorem qq_eq_pow (T : Tower p Ω) (i d : ℕ) : T.qq i = T.qq (i + d) ^ (p ^ d) := by
   induction d with
   | zero => simp
   | succ d ih => rw [ih, ← T.qpow (i + d), ← pow_mul, ← pow_succ', add_assoc]
 
-def gens (T : Tower p Ω) (n : ℕ) : Set Ω :=
-  Set.range (algebraMap (O0 p) Ω) ∪ T.ζ '' Set.Iic n ∪ T.qq '' Set.Iic n
-
-theorem gens_mono (T : Tower p Ω) {m n : ℕ} (h : m ≤ n) : gens T m ⊆ gens T n := by
-  unfold gens
-  gcongr <;> exact Set.Iic_subset_Iic.mpr h
-
-theorem fixes_gens (T : Tower p Ω) (n : ℕ) (g : Gal p Ω) (hg : g ∈ Gn T n) :
-    ∀ a ∈ gens T n, g a = a := by
-  have hz : g (T.ζ n) = T.ζ n := (Subgroup.mem_inf.mp hg).1
-  have hq : g (T.qq n) = T.qq n := (Subgroup.mem_inf.mp hg).2
-  rintro a ((⟨r, rfl⟩ | ⟨i, hi, rfl⟩) | ⟨i, hi, rfl⟩)
-  · exact g.commutes r
-  · have hi' : i + (n - i) = n := Nat.add_sub_cancel' hi
-    rw [zeta_eq_pow T i (n - i), hi', map_pow, hz]
-  · have hi' : i + (n - i) = n := Nat.add_sub_cancel' hi
-    rw [qq_eq_pow T i (n - i), hi', map_pow, hq]
-
 end GlobalTheory.K5.FinLevel
 
 namespace GlobalTheory.K5.FinLevel
-
-variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
-
-theorem exists_level_of_fixed (hClo : IsClo p Ω) (T : Tower p Ω) (y : Ω)
-    (hy : ∀ h ∈ ⨅ n, Gn T n, h y = y) : ∃ n, ∀ g ∈ Gn T n, g y = y := by
-  haveI := charZero_of_tower T
-  let L : IntermediateField ℚ Ω := IntermediateField.adjoin ℚ (⋃ n, gens T n)
-  have hmemL : ∀ a ∈ ⋃ n, gens T n, a ∈ L := fun a ha => IntermediateField.subset_adjoin ℚ _ ha
-  have hO : ∀ r : O0 p, algebraMap (O0 p) Ω r ∈ L := fun r =>
-    hmemL _ (Set.mem_iUnion.mpr ⟨0, Or.inl (Or.inl ⟨r, rfl⟩)⟩)
-  let φ : O0 p →+* L := (algebraMap (O0 p) Ω).codRestrict L hO
-  have hφ : ∀ r, algebraMap L Ω (φ r) = algebraMap (O0 p) Ω r := fun r => rfl
-  have hφinj : Function.Injective φ := by
-    intro a b hab
-    apply hClo.inj
-    rw [← hφ a, ← hφ b, hab]
-  haveI halg : Algebra.IsAlgebraic L Ω := by
-    constructor
-    intro z
-    obtain ⟨P, hP0, hPz⟩ := hClo.alg.isAlgebraic z
-    refine ⟨P.map φ, (Polynomial.map_ne_zero_iff hφinj).mpr hP0, ?_⟩
-    rw [Polynomial.aeval_def, Polynomial.eval₂_map]
-    rw [Polynomial.aeval_def] at hPz
-    convert hPz using 2
-    exact RingHom.ext hφ
-  haveI : IsAlgClosure L Ω := ⟨hClo.clo, halg⟩
-  haveI : IsGalois L Ω := IsAlgClosure.isGalois L Ω
-  have hyL : y ∈ L := by
-    have : y ∈ Set.range (algebraMap L Ω) := by
-      rw [InfiniteGalois.mem_range_algebraMap_iff_fixed]
-      intro f
-      let g : Gal p Ω := AlgEquiv.ofRingEquiv (f := f.toRingEquiv) (fun r => f.commutes (φ r))
-      have hg : g ∈ ⨅ n, Gn T n := by
-        refine Subgroup.mem_iInf.mpr fun n => Subgroup.mem_inf.mpr ⟨?_, ?_⟩
-        · show g (T.ζ n) = T.ζ n
-          exact f.commutes ⟨T.ζ n, hmemL _ (Set.mem_iUnion.mpr ⟨n, Or.inl (Or.inr ⟨n, Set.mem_Iic.mpr le_rfl, rfl⟩)⟩)⟩
-        · show g (T.qq n) = T.qq n
-          exact f.commutes ⟨T.qq n, hmemL _ (Set.mem_iUnion.mpr ⟨n, Or.inr ⟨n, Set.mem_Iic.mpr le_rfl, rfl⟩⟩)⟩
-      exact hy g hg
-    obtain ⟨l, rfl⟩ := this
-    exact l.2
-  obtain ⟨S, hS, hyS⟩ := IntermediateField.exists_finset_of_mem_adjoin hyL
-  have hex : ∀ t ∈ S, ∃ m, t ∈ gens T m := fun t ht => Set.mem_iUnion.mp (hS ht)
-  choose! m hm using hex
-  refine ⟨S.sup m, fun g hg => ?_⟩
-  have hSN : (S : Set Ω) ⊆ gens T (S.sup m) := fun t ht =>
-    gens_mono T (Finset.le_sup (f := m) ht) (hm t ht)
-  have hyN : y ∈ IntermediateField.adjoin ℚ (gens T (S.sup m)) :=
-    IntermediateField.adjoin.mono ℚ _ _ hSN hyS
-  let gq : Ω ≃ₐ[ℚ] Ω := AlgEquiv.ofRingEquiv (f := g.toRingEquiv) (fun q => by simp)
-  have hle : Algebra.adjoin ℚ (gens T (S.sup m)) ≤ AlgHom.equalizer (gq : Ω →ₐ[ℚ] Ω) (AlgHom.id ℚ Ω) :=
-    Algebra.adjoin_le fun a ha => fixes_gens T _ g hg a ha
-  obtain ⟨r, hr, s, hs, rfl⟩ := IntermediateField.mem_adjoin_iff_div.mp hyN
-  have hr' : g r = r := hle hr
-  have hs' : g s = s := hle hs
-  rw [map_div₀, hr', hs']
 
 end GlobalTheory.K5.FinLevel
 

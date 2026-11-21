@@ -46,39 +46,4 @@ abbrev baseChange (R A : Type) [CommRing R] [CommRing A] [Algebra R A] :
     Over (Spec (CommRingCat.of R)) ⥤ Over (Spec (CommRingCat.of A)) :=
   Over.pullback (Spec.map (CommRingCat.ofHom (algebraMap R A)))
 
-def IsSaturatedTorus {R : Type} [CommRing R] [IsLocalRing R] {r : ℕ}
-    {G : Over (Spec (CommRingCat.of R))} [GrpObj G] (u : torus R r ⟶ G) [IsMonHom u] : Prop :=
-  IsClosedImmersion ((baseChange R (IsLocalRing.ResidueField R)).map u).left ∧
-    (∀ x y : LieG (torus R r),
-      LieCongr G (IsLocalRing.maximalIdeal R) (lieMap u x) (lieMap u y) →
-        LieCongr (torus R r) (IsLocalRing.maximalIdeal R) x y) ∧
-    (Function.Bijective (lieCoord : LieG (torus R r) → Fin r → R) ∧
-      (∀ x y : LieG (torus R r), lieCoord (lieAdd _ x y) = lieCoord x + lieCoord y) ∧
-      ∀ (a : R) (x : LieG (torus R r)), lieCoord (lieScale _ a x) = a • lieCoord x) ∧
-    ∃ ρ : LieG G → LieG (torus R r), IsLieLinear ρ ∧ ∀ x, ρ (lieMap u x) = x
-
-def TorusSaturated : Prop :=
-  ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
-    (K : Type) [Field K] [Algebra R K] [IsFractionRing R K]
-    (G : Over (Spec (CommRingCat.of R))) [GrpObj G], IsSemiAbelian G →
-    ∀ (r : ℕ) (uK : (baseChange R K).obj (torus R r) ⟶ (baseChange R K).obj G),
-      IsMonHom uK → IsClosedImmersion uK.left →
-      ∃ (u : torus R r ⟶ G) (_ : IsMonHom u), (baseChange R K).map u = uK ∧
-        (∀ u' : torus R r ⟶ G, IsMonHom u' → (baseChange R K).map u' = uK → u' = u) ∧
-        IsSaturatedTorus u
-
-theorem isLieLinear_lieMap {R : Type} [CommRing R] {T G : Over (Spec (CommRingCat.of R))}
-    [GrpObj T] [GrpObj G] (u : T ⟶ G) [IsMonHom u] : IsLieLinear (lieMap u) :=
-  ⟨fun x y => Subtype.ext (MonObj.mul_comp x.1 y.1 u),
-    fun a x => Subtype.ext (Category.assoc _ _ _)⟩
-
-example (R K : Type) [CommRing R] [Field K] [Algebra R K] (r : ℕ) :
-    IsMonHom (𝟙 ((baseChange R K).obj (torus R r))) ∧
-      IsClosedImmersion (𝟙 ((baseChange R K).obj (torus R r)) : _ ⟶ _).left :=
-  ⟨inferInstance, by rw [Over.id_left]; infer_instance⟩
-
-example (R : Type) [CommRing R] (r : ℕ) :
-    ∃ ρ : LieG (torus R r) → LieG (torus R r), IsLieLinear ρ ∧ ∀ x, ρ (lieMap (𝟙 _) x) = x :=
-  ⟨id, ⟨fun _ _ => rfl, fun _ _ => rfl⟩, fun x => Subtype.ext (Category.comp_id x.1)⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps

@@ -1,5 +1,6 @@
 import Mathlib
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ExpandsPullOne
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullExp
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FamMod
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdExpPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdFam
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TWMain
@@ -56,47 +57,5 @@ theorem hasGen_pull {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L
   ext x
   simp [fsum, Fin.sum_univ_succ, Finsupp.single_apply]
   split_ifs <;> ring
-
-theorem exists_norm {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
-    {G : Over (Spec (CommRingCat.of V))} [GrpObj G] [IsCommMonObj G] (Lr : RigLB G) (f : G ⟶ G) [IsMonHom f]
-    (k N : ℕ) (hN1 : 1 ≤ N)
-    (h : HasGen Lr.L (fsum (K := Fin 2) ![𝟙 G.left, f.left] ![((k * N : ℕ) : ℤ), -(k : ℤ)])) :
-    ∃ u : LB.Gen (LB.LinComb Lr.L (K := Fin 2) ![gK, endK f ≫ gK] ![((k * N : ℕ) : ℤ), -(k : ℤ)]), u.IsGen ∧
-      LB.Gen.Corr Lr.L _ _ _ _ (LB.pullGen Lr.L _ _ u unitK)
-        (LB.pullGen Lr.L _ _ (GeneratorPullback.powGen Lr.L _ _ Lr.rig (k * (N - 1))) (jK V)) := by
-  have hc : endK f ≫ gK = gK ≫ f.left := by
-    unfold endK gK
-    exact pullback.lift_fst _ _ _
-  have hu : unitK ≫ gK = jK V ≫ eSec G := by
-    unfold unitK gK
-    exact pullback.lift_fst _ _ _
-  have hs : unitK ≫ pullback.snd G.hom (jK V) = 𝟙 _ := by
-    unfold unitK
-    exact pullback.lift_snd _ _ _
-  have he : eSec G ≫ f.left = eSec G := by
-    show (η[G] ≫ f).left = η[G].left
-    rw [IsMonHom.one_hom]
-  obtain ⟨t, ht⟩ := HasGen.gen Lr.isLB (h.pull gK) ![gK, endK f ≫ gK] ![((k * N : ℕ) : ℤ), -(k : ℤ)] (by
-    rw [hc]
-    simp only [fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Finsupp.mapDomain_add, Finsupp.mapDomain_single, Category.comp_id])
-  refine exists_normalized_to Lr.isLB _ _ t ht (pullback.snd G.hom (jK V)) unitK hs _ _ _
-    (pullGen_isGen_of_isGen _ _ _ (powGen_isGen_of_isGen _ Lr.rigGen _) _) ?_
-  have hv : unitK ≫ endK f ≫ gK = jK V ≫ eSec G := by
-    rw [hc, ← Category.assoc, hu, Category.assoc, he]
-  simp only [fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, hu, hv]
-  rw [Fintype.sum_unique, ← Finsupp.single_add]
-  congr 1
-  push_cast [Nat.cast_sub hN1]
-  ring
-
-theorem main : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (t : Geo.Tor.SAB H (Spec (CommRingCat.of V))) (P : Geo.Tor.PELUnif (maximalIdeal V) t) (a : NumberField.RingOfIntegers E) (N : ℕ), (letI := H.starRing; a * star a = (N : NumberField.RingOfIntegers E)) → 0 < N → letI := H.starRing;  ∀ k : ℕ, ∃ u : LB.Gen (LB.LinComb P.U.LG.L (K := Fin 2) ![gK, endK (t.act.act a) ≫ gK] ![((k * N : ℕ) : ℤ), -(k : ℤ)]), u.IsGen ∧ LB.Gen.Corr P.U.LG.L _ _ _ _ (LB.pullGen P.U.LG.L _ _ u unitK) (LB.pullGen P.U.LG.L _ _ (GeneratorPullback.powGen P.U.LG.L _ _ P.U.LG.rig (k * (N - 1))) (jK V)) := by
-  intro hG V _ _ _ E _ _ _ H t P a N hN hN0
-  letI := H.starRing
-  intro k
-  have := t.act.hom a
-  rw [P.bundle]
-  exact exists_norm t.PP (t.act.act a) k N hN0
-    (hasGen_pull t.PP t.cub t.act.toRingAct H.w0 a N hN (t.adj a) t.prim k)
 
 end GlobalTheory.PullGenG

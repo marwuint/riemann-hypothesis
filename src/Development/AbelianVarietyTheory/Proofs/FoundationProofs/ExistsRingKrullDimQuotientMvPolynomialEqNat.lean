@@ -349,16 +349,6 @@ theorem exists_forms_algebraicIndependent_finite {I : Ideal (MvPolynomial σ k)}
   exact ⟨e, max N e, F, he, le_max_right N e, hF,
     injective_of_finite_of_ringKrullDim_eq _ hfin hdim, hgen, hfin⟩
 
-example : (Ideal.span {(X 0 * X 1 : MvPolynomial (Fin 2) (ZMod 2))}).IsHomogeneous
-      (homogeneousSubmodule (Fin 2) (ZMod 2)) ∧
-    Ideal.span {(X 0 * X 1 : MvPolynomial (Fin 2) (ZMod 2))} ≠ ⊤ := by
-  have h : (X 0 * X 1 : MvPolynomial (Fin 2) (ZMod 2)).IsHomogeneous (1 + 1) :=
-    (isHomogeneous_X _ 0).mul (isHomogeneous_X _ 1)
-  refine ⟨Ideal.homogeneous_span _ _ (by rintro x rfl; exact ⟨_, h⟩),
-    ne_top_of_le_ne_top idealOfVars_ne_top ?_⟩
-  rw [Ideal.span_singleton_le_iff_mem, ← pow_one (idealOfVars _ _)]
-  exact mem_idealOfVars_pow_of_isHomogeneous h (by norm_num)
-
 end Main
 
 end GlobalTheory

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.DepthPays
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormSqUnitaryEmbeddingOrthogonalStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormSqUnitaryEmbeddingOrthogonal
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDecompSmulLatticeEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SqrtAbsNormLeProdNormCmTypeEmbeddingsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneLeNormRationalTranslateStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SqrtAbsNormLeProdNormCmTypeEmbeddings
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneLeNormRationalTranslate
 
 noncomputable section
 
@@ -25,17 +25,17 @@ theorem long_sum : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp 
     rw [e, mulVec_zero, mulVec_zero]
     simp [eu]
   have hz : ∀ τ (u : D.host.E), nrm θ B (stabilizerEmbedding d x) τ (u • zv d) = ‖tauE D τ u‖ := fun τ u => by
-    have h := GlobalTheory.T.norm_sq_unitaryEmbedding_orthogonal D θ hθ Y V d A B hAd x τ 0 u
+    have h := _root_.GlobalTheory.SepPer.norm_sq_unitaryEmbedding_add D θ hθ Y V d A B hAd x τ 0 u
     rw [mulVec_zero, zero_add, hzero] at h
     have h2 : nrm θ B (stabilizerEmbedding d x) τ (u • zv d) ^ 2 = ‖tauE D τ u‖ ^ 2 := by rw [h]; ring
     have h0 : 0 ≤ nrm θ B (stabilizerEmbedding d x) τ (u • zv d) := Real.sqrt_nonneg _
     exact (pow_left_inj₀ h0 (norm_nonneg _) two_ne_zero).1 h2
   have hge : ∀ τ y (u : D.host.E), nrm θ A x τ y ≤ nrm θ B (stabilizerEmbedding d x) τ (frameMat V Y d.ι *ᵥ y + u • zv d) := fun τ y u => by
-    have h := GlobalTheory.T.norm_sq_unitaryEmbedding_orthogonal D θ hθ Y V d A B hAd x τ y u
+    have h := _root_.GlobalTheory.SepPer.norm_sq_unitaryEmbedding_add D θ hθ Y V d A B hAd x τ y u
     have h0 : 0 ≤ nrm θ B (stabilizerEmbedding d x) τ (frameMat V Y d.ι *ᵥ y + u • zv d) := Real.sqrt_nonneg _
     have h1 : 0 ≤ nrm θ A x τ y := Real.sqrt_nonneg _
     nlinarith [sq_nonneg ‖tauE D τ u‖]
-  refine ⟨?_, fun τ => ?_, fun γ z hγ hz' τ => GlobalTheory.T.one_le_norm_rational_translate D θ hθ Y V d B x γ z hγ hz' τ⟩
+  refine ⟨?_, fun τ => ?_, fun γ z hγ hz' τ => _root_.GlobalTheory.SepPer.MajDom.one_le_nrm D θ hθ Y V d B x γ z hγ hz' τ⟩
   · intro 𝔪 h𝔪 w hw hw0
     obtain ⟨y, hy, u, hu, rfl⟩ := GlobalTheory.T.exists_decomp_smul_lattice_embedding D Y V d Λ x 𝔪 w hw
     by_cases hy0 : y = 0
@@ -46,7 +46,7 @@ theorem long_sum : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp 
       have e : ∏ τ, nrm θ B (stabilizerEmbedding d x) τ ((u : D.host.E) • zv d) = ∏ τ, ‖tauE D τ (u : D.host.E)‖ :=
         Finset.prod_congr rfl fun τ _ => hz τ _
       rw [e]
-      refine le_trans ?_ (GlobalTheory.T.sqrt_absNorm_le_prod_norm_cmTypeEmbeddings D 𝔪 u hu hu0)
+      refine le_trans ?_ (_root_.GlobalTheory.CMNorm.sqrt_absNorm_le_prod_tauE D 𝔪 u hu hu0)
       have h1 : s ^ Fintype.card D.what₂.Tau ≤ 1 := pow_le_one₀ hs0 hs1
       have h2 : 0 ≤ Real.sqrt (Ideal.absNorm 𝔪) := Real.sqrt_nonneg _
       nlinarith

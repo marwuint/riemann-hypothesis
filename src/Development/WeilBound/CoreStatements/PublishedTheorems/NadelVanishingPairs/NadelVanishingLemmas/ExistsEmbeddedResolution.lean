@@ -1,12 +1,12 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.BlowupAmpleRelativeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldMapBijectiveOfIsIsoRestrictStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldMapBijectiveOfIsIsoRestrict
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.PullbackCompositionCompatible
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.CanonicalDivisorOfForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDominantOfIsIsoRestrictStatement
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.CanonicalDivisorBirationalCompareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierDivisorPullbackSupportAndEffectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackBijectiveBirationalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierDivisorPullbackSupportAndEffective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackBijectiveBirational
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOrdSubOneLeOrdWedgeDifferentials
@@ -51,7 +51,7 @@ theorem GlobalTheory.exists_logRes_ample : GlobalTheory.Published.Principalisati
 
   set η₀ := EtaleKlt.ratPull p s₀ n η with hη₀def
   have hη₀ : η₀ ≠ 0 := fun h =>
-    hη ((GlobalTheory.T.rationalTopFormPullback_bijective_birational k X Y₀ p s₀ hbij n).1 (h.trans (map_zero _).symm))
+    hη ((_root_.GlobalTheory.EtaleKlt.ratPull_bijective_of_birational k X Y₀ p s₀ hbij n).1 (h.trans (map_zero _).symm))
   obtain ⟨K₀, hK₀⟩ := (GlobalTheory.T.canonical_divisor_of_form k Y₀ (s₀ ≫ p) n η₀ hη₀).1
 
   set D₀ : CartierDiv Y₀ := pullCart s₀ G - m • K₀ with hD₀
@@ -76,11 +76,11 @@ theorem GlobalTheory.exists_logRes_ample : GlobalTheory.Published.Principalisati
   have hprojY' : IsProjOver ((t ≫ s₀) ≫ p) := by rw [Category.assoc]; exact hprojY
   haveI : IsLocallyNoetherian Y := LocallyOfFiniteType.isLocallyNoetherian (t ≫ s₀ ≫ p)
   have hcomp := GlobalTheory.T.pullback_composition_compatible k X Y₀ Y p s₀ t
-  have hbt := GlobalTheory.T.functionFieldMap_bijective_of_isIso_restrict' Y₀ Y t I.support.compl hne hiso
+  have hbt := _root_.GlobalTheory.Discrepancy.functionFieldMap_bijective_of_isIso_restrict Y₀ Y t I.support.compl hne hiso
   have hbij' : Function.Bijective (functionFieldMap (t ≫ s₀)) := by
     rw [hcomp.1, RingHom.coe_comp]; exact hbt.comp hbij
   have hη₁ : EtaleKlt.ratPull p (t ≫ s₀) n η ≠ 0 := fun h =>
-    hη ((GlobalTheory.T.rationalTopFormPullback_bijective_birational k X Y p (t ≫ s₀) hbij' n).1 (h.trans (map_zero _).symm))
+    hη ((_root_.GlobalTheory.EtaleKlt.ratPull_bijective_of_birational k X Y p (t ≫ s₀) hbij' n).1 (h.trans (map_zero _).symm))
   obtain ⟨K, hK⟩ := (GlobalTheory.T.canonical_divisor_of_form k Y ((t ≫ s₀) ≫ p) n _ hη₁).1
   have hK' : IsDivOfForm K (EtaleKlt.ratPull (s₀ ≫ p) t n η₀) := ((hcomp.2.2 n η K).1 hK)
 
@@ -101,7 +101,7 @@ theorem GlobalTheory.exists_logRes_ample : GlobalTheory.Published.Principalisati
     refine (CartierDiv.supp_add_le _ _).trans (sup_le ?_ ?_)
     · intro y hy
       rw [hB]
-      exact Or.inr ((GlobalTheory.T.cartierDivisorPullback_support_and_effective Y₀ Y t D₀).1 y hy)
+      exact Or.inr ((_root_.GlobalTheory.Discrepancy.pullCart_supp_and_eff Y₀ Y t D₀).1 y hy)
     · intro y hy
       have hy' := supp_neg_le _ (supp_nsmul_le _ m hy)
       rw [hB]

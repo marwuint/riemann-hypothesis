@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LineLatAt
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LevAtZ
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.BaseMatrixGlApply
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
@@ -9,6 +9,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.We
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FinitePartMemFrameStabilizerIffLocalStabilizer
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCompactOpenLatticeStabilizerAtPlaces
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.InLatticeStabilizerAtPlaceOfSupportedStabilizer
+
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.SplitWeil GlobalTheory.LatPair GlobalTheory.SeeSaw GlobalTheory.FinPl ValuativeRel
 open scoped TensorProduct nonZeroDivisors
@@ -89,13 +90,6 @@ theorem moves_conj_iff {V : HSp D} {t : GA D V} (h : GA D V) {L M : Lat V} {P : 
     rwa [show t * (t⁻¹ * h * t * t⁻¹) = h by group] at this
   · have := moves_mul (moves_mul ht H) (moves_inv ht)
     rwa [← mul_assoc] at this
-
-theorem finE_conj_mem_St_iff : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ M : GlobalTheory.FinPl.Lat V), Formalism.L2.DIV.IsFrame β Λ → IsSelfDualC V Λ → IsSelfDualC V M → ∀ t h : GA D V, t ∈ GfC V → h ∈ GfC V → (∀ P, GlobalTheory.FinPl.Moves V t Λ M P) → (Lev.finE V (t⁻¹ * h * t) ∈ Formalism.L2.DIV.St β ↔ ∀ v : GlobalTheory.FinPl.Pl D, GlobalTheory.FinPl.Moves V h M M (· = v)) := by
-  intro D V β Λ M hβ hΛ _ t h _ _ ht
-  haveI : Submodule.IsLattice D.host.E Λ := hΛ.1
-  have hfg : Λ.FG := Submodule.IsLattice.fg (A := D.host.E)
-  rw [GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V β Λ hβ]
-  exact forall_congr' fun v => (moves_iff_stabLoc V Λ hfg v _).symm.trans (moves_conj_iff h (ht _))
 
 end GlobalTheory.StMoves
 

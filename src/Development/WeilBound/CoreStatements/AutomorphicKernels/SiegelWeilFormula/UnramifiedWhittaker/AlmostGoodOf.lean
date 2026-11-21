@@ -53,8 +53,6 @@ def TraceDualAt : Prop :=
   ∀ a : Fv F v ⊗[F] E,
     (∀ b ∈ Rv bs v, Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (a * b) ∈ v.adicCompletionIntegers F) ↔ a ∈ Rv bs v
 
-def AlmostGoodOf : Prop := FinInt → PsiBasic → PsiCond → LocRingE → LocMat → AlmostGood
-
 end PositivityTheory.SiegelWeilFormula.Gunr
 
 end

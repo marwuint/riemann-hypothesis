@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsRealCoord
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SiegelCover
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelSetEntryBoundOfLatticeMin
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ReducedBasisIntegralConjEntriesBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelReducedIntegralFormBoundedEntriesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ReducedBasisIntegralConjEntriesBounded
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelReducedIntegralFormBoundedEntries
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CuspIntegralBasisCovolumeConstant
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MulMatTranspose
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TraceFormRealCoordinatesIntegralGramStatement
@@ -17,17 +17,6 @@ noncomputable section
 namespace GlobalTheory.CuspGeo.RedBasisPf
 
 variable (I : AutInst)
-
-theorem vec_add (y : I.Ginf) (u w : Fin I.n → I.E) : vec I y (u + w) = vec I y u + vec I y w := by
-  funext v
-  simp only [vec, Pi.add_apply]
-  rw [← Matrix.mulVec_add, ← Matrix.mulVec_add]
-  congr 2
-  funext i
-  simp
-
-def vecHom (y : I.Ginf) : (Fin I.n → I.E) →+ (InfinitePlace I.F → Fin I.n → ℂ) :=
-  AddMonoidHom.mk' (vec I y) (vec_add I y)
 
 theorem vec_sum_zsmul (y : I.Ginf) {N : ℕ} (z : Fin N → ℤ) (e : Fin N → Fin I.n → I.E) :
     vec I y (∑ j, z j • e j) = ∑ j, z j • vec I y (e j) := by
@@ -161,7 +150,7 @@ theorem GlobalTheory.CuspGeo.redBasis_holds : ∀ I : AutInst, RedBasis I := by
     rw [integralBasis_apply]
     exact RingOfIntegers.isIntegral_coe _
   choose X hX using fun k => MulCoord.mul_conj_coord I N ρ hρ _ (hint k)
-  choose C2 hC2 using fun k => GlobalTheory.T.reducedBasis_integral_conj_entries_bounded N C0 (entSum (X k))
+  choose C2 hC2 using fun k => _root_.GlobalTheory.ReducedBasisBound.integral_conj_bounded N C0 (entSum (X k))
   obtain ⟨Xt, μ, c, hμ, hc, hXt⟩ := GlobalTheory.T.traceForm_real_coordinates_integral_gram I N ρ hρ
   obtain ⟨s, hs⟩ : ∃ s : ℝ, lam * s * lam = 1 := ⟨lam⁻¹ * lam⁻¹, by field_simp⟩
   obtain ⟨μ', hμ'0, hμ'⟩ : ∃ μ' : ℝ, μ' ≠ 0 ∧ lam * lam * μ = μ' * s := by
@@ -171,7 +160,7 @@ theorem GlobalTheory.CuspGeo.redBasis_holds : ∀ I : AutInst, RedBasis I := by
       linarith
     rw [hs']
     field_simp
-  obtain ⟨C3, hC3⟩ := GlobalTheory.T.siegelReduced_integral_form_bounded_entries N C0 (max |μ'| (entSum (s • Xt)))
+  obtain ⟨C3, hC3⟩ := _root_.GlobalTheory.RedBound.reduced_bound N C0 (max |μ'| (entSum (s • Xt)))
   refine ⟨N, max (∑ k, |C2 k|) C3, Real.sqrt N * (lam⁻¹ * C1 / c' ^ N), fun y => ?_⟩
   have hdy := hdet y
   obtain ⟨S, hSu, hSd⟩ : ∃ S : Matrix (Fin N) (Fin N) ℤ, IsUnit S.det ∧

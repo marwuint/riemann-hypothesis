@@ -53,9 +53,6 @@ theorem form_fin_inf_of (h1 : BigC fun {D} {_} _ _ {_} {_} {A} {_} _ _ _ {R} F c
     obtain ⟨u, e, hu⟩ := hy y
     exact ⟨u, e, hu.trans (mul_le_mul_of_nonneg_right hK hq)⟩
 
-theorem form_fin_inf : GlobalTheory.FunPr.Hypotheses₂ → FinFormK ∧ InfFormK := fun _ =>
-  form_fin_inf_of GlobalTheory.T.integralGoodForm_values_mem_scaledDualWeylLattice GlobalTheory.T.baseTupleGoodForm_values_bounded_by_classSum GlobalTheory.T.kernelLossBound_nonneg_and_level_card_le_exp
-
 end GlobalTheory.FormVal
 
 end

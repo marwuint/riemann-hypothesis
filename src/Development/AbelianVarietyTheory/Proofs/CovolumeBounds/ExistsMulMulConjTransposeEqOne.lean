@@ -561,12 +561,6 @@ theorem card_specialUnitaryGroup [Finite K] {q : ℕ} (hq : Nat.card K = q ^ 2)
   rw [prod_eq _ _ (by positivity), sub_neg_eq_add] at h2
   exact mul_right_cancel₀ (by positivity) h2
 
-section Abstract
-
-variable {V : Type*} [AddCommGroup V] [Module K V] {h : V →ₗ[K] V →ₗ⋆[K] K}
-
-end Abstract
-
 end Groups
 
 section Linear
@@ -629,21 +623,5 @@ theorem card_specialLinearGroup {q : ℕ} (hq : Nat.card F = q)
   exact_mod_cast hq2.ne'
 
 end Linear
-
-section Frobenius
-
-@[reducible] noncomputable def frobeniusStarRing (F K : Type*) [Field F] [Fintype F] [Field K]
-    [Algebra F K] (h2 : finrank F K = 2) : StarRing K :=
-  haveI : FiniteDimensional F K := Module.finite_of_finrank_pos (by omega)
-  haveI : Finite K := Module.finite_of_finite F
-  { star := FiniteField.frobeniusAlgEquivOfAlgebraic F K
-    star_involutive := fun x => by
-      have h := pow_orderOf_eq_one (FiniteField.frobeniusAlgEquivOfAlgebraic F K)
-      rw [FiniteField.orderOf_frobeniusAlgEquivOfAlgebraic, h2] at h
-      exact DFunLike.congr_fun h x
-    star_mul := fun x y => by rw [map_mul, mul_comm]
-    star_add := fun x y => map_add _ x y }
-
-end Frobenius
 
 end GlobalTheory.FiniteOrders

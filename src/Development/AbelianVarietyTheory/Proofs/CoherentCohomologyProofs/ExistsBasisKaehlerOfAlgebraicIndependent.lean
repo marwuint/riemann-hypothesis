@@ -37,60 +37,7 @@ theorem alternating_smul_add_mem (ω : M [⋀^ι]→ₗ[R] N) (P : Submodule R N
     rw [ω.map_eq_zero_of_eq _ (i := j) (j := i) (by simp [hi, hj]) hji]
     exact P.zero_mem
 
-theorem eq_lift_det_smul_ιMulti {n : ℕ} (b : Basis (Fin n) R M) (η : ⋀[R]^n M) :
-    η = exteriorPower.alternatingMapLinearEquiv b.det η • exteriorPower.ιMulti R n b := by
-  have key : (LinearMap.id : (⋀[R]^n M) →ₗ[R] (⋀[R]^n M))
-      = (exteriorPower.alternatingMapLinearEquiv b.det).smulRight (exteriorPower.ιMulti R n b) := by
-    apply exteriorPower.linearMap_ext
-    ext1 v
-    simp only [LinearMap.compAlternatingMap_apply, LinearMap.id_apply, LinearMap.smulRight_apply,
-      exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]
-    have e := alternating_map_sum_smul_eq_det_smul (exteriorPower.ιMulti R n (M := M))
-      (b.toMatrix v).transpose b
-    rw [Matrix.det_transpose, ← Basis.det_apply] at e
-    rw [← e]
-    congr 1
-    funext i
-    simp [Basis.toMatrix_apply]
-  exact congrArg (fun f : (⋀[R]^n M) →ₗ[R] (⋀[R]^n M) => f η) key
-
 end Alternating
-
-section TwoInIdeal
-
-variable (R : Type*) {A : Type*} [CommRing R] [CommRing A] [Algebra R A] {p : ℕ}
-
-theorem dWedge_mem_of_two_mem (t : A) (x : Fin p → A) {i j : Fin p} (hij : i ≠ j)
-    (hi : t ∣ x i) (hj : t ∣ x j) :
-    ∃ η : ⋀[A]^p Ω[A⁄R], dWedge R x = t • η := by
-  classical
-  let P : Submodule A (⋀[A]^p Ω[A⁄R]) := LinearMap.range (t • LinearMap.id)
-  have hP : ∀ (v : Fin p → Ω[A⁄R]) (k : Fin p) (u : Ω[A⁄R]), v k = t • u →
-      exteriorPower.ιMulti A p v ∈ P := by
-    intro v k u h
-    refine ⟨exteriorPower.ιMulti A p (Function.update v k u), ?_⟩
-    rw [LinearMap.smul_apply, LinearMap.id_apply, ← AlternatingMap.map_update_smul, ← h,
-      Function.update_eq_self]
-  have hx : ∀ k, ∃ (a : A) (w : Ω[A⁄R]), D R A (x k) = a • D R A t + w ∧
-      (t ∣ x k → ∃ u, w = t • u) := by
-    intro k
-    by_cases hk : t ∣ x k
-    · obtain ⟨c, hc⟩ := hk
-      exact ⟨c, t • D R A c, by rw [hc, Derivation.leibniz, add_comm], fun _ => ⟨_, rfl⟩⟩
-    · exact ⟨0, D R A (x k), by simp, fun h => absurd h hk⟩
-  choose a w hw hw' using hx
-  obtain ⟨ui, hui⟩ := hw' i hi
-  obtain ⟨uj, huj⟩ := hw' j hj
-  have : dWedge R x ∈ P := by
-    rw [dWedge, funext hw]
-    refine alternating_smul_add_mem _ P _ a w (hP w i ui hui) fun k => ?_
-    by_cases hk : i = k
-    · exact hP _ j uj (by rw [Function.update_of_ne (hk ▸ hij.symm), huj])
-    · exact hP _ i ui (by rw [Function.update_of_ne hk, hui])
-  obtain ⟨η, hη⟩ := this
-  exact ⟨η, hη.symm⟩
-
-end TwoInIdeal
 
 section RegForms
 
@@ -110,25 +57,11 @@ variable {V p}
       = exteriorPower.ιMulti F p (fun k => KaehlerDifferential.map K K V F (v k)) :=
   exteriorPowerMapOver_ιMulti _ _
 
-theorem formMap_dWedge (x : Fin p → V) :
-    formMap K V F p (dWedge K x) = dWedge K (fun k => algebraMap V F (x k)) := by
-  simp [dWedge]
-
 theorem ιMulti_mem_regForms (w : Fin p → Ω[F⁄K])
     (hw : ∀ k, w k ∈ LinearMap.range (KaehlerDifferential.map K K V F)) :
     exteriorPower.ιMulti F p w ∈ regForms K V F p := by
   choose v hv using hw
   exact ⟨exteriorPower.ιMulti V p v, by rw [formMap_ιMulti, funext hv]⟩
-
-theorem dWedge_mem_regForms (x : Fin p → V) :
-    dWedge K (fun k => algebraMap V F (x k)) ∈ regForms K V F p :=
-  ⟨_, formMap_dWedge K F x⟩
-
-theorem exists_dWedge_eq_smul_regForms (t : V) (x : Fin p → V) {i j : Fin p} (hij : i ≠ j)
-    (hi : t ∣ x i) (hj : t ∣ x j) :
-    ∃ η ∈ regForms K V F p, dWedge K (fun k => algebraMap V F (x k)) = t • η := by
-  obtain ⟨η, hη⟩ := dWedge_mem_of_two_mem K t x hij hi hj
-  exact ⟨_, ⟨η, rfl⟩, by rw [← formMap_dWedge, hη, map_smul]⟩
 
 end RegForms
 
@@ -170,16 +103,6 @@ theorem dlog_unit_mem_range (u : Vˣ) :
       ∈ LinearMap.range (KaehlerDifferential.map K K V F) := by
   refine ⟨((u⁻¹ : Vˣ) : V) • D K V u, ?_⟩
   rw [map_smul, map_D, ← map_units_inv, algebraMap_smul]
-
-theorem dlogWedge_mem_regForms (S : Finset (Fin p)) (x : Fin p → V)
-    (hS : ∀ k ∈ S, IsUnit (x k)) :
-    dlogWedge K S (fun k => algebraMap V F (x k)) ∈ regForms K V F p := by
-  refine ιMulti_mem_regForms K F _ fun k => ?_
-  split_ifs with hk
-  · obtain ⟨u, hu⟩ := hS k hk
-    simp only [← hu]
-    exact dlog_unit_mem_range K u
-  · exact ⟨D K V (x k), map_D ..⟩
 
 theorem smul_dlogWedge_mem_regForms (t : V) (ht : algebraMap V F t ≠ 0) (S : Finset (Fin p))
     (x : Fin p → F) (hS : ∀ k ∈ S, ∃ (m : ℤ) (u : Vˣ), x k = algebraMap V F u * algebraMap V F t ^ m)
@@ -235,19 +158,6 @@ noncomputable def ordTop_vw (f : F) : WithTop ℤ :=
 theorem ordTop_vw_of_ne_zero {f : F} (hf : f ≠ 0) :
     ordTop_vw V f = (WithZero.log (Ring.ordFrac V f) : ℤ) := if_neg hf
 
-theorem ordTop_vw_eq_top_iff {f : F} : ordTop_vw V f = ⊤ ↔ f = 0 := by
-  by_cases hf : f = 0
-  · simp [hf]
-  · simp [hf, ordTop_vw_of_ne_zero V hf]
-
-theorem ordTop_vw_mul (f g : F) : ordTop_vw V (f * g) = ordTop_vw V f + ordTop_vw V g := by
-  by_cases hf : f = 0
-  · simp [hf]
-  by_cases hg : g = 0
-  · simp [hg]
-  rw [ordTop_vw_of_ne_zero V hf, ordTop_vw_of_ne_zero V hg, ordTop_vw_of_ne_zero V (mul_ne_zero hf hg),
-    map_mul, WithZero.log_mul ((map_ne_zero _).mpr hf) ((map_ne_zero _).mpr hg), WithTop.coe_add]
-
 variable {V}
 
 theorem ordTop_vw_unit_mul_zpow {t : V} (ht : Irreducible t) (u : Vˣ) (m : ℤ) :
@@ -301,9 +211,6 @@ noncomputable def topFormGen (b : Basis (Fin n) V Ω[V⁄K]) : ⋀[F]^n Ω[F⁄K
 noncomputable def topFormCoeff (b : Basis (Fin n) V Ω[V⁄K]) : (⋀[F]^n Ω[F⁄K]) →ₗ[F] F :=
   exteriorPower.alternatingMapLinearEquiv (fracKaehlerBasis F b).det
 
-noncomputable def topFormOrd_vw (b : Basis (Fin n) V Ω[V⁄K]) (ω : ⋀[F]^n Ω[F⁄K]) : WithTop ℤ :=
-  ordTop_vw V (topFormCoeff F b ω)
-
 variable {F} (b : Basis (Fin n) V Ω[V⁄K])
 
 omit [IsDomain V] [IsDiscreteValuationRing V] in
@@ -317,118 +224,6 @@ omit [IsDomain V] [IsDiscreteValuationRing V] in
 @[simp] theorem topFormCoeff_topFormGen : topFormCoeff F b (topFormGen F b) = 1 := by
   rw [topFormGen_eq, topFormCoeff, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti,
     Basis.det_self]
-
-omit [IsDomain V] [IsDiscreteValuationRing V] in
-
-theorem topFormCoeff_smul_topFormGen (ω : ⋀[F]^n Ω[F⁄K]) :
-    topFormCoeff F b ω • topFormGen F b = ω := by
-  rw [topFormGen_eq]
-  exact (eq_lift_det_smul_ιMulti _ ω).symm
-
-omit [IsDomain V] [IsDiscreteValuationRing V] in
-theorem topFormGen_ne_zero : topFormGen F b ≠ 0 := by
-  intro h
-  have := topFormCoeff_topFormGen (F := F) b
-  rw [h, map_zero] at this
-  exact zero_ne_one this
-
-omit [IsDomain V] [IsDiscreteValuationRing V] in
-
-theorem mem_regForms_iff (ω : ⋀[F]^n Ω[F⁄K]) :
-    ω ∈ regForms K V F n ↔ ∃ a : V, ω = a • topFormGen F b := by
-  constructor
-  · rintro ⟨η, rfl⟩
-    refine ⟨exteriorPower.alternatingMapLinearEquiv b.det η, ?_⟩
-    rw [topFormGen, ← map_smul, ← eq_lift_det_smul_ιMulti]
-  · rintro ⟨a, rfl⟩
-    exact Submodule.smul_mem _ _ ⟨_, rfl⟩
-
-theorem topFormOrd_vw_smul_topFormGen (f : F) :
-    topFormOrd_vw F b (f • topFormGen F b) = ordTop_vw V f := by
-  simp [topFormOrd_vw]
-
-theorem topFormOrd_vw_smul (f : F) (ω : ⋀[F]^n Ω[F⁄K]) :
-    topFormOrd_vw F b (f • ω) = ordTop_vw V f + topFormOrd_vw F b ω := by
-  simp [topFormOrd_vw, ordTop_vw_mul]
-
-theorem topFormOrd_vw_eq_top_iff (ω : ⋀[F]^n Ω[F⁄K]) : topFormOrd_vw F b ω = ⊤ ↔ ω = 0 := by
-  rw [topFormOrd_vw, ordTop_vw_eq_top_iff]
-  refine ⟨fun h => ?_, fun h => by rw [h, map_zero]⟩
-  rw [← topFormCoeff_smul_topFormGen b ω, h, zero_smul]
-
-theorem le_topFormOrd_vw_iff {t : V} (ht : Irreducible t) (m : ℤ) (ω : ⋀[F]^n Ω[F⁄K]) :
-    (m : WithTop ℤ) ≤ topFormOrd_vw F b ω ↔
-      ∃ η ∈ regForms K V F n, ω = algebraMap V F t ^ m • η := by
-  rw [topFormOrd_vw, le_ordTop_vw_iff ht]
-  constructor
-  · rintro ⟨a, ha⟩
-    refine ⟨_, (mem_regForms_iff b _).mpr ⟨a, rfl⟩, ?_⟩
-    rw [← algebraMap_smul F a, smul_smul, ← ha, topFormCoeff_smul_topFormGen]
-  · rintro ⟨η, hη, rfl⟩
-    obtain ⟨a, rfl⟩ := (mem_regForms_iff b η).mp hη
-    exact ⟨a, by rw [← algebraMap_smul F a, smul_smul, map_smul, topFormCoeff_topFormGen,
-      smul_eq_mul, mul_one]⟩
-
-theorem topFormOrd_vw_nonneg_iff (ω : ⋀[F]^n Ω[F⁄K]) :
-    0 ≤ topFormOrd_vw F b ω ↔ ω ∈ regForms K V F n := by
-  obtain ⟨t, ht⟩ := IsDiscreteValuationRing.exists_irreducible V
-  simpa using le_topFormOrd_vw_iff b ht 0 ω
-
-theorem topFormOrd_vw_eq (b' : Basis (Fin n) V Ω[V⁄K]) (ω : ⋀[F]^n Ω[F⁄K]) :
-    topFormOrd_vw F b ω = topFormOrd_vw F b' ω := by
-  obtain ⟨t, ht⟩ := IsDiscreteValuationRing.exists_irreducible V
-  have key : ∀ c c' : Basis (Fin n) V Ω[V⁄K], topFormOrd_vw F c ω ≤ topFormOrd_vw F c' ω := by
-    intro c c'
-    by_cases h : topFormOrd_vw F c ω = ⊤
-    · rw [(topFormOrd_vw_eq_top_iff c' ω).mpr ((topFormOrd_vw_eq_top_iff c ω).mp h)]
-      exact le_top
-    · obtain ⟨m, hm⟩ := WithTop.ne_top_iff_exists.mp h
-      rw [← hm, le_topFormOrd_vw_iff c' ht, ← le_topFormOrd_vw_iff c ht, hm]
-  exact le_antisymm (key b b') (key b' b)
-
-theorem topFormOrd_vw_topFormGen (b' : Basis (Fin n) V Ω[V⁄K]) :
-    topFormOrd_vw F b (topFormGen F b') = 0 := by
-  obtain ⟨t, ht⟩ := IsDiscreteValuationRing.exists_irreducible V
-  rw [topFormOrd_vw_eq b b', topFormOrd_vw, topFormCoeff_topFormGen]
-  simpa using ordTop_vw_unit_mul_zpow (F := F) ht 1 0
-
-theorem topFormOrd_vw_dWedge_nonneg (x : Fin n → V) :
-    0 ≤ topFormOrd_vw F b (dWedge K fun k => algebraMap V F (x k)) :=
-  (topFormOrd_vw_nonneg_iff b _).mpr (dWedge_mem_regForms K F x)
-
-theorem one_le_topFormOrd_vw_dWedge (x : Fin n → V) {i j : Fin n} (hij : i ≠ j)
-    (hi : x i ∈ maximalIdeal V) (hj : x j ∈ maximalIdeal V) :
-    1 ≤ topFormOrd_vw F b (dWedge K fun k => algebraMap V F (x k)) := by
-  obtain ⟨t, ht⟩ := IsDiscreteValuationRing.exists_irreducible V
-  rw [ht.maximalIdeal_eq, Ideal.mem_span_singleton] at hi hj
-  obtain ⟨η, hη, h⟩ := exists_dWedge_eq_smul_regForms K F t x hij hi hj
-  exact (le_topFormOrd_vw_iff b ht 1 _).mpr ⟨η, hη, by rw [h, zpow_one, algebraMap_smul]⟩
-
-theorem neg_one_le_topFormOrd_vw_dlogWedge (S : Finset (Fin n)) (x : Fin n → F)
-    (hS : ∀ k ∈ S, x k ≠ 0) (hS' : ∀ k ∉ S, x k ∈ Set.range (algebraMap V F)) :
-    ((-1 : ℤ) : WithTop ℤ) ≤ topFormOrd_vw F b (dlogWedge K S x) := by
-  obtain ⟨t, ht⟩ := IsDiscreteValuationRing.exists_irreducible V
-  have h₀ : algebraMap V F t ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective V F)).mpr ht.ne_zero
-  refine (le_topFormOrd_vw_iff b ht (-1) _).mpr ⟨_, smul_dlogWedge_mem_regForms K t h₀ S x
-    (fun k hk => exists_eq_unit_mul_zpow ht (hS k hk)) hS', ?_⟩
-  rw [← algebraMap_smul F t, smul_smul, zpow_neg_one, inv_mul_cancel₀ h₀, one_smul]
-
-theorem topFormOrd_vw_dlogWedge_nonneg (S : Finset (Fin n)) (x : Fin n → V)
-    (hS : ∀ k ∈ S, IsUnit (x k)) :
-    0 ≤ topFormOrd_vw F b (dlogWedge K S fun k => algebraMap V F (x k)) :=
-  (topFormOrd_vw_nonneg_iff b _).mpr (dlogWedge_mem_regForms K S x hS)
-
-theorem topFormOrd_vw_dWedge_basis (z : Fin n → V) (c : Basis (Fin n) V Ω[V⁄K])
-    (hc : ∀ k, c k = D K V (z k)) :
-    topFormOrd_vw F b (dWedge K fun k => algebraMap V F (z k)) = 0 := by
-  rw [← topFormOrd_vw_topFormGen (F := F) b c, ← formMap_dWedge, topFormGen, dWedge, ← funext hc]
-
-theorem topFormOrd_vw_dlogWedge_basis (z : Fin n → V) (c : Basis (Fin n) V Ω[V⁄K])
-    (hc : ∀ k, c k = D K V (z k)) {i : Fin n} (hi : Irreducible (z i)) :
-    topFormOrd_vw F b (dlogWedge K {i} fun k => algebraMap V F (z k)) = ((-1 : ℤ) : WithTop ℤ) := by
-  rw [dlogWedge_eq_smul, topFormOrd_vw_smul, topFormOrd_vw_dWedge_basis b z c hc, add_zero,
-    Finset.prod_singleton]
-  simpa using ordTop_vw_unit_mul_zpow (F := F) hi 1 (-1)
 
 end Order
 
@@ -596,84 +391,5 @@ theorem trdeg_residueField_of_trdeg {n : ℕ} (hn : Algebra.trdeg K F = n) :
   rw [← rank_kaehler_eq_trdeg, ← finrank_eq_rank, ← h₂, Nat.add_sub_cancel]
 
 end Existence
-
-section Main
-
-theorem topFormOrd_vw_properties (K V F : Type*) [Field K] [CharZero K] [CommRing V] [IsDomain V]
-    [IsDiscreteValuationRing V] [Algebra K V] [Algebra.EssFiniteType K V]
-    [Algebra.FormallySmooth K V] [Field F] [Algebra V F] [IsFractionRing V F] [Algebra K F]
-    [IsScalarTower K V F] {n : ℕ} (hn : Algebra.trdeg K F = n) :
-    Algebra.trdeg K (ResidueField V) = (n - 1 : ℕ) ∧
-    (∀ t : V, Irreducible t → ∃ (h : 0 < n) (z : Fin n → V) (b : Basis (Fin n) V Ω[V⁄K]),
-      z ⟨0, h⟩ = t ∧ ∀ k, b k = D K V (z k)) ∧
-    Nonempty (Basis (Fin n) V Ω[V⁄K]) ∧
-    ∀ b : Basis (Fin n) V Ω[V⁄K],
-      (∀ (b' : Basis (Fin n) V Ω[V⁄K]) (ω : ⋀[F]^n Ω[F⁄K]),
-        topFormOrd_vw F b ω = topFormOrd_vw F b' ω) ∧
-      (∀ ω : ⋀[F]^n Ω[F⁄K], ∃! f : F, ω = f • topFormGen F b) ∧
-      (∀ f : F, topFormOrd_vw F b (f • topFormGen F b) = ordTop_vw V f) ∧
-      (∀ x : Fin n → V, 0 ≤ topFormOrd_vw F b (dWedge K fun i => algebraMap V F (x i))) ∧
-      (∀ (x : Fin n → V) (i j : Fin n), i ≠ j → x i ∈ maximalIdeal V → x j ∈ maximalIdeal V →
-        1 ≤ topFormOrd_vw F b (dWedge K fun i => algebraMap V F (x i))) ∧
-      (∀ (k : ℕ) (x : Fin n → F), (∀ i : Fin n, i.val < k → x i ≠ 0) →
-        (∀ i : Fin n, k ≤ i.val → x i ∈ Set.range (algebraMap V F)) →
-        ((-1 : ℤ) : WithTop ℤ) ≤ topFormOrd_vw F b (exteriorPower.ιMulti F n fun i =>
-          if i.val < k then (x i)⁻¹ • D K F (x i) else D K F (x i))) ∧
-      (∀ (k : ℕ) (x : Fin n → V), (∀ i : Fin n, i.val < k → IsUnit (x i)) →
-        0 ≤ topFormOrd_vw F b (exteriorPower.ιMulti F n fun i =>
-          if i.val < k then (algebraMap V F (x i))⁻¹ • D K F (algebraMap V F (x i))
-          else D K F (algebraMap V F (x i)))) := by
-  refine ⟨trdeg_residueField_of_trdeg K V F hn,
-    fun t ht => exists_basis_kaehler_of_trdeg K F hn ht, ?_, fun b =>
-    ⟨topFormOrd_vw_eq b, fun ω => ⟨_, (topFormCoeff_smul_topFormGen b ω).symm, ?_⟩,
-      topFormOrd_vw_smul_topFormGen b, topFormOrd_vw_dWedge_nonneg b,
-      fun x i j hij hi hj => one_le_topFormOrd_vw_dWedge b x hij hi hj, ?_, ?_⟩⟩
-  · obtain ⟨t, ht⟩ := IsDiscreteValuationRing.exists_irreducible V
-    obtain ⟨-, -, b, -, -⟩ := exists_basis_kaehler_of_trdeg K F hn ht
-    exact ⟨b⟩
-  · rintro f rfl
-    simp
-  · intro k x h₁ h₂
-    have := neg_one_le_topFormOrd_vw_dlogWedge b (Finset.univ.filter fun i => i.val < k) x
-      (fun i hi => h₁ i (by simpa using hi)) (fun i hi => h₂ i (by simpa using hi))
-    simpa only [dlogWedge, Finset.mem_filter, Finset.mem_univ, true_and] using this
-  · intro k x h₁
-    have := topFormOrd_vw_dlogWedge_nonneg (F := F) b (Finset.univ.filter fun i => i.val < k) x
-      (fun i hi => h₁ i (by simpa using hi))
-    simpa only [dlogWedge, Finset.mem_filter, Finset.mem_univ, true_and] using this
-
-end Main
-
-section Example
-
-open Polynomial
-
-variable (K : Type*) [Field K]
-
-theorem exists_smooth_discreteValuationRing :
-    ∃ (V : Subalgebra K (RatFunc K)) (_ : IsDiscreteValuationRing V),
-      Algebra.EssFiniteType K V ∧ Algebra.FormallySmooth K V ∧ IsFractionRing V (RatFunc K) ∧
-        Algebra.trdeg K (RatFunc K) = (1 : ℕ) := by
-  let 𝔭 : Ideal K[X] := Ideal.span {X}
-  haveI : 𝔭.IsPrime := (Ideal.span_singleton_prime X_ne_zero).mpr prime_X
-  have h𝔭 : 𝔭 ≠ ⊥ := by simp [𝔭]
-  let W : Subalgebra K[X] (RatFunc K) :=
-    Localization.subalgebra.ofField (RatFunc K) 𝔭.primeCompl 𝔭.primeCompl_le_nonZeroDivisors
-  haveI : IsLocalization.AtPrime W 𝔭 := Localization.subalgebra.isLocalization_ofField ..
-  haveI h₁ : IsDiscreteValuationRing W :=
-    IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain K[X] h𝔭 W
-  haveI : Algebra.EssFiniteType K[X] W := .of_isLocalization W 𝔭.primeCompl
-  haveI : Algebra.FormallySmooth K[X] W := .of_isLocalization 𝔭.primeCompl
-  have h₂ : Algebra.EssFiniteType K W := .comp K K[X] W
-  have h₃ : Algebra.FormallySmooth K W := .comp K K[X] W
-  have h₄ : IsFractionRing W (RatFunc K) :=
-    IsFractionRing.isFractionRing_of_isDomain_of_isLocalization 𝔭.primeCompl W (RatFunc K)
-  refine ⟨W.restrictScalars K, h₁, h₂, h₃, h₄, ?_⟩
-  haveI : Algebra.IsAlgebraic K[X] (RatFunc K) :=
-    IsLocalization.isAlgebraic (RatFunc K) (nonZeroDivisors K[X])
-  rw [← trdeg_add_eq K K[X], trdeg_eq_zero (R := K[X]) (A := RatFunc K)]
-  simp
-
-end Example
 
 end GlobalTheory

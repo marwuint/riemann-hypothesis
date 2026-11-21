@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CartFrSgn
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsDiscreteSeriesNegSignatureOfIsDiscreteSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AutomorphicCuspFormsHermitianSpaceSignTwistStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsDiscreteSeriesNegSignatureOfIsDiscreteSeries
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AutomorphicCuspFormsHermitianSpaceSignTwist
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SignedUnitaryGroupCompatStatement
 
 noncomputable section
@@ -27,7 +27,7 @@ def negM {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) : DSModel (s
     refine ⟨h1, q, hq, ?_⟩
     rw [hS, GlobalTheory.SignedHC.flip, Finset.image_image]
     rfl
-  ds τ := GlobalTheory.T.isDiscreteSeries_neg_signature_of_isDiscreteSeries _ _ _ _ _ (M.ds τ)
+  ds τ := _root_.GlobalTheory.PairLift.isDS_flip _ _ _ _ _ (M.ds τ)
   fr_unit := M.fr_unit
   fr_gram τ := by
     have e : gramAt D (neg V) τ = -gramAt D V τ := by ext i j; simp [gramAt, neg_gram]
@@ -127,8 +127,8 @@ theorem eq_symm_update (v : M.Vec) (τ : D.what₂.Tau) (w : M.sm τ) :
   funext fun ρ => Function.apply_update (fun ρ (u : M.sm ρ) => (smEquiv M θ hθ ρ).symm u) v τ w ρ
 
 theorem isMultMap_toNeg {T : MMap M} (hT : IsMultMap θ M ∅ 1 T) : IsMultMap θ (negM M) ∅ 1 (toNeg M θ hθ T) where
-  aut v := ((GlobalTheory.T.automorphic_cusp_forms_hermitianSpaceSignTwist D θ hθ true V _).1).2 (hT.aut _)
-  cusp v := ((GlobalTheory.T.automorphic_cusp_forms_hermitianSpaceSignTwist D θ hθ true V _).2).2 (hT.cusp _)
+  aut v := ((_root_.GlobalTheory.sgn_fun_cusp D θ hθ true V _).1).2 (hT.aut _)
+  cusp v := ((_root_.GlobalTheory.sgn_fun_cusp D θ hθ true V _).2).2 (hT.cusp _)
   lev v k hk := absurd hk (Set.notMem_empty _)
   equiv τ g hg v w hw := by
     classical
@@ -152,11 +152,11 @@ theorem isMultMap_ofNeg {T : MMap (negM M)} (hT : IsMultMap θ (negM M) ∅ 1 T)
   aut v := by
     have e : (fun g => ofNeg M θ hθ T v (ofSgn true V g)) = T (fun τ => (smEquiv M θ hθ τ).symm (v τ)) := by
       funext g; rw [ofNeg_apply, MulEquiv.symm_apply_apply]
-    exact ((GlobalTheory.T.automorphic_cusp_forms_hermitianSpaceSignTwist D θ hθ true V _).1).1 (e ▸ hT.aut _)
+    exact ((_root_.GlobalTheory.sgn_fun_cusp D θ hθ true V _).1).1 (e ▸ hT.aut _)
   cusp v := by
     have e : (fun g => ofNeg M θ hθ T v (ofSgn true V g)) = T (fun τ => (smEquiv M θ hθ τ).symm (v τ)) := by
       funext g; rw [ofNeg_apply, MulEquiv.symm_apply_apply]
-    exact ((GlobalTheory.T.automorphic_cusp_forms_hermitianSpaceSignTwist D θ hθ true V _).2).1 (e ▸ hT.cusp _)
+    exact ((_root_.GlobalTheory.sgn_fun_cusp D θ hθ true V _).2).1 (e ▸ hT.cusp _)
   lev v k hk := absurd hk (Set.notMem_empty _)
   equiv τ g hg v w hw := by
     classical

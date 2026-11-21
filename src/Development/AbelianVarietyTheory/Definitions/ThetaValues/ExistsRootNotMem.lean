@@ -59,8 +59,6 @@ def galRul {ta : c.F ≃+* c.F} (h : Fixes c ta) (f : Rul Xo c) : Rul Xo c :=
 def covAut {n : ℕ} (d : DeltaDat Xo c n) (ta : c.F ≃+* c.F) : d.c₂.F ≃+* d.c₂.F :=
   (d.eF.symm.toRingEquiv.trans ta).trans d.eF.toRingEquiv
 
-theorem fixes_refl : Fixes c (RingEquiv.refl c.F) := ⟨fun _ _ => rfl, fun _ => rfl⟩
-
 theorem Tw.val_algebraMap {K : Type} [Field K] (ta : K ≃+* K) (S : Type) [CommRing S] [Algebra K S] (a : K) :
     (algebraMap K (Tw ta S) a).val = algebraMap K S (ta a) := rfl
 
@@ -95,12 +93,5 @@ theorem fixes_covAut {n : ℕ} (d : DeltaDat Xo c n) (hA : d.l₂.A = 1) {ta : c
     · have : zeta d.l₂.A = 1 := by rw [hA]; simp [zeta]
       rw [this]; exact one_mem _
   exact h.base ⟨a, hle a.2⟩
-
-example {ta : c.F ≃+* c.F} (h : Fixes c ta) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
-    (twPt h y).x = y.x := rfl
-
-example : (algebraMap ℂ (Tw Complex.conjAe.toRingEquiv ℂ) Complex.I).val = -Complex.I := by
-  rw [Tw.val_algebraMap]
-  simp
 
 end GlobalTheory.GalTw

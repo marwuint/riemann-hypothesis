@@ -87,13 +87,6 @@ theorem _root_.GlobalTheory.heckeEig_iSup_eq_top_of_sep {O X M : Type} [CommRing
 theorem eigSpan_of_record (D : D7) : D.nd.EigSpan :=
   fun i => GlobalTheory.heckeEig_iSup_eq_top_of_sep (D.nd.T i) (D.nd.act i) (D.nd.T_sep i)
 
-theorem ptSt_eigSpan : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → AllSt fun _ _ _ _ _ _ x =>
-    ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => D'.nd.EigSpan := by
-  intro hL _
-  refine StepW.of_all fun K B f T w _ _ _ => ?_
-  intro P x l
-  exact ⟨fun _ => ∅, fun L _ => eigSpan_of_record _⟩
-
 end GlobalTheory.HeightCounting.Up
 
 end

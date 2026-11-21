@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGensOfDataFrom
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsNoetherianRingCompletedStalkSiegelFibrePower
-import Development.AbelianVarietyTheory.Definitions.Divisors.PerFactor
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsMumfordFamOfSubsingleton
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.FormallyUnramifiedOfTangentMapInjective
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResidueFieldMapFiniteOfQuasiFinite
@@ -175,21 +174,6 @@ theorem exists_essFiniteType_stalk (y : (LowChart.powA F r).left) :
   have e0 : ∀ p : PrimeSpectrum o, (StructureSheaf.toStalk o p).hom.EssFiniteType := fun p =>
     Algebra.EssFiniteType.of_isLocalization (R := o) ((Spec.structureSheaf o).presheaf.stalk p) p.asIdeal.primeCompl
   exact ⟨_, RingHom.EssFiniteType.comp (e0 (LowChart.toO F r y)) (LocallyOfFiniteType.stalkMap (LowChart.toO F r) y)⟩
-
-theorem c₀_smul_single [IsNoetherianRing o] (y : (LowChart.powA F r).left) (k : ℕ) (i : Fin r) :
-    (LowChart.c₀ F y ((k : ℤ) • Pi.single i 1)).left ≫ Pdiv.PullbackComparison.pφ (LowChart.toPow F y ≫ (LowChart.powA F r).hom) F.univ.A =
-      LowChart.toPow F y ≫ (LowChart.coord F i).left ≫ (𝟙 F.univ.A ^ k).left := by
-  classical
-  have e : LowChart.c₀ F y ((k : ℤ) • Pi.single i 1) = LowChart.pt F y i ^ k := by
-    show ∏ j, LowChart.pt F y j ^ (((k : ℤ) • Pi.single i 1 : Fin r → ℤ) j) = _
-    rw [Finset.prod_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp)]
-    simp
-  have pb := Pdiv.PullbackComparison.isGrpPullback (LowChart.toPow F y ≫ (LowChart.powA F r).hom) F.univ.A
-  have e₁ := map_pow (pushHom pb (𝟙_ _)) (LowChart.pt F y i) k
-  have e₂ : pushHom pb (𝟙_ _) (LowChart.pt F y i) ^ k = pushHom pb (𝟙_ _) (LowChart.pt F y i) ≫ (𝟙 F.univ.A ^ k) := by
-    rw [MonObj.comp_pow, Category.comp_id]
-  rw [e, ← Category.assoc, ← LowChart.pt_left]
-  exact congrArg (fun q => q.left) (e₁.trans e₂)
 
 end Pow
 

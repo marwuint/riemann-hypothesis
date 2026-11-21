@@ -15,9 +15,4 @@ def MulPtW : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (g : G1 p), g.Ok → ∀ c : ℂ_[p], IntegralW (g.mulBy c (Xv ()) : MvPowerSeries Unit ℂ_[p]) →
     ∀ (σ : Type) (a : MvPowerSeries σ ℂ_[p]), PtW a → PtW (g.mulBy c a)
 
-def LinPtW : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (g : G1 p), g.Ok → IntegralW (g.add (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]) →
-    ∀ (ι : Type) [Fintype ι] (c : ι → ℂ_[p]), (∀ j, IntegralW (g.mulBy (c j) (Xv ()) : MvPowerSeries Unit ℂ_[p])) →
-    ∀ (σ : Type) (a : ι → MvPowerSeries σ ℂ_[p]), (∀ j, PtW (a j)) → PtW (g.lin c a)
-
 end Formalism.MainNotions.Ext

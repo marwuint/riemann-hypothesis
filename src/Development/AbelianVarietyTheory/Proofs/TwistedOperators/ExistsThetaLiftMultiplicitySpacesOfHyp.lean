@@ -9,10 +9,15 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegralFo
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftCuspFormAutomorphicSmoothModerateGrowth
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.VacuumFockFromSquareIntegrability
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaChainLiftsAreCuspFormsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaModelsAreCoverDiscreteSeriesOfHarishChandraStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GkMapCuspFormsExtendsToSmoothVectorsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaVacuumCharactersRealPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealPlaceThetaObjectsTheoremARPartsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaModelsAreCoverDiscreteSeriesOfHarishChandra
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.BarMatrix
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GkMapCuspFormsExtendsToSmoothVectors
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.KTypeExtension
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaVacuumCharactersRealPlaces
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RaisingLoweringOperators
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealPlaceThetaObjectsTheoremARParts
+import Formalism.SharpRestriction.Divisibility.SchurIrreducible
+import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 
 noncomputable section
 
@@ -355,9 +360,9 @@ theorem ioPair_of_rapid (D : D7) (X : ProvA) (hX : ChosenSeries X) (h3 : Formali
 theorem ioPair_onObjects : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules →
     GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → ∀ D : D7, GlobalTheory.Chain.IoPair D := by
   intro hD hH hC hW D
-  obtain ⟨X, hX, -, -, -, -, h3, -⟩ := GlobalTheory.T.exists_provA_discreteSeries_archimedeanRallis hD hH
+  obtain ⟨X, hX, -, -, -, -, h3, -⟩ := _root_.GlobalTheory.RealPlaceTheta.exists_record_theta hD hH
   exact ioPair_of_rapid D X hX h3 (GlobalTheory.T.thetaChainLifts_areCuspForms hD hH hC D) (GlobalTheory.Chain.LiftReg.liftProps_obj hC D)
-    (GlobalTheory.T.gkMapCuspForms_extends_to_smoothVectors hH hW D) (GlobalTheory.VacuumFockLaws.vacuumFock_onObjects D) (GlobalTheory.T.thetaVacuumCharacters_realPlaces D) (GlobalTheory.T.thetaModels_are_coverDiscreteSeries_of_harishChandra hD hH D) hC hH
+    (_root_.GlobalTheory.GKExtensionToSmoothVectors.gkExtension hH hW D) (GlobalTheory.VacuumFockLaws.vacuumFock_onObjects D) (_root_.GlobalTheory.VacuumCharacter.vacChar D) (_root_.GlobalTheory.CoverModel.modelsAreCoverSeries_all hD hH D) hC hH
 
 end GlobalTheory.Chain.IoLift
 

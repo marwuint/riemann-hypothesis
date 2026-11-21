@@ -223,19 +223,3 @@ end Fields
 
 end BaseChangeColon.PlField
 
-theorem BaseChangeColon.intNumL_comap_base_extension : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (F F' : Type) [Field F] [Field F'] [Algebra F F'] [FiniteDimensional F F'] (V' : Ideal (MRing ι F')), IsMultiHomogIdeal V' → (∀ (c : ∀ k, ι k) (a : F'), ∃ (n : ℕ) (G : MRing ι F), IsMultiHomog G (fun _ => n) ∧ C a * (∏ k, X ⟨k, c k⟩) ^ n - MvPolynomial.map (algebraMap F F') G ∈ V') → ∀ l : List (K → ℤ), intNumL F (V'.comap (MvPolynomial.map (algebraMap F F'))) l = (Module.finrank F F' : ℤ) * intNumL F' V' l := by
-  intro K _ _ ι _ F F' _ _ _ _ V' _ h l
-  obtain ⟨n, hn⟩ := BaseChangeColon.PlField.exists_uniform (F := F) (V' := V') h
-  have hc : (Module.finrank F F' : ℤ) ≠ 0 := by
-    exact_mod_cast (Module.finrank_pos (R := F) (M := F')).ne'
-  refine BaseChangeColon.PlField.eventualValue_mul hc (BaseChangeColon.PlField.foldr_eventually _ _ ?_)
-  filter_upwards [Filter.eventually_ge_atTop fun k => ((n * Fintype.card (ι k) + 1 : ℕ) : ℤ)] with m hm
-  have h0 : ∀ k, 0 ≤ m k := fun k => le_trans (Int.natCast_nonneg _) (hm k)
-  have h1 : ∀ k, n * Fintype.card (ι k) < (m k).toNat := fun k => by
-    have h2 : ((n * Fintype.card (ι k) + 1 : ℕ) : ℤ) ≤ m k := hm k
-    generalize n * Fintype.card (ι k) = t at h2 ⊢
-    omega
-  rw [hilbFn, hilbFn, if_pos h0, if_pos h0,
-    BaseChangeColon.PlField.finrank_piece fun q hq => BaseChangeColon.PlField.lift_form hn h1 hq]
-  push_cast
-  rfl

@@ -102,13 +102,6 @@ theorem equiv_ginf {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E
   conv_lhs => rw [e]
   exact key Finset.univ y
 
-section Read
-
-variable {M : DSModel (D.sp.Y 0) S} {E : Submodule ℂ (MMap M)} {X : Formalism.L2.SG.HidaSetting.HidaSetting D}
-  {ι : GA D (D.sp.Y 0) ≃* X.B.I.GA} {t : GA D (D.sp.Y 0)} {v₀ : M.Vec}
-
-end Read
-
 end Formalism.L2.SG.EvalTEquiv
 
 end

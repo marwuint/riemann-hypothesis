@@ -99,91 +99,6 @@ theorem isMulRightInvariant_GL [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL 
   rw [isMulLeftInvariant_eq_smul (map (· * g) μ) μ, ← modularCharacterFun_eq_haarScalarFactor,
     this, one_smul]
 
-section DoubleCoset
-
-variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
-  [BorelSpace G]
-
-theorem measure_preimage_mk_finset (μ : Measure G) [μ.IsMulLeftInvariant] {K : Subgroup G}
-    (hK : IsOpen (K : Set G)) (O : Finset (G ⧸ K)) :
-    μ ((QuotientGroup.mk : G → G ⧸ K) ⁻¹' (O : Set (G ⧸ K))) = O.card * μ K := by
-  have hpre : ∀ a : G, (QuotientGroup.mk : G → G ⧸ K) ⁻¹' {(a : G ⧸ K)} = (a⁻¹ * ·) ⁻¹' K := by
-    intro a
-    ext b
-    rw [Set.mem_preimage, Set.mem_singleton_iff, QuotientGroup.eq, ← K.inv_mem_iff, mul_inv_rev,
-      inv_inv]
-    rfl
-  rw [show (QuotientGroup.mk : G → G ⧸ K) ⁻¹' (O : Set (G ⧸ K)) =
-      ⋃ y ∈ O, (QuotientGroup.mk : G → G ⧸ K) ⁻¹' {y} by ext; simp, measure_biUnion_finset]
-  · rw [Finset.sum_congr rfl (g := fun _ => μ K) fun x _ => ?_, Finset.sum_const, nsmul_eq_mul]
-    obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective x
-    rw [hpre, measure_preimage_mul]
-  · intro x _ y _ hxy
-    exact Set.disjoint_left.2 fun b hx hy => hxy (hx.symm.trans hy)
-  · intro x _
-    obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective x
-    rw [hpre]
-    exact (hK.preimage (continuous_const_mul _)).measurableSet
-
-theorem mem_map_conj_iff {K : Subgroup G} {g k : G} :
-    k ∈ K.map (MulAut.conj g).toMonoidHom ↔ g⁻¹ * k * g ∈ K := by
-  rw [Subgroup.mem_map_equiv, MulAut.conj_symm_apply]
-
-theorem measure_doubleCoset (μ : Measure G) [μ.IsMulLeftInvariant] {K : Subgroup G}
-    (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G)) (g : G) :
-    μ (doubleCoset g (K : Set G) K) =
-      ((K.map (MulAut.conj g).toMonoidHom).relIndex K : ℝ≥0∞) * μ K := by
-  set H := K.map (MulAut.conj g).toMonoidHom with hH
-  let O : Set (G ⧸ K) := MulAction.orbit K (g : G ⧸ K)
-  have hstab : MulAction.stabilizer K (g : G ⧸ K) = H.subgroupOf K := by
-    ext k
-    rw [MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf, mem_map_conj_iff]
-    show ((k : G) • ((g : G) : G ⧸ K)) = ((g : G) : G ⧸ K) ↔ _
-    rw [MulAction.Quotient.smul_mk, QuotientGroup.eq, smul_eq_mul,
-      show ((k : G) * g)⁻¹ * g = (g⁻¹ * k * g)⁻¹ by group, K.inv_mem_iff]
-  have hdc : doubleCoset g (K : Set G) K = (QuotientGroup.mk : G → G ⧸ K) ⁻¹' O := by
-    ext x
-    rw [mem_doubleCoset, Set.mem_preimage, MulAction.mem_orbit_iff]
-    constructor
-    · rintro ⟨k₁, hk₁, k₂, hk₂, rfl⟩
-      refine ⟨⟨k₁, hk₁⟩, ?_⟩
-      show ((k₁ : G) • ((g : G) : G ⧸ K)) = _
-      rw [MulAction.Quotient.smul_mk, QuotientGroup.eq]
-      simpa [mul_assoc] using hk₂
-    · rintro ⟨k, hk⟩
-      change ((k : G) • ((g : G) : G ⧸ K)) = _ at hk
-      rw [MulAction.Quotient.smul_mk, QuotientGroup.eq] at hk
-      exact ⟨k, k.2, (k * g)⁻¹ * x, hk, by group⟩
-  have hcK : CompactSpace K := isCompact_iff_compactSpace.1 hKc
-  have hopen : IsOpen ((H.subgroupOf K : Subgroup K) : Set K) := by
-    have : IsOpen (H : Set G) := by
-      have e : (H : Set G) = (fun x => g⁻¹ * x * g) ⁻¹' K := by
-        ext x
-        exact mem_map_conj_iff
-      rw [e]
-      exact hKo.preimage (by fun_prop)
-    exact this.preimage continuous_subtype_val
-  have hfin : Finite (K ⧸ H.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ hopen
-  have hOfin : O.Finite := by
-    have : Finite O := by
-      rw [← hstab] at hfin
-      exact Finite.of_equiv _ (MulAction.orbitEquivQuotientStabilizer K (g : G ⧸ K)).symm
-    exact Set.toFinite O
-  have hcard : hOfin.toFinset.card = H.relIndex K := by
-    rw [← Nat.card_eq_card_finite_toFinset, Subgroup.relIndex, Subgroup.index, ← hstab]
-    exact Nat.card_congr (MulAction.orbitEquivQuotientStabilizer K (g : G ⧸ K))
-  rw [hdc, ← hOfin.coe_toFinset, measure_preimage_mk_finset μ hKo, hcard]
-
-end DoubleCoset
-
-theorem measure_doubleCoset_diagPow [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
-    (μ : Measure (GL (Fin n) F)) [μ.IsMulLeftInvariant] (a : Fin n → ℤ) :
-    μ (doubleCoset (Cartan.diagPow F n a) (GLnLocal.integralGL F n : Set (GL (Fin n) F))
-        (GLnLocal.integralGL F n)) =
-      (((GLnLocal.integralGL F n).map (MulAut.conj (Cartan.diagPow F n a)).toMonoidHom).relIndex
-        (GLnLocal.integralGL F n) : ℝ≥0∞) * μ (GLnLocal.integralGL F n) :=
-  measure_doubleCoset μ (GLnLocal.isOpen_integralGL F n) (GLnLocal.isCompact_integralGL F n) _
-
 theorem inv_eq_self_GL [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] : μ.inv = μ := by
   have := isMulRightInvariant_GL F n μ
@@ -202,32 +117,6 @@ theorem inv_eq_self_GL [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) 
     exact_mod_cast this
   rw [e, hc, one_smul]
 
-theorem inv_doubleCoset {G : Type*} [Group G] (g : G) (K : Subgroup G) :
-    (doubleCoset g (K : Set G) K)⁻¹ = doubleCoset g⁻¹ (K : Set G) K := by
-  ext x
-  rw [Set.mem_inv, mem_doubleCoset, mem_doubleCoset]
-  constructor
-  · rintro ⟨a, ha, b, hb, h⟩
-    exact ⟨b⁻¹, K.inv_mem hb, a⁻¹, K.inv_mem ha, by rw [← inv_inv x, h]; group⟩
-  · rintro ⟨a, ha, b, hb, rfl⟩
-    exact ⟨b⁻¹, K.inv_mem hb, a⁻¹, K.inv_mem ha, by group⟩
-
-theorem relIndex_conj_eq {K : Subgroup (GL (Fin n) F)} (hKo : IsOpen (K : Set (GL (Fin n) F)))
-    (hKc : IsCompact (K : Set (GL (Fin n) F))) (g : GL (Fin n) F) :
-    (K.map (MulAut.conj g).toMonoidHom).relIndex K =
-      (K.map (MulAut.conj g⁻¹).toMonoidHom).relIndex K := by
-  borelize (GL (Fin n) F)
-  let μ : Measure (GL (Fin n) F) := Measure.haar
-  have hK0 : μ K ≠ 0 := hKo.measure_ne_zero μ ⟨1, K.one_mem⟩
-  have hKT : μ K ≠ ∞ := hKc.measure_lt_top.ne
-  have h1 := measure_doubleCoset μ hKo hKc g
-  have h3 : μ (doubleCoset g (K : Set (GL (Fin n) F)) K) =
-      μ (doubleCoset g⁻¹ (K : Set (GL (Fin n) F)) K) := by
-    conv_lhs => rw [← inv_eq_self_GL F n μ]
-    rw [Measure.inv_apply, inv_doubleCoset]
-  rw [h3, measure_doubleCoset μ hKo hKc g⁻¹] at h1
-  exact_mod_cast ((ENNReal.mul_left_inj hK0 hKT).1 h1).symm
-
 variable [MeasurableSpace F] [BorelSpace F] [MeasurableSpace (GL (Fin n) F)]
   [BorelSpace (GL (Fin n) F)]
 
@@ -235,15 +124,6 @@ noncomputable def haarGL (μ₀ : Measure (Fin n × Fin n → F)) : Measure (GL 
   (glChart F n).haar μ₀
 
 variable (μ₀ : Measure (Fin n × Fin n → F)) [μ₀.IsAddHaarMeasure]
-
-theorem haarGL_eq :
-    haarGL F n μ₀ = (μ₀.comap fun (g : GL (Fin n) F) (ij : Fin n × Fin n) =>
-      (g : Matrix (Fin n) (Fin n) F) ij.1 ij.2).withDensity
-        fun g => (((distribHaarChar F (Matrix.GeneralLinearGroup.det g) ^ n)⁻¹ : ℝ≥0) : ℝ≥0∞) := by
-  rw [haarGL, LinearChart.haar]
-  congr 1
-  funext g
-  rw [glChart_leftModulus]
 
 instance isHaarMeasure_haarGL : (haarGL F n μ₀).IsHaarMeasure :=
   LinearChart.isHaarMeasure_haar _ μ₀

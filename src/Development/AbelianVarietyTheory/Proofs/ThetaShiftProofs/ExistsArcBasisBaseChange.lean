@@ -8,11 +8,12 @@ import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TraceFormTwistIs
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.MemNonzeroLocusOfUnit
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNeZeroIff
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsPrimitiveRootArcRoot
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArcStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieCombStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsConstantEigenbasisTangentArcStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsConstantEigenbasisTangentArc
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ConstantArcEigenbasisFlatBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.DegenerationDataBaseChangesExistPidStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.DegenerationDataBaseChangesExistPid
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TangentVectorsThetaSectionArcWitnessBaseChangeStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ConstantEigenbasisIndependentOfWitnessStatement
 
@@ -102,7 +103,7 @@ theorem exists_matrix (hG : Out.GlobalFnsSt) {A : Type} [CommRing A] [IsDomain A
   obtain ⟨v₁, i₁, b₁⟩ := h₁
   obtain ⟨v₂, i₂, b₂⟩ := h₂
   choose g hg using fun τ k => (key τ (e₂ τ k) (v₂ τ k)
-    (((GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W (e₂ τ k)).2 _ (i₂ τ k)).2 ((b₂ τ).1 k).1) (i₂ τ k)
+    (((_root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W (e₂ τ k)).2 _ (i₂ τ k)).2 ((b₂ τ).1 k).1) (i₂ τ k)
     ((b₂ τ).1 k).2).exists
   refine ⟨fun τ => Matrix.of (g τ), fun τ => ?_, hg⟩
   have := W.t.semi.smooth
@@ -130,7 +131,7 @@ theorem exists_arcBasis_baseChange (hL : Out.Laws) (hL₂ : Out.Laws2) (hU : Out
     ∃ (W' : Wit Y a' (spMap (PowerSeries.map f) ≫ χ))
       (e' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a'.D₀ (epsR A')),
       (∀ τ k, LetBC p (e τ k) (e' τ k)) ∧ ArcBasis W' (fun τ => f.comp (ρ τ)) e' := by
-  obtain ⟨hW, hν, -⟩ := (GlobalTheory.T.degenerationData_baseChanges_exist_pid hL hL₂ hU hL₅ E H Dw l Xo c O β Y A A' b a f hf b' hp.1).2 a' p hp
+  obtain ⟨hW, hν, -⟩ := (_root_.GlobalTheory.ArcQBC.baseChanges hL hL₂ hU hL₅ E H Dw l Xo c O β Y A A' b a f hf b' hp.1).2 a' p hp
   obtain ⟨W', hW'⟩ := hW χ W
   choose e' he' using fun τ k => (hν (e τ k)).exists
   obtain ⟨m, -, hm, -⟩ := GlobalTheory.T.tangentVectors_thetaSection_arcWitness_baseChange hL hL₂ E H Dw l Xo c O β Y A b a χ W A' b' a' f p W' hp hW'

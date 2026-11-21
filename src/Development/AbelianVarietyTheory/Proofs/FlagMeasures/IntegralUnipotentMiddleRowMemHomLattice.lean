@@ -191,12 +191,6 @@ theorem _root_.GlobalTheory.SnMass.VolN.mulVec_esI (k r : ℕ) (a : Fin r)
 
 end Model
 
-section Main
-
-variable {E : Type} [Field E] [NumberField E]
-
-end Main
-
 open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 

@@ -7,18 +7,10 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Matrix NumberField ComplexConjugate
 open scoped ComplexOrder
 
-theorem approxB_jForm_add_right (p : ℕ) {r : ℕ} (x y z : Fin r → ℂ) :
-    jForm p x (y + z) = jForm p x y + jForm p x z := by
-  simp only [jForm, Pi.add_apply, mul_add, Finset.sum_add_distrib]
-
 theorem approxB_jForm_smul_right (p : ℕ) {r : ℕ} (x y : Fin r → ℂ) (a : ℂ) :
     jForm p x (a • y) = a * jForm p x y := by
   simp only [jForm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun k _ => by ring
-
-theorem approxB_jForm_sub_right (p : ℕ) {r : ℕ} (x y z : Fin r → ℂ) :
-    jForm p x (y - z) = jForm p x y - jForm p x z := by
-  simp only [jForm, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 theorem approxB_jForm_sum_right (p : ℕ) {r : ℕ} {α : Type*} (s : Finset α) (x : Fin r → ℂ)
     (f : α → Fin r → ℂ) : jForm p x (∑ j ∈ s, f j) = ∑ j ∈ s, jForm p x (f j) := by
@@ -93,13 +85,6 @@ abbrev ApproxPosIdx (r p : ℕ) := {j : Fin r // (j : ℕ) < p}
 theorem approxB_sum_pos {M : Type*} [AddCommMonoid M] {r p : ℕ} (f : Fin r → M)
     (hf : ∀ j : Fin r, ¬ (j : ℕ) < p → f j = 0) : ∑ j, f j = ∑ k : ApproxPosIdx r p, f k := by
   rw [← Finset.sum_subset (Finset.subset_univ (Finset.univ.filter fun j : Fin r => (j : ℕ) < p))
-    (fun j _ hj => hf j (by simpa using hj))]
-  exact Finset.sum_subtype _ (fun j => by simp) f
-
-theorem approxB_sum_neg {M : Type*} [AddCommMonoid M] {r p : ℕ} (f : Fin r → M)
-    (hf : ∀ j : Fin r, (j : ℕ) < p → f j = 0) :
-    ∑ j, f j = ∑ k : {j : Fin r // ¬ (j : ℕ) < p}, f k := by
-  rw [← Finset.sum_subset (Finset.subset_univ (Finset.univ.filter fun j : Fin r => ¬ (j : ℕ) < p))
     (fun j _ hj => hf j (by simpa using hj))]
   exact Finset.sum_subtype _ (fun j => by simp) f
 

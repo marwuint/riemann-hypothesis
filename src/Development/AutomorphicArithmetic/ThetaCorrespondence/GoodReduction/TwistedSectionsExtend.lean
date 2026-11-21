@@ -8,11 +8,11 @@ import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.Bije
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralAtSection
 import Development.AutomorphicArithmetic.ThetaCorrespondence.GoodReduction.TwistIso
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrFractionFieldRingEquivEqUnitMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemilinearSymmFixesUnitSectionGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemilinearModelFixesUnitSectionAbelianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralTwistedComparisonAtFixedSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleIsoConstOfGenericIsoDvrStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrFractionFieldRingEquivEqUnitMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemilinearSymmFixesUnitSectionGenericFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemilinearModelFixesUnitSectionAbelian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralTwistedComparisonAtFixedSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleIsoConstOfGenericIsoDvr
 import Development.AutomorphicArithmetic.ThetaCorrespondence.GoodReduction.IntegralSec
 
 set_option autoImplicit false
@@ -63,14 +63,14 @@ theorem twisted_sections_extend : ∀ (K W K' : Type) [Field K] [CommRing W] [Is
   have hx₂ : x ≫ pullback.snd G.hom (spMap (algebraMap W K')) = 𝟙 _ := pullback.lift_snd _ _ _
   have hxρ : x ≫ ρ = spMap (σ : K' →+* K') ≫ x := by
     subst hρ
-    exact GlobalTheory.T.semilinear_symm_fixes_unit_section_genericFibre K W K' A G e he σ x hx₁ hx₂
-  have he₀φ := GlobalTheory.T.semilinearModel_fixes_unit_section_abelian W K' G hG (σ : K' →+* K') τ φ ρ hτ hφG hφY η[G].left he₀ x hx₁ hxρ
-  have hv := GlobalTheory.T.dvr_fractionField_ringEquiv_eq_unit_mul W K' σ.toRingEquiv (hD σ hσ) (hD' σ hσ)
+    exact _root_.GlobalTheory.semilinear_symm_fixes_unit K W K' A G e he σ x hx₁ hx₂
+  have he₀φ := _root_.GlobalTheory.SemilinearModel.unit_section_semilinear W K' G hG (σ : K' →+* K') τ φ ρ hτ hφG hφY η[G].left he₀ x hx₁ hxρ
+  have hv := _root_.GlobalTheory.dvr_fractionField_ringEquiv_eq_mul W K' σ.toRingEquiv (hD σ hσ) (hD' σ hσ)
   have hHp : (H.pull (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K')))).IsLB :=
     LB.isLB_pull hH _
-  have hIAS := GlobalTheory.T.integral_twisted_comparison_at_fixed_section W K' G σ.toRingEquiv τ hv φ η[G].left he₀ he₀φ ρ x hx₁ hx₂ hxρ M _ hM hHp
+  have hIAS := _root_.GlobalTheory.SectionLattice.integralAtSection_of_conj W K' G σ.toRingEquiv τ hv φ η[G].left he₀ he₀φ ρ x hx₁ hx₂ hxρ M _ hM hHp
     w w₁ (hval x hxρ)
-  obtain ⟨v, c', hv', hrel⟩ := GlobalTheory.T.exists_lineBundleIso_const_of_genericIso_dvr W K' G hG (M.pull φ) M _ (LB.isLB_pull hM φ) hM hHp w w₁ hw hw₁
+  obtain ⟨v, c', hv', hrel⟩ := _root_.GlobalTheory.GenericIsoConst.exists_iso_const_of_generic W K' G hG (M.pull φ) M _ (LB.isLB_pull hM φ) hM hHp w w₁ hw hw₁
   exact UpperTheory.Lit.Nos.integralSec W K' G (M.pull φ) M _ (LB.isLB_pull hM φ) hM hHp w w₁ hw hw₁ hIAS v c' hv' hrel
     (GlobalTheory.Cartier.secPull u φ) _ (hsec n s u c hu)
 

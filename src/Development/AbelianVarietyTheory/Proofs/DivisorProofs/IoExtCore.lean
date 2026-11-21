@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtensionOfLowSmoothLines
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinorProductFockVectorExtremalTorusWeightStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinorProductFockVectorExtremalTorusWeight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPairRecordCore
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VecFockCore
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VPNeZeroCore
@@ -40,7 +40,7 @@ theorem ioExt_core : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Typ
   have hm := GlobalTheory.LowKProj.lowKSub_stable _ _ _ _ ha _ (v τ).2
   let u : lowT (R.MW i (sg0 D A)) τ := ⟨⟨_, hs τ hm⟩, hm⟩
   have h1 := hK τ _ ha v u rfl w
-  rw [hio, GlobalTheory.T.minorProduct_fockVector_extremalTorusWeight D G Pl0 T0 A Ks R F hR i (hV i) τ a A.μ0, ← hio, ← hf, ← hf] at h1
+  rw [hio, _root_.GlobalTheory.AdTh.MinorWeightCore.delta_extremal_weight_core D G Pl0 T0 A Ks R F hR i (hV i) τ a A.μ0, ← hio, ← hf, ← hf] at h1
   have h2 := inj_factor (R.MW i (sg0 D A)) hs hl τ f
     (fun k => R.ωP i A.μ0 (1, atTau R.θ (Wc D i) τ (((R.MW i (sg0 D A)).fr τ)⁻¹ * k * (R.MW i (sg0 D A)).fr τ)))
     (fun k hk v u hu => hK τ k hk v u hu w) v hv0

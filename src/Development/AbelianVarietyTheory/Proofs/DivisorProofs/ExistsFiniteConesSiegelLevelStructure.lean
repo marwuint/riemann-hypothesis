@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMinimiserSystemsSmoothConeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMinimiserSystemsSmoothCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothConeInteriorDefiniteBalancedForm
 
 open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.Poinc
@@ -169,7 +169,7 @@ theorem exists_finite_cones : ∀ (g : ℕ) (φ : InvFun ℤ), IsPolFan id g φ 
       Function.Injective x.2 ∧ IsCone id φ x.2 ∧ (∀ y, y ≠ 0 → 0 < ∑ j, x.2 j y y)}
     have hTS : TS.Finite := (finite_families _ S hS).subset fun x hx => ⟨hx.1, hx.2.1⟩
     have hdick := fun (x : Σ m : ℕ, Fin m → LinearMap.BilinForm ℤ (Fin r → ℤ))
-      (h : IsCone id φ x.2 ∧ (∀ y, y ≠ 0 → 0 < ∑ j, x.2 j y y)) => GlobalTheory.T.finite_minimiser_systems_smooth_cone φ W hW N hN r x.1 x.2 h.1 h.2
+      (h : IsCone id φ x.2 ∧ (∀ y, y ≠ 0 → 0 < ∑ j, x.2 j y y)) => _root_.GlobalTheory.Poinc.MinSys.finite_minimiser_systems φ W hW N hN r x.1 x.2 h.1 h.2
     let Fμ : (Σ m : ℕ, Fin m → LinearMap.BilinForm ℤ (Fin r → ℤ)) →
         Set ((Fin 8 → Fin r → ZMod N) → (Fin 8 → Fin r → ℤ)) := fun x =>
       if h : IsCone id φ x.2 ∧ (∀ y, y ≠ 0 → 0 < ∑ j, x.2 j y y) then ((hdick x h).choose : Set _) else ∅

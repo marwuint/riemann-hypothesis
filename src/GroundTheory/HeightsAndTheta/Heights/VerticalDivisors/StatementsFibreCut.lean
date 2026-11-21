@@ -39,7 +39,4 @@ def CodimOnePrimeAvoid.Statement : Prop :=
     h ≠ 0 → 1 ≤ ringKrullDim B →
       ∃ N : Ideal B, N.IsPrime ∧ h ∉ N ∧ ringKrullDim (B ⧸ N) + 1 = ringKrullDim B
 
-def two : HeightOneSpectrum ℤ :=
-  ⟨Ideal.span {2}, (Ideal.span_singleton_prime (by norm_num)).mpr Int.prime_two, by simp⟩
-
 end GroundTheory.Heights₂.Heights.Vertical

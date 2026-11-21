@@ -2,7 +2,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.ThinScalesBound
 import Formalism.SharpRestriction.CuspSpanNormBounds.ChainLength
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.DualIdealInclusion
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.FirstEmbeddingOne
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.DualVolumePowerIdentity
+import Formalism.HermitianCurvature.Statement
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.TransferProductMonic
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LocalConditionsAndQuotientSplitting
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.FirstKernelProperties
@@ -22,34 +22,6 @@ variable {D : Formalism.BasicNotions.D7}
 theorem gS_pos (D : Formalism.BasicNotions.D7) : 0 < Lat.gS D :=
   Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos
 
-theorem dual_one_eq (D : Formalism.BasicNotions.D7) :
-    FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) =
-      ((D.host.ddE : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)⁻¹ := by
-  unfold Formalism.BasicNotions.Host.ddE
-  rw [coeIdeal_differentIdeal ℤ ℚ, inv_inv]
-
-theorem dualPsiG_le_of_core (ν : ℤ) (L : Set D.host.E) (h2 : ∀ t ∈ gdd (D := D) 2 ν, t ∈ L) :
-    ∀ l ∈ dualPsiG (D := D) L, l ∈ gdd (D := D) (-1) (-(ν + 1)) := by
-  intro l hl
-  have key := Formalism.FourierDecayAlt.P.dual_third_group_holds D.host.E _ (dual_one_eq D) ν ((Lat.gS D : ℕ) : ℤ)
-    (by exact_mod_cast (gS_pos D).ne')
-    (((gdd (D := D) 2 ν : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) :
-      Submodule (𝓞 D.host.E) D.host.E).restrictScalars ℤ)
-    (by
-      intro y hy
-      simp only [Submodule.restrictScalars_mem, FractionalIdeal.mem_coe]
-      unfold gdd
-      rw [mul_comm]
-      simpa using hy) l
-    (by
-      intro y hy
-      simp only [Submodule.restrictScalars_mem, FractionalIdeal.mem_coe] at hy
-      obtain ⟨z, hz⟩ := hl y (h2 y hy)
-      exact ⟨z, by simpa using hz.symm⟩)
-  unfold gdd
-  rw [mul_comm]
-  simpa using key
-
 theorem cmE (D : Formalism.BasicNotions.D7) : IsCMField D.host.E :=
   D.host.isCMField_hostE
 
@@ -60,9 +32,6 @@ theorem deg_eq (D : Formalism.BasicNotions.D7) : letI := cmE D; Formalism.Fourie
   have h3 : D.R.f = 2 * D.R.ord := rfl
   rw [h2] at h1
   omega
-
-theorem rd_eq (D : Formalism.BasicNotions.D7) : letI := cmE D; Formalism.FourierDecayAlt.S6.rd D.host.E = D.host.rdE := by
-  simp [Formalism.FourierDecayAlt.S6.rd, Formalism.BasicNotions.Host.rdE, one_div]
 
 theorem gdd_eq_idl (D : Formalism.BasicNotions.D7) (a b : ℤ) :
     letI := cmE D; gdd (D := D) a b = Formalism.FourierDecayAlt.S6.idl D.host.E (Lat.gS D) a b := by
@@ -77,74 +46,6 @@ theorem rdE_pos (D : Formalism.BasicNotions.D7) : 0 < D.host.rdE := by
   apply Real.rpow_pos_of_pos
   have : (discr D.host.E : ℝ) ≠ 0 := by exact_mod_cast NumberField.discr_ne_zero D.host.E
   exact abs_pos.2 this
-
-theorem sqrt_absNorm_gdd (D : Formalism.BasicNotions.D7) (a : ℕ) :
-    Real.sqrt (FractionalIdeal.absNorm (gdd (D := D) (-1) (-(a : ℤ))) : ℝ) =
-      ((Lat.gS D : ℝ) * D.host.rdE ^ a) ^ (-(D.R.f : ℤ)) := by
-  have := cmE D
-  have h := Formalism.FourierDecayAlt.P.scaledIdealNorm D.host.E (Lat.gS D) (-1) (-(a : ℤ)) (gS_pos D)
-  rw [← gdd_eq_idl, deg_eq, rd_eq] at h
-  rw [h]
-  simp only [zpow_neg, zpow_natCast, zpow_one]
-  rw [← mul_inv, inv_pow]
-
-theorem period_lattice_index_of_known (δ : ∀ p, (D.s.atP p).Fp)
-    (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (i : ℕ) (hi : i ≤ D.R.rS + 1)
-    (hPl : PlacesTau D)
-    (h2 : ∀ t ∈ gdd (D := D) 2 (nu D.R.rS i i), t ∈ La M δ (nu D.R.rS i i) 1)
-    (hidx : (AddSubgroup.closure (dualPsiG (D := D) (La M δ (nu D.R.rS i i) 1))).relIndex
-      (gdd (D := D) (-1) (-((2 * D.R.rS + 3 - 2 * i : ℕ) : ℤ)) :
-        Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup = (Lat.gS D) ^ D.R.f) :
-    G4 δ M i := by
-  have := cmE D
-  have hg : (0 : ℝ) < (Lat.gS D : ℝ) := by exact_mod_cast gS_pos D
-  have hrd := rdE_pos D
-  have hν : ((nu D.R.rS i i : ℕ) : ℤ) + 1 = ((2 * D.R.rS + 3 - 2 * i : ℕ) : ℤ) := by
-    have : nu D.R.rS i i + 1 = 2 * D.R.rS + 3 - 2 * i := by unfold nu; omega
-    exact_mod_cast this
-  have c1 : ∀ l ∈ dualPsiG (D := D) (La M δ (nu D.R.rS i i) 1),
-      l ∈ gdd (D := D) (-1) (-((2 * D.R.rS + 3 - 2 * i : ℕ) : ℤ)) := by
-    intro l hl
-    rw [← hν]
-    exact dualPsiG_le_of_core _ _ h2 l hl
-  have c3 : ∀ l ∈ gdd (D := D) (-1) (-((2 * D.R.rS + 3 - 2 * i : ℕ) : ℤ)), l ≠ 0 →
-      Real.sqrt (FractionalIdeal.absNorm (gdd (D := D) (-1) (-((2 * D.R.rS + 3 - 2 * i : ℕ) : ℤ))) : ℝ) ≤
-        ∏ τ : D.what₂.Tau, ‖D.host.emb (D.eTau τ) l‖ := by
-    intro l hl h0
-    rw [hPl l]
-    exact Formalism.FourierDecayAlt.P.norm_lower_bound D.host.E _ l hl h0
-  have c4 := sqrt_absNorm_gdd D (2 * D.R.rS + 3 - 2 * i)
-  have c5 : ∀ c : D.what₂.Tau → ℝ,
-      (∏ τ, c τ * (2 * Real.pi / (Lat.gS D : ℝ)) ^ (2 * (i : ℤ) - 3 - 2 * (D.R.rS : ℤ))) /
-        Real.sqrt (FractionalIdeal.absNorm (gdd (D := D) (-1) (-((2 * D.R.rS + 3 - 2 * i : ℕ) : ℤ))) : ℝ) =
-      (∏ τ, c τ) * (2 * Real.pi / D.host.rdE) ^ ((2 * (i : ℤ) - 3 - 2 * (D.R.rS : ℤ)) * D.R.f) *
-        (Lat.gS D : ℝ) ^ (((D.R.m : ℤ) - 2 * ((i : ℤ) - 1)) * D.R.f) := by
-    intro c
-    have h := Formalism.FourierDecayAlt.P.dual_size_identity D.what₂.Tau c (Lat.gS D : ℝ) D.host.rdE D.R.rS i hg hrd
-    rw [D.what₂.card_Tau] at h
-    have hm : (D.R.m : ℤ) = 2 * (D.R.rS : ℤ) + 2 := by
-      have h1 := D.R.m_even
-      have h2 := D.R.two_le_m
-      have h3 : D.R.rS = D.R.m / 2 - 1 := rfl
-      obtain ⟨q, hq⟩ := h1
-      omega
-    have ha : (2 * (D.R.rS : ℤ) + 3 - 2 * (i : ℤ)) = ((2 * D.R.rS + 3 - 2 * i : ℕ) : ℤ) := by omega
-    rw [ha, zpow_natCast] at h
-    rw [c4, hm]
-    exact h
-  refine ⟨c1, hidx, c3, c4, c5, ?_⟩
-  intro c hc l hl h0
-  show _ / (∏ τ : D.what₂.Tau, ‖D.host.emb (D.eTau τ) l‖) ≤ (∏ τ, c τ) * (2 * Real.pi / D.host.rdE) ^ ((2 * (i : ℤ) - 3 - 2 * (D.R.rS : ℤ)) * D.R.f) *
-        (Lat.gS D : ℝ) ^ (((D.R.m : ℤ) - 2 * ((i : ℤ) - 1)) * D.R.f)
-  rw [← c5 c]
-  have hN : 0 < Real.sqrt (FractionalIdeal.absNorm
-      (gdd (D := D) (-1) (-((2 * D.R.rS + 3 - 2 * i : ℕ) : ℤ))) : ℝ) := by
-    rw [c4]; positivity
-  apply div_le_div_of_nonneg_left _ hN (c3 l (c1 l hl) h0)
-  apply Finset.prod_nonneg
-  intro τ _
-  have := hc τ
-  positivity
 
 theorem emb_injective (D : Formalism.BasicNotions.D7) : Function.Injective D.host.emb := by
   intro g g' h
@@ -164,29 +65,6 @@ theorem cc_notMem (φ : Formalism.HC.Frame) : φ.cc ∉ φ.Psi := by
   rw [Formalism.HC.Frame.mem_Psi_iff]
   simp [Formalism.HC.Frame.cc, Formalism.FrobeniusOrbits.c0]
 
-theorem placesTau (D : Formalism.BasicNotions.D7) : PlacesTau D := by
-  have := cmE D
-  intro l
-  have hinj : Function.Injective
-      (fun τ : D.what₂.Tau => InfinitePlace.mk (D.host.emb (D.eTau τ))) := by
-    intro τ τ' h
-    rcases InfinitePlace.mk_eq_iff.1 h with h | h
-    · exact D.eTau.injective (Subtype.ext (emb_injective D h))
-    · exfalso
-      rw [conj_emb] at h
-      have h1 := emb_injective D h
-      apply cc_notMem D.R.toFrame
-      have h2 : D.R.cc =
-          ((D.eTau τ' : D.R.Psi) : D.R.GG) *
-            ((D.eTau τ : D.R.Psi) : D.R.GG)⁻¹ := by
-        rw [← h1]; group
-      rw [h2]
-      exact (D.R.Psi).mul_mem (D.eTau τ').2 ((D.R.Psi).inv_mem (D.eTau τ).2)
-  have hcard : Fintype.card D.what₂.Tau = Fintype.card (InfinitePlace D.host.E) := by
-    rw [D.what₂.card_Tau, (Formalism.FourierDecayAlt.P.degreeFacts_statement D.host.E).2.1, deg_eq]
-  have hbij := (Fintype.bijective_iff_injective_and_card _).2 ⟨hinj, hcard⟩
-  exact Fintype.prod_bijective _ hbij _ _ (fun τ => (InfinitePlace.apply _ _).symm)
-
 theorem conjF_eq_complexConj (D : Formalism.BasicNotions.D7) (x : D.host.E) :
     letI := cmE D; D.conjF x = IsCMField.complexConj D.host.E x := by
   have := cmE D
@@ -205,55 +83,6 @@ theorem mem_perLat_iff (δ : ∀ p, (D.s.atP p).Fp)
   have := cmE D
   rw [h1 t, Formalism.FourierDecayAlt.S6.perLat, Formalism.FourierDecayAlt.P.S6x1.mem_twLat, gdd_eq_idl, gdd_eq_idl,
     conjF_eq_complexConj]
-
-theorem period_lattice_bounds_of_known (δ : ∀ p, (D.s.atP p).Fp)
-    (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (ν s : ℕ) (h1 : LaIsPeriod δ M ν s) :
-    (∀ t ∈ gdd (D := D) 2 ν, t ∈ La M δ ν s) ∧
-    (∀ l ∈ dualPsiG (D := D) (La M δ ν s), l ∈ gdd (D := D) (-1) (-((ν : ℤ) + 1))) := by
-  have := cmE D
-  have h2 : ∀ t ∈ gdd (D := D) 2 ν, t ∈ La M δ ν s := by
-    intro t ht
-    rw [← mem_perLat_iff δ M ν s h1]
-    rw [gdd_eq_idl] at ht
-    exact (Formalism.FourierDecayAlt.P.twistedLatticeBetween D.host.E _ _ s (Formalism.FourierDecayAlt.P.S6x2.idl_le D.host.E _ ν)
-      (Formalism.FourierDecayAlt.P.different_power_conj_stable D.host.E _ 2 ν)).1 ht
-  exact ⟨h2, dualPsiG_le_of_core _ _ h2⟩
-
-theorem dual_index_of_core (hU : letI := cmE D; Formalism.FourierDecayAlt.S6.Unram D.host.E) (δ : ∀ p, (D.s.atP p).Fp)
-    (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (ν s : ℕ) (h1 : LaIsPeriod δ M ν s) :
-    (AddSubgroup.closure (dualPsiG (D := D) (La M δ ν s))).relIndex
-      (gdd (D := D) (-1) (-((ν : ℤ) + 1)) : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup =
-        (Lat.gS D) ^ D.R.f := by
-  have := cmE D
-  have h := (Formalism.FourierDecayAlt.P.lattice_facts_general D.host.E hU (Lat.gS D) ν s (gS_pos D)).2.2.2.2.2.1
-  rw [deg_eq] at h
-  rw [← h]
-  unfold Formalism.FourierDecayAlt.S6.idx
-  congr 1
-  · rw [← AddSubgroup.closure_eq
-      (Formalism.FourierDecayAlt.S6.dualLat D.host.E (Lat.gS D) (Formalism.FourierDecayAlt.S6.perLat D.host.E (Lat.gS D) ν s)).toAddSubgroup]
-    congr 1
-    ext l
-    constructor
-    · intro hl y hy
-      obtain ⟨z, hz⟩ := hl y ((mem_perLat_iff δ M ν s h1 y).1 hy)
-      exact ⟨z, by simpa using hz.symm⟩
-    · intro hl y hy
-      obtain ⟨z, hz⟩ := hl y ((mem_perLat_iff δ M ν s h1 y).2 hy)
-      exact ⟨z, by simpa using hz.symm⟩
-  · rw [gdd_eq_idl]
-    rfl
-
-theorem period_lattice_unramified_of_known (hU : letI := cmE D; Formalism.FourierDecayAlt.S6.Unram D.host.E) (δ : ∀ p, (D.s.atP p).Fp)
-    (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (i : ℕ) (hi : i ≤ D.R.rS + 1)
-    (h1 : LaIsPeriod δ M (nu D.R.rS i i) 1) : G4 δ M i := by
-  have hcast : (2 * D.R.rS + 3 - 2 * i : ℕ) = nu D.R.rS i i + 1 := by
-    simp only [nu]
-    omega
-  refine period_lattice_index_of_known δ M i hi (placesTau D) (period_lattice_bounds_of_known δ M _ 1 h1).1 ?_
-  rw [hcast]
-  push_cast
-  exact dual_index_of_core hU δ M _ 1 h1
 
 theorem unram_of (E : Type) [Field E] [NumberField E] [IsCMField E]
     (h : ∀ P : Ideal (𝓞 E), P.IsMaximal → ∃ θ t : 𝓞 E,
@@ -301,22 +130,6 @@ theorem unram_of (E : Type) [Field E] [NumberField E] [IsCMField E]
 theorem unramE (D : Formalism.BasicNotions.D7) : letI := cmE D; Formalism.FourierDecayAlt.S6.Unram D.host.E := by
   have := cmE D
   exact unram_of D.host.E D.sp.cm.cmUnram.2.2
-
-theorem period_lattice_of_unit_block (δ : ∀ p, (D.s.atP p).Fp)
-    (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (m : ℕ) (hm : m + 1 ≤ D.R.rS + 1)
-    (h : G3blk δ M m 1) : G4 δ M (m + 1) := by
-  exact period_lattice_unramified_of_known (unramE D) δ M (m + 1) hm h.1
-
-theorem lattice_statement_of_root_gram_blocks {Y : TermTie D} (X : TermLocs D Y) (cN : D.what₂.Word → D.what₂.Word → ℝ)
-    (h : 4 * D.R.rS + 8 ≤ D.R.k →
-      ∃ (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-        (hA : ∀ p, Agree δ M p), G1root δ M ∧ G2 δ M (X δ M hA) cN ∧
-        (∀ m s, 1 ≤ s → m + s ≤ D.R.rS + 1 → G3blk δ M m s)) : aux₃ D X cN := by
-  intro hk
-  obtain ⟨δ, M, hA, h1, h2, h3⟩ := h hk
-  refine ⟨δ, M, hA, h1, h2, h3, fun i hi1 hi2 => ?_⟩
-  obtain ⟨m, rfl⟩ : ∃ m, i = m + 1 := ⟨i - 1, by omega⟩
-  exact period_lattice_of_unit_block δ M m hi2 (h3 m 1 le_rfl hi2)
 
 end Global
 
@@ -437,13 +250,6 @@ theorem inGLR_tr {m : ℕ} (h : Pt E m) (hh : M.InGLR h) : A5.InGLR M.R (tr h) :
     rw [mat_eq h] at this
     simpa only [Matrix.submatrix_apply, Equiv.apply_symm_apply] using this
   exact ⟨hP, isInt_inv_of M.R _ hP u hu (by rw [← det_eq h]; exact hdet)⟩
-
-theorem toAddSubgroup_Rsub (M : Model F E) : M.Rsub.toAddSubgroup = M.R.toAddSubgroup := by
-  ext x
-  exact mem_Rsub M x
-
-def quotE (M : Model F E) : (E ⧸ M.Rsub) ≃ (E ⧸ M.R.toAddSubgroup) :=
-  (QuotientAddGroup.quotientAddEquivOfEq (toAddSubgroup_Rsub M)).toEquiv
 
 end PartA
 
@@ -1134,8 +940,6 @@ def KKAll : Prop :=
   ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     (E : Type) [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     (M : Model F E), M.OK → KK M
-
-def BBFin (M : Model F E) (r : ℕ) : Prop := ∀ w : Pt E (r + 1), {c : M.Cls r | M.BB w c ≠ 0}.Finite
 
 end PartA
 

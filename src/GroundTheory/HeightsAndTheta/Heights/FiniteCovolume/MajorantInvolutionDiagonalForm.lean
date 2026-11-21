@@ -206,27 +206,9 @@ section Inhabitants
 
 open GaussianPlane
 
-def H0 : Matrix (Fin 2) (Fin 2) ℂ := Matrix.diagonal ![1, -1]
-
-def z0 : Fin 2 → ℂ := fun _ => 1
-
 def e1 : Fin 2 → ℂ := Pi.single 0 1
 
 def e2 : Fin 2 → ℂ := Pi.single 1 1
-
-theorem card_chooseBasisIndex_Eg :
-    Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 Eg)) = finrank ℚ Eg := by
-  rw [← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]
-
-def intBasisG : Basis (Fin (finrank ℚ Eg)) ℤ (𝓞 Eg) :=
-  (RingOfIntegers.basis Eg).reindex (Fintype.equivFinOfCardEq card_chooseBasisIndex_Eg)
-
-def intSubgroupEquiv (K : Type*) [Field K] [NumberField K] : 𝓞 K ≃ₗ[ℤ] intSubgroup K :=
-  (AddMonoidHom.ofInjective (f := (algebraMap (𝓞 K) K).toAddMonoidHom)
-    (FaithfulSMul.algebraMap_injective (𝓞 K) K)).toIntLinearEquiv
-
-def intSubgroupBasisG : Basis (Fin (finrank ℚ Eg)) ℤ (intSubgroup Eg) :=
-  intBasisG.map (intSubgroupEquiv Eg)
 
 instance fact_finrank_euclidean_fin_one : Fact (finrank ℝ (EuclideanSpace ℝ (Fin 1)) = 1) :=
   ⟨finrank_euclideanSpace_fin⟩

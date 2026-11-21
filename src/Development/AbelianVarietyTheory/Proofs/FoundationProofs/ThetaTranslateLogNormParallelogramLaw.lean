@@ -12,9 +12,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormTangentDenom
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicModelEquationTangentAtLatticeParameterStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicModelChordLawSumAndDifferenceStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicModelTangentLawAtDoubleStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TranslateModifiedSigmaAddMulSubAtZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TranslateModifiedSigmaTwoMulAtZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsOtherHalfPeriodStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TranslateModifiedSigmaAddMulSubAtZero
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TranslateModifiedSigmaTwoMulAtZero
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsOtherHalfPeriod
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
 
@@ -146,7 +146,7 @@ theorem generic (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G
   have hwone : ‖lamC g.lam (wpF g.abelian₂ Q) - lamC g.lam (wpF g.abelian₂ P)‖ = 1 := by
     rw [ediff, norm_mul, norm_mul, norm_pow, hu, norm_neg, norm_one] at hone
     simpa using hone
-  have key := GlobalTheory.T.U1_add_mul_U1_sub_at_zero_eq_wpF_sub g.abelian₂ hlat P Q hP.1 hQ.1
+  have key := _root_.GlobalTheory.translate_modifiedSigma_add_mul_sub_at_zero g.abelian₂ hlat P Q hP.1 hQ.1
   have cS := hc _ (tors_laq hS.2)
   have cD := hc _ (tors_laq hD.2)
   have cP := hc _ (tors_laq hP.2)
@@ -179,7 +179,7 @@ theorem doubling (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.
   have hone := GlobalTheory.T.norm_tangentDenominator_eq_one_of_unitDiscr_double g.W (xAt g P) (yAt g P) _ ha1 ha2 ha3 ha4 ha6 hΔ eP (hx P hP) hne
     (div_mul_cancel₀ _ hne) (by rw [← hdbl]; exact hx _ hS)
   rw [hη, norm_mul, norm_pow, hu, one_pow, one_mul] at hone
-  have key := GlobalTheory.T.translate_modifiedSigma_two_mul_at_zero g.abelian₂ hlat P hP.1
+  have key := _root_.GlobalTheory.SigmaDuplication.U1_two_mul_at_zero_eq_neg_wpD_mul_pow_four g.abelian₂ hlat P hP.1
   have cS := hc _ (tors_laq hS.2)
   have cP := hc _ (tors_laq hP.2)
   have key' := congrArg (lamC g.lam) key
@@ -224,7 +224,7 @@ theorem half (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p
     exact sub_mem hnP (natmul_mem h2 k)
   have tors2 : ∀ z : ℂ, 2 * z ∈ g.abelian₂ → z ∉ g.abelian₂ → GL3Theta.Tors1 p g.abelian₂ z :=
     fun z hz hz' => ⟨hz', 2, two_pos, hp2, by exact_mod_cast hz⟩
-  obtain ⟨P', h2', hP', hd⟩ := GlobalTheory.T.exists_half_period_sub_not_mem_of_isLat g.abelian₂ hlat P h2 hP.1
+  obtain ⟨P', h2', hP', hd⟩ := _root_.GlobalTheory.HalfPeriod.exists_other_half_period g.abelian₂ hlat P h2 hP.1
   set R := P - P' with hR
   have h2R : 2 * R ∈ g.abelian₂ := by rw [hR, mul_sub]; exact sub_mem h2 h2'
   have tP' := tors2 P' h2' hP'

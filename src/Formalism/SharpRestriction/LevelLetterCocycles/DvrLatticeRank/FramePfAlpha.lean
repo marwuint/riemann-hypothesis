@@ -170,16 +170,6 @@ theorem framepf_Ψα_J (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (x : W
   rw [framepf_Ψα_smulLA]
   exact Submodule.mem_map.2 ⟨_, framepf_Ψα_toLA Bs π' c hπ0 hΔπ hR2 γ0 hu H t, rfl⟩
 
-include hπ0 hΔπ γ0 in
-
-theorem framepf_α_J (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (x : W.EE ⊗[O] LcQ W T π' c)
-    (hx : x ∈ LamLA W T π' Eπ h' c ⊤) (hJ : x ∈ JLA W T π' Eπ h' M c) :
-    framepf_α Bs π' c hπ0 hΔπ hR2 γ0 hu Eπ hEu hEΔ h' M H ⟨x, hx⟩ = 0 := by
-  rw [framepf_α_apply]
-  unfold mkP
-  rw [Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype]
-  exact framepf_Ψα_J Bs π' c hπ0 hΔπ hR2 γ0 hu Eπ h' M H x hJ
-
 end Local
 
 end Formalism.MainNotions.N.Ln34

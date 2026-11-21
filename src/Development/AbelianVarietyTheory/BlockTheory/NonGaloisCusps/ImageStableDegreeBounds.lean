@@ -134,20 +134,4 @@ def Degrees : Prop :=
 
 end Statement
 
-def NModHighDegree : Prop :=
-  ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
-    (l e a : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a],
-    Reduction O K l e a ∧ Degrees O K l e a
-
-example : D₁ ({0, 1, 3} : Finset (ZMod 8)) 1 1 = {0, 1, 6} ∧
-    D₂ ({0, 1, 3} : Finset (ZMod 8)) 1 1 = {8, 9, 14} := by decide
-
-example (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
-    [IsUnitBall O K] (l e : ℕ) [Fact l.Prime] [NeZero e] :
-    uIn (S O K e) ^ (l * e) ∈ SHigh O K l e ∧ (1 : S O K e) ∉ SHigh O K l e := by
-  refine ⟨mem_SHigh.2 (by simp), fun h => ?_⟩
-  have h1 := X_pow_dvd_iff.1 (mem_SHigh.1 h) 0
-    (Nat.mul_pos (Fact.out : l.Prime).pos (NeZero.pos e))
-  simp at h1
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds

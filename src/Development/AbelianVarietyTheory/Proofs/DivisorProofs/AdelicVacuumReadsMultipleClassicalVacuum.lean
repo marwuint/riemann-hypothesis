@@ -85,7 +85,7 @@ theorem vac_reads : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D
     obtain ⟨⟨p, hp⟩, hn⟩ := hf.2.norm
     have := hn p hp
     simp [nrm2] at this
-  · rw [(GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D V W C _ ((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D V W C).2 B hIB).2.1 v hv.1).2.1]
+  · rw [(_root_.GlobalTheory.Ker.Ctx.th_laws D V W C _ ((_root_.GlobalTheory.Ker.onBasis_frame_period D V W C).2 B hIB).2.1 v hv.1).2.1]
     exact ht
 
 end GlobalTheory.AdTh.VacLine

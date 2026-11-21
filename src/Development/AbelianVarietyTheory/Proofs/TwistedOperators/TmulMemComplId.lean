@@ -21,9 +21,6 @@ theorem tmul_mem_complId {𝔠 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} {�
     {a : D.host.E} (ha : a ∈ 𝔠) : pairA D.host.F 0 α ⊗ₜ[D.host.F] a ∈ complId 𝔠 :=
   AddSubgroup.subset_closure ⟨α, hα, a, ha, rfl⟩
 
-example : pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E) ∈ complId (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) := by
-  exact tmul_mem_complId (fun w => by rw [map_one]; exact one_mem _) (FractionalIdeal.one_mem_one _)
-
 end GlobalTheory.XCharBF
 
 end

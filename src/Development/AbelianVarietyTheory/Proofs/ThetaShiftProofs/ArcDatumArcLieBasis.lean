@@ -9,7 +9,8 @@ import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CommonEigenvecto
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieComb
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsConstantLieBasisArcGroup
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNormalFormArcDatumFramedPointRootOfUnityStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNormalFormArcDatumFramedPointRootOfUnity
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters
 
 noncomputable section
 
@@ -206,7 +207,7 @@ open GlobalTheory.ArcQ.DatumBasis in
 
 theorem GlobalTheory.ArcQ.arcDatum_arcLieBasis : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁), (∀ τ k, GtTanR (d.e τ k)) → ArcLieBasis d.W d.e := by
   intro hL hL2 E _ _ _ H Dw l Xo c K₁ _ _ d htan
-  obtain ⟨ζ, -, -, -, hN, -⟩ := GlobalTheory.T.exists_normalForm_arcDatum_framedPoint_rootOfUnity hL hL2 E H Dw l Xo c K₁ d
+  obtain ⟨ζ, -, -, -, hN, -⟩ := _root_.GlobalTheory.ArcQ.exists_normalForm hL hL2 E H Dw l Xo c K₁ d
   obtain ⟨y, hy, -⟩ := hN htan
   obtain ⟨-, G, m1, m2, -, -, -, -, -, -, h, -⟩ := hy
   choose v p hv hp1 hp2 hp3 using h

@@ -1,5 +1,6 @@
 import Formalism.FlagUnipotentLattices.AlgebraicIdentityHigherDegree
-import Formalism.FlagUnipotentLattices.BlockMinorAbsoluteFromExplicit
+import Formalism.FlagUnipotentLattices.StabiliserComplementDecomposition
+import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.BlockMinorAbsoluteOfExplicit
 import Formalism.FormalDegreeBessel.FinalDS
 import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
 import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.FramesPt
@@ -12,56 +13,6 @@ noncomputable section
 namespace Formalism.MainNotions.TheoremBConstants
 
 open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.BasicNotions Formalism.MainNotions.OnePlaceEstimates Formalism.MainNotions.BesselShellMomentBounds
-
-section PieceA1
-
-def LitFormalDegree : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool), ∃ c : ℝ, 0 < c ∧
-    ∀ (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-      (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (v : H), IsHCParam lam → IsDS ε lam σ → v ≠ 0 →
-      fdegOf (Formalism.REAL.muG ε) σ v = c * fdegHC lam
-
-end PieceA1
-
-section PieceA2
-
-def OrbDat {k r : ℕ} (L : LocBessel k r) : Type :=
-  {x : Point ℂ (r + 1) × Mx k r × Measure (Mt k r) × Measure (PairSp k r) //
-    Gpt (Tz k r L.z) (Tz k r L.z') x.1 ≠ 0 ∧ IsPtRep L x.1 x.2.1 ∧ IsRelStab L x.2.1 ∧
-      IsRootMeas L x.1 x.2.1 x.2.2.1 ∧ IsOrbQuot L x.2.1 x.2.2.1 x.2.2.2}
-
-def OneStepCellExpansion (D : D7) (Ch Cg Cq Cb : ℝ) : Prop :=
-  ∀ (L : LocBessel D.R.k D.R.rS) (lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ)
-    (μsec : ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ) (ka b κ : ℝ) (p : ℕ)
-    (Hν : (Fin (2 * D.R.rS + D.R.k + 1) → ℤ) → Type) [∀ ν, NormedAddCommGroup (Hν ν)]
-    [∀ ν, InnerProductSpace ℂ (Hν ν)] [∀ ν, CompleteSpace (Hν ν)]
-    (σν : ∀ ν, Mx D.R.k D.R.rS → (Hν ν →L[ℂ] Hν ν)) (fν : ∀ _ν : Fin (2 * D.R.rS + D.R.k + 1) → ℤ,
-      Mx D.R.k D.R.rS → (L.Wq →L[ℂ] L.Wp)),
-    (κ = 1 ∨ κ = ka) → LocOk0 D Ch Cg L lam0 ka b κ → BesselRangeNearParameter D Cg Cq L lam0 p →
-    IsSection D.R.k D.R.rS L.z L.z' μsec →
-    (∀ ν : Fin (2 * D.R.rS + D.R.k + 1) → ℤ, ∑ s, |(ν s : ℝ)| ≤ ((D.R.rS + 1) * p : ℕ) →
-      IsDSHpk D.R.k D.R.rS L.ε (L.lam + fun a => (ν a : ℝ)) (σν ν) ∧ IsKFinCoefH (σν ν) (fν ν) ∧
-      (jNorm2 L (fν ν) μsec = 1 ∨
-        ((∀ q : (Fin D.R.rS → ℂ) × ℂ, InBig L q → L.J (fν ν) (bigCell D.R.k D.R.rS q.1 (μsec q.2)) = 0) ∧
-          ∀ f' : Mx D.R.k D.R.rS → (L.Wq →L[ℂ] L.Wp), IsKFinCoefH (σν ν) f' →
-            ∀ q : (Fin D.R.rS → ℂ) × ℂ, InBig L q → L.J f' (bigCell D.R.k D.R.rS q.1 (μsec q.2)) = 0))) →
-    ∀ (μ : Fin (2 * D.R.rS + D.R.k + 1) → ℤ) (l : Fin (D.R.rS + 1)) (sg : Bool),
-      ∑ s, |(μ s : ℝ)| + ((l : ℕ) + 1 : ℕ) ≤ ((D.R.rS + 1) * p : ℕ) →
-      ∃ a : (Fin (2 * D.R.rS + D.R.k + 1) → ℤ) →₀ ℂ,
-        (∀ ν ∈ a.support, ∑ s, |(ν s : ℝ)| ≤ ((l : ℕ) + 1 : ℕ)) ∧
-        (a.sum fun _ c => ‖c‖) ≤ b ^ (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2) ∧
-        (∀ q : (Fin D.R.rS → ℂ) × ℂ, InBig L q →
-          (if sg then Dbig ((l : ℕ) + 1) q else star (Dbig ((l : ℕ) + 1) q)) •
-              L.J (fν μ) (bigCell D.R.k D.R.rS q.1 (μsec q.2)) =
-            a.sum fun ν c => c • L.J (fν (μ + ν)) (bigCell D.R.k D.R.rS q.1 (μsec q.2))) ∧
-        (LocOk D Ch Cg L lam0 ka b κ →
-          ((D.R.rS + 1 : ℕ) : ℝ) * (l1 L.lam lam0 + (((D.R.rS + 1) * p : ℕ) : ℝ)) ≤
-            hNC L.ε lam0 / (Cq * Real.sqrt ((2 * D.R.rS + 2 : ℕ) : ℝ)) →
-        ∀ x : OrbDat L,
-          (if sg then Dpt x.1.1 l else star (Dpt x.1.1 l)) • OrbInt L (fν μ) x.1.2.1 x.1.2.2.2 =
-            a.sum fun ν c => c • OrbInt L (fν (μ + ν)) x.1.2.1 x.1.2.2.2)
-
-end PieceA2
 
 section PieceA3
 
@@ -88,43 +39,7 @@ def PieriShellBound (D : D7) (Ch Cg Cq C1 CA CQ : ℝ) : Prop :=
 
 end PieceA3
 
-section PieceA4
-
-open Formalism.HermitianLatticeCounting.ExpansionTerms
-
-section Geo
-
-variable {k r : ℕ}
-
-end Geo
-
-def DerivedActionPhaseBound (D : D7) (Ch Cg Cq Cs : ℝ) : Prop :=
-  ∀ (L : LocBessel D.R.k D.R.rS) (lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (ka b bv : ℝ) (Bf : L.Hs → L.Wp)
-    (μG μS νq : Measure (Mt D.R.k D.R.rS)) (P : Mx D.R.k D.R.rS),
-    ShellCommonHypotheses D Ch Cg L lam0 ka b bv Bf μG μS νq P →
-    l1 L.lam lam0 ≤ q0 Cq (2 * D.R.rS + 2) L.ε L.u lam0 →
-    ∃ Eop : Fin (2 * D.R.rS + D.R.k + 1) × Fin (2 * D.R.rS + D.R.k + 1) → L.Hs → L.Hs,
-      (∀ i j w, w ∈ shell L P j → Eop i w ∈ shell L P (j + 2)) ∧
-      (∀ (j : ℕ) w, w ∈ shell L P j →
-        ∑ i, ‖Eop i w‖ ^ 2 ≤ (Cs * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2 * (b + j)) ^ 2 * ‖w‖ ^ 2) ∧
-      ∀ (Y : Mx D.R.k D.R.rS) (θ : ℝ), Y * Y * Y = 0 →
-        (∀ t : ℝ, (1 + (t : ℂ) • Y + ((t : ℂ) ^ 2 / 2) • (Y * Y)) ∈ Nset D.R.k D.R.rS ∧
-          psi D.R.k D.R.rS L.z L.c (1 + (t : ℂ) • Y + ((t : ℂ) ^ 2 / 2) • (Y * Y)) =
-            Complex.exp (((θ * t : ℝ) : ℂ) * Complex.I)) →
-        ∀ (j : ℕ) w, w ∈ shell L P j → ∀ g ∈ UH (Hpk D.R.k D.R.rS),
-          ((θ : ℂ) * Complex.I) • Bf (L.σ g w) = ∑ i, (g⁻¹ * Y * g) i.1 i.2 • Bf (L.σ g (Eop i w))
-
-end PieceA4
-
 section PieceB1
-
-def BpAll (D : D7) (Ch Cg Cb : ℝ)
-    (Near : (Fin (2 * D.R.rS + D.R.k + 1) → ℝ) → (Fin (2 * D.R.rS + D.R.k + 1) → ℝ) → Prop) : Prop :=
-  ∀ (L : LocBessel D.R.k D.R.rS) (lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ)
-    (f : Mx D.R.k D.R.rS → (L.Wq →L[ℂ] L.Wp)) (μsec : ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ)
-    (ka b : ℝ), LocOk D Ch Cg L lam0 ka b 1 → Near L.lam lam0 →
-    IsKFinCoefH L.σ f → IsSection D.R.k D.R.rS L.z L.z' μsec →
-    ∀ γ : Point ℂ (D.R.rS + 1), Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ ≠ 0 → BpIneq D Cb L f μsec b γ
 
 def FrC (D : D7) (Cf ka : ℝ) : ℝ :=
   max ka⁻¹ (ka⁻¹)⁻¹ ^ (Cf * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2) *
@@ -136,353 +51,7 @@ def GapFr (D : D7) (Cgf : ℝ) (ε : Fin (2 * D.R.rS + D.R.k + 1) → Bool) (lam
   GapAtLeast ε lam (Cgf * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) *
       (((3 * (D.R.rS + 1) : ℕ) : ℝ) * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2 + ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 3))
 
-theorem bp_in_frame (D : D7) (Ch Cg Cgf Cf Cb : ℝ)
-    (Near : (Fin (2 * D.R.rS + D.R.k + 1) → ℝ) → (Fin (2 * D.R.rS + D.R.k + 1) → ℝ) → Prop)
-    (hFr : FrameBesselBound D Cgf Cf) (hBp : BpAll D Ch Cg Cb Near)
-    (L : LocBessel D.R.k D.R.rS) (lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ)
-    (f : Mx D.R.k D.R.rS → (L.Wq →L[ℂ] L.Wp)) (μsec : ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ)
-    (ka b : ℝ) (hL : LocOk D Ch Cg L lam0 ka b ka) (hN : Near L.lam lam0) (hgap : GapFr D Cgf L.ε L.lam)
-    (hf : IsKFinCoefH L.σ f) (hsec : IsSection D.R.k D.R.rS L.z L.z' μsec)
-    (γ : Point ℂ (D.R.rS + 1)) (hG : Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ ≠ 0) :
-    ENNReal.ofReal (ptWeight D.R.k D.R.rS (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ) * orbSq L f γ ≤
-      ENNReal.ofReal (FrC D Cf ka * (b ^ (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4) *
-        (max 1 (1 / (GsC D ka * Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ))) ^
-          (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2))) * jNorm2 L f μsec := by
-  obtain ⟨hk, hε, hc, hκ0, hκt, hStd, hT1, hT1'⟩ := hL
-  have hka : 0 < ka := hStd.2.2.2.1
-  have hτ : 0 < ka ^ D.R.rS := pow_pos hka _
-  obtain ⟨L₁, f₁, e1, e2, e3, e4, e5, e6, e7, e8, e9, hf₁, hrest⟩ :=
-    hFr L f ka ka⁻¹ (ka ^ D.R.rS) hka (inv_pos.2 hka) hτ hc hκ0 hκt hε hgap hf
-  obtain ⟨μsec₁, hsec₁, K₁, hK₁, hJ₁, hpt⟩ := hrest μsec hsec
-  obtain ⟨γ₁, -, hG₁, -, hle⟩ := hpt γ hG
-  have hsq : (ka ^ D.R.rS) ^ 2 = ka ^ (2 * D.R.rS) := by rw [← pow_mul, mul_comm]
-  have hinv : ka ^ (2 * D.R.rS) * (1 / ka) ^ (2 * D.R.rS) = 1 := by
-    rw [← mul_pow, mul_one_div, div_self hka.ne', one_pow]
-  have hone : (ka / ka) ^ (2 * D.R.rS) = 1 := by rw [div_self hka.ne', one_pow]
-  have hL₁ : LocOk D Ch Cg L₁ lam0 ka b 1 := by
-    refine ⟨hk, e1.trans hε, ?_, e6, e7, ?_, ?_, ?_⟩
-    · rw [e5, inv_mul_cancel₀ hka.ne']
-    · rw [e1, e3, e4, e8, e9, hsq]
-      have a1 : ka ^ (2 * D.R.rS) * Tz D.R.k D.R.rS L.z * (1 / ka) ^ (2 * D.R.rS) =
-          Tz D.R.k D.R.rS L.z * (ka / ka) ^ (2 * D.R.rS) := by
-        rw [hone, mul_one, mul_right_comm, hinv, one_mul]
-      have a2 : ka ^ (2 * D.R.rS) * Tz D.R.k D.R.rS L.z' * (1 / ka) ^ (2 * D.R.rS) =
-          Tz D.R.k D.R.rS L.z' * (ka / ka) ^ (2 * D.R.rS) := by
-        rw [hone, mul_one, mul_right_comm, hinv, one_mul]
-      rw [a1, a2]
-      exact hStd
-    · rw [e8, hsq, one_pow, mul_one, mul_comm]; exact hT1
-    · rw [e9, hsq, one_pow, mul_one, mul_comm]; exact hT1'
-  have hG₁0 : Gpt (Tz D.R.k D.R.rS L₁.z) (Tz D.R.k D.R.rS L₁.z') γ₁ ≠ 0 := by
-    rw [hG₁]
-    exact mul_ne_zero (mul_ne_zero (pow_ne_zero _ (inv_ne_zero hka.ne')) (pow_ne_zero _ hτ.ne')) hG
-  have hB := hBp L₁ lam0 f₁ μsec₁ ka b hL₁ (by rw [e2]; exact hN) hf₁ hsec₁ γ₁ hG₁0
-  unfold BpIneq at hB
-  rw [hG₁, hJ₁] at hB
-  have hK0 : ENNReal.ofReal K₁ ≠ 0 := (ENNReal.ofReal_pos.2 hK₁).ne'
-  have hKt : ENNReal.ofReal K₁ ≠ ⊤ := ENNReal.ofReal_ne_top
-  have hF0 : 0 ≤ FrC D Cf ka := by unfold FrC; positivity
-  have h2 := hle.trans (mul_le_mul' le_rfl hB)
-  rw [← ENNReal.mul_le_mul_iff_right hK0 hKt]
-  refine h2.trans (le_of_eq ?_)
-  rw [ENNReal.ofReal_mul hF0]
-  unfold FrC GsC
-  ring
-
 end PieceB1
-
-section PieceB2
-
-theorem prod_one_add_pow {R ι : Type*} [CommSemiring R] [Fintype ι] [DecidableEq ι] (x : ι → R) (N : ι → ℕ) :
-    ∏ l, (1 + x l) ^ N l =
-      ∑ κ ∈ Fintype.piFinset (fun l => Finset.range (N l + 1)), ∏ l, ((N l).choose (κ l) : R) * x l ^ κ l := by
-  rw [Finset.prod_congr rfl (fun l _ => (show (1 + x l) ^ N l =
-      ∑ k ∈ Finset.range (N l + 1), ((N l).choose k : R) * x l ^ k by
-    rw [add_comm, add_pow]
-    refine Finset.sum_congr rfl fun k _ => ?_
-    rw [one_pow, mul_one, mul_comm]))]
-  exact Finset.prod_univ_sum _ _
-
-section HS
-
-variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-  [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
-
-theorem hs_bound {ι : Type} (s : Finset ι) (a : ι → ℂ) (x : ι → (Wq →L[ℂ] Wp)) (M : ℝ)
-    (hM : ∀ i ∈ s, hsNormSq (x i) ≤ M) : hsNormSq (∑ i ∈ s, a i • x i) ≤ (∑ i ∈ s, ‖a i‖) ^ 2 * M := by
-  refine (hsNormSq_sum_le s a x).trans ?_
-  have h1 : ∑ i ∈ s, ‖a i‖ * hsNormSq (x i) ≤ (∑ i ∈ s, ‖a i‖) * M := by
-    rw [Finset.sum_mul]
-    exact Finset.sum_le_sum fun i hi => mul_le_mul_of_nonneg_left (hM i hi) (norm_nonneg _)
-  calc (∑ i ∈ s, ‖a i‖) * ∑ i ∈ s, ‖a i‖ * hsNormSq (x i) ≤ (∑ i ∈ s, ‖a i‖) * ((∑ i ∈ s, ‖a i‖) * M) :=
-        mul_le_mul_of_nonneg_left h1 (Finset.sum_nonneg fun i _ => norm_nonneg (a i))
-    _ = (∑ i ∈ s, ‖a i‖) ^ 2 * M := by ring
-
-end HS
-
-section Loc
-
-variable {k r : ℕ}
-
-theorem OrbInt_smul (L : LocBessel k r) (c : ℂ) (F : Mx k r → (L.Wq →L[ℂ] L.Wp)) (g : Mx k r)
-    (ν : Measure (PairSp k r)) : OrbInt L (fun x => c • F x) g ν = c • OrbInt L F g ν := by
-  unfold OrbInt besselIntg
-  rw [← integral_smul]
-  congr 1
-  funext p
-  simp only [ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]
-  rw [smul_comm]
-
-def withRep (L : LocBessel k r) (lam' : Fin (2 * r + k + 1) → ℝ) (hlam' : IsHCParam lam') (H : Type)
-    [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ' : Mx k r → (H →L[ℂ] H))
-    (hσ' : IsDSHpk k r L.ε lam' σ') : LocBessel k r where
-  ε := L.ε
-  lam := lam'
-  hlam := hlam'
-  z := L.z
-  z' := L.z'
-  hz := L.hz
-  hz' := L.hz'
-  u := L.u
-  u' := L.u'
-  Hs := H
-  σ := σ'
-  hσ := hσ'
-  Wp := L.Wp
-  π := L.π
-  hπ := L.hπ
-  Wq := L.Wq
-  π' := L.π'
-  hπ' := L.hπ'
-  c := L.c
-  μW := L.μW
-  μW' := L.μW'
-  hμW := L.hμW
-  hμW' := L.hμW'
-  κN := L.κN
-
-end Loc
-
-def ExFamC (D : D7) (Ch Cg Cq : ℝ) : Prop :=
-  ∀ (L : LocBessel D.R.k D.R.rS) (lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ)
-    (μsec : ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ) (ka b κ : ℝ) (p : ℕ)
-    (f0 : Mx D.R.k D.R.rS → (L.Wq →L[ℂ] L.Wp)),
-    (κ = 1 ∨ κ = ka) → LocOk0 D Ch Cg L lam0 ka b κ → BesselRangeNearParameter D Cg Cq L lam0 p →
-    IsSection D.R.k D.R.rS L.z L.z' μsec → IsKFinCoefH L.σ f0 → jNorm2 L f0 μsec = 1 →
-    ∃ (Hν : (Fin (2 * D.R.rS + D.R.k + 1) → ℤ) → Type) (_ : ∀ ν, NormedAddCommGroup (Hν ν))
-      (_ : ∀ ν, InnerProductSpace ℂ (Hν ν)) (_ : ∀ ν, CompleteSpace (Hν ν))
-      (σν : ∀ ν, Mx D.R.k D.R.rS → (Hν ν →L[ℂ] Hν ν)) (fν : ∀ _ν : Fin (2 * D.R.rS + D.R.k + 1) → ℤ,
-        Mx D.R.k D.R.rS → (L.Wq →L[ℂ] L.Wp)), fν 0 = f0 ∧
-      ∀ ν : Fin (2 * D.R.rS + D.R.k + 1) → ℤ, ∑ s, |(ν s : ℝ)| ≤ ((D.R.rS + 1) * p : ℕ) →
-        IsHCParam (L.lam + fun a => (ν a : ℝ)) ∧
-        IsDSHpk D.R.k D.R.rS L.ε (L.lam + fun a => (ν a : ℝ)) (σν ν) ∧ IsKFinCoefH (σν ν) (fν ν) ∧
-        (jNorm2 L (fν ν) μsec = 1 ∨
-          ((∀ q : (Fin D.R.rS → ℂ) × ℂ, InBig L q → L.J (fν ν) (bigCell D.R.k D.R.rS q.1 (μsec q.2)) = 0) ∧
-            ∀ f' : Mx D.R.k D.R.rS → (L.Wq →L[ℂ] L.Wp), IsKFinCoefH (σν ν) f' →
-              ∀ q : (Fin D.R.rS → ℂ) × ℂ, InBig L q → L.J f' (bigCell D.R.k D.R.rS q.1 (μsec q.2)) = 0))
-
-theorem jNorm2_le_one_of_alt (D : D7) (L : LocBessel D.R.k D.R.rS) (F : Mx D.R.k D.R.rS → (L.Wq →L[ℂ] L.Wp))
-    (μsec : ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ)
-    (h : jNorm2 L F μsec = 1 ∨
-      (∀ q : (Fin D.R.rS → ℂ) × ℂ, InBig L q → L.J F (bigCell D.R.k D.R.rS q.1 (μsec q.2)) = 0)) :
-    jNorm2 L F μsec ≤ 1 := by
-  have hk2 : 2 ≤ D.R.k := by have := Ranks.k_ge D.R; omega
-  rcases h with h | h
-  · exact le_of_eq h
-  · rw [jNorm2_eq]
-    have : ∀ q, ENNReal.ofReal (BesselShellMomentBounds.dens L F μsec q) = 0 := fun q => by
-      unfold BesselShellMomentBounds.dens
-      by_cases hq : (∀ i, q.1 i ≠ 0) ∧ Tz D.R.k D.R.rS L.z * Tz D.R.k D.R.rS L.z' < Complex.normSq q.2
-      · rw [h q hq]
-        simp [hsNormSq_eq]
-      · simp [bcWeight_off (k := D.R.k) (r := D.R.rS) hk2 (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') q hq]
-    simp [this]
-
-end PieceB2
-
-section PieceB3
-
-def KKc (D : D7) (Cf Cb ka b G : ℝ) : ℝ :=
-  FrC D Cf ka * (b ^ (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4) *
-    (max 1 (1 / (GsC D ka * G))) ^ (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2))
-
-theorem KKc_pos (D : D7) (Cf Cb ka b G : ℝ) (hka : 0 < ka) (hb : 0 < b) : 0 < KKc D Cf Cb ka b G := by
-  unfold KKc FrC GsC
-  positivity
-
-theorem loc_one (D : D7) (Ch Cg Cg1 Cq Cgf Cf Cb1 Cb2 : ℝ)
-    (Near : (Fin (2 * D.R.rS + D.R.k + 1) → ℝ) → (Fin (2 * D.R.rS + D.R.k + 1) → ℝ) → Prop)
-    (hFr : FrameBesselBound D Cgf Cf) (hBp : BpAll D Ch Cg Cb2 Near) (h92 : BesselConjugatesEveryCell D Ch Cg1 Cq Cb1)
-    (hX : ExFamC D Ch Cg1 Cq)
-    (L : LocBessel D.R.k D.R.rS) (lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ)
-    (f : Mx D.R.k D.R.rS → (L.Wq →L[ℂ] L.Wp)) (μsec : ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ)
-    (ka b : ℝ) (hb : 0 < b) (hL : LocOk D Ch Cg L lam0 ka b ka) (hL1 : LocOk0 D Ch Cg1 L lam0 ka b ka)
-    (hf : IsKFinCoefH L.σ f) (hsec : IsSection D.R.k D.R.rS L.z L.z' μsec)
-    (N : Fin (D.R.rS + 1) → ℕ) (s : Fin (D.R.rS + 1) → ℝ) (hs : ∀ l, 0 ≤ s l)
-    (hR : BesselRangeNearParameter D Cg1 Cq L lam0 (2 * ∑ l, N l))
-    (hLc : LocOk D Ch Cg1 L lam0 ka b ka)
-    (hF2 : ((D.R.rS + 1 : ℕ) : ℝ) * (l1 L.lam lam0 + (((D.R.rS + 1) * (2 * ∑ l, N l) : ℕ) : ℝ)) ≤
-      hNC L.ε lam0 / (Cq * Real.sqrt ((2 * D.R.rS + 2 : ℕ) : ℝ)))
-    (hNear : ∀ ν : Fin (2 * D.R.rS + D.R.k + 1) → ℤ,
-      ∑ t, |(ν t : ℝ)| ≤ ((D.R.rS + 1) * (2 * ∑ l, N l) : ℕ) →
-      Near (L.lam + fun a => (ν a : ℝ)) lam0 ∧ GapFr D Cgf L.ε (L.lam + fun a => (ν a : ℝ)))
-    (γ : Point ℂ (D.R.rS + 1)) (hG : Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ ≠ 0) :
-    ENNReal.ofReal ((∏ l, (1 + s l * ‖Dpt γ l‖ ^ 2) ^ N l) ^ 2 *
-        ptWeight D.R.k D.R.rS (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ) * orbSq L f γ ≤
-      ENNReal.ofReal ((∏ l, (1 + s l * b ^ (2 * Cb1 * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2)) ^ N l) ^ 2 *
-        KKc D Cf Cb2 ka b (Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ)) * jNorm2 L f μsec := by
-  classical
-  have hka : 0 < ka := hL.2.2.2.2.2.1.2.2.2.1
-  set nγ := ptWeight D.R.k D.R.rS (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ with hnγ
-  set KK := KKc D Cf Cb2 ka b (Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ) with hKK
-  set Qv := ∏ l, (1 + s l * ‖Dpt γ l‖ ^ 2) ^ N l with hQv
-  set B2 := b ^ (2 * Cb1 * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2) with hB2
-  set S := ∏ l, (1 + s l * B2) ^ N l with hS
-  have hKKpos : 0 < KK := KKc_pos D Cf Cb2 ka b _ hka hb
-  have hB2pos : 0 < B2 := Real.rpow_pos_of_pos hb _
-  have hSpos : 0 < S := Finset.prod_pos fun l _ => pow_pos (by have := hs l; positivity) _
-  have h0N := hNear 0 (by simp only [Pi.zero_apply, Int.cast_zero, abs_zero, Finset.sum_const_zero]; exact Nat.cast_nonneg _)
-  have hlam0 : (L.lam + fun a => (((0 : Fin (2 * D.R.rS + D.R.k + 1) → ℤ) a : ℤ) : ℝ)) = L.lam := by
-    ext a; simp
-  rw [hlam0] at h0N
-  have hbase := bp_in_frame D Ch Cg Cgf Cf Cb2 Near hFr hBp L lam0 f μsec ka b hL h0N.1 h0N.2 hf hsec γ hG
-  by_cases hn : 0 < nγ
-  swap
-  · rw [ENNReal.ofReal_of_nonpos (mul_nonpos_of_nonneg_of_nonpos (sq_nonneg _) (not_lt.1 hn)), zero_mul]
-    exact bot_le
-  by_cases htop : jNorm2 L f μsec = ⊤
-  · rw [htop, ENNReal.mul_top (by simpa using mul_pos (pow_pos hSpos 2) hKKpos)]
-    exact le_top
-  by_cases h0 : jNorm2 L f μsec = 0
-  · rw [h0, mul_zero] at hbase ⊢
-    rw [ENNReal.ofReal_mul (sq_nonneg _), mul_assoc, nonpos_iff_eq_zero.1 hbase, mul_zero]
-  set J := jNorm2 L f μsec with hJ
-  have hJr : 0 < J.toReal := ENNReal.toReal_pos h0 htop
-  set c : ℝ := Real.sqrt (J.toReal)⁻¹ with hc
-  have hc2 : ‖(c : ℂ)‖ ^ 2 = (J.toReal)⁻¹ := by
-    rw [Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (inv_nonneg.2 hJr.le)]
-  have hcJ : ENNReal.ofReal (‖(c : ℂ)‖ ^ 2) = J⁻¹ := by
-    rw [hc2, ENNReal.ofReal_inv_of_pos hJr, ENNReal.ofReal_toReal htop]
-  have h1 : jNorm2 L (fun x => (c : ℂ) • f x) μsec = 1 := by
-    rw [jNorm2_smul, hcJ]
-    exact ENNReal.inv_mul_cancel h0 htop
-  obtain ⟨Hν, i1, i2, i3, σν, fν, hf0, hfam⟩ := hX L lam0 μsec ka b ka (2 * ∑ l, N l)
-    (fun x => (c : ℂ) • f x) (Or.inr rfl) hL1 hR hsec (coef_smul L L.σ c f hf) h1
-  have h10 : jNorm2 L (fν 0) μsec = 1 := by rw [hf0]; exact h1
-  let I := Fintype.piFinset (fun l : Fin (D.R.rS + 1) => Finset.range (N l + 1))
-  have hI : ∀ κ ∈ I, ∑ l, κ l + ∑ l, κ l ≤ 2 * ∑ l, N l := by
-    intro κ hκ
-    have : ∑ l, κ l ≤ ∑ l, N l := Finset.sum_le_sum fun l _ => by
-      have := Fintype.mem_piFinset.1 hκ l
-      simp only [Finset.mem_range] at this
-      omega
-    omega
-  have hex := fun (κ : Fin (D.R.rS + 1) → ℕ) (hκ : κ ∈ I) =>
-    h92 L lam0 μsec ka b ka _ Hν σν fν (Or.inr rfl) hL1 hR hsec (fun ν hν => (hfam ν hν).2) h10 κ κ (hI κ hκ)
-  choose! a ha using hex
-  unfold orbSq
-  simp only [ENNReal.mul_iSup]
-  refine iSup_le fun g => iSup_le fun μR => iSup_le fun νm => iSup_le fun hrep => ?_
-  obtain ⟨hr1, hr2, hr3, hr4⟩ := hrep
-  set x := OrbInt L f g νm with hx
-  let xν : (Fin (2 * D.R.rS + D.R.k + 1) → ℤ) → (L.Wq →L[ℂ] L.Wp) := fun ν => OrbInt L (fν ν) g νm
-  have hx0 : xν 0 = (c : ℂ) • x := by
-    show OrbInt L (fν 0) g νm = _
-    rw [hf0, OrbInt_smul]
-  set M := KK / nγ with hM
-  have hM0 : 0 ≤ M := (div_pos hKKpos hn).le
-  have hxν : ∀ ν : Fin (2 * D.R.rS + D.R.k + 1) → ℤ,
-      ∑ t, |(ν t : ℝ)| ≤ ((D.R.rS + 1) * (2 * ∑ l, N l) : ℕ) → hsNormSq (xν ν) ≤ M := by
-    intro ν hν
-    obtain ⟨hHC, hDS, hKF, halt⟩ := hfam ν hν
-    let Lν := withRep L _ hHC (Hν ν) (σν ν) hDS
-    have hb' := bp_in_frame D Ch Cg Cgf Cf Cb2 Near hFr hBp Lν lam0 (fν ν) μsec ka b hL (hNear ν hν).1
-      (hNear ν hν).2 hKF hsec γ hG
-    have hle1 : jNorm2 L (fν ν) μsec ≤ 1 := jNorm2_le_one_of_alt D L _ μsec (halt.imp id And.left)
-    have hsup : ENNReal.ofReal (hsNormSq (xν ν)) ≤ orbSq Lν (fν ν) γ := by
-      unfold orbSq
-      exact le_iSup_of_le g <| le_iSup_of_le μR <| le_iSup_of_le νm <| le_iSup_of_le ⟨hr1, hr2, hr3, hr4⟩ le_rfl
-    have h3 : ENNReal.ofReal nγ * ENNReal.ofReal (hsNormSq (xν ν)) ≤ ENNReal.ofReal KK :=
-      (mul_le_mul' le_rfl hsup).trans (hb'.trans ((mul_le_mul' le_rfl hle1).trans (le_of_eq (mul_one _))))
-    rw [← ENNReal.ofReal_mul hn.le, ENNReal.ofReal_le_ofReal_iff hKKpos.le] at h3
-    rw [hM, le_div_iff₀ hn, mul_comm]
-    exact h3
-  let β : (Fin (D.R.rS + 1) → ℕ) → ℝ := fun κ =>
-    b ^ (Cb1 * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2 * (∑ l, κ l + ∑ l, κ l : ℕ))
-  have hβpos : ∀ κ, 0 < β κ := fun κ => Real.rpow_pos_of_pos hb _
-  let y : (Fin (D.R.rS + 1) → ℕ) → (L.Wq →L[ℂ] L.Wp) := fun κ => (DpowPt κ γ * star (DpowPt κ γ)) • xν 0
-  have hy : ∀ κ ∈ I, hsNormSq (y κ) ≤ β κ ^ 2 * M := by
-    intro κ hκ
-    obtain ⟨hfin, hsup, hsum, -, horb⟩ := ha κ hκ
-    have e := horb hLc hF2 γ g μR νm hG hr1 hr2 hr3 hr4
-    have hout : ∀ ν, ν ∉ hfin.toFinset → a κ ν = 0 := fun ν hν => by
-      by_contra h
-      exact hν (hfin.mem_toFinset.2 h)
-    rw [tsum_eq_sum (s := hfin.toFinset) (fun ν hν => by rw [hout ν hν, zero_smul])] at e
-    rw [tsum_eq_sum (s := hfin.toFinset) (fun ν hν => by rw [hout ν hν, norm_zero])] at hsum
-    have h2 := hs_bound hfin.toFinset (a κ) xν M (fun ν hν => hxν ν
-      ((hsup ν (hfin.mem_toFinset.1 hν)).trans (by exact_mod_cast Nat.mul_le_mul_left _ (hI κ hκ))))
-    show hsNormSq ((DpowPt κ γ * star (DpowPt κ γ)) • OrbInt L (fν 0) g νm) ≤ _
-    rw [e]
-    exact h2.trans (mul_le_mul_of_nonneg_right
-      (pow_le_pow_left₀ (Finset.sum_nonneg fun ν _ => norm_nonneg _) hsum 2) hM0)
-  let cκ : (Fin (D.R.rS + 1) → ℕ) → ℝ := fun κ => ∏ l, ((N l).choose (κ l) : ℝ) * s l ^ κ l
-  have hcκ0 : ∀ κ, 0 ≤ cκ κ := fun κ => Finset.prod_nonneg fun l _ => mul_nonneg (Nat.cast_nonneg _) (pow_nonneg (hs l) _)
-  have hQc : ((Qv : ℝ) : ℂ) = ∑ κ ∈ I, ((cκ κ : ℝ) : ℂ) * (DpowPt κ γ * star (DpowPt κ γ)) := by
-    have h := prod_one_add_pow (R := ℂ) (fun l => (s l : ℂ) * (Dpt γ l * star (Dpt γ l))) N
-    have e1 : ((Qv : ℝ) : ℂ) = ∏ l, (1 + (s l : ℂ) * (Dpt γ l * star (Dpt γ l))) ^ N l := by
-      rw [hQv]
-      push_cast
-      refine Finset.prod_congr rfl fun l _ => ?_
-      rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
-      push_cast
-      rfl
-    rw [e1, h]
-    refine Finset.sum_congr rfl fun κ _ => ?_
-    simp only [cκ, DpowPt, star_prod, star_pow, mul_pow, Finset.prod_mul_distrib]
-    push_cast
-    ring
-  have hβ : ∀ κ, β κ = B2 ^ (∑ l, κ l) := by
-    intro κ
-    show b ^ (Cb1 * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2 * (∑ l, κ l + ∑ l, κ l : ℕ)) = _
-    rw [hB2, ← Real.rpow_natCast (b ^ (2 * Cb1 * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2)) (∑ l, κ l), ← Real.rpow_mul hb.le]
-    congr 1
-    push_cast
-    ring
-  have hSc : S = ∑ κ ∈ I, cκ κ * β κ := by
-    have h := prod_one_add_pow (R := ℝ) (fun l => s l * B2) N
-    rw [hS, h]
-    refine Finset.sum_congr rfl fun κ _ => ?_
-    rw [hβ]
-    simp only [cκ, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]
-    ring
-  have hexp : ((Qv : ℝ) : ℂ) • xν 0 =
-      ∑ κ ∈ I, ((cκ κ * β κ : ℝ) : ℂ) • ((((β κ)⁻¹ : ℝ) : ℂ) • y κ) := by
-    rw [hQc, Finset.sum_smul]
-    refine Finset.sum_congr rfl fun κ _ => ?_
-    rw [smul_smul, ← Complex.ofReal_mul, mul_assoc, mul_inv_cancel₀ (hβpos κ).ne', mul_one, mul_smul]
-  have h4 := hs_bound I (fun κ => ((cκ κ * β κ : ℝ) : ℂ)) (fun κ => (((β κ)⁻¹ : ℝ) : ℂ) • y κ) M (by
-    intro κ hκ
-    rw [hsNormSq_smul, Complex.norm_real, Real.norm_eq_abs, sq_abs, inv_pow]
-    rw [inv_mul_le_iff₀ (pow_pos (hβpos κ) 2)]
-    exact hy κ hκ)
-  rw [← hexp, hsNormSq_smul, hx0, hsNormSq_smul, hc2, Complex.norm_real, Real.norm_eq_abs, sq_abs] at h4
-  have h5 : ∑ κ ∈ I, ‖((cκ κ * β κ : ℝ) : ℂ)‖ = S := by
-    rw [hSc]
-    refine Finset.sum_congr rfl fun κ _ => ?_
-    rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (hcκ0 κ) (hβpos κ).le)]
-  rw [h5] at h4
-  have hreal : Qv ^ 2 * nγ * hsNormSq x ≤ S ^ 2 * KK * J.toReal := by
-    calc Qv ^ 2 * nγ * hsNormSq x = (Qv ^ 2 * ((J.toReal)⁻¹ * hsNormSq x)) * (nγ * J.toReal) := by
-          field_simp
-      _ ≤ (S ^ 2 * M) * (nγ * J.toReal) := mul_le_mul_of_nonneg_right h4 (mul_pos hn hJr).le
-      _ = S ^ 2 * KK * J.toReal := by
-          rw [hM]; field_simp
-  rw [← ENNReal.ofReal_toReal htop, ← ENNReal.ofReal_mul (mul_nonneg (sq_nonneg _) hn.le),
-    ← ENNReal.ofReal_mul (mul_nonneg (sq_nonneg _) hKKpos.le)]
-  exact ENNReal.ofReal_le_ofReal hreal
-
-end PieceB3
 
 section PieceB4
 
@@ -771,11 +340,6 @@ theorem sQ_nonneg (D : D7) (l : Fin (D.R.rS + 1)) : 0 ≤ sQ D l := by
   unfold sQ
   positivity
 
-def EQ (D : D7) (Ch Cf Cb1 Cb2 : ℝ) (SN : ℕ) : ℝ :=
-  2 * ((4 + Ch + 2 * Cb1) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2 * SN) + 2 * Ch * Cf * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2 +
-    Cb2 * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4 +
-    (3 + 3 * Ch) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2 * (Cb2 * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2)
-
 theorem alfProd_inv_le_b (D : D7) (Ch b : ℝ) (hCh : 0 ≤ Ch) (hb : 2 ≤ b) (hka : 0 < kaRe D)
     (hk2 : (kaRe D)⁻¹ ≤ b ^ Ch) (n : ℕ) (hn : n ≤ D.R.rS + 1) :
     (((∏ i : Fin n, alf D i) ^ 2) ^ 2)⁻¹ ≤ b ^ ((3 + Ch) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2) := by
@@ -907,18 +471,6 @@ end PieceB6
 
 section PieceB7
 
-def RangeOne (D : D7) (Ch Cg Cg1 Cq Cgf dist : ℝ)
-    (Near : (Fin (2 * D.R.rS + D.R.k + 1) → ℝ) → (Fin (2 * D.R.rS + D.R.k + 1) → ℝ) → Prop)
-    (P : ∀ (T T' : ℕ) (b : ℝ), BData D Ch Cg T T' b dist → Prop) (A : ℕ) (p : ℝ) : Prop :=
-  ∀ (T T' : ℕ) (b : ℝ) (X : BData D Ch Cg T T' b dist), P T T' b X → ∀ v,
-    BesselRangeNearParameter D Cg1 Cq (X.L v) (lamSH D.R (D.hc v)) (2 * ∑ l, NQ D A p l) ∧
-    ((D.R.rS + 1 : ℕ) : ℝ) * (l1 (X.L v).lam (lamSH D.R (D.hc v)) + (((D.R.rS + 1) * (2 * ∑ l, NQ D A p l) : ℕ) : ℝ)) ≤
-      hNC (X.L v).ε (lamSH D.R (D.hc v)) / (Cq * Real.sqrt ((2 * D.R.rS + 2 : ℕ) : ℝ)) ∧
-    ∀ ν : Fin (2 * D.R.rS + D.R.k + 1) → ℤ,
-      ∑ t, |(ν t : ℝ)| ≤ ((D.R.rS + 1) * (2 * ∑ l, NQ D A p l) : ℕ) →
-      Near ((X.L v).lam + fun a => (ν a : ℝ)) (lamSH D.R (D.hc v)) ∧
-        GapFr D Cgf (X.L v).ε ((X.L v).lam + fun a => (ν a : ℝ))
-
 theorem Fl_eq (D : D7) (v : D.what₂.Tau) (γ : Point D.host.E (D.R.rS + 1)) (l : Fin (D.R.rS + 1)) :
     1 + sQ D l * ‖Dpt (ptLoc D v γ) l‖ ^ 2 = Fl D v γ l := by
   unfold Dpt Fl sQ absV
@@ -974,21 +526,9 @@ theorem sum_weighted_point_counts_le_cube (D : D7) (Aw Cb2 : ℝ) (hAw : 0 ≤ A
   have f5 : 0 ≤ Cb2 * ((D.R.rS : ℝ) + 1) ^ 3 := mul_nonneg h (pow_nonneg ht0 _)
   linarith
 
-def firstBoundConstant (Ch Cf Cb1 Cb2 : ℝ) : ℝ :=
-  2 * (4 + Ch + 2 * Cb1) * (Cb2 + 1) + 2 * Ch * Cf + Cb2 + (3 + 3 * Ch) * Cb2
-
-def weightedBoundConstant (Aw Ch Cf Cb1 Cb2 : ℝ) : ℝ :=
-  2 * (4 + Ch + 2 * Cb1) * (1 + Aw + Cb2) + 2 * Ch * Cf + Cb2 + (3 + 3 * Ch) * Cb2
-
 end PieceB8
 
 section PieceB9
-
-section Gen
-
-variable {n : ℕ}
-
-end Gen
 
 theorem epsSH_both (D : D7) : ∃ a b : Fin (2 * D.R.rS + D.R.k + 1), epsSH D.R a ≠ epsSH D.R b := by
   have hk := Ranks.k_ge D.R
@@ -1006,37 +546,9 @@ theorem epsSH_both (D : D7) : ∃ a b : Fin (2 * D.R.rS + D.R.k + 1), epsSH D.R 
   rw [h1, h2]
   exact Bool.noConfusion
 
-def XX (D : D7) : ℝ :=
-  ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) *
-    (((3 * (D.R.rS + 1) : ℕ) : ℝ) * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2 + ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 3)
-
-def NearG (D : D7) (ρ γ₀ : ℝ) (lam' lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) : Prop :=
-  l1 lam' lam0 ≤ ρ ∧ AllGaps lam0 γ₀
-
 end PieceB9
 
 section PieceB10
-
-def rhoQ (D : D7) (A : ℕ) (p : ℝ) : ℝ := (((D.R.rS + 1) * (2 * ∑ l, NQ D A p l) : ℕ) : ℝ)
-
-def NumRange (D : D7) (Cg Cg1 Cq Cgf dist γ₀ : ℝ) (A : ℕ) (p : ℝ) : Prop :=
-  Cg1 * ((2 * ∑ l, NQ D A p l : ℕ) : ℝ) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ≤ γ₀ ∧
-  dist + (((D.R.rS + 1) * (2 * ∑ l, NQ D A p l + D.R.rS + 2) : ℕ) : ℝ) ≤
-    min (max (Cg * XX D) γ₀ / (Cq * Real.sqrt ((2 * D.R.rS + 2 : ℕ) : ℝ))) γ₀ / Cq ∧
-  dist + rhoQ D A p ≤ max (Cg * XX D) γ₀ - Cgf * XX D ∧
-  ((D.R.rS + 1 : ℕ) : ℝ) * (dist + rhoQ D A p) ≤ max (Cg * XX D) γ₀ / (Cq * Real.sqrt ((2 * D.R.rS + 2 : ℕ) : ℝ))
-
-structure InB (D : D7) (Ch Cg Cg1 Cq Cgf Cf Cb1 Cb2 : ℝ) : Prop where
-  hCh : 0 ≤ Ch
-  hCf : 0 ≤ Cf
-  hCb1 : 0 ≤ Cb1
-  hCb2 : 0 ≤ Cb2
-  hCg : 2 ≤ Cg
-  hCg1 : Cg1 ≤ Cg
-  hCq : 0 < Cq
-  fr : FrameBesselBound D Cgf Cf
-  p92 : BesselConjugatesEveryCell D Ch Cg1 Cq Cb1
-  fam : ExFamC D Ch Cg1 Cq
 
 theorem lam_eq_of_dist0 (D : D7) {Ch Cg : ℝ} {T T' : ℕ} {b : ℝ} (X : BData D Ch Cg T T' b 0) (v : D.what₂.Tau) :
     (X.L v).lam = lamSH D.R (D.hc v) := by
@@ -1049,68 +561,5 @@ theorem lam_eq_of_dist0 (D : D7) {Ch Cg : ℝ} {T T' : ℕ} {b : ℝ} (X : BData
   exact sub_eq_zero.mp (abs_nonpos_iff.mp h0)
 
 end PieceB10
-
-section PieceB11
-
-end PieceB11
-
-section PieceB12
-
-structure WeightedBoundOpenInputs (D : D7) (Ch Aw Cu Cg Cg1 Cq Cg' C1 Cs CA CQ Cb Cb1 Cb2 Cgf1 Cf : ℝ) : Prop where
-  bp : TheoremBPrimePointwise D Ch Cg Cb
-  ubp : UniformityTheoremBPrime D Ch Cu Cg Cg' Cb
-  p90P : PieriNormPairing D Ch Cg Cq
-  p91 : BesselLeadingMinorBound D Ch Cg Cq Cb
-  p92c : BesselIterationNearParameter D Ch Cg Cq Cb
-  fr : FrameBesselBound D Cgf1 Cf
-  lit : LitFormalDegree
-  fam : ExFamC D Ch Cg1 Cq
-  shell : ShellSmooth D
-  exp : OneStepCellExpansion D Ch Cg1 Cq Cb1
-  bp1 : BpAll D Ch Cg Cb2 (NearG D (0 + rhoQ D (AQ D Cb2) 0) (Cg * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3))
-  bp3 : BpAll D Ch Cg Cb2 (NearG D (0 + rhoQ D (AQ D Cb2) (Aw * ((D.R.rS : ℝ) + 1) ^ 2))
-    (Cg * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4))
-  besselBoundUnitaryFirst : BpAll D Ch Cg Cb2 (NearG D (Cu * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 + rhoQ D (AQ D Cb2) 0)
-    (Cg' * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3))
-  besselBoundUnitaryThird : BpAll D Ch Cg Cb2 (NearG D (Cu * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 +
-                         rhoQ D (AQ D Cb2) (Aw * ((D.R.rS : ℝ) + 1) ^ 2))
-    (max (Cg' * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3) (Cg * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4)))
-  pieri : PieriShellBound D Ch Cg Cq C1 CA CQ
-  rep : DerivedActionPhaseBound D Ch Cg Cq Cs
-  lowK : LowestKTypeRightInvariant D Ch Cg
-  jMeas : JMeas D
-  phMeas : PhMeas D
-  nilpotentFrameMatrix : NumRange D Cg Cg1 Cq Cgf1 (Cu * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3)
-    (Cg' * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3) (AQ D Cb2) 0
-  unitaryRangeCubic : NumRange D Cg Cg1 Cq Cgf1 (Cu * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3)
-    (max (Cg' * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3) (Cg * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4)) (AQ D Cb2)
-    (Aw * ((D.R.rS : ℝ) + 1) ^ 2)
-
-structure WeightedBoundConstants (Ch Aw Cg Cg1 Cq C1 CardSubmodulesOfIndexLePow C2 Cs CA CQ Cb Cb1 Cb2 Cgf1 Cgf Cf : ℝ) : Prop where
-  hCh : 0 ≤ Ch
-  hAw : 0 ≤ Aw
-  hCf : 0 ≤ Cf
-  hCb1 : 0 ≤ Cb1
-  hCb2 : 0 ≤ Cb2
-  hCg : 2 ≤ Cg
-  gap_constant_nonneg : 0 ≤ Cg1
-  hCg1 : Cg1 ≤ Cg
-  hCq : 1 ≤ Cq
-  hCb1b : Cb1 ≤ Cb
-  hCK4 : firstBoundConstant Ch Cf Cb1 Cb2 ≤ Cb - 6
-  hCK5 : weightedBoundConstant Aw Ch Cf Cb1 Cb2 ≤ Cb - 6
-  r1 : 2 * (1 + Aw + Cb2) * Cg1 ≤ Cg
-  r2 : (2 + Aw + Cb2) * Cq ^ 2 ≤ Cg
-  r3 : 1 + Aw + Cb2 ≤ Cg - Cgf1
-  hCgf : Cgf1 ≤ Cgf
-  hCs : 0 ≤ Cs
-  hC1 : 1 ≤ C1
-  twice_smooth_le_first : 2 * Cs ≤ C1
-  hCA : 0 ≤ CA
-  hCQ : 1 ≤ CQ
-  constant_log_relation : 1 + 2 * |Ch| + CA + 3 * (Real.logb 2 CQ + 2) ≤ 2 * CardSubmodulesOfIndexLePow
-  hC2 : CardSubmodulesOfIndexLePow + (Real.logb 2 C1 + 4 + |Ch|) ≤ C2
-
-end PieceB12
 
 end Formalism.MainNotions.TheoremBConstants

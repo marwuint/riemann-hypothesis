@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueIsometryFixingBothFramesOfFrameAdaptStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueIsometryFixingBothFramesOfFrameAdapt
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermRowDoubleCosetEqIffIsometriesStatement
 open scoped Classical ENNReal
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.NGData Formalism.L2.SG.TermLoc GlobalTheory.Unfold
@@ -316,7 +316,7 @@ theorem same_key_lrel : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.
     Subgroup.mul_mem _ hA2.1 (Subgroup.mul_mem _ hn.1 (Subgroup.inv_mem _ hA1.1))
   have hs1 : Adapt s F F := ⟨hsI, tri_comp (tri_comp (tri_inv _ _ _ hA1.2) (nrat_tri _ _ hn)) hA2.2⟩
   have hs2 : Adapt s F' F' := ⟨hsI, tri_comp (tri_comp (tri_inv _ _ _ hA1'.2) hnT) hA2'.2⟩
-  obtain ⟨h, ⟨hH, hm, hm'⟩, -⟩ := GlobalTheory.T.existsUnique_isometryFixingBothFrames_of_frameAdapted D X Y u u' F F' w hZ hG s hs1 hs2
+  obtain ⟨h, ⟨hH, hm, hm'⟩, -⟩ := _root_.GlobalTheory.Unfold.Inter.common_stabiliser D X Y u u' F F' w hZ hG s hs1 hs2
   refine ⟨h, hH, ?_⟩
   rw [← hl, ← gmap_mul]
 

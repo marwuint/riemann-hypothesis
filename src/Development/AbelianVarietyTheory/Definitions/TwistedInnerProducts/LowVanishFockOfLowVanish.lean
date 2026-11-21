@@ -91,46 +91,6 @@ theorem exists_vac {V W : HSp D} (A : Fr V) (B : Fr W) {ψ : AddChar (AF D.host.
   obtain ⟨U, hU, hl⟩ := isTheta_iff_level.1 h.1
   exact ⟨f, f0, h, e, U, hU, Submodule.subset_span ⟨f, 1, h, hl, e.symm⟩⟩
 
-theorem dense_hyp (V W : HSp D) : ∃ (A : Fr V) (B : Fr W) (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ)
-    (μ : Measure (WO V W)) (𝓕 : Set (WO V W)) (f : WO V W → ℂ), IsStdChar D ψ (-1) ∧ IsInfFam θ ∧
-      IsCovolOne (ratL W V) μ 𝓕 ∧ f ≠ 0 ∧ IsVacF ψ θ A B f := by
-  obtain ⟨⟨θ, hθ⟩, ψ, hψ⟩ := GlobalTheory.Ker.exists_infFam_and_stdChar D
-  obtain ⟨A⟩ := nonempty_fr V
-  obtain ⟨B⟩ := nonempty_fr W
-  obtain ⟨μ, 𝓕, hm⟩ := exists_isCovolOne V W
-  obtain ⟨f, f0, hf, -⟩ := exists_vac A B hψ hθ
-  exact ⟨A, B, θ, ψ, μ, 𝓕, f, hψ, hθ, hm, f0, hf⟩
-
-theorem lieFock_of_all (h : LieFockAll D) {V W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSModel V S) (M' : DSModel W S')
-    {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
-    {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {f : WO V W → ℂ} {τ : D.what₂.Tau} {aS aT : ℚ}
-    (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω) (hS : HasInfExp D χS τ aS) (hT : HasInfExp D χT τ aT)
-    (hf : IsVacVec ψ θ M M' f) : LieFock ψ θ M M' ω f τ aS aT := by
-  obtain ⟨h1, h2⟩ := h V W (Fr.ofModel M) (Fr.ofModel M') θ ψ χS χT ω f τ aS aT hθ hω hS hT (isVacF_of_isVacVec hf)
-  refine ⟨fun X hX P z => ?_, h2⟩
-  have := h1 X hX P z
-  rw [neg_smul, ← sub_eq_add_neg] at this
-  exact this
-
-theorem compactFock_of_all (h : CompactFockAll D) {V W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSModel V S)
-    (M' : DSModel W S') {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
-    {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {f : WO V W → ℂ} {τ : D.what₂.Tau} {aS aT : ℚ}
-    (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω) (hS : HasInfExp D χS τ aS) (hT : HasInfExp D χT τ aT)
-    (hf : IsVacVec ψ θ M M' f) : CompactFock ψ θ M M' ω f τ aS aT :=
-  h V W (Fr.ofModel M) (Fr.ofModel M') θ ψ χS χT ω f τ aS aT hθ hω hS hT (isVacF_of_isVacVec hf) hf.ne
-
-theorem lowVanishFock_of_lowVanish (h : GlobalTheory.IndefiniteRowSideFullHecke.LoweredSignatureVanishing.LowVanish D) : LowVanishFock D := by
-  intro k i V' W M' θ ψ hθ hP hi hs ω' hω ν 𝓕 hν h𝓕 J χ F hF v A f₀ hf P
-  refine h k i V' W M' θ ψ hθ hP hi hs ω' hω ν 𝓕 hν h𝓕 J χ F hF v _ ?_
-  obtain ⟨χS, χT, hW, -⟩ := hω
-  exact GlobalTheory.Chain.InnerSteps.theta_pureTensorO hW.std hθ _ _ _ _ hf.1 P
-
-theorem fockS_offdiag (τ : D.what₂.Tau) :
-    fockS τ ![true, false] ![true] (Matrix.single 0 1 1) (1 : PolF D 1 2) =
-      -(MvPolynomial.X (τ, 0, 0) * MvPolynomial.X (τ, 0, 1)) ∧
-    fockS τ ![true, false] ![true] (Matrix.single 1 0 1) (1 : PolF D 1 2) = 0 := by
-  constructor <;> simp [fockS, raiO, lowO, sgn, Fin.sum_univ_two, Matrix.single_apply]
-
 end GlobalTheory.ChainFr.Model
 
 end

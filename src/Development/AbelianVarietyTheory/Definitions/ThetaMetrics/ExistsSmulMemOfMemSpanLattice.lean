@@ -176,14 +176,6 @@ instance [FiniteDimensional K V] : Nonempty (ArchMetric K V) :=
 
 variable (h : ArchMetric K V)
 
-theorem form_smul_left (σ : K →+* ℂ) (a : K) (x y : V) :
-    h.form σ (a • x) y = σ a * h.form σ x y := by
-  simp [LinearMap.map_smulₛₗ]
-
-theorem form_smul_right (σ : K →+* ℂ) (a : K) (x y : V) :
-    h.form σ x (a • y) = conj (σ a) * h.form σ x y := by
-  simp [LinearMap.map_smulₛₗ]
-
 @[simp]
 theorem conj_form (σ : K →+* ℂ) (x y : V) : conj (h.form σ x y) = h.form σ y x :=
   (h.form_symm σ x y).symm
@@ -191,31 +183,11 @@ theorem conj_form (σ : K →+* ℂ) (x y : V) : conj (h.form σ x y) = h.form �
 def ConjInvariant : Prop :=
   ∀ (σ : K →+* ℂ) (x y : V), h.form (ComplexEmbedding.conjugate σ) x y = conj (h.form σ x y)
 
-theorem conjInvariant_diag {ι : Type*} [Fintype ι] {d : (K →+* ℂ) → ι → ℝ}
-    (hd : ∀ σ i, 0 < d σ i) (hc : ∀ σ, d (ComplexEmbedding.conjugate σ) = d σ) :
-    (diag d hd).ConjInvariant := fun σ x y => by
-  simp [diag_form, hc]
-
-theorem conjInvariant_ofGram {ι : Type*} [Fintype ι] (b : Basis ι K V)
-    {G : (K →+* ℂ) → Matrix ι ι ℂ} (hG : ∀ σ, (G σ).PosDef)
-    (hc : ∀ σ i j, G (ComplexEmbedding.conjugate σ) i j = conj (G σ i j)) :
-    (ofGram b G hG).ConjInvariant := fun σ x y => by
-  simp [ofGram_form, hc]
-
-theorem conjInvariant_std (ι : Type*) [Fintype ι] : (std K ι).ConjInvariant :=
-  conjInvariant_diag _ fun _ => rfl
-
-theorem conjInvariant_stdField : (stdField K).ConjInvariant := fun σ x y => by simp
-
 def gram (σ : K →+* ℂ) {ι : Type*} (e : ι → V) : Matrix ι ι ℂ := sesqGram (h.form σ) e
 
 @[simp]
 theorem gram_apply (σ : K →+* ℂ) {ι : Type*} (e : ι → V) (i j : ι) :
     h.gram σ e i j = h.form σ (e i) (e j) := rfl
-
-theorem isHermitian_gram (σ : K →+* ℂ) {ι : Type*} (e : ι → V) : (h.gram σ e).IsHermitian := by
-  ext i j
-  simp
 
 theorem gram_comp (σ : K →+* ℂ) {ι κ : Type*} (e : ι → V) (p : κ → ι) :
     h.gram σ (e ∘ p) = (h.gram σ e).submatrix p p := rfl
@@ -277,9 +249,6 @@ theorem ofReal_gramDet (e : ι → V) : (h.gramDet σ e : ℂ) = (h.gram σ e).d
   have := (h.posSemidef_gram σ e).det_nonneg
   exact Complex.ext (by simp [gramDet]) (by simpa using (Complex.nonneg_iff.1 this).2)
 
-theorem gramDet_nonneg (e : ι → V) : 0 ≤ h.gramDet σ e :=
-  (Complex.nonneg_iff.1 (h.posSemidef_gram σ e).det_nonneg).1
-
 theorem gramDet_pos {e : ι → V} (he : LinearIndependent K e) : 0 < h.gramDet σ e :=
   (Complex.pos_iff.1 (h.posDef_gram σ he).det_pos).1
 
@@ -295,20 +264,6 @@ theorem gramDet_of_eq_sum {e f : ι → V} {g : Matrix ι ι K} (hf : ∀ i, f i
     ← Complex.mul_conj, RCLike.star_def]
   ring
 
-theorem gramDet_pos_iff {e : ι → V} : 0 < h.gramDet σ e ↔ LinearIndependent K e := by
-  refine ⟨fun hp => ?_, h.gramDet_pos σ⟩
-  rw [Fintype.linearIndependent_iff]
-  intro c hc i
-  have hd : (h.gram σ e).det ≠ 0 := by
-    rw [← ofReal_gramDet]
-    exact_mod_cast hp.ne'
-  have hz : (fun j => σ (c j)) ᵥ* h.gram σ e = 0 := by
-    ext j
-    have := congrArg (fun x => h.form σ x (e j)) hc
-    simpa [Matrix.vecMul, dotProduct, map_sum, LinearMap.map_smulₛₗ] using this
-  have := congrFun (Matrix.eq_zero_of_vecMul_eq_zero hd hz) i
-  simpa using this
-
 @[simp]
 theorem gramDet_of_isEmpty [IsEmpty ι] (e : ι → V) : h.gramDet σ e = 1 := by
   simp [gramDet]
@@ -316,15 +271,6 @@ theorem gramDet_of_isEmpty [IsEmpty ι] (e : ι → V) : h.gramDet σ e = 1 := b
 theorem gramDet_diag (d : (K →+* ℂ) → ι → ℝ) (hd : ∀ σ i, 0 < d σ i) :
     (diag d hd).gramDet σ (Pi.basisFun K ι) = ∏ i, d σ i := by
   rw [gramDet, gram_diag, Matrix.det_diagonal, ← Complex.ofReal_prod, Complex.ofReal_re]
-
-variable {h} in
-
-theorem ConjInvariant.gramDet_conjugate (hc : h.ConjInvariant) (e : ι → V) :
-    h.gramDet (ComplexEmbedding.conjugate σ) e = h.gramDet σ e := by
-  have : h.gram (ComplexEmbedding.conjugate σ) e = (h.gram σ e)ᵀ := by
-    ext i j
-    simp [hc σ]
-  rw [gramDet, this, Matrix.det_transpose, gramDet]
 
 end GramDet
 
@@ -337,10 +283,6 @@ theorem norm_nonneg (σ : K →+* ℂ) (x : V) : 0 ≤ h.norm σ x := Real.sqrt_
 
 theorem norm_sq (σ : K →+* ℂ) (x : V) : h.norm σ x ^ 2 = (h.form σ x x).re :=
   Real.sq_sqrt (Complex.nonneg_iff.1 (h.form_self_nonneg σ x)).1
-
-theorem form_self (σ : K →+* ℂ) (x : V) : h.form σ x x = ((h.norm σ x ^ 2 : ℝ) : ℂ) := by
-  rw [norm_sq]
-  exact Complex.ext (by simp) (by simpa using (Complex.nonneg_iff.1 (h.form_self_nonneg σ x)).2.symm)
 
 theorem gramDet_unique (σ : K →+* ℂ) {ι : Type*} [Fintype ι] [DecidableEq ι] [Unique ι]
     (e : ι → V) : h.gramDet σ e = h.norm σ (e default) ^ 2 := by
@@ -358,13 +300,6 @@ theorem norm_pos (σ : K →+* ℂ) {x : V} (hx : x ≠ 0) : 0 < h.norm σ x := 
 theorem norm_eq_zero {σ : K →+* ℂ} {x : V} : h.norm σ x = 0 ↔ x = 0 :=
   ⟨fun h0 => by_contra fun hx => (h.norm_pos σ hx).ne' h0, fun h0 => by simp [h0]⟩
 
-theorem norm_smul (σ : K →+* ℂ) (a : K) (x : V) : h.norm σ (a • x) = ‖σ a‖ * h.norm σ x := by
-  refine (sq_eq_sq₀ (h.norm_nonneg _ _)
-    (mul_nonneg (_root_.norm_nonneg _) (h.norm_nonneg _ _))).1 ?_
-  apply Complex.ofReal_injective
-  rw [← form_self, form_smul_left, form_smul_right, mul_pow, Complex.ofReal_mul, ← form_self,
-    ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, mul_assoc]
-
 @[simp]
 theorem stdField_norm (σ : K →+* ℂ) (x : K) : (stdField K).norm σ x = ‖σ x‖ := by
   rw [norm, stdField_form, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq,
@@ -372,35 +307,6 @@ theorem stdField_norm (σ : K →+* ℂ) (x : K) : (stdField K).norm σ x = ‖�
 
 @[simp]
 theorem norm_neg (σ : K →+* ℂ) (x : V) : h.norm σ (-x) = h.norm σ x := by simp [norm]
-
-theorem norm_form_le (σ : K →+* ℂ) (x y : V) : ‖h.form σ x y‖ ≤ h.norm σ x * h.norm σ y := by
-  have h1 := h.gramDet_nonneg σ ![x, y]
-  have h2 : (h.gramDet σ ![x, y] : ℂ) =
-      ((h.norm σ x ^ 2 * h.norm σ y ^ 2 - ‖h.form σ x y‖ ^ 2 : ℝ) : ℂ) := by
-    rw [ofReal_gramDet, Matrix.det_fin_two, Complex.ofReal_sub, Complex.ofReal_mul, ← form_self,
-      ← form_self, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]
-    simp
-  rw [Complex.ofReal_injective h2, ← mul_pow, sub_nonneg] at h1
-  exact (sq_le_sq₀ (_root_.norm_nonneg _)
-    (mul_nonneg (h.norm_nonneg _ _) (h.norm_nonneg _ _))).1 h1
-
-theorem norm_add_sq (σ : K →+* ℂ) (x y : V) :
-    h.norm σ (x + y) ^ 2 = h.norm σ x ^ 2 + 2 * (h.form σ x y).re + h.norm σ y ^ 2 := by
-  have : (h.form σ y x).re = (h.form σ x y).re := by rw [h.form_symm σ x y, Complex.conj_re]
-  simp only [norm_sq, map_add, LinearMap.add_apply, Complex.add_re, this]
-  ring
-
-theorem norm_add_le (σ : K →+* ℂ) (x y : V) : h.norm σ (x + y) ≤ h.norm σ x + h.norm σ y := by
-  refine (sq_le_sq₀ (h.norm_nonneg _ _) (add_nonneg (h.norm_nonneg _ _) (h.norm_nonneg _ _))).1 ?_
-  have := (Complex.re_le_norm _).trans (h.norm_form_le σ x y)
-  rw [norm_add_sq]
-  nlinarith
-
-variable {h} in
-
-theorem ConjInvariant.norm_conjugate (hc : h.ConjInvariant) (σ : K →+* ℂ) (x : V) :
-    h.norm (ComplexEmbedding.conjugate σ) x = h.norm σ x := by
-  rw [norm, hc σ, Complex.conj_re, norm]
 
 def comap (f : V' →ₗ[K] V) (hf : Function.Injective f) : ArchMetric K V' where
   form σ := LinearMap.mk₂'ₛₗ σ (ComplexEmbedding.conjugate σ) (fun x y => h.form σ (f x) (f y))
@@ -430,11 +336,6 @@ theorem comap_id : h.comap LinearMap.id Function.injective_id = h := rfl
 theorem comap_comap (g : V'' →ₗ[K] V') (hg : Function.Injective g) :
     (h.comap f hf).comap g hg = h.comap (f ∘ₗ g) (hf.comp hg) := rfl
 
-variable {h} in
-
-theorem ConjInvariant.comap (hc : h.ConjInvariant) : (h.comap f hf).ConjInvariant :=
-  fun σ x y => hc σ (f x) (f y)
-
 end Comap
 
 def restrict (W : Submodule K V) : ArchMetric K W := h.comap W.subtype W.injective_subtype
@@ -451,11 +352,6 @@ theorem restrict_gramDet (W : Submodule K V) (σ : K →+* ℂ) {ι : Type*} [Fi
     [DecidableEq ι] (e : ι → W) :
     (h.restrict W).gramDet σ e = h.gramDet σ fun i => (e i : V) := rfl
 
-variable {h} in
-
-theorem ConjInvariant.restrict (hc : h.ConjInvariant) (W : Submodule K V) :
-    (h.restrict W).ConjInvariant := hc.comap _ _
-
 noncomputable def scale (c : (K →+* ℂ) → ℝ) (hc : ∀ σ, 0 < c σ) : ArchMetric K V where
   form σ := (c σ : ℂ) • h.form σ
   form_symm σ x y := by simp
@@ -468,30 +364,13 @@ variable (c : (K →+* ℂ) → ℝ) (hc : ∀ σ, 0 < c σ) (σ : K →+* ℂ)
 @[simp]
 theorem scale_form (x y : V) : (h.scale c hc).form σ x y = c σ * h.form σ x y := rfl
 
-theorem scale_norm (x : V) : (h.scale c hc).norm σ x = Real.sqrt (c σ) * h.norm σ x := by
-  simp [norm, Real.sqrt_mul (hc σ).le]
-
 theorem scale_gram {ι : Type*} (e : ι → V) :
     (h.scale c hc).gram σ e = (c σ : ℂ) • h.gram σ e := rfl
-
-theorem scale_gramDet {ι : Type*} [Fintype ι] [DecidableEq ι] (e : ι → V) :
-    (h.scale c hc).gramDet σ e = c σ ^ Fintype.card ι * h.gramDet σ e := by
-  rw [gramDet, scale_gram, Matrix.det_smul, ← Complex.ofReal_pow, Complex.re_ofReal_mul, gramDet]
-
-variable {h c} in
-
-theorem ConjInvariant.scale (hh : h.ConjInvariant)
-    (hcc : ∀ σ, c (ComplexEmbedding.conjugate σ) = c σ) : (h.scale c hc).ConjInvariant :=
-  fun σ x y => by simp [hcc, hh σ]
 
 end Scale
 
 noncomputable def scaleNormExp (t : (K →+* ℂ) → ℝ) : ArchMetric K V :=
   h.scale (fun σ => Real.exp (2 * t σ)) fun _ => Real.exp_pos _
-
-theorem scaleNormExp_norm (t : (K →+* ℂ) → ℝ) (σ : K →+* ℂ) (x : V) :
-    (h.scaleNormExp t).norm σ x = Real.exp (t σ) * h.norm σ x := by
-  rw [scaleNormExp, scale_norm, two_mul, Real.exp_add, Real.sqrt_mul_self (Real.exp_pos _).le]
 
 end Field
 
@@ -537,19 +416,6 @@ theorem finrank_lattice_pos {A : Submodule (𝓞 K) V} (hA : A.FG) (h0 : A ≠ �
   refine Nat.pos_of_ne_zero fun h => h0 ?_
   rw [Submodule.finrank_eq_zero, Submodule.span_eq_bot] at h
   exact (Submodule.eq_bot_iff _).2 h
-
-theorem finrank_inf_restrictScalars_lt {A : Submodule (𝓞 K) V} (hA : A.FG) {W : Submodule K V}
-    (hW : ¬ A ≤ W.restrictScalars (𝓞 K)) :
-    finrank (𝓞 K) (A ⊓ W.restrictScalars (𝓞 K) : Submodule (𝓞 K) V) < finrank (𝓞 K) A := by
-  haveI := finiteDimensional_span_of_fg hA
-  rw [finrank_lattice_eq_finrank_span, finrank_lattice_eq_finrank_span,
-    span_inf_restrictScalars]
-  refine Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne inf_le_left fun h => hW ?_)
-  intro x hx
-  have : x ∈ Submodule.span K (A : Set V) ⊓ W := by
-    rw [h]
-    exact Submodule.subset_span hx
-  exact this.2
 
 theorem mem_span_of_le_of_finrank_eq {A B : Submodule (𝓞 K) V} (hA : A.FG) (hBA : B ≤ A)
     (hr : finrank (𝓞 K) B = finrank (𝓞 K) A) : ∀ x ∈ A, x ∈ Submodule.span K (B : Set V) := by
@@ -656,10 +522,6 @@ theorem relIndex_ne_zero (he : IsLatticeFrame A e) (hA : A.FG) :
     rw [Submodule.span_span_of_tower]
     exact he.mem_span x hx
 
-theorem finite_quotient (he : IsLatticeFrame A e) (hA : A.FG) :
-    Finite (A ⧸ (Submodule.span (𝓞 K) (Set.range e)).submoduleOf A) :=
-  Nat.finite_of_card_ne_zero (he.relIndex_ne_zero hA)
-
 omit [NumberField K] [IsScalarTower (𝓞 K) K V] in
 
 theorem of_le {B : Submodule (𝓞 K) V} (he : IsLatticeFrame A e) (hAB : A ≤ B)
@@ -700,16 +562,6 @@ theorem isLatticeFrame_span {ι : Type*} {e : ι → V} (he : LinearIndependent 
     IsLatticeFrame (Submodule.span (𝓞 K) (Set.range e)) e :=
   ⟨fun i => Submodule.subset_span ⟨i, rfl⟩, he,
     fun _ hx => Submodule.span_le_restrictScalars (𝓞 K) K _ hx⟩
-
-theorem isLatticeFrame_iff_card_eq {A : Submodule (𝓞 K) V} (hA : A.FG) {ι : Type*} [Fintype ι]
-    {e : ι → V} : IsLatticeFrame A e ↔
-      (∀ i, e i ∈ A) ∧ LinearIndependent K e ∧ Fintype.card ι = finrank (𝓞 K) A := by
-  refine ⟨fun he => ⟨he.mem, he.linearIndependent, he.card_eq⟩, fun ⟨h1, h2, h3⟩ => ?_⟩
-  haveI := finiteDimensional_span_of_fg hA
-  have : Submodule.span K (Set.range e) = Submodule.span K (A : Set V) :=
-    Submodule.eq_of_le_of_finrank_eq (Submodule.span_mono (Set.range_subset_iff.2 h1)) (by
-      rw [finrank_span_eq_card h2, h3, finrank_lattice_eq_finrank_span])
-  exact ⟨h1, h2, fun x hx => this ▸ Submodule.subset_span hx⟩
 
 theorem exists_isLatticeFrame {A : Submodule (𝓞 K) V} (hA : A.FG) :
     ∃ e : Fin (finrank (𝓞 K) A) → V, IsLatticeFrame A e := by
@@ -818,12 +670,6 @@ theorem arDeg_eq_frameDeg (hA : A.FG) {e : ι → V} (he : IsLatticeFrame A e) :
   rw [arDeg, dif_pos hA]
   exact h.frameDeg_eq_frameDeg hA (exists_isLatticeFrame hA).choose_spec he
 
-theorem arDeg_eq (hA : A.FG) {e : ι → V} (mem : ∀ i, e i ∈ A) (he : LinearIndependent K e)
-    (hc : Fintype.card ι = finrank (𝓞 K) A) :
-    h.arDeg A = Real.log (Nat.card (A ⧸ (Submodule.span (𝓞 K) (Set.range e)).submoduleOf A)) -
-      ∑ σ : K →+* ℂ, 1 / 2 * Real.log (h.gramDet σ e) :=
-  h.arDeg_eq_frameDeg hA ((isLatticeFrame_iff_card_eq hA).2 ⟨mem, he, hc⟩)
-
 theorem arDeg_span {e : ι → V} (he : LinearIndependent K e) :
     h.arDeg (Submodule.span (𝓞 K) (Set.range e)) =
       -∑ σ : K →+* ℂ, 1 / 2 * Real.log (h.gramDet σ e) := by
@@ -839,20 +685,6 @@ theorem arDeg_bot : h.arDeg ⊥ = 0 := by
 theorem arDeg_span_singleton {x : V} (hx : x ≠ 0) :
     h.arDeg (Submodule.span (𝓞 K) {x}) = -∑ σ : K →+* ℂ, Real.log (h.norm σ x) := by
   have := h.arDeg_span (e := fun _ : Unit => x) (linearIndependent_unique_iff.2 hx)
-  rw [Set.range_const] at this
-  rw [this]
-  congr 1
-  refine Finset.sum_congr rfl fun σ _ => ?_
-  rw [gramDet_unique, Real.log_pow]
-  push_cast
-  ring
-
-theorem arDeg_of_finrank_eq_one (hA : A.FG) (h1 : finrank (𝓞 K) A = 1) {x : V} (hxA : x ∈ A)
-    (hx : x ≠ 0) :
-    h.arDeg A = Real.log (Nat.card (A ⧸ (Submodule.span (𝓞 K) {x}).submoduleOf A)) -
-      ∑ σ : K →+* ℂ, Real.log (h.norm σ x) := by
-  have := h.arDeg_eq hA (e := fun _ : Unit => x) (fun _ => hxA)
-    (linearIndependent_unique_iff.2 hx) (by simp [h1])
   rw [Set.range_const] at this
   rw [this]
   congr 1
@@ -880,77 +712,11 @@ theorem arDeg_le_of_finrank_eq {B : Submodule (𝓞 K) V} (hA : A.FG) (hBA : B �
   rw [h.arDeg_eq_add_log_relIndex hA hBA (mem_span_of_le_of_finrank_eq hA hBA hr)]
   exact le_add_of_nonneg_right (Real.log_natCast_nonneg _)
 
-theorem arDeg_sub_arDeg_of_span_eq {B : Submodule (𝓞 K) V} (hA : A.FG) (hB : B.FG)
-    (hAB : Submodule.span K (A : Set V) = Submodule.span K (B : Set V)) :
-    h.arDeg A - h.arDeg B = Real.log (B.toAddSubgroup.relIndex A.toAddSubgroup) -
-      Real.log (A.toAddSubgroup.relIndex B.toAddSubgroup) := by
-  have hs : Submodule.span K ((A ⊓ B : Submodule (𝓞 K) V) : Set V) =
-      Submodule.span K (A : Set V) := by
-    rw [span_localization_inf K (nonZeroDivisors (𝓞 K)), ← hAB, inf_idem]
-  have e1 : (A ⊓ B).toAddSubgroup = A.toAddSubgroup ⊓ B.toAddSubgroup := rfl
-  rw [h.arDeg_eq_add_log_relIndex (B := A ⊓ B) hA inf_le_left
-      fun x hx => hs.ge (Submodule.subset_span hx),
-    h.arDeg_eq_add_log_relIndex (B := A ⊓ B) hB inf_le_right
-      fun x hx => (hs.trans hAB).ge (Submodule.subset_span hx),
-    e1, AddSubgroup.inf_relIndex_left, AddSubgroup.inf_relIndex_right]
-  ring
-
-theorem arDeg_eq_of_span_eq (hA : A.FG) {e : ι → V} (he : LinearIndependent K e)
-    (hs : Submodule.span K (Set.range e) = Submodule.span K (A : Set V)) :
-    h.arDeg A =
-      Real.log ((Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup.relIndex A.toAddSubgroup) -
-        Real.log (A.toAddSubgroup.relIndex (Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup) -
-        ∑ σ : K →+* ℂ, 1 / 2 * Real.log (h.gramDet σ e) := by
-  have := h.arDeg_sub_arDeg_of_span_eq hA (Submodule.fg_span (Set.finite_range e))
-    (by rw [Submodule.span_span_of_tower, hs])
-  rw [h.arDeg_span he] at this
-  linarith
-
-theorem arDeg_comap (f : V' →ₗ[K] V) (hf : Function.Injective f) {A : Submodule (𝓞 K) V'}
-    (hA : A.FG) : (h.comap f hf).arDeg A = h.arDeg (A.map (f.restrictScalars (𝓞 K))) := by
-  obtain ⟨e, he⟩ := exists_isLatticeFrame hA
-  rw [arDeg_eq_frameDeg _ hA he, arDeg_eq_frameDeg _ (hA.map _) (he.map f hf),
-    frameDeg_eq_relIndex, frameDeg_eq_relIndex]
-  have : Submodule.span (𝓞 K) (Set.range (f ∘ e)) =
-      (Submodule.span (𝓞 K) (Set.range e)).map (f.restrictScalars (𝓞 K)) := by
-    rw [Submodule.map_span, Set.range_comp]
-    rfl
-  rw [this, Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup,
-    AddSubgroup.relIndex_map_map_of_injective _ _ hf]
-  rfl
-
-theorem arDeg_restrict (W : Submodule K V) {A : Submodule (𝓞 K) W} (hA : A.FG) :
-    (h.restrict W).arDeg A = h.arDeg (A.map (W.subtype.restrictScalars (𝓞 K))) :=
-  h.arDeg_comap _ _ hA
-
-theorem arDeg_scale (c : (K →+* ℂ) → ℝ) (hc : ∀ σ, 0 < c σ) (hA : A.FG) :
-    (h.scale c hc).arDeg A =
-      h.arDeg A - finrank (𝓞 K) A / 2 * ∑ σ : K →+* ℂ, Real.log (c σ) := by
-  obtain ⟨e, he⟩ := exists_isLatticeFrame hA
-  have : ∀ σ, 1 / 2 * Real.log ((h.scale c hc).gramDet σ e) =
-      finrank (𝓞 K) A / 2 * Real.log (c σ) + 1 / 2 * Real.log (h.gramDet σ e) := fun σ => by
-    rw [scale_gramDet, Real.log_mul (pow_pos (hc σ) _).ne'
-      (h.gramDet_pos σ he.linearIndependent).ne', Real.log_pow, Fintype.card_fin]
-    ring
-  rw [arDeg_eq_frameDeg _ hA he, arDeg_eq_frameDeg _ hA he, frameDeg, frameDeg]
-  simp only [this, Finset.sum_add_distrib, Finset.mul_sum]
-  ring
-
-theorem arDeg_scaleNormExp (t : (K →+* ℂ) → ℝ) (hA : A.FG) :
-    (h.scaleNormExp t).arDeg A = h.arDeg A - finrank (𝓞 K) A * ∑ σ : K →+* ℂ, t σ := by
-  rw [scaleNormExp, arDeg_scale _ _ _ hA]
-  simp only [Real.log_exp, ← Finset.mul_sum]
-  ring
-
 theorem arDeg_diag (d : (K →+* ℂ) → ι → ℝ) (hd : ∀ σ i, 0 < d σ i) :
     (diag d hd).arDeg (Submodule.span (𝓞 K) (Set.range (Pi.basisFun K ι))) =
       -∑ σ : K →+* ℂ, 1 / 2 * ∑ i, Real.log (d σ i) := by
   rw [arDeg_span _ (Pi.basisFun K ι).linearIndependent]
   simp only [gramDet_diag, Real.log_prod fun i _ => (hd _ i).ne']
-
-theorem arDeg_std :
-    (std K ι).arDeg (Submodule.span (𝓞 K) (Set.range (Pi.basisFun K ι))) = 0 := by
-  simp [std, arDeg_diag]
 
 theorem arDeg_stdField_span_singleton {a : K} (ha : a ≠ 0) :
     (stdField K).arDeg (Submodule.span (𝓞 K) {a}) = -Real.log |((Algebra.norm ℚ a : ℚ) : ℝ)| := by
@@ -962,15 +728,7 @@ end ArDeg
 
 noncomputable def degNorm (A : Submodule (𝓞 K) V) : ℝ := h.arDeg A / finrank ℚ K
 
-noncomputable def lcv_sq (A : Submodule (𝓞 K) V) : ℝ := -2 * h.degNorm A
-
-noncomputable def deg_sq (A : Submodule (𝓞 K) V) : ℝ := -h.lcv_sq A
-
 noncomputable def slope (A : Submodule (𝓞 K) V) : ℝ := h.degNorm A / finrank (𝓞 K) A
-
-noncomputable def slope_sq (A : Submodule (𝓞 K) V) : ℝ := -h.lcv_sq A / finrank (𝓞 K) A
-
-noncomputable def arSlope (A : Submodule (𝓞 K) V) : ℝ := h.arDeg A / finrank (𝓞 K) A
 
 noncomputable def quotSlope (A B : Submodule (𝓞 K) V) : ℝ :=
   (h.degNorm A - h.degNorm B) / ((finrank (𝓞 K) A : ℝ) - finrank (𝓞 K) B)
@@ -982,42 +740,12 @@ noncomputable def muMin (A : Submodule (𝓞 K) V) : EReal :=
   ⨅ (W : Submodule K V) (_ : ¬ A ≤ W.restrictScalars (𝓞 K)),
     (h.quotSlope A (A ⊓ W.restrictScalars (𝓞 K)) : EReal)
 
-noncomputable def muMax_sq (A : Submodule (𝓞 K) V) : EReal := 2 * h.muMax A
-
-noncomputable def muMin_sq (A : Submodule (𝓞 K) V) : EReal := 2 * h.muMin A
-
 section Slopes
 
 variable {A B : Submodule (𝓞 K) V}
 
-theorem finrank_mul_degNorm (A : Submodule (𝓞 K) V) : finrank ℚ K * h.degNorm A = h.arDeg A :=
-  mul_div_cancel₀ _ (Nat.cast_ne_zero.2 Module.finrank_pos.ne')
-
 @[simp]
 theorem degNorm_bot : h.degNorm ⊥ = 0 := by simp [degNorm]
-
-theorem lcv_sq_eq (hA : A.FG) {ι : Type*} [Fintype ι] [DecidableEq ι] {e : ι → V}
-    (he : IsLatticeFrame A e) :
-    h.lcv_sq A = (∑ σ : K →+* ℂ, Real.log (h.gramDet σ e)) / finrank ℚ K -
-      2 / finrank ℚ K *
-        Real.log (Nat.card (A ⧸ (Submodule.span (𝓞 K) (Set.range e)).submoduleOf A)) := by
-  rw [lcv_sq, degNorm, h.arDeg_eq_frameDeg hA he, frameDeg, ← Finset.mul_sum]
-  ring
-
-theorem deg_sq_eq (A : Submodule (𝓞 K) V) : h.deg_sq A = 2 * h.degNorm A := by
-  rw [deg_sq, lcv_sq]
-  ring
-
-theorem slope_sq_eq (A : Submodule (𝓞 K) V) : h.slope_sq A = 2 * h.slope A := by
-  rw [slope_sq, lcv_sq, slope]
-  ring
-
-theorem arSlope_eq (A : Submodule (𝓞 K) V) : h.arSlope A = finrank ℚ K * h.slope A := by
-  rw [arSlope, slope, ← finrank_mul_degNorm, mul_div_assoc]
-
-theorem finrank_mul_slope (hA : A.FG) (h0 : A ≠ ⊥) :
-    finrank (𝓞 K) A * h.slope A = h.degNorm A :=
-  mul_div_cancel₀ _ (Nat.cast_ne_zero.2 (finrank_lattice_pos hA h0).ne')
 
 theorem slope_of_finrank_eq_one (h1 : finrank (𝓞 K) A = 1) : h.slope A = h.degNorm A := by
   simp [slope, h1]
@@ -1025,13 +753,6 @@ theorem slope_of_finrank_eq_one (h1 : finrank (𝓞 K) A = 1) : h.slope A = h.de
 @[simp]
 theorem quotSlope_bot (A : Submodule (𝓞 K) V) : h.quotSlope A ⊥ = h.slope A := by
   simp [quotSlope, slope]
-
-theorem sub_mul_quotSlope (hA : A.FG) {W : Submodule K V} (hW : ¬ A ≤ W.restrictScalars (𝓞 K)) :
-    ((finrank (𝓞 K) A : ℝ) -
-        finrank (𝓞 K) (A ⊓ W.restrictScalars (𝓞 K) : Submodule (𝓞 K) V)) *
-      h.quotSlope A (A ⊓ W.restrictScalars (𝓞 K)) =
-      h.degNorm A - h.degNorm (A ⊓ W.restrictScalars (𝓞 K)) :=
-  mul_div_cancel₀ _ (sub_pos.2 (Nat.cast_lt.2 (finrank_inf_restrictScalars_lt hA hW))).ne'
 
 theorem slope_le_muMax (hBA : B ≤ A) (h0 : B ≠ ⊥) : (h.slope B : EReal) ≤ h.muMax A :=
   le_iSup_of_le B (le_iSup_of_le hBA (le_iSup_of_le h0 le_rfl))
@@ -1042,56 +763,11 @@ theorem muMax_le_iff {c : EReal} : h.muMax A ≤ c ↔ ∀ B ≤ A, B ≠ ⊥ �
 theorem muMax_le_coe_iff {c : ℝ} : h.muMax A ≤ c ↔ ∀ B ≤ A, B ≠ ⊥ → h.slope B ≤ c := by
   simp [muMax_le_iff]
 
-theorem muMax_mono (hBA : B ≤ A) : h.muMax B ≤ h.muMax A :=
-  h.muMax_le_iff.2 fun _ hC h0 => h.slope_le_muMax (hC.trans hBA) h0
-
 @[simp]
 theorem muMax_bot : h.muMax ⊥ = ⊥ := by simp [muMax]
 
-theorem muMax_ne_bot (h0 : A ≠ ⊥) : h.muMax A ≠ ⊥ :=
-  ((EReal.bot_lt_coe _).trans_le (h.slope_le_muMax le_rfl h0)).ne'
-
-theorem degNorm_le_of_muMax_le (hA : A.FG) (hBA : B ≤ A) {c : ℝ} (hc : h.muMax A ≤ c) :
-    h.degNorm B ≤ finrank (𝓞 K) B * c := by
-  by_cases h0 : B = ⊥
-  · subst h0
-    simp
-  · rw [← h.finrank_mul_slope (hA.of_le hBA) h0]
-    exact mul_le_mul_of_nonneg_left (h.muMax_le_coe_iff.1 hc B hBA h0) (Nat.cast_nonneg _)
-
-theorem muMin_le_quotSlope {W : Submodule K V} (hW : ¬ A ≤ W.restrictScalars (𝓞 K)) :
-    h.muMin A ≤ h.quotSlope A (A ⊓ W.restrictScalars (𝓞 K)) :=
-  iInf_le_of_le W (iInf_le_of_le hW le_rfl)
-
-theorem le_muMin_iff {c : EReal} : c ≤ h.muMin A ↔ ∀ W : Submodule K V,
-    ¬ A ≤ W.restrictScalars (𝓞 K) → c ≤ h.quotSlope A (A ⊓ W.restrictScalars (𝓞 K)) := by
-  simp only [muMin, le_iInf_iff]
-
-theorem coe_le_muMin_iff {c : ℝ} : (c : EReal) ≤ h.muMin A ↔ ∀ W : Submodule K V,
-    ¬ A ≤ W.restrictScalars (𝓞 K) → c ≤ h.quotSlope A (A ⊓ W.restrictScalars (𝓞 K)) := by
-  simp only [le_muMin_iff, EReal.coe_le_coe_iff]
-
-theorem muMin_eq_iInf_isSaturatedIn (A : Submodule (𝓞 K) V) :
-    h.muMin A = ⨅ (B : Submodule (𝓞 K) V) (_ : IsSaturatedIn A B) (_ : B ≠ A),
-      (h.quotSlope A B : EReal) := by
-  refine le_antisymm (le_iInf fun B => le_iInf fun hB => le_iInf fun hne => ?_)
-    (h.le_muMin_iff.2 fun W hW => ?_)
-  · obtain ⟨W, rfl⟩ := (isSaturatedIn_iff_exists_subspace K).1 hB
-    exact h.muMin_le_quotSlope fun hW => hne (inf_eq_left.2 hW)
-  · exact iInf_le_of_le _ (iInf_le_of_le (isSaturatedIn_inf_restrictScalars A W)
-      (iInf_le_of_le (fun hW' => hW (inf_eq_left.1 hW')) le_rfl))
-
-theorem muMin_le_slope (h0 : A ≠ ⊥) : h.muMin A ≤ h.slope A := by
-  simpa using h.muMin_le_quotSlope (A := A) (W := ⊥) (by simpa using h0)
-
-theorem muMin_le_muMax (h0 : A ≠ ⊥) : h.muMin A ≤ h.muMax A :=
-  (h.muMin_le_slope h0).trans (h.slope_le_muMax le_rfl h0)
-
 @[simp]
 theorem muMin_bot : h.muMin ⊥ = ⊤ := by simp [muMin]
-
-theorem muMin_ne_top (h0 : A ≠ ⊥) : h.muMin A ≠ ⊤ :=
-  ((h.muMin_le_slope h0).trans_lt (EReal.coe_lt_top _)).ne
 
 theorem muMax_of_finrank_eq_one (hA : A.FG) (h1 : finrank (𝓞 K) A = 1) :
     h.muMax A = h.slope A := by
@@ -1106,143 +782,9 @@ theorem muMax_of_finrank_eq_one (hA : A.FG) (h1 : finrank (𝓞 K) A = 1) :
   exact div_le_div_of_nonneg_right (h.arDeg_le_of_finrank_eq hA hBA (hr.trans h1.symm))
     (Nat.cast_nonneg _)
 
-theorem muMin_of_finrank_eq_one (hA : A.FG) (h1 : finrank (𝓞 K) A = 1) :
-    h.muMin A = h.slope A := by
-  have h0 : A ≠ ⊥ := by
-    rintro rfl
-    simp at h1
-  refine le_antisymm (h.muMin_le_slope h0) (h.coe_le_muMin_iff.2 fun W hW => ?_)
-  have : A ⊓ W.restrictScalars (𝓞 K) = ⊥ := by
-    by_contra hne
-    have h2 := finrank_lattice_pos (hA.of_le inf_le_left) hne
-    have h3 := finrank_inf_restrictScalars_lt hA hW
-    omega
-  rw [this, quotSlope_bot]
-
-section Comap
-
-variable (f : V' →ₗ[K] V) (hf : Function.Injective f) {A' : Submodule (𝓞 K) V'}
-
-theorem degNorm_comap (hA : A'.FG) :
-    (h.comap f hf).degNorm A' = h.degNorm (A'.map (f.restrictScalars (𝓞 K))) := by
-  rw [degNorm, degNorm, h.arDeg_comap f hf hA]
-
-theorem slope_comap (hA : A'.FG) :
-    (h.comap f hf).slope A' = h.slope (A'.map (f.restrictScalars (𝓞 K))) := by
-  rw [slope, slope, h.degNorm_comap f hf hA,
-    (Submodule.equivMapOfInjective (f.restrictScalars (𝓞 K)) hf A').finrank_eq]
-
-theorem muMax_comap (hA : A'.FG) :
-    (h.comap f hf).muMax A' = h.muMax (A'.map (f.restrictScalars (𝓞 K))) := by
-  have hf' : Function.Injective (f.restrictScalars (𝓞 K)) := hf
-  have hne : ∀ B : Submodule (𝓞 K) V', B.map (f.restrictScalars (𝓞 K)) = ⊥ ↔ B = ⊥ := fun B => by
-    rw [← Submodule.map_bot (f.restrictScalars (𝓞 K)),
-      (Submodule.map_injective_of_injective hf').eq_iff]
-  refine le_antisymm ((muMax_le_iff _).2 fun B hB h0 => ?_) ((muMax_le_iff _).2 fun B hB h0 => ?_)
-  · rw [h.slope_comap f hf (hA.of_le hB)]
-    exact h.slope_le_muMax (Submodule.map_mono hB) ((hne B).not.2 h0)
-  · have h1 : (B.comap (f.restrictScalars (𝓞 K))).map (f.restrictScalars (𝓞 K)) = B :=
-      Submodule.map_comap_eq_self (hB.trans LinearMap.map_le_range)
-    have h2 : B.comap (f.restrictScalars (𝓞 K)) ≤ A' :=
-      (Submodule.comap_mono hB).trans (Submodule.comap_map_eq_of_injective hf' A').le
-    rw [← h1, ← h.slope_comap f hf (hA.of_le h2)]
-    exact slope_le_muMax _ h2 ((hne _).not.1 (h1.symm ▸ h0))
-
-theorem quotSlope_comap {B' : Submodule (𝓞 K) V'} (hA : A'.FG) (hB : B'.FG) :
-    (h.comap f hf).quotSlope A' B' =
-      h.quotSlope (A'.map (f.restrictScalars (𝓞 K))) (B'.map (f.restrictScalars (𝓞 K))) := by
-  rw [quotSlope, quotSlope, h.degNorm_comap f hf hA, h.degNorm_comap f hf hB,
-    (Submodule.equivMapOfInjective (f.restrictScalars (𝓞 K)) hf A').finrank_eq,
-    (Submodule.equivMapOfInjective (f.restrictScalars (𝓞 K)) hf B').finrank_eq]
-
-theorem muMin_comap (hA : A'.FG) :
-    (h.comap f hf).muMin A' = h.muMin (A'.map (f.restrictScalars (𝓞 K))) := by
-  have key : ∀ W : Submodule K V,
-      (A' ⊓ (W.comap f).restrictScalars (𝓞 K)).map (f.restrictScalars (𝓞 K)) =
-        A'.map (f.restrictScalars (𝓞 K)) ⊓ W.restrictScalars (𝓞 K) := fun W =>
-    (Submodule.map_inf_eq_map_inf_comap (f := f.restrictScalars (𝓞 K)) (p := A')
-      (p' := W.restrictScalars (𝓞 K))).symm
-  have key' : ∀ W : Submodule K V, A' ≤ (W.comap f).restrictScalars (𝓞 K) ↔
-      A'.map (f.restrictScalars (𝓞 K)) ≤ W.restrictScalars (𝓞 K) := fun W =>
-    (Submodule.map_le_iff_le_comap (f := f.restrictScalars (𝓞 K)) (p := A')
-      (q := W.restrictScalars (𝓞 K))).symm
-  refine le_antisymm ((le_muMin_iff _).2 fun W hW => ?_) ((le_muMin_iff _).2 fun W hW => ?_)
-  · rw [← key, ← h.quotSlope_comap f hf hA (hA.of_le inf_le_left)]
-    exact muMin_le_quotSlope _ ((key' W).not.2 hW)
-  · rw [← Submodule.comap_map_eq_of_injective hf W] at hW ⊢
-    rw [h.quotSlope_comap f hf hA (hA.of_le inf_le_left), key]
-    exact muMin_le_quotSlope _ ((key' _).not.1 hW)
-
-end Comap
-
-theorem slope_scaleNormExp (t : (K →+* ℂ) → ℝ) (hA : A.FG) (h0 : A ≠ ⊥) :
-    (h.scaleNormExp t).slope A = h.slope A - (∑ σ : K →+* ℂ, t σ) / finrank ℚ K := by
-  have : (finrank (𝓞 K) A : ℝ) ≠ 0 := Nat.cast_ne_zero.2 (finrank_lattice_pos hA h0).ne'
-  rw [slope, slope, degNorm, degNorm, h.arDeg_scaleNormExp t hA]
-  field_simp
-
-theorem muMax_sq_le_coe_iff {c : ℝ} :
-    h.muMax_sq A ≤ c ↔ ∀ B ≤ A, B ≠ ⊥ → h.slope_sq B ≤ c := by
-  have : h.muMax_sq A ≤ c ↔ h.muMax A ≤ ((c / 2 : ℝ) : EReal) := by
-    rw [muMax_sq, EReal.coe_div, mul_comm]
-    exact (EReal.le_div_iff_mul_le (by norm_num) (EReal.coe_ne_top 2)).symm
-  rw [this, muMax_le_coe_iff]
-  simp only [slope_sq_eq, le_div_iff₀' (two_pos : (0 : ℝ) < 2)]
-
-theorem muMax_sq_eq_iSup (A : Submodule (𝓞 K) V) :
-    h.muMax_sq A = ⨆ (B : Submodule (𝓞 K) V) (_ : B ≤ A) (_ : B ≠ ⊥), (h.slope_sq B : EReal) := by
-  have key : ∀ c : ℝ, h.muMax_sq A ≤ c ↔
-      (⨆ (B : Submodule (𝓞 K) V) (_ : B ≤ A) (_ : B ≠ ⊥), (h.slope_sq B : EReal)) ≤ c := fun c => by
-    simp only [muMax_sq_le_coe_iff, iSup_le_iff, EReal.coe_le_coe_iff]
-  exact le_antisymm (EReal.le_of_forall_lt_iff_le.1 fun z hz => (key z).2 hz.le)
-    (EReal.le_of_forall_lt_iff_le.1 fun z hz => (key z).1 hz.le)
-
-theorem coe_le_muMin_sq_iff {c : ℝ} : (c : EReal) ≤ h.muMin_sq A ↔ ∀ W : Submodule K V,
-    ¬ A ≤ W.restrictScalars (𝓞 K) → c ≤ 2 * h.quotSlope A (A ⊓ W.restrictScalars (𝓞 K)) := by
-  have : (c : EReal) ≤ h.muMin_sq A ↔ ((c / 2 : ℝ) : EReal) ≤ h.muMin A := by
-    rw [muMin_sq, EReal.coe_div]
-    exact (EReal.div_le_iff_le_mul (by norm_num) (EReal.coe_ne_top 2)).symm
-  rw [this, coe_le_muMin_iff]
-  simp only [div_le_iff₀' (two_pos : (0 : ℝ) < 2)]
-
 end Slopes
 
 end NumberField
-
-example : (std ℂ Unit).form (RingHom.id ℂ) (fun _ => Complex.I) (fun _ => 1) = Complex.I := by
-  simp [std_form]
-
-example : (diag (K := ℚ) (fun _ => ![1, 4]) (fun _ i => by fin_cases i <;> simp)).arDeg
-    (Submodule.span (𝓞 ℚ) (Set.range (Pi.basisFun ℚ (Fin 2)))) = -Real.log 2 := by
-  have h4 : Real.log 4 = 2 * Real.log 2 := by
-    rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]
-    norm_num
-  rw [arDeg_diag]
-  simp [h4, Embeddings.card]
-
-example : (std ℚ Unit).arDeg (Submodule.span (𝓞 ℚ) {fun _ => 3}) = -Real.log 3 := by
-  rw [arDeg_span_singleton _ (fun h0 => by simpa using congrFun h0 ())]
-  have : ∀ σ : ℚ →+* ℂ, (std ℚ Unit).norm σ (fun _ => 3) = 3 := fun σ => by
-    rw [norm, std_form]
-    simp
-  simp [this, Embeddings.card]
-
-example {K : Type*} [Field K] [NumberField K] :
-    (stdField K).muMax (Submodule.span (𝓞 K) {1}) = 0 := by
-  have h1 : finrank (𝓞 K) (Submodule.span (𝓞 K) {(1 : K)}) = 1 := by
-    rw [finrank_lattice_eq_finrank_span, Submodule.span_span_of_tower,
-      finrank_span_singleton one_ne_zero]
-  rw [muMax_of_finrank_eq_one _ (Submodule.fg_span_singleton _) h1, slope, degNorm,
-    arDeg_stdField_span_singleton one_ne_zero]
-  simp
-
-example {K : Type*} [Field K] (σ : K →+* ℂ) (hσ : ComplexEmbedding.conjugate σ ≠ σ) :
-    ∃ h : ArchMetric K (Unit → K), ¬ h.ConjInvariant := by
-  classical
-  refine ⟨diag (fun τ _ => if τ = σ then 1 else 2) fun τ _ => by split_ifs <;> norm_num,
-    fun hc => ?_⟩
-  have := hc σ (fun _ => 1) (fun _ => 1)
-  simp [diag_form, hσ] at this
 
 end ArchMetric
 

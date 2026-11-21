@@ -446,11 +446,6 @@ theorem stVGeo_of (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what
 theorem stVGeo_of_chart (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (hC : StVChart X u u') :
     StVGeo X u u' := stVGeo_of X u u' hC (stVLaw_holds X u u')
 
-theorem ooQuot_chart (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word)
-    (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (hN : NuQPin X u u' νq) (hC : StVChart X u u') :
-    ∃ νl, (∀ w, OkPt X u u' w → LocPin X u u' w νl) ∧ Formalism.L2.SG.Pf.Carrier.JointPf.OOQuot X u u' νq νl :=
-  ooQuot_geo X u u' νq hN (stRel_holds X u u') (stVGeo_of_chart X u u' hC)
-
 def StVKer (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) : Prop :=
   ∀ w, OkPt X u u' w → ∀ v : InfinitePlace X.B.I.F, ∀ y ∈ StV X u u' (gamW X u u' w) v,
     stCoordV X u' w (gamW X u u' w) v y = 0 → y = 1

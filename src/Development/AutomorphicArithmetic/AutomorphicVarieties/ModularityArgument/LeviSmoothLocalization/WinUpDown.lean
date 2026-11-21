@@ -42,8 +42,6 @@ def WinAt (π : CuspSub K n) (t : ℝ) (v : HeightOneSpectrum (𝓞 K)) : Prop :
 
 def AllWin (π : CuspSub K n) : Prop := ∃ t, ∀ v, WinAt π t v
 
-theorem AllWin.tor {π : CuspSub K n} (h : AllWin π) : AllTor π := fun v => (h.choose_spec v).1
-
 def PolFacts : Prop :=
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     (ValuativeRel.valuation k (unif k : k) < 1 ∧
@@ -167,26 +165,7 @@ def WinSph : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (n : ℕ), 1 ≤ n → ∀ (π : CuspSub K n) (t : ℝ) v, WinAt π t v →
     (∀ s, SuppAt π v s → ∀ ξ ∈ chars s, IsUnram ξ) → ∃ B, (CG.mk π).HasSat v B
 
-def AdSys {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (D : Ad3.Dat) (P : CuspSub K 3) : Prop :=
-  ∀ᶠ v : HeightOneSpectrum (𝓞 ℚ) in Filter.cofinite, ∀ w : PlacesOver K v,
-    (CG.mk P).HasSat w.1 {D.ν v (unif (v.adicCompletion ℚ)) ^ fdeg w, 1, (D.ν v (unif (v.adicCompletion ℚ)) ^ fdeg w)⁻¹}
-
 def lin {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ξ : kˣ →* ℂˣ) : ℂ[X] :=
   if IsUnram ξ then 1 - C ((ξ (unif k) : ℂˣ) : ℂ) * X else 1
-
-def MatchAd : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → ∀ D : Ad3.Dat, Ad3.An D →
-    ∀ P : CuspSub K 3, AdSys D P → ∃ η : HChar ℚ, ∀ (v : HeightOneSpectrum (𝓞 ℚ)), (∀ w : PlacesOver K v, (η.loc v).comp (nm w) = 1) ∧
-      (∀ θ : (v.adicCompletion ℚ)ˣ →* ℂˣ, IsSmoothChar θ → ∀ w : PlacesOver K v, IsUnram (θ.comp (nm w)) →
-        ((Finset.range 2).filter fun j => IsUnram (θ * (η ^ j).loc v)).card = ∑ w' : PlacesOver K v, fdeg w') ∧
-      ∀ s' : ∀ w : PlacesOver K v, Multiset (IrrGL (w.1.adicCompletion K)), (∀ w, SuppAt P w.1 (s' w)) →
-        ∀ θ : (v.adicCompletion ℚ)ˣ →* ℂˣ, IsSmoothChar θ →
-          ∏ j ∈ Finset.range 2, lin (D.ν v * (θ * (η ^ j).loc v)) * lin (θ * (η ^ j).loc v) * lin ((D.ν v)⁻¹ * (θ * (η ^ j).loc v)) =
-            ∏ w, (pol (s' w) (θ.comp (nm w))).comp (X ^ fdeg w)
-
-def AdK : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → ∀ D : Ad3.Dat, Ad3.An D →
-    ∀ P : CuspSub K 3, AdSys D P → ∀ (v : HeightOneSpectrum (𝓞 ℚ)) (w : PlacesOver K v), WinAt P 0 w.1 ∧
-      ∀ s, SuppAt P w.1 s → ∀ ζ ∈ chars s, ζ = (D.ν v).comp (nm w) ∨ ζ = 1 ∨ ζ = ((D.ν v).comp (nm w))⁻¹
 
 end UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter

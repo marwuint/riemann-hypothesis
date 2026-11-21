@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TendstoSumIccInvResidueCotStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPeriodicCotEqQExpansionFourierStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummablePeriodicMulInvSubInvFloorStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TendstoSumIccInvResidueCot
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPeriodicCotEqQExpansionFourier
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummablePeriodicMulInvSubInvFloor
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TendstoSumIccPeriodicMulInvFloorDivStatement
 
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
@@ -77,7 +77,7 @@ theorem lipschitz_one : ∀ (L : ℕ) (φ : ZMod L → ℂ) (z : ℂ), 0 < L →
   simp only [htrm]
   have hsum0 : ∑ r ∈ Finset.range L, φ r = 0 := by simpa [hat] using h0
   set g : ℤ → ℂ := fun d => φ d * ((z + d)⁻¹ - (z + ((L:ℤ) * (d / L) : ℤ))⁻¹) with hg
-  have hs : Summable g := T.summable_periodic_mul_inv_sub_inv_floor' L φ z hL hz
+  have hs : Summable g := _root_.GlobalTheory.summable_periodic_mul_inv_sub_inv_floor L φ z hL hz
   have hsplit : ∀ s : Finset ℤ, ∑ d ∈ s, φ d * (z + d)⁻¹ =
       ∑ d ∈ s, g d + ∑ d ∈ s, φ d * (z + ((L:ℤ) * (d / L) : ℤ))⁻¹ := by
     intro s
@@ -135,8 +135,8 @@ theorem lipschitz_one : ∀ (L : ℕ) (φ : ZMod L → ℂ) (z : ℂ), 0 < L →
     simp only [ZMod.natCast_self, mul_zero, add_zero]
     ring_nf
   have hmain := tendsto_finset_sum (Finset.range L)
-    fun r (_ : r ∈ Finset.range L) => (T.tendsto_sum_Icc_inv_add_mul_eq_pi_div_mul_cot L z r hL hz).const_mul (φ r)
-  rw [T.sum_periodic_cot_eq_qExpansion_fourier L φ z hL hz h0] at hmain
+    fun r (_ : r ∈ Finset.range L) => (_root_.GlobalTheory.tendsto_sum_Icc_inv_residue_cot L z r hL hz).const_mul (φ r)
+  rw [_root_.GlobalTheory.CotQExp.sum_cot_eq_qexp L φ z hL hz h0] at hmain
   have hT : ∑' d, g d = -2 * ↑π * Complex.I / ↑L * ∑' (m : ℕ), hat φ ↑(m + 1) *
       cexp (2 * ↑π * Complex.I * ↑(m + 1) * z / ↑L) := by
     refine tendsto_nhds_unique ?_ hmain

@@ -9,9 +9,6 @@ namespace PI.DCRelEquiv.UnitaryGroupMassFormula
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.L2.SG.TermDef
 
-theorem add_sub_self' {V : Type*} [AddCommGroup V] (a b : V) : a + (b - a) = b := by
-  abel
-
 theorem symm_mem_of_maps {K V : Type*} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (n : V ≃ₗ[K] V) (U : Submodule K V) (h : ∀ x ∈ U, n x ∈ U) : ∀ x ∈ U, n.symm x ∈ U := by
   intro x hx
@@ -216,10 +213,6 @@ theorem conj_cond (g x : S.V ≃ₗ[E] S.V) (A₁ B₁ A₂ B₂ : Submodule E S
     exact h1
 
 end Gen
-
-theorem nLamGroup_holds : NLamGroup := by
-  intro E _ _ _ S r T Λ F n m hn hm
-  exact ⟨nlam_mul hn hm, nlam_inv hn⟩
 
 theorem nLamConj_holds : NLamConj := by
   intro E _ _ _ S r T Λ F₁ F₂ g hg hfr x

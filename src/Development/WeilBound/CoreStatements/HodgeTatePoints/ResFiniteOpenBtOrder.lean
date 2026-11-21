@@ -3,8 +3,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.A
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderComapHomStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BaseChangePointsCompatStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderComapHom
+import GroundTheory.PAdicHodge.FiniteFlat
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BaseChangePointsCompat
 import Development.WeilBound.CoreStatements.HodgeTatePoints.TwhopfInd
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopf
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHens
@@ -15,14 +16,11 @@ open GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G.Sem
 
 namespace PositivityTheory.HtPt.Mk
 
-variable (hE : type_of% @GlobalTheory.T.exists_base_change_group)
+variable (hE : type_of% @_root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_isBaseChange_of_injective)
 include hE
 
 theorem sub_eq_top_of : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens), Γ.IsFinOpenSub U → Γ.btOrder U = Γ.btOrder ⊤ :=
   Htat.bt_sub_eq_top_of @Htat.hens_normal hE @Htat.reg_pull
-
-theorem hopf_of : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T), IsHopfOrder (Γ.btOrder ⊤) :=
-  Htat.bt_hopf_of @Htat.hens_normal hE @Htat.reg_pull
 
 omit hE in
 
@@ -124,7 +122,7 @@ theorem res_fin_core (Γ : QFGroup R T) {H : Type} [CommGroup H] [Finite H] (Γ�
       exact hU.inv S _ (fun z => by rw [happ]; exact hx z) z
   refine ⟨h1, le_antisymm ?_ ?_⟩
   · rintro _ ⟨f, hf, rfl⟩
-    exact GlobalTheory.T.btOrder_comap_hom R H Γ₁ T Γ a α hα f hf
+    exact _root_.GlobalTheory.CompanionTheory.Ar.BT.Funct.comp_mem_btOrder R H Γ₁ T Γ a α hα f hf
   · intro g hg
     obtain ⟨K, A, hK, hA, hind, -, hsec⟩ := order_ind hE Γ U hU
     rw [← sub_eq_top_of hE R H Γ₁ _ h1, Twhopf.mem_order] at hg
@@ -145,10 +143,6 @@ theorem res_fin_core (Γ : QFGroup R T) {H : Type} [CommGroup H] [Finite H] (Γ�
 
 end
 
-theorem res_finite_open_bt_order : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (H : Type) [CommGroup H] [Finite H] (Γ₁ : QFGroup R H) (a : Γ₁.G ⟶ Γ.G) [IsMonHom a] (α : H →* T), (∀ h, Γ₁.pt h ≫ a = Γ.pt (α h)) → IsClosedImmersion a.left → ∀ U : Γ.G.left.Opens, Γ.IsFinOpenSub U → Γ₁.IsFinOpenSub (a.left ⁻¹ᵁ U) ∧ resOrder α (Γ.btOrder ⊤) = Γ₁.btOrder ⊤ := by
-  intro R _ _ _ T _ _ Γ H _ _ Γ₁ a _ α hα hcl U hU
-  exact res_fin_core hE Γ Γ₁ a (fun S x y => MonObj.mul_comp x y a) α hα hcl U hU
-
 theorem res_core {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] {T : Type} [CommGroup T] [Finite T]
     (Γ : QFGroup R T) {H : Type} [CommGroup H] [Finite H] (Γ₁ : QFGroup R H) (a : Γ₁.G ⟶ Γ.G)
     (hmul : ∀ (S : Over (Spec (CommRingCat.of R))) (x y : S ⟶ Γ₁.G), (x * y) ≫ a = (x ≫ a) * (y ≫ a))
@@ -156,7 +150,7 @@ theorem res_core {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] {T 
     resOrder α (Γ.btOrder ⊤) = Γ₁.btOrder ⊤ := by
   refine le_antisymm ?_ fun g hg => ?_
   · rintro _ ⟨f, hf, rfl⟩
-    exact GlobalTheory.T.btOrder_comap_hom R H Γ₁ T Γ a α hα f hf
+    exact _root_.GlobalTheory.CompanionTheory.Ar.BT.Funct.comp_mem_btOrder R H Γ₁ T Γ a α hα f hf
   refine Htat.mem_descent R H (Subalgebra.toSubmodule (resOrder α (Γ.btOrder ⊤))) g fun P hP => ?_
   obtain ⟨R', _, _, _, _, hN, hflat, hP'⟩ := Htat.hens_normal R P
   have hinj : Function.Injective (algebraMap R R') := Htat.ValuationInjectivePi.flat_inj
@@ -190,8 +184,8 @@ theorem res_core {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] {T 
   have hα' : ∀ h, Γ₁'.pt h ≫ a' = Γ'.pt (α h) := by
     intro h
     apply hext
-    rw [Over.comp_left, Category.assoc, ha', ← Category.assoc, GlobalTheory.T.base_change_points_compat R H Γ₁ R' Γ₁' F₁ hF₁ κ hκ h,
-      GlobalTheory.T.base_change_points_compat R T Γ R' Γ' F hF κ hκ, Category.assoc, ← Over.comp_left, hα]
+    rw [Over.comp_left, Category.assoc, ha', ← Category.assoc, _root_.GlobalTheory.CompanionTheory.Ar.BT.genericPoint_baseChange R H Γ₁ R' Γ₁' F₁ hF₁ κ hκ h,
+      _root_.GlobalTheory.CompanionTheory.Ar.BT.genericPoint_baseChange R T Γ R' Γ' F hF κ hκ, Category.assoc, ← Over.comp_left, hα]
   haveI := Γ'.quasiFinite
   haveI := Γ'.separated
   haveI := Γ'.quasiCompact

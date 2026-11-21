@@ -42,13 +42,6 @@ def NeglAt : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (K : Subgroup (UA E a)) (w₀ w : HeightOneSpectrum (𝓞 E)),
     IsSplitAt w → Apart w w₀ → HypAt K w → ∀ Φ : MvPolynomial (Fin a) ℂ, Φ ≠ 0 → Negl w₀ K fun U => ¬ GenAt w Φ U
 
-def TestOp : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (K : Subgroup (UA E a)) (w : HeightOneSpectrum (𝓞 E)),
-    IsSplitAt w → HypAt K w → ∀ Φ : MvPolynomial (Fin a) ℂ, ∃ (f : UA E a →₀ ℂ) (η : Submodule ℂ (UA E a → ℂ) → ℂ),
-      (∀ g ∈ f.support, g ∈ finU E a) ∧ ∀ U, IsAutRepU U →
-        (∀ φ ∈ U, (∀ x ∈ K, RU E a x φ = φ) → opOf (RU E a) f φ = η U • φ) ∧
-        ((∃ φ ∈ U, φ ≠ 0 ∧ ∀ x ∈ K, RU E a x φ = φ) → (η U ≠ 0 ↔ GenAt w Φ U))
-
 structure IsTower {G : Type} [Group G] [TopologicalSpace G] (J : ℕ → Subgroup G) : Prop where
   isOpen : ∀ n, IsOpen (J n : Set G)
   compact : ∀ n, IsCompact (J n : Set G)
@@ -176,25 +169,6 @@ def SmoothAt : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (w₀ : HeightOneSpectrum (𝓞 E)), IsSplitAt w₀ → ∀ (W : Wt E a)
     (f : algForms W), ∃ N ∈ nhds (1 : GL (Fin a) (w₀.adicCompletion E)), ∀ x ∈ locU a w₀, cLoc w₀ x ∈ N →
       ∀ v g, f.1 v (g * x) = f.1 v g
-
-def FrameEx : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (W : Wt E a),
-    ∃ (d : ℕ) (b : UA E a → Fin d → W.Sp), (∀ f : algForms W, ∃ R : ℝ, ∀ g i, ‖ι.symm (f.1 (b g i) g)‖ ≤ R) ∧
-      (∀ f : algForms W, (∀ g i, f.1 (b g i) g = 0) → f = 0) ∧
-      (∀ h ∈ finU E a, ∃ m : Fin d → Fin d → ℂ, ∀ g i, b g i = ∑ j, m i j • b (g * h) j) ∧
-      ∀ h ∈ finU E a, (∀ u : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ u.asIdeal → cLoc u h = 1) → ∀ g, b (g * h) = b g
-
-def FrameOps : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (W : Wt E a) (J : Type)
-    (t : J → (UA E a →₀ ℂ)), (∀ j, ∀ g ∈ (t j).support, g ∈ finU E a) →
-    ∃ c : J → ℕ, (∀ j, IsIntegralOp ι (t j) → c j = 0) ∧ Framed ι W fun j => ((l : ℂ) ^ c j) • t j
-
-def ToPoly : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ)
-    (w₀ : HeightOneSpectrum (𝓞 E)) (K : Subgroup (UA E a)), K ≤ finU E a → ∀ (lam : (E →+* ℂ) → DomWeight a)
-    (P : Submodule ℂ (UA E a → ℂ) → Prop), Dense ι (Wt.ofFam lam) K P → ∀ (J : Type) (t : J → (UA E a →₀ ℂ))
-    (η : Submodule ℂ (UA E a → ℂ) → J → ℂ), Framed ι (Wt.ofFam lam) t → ActsBy K t η → ∀ U, OfType lam K U →
-      PolyApprox (fun j => ι.symm (η U j)) {θ | ∃ U', OfType lam K U' ∧ P U' ∧ θ = fun j => ι.symm (η U' j)}
 
 end UpperTheory.Gal.Gen
 

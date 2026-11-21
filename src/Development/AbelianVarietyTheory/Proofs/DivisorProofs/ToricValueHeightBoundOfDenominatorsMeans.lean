@@ -3,14 +3,19 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmal
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.VpBounds
 import Formalism.PairingDivisors.PairingDivisorProofs.Height
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.EllipticOnePole
-import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.RootsOfUnityDivisibility
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.FunctionalLowerBoundOfConditionsNumeric
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.SlopeBoundSingleLiftOfDefinitions
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.SlopeBoundOfConditionsWithErrorForFrames
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.ExampleSatisfiesConditionsAtFive
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMulPowIntegral
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.DepthTie
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ReductionLemmaFirst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsNormMinpolyCoeffZeroPowNumberFieldStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeanInfLogNormEmbeddingEqLogNormDivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationMinpolyCoeffZeroGeOfPowMulIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeanValuationNormOverDegreeSmulEqAddValuationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationMinpolyCoeffZeroGeOfPowMulIntegral
+import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
+import Formalism.PairingDivisors.StatementH
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeanValuationNormOverDegreeSmulEqAddValuation
 
 noncomputable section
 open NumberField Polynomial IsDedekindDomain
@@ -60,7 +65,7 @@ theorem height_meanVal [StarRing K] [IsTotallyComplex K] (σ : K →+* ℂ) (β 
     · obtain ⟨l, hl, hlw⟩ := exists_prime_mem w
       have hlS : l ∈ S := by
         rw [hSdef, Set.Finite.mem_toFinset]; exact ⟨hl, w, h, hlw⟩
-      have key := GlobalTheory.T.valuation_minpoly_coeff_zero_ge_of_pow_mul_integral K σ β p l (12 * n l) hp hl (hlow l hl) w hlw
+      have key := _root_.GlobalTheory.FunObj.SqNum.LowVal.vw_coeff_zero_ge K σ β p l (12 * n l) hp hl (hlow l hl) w hlw
       have h1 : N0 l * (vw w (l : K) : ℝ) ≤ Formalism.PairingDivisionLocalBalance.wt S N0 w :=
         Finset.single_le_sum (f := fun l => N0 l * (vw w (l : K) : ℝ))
           (fun l' _ => mul_nonneg (Nat.cast_nonneg _) (by exact_mod_cast Formalism.PairingDivisionLocalBalance.vw_natCast_nonneg w l')) hlS
@@ -234,7 +239,7 @@ theorem thbSt_of_inputs : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValua
     unfold GlobalTheory.CMVal.beta; rw [map_pow]; ring
   have hqc' := hqc
   rw [e12] at hqc'
-  have hmv := GlobalTheory.T.meanValuationNormOverDegree_smul_eq_add_valuation D.what₂.LL D.what₂.embLL _ (zd c ^ 12) p qc hp hqc' (beta_ne x hx0) (pow_ne_zero _ hz0)
+  have hmv := _root_.GlobalTheory.FunObj.SqNum.meanVal_vw_smul D.what₂.LL D.what₂.embLL _ (zd c ^ 12) p qc hp hqc' (beta_ne x hx0) (pow_ne_zero _ hz0)
   obtain ⟨finc, sumc⟩ := fam_bd (some c) _ qc hxc' hqc
   refine ⟨hz0, GlobalTheory.HeightMeanValueBounds.htLe_of_real g _ _ (zd c) _ hg (fun w => ?_) fin0 finc sum0 sumc⟩
   rw [hmv w, Formalism.PairingDivisionLocalBalance.vw_pow w _ hz0]

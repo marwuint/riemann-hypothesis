@@ -41,9 +41,6 @@ open GlobalTheory.Principalise GlobalTheory.Principalise.Model
 
 variable (k : Type) [Field k]
 
-abbrev coord : Γ(Sp (Polynomial k), ⊤) :=
-  (Scheme.ΓSpecIso (.of (Polynomial k))).commRingCatIsoToRingEquiv.symm Polynomial.X
-
 instance smooth_line : Smooth (spMap (Polynomial.C : k →+* Polynomial k)) := by
   rw [HasRingHomProperty.Spec_iff (P := @Smooth)]
   exact RingHom.smooth_algebraMap.2 (⟨inferInstance, inferInstance⟩ : Algebra.Smooth k (Polynomial k))

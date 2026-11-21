@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SelfDualAt
 import Formalism.LocalToGlobal.HermitianForms.TiedStep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SplitPlaceLatticeComponents
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralExtensionFiniteAdelesBasicProperties
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FirstComponentsBasisLocalLatticeSplitStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLocalLevelUnitriangularIffStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FirstComponentsBasisLocalLatticeSplit
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLocalLevelUnitriangularIff
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvUpperUnitriangularSuperdiagNegStatement
 open Formalism.BasicNotions Formalism.UG Formalism.L2.Forms NumberField IsDedekindDomain Matrix GlobalTheory.St.G
 open scoped TensorProduct
@@ -288,20 +288,20 @@ theorem local_frame_second_factor : ∀ (F E : Type) [Field F] [NumberField F] [
     rw [this]; simp
   have hrange : Set.range (fun j : Fin n => bd (Fin.rev j)) = Set.range bd :=
     (Fin.revPerm.surjective.range_comp bd)
-  obtain ⟨fr, hfr, hlat⟩ := GlobalTheory.T.first_components_basis_local_lattice_split F E cm n J hJ hdet v sp hsig halg hint g hg L hL
+  obtain ⟨fr, hfr, hlat⟩ := _root_.GlobalTheory.St.G.first_components_basis F E cm n J hJ hdet v sp hsig halg hint g hg L hL
     (fun j => bd (Fin.rev j)) (Set.range b) (fun j => hbd _)
     (by rintro _ ⟨i, rfl⟩ a; exact hb1 i a)
     (by intro y hy; rw [hrange, Set.union_comm]; exact hspan y hy)
-  obtain ⟨frB, hfrB, hlatB⟩ := GlobalTheory.T.first_components_basis_local_lattice_split F E cm n J hJ hdet v sp' hsig' halg' hint' g hg L hL
+  obtain ⟨frB, hfrB, hlatB⟩ := _root_.GlobalTheory.St.G.first_components_basis F E cm n J hJ hdet v sp' hsig' halg' hint' g hg L hL
     b (Set.range bd) hb
     (by rintro _ ⟨i, rfl⟩ a; rw [h1]; exact hbd2 i a)
     (by intro y hy; exact hspan y hy)
   obtain ⟨ψ, hψ1, hψ⟩ := residue_character F E v sp halg hint g hg e he psi hadd hpsiO hne
   refine ⟨fr, ψ, hψ1, hlat, ?_⟩
   intro y hy
-  have hA := GlobalTheory.T.hermitian_local_level_unitriangular_iff F E cm n J hJ hdet v sp' hsig' halg' hint' g hg L hL b frB hb
+  have hA := _root_.GlobalTheory.St.G.FirstColumn.unitriangular_iff F E cm n J hJ hdet v sp' hsig' halg' hint' g hg L hL b frB hb
     (fun j a => by rw [h2]; exact hb1 j a) hfrB hlatB t y hy
-  have hM := GlobalTheory.T.hermitian_local_level_unitriangular_iff F E cm n J hJ hdet v sp hsig halg hint g hg L hL
+  have hM := _root_.GlobalTheory.St.G.FirstColumn.unitriangular_iff F E cm n J hJ hdet v sp hsig halg hint g hg L hL
     (fun j => bd (Fin.rev j)) fr (fun j => hbd _) (fun j a => hbd2 _ a) hfr hlat t y hy
   obtain ⟨hAint, hAiff⟩ := hA
   obtain ⟨hMint, -⟩ := hM

@@ -32,11 +32,6 @@ def ε : A := 1 + S.π
 
 def u : O := 1 + (S.ℓ : O) ^ S.s * S.c₀
 
-def Rad : Prop := S.π ∈ (⊥ : Ideal A).jacobson
-
-def Decomp : Prop :=
-  ∀ g : A, ∃! e : Fin S.ℓ → A, g = ∑ j : Fin S.ℓ, S.ε ^ (j : ℕ) * S.φ (e j)
-
 theorem φ_ε : S.φ S.ε = S.ε ^ S.ℓ := by
   simp [ε, S.φπ]
 
@@ -61,12 +56,6 @@ theorem φ_X : S.φ S.X = S.X * S.Q := by
     ring
   rw [h, Q, one_add_pow_sub_one]
 
-theorem iterate_phi_s_pi_eq_X_mul_Q : (⇑S.φ)^[S.s] S.π = S.X * S.Q := by
-  have : S.s = (S.s - 1) + 1 := by have := S.hs; omega
-  rw [← S.φ_X, X]
-  conv_lhs => rw [this]
-  rw [Function.iterate_succ_apply']
-
 def base : Formalism.CoboundaryTransfers.Base O A where
   p := S.ℓ
   hp := S.hℓ
@@ -76,28 +65,6 @@ def base : Formalism.CoboundaryTransfers.Base O A where
   Q := S.Q
   comm := S.comm
   φX := ⟨S.Q, S.φ_X⟩
-
-def prodBase (ι : Type) (pr : Equiv.Perm ι) : Formalism.CoboundaryTransfers.Base O (ι → A) where
-  p := S.ℓ
-  hp := S.hℓ
-  φ :=
-    { toFun := fun a i => S.φ (a (pr i))
-      map_one' := by funext i; simp
-      map_mul' := by intro a b; funext i; simp
-      map_zero' := by funext i; simp
-      map_add' := by intro a b; funext i; simp
-      commutes' := by intro r; funext i; simp [Pi.algebraMap_apply] }
-  γ :=
-    { toFun := fun a i => S.γ (a i)
-      map_one' := by funext i; simp
-      map_mul' := by intro a b; funext i; simp
-      map_zero' := by funext i; simp
-      map_add' := by intro a b; funext i; simp
-      commutes' := by intro r; funext i; simp [Pi.algebraMap_apply] }
-  X := fun _ => S.X
-  Q := fun _ => S.Q
-  comm := by intro a; funext i; exact S.comm _
-  φX := ⟨fun _ => S.Q, by funext i; exact S.φ_X⟩
 
 end HidaSetting
 

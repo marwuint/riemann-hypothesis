@@ -47,26 +47,6 @@ theorem ofΩHom_apply (x : Ω) : Pl.ofΩHom x = Pl.ofΩ x := rfl
 theorem ofΩHom_injective : Function.Injective Pl.ofΩHom :=
   (IsFractionRing.injective (MvPolynomial (Ψ × Fin D.N × Fin D.N) Ω) Pl.ΩY).comp (C_injective _ _)
 
-theorem mConeMap_yY_rename_xV (f : MRing ι) :
-    mConeMap Pl.yY (rename Pl.xV f) =
-      rename (Sum.inl : K → K ⊕ (Ψ × Fin (D.N - 1))) (MvPolynomial.map Pl.ofΩHom (mConeMap D.y f)) := by
-  induction f using MvPolynomial.induction_on with
-  | C a => simp [mConeMap]
-  | add p q hp hq => simp only [map_add, hp, hq]
-  | mul_X p x hp =>
-    simp only [map_mul, hp, rename_X]
-    congr 1
-    simp [mConeMap, xV, yY, ofΩHom_apply]
-
-theorem imageZ_xV_PY : imageZ Pl.xV Pl.PY = mCoordIdeal D.y := by
-  have hinj : Function.Injective fun g : MvPolynomial K Ω =>
-      rename (Sum.inl : K → K ⊕ (Ψ × Fin (D.N - 1))) (MvPolynomial.map Pl.ofΩHom g) :=
-    (rename_injective _ Sum.inl_injective).comp (map_injective _ Pl.ofΩHom_injective)
-  ext f
-  show mConeMap Pl.yY (rename Pl.xV f) = 0 ↔ mConeMap D.y f = 0
-  rw [mConeMap_yY_rename_xV]
-  exact ⟨fun h => hinj (h.trans (by simp)), fun h => by simp [h]⟩
-
 variable {H : HodgeData D} (B : AdaptedBasis H)
 
 def gvar0 (τ : Ψ) (a b : Fin D.N) : Pl.ΩY :=
@@ -117,33 +97,8 @@ def HodgeFlagArith.Statement : Prop :=
 
 namespace Line
 
-def lineAdapted (II : IntersectionSystem)
-    (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2]) :
-    AdaptedBasis (lineHodge II hII) where
-  e _ := ⇑(Pi.basisFun Ω (Fin 2))
-  e_indep _ := (Pi.basisFun Ω (Fin 2)).linearIndependent
-  e_span _ := (Pi.basisFun Ω (Fin 2)).span_eq
-  e_head _ := by
-    show Submodule.span Ω (Set.range (⇑(Pi.basisFun Ω (Fin 2)) ∘
-        headIdx (show 1 ≤ 2 by decide))) = lineF
-    have : Set.range (⇑(Pi.basisFun Ω (Fin 2)) ∘ headIdx (show 1 ≤ 2 by decide)) = {Pi.single 0 1} := by
-      ext v
-      simp only [Set.mem_range, Function.comp_apply, Set.mem_singleton_iff]
-      constructor
-      · rintro ⟨a, rfl⟩
-        rw [Fin.fin_one_eq_zero a]
-        simp [headIdx]
-      · rintro rfl
-        exact ⟨0, by simp [headIdx]⟩
-    rw [this]
-    rfl
-
 theorem flagDim0_line : lineDataZero.flagDim0 = 0 := rfl
 
 end Line
-
-theorem HodgeFlagArith.hyps_inhabited :
-    Nonempty (PlueckerData Line.lineDataZero × AdaptedBasis (Line.lineHodge Line.zeroSystem fun _ _ => le_rfl)) :=
-  ⟨(Line.linePl Line.zeroSystem fun _ _ => le_rfl, Line.lineAdapted Line.zeroSystem fun _ _ => le_rfl)⟩
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree

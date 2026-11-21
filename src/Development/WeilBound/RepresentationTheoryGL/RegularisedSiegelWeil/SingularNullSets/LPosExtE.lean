@@ -48,15 +48,4 @@ theorem exist (A : Submodule ℂ (X → ℂ)) (hA : ∀ f ∈ A, Continuous f �
   · rw [hre, Complex.add_re, smul_eq_mul, Complex.mul_re, Complex.I_re, Complex.I_im, iv, ru]; ring
   · rw [him, Complex.add_im, smul_eq_mul, Complex.mul_im, Complex.I_re, Complex.I_im, iu, rv]; ring
 
-theorem main [SecondCountableTopology X] (A : Submodule ℂ (X → ℂ)) (hA : ∀ f ∈ A, Continuous f ∧ HasCompactSupport f)
-    (hmul : ∀ f ∈ A, ∀ g ∈ A, f * g ∈ A) (hstar : ∀ f ∈ A, star f ∈ A)
-    (hsep : ∀ x y, x ≠ y → ∃ f ∈ A, f x ≠ f y)
-    (hbump : ∀ C, IsCompact C → ∃ f ∈ A, (∀ x, 0 ≤ (f x).re ∧ (f x).im = 0) ∧ ∀ x ∈ C, f x = 1) :
-    (∀ L : A →ₗ[ℂ] ℂ, (∀ f : A, (∀ x, 0 ≤ (f.1 x).re ∧ (f.1 x).im = 0) → 0 ≤ (L f).re ∧ (L f).im = 0) →
-      ∃ ν : Measure X, IsFiniteMeasureOnCompacts ν ∧ ∀ f : A, L f = ∫ x, f.1 x ∂ν) ∧
-    ∀ ν ν' : Measure X, IsFiniteMeasureOnCompacts ν → IsFiniteMeasureOnCompacts ν' →
-      (∀ f ∈ A, ∫ x, f x ∂ν = ∫ x, f x ∂ν') → ν = ν' :=
-  ⟨fun L hpos => exist A hA hstar hbump L hpos,
-    fun ν ν' hν hν' heq => uniq' A hA hmul hstar hsep hbump ν ν' hν hν' heq⟩
-
 end PositivityTheory.Rg.Rsw.L.LPosExt

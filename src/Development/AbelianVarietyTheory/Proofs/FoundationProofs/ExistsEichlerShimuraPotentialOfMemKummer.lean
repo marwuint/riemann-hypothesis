@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAdmissibleSubalgebra
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsKummerPotentialRelationPadicStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsKummerPotentialRelationPadic
 
 open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ
@@ -10,5 +10,5 @@ theorem GlobalTheory.KZ.exists_pot_rel_of_mem_bSet : ∀ {Ω : Type} [Field Ω] 
   intro Ω _ _ _ ε X _ hj N l w hl h2 hN hc hw b hb
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
   obtain ⟨φ, hφ, hφ'⟩ := hj
-  exact GlobalTheory.T.exists_kummerPotentialRelation_padic Ω ε X l ⟨φ, hφ', hφ⟩ N w (by omega) h2
+  exact _root_.GlobalTheory.KZ.H3.exists_pot_rel Ω ε X l ⟨φ, hφ', hφ⟩ N w (by omega) h2
     ((Nat.Prime.coprime_iff_not_dvd hl.out).1 hc.symm) hw b (Submodule.subset_span hb)

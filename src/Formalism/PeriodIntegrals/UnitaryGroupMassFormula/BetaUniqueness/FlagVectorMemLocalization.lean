@@ -175,9 +175,6 @@ theorem frame_castSucc {r : ℕ} {T : E} (F : LFlag S r T) (a : Fin r) :
     frame F (Fin.castSucc a) = F.fl.e a := by
   simp [frame, FlagG.fvec]
 
-theorem frame_last {r : ℕ} {T : E} (F : LFlag S r T) : frame F (Fin.last r) = F.fl.z := by
-  simp [frame, FlagG.fvec]
-
 theorem flag_vector_mem_localization {g r : ℕ} {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'}
     {ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)} (hFC : IsFixedConv Λ g F) (hA : AdmWit Λ g F F' ξ)
     (Q : HeightOneSpectrum (𝓞 E)) (hgQ : (g : 𝓞 E) ∈ Q.asIdeal) (a : Fin r)

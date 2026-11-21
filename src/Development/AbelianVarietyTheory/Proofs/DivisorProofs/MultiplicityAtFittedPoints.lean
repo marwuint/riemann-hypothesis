@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SizeAt
+import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Definitions.Divisors.GridTestLatticeLargestSlopeBound
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotLeafMMZero
@@ -138,10 +139,5 @@ theorem leafMM_of_test {p : PtAt ex Csz} {CF : ℝ} (d : FunIn p CF) (a : SlopeT
   rfl
 
 end Leaf
-
-theorem mm_tie : GlobalTheory.BigTop.Fun.SetAt → GlobalTheory.BigTop.Fun.MM @GlobalTheory.BigTop.Fun.Comparison₂ := fun h =>
-  ⟨0, fun _ _ => h.imp fun _ _ _ _ _ => ⟨1, fun _ hC => EvPt.of_forall fun _ _ _ _ _ d hd =>
-    let ⟨_, a, ha⟩ := hd
-    leafMM_of_test d a ha.test hC⟩⟩
 
 end GlobalTheory.BigTop.Fun.LeafMMTie

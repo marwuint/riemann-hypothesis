@@ -4,8 +4,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IteratedDerivGa
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IteratedDerivIntegralGaussianExponentialStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IteratedDerivEqOfEqOnRealSegmentStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BruhatCellParabolicUnipotentFactorizationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HolomorphicParameterIntegralGaussianBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FourierInjectiveMatrixSpaceStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HolomorphicParameterIntegralGaussianBound
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FourierInjectiveMatrixSpace
 
 noncomputable section
 
@@ -53,12 +54,12 @@ theorem hol_int_pf {m : ℕ} (Φ : ℂ → (Fin m → Fin n → ℂ) → ℂ) (�
       ∀ r : ℕ, iteratedDeriv r (fun z => ∫ v, K v * Φ z v) 0 = ∫ v, K v * iteratedDeriv r (fun z => Φ z v) 0 ∧
         Continuous (fun v => iteratedDeriv r (fun z => Φ z v) 0) ∧
         ∃ C' : ℝ, ∀ v, ‖iteratedDeriv r (fun z => Φ z v) 0‖ ≤ C' * Real.exp (-δ * sq v) :=
-  GlobalTheory.T.holomorphic_parameter_integral_gaussian_bound m n Φ ρ C δ hρ hδ hd hc hb K hK hK1
+  _root_.GlobalTheory.CompanionTheory.HolMean.GaussianFamily.main m n Φ ρ C δ hρ hδ hd hc hb K hK hK1
 
 theorem ft_uniq_pf {m : ℕ} (s : ℂ) (hs : s ≠ 0) (g : (Fin m → Fin n → ℂ) → ℂ) (hg : Continuous g) (hgi : Integrable g)
     (h0 : ∀ u : Fin m → Fin n → ℂ, ∫ v, Complex.exp (2 * Real.pi * Complex.I *
       ((s * Matrix.trace ((Matrix.of u)ᴴ * Matrix.of v)).re : ℂ)) * g v = 0) : g = 0 :=
-  GlobalTheory.T.fourier_injective_matrix_space m n s hs g hg hgi h0
+  _root_.GlobalTheory.CompanionTheory.FourierMat.fourier_uniqueness m n s hs g hg hgi h0
 
 theorem up_decomp_closed : type_of% @up_decomp_pf := @up_decomp_pf
 

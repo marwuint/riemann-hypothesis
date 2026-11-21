@@ -98,19 +98,6 @@ theorem detT (hG1 : ∀ (g : G) (k : ℕ), (fun x => (Matrix.charpolyRev (r g x)
 
 end
 
-theorem charT : StatCharT := by
-  intro O _ X T d _ _ G _ r hG1 a ha k
-  have hA : (fun x => (a x).map C) ∈ spanSub (polyT T) (rPoly r) := lift_mem T r ha
-  have hM : (fun x => 1 - (Polynomial.X : O[X]) • (a x).map C) ∈ spanSub (polyT T) (rPoly r) := by
-    have he : (fun x => 1 - (Polynomial.X : O[X]) • (a x).map C) =
-        1 - algebraMap O[X] (X → Matrix d d O[X]) Polynomial.X * (fun x => (a x).map C) := by
-      funext x
-      simp [Algebra.algebraMap_eq_smul_one, smul_mul_assoc]
-    rw [he]
-    exact Subalgebra.sub_mem _ (Subalgebra.one_mem _)
-      (Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) hA)
-  exact detT T r hG1 _ hM k
-
 theorem blockPolyT : StatBlockPolyT := by
   intro O _ X T d _ _ G _ r hG1 e he a ha k
   have hE : (fun x => (e x).map C) ∈ spanSub (polyT T) (rPoly r) := lift_mem T r he

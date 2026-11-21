@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PullbackBijectiveDegreesOneTwo
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TowerComplexLiftAndExtensionLemmasStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TowerComplexLiftAndExtensionLemmas
 
 set_option autoImplicit false
 
@@ -66,7 +66,7 @@ theorem tower (K : Cx C) (Q : ℕ → ObjectProperty C) (hQ : ∀ n, Q n ≤ Q (
     (h0s : ∀ n, Function.Surjective ((K.res (Q (n + 1)).ι).resMap (ιOfLE (hQ n))).h0)
     (h1b : ∀ n, Function.Bijective ((K.res (Q (n + 1)).ι).resMap (ιOfLE (hQ n))).h1) :
     Function.Bijective (K.resMap (Q 0).ι).h1 := by
-  have ml := GlobalTheory.T.tower_complex_lift_and_extension_lemmas
+  have ml := _root_.GlobalTheory.TowerLift.tower_lemmas
   have hle : ∀ n k T, Q n T → Q (n + k) T := by
     intro n k T h
     induction k with

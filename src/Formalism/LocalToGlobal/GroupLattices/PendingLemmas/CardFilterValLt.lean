@@ -337,20 +337,6 @@ theorem nuv_zero (v : X.Pl) (j : ℕ) (s : Fin (X.G.P.n' v)) (i : ℕ) (h0 : NN 
     ring
   · rfl
 
-theorem colHt_le (v : X.Pl) (j : ℕ) (s : Fin (X.G.P.n' v)) (k : ℕ) : X.colHt v (j + 1) s k ≤ NN X.G.P.m X.t j := by
-  unfold Sys.colHt
-  calc _ ≤ (Icc 1 (NN X.G.P.m X.t j)).card := by
-        refine Finset.card_le_card fun i hi => ?_
-        rw [Finset.mem_filter, Finset.mem_Icc] at hi
-        rw [Finset.mem_Icc]
-        refine ⟨hi.1.1, ?_⟩
-        by_contra hc
-        have := nuv_zero X v j s i (not_le.1 hc)
-        rw [this] at hi
-        have := hi.2
-        omega
-    _ = _ := by simp
-
 theorem cMu_toNat (v : X.Pl) (j : ℕ) (s : Fin (X.G.P.n' v)) : (((cMu X j v s).toNat : ℕ) : ℤ) = cMu X j v s :=
   Int.toNat_of_nonneg (nuv_nonneg X v j s 1)
 
@@ -383,15 +369,6 @@ section Rule
 
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc]
 
-def hvEven (j : ℕ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : Fin (NN X.G.P.m X.t j) → ℕ → X.G.Kf) (c : ℕ) (h : Fin c → ℕ)
-    (hh : ∀ k, h k ≤ NN X.G.P.m X.t j) : (X.Pj j).Xsp :=
-  ∏ k, (Matrix.of fun i t : Fin (h k) => ∑ a, MvPolynomial.C (x a i.val) * yL X j v s a (Fin.castLE (hh k) t)).det
-
-def hvEven' (j : ℕ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : Fin (NN X.G.P.m X.t j) → ℕ → X.G.Kf) (c : ℕ) (h : Fin c → ℕ)
-    (hh : ∀ k, h k ≤ NN X.G.P.m X.t j) : DA X Kc j :=
-  ∏ k, (Matrix.of fun i t : Fin (h k) =>
-    ∑ b, xd X Kc j v s x b i.val * yMat X Kc j v s b (Fin.castLE ((hh k).trans (NN_le X j)) t)).det
-
 theorem pair_dy (j : ℕ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : Fin (NN X.G.P.m X.t j) → ℕ → X.G.Kf) (i : ℕ)
     (t : Fin (NN X.G.P.m X.t j)) :
     ∑ a, algebraMap X.G.Kf (DA X Kc j) (x a i) * dyMat X Kc j v s a t =
@@ -401,76 +378,6 @@ theorem pair_dy (j : ℕ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : Fin (NN X.G.P.m
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_
   ring
-
-theorem subD_hvEven (j : ℕ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (hs : ¬ IsOddPos s)
-    (x : Fin (NN X.G.P.m X.t j) → ℕ → X.G.Kf) (c : ℕ) (h : Fin c → ℕ) (hh : ∀ k, h k ≤ NN X.G.P.m X.t j) :
-    subD X Kc j (hvEven X j v s x c h hh) = hvEven' X Kc j v s x c h hh := by
-  unfold hvEven hvEven'
-  rw [map_prod]
-  refine Finset.prod_congr rfl fun k _ => ?_
-  rw [AlgHom.map_det]
-  congr 1
-  refine Matrix.ext fun i t => ?_
-  have hy : ∀ a t', subD X Kc j (yL X j v s a t') = dyMat X Kc j v s a t' := by
-    intro a t'
-    have := congrFun (congrFun (subD_yL X Kc j v s) a) t'
-    rw [Matrix.map_apply] at this
-    rw [this]
-    unfold ySub
-    rw [if_neg hs]
-  show subD X Kc j (∑ a, MvPolynomial.C (x a i.val) * yL X j v s a (Fin.castLE (hh k) t)) = _
-  rw [map_sum]
-  simp only [map_mul, hy]
-  rw [Matrix.of_apply, ← show Fin.castLE (NN_le X j) (Fin.castLE (hh k) t) = Fin.castLE ((hh k).trans (NN_le X j)) t from rfl,
-    ← pair_dy]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  congr 1
-  exact (subD X Kc j).commutes (x a i.val)
-
-theorem full_col (j : ℕ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : Fin (NN X.G.P.m X.t j) → ℕ → X.G.Kf) :
-    (Matrix.of fun i t : Fin (NN X.G.P.m X.t j) =>
-      ∑ b, xd X Kc j v s x b i.val * yMat X Kc j v s b (Fin.castLE (NN_le X j) t)).det =
-      algebraMap X.G.Kf (DA X Kc j) (Matrix.of fun a i : Fin (NN X.G.P.m X.t j) => x a i.val).det *
-        (dyMat X Kc j v s).det := by
-  have : (Matrix.of fun i t : Fin (NN X.G.P.m X.t j) =>
-      ∑ b, xd X Kc j v s x b i.val * yMat X Kc j v s b (Fin.castLE (NN_le X j) t)) =
-      ((Matrix.of fun a i : Fin (NN X.G.P.m X.t j) => x a i.val).map (algebraMap X.G.Kf (DA X Kc j))).transpose *
-        dyMat X Kc j v s := by
-    refine Matrix.ext fun i t => ?_
-    rw [Matrix.of_apply, ← pair_dy, Matrix.mul_apply]
-    rfl
-  rw [this, Matrix.det_mul, Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
-
-theorem polDel_hv_nu (j : ℕ) (x : ∀ v : X.Pl, Fin (X.G.P.n' v) → Fin (NN X.G.P.m X.t j) → ℕ → X.G.Kf)
-    (c : ∀ v : X.Pl, Fin (X.G.P.n' v) → ℕ) (h : ∀ (v : X.Pl) (s : Fin (X.G.P.n' v)), Fin (c v s) → ℕ)
-    (hh : ∀ v s k, h v s k ≤ NN X.G.P.m X.t j) :
-    polDel X Kc j (∏ v, ∏ s, if IsOddPos s
-        then hvOdd X j v s (x v s) (cMu X j v s).toNat (fun k => X.colHt v (j + 1) s k.val)
-        else hvEven X j v s (x v s) (c v s) (h v s) (hh v s)) =
-      ∏ v, ∏ s, if IsOddPos s
-        then hvOdd' X Kc j v s (x v s) (cMu X j v s).toNat (fun k => X.colHt v (j + 1) s k.val)
-        else hvEven' X Kc j v s (x v s) (c v s) (h v s) (hh v s) *
-          (dyMat X Kc j v s).det ^ (X.nuv v (j + 1) s (NN X.G.P.m X.t j)).toNat := by
-  have key := polDel_hv X Kc j x (fun v s => (cMu X j v s).toNat) (fun v s k => X.colHt v (j + 1) s k.val)
-    (fun v s => hvEven X j v s (x v s) (c v s) (h v s) (hh v s))
-    (fun v s _ k => colHt_le X v j s k.val) (fun v s _ => cMu_toNat X v j s) (fun v s _ => sum_colHt X v j s)
-  rw [key]
-  refine Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun s _ => ?_
-  by_cases ho : IsOddPos s
-  · rw [if_pos ho, if_pos ho]
-  · rw [if_neg ho, if_neg ho, subD_hvEven X Kc j v s ho]
-
-theorem delF_hv_nu (j : ℕ) (x : ∀ v : X.Pl, Fin (X.G.P.n' v) → Fin (NN X.G.P.m X.t j) → ℕ → X.G.Kf)
-    (c : ∀ v : X.Pl, Fin (X.G.P.n' v) → ℕ) (h : ∀ (v : X.Pl) (s : Fin (X.G.P.n' v)), Fin (c v s) → ℕ)
-    (hh : ∀ v s k, h v s k ≤ NN X.G.P.m X.t j) (f : MvPowerSeries (X.ZA j) Kc) :
-    delF X Kc j (∏ v, ∏ s, if IsOddPos s
-        then hvOdd X j v s (x v s) (cMu X j v s).toNat (fun k => X.colHt v (j + 1) s k.val)
-        else hvEven X j v s (x v s) (c v s) (h v s) (hh v s)) f =
-      pairD X Kc j (∏ v, ∏ s, if IsOddPos s
-        then hvOdd' X Kc j v s (x v s) (cMu X j v s).toNat (fun k => X.colHt v (j + 1) s k.val)
-        else hvEven' X Kc j v s (x v s) (c v s) (h v s) (hh v s) *
-          (dyMat X Kc j v s).det ^ (X.nuv v (j + 1) s (NN X.G.P.m X.t j)).toNat) f := by
-  rw [delF_apply, polDel_hv_nu]
 
 end Rule
 
@@ -830,11 +737,6 @@ theorem vtGood (j : ℕ) (G : (X.Pj j).Xsp) (hG : G ∈ (X.Pj j).Vtup) :
       have h3 : (X.Fl.Pj (j + 1)).m + 1 = NN X.G.P.m X.t (j + 1) := rankJ X (j + 1)
       have h4 : (X.Fl.Pj (j + 1)).m = X.G.P.m + (j + 1) * (X.Fl.t + 1) := rfl
       omega
-
-theorem polDel_spec (j : ℕ) (G : (X.Pj j).Xsp) (hG : G ∈ (X.Pj j).Vtup) :
-    denD X Kc j * polDel X Kc j G = subD X Kc j G * numD X Kc j := by
-  obtain ⟨R, hR⟩ := vtGood X Kc j G hG
-  rw [polDel_eq X Kc j G R hR, hR]
 
 end Vt
 

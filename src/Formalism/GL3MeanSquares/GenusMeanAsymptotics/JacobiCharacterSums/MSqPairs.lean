@@ -125,8 +125,6 @@ theorem tPart_cases (m₀ n : ℕ) : tPart m₀ n = 1 ∨ tPart m₀ n = n.minFa
   unfold tPart
   split_ifs <;> simp
 
-theorem minFac_prime_of_pp {n : ℕ} (h : IsPrimePow n) : n.minFac.Prime := Nat.minFac_prime h.ne_one
-
 theorem dbl_sum (s : Finset ℕ) (f g : ℕ → ℝ) :
     ∑ n ∈ s, ∑ n' ∈ s, f n * g n' = (∑ n ∈ s, f n) * ∑ n ∈ s, g n := by
   rw [Finset.sum_mul_sum]

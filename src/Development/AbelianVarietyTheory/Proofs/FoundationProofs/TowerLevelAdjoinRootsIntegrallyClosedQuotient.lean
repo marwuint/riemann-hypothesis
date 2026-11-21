@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRootsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRoots
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingCyclotomicTowerLevel
 open GlobalTheory.K5 GlobalTheory.KumDlog
 
@@ -38,7 +38,7 @@ theorem lev_closed : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebr
       IsInt p (a / b) → a / b ∈ Lev T m := by
   intro p _ Ω _ _ hΩ T m hm a ha b hb hb0 hint
   obtain ⟨ι, hι⟩ := GlobalTheory.K5.Basic.exists_isEmb T m
-  obtain ⟨-, hrange⟩ := GlobalTheory.T.towerLevelEmbedding_injective_range_adjoinRoots p Ω hΩ T m hm ι hι
+  obtain ⟨-, hrange⟩ := _root_.GlobalTheory.K5.LevEmb.emb_inj_range p Ω hΩ T m hm ι hι
   obtain ⟨hdom, hdvr, -⟩ := GlobalTheory.K5.OnDVR.isDVR_On p m hm
   rw [← hrange] at ha hb ⊢
   obtain ⟨a', rfl⟩ := (AlgHom.mem_range ι).1 ha

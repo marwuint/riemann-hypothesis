@@ -69,17 +69,6 @@ theorem single_notMem_vanishAt {k : Type} [Field k] {X : Scheme.{0}} [Algebra k 
     one_smul]
   exact hx
 
-section Main
-
-variable {k : Type} [Field k] [Infinite k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)]
-  [AlgebraicGeometry.IsNoetherian X] {M : LB X} (hM : M.IsLB) {m : ℕ} (t : Fin m → M.Sec)
-  (ht : ⨆ i, nonzeroLocus (t i) = ⊤)
-  (hf : ∀ r, algebraMap k Γ(X, ⊤) r = (strHom k X).appTop ((Scheme.ΓSpecIso (.of k)).inv r))
-  (hp : IsProjOver (strHom k X))
-include hM ht hf hp
-
-end Main
-
 end GlobalTheory.ZeroDimSystem
 
 namespace GlobalTheory

@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerPreservesSchwartzSpace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingTrRep
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerPreservesAdelicSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectiveGoodModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectivePairStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectivePairedModelsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectiveRegularStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerPreservesAdelicSchwartz
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectiveGoodModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectivePair
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectivePairedModels
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectiveRegular
 
 noncomputable section
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.WeilTr MeasureTheory
@@ -21,18 +21,18 @@ theorem GlobalTheory.ModelTr.exists_isWeil_trans_of_bijOn : ∀ (F E : Type) [Fi
   have hgood : IsGoodInt (adeleClass F) B.ψ M.co M₁.co T := by
     refine ⟨hTs, fun w Φ hΦ => ?_, fun l => ?_, fun μ hμ => ?_⟩
     · have hm : M.co.rho B.ψ w Φ ∈ schA F (Fin n × Fin d) :=
-        GlobalTheory.T.schroedinger_preserves_adelic_schwartz F B.ψ hpair.base.std _ (M.co.e w) Φ hΦ
+        _root_.GlobalTheory.SchrKeepsSchA.schr_mem_schA F B.ψ hpair.base.std _ (M.co.e w) Φ hΦ
       have := hev.Heisenberg₂ w Φ hΦ
       rw [h1, h1', Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one] at this
       rw [hTe _ hm, hTe _ hΦ, this]
-    · refine (GlobalTheory.T.weil_eigen_bijective_good_model F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij l).trans (GlobalTheory.ModelTr.adm_congr ?_)
+    · refine (_root_.GlobalTheory.ModelAdmUnconditional.model_admissible_iff_evaluation F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij l).trans (GlobalTheory.ModelTr.adm_congr ?_)
       intro Φ hΦ
       simp [hTe Φ hΦ]
-    · obtain ⟨c, hc⟩ := GlobalTheory.T.weil_eigen_bijective_pair F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij μ hμ
+    · obtain ⟨c, hc⟩ := _root_.GlobalTheory.EvalUnitUnconditional.exists_const F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij μ hμ
       exact ⟨c, fun Φ hΦ => by rw [hTe Φ hΦ]; exact hc Φ hΦ⟩
   refine ⟨trRep T om, isUWeilPair_trRep hgood
-    (GlobalTheory.T.weil_eigen_bijective_paired_models F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij T hTe)
-    (GlobalTheory.T.weil_eigen_bijective_regular F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij T hTe) hpair.weil, fun x Φ hΦ => ?_⟩
+    (_root_.GlobalTheory.DblGoodInt.main F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij T hTe)
+    (_root_.GlobalTheory.DblTransp.main F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij T hTe) hpair.weil, fun x Φ hΦ => ?_⟩
   have hpres : om x Φ ∈ schA F (Fin n × Fin d) := hpair.weil.isUSplitting.pres x Φ hΦ
   rw [trRep_apply, ← hTe Φ hΦ, LinearEquiv.symm_apply_apply, hTe _ hpres]
 

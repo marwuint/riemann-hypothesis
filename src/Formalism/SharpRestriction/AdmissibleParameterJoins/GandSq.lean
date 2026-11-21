@@ -89,13 +89,6 @@ variable {Z E Kap : Type} {R : Type} [CommRing R]
 def IsLin [Fintype Z] (f : MvPowerSeries Z R) : Prop :=
   f = ∑ z, C (coeff (Finsupp.single z 1) f) * X z
 
-theorem isLin_sum [Fintype Z] {α : Type} (s : Finset α) (f : α → MvPowerSeries Z R) (h : ∀ a ∈ s, IsLin (f a)) :
-    IsLin (∑ a ∈ s, f a) := by
-  unfold IsLin at *
-  simp_rw [map_sum, Finset.sum_mul]
-  rw [Finset.sum_comm]
-  exact Finset.sum_congr rfl h
-
 end Lin
 
 end Formalism.MainNotions.J

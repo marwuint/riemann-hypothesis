@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStableGauss
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormGroupSignMulAndNegOne
 import GroundTheory.LocalFields.UnramifiedNormSurj
 import GroundTheory.LocalFields.UnramifiedGalois
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsNonarchimedeanLocalFieldSpectralNormStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsNonarchimedeanLocalFieldSpectralNorm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RamificationIndexEqOneOfAdjoinRangeEqTopStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedQuadraticUniformizerTraceNormStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpectralNormClosedBallIsOpenIsCompactNhdsBasisAlStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedQuadraticUniformizerTraceNorm
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpectralNormClosedBallIsOpenIsCompactNhdsBasisAl
 open GlobalTheory.JR GlobalTheory.JR.WeilQuad Matrix MeasureTheory Filter Topology
 
 noncomputable section
@@ -39,8 +39,8 @@ theorem alg_main : ∀ (F E K L : Type) [NontriviallyNormedField F] [IsUltrametr
     fun a => (spectralNorm.eq_of_tower a).symm
   obtain ⟨vF, hFloc, hFv⟩ := NormSign.exists_valuativeRel_of_normed F
   obtain ⟨vE, hEloc, hEv⟩ := NormSign.exists_valuativeRel_of_normed E
-  obtain ⟨vK, tK, hKloc, hKv⟩ := GlobalTheory.T.exists_localField_structure_spectralNorm F K
-  obtain ⟨vL, tL, hLloc, hLv⟩ := GlobalTheory.T.exists_localField_structure_spectralNorm F L
+  obtain ⟨vK, tK, hKloc, hKv⟩ := _root_.GlobalTheory.exists_isNonarchimedeanLocalField_spectralNorm F K
+  obtain ⟨vL, tL, hLloc, hLv⟩ := _root_.GlobalTheory.exists_isNonarchimedeanLocalField_spectralNorm F L
   haveI : ValuativeExtension F E := ⟨fun a b => by rw [hEv, hFv, norm_algebraMap', norm_algebraMap']⟩
   haveI : ValuativeExtension F K := ⟨fun a b => by
     rw [hKv, hFv, spectralNorm_extends, spectralNorm_extends]⟩
@@ -59,7 +59,7 @@ theorem alg_main : ∀ (F E K L : Type) [NontriviallyNormedField F] [IsUltrametr
     have hd : ((ramificationIndex F E : ℕ) : ℤ) ∣ 1 := ⟨ord x, hord⟩
     exact_mod_cast Int.eq_one_of_dvd_one (by positivity) hd
   have heKL := GlobalTheory.T.ramificationIndex_eq_one_of_adjoin_range_eq_top_alt F E K L heF hgen
-  obtain ⟨ϖ, hϖ0, hϖ1, hϖ1', hN, hunif, htr, hnrm⟩ := GlobalTheory.T.unramified_quadratic_norm_trace_surjective K L heKL h2
+  obtain ⟨ϖ, hϖ0, hϖ1, hϖ1', hN, hunif, htr, hnrm⟩ := _root_.GlobalTheory.unramified_quadratic_uniformizer_trace_norm K L heKL h2
   have hleL : ∀ y : L, y ≤ᵥ 1 ↔ spectralNorm F L y ≤ 1 := fun y => by rw [hLv, spectralNorm_one]
   have hleK : ∀ s : K, s ≤ᵥ 1 ↔ spectralNorm F K s ≤ 1 := fun s => by rw [hKv, spectralNorm_one]
   have hgeK : ∀ s : K, (1 : K) ≤ᵥ s ↔ 1 ≤ spectralNorm F K s := fun s => by rw [hKv, spectralNorm_one]
@@ -163,7 +163,7 @@ theorem main : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedF
       exact Subalgebra.add_mem _ (ha trivial) (hb trivial)
   obtain ⟨ϖ, O, hO, hN, hϖO, hϖu, hunif, htr, hnrm, hsmall, hbig⟩ :=
     alg_main F E A.K A.L (fun y => U.unram y) hKL hgen
-  obtain ⟨hop, hcp, hball⟩ := GlobalTheory.T.spectralNorm_closedBall_isOpen_isCompact_nhds F A.L
+  obtain ⟨hop, hcp, hball⟩ := _root_.GlobalTheory.spectralNorm_closedBall_isOpen_isCompact_nhds_basis F A.L
   have hmem : ∀ y : A.L, y ∈ O ↔ spectralNorm F A.L y ≤ 1 := fun y => by
     rw [← SetLike.mem_coe, hO]
     rfl

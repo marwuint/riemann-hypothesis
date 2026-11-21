@@ -78,12 +78,6 @@ theorem ker_killVars (S : Set σ) :
   have := comap_killVars_map_C (R := R) S ⊥
   simpa [RingHom.ker_eq_comap_bot] using this
 
-theorem ker_map_comp_killVars (S : Set σ) (I : Ideal R) :
-    RingHom.ker ((MvPolynomial.map (Ideal.Quotient.mk I)).comp (killVars R S).toRingHom) =
-      I.map (C : R →+* MvPolynomial σ R) ⊔ Ideal.span (X '' S) := by
-  rw [← RingHom.comap_ker, MvPolynomial.ker_map, Ideal.mk_ker, ← comap_killVars_map_C]
-  rfl
-
 def quotientSpanXEquiv (R : Type*) [CommRing R] (S : Set σ) :
     (MvPolynomial σ R ⧸ Ideal.span (X '' S : Set (MvPolynomial σ R))) ≃ₐ[R]
       MvPolynomial {x : σ // x ∉ S} R :=
@@ -92,79 +86,6 @@ def quotientSpanXEquiv (R : Type*) [CommRing R] (S : Set σ) :
 
 @[simp] theorem quotientSpanXEquiv_mk (S : Set σ) (p : MvPolynomial σ R) :
     quotientSpanXEquiv R S (Ideal.Quotient.mk _ p) = killVars R S p := rfl
-
-theorem mem_map_C_of_X_mul_mem (x : σ) (I : Ideal R) {p : MvPolynomial σ R}
-    (hp : X x * p ∈ I.map (C : R →+* MvPolynomial σ R)) :
-    p ∈ I.map (C : R →+* MvPolynomial σ R) := by
-  rw [MvPolynomial.mem_map_C_iff] at hp ⊢
-  intro m
-  have := hp (Finsupp.single x 1 + m)
-  rwa [coeff_X_mul] at this
-
-theorem mem_of_X_mul_mem {S : Set σ} {x : σ} (hx : x ∉ S) (I : Ideal R) {p : MvPolynomial σ R}
-    (hp : X x * p ∈ I.map (C : R →+* MvPolynomial σ R) ⊔ Ideal.span (X '' S)) :
-    p ∈ I.map (C : R →+* MvPolynomial σ R) ⊔ Ideal.span (X '' S) := by
-  rw [← comap_killVars_map_C, Ideal.mem_comap] at hp ⊢
-  rw [map_mul, killVars_X_of_notMem hx] at hp
-  exact mem_map_C_of_X_mul_mem _ I hp
-
-theorem ofList_map_C_append_map_X (rs : List R) (l : List σ) :
-    Ideal.ofList (rs.map (C : R →+* MvPolynomial σ R) ++ l.map X) =
-      (Ideal.ofList rs).map C ⊔ Ideal.span (X '' {x | x ∈ l}) := by
-  rw [Ideal.ofList_append, Ideal.map_ofList]
-  congr 1
-  unfold Ideal.ofList
-  congr 1
-  ext p
-  simp
-
-theorem isWeaklyRegular_map_C_append_map_X {rs : List R} (hrs : IsWeaklyRegular R rs)
-    {l : List σ} (hl : l.Nodup) :
-    IsWeaklyRegular (MvPolynomial σ R) (rs.map (C : R →+* MvPolynomial σ R) ++ l.map X) := by
-  induction l using List.reverseRecOn with
-  | nil => simpa using hrs.of_flat (S := MvPolynomial σ R)
-  | append_singleton l x ih =>
-    rw [List.nodup_append] at hl
-    have hx : x ∉ {x | x ∈ l} := fun h => hl.2.2 x h x (by simp) rfl
-    rw [List.map_append, ← List.append_assoc, isWeaklyRegular_append_iff]
-    refine ⟨ih hl.1, ?_⟩
-    rw [List.map_singleton, isWeaklyRegular_singleton_iff, isSMulRegular_quotient_iff_mem_of_smul_mem,
-      smul_eq_mul, Ideal.mul_top, ofList_map_C_append_map_X]
-    intro p hp
-    exact mem_of_X_mul_mem hx _ hp
-
-theorem isRegular_map_C_append_map_X {rs : List R} (hrs : RingTheory.Sequence.IsRegular R rs)
-    {l : List σ} (hl : l.Nodup) :
-    RingTheory.Sequence.IsRegular (MvPolynomial σ R) (rs.map (C : R →+* MvPolynomial σ R) ++ l.map X) := by
-  refine ⟨isWeaklyRegular_map_C_append_map_X hrs.1 hl, ?_⟩
-  have h := hrs.2
-  rw [smul_eq_mul, Ideal.mul_top] at h ⊢
-  rw [ofList_map_C_append_map_X, ← ker_map_comp_killVars]
-  haveI : Nontrivial (R ⧸ Ideal.ofList rs) := Ideal.Quotient.nontrivial_iff.2 h.symm
-  exact (RingHom.ker_ne_top _).symm
-
-theorem isWeaklyRegular_map_X {l : List σ} (hl : l.Nodup) :
-    IsWeaklyRegular (MvPolynomial σ R) (l.map X : List (MvPolynomial σ R)) := by
-  simpa using isWeaklyRegular_map_C_append_map_X (IsWeaklyRegular.nil R R) hl
-
-theorem isRegular_map_X [Nontrivial R] {l : List σ} (hl : l.Nodup) :
-    RingTheory.Sequence.IsRegular (MvPolynomial σ R) (l.map X : List (MvPolynomial σ R)) := by
-  simpa using isRegular_map_C_append_map_X (RingTheory.Sequence.IsRegular.nil R R) hl
-
-theorem isWeaklyRegular_ofFn_X {n : ℕ} {e : Fin n → σ} (he : Function.Injective e) :
-    IsWeaklyRegular (MvPolynomial σ R) (List.ofFn fun k => (X (e k) : MvPolynomial σ R)) := by
-  have := isWeaklyRegular_map_X (R := R) (List.nodup_ofFn.2 he)
-  rwa [List.map_ofFn] at this
-
-theorem isRegular_ofFn_X [Nontrivial R] {n : ℕ} {e : Fin n → σ} (he : Function.Injective e) :
-    RingTheory.Sequence.IsRegular (MvPolynomial σ R) (List.ofFn fun k => (X (e k) : MvPolynomial σ R)) := by
-  have := isRegular_map_X (R := R) (List.nodup_ofFn.2 he)
-  rwa [List.map_ofFn] at this
-
-theorem isPrime_map_C_sup_span_X (S : Set σ) (I : Ideal R) [I.IsPrime] :
-    (I.map (C : R →+* MvPolynomial σ R) ⊔ Ideal.span (X '' S)).IsPrime := by
-  rw [← ker_map_comp_killVars]
-  exact RingHom.ker_isPrime _
 
 end Variables
 
@@ -248,24 +169,12 @@ theorem linFormEquiv_X_of_mem {S : Set ι} {i : ι} (hi : i ∈ S) :
     linFormEquiv u S j₀ hu (X (i, j₀)) = linForm u i :=
   linFormHom_X_of_mem u j₀ hi
 
-theorem linFormEquiv_X_of_notMem {S : Set ι} {x : ι × J} (hx : x ∉ elimIndices S j₀) :
-    linFormEquiv u S j₀ hu (X x) = X x :=
-  linFormHom_X_of_notMem u hx
-
 theorem linFormEquiv_C (S : Set ι) (r : R) : linFormEquiv u S j₀ hu (C r) = C r :=
   (linFormEquiv u S j₀ hu).commutes r
-
-theorem linFormEquiv_symm_linForm {S : Set ι} {i : ι} (hi : i ∈ S) :
-    (linFormEquiv u S j₀ hu).symm (linForm u i) = X (i, j₀) := by
-  rw [AlgEquiv.symm_apply_eq, linFormEquiv_X_of_mem u hu hi]
 
 theorem linFormEquiv_symm_X_of_notMem {S : Set ι} {x : ι × J} (hx : x ∉ elimIndices S j₀) :
     (linFormEquiv u S j₀ hu).symm (X x) = X x :=
   linFormHom_X_of_notMem _ hx
-
-theorem linFormEquiv_symm_X_of_mem {S : Set ι} {i : ι} (hi : i ∈ S) :
-    (linFormEquiv u S j₀ hu).symm (X (i, j₀)) = linForm (linFormInvCoeff u j₀ hu) i :=
-  linFormHom_X_of_mem _ j₀ hi
 
 theorem image_linFormEquiv_X (S : Set ι) :
     linFormEquiv u S j₀ hu '' (X '' elimIndices S j₀) = linForm u '' S := by
@@ -286,20 +195,6 @@ theorem linFormElim_apply (S : Set ι) (p : MvPolynomial (ι × J) R) :
 theorem linFormElim_X_of_notMem {S : Set ι} {x : ι × J} (hx : x ∉ elimIndices S j₀) :
     linFormElim u hu S (X x) = X ⟨x, hx⟩ := by
   rw [linFormElim_apply, linFormEquiv_symm_X_of_notMem u hu hx, killVars_X_of_notMem hx]
-
-theorem linFormElim_X_of_mem {S : Set ι} {i : ι} (hi : i ∈ S) [DecidableEq J] :
-    linFormElim u hu S (X (i, j₀)) = -∑ j : {j : J // j ≠ j₀},
-      C ((↑hu.unit⁻¹ : R) * u j) * X ⟨(i, j.1), fun h => j.2 h.2⟩ := by
-  rw [linFormElim_apply, linFormEquiv_symm_X_of_mem u hu hi, linForm_eq _ i j₀, map_add, map_mul,
-    killVars_X_of_mem (by exact ⟨hi, rfl⟩), mul_zero, zero_add, map_sum,
-    Finset.sum_subtype (p := fun j => j ≠ j₀) _ (by simp), ← Finset.sum_neg_distrib]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [map_mul, killVars_C, killVars_X_of_notMem (fun h => j.2 h.2), linFormInvCoeff, if_neg j.2,
-    C_neg, neg_mul]
-
-theorem linFormElim_linForm {S : Set ι} {i : ι} (hi : i ∈ S) :
-    linFormElim u hu S (linForm u i) = 0 := by
-  rw [linFormElim_apply, linFormEquiv_symm_linForm u hu hi, killVars_X_of_mem (by exact ⟨hi, rfl⟩)]
 
 theorem linFormElim_rename (S : Set ι)
     (p : MvPolynomial {x : ι × J // x ∉ elimIndices S j₀} R) :
@@ -354,11 +249,6 @@ def quotientSpanLinFormEquiv (S : Set ι) :
 @[simp] theorem quotientSpanLinFormEquiv_mk (S : Set ι) (p : MvPolynomial (ι × J) R) :
     quotientSpanLinFormEquiv u hu S (Ideal.Quotient.mk _ p) = linFormElim u hu S p := rfl
 
-theorem quotientSpanLinFormEquiv_symm_apply (S : Set ι)
-    (p : MvPolynomial {x : ι × J // x ∉ elimIndices S j₀} R) :
-    (quotientSpanLinFormEquiv u hu S).symm p = Ideal.Quotient.mk _ (rename Subtype.val p) := by
-  rw [AlgEquiv.symm_apply_eq, quotientSpanLinFormEquiv_mk, linFormElim_rename]
-
 def quotientMapCSupSpanLinFormEquiv (S : Set ι) (I : Ideal R) :
     (MvPolynomial (ι × J) R ⧸
       (I.map (C : R →+* MvPolynomial (ι × J) R) ⊔ Ideal.span (linForm u '' S))) ≃+*
@@ -373,114 +263,12 @@ def quotientMapCSupSpanLinFormEquiv (S : Set ι) (I : Ideal R) :
     quotientMapCSupSpanLinFormEquiv u hu S I (Ideal.Quotient.mk _ p) =
       MvPolynomial.map (Ideal.Quotient.mk I) (linFormElim u hu S p) := rfl
 
-theorem range_linForm_comp {κ : Type*} (e : κ → ι) :
-    Set.range (fun k => linForm u (e k)) = linForm u '' Set.range e :=
-  Set.range_comp (linForm u) e
-
 include hu
-
-theorem isPrime_map_C_sup_span_linForm (S : Set ι) (I : Ideal R) [I.IsPrime] :
-    (I.map (C : R →+* MvPolynomial (ι × J) R) ⊔ Ideal.span (linForm u '' S)).IsPrime := by
-  rw [← ker_map_comp_linFormElim u hu]
-  exact RingHom.ker_isPrime _
 
 theorem isPrime_span_linForm [IsDomain R] (S : Set ι) :
     (Ideal.span (linForm u '' S)).IsPrime := by
   rw [← ker_linFormElim u hu]
   exact RingHom.ker_isPrime _
-
-private theorem forall₂_linFormEquiv (rs : List R) (l : List ι) :
-    List.Forall₂ (fun (r s : MvPolynomial (ι × J) R) => ∀ x : MvPolynomial (ι × J) R,
-      (linFormEquiv u Set.univ j₀ hu).toAddEquiv (r • x) =
-        s • (linFormEquiv u Set.univ j₀ hu).toAddEquiv x)
-      (rs.map C ++ (l.map fun i => (i, j₀)).map X) (rs.map C ++ l.map (linForm u)) := by
-  have h : (rs.map C ++ l.map (linForm u) : List (MvPolynomial (ι × J) R)) =
-      (rs.map C ++ (l.map fun i => (i, j₀)).map X).map (linFormEquiv u Set.univ j₀ hu) := by
-    simp only [List.map_append, List.map_map]
-    congr 1
-    · exact List.map_congr_left fun r _ => (linFormEquiv_C u hu _ r).symm
-    · exact List.map_congr_left fun i _ => (linFormEquiv_X_of_mem u hu (Set.mem_univ i)).symm
-  rw [h, List.forall₂_map_right_iff, List.forall₂_same]
-  intro r _ x
-  exact map_mul (linFormEquiv u Set.univ j₀ hu) r x
-
-theorem isWeaklyRegular_map_C_append_map_linForm {rs : List R} (hrs : IsWeaklyRegular R rs)
-    {l : List ι} (hl : l.Nodup) :
-    IsWeaklyRegular (MvPolynomial (ι × J) R)
-      (rs.map (C : R →+* MvPolynomial (ι × J) R) ++ l.map (linForm u)) :=
-  (AddEquiv.isWeaklyRegular_congr (forall₂_linFormEquiv u hu rs l)).1
-    (isWeaklyRegular_map_C_append_map_X hrs (hl.map fun _ _ h => (Prod.ext_iff.1 h).1))
-
-theorem isRegular_map_C_append_map_linForm {rs : List R}
-    (hrs : RingTheory.Sequence.IsRegular R rs) {l : List ι} (hl : l.Nodup) :
-    RingTheory.Sequence.IsRegular (MvPolynomial (ι × J) R)
-      (rs.map (C : R →+* MvPolynomial (ι × J) R) ++ l.map (linForm u)) :=
-  (AddEquiv.isRegular_congr (forall₂_linFormEquiv u hu rs l)).1
-    (isRegular_map_C_append_map_X hrs (hl.map fun _ _ h => (Prod.ext_iff.1 h).1))
-
-theorem isWeaklyRegular_map_linForm {l : List ι} (hl : l.Nodup) :
-    IsWeaklyRegular (MvPolynomial (ι × J) R) (l.map (linForm u)) := by
-  simpa using isWeaklyRegular_map_C_append_map_linForm u hu (IsWeaklyRegular.nil R R) hl
-
-theorem isRegular_map_linForm [Nontrivial R] {l : List ι} (hl : l.Nodup) :
-    RingTheory.Sequence.IsRegular (MvPolynomial (ι × J) R) (l.map (linForm u)) := by
-  simpa using isRegular_map_C_append_map_linForm u hu (RingTheory.Sequence.IsRegular.nil R R) hl
-
-theorem isWeaklyRegular_C_cons_map_linForm {r : R} (hr : r ∈ nonZeroDivisors R)
-    {l : List ι} (hl : l.Nodup) :
-    IsWeaklyRegular (MvPolynomial (ι × J) R) (C r :: l.map (linForm u)) := by
-  have h : IsWeaklyRegular R [r] :=
-    (isWeaklyRegular_singleton_iff R r).2 (isRegular_iff_mem_nonZeroDivisors.2 hr).left
-  simpa using isWeaklyRegular_map_C_append_map_linForm u hu h hl
-
-theorem isRegular_C_cons_map_linForm {r : R} (hr : r ∈ nonZeroDivisors R) (hr' : ¬ IsUnit r)
-    {l : List ι} (hl : l.Nodup) :
-    RingTheory.Sequence.IsRegular (MvPolynomial (ι × J) R) (C r :: l.map (linForm u)) := by
-  have h : RingTheory.Sequence.IsRegular R [r] := by
-    refine ⟨(isWeaklyRegular_singleton_iff R r).2
-      (isRegular_iff_mem_nonZeroDivisors.2 hr).left, ?_⟩
-    rw [smul_eq_mul, Ideal.mul_top, Ideal.ofList_singleton, ne_comm, ne_eq,
-      Ideal.span_singleton_eq_top]
-    exact hr'
-  simpa using isRegular_map_C_append_map_linForm u hu h hl
-
-theorem isWeaklyRegular_ofFn_linForm {n : ℕ} {e : Fin n → ι} (he : Function.Injective e) :
-    IsWeaklyRegular (MvPolynomial (ι × J) R) (List.ofFn fun k => linForm u (e k)) := by
-  have := isWeaklyRegular_map_linForm u hu (List.nodup_ofFn.2 he)
-  rwa [List.map_ofFn] at this
-
-theorem isWeaklyRegular_C_cons_ofFn_linForm {r : R} (hr : r ∈ nonZeroDivisors R)
-    {n : ℕ} {e : Fin n → ι} (he : Function.Injective e) :
-    IsWeaklyRegular (MvPolynomial (ι × J) R) (C r :: List.ofFn fun k => linForm u (e k)) := by
-  have := isWeaklyRegular_C_cons_map_linForm u hu hr (List.nodup_ofFn.2 he)
-  rwa [List.map_ofFn] at this
-
-theorem linForm_elimination (S : Set ι) (σ : Type*) :
-    (∃ φ : MvPolynomial (ι × J) R ≃ₐ[R] MvPolynomial (ι × J) R,
-      (∀ i ∈ S, φ (X (i, j₀)) = ∑ j, C (u j) * X (i, j)) ∧
-      ∀ x : ι × J, ¬ (x.1 ∈ S ∧ x.2 = j₀) → φ (X x) = X x) ∧
-    (∃ ψ : (MvPolynomial (ι × J) R ⧸ Ideal.span (linForm u '' S)) ≃ₐ[R]
-        MvPolynomial {x : ι × J // x ∉ elimIndices S j₀} R,
-      ∀ x : {x : ι × J // x ∉ elimIndices S j₀}, ψ (Ideal.Quotient.mk _ (X x.1)) = X x) ∧
-    (∀ l : List ι, l.Nodup →
-      IsWeaklyRegular (MvPolynomial (ι × J) R) (l.map (linForm u)) ∧
-      (Nontrivial R →
-        RingTheory.Sequence.IsRegular (MvPolynomial (ι × J) R) (l.map (linForm u))) ∧
-      ∀ r ∈ nonZeroDivisors R,
-        IsWeaklyRegular (MvPolynomial (ι × J) R) (C r :: l.map (linForm u)) ∧
-        (¬ IsUnit r →
-          RingTheory.Sequence.IsRegular (MvPolynomial (ι × J) R) (C r :: l.map (linForm u)))) ∧
-    (∀ l : List σ, l.Nodup →
-      IsWeaklyRegular (MvPolynomial σ R) (l.map X : List (MvPolynomial σ R)) ∧
-      (Nontrivial R →
-        RingTheory.Sequence.IsRegular (MvPolynomial σ R) (l.map X : List (MvPolynomial σ R)))) :=
-  ⟨⟨linFormEquiv u S j₀ hu, fun _ hi => linFormEquiv_X_of_mem u hu hi,
-      fun _ hx => linFormEquiv_X_of_notMem u hu hx⟩,
-    ⟨quotientSpanLinFormEquiv u hu S, fun x => linFormElim_X_of_notMem u hu x.2⟩,
-    fun _ hl => ⟨isWeaklyRegular_map_linForm u hu hl, fun _ => isRegular_map_linForm u hu hl,
-      fun _ hr => ⟨isWeaklyRegular_C_cons_map_linForm u hu hr hl,
-        fun hr' => isRegular_C_cons_map_linForm u hu hr hr' hl⟩⟩,
-    fun _ hl => ⟨isWeaklyRegular_map_X hl, fun _ => isRegular_map_X hl⟩⟩
 
 end LinearForms
 

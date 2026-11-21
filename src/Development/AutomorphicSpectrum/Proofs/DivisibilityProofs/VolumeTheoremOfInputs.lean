@@ -14,35 +14,52 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CmHostRankBounds
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LinkedTowerPowerSumStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PropFTopHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AgreementPositiveStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AntisymmetryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.CoefficientsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagHeightStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.NefPolarizationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProportionalStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerRealConditionsStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerI5Statement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerGlobalConditionsStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerM1NefStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerM2Statement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerGlobalExtraStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerRealI6Statement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerRealExtraStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerRealAgreementStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerIntersectionExtraStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerA1Statement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerConvI2Statement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LinkedTowerPowerSum
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsFlagIndependence
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PropFTopHolds
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.PropFTop
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AgreementPositive
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.AgreementPos
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.Antisymmetry
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.APrime
+import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.Coefficients
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagHeight
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.NefPolarization
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.Proportional
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerRealConditions
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerI5
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerGlobalConditions
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerM1Nef
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerM2
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerGlobalExtra
+import Development.WeilBound.CoreStatements.FlagImmersions.GlobalModelRealTowerSmooth
+import Development.WeilBound.CoreStatements.FlagImmersions.GlobalModelTowerFinalCondition
+import Development.WeilBound.CoreStatements.FlagImmersions.GlobalModelRealTower
+import Development.WeilBound.CoreStatements.VolumeEquality.VolEqOfIsFullIntersectionSystem
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerA1
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerConvI2
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerI1Statement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FullIntersectionTowerI8IdentityStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerNefGeneralStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerProportionalStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootModelNefFibresStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SlopeLowerBaseSettingsStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerWeilInputsCombinedStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BaseSettingOfGoodTowerStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TestPolynomialShiftTotalStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FullIntersectionTowerI8Identity
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerNefGeneral
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerProportional
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootModelNefFibres
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SlopeLowerBaseSettings
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasBaseDegreeSettingStrict
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerWeilInputsCombined
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BaseSettingOfGoodTower
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TestPolynomialShiftTotal
+import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -57,7 +74,7 @@ theorem slopeLower_mono_top {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} 
     (h : T.SlopeLower II C rd Lval) : T.SlopeLower II C' rd Lval := by
   intro B hB hB' hbad
   have h1 := h B hB hB' hbad
-  have hJ : 0 < Top.testDeg Ψ N T.j := (GlobalTheory.T.test_polynomial_shift_total Ψ N T.j T.j_pos T.j_lt).2.1
+  have hJ : 0 < Top.testDeg Ψ N T.j := (_root_.GlobalTheory.CompanionTheory.Ar.Top.testPoly_facts Ψ N T.j T.j_pos T.j_lt).2.1
   have hvol : 0 ≤ T.volT := Finset.sum_nonneg fun c _ => (hP.1 c).le
   have hB1 : (128 : ℝ) ≤ B := by exact_mod_cast hB
   have hL : 0 ≤ Top.bigLam B rd Lval := by
@@ -76,46 +93,46 @@ theorem volumeTheoremX_of_inputs : Top.Given → PtsIntegrableStatement → Out.
   obtain ⟨-, -, -, -, -, -, -, -, -, hIn, hHS, -, hNF, hAP⟩ := id hG
   obtain ⟨hZ1, hZ2, -⟩ := hHS
   obtain ⟨hZh, -, -, -, hGr⟩ := hNF
-  have hAg := GlobalTheory.T.agreement_positive
+  have hAg := _root_.GlobalTheory.CompanionTheory.Ar.PB.agreementPos
   refine ⟨2 * max (Ch + Cu / 2) 0 + 3 * 4 + 5, by positivity, ?_⟩
   intro E _ _ _ _ H D Xo l c Y _ T o II hGl hX hII hq hpq hbad
   obtain ⟨hrd, hne, -⟩ := GlobalTheory.CompanionTheory.Ar.Top.HostNumbers.host_numbers E H
   haveI := hne
   have hp : 1 ≤ D.p := by omega
   have hqp : D.q ≤ D.p := by omega
-  have hUnif := GlobalTheory.T.good_tower_real_agreement hG E H D Xo l c Y T o II hGl hX hII hp hq
-  have hProp : T.Proportional := GlobalTheory.T.real_tower_proportional GlobalTheory.T.proportional' hIn II hII _ _ T _ hUnif
-  have hCI := GlobalTheory.T.real_tower_conv_I2 hAg hIn II hII _ _ T (Top.realOf o.toTowerOrigin)
-  have hI1 := GlobalTheory.T.real_tower_I1 GlobalTheory.T.coefficients' hAg hIn II hII _ _ T _
-    (GlobalTheory.T.good_tower_real_I6 hG E H D Xo l c Y T o II hGl hX hII hp hq)
+  have hUnif := _root_.RootFieldNumerics.global_model_real_tower hG E H D Xo l c Y T o II hGl hX hII hp hq
+  have hProp : T.Proportional := _root_.GlobalTheory.CompanionTheory.Ar.Top.rootTower_proportional_of_unif _root_.GlobalTheory.CompanionTheory.Ar.PB.proportional hIn II hII _ _ T _ hUnif
+  have hCI := _root_.GlobalTheory.CompanionTheory.Ar.Top.real_tower_convergence_I2 hAg hIn II hII _ _ T (Top.realOf o.toTowerOrigin)
+  have hI1 := GlobalTheory.T.real_tower_I1 _root_.GlobalTheory.CompanionTheory.Ar.PB.Top.coefficients hAg hIn II hII _ _ T _
+    (_root_.RootFieldNumerics.global_model_real_tower_smooth hG E H D Xo l c Y T o II hGl hX hII hp hq)
   have hPos : (Top.realOf o.toTowerOrigin).Pos := fun a => (o.Fx a).pos
-  have hA1 := GlobalTheory.T.real_tower_A1 hIn II hII _ _ T _ o.smooth o.flat hPos
-  have hM1 := GlobalTheory.T.good_tower_M1_nef hG E H D Xo l c Y T o II hGl hII hp hq
-  have hM2 := GlobalTheory.T.good_tower_M2 hG E H D Xo l c Y T o II hGl hII hp hq
-  have hAN : T.ANef := fun B a => GlobalTheory.T.root_model_nef_fibres _ _ (T.M B a) fun k => by
+  have hA1 := _root_.GlobalTheory.CompanionTheory.Ar.Top.tower_A1_of_real_tower hIn II hII _ _ T _ o.smooth o.flat hPos
+  have hM1 := _root_.GlobalTheory.CompanionTheory.Ar.Top.or_m1nef hG E H D Xo l c Y T o II hGl hII hp hq
+  have hM2 := _root_.GlobalTheory.CompanionTheory.Ar.Top.m2_of_good_tower hG E H D Xo l c Y T o II hGl hII hp hq
+  have hAN : T.ANef := fun B a => _root_.GlobalTheory.CompanionTheory.Ar.Top.rootModel_nefFib_zero_one_of_nonneg _ _ (T.M B a) fun k => by
     obtain ⟨h1, h0⟩ := (o.Or B a).A_deg
     by_cases hk : k = (o.Or B a).k₀
     · rw [hk, h1]; norm_num
     · rw [h0 k hk]
-  have hI56 := GlobalTheory.T.good_tower_I5 hG E H D Xo l c Y T o II hGl hX hII hp hq
+  have hI56 := _root_.GlobalTheory.CompanionTheory.Ar.Top.i5_and_i6_of_isGlobal_of_goodOrigin hG E H D Xo l c Y T o II hGl hX hII hp hq
   have hI7 : T.I7 := fun B a =>
-    ⟨(GlobalTheory.T.real_tower_nef_general GlobalTheory.T.nef_polarization hIn II hII _ _ T _ o.smooth o.flat B a).1,
-      (GlobalTheory.T.real_tower_nef_general GlobalTheory.T.nef_polarization hIn II hII _ _ T _ o.smooth o.flat B a).2,
-      GlobalTheory.T.good_tower_real_conditions hG E H D Xo l c Y T o II hGl hX hII hp hq B a⟩
-  have hI8 := GlobalTheory.T.full_intersection_tower_I8_identity hCS hG hW E H D Xo l c Y T o II hX hII hp hq
-  obtain ⟨φ, hfs, hLk⟩ := GlobalTheory.T.good_tower_global_conditions hCS hAg hM3 hTF hG E H D Xo l c Y T o II hGl hX hII hp hq
-  have hP6 := GlobalTheory.T.linked_tower_power_sum _ _ T II hII.1 hProp φ hLk
-  have hPA := GlobalTheory.T.good_tower_propA_of_global_extra hAg hTw hCP hG E H D Xo l c Y T o II hGl hX hII hp hq
+    ⟨(_root_.GlobalTheory.CompanionTheory.Ar.Top.rt_nefgen _root_.GlobalTheory.CompanionTheory.Ar.PB.nefPol hIn II hII _ _ T _ o.smooth o.flat B a).1,
+      (_root_.GlobalTheory.CompanionTheory.Ar.Top.rt_nefgen _root_.GlobalTheory.CompanionTheory.Ar.PB.nefPol hIn II hII _ _ T _ o.smooth o.flat B a).2,
+      _root_.GlobalTheory.CompanionTheory.Ar.Top.effDiff_of_goodOrigin hG E H D Xo l c Y T o II hGl hX hII hp hq B a⟩
+  have hI8 := _root_.GlobalTheory.CompanionTheory.Ar.Top.full_intersection_tower_I8_relation hCS hG hW E H D Xo l c Y T o II hX hII hp hq
+  obtain ⟨φ, hfs, hLk⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.Link.goodOrigin_linked hCS hAg hM3 hTF hG E H D Xo l c Y T o II hGl hX hII hp hq
+  have hP6 := _root_.GlobalTheory.CompanionTheory.Ar.Num.power_sum_term_linked_tower _ _ T II hII.1 hProp φ hLk
+  have hPA := _root_.GlobalTheory.CompanionTheory.Ar.Top.propA_of_goodOrigin hAg hTw hCP hG E H D Xo l c Y T o II hGl hX hII hp hq
   have hbadP : ∀ p ∈ T.bad, p.Prime := fun p hp' => ((o.bad_iff p).1 hp').1
-  have hPF := GlobalTheory.T.PropFTop_holds hPts hIn.2.2.1.2 hIn.2.1.2.1 _ _ T II _ (hostRd E) (hostLval H) hII.1 hCI.1 hProp hP6
-    (by linarith) hbadP (GlobalTheory.T.good_tower_real_extra hFD hG E H D Xo l c Y T o II hGl hX hII hp hq)
-  have hVol := GlobalTheory.T.good_tower_intersection_extra hCS hG E H D Xo l c Y T o II hGl hX hII hq hpq
+  have hPF := _root_.GlobalTheory.CompanionTheory.Ar.Flat.propFTop hPts hIn.2.2.1.2 hIn.2.1.2.1 _ _ T II _ (hostRd E) (hostLval H) hII.1 hCI.1 hProp hP6
+    (by linarith) hbadP (_root_.RootFieldNumerics.global_model_tower_final_condition hFD hG E H D Xo l c Y T o II hGl hX hII hp hq)
+  have hVol := _root_.SheetDecomposition.volEq_of_isFullIntersectionSystem hCS hG E H D Xo l c Y T o II hGl hX hII hq hpq
   have hj3 : 3 * (D.p + D.q - T.j) + 1 ≤ D.p + D.q := by rw [o.j_eq]; omega
-  have hSL0 := GlobalTheory.T.slope_lower_base_settings hZh II hII.1 _ _ T Ch Cu (hostRd E) (hostLval H) hProp hj3
-    fun B _ hB _ a => GlobalTheory.T.base_setting_of_good_tower Ch Cu hNine hW hAg GlobalTheory.T.proportional' hCS hG hPts E H D Xo l c Y T o II hGl hX hII
+  have hSL0 := _root_.GlobalTheory.CompanionTheory.Ar.Top.slope_lower_of_base_settings hZh II hII.1 _ _ T Ch Cu (hostRd E) (hostLval H) hProp hj3
+    fun B _ hB _ a => _root_.GlobalTheory.CompanionTheory.Ar.Cusp.TopBase.base_setting_of_good_origin Ch Cu hNine hW hAg _root_.GlobalTheory.CompanionTheory.Ar.PB.proportional hCS hG hPts E H D Xo l c Y T o II hGl hX hII
       hp hq hqp hbad B hB a
   have hSL := slopeLower_mono_top T II (le_max_left (Ch + Cu / 2) 0) (by linarith) hProp hSL0
-  have hch := GlobalTheory.T.tower_weil_inputs_combined GlobalTheory.T.flag_height hIn hZ1 hZ2 hAP hGr II hII _ _ T _ (max (Ch + Cu / 2) 0) 4 (hostRd E)
+  have hch := _root_.GlobalTheory.CompanionTheory.Ar.Top.chain_tower _root_.GlobalTheory.CompanionTheory.Ar.PB.flagHeight_holds hIn hZ1 hZ2 hAP hGr II hII _ _ T _ (max (Ch + Cu / 2) 0) 4 (hostRd E)
     (hostLval H) (le_max_right _ _) (by norm_num) (by linarith) hfs hProp hI1 hCI.2 hA1 hM1 hM2 hAN hI56.1 hI56.2
     hI7 hI8 hP6 hPA hPF hVol hSL
   exact ⟨hProp, hVol, hch.1, hch.2.1, hch.2.2.1, hch.2.2.2⟩

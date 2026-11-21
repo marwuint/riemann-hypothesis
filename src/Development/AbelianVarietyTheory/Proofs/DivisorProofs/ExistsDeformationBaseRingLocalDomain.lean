@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.KeyPBIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbsoluteSiegel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffTopMonEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedPowerSeriesEvaluationDivisibilityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPuncturedDiscInjectiveEvalAtPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNoetherianLocalOfOrderFunctionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPuncturedDiscInjectiveEvalAtPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNoetherianLocalOfOrderFunction
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
 open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto GlobalTheory.MBModel GlobalTheory.KeyCl GlobalTheory.Ex GlobalTheory.MBLow GlobalTheory.SecJet
@@ -50,7 +50,7 @@ theorem ring_of_deformation : ∀ (C : Type) [NontriviallyNormedField C] [IsUltr
     rintro _ ⟨g, (⟨x, rfl⟩ | ⟨a, rfl⟩), rfl⟩ u hu0 hu
     · rw [PowerSeries.map_C]; exact summable_coeff_C_mul_pow _ _
     · simpa [PowerSeries.coeff_map] using hsum u hu0 hu a
-  obtain ⟨u, ig, hu0, hu, hig, hige⟩ := GlobalTheory.T.exists_puncturedDisc_injective_evalAtPoint ε S hε hSc hSs
+  obtain ⟨u, ig, hu0, hu, hig, hige⟩ := _root_.GlobalTheory.exists_injective_evalAt_closure ε S hε hSc hSs
   have hmapA : ∀ x ∈ A, PowerSeries.map e x ∈ Subring.closure S := by
     intro x hx
     rw [hS, ← RingHom.map_closure]
@@ -73,7 +73,7 @@ theorem ring_of_deformation : ∀ (C : Type) [NontriviallyNormedField C] [IsUltr
   let f : A →+* B := Subring.inclusion hAB
   have hf : Function.Injective f := fun x y h => Subtype.ext (congrArg Subtype.val h :)
   obtain ⟨W, _, _, _, _, _, g, i₀, i₁, hi₀, hgi₀, hgi₁, hunit, hprime⟩ :=
-    GlobalTheory.T.exists_noetherianLocal_of_orderFunction A B C ℂ f ev t i hf hi ht hevt hfin
+    _root_.GlobalTheory.MBLow.exists_localRing_of_order A B C ℂ f ev t i hf hi ht hevt hfin
   let cA : o →+* A := (PowerSeries.C.comp o.subtype).codRestrict A
     (fun x => Subring.subset_closure (Or.inl ⟨x, rfl⟩))
   have hΦA : ∀ a, Φ a ∈ A := fun a => Subring.subset_closure (Or.inr ⟨a, rfl⟩)

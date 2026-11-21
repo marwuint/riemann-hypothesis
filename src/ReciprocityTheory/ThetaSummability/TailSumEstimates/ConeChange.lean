@@ -87,11 +87,6 @@ theorem tailSum_mem_logCone_iff (c : ℝ) (y : Fin r → ℝ) :
 theorem preimage_tailSum_logCone (c : ℝ) : tailSum ⁻¹' logCone r c = lowerBox r c := by
   ext y; exact tailSum_mem_logCone_iff c y
 
-theorem setIntegral_logCone (c : ℝ) (f : (Fin r → ℝ) → ℝ) :
-    ∫ x in logCone r c, f x = ∫ y in lowerBox r c, f (tailSum y) := by
-  rw [← preimage_tailSum_logCone c,
-    measurePreserving_tailSum.setIntegral_preimage_emb measurableEmbedding_tailSum]
-
 theorem integrableOn_logCone_iff (c : ℝ) (f : (Fin r → ℝ) → ℝ) :
     IntegrableOn f (logCone r c) ↔ IntegrableOn (fun y => f (tailSum y)) (lowerBox r c) := by
   rw [← preimage_tailSum_logCone c]

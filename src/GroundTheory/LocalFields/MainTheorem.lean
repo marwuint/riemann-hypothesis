@@ -10,35 +10,6 @@ namespace GroundTheory.LocalField
 
 open ValuativeRel
 
-section Main
-
-variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-  (Ω : Type*) [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
-
-theorem localArtinMap_spec :
-    Continuous (localArtinMap K Ω) ∧
-      (∀ π : Kˣ, ord (π : K) = 1 →
-        restrictAb (maximalUnramifiedExtension K Ω) maximalUnramifiedExtension_le_maximalAbelianExtension
-          (localArtinMap K Ω π) = maximalUnramifiedExtensionFrobenius K Ω) ∧
-      ∀ (L : IntermediateField K Ω) [FiniteDimensional K L] [IsAbelianGalois K L],
-        ((restrictAb L (le_maximalAbelianExtension L)).comp (localArtinMap K Ω)).ker =
-            (normUnits K L).range ∧
-          Function.Surjective ((restrictAb L (le_maximalAbelianExtension L)).comp (localArtinMap K Ω)) :=
-  ⟨continuous_localArtinMap, fun _ hπ => restrictAb_localArtinMap_uniformizer hπ,
-    fun L _ _ => ⟨ker_restrictAb_localArtinMap L, surjective_restrictAb_localArtinMap L⟩⟩
-
-theorem localArtinMap_unramified (L : IntermediateField K Ω) (hL : IsUnramifiedSubextension L)
-    (x : Kˣ) :
-    have := hL.1
-    have := hL.isGalois
-    restrictAb L (hL.le_maximalUnramifiedExtension.trans maximalUnramifiedExtension_le_maximalAbelianExtension)
-      (localArtinMap K Ω x) = unramifiedFrobenius K Ω L ^ ord (x : K) :=
-  have := hL.1
-  have := hL.isGalois
-  restrictAb_localArtinMap_of_le_maximalUnramifiedExtension L hL.le_maximalUnramifiedExtension x
-
-end Main
-
 section Functoriality
 
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]

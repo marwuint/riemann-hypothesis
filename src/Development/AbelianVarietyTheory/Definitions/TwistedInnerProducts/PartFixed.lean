@@ -99,8 +99,6 @@ def ConjRead : Prop := All fun {D} _ {L} _ {G} W M => ∀ i, ∀ hi : i < D.R.m,
 def PartFixed : Prop := All fun {_} _ _ _ {G} W M => ∀ ρ Φ u i h, ∀ k ∈ lev G (.grid (i + 1) 0), ∀ g,
   part W M ρ Φ u (i + 1) h (g * k) = part W M ρ Φ u (i + 1) h g
 
-example (W : HSp D) (R : Subgroup (GA D W)) : (1 : GA D W) ∈ strip W R {1} := ⟨1, one_mem _, 1, rfl, 1, one_mem _, by simp⟩
-
 end GlobalTheory.Asc
 
 end

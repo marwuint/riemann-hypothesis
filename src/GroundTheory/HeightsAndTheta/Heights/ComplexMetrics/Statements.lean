@@ -140,11 +140,6 @@ def standardMetric (hreg : ComplexMetric.RegularContinuous.Statement.{u}) :
     rw [unitFibreEquiv_sectionValue, unitFibreEquiv_sectionValue,
       X.evalAtPoint_conjPoint_germ x hx hx', Complex.norm_conj]
 
-def trivialBundle (hreg : ComplexMetric.RegularContinuous.Statement.{u}) : X.HermitianLineBundle where
-  L := 𝟙_ X.X.Modules
-  invertible := isInvertibleSheaf_unit
-  metric := X.standardMetric hreg
-
 end ProjScheme
 
 end

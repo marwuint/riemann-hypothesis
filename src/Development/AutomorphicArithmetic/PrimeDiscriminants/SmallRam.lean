@@ -39,43 +39,6 @@ theorem mem_sq_of_dvd_QS (hE : H.toHostRaw.Exact) {l : ℕ} (hl : l.Prime) (hd :
   rw [Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem] at hle
   simpa using hle
 
-theorem QS_notMem (hE : H.toHostRaw.Exact) (P : HeightOneSpectrum (𝓞 H.E)) {p : ℕ} (hp : p.Prime)
-    (hc : Nat.card (𝓞 H.E ⧸ P.asIdeal) = p) (h2 : (p : 𝓞 H.E) ∉ P.asIdeal ^ 2) : (H.QS : 𝓞 H.E) ∉ P.asIdeal := by
-  have hP := P.isPrime
-  have hpm : (p : 𝓞 H.E) ∈ P.asIdeal := by
-    rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← hc, ← nsmul_one]
-    exact card_nsmul_eq_zero'
-  intro hm
-  by_cases hd : p ∣ H.QS
-  · exact h2 (H.mem_sq_of_dvd_QS hE hp hd P.asIdeal hpm)
-  · have hcop : IsCoprime ((p : ℕ) : 𝓞 H.E) ((H.QS : ℕ) : 𝓞 H.E) := ((Nat.Prime.coprime_iff_not_dvd hp).2 hd).cast
-    obtain ⟨a, b, hab⟩ := hcop
-    exact hP.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ P.asIdeal.add_mem (P.asIdeal.mul_mem_left a hpm) (P.asIdeal.mul_mem_left b hm)))
-
-theorem condN_mul_notMem (hE : H.toHostRaw.Exact) (P : HeightOneSpectrum (𝓞 H.E)) {p : ℕ} (hp : p.Prime)
-    (hc : Nat.card (𝓞 H.E ⧸ P.asIdeal) = p) (h2 : (p : 𝓞 H.E) ∉ P.asIdeal ^ 2) {T : ℕ}
-    (h : ((2 * H.q * H.d * T : ℕ) : 𝓞 H.E) ∉ P.asIdeal) : ((H.condN * T : ℕ) : 𝓞 H.E) ∉ P.asIdeal := by
-  intro hm
-  have e : ((H.condN * T : ℕ) : 𝓞 H.E) = (H.QS : 𝓞 H.E) * ((H.q * H.d * T : ℕ) : 𝓞 H.E) := by
-    simp only [HostRaw.condN]; push_cast; ring
-  rw [e] at hm
-  rcases P.isPrime.mem_or_mem hm with h1 | h1
-  · exact H.QS_notMem hE P hp hc h2 h1
-  · refine h ?_
-    have e' : ((2 * H.q * H.d * T : ℕ) : 𝓞 H.E) = 2 * ((H.q * H.d * T : ℕ) : 𝓞 H.E) := by push_cast; ring
-    rw [e']
-    exact P.asIdeal.mul_mem_left _ h1
-
-theorem two_mul_notMem_of_condN (P : HeightOneSpectrum (𝓞 H.E)) {T : ℕ}
-    (h : ((H.condN * T : ℕ) : 𝓞 H.E) ∉ P.asIdeal) : ((2 * H.q * H.d * T : ℕ) : 𝓞 H.E) ∉ P.asIdeal := by
-  intro hm
-  obtain ⟨c, hc⟩ := H.two_dvd_QS
-  refine h ?_
-  have e : ((H.condN * T : ℕ) : 𝓞 H.E) = (c : 𝓞 H.E) * ((2 * H.q * H.d * T : ℕ) : 𝓞 H.E) := by
-    simp only [HostRaw.condN]; rw [hc]; push_cast; ring
-  rw [e]
-  exact P.asIdeal.mul_mem_left _ hm
-
 end Formalism.HC.HostAx
 
 end

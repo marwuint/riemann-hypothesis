@@ -59,27 +59,6 @@ theorem class_local_of_eq (D : D7) (H : LevelData D) (u : D.what₂.Word) {p : �
       (Cmp.stab_card hS r lam0 dom hk I ψ e' (isUnit_det_gram0 D.sp) hH a L hL).trans
         (Triv.card_stab (H u) D.host.g_prime D.host.g_ne _) }⟩
 
-theorem clsAt0_of_gatIs (D : D7) (H : LevelData D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
-    (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (hG : GatIs D H u w h) (μ : D.what₂.Tup)
-    (e : (D.mem u).C.cls 0 ≃ (D.chTw u μ).cls 0) {Fl : Fills (D.gat u w h)} (Lv : Levels Fl) :
-    Nonempty (ClsAt0 D u μ w h Lv) := by
-  obtain ⟨W, Qq, O, Kf, _, _, _, _, _, _, _, _, _, _, n', ι, σ, j, w0, hS, nV, r, m, lam0, dom, hk, I, ψ, e', hH, heq⟩ := hG
-  obtain ⟨c⟩ := class_local_of_eq D H u e hS nV r m lam0 dom hk I ψ e' hH (D.gat u w h) heq
-  exact ⟨c.toAt0 Lv⟩
-
-theorem clsAt0_twLoc (D : D7) (H : LevelData D) (hG : ∀ u w h, GatIs D H u w h)
-    (e : ∀ u μ, (D.mem u).C.cls 0 ≃ (D.chTw u μ).cls 0) {Gl : LatInst D} (Wl : WeilJacquetShalikaLaw.TwLoc D Gl) (μ : D.what₂.Tup)
-    (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
-    Nonempty (ClsAt0 D u μ w h ((Wl.Yt μ).Lv u w h)) :=
-  clsAt0_of_gatIs D H u w h (hG u w h) μ (e u μ) _
-
-theorem clsAt0_tied {D : D7} {Gt : GatTies D} {c : LatCmp D} (Gd : GroupCompatibilityAll D Gt c)
-    {inQ : D.what₂.Tup → IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F) → Prop}
-    (T : Formalism.L2.Herm.TwChTied D inQ) {Gl : LatInst D} (Wl : WeilJacquetShalikaLaw.TwLoc D Gl) (μ : D.what₂.Tup)
-    (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
-    Nonempty (ClsAt0 D u μ w h ((Wl.Yt μ).Lv u w h)) :=
-  clsAt0_twLoc D Gd.herm.lev0 Gd.gat T.eCls0 Wl μ u w h
-
 end Formalism.L2.G.TwTie0
 
 end

@@ -1,7 +1,11 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.CoreExists
 import Formalism.LocalToGlobal.ProjectiveLattices.ReadQuot
-import Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.MemSSgtOfZeroOnDom
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SiegelSpaceAlgebraHolds
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PeriodLatticeCountable
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.M3bExpHolds
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthogonalFrameDomain
+import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.MajLactRmul
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ReadingLinearIndependentAndInjective
 
 noncomputable section
@@ -13,44 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
   {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
-theorem rdU_eq_zero (U : Unf Xo c σ r) (f : Rul Xo c) (h : ∀ k, ∀ x ∈ (U.X k).dom, rdU U f k x = 0) :
-    rdU U f = 0 := by
-  funext k x
-  by_cases hx : x ∈ (U.X k).dom
-  · exact h k x hx
-  · classical
-    show (if h : x ∈ (U.X k).dom then toC (evR Xo c f (U.un k ⟨x, h⟩)) else 0) = 0
-    rw [dif_neg hx]
-
-theorem indep_one {K M : Type} [Field K] [AddCommGroup M] [Module K M] {f : M} (h : f ≠ 0) :
-    LinearIndependent K (fun _ : Fin 1 => f) := linearIndependent_unique_iff.2 h
-
-theorem inj_of_indep (U : Unf Xo c σ r) (h : RdIndep1 U) (a n) (hd : Dom a n) (f) (hf : f ∈ sec Xo c a n)
-    (h0 : ∀ k, ∀ x ∈ (U.X k).dom, rdU U f k x = 0) : f = 0 := by
-  by_contra hne
-  have := h a n hd 1 (fun _ => f) (fun _ => hf) (indep_one hne)
-  exact this.ne_zero 0 (rdU_eq_zero U f h0)
-
-theorem domInj_of_indep (U : Unf Xo c σ r) (h : RdIndep1 U) : RdDomInj1 U :=
-  fun a n hd f hf _ h0 => inj_of_indep U h a n hd f hf h0
-
-theorem domInj_iff (U : Unf Xo c σ r) : RdDomInj1 U ↔
-    ∀ a n, Dom a n → ∀ f ∈ sec Xo c a n, rdU U f = 0 → f = 0 :=
-  ⟨fun h a n hd f hf h0 => h a n hd f hf (h0 ▸ Submodule.zero_mem _) (fun k x _ => by rw [h0]; rfl),
-   fun h a n hd f hf _ h0 => h a n hd f hf (rdU_eq_zero U f h0)⟩
-
-theorem sec_eq_zero_of_isEmpty (U : Unf Xo c σ r) [IsEmpty U.Comp] (h : RdDomInj1 U) (a n) (hd : Dom a n)
-    (f) (hf : f ∈ sec Xo c a n) : f = 0 :=
-  (domInj_iff U).1 h a n hd f hf (funext fun k => isEmptyElim k)
-
 def copy (U : Unf Xo c σ r) : Formalism.L2.PjFree.Unf Xo c σ r := ⟨U.Comp, U.X, U.un⟩
 
 theorem isUnf_copy (U : Unf Xo c σ r) : Formalism.L2.PjFree.IsUnf (copy U) ↔ IsUnf U := Iff.rfl
-
-theorem indep_of_isUnf (hS : Out.SecBaseChangeSt) (U : Unf Xo c σ r) (hU : IsUnf U) : RdIndep1 U ∧ RdDomInj1 U :=
-  have h : RdIndep1 U := fun a n _ =>
-    (GlobalTheory.reading_linearIndependent_and_injective hS E H Dw l Xo c σ r (copy U) ((isUnf_copy U).2 hU) a n).1
-  ⟨h, domInj_of_indep U h⟩
 
 theorem invFun_relab_injective (c : Coeff l) (σ : c.F →+* ℂ) :
     Function.Injective (Function.invFun (relab (E := E) c σ)) := by
@@ -167,67 +136,6 @@ theorem adelAut_of_dominant
       show mu g * P k (x g) = mu g * P k (lact γ (x g))
       rw [hsec.2.2 γ hγ (x g) hd, chi_eq_one U hχ _ _ _ hγ, one_mul]
     exact (hc'.continuousAt hN).congr heq
-
-theorem meas_of_aut (h : AdelAut V dict mu) : AdelMeas1 U V dict mu := by
-  intro la P hP
-  obtain ⟨hL, hC⟩ := h la P hP
-  haveI : BorelSpace (GA D V) := ⟨rfl⟩
-  rw [onQ_eq_lift _ hL]
-  exact Measurable.aestronglyMeasurable (measurable_from_quotient.2 hC.measurable)
-
-theorem aeZero_of_aut (hA : AdelAut V dict mu) (hQ : QuotSupp V) (hmu : MuUnit V dict mu)
-    (hd : DictIsUnif V dict Kf th hr) : AeDom1 U V dict mu := by
-  intro la P hP hae k x hx
-  have hA' := adelAut_holSub hA la hP
-  have hz : ∀ g, adel V dict mu P g = 0 := hQ _ hA'.2 hA'.1 hae
-  have hEq := eqv_holSub U.X la hP
-  obtain ⟨g, γ, hγ, b, hb, hg⟩ := hd.2.2.2.2.1 k x hx
-  have hdom := hd.2.2.2.1 g
-  have h0 := hz g
-  change mu g * P (dict g).1 (dict g).2 = 0 at h0
-  rw [hg] at h0 hdom
-  have hmu0 : mu g ≠ 0 := by
-    intro h
-    have := hmu.2.1 g
-    rw [h, norm_zero] at this
-    exact zero_ne_one this
-  exact eq_zero_of_orbit _ (la k) (P k) (hEq.1 k) (hEq.2 k) hx hγ hb hdom ((mul_eq_zero.1 h0).resolve_left hmu0)
-
-theorem four_laws (hS : Out.SecBaseChangeSt) (hU : IsUnf U)
-    (hχ : ∀ a n, Dom a n → ∀ k, ∀ γ ∈ (U.X k).Γ, (U.X k).χ (laU U a n k) γ = 1)
-    (hd : DictIsUnif V dict Kf th hr) (hm : MuUnit V dict mu) (hc : Continuous mu)
-    (hL : ∀ g₀ : GA D V, ∃ N ∈ 𝓝 g₀, ∃ (k : U.Comp) (x : GA D V → Frame (U.X k).Ψ r), ContinuousOn x N ∧
-      ∀ g ∈ N, x g ∈ (U.X k).dom ∧ ∃ γ ∈ (U.X k).Γ, dict g = ⟨k, lact γ (x g)⟩)
-    (hT : VolTieG D) (hs : V.SigOK) :
-    RdIndep1 U ∧ RdDomInj1 U ∧ AdelMeas1 U V dict mu ∧ AeDom1 U V dict mu :=
-  have hA := adelAut_of_dominant U hχ hd hm hc hL
-  ⟨(indep_of_isUnf hS U hU).1, (indep_of_isUnf hS U hU).2, meas_of_aut U hA,
-    aeZero_of_aut U hA (quotSupp_of V (finVol_of_volTie hT V hs) (volPair_of_tie hT V hs)) hm hd⟩
-
-theorem meas_zero : AdelMeas1 U V dict 0 := by
-  intro la P _
-  have : onQ V (adel V dict 0 P) = fun _ => 0 := by funext q; exact zero_mul _
-  rw [this]; exact aestronglyMeasurable_const
-
-theorem aeZero_zero_iff : AeDom1 U V dict 0 ↔ ∀ la, ∀ P ∈ holSub U.X la, ∀ k, ∀ x ∈ (U.X k).dom, P k x = 0 :=
-  ⟨fun h la P hP => h la P hP (Filter.Eventually.of_forall fun _ => zero_mul _), fun h la P hP _ => h la P hP⟩
-
-theorem meas_off_dom (h : AdelMeas1 U V dict mu) (P : FDSec U.X) (hP : ∀ k, ∀ x ∈ (U.X k).dom, P k x = 0) :
-    AEStronglyMeasurable (onQ V (adel V dict mu P)) (muQ1 V) :=
-  h (fun _ => 0) P fun k => (GlobalTheory.FJCheck.mem_SSgt_of_zero_on_dom (U.X k) 0 0 (hP k)).1
-
-theorem adel_eq_zero_of_off_dom (hd : ∀ g, (dict g).2 ∈ (U.X (dict g).1).dom) (P : FDSec U.X)
-    (hP : ∀ k, ∀ x ∈ (U.X k).dom, P k x = 0) : adel V dict mu P = 0 := by
-  funext g
-  show mu g * P _ _ = 0
-  rw [hP _ _ (hd g), mul_zero]
-
-theorem zero_of_dict_off_dom (hd : ∀ g, (dict g).2 ∉ (U.X (dict g).1).dom) (h : AeDom1 U V dict mu) (la)
-    (f : Rul Xo c) (hf : rdU U f ∈ holSub U.X la) : rdU U f = 0 := by
-  refine rdU_eq_zero U f (h la _ hf (Filter.Eventually.of_forall fun q => ?_))
-  classical
-  show mu q.out * (if h : (dict q.out).2 ∈ (U.X _).dom then toC (evR Xo c f (U.un _ ⟨_, h⟩)) else 0) = 0
-  rw [dif_neg (hd _), mul_zero]
 
 end Adelic
 end GlobalTheory.OneEmbeddingProbe

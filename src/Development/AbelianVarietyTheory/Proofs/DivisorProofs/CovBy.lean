@@ -17,9 +17,4 @@ def CovBy {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlg
   ∃ (n : ℕ) (b : Fin n → F.obj S), Ideal.span (Set.range b) = ⊤ ∧
     ∀ (i : Fin n) (S' : C) (u : S ⟶ S'), IsUnit (mp F u (b i)) → Φ S'
 
-theorem CovBy.mono {R : Type} [CommRing R] {C : Type} [Category.{0} C] {F : C ⥤ CommAlgCat.{0} R}
-    {Φ Ψ : C → Prop} (h : ∀ S, Φ S → Ψ S) {S : C} (hS : CovBy F Φ S) : CovBy F Ψ S := by
-  obtain ⟨n, b, hb, hc⟩ := hS
-  exact ⟨n, b, hb, fun i S' u hu ↦ h _ (hc i S' u hu)⟩
-
 end GlobalTheory.CatCoh.Desc.VandermondeTwoBasis

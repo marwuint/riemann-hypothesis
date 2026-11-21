@@ -22,13 +22,9 @@ noncomputable section
 
 namespace GlobalTheory.ResW.SliceTwoAut
 
-variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
-
 end GlobalTheory.ResW.SliceTwoAut
 
 namespace GlobalTheory.ResW.SliceTwoAut
-
-variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 end GlobalTheory.ResW.SliceTwoAut
 

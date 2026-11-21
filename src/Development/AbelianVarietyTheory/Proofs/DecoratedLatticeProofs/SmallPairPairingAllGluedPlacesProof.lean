@@ -1,8 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SmallPairPairingAtOneGluedPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RamifiedOperatorsBijectiveAtPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SmallPairPairingAtOneGluedPlace
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUnique
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RamifiedOperatorsBijectiveAtPlaces
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValueDoubleExact
 
 noncomputable section
 
@@ -27,9 +29,9 @@ theorem vac_at_place {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S}
 
 theorem main : ∀ D : D7, GlobalTheory.FinPl.SmallAll D := by
   intro D k _ _ _ _ ι p I P hP n n' _ _ _ _ q χ hχ
-  have hSO := GlobalTheory.T.smallPair_pairing_at_one_gluedPlace D
-  have hOB := GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D
-  have hAB := GlobalTheory.T.epsilonFourierProduct_bijective_gluedPlaces D
+  have hSO := _root_.GlobalTheory.FinPl.smallOne D
+  have hOB := _root_.GlobalTheory.FinPl.overBasic D
+  have hAB := _root_.GlobalTheory.FinPl.allBijective_all D
   choose r e hr hval using fun i => hSO k (p i) n n' q (χ i) (hχ i)
   refine ⟨r, e, hr, ?_⟩
   intro ψ V₀ A L S T o ζ hζ hA hS hT χV χW χS χT om₁ omT hom₁ homT hunr vA vS vT a b s L₁ L₂ L₃ hL₁ hL₂ hL₃ hloc

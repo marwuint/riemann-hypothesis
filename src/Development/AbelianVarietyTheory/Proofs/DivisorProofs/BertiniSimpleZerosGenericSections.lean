@@ -6,11 +6,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResultantDerivative
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreeEqHilbertDegreeOfIsChowForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreeImageBirationalLinearSystemEqSelfInt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeOfRingKrullDimConeIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormOutsideImageIdealVanishingOnBoundaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormFiniteFibresBirationalLinearSystemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEliminationFormGeneralLinearFormsConeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearSectionFiniteInOpenOffBadFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearSectionEtaleOfSquarefreeChowFormStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormOutsideImageIdealVanishingOnBoundary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormFiniteFibresBirationalLinearSystem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEliminationFormGeneralLinearFormsCone
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearSectionFiniteInOpenOffBadForm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearSectionEtaleOfSquarefreeChowForm
 
 open NumberField MvPolynomial ReciprocityTheory.MultiplicativeHeights CategoryTheory AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -37,9 +37,9 @@ theorem bertini : Quoted → Bertini := by
     rw [GlobalTheory.ChowDegree.degree_eq_hilbertDegree_of_isChowForm F T.D T.N δ T.imageIdeal f hf hprime hhom]
     exact hdeg
   refine ⟨hδ, ?_⟩
-  obtain ⟨d₁, g₁, hg₁, hg₁I, hg₁v⟩ := GlobalTheory.T.exists_form_outside_imageIdeal_vanishing_on_boundary F T hG hB
-  obtain ⟨d₂, g₂, hg₂, hg₂I, hg₂f⟩ := GlobalTheory.T.exists_form_finite_fibres_birational_linearSystem F T.toLinSys hG.alg.variety hG.alg.bpf hB
-  obtain ⟨Q₁, hQ₁, hQ₁v⟩ := GlobalTheory.T.exists_eliminationForm_generalLinearForms_cone F T.D T.N (d₁ + d₂) T.imageIdeal (g₁ * g₂) hG.alg.variety.one_le hprime hhom
+  obtain ⟨d₁, g₁, hg₁, hg₁I, hg₁v⟩ := _root_.GlobalTheory.BoundaryForm.exists_form_vanishing F T hG hB
+  obtain ⟨d₂, g₂, hg₂, hg₂I, hg₂f⟩ := _root_.GlobalTheory.BirFiniteFibre.exists_form_finite_fibres F T.toLinSys hG.alg.variety hG.alg.bpf hB
+  obtain ⟨Q₁, hQ₁, hQ₁v⟩ := _root_.GlobalTheory.HSShort.exists_elim_form_of_field F T.D T.N (d₁ + d₂) T.imageIdeal (g₁ * g₂) hG.alg.variety.one_le hprime hhom
     hdim (hg₁.mul hg₂) fun h => (hprime.mem_or_mem h).elim hg₁I hg₂I
   obtain ⟨Q₂, hQ₂, -, hQ₂n⟩ :=
     GlobalTheory.PencilDisc.exists_poly_noSquare F T.D T.N δ f hf.isChowFormInt.pos hf.homog hf.irred
@@ -51,7 +51,7 @@ theorem bertini : Quoted → Bertini := by
   rw [map_mul] at hs'
   have hns : NoSquare (spec (fun i j => algebraMap E (AlgebraicClosure E) (s i j)) f) :=
     hQ₂n _ _ (right_ne_zero_of_mul hs')
-  obtain ⟨hfin, hopen⟩ := GlobalTheory.T.linearSection_finite_inOpen_off_badForm F T hG δ f hf (g₁ * g₂)
+  obtain ⟨hfin, hopen⟩ := _root_.GlobalTheory.HSShort.Supp.finite_and_inOpen F T hG δ f hf (g₁ * g₂)
     (fun K _ _ x hx => by rw [map_mul, hg₁v K x hx, zero_mul])
     (fun K _ _ y => (hg₂f K y).subset fun x hx => ⟨right_ne_zero_of_mul (by simpa only [map_mul] using hx.1), hx.2⟩)
     E s hns.1 fun x hx h0 => by
@@ -59,6 +59,6 @@ theorem bertini : Quoted → Bertini := by
         (hG.alg.bpf.coords_ne_zero _) (fun a ha => ?_) h0 ((T.toLinSys.mem_subPts_cut_baseChange_iff E s x).1 hx))
       have := T.toLinSys.eval₂_coords_eq_zero (LinSys.toBase x : T.Pt (AlgebraicClosure E)).1 ha
       rwa [LinSys.baseHom_ptOver] at this
-  exact GlobalTheory.T.linearSection_etale_of_squarefree_chowForm F T hG δ f hf hδ E s hfin hopen hns
+  exact _root_.GlobalTheory.HSShort.EtaleSection.simpleAt_of_noSquare F T hG δ f hf hδ E s hfin hopen hns
 
 end GlobalTheory.BertiniTop

@@ -2,10 +2,15 @@ import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.ThetaIdempotents.HeckeEta
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightRightTranslateCompactBound
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialConstantTermBound
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFirstBlockGroupEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightPullbackFirstBlockStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightPowerSummableRationalHermitianStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegrableOfSummableFundamentalDomainStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFirstBlockGroupEmbedding
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeanTransport
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightPullbackFirstBlock
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightPowerSummableRationalHermitian
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinConvergent
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionLeftInvariantRationalParabolic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PolarPartIdentity
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegrableOfSummableFundamentalDomain
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FourierZeroHolds
 
 noncomputable section
 
@@ -53,14 +58,14 @@ theorem integrable_height_rpow : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (
       GlobalTheory.StdUnn.blk4 0 1 (-1) 0 = GlobalTheory.StdUnn.blk4 0 1 (-1) 0
     rw [GlobalTheory.CompanionTheory.JacobiMaps.adjoint_symplectic_block_product, hadj0, hadj1, hadjn1]
     simp only [zero_mul, mul_zero, one_mul, mul_one, sub_zero, zero_sub, neg_neg, mul_neg, neg_mul, sub_self, neg_zero]
-  obtain ⟨ι, hιc, hιm⟩ := GlobalTheory.T.exists_first_block_group_embedding D n ρ p hn
-  have hH' := GlobalTheory.T.height_pullback_first_block D n ρ p hn ι hιc hιm H hH
+  obtain ⟨ι, hιc, hιm⟩ := _root_.GlobalTheory.CompanionTheory.FirstBlockEmb.exists_first_emb D n ρ p hn
+  have hH' := _root_.GlobalTheory.CompanionTheory.HtPull.isHt_blockPull D n ρ p hn ι hιc hιm H hH
   let w' : G D ρ := GlobalTheory.CompanionTheory.JacobiMaps.mkG u hu
   have hw' : GlobalTheory.StdUnn.mat w' = GlobalTheory.StdUnn.blk4 0 1 (-1) 0 := GlobalTheory.CompanionTheory.JacobiMaps.mat_mkG u hu
   let nb : hermA D ρ → G D ρ := fun z => GlobalTheory.CompanionTheory.JacobiMaps.nAt (z : Mx D ρ ρ) z.2
   have hnb : ∀ z : hermA D ρ, GlobalTheory.StdUnn.mat (nb z) = GlobalTheory.StdUnn.blk4 1 (z : Mx D ρ ρ) 0 1 :=
     fun z => GlobalTheory.CompanionTheory.JacobiMaps.mat_nAt _ _
-  have hS := GlobalTheory.T.height_power_summable_rational_hermitian D ρ (fun h => H (ι h)) hH' w' nb hw' hnb τ hτ
+  have hS := _root_.GlobalTheory.CompanionTheory.HermSum.summable_height_rpow D ρ (fun h => H (ι h)) hH' w' nb hw' hnb τ hτ
   have hιw : ι w' = M.w := by
     apply GlobalTheory.CompanionTheory.FourierN.mat_injective
     rw [hιm w' 0 1 (-1) 0 hw', M.w_mat]
@@ -77,7 +82,7 @@ theorem integrable_height_rpow : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (
   have hNc : Continuous fun z : hermA D ρ => M.nzx z 0 := GlobalTheory.CompanionTheory.PcB.continuous_nz M
   obtain ⟨κ, hκ1, hκ⟩ := GlobalTheory.CompanionTheory.HtRightTranslate.height_mul_le D n H hH hC
     ((fun z => M.nzx z 0) '' K) (hK.image hNc)
-  refine GlobalTheory.T.integrable_of_summable_fundamental_domain D ρ m.lz m.𝓖 m.hz (fun ζ => (H (M.w * M.nzx ζ 0) : ℝ) ^ τ) ?_ ?_ hSum K hKc (κ ^ τ)
+  refine _root_.GlobalTheory.CompanionTheory.HermFD.integrable_of_periodisation_bound D ρ m.lz m.𝓖 m.hz (fun ζ => (H (M.w * M.nzx ζ 0) : ℝ) ^ τ) ?_ ?_ hSum K hKc (κ ^ τ)
     (Real.rpow_nonneg (by linarith) τ) ?_
   · exact (NNReal.continuous_coe.comp (hH.1.comp (continuous_const.mul hNc))).rpow_const fun _ => Or.inr hτ0
   · exact fun z => Real.rpow_nonneg (NNReal.coe_nonneg _) τ

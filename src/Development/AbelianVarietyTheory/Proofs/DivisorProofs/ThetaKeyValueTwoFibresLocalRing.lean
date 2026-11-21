@@ -2,14 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.KeyPBIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbsoluteSiegel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffTopMonEqZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsJetsBaseChangePolarisedDatumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaConstantsJetsLocalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeyDatumPolarisedAbelianLocalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordinatesIntegralOfLinearlyIndependentReductioStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeyDatumFibreOfGrpPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsFirstJetsLinearIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsScalarMatrixBetweenKeyDataStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsJetsChangeSectionBasisStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsJetsBaseChangePolarisedDatum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaConstantsJetsLocalDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeyDatumPolarisedAbelianLocalDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordinatesIntegralOfLinearlyIndependentReductio
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeyDatumFibreOfGrpPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsFirstJetsLinearIndependent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsScalarMatrixBetweenKeyData
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsJetsChangeSectionBasis
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
 open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto GlobalTheory.MBModel GlobalTheory.KeyCl GlobalTheory.Ex GlobalTheory.MBLow GlobalTheory.SecJet
@@ -39,7 +39,7 @@ theorem frame_coords_lift {W K₀ K₁ : Type} [CommRing W] [IsDomain W] [Field 
     cases o with
     | none => exact h1
     | some j => exact congrFun h2 j
-  obtain ⟨z, hz, hϑz⟩ := GlobalTheory.T.coordinates_integral_of_linearly_independent_reduction W K₀ K₁ i₀ i₁ hi₀ hi₁ I (Option (Fin g)) u hind' ϑ
+  obtain ⟨z, hz, hϑz⟩ := _root_.GlobalTheory.MBLow.coords_integral_of_closed_indep W K₀ K₁ i₀ i₁ hi₀ hi₁ I (Option (Fin g)) u hind' ϑ
     (fun o => Option.elim o a₀ 0) (fun i => by simp [Fintype.sum_option, u, h0ϑ])
   have hz0 : ∀ j, z (some j) = 0 := fun j => hi₀ (by simpa using hz (some j))
   have ha₀ : i₀ (z none) = a₀ := by simpa using hz none
@@ -54,7 +54,7 @@ theorem frame_coords_lift {W K₀ K₁ : Type} [CommRing W] [IsDomain W] [Field 
   have hN : ∀ j, ∃ N : Option (Fin g) → W, (∀ o, i₀ (N o) = Option.elim o (c₀ j) (fun l => a₀ * M₀ j l)) ∧
       ∀ i, J i j = ∑ o, N o * u i o := by
     intro j
-    exact GlobalTheory.T.coordinates_integral_of_linearly_independent_reduction W K₀ K₁ i₀ i₁ hi₀ hi₁ I (Option (Fin g)) u hind' (fun i => J i j) _ (fun i => by
+    exact _root_.GlobalTheory.MBLow.coords_integral_of_closed_indep W K₀ K₁ i₀ i₁ hi₀ hi₁ I (Option (Fin g)) u hind' (fun i => J i j) _ (fun i => by
       simp [Fintype.sum_option, u, h0J, Finset.mul_sum, _root_.mul_assoc]; ring)
   choose N hN0 hNJ using hN
   have hN1 : ∀ j l, i₁ (N j (some l)) = a₁ * M₁ j l := by
@@ -92,25 +92,25 @@ theorem thJet_frameChange_castDim {K : Type} [Field K] [CharZero K] (x : KeyIn K
   cases x
   subst hg
   have hm0 : (m : K) ≠ 0 := Nat.cast_ne_zero.2 (by rintro rfl; exact (Nat.not_odd_zero hm))
-  simpa using GlobalTheory.T.thetaConstants_jets_change_section_basis K _ _ _ _ th hth v hv _ _ _ _ a M hth' hv' m hm hm0 I pt ϑ ϑ' J J' h1 h2
+  simpa using _root_.GlobalTheory.MBLow.JetUniq.thJet_change K _ _ _ _ th hth v hv _ _ _ _ a M hth' hv' m hm hm0 I pt ϑ ϑ' J J' h1 h2
 
 theorem keyValue_twoFibres : ∀ κ : Rule, Rule4 κ → ∀ (W : Type) [CommRing W] [IsDomain W] [IsNoetherianRing W] [IsLocalRing W] [IsIntegrallyClosed W] [CharZero W] (K₀ K₁ : Type) [Field K₀] [CharZero K₀] [Field K₁] [IsAlgClosed K₁] [CharZero K₁] (i₀ : W →+* K₀) (i₁ : W →+* K₁), Function.Injective i₀ → (∀ a, i₁ a ≠ 0 → IsUnit a) → ∀ (P : PolAV (Sp W)) (x₀ : KeyIn K₀) (x₁ : KeyIn K₁) (g : ℕ) (h₀ : x₀.P.g = g) (h₁ : x₁.P.g = g) (m : ℕ), P.g = g → Odd m → 3 ≤ m → ∀ (I : Type) (pt : I → (baseOver (Sp W) ⟶ P.A)) (p₀ : I → (baseOver (Sp K₀) ⟶ x₀.P.A)) (p₁ : I → (baseOver (Sp K₁) ⟶ x₁.P.A)) (φ₀ : x₀.P.A.left ⟶ P.A.left) (φ₁ : x₁.P.A.left ⟶ P.A.left), (∀ a, pt a ^ (m ^ 2) = 1) → IsGrpPullback x₀.P.A P.A (spMap i₀) φ₀ → IsGrpPullback x₁.P.A P.A (spMap i₁) φ₁ → LBIso x₀.P.L (P.L.pull φ₀) → LBIso x₁.P.L (P.L.pull φ₁) → (∀ a, (p₀ a).left ≫ φ₀ = spMap i₀ ≫ (pt a).left) → (∀ a, (p₁ a).left ≫ φ₁ = spMap i₁ ≫ (pt a).left) → (∀ z : baseOver (Sp K₁) ⟶ x₁.P.A, z ^ (m ^ 2) = 1 → ∃ a, p₁ a = z) → ∀ (ϑ : I → W) (J : I → Fin g → W) (k : W), ThJet x₀ h₀ m p₀ (fun a => i₀ (ϑ a)) (fun a j => i₀ (J a j)) → ThJet x₁ h₁ m p₁ (fun a => i₁ (ϑ a)) (fun a j => i₁ (J a j)) → (κ K₀ x₀ : K₀) = i₀ k → (κ K₁ x₁ : K₁) = i₁ k := by
   intro κ hκ W _ _ _ _ _ _ K₀ K₁ _ _ _ _ _ i₀ i₁ hi₀ hi₁ P x₀ x₁ g h₀ h₁ m hP hm hm3 I pt p₀ p₁ φ₀ φ₁ hpt hpb₀ hpb₁
     hL₀ hL₁ hc₀ hc₁ hsurj ϑ J k hJ₀ hJ₁ hk
   obtain ⟨hHom, -, -, hFam⟩ := hκ
   have hPg : 1 ≤ P.g := hP ▸ h₀ ▸ x₀.g_pos
-  obtain ⟨y, rfl⟩ := GlobalTheory.T.exists_keyDatum_polarisedAbelian_localDomain W P hPg
+  obtain ⟨y, rfl⟩ := _root_.GlobalTheory.MBLow.exists_keyIn_local W P hPg
   have hmu : IsUnit (m : W) := hi₁ _ (by rw [map_natCast]; exact_mod_cast (show m ≠ 0 by omega))
-  obtain ⟨ϑ', J', hy⟩ := GlobalTheory.T.exists_thetaConstantsJets_localDomain W y g hP m hm hmu I pt hpt
-  obtain ⟨th₀, hth₀, v₀, hv₀, hA₀⟩ := GlobalTheory.T.exists_keyDatum_fibre_of_grpPullback W K₀ i₀ y x₀.P φ₀ x₀.g_pos x₀.rig x₀.rig_gen (h₀.trans hP.symm) hpb₀ hL₀
-  obtain ⟨th₁, hth₁, v₁, hv₁, hA₁⟩ := GlobalTheory.T.exists_keyDatum_fibre_of_grpPullback W K₁ i₁ y x₁.P φ₁ x₁.g_pos x₁.rig x₁.rig_gen (h₁.trans hP.symm) hpb₁ hL₁
-  have hJy₀ := GlobalTheory.T.thetaConstantsJets_baseChange_polarisedDatum W K₀ i₀ y ⟨x₀.P, x₀.g_pos, x₀.rig, x₀.rig_gen, th₀, hth₀, v₀, hv₀⟩ φ₀ hA₀ g hP h₀ m I pt p₀ ϑ' J' hc₀ hy
-  have hJy₁ := GlobalTheory.T.thetaConstantsJets_baseChange_polarisedDatum W K₁ i₁ y ⟨x₁.P, x₁.g_pos, x₁.rig, x₁.rig_gen, th₁, hth₁, v₁, hv₁⟩ φ₁ hA₁ g hP h₁ m I pt p₁ ϑ' J' hc₁ hy
-  obtain ⟨a₀, M₀, ha₀, hth0, hv0⟩ := GlobalTheory.T.exists_scalar_matrix_between_keyData K₀ x₀.P th₀ x₀.th v₀ x₀.v hth₀ x₀.th_ne hv₀ x₀.basis
-  obtain ⟨a₁, M₁, ha₁, hth1, hv1⟩ := GlobalTheory.T.exists_scalar_matrix_between_keyData K₁ x₁.P th₁ x₁.th v₁ x₁.v hth₁ x₁.th_ne hv₁ x₁.basis
+  obtain ⟨ϑ', J', hy⟩ := _root_.GlobalTheory.MBLow.exists_thJet_local W y g hP m hm hmu I pt hpt
+  obtain ⟨th₀, hth₀, v₀, hv₀, hA₀⟩ := _root_.GlobalTheory.MBLow.exists_keyAtMap_of_isGrpPullback W K₀ i₀ y x₀.P φ₀ x₀.g_pos x₀.rig x₀.rig_gen (h₀.trans hP.symm) hpb₀ hL₀
+  obtain ⟨th₁, hth₁, v₁, hv₁, hA₁⟩ := _root_.GlobalTheory.MBLow.exists_keyAtMap_of_isGrpPullback W K₁ i₁ y x₁.P φ₁ x₁.g_pos x₁.rig x₁.rig_gen (h₁.trans hP.symm) hpb₁ hL₁
+  have hJy₀ := _root_.GlobalTheory.MBLow.thJet_of_keyAtMap W K₀ i₀ y ⟨x₀.P, x₀.g_pos, x₀.rig, x₀.rig_gen, th₀, hth₀, v₀, hv₀⟩ φ₀ hA₀ g hP h₀ m I pt p₀ ϑ' J' hc₀ hy
+  have hJy₁ := _root_.GlobalTheory.MBLow.thJet_of_keyAtMap W K₁ i₁ y ⟨x₁.P, x₁.g_pos, x₁.rig, x₁.rig_gen, th₁, hth₁, v₁, hv₁⟩ φ₁ hA₁ g hP h₁ m I pt p₁ ϑ' J' hc₁ hy
+  obtain ⟨a₀, M₀, ha₀, hth0, hv0⟩ := _root_.GlobalTheory.MBLow.TwoData.exists_scalar_matrix K₀ x₀.P th₀ x₀.th v₀ x₀.v hth₀ x₀.th_ne hv₀ x₀.basis
+  obtain ⟨a₁, M₁, ha₁, hth1, hv1⟩ := _root_.GlobalTheory.MBLow.TwoData.exists_scalar_matrix K₁ x₁.P th₁ x₁.th v₁ x₁.v hth₁ x₁.th_ne hv₁ x₁.basis
   obtain ⟨hu0ϑ, c₀, hu0J⟩ := thJet_frameChange_castDim x₀ th₀ hth₀ v₀ hv₀ a₀ M₀ hth0 hv0 h₀ m hm p₀ _ _ _ _ hJy₀ hJ₀
   obtain ⟨hu1ϑ, c₁, hu1J⟩ := thJet_frameChange_castDim x₁ th₁ hth₁ v₁ hv₁ a₁ M₁ hth1 hv1 h₁ m hm p₁ _ _ _ _ hJy₁ hJ₁
-  have hind := GlobalTheory.T.thetaConstants_firstJets_linearIndependent K₁ ⟨x₁.P, x₁.g_pos, x₁.rig, x₁.rig_gen, th₁, hth₁, v₁, hv₁⟩ g h₁ m hm hm3 I p₁ hsurj _ _ hJy₁
+  have hind := _root_.GlobalTheory.MBLow.TRank.main K₁ ⟨x₁.P, x₁.g_pos, x₁.rig, x₁.rig_gen, th₁, hth₁, v₁, hv₁⟩ g h₁ m hm hm3 I p₁ hsurj _ _ hJy₁
   obtain ⟨u, hu⟩ := hFam W y
   have hκy₀ := hu K₀ i₀ ⟨x₀.P, x₀.g_pos, x₀.rig, x₀.rig_gen, th₀, hth₀, v₀, hv₀⟩ ⟨φ₀, hA₀⟩
   have hκy₁ := hu K₁ i₁ ⟨x₁.P, x₁.g_pos, x₁.rig, x₁.rig_gen, th₁, hth₁, v₁, hv₁⟩ ⟨φ₁, hA₁⟩

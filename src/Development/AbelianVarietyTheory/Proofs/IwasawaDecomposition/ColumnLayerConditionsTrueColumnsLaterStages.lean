@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemRangeOfPowG
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColsReLev0
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStandardColumnComparisonsTrueColumnsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStandardColumnComparisonsTrueColumns
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StdLvPr
+import Formalism.LocalToGlobal.HermitianForms.TiedTwJSym
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TieTrF
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermEqExtraTied
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TiedColumnData
@@ -62,17 +64,7 @@ end Std
 
 variable (h : I.Ok) (p : TC.Pins B X) (l : I.Laws)
 
-def tieBase (hZ : Nonempty (Later B (I.cols l))) : ColsTiedSym (I.rec7 l hZ.some) := (GlobalTheory.T.exists_standardColumnComparisons_trueColumns I h p l hZ.some).choose
-
 variable (Z : Later B (I.cols l))
-
-def tieT : ColsTiedSym (I.rec7 l Z) := colsRe Z (tieBase I h p l ⟨Z⟩)
-
-def levT : LevelData (I.rec7 l Z) := (tieT I h p l Z).herm.base.lev0
-
-def formsT (u : B.Word) : Forms0 (I.rec7 l Z) u := ((tieT I h p l Z).forms u).to0
-
-def errT : ErrX (I.rec7 l Z) := errOf (tieT I h p l Z).herm
 
 theorem dGam_cols (u : B.Word) (a : I.ι) : ((I.cols l).chTw u a).DGam = DGam B.fields.E B.R := rfl
 

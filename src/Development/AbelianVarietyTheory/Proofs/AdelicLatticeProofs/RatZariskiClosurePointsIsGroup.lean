@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AevalSumElimEqZeroOfMemPtsStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AevalSumElimEqZeroOfMemPts
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 
@@ -68,7 +68,7 @@ theorem pts_group : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Mat
     rw [(map_eq_zero_iff _ (algebraMap ℚ ℂ).injective).1 h1, map_zero]
   · intro x hx y hy f hf
     rw [← ptsGroup_ev_mul]
-    refine GlobalTheory.T.aeval_sum_elim_eq_zero_of_mem_pts' ι Γ hΓ.aut_mem _ ?_ R x hx y hy
+    refine _root_.GlobalTheory.ClassFin.aeval_sum_elim_eq_zero_of_mem_pts ι Γ hΓ.aut_mem _ ?_ R x hx y hy
     intro g hg h hh
     rw [ptsGroup_ev_mul]
     exact hf _ (hΓ.mul_mem g hg h hh)

@@ -65,13 +65,6 @@ theorem ChFam.tied_cls {E : Extra D L hT Gi Gl K Dx cX} (F : ChFam E) (e0) (μ :
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (hq : D.what₂.places.resChar w ∉ Dx.Qp μ) :
     ((F.tied e0).ker μ hU u w hg hq).cls = clsAt (F.X μ hU u w hg hq) (F.H μ hU u w hg hq) := rfl
 
-theorem ChFam.tied_cmp {E : Extra D L hT Gi Gl K Dx cX} (F : ChFam E) (e0) (μ : D.what₂.Tup) (hU : DV.Used D μ) (u : D.what₂.Word)
-    (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (hq : D.what₂.places.resChar w ∉ Dx.Qp μ)
-    (j : ℕ) (hj : j + 1 ≤ D.R.m) (x : ((E.tw.fm u μ).lat (j + 1)).V) :
-    ((F.tied e0).ker μ hU u w hg hq).cmp (j + 1) x =
-      ((F.I μ hU u w hg hq).at' j hj).st.cmpJ (E.cmp.embW u w hg) (((F.I μ hU u w hg hq).at' j hj).eps.symm x) :=
-  kaAt_cmp (F.X μ hU u w hg hq) (F.H μ hU u w hg hq) hT j hj x
-
 end Formalism.MainNotions.G.KAat
 
 end

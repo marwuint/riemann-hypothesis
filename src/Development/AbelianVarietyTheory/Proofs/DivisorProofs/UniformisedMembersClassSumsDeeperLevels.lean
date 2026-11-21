@@ -3,21 +3,22 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Definitions.Divisors.LamRange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSetupStalkNoetherianNormalFractionRing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaSetupTowerLargeRatioStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCentredPureFiniteExtensionDeeperModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaSetupTowerBaseChangeMemberStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividingLabelAndShiftsPersistDeeperModelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaSetupTowerLargeRatio
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCentredPureFiniteExtensionDeeperModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaSetupTowerBaseChangeMember
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividingLabelAndShiftsPersistDeeperModel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpMapStalkHomFromSpecStalk
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPrimitiveRootMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeEquivTwoMembersSamePointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeEquivTwoMembersSamePoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmulEighthPowerDiag
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividingThetaConstantsGenerateIntegralTorsionLabStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemberTermsIntegralUnitShiftStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividingThetaConstantsGenerateIntegralTorsionLab
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemberTermsIntegralUnitShift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveLabelHomLatticeModLevelThetaMember
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteGaloisFractionRingOfIsFractionRingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteGaloisFractionRingOfIsFractionRing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeAutomorphismCongrOneModDetEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClassSumOfAdicSumUnitSmulTermsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdicSumMaximalIdealUniqueNoetherianLocalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClassSumOfAdicSumUnitSmulTerms
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMemberP
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdicSumMaximalIdealUniqueNoetherianLocal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDeeperPointIntegralClosureGaloisStalkStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantBoundedByShortestVector
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsWeightZeroSectionUnitIntegralTorsionPoint
@@ -102,7 +103,7 @@ theorem classSums_deeper : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd
   obtain ⟨hdiv, hrange, hmem⟩ := hgeo
   choose 𝔪 h𝔪 using hmem
   intro y₀ N₀
-  obtain ⟨𝔗, hN₀⟩ := GlobalTheory.T.exists_thetaSetup_tower_large_ratio g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT X₁ z₁ act hact N₀
+  obtain ⟨𝔗, hN₀⟩ := _root_.GlobalTheory.Poinc.Sep.TowerLarge.exists_tower_ge g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT X₁ z₁ act hact N₀
   letI : Algebra (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ := (X₁.M.stalkHom z₁).toAlgebra
   obtain ⟨-, hfr, -, -⟩ := GlobalTheory.Poinc.stalk_isNoetherian_normal_fractionRing g n F W Z i X₁ z₁
   haveI := hfr
@@ -111,17 +112,17 @@ theorem classSums_deeper : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd
   haveI := 𝔗.fd
   haveI := 𝔗.gal
   obtain ⟨algFL, tower, hfd, hgal, hfix⟩ :=
-    GlobalTheory.T.exists_finite_galois_fractionRing_fixing (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ 𝔗.X₂.Ω₁ (fun _ => rfl)
+    _root_.GlobalTheory.finiteGalois_fractionRing_of_isFractionRing (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ 𝔗.X₂.Ω₁ (fun _ => rfl)
   obtain ⟨z₂, j₂, hz₂, hj₂, hmax, hint, hσ₂, hinj⟩ := GlobalTheory.T.exists_deeperPoint_integralClosure_galois_stalk g n F W Z i X₁ act 𝔗 z₁
   have hdiv₂ : ∀ w, 𝔗.p w = z₁ → 𝔗.X₂.M.Div 𝔗.X₂.S.th (𝔗.lam x₀) w := fun w hw =>
-    (GlobalTheory.T.dividing_label_and_shifts_persist_deeper_model g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT X₁ z₁ act hact 𝔗 w hw x₀ hdiv (Φ.V y₀) (Φ.ev y₀)
+    (_root_.GlobalTheory.Poinc.Sep.div_lam_and_lam_mem_HH g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT X₁ z₁ act hact 𝔗 w hw x₀ hdiv (Φ.V y₀) (Φ.ev y₀)
       (Φ.X y₀) (Φ.m y₀) (Φ.t y₀) (Φ.δ y₀) (𝔪 y₀)).1
   have hlab : ∀ c, 𝔗.lam (lab c) ∈ 𝔗.X₂.S.HH 𝔗.X₂.M z₂ := fun c =>
-    (GlobalTheory.T.dividing_label_and_shifts_persist_deeper_model g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT X₁ z₁ act hact 𝔗 z₂ hz₂ x₀ hdiv (Φ.V y₀) (Φ.ev y₀)
+    (_root_.GlobalTheory.Poinc.Sep.div_lam_and_lam_mem_HH g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT X₁ z₁ act hact 𝔗 z₂ hz₂ x₀ hdiv (Φ.V y₀) (Φ.ev y₀)
       (Φ.X y₀) (Φ.m y₀) (Φ.t y₀) (Φ.δ y₀) (𝔪 y₀)).2 _ (by rw [← SetLike.mem_coe, ← hrange]; exact ⟨c, rfl⟩)
   obtain ⟨f₂, hf₂O, hf₂per, hf₂sum⟩ :=
     GlobalTheory.Poinc.Sep.ClassSumFun.exists_classSum_fun g n F W Z i 𝔗.X₂ z₂ 𝔗.act₂ (𝔗.lam x₀) (hdiv₂ z₂ hz₂)
-  obtain ⟨eps, hsbc⟩ := GlobalTheory.T.exists_thetaSetupTower_baseChange_member g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT X₁ z₁ act hact 𝔗 z₂ hz₂ x₀ hdiv
+  obtain ⟨eps, hsbc⟩ := _root_.GlobalTheory.exists_baseChange_member_of_tower g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT X₁ z₁ act hact 𝔗 z₂ hz₂ x₀ hdiv
 
   set L₂ := 𝔗.X₂.S.r * 𝔗.X₂.S.N with hL₂
   have hL₂pos : 1 ≤ L₂ := Nat.mul_pos 𝔗.X₂.S.r_pos (by have := 𝔗.X₂.S.N_ge; omega)
@@ -142,7 +143,7 @@ theorem classSums_deeper : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd
   have hext : ∀ y, ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsLocalRing V') (io : Φ.V y →+* V')
       (ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V'), IsCN V' ∧ Function.Injective io ∧ io.Finite ∧ IsLocalHom io ∧
         (∀ I : Ideal (Φ.V y), (I.map io).comap io = I) ∧ 𝔗.Ext (Φ.ev y) io ev₂ := fun y =>
-    GlobalTheory.T.exists_centred_pure_finite_extension_deeper_model g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT X₁ z₁ act hact 𝔗 z₂ hz₂ (Φ.V y) (Φ.ev y) (Φ.cn y)
+    _root_.GlobalTheory.Poinc.Sep.exists_centred_ext_tower g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT X₁ z₁ act hact 𝔗 z₂ hz₂ (Φ.V y) (Φ.ev y) (Φ.cn y)
       (Φ.ev_loc y) (𝔪 y).reg
   choose V' iR iD iL io ev₂ hcn hioi hiof hiol hioI hExt using hext
   have hmem₂ := fun y => hsbc (Φ.V y) (Φ.ev y) (Φ.X y) (Φ.m y) (Φ.t y) (Φ.δ y) (𝔪 y) Φ.Q lab (Φ.term y) (h𝔪 y)
@@ -151,8 +152,8 @@ theorem classSums_deeper : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd
 
   let M₂ := fun y => 𝔪₂ y (ev₂ y) (hExt y)
   have hyy := fun y => GlobalTheory.Poinc.Sep.Labels.yy_hom g n F W Z i 𝔗.X₂ z₂ 𝔗.act₂ (V' y) (ev₂ y) (Φ.X y) (Φ.m y) _ _ (M₂ y)
-  have hint₂ := fun y => GlobalTheory.T.dividingThetaConstants_generate_integral_torsion_labels g n F W Z i 𝔗.X₂ z₂ 𝔗.act₂ (𝔗.lam x₀) (hdiv₂ z₂ hz₂) (V' y) (ev₂ y) (Φ.X y) (Φ.m y) _ _ (M₂ y)
-  have hK := fun y => GlobalTheory.T.exists_lattice_equiv_two_members_same_point g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT 𝔗.X₂ z₂ 𝔗.act₂ 𝔗.isAct (V' y₀) (ev₂ y₀)
+  have hint₂ := fun y => _root_.GlobalTheory.Poinc.Sep.mem_HH_iff_yy_zero g n F W Z i 𝔗.X₂ z₂ 𝔗.act₂ (𝔗.lam x₀) (hdiv₂ z₂ hz₂) (V' y) (ev₂ y) (Φ.X y) (Φ.m y) _ _ (M₂ y)
+  have hK := fun y => _root_.GlobalTheory.Poinc.Sep.Cmp.exists_latEquiv_of_members g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT 𝔗.X₂ z₂ 𝔗.act₂ 𝔗.isAct (V' y₀) (ev₂ y₀)
     (Φ.X y₀) (Φ.m y₀) _ _ (M₂ y₀) (V' y) (ev₂ y) (Φ.X y) (Φ.m y) _ _ (M₂ y)
   choose K hKlin hKyy using hK
   choose k₀ hk₀ using fun y => GlobalTheory.smul_eighth_power_diag _ _ (K y) (hKlin y)
@@ -203,7 +204,7 @@ theorem classSums_deeper : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd
         (fun mu c => ev₂ y zt ^ eps (lab c) * io y (Φ.term y mu c)) (h𝔪₂T y (ev₂ y) (hExt y) zt hzt) c (aκ κ) _
         (hkk y _ κ (haκ κ)) h hh
       let e : (V' y)ˣ := hzu.unit ^ eps (lab c)
-      have hcs := GlobalTheory.T.isClassSum_of_adicSum_unit_smul_terms ℤ id g 8 W _ Φ y L₂ hL₂pos (fun v => kk y (κ v)) c (V' y) (io y) e (ev₂ y h)
+      have hcs := _root_.GlobalTheory.Poinc.isClassSum_of_sumI ℤ id g 8 W _ Φ y L₂ hL₂pos (fun v => kk y (κ v)) c (V' y) (io y) e (ev₂ y h)
         (by convert hs using 3; simp [e])
       have hj : j₂ ⟨Fv (aκ κ) c, hFB _ _⟩ = zt ^ ((M - 1) * eps (lab c)) * h := 𝔗.X₂.M.stalkHom_injective z₂ (by
         rw [hj₂, map_mul, map_pow, hzt, hh])
@@ -248,7 +249,7 @@ theorem classSums_deeper : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd
       congr 1
       exact 𝔗.X₂.M.stalkHom_injective z₂ (by show 𝔗.X₂.M.stalkHom z₂ (σ₂ x) = _; rw [hσ₂', hx])
     have hext₀ := hExtσ (Φ.ev y₀) (io y₀) (ev₂ y₀) (hExt y₀)
-    obtain ⟨Kσ, hKσlin, hKσyy⟩ := GlobalTheory.T.exists_lattice_equiv_two_members_same_point g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT 𝔗.X₂ z₂ 𝔗.act₂ 𝔗.isAct
+    obtain ⟨Kσ, hKσlin, hKσyy⟩ := _root_.GlobalTheory.Poinc.Sep.Cmp.exists_latEquiv_of_members g hg n hn hodd F Z z i hP hNZ hiz hD W hW hT 𝔗.X₂ z₂ 𝔗.act₂ 𝔗.isAct
       (V' y₀) (ev₂ y₀) (Φ.X y₀) (Φ.m y₀) _ _ (M₂ y₀) (V' y₀) ((ev₂ y₀).comp σ₂.toRingHom) (Φ.X y₀) (Φ.m y₀) _ _
       (𝔪₂ y₀ ((ev₂ y₀).comp σ₂.toRingHom) hext₀)
     obtain ⟨gk, hgk⟩ := GlobalTheory.smul_eighth_power_diag _ _ Kσ hKσlin
@@ -280,8 +281,8 @@ theorem classSums_deeper : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd
     have hFσ : ∀ a c, σ' (Fv a c) = Fv (𝔗.gl σ' a) c := by
       obtain ⟨Vr, _, _, _, evr, Xr, _, mr, tr, δr, hevr, ⟨𝔪r⟩⟩ := GlobalTheory.Poinc.Sep.exists_uMem_injective g hg n hn hodd F Z z i
         hP hNZ hiz hD W hW hT X₁ z₁ act hact
-      obtain ⟨ur, hur, -, -⟩ := GlobalTheory.T.exists_member_terms_integral_unit_shift g n F W Z i X₁ z₁ act x₀ hdiv Vr evr Xr mr tr δr 𝔪r Φ.Q lab hrange
-      obtain ⟨Vr', _, _, _, ior, evr₂, hcnr, hior, hiorf, -, -, hExtr⟩ := GlobalTheory.T.exists_centred_pure_finite_extension_deeper_model g hg n hn hodd F Z z i hP hNZ hiz
+      obtain ⟨ur, hur, -, -⟩ := _root_.GlobalTheory.Poinc.IntTerm.exists_terms g n F W Z i X₁ z₁ act x₀ hdiv Vr evr Xr mr tr δr 𝔪r Φ.Q lab hrange
+      obtain ⟨Vr', _, _, _, ior, evr₂, hcnr, hior, hiorf, -, -, hExtr⟩ := _root_.GlobalTheory.Poinc.Sep.exists_centred_ext_tower g hg n hn hodd F Z z i hP hNZ hiz
         hD W hW hT X₁ z₁ act hact 𝔗 z₂ hz₂ Vr evr 𝔪r.cn 𝔪r.loc 𝔪r.reg
       have hinjr : Function.Injective evr₂ := hinj Vr evr Vr' ior evr₂ hevr hior hExtr
       obtain ⟨𝔫, h𝔫T, h𝔫G⟩ := hsbc Vr evr Xr mr tr δr 𝔪r Φ.Q lab _ hur Vr' ior hcnr hior hiorf
@@ -309,7 +310,7 @@ theorem classSums_deeper : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd
       have hu1 : (evr₂ (σ₂ zt)) ^ M = 1 := by rw [← map_pow, ← map_pow, hztM, map_one, map_one]
       have hu2 : (evr₂ zt) ^ M = 1 := by rw [← map_pow, hztM, map_one]
       simp only [key _ hu1, key _ hu2] at t1 t2
-      have heq := GlobalTheory.T.adicSum_maximalIdeal_unique_noetherian_local Vr' _ _ _ _ t1 t2
+      have heq := _root_.GlobalTheory.Poinc.sumI_maximalIdeal_unique Vr' _ _ _ _ t1 t2
       have heq' : σ₂ (zt ^ ((M - 1) * eps (lab c)) * h) = zt ^ ((M - 1) * eps (lab c)) * h' :=
         hinjr (by simpa only [map_mul, map_pow, smul_eq_mul] using heq)
       have := congrArg (𝔗.X₂.M.stalkHom z₂) heq'

@@ -46,9 +46,6 @@ variable {p : ℕ} [Fact p.Prime] {σ : Type*}
 def add (l ex : PowerSeries ℂ_[p]) (a b : MvPowerSeries σ ℂ_[p]) : MvPowerSeries σ ℂ_[p] :=
   PowerSeries.subst (PowerSeries.subst a l + PowerSeries.subst b l) ex
 
-def sub (l ex : PowerSeries ℂ_[p]) (a b : MvPowerSeries σ ℂ_[p]) : MvPowerSeries σ ℂ_[p] :=
-  PowerSeries.subst (PowerSeries.subst a l - PowerSeries.subst b l) ex
-
 def mulBy (l ex : PowerSeries ℂ_[p]) (c : ℂ_[p]) (a : MvPowerSeries σ ℂ_[p]) : MvPowerSeries σ ℂ_[p] :=
   PowerSeries.subst (MvPowerSeries.C c * PowerSeries.subst a l) ex
 

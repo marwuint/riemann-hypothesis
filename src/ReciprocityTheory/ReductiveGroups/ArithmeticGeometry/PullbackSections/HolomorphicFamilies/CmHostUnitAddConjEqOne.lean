@@ -1,4 +1,6 @@
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.ChartValueIntegralGood
+import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
+import Formalism.LocalToGlobal.ProjectiveLattices.ChartDirectionsIntegral
+import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
 
@@ -86,10 +88,6 @@ theorem cmHostUnit_add_conj_eq_one : H.w0 + H.bar H.w0 = 1 := by
   exact mul_left_cancel₀ two_ne_zero h2
 
 end Host
-
-section RQ
-
-end RQ
 
 section Letters
 

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameDiv
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.SncChartBaseChange
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.SncChartDescendsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniversallyClosedOpenContainingFibreContainsNearStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniversallyClosedOpenContainingFibreContainsNear
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.LogPair
@@ -21,7 +21,7 @@ theorem GlobalTheory.LogPair.relSnc_spread : ∀ (R k : Type) [CommRing R] [Fiel
     obtain ⟨C, hC⟩ := GlobalTheory.T.snc_chart_descends R k φ X X' f f' π d s L σ C' y hpb hC'
     show π y ∈ W
     exact (Opens.mem_iSup).2 ⟨C, hC⟩
-  obtain ⟨a, ha, h⟩ := GlobalTheory.T.universallyClosed_open_containing_fibre_contains_nearby R k φ X X' f f' π W hpb hW
+  obtain ⟨a, ha, h⟩ := _root_.GlobalTheory.tube_of_universallyClosed R k φ X X' f f' π W hpb hW
   refine ⟨a, ha, fun T _ χ hχ Z g ρ hρ => ?_⟩
   have hZ := h T χ hχ Z g ρ hρ
   refine ⟨fun i => LB.isLB_pull (hL i) ρ, fun z => ?_⟩

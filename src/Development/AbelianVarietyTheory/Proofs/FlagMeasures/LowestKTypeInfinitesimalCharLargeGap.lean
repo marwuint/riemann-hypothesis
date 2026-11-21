@@ -3,12 +3,16 @@ import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.Eigenfunctio
 import Formalism.RealPlaceAnalysis.FinalF
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InnerRepK
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TraceTransposePow
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PhiPositiveDefiniteCholeskyFormulaStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PhiPositiveDefiniteCholeskyFormula
+import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiEntriesCentreEigenfunctionsDiscreteSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiPolarDecompositionEquivarianceStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiPolarDecompositionEquivariance
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.KTypeExtendsHolomorphicComplexifiedKStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GelfandInvariantsScalarOnLowestKTypeCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeCompressionFormulaOfStrictLowestKTypeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeCompressionFormulaOfStrictLowestKType
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ActSingleNeZero
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.FirstSlotSliceSlotMixedCasimirZero
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IsCompactInvariantOrthogonalInf
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeMultiplicityOneLargeGapsStatement
 
 open MeasureTheory Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.DSId
@@ -106,14 +110,14 @@ lemma compress_of_formula (hF : FormulaGap) {ε : Fin n → Bool} {lam : Fin n �
     rw [Topology.IsInducing.subtypeVal.continuousOn_iff]
     exact h1.congr (fun m hm => hτσ m hm y)
   have hF' := hF n ε lam H σ hlam hσ h hgap hh (w : H) hw X hX (u : H) u.2 (σ (star k) (v : H)) hv'mem
-  have hP := psEntry GlobalTheory.T.phi_positive_definite_cholesky_formula n ε lam (lowKSub ε lam σ) τ w hfin hcontτ
+  have hP := psEntry _root_.GlobalTheory.Dec.phiPos n ε lam (lowKSub ε lam σ) τ w hfin hcontτ
     (NormedSpace.exp (X.map star)) (exp_posDef hXb) u ⟨σ (star k) (v : H), hv'mem⟩
   have hC := muConj n ε (fun m => Phi lam (m⁻¹ * NormedSpace.exp (X.map star) * m) *
     (⟪(⟨σ (star k) (v : H), hv'mem⟩ : lowKSub ε lam σ), τ m w⟫_ℂ * ⟪τ m w, u⟫_ℂ))
   try simp only [] at hC
   have hconj : (k * NormedSpace.exp X).map star = k.map star * NormedSpace.exp (X.map star) := by
     rw [map_star_mul, exp_star]
-  rw [hconj, (GlobalTheory.T.psi_polar_decomposition_equivariance n ε lam (lowKSub ε lam σ) τ w hlam hτ).1 _ hkb _ hXb,
+  rw [hconj, (_root_.GlobalTheory.Dec.psiPolar n ε lam (lowKSub ε lam σ) τ w hlam hτ).1 _ hkb _ hXb,
     ContinuousLinearMap.comp_apply, hmul k (K_UJ hk) _ hexp, ContinuousLinearMap.comp_apply]
   have e1 : ⟪(v : H), σ k (σ (NormedSpace.exp X) (u : H))⟫_ℂ =
       ⟪σ (star k) (v : H), σ (NormedSpace.exp X) (u : H)⟫_ℂ := by
@@ -132,7 +136,7 @@ lemma compress_of_formula (hF : FormulaGap) {ε : Fin n → Bool} {lam : Fin n �
   have hmb := K_star hm
   rw [Submodule.coe_inner, Submodule.coe_inner, hτσ _ hmb, map_star_star]
   rw [K_inv hmb, K_inv hm, map_star_ct, ← exp_star, ← map_star_mul, ← map_star_mul, Phi_star]
-  have hpos := (GlobalTheory.T.phi_positive_definite_cholesky_formula n lam _ (posDef_conjTranspose_mul_exp_mul hm hX)).2.1
+  have hpos := (_root_.GlobalTheory.Dec.phiPos n lam _ (posDef_conjTranspose_mul_exp_mul hm hX)).2.1
   have him : (Phi lam ((toMK k')ᴴ * NormedSpace.exp X * toMK k')).im = 0 := by
     have h2 := (Complex.lt_def.mp hpos).2
     rw [Complex.zero_im] at h2
@@ -215,7 +219,7 @@ theorem lowChar_of_formula (hF : FormulaGap) (n : ℕ) (ε : Fin n → Bool) (la
   rw [(hc s hs y).2 m g hg, hcm m]
 
 theorem lowChar : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsHCParam lam → IsDS ε lam σ → ∀ h : ℝ, GapAtLeast ε lam h → 120 * (n : ℝ) * ((rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h → ∀ s ∈ lowKSub ε lam σ, ∀ y : H, IsZEigen ε (fun a => (lam a : ℂ)) (fun g => ⟪y, σ g s⟫_ℂ) := fun n ε lam H _ _ σ hlam hσ h hgap hh =>
-  lowChar_of_formula GlobalTheory.T.lowestKType_compressionFormula_of_strictLowestKType n ε lam H σ hlam hσ h hgap hh
+  lowChar_of_formula _root_.GlobalTheory.Jet.FormGapFree.formulaGap n ε lam H σ hlam hσ h hgap hh
     (GlobalTheory.T.lowestKType_isKType_of_large_gaps n ε lam H σ hlam hσ (fun a b hab => two_mul_lt_gap hgap hh a b hab))
 
 end GlobalTheory.DSId.LowCharGap

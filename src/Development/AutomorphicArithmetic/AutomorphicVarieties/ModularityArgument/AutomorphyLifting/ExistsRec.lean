@@ -20,12 +20,4 @@ theorem exRec (N : GlobalTheory.Mem.LiteralAutomorphy.LitN) (h : IsPlaceOver A w
 
 theorem exRec' (_N : GlobalTheory.Mem.LiteralAutomorphy.LitN) (h : IsPlaceOver A w) : ∃ rc, IsRecT h rc := recTExists E Ω A w h
 
-theorem exLL (H : GlobalTheory.Published.LocalLanglandsGL) (h : IsPlaceOver A w) : ∃ rc, IsRec h rc := (H.1 E Ω A w h).exists
-
-theorem exLL' (_H : True) (h : IsPlaceOver A w) : ∃ rc, IsRecT h rc := recTExists E Ω A w h
-
-theorem exists_rec_alt : type_of% @UpperTheory.V.Af.Hypotheses₂.exists_rec := by
-  intros
-  exact exRec (by assumption : UpperTheory.V.Af.Hypotheses₂).litN _
-
 end UpperTheory.V.Z.Win

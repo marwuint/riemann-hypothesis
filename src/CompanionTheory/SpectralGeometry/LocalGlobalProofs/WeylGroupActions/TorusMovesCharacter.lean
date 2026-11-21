@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.HermitianCurvature.BesselNonvanishingReduction
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BesselSquareIntegrable.SchurHpkAlt
+import Formalism.PeriodIntegrals.BesselL2FixAtZero
 import Formalism.PeriodIntegrals.QuotInv
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
 

@@ -32,21 +32,6 @@ def bicech (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E)
 def boxC (μ : E →ₗ[k] E' →ₗ[k] E'') (a : Finset ι → E) (b : Finset κ → E') : Finset ι × Finset κ → E'' :=
   fun x => μ (a x.1) (b x.2)
 
-variable (k ι κ E'') in
-open Classical in
-
-def crossL : (Finset ι × Finset κ → E'') →ₗ[k] (Finset (ι ×ₗ κ) → E'') :=
-  LinearMap.pi fun u => ∑ j ∈ u,
-    if Set.InjOn fstL (↑(u.filter (· ≤ j)) : Set (ι ×ₗ κ)) ∧ Set.InjOn sndL (↑(u.filter (j ≤ ·)) : Set (ι ×ₗ κ)) then
-      (idxSign fstL (u.filter (· ≤ j)) * idxSign sndL (u.filter (j ≤ ·))) •
-        LinearMap.proj (R := k) (φ := fun _ : Finset ι × Finset κ => E'') ((u.filter (· ≤ j)).image fstL, (u.filter (j ≤ ·)).image sndL)
-    else 0
-
 end Bi
-
-example : bicech (k := ℚ) (ι := Unit) (κ := Unit) (LinearMap.mul ℚ ℚ) (fun _ => ⊤) (fun _ => ⊤) =
-    ⟨bicechC (LinearMap.mul ℚ ℚ) (fun _ => ⊤) (fun _ => ⊤), biD ℚ Unit Unit ℚ⟩ := rfl
-
-example (a : Finset Unit → ℚ) (b : Finset Unit → ℚ) : boxC (LinearMap.mul ℚ ℚ) a b ({()}, {()}) = a {()} * b {()} := rfl
 
 end GlobalTheory.PD

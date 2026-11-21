@@ -151,25 +151,4 @@ theorem inner_toL2_eq_theta_pairing (ε : Fin n → Bool) {F G : Matrix (Fin n) 
   simp only [h1, h2, RCLike.inner_apply]
   exact mul_comm _ _
 
-theorem eq_on_unitary_of_toL2_eq (ε : Fin n → Bool) {F G : Matrix (Fin n) (Fin n) ℂ → ℂ}
-    (hFc : ContinuousOn F (UJset ε)) (hGc : ContinuousOn G (UJset ε))
-    (hF : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε))
-    (hG : MemLp (fun g : Formalism.REAL.UJ ε => G (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε))
-    (h : toL2 ε F = toL2 ε G) : ∀ g ∈ UJset ε, F g = G g := by
-  have h' := h
-  rw [toL2_eq_memLp_toLp ε hF, toL2_eq_memLp_toLp ε hG] at h'
-  have hae := (MemLp.toLp_eq_toLp_iff hF hG).mp h'
-  have hcF : Continuous (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) :=
-    hFc.comp_continuous (continuous_unitary_matrix ε) (unitary_matrix_mem_set ε)
-  have hcG : Continuous (fun g : Formalism.REAL.UJ ε => G (Formalism.MainNotions.S.umat g)) :=
-    hGc.comp_continuous (continuous_unitary_matrix ε) (unitary_matrix_mem_set ε)
-  haveI : MeasureTheory.Measure.IsOpenPosMeasure (Formalism.REAL.muG ε) := by
-    first
-    | infer_instance
-    | (unfold Formalism.REAL.muG; infer_instance)
-  have heq := (Continuous.ae_eq_iff_eq (Formalism.REAL.muG ε) hcF hcG).mp hae
-  intro g hg
-  obtain ⟨y, rfl⟩ := exists_unitary_preimage ε hg
-  exact congrFun heq y
-
 end ReciprocityTheory.ChartRestriction.DS

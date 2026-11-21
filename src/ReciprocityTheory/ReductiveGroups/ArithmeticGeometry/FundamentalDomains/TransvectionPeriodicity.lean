@@ -150,10 +150,6 @@ lemma cR_add (p q : X.Ψ → ℝ) : cR X (p + q) = cR X p + cR X q := by
   funext τ
   simp [cR]
 
-lemma cR_neg (p : X.Ψ → ℝ) : cR X (-p) = -cR X p := by
-  funext τ
-  simp [cR]
-
 lemma cR_zero : cR X 0 = 0 := by
   funext τ
   simp [cR]

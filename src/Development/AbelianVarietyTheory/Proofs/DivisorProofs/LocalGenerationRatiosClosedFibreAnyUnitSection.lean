@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalEnd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecRatioEqRefl
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GermRatioAgreeSelf
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -34,9 +35,6 @@ theorem exists_homog {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n :
 
 variable {X Y : Scheme.{0}}
 
-theorem gs_one {N : X.Opens} {y : X} (hy : y ∈ N) : gs (𝟙 X) y N 1 = 1 := by
-  rw [gs_eq _ _ _ hy, map_one, map_one]
-
 theorem isUnit_of_gs {N : X.Opens} (a : Γ(X, N)) (h : ∀ y ∈ N, IsUnit (gs (𝟙 X) y N a)) : IsUnit a :=
   X.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by
     have := h y hy
@@ -53,9 +51,6 @@ theorem rs_comp_cst {R : Type} [CommRing R] (q : X ⟶ Spec (CommRingCat.of R)) 
   simp only [GlobalTheory.AbLaw.cst, GlobalTheory.AbLaw.rs, RingHom.comp_apply]
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
-
-example {U : X.Opens} (f : Γ(X, U)) (a : Γ(X, U)) :
-    algebraMap Γ(X, U) Γ(X, X.basicOpen f) a = GlobalTheory.AbLaw.rs X (X.basicOpen_le f) a := rfl
 
 end GlobalTheory.Mum.AnySec
 

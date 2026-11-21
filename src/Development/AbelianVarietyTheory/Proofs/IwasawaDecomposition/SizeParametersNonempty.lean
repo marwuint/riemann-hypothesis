@@ -5,7 +5,14 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsExplici
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowNumAt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ForcedContentEqOverSameChoices
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResCharConj
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IndicesPairingLengthsVanishOffTwistedPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IndicesPairingLengthsVanishOffTwistedPlaces
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowsAre
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsIsBIffCoreB
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.WeilRepresentationUnitaryPair
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DsExistsOfDiscreteSeriesExists
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HarishChandraFinite
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
+import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 open GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Col2
@@ -16,28 +23,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 
 namespace GlobalTheory.HeightCounting.Up.SizePar
-
-theorem exists_params_atMem (hL : GlobalTheory.Published.LocalLanglandsGL) :
-    AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => ∃ L : SizeData₂ (w.D Z), Nonempty (ParameterChoice' (w.D Z) L) := by
-  refine (evG_of_ev GlobalTheory.PrimIn.AtData.ev_params).imp fun K _ _ _ _ hK => ?_
-  refine ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp,
-    fun B f T hO _ _ _ _ w Z Wt p0 t nch n xd c _ _ _ => ?_⟩
-  obtain ⟨L, -, -, hp, -⟩ := hK (w.st Z) hO t.etaF fun v hv j h1 h2 => by
-    have key : ∀ v', (w.D Z).what₂.muAt v' = (w.D Z).what₂.mu0 → v' ∉ Wt := by
-      intro v' he hw
-      have he' : (w.st Z).W.muAt v' = (w.st Z).C.mu0 := he
-      rw [t.mu.on v' hw] at he'
-      have h1 := t.mu.tw v'
-      rw [he', t.mu.mu0] at h1
-      exact (TwFin.tw_fin B f T).2.1 v' h1.symm
-    change (w.D Z).what₂.Aj j v = 0
-    replace hv : (w.D Z).what₂.muAt v = (w.D Z).what₂.mu0 := hv
-    have a := t.untw v (key v hv) j h1 h2
-    have b := t.untw _ (key _ (((w.D Z).what₂.muAt_conj v).trans hv)) j h1 h2
-    unfold Formalism.BasicNotions.Rows.Data.Aj
-    rw [hv, a.1, a.2, b.1]
-    rfl
-  exact ⟨L, hp⟩
 
 end GlobalTheory.HeightCounting.Up.SizePar
 
@@ -111,7 +96,7 @@ theorem aj_zero_at_state : StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : 
     refine Eq.trans ?_ e1.symm
     refine P.exact.trans ?_
     rw [GlobalTheory.Mem.Top.Bl.RowWt.forcedContent_eq_over_same_choices K B f T w P.Z₀ x.o.Z P.kap (P.q.kap x.o.η x.o.hη x.o.V x.o.S x.o.N x.o.G)]
-  have H := GlobalTheory.T.indices_pairingLengths_vanish_off_twistedPlaces K B f T w hO hF ⟨hS.1, ⟨P⟩⟩ P x hex
+  have H := _root_.GlobalTheory.Mem.R3.Rw.St.idx_zero_off_twisted_anyEta K B f T w hO hF ⟨hS.1, ⟨P⟩⟩ P x hex
   have key : ∀ v', (w.D x.o.Z).what₂.muAt v' = (w.D x.o.Z).what₂.mu0 → v' ∉ P.Wt := by
     intro v' he hw
     have he' : P.q.W₀.muAt v' = w.C.mu0 := he
@@ -131,12 +116,6 @@ theorem exists_params_allSt : AllSt fun _ _ _ _ _ _ x => (∃ L : SizeData₂ (D
     ∀ Lc : LocAll (lay0 (Dof x)), ∃ L : SizeData₂ (withLoc Lc), Nonempty (ParameterChoice' (withLoc Lc) L) :=
   ((stepW_start_ev ev_params_withLoc).and aj_zero_at_state).trans
     (StepW.of_all fun _ _ _ _ w hO _ H P x => H.1 (w.st x.o.Z) hO x.etaF (H.2 P x))
-
-theorem exists_params :
-    (∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => ∃ L : SizeData₂ (w.D Z), Nonempty (ParameterChoice' (w.D Z) L)) ∧
-      AllSt fun _ _ _ _ _ _ x => (∃ L : SizeData₂ (Dof x), Nonempty (ParameterChoice' (Dof x) L)) ∧
-        ∀ Lc : LocAll (lay0 (Dof x)), ∃ L : SizeData₂ (withLoc Lc), Nonempty (ParameterChoice' (withLoc Lc) L) :=
-  ⟨exists_params_atMem, exists_params_allSt⟩
 
 end GlobalTheory.HeightCounting.Up.SizePar
 

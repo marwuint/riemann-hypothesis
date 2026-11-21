@@ -196,31 +196,6 @@ section Summable
 
 variable {K : Type*} [Field K] [NumberField K]
 
-theorem exists_tendsto_sum_card_absNorm_div :
-    ∃ l : ℝ, Tendsto (fun n : ℕ ↦ (∑ k ∈ Finset.Icc 1 n,
-      (Nat.card {I : Ideal (𝓞 K) // absNorm I = k} : ℝ)) / n) atTop (𝓝 l) := by
-  refine ⟨_, ((Ideal.tendsto_norm_le_div_atTop₀ K).comp tendsto_natCast_atTop_atTop).congr
-    fun n ↦ ?_⟩
-  simp only [Function.comp_apply, Nat.cast_le, ← Nat.cast_sum]
-  congr
-  rw [← add_left_inj 1, ← card_norm_le_eq_card_norm_le_add_one,
-    show Finset.Icc 1 n = Finset.Ioc 0 n from Finset.Icc_succ_left_eq_Ioc _ _,
-    show 1 = Nat.card {I : Ideal (𝓞 K) // absNorm I = 0} by simp [Ideal.absNorm_eq_zero_iff],
-    Finset.sum_Ioc_add_eq_sum_Icc (n.zero_le),
-    ← Finset.card_preimage_eq_sum_card_image_eq (fun k _ ↦ finite_setOfPred_absNorm_eq k)]
-  simp [Set.coe_eq_subtype]
-
-theorem LSeriesSummable_card_absNorm {s : ℂ} (hs : 1 < s.re) :
-    LSeriesSummable (fun n ↦ (Nat.card {I : Ideal (𝓞 K) // absNorm I = n} : ℂ)) s := by
-  obtain ⟨l, hl⟩ := exists_tendsto_sum_card_absNorm_div (K := K)
-  refine LSeriesSummable_of_sum_norm_bigO (r := 1) ?_ zero_le_one hs
-  have h1 := (hl.isBigO_one ℝ).mul (Asymptotics.isBigO_refl (fun n : ℕ ↦ (n : ℝ)) atTop)
-  refine h1.congr' ?_ ?_
-  · filter_upwards [eventually_ne_atTop 0] with n hn
-    simp only [Complex.norm_natCast]
-    rw [div_mul_cancel₀ _ (Nat.cast_ne_zero.2 hn)]
-  · exact Eventually.of_forall fun n ↦ by simp
-
 theorem summable_absNorm_rpow_inv {σ : ℝ} (hσ : 1 < σ) :
     Summable fun I : Ideal (𝓞 K) ↦ ((absNorm I : ℝ) ^ σ)⁻¹ :=
   _root_.UpperTheory.Reformulated.B.Qp7.summable_absNorm_rpow_inv hσ
@@ -400,36 +375,12 @@ theorem hasSum_LFunction {s : ℂ} (hs : 1 < s.re) :
   rw [χ.LFunction_eq_tsum_coeffTerm hs, hfun]
   exact ((χ.summable_norm_coeffTerm hs).of_norm).hasSum
 
-theorem hasSum_LFunction_coprime {s : ℂ} (hs : 1 < s.re) :
-    HasSum (fun I : {I : Ideal (𝓞 K) // I ≠ ⊥ ∧ IsCoprime I χ.conductor} ↦
-      (χ.idealCharacter ⟨idealUnit I.1 I.2.1, idealUnit_mem_idealsPrimeTo I.2.1 I.2.2⟩ : ℂ) *
-        (absNorm (I : Ideal (𝓞 K)) : ℂ) ^ (-s)) (χ.LFunction s) := by
-  have h := χ.hasSum_LFunction hs
-  rw [← hasSum_subtype_iff_of_support_subset (s := {I | I ≠ ⊥ ∧ IsCoprime I χ.conductor})] at h
-  · have h2 : HasSum (fun I : {I : Ideal (𝓞 K) // I ≠ ⊥ ∧ IsCoprime I χ.conductor} ↦
-        χ.coeff I.1 * (absNorm I.1 : ℂ) ^ (-s)) (χ.LFunction s) := h
-    have hfun : (fun I : {I : Ideal (𝓞 K) // I ≠ ⊥ ∧ IsCoprime I χ.conductor} ↦
-        (χ.idealCharacter ⟨idealUnit I.1 I.2.1, idealUnit_mem_idealsPrimeTo I.2.1 I.2.2⟩ : ℂ) *
-          (absNorm (I : Ideal (𝓞 K)) : ℂ) ^ (-s)) =
-        fun I : {I : Ideal (𝓞 K) // I ≠ ⊥ ∧ IsCoprime I χ.conductor} ↦
-          χ.coeff I.1 * (Ideal.absNorm I.1 : ℂ) ^ (-s) :=
-      funext fun I ↦ by rw [χ.coeff_of_mem I.2]
-    rw [hfun]
-    exact h2
-  · intro I hI
-    by_contra h'
-    exact hI (by simp only [χ.coeff_of_not h', zero_mul])
-
 theorem abscissaOfAbsConv_LCoeff_le : LSeries.abscissaOfAbsConv χ.LCoeff ≤ 1 :=
   LSeries.abscissaOfAbsConv_le_of_forall_lt_LSeriesSummable fun y hy ↦
     χ.LSeriesSummable_LCoeff (by simpa using hy)
 
 theorem differentiableOn_LFunction : DifferentiableOn ℂ χ.LFunction {s | 1 < s.re} :=
   (LSeries_differentiableOn χ.LCoeff).mono fun s hs ↦
-    χ.abscissaOfAbsConv_LCoeff_le.trans_lt (by exact_mod_cast hs)
-
-theorem analyticOnNhd_LFunction : AnalyticOnNhd ℂ χ.LFunction {s | 1 < s.re} :=
-  (LSeries_analyticOnNhd χ.LCoeff).mono fun s hs ↦
     χ.abscissaOfAbsConv_LCoeff_le.trans_lt (by exact_mod_cast hs)
 
 theorem LFunction_hasProd_all {s : ℂ} (hs : 1 < s.re) :
@@ -439,29 +390,6 @@ theorem LFunction_hasProd_all {s : ℂ} (hs : 1 < s.re) :
   convert hasProd_euler (χ.coeffTerm s) (χ.summable_norm_coeffTerm hs) (χ.coeffTerm_bot s)
     using 3 with v
   rw [coeffTerm_apply, Complex.cpow_neg, div_eq_mul_inv]
-
-theorem LFunction_hasProd {s : ℂ} (hs : 1 < s.re) :
-    HasProd (fun v : {v : HeightOneSpectrum (𝓞 K) // ¬ v.asIdeal ∣ χ.conductor} ↦
-      (1 - (χ.idealCharacter ⟨primeIdealUnit v.1, primeIdealUnit_mem_idealsPrimeTo v.2⟩ : ℂ) *
-        (absNorm v.1.asIdeal : ℂ) ^ (-s))⁻¹) (χ.LFunction s) := by
-  have h := χ.LFunction_hasProd_all hs
-  rw [← hasProd_subtype_iff_of_mulSupport_subset
-    (s := {v : HeightOneSpectrum (𝓞 K) | ¬ v.asIdeal ∣ χ.conductor})] at h
-  · have h2 : HasProd (fun v : {v : HeightOneSpectrum (𝓞 K) // ¬ v.asIdeal ∣ χ.conductor} ↦
-        (1 - χ.coeff v.1.asIdeal * (absNorm v.1.asIdeal : ℂ) ^ (-s))⁻¹) (χ.LFunction s) := h
-    have hfun : (fun v : {v : HeightOneSpectrum (𝓞 K) // ¬ v.asIdeal ∣ χ.conductor} ↦
-        (1 - (χ.idealCharacter ⟨primeIdealUnit v.1, primeIdealUnit_mem_idealsPrimeTo v.2⟩ : ℂ) *
-          (absNorm v.1.asIdeal : ℂ) ^ (-s))⁻¹) =
-        fun v : {v : HeightOneSpectrum (𝓞 K) // ¬ v.asIdeal ∣ χ.conductor} ↦
-          (1 - χ.coeff v.1.asIdeal * (Ideal.absNorm v.1.asIdeal : ℂ) ^ (-s))⁻¹ :=
-      funext fun v ↦ by rw [χ.coeff_asIdeal_of_not_dvd v.2]
-    rw [hfun]
-    exact h2
-  · intro v hv
-    by_contra hdvd
-    have hdvd' : v.asIdeal ∣ χ.conductor := by simpa using hdvd
-    apply hv
-    simp only [χ.coeff_asIdeal_of_dvd hdvd', zero_mul, sub_zero, inv_one]
 
 theorem LFunction_ne_zero {s : ℂ} (hs : 1 < s.re) : χ.LFunction s ≠ 0 := by
   set x : HeightOneSpectrum (𝓞 K) → ℂ := fun v ↦ χ.coeffTerm s v.asIdeal with hx

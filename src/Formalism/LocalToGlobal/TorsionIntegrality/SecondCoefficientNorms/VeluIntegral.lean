@@ -9,23 +9,6 @@ def veluXs {K : Type} [Field K] {ι : Type} [Fintype ι] (A : PowerSeries K) (xs
     (xP : ι → K) (r : K) : PowerSeries K :=
   A + PowerSeries.X ^ 2 * (∑ P, (xs P - PowerSeries.C (xP P)) - PowerSeries.C r)
 
-def veluYs {K : Type} [Field K] {ι : Type} [Fintype ι] (A : PowerSeries K)
-    (xs ys : ι → PowerSeries K) (xP yP : ι → K) (r s t : K) : PowerSeries K :=
-  A - PowerSeries.X ^ 3 * ∑ P, (ys P - PowerSeries.C (yP P))
-    + PowerSeries.C s * PowerSeries.X * veluXs A xs xP r + PowerSeries.C t * PowerSeries.X ^ 3
-
-def VeluIntegral : Prop :=
-  ∀ (K : Type) [Field K] (R : Subring K) (A v : PowerSeries K) (ι : Type) [Fintype ι]
-    (xs ys : ι → PowerSeries K) (xP yP : ι → K) (al r s t : K),
-    IsOneUnit R A → (∀ P, IntPS R (xs P)) → (∀ P, IntPS R (ys P)) →
-    (∀ P, xP P ∈ R) → (∀ P, yP P ∈ R) → r ∈ R → s ∈ R → t ∈ R →
-    PowerSeries.constantCoeff v = 0 → v ≠ 0 →
-    PowerSeries.C (al ^ 2) * PowerSeries.subst v A * PowerSeries.X ^ 2 = v ^ 2 * veluXs A xs xP r →
-    PowerSeries.C (al ^ 3) * PowerSeries.subst v A * PowerSeries.X ^ 3 =
-      v ^ 3 * veluYs A xs ys xP yP r s t →
-    ∃ g : PowerSeries K, IsOneUnit R g ∧ v = PowerSeries.C al * PowerSeries.X * g ∧
-      g * veluYs A xs ys xP yP r s t = veluXs A xs xP r
-
 def VeluXFromZ : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] (e l linv A : PowerSeries K) (c0 : K) (ι : Type) [Fintype ι]
     (neg : ι → ι) (xP : ι → K) (w xs : ι → PowerSeries K) (al : K),

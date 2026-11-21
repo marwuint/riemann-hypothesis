@@ -4,7 +4,9 @@ import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.Eigenfunctio
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsClosedEmbeddingEntriesInf
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuous
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AbsOpIntIntegrable
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConvolutionSmoothL2Statement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConvolutionSmoothL2
+import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
+import Formalism.HarderNarasimhan.ShiftInvariance
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis
 open scoped InnerProductSpace ContDiff
@@ -40,7 +42,7 @@ theorem exists_contRep_bound : GlobalTheory.DSId.StrictLow → ∀ (B : RowsAut)
   have hai : Integrable a (muInf B.I) := by
     refine hvi.norm.mono' hac.aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)
     rw [norm_smul, hU.2.2.1, hw1, mul_one]
-  obtain ⟨C, hC⟩ := GlobalTheory.T.convolutionSmoothL2_of_def B B.g hn hg a hsm haS
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.SmoothGrowth.convolutionSmoothL2 B B.g hn hg a hsm haS
   refine ⟨C, fun A hA hK => ?_⟩
   have hRU := GlobalTheory.RightRegFund.rightReg_unitary_continuous B
   obtain ⟨P, hP1, hP2⟩ := GlobalTheory.absOpInt B.I.Ginf (muInf B.I) (B.I.L2 B.μf B.fund) (realRep B)

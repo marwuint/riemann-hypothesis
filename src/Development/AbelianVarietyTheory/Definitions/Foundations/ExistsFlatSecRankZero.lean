@@ -161,53 +161,13 @@ theorem parWt_eq_sum (w : Psi H → ℤ) : parWt Dw w = ∑ τ, (-w τ) • flat
   funext τ i
   simp [parWt, flatWt, Finset.sum_apply]
 
-example (τ : Psi H) (i : Fin (Dw.mult τ.1)) (j : Fin (Dw.mult (conjEmb τ.1))) (hi : (i : ℕ) < Dw.p)
-    (hj : (j : ℕ) < Dw.q) : exOf Dw (flatWt Dw τ) 0 (some ⟨τ.1, i⟩) = -1 ∧
-      exOf Dw (flatWt Dw τ) 0 (some ⟨conjEmb τ.1, j⟩) = 1 ∧ exOf Dw (flatWt Dw τ) 0 none = 0 := by
-  refine ⟨(wtOf_big _ 0 τ i hi).trans ?_, (wtOf_small _ 0 τ j hj).trans ?_, rfl⟩ <;> simp [flatWt, parWt]
-
 def different_vp (E : Type) [Field E] [NumberField E] (ℓ : ℕ) : ℚ :=
   (padicValNat ℓ (discr E).natAbs : ℚ) / (finrank ℚ E : ℚ)
-
-def flDefect_vp (Dw : Datum H) (ℓ : ℕ) : ℚ := Dw.q * (different_vp E ℓ - if ℓ = H.d then 1 else 0)
-
-theorem flDefect_vp_of_ne {ℓ : ℕ} (h : ℓ ≠ H.d) : flDefect_vp Dw ℓ = Dw.q * different_vp E ℓ := by
-  simp [flDefect_vp, h]
-
-theorem flDefect_vp_d (h : different_vp E H.d = 1 / 2) : flDefect_vp Dw H.d = -(Dw.q * different_vp E H.d) := by
-  simp only [flDefect_vp, h, if_true]; ring
-
-theorem flDefect_vp_eq_zero {ℓ : ℕ} (h : ℓ ≠ H.d) (h' : ¬ ℓ ∣ (discr E).natAbs) : flDefect_vp Dw ℓ = 0 := by
-  simp [flDefect_vp, h, different_vp, padicValNat.eq_zero_of_not_dvd h']
 
 def flDefect_vw (Dw : Datum H) (c : Coeff l) (τ : Psi H) (la : HeightOneSpectrum (𝓞 c.F)) : ℝ :=
   Dw.q * ((ord_vw la (conjDifferent (embF c τ.1)) : ℝ) - (vAdd la (H.d : c.F) : ℝ))
 
 variable {c : Coeff l}
-
-theorem flDefect_vw_eq [IsGalois ℚ E] (τ : Psi H) {ℓ : ℕ} (hℓ : ℓ.Prime) {la : HeightOneSpectrum (𝓞 c.F)}
-    (hm : (ℓ : 𝓞 c.F) ∈ la.asIdeal) :
-    flDefect_vw Dw c τ la = (vAdd la (ℓ : c.F) : ℝ) * (flDefect_vp Dw ℓ : ℝ) := by
-  have hd : (discr E).natAbs ≠ 0 := Int.natAbs_ne_zero.mpr (discr_ne_zero E)
-  have h1 := DefectSumCompare.vla_discAt (embF c τ.1) la
-  have h2 := vla_span (K := c.F) (x := ((discr E).natAbs : ℕ)) (Nat.cast_ne_zero.2 hd) la
-  have h3 := vAdd_natCast hℓ hd hm
-  have h4 : (finrank ℚ E : ℝ) * ord_vw la (conjDifferent (embF c τ.1)) =
-      padicValNat ℓ (discr E).natAbs * (vAdd la (ℓ : c.F) : ℝ) := by
-    have h5 : ((finrank ℚ E * ord_vw la (conjDifferent (embF c τ.1)) : ℕ) : ℤ) =
-        padicValNat ℓ (discr E).natAbs * vAdd la (ℓ : c.F) := by
-      rw [← h1, ← h3]; exact h2
-    have h7 := congrArg (Int.cast : ℤ → ℝ) h5
-    simpa only [Int.cast_mul, Int.cast_natCast, Nat.cast_mul] using h7
-  have h6 : (vAdd la (H.d : c.F) : ℝ) = (if ℓ = H.d then 1 else 0) * (vAdd la (ℓ : c.F) : ℝ) := by
-    split_ifs with h
-    · rw [h, one_mul]
-    · rw [vAdd_natCast hℓ H.d_prime.ne_zero hm, padicValNat.eq_zero_of_not_dvd
-        fun h' => h ((Nat.prime_dvd_prime_iff_eq hℓ H.d_prime).1 h')]
-      simp
-  have hE : (finrank ℚ E : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr finrank_pos.ne'
-  rw [flDefect_vw, h6, eq_div_of_mul_eq hE ((mul_comm _ _).trans h4), flDefect_vp, different_vp]
-  split_ifs <;> push_cast <;> ring
 
 theorem finite_flDefect_vw (τ : Psi H) : (Function.support (flDefect_vw Dw c τ)).Finite :=
   ((finite_ord (embF c τ.1)).union (finite_vAdd (K := c.F) (Nat.cast_ne_zero.2 H.d_prime.ne_zero))).subset
@@ -286,15 +246,6 @@ theorem val_idem {Z : Comp Xo c} {la : HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo
   show nval T.V e (evR Xo c (idem Z) y.1) = 0
   rw [evR_idem hy.2 y.2.1, nval_of_ne one_ne_zero]
   simp [vV]
-
-theorem val_rat {Z : Comp Xo c} {la : HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo c → EReal} (hv : v ∈ valOn Z la)
-    {f : Rul Xo c} {a : ℝ} (h : v f = a) : ∃ b : ℚ, a = b := by
-  obtain ⟨⟨q, T, io, e, ho, y, hy, η, hη, rfl⟩, rfl⟩ := hv
-  have h' : nval T.V e (evI y f) = a := h
-  by_cases h0 : evI y f = 0
-  · rw [h0, nval_zero] at h'; exact absurd h' (EReal.top_ne_coe a)
-  · rw [nval_of_ne h0, EReal.coe_eq_coe_iff] at h'
-    exact ⟨(vV T.V (evI y f) : ℚ) / e, by rw [← h']; push_cast; rfl⟩
 
 section Horiz
 
@@ -505,19 +456,7 @@ theorem val_mul_sig (f : Rul Xo c) {w} {v : Rul Xo c → EReal} (hv : v ∈ valO
     v (f * s.sig) = v f + ((δ w + s.rho_vw w : ℝ) : EReal) := by
   rw [(isVal_valOn hv).mul, s.val_eq hv]
 
-theorem exists_rat (w : HeightOneSpectrum (𝓞 c.F)) : ∃ b : ℚ, δ w + s.rho_vw w = b := by
-  obtain ⟨v, hv⟩ := s.hasPts.2 w
-  exact val_rat hv (s.val_eq hv)
-
-def cFin (w : HeightOneSpectrum (𝓞 c.F)) : ℝ := (Ideal.absNorm w.asIdeal : ℝ) ^ (-s.rho_vw w)
-
 def deg : ℝ := lineDeg s.cInf s.rho_vw
-
-theorem sum_log_eq : ((∑ᶠ w, Real.log (s.cFin w)) + ∑ σ, Real.log (s.cInf σ)) / (finrank ℚ c.F : ℝ) = -s.deg := by
-  have : ∀ w, Real.log (s.cFin w) = -(s.rho_vw w * Real.log (Ideal.absNorm w.asIdeal : ℝ)) := fun w => by
-    rw [cFin, Real.log_rpow (by linarith [one_lt_absNorm_real w]), neg_mul]
-  simp only [this, deg, lineDeg, lw, finsum_neg_distrib, div_eq_mul_inv, ← mul_assoc]
-  rw [← finsum_mul]; ring
 
 end Basic
 
@@ -715,11 +654,6 @@ theorem deg_eq_toFrame {τ : Psi H} (s : FlatSec U x Z τ) :
   simp only [Pi.zero_apply, sub_zero, sum_flDefect_vw]
   ring
 
-theorem rho_rat {τ : Psi H} (s : FlatSec U x Z τ) (w : HeightOneSpectrum (𝓞 c.F)) : ∃ b : ℚ, s.rho_vw w = b := by
-  obtain ⟨b, hb⟩ := s.exists_rat w
-  refine ⟨b - Dw.q * ((ord_vw w (conjDifferent (embF c τ.1)) : ℚ) - (vAdd w (H.d : c.F) : ℚ)), ?_⟩
-  rw [eq_sub_of_add_eq' hb, flDefect_vw]; push_cast; rfl
-
 def shift (h : HasPts U Z) (s : ∀ τ, FlatSec U x Z τ) (w : Psi H → ℤ) :
     ConstSec U x Z (parWt Dw w) (∑ τ, (-w τ) • flDefect_vw Dw c τ) :=
   (ConstSec.prod h Finset.univ fun τ => (s τ).zpow (-w τ)).copy (parWt_eq_sum w).symm rfl
@@ -776,10 +710,6 @@ theorem FlatExists.deg_eq (h : FlatExists U x) {Z : Comp Xo c} {τ : Psi H} (s :
 theorem FlatExists.nonempty (h : FlatExists U x) (Z : Comp Xo c) (τ : Psi H) : Nonempty (FlatSec U x Z τ) :=
   (h.choose_spec Z τ).1
 
-theorem FlatExists.sum_log_eq (h : FlatExists U x) {Z : Comp Xo c} {τ : Psi H} (s : FlatSec U x Z τ) :
-    ((∑ᶠ w, Real.log (s.cFin w)) + ∑ σ, Real.log (s.cInf σ)) / (finrank ℚ c.F : ℝ) = c1 U x τ := by
-  rw [s.sum_log_eq, h.deg_eq s τ, neg_neg]
-
 theorem FlatExists.deg_shift (h : FlatExists U x) {Z : Comp Xo c} (hp : HasPts U Z) (s : ∀ τ, FlatSec U x Z τ)
     (w : Psi H → ℤ) : (FlatSec.shift hp s w).deg = ∑ τ, w τ * c1 U x τ := by
   rw [(FlatSec.shift_spec hp s w).2.2.2]
@@ -790,23 +720,5 @@ theorem FlatDegree.c1_eq {logOm : ℝ} (h : FlatDegree U x logOm) (hne : CompNe 
   rw [FlatExistsAt.c1_eq h hne, flatDegVal]; ring
 
 theorem FlatDegree.flatExists {logOm : ℝ} (h : FlatDegree U x logOm) : FlatExists U x := ⟨_, h⟩
-
-example (hq : Dw.q = 0) (τ : Psi H) : flDefect_vw Dw c τ = 0 := by
-  funext w; simp [flDefect_vw, hq]
-
-variable (x) in
-
-theorem exists_flatSec_rank_zero (hp : Dw.p = 0) (hq : Dw.q = 0) {Z : Comp Xo c} (h : HasPts U Z) (τ : Psi H)
-    {a : c.F} (ha : a ≠ 0) : ∃ s : FlatSec U x Z τ, s.sig = a • idem Z ∧ (∀ σ, s.cInf σ = ‖σ a‖) ∧
-      (∀ w, s.rho_vw w = vAdd w a) ∧ s.deg = 0 :=
-  ⟨((ConstSec.one x h).smul a ha).copy (funext fun _ => funext fun i => by have := i.2; omega)
-      (funext fun w => by simp [flDefect_vw, hq]), rfl, fun σ => mul_one _, fun w => add_zero _,
-    (ConstSec.deg_smul a ha _).trans (ConstSec.deg_one h)⟩
-
-example {Z : Comp Xo c} {la : Weight Dw} (s : ConstSec U x Z la 0) (w : HeightOneSpectrum (𝓞 c.F))
-    (h : (Function.support (0 - fun v => open Classical in if v = w then (1 : ℝ) else 0)).Finite) :
-    (s.relat _ h).deg = s.deg - lw c.F w := by
-  rw [ConstSec.deg_relat, finsum_eq_single _ w fun v hv => by simp [hv]]
-  simp [sub_eq_add_neg]
 
 end GlobalTheory.FlatLine

@@ -212,11 +212,4 @@ end GlobalTheory.CovTop.AnchorRd
 
 namespace GlobalTheory.CovTop
 
-theorem anchor_holds : Anchor := by
-  refine Closed.imp (Closed.and WtShape.wtN (Sizes.hostN 1)) ?_
-  rintro eps Fm CH - ⟨⟨C1, -, hW⟩, ⟨A, -, hH⟩⟩
-  obtain ⟨x0, h⟩ := EvTied.and hW hH
-  exact ⟨100, by norm_num, x0, fun x hx hle ι p hp i =>
-    AnchorRd.anchorAt_of p i (Fm.params x hx ι) ((h x hx hle ι p hp).1 i) ((h x hx hle ι p hp).2 i)⟩
-
 end GlobalTheory.CovTop

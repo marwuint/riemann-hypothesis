@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColLieApply
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColLieOperatorEqSumColUnitaryActionBddDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColLieOperatorEqSumColUnitaryActionBddDegree
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsJointIntEigenvectorOfStable
 
 noncomputable section
@@ -114,7 +114,7 @@ theorem exists_colHighest (ι : Type) [Fintype ι] (m n : ℕ) (X : Type) [AddCo
   have hL : ∀ τ k l, ∀ Φ ∈ U, colLie m τ k l ∘ₗ Φ ∈ U := by
     intro τ k l Φ hΦ
     obtain ⟨d, hd⟩ := exists_bound Φ
-    obtain ⟨s, c, h⟩ := GlobalTheory.T.colLieOperator_eq_sum_colUnitaryAction_bddDegree ι m n d τ k l
+    obtain ⟨s, c, h⟩ := _root_.GlobalTheory.DefLift.colLie_eq_sum_colSub ι m n d τ k l
     have : colLie m τ k l ∘ₗ Φ = ∑ g ∈ s, c g • (colSub m τ g ∘ₗ Φ) := by
       ext1 x
       rw [LinearMap.comp_apply, ← h _ ((mem_restrictTotalDegree _ _ _).1 (hd x))]

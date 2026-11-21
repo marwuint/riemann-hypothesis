@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.FactorBounds
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeightedNormSquareRows
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OrthogonalNormSquareSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerChainMatricesWithNormBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerChainMatricesWithNormBounds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvFrameOfPosDef
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamFramedOfPos
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DatFramedOfGramPosDef
@@ -12,10 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColsInIsometry
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHtNumsOfKerSideLastSide
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LastMapNorm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodBoundLastLog
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightsInterlaceSameShift
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NonnegSubOfLt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IpAtNonnegOfDatFramed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelHalfChainNumbersAnyLevelPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LastMapHalfRecNumsOfLogLevelPrimeLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LastMapHalfRecNumsOfLogLevelPrimeLe
 
 open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColRows
 open scoped ComplexOrder
@@ -32,7 +32,7 @@ theorem rowsBody_colFace : ∀ CY CT : ℝ, 0 ≤ CT → ∃ C0 : ℝ, ∀ (D : 
   have hT : 1 ≤ Pr.T (wd x) := (hPr.T_prime _).one_le
   have hk := hker D N X s Pr W Ch G sel Sg (mu Bs.μ0) (cst Bs.μ0) (I Bs.μ0) dl B χ cD pl (wd x) δ (b Bs.μ0 x) (hY Bs.μ0 x)
     (hK Bs.μ0 x) (hF Bs.μ0 x) (hE x) Bs.J eJ R hHost hWt hChar hAn hmu hsharp (hL Bs.μ0) hFD hS hR hRd
-  have hl := GlobalTheory.T.lastMapHalf_recNums_of_log_levelPrime_le CY CT N X Pr W pl (wd x) δ Bs.J eJ R hWt hS hR hlogT hT hRd
+  have hl := _root_.GlobalTheory.ColRows.LastSideProof.lastSide_of_logT_le CY CT N X Pr W pl (wd x) δ Bs.J eJ R hWt hS hR hlogT hT hRd
   obtain ⟨hn, hA, hsz⟩ := GlobalTheory.ColRows.exists_htNums_of_kerSide_lastSide Bs.J (RPl N.R) (InfinitePlace X.K) R C CT _ _ hC hCT
     ((le_max_left _ _).trans hC0) (((le_max_left _ _).trans (le_max_right _ _)).trans hC0)
     (((le_max_right _ _).trans (le_max_right _ _)).trans hC0) hk hl
@@ -44,7 +44,7 @@ theorem rowsBody_colFace : ∀ CY CT : ℝ, 0 ≤ CT → ∃ C0 : ℝ, ∀ (D : 
   have hsh : ∀ τ, Br.SameShift (W.lamTrue (wd x) N.R.m τ) (W.sgTrue τ) :=
     fun τ => GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.members_sameShift W hWt.1 (wd x) τ
   have hdat := GlobalTheory.ColRows.evGSD_datFramed X hX Pr N.R W Ch sel Sg (mu Bs.μ0) (rPsymF Ch) (wd x) (hE x)
-  refine ⟨GlobalTheory.T.kerChain_matrices_with_norm_bounds X.K Bs Df (colFace hX Df Xg mu cst I hL hP Mem wd b hY (kerRec mu cst I wd b hY (ambOf s B χ cD) hK) hF ev) x
+  refine ⟨_root_.GlobalTheory.DefRowsChain.rowsBody_of_framed X.K Bs Df (colFace hX Df Xg mu cst I hL hP Mem wd b hY (kerRec mu cst I wd b hY (ambOf s B χ cD) hK) hF ev) x
     (memQ (A := kerRec mu cst I wd b hY (ambOf s B χ cD) hK) (hF := hF) hE (x := x)) _
     (colPerL (hP Bs.μ0) Xg (wd x) (ev Bs.μ0)) (RPl N.R) R hn (fun l => (eJ l).1) X0 hdet hiso
     (fun i => GlobalTheory.FamilyFrames.famFramed_chF X hX Pr N.R W Ch sel Sg (mu Bs.μ0) (I Bs.μ0) (wd x) i (hF Bs.μ0 x i)) hdat

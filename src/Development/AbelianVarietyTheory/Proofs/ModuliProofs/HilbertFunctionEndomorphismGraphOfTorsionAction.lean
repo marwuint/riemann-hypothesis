@@ -7,8 +7,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsGrowthBasicPropertiesAbelianVarietyStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalPolarisationVolumeFormSymmetricAmpleStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPolarisationFormOfLineBundleStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalPolarisationVolumeFormSymmetricAmple
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPolarisationFormOfLineBundle
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsCountSqEqDetFormOnTorsionStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilPairingTorsionBasisSymplecticStatement
 
@@ -188,11 +188,11 @@ theorem hilbert_graph_of_torsion : Out.Laws → Out.Laws2 → ∀ (g N κ l j : 
   have hPL : P.L.IsLB := P.isLB
   set M := LB.LinComb P.L (K := Fin 2) ![𝟙 P.A.left, f.left] ![(N : ℤ), (N : ℤ)] with hMdef
   have hM : M.IsLB := LB.isLB_linComb hPL _ _
-  have hSym : SymB M := symB_graph hPL (GlobalTheory.T.principalPolarisation_volume_form_symmetric_ample hL1 hL2 K P).2.2.1 f _ _
+  have hSym : SymB M := symB_graph hPL (_root_.GlobalTheory.principal_polarisation_numerics hL1 hL2 K P).2.2.1 f _ _
   have hAmpL : IsAmpleLB P.L := (relAmple_iff_isAmpleLB_of_isAffine P.A hPL).1 P.ample
   have hAmpM : IsAmpleLB M := isAmpleLB_graph hAmpL f.left hN
   have hRelM : Out.RelAmple P.A M := (relAmple_iff_isAmpleLB_of_isAffine P.A hM).2 hAmpM
-  obtain ⟨s, hs⟩ := GlobalTheory.T.exists_polarisationForm_of_lineBundle hL1 hL2 K P M hM
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.BundleForm.exists_formIs hL1 hL2 K P M hM
   have hk : ((l ^ j : ℕ) : K) ≠ 0 := by push_cast; exact pow_ne_zero _ hl0
   have hSs : ActsBy pt s S := hS K P pt ζ f s hk hζ hT hW hf hAct hs
   obtain ⟨δ, hVol, hH0, hdet⟩ := GlobalTheory.T.sections_count_sq_eq_det_form_on_torsion hL1 hL2 K P M s l hl hl0 hM hRelM hSym hs
@@ -209,7 +209,7 @@ theorem hilbert_graph_of_torsion : Out.Laws → Out.Laws2 → ∀ (g N κ l j : 
   have hLc : (lbPow P.L (N * (1 + κ))).IsLB := LB.isLB_linComb hPL _ _
   have hLcn : (lbPow (lbPow P.L (N * (1 + κ))) n).IsLB := LB.isLB_linComb hLc _ _
   have hMn : (lbPow M n).IsLB := LB.isLB_linComb hM _ _
-  have V1 : Vol P.A.hom P.L P.g 1 := (GlobalTheory.T.principalPolarisation_volume_form_symmetric_ample hL1 hL2 K P).1
+  have V1 : Vol P.A.hom P.L P.g 1 := (_root_.GlobalTheory.principal_polarisation_numerics hL1 hL2 K P).1
   have V2 : Vol P.A.hom (lbPow P.L (N * (1 + κ))) P.g (((N * (1 + κ) : ℕ) : ℝ) ^ P.g * 1) :=
     (GlobalTheory.T.sectionsGrowth_basic_properties_abelianVariety K P P.L P.g hPL).2.2.2.1 _ 1 hc V1
   have V3 : Vol P.A.hom (lbPow (lbPow P.L (N * (1 + κ))) n) P.g

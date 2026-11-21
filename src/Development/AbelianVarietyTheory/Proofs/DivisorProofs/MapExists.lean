@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmPullbackTeichmullerLiftStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralReducingToMvPowerSeriesSubstStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmPullbackTeichmullerLift
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralReducingToMvPowerSeriesSubst
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 
 set_option autoImplicit false
@@ -33,13 +33,13 @@ def modMap {d e : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k}
   Submodule.mapQ _ _
     (((substW p (fun j => Katz.lift p (φ j)) fun j => constantCoeff_lift p (hφ.const j)).comp
       (quasiLog p hν).subtype).codRestrict (quasiLog p hμ)
-      fun f => (GlobalTheory.T.quasiLogarithm_pullback_teichmullerLift p k d e μ ν hμ hν φ hφ f.1 f.2).1)
+      fun f => (_root_.GlobalTheory.KatzPull.quasiLog_pull p k d e μ ν hμ hν φ hφ f.1 f.2).1)
     (by
       intro f hf
       rw [Submodule.mem_comap]
       change f.1 ∈ intBy p k (Fin e) 1 at hf
       change subst (fun j => Katz.lift p (φ j)) f.1 ∈ intBy p k (Fin d) 1
-      exact (GlobalTheory.T.isIntegralReducingToMvPowerSeries_subst p k (Fin e) (Fin d) _ φ (fun j => constantCoeff_lift p (hφ.const j))
+      exact (_root_.GlobalTheory.Katz.red_subst p k (Fin e) (Fin d) _ φ (fun j => constantCoeff_lift p (hφ.const j))
         (fun j => red_lift p (φ j))).2 1 f.1 hf)
 
 theorem modMap_mk {d e : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k}

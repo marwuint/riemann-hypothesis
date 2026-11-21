@@ -143,15 +143,6 @@ theorem isPrimitiveRoot_pow_eq_pow_iff_zmod_eq {N : ℕ} [NeZero N] {ξ : LL} (h
   rw [hz, hmod a, hmod b]
   exact ⟨fun h => hξ.pow_inj (Nat.mod_lt _ hN) (Nat.mod_lt _ hN) h, fun h => by rw [h]⟩
 
-theorem card_Rs {n : ℕ} {ζ : LL} (hζ : IsPrimitiveRoot ζ (l ^ n)) (s : ℕ) (hs : s < n) :
-    (primitiveRoots (l ^ (s + 1)) LL).card = (l - 1) * l ^ s := by
-  have hl := (Fact.out : l.Prime)
-  have hpos : 0 < l ^ n := pow_pos hl.pos n
-  have hprod : l ^ n = l ^ (n - (s + 1)) * l ^ (s + 1) := by
-    rw [← pow_add, Nat.sub_add_cancel (by omega)]
-  have h := hζ.pow hpos hprod
-  rw [h.card_primitiveRoots, Nat.totient_prime_pow_succ hl, mul_comm]
-
 private theorem mem_primitiveRoots_iff_isPrimitiveRoot {k : ℕ} (h0 : 0 < k) {ζ : LL} :
     ζ ∈ primitiveRoots k LL ↔ IsPrimitiveRoot ζ k := by
   first

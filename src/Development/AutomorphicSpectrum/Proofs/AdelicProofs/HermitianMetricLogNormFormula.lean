@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HermitianLogNormLocalSumStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HermitianLogNormLocalSum
 open NumberField Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 
@@ -11,7 +11,7 @@ theorem deg_eq_of_local_two_curves : ∀ (k E : Type) [Field k] [NumberField k] 
   intro k E _ _ _ _ τ N ρ a r p q d n n' x t t' hρ ha hd hr hn hn' hinf ht ht2 hfin hloc
   let N' : LogNorms k :=
     ⟨fun s => N.inf s + (q : ℝ) / 2 * (Real.log (n' s) - Real.log (n s)), N.fin⟩
-  have h := GlobalTheory.T.hermitian_log_norm_local_sum k E τ N' ρ a r p q d n x t t' hρ ha hd hr hn
+  have h := _root_.GlobalTheory.CompanionTheory.Ar.Fl.LocalSum.deg_of_local_formulas k E τ N' ρ a r p q d n x t t' hρ ha hd hr hn
     (fun s => by
       change N.inf s + (q : ℝ) / 2 * (Real.log (n' s) - Real.log (n s)) = _
       rw [hinf s]

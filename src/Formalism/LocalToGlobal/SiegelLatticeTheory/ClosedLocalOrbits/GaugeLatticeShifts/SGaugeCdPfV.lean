@@ -1,4 +1,5 @@
-import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SGaugeCdPfB
+import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SGaugeDensPf
+import Formalism.LocalRingCardinality.DataTies
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.TraceMulConjTransposeReal
 
 open MeasureTheory Filter Topology Set Matrix
@@ -82,17 +83,6 @@ def phiE : EL ε ≃ₗ[ℝ] Formalism.BasicNotions.lieU P Q :=
 def phiC : EL ε ≃L[ℝ] Formalism.BasicNotions.lieU P Q := (phiE ε e h1 h2).toContinuousLinearEquiv
 
 theorem phiC_coe (t : EL ε) : ((phiC ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) = (linT ε t).submatrix e e := rfl
-
-theorem l1_entries_coordinate_chart (t : EL ε) :
-    ∑ i, ∑ j, ‖((phiC ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) i j‖ = ∑ a, ∑ b, ‖linT ε t a b‖ := by
-  rw [phiC_coe]
-  exact Fintype.sum_equiv e _ _ (fun i => Fintype.sum_equiv e _ _ (fun j => rfl))
-
-theorem preimage_ballU (r : ℝ) : (phiC ε e h1 h2) ⁻¹' Formalism.BasicNotions.ballU P Q r = l1B ε r := by
-  ext t
-  show (∑ i, ∑ j, ‖((phiC ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) i j‖ < r) ↔ _
-  rw [l1_entries_coordinate_chart]
-  rfl
 
 theorem hilbert_schmidt_coordinate_chart (t : EL ε) :
     Cd.hs2 ((phiC ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) = ‖t‖ ^ 2 := by
@@ -266,101 +256,5 @@ def gI : WithLp 2 (EL ε × EL ε) ≃ₗᵢ[ℝ] EuclideanSpace ℝ ((ι × ι)
 theorem gI_apply (w : WithLp 2 (EL ε × EL ε)) : gI ε e h1 h2 w = gL ε e h1 h2 w := rfl
 
 end Iso2
-
-section Meas
-
-def MpCF (κ : Type) [Fintype κ] : Prop :=
-  MeasurePreserving (fun y : EuclideanSpace ℝ (κ × Fin 2) => fun k => (y (k, 0) : ℂ) + (y (k, 1) : ℂ) * Complex.I)
-    volume volume
-
-variable (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
-  (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false)
-
-def aF (p : EL ε × EL ε) : (ι × ι) → ℂ := Formalism.BasicNotions.entries (mL ε e h1 h2 p)
-
-private theorem mpT_lemma (m : ℕ) :
-    MeasurePreserving (WithLp.toLp 2 : EuclideanSpace ℝ (Fin m) × EuclideanSpace ℝ (Fin m) →
-      WithLp 2 (EuclideanSpace ℝ (Fin m) × EuclideanSpace ℝ (Fin m)))
-      ((volume : Measure (EuclideanSpace ℝ (Fin m))).prod volume) volume := by
-  have hA := (PiLp.volume_preserving_ofLp (Fin m)).prod (PiLp.volume_preserving_ofLp (Fin m))
-  have hB := measurePreserving_sumPiEquivProdPi_symm (fun _ : Fin m ⊕ Fin m => (volume : Measure ℝ))
-  have hC := PiLp.volume_preserving_toLp (Fin m ⊕ Fin m)
-  have hJ := (PiLp.sumPiLpEquivProdLpPiLp (𝕜 := ℝ) 2 (fun _ : Fin m ⊕ Fin m => ℝ)).measurePreserving
-  have := hJ.comp (hC.comp (hB.comp hA))
-  convert this using 1
-  all_goals first | rfl | (funext p; rfl)
-
-theorem mp_aF (hC : MpCF (ι × ι)) :
-    MeasurePreserving (aF ε e h1 h2) ((volume : Measure (EL ε)).prod volume) volume := by
-  have hT := mpT_lemma (dimL ε)
-  have hG := (gI ε e h1 h2).measurePreserving
-  have := MeasurePreserving.comp hC (hG.comp hT)
-  convert this using 1
-  funext p
-  funext k
-  simp only [Function.comp_apply, gI_apply, gL_apply, WithLp.ofLp_toLp, aF, Formalism.BasicNotions.entries, rL_apply]
-  simp [Complex.re_add_im]
-
-theorem lamVol_of (hC : MpCF (ι × ι)) : LamVol ε e := by
-  intro h1 h2 lam hlam r
-  have hcl : IsClosed ((Formalism.BasicNotions.lieU P Q : Submodule ℝ (Matrix ι ι ℂ)) : Set (Matrix ι ι ℂ)) := by
-    have : ((Formalism.BasicNotions.lieU P Q : Submodule ℝ (Matrix ι ι ℂ)) : Set (Matrix ι ι ℂ)) =
-        {X | Xᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * X = 0} := rfl
-    rw [this]
-    exact isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).add
-      (continuous_const.matrix_mul continuous_id)) continuous_const
-  haveI : LocallyCompactSpace (Matrix ι ι ℂ) := inferInstanceAs (LocallyCompactSpace (ι → ι → ℂ))
-  haveI : SecondCountableTopology (Matrix ι ι ℂ) := inferInstanceAs (SecondCountableTopology (ι → ι → ℂ))
-  haveI : SecondCountableTopology (Formalism.BasicNotions.lieU P Q) :=
-    TopologicalSpace.Subtype.secondCountableTopology ((Formalism.BasicNotions.lieU P Q : Submodule ℝ (Matrix ι ι ℂ)) : Set (Matrix ι ι ℂ))
-  haveI : LocallyCompactSpace (Formalism.BasicNotions.lieU P Q) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace
-  haveI := hlam.1
-  have hφm : Measurable (phiC ε e h1 h2) := (phiC ε e h1 h2).continuous.measurable
-  haveI hH : ((volume : Measure (EL ε)).map (phiC ε e h1 h2)).IsAddHaarMeasure := by
-    first
-    | infer_instance
-    | exact (phiC ε e h1 h2).isAddHaarMeasure_map volume
-  obtain ⟨c, hc⟩ : ∃ c : ℝ≥0, lam = c • (volume : Measure (EL ε)).map (phiC ε e h1 h2) :=
-    ⟨_, Measure.isAddLeftInvariant_eq_smul lam _⟩
-  have hνν : ((volume : Measure (EL ε)).map (phiC ε e h1 h2)).prod ((volume : Measure (EL ε)).map (phiC ε e h1 h2)) =
-      ((volume : Measure (EL ε)).prod volume).map (Prod.map (phiC ε e h1 h2) (phiC ε e h1 h2)) :=
-    Measure.map_prod_map _ _ hφm hφm
-  have hA : Continuous fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q => (ab.1 : Matrix ι ι ℂ) :=
-    continuous_subtype_val.comp continuous_fst
-  have hB : Continuous fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q => (ab.2 : Matrix ι ι ℂ) :=
-    continuous_subtype_val.comp continuous_snd
-  have hF' : Continuous (fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q =>
-      (ab.1 : Matrix ι ι ℂ) + Complex.I • (ab.2 : Matrix ι ι ℂ)) := hA.add (hB.const_smul Complex.I)
-  have hF : Measurable (fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q =>
-      Formalism.BasicNotions.entries ((ab.1 : Matrix ι ι ℂ) + Complex.I • (ab.2 : Matrix ι ι ℂ))) :=
-    (continuous_pi fun k : ι × ι => hF'.matrix_elem k.1 k.2).measurable
-  have h := hlam.2
-  rw [hc, Measure.prod_smul_left, Measure.prod_smul_right, hνν, Measure.map_smul, Measure.map_smul,
-    Measure.map_map hF (hφm.prodMap hφm)] at h
-  change c • c • Measure.map (aF ε e h1 h2) ((volume : Measure (EL ε)).prod volume) = volume at h
-  rw [(mp_aF ε e h1 h2 hC).map_eq] at h
-  have hK : 0 < volume (Metric.closedBall (0 : (ι × ι) → ℂ) 1) := Metric.measure_closedBall_pos _ _ one_pos
-  have hK' : volume (Metric.closedBall (0 : (ι × ι) → ℂ) 1) ≠ ⊤ := (isCompact_closedBall _ _).measure_lt_top.ne
-  have hx : 0 < (volume (Metric.closedBall (0 : (ι × ι) → ℂ) 1)).toReal := ENNReal.toReal_pos hK.ne' hK'
-  have hv := congrArg (fun μ : Measure ((ι × ι) → ℂ) => (μ (Metric.closedBall 0 1)).toReal) h
-  simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ENNReal.toReal_mul, ENNReal.coe_toReal] at hv
-  have hcc : ((c : ℝ) * c) = 1 := by
-    have h3 : ((c : ℝ) * c) * (volume (Metric.closedBall (0 : (ι × ι) → ℂ) 1)).toReal =
-        1 * (volume (Metric.closedBall (0 : (ι × ι) → ℂ) 1)).toReal := by
-      rw [one_mul]
-      linear_combination hv
-    exact mul_right_cancel₀ hx.ne' h3
-  have hc1 : c = 1 := by
-    have h0 : (0 : ℝ) ≤ c := c.2
-    have : (c : ℝ) = 1 := by nlinarith
-    exact_mod_cast this
-  have hballm : MeasurableSet (Formalism.BasicNotions.ballU P Q r) := by
-    apply IsOpen.measurableSet
-    apply isOpen_lt _ continuous_const
-    exact continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ =>
-      (continuous_subtype_val.matrix_elem i j).norm
-  rw [hc, hc1, one_smul, Measure.map_apply hφm hballm, preimage_ballU]
-
-end Meas
 
 end Formalism.MainNotions.S.Gauge.CdV

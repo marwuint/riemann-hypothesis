@@ -11,12 +11,6 @@ namespace Formalism.L2.Col
 
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.LogVandermondeBounds
 
-section G1
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K)
-
-end G1
-
 section G3
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
@@ -169,17 +163,6 @@ theorem Deco.Ok.LshKer_lattice (hd : d.Ok) (ha : SepElt ST a) (P : ST) : Submodu
     (fun x hx => (hd.mem_LshKer ha P x).2 ⟨hd.L_le_Lsh hx, ((hd.mem_L x).1 hx).2 P⟩)
     (fun x hx => ((hd.mem_LshKer ha P x).1 hx).1)
 
-theorem DecoSet.locP_LshKer_up {d d' : DecoSet E n ST SG} {P : ST} {q : 𝓞 E} (hP : MoveHyp ST SG P)
-    (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) (ha : SepElt ST a) (h : d' ∈ d.upSet P q) (Q : ST) :
-    localization₂ Q.1.asIdeal (d'.1.LshKer P) = localization₂ Q.1.asIdeal d.1.Lsh := by
-  obtain ⟨y, hy, hfy, e⟩ := h
-  by_cases hQ : Q = P
-  · subst hQ
-    rw [d'.2.locP_LshKer_self ha Q, ← (d'.2.dnN_spec Q hP.ne).2.2.2, e, d.2.dnN_up Q hP hq hq2 hy hfy,
-      d.2.locP_Lsh ha Q]
-  · rw [d'.2.locP_LshKer_ne ha hQ, d'.2.locP_Lsh ha Q, d.2.locP_Lsh ha Q, e]
-    exact ((upN_spec d.2.lat d.2.uni P.1 hP.ne hy).2.2.1 Q.1 (fun h => hQ (Subtype.ext h)) (hP.st Q)).localization_eq
-
 end G2
 
 section Cols
@@ -192,91 +175,6 @@ theorem sepElt_of_ok (hPr : Pr.Ok) (u : Pr.Word) : SepElt (Pr.vT u) (cO X.E (Pr.
     exact decoFin_mem_of_mem_divs P.2
   off P := conj_piT_notMem hPr u P
 
-theorem BvLat_equivG (u : Pr.Word) (j : ℕ) (Λ : LevFam X.E X.K (R.N j) Pr.vGs) (P : {P // P ∈ Pr.vT u})
-    (g : (formGSD (colVal W u j (Pr.vT u) Pr.vGs) Λ).G) (d : (formGSD (colVal W u j (Pr.vT u) Pr.vGs) Λ).D) :
-    BvLat W u j P (g • d) =
-      (BvLat W u j P d).map (((formGSD (colVal W u j (Pr.vT u) Pr.vGs) Λ).ρ g).restrictScalars (𝓞 X.K)) := by
-  obtain ⟨m, hm, hc⟩ := Λ.chr_root g.2
-  exact (BvLat_smul W u j P (FormG.incl _ g) d).trans (map_root_smul _ _ hm hc).symm
-
 end Cols
-
-section ColsNab
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-
-end ColsNab
-
-section FamG
-variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
-  (emb : ι → E →+* K)
-
-theorem round_locP_congr_fam (lam : ι → DomWeight n) (w : HeightOneSpectrum (𝓞 K))
-    {L L' : ι → Submodule (𝓞 E) (Fin n → E)}
-    (hL : ∀ τ, Submodule.IsLattice E (L τ)) (hL' : ∀ τ, Submodule.IsLattice E (L' τ))
-    (h : ∀ τ, (∀ x ∈ L τ, ∃ s : 𝓞 E, RingOfIntegers.mapRingHom (emb τ) s ∉ w.asIdeal ∧ s • x ∈ L' τ) ∧
-      ∀ x ∈ L' τ, ∃ s : 𝓞 E, RingOfIntegers.mapRingHom (emb τ) s ∉ w.asIdeal ∧ s • x ∈ L τ) :
-    localization₂ w.asIdeal (delK lam fun τ => dualFr (tauLat emb τ (L τ))) =
-      localization₂ w.asIdeal (delK lam fun τ => dualFr (tauLat emb τ (L' τ))) := by
-  have hA : ∀ τ, Submodule.IsLattice K (tauLat emb τ (L τ)) := fun τ => tauLatLattice E K ι n emb τ _ (hL τ)
-  have hA' : ∀ τ, Submodule.IsLattice K (tauLat emb τ (L' τ)) := fun τ => tauLatLattice E K ι n emb τ _ (hL' τ)
-  have hM : ∀ τ, Submodule.IsLattice K (dualFr (tauLat emb τ (L τ))) := fun τ => du_dualFr_lattice basisAtEx _ (hA τ)
-  have hM' : ∀ τ, Submodule.IsLattice K (dualFr (tauLat emb τ (L' τ))) := fun τ => du_dualFr_lattice basisAtEx _ (hA' τ)
-  have hloc : ∀ τ, localization₂ w.asIdeal (dualFr (tauLat emb τ (L τ))) = localization₂ w.asIdeal (dualFr (tauLat emb τ (L' τ))) := by
-    intro τ
-    apply le_antisymm
-    · exact localization_le_of_le_localization w (dualFr_le_locP w (hA' τ).fg (tauLat_le_locP emb w τ (h τ).2))
-    · exact localization_le_of_le_localization w (dualFr_le_locP w (hA τ).fg (tauLat_le_locP emb w τ (h τ).1))
-  choose B hB using fun τ => basisAtEx K n _ (hM τ) w
-  have hB' : ∀ τ, IsBasisAt w (dualFr (tauLat emb τ (L' τ))) (B τ) := fun τ => (hloc τ).symm.trans (hB τ)
-  have h1 := nabDelLoc K ι n lam _ hM w B hB
-  have h2 := nabDelLoc K ι n lam _ hM' w B hB'
-  ext x
-  change (∃ s, s ∈ w.asIdeal.primeCompl ∧ (s • x).1 ∈ delP lam _) ↔ (∃ s, s ∈ w.asIdeal.primeCompl ∧ (s • x).1 ∈ delP lam _)
-  have e : x.1 ∈ localization₂ w.asIdeal (delP lam fun τ => dualFr (tauLat emb τ (L τ))) ↔
-      x.1 ∈ localization₂ w.asIdeal (delP lam fun τ => dualFr (tauLat emb τ (L' τ))) := by rw [h1.2, h2.2]
-  exact e
-end FamG
-
-section ColsF
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
-
-theorem BvLat_eq_BvLatF (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (j : ℕ) {w : HeightOneSpectrum (𝓞 X.K)}
-    (hw : seenC Pr u w) (P : {P // P ∈ Pr.vT u}) (d : ColDeco X Pr u (R.N j)) :
-    haveI := hX.nonempty_Tau
-    localization₂ w.asIdeal (BvLat W u j P d) = localization₂ w.asIdeal (BvLatF W u j (tauOfC w P.1) P d) := by
-  haveI := hX.nonempty_Tau
-  have ha := sepElt_of_ok hPr u
-  unfold BvLat BvLatF delAtr
-  refine round_locP_congr_fam X.emb (W.lamTrue u j) w (fun _ => d.2.LshKer_lattice ha P) (fun τ => ?_) (fun τ => ?_)
-  · by_cases hτ : τ = tauOfC w P.1
-    · rw [if_pos hτ]; exact d.2.LshKer_lattice ha P
-    · rw [if_neg hτ]; exact d.2.Lsh_lattice
-  · by_cases hτ : τ = tauOfC w P.1
-    · rw [if_pos hτ]
-      exact ⟨fun x hx => ⟨1, by rw [map_one]; exact one_notMem w, by rwa [one_smul]⟩,
-        fun x hx => ⟨1, by rw [map_one]; exact one_notMem w, by rwa [one_smul]⟩⟩
-    · rw [if_neg hτ]
-      have hQ := (seenC_iff hPr u w).1 hw τ
-      have hne : (⟨pullW τ w, hQ⟩ : {P // P ∈ Pr.vT u}) ≠ P := by
-        intro h
-        apply hτ
-        have := tauOfC_pullW hX hPr u w τ hQ
-        rw [← this]
-        exact congrArg (tauOfC w) (congrArg Subtype.val h)
-      have e := d.2.locP_LshKer_ne ha hne
-      constructor
-      · intro x hx
-        have h1 : x ∈ localization₂ (pullW τ w).asIdeal (d.1.LshKer P) := le_locP _ _ hx
-        rw [e] at h1
-        obtain ⟨s, hs, hsx⟩ := (mem_locP _ _ _).1 h1
-        exact ⟨s, hs, hsx⟩
-      · intro x hx
-        have h1 : x ∈ localization₂ (pullW τ w).asIdeal d.1.Lsh := le_locP _ _ hx
-        rw [← e] at h1
-        obtain ⟨s, hs, hsx⟩ := (mem_locP _ _ _).1 h1
-        exact ⟨s, hs, hsx⟩
-
-end ColsF
 
 end Formalism.L2.Col

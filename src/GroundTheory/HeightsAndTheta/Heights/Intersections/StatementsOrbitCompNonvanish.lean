@@ -15,8 +15,4 @@ def OrbitCompNonvanish.Statement : Prop :=
       ∀ z : (Σ k, ι k) → ℂ, eval z (map (Int.castRingHom ℂ) D) ≠ 0 →
         ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ eval (fun p => c p.1 * z p) (map (Int.castRingHom ℂ) E) ≠ 0
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

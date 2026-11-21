@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ZeroMemSolSet
 import Formalism.UnipotentAdelicQuotients.EllRegCheck
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DwSmoothLocalLinear
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AestronglyMeasurableExtendByZeroOffSubset
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EllipticSystemDerivativeContinuousFunctionalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EllipticSystemDerivativeContinuousFunctional
 open ZetaZeros.D.EllReg GlobalTheory.HCA MeasureTheory
 open scoped ContDiff BoundedContinuousFunction
 
@@ -41,7 +41,7 @@ open GlobalTheory.HCA.SupEst in
 theorem GlobalTheory.HCA.dw_le_sup : ∀ (d : ℕ) (ι : Type) [Fintype ι] (P : Sys d ι) (U : Set (E d)), IsOpen U → (∀ i n w, ContDiffOn ℝ ∞ (P.a i n w) U) → (∀ x ∈ U, ∀ ξ : E d, ξ ≠ 0 → ∃ i, P.symb i x ξ ≠ 0) → ∀ (w : List (Fin d)), ∀ x₀ ∈ U, ∃ C : ℝ, 0 ≤ C ∧ ∀ u : E d → ℂ, ContinuousOn u U → WeakSol P U u → ∀ M : ℝ, (∀ x ∈ U, ‖u x‖ ≤ M) → ‖dw w u x₀‖ ≤ C * M := by
   intro d ι _ P U hU ha hell w x₀ hx₀
   obtain ⟨S, hS⟩ := (solSet_closed_submodule d ι P U hU ha).2
-  obtain ⟨l, hl⟩ := GlobalTheory.T.ellipticSystem_derivative_continuous_functional d ι P U hU ha hell S hS w x₀ hx₀
+  obtain ⟨l, hl⟩ := _root_.GlobalTheory.HCA.dw_solSet_continuous_functional d ι P U hU ha hell S hS w x₀ hx₀
   refine ⟨‖l‖, norm_nonneg _, ?_⟩
   intro u hu hweak M hM
   have hM0 : 0 ≤ M := (norm_nonneg _).trans (hM x₀ hx₀)

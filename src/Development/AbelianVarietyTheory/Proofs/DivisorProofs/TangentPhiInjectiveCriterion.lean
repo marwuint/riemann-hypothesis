@@ -33,36 +33,4 @@ theorem Phi_smul {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M
   rw [e]
   rfl
 
-theorem cn_surjective (p : ℕ) (O : Type) [CommRing O] (G : GlobalTheory.PDivGroup p O) (A : Over (Sp O))
-    [GrpObj A] (t : G.TorsionTower A)
-    (hinj : ∀ (M : Type) [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M] [IsCentralScalar O M]
-      (z z' : TM O M ⟶ A) (h : zeroSec O M ≫ z = η[A]) (h' : zeroSec O M ≫ z' = η[A]),
-      (∀ w, Phi z h w = Phi z' h' w) → z = z')
-    (hnat : ∀ (M : Type) [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M] [IsCentralScalar O M]
-      (n : ℕ) (φ : G.A n →ₐ[O] TrivSqZeroExt O M)
-      (hφ : (TrivSqZeroExt.fstHom O O M).comp φ = Bialgebra.counitAlgHom O (G.A n)) (w : Wmod A),
-      Phi (spOver φ ≫ t.y n) (zeroSec_spOver_y t n φ hφ) w =
-        GlobalTheory.AugCot.sqZeroEquiv (Bialgebra.counitAlgHom O (G.A n)) M ⟨φ, hφ⟩ (cn t n w))
-    (n : ℕ) : Function.Surjective (cn t n) := by
-  let ε := Bialgebra.counitAlgHom O (G.A n)
-  let c : Wmod A →ₗ[O] AugCot ε :=
-    { toFun := cn t n
-      map_add' := map_add (cn t n)
-      map_smul' := fun a w => Phi_smul _ _ a w }
-  let N := AugCot ε ⧸ LinearMap.range c
-  letI : Module Oᵐᵒᵖ N := opModule O N
-  haveI : IsCentralScalar O N := opModule_central O N
-  let q : AugCot ε →ₗ[O] N := (LinearMap.range c).mkQ
-  let φ := (AugCot.sqZeroEquiv ε N).symm q
-  let φ₀ := (AugCot.sqZeroEquiv ε N).symm 0
-  have e : φ.1 = φ₀.1 := t.inj n _ _ _ <|
-    hinj N _ _ (zeroSec_spOver_y t n φ.1 φ.2) (zeroSec_spOver_y t n φ₀.1 φ₀.2) fun w => by
-      refine (hnat N n φ.1 φ.2 w).trans (Eq.trans ?_ (hnat N n φ₀.1 φ₀.2 w).symm)
-      change AugCot.sqZeroEquiv ε N φ (c w) = AugCot.sqZeroEquiv ε N φ₀ (c w)
-      rw [Equiv.apply_symm_apply, Equiv.apply_symm_apply, LinearMap.zero_apply]
-      exact (Submodule.Quotient.mk_eq_zero _).2 ⟨w, rfl⟩
-  have hq : q = 0 := (AugCot.sqZeroEquiv ε N).symm.injective (Subtype.ext e)
-  intro x
-  exact (Submodule.Quotient.mk_eq_zero (LinearMap.range c)).1 (LinearMap.congr_fun hq x)
-
 end GlobalTheory.SqZeroPt.CnSurj

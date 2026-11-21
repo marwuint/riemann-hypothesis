@@ -187,18 +187,7 @@ theorem genChar_apply (ψ : ∀ v : Sq Hs, AddChar (ZMod (Hs.g v.1)) K) (u : lev
 
 variable (Hs)
 
-def factorG (i : Fin 2) : Subgroup (LevelGroup Hs) := Subgroup.pi {v | v.1 ≠ i} fun _ => ⊥
-
-def factorH (i : Fin 2) : Subgroup (LevelGroup Hs) := factorG Hs i ⊓ levelU Hs
-
 def levelGU (i : Fin 2) : Subgroup (LevelGroup Hs) := Subgroup.pi {v | v.1 ≠ i} fun v => unitri R.r (ZMod (Hs.g v.1))
-
-theorem exists_factor (a : LevelGroup Hs) : ∃ b ∈ factorG Hs 0, ∃ c ∈ factorG Hs 1, a = b * c ∧
-    (∀ v, v.1 = 0 → b v = a v) ∧ ∀ v, v.1 = 1 → c v = a v := by
-  refine ⟨fun v => if v.1 = 0 then a v else 1, fun v hv => if_neg hv, fun v => if v.1 = 1 then a v else 1,
-    fun v hv => if_neg hv, funext fun v => ?_, fun v h => if_pos h, fun v h => if_pos h⟩
-  obtain ⟨i, w⟩ := v
-  fin_cases i <;> simp
 
 end Generic
 
@@ -228,9 +217,6 @@ theorem isTypeLevel_of_eq {m : ℕ} (hA : l.A = 1) (hM : l.M = D.host.g 0 * D.ho
   have h : cofactor l = m := by
     rw [cofactor, hM, Nat.mul_div_cancel_left _ (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos)]
   exact ⟨⟨hA, h ▸ hM, h ▸ hm⟩, h⟩
-
-theorem isTypeLevel_of_pin {Q : Par D} (h : Q.PinLevel) : IsTypeLevel Q.l ∧ cofactor Q.l = 1 :=
-  isTypeLevel_of_eq h.2 (by rw [mul_one]; exact h.1) (Nat.coprime_one_right _)
 
 theorem g_mem_typePrime (v : Sq D.host) : ((D.host.g v.1 : ℕ) : 𝓞 D.host.E) ∈ typePrime l v :=
   Ideal.mem_sup_right (by simpa using Ideal.mem_map_of_mem (algebraMap _ (𝓞 D.host.E)) v.2.2)
@@ -315,32 +301,6 @@ theorem IsTypeLevel.smul_eq_zsmul (hl : IsTypeLevel l) (v : Sq D.host) (a : 𝓞
     Submodule.smul_mem_smul hz trivial
   rw [smul_top_qMod, Submodule.mem_bot, sub_smul, sub_eq_zero, Int.cast_smul_eq_zsmul] at h
   exact h.symm
-
-theorem nonempty_addEquiv_pi {M : Type} [AddCommGroup M] {p r : ℕ} [hp : Fact p.Prime] (h : ∀ x : M, p • x = 0)
-    (hN : Nat.card M = p ^ r) : Nonempty (M ≃+ (Fin r → ZMod p)) := by
-  haveI : Finite M := Nat.finite_of_card_ne_zero (hN ▸ pow_ne_zero _ hp.out.ne_zero)
-  obtain ⟨inst⟩ : Nonempty (Module (ZMod p) M) := ⟨AddCommGroup.zmodModule h⟩
-  have hf : Module.finrank (ZMod p) M = Module.finrank (ZMod p) (Fin r → ZMod p) := by
-    have := Module.natCard_eq_pow_finrank (K := ZMod p) (V := M)
-    rw [hN, Nat.card_zmod] at this
-    rw [Module.finrank_fin_fun]
-    exact (Nat.pow_right_injective hp.out.two_le this).symm
-  haveI : FiniteDimensional (ZMod p) M := Module.Finite.of_finite
-  exact ⟨(LinearEquiv.ofFinrankEq (R := ZMod p) M (Fin r → ZMod p) hf).toAddEquiv⟩
-
-theorem IsTypeLevel.nonempty_typeFrame (hl : IsTypeLevel l) (hr : Dw.p + Dw.q = D.R.r) : Nonempty (TypeFrame Dw l) := by
-  refine ⟨fun v => Classical.choice ?_⟩
-  have hc : Nat.card (𝓞 D.host.E ⧸ typePrime l v) = D.host.g v.1 := by
-    rw [← (hl.typePrime_spec v).2, Ideal.absNorm_apply, Submodule.cardQuot_apply]
-  haveI : Finite (𝓞 D.host.E ⧸ typePrime l v) := Nat.finite_of_card_ne_zero (hc ▸ (D.host.g_prime _).ne_zero)
-  haveI := Dw.fin
-  haveI := Dw.proj
-  have hN : Nat.card (QMod Dw.La (typePrime l v)) = D.host.g v.1 ^ D.R.r := by
-    rw [natCard_quot_smul_top_of_projective, hc, Dw.rank, hr]
-  refine nonempty_addEquiv_pi (fun x => ?_) hN
-  have h : ((D.host.g v.1 : ℕ) : 𝓞 D.host.E) • x ∈ typePrime l v • (⊤ : Submodule _ (QMod Dw.La (typePrime l v))) :=
-    Submodule.smul_mem_smul (g_mem_typePrime v) trivial
-  rwa [smul_top_qMod, Submodule.mem_bot, Nat.cast_smul_eq_nsmul] at h
 
 def typeRed (fr : TypeFrame Dw l) : LevelAut Dw l →* LevelGroup D.host :=
   MonoidHom.pi fun v => (autMat (fr v)).comp (autRed (N := Dw.La) (J := typePrime l v) le_sup_left)
@@ -451,26 +411,11 @@ def prodEquiv (hl : IsTypeLevel l) (fr : TypeFrame Dw l) : LevelGroup D.host × 
 theorem prodEquiv_apply (hl : IsTypeLevel l) (fr : TypeFrame Dw l) (a : LevelGroup D.host) (b : grpR Dw l) :
     prodEquiv hl fr (a, b) = typeEmb hl fr a * b := rfl
 
-theorem typeRed_prodEquiv (hl : IsTypeLevel l) (fr : TypeFrame Dw l) (x : LevelGroup D.host × grpR Dw l) :
-    typeRed fr (prodEquiv hl fr x) = x.1 := by
-  rw [prodEquiv_apply, map_mul, typeRed_typeEmb, (typeRed_eq_one fr).2 x.2.2, mul_one]
-
 def grpOf (fr : TypeFrame Dw l) (S : Subgroup (LevelGroup D.host)) : Subgroup (LevelAut Dw l) := S.comap (typeRed fr)
 
 def grpHR (fr : TypeFrame Dw l) : Subgroup (LevelAut Dw l) := grpOf fr (levelU D.host)
 
 def grpGHR (fr : TypeFrame Dw l) (i : Fin 2) : Subgroup (LevelAut Dw l) := grpOf fr (levelGU D.host i)
-
-def grpOfEquiv (hl : IsTypeLevel l) (fr : TypeFrame Dw l) (S : Subgroup (LevelGroup D.host)) :
-    S × grpR Dw l ≃* grpOf fr S where
-  toFun x := ⟨prodEquiv hl fr (x.1, x.2), by
-    show typeRed fr _ ∈ S
-    rw [typeRed_prodEquiv]; exact x.1.2⟩
-  invFun γ := (⟨((prodEquiv hl fr).symm γ).1, by
-    rw [← typeRed_prodEquiv hl fr, MulEquiv.apply_symm_apply]; exact γ.2⟩, ((prodEquiv hl fr).symm γ).2)
-  left_inv x := by simp
-  right_inv γ := Subtype.ext ((prodEquiv hl fr).apply_symm_apply γ)
-  map_mul' x y := Subtype.ext (map_mul (prodEquiv hl fr) ((x.1 : LevelGroup D.host), x.2) ((y.1 : LevelGroup D.host), y.2))
 
 variable {K : Type} [Field K]
 

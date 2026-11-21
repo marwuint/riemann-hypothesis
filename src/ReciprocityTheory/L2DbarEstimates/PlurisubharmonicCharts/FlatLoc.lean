@@ -28,14 +28,6 @@ theorem denominator_ne_zero_on_chart (hD : A.D0 L w w0 s) {x : Y} (hx : x ∈ A.
   rw [hw.2 i (A.pick x) x trivial hi (A.mem_pick x)]
   exact mul_ne_zero (A.g_ne L i (A.pick x) x hi (A.mem_pick x)) hx.1
 
-theorem denominator_ne_zero_of_overlap (hD : A.D0 L w w0 s) {y : Y} {i j : ι} (hi : y ∈ (A.chart i).source)
-    (hj : y ∈ (A.chart j).source) (h : w0 j y ≠ 0) : w0 i y ≠ 0 := by
-
-  have hw := hD.isSection_denom
-  unfold WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hw
-  rw [hw.2 i j y trivial hi hj]
-  exact mul_ne_zero (A.g_ne L i j y hi hj) h
-
 theorem flL_zLoc_chart (hD : A.D0 L w w0 s) {y : Y} {i : ι} (hi : y ∈ (A.chart i).source)
     (_hne : w0 i y ≠ 0) : A.zLoc w0 s i (A.chart i y) = A.zmap w0 s y := by
 

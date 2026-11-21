@@ -1,10 +1,17 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HasStepCharts
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SelM
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPotentialBlockDecompositionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPotentialBlockDecomposition
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishingStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsClosedSectionBoundaryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodChartPotentialLeviFormStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsClosedSectionBoundary
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodChartPotentialLeviForm
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.CompRightEqZero
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.KappaSt
+import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
+import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
 
 noncomputable section
 
@@ -135,7 +142,7 @@ theorem isPshOn_stepPot : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, F
   obtain ⟨W, l, H, D, hW, hyW, hWU, hWO, hHh, hHd, hDh, hDn, hEq⟩ := hS x y₁ hU
   have hb : pr y₁ ∉ bdry BM.s := hyb
   obtain ⟨V, Pi, hV, hVo, hPh, hPg⟩ := BM.period l (pr y₁) ⟨hWO y₁ hyW, hb⟩
-  have hcl : IsClosed (bdry BM.s) := GlobalTheory.T.isClosed_section_boundary _ _ _ _ _ BM.sec
+  have hcl : IsClosed (bdry BM.s) := _root_.GlobalTheory.CompanionTheory.Ar.PB.CWeight.isClosed_bdry_of_isSection _ _ _ _ _ BM.sec
   let V' : Set R.X := W ∩ pr ⁻¹' (V ∩ (bdry BM.s)ᶜ)
   have hV'o : IsOpen V' := hW.inter ((hVo.inter hcl.isOpen_compl).preimage hp.1)
   have hyV' : y₁ ∈ V' := ⟨hyW, hV, hb⟩
@@ -153,7 +160,7 @@ theorem isPshOn_stepPot : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, F
       stepPot N j i (g y') = blockPot j i (BM.G l p.1 (pr y')) (H y') + Real.log ‖detFac j i (H y')‖ := by
     intro i y' hy'
     have hG := BM.G_pos l p.1 (pr y') ⟨hWO y' hy'.1, hy'.2.2⟩
-    exact GlobalTheory.T.flag_potential_block_decomposition N j i _ _ _ M.j_le (hPg p.1 _ hy'.2.1) hG.1 hG.2 (hHd y' hy'.1).1 (hHd y' hy'.1).2
+    exact _root_.GlobalTheory.CompanionTheory.Ar.PB.stepPot_mul_eq_blockPot N j i _ _ _ M.j_le (hPg p.1 _ hy'.2.1) hG.1 hG.2 (hHd y' hy'.1).1 (hHd y' hy'.1).2
   have hdn : ∀ y' ∈ V', detFac j p.2 (H y') ≠ 0 := fun y' hy' =>
     detFac_ne_zero' M.j_le p.2 (hHd y' hy'.1).1 (hHd y' hy'.1).2
   let f : R.X → ℂ := fun y' => D y' * (detFac j p.2 (H y'))⁻¹
@@ -187,7 +194,7 @@ theorem isPshOn_stepPot : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, F
       rw [if_neg hq]
       simp
   have hsrc : y₁ ∈ (R.A.chart c).source := (R.A.chart c).map_target hyt
-  obtain ⟨Lm, -, hL, -⟩ := GlobalTheory.T.period_chart_potential_levi_form e R.X R.A Unit N j M.j_le pot y₁ V'' (fun _ => g) hPC c hsrc
+  obtain ⟨Lm, -, hL, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.levi_diagonal_of_isPeriodChart e R.X R.A Unit N j M.j_le pot y₁ V'' (fun _ => g) hPC c hsrc
   have hlev := hL ((), p.2) w
   have e1 : (R.A.chart c) y₁ = y₀ := (R.A.chart c).right_inv hyt
   have e2 : (pot ((), p.2)).φ y₁ = Φl := by

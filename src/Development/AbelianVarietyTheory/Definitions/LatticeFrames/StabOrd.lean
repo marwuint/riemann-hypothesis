@@ -121,8 +121,6 @@ structure ClsDat.Is {c : Comm D} (ρ : RealC c) {t : Tup c} (A : ClsDat t) : Pro
         A.ell n h β a G (ρ.low n h fun z => t.rd n β ψ ((ρ.fr n).symm z) ((c.oT n h).emb (A.hT a, 1))) =
       t.cP * t.tail n h ψ G
 
-def ClsPin {c : Comm D} {𝒯 : Type} (t : 𝒯 → Tup c) : Prop := ∃ ρ : RealC c, ρ.Is ∧ ∀ s, ∃ A : ClsDat (t s), A.Is ρ
-
 end GlobalTheory.SeeSaw
 
 end

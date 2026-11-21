@@ -2,17 +2,21 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentTranslateLiftsSemiAbelianTripleMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVectorFieldPullbackBaseChangeDerivationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKodairaSpencerOfCohomologousCocycleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreProductAffineOpenClosureLegsEqTopStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentTranslateLiftsSemiAbelianTripleMap
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartFrameBaseHolds
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVectorFieldPullbackBaseChangeDerivation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKodairaSpencerOfCohomologousCocycle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreProductAffineOpenClosureLegsEqTop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FromSpecAppLETopEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LePreimageOfIsTranslate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReductionEqBasePoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeformationChartPointSpecMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerConditionRestrictBasicOpenOfAffine
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointDerivationsEqZeroKillingBothFactorsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BundleIsoOntoPullbackIntertwinesTransitionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointDerivationsEqZeroKillingBothFactors
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineHomOfField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BundleIsoOntoPullbackIntertwinesTransitions
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -65,7 +69,7 @@ theorem isTranslate_push {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {g : 
     rw [Category.assoc, mu.cart.1.w, ← Category.assoc, hg₀, Category.assoc, hx, ← Category.assoc,
       GlobalTheory.LogKSLoc.spMap_comp']
   obtain ⟨w, hw, -⟩ := existsUnique_isTranslate t (φS.comp (g.appLE U.1 U'.1 hU).hom) hg hvb
-  obtain ⟨w'', h1, h2⟩ := GlobalTheory.T.tangentTranslate_lifts_semiAbelianTripleMap E H X X' t t' g mu _ _ (g.appLE U.1 U'.1 hU).hom (chart U) (chart U') hx vb vb'
+  obtain ⟨w'', h1, h2⟩ := _root_.GlobalTheory.TransLift.lift_isTranslate E H X X' t t' g mu _ _ (g.appLE U.1 U'.1 hU).hom (chart U) (chart U') hx vb vb'
     hvb hvb' hvv S φS g₀ hg₀ w hw
   obtain ⟨_, _, huniq⟩ := existsUnique_isTranslate t' φS hg₀ hvb'
   have e : w'' = w' := (huniq _ h2).trans (huniq _ hw').symm
@@ -182,7 +186,7 @@ theorem rel_pair {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {g : X' ⟶ X
     have hx : chart U' ≫ g = spMap ψ ≫ chart U := (IsAffineOpen.SpecMap_appLE_fromSpec g U.2 U'.2 hU).symm
     rw [Category.assoc, hpb.w, ← Category.assoc, hg₀, Category.assoc, hx, ← Category.assoc,
       GlobalTheory.LogKSLoc.spMap_comp']
-  have key := GlobalTheory.T.pointDerivations_eq_zero_killing_both_factors _ _ _ _ t.G.hom t'.G.hom mu.φ g hpb U U' hU (W₁ ⊓ W₂) (inf_le_left.trans hW₁) O hO S g₀ hO₀ Δ
+  have key := _root_.GlobalTheory.KSBaseChangeLocal.eq_zero_of_kills_both _ _ _ _ t.G.hom t'.G.hom mu.φ g hpb U U' hU (W₁ ⊓ W₂) (inf_le_left.trans hW₁) O hO S g₀ hO₀ Δ
     ?add ?mul ?res ?gen₁ ?gen₂ f
   · exact sub_eq_zero.1 key
   case add =>
@@ -261,7 +265,7 @@ theorem isKS_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   have hWU : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ U.1 := fun i =>
     (le_iSup W i).trans (hcov.le.trans (t.G.hom.preimage_mono inf_le_left))
   have hpb : IsPullback mu.φ t'.G.hom t.G.hom g := mu.cart.1
-  choose e he hel hec using fun i => GlobalTheory.T.exists_vectorField_pullback_baseChange_derivation _ _ _ _ t.G.hom t'.G.hom mu.φ g hpb U U' hU D D' hD (W i) (hWU i)
+  choose e he hel hec using fun i => _root_.GlobalTheory.FieldBC.exists_field_pullback _ _ _ _ t.G.hom t'.G.hom mu.φ g hpb U U' hU D D' hD (W i) (hWU i)
     (d i) (hfld i) (hlift i (hWU i))
   obtain ⟨w, hwg, -⟩ := mu.lin
   let W' : J × t'.PP.L.ι → t'.G.left.Opens := fun q =>
@@ -273,7 +277,7 @@ theorem isKS_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     le_inf (fun y hy => Set.mem_iInter.2 fun _ => hWj q.1 (hW'1 q hy)) inf_le_right
   have hΩ : ∀ q q', W' q ⊓ W' q' ≤ mu.φ ⁻¹ᵁ (t.PP.L.U (j q.1) ⊓ t.PP.L.U (j q'.1)) := fun q q' y hy =>
     ⟨hWj _ (hW'1 q hy.1), hWj _ (hW'1 q' hy.2)⟩
-  refine GlobalTheory.T.isKodairaSpencer_of_cohomologous_cocycle E H X' t' V' U' n v' hv' D' _ (J × t'.PP.L.ι) W' Prod.snd (fun q => e q.1)
+  refine _root_.GlobalTheory.LogKSCoh.isKS_of_cohomologous E H X' t' V' U' n v' hv' D' _ (J × t'.PP.L.ι) W' Prod.snd (fun q => e q.1)
     (fun q => inf_le_right) (fun q => res (hW'L q) (w.s (fun _ => j q.1, q.2)))
     (fun q q' => res (hΩ q q') (pullU mu.φ _ (t.PP.L.g (j q.1) (j q'.1)))) ?_ ?_ ?_ ?_ ?_
   · refine le_antisymm (iSup_le fun q => inf_le_left.trans inf_le_right) fun y hy => ?_
@@ -294,7 +298,7 @@ theorem isKS_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   · intro q h r
     exact hel q.1 (W' q) h (hW'1 q) r
   · intro q q'
-    exact GlobalTheory.T.bundleIsoOntoPullback_intertwines_transitions _ _ mu.φ t.PP.L t'.PP.L w hwg (j q.1) (j q'.1) q.2 q'.2 (W' q) (W' q') (hW'L q) (hW'L q')
+    exact _root_.GlobalTheory.LogKSCoc.iso_pull_intertwines _ _ mu.φ t.PP.L t'.PP.L w hwg (j q.1) (j q'.1) q.2 q'.2 (W' q) (W' q') (hW'L q) (hW'L q')
       inf_le_right inf_le_right (hΩ q q')
   · intro q q' O hO f S _ φS g₀ w' hg₀ hO₀ hw'
     have hO' : O ≤ mu.φ ⁻¹ᵁ (W q.1 ⊓ W q'.1) ⊓ t'.G.hom ⁻¹ᵁ U'.1 := fun y hy =>

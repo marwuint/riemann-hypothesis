@@ -41,47 +41,6 @@ def decRes (A : ValuationSubring Ω) : Dec (F := L) A →* Dec (F := F) A :=
 
 theorem decRes_apply (σ : Dec (F := L) A) : (decRes F L A σ : G F Ω) = resGal F L Ω σ := rfl
 
-theorem decRes_injective : Function.Injective (decRes F L A) := by
-  intro σ τ h
-  apply Subtype.ext
-  apply AlgEquiv.ext
-  intro x
-  have := congrArg (fun g : Dec (F := F) A => (g : G F Ω) x) h
-  simpa [decRes_apply, resGal_apply] using this
-
-theorem decRes_surjective (h : Dec (F := F) A ≤ (resGal F L Ω).range) :
-    Function.Surjective (decRes F L A) := by
-  intro τ
-  obtain ⟨σ, hσ⟩ := MonoidHom.mem_range.mp (h τ.2)
-  refine ⟨⟨σ, resGal_mem_Dec_iff.mp (by rw [hσ]; exact τ.2)⟩, ?_⟩
-  apply Subtype.ext
-  rw [decRes_apply]
-  exact hσ
-
-theorem continuous_decRes [IsAlgClosure F Ω] : Continuous (decRes F L A) := by
-  refine continuous_induced_rng.2 ?_
-  have hc : Continuous (resGal F L Ω) :=
-    (isClosedEmbedding_resGal (F := F) (L := L) (Ω := Ω)).continuous
-  have e : ((↑) : Dec (F := F) A → G F Ω) ∘ decRes F L A =
-      resGal F L Ω ∘ ((↑) : Dec (F := L) A → G L Ω) := by
-    funext σ
-    exact decRes_apply σ
-  rw [e]
-  exact hc.comp continuous_subtype_val
-
-def decEquiv [IsAlgClosure F Ω] (h : Dec (F := F) A ≤ (resGal F L Ω).range) :
-    Dec (F := L) A ≃ₜ* Dec (F := F) A where
-  toMulEquiv := MulEquiv.ofBijective (decRes F L A) ⟨decRes_injective, decRes_surjective h⟩
-  continuous_toFun := continuous_decRes
-  continuous_invFun := by
-    have hI : Topology.IsInducing (resGal F L Ω) :=
-      (isClosedEmbedding_resGal (F := F) (L := L) (Ω := Ω)).toIsEmbedding.toIsInducing
-    refine continuous_induced_rng.2 (hI.continuous_iff.2 ?_)
-    convert (continuous_subtype_val : Continuous (fun τ : Dec (F := F) A => (τ : G F Ω))) using 1
-    funext τ
-    exact congrArg Subtype.val
-      ((MulEquiv.ofBijective (decRes F L A) ⟨decRes_injective, decRes_surjective h⟩).apply_symm_apply τ)
-
 theorem one_lt_normV (v : HeightOneSpectrum (𝓞 F)) : 1 < normV v := by
   have e : normV v = Ideal.absNorm v.asIdeal := by
     rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
@@ -96,34 +55,5 @@ theorem one_lt_normV (v : HeightOneSpectrum (𝓞 F)) : 1 < normV v := by
   omega
 
 end split
-
-section frob
-
-variable {F L Ω : Type*} [Field F] [NumberField F] [Field L] [NumberField L] [Field Ω] [Algebra F L]
-  [Algebra F Ω] [Algebra L Ω] [IsScalarTower F L Ω] {A : ValuationSubring Ω}
-
-end frob
-
-section conj
-
-variable {L Ω : Type*} [Field L] [NumberField L] [Field Ω] [Algebra L Ω]
-
-def mapPlace (τ : Ω ≃+* Ω) (A : ValuationSubring Ω) : ValuationSubring Ω :=
-  A.comap τ.symm.toRingHom
-
-def conjV (s : L ≃+* L) (w : HeightOneSpectrum (𝓞 L)) : HeightOneSpectrum (𝓞 L) where
-  asIdeal := w.asIdeal.comap (RingOfIntegers.mapRingEquiv s.symm : 𝓞 L →+* 𝓞 L)
-  isPrime := Ideal.comap_isPrime _ _
-  ne_bot := by
-    obtain ⟨y, hy, hy0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot
-    refine (Submodule.ne_bot_iff _).mpr ⟨RingOfIntegers.mapRingEquiv s y, ?_, ?_⟩
-    · rw [Ideal.mem_comap]
-      convert hy using 1
-      exact RingOfIntegers.ext (by simp)
-    · exact (map_ne_zero_iff _ (RingOfIntegers.mapRingEquiv s).injective).mpr hy0
-
-variable (s : L ≃+* L) (τ : Ω ≃+* Ω) (hτ : ∀ x : L, τ (algebraMap L Ω x) = algebraMap L Ω (s x))
-
-end conj
 
 end ReciprocityTheory.Gal

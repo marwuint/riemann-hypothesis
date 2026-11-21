@@ -29,8 +29,6 @@ def Covers (r : Γ →* GL (Fin a) k) (ρ : Γ →* GL (Fin d) k) : Prop :=
   ∃ (m : ℕ) (B : Matrix (Fin a × Fin m) (Fin d) k), B.rank = d ∧
     ∀ g : Γ, Matrix.kronecker (r g : Matrix (Fin a) (Fin a) k) (1 : Matrix (Fin m) (Fin m) k) * B = B * (ρ g : Matrix (Fin d) (Fin d) k)
 
-theorem inside_refl (r : Γ →* GL (Fin a) k) : Inside r r := ⟨1, by simp, fun g => by simp⟩
-
 end Alg
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] {a dd : ℕ}
@@ -90,8 +88,6 @@ def IsDivRep (ι : Qbar l ≃+* ℂ) (d : ℕ) (U : Submodule ℂ (UA E a → �
             ((r s⁻¹ : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly.map ι.toRingHom =
               ((algSat a (normV w) B).map fun b => Polynomial.X - Polynomial.C b).prod
 
-def GenM : ℕ → ℕ → Multiset ℂˣ → Prop := fun _ _ B => GenericMul B
-
 def PhiSeed : Prop :=
   ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a dd : ℕ)
     (U : Submodule ℂ (UA E a → ℂ)) (ψ : G E Ω →* (Qbar l)ˣ), IsDetChar ι U ψ →
@@ -114,14 +110,6 @@ def DivAll : Prop :=
           FrobEig ι r w (algSat a (normV w) B)) ∧
         (CrysAt ρ w → JumpsOcc U ι ρ w → CrysDRU U ι r w) ∧
         (IsSplitAt w → ∀ B, SatU U w B → GenericMul B → PhiKilled ι ρ w a B → CrysAt r w ∧ PhiPol ι r w B)
-
-def PhiOfDiv : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a →
-    ∀ d : ℕ, ImQ E d → ∀ U : Submodule ℂ (UA E a → ℂ), IsAutRepU U →
-    ∀ r : G E Ω →* GL (Fin a) (Qbar l), IsDivRep ι d U r →
-    ∀ (dd : ℕ) (ρ : G E Ω →* GL (Fin dd) (Qbar l)), Continuous ρ → IsSSRep ρ → Inside r ρ →
-    ∀ w : HeightOneSpectrum (𝓞 E), IsSplitAt w → ∀ B, SatU U w B → GenericMul B → PhiKilled ι ρ w a B →
-      CrysAt r w ∧ PhiPol ι r w B
 
 theorem PhiPol.phiAt {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ}
     (h : PhiPol ι r w B) : PhiAt ι r w B := by

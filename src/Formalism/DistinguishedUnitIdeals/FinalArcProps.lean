@@ -41,9 +41,6 @@ def jumpWindows (ell g : ℕ) (kind : ℕ → Kind) (b : ℕ → ℕ) : Finset �
 def wideWindows (ell g G₀ Sz η : ℕ) (kind : ℕ → Kind) (b : ℕ → ℕ) : Finset ℤ :=
   (Finset.range ell).biUnion fun s => win4 (kind s) g G₀ Sz η (b s)
 
-def kapOf (ℓ E g h : ℕ) : ℝ :=
-  (E : ℝ) + 7 * (g : ℝ) * ((E : ℝ) + 1 + 1 / ((ℓ : ℝ) - 1)) + 3 * Real.logb ℓ (2 * (h : ℝ))
-
 def TextWord (ℓ ell a₀ : ℕ) (b : ℕ → ℕ) (kind : ℕ → Kind) : Prop :=
   (∃ t₀ t₁ : ℕ, ∀ s < ell, s ≠ t₀ → s ≠ t₁ → kind s = Kind.thin) ∧
   ∀ s₀ s₁ : ℕ, s₀ < s₁ → s₁ < ell →
@@ -81,16 +78,6 @@ structure FinalNum (ℓ : ℕ) {n : ℕ} (Cu : Cuts n) (kd : ZMod n → Kind) (b
   kapOK : ∀ c ∈ Cu.cuts,
     kapExp ℓ (Cu.ell c - 1) (jumpWindows (Cu.ell c) g (kindAt kd c) (sizeAt bb c)) ≤ kap ∧
     kapExp ℓ (Cu.ell c - 1) (wideWindows (Cu.ell c) g G₀ Sz η (kindAt kd c) (sizeAt bb c)) ≤ kap
-
-def KapOfKAP : Prop :=
-  ∀ (ℓ n : ℕ) (Cu : Cuts n) (kd : ZMod n → Kind) (bb : ZMod n → ℕ) (g G₀ Sz η hh kap ellmax a₀ : ℕ),
-    ℓ.Prime → G₀ ≤ g → Sz ≤ g → η ≤ g → g ≤ hh → (∀ i, kd i ≠ Kind.thin → bb i + Sz ≤ hh) →
-    (∀ c ∈ Cu.cuts, Cu.ell c ≤ ellmax) →
-    (∀ c ∈ Cu.cuts, TextWord ℓ (Cu.ell c) a₀ (sizeAt bb c) (kindAt kd c)) →
-    kapOf ℓ (ellmax - 1) g hh ≤ (kap : ℝ) →
-    ∀ c ∈ Cu.cuts,
-      kapExp ℓ (Cu.ell c - 1) (jumpWindows (Cu.ell c) g (kindAt kd c) (sizeAt bb c)) ≤ kap ∧
-      kapExp ℓ (Cu.ell c - 1) (wideWindows (Cu.ell c) g G₀ Sz η (kindAt kd c) (sizeAt bb c)) ≤ kap
 
 structure FinalBase {O : Type} [CommRing O] (B : Base O) (ϖ : O) (eO : ℕ) (u x : Oˣ)
     (LL : Type) [Field LL] [Algebra O LL] : Prop where

@@ -90,9 +90,4 @@ theorem isCompact_KLev (hM : 1 ≤ M) : IsCompact (KLev F n M : Set (GL (Fin n) 
   (GroundTheory.Automorphic.AdelicGLn.isCompact_integralFiniteGL F n).of_isClosed_subset
     (Subgroup.isClosed_of_isOpen _ (isOpen_KLev hM)) KLev_le_integral
 
-theorem HasFixed.mono {Γ V : Type} [Group Γ] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ Γ V} {U U' : Subgroup Γ}
-    (h : HasFixed ρ U) (hU : U' ≤ U) : HasFixed ρ U' :=
-  let ⟨v, h0, hv⟩ := h
-  ⟨v, h0, fun u hu => hv u (hU hu)⟩
-
 end UpperTheory.V.Af

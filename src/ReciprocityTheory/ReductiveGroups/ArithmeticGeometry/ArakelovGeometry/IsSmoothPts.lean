@@ -111,10 +111,6 @@ structure IsGood (D : ℕ) (x : Ix κ → Ω) (m : ConeMetric ℂ (Ix κ)) (μ :
   conjMu : μ.map conjPt = μ
   vol : IsVolumeOn (coordIdeal ℤ x) D μ
 
-def defect (I : AllFam) (D : ℕ) (x : Ix κ → Ω) (m : ConeMetric ℂ (Ix κ)) (μ : Measure (Ix κ → ℂ)) :
-    ℕ → ℝ :=
-  GeometryOfNumbersTheory.hsDefect D (chi x m μ) (top I x m D)
-
 end Top
 
 end ReciprocityTheory.ChartRestriction.G.ArakelovGeometry

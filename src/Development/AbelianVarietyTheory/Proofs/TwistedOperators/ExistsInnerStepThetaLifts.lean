@@ -9,9 +9,9 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepW
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IoYStOfIoPair
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExpOfOrder
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChainParOfNodeGap
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsThetaLiftMultiplicitySpacesOfPublishedStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsThetaLiftMultiplicitySpacesOfHyp
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChainStepsLevelCharacterConditionsHoldStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsInnerStepIntertwinersThetaChainStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsInnerStepIntertwinersThetaChain
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -24,12 +24,12 @@ theorem ex_ioY_holds : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheo
     (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsFam → R.IsModels → HostHyp D → R.IsChainW → R.ex_ioY := by
   intro hDS hHC hCR hCW D G _ _ Pl0 T A Ks _ _ _ R hL hF hM hH hW
   have hθ : IsInfFam R.θ := hM.inf
-  have hE : R.ex_ItY := GlobalTheory.T.exists_innerStepIntertwiners_thetaChain hDS hHC D G Pl0 T A Ks R hL hF hM hH hW
+  have hE : R.ex_ItY := _root_.GlobalTheory.Chain.ExItY.ex_ItY_holds hDS hHC D G Pl0 T A Ks R hL hF hM hH hW
   have hI : R.chain_ItY := fun t k hk => (hW.ItY k hk).1 (hE k hk) t
   have hS : GlobalTheory.Chain.StepsOK R :=
     GlobalTheory.Chain.StepVac.stepsOK D G Pl0 T A Ks R hL hθ hW.ωY hW.ωX hW.vY hW.vX
   have hLw : GlobalTheory.Chain.LawsOK R := GlobalTheory.T.chainSteps_levelCharacter_conditions_hold D G Pl0 T A Ks R hL hθ hW.ωY hW.ωX hW.vY hW.vX
-  have hY := GlobalTheory.Chain.ioYSt_of_ioPair D G Pl0 T A Ks R (GlobalTheory.T.exists_thetaLift_multiplicitySpaces_of_hypotheses hDS hHC hCR hCW D)
+  have hY := GlobalTheory.Chain.ioYSt_of_ioPair D G Pl0 T A Ks R (_root_.GlobalTheory.Chain.IoLift.ioPair_onObjects hDS hHC hCR hCW D)
     (GlobalTheory.Chain.ParOfNodeGap.chainPar_of_nodeGap D hH.nodeGap) hθ hS hLw hM.νY hM.νY' hI
   exact fun t k hk => hY t k hk
 

@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomogeneousC
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagRelativeTangentTopChernIsHomogeneousCmTypeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsHomogeneousOfMulIsHomogeneousOfNeZeroRightStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GrassmannProductIntegralEqFlagDegreeWeightStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GrassmannProductIntegralEqZeroOfMemRelIdealStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GrassmannProductIntegralPointClassEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GrassmannProductIntegralEqZeroOfMemRelIdeal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GrassmannProductIntegralPointClassEqOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GrassmannProductTopDegreeEqSmulPointClassStatement
 
 namespace GlobalTheory.GrassTop
@@ -138,8 +138,8 @@ theorem grass_top : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   · obtain ⟨c, hc⟩ := GlobalTheory.T.grassmannProduct_topDegree_eq_smul_pointClass H Dw Re hReW
     have h1 := hL _ hc
     rw [map_sub, sub_eq_zero, C_mul', map_smul, smul_eq_mul] at h1
-    have h2 := GlobalTheory.T.grassmannProductIntegral_eq_zero_of_mem_relIdeal H Dw _ hc
-    rw [intGr_sub, intGr_C_mul, GlobalTheory.T.grassmannProductIntegral_pointClass_eq_one, mul_one, sub_eq_zero] at h2
+    have h2 := _root_.GlobalTheory.GrassTop.intGr_eq_zero_of_mem_relIdeal H Dw _ hc
+    rw [intGr_sub, intGr_C_mul, _root_.GlobalTheory.GrassTop.intGr_pointPoly, mul_one, sub_eq_zero] at h2
     rw [hLR, h1, ← h2, ← hIR, GlobalTheory.T.grassmannProductIntegral_eq_flagDegree_weight H Dw la R D hD hR]
   · have h1 : L Re = 0 := hdeg Re e hReW (Ne.symm hn)
     have h2 : L (pointPoly H Dw) = 0 := hdeg _ e (pointPoly_isWeightedHomogeneous H Dw) (Ne.symm hn)

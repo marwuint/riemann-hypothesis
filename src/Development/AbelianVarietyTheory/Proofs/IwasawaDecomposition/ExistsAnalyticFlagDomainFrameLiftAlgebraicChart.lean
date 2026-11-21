@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultOfNotMem
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HodgeMetricUniformisationSmoothOnInterior
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PtEqOfPtOfFrameEq
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicChartLiftHolomorphicPeriodMapsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodMapMemberEqFramePeriodMapLinearChangeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicChartLiftHolomorphicPeriodMaps
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodMapMemberEqFramePeriodMapLinearChange
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAnalyticFrameFamilyOfHolomorphicPeriodMapsStatement
 open AlgebraicGeometry CategoryTheory MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ProjVar GlobalTheory.FlagBundle GlobalTheory.GoodMetric GlobalTheory.LieBase
 open Classical
@@ -21,7 +21,7 @@ theorem exists_analytic_frame_lift : ∀ (E : Type) [Field E] [NumberField E] [I
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU X j hj hjo y hy c' hyc
   rcases Nat.eq_zero_or_pos (Dw.p + Dw.q) with hr | hr
   · obtain ⟨W⟩ := GlobalTheory.ArcQ.nonempty_unfWit_of_isUnf _ _ _ _ _ _ _ _ U hU
-    obtain ⟨i, B, P, hB, hb₀, -, hper, -, hq⟩ := GlobalTheory.T.algebraicChart_lift_holomorphic_periodMaps E H Dw l Xo c O β Y T F e σ W.g _ W.F X j hj hjo y hy c' hyc
+    obtain ⟨i, B, P, hB, hb₀, -, hper, -, hq⟩ := _root_.GlobalTheory.ShFam.chart_lift_periods_of_openPart E H Dw l Xo c O β Y T F e σ W.g _ W.F X j hj hjo y hy c' hyc
     obtain ⟨q₀, hq₀, hu₀⟩ := hq _ hb₀
     have hne : ¬ LiesIn (cxOf e σ hj y) (genBd T.Z) := by
       rw [← c'.e.left_inv hyc, ← hq₀]; exact not_liesIn_cxPt q₀
@@ -40,7 +40,7 @@ theorem exists_analytic_frame_lift : ∀ (E : Type) [Field E] [NumberField E] [I
     rw [← hq1, ← e1, hq₀, c'.e.left_inv hyc]
     exact hkx
   · obtain ⟨W, hinj⟩ := GlobalTheory.HodgeSmooth.exists_unfWit_inj hσ hU hr
-    obtain ⟨i, B, P, hB, hb₀, -, hper, hdiff, hq⟩ := GlobalTheory.T.algebraicChart_lift_holomorphic_periodMaps E H Dw l Xo c O β Y T F e σ W.g _ W.F X j hj hjo y hy c' hyc
+    obtain ⟨i, B, P, hB, hb₀, -, hper, hdiff, hq⟩ := _root_.GlobalTheory.ShFam.chart_lift_periods_of_openPart E H Dw l Xo c O β Y T F e σ W.g _ W.F X j hj hjo y hy c' hyc
     obtain ⟨q₀, -, hu₀⟩ := hq _ hb₀
     obtain ⟨k, x₁, t, hbor⟩ := hU.2.2.1 q₀
     have hk : W.ik k = i := W.F.disj _ _ _ _ (W.period k x₁) (hper _ hb₀)
@@ -57,7 +57,7 @@ theorem exists_analytic_frame_lift : ∀ (E : Type) [Field E] [NumberField E] [I
           h (fun j => Formalism.L2.PjFree.perFr (U.X k) x'.1 (W.φ k v : Fin (Dw.p + Dw.q) → E)
             (Formalism.L2.PjFree.relab c σ (W.e j).1) ((W.e j).2 : ℕ)) := by
       intro b hb q hqu
-      obtain ⟨x', hx', h, hh⟩ := GlobalTheory.T.periodMap_member_eq_frame_periodMap_linear_change E H Dw l Xo c σ _ U W hσ hU hinj k (P b) (hper b hb) q hqu
+      obtain ⟨x', hx', h, hh⟩ := _root_.GlobalTheory.PointLift.pm_lift_pointwise E H Dw l Xo c σ _ U W hσ hU hinj k (P b) (hper b hb) q hqu
       exact ⟨x', hx', h, fun v => (hh v).trans (congrArg h (funext fun j => W.Pm_eq k x' v j))⟩
     obtain ⟨s, hs, hev⟩ := GlobalTheory.T.exists_analytic_frame_family_of_holomorphic_periodMaps E (Dw.p + Dw.q) (U.X k) _ (W.φ k) W.g (fun j => Formalism.L2.PjFree.relab c σ (W.e j).1)
       (fun j => ((W.e j).2 : ℕ)) X.dim B P (c'.e y) hB hb₀ (fun b hb => (hper b hb).1) hdiff

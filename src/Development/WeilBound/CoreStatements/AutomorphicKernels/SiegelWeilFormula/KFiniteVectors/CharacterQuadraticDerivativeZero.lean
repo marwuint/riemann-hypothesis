@@ -293,8 +293,6 @@ theorem exists_at' (ξ : d.κ → mixedEmbedding.mixedSpace F) :
   refine Prod.ext ?_ (by simp)
   exact Box.at_pt ξ s hs
 
-theorem nf_add' (a b : d.κ → AF F) : Box.nf (a + b) = Box.nf a + Box.nf b := Box.nf_add a b
-
 theorem td_at_mul {p : Type} [Fintype p] {Z : Matrix (Fin d.m) p (AE F E)} (hZ : At (evI F) Z) {q : Type}
     (N : Matrix p q (AE F E)) : At (evI F) (Z * N) := fun c hc => by rw [← Matrix.smul_mul, hZ c hc, Matrix.zero_mul]
 

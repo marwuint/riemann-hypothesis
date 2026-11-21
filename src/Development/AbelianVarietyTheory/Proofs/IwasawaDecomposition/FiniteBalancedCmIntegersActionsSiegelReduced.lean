@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegelZeroFront
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BalancedEntriesBoundedSiegelReducedStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TraceBoundedOfAevalMonicEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BalancedEntriesBoundedSiegelReduced
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TraceBoundedOfAevalMonicEqZero
 
 open Matrix GlobalTheory.RedTh NumberField GlobalTheory.PolFan ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
@@ -21,7 +21,7 @@ theorem finite_balanced_actions : ∀ (E : Type) [Field E] [NumberField E] [IsCM
       (((ρ (H.bar c) * ρ c).trace : ℤ) : ℝ) ≤ K := by
     intro c
     obtain ⟨p, hpm, hp⟩ := Algebra.IsIntegral.isIntegral (R := ℤ) (H.bar c * c)
-    obtain ⟨K, hK⟩ := GlobalTheory.T.trace_bounded_of_aeval_monic_eq_zero p hpm n
+    obtain ⟨K, hK⟩ := _root_.GlobalTheory.RedTh.trace_le_of_aeval_monic_eq_zero p hpm n
     refine ⟨K, fun ρ => ?_⟩
     apply hK
     have h0 : Polynomial.aeval (ρ.toIntAlgHom (H.bar c * c)) p = 0 := by
@@ -31,7 +31,7 @@ theorem finite_balanced_actions : ∀ (E : Type) [Field E] [NumberField E] [IsCM
 
   have hC : ∀ c : 𝓞 E, ∃ N : ℤ, ∀ ρ ∈ S, ∀ i j, ρ c i j ∈ Set.Icc (-N) N := by
     intro c
-    obtain ⟨C, hC⟩ := GlobalTheory.T.balanced_entries_bounded_siegelReduced n (K c)
+    obtain ⟨C, hC⟩ := _root_.GlobalTheory.RedTh.balanced_entries_bounded n (K c)
     refine ⟨⌈C⌉, fun ρ hρ i j => ?_⟩
     obtain ⟨d, u, hs, hpos, hrel⟩ := hρ
     have h1 := hC (ρ c) (ρ (H.bar c)) d u hs hpos (hrel c) (hK c ρ) i j

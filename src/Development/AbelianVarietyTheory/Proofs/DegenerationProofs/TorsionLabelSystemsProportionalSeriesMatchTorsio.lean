@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsStrict
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationWeilPairingProperties
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantTermRepresentativeDependenceStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantTermRepresentativeDependence
+import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj BigOperators
@@ -34,7 +35,7 @@ theorem qEq_incl {k k' : ℕ} (p p' : N.QT k) (q q' : N.QT (k * k')) (hk : k' �
 theorem tx_congr [TopologicalSpace O] {m : ℕ} (hm : Odd m) {p p' : N.QT (m ^ 2)} (h : N.QEq p p') :
     N.tx m p' = N.tx m p := by
   obtain ⟨z, h1, h2⟩ := h
-  exact (tsum_congr fun χ => (GlobalTheory.T.thetaConstantTerm_representative_dependence O N m hm p p' χ).1 z h1 h2).trans
+  exact (tsum_congr fun χ => (_root_.GlobalTheory.Ex.txT_shift O N m hm p p' χ).1 z h1 h2).trans
     ((Equiv.addRight (m • z)).tsum_eq fun χ => N.txT m p χ)
 
 theorem wp_congr {k : ℕ} {p p' q q' : N.QT k} (h : N.QEq p p') (h' : N.QEq q q') : N.wp p q = N.wp p' q' := by

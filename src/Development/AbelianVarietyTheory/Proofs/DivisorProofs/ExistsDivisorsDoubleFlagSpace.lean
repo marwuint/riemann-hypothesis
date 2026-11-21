@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsDominantOfSection
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierDivisorPullbackOfDominantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCartierLocalEquationDiagonalOfAdaptedFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitStalkTransitionPulledBackFlagFramesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinorTwoByTwoTriangularProductStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlmostLowerTriangularDiagMinorIsUnitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParabolicMatrixFamilyDiagIsUnitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRangeDiagonalOfNotUnitTransitionEntryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotIsUnitOffDiagonalTransitionOnCommonSectionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierDivisorPullbackOfDominant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCartierLocalEquationDiagonalOfAdaptedFrame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitStalkTransitionPulledBackFlagFrames
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinorTwoByTwoTriangularProduct
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlmostLowerTriangularDiagMinorIsUnit
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParabolicMatrixFamilyDiagIsUnit
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRangeDiagonalOfNotUnitTransitionEntry
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotIsUnitOffDiagonalTransitionOnCommonSection
 
 noncomputable section
 
@@ -40,13 +40,13 @@ theorem key {F : Type} [Field F] {X Y : Var F} {ι : Type} [Fintype ι] {m : ι 
       (A₁.map W.α₁ * (A₂.map W.α₂)⁻¹) τ a b =
         (t₁ ⟨τ, a⟩ : W.Z.functionField)⁻¹ * (B.map W.α₁ * (B.map W.α₂)⁻¹) τ a b * t₂ ⟨τ, b⟩ ∧
       RegAt z ((A₁.map W.α₁ * (A₂.map W.α₂)⁻¹) τ a b) := by
-  obtain ⟨hP₁, h₁⟩ := GlobalTheory.T.isCartierLocalEquation_diagonal_of_adaptedFrame F Y ι m E' gr B hB hgr _ A₁ hA₁
-  obtain ⟨hP₂, h₂⟩ := GlobalTheory.T.isCartierLocalEquation_diagonal_of_adaptedFrame F Y ι m E' gr B hB hgr _ A₂ hA₂
+  obtain ⟨hP₁, h₁⟩ := _root_.GlobalTheory.FlagPush.isEqn_diag_of_frame F Y ι m E' gr B hB hgr _ A₁ hA₁
+  obtain ⟨hP₂, h₂⟩ := _root_.GlobalTheory.FlagPush.isEqn_diag_of_frame F Y ι m E' gr B hB hgr _ A₂ hA₂
   choose s₁ e₁ q₁ using h₁
   choose s₂ e₂ q₂ using h₂
   have hT₁ : Par m ⊤ ((B * A₁⁻¹).map W.α₁) := hP₁.map W.α₁ fun _ _ => trivial
   have hT₂ : Par m ⊤ ((B * A₂⁻¹).map W.α₂) := hP₂.map W.α₂ fun _ _ => trivial
-  have hloc := GlobalTheory.T.isUnit_stalk_transition_pulledBack_flagFrames F X Y ι m E E' φ f hf W hα z A₁ hA₁ A₂ hA₂
+  have hloc := _root_.GlobalTheory.FlagPush.Dbl.transition_par_stalk F X Y ι m E E' φ f hf W hα z A₁ hA₁ A₂ hA₂
   have dB₁ : ∀ σ, (B.map W.α₁ σ).det ≠ 0 := fun σ => by
     rw [Mat.det_map]; exact (map_ne_zero _).2 (Fr.det_ne hB σ)
   have dB₂ : ∀ σ, (B.map W.α₂ σ).det ≠ 0 := fun σ => by
@@ -58,11 +58,11 @@ theorem key {F : Type} [Field F] {X Y : Var F} {ι : Type} [Fintype ι] {m : ι 
     rw [Mat.map_mul, Mat.map_mul, Mat.map_inv, Mat.map_inv, Mat.mul_inv_rev, Mat.inv_inv dA₁, mul_assoc, mul_assoc,
       mul_assoc, ← mul_assoc (B.map W.α₂)⁻¹, Mat.inv_mul dB₂, one_mul, ← mul_assoc (B.map W.α₁)⁻¹, Mat.inv_mul dB₁,
       one_mul]
-  obtain ⟨hal, hd, hab', hmin⟩ := GlobalTheory.T.minor_two_by_two_triangular_product ι m τ a b hab _ _ _ _ hT₁.inv hT₂ hC
+  obtain ⟨hal, hd, hab', hmin⟩ := _root_.GlobalTheory.FlagPush.almostLow_mul_entries ι m τ a b hab _ _ _ _ hT₁.inv hT₂ hC
   rw [← eg] at hal hd hab' hmin
-  obtain ⟨hu, hm0, hm1⟩ := GlobalTheory.T.almostLowerTriangular_diag_minor_isUnit ι m τ a b hab _ _ _ hal hloc
+  obtain ⟨hu, hm0, hm1⟩ := _root_.GlobalTheory.FlagPush.almostLow_units ι m τ a b hab _ _ _ hal hloc
   have i₁ : ∀ x : Root m, ((B * A₁⁻¹).map W.α₁)⁻¹ x.1 x.2 x.2 = (W.α₁ (s₁ x))⁻¹ := fun x => by
-    rw [(GlobalTheory.T.parabolicMatrixFamily_diag_isUnit ι m _ ⊤ _ hT₁ x).2.2.1, ← e₁ x]; rfl
+    rw [(_root_.GlobalTheory.FlagPush.diag_of_par ι m _ ⊤ _ hT₁ x).2.2.1, ← e₁ x]; rfl
   have i₂ : ∀ x : Root m, ((B * A₂⁻¹).map W.α₂) x.1 x.2 x.2 = W.α₂ (s₂ x) := fun x => by
     rw [← e₂ x]; rfl
   refine ⟨fun x => Units.map W.α₁.toMonoidHom (s₁ x), fun x => Units.map W.α₂.toMonoidHom (s₂ x),
@@ -82,11 +82,11 @@ theorem key {F : Type} [Field F] {X Y : Var F} {ι : Type} [Fintype ι] {m : ι 
 
 theorem exists_divisors : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ (gr : Root m → Y.Dv), ∀ B ∈ E'.S (genericPoint Y.X), (∀ (y : Y.X) (x : Root m), ∃ A ∈ E'.S y, ∃ t : Y.Fnˣ, (B * A⁻¹) x.1 x.2 x.2 = t ∧ (gr x).IsEqn y t) → ∀ W : Dbl Y, (∀ u : X.Fn, W.α₁ (φ u) = W.α₂ (φ u)) → ∀ (τ : ι) (a b : Fin (m τ)), (b : ℕ) = a + 1 → AlmostLow τ a b (B.map W.α₁ * (B.map W.α₂)⁻¹) → ∃ (D₁ D₂ : Root m → CartierDiv W.Z) (Θ : CartierDiv W.Z), (∀ x, IsPull W.p₁ (D₁ x) (gr x)) ∧ (∀ x, IsPull W.p₂ (D₂ x) (gr x)) ∧ (∀ x, x ≠ ⟨τ, a⟩ → x ≠ ⟨τ, b⟩ → toPic (D₁ x) = toPic (D₂ x)) ∧ toPic (D₁ ⟨τ, a⟩) + toPic (D₁ ⟨τ, b⟩) = toPic (D₂ ⟨τ, a⟩) + toPic (D₂ ⟨τ, b⟩) ∧ toPic Θ = toPic (D₂ ⟨τ, b⟩) - toPic (D₁ ⟨τ, a⟩) ∧ Θ.Eff ∧ (Θ.supp : Set W.Z) = Set.range W.δ := by
   intro F _ X Y ι _ m E E' φ f hf gr B hB hgr W hα τ a b hab hC
-  choose D₁ hD₁ using fun x => GlobalTheory.T.exists_cartierDivisor_pullback_of_dominant W.Z Y.X W.p₁ (gr x)
-  choose D₂ hD₂ using fun x => GlobalTheory.T.exists_cartierDivisor_pullback_of_dominant W.Z Y.X W.p₂ (gr x)
+  choose D₁ hD₁ using fun x => _root_.GlobalTheory.FlagPush.exists_isPull W.Z Y.X W.p₁ (gr x)
+  choose D₂ hD₂ using fun x => _root_.GlobalTheory.FlagPush.exists_isPull W.Z Y.X W.p₂ (gr x)
   have hC0 : Par 0 ⊤ (B.map W.α₁ * (B.map W.α₂)⁻¹) := fun σ =>
     ⟨fun _ _ => trivial, hC.1 σ, trivial, fun i j hi => absurd hi (by simp)⟩
-  obtain ⟨hCd, hCm, -⟩ := GlobalTheory.T.almostLowerTriangular_diag_minor_isUnit ι m τ a b hab _ ⊤ _ hC hC0
+  obtain ⟨hCd, hCm, -⟩ := _root_.GlobalTheory.FlagPush.almostLow_units ι m τ a b hab _ ⊤ _ hC hC0
   have K := fun (z : W.Z) {A₁ A₂ : Mat m Y.Fn} (hA₁ : A₁ ∈ E'.S (W.p₁ z)) (hA₂ : A₂ ∈ E'.S (W.p₂ z)) =>
     key hf hB hgr W hα hab hC hD₁ hD₂ z hA₁ hA₂
   have hne : a ≠ b := fun h => by rw [h] at hab; omega
@@ -132,7 +132,7 @@ theorem exists_divisors : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fi
       obtain ⟨A₂, hA₂⟩ := E'.nonempty (W.p₂ z)
       obtain ⟨g, e, hg⟩ := hΘ z hA₁ hA₂
       obtain ⟨t₁, t₂, -, -, hal, -⟩ := K z hA₁ hA₂
-      refine GlobalTheory.T.mem_range_diagonal_of_not_unit_transitionEntry F X Y ι m E E' φ f hf W hα τ a b z A₁ hA₁ A₂ hA₂ hal ?_
+      refine _root_.GlobalTheory.FlagPush.mem_range_section_of_not_unitAt F X Y ι m E E' φ f hf W hα τ a b z A₁ hA₁ A₂ hA₂ hal ?_
       rw [← e]
       exact hg.mem_supp_iff.1 hz
     · rintro ⟨y, rfl⟩
@@ -142,6 +142,6 @@ theorem exists_divisors : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fi
       obtain ⟨g, e, hg⟩ := hΘ (W.δ y) (A₁ := A) (A₂ := A) (by rw [e₁]; exact hA) (by rw [e₂]; exact hA)
       refine hg.mem_supp_iff.2 ?_
       rw [e]
-      exact GlobalTheory.T.not_isUnit_offDiagonal_transition_on_commonSection F X Y ι m E E' φ f hf W hα τ a b hne y A hA
+      exact _root_.GlobalTheory.FlagPush.not_unitAt_section F X Y ι m E E' φ f hf W hα τ a b hne y A hA
 
 end GlobalTheory.FlagPush.DivOn

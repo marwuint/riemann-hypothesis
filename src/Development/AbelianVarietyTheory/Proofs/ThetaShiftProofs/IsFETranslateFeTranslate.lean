@@ -80,22 +80,6 @@ def famComp (j : ℕ) (α : D.X) : Fam D F j →ₗ[F] SecFMod D F j α where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
-def IsFETranslate (j : ℕ) (mu α : D.X) (s : SecBMod D j α) (t : SecBMod D j (α + j • mu)) : Prop :=
-  ∀ u : LB.Gen (LB.LinComb D.P.L (DegPre.deltaφ D (FractionRing R) j α mu) (DegPre.deltaε j)), u.IsGen →
-    LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u (DegPre.zF D (FractionRing R)).left)
-      (DegPre.famMult D (FractionRing R) j mu α) →
-    GeneratorPullback.SecRel D.P.L (DegPre.famφ D (FractionRing R) (α + j • mu)) (DegPre.famε j)
-      (resF D (FractionRing R) j (α + j • mu) t) (DegPre.famφ D (FractionRing R) α) (DegPre.famε j)
-      (resF D (FractionRing R) j α s) (DegPre.trF D (FractionRing R) mu).left
-      (DegPre.deltaφ D (FractionRing R) j α mu) (DegPre.deltaε j) u
-
-theorem IsFETranslate.unique (hG : GlobalFnsSt) {j : ℕ} {mu α : D.X} {s : SecBMod D j α}
-    {t t' : SecBMod D j (α + j • mu)} (h : IsFETranslate D j mu α s t) (h' : IsFETranslate D j mu α s t') : t = t' := by
-  obtain ⟨⟨u, hu, hc⟩, -⟩ := gen_fe (D := D) (F := FractionRing R) hG j mu α
-  refine resF_injective D (FractionRing R) j _ (sec_ext' D.P.isLB fun y J hJ => ?_)
-  exact ((secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (h u hu hc) _ _ y J hJ).trans
-    ((secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (h' u hu hc) _ _ y J hJ).symm
-
 abbrev trB (mu : D.X) : D.P.A ⟶ D.P.A := 𝟙 D.P.A * cP D D.P.A mu
 
 theorem trF_prB (mu : D.X) : DegPre.trF D F mu ≫ DegPre.prB D F = DegPre.prB D F ≫ trB D mu := by

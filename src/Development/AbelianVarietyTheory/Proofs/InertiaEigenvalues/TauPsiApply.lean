@@ -35,10 +35,4 @@ def letterEquiv (Dw : Datum H) {m n : ℕ} (hΨ : ∀ τ : D.host.E →+* ℂ, I
     (hm : m = Dw.p + Dw.q) : LtN Dw n ≃ FVar D m n :=
   (GlobalTheory.Harm.thetaLetterEquiv Dw n).trans (fockVarEquiv Dw hΨ hm).symm
 
-def stepsX (Dw : Datum H) (a : (D.host.E →+* ℂ) × ℕ → ℕ) : {τ : D.host.E →+* ℂ // InPsi H τ} → Fin Dw.p → ℕ :=
-  fun t => GlobalTheory.Harm.diffOf fun i : Fin Dw.p => a (t.1, i)
-
-def stepsY (Dw : Datum H) (a : (D.host.E →+* ℂ) × ℕ → ℕ) : {τ : D.host.E →+* ℂ // InPsi H τ} → Fin Dw.q → ℕ :=
-  fun t => GlobalTheory.Harm.diffOf fun i : Fin Dw.q => a (ComplexEmbedding.conjugate t.1, i)
-
 end GlobalTheory.FockLetters

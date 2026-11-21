@@ -4,7 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramesOnEqModel
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmExistsHolds
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGoodCmPointOfIntegralCmObject
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGoodCmPointAtCmBasisFrame
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOrthogonalLatticeFrameFlagDomainStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOrthogonalLatticeFrameFlagDomain
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCmLatticeDataUnfoldingSignatureOneZeroStatement
 
 namespace GlobalTheory.FlatCore.CMPointExistence
@@ -20,7 +21,7 @@ theorem exists_frPt_of_cmObj : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   intro E _ _ _ H Dw l Xo c _ hstar K _ _ _ ρ σ X La x Φ m' hρ hLa hx
   have hfib : LamF.IsFibreOf X.B.pol Φ.key (LamF.gmap K) m'.φ :=
     (LamF.isFibreOf_iff_isPolFibre (𝓞 K) K (algebraMap (𝓞 K) K) X.B.pol Φ.key m'.φ).2
-      ((GlobalTheory.T.principalTriple_pullback E H (𝓞 K) K (algebraMap (𝓞 K) K) X.B).2 Φ.T m' inferInstance).2.1
+      ((_root_.GlobalTheory.LamT.pat_pullback E H (𝓞 K) K (algebraMap (𝓞 K) K) X.B).2 Φ.T m' inferInstance).2.1
   obtain ⟨oa, oaΨ, oa', xΨ, x', φΨ, φ', τΨ, τ', ℓΨ, ℓ', Tl, LamL, hoa, -, -, hgood⟩ :=
     LamF.exists_lamObjGood_of_cmObj GlobalTheory.firstFiveLaws.2.1.secTwist GlobalTheory.thetaUnifAV_all GlobalTheory.firstFiveLaws.1
       GlobalTheory.homExtension_semiAbelian_dvr_unconditional E H l c hstar K ρ σ Dw.p Dw.q X La hρ hLa Φ.key m'.φ hfib
@@ -36,8 +37,8 @@ theorem exists_frPt_of_cmObj : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     · exact (hm b).2 h
   subst hmm
   choose w hw hU using hL.2.2.1
-  obtain ⟨y, hy, -, -⟩ := GlobalTheory.T.exists_framedPoint_of_lie_eigenbasis E H Dw l Xo c K x Φ e U w hx hdet hU (fun τ i =>
-    GlobalTheory.T.isEigenvectorAt_of_model E H Dw l Xo c K x Φ.T.t X.B.t Φ.m m' τ (w (e ⟨τ, i⟩)) (fun a => by
+  obtain ⟨y, hy, -, -⟩ := _root_.GlobalTheory.LamT.exists_frPt_of_eigenbasis E H Dw l Xo c K x Φ e U w hx hdet hU (fun τ i =>
+    _root_.GlobalTheory.LamT.isEigAt_of_model E H Dw l Xo c K x Φ.T.t X.B.t Φ.m m' τ (w (e ⟨τ, i⟩)) (fun a => by
       have h := heig τ i (w (e ⟨τ, i⟩)) (hw _) a
       rw [← hoa]
       exact h))
@@ -59,7 +60,7 @@ theorem exists_cmPt_on_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
   have hU := hL.unf σ₀ hσ₀
   have hr : 0 < r := by rw [hU.1]; have := hL.pos; omega
   obtain ⟨D₁, hD₁p, hD₁q⟩ := hL.line
-  obtain ⟨x₁, hx₁, lam, h1, h2, h3, h4, h5, h6⟩ := GlobalTheory.T.exists_orthogonal_lattice_frame_flagDomain E r ((U σ₀).X k)
+  obtain ⟨x₁, hx₁, lam, h1, h2, h3, h4, h5, h6⟩ := _root_.GlobalTheory.OrthoFrame.exists_orthoFrame E r ((U σ₀).X k)
   let x₀ : ((U σ₀).X k).dom := ⟨x₁, hx₁⟩
   obtain ⟨W⟩ := ReciprocityTheory.ChartRestriction.G.PullbackSections.nonempty_unfAt hU k x₀
   obtain ⟨Zl⟩ := GlobalTheory.T.exists_cmLattice_data_unfolding_signature_one_zero E H Dw l Xo c r (U σ₀) hU hr D₁ hD₁p hD₁q k x₀ W lam h1 h2 h3 h4 h5 h6

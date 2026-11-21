@@ -1,15 +1,12 @@
 import Mathlib
-import Formalism.PeriodIntegrals.NormTransG
-import Formalism.PeriodIntegrals.HeisNorm
+import Formalism.PeriodIntegrals.ThGDefs
+import Formalism.PeriodIntegrals.HeisDefs
 
 open MeasureTheory
 
 namespace PI.NormTransGW
 
 variable {T I J : Type} [Fintype T] [Fintype I] [Fintype J]
-
-noncomputable def phi (A : ℝ) (F : (T → I → J → ℂ) → ℂ) (z : T → I → J → ℂ) : ℝ :=
-  ‖F z‖ ^ 2 * Real.exp (-Real.pi * (HfG A z z).re)
 
 instance sigmaFinite_volume_single : SigmaFinite (volume : Measure (J → ℂ)) := inferInstance
 instance addLeftInvariant_volume_single : (volume : Measure (J → ℂ)).IsAddLeftInvariant := inferInstance

@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.SumExpSt
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExportSt
 
 set_option synthInstance.maxHeartbeats 200000
@@ -15,10 +15,6 @@ open Formalism.CohomologicalDescent.ShortWeightBounds (Wts HidaSetting WInputsLi
 namespace GlobalTheory.ExpTie
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
-section Point
-variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
-  {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
-end Point
 def NumStAlt : Prop := _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i _ => ∀ j, ∃ (P : Par) (W : Wts (Fm.D x i).what₂.Tau), Dict (Fm.L x i) j P W ∧ NumOk P W
 open Classical in
 def ExponentSumStatement : Prop := _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i p => ∀ j (P : Par) (W : Wts (Fm.D x i).what₂.Tau), Dict (Fm.L x i) j P W → NumOk P W →

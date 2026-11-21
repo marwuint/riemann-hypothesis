@@ -27,15 +27,6 @@ def AmpleTwistLocal.Statement : Prop :=
         Submodule.span (chartRing S x I) ((Q.twist (H.pow (b + A.m * n))).secs : Set Ω) *
           (H.pow (A.m * e)).sub I
 
-section Hypotheses
-
-variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
-  (x : Fin (N + 1) → Ω)
-
-variable (k : Type u) [Field k]
-
-end Hypotheses
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman

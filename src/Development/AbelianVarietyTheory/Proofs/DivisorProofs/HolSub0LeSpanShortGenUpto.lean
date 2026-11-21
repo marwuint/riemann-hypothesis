@@ -130,21 +130,21 @@ theorem holSub0_le_span_shortGen_upto : Formalism.MainNotions.ModuliIntegralChar
   have hev : Even n := by
     unfold Formalism.L2.Pj.Dom at hdom
     tauto
-  have huw := GlobalTheory.T.uniformisation_component_lattices_markings E H Dw l Xo c σ r U hσ hU hr1 W
+  have huw := _root_.GlobalTheory.Dict.uw_lattice E H Dw l Xo c σ r U hσ hU hr1 W
   have hsame : ∀ k, SameSp (U.X k) (U.X k₀) := fun k =>
     ⟨Finset.ext fun τ => ((hU.2.1 k).2 τ).trans ((hU.2.1 k₀).2 τ).symm, (hG k k₀).1,
       (hU.2.1 k).1.trans (hU.2.1 k₀).1.symm, (hG k k₀).2, by rw [(huw k).1, (huw k₀).1, (hG k k₀).2]⟩
   obtain ⟨ph, ψ, x₀, hph⟩ := hpin (hrpq ▸ hn)
-  obtain ⟨Dc, hDe, -⟩ := GlobalTheory.T.exists_letterRowWeightDictionary E H Dw l c σ r W.g n (U.X k₀) a W.e hσ hrpq (hU.2.1 k₀).1 (hU.2.1 k₀).2
+  obtain ⟨Dc, hDe, -⟩ := _root_.GlobalTheory.Dict.exists_dic E H Dw l c σ r W.g n (U.X k₀) a W.e hσ hrpq (hU.2.1 k₀).1 (hU.2.1 k₀).2
     (huw k₀).2.1 hdom
   obtain ⟨D, hD⟩ := GlobalTheory.T.exists_classicalLevelData_coverSelfDual E H Dw l Xo c n d σ r (U.X k₀) hn hrpq (huw k₀).2.1 hlev h3 ph ψ x₀ hph
   obtain ⟨v₀, mu, hv₀, hmu⟩ := GlobalTheory.SW.exists_vacua_and_multipliers E r (U.X k₀) W.g Dc.bas Dc.idx n Dc.sympl hev D
   obtain ⟨x0, ga, δ, hadm, hset, hsep⟩ := GlobalTheory.T.exists_components_lattices_moved_to_level_family E H Dw l Xo c n d σ r U hσ hU hr1 hA hlev W k₀ hsame ph D hn hD
-  obtain ⟨u, hu, hread⟩ := GlobalTheory.T.short_series_readings_eq_classical_thetaSeries hci E H Dw l Xo c n d σ r U hσ hU hr1 hlev hnab huc ph ψ x₀ hph W (U.X k₀) a
+  obtain ⟨u, hu, hread⟩ := _root_.GlobalTheory.Dict.rdU_short_eq_thP hci E H Dw l Xo c n d σ r U hσ hU hr1 hlev hnab huc ph ψ x₀ hph W (U.X k₀) a
     hdom Dc D hn hDe hD v₀ hv₀ x0
   choose C hC hrd using fun k => hread k (hsame k) (ga k) (δ k) (hset k).1 (hset k).2.1 (hset k).2.2.1
     (hset k).2.2.2.1 (hset k).2.2.2.2
-  have hmu1 := GlobalTheory.T.vacuum_multiplier_eq_one_on_stabiliser E H Dw l Xo c n d σ r W.g (U.X k₀) Dc.bas Dc.idx D hn ph Dc.sympl hev hD
+  have hmu1 := _root_.GlobalTheory.Dict.mult_eq_one_on_stab E H Dw l Xo c n d σ r W.g (U.X k₀) Dc.bas Dc.idx D hn ph Dc.sympl hev hD
     (W.F.Di (W.ik k₀)) (W.emb k₀) (huw k₀).2.2.2.1 (huw k₀).2.2.2.2.1 (huw k₀).2.2.2.2.2.1 (huw k₀).2.2.2.2.2.2
     v₀ hv₀ mu hmu
   have hgrp := (GlobalTheory.SW.level_laws E r (U.X k₀) W.g Dc.bas Dc.idx n Dc.sympl hev D hn).2.2.1
@@ -164,7 +164,7 @@ theorem holSub0_le_span_shortGen_upto : Formalism.MainNotions.ModuliIntegralChar
       exact Ideal.mem_span_singleton_self _
     unfold Mfr
     exact (Submodule.mem_inf.1 (Ideal.mul_le_inf h1)).2
-  obtain ⟨m, Λ, Pj, hΛ, hQ⟩ := GlobalTheory.T.stableForms_eq_sum_thetaSeries_freeLowerRows E r (U.X k₀) W.g Dw.p Dc.hr Dc.bas Dc.idx n Dc.sympl hev hbig D hn
+  obtain ⟨m, Λ, Pj, hΛ, hQ⟩ := _root_.GlobalTheory.Dict.stabForms_eq_sum_thP E r (U.X k₀) W.g Dw.p Dc.hr Dc.bas Dc.idx n Dc.sympl hev hbig D hn
     (2 * bad * d.l₂.M) (Mfr l) (Jd d) (by positivity) hMm hD.prod hD.cop v₀ hv₀ mu hmu Dc.k Dc.k' U.Comp
     (fun k => mapL (ga k) (U.X k).Λ) _ (fun k => (hset k).2.1) hsep
     (fun k g' hg' hfix => (hmu1 _ (hset k).2.1 g' hg' hfix).1) (fun k => (hpull k).1)
@@ -172,7 +172,7 @@ theorem holSub0_le_span_shortGen_upto : Formalism.MainNotions.ModuliIntegralChar
   have hg1 := fun j => (hgl j).1 bad d.l₂.M hbad d.l₂.odd (hΛ j).1
   choose N hN using fun j => (hg1 j).2.2.2
   have hV : ∀ j, Λ j ∈ Vset E n d.l₂.M := fun j => (hgl j).2.2.1 _ _ (Dvd.intro_left _ rfl) (hΛ j).1
-  choose mj t R hR hPj using fun j => GlobalTheory.T.harmonicRowHighest_eq_span_integral_harmonic E H Dw l c σ r W.g Dw.p n (U.X k₀) a Dc (Λ j) (N j)
+  choose mj t R hR hPj using fun j => _root_.GlobalTheory.Dict.rowHighest_eq_sum_harmL E H Dw l c σ r W.g Dw.p n (U.X k₀) a Dc (Λ j) (N j)
     (hN j).1.pos ((hN j).2.2.trans inf_le_left) (Pj j) (hΛ j).2
   choose f hf hfr using fun j i => (htot ⟨Λ j⟩ (N j) x0 (R j i) (hg1 j).1 (hg1 j).2.1 (hg1 j).2.2.1 (hN j)
     (hadm _) (hR j i)).2

@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DarbouxModelAlgebraicVectorsLeAdelicSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilDoublingFactorStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaUnramifiedStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilDoublingFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaUnramified
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaGlobalStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GaussianThetaImagesAlgebraicStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaContinuationStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaContinuation
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaFunctionalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockAlgebraicThetaVectorsStableLineDerivativeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockAlgebraicThetaVectorsStableLineDerivative
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
@@ -120,12 +120,12 @@ theorem thetaImage : GlobalTheory.Published.HoweDualityReal → GlobalTheory.Fun
   have hs' := GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz D.sp.cm.sig Γ.V' Γ.W Γ.M' Bs.ψ Bs.emb hG'
   refine ⟨fun T hT => ?_, fun T hT => ?_⟩
   · refine map_eq Γ.M Bs.ψ Bs.emb _ T _ hs hT
-      (GlobalTheory.T.seesaw_weil_doubling_factor hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM)
+      (_root_.GlobalTheory.GaussThetaAlg.thO_gauss_mem_algF hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM)
       (fun f φ u f₁ hf hu hA h1 h2 hin => ?_) ?_
-    · obtain ⟨L, hLc, hLf, hL⟩ := GlobalTheory.T.seesaw_weil_zeta_unramified hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB
+    · obtain ⟨L, hLc, hLf, hL⟩ := _root_.GlobalTheory.ThetaDer.thO_pure_deriv_first hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB
         R Rf hM f φ u f₁ hf hu hA h1 h2
       rw [hL]
-      exact GlobalTheory.T.fockAlgebraicThetaVectors_stable_lineDerivative D ψ θ hψ hθ true W X A B _ hin L hLc hLf
+      exact _root_.GlobalTheory.SquareComm.LineDeriv.deriv_line_mem_algF D ψ θ hψ hθ true W X A B _ hin L hLc hLf
     · rw [algF, Submodule.span_le]
       rintro q ⟨g, P, hg, rfl⟩
       obtain ⟨Φ, hΦ, hΦe⟩ := GlobalTheory.T.seesaw_weil_zeta_global hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB
@@ -134,10 +134,10 @@ theorem thetaImage : GlobalTheory.Published.HoweDualityReal → GlobalTheory.Fun
   · refine map_eq Γ.M' Bs.ψ Bs.emb _ T _ hs' hT
       (GlobalTheory.T.seesaw_weil_zeta_nonvanishing hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM)
       (fun f φ u f₁ hf hu hA h1 h2 hin => ?_) ?_
-    · obtain ⟨L, hLc, hLf, hL⟩ := GlobalTheory.T.seesaw_weil_zeta_continuation hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB
+    · obtain ⟨L, hLc, hLf, hL⟩ := _root_.GlobalTheory.ThetaRealDeriv.thO_pure_deriv_second hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB
         R Rf hM f φ u f₁ hf hu hA h1 h2
       rw [hL]
-      exact GlobalTheory.T.fockAlgebraicThetaVectors_stable_lineDerivative D ψ θ hψ hθ false W₁ X A₁ B _ hin L hLc hLf
+      exact _root_.GlobalTheory.SquareComm.LineDeriv.deriv_line_mem_algF D ψ θ hψ hθ false W₁ X A₁ B _ hin L hLc hLf
     · rw [algF, Submodule.span_le]
       rintro q ⟨g, P, hg, rfl⟩
       obtain ⟨Φ, hΦ, hΦe⟩ := GlobalTheory.T.exists_darbAlg_thO_eq_fockF' hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB

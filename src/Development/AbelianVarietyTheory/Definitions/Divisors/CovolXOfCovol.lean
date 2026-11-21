@@ -200,18 +200,12 @@ def RowsT : Prop := p.Rows ∧ RecTied D L
 def EvTied {eps : ℝ} (Fm : FamP eps) (Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x), Pt Fm x hx ι → Prop) : Prop :=
   ∃ x0 : ℝ, ∀ (x : ℝ) (hx : Fm.x1 < x), x0 ≤ x → ∀ (ι : Fm.Ix x) (p : Pt Fm x hx ι), RowsT p → Q x hx ι p
 
-theorem evTied_iff {eps : ℝ} (Fm : FamP eps) (Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x), Pt Fm x hx ι → Prop) :
-    EvTied Fm Q ↔ EvPt Fm fun x hx ι p => RecTied (Fm.D x ι) (Fm.L x ι) → Q x hx ι p :=
-  exists_congr fun _ => ⟨fun h x hx hle ι p a b => h x hx hle ι p ⟨a, b⟩, fun h x hx hle ι p a => h x hx hle ι p a.1 a.2⟩
-
 theorem EvTied.and {eps : ℝ} {Fm : FamP eps} {Q Q' : ∀ (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x), Pt Fm x hx ι → Prop}
     (h : EvTied Fm Q) (h' : EvTied Fm Q') : EvTied Fm fun x hx ι p => Q x hx ι p ∧ Q' x hx ι p := by
   obtain ⟨a, h⟩ := h
   obtain ⟨b, h'⟩ := h'
   exact ⟨max a b, fun x hx hle ι p hp =>
     ⟨h x hx ((le_max_left _ _).trans hle) ι p hp, h' x hx ((le_max_right _ _).trans hle) ι p hp⟩⟩
-
-def FamilyCompatibility {eps : ℝ} (Fm : FamP eps) : Prop := ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ ι : Fm.Ix x, RecTied (Fm.D x ι) (Fm.L x ι)
 
 def Lifts (Q : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι) (i : Fin (Fm.D x ι).R.m)
     (PP C : ℝ), Prop) : Prop :=
@@ -222,72 +216,15 @@ def Covers (Q : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι :
   Lifts fun Fm x hx ι p i PP C => (i : ℕ) + 1 < (Fm.D x ι).R.m →
     ∀ Y : Cov p i, GoodCov p i Y → Q Fm x hx ι p i Y PP C
 
-def Gram : Prop := Lifts fun _ _ _ _ p i _ _ => GramAt p i
-
-def Rec : Prop := Lifts fun _ _ _ _ p i _ _ => RecAt p i
-
-def Cut : Prop := Lifts fun _ _ _ _ p i _ _ => CutAt p i
-
-def Bad : Prop := Lifts fun _ _ _ _ p i _ _ => BadAt p i
-
 def abelian₂ : Prop := Lifts fun _ _ _ _ p i _ C => LamAt p i C
 
 def Size : Prop := Lifts fun _ _ _ _ p i PP C => SizeAt p i PP C
 
-def Meas : Prop := Lifts fun _ _ _ _ p i _ C => MeasAt p i C
-
 def Rat : Prop := Lifts fun _ _ _ _ p i _ _ => RatAt p i
-
-def CoreLe : Prop := Lifts fun _ _ _ _ p i _ C => CoreAt p i C
-
-def Low : Prop := Lifts fun _ _ _ _ p i _ C => LowAt p i C
-
-def Anchor : Prop := Lifts fun _ _ _ _ p i _ C => AnchorAt p i C
-
-def LowDef : Prop := Lifts fun Fm x _ ι p i _ C => (i : ℕ) + 1 = (Fm.D x ι).R.m → LowAt p i C
-
-def DeepEx : Prop := Lifts fun Fm x _ ι p i _ _ => (i : ℕ) + 1 < (Fm.D x ι).R.m →
-  ∃ Y : Cov p i, GoodCov p i Y
-
-def DeepGood : Prop := Covers fun _ _ _ _ p i Y _ _ => DeepGoodAt p i Y
 
 def Ring : Prop := Covers fun _ _ _ _ p i Y _ _ => RingAt p i Y
 
-def Maps : Prop := Covers fun _ _ _ _ p i Y _ _ => MapsAt p i Y
-
-def Rk : Prop := Covers fun _ _ _ _ p i Y PP _ => RkAt p i Y PP
-
-def Gmin : Prop := Covers fun _ _ _ _ p i Y PP _ => GminAt p i Y PP
-
-def FlatDeg : Prop := Covers fun _ _ _ _ p i Y _ _ => FlatDegAt p i Y
-
 def Flat : Prop := Covers fun _ _ _ _ p i Y _ C => FlatAt p i Y C
-
-def ULow : Prop := Covers fun _ _ _ _ p i Y _ C => UAt p i Y C
-
-def SumC : Prop := Covers fun _ _ _ _ p i Y _ _ => SumAt p i Y
-
-def Deg : Prop := Covers fun _ _ _ _ p i Y PP _ => ∀ u1, Quo p i PP u1 → DegAt p i Y u1
-
-def Share : Prop := Covers fun _ _ _ _ p i Y PP _ => ∀ u1, Quo p i PP u1 → ShareAt p i Y PP u1
-
-def Height : Prop := Covers fun _ _ _ _ p i Y PP C => ∀ u1, Quo p i PP u1 → HeightAt p i Y PP C u1
-
-def HS : Prop := Covers fun _ _ _ _ p i Y PP C => ∀ u1, Quo p i PP u1 → HSAt p i Y PP C u1
-
-def CovolX : Prop := Closed FamHyp fun Fm CH =>
-  ∃ C0 : ℝ, 0 ≤ C0 ∧ EvTied Fm fun _ _ _ p => ∀ C, C0 ≤ C → (p.S false).L3 (p.N C CH)
-
-theorem CovolX.covol (h : CovolX)
-    (ht : Closed FamHyp fun Fm _ => EvPt Fm fun x _ ι _ => RecTied (Fm.D x ι) (Fm.L x ι)) : Covol :=
-  Closed.imp (Closed.and h ht) fun _ _ _ ⟨⟨C0, h0, a, h⟩, b, h'⟩ => ⟨C0, h0, max a b, fun x hx hle ι p hp =>
-    h x hx ((le_max_left _ _).trans hle) ι p ⟨hp, h' x hx ((le_max_right _ _).trans hle) ι p hp⟩⟩
-
-example (h : Low) : LowDef :=
-  Closed.imp h fun _ _ _ ⟨C, h0, a, h⟩ => ⟨C, h0, a, fun x hx hle ι p hp i _ => h x hx hle ι p hp i⟩
-
-example (h : Formalism.MainNotions.WeightAlgebra.PO D L < 0) : ¬ RecTied D L := fun h' =>
-  absurd ((Real.log_natCast_nonneg _).trans h'.1.1) (not_le.2 h)
 
 end GlobalTheory.CovTop
 

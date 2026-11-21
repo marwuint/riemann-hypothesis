@@ -13,9 +13,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsContractNeZero
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralCharacterRecCompatibleStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralCharacterRecCompatible
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LanglandsClassificationSupercuspidalSupportMultiStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsTameWeilDeligneIffWildCharpolyStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsTameWeilDeligneIffWildCharpoly
 
 noncomputable section
 
@@ -49,11 +49,11 @@ theorem fixed_ne_bot_iff_isTameWD : DepthZeroCuspidalLL → DepthZeroInduction �
   obtain ⟨a, ha, ε, -, hL⟩ := id hrc
   obtain ⟨m, hm⟩ := hEx _ x
   have hs : HasSupport x.rep (msupp m) := GlobalTheory.T.langlandsClassification_supercuspidalSupport_multisegment hZel _ m x hm
-  have hcp := GlobalTheory.T.central_character_rec_compatible hEx hZel hGeo hBZ E Ω A w h a ha _ rc hL x (msupp m) hs
+  have hcp := _root_.GlobalTheory.LocLanglands.charPol_eq_prod_support hEx hZel hGeo hBZ E Ω A w h a ha _ rc hL x (msupp m) hs
   have hdy : ∀ y ∈ msupp m, (fixed y.rep (KOne (w.adicCompletion E) (Fin y.1)) ≠ ⊥ ↔ IsTameWD (rc y)) :=
     fun y hy => hDZC E Ω A w h rc hrc y (hs.isCusp hy)
   have htame : IsTameWD (rc x) ↔ ∀ y ∈ msupp m, IsTameWD (rc y) := by
-    simp only [GlobalTheory.T.isTameWeilDeligne_iff_wild_charpoly E Ω A w h]
+    simp only [_root_.GlobalTheory.LlcTame.isTameWD_iff_charPol E Ω A w h]
     constructor
     · intro H y hy σ hσ
       have hdvd : (rc y).charPol σ ∣ (rc x).charPol σ := by

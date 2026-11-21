@@ -9,20 +9,6 @@ open Finset MvPolynomial
 namespace Formalism.CountingSumsFrames
 namespace Har4
 
-theorem pairingPrime_holds : HPrime := by
-  intro F _ k hk
-  classical
-  have hirr : Irreducible (hXY F k) := by
-    have h := MvPolynomial.irreducible_sumSMulXSMulY (R := F) (n := Fin k)
-      (Finsupp.equivFunOnFinite.symm (fun _ => (1:F))) ?_ ?_
-    · convert h using 1
-      simp [hXY, sumSMulXSMulY, Finsupp.linearCombination_apply, Finsupp.sum_fintype]
-    · refine ⟨⟨0, by omega⟩, by simp, ⟨1, by omega⟩, by simp, ?_⟩
-      simp [Fin.ext_iff]
-    · intro r hr
-      exact isUnit_of_dvd_one (by simpa using hr ⟨0, by omega⟩)
-  exact hirr.prime
-
 theorem coeff_mem_of_h_mul {K : Type} [Field K] {k : ℕ} (R : Subring K) (i0 : Fin k) (G : PolXY K k)
     (hG : ∀ m, coeff m (hXY K k * G) ∈ R) : ∀ m, coeff m G ∈ R := by
   classical
@@ -365,50 +351,6 @@ theorem fock_to_dual {p : ℕ} (hp : p.Prime) (hR : PLocal R p) {f : PolXY K k} 
     rw [e]
     exact R.mul_mem hmem (h' m)
 
-theorem sqrtFock_to_sqrtGauss {f : PolXY K k} (hf : f ∈ PolAB K k A B) (h : f ∈ SqrtFockLat R) :
-    f ∈ SqrtGaussLat R (A.factorial * B.factorial) := by
-  have h' : ∀ m, ((xFact m : K) * (yFact m : K)) * coeff m f ^ 2 ∈ R := h
-  show ∀ m, ((A.factorial * B.factorial : ℕ) : K) * coeff m f ^ 2 ∈ R
-  intro m
-  rcases coeff_cases hf m with h0 | ⟨hx, hy⟩
-  · rw [h0]
-    simp
-  · rw [← hx, ← hy, ← xFact_mul_xMul, ← yFact_mul_yMul]
-    push_cast
-    have e : (xFact m : K) * (xMul m : K) * ((yFact m : K) * (yMul m : K)) * coeff m f ^ 2 =
-        ((xMul m : K) * (yMul m : K)) * (((xFact m : K) * (yFact m : K)) * coeff m f ^ 2) := by ring
-    rw [e]
-    exact R.mul_mem (R.mul_mem (natCast_mem R _) (natCast_mem R _)) (h' m)
-
-theorem sqrtGauss_to_sqrtFock {p : ℕ} (hp : p.Prime) (hR : PLocal R p) {f : PolXY K k}
-    (hf : f ∈ PolAB K k A B) (h : f ∈ SqrtGaussLat R (A.factorial * B.factorial)) :
-    ((p : K) ^ ((k - 1) * Nat.log p (A + B + k))) • f ∈ SqrtFockLat R := by
-  have h' : ∀ m, ((A.factorial * B.factorial : ℕ) : K) * coeff m f ^ 2 ∈ R := h
-  show ∀ m, ((xFact m : K) * (yFact m : K)) * coeff m (((p : K) ^ ((k - 1) * Nat.log p (A + B + k))) • f) ^ 2 ∈ R
-  intro m
-  rw [MvPolynomial.coeff_smul, smul_eq_mul]
-  rcases coeff_cases hf m with h0 | ⟨hx, hy⟩
-  · rw [h0]
-    simp
-  · have hxb : (xMul m).factorization p ≤ (k - 1) * Nat.log p (A + B + k) :=
-      le_trans (xMul_factorization_le p m) (Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega)))
-    have hyb : (yMul m).factorization p ≤ (k - 1) * Nat.log p (A + B + k) :=
-      le_trans (yMul_factorization_le p m) (Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega)))
-    have hx1 := pow_mul_inv_mem R hp hR (xMul_ne_zero m) hxb
-    have hy1 := pow_mul_inv_mem R hp hR (yMul_ne_zero m) hyb
-    have hxf : (xMul m : K) ≠ 0 := by exact_mod_cast xMul_ne_zero m
-    have hyf : (yMul m : K) ≠ 0 := by exact_mod_cast yMul_ne_zero m
-    have hm := h' m
-    rw [← hx, ← hy, ← xFact_mul_xMul, ← yFact_mul_yMul] at hm
-    push_cast at hm
-    have e : ((xFact m : K) * (yFact m : K)) * (((p : K) ^ ((k - 1) * Nat.log p (A + B + k))) * coeff m f) ^ 2 =
-        ((((p : K) ^ ((k - 1) * Nat.log p (A + B + k))) * (xMul m : K)⁻¹) * (((p : K) ^ ((k - 1) * Nat.log p (A + B + k))) * (yMul m : K)⁻¹)) *
-        ((xFact m : K) * (xMul m : K) * ((yFact m : K) * (yMul m : K)) * coeff m f ^ 2) := by
-      first | (field_simp; ring) | field_simp
-    rw [e]
-    first | exact R.mul_mem (R.mul_mem hx1 hy1) hm |
-      (convert R.mul_mem (R.mul_mem hx1 hy1) hm using 2; ring)
-
 end std
 
 theorem fockGaussLatticeComparison_holds : FockGaussXY := by
@@ -423,18 +365,6 @@ theorem fockGaussLatticeComparison_holds : FockGaussXY := by
     rw [mem_latOf_iff] at h ⊢
     rw [map_smul]
     exact gauss_to_fock R hp hR hf' h
-
-theorem sqrtFockGaussLatticeComparison_holds : SqrtFockGaussXY := by
-  intro K _ _ k A B p O g hk hp hR f hf
-  have hf' : glAct g⁻¹ f ∈ PolAB K k A B := glAct_mem_PolAB g⁻¹ f hf
-  constructor
-  · intro h
-    rw [mem_latOf_iff] at h ⊢
-    exact sqrtFock_to_sqrtGauss O.toSubring hf' h
-  · intro h
-    rw [mem_latOf_iff] at h ⊢
-    rw [map_smul]
-    exact sqrtGauss_to_sqrtFock O.toSubring hp hR hf' h
 
 theorem coeff_mem_of_h_pow_mul {K : Type} [Field K] {k : ℕ} (R : Subring K) (i0 : Fin k) (j : ℕ)
     (G : PolXY K k) (hG : hXY K k ^ j * G ∈ GaussLat R) : G ∈ GaussLat R := by
@@ -716,65 +646,6 @@ theorem gaussProj_of (H : FockProj) : GaussProj := by
   exact ⟨fun hG => ⟨hhar.1 hG, fun j hj => (lev j hj).1 hG⟩,
     fun hD => ⟨hhar.2 hD, fun j hj => (lev j hj).2 hD⟩⟩
 
-theorem exponent_le {k A B a p e : ℕ} (hk : 1 ≤ k) (hp : p.Prime) (hA : A ≤ 8 * a) (hB : B ≤ 8 * a)
-    (he : 3 * (Real.logb p (8 * (a : ℝ) + k - 1) + 1) + 4 * (k : ℝ) * (Real.logb p (8 * (a : ℝ) + k - 1) + 1)
-      ≤ (e : ℝ)) : (k + 1) * Nat.log p (A + B + k) ≤ e := by
-  have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.one_lt
-  set L := Nat.log p (A + B + k) with hLdef
-  set x : ℕ := 8 * a + k - 1 with hxdef
-  have hxr : (x : ℝ) = 8 * (a : ℝ) + k - 1 := by
-    rw [hxdef, Nat.cast_sub (by omega)]
-    push_cast
-    ring
-  rw [← hxr] at he
-  have hLX : (L : ℝ) ≤ Real.logb p x + 1 := by
-    rcases Nat.eq_zero_or_pos L with hL0 | hLpos
-    · rw [hL0]
-      push_cast
-      rcases Nat.eq_zero_or_pos x with hx0 | hxpos
-      · rw [hx0]
-        simp
-      · have h0 : (0 : ℝ) ≤ Real.logb p x := Real.logb_nonneg hp1 (by exact_mod_cast hxpos)
-        linarith
-    · have hN : A + B + k ≠ 0 := by omega
-      have hpow : p ^ L ≤ A + B + k := Nat.pow_log_le_self p hN
-      have h2 : 2 * p ^ (L - 1) ≤ p ^ L := by
-        have e1 : p ^ L = p * p ^ (L - 1) := by
-          rw [← pow_succ']
-          congr 1
-          omega
-        rw [e1]
-        exact Nat.mul_le_mul_right _ hp.two_le
-      have hy : p ^ (L - 1) ≤ x := by omega
-      have hyR : ((p ^ (L - 1) : ℕ) : ℝ) ≤ (x : ℝ) := by exact_mod_cast hy
-      have hposR : (0 : ℝ) < ((p ^ (L - 1) : ℕ) : ℝ) := by exact_mod_cast pow_pos hp.pos _
-      have hlog := (Real.logb_le_logb hp1 hposR (lt_of_lt_of_le hposR hyR)).2 hyR
-      rw [Nat.cast_pow, Real.logb_pow, Real.logb_self_eq_one hp1, mul_one] at hlog
-      have e2 : ((L - 1 : ℕ) : ℝ) = (L : ℝ) - 1 := by
-        rw [Nat.cast_sub hLpos]
-        simp
-      linarith
-  have hX1 : 0 ≤ Real.logb p x + 1 := le_trans (Nat.cast_nonneg L) hLX
-  have hk0 : (0 : ℝ) ≤ k := Nat.cast_nonneg k
-  have hfin : ((k : ℝ) + 1) * (L : ℝ) ≤ (e : ℝ) := by
-    nlinarith [mul_le_mul_of_nonneg_left hLX (by positivity : (0 : ℝ) ≤ (k : ℝ) + 1),
-      mul_nonneg (by positivity : (0 : ℝ) ≤ 2 + 3 * (k : ℝ)) hX1]
-  exact_mod_cast hfin
-
-theorem gaussProjText_of (H : GaussProj) : GaussProjText := by
-  intro K _ _ k A B a p e R g hk hp hR hA hB he f hf j hj
-  have hE := exponent_le hk hp hA hB he
-  have hpe : (p : K) ^ e = (p : K) ^ (e - (k + 1) * Nat.log p (A + B + k)) *
-      (p : K) ^ ((k + 1) * Nat.log p (A + B + k)) := by
-    rw [← pow_add, Nat.sub_add_cancel hE]
-  have hmem : (p : K) ^ (e - (k + 1) * Nat.log p (A + B + k)) ∈ R := R.pow_mem (natCast_mem R p) _
-  obtain ⟨h1, h2⟩ := H K k A B p R g hk hp hR f hf
-  refine ⟨fun hG => ?_, fun hD => ?_⟩
-  · rw [hpe, mul_smul]
-    exact smul_mem_latOf_gauss R g hmem ((h1 hG).2 j hj)
-  · rw [hpe, mul_smul]
-    exact smul_mem_latOf_dual R g hmem ((h2 hD).2 j hj)
-
 attribute [local instance] MvPolynomial.weightedGradedAlgebra in
 open DirectSum in
 theorem exists_cofactor {K : Type} [Field K] {k A B : ℕ} (hA : 1 ≤ A) (hB : 1 ≤ B) {w G : PolXY K k}
@@ -850,13 +721,9 @@ theorem harQuot_of (H1 : HarProj) (H2 : GaussProj) : HarQuot := by
 
 end Har4
 
-theorem fockGaussLatticeComparison_holds : FockGaussXY := Har4.fockGaussLatticeComparison_holds
-theorem sqrtFockGaussLatticeComparison_holds : SqrtFockGaussXY := Har4.sqrtFockGaussLatticeComparison_holds
 theorem gaussLemmaPairing_holds : GaussLemmaH := Har4.gaussLemmaPairing_holds
-theorem pairingPrime_holds : HPrime := Har4.pairingPrime_holds
 theorem isotypicLattice_holds : LevelLattice := Har4.isotypicLattice_holds
 theorem gaussLatticeProjection_holds : GaussProj := Har4.gaussProj_of fockLatticeProjection_holds
-theorem gaussLatticeProjectionExponent_holds : GaussProjText := Har4.gaussProjText_of gaussLatticeProjection_holds
 theorem harmonicQuotient_holds : HarQuot := Har4.harQuot_of harmonicProjection_holds gaussLatticeProjection_holds
 
 end Formalism.CountingSumsFrames

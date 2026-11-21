@@ -8,7 +8,11 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CharacterEqWeilPairi
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIntegralExpansionsOfValuationGeStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ToFSurjectiveFractionRing
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.TopLePreimageWchart
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FnEigenEquationOfForallGeometricPointStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FnEigenEquationOfForallGeometricPoint
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExpansionBijectiveOverFields
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TranslatePullbackEigensection
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.EigenEquationOfForallGeometricPoint
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SecLinIffComb
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsLiftPointTranslationFieldPointStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.EigenEquationTranslationKernelGenericFibreStatement
 
@@ -280,7 +284,7 @@ theorem eigen_germ : Laws → Laws4 → TwistBCSpanStatement → JetSer.JetAlgSt
   obtain ⟨Φ, hΦ'⟩ := phiFun_of hL V (maximalIdeal V) y.P.D F (k * p) hq pt w hw
   have hΦc : PhiRel y.P.D.toPre F (k * p) pt w (c • s') (c • t') :=
     (hΦ' _ _).2 (by rw [(hΦ' _ _).1 hΦ, map_smul])
-  have hall := GlobalTheory.T.fn_eigen_equation_of_forall_geometric_point_alt V (TWO.Ov y.v) F Subtype.val_injective (TWO.fO y.v y.hϖ y.hv) y.t.G inferInstance Z hfin
+  have hall := _root_.GlobalTheory.fn_eigen_equation_of_forall_geometric_point V (TWO.Ov y.v) F Subtype.val_injective (TWO.fO y.v y.hϖ y.hv) y.t.G inferInstance Z hfin
     hflat hred jZ hjZ U n cO sl kZ (fun T e c₀ r g hg z hz hz' => by
       have w₀ : (c₀.left ≫ jZ) ≫ y.t.G.hom = jFK (R := V) F ≫ jK V := by
         have a₁ : c₀.left ≫ Z.hom = Spec.map (CommRingCat.ofHom (algebraMap (TWO.Ov y.v) F)) := Over.w c₀

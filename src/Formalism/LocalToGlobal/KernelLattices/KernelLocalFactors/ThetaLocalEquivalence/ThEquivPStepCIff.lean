@@ -95,19 +95,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (A : Amb X) (u : Pr.Word)
 
-theorem thEquivP_stepT_of {i : ℕ} (hi : i < R.m) (e : X.Tau → ℤ) (he : ∀ τ, (e τ : ℚ) = (W.hc u τ).e ⟨i, hi⟩)
-    (hrat : A.JetsRat (R.N i) (R.N (i + 1)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u))
-    (hE : A.EOmega (R.N i) (R.N (i + 1)))
-    (hInd : A.ThIndEq (R.N i) (R.N (i + 1)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u))
-    (hChi : A.ChiLaw (R.N i) (R.N (i + 1)))
-    (hMa : MuProdLaw (R.N i) sel (rowSG Pr sel mu) (mUof Ch mu i) (muAtT Ch sel mu cst i) e)
-    (hMb : MuProdLaw (R.N (i + 1)) sel (rowSG Pr sel mu) (mUof Ch mu i) (muAtT Ch sel mu cst i) e) :
-    ThEquivP (stepT W Ch sel mu cst A u i (W.lamTrue u (i + 1))) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u)
-      (colValF W sel mu u i).rho (colValF W sel mu u (i + 1)).rho :=
-  thEquivP_of A (Sall sel mu u) (rowSG Pr sel mu) (cAof sel mu cst * cBof sel mu cst u) sel (mUof Ch mu i) (muAtT Ch sel mu cst i)
-    (W.lamTrue u i) (W.lamTrue u (i + 1)) (nuLast W u i) e (jet_in_weight_space_chain W u hi) hrat (indOmega_of A _ _ _ _ hE) hInd hChi hMa hMb
-    (wtLaw_step W u hi e he)
-
 theorem top_cast {m2 : ℕ} (hm : R.m = m2 + 2) :
     (ThEquivP (stepT W Ch sel mu cst A u (m2 + 1) (W.lamTrue u R.m)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u)
         (colValF W sel mu u (m2 + 1)).rho (colVal W u R.m (Pr.vT u) (rowSG Pr sel mu)).rho ↔

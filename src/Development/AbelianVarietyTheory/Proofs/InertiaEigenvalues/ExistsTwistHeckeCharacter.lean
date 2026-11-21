@@ -110,7 +110,7 @@ theorem exists_cong (N : ℕ) (hN : Odd N) (x : (Af D.host.F ⊗[D.host.F] D.hos
   have hn : (x : Af D.host.F ⊗[D.host.F] D.host.E) *
       sigR (Af D.host.F) D.sp.cm.sig (x : Af D.host.F ⊗[D.host.F] D.host.E) = 1 := hx
   obtain ⟨y, y', hy, hy', hyy, hroot, q, hq, hqe⟩ :=
-    GlobalTheory.T.exists_normOne_root_congruent_odd_hostField D N hN (x : Af D.host.F ⊗[D.host.F] D.host.E) w hw hwe hn
+    _root_.GlobalTheory.OddRoot.exists_root_odd D N hN (x : Af D.host.F ⊗[D.host.F] D.host.E) w hw hwe hn
   obtain ⟨Y, h1, h2, h3⟩ := GlobalTheory.DetRootCong.exists_idele D y y' hyy
   refine ⟨Y, ⟨h1, h2 ▸ hy, h3 ▸ hy'⟩, ⟨q, hq, h2 ▸ hqe⟩, ?_⟩
   apply quo_eq_of

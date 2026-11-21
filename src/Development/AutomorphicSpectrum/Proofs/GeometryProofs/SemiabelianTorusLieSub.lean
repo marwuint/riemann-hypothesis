@@ -12,8 +12,7 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFunctorialM
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianHomLieExtends
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianHomLieExtendsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusEmbeddingLieInjectiveStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusEmbeddingLieInjective
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsCocharacterLieModelStatement
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsUniqueHomExtensionSemiAbelian
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.LocallyOfFinitePresentationDiagMap
@@ -162,7 +161,7 @@ theorem exists_local_quot {O T K : Type} [CommRing O] [CommRing T] [IsDomain T] 
   obtain ⟨jT, hjT, -⟩ := LieBaseChange.existsUnique_semilinear_lifts (Sp O) G O T a (𝟙 _) E ET M L
   obtain ⟨MTT, hMTT⟩ := GlobalTheory.T.exists_cocharacter_lie_model (Sp T) X T (𝟙 _)
   obtain ⟨A, hAd, -⟩ := lieModel_exists_unique_diff (Sp T) TT H T (𝟙 _) (X →+ T) ET MTT MH F
-  obtain ⟨hinj, hsat⟩ := GlobalTheory.T.torus_embedding_lie_injective T K (Sp T) (𝟙 _) H X F hgen MTT hMTT ET MH A hAd
+  obtain ⟨hinj, hsat⟩ := _root_.GlobalTheory.CompanionTheory.Ar.TorusSat.lie_torus_saturated T K (Sp T) (𝟙 _) H X F hgen MTT hMTT ET MH A hAd
   let δa : X →+ T := a.toAddMonoidHom.comp δ
   let v := MT.pt (((algebraMap T K).comp a).toAddMonoidHom.comp δ)
   have e₁ : v.left ≫ φT = spMap (dualMap (algebraMap T K)) ≫ (MTT.pt δa).left :=
@@ -239,7 +238,7 @@ theorem saturated : ∀ (O K : Type) [CommRing O] [IsDedekindDomain O] [Field K]
   have := hG.separated
   obtain ⟨MTO, hMTO⟩ := GlobalTheory.T.exists_cocharacter_lie_model (Sp O) X O (𝟙 _)
   have hT := GlobalTheory.Diag.isGrpPullback X (spMap (algebraMap O K))
-  obtain ⟨io, hio⟩ := GlobalTheory.T.semiabelian_hom_lie_extends O K (splitTorus (Sp O) X) G (splitTorus (Sp K) X) GK _ φ
+  obtain ⟨io, hio⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieHomOk.hom_maps_lie O K (splitTorus (Sp O) X) G (splitTorus (Sp K) X) GK _ φ
     (GlobalTheory.Diag.isSemiAbelian _ X) hG hT h i (X →+ O) E MTO M
   have hL : ∀ δ, M.Lifts (algebraMap O K) φ (io δ)
       (MT.pt ((algebraMap O K).toAddMonoidHom.comp δ) ≫ i) := fun δ =>

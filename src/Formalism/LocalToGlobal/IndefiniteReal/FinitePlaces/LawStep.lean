@@ -1,5 +1,5 @@
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.AlgebraMapAEEqZero
-import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.RestrictedBlockMemBlockTriangular
+import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.TameAtOne
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.InfPartOfSplitIdem
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.SplitOrInertP
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceFinal
@@ -57,21 +57,6 @@ theorem isIdempotentElem_placeIdempotent (hes : ∀ PP ∈ P, Formalism.L2.NThet
       (single_one_mul_idempotent_eq_zero_of_notMem hes he hc ha hsub)
 
 end Sum
-
-section Chain
-
-variable {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
-  {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
-  {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
-  {βS : GL (Fin S.rank) (Lev.EAf D)} {βT : GL (Fin T.rank) (Lev.EAf D)}
-  {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} {es : Formalism.L2.DIV.Pl D.host.E → AE D}
-
-def facAt (χS χT : (AE D)ˣ →* Circle) (es : Formalism.L2.DIV.Pl D.host.E → AE D) {S T : HSp D} (g : GA D S) (h : GA D T)
-    (PP : Formalism.L2.DIV.Pl D.host.E) : ℂ :=
-  (splitFacO χS χT (detAt (es PP) S (resG S (sA (belowPl PP) 1) g)) (detAt (es PP) T (resG T (sA (belowPl PP) 1) h)) :
-    ℂ)
-
-end Chain
 
 theorem vacFixOff (hSL : SplitLin D) (hPM : PlaceModelAt D) (hSOI : SplitOrInert D) : VacFixOffO D :=
   vacFixOff_of hSL hPM hSOI fun _ _ _ _ _ _ _ _ hfS hfT _ _ _ _ hg hh t => actO_mem_latAll_iff hfS hfT hg hh t

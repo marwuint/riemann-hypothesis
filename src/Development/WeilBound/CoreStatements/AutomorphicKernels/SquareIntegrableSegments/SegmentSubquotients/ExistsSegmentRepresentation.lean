@@ -2,7 +2,7 @@ import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.FineJacquetModules.SegDefs
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
-import Development.WeilBound.CoreStatements.AutomorphicKernels.SquareIntegrableSegments.SegmentSubquotients.ExistsSocleSegmentProductStatement
+import Development.WeilBound.CoreStatements.AutomorphicKernels.SquareIntegrableSegments.SegmentSubquotients.ExistsSocleSegmentProduct
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContragredientSegmentProductEquivStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosocleOfContragredientSocle
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SocleOfMultiplicityOne
@@ -26,7 +26,7 @@ theorem exists_isLSeg : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   intro k _ _ _ _ hA Δ
   have hd : ∑ a, (Δ.term a).1 = Δ.deg := Δ.sum_term_fst
   obtain ⟨hd', ⟨φ⟩⟩ := GlobalTheory.T.contragredient_segment_product_equiv hA Δ hd
-  obtain ⟨τ', hτ'⟩ := GlobalTheory.TL.exists_socle_segment_product hA (segDual Δ) hd'
+  obtain ⟨τ', hτ'⟩ := _root_.GlobalTheory.CompanionTheory.LkSegSocle.exists_isSocle_prodIrr_dec hA (segDual Δ) hd'
   obtain ⟨τ, hτ⟩ := GlobalTheory.CompanionTheory.CosocleContra.isCosocle_of_isSocle_contra hA (prodIrr Δ.term hd)
     (isSmooth_prodIrr _ _) (hasFiniteLength_prodIrr hA _ _) τ' (hτ'.of_equiv (.refl _) φ.symm)
   exact ⟨τ, hd, hτ⟩

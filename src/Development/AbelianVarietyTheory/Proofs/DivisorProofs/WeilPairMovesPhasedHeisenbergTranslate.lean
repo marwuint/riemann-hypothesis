@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.CharLem
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergTranslateFixesThetaDeepLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardCharHalfSymplecticMovedFinitePointTriviaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelCurvePhaseEqOfCloseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergTranslateFixesThetaDeepLevel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardCharHalfSymplecticMovedFinitePointTrivia
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelCurvePhaseEqOfClose
 
 open NumberField MeasureTheory
 open scoped Classical
@@ -52,9 +52,9 @@ theorem moved_translate : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : In
       Formalism.MainNotions.StandardLatticesGL3.wdPh D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z') • heisO ψ S T (finPt hS hT r z') (om (g, h) f₀) := by
   intro D ψ θ S T a d hS hT cc δ r hset χS χT om hom x y g h hg hh f₀ hf₀ z
   have hF := hom.om_pres (g, h) f₀ hf₀
-  obtain ⟨n₁, hn₁, H₁⟩ := GlobalTheory.T.heisenbergTranslate_fixes_theta_deepLevel ψ θ S T hS hT cc δ r hset x y g h hg hh _ hF z
-  obtain ⟨n₂, hn₂, H₂⟩ := GlobalTheory.T.standardChar_halfSymplectic_movedFinitePoint_trivial ψ θ S T hS hT cc δ r hset x y g h hg hh z
-  obtain ⟨n₃, hn₃, H₃⟩ := GlobalTheory.T.exists_level_curvePhase_eq_of_close cc δ hset.crv x y z
+  obtain ⟨n₁, hn₁, H₁⟩ := _root_.GlobalTheory.LevelTr.level_translate ψ θ S T hS hT cc δ r hset x y g h hg hh _ hF z
+  obtain ⟨n₂, hn₂, H₂⟩ := _root_.GlobalTheory.MovedTrChar.psi_sympl_moved_eq_one ψ θ S T hS hT cc δ r hset x y g h hg hh z
+  obtain ⟨n₃, hn₃, H₃⟩ := _root_.GlobalTheory.PhaseMove.phase_eq cc δ hset.crv x y z
   refine ⟨n₁ * n₂ * n₃, by positivity, fun z' hz' => ?_⟩
   have c1 : Formalism.MainNotions.StandardLatticesGL3.CloseTo D cc n₁ (x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) (y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) z z' :=
     closeTo_of_mul (k := n₂ * n₃) (by rwa [show n₂ * n₃ * n₁ = n₁ * n₂ * n₃ by ring])

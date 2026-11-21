@@ -1,6 +1,7 @@
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.RecTTransport
-import Development.DiscreteGroups.GlobalIrreducibility.LTw
+import Mathlib
 import Development.DiscreteGroups.GlobalIrreducibility.DzTwFin
+import Development.DiscreteGroups.GlobalIrreducibility.DzTwChar
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.WDBasic
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.ClBasic
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.TwTame

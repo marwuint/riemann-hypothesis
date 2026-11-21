@@ -113,12 +113,6 @@ structure Carries (V V' : HSp D) (h : V.rank = V'.rank)
     Hecke₂ V (levS V β L) (levChi V β L) S P d (inA V R) ↔
       Hecke₂ V' (levS V' β' (castDat h L)) (levChi V' β' (castDat h L)) S P d (imA φ R)
 
-def LocalIsometry (D : D7) : Prop :=
-  ∀ (V V' : HSp D), V.rank = V'.rank →
-    ∀ (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)),
-      Formalism.IndefR.Datum.IsSelfDualC V Λ → Formalism.IndefR.Datum.IsSelfDualC V' Λ' →
-      ∀ v : HeightOneSpectrum (𝓞 D.host.F), ∃ j, IsLocLatIsom V V' Λ Λ' v j
-
 def GlobalIsometry (D : D7) : Prop :=
   ∀ (V V' : HSp D), V.rank = V'.rank →
     ∀ (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E))
@@ -135,9 +129,6 @@ def InducedIso (D : D7) : Prop :=
     ∀ (T : Set (Formalism.L2.DIV.Pl D.host.E)) (j : Matrix (Fin V'.rank) (Fin V.rank) (EAf D)),
       IsLatIsom V V' Λ Λ' j → MatchesAt V V' β β' T j →
       ∃ φ : GfC V ≃ₜ* GfC V', IsConjBy V V' j φ ∧ Carries V V' h Λ Λ' β β' (N * N') T φ
-
-def FiniteAdelicIdentification (D : D7) : Prop :=
-  LocalIsometry D ∧ GlobalIsometry D ∧ InducedIso D
 
 end GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter
 

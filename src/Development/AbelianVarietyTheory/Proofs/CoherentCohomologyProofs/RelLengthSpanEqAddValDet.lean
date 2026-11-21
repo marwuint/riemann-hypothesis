@@ -86,34 +86,4 @@ theorem length_coker (P : Matrix ι ι R) :
     rw [length_coker_of_injective (Pi.basisFun R ι) _ hinj, ← Matrix.toLin'_apply',
       LinearMap.det_toLin']
 
-theorem relLength_span_eq_addVal_det {V : Type*} [AddCommGroup V] [Module R V] {a v : ι → V}
-    (ha : LinearIndependent R a) (P : Matrix ι ι R) (hv : ∀ j, v j = ∑ i, P i j • a i) :
-    relLength (Submodule.span R (Set.range a)) (Submodule.span R (Set.range v)) =
-      addVal R P.det := by
-  have hinj : Function.Injective (Fintype.linearCombination R a) := by
-    rw [injective_iff_map_eq_zero]
-    intro x hx
-    funext i
-    exact Fintype.linearIndependent_iff.mp ha x (by rwa [Fintype.linearCombination_apply] at hx) i
-  have hA : Submodule.span R (Set.range a) =
-      (⊤ : Submodule R (ι → R)).map (Fintype.linearCombination R a) := by
-    rw [Submodule.map_top, Fintype.range_linearCombination]
-  have hcomp : Fintype.linearCombination R a ∘ₗ P.mulVecLin = Fintype.linearCombination R v := by
-    refine LinearMap.pi_ext' fun j => LinearMap.ext_ring ?_
-    simp [Fintype.linearCombination_apply, hv, Pi.single_apply]
-  have hB : Submodule.span R (Set.range v) =
-      (LinearMap.range P.mulVecLin).map (Fintype.linearCombination R a) := by
-    rw [← LinearMap.range_comp, hcomp, Fintype.range_linearCombination]
-  rw [hA, hB, relLength_map_of_injective _ hinj, relLength_top_left, length_coker]
-
-universe u_1 u_2 u_3 in
-
-theorem relLength_span_eq {R : Type u_1} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
-    {V : Type u_2} [AddCommGroup V] [Module R V] {ι : Type u_3} [Fintype ι] [DecidableEq ι]
-    {a v : ι → V} (ha : LinearIndependent R a) (P : Matrix ι ι R)
-    (hv : ∀ j, v j = ∑ i, P i j • a i) :
-    relLength (Submodule.span R (Set.range a)) (Submodule.span R (Set.range v)) =
-      (addVal R : R → ℕ∞) P.det :=
-  relLength_span_eq_addVal_det ha P hv
-
 end GlobalTheory.RelativeLengthSpanDet

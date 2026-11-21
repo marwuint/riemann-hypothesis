@@ -20,9 +20,6 @@ variable {E : Type*} [Field E] {c : E →+* E} {n m : Type*} [Fintype n] [Decida
 def Congr (c : E →+* E) (G G' : Matrix n n E) : Prop :=
   ∃ P : Matrix n n E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map c
 
-theorem Congr.refl (G : Matrix n n E) : Congr c G G :=
-  ⟨1, by simp, by simp [Matrix.map_one _ (map_zero c) (map_one c)]⟩
-
 theorem Congr.trans {G G' G'' : Matrix n n E} (h : Congr c G G') (h' : Congr c G' G'') :
     Congr c G G'' := by
   obtain ⟨P, hP, rfl⟩ := h

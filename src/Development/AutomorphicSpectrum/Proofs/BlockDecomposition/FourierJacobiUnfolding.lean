@@ -7,11 +7,18 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetCellInvari
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NondegenerateCharacterCellFactorization
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinConvergent
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RowD
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainUnfoldingTwoSumsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinTermsUniformlySummableStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeisenbergCentreRationalFormStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainUnfoldingTwoSums
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinTermsUniformlySummable
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeisenbergCentreRationalForm
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NondegenerateCentreCharacterCellStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeisenbergCosetsParamRationalStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeisenbergCosetsParamRational
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelParabolicQuotientIffRows
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryCellBlockNormalForm
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryBlockInvertibleCriterionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicFactorizationRowsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RowsProportionalOfTransform
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RowsOfWeylHeisenbergProductStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeylHeisenbergLeviRationalStatement
 noncomputable section
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory
@@ -57,15 +64,15 @@ theorem unfold_on {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) {ψ : AddC
       (∀ u, ‖Wz M m ψ b₀ f (M.sh (u.2.map (incA D)) * M.emb (u.1.out : GF D p) * g)‖ ≤ ∑' l : ratHerm D ρ, Um (e (l, u))) ∧
       HasSum (fun u : Cosets (P D p) (GF D p) × Matrix (Fin ρ) (Fin p) D.host.E =>
         Wz M m ψ b₀ f (M.sh (u.2.map (incA D)) * M.emb (u.1.out : GF D p) * g)) (zc M m ψ b₀ (eisS f) g) := by
-  obtain ⟨hinv, hdet, hmaj⟩ := GlobalTheory.T.eisenstein_terms_uniformly_summable hχ hf hl hs
+  obtain ⟨hinv, hdet, hmaj⟩ := _root_.GlobalTheory.CompanionTheory.ZUnf.law_facts hχ hf hl hs
   obtain ⟨hHaar, hFD, hvol⟩ := m.hz
-  obtain ⟨hadd, hcsh, hcem, hrat⟩ := GlobalTheory.T.heisenberg_centre_rational_form M
+  obtain ⟨hadd, hcsh, hcem, hrat⟩ := _root_.GlobalTheory.CompanionTheory.ZUnf.centre_nzx M
   have hcolat := GlobalTheory.CompanionTheory.HermVol.isCoLat_herm (D := D) (r := ρ)
   haveI : Countable (ratHerm D ρ) := countable_ratHerm
   haveI : Countable (Cosets (P D n) (GF D n)) := countable_cosets
   haveI : Countable (Cosets (P D p) (GF D p)) := countable_cosets
   haveI : Countable (Matrix (Fin ρ) (Fin p) D.host.E) := countable_mat ρ p
-  obtain ⟨e, he, hfib, hτe, hterm⟩ := GlobalTheory.T.heisenberg_cosets_param_rational hn M
+  obtain ⟨e, he, hfib, hτe, hterm⟩ := _root_.GlobalTheory.CompanionTheory.ZUnf.CellGlue.cell hn M
   obtain ⟨K0, hK0, hKc⟩ := hcolat.2
   have hcn := continuous_jacobi_map_zero M
   obtain ⟨Um, hUm, hub⟩ := hmaj ((fun d : hermA D ρ × G D n => M.nzx d.1 0 * d.2) '' (K0 ×ˢ C))
@@ -94,7 +101,7 @@ theorem unfold_on {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) {ψ : AddC
       simp only [mul_assoc]
     simp only [mul_assoc] at h1 ⊢
     rw [h1]
-  have key := GlobalTheory.T.fundamental_domain_unfolding_two_sums m.lz (ratHerm D ρ) m.𝓖 hFD hvol
+  have key := _root_.GlobalTheory.CompanionTheory.UnfoldFam.unfold_fam m.lz (ratHerm D ρ) m.𝓖 hFD hvol
     (fun q : Cosets (P D n) (GF D n) => zKer hn (ratOf q.out)) (⊥ : Submodule D.host.E (Fin ρ → D.host.E)) F F0 ch
     (fun q => (hF q).aestronglyMeasurable) hchc.aestronglyMeasurable
     (fun b => by simp only [ch, RCLike.norm_conj]; exact chz_norm hψ b₀ b)

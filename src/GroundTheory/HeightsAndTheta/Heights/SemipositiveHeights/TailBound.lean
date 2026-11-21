@@ -60,7 +60,4 @@ theorem ListTailLog.of_lemmaETailMass (h : LemmaETailMass.Statement) : ListTailL
   ListTailLog.of_lemmaE (LemmaETailLog.of_lemmaETailMass h) ListMono.full RegSection.full
     TailShift.full
 
-theorem TailBound.of_lemmaETailMass (h : LemmaETailMass.Statement) : TailBound.Statement :=
-  TailBound.of_listTailLog (ListTailLog.of_lemmaETailMass h)
-
 end GroundTheory.Heights₂.Heights.ForSecondHalf

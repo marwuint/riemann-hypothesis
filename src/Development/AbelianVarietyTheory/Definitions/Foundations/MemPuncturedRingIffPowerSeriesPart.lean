@@ -18,9 +18,6 @@ def ConvergesOn (ε : ℝ) (f : ℂ⟦X⟧) : Prop :=
 theorem ConvergesOn.mono {ε ε' : ℝ} {f : ℂ⟦X⟧} (h : ConvergesOn ε f) (hε : ε' ≤ ε) :
     ConvergesOn ε' f := fun u hu => h u (hu.trans_le hε)
 
-theorem ConvergesOn.hasSum {ε : ℝ} {f : ℂ⟦X⟧} (h : ConvergesOn ε f) {u : ℂ} (hu : ‖u‖ < ε) :
-    HasSum (fun n => PowerSeries.coeff n f * u ^ n) (sum f u) := (h u hu).hasSum
-
 theorem convergesOn_iff_le_radius {ε : ℝ} {f : ℂ⟦X⟧} :
     ConvergesOn ε f ↔ ENNReal.ofReal ε ≤ radius f := by
   constructor
@@ -827,10 +824,6 @@ def puncturedIncl {ε : ℝ} (hε : 0 < ε) : puncturedRing ε →ₐ[ℂ] convL
 @[simp] theorem coe_puncturedIncl {ε : ℝ} (hε : 0 < ε) (f : puncturedRing ε) :
     (puncturedIncl hε f : ℂ⸨X⸩) = f := rfl
 
-theorem mem_convLaurent_iff_eventually {f : ℂ⸨X⸩} :
-    f ∈ convLaurent ↔ ∀ᶠ v in 𝓝[≠] (0 : ℂ), Summable fun n : ℤ => f.coeff n * v ^ n :=
-  eventually_iff_exists_puncturedDisc.symm
-
 theorem coe_mem_convLaurent {g : ℂ⟦X⟧} : (g : ℂ⸨X⸩) ∈ convLaurent ↔ g ∈ convSeries := by
   simp only [mem_convLaurent, mem_convSeries, coe_mem_puncturedRing]
 
@@ -887,28 +880,6 @@ instance : IsFractionRing convSeries convLaurent :=
   IsLocalization.of_le (Submonoid.powers u) _
     (powers_le_nonZeroDivisors_of_noZeroDivisors irreducible_u.ne_zero) fun _ hf =>
     isUnit_of_mem_nonZeroDivisors <| map_mem_nonZeroDivisors _ algebraMap_convSeries_injective hf
-
-theorem eventually_hasSum_lsum (f : convLaurent) :
-    ∀ᶠ v in 𝓝[≠] (0 : ℂ), HasSum (fun n : ℤ => (f : ℂ⸨X⸩).coeff n * v ^ n) (lsum f v) :=
-  (mem_convLaurent_iff_eventually.1 f.2).mono fun _ h => h.hasSum
-
-def lgerm : convLaurent →+* Germ (𝓝[≠] (0 : ℂ)) ℂ where
-  toFun f := (lsum f : Germ (𝓝[≠] (0 : ℂ)) ℂ)
-  map_one' := by
-    rw [← Germ.coe_one, Germ.coe_eq]
-    exact Eventually.of_forall fun v => by simpa using lsum_single 0 1 v
-  map_mul' f g := by
-    rw [← Germ.coe_mul, Germ.coe_eq]
-    filter_upwards [eventually_hasSum_lsum f, eventually_hasSum_lsum g, self_mem_nhdsWithin]
-      with v hf hg hv
-    exact (hasSum_mul_laurent hv hf.summable hg.summable).tsum_eq
-  map_zero' := by
-    rw [← Germ.coe_zero, Germ.coe_eq]
-    exact Eventually.of_forall fun v => by simp [lsum]
-  map_add' f g := by
-    rw [← Germ.coe_add, Germ.coe_eq]
-    filter_upwards [eventually_hasSum_lsum f, eventually_hasSum_lsum g] with v hf hg
-    simpa [lsum, add_mul] using hf.summable.tsum_add hg.summable
 
 theorem eventually_lsum_ne_zero {f : ℂ⸨X⸩} (hf : f ∈ convLaurent) (h0 : f ≠ 0) :
     ∀ᶠ v in 𝓝[≠] (0 : ℂ), lsum f v ≠ 0 := by
@@ -1024,76 +995,5 @@ def expandConvLaurent : convLaurent →ₐ[ℂ] convLaurent :=
     (expandConvLaurent k hk f : ℂ⸨X⸩) = expandLaurent k hk f := rfl
 
 end Expand
-
-theorem eventually_iff_exp {p : ℂ → Prop} :
-    (∀ᶠ v in 𝓝[≠] (0 : ℂ), p v) ↔
-      ∃ T : ℝ, ∀ w : ℂ, T < w.im → p (Complex.exp (2 * Real.pi * Complex.I * w)) := by
-  have hn : ∀ w : ℂ, ‖Complex.exp (2 * Real.pi * Complex.I * w)‖ =
-      Real.exp (-(2 * Real.pi * w.im)) := fun w => by
-    rw [Complex.norm_exp]
-    simp
-  have hπ : 0 < 2 * Real.pi := by positivity
-  rw [eventually_iff_exists_puncturedDisc]
-  constructor
-  · rintro ⟨ε, hε, h⟩
-    refine ⟨-Real.log ε / (2 * Real.pi), fun w hw => h _
-      (mem_puncturedDisc.2 ⟨Complex.exp_ne_zero _, ?_⟩)⟩
-    rw [hn, ← Real.lt_log_iff_exp_lt hε]
-    rw [div_lt_iff₀ hπ] at hw
-    linarith
-  · rintro ⟨T, h⟩
-    refine ⟨Real.exp (-(2 * Real.pi * T)), Real.exp_pos _, fun v hv => ?_⟩
-    obtain ⟨hv0, hv⟩ := mem_puncturedDisc.1 hv
-    have hw : Complex.exp (2 * Real.pi * Complex.I *
-        (Complex.log v / (2 * Real.pi * Complex.I))) = v := by
-      rw [mul_div_cancel₀ _ Complex.two_pi_I_ne_zero, Complex.exp_log hv0]
-    rw [← hw] at hv ⊢
-    refine h _ ?_
-    rw [hn, Real.exp_lt_exp, neg_lt_neg_iff] at hv
-    exact lt_of_mul_lt_mul_left hv hπ.le
-
-section Scheme
-
-open CategoryTheory AlgebraicGeometry
-
-theorem exists_chart_of_isLocalRing {Y : Scheme.{0}} (s : Y ⟶ Spec (.of ℂ))
-    [LocallyOfFiniteType s] {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℂ R]
-    (x : Spec (.of R) ⟶ Y) (hx : x ≫ s = Spec.map (CommRingCat.ofHom (algebraMap ℂ R))) :
-    ∃ (A : CommRingCat.{0}) (_ : Algebra ℂ A) (_ : Algebra.FiniteType ℂ A) (i : Spec A ⟶ Y)
-      (φ : A →ₐ[ℂ] R), IsOpenImmersion i ∧
-        i ≫ s = Spec.map (CommRingCat.ofHom (algebraMap ℂ A)) ∧
-        Spec.map (CommRingCat.ofHom (φ : A →+* R)) ≫ i = x := by
-  obtain ⟨A, i, _, q, hq⟩ := Scheme.exists_Spec_apply_eq (x (IsLocalRing.closedPoint R))
-  have hle : Set.range x ⊆ Set.range i := by
-    rintro _ ⟨t, rfl⟩
-    exact (Scheme.preimage_eq_top_of_closedPoint_mem (R := .of R) x (U := i.opensRange)
-      ⟨q, hq⟩).ge (Set.mem_univ t)
-  obtain ⟨l, rfl⟩ : ∃ l, l ≫ i = x := ⟨_, IsOpenImmersion.lift_fac i x hle⟩
-  obtain ⟨a, rfl⟩ := Spec.map_surjective l
-  obtain ⟨φ, hφ⟩ := Spec.map_surjective (i ≫ s)
-  have hft : φ.hom.FiniteType := by
-    have : LocallyOfFiniteType (Spec.map φ) := hφ ▸ inferInstance
-    exact (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mp this
-  let : Algebra ℂ A := φ.hom.toAlgebra
-  rw [Category.assoc, ← hφ, ← Spec.map_comp] at hx
-  have hc := congrArg CommRingCat.Hom.hom (Spec.map_injective hx)
-  exact ⟨A, this, hft, i, ⟨a.hom, fun c => DFunLike.congr_fun hc c⟩, ‹_›, hφ.symm, rfl⟩
-
-end Scheme
-
-example (ε : ℝ) (u₀ : ℂ) (h : u₀ ∈ puncturedDisc ε) :
-    evalAt ε u₀ h ⟨HahnSeries.single (-1) 1, single_mem_puncturedRing ε _ _⟩ = u₀⁻¹ := by
-  simp
-
-example : IsUnit (1 + u) ∧ ¬ IsUnit u := by
-  simp [isUnit_iff]
-
-example : ∃ a : convSeries, a ^ 2 = 1 + u ∧ evalZero a = 1 := by
-  obtain ⟨a, ha, ha'⟩ := exists_isRoot (Polynomial.X ^ 2 - Polynomial.C (1 + u)) 1
-    (by simp) (by simp)
-  exact ⟨a, by simpa [sub_eq_zero] using ha, ha'⟩
-
-example (ε : ℝ) : ValuationRing convSeries ∧ CharZero convLaurent ∧ IsDomain (puncturedRing ε) :=
-  ⟨inferInstance, inferInstance, inferInstance⟩
 
 end GlobalTheory.Conv

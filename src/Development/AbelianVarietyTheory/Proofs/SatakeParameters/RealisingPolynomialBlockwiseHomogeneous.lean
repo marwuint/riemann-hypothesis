@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RkLe
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EvalStdFramesEqDetPowerMulBlockValueStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EvalModelPolynomialOnStdFramesInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EvalStdFramesEqDetPowerMulBlockValue
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EvalModelPolynomialOnStdFramesInjective
 
 noncomputable section
 
@@ -143,8 +143,8 @@ theorem realises_blockHom : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (p
       · simp only [hτ, if_false]; exact hfu τ⟩
     have hf' : ∀ τ, f'.1 τ = if τ = τ₀ then (if IsOddPos (pos.symm τ₀).2 then (2:ℂ)⁻¹ else 2) • f.1 τ else f.1 τ := by
       intro τ; rw [← ht]
-    have e1 := GlobalTheory.T.evalStdFrames_eq_detPower_mul_blockValue X D pos i h R2 f
-    have e2 := GlobalTheory.T.evalStdFrames_eq_detPower_mul_blockValue X D pos i h R f'
+    have e1 := _root_.GlobalTheory.TwV.DelA.ev1_eq_prod_det_pow_mul_valZ X D pos i h R2 f
+    have e2 := _root_.GlobalTheory.TwV.DelA.ev1_eq_prod_det_pow_mul_valZ X D pos i h R f'
     have e3 := hR f'
     have e4 := hR f
     have hv : valZ X D pos i h R f'.1 = valZ X D pos i h R2 f.1 := by
@@ -171,7 +171,7 @@ theorem realises_blockHom : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (p
           field_simp
       _ = _ := by rw [hE]; ring
   have hz : R2 - c • R = 0 := by
-    apply GlobalTheory.T.evalModelPolynomialOnStdFrames_injective X D pos i h
+    apply _root_.GlobalTheory.TwV.DelA.eq_zero_of_ev1_eq_zero_on_frames X D pos i h
     intro f
     rw [map_sub, map_smul]
     simp [key f]

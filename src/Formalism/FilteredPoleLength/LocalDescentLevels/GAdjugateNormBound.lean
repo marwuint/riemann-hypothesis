@@ -5,27 +5,6 @@ open Finset
 
 namespace Formalism.LatticeBaseChangeAlt
 
-private lemma norm_det_le {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (x : ℝ)
-    (hx : ∀ i j, ‖A i j‖ ≤ x) : ‖A.det‖ ≤ n.factorial * x ^ n := by
-  rw [Matrix.det_apply]
-  refine (norm_sum_le _ _).trans ?_
-  have hterm : ∀ σ : Equiv.Perm (Fin n), ‖Equiv.Perm.sign σ • ∏ i, A (σ i) i‖ ≤ x ^ n := by
-    intro σ
-    have hp : ‖∏ i, A (σ i) i‖ ≤ x ^ n := by
-      rw [norm_prod]
-      calc ∏ i, ‖A (σ i) i‖ ≤ ∏ _i : Fin n, x :=
-            Finset.prod_le_prod (fun i _ => norm_nonneg _) (fun i _ => hx _ _)
-        _ = x ^ n := by simp
-    rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs
-    · rw [hs, one_smul]
-      exact hp
-    · rw [hs, Units.neg_smul, one_smul, norm_neg]
-      exact hp
-  calc ∑ σ : Equiv.Perm (Fin n), ‖Equiv.Perm.sign σ • ∏ i, A (σ i) i‖
-      ≤ ∑ _σ : Equiv.Perm (Fin n), x ^ n := Finset.sum_le_sum fun σ _ => hterm σ
-    _ = n.factorial * x ^ n := by
-      simp [Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]
-
 private theorem det_le_one_of_posSemidef_of_diag_eq_one {n : ℕ} (G : Matrix (Fin n) (Fin n) ℝ)
     (hG : G.PosSemidef) (hd : ∀ j, G j j = 1) : G.det ≤ 1 := by
   have htr : G.trace = (n : ℝ) := by

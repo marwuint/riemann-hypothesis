@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirVolumeRatios.AdeleLC
-import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.SiegelWeilGramDensity
+import Formalism.UnipotentAdelicQuotients.SWXSDefs
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAdeleCharTrivialOnTotallyReal
 
 noncomputable section
@@ -56,19 +56,6 @@ theorem exists_coord_tens (F E : Type) [Field F] [NumberField F] [IsTotallyReal 
   show e1 (e0 (x + y)) = e1 (e0 x) + e1 (e0 y)
   rw [show e0 (x + y) = e0 x + e0 y from eL.map_add x y, h1]
 
-theorem exists_coord_tup (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E]
-    [NumberField E] [Algebra F E] (n M : ℕ) :
-    ∃ (N : ℕ) (e : (Fin n → Fin M → Ainf F ⊗[F] E) ≃ₜ (Fin N → ℝ)), ∀ x y, e (x + y) = e x + e y := by
-  obtain ⟨k, eK, hK⟩ := exists_coord_tens F E
-  obtain ⟨k1, e1, h1⟩ := exists_coord_pi eK hK (Fin M)
-  exact exists_coord_pi e1 h1 (Fin n)
-
-section Zero
-
-variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] [Subsingleton V]
-
-end Zero
-
 theorem measure_fundamentalDomain_pos (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (μ) (hμ : IsHaarH F E σ M J μ)
     (𝓕) (h : IsFDH F E σ M J μ 𝓕) : 0 < μ 𝓕 := by
@@ -109,38 +96,5 @@ def tensHomeo {κ : Type} [Finite κ] (b : Module.Basis κ F E) : R ⊗[F] E ≃
       IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis R b).equivFun.symm.toLinearMap }
 
 end HermTop
-
-open GlobalTheory.IndefiniteRowSideFullHecke.SiegelWeilGramDensity in
-
-def SiegelFormulaCc : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (σ : E →ₐ[F] E), IsCMExt F E σ →
-    ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
-    ∀ (n : ℕ), 1 ≤ n → 2 * n < M →
-    ∀ (T : Matrix (Fin n) (Fin n) E) (hT : IsHermND σ T),
-    ∀ (ψ : AddChar (AF F) ℂ), IsCharAF F ψ →
-    ∀ (b : Module.Basis (Fin 2) F E)
-      (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ)
-      (Φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ)
-      (Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ)
-      (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ),
-      IsProdInfFin Φ Φinf Φf → IsSmoothCc F E Φinf → IsPureFin b Φf Φv →
-      AllSome (fun μ : Measure (HA (AF F) σ J) => IsHaarH F E σ M J μ) fun μ =>
-      AllSome (fun 𝓕 : Set (HA (AF F) σ J) => IsFDH F E σ M J μ 𝓕) fun 𝓕 =>
-      AllSome (fun dX : Measure (Fin n → Fin M → Ainf F ⊗[F] E) =>
-          SdW F E σ M J (Ainf F) (psiInf F ψ) n dX) fun dXinf =>
-      AllSome (fun dS : Measure (HermR (Ainf F) σ n) =>
-          SdHerm F E σ (Ainf F) (psiInf F ψ) n dS) fun dSinf =>
-      AllSome (fun dX : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E) =>
-          ∀ v, SdW F E σ M J (Fv F v) (psiV F ψ v) n (dX v)) fun dXv =>
-      AllSome (fun dS : ∀ v : HeightOneSpectrum (𝓞 F), Measure (HermR (Fv F v) σ n) =>
-          ∀ v, SdHerm F E σ (Fv F v) (psiV F ψ v) n (dS v)) fun dSv =>
-      AllSome (fun g : HermR (Ainf F) σ n → ℂ =>
-          IsGramDensity (Ainf F) σ J dXinf dSinf Φinf g) fun ginf =>
-      AllSome (fun g : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ n → ℂ =>
-          ∀ v, IsGramDensity (Fv F v) σ J (dXv v) (dSv v) (Φv v) (g v)) fun gv =>
-        Multipliable (fun v => gv v (hermOf (Fv F v) σ T hT.1)) ∧
-        meanC μ 𝓕 (thetaS F E σ M J Φ (gramFibre σ J T)) =
-          ginf (hermOf (Ainf F) σ T hT.1) * ∏' v, gv v (hermOf (Fv F v) σ T hT.1)
 
 end GlobalTheory.SiegelWeilConvCompare

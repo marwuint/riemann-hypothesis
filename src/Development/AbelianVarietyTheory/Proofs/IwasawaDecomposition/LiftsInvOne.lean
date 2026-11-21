@@ -63,14 +63,6 @@ abbrev MidAt {u : B.Word} {a : I.ι} {i : ℕ} (hi : i < B.R.m) (b : (I.stp u a 
 def Keeps {u : B.Word} {a : I.ι} {i : ℕ} {b : (I.stp u a i).β} (κ : (I.stp u a i).G b) (p : (I.stp u a i).D b) : Prop :=
   (I.stp u a i).gam b κ = 1 ∧ cosetIn ((I.stp u a i).act b κ p) = cosetIn p
 
-theorem liftsInv_one {u : B.Word} {a : I.ι} {i : ℕ} {b : (I.stp u a i).β} (P : SBof I a) :
-    LiftsInv I (1 : (I.stp u a i).G b) P 1 := by
-  refine ⟨one_mem _, fun h x _ => ?_, fun h => ?_⟩
-  · show redV P.1 x = ((1 : GL (Fin (B.R.N i)) (𝓞 B.fields.E ⧸ P.1.asIdeal))⁻¹).1.mulVec (redV P.1 x)
-    simp
-  · show _ = ((1 : Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1)⁻¹).1
-    simp
-
 theorem keeps_one {u : B.Word} {a : I.ι} {i : ℕ} {b : (I.stp u a i).β} (p : (I.stp u a i).D b) :
     Keeps I (1 : (I.stp u a i).G b) p :=
   ⟨map_one _, congrArg cosetIn (@one_smul _ _ _ ((I.stp u a i).actD b) p)⟩

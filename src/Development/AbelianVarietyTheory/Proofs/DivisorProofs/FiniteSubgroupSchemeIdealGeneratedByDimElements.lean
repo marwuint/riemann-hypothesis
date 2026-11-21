@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStructureSheafDegOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpanMaximalIdealMapOfFlatRegularStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedSubfunctorStalkIdealCriterionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientAbelianVarietyFiniteSubgroupSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpanMaximalIdealMapOfFlatRegular
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedSubfunctorStalkIdealCriterion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientAbelianVarietyFiniteSubgroupScheme
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaCore
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.StalkOfSmoothLocal
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
@@ -101,7 +101,7 @@ theorem stalk_regular_of_section : ∀ (K : Type) [Field K] (X : Scheme.{0}) (f 
 theorem ideal_eq_span_fin : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (H : Over (Sp K)) [GrpObj H] (j : H ⟶ A), IsMonHom j → IsClosedImmersion j.left → IsFinite H.hom → ∀ x₀ : A.left, x₀ ∈ Set.range (η[A]).left.base → ∀ J : Ideal (A.left.presheaf.stalk x₀), (∀ (R' : Type) [CommRing R'] (ψ : A.left.presheaf.stalk x₀ →+* R'), (∃ y : Sp R' ⟶ H.left, y ≫ j.left = Spec.map (CommRingCat.ofHom ψ) ≫ A.left.fromSpecStalk x₀) ↔ J ≤ RingHom.ker ψ) → ∃ f : Fin g → A.left.presheaf.stalk x₀, Ideal.span (Set.range f) = J := by
   intro K _ _ A _ g hA hg H _ j hj hci hfin x₀ hx₀ J hJ
   have hmono : Mono j := Over.mono_of_mono_left j
-  obtain ⟨A', _, hA', q, hq, hqfin, hqflat, hqsurj, hpb⟩ := GlobalTheory.T.exists_quotient_abelianVariety_finite_subgroupScheme K A hA H j hj hmono hfin
+  obtain ⟨A', _, hA', q, hq, hqfin, hqflat, hqsurj, hpb⟩ := _root_.GlobalTheory.AbelianQuotientField.exists_quotient K A hA H j hj hmono hfin
   have hη : η[A] ≫ q = η[A'] := IsMonHom.one_hom q
   have hsA : (η[A]).left ≫ A.hom = 𝟙 _ := Over.w η[A]
   have hsA' : (η[A']).left ≫ A'.hom = 𝟙 _ := Over.w η[A']
@@ -134,10 +134,10 @@ theorem ideal_eq_span_fin : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (
     apply le_antisymm
     · simpa using (key _ (Ideal.Quotient.mk ((IsLocalRing.maximalIdeal (A'.left.presheaf.stalk (q.left.base x₀))).map σ))).2 (by simp)
     · simpa using (key _ (Ideal.Quotient.mk J)).1 (by simp)
-  obtain ⟨_, hart⟩ := GlobalTheory.T.closed_subfunctor_stalk_ideal_criterion K A H j hj hci hfin x₀ ⟨p, hp⟩ J hJ
+  obtain ⟨_, hart⟩ := _root_.GlobalTheory.FinStalk.stalk_quotient_ne_top_and_isArtinianRing K A H j hj hci hfin x₀ ⟨p, hp⟩ J hJ
   have hflat : σ.Flat := Flat.stalkMap q.left x₀
   haveI := Ldim.1
   rw [Lgeo] at hart ⊢
-  exact GlobalTheory.T.exists_span_maximalIdeal_map_of_flat_regular _ _ σ inferInstance hflat hart g Ldim.2.2
+  exact _root_.GlobalTheory.maximalIdeal_map_span_of_flat_of_isArtinianRing_fibre _ _ σ inferInstance hflat hart g Ldim.2.2
 
 end GlobalTheory.FinSubGen

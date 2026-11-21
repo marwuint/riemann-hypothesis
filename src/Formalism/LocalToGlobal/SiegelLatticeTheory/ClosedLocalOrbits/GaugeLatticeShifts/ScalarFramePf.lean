@@ -37,14 +37,4 @@ end Formalism.L2.SG.Pf.ScalarFramePf
 
 namespace Formalism.L2.SG.Pf
 
-open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.TermLoc
-  Formalism.L2.SG.Pf.ScalarFramePf
-
-theorem scalarFrameCT_of (hI : IotaStep) : ScalarFrameCT := by
-  intro D Z Λ T T' F F' F'' β Tn T'n hF hl' hl'' hc' hc'' ha' ha'' hP hg' hg'' hs hsc hG' hG'' hT hT' p
-  exact isScalarPair_lt Z p Λ (frame F) (frameAct (frame F') (admXi D Λ F F')⁻¹)
-    (frameAct (frame F'') (admXi D Λ F F'')⁻¹) β Tn T'n
-    (gfacts_of Λ F F' F'' β hF hl' hl'' hc' hc'' hP hs hsc hG' hG'' hT hT')
-    (hI D Z Λ F F' F'' β hF hl' hl'' hc' hc'' ha' ha'' hP hg' hg'' hs hsc hG' hG'' hT hT' p)
-
 end Formalism.L2.SG.Pf

@@ -2,12 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvDer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDerivationFormalGroupLawIsLinearStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffIterateInvariantDerivationMonomialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffIterateInvariantDerivationLinearStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapInvariantDerivationFormalGroupLawIterateStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffIterateInvariantDerivationMonomial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffIterateInvariantDerivationLinear
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapInvariantDerivationFormalGroupLawIterate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffIterateInvariantDerivationMemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffIterateInvariantDerivationCongrStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffQuasiLogarithmIntegralLowDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffIterateInvariantDerivationCongr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffQuasiLogarithmIntegralLowDegree
 
 set_option autoImplicit false
 
@@ -45,7 +45,7 @@ theorem constantCoeff_iterate_invDer_X_sub_mem : ∀ (p : ℕ) [Fact p.Prime] (B
     rw [up, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ,
       map_zero]
   obtain ⟨b, hbN, hb⟩ := GlobalTheory.T.constantCoeff_iterate_invariantDerivation_mem B Q d μ hμ (RingHom.ker θ) l j hcob hlin u p hp.two_le
-  have h3 := GlobalTheory.T.coeff_quasiLogarithm_integral_low_degree p B O Q θ hF d μ hL l hQL
+  have h3 := _root_.GlobalTheory.QLogInt.coeff_integral_of_QL p B O Q θ hF d μ hL l hQL
   let P : (Fin d →₀ ℕ) → Prop := fun α => α.degree ≤ p ∧ ∀ i, α ≠ Finsupp.single i p
   let h : (Fin d →₀ ℕ) → B := fun α => if hα : P α then (h3 α hα.1 hα.2).choose else 0
   have hh : ∀ α, P α → algebraMap B Q (h α) = coeff α l := fun α hα => by
@@ -72,17 +72,17 @@ theorem constantCoeff_iterate_invDer_X_sub_mem : ∀ (p : ℕ) [Fact p.Prime] (B
   have hnat : ∀ F : MvPowerSeries (Fin d) B,
       constantCoeff ((invDer (up Q μ) (fun i => algebraMap B Q (u i)))^[p] (map (algebraMap B Q) F)) =
         algebraMap B Q (constantCoeff ((invDer μ u)^[p] F)) := fun F => by
-    rw [← constantCoeff_map, GlobalTheory.T.map_invariantDerivationFormalGroupLaw_iterate B Q (algebraMap B Q) d μ hμ u p F]; rfl
+    rw [← constantCoeff_map, _root_.GlobalTheory.LawDer.map_invDer_iterate B Q (algebraMap B Q) d μ hμ u p F]; rfl
   have hmon : ∀ i : Fin d, monomial (Finsupp.single i p) (1 : Q) =
       map (algebraMap B Q) (monomial (Finsupp.single i p) (1 : B)) := fun i => by
     rw [map_monomial, (algebraMap B Q).map_one]
   have hmono : ∀ i : Fin d, constantCoeff ((invDer μ u)^[p] (monomial (Finsupp.single i p) (1 : B))) =
       (p.factorial : B) * u i ^ p := fun i => by
-    have := GlobalTheory.T.constantCoeff_iterate_invariant_derivation_monomial B d μ hμ hL.unit hL.comm u (Finsupp.single i p)
+    have := _root_.GlobalTheory.LawDer.MonoIter.constantCoeff_iterate_invDer_monomial B d μ hμ hL.unit hL.comm u (Finsupp.single i p)
     rw [Finsupp.degree_single] at this
     rw [this, Finset.prod_eq_single i (fun k _ hk => by rw [Finsupp.single_apply, if_neg (Ne.symm hk),
       pow_zero]) (by simp), Finsupp.single_eq_same]
-  have e1 := GlobalTheory.T.constantCoeff_iterate_invariantDerivation_congr Q d (up Q μ) hμQ (fun i => algebraMap B Q (u i)) p l G hG
+  have e1 := _root_.GlobalTheory.LawDer.IterateLocal.constantCoeff_iterate_invDer_congr Q d (up Q μ) hμQ (fun i => algebraMap B Q (u i)) p l G hG
   have e2 : constantCoeff ((invDer (up Q μ) (fun i => algebraMap B Q (u i)))^[p] G) =
       algebraMap B Q (constantCoeff ((invDer μ u)^[p] H)) +
         ∑ i, q i * algebraMap B Q ((p.factorial : B) * u i ^ p) := by
@@ -91,7 +91,7 @@ theorem constantCoeff_iterate_invDer_X_sub_mem : ∀ (p : ℕ) [Fact p.Prime] (B
     congr 1
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [smul_eq_C_mul, map_mul, constantCoeff_C, hnat, hmono]
-  obtain ⟨r, hr⟩ := GlobalTheory.T.constantCoeff_iterate_invariant_derivation_linear p B d μ hμ hL.unit hL.comm u H
+  obtain ⟨r, hr⟩ := _root_.GlobalTheory.LawDer.constantCoeff_iterate_invDer_sub_linear p B d μ hμ hL.unit hL.comm u H
   have hlin1 : ∀ k, coeff (Finsupp.single k 1) H = if k = j then 1 else 0 := fun k => by
     apply hF.inj
     have hPk : P (Finsupp.single k 1) := ⟨by rw [Finsupp.degree_single]; exact hp.one_le, fun i e => by

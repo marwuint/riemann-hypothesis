@@ -1,7 +1,8 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.UnramifiedSchwartzDensity.SchCut
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdeleHaarMapEqScaledVolumeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdeleHaarMapEqScaledVolume
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 
 noncomputable section
 
@@ -12,12 +13,12 @@ namespace GlobalTheory.CompanionTheory.SW.CoordR
 
 theorem coordInf : PositivityTheory.PfSWUS.SchInf.CoordInf := by
   intro F E _ _ _ _ _ σ hσ n M
-  obtain ⟨-, e, -, he, -⟩ := GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hσ.1
+  obtain ⟨-, e, -, he, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.real_iso F hσ.1
   let eh : Ainf F ≃ₜ (InfinitePlace F → ℝ) := he.homeomorph _
   have heh : ∀ y, eh y = e y := fun _ => rfl
   haveI : SecondCountableTopology (Ainf F) := eh.secondCountableTopology
   haveI : T2Space (Ainf F) := eh.symm.t2Space
-  obtain ⟨i1, i2, i3, i4, -, -, hb, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)
+  obtain ⟨i1, i2, i3, i4, -, -, hb, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Ainf F)
   let d := Module.finrank F E
   let b : Module.Basis (Fin d) F E := Module.finBasis F E
   let B := Algebra.TensorProduct.basis (Ainf F) b

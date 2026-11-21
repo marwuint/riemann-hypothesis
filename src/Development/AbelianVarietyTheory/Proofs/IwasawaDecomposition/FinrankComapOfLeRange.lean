@@ -77,25 +77,6 @@ theorem clauses {D : D7} {St : Formalism.L2.SG.HidaSetting.HidaSetting D} (s : B
   rw [Submodule.range_subtype]
   exact inf_le_left
 
-theorem seeIso : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.toRealDat.models_HE → (R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)) ≤ R.toRealDat.EEat R.triv → ∀ (St : Formalism.L2.SG.HidaSetting.HidaSetting D) (Gd : GoodOp St) (hK : St.LevelSubgroupCharacter) (wdD : (F.Dc (R.toCx3 F).zs).Mem → D.what₂.Word) (pw : ∀ x, PerW St hK (wdD x)) (bR : ∀ x, Fin ((F.Dc (R.toCx3 F).zs).a x) → (D.mem (wdD x)).A.Mram), F.Sp (R.toCx3 F).zs = spOf (twAt D.what₂.embLL A3.A.v0) (F.Dc (R.toCx3 F).zs) hK Gd wdD pw bR → ∀ (ι : GA D (D.sp.Y 0) ≃* St.B.I.GA) (t : GA D (D.sp.Y 0)) (c : ℝ), 0 < c → EvalTieT (R.MY 0) R.ν0 R.fd0 (R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)) St Gd ι t c → ∀ (sEE : (R.toCx3 F).EE →ₗ⋆[ℂ] (F.fc (R.toCx3 F).zs).Sp.HH) (sEEc : Tw (twAt D.what₂.embLL A3.A.v0) R.HE.H →ₗ⋆[ℂ] Tw (twAt D.what₂.embLL A3.A.v0) (HHX St)) (κS : ℂ), HEq sEE sEEc → (∀ (x : Tw (twAt D.what₂.embLL A3.A.v0) R.HE.H) (hx : R.HE.e (Tw.out x) ∈ (R.toRealDat.EEat (R.toRealDat.levR F.lv2 true))), sEEc x = Tw.mk (twAt D.what₂.embLL A3.A.v0) (κS • sEEofTT (R.MY 0) R.ν0 R.fd0 (R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)) St Gd ι t c ⟨R.HE.e (Tw.out x), hx⟩) ∧ RealDat.nP F.lv2 true * ‖sEEc x‖ ^ 2 = ‖x‖ ^ 2) → (R.toCx3 F).SEEIso sEE := by
-  intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hHE hle St Gd hK wdD pw bR hSp ι t c _ hE sEE sEEc κS hh hS
-  refine clauses (twAt D.what₂.embLL A3.A.v0) (F.Dc (R.toCx3 F).zs) hK Gd wdD pw bR (F.Sp (R.toCx3 F).zs) hSp
-    ((R.toCx3 F).EEl true) ((R.toCx3 F).nP true) sEE sEEc hh (fun e he => (hS e he).2) (fun e he => ?_) ?_
-  · refine (congrArg (fun y : Tw (twAt D.what₂.embLL A3.A.v0) (HHX St) =>
-      ((Tw.out y : HHX St) : L2X St) ∈ goodSub St Gd) (hS e he).1).mpr ?_
-    show ((κS • sEEofTT (R.MY 0) R.ν0 R.fd0 _ St Gd ι t c ⟨R.HE.e (Tw.out e), he⟩ : HHX St) : L2X St) ∈ goodSub St Gd
-    rw [Submodule.coe_smul]
-    refine Submodule.smul_mem _ _ ?_
-    unfold sEEofTT
-    rw [dif_pos hE]
-    exact (mem_EEC St Gd _).1 (hE.choose_spec.2.choose _).2
-  · refine (finrank_of_evalTieT hE).trans ?_
-    refine Eq.symm ((finrank_twSub (E := R.HE.H) (twAt D.what₂.embLL A3.A.v0)
-      ((R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)).comap R.HE.e)).trans ?_)
-    refine finrank_comap_of_le_range _ hHE.1 _ ?_
-    rw [hHE.2.1]
-    exact hle
-
 end GlobalTheory.Mem.SJ.RowIso
 
 end

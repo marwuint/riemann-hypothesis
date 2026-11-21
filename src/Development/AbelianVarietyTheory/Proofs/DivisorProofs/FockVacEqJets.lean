@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormSqMulGaussia
 import Formalism.SharpRestriction.GlobalSchurBounds.Joints
 import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitVacuumStandardLatticesDefinitePairStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockJetVacuumEqConstMulPeriodScaledJetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockJetsOriginOppositeSignVacuumConjPeriodStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockJetVacuumEqConstMulPeriodScaledJet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockJetsOriginOppositeSignVacuumConjPeriod
 
 noncomputable section
 
@@ -85,10 +85,10 @@ theorem fock_vac_eq_jets : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
   cases p with
   | chi i j =>
     obtain ⟨hi, rfl⟩ := hp
-    exact GlobalTheory.T.fockJets_origin_oppositeSignVacuum_conjPeriod W N δ t0 hc hδ ht0 i hi e0 he0 f hf
+    exact _root_.GlobalTheory.FunObj.FockChi.fockIn_chi_zero W N δ t0 hc hδ ht0 i hi e0 he0 f hf
   | mu t i j => exact absurd hp id
   | core i => exact absurd hp id
-  | top t j => exact GlobalTheory.T.fockJet_vacuum_eq_const_mul_periodScaledJet W N δ t0 hc hδ ht0 t j hp e0 he0 f hf
+  | top t j => exact _root_.GlobalTheory.FunObj.TopJet.fockIn_vacuum_eq W N δ t0 hc hδ ht0 t j hp e0 he0 f hf
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : ChiGrid.GridData L sc} (W : G.Weil)
 

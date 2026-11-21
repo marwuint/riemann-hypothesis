@@ -186,16 +186,6 @@ lemma restrict_inj {τ τ' : X.Ψ} (h : ∀ a : E, cc a = a → τ.1 a = τ'.1 a
 
 def resChar (τ : X.Ψ) : (fixF (E := E)) →* ℂ := (τ.1.comp (fixF (E := E)).subtype).toMonoidHom
 
-lemma resChar_linInd :
-    LinearIndependent ℂ (fun τ : X.Ψ => ((resChar X τ : (fixF (E := E)) →* ℂ) : (fixF (E := E)) → ℂ)) := by
-  have hinj : Function.Injective (fun τ : X.Ψ => resChar X τ) := by
-    intro τ τ' h
-    apply restrict_inj X
-    intro a ha
-    have := DFunLike.congr_fun h ⟨a, ha⟩
-    exact this
-  exact (linearIndependent_monoidHom (fixF (E := E)) ℂ).comp _ hinj
-
 open Classical in
 lemma periods_span : Submodule.span ℝ (X.periods la : Set (X.Ψ → ℝ)) = ⊤ := by
   by_contra hne

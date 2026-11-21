@@ -44,25 +44,4 @@ theorem continuous_inFrame (b : GL (Fin n ⊕ Fin n) E) : Continuous (inFrame (�
   have hm : Continuous fun g : G2 σ Y => mat2 g := Units.continuous_val.comp continuous_subtype_val
   exact (continuous_const.matrix_mul hm).matrix_mul continuous_const
 
-variable (σ Y) in
-
-def parLev {α : Type} [LinearOrder α] (b : GL (Fin n ⊕ Fin n) E) (lev : Fin n ⊕ Fin n → α) : Subgroup (G2 σ Y) where
-  carrier := {x | ∀ i j, lev j < lev i → inFrame b x i j = 0}
-  mul_mem' := by
-    intro x y hx hy
-    show Matrix.BlockTriangular (inFrame b (x * y)) lev
-    rw [inFrame_mul]
-    exact Matrix.BlockTriangular.mul hx hy
-  one_mem' := by
-    show Matrix.BlockTriangular (inFrame b (1 : G2 σ Y)) lev
-    rw [inFrame_one]
-    exact Matrix.blockTriangular_one
-  inv_mem' := by
-    intro x hx
-    show Matrix.BlockTriangular (inFrame b x⁻¹) lev
-    rw [inFrame_inv]
-    have : Invertible (inFrame b x) := ⟨inFrame b x⁻¹, inFrame_inv_mul b x, by
-      rw [← inFrame_mul, mul_inv_cancel, inFrame_one]⟩
-    exact Matrix.blockTriangular_inv_of_blockTriangular hx
-
 end GlobalTheory.EisBL.DoubledParabolic

@@ -7,13 +7,6 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.TensorDedekindLocalU
 open GroundTheory.FunctionField UpperTheory.Et.Sel
 open scoped TensorProduct
 
-section Spz
-
-variable {k L A : Type} [Field k] [Field L] [Algebra k L] [CommRing A] [Algebra k A]
-  {R : Subalgebra k L} {φ : R →ₐ[k] k}
-
-end Spz
-
 private theorem locPow_of_mul_inc_eq_of_dvd_exponent_sub {k K L : Type} [Field k] [Field K] [Algebra k K] [Field L]
     [Algebra k L] (q : ℕ) (hq0 : 0 < q) (B : Subalgebra k K) [IsDomain (L ⊗[k] B)]
     (m : Ideal (L ⊗[k] B)) (hm : m.IsPrime) (F : L ⊗[k] K) (a b π s t s' t' : L ⊗[k] B)

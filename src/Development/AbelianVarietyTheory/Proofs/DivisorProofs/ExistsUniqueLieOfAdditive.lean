@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CobOneEqZeroOfConnecting
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueDualOfCompatibleModPowStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueDualOfCompatibleModPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierDualTangentOfCoboundaryOneEqSmulStatement
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup
 
@@ -34,7 +34,7 @@ theorem existsUnique_lie_of_additive : ∀ (p : ℕ) (O : Type) [CommRing O] [Is
     rw [hz, map_add, map_smul, smul_eq_mul] at hx
     obtain ⟨k, hk⟩ := hx
     exact ⟨(p : O) * k - φ z, by linear_combination hk⟩
-  obtain ⟨l, hl, huniq⟩ := GlobalTheory.T.existsUnique_dual_of_compatible_mod_pow_of_adicComplete O G.dual.omega (p : O) U key
+  obtain ⟨l, hl, huniq⟩ := _root_.GlobalTheory.PDiv.exists_unique_dual_of_compatible_mod_pow O G.dual.omega (p : O) U key
   refine ⟨l, fun n w φ h => ?_, fun l' hl' => huniq l' fun n w => ?_⟩
   · have := (hl n w).trans (hU n w φ h)
     rwa [Ideal.Quotient.eq, Ideal.mem_span_singleton] at this

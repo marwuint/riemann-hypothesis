@@ -35,7 +35,7 @@ theorem exists_intModel_heq : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt �
   obtain ⟨χ₀, hχ₀, -⟩ := hN Tv.V b ϖ aw (Or.inr ⟨inferInstance, hϖ, by
     rw [← hϖ.maximalIdeal_eq]; infer_instance⟩)
   obtain ⟨W₀⟩ := (Yw.hasArcData_iff _ _ _ _ _).1 ((hχ₀ χ₀).1 rfl).2.2.2
-  obtain ⟨ew, -, hew⟩ := GlobalTheory.T.exists_constant_eigenbasis_tangent_arc hL hL₂ E H Dw l Xo c _ _ Yw Tv.V b aw χ₀ W₀ ρ (io.comp (algebraMap c.F K₁))
+  obtain ⟨ew, -, hew⟩ := _root_.GlobalTheory.ConstBasis.exists_arcBasis hL hL₂ E H Dw l Xo c _ _ Yw Tv.V b aw χ₀ W₀ ρ (io.comp (algebraMap c.F K₁))
     hw.1 hρ (exists_values c Wl)
 
   obtain ⟨W₁, e₁, l₁, b₁⟩ := exists_arcBasis_baseChange hL hL₂ hU hL₅ hinj hw W₀ hew
@@ -51,13 +51,13 @@ theorem exists_intModel_heq : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt �
   obtain ⟨g, hg, hge⟩ := exists_matrix hG W₁ b₁ b₂'
   have t₁ : ∀ τ k, GtTanR (e₁ τ k) := fun τ k => by
     obtain ⟨v, i, hv⟩ := b₁
-    exact ((GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c _ _ Yw Tv.Fr _ _ _ W₁ (e₁ τ k)).2 _ (i τ k)).2 ((hv τ).1 k).1
+    exact ((_root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c _ _ Yw Tv.Fr _ _ _ W₁ (e₁ τ k)).2 _ (i τ k)).2 ((hv τ).1 k).1
 
   obtain ⟨thw, hthw, -⟩ := GlobalTheory.KeyOnPol.exists_generator hL.secBaseChange aw.D₀.P
-  obtain ⟨-, -, -, x₁, z₁⟩ := (GlobalTheory.T.degenerationData_baseChanges_exist_pid hL hL₂ hU hL₅ E H Dw l Xo c _ _ Yw Tv.V Tv.Fr b aw _ hinj _ hw.1).2
+  obtain ⟨-, -, -, x₁, z₁⟩ := (_root_.GlobalTheory.ArcQBC.baseChanges hL hL₂ hU hL₅ E H Dw l Xo c _ _ Yw Tv.V Tv.Fr b aw _ hinj _ hw.1).2
     (aK.restrict (c.V Wl).subtype) pw hw
   obtain ⟨-, -, -, x₂, z₂⟩ :=
-    (GlobalTheory.T.degenerationData_baseChanges_exist_pid hL hL₂ hU hL₅ E H Dw l Xo c _ _ d.Y K₁ Tv.Fr _ (d.a.restrict (c.V d.Wp).subtype) io
+    (_root_.GlobalTheory.ArcQBC.baseChanges hL hL₂ hU hL₅ E H Dw l Xo c _ _ d.Y K₁ Tv.Fr _ (d.a.restrict (c.V d.Wp).subtype) io
       io.injective _ hK'.1).2
       (aK.restrict (c.V d.Wp).subtype) pK hK'
   obtain ⟨th₁, hth₁⟩ := (x₁ thw).exists

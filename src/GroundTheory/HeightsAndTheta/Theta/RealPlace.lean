@@ -211,51 +211,6 @@ theorem continuous_realPlaceEquiv_symm : Continuous (realPlaceEquiv hw hE).symm 
 
 end Phi
 
-section Unitary
-
-variable {K E : Type*} [Field K] [Field E] [Algebra K E] [Algebra.IsQuadraticExtension K E]
-variable {w : InfinitePlace K} (hw : w.IsReal) (hE : IsNonsplitAt E w)
-variable {ι : Type*} [Fintype ι] [DecidableEq ι] (H : Matrix ι ι E)
-
-noncomputable def realPlaceMatrix : Matrix ι ι ℂ :=
-  (H.map (Algebra.TensorProduct.includeRight : E →ₐ[K] w.Completion ⊗[K] E)).map
-    (realPlaceEquiv hw hE)
-
-attribute [local instance] tensorTopology isModuleTopology_tensor isTopologicalRing_tensor
-
-noncomputable def unitaryPointsRealEquiv :
-    unitaryPoints K E H w.Completion ≃ₜ*
-      unitaryGroupMatrix (starRingEnd ℂ) (realPlaceMatrix hw hE H) where
-  toMulEquiv := unitaryGroupMatrixCongr (realPlaceEquiv hw hE) (realPlaceEquiv_conjBase hw hE) rfl
-  continuous_toFun := by
-    have hv : Continuous fun g : unitaryPoints K E H w.Completion =>
-        ((g : GL ι (w.Completion ⊗[K] E)) : Matrix ι ι (w.Completion ⊗[K] E)) :=
-      Units.continuous_val.comp continuous_subtype_val
-    have h1 : Continuous fun g : unitaryPoints K E H w.Completion =>
-        ((g : GL ι (w.Completion ⊗[K] E)) : Matrix ι ι (w.Completion ⊗[K] E)).map
-          (realPlaceEquiv hw hE) :=
-      hv.matrix_map (continuous_realPlaceEquiv hw hE)
-    have h2 : Continuous fun g : unitaryPoints K E H w.Completion =>
-        ((((g : GL ι (w.Completion ⊗[K] E))⁻¹ : GL ι (w.Completion ⊗[K] E))) :
-          Matrix ι ι (w.Completion ⊗[K] E)).map (realPlaceEquiv hw hE) :=
-      ((Units.continuous_coe_inv.comp continuous_subtype_val)).matrix_map
-        (continuous_realPlaceEquiv hw hE)
-    exact Continuous.subtype_mk (Units.continuous_iff.2 ⟨h1, h2⟩) _
-  continuous_invFun := by
-    have h1 : Continuous fun g : unitaryGroupMatrix (starRingEnd ℂ) (realPlaceMatrix hw hE H) =>
-        ((g : GL ι ℂ) : Matrix ι ι ℂ).map (realPlaceEquiv hw hE).symm :=
-      (Units.continuous_val.comp continuous_subtype_val).matrix_map
-        (continuous_realPlaceEquiv_symm hw hE)
-    have h2 : Continuous fun g : unitaryGroupMatrix (starRingEnd ℂ) (realPlaceMatrix hw hE H) =>
-        ((((g : GL ι ℂ))⁻¹ : GL ι ℂ) : Matrix ι ι ℂ).map (realPlaceEquiv hw hE).symm :=
-      (Units.continuous_coe_inv.comp continuous_subtype_val).matrix_map
-        (continuous_realPlaceEquiv_symm hw hE)
-    exact Continuous.subtype_mk (Units.continuous_iff.2 ⟨h1, h2⟩) _
-
-variable {H}
-
-end Unitary
-
 section Example
 
 instance fact_sq_ne_neg_one : Fact (∀ r : ℚ, r ^ 2 ≠ -1 + 0 * r) :=

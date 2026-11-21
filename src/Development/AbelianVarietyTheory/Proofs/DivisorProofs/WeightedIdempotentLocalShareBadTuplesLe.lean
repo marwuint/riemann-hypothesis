@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MassNotRootsAvoi
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassHasDivisorOfDegreeLe
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassNoLargePrimeFactorLe
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GoodSquarefreeLabelTuplesWeightGe
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvFiveLogLeSumInvPrimesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvFiveLogLeSumInvPrimes
 
 noncomputable section
 open Polynomial Classical
@@ -49,7 +49,7 @@ theorem eU_coeff_one_ne (g N : ℕ) [NeZero g] (ψ₀ : AddChar (ZMod g) ℂ) :
 
 theorem sum_inv_primes_between_ge (N : ℕ) (hN : 100 ≤ N) : 1 / (5 * Real.log N) ≤
     ∑ p ∈ (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N), (1 : ℝ) / p :=
-  GlobalTheory.T.inv_five_log_le_sum_inv_primes_half_interval N hN
+  _root_.GlobalTheory.PrimeRecip.inv_five_log_le_sum_inv_primes N hN
 
 theorem mass_not_hasPrimeFactor_le_five (g : ℕ) [Fact g.Prime] (N : ℕ) (hN : 100 ≤ N) :
     (GlobalTheory.BadShare.mass g N fun f => ¬ GlobalTheory.BadShare.HasPrimeFactor g N f) ≤ 1 - 1 / (5 * Real.log N) := by
@@ -61,7 +61,7 @@ theorem mass_not_hasPrimeFactor_le_five (g : ℕ) [Fact g.Prime] (N : ℕ) (hN :
     obtain ⟨h, hh, rfl⟩ := Multiset.mem_map.1 hd
     exact ⟨h, UniqueFactorizationMonoid.irreducible_of_normalized_factor h hh,
       UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hh, hS _ hp⟩
-  have h2 := GlobalTheory.T.mass_degType_le_card_cycleType_div g N (fun s => ∀ p ∈ S, p ∉ s)
+  have h2 := _root_.GlobalTheory.BadShare.mass_degType_le_cycleType g N (fun s => ∀ p ∈ S, p ∉ s)
   have h3 := GlobalTheory.BadShare.card_perm_no_long_cycle N S fun p hp => (hS p hp).2.1
   have h4 := sum_inv_primes_between_ge N hN
   have hf : (0 : ℝ) < N.factorial := by exact_mod_cast N.factorial_pos
@@ -91,7 +91,7 @@ theorem tupleMass_not_good_le (g : ℕ) [Fact g.Prime] (N m q d : ℕ) (ι : Typ
       2 * (Fintype.card ι : ℝ) * m * (1 / (4 * ((min q d : ℕ) : ℝ)) + (1 + Real.log N) / ((g : ℝ) - 1)) +
       (N : ℝ) / 2 * (7 / 8 : ℝ) ^ Fintype.card ι +
       Real.exp (-((Fintype.card ι : ℝ) / (5 * Real.log N))) := by
-  have h1 := (GlobalTheory.T.squarefreeLabelTorusMass_divisor_bound g).1 N
+  have h1 := (_root_.GlobalTheory.BadShare.divisor_bound g).1 N
   let B2 : (ι → (ZMod g)[X]) → Prop := fun F => ∃ v ∈ (Finset.univ : Finset ι), ¬ RootsApart g N (F v)
   let B3 : (ι → (ZMod g)[X]) → Prop := fun F => ∃ p ∈ (Finset.univ : Finset (ι × Fin m × Bool)),
     ¬ RootsAvoid g (if p.2.2 then ch p.1 p.2.1 else (ch p.1 p.2.1)⁻¹) (F p.1)
@@ -125,7 +125,7 @@ theorem tupleMass_not_good_le (g : ℕ) [Fact g.Prime] (N m q d : ℕ) (ι : Typ
   have b2 : tupleMass g N B2 ≤ 23 * (Fintype.card ι : ℝ) * Real.log g / Real.sqrt g := by
     refine (tupleMass_exists_le _ fun v F => ¬ RootsApart g N (F v)).trans ?_
     refine (Finset.sum_le_card_nsmul _ _ _ fun v _ =>
-      (tupleMass_single_le h1 v fun f => ¬ RootsApart g N f).trans (GlobalTheory.T.squarefreeLabelTorusMass_rootsNotDistinct_le g N hg)).trans (le_of_eq ?_)
+      (tupleMass_single_le h1 v fun f => ¬ RootsApart g N f).trans (_root_.GlobalTheory.BadShare.mass_not_rootsApart_le g N hg)).trans (le_of_eq ?_)
     rw [Finset.card_univ, nsmul_eq_mul]; ring
   have b3 : tupleMass g N B3 ≤ 2 * (Fintype.card ι : ℝ) * m *
       (1 / (4 * ((min q d : ℕ) : ℝ)) + (1 + Real.log N) / ((g : ℝ) - 1)) := by
@@ -133,7 +133,7 @@ theorem tupleMass_not_good_le (g : ℕ) [Fact g.Prime] (N m q d : ℕ) (ι : Typ
       ¬ RootsAvoid g (if p.2.2 then ch p.1 p.2.1 else (ch p.1 p.2.1)⁻¹) (F p.1)).trans ?_
     have key : ∀ (c : (ZMod g)ˣ) (v : ι), tupleMass g N (fun F : ι → (ZMod g)[X] => ¬ RootsAvoid g c (F v)) ≤
         1 / (4 * ((min q d : ℕ) : ℝ)) + (1 + Real.log N) / ((g : ℝ) - 1) := fun c v =>
-      (tupleMass_single_le h1 v fun f => ¬ RootsAvoid g c f).trans (GlobalTheory.T.mass_not_rootsAvoid_le' g N q d c hq)
+      (tupleMass_single_le h1 v fun f => ¬ RootsAvoid g c f).trans (_root_.GlobalTheory.BadShare.mass_not_rootsAvoid_le g N q d c hq)
     refine (Finset.sum_le_card_nsmul _ _ _ fun p _ => key _ p.1).trans (le_of_eq ?_)
     rw [Finset.card_univ, nsmul_eq_mul]
     simp only [Fintype.card_prod, Fintype.card_fin, Fintype.card_bool]
@@ -145,7 +145,7 @@ theorem tupleMass_not_good_le (g : ℕ) [Fact g.Prime] (N m q d : ℕ) (ι : Typ
     · rw [Finset.mem_Icc] at ha
       refine (tupleMass_forall (fun _ : ι => HasDiv g a)).le.trans ?_
       rw [Finset.prod_const, Finset.card_univ]
-      exact pow_le_pow_left₀ (mass_nonneg _ _) (GlobalTheory.T.squarefreeLabelTorusMass_hasDivisorOfDegree_le g N a (by omega) (by omega)) _
+      exact pow_le_pow_left₀ (mass_nonneg _ _) (_root_.GlobalTheory.BadShare.mass_hasDiv_le g N a (by omega) (by omega)) _
     · rw [Nat.card_Icc, nsmul_eq_mul, Nat.add_sub_cancel]
       refine mul_le_mul_of_nonneg_right ?_ (by positivity)
       exact_mod_cast Nat.cast_div_le (α := ℝ) (m := N) (n := 2)
@@ -223,7 +223,7 @@ theorem propW_eUk : ∀ (D : Formalism.BasicNotions.D7) (ψ₀ : ∀ k : Fin 2, 
     rw [hsqS]; exact Finset.mem_filter.1 hf
   have hnsq : ∑ f ∈ S0.filter (fun f => ¬ Squarefree f), w f ≤ 2 / (D.host.g k : ℝ) := by
     have e1 := Finset.sum_filter_add_sum_filter_not S0 Squarefree w
-    have e2 := GlobalTheory.T.one_sub_two_div_le_squarefreeLabelMass (D.host.g k) D.R.r
+    have e2 := _root_.GlobalTheory.BadShare.one_sub_two_div_le_mass_true (D.host.g k) D.R.r
     linarith
 
   have hw1 : ∀ _v : D.nd.PlG k, ∑ f ∈ S0, w f ≤ 1 := fun _ => htot.le

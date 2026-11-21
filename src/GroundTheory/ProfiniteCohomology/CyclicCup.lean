@@ -1,7 +1,7 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.CyclicCupDefs
 import GroundTheory.TateCohomology.TateLow
-import GroundTheory.TateCohomology.TateZeroClass
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh
@@ -443,21 +443,6 @@ theorem cupCharClass_eq_zero_of_mem (χ : Additive G →+ AddCircle (1 : ℚ)) (
   rw [← hb]
   exact smul_norm_mem_coboundaries₂ χ b
 
-noncomputable def tateZeroToH2 (A : Rep ℤ G) (χ : Additive G →+ AddCircle (1 : ℚ)) :
-    tateCohomology A 0 ⟶ H2 A :=
-  ((tateCohomologyZeroIso ℤ G).app A).hom ≫
-    ModuleCat.ofHom ((normRangeInvariants A).liftQ (cupCharClass A χ).hom
-      (fun a ha => cupCharClass_eq_zero_of_mem χ a ha))
-
-theorem tateZeroToH2_tateZeroClass (χ : Additive G →+ AddCircle (1 : ℚ)) (a : A.ρ.invariants) :
-    (tateZeroToH2 A χ).hom (tateZeroClass A a) = (cupCharClass A χ).hom a := by
-  change ((normRangeInvariants A).liftQ (cupCharClass A χ).hom
-      (fun a ha => cupCharClass_eq_zero_of_mem χ a ha))
-    ((((tateCohomologyZeroIso ℤ G).app A).inv ≫ ((tateCohomologyZeroIso ℤ G).app A).hom).hom
-      (Submodule.Quotient.mk a)) = _
-  rw [Iso.inv_hom_id]
-  rfl
-
 variable [IsCyclic G]
 
 theorem cupCharClass_eq_zero_iff (χ : Additive G →+ AddCircle (1 : ℚ)) (hχ : Function.Injective χ)
@@ -488,26 +473,6 @@ theorem cupCharClass_surjective (χ : Additive G →+ AddCircle (1 : ℚ)) (hχ 
       refine ⟨⟨a, ha⟩, ?_⟩
       rw [cupCharClass_apply_charCocycle, H2π_eq_iff]
       exact hmem
-
-theorem tateZeroToH2_bijective (χ : Additive G →+ AddCircle (1 : ℚ)) (hχ : Function.Injective χ) :
-    Function.Bijective (tateZeroToH2 A χ).hom := by
-  refine ⟨fun x y hxy => ?_, fun y => ?_⟩
-  · obtain ⟨a, rfl⟩ := tateZeroClass_surjective A x
-    obtain ⟨b, rfl⟩ := tateZeroClass_surjective A y
-    rw [tateZeroToH2_tateZeroClass, tateZeroToH2_tateZeroClass, ← sub_eq_zero, ← map_sub,
-      cupCharClass_eq_zero_iff χ hχ] at hxy
-    rw [← sub_eq_zero, ← map_sub]
-    change ((tateCohomologyZeroIso ℤ G).app A).inv.hom (Submodule.Quotient.mk (a - b)) = 0
-    rw [(Submodule.Quotient.mk_eq_zero _).2 hxy]
-    exact map_zero _
-  · obtain ⟨a, rfl⟩ := cupCharClass_surjective χ hχ y
-    exact ⟨tateZeroClass A a, tateZeroToH2_tateZeroClass χ a⟩
-
-noncomputable def tateZeroIsoH2 (A : Rep ℤ G) (χ : Additive G →+ AddCircle (1 : ℚ))
-    (hχ : Function.Injective χ) : tateCohomology A 0 ≅ H2 A :=
-  have : IsIso (tateZeroToH2 A χ) :=
-    (ConcreteCategory.isIso_iff_bijective _).2 (tateZeroToH2_bijective χ hχ)
-  asIso (tateZeroToH2 A χ)
 
 end Cyclic
 

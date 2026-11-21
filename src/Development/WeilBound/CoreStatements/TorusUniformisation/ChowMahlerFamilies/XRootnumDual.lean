@@ -9,9 +9,10 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PScalarQuot
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.OfSteps
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeFiniteProjectiveBaseChange
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagDifferenceStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBundleChainStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparisonStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleBaseExtensionStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBundleChain
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.PluckerCoord
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparison
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleBaseExtension
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XBundleOfFamily
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XPullLine
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XPullPreserve
@@ -277,7 +278,7 @@ open PositivityTheory.Xgn.A_rootnum_dual in
 theorem PositivityTheory.Xgn.t_rootnum_dual : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (V₁ : Type) [AddCommGroup V₁] [Module Ω V₁] (β : V →ₗ[Ω] V₁ →ₗ[Ω] Ω) (E E' : ChartBundle O (mseg x) N V) (F F' : ChartBundle O (mseg x) N V₁), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → SameGeneric O x E E' → IsDualLat O x β E.lat F.lat → IsDualLat O x β E'.lat F'.lat → (∀ (k : ℕ), 1 ≤ k → k ≤ d + 1 → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d + 1 - k) → ck O x d N F F' k L Q = (-1) ^ k * ck O x d N E E' k L Q) ∧ ∀ (j : ℕ), j ≤ d → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d - j) → ∀ a : O, a ≠ 0 → rootNum O x d N F (psum (Fin N) ℤ j) L Q a = (-1) ^ j * rootNum O x d N E (psum (Fin N) ℤ j) L Q a := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d N V _ _ V₁ _ _ β E E' F F' hM hS hD hD'
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  obtain ⟨K', _, _, ι', _, z, EB, w, b, hm, hb, hj⟩ := GlobalTheory.T.same_generic_bundle_chain O Ω K ι x d hM N 1 V ![E, E'] (by
+  obtain ⟨K', _, _, ι', _, z, EB, w, b, hm, hb, hj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.CommonFlag.main O Ω K ι x d hM N 1 V ![E, E'] (by
     intro j
     fin_cases j
     · exact fun s _ => ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩,
@@ -288,11 +289,11 @@ theorem PositivityTheory.Xgn.t_rootnum_dual : ∀ (O : Type) [CommRing O] [IsDom
   obtain ⟨-, hB⟩ := (BundleExamples.isModelOver_iff O _ d).mp hm
   have hB' : IsModelOver (pointIdeal O (joinCoord x z)) d := hB
   have hSB := (PositivityTheory.Xgn.t_pull_preserve O Ω K ι x N V E E' K' ι' z _ _ hp hp').2.1 hS
-  obtain ⟨-, f, g, hfp⟩ := GlobalTheory.T.same_generic_flag_comparison O Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) ϖ hϖ d hB' N V
+  obtain ⟨-, f, g, hfp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagPairOfFrames.main O Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) ϖ hϖ d hB' N V
     (EB 0) (EB 1) hSB w w (b 0) (b 1) (hj 0).2 (hj 1).2
     (fun i j hij => by simp [Module.Basis.repr_self, hij.ne])
-  obtain ⟨FB, hF⟩ := (GlobalTheory.T.chart_bundle_base_extension O Ω K ι x N V₁ F).1 K' ι' z
-  obtain ⟨F'B, hF'⟩ := (GlobalTheory.T.chart_bundle_base_extension O Ω K ι x N V₁ F').1 K' ι' z
+  obtain ⟨FB, hF⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Num.PullExists.main O Ω K ι x N V₁ F).1 K' ι' z
+  obtain ⟨F'B, hF'⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Num.PullExists.main O Ω K ι x N V₁ F').1 K' ι' z
   obtain ⟨w₁, hw₁⟩ := PositivityTheory.Xgn.A_flagframe_dual.exists_dual β hD.1 w
   have hw : ∀ i j, β (w i) (w₁ j) = if i = j.rev then 1 else 0 := fun i j => by
     rw [hw₁]; simp [Finsupp.single_apply]

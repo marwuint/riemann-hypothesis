@@ -1,6 +1,8 @@
 import Development.WeilBound.RepresentationTheoryGL.GaloisPermutationReps.SubquotientEquivalence.IsTypeMap
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsIrreducibleTransportRep
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCuspidalWithLabelStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCuspidalWithLabel
+import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalLabelUniqueStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentsSimpleFDRepFiniteFinsumEqOne
 
@@ -116,13 +118,13 @@ theorem st7 : St7 := by
   letI : Fintype K := Fintype.ofFinite K
   obtain ⟨C⟩ := GlobalTheory.CompanionTheory.Hypotheses₂.CuspExists.nonempty_labelConv K
   obtain ⟨P0, a0, b0, c0, d0⟩ := GlobalTheory.CompanionTheory.Hypotheses₂.CuspExists.exists_monic_irreducible K n hn
-  obtain ⟨τ0, -⟩ := GlobalTheory.T.exists_cuspidal_with_label K C n hn P0 a0 b0 c0 d0
+  obtain ⟨τ0, -⟩ := _root_.GlobalTheory.CompanionTheory.TyFin.CuspLabel.exists_cuspidal_label K C n hn P0 a0 b0 c0 d0
   have hex : ∀ P : K[X], ∃ τ : FDRep ℂ (GL (Fin n) K), P ∈ Lab K n →
       CategoryTheory.Simple τ ∧ Formalism.IrreducibleCountingLemmas.TYPES.IsCuspidal K τ ∧ Formalism.IrreducibleCountingLemmas.TYPES.HasCuspLabel C τ P := by
     intro P
     by_cases hP : P ∈ Lab K n
     · obtain ⟨p1, p2, p3, p4⟩ := hP
-      obtain ⟨τ, hs, hc, hl⟩ := GlobalTheory.T.exists_cuspidal_with_label K C n hn P p1 p2 p3 p4
+      obtain ⟨τ, hs, hc, hl⟩ := _root_.GlobalTheory.CompanionTheory.TyFin.CuspLabel.exists_cuspidal_label K C n hn P p1 p2 p3 p4
       exact ⟨τ, fun _ => ⟨hs, hc, hl⟩⟩
     · exact ⟨τ0, fun h' => absurd h' hP⟩
   choose τ hτ using hex

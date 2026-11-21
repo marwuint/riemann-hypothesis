@@ -77,29 +77,4 @@ theorem exists_pow_eq (x : Ideles L) (hx : IsFinIdele x) :
   refine ⟨finPartI L u, k, fun _ => rfl, hu, ?_⟩
   rw [← hf, ← map_pow, ← e, map_mul, mul_assoc, mul_comm _ (infDiag k), infDiag_mul_finPartI]
 
-theorem exists_pow_mem {I : Type} [Fintype I] (φ : I → L →+* ℂ) (K : Subfield ℂ) (h1 : ∀ i x, φ i x ∈ K)
-    (h2 : ∀ i x, starRingEnd ℂ (φ i x) ∈ K) (χ : HChar L) (hχ : χ.IsUnitary) (n : I → ℤ) (hn : χ.HasInf φ n)
-    (x : Ideles L) (hx : IsFinIdele x) : ∃ m : ℕ, 0 < m ∧ ((χ.1 x : ℂˣ) : ℂ) ^ m ∈ K := by
-  obtain ⟨m, hm, hu⟩ := finUnit_pow χ hχ
-  obtain ⟨h, hh, u, k, u1, u2, e⟩ := exists_pow_eq x hx
-  have e1 := congrArg χ.1 e
-  rw [map_mul, map_mul, map_pow, χ.2.2 k, mul_one, ← eq_mul_inv_iff_mul_eq] at e1
-  have hK : ((χ.1 (infDiag k) : ℂˣ) : ℂ) ^ 2 ∈ K := by
-    have : ((χ.1 (infDiag k) : ℂˣ) : ℂ) = _ := hn k
-    rw [this, ← Finset.prod_pow]
-    refine prod_mem fun i _ => ?_
-    rw [← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, div_pow, ← Complex.mul_conj']
-    exact zpow_mem (div_mem (pow_mem (h1 _ _) _) (mul_mem (h1 _ _) (h2 _ _))) _
-  refine ⟨h * (m * 2), by positivity, ?_⟩
-  rw [pow_mul, ← Units.val_pow_eq_pow_val (χ.1 x), e1, Units.val_mul, mul_pow, pow_mul, hu u u1 u2, one_pow, one_mul,
-    Units.val_inv_eq_inv_val, inv_pow, mul_comm, pow_mul]
-  exact inv_mem (pow_mem hK _)
-
-theorem exists_pow_mem_host {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar H.E) (hχ : χ.IsUnitary)
-    (n : R.Psi → ℤ) (hn : χ.HasInf (embPsi H) n) (x : Ideles H.E) (hx : IsFinIdele x) :
-    ∃ m : ℕ, 0 < m ∧ ((χ.1 x : ℂˣ) : ℂ) ^ m ∈ H.φ₀.fieldRange := by
-  have hcm : IsCMField H.E := H.isCMField_hostE
-  refine exists_pow_mem (embPsi H) H.φ₀.fieldRange (fun i y => ⟨H.sigmaOf _ y, rfl⟩) (fun i y => ?_) χ hχ n hn x hx
-  exact ⟨IsCMField.complexConj H.E (H.sigmaOf _ y), IsCMField.complexEmbedding_complexConj H.E H.φ₀ _⟩
-
 end GlobalTheory.UnUnitCmp.Val

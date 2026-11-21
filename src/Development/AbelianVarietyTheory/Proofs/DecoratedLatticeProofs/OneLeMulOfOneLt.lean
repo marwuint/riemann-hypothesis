@@ -16,22 +16,6 @@ namespace GlobalTheory.IdemSumLoc
 
 variable {D : D7}
 
-theorem intAE_eq_hat :
-    intAE D = GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E)) := by
-  unfold intAE GlobalTheory.AdLat.hat1
-  congr 1
-  ext z
-  constructor
-  · rintro ⟨a, ha, x, rfl⟩
-    exact ⟨a, ha, _, ⟨x, rfl⟩, rfl⟩
-  · rintro ⟨a, ha, _, ⟨x, rfl⟩, rfl⟩
-    exact ⟨a, ha, x, rfl⟩
-
-theorem mul_mem {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
-    x * y ∈ intAE D := by
-  rw [intAE_eq_hat] at hx hy ⊢
-  exact GlobalTheory.AdIdem.mul_mem_hat _ _ hx hy
-
 theorem idem_mul_sum {es : Formalism.L2.DIV.Pl D.host.E → AE D} {S : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (hes : ∀ Q ∈ S, Formalism.L2.NTheta.IsIdemAt (es Q) Q) (hc : (∑ Q ∈ S, es Q) * cA D (∑ Q ∈ S, es Q) = 0)
     {P : Formalism.L2.DIV.Pl D.host.E} (hP : P ∈ S) : es P * ∑ Q ∈ S, es Q = es P := by

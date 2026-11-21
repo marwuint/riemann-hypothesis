@@ -123,7 +123,7 @@ theorem isBddSec_of_isUnf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
     rw [e]; rfl
   rw [hrd']
   generalize U'.un k' ⟨_, hx'⟩ = y at hN ⊢
-  obtain ⟨k, x, t, hx, ht⟩ := GlobalTheory.T.exists_orthonormalFrame_borelChange_complexFramedPoint E H Dw l Xo c σ r U hU y
+  obtain ⟨k, x, t, hx, ht⟩ := _root_.GlobalTheory.LamT.exists_ortho_frBor E H Dw l Xo c σ r U hU y
   obtain ⟨g, hg0, hgd, hchg⟩ :=
     ((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) (U.un k x) y y).1 t).1 ht
   have hm0 := isMetric_of_isOrtho E H Dw l Xo c σ r U hσ hU hpq k x hx

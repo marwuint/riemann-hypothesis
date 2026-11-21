@@ -15,6 +15,4 @@ theorem hodge_iso_natural_cech : type_of% (@CrystallineSemistableComparison.Om.h
   hdg_iso_of_ing glob_iso_c formToCO_bijective_i formToCO_smul_i cechOmAdd_smul_i cechOm_pull_c formCoch_pull_i
     cov_refine pullH_id pullC_id
 
-example : type_of% (@CrystallineSemistableComparison.Om.hdg_iso _) := hodge_iso_natural_cech
-
 end CrystallineSemistableComparison.Om.Nt2F

@@ -7,13 +7,13 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorL
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelStructureProperties
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelTestFunctionFiniteSumEquivariant
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaFunctionFundamentalDomainInnerProductBasic
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelOrthonormalFrameInDomainPeriodLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelOrthonormalFrameInDomainPeriodLinear
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalUnitaryGroupStructureStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdelicZakThetaExistsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelTestFunctionMapLinearInjectiveEquivarStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteAdelicLatticeTransportLawsStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelTestFunctionMapLinearInjectiveEquivar
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteAdelicLatticeTransportLaws
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SelfDualLatticesAtLevelStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FinitePointsCarryLatticeVacuumToMovedVacuumStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FinitePointsCarryLatticeVacuumToMovedVacuum
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsVacuaInnerEqConstMulTestInnerStatement
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.L2.Pj MeasureTheory IsDedekindDomain NumberField Matrix Complex
@@ -46,10 +46,10 @@ theorem phase_indep : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ om : GA D S 
   intro D S T C om hom Lv hn M hidem hM hMm v₀ hv₀ B hB h Λ hh htriv hfg hmov
   obtain ⟨w, hw⟩ : ∃ w : Lt D.host.E T.rank → TF S.rank C.g,
       ∀ L, w L = unitv (projA C.X C.bas Lv.w (tens Λ (Lv.sh L)) (v₀ L)) := ⟨_, fun _ => rfl⟩
-  have hx : C.xB B ∈ C.X.dom := ((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.1
+  have hx : C.xB B ∈ C.X.dom := ((_root_.GlobalTheory.Ker.onBasis_frame_period D S T C).2 B hB).2.1
   have hΛM : Λ ∈ Vset D.host.E S.rank M := (GlobalTheory.T.self_dual_lattices_at_level D S T C).1 M h Λ hM htriv hfg hmov
   have hstd : stdL D.host.E S.rank ∈ Vset D.host.E S.rank M := GlobalTheory.SW.stdL_mem_Vset M
-  have h6833 := GlobalTheory.T.level_structure_properties D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even Lv hn
+  have h6833 := _root_.GlobalTheory.SW.level_laws D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even Lv hn
   have fmt_one : ∀ V : HSp D, fmt V 1 = 1 ∧ fmtC V 1 = 1 := fun V =>
     ⟨(((GlobalTheory.T.rational_unitary_group_structure D S T C).2.2.2 V).2.2.2.1 1 (one_mem _)).1,
       (((GlobalTheory.T.rational_unitary_group_structure D S T C).2.2.2 V).2.2.2.1 1 (one_mem _)).2.1⟩
@@ -67,7 +67,7 @@ theorem phase_indep : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ om : GA D S 
 
   have phase : ∀ L ∈ Lv.lats, ∃ c : ℂ, ‖c‖ = 1 ∧
       om (h, 1) (C.Th (C.xB B) (v₀ L)) = c • C.Th (C.xB B) (w L) := fun L hL =>
-    GlobalTheory.T.finitePoints_carry_latticeVacuum_to_moved_vacuum D S T C om hom Lv.w Lv.w_int Lv.w_tr hidem M _ hstd _ hΛM _ _ (hsd L hL) (hsd L hL)
+    _root_.GlobalTheory.Ker.om_Th_vac D S T C om hom Lv.w Lv.w_int Lv.w_tr hidem M _ hstd _ hΛM _ _ (hsd L hL) (hsd L hL)
       h hh 1 (one_mem _) hmov (by rw [(fmt_one T).1]; exact GlobalTheory.Ker.VacPhase.isMov_one _)
       (v₀ L) (w L) (hv₀ L hL) (hvac L hL) B hB
 
@@ -100,20 +100,20 @@ theorem phase_indep : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ om : GA D S 
   have hinv : fmt T g * fmt T g⁻¹ = 1 := by
     rw [← (((GlobalTheory.T.rational_unitary_group_structure D S T C).2.2.2 T).2.1 g g⁻¹).2.1, mul_inv_cancel, (fmt_one T).1]
   have hshmov : IsMov (fmt T g) (Lv.sh C.X.Λ) (Lv.sh L) :=
-    ((((GlobalTheory.T.finiteAdelicLatticeTransport_laws D T.rank C.X.Λ hXfs).2.2.2 (fmt T g) (fmt T g⁻¹) hinv).2 L hLfg hgmov).2.2.2.2
+    ((((_root_.GlobalTheory.Ker.isMov_laws D T.rank C.X.Λ hXfs).2.2.2 (fmt T g) (fmt T g⁻¹) hinv).2 L hLfg hgmov).2.2.2.2
       Lv.𝔪 (conjI Lv.𝔪) Lv.ne_bot (GlobalTheory.Ker.VacPhase.conjI_ne_bot Lv.ne_bot)).2.1
 
-  obtain ⟨a, ha1, ha⟩ := GlobalTheory.T.finitePoints_carry_latticeVacuum_to_moved_vacuum D S T C om hom Lv.w Lv.w_int Lv.w_tr hidem M _ hstd _ hstd _ _
+  obtain ⟨a, ha1, ha⟩ := _root_.GlobalTheory.Ker.om_Th_vac D S T C om hom Lv.w Lv.w_int Lv.w_tr hidem M _ hstd _ hstd _ _
     (hsd _ hXl) (hsd L hL) 1 (one_mem _) g hg (hS1 _) hshmov (v₀ C.X.Λ) (v₀ L) (hv₀ _ hXl) (hv₀ L hL) B hB
-  obtain ⟨b, hb1, hb⟩ := GlobalTheory.T.finitePoints_carry_latticeVacuum_to_moved_vacuum D S T C om hom Lv.w Lv.w_int Lv.w_tr hidem M _ hΛM _ hΛM _ _
+  obtain ⟨b, hb1, hb⟩ := _root_.GlobalTheory.Ker.om_Th_vac D S T C om hom Lv.w Lv.w_int Lv.w_tr hidem M _ hΛM _ hΛM _ _
     (hsd _ hXl) (hsd L hL) 1 (one_mem _) g hg (hS1 _) hshmov (w C.X.Λ) (w L) (hvac _ hXl) (hvac L hL) B hB
 
   have hThX := (GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx _ (hsbv _ hXl)).1.1
   have hThwX := (GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx _ (hsbw _ hXl)).1.1
   have hinvar := (((GlobalTheory.Ker.ScalarProduct.ip_basic D S T C).2 μ 𝓕 hcov _ hThX).2.2.2 _ hThwX).2.2.2.2.2
     om hom (1, g)
-  rw [ha, hb, ← (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hx _ (hsbv L hL)).2.1 a,
-    ← (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hx _ (hsbw L hL)).2.1 b,
+  rw [ha, hb, ← (_root_.GlobalTheory.Ker.Ctx.th_laws D S T C _ hx _ (hsbv L hL)).2.1 a,
+    ← (_root_.GlobalTheory.Ker.Ctx.th_laws D S T C _ hx _ (hsbw L hL)).2.1 b,
     hipTh B hB _ _ (GlobalTheory.SW.TensVac.sb_smul a (hsbv L hL)) (GlobalTheory.SW.TensVac.sb_smul b (hsbw L hL)),
     hipTh B hB _ _ (hsbv _ hXl) (hsbw _ hXl),
     GlobalTheory.SW.TensVac.ip_smul_left _ (hsbv L hL) (GlobalTheory.SW.TensVac.sb_smul b (hsbw L hL)),
@@ -145,9 +145,9 @@ theorem phase_indep : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ om : GA D S 
     have := congrArg (fun p => om p (C.Th (C.xB B) (v₀ C.X.Λ))) e
     simpa only [map_mul, Module.End.mul_apply] using this
   rw [ha, hep, map_smul, map_smul, hc, hb, smul_smul, smul_smul,
-    ← (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hx _ (hsbw L hL)).2.1 (a * c),
-    ← (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hx _ (hsbw L hL)).2.1 (ep * b)] at hsq
-  have hfun := ((GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hx _ (GlobalTheory.SW.TensVac.sb_smul (a * c) (hsbw L hL))).1 _
+    ← (_root_.GlobalTheory.Ker.Ctx.th_laws D S T C _ hx _ (hsbw L hL)).2.1 (a * c),
+    ← (_root_.GlobalTheory.Ker.Ctx.th_laws D S T C _ hx _ (hsbw L hL)).2.1 (ep * b)] at hsq
+  have hfun := ((_root_.GlobalTheory.Ker.Ctx.th_laws D S T C _ hx _ (GlobalTheory.SW.TensVac.sb_smul (a * c) (hsbw L hL))).1 _
     (GlobalTheory.SW.TensVac.sb_smul (ep * b) (hsbw L hL))).2 hsq
   have e3 := congrArg (fun φ => GlobalTheory.SW.ip φ (w L)) hfun
   rw [GlobalTheory.SW.TensVac.ip_smul_left _ (hsbw L hL) (hsbw L hL),

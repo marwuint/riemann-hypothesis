@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvolutionSpheri
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceHeckeDoubleCosetCardGaussBinom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightTranslationLiftEqLevelMoveUnitConst
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameUniformEmbeddingSecond
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeckeElementLatticeBetweenPrimeMulSplitStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCosetRepHeckeElementPrincipalLevelStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeckeElementLatticeBetweenPrimeMulSplit
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCosetRepHeckeElementPrincipalLevel
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.FWT Formalism.L2.Pj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
@@ -106,9 +106,9 @@ theorem exists_coset_of_selfDual : ∀ (D : D7) {G : Type} [Group G] [Fintype G]
     intro h
     apply hso.1
     rw [Formalism.L2.Col.conjIdeal_asIdeal, h]
-  obtain ⟨a₀, ha₀, hT, hT2⟩ := GlobalTheory.T.exists_heckeElement_lattice_between_prime_mul_split D (Wc D i) P e ϖ k g (L' ⊓ latG (Wc D i) g) he hϖ1 hϖ2
+  obtain ⟨a₀, ha₀, hT, hT2⟩ := _root_.GlobalTheory.HeckeLocStep.exists_hecke D (Wc D i) P e ϖ k g (L' ⊓ latG (Wc D i) g) he hϖ1 hϖ2
     (le_inf h1 Submodule.smul_le_right) inf_le_right hidx
-  obtain ⟨a, ha, hK⟩ := GlobalTheory.T.exists_coset_rep_hecke_element_principal_level D R hL hF i P k α Rc e ϖ a₀ hso ⟨e, ϖ, he, hϖ1, hϖ2, hαe⟩ hRc he hϖ1 hϖ2 ha₀
+  obtain ⟨a, ha, hK⟩ := _root_.GlobalTheory.HeckeDC.exists_rep D R hL hF i P k α Rc e ϖ a₀ hso ⟨e, ϖ, he, hϖ1, hϖ2, hαe⟩ hRc he hϖ1 hϖ2 ha₀
   have hTL : latG (Wc D i) (g * a₀) = L' := by
     refine selfDual_eq D (Wc D i) P _ _ hP (GlobalTheory.Member.latG_selfDual D (Wc D i) (g * a₀) _ rfl).2.2 hsd ?_ ?_
     · refine le_trans ?_ (inf_le_left : L' ⊓ latG (Wc D i) g ≤ L')

@@ -1,14 +1,14 @@
 import Mathlib
 import Formalism.LocalRingCardinality.DataParams
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.ShortPlace
+import Formalism.LocalToGlobal.ProjectiveLattices.FullExists
+import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
 import Development.AbelianVarietyTheory.BlockTheory.GoodPlaces.ShortAtLevelPrime
-import Development.AbelianVarietyTheory.Counterexamples.JetSurvey.OwnPrimeIntegralOfBqd
 
 noncomputable section
 
 namespace GlobalTheory.ShortOwnCompare
 
-open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj GlobalTheory.IndefiniteRowSideFullHecke.ShortPlaceDegreesAtLevelPrime ReciprocityTheory.ChartRestriction.G.PullbackSections
+open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj GlobalTheory.IndefiniteRowSideFullHecke.ShortPlaceDegreesAtLevelPrime
 
 variable {D : D7}
 

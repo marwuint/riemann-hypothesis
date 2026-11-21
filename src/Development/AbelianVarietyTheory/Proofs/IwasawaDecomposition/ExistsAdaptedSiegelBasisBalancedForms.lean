@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegelZeroFront
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSiegelReducedBasisOfPosDefFormStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSiegelReductionOrthogonalStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSiegelReducedBasisOfPosDefForm
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSiegelReductionOrthogonal
 
 noncomputable section
 
@@ -24,9 +24,9 @@ theorem exists_siegel_split {X X₁ : Type} [AddCommGroup X] [AddCommGroup X₁]
   let BK : LinearMap.ker r →ₗ[ℤ] LinearMap.ker r →ₗ[ℤ] ℝ := B₀.compl₁₂ (LinearMap.ker r).subtype (LinearMap.ker r).subtype
   have hpK : IsPosDef BK := fun k x hx c hc =>
     hp₀ k (fun i => (x i : X)) (hx.map' (LinearMap.ker r).subtype (Submodule.ker_subtype _)) c hc
-  obtain ⟨b₁, d₁, u₁, hS₁, hd₁, hg₁⟩ := GlobalTheory.T.exists_siegelReduced_basis_of_posDef_form s _ bK BK (fun y z => hs₀ _ _) hpK
-  obtain ⟨b₂, d₂, u₂, hS₂, hd₂, hg₂⟩ := GlobalTheory.T.exists_siegelReduced_basis_of_posDef_form m _ bQ B₁ hs₁ hp₁
-  obtain ⟨t, d, d', u, -, hS, hS', hd', g11, g12, g22⟩ := GlobalTheory.T.exists_siegel_reduction_orthogonal s m d₁ u₁ d₂ u₂ hS₁ hS₂ hd₁ hd₂
+  obtain ⟨b₁, d₁, u₁, hS₁, hd₁, hg₁⟩ := _root_.GlobalTheory.RedTh.RedBasis.exists_siegel_basis s _ bK BK (fun y z => hs₀ _ _) hpK
+  obtain ⟨b₂, d₂, u₂, hS₂, hd₂, hg₂⟩ := _root_.GlobalTheory.RedTh.RedBasis.exists_siegel_basis m _ bQ B₁ hs₁ hp₁
+  obtain ⟨t, d, d', u, -, hS, hS', hd', g11, g12, g22⟩ := _root_.GlobalTheory.RedTh.siegelData_glue_scaled s m d₁ u₁ d₂ u₂ hS₁ hS₂ hd₁ hd₂
   let p : X →ₗ[ℤ] LinearMap.ker r := LinearMap.codRestrict _ (LinearMap.id - σ ∘ₗ r) fun x => by
     simp [hrσ]
   let e : X ≃ₗ[ℤ] LinearMap.ker r × X₁ := LinearEquiv.ofLinear (p.prod r) ((LinearMap.ker r).subtype.coprod σ)

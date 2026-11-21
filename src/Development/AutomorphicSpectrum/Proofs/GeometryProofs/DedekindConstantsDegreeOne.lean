@@ -3,7 +3,11 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsFlagIndependence
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsChartBundle
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ChartRingLocalizationMembershipStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ChartRingLocalizationMembership
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Cartier
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsCompactUnitaryPointsAtPlaceFstMemCompact
 open AlgebraicGeometry CategoryTheory NumberField MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Num GlobalTheory.CompanionTheory.Ar.Top
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame IsFlagPair SameGenericFibre IsModelOver)
 
@@ -432,11 +436,6 @@ def chartPts (ξ : Spec (CommRingCat.of Ω) ⟶ X) (O : Type) [CommRing O] [Alge
     (c : κ) : Set (Cpt ξ) :=
   {q | InChart ξ x c q ∧ ∀ o : O, algebraMap O Ω o ∈ regAt ξ q}
 
-theorem unitAt_mul {q : Cpt ξ} {a b : Ω} (ha : unitAt ξ q a) (hb : unitAt ξ q b) : unitAt ξ q (a * b) :=
-  ⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by
-    rw [mul_inv]
-    exact mul_mem ha.2.2 hb.2.2⟩
-
 theorem chartRing_le_regAt {κ : Type} {x : κ → Ω} {c : κ} {q : Cpt ξ} (hq : q ∈ chartPts ξ O x c) :
     (chartRing O x c).toSubring ≤ regAt ξ q := fun a ha =>
   Algebra.adjoin_induction (p := fun u _ => u ∈ regAt ξ q)
@@ -459,7 +458,7 @@ include m
 
 theorem chartRing_int_le (hC : HasConstants ℤ A y) {c : ∀ k, J k} (hc : segreVec y c ≠ 0) {t : Ω}
     (ht : t ∈ chartRing ℤ (segreVec y) c) : t ∈ chartRing O (segreVec y) c :=
-  (GlobalTheory.T.chart_ring_localization_membership K J Ω y A hC m O c hc t).2 ⟨1, (Ideal.ne_top_iff_one m).1 Ideal.IsPrime.ne_top', by simpa using ht⟩
+  (_root_.GlobalTheory.CompanionTheory.Ar.Num.mem_chartRing_atPrime_iff K J Ω y A hC m O c hc t).2 ⟨1, (Ideal.ne_top_iff_one m).1 Ideal.IsPrime.ne_top', by simpa using ht⟩
 
 theorem chart_prime (hT : CoordTie ℤ ξ (segreVec y)) (hC : HasConstants ℤ A y) {c : ∀ k, J k}
     (hc : segreVec y c ≠ 0) (P : Ideal (chartRing O (segreVec y) c).toSubring) (hP : P.IsPrime) :
@@ -478,10 +477,10 @@ theorem chart_prime (hT : CoordTie ℤ ξ (segreVec y)) (hC : HasConstants ℤ A
       obtain ⟨o, ho⟩ := exists_inv_of_notMem m (O := O) (Ω := Ω) hs
       exact ⟨_, Subalgebra.algebraMap_mem _ o, ho⟩)
     (fun t ht => by
-      obtain ⟨b, hb, hz⟩ := (GlobalTheory.T.chart_ring_localization_membership K J Ω y A hC m O c hc t).1 ht
+      obtain ⟨b, hb, hz⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Num.mem_chartRing_atPrime_iff K J Ω y A hC m O c hc t).1 ht
       exact ⟨_, ⟨b, hb, rfl⟩, hz⟩)
     (fun I hI => by
-      obtain ⟨q, ⟨hqc, hqu⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ _ (segreVec y) hT c hc I hI
+      obtain ⟨q, ⟨hqc, hqu⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X Ω ξ ℤ _ (segreVec y) hT c hc I hI
       exact ⟨q, hqc, hqu⟩)
     P hP
   have hO : ∀ o : O, algebraMap O Ω o ∈ regAt ξ q := by
@@ -501,7 +500,7 @@ theorem chart_frac (hT : CoordTie ℤ ξ (segreVec y)) (hC : HasConstants ℤ A 
     (hc : segreVec y c ≠ 0) {q : Cpt ξ} (hq : q ∈ chartPts ξ O (segreVec y) c) {a : Ω} (ha : a ∈ regAt ξ q) :
     ∃ s ∈ (chartRing O (segreVec y) c).toSubring, unitAt ξ q s ∧
       s * a ∈ (chartRing O (segreVec y) c).toSubring := by
-  obtain ⟨s, hs, hsu, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ (segreVec y) hT c q hq.1 a).1 ha
+  obtain ⟨s, hs, hsu, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ _ (segreVec y) hT c q hq.1 a).1 ha
   exact ⟨s, chartRing_int_le m hC hc hs, hsu, chartRing_int_le m hC hc hsa⟩
 
 theorem chart_basic (hT : CoordTie ℤ ξ (segreVec y)) (hC : HasConstants ℤ A y) {c : ∀ k, J k}

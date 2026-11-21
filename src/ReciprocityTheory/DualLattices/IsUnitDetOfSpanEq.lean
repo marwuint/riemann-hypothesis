@@ -197,13 +197,4 @@ theorem inv_mem_of_valuation_eq_one (hv : v.Integers R) {X : Type} [Fintype X] [
     simp [Matrix.diagonal_mul, hu0 x]
   simpa using hle hmem
 
-theorem isUnit_det_of_span_eq (hv : v.Integers R) {X : Type} [Fintype X] [DecidableEq X]
-    {P Q : Matrix X X C} (hP : IsUnit P.det)
-    (h : Submodule.span R (Set.range fun j x => P x j) =
-      Submodule.span R (Set.range fun j x => Q x j)) : IsUnit Q.det := by
-  have hvQ := valuation_det_eq_of_span_eq_alt hv hP h
-  refine isUnit_iff_ne_zero.2 fun h0 => ?_
-  rw [h0, map_zero] at hvQ
-  exact (Valuation.ne_zero_iff v).2 hP.ne_zero hvQ.symm
-
 end ReciprocityTheory.PGsh.L2

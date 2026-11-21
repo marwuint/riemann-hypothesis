@@ -288,20 +288,6 @@ theorem ord_pow_smul (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) (k : ℕ) (x 
   rw [Algebra.smul_def, map_pow, ord_mul ζ h, ord_pow ζ h, ord_unif ζ h]
   rw [← WithTop.coe_nsmul, nsmul_eq_mul]
 
-theorem ord_eq_zero_of_isUnit (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) {a : ↥(As O A)}
-    (ha : IsUnit a) : ord ϖ ζ (a : A) = 0 := by
-  rw [ord_of_mem ζ h a.2]
-  have h1 : vL ζ a = 0 := by
-    rw [vL_eq_zero_iff]
-    exact fun hm => ζ.isMaximal.ne_top (Ideal.eq_top_of_isUnit_mem _ hm ha)
-  change (vL ζ a).map (Nat.cast : ℕ → ℤ) = 0
-  rw [h1]
-  rfl
-
-theorem ord_algebraMap_unit (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) (u : Oˣ) :
-    ord ϖ ζ (algebraMap O A u) = 0 :=
-  ord_eq_zero_of_isUnit ζ h (a := algebraMap O ↥(As O A) u) (u.isUnit.map _)
-
 theorem ordAt_nonneg_iff (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) (n : ℕ) (a : ↥(As O A)) :
     0 ≤ ordAt ϖ ζ n a ↔ vL ζ ((algebraMap O ↥(As O A) ϖ) ^ n) ≤ vL ζ a := by
   unfold ordAt
@@ -363,9 +349,6 @@ theorem coord_smul_self {e : V} (he : IsGen A e) (v : V) : (coord e v : A) • e
 theorem coord_smul_gen {e : V} (he : IsGen A e) (a : A) : coord e (a • e) = a :=
   Function.leftInverse_invFun (f := fun a : A => a • e) he.1 a
 
-theorem coord_gen {e : V} (he : IsGen A e) : (coord e e : A) = 1 := by
-  simpa using coord_smul_gen he (1 : A)
-
 theorem coord_zero {e : V} (he : IsGen A e) : (coord e (0 : V) : A) = 0 := by
   simpa using coord_smul_gen he (0 : A)
 
@@ -391,10 +374,6 @@ def ballO [Module O V] [IsScalarTower O A V] (ϖ : O) (e : V) (c : Pts O A → �
   (ball ϖ e c).restrictScalars O
 
 variable {ϖ : O} {e : V} (c : Pts O A → ℤ)
-
-theorem ordV_gen (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) (he : IsGen A e) :
-    ordV ϖ ζ e c e = ((c ζ : ℤ) : WithTop ℤ) := by
-  rw [ordV, coord_gen he, ord_one ζ h, zero_add]
 
 theorem ordV_zero (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) (he : IsGen A e) :
     ordV ϖ ζ e c 0 = ⊤ := by
@@ -427,25 +406,11 @@ theorem mem_ballO_iff [Module O V] [IsScalarTower O A V] [∀ ζ : Pts O A, IsDV
     v ∈ ballO ϖ e c ↔ ∀ ζ : Pts O A, 0 ≤ ordV ϖ ζ e c v :=
   mem_ball_iff c h he v
 
-theorem mem_ball_zero_iff [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) (he : IsGen A e) (v : V) :
-    v ∈ ball ϖ e (0 : Pts O A → ℤ) ↔ (coord e v : A) ∈ As O A := by
-  rw [mem_ball_iff _ h he, mem_As_iff h]
-  simp [ordV]
-
 theorem ball_mono [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) (he : IsGen A e)
     {c c' : Pts O A → ℤ} (hc : c ≤ c') : ball ϖ e c ≤ ball ϖ e c' := by
   intro v hv
   rw [mem_ball_iff _ h he] at hv ⊢
   exact fun ζ => (hv ζ).trans (add_le_add_right (WithTop.coe_le_coe.2 (hc ζ)) _)
-
-theorem pow_smul_mem_ball_iff [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) (he : IsGen A e)
-    (k : ℕ) (v : V) :
-    (algebraMap O A ϖ) ^ k • v ∈ ball ϖ e c ↔
-      v ∈ ball ϖ e (fun ζ => c ζ + (k : ℤ) * (ep ϖ ζ : ℤ)) := by
-  rw [mem_ball_iff _ h he, mem_ball_iff _ h he]
-  refine forall_congr' (fun ζ => ?_)
-  rw [ordV_smul c ζ h he, ord_pow ζ h, ord_unif ζ h, ordV, ordV, ← WithTop.coe_nsmul,
-    nsmul_eq_mul, WithTop.coe_add, add_left_comm, add_comm (((c ζ : ℤ) : WithTop ℤ))]
 
 end Ball
 
@@ -460,10 +425,6 @@ theorem ep_eq_ramificationIdx {ϖ : O} (hϖ : Irreducible ϖ) (ζ : Pts O A) :
   rw [Ideal.ramificationIdx_def, h1]
   rfl
 
-theorem ep_congr {ϖ ϖ' : O} (hϖ : Irreducible ϖ) (hϖ' : Irreducible ϖ') (ζ : Pts O A) :
-    ep ϖ ζ = ep ϖ' ζ := by
-  rw [ep_eq_ramificationIdx hϖ, ep_eq_ramificationIdx hϖ']
-
 theorem fdeg_eq_inertiaDeg (ζ : Pts O A) : fdeg ζ = ζ.asIdeal.inertiaDeg O := by
   have : ζ.asIdeal.LiesOver (maximalIdeal O) := ⟨(comap_eq_maximalIdeal ζ).symm⟩
   let _ : Algebra (O ⧸ maximalIdeal O) (ResidueField O) :=
@@ -476,21 +437,6 @@ theorem fdeg_eq_inertiaDeg (ζ : Pts O A) : fdeg ζ = ζ.asIdeal.inertiaDeg O :=
     show IsScalarTower O (O ⧸ maximalIdeal O) (O ⧸ maximalIdeal O) from inferInstance
   exact (Ideal.inertiaDeg_eq_of_isFractionRing (maximalIdeal O) ζ.asIdeal (ResidueField O)
     (ResidueField (Loc ζ))).symm
-
-theorem ord_congr {ϖ ϖ' : O} (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) (h' : IsUnif A ϖ')
-    (x : A) : ord ϖ ζ x = ord ϖ' ζ x := by
-  obtain ⟨n, hn⟩ := h.denom x
-  have hm : algebraMap O A ϖ ∈ As O A := (algebraMap O ↥(As O A) ϖ).2
-  have hm' : (⟨algebraMap O A ϖ, hm⟩ : ↥(As O A)) = algebraMap O ↥(As O A) ϖ := rfl
-  have key : ∀ ϖ'' : O, IsUnif A ϖ'' → ord ϖ'' ζ (ϖ ^ n • x)
-      = (((n : ℤ) * (ep ϖ ζ : ℤ) : ℤ) : WithTop ℤ) + ord ϖ'' ζ x := by
-    intro ϖ'' h''
-    rw [Algebra.smul_def, map_pow, ord_mul ζ h'', ord_pow ζ h'', ord_of_mem ζ h'' hm, hm',
-      ← coe_ep ζ h, ENat.map_natCast, ← WithTop.coe_nsmul, nsmul_eq_mul]
-  have h1 : ord ϖ ζ (ϖ ^ n • x) = ord ϖ' ζ (ϖ ^ n • x) := by
-    rw [ord_of_mem ζ h hn, ord_of_mem ζ h' hn]
-  rw [key ϖ h, key ϖ' h'] at h1
-  exact (WithTop.add_left_inj WithTop.coe_ne_top).1 h1
 
 end Compare
 
@@ -510,111 +456,6 @@ theorem coe_ordZ (h : IsUnif A ϖ) {x : A} (hx : x ∈ nonZeroDivisors A) :
   rw [ordZ, ← hz]
   rfl
 
-theorem ordZ_mul (h : IsUnif A ϖ) {x y : A} (hx : x ∈ nonZeroDivisors A)
-    (hy : y ∈ nonZeroDivisors A) : ordZ ϖ ζ (x * y) = ordZ ϖ ζ x + ordZ ϖ ζ y := by
-  apply WithTop.coe_injective
-  rw [WithTop.coe_add, coe_ordZ ζ h hx, coe_ordZ ζ h hy, coe_ordZ ζ h (mul_mem hx hy),
-    ord_mul ζ h]
-
-theorem ordZ_unif (h : IsUnif A ϖ) : ordZ ϖ ζ (algebraMap O A ϖ) = ep ϖ ζ := by
-  rw [ordZ, ord_unif ζ h]
-  rfl
-
-theorem ordZ_units_inv (h : IsUnif A ϖ) (u : Aˣ) :
-    ordZ ϖ ζ ((u⁻¹ : Aˣ) : A) = - ordZ ϖ ζ (u : A) := by
-  have h1 := ord_units_add_inv ζ h u
-  rw [← coe_ordZ ζ h u.isUnit.mem_nonZeroDivisors,
-    ← coe_ordZ ζ h (u⁻¹).isUnit.mem_nonZeroDivisors, ← WithTop.coe_add, ← WithTop.coe_zero,
-    WithTop.coe_inj] at h1
-  linarith
-
 end OrdZ
-
-section Ball2
-
-variable {V : Type*} [AddCommGroup V] [Module A V] {ϖ : O} {e : V} (c : Pts O A → ℤ)
-
-theorem isScalarTower_of_field (K : Type*) [Field K] [Algebra O K] [Algebra K A]
-    [IsScalarTower O K A] [Module K V] [IsScalarTower K A V] [Module O V] [IsScalarTower O K V] :
-    IsScalarTower O A V :=
-  ⟨fun o a v => by
-    rw [← algebraMap_smul K o a, ← algebraMap_smul K o (a • v), smul_assoc]⟩
-
-def coordEquiv (he : IsGen A e) : V ≃ₗ[A] A :=
-  (LinearEquiv.ofBijective (LinearMap.toSpanSingleton A V e) he).symm
-
-theorem coordEquiv_apply (he : IsGen A e) (v : V) : coordEquiv he v = coord e v :=
-  (LinearEquiv.symm_apply_eq _).2 (coord_smul_self he v).symm
-
-theorem isGen_units_smul (he : IsGen A e) (u : Aˣ) : IsGen A ((u : A) • e) := by
-  have : (fun a : A => a • ((u : A) • e)) = (fun a : A => a • e) ∘ (fun a : A => a * u) := by
-    funext a
-    simp [smul_smul]
-  rw [IsGen, this]
-  exact he.comp (Units.mulRight_bijective u)
-
-theorem coord_units_smul (he : IsGen A e) (u : Aˣ) (v : V) :
-    (coord ((u : A) • e) v : A) * u = coord e v := by
-  apply he.1
-  change ((coord ((u : A) • e) v : A) * u) • e = (coord e v : A) • e
-  rw [mul_smul, coord_smul_self (isGen_units_smul he u), coord_smul_self he]
-
-theorem ordV_units_smul_gen (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) (he : IsGen A e) (u : Aˣ)
-    (v : V) : ordV ϖ ζ e c v = ord ϖ ζ (u : A) + ordV ϖ ζ ((u : A) • e) c v := by
-  rw [ordV, ← coord_units_smul he u, ord_mul ζ h, ordV, add_comm (ord ϖ ζ (coord _ v)), add_assoc]
-
-theorem le_mul_ep (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) (N : ℕ) :
-    (N : ℤ) ≤ (N : ℤ) * (ep ϖ ζ : ℤ) := by
-  exact_mod_cast Nat.le_mul_of_pos_right N (ep_pos ζ h)
-
-theorem exists_pow_smul_mem_ball [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) (he : IsGen A e)
-    {N : ℕ} (hc : ∀ ζ, -(N : ℤ) ≤ c ζ) (v : V) :
-    ∃ k : ℕ, (algebraMap O A ϖ) ^ k • v ∈ ball ϖ e c := by
-  obtain ⟨n, hn⟩ := h.denom (coord e v : A)
-  refine ⟨N + n, ?_⟩
-  rw [mem_ball_iff c h he]
-  intro ζ
-  have h1 : 0 ≤ ord ϖ ζ ((algebraMap O A ϖ) ^ n) + ord ϖ ζ (coord e v : A) := by
-    have := ord_nonneg ζ h hn
-    rwa [Algebra.smul_def, map_pow, ord_mul ζ h] at this
-  have h2 : 0 ≤ ord ϖ ζ ((algebraMap O A ϖ) ^ N) + ((c ζ : ℤ) : WithTop ℤ) := by
-    rw [ord_pow ζ h, ord_unif ζ h, ← WithTop.coe_nsmul, nsmul_eq_mul, ← WithTop.coe_add,
-      ← WithTop.coe_zero, WithTop.coe_le_coe]
-    have := le_mul_ep ζ h N
-    have := hc ζ
-    linarith
-  rw [ordV_smul c ζ h he, pow_add, ord_mul ζ h, ordV, add_comm (ord ϖ ζ (coord e v : A)),
-    add_add_add_comm]
-  exact add_nonneg h2 h1
-
-theorem pow_smul_coord_mem_As [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) (he : IsGen A e)
-    {N : ℕ} (hc : ∀ ζ, c ζ ≤ (N : ℤ)) {v : V} (hv : v ∈ ball ϖ e c) :
-    ϖ ^ N • (coord e v : A) ∈ As O A := by
-  rw [mem_ball_iff c h he] at hv
-  rw [mem_As_iff h]
-  intro ζ
-  rw [ord_pow_smul ζ h, add_comm]
-  refine (hv ζ).trans (add_le_add_right (WithTop.coe_le_coe.2 ?_) _)
-  exact (hc ζ).trans (le_mul_ep ζ h N)
-
-end Ball2
-
-section FieldCase
-
-theorem isDVRAt_of_field_ext (K : Type*) {L : Type*} [Field K] [Algebra O K] [IsFractionRing O K]
-    [Field L] [Algebra O L] [Algebra K L] [IsScalarTower O K L] [FiniteDimensional K L]
-    [Algebra.IsSeparable K L] (ζ : Pts O L) : IsDVRAt ζ := by
-  have : IsDedekindDomain ↥(As O L) := integralClosure.isDedekindDomain O K L
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  have h : IsUnif L ϖ := isUnif_of_field K hϖ
-  have hne : ζ.asIdeal ≠ ⊥ := by
-    intro h0
-    have h1 := unif_mem h ζ
-    rw [h0, Ideal.mem_bot] at h1
-    exact nonZeroDivisors.ne_zero (unif_mem_nonZeroDivisors h) h1
-  have hd : IsDomain (Loc ζ) := inferInstance
-  exact ⟨hd, IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain _ hne _⟩
-
-end FieldCase
 
 end Formalism.MainNotions.Gaps.EtaleWeightGaps

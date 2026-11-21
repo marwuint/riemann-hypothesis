@@ -34,19 +34,6 @@ theorem ker_thetaC : RingHom.ker (thetaC p O) = RingHom.ker (theta p O) := by
   rw [RingHom.mem_ker, RingHom.mem_ker, thetaC_apply,
     map_eq_zero_iff _ (IsUnitBall.awayEquiv O p).injective]
 
-theorem thetaC_surjective [IsAlgClosed C] : Function.Surjective (thetaC p O) := by
-  intro c
-  obtain ⟨x, hx⟩ := AinfInv.theta_surjective_of_frobenius p (IsUnitBall.frobenius_surjective O p)
-    ((IsUnitBall.awayEquiv O p).symm c)
-  exact ⟨algebraMap _ _ x, by rw [thetaC_apply, theta_algebraMap, hx, AlgEquiv.apply_symm_apply]⟩
-
-theorem hom_ext_thetaC {F : Type v} {L : Type w} [Field F] [Field L] [Algebra F L] [CharZero F]
-    [Algebra.IsAlgebraic F L] {s₁ s₂ : L →+* BdRPlus p O}
-    (hF : ∀ a : F, s₁ (algebraMap F L a) = s₂ (algebraMap F L a))
-    (hθ : ∀ x, thetaC p O (s₁ x) = thetaC p O (s₂ x)) : s₁ = s₂ :=
-  haveI := formallyEtale_of_isAlgebraic F L
-  hom_ext_of_formallyUnramified hF fun x => (IsUnitBall.awayEquiv O p).injective (hθ x)
-
 variable [IsAlgClosed C]
 
 section General
@@ -122,12 +109,6 @@ variable {p O}
   rw [← IsScalarTower.algebraMap_apply, BdRPlus.thetaC_algebraMap_padic]
   exact j.commutes a
 
-theorem BdRPlus.eq_padicSection (j : L →ₐ[ℚ_[p]] C) (s : L →ₐ[ℚ_[p]] BdRPlus p O)
-    (h : ∀ x, BdRPlus.thetaC p O (s x) = j x) : s = BdRPlus.padicSection p O j :=
-  AlgHom.coe_ringHom_injective (BdRPlus.hom_ext_thetaC (F := ℚ_[p])
-    (fun a => (s.commutes a).trans ((BdRPlus.padicSection p O j).commutes a).symm)
-    (fun x => (h x).trans (BdRPlus.thetaC_padicSection j x).symm))
-
 end Padic
 
 section Witt
@@ -173,13 +154,6 @@ def BdRPlus.wittSection (g : WittVector p k →+* O) (j : L →+* C)
       j (algebraMap (FractionRing (WittVector p k)) L (algebraMap _ _ a)) = g a) (x : L) :
     BdRPlus.thetaC p O (BdRPlus.wittSection g j hj x) = j x :=
   BdRPlus.thetaC_sectionC _ _ _ x
-
-theorem BdRPlus.wittSection_algebraMap (g : WittVector p k →+* O) (j : L →+* C)
-    (hj : ∀ a : WittVector p k,
-      j (algebraMap (FractionRing (WittVector p k)) L (algebraMap _ _ a)) = g a)
-    (a : FractionRing (WittVector p k)) :
-    BdRPlus.wittSection g j hj (algebraMap _ L a) = algebraMap _ _ (AinfInv.liftFracWitt p g a) :=
-  BdRPlus.sectionC_algebraMap _ _ _ a
 
 end Witt
 

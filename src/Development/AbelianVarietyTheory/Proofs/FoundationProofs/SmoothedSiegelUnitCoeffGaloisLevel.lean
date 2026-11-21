@@ -282,25 +282,6 @@ namespace GlobalTheory.Sieg
 
 open Gal
 
-theorem sg_coeff_galois : ∀ (c M a b d : ℕ) (σ : ℂ ≃+* ℂ), 0 < M → a < M → σ (ee (1 / (M : ℂ))) = ee ((d : ℂ) / M) → admitted c ![(a : ℚ) / M, (b : ℚ) / M] → admitted c ![(a : ℚ) / M, ((d * b : ℕ) : ℚ) / M] → ∃ (κ : ℚ) (A : ℕ → ℂ), HasQ M (fun τ => sg c ![(a : ℚ) / M, (b : ℚ) / M] τ * ee (-(κ : ℂ) * (τ : ℂ))) A ∧ HasQ M (fun τ => sg c ![(a : ℚ) / M, ((d * b : ℕ) : ℚ) / M] τ * ee (-(κ : ℂ) * (τ : ℂ))) (fun n => σ (A n)) := by
-  intro c M a b d σ hM _ hσ h1 h2
-  have hσ' : σ (ee ((b : ℂ) / M)) = ee (((d * b : ℕ) : ℂ) / M) := by
-    rw [show (b : ℂ) / M = b * (1 / M) by ring, ee_nat_mul, map_pow, hσ, ← ee_nat_mul]
-    congr 1; push_cast; ring
-  obtain ⟨k, φ, p, p'⟩ := rel_sg hM hσ' h1 h2
-  have e : ∀ τ : ℍ, ee (-((-(k : ℚ) / M : ℚ) : ℂ) * (τ : ℂ)) = Function.Periodic.qParam (M : ℝ) τ ^ k := fun τ => by
-    unfold ee Function.Periodic.qParam
-    rw [← Complex.exp_nat_mul]; congr 1; push_cast; ring
-  refine ⟨-(k : ℚ) / M, fun n => coeff n φ, ?_, ?_⟩
-  · rw [hasQ_iff]; intro τ
-    have := p τ
-    simp only [e, mul_comm (sg _ _ _)]
-    simpa only [Function.Periodic.qParam, Complex.ofReal_natCast] using this
-  · rw [hasQ_iff]; intro τ
-    have := p' τ
-    simp only [e, mul_comm (sg _ _ _)]
-    simpa only [Function.Periodic.qParam, Complex.ofReal_natCast, coeff_map, RingHom.coe_coe] using this
-
 theorem sg_coeff_galois_int : ∀ (c M a b d : ℕ) (σ : ℂ ≃+* ℂ), 0 < M → a < M → σ (ee (1 / (M : ℂ))) = ee ((d : ℂ) / M) → admitted c ![(a : ℚ) / M, (b : ℚ) / M] → admitted c ![(a : ℚ) / M, ((d * b : ℕ) : ℚ) / M] → ∃ (k : ℤ) (A : ℕ → ℂ), HasQ M (fun τ => sg c ![(a : ℚ) / M, (b : ℚ) / M] τ * ee (-((k : ℂ) / M) * (τ : ℂ))) A ∧ HasQ M (fun τ => sg c ![(a : ℚ) / M, ((d * b : ℕ) : ℚ) / M] τ * ee (-((k : ℂ) / M) * (τ : ℂ))) (fun n => σ (A n)) := by
   intro c M a b d σ hM _ hσ h1 h2
   have hσ' : σ (ee ((b : ℂ) / M)) = ee (((d * b : ℕ) : ℂ) / M) := by

@@ -52,12 +52,6 @@ lemma extMap_comp_left {Z Z₁ F : A} {Z' G : B} (a : Z' ⟶ Φ.obj Z₁) (b : �
   simp only [extMap_apply, Ext.mapExactFunctor_comp, Ext.mapExactFunctor_mk₀,
     Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀_assoc]
 
-lemma comp_extMap_left {Z F : A} {Z' Z₁ G : B} (a : Z' ⟶ Φ.obj Z) (b : Φ.obj F ⟶ G)
-    (t : Z₁ ⟶ Z') (n : ℕ) (x : Ext.{w} Z F n) :
-    (Ext.mk₀ t).comp (extMap.{w, w'} Φ a b n x) (zero_add n) =
-      extMap.{w, w'} Φ (t ≫ a) b n x := by
-  simp only [extMap_apply, Ext.mk₀_comp_mk₀_assoc]
-
 private lemma comp_comp_mk0_eq_comp_comp_of_square {X₀ X₁ X₂ X₃ Y₂ Y₃ : B} {n : ℕ} (a : Ext.{w'} X₀ X₁ 0)
     (y : Ext.{w'} X₁ X₂ n) (e : Ext.{w'} X₂ X₃ 1) (t₃ : X₃ ⟶ Y₃) (t₂ : X₂ ⟶ Y₂)
     (f : Ext.{w'} Y₂ Y₃ 1)
@@ -121,13 +115,6 @@ lemma freeYonedaHomEquiv_freeToPullback_comp {V : C} {W : D} (i : W ⟶ p.obj V)
   rw [freeYonedaHomEquiv_comp, freeToPullback, Equiv.apply_symm_apply, Adjunction.homEquiv_unit,
     freeYonedaHomEquiv_apply]
   exact NatTrans.naturality_apply b.hom i.op _
-
-lemma map_comp_freeToPullback {V : C} {W W' : D} (i : W ⟶ p.obj V) (k : W' ⟶ W) :
-    (freeYoneda K).map k ≫ freeToPullback J K p i = freeToPullback J K p (k ≫ i) := by
-  apply (freeYonedaHomEquiv W' _).injective
-  rw [freeYonedaHomEquiv_map_comp, freeToPullback, freeToPullback, Equiv.apply_symm_apply,
-    Equiv.apply_symm_apply, op_comp, Functor.map_comp]
-  rfl
 
 lemma freeToPullback_comp_map {V V' : C} {W : D} (i : W ⟶ p.obj V') (k : V' ⟶ V) :
     freeToPullback J K p i ≫ (p.sheafPullback AddCommGrpCat.{v} J K).map ((freeYoneda J).map k) =
@@ -201,14 +188,6 @@ lemma sitePull_res (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J
     (((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ) ((freeYoneda J).map k) n x
   rw [freeToPullback_comp_map] at h1
   exact (congrArg (fun y => sitePull.{w, w'} p φ n i y) (res_apply n k x)).trans h1
-
-lemma res_sitePull (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J K).obj G)
-    (n : ℕ) {V : C} {W W' : D} (i : W ⟶ p.obj V) (k : W' ⟶ W) (x : Sheaf.H'.{w} F n V) :
-    res G n k (sitePull.{w, w'} p φ n i x) = sitePull.{w, w'} p φ n (k ≫ i) x := by
-  have h1 := comp_extMap_left (p.sheafPullback AddCommGrpCat.{v} J K) (freeToPullback J K p i)
-    (((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ) ((freeYoneda K).map k) n x
-  rw [map_comp_freeToPullback] at h1
-  exact (res_apply n k _).trans h1
 
 lemma sitePull_δ {S : ShortComplex (Sheaf J AddCommGrpCat.{v})}
     {T : ShortComplex (Sheaf K AddCommGrpCat.{v})} (hS : S.ShortExact) (hT : T.ShortExact)

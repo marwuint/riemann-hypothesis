@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsCharZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigOfOmegaInjectiveOfEqZero
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniquePushoutTorsorSectionDifferenceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniquePushoutTorsorSectionDifference
 
 set_option autoImplicit false
 
@@ -39,7 +39,7 @@ theorem exists_isSecDiff : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj
       (φ : D →ₐ[R] D') (x : Pt A D), ∃ e : D', ∀ (E : Type) [CommRing E] [Algebra R E] (ψ : D' →ₐ[R] E)
         (z : Pt A E), z ^ n = spOver ψ ≫ spOver φ ≫ x →
           S D' (spOver φ ≫ x) E ψ z - S D x E (ψ.comp φ) z = ψ e :=
-    fun D _ _ D' _ _ φ x ↦ (GlobalTheory.T.existsUnique_pushoutTorsorSection_difference R A n hR b D' (spOver φ ≫ x) (S D' (spOver φ ≫ x))
+    fun D _ _ D' _ _ φ x ↦ (_root_.GlobalTheory.PtExt.isSec_sub_existsUnique R A n hR b D' (spOver φ ≫ x) (S D' (spOver φ ≫ x))
       (fun E _ _ ψ z ↦ S D x E (ψ.comp φ) z) (hS D' _) (isSec_pull n b φ x _ (hS D x))).exists
   refine ⟨fun D _ _ D' _ _ φ x ↦ Classical.choose (key D D' φ x), ?_⟩
   intro D _ _ D' _ _ φ x E _ _ ψ z hz

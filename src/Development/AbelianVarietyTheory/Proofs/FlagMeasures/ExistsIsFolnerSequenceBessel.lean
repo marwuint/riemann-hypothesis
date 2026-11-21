@@ -1,10 +1,10 @@
 import Mathlib
 import Formalism.FormalDegreeBessel.FinalG
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompactStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompact
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselRootDilationNormalizesContractsUnipotentStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClosedSubgroupBesselHaarFiniteCompactPosOpenStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClosedSubgroupBesselUnitaryHaarUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClosedSubgroupBesselUnitaryHaarUnique
 
 noncomputable section
 
@@ -185,7 +185,7 @@ theorem tendsto_AA (S H : Set (Mat k r)) (μ : Measure (Mt k r)) {L : ℝ} (hL :
 
 theorem exists_isFolner : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μS : Measure (Mt k r)), inWb k r z → 0 < Tz k r z → IsHaarOn (Sset k r z) μS → ∃ Om : ℕ → Set (Mt k r), IsFolner (Sset k r z) μS Om := by
   intro k r z μ hz hT hμ
-  obtain ⟨-, hN, hH, hS, hHc⟩ := GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT
+  obtain ⟨-, hN, hH, hS, hHc⟩ := _root_.GlobalTheory.SgInf.closedSub_groups k r z hz hT
   obtain ⟨hd1, hd2⟩ := GlobalTheory.T.besselRootDilation_normalizes_contracts_unipotent k r z hz
   obtain ⟨hfin, hpos⟩ := GlobalTheory.T.closedSubgroupBessel_haar_finite_compact_pos_open k r _ μ hS hμ
   obtain ⟨M, hM0, hM⟩ := exists_bound hHc
@@ -210,7 +210,7 @@ theorem exists_isFolner : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μS
     exact ⟨h, hh, _, ((hd1 _ (hτ j)).2.2 m hm).2, e2 j h hh m⟩
   set ψ : ℕ → Mt k r ≃ₜ Mt k r := fun j => cj (a j) (a j)⁻¹ (hab j) (hba j) with hψ
   have hψm : ∀ j, Measurable (ψ j) := fun j => (ψ j).continuous.measurable
-  choose c hc0 hct hc using fun j => GlobalTheory.T.closedSubgroupBesselUnitary_haar_unique k r _ μ _ hS hμ
+  choose c hc0 hct hc using fun j => _root_.GlobalTheory.SgInf.haarOn_unique k r _ μ _ hS hμ
     (isHaarOn_map_cj hS.2.1 hμ (hab j) (hba j) (h1 j) (h2 j))
   have hmeas : ∀ j t, μ (ψ j ⁻¹' AA (Sset k r z) (UWset k r z) t) =
       c j * μ (AA (Sset k r z) (UWset k r z) t) := fun j t => by

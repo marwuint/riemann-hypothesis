@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.BasicLiftAll
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutDec
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WordBoundCompactSupportCoefficientsStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WordBoundCompactSupportCoefficients
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.VecOpApplyCutFEq
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IteratedDerivBddOfEventuallyConst
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ContinuousOfIsPolyDeg
@@ -21,7 +21,7 @@ theorem wordBound_decay : ∀ a : ℕ → ℕ, BasicLiftAll a → ∀ Cb : ℝ, 
   obtain ⟨c₂, hc₂⟩ := Formalism.FourierDecayAlt.P.PBE.vecV_cut_op
   refine ⟨5 * max Cb 8 + max Cb 8 ^ 2 + 1 + |max c₁ c₂|, ?_⟩
   intro Wp Wq _ _ _ _ _ _ P0 p N w hDD hw hwN
-  obtain ⟨C, J, Θs, hC, hpoly, hB⟩ := GlobalTheory.T.wordBound_compactSupportCoefficients a ha Wp Wq P0 p w hw
+  obtain ⟨C, J, Θs, hC, hpoly, hB⟩ := _root_.GlobalTheory.HatNF.wordBound_cptCoef a ha Wp Wq P0 p w hw
   refine ⟨C, J, Θs, hC, hpoly, ?_⟩
   rintro φ f ⟨e₀, A, hφ, hf, hfA, hA⟩ e c hc hG
   have hXn : ((2 * P0.r + P0.k + 1 : ℕ) : ℝ) = 2 * (P0.r : ℝ) + P0.k + 1 := by push_cast; ring

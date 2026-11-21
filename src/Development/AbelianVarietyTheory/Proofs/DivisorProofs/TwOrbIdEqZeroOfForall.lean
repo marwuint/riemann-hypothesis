@@ -30,7 +30,4 @@ theorem twOrb_id_eq_zero_of_forall (K : Subgroup G) (γ : G) (f : G → ℂ) (h 
     twOrb (MonoidHom.id G) K γ f = 0 :=
   twOrb_eq_zero_of_forall (MonoidHom.id G) K γ f h
 
-example (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ) (h : twOrb θ K δ f ≠ 0) :
-    ∃ x, f (x⁻¹ * δ * θ x) ≠ 0 := exists_ne_zero_of_twOrb_ne_zero θ K δ f h
-
 end GlobalTheory.DZA.OrbSupp

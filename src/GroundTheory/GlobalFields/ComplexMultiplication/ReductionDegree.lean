@@ -225,12 +225,6 @@ theorem degree_reduceIsogeny : (reduceIsogeny K W W' φ).degree = φ.degree := b
 
 end Isog
 
-section Hom
-
-variable [W.IsElliptic] [W'.IsElliptic] [DecidableEq (ResidueField (gaussRing (gaussCurve W W)))]
-
-end Hom
-
 end
 
 end GroundTheory.Global

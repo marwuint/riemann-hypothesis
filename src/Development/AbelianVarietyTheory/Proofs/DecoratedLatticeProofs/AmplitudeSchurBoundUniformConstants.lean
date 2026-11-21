@@ -17,7 +17,7 @@ theorem schurSt_of_big_tie_uniform : ∀ Cg cb Cu cT CT C1 : ℝ, ∃ C₀ : ℝ
   refine ⟨2 * |CT| + 2 * C1, fun C hC => ⟨0, ?_⟩⟩
   intro D large₂ C' Cl C0 hBig htie hB hL hZ τ w w' hTT θ hθ W hW A hA μsec hsec
   obtain ⟨-, -, hb, hm, hr, -, -, hk, hv, -, -, -, -, -, -, -, hTb, -, -⟩ :=
-    GlobalTheory.T.amplitudeSizeConsequences_of_wordIndependentHyps D large₂ C' Cl Cg cb Cu cT CT C0 hBig.1 hZ
+    _root_.GlobalTheory.Amp.SizesProof.sizes_of_hyp D large₂ C' Cl Cg cb Cu cT CT C0 hBig.1 hZ
   have hb1 : 1 ≤ large₂.sc.b := by linarith [Real.add_one_le_exp 1]
   have hθ0 : 0 < θ := lt_of_lt_of_le (Real.rpow_pos_of_pos (by linarith) _) hθ.1
   have hv0 : 0 < D.host.v := by linarith
@@ -25,7 +25,7 @@ theorem schurSt_of_big_tie_uniform : ∀ Cg cb Cu cT CT C1 : ℝ, ∃ C₀ : ℝ
   have hk1 : 1 ≤ D.R.k := le_trans (Nat.one_le_pow _ _ hm1) hk
   have hT : 0 < Tr D w := by unfold Tr; exact_mod_cast hTT.1.pos
   have hT' : 0 < Tr D w' := by unfold Tr; exact_mod_cast hTT.2.1.pos
-  obtain ⟨hU, hI, -, hS, hS'⟩ := GlobalTheory.T.local_data_both_amplitude_sides D τ w w' θ W _ A hθ0 hv0 hTT hW hA
+  obtain ⟨hU, hI, -, hS, hS'⟩ := _root_.GlobalTheory.Amp.Side.both_sides D τ w w' θ W _ A hθ0 hv0 hTT hW hA
   obtain ⟨hM, hM', hDec⟩ := hL hZ τ w w' θ W hTT hW A hA
   have hBS := hB hZ τ w w' θ W hW A hA hT
   have hBS' := hB hZ τ w' w θ (swapW W) (goodW_swap hW) (swapS A) (goodS_swap hA) hT'
@@ -34,7 +34,7 @@ theorem schurSt_of_big_tie_uniform : ∀ Cg cb Cu cT CT C1 : ℝ, ∃ C₀ : ℝ
   obtain ⟨-, -, -, -, hz, hz', -, -, -, -, -, hN, -, -⟩ := hW
   obtain ⟨-, -, a3, a4, a5, a6, -, -, -, -, P, hP, hdeg⟩ := hA
   obtain ⟨c, hc, hdens, -⟩ := GlobalTheory.T.exists_unique_haarDensity_at_identity _ (GG D.R.k D.R.rS) W.μG (PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group _ _) s6
-  have hSch := GlobalTheory.T.besselModel_schur_of_formalDegree_density D.R.k D.R.rS A.σ (epsSH D.R) D.cd _ P A.deg c W.μG (htie _ _) hP hdeg hc s6 hdens
+  have hSch := _root_.GlobalTheory.FdegDens.schur_of_dens D.R.k D.R.rS A.σ (epsSH D.R) D.cd _ P A.deg c W.μG (htie _ _) hP hdeg hc s6 hdens
   have hd : 0 < A.deg := hdeg.1
   set κ : ℝ := (2 * D.host.v) ^ (-((D.R.rS : ℝ) * D.R.k)) * θ with hκ
   have hκ0 : 0 < κ := mul_pos (Real.rpow_pos_of_pos (by linarith) _) hθ0
@@ -49,11 +49,11 @@ theorem schurSt_of_big_tie_uniform : ∀ Cg cb Cu cT CT C1 : ℝ, ∃ C₀ : ℝ
     rw [norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ hnv]
   unfold psiS at hM hM' a3 a4
   rw [psi_eq_psiGen] at hM hM' a3 a4
-  have hQ := GlobalTheory.T.lintegral_hilbertSchmidtNormSq_besselAmplitude_le D.R.k D.R.rS A.σ A.v0 _ _ A.cN W.μG _ _ W.νS W.νS' _ W.z W.z' _ _ W.π W.π' A.B A.B' a6 hstd
-    ⟨⟨s1, s2, s4, GlobalTheory.T.isHaarOn_besselSubgroup_prod_map _ _ _ _ _ s1 s2 s7 s9, inferInstance⟩, s5, s3⟩
-    ⟨⟨t1, t2, t4, GlobalTheory.T.isHaarOn_besselSubgroup_prod_map _ _ _ _ _ t1 t2 t7 s9, inferInstance⟩, t5, t3⟩
+  have hQ := _root_.GlobalTheory.Amp.SchurNorm.lintegral_hsNormSq_ampJ_le D.R.k D.R.rS A.σ A.v0 _ _ A.cN W.μG _ _ W.νS W.νS' _ W.z W.z' _ _ W.π W.π' A.B A.B' a6 hstd
+    ⟨⟨s1, s2, s4, _root_.GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map _ _ _ _ _ s1 s2 s7 s9, inferInstance⟩, s5, s3⟩
+    ⟨⟨t1, t2, t4, _root_.GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map _ _ _ _ _ t1 t2 t7 s9, inferInstance⟩, t5, t3⟩
     s10 t10 hM hM' a3 a4 s14 s15 t15 hBS hBS' hdis
-  have hFm := GlobalTheory.T.measurable_hsNormSq_amplitude_besselUnitary D.R.k D.R.rS W.μG A.cN A.Φ A.Φ' s6 s13 t13
+  have hFm := _root_.GlobalTheory.Amp.AmpMeas.measurable_hsNormSq_ampJ D.R.k D.R.rS W.μG A.cN A.Φ A.Φ' s6 s13 t13
   have hvk := volUn_pos D.R.k
   have hvk1 := volUn_pos (D.R.k - 1)
   have hvn := volUn_pos (2 * D.R.rS + D.R.k + 1)

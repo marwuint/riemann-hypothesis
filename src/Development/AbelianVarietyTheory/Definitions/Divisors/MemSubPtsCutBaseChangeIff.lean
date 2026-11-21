@@ -165,10 +165,6 @@ theorem val_comb (u : Fin S.N → k) : S.val x (S.comb u) = ∑ j, S.baseHom x (
 theorem val_spMap_comp (τ : K →+* K') (s : S.L.Sec) : S.val (spMap τ ≫ x) s = τ (S.val x s) := by
   rw [val, ptOf_spMap_comp, valR_spMap_comp τ x _ (S.le_chartAt x), val]
 
-theorem powVal_spMap_comp (τ : K →+* K') {m : ℤ} (s : (lbZPow S.L m).Sec) :
-    S.powVal (spMap τ ≫ x) s = τ (S.powVal x s) := by
-  rw [powVal, ptOf_spMap_comp, valR_spMap_comp τ x _ (S.le_chartAt x), powVal]
-
 theorem coords_spMap_comp (τ : K →+* K') : S.coords (spMap τ ≫ x) = fun j => τ (S.coords x j) :=
   funext fun _ => S.val_spMap_comp x τ _
 
@@ -246,12 +242,6 @@ def Birational : Prop := ∃ η : S.Y, IsGenericPoint η Set.univ ∧ S.ratioFie
 
 def InjOnPts {K : Type} [Field K] [Algebra k K] (P : Set (S.Pt K)) : Prop :=
   ∀ x ∈ P, ∀ x' ∈ P, ∀ c : K, c ≠ 0 → S.coords x'.1 = c • S.coords x.1 → x = x'
-
-theorem sameImage_of_coords {K : Type} [Field K] {φ : k →+* K} (x x' : S.PtOver φ) {c : K} (hc : c ≠ 0)
-    (h : S.coords x'.1 = c • S.coords x.1) : S.SameImage (ptOf x.1) (ptOf x'.1) := fun d g hg => by
-  have e := eval₂Hom_unit_mul φ (Units.mk0 c hc) (S.coords x.1) (mem_polyGrading_natCast.2 hg)
-  rw [← S.powVal_ne_zero_iff, ← S.powVal_ne_zero_iff, powVal_form, powVal_form, baseHom_ptOver, baseHom_ptOver, h]
-  exact not_congr ((Units.mul_right_eq_zero (Units.mk0 c hc ^ (d : ℤ))).symm.trans (Eq.congr_left e.symm))
 
 section BaseChange
 

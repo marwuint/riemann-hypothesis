@@ -6,16 +6,6 @@ open scoped ComplexOrder
 
 namespace PI.UnitaryDenseWork
 
-noncomputable def detPoly {ι : Type} (n : ℕ) (τ : ι) : MvPolynomial (ι × Fin n × Fin n) ℂ :=
-  Matrix.det (Matrix.of fun i j : Fin n => (X (τ, i, j) : MvPolynomial (ι × Fin n × Fin n) ℂ))
-
-lemma det_ne_zero_of_frame {n : ℕ} (G y : Matrix (Fin n) (Fin n) ℂ) (hy : yᴴ * G * y = 1) :
-    y.det ≠ 0 := by
-  intro h0
-  have := congrArg Matrix.det hy
-  rw [det_mul, det_mul, det_one, h0, mul_zero] at this
-  exact zero_ne_one this
-
 end PI.UnitaryDenseWork
 
 open PI.UnitaryDenseWork

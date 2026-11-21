@@ -300,59 +300,6 @@ theorem eq_of_isDiff {w : Fin g → ℂ} {v v' : epsR ℂ ⟶ A} (hv : IsTangent
   rw [TangentOrigin.isDiff_iff hv' hU h₂ h0] at h'
   exact Over.OverMorphism.ext (TangentOrigin.ext_evalPt hU h₁ h₂ (h.trans h'.symm))
 
-theorem ex_translate (z w : Fin g → ℂ) :
-    (u.ex w).left ≫ ((toUnit A ≫ u.ex z) * 𝟙 A).left = (u.ex (z + w)).left := by
-  rw [← Over.comp_left, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, u.ex_add,
-    toUnit_unique (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _), Category.id_comp]
-
-theorem eq_zero_of_isDiff {w : Fin g → ℂ} (h : u.IsDiff w (toUnit (epsR ℂ) ≫ η[A])) : w = 0 := by
-  have h₀ : ∀ (U : A.left.Opens), ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U → ∀ f : Γ(A.left, U),
-      fderiv ℂ (fun z => valAt' (u.ex z).left U f) 0 w = 0 := fun U hU f => by
-    have h₁ := (TangentOrigin.tangent_mem_iff (u := u) (isTangent_zero A) U).2 hU
-    rw [← h U h₁ f, isDiff_zero u U h₁ f, map_zero]
-  have h₁ : ∀ (U : A.left.Opens) (f : Γ(A.left, U)) (z : Fin g → ℂ), ⊤ ≤ (u.ex z).left ⁻¹ᵁ U →
-      fderiv ℂ (fun y => valAt' (u.ex y).left U f) z w = 0 := fun U f z hz => by
-    have e := h₀ (((toUnit A ≫ u.ex z) * 𝟙 A).left ⁻¹ᵁ U)
-      (by rw [← top_le_preimage_comp, ex_translate, add_zero]; exact hz)
-      ((((toUnit A ≫ u.ex z) * 𝟙 A).left.app U).hom f)
-    simp only [valAt'_comp, ex_translate] at e
-    rw [fderiv_comp_add_left (f := fun y => valAt' (u.ex y).left U f), add_zero] at e
-    exact e
-  obtain ⟨U, hU, hx, -⟩ := exists_isAffineOpen_mem_and_subset (X := A.left)
-    (x := (u.ex 0).left (default : PrimeSpectrum ℂ)) (U := ⊤) trivial
-  have h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U := (top_le_preimage_iff_mem _ _).2 hx
-  have hl : Continuous fun s : ℂ => s • w := by fun_prop
-  have ht : Tendsto (fun s : ℂ => s • w) (𝓝 0) (𝓝 0) := by simpa using hl.tendsto 0
-  obtain ⟨r, hr, hb⟩ := Metric.eventually_nhds_iff_ball.1 (ht.eventually (TangentOrigin.eventually_mem u h0))
-  have hd : ∀ (f : Γ(A.left, U)), ∀ s ∈ Metric.ball (0 : ℂ) r,
-      HasDerivAt (fun s : ℂ => valAt' (u.ex (s • w)).left U f) 0 s := fun f s hs => by
-    have d := ((u.hol U f).2.differentiableAt ((u.hol U f).1.mem_nhds (hb s hs))).hasFDerivAt.comp_hasDerivAt s
-      ((hasDerivAt_id s).smul_const w)
-    rw [one_smul, h₁ U f _ (hb s hs)] at d
-    exact d
-  have hm : ∀ s ∈ Metric.ball (0 : ℂ) r, s • w ∈ u.Λ := fun s hs => by
-    rw [← u.ker, ← TangentOrigin.ex_zero u]
-    refine Over.OverMorphism.ext (TangentOrigin.ext_evalPt hU (hb s hs) h0 (RingHom.ext fun f => ?_))
-    rw [← TangentOrigin.valAt'_eq_evalPt, ← TangentOrigin.valAt'_eq_evalPt]
-    have := Metric.isOpen_ball.is_const_of_deriv_eq_zero (convex_ball (0 : ℂ) r).isPreconnected
-      (fun s hs => (hd f s hs).differentiableAt.differentiableWithinAt) (fun s hs => (hd f s hs).deriv) hs
-      (Metric.mem_ball_self hr)
-    simpa using this
-  have := u.discrete
-  obtain ⟨V, hV, hV'⟩ := isOpen_induced_iff.1 (isOpen_discrete ({0} : Set u.Λ))
-  have hV0 : (0 : Fin g → ℂ) ∈ V := by
-    have : (0 : u.Λ) ∈ Subtype.val ⁻¹' V := by rw [hV']; rfl
-    exact this
-  have he : ∀ᶠ s in 𝓝[≠] (0 : ℂ), s • w ∈ V ∧ s ∈ Metric.ball (0 : ℂ) r :=
-    ((ht.eventually (hV.mem_nhds hV0)).and (Metric.ball_mem_nhds _ hr)).filter_mono nhdsWithin_le_nhds
-  obtain ⟨s, ⟨hs, hs'⟩, hs0⟩ := (he.and self_mem_nhdsWithin).exists
-  have : (⟨s • w, hm s hs'⟩ : u.Λ) ∈ ({0} : Set u.Λ) := by rw [← hV']; exact hs
-  exact (smul_eq_zero.1 (congrArg Subtype.val this)).resolve_left hs0
-
-theorem isDiff_ne_iff {w : Fin g → ℂ} {v : epsR ℂ ⟶ A} (hv : IsTangent v) (h : u.IsDiff w v) :
-    w = 0 ↔ v = toUnit (epsR ℂ) ≫ η[A] :=
-  ⟨fun e => eq_of_isDiff u hv (isTangent_zero A) (e ▸ h) (isDiff_zero u), fun e => eq_zero_of_isDiff u (e ▸ h)⟩
-
 variable {K : Type} [Field K] {σ : K →+* ℂ} {G : Over (Sp K)} [GrpObj G] {φ : A.left ⟶ G.left}
   {t : epsR K ⟶ G} {t' : epsR ℂ ⟶ A}
 
@@ -374,23 +321,6 @@ theorem isTangent_of_pull (h : IsGrpPullback A G (spMap σ) φ) (ht : IsTangent 
   · have z := congrArg (· ≫ A.hom) (isTangent_zero A)
     rw [← z, Category.assoc, Category.assoc, Over.w, Over.w]
 
-theorem zero_pull (h : IsGrpPullback A G (spMap σ) φ) :
-    (toUnit (epsR ℂ) ≫ η[A]).left ≫ φ = spMap (dualMap σ) ≫ (toUnit (epsR K) ≫ η[G]).left := by
-  rw [Over.comp_left, Over.comp_left, Category.assoc]
-  refine (congrArg _ (PolBaseChange.eSec_comm h)).trans ?_
-  rw [← Category.assoc, ← Category.assoc]
-  congr 1
-  change spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ = spMap (dualMap σ) ≫ spMap (algebraMap K (DualNumber K))
-  rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]
-  congr 2
-  ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
-
-theorem dualMap_injective (σ : K →+* ℂ) : Function.Injective (dualMap σ) := fun a b e => by
-  have e₁ := congrArg TrivSqZeroExt.fst e
-  have e₂ := congrArg TrivSqZeroExt.snd e
-  simp [dualMap] at e₁ e₂
-  exact TrivSqZeroExt.ext (σ.injective e₁) (σ.injective e₂)
-
 theorem subsingleton_dual (K : Type) [Field K] : Subsingleton (PrimeSpectrum (DualNumber K)) := by
   refine ⟨fun a b => ?_⟩
   have hn : ∀ c : PrimeSpectrum (DualNumber K), c.asIdeal = IsLocalRing.maximalIdeal _ := fun c => by
@@ -398,35 +328,6 @@ theorem subsingleton_dual (K : Type) [Field K] : Subsingleton (PrimeSpectrum (Du
     rw [DualNumber.maximalIdeal_eq_span_singleton_eps, Ideal.span_singleton_le_iff_mem]
     exact c.isPrime.mem_of_pow_mem 2 (by rw [sq, DualNumber.eps_mul_eps]; exact zero_mem _)
   exact PrimeSpectrum.ext ((hn a).trans (hn b).symm)
-
-theorem dual_cancel (σ : K →+* ℂ) {X : Scheme.{0}} {x y : Sp (DualNumber K) ⟶ X}
-    (e : spMap (dualMap σ) ≫ x = spMap (dualMap σ) ≫ y) : x = y := by
-  have := subsingleton_dual K
-  obtain ⟨p⟩ : Nonempty (PrimeSpectrum (DualNumber ℂ)) := inferInstance
-  obtain ⟨U, hU, hx, -⟩ := exists_isAffineOpen_mem_and_subset (X := X)
-    (x := (spMap (dualMap σ) ≫ x) p) (U := ⊤) trivial
-  have k : ∀ z : Sp (DualNumber K) ⟶ X, (spMap (dualMap σ) ≫ z) p ∈ U → ⊤ ≤ z ⁻¹ᵁ U := fun z hz q _ => by
-    rw [Subsingleton.elim (α := PrimeSpectrum (DualNumber K)) q (spMap (dualMap σ) p)]
-    exact hz
-  have h₁ := k x hx
-  have h₂ := k y (e ▸ hx)
-  refine TangentOrigin.ext_evalPt hU h₁ h₂ (RingHom.ext fun f => dualMap_injective σ ?_)
-  have c : ∀ (a b : Sp (DualNumber ℂ) ⟶ X) (ha : ⊤ ≤ a ⁻¹ᵁ U) (hb : ⊤ ≤ b ⁻¹ᵁ U), a = b →
-      TangentOrigin.evalPt a U ha f = TangentOrigin.evalPt b U hb f := by
-    rintro a _ _ _ rfl
-    rfl
-  have l : ∀ z : Sp (DualNumber K) ⟶ X, ⊤ ≤ z ⁻¹ᵁ U → ⊤ ≤ (spMap (dualMap σ) ≫ z) ⁻¹ᵁ U := fun z hz q _ =>
-    hz (show spMap (dualMap σ) q ∈ (⊤ : (Sp (DualNumber K)).Opens) from trivial)
-  exact (TangentOrigin.evalPt_spMap_comp _ x U h₁ (l x h₁) f).symm.trans ((c _ _ _ _ e).trans
-    (TangentOrigin.evalPt_spMap_comp _ y U h₂ (l y h₂) f))
-
-theorem zero_pull_iff (h : IsGrpPullback A G (spMap σ) φ) (e : t'.left ≫ φ = spMap (dualMap σ) ≫ t.left) :
-    t' = toUnit (epsR ℂ) ≫ η[A] ↔ t = toUnit (epsR K) ≫ η[G] := by
-  constructor
-  · rintro rfl
-    exact Over.OverMorphism.ext (dual_cancel σ (e.symm.trans (zero_pull h)))
-  · rintro rfl
-    exact Over.OverMorphism.ext (h.1.hom_ext (e.trans (zero_pull h).symm) (by rw [Over.w, Over.w]))
 
 end Tangent
 
@@ -524,12 +425,6 @@ theorem isL2Sq_iff_isThNormAt (P : Out.PolAV (Sp K₁)) (rig : LB.Gen (P.L.pull 
       (volume_ne u hF).1, (volume_ne u hF).2, integrableOn_weight P'.isLB hAH hfn hF, rfl⟩
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
-
-def LetterNormAt (A₁ A₂ : Out.PolAV (Sp K₁)) (σ : K₁ →+* ℂ) :
-    Option ((epsR K₁ ⟶ A₁.A) ⊕ (epsR K₁ ⟶ A₂.A)) → ℝ → Prop
-  | none, v => v = 0
-  | some (.inl t), v => IsTangent t ∧ t ≠ toUnit (epsR K₁) ≫ η[A₁.A] ∧ IsLieNormAt A₁ t σ v
-  | some (.inr t), v => IsTangent t ∧ t ≠ toUnit (epsR K₁) ≫ η[A₂.A] ∧ IsLieNormAt A₂ t σ v
 
 end Compare
 

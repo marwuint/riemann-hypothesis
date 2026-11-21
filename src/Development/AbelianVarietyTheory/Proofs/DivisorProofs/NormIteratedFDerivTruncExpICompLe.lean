@@ -11,8 +11,6 @@ namespace GlobalTheory.GaussExpSeries
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
-def truncExpI (K : ℕ) (z : ℂ) : ℂ := ∑ j ∈ Finset.range K, (z * Complex.I) ^ j / (j ! : ℂ)
-
 theorem norm_iteratedFDeriv_cexp (i : ℕ) (z : ℂ) : ‖iteratedFDeriv ℝ i Complex.exp z‖ = Real.exp z.re := by
   have hc : ContDiffAt ℂ (i : ℕ) Complex.exp z := Complex.contDiff_exp.contDiffAt
   rw [← hc.restrictScalars_iteratedFDeriv (𝕜 := ℝ)]
@@ -85,7 +83,5 @@ theorem exists_bound_poly_mul_exp (c : ℝ) (hc : 0 < c) (N : ℕ) :
 end GlobalTheory.GaussExpSeries
 
 namespace GlobalTheory
-
-open GlobalTheory.GaussExpSeries
 
 end GlobalTheory

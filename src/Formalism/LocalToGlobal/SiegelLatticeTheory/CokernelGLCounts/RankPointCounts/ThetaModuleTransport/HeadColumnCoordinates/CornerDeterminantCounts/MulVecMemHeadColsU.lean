@@ -338,17 +338,6 @@ theorem ellU_equiv (γ : MbMod Z₁.Z ≃ₗ[M.R] MbMod Z₂.Z) (he : γ (eCl Z�
     ellU hY₂ hal₂ (γ m) = ellU hY₁ hal₁ m := ellU_comp hY₁ hal₁ hY₂ hal₂ γ.toLinearMap he m
 
 include hY₁ hal₁ in
-theorem mk_extL_mulVec (w : Fin r → M.R) :
-    (Submodule.Quotient.mk (extL r (Y₁.Z *ᵥ w)) : MbMod Z₁.Z) = (-(∑ j, al₁ j * w j)) • eCl Z₁.Z := by
-  exact mk_extL_mulVec_eq_neg_sum_smul_eCl hY₁ hal₁ w
-
-include hY₁ hal₁ in
-theorem mk_sub_extL (v : Fin (r + 1) → M.R) :
-    (Submodule.Quotient.mk v : MbMod Z₁.Z) =
-      Submodule.Quotient.mk (extL r (fun i => v i.castSucc)) + v (Fin.last r) • eCl Z₁.Z := by
-  exact mk_eq_mk_extL_add_last_smul_eCl Z₁ v
-
-include hY₁ hal₁ in
 theorem range_le_ker_indU (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (he : g (eCl Z₁.Z) = eCl Z₂.Z) :
     LinearMap.range Y₁.Z.mulVecLin ≤
       LinearMap.ker (piU hY₂ ∘ₗ g ∘ₗ (headCols Z₁.Z).mkQ ∘ₗ extL (M := M) r) := by

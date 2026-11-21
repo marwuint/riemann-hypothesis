@@ -5,18 +5,6 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RatUnit
 
-theorem sum_eq_dot {R : Type} [CommRing R] {r : ℕ} (σ : R → R) (G : Matrix (Fin r) (Fin r) R)
-    (x y : Fin r → R) : ∑ a, ∑ b, x a * G a b * σ (y b) = x ⬝ᵥ (G *ᵥ (σ ∘ y)) := by
-  simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Function.comp, mul_assoc]
-
-theorem dot_mulVec {R : Type} [CommRing R] {r : ℕ} (σ : R →+* R) (G γ : Matrix (Fin r) (Fin r) R)
-    (x y : Fin r → R) :
-    (γ *ᵥ x) ⬝ᵥ (G *ᵥ (σ ∘ (γ *ᵥ y))) = x ⬝ᵥ ((γᵀ * G * γ.map σ) *ᵥ (σ ∘ y)) := by
-  have h : σ ∘ (γ *ᵥ y) = γ.map σ *ᵥ (σ ∘ y) := by
-    funext i; exact RingHom.map_mulVec σ γ y i
-  rw [h, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec x γᵀ,
-    Matrix.vecMul_transpose]
-
 open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 

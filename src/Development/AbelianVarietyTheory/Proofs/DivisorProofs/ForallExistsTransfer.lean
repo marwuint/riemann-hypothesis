@@ -195,42 +195,4 @@ theorem exists_div_iff (hc : CMData (maximalRealSubfield E) E) (V : HSpace E)
 
 end CM
 
-section Host
-
-open Formalism.BasicNotions.TH Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.NTheta Formalism.IndefR Formalism.IndefR.Mult GlobalTheory.IndefiniteRowSideFullHecke.GoodReductionModelReading
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : D7}
-
-theorem exists_divAt {V V' : HSp D} (hr : V.rank = V'.rank) {P : HeightOneSpectrum (𝓞 D.host.E)}
-    {e f : Formalism.L2.Theta.AE D} (hP : IsPrimeIdem P e f) {ϖ : D.host.E} {d : List ℤ} {α : GA D V} (hα : SuppF V f α)
-    (hd : DivAt V e ϖ d α) : ∃ α' : GA D V', SuppF V' f α' ∧ DivAt V' e ϖ d α' := by
-  have : IsCMField D.host.E := D.host.isCMField_hostE
-  obtain ⟨v, hf, hef⟩ : ∃ v, GlobalTheory.PlaceComp.IsIdemOf D.host.E v f ∧ e * f = e := by
-    rcases id hP with ⟨⟨⟨h1, h2, v, ε, ⟨a, rfl, a1, a2⟩, h3⟩, -⟩, rfl⟩ | ⟨rfl, ⟨v, ε, ⟨a, rfl, a1, a2⟩, h3⟩, -⟩
-    · exact ⟨v, h3 ▸ GlobalTheory.PlaceComp.isIdemOf_algebraMap a1 a2, by rw [mul_add, h1, h2, add_zero]⟩
-    · exact ⟨v, h3 ▸ GlobalTheory.PlaceComp.isIdemOf_algebraMap a1 a2, ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P f f hP).1⟩
-  obtain ⟨α', h1, h2⟩ := (exists_div_iff (E := D.host.E) D.sp.cm V' hf hef ϖ (fun i => d.getD i 0) rfl).2
-    ((exists_div_iff (E := D.host.E) D.sp.cm V hf hef ϖ (fun i => d.getD i 0) hr).1 ⟨α, hα, hd.2⟩)
-  exact ⟨α', h1, hd.1.trans hr, h2⟩
-
-theorem exists_isCosetRep (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank)
-    {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : Formalism.L2.Theta.AE D} (hP : IsPrimeIdem P e f) {α : GA D V}
-    (hα : SuppF V f α) : ∃ R : Finset (GA D V), (∀ γ ∈ R, SuppF V f γ) ∧
-      IsCosetRep V {k | k ∈ (Lev.levG V β L : Set (GA D V)) ∧ SuppF V f k} α R := by
-  have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram
-  obtain ⟨h1, h2, hG, -⟩ := (GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e f hP
-  obtain ⟨S, hS⟩ := ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 f h1 h2).1
-  obtain ⟨R, r1, r2⟩ := exists_reps (relIndex_conj_ne_zero (L := S) (GlobalTheory.ParahoricCompact.isCompact_levG V β L)
-    (GlobalTheory.ParahoricCompact.isOpen_comap_lev V β L) (fun k hk hk' => ⟨hG k ((hS k).1 hk), hk'⟩) ((hS α).2 hα))
-  have hK : {k | k ∈ (Lev.levG V β L : Set (GA D V)) ∧ SuppF V f k} = (Lev.levG V β L ⊓ S : Subgroup (GA D V)) :=
-    Set.ext fun k => and_congr_right fun _ => (hS k).symm
-  have r0 : ∀ γ ∈ R, SuppF V f γ := fun γ hγ => by
-    obtain ⟨a, ha, b, hb, rfl⟩ := r1 γ hγ
-    exact (hS _).1 (mul_mem (mul_mem ha.2 ((hS α).2 hα)) hb.2)
-  rw [hK]
-  exact ⟨R, r0, fun γ hγ => ⟨hG γ (r0 γ hγ), r1 γ hγ⟩, r2⟩
-
-end Host
-
 end GlobalTheory.HeckeLabels

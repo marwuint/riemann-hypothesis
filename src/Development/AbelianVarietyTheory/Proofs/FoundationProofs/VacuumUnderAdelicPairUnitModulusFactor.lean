@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 import Formalism.PairingDivisors.StatementH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumUnderAdelicPairModulusOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddnessConditionHoldsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddnessConditionHolds
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.NormSum.VacMove
 open scoped BigOperators Pointwise
@@ -20,13 +20,13 @@ theorem exists_scalar {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv
   have hcc : cc ≠ ⊥ := hc.1.1
   have k0 : KLat D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') := klat _ (moves_one D N) (moves_one D N')
   have k1 := klat (tor0 D cc δ) h h'
-  have hT := vac_TT (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc he
-  obtain ⟨-, hF, -, hinv⟩ := GlobalTheory.T.intertwinerUnitary_all D cc δ hc N N' _ _ k0 k1 e0 he
+  have hT := vac_TT (_root_.GlobalTheory.InducedType.induced_type D).1 hc he
+  obtain ⟨-, hF, -, hinv⟩ := _root_.GlobalTheory.theta_translation_intertwiner_unitary D cc δ hc N N' _ _ k0 k1 e0 he
   have hF0 : Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') (La D (tor0 D cc δ) L₁ L₁') e0 ≠ 0 := by
     intro h0
     rw [h0, iop_zero] at hinv
     exact W.nz hinv.symm
-  obtain ⟨hline, hW, -⟩ := GlobalTheory.T.theta_space_selfDual_pair_at_most_line D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc N N' _ k1
+  obtain ⟨hline, hW, -⟩ := GlobalTheory.T.theta_space_selfDual_pair_at_most_line D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hc N N' _ k1
   suffices hG : W.Om g g' e0 ∈ ThSp D (tor0 D cc δ) (La D (tor0 D cc δ) L₁ L₁') from hline _ hG _ hF hF0
   refine ⟨(W.maps g g' e0 hT).1, fun x hx => ?_⟩
   suffices hs : Wd D (tor0 D cc δ) x (W.Om g g' e0) = W.Om g g' e0 by
@@ -36,7 +36,7 @@ theorem exists_scalar {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv
     intro a ha b hb F
     obtain ⟨φ, hφ⟩ := wd_wd D (tor0 D cc δ) a b
     have h2 := hφ (Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') (La D (tor0 D cc δ) L₁ L₁') e0)
-    rw [wd_fix (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc k1 hF hb, wd_fix (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc k1 hF ha, wd_fix (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc k1 hF (add_mem ha hb)] at h2
+    rw [wd_fix (_root_.GlobalTheory.InducedType.induced_type D).1 hc k1 hF hb, wd_fix (_root_.GlobalTheory.InducedType.induced_type D).1 hc k1 hF ha, wd_fix (_root_.GlobalTheory.InducedType.induced_type D).1 hc k1 hF (add_mem ha hb)] at h2
     have h3 : φ = 1 := by
       by_contra hne
       apply hF0
@@ -44,9 +44,9 @@ theorem exists_scalar {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv
         rw [sub_smul, one_smul, ← h2, sub_self]
       exact (smul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)
     rw [hφ, h3, one_smul]
-  obtain ⟨z', rfl, hz'⟩ := GlobalTheory.T.exists_rationalPoint_of_mem_movedThetaLattice D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hcc N N' g g' L₁ L₁' h h' x hx
-  have hlatb := GlobalTheory.T.cmThetaLatticePoint_mem_thetaLattice_of_adelic D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hcc N N' g g' L₁ L₁' h h'
-  have hlat0 := GlobalTheory.T.cmThetaLatticePoint_mem_thetaLattice_of_adelic D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hcc N N' 1 1 _ _ (moves_one D N) (moves_one D N')
+  obtain ⟨z', rfl, hz'⟩ := _root_.GlobalTheory.NormSum.exists_pt_of_mem_La_moved D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hcc N N' g g' L₁ L₁' h h' x hx
+  have hlatb := _root_.GlobalTheory.NormSum.pt_mem_La_of_adelic D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hcc N N' g g' L₁ L₁' h h'
+  have hlat0 := _root_.GlobalTheory.NormSum.pt_mem_La_of_adelic D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hcc N N' 1 1 _ _ (moves_one D N) (moves_one D N')
   simp only [OneMemClass.coe_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one] at hlat0
   simp only [← MI_one] at hz' hlatb hlat0
   obtain ⟨m0, hm0, hl0⟩ := W.lift g g' 0 e0 hT
@@ -71,7 +71,7 @@ theorem exists_scalar {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv
   have hz0 : MI D cc 1 (z.map (inc D)) := by
     simpa using (hz.of_dvd (one_dvd _)).add hz'
   obtain ⟨m, hm, hl⟩ := W.lift g g' z e0 hT
-  rw [wd_fix (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc k0 he (hlat0 z hz0)] at hl
+  rw [wd_fix (_root_.GlobalTheory.InducedType.induced_type D).1 hc k0 he (hlat0 z hz0)] at hl
   obtain ⟨w, hw⟩ := MI_approx hcc (P * z.map (inc D) * Q') (n' * (m * m0)) (by positivity)
   have hw1 : MI D cc 1 (P' * w.map (inc D) * Q) := by
     have := ((hb' _ _ hw).of_dvd (one_dvd _)).add hz0
@@ -107,7 +107,7 @@ theorem vacuum_under_adelic_pair : ∀ (D : D7), ∀ (cc : Ideal (𝓞 D.host.K)
   have hmod : Mod1All c := by
     obtain ⟨z, x, hz, hx, -⟩ := exists_splitComp D _ (det_norm D g)
     obtain ⟨z', x', hz', hx', -⟩ := exists_splitComp D _ (det_norm D g')
-    obtain ⟨sg, hsg, hc2⟩ := (GlobalTheory.T.oddness_condition_holds D cc δ hc N N' hev e0 he W.nz W g g' L₁ L₁' c h h' hce).1 z z' x x' hz hz' hx hx'
+    obtain ⟨sg, hsg, hc2⟩ := (_root_.GlobalTheory.VacuumScalar.vacuum_scalar D cc δ hc N N' hev e0 he W.nz W g g' L₁ L₁' c h h' hce).1 z z' x x' hz hz' hx hx'
     refine modulusOneAllEmbeddings_of_pow (k := 2 * 2) (by norm_num) ?_
     have hs : sg ^ 2 = 1 := by rcases hsg with rfl | rfl <;> norm_num
     have h4 : c ^ (2 * 2) = ((W.chV.f x' : ℂˣ) : ℂ) ^ (4 * W.ep) * ((W.chV'.f x : ℂˣ) : ℂ) ^ (4 * W.ep') := by
@@ -115,7 +115,7 @@ theorem vacuum_under_adelic_pair : ∀ (D : D7), ∀ (cc : Ideal (𝓞 D.host.K)
         ← Units.val_zpow_eq_zpow_val, ← Units.val_mul, mul_pow]
       congr 2 <;> (rw [← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul]; congr 1; push_cast; ring)
     rw [h4]
-    exact algebraicModulusOneAll_mul (algebraicModulusOneAll_zpow (GlobalTheory.T.unitaryHeckeCharacter_values D N W.chV x').1 _) (algebraicModulusOneAll_zpow (GlobalTheory.T.unitaryHeckeCharacter_values D N' W.chV' x).1 _)
+    exact algebraicModulusOneAll_mul (algebraicModulusOneAll_zpow (_root_.GlobalTheory.HeckeVal.hecke_values D N W.chV x').1 _) (algebraicModulusOneAll_zpow (_root_.GlobalTheory.HeckeVal.hecke_values D N' W.chV' x).1 _)
   refine ⟨c, hmod, hce, fun p _ lam k' hk' ht ht' => ?_⟩
   have hm1 : Moves D (k' : GL (Fin N') (AE D)) (stdL D N') := by
     simpa using moves_mul_int hk' (moves_one D N')
@@ -123,11 +123,11 @@ theorem vacuum_under_adelic_pair : ∀ (D : D7), ∀ (cc : Ideal (𝓞 D.host.K)
   obtain ⟨k, hk, hak⟩ : ∃ k : ℕ, 0 < k ∧ a ^ k = 1 := by
     obtain ⟨z, x, hz, hx, hxi⟩ := exists_splitComp D _ (det_norm D (1 : GA D N))
     obtain ⟨z', x', hz', hx', hxi'⟩ := exists_splitComp D _ (det_norm D k')
-    obtain ⟨sg, hsg, hc2⟩ := (GlobalTheory.T.oddness_condition_holds D cc δ hc N N' hev e0 he W.nz W 1 k' _ _ a (moves_one D N) hm1 hae).1
+    obtain ⟨sg, hsg, hc2⟩ := (_root_.GlobalTheory.VacuumScalar.vacuum_scalar D cc δ hc N N' hev e0 he W.nz W 1 k' _ _ a (moves_one D N) hm1 hae).1
       z z' x x' hz hz' hx hx'
-    obtain ⟨m, hm, hxm⟩ := (GlobalTheory.T.unitaryHeckeCharacter_values D N' W.chV' x).2.1
+    obtain ⟨m, hm, hxm⟩ := (_root_.GlobalTheory.HeckeVal.hecke_values D N' W.chV' x).2.1
       (hxi (det_int D _ (((mem_ratG_intG D N).2.1 1).1 (one_mem _))))
-    obtain ⟨m', hm', hxm'⟩ := (GlobalTheory.T.unitaryHeckeCharacter_values D N W.chV x').2.1
+    obtain ⟨m', hm', hxm'⟩ := (_root_.GlobalTheory.HeckeVal.hecke_values D N W.chV x').2.1
       (hxi' (det_int D _ (((mem_ratG_intG D N').2.1 k').1 hk')))
     refine ⟨2 * (2 * (m * m')), by positivity, ?_⟩
     have hs : sg ^ 2 = 1 := by rcases hsg with rfl | rfl <;> norm_num
@@ -137,7 +137,7 @@ theorem vacuum_under_adelic_pair : ∀ (D : D7), ∀ (cc : Ideal (𝓞 D.host.K)
         pow_mul, hu, one_pow, one_zpow]
     rw [pow_mul, hc2, mul_pow, pow_mul sg, hs, one_pow, one_mul, ← Units.val_pow_eq_pow_val, mul_pow,
       key _ _ m' _ hxm' ⟨2 * m, by ring⟩, key _ _ m _ hxm ⟨2 * m', by ring⟩, one_mul, Units.val_one]
-  have hT := vac_TT (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc he
+  have hT := vac_TT (_root_.GlobalTheory.InducedType.induced_type D).1 hc he
   have hae' : W.Om 1 k' e0 = a • e0 := by
     rw [hae, show La D (tor0 D cc δ) (stdL D N) (stdL D N') = La0 D (tor0 D cc δ) N N' from rfl,
       iop_self D _ (La0 D (tor0 D cc δ) N N') he]
@@ -150,6 +150,6 @@ theorem vacuum_under_adelic_pair : ∀ (D : D7), ∀ (cc : Ideal (𝓞 D.host.K)
     funext z
     simp [mul_assoc]
   exact norm_lamC_of_root lam hk hak hmod.1
-    ((GlobalTheory.T.oddness_condition_holds D cc δ hc N N' hev e0 he W.nz W g (g' * k') L₁ L₁' _ h (moves_mul_int hk' h') hprod).2 p lam ht ht').2
+    ((_root_.GlobalTheory.VacuumScalar.vacuum_scalar D cc δ hc N N' hev e0 he W.nz W g (g' * k') L₁ L₁' _ h (moves_mul_int hk' h') hprod).2 p lam ht ht').2
 
 end GlobalTheory.ArchFree.weilc

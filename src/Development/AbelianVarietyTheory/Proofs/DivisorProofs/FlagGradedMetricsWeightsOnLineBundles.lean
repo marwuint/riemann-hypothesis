@@ -2,10 +2,15 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsMetricFrOfIsMetricOn
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegreeComplex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedFrameEventuallyFrameNearComplexPoint
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedFullFlagFrameChangeDiagonalUnitsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlaggedBundleMetricGradedWeightFrameIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexPointsSmoothAtLogUnitAddGradedLengthStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviFormGradedLengthSubLogUnitNormSqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedFullFlagFrameChangeDiagonalUnits
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlaggedBundleMetricGradedWeightFrameIndependent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramLowerTriangularFactorLowerTriangularConj
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramLowerTriangularFactorPosDefPropertiesStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.AntisymmFibrePointTwo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexPointsSmoothAtLogUnitAddGradedLength
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlaggedBundleMetricSmoothUnitEtaleChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramLowerTriangularFactorGradedLengthSmooth
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviFormGradedLengthSubLogUnitNormSq
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.L2DbarEstimates (V)
@@ -25,7 +30,7 @@ theorem graded_weight : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) 
       UnitAt z ((B * A⁻¹) x.1 x.2 x.2 / f) := by
     intro z A hA f hf
     obtain ⟨A₀, hA₀, t, ht, he⟩ := hgr z x
-    obtain ⟨hu, hd⟩ := GlobalTheory.T.adaptedFullFlag_frame_change_diagonal_units F X ι m E B hB z A₀ A hA₀ hA x
+    obtain ⟨hu, hd⟩ := _root_.GlobalTheory.FlagChange.diag_unitAt_and_mul F X ι m E B hB z A₀ A hA₀ hA x
     have htf : UnitAt z ((t : X.Fn) / f) := (hf.iff_unitAt).1 he
     have hne : (A * A₀⁻¹) x.1 x.2 x.2 ≠ 0 := fun h0 => by
       obtain ⟨a, ha, h⟩ := hu
@@ -45,7 +50,7 @@ theorem graded_weight : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) 
       D.IsEqn (under y) (i.1.2) := fun i y hy => i.2.2 _ (mem_ptsIn.1 hy)
   have hindep : ∀ (i : (toLB D).ι) (y : CxPts X.str σ), y ∈ ptsIn X.str σ ((toLB D).U i) →
       ∀ A ∈ E.S (under y), val (Ach y) y i.1.2 = val A y i.1.2 := fun i y hy A hA =>
-    GlobalTheory.T.flaggedBundleMetric_graded_weight_frame_independent F σ X ι m E H hH B hB y (Ach y) (hAch y) A hA x _ (hunit _ A hA _ (heq i y hy))
+    _root_.GlobalTheory.ChernCalc.grWeight_frame_indep F σ X ι m E H hH B hB y (Ach y) (hAch y) A hA x _ (hunit _ A hA _ (heq i y hy))
   let ψ : Weight X.str σ (toLB D) :=
     { isLB := isLB_toLB D
       φ := fun i y => val (Ach y) y i.1.2
@@ -69,7 +74,7 @@ theorem graded_weight : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) 
   refine ⟨toLB D, fun i => i.1.2, ψ, hP, ?_, ?_⟩
   · intro i y hy
     have hu := hunit _ _ (hAch y) _ (heq i y hy)
-    refine (GlobalTheory.T.complexPointsSmoothAt_log_unit_add_graded_length F σ X ι m m E H hH y (Ach y) (hAch y) _ hu x.1 x.2).congr ?_
+    refine (_root_.GlobalTheory.ChernCalc.cInfAt_logUnit_grD F σ X ι m m E H hH y (Ach y) (hAch y) _ hu x.1 x.2).congr ?_
     filter_upwards [frame_eventually_near F σ X ι m m E y (Ach y) (hAch y), (isOpen_ptsIn _).mem_nhds hy] with z hz hzi
     exact hindep i z hzi (Ach y) hz
   · funext p
@@ -87,7 +92,7 @@ theorem graded_weight : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) 
     have key : leviForm (fun v => ψ.φ (pick ψ.isLB y) (c.e.symm v)) (c.e y) =
         leviForm (fun v => -Real.log (grD (H (Ach y) (c.e.symm v) x.1) x.2)) (c.e y) := by
       rw [leviForm_congr (u' := fun v => val (Ach y) (c.e.symm v) (pick ψ.isLB y).1.2)]
-      · exact GlobalTheory.T.leviForm_graded_length_sub_log_unit_normSq F σ X ι m m E H hH y (Ach y) (hAch y) _ hu x.1 x.2 c hy'
+      · exact _root_.GlobalTheory.ChernCalc.leviForm_neg_log_unit_sub_log_grD F σ X ι m m E H hH y (Ach y) (hAch y) _ hu x.1 x.2 c hy'
       · filter_upwards [hnear'] with v hv
         exact hindep _ _ hv.1 (Ach y) hv.2
     have e1 : c1W ψ ⟨(c, y), hy⟩ =

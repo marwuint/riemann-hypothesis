@@ -205,10 +205,6 @@ section Constants
 
 variable {n : ℕ}
 
-theorem cst_anti (i j k : Ix n) : cst i j k = -cst j i k := by
-  simp only [cst, cp, Bool.and_comm j.1]
-  split_ifs <;> simp
-
 theorem cp_eq (p q r : Pos n) :
     cp p q r = tc (CompanionTheory.D.LK.allT n) p q r - tc (CompanionTheory.D.LK.allT n) q p r := by
   have h : ∀ a b : Pos n, CompanionTheory.D.LK.Tri (CompanionTheory.D.LK.allT n) a b r ↔ (a.1.2 = b.1.1 ∧ r.1 = (a.1.1, b.1.2)) := by
@@ -229,25 +225,6 @@ theorem cp_jacobi (p q r k : Pos n) :
     ring
   rw [e, e, e]
   ring
-
-theorem sum_cst (p q r k : Ix n) : ∑ i, cst p q i * cst i r k =
-    if k.1 = (p.1 && q.1 && r.1) then ∑ m, cp p.2 q.2 m * cp m r.2 k.2 else 0 := by
-  obtain ⟨s, p⟩ := p
-  obtain ⟨t, q⟩ := q
-  obtain ⟨u, r⟩ := r
-  obtain ⟨w, k⟩ := k
-  rw [Fintype.sum_prod_type]
-  cases s <;> cases t <;> cases u <;> cases w <;> simp [cst]
-
-theorem cst_jacobi (p q r k : Ix n) :
-    ∑ i, cst p q i * cst i r k + ∑ i, cst q r i * cst i p k + ∑ i, cst r p i * cst i q k = 0 := by
-  rw [sum_cst, sum_cst, sum_cst]
-  have h1 : (q.1 && r.1 && p.1) = (p.1 && q.1 && r.1) := by cases p.1 <;> cases q.1 <;> cases r.1 <;> rfl
-  have h2 : (r.1 && p.1 && q.1) = (p.1 && q.1 && r.1) := by cases p.1 <;> cases q.1 <;> cases r.1 <;> rfl
-  rw [h1, h2]
-  split_ifs
-  · exact cp_jacobi _ _ _ _
-  · simp
 
 end Constants
 
@@ -405,54 +382,6 @@ theorem sum_cp {M : Type} [AddCommGroup M] [Module ℂ M] (G : Fin n → Fin n �
       (if p.1.2 = q.1.1 then G p.1.1 q.1.2 else 0) - (if q.1.2 = p.1.1 then G q.1.1 p.1.2 else 0) := by
   simp only [cp, sub_smul, Finset.sum_sub_distrib, sum_one]
 
-theorem glK {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : Pair2 E1 E2) :
-    GlRel fun a b => E1 a b + E2 a b := by
-  intro a b c d
-  have h1 := h.gl1 a b c d
-  have h2 := h.gl2 a b c d
-  have h3 := h.comm a b c d
-  have h4 := h.comm c d a b
-  have e : (E1 a b + E2 a b) * (E1 c d + E2 c d) - (E1 c d + E2 c d) * (E1 a b + E2 a b) =
-      (E1 a b * E1 c d - E1 c d * E1 a b) + (E2 a b * E2 c d - E2 c d * E2 a b) := by
-    simp only [add_mul, mul_add, h3, ← h4]
-    abel
-  rw [e, h1, h2]
-  split_ifs <;> simp <;> abel
-
-theorem rl_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : Pair2 E1 E2) (i j : Ix n) :
-    rl E1 E2 i * rl E1 E2 j - rl E1 E2 j * rl E1 E2 i = ∑ k, cst i j k • rl E1 E2 k := by
-  obtain ⟨s, p⟩ := i
-  obtain ⟨t, q⟩ := j
-  have e : ∑ k, cst (s, p) (t, q) k • rl E1 E2 k =
-      ∑ r : Pos n, cp p q r • rl E1 E2 (s && t, r) := by
-    rw [Fintype.sum_prod_type]
-    cases s <;> cases t <;> simp [cst]
-  rw [e]
-  have hK := glK h p.1.1 p.1.2 q.1.1 q.1.2
-  have h2 := h.gl2 p.1.1 p.1.2 q.1.1 q.1.2
-  have c1 := h.comm p.1.1 p.1.2 q.1.1 q.1.2
-  have c2 := h.comm q.1.1 q.1.2 p.1.1 p.1.2
-  cases s <;> cases t
-  · simpa only [rl, Bool.and_self, Bool.false_eq_true, if_false, sum_cp (fun a b => E2 a b)] using h2
-  · simp only [rl, Bool.false_and, Bool.false_eq_true, if_false, if_true, sum_cp (fun a b => E2 a b)]
-    rw [← h2, mul_add, add_mul, c2]
-    abel
-  · simp only [rl, Bool.and_false, Bool.false_eq_true, if_false, if_true, sum_cp (fun a b => E2 a b)]
-    rw [← h2, mul_add, add_mul, c1]
-    abel
-  · simpa only [rl, Bool.and_self, if_true, sum_cp (fun a b => E1 a b + E2 a b)] using hK
-
 end Letters
-
-theorem bdSqR : BdSqR := by
-  intro n V _ _ E1 E2 h
-  have hL : ∀ i j : Ix n, (liftR n (rl E1 E2 i) : Module.End ℂ (Cr n V)) * liftR n (rl E1 E2 j) -
-      liftR n (rl E1 E2 j) * liftR n (rl E1 E2 i) = ∑ k, cst i j k • (liftR n (rl E1 E2 k) : Module.End ℂ (Cr n V)) := by
-    intro i j
-    refine LinearMap.ext fun x => funext fun A => ?_
-    have := LinearMap.congr_fun (rl_comm h i j) (x A)
-    simpa [lift_apply, LinearMap.sum_apply, Finset.sum_apply] using this
-  exact d_sq cst (fun i => (liftR n (rl E1 E2 i) : Module.End ℂ (Cr n V))) annR creR hL
-    (fun i j => lift_ann _ j) (fun i j => lift_cre _ j) cst_anti cst_jacobi ann_ann cre_cre ann_cre
 
 end GlobalTheory.CompanionTheory.RealMult.BdSqProof

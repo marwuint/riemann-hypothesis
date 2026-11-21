@@ -2,7 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TorMatch
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedEighthPowerEndomorphismActsByIntMatri
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationEndomorphismClosedFibreTorusCharac
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterMapOfIntegralMatrixActionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterMapOfIntegralMatrixAction
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
+import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Definitions.Uniformization.SeriesFrame
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -89,7 +91,7 @@ theorem endU_lattice_adjoint : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
       _ = preH U'.gen.hom (List.ofFn fun v => pr v ^ a' u v).prod := (map_ofFn_prod _ pr (a' u)).symm
       _ = U'.gen.hom ≫ (List.ofFn fun v => pr v ^ a' u v).prod := rfl
   have hEC := GlobalTheory.Poinc.Eq8.endChar_endU R hCN D' A' G' hG' U' E'
-  have hh := GlobalTheory.T.characterMap_of_integral_matrix_action R hCN D A G hG U D' A' G' hG' U' pG hpG c hc a' E'.aG E'.h E'.homG hEC hstep
+  have hh := _root_.GlobalTheory.Poinc.MatChar.charMap_matrix R hCN D A G hG U D' A' G' hG' U' pG hpG c hc a' E'.aG E'.h E'.homG hEC hstep
   exact lattice_of_charMap (W + W.transpose) a a' (by rw [Matrix.transpose_add, Matrix.transpose_transpose, add_comm])
     haa' c e he E'.h hh y
 

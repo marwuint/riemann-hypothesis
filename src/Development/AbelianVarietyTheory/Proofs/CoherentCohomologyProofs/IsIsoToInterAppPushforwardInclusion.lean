@@ -96,24 +96,6 @@ lemma toInter_app_comp_map_comp_inv (W : Opens X) {F G : X.Sheaf A} (f : F ⟶ G
 
 end Inter
 
-section Iso
-
-variable (A : Type u') [Category.{u} A]
-
-def interSheafIso (W : Opens X) :
-    W.isOpenEmbedding.sheafPullback A ⋙ TopCat.Sheaf.pushforward A W.inclusion' ≅
-      interSheaf A W :=
-  haveI := W.isOpenEmbedding.functor_isContinuous
-  Functor.sheafPushforwardContinuousComp' (interFunctorIso W) A _ _ _
-
-def interSheafIsoPullback (W : Opens X) :
-    TopCat.Sheaf.pullback AddCommGrpCat.{u} W.inclusion' ⋙
-      TopCat.Sheaf.pushforward AddCommGrpCat.{u} W.inclusion' ≅ interSheaf AddCommGrpCat.{u} W :=
-  Functor.isoWhiskerRight (W.isOpenEmbedding.sheafPullbackIso AddCommGrpCat.{u}) _ ≪≫
-    interSheafIso _ W
-
-end Iso
-
 section Abelian
 
 instance (W : Opens X) : (interSheaf AddCommGrpCat.{u} W).Additive where

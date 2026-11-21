@@ -1,14 +1,15 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StageData
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasureOrthogonalExtensionStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasureGeneralRankExtensionStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.BlockOneScalarPreservesNondegenerateStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasureOrthogonalExtension
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasureGeneralRankExtension
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.BlockOneScalarPreservesNondegenerate
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ContinuousHermScal
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorelStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberConsProductIntegralStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberConsProductIntegral
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
 
 noncomputable section
 
@@ -87,7 +88,7 @@ theorem measurable_sTil (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm)
   have hLC := D.hR.2.1
   have hSC := D.hR.2.2.1
   have hT2 := D.hR.2.2.2.1
-  obtain ⟨k1, k2, k3, k4, hsigc, htrc, -, hbw, -, hgramc⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R
+  obtain ⟨k1, k2, k3, k4, hsigc, htrc, -, hbw, -, hgramc⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ D.hCM R
   haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩
   have hq : Continuous fun y : Fin 1 → Fin (M + 1) → R ⊗[F] E =>
       s0 R (gramR R σ (blockOne (algebraMap F E t) J) y) := by
@@ -105,12 +106,12 @@ theorem measurable_chi (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm)
   have hLC := D.hR.2.1
   have hSC := D.hR.2.2.1
   have hT2 := D.hR.2.2.2.1
-  obtain ⟨k1, k2, k3, k4, -, -, -, hbw, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R
+  obtain ⟨k1, k2, k3, k4, -, -, -, hbw, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ D.hCM R
   haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩
-  have hJ' := GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht
-  obtain ⟨h1, h2, h3, h4, h5, hact⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ D.hCM (M + 1) _ hJ' R
+  have hJ' := _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap F E σ M J D.hJ t D.ht
+  obtain ⟨h1, h2, h3, h4, h5, hact⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ D.hCM (M + 1) _ hJ' R
   have hact' := (hact n).1.measurable
-  obtain ⟨hK, -, -⟩ := GlobalTheory.T.coordinate_haar_measure F E σ D.hCM R d b lam D.hlam
+  obtain ⟨hK, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ D.hCM R d b lam D.hlam
   haveI : SigmaFinite (coordK R b lam) := inferInstance
   haveI : SigmaFinite (coordW R b lam n M) := by unfold coordW; infer_instance
   have hG : Measurable fun q : ((Fin 1 → Fin (M + 1) → R ⊗[F] E) × (Fin n → R ⊗[F] E)) ×
@@ -150,8 +151,8 @@ theorem isUnit_gram (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm)
   have hLC := D.hR.2.1
   have hSC := D.hR.2.2.1
   have hT2 := D.hR.2.2.2.1
-  have hJ' := GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht
-  obtain ⟨-, -, -, -, hg⟩ := GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R 1
+  have hJ' := _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap F E σ M J D.hJ t D.ht
+  obtain ⟨-, -, -, -, hg⟩ := _root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ D.hCM R 1
   obtain ⟨g, -, hg⟩ := hg (M + 1) _ hJ'
   obtain ⟨-, hh, -⟩ := hermScal_main F E σ D.hCM R d b
   have hS := hh (g y)
@@ -175,14 +176,14 @@ theorem first_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   have hLC := D.hR.2.1
   have hSC := D.hR.2.2.1
   have hT2 := D.hR.2.2.2.1
-  obtain ⟨k1, k2, k3, k4, -, -, -, hbw, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R
+  obtain ⟨k1, k2, k3, k4, -, -, -, hbw, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ D.hCM R
   haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩
-  have hJ' := GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht
+  have hJ' := _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap F E σ M J D.hJ t D.ht
 
   have hUm : MeasurableSet (Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)) := by
-    obtain ⟨-, -, -, hbor, hg⟩ := GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R (n + 1)
+    obtain ⟨-, -, -, hbor, hg⟩ := _root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ D.hCM R (n + 1)
     obtain ⟨g, hgc, hg⟩ := hg (M + 1) _ hJ'
-    have hBo := (GlobalTheory.T.continuousOn_schur_coordinates_and_isOpen_Bset F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D).2.2.2.2
+    have hBo := (_root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.Coord.coords F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D).2.2.2.2
     have : (Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)) = g ⁻¹' Bset R σ t a B₀ := by
       ext v
       constructor
@@ -196,9 +197,9 @@ theorem first_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   have hφ' := hφ.indicator hUm
   have hchi := measurable_chi D hφ'
 
-  obtain ⟨-, -, -, hbor1, hg1⟩ := GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R 1
+  obtain ⟨-, -, -, hbor1, hg1⟩ := _root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ D.hCM R 1
   obtain ⟨g₁, hg₁c, hg₁⟩ := hg1 (M + 1) _ hJ'
-  obtain ⟨hUo, -, -, -, -, hae⟩ := GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ D.hCM (M + 1) 1 _ hJ' R D.hR d b lam D.hlam m₁ D.hm₁
+  obtain ⟨hUo, -, -, -, -, hae⟩ := _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.gramFib_basic F E σ D.hCM (M + 1) 1 _ hJ' R D.hR d b lam D.hlam m₁ D.hm₁
   have hU₁ : MeasurableSet {X : Fin 1 → Fin (M + 1) → R ⊗[F] E |
       IsUnit (gramR R σ (blockOne (algebraMap F E t) J) X).det} := by
     have : {X : Fin 1 → Fin (M + 1) → R ⊗[F] E |
@@ -218,7 +219,7 @@ theorem first_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   have e1 : ∫⁻ v in (Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)), φ v ∂(coordW R b lam (n + 1) (M + 1))
       = ∫⁻ y, χ y ∂(coordW R b lam 1 (M + 1)) := by
     rw [← lintegral_indicator hUm]
-    exact GlobalTheory.T.lintegral_coordW_succ_eq_iterated_of_unitary_section F E σ D.hCM M _ hJ' R D.hR d b lam D.hlam n (sTil σ J t s a) (measurable_sTil D) _ hφ'
+    exact _root_.GlobalTheory.CompanionTheory.SW.lintegral_tuple_moving_frame F E σ D.hCM M _ hJ' R D.hR d b lam D.hlam n (sTil σ J t s a) (measurable_sTil D) _ hφ'
   have e2 : ∫⁻ y, χ y ∂(coordW R b lam 1 (M + 1)) =
       ∫⁻ y in {X : Fin 1 → Fin (M + 1) → R ⊗[F] E |
         IsUnit (gramR R σ (blockOne (algebraMap F E t) J) X).det}, χ y ∂(coordW R b lam 1 (M + 1)) := by

@@ -94,41 +94,6 @@ structure MuAction {v : AddValuation C (WithTop ℝ)} {d : ℕ} (G : LogFGL v d)
   lg_mul : ∀ z, z ^ (p ^ h - 1) = 1 → ∀ a,
     subst (mul z) (G.lg a) = (z ^ (p ^ (ty a).val)) • G.lg a
 
-def additive (v : AddValuation C (WithTop ℝ)) (d : ℕ) : LogFGL v d where
-  lg a := X a
-  lg_const a := by simp
-  lg_lin a b := by
-    rw [coeff_X]
-    by_cases h : a = b
-    · subst h; simp
-    · have : Finsupp.single b 1 ≠ Finsupp.single a 1 := by
-        intro e; exact h (Finsupp.single_left_injective one_ne_zero e).symm
-      simp [h, this]
-  F a := X (Sum.inl a) + X (Sum.inr a)
-  F_int a α := by
-    unfold IsIntV
-    rw [map_add]
-    refine le_trans (le_min ?_ ?_) (v.map_add _ _) <;> (rw [coeff_X]; split_ifs <;> simp)
-  F_const a := by simp
-  lg_F a := by
-    rw [subst_X (hasSubst_of_constantCoeff_zero (by simp)),
-      subst_X (hasSubst_of_constantCoeff_zero (by simp)),
-      subst_X (hasSubst_of_constantCoeff_zero (by simp))]
-
-def additiveMu (v : AddValuation C (WithTop ℝ)) (d p h : ℕ) (hph : p ^ h - 1 ≠ 0)
-    (ty : Fin d → ZMod h) : MuAction (additive v d) p h ty where
-  mul z a := (z ^ (p ^ (ty a).val)) • X a
-  mul_int z hz a α := by
-    unfold IsIntV
-    rw [coeff_smul, coeff_X]
-    split_ifs
-    · rw [mul_one, v.map_pow, v_eq_zero_of_pow_eq_one hph hz, smul_zero]
-    · simp
-  mul_const z a := by simp
-  lg_mul z hz a := by
-    simp only [additive]
-    rw [subst_X (hasSubst_of_constantCoeff_zero (by simp))]
-
 def expComp [CharZero C] (Ω : C) (lg : PowerSeries C) : PowerSeries C :=
   PowerSeries.mk fun m => ∑ n ∈ Finset.range (m + 1),
     Ω ^ n / (n.factorial : C) * PowerSeries.coeff m (lg ^ n)

@@ -1,20 +1,10 @@
-import Development.EtaleCohomology.EtaleSheaves.KerLocPf
+import Development.EtaleCohomology.EtaleSheaves.LocalDescent
 import Development.EtaleCohomology.EtaleSheaves.LeafGhostCut
 
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry CochainComplex CochainComplex.HomComplex GlobalTheory.EtC LateralTheory.E.t_E3Cut LateralTheory.E.StalkCut LateralTheory.E.DescLocPf LateralTheory.E.LeafGhostCut
 
 namespace LateralTheory.E.TruncationKernel
-
-def RelExact : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (f : U ⟶ E) (n : ℤ) (x : H R E F n),
-  pull R f F n x = 0 → ∃ y : Hrel R f F n, fgt R f F n y = x
-
-def RelNat : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {U E U' E' : Spc} (f : U ⟶ E) (f' : U' ⟶ E') (u : U' ⟶ U)
-  (e : E' ⟶ E) (comm : f' ≫ e = u ≫ f) (n : ℤ) (y : Hrel R f F n),
-  fgt R f' F n (rpull R f f' u e comm F n y) = pull R e F n (fgt R f F n y)
-
-def FgtInj : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (f : U ⟶ E) (n : ℤ),
-  (∀ m : ℤ, m + 1 = n → Function.Surjective (pull R f F m)) → Function.Injective (fgt R f F n)
 
 def RelDesc : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i n : ℤ) {A Y : CommRingCat.{0}} (φ : A ⟶ Y), IsUnit (q : A) →
   ∀ P : ∀ C : CommRingCat.{0}, (A ⟶ C) → Prop, PushClosed P → EtClosed P →
@@ -25,19 +15,6 @@ def RelDesc : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i n : ℤ) {A Y : CommRi
     Et e → SpS e → P E (d ≫ e) → ∀ hpo' : IsPushout φ' e u φ'',
   Function.Injective (rpl q i (Spec.map φ') (Spec.map φ'') (Spec.map u) (Spec.map e)
     (by rw [← Spec.map_comp, ← Spec.map_comp, hpo'.w]) n)
-
-theorem exists_fgt_eq_of_pull_eq_zero : ∀ (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (f : U ⟶ E) (n : ℤ) (x : H R E F n),
-  pull R f F n x = 0 → ∃ y : Hrel R f F n, fgt R f F n y = x := by
-  intro R _ F U E f n x hx
-  obtain ⟨z, rfl⟩ := x.mk_surjective
-  change CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map f)) z (zero_add n)) = 0 at hx
-  rw [CohomologyClass.mk_eq_zero_iff] at hx
-  obtain ⟨m, hm, β, hβ⟩ := hx
-  refine ⟨CohomologyClass.mk (mappingCone.descCocycle _ (n.negOnePow • β) z hm ?_), ?_⟩
-  · rw [δ_units_smul, hβ]
-    rfl
-  · refine congrArg CohomologyClass.mk (Cocycle.ext ?_)
-    exact mappingCone.inr_descCochain _ _ _ hm
 
 theorem fgt_injective_of_pull_surjective : ∀ (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (f : U ⟶ E) (n : ℤ),
   (∀ m : ℤ, m + 1 = n → Function.Surjective (pull R f F m)) → Function.Injective (fgt R f F n) := by
@@ -79,8 +56,5 @@ theorem fgt_injective_of_pull_surjective : ∀ (R : Type) [CommRing R] (F : Shv 
     simp only [δ_neg, hα0, Cochain.comp_units_smul, smul_add, smul_smul, Int.units_mul_self, one_smul, mappingCone.inl_snd_assoc, zero_comp, Cochain.zero_comp, add_zero]
     abel
   · simp
-
-theorem relExact : RelExact := exists_fgt_eq_of_pull_eq_zero
-theorem fgtInj : FgtInj := fgt_injective_of_pull_surjective
 
 end LateralTheory.E.TruncationKernel

@@ -116,14 +116,6 @@ theorem ArchUnimodular.proof (h : HermitianForm F E W) (v : Basis ι E W) :
   have hm : Measurable (conjCME g⁻¹) := (map_continuous (conjCME g⁻¹)).measurable
   rw [hfun, ← Measure.map_map (measurable_const_mul g) hm, hc, map_mul_left_eq_self]
 
-section Example
-
-open GaussianPlane
-
-example : muG.IsMulRightInvariant := ArchUnimodular.proof hG vG muG
-
-end Example
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

@@ -438,14 +438,6 @@ theorem hasSupport_nu {x : IrrGL k} {s : Multiset (IrrGL k)} (h : HasSupport x.r
     HasSupport (x.nu e).rep (s.map fun y => y.nu e) :=
   (h.tw _ (isSmoothChar_absPow e)).of_equiv (x.twEquiv _ _)
 
-theorem hasSupport_speh (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) {x : IrrGL k} {d N : ℕ}
-    {π : Representation ℂ (GL (Fin N) k) V} (h : IsSpeh x d π) {s : Multiset (IrrGL k)} (hs : HasSupport x.rep s) :
-    HasSupport π (∑ j : Fin d, s.map fun y => y.nu (((d : ℂ) - 1) / 2 - (j : ℕ))) := by
-  obtain ⟨Z, Ψ, -, hΨ, -⟩ := hZ k
-  obtain ⟨hd, hc⟩ := h
-  exact hasSupport_of_isSubquotient_prodIrr hΨ (y := spehFactor x d)
-    (t := fun j => s.map fun y => y.nu (((d : ℂ) - 1) / 2 - (j : ℕ))) (fun j => hasSupport_nu hs (((d : ℂ) - 1) / 2 - (j : ℕ))) hc.1 hc.isSubquotient
-
 theorem hasSupport_multiProd (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) {c N : ℕ} {d : Fin c → ℕ}
     (hd : ∑ a, d a = N) {X : Fin c → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
     (σ : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)) (hs : ∀ a, IsSmooth (σ a))

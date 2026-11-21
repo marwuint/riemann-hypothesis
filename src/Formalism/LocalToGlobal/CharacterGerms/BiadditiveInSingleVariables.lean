@@ -61,40 +61,12 @@ def CapacityFactorialProduct : Prop :=
       (∏ t ∈ Finset.Icc 1 x, ∏ c ∈ Finset.range n0, (t + c)) = capNat n0 x ∧
       (∀ c, c.factorial ∣ (x + c).factorial) ∧ capNat n0 x ≠ 0
 
-def F2 : Prop :=
-  ∀ l : ℕ, l.Prime →
-    (∀ N : ℕ, (padicValNat l N.factorial : ℝ) = ((N : ℝ) - (Nat.digits l N).sum) / ((l : ℝ) - 1)) ∧
-    (∀ N : ℕ, 1 ≤ N → ((Nat.digits l N).sum : ℝ) ≤ ((l : ℝ) - 1) * ((⌊Real.logb l N⌋₊ : ℝ) + 1)) ∧
-    (∀ (σ : Type) [Fintype σ] (A : σ →₀ ℕ), 1 ≤ A.degree →
-      (A.degree : ℝ) / ((l : ℝ) - 1) - (Fintype.card σ : ℝ) * (Real.logb l A.degree + 1) ≤
-          (padicValNat l (mfact A) : ℝ) ∧
-        (padicValNat l (mfact A) : ℝ) ≤ (A.degree : ℝ) / ((l : ℝ) - 1)) ∧
-    (∀ N : ℕ, N < l ^ 2 → padicValNat l N.factorial = N / l)
-
 def F3 : Prop :=
   ∀ l : ℕ, l.Prime → ∀ n0 n x : ℕ, 1 ≤ n → n0 ≤ n →
     (padicValNat l (capNat n0 x) : ℝ) ≤
         (n0 : ℝ) * x / ((l : ℝ) - 1) + n0 * (Real.logb l n0 + 1) ∧
       (n0 : ℝ) * x / ((l : ℝ) - 1) + n0 * (Real.logb l n0 + 1) ≤
         (n0 : ℝ) * x / ((l : ℝ) - 1) + n * (Real.logb l n + 1)
-
-def detM (C : Type) [CommRing C] (n0 : ℕ) : MvPolynomial (Fin n0 × Fin n0) C :=
-  Matrix.det (Matrix.of fun b c : Fin n0 => MvPolynomial.X (b, c))
-
-def actM {C : Type} [CommRing C] {n0 : ℕ} (g1 g2 : Matrix (Fin n0) (Fin n0) C) :
-    MvPolynomial (Fin n0 × Fin n0) C →ₐ[C] MvPolynomial (Fin n0 × Fin n0) C :=
-  MvPolynomial.aeval fun x : Fin n0 × Fin n0 =>
-    ∑ b' : Fin n0, ∑ c' : Fin n0,
-      MvPolynomial.C (g1 b' x.1 * g2 c' x.2) * MvPolynomial.X (b', c')
-
-def F4 : Prop :=
-  ∀ (C : Type) [Field C] [CharZero C] (n0 N : ℕ)
-    (lam : MvPolynomial (Fin n0 × Fin n0) C →ₗ[C] C),
-    (∀ Q : MvPolynomial (Fin n0 × Fin n0) C, Q.IsHomogeneous N →
-      ∀ g1 g2 : Matrix (Fin n0) (Fin n0) C, g1.det = 1 → g2.det = 1 → lam (actM g1 g2 Q) = lam Q) →
-    (n0 ∣ N → ∃ c : C, ∀ Q : MvPolynomial (Fin n0 × Fin n0) C, Q.IsHomogeneous N →
-        lam Q = c * jetAt0 (detM C n0 ^ (N / n0)) (Q : MvPowerSeries (Fin n0 × Fin n0) C)) ∧
-      (¬ n0 ∣ N → ∀ Q : MvPolynomial (Fin n0 × Fin n0) C, Q.IsHomogeneous N → lam Q = 0)
 
 def F5 : Prop :=
   (∀ (y : ℤ) (s : ℕ), ((Ring.choose y s : ℤ) : ℚ) =
@@ -155,27 +127,6 @@ def monG {C : Type} [CommRing C] {σ : Type} (N N' : ℕ) (e : ℕ → ℕ)
     (t : Fin N × Fin N' → MvPowerSeries σ C) : MvPowerSeries σ C :=
   ∏ ρ : Fin N, if h : ρ.val < N' then t (ρ, ⟨ρ.val, h⟩) ^ monAl N N' e ρ.val else 1
 
-def MON : Prop :=
-  ∀ (C : Type) [Field C] [CharZero C] (N N' : ℕ) (e : ℕ → ℕ)
-    (t : Fin N × Fin N' → MvPowerSeries (Fin N × Fin N') C), TangentId t →
-    jetAt0 (monP C N N' e) (monG N N' e t) = ((∏ ρ : Fin N, (monAl N N' e ρ.val).factorial : ℕ) : C) ∧
-      ∑ ρ : Fin N, monAl N N' e ρ.val = monDeg N N' e ∧
-      ∀ (v : AddValuation C (WithTop ℝ)) (l : ℕ), l.Prime → v (l : C) = 1 →
-        v ((∏ ρ : Fin N, (monAl N N' e ρ.val).factorial : ℕ) : C) ≤
-            (((monDeg N N' e : ℝ) / ((l : ℝ) - 1) : ℝ) : WithTop ℝ) ∧
-          ((∀ ρ : Fin N, monAl N N' e ρ.val < l) →
-            v ((∏ ρ : Fin N, (monAl N N' e ρ.val).factorial : ℕ) : C) = 0)
-
-def MONTypes : Prop :=
-  ∀ (C : Type) [Field C] [CharZero C] (B : Type) [Fintype B] [DecidableEq B] (N : ℕ) (N' : B → ℕ)
-    (e : B → ℕ → ℕ)
-    (t : (Σ b : B, Fin N × Fin (N' b)) → MvPowerSeries (Σ b : B, Fin N × Fin (N' b)) C),
-    TangentId t →
-    jetAt0 (∏ b : B, MvPolynomial.rename (fun x => (⟨b, x⟩ : Σ b : B, Fin N × Fin (N' b)))
-          (monP C N (N' b) (e b)))
-        (∏ b : B, monG N (N' b) (e b) fun x => t ⟨b, x⟩) =
-      ((∏ b : B, ∏ ρ : Fin N, (monAl N (N' b) (e b) ρ.val).factorial : ℕ) : C)
-
 def InRow {C : Type} [Field C] {n : ℕ} (ρ : Fin n) (G : MvPowerSeries (PVar n) C) : Prop :=
   ∀ m : PVar n →₀ ℕ, MvPowerSeries.coeff m G ≠ 0 → ∀ x ∈ m.support, rowOf x = ρ
 
@@ -222,19 +173,5 @@ def BiWindow : Prop :=
         v (jetAt0 (detL C n ^ (l ^ i * y) * detR C n ^ y) (BiF l i n0 n y hr t t')) ≤
           (((bdP l i n n y + ((i : ℝ) + 1) * m * ((l : ℝ) ^ i + 1) * y / ((l : ℝ) - 1)) : ℝ) :
             WithTop ℝ)
-
-def UBCong : Prop :=
-  ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (l : ℕ),
-    l.Prime → 5 ≤ l → v (l : C) = 1 → ∀ n n0 y : ℕ, 1 ≤ n → n0 ≤ n → y + n ≤ l - 1 →
-    ∀ h1 : MvPowerSeries (PVar n0) C, HM1 v l 1 n0 h1 → HM2 h1 → HSeparatedRowSum v l n0 h1 →
-      1 ≤ v (LamP C l 1 n0 h1 y - (capNat n0 y : C))
-
-def UB : Prop :=
-  ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (l : ℕ),
-    l.Prime → 5 ≤ l → v (l : C) = 1 → ∀ n n0 y : ℕ, 1 ≤ n → n0 ≤ n → y + n ≤ l - 1 →
-    ∀ h1 : MvPowerSeries (PVar n0) C, HM1 v l 1 n0 h1 → HM2 h1 → HSeparatedRowSum v l n0 h1 →
-      ¬ l ∣ capNat n0 y ∧ v (LamP C l 1 n0 h1 y) = 0 ∧
-        v (((((l * y).factorial * y.factorial) ^ (n - n0) : ℕ) : C) * LamP C l 1 n0 h1 y) =
-          ((((n : ℝ) - n0) * y : ℝ) : WithTop ℝ)
 
 end Formalism.L2.FormalSeriesBounds

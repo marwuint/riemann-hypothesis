@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowIdeal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PushforwardSystemAffineSectionsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacobsonIdealFaithfulModuleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompleteModuleNoetherianRealizationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacobsonIdealFaithfulModule
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompleteModuleNoetherianRealization
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubobjectLeIffAffineSectionsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuasicoherentSupSectionsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdealPowerSubobjectSectionsStatement
@@ -94,7 +94,7 @@ theorem adjKer_pow_smul_mem_secs {A : Type} [CommRing A] [IsNoetherianRing A] (I
       rw [hpowsecs]
       exact ht
   obtain ⟨R, firstRealIndex, secondRealIndex, iR3, M, familyMassRatio, familyMassSecondLine, iM3, iM4, iM5, μ, hjac, hspan, hiff⟩ :=
-    GlobalTheory.T.complete_module_noetherian_realization IB T h1 h2
+    _root_.GlobalTheory.CompanionTheory.GE.CompletionTower.exists_completion_tower IB T h1 h2
   have hJ : ∀ a ∈ J.ideal ⟨(V : X.Opens), V.2⟩, ∀ m : M, a • m = 0 := by
     intro a ha m
     have hm : m ∈ Submodule.span R (Set.range μ) := hspan ▸ Submodule.mem_top
@@ -118,7 +118,7 @@ theorem adjKer_pow_smul_mem_secs {A : Type} [CommRing A] [IsNoetherianRing A] (I
     refine chartIn_map _ _ μ ?_ (hch n)
     rintro _ ⟨e, he, rfl⟩
     exact (hiff n e).1 he
-  obtain ⟨k, hk⟩ := GlobalTheory.T.jacobson_ideal_faithful_module J ψ hψ (V : X.Opens) V.2 IB hjac hJ f hIso (μ x) hch'
+  obtain ⟨k, hk⟩ := _root_.GlobalTheory.CompanionTheory.GE.Krull.fPow_torsion_of_chartIn J ψ hψ (V : X.Opens) V.2 IB hjac hJ f hIso (μ x) hch'
   refine ⟨k, fun n => ?_⟩
   have hμ : μ (f ^ k • x) ∈ (IB ^ (n + 1) • ⊤ : Submodule Γ(X, V) M) := by
     rw [map_smul, hk]

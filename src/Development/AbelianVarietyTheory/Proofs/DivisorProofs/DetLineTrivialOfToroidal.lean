@@ -2,17 +2,18 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFramedChartSnc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SncToroidalGenericBoundaryOfSncBoundary
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactification
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralGeometricallyConnectedOpenModuliStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModuliSchemeAffineFrameCoverTwoEigenPartsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralGeometricallyConnectedOpenModuli
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSectionOfChg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModuliSchemeAffineFrameCoverTwoEigenParts
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLieDeterminantLineRatioFunctionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstantComponentFunctionComplexValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisedFibreOfFramedComplexPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomologyWedgeCoordinateNonzeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreComponentClosureOpenIsIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstantFunctionNormalCompactificationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToroidalGenericFibreAffineFrameCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstantComponentFunctionComplexValues
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisedFibreOfFramedComplexPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomologyWedgeCoordinateNonzero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreComponentClosureOpenIsIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstantFunctionNormalCompactification
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToroidalGenericFibreAffineFrameCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasMarkingPreservingTransportOfRankZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVarietyCompactifyingConnectedComponentStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVarietyCompactifyingConnectedComponent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonvanishingDetLineSectionOfHorizontalStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDeterminantLineSectionRestrictionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstMulHorizontalDetLieCoordinateStatement
@@ -80,7 +81,7 @@ variable {Xo : Moduli D l} {c : Coeff l}
 
 theorem nonempty_of_geomConn {U : (Xo.XF c).Opens} (hG : GeometricallyConnected (U.ι ≫ toF Xo c)) :
     (U : Set (Xo.XF c)).Nonempty := by
-  have := GlobalTheory.T.isIntegral_geometricallyConnected_open_moduli E H D l Xo c U hG
+  have := _root_.GlobalTheory.DetLine.isIntegral_open_of_geometricallyConnected E H D l Xo c U hG
   exact ⟨_, (genericPoint U.toScheme).2⟩
 
 theorem flat_unique {U : (Xo.XF c).Opens} (hG : GeometricallyConnected (U.ι ≫ toF Xo c)) {τ : E →+* ℂ}
@@ -88,7 +89,7 @@ theorem flat_unique {U : (Xo.XF c).Opens} (hG : GeometricallyConnected (U.ι ≫
     (hs : SecU Xo c U τ σ) (hz : NzU Xo c U τ σ) (hf : IsFlatAt Xo c U τ σ e) (hs' : SecU Xo c U τ σ')
     (hf' : IsFlatAt Xo c U τ σ' e) :
     ∃! a : c.F, IsMultiple Xo.univ.t (toX Xo c) (toF Xo c) U (HermitianCompactForm.chi c τ) σ' a σ := by
-  have hc := GlobalTheory.T.moduliScheme_affineFrameCover_two_eigenParts E H D l Xo c U τ hτ
+  have hc := _root_.GlobalTheory.DetLine.frameCover_univ E H D l Xo c U τ hτ
   obtain ⟨f, hr⟩ := GlobalTheory.T.exists_lieDeterminantLine_ratio_function E H l c _ _ _ _ _ τ _ _ U σ σ' hc hs hz hs'
   have fr : ∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ toF Xo c = spMap e → Set.range y ⊆ U → ∃ v w, FrU Xo c U τ e y v w :=
     fun y hy hU => by
@@ -99,14 +100,14 @@ theorem flat_unique {U : (Xo.XF c).Opens} (hG : GeometricallyConnected (U.ι ≫
       obtain rfl : e = (GlobalTheory.Points.valMap y W hle).hom.comp j :=
         congrArg CommRingCat.Hom.hom (Spec.map_injective (hy.symm.trans h'.1))
       exact ⟨v', w', h'⟩
-  obtain ⟨a, rfl⟩ := GlobalTheory.T.exists_constant_component_function_complexValues E H D l Xo c U e f hG fun y y' hy hy' hU hU' => by
+  obtain ⟨a, rfl⟩ := _root_.GlobalTheory.OneValue.exists_eq_constFn_of_one_value E H D l Xo c U e f hG fun y y' hy hy' hU hU' => by
     obtain ⟨v, w, h⟩ := fr y hy hU
     obtain ⟨v', w', h'⟩ := fr y' hy' hU'
-    obtain ⟨o, m, g, u, Hm, κ, V, W, hA, hV, hW, iV, iW⟩ := GlobalTheory.T.exists_uniformised_fibre_of_framed_complex_point E H D l Xo c U τ e y v w h
-    obtain ⟨o', m', g', u', Hm', κ', V', W', hA', hV', hW', -⟩ := GlobalTheory.T.exists_uniformised_fibre_of_framed_complex_point E H D l Xo c U τ e y' v' w' h'
+    obtain ⟨o, m, g, u, Hm, κ, V, W, hA, hV, hW, iV, iW⟩ := _root_.GlobalTheory.DetLine.exists_unif_of_frame E H D l Xo c U τ e y v w h
+    obtain ⟨o', m', g', u', Hm', κ', V', W', hA', hV', hW', -⟩ := _root_.GlobalTheory.DetLine.exists_unif_of_frame E H D l Xo c U τ e y' v' w' h'
     obtain ⟨φ, hφ⟩ := hT y y' hy hy' hU hU' o o' ⟨m⟩ ⟨m'⟩ g g' u u' Hm Hm' κ κ' hA hA'
-    obtain ⟨x, Δ, hΔ, hx⟩ := (GlobalTheory.T.exists_homologyWedgeCoordinate_nonzero g _ _ Hm V W hA.1 hA.2.1).2 iV iW
-    obtain ⟨Δ', hx'⟩ := (GlobalTheory.T.exists_homologyWedgeCoordinate_nonzero g' _ _ Hm' V' W' hA'.1 hA'.2.1).1 fun k => φ (x k)
+    obtain ⟨x, Δ, hΔ, hx⟩ := (_root_.GlobalTheory.DetLine.exists_wedgeCoord g _ _ Hm V W hA.1 hA.2.1).2 iV iW
+    obtain ⟨Δ', hx'⟩ := (_root_.GlobalTheory.DetLine.exists_wedgeCoord g' _ _ Hm' V' W' hA'.1 hA'.2.1).1 fun k => φ (x k)
     have e1 := hf y y' v w v' w' h h' o o' m m' g g' u u' Hm Hm' κ κ' φ V W V' W' x Δ Δ' hA hA' hφ hV hW hV' hW' hx hx'
     have e2 := hf' y y' v w v' w' h h' o o' m m' g g' u u' Hm Hm' κ κ' φ V W V' W' x Δ Δ' hA hA' hφ hV hW hV' hW' hx hx'
     rw [hr ℂ e y v w h, hr ℂ e y' v' w' h', _root_.mul_assoc, _root_.mul_assoc, e1] at e2
@@ -118,11 +119,11 @@ theorem cpt_unique {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β
     (hG : GeometricallyConnected (U.ι ≫ toF Xo c)) {τ : E →+* ℂ} (hτ : τ (H.rt : E) = H.rt0) {σ σ' : RuleY Y}
     (hs : SecY Y (compactOf Y U) τ σ) (hz : NzY Y (compactOf Y U) τ σ) (hs' : SecY Y (compactOf Y U) τ σ') :
     ∃! a : c.F, IsMultiple Y.t (genι Y) (genStr Y) (compactOf Y U) (HermitianCompactForm.chi c τ) σ' a σ := by
-  obtain ⟨V, hV, -⟩ := GlobalTheory.T.genericFibre_componentClosure_open_isIntegral E H D l Xo c O β Y U hN hU hG
+  obtain ⟨V, hV, -⟩ := _root_.GlobalTheory.DetLine.exists_open_compactOf_isIntegral E H D l Xo c O β Y U hN hU hG
   have hne : (V : Set (gen Y)).Nonempty := hV ▸ ((nonempty_of_geomConn hG).image _).closure
-  have hk := GlobalTheory.T.exists_constant_function_normal_compactification E H D l Xo c O β Y U V hN hU hG hV
+  have hk := _root_.GlobalTheory.CptConst.exists_eq_constFn_compactOf E H D l Xo c O β Y U V hN hU hG hV
   rw [← hV] at hs hz hs' ⊢
-  have hc := GlobalTheory.T.toroidalGenericFibre_affineFrameCover E H D l Xo c O β Y V τ hτ
+  have hc := _root_.GlobalTheory.DetLine.frameCover_gen E H D l Xo c O β Y V τ hτ
   obtain ⟨f, hr⟩ := GlobalTheory.T.exists_lieDeterminantLine_ratio_function E H l c _ _ _ _ _ τ _ _ V σ σ' hc hs hz hs'
   obtain ⟨a, rfl⟩ := hk f
   exact existsUnique_multiple hne hc hz a hr
@@ -148,14 +149,14 @@ theorem exists_of_snc {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c
     (hsm : SmoothOfRelativeDimension D.dim (genStr Z)) (hsnc : ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Z))
     {U : (Xo.XF c).Opens} (hU : IsClosed (U : Set (Xo.XF c))) (hG : GeometricallyConnected (U.ι ≫ toF Xo c))
     {τ : E →+* ℂ} (hτ : τ (H.rt : E) = H.rt0) (hr : 1 ≤ D.p + D.q) : HasFlatSection Xo c U τ := by
-  obtain ⟨B, io, h1, h2, h3⟩ := GlobalTheory.T.exists_variety_compactifying_connected_component E H D l Xo c O β Z U hsm hU hG
+  obtain ⟨B, io, h1, h2, h3⟩ := _root_.GlobalTheory.CompactVar.exists_var E H D l Xo c O β Z U hsm hU hG
   have fam : ∀ e : c.F →+* ℂ, Formalism.L2.PjFree.GoodEmb c e → ∃ (g : ℕ) (en : Fin g ≃ Pad.Letter D) (Fu : Fam Xo c e en)
       (x : ∀ i, Idx D τ → (Fu.Di i).La) (hm : Fin Fu.n → Matrix (Idx D τ) (Idx D τ) E),
       ∀ i, IsPerBasis (Fu.Di i) (x i) (hm i) := fun e he => by
     let en : Fin (Fintype.card (Pad.Letter D)) ≃ Pad.Letter D := (Fintype.equivFin _).symm
     obtain ⟨Fu⟩ := GlobalTheory.closing_of_abelianSchemeLaws E H D l Xo (e.comp (IntermediateField.inclusion c.le).toRingHom) _
       (fun j => Formalism.L2.PjFree.relab c e (en j).1) hr he ((GlobalTheory.Relab.relab_good E H l c e he).2.2.2 D _ en)
-    choose x hm hx using fun i : Fin Fu.n => GlobalTheory.T.exists_hermitianPeriodLatticeBasis_same_signature _ H D (Fu.Di i) τ (Fu.sig i)
+    choose x hm hx using fun i : Fin Fu.n => _root_.GlobalTheory.ShFam.Hor.PerBasis.exists_isPerBasis _ H D (Fu.Di i) τ (Fu.sig i)
     exact ⟨_, en, Fu, x, hm, hx⟩
   obtain ⟨e₀, he₀⟩ : ∃ e₀, Formalism.L2.PjFree.GoodEmb c e₀ := (good_or c c.F.val.toRingHom).elim (⟨_, ·⟩) (⟨_, ·⟩)
   obtain ⟨g₀, en₀, Fu₀, x₀, hm₀, hx₀⟩ := fam e₀ he₀

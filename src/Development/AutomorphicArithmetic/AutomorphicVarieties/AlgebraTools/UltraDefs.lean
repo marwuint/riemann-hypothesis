@@ -53,34 +53,6 @@ theorem ULim.map_mk {I' : ℕ → Ideal R} {M' : ι → Type} [∀ i, AddCommGro
 def ULim.scal (r : ι → R) : ULim F I M →ₗ[R] ULim F I M :=
   ULim.map F (fun _ => le_rfl) fun i => r i • LinearMap.id
 
-theorem ULim.scal_const (r : R) (x : ULim F I M) : ULim.scal F I M (fun _ => r) x = r • x := by
-  obtain ⟨p, rfl⟩ := ULim.mk_surjective F I M x
-  rfl
-
-variable (R) in
-
-abbrev UProd : Type := ULim F (fun _ => (⊥ : Ideal R)) M
-
-variable {F M} in
-theorem UProd.mk_eq_zero {p : ∀ i, M i} :
-    ULim.mk F (fun _ => (⊥ : Ideal R)) M p = 0 ↔ ∀ᶠ i in F, p i = 0 := by
-  rw [ULim.mk_eq_zero]
-  simp
-
-theorem UProd.pure_bijective (i₀ : ι) :
-    ∃ e : UProd R (pure i₀) M →ₗ[R] M i₀, Function.Bijective e ∧ ∀ p, e (ULim.mk _ _ M p) = p i₀ := by
-  refine ⟨Submodule.liftQ _ (LinearMap.proj i₀) fun p hp => ?_, ⟨?_, ?_⟩, fun _ => rfl⟩
-  · simpa using hp 0
-  · rw [injective_iff_map_eq_zero]
-    intro x hx
-    obtain ⟨p, rfl⟩ := ULim.mk_surjective _ _ M x
-    exact UProd.mk_eq_zero.2 hx
-  · classical
-    intro m
-    exact ⟨ULim.mk _ _ M (Pi.single i₀ m), by
-      show (Pi.single i₀ m : ∀ i, M i) i₀ = m
-      simp⟩
-
 end ULim
 
 section QReg
@@ -96,9 +68,6 @@ theorem isQuasiRegularSeq_iff_qRegAt (M : Type) [AddCommGroup M] [Module R M] (y
     GlobalTheory.IsQuasiRegularSeq M y ↔ ∀ a, QRegAt M y ⊥ a := by
   unfold GlobalTheory.IsQuasiRegularSeq QRegAt
   simp only [sup_bot_eq]
-
-theorem qRegAt_top (M : Type) [AddCommGroup M] [Module R M] (y : σ → R) (a : ℕ) : QRegAt M y ⊤ a :=
-  fun _ _ _ => by simp
 
 end QReg
 

@@ -47,29 +47,4 @@ theorem moment_fibre {ι κ : Type*} [Fintype ι] [Fintype κ] (b : ι → ℂ) 
 
 variable {n : ℕ}
 
-theorem moment_match {ι : Type*} [Fintype ι] (b : ι → ℂ) (w : ι → ℝ) (hw : ∀ i, 0 < w i) (a : Fin n → ℂ)
-    (ha : Function.Injective a) (r : Fin n → ℂ)
-    (h : ∀ k : ℕ, ∑ i, (w i : ℂ) * b i ^ k = ∑ s, r s * a s ^ k) :
-    (∀ i, ∃ s, b i = a s) ∧ ∀ s, r s = ∑ i ∈ univ.filter (fun i => b i = a s), (w i : ℂ) := by
-  classical
-  refine ⟨fun i => ?_, fun s => ?_⟩
-  · by_contra hcon
-    push_neg at hcon
-    have e := moment_fibre b (fun i => (w i : ℂ)) a r h (b i)
-    have e0 : univ.filter (fun s => a s = b i) = ∅ :=
-      Finset.filter_eq_empty_iff.mpr fun t _ h' => hcon t h'.symm
-    rw [e0, Finset.sum_empty] at e
-    have hpos : 0 < ∑ j ∈ univ.filter (fun j => b j = b i), w j :=
-      Finset.sum_pos (fun j _ => hw j) ⟨i, by simp⟩
-    have e' : ((∑ j ∈ univ.filter (fun j => b j = b i), w j : ℝ) : ℂ) = 0 := by
-      push_cast
-      exact e
-    exact hpos.ne' (by exact_mod_cast e')
-  · have e := moment_fibre b (fun i => (w i : ℂ)) a r h (a s)
-    have e1 : univ.filter (fun t => a t = a s) = {s} := by
-      ext t
-      simp [ha.eq_iff]
-    rw [e1, Finset.sum_singleton] at e
-    exact e.symm
-
 end ReciprocityTheory.ChartRestriction.DS

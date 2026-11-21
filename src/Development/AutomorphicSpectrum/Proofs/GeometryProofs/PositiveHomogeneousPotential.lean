@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsSmoothHermTrivLine
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemAbLocusIff
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothFunctionAsDegreeZeroMetricStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugationInvariantHermitianMetricStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothFunctionAsDegreeZeroMetric
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugationInvariantHermitianMetric
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PFsInvPow
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
@@ -156,7 +158,7 @@ theorem exists_flat_line : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, F
   obtain ⟨H, hHdef⟩ : ∃ H, H = GroundTheory.Heights₂.Heights.LowerBoundFree.fsHerm J a := ⟨_, rfl⟩
   have hHa : H.a = a := by rw [hHdef]; rfl
   rw [← hHdef] at hHs
-  obtain ⟨B, hBa, hBs, hB⟩ := GlobalTheory.T.smooth_function_as_degree_zero_metric K J P D R _ (smooth_ratio R hsm hloc H hHa hHs)
+  obtain ⟨B, hBa, hBs, hB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.exists_hermLine_log_eq_of_smooth K J P D R _ (smooth_ratio R hsm hloc H hHa hHs)
   have hT₀s : IsSmoothHerm (H.tensor B) := ContDiffOn.mul hHs hBs
   have hT₀a : (H.tensor B).a = a := by
     show H.a + B.a = a
@@ -182,7 +184,7 @@ theorem exists_flat_line : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, F
     have h1 := hpt x
     rw [e, (H.tensor B).smul c z hc, hT₀a, hsm z hz c hc] at h1
     exact mul_left_cancel₀ hne h1
-  obtain ⟨T, hTa, hTs, hTc, hT⟩ := GlobalTheory.T.conjugation_invariant_hermitian_metric K J (H.tensor B) hT₀s
+  obtain ⟨T, hTa, hTs, hTc, hT⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.exists_conjInvariant_line_averaged K J (H.tensor B) hT₀s
   have hTφ : ∀ z ∈ mcPts P, T.h z = φ z := by
     intro z hz
     have hc := conj_mem_mcPts hz

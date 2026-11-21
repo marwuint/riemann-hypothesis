@@ -2,8 +2,13 @@ import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.VuOntoA
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.VuOntoB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SerreHolomorphicSectionsHolds
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ToroidalFlagSmoothProjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexSectionFiniteCombinationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicExtensionSectionReadingStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexSectionFiniteCombination
+import Development.AbelianVarietyTheory.Definitions.Divisors.NoCommonZeroCombVal
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicExtensionSectionReading
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsVanBdOfMemExtVanZ
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecondCountableTopologyOfIsProjOver
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OffZero
 
 open CategoryTheory AlgebraicGeometry NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj GlobalTheory.CompanionTheory.Ar.OntoDef GlobalTheory.CompHS
 open GlobalTheory.CompanionTheory.Ar.HolExt DifferentiableLines
@@ -54,10 +59,10 @@ theorem exists_comb {V : Unf Xo c σ r} (hσ : GoodEmb c σ) (hU : IsUnf V) (T :
     haveI := hsm
     haveI : Smooth (flagStr T.X) := SmoothOfRelativeDimension.smooth d _
     infer_instance
-  obtain ⟨m, as, ss, hss, hsum⟩ := GlobalTheory.T.complex_section_finite_combination c.F T.X.YY (flagStr T.X) σ hlft _ hB (flagOpen T.X) xC
+  obtain ⟨m, as, ss, hss, hsum⟩ := _root_.GlobalTheory.CompanionTheory.VanDescent.vanish_descent c.F T.X.YY (flagStr T.X) σ hlft _ hB (flagOpen T.X) xC
     (fun i y hy => by rw [hxv]; exact hv i y hy)
   refine ⟨m, as, fun j => ruleTop T.X _ (GlobalTheory.Vanishing.H0.ofSec (flagStr T.X) ⊤ (ss j)), fun j => ?_,
-    fun k => GlobalTheory.T.holomorphic_extension_section_reading E H D l Xo c r σ V T e k (P k) h (hRh k) m as ss (hxv.symm.trans hsum)⟩
+    fun k => _root_.GlobalTheory.CompanionTheory.Ar.HolExt.reads_comb E H D l Xo c r σ V T e k (P k) h (hRh k) m as ss (hxv.symm.trans hsum)⟩
   refine ruleTop_mem_extVanZ.2 (mem_vanOut_iff_le.2 ?_)
   have e' : toSec (GlobalTheory.Vanishing.H0.ofSec (flagStr T.X) ⊤ (ss j)) = ss j :=
     (Equiv.ofBijective _ GlobalTheory.Vanishing.H0.bijective_ofSec_top).symm_apply_apply (ss j)

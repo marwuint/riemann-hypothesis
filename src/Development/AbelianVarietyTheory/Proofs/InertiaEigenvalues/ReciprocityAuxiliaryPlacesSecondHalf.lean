@@ -6,11 +6,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Co
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousAlgebraMapPadicInt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPlaceOverMoveValCc
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TamePairingStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvCupPairingOfInvCupCharactersStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvCupPairingOfInvCupCharacters
+import Formalism.GaloisCohomology.Statement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumInvEqZeroOfUnramifiedCocycleStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CocycleUnramifiedOutsideVanishOnKernelStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ActsTriviallyResidualOfComplexConjugateStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalCupPairingReducedCocyclesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ActsTriviallyResidualOfComplexConjugate
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalCupPairingReducedCocycles
 
 noncomputable section
 
@@ -247,14 +248,14 @@ theorem local_pair (hT : TameLocal) {bkP : BKPh X} (h : GalHyp bkP i s) (hK : Is
   haveI : CompactSpace (DecV N P) := isCompact_iff_compactSpace.1 (isClosed_Dec _).isCompact
   have hcyc : ∀ g : DecV N P, cycMod D.host.E N.Om (X.l i) 1 g = 1 := fun g => cycMod_of_resTriv hK (hP g g.2)
   have hP' : ∀ g : DecV N P, ResTriv i s (cConj X g) := fun g =>
-    GlobalTheory.T.actsTriviallyResidual_of_complexConjugate D N X i s h.2.2.1 g _ (cConj_apply X g) (hP g g.2)
+    _root_.GlobalTheory.ResTrivConj.resTriv_conj D N X i s h.2.2.1 g _ (cConj_apply X g) (hP g g.2)
   obtain ⟨u, hu⟩ := GlobalTheory.T.tame_pairing_statement hT D.host.E N.Om (X.l i) _ P hA hl hq hcyc (inv _) (hinv.1 _ _ hA).1 M hM d hd
     ⟨γ, Ine_le_Dec _ hγ⟩ ⟨φ, hφ.1⟩ hγ hdγ hφ
   refine ⟨u, fun lam x y hy hy' => ?_⟩
   have hμ : ∀ (g : DecV N P) m, muLoc D.host.E (X.l i) 1 (N.plOm.1 P) g m = m := fun g m => by
     change ((cycMod D.host.E N.Om (X.l i) 1 g : (ZMod (X.l i ^ 1))ˣ) : ZMod (X.l i ^ 1)) * m = m
     rw [hcyc, Units.val_one, one_mul]
-  have key := GlobalTheory.T.inv_cup_pairing_of_inv_cup_characters_alt (DecV N P) (X.l i) _ hμ (inv _) _ u _ _ hu (Fin D.R.r → K) (Fin D.R.r → K)
+  have key := _root_.GlobalTheory.inv_cup_pairing_of_inv_cup_characters (DecV N P) (X.l i) _ hμ (inv _) _ u _ _ hu (Fin D.R.r → K) (Fin D.R.r → K)
     (fun m => by rw [← Nat.cast_smul_eq_nsmul K, l_eq_zero hK, zero_smul])
     ((LinearMap.toAddMonoidHom'.comp (dotProductBilin K K).toAddMonoidHom).compr₂ lam)
   constructor
@@ -402,7 +403,7 @@ theorem reciprocity : Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLo
       rw [hAv v fun ⟨a, e⟩ => hv' ⟨.inr a, by simp, e⟩]
       have : (Submodule.Quotient.mk (locZ (N.plOm.1 v) (cupZ hK hρ lam x y)) : H2 _) = 0 := by
         rcases (hmem v).1 hv with e | e | e
-        · exact GlobalTheory.T.local_cup_pairing_reduced_cocycles hLD D N X bkP i s h K hK ρ hρ v e (restrictCocycles1 _ _ continuous_subtype_val x)
+        · exact _root_.GlobalTheory.CupAbove.cup_eq_zero_above hLD D N X bkP i s h K hK ρ hρ v e (restrictCocycles1 _ _ continuous_subtype_val x)
             (restrictCocycles1 _ _ continuous_subtype_val y) (mem_bkOn hx e) (mem_bkOn hy e) lam _ fun _ _ => rfl
         · exact loc_eq_zero_of_subsingleton hK hρ lam x y v (local_cohomology_vanishes D N X bkP i s h v e K 1
             (by rw [MonoidHom.ker_one]; exact isOpen_univ) (fun g => ⟨0, by simp⟩) K (tors_field K) _ (Or.inl rfl)).2.1

@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLocModelIsPrimeOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotDominatesTopPlace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrPlaceCentreOnBaseOfEtaleTowerOverNormalLocalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrPlaceOrdEqAlongEtaleTowerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrderDifferentialFormEtTowerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormOrderWedgeEqOfEtaleTowerHeightOnePrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFreeGenTopFormEtaleTowerTranscendenceBasisStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrPlaceCentreOnBaseOfEtaleTowerOverNormalLocal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrPlaceOrdEqAlongEtaleTower
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrderDifferentialFormEtTower
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormOrderWedgeEqOfEtaleTowerHeightOnePrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFreeGenTopFormEtaleTowerTranscendenceBasis
 open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
@@ -33,7 +33,7 @@ theorem effAt_etTower : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) 
   have hι0 : ∀ g : R, g ≠ 0 → (ι g : L) ≠ 0 := fun g hg h =>
     hg (hinj (Subtype.ext (by simpa using h)))
   refine ⟨fun h => ?_, ?_, fun P hP => ?_⟩
-  · have hC := GlobalTheory.T.isFreeGen_topForm_etaleTower_transcendenceBasis cK cL n r R T ι ψ τ x hT hx
+  · have hC := _root_.GlobalTheory.FieldPair.isFreeGen_dForm_tower cK cL n r R T ι ψ τ x hT hx
     exact one_ne_zero (hC.1 (a₁ := 1) (a₂ := 0) (by simp [h]))
   · rw [Finsupp.add_apply]
     have h1 : Finsupp.mapDomain (fun g : R => (ι g : L)) φ 0 = 0 := by
@@ -58,17 +58,17 @@ theorem effAt_etTower : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) 
       exact_mod_cast (P.ord_nonneg_iff (hθ g hg).1).2 (hP.1 _ g.2)
     rw [hq] at hθ'
     rw [Place.disc, map_add]
-    rcases GlobalTheory.T.dvrPlace_centre_on_base_of_etaleTowerOverNormalLocal cK cL r R T ι ψ τ P hT hP with h0 | ⟨P0, hP0, h0⟩
-    · rw [GlobalTheory.T.order_differential_form_et_tower cK cL n r R T ι ψ τ x P hT hx hP h0, hq, hq]
+    rcases _root_.GlobalTheory.FieldPair.centre_of_isEtTower cK cL r R T ι ψ τ P hT hP with h0 | ⟨P0, hP0, h0⟩
+    · rw [_root_.GlobalTheory.FieldPair.formOrd_dForm_append_eq_zero cK cL n r R T ι ψ τ x P hT hx hP h0, hq, hq]
       have : (φ.sum fun g t => t * (P.ord (ι g : L) : ℚ)) = 0 :=
         Finset.sum_eq_zero fun g hg => by dsimp only; rw [h0 g (hφ g hg)]; simp
       rw [this]
       push_cast
       linarith
-    · have h1 := GlobalTheory.T.dvrPlace_ord_eq_along_etaleTower cK cL r R T ι ψ τ P P0 hT hP hP0 h0
+    · have h1 := _root_.GlobalTheory.FieldPair.UnramOrd.ord_eq_of_etTower cK cL r R T ι ψ τ P P0 hT hP hP0 h0
       have hd := hE.2.2 P0 hP0
       rw [Place.disc, hq] at hd
-      rw [GlobalTheory.T.formOrder_wedge_eq_of_etaleTower_heightOnePrime cK cL n r R T ι ψ τ x P P0 hT hx hP hP0 h1, hq, hq]
+      rw [_root_.GlobalTheory.FieldPair.formOrd_append_of_ord_eq cK cL n r R T ι ψ τ x P P0 hT hx hP hP0 h1, hq, hq]
       have : (φ.sum fun g t => t * (P.ord (ι g : L) : ℚ)) =
           φ.sum fun g t => t * (P0.ord (g : K) : ℚ) :=
         Finset.sum_congr rfl fun g hg => by dsimp only; rw [h1 g (hφ g hg)]

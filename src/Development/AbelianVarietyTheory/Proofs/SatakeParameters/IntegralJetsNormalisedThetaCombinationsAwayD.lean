@@ -11,10 +11,13 @@ import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.IntEasy
 import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.Hurwitz
 import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.Several
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanRangeEmb4EqTop
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralJetsNormalisedThetaTranslatesAwayDiscStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicSeriesLinearCoordsEqFlatTaylorStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalisedThetaFamilyNormalisedAllPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeJetsIntegralIffIntegralFramesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralJetsNormalisedThetaTranslatesAwayDisc
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicSeriesLinearCoordsEqFlatTaylor
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalisedThetaFamilyNormalisedAllPlaces
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeJetsIntegralIffIntegralFrames
+import Formalism.SharpRestriction.GlobalSchurBounds.GL3Columns
+import Formalism.LocalToGlobal.KernelLattices.ThDistC
+import Formalism.GaussJetBounds.StatementN
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Col Classical
 open Formalism.L2.Th1.H (cmL CmOK matH IsIsom taylorMv)
 open Formalism.L2.Th1.GD (LocNorm InMul frameM thetaLin)
@@ -106,7 +109,7 @@ theorem term_jets (hIn : GlobalTheory.ThLoc.Inputs) (hcc : TaylorLogMetric.IsCur
   obtain ⟨s₂, hs₂, e3, e4⟩ := id hE'
   have hS : Nat.Coprime (s₁ * s₂) p := Nat.Coprime.mul_left hs₁ hs₂
   obtain ⟨M, hM0, hMc, hMm⟩ := (Formalism.L2.KerInert.pairing_fact D cc δ p N N' L L₁ L' L₁' hE hE').2 t ht
-  have hLat := GlobalTheory.T.normalisedThetaFamily_normalised_all_places D cc δ hcc hδ B χ hχ X s hs a₀ b₀ c₀ ha hd lam hlam hcm hlat N N' L₁ L₁' hA₁ p ι
+  have hLat := _root_.GlobalTheory.ThLoc.latAt_all D cc δ hcc hδ B χ hχ X s hs a₀ b₀ c₀ ha hd lam hlam hcm hlat N N' L₁ L₁' hA₁ p ι
 
   have hθ := hLat.mem_th.1
   have hEan : AnalyticOnNhd ℂ (B.eNat χ N N' L₁ L₁') Set.univ := by
@@ -158,7 +161,7 @@ theorem term_jets (hIn : GlobalTheory.ThLoc.Inputs) (hcc : TaylorLogMetric.IsCur
     rw [tauEmb_eq hι, e]
     simp only [RingHom.coe_coe, map_mul, map_natCast]
     field_simp
-  have key := GlobalTheory.T.integralJets_normalisedTheta_translates_away_disc hIn D cc δ hcc hδ a₀ b₀ c₀ ha hd lam hlam hcm hlat (DVar X.Tau N N')
+  have key := _root_.GlobalTheory.ThLoc.jetsIntegral_away_disc hIn D cc δ hcc hδ a₀ b₀ c₀ ha hd lam hlam hcm hlat (DVar X.Tau N N')
     (Formalism.L2.AlgTh.hSc X.Tau N N' (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹) (s.laF B.tor L₁ L₁')
     (fun z => B.eNat χ N N' L₁ L₁' (s.flatV N N' z)) p ι hLat hpd h3 Unit (fun _ => 1)
     (fun _ => (s.flatV N N').symm t) M (fun _ => by simp) hM0
@@ -170,7 +173,7 @@ theorem term_jets (hIn : GlobalTheory.ThLoc.Inputs) (hcc : TaylorLogMetric.IsCur
       rw [map_smul, LinearEquiv.apply_symm_apply, Nat.cast_smul_eq_nsmul]
       exact hMm)
     (Fin n) v hv (Fin n) A hA
-  rw [GlobalTheory.T.padicSeries_linearCoords_eq_flatTaylor D X s N N' p lm ι hι _ hGan hCo (Fin n), hfr, hU]
+  rw [_root_.GlobalTheory.FlatTaylorBridge.bridge D X s N N' p lm ι hι _ hGan hCo (Fin n), hfr, hU]
   simpa [thetaLin] using key
 
 end GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d
@@ -188,7 +191,7 @@ theorem GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d.jetsA
     rw [hL]
     exact B.lat
   obtain ⟨m, r, t, L₁, L₁', hr, ht, hL1, rfl⟩ := hF
-  refine (GlobalTheory.T.latticeJetsIntegral_iff_integralFrames D N N' p lm _ _).1.2 fun n y hy => ?_
+  refine (_root_.GlobalTheory.Proof.latticeJetsIntegral_iff_integralFrames.jetsInt_frames D N N' p lm _ _).1.2 fun n y hy => ?_
   have e : ∀ (c : D.what₂.Tau × Fin N' × Fin N → Fin n → ℂ_[p]) (G : Fin m → MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]),
       TaylorLogMetric.atLin c (fun j => MvPowerSeries.X j)
         (∑ k, algebraMap ℂ_[p] (MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) (r k) * G k) =

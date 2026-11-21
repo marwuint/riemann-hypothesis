@@ -31,8 +31,8 @@ private theorem rec_spehQuotT {E Ω : Type} [Field E] [NumberField E] [Field Ω]
       sumList ((List.range d).map fun k : ℕ => (rc (cls (ParLaws.toRep σ))).lpTw (((d : ℝ) - 1) / 2 - k)) := by
   haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective
   obtain ⟨m, δ, Δ, s, hΔ, hδu, hs, hd0, hφ⟩ := hTZ.exists_prod σ.smooth σ.irred hu hg
-  have hA := GlobalTheory.T.isLanglandsQuotient_of_irreducible_unitary_segment_product _ (GlobalTheory.T.unitarisable_segment_twist_precedes_add_one_le _) a _ σ.ρ σ.irred m δ Δ s hΔ hδu hs hd0 hφ
-  have hB := GlobalTheory.T.langlandsQuotient_of_speh_type_product_isL _ hLM (GlobalTheory.T.unitarisable_segment_twist_precedes_add_one_le _) (GlobalTheory.T.parabolicInduction_in_stages_product_of_products _) a _ σ.ρ m δ Δ s hΔ hδu hs hd0 hφ d n hd _ σ'.ρ σ'.irred hq
+  have hA := _root_.GlobalTheory.isL_of_irreducible_prod_unitarisable_nu _ (GlobalTheory.T.unitarisable_segment_twist_precedes_add_one_le _) a _ σ.ρ σ.irred m δ Δ s hΔ hδu hs hd0 hφ
+  have hB := _root_.GlobalTheory.speh_quotient_isL _ hLM (GlobalTheory.T.unitarisable_segment_twist_precedes_add_one_le _) (GlobalTheory.T.parabolicInduction_in_stages_product_of_products _) a _ σ.ρ m δ Δ s hΔ hδu hs hd0 hφ d n hd _ σ'.ρ σ'.irred hq
   obtain ⟨a', ha', L⟩ := hrc
   rw [L.langlands _ _ (GlobalTheory.SpehRec.isL_of_equiv hB (equivRep (ParLaws.toRep σ'))),
     L.langlands _ _ (GlobalTheory.SpehRec.isL_of_equiv hA (equivRep (ParLaws.toRep σ)))]
@@ -42,11 +42,3 @@ private theorem rec_spehQuotT {E Ω : Type} [Field E] [NumberField E] [Field Ω]
   refine List.map_congr_left fun i _ => ?_
   exact segSum_nu L.nu _ _
 
-theorem UpperTheory.V.Z.Win.Gu.spehT :
-    HypothesesH → ExtraV → SpehT := by
-  intro H _ E Ω _ _ _ _ _ _ a d P w ρ σ _ _ hP hu hS A h rc hrc
-  have L := H.litN.loc
-  have hd : ∑ _ : Fin d, a = d * a := by simp
-  exact rec_spehQuotT hrc (GlobalTheory.T.generic_unitary_dual_gl L.unit L.sq L.gen L.multi L.cos) L.cos a d _ hd ρ σ hu
-    (GlobalTheory.CuspRep.Generic.isGeneric_of_isLocComp E a P w ρ hP)
-    (GlobalTheory.DiscreteSpectrumCM.isSpehQuot_of_isSpeh hd ρ σ hS)

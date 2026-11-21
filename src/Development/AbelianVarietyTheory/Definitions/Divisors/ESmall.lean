@@ -48,8 +48,6 @@ def eOf (F N k m : ℕ) (Mb Sm : ℝ) (vd : ℕ → ℝ) (M : ℕ) (S R : Finset
   else if p ∈ R then (F * N * Mb + Sm) / ((p : ℝ) - 1)
   else if m * p < k then eSmall F N m Mb Sm M p + 1 else (6 * F * m * Mb + Sm) / ((p : ℝ) - 1) + 1
 
-example (F N k m : ℕ) (Mb Sm : ℝ) (vd : ℕ → ℝ) (S R : Finset ℕ) : eOf F N k m Mb Sm vd 3 S R 5 = 0 := by simp [eOf]
-
 section Point
 
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
@@ -67,8 +65,6 @@ def NumAt (PP C : ℝ) : Prop :=
     ∀ q ∈ ({D.host.q, D.host.d} : Finset ℕ), D.R.r * Real.log q / ((q : ℝ) - 1) ≤ C * D.R.m * L.sc.L
 
 end Point
-
-def WtPt : Prop := Lifts fun Fm x _ ι p i PP C => (i : ℕ) + 1 < (Fm.D x ι).R.m → ∀ u1, Quo p i PP u1 → WtAt p i PP C u1
 
 def NumPt : Prop := Lifts fun Fm x _ ι p i PP C => (i : ℕ) + 1 < (Fm.D x ι).R.m → NumAt p i PP C
 

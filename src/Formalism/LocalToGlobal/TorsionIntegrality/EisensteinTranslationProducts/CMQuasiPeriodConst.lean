@@ -39,15 +39,6 @@ def CmStable : Prop :=
   ∀ (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d), 4 * (a : ℤ) * c = b ^ 2 + d →
     ∀ m n : ℤ, MulStable (cmPair a b d ha hd) ((m : ℂ) + (n : ℂ) * cmTheta b d)
 
-def CmOrder : Prop :=
-  ∀ (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d), 4 * (a : ℤ) * c = b ^ 2 + d →
-    Int.gcd (Int.gcd a b) c = 1 → ∀ α : ℂ, MulStable (cmPair a b d ha hd) α →
-      ∃ m n : ℤ, α = (m : ℂ) + (n : ℂ) * cmTheta b d
-
-def CmArea : Prop :=
-  ∀ (a : ℕ) (b : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d),
-    area (cmPair a b d ha hd) = (a : ℝ) * Real.sqrt d / 2
-
 def CmNorm : Prop :=
   ∀ (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d), 4 * (a : ℤ) * c = b ^ 2 + d → ∀ m n : ℤ,
     Complex.normSq ((m : ℂ) * (a : ℂ) + (n : ℂ) * cmTheta b d) = (a : ℝ) * (cmForm a b c m n : ℝ) ∧
@@ -60,11 +51,6 @@ def CmAltE : Prop :=
   ∀ (a : ℕ) (b : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (m n m' n' : ℤ),
     altE (cmPair a b d ha hd) ((m : ℂ) * (a : ℂ) + (n : ℂ) * cmTheta b d)
       ((m' : ℂ) * (a : ℂ) + (n' : ℂ) * cmTheta b d) = ((n * m' - m * n' : ℤ) : ℝ)
-
-def CMHalfLatticeIff : Prop :=
-  ∀ (a : ℕ) (b : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d), Odd a → ∀ m n : ℤ,
-    (((m : ℂ) + (n : ℂ) * cmTheta b d) * ((a : ℂ) / 2) ∈ (cmPair a b d ha hd).lattice ↔
-      Even m ∧ Even n)
 
 def CmTheta0 : Prop :=
   ∀ (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d), 4 * (a : ℤ) * c = b ^ 2 + d → Odd a →

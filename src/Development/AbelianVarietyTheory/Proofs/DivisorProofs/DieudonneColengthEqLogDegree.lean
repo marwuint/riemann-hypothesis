@@ -2,13 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEqKer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittModuleLengthCompositionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueKernelOrderPPowerDegreeIsogenyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasKernelOrderPPowerDegreeCompLeAddStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittModuleLengthComposition
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueKernelOrderPPowerDegreeIsogeny
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasKernelOrderPPowerDegreeCompLeAdd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivisibleGroupIsogenyBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelDegreeLeDieudonneColengthStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenousPDivGroupFinrankOmegaDualStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelDegreeLeDieudonneColength
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenousPDivGroupFinrankOmegaDual
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorProperties
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Dieu
 
 namespace GlobalTheory.Dieu
@@ -20,19 +20,19 @@ theorem length_quot_range_map_eq_of_hasLogDeg : ∀ (p : ℕ) [Fact p.Prime] (T 
   obtain ⟨n, g, hqg, hgq⟩ := hq
   have hq' : IsIsog q := ⟨n, g, hqg, hgq⟩
   have hg : IsIsog g := ⟨n, q, hgq, hqg⟩
-  obtain ⟨e', he', -⟩ := GlobalTheory.T.existsUnique_kernelOrder_pPowerDegree_isogeny p k H G g hg
+  obtain ⟨e', he', -⟩ := _root_.GlobalTheory.Dieu.existsUnique_hasLogDeg p k H G g hg
   have hpG := ((GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k G).1 n).2
   rw [← hqg] at hpG
-  have hle : n * G.height ≤ e + e' := GlobalTheory.T.hasKernelOrderPPowerDegree_comp_le_add p k G H G q g e e' _ he he' hpG
-  have h1 := GlobalTheory.T.kernelDegree_le_dieudonneColength p T k G H q e hq' he
-  have h2 := GlobalTheory.T.kernelDegree_le_dieudonneColength p T k H G g e' hg he'
-  obtain ⟨hinj, hfin1, -⟩ := GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k G H q hq'
-  obtain ⟨-, hfin2, -⟩ := GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k H G g hg
+  have hle : n * G.height ≤ e + e' := _root_.GlobalTheory.Dieu.hasLogDeg_comp_le p k G H G q g e e' _ he he' hpG
+  have h1 := _root_.GlobalTheory.Dieu.le_length_coker_of_hasLogDeg p T k G H q e hq' he
+  have h2 := _root_.GlobalTheory.Dieu.le_length_coker_of_hasLogDeg p T k H G g e' hg he'
+  obtain ⟨hinj, hfin1, -⟩ := _root_.GlobalTheory.Dieu.isog_finrank_omega p T k G H q hq'
+  obtain ⟨-, hfin2, -⟩ := _root_.GlobalTheory.Dieu.isog_finrank_omega p T k H G g hg
   obtain ⟨hid, hcomp, -, -, -, -, -, hrank, -⟩ :=
-    GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k G H G trivial trivial trivial
+    _root_.GlobalTheory.Dieu.base_functor_props p (fun _ _ _ => True) T.base k G H G trivial trivial trivial
   obtain ⟨-, -, -, -, hsmulG, -⟩ :=
-    GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k G G G trivial trivial trivial
-  obtain ⟨hadd, hpow, -⟩ := GlobalTheory.T.witt_module_length_composition p k (T.M G) (T.M H) (T.M G)
+    _root_.GlobalTheory.Dieu.base_functor_props p (fun _ _ _ => True) T.base k G G G trivial trivial trivial
+  obtain ⟨hadd, hpow, -⟩ := _root_.GlobalTheory.Dieu.colength_add_and_pow_and_eq p k (T.M G) (T.M H) (T.M G)
   have hsum := hadd (T.map q) (T.map g) hinj
   have hcomp' : T.map q ∘ₗ T.map g = T.map (q ≫ g) := (hcomp q g).symm
   have hmul : ∀ a : T.M G, (T.map q ∘ₗ T.map g) a = p ^ n • a := by

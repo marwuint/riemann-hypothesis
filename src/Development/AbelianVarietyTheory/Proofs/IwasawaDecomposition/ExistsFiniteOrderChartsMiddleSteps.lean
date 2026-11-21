@@ -1,23 +1,23 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemCutQGrp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStepLevelConjBaseLatticeUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitLocalLevelFirstFactorReadsComponentStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitLocalLevelFirstFactorReadsComponent
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdmissibleBasePointUnitaryNormalisesLevelStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalLevelCharacterFiniteOrderStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OpenLevelCutByCosetStabiliserStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugatedChartDataLocalLevelAtQStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FramesExactOfIsAdelicPointOfFramedLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartLevelIffFramesOnPointsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartCharacterFramesOnPointsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FramesExactOfIsAdelicPointOfFramedLattice
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartLevelIffFramesOnPoints
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartCharacterFramesOnPoints
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartClassesBijectiveOrbitsFramedLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartClassStabiliserRationalPartsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartClassStabiliserRationalParts
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetMovesWithFrameChangeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepPointDeterminedByLatticeInvariantsStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetsInFramesEqIffReductionsStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStepPointGivenReductionsCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetTwistPrimeEmptyOrCosetStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelAtTwistPrimesIsOpenStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemberLevelPrimeNotUnderTwistPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetTwistPrimeEmptyOrCoset
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelAtTwistPrimesIsOpen
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemberLevelPrimeNotUnderTwistPrime
 
 noncomputable section
 
@@ -32,20 +32,6 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] {ST SG Q : Finset (Pl E)}
-
-theorem exists_conj_level {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
-    (S : StepLevel F E σ J T f bad) (b : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
-    (hbU : b ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F))
-    (hbV : ∀ v, bc (prV (E := E) v) b ∈ levelVL σ J v S.Lb)
-    (hbT : ∀ v, (T : 𝓞 F) ∈ v.asIdeal → (S.Uloc v).map (MulAut.conj (bc (prV (E := E) v) b)).toMonoidHom = S.Uloc v)
-    (hbO : ∀ v, v ∉ bad → (T : 𝓞 F) ∉ v.asIdeal → bc (prV (E := E) v) b = 1) :
-    ∃ S' : StepLevel F E σ J T f bad, S'.Lb = S.Lb ∧ S'.U = S.U.map (MulAut.conj b).toMonoidHom ∧
-      ∀ (x : S'.U) (z : S.U), x.1 = b * z.1 * b⁻¹ → S'.chi x = S.chi z :=
-  GlobalTheory.T.exists_stepLevel_conj_baseLatticeUnitary S b hbU hbV hbT hbO
-
-theorem qPi_of_adAt {K : Type} [Field K] {Θ : LevQFam E K n Q} (q : QLoc hc n Q Θ) (P : Q) (hP : conjPrime₂ P.1 ≠ P.1)
-    (a : AfE F E) (e : E) (h : adAt F P.1 a = algebraMap E _ e) : qPi q P a = q.phi P e :=
-  GlobalTheory.T.splitLocalLevel_firstFactor_reads_component hc n q P hP a e h
 
 theorem k_facts {π : 𝓞 E} (hB : BasePi ST π) (k : GL (Fin n) (AfE F E)) (c : DiaG E ST)
     (hk : ∃ p₀ : DecoF E n ∅ ∅ ∅, IsPtOf hc k p₀ ∧ p₀.deco.1.N = stdLat E n)
@@ -113,7 +99,7 @@ theorem chartQ_exists {K : Type} [Field K] (Hw : ∀ w : SG, Subgroup (GL (Fin n
 
 theorem frExact_of_isPtOf {K : Type} [Field K] {Θ : LevQFam E K n Q} (q : QLoc hc n Q Θ) (hQ : ∀ P : Q, conjPrime₂ P.1 ≠ P.1)
     {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} (h : IsPtOf hc g p) : g ∈ UAd hc n ∧ FrExact q g p :=
-  GlobalTheory.T.framesExact_of_isAdelicPointOfFramedLattice hc n q hQ h
+  _root_.GlobalTheory.Mem.Col2.ChEx.frExact_of_isPtOf hc n q hQ h
 
 end Gen
 
@@ -140,7 +126,7 @@ theorem lev_iffQ (cq : PtY ST SG Q y → ∀ P : Q, Set (Sp X.E n)) (hact : InvA
     (e : FrExact q g r.1.1) (e' : FrExact q (g * s) p) :
     s ∈ levUQ hc n ST SG Q (chG Λ C) q ↔
       ∃ κ : FrmG Λ Θ, ufGL X.E n κ.1 = 1 ∧ (ya Λ Θ κ r).1.1 = p ∧ bar (ya Λ Θ κ r) = bar r ∧ cq (ya Λ Θ κ r) = cq r :=
-  GlobalTheory.T.chartLevel_iff_frames_onPoints hc cq hact Λ Θ r C hC D hD q hg hx p e e'
+  _root_.GlobalTheory.Mem.Col2.ChEx.lev_iff_frames hc cq hact Λ Θ r C hC D hD q hg hx p e e'
 
 theorem chr_eqQ (σ : X.K →+* ℂ) (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (r : PtY ST SG Q y)
     (C : ∀ w : SG, Set (Fin n → 𝓞 X.E ⧸ w.1.asIdeal)) (D : ∀ P : Q, Set (Sp X.E n)) (q : QLoc hc n Q (cutQ Θ D))
@@ -148,7 +134,7 @@ theorem chr_eqQ (σ : X.K →+* ℂ) (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.
     (e : FrExact q g r.1.1) (e' : FrExact q (g * z.1) (ya Λ Θ κ r).1.1) :
     ((((levTyp (chLam σ Λ C)).comp (Subgroup.inclusion (levUQ_le q _)) * (chiQ q _ σ)⁻¹ : levUQ hc n ST SG Q (chG Λ C) q →* ℂˣ) z : ℂˣ) : ℂ) =
       σ ((Λ.chr κ.2.1 * Θ.chr κ.2.2 : X.Kˣ) : X.K) :=
-  GlobalTheory.T.chartCharacter_frames_onPoints hc σ Λ Θ r C D q z hg κ h1 e e'
+  _root_.GlobalTheory.Mem.Col2.ChEx.chr_frames hc σ Λ Θ r C D q z hg κ h1 e e'
 
 end Mid
 
@@ -175,7 +161,7 @@ theorem stM_rangeQ (hact : InvActs cq) (hinj : PtDet cq) (c : (stR Λ Θ p₀ pr
     (D : ∀ P : Q, Set (Sp X.E n)) (hD : cq (rp Λ Θ p₀ pref c) = D) (γ : GL (Fin n) X.E) :
     γ ∈ (stM Λ Θ p₀ pref c).range ↔ ∃ g : UF X.E n × ↥(chG (Λ b) C) × ↥(cutQ (Θ b) D).grp, ufGL X.E n g.1 = γ ∧
       g • (rp Λ Θ p₀ pref c).1.1 = (rp Λ Θ p₀ pref c).1.1 :=
-  GlobalTheory.T.chartClassStabiliser_rationalParts Λ Θ p₀ pref cq hact hinj c b hb C hC D hD γ
+  _root_.GlobalTheory.Mem.Col2.ChEx.stM_range_tw Λ Θ p₀ pref cq hact hinj c b hb C hC D hD γ
 
 end Orb
 
@@ -204,7 +190,7 @@ theorem exists_pt_inv (hd : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vG
 
 theorem cqOf_form (hd : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (r : PtAt R sel mu cst u j) (P : QE sel (mu : Chr X.F X.E X.K)) :
     cqOf r P = ∅ ∨ ∃ (z : Sp X.E (R.N j)) (c : X.E), c ≠ 0 ∧ cqOf r P = {x | c⁻¹ • (x - z) ∈ stdAt X.E (R.N j) P.1} :=
-  GlobalTheory.T.couplingCoset_twistPrime_empty_or_coset hd r P
+  _root_.GlobalTheory.Mem.Col2.ChEx.cqOf_empty_or_coset hd r P
 
 end PtL
 
@@ -216,7 +202,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
 
 theorem thetaOpen_levQ (hL : L.Ok Ch sel mu cst G m2) (hd : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (j : ℕ) (b : L.β j) :
     ThetaOpen (L.levQ j b) :=
-  GlobalTheory.T.levelAtTwistPrimes_isOpen hL hd j b
+  _root_.GlobalTheory.Mem.Col2.ChEx.thetaOpen_levQ hL hd j b
 
 end Open
 
@@ -238,7 +224,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
 theorem trace_not_mem_twistPrime_under (hI : I.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) : ∀ P : I.Q a, (B.T u : 𝓞 B.host.F) ∉ (qv B.host.F P.1).asIdeal :=
-  GlobalTheory.T.memberLevelPrime_not_under_twistPrime I hI hPr u a
+  _root_.GlobalTheory.Mem.Col2.ChEx.T_notMem_qv I hI hPr u a
 
 theorem lvQ_open (hI : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ) (hm : i < B.R.m) (b : (I.stp u a i).β) : ThetaOpen (lvQ I a i b) := by
   obtain ⟨al, hal⟩ := Option.isSome_iff_exists.1 (b.2.2 hm)
@@ -338,7 +324,7 @@ theorem chart_of (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.
       (∀ c, (K.y c).1 = g c.1 * k⁻¹) ∧ ∀ c a', (K.stabI c a').1 = (I.stp u a i).gam c.1.1 a'.1 := by
   have hPr := l.pr
   have hX := GlobalTheory.Mem.FieldsLaws.fields_ok B
-  obtain ⟨hg1, -, hl⟩ := (GlobalTheory.T.trueColumn_spaces_standard_in_frameCoords I hI hP l Z).2.2.2 i hi
+  obtain ⟨hg1, -, hl⟩ := (_root_.GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 i hi
   have hf : B.fields.f = B.R.f := (hPr.vT_card u).symm.trans (l.lev u a).card_ST
   have hd := q_disj I hI a
   have hq := hqG hPr
@@ -463,7 +449,7 @@ theorem exists_charts : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok →
     rw [← cosetIn_iff hd hq]
     conv_lhs => rw [← hs β]
     exact key c (s β)
-  choose g hg using fun c : (I.stp u a i).Cl => GlobalTheory.T.exists_adelicPoint_decoratedLattice_allTwists I hI u _ (extTo I.SQ ((I.stp u a i).rep c).1.1)
+  choose g hg using fun c : (I.stp u a i).Cl => _root_.GlobalTheory.Mem.Col2.PtTwist.exists_ptOf_twists I hI u _ (extTo I.SQ ((I.stp u a i).rep c).1.1)
   choose K q K1 K2 K3 K4 K5 K6 using fun β => chart_of I hI hP l Z u a Q i hi hm hQ (k β) (hk.std β) (hk.off β) (hk.T β) g hg (s β)
     (fun c => GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c = β) (hp β)
   have hy : ∀ c, (id ((K (GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c)).y ⟨c, rfl⟩).1 : GA B (B.R.N i)) = g c * (k (GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c))⁻¹ := fun c => K5 _ _

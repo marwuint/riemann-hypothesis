@@ -64,7 +64,7 @@ private theorem UpperTheory.hecke_offprime_sum {D : D7} (V : Formalism.BasicNoti
   have h1 : ((1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
     rw [Nat.cast_one]; exact (Ideal.ne_top_iff_one _).1 P.isPrime.ne_top
   have hχ := UpperTheory.level_character_trivial V β Λ L hc' P h1 hoff
-  have H := GlobalTheory.T.doubleCosetOperator_eq_labelOperator_localReps V β Λ 1 L hc' P h1 hoff d x B hd hx hB hDC
+  have H := _root_.GlobalTheory.HkDict.dcOp_eq_label V β Λ 1 L hc' P h1 hoff d x B hd hx hB hDC
   have hs : GlobalTheory.Hk3.SphOp V (Formalism.DivisionValues.conjPl (Formalism.DivisionValues.conjPl P)) d (GlobalTheory.Hk3.rep V P d) := by
     rw [GlobalTheory.SphConj.conjPl_conjPl]
     exact GlobalTheory.SphLabelOps.sphOp_rep H.1
@@ -85,7 +85,7 @@ theorem UpperTheory.exists_sphericalHeckeRep_splitLabel_of_offLevelPlace :
   intro D L hT Gi Gl Kc Y cX ex Csz p j t Q k hpos hk
   obtain ⟨hg, -, -⟩ := (GlobalTheory.GoodPrimes.good_primes p.R.toRealDat (p.P.face p.Dcf p.Spf p.Del p.h0 Csz).lv2
     p.charW.base.lev).2.2.2 p.charW.base.fam t Q.1 Q.2
-  have hs := fun x => GlobalTheory.T.split_hecke_element_label_zeros_then_neg_ones (Vc D j) p.R.pl _ ((Q, k) : _ × ℕ) x
+  have hs := fun x => _root_.GlobalTheory.Hk3Split.isLabElt_of_isTEnv (Vc D j) p.R.pl _ ((Q, k) : _ × ℕ) x
   have hloc : ∀ a ∈ hkA p j t (Q, k), GlobalTheory.Hk3.IsLocElt (Vc D j) (plOf p j t Q) a :=
     fun a ha => (hs a).2.1 ((p.R.B.L j t).hecke.hA_loc (Q, k) ⟨hpos, hk⟩ a ha)
   exact ⟨hloc, UpperTheory.hecke_offprime_sum (Vc D j) (p.R.βV j) (p.R.ΛV j) (p.R.datVt j t) (p.charW.base.lev.βV j) (plOf p j t Q) hg

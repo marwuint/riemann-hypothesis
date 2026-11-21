@@ -64,60 +64,9 @@ theorem lo_det (hu : IsLo u) : u.det = 1 := by
   rw [← Matrix.det_transpose]
   exact up_det fun i j => ⟨(hu j i).1, fun e => (hu j i).2 e.symm⟩
 
-theorem lead_block_mul (Z : Matrix (Fin m) (Fin m) E) (hu : IsUp u) {l : ℕ} (hl : l ≤ m) :
-    (Z * u).submatrix (Fin.castLE hl) (Fin.castLE hl) =
-      Z.submatrix (Fin.castLE hl) (Fin.castLE hl) * u.submatrix (Fin.castLE hl) (Fin.castLE hl) := by
-  ext i j
-  simp only [Matrix.submatrix_apply, Matrix.mul_apply]
-  symm
-  refine Finset.sum_of_injOn (Fin.castLE hl) (Fin.castLE_injective hl).injOn (by simp) ?_ (by simp)
-  intro k _ hk
-  have : Fin.castLE hl j < k := by
-    by_contra h
-    exact hk ⟨⟨k, by have := j.2; simp [Fin.lt_def] at h; omega⟩, by simp, rfl⟩
-  rw [(hu k _).1 this, mul_zero]
-
-theorem lead_mul_up (Z : Matrix (Fin m) (Fin m) E) (hu : IsUp u) (l : ℕ) (hl : l ≤ m) :
-    SgAlg.lead (Z * u) l hl = SgAlg.lead Z l hl := by
-  rw [SgAlg.lead, lead_block_mul Z hu, Matrix.det_mul,
-    up_det (u := u.submatrix (Fin.castLE hl) (Fin.castLE hl)) fun i j => ⟨fun h => (hu _ _).1 h, fun h => (hu _ _).2 (congrArg _ h)⟩, mul_one,
-    SgAlg.lead]
-
-theorem lead_lo_mul (Z : Matrix (Fin m) (Fin m) E) (hu : IsLo u) (l : ℕ) (hl : l ≤ m) :
-    SgAlg.lead (u * Z) l hl = SgAlg.lead Z l hl := by
-  have t (W : Matrix (Fin m) (Fin m) E) : SgAlg.lead Wᵀ l hl = SgAlg.lead W l hl := by
-    rw [SgAlg.lead, SgAlg.lead, ← Matrix.det_transpose]; rfl
-  rw [← t, Matrix.transpose_mul, lead_mul_up (u := uᵀ) _ (fun i j => ⟨(hu j i).1, fun e => (hu j i).2 e.symm⟩), t]
-
 def IsStrict (A : Matrix (Fin m) (Fin m) E) : Prop := ∀ i j, j ≤ i → A i j = 0
 
 def simpleSum {r : ℕ} (A : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : E := ∑ a : Fin r, A a.castSucc a.succ
-
-theorem strict_conj {r : ℕ} {u v A : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hu : IsUp u) (hv : IsUp v)
-    (hA : IsStrict A) : IsStrict (v * A * u) ∧ simpleSum (v * A * u) = simpleSum A := by
-  have h1 : IsStrict (v * A) := fun i j h => by
-    rw [Matrix.mul_apply]
-    refine Finset.sum_eq_zero fun k _ => ?_
-    rcases lt_or_ge k i with hk | hk
-    · rw [(hv i k).1 hk, zero_mul]
-    · rw [hA k j (h.trans hk), mul_zero]
-  have h2 (a : Fin r) : (v * A) a.castSucc a.succ = A a.castSucc a.succ := by
-    rw [Matrix.mul_apply, Finset.sum_eq_single a.castSucc _ (by simp), (hv _ _).2 rfl, one_mul]
-    intro k _ hk
-    rcases lt_or_gt_of_ne hk with h | h
-    · rw [(hv _ k).1 h, zero_mul]
-    · rw [hA k _ (Fin.castSucc_lt_iff_succ_le.1 h), mul_zero]
-  refine ⟨fun i j h => ?_, Finset.sum_congr rfl fun a _ => ?_⟩
-  · rw [Matrix.mul_apply]
-    refine Finset.sum_eq_zero fun k _ => ?_
-    rcases lt_or_ge j k with hk | hk
-    · rw [(hu k j).1 hk, mul_zero]
-    · rw [h1 i k (hk.trans h), zero_mul]
-  · rw [Matrix.mul_apply, Finset.sum_eq_single a.succ _ (by simp), (hu _ _).2 rfl, mul_one, h2]
-    intro k _ hk
-    rcases lt_or_gt_of_ne hk with h | h
-    · rw [h1 _ k (Fin.le_castSucc_iff.2 h), zero_mul]
-    · rw [(hu k _).1 h, mul_zero]
 
 end Tri
 
@@ -138,31 +87,6 @@ theorem pairM_mul (u v : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     pairM σ J (P' * u) (P * v) = cT σ v * pairM σ J P' P * u := by
   rw [pairM, pairM, cT_mul]
   simp only [Matrix.mul_assoc]
-
-theorem eOf_mul (hu : IsUp u) : eOf (P * u) = eOf P * u.submatrix Fin.castSucc Fin.castSucc := by
-  ext i j
-  simp only [eOf, Matrix.submatrix_apply, Matrix.mul_apply, id, Fin.sum_univ_castSucc]
-  rw [(hu _ _).1 (Fin.castSucc_lt_last j), mul_zero, add_zero]
-
-theorem up_block (hu : IsUp u) : IsUp (u.submatrix Fin.castSucc Fin.castSucc) :=
-  fun _ _ => ⟨fun h => (hu _ _).1 h, fun h => (hu _ _).2 (congrArg _ h)⟩
-
-theorem spanX_mul (hu : IsUp u) : spanX (P * u) = spanX P := by
-  have k {Q : Matrix (Fin n) (Fin (r + 1)) E} {w : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hw : IsUp w) :
-      spanX (Q * w) ≤ spanX Q := by
-    rintro _ ⟨c, rfl⟩
-    exact ⟨w.submatrix Fin.castSucc Fin.castSucc *ᵥ c, by simp [eOf_mul hw]⟩
-  refine le_antisymm (k hu) ?_
-  simpa [Matrix.mul_assoc, up_mul_inv hu] using k (Q := P * u) (up_inv hu)
-
-theorem perpX_mul (hu : IsUp u) : perpX σ J (P * u) = perpX σ J P := by
-  have k {Q : Matrix (Fin n) (Fin (r + 1)) E} {w : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hw : IsUp w) :
-      perpX σ J Q ≤ perpX σ J (Q * w) := by
-    intro x hx
-    rw [mem_perpX] at hx ⊢
-    rw [eOf_mul hw, cT_mul, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_zero]
-  refine le_antisymm ?_ (k hu)
-  simpa [Matrix.mul_assoc, up_mul_inv hu] using k (Q := P * u) (up_inv hu)
 
 theorem mulVec_mem_spanX {x : Fin n → E} (hx : x ∈ spanX P) : s *ᵥ x ∈ spanX (s * P) := by
   obtain ⟨c, rfl⟩ := hx
@@ -367,17 +291,6 @@ theorem primIn_latMap (hs : IsUnit s.det) : PrimIn (latMap s M) (latMap s Λ) �
   simp only [PrimIn, SetLike.le_def]
   refine and_congr (hsur.forall.trans ?_) (hsur.forall.trans ?_) <;>
     simp only [mulVec_mem_latMap hs, mulVec_mem_span hs]
-
-omit [NumberField E] in
-
-theorem selfDual_latMap (hJ : IsUnit J.det) (hs : IsUn σ J s) (h : SelfDual σ J Λ) :
-    SelfDual σ J (latMap s Λ) := by
-  have hu := isUnit_det_of_isUn hJ hs
-  have hsur := Matrix.mulVec_surjective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 hu)
-  refine ⟨h.1.map _, hsur.forall.2 fun x => ?_⟩
-  rw [hsur.forall]
-  simp only [mulVec_mem_latMap hu, form_mulVec hs]
-  exact h.2 x
 
 end Lattices
 

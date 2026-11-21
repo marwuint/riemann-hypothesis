@@ -4,7 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanStandard
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxCoordsRealFamilyArchimedeanLinear
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRatPairIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLintegralSqEqMulSetLIntegralThetaTransformStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLintegralSqEqMulSetLIntegralThetaTransform
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
@@ -139,7 +141,7 @@ theorem contDiff_thetaTr_realF : ∀ (F E : Type) [Field F] [NumberField F] [Fie
   | mem Φ h =>
     obtain ⟨f, g, hg, rfl⟩ := h
     intro w
-    obtain ⟨M, hM⟩ := GlobalTheory.T.summable_rational_schwartzBruhat_mul_polynomial_decay F κ g hg (fun i => ((co.e w).1 i).2)
+    obtain ⟨M, hM⟩ := _root_.GlobalTheory.LatSumSB.summable_sb_mul_decay F κ g hg (fun i => ((co.e w).1 i).2)
     let eM := InfiniteAdeleRing.ringEquiv_mixedSpace F
     let yv : (κ → F) → (κ → mixedEmbedding.mixedSpace F) := fun x i => mixedEmbedding F (x i)
     let ah : κ → mixedEmbedding.mixedSpace F := fun i => eM ((co.e w).1 i).1

@@ -28,14 +28,6 @@ theorem star_mem_zpow (m : ℤ) {x : D.host.E} (hx : x ∈ ddS D ^ m) : star x �
   · rw [_root_.zpow_neg, zpow_natCast, Formalism.L2.SG.Pf.NcReal.JX.CovB.ddS_eq, ← FractionalIdeal.coeIdeal_pow] at hx ⊢
     exact Formalism.L2.SG.NGCut.LeadingMinorIntegrality.star_mem_inv n hx
 
-theorem mul_mem_zpow {m n : ℤ} {x y : D.host.E} (hx : x ∈ ddS D ^ m) (hy : y ∈ ddS D ^ n) :
-    x * y ∈ ddS D ^ (m + n) := by
-  rw [zpow_add₀ ddS_ne']
-  exact FractionalIdeal.mul_mem_mul hx hy
-
-theorem one_mem_zpow_zero : (1 : D.host.E) ∈ ddS D ^ (0 : ℤ) := by
-  rw [zpow_zero]; exact FractionalIdeal.one_mem_one _
-
 theorem iQ_eq (b a : Fin D.R.rS) : iQ D b a = ((ddS D ^ ((b : ℤ) - a) : FIE) : Set D.host.E) := by
   unfold iQ aaD
   congr 1

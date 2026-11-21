@@ -1,89 +1,10 @@
-import Formalism.BranchSandwichDivisors.NormLog
+import Mathlib
+import Formalism.BranchSandwichDivisors.StatementR
 import Formalism.BranchSandwichDivisors.BranchIsometryProofs.Interlace
 
 open Finset
 
 namespace Formalism.BranchingDeterminantCap
-
-private theorem two_pow_le_succ_factorial (j : ℕ) : 2 ^ j ≤ (j + 1).factorial := by
-  induction j with
-  | zero => simp
-  | succ k ih =>
-    rw [Nat.factorial_succ, pow_succ]
-    calc 2 ^ k * 2 ≤ (k + 1).factorial * (k + 1 + 1) := Nat.mul_le_mul ih (by omega)
-      _ = (k + 1 + 1) * (k + 1).factorial := Nat.mul_comm _ _
-
-theorem choose_succ_mul_two_pow_le (r j : ℕ) : r.choose (j + 1) * 2 ^ j ≤ r ^ (j + 1) := by
-  calc r.choose (j + 1) * 2 ^ j ≤ r.choose (j + 1) * (j + 1).factorial :=
-        Nat.mul_le_mul le_rfl (two_pow_le_succ_factorial j)
-    _ = r.descFactorial (j + 1) := by rw [Nat.descFactorial_eq_factorial_mul_choose, Nat.mul_comm]
-    _ ≤ r ^ (j + 1) := Nat.descFactorial_le_pow r (j + 1)
-
-theorem geom_half_le (k : ℕ) : ∑ j ∈ range k, ((1 : ℝ) / 2) ^ j ≤ 2 := by
-  exact sum_geometric_two_le k
-
-theorem multiplicity_at_place : MultPlace := by
-  unfold MultPlace
-  intro q k r Nn hq hk hkr hrq hN0 hNn gam hg0 hgs
-  have hq2 : (2:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq
-  have hq0 : (0:ℝ) < (q:ℝ) := by linarith
-  have hqne : (q:ℝ) ≠ 0 := hq0.ne'
-  have hrq' : (r:ℝ) ≤ (q:ℝ) := by exact_mod_cast hrq
-  have hg : ∀ l, 0 ≤ gam l ∧ gam l ≤ (q:ℝ) ^ l := by
-    intro l
-    cases l with
-    | zero => simp [hg0]
-    | succ l =>
-      rw [hgs l]
-      have h1 : (0:ℝ) ≤ (q:ℝ) ^ l := pow_nonneg hq0.le l
-      constructor
-      · rw [pow_succ]; nlinarith
-      · linarith
-  obtain ⟨m, rfl⟩ : ∃ m, k = m + 1 := ⟨k - 1, by omega⟩
-  rw [Finset.sum_range_succ', hN0]
-  simp only [Nat.cast_one, one_mul, Nat.sub_zero]
-  have hterm : ∀ i ∈ range (m + 1), (Nn (i + 1) : ℝ) * gam (m + 1 - (i + 1)) ≤
-      (r:ℝ) * (q:ℝ) ^ m * ((1:ℝ) / 2) ^ i := by
-    intro i hi
-    have him : i ≤ m := by have := Finset.mem_range.mp hi; omega
-    have e : m + 1 - (i + 1) = m - i := by omega
-    rw [e]
-    have hN : (Nn (i + 1) : ℝ) ≤ (r.choose (i + 1) : ℝ) := by exact_mod_cast hNn (i + 1)
-    have key : (r.choose (i + 1) : ℝ) * 2 ^ i ≤ (r:ℝ) ^ (i + 1) := by
-      exact_mod_cast choose_succ_mul_two_pow_le r i
-    have hqs : (q:ℝ) ^ m = (q:ℝ) ^ i * (q:ℝ) ^ (m - i) := by
-      rw [← pow_add]; congr 1; omega
-    have h2 : ((2:ℝ)) ^ i * ((1:ℝ) / 2) ^ i = 1 := by rw [← mul_pow]; norm_num
-    have hpos : (0:ℝ) ≤ ((1:ℝ) / 2) ^ i := by positivity
-    have hqm : (0:ℝ) ≤ (q:ℝ) ^ (m - i) := pow_nonneg hq0.le _
-    calc (Nn (i + 1) : ℝ) * gam (m - i) ≤ (r.choose (i + 1) : ℝ) * (q:ℝ) ^ (m - i) :=
-          mul_le_mul hN (hg _).2 (hg _).1 (Nat.cast_nonneg _)
-      _ = (r.choose (i + 1) : ℝ) * 2 ^ i * (q:ℝ) ^ (m - i) * ((1:ℝ) / 2) ^ i := by
-          linear_combination (-((r.choose (i + 1) : ℝ) * (q:ℝ) ^ (m - i))) * h2
-      _ ≤ (r:ℝ) * (q:ℝ) ^ m * ((1:ℝ) / 2) ^ i := by
-          apply mul_le_mul_of_nonneg_right _ hpos
-          calc (r.choose (i + 1) : ℝ) * 2 ^ i * (q:ℝ) ^ (m - i)
-              ≤ (r:ℝ) ^ (i + 1) * (q:ℝ) ^ (m - i) := mul_le_mul_of_nonneg_right key hqm
-            _ = (r:ℝ) * (r:ℝ) ^ i * (q:ℝ) ^ (m - i) := by ring
-            _ ≤ (r:ℝ) * (q:ℝ) ^ i * (q:ℝ) ^ (m - i) := by gcongr
-            _ = (r:ℝ) * (q:ℝ) ^ m := by rw [hqs]; ring
-  have hsum_nonneg : 0 ≤ ∑ i ∈ range (m + 1), (Nn (i + 1) : ℝ) * gam (m + 1 - (i + 1)) :=
-    Finset.sum_nonneg (fun i _ => mul_nonneg (Nat.cast_nonneg _) (hg _).1)
-  have hsum_le : ∑ i ∈ range (m + 1), (Nn (i + 1) : ℝ) * gam (m + 1 - (i + 1)) ≤
-      2 * (r:ℝ) * (q:ℝ) ^ m := by
-    calc _ ≤ ∑ i ∈ range (m + 1), (r:ℝ) * (q:ℝ) ^ m * ((1:ℝ) / 2) ^ i := Finset.sum_le_sum hterm
-      _ = (r:ℝ) * (q:ℝ) ^ m * ∑ i ∈ range (m + 1), ((1:ℝ) / 2) ^ i := by rw [Finset.mul_sum]
-      _ ≤ (r:ℝ) * (q:ℝ) ^ m * 2 := by
-          apply mul_le_mul_of_nonneg_left (geom_half_le (m + 1)); positivity
-      _ = 2 * (r:ℝ) * (q:ℝ) ^ m := by ring
-  have hgm : gam (m + 1) = (q:ℝ) ^ (m + 1) - (q:ℝ) ^ m := hgs m
-  have hA : (q:ℝ) ^ (m + 1) * (1 - 1 / (q:ℝ)) = (q:ℝ) ^ (m + 1) - (q:ℝ) ^ m := by
-    field_simp; ring
-  have hB : (q:ℝ) ^ (m + 1) * (1 + (2 * (r:ℝ) - 1) / (q:ℝ)) =
-      (q:ℝ) ^ (m + 1) + (2 * (r:ℝ) - 1) * (q:ℝ) ^ m := by
-    field_simp; ring
-  rw [hA, hB, hgm]
-  constructor <;> linarith [hsum_nonneg, hsum_le]
 
 theorem one_sub_sum_le_prod {ι : Type} (s : Finset ι) (x : ι → ℝ) (h0 : ∀ i ∈ s, 0 ≤ x i)
     (h1 : ∀ i ∈ s, x i ≤ 1) : 1 - ∑ i ∈ s, x i ≤ ∏ i ∈ s, (1 - x i) := by
@@ -280,37 +201,6 @@ theorem capacity_constant_bound : CapConst := by
           simp only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
           rw [Finset.prod_pow_eq_pow_sum, ← pow_mul, hsum]
 
-theorem capacity_log_bound : CapLog := by
-  unfold CapLog
-  intro n lam sg a h ha
-  obtain ⟨hne, hle⟩ := capacity_constant_bound n lam sg h
-  have hd1 := d1_nonneg_of_interlace h
-  have hM : (0:ℝ) ≤ ((lam 0 - lam (Fin.last n) : ℤ) : ℝ) := by
-    have := interlace_antitone h (Fin.zero_le (Fin.last n))
-    exact_mod_cast (by omega : (0:ℤ) ≤ lam 0 - lam (Fin.last n))
-  have hn : (0:ℝ) ≤ n := Nat.cast_nonneg n
-  have hcpos : (0:ℝ) < |(cCap lam sg : ℝ)| := by
-    rw [abs_pos]; exact_mod_cast hne
-  have h1 : |(cCap lam sg : ℝ)| ≤
-      (((lam 0 - lam (Fin.last n) + (n:ℤ) - 1) : ℤ) : ℝ) ^ (n * (d1 lam sg).toNat) := by
-    exact_mod_cast hle
-  have e : (((lam 0 - lam (Fin.last n) + (n:ℤ) - 1) : ℤ) : ℝ) =
-      ((lam 0 - lam (Fin.last n) : ℤ) : ℝ) + n - 1 := by push_cast; ring
-  have hB : |(((lam 0 - lam (Fin.last n) + (n:ℤ) - 1) : ℤ) : ℝ)| ≤ 2 * a := by
-    rw [e, abs_le]; constructor <;> linarith
-  have h2 : |(cCap lam sg : ℝ)| ≤ (2 * a) ^ (n * (d1 lam sg).toNat) := by
-    calc _ ≤ _ := h1
-      _ ≤ |(((lam 0 - lam (Fin.last n) + (n:ℤ) - 1) : ℤ) : ℝ)| ^ (n * (d1 lam sg).toNat) := by
-          rw [← abs_pow]; exact le_abs_self _
-      _ ≤ (2 * a) ^ (n * (d1 lam sg).toNat) := by gcongr
-  have ht : (((d1 lam sg).toNat : ℕ) : ℝ) = ((d1 lam sg : ℤ) : ℝ) := by
-    exact_mod_cast Int.toNat_of_nonneg hd1
-  calc Real.log |(cCap lam sg : ℝ)| ≤ Real.log ((2 * a) ^ (n * (d1 lam sg).toNat)) :=
-        Real.log_le_log hcpos h2
-    _ = ((n * (d1 lam sg).toNat : ℕ) : ℝ) * Real.log (2 * a) := Real.log_pow _ _
-    _ = ((n:ℝ) + 1 - 1) * ((d1 lam sg : ℤ) : ℝ) * Real.log (2 * a) := by
-        rw [Nat.cast_mul, ht]; ring
-
 theorem card_pairs_lt (n : ℕ) :
     ((Finset.univ : Finset (Fin (n + 1) × Fin (n + 1))).filter (fun p => p.1 < p.2)).card =
       (n + 1) * n / 2 := by
@@ -367,23 +257,5 @@ theorem weyl_dimension_bound : WeylDimBound := by
             (fun p hp => le_trans zero_le_one (weyl_factor h p (Finset.mem_filter.mp hp).2).1)
             (fun p hp => (weyl_factor h p (Finset.mem_filter.mp hp).2).2)
       _ = _ := by rw [Finset.prod_const, card_pairs_lt]
-
-theorem weyl_log_bound : WeylLog := by
-  unfold WeylLog
-  intro n nu a h ha
-  obtain ⟨h1, h2⟩ := weyl_dimension_bound n nu h
-  have hM : (0:ℝ) ≤ ((nu 0 - nu (Fin.last n) : ℤ) : ℝ) := by
-    have := h (Fin.zero_le (Fin.last n))
-    exact_mod_cast (by omega : (0:ℤ) ≤ nu 0 - nu (Fin.last n))
-  have hn : (0:ℝ) ≤ n := Nat.cast_nonneg n
-  have hK : (((n + 1) * n / 2 : ℕ) : ℝ) = ((n:ℝ) + 1) * ((n:ℝ) + 1 - 1) / 2 := by
-    have hdvd : 2 ∣ (n + 1) * n := by
-      rw [mul_comm]; exact even_iff_two_dvd.mp (Nat.even_mul_succ_self n)
-    rw [Nat.cast_div hdvd (by norm_num)]; push_cast; ring
-  calc Real.log _ ≤ Real.log ((2 * a) ^ ((n + 1) * n / 2)) := by
-        apply Real.log_le_log (by linarith)
-        calc _ ≤ _ := h2
-          _ ≤ (2 * a) ^ ((n + 1) * n / 2) := by gcongr <;> linarith
-    _ = _ := by rw [Real.log_pow, hK]
 
 end Formalism.BranchingDeterminantCap

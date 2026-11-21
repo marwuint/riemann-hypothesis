@@ -118,9 +118,6 @@ theorem HfIntRec_of_gen (h : HfGenRec) : HfIntRec := by
   rw [Hf_smul]
   exact h D cc hcc δ hδ h0 N N' L L' hA c hc c' hc' A hA' B hB'
 
-theorem LinkThIndep_of_gen (hA : HfGenRec) (hB : SelfDualRec) : LinkThIndep :=
-  LinkThIndep_of_parts (HfIntRec_of_gen hA) hB
-
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 end

@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsOfLayers
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusSubOneWittTensorLatticeSurjectiveFixedStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusSubOneWittTensorLatticeSurjectiveFixed
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniqueCocycleStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGammaLayerPadicCoordinatesStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWeakTopologyWittTiltTensorStatement
@@ -433,7 +433,7 @@ theorem exists_classMaps : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : L
   have := compact_GK K
   have hT : ∀ T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL),
       Setup (φRW LL) (fun g : ↥(GK K) => AI.gRW LL (g : GQ l)) l T := fun T =>
-    ⟨⟨(GlobalTheory.T.frobenius_sub_one_wittTensorLattice_surjective_fixed l K LL T).1, fun b => ((GlobalTheory.T.frobenius_sub_one_wittTensorLattice_surjective_fixed l K LL T).2.1 b).1⟩, GlobalTheory.T.exists_weak_topology_witt_tilt_tensor l P AI K LL T⟩
+    ⟨⟨(_root_.GlobalTheory.WittTensorFixed.main l K LL T).1, fun b => ((_root_.GlobalTheory.WittTensorFixed.main l K LL T).2.1 b).1⟩, GlobalTheory.T.exists_weak_topology_witt_tilt_tensor l P AI K LL T⟩
   exact nonempty_cl (l := l) (I := I) (gRW_one AI LL) (fun g h => gRW_mul AI LL (g : GQ l) (h : GQ l))
     (fun g => phi_gRW AI LL (g : GQ l)) hT (GlobalTheory.T.exists_gammaLayer_padic_coordinates l P K s LL hg Γ) E
 

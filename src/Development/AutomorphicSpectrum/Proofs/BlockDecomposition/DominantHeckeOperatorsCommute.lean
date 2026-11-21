@@ -1,7 +1,8 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.JointGeneralisedEigenvectors.IsJointGenEig
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CasselmanFirstPropertyStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCharacterExistsUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCharacterExistsUnique
+import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.TwistedIndependenceLemma.TwistedIndependence
 
 open GlobalTheory.PRep PositivityTheory.SphericalProduct
 
@@ -32,6 +33,6 @@ theorem heckeOp_commute : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopol
     have e : (t' : G) * (t : G) * ((t' : G)⁻¹ * (t : G)⁻¹ * (t' : G) * (t : G))⁻¹ = (t : G) * t' := by
       group
     rwa [e] at this
-  exact (GlobalTheory.T.hecke_character_exists_unique G D.J D.isOpen_J D.isCompact_J V π hπ ((t : G) * t')).unique h1 h3
+  exact (_root_.GlobalTheory.CompanionTheory.HeckeFixed.heckeExistsUnique G D.J D.isOpen_J D.isCompact_J V π hπ ((t : G) * t')).unique h1 h3
 
 end GlobalTheory.CompanionTheory.CassHecke

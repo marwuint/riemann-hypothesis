@@ -101,10 +101,6 @@ def ES (W : R2 Ω l) (A : ValuationSubring Ω) : Prop :=
     ∀ n : ℕ, 1 ≤ n → ∀ w : Pl, w ∉ S' → l ^ n ∣ normV w - 1 → ∀ ψ : G ℚ Ω →* Multiplicative (ZMod (l ^ n)),
       KillsMu (normV w) ψ → Function.Surjective ψ → Tame c W y n w ψ
 
-def FinalTheorems (ι : Qbar l ≃+* ℂ) (e : ℕ) (W : R2 Ω l) (g : Newform (2 * e + 1)) : Prop :=
-  ¬ l ∣ g.M ∧ ‖ι.symm (g.a l)‖ = 1 ∧ ∃ χ : G ℚ Ω →* (Qbar l)ˣ, KillsMu l χ ∧
-    g.Att ι (tw W (cycBar ℚ Ω l ^ (-(e : ℤ)) * (dt W)⁻¹ * χ))
-
 structure Coc2 (c : Coef l) (n : ℕ) (S : Finset Pl) (ξ : G ℚ Ω → G ℚ Ω → Qbar l) : Prop where
   cont : Continuous fun p : G ℚ Ω × G ℚ Ω => ξ p.1 p.2
   int : ∀ s t, ξ s t ∈ c.O
@@ -125,15 +121,6 @@ def cup (W : R2 Ω l) (a b : G ℚ Ω → Fin 2 → Qbar l) (s t : G ℚ Ω) : Q
 
 def ht (W : R2 Ω l) (y z : G ℚ Ω → Fin 2 → Qbar l) (u : G ℚ Ω → Qbar l) (s : G ℚ Ω) : Qbar l :=
   (mat W s - 1).det * u s - om ((mat W s - 1).adjugate *ᵥ y s) (z s)
-
-structure Inp0 : Prop extends U3.CohInp where
-  lemM : Alg.LemmaM
-  lemM' : Alg.LemmaM'
-  lemP : Alg.LemmaP
-  adK : Af.AdVanishK
-  adQ : Af.AdVanishQ
-  newAut : Af.NewformAut
-  number : Af.CongruenceNumberRankThree
 
 end GlobalTheory.Ord2
 

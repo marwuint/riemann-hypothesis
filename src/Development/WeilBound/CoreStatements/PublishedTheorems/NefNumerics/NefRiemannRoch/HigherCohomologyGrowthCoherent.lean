@@ -12,7 +12,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowLeGlobalSe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIntersectionNumberEqGenericRankMul
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntersectionNumberEqGenericRankMulProjCurve
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfForallExists
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SheafCohomologyDimTwistBoundOfShortExactStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SheafCohomologyDimTwistBoundOfShortExact
 import Development.WeilBound.CoreStatements.PublishedTheorems.NefNumerics.NefRiemannRoch.HigherCohomologyGrowthStructureStatement
 import Development.WeilBound.CoreStatements.PublishedTheorems.NefNumerics.NefRiemannRoch.HigherCohomologyGrowthTwist
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsRestFurther
@@ -66,7 +66,7 @@ theorem GlobalTheory.NefBound.hdim_twist_le_of_isIntegral : ∀ (k : Type) [Fiel
     have h1 : IsFiniteQC S.X₁ := inferInstanceAs (IsFiniteQC (structureModule X))
     have hbd : ∀ i, 0 < i → ∃ C : ℕ, ∀ m : ℕ,
         hdim k (twist (twist G (lbPow A n)) (lbPow L m)) i ≤ C * ((d + 1) * (m + 1) ^ d) :=
-      fun i hi => GlobalTheory.T.sheafCohomologyDim_twist_bound_of_shortExact k X hp L hL.isLB S hS h1 hQ i _
+      fun i hi => _root_.GlobalTheory.hdim_twist_bound_of_shortExact k X hp L hL.isLB S hS h1 hQ i _
         (GlobalTheory.T.higher_cohomology_growth_structure k X hp d L hL hd hE i hi) (ih (cokernel (QCoh.sectionHom s)) (by omega) i hi)
     obtain ⟨C, hC⟩ := GlobalTheory.T.higher_cohomology_growth_twist k X hp d L hL.isLB hE (twist G (lbPow A n))
       ((QCoh.suppDim_le _).trans hd) _ (isLB_lbZPow hM (-1)) hbd i hi

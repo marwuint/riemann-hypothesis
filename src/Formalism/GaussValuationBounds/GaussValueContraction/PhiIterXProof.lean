@@ -1,13 +1,12 @@
 import Formalism.GaussValuationBounds.Statement
 import Formalism.WindowSums.PowerSeriesRelationList
-import Formalism.FrobeniusContraction.FrobeniusContractionProofs.FrobIterQModPrimeHolds
+import Formalism.FrobeniusContraction.Statement
 import Formalism.FrobeniusContraction.FrobeniusContractionProofs.FiniteCocyclesLeCocycles
 import Formalism.FrobeniusContraction.FrobeniusContractionProofs.ContractBij
 import Formalism.FrobeniusContraction.FrobeniusContractionProofs.CocycleComponentRelation
 import Formalism.FrobeniusContraction.FrobeniusContractionProofs.LenBound
-import Formalism.FrobeniusContraction.FrobeniusContractionProofs.LemmaS
-import Formalism.FrobeniusContraction.FrobeniusContractionProofs.EulerCharacteristicHolds
-import Formalism.FrobeniusContraction.FrobeniusContractionProofs.LowestComponent
+import Formalism.FrobeniusContraction.StatementTop
+import Mathlib
 import Formalism.FrobeniusContraction.HighestWeightResidueAvoids
 
 noncomputable section
@@ -63,38 +62,6 @@ theorem psIdeal_proof : PsIdeal := by
   simp only [Formalism.WachCohomologyFacts.Base.p, Formalism.WachCohomologyFacts.Base.q]
   rw [hadd]
   exact Ideal.add_mem _ (hX s) (Ideal.subset_span (by simp))
-
-theorem delVal_proof : DelVal := by
-  intro ℓ _ hℓ2 χ hχ r
-  have hp : ℓ.Prime := Fact.out
-  have hℓ1 : 1 ≤ ℓ - 1 := by have := hp.two_le; omega
-  have hz := Formalism.WindowSums.arc_ZpowVal ℓ χ 1 le_rfl (fun h => absurd h hℓ2) (by exact_mod_cast hχ)
-    ((ℓ - 1 : ℕ) : ℤ) (by exact_mod_cast (show ℓ - 1 ≠ 0 by omega))
-  have hnd : ¬ ℓ ∣ ℓ - 1 := Nat.not_dvd_of_pos_of_lt (by omega) (by omega)
-  rw [zpow_natCast, padicValInt.of_nat, padicValNat.eq_zero_of_not_dvd hnd] at hz
-  have hvp := (Formalism.WindowSums.arc_ValProd ℓ (χ ^ (ℓ - 1)) 1 le_rfl (fun h => absurd h hℓ2)
-    (by rw [hz.2])).1 r
-  have heq : ∀ y, ((χ ^ (ℓ - 1) : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) ^ y = (χ : ℤ_[ℓ]) ^ ((ℓ - 1) * y) := by
-    intro y; rw [Units.val_pow_eq_pow_val, pow_mul]
-  simp only [heq, mul_one] at hvp
-  exact hvp
-
-theorem dSat_proof : DSat := by
-  intro O _ _ ϖ hϖ p v N hN hv h c hc
-  rw [Ideal.mem_span_singleton] at h
-  obtain ⟨q, hq⟩ := h
-  rw [Ideal.mem_span_pair] at hc
-  obtain ⟨a, b, hab⟩ := hc
-  have hp0 : PowerSeries.constantCoeff p = ϖ * PowerSeries.constantCoeff q := by
-    have h1 := congrArg PowerSeries.constantCoeff hq
-    simp only [map_sub, map_mul, PowerSeries.constantCoeff_C, map_pow, PowerSeries.constantCoeff_X,
-      zero_pow (by omega : N ≠ 0), mul_zero, sub_zero] at h1
-    exact h1
-  have hc0 := congrArg PowerSeries.constantCoeff hab
-  simp only [map_add, map_mul, PowerSeries.constantCoeff_C, hp0] at hc0
-  exact ⟨PowerSeries.constantCoeff a + PowerSeries.constantCoeff b * PowerSeries.constantCoeff q, by
-    rw [← hc0]
-    ring⟩
 
 theorem dUDeg_proof : DUDeg := by
   intro O _ _ ϖ hϖ ℓ p₀ p₁ v₀ v₁ w s₀ s₁ b₀ b₁ hs hb hv₀ hv₁ hw h₀ h₁ hmem

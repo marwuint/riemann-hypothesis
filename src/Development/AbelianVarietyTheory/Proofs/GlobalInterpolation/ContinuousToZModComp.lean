@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslateMome
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HeisenbergCocycleFormIntegralSelfDual
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeylHeisenbergOperatorCalculusRational
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MonomialEqSumJet
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdmissibleLatticeBasisExistsStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AlgebraicNumbersPadicPlacesFactsStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdmissibleLatticeBasisExists
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AlgebraicNumbersPadicPlacesFacts
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsLocallyConstantToZModPow
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RatIntOfIsIntegral
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FieldIsoLatticesFormTaylorCorrespondStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FieldIsoLatticesFormTaylorCorrespond
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker Formalism.L2.Th1.H GlobalTheory.IndefiniteRowSideFullHecke.JetSumTable GlobalTheory.MomT
 
 noncomputable section
@@ -163,7 +163,7 @@ theorem al_unit {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[
   have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.2 hn
   have h : coc A t t = -2 * ((-(m : ℚ) / (2 * (n : ℚ) ^ 2) : ℚ) : ℝ) := by
     push_cast; rw [← hm]; field_simp
-  have := (GlobalTheory.T.algebraicNumbers_padicPlaces_facts X.K p A.σ₀ ι).2.2 lam (-(m : ℚ) / (2 * (n : ℚ) ^ 2))
+  have := (_root_.GlobalTheory.MomPlace.places X.K p A.σ₀ ι).2.2 lam (-(m : ℚ) / (2 * (n : ℚ) ^ 2))
   rw [alV_eq, h]
   rwa [show (Real.pi : ℂ) * Complex.I * ((-2 * ((-(m : ℚ) / (2 * (n : ℚ) ^ 2) : ℚ) : ℝ) : ℝ) : ℂ) =
     -(2 * (Real.pi : ℂ)) * Complex.I * (((-(m : ℚ) / (2 * (n : ℚ) ^ 2) : ℚ) : ℝ) : ℂ) by push_cast; ring]
@@ -212,19 +212,19 @@ theorem pu_emb (x : HomE X.E a b) :
 
 theorem Hf_pu (z w : VCx X.Tau a b) :
     TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) (pu s z) (pu s w) = HV (ambOf s B χ cD).sc z w := by
-  rw [(GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).2.2.1, pu_iT, pu_iT]
+  rw [(_root_.GlobalTheory.SeamTransport.transport D X s cc δ B χ cD a b hs).2.2.1, pu_iT, pu_iT]
 
 theorem pu_mem {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)} {x : HomE X.E a b}
     (hx : x ∈ per (ambOf s B χ cD) N N') :
     pu s (emb (ambOf s B χ cD) x) ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (s.lat N) (s.lat N') := by
-  rw [(GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).1, pu_iT]
+  rw [(_root_.GlobalTheory.SeamTransport.transport D X s cc δ B χ cD a b hs).1, pu_iT]
   exact ⟨x, hx, rfl⟩
 
 theorem exists_pt {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)} (hδ : δ ≠ 0) (τ : X.Tau)
     {m : Matrix (Fin b) (Fin a) D.host.E}
     (hm : δ • TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) m ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (s.lat N) (s.lat N')) :
     ∃ x ∈ per (ambOf s B χ cD) N N', mat s x = m := by
-  rw [(GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).1] at hm
+  rw [(_root_.GlobalTheory.SeamTransport.transport D X s cc δ B χ cD a b hs).1] at hm
   obtain ⟨x, hx, h⟩ := hm
   refine ⟨x, hx, ?_⟩
   funext i j
@@ -272,7 +272,7 @@ theorem jetC_pu (c : ℂ) (hc : c ≠ 0) (G : TaylorLogMetric.VC D a b → ℂ) 
   have h1 := (Heis.calculus X (ambOf s B χ cD) a b).2.2.2.2.2.2.2 Unit {()} (fun _ => c) (fun _ z => G (pu s z))
     (fun _ _ => hG2) m
   simp only [Finset.sum_singleton] at h1
-  rw [h, h1, jetC, ← (GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).2.2.2 G hG' m]
+  rw [h, h1, jetC, ← (_root_.GlobalTheory.SeamTransport.transport D X s cc δ B χ cD a b hs).2.2.2 G hG' m]
   rfl
 
 end Tr
@@ -344,12 +344,12 @@ theorem ptMom : ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.hos
   have hp : p.Prime := Fact.out
   obtain ⟨hδ, ⟨τ₀⟩, -, -, -, hLa⟩ := hLa
   have hL := (hLa N N' hN1 hN2).2
-  have hadm := (GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).2.1 N N' ha hb hN1 hN2
+  have hadm := (_root_.GlobalTheory.SeamTransport.transport D X s cc δ B χ cD a b hs).2.1 N N' ha hb hN1 hN2
   have hn0 : n ≠ 0 := by rintro rfl; exact hp.ne_one (by simpa using hn)
   obtain ⟨N₀, hN₀, hM⟩ := hM a b _ _ hadm (pu s (emb (ambOf s B χ cD) t)) ⟨n, Nat.pos_of_ne_zero hn0, hn, by
     have := pu_mem B χ cD hs ht
     rwa [Nat.cast_smul_eq_nsmul, emb, map_nsmul] at this⟩
-  obtain ⟨r, bb, hbb⟩ := GlobalTheory.T.admissible_lattice_basis_exists D cc δ p a b _ _ hp hcc hadm
+  obtain ⟨r, bb, hbb⟩ := _root_.GlobalTheory.HomLocBasis.exists_nnBasis D cc δ p a b _ _ hp hcc hadm
   obtain ⟨μ, hμ, hM⟩ := hM r bb hbb
   choose β hβ hβm using fun i => exists_pt B χ cD hs hδ τ₀ (hbb.2 i)
   obtain ⟨hα, hα1⟩ := al_unit (ambOf s B χ cD) hX hδ hL lam ι hn0 ht

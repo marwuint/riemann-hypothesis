@@ -135,26 +135,4 @@ end Formalism.MainNotions.ColumnSystems.Pf.TF
 
 namespace Formalism.MainNotions.ColumnSystems.Pf
 
-open Formalism.MainNotions.G Formalism.GradedWeylDivisibility TF
-open Formalism.L2.G.Model (dE dual_edgeBasis pQ_ne edgeBasis dual_edge Th0)
-
-theorem testFlatAt : TestFlatAt := by
-  intro p n' _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS φ hφ m TT aT bT hm e he
-  letI : Algebra (WF p n') O := algOfIdent jO φ
-  obtain ⟨b, hb⟩ := edgeBasis hS m 1 e he
-  have hb' := dual_edgeBasis p 1 (pQ_ne hS) e b hb
-  obtain ⟨Θ, hΘ1, hΘ2⟩ := flatTheta hS φ hφ m TT aT bT hm b hb.1
-  obtain ⟨Θ', hΘ1', hΘ2'⟩ := flatTheta hS φ hφ m TT aT bT hm _ hb'.1
-  obtain ⟨thK, hthK⟩ := exists_thK Kf hm (vecH TT) (hhDegs TT aT bT)
-  have hpO : (p : O) ∈ IsLocalRing.maximalIdeal O :=
-    (IsLocalRing.mem_maximalIdeal _).2 (settingCZ p n' W Qq O Kf ι σ jO w hS).2
-  have hMD : MultDiv O p (kapZ p m TT aT bT) (k := m + 1) (hhDegs TT aT bT) :=
-    multDiv_kapFl O p hpO (k := m + 1) (hhDegs TT aT bT)
-  refine ⟨b, _, Θ, Θ', 1, 1, XiH thK (zK Kf p (kapZ p m TT aT bT) TT aT bT),
-    ⟨hΘ1, hb.2.1, isGLW_one _, by rw [mul_matQ_one]; exact hb⟩,
-    ⟨(dual_edge hS m 1 e he).1, hΘ1', hb'.2.1, isGLW_one _, by rw [mul_matQ_one]; exact hb'⟩,
-    fun t c v hv => Xi_CC thK hS hm hthK _ hMD e he t c v hv,
-    fun F => ⟨lift_Pol hS φ hφ m TT aT bT 1 (isGLW_one _) F.1 F.2, lift_Pol hS φ hφ m TT aT bT 1 (isGLW_one _) F.1 F.2⟩,
-    fun F F' y hy => pairing thK hS φ hφ hthK b hb.1 hb'.1 Θ Θ' hΘ2 hΘ2' F F' y hy⟩
-
 end Formalism.MainNotions.ColumnSystems.Pf

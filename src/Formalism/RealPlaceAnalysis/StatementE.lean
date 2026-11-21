@@ -17,12 +17,6 @@ def qminor {A : Type*} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n
 def qdet {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (u : ℂ) : A :=
   qminor E id id u
 
-def RTT : Prop :=
-  ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (E : Fin n → Fin n → A), GlRel E →
-    ∀ (x y : ℂ) (a b c d : Fin n),
-      algebraMap ℂ A (x - y) * (Tm E x a b * Tm E y c d - Tm E y c d * Tm E x a b) =
-        Tm E x c b * Tm E y a d - Tm E y c b * Tm E x a d
-
 def QSkewRow : Prop :=
   ∀ (A : Type) [Ring A] [Algebra ℂ A] (n t : ℕ) (E : Fin n → Fin n → A) (a b : Fin t → Fin n)
     (τ : Equiv.Perm (Fin t)) (u : ℂ),

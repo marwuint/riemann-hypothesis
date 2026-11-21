@@ -305,18 +305,6 @@ def actT : Λ →+* Module.End ℤ_[p] P.T := actTate P.oA.toRingAct p _
 
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
 
-def tateGt : Submodule ℤ_[p] P.T := LinearMap.range (Tate.map p P.toA)
-
-def torusPts : (specO O O ⟶ splitTorus (Sp O) P.Ext.X) →* (specO O O ⟶ P.Gt) :=
-  haveI := P.D.i_hom
-  MonoidHom.mk' (fun x => x ≫ P.D.i) fun x y => MonObj.mul_comp x y _
-
-def tateTorus : Submodule ℤ_[p] P.T := LinearMap.range (Tate.map p (P.toA.comp P.torusPts))
-
-theorem tateTorus_le_tateGt : P.tateTorus ≤ P.tateGt := by
-  rintro _ ⟨t, rfl⟩
-  exact ⟨Tate.map p P.torusPts t, Tate.ext fun n => rfl⟩
-
 variable [IsAlgClosed C] [CharZero C]
 
 def IsWeilChar (t : P.T) (χ : Tv P.Gt p) : Prop :=
@@ -418,15 +406,6 @@ def al₀ : P.T →ₗ[ℤ_[p]] omega P.Gt where
   map_smul' a t := Subtype.ext (funext fun x => Tate.map_smul_of_isHausdorff
     (AddMonoidHom.mk' (fun t : P.T => (dlogTv (P.weilChar t)).1 x) fun s t => by
       rw [dlogTv_mul (P.weilChar_add s t)]; rfl) a t)
-
-theorem eq_al₀_iff (t : P.T) (f : omega P.Gt) :
-    f = P.al₀ t ↔ ∃ χ : Tv P.Gt p, P.IsWeilChar t χ ∧ IsAl χ f.1 := by
-  constructor
-  · rintro rfl
-    exact ⟨P.weilChar t, P.isWeilChar_weilChar t, isAl_dlogTv _⟩
-  · rintro ⟨χ, hχ, hf⟩
-    rw [(P.existsUnique_isWeilChar t).unique hχ (P.isWeilChar_weilChar t)] at hf
-    exact eq_dlogTv hf
 
 theorem al₀_act (a : Λ) (t : P.T) : P.al₀ (P.actT a t) = omegaAct P.oGt a (P.al₀ t) := P.dlogTv_weilChar_act a t
 

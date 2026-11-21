@@ -45,10 +45,4 @@ def pullbackPushforward_holds.Statement : Prop :=
     (∀ j, volume ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' pullBad R v Ψ) = 0) ∧
       ∀ y, (pullQ R v Ψ ⁻¹' {y} \ pullBad R v Ψ).Finite
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

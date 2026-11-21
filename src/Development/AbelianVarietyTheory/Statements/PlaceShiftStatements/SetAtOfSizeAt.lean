@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SizeAt
+import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeChoiceClausesOfWeakCharacterisationAtFaceAl
 import Development.AutomorphicArithmetic.CyclotomicBounds.RamifiedDiscriminants.FourMulQLeCondN
 
@@ -14,44 +15,6 @@ namespace GlobalTheory.BigTop.Fun.SetAtModel
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
-
-theorem finite_tup (p : PtAt ex Csz) : Finite p.P.T := by
-  classical
-  have h1 := p.charW.tup.mu_off
-  have h2 := p.charW.tup.mu_used
-  have : (Set.univ : Set p.P.T) ⊆ insert p.P.A3.A.μ0 (p.R.mu '' (p.R.twPl : Set _)) := fun t _ => by
-    rcases h2 t with h | ⟨w, rfl⟩
-    · exact Or.inl h
-    · by_cases hw : w ∈ p.R.twPl
-      · exact Or.inr ⟨w, hw, rfl⟩
-      · exact Or.inl (h1 w hw)
-  exact Set.finite_univ_iff.1 ((((p.R.twPl).finite_toSet.image _).insert _).subset this)
-
-set_option maxHeartbeats 1600000 in
-
-theorem setting_of_size (p : PtAt ex Csz) (hp : p.Rows) (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows L) (he : GlobalTheory.GLq.ESerTie D) :
-    HidaSetting L p.R.toRealDat p.F.lv2 where
-  size := hs
-  eser := he
-  host := p.host
-  hF := p.hF
-  core := (GlobalTheory.OneMapBridge.heckeChoiceClauses_of_weakCharacterisation_at_face D _ _ _ _ _ _ p.R p.F p.charW hp.exAt).1
-  mu_off := p.charW.tup.mu_off
-  mu_used := p.charW.tup.mu_used
-  mu_ne := p.charW.tup.mu_ne
-  mu_conj := p.charW.tup.mu_conj
-  mu_on := p.charW.tup.mu_on
-  grp := p.charW.base.grp.record
-  guard := p.qGuard
-  fin := finite_tup p
-  fullY := p.charW.fullY
-  fullX := p.charW.fullX
-  std := p.stdChar
-  stdX := p.stdX
-  betaX := p.betaStd.2
-
-theorem setAt_of_sizeAt (h : SizeAt) : SetAt :=
-  h.imp fun _ _ _ a => evPt_imp a fun _ _ _ p hp b he => setting_of_size p hp b he
 
 section Sizes
 
@@ -349,31 +312,6 @@ theorem sizeRows_of (P : ParameterChoice' D L) (T : ParamsT D L P) (hC : P.CnW =
     have e : (16 * (D.R.t : ℝ) ^ 8) * B ≤ B * B := by gcongr
     have f : B * B = L.sc.b := by rw [← hB2]; ring
     linarith only [b, d, e, f, hSc, Bb, B1]
-
-theorem sizeRows_fam {eps : ℝ} (he : 0 < eps) (Fm : FamP eps) (h : FamHyp Fm) :
-    ∃ x₀ : ℝ, ∀ x, Fm.x1 < x → x₀ ≤ x → ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows (Fm.L x i) := by
-  refine ⟨max (44 ^ 4) ((8 : ℝ) ^ (4 / eps)), fun x hx h0 i => ?_⟩
-  obtain ⟨⟨hn, -⟩, ⟨hm0, hm1⟩, hk, -⟩ := h.2.1 x hx i
-  obtain ⟨hc, -, hg, -⟩ := h.1.2.2.2.2.2.2.2.2 x hx i
-  have ex := Fm.L_x x i hx
-  have ee := Fm.L_eps x i
-  refine sizeRows_of (Fm.params x hx i) (Fm.parT x hx i) (Fm.fixed.2.2.2.2.2.2.2 x hx i).1 (Fm.sizes x hx i)
-    (by rw [ex, ee]; exact hn) (by rw [ex]; exact hm0) (by rw [ex]; exact hm1) (by rw [ex, ee]; exact hk) hg
-    (h.2.2.1 x hx i) hc ?_ (by rw [ex]; exact le_of_max_le_left h0)
-  rw [ex, ee]
-  have e1 : (8 : ℝ) = ((8 : ℝ) ^ (4 / eps)) ^ (eps / 4) := by
-    rw [← Real.rpow_mul (by norm_num), show 4 / eps * (eps / 4) = 1 by field_simp, Real.rpow_one]
-  rw [e1]
-  exact Real.rpow_le_rpow (by positivity) (le_of_max_le_right h0) (by positivity)
-
-theorem sizeAt : SizeAt :=
-  ⟨1, one_pos, fun _ he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ hF _ =>
-    let ⟨x₀, h⟩ := sizeRows_fam he Fm hF
-    ⟨x₀, fun x hx h0 i _ _ => h x hx h0 i⟩⟩⟩
-
-theorem setAt : SetAt := setAt_of_sizeAt sizeAt
-
-theorem atPt_of_big {Q : ChP} (hQ : Big Q) : AtPt Q := setAt.atPt hQ
 
 end Main
 

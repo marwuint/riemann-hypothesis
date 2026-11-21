@@ -2,12 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 import Development.AbelianVarietyTheory.Definitions.Divisors.AdjKltOfLtDisc
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsProjectiveVarietyOfIsLocalRingOfVarietyPoiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsProjectiveVarietyOfIsLocalRingOfVarietyPoi
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLocModelIsPrimeOf
+import Development.AbelianVarietyTheory.Definitions.Divisors.NotDominatesTopPlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingEquivTransportsVarietyPairDataStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvrPlaceEquivOfRingEquivOverConstantsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KltAlongPlaceNeighboursRingEquivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOrdQEqOrdDivOfRationalCombinationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InversionOfAdjunctionProjStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvrPlaceEquivOfRingEquivOverConstants
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KltAlongPlaceNeighboursRingEquiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOrdQEqOrdDivOfRationalCombination
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InversionOfAdjunctionProj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProjOverLocallyOfFiniteType
 
 set_option autoImplicit false
@@ -60,7 +62,7 @@ theorem klt_of_adjKlt_locModel : GlobalTheory.Published.Principalisation → ∀
     S.disc (dForm c x) φ = 0 → EffAt c n T (dForm c x) φ →
     AdjKlt c n T S (dForm c x) (φ + Finsupp.single f 1) → Klt c n T (dForm c x) φ := by
   intro hP L _ c n T x φ f S hT hTic hx hfT hf0 hS hSf hSd hEff hAdj
-  obtain ⟨Y, hY, p, e, y, hproj, hdim, hc, hy⟩ := GlobalTheory.T.exists_projectiveVariety_of_isLocalRingOfVarietyPoint L c T n x hT hx
+  obtain ⟨Y, hY, p, e, y, hproj, hdim, hc, hy⟩ := _root_.GlobalTheory.LocModelProj.exists_projective_of_isLocModel L c T n x hT hx
   haveI := hY
   haveI : LocallyOfFiniteType p := GlobalTheory.isProjOver_locallyOfFiniteType ℂ Y p hproj
   haveI : IsLocallyNoetherian Y := LocallyOfFiniteType.isLocallyNoetherian p
@@ -71,11 +73,11 @@ theorem klt_of_adjKlt_locModel : GlobalTheory.Published.Principalisation → ∀
     rw [← hy]
     ext z
     simp [Subring.mem_map]
-  obtain ⟨Φ, hΦ⟩ := GlobalTheory.T.exists_dvrPlace_equiv_of_ringEquiv_over_constants c (Cartier.constFn p) e.symm hc'
+  obtain ⟨Φ, hΦ⟩ := _root_.GlobalTheory.FieldPair.placeEquiv_ringEquiv c (Cartier.constFn p) e.symm hc'
   obtain ⟨hx', -, -, -⟩ := GlobalTheory.T.ringEquiv_transports_varietyPair_data c (Cartier.constFn p) e.symm hc' n x T φ hx
   have hψ0 : (φ + Finsupp.single f 1 : L →₀ ℚ) 0 = 0 := by
     simp [hEff.apply_zero, Finsupp.single_apply, hf0]
-  obtain ⟨m, g, hm, hg⟩ := GlobalTheory.T.exists_ordQ_eq_ord_div_of_rational_combination (Cartier.constFn p)
+  obtain ⟨m, g, hm, hg⟩ := _root_.GlobalTheory.FieldPair.exists_ordQ_eq_ord_div (Cartier.constFn p)
     (Finsupp.mapDomain e.symm (φ + Finsupp.single f 1)) (by
       rw [← map_zero e.symm, Finsupp.mapDomain_apply e.symm.injective]
       exact hψ0)
@@ -141,9 +143,9 @@ theorem klt_of_adjKlt_locModel : GlobalTheory.Published.Principalisation → ∀
   have hadj : AdjKlt (Cartier.constFn p) n (locRing y) (placeEquiv p ((placeEquiv p).symm (Φ S)))
       (dForm (Cartier.constFn p) (e.symm ∘ x)) (Finsupp.single (g : Y.functionField) (1 / (m : ℚ))) := by
     rw [Equiv.apply_symm_apply, ← hyT]
-    have h := GlobalTheory.T.kltAlongPlaceNeighbours_ringEquiv c (Cartier.constFn p) e.symm hc' n x T _ S (Φ S) hx (hΦ S).1 hAdj
+    have h := _root_.GlobalTheory.FieldPair.adjKlt_ringEquiv c (Cartier.constFn p) e.symm hc' n x T _ S (Φ S) hx (hΦ S).1 hAdj
     exact (adjKlt_congr h.apply_zero (Finsupp.single_eq_of_ne g.ne_zero.symm) hordQ).1 h
-  have hmain := GlobalTheory.T.inversion_of_adjunction_proj_alt hP Y p n hproj hdim (e.symm ∘ x) m g f' y ((placeEquiv p).symm (Φ S))
+  have hmain := _root_.GlobalTheory.inversion_of_adjunction_proj hP Y p n hproj hdim (e.symm ∘ x) m g f' y ((placeEquiv p).symm (Φ S))
     hx' hm hstalk hreg hSprime hSord hSdisc heff hadj
   refine ⟨hEff.form_ne_zero, hEff.apply_zero, fun E hE => ?_⟩
   have hThr : ((placeEquiv p).symm (Φ E)).Through y := by

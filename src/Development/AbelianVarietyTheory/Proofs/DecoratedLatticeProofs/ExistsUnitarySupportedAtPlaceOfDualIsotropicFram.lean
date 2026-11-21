@@ -17,10 +17,6 @@ theorem adj_diagonal {n : ℕ} (f : Fin n → AE D) :
     adj (Matrix.diagonal f) = Matrix.diagonal (fun i => cA D (f i)) := by
   ext i j; simp [adj, Matrix.diagonal_apply]; split_ifs <;> simp_all [eq_comm]
 
-theorem mul_tail {a m n k : ℕ} {A : Mx D a m} {B : Mx D m n} {C : Mx D a n} (h : A ⬝ B = C) (X : Mx D n k) :
-    A ⬝ (B ⬝ X) = C ⬝ X := by
-  rw [← Matrix.mul_assoc, h]
-
 theorem mul_tail₃ {a m n p k : ℕ} {A : Mx D a m} {B : Mx D m n} {B' : Mx D n p} {C : Mx D a p}
     (h : A ⬝ (B ⬝ B') = C) (X : Mx D p k) :
     A ⬝ (B ⬝ (B' ⬝ X)) = C ⬝ X := by
@@ -39,21 +35,10 @@ variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 
 theorem gXX {k : ℕ} (X : Mx D ρ k) : adj d.jX ⬝ (gA S ⬝ (d.jX ⬝ X)) = 0 := by
   rw [mul_tail₃ d.gram_XX, Matrix.zero_mul]
-theorem gYY {k : ℕ} (X : Mx D ρ k) : adj d.jY ⬝ (gA S ⬝ (d.jY ⬝ X)) = 0 := by
-  rw [mul_tail₃ d.gram_YY, Matrix.zero_mul]
 theorem gYX {k : ℕ} (X : Mx D ρ k) : adj d.jY ⬝ (gA S ⬝ (d.jX ⬝ X)) = X := by
   rw [mul_tail₃ d.gram_YX, Matrix.one_mul]
-theorem gXY {k : ℕ} (X : Mx D ρ k) : adj d.jX ⬝ (gA S ⬝ (d.jY ⬝ X)) = X := by
-  rw [mul_tail₃ d.gram_XY, Matrix.one_mul]
 theorem g0X {k : ℕ} (X : Mx D ρ k) : adj d.j0 ⬝ (gA S ⬝ (d.jX ⬝ X)) = 0 := by
   rw [mul_tail₃ d.gram_0X, Matrix.zero_mul]
-theorem g0Y {k : ℕ} (X : Mx D ρ k) : adj d.j0 ⬝ (gA S ⬝ (d.jY ⬝ X)) = 0 := by
-  rw [mul_tail₃ d.gram_0Y, Matrix.zero_mul]
-theorem adjoint_jX_gram_j_zero_eq_zero {k : ℕ} (X : Mx D S₀.rank k) : adj d.jX ⬝ (gA S ⬝ (d.j0 ⬝ X)) = 0 := by
-  rw [mul_tail₃ d.wittDecomp_gram_X_anisotropic, Matrix.zero_mul]
-theorem g00 {k : ℕ} (X : Mx D S₀.rank k) : adj d.j0 ⬝ (gA S ⬝ (d.j0 ⬝ X)) = gA S₀ ⬝ X :=
-  mul_tail₃ d.gram_00 X
-
 end GlobalTheory.IwaPlace.BuildQ
 
 namespace GlobalTheory.IwaPlace.BuildQ
@@ -73,10 +58,6 @@ theorem one_sub_sq {ε : AE D} (hεε : ε * ε = ε) : (1 - ε) * (1 - ε) = 1 
 theorem kill_left {ε : AE D} (hεε : ε * ε = ε) {m n k : ℕ} {x : Mx D m n} (hx : ε • x = x) (X : Mx D n k) :
     (1 - ε) • (x ⬝ X) = 0 := by
   rw [← Matrix.smul_mul, ← hx, smul_smul, one_sub_mul_self hεε, zero_smul, Matrix.zero_mul]
-
-theorem kill_right {ε : AE D} (hεε : ε * ε = ε) {m n k : ℕ} {x : Mx D n k} (hx : ε • x = x) (X : Mx D m n) :
-    (1 - ε) • (X ⬝ x) = 0 := by
-  rw [← Matrix.mul_smul, ← hx, smul_smul, one_sub_mul_self hεε, zero_smul, Matrix.mul_zero]
 
 theorem diag_absorb {ε : AE D} {n : ℕ} {α : Fin n → AE D} (hαε : ∀ i, ε * α i = α i) :
     ε • Matrix.diagonal α = Matrix.diagonal α := by

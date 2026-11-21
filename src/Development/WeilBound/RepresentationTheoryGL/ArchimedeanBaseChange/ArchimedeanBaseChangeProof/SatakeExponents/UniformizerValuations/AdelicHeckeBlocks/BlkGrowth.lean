@@ -37,6 +37,4 @@ theorem blkWord' (h : MultAlg) : BlockWordOperators := blkWord (blkOp' h)
 
 theorem pTTest' (h : KerEx) : PTTest := pTTest regOf finConv' fmTr' h
 
-theorem blkGrowth' (h : MultAlg) (h' : D4.EllFormula2J) : BlockEllipticGrowth := blkGrowth (blkOp' h) (blkWord' h) blkSum (ellLin h')
-
 end PositivityTheory.Rg.BcB.F.BlockFiniteConvolution

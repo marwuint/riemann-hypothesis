@@ -74,18 +74,6 @@ theorem subst_substEach_unit (g : PowerSeries A) (φ : MvPowerSeries Unit A) :
 
 end Composition
 
-section FormalModule
-
-variable {A : Type*} [CommRing A]
-
-structure FormalModule (F : FormalGroup A) [F.IsComm] where
-
-  smul : A →+* Hom F F
-
-  linearCoeff_smul : ∀ a, linearCoeff F (smul a) = a
-
-end FormalModule
-
 section LubinTate
 
 variable {A : Type*} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
@@ -116,13 +104,6 @@ theorem single_zero_ne_single_one :
   intro h
   have := congrArg (fun d => d 0) h
   simp at this
-
-theorem substEach_fin_two (g : PowerSeries A) :
-    (substEach g : Fin 2 → MvPowerSeries (Fin 2) A) =
-      ![PowerSeries.subst (X 0 : MvPowerSeries (Fin 2) A) g,
-        PowerSeries.subst (X 1 : MvPowerSeries (Fin 2) A) g] := by
-  funext i
-  fin_cases i <;> rfl
 
 variable (hπ : Irreducible π)
 include hπ
@@ -206,33 +187,6 @@ theorem lubinTateFormalGroup_toPowerSeries (hf : IsLubinTateSeries π f) :
 
 instance (hf : IsLubinTateSeries π f) : (lubinTateFormalGroup hπ hf).IsComm :=
   ⟨lubinTateLift_comm hπ hf⟩
-
-noncomputable def lubinTateEndo (hf : IsLubinTateSeries π f) :
-    Hom (lubinTateFormalGroup hπ hf) (lubinTateFormalGroup hπ hf) where
-  toPowerSeries := f
-  constantCoeff_eq_zero := hf.constantCoeff_eq_zero
-  map_add := by
-    have := subst_lubinTateLift hπ hf hf (![1, 1] : Fin 2 → A)
-    rw [substEach_fin_two] at this
-    exact this
-
-theorem eq_lubinTateFormalGroup (hf : IsLubinTateSeries π f) (F : FormalGroup A) (φ : Hom F F)
-    (hφ : φ.toPowerSeries = f) : F = lubinTateFormalGroup hπ hf := by
-  apply FormalGroup.ext
-  refine eq_lubinTateLift hπ hf hf (![1, 1] : Fin 2 → A) ?_ ?_
-  · have h2 := two_le_order_higher F
-    have e : higher F = F.toPowerSeries - X 0 - X 1 := rfl
-    rwa [e, sub_sub, ← one_mul (X 0 : MvPowerSeries (Fin 2) A), ← one_mul (X 1 : MvPowerSeries (Fin 2) A),
-      ← map_one (C : A →+* MvPowerSeries (Fin 2) A), ← linearForm_fin_two] at h2
-  · have := φ.map_add
-    rw [hφ] at this
-    rw [substEach_fin_two]
-    exact this
-
-theorem existsUnique_formalGroup (hf : IsLubinTateSeries π f) :
-    ∃! F : FormalGroup A, ∃ φ : Hom F F, φ.toPowerSeries = f :=
-  ⟨lubinTateFormalGroup hπ hf, ⟨lubinTateEndo hπ hf, rfl⟩,
-    fun F ⟨φ, hφ⟩ => eq_lubinTateFormalGroup hπ hf F φ hφ⟩
 
 end LubinTate
 
@@ -384,10 +338,6 @@ noncomputable def lubinTateEndRingHom :
 
 theorem lubinTateEndRingHom_apply (a : A) : lubinTateEndRingHom hπ hf a = lubinTateHom hπ hf hf a :=
   rfl
-
-noncomputable def lubinTateFormalModule : FormalModule (lubinTateFormalGroup hπ hf) where
-  smul := lubinTateEndRingHom hπ hf
-  linearCoeff_smul a := coeff_one_lubinTateHom hπ hf hf a
 
 noncomputable def lubinTateIso (u : Aˣ) :
     Iso (lubinTateFormalGroup hπ hg) (lubinTateFormalGroup hπ hf) :=

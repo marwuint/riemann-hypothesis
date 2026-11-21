@@ -10,26 +10,6 @@ namespace GlobalTheory.Count.Test
 
 open Formalism.MainNotions.S GlobalTheory.Count
 
-theorem dHS_rank_one (z : ℂ) : dHS (!![z] : Matrix (Fin 1) (Fin 1) ℂ) = |Real.log ‖z‖| := by
-  have hev : (Matrix.isHermitian_conjTranspose_mul_self
-      (!![z] : Matrix (Fin 1) (Fin 1) ℂ)).eigenvalues 0 = ‖z‖ ^ 2 := by
-    have htr := (Matrix.isHermitian_conjTranspose_mul_self
-      (!![z] : Matrix (Fin 1) (Fin 1) ℂ)).trace_eq_sum_eigenvalues
-    rw [Fin.sum_univ_one] at htr
-    have h2 : ((!![z] : Matrix (Fin 1) (Fin 1) ℂ)ᴴ * !![z]).trace = ((‖z‖ ^ 2 : ℝ) : ℂ) := by
-      simp [Matrix.trace_fin_one, Matrix.mul_apply, Complex.conj_mul']
-    exact Complex.ofReal_injective (htr.symm.trans h2)
-  unfold dHS
-  rw [Fin.sum_univ_one, hev, Real.log_pow]
-  rw [show ((2 : ℕ) : ℝ) * Real.log ‖z‖ / 2 = Real.log ‖z‖ by push_cast; ring, Real.sqrt_sq_eq_abs]
-
-theorem layerProd_const (f : ℕ) (τ : Fin 2 → ℝ) (c : ℝ) :
-    layerProd 10 f ![1, 2] τ (fun _ => c) = c ^ ((2 * 3 * 10 - 2 * 3 ^ 2 - (1 + 4)) * f) := by
-  simp [layerProd, Finset.prod_filter, Fin.prod_univ_two, Fin.sum_univ_two]
-  ring
-
-theorem gap_const : (16 : ℝ) * ((1 / 10 ^ 6)⁻¹) ^ 2 * (4 * 11 + 6) = 8 * 10 ^ 14 := by norm_num
-
 variable (I : AutInst)
 
 theorem mem_lamX (x : I.GA) (y : Fin I.n → I.E) : y ∈ lamX I x ↔
@@ -188,39 +168,5 @@ theorem one_mem_nearSet (x : I.GA) {δ : ℝ} (hδ : 0 ≤ δ) : (1 : I.GA) ∈ 
   · rw [mul_one, inv_mul_cancel]
     exact one_mem (Formalism.UG.stabGL I.Lf)
   · simp [uMat, Formalism.REAL.hs, hδ]
-
-theorem hasType_zero (x : I.GA) (j : Fin 0 → ℕ) (τ : Fin 0 → ℝ) :
-    HasType I x j τ ↔ stepLt I x (1 / 2) = ⊥ := by
-  unfold HasType HasFlag
-  constructor
-  · rintro ⟨S, ⟨h0, -, hlast, -, -, -⟩, -⟩
-    rw [← hlast, show (Fin.last 0 : Fin (0 + 1)) = 0 from rfl]
-    exact h0
-  · intro h
-    refine ⟨fun _ => ⊥, ⟨rfl, ?_, h.symm, fun a => a.elim0, fun i => i.elim0, ?_⟩, fun i => i.elim0⟩
-    · intro a b hab
-      rw [show a = b from Fin.ext (by have := a.2; have := b.2; omega)] at hab
-      exact absurd hab (lt_irrefl b)
-    · intro t ht
-      refine ⟨0, ?_⟩
-      show ⊥ = stepLe I x t
-      refine (eq_bot_iff.mpr ?_).symm
-      rw [← h]
-      unfold stepLe stepLt
-      apply sSup_le_sSup
-      rintro N ⟨h1, h2, h3⟩
-      exact ⟨h1, h2, lt_of_le_of_lt h3 ht⟩
-
-theorem ph_one (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : IsDSData B d) :
-    ph B d 1 = ((∏ v, d v : ℝ) : ℂ) := by
-  have hv : ∀ v, ⟪B.w v, B.σ v (uMat ((1 : B.I.Ginf) v)) (B.w v)⟫_ℂ = 1 := by
-    intro v
-    have h1 : B.σ v 1 = 1 := (h v).2.1.2.2.1.1.1
-    have h2 : ‖B.w v‖ = 1 := (h v).2.2.1.1
-    have hu : uMat ((1 : B.I.Ginf) v) = 1 := by simp [uMat]
-    rw [hu, h1, one_apply_eq_self, inner_self_eq_norm_sq_to_K, h2]
-    simp
-  unfold ph
-  rw [Finset.prod_eq_one (fun v _ => hv v), star_one, mul_one]
 
 end GlobalTheory.Count.Test

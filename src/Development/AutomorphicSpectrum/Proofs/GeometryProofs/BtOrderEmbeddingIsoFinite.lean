@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.Models
+import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteOpenHopfOrder
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteOpenHopfOrderStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderInductionIdStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValuesStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderInductionId
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValues
+
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
@@ -64,7 +64,7 @@ theorem isIso_of_finite : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrally
   have : IsAffine Γ.G.left := by
     have := hfin
     exact isAffine_of_isAffineHom Γ.G.hom
-  obtain ⟨H, A', hH, hopf, hA'⟩ := GlobalTheory.T.finite_open_hopf_order R T Γ ⊤ hF
+  obtain ⟨H, A', hH, hopf, hA'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.SubOrder.hopfOrder_of_finOpenSub R T Γ ⊤ hF
   have htop : ∀ t, ⊤ ≤ (Γ.pt t).left ⁻¹ᵁ (⊤ : Γ.G.left.Opens) := fun t => by simp
   have hHt : ∀ t, t ∈ H := fun t => (hH t).2 (htop t)
   have inj : Function.Injective (algebraMap R (FractionRing R)) := IsFractionRing.injective R _
@@ -92,7 +92,7 @@ theorem isIso_of_finite : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrally
     let f' : H → R := fun h => f h
     have hf' : f' ∈ A' := (hA' f').2 ⟨s, fun t h => (hf t).symm⟩
     have hind : f' ∈ indOrder (MonoidHom.id H) A' := by
-      rw [GlobalTheory.T.hopf_order_induction_id R H A' hopf]
+      rw [_root_.GlobalTheory.CompanionTheory.Ar.BT.indOrder_id_eq_of_isHopfOrder R H A' hopf]
       exact hf'
     have hmem : f ∈ Γ.btOrder ⊤ := by
       apply Algebra.subset_adjoin
@@ -101,7 +101,7 @@ theorem isIso_of_finite : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrally
       exact ⟨⊤, trivial, s', fun u h => hs' ⟨u, hHt u⟩ h⟩
     refine ⟨⟨f, hmem⟩, ?_⟩
     rw [← sub_eq_zero]
-    apply GlobalTheory.T.section_eq_zero_of_values R T Γ ⊤
+    apply _root_.GlobalTheory.CompanionTheory.Ar.BT.section_eq_zero_of_val_generic R T Γ ⊤
     intro t h
     rw [← valHom_apply, map_sub, valHom_apply, valHom_apply, val_secMap Γ hj, hf, sub_self]
 

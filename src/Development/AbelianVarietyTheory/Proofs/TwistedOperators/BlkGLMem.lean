@@ -38,10 +38,6 @@ theorem mt_blk (V V₁ : HSp D) (g : GA D V) (g₁ : GA D V₁) :
     Formalism.L2.Theta.mt (hsum V V₁) (blk V V₁ (g, g₁)) =
       blkMat finSumFinEquiv (Formalism.L2.Theta.mt V g) (Formalism.L2.Theta.mt V₁ g₁) := rfl
 
-theorem continuous_blk (V V₁ : HSp D) : Continuous (blk V V₁) := by
-  apply Continuous.subtype_mk
-  exact (continuous_blkGL finSumFinEquiv).comp (continuous_subtype_val.prodMap continuous_subtype_val)
-
 def frSgn (ε : Bool) {V : HSp D} (A : Fr V) : Fr (sgn ε V) where
   ε τ a := xor ε (A.ε τ a)
   fr := A.fr

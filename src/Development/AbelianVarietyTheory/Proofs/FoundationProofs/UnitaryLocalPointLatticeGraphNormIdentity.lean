@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.GraphHeightLattice
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GraphElementIwasawaSplitPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GraphElementIwasawaSplitPlace
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GraphElementIwasawaInertPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DoublingNormDetSplitPlaceLatticeIntersectionStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DoublingNormDetInertPlaceLatticeLengthStatement
@@ -119,7 +119,7 @@ theorem graphNormFinite : GraphNormFinite := by
   intro F E _ _ _ _ _ σ h n J hJ L _ v hSD
   refine ⟨?_, ?_⟩
   · intro τ β hβ g
-    obtain ⟨p, k, hk, hpk⟩ := GlobalTheory.T.graph_element_iwasawa_split_place F E σ h n J hJ L v hSD ⟨τ⟩ g
+    obtain ⟨p, k, hk, hpk⟩ := _root_.GlobalTheory.GraphIwSplit.graph_iwasawa_split F E σ h n J hJ L v hSD ⟨τ⟩ g
     have hlat := unitaryLocalPoint_latticeGraphNorm_identity F E σ h n J hJ L v g p k hk hpk
     have hgr : graphHgt σ J L v g = absEv F E v (Matrix.GeneralLinearGroup.det
         (leviOf finSumFinEquiv (matHom (Fv F v) σ (dblGram finSumFinEquiv J)) p)) := by

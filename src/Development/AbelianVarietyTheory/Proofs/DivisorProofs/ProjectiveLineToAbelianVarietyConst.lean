@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScaleInvOfFamMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenSetOfChartsMemStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartMapIntoAffineConstStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreLineOverSurjectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineLineMorphismConstantOfConstOnNonzeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PuncturedLineOpenCofiniteStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreLineOverSurjection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineLineMorphismConstantOfConstOnNonzero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PuncturedLineOpenCofinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveLineChartFamiliesAgreeOnOverlapStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
@@ -73,7 +74,7 @@ theorem projLine_map_const : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over 
     exact this
   have h1V : spMap χ₁.toRingHom pt ∈ V := by
     intro x hx
-    obtain ⟨x', rfl⟩ := GlobalTheory.T.mem_range_spMap_mapRingHom_of_fibre_closedPoint L k χ₁.toRingHom
+    obtain ⟨x', rfl⟩ := _root_.GlobalTheory.fibre_line_over_surjection L k χ₁.toRingHom
       (fun z => ⟨algebraMap k L z, by simp⟩) x hx
     constructor
     · have := famMap_base B f₀ h0 χ₁ t
@@ -86,7 +87,7 @@ theorem projLine_map_const : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over 
       rw [← Scheme.Hom.comp_apply]
       erw [this]
       exact hinW k _ _ f₁ h1 x'
-  have hF := GlobalTheory.T.finite_compl_punctured_line_open k V hV χ₁ h1V
+  have hF := _root_.GlobalTheory.punctured_line_open_cofinite k V hV χ₁ h1V
   set F := {c : k | c ≠ 0 ∧ ∀ χ : L →ₐ[k] k, χ (algebraMap (Polynomial k) _ X) = c → spMap χ.toRingHom pt ∉ V}
 
   have hscale : ∀ c : k, c ≠ 0 → c ∉ F → ∀ a : k,
@@ -115,6 +116,6 @@ theorem projLine_map_const : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over 
     rw [_root_.mul_one] at e1 e2
     rw [show d * (c / d) = c by field_simp] at e1
     rw [e1, e2]
-  exact GlobalTheory.T.affineLine_morphism_constant_of_const_on_nonzero k B.left B.hom f₀ h0 hunit a b
+  exact _root_.GlobalTheory.ConstAffineLine.eq_of_const_nonzero k B.left B.hom f₀ h0 hunit a b
 
 end GlobalTheory.LineConst

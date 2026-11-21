@@ -1,13 +1,17 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvatureLowerBoundOnCoverBallsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyAtlasBallPartitionCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RoughHormanderEstimateCompactManifoldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeakSectionsFiniteWeightedAtlasStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeakSectionSmallFirstJetNormalFrameStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvatureLowerBoundOnCoverBalls
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyAtlasBallPartitionCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RoughHormanderEstimateCompactManifold
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeakSectionsFiniteWeightedAtlas
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeakSectionSmallFirstJetNormalFrame
+
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
@@ -15,12 +19,12 @@ namespace GlobalTheory
 
 theorem jets_approx_sections_of_positive : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (H : La), (∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < A.leviAt i (A.ph H i) y ξ) → ∀ T : Finset Y, ∃ q : Y → V n → ℂ, (∀ P ∈ T, Differentiable ℂ (q P)) ∧ ∀ (G : La) (p : Y → V n → ℂ), (∀ P, Differentiable ℂ (p P)) → ∀ ε : ℝ, 0 < ε → ∃ k0 : ℕ, ∀ k ≥ k0, ∃ F : ι → Y → ℂ, A.IsSec (A.kap + (G + k • H)) F ∧ ∀ P ∈ T, ‖F (A.pick P) P * Complex.exp (-(k * q P (A.chart (A.pick P) P))) - p P (A.chart (A.pick P) P)‖ ≤ ε ∧ ‖fderiv ℂ (fun v => F (A.pick P) ((A.chart (A.pick P)).symm v) * Complex.exp (-(k * q P v)) - p P v) (A.chart (A.pick P) P)‖ ≤ ε := by
   intro n Y _ _ _ _ _ _ ι La _ A H hH T
-  obtain ⟨C⟩ := GlobalTheory.T.nonempty_atlasBallPartitionCover n Y ι La A
-  obtain ⟨q, c, Cq, r0, hc, hr0, hqT, hrest⟩ := GlobalTheory.T.peak_sections_finite_weighted_atlas n Y ι La A C H hH T
+  obtain ⟨C⟩ := _root_.GlobalTheory.OTY.nonempty_cover n Y ι La A
+  obtain ⟨q, c, Cq, r0, hc, hr0, hqT, hrest⟩ := _root_.GlobalTheory.OTY.peak_sections_finite n Y ι La A C H hH T
   refine ⟨q, fun P hP => (hqT P hP).1, ?_⟩
   intro G p hp ε hε
-  obtain ⟨K', t0, hK', hk6⟩ := GlobalTheory.T.rough_hormander_estimate_compact_manifold n Y ι La A C
-  obtain ⟨k1, hk1⟩ := GlobalTheory.T.curvature_lower_bound_on_cover_balls n Y ι La A C H G hH t0
+  obtain ⟨K', t0, hK', hk6⟩ := _root_.GlobalTheory.rough_hormander_compact n Y ι La A C
+  obtain ⟨k1, hk1⟩ := _root_.GlobalTheory.OTY.CoverCurv.curv_cover n Y ι La A C H G hH t0
   obtain ⟨K, hK, hF0⟩ := hrest G p hp
   have hloc : ∀ P : Y, ∃ k0 : ℕ, P ∈ T → ∀ k ≥ k0, ∀ D : ι → Y → ℂ,
       A.IsSSec (A.kap + (G + k • H)) D →
@@ -32,7 +36,7 @@ theorem jets_approx_sections_of_positive : ∀ (n : ℕ) (Y : Type) [Topological
           (A.chart (A.pick P) P)‖ ≤ ε := by
     intro P
     by_cases hP : P ∈ T
-    · obtain ⟨k0, hk0⟩ := GlobalTheory.T.peak_section_small_first_jet_normal_frame n Y ι La A H G (A.pick P) (A.chart (A.pick P) P) r0 c Cq
+    · obtain ⟨k0, hk0⟩ := _root_.GlobalTheory.JetSmall.main n Y ι La A H G (A.pick P) (A.chart (A.pick P) P) r0 c Cq
         (K' * K) (q P) hr0 hc (hqT P hP).2.1 (hqT P hP).1 (hqT P hP).2.2 ε hε
       exact ⟨k0, fun _ => hk0⟩
     · exact ⟨0, fun h => absurd h hP⟩

@@ -18,10 +18,6 @@ theorem good_ofChar (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : Good (IrrGL.
     rw [Multiset.mem_singleton.1 hy]
     exact Or.inl rfl⟩
 
-theorem good_of_toral {x : IrrGL k} (h : Toral x) : Good x :=
-  let ⟨s, hs, h1⟩ := h
-  ⟨s, hs, fun y hy => Or.inl (h1 y hy)⟩
-
 variable [CharZero k]
 
 theorem good_of_one (x : IrrGL k) (h : x.1 = 1) : Good x := by
@@ -56,13 +52,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 theorem charZero_compl (w : HeightOneSpectrum (𝓞 E)) : CharZero (w.adicCompletion E) :=
   charZero_of_injective_algebraMap (algebraMap E _).injective
 
-theorem Old.close (hε : IsDeligneEps ε) (H : Laws a ha ε rc) : IsRec h rc := ⟨a, ha, ε, hε, H⟩
-
 theorem New.close (H : LawsM a ha ε rc) : IsRecT h rc := cls_of H
-
-theorem Old.artin (hL : LocalLanglandsGL) (h : IsPlaceOver A w) : ∃ a : Weil h →* (w.adicCompletion E)ˣ, IsLocalArtin h a :=
-  let ⟨_, ⟨a, ha, _⟩, _⟩ := hL.1 E Ω A w h
-  ⟨a, ha⟩
 
 theorem New.artin (hL : RecTExists) (h : IsPlaceOver A w) : ∃ a : Weil h →* (w.adicCompletion E)ˣ, IsLocalArtin h a :=
   let ⟨_, a, ha, _⟩ := hL E Ω A w h

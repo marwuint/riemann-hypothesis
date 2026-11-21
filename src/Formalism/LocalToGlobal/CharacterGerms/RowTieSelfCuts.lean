@@ -1,6 +1,6 @@
 import Formalism.LocalToGlobal.CharacterGerms.SelfConjugateRowData
 import Formalism.LocalToGlobal.CharacterGerms.RowTieLab
-import Formalism.LocalToGlobal.CharacterGerms.RowTieCH
+import Formalism.LocalToGlobal.CharacterGerms.RowTieTop
 import Formalism.LocalToGlobal.CharacterGerms.NondegenerateCharts
 
 set_option autoImplicit false
@@ -52,21 +52,8 @@ def RankMaximalSelfOfNondegenerate : Prop :=
 
 variable (Xo c)
 
-def LabSGeoCoreSt : Prop :=
-  (∀ a : 𝓞 E, star a = H.bar a) →
-  ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C3 : IntChart T io y)
-    (C : Type) [Field C] [CharZero C] (V : VF C) (ι : T.Fr →+* C), EmbOK T V ι →
-    ∀ (k : ℕ) (Y : FBChart C V (𝓞 E) (chD C3.ch)), IsBC C3 ι k Y →
-    ∀ (Orb : Type) (d : ℕ) [NeZero d] (lab : LabS E C Orb d), LabSArith V io ι lab → LabSGeoCore C3 ι Y lab
-
-theorem labSGeo_of_core (h : LabSGeoCoreSt Xo c) : LabSGeoSt Xo c :=
-  fun hstar T io y C3 C _ _ V ι hι k Y hY Orb d _ lab ha =>
-    labSGeo_of hstar hι ha (h hstar T io y C3 C V ι hι k Y hY Orb d lab ha)
-
 theorem rank_maximal_self_charts_of_nondegenerate (h1 : RankMaximalSelfOfNondegenerate) (h2 : NondegenerateCharts Xo c) : RankMaximalSelfCharts Xo c :=
   fun hstar T io y C3 C _ _ V ι hι k Y hY _ d _ _ ha hg hr o Hc =>
     h1 C V (𝓞 E) _ Y d _ (selfOfLab ha hg o) (h2 hstar T io y C3 C V ι hι k Y hY) (rankHyp_ofLabS ha hg hr o) Hc
-
-def HodgeTatePackSelfCharts : Prop := AllSelfConjugateCharts Xo c fun _ _ V _ _ _ _ X => ∀ Hc : ∀ g, X.CartHyp V g, RawChart.HTDPack Hc
 
 end Formalism.L2.FormalSeriesBounds

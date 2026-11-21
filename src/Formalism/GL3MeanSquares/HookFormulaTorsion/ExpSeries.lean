@@ -231,17 +231,6 @@ theorem CT.mul {F G : ℕ → MvPowerSeries σ K} {f g : MvPowerSeries σ K} (hF
   intro p _
   exact (hF p.1).mul (hG p.2)
 
-theorem CT.pow {F : ℕ → MvPowerSeries σ K} {f : MvPowerSeries σ K} (hF : CT F f) (n : ℕ) :
-    CT (fun k => F k ^ n) (f ^ n) := by
-  induction n with
-  | zero =>
-    intro d
-    simp only [pow_zero]
-    exact tendsto_const_nhds
-  | succ n ih =>
-    simp only [pow_succ]
-    exact ih.mul hF
-
 theorem inLam_zero [IsUltrametricDist K] [Algebra ℚ K] : InLam (0 : MvPowerSeries σ K) := by
   refine ⟨map_zero _, ?_⟩
   classical
@@ -286,7 +275,5 @@ end Normed
 end Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition
 
 namespace Formalism.HermitianLattices.ExpSeriesBivariate
-
-open ExpSeriesAddition
 
 end Formalism.HermitianLattices.ExpSeriesBivariate

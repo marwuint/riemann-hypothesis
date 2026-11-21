@@ -22,28 +22,6 @@ def wildInertiaGroup : Subgroup (Ω ≃ₐ[K] Ω) := (tameExtension K Ω).fixing
 
 end Definition
 
-section GroupTheory
-
-variable {G : Type*} [Group G]
-
-end GroupTheory
-
-section Galois
-
-variable {K : Type*} [Field K] {Ω : Type*} [Field Ω] [Algebra K Ω] [IsGalois K Ω]
-
-end Galois
-
-section Valued
-
-variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-  {Ω : Type*} [Field Ω] [Algebra K Ω] [IsGalois K Ω]
-
-variable [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω]
-  [IsSepClosed Ω]
-
-end Valued
-
 section SeparableClosure
 
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]

@@ -27,11 +27,6 @@ theorem first_kernel_parseval : Formalism.FourierDecayAlt.A5.SingleBlockParseval
 
 namespace FirstKernelProperties
 
-theorem th1All : Formalism.FourierDecayAlt.A5.Th1Eq ∧ Formalism.FourierDecayAlt.A5.SingleBlockThetaProps := ⟨A5x6.first_theta_eq_of_equality (A5x6.first_theta_equality_of_kernel_facts first_kernel_periodic first_kernel_gram_property first_kernel_parseval
-    added_block_kernel_support added_block_kernel_block_diagonal),
-    A5x6.first_theta_equality_of_kernel_facts first_kernel_periodic first_kernel_gram_property first_kernel_parseval
-      added_block_kernel_support added_block_kernel_block_diagonal⟩
-
 end FirstKernelProperties
 
 theorem first_theta_kernel_equality : Formalism.FourierDecayAlt.A5.Th1Eq := A5x6.first_theta_eq_of_equality (A5x6.first_theta_equality_of_kernel_facts first_kernel_periodic first_kernel_gram_property first_kernel_parseval

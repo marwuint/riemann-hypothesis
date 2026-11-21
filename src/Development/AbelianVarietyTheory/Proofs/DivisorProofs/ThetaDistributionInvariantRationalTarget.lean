@@ -1,11 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDetSmulSubOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussSumNondegenerateFiniteHermitianModuleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexMapNsmulComapEqAbsNormDetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussSumNondegenerateFiniteHermitianModule
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsHeisTrivial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexMapNsmulComapEqAbsNormDet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalLatticeSelfDualFgFullIndexStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralGaussianRealIsometryNoFixedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralGaussianRealIsometryNoFixed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsHalfIdem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaTildeHeckeCharSplitMulSignOfNormFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartanInvolutionCommQuasiReflectionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartanInvolutionCommQuasiReflection
+import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalIsometryVacuumScalarGaussSumIntegralStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteWeilRepEqLatticeIntertwinerMulCharacterStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalSubstitutionThetaHeisenbergUnitaryStatement
@@ -140,7 +143,7 @@ theorem scalar_const (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hS : IsSel
   obtain ⟨w, Om, hO⟩ := exists_isLatRep hψ hS hT hlam
   obtain ⟨ε, hε⟩ := exists_isHalfIdem D
   obtain ⟨κ, κ', k1, k2, k3⟩ := exists_phi hη.2.2.1 hε
-  obtain ⟨e, he⟩ := GlobalTheory.T.integral_gaussian_real_isometry_no_fixed D S T sS sT cS cT
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.RatAut.RealInt.integral_gaussR D S T sS sT cS cT
   refine ⟨e, η (κ ((-1) ^ Fintype.card (Fin T.rank × Fin S.rank))), Circle.coe_ne_zero _,
     fun g h a b ha hb sa sb hd c hc H => ?_⟩
   obtain ⟨d1, d2⟩ := det_unitary_sub_one (P := T.gram ⊗ₖ S.gram⁻¹ᵀ) (by
@@ -297,7 +300,7 @@ theorem exists_cartan_refl (V : HSp D) (x : Fin V.rank → D.host.E) (c : D.host
       s * (1 + c • Matrix.vecMulVec x (star x ᵥ* V.gram)).map (tauE D τ) =
         (1 + c • Matrix.vecMulVec x (star x ᵥ* V.gram)).map (tauE D τ) * s := by
   have e0 : star (tauE D τ ∘ x) = tauE D τ ∘ star x := funext fun i => (tauE_star τ (x i)).symm
-  obtain ⟨s, h1, h2⟩ := GlobalTheory.T.exists_cartanInvolution_comm_quasiReflection _ (gramAt D V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ)
+  obtain ⟨s, h1, h2⟩ := _root_.GlobalTheory.CartanRefl.exists_cartan_comm_quasiReflection _ (gramAt D V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ)
     (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ).ne_zero (tauE D τ ∘ x) (by
       have : star (tauE D τ ∘ x) ⬝ᵥ gramAt D V τ *ᵥ (tauE D τ ∘ x) = tauE D τ (star x ⬝ᵥ V.gram *ᵥ x) := by
         rw [e0, RingHom.map_dotProduct]

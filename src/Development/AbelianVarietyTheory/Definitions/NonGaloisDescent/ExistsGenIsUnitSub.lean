@@ -350,9 +350,6 @@ theorem frobOA_idem (τ : ZMod a) : frobOA l O (idem (constA t) τ) = idem (cons
 
 theorem inclO_idem (τ : ZMod a) : inclO l O (idem (constA t) τ) = idem (constW t) τ := rfl
 
-theorem frobOW_idem (τ : ZMod a) : frobOW l O (idem (constW t) τ) = idem (constW t) (τ + 1) := by
-  rw [← inclO_idem, frobOW_inclO, frobOA_idem, inclO_idem]
-
 theorem galOA_constA {g : GQ l} (hg : ∀ x ∈ Kunr l a, g x = x) (x : ZMod a → O) :
     galOA O g (constA t x) = constA t x := by
   obtain ⟨y, rfl⟩ := (splitHom_bijective t).2 x
@@ -679,13 +676,6 @@ instance finite_OL : Module.Finite ℤ_[l] ↥(OL LL) := GlobalTheory.Decompl.fi
 theorem inclO_eq : inclO l ↥(OL LL) = inclR LL := rfl
 
 theorem frobOW_eq : frobOW l ↥(OL LL) = φRW LL := rfl
-
-theorem galOW_eq {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) : galOW ↥(OL LL) g = AI.gRW LL g := by
-  rw [LocAinf.gRW, locAinf_actWCbHom_eq]
-  rfl
-
-example {e : ℕ} [NeZero e] (ϖ : PiSys l e) : Function.Injective (ϖ.iW (thetaW a LL) ↥LL.1) :=
-  ϖ.iW_injective _ _
 
 end FinExt
 

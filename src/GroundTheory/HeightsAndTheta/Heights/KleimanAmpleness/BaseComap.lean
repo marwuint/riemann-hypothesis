@@ -27,17 +27,4 @@ def ModelCurves.Statement : Prop :=
             ∃ W : Ideal (NumbersDVR.MRing ι F), NumbersDVR.IsMultiProjPrime W ∧ mIdealOver F y ≤ W ∧
               relDim W = ((d : ℕ) : WithBot (WithTop ℤ)) ∧ baseComap F k₀ e W = P)
 
-theorem ModelCurves.hyps (F : Type) [Field F] :
-    IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase F (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 1) () ∧
-      NumbersDVR.IsMultiProjPrime (mIdealOver F (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 1)) ∧
-      relDim (mIdealOver F (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 1)) = ((1 : ℕ) : WithBot (WithTop ℤ)) ∧
-      baseComap F () (Equiv.refl (Fin (1 + 1))) (mIdealOver F (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 1)) = ⊥ := by
-  refine ⟨IndefiniteRowSideFullHecke.Kleiman2.isModelWithBase_pnPt F 1, ?_, IndefiniteRowSideFullHecke.Kleiman2.relDim_pnPt F 1, ?_⟩
-  · rw [IndefiniteRowSideFullHecke.Kleiman2.mIdealOver_pnPt]
-    exact NumbersDVR.isMultiProjPrime_bot
-  · rw [IndefiniteRowSideFullHecke.Kleiman2.mIdealOver_pnPt, baseComap]
-    refine Ideal.comap_bot_of_injective _ (rename_injective _ ?_)
-    rintro ⟨⟨⟩, i⟩ ⟨⟨⟩, j⟩ h
-    simpa using h
-
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

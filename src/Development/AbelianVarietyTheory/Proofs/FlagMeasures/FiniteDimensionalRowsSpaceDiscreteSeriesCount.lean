@@ -10,12 +10,13 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFlag
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizeProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountHypPAtAddQAt
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousRepresentativeProperties
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IdempotentIntertwinerImagesCuspidalOfLevelStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IdempotentIntertwinerImagesCuspidalOfLevel
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureFundamentalDomainLtOfDeepPointBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DeepPointBoundCuspidalIsometricIntertwinerFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DeepPointBoundCuspidalIsometricIntertwinerFamily
+import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.DeepKernelBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousRepresentativeBoundedEvaluation
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameOfLe
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousRowRepresentativesLowestKTypeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousRowRepresentativesLowestKType
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeMultiplicityOneCountingHypotheses
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeEqFundamentalDomainInter
 
@@ -250,7 +251,7 @@ theorem rows_finiteDimensional : GlobalTheory.DSId.DecGap → GlobalTheory.FlagM
     rw [hrk v]
     exact h120
   have hLoc := GlobalTheory.Dec.locDec_of_decGap hD B d h hB hgap h120'
-  have hE := GlobalTheory.T.idempotent_intertwiner_images_cuspidal_of_level B d h hB hK hg h120' hLoc hbig40
+  have hE := _root_.GlobalTheory.Dec.CuspAllKType.cusp_all B d h hB hK hg h120' hLoc hbig40
   obtain ⟨hvpos, hvtop⟩ := vol_lt_top hV B p q hs hqn hn8 hrd
   obtain ⟨C, hC⟩ := GlobalTheory.EvalBound.exists_contRep_bound_of_isKTypeOf B d hB hK (by omega) hg
   have hw1 : ‖B.tens B.w‖ = 1 := by
@@ -291,7 +292,7 @@ theorem rows_finiteDimensional : GlobalTheory.DSId.DecGap → GlobalTheory.FlagM
     fun i u => ((hE _ (hS (hTS i))).2 u).2
   have hTc : ∀ i u, B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext (T i u)) :=
     fun i u => ((hE _ (hS (hTS i))).2 u).1
-  choose Fr hFr using fun i => GlobalTheory.T.exists_continuousRowRepresentatives_lowestKType B d hB hK hg (T i) (hTH i) (fun u k hk => hTk i u k hk)
+  choose Fr hFr using fun i => _root_.GlobalTheory.SmoothRepsType.repsExist B d hB hK hg (T i) (hTH i) (fun u k hk => hTk i u k hk)
   have hmem : B.tens B.w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.VP B 0 := by
     apply Submodule.subset_span
     refine ⟨[], B.w, by simp, fun v => (hB v).2.2.1.2, ?_⟩
@@ -307,7 +308,7 @@ theorem rows_finiteDimensional : GlobalTheory.DSId.DecGap → GlobalTheory.FlagM
     have hfirst : 0 ≤ ((Module.finrank ℂ S) : ℝ) * e / V := by positivity
     have hsecond : 0 ≤ C ^ 2 * M ^ 2 := by positivity
     by_cases hx : 1 ≤ q ∧ least B.I x < tauStar B q b
-    · have h1 := GlobalTheory.T.deepPoint_bound_cuspidalIsometricIntertwinerFamily B Cg n₀ d p q b c x (Module.finrank ℂ S) T Fr hn₀ hx.1 hH hc hx.2 hFr hiso hTc
+    · have h1 := _root_.GlobalTheory.DeepFamilyGap.deep_bound_family B Cg n₀ d p q b c x (Module.finrank ℂ S) T Fr hn₀ hx.1 hH hc hx.2 hFr hiso hTc
       have h2 := (GlobalTheory.T.measure_fundamentalDomain_lt_of_deepPoint_bound hV B Cg n₀ d p q b c x hn₀ hx.1 hH hc hx.2).2
       have hvv : ‖GlobalTheory.Deep.vv B Fr (B.tens B.w) x‖ ^ 2 = ∑ i, ‖Fr i (B.tens B.w) x‖ ^ 2 := by
         rw [EuclideanSpace.norm_sq_eq]

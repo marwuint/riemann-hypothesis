@@ -1,8 +1,11 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.BiextensionHypothesesOfLevelOne
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.ThetaInZIsThetaLog
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementC
-import Formalism.GaussJetBounds.ThmAEntryFull
+import Formalism.GaussJetBounds.StatementS
 import Formalism.GaussJetBounds.OneLetterGauss
+import Formalism.GaussJetBounds.GenLogInverse
+import Formalism.GradedWeylDivisibility.FinalD
+import Formalism.GaussJetBounds.GaussJetProofs.OrbMul
 import Formalism.GaussJetBounds.ThmAGauss
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.ThetaLogIsSubst
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FinalS
@@ -15,12 +18,6 @@ namespace Formalism.L2.Th1.D
 open Formalism.DworkPowerSeriesWeights (Integral mvExp torus BHyp Unram entLog oneLog thetaZ thetaOne frameJet frameJetOne
   nablaO)
 open Formalism.InvariantFactorPaths.G7 (lgF at1 Simeq DivAB d1 swap2 UnrOK IsLawOfLog BetaHyp OmOK lamF thetaLog sSub zLin)
-
-theorem unramified_top : UnramTop := by
-  intro K _ l σ hU a _ ha
-  obtain ⟨k, hk⟩ := hU.2.2.2.1 a ha
-  refine ⟨-k, ?_⟩
-  rw [hk, hU.2.2.1, inv_zpow', neg_neg]
 
 namespace CohomologyFunctoriality₂
 
@@ -170,82 +167,7 @@ theorem theta_integer_is_theta_log : ThetaInZIsThetaLog := by
 
 namespace CohomologyFunctoriality₂
 
-theorem thetaForm (l : ℕ) [Fact l.Prime] (K0 : Type) [NormedField K0] [IsUltrametricDist K0]
-    [CharZero K0] (σ : K0 →+* K0) (hU : UnrOK K0 l σ) (j : K0 →+* ℂ_[l]) (hj : ∀ a, ‖j a‖ = ‖a‖)
-    (F : MvPowerSeries (Fin 2) K0) (hF : IsLawOfLog l F) (be0 : MvPowerSeries (Fin 2) K0)
-    (hF1 : F1 F be0) (hF2 : F2 l σ be0) (d N0 N1 : ℕ) [NeZero d] (hd2 : 2 ≤ d) (hde : Even d)
-    (ι : Type) [Fintype ι] [DecidableEq ι] (om oms : ι → K0) (hO : OwOK d σ om oms)
-    (hT : TrDual d σ om oms) (hζ : ∃ ζ : K0, IsPrimitiveRoot ζ (l ^ d - 1))
-    (U0 Φ : MvPowerSeries (Bool × ι × Fin N0 × Fin N1) ℂ_[l]) (hU0 : Integral U0)
-    (hΦ0 : MvPowerSeries.constantCoeff Φ = 0) (hΦ : Simeq Φ (sumE (MvPowerSeries.map j be0))) :
-    ∃ (K1 : Subfield ℂ_[l]) (ζ : ℂ_[l]) (be : MvPowerSeries (ZMod d) ℂ_[l])
-      (g : Formalism.DworkPowerSeriesWeights.ZV d N0 N1 → MvPowerSeries (Formalism.DworkPowerSeriesWeights.ZV d N0 N1) ℂ_[l])
-      (U : MvPowerSeries (Formalism.DworkPowerSeriesWeights.ZV d N0 N1) ℂ_[l]),
-      Unram l K1 ∧ IsPrimitiveRoot ζ (l ^ d - 1) ∧ BHyp l d K1 ζ be ∧
-      (∀ y, MvPowerSeries.constantCoeff (g y) = 0) ∧
-      (∀ y, MvPowerSeries.subst g (entLog (K := ℂ_[l]) l y) = MvPowerSeries.X y) ∧ Integral U ∧
-      thetaInZ l j σ om oms (mvExp (-Φ) * U0) = thetaZ g U (-1) be := by
-  obtain ⟨ζ, hζ⟩ := hζ
-  obtain ⟨U, hUi, hUeq⟩ := b0 K0 ℂ_[l] l d N0 N1 σ j hU hj hd2 hde F hF be0 hF1 hF2 ι om oms hO hT
-    ζ hζ U0 Φ hU0 hΦ0 hΦ
-  obtain ⟨g, hg0, hg, -⟩ := Formalism.DworkPowerSeriesWeights.generalized_log_inverse.{0, 0} ℂ_[l] l hU.1
-    (Formalism.DworkPowerSeriesWeights.ZV d N0 N1) (fun y => (y.1 - 2, y.2.1, y.2.2))
-  have hg' : ∀ y, MvPowerSeries.subst g (entLog (K := ℂ_[l]) l y) = MvPowerSeries.X y := by
-    intro y
-    rw [(Formalism.DworkPowerSeriesWeights.logarithm_weight_comparison.{0} ℂ_[l] l d N0 N1).2.1 y]
-    exact hg y
-  obtain ⟨hT1, hT2, -, -⟩ := Formalism.DworkPowerSeriesWeights.admissibleTransfer K0 ℂ_[l] j hj l d N0 N1 ⊤ ζ
-    (beMean l σ be0 om oms ζ)
-  exact ⟨_, j ζ, _, g, U, hT1 (unramified_top K0 l σ hU), hζ.map_of_injective j.injective,
-    hT2 (biextension_hypotheses_of_level_one K0 l d σ hU hd2 hde F hF be0 hF1 ι om oms hO ζ hζ), hg0, hg', hUi,
-    hUeq g hg0 hg'⟩
-
 end CohomologyFunctoriality₂
-
-theorem theorem_a_entry_of_f : ThmAEntryOfF := by
-  intro l _ K0 _ _ _ σ hU j hj F hF be0 hF1 hF2 d N0 N1 _ hd2 hde ι _ _ om oms hO hT hζ U0 Φ hU0
-    hΦ0 hΦ TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 a ha hsa hthr δ hδ
-  obtain ⟨K1, ζ, be, g, U, hK1, hζ', hbe, hg0, hg, hUi, heq⟩ := CohomologyFunctoriality₂.thetaForm l K0 σ hU j hj F hF
-    be0 hF1 hF2 d N0 N1 hd2 hde ι om oms hO hT hζ U0 Φ hU0 hΦ0 hΦ
-  rw [heq]
-  exact Formalism.DworkPowerSeriesWeights.thmAEntryFull l d N0 N1 hU.2.1 hd2 hde K1 hK1 ζ hζ' be hbe g hg0 hg U hUi (-1)
-    (Or.inr rfl) TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 a ha hsa hthr δ hδ
-
-theorem theorem_a_gauss_of_f : ThmAGaussOfF := by
-  intro l _ K0 _ _ _ σ hU j hj F hF be0 hF1 hF2 d N0 N1 _ hd2 hde ι _ _ om oms hO hT hζ U0 Φ hU0
-    hΦ0 hΦ TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 a ha hsa hthr n
-  obtain ⟨K1, ζ, be, g, U, hK1, hζ', hbe, hg0, hg, hUi, heq⟩ := CohomologyFunctoriality₂.thetaForm l K0 σ hU j hj F hF
-    be0 hF1 hF2 d N0 N1 hd2 hde ι om oms hO hT hζ U0 Φ hU0 hΦ0 hΦ
-  rw [heq]
-  exact Formalism.DworkPowerSeriesWeights.thmAGauss l d N0 N1 hU.2.1 hd2 hde K1 hK1 ζ hζ' be hbe g hg0 hg U hUi (-1)
-    (Or.inr rfl) TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 a ha hsa hthr n
-
-theorem one_letter_gauss_of_f : OneLetterGaussOfF := by
-  intro l _ K0 _ _ _ σ hU j hj F hF be0 hF1 hF2 hζ ph hph N0 N1 C U0 Φ hU0 hΦ0 hΦ p hp I a ha hsa n
-  obtain ⟨ζ, hζ⟩ := hζ
-  obtain ⟨U, hUi, hUeq⟩ := single_letter_theta_factorization K0 ℂ_[l] l N0 N1 σ j hU hj F hF be0 hF1 hF2 ζ hζ ph hph U0 Φ hU0
-    hΦ0 hΦ
-  obtain ⟨g, hg0, hg, -⟩ := Formalism.DworkPowerSeriesWeights.generalized_log_inverse.{0, 0} ℂ_[l] l hU.1
-    (Fin N0 × Fin N1) id
-  have hg' : ∀ y, MvPowerSeries.subst g (oneLog (K := ℂ_[l]) l y) = MvPowerSeries.X y := by
-    intro y
-    rw [(Formalism.DworkPowerSeriesWeights.logarithm_weight_comparison.{0} ℂ_[l] l 2 N0 N1).2.2 y]
-    exact hg y
-  obtain ⟨hT1, hT2, -, -⟩ := Formalism.DworkPowerSeriesWeights.admissibleTransfer K0 ℂ_[l] j hj l 2 N0 N1 ⊤ ζ
-    (beMean (d := 2) l σ be0 (fun _ : Unit => (1 : K0)) (fun _ => 1) ζ)
-  rw [hUeq g hg0 hg']
-  exact Formalism.DworkPowerSeriesWeights.oneLetterGauss l N0 N1 C hU.2.1 _ (hT1 (unramified_top K0 l σ hU)) (j ζ)
-    (hζ.map_of_injective j.injective) _
-    (hT2 (biextension_hypotheses_of_level_one K0 l 2 σ hU le_rfl (by decide) F hF be0 hF1 Unit _ _ (SingleLetterLog.owOK_two σ) ζ hζ))
-    1 (by simp) g hg0 hg' U hUi (-1) (Or.inr rfl) p hp I a ha hsa n
-
-theorem theorem_s_of_f : ThmSOfF := by
-  intro K0 K _ _ _ _ _ _ _ j p ν r0 r1 _ σ hj hU hζ F hF be hF1 hF2
-  obtain ⟨c, hc, hcc, h⟩ := Formalism.InvariantFactorPaths.G7.Top.thmSFull K0 K j p ν r0 r1 σ hj hU hζ F hF be
-    (betaHypOfF K0 p σ hU F be hF1 hF2)
-  refine ⟨c, hc, hcc, ?_⟩
-  intro om oms ϖ μ U0 Φ hϖ hO hT hμ0 hμ hU0 hΦ0 hΦ
-  exact h _ _ ϖ μ U0 Φ hϖ (omega_integral_criterion K0 K p ν σ j hU hj om oms hO hT) hμ0 hμ hU0 hΦ0 hΦ
 
 theorem kernel_of_f : KernelOfF := by
   intro p _ K0 _ _ _ _ σ hU hζ F hF be hF1 hF2 K _ _ _ j ν r0 r1 _ hj hϖ om oms hO hT U0 Φ hU0 hΦ0

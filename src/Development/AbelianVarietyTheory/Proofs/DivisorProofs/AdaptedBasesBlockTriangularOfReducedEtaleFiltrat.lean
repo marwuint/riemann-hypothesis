@@ -1,9 +1,9 @@
 import Mathlib
 import Formalism.PieriBlockIdeals.LemmaWFromLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralBlock
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedIntegralBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaurentSeriesAdaptedBasisCoordsVanishBeyondFinraStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalEntryOfSemilinearModSubspaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedIntegralBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaurentSeriesAdaptedBasisCoordsVanishBeyondFinra
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalEntryOfSemilinearModSubspace
 
 set_option autoImplicit false
 
@@ -77,7 +77,7 @@ theorem adapted_bases_of_redFilt : ∀ (ι : Type) (σ : Equiv.Perm ι) (l n t :
     rw [(hV i0).2.1, finrank_top, Module.finrank_fin_fun]
   have hdle : ∀ k, d k ≤ n := fun k => hdlast ▸ hdmono (Fin.le_last k)
 
-  choose g hg using fun i => GlobalTheory.T.exists_unit_matrix_adapted_to_flag F n R (V i) (hV i).2.2
+  choose g hg using fun i => _root_.GlobalTheory.LaurentFlagBasis.adapted_integral_basis F n R (V i) (hV i).2.2
   have hg' : ∀ i k (j : Fin n), (j : ℕ) < d k → lau (fun a => (g i : Matrix (Fin n) (Fin n) F⟦X⟧) a j) ∈ V i k :=
     fun i k j hj => hg i k j (by rw [hdi]; exact hj)
 
@@ -110,14 +110,14 @@ theorem adapted_bases_of_redFilt : ∀ (ι : Type) (σ : Equiv.Perm ι) (l n t :
     intro i a j hlt
     rw [hentP]
     have hmem := hphi i ⟨b j, hbR j⟩ _ (hg' (σ i) ⟨b j, hbR j⟩ j ((hb j _).2 le_rfl))
-    refine GlobalTheory.T.laurentSeries_adapted_basis_coords_vanish_beyond_finrank F n (V i ⟨b j, hbR j⟩) (g i) (fun j' hj' => hg i _ j' hj') _ hmem a ?_
+    refine _root_.GlobalTheory.adapted_coords_vanish_stmt F n (V i ⟨b j, hbR j⟩) (g i) (fun j' hj' => hg i _ j' hj') _ hmem a ?_
     rw [hdi]
     exact Nat.le_of_not_lt (fun h => absurd ((hb a _).1 h) (Nat.not_le.2 hlt))
   have hbtG : ∀ i, (Formalism.CohomologicalDescent.FrobeniusPeriodChange.chgGam un (g i) (D i)).BlockTriangular b := by
     intro i a j hlt
     rw [hentG]
     have hmem := hgam i ⟨b j, hbR j⟩ _ (hg' i ⟨b j, hbR j⟩ j ((hb j _).2 le_rfl))
-    refine GlobalTheory.T.laurentSeries_adapted_basis_coords_vanish_beyond_finrank F n (V i ⟨b j, hbR j⟩) (g i) (fun j' hj' => hg i _ j' hj') _ hmem a ?_
+    refine _root_.GlobalTheory.adapted_coords_vanish_stmt F n (V i ⟨b j, hbR j⟩) (g i) (fun j' hj' => hg i _ j' hj') _ hmem a ?_
     rw [hdi]
     exact Nat.le_of_not_lt (fun h => absurd ((hb a _).1 h) (Nat.not_le.2 hlt))
 
@@ -159,7 +159,7 @@ theorem adapted_bases_of_redFilt : ∀ (ι : Type) (σ : Equiv.Perm ι) (l n t :
     refine ⟨c, ?_, ?_⟩
     · rintro rfl
       rw [zero_smul, add_zero] at hyz
-      have h0 := GlobalTheory.T.laurentSeries_adapted_basis_coords_vanish_beyond_finrank F n (V i (rs s).castSucc) (g i) (fun j' hj' => hg i _ j' hj') _ (hyz ▸ hy) (pos s)
+      have h0 := _root_.GlobalTheory.adapted_coords_vanish_stmt F n (V i (rs s).castSucc) (g i) (fun j' hj' => hg i _ j' hj') _ (hyz ▸ hy) (pos s)
         (by rw [hdi] <;> exact Nat.le_of_not_lt (hpos_nlt s))
       have h1 : (((g i)⁻¹ : (Matrix (Fin n) (Fin n) F⟦X⟧)ˣ) : Matrix (Fin n) (Fin n) F⟦X⟧).mulVec
           (fun a => (g i : Matrix (Fin n) (Fin n) F⟦X⟧) a (pos s)) (pos s) = 1 := by
@@ -195,7 +195,7 @@ theorem adapted_bases_of_redFilt : ∀ (ι : Type) (σ : Equiv.Perm ι) (l n t :
       (fun a ha hne => hg' i _ a (hlow s a ha (fun h => hne (by rw [← hentP]; exact hbtP i h))))
     rw [← hentP] at hdP
     have hθFe : ⇑θF = frob0 l := funext hθF
-    have key := GlobalTheory.T.diagonal_entry_of_semilinear_mod_subspace_alt F n θF (P i) (V (σ i) (rs s).castSucc) (V i (rs s).castSucc)
+    have key := _root_.GlobalTheory.diagonal_entry_of_semilinear_mod_subspace F n θF (P i) (V (σ i) (rs s).castSucc) (V i (rs s).castSucc)
       (fun c => (g (σ i) : Matrix (Fin n) (Fin n) F⟦X⟧) c (pos s)) (e (σ i) s)
       (fun c => (g i : Matrix (Fin n) (Fin n) F⟦X⟧) c (pos s)) (e i s)
       (w (σ i) s) (w i s) (k (σ i) s) (k i s) (m i s) (Formalism.CohomologicalDescent.FrobeniusPeriodChange.chgPhi l (g i) (g (σ i)) (P i) (pos s) (pos s))
@@ -225,7 +225,7 @@ theorem adapted_bases_of_redFilt : ∀ (ι : Type) (σ : Equiv.Perm ι) (l n t :
       (fun a ha hne => hg' i _ a (hlow s a ha (fun h => hne (by rw [← hentG]; exact hbtG i h))))
     rw [← hentG] at hdG
     have hθGe : ⇑θG = gam0 0 un := funext hθG
-    have key := GlobalTheory.T.diagonal_entry_of_semilinear_mod_subspace_alt F n θG (1 + (X : F⟦X⟧) • D i) (V i (rs s).castSucc) (V i (rs s).castSucc)
+    have key := _root_.GlobalTheory.diagonal_entry_of_semilinear_mod_subspace F n θG (1 + (X : F⟦X⟧) • D i) (V i (rs s).castSucc) (V i (rs s).castSucc)
       (fun c => (g i : Matrix (Fin n) (Fin n) F⟦X⟧) c (pos s)) (e i s)
       (fun c => (g i : Matrix (Fin n) (Fin n) F⟦X⟧) c (pos s)) (e i s)
       (w i s) (w i s) (k i s) (k i s) (m i s) (Formalism.CohomologicalDescent.FrobeniusPeriodChange.chgGam un (g i) (D i) (pos s) (pos s))

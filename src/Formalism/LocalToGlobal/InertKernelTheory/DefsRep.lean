@@ -1,5 +1,7 @@
 import Formalism.LocalToGlobal.InertKernelTheory.FirstKernelGeneratorOfOrthogonal
-import Formalism.LocalToGlobal.InertKernelTheory.StatementBeCob
+import Formalism.SharpRestriction.GrowthBounds.FormalGroupSystem
+import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.CoeffOneLNe
+import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.UniformGaussModelCondition
 import Formalism.LocalToGlobal.InertKernelTheory.StatementInt
 import Formalism.LocalToGlobal.PairingIndexBounds.PendingAdmissibility.LocalFDerivAdmissibility.RepRed
 
@@ -30,15 +32,6 @@ def OrthInt (l : ℕ) [Fact l.Prime] (g2 g3 s2 ε : MaximalUnramifiedExtension l
     Integral (mvExp (Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε) : MvPowerSeries (Fin r) ℂ_[l]) *
       @inParamK l _ (Fin r) ℂ_[l] _ (wittFractionAlgebraCp l) Θ)
 
-def OrthAll {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : Formalism.L2.G.Pend.CEmbC X.G)
-    (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) {T : Type} (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ T)
-    (F : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (T × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) ℂ_[p])
-    (g2 g3 s2 ε : MaximalUnramifiedExtension p) : Prop :=
-  letI := wittFractionAlgebraCp p
-  letI := Formalism.L2.G.Pend.algKfC E.toCEmb
-  ∀ j (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1), (X.Pj (j + 1)).IsLatTup La'.2 →
-    ∀ φ : Frm X j L0 La', OrthInt p g2 g3 s2 ε (thA ℂ_[p] φ (thFOf X pos F j L0 La'))
-
 section Glob
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker
@@ -55,23 +48,6 @@ variable {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E :
     (Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))
     (F : ∀ j, X.Lt j → X.Lt (j + 1) →
       MvPowerSeries (D.what₂.Tau × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) ℂ_[p])
-
-def CombAt (T : Tor D) (e : FamE D) (lam : Qbar →+* ℂ_[p]) : Prop :=
-  ∀ j (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1), (X.Pj (j + 1)).IsLatTup La'.2 →
-    admitted D _ _ (large₂ j L0 La') (Lg' j L0 La') ∧ IsComb D T e lam (large₂ j L0 La') (Lg' j L0 La') (F j L0 La')
-
-def FrameHyp (S : ∀ j, X.Lt j → X.Lt (j + 1) →
-      (D.what₂.Tau × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) →
-      (D.what₂.Tau × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) → ℂ_[p])
-    (lam : Qbar →+* ℂ_[p]) (c : ℂ_[p]) : Prop :=
-  letI := wittFractionAlgebraCp p
-  letI := Formalism.L2.G.Pend.algKfC E.toCEmb
-  ∀ j (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1), (X.Pj (j + 1)).IsLatTup La'.2 →
-    ∀ φ : Frm X j L0 La', ∃ (r : ℕ) (b : Fin r → Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj j).m + 1)) D.host.E),
-      LocBasis D p (YYl D (large₂ j L0 La') (Lg' j L0 La')) b ∧ Orthonormal D b ∧
-      ∃ (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (f f' : X.EA j → Fin r → MaximalUnramifiedExtension p), UnrOK (MaximalUnramifiedExtension p) p σ ∧ IsHypPair σ f f' ∧
-        thA ℂ_[p] φ (thFOf X pos (fun j La La' => linSub (S j La La') (F j La La')) j L0 La') =
-          MvPowerSeries.subst (hypLin p f f') (thOrth D lam c b (F j L0 La'))
 
 end Glob
 

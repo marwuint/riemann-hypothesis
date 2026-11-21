@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OfE
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalHaarScalingByUnitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteAdeleHaarScalingTotallyRealStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalHaarScalingTensorUnitsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticePreservedCofinitelyByUnitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardLatticeMeasureEqOneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteAdeleHaarScalingTotallyReal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalHaarScalingTensorUnits
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticePreservedCofinitelyByUnit
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardLatticeMeasureEqOne
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology Filter PositivityTheory.Rg.Base1 GroundTheory.Global GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil
 open scoped TensorProduct ENNReal NNReal Matrix Classical
@@ -112,7 +112,7 @@ theorem place1 {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
     ∃ H : (Fin 1 × Fin 1 × Fin d → R) ≃ₜ (Fin 1 → Fin 1 → R ⊗[F] E),
       (∀ t, H t = fun a i => (y : R ⊗[F] E) * (eW R hK 1 1).symm t a i) ∧
       (Measure.pi fun _ => lam).map H = c • coordW R b lam 1 1 := by
-  obtain ⟨_, _, _, _, -, -, -, hB, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R
+  obtain ⟨_, _, _, _, -, -, -, hB, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
   have := hB 1 1
   have c1 : Continuous (eW R hK 1 1) := continuous_pi fun p =>
     (continuous_apply p.2.2).comp (hK.continuous.comp (continuous_apply_apply p.1 p.2.1))
@@ -137,7 +137,7 @@ theorem place1 {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
   have e2 : (H : (Fin 1 × Fin 1 × Fin d → R) → _) =
       (fun (X : Fin 1 → Fin 1 → R ⊗[F] E) a i => (y : R ⊗[F] E) * X a i) ∘ (eW R hK 1 1).symm := rfl
   rw [e2, ← Measure.map_map (hm _).measurable (eW R hK 1 1).symm.measurable, e1]
-  exact GlobalTheory.T.local_haar_scaling_tensor_units F E σ hcm R hR d b lam inferInstance y n c hn hc
+  exact _root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.UnitScale.map_coordW_unit F E σ hcm R hR d b lam inferInstance y n c hn hc
 
 end Place
 
@@ -176,8 +176,8 @@ theorem equi_unit : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F]
     simpa using this.symm
   subst hd
   obtain ⟨hφc, hφs, hφ0, hφu, hAS, hAoff⟩ := hT
-  have Ri := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hcm.1
-  have Rv := GlobalTheory.T.completion_is_local_ring F
+  have Ri := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hcm.1
+  have Rv := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F
   obtain ⟨_, _, _, _, -⟩ := id Ri
   have : BorelSpace (Ainf F) := ⟨rfl⟩
   have : ∀ v, IsTopologicalRing (Fv F v) := fun v => (Rv v).1
@@ -187,9 +187,9 @@ theorem equi_unit : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F]
   have : ∀ v, BorelSpace (Fv F v) := fun _ => ⟨rfl⟩
   haveI := hli.1
   haveI : ∀ v, (lam v).IsAddHaarMeasure := fun v => (hlam v).1
-  have hKi : IsHomeomorph (cK (F := F) (E := E) (Ainf F) b) := (GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Ainf F)).2.2.2.2.2.2.1 2 b
+  have hKi : IsHomeomorph (cK (F := F) (E := E) (Ainf F) b) := (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Ainf F)).2.2.2.2.2.2.1 2 b
   have hKv : ∀ v, IsHomeomorph (cK (F := F) (E := E) (Fv F v) b) := fun v =>
-    (GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)).2.2.2.2.2.2.1 2 b
+    (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Fv F v)).2.2.2.2.2.2.1 2 b
 
   let yi : (Ainf F ⊗[F] E)ˣ := Units.map (cI (F := F) (E := E)).toMonoidHom y
   let yv : ∀ v, (Fv F v ⊗[F] E)ˣ := fun v => Units.map (cV (E := E) v).toMonoidHom y
@@ -197,14 +197,14 @@ theorem equi_unit : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F]
   let nv : ∀ v, (Fv F v)ˣ := fun v => Units.map ((evalV F v).comp (sndA F)).toMonoidHom n
   obtain ⟨ci, hci, mci⟩ : ∃ c : ℝ≥0, (c : ℝ) = (∏ w : InfinitePlace F, ‖(n : AF F).1 w‖)⁻¹ ∧
       li.map (fun t => (ni : Ainf F) * t) = c • li :=
-    ⟨_, by push_cast; rfl, GlobalTheory.T.infinite_adele_haar_scaling_totally_real F hcm.1 li inferInstance ni⟩
+    ⟨_, by push_cast; rfl, _root_.GlobalTheory.CompanionTheory.SW.HaarUnit.map_mul_unit F hcm.1 li inferInstance ni⟩
   choose cv hcv mcv using fun v => (⟨_, by push_cast; rfl, GlobalTheory.T.local_haar_scaling_by_unit F v (lam v) inferInstance (nv v)⟩ :
     ∃ c : ℝ≥0, (c : ℝ) = ‖(n : AF F).2 v‖⁻¹ ∧ (lam v).map (fun t => (nv v : Fv F v) * t) = c • lam v)
   obtain ⟨Hi, hHi, mHi⟩ := place1 σ hcm (Ainf F) Ri b hKi li yi ni ci (cI_norm σ y n hn) mci
   choose Hv hHv mHv using fun v => place1 σ hcm (Fv F v) (Rv v) b (hKv v) (lam v) (yv v) (nv v) (cv v)
     (cV_norm σ y n hn v) (mcv v)
 
-  have hbad := eventually_cofinite.1 (GlobalTheory.T.lattice_preserved_cofinitely_by_unit F E σ hcm 2 b y)
+  have hbad := eventually_cofinite.1 (_root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.UnitLat.eventually_cV_mul_mem_latV_iff F E σ hcm 2 b y)
   have hnb := IdeleGroup.finite_mulSupport_norm (K := F) n
   set S' : Finset (HeightOneSpectrum (𝓞 F)) := S ∪ hbad.toFinset ∪ hnb.toFinset with hS'd
   have hSS' : S ⊆ S' := Finset.subset_union_left.trans Finset.subset_union_left
@@ -214,17 +214,17 @@ theorem equi_unit : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F]
       hv (Finset.mem_union_left _ (Finset.mem_union_right _ h')))) Y
   have hnorm : ∀ v, v ∉ S' → ‖(n : AF F).2 v‖ = 1 := fun v hv => by_contra fun h =>
     hv (Finset.mem_union_right _ (hnb.mem_toFinset.2 h))
-  obtain ⟨-, -, -, t4, -⟩ := GlobalTheory.T.adelic_tuple_projections F E σ hcm 2 b 1 1
+  obtain ⟨-, -, -, t4, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm 2 b 1 1
   have hAco : ∀ v, IsCompact (A v) ∧ IsOpen (A v) := fun v => by
     by_cases hv : v ∈ S
     · exact ⟨(hAS v hv).1, (hAS v hv).2.1⟩
     · rw [hAoff v hv]
       exact t4 v
   have hT2 : ∀ v, T2Space (Fin 1 → Fin 1 → Fv F v ⊗[F] E) := fun v => by
-    obtain ⟨-, -, -, _, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)
+    obtain ⟨-, -, -, _, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Fv F v)
     infer_instance
   have hBv : ∀ v, BorelSpace (Fin 1 → Fin 1 → Fv F v ⊗[F] E) := fun v =>
-    (GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)).2.2.2.2.2.2.2.1 1 1
+    (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Fv F v)).2.2.2.2.2.2.2.1 1 1
   set ψ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin 1 × Fin 1 × Fin 2 → Fv F v) → ℝ := fun v => (Hv v ⁻¹' A v).indicator 1 with hψd
   have hcl : ∀ v, IsClopen (Hv v ⁻¹' A v) := fun v =>
     ⟨(hAco v).1.isClosed.preimage (Hv v).continuous, (hAco v).2.preimage (Hv v).continuous⟩
@@ -235,10 +235,10 @@ theorem equi_unit : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F]
   have hL := hEq F hcm.1 θ hθ li lam hli hlam (Fin 1 × Fin 1 × Fin 2) S' (φ ∘ Hi) ψ (hφc.comp Hi.continuous)
     (hφs.comp_homeomorph Hi) hψ
 
-  have hBi := (GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Ainf F)).2.2.2.2.2.2.2.1 1 1
+  have hBi := (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Ainf F)).2.2.2.2.2.2.2.1 1 1
   have hHaarV : ∀ v, (coordW (Fv F v) b (lam v) 1 1).IsAddHaarMeasure := fun v =>
-    (GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F v) 2 b (lam v) inferInstance).2.1 1 1
-  have hHaarI : (coordW (Ainf F) b li 1 1).IsAddHaarMeasure := (GlobalTheory.T.coordinate_haar_measure F E σ hcm (Ainf F) 2 b li inferInstance).2.1 1 1
+    (_root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm (Fv F v) 2 b (lam v) inferInstance).2.1 1 1
+  have hHaarI : (coordW (Ainf F) b li 1 1).IsAddHaarMeasure := (_root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm (Ainf F) 2 b li inferInstance).2.1 1 1
   have eV : ∀ v, ∫ t, ψ v t ∂(Measure.pi fun _ => lam v) = (cv v : ℝ) * (coordW (Fv F v) b (lam v) 1 1 (A v)).toReal := fun v => by
     have e1 : (Measure.pi fun _ : Fin 1 × Fin 1 × Fin 2 => lam v) (Hv v ⁻¹' A v) =
         ((Measure.pi fun _ : Fin 1 × Fin 1 × Fin 2 => lam v).map (Hv v)) (A v) :=
@@ -263,7 +263,7 @@ theorem equi_unit : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F]
       rw [Finset.prod_mul_distrib]
       congr 1
       refine (Finset.prod_subset hSS' fun v _ hv => ?_).symm
-      rw [hAoff v hv, GlobalTheory.T.standard_lattice_measure_eq_one F E σ hcm 2 b lam hlam v]
+      rw [hAoff v hv, _root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.CoordLat.coordW_latV_one F E σ hcm 2 b lam hlam v]
       simp
     have e3 : (ci : ℝ) * ∏ v ∈ S', (cv v : ℝ) = (md n)⁻¹ := by
       rw [md_eq hcm.1 n S' hnorm, hci, mul_inv]

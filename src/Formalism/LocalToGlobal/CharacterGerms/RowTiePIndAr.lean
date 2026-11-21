@@ -593,12 +593,4 @@ theorem ind_gen (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x))
 
 end IndAr
 
-theorem indSt_holds : IndSt := by
-  intro C _ _ V O _ _ dd Y d _ I _ p g N ty M h1 hadd hneg hmul hteich hact hlim a
-  exact IndAr.ind_gen (p.em g) (p.em_int g) (p.em_frob g)
-    (fun b b' h => p.em_sep (g, b) (g, b') (by simp [h])) N ty M h1 hadd hneg hmul hteich hact hlim a
-
-theorem typical_averaging_of_limits (hAct : OActTySt) (hLim : LimTySt) : PTAvgFBSt := by
-  exact ptAvg_of hAct hLim indSt_holds
-
 end Formalism.L2.FormalSeriesBounds

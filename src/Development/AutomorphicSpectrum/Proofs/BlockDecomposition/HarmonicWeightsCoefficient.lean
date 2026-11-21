@@ -6,7 +6,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MonomialCoeffic
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeylDenominatorProductStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VandermondeSquaresStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdPairSumsEqSumPowersetScoreStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScoreTZeroEqLevelCountStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScoreTZeroEqLevelCount
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScoreRigidityPermEqOneStatement
 
 noncomputable section
@@ -57,7 +57,7 @@ theorem alt_expand (e : Fin n → ℤ) (z : Fin n → ℂ) :
 theorem score_tZero (lev : Fin n → ℕ) (hm : Monotone lev) (a : Fin n) :
     score (tZero lev) a = ((univ.filter fun b => lev a < lev b).card : ℤ) -
       ((univ.filter fun b => lev b < lev a).card : ℤ) + ((a : ℕ) : ℤ) :=
-  GlobalTheory.T.score_tZero_eq_level_count lev hm a
+  _root_.GlobalTheory.CompanionTheory.CoefId.score_tZero_level lev hm a
 
 theorem step_unique (lev : Fin n → ℕ) (hm : Monotone lev) (L : Fin n → ℤ) (hL : StrictAnti L)
     (hb : ∀ a b, lev a = lev b → L a - L b = ((b : ℕ) : ℤ) - ((a : ℕ) : ℤ)) (σ : Equiv.Perm (Fin n))

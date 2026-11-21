@@ -3,14 +3,16 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ModuliUnivEta
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ConnectionLinearInSectionStatement
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaGroupShiftHalfTorsionRootStatement
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalWeilPairingPullbackExistsUnique
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.TorsionIsotropicCommutatorPairingStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsotropicEnumerationSurjectiveLocalRingStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InZhGeoInjStableStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.TorsionIsotropicCommutatorPairing
+import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.VtUniq
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsotropicEnumerationSurjectiveLocalRing
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InZhGeoInjStable
 import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ExpTie
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndBC
-import Formalism.LocalToGlobal.ProjectiveLattices.ThExpBC
+import Formalism.LocalToGlobal.ProjectiveLattices.IsExpChart
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -43,9 +45,9 @@ theorem shortSum_indep_local : Laws → ∀ (E : Type) [Field E] [NumberField E]
   obtain ⟨hNodd, hMN, hNL⟩ := hLev
   have hN0 : 0 < N := hNodd.pos
   have hLa : Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La := hNL.trans inf_le_left
-  have hsurj := (GlobalTheory.T.isotropic_enumeration_surjective_local_ring hL E H Dw l Xo T y.x n Λ N hU hN0 hLa z1 hz1 hg1).1
-  have h58 := GlobalTheory.T.torsion_isotropic_commutator_pairing hL E H Dw l Xo T y.x n Λ N hU hN0 hLa
-  have h56 := GlobalTheory.T.inZh_geoInj_stable_alt E H Dw l Xo n Λ N
+  have hsurj := (_root_.GlobalTheory.isotropic_enumeration_onto_of_isLocalRing hL E H Dw l Xo T y.x n Λ N hU hN0 hLa z1 hz1 hg1).1
+  have h58 := _root_.GlobalTheory.zh_isotropic_and_half_isotropic hL E H Dw l Xo T y.x n Λ N hU hN0 hLa
+  have h56 := _root_.GlobalTheory.inZh_geoInj_stable E H Dw l Xo n Λ N
   have h57 := (GlobalTheory.UnivPairing.weilIs_univ_pull_exists_unique hL E H Dw l Xo N hN0).2.1
 
   have hz2inj : Function.Injective z2 := by

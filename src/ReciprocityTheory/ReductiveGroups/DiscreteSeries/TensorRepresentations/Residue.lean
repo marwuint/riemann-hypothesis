@@ -135,9 +135,6 @@ theorem not_injective_shift_iff {μ ν : Fin n → ℝ} (hμ : Function.Injectiv
     have hne : s' ≠ s := (Finset.mem_erase.mp hs').1
     exact hne (hinj (by rw [ho s' hne, hs, h]))
 
-theorem resSeries_coeff_zero (a : Fin n → ℂ) : PowerSeries.coeff 0 (resSeries a) = 0 := by
-  simp [resSeries, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_prod]
-
 theorem resSeries_coeff_succ {a : Fin n → ℂ} (ha : Function.Injective a) (k : ℕ) :
     PowerSeries.coeff (k + 1) (resSeries a) = ∑ s, resid a s * a s ^ k := by
   rw [resSeries_coeff_succ' ha k]
@@ -169,52 +166,6 @@ theorem poleVd_injective {μ : Fin n → ℝ} (hμ : Function.Injective μ) : Fu
   simp only [poleVd] at h
   have h' := Complex.ofReal_injective h
   linarith
-
-theorem ratioV_nonneg {μ : Fin n → ℝ} (hμ : Function.Injective μ) (hint : ∀ a b, ∃ m : ℤ, μ a - μ b = (m : ℝ))
-    (s : Fin n) : 0 ≤ ratioV μ s ∧ (ratioV μ s = 0 ↔ ¬ Function.Injective (μ + Pi.single s 1)) := by
-  have hfac : ∀ s' ∈ univ.erase s, 0 ≤ (μ s + 1 - μ s') / (μ s - μ s') := by
-    intro s' hs'
-    obtain ⟨m, hm⟩ := hint s s'
-    rw [show μ s + 1 - μ s' = (μ s - μ s') + 1 by ring, hm]
-    have hm0 : m ≠ 0 := by
-      intro h0
-      rw [h0, Int.cast_zero, sub_eq_zero] at hm
-      exact (Finset.mem_erase.mp hs').1 (hμ hm).symm
-    rcases lt_or_gt_of_ne hm0 with h | h
-    · have h' : (m : ℝ) ≤ -1 := by exact_mod_cast (show m ≤ -1 by omega)
-      exact div_nonneg_of_nonpos (by linarith) (by linarith)
-    · have h' : (1 : ℝ) ≤ m := by exact_mod_cast h
-      exact div_nonneg (by linarith) (by linarith)
-  refine ⟨Finset.prod_nonneg hfac, ?_⟩
-  rw [ratioV, Finset.prod_eq_zero_iff,
-    not_injective_shift_iff hμ s 1 (by simp) (fun x hx => by simp [Pi.single_apply, hx])]
-  refine exists_congr fun s' => and_congr_right fun hs' => ?_
-  have hd : μ s - μ s' ≠ 0 := sub_ne_zero.mpr (fun h => (Finset.mem_erase.mp hs').1 (hμ h).symm)
-  rw [div_eq_zero_iff, or_iff_left hd, sub_eq_zero]
-
-theorem ratioVd_nonneg {μ : Fin n → ℝ} (hμ : Function.Injective μ) (hint : ∀ a b, ∃ m : ℤ, μ a - μ b = (m : ℝ))
-    (s : Fin n) : 0 ≤ ratioVd μ s ∧ (ratioVd μ s = 0 ↔ ¬ Function.Injective (μ - Pi.single s 1)) := by
-  have hfac : ∀ s' ∈ univ.erase s, 0 ≤ (μ s - 1 - μ s') / (μ s - μ s') := by
-    intro s' hs'
-    obtain ⟨m, hm⟩ := hint s s'
-    rw [show μ s - 1 - μ s' = (μ s - μ s') - 1 by ring, hm]
-    have hm0 : m ≠ 0 := by
-      intro h0
-      rw [h0, Int.cast_zero, sub_eq_zero] at hm
-      exact (Finset.mem_erase.mp hs').1 (hμ hm).symm
-    rcases lt_or_gt_of_ne hm0 with h | h
-    · have h' : (m : ℝ) ≤ -1 := by exact_mod_cast (show m ≤ -1 by omega)
-      exact div_nonneg_of_nonpos (by linarith) (by linarith)
-    · have h' : (1 : ℝ) ≤ m := by exact_mod_cast h
-      exact div_nonneg (by linarith) (by linarith)
-  refine ⟨Finset.prod_nonneg hfac, ?_⟩
-  rw [ratioVd, Finset.prod_eq_zero_iff,
-    not_injective_shift_iff hμ s (-1) (by simp [sub_eq_add_neg])
-      (fun x hx => by simp [Pi.single_apply, hx])]
-  refine exists_congr fun s' => and_congr_right fun hs' => ?_
-  have hd : μ s - μ s' ≠ 0 := sub_ne_zero.mpr (fun h => (Finset.mem_erase.mp hs').1 (hμ h).symm)
-  rw [div_eq_zero_iff, or_iff_left hd]
-  constructor <;> intro h <;> linarith
 
 theorem ratioVd_add_single_mul {μ : Fin n → ℝ} (s : Fin n) (hμ : Function.Injective μ)
     (hμs : Function.Injective (μ + Pi.single s 1)) :

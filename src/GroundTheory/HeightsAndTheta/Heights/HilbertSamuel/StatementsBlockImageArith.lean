@@ -15,12 +15,6 @@ def BlockImageArith.Statement : Prop :=
     IsArithVar (mCoordIdeal y) (D + 1) → BlockBirational y k₀ → IsBlockImage y k₀ M N x →
       LinearIndependent ℤ x → IsArithVar (ι := GlobalTheory (Fin r)) (coordIdeal ℤ x) (D + 1)
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

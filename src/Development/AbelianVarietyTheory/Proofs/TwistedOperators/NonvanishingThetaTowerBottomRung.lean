@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PartFix
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsVacFOfIsVacVec
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LastSeesawPeriodNonvanishingStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftPeriodsIsTameThetaFunctionalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridConjugationWeilDataInverseCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridConjugationWeilDataInverseCharacter
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilDatumHermitianPair
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridHeckeCharactersExist
 import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasChr
@@ -27,7 +27,7 @@ theorem rapidDec_star {V : HSp D} {f : GA D V → ℂ} (h : RapidDec V f) : Rapi
 theorem rung0 (hF : FockTot) : Rung0 := by
   intro D hq T L μ0 hL sc G W M hM v F ΓL hE hG Ψ hΨ u hu hper h
   have hm : 0 < D.R.m := by omega
-  obtain ⟨hom, homC, -, hev, hdep, hdn, hpart, -, -, -⟩ := GlobalTheory.T.gridConjugation_weilData_inverseCharacter D hq T L μ0 hL sc G W M hM 0 hm
+  obtain ⟨hom, homC, -, hev, hdep, hdn, hpart, -, -, -⟩ := _root_.GlobalTheory.Asc.conjRead_holds D hq T L μ0 hL sc G W M hM 0 hm
   obtain ⟨hchT, hchS⟩ := hev ⟨0, rfl⟩
   obtain ⟨hrap, hch⟩ := hΨ
   obtain ⟨f, hf, hΨ0⟩ := hch 0 hm

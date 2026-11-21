@@ -358,7 +358,7 @@ theorem isEig_iff (r : 𝓞 E →+* A) {ν : GtPt a.D₀ (epsR A)} {v : epsR (Po
 include W in
 theorem gtTanR_iff (ν : GtPt a.D₀ (epsR A)) {o : GtPt a.D₀ (epsR A)} (ho : GtComb (m := 0) Fin.elim0 Fin.elim0 o) :
     GtTanR ν ↔ GtComb (fun _ : Fin 1 => 0) (fun _ => ν) o := by
-  have ex := GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W
+  have ex := _root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W
   obtain ⟨v, hv, -⟩ := (ex ν).1
   have h₀ := (GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y A b a χ W 0 _ _ o Fin.elim0 1 (fun j => j.elim0) ho).2
     ⟨Fin.elim0, fun j => j.elim0, by simp⟩
@@ -372,7 +372,7 @@ theorem isEigBasis_iff (r : 𝓞 E →+* A) {m : ℕ} {u : Fin m → GtPt a.D₀
       ∀ w, IsTangent w → (∀ x : 𝓞 E,
         (w ≫ W.t.act.act x).left = spMap (epsScaleR (PowerSeries.C (R := A) (r x))) ≫ w.left) →
         ∃! cf : Fin m → PowerSeries A, IsLieComb cf v w := by
-  have ex := GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W
+  have ex := _root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W
   refine (and_congr_left' (forall_congr' fun k =>
     and_congr ((ex _).2 _ (hu k)) (isEig_iff hG W r (hu k)))).trans (and_congr_right fun h => ?_)
   have := W.P.U.smooth
@@ -409,7 +409,7 @@ theorem isEigBasis_iff (r : 𝓞 E →+* A) {m : ℕ} {u : Fin m → GtPt a.D₀
 theorem arcBasis_iff (ρ : (E →+* ℂ) → (𝓞 E →+* A)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → GtPt a.D₀ (epsR A)) :
     ArcBasis W ρ e ↔ ∀ τ, IsEigBasis hG (ρ τ) (e τ) := by
   refine ⟨fun ⟨v, hv, h⟩ τ => (isEigBasis_iff hG W _ (hv τ)).2 (h τ), fun h => ?_⟩
-  choose v hv using fun ν => (GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W ν).1.exists
+  choose v hv using fun ν => (_root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W ν).1.exists
   exact ⟨fun τ k => v (e τ k), fun τ k => hv _, fun τ => (isEigBasis_iff hG W _ fun k => hv _).1 (h τ)⟩
 
 include W in

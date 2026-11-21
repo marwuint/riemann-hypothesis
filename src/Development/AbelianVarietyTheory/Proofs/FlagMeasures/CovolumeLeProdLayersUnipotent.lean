@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IpLEqZeroOfMemSpan
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GaugeMeasureMatrixAlgebraSubgroupLocalAsymptoticStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurePreservingTriangularShearStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoVolumeSublevelDivPowStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumeProductOverGradingLayersStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumeProductOverGradingLayers
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalLieCoordinatesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TraceCoordSqSumLeHilbertSchmidtUnitaryGroupStatement
 
@@ -128,7 +128,7 @@ theorem covol_le_prod_layers : ∀ (ι : Type) [Fintype ι] (n d m : ℕ) (ε : 
     refine MeasurableSet.iInter fun c => MeasurableSet.iInter fun _ => ?_
     exact (show Measurable fun (x : ι → Fin d → ℝ) v (i : {i : Fin d // deg i = c}) => x v i.1 by
       fun_prop) (hD c)
-  rw [← GlobalTheory.T.volume_product_over_grading_layers ι d m deg D hdeg hD]
+  rw [← _root_.GlobalTheory.LayerBox.volume_layer_box ι d m deg D hdeg hD]
   refine le_trans ?_ (hmp.measure_preimage hB.nullMeasurableSet).le
   refine iInf_le_of_le _ (iInf_le_of_le (hmp.measurable hB) (iInf_le_of_le ?_ le_rfl))
   intro x hx

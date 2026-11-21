@@ -98,10 +98,6 @@ theorem fromL_toL : (fromL s).comp (toL s) = RingHom.id _ := by
   apply dAway_ext s
   rw [RingHom.comp_assoc, toL_comp, fromL_comp, RingHom.id_comp]
 
-theorem toL_fromL : (toL s).comp (fromL s) = RingHom.id _ := by
-  apply IsLocalization.ringHom_ext (Submonoid.powers (TrivSqZeroExt.inl s : DualNumber S))
-  rw [RingHom.comp_assoc, fromL_comp, toL_comp, RingHom.id_comp]
-
 end Iso
 
 section Glue

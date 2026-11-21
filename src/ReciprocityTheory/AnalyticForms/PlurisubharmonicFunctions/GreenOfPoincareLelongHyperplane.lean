@@ -58,40 +58,6 @@ theorem hypInclAt_zero {n : ℕ} (w : Fin n → ℂ) : hypInclAt 0 w = hypIncl w
   funext j
   simp [hypInclAt, hypIncl, Fin.insertNth_zero']
 
-theorem exists_poincareLelongData {n : ℕ} (U : Set (Fin (n + 1) → ℂ)) (hU : IsOpen U) (z : Fin (n + 1) → ℂ)
-    (hz : z ∈ U) (φ : Fin n → (Fin (n + 1) → ℂ) → ℝ) (hφ : ∀ k, ContDiffOn ℝ ∞ (φ k) U) :
-    ∃ v : (Fin (n + 1) → ℂ) → ℝ, PoincareLelongData U v φ ∧ v z = 1 := by
-  obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp hU z hz
-  let f : ContDiffBump z := ⟨ε / 4, ε / 2, by positivity, by linarith⟩
-  refine ⟨f, ⟨hU, f.contDiff, f.hasCompactSupport, ?_, hφ⟩,
-    f.one_of_mem_closedBall (Metric.mem_closedBall_self (by positivity))⟩
-  rw [f.tsupport_eq]
-  exact (Metric.closedBall_subset_ball (by linarith : ε / 2 < ε)).trans hball
-
-theorem green_of_poincareLelongHyperplane (h : PoincareLelongHyperplane) (u : (Fin 1 → ℂ) → ℝ) (hu : ContDiff ℝ 3 u)
-    (hcs : HasCompactSupport u) :
-    Integrable (fun z : Fin 1 → ℂ => Real.log ‖z 0‖ * ReciprocityTheory.AnForm.maDens ![u] z) ∧
-      ∫ z : Fin 1 → ℂ, Real.log ‖z 0‖ * ReciprocityTheory.AnForm.maDens ![u] z = u 0 := by
-  obtain ⟨h1, -, h3⟩ := h 0 Set.univ u Fin.elim0
-    ⟨isOpen_univ, hu, hcs, Set.subset_univ _, fun k => k.elim0⟩
-  have hv : densV u (Fin.elim0 : Fin 0 → (Fin 1 → ℂ) → ℝ) = ReciprocityTheory.AnForm.maDens ![u] := by
-    funext z; rfl
-  rw [hv] at h1 h3
-  refine ⟨h1, ?_⟩
-  rw [h3]
-  have hw : ∀ w : Fin 0 → ℂ,
-      u (hypIncl w) * densHyp (Fin.elim0 : Fin 0 → (Fin 1 → ℂ) → ℝ) w = u 0 := by
-    intro w
-    have e1 : hypIncl w = 0 := by
-      funext j
-      refine Fin.cases rfl (fun i => i.elim0) j
-    have e2 : densHyp (Fin.elim0 : Fin 0 → (Fin 1 → ℂ) → ℝ) w = 1 := by
-      simp [densHyp, ReciprocityTheory.AnForm.maDens, ReciprocityTheory.AnForm.mdisc]
-    rw [e1, e2, mul_one]
-  simp_rw [hw]
-  simp [MeasureTheory.integral_const, MeasureTheory.volume_pi, MeasureTheory.measureReal_def,
-    MeasureTheory.Measure.pi_univ]
-
 end
 
 end ReciprocityTheory.AnForm.A

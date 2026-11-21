@@ -30,34 +30,4 @@ def IsHTLatOf {ct : At S κ p} (hm : HTmSt ct (shfTrue ct) (htpTrue ct)) (B : ct
     letI : Fact p.Prime := ⟨ct.hp⟩; letI := A.H.starRing
     hm.omPat y = (GlobalTheory.HTSheaf.fibLat (ct.isGrpPullback_htToMdl y) L.N).toAddSubgroup
 
-def stagesOf (ct : At S κ p) (hm : HTmSt ct (shfTrue ct) (htpTrue ct)) (jt : JetSt ct (uniTrue ct) (thgTrue ct)) : Stages ct where
-  lw := SharedLaws.lawSt _ _ _ _ _ _ _ ct
-  mo := motTrue ct
-  sh := shfTrue ct
-  fg := flgOf ct (IsHTLatOf hm)
-  fr := frmTrue ct
-  ch := chtTrue ct
-  tr := torTrue ct
-  fj := fjTrue ct
-  un := uniTrue ct
-  tb := thbTrue ct
-  ky := keyTrue ct
-  bd := bdyTrue ct
-  tg := thgTrue ct
-  jt := jt
-  ev := evlTrue ct
-  hq := htpTrue ct
-  hm := hm
-  cd := crdTrue ct
-  cr := crhOf ct (IsHTLatOf hm) (classFam (IsHTLatOf hm))
-
-abbrev HTmFam (D : D7) : Type 1 := ∀ (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) (ct : At S κ p),
-  HTmSt ct (shfTrue ct) (htpTrue ct)
-
-abbrev JetFam (D : D7) : Type 1 := ∀ (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) (ct : At S κ p),
-  JetSt ct (uniTrue ct) (thgTrue ct)
-
-def stOf (hm : HTmFam D) (jt : JetFam D)  (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) : StFam S κ :=
-  ⟨fun {p} ct => stagesOf ct (hm A N j S κ p ct) (jt A N j S κ p ct), alpOf D, fun _ => rfl⟩
-
 end GlobalTheory.LocM

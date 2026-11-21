@@ -69,17 +69,4 @@ theorem simeq_of_sub_eq {f g f' g' : MvPowerSeries σ ℂ_[p]} (e : f - g = f' -
 theorem cc_Xv (i : Fin 3) : MvPowerSeries.constantCoeff (Xv (p := p) i) = 0 := by
   exact MvPowerSeries.constantCoeff_X i
 
-theorem target : Target := by
-  intro p _ l ex ph hex h hC
-  constructor
-  · refine simeq_of_sub_eq ?_ hC
-    simp only [be]
-    rw [add_comm' l ex (Xv 2) (Xv 0)]
-    ring
-  · refine simeq_of_sub_eq ?_ hC
-    simp only [be]
-    rw [add_comm' l ex (Xv 2) (Xv 0),
-      add_assoc' hex h (Xv 0) (Xv 1) (Xv 2) (cc_Xv 0) (cc_Xv 1) (cc_Xv 2)]
-    ring
-
 end PI.BiaddOfCubeWork

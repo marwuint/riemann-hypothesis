@@ -30,6 +30,3 @@ theorem GlobalTheory.HomStab.groupHomology_map_conj : ∀ (k G H : Type) [CommRi
   rw [e, groupHomology.map_comp, GlobalTheory.T.innerAut_acts_trivially_groupHomology k G g n B (actHom B g) (fun a => rfl),
     Category.comp_id]
 
-section
-open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
-end

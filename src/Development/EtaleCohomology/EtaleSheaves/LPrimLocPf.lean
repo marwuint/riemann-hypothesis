@@ -8,12 +8,6 @@ namespace LateralTheory.E.L_prim_locPf
 def AlgPow : Prop := ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A] (ζ ξ : Prim q A),
   ∃ s : Set A, Ideal.span s = ⊤ ∧ ∀ f ∈ s, ∃ (a : (ZMod q)ˣ) (n : ℕ), f ^ n * (ξ.1 - ζ.1 ^ (a : ZMod q).val) = 0
 
-def AlgRoot : Prop := ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A] (ζ : Prim q A) (x : A), x ^ q = 1 →
-  ∃ s : Set A, Ideal.span s = ⊤ ∧ ∀ f ∈ s, ∃ a n : ℕ, f ^ n * (x - ζ.1 ^ a) = 0
-
-def EtRoot : Prop := ∀ (U : Scheme.{0}) (p : Polynomial Γ(U, ⊤)), p.Monic → (Nontrivial Γ(U, ⊤) → 0 < p.natDegree) → p.Separable →
-  Loc U fun V g => ∃ t : Γ(V, ⊤), (p.map g.appTop.hom).IsRoot t
-
 section Alg
 variable {q : ℕ} [NeZero q] {A : Type} [CommRing A]
 
@@ -177,42 +171,9 @@ theorem loc_mono' {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop
   obtain ⟨S, hS, hP⟩ := h
   exact ⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩
 
-theorem c1 (hE : EtRoot) (q : ℕ) [NeZero q] (U : Scheme.{0}) (hq : IsUnit (q : Γ(U, ⊤))) :
-    Loc U fun V _ => Nonempty (Prim q Γ(V, ⊤)) := by
-  have hsep : (Polynomial.cyclotomic q Γ(U, ⊤)).Separable := by
-    have h1 := Polynomial.separable_X_pow_sub_C_unit (1 : (Γ(U, ⊤))ˣ) hq
-    rw [Units.val_one, map_one] at h1
-    exact h1.of_dvd (Polynomial.cyclotomic.dvd_X_pow_sub_one q _)
-  have hdeg : Nontrivial Γ(U, ⊤) → 0 < (Polynomial.cyclotomic q Γ(U, ⊤)).natDegree := by
-    intro _; rw [Polynomial.natDegree_cyclotomic]; exact Nat.totient_pos.2 (Nat.pos_of_ne_zero (NeZero.ne q))
-  refine loc_mono' (hE U _ (Polynomial.cyclotomic.monic q _) hdeg hsep) fun V g ⟨t, ht⟩ => ?_
-  have hqV : IsUnit (q : Γ(V, ⊤)) := by simpa using hq.map g.appTop.hom
-  refine ⟨⟨t, hqV, ?_⟩⟩
-  rw [Polynomial.map_cyclotomic] at ht
-  rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]
-  exact ht
-
-theorem c4 (hE : EtRoot) (q : ℕ) [NeZero q] (U : Scheme.{0}) (hq : IsUnit (q : Γ(U, ⊤))) (u : (Γ(U, ⊤))ˣ) :
-    Loc U fun V g => ∃ v : (Γ(V, ⊤))ˣ, v ^ q = Units.map g.appTop.hom.toMonoidHom u := by
-  have hq0 : q ≠ 0 := NeZero.ne q
-  refine loc_mono' (hE U _ (Polynomial.monic_X_pow_sub_C _ hq0) (fun _ => by rw [Polynomial.natDegree_X_pow_sub_C]; omega)
-    (Polynomial.separable_X_pow_sub_C_unit u hq)) fun V g ⟨t, ht⟩ => ?_
-  have ht' : t ^ q = g.appTop.hom u := by
-    simpa [Polynomial.IsRoot, sub_eq_zero] using ht
-  have htu : IsUnit t := (isUnit_pow_iff hq0).1 (by rw [ht']; exact (u.isUnit.map _))
-  refine ⟨htu.unit, Units.ext ?_⟩
-  simp [ht']
-
 theorem c2 (hA : AlgPow) (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ ξ : Prim q Γ(U, ⊤)) :
     Loc U fun _ g => ∃ a : (ZMod q)ˣ, g.appTop.hom ξ.1 = g.appTop.hom ζ.1 ^ (a : ZMod q).val := by
   obtain ⟨s, hs, hf⟩ := hA q Γ(U, ⊤) ζ ξ
-  refine loc_of_span s hs fun f hfs V g hu => ?_
-  obtain ⟨a, n, hn⟩ := hf f hfs
-  exact ⟨a, by rw [eq_of_unit_kill g.appTop.hom hn hu, map_pow]⟩
-
-theorem c3 (hR : AlgRoot) (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (x : Γ(U, ⊤)) (hx : x ^ q = 1) :
-    Loc U fun _ g => ∃ a : ℕ, g.appTop.hom x = g.appTop.hom ζ.1 ^ a := by
-  obtain ⟨s, hs, hf⟩ := hR q Γ(U, ⊤) ζ x hx
   refine loc_of_span s hs fun f hfs V g hu => ?_
   obtain ⟨a, n, hn⟩ := hf f hfs
   exact ⟨a, by rw [eq_of_unit_kill g.appTop.hom hn hu, map_pow]⟩

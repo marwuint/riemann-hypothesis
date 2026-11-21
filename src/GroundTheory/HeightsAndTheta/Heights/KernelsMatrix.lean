@@ -34,10 +34,6 @@ def SiegelCoordinates.Statement : Prop :=
       ∃! XY : Matrix (Fin g) (Fin g) ℝ × Matrix (Fin g) (Fin g) ℝ,
         XY.1.IsSymm ∧ XY.2.PosDef ∧ G = siegelGram XY.1 XY.2
 
-def FirstCoordinateBound.Statement : Prop :=
-  ∀ (g : ℕ) [NeZero g] (Y : Matrix (Fin g) (Fin g) ℝ), Y.PosDef → ∀ v : Fin g → ℝ,
-    v 0 ^ 2 / Y⁻¹ 0 0 ≤ qf Y v
-
 def GaussianSum.Statement : Prop :=
   ∃ C : ℝ, 0 < C ∧ ∀ (g : ℕ) (Y : Matrix (Fin g) (Fin g) ℝ) (ρ : ℝ), Y.PosDef → 0 < ρ →
     (∀ l : Fin g → ℤ, l ≠ 0 → ρ ^ 2 ≤ qf Y⁻¹ (intVec l)) →
@@ -90,60 +86,6 @@ def WeakMatrixArithmetic.Statement : Prop :=
       finMean (fun s => g * log (1 + 1 / ρ s) + C₀ * g * log (2 * g)) ≤
         C * (Φ + g ^ 2 * log (2 * g)) ∧
       finMean (fun s => posLog (1 / ρ s)) ≤ 1 / 2 * log (1 + finMean (fun s => (ρ s ^ 2)⁻¹))
-
-def ShortVectors.Statement : Prop :=
-  ∀ (n : ℕ), 0 < n → ∀ (L : Submodule ℤ (EuclideanSpace ℝ (Fin n))) [DiscreteTopology L]
-    [IsZLattice ℝ L],
-    ∃ lam : ℝ, IsLeast {t | ∃ v ∈ L, v ≠ 0 ∧ t = ‖v‖} lam ∧
-      (lam / √n) ^ n ≤ ZLattice.covolume L ∧
-      ∀ (U : Submodule ℝ (EuclideanSpace ℝ (Fin n))) (r : ℝ), lam ≤ r →
-        {v | v ∈ L ∧ v ∈ U ∧ ‖v‖ ≤ r ∧ v ≠ 0}.Finite ∧
-        (({v | v ∈ L ∧ v ∈ U ∧ ‖v‖ ≤ r ∧ v ≠ 0}.ncard : ℕ) : ℝ) ≤
-          (3 * r / lam) ^ Module.finrank ℝ U - 1
-
-example : (1 : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℝ) ∈ symplecticGroup (Fin 1) ℝ ∧
-    (1 : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℝ).PosDef :=
-  ⟨Submonoid.one_mem _, Matrix.PosDef.one⟩
-
-example : siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 ≠ 1 := by
-  intro h
-  have := congrFun (congrFun h (Sum.inr 0)) (Sum.inr 0)
-  simp [siegelGram] at this
-
-theorem isReducedImaginaryPart_one : IsReducedImaginaryPart (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 where
-  pos := one_pos
-  sq_le := by norm_num
-  first := by simp
-  min := by
-    intro l hl
-    have h0 : l 0 ≠ 0 := by
-      intro h; apply hl; funext i; fin_cases i; exact h
-    have h : (1 : ℝ) ≤ |(l 0 : ℝ)| := by exact_mod_cast Int.one_le_abs h0
-    have h2 : (1 : ℝ) ≤ (l 0 : ℝ) * (l 0 : ℝ) := by
-      nlinarith [abs_mul_abs_self (l 0 : ℝ), abs_nonneg (l 0 : ℝ)]
-    simpa [qf, intVec, dotProduct] using h2
-  det_le := by simp
-
-example : (1 : Matrix (Fin 1) (Fin 1) ℝ).PosDef ∧ (0 : Matrix (Fin 1) (Fin 1) ℝ).IsSymm ∧
-    ∀ l : Fin 1 → ℤ, l ≠ 0 → (1 : ℝ) ^ 2 ≤ qf (1 : Matrix (Fin 1) (Fin 1) ℝ)⁻¹ (intVec l) :=
-  ⟨Matrix.PosDef.one, Matrix.isSymm_zero, isReducedImaginaryPart_one.min⟩
-
-example : (∀ s : Unit, 0 < (fun _ => (1 : ℝ)) s ∧ (fun _ => (1 : ℝ)) s ≤ √(2 * (1 : ℕ))) ∧
-    finMean (fun _ : Unit => π / 96 * ((1 : ℝ) ^ 2)⁻¹ -
-      ((1 : ℕ) * log (1 + 1 / 1) + 0 * (1 : ℕ) * log (2 * (1 : ℕ)))) ≤ 1 := by
-  refine ⟨fun _ => ⟨one_pos, ?_⟩, ?_⟩
-  · rw [Real.le_sqrt (by norm_num) (by norm_num)]; norm_num
-  · simp only [finMean, Finset.univ_unique, Finset.sum_singleton, Fintype.card_unit]
-    have h2 : (0 : ℝ) ≤ log 2 := log_nonneg (by norm_num)
-    have hp : π / 96 ≤ 1 := by linarith [pi_lt_four]
-    norm_num
-    linarith
-
-example (n : ℕ) : IsZLattice ℝ
-    (Submodule.span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis)) := inferInstance
-
-example (n : ℕ) : DiscreteTopology
-    (Submodule.span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis)) := inferInstance
 
 end
 

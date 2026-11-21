@@ -91,20 +91,6 @@ theorem abstractSymbol_mk_of_le_sup_zhatField [IsMulCommutative (L.1 ≃ₐ[K.1]
     restrictHom_eq_ideleSymbol_of_le_sup K L (hL.trans (sup_le_sup_left zhatField_le_maxCyclotomic _))
       ⟨g, hgK⟩ x hg]
 
-theorem range_diagonal_le_ker_ideleSymbol_of_le_sup_zhatField [IsMulCommutative (L.1 ≃ₐ[K.1] L.1)]
-    (hL : L.1 ≤ K.1 ⊔ zhatField) : (diagonal K.1).range ≤ (ideleSymbol K.1 L.1).ker := by
-  rintro _ ⟨a, rfl⟩
-  exact ideleSymbol_diagonal_eq_one_of_le_sup K L
-    (hL.trans (sup_le_sup_left zhatField_le_maxCyclotomic _)) a
-
-theorem abstractSymbol_eq_ideleClassSymbol [IsMulCommutative (L.1 ≃ₐ[K.1] L.1)]
-    (hL : L.1 ≤ K.1 ⊔ zhatField) :
-    abstractSymbol K L = Abelianization.of.comp (ideleClassSymbol L.1
-      (range_diagonal_le_ker_ideleSymbol_of_le_sup_zhatField K L hL)) := by
-  refine MonoidHom.ext fun c ↦ ?_
-  obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective K.1 c
-  rw [MonoidHom.comp_apply, ideleClassSymbol_mk, abstractSymbol_mk_of_le_sup_zhatField K L hL]
-
 end IdeleClassLimit
 
 end

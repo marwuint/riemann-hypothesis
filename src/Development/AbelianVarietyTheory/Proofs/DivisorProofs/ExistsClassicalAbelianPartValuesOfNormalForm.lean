@@ -7,8 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ValIsoChart
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ValIso
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TorusExtensionOverCompleteLocalDvr
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.HolJetC
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualPointOverOriginLiftsTangentVectorUniformisedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicUniformizationComplexBaseChangeStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualPointOverOriginLiftsTangentVectorUniformised
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicUniformizationComplexBaseChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicFunctionValuesClassicalUniformisationStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedFibreFrameAtOriginEqRigidificationStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
@@ -195,9 +196,9 @@ theorem exists_ab_geo_of_nf : AllC fun {R} _ _ {D} _ {N} ν => ∀ (y : KeyIn R)
   · rw [hE]
     show (frW w u (ν.J ((u.ex z).left ≫ φ)) z / ν.rg) * ν.rg = _
     exact div_mul_cancel₀ _ hrgne
-  · obtain ⟨b', hb't, hb'⟩ := GlobalTheory.T.dualPointOverOrigin_lifts_tangentVector_uniformised R D x φ hφ he bb hbb
+  · obtain ⟨b', hb't, hb'⟩ := _root_.GlobalTheory.MBLow.Cl.tangent_lift_of_pullback R D x φ hφ he bb hbb
     obtain ⟨W', hW', -⟩ := eu_gen x _ hg u b' hb't
-    exact ⟨W', (GlobalTheory.T.holomorphic_uniformization_complex_base_change R D N ν _ d x u φ hφ hE b' bb hb't hb' W').2 hW'⟩
+    exact ⟨W', (_root_.GlobalTheory.UnifTan.isD_iff_isDiff R D N ν _ d x u φ hφ hE b' bb hb't hb' W').2 hW'⟩
   · intro vB hvB i bb hbb W'
     have hvi : v i = vB i := by
       have := eq_of_heq (hvB i)
@@ -206,7 +207,7 @@ theorem exists_ab_geo_of_nf : AllC fun {R} _ _ {D} _ {N} ν => ∀ (y : KeyIn R)
     have hb' : (x.v (i.cast hg.symm)).left ≫ φ = bb.left := by
       rw [hv, hbb, hF, ← hvi]
       rfl
-    rw [GlobalTheory.T.holomorphic_uniformization_complex_base_change R D N ν _ d x u φ hφ hE _ bb (x.basis.1 _) hb' W']
+    rw [_root_.GlobalTheory.UnifTan.isD_iff_isDiff R D N ν _ d x u φ hφ hE _ bb (x.basis.1 _) hb' W']
     obtain ⟨W0, -, huniq⟩ := eu_gen x _ hg u _ (x.basis.1 (i.cast hg.symm))
     constructor
     · intro h

@@ -135,12 +135,6 @@ theorem trig_approx (hψ : IsStdChar D ψ (-1)) {q : WO S T → ℂ} (hq : Conti
       exact ⟨fun h γ hγ => h ⟨γ, hγ⟩, fun h γ => h γ γ.2⟩)
     q hq hqp δ hδ
 
-def thetaSub (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) : Submodule ℂ (WO S T → ℂ) where
-  carrier := {f | IsThetaFunO ψ S T f}
-  add_mem' := GlobalTheory.WeilVacMove.isTheta_add
-  zero_mem' := GlobalTheory.WeilVacMove.isTheta_zero
-  smul_mem' := fun c _ h => GlobalTheory.WeilVacMove.isTheta_smul c h
-
 theorem trig_mul_eq (s : Finset (ratL T S)) (c : ratL T S → ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     (fun x => (∑ a ∈ s, c a * ψ (symplO S T x a)) * f x) = ∑ a ∈ s, c a • heisO ψ S T a f := by
   funext x

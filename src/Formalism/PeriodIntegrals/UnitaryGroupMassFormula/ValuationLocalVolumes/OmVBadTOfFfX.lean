@@ -17,10 +17,6 @@ theorem redP_holds : ∀ v : PlX X, ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal
     rw [OmW.omVGram_holds X u' v]
     exact local_gram_matrix_corank_one X u' v hv hϖ)
 
-theorem omVBadT_of_ff (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram X u')
-    (hFI : FFInertB) (hFS : FFSplitB) : OmVBadT X u' ψ :=
-  PI.OmVf.omVBadT_of_rest X u' ψ hStd hLat hGram (redP_holds X u' ψ) hFI hFS
-
 theorem omVBadT_of_ffX (hStd : Formalism.L2.SG.Pf.NcX.OmVSt.OmVStd X ψ) (hLat : Formalism.L2.SG.Pf.NcX.OmVSt.OmVLat X)
     (hGram : Formalism.L2.SG.Pf.NcX.OmVSt.OmVGram X u') (hFI : FFInertB) (hFS : FFSplitB) :
     Formalism.L2.SG.Pf.NcX.OmVSt.OmVBadT X u' ψ :=

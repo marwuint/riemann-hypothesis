@@ -78,11 +78,6 @@ theorem isProPGroup_subgroup_iff_isPGroup_map {p : ℕ} {H : Subgroup G} :
   rw [isProPGroup_subgroup_iff]
   exact forall_congr' fun U => (isPGroup_map_mk_iff H (U : Subgroup G)).symm
 
-theorem IsProPGroup.of_le {p : ℕ} {H K : Subgroup G} (hH : IsProPGroup p H) (hKH : K ≤ H) :
-    IsProPGroup p K := by
-  rw [isProPGroup_subgroup_iff] at hH ⊢
-  exact fun U k hk => hH U k (hKH hk)
-
 theorem isProPGroup_bot (p : ℕ) : IsProPGroup p (⊥ : Subgroup G) := by
   rw [isProPGroup_subgroup_iff]
   intro U h hh

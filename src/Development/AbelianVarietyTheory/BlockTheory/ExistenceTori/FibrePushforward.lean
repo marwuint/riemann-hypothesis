@@ -93,34 +93,4 @@ def TrUnique (tr : Transport Xo c) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) : Prop :=
     x ≫ Xo.s = sOf c Ω → Xo.univ.t.HeckeKer (Over.mk x) Dw 𝔓 p i C → IsHeckeIsog p C ψ → IsThGen x s →
     IsThGen x' s' → IsThGen x' s'' → tr Ω x x' ψ s s' → tr Ω x x' ψ s s'' → s' = s''
 
-def FinSt : Prop :=
-  ∀ (𝔓 : Ideal (𝓞 E)) (p : ℕ) (h : IsSplitOff l 𝔓 p) (i : ℕ),
-    HkFin (K := c.F) (fun S _ _ => FrPt Xo c S) (fun Ω _ _ _ y => HeckeIdx Xo c h i Ω y)
-
-def TotalSt : Prop :=
-  ToroidalHeckeCompatibility (D := Dw) → ∀ (𝔓 : Ideal (𝓞 E)) (p : ℕ) (h : IsSplitOff l 𝔓 p) (i : ℕ) (tr : Transport Xo c),
-    TrTotal Xo c tr 𝔓 p i →
-    HkTotal (K := c.F) (fun S _ _ => FrPt Xo c S) (fun Ω _ _ _ y => HeckeIdx Xo c h i Ω y)
-      (fun Ω _ _ _ y C z => IsHeckePt Xo c tr h i Ω y C z)
-
-def FunSt : Prop :=
-  ToroidalHeckeCompatibility (D := Dw) → ∀ (𝔓 : Ideal (𝓞 E)) (p : ℕ) (h : IsSplitOff l 𝔓 p) (i : ℕ) (tr : Transport Xo c),
-    TrUnique Xo c tr 𝔓 p i →
-    HkFun (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)
-      (fun Ω _ _ _ y => HeckeIdx Xo c h i Ω y) (fun Ω _ _ _ y C z => IsHeckePt Xo c tr h i Ω y C z)
-
-example {Ω : Type} [CommRing Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω) : IsThGen y.x y.s := y.gen
-
-example {Ω : Type} [CommRing Ω] (x : Sp Ω ⟶ Xo.X) (a : Over.mk x ⟶ Xo.univ.t.G) : Sends (𝟙 (Gx x)) a a := by
-  simp [Sends]
-
-example {Ω : Type} [CommRing Ω] (x : Sp Ω ⟶ Xo.X) : IsLinHom (𝟙 (Gx x)) := by
-  have hp : ∀ (T : Scheme.{0}) (t : T ⟶ Sp Ω) (a : Over.mk (t ≫ x) ⟶ Xo.univ.t.G), push (𝟙 (Gx x)) t a = a.left := by
-    intro T t a
-    unfold push toFib
-    rw [Category.id_comp, ← Over.comp_left, lift_snd]
-  refine ⟨Category.id_comp _, fun T t a₁ a₂ b₁ b₂ h₁ h₂ => ?_, fun r => by simp⟩
-  rw [hp] at h₁ h₂ ⊢
-  rw [Over.OverMorphism.ext h₁, Over.OverMorphism.ext h₂]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori

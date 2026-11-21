@@ -1,11 +1,11 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.UnfoldedLatticeData
+import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
 
 noncomputable section
 
 namespace GlobalTheory.PadicUnfold
 
-open Formalism.L2.Col GlobalTheory.IndefiniteRowSideFullHecke.UnfoldedLatticeData
+open Formalism.L2.Col
 
 variable {g : ℕ} [Fact g.Prime]
 
@@ -32,8 +32,6 @@ theorem Dv.mono {a b : ℤ} {x : ℚ_[g]} (h : a ≤ b) (hx : Dv g b x) : Dv g a
   obtain ⟨k, rfl⟩ := Int.le.dest h
   exact ⟨(g : ℤ_[g]) ^ k * u, by rw [zpow_add₀ g_ne]; push_cast; rw [zpow_natCast]; ring⟩
 
-def eSt (n : ℕ) (l : ℕ) : ℕ := if l < n then 0 else l - n + 1
-
 theorem eN_eq {k : Type} [CommRing k] {N : ℕ} (s : Fin N) : Loc.eN k N s.1 = Pi.single s 1 := by
   funext l
   simp [Loc.eN, Pi.single_apply, Fin.ext_iff]
@@ -53,10 +51,6 @@ theorem linearMap_unfolding_apply_single (xj : (Fin n' → k) →ₗ[k] (Fin n �
         (if hl : l.1 < n then xj (Pi.single ⟨s.1, hs⟩ 1) ⟨l.1, hl⟩ else 0)
       else if l.1 = n + (s.1 - n') then 1 else 0 := by
   simp [Loc.xx1, Matrix.toLin'_apply, LinearMap.toMatrix'_apply]
-
-def frM (τ : Loc.FC n' c' n c → k) : (Fin (n' + c') → k) →ₗ[k] (Fin (n + c) → k) :=
-  Matrix.toLin' (Matrix.of fun (l : Fin (n + c)) (s : Fin (n' + c')) =>
-    if hf : Loc.IsFree n' n c l.1 s.1 then τ ⟨(l, s), hf⟩ else 0)
 
 theorem hom_ext {a b : ℕ} {x y : (Fin a → k) →ₗ[k] (Fin b → k)}
     (h : ∀ s l, x (Pi.single s 1) l = y (Pi.single s 1) l) : x = y := by
@@ -82,34 +76,5 @@ theorem chArg_eq (x : (Fin (n' + (c + 1)) → k) →ₗ[k] (Fin (n + c) → k)) 
   exact atN_eq _ ⟨n + i.1, by omega⟩
 
 end Affine
-
-def integrand {n' n c : ℕ} (ψ : AddChar ℚ_[g] ℂ) (G : Loc.SF ℚ_[g] ℂ (n' + (c + 1)) (n + c))
-    (xj : HomQ g n' n) (t : Loc.FC n' (c + 1) n c → ℚ_[g]) : ℂ :=
-  G (Loc.xx1 xj t) * ψ (-Loc.chArg (Loc.xx1 xj t))
-
-def sumModG {n' n c : ℕ} (ψ : AddChar ℚ_[g] ℂ) (G : Loc.SF ℚ_[g] ℂ (n' + (c + 1)) (n + c))
-    (xj : HomQ g n' n) : ℂ :=
-  ∑ k ∈ Fintype.piFinset fun _ : Loc.FC n' (c + 1) n c => Finset.range g,
-    integrand ψ G xj fun p => (g : ℚ_[g]) ^ ((eSt n p.1.1.1 : ℤ) - eSt n' p.1.2.1) * (k p : ℚ_[g])
-
-abbrev NPos (n c : ℕ) : Type := {p : Fin (n + c) × Fin (n + c) // n < p.2.1 ∧ p.1.1 < p.2.1}
-
-def Ncong (g : ℕ) [Fact g.Prime] (n c M : ℕ) : Subgroup (Aut g (n + c)) where
-  carrier := {r | r ∈ Loc.N1 ℚ_[g] n c ⊓ GLlat (lamSt g n c) ∧
-    ∀ v ∈ lamSt g n c, ∃ u ∈ lamSt g n c, r v - v = (g : ℚ_[g]) ^ M • u}
-  one_mem' := ⟨one_mem _, fun v _ => ⟨0, zero_mem _, by simp⟩⟩
-  mul_mem' := fun {a b} ha hb => ⟨mul_mem ha.1 hb.1, fun v hv => by
-    obtain ⟨u, hu, e⟩ := hb.2 v hv
-    obtain ⟨w, hw, e'⟩ := ha.2 (b v) ((hb.1.2 v).2 hv)
-    refine ⟨w + u, add_mem hw hu, ?_⟩
-    rw [smul_add, ← e, ← e']
-    show a (b v) - v = _
-    abel⟩
-  inv_mem' := fun {a} ha => ⟨inv_mem ha.1, fun v hv => by
-    obtain ⟨u, hu, e⟩ := ha.2 (a.symm v) (((inv_mem ha.1 : a⁻¹ ∈ _).2 v).2 hv)
-    refine ⟨-u, neg_mem hu, ?_⟩
-    rw [smul_neg, ← e, LinearEquiv.apply_symm_apply]
-    show a.symm v - v = _
-    abel⟩
 
 end GlobalTheory.PadicUnfold

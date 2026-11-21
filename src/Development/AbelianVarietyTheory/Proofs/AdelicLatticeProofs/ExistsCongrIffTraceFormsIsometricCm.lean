@@ -8,7 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsZeroFiv
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsForallAbvSubLt
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRingHomAdicCompletion
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsZeroCoordNeZero
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsCongrIffTraceFormsIsometric
+import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.ExistsOrthogonalBasisDotProductApplyEq
+import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.ExistsGlIsometryCompEqOfNondegenerate
 
 open NumberField IsDedekindDomain
 open scoped Matrix WithZero
@@ -299,27 +300,5 @@ theorem isotropic_of_indefinite (H : GlobalTheory.Published.HasseNormSt) (F : Ty
 
 theorem landherr_of_hasseNormSt (H : GlobalTheory.Published.HasseNormSt) : GlobalTheory.Published.Landherr :=
   landherr_of_isotropy fun F _ _ _ _ a hι ha hr => isotropic_of_indefinite H F a hι ha hr
-
-universe u v w in
-
-theorem trace_forms_and_landherr :
-    (∀ {F : Type u} {E : Type v} [Field F] [Field E] [Algebra F E], (2 : E) ≠ 0 →
-      ∀ c : E →+* E, (∀ t, c (c t) = t) → (∀ t : E, c t = t ↔ ∃ s : F, algebraMap F E s = t) →
-      ∀ {n : Type w} [Fintype n] [DecidableEq n] {G G' : Matrix n n E},
-      (∀ a b, c (G a b) = G b a) → (∀ a b, c (G' a b) = G' b a) → G.det ≠ 0 → G'.det ≠ 0 →
-      ((∃ P : Matrix n n E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map c) ↔
-        ∃ φ : (n → E) ≃ₗ[F] (n → E),
-          ∀ x, x ⬝ᵥ G' *ᵥ (c ∘ x) = φ x ⬝ᵥ G *ᵥ (c ∘ φ x))) ∧
-    (GlobalTheory.Published.HasseNormSt → ∀ (F : Type) [Field F] [NumberField F] {ι : Type w} [Fintype ι],
-      4 ≤ Fintype.card ι → ∀ a : ι → F, (∀ i, a i ≠ 0) →
-      (∀ σ : F →+* ℝ, ∃ x : ι → ℝ, x ≠ 0 ∧ ∑ i, σ (a i) * x i ^ 2 = 0) →
-      (∀ v : HeightOneSpectrum (𝓞 F), ∃ x : ι → v.adicCompletion F, x ≠ 0 ∧
-        ∑ i, algebraMap F (v.adicCompletion F) (a i) * x i ^ 2 = 0) →
-      ∃ x : ι → F, x ≠ 0 ∧ ∑ i, a i * x i ^ 2 = 0) ∧
-    (GlobalTheory.Published.HasseNormSt → GlobalTheory.Published.Landherr) :=
-  ⟨fun h2 c hc hF _ _ _ _ _ hG hG' hd hd' =>
-      exists_congr_iff_trace_forms_isometric h2 c hc hF hG hG' hd hd',
-    fun H F _ _ _ _ hι a ha hr hf => isotropic_of_locally_isotropic H F hι a ha hr hf,
-    landherr_of_hasseNormSt⟩
 
 end GlobalTheory.LocalQuad

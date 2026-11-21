@@ -29,12 +29,6 @@ def Represents (R : RealDat D A Ks) (t : T) (y : (R.HX t).H →ₗ[ℂ] R.HE.H) 
 
 end
 
-def ProjLiftExists : Prop :=
-  ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
-    (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks),
-    R.toLevCh.Is A.μ0 → R.grp_record → R.models_HE →
-      ∀ t : T, ∃ y : (R.HX t).H →ₗ[ℂ] R.HE.H, Represents R t y
-
 section Basic₂
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
@@ -45,21 +39,6 @@ theorem chain_Th_iff (R : RealDat D A Ks) : R.chain_Th ↔ ∀ t, Represents R t
 theorem Represents.unique {R : RealDat D A Ks} (hE : R.models_HE) {t : T} {y y' : (R.HX t).H →ₗ[ℂ] R.HE.H}
     (h : Represents R t y) (h' : Represents R t y') : y = y' :=
   LinearMap.ext fun x => hE.1 ((h x).trans (h' x).symm)
-
-theorem exists_lift_iff {X N : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup N] [Module ℂ N] {M : HMod X} {V : Submodule ℂ X}
-    {ip : X → X → ℂ} (hM : M.Is V ip) (f : N →ₗ[ℂ] X) : (∃ y : N →ₗ[ℂ] M.H, ∀ x, M.e (y x) = f x) ↔ ∀ x, f x ∈ V := by
-  obtain ⟨hi, rfl, -⟩ := hM
-  constructor
-  · rintro ⟨y, hy⟩ x
-    exact ⟨y x, hy x⟩
-  · intro h
-    exact ⟨(LinearEquiv.ofInjective M.e hi).symm.toLinearMap ∘ₗ f.codRestrict _ h, fun x =>
-      congrArg Subtype.val ((LinearEquiv.ofInjective M.e hi).apply_symm_apply ⟨f x, h x⟩)⟩
-
-theorem exists_represents_iff {R : RealDat D A Ks} (hE : R.models_HE) (t : T) :
-    (∃ y : (R.HX t).H →ₗ[ℂ] R.HE.H, Represents R t y) ↔ ∀ x, projLift R t x ∈ R.EEat R.triv := by
-  refine Iff.trans ?_ (exists_lift_iff hE (projLift R t))
-  simp only [Represents, projLift_apply]
 
 end Basic₂
 

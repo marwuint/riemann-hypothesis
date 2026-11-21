@@ -184,8 +184,4 @@ end GlobalTheory.RowClassSum
 
 namespace GlobalTheory
 
-theorem rowForms_translate_unitary : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.models_HX → R.models_cX → ∀ t g0 κ, IsLevelLift D.sp.X' R.βX (R.datXt t) g0 κ → ∀ y : (R.HX t).H, ∃ y' : (R.HX t).H, (∀ h, (R.HX t).e y' h = (levChi _ R.βX (flagL (R.datXt t)) κ)⁻¹ • (R.HX t).e y (h * (finHom _).rangeRestrict κ)) ∧ ‖y'‖ = ‖y‖ := by
-  intro D G _ _ Pl0 T0 A Ks _ _ _ R _ hH hc t g0 κ hκ y
-  exact RowClassSum.exists_translate _ R.βX (R.datXt t) R.cX hc (R.HX t) _ (R.B.R t).pres.reps (hH t) g0 κ hκ y
-
 end GlobalTheory

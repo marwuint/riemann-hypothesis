@@ -25,33 +25,6 @@ theorem _root_.GlobalTheory.FlagMahler.col_map_eq (P : Matrix (Fin r) (Fin r) E)
   ext a
   simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.col, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, Matrix.mulVec, dotProduct, Pi.single_apply]
 
-theorem hermC_expand (τ : E →+* ℂ) (P : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
-    hermC τ X.Gm ((P.map τ) *ᵥ u) ((P.map τ) *ᵥ w) =
-      ∑ k, ∑ l, u k * conj (w l) * τ (herm X.Gm (P *ᵥ Pi.single k 1) (P *ᵥ Pi.single l 1)) := by
-  rw [Data.mulVec_eq_sum_col (P.map τ) u, Data.mulVec_eq_sum_col (P.map τ) w, hermC_sum_left]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [hermC_smul_left, hermC_sum_right, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun l _ => ?_
-  rw [hermC_smul_right, col_map_eq, col_map_eq, hermC_emb]
-  ring
-
-theorem hermC_stab {γ : Matrix (Fin r) (Fin r) E}
-    (hγ : ∀ x y, herm X.Gm (γ *ᵥ x) (γ *ᵥ y) = herm X.Gm x y) (τ : E →+* ℂ) (u w : Fin r → ℂ) :
-    hermC τ X.Gm ((γ.map τ) *ᵥ u) ((γ.map τ) *ᵥ w) = hermC τ X.Gm u w := by
-  have h1 : ((1 : Matrix (Fin r) (Fin r) E).map τ) = 1 := Matrix.map_one τ τ.map_zero τ.map_one
-  conv_rhs => rw [← one_mulVec u, ← one_mulVec w, ← h1]
-  rw [hermC_expand, hermC_expand]
-  simp only [hγ, one_mulVec]
-
-theorem gram_stab {γ : Matrix (Fin r) (Fin r) E}
-    (hγ : ∀ x y, herm X.Gm (γ *ᵥ x) (γ *ᵥ y) = herm X.Gm x y) (τ : E →+* ℂ)
-    (Y : Matrix (Fin r) (Fin r) ℂ) : gram τ X.Gm (γ.map τ * Y) = gram τ X.Gm Y := by
-  ext a b
-  simp only [gram, of_apply]
-  have hc : ∀ c, col (γ.map τ * Y) c = (γ.map τ) *ᵥ col Y c := by
-    intro c; funext i; simp [col, Matrix.mul_apply, mulVec, dotProduct]
-  rw [hc, hc, hermC_stab X hγ]
-
 open NumberField Module in
 open Matrix in
 open scoped ComplexConjugate in
@@ -70,41 +43,6 @@ theorem _root_.GlobalTheory.FlagMahler.inv_lact (γ : GL (Fin r) E) (τ : E →+
   congr 1
   ext i
   exact (RingHom.map_mulVec τ _ v i).symm
-
-theorem entry_bound {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} (hY : Y.det ≠ 0)
-    (hg : gram τ X.Gm Y = diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (l b : Fin r) :
-    ‖Y l b‖ ≤ ∑ k, ‖(X.Gm.map τ)⁻¹ k l‖ * ‖Y⁻¹ b k‖ := by
-  set Gt := X.Gm.map τ with hGtdef
-  have hGt : Gt.det ≠ 0 := by
-    have e : (X.Gm.map τ).det = τ X.Gm.det := by rw [RingHom.map_det]; rfl
-    rw [hGtdef, e]; exact (map_ne_zero τ).mpr X.Gm_det
-  have hGG : Gt * Gt⁻¹ = 1 := mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hGt)
-  set q : Fin r → ℂ := fun k => conj (Gt⁻¹ k l) with hq
-  have h1 : hermC τ X.Gm (col Y b) q = Y l b := by
-    have e : ∀ a, ∑ c, Y a b * τ (X.Gm a c) * conj (q c) = Y a b * (Gt * Gt⁻¹) a l := by
-      intro a
-      rw [Matrix.mul_apply, Finset.mul_sum]
-      refine Finset.sum_congr rfl fun c _ => ?_
-      simp only [hq, Complex.conj_conj, hGtdef, Matrix.map_apply]
-      ring
-    simp only [hermC, col]
-    simp_rw [e, hGG, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
-      Finset.mem_univ, if_true]
-  have h2 := IntegralBasisReduction.hermC_normal X hY _ hg (col Y b) q
-  have h3 : Y⁻¹ *ᵥ col Y b = Pi.single b 1 := by
-    have : col Y b = Y *ᵥ Pi.single b 1 := by funext i; simp [col]
-    rw [this, mulVec_mulVec, nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hY), one_mulVec]
-  rw [h3] at h2
-  simp only [Pi.single_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq',
-    Finset.mem_univ, if_true] at h2
-  rw [← h1, h2, norm_mul, Complex.norm_conj]
-  have hs : ‖(((sgn X.p0 (b : ℕ) : ℝ) : ℂ))‖ = 1 := by
-    unfold sgn; split_ifs <;> simp
-  rw [hs, one_mul]
-  simp only [mulVec, dotProduct]
-  refine (norm_sum_le _ _).trans (le_of_eq ?_)
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [norm_mul, hq, Complex.norm_conj, mul_comm]
 
 open NumberField Module in
 open Matrix in
@@ -183,61 +121,7 @@ theorem _root_.GlobalTheory.FlagMahler.Kset_compact (R : ℝ) :
     refine (pi_norm_le_iff_of_nonneg (abs_nonneg R)).mpr fun c => ?_
     exact ((hw τ).2 a c).trans (le_abs_self R)
 
-theorem det_ne_of_gram {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} {p0 : ℕ}
-    (hg : gram τ X.Gm Y = diagonal fun a : Fin r => ((sgn p0 (a : ℕ) : ℝ) : ℂ)) : Y.det ≠ 0 := by
-  intro h0
-  obtain ⟨v, hv, hv0⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr h0
-  have h1 : gram τ X.Gm Y *ᵥ star v = 0 := by
-    funext a
-    have e : ∑ b, hermC τ X.Gm (col Y a) (col Y b) * star (v b) = hermC τ X.Gm (col Y a) (Y *ᵥ v) := by
-      rw [Data.mulVec_eq_sum_col, hermC_sum_right]
-      refine Finset.sum_congr rfl fun b _ => ?_
-      rw [hermC_smul_right, Complex.star_def, mul_comm]
-    simp only [mulVec, dotProduct, gram, of_apply, Pi.zero_apply, Pi.star_apply]
-    rw [e, hv0, hermC_zero_right]
-  rw [hg] at h1
-  apply hv
-  funext b
-  have h2 := congrFun h1 b
-  rw [mulVec_diagonal] at h2
-  have hs : ((sgn p0 (b : ℕ) : ℝ) : ℂ) ≠ 0 := by unfold sgn; split_ifs <;> norm_num
-  have h3 : star (v b) = 0 := (mul_eq_zero.mp h2).resolve_left hs
-  simpa using h3
-
-theorem Kset_sub (R : ℝ) : Kset X R ⊆ X.dom := by
-  intro w hw τ
-  have hg := (hw τ).1
-  refine ⟨det_ne_of_gram X hg, fun i => ?_⟩
-  have e : dmin X.Gm w τ i = ((psgn X.p0 i : ℝ) : ℂ) := by
-    unfold dmin lminor
-    rw [hg, submatrix_diagonal _ _ (Fin.castLE_injective _), det_diagonal]
-    simp only [psgn, Complex.ofReal_prod, Fin.val_castLE]
-    exact Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) i
-  rw [e, Complex.ofReal_re]
-  have hne : psgn X.p0 i ≠ 0 :=
-    Finset.prod_ne_zero_iff.mpr fun a _ => by unfold sgn; split_ifs <;> norm_num
-  exact mul_self_pos.mpr hne
-
 end
-
-theorem norm_herm_le {y : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hy : IntegralBasisReduction.IsNormal X y) {C : ℝ}
-    {p q : Fin r → E} (hp : QuadraticLatticeForms.Qy X y p ≤ C) (hq : QuadraticLatticeForms.Qy X y q ≤ C) (τ : X.Ψ) :
-    ‖τ.1 (herm X.Gm p q)‖ ≤ r * (C / X.c τ) := by
-  rw [← hermC_emb, IntegralBasisReduction.hermC_normal X (hy τ).1 _ (hy τ).2]
-  refine (norm_sum_le _ _).trans ?_
-  have hc := QuadraticLatticeForms.c_pos X τ
-  calc _ ≤ ∑ _a : Fin r, C / X.c τ := by
-        refine Finset.sum_le_sum fun a _ => ?_
-        have hs : ‖(((sgn X.p0 (a : ℕ) : ℝ) : ℂ))‖ = 1 := by
-          unfold sgn; split_ifs <;> simp
-        rw [norm_mul, norm_mul, hs, one_mul, Complex.norm_conj]
-        have h1 := (comp_le_Qy X y τ p a).trans hp
-        have h2 := (comp_le_Qy X y τ q a).trans hq
-        rw [le_div_iff₀ hc]
-        set u := ‖((y τ)⁻¹ *ᵥ Data.emb τ.1 p) a‖
-        set w := ‖((y τ)⁻¹ *ᵥ Data.emb τ.1 q) a‖
-        nlinarith [mul_nonneg hc.le (sq_nonneg (u - w))]
-    _ = _ := by simp
 
 open NumberField Module in
 open Matrix in
@@ -263,29 +147,6 @@ theorem _root_.GlobalTheory.FlagMahler.Qy_smul_le (y : X.Ψ → Matrix (Fin r) (
   have h3 := (_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.c_pos X τ).le
   nlinarith [mul_le_mul_of_nonneg_right h1 (mul_nonneg h3 h2)]
 
-theorem finite_bounded (B : X.Ψ → ℝ) :
-    {α : E | IsIntegral ℤ ((X.den : E) * α) ∧ ∀ τ : X.Ψ, ‖τ.1 α‖ ≤ B τ}.Finite := by
-  have hd : (X.den : E) ≠ 0 := by exact_mod_cast X.den_ne
-  have hfin := NumberField.Embeddings.finite_of_norm_le E ℂ
-    (∑ τ : X.Ψ, ‖τ.1 (X.den : E)‖ * |B τ|)
-  refine (hfin.preimage (f := fun α => (X.den : E) * α)
-    (fun a _ b _ h => mul_left_cancel₀ hd h)).subset ?_
-  rintro α ⟨h1, h2⟩
-  have key : ∀ τ : X.Ψ, ‖τ.1 ((X.den : E) * α)‖ ≤ ∑ τ : X.Ψ, ‖τ.1 (X.den : E)‖ * |B τ| := by
-    intro τ
-    rw [map_mul, norm_mul]
-    refine (mul_le_mul_of_nonneg_left ((h2 τ).trans (le_abs_self _)) (norm_nonneg _)).trans ?_
-    exact Finset.single_le_sum (f := fun τ : X.Ψ => ‖τ.1 (X.den : E)‖ * |B τ|)
-      (fun _ _ => by positivity) (Finset.mem_univ τ)
-  refine ⟨h1, fun φ => ?_⟩
-  by_cases hφ : φ ∈ X.Ψ
-  · exact key ⟨φ, hφ⟩
-  · have h3 : ComplexEmbedding.conjugate φ ∈ X.Ψ :=
-      (X.cmType _).mpr (by rw [TraceIntegralBasis.conj_conj]; exact hφ)
-    have h4 := key ⟨_, h3⟩
-    simp only [ComplexEmbedding.conjugate_coe_eq, Complex.norm_conj] at h4
-    exact h4
-
 open NumberField Module in
 open Matrix in
 open scoped ComplexConjugate in
@@ -298,24 +159,6 @@ theorem _root_.GlobalTheory.FlagMahler.finite_int_sq (D : ℝ) : {n : ℤ | (n :
   have h1 : (n : ℝ) ≤ ⌈|D|⌉ + 1 := by nlinarith [sq_nonneg ((n : ℝ) - 1)]
   have h2 : -((⌈|D|⌉ : ℝ) + 1) ≤ n := by nlinarith [sq_nonneg ((n : ℝ) + 1)]
   exact ⟨by exact_mod_cast h2, by exact_mod_cast h1⟩
-
-theorem finite_types {ι : Type} [Fintype ι] [DecidableEq ι] (C D : ℝ) (hD : 0 ≤ D) :
-    (HermitianLatticeMaps.ty X '' {f : Basis ι ℤ X.Λ | ∃ y, IntegralBasisReduction.IsNormal X y ∧
-      (∀ i, QuadraticLatticeForms.Qy X y (f i) ≤ C) ∧
-      ∀ (v : X.Λ) (i : ι), ((f.repr v i : ℤ) : ℝ) ^ 2 ≤ D * QuadraticLatticeForms.Qy X y v}).Finite := by
-  have h1 := finite_bounded X fun τ => r * (C / X.c τ)
-  have h2 := fun k : Free.ChooseBasisIndex ℤ (𝓞 E) =>
-    finite_int_sq (D * ((∑ σ : X.Ψ, ‖σ.1 (RingOfIntegers.basis E k : E)‖ ^ 2) * C))
-  have h3 := Set.Finite.pi' (fun _ : ι => Set.Finite.pi' fun _ : ι => h1)
-  have h4 := Set.Finite.pi' (fun k => Set.Finite.pi' fun _ : ι => Set.Finite.pi' fun _ : ι => h2 k)
-  refine (h3.prod h4).subset ?_
-  rintro _ ⟨f, ⟨y, hy, hf, hr⟩, rfl⟩
-  refine ⟨fun i j => ⟨X.Λ_int _ (f i).2 _ (f j).2, norm_herm_le X hy (hf i) (hf j)⟩,
-    fun k i j => ?_⟩
-  refine (hr _ j).trans (mul_le_mul_of_nonneg_left ?_ hD)
-  rw [HermitianLatticeMaps.smul_coe]
-  exact (Qy_smul_le X y _ _).trans (mul_le_mul_of_nonneg_left (hf i)
-    (Finset.sum_nonneg fun _ _ => by positivity))
 
 noncomputable def bound {ι : Type} [Fintype ι] (C : ℝ) (g : Basis ι ℤ X.Λ) (s : GL (Fin r) E) : ℝ :=
   ∑ τ : X.Ψ, ∑ l : Fin r, ∑ k : Fin r, ‖(X.Gm.map τ.1)⁻¹ k l‖ *

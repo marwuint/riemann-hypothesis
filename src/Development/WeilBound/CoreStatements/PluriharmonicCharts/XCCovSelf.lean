@@ -4,7 +4,15 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.MinorSingle
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFirst
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFifth
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagFrameAtGoodPointStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagFrameAtGoodPoint
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsImg
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AevalNeZeroOfNotMem
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsValueAtOfTorus
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsBlkCover
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishingStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
+import GroundTheory.HeightsAndTheta.Heights.Intersections.PtsOverPt
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 
@@ -136,7 +144,7 @@ theorem isImg_self [Fintype Ψ] [DecidableEq Ψ] (M : FlagModel y Ψ N j) (z : (
       M.IsFlagOf F z₀ fun τ => (idCover M).trans F' F (basePart M.blk z) τ * H τ := by
   have hzb := CPts.base_mem M hz
   have hT := FibreCount.trans_unit (idCover M) hzb h' h g' g
-  refine (GlobalTheory.T.block_diag_frame_at_good_point K ι Φ y Ψ N j M F z _ h hzb g (fun τ => ⟨(hT τ).1.mul (hH.2.1 τ).1, by
+  refine (_root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.FlagPt.main K ι Φ y Ψ N j M F z _ h hzb g (fun τ => ⟨(hT τ).1.mul (hH.2.1 τ).1, by
     rw [det_mul]; exact mul_ne_zero (hT τ).2 (hH.2.1 τ).2⟩) fun p k hp => ?_).2
   obtain ⟨a, ha, hz'⟩ := hH.2.2 p k hp
   have hd := CPts.detFac_ne_zero M.j_le p.2 (hT p.1).1 (hT p.1).2

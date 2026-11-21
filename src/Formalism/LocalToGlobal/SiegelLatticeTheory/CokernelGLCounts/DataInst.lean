@@ -99,20 +99,6 @@ private theorem isPtL_of_ptOfList_ne_none {i : ℕ} {z : TB.Pt D.host.E} (hz : p
   · exact (isPtL_signPt _ _ _).mp hh
   · exact absurd rfl hz
 
-theorem KrOf_of_not (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-    (T T' : ℕ) {i : ℕ} (hi : i ≠ 0) {x y : TB.Pt D.host.E}
-    (h : ¬ (Formalism.L2.S.IsPtL x i ∧ Formalism.L2.S.IsPtL y i)) : KrOf δ M T T' i x y = 0 := by
-  simp only [KrOf, if_neg hi]
-  split_ifs
-  · rfl
-  · cases hx : ptOfList i x with
-    | none => rfl
-    | some a =>
-      cases hy : ptOfList i y with
-      | none => rfl
-      | some b =>
-        exact absurd ⟨isPtL_of_ptOfList_ne_none (by simp [hx]), isPtL_of_ptOfList_ne_none (by simp [hy])⟩ h
-
 def ThOf : ℕ → ℕ → D.host.E → TB.Pt D.host.E → TB.Pt D.host.E → ℂ := fun _ _ _ _ _ => 0
 
 def eOf : ℕ → ℝ := fun _ => 0
@@ -147,14 +133,6 @@ theorem inst_dOf (S : C.HidaSetting D.host.E Wp Wq) (δ : ∀ p : PlF D, (D.s.at
     fun _ _ => rfl, fun _ _ _ => rfl, fun _ _ => rfl⟩
 
 theorem unram_host (D : Formalism.BasicNotions.D7) : S6.Unram D.host.E := MainNotions.LocalModelPeriodLattices.unramE D
-
-def KrFinite (D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
-    (∀ p, Agree δ M p) → ∀ u u' : D.what₂.Word,
-    (∀ (n : ℕ) (w w' : Point D.host.E n), n ≤ D.R.rS →
-      (Function.mulSupport fun p => locK M δ (D.mem u).A.T (D.mem u').A.T p n w w').Finite) ∧
-    (∀ w w' : Point D.host.E (D.R.rS + 1),
-      (Function.mulSupport fun p => KtopP M δ (D.mem u).A.T (D.mem u').A.T p w w').Finite)
 
 def LocalModelAt (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (Wp Wq : InfinitePlace D.host.E → Type) [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
@@ -278,21 +256,6 @@ def RowLabelExists (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)), IsRowReps D F0 what₂ →
     ∃ κ : TermDef.Term D u u' F0 what₂ → ℕ, RowLabel κ
-
-def RowsInputAt (D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (Wp Wq : InfinitePlace D.host.E → Type) [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting D.host.E Wp Wq) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
-    (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep), (∀ p, Agree δ M p) →
-    ∀ (L : CntLocal.LocSp D M) (u u' : D.what₂.Word),
-    (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Formalism.MainNotions.S.Lat.gS D) ^ 2] → Compat S u u' →
-    ∀ (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)),
-      IsRowReps D F0 what₂ →
-    ∀ ϖ : ∀ p : PlF D, 𝒪[(D.s.atP p).Fp], (∀ p, Irreducible (ϖ p)) →
-    ∀ nc : ℝ, CntLocal.Formula δ L u u' F0 what₂ nc → ∀ α : ℝ, 0 < α →
-    BddAbove (densSet L δ ϖ u u' F0 what₂) →
-      (∃ κ : TermDef.Term D u u' F0 what₂ → ℕ, RowLabel κ) ∧
-      ∀ κ : TermDef.Term D u u' F0 what₂ → ℕ, RowLabel κ →
-        RowsPSD S δ M L u u' F0 what₂ ϖ (PairVal.vRdef D u u' F0 what₂ δ M) κ nc α
 
 end RowsStmt
 

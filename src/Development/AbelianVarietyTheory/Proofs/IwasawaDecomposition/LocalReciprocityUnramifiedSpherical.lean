@@ -1,10 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InfOfNodupAlg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceLocalComponentExistsUniqueClassStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsotypicPartSpannedBySplitPlaceLocalComponentStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsotypicPartSpannedBySplitPlaceLocalComponent
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryFiniteAdelesSplitPlaceDecompositionStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteCosetsHeckeSetAtSplitPlaceOutsideLevel
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FixedVectorsNeBotOfMemSumIntertwiningRangesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FixedVectorsNeBotOfMemSumIntertwiningRanges
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
 
 noncomputable section
@@ -18,7 +20,7 @@ theorem fixed_ne_bot_of_mem_iSup {ι : Type} [Finite ι] {σ : Representation �
     {ρ : Representation ℂ G X} (T : ι → σ.IntertwiningMap ρ) (K : Subgroup G) {f : X}
     (hf : f ∈ ⨆ j, LinearMap.range (T j).toLinearMap) (hf0 : f ≠ 0) (hK : ∀ k ∈ K, ρ k f = f) :
     GlobalTheory.PRep.fixed σ K ≠ ⊥ :=
-  GlobalTheory.T.fixedVectors_ne_bot_of_mem_sum_intertwining_ranges hσ T K hf hf0 hK
+  _root_.GlobalTheory.UnrLoc.fixed_ne_bot_of_mem_iSup_range hσ T K hf hf0 hK
 
 end Alg
 
@@ -122,7 +124,7 @@ theorem isSpherical_of_sphAt (π : NG.AutRep L n) (s : SplitPlace L)
     unfold NG.isoTyp
     exact Submodule.mem_sSup_of_mem (show π.S ∈ {S' | NG.IsIrrRep π.ρ S' ∧ NG.IsoRep π.S S'} from
       ⟨π.irrS, LinearEquiv.refl ℂ _, fun _ _ _ e => e⟩) hf
-  have h1 := GlobalTheory.T.isotypicPart_spanned_by_splitPlace_localComponent L n π.toAlgWt π.S π.irrS s σ hσ i hi hic hiso
+  have h1 := _root_.GlobalTheory.SpanLoc.main L n π.toAlgWt π.S π.irrS s σ hσ i hi hic hiso
   rw [iSup_subtype', Submodule.mem_iSup_iff_exists_finset] at h1
   obtain ⟨t, ht⟩ := h1
   rw [iSup_subtype'] at ht
@@ -141,23 +143,3 @@ end GlobalTheory.SphLoc
 
 end
 
-section
-attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
-
-theorem GlobalTheory.SphLoc.main : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) x,
-    GlobalTheory.AutQuot.LocAt π s.w x → π.SphAt s.v → (GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 s.w) x).unr := by
-  intro hL D π s x hx hs
-  obtain ⟨s', σ, h, hσ, e⟩ := hx
-  have hv : s'.v = s.v := HeightOneSpectrum.ext (by rw [← s'.w_under, ← s.w_under, h])
-  have hsph := GlobalTheory.SphLoc.isSpherical_of_sphAt π s' σ hσ (hv ▸ hs)
-  have hu := (GlobalTheory.CuspRep.ParLaws.unr_iff (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 s'.w)) σ).2 hsph
-  have key : ∀ (u u' : HeightOneSpectrum (𝓞 D.host.E)) (_ : u = u') (a : GlobalTheory.LocGL.IrrGL (u.adicCompletion D.host.E))
-      (b : GlobalTheory.LocGL.IrrGL (u'.adicCompletion D.host.E)), HEq a b →
-      (GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 u) a).unr → (GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 u') b).unr := by
-    intro u u' hu a b hab
-    subst hu
-    cases eq_of_heq hab
-    exact id
-  exact key _ _ h _ _ e hu
-
-end

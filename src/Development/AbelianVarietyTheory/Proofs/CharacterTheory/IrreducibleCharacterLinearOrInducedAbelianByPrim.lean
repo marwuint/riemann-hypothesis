@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CommuteImageAbelianByPrimePowerOfNormalCentralStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsCharacterEigenvectorOfCommutingRepresentatStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharacterEqInducedOfImprimitivitySystemStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CommuteImageAbelianByPrimePowerOfNormalCentral
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsCharacterEigenvectorOfCommutingRepresentat
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharacterEqInducedOfImprimitivitySystem
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IrreducibleIdempotentEqOneAndCharacterEqWeightAlStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsWeightIdempotentStatement
 open GlobalTheory.BI
@@ -42,13 +42,13 @@ theorem irrChar_linear_or_induced : ∀ (L : Type) [Field L] [CharZero L] [IsAlg
   left
   obtain ⟨hs1, hs2⟩ := GlobalTheory.T.idempotent_eq_one_and_character_eq_of_isIrreducible L G (Fin n → L) ρ hρ
   have hcomm : ∀ a b : G, ρ a * ρ b = ρ b * ρ a := by
-    refine GlobalTheory.T.commute_image_abelianByPrimePower_of_normal_central G (Module.End L (Fin n → L)) ρ hG ?_
+    refine _root_.GlobalTheory.BI.commute_all G (Module.End L (Fin n → L)) ρ hG ?_
     intro B hB hBc
-    obtain ⟨lam, v, hv, hlam⟩ := GlobalTheory.T.exists_character_eigenvector_of_commuting_representation L B (Fin n → L) (ρ.comp B.subtype)
+    obtain ⟨lam, v, hv, hlam⟩ := _root_.GlobalTheory.exists_character_eigenvector_of_commute L B (Fin n → L) (ρ.comp B.subtype)
       (fun a b => hBc a a.2 b b.2)
     obtain ⟨e, he0, hee, heB, heT, heN⟩ := GlobalTheory.T.exists_weight_idempotent_of_eigenvector L G (Fin n → L) ρ B
       (weightStabiliser B hB lam) lam v hB hv hlam (fun _ => Iff.rfl)
-    obtain ⟨ψ, hψ, hind⟩ := GlobalTheory.T.character_eq_induced_of_imprimitivity_system L G (Fin n → L) ρ _ e hρ he0 hee heT heN
+    obtain ⟨ψ, hψ, hind⟩ := _root_.GlobalTheory.BI.character_eq_ind_of_imprimitive L G (Fin n → L) ρ _ e hρ he0 hee heT heN
     have hT : weightStabiliser B hB lam = ⊤ := by
       by_contra hT
       exact hR ⟨_, hT, ψ, hψ, funext fun g => (hχ' g).trans (hind g)⟩
@@ -58,7 +58,7 @@ theorem irrChar_linear_or_induced : ∀ (L : Type) [Field L] [CharZero L] [IsAlg
     rw [he1, mul_one] at this
     change ρ b = _ at this
     rw [this, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
-  obtain ⟨lam, v, hv, hlam⟩ := GlobalTheory.T.exists_character_eigenvector_of_commuting_representation L G (Fin n → L) ρ hcomm
+  obtain ⟨lam, v, hv, hlam⟩ := _root_.GlobalTheory.exists_character_eigenvector_of_commute L G (Fin n → L) ρ hcomm
   exact ⟨lam, fun g => (hχ' g).trans (hs2 lam v hv hlam g)⟩
 
 end GlobalTheory.BI

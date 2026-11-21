@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvdAllPowOfFrobeniusEqKilledByPerfectPointsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvdAllPowOfFrobeniusEqKilledByPerfectPoints
 open scoped NNReal TensorProduct
 
 namespace GlobalTheory
@@ -64,7 +64,7 @@ theorem descent_of_points_killed : ∀ (l : ℕ) [Fact l.Prime] (A B : Type) [Co
     ring
 
   have hkey : ∀ (m : ℕ) j, U ^ m ∣ D j := by
-    refine GlobalTheory.T.dvd_all_pow_of_frobenius_eq_killed_by_perfect_points l (B ⊗[A] B) U hlR hUreg κ D c' h hc' ?_
+    refine _root_.GlobalTheory.PointsKey.key l (B ⊗[A] B) U hlR hUreg κ D c' h hc' ?_
     intro O _ _ _ _ _ f hf0 hfnu hcomp j
     let ψ : B →+* O := f.comp iL.toRingHom
     let ψ' : B →+* O := f.comp iR.toRingHom

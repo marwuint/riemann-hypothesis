@@ -6,14 +6,15 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AdaptSelf
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormGeometrySummary
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairCommonUnipotentStabiliserSummary
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsIntegralOfMulMem
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairScalarEqQuotIdealsNormLeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairScalarEqQuotIdealsNormLe
+import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagFramesSameGradedDefinitePartLatticeEq
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsHermFramePairNormalFormMovedByIsometryStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormUniqueUpToUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SignedBlockAntidiagWithLeadingMinorsEncardLeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsHermFramePairNormalFormMovedByIsometry
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormUniqueUpToUnipotent
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SignedBlockAntidiagWithLeadingMinorsEncardLe
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvVolPos
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumWeightsInequivalentHermFrameTermsLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EmbeddedDatumInvariantUnderUnipotentStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumWeightsInequivalentHermFrameTermsLe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EmbeddedDatumInvariantUnderUnipotent
 
 open NumberField Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.DegCnt GlobalTheory.DegAsm
 open scoped Pointwise ENNReal Classical
@@ -128,12 +129,12 @@ theorem one_class (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {F : Flag
   have hex : ∀ i ∈ s, ∃ σ : V ≃ₗ[K] V, F.InN (σ : V →ₗ[K] V) ∧
       ∀ a, σ (N₀.F.e a) = (N i).F.e a ∧ σ (N₀.F'.e a) = (N i).F'.e a := fun i hi => by
     obtain ⟨a1, -, a2, a3, a4, a5, -⟩ := hN i hi
-    exact GlobalTheory.T.hermFramePairNormalForm_unique_up_to_unipotent K V H hK r F N₀ (N i) h₀.2.1 a1.2.1 a2 a3 a4 a5
+    exact _root_.GlobalTheory.DegAsm.nf_unique K V H hK r F N₀ (N i) h₀.2.1 a1.2.1 a2 a3 a4 a5
   choose! σ hσ hσe using hex
   have hcan : ∀ i, σ i • ((σ i)⁻¹ • Λ) = Λ := fun i => smul_inv_smul _ _
   have hmove : ∀ i ∈ s, omI F (G i) 𝔡 Λ ≤ N₀.om ((σ i)⁻¹ • Λ) ∧ N₀.IsTerm g ((σ i)⁻¹ • Λ) := fun i hi => by
     obtain ⟨a1, a2, -⟩ := hN i hi
-    obtain ⟨N', b1, -, -, -, b2, -, b3⟩ := GlobalTheory.T.exists_hermFramePairNormalForm_moved_by_isometry K V H hK r N₀ (σ i) ((mem_isomGrp H _).2 (hσ i hi).1)
+    obtain ⟨N', b1, -, -, -, b2, -, b3⟩ := _root_.GlobalTheory.DegMove.exists_moved K V H hK r N₀ (σ i) ((mem_isomGrp H _).2 (hσ i hi).1)
     obtain ⟨c1, c2, -⟩ := b3 g ((σ i)⁻¹ • Λ)
     rw [hcan] at c1 c2
     have hA : Adapt F (G i) 𝔡 N' := by
@@ -147,13 +148,13 @@ theorem one_class (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {F : Flag
     exact ((adapt_invariants K V H hK r F (G i) 𝔡 (N i) a1).2.2.2.2.2.2.2.2 g Λ).1.1 a2
   refine (Finset.sum_le_sum fun i hi => (hmove i hi).1).trans ?_
   rw [← finrank_wt hK he h₀]
-  refine GlobalTheory.T.sum_weights_inequivalent_hermFrameTerms_le K V H hK r N₀ g Λ ι s (fun i => (σ i)⁻¹ • Λ) hg ht₀ (fun i hi => ?_) ?_
+  refine _root_.GlobalTheory.DegAsm.FixedForm.main K V H hK r N₀ g Λ ι s (fun i => (σ i)⁻¹ • Λ) hg ht₀ (fun i hi => ?_) ?_
   · obtain ⟨a1, -, -, -, -, -, a2⟩ := hN i hi
     have hc : Carr (1 * (σ i * 1)) G₀ (G i) :=
       ((carr_of_sameGr (AdaptInv.sameGr_symm h₀.2.2)).trans (carr_of_eq fun a => (hσe i hi a).2)).trans
         (carr_of_sameGr a1.2.2)
     rw [one_mul, mul_one] at hc
-    obtain ⟨d1, d2⟩ := GlobalTheory.T.embeddedDatum_invariant_under_unipotent K V W H HW e hK r F G₀ (G i) 𝔡 N₀ g he h₀
+    obtain ⟨d1, d2⟩ := _root_.GlobalTheory.DegAsm.datOf_move K V W H HW e hK r F G₀ (G i) 𝔡 N₀ g he h₀
     obtain ⟨e1, -, e2⟩ := d1 (σ i) ((σ i)⁻¹ • Λ) (hσ i hi) hc
     rw [hcan] at e1 e2
     obtain ⟨f1, f2⟩ := d2 ((σ i)⁻¹ • Λ) Λ (e1.symm.trans a2)
@@ -212,7 +213,7 @@ theorem sum_weights_per_datum : ∀ (K V W : Type) [Field K] [NumberField K] [St
   have hjr : j ≤ r := hj i₁ hi₁ ▸ (N i₁).j_le
   have hjr' : j ≤ r + 1 := by omega
   have c1 : ((s.image fun i => sqM (N i) j hjr').card : ℝ) ≤ 8 ^ r := by
-    have h1 := GlobalTheory.T.signedBlockAntidiag_with_leadingMinors_encard_le K j δ
+    have h1 := _root_.GlobalTheory.signed_block_count K j δ
     have h2 := (Set.encard_le_encard (s := ((s.image fun i => sqM (N i) j hjr' : Finset _) : Set _)) ?_).trans h1
     · rw [Set.encard_coe_eq_coe_finsetCard] at h2
       have h3 : (s.image fun i => sqM (N i) j hjr').card ≤ 8 ^ j := by exact_mod_cast h2
@@ -235,7 +236,7 @@ theorem sum_weights_per_datum : ∀ (K V W : Type) [Field K] [NumberField K] [St
       obtain ⟨i, hi, rfl⟩ := Finset.mem_image.1 (Finset.mem_coe.1 hc)
       refine ⟨(N i).c_norm, ?_⟩
       rw [← hD i hi]
-      exact GlobalTheory.T.hermFramePair_scalar_eq_quot_ideals_norm_le K V H hK r (N i) g Λ hg (ht i hi)
+      exact _root_.GlobalTheory.DegCnt.c_eq_quot_ideals K V H hK r (N i) g Λ hg (ht i hi)
   have c3 : ((s.image fun i => (sqM (N i) j hjr', (N i).c)).card : ℝ) ≤
       8 ^ r * (8 * ((Formalism.HermitianLatticesTheory.fDeg K) : ℝ) ^ 2 * Del ^ (2 * (2 + cf K))) := by
     have h1 : (s.image fun i => (sqM (N i) j hjr', (N i).c)).card ≤

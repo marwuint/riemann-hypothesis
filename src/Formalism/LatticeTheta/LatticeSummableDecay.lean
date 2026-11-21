@@ -40,14 +40,6 @@ def LatticeFourierSeries [FiniteDimensional ℝ V] : Prop :=
           Complex.exp (2 * Real.pi * Complex.I * (⟪(μ : V), x⟫ : ℝ)))
       (G x)
 
-def GaussFourier [FiniteDimensional ℝ V] : Prop :=
-  ∀ t : ℝ, 0 < t →
-    Continuous (fun v : V => (Real.exp (-Real.pi * t * ‖v‖ ^ 2) : ℂ)) ∧
-    (∀ b : ℝ, (fun v : V => (Real.exp (-Real.pi * t * ‖v‖ ^ 2) : ℂ)) =O[cocompact V]
-      (fun v => ‖v‖ ^ (-b))) ∧
-    ∀ w : V, (𝓕 (fun v : V => (Real.exp (-Real.pi * t * ‖v‖ ^ 2) : ℂ)) : V → ℂ) w =
-      ((t ^ (-(Module.finrank ℝ V : ℝ) / 2) : ℝ) : ℂ) * (Real.exp (-Real.pi * ‖w‖ ^ 2 / t) : ℂ)
-
 def SchwartzDecay [FiniteDimensional ℝ V] : Prop :=
   ∀ (f : 𝓢(V, ℂ)) (b : ℝ),
     (f : V → ℂ) =O[cocompact V] (fun v => ‖v‖ ^ (-b)) ∧

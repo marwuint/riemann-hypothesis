@@ -2,7 +2,8 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.SectionArithmetic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionTwistedLineBundleNonzeroClosedFibreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionTwistedLineBundleNonzeroClosedFibre
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.DegExp
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
@@ -49,7 +50,7 @@ theorem exists_secB_isUnit_const : ∀ (E : Type) [Field E] [NumberField E] [IsC
     show ((P.D.toPre.c mu).left ≫ P.D.toPre.P.A.hom) _ = _
     rw [Over.w (P.D.toPre.c mu)]
     rfl
-  obtain ⟨σ₂, hσ₂⟩ := GlobalTheory.T.exists_section_twistedLineBundle_nonzero_closedFibre (ChartRing k m d) (GlobalTheory.MumfordChart.admissibleBase_chartRing k m d).2.2.2 P.D.toPre al _ hxc
+  obtain ⟨σ₂, hσ₂⟩ := _root_.GlobalTheory.TwistGen.exists_sec_nonzeroLocus_closedFibre (ChartRing k m d) (GlobalTheory.MumfordChart.admissibleBase_chartRing k m d).2.2.2 P.D.toPre al _ hxc
   have hA := (GlobalTheory.abelianSchemeLaws_all).1.ample
   obtain ⟨N, s, hcov⟩ := (hA (Spec (CommRingCat.of (ChartRing k m d))) P.D.toPre.P (e - 2) (by omega)).1 ⊤
     (isAffineOpen_top _)

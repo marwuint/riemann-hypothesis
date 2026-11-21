@@ -178,5 +178,3 @@ theorem norm_heckeL_le (E : Type) [Field E] [NumberField E] (χ : HChar E) (Λ :
 
 end GlobalTheory.HeckeLBound
 
-example : ∀ (E : Type) [Field E] [NumberField E] (χ : HChar E) (Λ : ℂ → ℂ) (S : ℂ), IsUnitary χ → IsHeckeL χ Λ → 3 / 2 ≤ S.re → ‖Λ S‖ ≤ ‖riemannZeta (3 / 2)‖ ^ Module.finrank ℚ E :=
-  GlobalTheory.HeckeLBound.norm_heckeL_le

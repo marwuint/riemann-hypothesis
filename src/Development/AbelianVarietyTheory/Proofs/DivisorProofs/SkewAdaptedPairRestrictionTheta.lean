@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulTransposeInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticIsotropicPlaneVanishesAdelicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticIsotropicEmbeddedVanishesAdelicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticFormRestrictedPlaneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticIsotropicEmbeddedVanishesAdelic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticFormRestrictedPlane
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LagrangianDimensionBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalModelCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalLagrangianSubspaceExistsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SkewDeterminantNeZeroFirstSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuadraticInjectivePlaneCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalModelCoordinates
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalLagrangianSubspaceExists
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SkewDeterminantNeZeroFirstSpace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuadraticInjectivePlaneCoordinates
 
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
@@ -32,7 +32,7 @@ theorem exists_ratLagr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
 
   have hD : ∀ p q, symp (cA σ) (-1) (incM F X.J) (incM F W.J) p q =
       (M.co.e p).1 ⬝ᵥ (M.co.e q).2 - (M.co.e q).1 ⬝ᵥ (M.co.e p).2 := M.co.form
-  have hcross := GlobalTheory.T.symplectic_isotropic_embedded_vanishes_adelic F E σ n d d₁ X.J W.J H' (fun u => (hH.orth u).1)
+  have hcross := _root_.GlobalTheory.MixedLagr.symplectic_isotropic_embedded_vanishes F E σ n d d₁ X.J W.J H' (fun u => (hH.orth u).1)
   have hiso : ∀ a ∈ lagr M M₁ H', ∀ b ∈ lagr M M₁ H', a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2 := by
     intro a ha b hb
     obtain ⟨u, hu, z, hz, hea⟩ := ha
@@ -44,7 +44,7 @@ theorem exists_ratLagr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
     have h1 := GlobalTheory.T.symplectic_isotropic_plane_vanishes_adelic F E σ n d d₁ X.J W.J H' hH.xx u hu u' hu'
     have h2 := hcross u' hu' z
     have h3 := hcross u hu z'
-    have h4 := GlobalTheory.T.symplectic_form_restricted_plane F E σ n d d₁ X.J W.J W₁.J H'.ι hH.gram z z'
+    have h4 := _root_.GlobalTheory.MixedLagrGram.symp_restrict_gram F E σ n d d₁ X.J W.J W₁.J H'.ι hH.gram z z'
     rw [M₁.co.form, hz, hz', zero_dotProduct, zero_dotProduct, sub_zero] at h4
     rw [hD] at h1 h2 h3 h4
     apply (AdeleRing.algebraMap_injective (𝓞 F) F)
@@ -59,18 +59,18 @@ theorem exists_ratLagr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
     linear_combination h1 + h2 - h3 + h4
   refine ⟨lagr M M₁ H', hiso, ?_, ?_⟩
   ·
-    have hrat := GlobalTheory.T.rational_model_coordinates F E σ n d X W M hP.good.rat
-    have hrat₁ := GlobalTheory.T.rational_model_coordinates F E σ n d₁ X W₁ M₁ hP₁.good.rat
+    have hrat := _root_.GlobalTheory.MixedLagr.ratCoord_linear_injective F E σ n d X W M hP.good.rat
+    have hrat₁ := _root_.GlobalTheory.MixedLagr.ratCoord_linear_injective F E σ n d₁ X W₁ M₁ hP₁.good.rat
     obtain ⟨f, hf, hfe⟩ := hrat
     obtain ⟨f₁, hf₁, hfe₁⟩ := hrat₁
     have h2 : Module.finrank F E = 2 := hP.base.cm.2.2.1
-    obtain ⟨K, hK, hKz⟩ := GlobalTheory.T.rational_lagrangian_subspace_exists F E σ n d₁ X W₁ M₁ h2 f₁ hf₁ hfe₁
+    obtain ⟨K, hK, hKz⟩ := _root_.GlobalTheory.MixedLagr.rat_first_zero_dim F E σ n d₁ X W₁ M₁ h2 f₁ hf₁ hfe₁
     have hinj := mul_transpose_injective F E σ n d d₁ W.J W₁.J H'.ι hH.gram
-      (GlobalTheory.T.skew_determinant_ne_zero_first_space F E σ B d₁ W₁ r₁ s₁ hP₁.skew)
+      (_root_.GlobalTheory.SkewGram.det_ne_zero F E σ B d₁ W₁ r₁ s₁ hP₁.skew)
     refine le_antisymm ?_ ?_
     · exact GlobalTheory.T.lagrangian_dimension_bound F _ _ hiso
     · rw [Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]
-      exact GlobalTheory.T.quadratic_injective_plane_coordinates F E σ n d d₁ X W W₁ M M₁ H' h2 hH.rank hH.xy (fun u => (hH.orth u).2) hinj f hf hfe K hK hKz
+      exact _root_.GlobalTheory.MixedLagr.le_finrank_lagr F E σ n d d₁ X W W₁ M M₁ H' h2 hH.rank hH.xy (fun u => (hH.orth u).2) hinj f hf hfe K hK hKz
   ·
     intro t w hw
     obtain ⟨u, ⟨y, rfl⟩, z, hz, he⟩ := hw

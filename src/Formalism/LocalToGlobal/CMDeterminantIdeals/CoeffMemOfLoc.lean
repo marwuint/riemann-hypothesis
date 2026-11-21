@@ -13,10 +13,6 @@ def CMNumbers0 {K : Type} [Field K] [NumberField K] {g : ℕ} (abelian₂ : MLin
   ∑ j, (ℓ j).deg - (g : ℝ) * (Module.finrank ℚ K : ℝ) * Real.log La ≤ abelian₂.deg ∧ (∀ j, (ℓ j).ndeg = logOm / 2) ∧
   de.ndeg ≤ (1 / 2) * abelian₂.dual.ndeg + (g : ℝ) / 4 * Real.log (2 * Real.pi)
 
-def CMNumbersLink : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (g : ℕ) (Lie : MLat K g) (ℓ : Fin g → MLine K) (u : Fin g → Fin g → K)
-    (de : MLine K) (La logOm : ℝ), CMNumbers Lie ℓ u de La logOm → CMNumbers0 Lie.detLine ℓ de La logOm
-
 def DegDe0 : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (g : ℕ) (abelian₂ : MLine K) (ℓ : Fin g → MLine K) (de : MLine K) (La logOm : ℝ),
     CMNumbers0 abelian₂ ℓ de La logOm → de.ndeg ≤ (g : ℝ) * (pDeg logOm + (1 / 2) * Real.log La)
@@ -52,9 +48,5 @@ def CoeffMemOfLoc : Prop :=
     (∀ p : HeightOneSpectrum (𝓞 K), ∃ (t : K) (cl : Fin g → K), IsLocGen p t de.I ∧ (∀ j, IsLocGen p (cl j) (ℓ j).I) ∧
       p.valuation K (cf * ∏ v, cl (c v) ^ μ v) ≤ p.valuation K (t ^ n)) →
     cf ∈ (lineNN de ℓ c μ n).I
-
-def DegGalois : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (γ : K ≃+* K) (L L' : MLine K), L.Good →
-    (∀ x : K, γ x ∈ L'.I ↔ x ∈ L.I) → (∀ σ : K →+* ℂ, L'.n σ = L.n (σ.comp (γ : K →+* K))) → L'.deg = L.deg
 
 end Formalism.L2.LamCM

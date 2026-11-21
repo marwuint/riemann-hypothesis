@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootHeightDifferenceBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineHeightInvariantScalingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HeightOfZeroDimVarietyStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProjectStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineHeightInvariantScaling
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HeightOfZeroDimVariety
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProject
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DominantWeightGapShiftStatement
 
 noncomputable section
@@ -112,7 +112,7 @@ theorem transfer [DecidableEq Ψ] (M R : RootModel Ψ N) (i : R.Ω →+* M.Ω) (
   classical
   have hw' : (fun p => algebraMap L (AlgebraicClosure L) (w p)) ∈ ptsOver (AlgebraicClosure L) M.P :=
     ptsOver_map (algebraMap L (AlgebraicClosure L)) hw
-  obtain ⟨-, -, hpts, hlift⟩ := GlobalTheory.T.join_model_points_project Ψ N M R i
+  obtain ⟨-, -, hpts, hlift⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Ht.JoinFacts.main Ψ N M R i
   obtain ⟨z, hz, hzw⟩ := hlift (AlgebraicClosure L) _ hw'
   let F := IntermediateField.adjoin L (Set.range z)
   haveI : FiniteDimensional L F :=
@@ -127,7 +127,7 @@ theorem transfer [DecidableEq Ψ] (M R : RootModel Ψ N) (i : R.Ω →+* M.Ω) (
     unfold rootHt
     refine Finset.sum_congr rfl fun j _ => ?_
     congr 1
-    rw [← GlobalTheory.T.line_height_invariant_scaling M.K M.ι (M.line t j) L F (algebraMap L F) w (fun _ => 1) hw.1 (fun _ => one_ne_zero)]
+    rw [← _root_.GlobalTheory.CompanionTheory.Ar.Ht.lineHt_map_scale M.K M.ι (M.line t j) L F (algebraMap L F) w (fun _ => 1) hw.1 (fun _ => one_ne_zero)]
     congr 1
     funext p
     rw [one_mul]
@@ -148,7 +148,7 @@ theorem point_bound [DecidableEq Ψ] {II : IntersectionSystem} (hII : IsIntersec
     ∃ x, -C₁ ≤ x ∧ s * x - (C₁ + |C| * (G + 2) + 1) * Real.log (2 + (C₁ + |C| * (G + 2) + 1) + x) -
       (C₁ + |C| * (G + 2) + 1) * l - (C₁ + |C| * (G + 2) + 1) * b - (C₁ + |C| * (G + 2) + 1) ≤
         M.ht II t mu s W := by
-  obtain ⟨L, _, _, w, hWw, hwW, hII'⟩ := GlobalTheory.T.height_of_zero_dim_variety M.K M.ι II hII W hW.1
+  obtain ⟨L, _, _, w, hWw, hwW, hII'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Ht.height_eq_intersection_number M.K M.ι II hII W hW.1
   have hwP : w ∈ ptsOver L M.P := ptsOver_mono hW.2 hwW
   have hht : M.ht II t mu s W = rootHt M t mu s L w := by
     unfold RootModel.ht rootHt

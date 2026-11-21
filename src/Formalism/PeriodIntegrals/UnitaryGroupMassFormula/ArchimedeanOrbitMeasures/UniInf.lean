@@ -41,7 +41,4 @@ theorem unimodInf_holds : UnimodInf := by
     _ = ∫⁻ g, f g ∂X.measG.μGinf := by
         rw [MeasurableEquiv.coe_mulRight, hm]
 
-theorem jacOne_of_goodChart (hK : KPos) (hG : GoodChartEx) : JacOne :=
-  jacOne_of_good hK unimodInf_holds hG
-
 end PI.AprimeInfW

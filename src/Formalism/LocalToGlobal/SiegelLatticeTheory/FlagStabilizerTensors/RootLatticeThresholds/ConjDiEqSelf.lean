@@ -85,14 +85,6 @@ theorem fix_gen (d : Fin (2 * r + k + 1) → ℂ) (d0 : ℂ) (hmid : ∀ i : Fin
     · push_neg at hi hj
       rw [hmid i hi.1 hi.2, hmid j hj.1 hj.2]
 
-def dD (k r : ℕ) (δ : ℝ) (i : Fin (2 * r + k + 1)) : ℂ :=
-  if i.val < r then ((δ ^ (r - i.val) : ℝ) : ℂ)
-  else if r + k < i.val then (((δ ^ (r - (2 * r + k - i.val)))⁻¹ : ℝ) : ℂ) else 1
-
-def tD (k r : ℕ) (δ : ℝ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.diagonal (dD k r δ)
-def tDi (k r : ℕ) (δ : ℝ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ :=
-  Matrix.diagonal fun i => (dD k r δ i)⁻¹
-
 variable {δ : ℝ}
 
 end Formalism.L2.SG.Pf.Carrier.CarPinTor

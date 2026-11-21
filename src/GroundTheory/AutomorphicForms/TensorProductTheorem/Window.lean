@@ -82,9 +82,6 @@ theorem heckeOp_of_mem {g : G} (hg : g ∈ K) : heckeOp hρ hKc hKo g = 1 := by
   rw [heckeOp_apply, fixedProj_apply_act hρ hKc hKo hg, fixedProj_apply_of_mem hρ hKc hKo m.2,
     Module.End.one_apply]
 
-theorem heckeOp_one : heckeOp hρ hKc hKo 1 = 1 :=
-  heckeOp_of_mem hρ hKc hKo (one_mem K)
-
 theorem heckeOp_mul_apply {a b : G}
     (hab : ∀ h ∈ K, ∃ k ∈ K, k * a = a * k ∧ (k⁻¹ * h) * b = b * (k⁻¹ * h))
     (m : fixedVectors ρ K) :

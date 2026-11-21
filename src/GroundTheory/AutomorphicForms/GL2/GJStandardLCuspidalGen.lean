@@ -586,59 +586,6 @@ theorem coeff_factor (ω : ∀ v : HeightOneSpectrum (𝓞 K), GL (Fin n) (v.adi
 
 end Cusp
 
-section Conclusion
-
-open GodementJacquet GLnLocal GJStandardL NumberField.mixedEmbedding
-open scoped SchwartzMap Classical
-
-def PartialLFunctionalEquation {K : Type} [Field K] [NumberField K] {n : ℕ} (S : Finset (HeightOneSpectrum (𝓞 K)))
-    {V : HeightOneSpectrum (𝓞 K) → Type} [∀ v, AddCommGroup (V v)] [∀ v, Module ℂ (V v)]
-    (π : ∀ v, Representation ℂ (GL (Fin n) (v.adicCompletion K)) (V v)) (ξ : ∀ v, V v)
-    (ℓ : ∀ v, Module.Dual ℂ (V v)) (fi : AdelicGLn.InfiniteAdelicGL K n → ℂ) : Prop :=
-    ∃ σ : ℝ, ∃ Λ : ℂ → ℂ, Differentiable ℂ Λ ∧
-      ∃ (φ φ' : 𝓢(Fin n × Fin n → mixedSpace K, ℂ))
-        (Φ Φ' : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ) (c c' : ℂ),
-        c ≠ 0 ∧ c' ≠ 0 ∧ φ' = archMatrixFourier φ ∧
-        (∃ C : ℂ, C ≠ 0 ∧
-          (∀ (φ₀ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ)) (S₀ : Finset (HeightOneSpectrum (𝓞 K)))
-            (Φ₀ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ),
-            (∀ v ∈ S₀, IsSchwartzBruhat (Φ₀ v)) →
-            (∀ v ∉ S₀, Φ₀ v = integralIndicator (v.adicCompletion K) n) →
-            GJMatrix.adelicMatrixFourier K (GJStandardL.matrixTensor φ₀ Φ₀) = C • GJStandardL.matrixTensor (archMatrixFourier φ₀)
-              (fun v ↦ GJMatrix.localMatrixFourier (GroundTheory.Global.localAdelicChar K v) (Φ₀ v))) ∧
-          c = C ^ 3 * c') ∧
-        (∀ v ∈ S, IsSchwartzBruhat (Φ v) ∧
-          Φ' v = GJMatrix.localMatrixFourier (GroundTheory.Global.localAdelicChar K v) (Φ v)) ∧
-        (∀ v ∉ S, Φ v = integralIndicator (v.adicCompletion K) n ∧
-          Φ' v = integralIndicator (v.adicCompletion K) n) ∧
-        (∀ v ∈ S, RatFE (v.adicCompletion K)
-          (gammaFactor (v.adicCompletion K) (π v) (GroundTheory.Global.localAdelicChar K v))
-          (zetaIntegral (localHaar n v) (Φ v) (Parabolic.matrixCoeff (F := v.adicCompletion K) (π v) (ξ v) (ℓ v)))
-          (fun s ↦ zetaIntegral (localHaar n v) (Φ' v)
-            (fun g ↦ Parabolic.matrixCoeff (F := v.adicCompletion K) (π v) (ξ v) (ℓ v) g⁻¹) (1 - s))) ∧
-        Differentiable ℂ (archZeta Measure.haar φ' (fun x ↦ fi x⁻¹)) ∧
-        (∃ s, archZeta Measure.haar φ' (fun x ↦ fi x⁻¹) s ≠ 0) ∧
-        (∀ v ∈ S, ∃ a : ℂ, a ≠ 0 ∧ ∃ g₀ : GL (Fin n) (v.adicCompletion K), ∀ s : ℂ,
-          zetaIntegral (localHaar n v) (Φ' v)
-            (fun g ↦ Parabolic.matrixCoeff (F := v.adicCompletion K) (π v) (ξ v) (ℓ v) g⁻¹) s =
-            a * detPow g₀ (s + ((n : ℂ) - 1) / 2)) ∧
-        ∀ s : ℂ, σ < s.re →
-          HasProd (fun v : {v : HeightOneSpectrum (𝓞 K) // v ∉ S} ↦
-            LFunction (F := (v : HeightOneSpectrum (𝓞 K)).adicCompletion K) (π v) s) (partialL S π s) ∧
-          HasProd (fun v : {v : HeightOneSpectrum (𝓞 K) // v ∉ S} ↦
-            LFunction (F := (v : HeightOneSpectrum (𝓞 K)).adicCompletion K) (contragredient (π v)) s)
-            (dualPartialL S π s) ∧
-          partialL S π s ≠ 0 ∧ dualPartialL S π s ≠ 0 ∧
-          Λ s = c * archZeta Measure.haar φ fi s *
-            (∏ v ∈ S, zetaIntegral (localHaar n v) (Φ v)
-              (Parabolic.matrixCoeff (F := v.adicCompletion K) (π v) (ξ v) (ℓ v)) s) * partialL S π s ∧
-          Λ (1 - s) = c' * archZeta Measure.haar φ' (fun x ↦ fi x⁻¹) s *
-            (∏ v ∈ S, zetaIntegral (localHaar n v) (Φ' v)
-              (fun g ↦ Parabolic.matrixCoeff (F := v.adicCompletion K) (π v) (ξ v) (ℓ v) g⁻¹) s) *
-            dualPartialL S π s
-
-end Conclusion
-
 section Final
 
 open AutomorphicForm CuspidalSpectrum AdelicGLn GLnLocal RestrictedTensor
@@ -763,33 +710,6 @@ theorem matrixCoeff_factorization_of_pureTensor (P : CuspidalAutomorphicRepresen
     rw [hk, hℓ1 v]
 
 end Sph
-
-theorem matrixCoeff_factorization_cuspidal (P : CuspidalAutomorphicRepresentation K n)
-    (D : AdelicDecomposition P.toModule) (μ : Measure (Reduction.normOneGL K n)) [μ.IsHaarMeasure] :
-    ∃ (φ : cuspForms K n) (ξ : ∀ v, D.finite.W v) (ℓ : ∀ v, Module.Dual ℂ (D.finite.W v))
-      (fi : InfiniteAdelicGL K n → ℂ) (S₀ : Finset (HeightOneSpectrum (𝓞 K))),
-      φ ∈ P.carrier ∧ φ ≠ 0 ∧ (∀ v, ξ v ∈ smoothVectors (D.finite.π v)) ∧
-      (∀ v, ℓ v ∈ smoothVectors (Representation.dual (D.finite.π v))) ∧
-      (∀ v ∉ S₀, ξ v ∈ fixedVectors (D.finite.π v) (integralGL (v.adicCompletion K) n) ∧ ℓ v (ξ v) = 1) ∧
-      (∀ v ∉ S₀, ℓ v ∈ fixedVectors (Representation.dual (D.finite.π v)) (integralGL (v.adicCompletion K) n)) ∧
-      (∀ g, GJGlobal.matrixCoeff μ (φ : AdelicGL K n → ℂ) φ g = fi (GJStandardL.archComp K n g) *
-        ∏ᶠ v : HeightOneSpectrum (𝓞 K), Parabolic.matrixCoeff (F := v.adicCompletion K) (D.finite.π v) (ξ v) (ℓ v)
-          (GJStandardL.localComp n v g)) ∧
-      ∃ g, GJGlobal.matrixCoeff μ (φ : AdelicGL K n → ℂ) φ g ≠ 0 := by
-  obtain ⟨a, x, hx, ha, hx0⟩ := exists_pureTensor P D
-  obtain ⟨ℓ, fi, hℓs, hℓ1, hℓK, hf, hF1⟩ := matrixCoeff_factorization_of_pureTensor P D μ a x hx ha hx0
-  have hS : ∀ᶠ v in cofinite, x v ∈ fixedVectors (D.finite.π v) (integralGL (v.adicCompletion K) n) := by
-    filter_upwards [hx, D.finite.mem_fixedVectors] with v h1 h2
-    rw [h1]
-    exact h2
-  have hfin := Filter.eventually_cofinite.1 hS
-  have hnot : ∀ v ∉ hfin.toFinset, x v ∈ fixedVectors (D.finite.π v) (integralGL (v.adicCompletion K) n) := by
-    intro v hv
-    by_contra h
-    exact hv (hfin.mem_toFinset.2 h)
-  exact ⟨Phi0 P D a x hx, x, ℓ, fi, hfin.toFinset, (phi D a x hx).2,
-    fun h => phi_ne D a x hx ha hx0 (Subtype.ext h), fun v => (D.finite.isAdmissible v).1 (x v), hℓs,
-    fun v hv => ⟨hnot v hv, hℓ1 v⟩, fun v hv => hℓK v (hnot v hv), hf, ⟨1, hF1⟩⟩
 
 end Final
 

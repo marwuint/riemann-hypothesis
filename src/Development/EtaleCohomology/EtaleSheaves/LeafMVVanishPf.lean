@@ -18,6 +18,4 @@ theorem mvSpc : LateralTheory.E.MVPf.MVSpc :=
 end LateralTheory.E.LeafMVVanishPf
 
 namespace LateralTheory.E.E8
-open LateralTheory.E.LeafMVVanishPf
-
 end LateralTheory.E.E8

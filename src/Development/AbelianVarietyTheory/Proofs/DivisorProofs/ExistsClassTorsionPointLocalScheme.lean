@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftGeometricGenericPointStalkOfFlatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominantGeometricGenericPointSpecDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfFormallyUnramifiedOfEqAtClosedPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftGeometricGenericPointStalkOfFlat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominantGeometricGenericPointSpecDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfFormallyUnramifiedOfEqAtClosedPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaCompOfIsGrpPullback
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.FormallyUnramifiedOfTangentMapInjective
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
@@ -74,7 +74,7 @@ theorem fromSpecStalk_killed {X' : Scheme.{0}} (G : Over X') [GrpObj G] (n : ℕ
   have := mono_torsion_ι G n
   have key : (torsion G n).left.fromSpecStalk (P (IsLocalRing.closedPoint K)) ≫ u₁.left =
       (torsion G n).left.fromSpecStalk (P (IsLocalRing.closedPoint K)) ≫ u₂.left := by
-    refine GlobalTheory.T.eq_of_formallyUnramified_of_eq_at_closedPoint (torsion G n).hom _ _ _ ?_ K (Spec.map (Scheme.stalkClosedPointTo P)) ?_ ?_
+    refine _root_.GlobalTheory.TorsSpec.eq_of_unramified_of_closedPoint (torsion G n).hom _ _ _ ?_ K (Spec.map (Scheme.stalkClosedPointTo P)) ?_ ?_
     · rw [Category.assoc, Category.assoc, Over.w, Over.w]
     · intro x
       obtain rfl : x = IsLocalRing.closedPoint K := Subsingleton.elim _ _
@@ -93,8 +93,8 @@ theorem exists_valAt : ∀ {E : Type} [Field E] {X' : Scheme.{0}} [IsIntegral X'
   intro E _ X' _ _ G _ _ _ n hn V _ ℓ _ M w hw _ act I hex K _ _ P hP x
   have := GlobalTheory.GrpTangent.etale_torsion G hn
   have := isDomain_stalk_of_etale (torsion G n).hom (P x)
-  obtain ⟨Ω, _, _, y₀, hy₀, _⟩ := GlobalTheory.T.exists_dominant_geometricGenericPoint_spec_domain ((torsion G n).left.presheaf.stalk (P x))
-  obtain ⟨z₀, hz₀⟩ := GlobalTheory.T.exists_lift_geometricGenericPoint_stalk_of_flat (torsion G n).hom (P x) ℓ Ω y₀ hy₀
+  obtain ⟨Ω, _, _, y₀, hy₀, _⟩ := _root_.GlobalTheory.exists_geomGeneric_dominant ((torsion G n).left.presheaf.stalk (P x))
+  obtain ⟨z₀, hz₀⟩ := _root_.GlobalTheory.lift_of_stalk_generic_flat (torsion G n).hom (P x) ℓ Ω y₀ hy₀
   have hw' : (torsion.ι G n).left ≫ G.hom = (torsion G n).hom := Over.w _
   obtain ⟨c, hc⟩ := hex Ω z₀ (y₀ ≫ (torsion G n).left.fromSpecStalk (P x) ≫ (torsion.ι G n).left)
     (by rw [Category.assoc, Category.assoc, hw', hz₀]) (fun a ha => by

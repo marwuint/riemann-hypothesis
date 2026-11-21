@@ -83,8 +83,5 @@ def ProjChart {Ω' : Type} [Field Ω'] [Algebra o Ω'] (N : RatModel o Ω') (φ 
     (U : Set N.Z) = {z' | q z' ∈ W ∧ N.Div t i z'} ∧
     N.ringOn U = Algebra.adjoin o (φ '' (M.ringOn W : Set Ω) ∪ Set.range fun j => t j / t i)
 
-example : M.GenTriv ⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩ fun _ => 1 :=
-  ⟨fun _ => one_ne_zero, fun _ _ h => (valR_one _ _ (M.top_le_preimage_pt h)).trans (div_one 1).symm⟩
-
 end GlobalTheory.ZH.RatModel
 end

@@ -82,7 +82,7 @@ theorem tateWit_of : TateWit := by
       have hw := hweil n (f n a) (f n a')
         (Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF (f n a) (f n a') : ℂ) / n)) (Complex.exp_ne_zero _))
         hn rfl
-      have hu := GlobalTheory.T.weilPairing_complex_value_unique S o.A D.g o.ab hX _ hL x n _ _ _ _ hiso hw
+      have hu := _root_.GlobalTheory.WeilComplexUnique.weilIs_unitOn_unique_complex S o.A D.g o.ab hX _ hL x n _ _ _ _ hiso hw
       have hu' := congrArg (fun u : ℂˣ => (u : ℂ)) hu
       simp only [Units.val_zpow_eq_zpow_val, Units.val_mk0] at hu'
       rw [(hnu n hn hnp).2, ← Complex.exp_int_mul] at hu'
