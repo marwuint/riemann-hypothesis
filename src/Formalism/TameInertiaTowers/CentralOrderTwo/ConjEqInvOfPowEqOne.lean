@@ -116,7 +116,7 @@ end UnitConjugation
 
 open UnitConjugation
 
-theorem layerConj_of (_hG : LayerGalois) : LayerConj := by
+theorem layerConj_of : LayerConj := by
   intro n q d _ hqd L _ _ ζ a b h φ σ
   exact conj_iff hqd.1.pos hqd.2.1.pos h φ σ
 

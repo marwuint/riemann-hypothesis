@@ -139,7 +139,7 @@ theorem compactDecomposition_of_finrank (he : KHiExist) (V : Type) [NormedAddCom
           · conv_lhs => rw [← h3]
             exact iSup_le fun j => le_iSup_of_le j.succ (by simp)
 
-theorem kDecomp_of (he : KHiExist) (ho : KOrth) : KDecomp := by
+theorem kDecomp_of (he : KHiExist) : KDecomp := by
   intro V _ _ n ε F S hfin hr hu hS
   exact compactDecomposition_of_finrank he V n ε F hr hu _ S rfl hfin hS
 
