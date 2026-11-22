@@ -65,17 +65,6 @@ def topForms (B : HolLineBundle A) : Submodule ℂ (Fin A.n → X → ℂ) where
 
 def secMul (f g : Fin A.n → X → ℂ) : Fin A.n → X → ℂ := fun j x => f j x * g j x
 
-open scoped Classical in
-
-def chartLIntegral (A : FinHolAtlas D X) (ρ : Fin A.n → X → ℝ) : ℝ≥0∞ :=
-  if h : Nonempty (ChartPartition A) then
-    ∑ j, ∫⁻ y in (A.chart j).target,
-      ENNReal.ofReal (h.some.χ j ((A.chart j).symm y) * ρ j ((A.chart j).symm y))
-  else ⊤
-
-def topFormWeightedL2 (ψ : Fin A.n → X → ℝ) (f : Fin A.n → X → ℂ) : ℝ≥0∞ :=
-  chartLIntegral A (fun j x => 2 ^ D * ‖f j x‖ ^ 2 * Real.exp (-ψ j x))
-
 structure HermSpace (B : Submodule ℂ (Fin A.n → X → ℂ)) where
 
   n : ℕ
@@ -83,10 +72,6 @@ structure HermSpace (B : Submodule ℂ (Fin A.n → X → ℂ)) where
   e : Fin n → Fin A.n → X → ℂ
   mem : ∀ i, e i ∈ B
   indep : LinearIndependent ℂ e
-
-namespace HermSpace
-
-end HermSpace
 
 def fsPhi {B : Submodule ℂ (Fin A.n → X → ℂ)} (H : HermSpace B) (j : Fin A.n) (x : X) : ℝ :=
   Real.log (∑ i, ‖H.e i j x‖ ^ 2)
@@ -113,10 +98,6 @@ structure FSData (A : FinHolAtlas D X) (Y : Type) [TopologicalSpace Y] where
   continuous_Φ : Continuous Φ
   Φ_ι : ∀ x, (fun i => W.e i (chartIdx A x) x) ∈ (Φ (ι x)).submodule
 
-namespace FSData
-
-end FSData
-
 structure HSData (A : FinHolAtlas D X) (Y : Type) [TopologicalSpace Y] extends FSData A Y where
 
   β : ℝ
@@ -132,10 +113,6 @@ structure HSData (A : FinHolAtlas D X) (Y : Type) [TopologicalSpace Y] extends F
     Real.exp (-φA j x) ≤ β ^ (D + 1) * Real.exp (-(fsPhi W₂ j x + D * fsPhi W j x))
 
   V : (j : ℕ) → HermSpace (topForms (twist L₂ L (D + j)))
-
-namespace HSData
-
-end HSData
 
 end
 

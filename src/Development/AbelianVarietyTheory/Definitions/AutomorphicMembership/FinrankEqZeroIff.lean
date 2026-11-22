@@ -9,12 +9,6 @@ open Formalism.MainNotions.DIV.Cons (SCF intO)
 
 namespace GlobalTheory.LocM.Cht
 
-def TrivOfAbSt : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
-    (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (p : ℕ) (C : SCF p)
-    (P : PointsOfFlagModel.PtC Y C) (A : DatAt Y P), p.Prime →
-    P.yt (closedPoint ↥(intO ↥C.S)) ∈ abLocus Y.t.G → Subsingleton A.Ylat
-
 def StalkSt : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p),

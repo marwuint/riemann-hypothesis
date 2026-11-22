@@ -1,5 +1,5 @@
 import Formalism.SharpRestriction.InertJacobiLevels.ExtraMods
-import Formalism.LocalRingCardinality.SpanPowerMembership.TiesGen
+import Formalism.LocalRingCardinality.SpanPowerMembership.TwCore
 import Formalism.LocalRingCardinality.SpanPowerMembership.DivXExample
 
 noncomputable section
