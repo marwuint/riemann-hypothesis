@@ -14,9 +14,6 @@ def conjActHom {k G : Type} [CommRing k] [Group G] (g : G) (A : Rep k G) :
     rw [← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]
     simp [mul_assoc]⟩
 
-theorem conjActHom_hom_apply {k G : Type} [CommRing k] [Group G] (g : G) (A : Rep k G) (a : A) :
-    (conjActHom g A).hom a = A.ρ g a := rfl
-
 theorem conj_map_eq_id_zero (k G : Type) [CommRing k] [Group G] (g : G) (A : Rep k G)
     (u : A ⟶ Rep.res (MulAut.conj g).toMonoidHom A) (hu : ∀ a, u.hom a = A.ρ g a) :
     groupHomology.map (MulAut.conj g).toMonoidHom u 0 = 𝟙 _ := by

@@ -133,8 +133,6 @@ theorem intB_of (hPS : StandardPairingDecay.PStdC) (hD : DecayUnif) : IntB := by
 
 def IntBOfParts : Prop := StandardPairingDecay.PStdC → DecayUnif → IntB
 
-theorem intBOfParts : IntBOfParts := intB_of
-
 end
 
 end Formalism.FourierDecayAlt.P.PBASM

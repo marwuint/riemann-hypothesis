@@ -423,8 +423,6 @@ namespace Formalism.FourierDecayAlt.P
 
 theorem tailBound_statement : Formalism.FourierDecayAlt.G.TailBound := OrbitTailEstimates.tailBound
 
-theorem tail_estimate_of_bound : Formalism.FourierDecayAlt.G.TailStepOfBound := OrbitTailEstimates.tailStepOfBound
-
 theorem germ_large_parameter : Formalism.FourierDecayAlt.G.GermLargeT := OrbitTailEstimates.germLargeT
 
 end Formalism.FourierDecayAlt.P

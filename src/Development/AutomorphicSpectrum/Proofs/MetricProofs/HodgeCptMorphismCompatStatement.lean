@@ -1,5 +1,7 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptMorphismCompat
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ColFlags
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenUIsGenFam
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCFmExistsFlagsField
 
 open AlgebraicGeometry CategoryTheory NumberField Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor

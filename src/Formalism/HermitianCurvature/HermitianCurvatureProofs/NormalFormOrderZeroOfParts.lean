@@ -1514,12 +1514,6 @@ end Act
 
 end Formalism.FourierDecayAlt.P.NFx4.NO
 
-namespace Formalism.FourierDecayAlt.P
-
-theorem normal_form_order_zero_of_parts : Formalism.FourierDecayAlt.NF.NFOrder0OfParts := NFx4.NO.nFOrder0OfParts
-
-end Formalism.FourierDecayAlt.P
-
 end
 
 section

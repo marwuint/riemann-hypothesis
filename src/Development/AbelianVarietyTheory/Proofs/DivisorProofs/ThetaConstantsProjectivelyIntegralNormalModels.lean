@@ -32,11 +32,6 @@ theorem grpPullback_self' {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullba
   rw [ex, ey, ← MonObj.comp_mul]
   exact (Category.id_comp _).trans (Category.comp_id _).symm
 
-theorem sec_eq' {X : Scheme.{0}} {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j = s'.f j) : s = s' := by
-  cases s; cases s'
-  simp only [LB.Sec.mk.injEq]
-  exact funext h
-
 theorem pullS_comp' {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.left} (hL : L.IsLB) (a : ℤ) {T T' T'' : Over S}
     (h : T' ⟶ T) (h' : T'' ⟶ T') (s : LB.Sec (LPow G L a T)) :
     VVRank.pullS G a h' (VVRank.pullS G a h s) = VVRank.pullS G a (h' ≫ h) s := GlobalTheory.UMin.SymRat.pullS_comp G hL a h h' s

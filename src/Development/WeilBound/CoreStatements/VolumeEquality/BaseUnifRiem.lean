@@ -96,21 +96,6 @@ theorem exists_proj {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : 𝓞 E →+
   refine Finset.sum_congr rfl fun b _ => ?_
   rw [map_smul, ← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]
 
-omit [IsCMField E] in
-theorem sum_eigComp {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : 𝓞 E →+* Module.End ℂ V) (x : V) :
-    ∑ s : E →+* ℂ, eigComp ρ (s.comp (algebraMap (𝓞 E) E)) x = x := by
-  classical
-  obtain ⟨y, hy, hs⟩ := exists_decomp ρ x
-  conv_rhs => rw [← hs]
-  refine Finset.sum_congr rfl fun s _ => ?_
-  obtain ⟨p, h₁, -, h₃, h₄⟩ := exists_proj ρ (s.comp (algebraMap (𝓞 E) E))
-  rw [h₁, ← hs, map_sum, Finset.sum_eq_single s (fun s' _ hne => ?_) (by simp), h₃ _ (hy s)]
-  by_contra h0
-  refine hne (comp_injective (RingHom.ext fun a => ?_))
-  have e := h₄ a (y s')
-  rw [mem_eigSp_iff.1 (hy s') a, map_smul] at e
-  exact smul_left_injective ℂ h0 e
-
 theorem adj_herm (R : RiemLat E g Λ) (a a' : 𝓞 E) (ha : (a' : E) = IsCMField.complexConj E (a : E)) (z w : Fin g → ℂ) :
     R.B a z ⬝ᵥ R.Hm *ᵥ star w = z ⬝ᵥ R.Hm *ᵥ star (R.B a' w) := by
   have h : (imB R.Hm).comp ((R.B a).restrictScalars ℝ) = (imB R.Hm).compl₂ ((R.B a').restrictScalars ℝ) := by

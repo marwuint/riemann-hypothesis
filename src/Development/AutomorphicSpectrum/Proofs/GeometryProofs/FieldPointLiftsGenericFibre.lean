@@ -9,6 +9,4 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CompanionTheory.Ar.M0
 
-theorem fieldPoint_lifts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β), (letI := β.toAlgebra; IsFractionRing O c.F) → ∀ (K : Type) [Field K] (x : Sp K ⟶ Y.X), Set.range x ⊆ Set.range Y.j → ∃ y : Sp K ⟶ Xo.XF c, y ≫ Y.j = x := PositivityTheory.HtPt.Ml.lift_generic_point
-
 end GlobalTheory.CompanionTheory.Ar.M0

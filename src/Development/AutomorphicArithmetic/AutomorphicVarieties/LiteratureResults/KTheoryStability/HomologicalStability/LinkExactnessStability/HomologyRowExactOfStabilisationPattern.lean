@@ -5,11 +5,6 @@ open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 
 namespace GlobalTheory.HomStab.Row
 
-theorem hMap_zero' {k G : Type} [CommRing k] [Group G] (A B : Rep k G) (n : ℕ) :
-    hMap (0 : A ⟶ B) n = 0 := by
-  simp [hMap, groupHomology.map]
-  rfl
-
 theorem main : ∀ (k G : Type) [CommRing k] [Group G] (C : ℕ → Rep k G) (d : ∀ p, C (p + 1) ⟶ C p),
     (∀ p, d (p + 1) ≫ d p = 0) → ∀ (M : ℕ → ℕ → ModuleCat.{0} k)
     (e : ∀ p q, M p q ⟶ groupHomology (C p) q) (s : ∀ p q, M (p + 1) q ⟶ M p q) (T : ℕ),

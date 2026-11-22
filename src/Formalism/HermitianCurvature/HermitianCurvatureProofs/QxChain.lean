@@ -2483,8 +2483,6 @@ end
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem chain_descent_from_rules : Formalism.FourierDecayAlt.Q.ChainStepFromRules := Qx6.stp_chainStepFromRules
-
 theorem qx_chainStepBoth : Formalism.FourierDecayAlt.Q.ChainStepRaw ∧ Formalism.FourierDecayAlt.Q.ChainStep := Formalism.FourierDecayAlt.P.Qx6.stp_chainStepFromRules border_first_expansion border_last_expansion border_full_expansion generator_gl_level generator_action_preserved quantum_minor_left_hermitian right_action_rule left_action_rule torus_action_rule weyl_level_element_properties
 
 theorem chain_descent_relation : Formalism.FourierDecayAlt.Q.ChainStep := qx_chainStepBoth.2

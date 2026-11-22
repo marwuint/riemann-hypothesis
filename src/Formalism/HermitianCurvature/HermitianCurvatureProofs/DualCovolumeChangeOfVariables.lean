@@ -249,6 +249,4 @@ theorem trace_dual_alt : Formalism.FourierDecayAlt.J.TraceDual := Jx3.t_TraceDua
 
 theorem block_frame : Formalism.FourierDecayAlt.J.BlockFrame := Jx3.t_BlockFrame
 
-theorem poisson_joint : Formalism.FourierDecayAlt.J.PoissonJoint := Jx3.t_PoissonJoint
-
 end Formalism.FourierDecayAlt.P

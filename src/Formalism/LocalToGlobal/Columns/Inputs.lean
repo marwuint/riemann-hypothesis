@@ -17,9 +17,6 @@ def UnimodGenusLoc (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) :
   IsCMUnram E → ∀ N : Submodule (𝓞 E) (Sp E n), Submodule.IsLattice E N → IsUnimodular (hStd E n) N →
     SameGenus (hStd E n) (stdLat E n) N
 
-def UnimodGenusLocAll : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ), UnimodGenusLoc E n
-
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n]
 

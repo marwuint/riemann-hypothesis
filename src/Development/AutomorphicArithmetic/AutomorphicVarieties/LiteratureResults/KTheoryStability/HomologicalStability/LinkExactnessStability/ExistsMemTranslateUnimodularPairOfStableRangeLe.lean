@@ -6,15 +6,6 @@ open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 
 namespace GlobalTheory
 
-theorem finsupp_coord_ideal_eq_top {R : Type} [CommRing R] (u : ℕ →₀ R) (g : (ℕ →₀ R) →ₗ[R] R)
-    (hg : g u = 1) (K : Ideal R) (hK : ∀ i, u i ∈ K) : K = ⊤ := by
-  rw [Ideal.eq_top_iff_one, ← hg]
-  rw [show g u = g (u.sum Finsupp.single) by rw [Finsupp.sum_single]]
-  rw [Finsupp.sum, map_sum]
-  refine Ideal.sum_mem _ fun i _ => ?_
-  rw [← Finsupp.smul_single_one, map_smul, smul_eq_mul]
-  exact Ideal.mul_mem_right _ _ (hK i)
-
 theorem finsupp_exists_form_of_span {R : Type} [CommRing R] (u : ℕ →₀ R)
     (h : Ideal.span (Set.range fun i => u i) = ⊤) : ∃ g : (ℕ →₀ R) →ₗ[R] R, g u = 1 := by
   have h1 : (1 : R) ∈ Ideal.span (Set.range fun i => u i) := by

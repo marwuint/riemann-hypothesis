@@ -719,6 +719,4 @@ theorem main : WalkSharp := by
 
 end WalkSharpP
 
-theorem walkSharp_true : WalkSharp := WalkSharpP.main
-
 end Formalism.G0

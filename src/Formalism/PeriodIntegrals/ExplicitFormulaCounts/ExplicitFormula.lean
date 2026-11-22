@@ -1,6 +1,8 @@
 import Formalism.PeriodIntegrals.ExplicitFormulaCounts.AnalyticInputs
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ZerosWindow
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ExplicitFormula
+import Mathlib
+import Formalism.PeriodIntegrals.ExplicitFormula
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ExplicitFormula.LocalLemmaOfHelpers
 
 theorem zerosWindow_closed : PI.ZerosWindow :=
   zerosWindow_of chk_lBoundRight chk_zetaBoundRight chk_lInvRight

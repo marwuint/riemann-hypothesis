@@ -20,9 +20,6 @@ open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 
 namespace PositivityTheory.Rg.Rsw.Kplug
 
-theorem resKilled_of_leaves : K0 → K1 → K2 → SimplePoleRescaling → ContinuousInvariantCoefficients → KillingPolyConst → ContinuationThroughChart → K4 →
-    GlobalTheory.Published.SiegelEisensteinContinuation → PositivityTheory.Rg.Rsw.ResCore → ResidueVanishing := PositivityTheory.Rg.Rsw.Kplug.residue_vanishes_of_siegel_eisenstein
-
 theorem k0 : K0 := mem_section_space
 theorem k1 : K1 := local_representation_smoothness
 theorem k2 : K2 := continuation_pole_order

@@ -569,8 +569,6 @@ theorem wlocal_global : Formalism.UG.WeylGLStable := by
   rw [hJdef, Submodule.mem_comap, LinearMap.toSpanSingleton_apply, one_smul] at h1
   exact h1
 
-theorem weyl_module_GL_stable_local : Formalism.UG.WeylGLStableLocal := wlocal_local
-
 theorem weyl_module_GL_stable : Formalism.UG.WeylGLStable := wlocal_global
 
 end Formalism.UG.P

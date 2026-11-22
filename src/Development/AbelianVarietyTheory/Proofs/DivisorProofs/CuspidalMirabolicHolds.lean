@@ -1,9 +1,0 @@
-import Mathlib
-import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.BlockTriangularOfSubOne
-import CompanionTheory.AutomorphicTheory.MirabolicRestriction.MirabolicInduction.CuspidalMirabolic
-
-namespace GlobalTheory
-
-theorem cuspidalMirabolic_holds : GlobalTheory.Published.CuspidalMirabolic := CompanionTheory.Mirab.cuspidalMirabolic
-
-end GlobalTheory

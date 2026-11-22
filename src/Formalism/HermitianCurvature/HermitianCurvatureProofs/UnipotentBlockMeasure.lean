@@ -994,32 +994,6 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt
 
-theorem norm_of_lemmas : Formalism.FourierDecayAlt.PN.NormOfLemmas := HermitianFormNormLemmas.A.t_NormOfLemmas
-
 theorem pn_norm_bound : Formalism.FourierDecayAlt.PN.NormBound := Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.A.t_NormOfLemmas jacobian_natural_measure_constant local_ratio_product column_identity
-
-theorem frame_passage : Formalism.FourierDecayAlt.PN.FramePassage := HermitianFormNormLemmas.A.t_FramePassage
-
-theorem norm_real_part : Formalism.FourierDecayAlt.PN.NormRe := HermitianFormNormLemmas.A.t_NormRe
-
-theorem mean_amplitude_joint : Formalism.FourierDecayAlt.PN.MeanAmpJoint := HermitianFormNormLemmas.B.t_MeanAmpJoint
-
-theorem class_squares_sum : Formalism.FourierDecayAlt.PN.ClassSquaresSum := HermitianFormNormLemmas.C.t_ClassSquaresSum
-
-theorem class_cauchy_schwarz : Formalism.FourierDecayAlt.PN.ClassCS := HermitianFormNormLemmas.C.t_ClassCS
-
-theorem first_bracket : Formalism.FourierDecayAlt.PN.FirstBracket := HermitianFormNormLemmas.D1.t_FirstBracket
-
-theorem second_bracket : Formalism.FourierDecayAlt.PN.SecondBracket := HermitianFormNormLemmas.D2.t_SecondBracket
-
-theorem line_from_classes : Formalism.FourierDecayAlt.PN.RowFromClasses := HermitianFormNormLemmas.E.t_RowFromClasses
-
-theorem line_norm_abstract : Formalism.FourierDecayAlt.PN.RowNGAbstract := HermitianFormNormLemmas.E.t_RowNGAbstract
-
-theorem exponent_sum : Formalism.FourierDecayAlt.PN.ExponentSum := HermitianFormNormLemmas.D1.t_ExponentSum
-
-theorem norm_numbers : Formalism.FourierDecayAlt.PN.NGNumbers := HermitianFormNormLemmas.D3.t_NGNumbers
-
-theorem line_norm_joint : Formalism.FourierDecayAlt.PN.RowNGJoint := HermitianFormNormLemmas.F.t_RowNGJoint
 
 end Formalism.FourierDecayAlt.P

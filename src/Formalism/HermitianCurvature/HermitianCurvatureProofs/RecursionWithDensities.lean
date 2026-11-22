@@ -21,10 +21,6 @@ end gen
 
 end Formalism.FourierDecayAlt.P.RecursionWithDensities.A1
 
-namespace Formalism.FourierDecayAlt.P.RecursionWithDensities.A2
-
-end Formalism.FourierDecayAlt.P.RecursionWithDensities.A2
-
 namespace Formalism.FourierDecayAlt.P.RecursionWithDensities.B1
 
 open Finset Formalism.FourierDecayAlt.TB Formalism.FourierDecayAlt.TB.Data Formalism.FourierDecayAlt.TC
@@ -532,16 +528,6 @@ namespace Formalism.FourierDecayAlt.P
 
 open RecursionWithDensities
 
-theorem domination_minimum_of_text : Formalism.FourierDecayAlt.TC.DomMinOfText := RecursionWithDensities.B1.domMinOfText
-
 theorem theorem_a_after : Formalism.FourierDecayAlt.TC.TheoremAAfter := RecursionWithDensities.B2.theoremAAfterOfSteps RecursionWithDensities.B1.oneLevelAfter limitStep joint_theorem_A'
-
-theorem density_le_two : Formalism.FourierDecayAlt.TC.DensLeTwo := RecursionWithDensities.J1.t_DensLeTwo
-
-theorem density_size : Formalism.FourierDecayAlt.TC.DensSize := RecursionWithDensities.J1.t_DensSize
-
-theorem sum_bound_max : Formalism.FourierDecayAlt.TC.SumBoundMax := RecursionWithDensities.J1.t_SumBoundMax
-
-theorem recursion_with_densities : Formalism.FourierDecayAlt.TC.RecursionWithDens := RecursionWithDensities.J1.t_RecursionWithDens
 
 end Formalism.FourierDecayAlt.P

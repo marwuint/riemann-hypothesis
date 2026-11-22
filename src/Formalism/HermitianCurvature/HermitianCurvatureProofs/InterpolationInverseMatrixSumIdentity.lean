@@ -771,9 +771,6 @@ end Formalism.FourierDecayAlt.P.NFx3
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem normal_form_from_module : Formalism.FourierDecayAlt.NF.NormalFormFromModuleOfParts := by
-  exact NFx3.normalFormFromModuleOfParts
-
 theorem actual_hypotheses_of_parts : Formalism.FourierDecayAlt.NF.ActualSHypOfParts := by
   exact NFx3.actualSHypOfParts
 

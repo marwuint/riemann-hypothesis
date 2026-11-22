@@ -39,5 +39,3 @@ theorem qnMinorLeft : Formalism.FourierDecayAlt.Q.QMinorLeftH := by
     obtain ⟨k, rfl⟩ := List.mem_ofFn.mp hT
     exact qdTop_eabH_comp_mul_left H h _ _ _ f'
   rw [foldr_apply_comp_mul_left_of_forall_mem h _ hL f]
-
-theorem quantum_minor_left : Formalism.FourierDecayAlt.Q.QMinorLeftH := qnMinorLeft

@@ -9,9 +9,6 @@ namespace Formalism.FourierDecayAlt.P.CutSE.JSW
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5
 
-theorem fderiv_apply_sm {g : ℂ → ℂ} {U : Set ℂ} (hU : IsOpen U) (hg : ContDiffOn ℝ ∞ g U) (v : ℂ) :
-    ContDiffOn ℝ ∞ (fun ζ => fderiv ℝ g ζ v) U := Formalism.FourierDecayAlt.P.NFx4.NO.fderiv_apply_smooth hU hg v
-
 theorem dZ_sm {g : ℂ → ℂ} {U : Set ℂ} (hU : IsOpen U) (hg : ContDiffOn ℝ ∞ g U) :
     ContDiffOn ℝ ∞ (NF.dZ g) U := Formalism.FourierDecayAlt.P.NFx4.NO.dZ_smooth hU hg
 

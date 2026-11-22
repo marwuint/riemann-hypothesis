@@ -3335,8 +3335,6 @@ namespace Formalism.FourierDecayAlt.P.MAx1
 
 theorem qQRTTEntries : QQRTTEntries := ModelAlgebraRelations.entries_of sSNorm sSComm sSMixed nabSS curvature
 
-theorem qQRTTOfEntries : QQRTTOfEntries := ModelAlgebraRelations.PC.ofEntries
-
 theorem qQRTT : QQRTT := Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.PC.ofEntries qQRTTEntries
 
 end Formalism.FourierDecayAlt.P.MAx1
@@ -5339,8 +5337,6 @@ theorem startIsStartAssemble : StartIsStartAssemble := by
   intro hH hR hD P D _ hP l
   exact WeylSymmetry.isStart_smul (QQr P D) (qC P) (sgn P l) (WeylSymmetry.sgn_sq P D l) (WeylSymmetry.sgn_star P D l)
     ⟨fun Y hY => by rw [hH P D hP Y, hY], hR P D hP, hD P D hP, WeylSymmetry.qC_real P D⟩
-
-theorem startAssemble : StartAssemble := WeylSymmetry.startOK_of
 
 theorem sitesOKM : SitesOKM := by
   intro P D _ l

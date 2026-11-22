@@ -525,10 +525,6 @@ theorem coordinate_sizes_of_hypotheses (hSM : SliceMem) (hU1 : BigCellCoordinate
 
 end Formalism.FourierDecayAlt.P.Ux6
 
-theorem Formalism.FourierDecayAlt.P.coordinate_sizes_of_parts : Formalism.FourierDecayAlt.U.CoordinateSizesFromComponents := Formalism.FourierDecayAlt.P.Ux6.coordinate_sizes_of_parts_holds
-
-theorem Formalism.FourierDecayAlt.P.norm_decay_of_coordinate_sizes : Formalism.FourierDecayAlt.U.CoordinateDecayOfSizes := Formalism.FourierDecayAlt.P.Ux6.norm_decay_of_coordinate_sizes_holds
-
 theorem Formalism.FourierDecayAlt.P.weight_integrability : Formalism.FourierDecayAlt.U.WeightIntegrable := Formalism.FourierDecayAlt.P.Ux6.weight_integrability_holds
 
 theorem Formalism.FourierDecayAlt.P.integrability_top_level : Formalism.FourierDecayAlt.U.IntTop := Formalism.FourierDecayAlt.P.Ux6.intTop

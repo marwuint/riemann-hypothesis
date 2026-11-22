@@ -477,12 +477,4 @@ namespace Formalism.FourierDecayAlt.P
 
 theorem scaling_bound : Formalism.FourierDecayAlt.J.ScaleOk := Jx8.t_ScaleOk Jx8.t_DiagScale
 
-theorem phaseOk_statement : Formalism.FourierDecayAlt.J.PhaseOk := Jx8.t_PhaseOk
-
-theorem outside_systems_bound : Formalism.FourierDecayAlt.J.OutsideSysOk := Jx8.t_OutsideSysOk
-
-theorem outside_domination : Formalism.FourierDecayAlt.J.OutsideDomination := Jx8.t_OutsideDomination
-
-theorem uniform_majorant_on : Formalism.FourierDecayAlt.J.UniformMajorantOn := Jx8.t_UniformMajorantOn
-
 end Formalism.FourierDecayAlt.P

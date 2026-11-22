@@ -1150,10 +1150,6 @@ theorem pair_split_alt : Formalism.FourierDecayAlt.PB.PairSplit := GrowthPolynom
 
 theorem subfamilyAlt : Formalism.FourierDecayAlt.PB.SubFamily := GrowthPolynomialOperator.t_SubFamily
 
-theorem loops_give_series : Formalism.FourierDecayAlt.PB.LoopsGiveRows := GrowthPolynomialOperator.t_LoopsGiveRows
-
 theorem pair_bound_abstract : Formalism.FourierDecayAlt.PB.PairBoundAbstract := GrowthPolynomialOperator.t_PairBoundAbstract
-
-theorem loops_joint : Formalism.FourierDecayAlt.PB.LoopsJoint := GrowthPolynomialOperator.t_LoopsJoint
 
 end Formalism.FourierDecayAlt.P

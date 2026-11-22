@@ -62,29 +62,8 @@ import GroundTheory.AutomorphicForms.Anisotropic
 
 namespace PositivityTheory.Prw
 
-theorem idealInvariantsOneOrbitSt_holds : GlobalTheory.Published.IdealInvariantsOneOrbitSt :=
-  GlobalTheory.CompanionTheory.CM.idealInvariantsOneOrbit
-
-theorem discreteSeriesHermitianUnique_holds : GlobalTheory.Published.DiscreteSeriesHermitianUnique :=
-  GlobalTheory.CompanionTheory.Front.discreteSeriesHermitianUnique
-
-theorem discreteSeriesLowestKType_holds : GlobalTheory.Published.DiscreteSeriesLowestKType :=
-  GlobalTheory.CompanionTheory.Glob.discreteSeriesLowestKType
-
 theorem bernsteinZelevinskyFiniteness_holds : GlobalTheory.Published.BernsteinZelevinskyFiniteness :=
   GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness
-
-theorem partialZetaFunctionalEquation_holds : GlobalTheory.Published.PartialZetaFunctionalEquation :=
-  GlobalTheory.CompanionTheory.Hypotheses₂.partialZetaFunctionalEquation
-
-theorem moyPrasadJacquetIso_holds : GlobalTheory.Published.MoyPrasadJacquetIso :=
-  GlobalTheory.CompanionTheory.MoyPrasadTop.moyPrasadJacquetIso
-
-theorem weberRayFieldSt_holds : GlobalTheory.Published.WeberRayFieldSt :=
-  GlobalTheory.CompanionTheory.WeberRay.weberRayField
-
-theorem ellipticMainTheoremCM_holds : GlobalTheory.Published.EllipticMainTheoremCM :=
-  GlobalTheory.CompanionTheory.Hypotheses₂.ellipticMainTheoremCM
 
 theorem dixmierMalliavinFactorisation_holds : GlobalTheory.Published.DixmierMalliavinFactorisation :=
   PositivityTheory.DM.dixmierMalliavinFactorisation_holds

@@ -1749,10 +1749,3 @@ theorem chainFromStep : ChainFromStep := by
 end
 
 end Formalism.FourierDecayAlt.P.Qx6
-
-namespace Formalism.FourierDecayAlt.P
-
-theorem chain_recursion_from_single_descent : Formalism.FourierDecayAlt.Q.ChainFromStep := by
-  exact Qx6.chainFromStep
-
-end Formalism.FourierDecayAlt.P

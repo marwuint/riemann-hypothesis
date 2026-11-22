@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmColExp
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmRowExp
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmSkip
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmStar
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmIndep
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuarticIndependence.QmIndep
 import Mathlib
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnCovLin
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnCovDet
@@ -15,9 +15,9 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnEabGl
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnEabPres
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnMinorLeft
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnRdSkew
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnRuleRight
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RightSingleRule.EllSingleZero
 import Formalism.FormalDegreeBessel.FinalWR
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.WeylLevelElementProperties
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeylConjugationFixedColumn.ReflectionScalarDualIsotropic
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnYLeibniz
 
 theorem Formalism.FourierDecayAlt.P.expansion_first_column : Formalism.FourierDecayAlt.Q.ExpFirstCol := PI.QmColExpWork.expFirstCol

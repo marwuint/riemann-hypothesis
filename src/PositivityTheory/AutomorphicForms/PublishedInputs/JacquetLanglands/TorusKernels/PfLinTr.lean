@@ -139,5 +139,3 @@ theorem main : UpperTheory.Esk.LinTr := by
   simp [LinearMap.toMatrix_apply, Module.Basis.coord_apply]
 
 end UpperTheory.Esk.LinearTraceLemmas
-
-theorem UpperTheory.Esk.pf_LinTr : UpperTheory.Esk.LinTr := UpperTheory.Esk.LinearTraceLemmas.main

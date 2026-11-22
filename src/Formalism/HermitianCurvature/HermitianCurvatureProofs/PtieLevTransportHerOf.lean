@@ -376,10 +376,3 @@ theorem levTransportHer_of (hJ : PTie.JFScale) (hS : PTie.SliceStepHer) : PTie.L
   · exact arel_RRw (fun Y => hqq n hn Y) w
 
 end Formalism.FourierDecayAlt.P.PTieH
-
-namespace Formalism.FourierDecayAlt.P
-
-theorem ptie_levTransportHer_of : Formalism.FourierDecayAlt.P.PTie.JFScale → Formalism.FourierDecayAlt.P.PTie.SliceStepHer →
-    Formalism.FourierDecayAlt.P.PTie.LevTransportHer := PTieH.levTransportHer_of
-
-end Formalism.FourierDecayAlt.P

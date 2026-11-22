@@ -247,18 +247,4 @@ theorem densChain : DensChain := by
 
 end Formalism.FourierDecayAlt.P.DensitySumsAndDomination
 
-namespace Formalism.FourierDecayAlt.P
-
-theorem domination_scale_top : Formalism.FourierDecayAlt.TC.DomScaleTop := DensitySumsAndDomination.domScaleTop
-
-theorem recursion_hypothesis_scale_top : Formalism.FourierDecayAlt.TC.RecHypScaleTop := DensitySumsAndDomination.recHypScaleTop
-
-theorem domination_after_of_local : Formalism.FourierDecayAlt.TC.DomAfterOfLocal := DensitySumsAndDomination.domAfterOfLocal
-
-theorem density_sum : Formalism.FourierDecayAlt.TC.DensSum := DensitySumsAndDomination.densSum
-
-theorem density_chain : Formalism.FourierDecayAlt.TC.DensChain := DensitySumsAndDomination.densChain
-
-end Formalism.FourierDecayAlt.P
-
 end

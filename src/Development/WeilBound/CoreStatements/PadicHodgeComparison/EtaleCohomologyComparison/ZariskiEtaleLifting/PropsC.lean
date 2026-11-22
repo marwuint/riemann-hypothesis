@@ -75,6 +75,3 @@ theorem CrystallineSemistableComparison.B.P.ch_one : ∀ {l : ℕ} [Fact l.Prime
 
 theorem CrystallineSemistableComparison.B.P.ch_cmp : ∀ {l : ℕ} [Fact l.Prime], ∀ {O : Type} [CommRing O] (F : Fn O) (κ : O →+* OC l) {m n : ℕ} (h : n ≤ m) (j : ℕ) (x : Hc F κ false m j), redHc F κ true h j ((cmpMor F κ m).pull j x) = (cmpMor F κ n).pull j (redHc F κ false h j x) :=
   @GlobalTheory.CompanionTheory.CrisCmp.main
-
-theorem CrystallineSemistableComparison.B.P.firstChern_compatible : ∀ (l : ℕ) [Fact l.Prime], FirstChernCompatible l :=
-  @GlobalTheory.CompanionTheory.FirstChernComparison.main

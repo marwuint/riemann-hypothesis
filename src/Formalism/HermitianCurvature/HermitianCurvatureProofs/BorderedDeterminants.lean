@@ -295,7 +295,4 @@ namespace Formalism.FourierDecayAlt.P
 
 theorem submodule_relations : Qr.SubRel := BorderedDeterminants.subRel
 theorem border_first : Qr.BorderFirst := BorderedDeterminants.borderFirst
-theorem qr_raiseNZ_of : Qr.CovUp → Qr.RaiseNZ := BorderedDeterminants.raiseNZ_of
-theorem qr_lowerNZ_of : Qr.VecDown → Qr.LowerNZ := BorderedDeterminants.lowerNZ_of
-
 end Formalism.FourierDecayAlt.P

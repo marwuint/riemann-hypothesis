@@ -854,6 +854,4 @@ namespace Formalism.FourierDecayAlt.P
 
 theorem quantum_determinant_from_rtt : Formalism.FourierDecayAlt.Q.QdetFromRTT := Qx7.qdet_main
 
-theorem rtt_upper_relations_from_descent : Formalism.FourierDecayAlt.Q.RTTUpperFromSteps := Qx7.upper_from_steps
-
 end Formalism.FourierDecayAlt.P

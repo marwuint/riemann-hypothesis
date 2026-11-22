@@ -1,6 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ImportsTerTail
-import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XSJoinvertdiv
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinJoinVertDiv
 
 namespace GlobalTheory.CompanionTheory.Heights
 

@@ -235,9 +235,3 @@ lemma gram_diag (D : Data E W) (hG : D.GramPSD) (ε : ℝ) (hε : 0 < ε) (i : �
   exact (Complex.le_def.1 h2).1
 
 end Formalism.FourierDecayAlt.P.OneLevelCoefficients
-
-namespace Formalism.FourierDecayAlt.P
-
-theorem levelInequalityOfSteps : Formalism.FourierDecayAlt.TB.OneLevelOfSteps := OneLevelCoefficients.oneLevel_of_steps
-
-end Formalism.FourierDecayAlt.P

@@ -10,9 +10,10 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.TermAttrConst
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.IdCellInS
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.InSClassConst
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.InSRelevant
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.PairCorankPos
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ScalEquivGen
 import Mathlib
+import Formalism.PeriodIntegrals.PairCorankPos
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PairCorankPositivity.FinrankOrthAddLe
+import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ScalEquivGen
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarEquivalenceGenerators.ScalarEquivOfGen
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.BetaModX
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ScalRelRepFree
@@ -21,8 +22,9 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.GGCardUni
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.GGConvScalar
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.GGGenRatio
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.GGMatBound
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.GGMirBound
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.WhitFunctDual
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MirabolicBound.MirabolicBound
+import Formalism.PeriodIntegrals.WhitFunctDual
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WhittakerFunctionalDual.StableOfIrreducible
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.CdHaarScale
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SplitRow
 import Formalism.PeriodIntegrals.ExplicitFormulaCounts.BetaIndep
@@ -59,7 +61,6 @@ theorem ScalarEquivG_holds : Formalism.L2.SG.Corank.ScalarEquivG := PI.UnitaryGr
 
 theorem GelfandGraevMultOne_holds : Formalism.L2.SG.GGMirabolic.GelfandGraevMultOne := PI.WhitFunctDualWork.whitFunctDual_main Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.gelfand_graev_multiplicity_one
 theorem MirabolicBound_holds : Formalism.L2.SG.GGMirabolic.MirabolicBound := PI.GGMirBoundW.mirabolicBound
-theorem GGMatrixBoundOfLit_holds : Formalism.L2.SG.GGMirabolic.GGMatrixBoundOfLit := gg_matrix_bound
 theorem GGMatrixBound_holds : Formalism.L2.SG.GGMirabolic.GGMatrixBound := gg_matrix_bound GelfandGraevMultOne_holds MirabolicBound_holds
 theorem TermsGGBound_holds : Formalism.L2.SG.GGMirabolic.TermsGGBound :=
   Formalism.L2.SG.GGMirabolic.termsGGBound_of_matrix GGMatrixBound_holds

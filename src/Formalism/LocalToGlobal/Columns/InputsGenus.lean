@@ -9,8 +9,6 @@ namespace Formalism.L2.Col
 
 open NumberField
 
-theorem unimodGenusLocAll_holds : UnimodGenusLocAll := unimodular_genus_unique
-
 theorem unimodGenusLoc_holds (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) : UnimodGenusLoc E n := unimodular_genus_unique E n
 
 theorem unimodGenus_holds {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]

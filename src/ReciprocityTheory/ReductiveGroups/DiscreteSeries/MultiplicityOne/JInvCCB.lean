@@ -223,9 +223,6 @@ section Linfty
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra Matrix.linftyOpNormedSpace
 
-lemma hasDerivAt_exp_linfty {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
-    HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := Formalism.REAL.hasDerivAt_matrix_exp_smul_at_zero X
-
 end Linfty
 
 lemma slope_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :

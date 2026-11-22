@@ -2,8 +2,10 @@ import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.Unit
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AreaLat
 import Mathlib
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SigmaStarUniq
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.DiscrNe
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SigmaStarEx
+import Formalism.PeriodIntegrals.DiscrNe
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.NonzeroDiscriminants.DiscMain
+import Formalism.PeriodIntegrals.SigmaStarEx
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ThetaSeriesExistence.SigmaStarEx
 
 namespace Formalism.MainNotions.Ext
 

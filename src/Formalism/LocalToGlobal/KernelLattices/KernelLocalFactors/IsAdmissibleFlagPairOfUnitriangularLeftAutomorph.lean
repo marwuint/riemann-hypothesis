@@ -20,7 +20,6 @@ open Formalism.MainNotions.GlobalTheoryTheory.Inhab (mem_stdL single_mem_stdL)
 
 theorem kInterInv : InterInv := Formalism.L2.Th1.H.interInv
 theorem kInterTh : InterTh := InterTh_of semicharacterHom heisenbergAnalytic
-theorem kLineTransport : LineTransport := LineTransport_of kInterInv kInterTh
 theorem kThetaVector : ThetaVector := Formalism.L2.Th1.H.thetaVector
 
 theorem formV_apply (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) (z w : n → Fin N' → Fin N → ℂ) :
@@ -721,13 +720,5 @@ theorem Base.stdOK_of' {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ
   B.stdOK_of half B.isomOK betaStd betaSemi selfDual idx₁ idx₂
 
 end Isom
-
-namespace Test
-
-end Test
-
-namespace Test
-
-end Test
 
 end Formalism.L2.Ker

@@ -277,8 +277,6 @@ end Formalism.FourierDecayAlt.P.Jx1
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem psd_agree : Formalism.FourierDecayAlt.J.PSDAgree := Jx1.t_PSDAgree
-
 theorem box_sum_lattice : Formalism.FourierDecayAlt.J.BoxSumLattice := Jx1.t_BoxSumLattice
 
 end Formalism.FourierDecayAlt.P

@@ -14,8 +14,4 @@ def GamAt {D : D7} (T : Top D) : Prop :=
       Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) x - x = (T.Q.l.M : D.host.E) • y) →
     γ ∈ ((T.U j σ).X k).Γ
 
-def HalfDiffNormSt : Prop :=
-  ∀ D : D7, 0 < Ideal.absNorm D.host.𝔟 ∧
-    2 * Real.log (Ideal.absNorm D.host.𝔟 : ℝ) ≤ Real.log |((NumberField.discr D.host.E : ℤ) : ℝ)|
-
 end ReciprocityTheory.ChartRestriction.G.PullbackSections

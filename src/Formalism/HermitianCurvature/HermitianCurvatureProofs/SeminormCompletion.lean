@@ -387,8 +387,4 @@ namespace Formalism.FourierDecayAlt.P
 
 theorem compactly_supported_monotone : Formalism.FourierDecayAlt.U.CCMono := Ux8.ccMono
 theorem star_projection : Formalism.FourierDecayAlt.U.StarPi := Ux8.starPi
-theorem phi_support_level_of_parts : Formalism.FourierDecayAlt.U.PhiSuppGOfParts := Ux8.phiSuppGOfParts
-theorem corollary_u2_of_parts : Formalism.FourierDecayAlt.U.GermExpansionHypothesisFromComponents := Ux8.corollary_u2_of_parts_holds
-theorem germ_expansion_of_parts : Formalism.FourierDecayAlt.U.UseGermOfParts := Ux8.useGermOfParts
-theorem germ_top_level_of_parts : Formalism.FourierDecayAlt.U.UseGermTopOfParts := Ux8.useGermTopOfParts
 end Formalism.FourierDecayAlt.P

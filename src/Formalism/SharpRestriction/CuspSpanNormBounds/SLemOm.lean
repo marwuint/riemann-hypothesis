@@ -3,7 +3,8 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.RootMeasBig
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BoundarySlices.WbPartBvecEI
 import Formalism.FormalDegreeBessel.FinalG
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.StabBig
+import Formalism.PeriodIntegrals.StabBig
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LargeStabilizerInverse.GLeftInv
 
 namespace Formalism.MainNotions.S.Lem
 
