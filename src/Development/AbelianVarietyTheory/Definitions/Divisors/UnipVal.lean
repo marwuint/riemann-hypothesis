@@ -61,8 +61,6 @@ def weyl (ν : Type) [Fintype ν] [DecidableEq ν] : UG c (stdJ ν E) :=
     rw [h, stdJ_mul_stdJ]
     simp⟩
 
-theorem weyl_val : ((weyl c ν : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E) = stdJ ν E := rfl
-
 def unip (b : Matrix ν ν E) (hb : (b.map c)ᵀ = b) : UG c (stdJ ν E) :=
   ⟨⟨fromBlocks 1 b 0 1, fromBlocks 1 (-b) 0 1, by simp [fromBlocks_multiply], by simp [fromBlocks_multiply]⟩, by
     rw [mem_UG_iff]

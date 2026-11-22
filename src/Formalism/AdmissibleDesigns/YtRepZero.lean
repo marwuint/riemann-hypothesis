@@ -100,10 +100,6 @@ def ytG [Module.Finite O A] [NoZeroSMulDivisors O A] (hfd : FiniteDimensional LL
   haveI := nzsd_prod (O := O) (N := ↥(Ymod r χ E))
   mkYt heO eG.symm.toMonoidHom Qp (resRep (ytRep O r χ E) Dw) (fun _ _ => rfl) hcont
 
-theorem ytG_ρ [Module.Finite O A] [NoZeroSMulDivisors O A] (hfd : FiniteDimensional LL (TrV e (MK (O := O) (↥(Ymod r χ E) × O))))
-    (hcont : ∀ x, Continuous fun g => ytVG (e := e) r χ E Dw eG g x) :
-    (ytG Qp heO r χ E Dw eG hfd hcont).ρ = ytVG (e := e) r χ E Dw eG := rfl
-
 theorem ytG_psi [Module.Finite O A] [NoZeroSMulDivisors O A] (hfd : FiniteDimensional LL (TrV e (MK (O := O) (↥(Ymod r χ E) × O))))
     (hcont : ∀ x, Continuous fun g => ytVG (e := e) r χ E Dw eG g x)
     {M : Type} [AddCommGroup M] [Module A M] [Module O M] [SMulCommClass A O M] {e' : ℕ}

@@ -266,10 +266,6 @@ instance (R : Type) [CommRing R] (p : ℕ) [hp : Fact p.Prime] : Algebra (PowerS
 section Basis
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime]
 
-theorem normOp_eq (h : PowerSeries R) : normOp p h = Algebra.norm (PowerSeries R) (S := Up R p) h := rfl
-
-theorem trOp_eq (h : PowerSeries R) : trOp p h = Algebra.trace (PowerSeries R) (Up R p) h := rfl
-
 variable [IsAdicComplete (Ideal.span {(p : R)}) R]
 
 def basis (hu : (p : R) ∈ nonunits R) : Module.Basis (Fin p) (PowerSeries R) (Up R p) :=

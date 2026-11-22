@@ -19,6 +19,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 def conjV (n : ℕ) : V n ≃ₗᵢ[ℝ] V n := LinearIsometryEquiv.piLpCongrRight 2 fun _ => Complex.conjLIE
 
-theorem conjV_apply (n : ℕ) (v : V n) (a : Fin n) : conjV n v a = starRingEnd ℂ (v a) := rfl
-
 end GlobalTheory.ShFam

@@ -76,12 +76,6 @@ def Pair.s0 (p : Pair D u u' F0 what₂) : ℕ := Lat.s0 p.lam (lf D F0) p.fst.1
 def Pair.scalarPair (p : Pair D u u' F0 what₂) : Prop :=
   p.s0 = 1 ∧ IsScalar p.lam (lf D F0) p.fst.1 p.snd.1 p.beta
 
-def Pair.isScalar (p : Pair D u u' F0 what₂) : Prop :=
-  IsScalar p.lam (lf D F0) p.fst.1 p.snd.1 p.beta
-
-theorem Pair.scalarPair_iff (p : Pair D u u' F0 what₂) : p.scalarPair ↔ p.s0 = 1 ∧ p.isScalar :=
-  Iff.rfl
-
 end PairAttr
 
 variable (D)

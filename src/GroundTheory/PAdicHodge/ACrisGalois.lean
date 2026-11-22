@@ -170,10 +170,6 @@ instance instMulSemiringActionGalZero :
   smul_one σ := map_one (galZero σ)
   smul_mul σ := map_mul (galZero σ)
 
-theorem gal_smul_zero_def (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) :
-    σ • y = galZero σ y :=
-  rfl
-
 theorem coe_gal_smul_zero (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) :
     ((σ • y : ACrisZero ℂ_[p] p) : 𝔸) = galAway σ y :=
   rfl

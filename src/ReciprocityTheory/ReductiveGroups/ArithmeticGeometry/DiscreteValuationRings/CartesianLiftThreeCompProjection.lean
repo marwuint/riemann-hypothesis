@@ -40,8 +40,6 @@ lemma lf_pull (h : T' ⟶ T) (F : (T ⟶ A) →₀ ℤ) :
   rfl
 
 lemma padd_eq_mul (a b : T ⟶ A) : padd A a b = a * b := rfl
-lemma pzero_eq_one : pzero A T = 1 := rfl
-
 lemma comp_psum {n : ℕ} (h : T' ⟶ T) (x : Fin n → (T ⟶ A)) (I : Finset (Fin n)) :
     h ≫ psum A x I = psum A (fun k => h ≫ x k) I := by
   unfold psum

@@ -47,8 +47,6 @@ def thA : Thick L ⥤ CommAlgCat.{0} b.R where
   map_id _ := rfl
   map_comp _ _ := rfl
 
-theorem modF_thA : CH.modF (thA L) = O L := rfl
-
 def thP : PDF b.R (Thick L) where
   A := thA L
   J := ⟨fun T => T.J, fun φ _ hx => φ.hle hx⟩
@@ -112,9 +110,6 @@ def nlFun (γ : DividedPowers I) (p : ℕ) (X : Scheme.{0}) (q : X ⟶ Spec (Com
   g_comp i := i.elim
   prod_f {_ _ y} _ := by simp
   prod_g _ _ := by simp
-
-theorem smFun_eq {K : Type} [CommRing K] (X : Scheme.{0}) (q : X ⟶ Spec (CommRingCat.of K)) :
-    smFun X q = nlFun (dividedPowersBot K) 0 X q (Ideal.Quotient.mk ⊥) := rfl
 
 variable {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 

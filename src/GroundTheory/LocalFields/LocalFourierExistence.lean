@@ -34,9 +34,6 @@ theorem ratAddCircleToReal_injective : Function.Injective ratAddCircleToReal := 
 def ratCircleChar : AddChar (AddCircle (1 : ℚ)) Circle :=
   (AddCircle.toCircle_addChar (T := 1)).compAddMonoidHom ratAddCircleToReal
 
-theorem ratCircleChar_apply (x : AddCircle (1 : ℚ)) :
-    ratCircleChar x = AddCircle.toCircle (ratAddCircleToReal x) := rfl
-
 theorem ratCircleChar_injective : Function.Injective ratCircleChar :=
   (AddCircle.injective_toCircle one_ne_zero).comp ratAddCircleToReal_injective
 

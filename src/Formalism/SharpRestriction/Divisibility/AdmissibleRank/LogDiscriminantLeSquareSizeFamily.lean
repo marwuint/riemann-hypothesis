@@ -32,17 +32,9 @@ structure JetSit (D : D7) (P : ModuliIntegralCharts.Prov D) (l q DF : ℕ) where
   hsg : (P.loc w l).SymLift y ((P.loc w l).latStd nW) q sg
   ev : (P.loc w l).Jet y ((P.loc w l).latStd nW) q DF →ₗ[((P.loc w l).fld y).C] ((P.loc w l).fld y).C
 
-namespace JetSit
-
-end JetSit
-
 section SizesF
 
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
-
-def CsFn (l : List ℝ) : ℝ := max (l.getD 6 0 + 1) (max (l.getD 13 0) (max (l.getD 1 0) 0))
-
-theorem CsFn_cOut : CsFn Fm.cOut = max (Fm.CYL + 1) (max Fm.CTu (max Fm.Cc 0)) := rfl
 
 end SizesF
 
@@ -53,4 +45,3 @@ end
 namespace Formalism.MainNotions.DIV
 
 end Formalism.MainNotions.DIV
-

@@ -169,8 +169,6 @@ theorem inK_oK (c : ↥(OL K)) : inK K (oK K c) = toB K (inI K c) := IsLocalizat
 
 def inP : BcrisP l →+* BK K := plusLift ((toB K).comp (inC K)) (isUnit_l K)
 
-theorem inP_algebraMap (a : Per.Acris l) : inP K (algebraMap _ _ a) = toB K (inC K a) := plusLift_alg _ _ a
-
 variable {K}
 
 theorem ringHom_extK {S : Type*} [CommRing S] {u v : ↥K.1 →+* S} (h : ∀ c, u (oK K c) = v (oK K c)) : u = v :=
@@ -201,15 +199,6 @@ scoped instance algWP : Algebra (W0 K) (BcrisP l) :=
 scoped instance algWK : Algebra (W0 K) ↥K.1 := ((oK K).comp (thetaW (fK K) K).toRingHom).toAlgebra
 
 abbrev PK : Type := BcrisP l ⊗[W0 K] ↥K.1
-
-def ofPK : PK K →+* BK K :=
-  letI : Algebra (W0 K) (BK K) := ((inP K).comp (algebraMap (W0 K) (BcrisP l))).toAlgebra
-  (Algebra.TensorProduct.productMap (R := W0 K) { toRingHom := inP K, commutes' := fun _ => rfl }
-    { toRingHom := inK K
-      commutes' := fun w => ((inK_oK K _).trans (congrArg (toB K) (inC_wA K w).symm)).trans (inP_algebraMap K _).symm
-    }).toRingHom
-
-theorem ofPK_tmul (b : BcrisP l) (c : ↥K.1) : ofPK K (b ⊗ₜ[W0 K] c) = inP K b * inK K c := rfl
 
 variable {K}
 

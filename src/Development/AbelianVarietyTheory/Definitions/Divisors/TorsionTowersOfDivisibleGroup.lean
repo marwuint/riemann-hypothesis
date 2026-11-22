@@ -220,10 +220,6 @@ theorem mulBy_y (k : ℕ) :
   rw [pts_apply, pts_apply, ← comp_mulBy_pts, ofConv_toConv, spOver_id, Category.id_comp] at h
   exact h
 
-theorem mulP_y : spOver (G.mulP n : G.A n →ₐ[O] G.A (n + 1)) ≫ t.y n = t.y (n + 1) ^ p := by
-  rw [← t.res n, ← Category.assoc, spOver_comp, ← t.mulBy_y, ← G.mulP_comp_res]
-  rfl
-
 end Basic
 
 section Semi

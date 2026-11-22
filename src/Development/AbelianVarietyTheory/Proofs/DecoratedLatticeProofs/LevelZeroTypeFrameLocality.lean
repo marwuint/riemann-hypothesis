@@ -26,8 +26,4 @@ namespace GlobalTheory.ReadAtBase
 theorem bc_apply {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →+* B) (g : GL (Fin n) A) (i j : Fin n) :
     (Formalism.UG.bc f g).val i j = f (g.val i j) := rfl
 
-theorem intGL_apply {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
-    (w : GL (Fin n) (Formalism.L2.Herm.intAf F E)) (i j : Fin n) :
-    (intGL F E n w).val i j = (w.val i j : E ⊗[F] Formalism.L2.Herm.Af F) := rfl
 end GlobalTheory.ReadAtBase
-

@@ -147,9 +147,6 @@ theorem Lat.not_inFibre_of_coprime (p : Cpt ξ) {q q' : ℕ} (h : q.Coprime q') 
   · exact h1 (key _ (isUnit_of_mul_isUnit_right h'))
   · exact h2 (key _ (isUnit_of_mul_isUnit_right h'))
 
-theorem Lat.mem_predualIn_iff {L : Lat ξ (Module.Dual Ω E)} {V : Submodule Ω E} {p : Cpt ξ} {v : E} :
-    v ∈ L.predualIn V p ↔ v ∈ V ∧ ∀ w ∈ L p, w v ∈ regAt ξ p := Iff.rfl
-
 end API
 
 end GlobalTheory.CompanionTheory.Ar

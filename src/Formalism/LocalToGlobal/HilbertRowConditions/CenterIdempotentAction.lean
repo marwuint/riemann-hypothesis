@@ -18,9 +18,6 @@ def rOp (P : Subgroup Gp) (ψ : P →* D.what₂.LLˣ) (t : T) (a : MonoidAlgebr
     Matrix (Fin (rDim D A P ψ t)) (Fin (rDim D A P ψ t)) D.what₂.LL :=
   (A.fam.R t).S.lvlOp (A.fam.R t).r (A.fam.lvl P ψ).P (A.fam.lvl P ψ).ψ a
 
-theorem rE_eq_rOp (P : Subgroup Gp) (ψ : P →* D.what₂.LLˣ) (t : T) :
-    rE D A P ψ t = rOp D A P ψ t (idemOf A.X) := rfl
-
 def CenTie {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]
     (X : RowSide D EE) (P : Subgroup Gp) (ψ : P →* D.what₂.LLˣ) (eG : Gp ≃* G0g D.nd) (tup : T → D.what₂.Tup)
     (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)) : Prop :=

@@ -40,31 +40,6 @@ variable {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : Taylor
 
 include h5 h2 he r ψ e c hc hg hpg Ch hr1 hr2 hfin in
 
-def OrthTie : Prop :=
-  (∃ co, IsOrthCo (D.sp.cm.sig : D.host.E →+* D.host.E) D.sp.gram0 co) ∧
-    ∀ i, i < D.R.m → ∃ co, IsOrthCo (D.sp.cm.sig : D.host.E →+* D.host.E) (D.sp.X (i + 1)).gram co
-
-include h5 h2 he r ψ e c hc hg hpg Ch hr1 hr2 hfin in
-
-def ATie : Prop :=
-  compan (sp := D.sp) D.sp.gram0 a Lc.Lb = D.sp.crdLat0 (D.sp.X 0).L0 ∧
-    ∀ (i : ℕ) (hi : i < D.R.m) (β : Cb i hi), compan (sp := D.sp) (D.sp.X (i + 1)).gram a (Sx i hi β).lev.Lb =
-      Formalism.L2.Herm.crdLat (D.sp.X (i + 1)) (D.sp.X (i + 1)).L0
-
-def MuTie (muT : ℕ → (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)ˣ → ℂ) : Prop :=
-  ∀ j, muT j 1 = 1 ∧ (∀ x y, muT j (x * y) = muT j x * muT j y) ∧ ∀ x, muT j x ≠ 0 ∧ muT j x ∈ TaylorLogMetric.Qbar
-
-include h5 h2 he r ψ e c hc hg hpg Ch hr1 hr2 hfin in
-
-def baseComp : ∀ j, (sysRec D u h L h5 h2 he r Lc I ψ e c hc hg hpg Cb Sx Ch hr1 hr2 hfin).Lt j → Submodule (𝓞 D.host.E) (Fin (((sysRec D u h L h5 h2 he r Lc I ψ e c hc hg hpg Cb Sx Ch hr1 hr2 hfin).Pj j).m + 1) → D.host.E)
-  | 0, _ => (compan (sp := D.sp) D.sp.gram0 a Lc.Lb).map
-      (((reE (E := D.host.E) (n := ((sysRec D u h L h5 h2 he r Lc I ψ e c hc hg hpg Cb Sx Ch hr1 hr2 hfin).Pj 0).m + 1) (by exact (k_pred D.R).symm) : _ ≃ₗ[D.host.E] _) : _ →ₗ[D.host.E] _).restrictScalars (𝓞 D.host.E))
-  | i + 1, La => (compan (sp := D.sp) (D.sp.X (i + 1)).gram a (Sx i La.1.1 La.1.2.1).lev.Lb).map
-      (((reE (E := D.host.E) (n := ((sysRec D u h L h5 h2 he r Lc I ψ e c hc hg hpg Cb Sx Ch hr1 hr2 hfin).Pj (i + 1)).m + 1) (by exact (rank_step D i La.1.1).symm) : _ ≃ₗ[D.host.E] _) :
-        _ →ₗ[D.host.E] _).restrictScalars (𝓞 D.host.E))
-
-include h5 h2 he r ψ e c hc hg hpg Ch hr1 hr2 hfin in
-
 def LamPos : Prop :=
   ∀ (τ : D.what₂.Tau) (x : D.host.E) (hx : TaylorLogMetric.embT D τ x ∈ TaylorLogMetric.Qbar),
     lam ⟨TaylorLogMetric.embT D τ x, hx⟩ =

@@ -239,8 +239,6 @@ def LJ : (J k r → ℝ) →ₗ[ℝ] Mx k r where
   map_add' y y' := by rw [toC_add, Lm_add]
   map_smul' c y := by rw [toC_smul, Lm_smul]; rfl
 
-theorem LJ_apply (y : J k r → ℝ) : LJ y = Lm (toC y) := rfl
-
 theorem continuous_LJ : Continuous (LJ (k := k) (r := r)) := LinearMap.continuous_of_finiteDimensional _
 
 end Formalism.L2.SG.Pf.NcReal.JX.EC

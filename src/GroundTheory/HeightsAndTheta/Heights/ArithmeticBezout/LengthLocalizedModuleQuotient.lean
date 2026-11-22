@@ -52,9 +52,6 @@ abbrev ι : ℤ ≃+* 𝓞 ℚ := Rat.ringOfIntegersEquiv.symm
 def Ψ (n : ℕ) : MRing (PBlk n) ≃+* MvPolynomial (Fin n) (𝓞 ℚ) :=
   (renameEquiv ℤ (eb n)).symm.toRingEquiv.trans (mapEquiv (Fin n) ι)
 
-theorem Ψ_apply (f : MRing (PBlk n)) :
-    Ψ n f = MvPolynomial.map (ι : ℤ →+* 𝓞 ℚ) (rename (eb n).symm f) := rfl
-
 end VerticalPartMultiplicity
 
 end ObjectsChow

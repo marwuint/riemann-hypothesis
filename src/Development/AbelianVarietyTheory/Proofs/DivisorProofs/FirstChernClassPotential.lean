@@ -160,9 +160,6 @@ def intL : smSub M →ₗ[ℝ] MultilinearMap ℝ (fun _ : Fin e => (I → ℝ) 
 def form0 : MultilinearMap ℝ (fun _ : Fin (e + 1) => (I → ℝ) × smSub M) ℝ :=
   LinearMap.uncurryLeft (M := fun _ : Fin (e + 1) => (I → ℝ) × smSub M) ((intL M P hP).comp (LinearMap.snd ℝ _ _))
 
-theorem zero_form_apply (w : Fin (e + 1) → (I → ℝ) × smSub M) :
-    form0 M P hP w = M.int (fun i => chern M P (w i.succ)) (w 0).2 := rfl
-
 end Calculus
 
 end GlobalTheory.Mean4O.InhabCalc

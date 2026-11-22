@@ -16,12 +16,6 @@ def ZMap : Prop :=
     PowerSeries.map φ (wpReg W) = wpReg (W.map φ) ∧
     φ (g₂ W) = g₂ (W.map φ) ∧ φ (g₃ W) = g₃ (W.map φ)
 
-def ConstOfD : Prop :=
-  ∀ (R : Type u) [CommRing R] [IsAddTorsionFree R] (W : WeierstrassCurve R),
-    (∀ f : R⟦X⟧, D W f = 0 → f = C (constantCoeff f)) ∧
-    (∀ f : LaurentSeries R, dL f = 0 → f = HahnSeries.C (f.coeff 0)) ∧
-    (∀ f : LaurentSeries R, DL W f = 0 → f = HahnSeries.C (f.coeff 0))
-
 def JetZ : Prop :=
   ∀ (K : Type u) [Field K] [CharZero K] (W : WeierstrassCurve K) (f : K⟦X⟧) (n : ℕ),
     (n.factorial : K) * coeff n (f.subst (expSer W)) = constantCoeff ((D W)^[n] f)

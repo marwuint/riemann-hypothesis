@@ -467,22 +467,6 @@ def partAway (S : Finset (HeightOneSpectrum (𝓞 F))) (g : GAd σ J) : awayPts 
 theorem embAt_mul_partAway (S : Finset (HeightOneSpectrum (𝓞 F))) (g : GAd σ J) :
     embAt σ J S (projAt σ J S g) * partAway σ J S g = g := mul_inv_cancel_left _ _
 
-def atAwayEquiv (S : Finset (HeightOneSpectrum (𝓞 F))) : GAd σ J ≃* (∀ v : S, GLoc σ J v) × awayPts σ J S :=
-  MulEquiv.symm (MulEquiv.ofBijective
-    (MonoidHom.noncommCoprod (embAt σ J S) (awayPts σ J S).subtype fun x y =>
-      commute_atPts_awayPts σ J (embAt_mem σ J S x) y.2)
-    ⟨(injective_iff_map_eq_one _).2 fun p hp => by
-      have hp' : embAt σ J S p.1 * p.2.1 = 1 := hp
-      have h1 : p.1 = 1 := funext fun v => by
-        have := congrArg (proj σ J v) hp'
-        rwa [map_mul, proj_embAt, mem_awayPts.1 p.2.2 v v.2, mul_one, map_one] at this
-      rw [h1, map_one, one_mul] at hp'
-      exact Prod.ext h1 (Subtype.ext hp'),
-    fun g => ⟨(projAt σ J S g, partAway σ J S g), embAt_mul_partAway σ J S g⟩⟩)
-
-theorem atAwayEquiv_symm_apply (S : Finset (HeightOneSpectrum (𝓞 F))) (p : (∀ v : S, GLoc σ J v) × awayPts σ J S) :
-    (atAwayEquiv σ J S).symm p = embAt σ J S p.1 * p.2 := rfl
-
 def embArchPi : (∀ w, GArch σ J w) →* GInf σ J :=
   MonoidHom.noncommPiCoprod (fun w => embArchInf σ J w) fun u w h x y => GInf_ext σ J fun t => by
     by_cases ht : t = u

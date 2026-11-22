@@ -28,9 +28,6 @@ noncomputable def semigroupAlgebra (S : AddSubmonoid G) : Subalgebra k (AddMonoi
 
 variable {k}
 
-theorem mem_semigroupAlgebra {S : AddSubmonoid G} {f : AddMonoidAlgebra k G} :
-    f ∈ semigroupAlgebra k S ↔ ↑f.coeff.support ⊆ (S : Set G) := Iff.rfl
-
 end SemigroupAlgebra
 
 section Domain

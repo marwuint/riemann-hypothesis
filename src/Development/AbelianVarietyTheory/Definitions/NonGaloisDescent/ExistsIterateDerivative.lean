@@ -244,8 +244,6 @@ def homT (F : BK.Hom P Q) : Treal t ϖ P →ₗ[O] Treal t ϖ Q :=
   ((homW t ϖ F).restrictScalars O).restrict fun v hv =>
     mem_Treal.2 ((homW_phiW t ϖ F v).symm.trans (congrArg _ (mem_Treal.1 hv)))
 
-theorem coe_homT (F : BK.Hom P Q) (v : Treal t ϖ P) : (homT t ϖ F v : κ → OW l O) = homW t ϖ F v := rfl
-
 theorem homW_injective : Function.Injective (homW t ϖ : BK.Hom P Q → _) := by
   rintro ⟨F, hF, _⟩ ⟨G, hG, _⟩ h
   have h1 := Matrix.toLin'.injective h
@@ -305,11 +303,6 @@ theorem range_ofT : LinearMap.range I.ofT = Treal t ϖ P := by
   ext v
   rw [mem_Treal, ← I.j.injective.eq_iff, I.j_φ, (frob_fixed T).2.1]
   exact exists_congr fun x => by rw [← I.j.injective.eq_iff, j_ofT, eq_comm]
-
-def equivT : ↥T.L.T ≃ₗ[O] Treal t ϖ P :=
-  (LinearEquiv.ofInjective I.ofT I.ofT_injective).trans (LinearEquiv.ofEq _ _ I.range_ofT)
-
-theorem coe_equivT (x : ↥T.L.T) : (I.equivT x : ι → OW l O) = I.ofT x := rfl
 
 include I in
 
@@ -495,10 +488,6 @@ variable (K) in
 abbrev CrysBKFunctor (Pl : LocPrime l) : Type 1 :=
   BKFunctor t ϖ fun T : Lat a O K ϖ => IsCrys (Pl.PD (ϖ.field a)) T.ρ
 
-namespace BKFunctor
-
-end BKFunctor
-
 section Conn
 
 structure Conn {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
@@ -672,10 +661,6 @@ end Triv
 section FinExt
 
 variable (LL : FinExt l) {G : Type} [Group G] [TopologicalSpace G]
-
-theorem zlLat_eq (T : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)) : zlLat T = Formalism.MainNotions.LocalSituation.zlMod LL T := rfl
-
-theorem actZ_eq (T : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)) : actZ T = fun g => Formalism.MainNotions.LocalSituation.actTZ LL T g := rfl
 
 variable (a) in
 

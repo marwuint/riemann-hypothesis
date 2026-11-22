@@ -19,10 +19,6 @@ def FrobLift (w : PlE H) (σ : G H.E N.Om) : Prop := IsFrob (F := H.E) (N.plOm.1
 def charRep (i : N.Loc) (χ : G H.E N.Om →* (N.O i)ˣ) : G H.E N.Om →* GL (Fin 1) (N.O i) :=
   (Matrix.GeneralLinearGroup.scalar (Fin 1)).comp χ
 
-def TemperedSizes (eig : Eig N A) : Prop := ∀ w σ, FrobLift N w σ → ∀ a : A.LP w, A.tempered a →
-  ∀ α ∈ eig w a σ, ((normV w : ℕ) : ℝ) ^ (-(((A.lpDim a : ℝ) - 1) / 2)) ≤ ‖α‖ ∧
-    ‖α‖ ≤ ((normV w : ℕ) : ℝ) ^ (((A.lpDim a : ℝ) - 1) / 2)
-
 def EtaType : Prop := A.csd A.etaT ∧ ∀ τ, ∀ z ∈ A.infG A.etaT τ, ∃ k : ℤ, z = (k : ℂ) + 1 / 2
 
 def WeightRegular : Prop := ∀ (i : N.Loc) (_ : A.AV i) (τ : H.E →+* ℂ), (A.infWt i τ).Nodup ∧
@@ -55,10 +51,6 @@ theorem r_odd (R : Ranks) : Odd R.r := by
   exact ⟨a + b - 1, by unfold Ranks.r; omega⟩
 
 theorem r_add_le (R : Ranks) : R.r + 5 ≤ R.t := R.rank_add_five_le
-
-theorem charRep_val (i : N.Loc) (χ : G H.E N.Om →* (N.O i)ˣ) (g : G H.E N.Om) :
-    ((charRep N i χ g : GL (Fin 1) (N.O i)) : Matrix (Fin 1) (Fin 1) (N.O i)) =
-      Matrix.scalar (Fin 1) ((χ g : (N.O i)ˣ) : N.O i) := rfl
 
 theorem chi_apply (i : N.Loc) (k : ℕ) (hk : k < R.t) (g : G H.E N.Om) :
     N.chi i (k + 1) g = N.chi i 1 g * ((eps N i g) ^ k)⁻¹ := by

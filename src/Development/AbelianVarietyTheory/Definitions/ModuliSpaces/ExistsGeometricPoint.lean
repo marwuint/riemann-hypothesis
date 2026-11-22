@@ -27,8 +27,6 @@ namespace GlobalTheory.Models.FamTest
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
-theorem coe_ze (S A : ℕ) : (RZ.ze H S A : ℂ) = zeta A := rfl
-
 variable {D : Datum H} {Xo : ∀ l : Level H, Moduli D l} {n N : ℕ}
 
 end GlobalTheory.Models.FamTest

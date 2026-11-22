@@ -37,8 +37,6 @@ def ι {D E : CommRingCat.{0}} (e : D ⟶ E) : (p : ℕ) → Fin (p+1) → (E �
   | 0 => fun _ => 𝟙 E
   | p+1 => Fin.lastCases (pushout.inr (tp e p).2 e) (fun i => ι e p i ≫ pushout.inl (tp e p).2 e)
 
-lemma ι_zero {D E : CommRingCat.{0}} (e : D ⟶ E) (i : Fin 1) : ι e 0 i = 𝟙 E := rfl
-
 lemma ι_last {D E : CommRingCat.{0}} (e : D ⟶ E) (p : ℕ) :
     ι e (p+1) (Fin.last _) = pushout.inr (tp e p).2 e := by
   first | rfl | (dsimp only [ι]; exact Fin.lastCases_last) | (dsimp only [ι]; rw [Fin.lastCases_last])

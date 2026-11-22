@@ -33,9 +33,6 @@ variable {σ : Representation ℂ (GL (Fin r) k) V} {χW χV : kˣ →* ℂˣ}
 theorem evAt_apply (g : GL (Fin (r + t)) k) (f : LiftSp t σ χW χV) :
     evAt t σ χW χV g f = TensorProduct.rid ℂ V (f.1.1 g) := rfl
 
-theorem evAt_lift (g x : GL (Fin (r + t)) k) (f : LiftSp t σ χW χV) :
-    evAt t σ χW χV g (liftRep t σ χW χV x f) = evAt t σ χW χV (g * x) f := rfl
-
 def diagO (a : GL (Fin r) 𝒪[k]) (d : GL (Fin t) 𝒪[k]) : GL (Fin (r + t)) 𝒪[k] :=
   emb₂ 𝒪[k] (stdSum (rfl : r + t = r + t)) (a, d)
 

@@ -301,9 +301,6 @@ def lubinTateLimitGalEquiv (hf : IsLubinTateSeries π f) :
         ← mem_fixingSubgroup_restrict_iff]
       exact hσ }
 
-theorem lubinTateLimitGalEquiv_apply' (hf : IsLubinTateSeries π f) (u : 𝒪[K]ˣ) :
-    lubinTateLimitGalEquiv (Ω := Ω) hπ hf u = lubinTateLimitAut hπ hf u := rfl
-
 theorem lubinTateChar_lubinTateLimitGalEquiv (hf : IsLubinTateSeries π f) (u : 𝒪[K]ˣ) (n : ℕ) :
     lubinTateChar hπ hf n (lubinTateField_le_lubinTateLimit hπ hf n)
       (lubinTateLimitGalEquiv (Ω := Ω) hπ hf u) = unitsMk π n u :=

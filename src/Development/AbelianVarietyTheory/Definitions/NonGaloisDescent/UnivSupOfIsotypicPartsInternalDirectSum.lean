@@ -154,8 +154,6 @@ def dat : XD (rec D A s) where
     funext y
     simp [transl]
 
-theorem inNonzeroPlaces_recursive_iff (i : D.ntw.Tw) : (rec D A s).ntw.NonzeroIndexPlace i ↔ D.ntw.NonzeroIndexPlace i := Iff.rfl
-
 end GlobalTheory.SupLaw.Model
 
 end

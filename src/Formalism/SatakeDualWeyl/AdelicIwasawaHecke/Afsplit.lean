@@ -321,16 +321,8 @@ def afsplitE : UPts σ J 𝔸 ≃* (UPts σ J (v.adicCompletion F) × afsplitKer
       afsplitU v 1 (g : GL n (E ⊗[F] 𝔸)) * afsplitU v 1 (g' : GL n (E ⊗[F] 𝔸))
     rw [← afsplitU_mul, one_mul]
 
-theorem afsplitE_fst (g : UPts σ J 𝔸) :
-    (((afsplitE σ J v g).1 : UPts σ J (v.adicCompletion F)) : GL n _) =
-      bc (prV (E := E) v) (g : GL n (E ⊗[F] 𝔸)) := rfl
-
 theorem afsplitE_snd (g : UPts σ J 𝔸) :
     (((afsplitE σ J v g).2 : afsplitKer σ J v) : GL n _) = afsplitU v 1 (g : GL n (E ⊗[F] 𝔸)) := rfl
-
-theorem afsplitE_symm (p : UPts σ J (v.adicCompletion F) × afsplitKer σ J v) :
-    (((afsplitE σ J v).symm p : UPts σ J 𝔸) : GL n (E ⊗[F] 𝔸)) =
-      afsplitU v (p.1 : GL n (E ⊗[F] v.adicCompletion F)) (p.2 : GL n (E ⊗[F] 𝔸)) := rfl
 
 private lemma prV_IE_ne_lemma_16 (w : HeightOneSpectrum (𝓞 F)) (hw : w ≠ v) (x : E ⊗[F] v.adicCompletion F) :
     prV (E := E) w (afsplitIE v x) = 0 := by

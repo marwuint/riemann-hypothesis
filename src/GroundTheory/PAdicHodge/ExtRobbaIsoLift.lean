@@ -112,14 +112,6 @@ theorem toB_algebraMap (x : Γ) : G.toB (algebraMap Γ T.B x) = algebraMap Γ T.
 theorem toB_comp (G₁ G₂ : T.TeichIso) (b : T.B) : (G₁.comp G₂).toB b = G₁.toB (G₂.toB b) := by
   rw [toB_apply, toB_apply, toB_apply, toBHom_comp]; rfl
 
-theorem toB_eq_self (h : ∀ x, G.ψ x = x) (b : T.B) : G.toB b = b := by
-  have : (G.toB : T.B →+* T.B) = RingHom.id _ :=
-    IsLocalization.ringHom_ext (Submonoid.powers T.π) (RingHom.ext fun x => by
-      simp [toB_algebraMap, h])
-  exact congrArg (fun f : T.B →+* T.B => f b) this
-
-theorem toB_symm_apply (b : T.B) : G.toB.symm b = G.symm.toB b := rfl
-
 theorem coeffB_toB (b : T.B) (k : ℤ) : T.coeffB (G.toB b) k = G.g (T.coeffB b k) := by
   obtain ⟨N, x, hx⟩ := IsLocalization.Away.surj T.π b
   have h' : G.toB b * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B (G.ψ x) := by
@@ -142,20 +134,6 @@ theorem gaussNorm_coeffB_toB (b : T.B) (ρ : ℝ) :
 theorem toB_mem_Econ_iff {ρ : Set.Ioo (0 : ℝ) 1} {b : T.B} :
     G.toB b ∈ T.Econ ρ ↔ b ∈ T.Econ ρ :=
   G.convergesAt_coeffB_toB_iff
-
-theorem toB_mem_Edag_iff {b : T.B} : G.toB b ∈ T.Edag ↔ b ∈ T.Edag := by
-  simp only [mem_Edag, G.toB_mem_Econ_iff]
-
-def edagEquiv : T.Edag ≃+* T.Edag where
-  toFun b := ⟨G.toB (b : T.B), G.toB_mem_Edag_iff.2 b.2⟩
-  invFun b := ⟨G.toB.symm (b : T.B),
-    G.toB_mem_Edag_iff.1 (by rw [RingEquiv.apply_symm_apply]; exact b.2)⟩
-  left_inv b := Subtype.ext (G.toB.symm_apply_apply (b : T.B))
-  right_inv b := Subtype.ext (G.toB.apply_symm_apply (b : T.B))
-  map_mul' b c := Subtype.ext (map_mul G.toB (b : T.B) c)
-  map_add' b c := Subtype.ext (map_add G.toB (b : T.B) c)
-
-theorem edagEquiv_apply (b : T.Edag) : (G.edagEquiv b : T.B) = G.toB (b : T.B) := rfl
 
 variable (ρ0 : Set.Ioo (0 : ℝ) 1)
 
@@ -184,13 +162,6 @@ theorem extMap_coe (b : T.Econ ρ0) :
     G.extMap ρ0 (b : T.RobbaExt ρ0) = ((G.econMap ρ0 b : T.Econ ρ0) : T.RobbaExt ρ0) :=
   Completion.mapRingHom_coe _ b
 
-theorem res_extMap {ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) (x : T.RobbaExt ρ0) :
-    T.res h (G.extMap ρ0 x) = G.extMap ρ1 (T.res h x) :=
-  Completion.induction_on x
-    (isClosed_eq ((T.continuous_res _).comp Completion.continuous_map)
-      (Completion.continuous_map.comp (T.continuous_res _)))
-    fun b => by rw [extMap_coe, res_coe, res_coe, extMap_coe]; rfl
-
 theorem extMap_comp (G₁ G₂ : T.TeichIso) (x : T.RobbaExt ρ0) :
     (G₁.comp G₂).extMap ρ0 x = G₁.extMap ρ0 (G₂.extMap ρ0 x) :=
   Completion.induction_on x
@@ -199,47 +170,6 @@ theorem extMap_comp (G₁ G₂ : T.TeichIso) (x : T.RobbaExt ρ0) :
       rw [extMap_coe, extMap_coe, extMap_coe]
       congr 1
       exact Subtype.ext (toB_comp G₁ G₂ (b : T.B))
-
-theorem extMap_eq_self (h : ∀ x, G.ψ x = x) (y : T.RobbaExt ρ0) : G.extMap ρ0 y = y :=
-  Completion.induction_on y (isClosed_eq Completion.continuous_map continuous_id) fun b => by
-    rw [extMap_coe]
-    congr 1
-    exact Subtype.ext (G.toB_eq_self h (b : T.B))
-
-def tildeMap : T.RobbaTilde →+* T.RobbaTilde :=
-  Ring.DirectLimit.lift (fun i : RadIdx => T.RobbaExt (OrderDual.ofDual i))
-    (fun i j h => T.resSys i j h) T.RobbaTilde
-    (fun i => (T.ofRad (OrderDual.ofDual i)).comp (G.extMap (OrderDual.ofDual i)))
-    fun i j hij x => by
-      simp only [RingHom.comp_apply, resSys]
-      rw [← G.res_extMap, T.ofRad_res]
-
-theorem tildeMap_ofRad (σ : Set.Ioo (0 : ℝ) 1) (x : T.RobbaExt σ) :
-    G.tildeMap (T.ofRad σ x) = T.ofRad σ (G.extMap σ x) := by
-  exact Ring.DirectLimit.lift_of ..
-
-theorem tildeMap_comp (G₁ G₂ : T.TeichIso) (x : T.RobbaTilde) :
-    (G₁.comp G₂).tildeMap x = G₁.tildeMap (G₂.tildeMap x) := by
-  obtain ⟨σ, y, rfl⟩ := T.exists_ofRad x
-  rw [tildeMap_ofRad, tildeMap_ofRad, tildeMap_ofRad, extMap_comp]
-
-theorem tildeMap_eq_self (h : ∀ x, G.ψ x = x) (x : T.RobbaTilde) : G.tildeMap x = x := by
-  obtain ⟨σ, y, rfl⟩ := T.exists_ofRad x
-  rw [tildeMap_ofRad, G.extMap_eq_self h]
-
-theorem tildeMap_symm_tildeMap (x : T.RobbaTilde) : G.symm.tildeMap (G.tildeMap x) = x := by
-  rw [← tildeMap_comp]
-  exact tildeMap_eq_self _ (fun y => by simp) x
-
-theorem tildeMap_tildeMap_symm (x : T.RobbaTilde) : G.tildeMap (G.symm.tildeMap x) = x := by
-  rw [← tildeMap_comp]
-  exact tildeMap_eq_self _ (fun y => by simp) x
-
-def tildeEquiv : T.RobbaTilde ≃+* T.RobbaTilde :=
-  RingEquiv.ofRingHom G.tildeMap G.symm.tildeMap (RingHom.ext G.tildeMap_tildeMap_symm)
-    (RingHom.ext G.tildeMap_symm_tildeMap)
-
-theorem tildeEquiv_apply (x : T.RobbaTilde) : G.tildeEquiv x = G.tildeMap x := rfl
 
 variable (F : T.TeichFrob)
 

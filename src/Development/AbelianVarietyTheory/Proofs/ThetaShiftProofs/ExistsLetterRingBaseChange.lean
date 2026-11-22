@@ -16,9 +16,6 @@ def coeffMap {K L : Type} [Field K] [Field L] (f : K →+* L) : LaurentSeries K 
   map_zero' := by ext; simp
   map_add' _ _ := by ext; simp
 
-theorem coeffMap_coeff {K L : Type} [Field K] [Field L] (f : K →+* L) (g : LaurentSeries K) (m : ℤ) :
-    (coeffMap f g).coeff m = f (g.coeff m) := rfl
-
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField in
 theorem _root_.GlobalTheory.LetterMap.coeffMap_ofPowerSeries {K L : Type} [Field K] [Field L] (f : K →+* L)
     (g : PowerSeries K) :

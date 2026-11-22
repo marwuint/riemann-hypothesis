@@ -61,11 +61,6 @@ lemma extEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (n : ℕ) (U 
     (x : F.H' n U) :
     extEquiv G n U (map f n U x) = (extEquiv F n U x).comp (Ext.mk₀ f) (add_zero n) := rfl
 
-lemma extEquiv_res (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) {U V : C} (i : V ⟶ U)
-    (x : F.H' n U) :
-    extEquiv F n V (res F n i x) =
-      (Ext.mk₀ ((freeSheaf J).map i)).comp (extEquiv F n U x) (zero_add n) := rfl
-
 instance cohomologyPresheafFunctor_additive (n : ℕ) :
     (Sheaf.cohomologyPresheafFunctor.{w} J n).Additive where
   map_add {F G f g} := by

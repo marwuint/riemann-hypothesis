@@ -86,24 +86,12 @@ theorem eigenSub_baseChangeAction_of_flat (χ : O →+* R) :
   ext x
   simp [TensorProduct.tmul_sub]
 
-theorem isBaseChange_eigenMapAlgebra_of_flat (hf : ∀ a x, f (ρ a x) = ρ' a (f x))
-    (hb : IsBaseChange R' f) (χ : O →+* R) : IsBaseChange R' (eigenMapAlgebra hf χ) :=
-  IsBaseChange.of_equiv (baseChangeEquiv R' (eigenSub ρ χ) ≪≫ₗ
-    LinearEquiv.ofEq _ _ (eigenSub_baseChangeAction_of_flat R' ρ χ).symm ≪≫ₗ
-    (isEquivariant_equiv hf hb).eigenLinearEquiv _) fun x => Subtype.ext (by simp)
-
 theorem eigenSub_eq_span_of_flat (hf : ∀ a x, f (ρ a x) = ρ' a (f x))
     (hb : IsBaseChange R' f) (χ : O →+* R) :
     eigenSub ρ' ((algebraMap R R').comp χ) = Submodule.span R' (f '' eigenSub ρ χ) := by
   rw [← (isEquivariant_equiv hf hb).map_eigenSub, eigenSub_baseChangeAction_of_flat,
     Submodule.baseChange_eq_span, Submodule.map_span, Submodule.map_coe, Set.image_image]
   simp
-
-theorem finrank_eigenSub_of_flat [NoZeroDivisors R'] [FaithfulSMul R R']
-    (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBaseChange R' f) (χ : O →+* R) :
-    Module.finrank R' (eigenSub ρ' ((algebraMap R R').comp χ))
-      = Module.finrank R (eigenSub ρ χ) :=
-  (isBaseChange_eigenMapAlgebra_of_flat hf hb χ).finrank_eq
 
 end FlatBaseChange
 
@@ -119,9 +107,6 @@ noncomputable def extendTensor : S ⊗[A] N →ₗ[S] T ⊗[A] N :=
 variable {A S N} in
 @[simp] theorem extendTensor_tmul (s : S) (x : N) :
     extendTensor A S T N (s ⊗ₜ x) = algebraMap S T s ⊗ₜ x := rfl
-
-theorem isBaseChange_extendTensor : IsBaseChange T (extendTensor A S T N) :=
-  isBaseChange_tensorProduct_map T (IsBaseChange.linearMap S T)
 
 variable {A N} in
 theorem extendTensor_equivariant {O : Type*} [CommRing O] (ρ : O →+* Module.End A N) (a : O)

@@ -379,8 +379,6 @@ def glLat (Λ : Submodule 𝒪[k] (D → k)) : Subgroup (GL D k) where
   mul_mem' {g h} hg hh x := by rw [Units.val_mul, ← vecMul_vecMul, hh, hg]
   inv_mem' {h} hh x := by rw [← hh, vecMul_vecMul, Units.inv_mul, vecMul_one]
 
-theorem mem_glLat {Λ : Submodule 𝒪[k] (D → k)} {h : GL D k} : h ∈ glLat Λ ↔ ∀ x, x ᵥ* h.val ∈ Λ ↔ x ∈ Λ := Iff.rfl
-
 def glLatCong (c : kˣ) (Λ : Submodule 𝒪[k] (D → k)) : Subgroup (GL D k) where
   carrier := {h | h ∈ glLat Λ ∧ ∀ x ∈ Λ, x ᵥ* (h.val - 1) ∈ c • Λ}
   one_mem' := ⟨one_mem _, fun x _ => by simp⟩
@@ -743,10 +741,6 @@ inductive Edge
   | .theta i j => (i, j)
   | .ex i j => (i + 1, j)
 
-def Edge.InGrid (m : ℕ) : Edge → Prop
-  | .theta i j => i ≤ m ∧ j < m
-  | .ex i j => i < m ∧ j ≤ m
-
 def IsPath (γ : List Edge) : Prop := γ.IsChain fun e e' => e.tgt = e'.src
 
 def innerVertices (γ : List Edge) : List (ℕ × ℕ) := γ.tail.map Edge.src
@@ -948,18 +942,6 @@ theorem Assignment.read_mem_KO (s : Assignment) {n : Type*} [Fintype n] [Decidab
   cases s
   · exact invT_mem_KO hg
   · exact hg
-
-theorem Grid.IsGood.condLE_kappa {G : Grid k} {ϖ : kˣ} {ψ : AddChar k Circle} {e : ℕ} (h : G.IsGood ϖ ψ e)
-    {b : Edge} (hb : b.InGrid G.m) (X : ℕ × ℕ) : CondLE ϖ e (G.kappa b X) := by
-  intro x hx
-  have h1 : G.eta x = 1 := h.eta x hx.1
-  cases b with
-  | theta i j =>
-    have := (h.square 0 (by have := hb.2; omega) j hb.2).condα x hx
-    simpa [Grid.kappa, Grid.blockChar, Grid.alpha, h1] using this
-  | ex i j =>
-    have := (h.square i hb.1 0 (by have := hb.1; omega)).condβ x hx
-    simpa [Grid.kappa, Grid.blockChar, Grid.beta, h1] using this
 
 theorem isOpen_map_invT {n : Type*} [Fintype n] [DecidableEq n] {J : Subgroup (GL n k)}
     (ho : IsOpen (J : Set (GL n k))) (hK : J ≤ KO k n) :

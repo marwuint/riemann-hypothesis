@@ -61,10 +61,6 @@ variable (ρ : O →+* End F) (σ : O →+* Γ(X, ⊤))
 
 def eigenEval : F ⟶ dual (eigen (dualAct ρ) σ) := cartierDualToBidual F ≫ dualMap (eigenι (dualAct ρ) σ)
 
-theorem dualApp_eigenEval {V W : X.Opens} (s : Γ(F, V)) (h : W ≤ V)
-    (l : Γ(eigen (dualAct ρ) σ, W)) : dualApp ((eigenEval ρ σ).app V s) h l =
-      dualApp ((eigenι (dualAct ρ) σ).app W l) le_rfl (resM F h s) := rfl
-
 theorem eigenEval_eq : eigenEval ρ σ =
     eigenπ ρ σ ≫ cartierDualToBidual _ ≫ dualMap (dualQuotIso ρ σ).inv := by
   rw [toBidual_naturality_dualSheafTranspose_assoc, ← dualMap_comp, ← dualQuotIso_hom_ι, Iso.inv_hom_id_assoc,

@@ -24,12 +24,6 @@ namespace TeichFrob
 
 variable (F : T.TeichFrob) [CompleteSpace L]
 
-def πEdag (T : TeichLift p L Γ) : T.Edag :=
-  ⟨algebraMap Γ T.B T.π, T.Econ_le_Edag ⟨1 / 2, by norm_num, by norm_num⟩
-    (T.algebraMap_π_mem_Econ _)⟩
-
-theorem edagToTilde_πEdag : T.edagToTilde (πEdag T) = T.πTilde := rfl
-
 end TeichFrob
 
 end TeichLift

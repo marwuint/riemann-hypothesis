@@ -21,21 +21,9 @@ variable {Os Ks O Kf O' Kf' : Type} [CommRing Os] [Field Ks] [Algebra Os Ks] [Co
   [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf] [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Field Kf']
   [Algebra O' Kf']
 
-theorem extMap_φ (X : ExtOf Os Ks O Kf) (eO : O ≃+* O') (eK : Kf ≃+* Kf')
-    (hc : ∀ x, eK (algebraMap O Kf x) = algebraMap O' Kf' (eO x)) (hfrac : IsFractionRing O' Kf')
-    (hcomp : IsAdicComplete (IsLocalRing.maximalIdeal O') O') (x : Os) :
-    (X.map eO eK hc hfrac hcomp).φ x = eO (X.φ x) := rfl
-
-theorem extMap_φK (X : ExtOf Os Ks O Kf) (eO : O ≃+* O') (eK : Kf ≃+* Kf')
-    (hc : ∀ x, eK (algebraMap O Kf x) = algebraMap O' Kf' (eO x)) (hfrac : IsFractionRing O' Kf')
-    (hcomp : IsAdicComplete (IsLocalRing.maximalIdeal O') O') (y : Ks) :
-    (X.map eO eK hc hfrac hcomp).φK y = eK (X.φK y) := rfl
-
 end Ext
 
 section Bridge
-
-theorem frobOrder_eq (D : D7) (p : ℕ) : frobOrder D p = nFr D p := rfl
 
 theorem pack_eq (D : D7) (u : D.what₂.Word)
     (Lc : ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u)) (w : D.what₂.places.Pl)
@@ -64,11 +52,6 @@ variable (D : D7) (sc : Scale) (Ce : ℝ)
     Formalism.L2.Herm.awayFrom₂ (Lc u) (D.what₂.places.resChar w) →* (ORec D w (nFr D (D.what₂.places.resChar w)))ˣ)
   (hd : ∀ u w h, ((packC D Lc I ψ u w h).gat (rSc sc D.R.k (D.what₂.places.resChar w))
     (epSc D.R sc Ce (D.what₂.places.resChar w))).d = Module.finrank ℂ (D.mem u).A.Mu0)
-
-theorem recordAllTies_forms (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
-    (T : ∀ u : D.what₂.Word, Forms0 (recC D sc Ce Lc I ψ hd) u)
-    (B : GL (Fin D.R.k) D.host.E) (hBs : Cmp.StdB (recC D sc Ce Lc I ψ hd) B) (hB) (CH) (hH) :
-    (groupCompatibilityOfRecursion D sc Ce Lc I ψ hd H0 hL T B hBs hB CH hH).forms = T := rfl
 
 end Record
 

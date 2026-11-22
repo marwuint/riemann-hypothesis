@@ -143,8 +143,6 @@ def toVSys (N₁ : ℕ) (hl : Φ.abelian₂) (hf : Φ.Four N₁) : VSys bar q W 
   lam := hl
   four := hf
 
-theorem pre_toVSys (N₁ : ℕ) (hl : Φ.abelian₂) (hf : Φ.Four N₁) : (Φ.toVSys N₁ hl hf).pre = Φ := rfl
-
 end VPre
 
 end

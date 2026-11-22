@@ -211,17 +211,6 @@ theorem map_unitsEquivOfForall_range_norm (K' L' : OpenSubgroup (Ω ≃ₐ[K] Ω
     change unitsEquivOfForall _ E _ (norm Ωˣ _ _ _) = _
     rw [unitsEquivOfForall_norm (K' : Subgroup (Ω ≃ₐ[K] Ω)) L' h hK hL, MulEquiv.apply_symm_apply]
 
-noncomputable def relReciprocityOfFixingSubgroups (K' L' : OpenSubgroup (Ω ≃ₐ[K] Ω)) (hK : E.fixingSubgroup = K')
-    (hL : F.fixingSubgroup = L') :
-    Abelianization (IntermediateField.extendScalars h ≃ₐ[E] IntermediateField.extendScalars h) ≃*
-      Eˣ ⧸ (normUnits E (IntermediateField.extendScalars h)).range :=
-  haveI := (galoisTateModel (K' : Subgroup (Ω ≃ₐ[K] Ω)) L' h hK hL).normal
-  transportReciprocity (K' := K') (L' := L')
-    (fun _ hx => (galoisTateModel (K' : Subgroup (Ω ≃ₐ[K] Ω)) L' h hK hL).le hx)
-    (galoisTateModel (K' : Subgroup (Ω ≃ₐ[K] Ω)) L' h hK hL).quotientEquiv
-    (unitsEquivOfForall (K' : Subgroup (Ω ≃ₐ[K] Ω)) E (mem_iff_forall_of_fixingSubgroup_eq _ hK))
-    _ (map_unitsEquivOfForall_range_norm h K' L' hK hL)
-
 end Relative
 
 section ConjSquare

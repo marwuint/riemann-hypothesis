@@ -101,7 +101,4 @@ def biprod (fl₁ : Flag E₁ r) (fl₂ : Flag E₂ s) : Flag (E₁ ⊞ E₂) (r
       (Fin.ext (by simp [sndIdx]))
     exact inferInstanceAs (IsIso (biprod.mapIso (asIso (fl₁.ι _)) (asIso (fl₂.ι _))).hom)
 
-theorem biprod_ι (fl₁ : Flag E₁ r) (fl₂ : Flag E₂ s) (i : Fin (r + s + 1)) :
-    (fl₁.biprod fl₂).ι i = biprod.map (fl₁.ι (fstIdx r s i)) (fl₂.ι (sndIdx r s i)) := rfl
-
 end GlobalTheory.Vert.Flag

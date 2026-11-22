@@ -624,29 +624,6 @@ open Classical in
 
 end Model
 
-def rhoJ (r p : ℕ) : ℕ := if 2 ≤ r ∧ 2 ≤ p then 1 else 0
-
-theorem rhoJ_p (r p : ℕ) : 2 ≤ p ∨ rhoJ r p = 0 := by
-  unfold rhoJ
-  split_ifs with h
-  · exact Or.inl h.2
-  · exact Or.inr rfl
-
-theorem rhoJ_dim (f r p : ℕ) : rhoJ r p * (2 * f) ≤ f * r := by
-  unfold rhoJ
-  split_ifs with h
-  · nlinarith [h.1]
-  · simp
-
-def junkLocalData (D : D7) (r j p : ℕ) : ModuliIntegralCharts.Loc D r j p := locT D r j p (cfJunk p) (rhoJ r p)
-
-def exJunk (D : D7) (r j p : ℕ) : ModuliIntegralCharts.ExtA D (junkLocalData D r j p) := extT D r j p (cfJunk p) (rhoJ r p)
-
-def junkLocBAll (D : D7) (r j p : ℕ) : BoundaryLocalData.LocB D (junkLocalData D r j p) :=
-  locBT D r j p (cfJunk p) (rhoJ r p) (rhoJ_p r p) (rhoJ_dim D.R.f r p)
-
-def junkLocB (D : D7) (r j p : ℕ) (_hp : p.Prime) : BoundaryLocalData.LocB D (junkLocalData D r j p) := junkLocBAll D r j p
-
 end Formalism.L2.Geo
 
 end

@@ -16,6 +16,4 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.PrimeNumberTheoremConsequences
 
-theorem PNTAPRelW_iff_ext : PNTAPRelW ↔ Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds.PNTAPRelW := Iff.rfl
-
 end Formalism.HermitianLattices.PrimeNumberTheoremConsequences

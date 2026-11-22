@@ -47,8 +47,6 @@ def extHom (ι : S →ₙ+* R) : Matrix n n S →* Matrix n n R where
 
 def extGL (ι : S →ₙ+* R) : GL n S →* GL n R := Units.map (extHom ι)
 
-theorem extGL_coe (ι : S →ₙ+* R) (g : GL n S) : ((extGL ι g : GL n R) : Matrix n n R) = extM ι g := rfl
-
 theorem extM_cT (ι : S →ₙ+* R) (σS : S →+* S) (σR : R →+* R) (hι : ∀ x, ι (σS x) = σR (ι x)) (A : Matrix n n S) :
     cT σR (extM ι A) = extM ι (cT σS A) := by
   have he : σR (ι 1) = ι 1 := by rw [← hι, map_one]
@@ -127,10 +125,6 @@ theorem jv_inclE (v : HeightOneSpectrum (𝓞 F)) (e : E) :
     jv v (Formalism.UG.inclE (F := F) (v.adicCompletion F) e) = jv v 1 * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (AF F) e := by
   show jv v (e ⊗ₜ[F] 1) = jv v (1 ⊗ₜ[F] 1) * ((1 : AF F) ⊗ₜ[F] e)
   rw [jv_tmul, jv_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
-
-def backT : AF F ⊗[F] E →+* E ⊗[F] Af F :=
-  (Algebra.TensorProduct.comm F (Af F) E).toRingEquiv.toRingHom.comp
-    (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom
 
 end Place
 
@@ -225,15 +219,6 @@ theorem embV_mem (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicComple
 def embV (V : HSp D) (s : SplitD D v) : GL (Fin V.rank) (v.adicCompletion D.host.F) →* GA D V :=
   MonoidHom.codRestrict ((extGL (jv v)).comp (locV V s)) (HR (AF D.host.F) D.sp.cm.sig V.gram) (embV_mem V s)
 
-theorem embV_coe (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicCompletion D.host.F)) :
-    (matHom V (embV V s a)).val = extM (jv v) (locV V s a).val := rfl
-
-theorem infHom_entry (V : HSp D) (g : GA D V) (i j : Fin V.rank) :
-    (infHom V g).val i j = Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id _ _) ((matHom V g).val i j) := rfl
-
-theorem compV_entry (V : HSp D) (w : HeightOneSpectrum (𝓞 D.host.F)) (g : GA D V) (i j : Fin V.rank) :
-    (compV V w g).val i j = Formalism.UG.prV w (backT ((matHom V g).val i j)) := rfl
-
 end Emb
 
 section Level
@@ -243,12 +228,6 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
-
-def compVH (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) :
-    GA D V →* GL (Fin V.rank) (D.host.E ⊗[D.host.F] v.adicCompletion D.host.F) :=
-  (Formalism.UG.bc (Formalism.UG.prV v)).comp (Formalism.IndefR.Lev.finE V)
-
-theorem compVH_apply (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GA D V) : compVH V v g = compV V v g := rfl
 
 end Level
 

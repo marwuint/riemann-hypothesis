@@ -114,9 +114,6 @@ def locHom (T : Thick (F.cr b ht κ)) (a : T.B) : T ⟶ locT T a :=
     (Classical.choose (GlobalTheory.CompanionTheory.JLiftDP.dpFlat T.B (Localization.Away a) T.J T.δ))
     (Classical.choose_spec (GlobalTheory.CompanionTheory.JLiftDP.dpFlat T.B (Localization.Away a) T.J T.δ))
 
-theorem locHom_φ (T : Thick (F.cr b ht κ)) (a : T.B) :
-    (locHom T a).φ = algebraMap T.B (Localization.Away a) := rfl
-
 theorem comp_φ {L : b.Fun} {T T' T'' : Thick L} (f : T ⟶ T') (g : T' ⟶ T'') : (f ≫ g).φ = g.φ.comp f.φ := rfl
 
 theorem locT_univ (T : Thick (F.cr b ht κ)) (a : T.B) {T'' : Thick (F.cr b ht κ)} (ψ : T ⟶ T'')

@@ -364,76 +364,12 @@ variable [IsIntegral X]
 theorem genericPoint_mem (W : X.Opens) [h : Nonempty W] : genericPoint X ∈ W :=
   ((genericPoint_spec X).mem_open_set_iff W.isOpen).mpr (by simpa using h)
 
-theorem germK_resG {U V : X.Opens} [Nonempty U] [Nonempty V] (h : V ≤ U) (a : Γ(X, U)) :
-    (X.germToFunctionField V).hom (resG X h a) = (X.germToFunctionField U).hom a :=
-  germ_resG h _ _ a
-
 theorem ext_germK {U : X.Opens} {a b : Γ(X, U)}
     (h : ∀ hU : genericPoint X ∈ U, (X.presheaf.germ U _ hU).hom a = (X.presheaf.germ U _ hU).hom b) :
     a = b := by
   by_cases hU : Nonempty U
   · exact germ_injective_of_isIntegral X _ (genericPoint_mem U) (h _)
   · exact ext_germ fun x hx => (hU ⟨⟨x, hx⟩⟩).elim
-
-theorem exists_germK_eq_of_stalk (U : X.Opens) [Nonempty U] (t : X.functionField)
-    (h : ∀ x ∈ U, t ∈ Set.range (algebraMap (X.presheaf.stalk x) X.functionField)) :
-    ∃ a : Γ(X, U), (X.germToFunctionField U).hom a = t := by
-  have loc : ∀ x : U, ∃ (V : X.Opens) (_ : V ≤ U) (_ : x.1 ∈ V) (c : Γ(X, V)),
-      ∀ hV : genericPoint X ∈ V, (X.presheaf.germ V _ hV).hom c = t := by
-    rintro ⟨x, hx⟩
-    obtain ⟨r, hr⟩ := h x hx
-    obtain ⟨V, hV, c, rfl⟩ := X.presheaf.exists_germ_eq r
-    have : Nonempty V := ⟨⟨x, hV⟩⟩
-    refine ⟨U ⊓ V, inf_le_left, ⟨hx, hV⟩, resG X inf_le_right c, fun hV' => ?_⟩
-    rw [germ_resG, ← hr]
-    exact (Scheme.algebraMap_germ_eq_germToFunctionField X hV c).symm
-  choose V hV hx c hc using loc
-  obtain ⟨s, hs, -⟩ := X.sheaf.existsUnique_gluing' V U (fun i => homOfLE (hV i))
-    (fun x hx' => Opens.mem_iSup.2 ⟨⟨x, hx'⟩, hx _⟩) c (fun i j => ext_germK fun hη =>
-      ((germ_resG inf_le_left _ hη (c i)).trans (hc i _)).trans
-        ((germ_resG inf_le_right _ hη (c j)).trans (hc j _)).symm)
-  obtain ⟨x⟩ := ‹Nonempty U›
-  have : Nonempty (V x) := ⟨⟨x.1, hx x⟩⟩
-  refine ⟨s, ?_⟩
-  rw [← hc x (genericPoint_mem _), ← hs x]
-  exact (germ_resG (hV x) _ (genericPoint_mem _) s).symm
-
-def ratSecs {L : LB X} (s : L.Sec) (V : X.Opens) [Nonempty V] :
-    Submodule Γ(X, V) X.functionField where
-  carrier := {h | ∀ (i : L.ι) [Nonempty (V ⊓ L.U i : X.Opens)], ∃ a : Γ(X, V ⊓ L.U i),
-    (X.germToFunctionField _).hom a =
-      (X.germToFunctionField (V ⊓ L.U i)).hom (resG X inf_le_right (s.f i)) * h}
-  add_mem' := fun {h h'} hh hh' i _ => by
-    obtain ⟨a, ha⟩ := hh i
-    obtain ⟨a', ha'⟩ := hh' i
-    exact ⟨a + a', by rw [map_add, ha, ha', mul_add]⟩
-  zero_mem' := fun i _ => ⟨0, by rw [map_zero, mul_zero]⟩
-  smul_mem' := fun c h hh i _ => by
-    obtain ⟨a, ha⟩ := hh i
-    refine ⟨resG X inf_le_left c * a, ?_⟩
-    rw [map_mul, ha, germK_resG, Algebra.smul_def, mul_left_comm]
-    rfl
-
-theorem mem_ratSecs_iff_stalk {L : LB X} (s : L.Sec) (V : X.Opens) [Nonempty V]
-    (h : X.functionField) :
-    h ∈ ratSecs s V ↔ ∀ (i : L.ι) (x : X) (_ : x ∈ V) (hx : x ∈ L.U i),
-      algebraMap (X.presheaf.stalk x) X.functionField ((X.presheaf.germ _ x hx).hom (s.f i)) * h ∈
-        Set.range (algebraMap (X.presheaf.stalk x) X.functionField) := by
-  constructor
-  · intro hh i x hxV hx
-    have hm : x ∈ V ⊓ L.U i := ⟨hxV, hx⟩
-    have : Nonempty (V ⊓ L.U i : X.Opens) := ⟨⟨x, hm⟩⟩
-    obtain ⟨a, ha⟩ := hh i
-    refine ⟨(X.presheaf.germ _ x hm).hom a, ?_⟩
-    rw [← germ_resG (inf_le_right : V ⊓ L.U i ≤ L.U i) x hm]
-    exact (Scheme.algebraMap_germ_eq_germToFunctionField X hm a).trans (ha.trans
-      (congrArg (· * h) (Scheme.algebraMap_germ_eq_germToFunctionField X hm _).symm))
-  · intro hh i _
-    refine exists_germK_eq_of_stalk _ _ fun x hx => ?_
-    have := hh i x hx.1 hx.2
-    rw [← germ_resG (inf_le_right : V ⊓ L.U i ≤ L.U i) x hx] at this
-    exact (congrArg (fun r => r * h ∈ Set.range (algebraMap (X.presheaf.stalk x) X.functionField))
-      (Scheme.algebraMap_germ_eq_germToFunctionField X hx _)).mp this
 
 def genericChart {L : LB X} (hL : L.IsLB) : L.ι := (LB.mem_of_cover hL (genericPoint X)).choose
 

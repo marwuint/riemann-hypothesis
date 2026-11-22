@@ -23,10 +23,6 @@ def RhoUnit : Prop :=
     ‖σ (muInvDet sel (rowSG Pr sel mu) (mUof Ch mu i) (muAt Ch sel mu cst i) N fr)‖ = 1) ∧
   ∀ (n : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E n)), IsSdLat N → ‖chi n N‖ = 1
 
-def ChiSplit (A : Amb X) : Prop :=
-  ∀ (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)),
-    A.chiF a b N N' = chi a N ^ (((b / 2 : ℕ) : ℤ)) * chi b N' ^ (-((a / 2 : ℕ) : ℤ))
-
 variable {Ch sel mu cst σ chi}
 
 end Rho
@@ -40,10 +36,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (P : LevFam X.E X.K R.r Pr.vGs) (c : TopDepth R cst.M)
 
 @[reducible] def twFam : ℕ → GFam X.K := levFam W sel mu cst L u m2 b hY (topLevG Ch P) (topLevQ R sel mu c.pos)
-
-def TwEquiv : Prop :=
-  MatEquiv W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) ∧ Cp1Equiv W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) b hY ∧
-    TopEquiv W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) b hY P c
 
 variable {W Ch sel mu cst L A u m2 b hY P c}
 

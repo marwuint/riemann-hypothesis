@@ -54,31 +54,6 @@ theorem mem_fixed {ρ : Representation ℂ G V} {K : Subgroup G} {v : V} :
   · intro h k hk; simpa using h ⟨k, hk⟩
   · intro h k; simpa using h k k.2
 
-def twJacquet (ρ : Representation ℂ G V) (N : Subgroup G) (ψ : N →* ℂˣ) {M : Type} [Group M] (s : M →* G)
-    (hs : ∀ (m : M) (n : N), ∃ h : s m * n * (s m)⁻¹ ∈ N, ψ ⟨_, h⟩ = ψ n) :
-    Representation ℂ M (TwJacquet ρ N ψ) where
-  toFun m := (twKer ρ N ψ).mapQ (twKer ρ N ψ) (ρ (s m)) (by
-    refine Submodule.span_le.2 ?_
-    rintro w ⟨n, v, rfl⟩
-    obtain ⟨hn, e⟩ := hs m n
-    refine Submodule.subset_span ⟨⟨_, hn⟩, ρ (s m) v, ?_⟩
-    rw [e, map_sub, map_smul]
-    congr 1
-    rw [← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]
-    congr 2
-    group)
-  map_one' := by ext v; simp
-  map_mul' a b := by
-    ext v
-    show Submodule.Quotient.mk (ρ (s (a * b)) v) = Submodule.Quotient.mk (ρ (s a) (ρ (s b) v))
-    simp
-
-def coinvFst (ρ : Representation ℂ (G × H) V) :
-    Representation ℂ H (Jacquet ρ (MonoidHom.inl G H).range) :=
-  twJacquet ρ _ 1 (MonoidHom.inr G H) (by
-    rintro m ⟨_, g, rfl⟩
-    exact ⟨⟨g, by simp⟩, rfl⟩)
-
 theorem charRep_irreducible (χ : G →* ℂˣ) : (charRep χ).IsIrreducible := by
   have hne : (⊥ : Subrepresentation (charRep χ)) ≠ ⊤ := fun h =>
     bot_ne_top (congrArg Subrepresentation.toSubmodule h)
@@ -107,16 +82,9 @@ end Alg
 section Top
 variable {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V]
 
-theorem isSmooth_iff (ρ : Representation ℂ G V) : IsSmooth ρ ↔ SplitWeil.IsSmoothRep ρ := Iff.rfl
-
 def IsIrrSmooth (ρ : Representation ℂ G V) : Prop := IsSmooth ρ ∧ ρ.IsIrreducible
 
 variable [IsTopologicalGroup G]
-
-def smoothDual (ρ : Representation ℂ G V) : Representation ℂ G (smoothPart ρ.dual) := smoothRep ρ.dual
-
-theorem smoothDual_apply (ρ : Representation ℂ G V) (g : G) (l : smoothPart ρ.dual) (v : V) :
-    (smoothDual ρ g l).1 v = l.1 (ρ g⁻¹ v) := rfl
 
 theorem smoothRep_isSmooth (ρ : Representation ℂ G V) : IsSmooth (smoothRep ρ) := by
   intro v
@@ -272,9 +240,6 @@ def nIndQ (τ : Representation ℂ P.Q W) : Representation ℂ G (smoothPart (in
 abbrev IndSpace (σ : Representation ℂ M W) : Type := smoothPart (ind P.Q (twist P.deltaHalf (σ.comp P.p)))
 
 def nInd (σ : Representation ℂ M W) : Representation ℂ G (P.IndSpace σ) := P.nIndQ (σ.comp P.p)
-
-theorem nInd_apply (σ : Representation ℂ M W) (g x : G) (f : P.IndSpace σ) :
-    (P.nInd σ g f).1.1 x = f.1.1 (x * g) := rfl
 
 theorem IndSpace.law {σ : Representation ℂ M W} (f : P.IndSpace σ) (q : P.Q) (g : G) :
     f.1.1 (q * g) = (P.deltaHalf q : ℂ) • σ (P.p q) (f.1.1 g) := f.1.2 q g
@@ -505,8 +470,6 @@ def blockPar (k a d : Type) [Field k] [TopologicalSpace k] [IsTopologicalRing k]
     (continuous_toHomUnits _ (continuous_matrix fun i j =>
       (continuous_entry (Sum.inr i) (Sum.inr j)).comp continuous_subtype_val))
 
-theorem blockPar_s_val (m : GL a k × GL d k) : ((blockPar k a d).s m).val = fromBlocks m.1.val 0 0 m.2.val := rfl
-
 end Blocks
 
 section Unram
@@ -546,8 +509,6 @@ instance t2Space_of_nonarchimedeanLocalField : T2Space k := by
 def vZ : k →*₀ WithZero (Multiplicative ℤ) :=
   ((IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k).toMulEquiv.toMonoidWithZeroHom).comp
     (valuation k).toMonoidWithZeroHom
-
-theorem vZ_apply (x : k) : vZ k x = IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k (valuation k x) := rfl
 
 variable {k}
 
@@ -742,9 +703,6 @@ end Examples
 section Coinv
 variable {A G H V W : Type} [Group A] [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
-theorem coinvFst_mk (ρ : Representation ℂ (G × H) V) (h : H) (v : V) :
-    coinvFst ρ h (Submodule.Quotient.mk v) = Submodule.Quotient.mk (ρ (1, h) v) := rfl
-
 def tensorFst (ω : Representation ℂ (G × H) V) (τ : Representation ℂ G W) : Representation ℂ (G × H) (V ⊗[ℂ] W) :=
   Representation.tprod ω (τ.comp (MonoidHom.fst G H))
 
@@ -752,52 +710,15 @@ def tensorFst (ω : Representation ℂ (G × H) V) (τ : Representation ℂ G W)
     (w : W) : tensorFst ω τ g (v ⊗ₜ w) = ω g v ⊗ₜ τ g.1 w := by
   simp [tensorFst]
 
-def charFst (H : Type) [Group H] (χ : A →* ℂˣ) : (MonoidHom.inl A H).range →* ℂˣ :=
-  χ.comp ((MonoidHom.fst A H).comp (Subgroup.subtype _))
-
-def coinvChar (χ : A →* ℂˣ) (ρ : Representation ℂ (A × H) V) :
-    Representation ℂ H (TwJacquet ρ (MonoidHom.inl A H).range (charFst H χ)) :=
-  twJacquet ρ _ _ (MonoidHom.inr A H) (by
-    rintro m ⟨_, g, rfl⟩
-    exact ⟨⟨g, by simp⟩, by simp [charFst]⟩)
-
-theorem coinvChar_mk (χ : A →* ℂˣ) (ρ : Representation ℂ (A × H) V) (h : H) (v : V) :
-    coinvChar χ ρ h (Submodule.Quotient.mk v) = Submodule.Quotient.mk (ρ (1, h) v) := rfl
-
-def prodSwapMid (A G H : Type) [Group A] [Group G] [Group H] : A × (G × H) ≃* G × (A × H) where
-  toFun x := (x.2.1, x.1, x.2.2)
-  invFun x := (x.2.1, x.1, x.2.2)
-  left_inv _ := rfl
-  right_inv _ := rfl
-  map_mul' _ _ := rfl
-
-def coinvCharMid (χ : A →* ℂˣ) (ρ : Representation ℂ (G × (A × H)) V) :
-    Representation ℂ (G × H) (TwJacquet (ρ.comp (prodSwapMid A G H).toMonoidHom) (MonoidHom.inl A (G × H)).range
-      (charFst (G × H) χ)) :=
-  coinvChar χ (ρ.comp (prodSwapMid A G H).toMonoidHom)
-
-theorem coinvCharMid_mk (χ : A →* ℂˣ) (ρ : Representation ℂ (G × (A × H)) V) (g : G × H) (v : V) :
-    coinvCharMid χ ρ g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (ρ (g.1, 1, g.2) v) := rfl
-
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 end Coinv
-
-namespace LeviDatum
-end LeviDatum
 
 section Compare
 open ValuativeRel
 variable {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 theorem twist_eq (χ : G →* ℂˣ) (ρ : Representation ℂ G V) : twist χ ρ = SmGL.twist ρ χ := rfl
-
-theorem charRep_eq (χ : G →* ℂˣ) : charRep χ = SmGL.ofChar χ := rfl
-
-theorem extProd_eq (π : Representation ℂ G V) (π' : Representation ℂ H W) : extProd π π' = SmGL.extTensor π π' := rfl
-
-theorem isSubquot_iff (π : Representation ℂ G W) (ρ : Representation ℂ G V) :
-    IsSubquot π ρ ↔ SmGL.IsSubquotient π ρ := Iff.rfl
 
 theorem hasFiniteLength_iff (ρ : Representation ℂ G V) : HasFiniteLength ρ ↔ SmGL.HasFiniteLength ρ := Iff.rfl
 
@@ -806,30 +727,12 @@ theorem isUnitarisable_iff (ρ : Representation ℂ G V) : IsUnitarisable ρ ↔
 theorem isSpherical_iff (ρ : Representation ℂ G V) (K : Subgroup G) : IsSpherical ρ K ↔ SmGL.IsSphericalFor ρ K :=
   Iff.rfl
 
-theorem smoothDual_eq [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representation ℂ G V) :
-    smoothDual ρ = SmGL.contra ρ := rfl
-
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 theorem unrChar_eq (z : ℂˣ) : unrChar (vZ k) z = SmGL.unrChar k z := MonoidHom.ext fun _ => rfl
 
 variable {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
   [Fintype n] [DecidableEq n]
-
-def parDatum (e : (Σ a, m a) ≃ n) : LeviDatum (GL n k) (SmGL.Levi k m) where
-  Q := SmGL.parab k e
-  s := SmGL.leviEmb k e
-  p := SmGL.leviProj k e
-  s_mem := SmGL.leviEmb_mem_parab k e
-  p_s := SmGL.leviProj_leviEmb k e
-  closed_Q := isClosed_blockQ (SmGL.blk e)
-  leviSection_continuous := SmGL.continuous_leviEmb k e
-  cont_p := continuous_pi fun a => continuous_toHomUnits (SmGL.diagBlock k e a)
-    (continuous_matrix fun _ _ => (continuous_entry _ _).comp continuous_subtype_val)
-
-theorem parDatum_Q (e : (Σ a, m a) ≃ n) : (parDatum k e).Q = blockQ k (SmGL.blk e) := rfl
-
-theorem parDatum_U (e : (Σ a, m a) ≃ n) : (parDatum k e).U = SmGL.unipRad k e := rfl
 
 end Compare
 
@@ -1029,10 +932,6 @@ def lineParUOp (n : ℕ) : LeviDatum (GU σ (n + 2)) (Lˣ × GU σ n) :=
 @[simp] theorem lineParabolicUnitary_leviSection_eq : (lineParU σ hσ hc n).s = lineSec σ hσ n := rfl
 
 @[simp] theorem lineOppositeParabolicUnitary_leviSection_eq : (lineParUOp σ hσ hc n).s = lineSec σ hσ n := rfl
-
-theorem lineParU_Q : (lineParU σ hσ hc n).Q = (parU σ (selfDualBlocks_line (n + 2))).Q := rfl
-
-theorem lineParUOp_Q : (lineParUOp σ hσ hc n).Q = (parUOp σ (selfDualBlocks_line (n + 2))).Q := rfl
 
 omit σ hσ hc
 

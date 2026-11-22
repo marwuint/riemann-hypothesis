@@ -28,9 +28,6 @@ def toL2 {X : Type*} [AddCommGroup X] [Module ℂ X] (L : X →ₗ[ℂ] (α → 
     rw [RingHom.id_apply, ← MemLp.toLp_const_smul]
     exact MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq (map_smul L c x))
 
-theorem to_square_integrable_apply {X : Type*} [AddCommGroup X] [Module ℂ X] (L : X →ₗ[ℂ] (α → ℂ))
-    (hL : ∀ w, MemLp (L w) 2 ν) (w : X) : toL2 L hL w = (hL w).toLp (L w) := rfl
-
 end L2
 
 section Sob

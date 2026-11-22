@@ -85,20 +85,6 @@ variable {Ψ : Type} [Fintype Ψ] {V : Ψ → Type} [∀ τ, AddCommGroup (V τ)
   {Dc : ComponentData II Ψ K J Ω V} {T T' : Set ((Σ k, J k) → ℂ)} {O' Lt : Type} [CommRing O'] [AddCommGroup Lt]
   [Module O' Lt]
 
-def IsPeriodAt (C : CuspDataOn Dc T O' Lt) (w : (Σ k, J k) → ℂ) {g : ℕ} (P : Lt → Fin g → ℂ)
-    (Hm : Matrix (Fin g) (Fin g) ℂ) (B : O' → Matrix (Fin g) (Fin g) ℂ) : Prop :=
-  (∀ (a : O') v, P (a • v) = (B a).mulVec (P v)) ∧
-  (∀ v, C.normSq w v = (P v ⬝ᵥ Hm.mulVec (star (P v))).re) ∧
-  (∀ v v', ((C.form v v' : ℤ) : ℝ) = (P v ⬝ᵥ Hm.mulVec (star (P v'))).im) ∧
-  ∃ pr : Ψ → (Fin g → ℂ) → Fin g → ℂ,
-    (∀ τ x, (∀ a, (B a).mulVec (pr τ x) = C.emb τ a • pr τ x) ∧
-      ∀ x', (∀ a, (B a).mulVec x' = C.emb τ a • x') → (x - pr τ x) ⬝ᵥ Hm.mulVec (star x') = 0) ∧
-    ∀ τ v v', star (C.lie w τ v) ⬝ᵥ C.lie w τ v' = pr τ (P v') ⬝ᵥ Hm.mulVec (star (pr τ (P v)))
-
-theorem isPeriodAt_restrict (C : CuspDataOn Dc T O' Lt) (h : T' ⊆ T) (w : (Σ k, J k) → ℂ) {g : ℕ} (P : Lt → Fin g → ℂ)
-    (Hm : Matrix (Fin g) (Fin g) ℂ) (B : O' → Matrix (Fin g) (Fin g) ℂ) :
-    IsPeriodAt (C.restrict h) w P Hm B ↔ IsPeriodAt C w P Hm B := Iff.rfl
-
 end Period
 
 end Origin
@@ -111,21 +97,7 @@ variable {Y : Model Xo c β} {S₀ : Finset ℕ} {Dc : ComponentData II (CMType 
   (Or : CptOrigin Y S₀ Dc Hd) {T T' : Set ((Σ k, J k) → ℂ)} {O' Lt : Type} [CommRing O'] [AddCommGroup Lt]
   [Module O' Lt]
 
-def CptOrigin.CuspTieAt (e : 𝓞 E ≃+* O') (C : CuspDataOn Dc T O' Lt) (z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X)
-    (w : (Σ k, J k) → ℂ) : Prop :=
-  ∃ (A : Over (Sp ℂ)) (_ : GrpObj A) (φ : A.left ⟶ Or.𝔐.t.G.left) (g : ℕ)
-    (u : HolUnif A (Or.𝔐.t.PP.L.pull φ) g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ)
-    (B : O' → Matrix (Fin g) (Fin g) ℂ) (α : Lt ≃+ u.Λ),
-    IsGrpPullback A Or.𝔐.t.G z φ ∧ u.IsAH Hm χ ∧
-    (∀ a x, (u.ex ((B (e a)).mulVec x)).left ≫ φ = (u.ex x).left ≫ φ ≫ (Or.𝔐.t.act.act a).left) ∧
-    (∀ τ a, ValAt Or.𝔐.ξ z (Or.𝔐.emb (Or.sm τ) a) (C.emb τ (e a))) ∧
-    Origin.IsPeriodAt C w (fun v => (α v : Fin g → ℂ)) Hm B
-
 variable {Or}
-
-theorem CptOrigin.cuspTieAt_restrict (e : 𝓞 E ≃+* O') (C : CuspDataOn Dc T O' Lt) (h : T' ⊆ T)
-    (z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X) (w : (Σ k, J k) → ℂ) :
-    Or.CuspTieAt e (C.restrict h) z w ↔ Or.CuspTieAt e C z w := Iff.rfl
 
 end Comparison₂
 

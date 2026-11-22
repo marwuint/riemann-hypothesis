@@ -92,8 +92,6 @@ def Conclusion3Family : Prop := ∀ Cg cb Cu cT CT C0 : ℝ,
 
 def FamilyNonGenericLocalBound (CN : ℝ) : Prop := Conclusion1Family Fm CN
 
-def FamilyNonIdentityTermSummability : Prop := Conclusion2Family Fm ∧ Conclusion3Family Fm
-
 end Family
 
 end Formalism.MainNotions.NonGenericAndKTwoTheorems

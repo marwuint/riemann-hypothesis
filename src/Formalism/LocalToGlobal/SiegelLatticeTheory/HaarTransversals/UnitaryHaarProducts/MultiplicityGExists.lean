@@ -277,8 +277,6 @@ def sA (hE : Module.finrank F E = 2) : HA (AF F) σ J ≃ₜ* HA (Ainf F) σ J �
       exact ((MulEquiv.ofBijective (splitA σ J) ⟨splitA_injective σ J b,
         splitA_surjective σ J b⟩).toEquiv.toHomeomorphOfContinuousOpen (splitA_cont σ J b) ho).symm.continuous }
 
-theorem sA_apply (hE : Module.finrank F E = 2) (g : HA (AF F) σ J) : sA σ J hE g = splitA σ J g := rfl
-
 end Iso
 
 end Formalism.L2.SG.Pf.Meas
@@ -445,9 +443,6 @@ def eFin : I.Gf ≃ₜ* HA (Af I.F) I.cm.sig I.J where
     rfl
   continuous_toFun := continuous_snd.comp ((Phi I hb).continuous.comp (continuous_const.prodMk continuous_id))
   continuous_invFun := continuous_snd.comp ((Phi I hb).symm.continuous.comp (continuous_const.prodMk continuous_id))
-
-theorem eInf_coe : (eInf I hb : I.Ginf → _) = toInfI I hb := rfl
-theorem eFin_coe : (eFin I hb : I.Gf → _) = toFinI I hb := rfl
 
 theorem Phi_eq : (Phi I hb : I.GA → _) = Prod.map (eInf I hb) (eFin I hb) := by
   funext p

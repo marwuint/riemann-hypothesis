@@ -21,13 +21,6 @@ section General
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
-theorem closedSplit_iff (T : CDVR) (G : SAB H (Sp T.V)) :
-    ClosedSplit T G ↔ ∃ S : SplitExt (Sp (IsLocalRing.ResidueField T.V)),
-      S.IsGt ((Over.pullback (spMap (IsLocalRing.residue T.V))).obj G.G) := Iff.rfl
-
-theorem hasUnif_iff (T : CDVR) (G : SAB H (Sp T.V)) :
-    HasUnif T G ↔ ∃ P : PELUnif (IsLocalRing.maximalIdeal T.V) G, P.TorsionIso := Iff.rfl
-
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
 end General

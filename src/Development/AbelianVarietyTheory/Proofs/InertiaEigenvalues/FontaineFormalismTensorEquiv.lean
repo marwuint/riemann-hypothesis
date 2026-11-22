@@ -134,11 +134,6 @@ theorem prod_mem {ρ : Representation LL G V} {ρ' : Representation LL G V'}
   intro g
   rw [act_prod, (CrystallineSubrepresentation.mem_Dcris PD ρ x).1 x.2, (CrystallineSubrepresentation.mem_Dcris PD ρ' y).1 y.2]
 
-theorem mulDcris_tmul {ρ : Representation LL G V} {ρ' : Representation LL G V'}
-    (x : ↥(Dcris PD ρ)) (y : ↥(Dcris PD ρ')) :
-    TensorMultiplication.mulDcris PD ρ ρ' (x ⊗ₜ y) =
-      CrystallineSubrepresentation.prodB (LL := LL) ((x : V ⊗[Qp] B) ⊗ₜ[LL] (y : V' ⊗[Qp] B)) := rfl
-
 theorem unit_eq : Dcris PD (Representation.trivial LL G LL) =
       LinearMap.range (AlgebraTensorModule.map (LinearMap.id : LL →ₗ[LL] LL)
         (IsScalarTower.toAlgHom Qp K₀ B).toLinearMap) := by
@@ -215,9 +210,6 @@ def actKK (τ : K₀ →ₐ[Qp] LL) : K₀ ⊗[Qp] K₀ →+ (V ⊗[Qp] B →ₗ
       rw [smul_assoc, smul_comm r, ← tmul_smul, ← smul_mul_assoc, Algebra.smul_def r c, map_mul,
         ← IsScalarTower.algebraMap_apply, ← Algebra.smul_def])
 
-theorem actKK_tmul (τ : K₀ →ₐ[Qp] LL) (a c : K₀) (x : V ⊗[Qp] B) :
-    actKK LL V τ (a ⊗ₜ c) x = τ a • mB LL (algebraMap K₀ B c) x := rfl
-
 theorem mem_DcrisL (ρ : Representation LL G V) (τ : K₀ →ₐ[Qp] LL) (x : V ⊗[Qp] B) :
     x ∈ DcrisL PD ρ τ ↔ x ∈ Dcris PD ρ ∧ ∀ c : K₀, mB LL (algebraMap K₀ B c) x = τ c • x := by
   simp [DcrisL, Submodule.mem_iInf, sub_eq_zero, mulVB_eq]
@@ -227,8 +219,6 @@ end Tools
 theorem inv_iff : CrystallineSubrepresentation.InvariantsEq PD ↔ TensorMultiplication.InvB PD := Iff.rfl
 
 variable (LL : Type) [Field LL] [Algebra Qp LL]
-
-theorem comparison_iff : CrystallineSubrepresentation.ComparisonBij PD LL ↔ TensorMultiplication.Comparison PD LL := Iff.rfl
 
 theorem sub_iff : CrystallineSubrepresentation.SubCrys PD LL ↔ TensorMultiplication.CrysSub PD LL := Iff.rfl
 

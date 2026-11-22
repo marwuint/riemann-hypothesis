@@ -19,8 +19,6 @@ variable {D : Formalism.BasicNotions.D7} {E : Type} [Field E] [NumberField E] [I
 
 def copy (U : Unf Xo c σ r) : Formalism.L2.PjFree.Unf Xo c σ r := ⟨U.Comp, U.X, U.un⟩
 
-theorem isUnf_copy (U : Unf Xo c σ r) : Formalism.L2.PjFree.IsUnf (copy U) ↔ IsUnf U := Iff.rfl
-
 theorem invFun_relab_injective (c : Coeff l) (σ : c.F →+* ℂ) :
     Function.Injective (Function.invFun (relab (E := E) c σ)) := by
   have hi : Function.Injective (relab (E := E) c σ) := by

@@ -43,9 +43,6 @@ private def EB {n : ℕ} (A C : BR k n) : Prop := Embeds A.ρ C.ρ
 private theorem EB.trans {n : ℕ} {A C D : BR k n} (h : EB A C) (h' : EB C D) : EB A D := Embeds.trans h h'
 
 unseal GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.one in
-private theorem EB_pr {p q N : ℕ} {x : Fin p → IrrGL k} {y : Fin q → IrrGL k} (hx : ∑ a, (x a).1 = N)
-    (hy : ∑ a, (y a).1 = N) : EB (pr x hx) (pr y hy) ↔ Embeds (prodIrr x hx) (prodIrr y hy) := Iff.rfl
-
 attribute [irreducible] EB
 
 private def PE {p q : ℕ} (x : Fin p → IrrGL k) (y : Fin q → IrrGL k) : Prop :=
@@ -63,4 +60,3 @@ private theorem exists_cls {c : ℕ} (w : Fin c → IrrGL k) (hi : (prodIrr w rf
     .of_injective φ.symm.toIntertwiningMap φ.symm.toLinearEquiv.injective⟩
 
 end
-

@@ -102,8 +102,6 @@ def wLoc : HA R σ Q :=
 
 theorem mat_nLoc (b : HermR R σ n) : matR R σ (nLoc R σ hQ b) = StdUnn.blk4 1 b.1 0 1 := rfl
 
-theorem mat_wLoc : matR R σ (wLoc R σ hQ) = StdUnn.blk4 0 1 (-1) 0 := rfl
-
 @[simp] theorem nLoc_zero : nLoc R σ hQ (0 : HermR R σ n) = 1 :=
   ext_matR (by rw [mat_nLoc, matR_one]; simpa using StdUnn.Model.block_matrix_one)
 
@@ -151,9 +149,6 @@ def leviUp : upperParabolic R σ Q →* GL (Fin n) (R ⊗[F] E) :=
 def aUp : upperParabolic R σ Q →* (R ⊗[F] E)ˣ := Matrix.GeneralLinearGroup.det.comp (leviUp R σ Q)
 
 variable {R σ Q}
-
-theorem coe_leviUp (p : upperParabolic R σ Q) : (leviUp R σ Q p : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = StdUnn.blkA (matR R σ p.1) :=
-  rfl
 
 theorem coe_aUp (p : upperParabolic R σ Q) : (aUp R σ Q p : R ⊗[F] E) = (StdUnn.blkA (matR R σ p.1)).det := rfl
 
@@ -320,9 +315,6 @@ abbrev IsIwasawaUp : Prop := IsIwasawa (ν.comp (aUp R σ Q)) K
 
 def hgtUp : HA R σ Q → ℝ≥0 := iwAbs (ν.comp (aUp R σ Q)) K
 
-def psUp [TopologicalSpace R] (μ : (R ⊗[F] E)ˣ →* Circle) (s : ℂ) : Submodule ℂ (HA R σ Q → ℂ) :=
-  indSpace (ν.comp (aUp R σ Q)) K (μ.comp (aUp R σ Q)) (s + (n : ℂ) / 2)
-
 def flatUp (Φ : HA R σ Q → ℂ) (s₀ s : ℂ) : HA R σ Q → ℂ := flatSec (ν.comp (aUp R σ Q)) K Φ s₀ s
 
 def sphUp (s : ℂ) : HA R σ Q → ℂ := fun g => npow (hgtUp R σ Q ν K g) (s + (n : ℂ) / 2)
@@ -339,27 +331,12 @@ def IntwConv [TopologicalSpace R] (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (db : Measur
 
 variable {R σ Q ν K}
 
-theorem flatUp_apply (Φ : HA R σ Q → ℂ) (s₀ s : ℂ) (g : HA R σ Q) :
-    flatUp R σ Q ν K Φ s₀ s g = Φ g * npow (hgtUp R σ Q ν K g) (s - s₀) := rfl
-
 @[simp] theorem flatUp_self (Φ : HA R σ Q → ℂ) (s₀ : ℂ) : flatUp R σ Q ν K Φ s₀ s₀ = Φ := flatSec_self Φ s₀
 
 theorem hgtUp_mul (h : IsIwasawaUp R σ Q ν K) (p : upperParabolic R σ Q) {k : HA R σ Q} (hk : k ∈ K) :
     hgtUp R σ Q ν K (p * k) = ν (aUp R σ Q p) := h.iwAbs_mul p hk
 
 variable [TopologicalSpace R]
-
-theorem mem_psUp {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ} {Φ : HA R σ Q → ℂ} : Φ ∈ psUp R σ Q ν K μ s ↔
-    (∀ (p : upperParabolic R σ Q) (g : HA R σ Q),
-      Φ (p * g) = μ (aUp R σ Q p) * npow (ν (aUp R σ Q p)) (s + (n : ℂ) / 2) * Φ g) ∧ Continuous Φ ∧ IsKFinite K Φ :=
-  Iff.rfl
-
-theorem intwLoc_eq (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (db : Measure (HermR R σ n)) (f : ℂ → HA R σ Q → ℂ) (s : ℂ)
-    (g : HA R σ Q) : intwLoc R σ hQ db f s g = ∫ b, f s (wLoc R σ hQ * nLoc R σ hQ b * g) ∂db := rfl
-
-theorem intwConv_iff (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (db : Measure (HermR R σ n)) (f : ℂ → HA R σ Q → ℂ) (s : ℂ)
-    (g : HA R σ Q) :
-    IntwConv R σ hQ db f s g ↔ Integrable (fun b => f s (wLoc R σ hQ * nLoc R σ hQ b * g)) db := Iff.rfl
 
 variable [IsTopologicalRing R] [FiniteDimensional F E] [T2Space R]
 
@@ -483,10 +460,6 @@ variable (D : D7) (n : ℕ)
 
 theorem Jst_eq : StdUnn.Jst D n = StdUnn.blk4 0 1 (-1) 0 := rfl
 
-theorem upperParabolic_adele : upperParabolic (AF D.host.F) D.sp.cm.sig (StdUnn.Jst D n) = StdUnn.P D n := rfl
-
-theorem KUpAd_adele : KUpAd D.sp.cm.sig (StdUnn.Jst D n) = StdUnn.K D n := rfl
-
 variable {D n} in
 
 theorem matR_adele (g : StdUnn.G D n) : matR (AF D.host.F) D.sp.cm.sig g = StdUnn.mat g := rfl
@@ -525,8 +498,6 @@ variable {D n}
 @[simp] theorem coe_hermEquiv (b : ResAniso.hermN D n) : (hermEquiv D n b).1 = b.1 := rfl
 
 @[simp] theorem coe_hermEquiv_symm (b : HermR (AF D.host.F) D.sp.cm.sig n) : ((hermEquiv D n).symm b).1 = b.1 := rfl
-
-theorem hermEquiv_eq (b : ResAniso.hermN D n) : hermEquiv D n b = hermAddEquiv D n b := rfl
 
 end Datum
 

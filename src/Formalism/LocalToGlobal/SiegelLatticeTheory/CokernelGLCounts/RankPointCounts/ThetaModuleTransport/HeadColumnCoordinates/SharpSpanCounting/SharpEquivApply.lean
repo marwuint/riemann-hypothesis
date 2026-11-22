@@ -180,10 +180,6 @@ def ddEquiv {r : ℕ} (t : Term V M r) (hG : IsUnit (gramH H (H.MMfam t)).det) :
     DDt H t ≃ₗ[M.L.O] (Fin (r + 1) ⊕ Fin (r + 1) → M.L.O) ⧸ relSub H t :=
   Submodule.Quotient.equiv _ _ (sharpEquiv H t hG) (map_sharp_MMo H t hG)
 
-theorem ddEquiv_mk {r : ℕ} (t : Term V M r) (hG : IsUnit (gramH H (H.MMfam t)).det)
-    (u : ↥(MMsharp H t)) :
-    ddEquiv H t hG (ddMk H t u) = Submodule.Quotient.mk (sharpEquiv H t hG u) := rfl
-
 end Sharp
 
 end Formalism.L2.SG.LocalCountModules.LocCntCommon

@@ -75,10 +75,6 @@ def sqn {N : ℕ} (A : WeightedAtlas n Y ι La) (la : La) (w : Fin N → ι → 
 def leviAt (A : WeightedAtlas n Y ι La) (i : ι) (f : Y → ℝ) (y : Y) (ξ : Fin n → ℂ) : ℝ :=
   (leviV n (fun v => ((f ((A.chart i).symm v) : ℝ) : ℂ)) (A.chart i y) ξ).re
 
-def hessAt (A : WeightedAtlas n Y ι La) (i : ι) (f : Y → ℝ) (y : Y) :
-    Matrix (Fin n) (Fin n) ℂ :=
-  cHess n (fun v => ((f ((A.chart i).symm v) : ℝ) : ℂ)) (A.chart i y)
-
 def Pos (A : WeightedAtlas n Y ι La) (la : La) (ps : Y → ℝ) : Prop :=
   ∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ,
     0 ≤ A.leviAt i (fun x => A.ph la i x + ps x) y ξ

@@ -150,10 +150,6 @@ def asModuleMap {π : Representation O G M} {π' : Representation O G M'} (f : M
   Representation.IntertwiningMap.equivLinearMapAsModule π π'
     { toLinearMap := f, isIntertwining' := fun g => LinearMap.ext (hf g) }
 
-theorem asModuleMap_apply {π : Representation O G M} {π' : Representation O G M'} (f : M →ₗ[O] M')
-    (hf : ∀ g x, f (π g x) = π' g (f x)) (x : π.asModule) :
-    π'.asModuleEquiv (asModuleMap f hf x) = f (π.asModuleEquiv x) := rfl
-
 def equivAsModule {π : Representation O G M} {π' : Representation O G M'} (e : M ≃ₗ[O] M')
     (he : ∀ g x, e (π g x) = π' g (e x)) : π.asModule ≃ₗ[MonoidAlgebra O G] π'.asModule :=
   LinearEquiv.ofBijective (asModuleMap e.toLinearMap he) e.bijective

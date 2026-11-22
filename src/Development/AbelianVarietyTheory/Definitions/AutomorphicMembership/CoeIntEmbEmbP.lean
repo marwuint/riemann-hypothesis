@@ -22,11 +22,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RayEv
 
-theorem mapLinear_coe {R S O : Type} [CommRing R] [CommRing S] [CommRing O] (f : R →+* S) {G B : Over (Sp R)}
-    [GrpObj G] [IsCommMonObj G] [GrpObj B] [IsCommMonObj B] {a : OAct O G} {b : OAct O B} {q : G ⟶ B}
-    (hq : IsLinearHom a b q) (σ : O →+* S) (v : LieEig f a σ) :
-    Lie.mapLinear (isLinearHom_pull f hq) v.1 = (eigMap f hq σ v).1 := rfl
-
 section Point
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}

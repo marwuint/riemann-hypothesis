@@ -132,8 +132,6 @@ abbrev Fn : Type := Y.X.functionField
 
 instance algebraFn : Algebra F Y.Fn := (Cartier.constFn Y.str).toAlgebra
 
-theorem algebraMap_Fn : algebraMap F Y.Fn = Cartier.constFn Y.str := rfl
-
 instance isScalarTower_Fn : IsScalarTower F Γ(Y.X, ⊤) Y.Fn :=
   .of_algebraMap_eq fun a => congrArg (fnOf ⊤ trivial) (LB.resG_self (X := Y.X) le_top _)
 
@@ -221,8 +219,6 @@ section LinSys
 
 variable {Δ : Y.Dv} {n : ℕ} (b : Fin n → Y.H0 Δ)
 
-abbrev linSys : LinSys F := Y.sysOf (isLB_toLB Δ) fun j => sec (b j)
-
 end LinSys
 
 section Hyperplane
@@ -279,8 +275,6 @@ instance geometricallyIntegral_id_str : GeometricallyIntegral (𝟙 _ ≫ PSpace
 def proj : Var F := Var.ofClosedImmersion (𝟙 (PSpace F n)) n
 
 instance : Inhabited (Var F) := ⟨proj F 0⟩
-
-theorem proj_dim : (proj F n).dim = n := rfl
 
 instance isIso_proj_ι : IsIso (proj F n).ι :=
   have : IsIso ((Var.isoOfClosedImmersion (𝟙 (PSpace F n)) n).hom ≫ (proj F n).ι) :=

@@ -31,18 +31,6 @@ section Example
 
 variable (F E)
 
-def hypPlaneSesq : (Fin 2 → E) →ₛₗ[conjHom F E] (Fin 2 → E) →ₗ[E] E :=
-  LinearMap.mk₂'ₛₗ (conjHom F E) (RingHom.id E)
-    (fun x y => conj F E (x 0) * y 1 + conj F E (x 1) * y 0)
-    (by intros; simp only [Pi.add_apply, map_add]; ring)
-    (by intros; simp only [Pi.smul_apply, smul_eq_mul, map_mul]
-        rw [show ∀ c, conjHom F E c = conj F E c from fun _ => rfl]; ring)
-    (by intros; simp only [Pi.add_apply]; ring)
-    (by intros; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring)
-
-theorem hypPlaneSesq_apply (x y : Fin 2 → E) :
-    hypPlaneSesq F E x y = conj F E (x 0) * y 1 + conj F E (x 1) * y 0 := rfl
-
 end Example
 
 end UnitaryReduction

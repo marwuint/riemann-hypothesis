@@ -31,32 +31,6 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
-def archKerEquiv (w : InfinitePlace F) : GArch σ J w × (projArch σ J w).ker ≃ₜ* GAd σ J where
-  toFun p := embArch σ J w p.1 * p.2
-  invFun x := (projArch σ J w x, ⟨(embArch σ J w (projArch σ J w x))⁻¹ * x, by
-    rw [MonoidHom.mem_ker, map_mul, map_inv, projArch_embArch_self, inv_mul_cancel]⟩)
-  left_inv p := by
-    obtain ⟨a, z, hz⟩ := p
-    have hz' : projArch σ J w z = 1 := hz
-    refine Prod.ext ?_ (Subtype.ext ?_)
-    · simp [hz']
-    · simp [hz']
-  right_inv x := by simp
-  map_mul' p q := by
-    obtain ⟨a, z, hz⟩ := p
-    obtain ⟨a', z', hz'⟩ := q
-    have hc := (commute_embArch σ J a' (g := z) hz).eq
-    simp only [Prod.mk_mul_mk, Subgroup.coe_mul, map_mul]
-    simp only [mul_assoc]
-    rw [← mul_assoc (embArch σ J w a'), hc, mul_assoc]
-  continuous_toFun := ((continuous_embArch σ J w).comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)
-  continuous_invFun := by
-    refine (continuous_projArch σ J w).prodMk (Continuous.subtype_mk ?_ _)
-    exact ((continuous_embArch σ J w).comp (continuous_projArch σ J w)).inv.mul continuous_id
-
-theorem archKerEquiv_apply (w : InfinitePlace F) (p : GArch σ J w × (projArch σ J w).ker) :
-    archKerEquiv σ J w p = embArch σ J w p.1 * p.2 := rfl
-
 variable {σ J}
 
 theorem isMulCommutative_cent_projArch_ratEmb {γ : GRat σ J} (hγ : IsRegSS γ.1.1) (w : InfinitePlace F) :

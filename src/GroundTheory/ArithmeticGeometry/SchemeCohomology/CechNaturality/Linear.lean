@@ -30,9 +30,6 @@ noncomputable def H.endRingHom (G : Sheaf J AddCommGrpCat.{w}) (n : ℕ) :
     ext x
     exact Sheaf.H.map_add_apply f g x
 
-lemma H.endRingHom_apply (G : Sheaf J AddCommGrpCat.{w}) (n : ℕ) (f : End G)
-    (x : Sheaf.H.{w'} G n) : H.endRingHom G n f x = Sheaf.H.map f n x := rfl
-
 end EndAction
 
 section Scalar
@@ -109,9 +106,6 @@ noncomputable def smulAbRingHom (F : X.Modules) : Γ(X, ⊤) →+* End (modulesA
   map_add' r s := by
     rw [show smulHom F (r + s) = smulHom F r + smulHom F s from (smulRingHom F).map_add r s]
     exact (SheafOfModules.toSheaf X.ringCatSheaf).map_add
-
-lemma smulAbRingHom_apply (F : X.Modules) (r : Γ(X, ⊤)) :
-    smulAbRingHom F r = (SheafOfModules.toSheaf X.ringCatSheaf).map (smulHom F r) := rfl
 
 noncomputable abbrev modulesAbMap {F G : X.Modules} (φ : F ⟶ G) : modulesAb F ⟶ modulesAb G :=
   (SheafOfModules.toSheaf X.ringCatSheaf).map φ

@@ -181,11 +181,6 @@ section Fld
 
 variable {Y : Model Xo c β} {K : Type} [Field K] {b : O →+* K} {a : ArcIn Dw l β K b} {χ : Sp (PowerSeries K) ⟶ Y.X}
 
-theorem lieImg_iff_isLieImage (W : Wit Y a χ) (ν : Out.GtPt a.D₀ (epsR K)) (v : epsR (PowerSeries K) ⟶ W.t.G) :
-    LieImg W ν v ↔ IsLieImage W ν v := Iff.rfl
-
-theorem gtTanR_iff_gtTan (ν : Out.GtPt a.D₀ (epsR K)) : GtTanR ν ↔ GtTan (a := a) ν := Iff.rfl
-
 theorem IsArcFr.isFramedPoint_changed_by_letters [Algebra c.F K] [Algebra c.F (ArcS Dw K)] {W : Wit Y a χ}
     {e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K)} {th : a.D₀.P.L.Sec} {ζ : ArcS Dw K}
     {y₀ y : FrPt Xo c (ArcS Dw K)} (h : IsArcFr W e th (arcι Dw K) y₀) (hc : GlobalTheory.Frames.FrChg (letM Dw K) ζ y₀ y)

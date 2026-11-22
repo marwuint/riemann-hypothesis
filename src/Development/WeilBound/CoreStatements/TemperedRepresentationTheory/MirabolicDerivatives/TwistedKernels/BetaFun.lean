@@ -21,10 +21,6 @@ def thetaA (ψ : AddChar k Circle) {n : ℕ} (a : Fin n → k) : MirUin k n →*
 
 variable {k} [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-def betaFun (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
-    (τ : Representation ℂ (Mir k (n + 1)) V) (v : V) : Mir k (n + 1) → TwJacquet τ (MirUin k (n + 1)) (mirChar k ψ n) :=
-  fun g => Submodule.Quotient.mk (τ g v)
-
 end GlobalTheory.BZMir
 
 end

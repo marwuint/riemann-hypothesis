@@ -16,14 +16,6 @@ section General
 
 variable (D : D7) (u : D.what₂.Word)
 
-theorem vGam_eq (w : D.what₂.places.Pl) : vGam D u w = WeilJacquetShalikaLaw.vDG D u w := rfl
-
-theorem colGe_iff (w : D.what₂.places.Pl) (x : ((D.fm u).lat 0).V) (s : ℝ) :
-    ColGe D u w x s ↔ WeilJacquetShalikaLaw.ColGe0 D u w x s := Iff.rfl
-
-theorem nprime_iff (L : SizeData₂ D) : DV.NprimeDef D L ↔
-    ∀ u, (D.div.Nu u).L = shift D u L.supp (fun w => ⌊DV.ur D w (L.sg u w)⌋) (L.NuLat u) := Iff.rfl
-
 variable {D}
 
 end General

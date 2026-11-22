@@ -419,8 +419,6 @@ def dHat : Derivation K (Ahat O K l e) (Ahat O K l e) := complDer _ (derAl O K l
 
 def dHatE : Derivation K (AhatE O K l e) (AhatE O K l e) := awayDer (dHat O K l e) _
 
-def NHat : Derivation K (Ahat O K l e) (Ahat O K l e) := uhat O K l e • dHat O K l e
-
 def NHatE : Derivation K (AhatE O K l e) (AhatE O K l e) :=
   algebraMap (Ahat O K l e) (AhatE O K l e) (uhat O K l e) • dHatE O K l e
 

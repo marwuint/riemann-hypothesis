@@ -1136,9 +1136,6 @@ def HM {LL : Type} [Field LL] {d : ℕ} (sol : Fin d → ℕ → Fin d → LL) :
     Matrix (Fin d) (Fin d) (PowerSeries LL) :=
   Matrix.of fun m' k' => PowerSeries.mk fun r' => sol k' r' m'
 
-theorem HM_apply {LL : Type} [Field LL] {d : ℕ} (sol : Fin d → ℕ → Fin d → LL) (m' k' : Fin d) :
-    HM sol m' k' = PowerSeries.mk fun r' => sol k' r' m' := rfl
-
 variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
     {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]

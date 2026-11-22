@@ -32,6 +32,4 @@ def toInt (h : OTied D T C) : D.what₂.O →+* 𝓞 (fracO D) where
   map_zero' := by ext; simp
   map_add' a b := by ext; exact map_add D.what₂.OtoLL a b
 
-theorem toInt_val (h : OTied D T C) (y : D.what₂.O) : ((toInt h y : fracO D) : D.what₂.LL) = D.what₂.OtoLL y := rfl
-
 end GlobalTheory.GeoModel

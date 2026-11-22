@@ -50,10 +50,6 @@ theorem expLeMono : ExpLeMono := by
   rw [e1, mul_smul]
   exact Submodule.smul_mem _ _ hmx
 
-noncomputable def ldDet : MvPolynomial (Fin 2 × Fin 2) ℤ := X (0, 0) * X (1, 1) - X (0, 1) * X (1, 0)
-
-theorem rank_two_vector_def (w y i : ℕ) : vec2 w y i = X (0, 0) ^ (w - y - i) * X (1, 0) ^ i * ldDet ^ y := rfl
-
 theorem ld_boxes_le (p w i q : ℕ) (lam2 tau : Fin q → ℕ) (htau : tau ∈ shapes p w i lam2) (c : ℤ) :
     boxesOfContent lam2 tau c ≤ p := by
   simp only [shapes, Finset.mem_filter, Fintype.mem_piFinset] at htau

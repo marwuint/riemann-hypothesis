@@ -32,12 +32,4 @@ def IsOriginChart {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] {d : ℕ}
     (∀ j, ψ (zR m j) = jetOfSeries m (F.F j)) ∧
     lift (algOverHom ψ₀ ≫ x m) (algOverHom ψ₁ ≫ x m) ≫ μ[G] = algOverHom ψ ≫ x m)
 
-def mulSeries {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) (n : ℕ) : Pt R 1 d :=
-  Nat.rec (motive := fun _ => Pt R 1 d) 0 (fun _ a => F.add a (pt R d 0)) n
-
-theorem mulSeries_zero {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) : mulSeries F 0 = 0 := rfl
-
-theorem mulSeries_succ {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) (n : ℕ) :
-    mulSeries F (n + 1) = F.add (mulSeries F n) (pt R d 0) := rfl
-
 end GlobalTheory.IndefiniteRowSideFullHecke.OriginChartMultiplication

@@ -30,8 +30,6 @@ theorem rho_apply (ε : Fin g' ≃ Fin g) (z : Fin g → ℂ) : rho ε z = z ∘
 noncomputable def rhoM (ε : Fin g' ≃ Fin g) : (Fin g → ℂ) ≃ᵐ (Fin g' → ℂ) :=
   (MeasurableEquiv.piCongrLeft (fun _ => ℂ) ε).symm
 
-theorem rhoM_eq (ε : Fin g' ≃ Fin g) : ⇑(rhoM ε) = ⇑(rho ε) := rfl
-
 end GlobalTheory.FrameEquiv.Reindex
 
 namespace GlobalTheory.FrameEquiv

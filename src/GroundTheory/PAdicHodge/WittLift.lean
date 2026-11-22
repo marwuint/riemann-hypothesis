@@ -84,9 +84,6 @@ noncomputable def resOp (A : Matrix ι ι (𝕎 k)) (e : ℕ) : (ι → k) →+ 
     funext i
     simp [add_pow_char_pow]
 
-theorem resOp_apply (A : Matrix ι ι (𝕎 k)) (x : ι → k) :
-    resOp A e x = A.map (fun a => a.coeff 0) *ᵥ (fun i => x i ^ p ^ e) := rfl
-
 variable [PerfectRing k p]
 
 end Matrix

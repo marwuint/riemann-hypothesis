@@ -10,13 +10,6 @@ variable {D : D7} {c : LatCmp D} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.w
   {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
   {I : CmpJIn Tw u μ w h Lv}
 
-def tieAt (X : LabIn I) (H : CmpJHyp c I) (Gt : GatTies D) :
-    TieAt c Tw u μ w h (chainAt H Gt) Formalism.L2.G.RelativeIndexFlags.blockRationality_holds Gt where
-  lab := labAt X H
-  inp := I
-  hyp := H
-  ch := (kaAt X H Gt).cmp_K
-
 variable {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Dx : DivX D} {cX : ExtraC}
 
 structure ChFam (E : Extra D L hT Gi Gl K Dx cX) where
@@ -52,18 +45,6 @@ def ChFam.tied {E : Extra D L hT Gi Gl K Dx cX} (F : ChFam E) (e0 : ∀ u, E.tw.
   LC := F.LC
   ker := fun μ hU u w hg hq => F.ka μ hU u w hg hq
   twisted_e0_at_mu0_eq_eMu0 := e0
-
-theorem ChFam.tied_Lv {E : Extra D L hT Gi Gl K Dx cX} (F : ChFam E) (e0) (μ : D.what₂.Tup) (u : D.what₂.Word) (w : D.what₂.places.Pl)
-    (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
-    ((Pk.reW Gl (F.tied e0).LC).Yt μ).Lv u w hg = F.Lv μ u w hg := rfl
-
-theorem ChFam.tied_Ch {E : Extra D L hT Gi Gl K Dx cX} (F : ChFam E) (e0) (μ : D.what₂.Tup) (u : D.what₂.Word) (w : D.what₂.places.Pl)
-    (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
-    ((Pk.reW Gl (F.tied e0).LC).Yt μ).Ch u w hg = F.ch μ u w hg := rfl
-
-theorem ChFam.tied_cls {E : Extra D L hT Gi Gl K Dx cX} (F : ChFam E) (e0) (μ : D.what₂.Tup) (hU : DV.Used D μ) (u : D.what₂.Word)
-    (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (hq : D.what₂.places.resChar w ∉ Dx.Qp μ) :
-    ((F.tied e0).ker μ hU u w hg hq).cls = clsAt (F.X μ hU u w hg hq) (F.H μ hU u w hg hq) := rfl
 
 end Formalism.MainNotions.G.KAat
 

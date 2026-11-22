@@ -1981,10 +1981,6 @@ theorem padM_mulVec_snoc {R : Type} [CommRing R] (A : Matrix (Fin n) (Fin n) R) 
 def extG : GLG E n SG →* GLG E (n + 1) SG :=
   MonoidHom.pi fun w => (Units.map (padM (𝓞 E ⧸ w.1.asIdeal) n)).comp (Pi.evalMonoidHom _ w)
 
-theorem extG_apply (h : GLG E n SG) (w : SG) :
-    ((extG h w : GL (Fin (n + 1)) (𝓞 E ⧸ w.1.asIdeal)) : Matrix _ _ _) =
-      padM (𝓞 E ⧸ w.1.asIdeal) n (h w).1 := rfl
-
 theorem tilN_gmap (g : Sp E n ≃ₗ[E] Sp E n) (N : Submodule (𝓞 E) (Sp E n)) :
     tilN (gmap g N) = gmap (extE g) (tilN N) := by
   have h1 : ∀ y, extE g (incl E n y) = incl E n (g y) := fun y =>

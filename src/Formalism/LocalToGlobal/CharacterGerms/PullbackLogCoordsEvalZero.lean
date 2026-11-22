@@ -25,8 +25,6 @@ variable (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o))
 
 def Mu : WVO I → Fin dd → C := fun w i => (p w.1).u w.2.1 w.2.2 i
 
-theorem expAll_eq (x : Fin dd) : expAll Y p x = MvPowerSeries.subst (linS (Mu Y p)) (un1 (Y.ex x)) := rfl
-
 theorem cc_exZero (q : Fin 2 × Fin dd) : MvPowerSeries.constantCoeff (exZero Y q) = 0 := by
   unfold exZero
   split_ifs

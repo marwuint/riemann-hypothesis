@@ -22,9 +22,6 @@ def gmOf (C : CommRingCat.{0}) : Additive Cˣ →+ (onRings Gm).obj C :=
     ((AddEquiv.ulift.{0, 1}.symm : Additive Γ(Spec C, ⊤)ˣ ≃+ ULift.{1} (Additive Γ(Spec C, ⊤)ˣ)).toAddMonoidHom.comp
       (MulEquiv.toAdditive (Units.mapEquiv (gsi C).symm.toMulEquiv)).toAddMonoidHom)
 
-theorem gmOf_apply (C : CommRingCat.{0}) (a : Additive Cˣ) :
-    gmOf C a = ofRings.sec unitsF (Spec C) (ULift.up (Additive.ofMul (Units.mapEquiv (gsi C).symm.toMulEquiv a.toMul))) := rfl
-
 theorem gmOf_bijective (C : CommRingCat.{0}) : Function.Bijective (gmOf C) := by
   have h := GlobalTheory.T.bijective_multiplicativeGroup_sections_units (Spec C)
   have h2 : Function.Bijective (fun a : Additive Cˣ =>

@@ -91,15 +91,6 @@ def incl (d : ℕ) : (Vec D d).Hom (Vec D (d + 1)) where
     change Fin.snoc (α := fun _ => _) (f ∘ x.1.2) 0 = f ∘ Fin.snoc (α := fun _ => _) x.1.2 0
     rw [comp_snoc', map_zero]))
 
-theorem incl_rel (d : ℕ) : (incl D d).Rel := by
-  intro A _ x y h
-  obtain ⟨h1, u, h2⟩ := h
-  refine ⟨h1, u, funext fun j => ?_⟩
-  change Fin.snoc (α := fun _ => A) x.1.2 0 j = (u : A) * Fin.snoc (α := fun _ => A) y.1.2 0 j
-  refine Fin.lastCases ?_ (fun j => ?_) j
-  · simp
-  · simp [h2]
-
 def specOf {B : Type} [CommRing B] {T : Scheme.{0}} (ψ : B →+* Γ(T, ⊤)) : T ⟶ Spec (CommRingCat.of B) :=
   T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ)
 

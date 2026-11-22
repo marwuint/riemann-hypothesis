@@ -156,14 +156,6 @@ theorem isDiscreteValuationRing_stalk {X : Scheme.{u}} [IsNormalScheme X] [IsLoc
       (Ring.krullDimLE_one_iff_of_noZeroDivisors.mp h1 P hP.1 hP.2)⟩
   exact ((IsDiscreteValuationRing.TFAE (X.presheaf.stalk x) hf).out 0 3).mpr h3
 
-theorem isDiscreteValuationRing_stalk_iff {X : Scheme.{u}} [IsNormalScheme X]
-    [IsLocallyNoetherian X] {x : X} :
-    IsDiscreteValuationRing (X.presheaf.stalk x) ↔ Order.coheight x = 1 := by
-  refine ⟨fun h ↦ ?_, isDiscreteValuationRing_stalk⟩
-  have := IsDiscreteValuationRing.ringKrullDim_eq_one (X.presheaf.stalk x)
-  rw [ringKrullDim_stalk_eq_coheight] at this
-  exact_mod_cast this
-
 theorem eq_of_mem_irreducibleComponents_of_isDomain {X : Scheme.{u}} {x : X}
     [IsDomain (X.presheaf.stalk x)] {Z W : Set X} (hZ : Z ∈ irreducibleComponents X)
     (hW : W ∈ irreducibleComponents X) (hxZ : x ∈ Z) (hxW : x ∈ W) : Z = W := by

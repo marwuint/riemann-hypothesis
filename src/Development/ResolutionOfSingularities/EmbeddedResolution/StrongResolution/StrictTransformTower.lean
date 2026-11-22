@@ -154,10 +154,6 @@ theorem strictTransformToBase_emb (i : ℕ) :
 def detachedCoprodInl (i : ℕ) : S.detachedCoprod i ⟶ S.detachedCoprod (i + 1) :=
   (coprod.inl : S.detachedCoprod i ⟶ S.detachedCoprod i ⨿ S.detachedScheme i)
 
-theorem detachedCoprodInl_eq (i : ℕ) :
-    S.detachedCoprodInl i = (coprod.inl : S.detachedCoprod i ⟶ S.detachedCoprod i ⨿ S.detachedScheme i) :=
-  rfl
-
 theorem detachedCoprodInl_inr_totalTransition (i : ℕ) :
     S.detachedCoprodInl i ≫ (coprod.inr : S.detachedCoprod (i + 1) ⟶ S.totalSpace (i + 1)) ≫
         S.totalTransition i =

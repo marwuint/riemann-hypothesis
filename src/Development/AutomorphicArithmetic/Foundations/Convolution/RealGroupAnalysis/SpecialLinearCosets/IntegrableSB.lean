@@ -37,9 +37,6 @@ private def cjE (x : GL (Fin 2) K) :
     refine Continuous.subtype_mk ?_ _
     exact (continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const
 
-private theorem cjE_val (x : GL (Fin 2) K) (m : Matrix.SpecialLinearGroup (Fin 2) K) :
-    (cjE x m).1 = (x⁻¹).val * m.1 * x.val := rfl
-
 variable [LocallyCompactSpace (Matrix.SpecialLinearGroup (Fin 2) K)]
   [MeasurableSpace (Matrix.SpecialLinearGroup (Fin 2) K)]
   [BorelSpace (Matrix.SpecialLinearGroup (Fin 2) K)]

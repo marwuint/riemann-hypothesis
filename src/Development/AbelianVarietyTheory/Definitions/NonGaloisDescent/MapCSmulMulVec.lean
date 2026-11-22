@@ -140,11 +140,6 @@ def γl (i : ZMod n) : (Fin r → R.EE) →ₗ[O] (Fin r → R.EE) :=
 def φit (c : ZMod n) (j : ℕ) : (Fin r → R.EE) →ₗ[O] (Fin r → R.EE) :=
   Nat.rec LinearMap.id (fun j f => (S.φl (c + (j : ZMod n) + 1)).comp f) j
 
-theorem φit_zero (c : ZMod n) : S.φit c 0 = LinearMap.id := rfl
-
-theorem φit_succ (c : ZMod n) (j : ℕ) :
-    S.φit c (j + 1) = (S.φl (c + (j : ZMod n) + 1)).comp (S.φit c j) := rfl
-
 def P (c : ZMod n) (j : ℕ) : Submodule O⟦X⟧ (Fin r → R.EE) :=
   Submodule.span O⟦X⟧ (S.φit c j '' (R.N0 r : Set (Fin r → R.EE)))
 
@@ -183,14 +178,6 @@ def Horiz (i : ZMod n) (h : Fin r → (FractionRing O)⟦X⟧) : Prop := S.γF i
 
 def φ0 (i : ZMod n) : Matrix (Fin r) (Fin r) (FractionRing O) :=
   ((constantCoeff (R.toL R.E)) ^ S.M)⁻¹ • (S.Φ i).map (fun a => constantCoeff (R.toL a))
-
-def φ0it (c : ZMod n) (j : ℕ) : Matrix (Fin r) (Fin r) (FractionRing O) :=
-  Nat.rec 1 (fun j f => S.φ0 (c + (j : ZMod n) + 1) * f) j
-
-theorem φ0it_zero (c : ZMod n) : S.φ0it c 0 = 1 := rfl
-
-theorem φ0it_succ (c : ZMod n) (j : ℕ) :
-    S.φ0it c (j + 1) = S.φ0 (c + (j : ZMod n) + 1) * S.φ0it c j := rfl
 
 def Fil (i : ZMod n) (τ : Fin R.e) (a : ℤ) : Submodule (FractionRing O) (Fin r → FractionRing O) :=
   Submodule.span _ {δ | ∃ h, S.Horiz (i - 1) h ∧ δ = (S.φ0 i).mulVec (fun k => constantCoeff (h k)) ∧

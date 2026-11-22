@@ -157,8 +157,6 @@ def RecExP (QO : Par → ∀ D : D7, Obj D → Prop) : Prop :=
             ∀ p : LedPart κ.C Y, p.L.sc = s → WtEq p.L a b → Val κ.C κ.cD κ.ch p.L → CanonInst p.ta.Gx →
               QO κ p.pt.D (Obj.ofPt p.pt)
 
-theorem recExP_const_iff (QO : ∀ D : D7, Obj D → Prop) : (RecExP fun _ => QO) ↔ RecEx QO := Iff.rfl
-
 def ObjCP (Q : Par → PtProp) : Prop :=
   ParEv fun κ => ∃ x0 : ℝ,
     ∀ (s : Scale) (R : Ranks) (H : Host R) (q0 : ℕ) (a b : R.A → ℤ) (M : ℕ)

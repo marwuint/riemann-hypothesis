@@ -55,10 +55,6 @@ theorem locAinf_actW {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (a : Ainf l)
     AI.actW g a = Per.σA g a :=
   WittVector.ext fun n => (locAinf_actT AI g (a.coeff n)).trans (GlobalTheory.RingIface.sigA_coeff l g a n).symm
 
-theorem locAinf_xi {P : LocPrime l} (AI : LocAinf l P) : AI.ξ = xi AI.ε := rfl
-
-theorem locAinf_mu {P : LocPrime l} (AI : LocAinf l P) : AI.μ = mu AI.ε := rfl
-
 variable (l)
 
 theorem isUnit_l_BdRp : IsUnit ((l : ℕ) : Per.BdRp l) := by

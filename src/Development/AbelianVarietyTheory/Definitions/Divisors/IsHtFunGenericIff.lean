@@ -21,23 +21,6 @@ abbrev clo (z : X) : Closeds X := ⟨closure {z}, isClosed_closure⟩
 instance isIntegral_clo (z : X) : IsIntegral (Scheme.IdealSheafData.vanishingIdeal (clo z)).subscheme :=
   isIntegral_red (Z := clo z) isIrreducible_singleton.closure
 
-def IsHtFun {p : X ⟶ Sp k} (L : ι → HermLB p) (y : X) (D : ℕ) (Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) : Prop :=
-  (∀ n : ι → ℤ, ∃ h, (comb L n).IsArithHeight h ∧ h y = Φ (lin (fun i => (n i : ℝ)) ^ D)) ∧
-    ∀ (P : MvPolynomial ι ℝ) (d : ℕ), d ≠ D → P.IsHomogeneous d → Φ P = 0
-
-def IsIntFun {p : X ⟶ Sp k} (L : ι → HermLB p) (f : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) (D : ℕ)
-    (Λ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) : Prop :=
-  (∀ n : ι → ℤ, Λ (lin (fun i => (n i : ℝ)) ^ D) = chInt (comb L n) D f) ∧
-    ∀ (P : MvPolynomial ι ℝ) (d : ℕ), d ≠ D → P.IsHomogeneous d → Λ P = 0
-
-theorem isHtFun_generic_iff [IsIntegral X] {p : X ⟶ Sp k} (L : ι → HermLB p) (D : ℕ) (Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) :
-    IsHtFun L (genericPoint X) (D + 1) Φ ↔ IsArFun L D Φ :=
-  Iff.rfl
-
-theorem isIntFun_one_iff {p : X ⟶ Sp k} (L : ι → HermLB p) (D : ℕ) (Λ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) :
-    IsIntFun L (fun _ _ => 1) D Λ ↔ IsGeoFun L D Λ :=
-  Iff.rfl
-
 structure FlagSp (E : X.Modules) (r : ℕ) : Type 1 where
 
   Y : Scheme.{0}
@@ -46,10 +29,6 @@ structure FlagSp (E : X.Modules) (r : ℕ) : Type 1 where
 
   fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) r
   univ : IsFlagBundle π (fun _ : Unit => E) (fun _ => r) (fun _ => fl)
-
-namespace FlagSp
-
-end FlagSp
 
 end Free
 
@@ -101,9 +80,6 @@ abbrev q : M.B ⟶ Sp (𝓞 O.κ.c.F) := M.b ≫ O.s.T.Z.s
 def lam (R : ℝ) : HermLB M.q := VMetric.det ((M.H R).pull M.b rfl)
 
 def lamB : LB M.B := VB.det ((Scheme.Modules.pullback M.b).obj (omega O.s.T.Z.t.G)) (D.R.f * O.N)
-
-theorem lam_B (R : ℝ) : (M.lam R).B = M.lamB :=
-  rfl
 
 def bd : Set M.B := {w | M.b w ∉ abLocus O.s.T.Z.t.G}
 

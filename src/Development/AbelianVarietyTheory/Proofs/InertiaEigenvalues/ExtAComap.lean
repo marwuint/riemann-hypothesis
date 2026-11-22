@@ -48,9 +48,6 @@ def extA {K : Type} [Field K] [NumberField K] [StarRing K] {m : ℕ} (A : FamIn 
   leftGroupActionLift j τ := Sum.rec (A.leftGroupActionLift j) (X.actL j) τ
   heckeL j τ := Sum.rec (A.heckeL j) (X.opL j) τ
 
-theorem extA_comap {K : Type} [Field K] [NumberField K] [StarRing K] {m : ℕ} (A : FamIn K G Pl0 T m) {s : N → T}
-    (X : NewFam A s) : (extA A X).comap Sum.inl A.μ0 = A := rfl
-
 variable {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 set_option genInjectivity false in
@@ -152,10 +149,6 @@ def extR (R : RealDat D A Ks) {s : N → T} {a : N → ℕ} {X : NewFam A s} (Y 
   kap := R.kap
   lam _ _ _ _ := 0
   err0 := R.err0
-
-set_option maxHeartbeats 4000000 in
-theorem extR_comap (R : RealDat D A Ks) {s : N → T} {a : N → ℕ} {X : NewFam A s} (Y : NewReal R a X) :
-    (extR R Y).comap Sum.inl A.μ0 R.mu R.twPl R.FW R.kap R.lam R.err0 = R := rfl
 
 end GlobalTheory.ConjExt
 

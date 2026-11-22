@@ -21,8 +21,6 @@ def muV : Vs →ₛₗ[φK] Vs' where
   map_add' := by intro x y; exact Subtype.ext (map_add μ x.1 y.1)
   map_smul' := by intro c x; exact Subtype.ext (map_smulₛₗ μ c x.1)
 
-theorem muV_coe (x : Vs) : ((muV μ Vs Vs' hV x : Vs') : X') = μ x.1 := rfl
-
 theorem bc_comap (A : Submodule R X) (A' : Submodule R' X') (hA : ∀ z ∈ A, z ∈ Vs) (h : BC μ A A') :
     BC (muV μ Vs Vs' hV) (A.comap (Vs.subtype.restrictScalars R)) (A'.comap (Vs'.subtype.restrictScalars R')) := by
   unfold BC

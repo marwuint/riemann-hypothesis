@@ -93,11 +93,6 @@ def De (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (a : ℝ) (t : H)
     ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ((w (partner t g) : ℝ) : ℂ)
       * GPsi D ell ψ (a / w (partner t g))
 
-def AskMainBalance : Prop :=
-  ∀ (D : ArithData H), HostFacts D → ∀ (ell : AddChar (E0 × H) ℂ → ℂ) (a : ℝ) (t : H) (w : E0 × H → ℝ),
-    0 < a → (∀ ρ, InPhi ρ → 0 < w ρ) → ∀ N : ℕ, (∀ ρ, InPhi ρ → a / w ρ ≤ N) →
-      (ASK D N a t w : ℂ) - MAIN ell a w = De D ell a t w
-
 def PrimValPow : Prop :=
   ∀ (D : ArithData H) (ψ : AddChar (E0 × H) ℂ) (p i : ℕ), p.Prime → 1 ≤ i →
     primVal D ψ (p ^ i) = cosetMean (D.inertia p) (i • D.frob p) ψ

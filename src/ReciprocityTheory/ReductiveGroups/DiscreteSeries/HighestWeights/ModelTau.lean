@@ -93,9 +93,6 @@ def tauM (ε : Fin n → Bool) (m : Fin n → ℤ) : KG ε →* unitary (MV ε m
   map_one' := Subtype.ext (tauC_one ε m)
   map_mul' k₁ k₂ := Subtype.ext (tauC_mul ε m k₁ k₂)
 
-theorem tauM_coe (ε : Fin n → Bool) (m : Fin n → ℤ) (k : KG ε) :
-    ((tauM ε m k : unitary (MV ε m →L[ℂ] MV ε m)) : MV ε m →L[ℂ] MV ε m) = tauC ε m k := rfl
-
 theorem continuous_tauM (ε : Fin n → Bool) (m : Fin n → ℤ) : Continuous (tauM ε m) := continuous_induced_rng.2 (continuous_tauC ε m)
 
 private theorem derOp_fn_eq_deriv_kcurve (ε : Fin n → Bool) (m : Fin n → ℤ) (X : Matrix (Fin n) (Fin n) ℂ) (f : MV ε m)

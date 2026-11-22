@@ -38,8 +38,6 @@ local notation "ιA" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
 def inclAd : 𝔸 →+* 𝒜 := (Algebra.TensorProduct.includeRight : 𝔸 →ₐ[F] 𝒜).toRingHom
 
-theorem inclAd_apply (a : 𝔸) : inclAd (E := E) a = (1 : E) ⊗ₜ[F] a := rfl
-
 end Main
 
 end Formalism.MainNotions.Gaps.CC.Surj

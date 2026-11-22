@@ -49,33 +49,6 @@ structure RealData {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (Padi
   cs : ContinuousConstSMul (FractionRing O) VT
   cs' : ContinuousConstSMul (FractionRing O) VT'
 
-def StatFinGK : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
-    (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
-    [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)]
-    (VT VT' : Type)
-    [AddCommGroup VT] [Module O VT] [TopologicalSpace VT] [IsTopologicalAddGroup VT]
-    [ContinuousSMul O VT] [Module (FractionRing O) VT] [IsScalarTower O (FractionRing O) VT]
-    [AddCommGroup VT'] [Module O VT'] [TopologicalSpace VT'] [IsTopologicalAddGroup VT']
-    [ContinuousSMul O VT'] [Module (FractionRing O) VT'] [IsScalarTower O (FractionRing O) VT']
-    (D : LatData O (GK p K) VT VT'),
-    FiniteDimensional ℚ_[p] K → PadicCoeff p O → RealData D → Module.Finite O (H1 D.ρTl')
-
-def StatIntGK : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
-    (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
-    [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)]
-    (VT VT' : Type)
-    [AddCommGroup VT] [Module O VT] [TopologicalSpace VT] [IsTopologicalAddGroup VT]
-    [ContinuousSMul O VT] [Module (FractionRing O) VT] [IsScalarTower O (FractionRing O) VT]
-    [AddCommGroup VT'] [Module O VT'] [TopologicalSpace VT'] [IsTopologicalAddGroup VT']
-    [ContinuousSMul O VT'] [Module (FractionRing O) VT'] [IsScalarTower O (FractionRing O) VT']
-    (D : LatData O (GK p K) VT VT'),
-    FiniteDimensional ℚ_[p] K → PadicCoeff p O → FracTop O → RealData D → Function.Injective D.inv →
-    ∀ x, (∀ t, D.pr x t = 0) → x = 0
-
 def StatCompat : Prop :=
   ∀ (O G VT VT' : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]

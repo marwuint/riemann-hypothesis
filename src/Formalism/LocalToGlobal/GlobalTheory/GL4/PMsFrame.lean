@@ -16,9 +16,6 @@ section Frames
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
-theorem mem_dualSub (S : HSpace E) (L : Submodule (𝓞 E) S.V) (x : S.V) :
-    x ∈ dualSub S L ↔ ∀ y ∈ L, S.hT y x ∈ (algebraMap (𝓞 E) E).range := Iff.rfl
-
 end Frames
 
 end Formalism.L2.GlobalTheoryTheory.TraceIntegrality

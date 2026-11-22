@@ -116,8 +116,4 @@ def fld {p : ℕ} {T : Tower p Xo c} : ∀ {Z : MdlC}, Pt T Z → Formalism.Main
   | .yy, y => y.2.1.toCF
   | .xn _, y => y.2.1.toCF
 
-def toXm {p : ℕ} {T : Tower p Xo c} (y : Pt T .yy) : Pt T .xm := ⟨y.1, y.2.1, y.2.2.1⟩
-
-theorem fld_toXm {p : ℕ} {T : Tower p Xo c} (y : Pt T .yy) : fld (toXm y) = fld y := rfl
-
 end Formalism.L2.Pj.PointsOfFlagModel

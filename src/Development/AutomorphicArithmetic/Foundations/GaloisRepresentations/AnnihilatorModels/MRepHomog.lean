@@ -42,9 +42,6 @@ private noncomputable def ptOf {κ B : Type} [Field κ] [CommRing B] [Algebra κ
     ext r
     simp)
 
-private lemma ptOf_left {κ B : Type} [Field κ] [CommRing B] [Algebra κ B] (ε : B →ₐ[κ] κ) :
-    (ptOf ε).left = spMap ε.toRingHom := rfl
-
 private lemma ptOf_surj {κ B : Type} [Field κ] [CommRing B] [Algebra κ B] (y : 𝟙_ (Over (Sp κ)) ⟶ algPt κ B) :
     ∃ ε : B →ₐ[κ] κ, ptOf ε = y := by
   obtain ⟨ε, hε⟩ := exists_algHom (C := κ) y.left (by

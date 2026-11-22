@@ -18,11 +18,6 @@ def phisB (j : Fin G.T.t → ℕ) (jp : ℕ) :
       ((G.lettersAt j jp).deg (G.letterAt (G.T.pos i))) ((G.lettersAt j jp).deg (G.letterAt (G.T.pos i + 1)))
       (G.T.z i) ∘ₗ acc) LinearMap.id
 
-theorem phiAll_eq (j : Fin G.T.t → ℕ) (jp : ℕ) :
-    G.phiAll p (r := r) j jp =
-      Formalism.GM.tiePhi (fun c => Sum.inl (Fin.castSucc G.uPos, c)) (fun c => Formalism.GM.M.xiVar N r G.T.t c)
-        (G.LL.deg G.uPos - jp) (G.B - jp) G.zPlus ∘ₗ phisB p (r := r) G j jp := rfl
-
 def bePhi (j : Fin G.T.t → ℕ) (jp : ℕ) (u v : MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p]) : ℚ_[p] :=
   Formalism.GM.M.fockK (phisB p (r := r) G j jp u) v / (degFact G j jp : ℚ_[p])
 

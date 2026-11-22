@@ -21,16 +21,6 @@ def diagU {R : Type} [CommRing R] (u : n → Rˣ) : GL n R where
   val_inv := by simp [Matrix.diagonal_mul_diagonal]
   inv_val := by simp [Matrix.diagonal_mul_diagonal]
 
-def cycSum (K : FinExt l) (a : n → ℤ) : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l) where
-  toFun g := diagU fun j => Units.map (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) : ℚ_[l] →* ↥(MaximalUnramifiedExtension l)) (P.χQ (g : GQ l) ^ a j)
-  map_one' := by ext i j; simp [diagU]
-  map_mul' g h := by
-    apply Units.ext
-    simp [diagU, Matrix.diagonal_mul_diagonal, mul_zpow]
-
-theorem cycSum_val (K : FinExt l) (a : n → ℤ) (g : ↥(GK K)) : (cycSum P K a g : Matrix n n ↥(MaximalUnramifiedExtension l)) =
-    Matrix.diagonal fun j => algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) ((P.χQ (g : GQ l) ^ a j : ℚ_[l]ˣ) : ℚ_[l]) := rfl
-
 def tU : P.R.Bˣ := (isUnit_tB P).unit
 
 theorem actQ_tU (g : GQ l) (a : ℤ) : P.actQ g ((tU P ^ a : P.R.Bˣ) : P.R.B) =

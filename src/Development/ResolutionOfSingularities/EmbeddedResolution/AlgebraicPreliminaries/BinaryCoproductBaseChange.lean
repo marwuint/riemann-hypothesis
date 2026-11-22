@@ -76,18 +76,6 @@ private noncomputable def isoCoprodInitial (P : Scheme.{u}) : P ≅ P ⨿ (⊥_ 
 private theorem coprodInitialIsoRight_hom (P : Scheme.{u}) :
     (isoCoprodInitial P).hom = (coprod.inl : P ⟶ P ⨿ (⊥_ Scheme.{u})) := rfl
 
-private noncomputable def isoInitialCoprod (P : Scheme.{u}) : P ≅ (⊥_ Scheme.{u}) ⨿ P where
-  hom := coprod.inr
-  inv := coprod.desc (initial.to P) (𝟙 P)
-  hom_inv_id := coprod.inr_desc (initial.to P) (𝟙 P)
-  inv_hom_id := by
-    apply coprod.hom_ext
-    · exact initial.hom_ext _ _
-    · rw [← Category.assoc, coprod.inr_desc, Category.id_comp, Category.comp_id]
-
-private theorem coprodInitialIsoLeft_hom (P : Scheme.{u}) :
-    (isoInitialCoprod P).hom = (coprod.inr : P ⟶ (⊥_ Scheme.{u}) ⨿ P) := rfl
-
 private noncomputable def isInitialOfIsEmptyScheme {X : Scheme.{u}} (h : IsEmpty X) : IsInitial X := by
   haveI := h
   exact isInitialOfIsEmpty

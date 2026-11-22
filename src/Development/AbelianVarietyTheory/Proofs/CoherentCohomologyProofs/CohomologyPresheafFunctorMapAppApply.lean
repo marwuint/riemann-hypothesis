@@ -21,9 +21,6 @@ noncomputable abbrev freeSheafMap {V U : C} (i : V ⟶ U) : freeSheaf J V ⟶ fr
 instance mono_freeSheafMap {V U : C} (i : V ⟶ U) [Mono i] : Mono (freeSheafMap J i) := by
   infer_instance
 
-noncomputable def freeSheafGen (U : C) : (freeSheaf J U).obj.obj (op U) :=
-  (toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free)).app (op U) (FreeAbelianGroup.of (𝟙 U))
-
 variable {J}
 
 noncomputable def freeSheafHomEquiv (U : C) (F : Sheaf J AddCommGrpCat.{v}) :
@@ -32,9 +29,6 @@ noncomputable def freeSheafHomEquiv (U : C) (F : Sheaf J AddCommGrpCat.{v}) :
     (((AddCommGrpCat.adj.whiskerRight Cᵒᵖ).homEquiv _ _).trans yonedaEquiv)
   map_add' f g := by
     rfl
-
-lemma freeSheafHomEquiv_apply (U : C) (F : Sheaf J AddCommGrpCat.{v}) (f : freeSheaf J U ⟶ F) :
-    freeSheafHomEquiv U F f = f.hom.app (op U) (freeSheafGen J U) := rfl
 
 lemma freeSheafHomEquiv_comp {U : C} {F G : Sheaf J AddCommGrpCat.{v}} (f : freeSheaf J U ⟶ F)
     (g : F ⟶ G) :

@@ -60,6 +60,4 @@ theorem tauPl_bijective (D : D7) : Function.Bijective (tauPl D) := by
 
 def plEquiv (D : D7) : (Bool × HH D) ≃ D.what₂.Tau := Equiv.ofBijective _ (tauPl_bijective D)
 
-theorem plEquiv_apply (D : D7) (z : Bool × HH D) : plEquiv D z = tauPl D z := rfl
-
 end GlobalTheory.InertCompare

@@ -157,12 +157,6 @@ def derivationOfLeibniz {k A M : Type*} [CommSemiring k] [CommSemiring A] [AddCo
     (hmul : ∀ a b, D (a * b) = a • D b + b • D a) : Derivation k A M :=
   Derivation.mk' { toFun := D, map_add' := hadd, map_smul' := hsmul } hmul
 
-theorem derivationOfLeibniz_apply {k A M : Type*} [CommSemiring k] [CommSemiring A]
-    [AddCommGroup M] [Algebra k A] [Module A M] [Module k M] (D : A → M)
-    (hadd : ∀ a b, D (a + b) = D a + D b) (hsmul : ∀ (r : k) (a : A), D (r • a) = r • D a)
-    (hmul : ∀ a b, D (a * b) = a • D b + b • D a) (a : A) :
-    derivationOfLeibniz D hadd hsmul hmul a = D a := rfl
-
 def dLDR (R : Type u) [CommRing R] : Derivation R (LaurentSeries R) (LaurentSeries R) :=
   derivationOfLeibniz (fun f => dL f) (fun a b => map_add dL a b)
     (fun r f => by

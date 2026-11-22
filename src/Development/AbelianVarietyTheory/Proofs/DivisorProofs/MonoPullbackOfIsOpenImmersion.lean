@@ -63,29 +63,4 @@ theorem same_of_range {u : A ⟶ E} {v : A' ⟶ E} [Mono u] [Mono v]
   obtain ⟨g, hg⟩ := exists_fac_of_sections v u fun V s => (h V).ge ⟨s, rfl⟩
   exact same_of_le_le f g hf hg
 
-theorem bijective_pullbackSections (a : Y ⟶ X) [IsOpenImmersion a] (E : X.Modules) {V : X.Opens}
-    (hV : V ≤ a.opensRange) {W : Y.Opens} (hW : W = a ⁻¹ᵁ V) :
-    Function.Bijective (pullbackSections a E hW.le) := by
-  subst hW
-  have e := Adjunction.unit_leftAdjointUniq_hom_app (Scheme.Modules.restrictAdjunction a)
-    (Scheme.Modules.pullbackPushforwardAdjunction a) E
-  have h1 : Function.Bijective (E.presheaf.map (homOfLE (a.image_preimage_le V)).op) :=
-    QCoh.res_bijective_of_eq E _ (by
-      rw [Scheme.Hom.image_preimage_eq_opensRange_inf]; exact inf_eq_right.2 hV)
-  have h2 := ConcreteCategory.bijective_of_isIso
-    (((Scheme.Modules.restrictFunctorIsoPullback a).hom.app E).app (a ⁻¹ᵁ V))
-  convert h2.comp h1 using 1
-  funext s
-  exact (resM_self _ _).trans congr(($e).app V s).symm
-
-theorem mono_pullback_of_isOpenImmersion (a : Y ⟶ X) [IsOpenImmersion a] (v : A ⟶ E) [Mono v] :
-    Mono ((Scheme.Modules.pullback a).map v) := by
-  refine QCoh.mono_of_locally_app_injective _ fun W _ hx => ⟨W, hx, le_rfl, fun s t h => ?_⟩
-  have hW := (a.preimage_image_eq W).symm
-  have hV := a.image_le_opensRange W
-  obtain ⟨s, rfl⟩ := (bijective_pullbackSections a A hV hW).2 s
-  obtain ⟨t, rfl⟩ := (bijective_pullbackSections a A hV hW).2 t
-  rw [pullback_map_app_pullbackSections, pullback_map_app_pullbackSections] at h
-  rw [QCoh.injective_app_of_mono v _ ((bijective_pullbackSections a E hV hW).1 h)]
-
 end GlobalTheory.FlagLocal

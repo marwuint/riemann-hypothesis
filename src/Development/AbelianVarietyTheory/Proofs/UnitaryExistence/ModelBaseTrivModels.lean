@@ -41,13 +41,4 @@ theorem isTypeFn_letters (c : Coeff l) (σ : c.F →+* ℂ) (hσ : GoodEmb c σ)
 variable {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {g : ℕ}
   {e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)} {F : GlobalTheory.IndefiniteRowSideFullHecke.ModelFamilies.FamAt Xo c σ e} {r : ℕ}
 
-def modelsEquiv (F : GlobalTheory.IndefiniteRowSideFullHecke.ModelFamilies.FamAt Xo c σ e) (r : ℕ) :
-    Rows.ModelsOf F r ≃ GlobalTheory.IndefiniteRowSideFullHecke.ModelFamilies.ModelsOf F r where
-  toFun M := ⟨M.X, M.φ⟩
-  invFun M := ⟨M.X, M.φ⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-theorem modelsEquiv_φ (M : Rows.ModelsOf F r) : (modelsEquiv F r M).φ = M.φ := rfl
-
 end GlobalTheory.PeriodRowsCompare

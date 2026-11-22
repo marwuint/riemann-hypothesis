@@ -223,11 +223,6 @@ theorem tensor_ρ_tmul (X Y : Rep k G) (s : G) (a : X) (b : Y) :
     (X ⊗ Y).ρ s (a ⊗ₜ[k] b) = X.ρ s a ⊗ₜ[k] Y.ρ s b :=
   rfl
 
-theorem associator_hom_tmul (X Y Z : Rep k G) (a : X) (b : Y) (c : Z) :
-    (α_ X Y Z).hom.hom (((a ⊗ₜ[k] b : (X ⊗ Y : Rep k G)) ⊗ₜ[k] c : ((X ⊗ Y) ⊗ Z : Rep k G))) =
-      a ⊗ₜ[k] (b ⊗ₜ[k] c) :=
-  rfl
-
 theorem leftUnitor_hom_tmul (X : Rep k G) (c : k) (a : X) :
     (λ_ X).hom.hom ((c ⊗ₜ[k] a : (𝟙_ (Rep k G) ⊗ X : Rep k G))) = c • a :=
   rfl

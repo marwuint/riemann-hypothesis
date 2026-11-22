@@ -48,15 +48,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 abbrev neg (V : Formalism.BasicNotions.HSpace E) : Formalism.BasicNotions.HSpace E := sgn true V
 
-theorem sgn_false (V : Formalism.BasicNotions.HSpace E) : sgn false V = V := rfl
-
-theorem neg_hT (V : Formalism.BasicNotions.HSpace E) (x y : V.V) : (neg V).hT x y = -V.hT x y := rfl
-
 theorem neg_gram (V : Formalism.BasicNotions.HSpace E) : (neg V).gram = -V.gram := rfl
 
 theorem neg_sig (V : Formalism.BasicNotions.HSpace E) (τ : E →+* ℂ) : (neg V).sig τ = ((V.sig τ).2, (V.sig τ).1) := rfl
-
-theorem sgn_rank (ε : Bool) (V : Formalism.BasicNotions.HSpace E) : (sgn ε V).rank = V.rank := rfl
 
 theorem hasSignature_neg {n : Type} {J : Matrix n n ℂ} {p q : ℕ} (h : Formalism.UG.HasSignature J p q) :
     Formalism.UG.HasSignature (-J) q p := by
@@ -99,8 +93,6 @@ def ofSgn (ε : Bool) (V : HSp D) : GA D (sgn ε V) ≃* GA D V where
   map_mul' _ _ := rfl
 
 theorem mt_ofSgn (ε : Bool) (V : HSp D) (g : GA D (sgn ε V)) : Formalism.L2.Theta.mt V (ofSgn ε V g) = Formalism.L2.Theta.mt (sgn ε V) g := rfl
-
-theorem ofSgn_false (V : HSp D) (g : GA D V) : ofSgn false V g = g := rfl
 
 theorem continuous_ofSgn (ε : Bool) (V : HSp D) : Continuous (ofSgn ε V) :=
   Continuous.subtype_mk continuous_subtype_val _

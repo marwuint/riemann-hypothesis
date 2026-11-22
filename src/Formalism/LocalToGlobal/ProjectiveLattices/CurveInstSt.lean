@@ -18,11 +18,6 @@ def SpanW {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ
 
 variable {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j)
 
-def wNorm (σ : T.Q.c.F →+* ℂ) {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF)
-    (p : FPt (T.U j σ).X) : ℝ :=
-  Real.sqrt (∑ k, (((T.U j σ).X p.1).pnorm (laU (T.U j σ) (wtA wL) wL.n p.1)
-    (rdU (T.U j σ) ((G.w k : (recB h.toLawsCore).Cusp j wL) : T.R j) p.1) p.2) ^ 2)
-
 def BigAt (hG : GenFrEx (T.Q.Xo j) T.Q.c) {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF) : Prop :=
   NoCommonZero (Xo := T.Q.Xo j) (c := T.Q.c) (fun k => ((G.w k : (recB h.toLawsCore).Cusp j wL) : T.R j)) ∧
   (∀ Z : Comp (T.Q.Xo j) T.Q.c, ∃ k₀, evC hG Z ((G.w k₀ : (recB h.toLawsCore).Cusp j wL) : T.R j) ≠ 0 ∧

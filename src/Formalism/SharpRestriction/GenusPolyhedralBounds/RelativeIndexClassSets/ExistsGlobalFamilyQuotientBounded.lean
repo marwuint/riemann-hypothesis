@@ -115,44 +115,11 @@ section Unchanged
 
 variable {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G0 : GlobalFamilyData X ka wL wF) (rq : ℕ) (th : Fin rq → B.Mlat j ka)
 
-theorem tiedW_reQ (S : Scal B) (Gc Prw : ℝ) :
-    ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF).TiedW S Gc Prw ↔ G0.TiedW S Gc Prw := Iff.rfl
-
-theorem tiedTh_reQ (S : Scal B) (Gc : ℝ) :
-    ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF).TiedTh S Gc ↔ G0.TiedTh S Gc := Iff.rfl
-
-theorem tiedZ_reQ (S : Scal B) (T : ℕ) (Gc : ℝ) :
-    ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF).TiedZ S T Gc ↔ G0.TiedZ S T Gc := Iff.rfl
-
-theorem tiedEt_reQ (large₂ : SizeData₂ D) (Cf Af : ℝ) :
-    ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF).TiedEt large₂ Cf Af ↔ G0.TiedEt large₂ Cf Af := Iff.rfl
-
-theorem inBasis_reQ (la : HeightOneSpectrum (𝓞 B.KO)) :
-    InBasis ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) la ↔ InBasis G0 la := Iff.rfl
-
-theorem inContainZ_reQ (la : HeightOneSpectrum (𝓞 B.KO)) (S : Scal B) (T : ℕ) :
-    InContainZ ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) la S T ↔ InContainZ G0 la S T := Iff.rfl
-
-theorem inContainM_reQ (la : HeightOneSpectrum (𝓞 B.KO)) (CRm : ℝ) (T : ℕ) (c : ℝ) :
-    InContainM ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) la CRm T c ↔ InContainM G0 la CRm T c := Iff.rfl
-
-theorem combBound_reQ (S : Scal B) (c : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) :
-    CombBound ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) S c nus ↔ CombBound G0 S c nus := Iff.rfl
-
 def LocalPointData.reQ {G0 : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G0 la) (rq : ℕ) (th : Fin rq → B.Mlat j ka) :
     LocalPointData ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) la :=
   ⟨Q.y, Q.g0, Q.c⟩
 
 variable {G0} {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G0 la)
-
-theorem LocalPointData.inCurve_reQ : (Q.reQ rq th).InCurve ↔ Q.InCurve := Iff.rfl
-
-theorem LocalPointData.inTie_reQ (S : Scal B) : (Q.reQ rq th).InTie S ↔ Q.InTie S := Iff.rfl
-
-theorem LocalPointData.inLift_reQ (T : ℕ) : (Q.reQ rq th).InLift T ↔ Q.InLift T := Iff.rfl
-
-theorem heights_reQ (Qf : ∀ la, LocalPointData G0 la) (Gc PH Prw Pet : ℝ) :
-    Heights (fun la => (Qf la).reQ rq th) Gc PH Prw Pet ↔ Heights Qf Gc PH Prw Pet := Iff.rfl
 
 end Unchanged
 

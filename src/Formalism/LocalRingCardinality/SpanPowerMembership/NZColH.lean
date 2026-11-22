@@ -52,16 +52,8 @@ variable {R : Ranks} {Tau : Type} [Fintype Tau] (hc : Tau → HCParam R) (K : Cl
 def eMuN (hT2 : T ≠ 2) : MuN (K.cls 0) ≃ₗ[ℂ] (atTN hc K T Dst hD du hdu Gam hG).Mram :=
   (eE (K.cls 0)).trans (LinearEquiv.ofTop _ (atTN_Mram hc K T Dst hD du hdu Gam hG hT2)).symm
 
-theorem eMuN_coe (hT2 : T ≠ 2) (φ : MuN (K.cls 0)) :
-    ((eMuN hc K T Dst hD du hdu Gam hG hT2 φ : (atTN hc K T Dst hD du hdu Gam hG).Mram) : FK (K.cls 0)) =
-      eE (K.cls 0) φ := rfl
-
 def eCuN : MuN (K.cls 0) ≃ₗ[ℂ] (atTN hc K T Dst hD du hdu Gam hG).Mu0 :=
   (eE (K.cls 0)).trans (LinearEquiv.ofTop (⊤ : Submodule ℂ (FK (K.cls 0))) rfl).symm
-
-theorem eCuN_coe (φ : MuN (K.cls 0)) :
-    ((eCuN hc K T Dst hD du hdu Gam hG φ : (atTN hc K T Dst hD du hdu Gam hG).Mu0) : FK (K.cls 0)) =
-      eE (K.cls 0) φ := rfl
 
 end Rec
 

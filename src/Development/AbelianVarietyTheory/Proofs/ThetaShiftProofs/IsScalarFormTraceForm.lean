@@ -145,21 +145,6 @@ theorem val_tau_rescale (q : D.X → (FractionRing R)ˣ) {a b : D.X} {x : (Fract
   simp only [ofMul_mul, ofMul_inv]
   abel
 
-theorem psiUnitOn_rescale (q : D.X → (FractionRing R)ˣ) {χ : D.X} (u : Rˣ)
-    (hu : q χ = Units.map (algebraMap R (FractionRing R)).toMonoidHom u) {U : Set (Sp R)} (h : PsiUnitOn D χ U) :
-    PsiUnitOn (rescale D q) χ U := by
-  intro j V hV hU hc hle
-  obtain ⟨r, hr, e⟩ := h j V hV hU hc hle
-  refine ⟨(res (le_top : V ≤ ⊤) (unitOn u)).val * r, (Units.isUnit _).mul hr, ?_⟩
-  rw [map_mul, e]
-  refine Eq.trans (congrArg₂ (· * ·) ?_ rfl) (map_mul _ (res le_top (unitOn (q χ))).val ((D.psi χ).s j).val).symm
-  refine fn_ext fun y hy => ?_
-  refine (gs_pull (𝟙 _) (jK R) y V hy _).trans ((gs_unit _ y V hy _).trans (Eq.trans ?_
-    ((gs_res (𝟙 _) y hle hy _).trans (gs_unit _ y _ (hle hy) _)).symm))
-  refine congrArg Units.val ((gm_res _ y le_top hy _).trans (Eq.trans ?_ (gm_res _ y le_top (hle hy) _).symm))
-  rw [hu]
-  exact unitAt_spMap (𝟙 _) (algebraMap R (FractionRing R)) y u
-
 section Twist
 
 variable [Module O D.X] {w : O} {t : D.X → D.X → (FractionRing R)ˣ}
@@ -212,11 +197,6 @@ theorem psi_weight_zero_twist {oa : D.OAct O} (h : TraceFormTwistIso D oa w) : T
     (Eq.trans ?_ ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_psi_twist w t x _ hJ) rfl)).symm))
   rw [_root_.mul_assoc, _root_.mul_assoc]
   exact congrArg _ e
-
-omit hw ht in
-theorem psiUnitOn_twist (w : O) (t₀ : D.X → D.X → Rˣ) {χ : D.X} {U : Set (Sp R)} (h : PsiUnitOn D χ U) :
-    PsiUnitOn (twist D w fun y x => Units.map (algebraMap R (FractionRing R)).toMonoidHom (t₀ y x)) χ U :=
-  psiUnitOn_rescale _ (t₀ χ (w • χ)) rfl h
 
 end Twist
 

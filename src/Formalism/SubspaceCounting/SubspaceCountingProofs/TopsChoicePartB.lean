@@ -24,8 +24,6 @@ def step (R L₂ : ℕ) : St → Bool → St
          else if K ≤ 1 then .bad else .run (K - 1) 0 0 true (!ev))
       else .run K (j + 1) 0 (al && okG L₂ j d ev) (!ev)
 
-def runS (R L₂ : ℕ) (s : St) (bs : List Bool) : St := bs.foldl (step R L₂) s
-
 end Formalism.G0.TopsWeightFunctionBounds
 
 noncomputable section
@@ -42,9 +40,6 @@ namespace Formalism.G0.TopsWeightFunctionBounds
 
 section sums
 variable {R L₂ : ℕ} {δ : ℝ}
-
-lemma runS_cons (s : St) (b : Bool) (bs : List Bool) :
-    runS R L₂ s (b :: bs) = runS R L₂ (step R L₂ s b) bs := rfl
 
 end sums
 

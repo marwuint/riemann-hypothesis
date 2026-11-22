@@ -16,7 +16,4 @@ def withSeen (D : D7) (seen : D.what₂.Word → D.what₂.places.Pl → Bool)
     nuIn_norm := D.nuIn_norm
     s_Cu_isom := D.s_Cu_isom }
 
-theorem withSeen_seenP (D : D7) (seen tau u) : ((withSeen D seen tau).fm u).seenP = seen u := rfl
-theorem withSeen_tauOf (D : D7) (seen tau u) : ((withSeen D seen tau).fm u).tauOf = tau u := rfl
-
 end Formalism.BasicNotions.Examples₂

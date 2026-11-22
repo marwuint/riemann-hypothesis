@@ -19,10 +19,6 @@ def cxSt (F : Type) [Field F] [NumberField F] : CxSt F := ProjVar.cxStage F
 
 variable {F : Type} [Field F] [NumberField F]
 
-theorem cxSt_cx : (cxSt F).cx = Var.cx := rfl
-
-theorem cxSt_pn : (cxSt F).pn = Var.pn := rfl
-
 variable {Y : Var F} {σ : F →+* ℂ} {Δ Δ' : Y.Dv}
 
 end GlobalTheory.TrueGeo

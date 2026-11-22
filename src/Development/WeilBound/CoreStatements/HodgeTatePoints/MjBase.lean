@@ -23,8 +23,6 @@ variable {X Y Z : Type}
 def pspan (A : Subalgebra R (X → R)) (B : Subalgebra R (Y → R)) : Submodule R (X × Y → R) :=
   Submodule.span R {g | ∃ a ∈ A, ∃ b ∈ B, g = fun z => a z.1 * b z.2}
 
-theorem prodSpan_eq (A : Subalgebra R (X → R)) : prodSpan A = pspan A A := rfl
-
 theorem mul_mem_pspan {A : Subalgebra R (X → R)} {B : Subalgebra R (Y → R)} {a : X → R} {b : Y → R}
     (ha : a ∈ A) (hb : b ∈ B) : (fun z : X × Y => a z.1 * b z.2) ∈ pspan A B :=
   Submodule.subset_span ⟨a, ha, b, hb, rfl⟩
@@ -120,9 +118,6 @@ theorem exists_tensor_equiv (A : Subalgebra R (X → R)) (B : Subalgebra R (Y �
   exact hw
 
 variable {T H : Type} [CommGroup T] [CommGroup H]
-
-theorem mem_resOrder {ι : H →* T} {A : Subalgebra R (T → R)} {g : H → R} :
-    g ∈ resOrder ι A ↔ ∃ f ∈ A, (fun h => f (ι h)) = g := Iff.rfl
 
 theorem res_mem (ι : H →* T) {A : Subalgebra R (T → R)} {f : T → R} (hf : f ∈ A) :
     (fun h => f (ι h)) ∈ resOrder ι A := ⟨f, hf, rfl⟩

@@ -65,10 +65,6 @@ def mulTens : (V ⊗[Qp] B) ⊗[LL] (V' ⊗[Qp] B) →ₗ[LL] (V ⊗[LL] V') ⊗
   (AlgebraTensorModule.map (LinearMap.id : V ⊗[LL] V' →ₗ[LL] V ⊗[LL] V') (LinearMap.mul' Qp B)).comp
     (AlgebraTensorModule.tensorTensorTensorComm Qp Qp LL LL V B V' B).toLinearMap
 
-def mulDcris (ρ : Representation LL G V) (ρ' : Representation LL G V') :
-    ↥(Dcris PD ρ) ⊗[LL] ↥(Dcris PD ρ') →ₗ[LL] (V ⊗[LL] V') ⊗[Qp] B :=
-  (mulTens Qp B LL V V').comp (TensorProduct.map (Dcris PD ρ).subtype (Dcris PD ρ').subtype)
-
 end Maps
 
 def InvB : Prop := ∀ b : B, (∀ g, PD.actB g b = b) ↔ ∃ c : K₀, algebraMap K₀ B c = b

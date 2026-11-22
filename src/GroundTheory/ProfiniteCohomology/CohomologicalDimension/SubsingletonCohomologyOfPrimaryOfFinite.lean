@@ -167,11 +167,6 @@ def primarySubmodule (A : Rep.{u} k G) (p : ℕ) : Submodule k A where
   smul_mem' := fun r a ⟨k, hk⟩ => ⟨k, by rw [smul_comm, hk, smul_zero]⟩
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
-theorem mem_primarySubmodule (A : Rep.{u} k G) (p : ℕ) (a : A) :
-    a ∈ primarySubmodule A p ↔ ∃ k : ℕ, p ^ k • a = 0 :=
-  Iff.rfl
-
-omit [TopologicalSpace G] [IsTopologicalGroup G] in
 theorem primarySubmodule_le_comap (A : Rep.{u} k G) (p : ℕ) (g : G) :
     primarySubmodule A p ≤ (primarySubmodule A p).comap (A.ρ g) :=
   fun a ⟨k, hk⟩ => ⟨k, by rw [← map_nsmul, hk, map_zero]⟩

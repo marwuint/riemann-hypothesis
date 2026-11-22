@@ -246,13 +246,6 @@ structure SurfSt : Type 1 where
 
   surfFpCh2 : SurfFp → ℝ
 
-def surfSt : SurfSt where
-  Surf := Surf
-  surfCh2 := Surf.ch2
-  surfDegOm := Surf.degOm
-  SurfFp := SurfFp
-  surfFpCh2 := SurfFp.ch2
-
 namespace SurfSt
 
 variable {D : D7}
@@ -274,10 +267,6 @@ def put (t : SurfSt) (X : DivX D) : DivX D :=
 end SurfSt
 
 variable {D : D7} {X : DivX D}
-
-def HasTrueSurf (X : DivX D) : Prop := SurfSt.of X = surfSt
-
-theorem hasTrueSurf_put (X : DivX D) : HasTrueSurf (surfSt.put X) := rfl
 
 theorem Surf.exists_const (F : Type) [Field F] [NumberField F] (W : _root_.WeierstrassCurve (𝓞 F))
     [W.IsElliptic] : ∃ (s : Surf) (e : s.C.X ≅ PSpace (𝓞 F) 1)

@@ -42,11 +42,6 @@ theorem limJ_tt_eq_iff {σ : Type} [Finite σ] (k : ℕ) (f g : MvPowerSeries σ
   refine forall_congr' fun x => imp_congr_right fun hx => ?_
   rw [MvPowerSeries.coeff_truncTotal _ hx, MvPowerSeries.coeff_truncTotal _ hx]
 
-theorem limJ_substJ_mk {n d : ℕ} (m : ℕ) (φ : Fin d → PS T n d) (hφ : ∀ j, constantCoeff (φ j) = 0)
-    (P : MvPolynomial (Fin 1 × Fin d) T) :
-    substJ m φ hφ (Ideal.Quotient.mk _ P) = MvPolynomial.aeval (fun q => psJet m (φ q.2)) P :=
-  rfl
-
 end Jets
 
 end ReciprocityTheory.ChartRestriction.G.Pdiv.TL

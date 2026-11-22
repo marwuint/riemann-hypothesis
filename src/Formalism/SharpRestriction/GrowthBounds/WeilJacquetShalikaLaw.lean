@@ -227,16 +227,6 @@ section Relations
 variable {X : Inst D L} {Y : LatInst D} {K : Consts} {c : LatCmp D} {Dx : DivX D} {T : TwForms D}
   {lev : LevelData D} {Xe : ErrX D} {ce : ErrC} {sp : ℝ}
 
-theorem difference_bound_iff_forall_place : Formalism.MainNotions.AuxBlock8.UnitBoundDifferenceTerm D L X Y K ↔
-    ∀ hT : GatTies D, LatTied hT X Y → ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl)
-      (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)), UAt X Y K (lowFE L u w) u w hg := by
-  exact Iff.rfl
-
-theorem unit_bound_iff_forall_place : Formalism.MainNotions.AuxBlock8.unitBoundAtTwistedPlaces D L X Y K ↔
-    ∀ hT : GatTies D, LatTied hT X Y → ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl)
-      (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)), UAt X Y K (Formalism.MainNotions.AuxBlock8.lowU D u w) u w hg := by
-  exact Iff.rfl
-
 theorem zero_gain_of_no_served_orbit (h : ColumnValuationAwayFromTypePrimes D L K Dx T lev Xe ce sp) : ZeroGainValuation D L K Dx T lev Xe ce sp := by
   exact fun hF hE u w h1 h2 _ μ hμ hq x hx => h hF hE u w h1 h2 μ hμ hq x hx
 
@@ -251,9 +241,6 @@ theorem residue_char_ne_level {u : D.what₂.Word} {w : D.what₂.places.Pl}
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : D.what₂.places.resChar w ≠ (D.mem u).A.T := by
   intro h
   exact hg.2.2.2.2.2 ⟨1, by rw [h, mul_one]⟩
-
-theorem NP_tw (W : TwLoc D Y) (μ : D.what₂.Tup) (u : D.what₂.Word) (w : D.what₂.places.Pl)
-    (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : NP X (W.Yt μ) K u w hg = NP X Y K u w hg := rfl
 
 theorem LatTied_congr {Y1 Y2 : LatInst D} (hT : GatTies D) (h1 : Y1.vOf = Y2.vOf) (h2 : Y1.Fl = Y2.Fl) :
     LatTied hT X Y1 ↔ LatTied hT X Y2 := by

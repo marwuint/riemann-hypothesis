@@ -44,8 +44,6 @@ def SigmaDegreeTwoSidedBoundOfGap (D : D7) : Prop :=
     D.dsig ρ ≤ 4 * dTau (rowSgn D) (rowLam D ρ) *
       (3 * (pY D : ℝ) * (qY D : ℝ) * lamAbs (rowLam D ρ)) ^ (pY D * qY D)
 
-def DstarM (D : D7) : ℝ := DstarP D (D.host.g 0) (D.host.g 1) (massI D D.R.r) D.dsig
-
 def BaseVolumeEqualsMass (D : D7) : Prop := volY0 D = massI D D.R.r
 
 def piN (n g : ℕ) : ℝ := ∏ i ∈ Finset.Icc 1 n, (1 - ((g : ℝ) ^ i)⁻¹)

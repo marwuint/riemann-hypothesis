@@ -453,12 +453,6 @@ theorem LatHom.post_Z1fT (c : G → V) (hc : c ∈ latticeFiniteCocycles PD L) :
   rw [← h]
   simp [M, AlgebraTensorModule.map_tmul, LatHom.post]
 
-theorem LatHom.H1map_H1fT (x : LatticeCohomology L) (hx : x ∈ latticeFiniteCohomology PD L) : F.H1map x ∈ latticeFiniteCohomology PD L' := by
-  obtain ⟨c, hc, rfl⟩ := Submodule.mem_map.mp hx
-  refine Submodule.mem_map.mpr ⟨⟨F.post c, F.post_Z1T (c : G → V) c.2⟩,
-    Submodule.mem_comap.mpr (F.post_Z1fT PD (c : G → V) (Submodule.mem_comap.mp hc)), ?_⟩
-  rfl
-
 def LatHom.ColLe (b : ℚ) : Prop :=
   ∃ m k : ℕ, F.col PD = m ∧ lenOl PD (O := O) = k ∧ (m : ℚ) ≤ b * k
 

@@ -137,27 +137,11 @@ noncomputable def tateGlobalCohomologyIso (n : ℕ) :
     (isIso_homologyMap_prodFst (cochainsComplex A) (degZeroComplex (ModuleCat.of k (∀ w, Aᵣ w)))
       (isZero_degZeroComplex_homology_succ _ n))
 
-omit [∀ w, TopologicalSpace (F w)] [∀ w, IsTopologicalGroup (F w)] [∀ w, Fintype (F w)]
-  [∀ w, IsDiscreteRep (Aᵣ w)] in
-theorem tateGlobalCohomologyIso_hom (n : ℕ) :
-    (tateGlobalCohomologyIso A Aᵣ n).hom =
-      HomologicalComplex.homologyMap (prodFst _ _) (n + 1) :=
-  rfl
-
 noncomputable def tateGlobalCohomologyZeroIso :
     (tateGlobalComplex A Aᵣ).homology 0 ≅ ModuleCat.of k (cohomology A 0 × ∀ w, Aᵣ w) :=
   prodHomologyIso _ _ 0 ≪≫
     ((LinearEquiv.refl k (cohomology A 0)).prodCongr
       (degZeroHomologyIso (ModuleCat.of k (∀ w, Aᵣ w))).toLinearEquiv).toModuleIso
-
-omit [∀ w, TopologicalSpace (F w)] [∀ w, IsTopologicalGroup (F w)] [∀ w, Fintype (F w)]
-  [∀ w, IsDiscreteRep (Aᵣ w)] in
-theorem tateGlobalCohomologyZeroIso_hom_apply (z : (tateGlobalComplex A Aᵣ).homology 0) :
-    (tateGlobalCohomologyZeroIso A Aᵣ).hom.hom z =
-      ((HomologicalComplex.homologyMap (prodFst _ _) 0).hom z,
-        (degZeroHomologyIso (ModuleCat.of k (∀ w, Aᵣ w))).hom.hom
-          ((HomologicalComplex.homologyMap (prodSnd _ _) 0).hom z)) :=
-  rfl
 
 theorem tateCompactRes_prodFst :
     tateCompactRes φ ψ A Aᵥ a Aᵣ ar ≫ prodFst _ _ = prodFst _ _ ≫ localRes φ A Aᵥ a :=

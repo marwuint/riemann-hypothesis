@@ -4,20 +4,6 @@ noncomputable section
 
 namespace Formalism.CoboundaryTransfers
 
-def UClaimU : Prop :=
-  ∀ (ℓ : ℕ) [Fact ℓ.Prime] (A : Type) [CommRing A] [Algebra ℤ_[ℓ] A] (B : Base ℤ_[ℓ] A) (M : ℕ)
-    (u : ℤ_[ℓ]ˣ), B.p = ℓ → B.φ B.X = B.X * B.Q → B.GammaX (u : ℤ_[ℓ]) → B.GammaQ →
-    ∀ (D : Type) [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D] [IsScalarTower ℤ_[ℓ] A D]
-    (W : WachMod B M D) (s : ℕ) (J : Finset ℤ),
-    1 ≤ s → (ℓ = 2 → 2 ≤ s) → PadicInt.valuation ((u : ℤ_[ℓ]) - 1) = s → 0 ∉ J →
-    (∀ n ∈ W.N, ∃ z ∈ W.N, B.X ^ (M + 1) • n = B.X ^ (M + 1) • z - W.φ (B.X ^ (M + 1) • z)) →
-    (∀ y, W.QInv y → B.X • y ∈ W.N → y ∈ W.N) →
-    (∀ y, W.QInv y → Polynomial.aeval W.γ ((Polynomial.X - 1) *
-      ∏ j ∈ J, (Polynomial.X - Polynomial.C (((u ^ (-j) : ℤ_[ℓ]ˣ) : ℤ_[ℓ])))) y ∈ W.N) →
-    (∀ y, W.QInv y → (ℓ : ℤ_[ℓ]) • y ∈ W.N → y ∈ W.N) →
-    W.TorsKilled ((∏ j ∈ J, (1 - ((u ^ (-j) : ℤ_[ℓ]ˣ) : ℤ_[ℓ]))) *
-      ∏ i ∈ Finset.Icc 1 M, ((u : ℤ_[ℓ]) ^ i - 1))
-
 def LemmaUU : Prop :=
   ∀ (ℓ : ℕ) [Fact ℓ.Prime] (A : Type) [CommRing A] [Algebra ℤ_[ℓ] A] (B : Base ℤ_[ℓ] A) (M : ℕ)
     (u : ℤ_[ℓ]ˣ), B.p = ℓ → B.φ B.X = B.X * B.Q → B.GammaX (u : ℤ_[ℓ]) → B.GammaQ →

@@ -16,12 +16,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 theorem pLoc_idem (T : Finset (Pl E)) (w : Pl E) : pLoc E w (idem E T) = if w ∈ T then 1 else 0 := rfl
 
-theorem prjG_val (T : Finset (Pl E)) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
-    (prjG E n T g).val = idem E T • g.val + (1 - idem E T) • (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)) := rfl
-
-theorem thF_val (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
-    (thF E n g).val = (PhiU n _).val * (((g⁻¹).val.map (GlobalTheory.ThetaPull.cFin E))ᵀ) * ((PhiU n _)⁻¹).val := rfl
-
 theorem thF_thF (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) : thF E n (thF E n g) = g :=
   GlobalTheory.ThetaPull.thetaGL_thetaGL _ GlobalTheory.ThetaPull.cFin_cFin g
 

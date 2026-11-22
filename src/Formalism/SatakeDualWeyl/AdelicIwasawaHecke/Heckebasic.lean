@@ -79,18 +79,6 @@ section Basis
 
 variable {G : Type} [Group G]
 
-def toFs (k : Type) [CommRing k] (K : Subgroup G) (f : Hecke k K) : ClassSet K K →₀ k :=
-  Finsupp.ofSupportFinite (fun c => (f : G → k) (Quotient.out c)) (by
-    obtain ⟨S, hS⟩ := f.2.2
-    refine (S.finite_toSet.image (DoubleCoset.mk K K)).subset ?_
-    intro c hc
-    obtain ⟨s, hs, a, b, e⟩ := hS (Quotient.out c) hc
-    exact ⟨s, hs, ((DoubleCoset.eq K K s (Quotient.out c)).2 ⟨a, a.2, b, b.2, e⟩).trans
-      (DoubleCoset.out_eq' K K c)⟩)
-
-theorem toFs_apply (k : Type) [CommRing k] (K : Subgroup G) (f : Hecke k K) (c : ClassSet K K) :
-    toFs k K f c = (f : G → k) (Quotient.out c) := rfl
-
 end Basis
 
 end Formalism.UG.P

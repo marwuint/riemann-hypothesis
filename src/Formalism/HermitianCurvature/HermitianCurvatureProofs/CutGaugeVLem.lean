@@ -66,9 +66,6 @@ def Lin (v : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) : (Wq →L[ℂ]
   map_add' A C := by rw [hsV_add, inner_add_right]
   map_smul' a A := by rw [hsV_smul, inner_smul_right]; rfl
 
-theorem Lin_apply (v : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) (A : Wq →L[ℂ] Wp) :
-    Lin v A = inner ℂ v (B.hsVec A) := rfl
-
 variable (P : M.Par)
 
 def trR (μ : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k + 1)) ℂ) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))

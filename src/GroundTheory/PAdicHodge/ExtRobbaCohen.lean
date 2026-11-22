@@ -403,9 +403,6 @@ theorem norm_cohenMap_of_coeff_ne_zero {w : WittVector p (ResidueField (normInte
 instance cohenAlgebra : Algebra (WittVector p (ResidueField (normInteger K))) (normInteger K) :=
   (cohenMap K p).toAlgebra
 
-theorem algebraMap_cohen :
-    algebraMap (WittVector p (ResidueField (normInteger K))) (normInteger K) = cohenMap K p := rfl
-
 theorem cohen_smul_def (w : WittVector p (ResidueField (normInteger K))) (x : normInteger K) :
     w • x = cohenMap K p w * x := Algebra.smul_def w x
 

@@ -262,14 +262,6 @@ def met : Met Y.Y σ (divOf Y n) where
 variable {Y} {p : Y.Y.pts σ} {t t₁ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ} {g g₁ : Y.FrameAt p}
   {t' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℂˣ}
 
-theorem prodPow_mem (h : ∀ τ i, p ∈ eqnSet σ (Y.gr τ i) (t τ i)) : p ∈ eqnSet σ (divOf Y n) (prodPow t n) := by
-  have hE : ∀ s : Finset (Letter Dw), (∑ z ∈ s, n z • Y.gr z.1 z.2).IsEqn (base p) (∏ z ∈ s, t z.1 z.2 ^ n z) := fun s => by
-    classical
-    induction s using Finset.induction_on with
-    | empty => simpa using CartierDiv.isEqn_zero (base p)
-    | insert z s hz ih => rw [Finset.sum_insert hz, Finset.prod_insert hz]; exact ((h _ _).zsmul _).add ih
-  exact hE Finset.univ
-
 omit [NumberField F] in
 
 theorem Adapted.compare (h₁ : Y.Adapted p t₁ g₁ 1) (h : Y.Adapted p t g t') :
@@ -318,60 +310,6 @@ theorem Adapted.mem_eqnSet (h : Y.Adapted p t g t') (τ : E →+* ℂ) (i : Fin 
   refine (CartierDiv.IsEqn.iff_unitAt (h1 τ i)).2 ⟨((u τ i)⁻¹ : _ˣ), Units.isUnit _, ?_⟩
   rw [hu, Units.val_mul, div_mul_cancel_left₀ (Units.ne_zero _), ← Units.val_inv_eq_inv_val, ← map_inv]
   rfl
-
-theorem met_h (h : Y.Adapted p t g t') :
-    (Y.met G n).h (prodPow t n) p = Y.genSq G n g / ‖((prodPow t' n : ℂˣ) : ℂ)‖ ^ 2 := by
-  obtain ⟨u, hu, hg⟩ := (Y.exists_adapted p).choose_spec.2.compare G h
-  have e1 : Var.tv (prodPow t n) (prodPow (Y.exists_adapted p).choose.1 n) p = evStalk p (prodPow u n : _ˣ) := by
-    rw [← (hasVal_cx_stalk _).val_eq, Var.tv]
-    simp only [prodPow, hu, mul_zpow, Finset.prod_mul_distrib, ← map_zpow, ← map_prod, Units.val_mul,
-      mul_div_cancel_left₀ _ (Units.ne_zero _)]
-    rfl
-  have e2 : evStalk p (prodPow u n : _ˣ) = ∏ z : Letter Dw, evStalk p (u z.1 z.2) ^ n z := by
-    refine (congrArg Units.val (map_prod (Units.map (evStalk p).toMonoidHom) _ _)).trans ?_
-    simp only [map_zpow, Units.coe_prod, Units.val_zpow_eq_zpow_val]
-    rfl
-  rw [eq_div_iff (pow_ne_zero _ (norm_ne_zero_iff.2 (Units.ne_zero _)))]
-  show ‖_‖ ^ 2 * _ * _ = _
-  rw [e1, e2]
-  simp only [genSq, hg, prodPow, Units.coe_prod, Units.val_zpow_eq_zpow_val, norm_prod, norm_zpow, norm_mul,
-    ← Finset.prod_pow, ← Finset.prod_mul_distrib]
-  refine Finset.prod_congr rfl fun z _ => ?_
-  simp only [sq, mul_zpow]
-  ring
-
-omit [NumberField F] in
-
-theorem adapted_of_tri {y : Y.Y.X} {ψ : Y.Y.X.presheaf.stalk y →+* ℂ} {φ : c.F →+* Y.Y.X.presheaf.stalk y}
-    {f : EigFrame Z φ (stalkPt Y.Y y ≫ Y.π ≫ genι Z)} (hp : p.1 = spMap ψ ≫ stalkPt Y.Y y)
-    (a : f.Tri (algebraMap (Y.Y.X.presheaf.stalk y) Y.Y.X.functionField) Y.f0 t) (b : f.Tri ψ g t') :
-    Y.Adapted p t g t' ∧ ∀ r, Var.val p (Y.Y.cx σ (algebraMap _ Y.Y.X.functionField r)) = ψ r := by
-  have hs : base p ⤳ y := by
-    have : base p ∈ Set.range (Y.Y.X.fromSpecStalk y) := by rw [base, hp]; exact ⟨_, rfl⟩
-    rwa [Scheme.range_fromSpecStalk] at this
-  let ρ : Y.Y.X.presheaf.stalk y →+* Y.Y.X.presheaf.stalk (base p) := (Y.Y.X.presheaf.stalkSpecializes hs).hom
-  have h1 : spMap ρ ≫ stalkPt Y.Y y = stalkPt Y.Y (base p) := Scheme.SpecMap_stalkSpecializes_fromSpecStalk hs
-  have h2 : (evStalk p).comp ρ = ψ := EigLoc.spMap_inj ((cancel_mono (Y.Y.X.fromSpecStalk y)).1 (by
-    refine Eq.trans ?_ ((Y.spMap_evStalk p).trans hp)
-    rw [← h1, ← Category.assoc, ← Spec.map_comp]; rfl))
-  have h3 : (algebraMap _ Y.Y.X.functionField).comp ρ = algebraMap _ Y.Y.X.functionField :=
-    congrArg CommRingCat.Hom.hom (Y.Y.X.presheaf.stalkSpecializes_comp _ hs)
-  obtain ⟨f', hf⟩ := f.exists_isMap ρ (x' := stalkPt Y.Y (base p) ≫ Y.π ≫ genι Z) rfl (by rw [← h1, Category.assoc])
-  have key : ∀ {k : Type} [CommRing k] (χ : Y.Y.X.presheaf.stalk (base p) →+* k) {φ' : c.F →+* k} {x' : Sp k ⟶ Z.X}
-      {g : EigFrame Z φ' x'} {t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → kˣ}, f.Tri (χ.comp ρ) g t → f'.Tri χ g t :=
-    fun χ _ _ g t h => ⟨by rw [h.1, ← h1, Category.assoc, ← Category.assoc (spMap χ), ← Spec.map_comp]; rfl, h.2.1,
-      fun τ i => by simpa only [hf τ, GlobalTheory.GradedPieces.dual_comp] using h.2.2 τ i⟩
-  refine ⟨⟨_, f', key _ (h3.symm ▸ a), key _ (h2.symm ▸ b)⟩, fun r => ?_⟩
-  rw [← h3, ← h2]
-  exact (hasVal_cx_stalk _).val_eq
-
-theorem pn_met {s : Y.Y.Fn} {a : ℂ} (h : IsCoord Y p.1 g n s a) :
-    pn Y.Y σ _ (Y.met G n) (Y.Y.cx σ s) p = ‖a‖ ^ 2 * Y.genSq G n g := by
-  obtain ⟨y, ψ, φ, f, t, t', r, h1, h2, h3, h4, rfl⟩ := h
-  obtain ⟨ha, hv⟩ := adapted_of_tri h1 h2 h3
-  rw [pn_eq (prodPow_mem n ha.mem_eqnSet), met_h G n ha, fval, ← map_mul, ← h4, hv, norm_mul]
-  simp only [prodPow, _root_.zpow_neg, Finset.prod_inv_distrib, Units.val_inv_eq_inv_val, norm_inv]
-  ring
 
 end FlagCpt
 

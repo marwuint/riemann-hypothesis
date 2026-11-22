@@ -98,9 +98,6 @@ def kRes (hV : IsGKSub ε ρ (kFinVec ε ρ)) (κ : Matrix (Fin n) (Fin n) ℂ) 
     Module.End ℂ (kFinVec ε ρ) :=
   (ρ κ : H →ₗ[ℂ] H).restrict (fun x hx => hV.kStable κ hκ x hx)
 
-theorem kRes_coe (hV : IsGKSub ε ρ (kFinVec ε ρ)) (κ : Matrix (Fin n) (Fin n) ℂ) (hκ : κ ∈ Kset ε)
-    (v : kFinVec ε ρ) : ((kRes hV κ hκ v : kFinVec ε ρ) : H) = ρ κ v := rfl
-
 end KPart
 
 end GlobalTheory.GKLie

@@ -21,8 +21,6 @@ variable (D : D7) (u u' : D.what₂.Word)
 def Pt (b C : ℝ) (Z : GramM D) (τ : D.what₂.Tau) : ℝ :=
   ∏ l ∈ Finset.Icc 1 (D.R.rS + 1), max 1 (Cnt.absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2))
 
-theorem sizeZ_eq (b C : ℝ) (Z : GramM D) : Cnt.sizeZ D b C Z = ∏ τ, Pt D b C Z τ := rfl
-
 end Bound
 
 end Formalism.MainNotions.GramProductBounds

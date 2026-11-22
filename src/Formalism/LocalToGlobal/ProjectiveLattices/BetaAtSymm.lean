@@ -9,9 +9,6 @@ open AlgebraicGeometry CategoryTheory
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
-def ordPsi (D : DegPre R) (χ : D.X) : ℕ∞ :=
-  ⨆ (n : ℕ) (_ : D.PsiIn χ (IsLocalRing.maximalIdeal R ^ n)), (n : ℕ∞)
-
 section At
 
 variable {R : Type} [CommRing R] [IsDomain R]

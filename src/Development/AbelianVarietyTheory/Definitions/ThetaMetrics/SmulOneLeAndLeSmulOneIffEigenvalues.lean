@@ -228,10 +228,6 @@ end IsLogBoundedScalar
 
 end Scalar
 
-namespace HasLogGrowthEntries
-
-end HasLogGrowthEntries
-
 section MatrixLemmas
 
 variable {m n : Type*}
@@ -239,18 +235,6 @@ variable {m n : Type*}
 variable [Fintype n] [DecidableEq n]
 
 variable [Fintype m] [DecidableEq m]
-
-noncomputable def schurComplement₁₁ (G : Matrix (m ⊕ n) (m ⊕ n) ℂ) : Matrix n n ℂ :=
-  G.toBlocks₂₂ - G.toBlocks₂₁ * G.toBlocks₁₁⁻¹ * G.toBlocks₁₂
-
-noncomputable def schurComplement₂₂ (G : Matrix (m ⊕ n) (m ⊕ n) ℂ) : Matrix m m ℂ :=
-  G.toBlocks₁₁ - G.toBlocks₁₂ * G.toBlocks₂₂⁻¹ * G.toBlocks₂₁
-
-omit [DecidableEq m] [Fintype m] in
-
-theorem schurComplement₂₂_eq_swap (G : Matrix (m ⊕ n) (m ⊕ n) ℂ) :
-    schurComplement₂₂ G = schurComplement₁₁ (G.submatrix Sum.swap Sum.swap) :=
-  rfl
 
 end MatrixLemmas
 
@@ -311,14 +295,6 @@ variable [Fintype n]
 end IsLogBounded
 
 variable [Fintype n]
-
-namespace IsLogBounded
-
-end IsLogBounded
-
-namespace IsLogBounded
-
-end IsLogBounded
 
 end LogBounded
 

@@ -209,9 +209,6 @@ open Classical in
 def tilC (u : Pr.Word) : RowPt Pr R sel mu → DecoSet X.E (R.N R.m) (Pr.vT u) Pr.vGs :=
   fun d => (tilQ sel mu u d).res Finset.subset_union_left
 
-def evzC (u : Pr.Word) : ColV W Ch u R.m →ₗ[X.K] (RowPt Pr R sel mu → VV X.K (W.lamTrue u R.m)) :=
-  (LinearMap.funLeft X.K (VV X.K (W.lamTrue u R.m)) (tilC sel mu u)) ∘ₗ (ColV W Ch u R.m).subtype
-
 def PtilFF (P : LevFam X.E X.K R.r Pr.vGs) (h : (mtildeGSD W Ch sel mu P).Ok) (u : Pr.Word) :
     (RowPt Pr R sel mu → VV X.K (W.lamTrue u R.m)) →ₗ[X.K] (RowPt Pr R sel mu → VV X.K W.sgTrue) →ₗ[X.K] X.K :=
   (mtildeGSD W Ch sel mu P).csOf h (mtildeGSD W Ch sel mu P).outSec fun d' =>

@@ -143,8 +143,6 @@ variable (e : IndefiniteRowSideFullHecke.IdeleNormTraceForm.Af ≃ₐ[ℚ] Indef
 
 def ue : IndefiniteRowSideFullHecke.IdeleNormTraceForm.Afˣ ≃* IndefiniteRowSideFullHecke.AdelicScalarMultiplier.Afˣ := Units.mapEquiv e.toMulEquiv
 
-theorem ue_val (ν : IndefiniteRowSideFullHecke.IdeleNormTraceForm.Afˣ) : (ue e ν : IndefiniteRowSideFullHecke.AdelicScalarMultiplier.Af) = e ν := rfl
-
 end Adelic
 
 section Hypotheses
@@ -155,15 +153,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] [Algebra K E]
 
 variable {W : Type} [AddCommGroup W] [Module ℚ W] [Module E W] [IsScalarTower ℚ E W]
   [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
-
-omit [Algebra K E] [IsScalarTower ℚ E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W] in
-theorem hermitian_iff (h : W →ₗ[ℚ] W →ₗ[ℚ] E) :
-    IndefiniteRowSideFullHecke.IdeleNormTraceForm.IsHermitian E h ↔ IndefiniteRowSideFullHecke.AdelicScalarMultiplier.IsHermitian h := Iff.rfl
-
-omit [Algebra K E] [IsCMField E] [IsScalarTower ℚ E W] [Module (𝓞 E) W]
-  [IsScalarTower (𝓞 E) E W] in
-theorem signature_iff (h : W →ₗ[ℚ] W →ₗ[ℚ] E) (p q : ℕ) :
-    IndefiniteRowSideFullHecke.IdeleNormTraceForm.HasSignature E h p q ↔ ∀ τ, IndefiniteRowSideFullHecke.AdelicScalarMultiplier.HasSignatureAt h τ p q := Iff.rfl
 
 end Hypotheses
 

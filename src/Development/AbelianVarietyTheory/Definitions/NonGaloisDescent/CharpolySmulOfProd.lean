@@ -190,9 +190,6 @@ variable (C : CharFrame D)
 def hframe : GlobalTheory.Mem.Chr.HFrame D.host (fun j => eExp D j) :=
   ⟨C.P, C.W, C.mu0, C.eta, C.chiPsi, C.del, C.del', C.isMu0, C.isEta, C.isChi, C.isDel, C.isDel'⟩
 
-theorem muBase_eq (l : ℕ) (j : Fin D.R.m) :
-    muBase C l j = (hframe C).mu0 j * GlobalTheory.GalChar.delAt D.host (hframe C) l := rfl
-
 theorem eExp_int (j : Fin D.R.m) (τ : D.R.Psi) : ∃ z : ℤ, eExp D j τ = z := (D.hc _).e_int j
 
 theorem shiftChar_unr (v : PlE D.host) : (shiftChar C).UnrAt v := fun x hx => by

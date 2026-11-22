@@ -54,10 +54,6 @@ section Inhabitant
 
 open Line
 
-theorem genPt_line_inl :
-    genPt linePlData linePlData.e ⟨Sum.inl (), (0 : Fin 2)⟩ =
-      X (Sum.inl (Sum.inl ())) * C (lineDataHodgeZero.y ⟨(), 0⟩) := rfl
-
 end Inhabitant
 
 end FlagModelAlt

@@ -152,9 +152,6 @@ def frameEquiv (ρ : D.what₂.Tau) : GArch D.sp.cm.sig V.gram (placeOf D ρ) �
 theorem ujMat_frameEquiv_eq_conj (ρ : D.what₂.Tau) (g : GArch D.sp.cm.sig V.gram (placeOf D ρ)) :
     ujMat (M.ε ρ) (frameEquiv M ρ g) = M.fr ρ * matAt V ρ g * (M.fr ρ)⁻¹ := rfl
 
-theorem dsRep_eq_comp (ρ : D.what₂.Tau) :
-    dsRep M ρ = (ujRep (M.ds ρ).2.2.1).comp (frameEquiv M ρ : _ →* Formalism.REAL.UJ (M.ε ρ)) := rfl
-
 end Record
 
 end GlobalTheory.Orb

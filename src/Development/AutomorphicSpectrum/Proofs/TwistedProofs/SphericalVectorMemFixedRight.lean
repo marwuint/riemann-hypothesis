@@ -113,8 +113,6 @@ def finv (f : G → ℂ) : G → ℂ := fun g => f g⁻¹
 
 theorem finv_add (f₁ f₂ : G → ℂ) : finv (f₁ + f₂) = finv f₁ + finv f₂ := rfl
 theorem finv_smul (z : ℂ) (f : G → ℂ) : finv (z • f) = z • finv f := rfl
-theorem finv_zero : finv (0 : G → ℂ) = 0 := rfl
-
 end Abs
 
 section Loc

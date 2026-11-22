@@ -18,21 +18,6 @@ def GDef {N a : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (X : Fin N → Fin a → �
 def GGram {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (a : ℕ) : Set (HCo a) :=
   {t | ∃ X : Fin N → Fin a → ℂ, (Matrix.of X)ᴴ * H * Matrix.of X = hOf t ∧ GDef H X}
 
-def GLaw {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (a : ℕ) (μ : Measure (Fin N → Fin N → ℂ)) (C : ℝ) : Prop :=
-  0 < C ∧ ∀ Φ : (Fin N → Fin a → ℂ) → ℝ≥0∞, Measurable Φ → ∀ s : HCo a → Fin N → Fin a → ℂ,
-    (∀ t ∈ GGram H a, (Matrix.of (s t))ᴴ * H * Matrix.of (s t) = hOf t) →
-    (2 : ℝ≥0∞) ^ (N * a) * ∫⁻ X in {X | GDef H X}, Φ X =
-      (2 : ℝ≥0∞) ^ (a * (a - 1) / 2) * ∫⁻ t in GGram H a,
-        ENNReal.ofReal (C * ‖(hOf t).det‖ ^ (N - a)) *
-          ∫⁻ g, Φ (Matrix.of.symm (Matrix.of g * Matrix.of (s t))) ∂μ
-
-theorem gDef_iff {k r a : ℕ} (X : Tup k r a) : GDef (Hpk k r) X ↔ DefPerp X := Iff.rfl
-
-theorem gGram_eq (k r a : ℕ) : GGram (Hpk k r) a = DefGram k r a := rfl
-
-theorem gLaw_iff (k r a : ℕ) (μ : Measure (Mt k r)) (C : ℝ) : GLaw (Hpk k r) a μ C ↔ IsGramConst k r a μ C :=
-  Iff.rfl
-
 def Sgn {a : ℕ} (d : Fin a → ℂ) : Prop := ∀ i, d i = 1 ∨ d i = -1
 
 open MeasureTheory Matrix Filter Topology in

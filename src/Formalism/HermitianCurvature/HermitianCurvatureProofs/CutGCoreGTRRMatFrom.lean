@@ -48,9 +48,6 @@ theorem rotA_smul (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (φ : ℝ) (a
   ext v
   simp [rotA]
 
-theorem rotM_eq (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (E : M.Ty P → (Wq →L[ℂ] Wp)) (φ : ℝ) (ρ ρ' : M.Ty P) :
-    rotM P Bs.z Bs.z' Bs.π Bs.π' E φ ρ ρ' = inner ℂ (B.hsVec (E ρ)) (B.hsVec (rotA P Bs φ (E ρ'))) := rfl
-
 theorem ann_tz (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') {ζ : ℂ}
     (hζ : P.TT < Complex.normSq ζ) : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ := by
   rw [SSTr.tz_eq P Bs hpl]; exact hζ

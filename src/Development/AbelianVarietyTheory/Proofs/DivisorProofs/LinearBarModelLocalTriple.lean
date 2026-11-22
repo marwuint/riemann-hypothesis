@@ -31,8 +31,4 @@ def splitC {R : Type} {m n : ℕ} (Y : Matrix (Fin m) (Fin (n + n)) R) :
     Matrix (Fin m) (Fin n) R × Matrix (Fin m) (Fin n) R :=
   (fun i j => Y i (Fin.castAdd n j), fun i j => Y i (Fin.natAdd n j))
 
-theorem splitC_add {R : Type} [Add R] {m n : ℕ} (Y C : Matrix (Fin m) (Fin (n + n)) R) :
-    splitC (Y + C) = splitC Y + splitC C := rfl
-
 end GlobalTheory.SwapSchur
-

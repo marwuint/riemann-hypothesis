@@ -18,10 +18,6 @@ open scoped Formalism.Per
 
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l} {π : ↥(OL K)}
 
-def frobE (K : FinExt l) : AK K ≃+* AK K := RingEquiv.ofBijective (frobq K).toRingHom (frobq_bijective K)
-
-theorem frobE_apply (x : AK K) : frobE K x = frobq K x := rfl
-
 end Core
 
 end GlobalTheory.LTOmega

@@ -26,10 +26,6 @@ open Classical in
 
 def typePl : Finset (HeightOneSpectrum (𝓞 D.host.F)) := R.Pg.image fun PP => PP.under (𝓞 D.host.F)
 
-def heckePart (P : LevelP R.Pg D.R.r ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (c : Sys D) :
-    Submodule ℂ (MMap (R.MY 0)) :=
-  partDual R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 P)) (levChi _ (R.βY 0) (R.dat0 P)) Sb c ⊓ R.EEat P
-
 variable (t : T)
 
 def eY (j : ℕ) : (GA D (Yc D j) → ℂ) →ₗ[ℂ] (GA D (Yc D j) → ℂ) :=

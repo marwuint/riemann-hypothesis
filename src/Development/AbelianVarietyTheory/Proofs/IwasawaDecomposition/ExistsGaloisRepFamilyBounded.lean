@@ -168,11 +168,6 @@ variable (hA : GlobalTheory.Published.GlobalArtinReciprocity) (D : D7) (cf : Cha
 def GoodOcc (σ : D.what₂.FT) : Prop :=
   (∃ k, 1 ≤ k ∧ k ≤ D.R.m ∧ D.what₂.isot k σ ≠ ⊥) ∧ D.nd.goodRow σ
 
-open Classical in
-
-def pickL (l : ℕ) [Fact l.Prime] (j : ↥D.LL0 →+* PadicAlgCl l) (σ : D.what₂.FT) : Loc.FinExt l :=
-  if h : GoodOcc D σ then (core hA D cf jE A hG hR hC l j σ h.1 h.2).choose else ⟨⊥, inferInstance⟩
-
 def starRestrictSubfield (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) : ↥D.LL0 →+* ↥D.LL0 where
   toFun x := ⟨star (x : D.what₂.LL), hstar x⟩
   map_one' := Subtype.ext (star_one _)

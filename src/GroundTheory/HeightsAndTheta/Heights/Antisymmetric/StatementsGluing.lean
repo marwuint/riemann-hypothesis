@@ -17,11 +17,6 @@ variable {Ω Ω' : Type*} [Field Ω] [Field Ω'] [Algebra Ω Ω'] {ι κ : Type*
 def joinPt (x : ι → Ω) (z : κ → Ω') : ι × κ → Ω' :=
   segreJoin (fun i => algebraMap Ω Ω' (x i)) z
 
-def pullbackLat {x : ι → Ω} (B : ChartBundle ℤ x r E) (z : κ → Ω') (q : ι × κ) :
-    AddSubgroup (Ω' ⊗[Ω] E) :=
-  AddSubgroup.closure {w | ∃ a ∈ chartRing ℤ (joinPt x z) q, ∃ v ∈ B.lat q.1,
-    w = a • ((1 : Ω') ⊗ₜ[Ω] v)}
-
 end Join
 
 section AddBlock

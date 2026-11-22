@@ -153,9 +153,6 @@ def cocone : Cocone (diag (X := X) A) where
            show uHom (trans i j f.le) ≫ uHom (toA j) = uHom (toA i)
            rw [← uHom_comp, toA_trans] }
 
-theorem cocone_app (i : Idx X A) (x : D i) :
-    ((Under.forget X ⋙ forget CommRingCat).mapCocone (cocone A)).ι.app i x = toA i x := rfl
-
 def isColimitCocone : IsColimit (cocone (X := X) A) := by
   have : ReflectsColimitsOfShape (Idx X A) (Under.forget X ⋙ forget CommRingCat) :=
     reflectsColimitsOfShape_of_reflectsIsomorphisms

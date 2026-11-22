@@ -249,10 +249,6 @@ theorem aMinus_ge_one (j : ℕ) (h1 : 1 ≤ j) (z : RPl N.R) (c : ℕ) (hc : c <
   | zero => exact N.aMinus_zero j h1 z (by omega)
   | succ c ih => exact le_trans (ih (by omega)) (N.aMinus_step j z c hc)
 
-def ChiKIsKronecker : Prop :=
-  ∀ N : NumDatum, (∀ n : ℕ, Odd n → N.chiK (n : ZMod N.d) = ((jacobiSym (-(N.d : ℤ)) n : ℤ) : ℂ)) ∧
-    N.chiK (2 : ZMod N.d) = 1
-
 def HookLower : Prop :=
   ∀ (N : NumDatum) (j : ℕ), 1 ≤ j → j ≤ N.R.m → ∀ z : RPl N.R,
     Formalism.DivisionValues.logFactRows (N.apRows j z) ≤ N.logHook j z
@@ -339,8 +335,6 @@ theorem hP_eq_ofRecord {p : ℕ} (hp : p.Prime) (hN : ¬ p ∣ D.host.condN) :
   rw [hP_eq_art D hp hc]
   unfold NumDatum.hP
   rw [dif_pos hc]
-
-theorem ofRecord_cls (p : ℕ) : (ofRecord D L Del h0).cls p = D.host.cls p := rfl
 
 theorem ofRecord_w {j : ℕ} (hj : 1 ≤ j) (z : Bool × HH D) : (ofRecord D L Del h0).w j z = wPl D j z := by
   unfold NumDatum.w NumDatum.eQ wPl wj
@@ -551,13 +545,8 @@ theorem ofRecord_hA (hDel : D.s.Del = (Del : ℚ)) (hEta : L.etaSz = (D.R.m : �
   rw [e, s, hS, hE, ofRecord_La]
   rfl
 
-theorem ofRecord_exch : (ofRecord D L Del h0).exch = exch D := rfl
-
 theorem ofRecord_aPlus (j : ℕ) (z : Bool × HH D) (i : ℕ) :
     (ofRecord D L Del h0).aPlus j z i = DV.aPlusQ D j (tauPl D z) i := rfl
-
-theorem ofRecord_aMinus (j : ℕ) (z : Bool × HH D) (c : ℕ) :
-    (ofRecord D L Del h0).aMinus j z c = DV.aMinusQ D j (tauPl D z) c := rfl
 
 end Record
 
@@ -573,9 +562,6 @@ def hostEx : Formalism.HC.HostAx Examples₂.R0.toFrame :=
     layerEx.choose_spec.choose_spec.choose _ _ _
     layerEx.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec
 
-theorem hostEx_q : hostEx.q = 11 := rfl
-theorem hostEx_d : hostEx.d = 7 := rfl
-theorem hostEx_QS : hostEx.QS = 16 := rfl
 def numEx : NumDatum where
   R := Examples₂.R0
   sc := { x := 2, eps := 1 / 100, one_lt_alt := by norm_num, eps_pos := by norm_num, eps_lt := by norm_num,
@@ -595,17 +581,7 @@ def numEx : NumDatum where
   hc := fun _ => Examples₂.hc0
 
 theorem ex_e : numEx.R.e = 2 := rfl
-theorem ex_k : numEx.R.k = 8 := rfl
-theorem ex_m : numEx.R.m = 2 := rfl
 theorem numEx_t_eq_fifteen : numEx.R.t = 15 := rfl
-theorem ex_nV : numEx.R.nV = 24 := rfl
-theorem example_rank_first : numEx.R.N (1 - 1) = 8 := rfl
-theorem example_rank_second : numEx.R.N 1 = 24 := rfl
-theorem ex_Del : numEx.Del = 1 := rfl
-
-theorem example_exponent_first (z : RPl numEx.R) : numEx.eQ 1 z = 100 := by
-  rfl
-
 end Formalism.L2.DIV
 
 end

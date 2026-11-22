@@ -10,8 +10,6 @@ variable {L : Type} [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L))
 
 def nrmAbs : AbsoluteValue (P.adicCompletion L) ℝ := NormedField.toAbsoluteValue (P.adicCompletion L)
 
-theorem nrmAbs_apply (x : P.adicCompletion L) : nrmAbs P x = ‖x‖ := rfl
-
 theorem nrmAbs_eq_toNNReal (x : P.adicCompletion L) :
     nrmAbs P x = WithZeroMulInt.toNNReal (NumberField.HeightOneSpectrum.absNorm_ne_zero P) (Valued.v x) :=
   FinitePlace.norm_def (v := P) x

@@ -48,13 +48,6 @@ def IsHomogOfDeg (P : ArithVariety n) (a : ι → ℤ) (x : FunField P) : Prop :
     IsWeightedHomogeneous (coordDeg n) g dg ∧ g ∉ P.ideal ∧ (∀ k, (df k : ℤ) - dg k = a k) ∧
     x = val P f / val P g
 
-def conePoints {κ : Type} [Fintype κ] [DecidableEq κ] {m : κ → ℕ}
-    (I : Ideal (MvPolynomial (Coord m) ℤ)) (F : Type*) [CommRing F] : Set (Cone m F) :=
-  {z | BlockNonzero z ∧ ∀ f ∈ I, evalCone z f = 0}
-
-theorem points_eq_conePoints (P : ArithVariety n) (F : Type*) [CommRing F] :
-    P.points F = conePoints P.ideal F := rfl
-
 structure GenSystem (P : ArithVariety n) where
 
   r : ℕ
@@ -116,9 +109,6 @@ section OneBlock
 
 open NumberField Matrix TensorProduct ComplexAt
 open scoped ComplexOrder
-
-def hermNorm {i : ℕ} (H : Matrix (Fin i) (Fin i) ℂ) (w : Fin i → ℂ) : ℝ :=
-  Real.sqrt (star w ⬝ᵥ (H *ᵥ w)).re
 
 end OneBlock
 

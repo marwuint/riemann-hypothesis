@@ -17,9 +17,6 @@ theorem co_tmul {F L B : Type} [Field F] [Field L] [Algebra F L] [CommRing B] [A
 def onR {F B : Type} (L : Type) [Field F] [Field L] [Algebra F L] [CommRing B] [Algebra F B] (s : B →ₐ[F] B) : L ⊗[F] B →+* L ⊗[F] B :=
   (Algebra.TensorProduct.map (AlgHom.id F L) s).toRingHom
 
-theorem onR_tmul {F B : Type} (L : Type) [Field F] [Field L] [Algebra F L] [CommRing B] [Algebra F B] (s : B →ₐ[F] B) (x : L) (b : B) :
-    onR L s (x ⊗ₜ[F] b) = x ⊗ₜ[F] s b := rfl
-
 def CoFacts : Prop :=
   ∀ (F L B : Type) [Field F] [Field L] [Algebra F L] [CommRing B] [Algebra F B] (a : ℕ),
     (∀ x y : (Fin a → L) ⊗[F] B, co (x + y) = co x + co y) ∧

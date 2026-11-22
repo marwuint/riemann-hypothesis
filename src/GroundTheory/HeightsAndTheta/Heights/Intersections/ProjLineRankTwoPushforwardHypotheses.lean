@@ -82,10 +82,6 @@ def flagMinor {R : Type} [CommRing R] {n N1 : ℕ} (M : Matrix (Fin n) (Fin N1) 
 def genMat (R : Type) [CommRing R] (n : ℕ) : Matrix (Fin n) (Fin n) (MvPolynomial (Fin n × Fin n) R) :=
   Matrix.of fun a b => X (a, b)
 
-def flagIdealQ (n : ℕ) : Ideal (MRingOver ℚ (PluckerBlocks n n)) :=
-  RingHom.ker (aeval (fun q : Σ j, PluckerBlocks n n j => flagMinor (genMat ℚ n) q.1 q.2) :
-    MRingOver ℚ (PluckerBlocks n n) →ₐ[ℚ] MvPolynomial (Fin n × Fin n) ℚ)
-
 def flagDim (n : ℕ) : ℕ := n * (n - 1) / 2
 
 end Bundles

@@ -232,23 +232,6 @@ def ofStepIn {A : ColumnsAtT D.R C} {P : PeriodMap D.R C}
   lat := S.lat
   K := S.K
 
-def ofOne {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} (eY : C.Y i ≃ Fr D i hi)
-    {lat : C.cls i → Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E)} (K : LevelChart D T bad i hi (C.stab i) lat) : StepCharts C i hi where
-  T := T
-  bad := bad
-  eY := eY
-  Ch := Unit
-  chOf := fun _ => ()
-  lat := lat
-  K := fun _ =>
-    { lev := K.lev
-      y := fun c => K.y c.1
-      y_bij := K.y_bij.comp ⟨Subtype.val_injective, fun c => ⟨⟨c, rfl⟩, rfl⟩⟩
-      y_lat := fun c => K.y_lat c.1
-      stabI := fun c => K.stabI c.1
-      stabI_inj := fun c => K.stabI_inj c.1
-      stabI_range := fun c => K.stabI_range c.1 }
-
 variable (St : StepCharts C i hi)
 
 def y (c : C.cls i) : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := (St.K (St.chOf c)).y ⟨c, rfl⟩
@@ -260,8 +243,6 @@ theorem y_eq {β : St.Ch} (c : {c // St.chOf c = β}) : (St.K β).y c = St.y c.1
 abbrev Base : Type := ∀ β : St.Ch, basePts (St.K β).lev
 
 def move (k : St.Base) : StepCharts C i hi := { St with K := fun β => moveChart (St.K β) (k β) }
-
-theorem move_y (k : St.Base) (c : C.cls i) : (St.move k).y c = St.y c * basePtU (k (St.chOf c)) := rfl
 
 end StepCharts
 

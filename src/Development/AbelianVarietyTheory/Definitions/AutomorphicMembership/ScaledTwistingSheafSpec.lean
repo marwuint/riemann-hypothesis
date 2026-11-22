@@ -71,33 +71,6 @@ def DomLoc (Y : LocFam Xo) {c : Coeff l} (hg : ∀ p : ℕ, p.Prime → l.GoodAt
   ∀ (p : ℕ) (W : ValuationSubring ℂ) (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (b : 𝓞 c.F →+* c.V W),
     (∀ x, ((b x : c.V W) : c.F) = (x : c.F)) → Dominates Z (Y p W hp hW ⟨l, c, hg p hp⟩) b
 
-theorem dominates_tor {c : Coeff l} {O O' : Type} [CommRing O] [CommRing O'] {β : O →+* c.F} {β' : O' →+* c.F}
-    {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo l) c β} (T : TorModel Z) {Y' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo l) c β'}
-    {b : O →+* O'} (h : Dominates Z Y' b) : Dominates T.Z Y' b := by
-  obtain ⟨f, t, m₁, m₂, hf, hj, hφ⟩ := h
-  let q : pullback T.Z.s (spMap b) ⟶ pullback Z.s (spMap b) :=
-    pullback.lift (pullback.fst _ _ ≫ T.b) (pullback.snd _ _) (by rw [Category.assoc, T.b_s, pullback.condition])
-  have q1 : q ≫ pullback.fst _ _ = pullback.fst _ _ ≫ T.b := pullback.lift_fst _ _ _
-  have q2 : q ≫ pullback.snd _ _ = pullback.snd _ _ := pullback.lift_snd _ _ _
-  obtain ⟨t', ⟨n⟩⟩ := exists_sab q t
-  obtain ⟨n₂, e₂⟩ := ObjMaps.exists_sab_comp m₂ n
-  obtain ⟨n₁, e₁⟩ : ∃ k : SABMap t' Z.t (pullback.fst _ _ ≫ T.b), k.φ = n.φ ≫ m₁.φ :=
-    q1 ▸ ObjMaps.exists_sab_comp m₁ n
-  obtain ⟨n₀, e₀⟩ := ObjMaps.exists_sab_cancel T.pull n₁
-  refine ⟨q ≫ f, t', n₀, n₂, by rw [Category.assoc, hf, q2], fun a ha => ?_, fun S g g₁ g₂ h₁ h₂ h₃ => ?_⟩
-  · rw [← Category.assoc]
-    exact hj _ (by rw [Category.assoc, q1, ← Category.assoc, ha, T.j_b])
-  · have c₁ := T.Z.m0.toSABMap.cart.1
-    have c₂ := Z.m0.toSABMap.cart.1
-    have w : (g₁ ≫ T.Z.m0.toSABMap.φ) ≫ (Xo l).univ.t.G.hom = (g₁ ≫ T.Z.oF.t.G.hom) ≫ pullback.fst _ _ := by
-      rw [Category.assoc, Category.assoc, c₁.w]
-    have l₁ := c₂.lift_fst _ _ w
-    have l₂ := c₂.lift_snd _ _ w
-    rw [e₂, ← Category.assoc]
-    refine hφ S _ (c₂.lift _ _ w) g₂ ?_ (l₁.trans h₂) (l₂.trans h₃)
-    rw [Category.assoc, ← e₁, e₀, ← Category.assoc, h₁, Category.assoc]
-    exact T.pull_univ S _ _ l₁.symm l₂.symm
-
 structure PreCode (Xo : ∀ l : Level H, Moduli Dw l) (c : Coeff l) : Type where
 
   n : ℕ

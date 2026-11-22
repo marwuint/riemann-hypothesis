@@ -39,8 +39,6 @@ section Base
 variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (i : Fin D.R.m)
 
-theorem latType_eq : latType R F i = latAll R i ⊓ (spType R F i).restrictScalars (𝓞 D.what₂.LL) := rfl
-
 end Base
 
 section Weights

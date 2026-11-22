@@ -168,8 +168,6 @@ def numBase (j : ℕ) : OT.Num where
 
 def numAt (j : ℕ) : OT.Num := (numBase Q j).hat
 
-theorem numAt_hat (j : ℕ) : (numAt Q j).hat = numAt Q j := rfl
-
 structure Choice (j : ℕ) : Prop where
   kap_def : DV.KapDef D
   sizes : SizesAt L

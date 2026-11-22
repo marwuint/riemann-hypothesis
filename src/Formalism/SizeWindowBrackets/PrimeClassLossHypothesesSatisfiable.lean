@@ -67,10 +67,6 @@ def tDetD (P : Par) (m T : ℝ) : ℝ :=
   tFloors P m + tCp P m T + tPrLow P m T + tPrHigh P m T + tOr P m T + tOutD P m T + tOrders P m T
     + tBand P m T + tHigh P m T + tD P m T + tSecondD P m T
 
-def ExplicitSizeBoundUnderWindows : Prop :=
-  ∀ (P : Par) (e K m T : ℝ), WindowsD P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
-    tDetD P m T ≤ (2 * Real.log 4 * P.C + 13 * sg P K) * unitU P m T
-
 def PrimeClassLossHypotheses (P : Par) {U : Type} (Ps cand PR : Finset ℕ) (J : Finset κ) (TT : Finset τ)
     (BAD : ℕ → τ → Prop) (Sig : ℕ → ℝ) (io : U → ℕ → ℝ) (D : U → LD ι κ τ) : Prop :=
   TT.Nonempty ∧ (∀ p ∈ Ps, p.Prime ∧ p ≠ 2) ∧ (∀ p ∈ cand, 0 ≤ Sig p) ∧

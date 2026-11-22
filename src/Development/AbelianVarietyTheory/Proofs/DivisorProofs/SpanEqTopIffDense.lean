@@ -78,34 +78,16 @@ def ofModule [Module (Matrix ι ι R) N] [IsScalarTower R (Matrix ι ι R) N] : 
   sum_diag := by
     rw [← map_sum, Matrix.sum_single_one, map_one]
 
-theorem ofModule_E [Module (Matrix ι ι R) N] [IsScalarTower R (Matrix ι ι R) N] (i j : ι) (x : N) :
-    (ofModule (R := R)).E i j x = Matrix.single i j (1 : R) • x := rfl
 end GlobalTheory.Morita
 
 namespace GlobalTheory.Morita.MatrixUnits
 variable {R : Type*} [CommRing R] {N : Type*} [AddCommGroup N] [Module R N]
   {ι : Type*} [Fintype ι] [DecidableEq ι] (U : MatrixUnits R N ι)
 
-theorem toPi_corner (a : ι) (y : U.corner a) : U.toPi a y = Pi.single a y := by
-  ext i
-  rw [toPi_apply, ← (U.mem_corner_iff a _).1 y.2, U.apply_apply]
-  by_cases h : i = a
-  · subst h; simp [(U.mem_corner_iff i _).1 y.2]
-  · simp [h, Pi.single_apply, Ne.symm h]
-
 def IsStable (L : Submodule R N) : Prop := ∀ i j, ∀ x ∈ L, U.E i j x ∈ L
-
-def cornerPart (a : ι) (L : Submodule R N) : Submodule R (U.corner a) := L.comap (U.corner a).subtype
 
 def spread (a : ι) (L₀ : Submodule R (U.corner a)) : Submodule R N :=
   (Submodule.pi Set.univ fun _ => L₀).comap (U.toPi a).toLinearMap
-
-theorem mem_cornerPart {a : ι} {L : Submodule R N} {y : U.corner a} : y ∈ U.cornerPart a L ↔ (y : N) ∈ L :=
-  Iff.rfl
-
-theorem mem_spread {a : ι} {L₀ : Submodule R (U.corner a)} {x : N} :
-    x ∈ U.spread a L₀ ↔ ∀ i, U.toPi a x i ∈ L₀ := by
-  simp [spread, Submodule.mem_pi]
 
 end GlobalTheory.Morita.MatrixUnits
 
@@ -116,51 +98,6 @@ variable {R : Type*} [CommRing R] {N : Type*} [AddCommGroup N] [Module R N]
 theorem mem_of_forall {L : Submodule R N} (hL : U.IsStable L) (a : ι) {x : N} (h : ∀ i, U.E a i x ∈ L) : x ∈ L := by
   rw [← (U.toPi a).symm_apply_apply x, toPi_symm_apply]
   exact L.sum_mem fun i _ => hL i a _ (h i)
-
-theorem spread_isStable (a : ι) (L₀ : Submodule R (U.corner a)) : U.IsStable (U.spread a L₀) := by
-  intro i j x hx
-  rw [mem_spread] at hx ⊢
-  intro k
-  rw [toPi_E]
-  by_cases h : k = i
-  · subst h; simpa using hx j
-  · simp [Pi.single_apply, h, L₀.zero_mem]
-
-theorem cornerPart_spread (a : ι) (L₀ : Submodule R (U.corner a)) : U.cornerPart a (U.spread a L₀) = L₀ := by
-  ext y
-  rw [mem_cornerPart, mem_spread, toPi_corner]
-  constructor
-  · intro h; simpa using h a
-  · intro h i
-    by_cases hi : i = a
-    · subst hi; simpa using h
-    · simp [Pi.single_apply, hi, L₀.zero_mem]
-
-theorem spread_cornerPart {L : Submodule R N} (hL : U.IsStable L) (a : ι) : U.spread a (U.cornerPart a L) = L := by
-  ext x
-  rw [mem_spread]
-  constructor
-  · intro h; exact U.mem_of_forall hL a fun i => h i
-  · intro h i; exact hL a i x h
-
-def latIso (a : ι) : {L : Submodule R N // U.IsStable L} ≃o Submodule R (U.corner a) where
-  toFun L := U.cornerPart a L.1
-  invFun L₀ := ⟨U.spread a L₀, U.spread_isStable a L₀⟩
-  left_inv L := Subtype.ext (U.spread_cornerPart L.2 a)
-  right_inv L₀ := U.cornerPart_spread a L₀
-  map_rel_iff' {L L'} := by
-    constructor
-    · intro h
-      show L.1 ≤ L'.1
-      rw [← U.spread_cornerPart L.2 a, ← U.spread_cornerPart L'.2 a]
-      intro x hx
-      rw [mem_spread] at hx ⊢
-      exact fun i => h (hx i)
-    · intro h y hy; exact h hy
-
-theorem latIso_apply (a : ι) (L : {L : Submodule R N // U.IsStable L}) : U.latIso a L = U.cornerPart a L.1 := rfl
-
-theorem latIso_symm_apply (a : ι) (L₀ : Submodule R (U.corner a)) : ((U.latIso a).symm L₀).1 = U.spread a L₀ := rfl
 
 section semilinear
 

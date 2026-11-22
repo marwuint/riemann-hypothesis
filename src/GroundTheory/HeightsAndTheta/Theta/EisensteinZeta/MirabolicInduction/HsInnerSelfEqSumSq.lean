@@ -87,22 +87,7 @@ variable {f : ℕ} {p q : Fin f → ℕ}
 
 theorem hsInner_eq (X Y : MatProd p q) : hsInner X Y = ∑ τ, tInner (X τ) (Y τ) := rfl
 
-def hsInnerR (X : MatProd p q) : MatProd p q →ₗ[ℝ] ℝ where
-  toFun Y := hsInner X Y
-  map_add' Y Z := by
-    simp only [hsInner, Pi.add_apply, conjTranspose_add, Matrix.mul_add, trace_add, Complex.add_re,
-      Finset.sum_add_distrib]
-  map_smul' c Y := by
-    simp only [hsInner, Pi.smul_apply, conjTranspose_smul, star_trivial, Matrix.mul_smul,
-      trace_smul, Complex.smul_re, RingHom.id_apply, smul_eq_mul, Finset.mul_sum]
-
-theorem hsInnerR_apply (X Y : MatProd p q) : hsInnerR X Y = hsInner X Y := rfl
-
 end Inner
-
-end UnitaryRecombination
-
-namespace UnitaryRecombination
 
 end UnitaryRecombination
 
@@ -112,22 +97,9 @@ section Places
 
 variable {ι : Type*} [Fintype ι]
 
-def tInnerR (X : Matrix ι ι ℂ) : Matrix ι ι ℂ →ₗ[ℝ] ℝ where
-  toFun Y := tInner X Y
-  map_add' Y Z := by simp only [tInner, conjTranspose_add, Matrix.mul_add, trace_add, Complex.add_re]
-  map_smul' c Y := by
-    simp only [tInner, conjTranspose_smul, star_trivial, Matrix.mul_smul, trace_smul,
-      Complex.smul_re, RingHom.id_apply, smul_eq_mul]
-
-theorem tInnerR_apply (X Y : Matrix ι ι ℂ) : tInnerR X Y = tInner X Y := rfl
-
 variable (F : OrthoFrame)
 
 end Places
-
-end UnitaryRecombination
-
-namespace UnitaryRecombination
 
 end UnitaryRecombination
 

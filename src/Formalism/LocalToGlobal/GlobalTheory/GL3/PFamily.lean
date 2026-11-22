@@ -12,10 +12,6 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker Classical
 
-def TaylorCoeffsInNumberField (D : D7) (e : FamE D) : Prop :=
-  ∀ N N' L L', admitted D N N' L L' →
-    ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ CoefIn D (e N N' L L') M
-
 def NonzeroThetaVectorFamily (D : D7) (T : Tor D) (e : FamE D) : Prop :=
   ∀ N N' L L', admitted D N N' L L' → e N N' L L' ∈ Th D T L L' ∧ e N N' L L' ≠ 0
 
@@ -31,13 +27,6 @@ def ThetaNormConjugateIndependent (D : D7) (T : Tor D) (e : FamE D) : Prop :=
       CoefIn D (e N N' L₁ L₁') M → CoefIn D (e N N' L₂ L₂') M → ∀ ρ : M →ₐ[ℚ] ℂ,
         normSq D (torConj D T M ρ) (La D (torConj D T M ρ) L₁ L₁') (fnConj D M ρ (e N N' L₁ L₁')) =
           normSq D (torConj D T M ρ) (La D (torConj D T M ρ) L₂ L₂') (fnConj D M ρ (e N N' L₂ L₂'))
-
-theorem theta_conditions_iff (D : D7) (T : Tor D) (C : ℝ) (e : FamE D) :
-    th22 D T C e ↔ ThetaNormIndependent D T e ∧ ThetaMeanBound D T C e ∧ ThetaNormConjugateIndependent D T e ∧ th22U D T e := Iff.rfl
-
-def EigenvectorPacketProperties {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (C : ℝ) (χ : IdE D → ℂ) : Prop :=
-  TaylorCoeffsInNumberField D (B.eNat χ) ∧ ThetaMeanBound D (tor0 D cc δ) C (B.eNat χ) ∧ ThetaNormConjugateIndependent D (tor0 D cc δ) (B.eNat χ) ∧
-    B.EqP χ ∧ B.IntP χ ∧ B.MomP χ ∧ B.StrP χ
 
 def LinkBaseNe : Prop :=
   ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Base D cc δ → δ ≠ 0

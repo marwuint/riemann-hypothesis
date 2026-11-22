@@ -17,9 +17,6 @@ def toT (g : GtPtF D F) : GtPt D (TF (R := R) F) := ⟨g.b, g.s, g.isGen, g.s_ze
 
 theorem isZero_toT (g : GtPtF D F) : (toT g).IsZero ↔ g.IsZero := Iff.rfl
 
-theorem isPullF_iff_isPull (x : Spec (CommRingCat.of F) ⟶ T.left) (g : GtPt D T) (g' : GtPtF D F) :
-    GtPt.IsPullF F x g g' ↔ GtPt.IsPull (T' := TF (R := R) F) x g (toT g') := Iff.rfl
-
 theorem maps_eq {x : Spec (CommRingCat.of F) ⟶ T.left} {g : GtPt D T} {g' : GtPtF D F}
     (H : GtPt.IsPullF F x g g') (χ : D.X) (k : Fin 4) :
     DegPre.gtφ D F g'.b χ k = x ≫ DegPre.gtφT D T g.b χ k := by

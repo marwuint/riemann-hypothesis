@@ -39,14 +39,8 @@ section Points
 
 variable {k : Type} [CommRing k] {X X' : Scheme.{0}} {p : X ⟶ Sp k} {q : X' ⟶ Sp k} {ι : k →+* AlgebraicClosure ℚ}
 
-theorem GeomPt.base_push (π : X' ⟶ X) (hπ : π ≫ p = q) (z : GeomPt q ι) : (z.push π hπ).base = π z.base := rfl
-
 end Points
 
 variable {D : D7} {Y : ShimX D.what₂.Tau}
-
-namespace ProjEx
-
-end ProjEx
 
 end GlobalTheory.Mean4O

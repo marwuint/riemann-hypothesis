@@ -16,19 +16,11 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ} {ST SG SG
 
 def StdAtT {n : ℕ} (d : Deco E n ST SG) : Prop := ∀ P : ST, d.at P.1 = stdAt E n P.1
 
-def suppPts (d : Deco E a ST SG) (d' : Deco E b ST SG') : Set (HomE E a b) :=
-  {x | ∀ P : ST, ∀ y ∈ d.at P.1, x y ∈ d'.at P.1 ∧ d'.f P (x y) = d.f P y}
-
 end Sets
 
 section Table
 
 variable {X : Fields} {a b : ℕ}
-
-def kerTable (A : Amb X) (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) (cA cB : ℕ)
-    (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (Ξ : HomE X.E a b → X.K)
-    (m : DVar X.Tau a b →₀ ℕ) : X.K :=
-  latSum (divLat cA (homAt Sall N N')) (mulLat cB (homAt Sall N N')) fun x => Ξ x * A.jetK Sall N N' cB x m
 
 def RatAt (A : Amb X) (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) (cA cB : ℕ)
     (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (Ξ : HomE X.E a b → X.K)

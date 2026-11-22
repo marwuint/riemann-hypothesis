@@ -231,9 +231,6 @@ theorem isIntM_add {a b : ℕ} {N M : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIn
   rw [Matrix.add_apply]
   exact add_mem (hN i j) (hM i j)
 
-theorem intM_eq {n : ℕ} (y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) :
-    y.map Subtype.val = y.map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype := rfl
-
 theorem redM_of_int (PP : Formalism.L2.DIV.Pl D.host.E) {a b : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) (i j) :
     redM PP N i j = Formalism.L2.DIV.resS D.host.F PP ⟨N i j, hN i j⟩ := by
   unfold redM; rw [dif_pos (hN i j)]

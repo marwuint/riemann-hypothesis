@@ -51,6 +51,4 @@ theorem fromT_of_res (hBC : HasBC Xo c) {S : Type} [CommRing S] [Algebra c.F S] 
 
 variable (Xo)
 
-theorem secBC_iff_forall : Formalism.L2.Pj.SecBC Xo hle ↔ ∀ a n, GlobalTheory.IndefiniteRowSideFullHecke.SectionBaseChangeTests.SecBC Xo hle a n := Iff.rfl
-
 end GlobalTheory.SecFieldCompare

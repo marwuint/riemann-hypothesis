@@ -69,9 +69,6 @@ theorem ordGE_subst [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, Ord
 def killV (P : σ → Prop) (F : MvPowerSeries σ C) : MvPowerSeries σ C :=
   fun μ => if ∀ w ∈ μ.support, P w then coeff μ F else 0
 
-theorem coeff_killV (P : σ → Prop) (F : MvPowerSeries σ C) (μ : σ →₀ ℕ) :
-    coeff μ (killV P F) = if ∀ w ∈ μ.support, P w then coeff μ F else 0 := rfl
-
 theorem dVar_eq_pderiv {C : Type} [Field C] {σ : Type} (w : σ) (F : MvPowerSeries σ C) :
     dVar w F = pderiv C w F := by
   ext μ

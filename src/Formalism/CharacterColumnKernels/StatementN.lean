@@ -118,18 +118,6 @@ abbrev CongMod [Module O V] [IsScalarTower O (FractionRing O) V] (T : Subalgebra
 
 end Lat
 
-def StatCongBound : Prop :=
-  ∀ (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (X : Type*) [Finite X]
-    (T : Subalgebra O (X → O)) [IsLocalRing T], (∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) →
-    ∀ (V : Type*) [AddCommGroup V] [Module (FractionRing O) V] [FiniteDimensional (FractionRing O) V]
-      [Module O V] [IsScalarTower O (FractionRing O) V]
-      (act : T →+* Module.End (FractionRing O) V), (⨆ x, Vx T act x) = ⊤ →
-    ∀ L : Submodule O V, L.FG → Submodule.span (FractionRing O) (L : Set V) = ⊤ →
-      (∀ f : T, ∀ v ∈ L, act f v ∈ L) →
-    ∀ Z : Finset X,
-      Module.length O (CongMod T act L (Z : Set X)) ≤
-        ∑ x ∈ Z, (Module.finrank (FractionRing O) (Vx T act x) : ℕ∞) * vcc T (Z : Set X) x
-
 def StatCongBoundGood : Prop :=
   ∀ (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (X : Type*) [Finite X]
     (T : Subalgebra O (X → O)) [IsLocalRing T], (∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) →

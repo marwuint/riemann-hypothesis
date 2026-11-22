@@ -44,9 +44,6 @@ def pairChar (a b : Type) [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b
     GL a k × GL b k →* ℂˣ :=
   (detChar a μ).comp (MonoidHom.fst _ _) * (detChar b μ).comp (MonoidHom.snd _ _)
 
-theorem pairChar_apply (μ : kˣ →* ℂˣ) (g : GL a k × GL b k) :
-    pairChar a b μ g = μ (Matrix.GeneralLinearGroup.det g.1) * μ (Matrix.GeneralLinearGroup.det g.2) := rfl
-
 end Local
 
 end GlobalTheory.TypeTwo.EndTwist

@@ -385,8 +385,6 @@ def spacesOfRanks : Spaces R F E where
     rw [Pi.basisFun_apply, Pi.basisFun_apply, diagForm_single]
     simp [sgn]
 
-theorem spacesOfRanks_T : (spacesOfRanks R hstar cm T hT pz hpz hy).T = T := rfl
-
 theorem spaces_signature_eq : ∀ j, j ≤ R.m → ∀ τ : E →+* ℂ,
     ((spacesOfRanks R hstar cm T hT pz hpz hy).Y j).sig τ = sigYD R j := fun _ _ _ => rfl
 

@@ -22,8 +22,6 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 
 theorem lamV_eq : GlobalTheory.IndefiniteRowSideFullHecke.RationalFormValues.lamV D i = FWT.lamV D i := rfl
 
-theorem formFn_eq (x : A.fam.amb.FL i t) : formFn R i t x = (R.HV i t).e (jVx R i t x) := rfl
-
 theorem isCoefExt_iff_c0BC (jL : D.what₂.LL →+* K') (c₀ : VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).W)
     (c' : VsV D i K' →ₛₗ[σ'] (R.cV i).W) :
     IsCoefExt jL (FWT.lamV D i) c₀ c' ↔ CoefficientBaseChange R i jL σ' c₀ c' := by

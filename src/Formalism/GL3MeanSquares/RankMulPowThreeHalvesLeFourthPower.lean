@@ -7,11 +7,6 @@ namespace Formalism.HermitianLattices.GenusMassVolumes
 open Finset MeasureTheory
 open Formalism.LogVandermondeBounds.StandardLattice
 
-def SW_hecke_gap : Prop :=
-  ∀ (q : ℝ) (M : ℕ), 2 ≤ q → 3 ≤ M →
-    q ^ 2 + q < q ^ M + q - 1 + q ^ (2 - (M : ℤ)) ∧
-    ∀ S : ℝ, 0 ≤ S → (q ^ M + q - 1 + q ^ (2 - (M : ℤ))) * S ≤ (q ^ 2 + q) * S → S = 0
-
 def GlobalArithmeticIdentity : Prop :=
   ∀ (f M : ℕ) (v Lv : ℝ), 1 ≤ M → 0 < v → 0 < Lv →
     let dF : ℝ := (2 * v) ^ f

@@ -98,26 +98,6 @@ def oneSec (F : Type) [CommRing F] :
       (⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩ : LB (Spec (CommRingCat.of F))) :=
   mk _ ⟨fun _ => 1, fun _ _ => by simp⟩
 
-theorem oneSec_ne_zero (F : Type) [CommRing F] [Nontrivial F] : oneSec F ≠ 0 := by
-  intro h
-  have h1 : ((1 : Γ(Spec (CommRingCat.of F), ⊤)) : Γ(Spec (CommRingCat.of F), ⊤)) = 0 := by
-    have := congrArg (fun s => (SecMod.sec s).f PUnit.unit) h
-    simpa [oneSec] using this
-  have h2 := congrArg (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom h1
-  rw [map_one, map_zero] at h2
-  exact one_ne_zero h2
-
-theorem smul_oneSec_eq_zero_iff (F : Type) [CommRing F] (c : F) : c • oneSec F = 0 ↔ c = 0 := by
-  constructor
-  · intro h
-    have h1 := congrArg (fun s => (SecMod.sec s).f PUnit.unit) h
-    simp only [coord_smul, coord_zero, oneSec, coord_mk, _root_.mul_one] at h1
-    simp [resTop, scal] at h1
-    have h2 := congrArg (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom h1
-    simpa using h2
-  · rintro rfl
-    exact zero_smul F _
-
 end SecMod
 end GlobalTheory.UU
 end

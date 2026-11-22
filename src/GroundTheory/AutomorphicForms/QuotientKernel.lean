@@ -100,22 +100,11 @@ theorem coeFn_rightRegularRep (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
 
 variable [CompactSpace (RightCosetSpace Γ)]
 
-omit [μ.IsMulRightInvariant] in
-
-theorem memLp_quotientKernel (f : CompactlySupportedContinuousMap G ℂ) :
-    MemLp (quotientKernel Γ f) 2 ((quotientMeasure Γ μ).prod (quotientMeasure Γ μ)) :=
-  (continuous_quotientKernel Γ f).memLp_of_hasCompactSupport
-    (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (subset_univ _))
-
 omit [Group G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
   [SecondCountableTopology G] [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] in
 theorem coeFn_compactSupportToL1 (f : CompactlySupportedContinuousMap G ℂ) :
     (UnitaryRep.ccToL1 μ f : G → ℂ) =ᵐ[μ] f :=
   MemLp.coeFn_toLp _
-
-def kernelOperator (f : CompactlySupportedContinuousMap G ℂ) :
-    Lp ℂ 2 (quotientMeasure Γ μ) →L[ℂ] Lp ℂ 2 (quotientMeasure Γ μ) :=
-  L2Kernel.kernelOp ((memLp_quotientKernel Γ μ f).toLp _)
 
 end Operator
 

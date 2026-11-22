@@ -259,9 +259,6 @@ variable {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ D.host.E
 
 def latN : Submodule (𝓞 c.F) (cuspW Xo c U G) := chiLat (grpHR fr) U G (chiHR fr ψ)
 
-def latCut (e : MonoidAlgebra c.F (LevelGroup D.host)) : Submodule (𝓞 c.F) (cuspW Xo c U G) :=
-  cutLat (latN fr U G ψ) (typeOp Xo c hl fr e)
-
 variable (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* (c.F)ˣ) (j : Fin D.R.m)
 
 def latBad : Submodule (𝓞 c.F) (cuspW Xo c U G) := cutLat (latN fr U G ψ) (1 - goodOp Xo c hl fr om j)

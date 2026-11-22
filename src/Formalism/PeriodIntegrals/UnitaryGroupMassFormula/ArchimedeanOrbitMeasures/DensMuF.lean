@@ -11,10 +11,6 @@ open MeasureTheory NumberField Topology Set Formalism.BasicNotions Formalism.L2.
 
 def BetaSym : Prop := ∀ {D : D7} (X : HidaSetting D) (x y : EuclideanSpace ℝ (KapI X)), betaI X x y = betaI X y x
 
-open Classical in
-
-def MatND : Prop := ∀ {D : D7} (X : HidaSetting D), (matI X).det ≠ 0
-
 section
 variable {D : D7} (X : HidaSetting D)
 

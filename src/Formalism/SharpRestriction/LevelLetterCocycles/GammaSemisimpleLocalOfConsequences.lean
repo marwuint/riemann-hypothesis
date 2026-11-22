@@ -20,29 +20,12 @@ variable (W : LocWach PD LL O v n)
 
 def WachLatticeFree : Prop := ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → wachFree W T
 
-def WachLatticeDualClosed : Prop :=
-  ∀ (T T' : LocLat G Qp LL O) (P : T.V →ₗ[LL] T'.V →ₗ[LL] LL), IsCrys PD T.ρ → IsCrys PD T'.ρ →
-    wachDual W T T' P
-
-def WachLatticeTensorClosed : Prop :=
-  ∀ (T T' T'' : LocLat G Qp LL O) (b : T.V →ₗ[LL] T'.V →ₗ[LL] T''.V),
-    IsCrys PD T.ρ → IsCrys PD T'.ρ → IsCrys PD T''.ρ → wachTensor W T T' T'' b
-
-def WachLatticeMonoidal : Prop := WachLatticeDualClosed W ∧ WachLatticeTensorClosed W
-
 def WachCharacterisationLattice : Prop := ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → p10 W T
-
-def WachTwistLattice : Prop :=
-  ∀ (T T' : LocLat G Qp LL O) (j : ℤ), IsCrys PD T.ρ → IsCrys PD T'.ρ → wachTwistIso W T T' j
 
 def GammaSemisimpleQuotient : Prop :=
   ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ →
     ∀ y : ℕ, 1 ≤ y → SSEig W T (invN W T (W.Q ^ y)) (W.N T)
       {c | ∃ a ∈ Jumps (PD := PD) T, ∃ j : ℕ, 1 ≤ j ∧ j ≤ y ∧ c = (uU W) ^ (-(a + j))}
-
-theorem wach_first_lattice_iff : WachFreeDualTensor W ↔ WachLatticeFree W ∧ WachLatticeMonoidal W := Iff.rfl
-
-theorem wach_tenth_iff : WachTwistCharacterisation W ↔ WachCharacterisationLattice W ∧ WachTwistLattice W := Iff.rfl
 
 end Local
 

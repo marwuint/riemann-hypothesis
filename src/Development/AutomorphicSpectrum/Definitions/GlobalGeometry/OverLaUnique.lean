@@ -49,8 +49,6 @@ def pjSys : PtSys c.F (Rul Xo c) where
   val_smul y a f ha := vAtV_smul y a f ha
   val_mul y f g := vAtV_mul y f g
 
-def phU (la : HeightOneSpectrum (𝓞 c.F)) (y : (pjSys Xo c).Pt la) : ℝ := imgV (show PtU Xo c la from y)
-
 variable {Xo c} in
 
 def IsBC {T T' : CDVR} {io : c.F →+* T.Fr} (φ : T.Fr →+* T'.Fr) (y : IntFr Xo c T io)
@@ -89,10 +87,6 @@ theorem pjSys_val_mk (la : HeightOneSpectrum (𝓞 c.F)) {T : CDVR} {io : c.F �
     (ho : OverLa la T.V io e) (y : IntFr Xo c T io) (hy : y.IsAlg) (t : ℝ) (ht : IsPhiAt Xo c la T io y t)
     (f : Rul Xo c) :
     (pjSys Xo c).val (show PtU Xo c la from PtV.mk la ho y hy t ht) f = nval T.V e (evI y f) := rfl
-
-theorem phU_mk (la : HeightOneSpectrum (𝓞 c.F)) {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ}
-    (ho : OverLa la T.V io e) (y : IntFr Xo c T io) (hy : y.IsAlg) (t : ℝ) (ht : IsPhiAt Xo c la T io y t) :
-    phU Xo c la (show PtU Xo c la from PtV.mk la ho y hy t ht) = t := rfl
 
 end Basic
 

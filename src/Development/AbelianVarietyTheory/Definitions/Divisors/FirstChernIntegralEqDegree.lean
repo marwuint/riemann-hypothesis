@@ -745,8 +745,6 @@ variable (h) in
 
 def first_chern_integral : ℝ := ∑ᶠ σ, (h.met σ).detWeight.chernInt 1 univ fun _ => 1
 
-theorem firstChernIntegral_eq_degree (H : h.IsCInf) : h.first_chern_integral = ArInt.gdeg (det H) 1 := rfl
-
 end VMetric
 
 structure HermVB (p : X ⟶ Sp k) (r : ℕ) where

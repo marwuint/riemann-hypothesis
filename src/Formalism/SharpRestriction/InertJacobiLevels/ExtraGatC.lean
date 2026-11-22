@@ -60,18 +60,12 @@ def gatTiesC : GatTies (withGatC D h0 rOf eOf bs) where
     @position_succ_eq_mul_frobenius _ D.host _ (served_of h) (bs u (D.what₂.places.resChar w)) _ D.eTau v s P hP hL σ hσ
   gat_lam := fun _ _ _ _ _ _ => rfl
 
-theorem withGatC_e (u w h) : ((withGatC D h0 rOf eOf bs).gat u w h).e = eOf (D.what₂.places.resChar w) := rfl
-
 variable (B : D.what₂.Word → ℕ → Set (HH D))
 
 def withGatCB : D7 := withGatC D h0 rOf eOf (fun u p => tau1P D.R.toFrame '' B u p)
 
 variable (u : D.what₂.Word) (w : D.what₂.places.Pl)
   (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
-
-theorem withGatCB_r : ((withGatCB D h0 rOf eOf B).gat u w h).P.r = rOf u (D.what₂.places.resChar w) := rfl
-
-theorem hP_withGatCB (p : ℕ) : hP (withGatCB D h0 rOf eOf B) p = hP D p := rfl
 
 end Formalism.MainNotions.Inhab
 

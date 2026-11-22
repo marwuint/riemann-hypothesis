@@ -87,37 +87,6 @@ theorem isIntegral_trace_of_isIntegral {K : Type} [Field K] {n : ℕ}
   rw [← htr] at hsum
   exact (isIntegral_algHom_iff φ.toIntAlgHom φ.injective).mp hsum
 
-theorem isIntegral_of_preserves_lattice {E : Type} [Field E] [NumberField E] {r : ℕ}
-    (Λ : Submodule (𝓞 E) (Fin r → E)) (A : Matrix (Fin r) (Fin r) E) (hfg : Λ.FG)
-    (hsp : Submodule.span E (Λ : Set (Fin r → E)) = ⊤) (hA : ∀ x ∈ Λ, A *ᵥ x ∈ Λ) :
-    IsIntegral ℤ A := by
-  set Lz := Λ.restrictScalars ℤ
-  have : Module.Finite ℤ Lz := Module.Finite.iff_fg.mpr hfg.restrictScalars
-  have hAz : ∀ x ∈ Lz, (A.mulVecLin.restrictScalars ℤ) x ∈ Lz := fun x hx => hA x hx
-  obtain ⟨p, hpm, hp⟩ :=
-    LinearMap.exists_monic_and_aeval_eq_zero ℤ
-      (LinearMap.restrict (A.mulVecLin.restrictScalars ℤ) hAz)
-  have hpA : aeval A p = 0 := by
-    have hker : ∀ x ∈ Λ, (aeval A p) *ᵥ x = 0 := by
-      intro x hx
-      have h := aeval_restrict_coe A Lz hAz p ⟨x, hx⟩
-      rw [hp] at h
-      rw [← h]; rfl
-    have hle : Submodule.span E (Λ : Set (Fin r → E)) ≤ LinearMap.ker (aeval A p).mulVecLin :=
-      Submodule.span_le.2 fun x hx => hker x hx
-    rw [hsp] at hle
-    ext i j
-    have h := congrFun (hle (Submodule.mem_top : Pi.single j (1 : E) ∈ ⊤)) i
-    simpa [Matrix.mulVec_single] using h
-  exact ⟨p, hpm, by rw [← aeval_def]; exact hpA⟩
-
-theorem trace_isIntegral_of_preserves_lattice : ∀ (E : Type) [Field E] [NumberField E] (r : ℕ)
-    (Λ : Submodule (𝓞 E) (Fin r → E)) (A : Matrix (Fin r) (Fin r) E), Λ.FG →
-    Submodule.span E (Λ : Set (Fin r → E)) = ⊤ → (∀ x ∈ Λ, A *ᵥ x ∈ Λ) →
-    IsIntegral ℤ A.trace := by
-  intro E _ _ r Λ A hfg hsp hA
-  exact isIntegral_trace_of_isIntegral A (isIntegral_of_preserves_lattice Λ A hfg hsp hA)
-
 end GlobalTheory.LatTrace
 
 end

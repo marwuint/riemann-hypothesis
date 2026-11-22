@@ -23,31 +23,6 @@ theorem awaySMulHom_algebraMap (σ : G) (x : R) :
       algebraMap R (Localization.Away t) (σ • x) :=
   IsLocalization.lift_eq _ x
 
-theorem awaySMulHom_one : awaySMulHom t h (1 : G) = RingHom.id _ := by
-  apply IsLocalization.ringHom_ext (Submonoid.powers t)
-  refine RingHom.ext fun x => ?_
-  rw [RingHom.comp_apply, awaySMulHom_algebraMap, one_smul, RingHom.comp_apply, RingHom.id_apply]
-
-theorem awaySMulHom_mul (σ τ : G) :
-    awaySMulHom t h (σ * τ) = (awaySMulHom t h σ).comp (awaySMulHom t h τ) := by
-  apply IsLocalization.ringHom_ext (Submonoid.powers t)
-  refine RingHom.ext fun x => ?_
-  rw [RingHom.comp_apply, awaySMulHom_algebraMap, mul_smul, RingHom.comp_apply, RingHom.comp_apply,
-    awaySMulHom_algebraMap, awaySMulHom_algebraMap]
-
-def awayMulSemiringAction : MulSemiringAction G (Localization.Away t) where
-  smul σ x := awaySMulHom t h σ x
-  one_smul x := by
-    change awaySMulHom t h 1 x = x
-    rw [awaySMulHom_one, RingHom.id_apply]
-  mul_smul σ τ x := by
-    change awaySMulHom t h (σ * τ) x = awaySMulHom t h σ (awaySMulHom t h τ x)
-    rw [awaySMulHom_mul, RingHom.comp_apply]
-  smul_zero σ := map_zero (awaySMulHom t h σ)
-  smul_add σ := map_add (awaySMulHom t h σ)
-  smul_one σ := map_one (awaySMulHom t h σ)
-  smul_mul σ := map_mul (awaySMulHom t h σ)
-
 theorem awaySMulHom_comm (f : Localization.Away t →+* Localization.Away t) (F : R →+* R)
     (hf : ∀ x, f (algebraMap R (Localization.Away t) x) = algebraMap R (Localization.Away t) (F x))
     (hF : ∀ (σ : G) x, F (σ • x) = σ • F x) (σ : G) (x : Localization.Away t) :
@@ -99,13 +74,6 @@ theorem isUnit_gal_smul_periodT (σ : Gal(PadicAlgCl p/K)) :
 
 def galB (σ : Gal(PadicAlgCl p/K)) : BCris hε →+* BCris hε :=
   awaySMulHom _ (isUnit_gal_smul_periodT hε) σ
-
-def galBAction : MulSemiringAction Gal(PadicAlgCl p/K) (BCris hε) :=
-  awayMulSemiringAction (isUnit_gal_smul_periodT hε)
-
-theorem galBAction_smul (σ : Gal(PadicAlgCl p/K)) (x : BCris hε) :
-    (galBAction hε).smul σ x = galB hε σ x :=
-  rfl
 
 theorem galB_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : BCrisPlus ℂ_[p] p) :
     galB hε σ (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) x) =

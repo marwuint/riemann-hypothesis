@@ -69,8 +69,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 def frameOf {r : ℕ} (Xx : DataX E r) {X : Data E r} (hX : Xx.toData = X) (x : Frame X.Ψ r) : Frame Xx.Ψ r :=
   cast (congrArg (fun Y : Data E r => Frame Y.Ψ r) hX.symm) x
 
-theorem frameOf_rfl {r : ℕ} (Xx : DataX E r) (x : Frame Xx.Ψ r) : frameOf Xx rfl x = x := rfl
-
 end Point
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LatticeLetterSources

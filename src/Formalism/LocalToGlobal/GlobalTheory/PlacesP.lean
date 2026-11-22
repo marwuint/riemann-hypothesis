@@ -55,9 +55,6 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComple
 
 def toFinPl (v : HeightOneSpectrum (𝓞 K)) : slopeLatticeData.FinPl K := ⟨v.asIdeal, v.isMaximal⟩
 
-theorem lenLoc_eq_lenAt (v : HeightOneSpectrum (𝓞 K)) (M N : Submodule (𝓞 K) V) :
-    DV.lenLoc v N M = slopeLatticeData.lenAt (toFinPl v) M N := rfl
-
 theorem mu_index_sum (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (hX : ∀ v, IsUnit (X v).det)
     {M N : Submodule (𝓞 K) V} (hM : M.FG) (hNM : N ≤ M) (hN0 : N ≠ ⊥) (hrk : rkK N = rkK M) :
     (∀ v, DV.lenLoc v N M ≠ ⊤) ∧ ∀ S : Finset (HeightOneSpectrum (𝓞 K)), (∀ v, v ∉ S → DV.lenLoc v N M = 0) →
@@ -662,4 +659,3 @@ end Link
 end Formalism.L2.GlobalTheoryTheory.Places
 
 end
-

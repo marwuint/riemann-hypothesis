@@ -52,15 +52,6 @@ section Torus
 
 variable (X : Data E r)
 
-def nuForm (ν : X.Ψ → ℝ) : (X.Ψ → ℝ) →ₗ[ℝ] ℝ where
-  toFun s := 2 * ∑ τ, ν τ * s τ
-  map_add' s t := by simp [mul_add, Finset.sum_add_distrib]
-  map_smul' c s := by
-    simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
-    exact Finset.sum_congr rfl fun _ _ => by ring
-
-theorem nuForm_apply (ν s : X.Ψ → ℝ) : nuForm X ν s = 2 * ∑ τ, ν τ * s τ := rfl
-
 end Torus
 
 end

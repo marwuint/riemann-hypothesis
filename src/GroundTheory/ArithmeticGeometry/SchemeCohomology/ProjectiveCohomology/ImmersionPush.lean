@@ -19,11 +19,6 @@ lemma app_resO (i : X ⟶ Y) {U V : Y.Opens} (h : V ≤ U) (r : Γ(Y, U)) :
 
 variable (i : X ⟶ Y)
 
-lemma resF_pushforward (F : X.Modules) {U V : Y.Opens} (h : V ≤ U)
-    (m : Γ((Scheme.Modules.pushforward i).obj F, U)) :
-    resF ((Scheme.Modules.pushforward i).obj F) h m =
-      resF F ((Opens.map i.base).monotone h) m := rfl
-
 lemma smul_pushforward (F : X.Modules) {U : Y.Opens} (r : Γ(Y, U))
     (m : Γ((Scheme.Modules.pushforward i).obj F, U)) :
     r • m = (i.app U r • (show Γ(F, i ⁻¹ᵁ U) from m) : Γ(F, i ⁻¹ᵁ U)) := rfl

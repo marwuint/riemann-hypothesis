@@ -148,10 +148,6 @@ theorem spacesNorm_coord :
     refine signSpace_cut_eq _ (R.rankY 0) R.r (R.k + j - 1) (R.m - j) h ?_ ?_ <;> omega
   · exact signSpace_false_eq _ _
 
-theorem spacesNorm_T : (spacesNorm R cm T hT pz hpz).T = T := rfl
-
-theorem spacesNorm_Vneg (j : ℕ) : (spacesNorm R cm T hT pz hpz).Vneg j = false := rfl
-
 theorem spacesNorm_Y_sig (j : ℕ) (τ : E →+* ℂ) : ((spacesNorm R cm T hT pz hpz).Y j).sig τ = sigYD R j :=
   spY_sig R j τ
 

@@ -119,13 +119,4 @@ theorem Mdl.alg_eq (Z : Mdl Y i₀) {R : Type} [CommRing R] {a a' : Fin Z.m} {φ
     φ.comp (Z.alg a) = φ'.comp (Z.alg a') :=
   coeff_ext (W := W) (by rw [← Z.affineOpenChart_comp_structure_eq_spMap, ← Z.affineOpenChart_comp_structure_eq_spMap, reassoc_of% h])
 
-theorem Mdl.exists_chart_fac (Z : Mdl Y i₀) {R : Type} [CommRing R] (w : Sp R ⟶ Z.X) (a : Fin Z.m)
-    (h : Set.range w ⊆ (Z.U a).1) : ∃ φ : Γ(Z.X, (Z.U a).1) →+* R, spMap φ ≫ Z.chart a = w := by
-  have := (Z.U a).2.isOpenImmersion_fromSpec
-  have h' : Set.range w ⊆ Set.range (Z.U a).2.fromSpec := by rwa [(Z.U a).2.range_fromSpec]
-  refine ⟨(Spec.preimage (IsOpenImmersion.lift (Z.U a).2.fromSpec w h')).hom, ?_⟩
-  show Spec.map (Spec.preimage _) ≫ _ = _
-  rw [Spec.map_preimage]
-  exact IsOpenImmersion.lift_fac _ _ _
-
 end GlobalTheory.LocM

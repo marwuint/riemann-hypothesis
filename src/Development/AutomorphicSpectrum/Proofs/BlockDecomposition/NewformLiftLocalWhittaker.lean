@@ -23,13 +23,6 @@ theorem ord_one' : ord (1 : F) = 0 := by
   have := (mem_unitFiltrationUnits_zero_iff_ord (K := F) (u := 1)).1 (one_mem _)
   simpa using this
 
-def unrC (z : ℂˣ) : Fˣ →* ℂˣ where
-  toFun x := z ^ ord (x : F)
-  map_one' := by simp [ord_one']
-  map_mul' x y := by rw [ord_units_mul, _root_.zpow_add]
-
-theorem unrC_apply (z : ℂˣ) (x : Fˣ) : unrC z x = z ^ ord (x : F) := rfl
-
 end Unr
 
 section Glob

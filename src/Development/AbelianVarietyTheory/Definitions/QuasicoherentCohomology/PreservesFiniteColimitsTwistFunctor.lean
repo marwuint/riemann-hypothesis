@@ -225,11 +225,6 @@ def chartEquiv (hL : L.IsLB) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i) :
 theorem chartEquiv_apply (hL : L.IsLB) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i)
     (s : Γ(twist F L, V)) : chartEquiv hL i h s = resM F (le_inf le_rfl h) (coord s i) := rfl
 
-theorem coord_chartEquiv_symm (hL : L.IsLB) (i j : L.ι) {V : X.Opens} (h : V ≤ L.U i)
-    (t : Γ(F, V)) : coord ((chartEquiv hL i h).symm t) j =
-      resG X (le_inf inf_le_right (inf_le_left.trans h)) (L.g j i : Γ(X, L.U j ⊓ L.U i)) •
-        resM F inf_le_left t := rfl
-
 theorem chartEquiv_resM (hL : L.IsLB) (i : L.ι) {V W : X.Opens} (h : V ≤ L.U i) (h' : W ≤ V)
     (s : Γ(twist F L, V)) :
     chartEquiv hL i (h'.trans h) (resM (twist F L) h' s) = resM F h' (chartEquiv hL i h s) := by
@@ -251,11 +246,6 @@ variable (F) in
 def restrictIso (hL : L.IsLB) (i : L.ι) (g : Y ⟶ X) [IsOpenImmersion g]
     (hg : g.opensRange ≤ L.U i) : (twist F L).restrict g ≅ F.restrict g :=
   restrictIsoOfLinear (fun _ h => chartEquiv hL i h) (chartEquiv_resM hL i) g hg
-
-theorem restrictIso_hom_app (hL : L.IsLB) (i : L.ι) (g : Y ⟶ X) [IsOpenImmersion g]
-    (hg : g.opensRange ≤ L.U i) (W : Y.Opens) (s : Γ(twist F L, g ''ᵁ W)) :
-    ((restrictIso F hL i g hg).hom.app W s : Γ(F, g ''ᵁ W)) =
-      chartEquiv hL i ((g.image_le_opensRange W).trans hg) s := rfl
 
 variable (F) in
 
@@ -421,9 +411,6 @@ def genIso (hL : L.IsLB) (t : LB.Gen L) (ht : t.IsGen) : F ≅ twist F L :=
   haveI := isIso_secHom_genSec (F := F) hL t ht
   asIso (secHom F (DVR.genSec t ht))
 
-theorem genIso_hom (hL : L.IsLB) (t : LB.Gen L) (ht : t.IsGen) :
-    (genIso F hL t ht).hom = secHom F (DVR.genSec t ht) := rfl
-
 def genNatIso (hL : L.IsLB) (t : LB.Gen L) (ht : t.IsGen) : 𝟭 X.Modules ≅ twistFunctor L :=
   NatIso.ofComponents (fun F => genIso F hL t ht) fun φ => secHom_naturality _ φ
 
@@ -523,8 +510,6 @@ variable (F) in
 def divIso (hL : L.IsLB) (hN : N.IsLB) : twist F N ≅ twist (twist F L) (LB.div N L) :=
   haveI := isIso_divHom (F := F) hL hN
   asIso (divHom F N hL)
-
-theorem divIso_hom (hL : L.IsLB) (hN : N.IsLB) : (divIso F hL hN).hom = divHom F N hL := rfl
 
 def divNatIso (hL : L.IsLB) (hN : N.IsLB) :
     twistFunctor N ≅ twistFunctor L ⋙ twistFunctor (LB.div N L) :=
@@ -635,9 +620,6 @@ def isoOfGen (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen) :
     twist F L ≅ twist F M :=
   genIso (twist F L) (Semi.LB.isLB_div hM hL) w hw ≪≫ (divIso F hL hM).symm
 
-theorem isoOfGen_hom (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen) :
-    (isoOfGen F hL hM w hw).hom = homOfSec F hL hM (DVR.genSec w hw) := rfl
-
 def isoUnit (w : LB.Iso L M) (p : M.ι) (q : L.ι) : Γ(X, M.U p ⊓ L.U q)ˣ := w.s (p, q)
 
 theorem coord_isoOfGen_hom_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen)
@@ -688,10 +670,6 @@ def twistTwistNatIso (hL : L.IsLB) (hM : M.IsLB) (hN : N.IsLB)
     twistFunctor L ⋙ twistFunctor M ≅ twistFunctor N :=
   (twistFunctor L).isoWhiskerLeft (natIsoOfGen hM (Semi.LB.isLB_div hN hL) w hw) ≪≫
     (divNatIso hL hN).symm
-
-theorem twistTwistNatIso_hom_app (hL : L.IsLB) (hM : M.IsLB) (hN : N.IsLB)
-    (w : LB.Gen (LB.div (LB.div N L) M)) (hw : w.IsGen) (F : X.Modules) :
-    (twistTwistNatIso hL hM hN w hw).hom.app F = (twistTwistIso F hL hM hN w hw).hom := rfl
 
 @[reassoc] theorem twistTwistIso_naturality (hL : L.IsLB) (hM : M.IsLB) (hN : N.IsLB)
     (w : LB.Gen (LB.div (LB.div N L) M)) (hw : w.IsGen) (φ : F ⟶ G) :
@@ -828,16 +806,6 @@ def projIso (G : Y.Modules) :
       (resM_resM (F := G) _ (le_pull_inf f W i) _).trans
         (resM_resM (F := G) (le_pull_inf f V i) (f.preimage_mono (inf_le_inf_right _ h)) _).symm
 
-theorem coord_projIso_hom_app (G : Y.Modules) {V : X.Opens}
-    (s : Γ(twist G (L.pull f), f ⁻¹ᵁ V)) (i : L.ι) :
-    (coord ((projIso L f G).hom.app V s) i : Γ(G, f ⁻¹ᵁ (V ⊓ L.U i))) =
-      resM G (le_pull_inf f V i) (coord s fun _ => i) := rfl
-
-theorem coord_projIso_inv_app (G : Y.Modules) {V : X.Opens}
-    (s : Γ(twist ((Scheme.Modules.pushforward f).obj G) L, V)) (j : (L.pull f).ι) :
-    coord (F := G) (V := f ⁻¹ᵁ V) ((projIso L f G).inv.app V s) j =
-      resM G (LB.pull_inf_le f V j) (coord s (j PUnit.unit)) := rfl
-
 variable (L) in
 
 def projNatIso : twistFunctor (L.pull f) ⋙ Scheme.Modules.pushforward f ≅
@@ -905,9 +873,6 @@ def refineIso (hL : L.IsLB) (hM : M.IsLB) : twist F L ≅ twist F M :=
   haveI := isIso_refineHom (F := F) r hU hg hL hM
   asIso (refineHom F r hU hg)
 
-theorem refineIso_hom (hL : L.IsLB) (hM : M.IsLB) :
-    (refineIso F r hU hg hL hM).hom = refineHom F r hU hg := rfl
-
 end Refine
 
 end Twist
@@ -925,8 +890,6 @@ variable {X Y : Scheme.{0}} {F G H : X.Modules} {L M N : LB X}
 section Pow
 
 variable {n m m' k k' l : ℤ}
-
-theorem lbZPow_natCast (L : LB X) (n : ℕ) : lbZPow L n = lbPow L n := rfl
 
 theorem twistZ_natCast (F : X.Modules) (L : LB X) (n : ℕ) :
     twistZ F L n = twist F (lbPow L n) := rfl

@@ -297,10 +297,6 @@ def MinkowskiBound : Prop :=
 
 def MinkowskiDvdFactorial : Prop := ∀ N : ℕ, minkowskiM N ∣ (2 * N).factorial
 
-def ExpIdentity : Prop :=
-  ∀ (k j : ℕ) (D : ℝ), 0 < D →
-    D ^ ((k : ℝ) / 2) * D ^ (-(((k : ℝ) - 1 - j) / 2)) = D ^ (((j : ℝ) + 1) / 2)
-
 def FinalSum : Prop :=
   ∀ C : ℝ, 1 ≤ C → ∃ C₀ : ℝ, 0 < C₀ ∧ ∀ (k r f : ℕ) (b d : ℝ), 2 ≤ b → 1 ≤ f → 0 ≤ d →
     C₀ * ((2 * r + 2 : ℕ) : ℝ) ^ 6 * Real.log b ≤ (k : ℝ) * Real.log k →

@@ -16,9 +16,6 @@ noncomputable def linearYonedaObjMap {X Y : ChainComplex C ℕ} (f : X ⟶ Y) (B
   (HomologicalComplex.unopFunctor (ModuleCat R) (ComplexShape.down ℕ)).map
     ((((linearYoneda R C).obj B).rightOp.mapHomologicalComplex _).map f).op
 
-lemma linearYonedaObjMap_f_apply {X Y : ChainComplex C ℕ} (f : X ⟶ Y) (B : C) (n : ℕ)
-    (x : Y.X n ⟶ B) : (linearYonedaObjMap (R := R) f B).f n x = f.f n ≫ x := rfl
-
 lemma linearYonedaObjMap_comp {X Y Z : ChainComplex C ℕ} (f : X ⟶ Y) (g : Y ⟶ Z) (B : C) :
     linearYonedaObjMap (R := R) (f ≫ g) B = linearYonedaObjMap g B ≫ linearYonedaObjMap f B := by
   ext n x

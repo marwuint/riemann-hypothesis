@@ -68,9 +68,6 @@ theorem restrictIdeal_comap_eq_comap_resLE_restrictIdeal {X Y : Scheme.{u}} (f :
 abbrev zeroLocus {X : Scheme.{u}} (I : X.IdealSheafData) : TopologicalSpace.Closeds X :=
   I.support
 
-theorem zeroLocus_eq_support {X : Scheme.{u}} (I : X.IdealSheafData) :
-    zeroLocus I = I.support := rfl
-
 def VanishesAlong {X : Scheme.{u}} (I J : X.IdealSheafData) : Prop := I ≤ J
 
 theorem vanishesAlong_iff_le {X : Scheme.{u}} (I J : X.IdealSheafData) :

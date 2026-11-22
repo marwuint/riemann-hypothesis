@@ -29,11 +29,6 @@ def PInvIsGInv (P : Subgroup G) : Prop :=
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
-def HasTraceDistr (ρ : Representation ℂ G V) : Prop :=
-  ∃ D : Module.End ℂ V →ₗ[ℂ] (G → ℂ) →ₗ[ℂ] ℂ,
-    (∀ (g : G) (S : Module.End ℂ V), ∀ f ∈ testFn G, D (ρ g⁻¹ * S * ρ g) f = D S (conjFn g f)) ∧
-    (∀ S : Module.End ℂ V, (∀ f ∈ testFn G, D S f = 0) → S = 0)
-
 abbrev Sesq (V : Type) [AddCommGroup V] [Module ℂ V] : Type := V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ
 
 def HasFormTraceDistr (ρ : Representation ℂ G V) : Prop :=

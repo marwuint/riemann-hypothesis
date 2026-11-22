@@ -51,8 +51,6 @@ theorem c₁_pos (τ : K →+* ℂ) : 0 < x.c₁ τ := archSize_pos (G.herm τ) 
 theorem c₂_pos (τ : K →+* ℂ) : 0 < x.c₂ τ := archSize_pos (G.herm₂ τ) fun h =>
   G.alg₂.bpf.coords_ne_zero x.pt.1 (funext fun k => (map_eq_zero τ).1 (congrFun h k))
 
-theorem ht_eq_pointHeight : x.ht = pointHeight G.w G.A (G.coords x.pt.1) := rfl
-
 theorem c₂_conj (τ : K →+* ℂ) : x.c₂ ((starRingEnd ℂ).comp τ) = x.c₂ τ := by
   let w (σ : K →+* ℂ) : CxPts G.str σ := Points.PtsOver.map (G.ideal s).subschemeι rfl (spMap σ) (x.along σ)
   have e (σ : K →+* ℂ) : (G.φ₂ σ).φ (G.second.chartAt (ptOf x.pt.1)) (w σ) = Real.log (x.c₂ σ ^ 2) := by

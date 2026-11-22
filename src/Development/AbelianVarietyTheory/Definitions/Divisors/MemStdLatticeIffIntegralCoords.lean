@@ -21,8 +21,6 @@ abbrev sw (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E ≃+* ReciprocityTheory.
 
 theorem sw_tmul (a : Af D.host.F) (x : D.host.E) : sw D (a ⊗ₜ x) = x ⊗ₜ a := rfl
 
-theorem sw_symm_tmul (a : Af D.host.F) (x : D.host.E) : (sw D).symm (x ⊗ₜ a) = a ⊗ₜ x := rfl
-
 theorem sw_sig (y : ReciprocityTheory.Aut.AL D.host.E) :
     (sw D).symm (ReciprocityTheory.Aut.conjAL D.host.E y) = sigR (Af D.host.F) D.sp.cm.sig ((sw D).symm y) := by
   induction y using TensorProduct.induction_on with

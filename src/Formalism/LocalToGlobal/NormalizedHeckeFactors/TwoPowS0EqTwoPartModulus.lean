@@ -140,8 +140,6 @@ def plGF (D : D7) (k : Fin 2) (v : D.nd.PlG k) : HeightOneSpectrum (𝓞 (maxima
   isPrime := Ideal.comap_isPrime _ _
   ne_bot := Ideal.under_ne_bot _ (D.naut.plGw k v).ne_bot
 
-theorem plGF_over (D : D7) (k : Fin 2) (v : D.nd.PlG k) : NG.OverPl (D.naut.plGw k v) (plGF D k v) := rfl
-
 theorem plGF_mem (D : D7) (k : Fin 2) (v : D.nd.PlG k) : plGF D k v ∈ plF D k := by
   have h := D.naut.plGw_over k v
   show ((D.host.g k : ℕ) : 𝓞 (maximalRealSubfield D.host.E)) ∈

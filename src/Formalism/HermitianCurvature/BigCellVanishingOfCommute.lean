@@ -102,8 +102,6 @@ def ComposeDDPlus : Prop :=
 
 def AV (CV r n : ℕ) : ℝ := (CV : ℝ) * ((r : ℝ) ^ 3 * n + (n : ℝ) ^ 2 + (r : ℝ) ^ 4)
 
-def mmV (CV r : ℕ) : ℕ := CV * (r ^ 2 + 1)
-
 def AveragingZero : Prop :=
   ∀ β : ℂ, β ≠ 0 → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (p : Seminorm ℂ V) (s : ℕ) (w : Fin s → ℂ)
     (a : Fin s → V) (C' x₁ : ℝ), Function.Injective w →

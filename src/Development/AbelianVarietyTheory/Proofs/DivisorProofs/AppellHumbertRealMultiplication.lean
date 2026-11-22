@@ -35,8 +35,6 @@ def dmul (s : Fin g → ℂ) : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ) where
   map_add' z w := by funext j; simp [mul_add]
   map_smul' t z := by funext j; simp; ring
 
-theorem dmul_apply (s z : Fin g → ℂ) : dmul s z = fun j => s j * z j := rfl
-
 def fdiag (g : ℕ) : (Fin g → ℂ) →ₗ[ℂ] (Fin (g + g) → ℂ) where
   toFun z := Fin.append z z
   map_add' z w := by
@@ -50,7 +48,4 @@ def fdiag (g : ℕ) : (Fin g → ℂ) →ₗ[ℂ] (Fin (g + g) → ℂ) where
     · simp only [Fin.append_left, Pi.smul_apply, RingHom.id_apply]
     · simp only [Fin.append_right, Pi.smul_apply, RingHom.id_apply]
 
-theorem fdiag_apply (z : Fin g → ℂ) : fdiag g z = Fin.append z z := rfl
-
 end GlobalTheory.RosatiAH
-

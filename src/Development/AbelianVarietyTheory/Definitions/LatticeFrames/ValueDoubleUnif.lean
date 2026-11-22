@@ -13,10 +13,6 @@ namespace GlobalTheory.FinPl
 
 variable {D : D7}
 
-def mono4 {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {B : BesLev D (σ + 1)} {J : JacLev D (σ + 1)} {B' : BesLev D σ}
-    (s₁ : StepBF ψ B J) (s₂ : StepFB ψ J B') (a : (AE D)ˣ) (e : Fin 4 → ℤ) : ℂ :=
-  chrPow s₁.χV a (e 0) * chrPow s₁.χW a (e 1) * chrPow s₂.χV a (e 2) * chrPow s₂.χW a (e 3)
-
 def LinExact (D : D7) : Prop :=
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (q : Unif k)
     (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om →

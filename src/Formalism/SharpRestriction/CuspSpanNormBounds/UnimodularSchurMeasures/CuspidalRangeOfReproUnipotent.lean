@@ -32,8 +32,6 @@ instance cu_sfin (X : CData) : SigmaFinite (cu_mu X) := by
   unfold cu_mu AutInst.muA
   infer_instance
 
-def cu_cst (X : CData) (ν : Measure X.I.GA) (f : X.I.GA → ℂ) (x : X.I.GA) : ℂ := ∫ m, f (m * x) ∂ν
-
 structure cu_NObj (X : CData) where
   μN : ∀ v : InfinitePlace X.I.F, Measure (Formalism.REAL.UJ (X.I.ε v))
   [sN : ∀ v, SigmaFinite (μN v)]
@@ -54,26 +52,7 @@ def IsOn (W : Submodule X.I.E (Fin X.I.n → X.I.E)) : Prop := O.μNA (X.I.NA W)
 def IsWeil : Prop :=
   ∀ F : X.I.GA → ℂ, Integrable F (cu_mu X) → ∫ y, F y ∂(cu_mu X) = ∫ y, ∫ n, F (n * y) ∂O.μNA ∂O.lam
 
-def CstInv (ν : Measure X.I.GA) (f : X.I.GA → ℂ) : Prop :=
-  ∀ᵐ y ∂O.lam, ∃ c : ℂ, ∀ᵐ n ∂O.μNA, cu_cst X ν f (n * y) = c
-
 end cu_NObj
-
-namespace cu
-
-end cu
-
-namespace cu
-
-end cu
-
-namespace cu
-
-end cu
-
-namespace cu
-
-end cu
 
 namespace cu_NObj
 
@@ -98,10 +77,6 @@ variable (X : CData)
 def UnipFine : Prop :=
   ∀ W : Submodule X.I.E (Fin X.I.n → X.I.E), X.I.IsIsot W → ∃ O : cu_NObj X, O.IsOn W ∧ O.IsWeil ∧ O.IsWeilNull ∧
     O.μNA ≠ 0 ∧ ∃ v, O.RInv v ∧ O.LocZero v
-
-end cu
-
-namespace cu
 
 end cu
 

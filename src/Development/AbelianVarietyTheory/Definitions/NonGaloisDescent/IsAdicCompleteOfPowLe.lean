@@ -288,9 +288,6 @@ def flat : OCb l :=
   (⟨fun n => Ideal.Quotient.mk _ (ϖ.seqO n), fun n => by rw [← map_pow, seqO_succ]⟩ :
     Perfection (ModP (OC l) l) l)
 
-theorem coeff_flat (n : ℕ) :
-    PreTilt.coeff n ϖ.flat = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (ϖ.seqO n) := rfl
-
 theorem untilt_flat : ϖ.flat.untilt = ϖ.seqO 0 := by
   refine Perfection.teichmuller_spec (I := Ideal.span {((l : ℕ) : OC l)}) fun n => ⟨ϖ.seqO n, rfl, ?_⟩
   have : ϖ.seqO n ^ l ^ n = ϖ.seqO 0 :=
@@ -943,8 +940,6 @@ def toAinf : Hom (ϖ.prism a) (ainfObj (ϖ.field a)) where
   f_I x hx := (ϖ.theta_ev_eq_zero_iff a x).2 (Ideal.mem_span_singleton.1 hx)
   f_str r x h := ((isAinf_ainfObj _).mk_eq_str_iff r (ϖ.ev a x)).2
     ((congrArg (ϖ.quotToOC a) h).trans (ϖ.quotToOC_strMap a r))
-
-theorem toAinf_f (x : (Wq l a)⟦X⟧) : (ϖ.toAinf a).f x = ϖ.ev a x := rfl
 
 theorem span_ev_eis : Ideal.span {ϖ.ev a (eis l a e)} = RingHom.ker (Per.θ l) := by
   obtain ⟨ξ, h, -, h1⟩ := exists_generator l

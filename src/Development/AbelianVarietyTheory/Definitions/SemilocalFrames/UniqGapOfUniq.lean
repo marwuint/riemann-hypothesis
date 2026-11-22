@@ -42,8 +42,6 @@ def AmpKF0 : Prop :=
       (⟪l v, ξ⟫_ℂ * ⟪ξ', l' v'⟫_ℂ) • ampJ νR 1 (fun g => l (L.σ g w0)) (fun g => l' (L.σ g w0)) γ =
         ((PI.BesselPeriodGGP.fdegH μG L.σ w0 : ℂ)⁻¹) • OrbInt L (coefF L v v' ξ ξ') γ ν
 
-theorem ampKF_iff : AmpKF ↔ (Formalism.FourierDecayAlt.ThreeDimData.Inputs → AmpKF0) := Iff.rfl
-
 end GlobalTheory.GapIn
 
 end

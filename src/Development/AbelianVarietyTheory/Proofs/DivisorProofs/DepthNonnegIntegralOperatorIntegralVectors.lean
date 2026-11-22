@@ -41,9 +41,6 @@ theorem mfact_fintype {σ : Type} [Fintype σ] (α : σ →₀ ℕ) :
     (mfact α : C) = ∏ i, ((α i).factorial : C) :=
   Finsupp.prod_fintype _ _ (by simp)
 
-theorem mvIsInt_iff {σ : Type} (g : MvPowerSeries σ C) : MvIsInt v g ↔ ∀ α, coeff α g ∈ intSub v :=
-  Iff.rfl
-
 theorem mvIsInt_mul {σ : Type} {g h : MvPowerSeries σ C} (hg : MvIsInt v g) (hh : MvIsInt v h) :
     MvIsInt v (g * h) := by
   classical

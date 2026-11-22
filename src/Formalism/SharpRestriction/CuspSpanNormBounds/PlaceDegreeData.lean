@@ -20,9 +20,6 @@ def qOf {n : ℕ} (ε : Fin n → Bool) : ℕ := (univ.filter fun a => ε a = fa
 
 def pOf {n : ℕ} (ε : Fin n → Bool) : ℕ := (univ.filter fun a => ε a = true).card
 
-def decBound {n : ℕ} (q : ℕ) (h : ℝ) (X : Matrix (Fin n) (Fin n) ℂ) : ℝ :=
-  Real.exp (-(h / 8) * min (Formalism.REAL.hs X) (Real.sqrt (Formalism.REAL.hs X) / Real.sqrt (2 * (q : ℝ))))
-
 def phLoc {n : ℕ} (ε : Fin n → Bool) {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (w : H) : Formalism.REAL.UJ ε → ℂ :=
   fun g => ((fdegOf (Formalism.REAL.muG ε) σ w : ℝ) : ℂ) * star (coefOn σ w w g)

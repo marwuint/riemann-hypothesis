@@ -13,6 +13,4 @@ namespace Formalism.L2.GlobalTheoryTheory.MergeGL2b
 
 open Formalism.LFunctionChainParameters Formalism.HermitianLattices Formalism.L2.GlobalTheoryTheory.MergeGL2
 
-theorem boxCountAll_iff : BoxCountUnconditional.BoxCountAll ↔ ∃ C : ℝ, ZeroFreeRegionGL2.BoxCountHyp C := Iff.rfl
-
 end Formalism.L2.GlobalTheoryTheory.MergeGL2b

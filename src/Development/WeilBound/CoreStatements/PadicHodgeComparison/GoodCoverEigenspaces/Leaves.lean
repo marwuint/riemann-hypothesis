@@ -40,18 +40,6 @@ def CoverOp : Prop :=
 def HasOps (l : ℕ) [Fact l.Prime] {k : Type} [Field k] (H : HTower k) (Ω : Type) [Field Ω] [Algebra k Ω] {J : Type}
     (ι : J → H.Γ) : Prop := ∀ j, ∃ T, IsCorrOp l (H.sΩ Ω (ι j)) (H.tΩ Ω (ι j)) T
 
-def HodgeTateSmoothTowers : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
-    (ιC : Qbar l ≃+* ℂ) (H : HTower E) [IsProper H.q] [Smooth H.q] (J : Type) (ι : J → H.Γ) (θ : J → Qbar l) (a : ℕ)
-    (Gw : Subgroup (Ω ≃ₐ[E] Ω)) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O)
-    (τK : E →+* ↥Bw.Kw.1), (∀ x, (τK x : Qbar l) = Bw.j (algebraMap E Ω x)) →
-    ∀ (HK : HTower ↥Bw.Kw.1) (ιK : J → HK.Γ) (_ : TowerBC τK H HK ι ιK)
-      (H' : HTower ℂ) (ι' : J → H'.Γ) [∀ j, IsFinite (H'.s (ι' j))] [∀ j, Etale (H'.s (ι' j))]
-      (_ : TowerBC (ιC.toRingHom.comp (Bw.j.comp (algebraMap E Ω))) H H' ι ι'),
-    (∀ j, IsFinite (H.s (ι j)) ∧ Etale (H.s (ι j))) → HasOps l H Ω ι → (∀ n, HTCover HK ιK n) → HodgeOcc H' ι' (fun j => ιC (θ j)) a →
-    ∀ (d : ℕ) (ρ : (Ω ≃ₐ[E] Ω) →* GL (Fin d) (Qbar l)), IsRepOf H Ω ι θ (fun σ => (ρ σ).val) →
-      HTOcc (K := Bw.Kw) (fun σ => (ρ (Bw.e.symm σ : Gw)).val) a
-
 def IsConj {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O O' : Type}
     [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] [CommRing O'] [Algebra ℤ_[l] O'] [TopologicalSpace O']
     (γ : GQ l) (Bw : LocBridge l E Ω Gw O) (Bw' : LocBridge l E Ω Gw O') : Prop :=

@@ -37,9 +37,6 @@ variable (p) in
 
 def muA (ε : 𝒪♭) : 𝔸 := algebraMap (AInf ℂ_[p] p) 𝔸 (AInf.mu ε)
 
-theorem toBDeRhamPlus_muA (ε : 𝒪♭) : toBDeRhamPlus (normInteger ℂ_[p]) p (muA p ε) = muBdR p ε :=
-  rfl
-
 end WAPeriodT
 
 end GroundTheory.PAdicHodge

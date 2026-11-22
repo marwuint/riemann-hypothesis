@@ -18,8 +18,6 @@ namespace Base
 
 variable {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (B : Base O A)
 
-def QLin : Prop := B.Q = B.X + (B.p : A)
-
 def PhiX (k : ℕ) : Prop := ∃ v : A, B.φ B.X = B.X * B.Q ^ k * v
 
 def GammaQ : Prop := ∃ v : A, IsUnit v ∧ (∃ t : A, v = 1 + B.X * t) ∧ B.γ B.Q = v * B.Q
@@ -155,10 +153,6 @@ def Lifts (S : SES W₀ W₁ W₂) (c : O) : Prop :=
   ∀ y z, W₂.Cocycle y z → ∃ y₁ z₁, W₁.Cocycle y₁ z₁ ∧ S.π.f y₁ = c • y ∧ S.π.f z₁ = c • z
 
 end Hyp
-
-namespace WachMod
-
-end WachMod
 
 section Gal
 

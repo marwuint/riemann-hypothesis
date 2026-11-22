@@ -63,8 +63,6 @@ def lieN : Submodule k (Matrix (Fin n) (Fin n) k) where
 
 variable {F}
 
-theorem mem_lieQ {X : Matrix (Fin n) (Fin n) k} : X ∈ F.lieQ ↔ ∀ V ∈ F.carrier, ∀ v ∈ V, X *ᵥ v ∈ V := Iff.rfl
-
 theorem mem_lieN {X : Matrix (Fin n) (Fin n) k} : X ∈ F.lieN ↔ ∀ V ∈ F.carrier, ∀ v ∈ V, X *ᵥ v ∈ F.pred V := Iff.rfl
 
 variable (F)
@@ -73,9 +71,6 @@ variable {F}
 
 end Ring
 
-end PFlag
-
-namespace PFlag
 end PFlag
 
 end GlobalTheory.Tw

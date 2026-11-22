@@ -21,10 +21,6 @@ section ProdChart
 variable {e e' : ℕ} {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
   (A : FinHolAtlas e X) (B : FinHolAtlas e' Y) (j : Fin A.n) (k : Fin B.n)
 
-theorem prodChart_symm_apply (z : Fin (e + e') → ℂ) :
-    (prodChart A B j k).symm z = ((A.chart j).symm ((appendCLE e e').symm z).1,
-      (B.chart k).symm ((appendCLE e e').symm z).2) := rfl
-
 end ProdChart
 
 open scoped Classical in

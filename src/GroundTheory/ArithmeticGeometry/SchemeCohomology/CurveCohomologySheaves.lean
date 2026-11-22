@@ -275,9 +275,6 @@ noncomputable def constToQuot : constSheaf X ⟶ quotSheaf D :=
             exact QuotientAddGroup.mk_add _ _ _ }
      naturality := fun _ _ _ => rfl }⟩
 
-lemma constToQuot_app_apply (V : X.Opens) (t : constSections V) (z : V) :
-    ((constToQuot D).hom.app (op V) t).1 z = QuotientAddGroup.mk (t.1 z) := rfl
-
 noncomputable def divisorSeq : ShortComplex (Sheaf (Opens.grothendieckTopology X.toTopCat)
     AddCommGrpCat.{u}) :=
   ShortComplex.mk (divisorToConst D) (constToQuot D) (by

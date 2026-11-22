@@ -136,8 +136,6 @@ def phiSpan (Y : LocLat S.G S.Qp S.LL S.O) (N : Submodule (LetA S.O S.n) (S.W.DD
     Submodule (LetA S.O S.n) (S.W.DD Y) :=
   Submodule.span (LetA S.O S.n) (S.W.φD Y '' (N : Set (S.W.DD Y)))
 
-theorem phiSpan_rec {S : Sit} (Y : LocLat S.G S.Qp S.LL S.O) : phiSpan S Y (S.W.N Y) = S.W.φpull Y := rfl
-
 def WClauses (Y : LocLat S.G S.Qp S.LL S.O) (M0 h0 : ℕ) (N : Submodule (LetA S.O S.n) (S.W.DD Y)) :
     Prop :=
   NBasis S E Y N ∧

@@ -124,24 +124,6 @@ variable {Comp : Type}
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
   {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
-open Classical in
-
-def DictSpec (U : Unf Xo c σ r) (V : HSp D) (hr : V.rank = r)
-    (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) {g : ℕ} (e : Fin g ≃ Σ τ : D.host.E →+* ℂ, Fin (Dw.mult τ))
-    (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
-    (ik : U.Comp → Fin F.n) (φ : ∀ k, (F.Di (ik k)).La ≃ₗ[𝓞 D.host.E] (U.X k).Λ)
-    (th : ∀ k, (U.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
-    (x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ) (h : GA D V) (p : Σ k, Frame (U.X k).Ψ r) : Prop :=
-  ∃ γ ∈ GQ V,
-      ((U.X p.1).Λ : Set (Fin r → D.host.E)) =
-        (fun v : Fin V.rank → D.host.E => v ∘ Fin.cast hr.symm) '' (latG V (γ * h) : Set _) ∧
-      (∀ a ∈ l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) • (⊤ : Submodule (𝓞 D.host.E) Dw.La),
-        ∃ w ∈ latGHat V (γ * h),
-        finVec V ((φ p.1 (F.t (ik p.1) a) : Fin r → D.host.E) ∘ Fin.cast hr) -
-          (finHom V (γ * h)).1.mulVec (finVec V (ι a)) = (l.M : ℕ) • w) ∧
-      ∀ τ : (U.X p.1).Ψ, mat p.2 τ =
-        Matrix.reindex (finCongr hr) (finCongr hr) (archM V (th p.1 τ) (γ * h)) * x₀ τ.1
-
 def DetRootMul (V : HSp D) : Prop :=
   ∀ g g' x x', IsDetRoot V g x → IsDetRoot V g' x' → IsDetRoot V (g * g') (x * x')
 

@@ -50,22 +50,6 @@ section FormGroup
 variable {𝔄 : Type*} [NormedRing 𝔄] [NormedAlgebra ℝ 𝔄] [CompleteSpace 𝔄] [FiniteDimensional ℝ 𝔄]
   (σ : 𝔄 →ₗ[ℝ] 𝔄) (hσ1 : σ 1 = 1) (hσ : ∀ x y, σ (x * y) = σ y * σ x) (J : 𝔄ˣ)
 
-def formGroup : Subgroup 𝔄ˣ where
-  carrier := {g | σ g * J * g = J}
-  one_mem' := by simp [hσ1]
-  mul_mem' {a b} ha hb := by
-    simp only [mem_ofPred_eq, Units.val_mul, hσ] at ha hb ⊢
-    calc σ b * σ a * J * (a * b) = σ b * (σ a * J * a) * b := by simp only [mul_assoc]
-      _ = J := by rw [ha, hb]
-  inv_mem' {a} ha := by
-    simp only [mem_ofPred_eq] at ha ⊢
-    have h1 : σ (a⁻¹ : 𝔄ˣ) * σ a = 1 := by rw [← hσ, Units.mul_inv, hσ1]
-    calc σ (a⁻¹ : 𝔄ˣ) * J * (a⁻¹ : 𝔄ˣ) = σ (a⁻¹ : 𝔄ˣ) * (σ a * J * a) * (a⁻¹ : 𝔄ˣ) := by rw [ha]
-      _ = (σ (a⁻¹ : 𝔄ˣ) * σ a) * J * (a * (a⁻¹ : 𝔄ˣ)) := by simp only [mul_assoc]
-      _ = J := by rw [h1, Units.mul_inv, one_mul, mul_one]
-
-theorem mem_formGroup {g : 𝔄ˣ} : g ∈ formGroup σ hσ1 hσ J ↔ σ g * J * g = J := Iff.rfl
-
 end FormGroup
 
 end

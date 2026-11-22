@@ -124,30 +124,6 @@ theorem exists_proj {B : Base F E} (hB : B.IsGood σ) {d d₁ : ℕ} {W : Spc F 
       neg_inj] at this
     exact this
 
-theorem exists_isLevi {B : Base F E} (hB : B.IsGood σ) {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {r s r₁ s₁ : ℕ}
-    (hW : W.IsSkew σ B r s) (hW₁ : W₁.IsSkew σ B r₁ s₁) {H' : Plane E d d₁} {i₀ i₁ : ℕ} (hA : H'.IsAdapted σ B W W₁ i₀ i₁)
-    (h₁ : UA σ W₁.J) : ∃ m : UA σ W.J, IsLevi H' 1 h₁ m := by
-  obtain ⟨π, p1, p2, p3, p4, p5⟩ := exists_proj hB hW hW₁ hA
-  have q1 : incM F π * incM F H'.ι = 1 := by
-    rw [← incM_mul, p1]; exact Matrix.map_one _ (map_zero _) (map_one _)
-  have q2 : incM F W.J * (incM F H'.ι).map (cA σ).toRingHom = (incM F π)ᵀ * incM F W₁.J := by
-    rw [incM_conj, ← incM_mul, p2, incM_mul]; rfl
-  have q3 : (incM F H'.ι)ᵀ * incM F W.J = incM F W₁.J * (incM F π).map (cA σ).toRingHom := by
-    rw [incM_conj, ← incM_mul, ← p3, incM_mul]; rfl
-  have hfix : ∀ z, π *ᵥ z = 0 → (1 + incM F H'.ι * (mat h₁ - 1) * incM F π) *ᵥ incV F z = incV F z := by
-    intro z hz
-    have h0 : incV F (0 : Fin d₁ → E) = 0 := by funext i; exact map_zero _
-    rw [add_mulVec, one_mulVec, ← mulVec_mulVec, incM_mulVec, hz, h0, mulVec_zero, add_zero]
-  refine ⟨⟨⟨1 + incM F H'.ι * (mat h₁ - 1) * incM F π, 1 + incM F H'.ι * ((h₁.1⁻¹).1 - 1) * incM F π, ?_, ?_⟩, ?_⟩,
-    ?_, ?_, ?_⟩
-  · rw [ext_mul q1, mat, Units.mul_inv]; simp
-  · rw [ext_mul q1, mat, Units.inv_mul]; simp
-  · exact ext_unitary (cA σ).toRingHom q1 q2 q3 h₁.2
-  · rw [Units.val_one, one_smul]; exact hfix _ p4
-  · rw [inv_one, Units.val_one, map_one, one_smul]; exact hfix _ p5
-  · show (1 + incM F H'.ι * (mat h₁ - 1) * incM F π) * incM F H'.ι = _
-    rw [Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, q1, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_one, add_sub_cancel]
-
 end GlobalTheory.LeviUnitary
 
 end

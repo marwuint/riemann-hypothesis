@@ -23,8 +23,4 @@ def ctLevi {d d₁ : ℕ} (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d 
     (𝓕 : Set (unip σ W H')) (f : UA σ W.J → ℂ) (h : UA σ W.J) (t : (AE F E)ˣ) : ℂ :=
   ∫ u in 𝓕, f (u.1 * (leviElt σ W W₁ H' t * h)) ∂μ
 
-theorem ctLevi_apply {σ : E →ₐ[F] E} {d d₁ : ℕ} (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁)
-    (μ : Measure (unip σ W H')) (𝓕 : Set (unip σ W H')) (f : UA σ W.J → ℂ) (h : UA σ W.J) (t : (AE F E)ˣ) :
-    ctLevi σ W W₁ H' μ 𝓕 f h t = ∫ u in 𝓕, f (u.1 * (leviElt σ W W₁ H' t * h)) ∂μ := rfl
-
 end GlobalTheory.ThKCtFin

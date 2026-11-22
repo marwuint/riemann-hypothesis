@@ -15,14 +15,6 @@ lemma isBasisOn_localBasis (D : WeilDivisor X) (U : X.Opens) (g : (X.functionFie
     IsBasisOn ((preMod X).obj (divisorSheaf D)) U (localBasis D U g hg) :=
   fun V h => localBasis_bijective D U g hg V h
 
-theorem isInvertibleSheaf_divisorSheaf (D : WeilDivisor X) :
-    IsInvertibleSheaf (divisorSheaf D) := by
-  intro x
-  obtain ⟨U, g, hxU, hg⟩ := WeilDivisor.exists_local_equation D x
-  have hg' : ∀ Z : PrimeDivisor X, Z.point ∈ U → Z.ord (g : X.functionField) = D Z :=
-    fun Z hZ => (principalDivisor_apply g Z).symm.trans (hg Z hZ)
-  exact ⟨U, hxU, localBasis D U g hg', isBasisOn_localBasis D U g hg'⟩
-
 lemma mul_mem_divisorSections_add {D E : WeilDivisor X} {V : X.Opens}
     {f g : V → X.functionField} (hf : f ∈ divisorSections D V) (hg : g ∈ divisorSections E V) :
     (fun y => f y * g y) ∈ divisorSections (D + E) V := by
@@ -102,9 +94,5 @@ instance (D E : WeilDivisor X) : IsIso (divisorTensorHom D E) := by
     rw [← Units.val_mul, mul_inv_rev, mul_comm]
   rw [himg]
   exact isBasisOn_localBasis (D + E) U (g₁ * g₂) h₁₂
-
-noncomputable def divisorTensorIso (D E : WeilDivisor X) :
-    divisorSheaf D ⊗ divisorSheaf E ≅ divisorSheaf (D + E) :=
-  asIso (divisorTensorHom D E)
 
 end GroundTheory.Arith.SchemeCoh

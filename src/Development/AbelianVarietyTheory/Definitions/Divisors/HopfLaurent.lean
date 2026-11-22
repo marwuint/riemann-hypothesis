@@ -55,8 +55,6 @@ local instance hopfLaurent : HopfAlgebra (CommRingCat.of R) (CommRingCat.of R[T;
 
 abbrev G : Over (Sp R) := (Spec (CommRingCat.of R[T;T⁻¹])).asOver (Spec (CommRingCat.of R))
 
-theorem G_hom : (G R).hom = spMap (algebraMap R R[T;T⁻¹]) := rfl
-
 theorem unit_eq (B : Type) [CommRing B] [Algebra R B] :
     unitPt (G R) B = spMap (algebraMap R B) ≫ spMap (Bialgebra.counitAlgHom R R[T;T⁻¹]).toRingHom := rfl
 

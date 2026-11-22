@@ -21,10 +21,6 @@ structure LMPoint (C : Type) [CommRing C] (ϖ : C) (n : ℕ) [NeZero n] where
 
   step : ∀ i, (ℓ i).map (stdStep ϖ i) ≤ ℓ (i + 1)
 
-def chainComp {C : Type} [CommRing C] {n : ℕ} {M : Fin (n + 1) → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module C (M i)]
-    (f : ∀ i : Fin n, M i.castSucc →ₗ[C] M i.succ) : ∀ i : Fin (n + 1), M 0 →ₗ[C] M i :=
-  Fin.induction LinearMap.id (fun i g => f i ∘ₗ g)
-
 end GlobalTheory.SSG
 
 end

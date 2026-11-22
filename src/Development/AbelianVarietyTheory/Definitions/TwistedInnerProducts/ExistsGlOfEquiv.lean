@@ -244,13 +244,6 @@ structure GluePair (n : Type*) where
   cls_ne : cls ≠ 0
   smul_cls : ∀ s ∈ maximalIdeal 𝒪[k], s • cls = 0
 
-def Pair.toGlue (P : Pair k n) : GluePair k n where
-  ker := P.ker
-  isLat := P.ker_isLat
-  cls := P.ker.mkQ P.vec
-  cls_ne h := (Pair.isGlue P.hasVal_vec).not_mem ((Submodule.Quotient.mk_eq_zero _).1 h)
-  smul_cls s hs := (Submodule.Quotient.mk_eq_zero _).2 (Pair.smul_mem_ker hs P.hasVal_vec.mem)
-
 namespace Pair
 
 instance (P : Pair k n) : P.lat.IsLattice k := P.isLat

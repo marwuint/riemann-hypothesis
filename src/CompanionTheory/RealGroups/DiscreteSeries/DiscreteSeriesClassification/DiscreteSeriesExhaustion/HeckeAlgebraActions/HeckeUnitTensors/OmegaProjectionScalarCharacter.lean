@@ -23,10 +23,6 @@ theorem toS_ofS (g : ↥(stepSub X (χ s))) : toS X χ s (ofS X χ s g) = g := r
 
 theorem toS_add (g g' : (step X (χ s)).V) : toS X χ s (g + g') = toS X χ s g + toS X χ s g' := rfl
 
-theorem toS_smul (r : ℂ) (g : (step X (χ s)).V) : toS X χ s (r • g) = r • toS X χ s g := rfl
-
-theorem toS_sub (g g' : (step X (χ s)).V) : toS X χ s (g - g') = toS X χ s g - toS X χ s g' := rfl
-
 theorem toS_neg (g : (step X (χ s)).V) : toS X χ s (-g) = -toS X χ s g := rfl
 
 theorem toS_sum (g : Fin (m + 1) → (step X (χ s)).V) : toS X χ s (∑ c, g c) = ∑ c, toS X χ s (g c) :=

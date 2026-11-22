@@ -26,9 +26,6 @@ noncomputable def toCxₛₗ {B : Base} {X : PreX B.toPre} (I : TC B X) (hX : B.
   map_add' := toCx_add I hX a
   map_smul' := toCx_smul I hX a
 
-theorem toCxₛₗ_apply {B : Base} {X : PreX B.toPre} (I : TC B X) (hX : B.fields.Ok) (a : I.ι) (x : (MtHL I hX a).V) :
-    toCxₛₗ I hX a x = toCx I hX a x := rfl
-
 theorem toCx_linearIndependent {B : Base} {X : PreX B.toPre} (I : TC B X) (hX : B.fields.Ok) (a : I.ι) :
     LinearIndependent ℂ (fun i => toCx I hX a ((MtHL I hX a).b i)) :=
   toMtilde_linearIndependent _ _ _ _ _ _ (MtHL I hX a).b.linearIndependent

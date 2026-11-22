@@ -57,8 +57,4 @@ namespace Formalism.L2.GlobalTheoryTheory.MergeGL2
 open Formalism.LFunctionChainParameters Formalism.HermitianLattices
 
 theorem tw_eq : @LBr2.tw = @ZeroFreeRegionGL2.tw := rfl
-theorem prop_2_5_eq : @LBr2.ExistsSplitGoodPrimePair = @ZeroFreeRegionGL2.ExistsSplitGoodPrimePair := rfl
-theorem LogNE_eq : LBr2.LogNE = ZeroFreeRegionGL2.LogNE := rfl
-theorem NoRealZeroSmall_eq : LBr2.NoRealZeroSmall = GL2b2.NoRealZeroSmall := rfl
-
 end Formalism.L2.GlobalTheoryTheory.MergeGL2

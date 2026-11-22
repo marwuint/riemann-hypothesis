@@ -74,7 +74,4 @@ def beP (hN : N3Tower T) (hA : AddTow T) {Z : MdlC} (y : Pt T Z) : YlatP hN y â†
       ext b
       simp [latticeAt_form_add_left hN hA y a a' b])).toIntLinearMap
 
-theorem latticeForm_apply (hN : N3Tower T) (hA : AddTow T) {Z : MdlC} (y : Pt T Z) (a b : YlatP hN y) :
-    beP hN hA y a b = (latticeâ‚‚ hN y).beta a b := rfl
-
 end Formalism.L2.Pj

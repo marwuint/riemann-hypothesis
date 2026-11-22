@@ -18,9 +18,6 @@ universe u
 
 namespace Formalism.L2.Indef.Tree
 
-def completedOddL {d : ℕ} [NeZero d] (χ : DirichletCharacter ℂ d) (s : ℂ) : ℂ :=
-  (((d : ℝ) / Real.pi : ℝ) : ℂ) ^ ((s + 1) / 2) * Complex.Gamma ((s + 1) / 2) * DirichletCharacter.LFunction χ s
-
 def reducedForms (D : ℤ) : Finset (ℤ × ℤ × ℤ) :=
   ((Finset.Icc 1 |D| ×ˢ (Finset.Icc (-|D|) |D| ×ˢ Finset.Icc 1 |D|))).filter fun f =>
     f.2.1 ^ 2 - 4 * f.1 * f.2.2 = D ∧ |f.2.1| ≤ f.1 ∧ f.1 ≤ f.2.2 ∧
@@ -28,10 +25,6 @@ def reducedForms (D : ℤ) : Finset (ℤ × ℤ × ℤ) :=
 
 def formRoot (D : ℤ) (f : ℤ × ℤ × ℤ) : ℂ :=
   (-(f.2.1 : ℂ) + Complex.I * (Real.sqrt (-(D : ℝ)) : ℂ)) / (2 * (f.1 : ℂ))
-
-namespace KoszulExact
-
-end KoszulExact
 
 namespace EagonNorthcott
 

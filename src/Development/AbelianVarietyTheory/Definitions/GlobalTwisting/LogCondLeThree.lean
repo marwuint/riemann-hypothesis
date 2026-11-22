@@ -40,10 +40,6 @@ theorem HostVal.log_cond_le_three {s : Scale} {C8 : ℝ} {R : Ranks} {H : Host R
 theorem HostVal.modRow {s : Scale} {C8 : ℝ} {R : Ranks} {H : Host R} (h : HostVal s C8 H) : ModRow s H.condN H.d :=
   modRow_host H h.log_cond_le_three
 
-def QDChoice : Prop :=
-  ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ C5 x0 : ℝ, 0 < C5 ∧ ∀ x ≥ x0, ∀ n : ℕ, 1 ≤ n → (n : ℝ) ≤ 2 * x ^ (2 + 8 * eps) →
-    ∃ q d : ℕ, Rowq x eps n q d ∧ QDq x eps C5 q d ∧ Boxq x eps q d
-
 open Classical in
 
 def NormPrimes : Prop :=

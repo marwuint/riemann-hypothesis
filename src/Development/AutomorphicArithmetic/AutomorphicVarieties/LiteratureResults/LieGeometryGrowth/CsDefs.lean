@@ -39,9 +39,6 @@ def tp (A : V →L[ℝ] V) (B : F →L[ℝ] F) {q : ℕ} (w : V → V [⋀^Fin q
 theorem tp_apply (A : V →L[ℝ] V) (B : F →L[ℝ] F) {q : ℕ} (w : V → V [⋀^Fin q]→L[ℝ] F) (p : V) (v : Fin q → V) :
     tp A B w p v = B (w (A p) fun i => A (v i)) := rfl
 
-theorem tp_tp (A A' : V →L[ℝ] V) (B B' : F →L[ℝ] F) {q : ℕ} (w : V → V [⋀^Fin q]→L[ℝ] F) :
-    tp A B (tp A' B' w) = tp (A' * A) (B * B') w := rfl
-
 theorem tp_one {q : ℕ} (w : V → V [⋀^Fin q]→L[ℝ] F) : tp 1 1 w = w := rfl
 
 end An

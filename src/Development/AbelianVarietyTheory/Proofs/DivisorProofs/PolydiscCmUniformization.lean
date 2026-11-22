@@ -25,14 +25,6 @@ section Pairs
 
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 
-def vPt (e : Fin (Module.finrank ℚ (FR E)) ≃ (FR E →+* ℝ)) (τ : (FR E →+* ℝ) → ℂ)
-    (lam : Fin (Module.finrank ℚ (FR E)) → ℂ) (p : FR E × FR E) : Fin (Module.finrank ℚ (FR E)) → ℂ :=
-  fun j ↦ lam j * (2 * Real.pi * Complex.I * ((e j p.1 : ℂ) + (e j p.2 : ℂ) * τ (e j)))
-
-theorem vPt_apply (e : Fin (Module.finrank ℚ (FR E)) ≃ (FR E →+* ℝ)) (τ : (FR E →+* ℝ) → ℂ)
-    (lam : Fin (Module.finrank ℚ (FR E)) → ℂ) (p : FR E × FR E) (j : Fin (Module.finrank ℚ (FR E))) :
-    vPt e τ lam p j = lam j * latPt τ p (e j) := rfl
-
 end Pairs
 
 end GlobalTheory.LatSumCmp

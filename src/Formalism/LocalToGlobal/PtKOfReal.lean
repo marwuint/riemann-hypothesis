@@ -57,27 +57,6 @@ abbrev pkOf [IsTotallyComplex D.what₂.LL] {Rc : Formalism.L2.RecT ex} {P : Row
     (hP : CovolumeOntoIsometryConditions Q.Rl (faceT P Dcf Spf Zscf) Q.sEE (hkCan P.A3) Cl CHl) (hI : PassIn3 Q.Rl (faceT P Dcf Spf Zscf) Cl CHl) :=
   primitivePackageFullHecke hOk hsep Q.Rl (faceT P Dcf Spf Zscf) Q.sEE (hkCan P.A3) Cl CHl Q.charW hP hI
 
-def InpAt [IsTotallyComplex D.what₂.LL] {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {X : Formalism.L2.Col.Fields}
-    {e : X.Tau → (X.E →+* D.what₂.LL)} (c : ColRec3 (fieldsLL D X e) P.A3 P.Ps P.ψs)
-    {Sp : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (c.face Zs)} {Zsc : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3}
-    {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
-    (Q : RealT Rc P c.face Sp Zsc S Ks) {s : ℕ} (hOk : P.A3.fam3.Ok3 s) (hsep : P.A3.fam3.TypesSep3) (Cl CHl : ℝ)
-    (hP : CovolumeOntoIsometryConditions Q.Rl (faceT P c.face Sp Zsc) Q.sEE (hkCan P.A3) Cl CHl) (hI : PassIn3 Q.Rl (faceT P c.face Sp Zsc) Cl CHl)
-    (Del h0 : ℕ) (lam0 C0 ce Ch Sw C1 : ℝ) (eJ : P.A3.fam3.base3.J ≃ Fin D.R.m)
-    (H : ∀ u, (ofRecord D L Del h0).NumFacts (letterOf D L Del h0 u) L.Nc lam0 C0 ce Ch Sw C1) : Prop :=
-  ∀ (NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin ((c.face (pkOf Q hOk hsep Cl CHl hP hI).Zs).a w) → D.what₂.LL))
-      (I : DivisionCompatibilityDataThreeSided D P.A3 P.P0 P.ψ0 P.Ps P.ψs (pkOf Q hOk hsep Cl CHl hP hI).Zs
-        (pkOf Q hOk hsep Cl CHl hP hI).core.base.toIndefData (pkOf Q hOk hsep Cl CHl hP hI).core.cols.toIndefData ex.p0
-        (c.face (pkOf Q hOk hsep Cl CHl hP hI).Zs)),
-      DivTied3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs (pkOf Q hOk hsep Cl CHl hP hI).Zs
-        (pkOf Q hOk hsep Cl CHl hP hI).core.base.toIndefData (pkOf Q hOk hsep Cl CHl hP hI).core.cols.toIndefData ex.p0
-        (pkOf Q hOk hsep Cl CHl hP hI).core.cols.col NuC I →
-      HEq I P.I →
-      ∃ inp : ∀ u, DivInputs0R (pkOf Q hOk hsep Cl CHl hP hI).core
-          (RecNums.ofNum (ofRecord D L Del h0) eJ (letterOf D L Del h0 u) ((D.mem u).A.T) L.Nc lam0 C0 ce Ch Sw C1 (H u))
-          (I.wU u) (Cons.nuOf L u (I.eNu u)) (sgRec L u),
-        ∃ hQ : ∀ u, ChainTie (inp u).ch (c.memQ (I.wU u)), ∀ u, FirstCols c.hE (hQ u)
-
 def RowsU [IsTotallyComplex D.what₂.LL] {P : RowSideFamily ex} {X : Formalism.L2.Col.Fields}
     {e : X.Tau → (X.E →+* D.what₂.LL)} (c : ColRec3 (fieldsLL D X e) P.A3 P.Ps P.ψs)
     {Sp : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (c.face Zs)} {Zsc : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3}

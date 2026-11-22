@@ -112,33 +112,15 @@ theorem unram_iff : UnitaryLatticeOrthogonal.UnramAt F E v ↔ SelfDualLatticeAc
   haveI := w.isMaximal
   exact Ideal.ramificationIdx_eq_one_iff
 
-theorem oEv_eq : UnitaryLatticeOrthogonal.OEv F E v = SelfDualLatticeActions.OEv E v := rfl
-
 theorem act_eq : UnitaryLatticeOrthogonal.act σ J v = SelfDualLatticeActions.act v σ J := rfl
 
 theorem perp_eq : UnitaryLatticeOrthogonal.perp σ J v = SelfDualLatticeActions.perp v σ J := rfl
-
-theorem perpLat_eq (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) (x : SelfDualLatticeActions.Wv E v M) :
-    UnitaryLatticeOrthogonal.perpLat σ J v L x = SelfDualLatticeActions.perpLat v σ J x L := rfl
-
-theorem isSDLatIn_iff (P : Submodule (SelfDualLatticeActions.Ev E v) (SelfDualLatticeActions.Wv E v M))
-    (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) :
-    UnitaryLatticeOrthogonal.IsSDLatIn σ J v P L ↔ SelfDualLatticeActions.IsSelfDualIn v σ J P L := Iff.rfl
 
 theorem isSDLat_iff (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) :
     UnitaryLatticeOrthogonal.IsSDLat σ J v L ↔ SelfDualLatticeActions.IsSelfDualLat v σ J L := Iff.rfl
 
 theorem stabLat_eq (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) :
     UnitaryLatticeOrthogonal.stabLat σ J v L = SelfDualLatticeActions.latStab v σ J L := rfl
-
-theorem stabVec_eq (x : SelfDualLatticeActions.Wv E v M) :
-    UnitaryLatticeOrthogonal.stabVec σ J v x = SelfDualLatticeActions.vecStab v σ J x := rfl
-
-theorem unitaryLatIn_eq (P : Submodule (SelfDualLatticeActions.Ev E v) (SelfDualLatticeActions.Wv E v M))
-    (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) :
-    UnitaryLatticeOrthogonal.unitaryLatIn σ J v P L = SelfDualLatticeActions.latUnitaryIn v σ J P L := rfl
-
-theorem xb_eq (β : Fv F v) : UnitaryLatticeOrthogonal.Xb σ J v β = SelfDualLatticeActions.Xbeta v σ J β := rfl
 
 theorem sL_eq (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) (β : Fv F v) :
     UnitaryLatticeOrthogonal.SL σ J v L β = SelfDualLatticeActions.sphere v σ J L β := rfl

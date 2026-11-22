@@ -140,8 +140,6 @@ variable (l) in
 def ainfQuot : (Ainf l ⧸ RingHom.ker (Per.θ l)) ≃+* OC l :=
   RingHom.quotientKerEquivOfSurjective (theta_onto l)
 
-theorem ainfQuot_mk (a : Ainf l) : ainfQuot l (Ideal.Quotient.mk _ a) = Per.θ l a := rfl
-
 variable (l) in
 
 def ainfC : Obj l (OC l) where
@@ -269,8 +267,6 @@ theorem eq_galHom (H : IsAinf K P e) (g : ↥(GK K)) (h : Hom P P)
 end IsAinf
 
 def ainfHom (K : FinExt l) (g : ↥(GK K)) : Hom (ainfObj K) (ainfObj K) := (isAinf_ainfObj K).galHom g
-
-theorem ainfHom_f (K : FinExt l) (g : ↥(GK K)) (a : Ainf l) : (ainfHom K g).f a = Per.σA (g : GQ l) a := rfl
 
 structure Realises (K : FinExt l) (E : FCrys l ↥(OL K)) (P : Obj l ↥(OL K))
     (e : P.A ≃+* Ainf l) (T : Type) [AddCommGroup T] [Module ℤ_[l] T]

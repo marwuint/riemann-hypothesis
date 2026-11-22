@@ -89,7 +89,4 @@ def toDual : H ⟶ dual H :=
     fun h s => dual_ext fun W h' u =>
       congrArg (fun z => glued b hb W z u) (resM_resM h h' s)
 
-theorem dualApp_toDual {V W : T.Opens} (h : W ≤ V) (s : Γ(H, V)) (t : Γ(H, W)) :
-    dualApp ((toDual b hb).app V s) h t = glued b hb W (resM H h s) t := rfl
-
 end GlobalTheory.AffinePairingGlue

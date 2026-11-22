@@ -9,9 +9,6 @@ open scoped Matrix NNReal
 
 namespace UpperTheory.V.Sd.Wc
 
-def WtMon : Prop :=
-  ∀ (I : Type) [Fintype I] (n : I → ℕ) (P : MvPolynomial (I × Fin 2) ℂ), P ∈ Wt n ↔ ∀ d ∈ P.support, ∀ v, d (v, 0) + d (v, 1) = n v
-
 def ExChi : Prop :=
   ∀ (G Z : Type) [Group G] [Group Z] (K : Subgroup G) (ζ : Z →* G) (ω : Z →* ℂˣ), (∀ z, ζ z ∈ Subgroup.center G) → (∀ z, ζ z ∈ K → ω z = 1) →
     ∃ χ : ↥(K ⊔ ζ.range) →* ℂˣ, ∀ h : ↥(K ⊔ ζ.range), (∃ k ∈ K, ∃ z, (h : G) = k * ζ z) ∧ ∀ k ∈ K, ∀ z, (h : G) = k * ζ z → χ h = ω z

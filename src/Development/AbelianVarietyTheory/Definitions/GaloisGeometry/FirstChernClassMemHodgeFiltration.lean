@@ -28,10 +28,4 @@ end GlobalTheory.LogCris.CupModel
 
 namespace GlobalTheory.CatH
 
-theorem cupC_one_one_model {R : Type} [CommRing R] {C : Type} [Category.{0} C] {F : C ⥤ ModuleCat.{0} R} (μ : Mult F)
-    (f g : Cn F 1) (s : ComposableArrows C 2) :
-    cupC μ (show 1 + 1 = 2 from rfl) f g s =
-      μ.mul _ ((F.map (s.map' 1 2)).hom (f ((fr_mono 1 2 (by omega)).functor ⋙ s)))
-        ((F.map (s.map' 2 2)).hom (g ((bk_mono 1 1 2 (by omega)).functor ⋙ s))) := rfl
-
 end GlobalTheory.CatH

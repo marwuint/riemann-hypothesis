@@ -22,13 +22,7 @@ theorem finset_fin_two_eq_cases (i : Fin 2) : i = 0 ∨ i = 1 := by
 theorem projectiveLineSource_zero : projectiveLineSource 0 = Set.range ((↑) : ℂ → OnePoint ℂ) := by
   simp [projectiveLineSource]
 
-theorem projectiveLineLift_zero (q : Σ _ : Unit, Fin 2) : homogeneousLift 0 q = if q.2 = 0 then 1 else X 0 := rfl
-
-theorem projectiveLineLift_one (q : Σ _ : Unit, Fin 2) : homogeneousLift 1 q = if q.2 = 1 then 1 else X 0 := rfl
-
 private theorem onePoint_elim_coe (z a : ℂ) (f : ℂ → ℂ) : (z : OnePoint ℂ).elim a f = f z := rfl
-
-private theorem onePoint_elim_infty (a : ℂ) (f : ℂ → ℂ) : (∞ : OnePoint ℂ).elim a f = a := rfl
 
 private theorem coe_mem_projectiveLineSource_zero (w : ℂ) : (w : OnePoint ℂ) ∈ projectiveLineSource 0 := by
   rw [projectiveLineSource_zero]

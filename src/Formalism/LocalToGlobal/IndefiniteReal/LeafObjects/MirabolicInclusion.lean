@@ -165,8 +165,6 @@ def onObjOf (R : RealDat D A Ks) (F : Face D A) (c : OnConst) (I : OnIn R) : OnO
 
 variable (R : RealDat D A Ks) (F : Face D A) (c : OnConst) (I : OnIn R)
 
-theorem tieU_rfl : TieU (onObjOf R F c I) (fun v => uniSub (kP v.1) (D.R.r - 1)) := rfl
-
 theorem proj_range (j : Fin D.R.m) : LinearMap.range ((onObjOf R F c I).e j) = (onObjOf R F c I).V₀ j := rfl
 
 end Formalism.IndefR.Obj

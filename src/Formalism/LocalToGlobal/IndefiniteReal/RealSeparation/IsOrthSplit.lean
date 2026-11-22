@@ -14,9 +14,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
-def bEll (Z : HSp D) (ρ : ℕ) : Mx D ρ Z.rank :=
-  fun i k => if i.1 + 1 = ρ then incA D (∑ j, Z.gram j k) else 0
-
 def SUp (D : D7) (ρ : ℕ) : AddSubgroup (Mx D ρ ρ) where
   carrier := {N | ∀ i j, j ≤ i → N i j = 0}
   zero_mem' := by intro i j _; rfl

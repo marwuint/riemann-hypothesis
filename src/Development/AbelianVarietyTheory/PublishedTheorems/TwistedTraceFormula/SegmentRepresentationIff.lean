@@ -19,10 +19,6 @@ def Concl {d : ℕ} (σ : Representation ℂ (GL (Fin d) k) V) (l : ℕ) : Prop 
       S'.toRepresentation.IsIrreducible → S' = S) ∧
     Nonempty ((jac (consecBlocks l d) S.toRepresentation).Equiv (piTensor (segTerm σ l)))
 
-theorem segmentRepresentation_iff : SegmentRepresentation ↔
-    ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-      (d l : ℕ), 0 < d → 0 < l → ∀ σ : IrrRep (GL (Fin d) k), IsCuspidal σ.ρ → Concl σ.ρ l := Iff.rfl
-
 end GlobalTheory.SegmentRepModel
 
 end

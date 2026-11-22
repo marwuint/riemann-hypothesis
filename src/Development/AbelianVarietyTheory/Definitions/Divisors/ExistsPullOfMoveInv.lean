@@ -15,8 +15,6 @@ open NumberField Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor Gl
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
-theorem laQ_eq : LaQ Dw l = LevQ Dw l := rfl
-
 theorem exists_isLift : ∃ lift : Gam Dw l → Dw.La →ₗ[𝓞 E] Dw.La, IsLift lift := by
   have := Dw.proj
   choose lift h using fun γ : Gam Dw l =>

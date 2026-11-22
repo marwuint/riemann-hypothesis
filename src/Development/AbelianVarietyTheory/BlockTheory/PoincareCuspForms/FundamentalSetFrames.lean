@@ -80,9 +80,6 @@ def ballSup (X : Data E r) (ε : ℝ) (u : Frame X.Ψ r → EReal) (y : Frame X.
 def term (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (γ : X.Γ) (x : Frame X.Ψ r) : ℂ :=
   (X.χ la γ.1)⁻¹ * P (lact γ.1 x)
 
-theorem poin_eq (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
-    poin X la P x = ∑' γ, term X la P γ x := rfl
-
 def ConvergesNormally (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) : Prop :=
   ∀ K : Set (Frame X.Ψ r), IsCompact K → K ⊆ X.dom →
     ∃ M : X.Γ → ℝ, Summable M ∧ ∀ γ, ∀ x ∈ K, ‖term X la P γ x‖ ≤ M γ

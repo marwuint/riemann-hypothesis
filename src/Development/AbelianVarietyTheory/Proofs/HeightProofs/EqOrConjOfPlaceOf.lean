@@ -153,9 +153,6 @@ theorem isInfEmb_unique (τ : E →+* ℂ) (θ θ' : Ainf F ⊗[F] E →+* ℂ) 
     rw [e, map_mul, map_mul, h.1, h'.1, congrFun key a]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
-theorem infMat_infEmb (τ : E →+* ℂ) (g : GA hc V) :
-    Formalism.MainNotions.StandardLattice.infMat hc.sig V.gram (infEmb hc τ) g = (realComp hc V τ g).1.1 := rfl
-
 def evW (w : InfinitePlace F) : Ainf F →ₐ[F] w.Completion :=
   Pi.evalAlgHom F (fun w : InfinitePlace F => w.Completion) w
 

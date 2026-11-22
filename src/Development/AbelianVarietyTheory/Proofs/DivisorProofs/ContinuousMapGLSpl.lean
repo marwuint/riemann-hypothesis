@@ -10,8 +10,6 @@ namespace GlobalTheory.EulerTw
 
 variable (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
 
-theorem pLoc_idem_spl (T : Finset (Pl E)) (w : Pl E) : pLoc E w (idem E T) = if w ∈ T then 1 else 0 := rfl
-
 theorem continuous_sLoc_spl (v : Pl E) : Continuous (sLoc E v) := by
   have hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (Pl E)) :=
     Filter.le_principal_iff.2 (Set.finite_singleton v).compl_mem_cofinite
@@ -26,9 +24,5 @@ theorem continuous_locGL_spl (w : Pl E) : Continuous (locGL E n w) :=
   Continuous.units_map _ (continuous_const.add (Continuous.matrix_map continuous_id (continuous_sLoc_spl E w)))
 
 variable {E n}
-
-theorem rho_apply_spl (u : Pl E) (g : Gam E n u) :
-    rho E n u g = (GeneralLinearGroup.map (pLoc E u) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)),
-      GeneralLinearGroup.map (pLoc E (cPl E u)) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E))) := rfl
 
 end GlobalTheory.EulerTw

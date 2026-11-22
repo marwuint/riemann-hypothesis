@@ -357,9 +357,6 @@ theorem phase_main : PhaseWellDef := by
 def bdiag (s : List ℕ) (x : Matrix (Fin s.sum) (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K :=
   fun a c => if blk s a = blk s c then x a c else 0
 
-private lemma bdiag_apply (s : List ℕ) (x : Matrix (Fin s.sum) (Fin s.sum) K)
-    (a c : Fin s.sum) : bdiag s x a c = if blk s a = blk s c then x a c else 0 := rfl
-
 end Phase
 
 theorem phaseWellDef : Formalism.DoubleCosetMeasures.PhaseWellDef := Phase.phase_main

@@ -23,6 +23,4 @@ def padTrue (L : LocSt D N j ng) (G : GlobSt fun p => (L.loc p).Mdl) : PadPkg D 
 
 variable (L : LocSt D N j ng) (G : GlobSt fun p => (L.loc p).Mdl)
 
-theorem padTrue_arDeg : (padTrue s Φ hm jC hj hA L G).arDeg = (arIn s Φ hm).arDeg := rfl
-
 end GlobalTheory.ShFam.Pad

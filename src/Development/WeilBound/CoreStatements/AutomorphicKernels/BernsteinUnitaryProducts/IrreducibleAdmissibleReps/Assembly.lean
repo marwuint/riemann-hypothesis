@@ -15,11 +15,6 @@ section Deriv
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {N : ℕ} {X Y Z : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] [AddCommGroup Z] [Module ℂ Z]
 
-def jacMap₂ {n h : ℕ} (hn : n + h = N) {ρ : Representation ℂ (GL (Fin N) k) X}
-    {σ : Representation ℂ (GL (Fin N) k) Y} (f : ρ.IntertwiningMap σ) :
-    Jacquet ρ (unipRad k (two (stdSum hn))) →ₗ[ℂ] Jacquet σ (unipRad k (two (stdSum hn))) :=
-  twMap ρ σ (unipRad k (two (stdSum hn))) 1 f.toLinearMap (fun g v => LinearMap.congr_fun (f.isIntertwining' g) v)
-
 end Deriv
 
 section Sub

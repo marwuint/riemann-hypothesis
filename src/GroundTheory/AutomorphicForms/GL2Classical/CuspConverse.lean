@@ -80,73 +80,6 @@ theorem isZeroAtImInfty_of_integral_vadd_eq_zero {F : ℍ → ℂ} {M : ℝ} (hM
 
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
-theorem constantTerm_liftEquiv_finiteDiagonal_inv
-    (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (δ : GL (Fin 2) ℚ)
-    (hδ : 0 < (δ.det.val : ℚ)) :
-    ∃ M : ℕ, 0 < M ∧ (∀ z : ℍ, ((f : ℍ → ℂ) ∣[k] toReal δ) ((M : ℝ) +ᵥ z) = ((f : ℍ → ℂ) ∣[k] toReal δ) z) ∧
-      ∀ z : ℍ, ∃ c : ℂ, c ≠ 0 ∧
-        constantTerm 1 (liftEquiv N k f : AdelicGL ℚ 2 → ℂ)
-            (realEmb (borelGL z) * finEmb ℚ 2 (finiteDiagonal ℚ 2 δ⁻¹)) =
-          c * ∫ t in (0 : ℝ)..M, ((f : ℍ → ℂ) ∣[k] toReal δ) (t +ᵥ z) := by
-  have hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f := fun γ hγ =>
-    SlashInvariantForm.slash_action_eqn f γ hγ
-  set φ : AdelicGL ℚ 2 → ℂ := ↑(liftEquiv N k f)
-  have hφ : IsWeightLevel N k φ := (liftEquiv N k f).2
-  set w := finiteDiagonal ℚ 2 δ⁻¹
-  obtain ⟨M, hM, hconj⟩ := exists_level_conj N w
-  have : NeZero M := ⟨hM.ne'⟩
-  have hw : w = finiteDiagonal ℚ 2 δ⁻¹ * 1 := (mul_one _).symm
-  have hMmem : algebraMap ℚ 𝔸f (M : ℚ) ∈ levelIdeal M := ⟨1, one_mem _, by simp⟩
-  have hmem : finiteDiagonal ℚ 2 (δ * unipRat M * δ⁻¹) ∈ Gamma0Level N := by
-    have := finiteDiagonal_conj_mem hconj (one_mem _) hw hMmem
-    rwa [inv_inv] at this
-  set F := (f : ℍ → ℂ) ∣[k] toReal δ
-  have hper : ∀ z : ℍ, F ((M : ℝ) +ᵥ z) = F z := by
-    intro z
-    have := slash_periodic hf (M : ℚ) hmem z
-    simpa using this
-  refine ⟨M, hM, hper, fun z => ?_⟩
-  set h := borelGL z
-  have hpos : 0 < h.det.val := det_borelGL_pos z
-  have hδR : 0 < (toReal δ).det.val := by rw [det_toReal]; exact_mod_cast hδ
-  have hdne : ((toReal δ).det.val : ℂ) ^ (k - 1) ≠ 0 := zpow_ne_zero _ (by exact_mod_cast hδR.ne')
-  set j := denom h ((UpperHalfPlane.I : ℍ) : ℂ)
-  set C : ℂ := (((toReal δ).det.val : ℂ) ^ (k - 1))⁻¹ * (Real.sqrt (toReal δ).det.val : ℂ) ^ k *
-    ((j / (‖j‖ : ℂ)) ^ (-k) * (Real.sqrt (h • UpperHalfPlane.I).im : ℂ) ^ k)
-  have hj : j = 1 := denom_borelGL z _
-  have hhI : h • UpperHalfPlane.I = z := borelGL_smul_I z
-  have hC : C ≠ 0 := by
-    have h1 : (Real.sqrt (toReal δ).det.val : ℂ) ≠ 0 := by
-      exact_mod_cast (Real.sqrt_pos.2 hδR).ne'
-    have h2 : (Real.sqrt (h • UpperHalfPlane.I).im : ℂ) ≠ 0 := by
-      exact_mod_cast (Real.sqrt_pos.2 (h • UpperHalfPlane.I).im_pos).ne'
-    simp only [C, hj, norm_one, Complex.ofReal_one, div_one, _root_.one_zpow, one_mul]
-    exact mul_ne_zero (mul_ne_zero (inv_ne_zero hdne) (zpow_ne_zero _ h1)) (zpow_ne_zero _ h2)
-  have key : ∀ t : ℝ, archLift k f (toReal δ * (unipReal t * h)) = C * F (t +ᵥ z) := by
-    intro t
-    have hy : 0 < (unipReal t * h).det.val := by
-      rw [map_mul, Units.val_mul, det_unipReal, one_mul]
-      exact hpos
-    have h1 := archLift_mul_left (k := k) (f : ℍ → ℂ) hδR hy
-    rw [archLift_unipReal_mul F hpos t] at h1
-    rw [eq_inv_mul_iff_mul_eq₀ hdne |>.2 h1, ← hhI]
-    simp only [C, j]
-    ring
-  have hint : ∀ t : ℝ, φ (realEmb (unipReal t * h) * finEmb ℚ 2 w) = C * F (t +ᵥ z) := by
-    intro t
-    rw [hw, hφ.apply_realEmb_mul_finiteDiagonal δ⁻¹ _ (one_mem _), map_inv, inv_inv, ← key t]
-    refine adelicLift_realEmb hf ?_
-    rw [map_mul, Units.val_mul]
-    refine mul_pos hδR ?_
-    rw [map_mul, Units.val_mul, det_unipReal, one_mul]
-    exact hpos
-  refine ⟨levelConstant M * C, mul_ne_zero (by exact_mod_cast (levelConstant_pos M).ne') hC, ?_⟩
-  rw [constantTerm_realEmb_mul_finEmb_of_conj hφ h hconj]
-  simp_rw [hint]
-  rw [intervalIntegral.integral_const_mul, Complex.real_smul]
-  simp only [C]
-  ring
-
 theorem isBoundedAtImInfty_slash_toReal (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (δ : GL (Fin 2) ℚ) : IsBoundedAtImInfty ((f : ℍ → ℂ) ∣[k] toReal δ) := by
   have hc : IsCusp (toReal δ • (OnePoint.infty : OnePoint ℝ)) (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) := by
@@ -155,40 +88,6 @@ theorem isBoundedAtImInfty_slash_toReal (f : ModularForm (Gamma0 N : Subgroup (G
     rw [← Rat.coe_castHom, OnePoint.map_smul, OnePoint.map_infty]
     rfl
   exact f.bdd_at_cusps' hc (toReal δ) rfl
-
-theorem isZeroAtImInfty_slash_of_isCuspidal (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
-    (hcusp : IsCuspidal (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ)) (δ : GL (Fin 2) ℚ)
-    (hδ : 0 < (δ.det.val : ℚ)) : IsZeroAtImInfty ((f : ℍ → ℂ) ∣[k] toReal δ) := by
-  obtain ⟨M, hM, hper, hct⟩ := constantTerm_liftEquiv_finiteDiagonal_inv f.toSlashInvariantForm δ hδ
-  refine isZeroAtImInfty_of_integral_vadd_eq_zero (M := M) (by exact_mod_cast hM) hper
-    (f.holo'.slash k (toReal δ)) (isBoundedAtImInfty_slash_toReal f δ) fun z => ?_
-  obtain ⟨c, hc, he⟩ := hct z
-  have h0 := hcusp 1 one_pos (by norm_num) (realEmb (borelGL z) * finEmb ℚ 2 (finiteDiagonal ℚ 2 δ⁻¹))
-  rw [he] at h0
-  exact (mul_eq_zero.1 h0).resolve_left hc
-
-theorem isCuspForm_of_isCuspidal_liftEquiv (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
-    (hcusp : IsCuspidal (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ)) : IsCuspForm f := by
-  rw [isCuspForm_iff]
-  intro c hc
-  rw [Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z, isCusp_SL2Z_iff'] at hc
-  obtain ⟨σ, rfl⟩ := hc
-  rw [OnePoint.isZeroAt_iff rfl, ← toReal_mapGL]
-  refine isZeroAtImInfty_slash_of_isCuspidal f hcusp _ ?_
-  have h1 := det_toReal (Matrix.SpecialLinearGroup.mapGL ℚ σ)
-  have h2 : (toReal (Matrix.SpecialLinearGroup.mapGL ℚ σ)).det.val = 1 := by
-    rw [toReal_mapGL]
-    simp
-  rw [h2] at h1
-  have h3 : ((Matrix.SpecialLinearGroup.mapGL ℚ σ).det.val : ℚ) = 1 := by exact_mod_cast h1.symm
-  rw [h3]
-  exact one_pos
-
-theorem exists_cuspForm_of_isCuspidal_liftEquiv (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
-    (hcusp : IsCuspidal (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ)) :
-    ∃ F : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k, (F : ℍ → ℂ) = f := by
-  obtain ⟨F, hF⟩ := isCuspForm_of_isCuspidal_liftEquiv f hcusp
-  exact ⟨F, congrArg (fun g : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k => (g : ℍ → ℂ)) hF⟩
 
 end GL2Classical
 

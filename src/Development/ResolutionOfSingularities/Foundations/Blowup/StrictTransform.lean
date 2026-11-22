@@ -41,9 +41,6 @@ theorem strictTransform_eq_ker {X' X : Scheme.{u}} (f : X' ⟶ X) (Z J : X.Ideal
 def schemeImageIdeal {X Y : Scheme.{u}} (f : X ⟶ Y) (I : X.IdealSheafData) : Y.IdealSheafData :=
   (I.subschemeι ≫ f).ker
 
-theorem schemeImageIdeal_eq_ker {X Y : Scheme.{u}} (f : X ⟶ Y) (I : X.IdealSheafData) :
-    schemeImageIdeal f I = (I.subschemeι ≫ f).ker := rfl
-
 private theorem isClosedImmersion_lift_comp {X Y Z : Scheme.{u}} (f : X ⟶ Z) [IsClosedImmersion f] (g : Y ⟶ Z)
     (h : Scheme.Hom.ker f ≤ Scheme.Hom.ker g) : IsClosedImmersion.lift f g h ≫ f = g := by
   simp

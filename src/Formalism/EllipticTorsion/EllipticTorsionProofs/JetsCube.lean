@@ -16,8 +16,6 @@ variable {K : Type u} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
 variable (F : FormalGroup (unitBall K))
 
-theorem omegaF_eq : omegaF F = Formalism.G.LogP.omegaF (FK F) := rfl
-
 theorem FK_eq : (FK F).toPowerSeries = MvPowerSeries.map (unitBall K).subtype F.toPowerSeries :=
   rfl
 

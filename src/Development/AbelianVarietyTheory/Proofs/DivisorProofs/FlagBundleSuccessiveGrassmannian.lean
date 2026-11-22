@@ -182,11 +182,6 @@ private theorem pullTo_ι {π : Y ⟶ B} {E : B.Modules} {r : ℕ} (fl : Flag ((
     {g : T ⟶ B} (w : h ≫ π = g) (l : Fin (r + 1)) :
     (pullTo fl h w).ι l = (Scheme.Modules.pullback h).map (fl.ι l) ≫ (cmp h π w).hom.app E := rfl
 
-private theorem isFlagBundle_iff {π : Y ⟶ B} {ι : Type} {E : ι → B.Modules} {n : ι → ℕ}
-    {fl : ∀ a, Flag ((Scheme.Modules.pullback π).obj (E a)) (n a)} : IsFlagBundle π E n fl ↔
-    ∀ (T : Scheme.{0}) (g : T ⟶ B) (fl' : ∀ a, Flag ((Scheme.Modules.pullback g).obj (E a)) (n a)),
-      ∃! g' : T ⟶ Y, ∃ w : g' ≫ π = g, ∀ a, SameFl (pullTo (fl a) g' w) (fl' a) := Iff.rfl
-
 variable {γ : G ⟶ B} {E : B.Modules} {S P : G.Modules} (s : S ⟶ P) (j : P ⟶ (Scheme.Modules.pullback γ).obj E)
 
 private def jk (k : T ⟶ G) {g : T ⟶ B} (w : k ≫ γ = g) :

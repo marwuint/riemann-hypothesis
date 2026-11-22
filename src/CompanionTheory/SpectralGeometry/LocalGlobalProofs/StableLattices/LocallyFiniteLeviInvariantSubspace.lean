@@ -35,9 +35,6 @@ def chainsIn (lev : Fin n → ℕ) (d : ℕ) (S : Submodule ℂ V) : Submodule �
     have key : ∀ A, (c • x) A ≠ 0 → x A ≠ 0 := fun A h h0 => h (by simp [h0])
     exact ⟨fun A h => hx1 A (key A h), fun A h => hx2 A (key A h), fun A => S.smul_mem c (hx3 A)⟩
 
-theorem mem_chainsIn {lev : Fin n → ℕ} {d : ℕ} {S : Submodule ℂ V} {x : Cn n V} :
-    x ∈ chainsIn lev d S ↔ SuppIn (inU lev) x ∧ Deg d x ∧ ∀ A, x A ∈ S := Iff.rfl
-
 theorem finiteDimensional_chainsIn (lev : Fin n → ℕ) (d : ℕ) (S : Submodule ℂ V) [FiniteDimensional ℂ S] :
     FiniteDimensional ℂ (chainsIn lev d S) := by
   let L : chainsIn lev d S →ₗ[ℂ] (Finset (Pos n) → S) :=

@@ -171,8 +171,6 @@ theorem epsHom_comp (C : Chart G) : (epsHom C).hom.comp (alg0 C) = RingHom.id R�
 def eps (C : Chart G) : Γ(G.left, C.U) →ₐ[R₀] R₀ :=
   { (epsHom C).hom with commutes' := fun r => RingHom.congr_fun (epsHom_comp C) r }
 
-theorem eps_apply (C : Chart G) (a : Γ(G.left, C.U)) : eps C a = (epsHom C).hom a := rfl
-
 theorem pt_eps (C : Chart G) (P : Type) [CommRing P] [Algebra R₀ P] :
     pt C ((Algebra.ofId R₀ P).comp (eps C)) = (1 : sp P ⟶ G) := by
   apply Over.OverMorphism.ext

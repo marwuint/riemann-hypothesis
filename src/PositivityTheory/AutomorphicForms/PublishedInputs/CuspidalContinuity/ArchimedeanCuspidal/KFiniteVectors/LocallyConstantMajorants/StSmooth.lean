@@ -30,7 +30,4 @@ def sec (k : ℕ) (Ψ : Sw) (g : GL (Fin 3) ℂ) : ℂ :=
 def StInt : Prop := ∀ k : ℕ, 3 ≤ k → ∀ (Φ : Sw) (s : ℂ), 1 / 4 < s.re →
   Integrable (fun a => sec k Φ (dg a 1 1) * chC 0 (s - 1) a) mulC
 
-def StInt' : Prop := ∀ k : ℕ, 3 ≤ k → ∀ (Φ : Sw) (s : ℂ), s.re < 3 / 4 →
-  Integrable (fun p : ℂˣ × ℂ => sec k Φ (mm p.1 p.2) * chC 0 s p.1) (mulC.prod volC)
-
 end Ad3.K.LC

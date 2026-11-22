@@ -13,9 +13,6 @@ section Fun
 
 variable {O : Type} [CommRing O]
 
-theorem comb_eval (a b : ℕ) (ψ φ : InvFun O) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] (B : X → X → ℝ) :
-    (comb a ψ b φ).eval X B = a * ψ.eval X B + b * φ.eval X B := rfl
-
 variable {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
 
 variable {bar : O → O} {φ φ' : InvFun O}

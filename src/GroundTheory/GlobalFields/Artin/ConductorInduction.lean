@@ -29,12 +29,6 @@ variable {K F L : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNona
   [ValuativeExtension K F] [ValuativeExtension F L] [ValuativeExtension K L]
   [FiniteDimensional K F] [FiniteDimensional F L] [FiniteDimensional K L] [IsGalois K L]
 
-omit [ValuativeExtension K F] [FiniteDimensional K F] [IsGalois K L] in
-
-theorem lowerIndex_restrictScalars_tower (σ : L ≃ₐ[F] L) :
-    lowerIndex K L (σ.restrictScalars K) = lowerIndex F L σ :=
-  rfl
-
 end LocalTower
 
 end GroundTheory.Global

@@ -226,8 +226,6 @@ def TanSp.pt (m : TanSp x0 G) : overAt x0 (DualNumber S) ⟶ G :=
 def TanSp.mk (W : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 W = 1) : TanSp x0 G :=
   (Additive.ofMul (⟨W, h⟩ : (smHom (G := G) x0 0).ker) : Additive (smHom (G := G) x0 0).ker)
 
-theorem TanSp.pt_mk (W : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 W = 1) : (TanSp.mk W h).pt = W := rfl
-
 theorem TanSp.tan (m : TanSp x0 G) : smT x0 0 m.pt = 1 :=
   (Additive.toMul (show Additive (smHom (G := G) x0 0).ker from m)).2
 

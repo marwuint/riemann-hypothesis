@@ -32,9 +32,6 @@ def DetIdeal (D D' : Datum H) (l₂ : Level H) (t : D.La →ₗ[𝓞 E] D'.La) (
 
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
-def embCov {n : ℕ} (d : DeltaDat Xo c n) (σ : c.F →+* ℂ) : d.c₂.F →+* ℂ :=
-  σ.comp (d.eF.symm : d.c₂.F →+* c.F)
-
 def IsCover {n : ℕ} (d : DeltaDat Xo c n) (N : ℕ) (I : Ideal (𝓞 E)) : Prop :=
   d.pd = N ∧ d.I = I ∧ d.l₂.M = l.M * N ∧ d.l₂.Mb = l.Mb * I ∧ d.l₂.A = l.A ∧
   (∃ jK : KA l →+* KA d.l₂, (∀ x, ((jK x : KA d.l₂) : ℂ) = ((x : KA l) : ℂ)) ∧
@@ -47,16 +44,5 @@ def IsCover {n : ℕ} (d : DeltaDat Xo c n) (N : ℕ) (I : Ideal (𝓞 E)) : Pro
   ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] [Algebra d.c₂.F k],
     (∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a) →
     ∀ y : FrPt Xo c k, ∃ y₂ : FrPt d.Xo₂ d.c₂ k, FrOver d y₂ y
-
-def IsXiDet {n : ℕ} (d : DeltaDat Xo c n) (σ : c.F →+* ℂ) (𝔣 : Ideal (𝓞 E)) (xi : Ideal (𝓞 E) →*₀ c.F) : Prop :=
-  d.cδ ∈ sec d.Xo₂ d.c₂ 0 0 ∧
-  (∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H Dw.p Dw.q ty ∧
-    Nonempty (FamilyUnif d.Xo₂ ((embCov d σ).comp (IntermediateField.inclusion d.c₂.le).toRingHom) ty)) ∧
-  ∀ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H Dw.p Dw.q ty →
-    ∀ (U : FamilyUnif d.Xo₂ ((embCov d σ).comp (IntermediateField.inclusion d.c₂.le).toRingHom) ty) (i : Fin U.n),
-      (∃ 𝔠, DetIdeal Dw (U.Di i) d.l₂ (U.t i) 𝔣 𝔠) ∧
-      ∀ 𝔠, DetIdeal Dw (U.Di i) d.l₂ (U.t i) 𝔣 𝔠 →
-        ∀ P, IsPeriod (U.Di i) ty P → ∀ y : FrPt d.Xo₂ d.c₂ (CAt (embCov d σ)), y.x = U.u i P →
-          toC (evR d.Xo₂ d.c₂ d.cδ y) = σ (xi 𝔠)
 
 end GlobalTheory.IndefiniteRowSideFullHecke.RayContainment

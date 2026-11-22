@@ -119,8 +119,6 @@ private def resE (s : K ≃ₐ[k] K) : 𝒪[K] ≃+* 𝒪[K] where
   map_mul' x y := Subtype.ext (map_mul s (x : K) (y : K))
   map_add' x y := Subtype.ext (map_add s (x : K) (y : K))
 
-private theorem resE_coe (s : K ≃ₐ[k] K) (x : 𝒪[K]) : ((resE s x : 𝒪[K]) : K) = s (x : K) := rfl
-
 end
 
 end UpperTheory.Gal.InertialTypesAlt.L

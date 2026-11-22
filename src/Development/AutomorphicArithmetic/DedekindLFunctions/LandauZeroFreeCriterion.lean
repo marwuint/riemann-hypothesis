@@ -48,12 +48,6 @@ def famD (q : ℕ) [NeZero q] (S : Finset (DirichletCharacter ℂ q)) (w : ℝ) 
     | none => exact Or.inl rfl
     | some ξ => exact Or.inr ξ.2.2
 
-open Classical in
-
-def GmLevel (j : ℕ) (y : ℝ) : ℝ :=
-  G y + (3 * (2 : ℝ) ^ j + 1)⁻¹ *
-    ∑ ξ ∈ Finset.univ.filter (fun ξ : DirichletCharacter ℂ (2 ^ (j + 2)) => ξ.Even ∧ ξ ≠ 1), (Gchi ξ y).re
-
 def ZeroFreeAbove (j : ℕ) (θ : ℝ) : Prop :=
   ∀ s : ℂ, θ < s.re → riemannZeta s ≠ 0 ∧
     ∀ ξ : DirichletCharacter ℂ (2 ^ (j + 2)), ξ.Even → ξ ≠ 1 → DirichletCharacter.LFunction ξ s ≠ 0

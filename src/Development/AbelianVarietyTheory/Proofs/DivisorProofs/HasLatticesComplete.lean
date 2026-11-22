@@ -62,9 +62,6 @@ def IsWeilHom {𝒜 ℬ : PDivGroup p R} {A B : Over (Sp R)} [GrpObj A] [GrpObj 
 
 variable [Fact p.Prime] {Γ : PDivGroup p R} {𝒜 : PDivGroup p K}
 
-def weilProj (κ : Γ.baseChange K ⟶ 𝒜) (w : 𝒜 ⟶ 𝒜.dual) : 𝒜 ⟶ Γ.dual.baseChange K :=
-  w ≫ dualHom _ _ κ ≫ (PerfdLat.dualBaseChange K Γ).hom
-
 variable [Module R 𝒜.RigExt] [IsScalarTower R K 𝒜.RigExt]
 
 end Tower

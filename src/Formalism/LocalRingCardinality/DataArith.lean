@@ -31,8 +31,6 @@ def lw (w : HeightOneSpectrum (𝓞 K)) : ℝ :=
 
 def eWL (w : HeightOneSpectrum (𝓞 K)) : ℕ := w.asIdeal.ramificationIdx ℤ
 
-def sizeOfVal (w : HeightOneSpectrum (𝓞 K)) (y : ℝ) : ℝ := 2 * lw K w * y
-
 end Places
 
 def bridge_unit_rule : Prop :=
@@ -91,15 +89,6 @@ def bridge_hn_mu : Prop :=
 def bridge_dual_mu : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (A : HLat K),
     A.Good → 0 < A.rank → A.muMinDual = - A.muMax
-
-def bridge_ccb_dual : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (V W : Type) [AddCommGroup V] [Module K V]
-    [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
-    [IsScalarTower (𝓞 K) K W] (A : Submodule (𝓞 K) V) (N : Submodule (𝓞 K) W)
-    (B : W →ₗ[K] Module.Dual K V),
-    (∃ β : N →ₗ[𝓞 K] Module.Dual (𝓞 K) A,
-        ∀ (φ : N) (F : A), algebraMap (𝓞 K) K (β φ F) = B (φ : W) (F : V)) ↔
-      N.map (B.restrictScalars (𝓞 K)) ≤ Formalism.HN.dualLat A
 
 section Frame
 

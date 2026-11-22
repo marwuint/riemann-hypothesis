@@ -12,14 +12,7 @@ noncomputable def weylDim {n : ℕ} (lam : Fin n → ℤ) : ℝ :=
   ∏ i : Fin n, ∏ j ∈ univ.filter (fun j => i < j),
     (((lam i - lam j + (j : ℤ) - (i : ℤ) : ℤ) : ℝ) / (((j : ℕ) : ℝ) - ((i : ℕ) : ℝ)))
 
-def Wnum {n : ℕ} (lam : Fin (n + 1) → ℤ) : ℤ := lam 0 - lam (Fin.last n) + n + 1
-
 def degZ {n : ℕ} (lam : Fin (n + 1) → ℤ) (nu : Fin n → ℤ) : ℤ := ∑ i, lam i - ∑ i, nu i
-
-noncomputable def MeanSquareTwistBound {n : ℕ} (lam : Fin (n + 1) → ℤ) (nu : Fin n → ℤ) (logT : ℝ) : ℝ :=
-  -(degZ lam nu : ℝ) * logT
-    + 2 * (n : ℝ) * Real.log (Wnum lam : ℝ) * (∑ i, ((min (len lam i) (B0 lam nu) : ℤ) : ℝ))
-    + Real.log (weylDim lam)
 
 def wt {k : ℕ} (lam : Fin k → ℤ) : ℤ := ∑ i, lam i
 
@@ -48,23 +41,6 @@ structure Numbers (C₀ a b' L v logT logg eta S : ℝ) (k m t N : ℕ) : Prop w
   sq : (N : ℝ) ^ 2 * (L + logT) ≤ N * b'
   lin : (N : ℝ) * L + logT ≤ b'
   pow : (1 + 2 * C₀) * (m : ℝ) ^ 3 * N ≤ b'
-
-def ZetaBoundApplication : Prop :=
-  ∀ C₀ : ℝ, 0 ≤ C₀ → ∃ C : ℝ, ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (TT : Finset ι) (n : ℕ)
-    (lam : ι → Fin (n + 1) → ℤ) (sg : ι → Fin n → ℤ) (A bt : ι → ℝ)
-    (b' L logT eta S mt logP : ℝ),
-    1 ≤ L → 0 ≤ logT → 0 ≤ b' → 0 ≤ eta → 0 ≤ S → 0 ≤ mt →
-    (∀ ρ, Interlace (lam ρ) (sg ρ)) → (∀ ρ, Real.log (Wnum (lam ρ) : ℝ) ≤ C₀ * L) →
-    (∀ ρ ∈ TT, bt ρ ≤ 2 * b') →
-    (∀ ρ ∈ TT, (B0 (lam ρ) (sg ρ) : ℝ) ≤ bt ρ + eta + S) →
-    (∀ ρ, ρ ∉ TT → (B0 (lam ρ) (sg ρ) : ℝ) ≤ eta + S) →
-    (∀ ρ, ∃ X : Finset (Fin n), X.card ≤ 3 ∧ ((∑ i ∈ Xᶜ, len (lam ρ) i : ℤ) : ℝ) ≤ eta + S) →
-    (∀ ρ ∈ TT, A ρ - bt ρ - C₀ * (S + eta + mt) ≤ (degZ (lam ρ) (sg ρ) : ℝ)) →
-    (∀ ρ, ρ ∉ TT → -(S + eta) - C₀ * mt ≤ (degZ (lam ρ) (sg ρ) : ℝ)) →
-    logP ≤ ∑ ρ, MeanSquareTwistBound (lam ρ) (sg ρ) logT →
-    logP ≤ -(∑ ρ ∈ TT, A ρ) * logT + C * TT.card * b' * (logT + ((n : ℝ) + 1) * L)
-        + C * Fintype.card ι * (eta + 3 * S + mt) * (logT + ((n : ℝ) + 1) * L)
-        + C * Fintype.card ι * ((n : ℝ) + 1) ^ 2 * L
 
 def LastColumnBound : Prop :=
   ∀ (κ : ℕ) (lam : Fin (κ + 1 + 1) → ℤ) (A bt S : ℤ), 0 ≤ bt → 0 ≤ S →

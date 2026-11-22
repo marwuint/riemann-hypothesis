@@ -18,10 +18,6 @@ section Discrete
 variable {G G' : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G']
 
-def pairRepHom {M : TRep R G} {M' : TRep R G'} (P : Pair M M') :
-    Rep.res P.φ (Rep.of M.rho) ⟶ Rep.of M'.rho :=
-  Rep.ofHom ⟨P.u, fun g => LinearMap.ext fun m => P.equiv g m⟩
-
 open groupCohomology
 
 def zIncl (M : TRep R G) (n : ℕ) : M.coch.Z n →ₗ[R] ((Fin n → G) → M.V) where

@@ -148,9 +148,6 @@ def levPtCl (Xo : Moduli D l) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) (x : 
       exact h2
     simp only [levPt, this])
 
-theorem levPtCl_mk (Xo : Moduli D l) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) (u : D.La) :
-    levPtCl Xo x0 (Submodule.Quotient.mk u) = levPt Xo x0 u := rfl
-
 variable (D l) in
 
 def levelIndex (n : ℕ) : Finset (Fin n → NamedCl D l) := (Set.finite_univ).toFinset

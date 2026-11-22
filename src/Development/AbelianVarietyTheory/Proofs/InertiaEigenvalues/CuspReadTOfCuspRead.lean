@@ -41,9 +41,6 @@ variable {Ω : Type} [Field Ω] [Algebra H.E Ω] [IsAlgClosure H.E Ω]
 def locGR (rc : RecFam) (pl : Formalism.GaloisCohomology.Places H.E Ω) {a : ℕ} (π : HostCGu H a) (w : PlE H) : WD (pl.2 w) :=
   rc (pl.2 w) (compG π w)
 
-theorem locGR_locRec (hL : GlobalTheory.Published.LocalLanglandsGL) (pl : Formalism.GaloisCohomology.Places H.E Ω) {a : ℕ} (π : HostCGu H a)
-    (w : PlE H) : locGR (fun h => ParLaws.locRec hL h) pl π w = ParLaws.locG hL pl π w := rfl
-
 end GlobalTheory.RecT
 
 namespace GlobalTheory.RecT
@@ -62,20 +59,6 @@ structure CGTrueT (rc : RecFam) (D : D7) (T : WDTie D.nd D.naut) where
 
 variable {rc : RecFam} {D : D7} {T : WDTie D.nd D.naut}
 
-def cgTrueT_of_cgTrue (hD : GlobalTheory.Published.DepthZeroTypeInertia) {hL : GlobalTheory.Published.LocalLanglandsGL} (C : CGTrue hL D T) :
-    CGTrueT (fun h => ParLaws.locRec hL h) D T where
-  isRecT w := (isRecT_iff _).2 (UpperTheory.Zero.LLC.isRecT_of_isRec hD (ParLaws.isRec_locRec hL (D.nd.plOm.2 w)))
-  e := C.e
-  surj a ha π _ := C.surj a ha π
-  zero := C.zero
-  loc a π w _ := C.loc a π w
-  tw := C.tw
-  inf := C.inf
-  csd := C.csd
-
-theorem cgTrueT_of_cgTrue_e (hD : GlobalTheory.Published.DepthZeroTypeInertia) {hL : GlobalTheory.Published.LocalLanglandsGL} (C : CGTrue hL D T) :
-    (cgTrueT_of_cgTrue hD C).e = C.e := rfl
-
 def CGTrueT.equivGood (C : CGTrueT rc D T) (a : ℕ) (h : 0 < a) :
     {σ : D.naut.CG a // AllGood (C.e a σ)} ≃ {π : HostCGu D.host a // AllGood π} :=
   Equiv.ofBijective (fun σ => ⟨C.e a σ.1, σ.2⟩)
@@ -88,14 +71,6 @@ def CGTrueT.equivGood (C : CGTrueT rc D T) (a : ℕ) (h : 0 < a) :
 section Read
 
 open Formalism.MainNotions Formalism.MainNotions.N ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
-
-def recMapT {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N} (T : WDTie N A)
-    (rc : RecFam) : RecMap A :=
-  fun w _ σ => (T.e w).symm (rc (N.plOm.2 w) (cls (ParLaws.toRep σ)))
-
-theorem recMapT_locRec {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
-    (T : WDTie N A) (hL : GlobalTheory.Published.LocalLanglandsGL) :
-    recMapT T (fun h => ParLaws.locRec hL h) = GlobalTheory.FormDict.recT T hL := rfl
 
 end Read
 

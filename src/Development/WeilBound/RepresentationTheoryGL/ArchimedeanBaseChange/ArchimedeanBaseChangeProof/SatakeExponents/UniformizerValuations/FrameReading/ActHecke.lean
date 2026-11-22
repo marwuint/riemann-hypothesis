@@ -32,9 +32,6 @@ def actT (w : Pl E) (u : LF a b w) (G : H E a b → ℂ) : H E a b → ℂ :=
 def locM {k : Type} [Fintype k] (w : Pl E) (M : k → k → LF a b w) (G : k → H E a b → ℂ) : k → H E a b → ℂ :=
   fun x => ∑ y, actP w (M x y) (G y)
 
-theorem matS_eq {n : ℕ} (h : a + b = n) (w : Pl E) (μ : (w.adicCompletion E)ˣ →* ℂˣ) (f : GLw n w → ℂ) (X : Finset (GLw n w)) :
-    matS h w μ f X = locM w fun x y : X => phiMu h w μ f x y := rfl
-
 def DiagIdem {κ : Pl E → Type} (P : Finset (Pl E)) (U : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (L : LM κ a b) : Prop :=
   ∀ w ∈ P, ∀ x y, L.m w x y = if x = y then idem (U w) else 0
 

@@ -34,9 +34,6 @@ def prU (c : A →ₐ[R] A) (J : Matrix ι ι A) (e : R) (he : e * e = e) : UG c
       zero_smul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one, hg]
     rw [← add_smul, add_sub_cancel, one_smul]
 
-theorem prU_val (c : A →ₐ[R] A) (J : Matrix ι ι A) (e : R) (he : e * e = e) (g : UG c J) :
-    (prU c J e he g).1.1 = e • g.1.1 + (1 - e) • 1 := rfl
-
 theorem continuous_prU [TopologicalSpace A] [ContinuousAdd A] [ContinuousConstSMul R A] (c : A →ₐ[R] A)
     (J : Matrix ι ι A) (e : R) (he : e * e = e) : Continuous (prU c J e he) := by
   refine Continuous.subtype_mk ?_ _

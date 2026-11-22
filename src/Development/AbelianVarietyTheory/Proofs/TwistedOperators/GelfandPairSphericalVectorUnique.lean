@@ -33,8 +33,6 @@ def stabSub (K : Subgroup G) (g : G) : Subgroup G where
     convert K.inv_mem ha' using 1
     group
 
-theorem mem_stabSub {K : Subgroup G} {g h : G} : h ∈ stabSub K g ↔ h ∈ K ∧ g⁻¹ * h * g ∈ K := Iff.rfl
-
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 end GlobalTheory.GelfandLine

@@ -1145,12 +1145,6 @@ theorem smul_dUnit_muT_eq_zero_iff (n : ℕ) (c : O) :
   · rintro ⟨d, rfl⟩
     rw [mul_comm, mul_smul, (mu p O).pow_smul_cot n, smul_zero]
 
-theorem dlogT_ne_zero (hp : ¬ IsUnit (p : O)) : dlogT p O ≠ 0 := fun h => by
-  have h1 : (1 : O) • dUnit O (muT O (p ^ 1)) = 0 :=
-    (one_smul _ _).trans (congrArg (fun w : (mu p O).omega => w.1 1) h)
-  rw [smul_dUnit_muT_eq_zero_iff, pow_one] at h1
-  exact hp (isUnit_of_dvd_one h1)
-
 theorem toSpanSingleton_dlogT_bijective [IsAdicComplete (Ideal.span {(p : O)}) O] :
     Function.Bijective (LinearMap.toSpanSingleton O _ (dlogT p O)) := by
   have hm : ∀ (n : ℕ) (a b : O),

@@ -20,44 +20,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
   {R : Type} [CommRing R] {ξ : Sp R ⟶ X} {q : ℕ} (P' : GlobalTheory.HTMap.FP t ξ q)
   {O : Type} [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f))
 
-theorem aH_left_π_ptMap {G' : Over (Sp O)} {π : G'.left ⟶ t.G.left}
-    (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) {D : Type} [CommRing D] [Algebra O D]
-    (a : Bt P' x0 hu →ₐ[O] D) :
-    (ptMap a ≫ aH P' x0 hu hπ).left ≫ π = spMap (a.toRingHom.comp (inB P' x0 hu)) ≫ P'.u.left := by
-  rw [Over.comp_left, Category.assoc, aH_left_π]
-  change spMap a.toRingHom ≫ spMap (inB P' x0 hu) ≫ P'.u.left = _
-  rw [GlobalTheory.HTMap.spc_assoc]
-
-theorem str_of_alg {D : Type} [CommRing D] [Algebra O D] (a : Bt P' x0 hu →ₐ[O] D) :
-    (a.toRingHom.comp (inB P' x0 hu)).comp P'.str = (algebraMap O D).comp x0 := by
-  rw [RingHom.comp_assoc, inB_str, ← RingHom.comp_assoc]
-  congr 1
-  exact a.comp_algebraMap
-
-theorem at_alg {D : Type} [CommRing D] [Algebra O D] (a : Bt P' x0 hu →ₐ[O] D) :
-    P'.At ((algebraMap O D).comp x0) (spMap (a.toRingHom.comp (inB P' x0 hu)) ≫ P'.u.left)
-      (a.toRingHom.comp (inB P' x0 hu)) :=
-  ⟨str_of_alg P' x0 hu a, rfl⟩
-
-theorem exists_mul_affine {G' : Over (Sp O)} [GrpObj G'] {π : G'.left ⟶ t.G.left}
-    (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π) {D : Type} [CommRing D] [Algebra O D]
-    (a b : Bt P' x0 hu →ₐ[O] D) :
-    ∃ z : specO O D ⟶ Hs P' x0 hu, z ≫ aH P' x0 hu hg.1 =
-      (ptMap a ≫ aH P' x0 hu hg.1) * (ptMap b ≫ aH P' x0 hu hg.1) := by
-  have ha := at_alg P' x0 hu a
-  have hb := at_alg P' x0 hu b
-  let w₁ : Over.mk ((specO O D).hom ≫ spMap x0 ≫ ξ) ⟶ t.G :=
-    GlobalTheory.HTMap.mkPt _ (ha.over.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)
-  let w₂ : Over.mk ((specO O D).hom ≫ spMap x0 ≫ ξ) ⟶ t.G :=
-    GlobalTheory.HTMap.mkPt _ (hb.over.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)
-  obtain ⟨β'', h''⟩ := GlobalTheory.HTMap.FP.At.mul (w := w₁) (w' := w₂) ha hb
-  refine ⟨ptOf P' x0 hu β'' h''.1, ?_⟩
-  refine Over.OverMorphism.ext (hg.1.hom_ext ?_ ?_)
-  · rw [ptOf_aH_π, h''.2]
-    exact hg.2 (specO O D) _ _ w₁ w₂ (aH_left_π_ptMap P' x0 hu hg.1 a).symm
-      (aH_left_π_ptMap P' x0 hu hg.1 b).symm
-  · rw [Over.w, Over.w]
-
 end GlobalTheory.FinPartAt
 
 namespace GlobalTheory.FinPartAt

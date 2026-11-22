@@ -22,10 +22,6 @@ def ctY (Y : GT ι) (w : EuclideanSpace ℂ ι) : GT ι where
     rw [norm_mul, Y.ka_abs x hx, one_mul, Complex.norm_exp]
     simp
 
-theorem twisted_firstMinimum (Y : GT ι) (w : EuclideanSpace ℂ ι) : (ctY Y w).la1 = Y.la1 := rfl
-
-theorem ctY_lat (Y : GT ι) (w : EuclideanSpace ℂ ι) : lat (ctY Y w).b = lat Y.b := rfl
-
 private theorem Hf_add_left_euclidean (a b c : EuclideanSpace ℂ ι) : Hf (a + b) c = Hf a c + Hf b c := by
   simp [Hf, add_mul, Finset.sum_add_distrib]
 

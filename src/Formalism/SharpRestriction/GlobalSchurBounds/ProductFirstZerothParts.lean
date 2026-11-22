@@ -83,8 +83,6 @@ def KT (i : ℕ) : Fn D u i →ₗ[ℂ] Fn D u (i + 1) := (D.mem u).C.Klin i
 
 def colT : Fn D u 0 → Fn D u D.R.m := (D.mem u).C.col
 
-theorem KT_apply (i : ℕ) (φ : Fn D u i) : KT D u i φ = (D.mem u).C.K i φ := rfl
-
 abbrev Wt (τ : D.what₂.Tau) : ℕ := Wtau D u τ
 
 def amax : ℤ := (tops D).fold max 0 (D.fm u).aTop
@@ -121,8 +119,6 @@ def Alcove : Prop :=
 def HidaSetting : Prop :=
   2 * D.R.f * D.R.N D.R.m + 1 < (D.mem u).A.T ∧ (4 * amax D u < ((D.mem u).A.T : ℤ) ∧ Alcove D u) ∧
     ∀ τ ∈ tops D, 0 ≤ (D.fm u).bTop τ
-
-def UpDownIncidenceInverse : Prop := (D.fm u).DnUp ∧ (D.fm u).DnFv
 
 def admS : Prop := (D.mem u).C.StabZero
 

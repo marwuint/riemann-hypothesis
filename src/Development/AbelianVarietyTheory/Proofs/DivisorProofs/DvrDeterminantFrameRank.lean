@@ -15,8 +15,6 @@ section SlopeTestRemainingChoices
 
 variable {O : Type} [CommRing O] {C : Type} [Field C] [Algebra O C]
 
-theorem incl_apply' (h : ℕ) (l : Fin h → O) : incl C h l = fun i => algebraMap O C (l i) := rfl
-
 end SlopeTestRemainingChoices
 
 end GlobalTheory.DetInv

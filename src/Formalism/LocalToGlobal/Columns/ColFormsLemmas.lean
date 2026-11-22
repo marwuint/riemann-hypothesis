@@ -58,9 +58,6 @@ section Form
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG)
 
-theorem formGSD_smul (a : (formGSD C Λ).G) (d : (formGSD C Λ).D) :
-    a • d = ((FormG.incl Λ a : UF X.E n × GLG X.E n SG) • (d : DecoSet X.E n ST SG) : DecoSet X.E n ST SG) := rfl
-
 theorem FormG.incl_injective : Function.Injective (FormG.incl Λ) := by
   intro a b h
   have h1 := congrArg Prod.fst h

@@ -286,8 +286,6 @@ theorem ev_fsum {ι : Type*} (s : Finset ι) (F : ι → AA k r E) (f : Mat k r 
     | (simp [ev, LinearMap.sum_apply, Finset.sum_apply]; done)
     | (simp only [ev, LinearMap.coeFn_sum, Finset.sum_apply])
 
-theorem ev_zero_el (f : Mat k r → E) (x : Mat k r) : ev Eop (0 : AA k r E) f x = 0 := rfl
-
 theorem ev_intCast_mul (z : ℤ) (a : AA k r E) (f : Mat k r → E) (x : Mat k r) :
     ev Eop ((z : AA k r E) * a) f x = (z : ℂ) • ev Eop a f x := by
   rw [← map_intCast (algebraMap ℂ (AA k r E)) z]

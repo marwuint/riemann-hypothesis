@@ -17,10 +17,6 @@ def finiteSchwartzBruhat2 : Submodule ℂ ((Fin 2 → 𝔸ᶠ[K]) → ℂ) where
   add_mem' hf hg := ⟨hf.1.add hg.1, hf.2.add hg.2⟩
   smul_mem' c _ hf := ⟨hf.1.comp (c • ·), hf.2.comp_left (smul_zero c)⟩
 
-theorem mem_finiteSchwartzBruhat2 {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ} :
-    f ∈ finiteSchwartzBruhat2 K ↔ IsLocallyConstant f ∧ HasCompactSupport f :=
-  Iff.rfl
-
 def finiteMeasure2 : Measure (Fin 2 → 𝔸ᶠ[K]) :=
   Measure.pi fun _ ↦ finiteAdeleMeasure K
 

@@ -15,9 +15,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
-theorem Nlet_five (D : D7) : Nlet D 5 = NA D := by
-  rfl
-
 theorem Dstar_pos (D : D7) : 0 < D.what₂.Dstar := by
   rw [← D.Dstar_eq D.u₀]; exact (D.mem D.u₀).A.Dstar_pos
 

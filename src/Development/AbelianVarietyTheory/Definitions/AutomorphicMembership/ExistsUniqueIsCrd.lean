@@ -40,17 +40,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 variable (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hX : X.B.fields.Ok)
 
-theorem rowForm_eq (Xg tr) (a : I.ι) (y) :
-    R3.rowForm (D := X.toD7) (R3.famR X I hX Set.univ Xg tr).A (R3.lev1 I) (R3.chr1 I) (tAll I a) y =
-      frm (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) y := rfl
-
 end Cols
 
 section Standard
 
 open Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links
-
-theorem labLL_eq (X : Stages) : labLL X.toD7 = X.B.fields.emb := rfl
 
 end Standard
 

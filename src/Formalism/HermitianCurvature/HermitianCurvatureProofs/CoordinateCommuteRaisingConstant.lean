@@ -3015,7 +3015,6 @@ theorem cz_cc : cz P D * cc P D = cc P D * cz P D := by
   rw [multiplierPair_mul D, multiplierPair_mul D]
   exact multiplierPair_comm D _ _ _ _
 
-theorem g_sc : ggA P D = sc P D (D.ggP P.TT) := rfl
 theorem G_sc : ggiA P D = sc P D (D.ggiP P.TT) := rfl
 
 theorem star_g : star (ggA P D) = ggA P D := (starGens P D).2.2.2.1

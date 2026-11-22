@@ -128,10 +128,8 @@ section fst
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
 theorem fst_mul' (a b : Q.Pr V) : (a * b).1 = a.1 * b.1 := rfl
-theorem fst_add' (a b : Q.Pr V) : (a + b).1 = a.1 + b.1 := rfl
 theorem fst_neg' (a : Q.Pr V) : (-a).1 = -a.1 := rfl
 theorem fst_sub' (a b : Q.Pr V) : (a - b).1 = a.1 - b.1 := rfl
-theorem fst_zero' : (0 : Q.Pr V).1 = 0 := rfl
 theorem fst_smul' (c : ℂ) (a : Q.Pr V) : (c • a).1 = c • a.1 := by
   first
   | rfl

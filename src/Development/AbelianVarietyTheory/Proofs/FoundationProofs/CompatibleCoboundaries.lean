@@ -155,12 +155,6 @@ theorem frac_compat : (fracComp b).Compat (LinearMap.range (Algebra.linearMap O 
     rw [← hm, fracComp_inc]
     simp [← IsScalarTower.algebraMap_apply]
 
-def divComp (r : ℕ) : Comp b (Fin r → KmodO O) (Fin r → KmodO O') := (frac_compat b).quot.pi (Fin r)
-
-theorem divComp_inc {r : ℕ} (y : Fin r → FractionRing O) (j : Fin r) :
-    (divComp b r).inc (fun j => Submodule.Quotient.mk (y j)) j =
-      Submodule.Quotient.mk (algebraMap (FractionRing O) (FractionRing O') (y j)) := rfl
-
 open Formalism.MainNotions.BlochKatoReduction
 
 def fracClasses {Γ O₀ : Type} [Group Γ] [TopologicalSpace Γ] [CommRing O₀] {O : Type} [CommRing O]
@@ -195,9 +189,6 @@ def selG {O : Type} [CommRing O] [IsDomain O] (φ : X.O0 i →+* O)
     (Q : Finset (HeightOneSpectrum (𝓞 D.host.E))) :
     Submodule O (H1 (twRep φ (X.rhoS i s) (chiS i s) 1)) :=
   SelAll _ N.plOm (bkCond _ N.plOm (X.l i) (Spl i ∪ ↑Q) (bkG bkP i s φ))
-
-theorem selT_eq (k : ℕ) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E))) :
-    selT bkP i s k Q 1 = selG bkP i s (phiK X i k) Q := rfl
 
 end Main
 

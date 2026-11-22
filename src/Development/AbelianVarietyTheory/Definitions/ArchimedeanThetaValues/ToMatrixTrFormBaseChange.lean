@@ -79,9 +79,6 @@ def traceDual (H : Host E) : 𝓞 E →ₗ[𝓞 E] ConjDual H where
 
 @[simp] theorem toDual_traceDual (H : Host E) (x : 𝓞 E) : toDual H (traceDual H x) = trForm H x := rfl
 
-theorem traceDual_apply (H : Host E) (x y : 𝓞 E) :
-    toDual H (traceDual H x) y = Algebra.trace ℤ (𝓞 E) (H.bar x * y) := rfl
-
 theorem traceDual_injective (H : Host E) : Function.Injective (traceDual H) :=
   fun _ _ h => trForm_injective H (congrArg (toDual H) h)
 
@@ -343,14 +340,9 @@ end Action
     · rw [trace_of_smul H a A hA, ht, Complex.intCast_re]
     · rw [trace_hypJ_comp H a A hA, ht, Complex.intCast_im, mul_zero]⟩
 
-theorem hypDatum_La (H : Host E) : (hypDatum H).La = (𝓞 E × ConjDual H) := rfl
-
 @[simp] theorem hypDatum_p (H : Host E) : (hypDatum H).p = 1 := rfl
 
 @[simp] theorem hypDatum_q (H : Host E) : (hypDatum H).q = 1 := rfl
-
-theorem hypDatum_EF (H : Host E) (x y : 𝓞 E) (f g : ConjDual H) :
-    (hypDatum H).EF (x, f) (y, g) = toDual H f y - toDual H g x := rfl
 
 theorem hypDatum_smul (H : Host E) (a x : 𝓞 E) (f : ConjDual H) :
     (a • (x, f) : (hypDatum H).La) = (a * x, a • f) := rfl

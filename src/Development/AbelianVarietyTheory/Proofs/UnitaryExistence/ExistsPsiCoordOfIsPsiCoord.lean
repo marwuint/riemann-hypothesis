@@ -68,7 +68,4 @@ theorem psiIn_top {I : Ideal R} (D : DegData R I) (χ : D.toPre.X) : D.toPre.Psi
   · subst h; exact (PsiZero.main R D.toPre).1 D.tau_bimult
   · exact (PsiZero.main R D.toPre).2 χ I ⊤ le_top (D.psi_pos χ h)
 
-theorem ordPsi_eq_psiOrd [IsLocalRing R] (D : DegData R (maximalIdeal R)) (χ : D.toPre.X) :
-    ordPsi D.toPre χ = psiOrd D χ := rfl
-
 end GlobalTheory.PeriodFormCompare

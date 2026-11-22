@@ -17,36 +17,9 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 local notation "Γ₁" => rationalGLOne K n
 
-theorem continuous_uOne : Continuous (uOne (K := K) (n := n)) :=
-  continuous_induced_rng.2 continuous_uGL
-
 theorem continuous_adelicChar_neg_supSum :
     Continuous fun X : Pos n → 𝔸[K] => (GroundTheory.Global.adelicChar K (-supSum 0 X) : ℂ) :=
   continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (continuous_supSum 0).neg)
-
-theorem integrableOn_whittakerOne {ϕ : normOneGL K n → ℂ} (hc : Continuous ϕ) (x : normOneGL K n) :
-    IntegrableOn (fun X => ϕ (uOne X * x) * (GroundTheory.Global.adelicChar K (-supSum 0 X) : ℂ))
-      (vecDomain K (Pos n)) (vecMeasure K (Pos n)) := by
-  have hcont : Continuous fun X : Pos n → 𝔸[K] =>
-      ϕ (uOne X * x) * (GroundTheory.Global.adelicChar K (-supSum 0 X) : ℂ) :=
-    (hc.comp (continuous_uOne.mul continuous_const)).mul continuous_adelicChar_neg_supSum
-  exact (hcont.continuousOn.integrableOn_compact isCompact_closure_vecDomain).mono_set subset_closure
-
-theorem whittakerOne_add {ϕ ϕ' : normOneGL K n → ℂ} (hc : Continuous ϕ) (hc' : Continuous ϕ')
-    (x : normOneGL K n) : whittakerOne (ϕ + ϕ') x = whittakerOne ϕ x + whittakerOne ϕ' x := by
-  unfold whittakerOne
-  rw [← integral_add (integrableOn_whittakerOne hc x) (integrableOn_whittakerOne hc' x)]
-  congr 1
-  funext X
-  simp only [Pi.add_apply, add_mul]
-
-theorem whittakerOne_smul (c : ℂ) (ϕ : normOneGL K n → ℂ) (x : normOneGL K n) :
-    whittakerOne (c • ϕ) x = c * whittakerOne ϕ x := by
-  unfold whittakerOne
-  rw [← integral_const_mul]
-  congr 1
-  funext X
-  simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
@@ -58,12 +31,6 @@ variable {μ}
 theorem HasContRep.unique {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F F' : normOneGL K n → ℂ}
     (h : HasContRep μ φ F) (h' : HasContRep μ φ F') : F = F' :=
   (h.1.ae_eq_iff_eq μ h'.1).1 (h.2.2.symm.trans h'.2.2)
-
-theorem hasContRep_zero : HasContRep μ (0 : Lp ℂ 2 (quotientMeasure Γ₁ μ)) 0 := by
-  refine ⟨continuous_const, fun _ _ _ => rfl, ?_⟩
-  filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp
-    (Lp.coeFn_zero ℂ 2 (quotientMeasure Γ₁ μ))] with y hy
-  exact hy
 
 theorem HasContRep.add {φ ψ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F F' : normOneGL K n → ℂ}
     (h : HasContRep μ φ F) (h' : HasContRep μ ψ F') : HasContRep μ (φ + ψ) (F + F') := by

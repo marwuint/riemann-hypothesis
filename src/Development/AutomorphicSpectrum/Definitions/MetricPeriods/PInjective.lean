@@ -12,8 +12,6 @@ def stdE : LinearMap.BilinForm ℤ (Fin 2 → ℤ) :=
     (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring)
     (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring)
 
-theorem stdE_apply (x y : Fin 2 → ℤ) : stdE x y = x 1 * y 0 - x 0 * y 1 := rfl
-
 def per (w : Fin 1 → ℂ) : (Fin 2 → ℤ) →+ (Fin 1 → ℂ) where
   toFun x := fun _ => (x 0 : ℂ) + (x 1 : ℂ) * (w 0 / (2 * Real.pi * Complex.I))
   map_zero' := by funext; simp

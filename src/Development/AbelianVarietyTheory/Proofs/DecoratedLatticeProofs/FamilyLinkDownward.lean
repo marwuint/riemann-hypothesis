@@ -29,10 +29,6 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 abbrev xOf (W : RealPack ex) (t : W.P.T) (F : Fin ((W.Q.F.fc (cxW W).zs).Df1.nV t) → D.what₂.LL) : ((pk W).HX t).H :=
   (pk W).jX t (W.Q.F.eV (cxW W).zs t F)
 
-theorem topOf_eq (W : RealPack ex) (t : W.P.T) (F : Fin ((W.Q.F.fc (cxW W).zs).Df1.nV t) → D.what₂.LL) :
-    topOf W t F = (pk W).cX.toMap (pk W).prX (((pk W).HX t).e (xOf W t F)) := rfl
-
 end GlobalTheory.RowDescent
 
 end
-

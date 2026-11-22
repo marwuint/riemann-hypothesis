@@ -533,12 +533,6 @@ theorem locS (hE : Ev r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd 
   · exact locS_g i r ρ π Dd hE hN hG5 h5x c' v hv g hg
   · exact locS_pde i r ρ π Dd hE hN hG5 h5x c' v hv g hg
 
-theorem Fall_succ (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) (c' : Fin D.R.t) :
-    Fall i dc Dd F0 c'.succ = Fpos i dc Dd c'.succ := rfl
-
-theorem Fall_zero (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) :
-    Fall i dc Dd F0 0 = F0 := rfl
-
 end Final
 
 section Shape

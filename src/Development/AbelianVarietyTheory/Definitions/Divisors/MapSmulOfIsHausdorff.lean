@@ -201,9 +201,6 @@ theorem Eps.bijective (ε : Eps p C) :
 def Eps.equiv (ε : Eps p C) : ℤ_[p] ≃ₗ[ℤ_[p]] Tate p Cˣ :=
   LinearEquiv.ofBijective _ ε.bijective
 
-theorem Eps.lev_equiv (ε : Eps p C) (a : ℤ_[p]) (n : ℕ) :
-    (ε.equiv a).lev n = ε.1.lev n ^ digit n a := rfl
-
 instance [IsAlgClosed C] [CharZero C] : Nonempty (Eps p C) := by
   have hp : p.Prime := Fact.out
   haveI : NeZero (p : C) := ⟨Nat.cast_ne_zero.2 hp.ne_zero⟩

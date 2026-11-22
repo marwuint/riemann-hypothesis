@@ -46,11 +46,6 @@ def GoodCuspidal : Prop :=
     (¬ ∃ a : ℕ, 1 ≤ a ∧ 2 * a ≤ r ∧ ∀ v, ∃ g : k[X], g ∣ f v ∧ g.natDegree = a) →
     (∀ i, d i = 1) ∧ Fintype.card I ≤ 1
 
-def SplitEigenAnnihilator : Prop :=
-  ∀ (K V : Type) [Field K] [AddCommGroup V] [Module K V] (A B : Submodule K V)
-    (γ₀ γ : Module.End K V) (c : K), IsCompl A B → (∀ v ∈ A, γ₀ v = v) → (∀ v ∈ A, γ v = v) →
-    (∀ v ∈ B, γ v = c • v) → (γ₀ - 1) * (γ - algebraMap K (Module.End K V) c) = 0
-
 def UnitEvalOfMultiplicity : Prop :=
   ∀ (O : Type) [CommRing O] [IsLocalRing O] (t : ℕ) (c : O) (s' : O[X]), s'.Monic →
     ((s' * (X - C c) ^ t).map (IsLocalRing.residue O)).rootMultiplicity (IsLocalRing.residue O c) = t →

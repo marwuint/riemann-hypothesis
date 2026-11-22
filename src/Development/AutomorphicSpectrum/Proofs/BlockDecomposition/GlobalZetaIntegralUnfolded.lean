@@ -14,8 +14,5 @@ namespace GlobalTheory.CompanionTheory.RankinUnfold
 
 open Ad3 Ad3.R
 
-theorem pri_eq (α : ℚˣ) : pri α = IdeleGroup.diagonal ℚ α := by
-  rfl
-
 end GlobalTheory.CompanionTheory.RankinUnfold
 end

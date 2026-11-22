@@ -32,23 +32,6 @@ theorem exists_finset_norm_one (x : F) (hx : x ≠ 0) :
   simp only [map_one, NNReal.coe_one] at h
   exact h
 
-theorem compA_inf (Δ P R : F) (a b : AF F) (w : InfinitePlace F) :
-    (a * algebraMap F (AF F) P + algebraMap F (AF F) Δ * (b * -algebraMap F (AF F) R)).1 w =
-      a.1 w * algebraMap F w.Completion P + algebraMap F w.Completion Δ * (b.1 w * -algebraMap F w.Completion R) := rfl
-
-theorem compB_inf (P R : F) (a b : AF F) (w : InfinitePlace F) :
-    (a * -algebraMap F (AF F) R + b * algebraMap F (AF F) P).1 w =
-      a.1 w * -algebraMap F w.Completion R + b.1 w * algebraMap F w.Completion P := rfl
-
-theorem compA_fin (Δ P R : F) (a b : AF F) (v : HeightOneSpectrum (𝓞 F)) :
-    (a * algebraMap F (AF F) P + algebraMap F (AF F) Δ * (b * -algebraMap F (AF F) R)).2 v =
-      a.2 v * algebraMap F (v.adicCompletion F) P +
-        algebraMap F (v.adicCompletion F) Δ * (b.2 v * -algebraMap F (v.adicCompletion F) R) := rfl
-
-theorem compB_fin (P R : F) (a b : AF F) (v : HeightOneSpectrum (𝓞 F)) :
-    (a * -algebraMap F (AF F) R + b * algebraMap F (AF F) P).2 v =
-      a.2 v * -algebraMap F (v.adicCompletion F) R + b.2 v * algebraMap F (v.adicCompletion F) P := rfl
-
 end Places
 
 variable {D : D7}

@@ -146,7 +146,6 @@ theorem inPhi_symm_iff (x : MM D) : (tE D).symm x ∈ D.R.Psi ↔ D5.InPhi x := 
 
 theorem tE_cc : tE D (D.R.cc) = D5.cconj := rfl
 theorem top_place_of_first_tau (t : HH D) : tE D (D.R.tau1 t) = D5.topPl (tH D t) := rfl
-theorem thick_place_of_second_tau (t : HH D) : tE D (D.R.tau2 t) = D5.thickPl (tH D t) := rfl
 theorem tE_iner : tE D (iner D) = characterSumData.sgc0 := rfl
 
 theorem tE_rho (t : HH D) (g : D.R.GG) :
@@ -322,8 +321,6 @@ def tHe : HH D ≃ D.R.A :=
 
 theorem tHe_apply (t : HH D) : tHe D t = tH D t := rfl
 
-theorem tH_add (u v : HH D) : tH D (u + v) = tH D u + tH D v := rfl
-
 def TTm : Finset D.R.A := D.host.TT.map (tHe D).toEmbedding
 
 end Formalism.MainNotions.ZetaZeroFreeRegion.Br
@@ -333,4 +330,3 @@ end
 namespace Formalism.MainNotions.ZetaZeroFreeRegion
 
 end Formalism.MainNotions.ZetaZeroFreeRegion
-

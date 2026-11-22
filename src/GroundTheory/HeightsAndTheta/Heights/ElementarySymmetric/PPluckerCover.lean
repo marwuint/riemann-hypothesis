@@ -17,10 +17,6 @@ section Bundle
 
 variable {D : ℕ} (S : ProjectiveLineBundle D)
 
-abbrev yyc : (Σ k, S.YIdx k) → S.Φ := T.yyCoord S.x S.δ S.e S.φ (S.a 0)
-
-theorem yyc_base (i : S.ι) : yyc S ⟨.base, i⟩ = algebraMap S.Ω S.Φ (S.x i) := rfl
-
 end Bundle
 
 end PluckerAffineCover

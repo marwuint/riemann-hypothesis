@@ -16,33 +16,9 @@ theorem normal_cyclotomic (N : ℕ) : Normal ℚ (cycQ N) := normal_adjoin fun s
   show (s x) ^ N = 1
   rw [← map_pow, show x ^ N = 1 from hx, map_one]
 
-theorem cyclotomic_mono_of_dvd {M N : ℕ} (h : M ∣ N) : cycQ M ≤ cycQ N := by
-  unfold cycQ
-  apply adjoin.mono
-  intro z hz
-  obtain ⟨c, rfl⟩ := h
-  show z ^ (M * c) = 1
-  rw [pow_mul, show z ^ M = 1 from hz, one_pow]
-
 section Split
 
 variable {X : Fields}
-
-def toyConjugatePrime (P : HeightOneSpectrum (𝓞 X.E)) : HeightOneSpectrum (𝓞 X.E) where
-  asIdeal := P.asIdeal.comap X.conjO
-  isPrime := Ideal.comap_isPrime _ _
-  ne_bot := by
-    intro h
-    obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot
-    have h1 : X.conjO x ∈ P.asIdeal.comap X.conjO := by
-      rw [Ideal.mem_comap, X.conjO_invol]
-      exact hx
-    rw [h] at h1
-    have h2 : X.conjO x = 0 := h1
-    apply hx0
-    rw [← X.conjO_invol x, h2, map_zero]
-
-theorem mem_conjugatePrime_iff (P : HeightOneSpectrum (𝓞 X.E)) (x : 𝓞 X.E) : x ∈ (toyConjugatePrime P).asIdeal ↔ X.conjO x ∈ P.asIdeal := Iff.rfl
 
 end Split
 
@@ -78,38 +54,13 @@ def hz (a b : ℤ) : 𝓞 (hostFields H ι LL hE).E :=
 
 end HostZ
 
-def toyFirstParameter : ℕ := 5812161310401002497
-
-def toySecondParameter : ℕ := 10580716767734447210497
-
-def nd2T : ℕ := 56194698826333161291662198507648755438473557111144279252246328293211974734191775333427954228508737780869538570051953955243454133837703637171933755744705457828859522702609327843686445057
-
-def columnDegreeBound : ℕ := 175899382716746995995794692370095808443505986460327359316203003947391329197558870718244898147225575657278023097973275990081581282841096000378419862656504066221696375796925055794734493697
-
 def nd2N : ℕ := 204572886511813553061037407562329625995783655411690436542768105489192394035355663504895707466548678171695054788500010062488923813826764064938234928730947196464262768270018653110228498338042697795156970159903677022807129186961004810571117527615229822789011462114279289419559348825463524785325415815445950503458435921145728668675289394505621558664460319354973532563002004291054537384997546176343222140701606270894674242774158138205418672187221164903157007908864
 
 theorem example_level_pos : 0 < nd2N := by decide +kernel
 
-theorem exampleField_le_cyclotomic : Examples₂.H0.EQ ≤ cycQ nd2N :=
-  (condEQ Examples₂.H0).1.trans (cyclotomic_mono_of_dvd (by decide +kernel))
-
 section Inst
 
 variable (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL] (hLL : cycQ nd2N ≤ LL)
-
-abbrev nd2X : Fields := hostFields Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL)
-
-abbrev nd2z (a b : ℤ) : 𝓞 (nd2X LL hLL).E := hz Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL) a b
-
-def toyPrimes : Primes (nd2X LL hLL) where
-  cond := Examples₂.H0.condN
-  g := ![toyFirstParameter, toySecondParameter]
-  piG := ![nd2z LL hLL 1 (((Examples₂.H0.condN : ℕ) : ℤ) * 18),
-    nd2z LL hLL 1 (((Examples₂.H0.condN : ℕ) : ℤ) * 768)]
-  Word := Fin 2
-  T := ![nd2T, columnDegreeBound]
-  piT := ![nd2z LL hLL 1 (((Examples₂.H0.condN * (toyFirstParameter * toySecondParameter) ^ 2 : ℕ) : ℤ) * 468),
-    nd2z LL hLL 1 (((Examples₂.H0.condN * (toyFirstParameter * toySecondParameter) ^ 2 : ℕ) : ℤ) * 828)]
 
 end Inst
 

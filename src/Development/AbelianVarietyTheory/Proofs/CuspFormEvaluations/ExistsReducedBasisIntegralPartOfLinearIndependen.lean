@@ -91,9 +91,6 @@ variable {K σ : Type*} [Field K]
 def integralPart (W : Submodule K (MvPolynomial σ K)) : Submodule ℤ (MvPolynomial σ K) :=
   W.restrictScalars ℤ ⊓ coeffsIn σ (integralClosure ℤ K).toSubmodule
 
-theorem mem_integralPart {W : Submodule K (MvPolynomial σ K)} {P : MvPolynomial σ K} :
-    P ∈ integralPart W ↔ P ∈ W ∧ ∀ α, IsIntegral ℤ (P.coeff α) := Iff.rfl
-
 theorem smul_mem_integralPart {W : Submodule K (MvPolynomial σ K)} (c : 𝓞 K)
     {P : MvPolynomial σ K} (hP : P ∈ integralPart W) : c • P ∈ integralPart W :=
   ⟨W.smul_mem (c : K) hP.1, fun α => by

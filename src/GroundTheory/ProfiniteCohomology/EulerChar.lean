@@ -139,18 +139,6 @@ theorem eulerChar_shortExact (hP : ∀ m n, m ∣ n → P n → P m) (hG : HasFi
     exact Nat.card_congr (Submodule.topEquiv).toEquiv
   exact eulerChar_shortExact_of_mem hG hS h₁ h₂ h₃
 
-noncomputable def eulerCharUnit (hG : HasFiniteCohomology k G P)
-    (A : (finiteDiscreteRep k G P).FullSubcategory) : ℚˣ :=
-  haveI := A.property.1
-  haveI := A.property.2.1
-  Units.mk0 (eulerChar A.obj) (eulerChar_pos hG A.obj A.property.2.2).ne'
-
-theorem coe_eulerCharUnit (hG : HasFiniteCohomology k G P)
-    (A : (finiteDiscreteRep k G P).FullSubcategory) :
-    haveI := A.property.1
-    (eulerCharUnit hG A : ℚ) = eulerChar A.obj :=
-  rfl
-
 end Hypothesis
 
 section Shapiro

@@ -291,20 +291,6 @@ theorem KSIso.exists_isTanFrame {Φ : Finset (E →+* ℂ)} {y : FrPt Xo c K} (h
   choose w hw using fun k : VIx Dw => (existsUnique_isVert y (Pi.single k.toF (1 : K))).exists
   exact ⟨Sum.elim (fun k => z (Pi.single k 1)) w, fun k => (hz _).2, hw⟩
 
-theorem existsUnique_isTanFrame_of_isEmpty {Φ : Finset (E →+* ℂ)} [IsEmpty (HIx Dw Φ)] (y : FrPt Xo c K) :
-    ∃! v, IsTanFrame Φ y v := by
-  choose w hw hu using fun k : VIx Dw => existsUnique_isVert y (Pi.single k.toF (1 : K))
-  refine ⟨Sum.elim isEmptyElim w, ⟨isEmptyElim, hw⟩, fun v hv => funext fun k => ?_⟩
-  rcases k with k | k
-  · exact isEmptyElim k
-  · exact hu k _ (hv.2 k)
-
-theorem isEmpty_HIx (Φ : Finset (E →+* ℂ)) (h : Dw.p = 0 ∨ Dw.q = 0) : IsEmpty (HIx Dw Φ) :=
-  ⟨fun ⟨τ, a, b⟩ => by
-    have ha := a.2
-    have hb := b.2
-    rcases mult_conj (Dw := Dw) τ.1 with ⟨k, k'⟩ | ⟨k, k'⟩ <;> omega⟩
-
 theorem sum_FIx (g : FIx Dw → K) :
     ∑ k, g k = ∑ k : VIx Dw, g k.toF + ∑ k ∈ Finset.univ.filter (fun k => k ∉ Set.range VIx.toF), g k := by
   rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun k => k ∈ Set.range VIx.toF)]
@@ -336,13 +322,6 @@ def IsWedgeVal (o : ι ≃ TIx Dw Φ) (φ : K₀ →ₐ[c.F] K) (y : FrPt Xo c K
 
 variable {Φ}
 
-theorem existsUnique_isWedgeVal_of_isEmpty [IsEmpty (HIx Dw Φ)] (o : ι ≃ TIx Dw Φ) (φ : K₀ →ₐ[c.F] K)
-    {y : FrPt Xo c K} {s : ι → RulK Xo c K₀} (h0 : ∀ i, val φ y (s i) = 0) : ∃! d, IsWedgeVal Φ o φ y s d := by
-  obtain ⟨v, hv, hu⟩ := existsUnique_isTanFrame_of_isEmpty (Φ := Φ) y
-  refine ⟨_, ⟨h0, v, hv, rfl⟩, ?_⟩
-  rintro _ ⟨-, w, hw, rfl⟩
-  rw [hu w hw]
-
 theorem IsWedgeVal.reorder {o : ι ≃ TIx Dw Φ} {φ : K₀ →ₐ[c.F] K} {y : FrPt Xo c K} {s : ι → RulK Xo c K₀} {d : K}
     (h : IsWedgeVal Φ o φ y s d) (o' : ι ≃ TIx Dw Φ) :
     IsWedgeVal Φ o' φ y s ((Equiv.Perm.sign (o'.trans o.symm) : ℤ) * d) := by
@@ -365,49 +344,9 @@ abbrev CoefHom (io : c.F →+* T.Fr) (K₀ : Type) [CommRing K₀] [Algebra c.F 
   letI := io.toAlgebra
   K₀ →ₐ[c.F] T.Fr
 
-def secOrd (n : ℕ) (φ : CoefHom c io K₀) (y : IntFr Xo c T io) (s : RulK Xo c K₀) : EReal :=
-  letI := io.toAlgebra
-  nval T.V n (val φ y.1 s)
-
 variable (Φ : Finset (E →+* ℂ))
 
-def IsWedgeOrd (n : ℕ) (φ : CoefHom c io K₀) (y : IntFr Xo c T io) (s : ι → RulK Xo c K₀) (w : EReal) : Prop :=
-  letI := io.toAlgebra
-  ∃ (o : ι ≃ TIx Dw Φ) (d : T.Fr), IsWedgeVal Φ o φ y.1 s d ∧ w = nval T.V n d
-
-def wedgeOrd (n : ℕ) (φ : CoefHom c io K₀) (y : IntFr Xo c T io) (s : ι → RulK Xo c K₀) : EReal :=
-  if h : ∃! w, IsWedgeOrd Φ n φ y s w then h.choose else ⊥
-
-def normOfOrd (p : ℕ) (w : EReal) : ENNReal := EReal.exp (-(w * (Real.log p : ℝ)))
-
 variable {Φ}
-
-theorem wedgeOrd_ne_bot_iff {n : ℕ} {φ : CoefHom c io K₀} {y : IntFr Xo c T io} {s : ι → RulK Xo c K₀} :
-    wedgeOrd Φ n φ y s ≠ ⊥ ↔ ∃! w, IsWedgeOrd Φ n φ y s w := by
-  refine ⟨fun h => by_contra fun h' => h (dif_neg h'), fun h => ?_⟩
-  obtain ⟨o, d, -, e⟩ := h.choose_spec.1
-  rw [wedgeOrd, dif_pos h, e]
-  exact nval_ne_bot _ _
-
-theorem wedgeOrd_eq {n : ℕ} {φ : CoefHom c io K₀} {y : IntFr Xo c T io} {s : ι → RulK Xo c K₀}
-    (h : wedgeOrd Φ n φ y s ≠ ⊥) {w : EReal} (hw : IsWedgeOrd Φ n φ y s w) : wedgeOrd Φ n φ y s = w := by
-  have h' := wedgeOrd_ne_bot_iff.1 h
-  rw [wedgeOrd, dif_pos h']
-  exact h'.unique h'.choose_spec.1 hw
-
-theorem nval_sign_mul (n : ℕ) (u : ℤˣ) (x : T.Fr) : nval T.V n (((u : ℤ) : T.Fr) * x) = nval T.V n x := by
-  rcases Int.units_eq_one_or u with rfl | rfl
-  · simp
-  · refine nval_mul_unit n (by simp) ?_ x
-    simp [vV]
-
-theorem wedgeOrd_eq_of_unique (n : ℕ) {φ : CoefHom c io K₀} {y : IntFr Xo c T io} {s : ι → RulK Xo c K₀}
-    {o : ι ≃ TIx Dw Φ} (h : letI := io.toAlgebra; ∃! d, IsWedgeVal Φ o φ y.1 s d) {d : T.Fr}
-    (hd : letI := io.toAlgebra; IsWedgeVal Φ o φ y.1 s d) : wedgeOrd Φ n φ y s = nval T.V n d := by
-  letI := io.toAlgebra
-  refine wedgeOrd_eq (wedgeOrd_ne_bot_iff.2 ⟨_, ⟨o, d, hd, rfl⟩, ?_⟩) ⟨o, d, hd, rfl⟩
-  rintro _ ⟨o', d', hd', rfl⟩
-  rw [← h.unique (hd'.reorder o) hd, nval_sign_mul]
 
 end Norm
 

@@ -190,20 +190,6 @@ theorem exists_isConvLine : ∃ T₀, A.IsConvLine T₀ := by
     mul_le_mul_of_nonneg_left (h μ) (by positivity)
   linarith
 
-theorem tate_isConvLine_iff (τ₀ : ℂ) (T₀ : ℝ) : (tate τ₀).IsConvLine T₀ ↔ -τ₀.im / 2 ≤ T₀ := by
-  have key : ∀ μ : ℤ, (((tate τ₀).H ((tate τ₀).ct μ) ((tate τ₀).ct μ)).re / 2 - ((tate τ₀).T μ μ).im ≤
-      T₀ * (tate τ₀).be μ μ) ↔ -(τ₀.im * μ * μ) ≤ T₀ * (2 * μ * μ) := fun μ => by
-    change (hermForm (0 : Matrix (Fin 0) (Fin 0) ℂ) 0 0).re / 2 - (TInt τ₀ μ μ).im ≤ T₀ * (beInt μ μ : ℤ) ↔ _
-    simp [hermForm]
-  constructor
-  · intro h
-    have := (key 1).1 (h (1 : ℤ))
-    simp only [Int.cast_one, mul_one] at this
-    linarith
-  · intro h μ
-    refine (key μ).2 ?_
-    nlinarith [mul_self_nonneg ((show ℤ from μ) : ℝ)]
-
 section Conv
 
 variable {A} {T₀ : ℝ} (hT : A.IsConvLine T₀) {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ}

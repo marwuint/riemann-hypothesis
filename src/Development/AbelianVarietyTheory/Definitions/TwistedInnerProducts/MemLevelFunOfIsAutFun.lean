@@ -43,9 +43,6 @@ def locChar (ψ : AddChar (AF F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1) {v : HeightO
     change ψ _ = ψ _ * ψ _
     rw [mul_add, map_add, AddChar.map_add_eq_mul])
 
-theorem coe_locChar (ψ : AddChar (AF F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1) {v : HeightOneSpectrum (𝓞 F)} (a x : Fv F v) :
-    (locChar ψ hψ a x : ℂ) = psiV F ψ v (a * x) := rfl
-
 end Inst
 
 section Bases
@@ -93,33 +90,17 @@ def locPt : GL ι (Fv D.host.F v) ≃* GlobalTheory.AdelicU.GLoc D.sp.cm.sig V.g
 def locGL : GL ι (Fv D.host.F v) →* GA D V :=
   (GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v).comp (locPt V τ β).toMonoidHom
 
-theorem locGL_mem_GfC (g : GL ι (Fv D.host.F v)) : locGL V τ β g ∈ GfC V :=
-  GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ _ _)
-
-theorem map_piW (g : GA D V) :
-    (mt V g).map (piW τ) = (splitHom D.sp.cm.sig V.gram τ (GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g)).val := rfl
-
 end Loc
 
 section Rep
 
 variable (V : HSp D)
 
-def IsFinStable (U : Submodule ℂ (GA D V → ℂ)) : Prop := ∀ x ∈ GfC V, ∀ f ∈ U, rTrans x f ∈ U
-
 variable (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) {ι : Type} [Fintype ι] [DecidableEq ι]
   (β : LatFrame (Fv D.host.F v) ι (Fin V.rank))
 
 def locReg : Representation ℂ (GL ι (Fv D.host.F v)) (GA D V → ℂ) :=
   (GlobalTheory.PRep.rightReg ℂ (GA D V) ℂ).comp (locGL V τ β)
-
-theorem locReg_apply (g : GL ι (Fv D.host.F v)) (f : GA D V → ℂ) : locReg V τ β g f = rTrans (locGL V τ β g) f := rfl
-
-def locRepOn (U : Submodule ℂ (GA D V → ℂ)) (hU : IsFinStable V U) : Representation ℂ (GL ι (Fv D.host.F v)) U :=
-  GlobalTheory.PRep.sub (locReg V τ β) U fun g f hf => hU _ (locGL_mem_GfC V τ β g) f hf
-
-theorem coe_locRepOn (U : Submodule ℂ (GA D V → ℂ)) (hU : IsFinStable V U) (g : GL ι (Fv D.host.F v)) (f : U) :
-    (locRepOn V τ β U hU g f : GA D V → ℂ) = locReg V τ β g f := rfl
 
 end Rep
 
@@ -130,20 +111,6 @@ open GlobalTheory.RootEx
 variable {k : Type} [Field k] [MeasurableSpace k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
   {A A' : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup A'] [Module ℂ A']
   (ν : Measure k) (σ : Representation ℂ (GL (n ⊕ Fin c) k) A)
-
-def downIter (q d : ℕ) : (A → ℂ) → A → ℂ :=
-  Nat.rec (motive := fun _ => (A → ℂ) → A → ℂ) (fun l => l) (fun d F l => F (exDown ν (q + d) σ l)) d
-
-theorem downIter_zero (q : ℕ) (l : A → ℂ) : downIter ν σ q 0 l = l := rfl
-
-theorem downIter_succ (q d : ℕ) (l : A → ℂ) : downIter ν σ q (d + 1) l = downIter ν σ q d (exDown ν (q + d) σ l) := rfl
-
-def upIter (p d : ℕ) (l : A → ℂ) : A → ℂ :=
-  Nat.rec (motive := fun _ => A → ℂ) l (fun d l' => exUp ν (p + d) σ l') d
-
-theorem upIter_zero (p : ℕ) (l : A → ℂ) : upIter ν σ p 0 l = l := rfl
-
-theorem upIter_succ (p d : ℕ) (l : A → ℂ) : upIter ν σ p (d + 1) l = exUp ν (p + d) σ (upIter ν σ p d l) := rfl
 
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [BorelSpace k] [ν.IsAddHaarMeasure]
   {ψ : AddChar k Circle} {σ}

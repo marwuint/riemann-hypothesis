@@ -45,9 +45,6 @@ theorem OffEq.unique {R : RealDat D A Ks} {F : Face D A} {b : Bool} {i : Fin D.R
   have h2 := mul_right_cancel₀ (by exact_mod_cast hx0) h1
   exact_mod_cast h2
 
-theorem zs_withScal (R : RealDat D A Ks) (F : Face D A) (lam) (kap : ℝ) :
-    ((withScal R lam kap).toCx F).zs = (R.toCx F).zs := rfl
-
 theorem partAt_withScal (R : RealDat D A Ks) (F : Face D A) (lam) (kap : ℝ) (b i p v) :
     (withScal R lam kap).PartAt F b i p v ↔ R.PartAt F b i p v := Iff.rfl
 

@@ -57,8 +57,6 @@ variable {D : D7} {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : �
 
 def massTerm (t : Term D u u' F0 what₂) : ℝ := massRow D F0 what₂ t.lam
 
-theorem term_mass_eq_weight_ratio (t : Term D u u' F0 what₂) : massTerm t = wRow D F0 t.lam / Cnt.massRows D F0 what₂ := rfl
-
 end TermMass
 
 section Phase

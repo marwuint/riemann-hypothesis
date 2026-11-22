@@ -133,8 +133,6 @@ def Conclusion2 (C₁ C₂ : ℝ) : Prop := GaussianCaseHeightBound D V C₁ ∧
 
 def Conclusion₂ (C₁ C₂ : ℝ) : Prop := Conclusion1 D V ∧ Conclusion2 D V C₁ C₂
 
-def ConclusionE₂ (C₁ C₂ : ℝ) (bD : ℕ) : Prop := Conclusion1 D V ∧ GaussianCaseHeightBound D V C₁ ∧ InertBoundExponent D V C₂ bD
-
 section Lit
 
 open NumberField IsDedekindDomain
@@ -271,10 +269,6 @@ def BaseChange2 : Prop :=
 def IsRiAt {F : Type} [Field F] [NumberField F] [Algebra F QbarQ] {n l : ℕ} [Fact l.Prime] (ι : QbarL l ≃+* ℂ)
     (π : (V.spec F n).Rep) (ρ : Formalism.ConjugateSelfDual.G F QbarQ →* GL (Fin n) (QbarL l)) : Prop :=
   TV.GeoMatch ρ ι.toRingHom ((V.spec F n).hecke π)
-
-theorem isRi_iff {F : Type} [Field F] [NumberField F] [Algebra F QbarQ] {n l : ℕ} [Fact l.Prime]
-    (π : (V.spec F n).Rep) (ρ : Formalism.ConjugateSelfDual.G F QbarQ →* GL (Fin n) (QbarL l)) :
-    V.IsRi π ρ ↔ IsRiAt V (V.iotaC l) π ρ := Iff.rfl
 
 def IndPl (l : ℕ) [Fact l.Prime] (H : Subgroup GQ) (τ : IntermediateField.fixedField H →+* QbarL l) : Prop :=
   ∀ x : IntermediateField.fixedField H, ((x : QbarQ) ∈ V.plc l ↔ ‖τ x‖ ≤ 1)
@@ -698,14 +692,6 @@ def LitE (X : SymSp) (β cP cD : ℝ) (aD : ℕ) : Prop :=
 
 def Lit (X : SymSp) (β cP cD : ℝ) : Prop := LitE D V X β cP cD 4
 
-def LiftingLemmasStatement (X : SymSp) (β cP cD C₁ C₂ : ℝ) : Prop := Lit D V X β cP cD → admitted D V → Conclusion₂ D V C₁ C₂
-
-def ExponentFormsStatement (X : SymSp) (β cP cD : ℝ) (aD : ℕ) (C₁ C₂ : ℝ) : Prop :=
-  LitE D V X β cP cD aD → admitted D V → ConclusionE₂ D V C₁ C₂ (max 6 (aD + 1))
-
-theorem stmtLE_four (X : SymSp) (β cP cD C₁ C₂ : ℝ) :
-    ExponentFormsStatement D V X β cP cD 4 C₁ C₂ ↔ LiftingLemmasStatement D V X β cP cD C₁ C₂ := Iff.rfl
-
 end Lit
 
 section Fam
@@ -756,22 +742,6 @@ def GaussianCaseFreeExponents (C₁ : ℝ) (bN be : ℕ) : Prop :=
         ∑ χ'' ∈ Finset.univ.filter (ChiConj D χ), V.Vlen l e χ'' ≤
           2 * (padicValInt l (Zsqrtd.norm NN) : ℕ∞)
 
-def InertCaseFreeExponents (C₂ : ℝ) (bD bN be : ℕ) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K],
-    Formalism.MainNotions.V.UnitaryThreeData V l e χ K → Formalism.MainNotions.V.UnitaryCaseInert V l χ K →
-    ∃ v : ℕ, V.Vlen l e χ = v ∧
-      (v : ℝ) * Real.log l ≤
-        C₂ * |(NumberField.discr K : ℝ)| ^ bD * (degQ D χ : ℝ) * (condV D : ℝ) ^ bN * (e : ℝ) ^ be *
-          Real.log (Real.log ((condV D : ℝ) * l))
-
-def HeightBoundsFreeExponents (C₁ C₂ : ℝ) (bD bN be : ℕ) : Prop := Conclusion1 D V ∧ GaussianCaseFreeExponents D V C₁ bN be ∧ InertCaseFreeExponents D V C₂ bD bN be
-
-theorem gaussian_bound_text_iff (C₁ : ℝ) : GaussianCaseFreeExponents D V C₁ 18 7 ↔ GaussianCaseHeightBound D V C₁ := Iff.rfl
-theorem inert_bound_text_iff (C₂ : ℝ) (bD : ℕ) : InertCaseFreeExponents D V C₂ bD 18 7 ↔ InertBoundExponent D V C₂ bD := Iff.rfl
-theorem free_exponents_eighteen_seven_iff (C₁ C₂ : ℝ) (bD : ℕ) : HeightBoundsFreeExponents D V C₁ C₂ bD 18 7 ↔ ConclusionE₂ D V C₁ C₂ bD := Iff.rfl
-
-theorem free_exponents_six_eighteen_seven_iff (C₁ C₂ : ℝ) : HeightBoundsFreeExponents D V C₁ C₂ 6 18 7 ↔ Conclusion₂ D V C₁ C₂ := Iff.rfl
-
 def DeJong : Prop := ForallUnitaryThreeLiftingProblems D V fun l _ _ _ _ _ T => ∀ (W : V1.TR T.P.O) [IsDomain W.C], ((l : ℕ) : W.C) ≠ 0 →
   ∀ F : W.C, F ≠ 0 →
     ∃ y : W.C →+* QbarL l, (∀ x : T.P.O, y (algebraMap T.P.O W.C x) = V.jO l (T.eO x)) ∧ y F ≠ 0
@@ -781,10 +751,6 @@ end X
 section FamX
 
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (VF : ∀ x (i : Fm.Ix x), VData (Fm.D x i))
-
-def FamilyFreeExponentBound (C₁ C₂ : ℝ) (bD bN be : ℕ) : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, HeightBoundsFreeExponents (Fm.D x i) (VF x i) C₁ C₂ bD bN be
-theorem family_bound_text_iff (C₁ C₂ : ℝ) : FamilyFreeExponentBound Fm VF C₁ C₂ 6 18 7 ↔ OrbitValuationBound Fm VF C₁ C₂ := Iff.rfl
 
 end FamX
 

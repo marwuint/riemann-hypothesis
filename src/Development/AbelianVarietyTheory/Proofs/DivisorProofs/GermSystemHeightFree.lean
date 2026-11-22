@@ -44,9 +44,6 @@ def ptModuleWvs (o : Obj b N s) (T : Over S) : Module (𝓞 D.F) (Additive (T �
 
 attribute [local instance] ptModuleWvs
 
-theorem smul_toMul_wvs (o : Obj b N s) (T : Over S) (a : 𝓞 D.F) (g : Additive (T ⟶ o.A)) :
-    (a • g).toMul = g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O a) := rfl
-
 def kerWSubWvs (o o' : Obj b N s) (ψ : o.A ⟶ o'.A) [IsMonHom ψ]
     (hl : ∀ a : 𝓞 D.F, o.act.act (algebraMap (𝓞 D.F) D.O a) ≫ ψ = ψ ≫ o'.act.act (algebraMap (𝓞 D.F) D.O a))
     (w : Ideal (𝓞 D.F)) (T : Over S) : Submodule (𝓞 D.F) (Additive (T ⟶ o.A)) where

@@ -18,10 +18,6 @@ def mfact {κ : Type} [Fintype κ] (e : κ → ℕ) : ℕ := ∏ x, (e x)!
 
 def cj {κ : Type} (u : κ → ℂ) : κ → ℂ := fun x => conj (u x)
 
-def SupShift : Prop :=
-  ∀ y e s : ℝ, 0 ≤ y → 0 < e → e < 1 → 0 ≤ s →
-    s ^ y * Real.exp (-((1 - e) * s ^ 2) / 2) ≤ (1 - e) ^ (-(y / 2)) * Real.exp (ph y / 2)
-
 def GaussCoord : Prop :=
   ∀ (κ : Type) [Fintype κ] (b : κ → ℝ), (∀ x, 0 < b x) →
     Integrable (fun u : κ → ℂ => Real.exp (-∑ x, b x * ‖u x‖ ^ 2)) ∧

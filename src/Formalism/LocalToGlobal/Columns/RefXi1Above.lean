@@ -16,8 +16,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : �
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
   (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (m2 : ℕ) (al : ∀ j, j ≤ m2 + 1 → L.β j) (Am : Amb X) (u : Pr.Word)
 
-def refXi1 : XiFam Pr R u := fun i p p' x => XiRef Ch sel mu cst L m2 al i (liftQ hQ p) (liftQ hQ p') x
-
 end Ref1
 
 end Formalism.L2.Col

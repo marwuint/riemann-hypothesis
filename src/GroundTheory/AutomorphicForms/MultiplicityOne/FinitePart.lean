@@ -71,12 +71,6 @@ instance : Module ℂ (FinitePartSpace σ V₀ hV₀) :=
 def finitePart : Representation ℂ (AdelicGLn.FiniteAdelicGL K n) (FinitePartSpace σ V₀ hV₀) :=
   smoothPart (finRep σ V₀ hV₀)
 
-def fpOp (S : FinitePartSpace σ V₀ hV₀) : V₀ →L[ℂ] H :=
-  HomSpace.op σ V₀ hV₀ (S : smoothVectors (finRep σ V₀ hV₀)).1
-
-theorem fpOp_finitePart (w : AdelicGLn.FiniteAdelicGL K n) (S : FinitePartSpace σ V₀ hV₀) :
-    fpOp σ V₀ hV₀ (finitePart σ V₀ hV₀ w S) = σ (finProj K n w) ∘L fpOp σ V₀ hV₀ S := rfl
-
 end MultiplicityOne
 
 end

@@ -87,9 +87,6 @@ def baseChange (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L] (f : T.b
 @[simp] theorem baseChange_mult (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L]
     (f : T.base →+* L) : (T.baseChange L f).mult = T.mult := rfl
 
-theorem baseChange_scheme (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L] (f : T.base →+* L) :
-    (T.baseChange L f).scheme = pullback T.structMap (specMapOfFieldHom T.base L f) := rfl
-
 theorem baseChange_structureMorphism (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L] (f : T.base →+* L) :
     (T.baseChange L f).structMap = pullback.snd T.structMap (specMapOfFieldHom T.base L f) := rfl
 
@@ -131,10 +128,6 @@ theorem withSchemeIdealBoundary_structureMorphism (T : MarkedIdealWithBoundary.{
 theorem withSchemeIdealBoundary_ideal (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (J : Y.IdealSheafData)
     (E : List Y.IdealSheafData) : (T.withSchemeIdealBoundary Y q J E).ideal = J := rfl
-
-theorem withSchemeIdealBoundary_boundary (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
-    (q : Y ⟶ Spec (CommRingCat.of T.base)) (J : Y.IdealSheafData)
-    (E : List Y.IdealSheafData) : (T.withSchemeIdealBoundary Y q J E).boundary = E := rfl
 
 def withBoundary (T : MarkedIdealWithBoundary.{u}) (E : List T.scheme.IdealSheafData) :
     MarkedIdealWithBoundary.{u} where

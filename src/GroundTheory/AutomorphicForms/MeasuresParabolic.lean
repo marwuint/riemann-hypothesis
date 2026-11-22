@@ -21,10 +21,6 @@ def lieParabolic : Submodule F (Matrix (Fin n) (Fin n) F) where
   smul_mem' c A hA i j hij := by
     simp [hA hij]
 
-theorem mem_lieParabolic {A : Matrix (Fin n) (Fin n) F} :
-    A ∈ lieParabolic F n β ↔ A.BlockTriangular β :=
-  Iff.rfl
-
 abbrev ParabolicIndex : Type := {ij : Fin n × Fin n // ¬ β ij.2 < β ij.1}
 
 noncomputable def parabolicCoord : lieParabolic F n β ≃ₗ[F] (ParabolicIndex n β → F) where

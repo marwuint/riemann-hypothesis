@@ -39,10 +39,6 @@ def capEquiv {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingC
     (i : Fin (n + 1) → U.ι) : HU (Fk q U a) (capT (Vk q U a) i) a ≃ₗ[K] CH.H (FV q (capO U.U i) a) a :=
   LinearEquiv.ofBijective ((capM q U a n i).pull a) (capM_bij q U a n i a)
 
-theorem capEquiv_apply {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (U : Cov q) (a n : ℕ)
-    (i : Fin (n + 1) → U.ι) (x : HU (Fk q U a) (capT (Vk q U a) i) a) :
-    capEquiv q U a n i x = (capM q U a n i).pull a x := rfl
-
 theorem term : ∀ (K : Type) [Field K] [CharZero K],
     ∃ t : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] (U : Cov q) (a n : ℕ) (i : Fin (n + 1) → U.ι),
       HU (Fk q U a) (capT (Vk q U a) i) a ≃ₗ[K] OmU q (capO U.U i) a,

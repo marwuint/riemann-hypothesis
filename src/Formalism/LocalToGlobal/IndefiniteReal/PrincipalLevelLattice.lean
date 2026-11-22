@@ -15,12 +15,6 @@ variable {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A → DefF
 
 def principalHermitianLattice : Formalism.BasicNotions.HLat K := toHLat (X.XE cr b) (X.data cr b).RR
 
-theorem hermitian_lattice_space_eq : (principalHermitianLattice X cr b).V = (Fin ((lv (fc X.zs) b).dQ Bs.μ0) → K) := rfl
-
-theorem hermitian_lattice_frame_eq : (principalHermitianLattice X cr b).X = (X.XE cr b) := rfl
-
-theorem hermitian_lattice_eq_data : (principalHermitianLattice X cr b).L = (X.data cr b).RR := rfl
-
 def jEEx (σ : K →+* ℂ) : (Fin ((lv (fc X.zs) b).dQ Bs.μ0) → K) →ₛₗ[σ] X.EE :=
   (X.iC cr b Bs.μ0).comp (cptL σ _)
 

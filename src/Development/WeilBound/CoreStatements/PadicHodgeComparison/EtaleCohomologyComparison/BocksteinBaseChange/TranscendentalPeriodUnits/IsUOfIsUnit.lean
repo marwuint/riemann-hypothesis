@@ -12,8 +12,6 @@ namespace CrystallineSemistableComparison
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
-theorem σ_per (g : K.fixingSubgroup) (x : BdR l) : (per l K).σ g x = σD g.1 x := rfl
-
 theorem isU_of_isUnit {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) {a : A} (ha : IsUnit a) :
     f a ∈ f.range ∧ ∃ y ∈ f.range, f a * y = 1 :=
   ⟨⟨a, rfl⟩, f ha.unit⁻¹.1, ⟨_, rfl⟩, by rw [← map_mul, ha.mul_val_inv, map_one]⟩

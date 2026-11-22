@@ -42,10 +42,6 @@ structure Pin (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) where
     (D.naut.IsdRW i r w ↔ wd.IsdRW (D.nd.l i) (D.naut.iotaQC i) r w) ∧
     ∀ τ, D.naut.jumpsW i r τ = wd.jumpsW (D.nd.l i) (D.naut.iotaQC i) r τ
 
-def rcAt (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (w : PlE D.host) (n : ℕ) (π : Irr (w.adicCompletion D.host.E) n) :
-    GlobalTheory.WeilDeligne.WD (E := D.host.E) (A := D.nd.plOm.1 w) (w := w) (D.nd.plOm.2 w) :=
-  GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 w) (GlobalTheory.LocLanglands.cls π.toIrrRep)
-
 def IsComp {E : Type} [Field E] [NumberField E] (χ : HChar E) (w : HeightOneSpectrum (𝓞 E))
     (ξ : (w.adicCompletion E)ˣ →* ℂˣ) : Prop :=
   IsSmoothChar ξ ∧ ∀ x : Eˣ, ξ (Units.map (algebraMap E (w.adicCompletion E)).toMonoidHom x) = χ.locK w x

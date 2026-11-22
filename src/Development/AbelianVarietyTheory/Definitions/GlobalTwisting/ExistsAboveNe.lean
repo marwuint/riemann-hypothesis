@@ -143,14 +143,6 @@ def splitAt (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word)
       · rfl)
     (fun P hP => (T_unif hX hPr u ⟨P, hP⟩).1) (fun P hP => (T_unif hX hPr u ⟨P, hP⟩).2)
 
-theorem splitAt_off (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word)
-    (hQ : ∀ w ∈ QE sel (mu : Chr X.F X.E X.K), (Pr.T u : 𝓞 X.E) ∉ w.asIdeal) (j : ℕ) (b) (p q : PtAt R sel mu cst u j) :
-    ((splitAt sel mu cst L Tp hX hPr u hQ j).off b).r p q ↔ SameOffPt sel mu cst u p q := Iff.rfl
-
 end Chain
-
-namespace KerInh
-
-end KerInh
 
 end GlobalTheory.LvT.Built.Model

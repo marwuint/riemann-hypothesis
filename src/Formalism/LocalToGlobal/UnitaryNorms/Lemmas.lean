@@ -56,16 +56,6 @@ theorem cycQplus_eq {N : ℕ} [NeZero N] {w : Qb} (hw : IsPrimitiveRoot w N) :
   · rw [IntermediateField.adjoin_simple_le_iff]
     exact IntermediateField.subset_adjoin ℚ ((fun z : Qb => z + z⁻¹) '' mus N) ⟨w, hw.pow_eq_one, rfl⟩
 
-theorem cycQ_eq {N : ℕ} [NeZero N] {w : Qb} (hw : IsPrimitiveRoot w N) : cycQ N = ℚ⟮w⟯ := by
-  apply le_antisymm
-  · show adjoin ℚ (mus N) ≤ _
-    rw [IntermediateField.adjoin_le_iff]
-    intro z hz
-    obtain ⟨i, -, rfl⟩ := hw.eq_pow_of_pow_eq_one hz
-    exact pow_mem (IntermediateField.mem_adjoin_simple_self ℚ w) i
-  · rw [IntermediateField.adjoin_simple_le_iff]
-    exact IntermediateField.subset_adjoin ℚ (mus N) hw.pow_eq_one
-
 theorem adjoin_pair_eq_sup (x y : Qb) : adjoin ℚ {x, y} = ℚ⟮x⟯ ⊔ ℚ⟮y⟯ := by
   rw [Set.insert_eq]
   exact IntermediateField.gc.l_sup

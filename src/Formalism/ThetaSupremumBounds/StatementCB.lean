@@ -19,16 +19,6 @@ def blockMap {AA AA' : Type} [Fintype AA] {H : AA → Type} {H' : AA' → Type}
     (E : ∀ a b, H a →+ H' b) (G : ∀ a, H a) : ∀ b, H' b :=
   fun b => ∑ a, E a b (G a)
 
-def PathSum : Prop :=
-  ∀ (m : ℕ) (AA : Fin (m + 1) → Type) [∀ i, Fintype (AA i)] [∀ i, DecidableEq (AA i)]
-    (H : ∀ i, AA i → Type) [∀ i a, AddCommMonoid (H i a)]
-    (E : ∀ (j : Fin m) (a : AA j.castSucc) (b : AA j.succ), H j.castSucc a →+ H j.succ b)
-    (G : ∀ a, H 0 a),
-    chainFun (C := fun i => ∀ a, H i a) (fun j => blockMap (E j)) (Fin.last m) G =
-      ∑ al : (∀ i, AA i), Pi.single (al (Fin.last m))
-        (chainFun (C := fun i => H i (al i)) (fun j => E j (al j.castSucc) (al j.succ)) (Fin.last m)
-          (G (al 0)))
-
 def SharpNorm : Prop :=
   ∀ (AA AA' : Type) [Fintype AA] [Fintype AA'] (Cl : AA → Type) (Cl' : AA' → Type)
     [∀ a, Fintype (Cl a)] [∀ b, Fintype (Cl' b)] (A B : Type)

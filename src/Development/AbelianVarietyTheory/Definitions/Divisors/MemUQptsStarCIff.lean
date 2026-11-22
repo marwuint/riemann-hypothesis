@@ -96,17 +96,11 @@ theorem Datum.adjE_adjE (g : Module.End ℚ D.VQ) : D.adjE (D.adjE g) = g :=
 theorem Datum.adjE_mul (g h : Module.End ℚ D.VQ) : D.adjE (g * h) = D.adjE h * D.adjE g :=
   D.end_ext fun x y => by simp only [D.EFQ_adjE_left, Module.End.mul_apply]
 
-theorem Datum.adjE_add (g h : Module.End ℚ D.VQ) : D.adjE (g + h) = D.adjE g + D.adjE h :=
-  D.end_ext fun x y => by simp only [D.EFQ_adjE_left, LinearMap.add_apply, map_add]
-
 theorem Datum.adjE_smul (q : ℚ) (g : Module.End ℚ D.VQ) : D.adjE (q • g) = q • D.adjE g :=
   D.end_ext fun x y => by simp only [D.EFQ_adjE_left, LinearMap.smul_apply, map_smul]
 
 theorem Datum.adjE_one : D.adjE 1 = 1 :=
   D.end_ext fun x y => by simp only [D.EFQ_adjE_left, Module.End.one_apply]
-
-theorem Datum.adjE_zero : D.adjE 0 = 0 :=
-  D.end_ext fun x y => by simp [D.EFQ_adjE_left]
 
 theorem Datum.adjE_actQ (b : D.O) : D.adjE (D.actQ b) = D.actQ (D.star b).unop :=
   D.end_ext fun x y => by rw [D.EFQ_adjE_left, D.EFQ_actQ, D.star_star]
@@ -122,15 +116,6 @@ theorem Datum.adjE_mem {g : Module.End ℚ D.VQ} (hg : g ∈ D.endO) : D.adjE g 
   have h := congrArg D.adjE (hg (D.star b).unop)
   rw [D.adjE_mul, D.adjE_mul, D.adjE_actQ, D.star_star] at h
   exact h.symm
-
-def Datum.starC : D.endO →+* D.endOᵐᵒᵖ where
-  toFun g := MulOpposite.op ⟨D.adjE g, D.adjE_mem g.2⟩
-  map_one' := MulOpposite.unop_injective (Subtype.ext D.adjE_one)
-  map_mul' g h := MulOpposite.unop_injective (Subtype.ext (D.adjE_mul g h))
-  map_zero' := MulOpposite.unop_injective (Subtype.ext D.adjE_zero)
-  map_add' g h := MulOpposite.unop_injective (Subtype.ext (D.adjE_add g h))
-
-theorem Datum.coe_starC (g : D.endO) : (((D.starC g).unop : D.endO) : Module.End ℚ D.VQ) = D.adjE g := rfl
 
 def Datum.actInt : 𝓞 D.F →+* D.endO :=
   (D.actQ.comp (algebraMap (𝓞 D.F) D.O)).codRestrict D.endO fun c => D.mem_endO.2 fun b => by
@@ -169,8 +154,6 @@ theorem Datum.actF_comm (x : D.F) (g : D.endO) : D.actF x * g = g * D.actF x := 
   exact LinearMap.congr_fun h x
 
 instance Datum.algebraF : Algebra D.F D.endO := D.actF.toRingHom.toAlgebra' D.actF_comm
-
-theorem Datum.algebraMap_endO (x : D.F) : algebraMap D.F D.endO x = D.actF x := rfl
 
 instance Datum.towerF : IsScalarTower ℚ D.F D.endO :=
   IsScalarTower.of_algebraMap_eq fun q => (D.actF.commutes q).symm

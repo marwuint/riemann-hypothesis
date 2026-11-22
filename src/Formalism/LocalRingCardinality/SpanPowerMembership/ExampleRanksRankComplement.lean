@@ -26,7 +26,6 @@ noncomputable def R0 : Formalism.BasicNotions.Ranks where
 @[simp] theorem exampleRanks_f : R0.f = 8 := rfl
 @[simp] theorem exampleRanks_n : R0.n = 4 := rfl
 @[simp] theorem exampleRanks_order : R0.ord = 4 := rfl
-theorem exampleRanks_frame : R0.toFrame = Formalism.HC.cyclicFrame 2 := rfl
 theorem exampleRanks_baseRank : R0.n0 = 4 := by
   show (Formalism.HC.frameCyc 2 1).n0 = 4
   rw [Formalism.HC.frameCyclic_order]
@@ -41,7 +40,6 @@ theorem exampleRanks_h_injective : Function.Injective R0.h :=
 @[simp] theorem exampleRanks_r : R0.r = 9 := rfl
 @[simp] theorem exampleRanks_wittIndex : R0.rS = 0 := rfl
 @[simp] theorem exampleRanks_vertexCount : R0.nV = 24 := rfl
-theorem exampleRanks_N_formula (j : ℕ) : R0.N j = 8 + j * 16 := rfl
 @[simp] theorem exampleRanks_rankComplement : R0.rankX' = 39 := rfl
 
 end Formalism.BasicNotions.Examples₂

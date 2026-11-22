@@ -229,11 +229,6 @@ def KerChain.ofCol {P : LevFam X.E X.K R.r Pr.vGs} {u : Pr.Word} {m2 : ℕ} {b :
   Y := ybCpl W sel mu cst L u m2 b hY
   cp := A.cp
 
-theorem KerChain.ofCol_col {P : LevFam X.E X.K R.r Pr.vGs} {u : Pr.Word} {m2 : ℕ} {b : L.β (m2 + 1)}
-    {hY : YbHyp (R := R) sel mu cst L u m2 b} (A : ChKer W Ch sel mu cst L P u m2 b hY)
-    (hF : ∀ j, (chF W sel mu L u j).Ok) (hE : (evGSD W Ch sel mu P u).Ok) :
-    (KerChain.ofCol W Ch sel mu cst L A hF hE).col = A.colF hF := rfl
-
 end OfCol
 
 section Comparison₂
@@ -383,13 +378,6 @@ variable {hX : X.Ok} {Bs : DefBase X.K} {Df : DefSide Bs} {P : LevFam X.E X.K Rk
   {A : ∀ t x, ChKer W Ch sel (mu t) (cst t) (L t) P (wd x) m2 (b t x) (hY t x)}
   {hF : ∀ t x j, (chF W sel (mu t) (L t) (wd x) j).Ok} {ev : ∀ t, (Fin (Df.nV t) → X.K) →ₗ[X.K] V0X W Ch sel (mu t) Xg P}
 
-theorem colFace_pt (x : Mem) (t : Bs.Tup) :
-    (colFace hX Df Xg mu cst L hL hP Mem wd b hY A hF ev).Pt x t = colPer hX (hP t) Xg (A t x) (hF t x) (hL t) (ev t) := rfl
-
-theorem colFace_a (x : Mem) : (colFace hX Df Xg mu cst L hL hP Mem wd b hY A hF ev).a x = ramDim W Ch hX (wd x) := rfl
-
-theorem colFace_Xc (x : Mem) : (colFace hX Df Xg mu cst L hL hP Mem wd b hY A hF ev).Xc x = (MramH W Ch hX (wd x)).X := rfl
-
 variable (hE : ∀ x, (evGSD W Ch sel (mu Bs.μ0) P (wd x)).Ok) {x : Mem}
   {ch : ColChain (colFace hX Df Xg mu cst L hL hP Mem wd b hY A hF ev) x}
 
@@ -400,15 +388,6 @@ def FirstCols (T : ChainTie ch (memQ (A := A) (hF := hF) hE (x := x))) : Prop :=
   T.First ((colsIn W Ch hX sel (mu Bs.μ0) (cst Bs.μ0) (L Bs.μ0) (hL Bs.μ0) (wd x)).comp
     (LinearMap.funLeft X.K X.K (Fin.cast ch.c0.symm)))
 
-def LastPer (T : ChainTie ch (memQ (A := A) (hF := hF) hE (x := x))) : Prop :=
-  T.Last (colPerL (hP Bs.μ0) Xg (wd x) (ev Bs.μ0))
-
-theorem LastPer.reading_tie {T : ChainTie ch (memQ (A := A) (hF := hF) hE (x := x))} (h0 : FirstCols hE T)
-    (hL' : LastPer hE T) (φ : Fin (ramDim W Ch hX (wd x)) → X.K) (F : Fin (Df.nV Bs.μ0) → X.K) :
-    (colFace hX Df Xg mu cst L hL hP Mem wd b hY A hF ev).Pt x Bs.μ0 φ F =
-      colPerL (hP Bs.μ0) Xg (wd x) (ev Bs.μ0) (colC (A Bs.μ0 x) (hF Bs.μ0 x) (hL Bs.μ0) (colOfCoord W Ch hX (wd x) φ)) F := by
-  rfl
-
 end Face
 
 end ColFaceAll
@@ -417,18 +396,6 @@ section Generic
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
   {Bs : DefBase K} {Df0 Df1 : DefSide Bs} {Dc : DefCols Df1} {Sp : SPer Dc} {N : IndefNum Bs}
-
-def DivClauses {Pl : Type} [Fintype Pl] [DecidableEq Pl] (P : IndefCore Df0 Df1 Dc Sp N) (R : RecNums Bs.J Pl)
-    (u : Dc.Mem) (Nu : Submodule (𝓞 K) (Fin (Dc.a u) → K)) (sg : HeightOneSpectrum (𝓞 K) → ℝ) : Prop :=
-  (∀ φ ∈ shiftLat Nu sg, P.cols.col.B u φ ∈ Formalism.HN.dualLat P.cols.RR) ∧
-  (∃ cu : InfinitePlace K → ℝ, (∀ v, 0 < cu v ∧
-      Formalism.HN.opNormAt (Pi.basisFun K (Fin (Dc.a u))) (Dc.Xc u) (Pi.basisFun K (Fin P.cols.D)).dualBasis
-        (Formalism.HN.dualFrame P.cols.XE) v (P.cols.col.B u) ^ 2 ≤ cu v) ∧
-    (1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, Real.log (cu v) = R.hu - meanLog P.cols.κ) ∧
-  P.cols.muCC - meanLog P.cols.κ + R.hu - 2 * FoOf P ≤ R.rhs ∧
-  Formalism.HN.muDef (Pi.basisFun K (Fin (Dc.a u))) (Dc.Xc u) (shiftLat Nu sg) =
-    Formalism.HN.muDef (Pi.basisFun K (Fin (Dc.a u))) (Dc.Xc u) Nu +
-      2 * ∑ᶠ w : HeightOneSpectrum (𝓞 K), lw w * (shiftZ sg w : ℝ)
 
 theorem nK_of_cb {m : ℕ} {c : Fin (m + 1) → ℕ} {Xc : ∀ i, InfinitePlace K → Matrix (Fin (c i)) (Fin (c i)) ℂ}
     {Kj : ∀ j : Fin m, Matrix (Fin (c j.succ)) (Fin (c j.castSucc)) K} (D : CBData Xc Kj) (B : Fin m → InfinitePlace K → ℝ)
@@ -555,15 +522,6 @@ abbrev kerRec {Bs : DefBase X.K} {P : LevFam X.E X.K Rk.r Pr.vGs} {m2 : ℕ} (mu
     ∀ t x, ChKer W Ch sel (mu t) (cst t) (L t) P (wd x) m2 (b t x) (hY t x) :=
   fun t x => Formalism.L2.Ker.chKerC W Ch sel (mu t) (cst t) (L t) Am (wd x) m2 (b t x) (hY t x) P (hK t x)
 
-theorem kerRec_colC {Bs : DefBase X.K} {P : LevFam X.E X.K Rk.r Pr.vGs} {m2 : ℕ} {Gc : ChGlob X Rk.m} (mu : Bs.Tup → Tup X.F X.E X.K Sg)
-    (cst : ∀ t, LocCst X (rowSG Pr sel (mu t))) (L : ∀ t, ChIdx X Pr Rk (QE sel (mu t : Chr X.F X.E X.K)))
-    (hL : ∀ t, (L t).Ok Ch sel (mu t) (cst t) Gc m2) {Mem : Type}
-    (wd : Mem → Pr.Word) (b : ∀ t, Mem → (L t).β (m2 + 1)) (hY : ∀ t x, YbHyp (R := Rk) sel (mu t) (cst t) (L t) (wd x) m2 (b t x))
-    (Am : Formalism.L2.Ker.Amb X) (hK : ∀ t x, Formalism.L2.Ker.KerEquivC W Ch sel (mu t) (cst t) (L t) Am (wd x) m2 (b t x) (hY t x) P)
-    (hF : ∀ t x j, (chF W sel (mu t) (L t) (wd x) j).Ok) (t : Bs.Tup) (x : Mem) :
-    colC (kerRec mu cst L wd b hY Am hK t x) (hF t x) (hL t) =
-      Formalism.L2.Ker.colMu W Ch sel (mu t) (cst t) (L t) Am (wd x) m2 (b t x) (hY t x) P (hK t x) (hF t x) (hL t) := rfl
-
 end ConcreteCol
 
 end Formalism.L2.DIV
@@ -612,11 +570,5 @@ def cK (a b : K3) : Formalism.L2.Col.CplKer pt pt pt ptY :=
 
 def ptIn : (Fin 1 → K3) →ₗ[K3] pt.EqFun :=
   LinearMap.codRestrict pt.EqFun (LinearMap.pi fun _ => LinearMap.proj 0) (fun _ _ _ => rfl)
-
-theorem ptIn_apply (x : Fin 1 → K3) (d : Unit) : (ptIn x : Unit → K3) d = x 0 := rfl
-
-def ptInF : (Fin 1 → K3) →ₗ[K3] pt.toFam.Forms := LinearMap.pi fun _ => ptIn
-
-theorem ptInF_apply (x : Fin 1 → K3) (b : Unit) : ptInF x b = ptIn x := rfl
 
 end Formalism.L2.DIV.Inst

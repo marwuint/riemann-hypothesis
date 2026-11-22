@@ -160,11 +160,6 @@ theorem exists_isAbove (R K Ω : Type) [CommRing R] [IsDomain R] [ValuationRing 
   obtain ⟨V, -, -, -, h⟩ := exists_valuationSubring_dominating (V := R) (algebraMap K Ω)
   exact ⟨V, Subring.ext h⟩
 
-theorem hasGoodReduction_baseChange_iff {K W L : Type} [Field K] [CommRing W] [Field L] [Algebra K L] [Algebra W L]
-    (A : Over (Sp K)) [GrpObj A] :
-    HasGoodReduction W L ((Over.pullback (spMap (algebraMap K L))).obj A) ↔
-      ∃ (G : Over (Sp W)) (_ : GrpObj G), IsAbelianScheme G ∧ GlobalTheory.SS.IsModel (L := L) A G := Iff.rfl
-
 theorem tateUnramified_of_torsionUnramified {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {A : Over (Sp K)}
     [GrpObj A] [IsCommMonObj A] {V : ValuationSubring Ω} {l : ℕ} [Fact l.Prime]
     (h : ∀ n, TorsionUnramified A V (l ^ n)) : TateUnramified A V l :=

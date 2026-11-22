@@ -41,12 +41,6 @@ theorem nestedHomeomorph_zero_apply (v : resolutionX X 0) (x : Fin 0 → G) :
     nestedHomeomorph X 0 v x = v :=
   rfl
 
-theorem nestedHomeomorph_succ_apply (m : ℕ) (f : resolutionX X (m + 1))
-    (x : Fin (m + 1) → G) :
-    nestedHomeomorph X (m + 1) f x =
-      nestedHomeomorph X m ((f : C(G, resolutionX X m)) (x 0)) (Fin.tail x) :=
-  rfl
-
 theorem nestedHomeomorph_add (m : ℕ) (a b : resolutionX X m) :
     nestedHomeomorph X m (a + b) = nestedHomeomorph X m a + nestedHomeomorph X m b := by
   induction m with
@@ -82,4 +76,3 @@ def nestedLinearEquiv (m : ℕ) : resolutionX X m ≃ₗ[k] C(Fin m → G, X) wh
 theorem nestedLinearEquiv_apply (m : ℕ) (a : resolutionX X m) :
     nestedLinearEquiv X m a = nestedHomeomorph X m a :=
   rfl
-

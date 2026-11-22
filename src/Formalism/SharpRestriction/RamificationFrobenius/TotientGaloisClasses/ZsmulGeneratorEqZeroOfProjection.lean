@@ -68,8 +68,6 @@ def o : ℕ := φ.ord / φ.n0
 
 def dig (s : ℕ) : φ.A := s • φ.a0
 
-theorem dig_def (s : ℕ) : φ.dig s = s • φ.a0 := rfl
-
 def ofNat (u : ℕ) : φ.A := A.ofVal (u % φ.ord) (Nat.mod_lt _ φ.ord_pos)
 
 theorem val_ofNat (u : ℕ) : (φ.ofNat u).val = u % φ.ord := rfl

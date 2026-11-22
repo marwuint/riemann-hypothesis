@@ -27,13 +27,6 @@ theorem coe_appLinear (φ : M ⟶ N) (U : X.Opens) : ⇑(appLinear φ U) = φ.ap
 theorem appLinear_comp (φ : M ⟶ N) (ψ : N ⟶ P) (U : X.Opens) :
     appLinear (φ ≫ ψ) U = appLinear ψ U ∘ₗ appLinear φ U := rfl
 
-theorem appLinear_id (M : X.Modules) (U : X.Opens) : appLinear (𝟙 M) U = LinearMap.id := rfl
-
-theorem appLinear_zero (M N : X.Modules) (U : X.Opens) : appLinear (0 : M ⟶ N) U = 0 := rfl
-
-theorem appLinear_add (φ ψ : M ⟶ N) (U : X.Opens) :
-    appLinear (φ + ψ) U = appLinear φ U + appLinear ψ U := rfl
-
 theorem app_app (φ : M ⟶ N) (ψ : N ⟶ P) (U : X.Opens) (s : Γ(M, U)) :
     ψ.app U (φ.app U s) = (φ ≫ ψ).app U s := rfl
 

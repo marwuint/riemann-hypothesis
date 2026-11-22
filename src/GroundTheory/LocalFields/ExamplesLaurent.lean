@@ -170,8 +170,6 @@ theorem laurentHom_surjective : Function.Surjective (laurentHom K p) := by
 noncomputable def laurentEquiv : 𝓀[K]⸨X⸩ ≃+* K :=
   RingEquiv.ofBijective (laurentHom K p) ⟨(laurentHom K p).injective, laurentHom_surjective K p⟩
 
-theorem laurentEquiv_apply (x : 𝓀[K]⸨X⸩) : laurentEquiv K p x = laurentHom K p x := rfl
-
 end EqualChar
 
 end GroundTheory.LocalField

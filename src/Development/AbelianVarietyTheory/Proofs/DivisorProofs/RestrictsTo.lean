@@ -47,8 +47,6 @@ structure Datum (α : O →+* End A) (β : O →+* End B) (α' : O →+* End A')
 
 variable (α : O →+* End A) (β : O →+* End B) (α' : O →+* End A') (β' : O →+* End B') (r : ℕ)
 
-abbrev DatumOn (f : T ⟶ X) : Type 1 := Datum (pullAct α f) (pullAct β f) (pullAct α' f) (pullAct β' f) r
-
 variable {α β α' β' r}
 
 def biprodAct (α : O →+* End A) (β : O →+* End B) : O →+* End (A ⊞ B) where

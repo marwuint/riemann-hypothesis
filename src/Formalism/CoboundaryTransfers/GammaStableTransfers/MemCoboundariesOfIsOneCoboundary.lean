@@ -32,10 +32,6 @@ theorem xN_smulO (c : O) {z : D} (hz : W.XN z) : W.XN (c • z) := by
 theorem isOneCochain_smul_of_tower (c : O) {y z : D} (h : W.C1 y z) : W.C1 (c • y) (c • z) :=
   ⟨W.qInv_smulO c h.1, W.xN_smulO c h.2⟩
 
-theorem isTwoCochain_smul (a : A) {ω : D} (h : W.C2 ω) : W.C2 (a • ω) := by
-  obtain ⟨y, hy, rfl⟩ := h
-  exact ⟨a • y, W.qInv_smul a hy, smul_comm _ _ _⟩
-
 theorem d1_apply (y z : D) : W.d1 y z = (W.γ y - y) - (W.φ z - z) := rfl
 
 theorem diffOne_smul_of_tower (c : O) (y z : D) : W.d1 (c • y) (c • z) = c • W.d1 y z := by

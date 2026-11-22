@@ -11,8 +11,6 @@ private theorem ht_cast_cast {q : ℕ} {E : Spc} {n i n' i' n'' i'' : ℤ} (h1 :
   subst h1 h2 h3 h4
   rfl
 
-private theorem ht_cast_self {q : ℕ} {E : Spc} {n i : ℤ} (h1 : n = n) (h2 : i = i) (x : Ht q E n i) : Ht.cast h1 h2 x = x := rfl
-
 private theorem ht_cast_zero {q : ℕ} {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') :
     Ht.cast h1 h2 (0 : Ht q E n i) = 0 := by
   subst h1 h2

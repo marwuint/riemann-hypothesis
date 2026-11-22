@@ -22,8 +22,6 @@ def toIdl : (AfE F E)ˣ →* Ideles E :=
   Units.map ((MonoidHom.inr (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)).comp
     (afIso F E : AfE F E →* FiniteAdeleRing (𝓞 E) E))
 
-theorem toIdl_fst (y : (AfE F E)ˣ) : (toIdl F E y : AdeleRing (𝓞 E) E).1 = 1 := rfl
-
 theorem toIdl_snd (y : (AfE F E)ˣ) : (toIdl F E y : AdeleRing (𝓞 E) E).2 = afIso F E y := rfl
 
 theorem toIdl_finAf (a : Ideles E) : toIdl F E (finAf F E a) = finPartI E a :=

@@ -111,9 +111,6 @@ def gamL (X : Data E r) {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ) : X.Λ 
     simp only
     rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
-theorem gamL_coe (X : Data E r) {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ) (v : X.Λ) :
-    ((gamL X hγ v : X.Λ) : Fin r → E) = (γ : Matrix (Fin r) (Fin r) E) *ᵥ v := rfl
-
 end GamL
 
 end Formalism.L2.Pj

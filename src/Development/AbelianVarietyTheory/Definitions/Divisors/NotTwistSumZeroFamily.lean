@@ -19,13 +19,6 @@ namespace GlobalTheory.GSep.TwistModel
 section Siegel
 variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
 
-theorem twistSum_ofUMem_iff {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
-    {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
-    {X : Type} [AddCommGroup X] {m : ℕ} {t : Fin m → V} {δ : Fin m → LinearMap.BilinForm ℤ X} (𝔪 : UMem X₁ z₁ act V ev X t δ)
-    (x₀ : X₁.S.Gam) {C : Type} (lab : C → X₁.S.Gam) (T : (Fin 8 → X) → C → V) (sg : ℤˣ) (c : C) (τ : X₁.S.Gam) (e : ℕ) :
-    GlobalTheory.GSep.TwistSum (ofSetup X₁) z₁ _ x₀ (ofUMem 𝔪) lab T sg c τ e ↔
-      GlobalTheory.Poinc.Sep.TwistSum X₁ z₁ act x₀ 𝔪 lab T sg c τ e := Iff.rfl
-
 end Siegel
 
 variable {I : Type} {X₁ : GSet} {z₁ : X₁.M.Z} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}

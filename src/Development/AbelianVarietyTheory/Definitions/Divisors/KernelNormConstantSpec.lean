@@ -174,8 +174,6 @@ def fockIn (B : VertexFrames G) (p : Pair T) (f : WO (G.pS p) (G.pT p) → ℂ) 
     PolF D (G.pT p).rank (G.pS p).rank →ₗ[ℂ] (WO (G.pS p) (G.pT p) → ℂ) :=
   pureTensorO W.ψ W.θ _ _ (G.cartS W.cart p) (G.onT W.cart p) (G.onS B p) (G.onT B p) f
 
-theorem fockIn_onb (p : Pair T) (f : WO (G.pS p) (G.pT p) → ℂ) : fockIn W W.onb p f = W.fock p f := rfl
-
 def jetTab (B : VertexFrames G) (p : Pair T) (f : WO (G.pS p) (G.pT p) → ℂ) (x : FinPt G p.small) (y : FinPt G p.big)
     (k : DVar D.what₂.Tau (G.V p.small).rank (G.V p.big).rank →₀ ℕ) : ℂ :=
   kerFin W p (fockIn W B p f (monomial (k.mapDomain (fvar G p)) 1)) x y

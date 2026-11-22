@@ -254,11 +254,6 @@ def adm6 (C : NChoice D) : Prop := ∀ i0 w, Over D i0 w → ∀ j ∈ lifts D, 
     (Module.finrank (FractionRing (D.ntw.O (C.twI w))) (IntegralHeckeForms.Fm0 D.nexp (C.twI w) j b) : ℝ) ≤ 2 * D.what₂.D0 ∧
     (D.nexp.Bsup (C.twI w) j b).map (IntegralHeckeForms.AO D.nexp (C.twI w) j b) ≤ D.nexp.Bsup (C.twI w) j b
 
-def TorsionSectionsReflex (C : NChoice D) : Prop := ∀ i0 w, Over D i0 w → ∀ j ∈ lifts D, ∀ b : Bool,
-  rkK (IntegralHeckeForms.Mall D.nexp (C.twI w) j b) =
-      Module.finrank (FractionRing (D.ntw.O (C.twI w))) (IntegralHeckeForms.Fm0 D.nexp (C.twI w) j b) ∧
-    rkK (Mj D (C.twI w) j b) = D.what₂.D0
-
 def twistV0Submodule (C : NChoice D) (w : Pl D) (j : ℕ) (b : Bool) :
     Submodule (D.ntw.Ok (C.twI w) (C.k' w))
       (D.ntw.Ok (C.twI w) (C.k' w) ⊗[D.ntw.O (C.twI w)] D.nexp.Fm (C.twI w) j b) :=
@@ -294,8 +289,6 @@ def adm11 (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) : Prop := ∀ j (h1 :
     WeightAlgebra.Hyp L (X.W j h1 h2) H C2 A2 CR 0 CT (X.run j).S (X.run j).ka (X.run j).wL (X.run j).wF X.TO
       (X.run j).nP (X.run j).nW (X.run j).h0 (X.run j).nus)
 
-def AdmLA : Prop := adm1 D X ∧ adm2 D X
-
 end admitted
 
 section Conclusion₂
@@ -315,9 +308,6 @@ section Fam
 
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
   (XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc (Fm.D x i) (Fm.ex x hx i).nch)
-
-def AdmLAF : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, AdmLA (Fm.D x i) (XF x hx i)
 
 end Fam
 

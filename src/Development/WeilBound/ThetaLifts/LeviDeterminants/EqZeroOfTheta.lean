@@ -130,15 +130,6 @@ theorem Tw.exists_inv (hψ : IsStd ψ) (h : Tw ψ d d₁ e) (h' : Tw ψ d₁ d e
   refine ⟨_, h'', h1, fun Φ hΦ => sub_eq_zero.1 (h''.inj hψ hr' (sub_mem (h.maps _ (h''.maps Φ hΦ)) hΦ) ?_)⟩
   rw [map_sub, h1 _ (h''.maps Φ hΦ), sub_self]
 
-def negD (d : Darboux B κ) : Darboux (fun w w' => -B w w') κ where
-  e := d.e.trans ((LinearEquiv.refl _ _).prodCongr (LinearEquiv.neg _))
-  form w w' := by
-    rw [d.form]
-    simp
-    ring
-
-theorem negD_e (d : Darboux B κ) (w : W) : (negD d).e w = ((d.e w).1, -(d.e w).2) := rfl
-
 end One
 
 def TwEx : Prop := ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]

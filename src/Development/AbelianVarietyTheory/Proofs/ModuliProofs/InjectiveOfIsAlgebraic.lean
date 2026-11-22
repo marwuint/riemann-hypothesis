@@ -46,25 +46,6 @@ variable {F} {k : ℕ}
 def cls (p : QkPt D F k) : (D.X × GtMod oa F) ⧸ LinearMap.range (relMap hB oa F k) :=
   Submodule.Quotient.mk (p.y, p.g)
 
-theorem equiv_iff_cls (p q : QkPt D F k) : QkPt.Equiv D F p q ↔ cls hB oa p = cls hB oa q := by
-  rw [equiv_iff hB, cls, cls, eq_comm, Submodule.Quotient.eq]
-  refine exists_congr fun z => ?_
-  rw [eq_sub_iff_add_eq', Prod.ext_iff]
-  exact and_congr eq_comm eq_comm
-
-theorem add_iff_cls (p p' q : QkPt D F k) :
-    Geo.Tor.QkAdd p p' q ↔ cls hB oa p + cls hB oa p' = cls hB oa q := by
-  rw [TorusExt.qkAdd_iff hB, equiv_iff_cls hB oa]; rfl
-
-theorem zero_iff_equiv (p : QkPt D F k) : TateUniformizationInput.QkZero p ↔ QkPt.Equiv D F (qkZero hB F k) p := by
-  rw [equiv_iff hB]
-  refine exists_congr fun z => and_congr ?_ ?_
-  · rw [qkZero, qkMk_y, zero_add]
-  · rw [qkZero, qkMk_g, zero_add, isIota_iff_eq hB]
-
-theorem zero_iff_cls (p : QkPt D F k) : TateUniformizationInput.QkZero p ↔ cls hB oa p = 0 := by
-  rw [zero_iff_equiv hB, equiv_iff_cls hB oa, eq_comm]; rfl
-
 variable {F' : Type} [Field F'] [Algebra (FractionRing R) F'] (f : F →+* F')
   (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F')
 
@@ -149,58 +130,8 @@ theorem det_iff [CharZero F] (ρ : F) :
 
 variable (hB : P.TauBimult)
 
-def toQTateIso (I : TateIsoQ D P oa F) : TateUniformizationInput.QTateIso D oa F where
-  ζ n := I.ζ n
-  ζ_prim n := I.ζ_prim n n.pos
-  ζ_pow n m := I.ζ_pow n m n.pos m.pos
-  ev n := I.ev n
-  add n := I.add n n.pos
-  lin n x a := letI := H.starRing; (DegActCompare.qkAct_iff oa x _ _).1 (I.lin n n.pos x a)
-  ker n a := by
-    letI := H.starRing
-    have h := (add_iff_cls hB oa _ _ _).1 (I.add n n.pos 0 0)
-    rw [add_zero, add_eq_left] at h
-    rw [zero_iff_cls hB oa, ← h, ← equiv_iff_cls, I.ker n n.pos]
-    simp only [zero_add]
-  onto n := I.onto n n.pos
-  tower n m a := ⟨rfl, I.tower n m n.pos m.pos a⟩
-  isom n := I.isom n n.pos
-
 def evNat (J : TateUniformizationInput.QTateIso D oa F) (n : ℕ) (a : D.La) : QkPt P F n :=
   if h : 0 < n then J.ev ⟨n, h⟩ a else qkZero hB F n
-
-theorem evNat_pos (J : TateUniformizationInput.QTateIso D oa F) {n : ℕ} (h : 0 < n) : evNat hB J n = J.ev ⟨n, h⟩ :=
-  funext fun _ => dif_pos h
-
-include hB in
-theorem equiv_ev_iff (J : TateUniformizationInput.QTateIso D oa F) (n : ℕ+) (a b : D.La) :
-    QkPt.Equiv P F (J.ev n a) (J.ev n b) ↔ ∃ e, a = b + (n : ℕ) • e := by
-  letI := H.starRing
-  have k := (add_iff_cls hB oa _ _ _).1 (J.add n (a - b) b)
-  rw [sub_add_cancel] at k
-  rw [equiv_iff_cls hB oa, ← k, add_eq_right, ← zero_iff_cls, J.ker]
-  exact exists_congr fun e => sub_eq_iff_eq_add'
-
-def ofQTateIso (J : TateUniformizationInput.QTateIso D oa F) : TateIsoQ D P oa F where
-  ζ n := if h : 0 < n then J.ζ ⟨n, h⟩ else 1
-  ζ_prim n h := by rw [dif_pos h]; exact J.ζ_prim ⟨n, h⟩
-  ζ_pow n m h h' := by rw [dif_pos h, dif_pos (Nat.mul_pos h h')]; exact J.ζ_pow ⟨n, h⟩ ⟨m, h'⟩
-  ev := evNat hB J
-  add n h := by rw [evNat_pos hB J h]; exact J.add ⟨n, h⟩
-  lin n h x a := by
-    letI := H.starRing
-    rw [evNat_pos hB J h]; exact (DegActCompare.qkAct_iff oa x _ _).2 (J.lin ⟨n, h⟩ x a)
-  ker n h a b := by rw [evNat_pos hB J h]; exact equiv_ev_iff hB J ⟨n, h⟩ a b
-  onto n h := by rw [evNat_pos hB J h]; exact J.onto ⟨n, h⟩
-  tower n m h h' a := by
-    rw [evNat_pos hB J h, evNat_pos hB J (Nat.mul_pos h h')]; exact (J.tower ⟨n, h⟩ ⟨m, h'⟩ a).2
-  isom n h := by rw [evNat_pos hB J h, dif_pos h]; exact J.isom ⟨n, h⟩
-
-def SameIso (I : TateIsoQ D P oa F) (J : TateUniformizationInput.QTateIso D oa F) : Prop :=
-  ∀ n : ℕ+, I.ζ n = J.ζ n ∧ I.ev n = J.ev n
-
-theorem sameIso_of (J : TateUniformizationInput.QTateIso D oa F) : SameIso (ofQTateIso hB J) J := fun n =>
-  ⟨dif_pos n.pos, evNat_pos hB J n.pos⟩
 
 end Data
 
@@ -241,70 +172,6 @@ section ThetaShiftProofs
 variable {D : Datum H} {l : Level H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
 
-open Classical in
-
-theorem geom_of_input (x : TateUniformizationInput.ArcInput D c β O' b) (F : Type) [Field F] [IsAlgClosed F]
-    [Algebra (FractionRing O') F] (r z : O) (hr : ((β r : c.F) : ℂ) = H.rt0) (hz : ((β z : c.F) : ℂ) = zeta l.A)
-    (f : O' →+* F) (hf : f = (algebraMap (FractionRing O') F).comp (algebraMap O' _)) : letI := H.starRing
-    (∀ τ : 𝓞 E →+* F, ∃ n, LieMult (ofRingAct x.ac.onB.toRingAct) (spMap f) τ n ∧
-      n + Module.finrank (𝓞 E) x.P.X = if τ H.rt = f (b r) then D.p else D.q) ∧
-    ∃ I : TateIsoQ D x.P x.ac F, (I.ζ l.A : F) = f (b z) ∧
-      (∀ a q, QkExt (algebraMap _ F) (x.lev.etaA a) q → QkPt.Equiv x.P F q (I.ev l.A a)) ∧
-      ∀ a ∈ halfLat D l, ∀ q, QkExt (algebraMap _ F) (x.lev.eta a) q → QkPt.Equiv x.P F q (I.ev l.M a) := by
-  letI := H.starRing
-  subst hf
-  have hB := x.tau_bimult
-  have := x.charZero
-  let i : AlgebraicClosure (FractionRing O') →+* F :=
-    (IsAlgClosed.lift : AlgebraicClosure (FractionRing O') →ₐ[FractionRing O'] F)
-  have hi₀ : ∀ y, i (algebraMap (FractionRing O') _ y) = algebraMap (FractionRing O') F y := fun y =>
-    (IsAlgClosed.lift : AlgebraicClosure (FractionRing O') →ₐ[FractionRing O'] F).commutes y
-  have hi : i.comp (algebraMap (FractionRing O') _) = algebraMap (FractionRing O') F := RingHom.ext hi₀
-  constructor
-  · intro σ
-    obtain ⟨τ, rfl⟩ := DetExtend.exists_factor i σ
-    obtain ⟨n, h₁, h₂⟩ := (det_iff _).2 x.det τ
-    have := x.P.P.isAb.smooth
-    rw [x.gam_rt r hr] at h₂
-    refine ⟨n, ?_, h₂.trans (if_congr ?_ rfl rfl)⟩
-    · have e : spMap ((algebraMap (FractionRing O') F).comp (algebraMap O' _)) = spMap i ≫
-          spMap ((algebraMap (FractionRing O') (AlgebraicClosure (FractionRing O'))).comp (algebraMap O' _)) := by
-        rw [spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← RingHom.comp_assoc, hi]
-      rw [e]
-      exact (DetExtend.lieMult_extend i _ _ τ n).2 h₁
-    · rw [RingHom.comp_apply, RingHom.comp_apply, ← hi₀, i.injective.eq_iff]
-  · obtain ⟨J, hζ, hA, hM⟩ := x.induced
-    have key : ∀ (n : ℕ+) (p : QkPt x.P (FractionRing O') n) (a : D.La),
-        TorusGraphMaps.QkMap (Algebra.ofId (FractionRing O') _) p (J.ev n a) → ∀ q, QkExt (algebraMap _ F) p q →
-        QkPt.Equiv x.P F q (qkExt hB i hi ((ofQTateIso hB J).ev n a)) := fun n p a h q hq => by
-      have h₀ : (algebraMap (FractionRing O') (AlgebraicClosure (FractionRing O'))).comp
-        (algebraMap (FractionRing O') (FractionRing O')) = algebraMap _ _ := RingHom.ext fun _ => rfl
-      rw [← hi] at hq
-      rw [qkExt_qkExt hB _ h₀ i hi hq, (sameIso_of hB J n).2]
-      exact qkExt_congr hB i hi ((DegActCompare.forall_qkExt_iff hB _ _ _).2 h _
-        ((TorusExt.qkExt_iff hB _ h₀ _ _).2 rfl))
-    refine ⟨ArcExt.tateExt i hi hB abelianSchemeLaws_all.1 (ofQTateIso hB J) (weil_ext hB i hi), ?_,
-      fun a => key (TateUniformizationInput.levelA l) _ a (hA a), fun a ha => key (TateUniformizationInput.levelM l) _ a (hM a ha)⟩
-    show i ((ofQTateIso hB J).ζ (TateUniformizationInput.levelA l)) = _
-    rw [(sameIso_of hB J _).1, hζ, x.gam_zeta z hz, hi₀, RingHom.comp_apply]
-
-def toArcIn (x : TateUniformizationInput.ArcInput D c β O' b) : ArcIn D l β O' b where
-  D₀ := x.P
-  oa := x.ac
-  nontriv := x.nontriv
-  even := x.psi_even
-  bimult := x.tau_bimult
-  gen y := (DegActCompare.psiUnitOn_iff _ y isOpen_univ).2 (x.psi_gen y)
-  w0 := (DegActCompare.psiW0_host_iff H x.ac).2 x.through
-  be := x.be
-  be_symm := x.be_symm
-  be_pos := x.be_pos
-  be_adj := x.be_adj
-  be_dvd := x.be_dvd
-  eta := x.lev.eta
-  etaA := x.lev.etaA
-  geom F _ _ _ r z hr hz f hf := geom_of_input x F r z hr hz f hf
-
 end ThetaShiftProofs
 
 section Main
@@ -319,14 +186,6 @@ structure Core (D : Datum H) (l : Level H) (O' : Type) [CommRing O'] [IsDomain O
   be : LinearMap.BilinForm ℤ P.X
   eta : halfLat D l → QkPt P (FractionRing O') l.M
   etaA : D.La → QkPt P (FractionRing O') l.A
-
-def coreOfArcIn (a : ArcIn D l β O' b) : Core D l O' :=
-  { P := a.D₀, ac := a.oa, be := a.be, eta := fun v => a.eta v, etaA := a.etaA }
-
-def coreOfInput (x : TateUniformizationInput.ArcInput D c β O' b) : Core D l O' :=
-  { P := x.P, ac := x.ac, be := x.be, eta := fun v => x.lev.eta v, etaA := x.lev.etaA }
-
-theorem core_toArcIn (x : TateUniformizationInput.ArcInput D c β O' b) : coreOfArcIn (toArcIn x) = coreOfInput x := rfl
 
 end Main
 

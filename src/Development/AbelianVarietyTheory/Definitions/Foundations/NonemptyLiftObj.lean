@@ -10,9 +10,6 @@ open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalis
 
 def ofRec {p : ℕ} [Fact p.Prime] (g : GL3Theta.G1 p) : G1 p := ⟨g.lam, g.abelian₂, g.C, g.wq, g.ex⟩
 
-theorem at_ofRec (D : D7) {p : ℕ} [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p) :
-    At D cc δ (ofRec g) ↔ GL3Theta.At D cc δ g := Iff.rfl
-
 def stdLat (E : Type) [Field E] [NumberField E] (N : ℕ) : Submodule (𝓞 E) (Fin N → E) :=
   Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)
 

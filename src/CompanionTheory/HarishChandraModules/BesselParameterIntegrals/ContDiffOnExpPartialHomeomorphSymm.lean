@@ -91,32 +91,6 @@ variable (𝕂 : Type*) [RCLike 𝕂] {𝔸 : Type*} [NormedRing 𝔸] [NormedAl
 
 local notation "𝔢" => expPartialHomeomorph 𝕂 𝔸
 
-noncomputable def expChartUnits (g : 𝔸ˣ) : OpenPartialHomeomorph 𝔸ˣ 𝔸 where
-  toFun x := (𝔢).symm ((g⁻¹ * x : 𝔸ˣ) : 𝔸)
-  invFun X := g * expUnit 𝕂 𝔸 X
-  source := {x | ((g⁻¹ * x : 𝔸ˣ) : 𝔸) ∈ (𝔢).target}
-  target := (𝔢).source
-  map_source' x hx := (𝔢).map_target hx
-  map_target' X hX := by
-    simp only [mem_ofPred_eq, inv_mul_cancel_left, coe_expUnit]
-    exact (𝔢).map_source hX
-  left_inv' x hx := by
-    have h2 : exp ((𝔢).symm ((g⁻¹ * x : 𝔸ˣ) : 𝔸)) = ((g⁻¹ * x : 𝔸ˣ) : 𝔸) := (𝔢).right_inv hx
-    apply Units.ext
-    show (g : 𝔸) * exp ((𝔢).symm ((g⁻¹ * x : 𝔸ˣ) : 𝔸)) = x
-    rw [h2, ← Units.val_mul, mul_inv_cancel_left]
-  right_inv' X hX := by
-    simp only [inv_mul_cancel_left, coe_expUnit]
-    exact (𝔢).left_inv hX
-  open_source := (𝔢).open_target.preimage (Units.continuous_val.comp (continuous_const.mul continuous_id))
-  open_target := (𝔢).open_source
-  continuousOn_toFun := (𝔢).continuousOn_symm.comp
-    (Units.continuous_val.comp (continuous_const.mul continuous_id)).continuousOn (fun _ hx => hx)
-  continuousOn_invFun := (continuous_const.mul (continuous_expUnit 𝕂 𝔸)).continuousOn
-
-theorem expChartUnits_symm_apply (g : 𝔸ˣ) (X : 𝔸) :
-    (((expChartUnits 𝕂 g).symm X : 𝔸ˣ) : 𝔸) = g * exp X := rfl
-
 end UnitsChart
 
 section LinearLie

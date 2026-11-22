@@ -122,24 +122,6 @@ lemma unitFibreEquiv_sectionValue (x : X.complexPoints ρ) {U : X.X.Opens} (hx :
     (fibreMk _ _ 1 (germM hx s))) = _
   rw [hg, key, mul_one, RingEquiv.symm_apply_apply]
 
-def standardMetric (hreg : ComplexMetric.RegularContinuous.Statement.{u}) :
-    X.ContinuousMetric (𝟙_ X.X.Modules) where
-  norm ρ x s := ‖X.unitFibreEquiv x s‖
-  norm_smul ρ x c s := by rw [LinearEquiv.map_smul, smul_eq_mul, norm_mul]
-  norm_pos ρ x s hs := norm_pos_iff.mpr (by
-    intro h0
-    exact hs ((X.unitFibreEquiv x).map_eq_zero_iff.mp h0))
-  continuous_frame ρ U e _ := by
-    have : (fun y : {x : X.complexPoints ρ // X.point x ∈ U} =>
-        ‖X.unitFibreEquiv y.1 (X.sectionValue y.1 y.2 e)‖) =
-        fun y => ‖X.evalAtPoint y.1 (germR y.2 (show ringOn X.X U from e))‖ := by
-      funext y
-      rw [unitFibreEquiv_sectionValue]
-    exact this ▸ continuous_norm.comp (hreg A N X ρ U e)
-  norm_conj ρ U s x hx hx' := by
-    rw [unitFibreEquiv_sectionValue, unitFibreEquiv_sectionValue,
-      X.evalAtPoint_conjPoint_germ x hx hx', Complex.norm_conj]
-
 end ProjScheme
 
 end

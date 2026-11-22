@@ -89,15 +89,6 @@ theorem isOfDegree_iff (P : ArithVariety n) (a : ι → ℤ) (x : P.FunField) :
     refine ⟨f, g, df, dg, hf, hg, hd, hgP, (funFieldEquiv P).injective ?_⟩
     rw [hx, map_div₀, funFieldEquiv_mkF, funFieldEquiv_mkF]
 
-def GenSystem.ofIsHomogGenerators {P : ArithVariety n} {r : ℕ}
-    {G : Fin r → MvPolynomial (Coord n) ℤ} {δ : Fin r → ι → ℕ} (h : P.IsHomogGenerators G δ) :
-    GenSystem P where
-  r := r
-  f := G
-  δ := δ
-  homog := h.homog
-  span_eq := h.span_eq
-
 end
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close

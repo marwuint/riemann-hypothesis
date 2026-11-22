@@ -152,11 +152,6 @@ theorem flips_tensor_heq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   cases hS
   rfl
 
-theorem tflip_eq {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (B : FunObj.Frames G)
-    (t : T) (Φ : G.Datum) (w : Pl D.host.E) : FunObj.Tflip W B t Φ w =
-      ((FunObj.givenStage t w B Φ).flips .one (FunObj.psiAt W w) (FunObj.unifAt w) (FunObj.depthAt G w)
-        (FunObj.flipOrder D.R.m)).tensor := rfl
-
 theorem lsp_eq {D : D7} {x : LSp D} {s : HSp D} {l : Submodule (𝓞 D.host.E) (Fin s.rank → D.host.E)} (hs : s = x.sp)
     (hl : HEq l x.lat) : (⟨s, l⟩ : LSp D) = x := by
   cases x

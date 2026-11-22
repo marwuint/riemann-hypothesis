@@ -133,29 +133,6 @@ theorem nonempty_adelicDecomposition (π : CuspidalAutomorphicRepresentation K n
 
 end CuspidalAutomorphicRepresentation
 
-open GL2Classical ModularForm CongruenceSubgroup in
-
-def CuspidalAutomorphicRepresentation.ofEigenform {N : ℕ} [NeZero N] {k : ℤ}
-    (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
-    (hf : ∀ (p : ℕ) [Fact p.Prime], ∃ c : ℂ, heckeCusp N p k f = c • f)
-    (hf1 : (UpperHalfPlane.qExpansion 1 f).coeff 1 = 1) : CuspidalAutomorphicRepresentation ℚ 2 :=
-  have hst := isGKFStable_gkfSpan (liftCusp f)
-  have hle : gkfSpan (liftCusp f) ≤ centralCuspForms ℚ 2 :=
-    gkfSpan_le ⟨fun X _ hv => ρ_mem_centralCuspForms X hv, fun x _ hv => σ_mem_centralCuspForms x hv,
-      fun g _ hv => finRepCusp_mem_centralCuspForms g hv⟩
-      (fun s x => centralSection_of_mem_translateSpanCusp f (liftCusp_mem_translateSpanCusp f) s x)
-  have hirr := gkfSpan_liftCusp_irreducible f hf hf1
-  CuspidalAutomorphicRepresentation.ofIrreducible (gkfSpan (liftCusp f)) hle hst.1 hst.2.1 hst.2.2
-    (isIrreducible_cuspSubmodule_of _ hst.1 hst.2.1 hst.2.2 hirr.1
-      fun W hW hWρ hWσ hWτ => hirr.2 W ⟨hWρ, hWσ, hWτ⟩ hW)
-
-open GL2Classical ModularForm CongruenceSubgroup in
-theorem CuspidalAutomorphicRepresentation.carrier_ofEigenform {N : ℕ} [NeZero N] {k : ℤ}
-    (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
-    (hf : ∀ (p : ℕ) [Fact p.Prime], ∃ c : ℂ, heckeCusp N p k f = c • f)
-    (hf1 : (UpperHalfPlane.qExpansion 1 f).coeff 1 = 1) :
-    (CuspidalAutomorphicRepresentation.ofEigenform f hf hf1).carrier = gkfSpan (liftCusp f) := rfl
-
 end AutomorphicForm
 
 end GroundTheory.Automorphic

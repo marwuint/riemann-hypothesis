@@ -60,10 +60,6 @@ noncomputable def glChart : LinearChart F (Fin n × Fin n) (GL (Fin n) F) where
   toFun_mul_left g x := by simp
   toFun_mul_right h x := by simp
 
-theorem glChart_apply (g : GL (Fin n) F) (ij : Fin n × Fin n) :
-    (glChart F n).toFun g ij = (g : Matrix (Fin n) (Fin n) F) ij.1 ij.2 :=
-  rfl
-
 theorem glChart_leftModulus (g : GL (Fin n) F) :
     (glChart F n).leftModulus g = distribHaarChar F (Matrix.GeneralLinearGroup.det g) ^ n := by
   rw [LinearChart.leftModulus, distribHaarChar_pi_eq, ← map_pow]

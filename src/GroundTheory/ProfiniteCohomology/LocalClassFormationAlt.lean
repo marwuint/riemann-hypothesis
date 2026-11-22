@@ -71,10 +71,6 @@ noncomputable def galFixedFieldEquivOpen (U : OpenSubgroup Gal(Ksep/K)) :
     Gal(Ksep/fixedField (U : Subgroup Gal(Ksep/K))) ≃* (U : Subgroup Gal(Ksep/K)) :=
   MulEquiv.ofBijective (galFixedFieldToOpen U) (galFixedFieldToOpen_bijective U)
 
-theorem galFixedFieldEquivOpen_toMonoidHom (U : OpenSubgroup Gal(Ksep/K)) :
-    (galFixedFieldEquivOpen U).toMonoidHom = galFixedFieldToOpen U :=
-  rfl
-
 theorem continuous_galFixedFieldEquivOpen (U : OpenSubgroup Gal(Ksep/K)) :
     Continuous (galFixedFieldEquivOpen U).toMonoidHom :=
   continuous_galFixedFieldToOpen U

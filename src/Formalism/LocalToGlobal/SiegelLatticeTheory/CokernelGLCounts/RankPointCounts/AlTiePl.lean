@@ -315,9 +315,6 @@ def plEquiv : HeightOneSpectrum (𝓞 X.B.I.F) ≃ PlF D where
       ((RingOfIntegers.mapRingEquiv (Formalism.L2.GlobalTheoryTheory.AFTransport.iotaF X)).symm x) ∈ w.asIdeal ↔ x ∈ w.asIdeal
     rw [RingEquiv.apply_symm_apply]
 
-theorem plEquiv_apply (v : HeightOneSpectrum (𝓞 X.B.I.F)) :
-    plEquiv X v = mapPl (Formalism.L2.GlobalTheoryTheory.AFTransport.iotaF X) v := rfl
-
 theorem absNorm_plEquiv (v : HeightOneSpectrum (𝓞 X.B.I.F)) :
     Ideal.absNorm (plEquiv X v).asIdeal = Ideal.absNorm v.asIdeal := absNorm_mapPl (Formalism.L2.GlobalTheoryTheory.AFTransport.iotaF X) v
 

@@ -20,7 +20,6 @@ theorem af_mul_apply (a b : Af F) (w : HeightOneSpectrum (𝓞 F)) : (a * b) w =
 theorem af_add_apply (a b : Af F) (w : HeightOneSpectrum (𝓞 F)) : (a + b) w = a w + b w := rfl
 theorem af_sub_apply (a b : Af F) (w : HeightOneSpectrum (𝓞 F)) : (a - b) w = a w - b w := rfl
 theorem af_one_apply (w : HeightOneSpectrum (𝓞 F)) : (1 : Af F) w = 1 := rfl
-theorem af_zero_apply (w : HeightOneSpectrum (𝓞 F)) : (0 : Af F) w = 0 := rfl
 theorem af_alg_apply (c : F) (w : HeightOneSpectrum (𝓞 F)) :
     (algebraMap F (Af F) c) w = algebraMap F (w.adicCompletion F) c := rfl
 

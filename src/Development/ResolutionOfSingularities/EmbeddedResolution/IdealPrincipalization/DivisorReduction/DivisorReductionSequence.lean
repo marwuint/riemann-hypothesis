@@ -227,16 +227,6 @@ theorem divisorReductionSeq_eq_liftSeqFromDivisor_prepend (hres : FunctorialReso
   unfold divisorReductionSeq
   rw [dif_pos hj, if_neg hcs, if_neg hZ, dif_pos hb]
 
-noncomputable def divisorReductionSeqFromLowerDim (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
-    (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
-    (alg : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → S.SequenceOfBlowups) (j : ℕ) : T.SequenceOfBlowups :=
-  divisorReductionSeq hres hno T alg j
-
-theorem divisorReductionSeqFromLowerDim_eq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
-    (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
-    (alg : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → S.SequenceOfBlowups) (j : ℕ) :
-    divisorReductionSeqFromLowerDim hres hno T alg j = divisorReductionSeq hres hno T alg j := rfl
-
 end DivisorReduction
 
 end FunctorialResolution.EmbeddedResolution

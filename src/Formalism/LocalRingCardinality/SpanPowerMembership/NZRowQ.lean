@@ -66,17 +66,6 @@ def eP : En a →ₗ[ℂ] En a where
 
 theorem eP_apply (x : En a) (i : Fin a) : eP a n1 x i = if (i : ℕ) < n1 then x i else 0 := rfl
 
-def secB : EE →ₗ[ℂ] En a where
-  toFun y := WithLp.toLp 2 fun i => if hi : (i : ℕ) < n then b.repr y ⟨i, hi⟩ else 0
-  map_add' x y := by
-    ext i
-    by_cases hi : (i : ℕ) < n <;> simp [hi]
-  map_smul' c x := by
-    ext i
-    by_cases hi : (i : ℕ) < n <;> simp [hi]
-
-theorem secB_apply (y : EE) (i : Fin a) : secB b a y i = if hi : (i : ℕ) < n then b.repr y ⟨i, hi⟩ else 0 := rfl
-
 end Coord
 
 end Formalism.BasicNotions.Examples₂.NZ

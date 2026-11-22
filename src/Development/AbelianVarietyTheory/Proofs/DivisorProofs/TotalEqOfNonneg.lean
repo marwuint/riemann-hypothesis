@@ -54,8 +54,6 @@ section BC
 variable {S : ShortComplex X.Modules} {r s : ℕ} {h : Met p σ S.X₂ (r + s)} (hS : S.ShortExact)
   (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s)
 
-theorem bcMeas_eq_part : h.bcMeas hS h₁ h₃ = part fun c y => h.bcDens hS h₁ h₃ c y := rfl
-
 end BC
 
 end GlobalTheory.CurveDens

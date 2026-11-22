@@ -120,10 +120,6 @@ private theorem ev_units_val_eq_evHom {V₁ : Y.Opens} {y₁ : CxPts p σ} (h : 
   rw [ev_eq h]
   rfl
 
-private theorem pullU_val' {Y₁ : Scheme.{0}} (g : Y₁ ⟶ Y) (W₁ : Y.Opens) (u : Γ(Y, W₁)ˣ) :
-    (pullU g W₁ u).val = (g.app W₁).hom u.val :=
-  rfl
-
 private theorem ev_app_pullback_eq_ev {k₁ : Type} [CommRing k₁] {Y₁ : Scheme.{0}} {p₁ : Y₁ ⟶ Sp k₁}
     {σ₁ : k₁ →+* ℂ} (g : Y₁ ⟶ Y) {W₁ : Y.Opens} {z₁ : CxPts p₁ σ₁} {y₁ : CxPts p σ}
     (hm : y₁.1 = z₁.1 ≫ g) (a : Γ(Y, W₁)) :

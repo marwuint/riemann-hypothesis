@@ -250,11 +250,6 @@ end Mor
 
 def Mor.ofBlk {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R'} (m : GlobalTheory.CatH.Mor F F' σ) : Mor F F' σ := ⟨m.G, m.τ, m.nat⟩
 
-theorem H_eq_blk (F : C ⥤ ModuleCat.{0} R) (n : ℕ) : H F n = GlobalTheory.CatH.H F n := rfl
-
-theorem pull_ofBlk {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R'} (m : GlobalTheory.CatH.Mor F F' σ) (n : ℕ)
-    (x : GlobalTheory.CatH.H F n) : (Mor.ofBlk m).pull n x = m.pull n x := rfl
-
 structure SubF (F : C ⥤ ModuleCat.{w} R) where
   S : ∀ T : C, Submodule R (F.obj T)
   map_mem : ∀ {T T' : C} (φ : T ⟶ T') {x : F.obj T}, x ∈ S T → (F.map φ).hom x ∈ S T'

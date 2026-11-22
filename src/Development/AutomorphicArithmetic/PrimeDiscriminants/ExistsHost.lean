@@ -34,8 +34,6 @@ def withTop {R : Ranks} (H : Host R) : Host R :=
     ccK_coprime := fun p _ => by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left p
     ccK_coprimeS := by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left _ }
 
-theorem withTop_ccK {R : Ranks} (H : Host R) : (withTop H).ccK = ⊤ := rfl
-
 end UpperTheory.Host
 
 end

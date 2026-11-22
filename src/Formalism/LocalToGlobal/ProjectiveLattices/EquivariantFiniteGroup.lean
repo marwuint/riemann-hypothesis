@@ -48,8 +48,6 @@ def holSub (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) : Submodule ℂ (
 theorem holCusp_mem_holSub (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) {P : FDSec X}
     (h : IsHolCusp X la P) : P ∈ holSub X la := Submodule.subset_span h
 
-def dmet (n f r : ℕ) : ℝ := Real.exp ((n : ℝ) * f * r * (-(1 / 2) * Real.log (2 * Real.pi)) / 2)
-
 theorem supN_nonneg (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) (P : FDSec X) : 0 ≤ supN X la P := ENNReal.toReal_nonneg
 
 variable (V : HSp D)

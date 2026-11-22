@@ -544,9 +544,6 @@ def diagVal {V : Type*} (α : V → V → ℂ) (ξ : V) : ℝ := (-I * α ξ ξ)
 
 def FormLe {V : Type*} (α β : V → V → ℂ) : Prop := ∀ ξ, diagVal α ξ ≤ diagVal β ξ
 
-def FormAbsLe {V : Type*} (α : V → V → ℂ) (C : ℝ) (β : V → V → ℂ) : Prop :=
-  FormLe (fun ξ η => -C * β ξ η) α ∧ FormLe α fun ξ η => C * β ξ η
-
 section Tangent
 
 variable {ι : Type*} [Fintype ι]

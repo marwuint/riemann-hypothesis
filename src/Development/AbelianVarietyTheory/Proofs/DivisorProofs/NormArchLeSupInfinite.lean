@@ -10,7 +10,4 @@ open scoped Classical
 
 namespace GlobalTheory.ThetaDecay
 
-theorem archAt_eq_ext (F : Type) [Field F] [NumberField F] (w : InfinitePlace F) (a : AF F) :
-    archAt F w a = InfinitePlace.Completion.extensionEmbedding w (a.1 w) := rfl
-
 end GlobalTheory.ThetaDecay

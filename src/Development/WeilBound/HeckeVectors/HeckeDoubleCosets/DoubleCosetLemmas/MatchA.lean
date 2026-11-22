@@ -52,9 +52,6 @@ def rT (n c : ℕ) : Representation ℂ (GL (Fin n) (Cv v)) (Matrix (Fin n) (Fin
 theorem rS_apply {n c : ℕ} (g : GL (Fin c) (Cv v)) (Φ) (y) :
     rS v n c g Φ y = wt ((n : ℝ) / 2) g * Φ (y * g.1) := rfl
 
-theorem rT_apply {n c : ℕ} (z : GL (Fin n) (Cv v)) (Φ) (y) :
-    rT v n c z Φ y = wt ((c : ℝ) / 2) z * Φ (z.1ᵀ * y) := rfl
-
 end CompanionTheory.D.Upq.DoubleCosetLemmas.Mch
 
 end

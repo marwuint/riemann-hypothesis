@@ -67,22 +67,6 @@ def lagr (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) :
     rw [hat_smul, LinearEquiv.map_smul]
     exact ha.smul _
 
-theorem mem_lagr {M : Model σ X W} {M₁ : Model σ X W₁} {H' : Plane E d d₁} {w} :
-    w ∈ lagr M M₁ H' ↔ IsMixed M₁ H' (M.co.e.symm (hat w)) := Iff.rfl
-
-theorem mul_transpose_injective : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (n d d₁ : ℕ)
-    (JW : Matrix (Fin d) (Fin d) E) (JW₁ : Matrix (Fin d₁) (Fin d₁) E) (ι : Matrix (Fin d) (Fin d₁) E),
-    ιᵀ * JW * ι.map σ = JW₁ → JW₁.det ≠ 0 → Function.Injective fun z : Matrix (Fin n) (Fin d₁) E => z * ιᵀ := by
-  intro F E _ _ _ σ n d d₁ JW JW₁ ι hg hdet z z' h
-  simp only at h
-  have h0 : (z - z') * JW₁ = 0 := by
-    rw [← hg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.sub_mul, h, sub_self, Matrix.zero_mul, Matrix.zero_mul]
-  have h1 : z - z' = 0 := by
-    have := congrArg (· * JW₁⁻¹) h0
-    simp only [Matrix.zero_mul] at this
-    rwa [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hdet), Matrix.mul_one] at this
-  exact sub_eq_zero.mp h1
-
 end GlobalTheory.MixedLagr
 
 end

@@ -76,8 +76,4 @@ def baseC (hS : SplitK M Qw hR X) : LocBase0 H what₂ where
   hK_def := hKC_def M Qw hR X
   split := hS
 
-theorem baseC_Oc (hS : SplitK M Qw hR X) : (baseC M Qw hR X hS).Oc = OcC X := rfl
-theorem baseC_hL (hS : SplitK M Qw hR X) : (baseC M Qw hR X hS).hL = hLC M Qw hR := rfl
-theorem baseC_iV (hS : SplitK M Qw hR X) : (baseC M Qw hR X hS).iV = iVC X := rfl
-
 end Formalism.L2.Fam.NPC.BaseC

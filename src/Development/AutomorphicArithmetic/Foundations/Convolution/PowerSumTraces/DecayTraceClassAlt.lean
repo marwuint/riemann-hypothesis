@@ -18,15 +18,6 @@ def TwistUnitary : Prop :=
       (∀ g v, U (rightRegularRep (Gam K n) μ g v) = rightRegularRep (Gam K n) μ (θ.e g) (U v)) ∧
       (cuspidalL2 μ).map (U : L2 μ →ₗ[ℂ] L2 μ) = cuspidalL2 μ
 
-def CuspTrSum : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (θ : Twist μ), MultOneAt μ →
-    (∀ B : L2 μ →L[ℂ] L2 μ, (∀ V, IsSummand μ V → ∀ v ∈ V, B v ∈ V) → IsTraceClass (Pc μ ∘L B ∘L Pc μ) →
-      HasSum (fun V : {V // IsSummand μ V ∧ V.map (θ.U : L2 μ →ₗ[ℂ] L2 μ) = V} => trOn V.1 (B ∘L θ.U))
-        (trace (Pc μ ∘L B ∘L θ.U ∘L Pc μ))) ∧
-    ∀ f : CC K n, IsTraceClass (Pc μ ∘L Rop μ f ∘L Pc μ) →
-      HasSum (fun V : {V // IsSummand μ V ∧ V.map (θ.U : L2 μ →ₗ[ℂ] L2 μ) = V} => trOn V.1 (Rop μ f ∘L θ.U))
-        (cuspTr μ θ f)
-
 def PolyBdAll : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (a : CC K n), PolyBd μ a
 

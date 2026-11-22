@@ -104,9 +104,6 @@ def bcTan (φ : S →+* T) (hx : spMap φ ≫ x = x') : TanM x t.G →ₛₗ[φ]
   map_add' v w := by simpa using tanOf_map_sum φ hx ![v, w] ![1, 1]
   map_smul' a v := by simpa using tanOf_map_sum φ hx ![v] ![a]
 
-theorem left_bcTan (φ : S →+* T) (hx : spMap φ ≫ x = x') (v : TanM x t.G) :
-    (tv (bcTan φ hx v)).left = spMap (dualMap φ) ≫ (tv v).left := rfl
-
 end Tangent
 
 section Free

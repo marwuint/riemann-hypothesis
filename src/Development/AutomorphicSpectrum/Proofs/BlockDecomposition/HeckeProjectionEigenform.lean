@@ -362,9 +362,6 @@ theorem eig_relation {φ : G2 → ℂ} {ω c : HeckeCharacter ℚ} {μ : Measure
   rw [e3, e4] at hmain
   exact hmain
 
-theorem toIdele_mul (c d : HeckeCharacter ℚ) (z : Jd) :
-    (((c * d).toIdele z : Circle) : ℂ) = (c.toIdele z : ℂ) * d.toIdele z := rfl
-
 end GlobalTheory.CompanionTheory.RankinSelbergHeckeProjection
 
 end

@@ -17,12 +17,6 @@ def Carries {B Y T : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E : ι → B.Module
     e.hom ≫ (fl' a).ι i = (Scheme.Modules.pullback g').map ((fl a).ι i) ≫
       (Scheme.Modules.pullbackComp g' π).hom.app (E a) ≫ (Scheme.Modules.pullbackCongr w).hom.app (E a)
 
-theorem isFlagBundle_iff {B Y : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E : ι → B.Modules) (n : ι → ℕ)
-    (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (n a)) :
-    CovTest.IsFlagBundle π E n fl ↔ ∀ (T : Scheme.{0}) (g : T ⟶ B)
-      (fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback g).obj (E a)) (n a)),
-      ∃! g' : T ⟶ Y, ∃ w : g' ≫ π = g, Carries π E n fl g' g w fl' := Iff.rfl
-
 end GlobalTheory.FlagConnect
 
 end

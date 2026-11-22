@@ -56,9 +56,6 @@ lemma conjRep_H1π (g : G) (f : cocycles₁ (res S.subtype A)) :
     conjRep A S 1 g (H1π _ f) = H1π _ (mapCocycles₁ (conjHom S g) (conjMor A S g) f) := by
   rw [conjRep_apply, H1π_comp_map_apply]
 
-lemma coe_mapCocycles₁_conj (g : G) (f : cocycles₁ (res S.subtype A)) (s : S) :
-    mapCocycles₁ (conjHom S g) (conjMor A S g) f s = A.ρ g (f (conjHom S g s)) := rfl
-
 omit [S.Normal] in
 variable {A S} in
 

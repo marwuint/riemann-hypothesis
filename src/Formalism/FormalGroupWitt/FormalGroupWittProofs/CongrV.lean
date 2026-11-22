@@ -17,8 +17,6 @@ variable {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : Type w}
 
 def ofFun (g : (τ →₀ ℕ) → K) : MvPowerSeries τ K := g
 
-theorem coeff_ofFun (g : (τ →₀ ℕ) → K) (e : τ →₀ ℕ) : coeff e (ofFun g) = g e := rfl
-
 end Norm
 
 end Formalism.FG.CongrVAux

@@ -372,10 +372,6 @@ def atlas : WeightedAtlas D (CxPts p σ) F.Idx (Option κ → ℤ) :=
       · exact (F.φ a).trans _ _ y (mem_L h a) (mem_L h' a))
     none fun c c' y h h' => rv_chart (F.refine.chart c) (F.refine.chart c') h h'
 
-theorem atlas_chart (c : F.Idx) : F.atlas.chart c = (F.refine.chart c).e := rfl
-
-theorem atlas_kap : F.atlas.kap = Pi.single none 1 := rfl
-
 theorem atlas_g (m : Option κ → ℤ) (c c' : F.Idx) (y : CxPts p σ) :
     F.atlas.g m c c' y = ∏ o, F.g₀ o c c' y ^ m o := rfl
 

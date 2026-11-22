@@ -192,11 +192,6 @@ namespace IntegralSection
 
 variable {P : ArithVariety n} {a : ι → ℤ}
 
-def SupNormLE (A : HermLine n) (s : IntegralSection P A.deg) (C : ℝ) : Prop :=
-  ∀ z ∈ P.points ℂ, ∀ (c : (k : ι) → Fin (n k + 1)) (d : ι → ℕ) (e : MvPolynomial (Coord n) ℤ),
-    IsChartForm P A.deg s.num s.den c d e → (∀ k, z k (c k) ≠ 0) →
-    ‖evalCone z e‖ / (‖evalCone z (chartMonomial c d)‖ * A.metric z) ≤ Real.exp C
-
 end IntegralSection
 
 end

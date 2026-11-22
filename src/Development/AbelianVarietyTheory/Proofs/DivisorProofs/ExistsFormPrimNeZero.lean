@@ -22,9 +22,6 @@ variable {S : Scheme.{0}} {A A' : Type} [CommRing A] [CommRing A']
 def coordVal (x : Sp A ⟶ (Gm S).left) : A :=
   charVal (Over.homMk x rfl : Over.mk (x ≫ (Gm S).hom) ⟶ Gm S) (ULift.up 1)
 
-theorem coordVal_left {g : Sp A ⟶ S} (w : Over.mk g ⟶ Gm S) :
-    coordVal w.left = charVal w (ULift.up 1) := rfl
-
 end Coord
 
 variable {R : Type} [CommRing R]

@@ -675,8 +675,6 @@ def prSub : Subalgebra ℂ (DQ P).Pr where
   add_mem' {a b} ha hb := by show a.1 + b.1 ∈ okSub P; exact add_mem ha hb
   algebraMap_mem' z := Subalgebra.algebraMap_mem (okSub P) z
 
-theorem mem_prSub (a : (DQ P).Pr) : a ∈ prSub P ↔ a.1 ∈ okSub P := Iff.rfl
-
 theorem gens_sub : (DQ P).gens P.TT ⊆ prSub P := by
   intro a ha
   simp only [DAlg.gens, Set.mem_union, Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff] at ha
@@ -1150,8 +1148,6 @@ theorem Gf_smooth : ContDiff ℝ sm (Gf τ) := by
   exact ((h1.mul h1).add (h2.mul h2)).sub contDiff_const
 
 theorem Gf_pos (q : Qp 0 τ) : 0 < Gf τ q.1 := sub_pos.2 q.2.2
-theorem Gf_eq (q : Qp 0 τ) : Gf τ q.1 = GR q := rfl
-
 theorem phi_smooth {φ : ℝ → ℝ} (hφ : LE.SmoothLog φ) :
     (fun q : Qp 0 τ => ((φ (Gf τ q.1) : ℝ) : ℂ)) ∈ smSub 0 τ := by
   have h1 : ContDiffOn ℝ sm (fun x => Real.log (Gf τ x)) (Qset 0 τ) :=
@@ -1161,8 +1157,6 @@ theorem phi_smooth {φ : ℝ → ℝ} (hφ : LE.SmoothLog φ) :
   exact h2.congr fun x hx => by rw [ext_of_mem _ hx, Real.exp_log (Gf_pos ⟨x, hx⟩)]
 
 def phiS {φ : ℝ → ℝ} (hφ : LE.SmoothLog φ) : S τ := ⟨_, phi_smooth hφ⟩
-
-theorem ev_phiS {φ : ℝ → ℝ} (hφ : LE.SmoothLog φ) (q : Qp 0 τ) : ev (phiS (τ := τ) hφ) q = ((φ (GR q) : ℝ) : ℂ) := rfl
 
 end
 

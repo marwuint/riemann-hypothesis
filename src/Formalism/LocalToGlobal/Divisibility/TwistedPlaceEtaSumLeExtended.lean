@@ -290,9 +290,6 @@ def DivisionInputsWithoutNorm.toDef {bd : Fin m → ℝ} (I : DivisionInputsWith
     DivInputsDef3 A3 s P0 ψ0 P1 ψ1 Dc Sp Zsc cf C CH Pk R u Nu sg :=
   { I with bd := bd, hN := hN }
 
-theorem DivisionInputsWithoutNorm.toDef_bd {bd : Fin m → ℝ} (I : DivisionInputsWithoutNorm A3 s P0 ψ0 P1 ψ1 Dc Sp Zsc cf C CH Pk R u Nu sg bd)
-    (hN : InEta A3.A.fam P0 ψ0 (A3.fam3.toSub2 Pk.Zs) Pk.core.base.μ Pk.core.base.Tw bd) : (I.toDef hN).bd = bd := rfl
-
 end Inputs3
 
 section N

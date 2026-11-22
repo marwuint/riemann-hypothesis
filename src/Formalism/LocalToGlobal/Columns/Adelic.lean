@@ -200,10 +200,6 @@ instance : Group (AdG hc n ST SG H) := inferInstanceAs (Group (URat hc n × (JH 
 def adHom : AdG hc n ST SG H →* UF E n × H :=
   show URat hc n × (JH hc n ST SG H ⧸ (redH hc n ST SG H).ker) →* UF E n × H from MonoidHom.prodMap (ratHom hc n) (QuotientGroup.kerLift (redH hc n ST SG H))
 
-theorem adHom_mk (γ : URat hc n) (k : JH hc n ST SG H) :
-    adHom hc n ST SG H ((γ, (k : JH hc n ST SG H ⧸ (redH hc n ST SG H).ker)) : AdG hc n ST SG H) =
-      (ratHom hc n γ, redH hc n ST SG H k) := rfl
-
 def rawSm (γ : URat hc n) (k : J0 hc n ST) (x : UAd hc n) : UAd hc n :=
   ratIn hc n γ * x * (ToUnitaryAdelic hc n ST k)⁻¹
 

@@ -54,8 +54,6 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 
 def resCard (F : Type) [Field F] [ValuativeRel F] : ℝ := (Nat.card 𝓀[F] : ℝ)
 
-def unitIn (u : 𝒪[F]ˣ) : Fˣ := Units.map (𝒪[F].subtype : 𝒪[F] →* F) u
-
 def entries {m n : Type} (A : Matrix m n 𝒪[F]) : m → n → F := fun i j => (A i j : F)
 
 def groupSet {n : Type} [Fintype n] [DecidableEq n] (H : Subgroup (GL n 𝒪[F])) : Set (n → n → F) :=

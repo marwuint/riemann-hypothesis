@@ -15,11 +15,6 @@ section Flag
 variable {D : D7} {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {f : Fin D.R.rS → (VS D).V}
   {M : Submodule (𝓞 D.host.E) (WbQ D F0)}
 
-theorem rs_mem_lamC {v : (VS D).V} : v ∈ lamC D F0 f M ↔
-    (∀ a, star ((VS D).hT (F0.e a) v) ∈ (aaI D a)⁻¹) ∧
-    (∃ w : perpS (VS D) F0.X, (w : (VS D).V) = vPr D F0 f v ∧ (Submodule.Quotient.mk w : WbQ D F0) ∈ M) ∧
-    ∀ a, (VS D).hT (f a) (vPr D F0 f v) ∈ aaI D a := Iff.rfl
-
 theorem rs_mem_lamC_perp {v : (VS D).V} (hv : v ∈ perpS (VS D) F0.X) :
     v ∈ lamC D F0 f M ↔ (Submodule.Quotient.mk (⟨v, hv⟩ : perpS (VS D) F0.X) : WbQ D F0) ∈ M ∧
       ∀ a, (VS D).hT (f a) v ∈ aaI D a := by

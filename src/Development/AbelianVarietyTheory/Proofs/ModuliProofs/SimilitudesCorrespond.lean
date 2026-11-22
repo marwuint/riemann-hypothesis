@@ -331,21 +331,6 @@ theorem Matches.trivAt_iff {g : Sim D} {u : Lhat D ≃ₗ[Zhat] Lhat D} (h : Mat
     h.congSub_iff l.A_pos (Ideal.mem_span_singleton_self _)]
   simp only [Sim.TrivAt, modN_iff]
 
-theorem Matches.simGroup_iff (hpq : 1 ≤ D.p + D.q) {g : Sim D} {u : Lhat D ≃ₗ[Zhat] Lhat D} (h : Matches g u)
-    (l : Level H) : (l.A : ℤ) ∣ g.ν l.A - 1 ↔ u ∈ simGroup D l := by
-  obtain ⟨u', ν, h', hs, hν⟩ := exists_matches hpq g
-  obtain rfl := h.unique h'
-  have e : (l.A : ℤ) ∣ g.ν l.A - 1 ↔ Zhat.red ⟨l.A, l.A_pos⟩ ν = 1 := by
-    rw [← ZMod.intCast_zmod_eq_zero_iff_dvd, Int.cast_sub, Int.cast_one, sub_eq_zero]
-    exact (hν ⟨l.A, l.A_pos⟩).symm.congr_left
-  rw [e]
-  exact ⟨fun k => ⟨hs.1, ν, k, hs.2⟩, fun ⟨k, ν', k', k''⟩ => hs.unique hpq ⟨k, k''⟩ ▸ k'⟩
-
-theorem Matches.inGam_iff (hpq : 1 ≤ D.p + D.q) {g : Sim D} {u : Lhat D ≃ₗ[Zhat] Lhat D} (h : Matches g u)
-    (l l₂ : Level H) : g.InGam l l₂ ↔ u ∈ relGroup D l l₂ := by
-  rw [relGroup, Subgroup.mem_inf, ← h.simGroup_iff hpq, ← h.trivAt_iff]
-  rfl
-
 section Geometry
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
@@ -368,27 +353,10 @@ theorem etaA_congr (o : Obj D l b s) {x y : D.La}
 
 end
 
-theorem Matches.levAut_iff {g : Sim D} {u : Lhat D ≃ₗ[Zhat] Lhat D} (h : Matches g u) (Xo : Moduli D l)
-    (ρ : Xo.X ≅ Xo.X) : Xo.LevAut g ρ ↔ ρ.hom ≫ Xo.s = Xo.s ∧ ChangesLevelBy Xo u ρ.hom := by
-  have e₁ := h.congr_iff (level_pos l) (level_mem l)
-  have e₂ := h.congr_iff l.A_pos (Ideal.mem_span_singleton_self _)
-  refine and_congr_right fun _ => exists_congr fun m => and_congr ?_ ?_
-  · exact ⟨fun k a b hab => by rw [← eta_congr Xo.univ ((e₁ a b).1 hab)]; exact k a,
-      fun k a => k a _ ((e₁ a _).2 (by simp))⟩
-  · exact ⟨fun k a b hab => by rw [← etaA_congr Xo.univ ((e₂ a b).1 hab)]; exact k a,
-      fun k a => k a _ ((e₂ a _).2 (by simp))⟩
-
 theorem isReduced (Xo : Moduli D l) : IsReduced Xo.X := by
   haveI := Xo.smooth
   exact (isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ Xo.s
     (SmoothOfRelativeDimension.smooth D.dim _)).1
-
-theorem eq_id_of_trivAt (Xo : Moduli D l) {u : Lhat D ≃ₗ[Zhat] Lhat D} (hu : u ∈ trivAt D l) {r : Xo.X ⟶ Xo.X}
-    (hr : r ≫ Xo.s = Xo.s) (h : ChangesLevelBy Xo u r) : r = 𝟙 _ := by
-  obtain ⟨m, h₁, h₂⟩ := h
-  obtain ⟨i, -⟩ := (ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ Xo.univ Xo.univ).1
-  exact (Xo.rep Xo.X Xo.s (isReduced Xo) Xo.univ).unique
-    ⟨hr, ⟨⟨m, fun a => h₁ a a (hu.1 _), fun a => h₂ a a (hu.2 _)⟩⟩⟩ ⟨Category.id_comp _, ⟨i⟩⟩
 
 theorem map_mem_hatSub {u : Lhat D ≃ₗ[Zhat] Lhat D} (hu : ∀ c x, u (hatMul D c x) = hatMul D c (u x))
     {𝔞 : Ideal (𝓞 E)} {x : Lhat D} (hx : x ∈ hatSub D 𝔞) : u x ∈ hatSub D 𝔞 := by
@@ -413,74 +381,14 @@ theorem exists_mid {u u' : Lhat D ≃ₗ[Zhat] Lhat D} (hu : ∀ c x, u (hatMul 
   convert Submodule.sub_mem _ h (map_mem_hatSub hu (mulSub_le h𝔞 hc)) using 1
   simp
 
-theorem changes_comp (Xo : Moduli D l) {u u' : Lhat D ≃ₗ[Zhat] Lhat D}
-    (hu : ∀ c x, u (hatMul D c x) = hatMul D c (u x)) {r r' : Xo.X ⟶ Xo.X} (h : ChangesLevelBy Xo u r)
-    (h' : ChangesLevelBy Xo u' r') : ChangesLevelBy Xo (u * u') (r ≫ r') := by
-  obtain ⟨m, h₁, h₂⟩ := h
-  obtain ⟨m', h₁', h₂'⟩ := h'
-  obtain ⟨n, hn⟩ := ObjMaps.exists_sab_comp m' m
-  refine ⟨n, fun a b hab => ?_, fun a b hab => ?_⟩
-  · obtain ⟨c, k₁, k₂⟩ := exists_mid hu (level_pos l) (level_mem l) hab
-    rw [hn, ← Category.assoc, h₁ c b k₂, Category.assoc, h₁' a c k₁, Category.assoc]
-  · obtain ⟨c, k₁, k₂⟩ := exists_mid hu l.A_pos (Ideal.mem_span_singleton_self _) hab
-    rw [hn, ← Category.assoc, h₂ c b k₂, Category.assoc, h₂' a c k₁, Category.assoc]
-
-theorem changes_unique (Xo : Moduli D l) {u : Lhat D ≃ₗ[Zhat] Lhat D}
-    (hu : ∀ c x, u (hatMul D c x) = hatMul D c (u x)) {r r' : Xo.X ⟶ Xo.X} (σ : Xo.X ≅ Xo.X)
-    (hr : r ≫ Xo.s = Xo.s) (hr' : r' ≫ Xo.s = Xo.s) (hσ : σ.hom ≫ Xo.s = Xo.s) (h : ChangesLevelBy Xo u r)
-    (h' : ChangesLevelBy Xo u r') (k : ChangesLevelBy Xo u⁻¹ σ.hom) : r = r' := by
-  have e : ∀ {r : Xo.X ⟶ Xo.X}, r ≫ Xo.s = Xo.s → ChangesLevelBy Xo u r → r ≫ σ.hom = 𝟙 _ := fun hr h =>
-    eq_id_of_trivAt Xo (u := u * u⁻¹) (by rw [mul_inv_cancel]; exact one_mem _) (by rw [Category.assoc, hσ, hr])
-      (changes_comp Xo hu h k)
-  exact (cancel_mono σ.hom).1 ((e hr h).trans (e hr' h').symm)
-
 theorem spMap_id (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 _ := Spec.map_id _
-
-theorem levelMap_unique (h : l.Dvd l₂) (Xo : Moduli D l) (Xo₂ : Moduli D l₂) {π π' : Xo₂.X ⟶ Xo.X}
-    (hπ : IsOver h Xo Xo₂ π) (hπ' : IsOver h Xo Xo₂ π') (k : PullsBack Xo Xo₂ π) (k' : PullsBack Xo Xo₂ π') :
-    π' = π := by
-  obtain ⟨m, h₁, h₂⟩ := k
-  obtain ⟨m', h₁', h₂'⟩ := k'
-  obtain ⟨o, ⟨n⟩⟩ := obj_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ Xo.s (π ≫ Xo.s) (𝟙 _ ≫ π)
-    rfl rfl (by rw [spMap_id, Category.id_comp, Category.comp_id]) Xo.univ
-  obtain ⟨i, hi⟩ := ObjMaps.exists_sab_cancel m n.toSABMap
-  obtain ⟨n', hn'⟩ := ObjMaps.exists_sab_comp m' i
-  have key : ∀ (x : 𝟙_ (Over Xo₂.X) ⟶ o.t.G) (y : 𝟙_ (Over Xo₂.X) ⟶ Xo₂.univ.t.G),
-      x.left ≫ n.toSABMap.φ = y.left ≫ m.φ → x.left ≫ n'.φ = y.left ≫ m'.φ := fun x y e => by
-    have : x.left ≫ i.φ = y.left := m.cart.1.hom_ext (by rw [Category.assoc, ← e, hi]) (by
-      rw [Category.assoc, i.cart.1.w, Category.comp_id, Over.w, Over.w])
-    rw [hn', ← this, Category.assoc]
-  have := (Xo.rep Xo₂.X _ (isReduced Xo₂) o).unique
-    (y₁ := 𝟙 _ ≫ π') (y₂ := 𝟙 _ ≫ π) ⟨by rw [Category.id_comp, hπ', ← hπ], ⟨⟨n', fun a => ?_, fun a => ?_⟩⟩⟩
-    ⟨by rw [Category.id_comp], ⟨n⟩⟩
-  · simpa using this
-  · exact (key _ _ (by rw [h₁, n.eta, Category.id_comp])).trans ((h₁' a).trans (by rw [Category.id_comp]))
-  · exact (key _ _ (by rw [h₂, n.etaA, Category.id_comp])).trans ((h₂' a).trans (by rw [Category.id_comp]))
-
-theorem eq_lowerCoeff (h : l.Dvd l₂) {c : Coeff l} {c₂ : Coeff l₂} (hc : c.F = c₂.F) : c = lowerCoeff h c₂ := by
-  cases c
-  cases hc
-  rfl
 
 theorem spMap_inclusion_self {F : IntermediateField ℚ ℂ} (h : F ≤ F) :
     spMap (IntermediateField.inclusion h).toRingHom = 𝟙 _ := spMap_id F
 
-theorem comp_endF_eq_iff {Xo : Moduli D l} {r : Xo.X ⟶ Xo.X} (hr : r ≫ Xo.s = Xo.s) (c : Coeff l) {T : Scheme.{0}}
-    {x y : T ⟶ Xo.XF c} (e : y ≫ pullback.snd _ _ = x ≫ pullback.snd _ _) :
-    x ≫ endF r hr c = y ↔ y ≫ pullback.fst _ _ = x ≫ pullback.fst _ _ ≫ r := by
-  refine ⟨fun k => by rw [← k, Category.assoc, endF, pullback.lift_fst], fun k => pullback.hom_ext ?_ ?_⟩
-  · rw [Category.assoc, endF, pullback.lift_fst, k]
-  · rw [Category.assoc, endF, pullback.lift_snd, e]
-
 theorem levelMapF_snd (h : l.Dvd l₂) {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {π : Xo₂.X ⟶ Xo.X}
     (hπ : IsOver h Xo Xo₂ π) (c : Coeff l₂) : levelMapF h hπ c ≫ pullback.snd _ _ = pullback.snd _ _ :=
   pullback.lift_snd _ _ _
-
-theorem levelMapF_snd' (h : l.Dvd l₂) {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {π : Xo₂.X ⟶ Xo.X}
-    (hπ : IsOver h Xo Xo₂ π) (c : Coeff l₂) (hc : (lowerCoeff h c).F ≤ c.F) : levelMapF h hπ c ≫ pullback.snd _ _ =
-      pullback.snd _ _ ≫ spMap (IntermediateField.inclusion hc).toRingHom :=
-  (levelMapF_snd h hπ c).trans ((Category.comp_id _).symm.trans
-    (congrArg (pullback.snd _ _ ≫ ·) (spMap_inclusion_self (F := c.F) hc).symm))
 
 theorem snd_eq (h : l.Dvd l₂) {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {π : Xo₂.X ⟶ Xo.X} (hπ : IsOver h Xo Xo₂ π)
     (c : Coeff l₂) {T : Scheme.{0}} {x y : T ⟶ Xo₂.XF c} (e : y ≫ levelMapF h hπ c = x ≫ levelMapF h hπ c) :
@@ -488,90 +396,9 @@ theorem snd_eq (h : l.Dvd l₂) {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {π : 
   rw [← levelMapF_snd h hπ c]
   exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ pullback.snd _ _) e).trans (Category.assoc _ _ _))
 
-theorem covering_iff (hpq : 1 ≤ D.p + D.q) (h : l.Dvd l₂) {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {r : Xo₂.X ⟶ Xo.X}
-    (hr : IsOver h Xo Xo₂ r) :
-    ((∀ g : Sim D, g.InGam l l₂ → ∃ ρ : Xo₂.X ≅ Xo₂.X, Xo₂.LevAut g ρ ∧ ρ.hom ≫ r = r) ∧
-      ∀ (c : Coeff l) (c₂ : Coeff l₂) (hc : c.F = c₂.F), ∃ rF : Xo₂.XF c₂ ⟶ Xo.XF c,
-        rF ≫ pullback.fst _ _ = pullback.fst _ _ ≫ r ∧
-        rF ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (IntermediateField.inclusion hc.le).toRingHom ∧
-        IsFinite rF ∧ Etale rF ∧ Surjective rF ∧
-        ∀ (k : Type) [Field k] [IsAlgClosed k] (y y' : Sp k ⟶ Xo₂.XF c₂), y ≫ rF = y' ≫ rF →
-          (∃ (g : Sim D) (ρ : Xo₂.X ≅ Xo₂.X), g.InGam l l₂ ∧ Xo₂.LevAut g ρ ∧ ρ.hom ≫ r = r ∧
-            y' ≫ pullback.fst _ _ = y ≫ pullback.fst _ _ ≫ ρ.hom) ∧
-          ∀ (g : Sim D) (ρ : Xo₂.X ≅ Xo₂.X), g.InGam l l₂ → Xo₂.LevAut g ρ →
-            y ≫ pullback.fst _ _ ≫ ρ.hom = y ≫ pullback.fst _ _ → g.TrivAt l₂) ↔
-    IsLevelCovering h hr := by
-  have hsim : ∀ u : relGroup D l l₂, ∃ g : Sim D, Matches g u.1 ∧ g.InGam l l₂ := fun ⟨u, hu⟩ => by
-    obtain ⟨k, ν, -, k'⟩ := hu.1
-    obtain ⟨g, hg⟩ := exists_sim (ν := ν) ⟨k, k'⟩
-    exact ⟨g, hg, (hg.inGam_iff hpq l l₂).2 hu⟩
-  have hhat : ∀ g : Sim D, g.InGam l l₂ → ∃ u : relGroup D l l₂, Matches g u.1 := fun g hg => by
-    obtain ⟨u, -, hu, -⟩ := exists_matches hpq g
-    exact ⟨⟨u, (hu.inGam_iff hpq l l₂).1 hg⟩, hu⟩
-  have uniq : ∀ (ρ : relGroup D l l₂ → (Xo₂.X ≅ Xo₂.X)), (∀ u, (ρ u).hom ≫ Xo₂.s = Xo₂.s) →
-      (∀ u, ChangesLevelBy Xo₂ u.1 (ρ u).hom) → ∀ (u : relGroup D l l₂) (f : Xo₂.X ⟶ Xo₂.X), f ≫ Xo₂.s = Xo₂.s →
-      ChangesLevelBy Xo₂ u.1 f → (ρ u).hom = f := fun ρ h₁ h₂ u f hf k =>
-    changes_unique Xo₂ u.2.1.1 (ρ u⁻¹) (h₁ u) hf (h₁ _) (h₂ u) k (h₂ u⁻¹)
-  constructor
-  · rintro ⟨hact, hcov⟩
-    have hex : ∀ u : relGroup D l l₂, ∃ ρ : Xo₂.X ≅ Xo₂.X,
-        (ρ.hom ≫ Xo₂.s = Xo₂.s ∧ ChangesLevelBy Xo₂ u.1 ρ.hom) ∧ ρ.hom ≫ r = r := fun u => by
-      obtain ⟨g, hg, hg'⟩ := hsim u
-      obtain ⟨ρ, k, k'⟩ := hact g hg'
-      exact ⟨ρ, (hg.levAut_iff Xo₂ ρ).1 k, k'⟩
-    choose ρ hρ hρr using hex
-    have hu := uniq ρ (fun u => (hρ u).1) fun u => (hρ u).2
-    refine ⟨ρ, fun u => (hρ u).1, Iso.ext (eq_id_of_trivAt Xo₂ (one_mem _) (hρ 1).1 (hρ 1).2), fun u u' => Iso.ext
-      (hu _ _ (by rw [Iso.trans_hom, Category.assoc, (hρ u').1, (hρ u).1])
-        (changes_comp Xo₂ u.2.1.1 (hρ u).2 (hρ u').2)), fun u => (hρ u).2, hρr, fun c => ?_⟩
-    obtain ⟨rF, e₁, e₂, k₁, k₂, k₃, k₄⟩ := hcov (lowerCoeff h c) c rfl
-    obtain rfl : rF = levelMapF h hr c := pullback.hom_ext (e₁.trans (pullback.lift_fst _ _ _).symm)
-      (e₂.trans (levelMapF_snd' h hr c _).symm)
-    refine ⟨k₁, k₂, k₃, fun k _ _ x => ⟨fun y hy => ?_, fun u => ?_⟩⟩
-    · obtain ⟨g, σ, hg, hσ, -, e⟩ := (k₄ k x y hy.symm).1
-      obtain ⟨u, hgu⟩ := hhat g hg
-      obtain ⟨a₁, a₂⟩ := (hgu.levAut_iff Xo₂ σ).1 hσ
-      exact ⟨u, (comp_endF_eq_iff _ c (snd_eq h hr c hy)).2 (by rw [hu u _ a₁ a₂]; exact e)⟩
-    · rw [comp_endF_eq_iff _ c rfl]
-      obtain ⟨g, hg, hg'⟩ := hsim u
-      refine ⟨fun e => (hg.trivAt_iff l₂).1 ((k₄ k x x rfl).2 g (ρ u) hg' ((hg.levAut_iff Xo₂ _).2 (hρ u)) e.symm),
-        fun e => ?_⟩
-      rw [eq_id_of_trivAt Xo₂ e (hρ u).1 (hρ u).2, Category.comp_id]
-  · rintro ⟨ρ, hρ, -, -, hch, hρr, hcov⟩
-    refine ⟨fun g hg => ?_, fun c c₂ hc => ?_⟩
-    · obtain ⟨u, hu⟩ := hhat g hg
-      exact ⟨ρ u, (hu.levAut_iff Xo₂ _).2 ⟨hρ u, hch u⟩, hρr u⟩
-    obtain rfl := eq_lowerCoeff h hc
-    obtain ⟨k₁, k₂, k₃, k₄⟩ := hcov c₂
-    refine ⟨levelMapF h hr c₂, pullback.lift_fst _ _ _, ?_, k₁, k₂, k₃, fun k _ _ x y hy => ⟨?_, ?_⟩⟩
-    · exact levelMapF_snd' h hr c₂ _
-    · obtain ⟨u, e⟩ := (k₄ k x).1 y hy.symm
-      obtain ⟨g, hg, hg'⟩ := hsim u
-      exact ⟨g, ρ u, hg', (hg.levAut_iff Xo₂ _).2 ⟨hρ u, hch u⟩, hρr u,
-        (comp_endF_eq_iff _ c₂ (snd_eq h hr c₂ hy.symm)).1 e⟩
-    · intro g σ hg hσ e
-      obtain ⟨u, hu⟩ := hhat g hg
-      obtain ⟨a₁, a₂⟩ := (hu.levAut_iff Xo₂ σ).1 hσ
-      refine (hu.trivAt_iff l₂).2 (((k₄ k x).2 u).1 ((comp_endF_eq_iff _ c₂ rfl).2 ?_))
-      rw [uniq ρ hρ hch u _ a₁ a₂]
-      exact e.symm
-
 theorem eq_inclusion (h : l.Dvd l₂) {j : KA l →+* KA l₂} (hj : ∀ x, ((j x : KA l₂) : ℂ) = ((x : KA l) : ℂ)) :
     j = (IntermediateField.inclusion (KA_le h)).toRingHom :=
   RingHom.ext fun x => Subtype.ext ((hj x).trans (IntermediateField.coe_inclusion (KA_le h) x).symm)
-
-theorem levelMaps_iff (hpq : 1 ≤ D.p + D.q) :
-    ToroidalLevelCompatibility (H := H) (D := D) ↔ ∀ (l l₂ : Level H) (h : l.Dvd l₂) (Xo : Moduli D l) (Xo₂ : Moduli D l₂),
-      ∃ (π : Xo₂.X ⟶ Xo.X) (hπ : IsOver h Xo Xo₂ π), PullsBack Xo Xo₂ π ∧
-        (∀ π' : Xo₂.X ⟶ Xo.X, IsOver h Xo Xo₂ π' → PullsBack Xo Xo₂ π' → π' = π) ∧
-        IsLevelCovering h hπ := by
-  refine forall₂_congr fun l l₂ => ⟨fun k h Xo Xo₂ => ?_, fun k Xo Xo₂ h => ?_⟩
-  · obtain ⟨r, j, m, hj, hr, h₁, h₂, hcov⟩ := k Xo Xo₂ h
-    obtain rfl := eq_inclusion h hj
-    exact ⟨r, hr, ⟨m, h₁, h₂⟩, fun π' a b => levelMap_unique h Xo Xo₂ hr a ⟨m, h₁, h₂⟩ b,
-      (covering_iff hpq h hr).1 hcov⟩
-  · obtain ⟨r, hr, ⟨m, h₁, h₂⟩, -, hcov⟩ := k h Xo Xo₂
-    exact ⟨r, _, m, IntermediateField.coe_inclusion (KA_le h), hr, h₁, h₂, (covering_iff hpq h hr).2 hcov⟩
 
 end Geometry
 

@@ -59,8 +59,6 @@ theorem isAt_unique {M M' : Vol G} {X : Node} {K} (h : M.IsAt X K) (h' : M'.IsAt
 
 variable (W : G.Weil)
 
-theorem levJ_col (t : T) (j : ℕ) : levJ G t (.grid 0 (j + 1)) = levCol L t j := rfl
-
 end GlobalTheory.FunObjModel
 
 end

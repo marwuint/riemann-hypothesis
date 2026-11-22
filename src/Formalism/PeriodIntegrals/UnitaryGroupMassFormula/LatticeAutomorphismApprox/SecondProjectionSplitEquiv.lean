@@ -38,12 +38,6 @@ theorem piEquiv_sig {K R : Type} [Field K] [CommRing R] (σ : R →+* R) (p1 : R
     piEquiv σ p1 hb (σ r) = (piEquiv σ p1 hb r).swap := by
   ext <;> simp [piEquiv, piHom, hσσ]
 
-theorem first_projection_split_equiv {K R : Type} [Field K] [CommRing R] (σ : R →+* R) (p1 : R →+* K)
-    (hb : Function.Bijective (piHom σ p1)) (r : R) : SplitGL.p1 (piEquiv σ p1 hb) r = p1 r := rfl
-
-theorem second_projection_split_equiv {K R : Type} [Field K] [CommRing R] (σ : R →+* R) (p1 : R →+* K)
-    (hb : Function.Bijective (piHom σ p1)) (r : R) : SplitGL.p2 (piEquiv σ p1 hb) r = p1 (σ r) := rfl
-
 theorem proj_coe {R k : Type} [CommRing R] [Field k] {n : Type} [Fintype n] [DecidableEq n]
     (σ : R →+* R) (π : R ≃+* k × k) (J : Matrix n n R) (y : Formalism.UG.UJ σ J) :
     ((SplitGL.proj σ π J y : GL n k) : Matrix n n k) = ((y : GL n R) : Matrix n n R).map (SplitGL.p1 π) := rfl

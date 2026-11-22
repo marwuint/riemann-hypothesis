@@ -520,8 +520,6 @@ def Conclusion5 : Prop := ArchimedeanRallisFifth X.toProvA
 
 def Stmt : Prop := admitted D X → Conclusion1 D X ∧ Conclusion2 D X ∧ PointsLemma D X ∧ Conclusion4 D X ∧ Conclusion5 D X
 
-def ArchimedeanRallisLocal : Prop := IntegralityGoodReduction X.toProvA
-
 end Packet
 
 end Formalism.MainNotions.SchurIrreducible

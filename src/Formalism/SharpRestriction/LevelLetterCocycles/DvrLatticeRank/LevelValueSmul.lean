@@ -155,10 +155,6 @@ def valQ {c : ZMod n} {ζ : LL} (hP : PtHyp (W := W) T c ζ) (π' : LetA O n)
     (hπ : PowerSeries.constantCoeff (W.lev (c - 1) 1 π') = 0) : LcQ W T π' c →ₗ[O] XO BdR T :=
   Submodule.liftQ _ (valL Ct T hP) (valL_ker Ct T hP π' hπ)
 
-theorem valQ_mkL {c : ZMod n} {ζ : LL} (hP : PtHyp (W := W) T c ζ) (π' : LetA O n)
-    (hπ : PowerSeries.constantCoeff (W.lev (c - 1) 1 π') = 0) (x : W.DD T) (hx : x ∈ NcS W T (c - 1)) :
-    valQ Ct T hP π' hπ (mkL W T π' c x hx) = valAt W T c ζ x := rfl
-
 def muL (c : ZMod n) (ζ : LL) : LetA O n ⊗[O] XO BdR T →ₗ[O] (ℤ → XO BdR T) :=
   TensorProduct.lift (LinearMap.mk₂ O (fun a d => serC (W.lev c ζ a) d)
     (fun a a' d => by

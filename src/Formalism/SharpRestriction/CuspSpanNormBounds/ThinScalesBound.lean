@@ -10,50 +10,6 @@ open Formalism.MainNotions.S.Loc
 
 namespace Formalism.MainNotions.ThinScalesBound
 
-open scoped Classical in
-
-def ThOK {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
-    {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
-    (M : Model F E) (m : ℕ) (s : ℕ+) (N : ℕ) (h : Fin N → Pt E m)
-    (Th : E ⧸ M.Rsub → Fin N → Fin N → ℂ) : Prop :=
-
-  (∀ x, (Matrix.of fun a b => Th x a b).PosSemidef) ∧
-
-  (∀ x a b, M.detMod (h a) ≠ M.detMod (h b) → Th x a b = 0) ∧
-
-  (∃ Λ : Submodule M.R E, IsCompact (Λ : Set E) ∧ IsOpen (Λ : Set E) ∧
-    ∀ t ∉ Λ, ∀ a b, Th (Submodule.Quotient.mk t) a b = 0) ∧
-
-  (∀ t : Eˣ, (Matrix.of fun a b => Th (Submodule.Quotient.mk (t : E)) a b -
-      M.Ns s t t (h a) (h b)).PosSemidef) ∧
-
-  (∀ c : ℝ, (Matrix.of fun (a b : {a : Fin N // M.detMod (h a) = c}) =>
-      ((c⁻¹ ^ (2 * (s : ℕ)) : ℝ) : ℂ) * M.N0 (h a) (h b) - ∑' x : E ⧸ M.Rsub, Th x a b).PosSemidef) ∧
-
-  ((s : ℕ) = 1 →
-    (∀ (t : Eˣ) a b, Th (Submodule.Quotient.mk (t : E)) a b = M.Ns s t t (h a) (h b)) ∧
-    ∀ a b, M.detMod (h a) = M.detMod (h b) →
-      ∑' x : E ⧸ M.Rsub, Th x a b = ((M.detMod (h a))⁻¹ ^ 2 : ℝ) * M.N0 (h a) (h b)) ∧
-
-  ((∀ a, M.InGLR (h a)) →
-    (∀ a b, M.N0 (h a) (h b) = 1) ∧
-    ∀ x, (Matrix.of fun a b => (if x = 0 then (1 : ℂ) else 0) * M.N0 (h a) (h b) -
-      Th x a b).PosSemidef)
-
-def FamilyTheoremThreePassage {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
-    {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
-    (M : Model F E) (r n : ℕ) : Prop :=
-  ∀ (g : SplitG M.L), M.split = some g →
-  ∀ (V : Type) [AddCommGroup V] [Module E V] (H : HermSp M V), Module.finrank E V = n →
-  ∀ (t : Term V M r), H.IsTerm t →
-  ∀ nn ∈ H.NGrp t.abelian₂ t.f, ∀ nn' ∈ H.NGrp t.abelian₂ t.f',
-    (∀ x ∈ t.abelian₂, nn x - nn' x ∈ H.smulLat (algebraMap F E (g.q : F)) t.abelian₂) →
-    ∃ uL uU : Matrix (Fin (r + 1)) (Fin (r + 1)) E,
-      (∀ a b, uL a b ∈ M.R ∧ uU a b ∈ M.R) ∧
-      (∀ a, uL a a = 1 ∧ uU a a = 1) ∧ (∀ a b, a < b → uL a b = 0 ∧ uU b a = 0) ∧
-      H.ZZplus ⟨t.abelian₂, fun a => nn (t.f a), fun a => nn' (t.f' a), t.T, t.T'⟩ =
-        uL * H.ZZplus t * uU
-
 def FrameK {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}

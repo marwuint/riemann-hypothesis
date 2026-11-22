@@ -25,11 +25,6 @@ variable {D : Datum H} {Xo : ∀ l : Level H, Moduli D l}
 def Top.Amp {n N : ℕ} (T : Top Xo n N) : Prop :=
   ∃ k : ℕ, Nonempty (GlobalTheory.LN.AmpFrames T.t.G T.t.PP.L ((n ^ k) ^ 2))
 
-theorem topExists_iff_amp : TopExists ↔
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q →
-      ∀ (Xo : ∀ l : Level H, Moduli D l) (n : ℕ), AuxiliaryInertOddPrime H n → ∃ J : ℕ, 1 ≤ J ∧ ∃ T : Top Xo n (n ^ J), T.Amp :=
-  Iff.rfl
-
 end Amp
 
 theorem flat_projSpace (R : Type) [CommRing R] (N : ℕ) : Flat (PSpace.str R N) :=

@@ -33,24 +33,6 @@ theorem Gam_eq_map (Γ K : Subgroup G) (g : G) :
     convert hk using 1
     group
 
-def GamEquivSet (Γ K : Subgroup G) (g : G) : Gam Γ K g ≃ {γ : Γ | g⁻¹ * (γ : G) * g ∈ K} where
-  toFun x := ⟨⟨x.1, (mem_Gam.1 x.2).1⟩, (mem_Gam.1 x.2).2⟩
-  invFun y := ⟨y.1.1, mem_Gam.2 ⟨y.1.2, y.2⟩⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-def GamCongr {Γ U : Subgroup G} {x x' h u : G} (hh : h ∈ Γ) (hu : u ∈ U) (e : x' = h * x * u) :
-    Gam Γ U x ≃* Gam Γ U x' where
-  toFun y := ⟨h * y * h⁻¹, mem_Gam.2 ⟨Γ.mul_mem (Γ.mul_mem hh (mem_Gam.1 y.2).1) (Γ.inv_mem hh), by
-    have := U.mul_mem (U.mul_mem (U.inv_mem hu) (mem_Gam.1 y.2).2) hu
-    rw [e]; convert this using 1; group⟩⟩
-  invFun y := ⟨h⁻¹ * y * h, mem_Gam.2 ⟨Γ.mul_mem (Γ.mul_mem (Γ.inv_mem hh) (mem_Gam.1 y.2).1) hh, by
-    have := U.mul_mem (U.mul_mem hu (mem_Gam.1 y.2).2) (U.inv_mem hu)
-    subst e; convert this using 1; group⟩⟩
-  left_inv y := by ext; simp [mul_assoc]
-  right_inv y := by ext; simp [mul_assoc]
-  map_mul' y z := by ext; simp [mul_assoc]
-
 def toK (Γ K : Subgroup G) (g : G) : Gam Γ K g →* K where
   toFun x := ⟨g⁻¹ * x * g, (mem_Gam.1 x.2).2⟩
   map_one' := by ext; simp

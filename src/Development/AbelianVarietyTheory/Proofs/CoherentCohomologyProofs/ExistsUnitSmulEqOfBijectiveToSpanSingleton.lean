@@ -8,13 +8,6 @@ section Ring
 
 variable (A G : Type*) [CommRing A] [Group G] [MulSemiringAction G A]
 
-theorem mem_fixedSubring_iff {a : A} : a ∈ FixedPoints.subring A G ↔ ∀ g : G, g • a = a :=
-  Iff.rfl
-
-theorem mem_fixedSubalgebra_iff (R : Type*) [CommRing R] [Algebra R A] [SMulCommClass G R A]
-    {a : A} : a ∈ FixedPoints.subalgebra R A G ↔ ∀ g : G, g • a = a :=
-  Iff.rfl
-
 instance isInvariant_fixedSubring : Algebra.IsInvariant (FixedPoints.subring A G) A G :=
   ⟨fun b hb ↦ ⟨⟨b, hb⟩, rfl⟩⟩
 
@@ -193,15 +186,6 @@ noncomputable def tensorMulSemiringAction : MulSemiringAction G (S ⊗[R] A) whe
   smul_add g := map_add (Algebra.TensorProduct.map _ _)
   smul_one g := map_one (Algebra.TensorProduct.map _ _)
   smul_mul g := map_mul (Algebra.TensorProduct.map _ _)
-
-theorem tensorMulSemiringAction_smul_tmul (g : G) (s : S) (a : A) :
-    letI := tensorMulSemiringAction G R S A
-    g • (s ⊗ₜ[R] a) = s ⊗ₜ[R] (g • a) := rfl
-
-theorem tensorMulSemiringAction_includeRight (g : G) (a : A) :
-    letI := tensorMulSemiringAction G R S A
-    (Algebra.TensorProduct.includeRight : A →ₐ[R] S ⊗[R] A) (g • a) =
-      g • (Algebra.TensorProduct.includeRight : A →ₐ[R] S ⊗[R] A) a := rfl
 
 end
 

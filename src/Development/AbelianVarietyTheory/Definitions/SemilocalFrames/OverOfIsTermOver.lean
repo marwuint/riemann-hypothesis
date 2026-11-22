@@ -59,17 +59,8 @@ variable {D : D7}
 
 variable {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
-theorem moveT_eq {p : PlF D} {Mp : Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)
-    (t : Loc.Term (Vp D p) Mp D.R.rS) : moveT g t = move g t := rfl
-
 theorem locF_eq (p : PlF D) {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
     locF Y p F = scaled (zOf Y) p (frame F) := rfl
-
-theorem locT_eq (t : TauC Y u u') (p : PlF D) :
-    locT Y u u' t p = locU (zOf Y) p t.toTerm.lam (lf D (X.Fu u)) (Quot.out t.toTerm.cls).1 (Tu D u) (Tu D u') := rfl
-
-theorem overOrb_iff {Cl Nu : Type} (Fm : LocFam (zOf Y) Cl Nu) (t : TauC Y u u') (p : PlF D)
-    (d : LocNG.Datum (Fm.FP p)) : OverOrb Fm t p d ↔ Over (Fm.FP p) d (locT Y u u' t p) := Iff.rfl
 
 end Glob
 

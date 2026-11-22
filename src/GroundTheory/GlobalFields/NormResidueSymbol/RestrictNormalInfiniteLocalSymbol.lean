@@ -26,10 +26,6 @@ def belowPlace (u : PlacesOver M v) : PlacesOver L v :=
   ⟨below L u.1, liesOver_below_of_placesOver L M v u⟩
 
 omit [NumberField K] [NumberField L] [NumberField M] in
-theorem belowPlace_val (u : PlacesOver M v) : (belowPlace L M v u).1 = below L u.1 :=
-  rfl
-
-omit [NumberField K] [NumberField L] [NumberField M] in
 
 instance liesOver_belowPlace (u : PlacesOver M v) :
     u.1.asIdeal.LiesOver (belowPlace L M v u).1.asIdeal :=

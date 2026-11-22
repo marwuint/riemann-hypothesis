@@ -110,10 +110,6 @@ theorem Place.isChar_ofSplitPt (q : GlobalTheory.FinPl.SplitPt D k) {ψ : AddCha
   rw [Circle.ext_iff, hχ, key]
   rfl
 
-theorem Place.down_ofSplitPt {q : GlobalTheory.FinPl.SplitPt D k} {S T : HSp D} {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n']
-    [DecidableEq n'] (α : GlobalTheory.FinPl.Frame q S n') (β : GlobalTheory.FinPl.Frame q T n) (t : WO S T) :
-    (Place.ofSplitPt q).down (Frame.ofFinPl α) (Frame.ofFinPl β) t = GlobalTheory.FinPl.rd α β t := rfl
-
 namespace Witness
 open GlobalTheory.SplitHalf
 open scoped Topology

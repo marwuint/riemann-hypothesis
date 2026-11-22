@@ -23,10 +23,5 @@ def zeroTriple : SAB H (Sp R) :=
     adj := (GlobalTheory.Models.Inhab.zeroTriple H (Sp R)).adj
     prim := (GlobalTheory.Models.Inhab.zeroTriple H (Sp R)).prim }
 
-def zeroU [IsHausdorff I R] : Unif I (UnifZero.zeroData R I) (Inh.zeroPolAV (Sp (FractionRing R))) (zeroTriple H R I).G :=
-  ⟨UnifZero.zeroPre R I, fun k _ => UnifZero.expBij k⟩
-
-theorem zeroU_LG [IsHausdorff I R] : (zeroU H R I).LG = (zeroTriple H R I).PP := rfl
-
 end GlobalTheory.LN.PelModel
 end

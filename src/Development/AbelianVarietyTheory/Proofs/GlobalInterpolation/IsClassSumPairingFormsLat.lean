@@ -221,8 +221,6 @@ section Level
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (C C' : CoefPk X n (DecoSet X.E n ST SG))
   (Λ : LevFam X.E X.K n SG)
 
-def clInv : (formGSD C' Λ.inv).Cl ≃ (formGSD C Λ).Cl := Equiv.refl (formGSD C Λ).Cl
-
 end Level
 
 section Concrete

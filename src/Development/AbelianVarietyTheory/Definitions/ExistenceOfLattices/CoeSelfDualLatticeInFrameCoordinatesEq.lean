@@ -110,8 +110,6 @@ structure PkgLaws {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ
     (∀ k τ, Formalism.MainNotions.StandardLattice.IsInfEmb τ.1 (th k τ)) ∧ DictIsUnif V dict Kf th hr ∧
       DictLat U V hr dict ι e F ik φ th x₀
 
-theorem cF_apply_eq_complexConj (D : D7) (x : D.host.E) : cF D x = IsCMField.complexConj D.host.E x := rfl
-
 theorem mem_latC_iff_symm_mem (V : HSp D) (v : Fin V.rank → D.host.E) :
     v ∈ latC V ↔ V.frame.equivFun.symm v ∈ V.L0 := by
   constructor
@@ -125,9 +123,6 @@ theorem coe_selfDualLatticeInFrameCoordinates_eq (V : HSp D) : (latC V : Set (Fi
   ext v
   rw [SetLike.mem_coe, mem_latC_iff_symm_mem, Module.Basis.equivFun_symm_apply]
   rfl
-
-theorem isLevelK_iff_finCong (V : HSp D) (N : ℕ) (Kf : Subgroup (GA D V)) :
-    IsLevelK V N Kf ↔ ∀ k, k ∈ Kf ↔ k ∈ GfC V ∧ FinCong V N k := Iff.rfl
 
 theorem exists_isRat_of_mem_GQ (V : HSp D) {γ : GA D V} (h : γ ∈ GQ V) : ∃ γ', IsRat V γ γ' := by
   obtain ⟨γ', -, e⟩ := h
@@ -170,9 +165,6 @@ theorem isom_iff_model (Dw : Datum H) (V : HSp D) {r : ℕ} (hr : V.rank = r)
 namespace Ctx
 
 variable {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {V : HSp D} {r : ℕ} (C : Ctx Xo c σ V r)
-
-theorem unf_eq_toPj (un : ∀ k, (C.M.X k).dom → FrPt Xo c (CAt σ)) :
-    C.unf un = (GlobalTheory.FrameUnif.unfOf C.e C.F C.M un).toPj := rfl
 
 end Ctx
 

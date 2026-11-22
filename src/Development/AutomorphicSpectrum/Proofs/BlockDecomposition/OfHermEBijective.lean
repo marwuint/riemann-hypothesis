@@ -35,11 +35,6 @@ theorem ofHermE_bijective : Function.Bijective (ofHermE (D := D) (r := r)) := by
 
 def hermEquiv : HermE D r ≃ ratHerm D r := Equiv.ofBijective _ ofHermE_bijective
 
-theorem hermEquiv_apply (β : HermE D r) : (hermEquiv (D := D) (r := r)) β = ofHermE β := rfl
-
-theorem J_eq_Jt (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (μ : Measure (Mx D V.rank r)) (φ : Mx D V.rank r → ℂ)
-    (β : HermE D r) : J ψ V μ φ β = Jt ψ V μ φ (ofHermE β).1 := rfl
-
 theorem W_eq (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r))
     (φ : Mx D V.rank r → ℂ) (β : HermE D r) :
     W ψ V μ lam φ β = ∫ b, Jt ψ V μ φ b *

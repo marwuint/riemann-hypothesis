@@ -36,18 +36,6 @@ def CurveSigma : Prop :=
     MvPowerSeries.X 0 ^ 2 * MvPowerSeries.X 1 ^ 2 * (atS (sgW W s2) * atD (sgW W s2)) =
       at1 0 (sgW W s2) ^ 2 * at1 1 (sgW W s2) ^ 2 * wpDiff (wpReg W)
 
-def CurvePar : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K) (s2 : K),
-    IntModel W →
-    Simeq (par (fgl W) (iSer W) (phW W s2)) 0 ∧
-    Simeq (ι := Unit) (PowerSeries.subst (iSer W) (phW W s2)) (phW W s2) ∧
-    Simeq (ι := Unit)
-      (MvPowerSeries.subst ![(PowerSeries.X : PowerSeries K), PowerSeries.X] (beW W s2))
-      (2 * phW W s2) ∧
-    ∀ (n : ℤ) (N : PowerSeries K), PowerSeries.constantCoeff N = 0 →
-      PowerSeries.subst N (logSer W) = PowerSeries.C (n : K) * logSer W →
-      Simeq (ι := Unit) (PowerSeries.subst N (phW W s2)) (((n ^ 2 : ℤ) : PowerSeries K) * phW W s2)
-
 def WeierstrassBiadditiveModEquiv : Prop :=
   ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K) (s2 : K),
     IntModel W → ‖(2 : K)‖ = 1 →

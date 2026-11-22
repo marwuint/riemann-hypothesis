@@ -193,9 +193,6 @@ namespace IsIwasawa
 variable (h : IsIwasawa δ K)
 include h
 
-theorem flatSec_of_mem (Φ : G → ℂ) (s₀ s : ℂ) {k : G} (hk : k ∈ K) : flatSec δ K Φ s₀ s k = Φ k := by
-  simp [flatSec, h.iwAbs_of_mem hk]
-
 theorem indLaw_flatSec {Φ : G → ℂ} {ρ s₀ : ℂ} (hΦ : IndLaw δ χ (s₀ + ρ) Φ) (s : ℂ) :
     IndLaw δ χ (s + ρ) (flatSec δ K Φ s₀ s) := fun p g => by
   rw [flatSec, flatSec, hΦ, h.iwAbs_left, npow_mul, show s + ρ = (s₀ + ρ) + (s - s₀) by ring,

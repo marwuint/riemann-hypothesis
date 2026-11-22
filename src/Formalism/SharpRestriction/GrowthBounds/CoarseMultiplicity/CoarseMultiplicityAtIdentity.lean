@@ -61,13 +61,6 @@ def RawTailBody (C0 Cde CE1 CE2 : ℝ) (X : Loc) [NeZero X.m] [Fact X.p.Prime] (
         InWj w (liftSubst X.p X.n' O w 1 (hhLetters X.TT) g raw - symFam (KK O) X.p C0 CE1 CE2 X β s -
           ∑ ε ∈ Finset.Ico 1 n, (w ^ ε) • τ ε) n
 
-def RawTailAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
-  ∀ (X : Loc) [NeZero X.m] [Fact X.p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [Algebra (WF X.p X.n') O] (S : UniformizedDVR X.p O), S.SqP → D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X →
-    ∀ mm : ℝ, (mm = 0 ∨ mm = 12 * (X.c : ℝ)) →
-    ∀ g : Matrix (Fin (X.m + 1)) (Fin (X.m + 1)) (WF X.p X.n'), IsGLW g →
-      RawTailBody C0 Cde CE1 CE2 X O S.w mm g
-
 def RawTailAt1 (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
   ∀ (X : Loc) [NeZero X.m] [Fact X.p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra (WF X.p X.n') O] (S : UniformizedDVR X.p O), S.SqP → D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X →

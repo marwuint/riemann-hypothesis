@@ -176,15 +176,8 @@ noncomputable def zmodRepOfTorsion : Rep.{0} (ZMod l) G :=
         ext a
         simp [Module.End.mul_apply] }
 
-theorem zmodRepOfTorsion_ρ_apply (g : G) (a : A) :
-    (zmodRepOfTorsion l A hA).ρ g a = A.ρ g a :=
-  rfl
-
 def zmodRepOfTorsionEquiv : A ≃+ zmodRepOfTorsion l A hA :=
   AddEquiv.refl A
-
-theorem zmodRepOfTorsionEquiv_apply (a : A) : zmodRepOfTorsionEquiv l A hA a = a :=
-  rfl
 
 variable [TopologicalSpace G]
 

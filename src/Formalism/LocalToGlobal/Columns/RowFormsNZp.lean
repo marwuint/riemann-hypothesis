@@ -27,6 +27,4 @@ def permGL : Equiv.Perm (Fin n) →* GL (Fin n) R where
   map_one' := Units.ext (pM_one R)
   map_mul' s t := Units.ext (pM_mul R s t)
 
-theorem permGL_val (s : Equiv.Perm (Fin n)) : ((permGL R s : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = pM R s := rfl
-
 end Formalism.L2.Col

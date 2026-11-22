@@ -33,9 +33,6 @@ def sphereBall (h : HermNorm n) (k : ℕ) : Set (Fin k × Fin n → ℂ) :=
 def sphereNormalize (h : HermNorm n) (k : ℕ) (u : Fin k × Fin n → ℂ) : Fin k × Fin n → ℂ :=
   fun ij ↦ ((h.norm fun j ↦ u (ij.1, j) : ℝ) : ℂ)⁻¹ * u ij
 
-theorem sphereMean_eq (h : HermNorm n) (k : ℕ) (g : (Fin k × Fin n → ℂ) → ℝ) :
-    sphereMean h k g = ⨍ u in sphereBall h k, g (sphereNormalize h k u) := rfl
-
 def sphereLaw (N : ℕ) : Measure (Fin N → ℂ) :=
   (volume[|sphereBall (HermNorm.std N) 1]).map
     fun u j ↦ sphereNormalize (HermNorm.std N) 1 u (0, j)
@@ -44,14 +41,7 @@ end Sphere
 
 section HeightsOfPoints
 
-def intToField (F K : Type*) [Field F] [Field K] [Algebra F K] : 𝓞 F →+* K :=
-  (algebraMap F K).comp (algebraMap (𝓞 F) F)
-
 variable {F : Type*} [Field F] [NumberField F] {W : Type*} [AddCommGroup W] [Module (𝓞 F) W]
-
-abbrev DualVec (F : Type*) [Field F] (W : Type*) [AddCommGroup W] [Module (𝓞 F) W]
-    (K : Type*) [Field K] [Algebra F K] : Type _ :=
-  W →ₛₗ[intToField F K] K
 
 variable {K : Type*} [Field K] [NumberField K] [Algebra F K]
 
@@ -99,16 +89,6 @@ instance isProbabilityMeasure_sphereLaw (N : ℕ) : IsProbabilityMeasure (sphere
   unfold sphereNormalize
   simp only [HermNorm.std_norm_eq]
   fun_prop
-
-def ratPointVec : DualVec ℚ (Fin 2 → 𝓞 ℚ) ℚ where
-  toFun x := (x 0 : ℚ) + 2 * (x 1 : ℚ)
-  map_add' x y := by simp only [Pi.add_apply, map_add]; ring
-  map_smul' a x := by
-    simp only [Pi.smul_apply, smul_eq_mul, intToField, RingHom.comp_apply,
-      map_mul, Algebra.algebraMap_self, RingHom.id_apply]
-    ring
-
-theorem ratPointVec_apply (x : Fin 2 → 𝓞 ℚ) : ratPointVec x = (x 0 : ℚ) + 2 * (x 1 : ℚ) := rfl
 
 end Inhabitants
 

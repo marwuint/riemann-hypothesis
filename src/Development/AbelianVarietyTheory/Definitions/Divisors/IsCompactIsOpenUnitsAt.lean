@@ -92,13 +92,6 @@ variable (E) in
 def unitsAt (v : Pl F) : Subgroup (AE F E)ˣ :=
   idelesAt E (evFin F v) ⊓ (intLoc F E v).toSubmonoid.units.comap (unitFin F E v)
 
-theorem mem_UAtSub {X : Spc F E n} {ev : AF F → R} {g : UA σ X.J} : g ∈ UAtSub σ X ev ↔ g ∈ UAt σ X ev := Iff.rfl
-
-theorem mem_KAt {X : Spc F E n} {K : Subgroup (UA σ X.J)} {ev : AF F → R} {g : UA σ X.J} :
-    g ∈ KAt K ev ↔ g ∈ K ∧ g ∈ UAt σ X ev := Iff.rfl
-
-theorem mem_idelesAt {ev : AF F → R} {l : (AE F E)ˣ} : l ∈ idelesAt E ev ↔ At ev ((l : AE F E) - 1) := Iff.rfl
-
 theorem mem_unitsAt {v : Pl F} {l : (AE F E)ˣ} : l ∈ unitsAt E v ↔ l ∈ idelesAt E (evFin F v) ∧
     compFin F E v l ∈ intLoc F E v ∧ compFin F E v (l⁻¹ : (AE F E)ˣ) ∈ intLoc F E v := Iff.rfl
 

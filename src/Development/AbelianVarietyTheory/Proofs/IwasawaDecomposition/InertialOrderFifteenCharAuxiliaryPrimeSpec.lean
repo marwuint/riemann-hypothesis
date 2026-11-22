@@ -186,9 +186,6 @@ theorem IsGal.pow_eq_one (ha : IsGlobalArtin art) (h : IsGal art κ ι χ 0 r) {
   exact this
 
 omit [TopologicalSpace O] in
-theorem sideIso_true (ι : Qbar l ≃+* ℂ) : sideIso ι true = ι := rfl
-
-omit [TopologicalSpace O] in
 theorem sideIso_false (ι : Qbar l ≃+* ℂ) (x : Qbar l) : sideIso ι false x = starRingEnd ℂ (ι x) := rfl
 
 theorem IsGal.side (h : IsGal art κ ι χ 0 r) {m : ℕ} (hm0 : 0 < m) (hm : χ.OrderDvd m) (b : Bool)

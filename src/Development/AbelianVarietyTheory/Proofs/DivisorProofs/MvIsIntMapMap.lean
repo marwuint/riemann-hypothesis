@@ -145,11 +145,6 @@ theorem isIntFB_chart :
   · unfold FB.toK; rw [h4]; exact mvIsInt_map_map X _
   · unfold FB.toK; rw [h6]; exact mvIsInt_map_map X _
 
-theorem fgl_eq_fglOf :
-    letI := io.toAlgebra
-    letI : Algebra T.Fr X.C := X.ιF.toAlgebra
-    fgl Ch X = fglOf (isIntFB_chart Ch X) := rfl
-
 theorem gauge_chart :
     letI := io.toAlgebra
     letI : Algebra T.Fr X.C := X.ιF.toAlgebra

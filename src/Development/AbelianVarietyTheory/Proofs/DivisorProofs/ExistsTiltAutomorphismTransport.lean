@@ -47,9 +47,6 @@ def tensorEquiv (G : PreTilt O p ≃+* PreTilt O p) : RL p O Λ ≃+* RL p O Λ 
 theorem tensorEquiv_tmul (G : PreTilt O p ≃+* PreTilt O p) (a : Ainf p O) (l : Λ) :
     tensorEquiv Λ G (a ⊗ₜ l) = wittEquiv G a ⊗ₜ l := rfl
 
-theorem tensorEquiv_symm_tmul (G : PreTilt O p ≃+* PreTilt O p) (a : Ainf p O) (l : Λ) :
-    (tensorEquiv Λ G).symm (a ⊗ₜ l) = (wittEquiv G).symm a ⊗ₜ l := rfl
-
 end GlobalTheory.GammaAct
 
 namespace GlobalTheory.GammaAct
@@ -57,10 +54,6 @@ namespace GlobalTheory.GammaAct
 section
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (Ideal.span {(p : O)}) O]
-
-theorem tensorEquiv_inA (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ]
-    (G : PreTilt O p ≃+* PreTilt O p) (a : Ainf p O) :
-    tensorEquiv Λ G (inA a) = inA (wittEquiv G a) := rfl
 
 end
 

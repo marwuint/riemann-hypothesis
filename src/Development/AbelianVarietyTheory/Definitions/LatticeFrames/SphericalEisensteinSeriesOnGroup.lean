@@ -29,8 +29,6 @@ def Lvl.Good {V : HSp D} (l : Lvl V) : Prop :=
 
 def Lvl.form {V : HSp D} (l : Lvl V) : Mx D V.rank V.rank := adj (l.c⁻¹).1 ⬝ (l.c⁻¹).1
 
-theorem Lvl.K_frameLat (V : HSp D) (a : GL (Fin V.rank) (AE D)) : Lvl.K (⟨frameLat V, a⟩ : Lvl V) = Kmax V a := rfl
-
 theorem Lvl.Good.isCompact_K {V : HSp D} {l : Lvl V} (h : l.Good) : IsCompact (l.K : Set (GA D V)) :=
   haveI := h.1
   isCompact_levelAll (isCMExt_host D) _ _ _
@@ -42,8 +40,6 @@ variable {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (K : Subgroup (GA D T)
 def sphericalSectionIwasawa (s : ℂ) : GA D T → ℂ := fun h => npow (iwAbs (absDet d) K h) (s + rhoH T r)
 
 def sphericalEisensteinSeriesOnGroup (h : GA D T) : ℂ → ℂ := fun s => cosetSum (stab d) (GQ T) (sphericalSectionIwasawa d K s) h
-
-theorem sphericalSection_maximalCompact (b : GL (Fin T.rank) (AE D)) : sphericalSectionIwasawa d (Kmax T b) = sphericalSection d b := rfl
 
 end SlopeTestRemainingChoices
 

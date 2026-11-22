@@ -138,12 +138,6 @@ def inflationToAbsolute (E : IntermediateField K Ks) [FiniteDimensional K E] [Is
   (AddMonoidHom.toMultiplicative (unitsInflationH2 K E).hom.toAddMonoidHom).comp
     (H2mul.galUnitsEquivH2 : H2mul (E ≃ₐ[K] E) Eˣ ≃* _).toMonoidHom
 
-theorem inflationToAbsolute_apply (E : IntermediateField K Ks) [FiniteDimensional K E]
-    [IsGalois K E] (x : H2mul (E ≃ₐ[K] E) Eˣ) :
-    inflationToAbsolute K E x = Multiplicative.ofAdd
-      ((unitsInflationH2 K E).hom (Multiplicative.toAdd (H2mul.galUnitsEquivH2 x))) :=
-  rfl
-
 end Galois
 
 end Main

@@ -20,8 +20,6 @@ def thetaC : ℂ := (1 + Complex.I * (Real.sqrt D.host.d : ℂ)) / 2
 
 def KQuad : Prop := Module.finrank ℚ D.host.K = 2
 
-def ConjOnK : Prop := PI.KerIso.IsConj D.host.K D.host.conj
-
 def CardTau : Prop := Fintype.card D.what₂.Tau = Module.finrank D.host.K D.host.E
 
 def EmbInj : Prop := Function.Injective (TaylorLogMetric.embT D)
@@ -37,8 +35,6 @@ def SqrtInK : Prop :=
 
 def LatStable : Prop :=
   ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), ∀ w ∈ TaylorLogMetric.lamOf D cc δ, thetaC D * w ∈ TaylorLogMetric.lamOf D cc δ
-
-def MMSelfDual : Prop := PI.KerIso.SelfDualI D.host.K D.host.conj D.host.AA0
 
 def SplitKSplits : Prop := ∀ p : ℕ, p.Prime → SplitK D p → PI.KerIso.SplitsAt D.host.K D.host.conj p
 

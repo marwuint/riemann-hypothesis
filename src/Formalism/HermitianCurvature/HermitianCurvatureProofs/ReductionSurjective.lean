@@ -26,9 +26,6 @@ theorem hEmb_mul (h h' : Matrix (Fin k) (Fin k) A) : hEmb r (h * h') = hEmb r h 
 theorem hEmb_one : hEmb r (1 : Matrix (Fin k) (Fin k) A) = 1 := by
   simp [hEmb, midEmb]
 
-theorem hEmb_apply (h : Matrix (Fin k) (Fin k) A) (a b : Fin k) :
-    hEmb r h (Sum.inr (Sum.inl (Sum.inl a))) (Sum.inr (Sum.inl (Sum.inl b))) = h a b := rfl
-
 variable (A r k) in
 
 def hEmbHom : Matrix (Fin k) (Fin k) A →* Matrix (Idx r k) (Idx r k) A where
@@ -50,9 +47,6 @@ section Local
 variable (o : Type) [CommRing o] [IsLocalRing o]
 
 local notation "𝔽" => IsLocalRing.ResidueField o
-
-theorem coe_red (ι : Type) [Fintype ι] [DecidableEq ι] (g : GL ι o) :
-    (red o ι g : Matrix ι ι 𝔽) = (g : Matrix ι ι o).map (IsLocalRing.residue o) := rfl
 
 variable {o} {r k : ℕ}
 

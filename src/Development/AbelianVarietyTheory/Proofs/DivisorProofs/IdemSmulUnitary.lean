@@ -59,9 +59,6 @@ def idemUnit (ε : AF F) (hε : ε * ε = ε) : (AE F E)ˣ →* (AE F E)ˣ where
   map_one' := Units.ext (by simp only [Units.val_one, Units.val_mk]; rw [← add_smul, add_sub_cancel, one_smul])
   map_mul' a b := Units.ext (by simp only [Units.val_mul, Units.val_mk]; rw [idem_smul_mul hε])
 
-theorem val_idemUnit (ε : AF F) (hε : ε * ε = ε) (l : (AE F E)ˣ) :
-    (idemUnit E ε hε l : AE F E) = ε • (l : AE F E) + (1 - ε) • 1 := rfl
-
 variable (σ) in
 
 def idemU {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ε : AF F) (hε : ε * ε = ε) : UA σ J →* UA σ J where
@@ -115,23 +112,12 @@ def compArch {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : UA σ J →* UA σ J := 
 theorem mat_compAt {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : Pl F) (g : UA σ J) :
     mat (compAt σ J v g) = eFin v • mat g + (1 - eFin v) • 1 := rfl
 
-theorem mat_compArch {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g : UA σ J) :
-    mat (compArch σ J g) = eInf F • mat g + (1 - eInf F) • 1 := rfl
-
 theorem compAt_mem {n : ℕ} {X : Spc F E n} (v : Pl F) (g : UA σ X.J) : compAt σ X.J v g ∈ UAt σ X (evFin F v) := by
   intro u hu
   have h := GlobalTheory.LatVac.at_liftV v 1 u hu
   rw [mat_compAt, show eFin v • mat g + (1 - eFin v) • (1 : Matrix (Fin _) (Fin _) (AE F E)) - 1 =
     eFin v • (mat g - 1) by rw [sub_smul, one_smul, smul_sub]; abel, smul_smul]
   rw [show u * eFin v = 0 from h, zero_smul]
-
-theorem compArch_mem {n : ℕ} {X : Spc F E n} (g : UA σ X.J) : compArch σ X.J g ∈ UAt σ X (evI F) := by
-  intro u hu
-  have h := at_partInf (M := AF F) (1 : AF F) u hu
-  simp only [partInf, smul_eq_mul, mul_one] at h
-  rw [mat_compArch, show eInf F • mat g + (1 - eInf F) • (1 : Matrix (Fin _) (Fin _) (AE F E)) - 1 =
-    eInf F • (mat g - 1) by rw [sub_smul, one_smul, smul_sub]; abel, smul_smul]
-  rw [show u * eInf F = 0 from h, zero_smul]
 
 theorem unitAt_mem (v : Pl F) (l : (AE F E)ˣ) : unitAt E v l ∈ idelesAt E (evFin F v) := by
   intro u hu

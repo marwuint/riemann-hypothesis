@@ -23,10 +23,6 @@ def pairPt {k m : ℕ} (x : EuclideanSpace ℝ (Fin k)) (y : EuclideanSpace ℝ 
     EuclideanSpace ℝ (Fin k ⊕ Fin m) :=
   WithLp.toLp 2 (Sum.elim (fun i => x i) (fun j => y j))
 
-def graphOver {k m : ℕ} (F : EuclideanSpace ℝ (Fin k) → EuclideanSpace ℝ (Fin m))
-    (A : Set (EuclideanSpace ℝ (Fin k))) : Set (EuclideanSpace ℝ (Fin k ⊕ Fin m)) :=
-  (fun x => pairPt x (F x)) '' A
-
 def coordGraph {n : ℕ} (P : Finset (Fin n)) (Ω : Set (P → ℂ)) (F : (P → ℂ) → Fin n → ℂ) :
     Set (EuclideanSpace ℂ (Fin n)) :=
   {z | (fun i : P => z i) ∈ Ω ∧ ∀ j, j ∉ P → z j = F (fun i : P => z i) j}

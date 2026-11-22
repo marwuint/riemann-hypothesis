@@ -76,9 +76,6 @@ open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 variable {D : D7} {N N' r : ℕ} {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ)
   (C : WeierstrassCurve.VariableChange ℂ_[p]) (wq : PowerSeries ℂ_[p]) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
 
-theorem atLog_def (G : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) :
-    atLog D lam Λ C wq b G = MvPowerSeries.subst (RestC.atLogA lam Λ C wq b) G := rfl
-
 end Chain
 
 section Lin

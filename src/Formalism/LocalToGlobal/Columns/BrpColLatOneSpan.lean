@@ -45,17 +45,6 @@ section LocDel
 
 variable (K : Type) [Field K] [NumberField K] [StarRing K] {n : ℕ}
 
-def brpRhoEquiv (lam : DomWeight n) (B : GL (Fin n) K) : VV K (oneW lam) ≃ₗ[K] VV K (oneW lam) :=
-  LinearEquiv.ofLinear (rhoK (oneW lam) (fun _ => B)) (rhoK (oneW lam) (fun _ => B⁻¹))
-    (by
-      rw [← Module.End.mul_eq_comp, ← map_mul]
-      have : ((fun _ : Unit => B) * fun _ => B⁻¹) = 1 := by funext; simp
-      rw [this, map_one]; rfl)
-    (by
-      rw [← Module.End.mul_eq_comp, ← map_mul]
-      have : ((fun _ : Unit => B⁻¹) * fun _ => B) = 1 := by funext; simp
-      rw [this, map_one]; rfl)
-
 def brpMatEquiv (B : GL (Fin n) K) : (Fin n → K) ≃ₗ[K] (Fin n → K) :=
   LinearEquiv.ofLinear (Matrix.mulVecLin (B : Matrix (Fin n) (Fin n) K)) (Matrix.mulVecLin ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))
     (by rw [← Matrix.mulVecLin_mul]; simp)

@@ -71,27 +71,6 @@ theorem valAt'_id_top (r : Γ(Sp ℂ, ⊤)) :
   rw [valAt', dif_pos (show ⊤ ≤ 𝟙 (Sp ℂ) ⁻¹ᵁ ⊤ from fun _ _ => trivial), valAt, e]
   rfl
 
-theorem ext_of_valAt'_of_isIso [IsIso x] {U : X.Opens} {f f' : Γ(X, U)}
-    (h : ⊤ ≤ x ⁻¹ᵁ U → valAt' x U f = valAt' x U f') : f = f' := by
-  by_cases hU : ⊤ ≤ x ⁻¹ᵁ U
-  · have h1 := h hU
-    rw [valAt', valAt', dif_pos hU, dif_pos hU] at h1
-    have h2 := (ConcreteCategory.bijective_of_isIso
-      (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).1 h1
-    have hinj : Function.Injective (x.appLE U ⊤ hU).hom := by
-      rw [Scheme.Hom.appLE_congr x hU rfl (top_unique hU).symm
-        (fun φ => Function.Injective φ.hom), Scheme.Hom.appLE_eq_app]
-      exact (ConcreteCategory.bijective_of_isIso (x.app U)).1
-    exact hinj h2
-  · have hb : U = ⊥ := by
-      refine bot_unique fun y hy => hU ?_
-      obtain ⟨q, rfl⟩ := x.surjective y
-      intro q' _
-      obtain rfl : q' = q := Subsingleton.elim (α := PrimeSpectrum ℂ) _ _
-      exact hy
-    subst hb
-    exact Subsingleton.elim _ _
-
 end Values
 
 section Transport
@@ -262,10 +241,6 @@ theorem isFnAt_fnAt (hL : L.IsLB) (k : ℤ) (s : LB.Sec (LPow A L k T)) :
     IsFnAt u p k s (fnAt u p hL k s) :=
   (existsUnique_isFnAt u p hL k s).exists.choose_spec
 
-theorem isFnAt_iff_eq_fnAt (hL : L.IsLB) {k : ℤ} {s : LB.Sec (LPow A L k T)}
-    {θ : (Fin g → ℂ) → ℂ} : IsFnAt u p k s θ ↔ θ = fnAt u p hL k s :=
-  ⟨fun h => h.unique hL (isFnAt_fnAt u p hL k s), fun h => h ▸ isFnAt_fnAt u p hL k s⟩
-
 variable {u p}
 
 theorem IsFnAt.differentiable (hL : L.IsLB) {k : ℤ} {s : LB.Sec (LPow A L k T)}
@@ -310,21 +285,6 @@ theorem IsFnAt.liftFun_mul {k : ℤ} {s t : LB.Sec (LPow A L k T)} {θ : (Fin g 
 
 variable (u p)
 
-def fnAtHom (hL : L.IsLB) (k : ℤ) :
-    SecM A L k T →ₛₗ[valHom p.left ⊤ (fun _ _ => trivial)] ((Fin g → ℂ) → ℂ) where
-  toFun s := fnAt u p hL k (SecM.toSec A s)
-  map_add' s s' := ((isFnAt_iff_eq_fnAt u p hL).1
-    ((isFnAt_fnAt u p hL k (SecM.toSec A s)).add (isFnAt_fnAt u p hL k (SecM.toSec A s'))
-      (t := SecM.toSec A (s + s')) fun _ => rfl)).symm
-  map_smul' r s := by
-    refine Eq.trans ((isFnAt_iff_eq_fnAt u p hL).1
-      ((isFnAt_fnAt u p hL k (SecM.toSec A s)).liftFun_mul r
-        (t := SecM.toSec A (r • s)) fun _ => rfl)).symm ?_
-    exact congrArg (· • fnAt u p hL k (SecM.toSec A s)) (valAt'_eq_valHom p.left _ r)
-
-theorem fnAtHom_apply (hL : L.IsLB) (k : ℤ) (s : SecM A L k T) :
-    fnAtHom u p hL k s = fnAt u p hL k (SecM.toSec A s) := rfl
-
 variable {u p}
 
 theorem mem_ptChart_iff {x : T ⟶ A} {z : Fin g → ℂ} (hx : p ≫ x = u.ex z) (j : Fin 1 → L.ι) :
@@ -332,40 +292,6 @@ theorem mem_ptChart_iff {x : T ⟶ A} {z : Fin g → ℂ} (hx : p ≫ x = u.ex z
   refine (le_wchart_unique L p.left x.left j).trans ?_
   rw [← Over.comp_left, hx]
   rfl
-
-theorem IsFnAt.valAt'_ptSecT {k : ℤ} {s : LB.Sec (LPow A L k T)} {θ : (Fin g → ℂ) → ℂ}
-    (h : IsFnAt u p k s θ) {x : T ⟶ A} {z : Fin g → ℂ} (hx : p ≫ x = u.ex z) (j : Fin 1 → L.ι)
-    (hj : ⊤ ≤ p.left ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => x.left) j) :
-    valAt' p.left (LB.wchart L (fun _ : Fin 1 => x.left) j)
-      ((T.left.presheaf.map (homOfLE (val_le A L x j)).op).hom
-        (((ptSecT A x).left.app _).hom (s.f j))) = θ z * u.fr (j 0) z ^ k := by
-  refine (valAt'_appLE' p.left (ptSecT A x).left (val_le A L x j) hj _).trans ?_
-  rw [comp_ptSecT u p hx]
-  exact h j z ((exAt_mem_chart_iff u p k j z).2 ((mem_ptChart_iff hx j).1 hj))
-
-theorem IsFnAt.value_mul_frame {k : ℤ} {s : LB.Sec (LPow A L k T)} {θ : (Fin g → ℂ) → ℂ}
-    (h : IsFnAt u p k s θ) {x : T ⟶ A} {z : Fin g → ℂ} (hx : p ≫ x = u.ex z)
-    {τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => k))}
-    {v : Γ(T.left, ⊤)} (hv : IsValueAt A L k s x τ v) (j : Fin 1 → L.ι)
-    (hj : ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U (j 0)) :
-    valAt' p.left ⊤ v * valAt' p.left (LB.wchart L (fun _ : Fin 1 => x.left) j) (τ.s j).val =
-      θ z * u.fr (j 0) z ^ k := by
-  have hj' := (mem_ptChart_iff hx j).2 hj
-  rw [← h.valAt'_ptSecT hx j hj', hv j, valAt'_mul _ hj', valAt'_res _ _ hj']
-
-theorem IsFnAt.isValueAt_of_isIso [IsIso p] {k : ℤ} {s : LB.Sec (LPow A L k T)}
-    {θ : (Fin g → ℂ) → ℂ} (h : IsFnAt u p k s θ) {x : T ⟶ A} {z : Fin g → ℂ}
-    (hx : p ≫ x = u.ex z)
-    {τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => k))}
-    {v : Γ(T.left, ⊤)} (hv : ∀ j : Fin 1 → L.ι, ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U (j 0) →
-      valAt' p.left ⊤ v * valAt' p.left (LB.wchart L (fun _ : Fin 1 => x.left) j) (τ.s j).val =
-        θ z * u.fr (j 0) z ^ k) : IsValueAt A L k s x τ v := by
-  intro j
-  have : IsIso (show Sp ℂ ⟶ T.left from p.left) :=
-    inferInstanceAs (IsIso ((Over.forget _).map p))
-  refine ext_of_valAt'_of_isIso (show Sp ℂ ⟶ T.left from p.left) fun hj => ?_
-  refine (h.valAt'_ptSecT hx j hj).trans ((hv j ((mem_ptChart_iff hx j).1 hj)).symm.trans ?_)
-  exact ((valAt'_mul p.left hj _ _).trans (congrArg (· * _) (valAt'_res p.left _ hj v))).symm
 
 variable (u p) in
 
@@ -387,15 +313,6 @@ theorem valAt'_rigT {rig : LB.Gen (L.pull (eSec A))} (hrig : u.IsRig rig) (k : �
   refine (valAt'_appLE' p.left T.hom (rigT_le A L j) hj' _).trans ?_
   rw [hp]
   exact (hrig (fun _ => j 0) h0).symm
-
-theorem IsFnAt.value_origin (hL : L.IsLB) {rig : LB.Gen (L.pull (eSec A))} (hrig : u.IsRig rig)
-    {k : ℤ} {s : LB.Sec (LPow A L k T)} {θ : (Fin g → ℂ) → ℂ} (h : IsFnAt u p k s θ)
-    {v : Γ(T.left, ⊤)} (hv : IsValueAt A L k s 1 (rigT A L rig T k) v) :
-    valAt' p.left ⊤ v = θ 0 := by
-  obtain ⟨i, hi⟩ := exists_chart u valueRules hL 0
-  have h1 := h.value_mul_frame (comp_one_eq_ex_zero u p) hv (fun _ => i) hi
-  rw [valAt'_rigT p hrig k (fun _ => i) hi] at h1
-  exact mul_right_cancel₀ (zpow_ne_zero k (u.fr_ne i 0 hi)) h1
 
 theorem IsFnAt.twistPull {ψ : T ⊗ A ⟶ T ⊗ A} {m : T ⊗ A ⟶ A} {hm : ψ ≫ snd T A = m} {a b : ℤ}
     {α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, m.left] ![a, -b])}
@@ -425,29 +342,12 @@ variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A
 
 def basePt : 𝟙_ (Over (Sp ℂ)) ⟶ baseOver (Sp ℂ) := Over.homMk (𝟙 (Sp ℂ)) (Category.id_comp _)
 
-theorem basePt_left : basePt.left = 𝟙 (Sp ℂ) := rfl
-
 instance isIso_basePt : IsIso basePt := inferInstanceAs (IsIso (𝟙 (𝟙_ (Over (Sp ℂ)))))
 
 abbrev exT (z : Fin g → ℂ) : Sp ℂ ⟶ (baseOver (Sp ℂ) ⊗ A).left := exAt u basePt z
 
 abbrev IsFnT (k : ℤ) (s : LB.Sec (LPow A L k (baseOver (Sp ℂ)))) (θ : (Fin g → ℂ) → ℂ) : Prop :=
   IsFnAt u basePt k s θ
-
-theorem isFnT_iff (k : ℤ) (s : LB.Sec (LPow A L k (baseOver (Sp ℂ)))) (θ : (Fin g → ℂ) → ℂ) :
-    IsFnT u k s θ ↔ ∀ (j : Fin 1 → L.ι) z, ⊤ ≤ exT u z ⁻¹ᵁ (LPow A L k (baseOver (Sp ℂ))).U j →
-      valAt' (exT u z) ((LPow A L k (baseOver (Sp ℂ))).U j) (s.f j) = θ z * u.fr (j 0) z ^ k :=
-  Iff.rfl
-
-abbrev exUnit (z : Fin g → ℂ) : Sp ℂ ⟶ (𝟙_ (Over (Sp ℂ)) ⊗ A).left := exAt u (𝟙 _) z
-
-abbrev IsFnUnit (k : ℤ) (s : LB.Sec (LPow A L k (𝟙_ (Over (Sp ℂ))))) (θ : (Fin g → ℂ) → ℂ) : Prop :=
-  IsFnAt u (𝟙 _) k s θ
-
-theorem exUnit_eq_exT (z : Fin g → ℂ) : exUnit u z = exT u z := rfl
-
-theorem isFnUnit_iff_isFnT (k : ℤ) (s : LB.Sec (LPow A L k (𝟙_ (Over (Sp ℂ)))))
-    (θ : (Fin g → ℂ) → ℂ) : IsFnUnit u k s θ ↔ IsFnT u k s θ := Iff.rfl
 
 abbrev numT (r : Γ((baseOver (Sp ℂ)).left, ⊤)) : ℂ :=
   (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom r

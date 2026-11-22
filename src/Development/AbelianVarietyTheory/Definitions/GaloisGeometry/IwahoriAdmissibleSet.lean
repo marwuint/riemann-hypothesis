@@ -41,21 +41,7 @@ def wS (ϖ : kˣ) (S : Finset (Fin a)) : GL (Fin a) k :=
     refine mul_ne_zero ?_ (Finset.prod_ne_zero_iff.2 fun c _ => Units.ne_zero _)
     rcases Int.units_eq_one_or (Equiv.Perm.sign (cyc S)) with h | h <;> simp [h])
 
-theorem val_wS (ϖ : kˣ) (S : Finset (Fin a)) :
-    (wS k ϖ S : Matrix (Fin a) (Fin a) k) = (cyc S).permMatrix k * diagonal fun c => (dEnt k ϖ S c : k) := rfl
-
 def phiS (ϖ : kˣ) (S : Finset (Fin a)) : HeckeFn (iwahori k (Fin a)) :=
   HeckeFn.dc (IwahoriOnto.isOpen_iwahori k (Fin a)) (IwahoriOnto.isCompact_iwahori k (Fin a)) (wS k ϖ S)
-
-theorem phiS_toFun (ϖ : kˣ) (S : Finset (Fin a)) : (phiS k ϖ S).toFun = dcFn (iwahori k (Fin a)) (wS k ϖ S) := rfl
-
-def kotQ (ϖ : kˣ) (Q : ℂ) : HeckeFn (iwahori k (Fin a)) :=
-  hLin (Finset.univ.filter fun S : Finset (Fin a) => S.Nonempty) (fun S => (1 - Q) ^ (S.card - 1)) (phiS k ϖ)
-
-def kot (ϖ : kˣ) : HeckeFn (iwahori k (Fin a)) := kotQ k ϖ (Nat.card 𝓀[k] : ℂ)
-
-theorem kot_apply (ϖ : kˣ) (g : GL (Fin a) k) :
-    (kot (a := a) k ϖ).toFun g = ∑ S ∈ Finset.univ.filter fun S : Finset (Fin a) => S.Nonempty,
-      (1 - (Nat.card 𝓀[k] : ℂ)) ^ (S.card - 1) * (phiS k ϖ S).toFun g := rfl
 
 end GlobalTheory.IwFn

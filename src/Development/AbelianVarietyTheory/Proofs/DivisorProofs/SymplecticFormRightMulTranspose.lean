@@ -23,17 +23,4 @@ theorem hTens_eq_trace' {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (c 
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
-theorem symp_mul_transpose_right : ∀ {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (c : S →ₐ[R] S) (ξ : S)
-    {α β β' : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype β'] [DecidableEq β']
-    (JA : Matrix α α S) (JB : Matrix β β S) (Q : Matrix β β' S) (z z' : Matrix α β' S),
-    symp c ξ JA JB (z * Qᵀ) (z' * Qᵀ) = symp c ξ JA (Qᵀ * JB * Q.map c) z z' := by
-  intro R S _ _ _ c ξ α β β' _ _ _ _ _ _ JA JB Q z z'
-  simp only [symp, hTens_eq_trace']
-  congr 2
-  rw [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, Matrix.transpose_map,
-    Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]
-  simp only [Matrix.mul_assoc]
-  rw [Matrix.trace_mul_comm Q]
-  simp only [Matrix.mul_assoc]
-
 end GlobalTheory.SympRight

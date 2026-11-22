@@ -27,10 +27,6 @@ instance : Nonempty FiniteSubfield := ⟨⟨⊥, inferInstance⟩⟩
 abbrev algebraOfLE {F E : FiniteSubfield} (h : F ≤ E) : Algebra F.1 E.1 :=
   (IntermediateField.inclusion (show F.1 ≤ E.1 from h)).toRingHom.toAlgebra
 
-theorem algebraOfLE_algebraMap {F E : FiniteSubfield} (h : F ≤ E) (x : F.1) :
-    ((@algebraMap F.1 E.1 _ _ (algebraOfLE h) x : E.1) : ℚ̄) = x :=
-  rfl
-
 def ideleClassMap {F E : FiniteSubfield} (h : F ≤ E) :
     IdeleClassGroup F.1 →* IdeleClassGroup E.1 :=
   letI := algebraOfLE h

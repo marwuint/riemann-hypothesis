@@ -47,22 +47,6 @@ abbrev df1 : DefSide (base K v0) where
   Tl := fun _ _ => sl K 1
   Zp := fun _ _ => only0 (Fin 1 → K)
 
-abbrev dat1 : IndefData (df1 K v0) where
-  μ := fun _ => ()
-  Tw := ∅
-  D := 1
-  XE := scaleFrame (fun _ => kap * ∏ j, l j 0) (fr K 1)
-  Ep := only0 (Fin 1 → K)
-  ι := fun _ => 1
-  dW := fun _ => 1
-  XW := fun j => scaleFrame (fun _ => l j 0) (fr K 1)
-  Wp := fun _ => only0 (Fin 1 → K)
-  M := fun _ => sl K 1
-  θ := fun _ _ => 1
-  κ := fun _ => kap
-  lam := fun j _ p _ => l j p
-  err0 := fun _ _ => 0
-
 variable {K v0 kap l}
 
 variable (K v0) in

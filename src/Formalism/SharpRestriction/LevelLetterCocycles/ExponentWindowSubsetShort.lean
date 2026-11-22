@@ -54,11 +54,6 @@ def cutsOf {n j : ℕ} {ty : ZMod n → LT} {cuts : Finset (ZMod n)} {arcLen : Z
 
 theorem parM_eq_Mpar (l g h : ℕ) : Formalism.ExponentWindows.E.parM l h g = Mpar l g h := rfl
 
-theorem parA_eq_initialExponentBound (l n : ℕ) [NeZero n] (j g h : ℕ) (H₁ H₂ : ZMod n → ℕ)
-    (cuts : Finset (ZMod n)) (arcLen : ZMod n → ℕ) :
-    Formalism.ExponentWindows.E.parA (sigPar l g h j) (rrPar l n H₁ H₂ cuts) g (ellMax cuts arcLen) =
-      initialExponentBound l n j g h H₁ H₂ cuts arcLen := rfl
-
 theorem parE_eq_ePar (l n : ℕ) [NeZero n] (j g h : ℕ) (H₁ H₂ : ZMod n → ℕ)
     (cuts : Finset (ZMod n)) (arcLen : ZMod n → ℕ) :
     Formalism.ExponentWindows.E.parE (sigPar l g h j) (rrPar l n H₁ H₂ cuts) g (ellMax cuts arcLen)

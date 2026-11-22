@@ -37,10 +37,6 @@ def QDRows_at (D : D7) (x eps : ℝ) : Prop :=
 def QDRowsF {eps : ℝ} (Fm : FamP eps) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∃ Y : ℝ, (x ^ (1 / Fm.J) ≤ Y ∧ Y ≤ x) ∧ QDRows_at (Fm.D x i) Y eps
 
-def TR_at (D : D7) : Prop :=
-  ∃ V : D.what₂.EE ≃ₗᵢ[ℂ] D.what₂.EE, ∀ u, ∃ a : ℂ, a ≠ 0 ∧
-    ∃ U : D.what₂.Mu u ≃ₗᵢ[ℂ] D.what₂.Mu u, ∀ φ F, D.what₂.Bu u φ F = a * D.besS u (U φ) (V F)
-
 def MinkMult (n M : ℕ) : Prop :=
   ∀ H : Subgroup (Matrix.GeneralLinearGroup (Fin n) ℚ), Finite H → Nat.card H ∣ M
 

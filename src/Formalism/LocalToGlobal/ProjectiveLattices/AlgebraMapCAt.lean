@@ -99,8 +99,6 @@ instance (σ : K →+* ℂ) : Algebra K (CAt σ) := σ.toAlgebra
 
 def cabs {σ : K →+* ℂ} (z : CAt σ) : ℝ := ‖(show ℂ from z)‖
 
-theorem algebraMap_CAt (σ : K →+* ℂ) (c : K) : (show ℂ from algebraMap K (CAt σ) c) = σ c := rfl
-
 variable {ι : Type} [Fintype ι]
 variable (pts : ∀ (S : Type) [CommRing S] [Algebra K S], Type)
 variable (mapR : ∀ {S T : Type} [CommRing S] [Algebra K S] [CommRing T] [Algebra K T],

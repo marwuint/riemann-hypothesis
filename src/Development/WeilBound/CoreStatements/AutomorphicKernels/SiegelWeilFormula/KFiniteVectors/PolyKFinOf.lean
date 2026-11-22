@@ -29,8 +29,6 @@ def Tl (d : SD σ) : d.Fn →ₗ[ℂ] (Mx F E d.m d.n → ℂ) where
 
 def TK (d : SD σ) : Submodule ℂ (Mx F E d.m d.n → ℂ) := (kfS d).map (Tl d)
 
-theorem mem_TK {f : Mx F E d.m d.n → ℂ} : f ∈ TK d ↔ ∃ Φ ∈ kfS d, d.T Φ = f := Iff.rfl
-
 theorem D_dg_mem {Φ : d.Fn} (hΦ : Φ ∈ kfS d) {Z : Mx F E d.m d.n} (hZ : At (evI F) Z) :
     Box.D (d.dd.e (Z * (dg d)ᵀ)) Φ ∈ kfS d :=
   D_kfS (fun c hc => by rw [← Matrix.smul_mul, hZ c hc, Matrix.zero_mul]) hΦ

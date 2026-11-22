@@ -30,8 +30,6 @@ instance isLocalizedModule_tv (A : AbVar K) : IsLocalizedModule (nonZeroDivisors
   rw [isLocalizedModule_iff_isBaseChange (nonZeroDivisors ℤ_[l]) ℚ_[l]]
   exact TensorProduct.isBaseChange _ _ _
 
-theorem galV_tv (A : AbVar K) (σ : Gal K) (t : Tl l A) : galV l A σ (tv l A t) = tv l A (galT l A σ t) := rfl
-
 end GlobalTheory.AV.AbVar
 
 namespace GlobalTheory.AV.AbVar

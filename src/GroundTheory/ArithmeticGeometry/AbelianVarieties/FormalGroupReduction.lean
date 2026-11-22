@@ -754,15 +754,6 @@ def E0 : AddSubgroup (curveK K W).Point where
   add_mem' hP hQ := (add_mem_and_reduce K W hP hQ).1
   neg_mem' hP := (neg_mem_and_reduce K W hP).1
 
-theorem mem_E0_iff (P : (curveK K W).Point) : P ∈ E0 K W ↔ P ∈ E0Set K W := Iff.rfl
-
-def reduceHom : E0 K W →+ (curveRed W).Point where
-  toFun P := reducePoint K W P
-  map_zero' := reducePoint_zero K W
-  map_add' P Q := (add_mem_and_reduce K W P.2 Q.2).2
-
-theorem reduceHom_apply (P : E0 K W) : reduceHom K W P = reducePoint K W P := rfl
-
 end Reduction
 
 end

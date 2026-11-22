@@ -43,9 +43,6 @@ def formV (D : D7) (T : Tor D) (N N' : ℕ) : Sesq (VC D N N') :=
 @[simp] theorem formV_apply (D : D7) (T : Tor D) {N N' : ℕ} (z w : VC D N N') :
     formV D T N N' z w = Hf D T z w := rfl
 
-theorem heis_formV (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (G : VC D N N' → ℂ) :
-    Heisenberg₂ (formV D T N N') x G = U D T x G := rfl
-
 open NumberField Classical in
 open Complex in
 open scoped BigOperators ComplexConjugate Real in

@@ -75,16 +75,6 @@ theorem chiLen_congr (e : F ≅ G) : chiLen R F = chiLen R G :=
 theorem chiLen_eq_zero_of_isZero (h : IsZero F) : chiLen R F = 0 := by
   rw [chiLen_eq_sum_range R 0 fun n _ => cohOn.subsingleton_of_isZero h ⊤ n]; simp
 
-theorem chiLen_eq_chi (k : Type) [Field k] [Algebra k Γ(X, ⊤)] (F : X.Modules) :
-    chiLen k F = chi k F :=
-  finsum_congr fun n => by
-    rw [hdim_def, Module.length_eq_rank, Cardinal.toNat_toENat]; rfl
-
-theorem chiLen_eq_of_surjective (k : Type) [CommRing k] [Algebra R k] [Algebra k Γ(X, ⊤)]
-    [IsScalarTower R k Γ(X, ⊤)] (h : Function.Surjective (algebraMap R k)) (F : X.Modules) :
-    chiLen R F = chiLen k F :=
-  finsum_congr fun n => by rw [Module.length_eq_of_surjective (M := coh F n) h]
-
 variable {R}
 
 namespace FiniteLenCoh
@@ -195,21 +185,6 @@ theorem interLen_eq_multiDiff {ι : Type} [Fintype ι] {L : ι → LB X} (hL : �
     interLen R F L = multiDiff (fun i => cls (L i) (hL i)) (chiLenPic R F) 0 :=
   Finset.sum_congr rfl fun S _ => by
     rw [zero_sub, ← cls_lbInvProd hL S (isLB_lbInvProd hL S), chiLenPic_cls, smul_eq_mul]
-
-theorem chiLenPic_pushforward (k : Type) [Field k] [Algebra R k] [Algebra k Γ(Y, ⊤)]
-    (hk : Function.Surjective (algebraMap R k)) (i : Y ⟶ X) [IsClosedImmersion i]
-    (hi : ∀ r : R, i.appTop (algebraMap R Γ(X, ⊤) r) = algebraMap k Γ(Y, ⊤) (algebraMap R k r))
-    (H : Y.Modules) :
-    chiLenPic R ((Scheme.Modules.pushforward i).obj H) = chiPic k H ∘ pull i := by
-  funext c
-  obtain ⟨M, hM, rfl⟩ := cls_surj c
-  letI : Algebra R Γ(Y, ⊤) := ((algebraMap k Γ(Y, ⊤)).comp (algebraMap R k)).toAlgebra
-  have : IsScalarTower R k Γ(Y, ⊤) := .of_algebraMap_eq fun _ => rfl
-  refine (chiLen_congr R (Twist.projIso M i H)).symm.trans ?_
-  rw [chiLen_eq_of_linearEquiv R fun n => LinearEquiv.ofBijective _
-    (cohPushMap_bijective_of_isClosedImmersion R i hi _ ⊤ n), chiLen_eq_of_surjective R k hk,
-    chiLen_eq_chi]
-  rfl
 
 variable {R}
 
@@ -533,23 +508,10 @@ theorem picForm_prod (h : DiffVanish (d + 1) φ) {ι : Type} [Fintype ι] (g : �
   rw [multiDiff_comap]
   simp [Function.comp_def]
 
-theorem picSym_linearMap_ext {N : Type*} [AddCommGroup N] [Module ℚ N] {l l' : PicSym X →ₗ[ℚ] N}
-    (h : ∀ (n : ℕ) (g : Fin n → Pic X), l (∏ i, firstChernPic (g i)) = l' (∏ i, firstChernPic (g i))) : l = l' :=
-  symQ_linearMap_ext fun n g => by simpa [firstChernPic] using h n fun i => smallPicEquiv X (g i)
-
 theorem picForm_eq_add {χ : Pic X → ℤ} (h : DiffVanish (d + 1) χ) (h₁ : DiffVanish (d + 1) φ)
     (h₂ : DiffVanish (d + 1) ψ) (a : Pic X) (e : ∀ x, χ x = φ (a + x) + ψ x) :
     picForm h = picForm h₁ + picForm h₂ :=
   topForm_eq_add _ _ _ ((smallPicEquiv X).symm a) fun x => by simpa using e _
-
-theorem picForm_comap (f : Y ⟶ X) {χ : Pic Y → ℤ} (h : DiffVanish (d + 1) χ) (x : PicSym X) :
-    picForm (h.comap (pull f)) x = picForm h (picSymPull f x) := by
-  refine LinearMap.congr_fun (picSym_linearMap_ext
-    (l' := picForm h ∘ₗ (picSymPull f).toLinearMap) fun n g => ?_) x
-  simp only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_prod, picSymPull_c1Pic,
-    picForm_prod]
-  rw [multiDiff_comap, Function.comp_apply, map_zero]
-  rfl
 
 theorem picForm_eq_zero (h : DiffVanish (d + 1) φ) {n : ℕ} (hn : n ≠ d) {x : PicSym X}
     (hx : x ∈ symDeg (SmallPic X) n) : picForm h x = 0 := topForm_eq_zero _ hn hx

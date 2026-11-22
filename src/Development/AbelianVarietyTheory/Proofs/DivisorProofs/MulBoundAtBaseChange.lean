@@ -47,9 +47,6 @@ namespace GlobalTheory.Adelic.HermSys
 
 variable {F : Type} [Field F] [NumberField F] {T : HermSys F} (E : Type) [Field E] [NumberField E] [Algebra F E]
 
-theorem normAt_baseChange (τ : E →+* ℂ) (u : Fin T.N → F) :
-    (T.baseChange E).normAt τ (fun j => algebraMap F E (u j)) = T.normAt (τ.comp (algebraMap F E)) u := rfl
-
 end GlobalTheory.Adelic.HermSys
 
 namespace GlobalTheory.HilbertSamuel

@@ -17,8 +17,6 @@ variable {K : Type}
 
 def diff1 (g : ℤ → ℤ) : ℤ → ℤ := fun t => g t - g (t - 1)
 
-theorem backwardDifference_apply (g : ℤ → ℤ) (t : ℤ) : diff1 g t = g t - g (t - 1) := rfl
-
 end Product
 
 end

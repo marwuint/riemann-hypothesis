@@ -60,14 +60,7 @@ end Cht
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ}
 
-theorem Cht.goodIff (ct : At S κ p) : Cht.GoodIff ct := Cht.goodIff_of Cht.GoodOfZero.abOfTriv Cht.trivOfAbSt ct
-
 theorem Cht.genEx (ct : At S κ p) : Cht.GenEx ct :=
   Cht.genEx_of GlobalTheory.SpecialStalk.stalkSt Cht.CompletedClosure.fieldSt Cht.extendSt Cht.exists_fam ct
-
-def chtTrue (ct : At S κ p) : ChtSt ct := Cht.chtOf ct (Cht.goodIff ct) (Cht.genEx ct)
-
-theorem chtTrue_yEta (ct : At S κ p) {Z : ct.Mdl} (η : ct.Gen Z) :
-    (chtTrue ct).yEta η = (chtTrue ct).ptK Z ((chtTrue ct).genK η) := rfl
 
 end GlobalTheory.LocM

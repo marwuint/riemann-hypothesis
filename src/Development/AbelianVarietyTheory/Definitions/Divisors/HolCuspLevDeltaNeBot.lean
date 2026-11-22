@@ -270,9 +270,6 @@ theorem finRep_mem_holCusp (lam : InfinitePlace F → DomWeight 2) (g : GF F) (�
 def holCuspLev (lam : InfinitePlace F → DomWeight 2) (U : Subgroup (GF F)) : Submodule ℂ (TR.Sm F 2) :=
   holCusp lam ⊓ Hi.fixd (TR.finRep F 2) U
 
-theorem mem_holCuspLev {lam : InfinitePlace F → DomWeight 2} {U : Subgroup (GF F)} {φ : TR.Sm F 2} :
-    φ ∈ holCuspLev lam U ↔ IsHolo lam φ ∧ ∀ u ∈ U, TR.finRep F 2 u φ = φ := Iff.rfl
-
 def heckeHol (lam : InfinitePlace F → DomWeight 2) {U : Subgroup (GF F)} (f : HeckeFn U) : Module.End ℂ (holCuspLev lam U) :=
   heckeOn (TR.finRep F 2) (finRep_mem_holCusp lam) f
 

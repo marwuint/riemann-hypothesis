@@ -109,8 +109,6 @@ def pushL : TanM x' t'.G →ₗ[S] TanM x t.G where
     exact (key _ e _ _ rfl rfl).symm)
   map_smul' a v := tan_ext (Category.assoc _ _ _)
 
-theorem left_pushL (v : TanM x' t'.G) : (tv (pushL m x' hx v)).left = (tv v).left ≫ m.φ := rfl
-
 theorem pushL_bijective : Function.Bijective (pushL m x' hx) := by
   refine ⟨fun v w h => tan_ext (m.cart.1.hom_ext (congrArg (fun z => (tv z).left) h)
     ((isTan_tv v).1.trans (isTan_tv w).1.symm)), fun w => ?_⟩

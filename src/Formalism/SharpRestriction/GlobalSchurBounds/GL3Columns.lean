@@ -36,12 +36,6 @@ structure DtAd (D : D7) where
 
 def rhoA (D : D7) (m1 : D.Dt →* ℂˣ) (N' : ℕ) : D.Dt →* ℂˣ := m1⁻¹ * D.chiD ^ (-((N' / 2 : ℕ) : ℤ))
 
-def rhoA' (D : D7) (m1 : D.Dt →* ℂˣ) (N : ℕ) : D.Dt →* ℂˣ := m1 * D.chiD ^ (((N / 2 : ℕ) : ℤ))
-
-theorem rhoOf_eq (D : D7) (mt : ℕ → D.Dt →* ℂˣ) (i : ℕ) : rhoOf D mt i = rhoA D (mt (i + 1)) (D.R.N (i + 1)) := rfl
-
-theorem rhoOf'_eq (D : D7) (mt : ℕ → D.Dt →* ℂˣ) (i : ℕ) : rhoOf' D mt i = rhoA' D (mt (i + 1)) (D.R.N i) := rfl
-
 def dOrt (D : D7) (T : Tor D) : ℂ := ((Real.sqrt (area T.abelian₂ / Real.pi) : ℝ) : ℂ)
 
 def sclP (D : D7) {N N' : ℕ} (s : D.what₂.Tau → ℂ) (P : MvPolynomial (Idx D N N') ℂ) : MvPolynomial (Idx D N N') ℂ :=
@@ -87,10 +81,6 @@ structure AdLift (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (
   z_S : ∀ c c' k, ∃ a : ℕ, 0 < a ∧ (∀ q : ℕ, q.Prime → q ∣ a → q ∈ O.S) ∧
     a • pt D (tor0 D cc δ) δ (z c c' k) ∈ La0 D (tor0 D cc δ) (D.R.N i) (D.R.N (i + 1))
   dg : D.what₂.Tau → ℕ
-
-namespace AdLift
-
-end AdLift
 
 def br (D : D7) {u : D.what₂.Word} (C : ColumnChain D.R D.what₂.Tau (D.hcW u)) (mt : ℕ → D.Dt →* ℂˣ) : Prop :=
   ∀ idl : D.Dt ⧸ D.UO → IdE D, RelDetPinned D idl →

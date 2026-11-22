@@ -123,9 +123,6 @@ def smul (γ : C.Γ) (L : P.Tup) : P.Tup :=
 
 def actX (γ : C.Γ) : P.Xsp →ₗ[Kf] P.Xsp := P.natAct fun v => C.act v γ
 
-def ActH : Prop := ∀ (γ : C.Γ) (L : P.Tup), P.IsLatTup L →
-  (P.Htup L).map ((C.actX γ).restrictScalars O) = P.Htup (C.smul γ L)
-
 def ActHW : Prop := ∀ (γ : C.Γ) (L : P.Tup), P.IsLatTup L →
   (P.HtupW L).map ((C.actX γ).restrictScalars O) = P.HtupW (C.smul γ L)
 

@@ -60,8 +60,6 @@ theorem disjoint_Pg_Q (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) (t : T) : Disjoi
   obtain ⟨⟨q, hq, hcard, -, hqg⟩, -⟩ := hL.Q_pl t P hPQ
   exact not_two_primes P.isPrime.ne_top (D.host.g_prime i) hq (fun h => hqg i h.symm) (g_mem_of_div L.C hi) (char_mem hcard)
 
-theorem rangeX_iff : RangeX R ↔ Formalism.IndefR.RecTie.TopMultH R := Iff.rfl
-
 theorem mem_S (hL : R.toLevCh.Is A.μ0) (t : T) (k : Fin 2) (P : Pl D.host.E)
     (hk : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) : P.under (𝓞 D.host.F) ∈ (comR R t).S := by
   classical
@@ -125,12 +123,6 @@ theorem twist_of (hL : R.toLevCh.Is A.μ0) (t : T) (hc : (comR R t).Is) (hne : �
   refine ⟨hc, rfl, hd, fun j PP hP => ?_, fun j PP hP => ?_, hne, fun g => Iff.rfl, rfl⟩
   · exact if_neg (Finset.disjoint_left.1 hd hP)
   · exact if_pos hP
-
-theorem stepX_toCC (h : RangeX R) (t : T) (x : (R.HX t).H) :
-    PiTensorProduct.lift.symm ((stepX R h t).io (toCC R h t x)).1 = GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.topStep R t x := rfl
-
-theorem toCC_val (h : RangeX R) (t : T) (x : (R.HX t).H) (v) (g) :
-    PiLocalization₂.val (toCC R h t x) v g = R.prX (R.cX.ext ((R.HX t).e x) g) v := rfl
 
 theorem Q_base (hL : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ := by
   ext PP

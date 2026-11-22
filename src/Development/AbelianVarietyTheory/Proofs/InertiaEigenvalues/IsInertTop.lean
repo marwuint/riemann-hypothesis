@@ -76,16 +76,6 @@ def FrameTie {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (W
   ∀ k, IsInvOf W hr (U.X k) (fun τ => x₀ τ.1) s ∧
     ∀ hq : (U.X k).p0 + Dw.p = r, IsBasOf W hr (U.X k) hq (fun τ => x₀ τ.1) BW
 
-def MarkedVal {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) (θ : InfFam D) (W : HSp D) {r : ℕ} (hr : W.rank = r)
-    (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ)
-    (f : Rul d.Xo₂ d.c₂) (ν : GA D W → ℂ) : Prop :=
-  ∀ (X : Data D.host.E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw)
-    (k : GA D W) (mk : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E)), IsMod W hr X → X.p0 = Dw.q → IsSympl X bas →
-    IdxIs c (inC c) X idx e → latR hr (latG W k) = X.Λ → IsMark d.l₂ X.Λ mk → MarkAd d.l₂ W hr ι k mk →
-    letI : Algebra d.c₂.F ℂ := ((inC c).comp (d.eF.symm : d.c₂.F →+* c.F)).toAlgebra
-    ∀ (y₂ : FrPt d.Xo₂ d.c₂ ℂ) (A₂ : AnFib X bas idx e (frMove θ W hr X k (fun τ => x₀ τ.1)) X.Λ y₂), A₂.Marked mk →
-      evR d.Xo₂ d.c₂ f y₂ = ν k
-
 def IsThetaSum {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) {T : Type} [Fintype T] (cs : T → Rul d.Xo₂ d.c₂)
     (w : T → (Fin n → LevQ Dw d.l₂) → c.F) (La : GenLat D.host.E n) (N : ℕ) (P : T → MvPolynomial (LtN Dw n) c.F)
     (f : Rul Xo c) : Prop :=
@@ -97,8 +87,6 @@ def IsThetaSum {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) {T : Type} [Fintype
       evR Xo c f y = ∑ t, evR d.Xo₂ d.c₂ (cs t) y₂ * v t
 
 def intOf (A : ValuationSubring ℂ) (K : Subfield ℂ) : Subring ℂ := A.toSubring ⊓ K.toSubring
-
-theorem mem_intOf {A : ValuationSubring ℂ} {K : Subfield ℂ} {x : ℂ} : x ∈ intOf A K ↔ x ∈ A ∧ x ∈ K := Iff.rfl
 
 end GlobalTheory.SingleDatum
 

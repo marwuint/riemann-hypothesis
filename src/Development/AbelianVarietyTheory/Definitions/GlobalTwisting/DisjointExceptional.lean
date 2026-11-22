@@ -74,8 +74,6 @@ def ReqPt : PtProp := fun D L _ Gx _ K _ _ _ =>
 
 def TwPt : PtProp := fun D _ _ _ _ _ _ _ ex => LocalQuadraticParts.TWAt D ex.nch ex.xd
 
-theorem Pt.has_and {C : FC} (p : Pt C) (Q Q' : PtProp) : p.Has (Q.and Q') ↔ p.Has Q ∧ p.Has Q' := Iff.rfl
-
 theorem Pt.Same.refl {C : FC} (p : Pt C) : p.Same p := by
   refine ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, fun _ => rfl, ?_, ?_, rfl, rfl, ?_, rfl, rfl, rfl⟩
   · intro h t h' t' e1 e2
@@ -134,10 +132,6 @@ theorem classOf_reqPt {eps : ℝ} (Fm : FamP eps) (h : classOf ReqPt Fm) :
     have := (h x hx' i).2.2
     unfold QDRowsW PairWin at this
     rwa [Fm.L_x x i hx', Fm.L_eps x i, Fm.L_J x i] at this
-
-theorem boxesWF_iff {eps : ℝ} (Fm : FamP eps) : BoxesWF Fm ↔ BoxesF Fm := Iff.rfl
-
-theorem qdRowsWF_iff {eps : ℝ} (Fm : FamP eps) : QDRowsWF Fm ↔ QDRowsF Fm := Iff.rfl
 
 theorem mod_lcm_of_mod_mul {p N : ℕ} (hN : 0 < N) (h : p % (15 * N) = 1) : p % Nat.lcm 15 N = 1 := by
   have h1 : 1 < Nat.lcm 15 N := lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.lcm_pos (by norm_num) hN) (Nat.dvd_lcm_left 15 N))

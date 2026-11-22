@@ -47,8 +47,4 @@ variable {Tp hK hinj EX fw F r hr ι ℓ ph} {O : OnObj S (Mir R) c}
 
 end Comparison₂
 
-def depthConst : ℝ := max 1 leafDepth_all_run_unconditional.choose
-
-def absConst : OnConst := ⟨depthConst, 14, 66 * depthConst + 4⟩
-
 end GlobalTheory.IndexAssembly

@@ -11,80 +11,6 @@ open Formalism.BasicNotions Formalism.MainNotions MeasureTheory NumberField IsDe
 
 namespace Formalism.L2.Geo
 
-def geoDegenerateNoTau (F : Type) [Field F] [NumberField F] [StarRing F] : DV.Geo F where
-  Var := ℕ
-  dim := id
-  Fn := fun _ => F
-  fnField := fun _ => inferInstanceAs (Field F)
-  fnAlg := fun _ => inferInstanceAs (Algebra F F)
-  Dv := fun _ => ℤ
-  dvGrp := fun _ => inferInstanceAs (AddCommGroup ℤ)
-  Eff := fun _ _ => True
-  eff_zero := fun _ => trivial
-  eff_add := fun _ _ _ _ _ => trivial
-  H0 := fun _ _ => ⊥
-  degreeZeroCohomology_finiteDimensional := fun _ _ => inferInstance
-  mul_mem_riemannRochSpace_add := fun _ _ _ f g hf _ => by
-    rw [Submodule.mem_bot] at hf ⊢; simp [hf]
-  riemannRoch_mono := fun _ _ _ _ => le_refl _
-  KY := fun _ => (0 : ℤ)
-  Cl := fun _ => PUnit
-  properCl := fun _ _ => True
-  subCl := fun _ _ _ => True
-  supp := fun _ _ => PUnit.unit
-  inter := fun _ _ => 0
-  nef := fun _ _ => True
-  big := fun _ _ => True
-  bpf := fun _ _ _ => True
-  phiBir := fun _ _ _ => True
-  phiNoContr := fun _ _ _ _ => True
-  vanishOn := fun _ _ _ _ => True
-  hdim := fun _ _ _ => 0
-  pts := fun _ _ => PUnit
-  ptsMeas := fun _ _ => ⊤
-  vol := fun _ _ => 0
-  FnC := fun _ _ => ℂ
-  fnCRing := fun _ _ => inferInstanceAs (CommRing ℂ)
-  fnCAlg := fun _ _ => inferInstanceAs (Algebra ℂ ℂ)
-  cx := fun _ σ => σ
-  cx_smul := fun _ σ a f => by
-    show σ (a * f) = σ a * σ f
-    exact map_mul σ a f
-  Met := fun _ _ _ => PUnit
-  mAdd := fun _ _ _ _ _ _ => PUnit.unit
-  mPow := fun _ _ _ _ _ => PUnit.unit
-  fsMet := by intros; exact PUnit.unit
-  pn := fun _ _ _ _ _ _ => 0
-  pnK := fun _ _ _ _ _ _ => 0
-  mSmooth := fun _ _ _ _ => True
-  mPsh := fun _ _ _ _ _ => True
-  redZero := fun _ _ _ _ _ => True
-  agreeOn := fun _ _ _ _ _ _ => True
-  resNorm := by intros; exact 0
-  Adl := fun _ => PUnit
-  ofW := fun _ _ _ _ => PUnit.unit
-  twist := fun _ _ _ _ => PUnit.unit
-  arTop := fun _ _ => 0
-  arVol := fun _ _ => 0
-  nefA := fun _ _ => True
-  supInf := fun _ _ _ _ _ => 0
-  supFin := fun _ _ _ _ _ => 0
-  cutGood := by intros; exact True
-  cutHt := by intros; exact 0
-  cutOrd := by intros; exact 0
-  resFull := by intros; exact True
-  resDeg := by intros; exact 0
-  supInf_ofW := by intros; simp
-  supInf_twist := by intros; simp
-  supFin_twist := by intros; simp
-  regOn := fun _ _ _ _ _ => True
-
-def ngJunk : NgPkg where
-  NgC := fun _ => PUnit
-  NgC_ne := fun _ => ⟨PUnit.unit⟩
-  KF := fun _ _ => Empty
-  kfNorm := fun k _ => k.elim
-
 def cxJunk (Tau : Type) [Fintype Tau] (N j : ℕ) : CxPkg Tau N j PUnit where
   Γ := fun _ => ⊥
   Γ_le := fun _ => bot_le
@@ -100,20 +26,6 @@ def cxJunk (Tau : Type) [Fintype Tau] (N j : ℕ) : CxPkg Tau N j PUnit where
   normDetInf := fun _ _ => 0
 
 variable (D : D7)
-
-def algJunk (N : ℕ) : AlgPkg (geoDegenerateNoTau D.what₂.LL) D.what₂.Tau N PUnit where
-  Yv := fun _ => Formalism.DegreeFormula.dimFl D.what₂.Tau N
-  Ybd := fun _ => PUnit.unit
-  bd := fun _ => (0 : ℤ)
-  bd_supp := fun _ => rfl
-  Lw := fun _ => 0
-  dim_eq := fun _ => rfl
-  degA := fun _ _ => 0
-  degA_ofW := fun _ _ _ _ => by simp [geoDegenerateNoTau]
-  degA_twist := fun _ _ _ _ => rfl
-  semipos := fun _ => True
-  nefFib := fun _ => True
-  Mbar := fun _ _ _ _ => PUnit.unit
 
 def iThJunk (d : ℕ) : DV.ITh where
   LB := PUnit
@@ -157,51 +69,6 @@ def mdlJunk (p : ℕ) [Fact p.Prime] (jc : DV.KW p →+* ℂ) (N j : ℕ) (hj : 
   om_dual := fun τ => ⟨finCongr (rkOf_dual D _ N j hj (fun τ => psiOf_cm p jc τ) τ), fun _ => by show (0 : ℚ) = -0; rw [neg_zero]⟩
   dim_eq := rfl
   omW_dual := ⟨Equiv.refl _, fun _ => by show (0 : ℚ) = -0; rw [neg_zero]⟩
-
-def padJunk (N j : ℕ) (hj : j ≤ N) (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)) :
-    PadPkg D N j PUnit jC ngJunk where
-  loc := fun p => junkLocalData D N j p
-  ex := fun p => exJunk D N j p
-  locB := fun p hp => junkLocB D N j p hp
-  pbKF := fun _ _ k => Empty.elim k
-  levIn := fun _ => True
-  Xg := Empty
-  bc := fun _ Z => Z.elim
-  DivG := fun Z => Z.elim
-  effD := @fun Z _ => Z.elim
-  noVertD := @fun Z _ => Z.elim
-  posBdD := @fun Z _ => Z.elim
-  ampleOnAbelianBase := fun Z _ _ => Z.elim
-  Met := Empty
-  nefFibM := fun M => M.elim
-  ampleGen := fun M => M.elim
-  limRA := fun M => M.elim
-  Mp := fun _ _ => PUnit
-  md := fun p _ la _ => mdlJunk D p (jC p la) N j hj
-  CurveM := fun _ _ _ => Empty
-  degM := fun _ _ _ c => c.elim
-  htMdl := fun _ _ => PUnit.unit
-  Pt := Empty
-  compPt := fun y => y.elim
-  phiDR := fun _ y => y.elim
-  phiMod := fun _ y => y.elim
-  phiFr := fun _ y => y.elim
-  phiFr_unram := fun _ y => y.elim
-  normDetT := fun _ _ y => y.elim
-  normDetH := fun _ _ y => y.elim
-  htDetT := fun _ _ _ => 0
-  arDeg := fun _ _ => 0
-  arDeg_homog := fun _ _ _ _ _ _ => rfl
-  arMix := fun _ _ _ => 0
-  arMix_HT := fun _ _ _ _ => rfl
-  arMix_DR := fun _ _ _ _ => rfl
-
-def shimUJunk {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)) (w : Dat D Lev) :
-    ShimU D (geoDegenerateNoTau D.what₂.LL) jC ngJunk w where
-  Comp := PUnit
-  cx := cxJunk D.what₂.Tau w.N w.j
-  alg := algJunk D w.N
-  pad := padJunk D w.N w.j w.j_le jC
 
 section FlagZ
 
@@ -453,68 +320,6 @@ section Tied
 
 variable (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ))
 
-def shimXJunk (N j : ℕ) (h1 : 1 ≤ j) (h2 : j < N) : DV.ShimX D.what₂.Tau where
-  N := N
-  j := j
-  j_pos := h1
-  j_lt := h2
-  lev := Finset.univ.image D.host.g
-  lev_prime := fun p hp => by
-    obtain ⟨i, _, rfl⟩ := Finset.mem_image.1 hp
-    exact D.host.g_prime i
-  Comp := PUnit
-  vol := (cxJunk D.what₂.Tau N j).vol
-  chern := (cxJunk D.what₂.Tau N j).chern
-  chern_homog := fun P d hd hP => chernOf_homog D.what₂.Tau N (cxJunk D.what₂.Tau N j).vol P d hd hP
-  arDeg := (padJunk D N j h2.le jC).arDeg
-  arDeg_homog := (padJunk D N j h2.le jC).arDeg_homog
-  arMix := (padJunk D N j h2.le jC).arMix
-  arMix_HT := (padJunk D N j h2.le jC).arMix_HT
-  arMix_DR := (padJunk D N j h2.le jC).arMix_DR
-  CurveHT := (padJunk D N j h2.le jC).CurveHT
-  degHT := (padJunk D N j h2.le jC).degHT
-  CurveDR := (padJunk D N j h2.le jC).CurveDR
-  degDR := (padJunk D N j h2.le jC).degDR
-  FibComp := (padJunk D N j h2.le jC).FibComp
-  fibInBd := (padJunk D N j h2.le jC).fibInBd
-  Pt := (padJunk D N j h2.le jC).Pt
-  phiDR := (padJunk D N j h2.le jC).phiDR
-  phiMod := (padJunk D N j h2.le jC).phiMod
-  phiFr := (padJunk D N j h2.le jC).phiFr
-  XC := (cxJunk D.what₂.Tau N j).XC
-  rfn := (cxJunk D.what₂.Tau N j).rfn
-  rfn_ge := (cxJunk D.what₂.Tau N j).rfn_ge
-  hLo := (cxJunk D.what₂.Tau N j).hLo
-  hUp := (cxJunk D.what₂.Tau N j).hUp
-  hLo_le := (cxJunk D.what₂.Tau N j).hLo_le
-  connN := (cxJunk D.what₂.Tau N j).connN
-  curvN := (cxJunk D.what₂.Tau N j).curvN
-  compOf := (cxJunk D.what₂.Tau N j).compOf
-  normDetInf := (cxJunk D.what₂.Tau N j).normDetInf
-  compPt := (padJunk D N j h2.le jC).compPt
-  normDetT := (padJunk D N j h2.le jC).normDetT
-  normDetH := (padJunk D N j h2.le jC).normDetH
-  htDetT := (padJunk D N j h2.le jC).htDetT
-  ALB := (algJunk D N).ALB
-  arSelf := fun L => ∑ c, (algJunk D N).arSelfC L c
-  arSelfC := (algJunk D N).arSelfC
-  arSelf_sum := fun _ => rfl
-  geo := fun L => ∑ c, (algJunk D N).geoC L c
-  geoC := (algJunk D N).geoC
-  geo_sum := fun _ => rfl
-  arVol := (algJunk D N).arVol
-  semipos := (algJunk D N).semipos
-  nefFib := (algJunk D N).nefFib
-  arNef := (algJunk D N).arNef
-  Mbar := (algJunk D N).Mbar
-
-theorem shimXJunk_congr {N j N' j' : ℕ} (h1 h2 h1' h2') (hN : N = N') (hj : j = j') :
-    shimXJunk D jC N j h1 h2 = shimXJunk D jC N' j' h1' h2' := by
-  subst hN; subst hj; rfl
-
-theorem toShimX_junk {Lev : Type} (w : Dat D Lev) (h : w.Indef) (hl) :
-    toShimX (shimUJunk D jC w) h (Finset.univ.image D.host.g) hl = shimXJunk D jC w.N w.j h.1 h.2 := rfl
-
 def recN (S : letI := D.host.cmStar; HSpace D.host.E) : ℕ :=
   letI := D.host.cmStar; if 2 ≤ S.rank then S.rank else 2
 
@@ -538,75 +343,13 @@ theorem recJ_dat {Lev : Type} (w : Dat D Lev) (h : w.Indef) : recJ D w.S = w.j :
 
 variable (X0 : DivX D)
 
-def compatibleDivisorData : DivX D :=
-  { X0 with
-    geo := geoDegenerateNoTau D.what₂.LL
-    Lev := Unit
-    levPr := fun _ => Finset.univ.image D.host.g
-    shv := fun S _ => shimXJunk D jC (recN D S) (recJ D S) (recJ_pos D S) (recJ_lt D S)
-    shv_N := fun S _ h => by show recN D S = _; unfold recN; rw [if_pos h]
-    shv_lev := fun _ _ => rfl
-    PlP := fun p _ => PlL D p
-    plpFin := fun p _ => finPl D p
-    plpNe := fun p _ => plL_ne D p
-    wtP := fun p _ => wtL D p
-    divisorWeight_nonneg := fun p _ => wtL_nonneg D p
-    divisorWeight_sum := fun p _ => wtL_sum D p
-    plP := fun p _ => Formalism.BasicNotions.Examples₂.PlOver.plLEquiv D p
-    divisorWeight_def := fun p _ la => Formalism.BasicNotions.Examples₂.PlOver.wtLog_eq D p la
-    jC := fun p _ => jC p
-    Mp := fun _ _ _ _ _ => PUnit
-    md := fun S _ p _ la _ => mdlJunk D p (jC p la) (recN D S) (recJ D S) (recJ_lt D S).le
-    phiFr_unram := fun _ _ _ y => Empty.elim y
-    CurveM := fun _ _ _ _ _ _ => Empty
-    degM := fun _ _ _ _ _ _ c => Empty.elim c
-    htMdl := fun _ _ _ _ _ => PUnit.unit
-    htCurve := fun _ _ _ _ => Equiv.refl _
-    htCurve_deg := fun _ _ _ _ c => Empty.elim c.2
-    Comp := fun _ => PUnit
-    compFin := fun _ => inferInstance
-    degHH := fun _ _ _ => 0
-    Yv := fun j _ => Formalism.DegreeFormula.dimFl D.what₂.Tau (datW D () j).N
-    Ybd := fun _ _ => PUnit.unit
-    Lw := fun _ _ => 0
-    iMj := fun j _ => (0 : (X0.MjH j).V →ₗ[D.what₂.LL] D.what₂.LL)
-    iMj_mem := fun _ _ _ => by
-      show (0 : D.what₂.LL) ∈ (⊥ : Submodule D.what₂.LL D.what₂.LL)
-      exact Submodule.zero_mem _ }
-
 theorem md_heq (p : ℕ) [Fact p.Prime] (jc : DV.KW p →+* ℂ) {N j N' j' : ℕ} (h h') (hN : N = N') (hj : j = j') :
     HEq (fun _ : PUnit.{1} => mdlJunk D p jc N j h) (fun _ : PUnit.{1} => mdlJunk D p jc N' j' h') := by
   subst hN; subst hj; rfl
 
-theorem degM_heq {N N' : ℕ} (hN : N = N') :
-    HEq (fun (_ : PUnit.{1}) (c : Empty) => (Empty.elim c : DV.Rt D.what₂.Tau N → ℝ))
-      (fun (_ : PUnit.{1}) (c : Empty) => (Empty.elim c : DV.Rt D.what₂.Tau N' → ℝ)) := by
-  subst hN; rfl
-
 theorem prime_of_mem_image : ∀ (_ : Unit), ∀ p ∈ Finset.univ.image D.host.g, p.Prime := fun _ p hp => by
   obtain ⟨i, _, rfl⟩ := Finset.mem_image.1 hp
   exact D.host.g_prime i
-
-theorem tiedX_junk : TiedX (jC := jC) (ng := ngJunk) (compatibleDivisorData D jC X0) (fun _ => Finset.univ.image D.host.g)
-    (prime_of_mem_image D) () (fun p _ => Equiv.refl _) (fun w => shimUJunk D jC w) (fun _ _ _ => Equiv.refl _) where
-  shv :=
-    { lev := rfl
-      shv := fun w h => (shimXJunk_congr D jC _ _ _ _ (recN_dat D w) (recJ_dat D w h)).trans
-        (toShimX_junk D jC w h _).symm }
-  pl :=
-    { wt := fun _ _ _ => rfl
-      jc := fun _ _ _ => rfl
-      mp := fun _ _ _ _ _ => rfl
-      md := fun w h p _ la => md_heq D p (jC p la) (recJ_lt D w.S).le w.j_le (recN_dat D w) (recJ_dat D w h)
-      curveM := fun _ _ _ _ _ => HEq.rfl
-      degM := fun w _ _ _ _ => degM_heq D (recN_dat D w)
-      htMdl := fun _ _ _ _ _ => HEq.rfl
-      htCurve := fun _ _ _ _ _ c' _ => c'.2.elim }
-  geo :=
-    { yv := fun _ _ _ _ => rfl
-      ybd := fun _ _ _ _ => HEq.rfl
-      lw := fun _ _ _ _ _ => HEq.rfl }
-  lev_κg := rfl
 
 end Tied
 

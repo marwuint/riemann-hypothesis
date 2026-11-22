@@ -17,10 +17,6 @@ section B
 variable (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
   (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (P : GL (IdxD D) (FpX X p))
 
-theorem cV_crd (s : IdxD D) :
-    ((P⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ cV X u p θ s =
-      crd1 X p θ P (ratV (F := X.B.I.F) (FpX X p) (vecAt (frameOf X u) s)) := rfl
-
 theorem yV_crd (i : Fin D.R.k) :
     ((P⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ yV X hb u p θ i =
       crd1 X p θ P (adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i)) := rfl

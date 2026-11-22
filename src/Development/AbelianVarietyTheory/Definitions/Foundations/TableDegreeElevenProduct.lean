@@ -295,8 +295,6 @@ def tableDegreeThreeBase : ℝ := 3 * N.lrd + 12.57 * (xl (4 * N.tableDegreeOneS
 
 def T7 : ℝ := N.tableDegreeThreeBase + 2 * N.tableDegreeTwoSeven + 10 * (N.D : ℝ) * N.L + (max (N.rS) (N.rP)) / 2
 
-def lbad : ℝ := N.l2q + N.lg + Real.log (15) + 2 * N.lp
-
 def g0n : ℝ := 1250 * N.r
 
 def n0 : ℝ := N.r + 2 * N.g0n * ((N.DX : ℝ) + 1)
@@ -357,8 +355,6 @@ def XW : ℝ := 66 * N.L + N.Np * N.f * N.r * N.lrd
 
 def gG : ℝ := 20 * N.f * N.r * N.r * N.L
 
-def Bfl : ℝ := 35 * N.L + N.rP / 2
-
 def B7 : ℝ := N.P7 + 6 * (N.D : ℝ) * N.L
 
 def Bt : ℝ := N.B7 + N.V
@@ -366,8 +362,6 @@ def Bt : ℝ := N.B7 + N.V
 def Gka : ℝ := 3 * N.G
 
 def rtN : ℝ := 0.46 * N.f * N.r * N.Np
-
-def r58 : ℝ := 12 * ((N.D : ℝ) + 3) * N.r * N.sc1 / (N.D : ℝ) + 6 * N.f * N.r * N.r * N.L
 
 def E0 : ℝ := N.f * N.r * (N.c0p + 4 * N.r)
 

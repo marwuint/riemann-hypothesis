@@ -14,15 +14,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 abbrev ccH (E : Type) [Field E] [NumberField E] [IsCMField E] : E →+* E := (IsCMField.complexConj E).toRingHom
 
-def FundFor (X : Data E r) (Γ : Subgroup (GL (Fin r) E)) (x0 : Frame X.Ψ r) (FF : Set (V (nd X))) : Prop :=
-  MeasurableSet FF ∧ FF ⊆ OmF X x0 ∧
-  (∀ z ∈ FF, ∀ z' ∈ FF, ∀ γ ∈ Γ, ∀ b ∈ Bor X.Ψ r, cpt X x0 z' = lact γ (rmul (cpt X x0 z) b) → z = z') ∧
-  ∀ᵐ z ∂muF X x0, ∃ z' ∈ FF, ∃ γ ∈ Γ, ∃ b ∈ Bor X.Ψ r, cpt X x0 z = lact γ (rmul (cpt X x0 z') b)
-
-theorem fundFor_iff (X : Data E r) (x0 : Frame X.Ψ r) (FF : Set (V (nd X))) :
-    FundFor X X.Γ x0 FF ↔ IsFundSet X x0 FF := by
-  exact Iff.rfl
-
 end defs
 
 def LevelFacts : Prop :=

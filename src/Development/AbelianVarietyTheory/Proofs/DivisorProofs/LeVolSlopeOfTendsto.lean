@@ -23,9 +23,6 @@ variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A}
 
 abbrev unf (s : FinalTheorems S κ) : ∀ σ : κ.c.F →+* ℂ, Formalism.L2.Pj.Unf s.Xo κ.c σ N := fun σ => GlobalTheory.ThetaDictCompare.toU (s.U σ)
 
-def drSym (la : AllWt.Weight S.Dw) : Sym D.host.E →₀ ℤ :=
-  ∑ z : Letter S.Dw, Finsupp.single (fun _ => false, none, .inl (z.1, z.2)) (-exOf S.Dw la 0 (some z))
-
 variable {s : FinalTheorems S κ} (Φ : s.Flag) (k : s.Comp)
 
 def Over (Z : Comp s.Xo κ.c) : Prop := letI := (constF κ.e (Φ.C k).Y).toAlgebra; LiesOn Z (Φ.C k).y0

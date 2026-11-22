@@ -20,8 +20,6 @@ theorem exists_clear_denominators_alt (M : Submodule O W) (y : W) (hy : y ∈ MQ
 def latticeInter (M : Submodule O W) (L : Submodule (KK O) W) : Submodule O L :=
   M.comap (L.subtype.restrictScalars O)
 
-theorem mem_latticeInter_iff (M : Submodule O W) (L : Submodule (KK O) W) (x : L) : x ∈ latticeInter M L ↔ (x : W) ∈ M := Iff.rfl
-
 theorem latticeInter_isLattice (M : Submodule O W) (hfg : M.FG) (hMQ : MQ (K := KK O) M = ⊤) (L : Submodule (KK O) W) :
     Submodule.IsLattice (KK O) (latticeInter M L) where
   fg := by

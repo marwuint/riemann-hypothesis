@@ -54,8 +54,6 @@ def subV (k : Type) [CommRing k] (V : Set σ) : Subalgebra k (MvPowerSeries σ k
 
 variable {k : Type} [CommRing k]
 
-theorem mem_subV (V : Set σ) (f : MvPowerSeries σ k) : f ∈ subV k V ↔ OnV V f := Iff.rfl
-
 variable [Algebra ℚ k]
 
 private lemma coeff_XX_pow_lemma (d : ℕ) (e : Fin 2 →₀ ℕ) :

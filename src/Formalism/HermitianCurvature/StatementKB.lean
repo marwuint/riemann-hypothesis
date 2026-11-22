@@ -24,13 +24,6 @@ def BlockOfCS : Prop :=
       (∑ p ∈ Y₁, ∑ p' ∈ Y₁, c p * conj (c p') * a p p').re * (∑ q ∈ Y₂, ∑ q' ∈ Y₂, d q * conj (d q') * b q q').re) →
     BlockPSD Y₁ Y₂ a w b
 
-def BlockSchur : Prop :=
-  ∀ (ι α β : Type) [Fintype ι] (Y₁ : Finset α) (Y₂ : Finset β) (κa : α → α → ℂ) (κw : α → β → ℂ) (κb : β → β → ℂ)
-    (a : ι → α → α → ℂ) (w : ι → α → β → ℂ) (b : ι → β → β → ℂ),
-    BlockPSD Y₁ Y₂ κa κw κb → (∀ v, BlockPSD Y₁ Y₂ (a v) (w v) (b v)) →
-    ‖∑ p ∈ Y₁, ∑ q ∈ Y₂, κw p q * ∏ v, w v p q‖ ≤
-      ((∑ p ∈ Y₁, ∑ p' ∈ Y₁, κa p p' * ∏ v, a v p p').re + (∑ q ∈ Y₂, ∑ q' ∈ Y₂, κb q q' * ∏ v, b v q q').re) / 2
-
 section loc
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}

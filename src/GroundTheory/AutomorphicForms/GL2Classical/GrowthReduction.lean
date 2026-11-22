@@ -20,11 +20,6 @@ section Heights
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
-theorem height_eq_prod_locHeight (g : AdelicGLn.AdelicGL K n) :
-    AutomorphicForm.height g = (∏ w : InfinitePlace K, locHeight (infAt w g) ^ w.mult) *
-      ∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v g) :=
-  rfl
-
 theorem det_infAt_eq (w : InfinitePlace K) (g : AdelicGLn.AdelicGL K 2) :
     ((AdelicGLn.det K 2 g : 𝔸[K])).1 w = (infAt w g : Matrix (Fin 2) (Fin 2) w.Completion).det := by
   rw [AdelicGLn.coe_det]

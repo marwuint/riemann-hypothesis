@@ -1507,8 +1507,6 @@ structure CountingConstants where
   c : ℝ
   cb : ℝ
 
-def gcOf {eps : ℝ} (Fm : FamP eps) (C0 : ℝ) : AdmissibleBoundsFromSource.GivC := ⟨C0, Fm.CYL + 1, 1 / 4, 3, 1 / 2, Fm.CTu⟩
-
 def linkThresholds (ca : List ℝ → AdmissibleBoundsFromSource.AdmC) (c30 : List ℝ → CountingConstants) : TransportedAlt :=
   ⟨0, fun _ => 0, fun l => max (ca l).CE (ca l).CN + 1,
     fun l => max 2 (max (2 * (c30 (l.take 16)).C) (8 * l.getD 17 0))⟩

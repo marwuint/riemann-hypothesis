@@ -83,12 +83,6 @@ def om' {r : ℕ} (f f' : Fin (r + 1) → V) : V :=
 def om {r : ℕ} (f f' : Fin (r + 1) → V) : V :=
   ∑ a, M.L.cj ((H.Zhat f f').adjugate (Fin.last r) a) • f a
 
-def NGrp (abelian₂ : Submodule M.L.O V) {r : ℕ} (f : Fin (r + 1) → V) : Set (V ≃ₗ[E] V) :=
-  {n | (∀ x y, H.h (n x) (n y) = H.h x y) ∧ (n : V → V) '' (abelian₂ : Set V) = abelian₂ ∧
-    (∀ a : Fin r, n (f a.castSucc) - f a.castSucc ∈
-      Submodule.span E ((fun b : Fin r => f b.castSucc) '' {b | b < a})) ∧
-    ∀ v ∈ H.perp (H.X f), n v - v ∈ H.X f}
-
 end HermSp
 
 structure Term (V : Type) [AddCommGroup V] [Module E V] (M : Model F E) (r : ℕ) where

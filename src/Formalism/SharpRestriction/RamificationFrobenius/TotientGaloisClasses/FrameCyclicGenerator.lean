@@ -36,11 +36,6 @@ def ofEquivIso : (ofEquiv e ε h' hs a' hk).A ≃+ A' :=
   letI : AddCommGroup (Idx n) := ε.addCommGroup
   ε.addEquiv
 
-theorem ofEquivIso_apply (t : (ofEquiv e ε h' hs a' hk).A) : ofEquivIso e ε h' hs a' hk t = ε t := rfl
-
-theorem ofEquiv_h (t : (ofEquiv e ε h' hs a' hk).A) :
-    (ofEquiv e ε h' hs a' hk).h t = h' (ofEquivIso e ε h' hs a' hk t) := rfl
-
 theorem ofEquiv_generator : ofEquivIso e ε h' hs a' hk (ofEquiv e ε h' hs a' hk).a0 = a' :=
   ε.apply_symm_apply a'
 
@@ -57,12 +52,7 @@ def ofGroup : Frame := ofEquiv e (n := Fintype.card A') (Fintype.equivFin A').sy
 def ofGroupIso : (ofGroup e h' hs a' hk).A ≃+ A' :=
   ofEquivIso e (n := Fintype.card A') (Fintype.equivFin A').symm h' hs a' hk
 
-theorem ofGroup_e : (ofGroup e h' hs a' hk).e = e := rfl
-
 theorem ofGroup_ord : (ofGroup e h' hs a' hk).ord = Fintype.card A' := rfl
-
-theorem ofGroup_h (t : (ofGroup e h' hs a' hk).A) :
-    (ofGroup e h' hs a' hk).h t = h' (ofGroupIso e h' hs a' hk t) := rfl
 
 theorem ofGroup_generator : ofGroupIso e h' hs a' hk (ofGroup e h' hs a' hk).a0 = a' :=
   ofEquiv_generator e (n := Fintype.card A') (Fintype.equivFin A').symm h' hs a' hk
@@ -99,8 +89,6 @@ def frameCycIso (e : ℕ) (a' : ZMod (2 ^ e)) : (frameCyc e a').A ≃+ ZMod (2 ^
 section Cyc
 
 variable (e : ℕ) (a' : ZMod (2 ^ e))
-
-theorem frameCyc_e : (frameCyc e a').e = e := rfl
 
 theorem frameCyc_ord : (frameCyc e a').ord = 2 ^ e := rfl
 

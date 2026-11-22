@@ -27,17 +27,6 @@ def PerpTraceStatement : Prop :=
 
 def gv {X : Type*} {p : ℕ} (g : Fin p → X → ℂ) (y : X) : Fin p → ℂ := fun l => g l y
 
-def jacV (n : ℕ) {p : ℕ} (g : Fin p → V n → ℂ) (y : V n) (ξ : Fin n → ℂ) : Fin p → ℂ :=
-  fun l => ∑ k, wd n k (g l) y * ξ k
-
-def LeviLogVStatement : Prop :=
-  ∀ (n p : ℕ) (g : Fin p → V n → ℂ) (U : Set (V n)), IsOpen U →
-    (∀ l, DifferentiableOn ℂ (g l) U) → (∀ l, ContDiffOn ℝ 2 (g l) U) →
-    (∀ y ∈ U, gv g y ≠ 0) →
-    ∀ y ∈ U, ∀ ξ : Fin n → ℂ,
-      leviV n (fun y => ((Real.log (vsq (gv g y)) : ℝ) : ℂ)) y ξ =
-        ((vsq (perp (gv g y) (jacV n g y ξ)) / vsq (gv g y) : ℝ) : ℂ)
-
 def jacM (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M → V n) {p : ℕ} (g : Fin p → M → ℂ)
     (x : M) (ξ : Fin n → ℂ) : Fin p → ℂ :=
   fun l => ∑ k, d n z k (g l) x * ξ k

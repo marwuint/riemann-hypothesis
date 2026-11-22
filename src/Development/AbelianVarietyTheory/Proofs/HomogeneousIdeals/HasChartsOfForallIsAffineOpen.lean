@@ -90,9 +90,6 @@ def affinePoint {U : X.left.Opens} (hU : IsAffineOpen U) : sp Γ(X.left, U) ⟶ 
     change hU.fromSpec ≫ X.hom = Spec.map (CommRingCat.ofHom (algebraMap k Γ(X.left, U)))
     rw [← h, algebraMap_sections, CommRingCat.ofHom_hom, Spec.map_comp])
 
-theorem affinePoint_left {U : X.left.Opens} (hU : IsAffineOpen U) :
-    (affinePoint hU).left = hU.fromSpec := rfl
-
 abbrev toAway (r : A) : A →ₐ[k] Localization.Away r :=
   IsScalarTower.toAlgHom k A (Localization.Away r)
 

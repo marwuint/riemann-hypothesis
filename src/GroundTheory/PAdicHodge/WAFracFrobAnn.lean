@@ -22,13 +22,7 @@ local notation "𝔽" => frob ℂ_[p] p
 
 variable (p) (ρ1 : Set.Ioo (0 : ℝ) 1)
 
-abbrev inRad : Set.Ioc (0 : ℝ) ρ1 := (𝔽).radPow ρ1
-
 variable {p}
-
-theorem annIoc_annOut : annIoc (annOut ρ1 (inRad p ρ1)) = topRad ρ1 := rfl
-
-theorem annIoc_annIn : annIoc (annIn ρ1 (inRad p ρ1)) = (𝔽).radPow ρ1 := rfl
 
 end WAFrac
 

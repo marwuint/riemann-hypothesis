@@ -19,9 +19,6 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 def Deco.IsDnA (P : ST) (q : 𝓞 E) (a : 𝓞 E ⧸ P.1.asIdeal) (d d' : Deco E n ST SG) : Prop :=
   d' = d.dn P (d'.f P) ∧ ∀ e ∈ d.N, d.f P e = 1 → d'.f P (q • e) = a
 
-theorem Deco.isDnA_one (P : ST) (q : 𝓞 E) (d d' : Deco E n ST SG) :
-    Deco.IsDnA P q 1 d d' ↔ Deco.IsDn P q d d' := Iff.rfl
-
 theorem Deco.IsDnA.act {P : ST} {q : 𝓞 E} {a : 𝓞 E ⧸ P.1.asIdeal} {d d' : Deco E n ST SG}
     (hdd : Deco.IsDnA P q a d d') {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) (h : GLG E n SG) :
     Deco.IsDnA P q a (d.act g h) (d'.act g h) := by
@@ -37,8 +34,6 @@ theorem Deco.IsDnA.act {P : ST} {q : 𝓞 E} {a : 𝓞 E ⧸ P.1.asIdeal} {d d' 
 def DecoSet.dnSetA (P : ST) (q : 𝓞 E) (a : 𝓞 E ⧸ P.1.asIdeal) (d : DecoSet E n ST SG) :
     Set (DecoSet E n ST SG) :=
   {d' | Deco.IsDnA P q a d.1 d'.1}
-
-theorem DecoSet.dnSetA_one (P : ST) (q : 𝓞 E) (d : DecoSet E n ST SG) : d.dnSetA P q 1 = d.dnSet P q := rfl
 
 theorem DecoSet.smul_mem_dnSetA (x : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E) (a : 𝓞 E ⧸ P.1.asIdeal)
     (d d' : DecoSet E n ST SG) : x • d' ∈ (x • d).dnSetA P q a ↔ d' ∈ d.dnSetA P q a := by
@@ -76,10 +71,6 @@ section Ops
 
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG)
-
-def diaG (c : DiaG X.E ST) : Module.End X.K (formGSD C Λ).EqFun :=
-  (LocOp.ofMap (S := formGSD C Λ) (S' := formGSD C Λ) (MonoidHom.id _) (fun d => DecoSet.dia c d) LinearMap.id
-    (fun g d => DecoSet.dia_smul c (FormG.incl Λ g) d) (fun _ _ => rfl)).op
 
 def diamondOperatorOnForms' (P : ST) (c : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) : Module.End X.K (formGSD C Λ).EqFun :=
   (LocOp.ofMap (S := formGSD C Λ) (S' := formGSD C Λ) (MonoidHom.id _) (fun d => DecoSet.dia1 P c d) LinearMap.id

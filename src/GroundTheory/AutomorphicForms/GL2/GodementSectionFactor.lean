@@ -20,9 +20,6 @@ variable {K : Type*} [Field K] [NumberField K]
 def adeleAt (v : HeightOneSpectrum (𝓞 K)) : FiniteAdeleRing (𝓞 K) K →+* v.adicCompletion K :=
   RestrictedProduct.evalRingHom (fun w : HeightOneSpectrum (𝓞 K) ↦ w.adicCompletion K) v
 
-theorem adeleAt_apply (v : HeightOneSpectrum (𝓞 K)) (x : FiniteAdeleRing (𝓞 K) K) :
-    adeleAt v x = x v := rfl
-
 def glAt (v : HeightOneSpectrum (𝓞 K)) :
     GL (Fin 2) (FiniteAdeleRing (𝓞 K) K) →* GL (Fin 2) (v.adicCompletion K) :=
   Matrix.GeneralLinearGroup.map (adeleAt v)

@@ -14,12 +14,6 @@ section A
 
 variable {F : Type} [Field F] (O : Subring F) (ϖ : F)
 
-theorem reindex_apply' {a t : ℕ} {R : Type} (A : Matrix (Fin (a + t)) (Fin (a + t)) R)
-    (x y : Fin a ⊕ Fin t) :
-    Matrix.reindex finSumFinEquiv.symm finSumFinEquiv.symm A x y =
-      A (finSumFinEquiv x) (finSumFinEquiv y) := by
-  rfl
-
 def theta {a t : ℕ} {R : Type} (A : Matrix (Fin a) (Fin a) R) (B : Matrix (Fin a) (Fin t) R)
     (C : Matrix (Fin t) (Fin a) R) (D : Matrix (Fin t) (Fin t) R) :
     Matrix (Fin (a + t)) (Fin (a + t)) R :=

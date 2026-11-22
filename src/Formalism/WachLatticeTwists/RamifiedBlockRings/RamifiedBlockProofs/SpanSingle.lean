@@ -27,11 +27,6 @@ def bcHom (D : RingData O X d G t bl) (D' : RingData O' X d G t bl) (σ : D'.X' 
     (Pi.evalRingHom (fun _ : D.X' => Matrix d d (FractionRing O)) (σ y'))).comp D.R'.val.toRingHom) D'.R'
     (fun a => h a.1 a.2)
 
-theorem bcHom_apply (D : RingData O X d G t bl) (D' : RingData O' X d G t bl) (σ : D'.X' → D.X')
-    (κ : FractionRing O →+* FractionRing O')
-    (h : ∀ a ∈ D.R', (fun y' => (a (σ y')).map κ) ∈ D'.R') (a : D.R') (y' : D'.X') :
-    (bcHom D D' σ κ h a).1 y' = (a.1 (σ y')).map κ := rfl
-
 end
 
 theorem relMap_ev {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X' d : Type} [Fintype d]

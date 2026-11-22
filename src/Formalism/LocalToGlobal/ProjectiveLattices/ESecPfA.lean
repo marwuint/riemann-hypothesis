@@ -26,9 +26,6 @@ theorem esecMul_coe {w w' : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp
     (F' : (recB h.toLawsCore).Cusp j w') :
     ((esecMul h hj F F' : (recB h.toLawsCore).Cusp j (wadd w w')) : T.R j) = (F : T.R j) * (F' : T.R j) := rfl
 
-theorem esec_inc_apply {w : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp j w) :
-    (recPJ h j hj).inc w F = AddMonoidAlgebra.single (deg w) (F : T.R j) := rfl
-
 theorem esec_inc_mul {w w' : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp j w)
     (F' : (recB h.toLawsCore).Cusp j w') :
     (recPJ h j hj).inc (wadd w w') (esecMul h hj F F') = (recPJ h j hj).inc w F * (recPJ h j hj).inc w' F' :=

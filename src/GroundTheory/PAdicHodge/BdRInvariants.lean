@@ -30,9 +30,6 @@ instance algebraPadicBDeRham : Algebra ℚ_[p] 𝔹dR :=
 theorem algebraMap_padic_bDeRham (q : ℚ_[p]) :
     algebraMap ℚ_[p] 𝔹dR q = algebraMap 𝔹 𝔹dR (algebraMap ℚ_[p] 𝔹 q) := rfl
 
-theorem algebraMap_algCl_bDeRham (x : PadicAlgCl p) :
-    algebraMap (PadicAlgCl p) 𝔹dR x = algebraMap 𝔹 𝔹dR (algClToBdR p x) := rfl
-
 instance isScalarTower_padic_bDeRhamPlus_bDeRham : IsScalarTower ℚ_[p] 𝔹 𝔹dR :=
   IsScalarTower.of_algebraMap_eq fun _ => rfl
 

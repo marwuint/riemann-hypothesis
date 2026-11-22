@@ -17,10 +17,4 @@ variable {F L Ω : Type u} [Field F] [NumberField F] [Field L] [NumberField L] [
   (hL : ∀ x : L, algebraMap L Ω x ∈ maxUnramifiedOutside F Ω S)
   (ιs : ∀ v : S, Ω →ₐ[F] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F))
 
-omit [IsGalois L Ω] in
-
-theorem coe_mackeyPlaceEquiv_eq (p : MackeyIndex (gsOpenSubgroup S hL) (gsFinFamily S ιs)) :
-    (mackeyPlaceEquiv S hL ιs p : HeightOneSpectrum (𝓞 L)) = (gsLocalPlace hL ιs p.1 p.2.out).1 :=
-  rfl
-
 end GroundTheory.ProfCoh

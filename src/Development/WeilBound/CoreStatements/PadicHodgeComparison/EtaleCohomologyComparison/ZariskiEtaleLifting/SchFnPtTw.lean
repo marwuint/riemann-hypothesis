@@ -90,9 +90,6 @@ def ptTw (hσ : ∀ x, galOC σ (κ x) = κ x) : F.pt κ ⟶ twF σ ⋙ F.pt κ 
         ((twU_mapU σ f _).trans (congrArg (mapU f) ((twUEquiv σ A).apply_symm_apply x))).symm
     exact map_sq F.Pt _ _ _ _ e _
 
-theorem schFn_ptTw {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (hσ : ∀ x, galOC σ (κ x) = κ x) :
-    ptTw (schFn q) κ σ hσ = pxTw q κ σ hσ := rfl
-
 end Gal
 
 noncomputable def frb {B : Type} [CommRing B] (h : (l : B) = 0) : B →+* B :=

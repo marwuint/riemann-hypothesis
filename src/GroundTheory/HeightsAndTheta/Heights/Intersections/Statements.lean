@@ -16,21 +16,6 @@ def DegreeGeneric.Statement : Prop :=
       ptsIntegral P (pot L) (fun _ => 1) =
         NumbersDVR.intNum ℚ (P.map (MvPolynomial.map (Int.castRingHom ℚ))) (fun j => (L j).a)
 
-theorem isArithVar_projLine : IsArithVar (⊥ : Ideal (MRing (PBlk 2))) 2 := by
-  refine ⟨inferInstance, ⟨Ideal.isPrime_bot,
-    ⟨∅, fun f hf => absurd hf (Set.notMem_empty f), Ideal.span_empty.symm⟩,
-    fun _ => ⟨0, by rw [Submodule.mem_bot]; exact X_ne_zero _⟩⟩, ?_, ?_⟩
-  · ext a
-    simp [Ideal.mem_comap]
-  · rw [ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _),
-      MvPolynomial.ringKrullDim_of_isNoetherianRing,
-      IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]
-    have hc : Nat.card ((_ : Unit) × PBlk 2 ()) = 2 := by
-      rw [Nat.card_eq_fintype_card, Fintype.card_sigma]
-      simp
-    rw [hc, Fintype.card_unit]
-    rfl
-
 theorem isSmoothHerm_fsLine (n : ℕ) : IsSmoothHerm (fsLine n) := by
   have hfun : (fsLine n).h = fun z => ∏ k : Unit, Real.sqrt (∑ i : Fin n, ‖z ⟨k, i⟩‖ ^ 2) := by
     funext z

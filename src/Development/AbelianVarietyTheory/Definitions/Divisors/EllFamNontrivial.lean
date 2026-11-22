@@ -277,8 +277,6 @@ end Charts
 def Fam.transl (F : Fam I g Λ) (l : Λ) : F.allCharts.triv F.totChart ⟶ F.allCharts.triv F.totChart :=
   Charts.ptHom (l := l) (F.allCharts.triv F.totChart) (fun _ h ↦ h)
 
-theorem Fam.transl_deg (F : Fam I g Λ) (l : Λ) : (F.transl l).deg = l := rfl
-
 def Charts.dualAt {F : Fam I g Λ} (K : Charts F) (k : K.K) (p : Tot I g) (hp : p ∈ K.W k) : K.Obj where
   k := k
   C := DualNumber ℂ
@@ -287,13 +285,5 @@ def Charts.dualAt {F : Fam I g Λ} (K : Charts F) (k : K.K) (p : Tot I g) (hp : 
   nil := ⟨2, by rw [Ideal.span_singleton_pow, sq, DualNumber.eps_mul_eps]; simp⟩
   ρ := (algebraMap ℂ (DualNumber ℂ)).comp (Hol.ev p hp).toRingHom
   ρ_cst _ := rfl
-
-theorem Charts.dualAt_J_ne_bot {F : Fam I g Λ} (K : Charts F) (k : K.K) (p : Tot I g) (hp : p ∈ K.W k) :
-    (K.dualAt k p hp).J ≠ ⊥ := by
-  change Ideal.span {DualNumber.eps} ≠ ⊥
-  rw [Ne, Ideal.span_singleton_eq_bot]
-  intro h
-  have := congrArg TrivSqZeroExt.snd h
-  simp at this
 
 end GlobalTheory.AnPer

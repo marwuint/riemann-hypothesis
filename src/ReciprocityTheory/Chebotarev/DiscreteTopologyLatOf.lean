@@ -8,8 +8,6 @@ namespace ReciprocityTheory.Cheb
 
 variable {E : Type} [Field E] [NumberField E]
 
-theorem embZ_apply (α : 𝓞 E) : embZ α = mixedEmbedding E (α : E) := rfl
-
 theorem mem_latOf {I : Ideal (𝓞 E)} {x : mixedSpace E} : x ∈ latOf I ↔ ∃ α ∈ I, embZ α = x := by
   simp only [latOf, Submodule.mem_map, Submodule.restrictScalars_mem]
 

@@ -14,10 +14,6 @@ def rt (g : GL (Fin 3) ℝ) (Ψ : M23 → ℂ) (X : M23) : ℂ :=
 def pol (i j : Fin 3) (Ψ : M23 → ℂ) (X : M23) : ℂ :=
   fderiv ℝ Ψ X (Matrix.of.symm (Matrix.of X * Matrix.single i j (1 : ℝ))) + if i = j then Ψ X else 0
 
-def secInt (k : ℕ) (Φ : Sw) (g : GL (Fin 3) ℝ) (h : M22) : ℂ :=
-  Wm k (Matrix.of h)⁻¹ * inn Φ g (Matrix.of h) * sg (Matrix.of h).det *
-    ((|(Matrix.of h).det| ^ (-(1 : ℝ) / 2) : ℝ) : ℂ)
-
 def maj (k N : ℕ) (a b : ℝ) (h : M22) : ℝ :=
   ‖Wm k (Matrix.diagonal ![a, 1] * (Matrix.of h)⁻¹)‖ * |(Matrix.of h).det| ^ (-(3 : ℝ) / 2) /
     ((1 + ‖h‖) ^ N * (1 + |b| * ‖eta h‖) ^ N)

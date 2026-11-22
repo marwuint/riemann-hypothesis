@@ -166,41 +166,6 @@ theorem weilPairing_ne_zero {n : ℕ} (hn : (n : F) ≠ 0) {S T : W.toAffine.Poi
   rw [h0, zero_pow hn'] at h
   exact zero_ne_one h
 
-theorem weilPairing_add_left {n : ℕ} (hn : (n : F) ≠ 0) {S₁ S₂ T : W.toAffine.Point}
-    (hS₁ : n • S₁ = 0) (hS₂ : n • S₂ = 0) (hT : n • T = 0) :
-    weilPairing W n (S₁ + S₂) T = weilPairing W n S₁ T * weilPairing W n S₂ T := by
-  obtain ⟨f, g, h⟩ := exists_isWeilData W hn hT
-  apply weilPairing_eq_of_translate_eq (by rw [nsmul_add, hS₁, hS₂, add_zero]) h
-  rw [← translate_translate, translate_eq_weilPairing_mul hS₂ h, map_mul, translate_algebraMap,
-    translate_eq_weilPairing_mul hS₁ h, map_mul]
-  ring
-
-theorem weilPairing_add_right {n : ℕ} (hn : (n : F) ≠ 0) {S T₁ T₂ : W.toAffine.Point}
-    (hS : n • S = 0) (hT₁ : n • T₁ = 0) (hT₂ : n • T₂ = 0) :
-    weilPairing W n S (T₁ + T₂) = weilPairing W n S T₁ * weilPairing W n S T₂ := by
-  obtain ⟨f₁, g₁, h₁⟩ := exists_isWeilData W hn hT₁
-  obtain ⟨f₂, g₂, h₂⟩ := exists_isWeilData W hn hT₂
-  obtain ⟨hf₁, hg₁, hdiv₁, hn0, hpull₁⟩ := h₁
-  obtain ⟨hf₂, hg₂, hdiv₂, hn0', hpull₂⟩ := h₂
-  have hS' : (n : ℤ) • S = 0 := by rw [natCast_zsmul]; exact hS
-
-  obtain ⟨k, hk, hdivk⟩ := (exists_divisorOf_eq_iff W (Finsupp.single (T₁ + T₂) 1 -
-    Finsupp.single T₁ 1 - Finsupp.single T₂ 1 + Finsupp.single 0 1)).mpr
-    ⟨by simp, by simp⟩
-  have hdata : IsWeilData W n (T₁ + T₂) (f₁ * f₂ * k ^ n) (g₁ * g₂ * mulPullback W n hn0 k) := by
-    refine ⟨mul_ne_zero (mul_ne_zero hf₁ hf₂) (pow_ne_zero n hk),
-      mul_ne_zero (mul_ne_zero hg₁ hg₂) (mulPullback_ne_zero W hn0 hk), ?_, hn0, ?_⟩
-    · rw [divisorOf_mul W (mul_ne_zero hf₁ hf₂) (pow_ne_zero n hk), divisorOf_mul W hf₁ hf₂,
-        divisorOf_pow W hk, hdiv₁, hdiv₂, hdivk, ← natCast_zsmul]
-      simp only [smul_sub, smul_add]
-      abel
-    · rw [map_mul, map_mul, map_pow, hpull₁, hpull₂, mul_pow, mul_pow]
-  apply weilPairing_eq_of_translate_eq hS hdata
-  rw [map_mul, map_mul, translate_eq_weilPairing_mul hS ⟨hf₁, hg₁, hdiv₁, hn0, hpull₁⟩,
-    translate_eq_weilPairing_mul hS ⟨hf₂, hg₂, hdiv₂, hn0', hpull₂⟩,
-    translate_mulPullback_of_zsmul_eq_zero W hn0 hS', map_mul]
-  ring
-
 noncomputable def weilPairingRoot {n : ℕ} (hn : (n : F) ≠ 0)
     (S T : torsionBy W.toAffine.Point n) : rootsOfUnity n F :=
   ⟨Units.mk0 (weilPairing W n S T)
@@ -211,41 +176,6 @@ noncomputable def weilPairingRoot {n : ℕ} (hn : (n : F) ≠ 0)
 @[simp]
 theorem coe_weilPairingRoot {n : ℕ} (hn : (n : F) ≠ 0) (S T : torsionBy W.toAffine.Point n) :
     ((weilPairingRoot hn S T : Fˣ) : F) = weilPairing W n S T :=
-  rfl
-
-theorem weilPairingRoot_add_left {n : ℕ} (hn : (n : F) ≠ 0) (S₁ S₂ T : torsionBy W.toAffine.Point n) :
-    weilPairingRoot hn (S₁ + S₂) T = weilPairingRoot hn S₁ T * weilPairingRoot hn S₂ T := by
-  apply Subtype.ext
-  apply Units.ext
-  change weilPairing W n ((S₁ + S₂ : torsionBy W.toAffine.Point n) : W.toAffine.Point) T =
-    weilPairing W n S₁ T * weilPairing W n S₂ T
-  rw [AddSubgroup.coe_add]
-  exact weilPairing_add_left hn (torsionBy.nsmul_iff.mp S₁.2) (torsionBy.nsmul_iff.mp S₂.2)
-    (torsionBy.nsmul_iff.mp T.2)
-
-theorem weilPairingRoot_add_right {n : ℕ} (hn : (n : F) ≠ 0) (S T₁ T₂ : torsionBy W.toAffine.Point n) :
-    weilPairingRoot hn S (T₁ + T₂) = weilPairingRoot hn S T₁ * weilPairingRoot hn S T₂ := by
-  apply Subtype.ext
-  apply Units.ext
-  change weilPairing W n S ((T₁ + T₂ : torsionBy W.toAffine.Point n) : W.toAffine.Point) =
-    weilPairing W n S T₁ * weilPairing W n S T₂
-  rw [AddSubgroup.coe_add]
-  exact weilPairing_add_right hn (torsionBy.nsmul_iff.mp S.2) (torsionBy.nsmul_iff.mp T₁.2)
-    (torsionBy.nsmul_iff.mp T₂.2)
-
-noncomputable def weilPairingHom {n : ℕ} (hn : (n : F) ≠ 0) :
-    torsionBy W.toAffine.Point n →+ torsionBy W.toAffine.Point n →+ Additive (rootsOfUnity n F) :=
-  AddMonoidHom.mk' (fun S => AddMonoidHom.mk' (fun T => Additive.ofMul (weilPairingRoot hn S T))
-      fun T₁ T₂ => by rw [weilPairingRoot_add_right]; rfl)
-    fun S₁ S₂ => AddMonoidHom.ext fun T => by
-      change Additive.ofMul (weilPairingRoot hn (S₁ + S₂) T) =
-        Additive.ofMul (weilPairingRoot hn S₁ T) + Additive.ofMul (weilPairingRoot hn S₂ T)
-      rw [weilPairingRoot_add_left]
-      rfl
-
-theorem weilPairingHom_apply {n : ℕ} (hn : (n : F) ≠ 0) (S T : torsionBy W.toAffine.Point n) :
-    (((Additive.toMul (weilPairingHom hn S T) : rootsOfUnity n F) : Fˣ) : F) =
-      weilPairing W n S T :=
   rfl
 
 end GroundTheory.Arith.Abelian

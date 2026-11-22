@@ -30,10 +30,6 @@ def tupZ (u u' : D.what₂.Word) (Z : PairVal.MatR D) (p : PlF D) : Set (MatP D 
 
 variable {M δ}
 
-theorem locT_eq_tupZ {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
-    {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (γ : TermDef.Term D u u' F0 what₂) :
-    locT M δ γ = tupZ M δ u u' (zT γ) := rfl
-
 variable {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 

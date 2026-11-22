@@ -15,9 +15,6 @@ def saturation (N : Submodule R M) : Submodule R M :=
 def IsSaturatedSubmodule (N : Submodule R M) : Prop :=
   saturation N = N
 
-theorem saturation_eq_comap_torsion (N : Submodule R M) :
-    saturation N = (Submodule.torsion R (M ⧸ N)).comap N.mkQ := rfl
-
 theorem mem_saturation_iff' {N : Submodule R M} {x : M} :
     x ∈ saturation N ↔ ∃ a ∈ R⁰, a • x ∈ N := by
   change N.mkQ x ∈ Submodule.torsion R (M ⧸ N) ↔ _
@@ -119,12 +116,6 @@ theorem isSaturatedSubmodule_saturation (N : Submodule R M) :
 instance isTorsionFree_quotient_saturation [IsDomain R] (N : Submodule R M) :
     Module.IsTorsionFree R (M ⧸ saturation N) :=
   (isSaturatedSubmodule_saturation N).isTorsionFree_quotient
-
-theorem IsSaturatedSubmodule.saturation_le_iff {N P : Submodule R M}
-    (h : IsSaturatedSubmodule P) : saturation N ≤ P ↔ N ≤ P := ⟨fun hN => (le_saturation N).trans hN, fun hN => (saturation_mono hN).trans h.saturation_eq.le⟩
-
-theorem IsSaturatedSubmodule.eq_saturation {N P : Submodule R M}
-    (h : IsSaturatedSubmodule P) (h₁ : N ≤ P) (h₂ : P ≤ saturation N) : P = saturation N := le_antisymm h₂ (h.saturation_le_iff.2 h₁)
 
 @[simp]
 theorem saturation_bot : saturation (⊥ : Submodule R M) = Submodule.torsion R M := by
@@ -436,16 +427,6 @@ theorem span_inf_restrictScalars_of_le {M : Submodule R V} {W : Submodule K V}
     (h : W ≤ Submodule.span K (M : Set V)) :
     Submodule.span K ((M ⊓ W.restrictScalars R : Submodule R V) : Set V) = W := by
   rw [span_inf_restrictScalars, inf_of_le_right h]
-
-def saturatedOrderIsoSubspaceSpan (M : Submodule R V) :
-    {N : Submodule R M // IsSaturatedSubmodule N} ≃o
-      Submodule K (Submodule.span K (M : Set V)) :=
-  haveI := isLocalizedModule_inclusionSpan K R⁰ M
-  saturatedOrderIsoSubspace K (M.inclusionSpan K)
-
-theorem mem_saturatedOrderIsoSubspaceSpan_symm_apply (M : Submodule R V)
-    (W : Submodule K (Submodule.span K (M : Set V))) (x : M) :
-    x ∈ ((saturatedOrderIsoSubspaceSpan K M).symm W).1 ↔ M.inclusionSpan K x ∈ W := Iff.rfl
 
 def saturatedInOrderIso (M : Submodule R V) :
     {N : Submodule R V // IsSaturatedIn M N} ≃o Set.Iic (Submodule.span K (M : Set V)) where

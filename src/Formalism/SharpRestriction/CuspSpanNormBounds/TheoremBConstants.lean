@@ -14,31 +14,6 @@ namespace Formalism.MainNotions.TheoremBConstants
 
 open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.BasicNotions Formalism.MainNotions.OnePlaceEstimates Formalism.MainNotions.BesselShellMomentBounds
 
-section PieceA3
-
-def PieriShellBound (D : D7) (Ch Cg Cq C1 CA CQ : ℝ) : Prop :=
-  ∀ (L : LocBessel D.R.k D.R.rS) (lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (ka b bv : ℝ) (Bf : L.Hs → L.Wp)
-    (μG μS νq : Measure (Mt D.R.k D.R.rS)) (P : Mx D.R.k D.R.rS) (w : L.Hs) (j : ℕ),
-    CloudNodeShape D Ch Cg L lam0 ka b bv Bf μG μS νq P w j →
-    l1 L.lam lam0 + 1 ≤ q0 Cq (2 * D.R.rS + 2) L.ε L.u lam0 →
-    (j : ℝ) + 2 ≤ bv / (C1 * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2) →
-    ∃ (X : Fin (2 * D.R.rS + D.R.k + 1) → Mx D.R.k D.R.rS → ℝ) (ιs : Type) (_ : Fintype ιs)
-      (sI : ιs → Fin (2 * D.R.rS + D.R.k + 1)) (A : ιs → ℝ) (Ls : ιs → LocBessel D.R.k D.R.rS)
-      (Bs : ∀ s, (Ls s).Hs → (Ls s).Wp) (Ps : ιs → Mx D.R.k D.R.rS)
-      (ws : ∀ (_c : Fin (2 * D.R.rS + D.R.k + 1)) (s : ιs), (Ls s).Hs),
-      Fintype.card ιs ≤ 2 * D.R.rS + D.R.k + 1 ∧
-      (∀ c g, 0 ≤ X c g) ∧ (∀ g ∈ UH (Hpk D.R.k D.R.rS), la D L 0 g ^ 2 = ∑ c, X c g) ∧
-      (∀ s, 0 ≤ A s ∧ A s ≤ Tz D.R.k D.R.rS L.z * ka ^ (2 * D.R.rS) * b ^ CA) ∧
-      (∀ s, (Ls s).lam = L.lam - Pi.single (sI s) 1 ∧ (Ls s).u = L.u ∧ (Ls s).z = L.z ∧
-        ShellCommonHypotheses D Ch Cg (Ls s) lam0 ka b bv (Bs s) μG μS νq (Ps s)) ∧
-      (∀ c s, ws c s ∈ shell (Ls s) (Ps s) (j + 2)) ∧
-      (∀ c, ∀ g ∈ UH (Hpk D.R.k D.R.rS), X c g * ‖Bf (L.σ g w)‖ ^ 2 ≤
-        (Fintype.card ιs : ℝ) * ∑ s, A s * ‖Bs s ((Ls s).σ g (ws c s))‖ ^ 2) ∧
-      ∀ c, ∑ s, ‖ws c s‖ ^ 2 ≤
-        (CQ * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) * b) ^ (2 * (2 * D.R.rS + 2) + 1) * ‖w‖ ^ 2
-
-end PieceA3
-
 section PieceB1
 
 def FrC (D : D7) (Cf ka : ℝ) : ℝ :=

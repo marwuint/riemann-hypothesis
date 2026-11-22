@@ -41,8 +41,6 @@ def negM {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) : DSModel (s
 
 variable {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
 
-theorem negM_rep (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) : (negM M).rep τ g = M.rep τ g := rfl
-
 variable (θ : InfFam D)
 
 theorem negM_sm (hθ : IsInfFam θ) (τ : D.what₂.Tau) : (negM M).sm τ = M.sm τ := by

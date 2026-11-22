@@ -112,11 +112,6 @@ def lin (a : ι → K) : MvPowerSeries ι K := ∑ i, a i • MvPowerSeries.X i
 def corr (e e' : PowerSeries K) (π : K) (N : ℕ) (P : MvPowerSeries ι K) : MvPowerSeries ι K :=
   fun d => if d.degree = N + 1 then MvPowerSeries.coeff d (Ldef e e' P) / (π - π ^ (N + 1)) else 0
 
-theorem coeff_corr (e e' : PowerSeries K) (π : K) (N : ℕ) (P : MvPowerSeries ι K)
-    (d : ι →₀ ℕ) : MvPowerSeries.coeff d (corr e e' π N P) =
-      if d.degree = N + 1 then MvPowerSeries.coeff d (Ldef e e' P) / (π - π ^ (N + 1)) else 0 :=
-  rfl
-
 variable {p q : ℕ} {π : K} {e e' : PowerSeries K} {a : ι → K}
 
 end Constr

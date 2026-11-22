@@ -16,6 +16,4 @@ def pairOne (K : Type) [Field K] [StarRing K] : K →ₗ⋆[K] K →ₗ[K] K :=
     (by intro x y z; simp [add_mul]) (by intro a x y; simp [mul_assoc, starRingEnd_apply])
     (by intro x y z; simp [mul_add]) (by intro a x y; simp [mul_left_comm])
 
-theorem pairOne_apply (K : Type) [Field K] [StarRing K] (x y : K) : pairOne K x y = star x * y := rfl
-
 end Formalism.L2.DIV.CSD

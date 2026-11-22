@@ -34,9 +34,6 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 
 namespace GlobalTheory.TrueGeo.NefFibUniq
 
-theorem nefFib_shift {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (L : HermLB p) (t : (k →+* ℂ) → ℝ)
-    (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) : ArInt.NefFib (L.shift t ht) ↔ ArInt.NefFib L := Iff.rfl
-
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} {A : Adl C Y}
 
 end GlobalTheory.TrueGeo.NefFibUniq

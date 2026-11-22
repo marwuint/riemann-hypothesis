@@ -38,12 +38,6 @@ def oscAct (P Q : ℕ) : Mat P Q →ₗ[ℂ] Module.End ℂ (OscPol P Q) :=
 theorem oscAct_apply (Z : Mat P Q) : oscAct P Q Z = ∑ l, ∑ l', Z l l' • unitOp l l' := by
   simp [oscAct, LinearMap.sum_apply]
 
-theorem oscAct_single (a b : Ix P Q) (c : ℂ) : oscAct P Q (Matrix.single a b c) = c • unitOp a b := by
-  simp [oscAct_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, ite_smul]
-
-theorem oscAct_Eab (a b : Ix P Q) : oscAct P Q (Eab a b) = unitOp a b := by
-  rw [Eab, oscAct_single, one_smul]
-
 theorem unitOp_inl_inl (i j : Fin P) (f : OscPol P Q) :
     unitOp (.inl i) (.inl j) f = X (.inl i) * pderiv (.inl j) f + if i = j then (1 / 2 : ℂ) • f else 0 := by
   by_cases h : i = j <;> simp [unitOp, rai, low, h]
@@ -372,12 +366,6 @@ open MvPolynomial GlobalTheory.Oscillator
 
 variable {P Q : ℕ} {T0 : GrpData P Q}
 
-theorem loweringOperator_eq (l : Ix P Q) : oscillatorLowering l = low l := rfl
-
-theorem raisingOperator_eq (l : Ix P Q) : oscillatorRaising l = rai l := rfl
-
-theorem matrixUnitOperator_eq (l l' : Ix P Q) : oscillatorMatrixUnit l l' = unitOp l l' := rfl
-
 theorem omAct0_eq (P Q : ℕ) : omAct0 P Q = oscAct P Q := rfl
 
 def seqFock (σ : Type) [DecidableEq σ] : Fock σ where
@@ -396,9 +384,6 @@ def fockOf (O : GlobalTheory.Osc P Q T0) : Fock (Ix P Q) where
   dense := O.dense
   fockIP := O.fockIP
 
-theorem isOsc_fockOf (O : GlobalTheory.Osc P Q T0) : IsOsc T0 (fockOf O) O.Om :=
-  ⟨O.isom, O.cont, O.der⟩
-
 def IsOsc.toOsc {F : Fock (Ix P Q)} {Om : T0.G →* (F.H →L[ℂ] F.H)} (h : IsOsc T0 F Om) : GlobalTheory.Osc P Q T0 where
   H := F.H
   Om := Om
@@ -409,11 +394,6 @@ def IsOsc.toOsc {F : Fock (Ix P Q)} {Om : T0.G →* (F.H →L[ℂ] F.H)} (h : Is
   dense := F.dense
   fockIP := F.fockIP
   der := h.der
-
-theorem IsOsc.fockOf_toOsc {F : Fock (Ix P Q)} {Om : T0.G →* (F.H →L[ℂ] F.H)} (h : IsOsc T0 F Om) :
-    fockOf h.toOsc = F := rfl
-
-theorem toOsc_isOsc_fockOf (O : GlobalTheory.Osc P Q T0) : (isOsc_fockOf O).toOsc = O := rfl
 
 theorem hasCoeff_coe {σ : Type} [DecidableEq σ] (F : Fock σ) (f : MvPolynomial σ ℂ) :
     HasCoeff F (F.ι f) (f : MvPowerSeries σ ℂ) := by

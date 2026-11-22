@@ -153,8 +153,6 @@ def liftS : GL β (Fv F v) →* UG (cA σ) J :=
     · rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, awM_cA, up_aw, Matrix.transpose_one,
         Matrix.map_one _ (map_zero _) (map_one _), one_mul, mul_one]
 
-theorem liftS_val (g : GL β (Fv F v)) : (liftS hσ τ h1 h2 g).1.1 = up hσ τ g.1 (dual Jp g).1 := rfl
-
 include h1 in
 theorem snd_eq (g : UG (cA σ) J) : g.1.1.map (piW (τ.comp σ)) = (dual Jp (Matrix.GeneralLinearGroup.map (piW τ) g.1)).1 := by
   have := (pi_gram τ g.1.1).symm.trans (congrArg (·.map (piW τ)) g.2)

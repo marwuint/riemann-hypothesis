@@ -231,9 +231,6 @@ def cmpZZ (s : X ⟶ Sp R) : Z1 (O (dp0 R) s) →ₗ[R] cechDeRhamTotalCocyclesO
   ptZZ (F := OAff s) (fun U ↦ affPt s U.unop) (fun U ↦ affPt_w s U.unop)
     fun _ _ a ↦ affPt_res s (leOfHom a.unop)
 
-theorem cmpZZ_ω (s : X ⟶ Sp R) (f : Z1 (O (dp0 R) s)) (U : AffOp X) :
-    (cmpZZ s f).1.2 U = connForm f (affPt s U.unop) (affPt_w s U.unop) := rfl
-
 theorem cmpZZ_f (s : X ⟶ Sp R) (f : Z1 (O (dp0 R) s)) {U V : AffOp X} (a : U ⟶ V) :
     (cmpZZ s f).1.1 U V a = ev f (Thick.trivHom (hx := affPt_w s U.unop)
       (T := Thick.triv _ _ (affPt_w s V.unop)) (Sec.res s (leOfHom a.unop))
@@ -407,9 +404,6 @@ def affEquiv : AlgebraFirstDeRham R B ≃ₗ[R] HH1 (algStr R B) :=
         le_top (a := U.unop.1))).op) fun _ _ ↦ rfl)
       (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of B)).inv))
 
-theorem affEquiv_mk (ω : LinearMap.ker (dOne R B)) : affEquiv R B (Submodule.Quotient.mk ω) =
-    clForm _ (coneForm (F := OAff (algStr R B)) (fun U ↦ toSec R B U.unop) (res_toSec R B) ω) := rfl
-
 open Polynomial
 
 theorem dOne_line (ω : Ω[R[X]⁄R]) : dOne R R[X] ω = 0 := by
@@ -426,9 +420,6 @@ def lineEquiv : (Ω[R[X]⁄R] ⧸ LinearMap.range (D R R[X]).toLinearMap) ≃ₗ
       ext ω
       exact ⟨fun ⟨x, hx, e⟩ ↦ e ▸ hx, fun hω ↦ ⟨⟨ω, dOne_line R ω⟩, hω, rfl⟩⟩)).symm.trans
     (affEquiv R R[X])
-
-theorem lineEquiv_mk (ω : Ω[R[X]⁄R]) : lineEquiv R (Submodule.Quotient.mk ω) =
-    affEquiv R R[X] (Submodule.Quotient.mk ⟨ω, dOne_line R ω⟩) := rfl
 
 end Affine
 

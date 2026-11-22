@@ -189,8 +189,6 @@ def halfSub {D : D7} (S T : HSp D) (c : AE D) : AddSubgroup (WO S T) where
     show c * (-x i j) = -x i j
     rw [mul_neg, hx i j]
 
-theorem mem_halfSub {D : D7} {S T : HSp D} {c : AE D} {w : WO S T} : w ∈ halfSub S T c ↔ IsHalf c w := Iff.rfl
-
 end GlobalTheory.ScalarReps
 
 namespace GlobalTheory.ScalarReps

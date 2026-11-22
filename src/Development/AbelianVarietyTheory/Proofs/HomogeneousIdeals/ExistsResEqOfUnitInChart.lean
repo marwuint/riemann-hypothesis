@@ -33,9 +33,6 @@ def addDer (φ : B →ₐ[R] A) (D : B →ₗ[R] A) (hD : ∀ b b', D (b * b') =
       simp only [LinearMap.add_apply, AlgHom.toLinearMap_apply, map_mul, hD]
       linear_combination - h0 b b')
 
-theorem addDer_apply (φ : B →ₐ[R] A) (D : B →ₗ[R] A) (hD) (h0) (b : B) :
-    addDer φ D hD h0 b = φ b + D b := rfl
-
 def addDers {κ : Type} [Fintype κ] (τ : κ → Derivation R B B) (φ : B →ₐ[R] A) (t : κ → A)
     (ht : ∀ i j, t i * t j = 0) : B →ₐ[R] A :=
   addDer φ

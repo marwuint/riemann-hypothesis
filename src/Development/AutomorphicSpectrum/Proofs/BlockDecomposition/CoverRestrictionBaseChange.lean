@@ -308,13 +308,6 @@ def altAb (f : T' ⟶ T) {F : AbSheaf T} {G : AbSheaf T'} (φ : F ⟶ (push f).o
     exact (map_map_thin _ _ _ (homOfLE ((cechOpen_anti W U' h).trans (hτ s))).op _).trans
       (map_map_thin _ _ _ _ _).symm
 
-theorem altAb_app (f : T' ⟶ T) {F : AbSheaf T} {G : AbSheaf T'} (φ : F ⟶ (push f).obj G)
-    {V : Opens T} {W : Opens T'} {U : ι → Opens T} {U' : κ → Opens T'} (τ : κ → ι)
-    (hτ : ∀ t : Finset κ, cechOpen W U' t ≤ (Opens.map f).obj (cechOpen V U (t.image τ)))
-    (t : Finset κ) (x : F.obj.obj (op (cechOpen V U (t.image τ)))) :
-    (altAb f φ τ hτ).app t x =
-      G.obj.map (homOfLE (hτ t)).op (φ.hom.app (op (cechOpen V U (t.image τ))) x) := rfl
-
 theorem altAb_comm (f : T' ⟶ T) {A B : AbSheaf T} {A' B' : AbSheaf T'} (a : A ⟶ B) (b : A' ⟶ B')
     (φ₁ : A ⟶ (push f).obj A') (φ₂ : B ⟶ (push f).obj B') (h : a ≫ φ₂ = φ₁ ≫ (push f).map b)
     {V : Opens T} {W : Opens T'} {U : ι → Opens T} {U' : κ → Opens T'} (τ : κ → ι)

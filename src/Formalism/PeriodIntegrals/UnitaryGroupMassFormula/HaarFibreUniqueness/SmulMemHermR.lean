@@ -30,9 +30,6 @@ theorem smul_mem_HermR (c : R) (S : Matrix (Fin a) (Fin a) (R ⊗[F] E)) (hS : S
 instance hermSMul : SMul R (HermR R σ a) :=
   ⟨fun c S => ⟨c • (S : Matrix (Fin a) (Fin a) (R ⊗[F] E)), smul_mem_HermR R σ a c S S.2⟩⟩
 
-theorem coe_herm_smul (c : R) (S : HermR R σ a) :
-    ((c • S : HermR R σ a) : Matrix (Fin a) (Fin a) (R ⊗[F] E)) = c • (S : Matrix _ _ _) := rfl
-
 instance hermModule : Module R (HermR R σ a) :=
   Function.Injective.module R (HermR R σ a).subtype Subtype.val_injective (fun _ _ => rfl)
 

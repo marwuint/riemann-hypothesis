@@ -213,8 +213,6 @@ def toRep (π : CuspSub E a) (h : carrier π ≤ centralCuspForms E a) : Cuspida
 def ofRep (π : CuspidalAutomorphicRepresentation E a) : CuspSub E a :=
   ofIrr π.carrier ⟨π.stable_ρ, π.stable_σ, π.stable_τ⟩ π.isIrreducible
 
-theorem carrier_toRep (π : CuspSub E a) (h) : (toRep π h).carrier = carrier π := rfl
-
 theorem carrier_le_central (π : CuspSub E a) (h : ∀ φ ∈ π.V, lie E a (oneL E a) φ = 0) :
     carrier π ≤ centralCuspForms E a := fun _ hψ => mem_centralCuspForms_of (h _ hψ)
 

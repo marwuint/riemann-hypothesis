@@ -32,18 +32,6 @@ def RelRepC : Prop :=
     t.relevant → t.G = 0 →
     Relevant D.host.F (lf D (X.Fu u)).fl (frq X t.rep).fl ∧ Gval (lf D (X.Fu u)) (frq X t.rep) = 0
 
-def CovRepC : Prop :=
-  ∀ (D : D7) (X : HidaSetting D) (u u' : D.what₂.Word) (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V)
-    (q : GCar X u u' (X.Fu u) (X.Fu u') Λ Λ'),
-    Relevant D.host.F (lf D (X.Fu u)).fl (frq X q).fl →
-    ∀ Ω : Set X.B.I.Ginf, IsSFund X.B.I (ROset X (X.Fu u) (X.Fu u') Λ Λ' q.1.2) Ω →
-    OOInt (Formalism.L2.SG.ProjRows.muInf X.B.I) Ω (X.Wu u) (X.Wu u') q.1.1.1 →
-    ∀ h ∈ pointwiseStabilizerInfinite X q,
-      (haveI := FiniteDimensional.complete ℂ (X.Vpi u)
-       (X.piU u h).comp (OO (Formalism.L2.SG.ProjRows.muInf X.B.I) Ω (X.Wu u) (X.Wu u') q.1.1.1) =
-        (OO (Formalism.L2.SG.ProjRows.muInf X.B.I) Ω (X.Wu u) (X.Wu u') q.1.1.1).comp
-          (X.piU u' (q.1.1.1⁻¹ * h * q.1.1.1)))
-
 def SchurNFC : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (u u' : D.what₂.Word) (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V)
     (q : GCar X u u' (X.Fu u) (X.Fu u') Λ Λ'),

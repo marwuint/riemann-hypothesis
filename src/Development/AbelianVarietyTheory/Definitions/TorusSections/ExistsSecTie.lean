@@ -47,10 +47,6 @@ def IntSec.ofIntData {Xo : Moduli Dw l} {c : Coeff l} {T : CDVR} {io : c.F →+*
   letI := io.toAlgebra
   ⟨I.t', I.m1, I.m2, I.θ, I.w1, I.w2, I.σ, I.s1, I.θ2, I.rig1, I.rig2, I.maps1, I.maps2, I.pull, I.gen1⟩
 
-theorem IntSec.ofIntData_θ {Xo : Moduli Dw l} {c : Coeff l} {T : CDVR} {io : c.F →+* T.Fr}
-    {y : letI := io.toAlgebra; FrPt Xo c T.Fr} (I : IntData Xo c T io y) :
-    letI := io.toAlgebra; (IntSec.ofIntData I).θ = I.θ := rfl
-
 structure Fib (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) (A : PolAV (Spec (CommRingCat.of K))) where
   φ : A.A.left ⟶ Xo.univ.t.G.left
   cart : IsGrpPullback A.A Xo.univ.t.G x φ

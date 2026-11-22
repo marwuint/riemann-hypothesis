@@ -50,9 +50,6 @@ theorem equivFam_zero : equivFam K Ω L (0 : FieldOfNorms K Ω L) = 0 :=
 theorem equivFam_natCast (n : ℕ) : equivFam K Ω L (n : FieldOfNorms K Ω L) = n :=
   (equivFam K Ω L).apply_symm_apply _
 
-theorem equivFam_val (x : FieldOfNorms K Ω L) (n : ℕ) :
-    (equivFam K Ω L x).1 n = x.1 (isTowerFor.finSub n) := rfl
-
 instance charP : CharP (FieldOfNorms K Ω L) (ringChar 𝓀[K]) :=
   (CharP.charP_iff_prime_eq_zero (APFData.fact_prime (K := K)).out).mpr (by
     apply (equivFam K Ω L).injective
@@ -122,10 +119,6 @@ instance instIsNonarchimedeanLocalField : IsNonarchimedeanLocalField (FieldOfNor
   toIsValuativeTopology := inferInstance
   toLocallyCompactSpace := inferInstance
   toIsNontrivial := inferInstance
-
-end FieldOfNorms
-
-namespace FieldOfNorms
 
 end FieldOfNorms
 

@@ -68,34 +68,6 @@ theorem localBasis_bijective (D : WeilDivisor X) (U : X.Opens) (g : (X.functionF
     refine ⟨fun _ _ _ => Subsingleton.elim _ _, fun t => ⟨0, Subtype.ext (funext fun y => ?_)⟩⟩
     exact (hne ⟨y⟩).elim
 
-noncomputable def divisorSectionsOne (V : X.Opens) : divisorSections (0 : WeilDivisor X) V :=
-  divisorSectionsRes 0 le_top (localBasis 0 ⊤ 1 (fun Z _ => by simp [PrimeDivisor.ord_one]))
-
-noncomputable def unitToDivisorZero (V : (Opens X)ᵒᵖ) :
-    (X.ringCatSheaf.obj.obj V) →ₗ[X.ringCatSheaf.obj.obj V]
-      ((divisorPresheaf (0 : WeilDivisor X)).obj V) :=
-  LinearMap.toSpanSingleton _ _ (divisorSectionsOne V.unop)
-
-lemma unitToDivisorZero_bijective (V : (Opens X)ᵒᵖ) :
-    Function.Bijective (unitToDivisorZero (X := X) V) :=
-  localBasis_bijective 0 ⊤ 1 (fun Z _ => by simp [PrimeDivisor.ord_one]) V.unop le_top
-
-noncomputable def divisorSheafZeroIso :
-    SheafOfModules.unit X.ringCatSheaf ≅ divisorSheaf (0 : WeilDivisor X) :=
-  (SheafOfModules.fullyFaithfulForget X.ringCatSheaf).preimageIso
-    (PresheafOfModules.isoMk
-      (fun V => (LinearEquiv.ofBijective (unitToDivisorZero V)
-        (unitToDivisorZero_bijective V)).toModuleIso)
-      (fun V W i => by
-        apply ModuleCat.hom_ext
-        apply LinearMap.ext
-        intro r
-        apply Subtype.ext
-        funext y
-        change sectionValue W.unop y (X.presheaf.map i r) * 1 =
-          sectionValue V.unop ⟨y.1, i.unop.le y.2⟩ r * 1
-        exact congrArg (· * 1) (sectionValue_res i.unop.le y (show Γ(X, V.unop) from r))))
-
 end Basis
 
 end GroundTheory.Arith.SchemeCoh

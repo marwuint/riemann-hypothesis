@@ -17,17 +17,6 @@ def glPiEquiv {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (F
     GL (Fin n) R ≃* (Fin (d + 1) → GL (Fin n) S) :=
   (Units.mapEquiv (e.mapMatrix.trans (matPiEquiv S n (d + 1))).toMulEquiv).trans MulEquiv.piUnits
 
-theorem glPiEquiv_val {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (Fin (d + 1) → S))
-    (g : GL (Fin n) R) (i : Fin (d + 1)) (a b : Fin n) :
-    ((glPiEquiv d n e g i : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) a b = e ((g : Matrix (Fin n) (Fin n) R) a b) i :=
-  rfl
-
-theorem glPiEquiv_inv_val {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (Fin (d + 1) → S))
-    (g : GL (Fin n) R) (i : Fin (d + 1)) (a b : Fin n) :
-    (((glPiEquiv d n e g i)⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) a b =
-      e (((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) a b) i :=
-  rfl
-
 end GlobalTheory.LKRes
 
 namespace GlobalTheory.LKRes

@@ -64,13 +64,6 @@ variable {F L Ω : Type u} [Field F] [Field L] [Field Ω] [Algebra F L] [Algebra
 abbrev unitsEquivOfRestrictScalarsEq : Eˣ ≃* E'ˣ :=
   Units.mapEquiv (fieldEquivOfRestrictScalarsEq h).toMulEquiv
 
-def galUnitsResIso : Rep.res (fixingOfRestrictScalarsEq h).subtype (galUnits.{u} F E) ≅
-    Rep.res (fixingMulEquivOfRestrictScalarsEq h).toMonoidHom (galUnits.{u} L E') :=
-  Rep.mkIso (Representation.Equiv.mk
-    (uliftIntLinearEquiv.{u} (MulEquiv.toAdditive (unitsEquivOfRestrictScalarsEq h)) :
-      Additive Eˣ ≃ₗ[ULift.{u} ℤ] Additive E'ˣ) fun _ =>
-      LinearMap.ext fun _ => rfl)
-
 abbrev rootsOfUnityEquivOfRestrictScalarsEq (n : ℕ) : rootsOfUnity n E ≃* rootsOfUnity n E' :=
   (fieldEquivOfRestrictScalarsEq h).toMulEquiv.restrictRootsOfUnity n
 
@@ -130,11 +123,6 @@ abbrev gsSubtype : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)
     galUnramifiedOutside F Ω S :=
   (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)).subtype
 
-def gsUnitsIso : Rep.res (gsSubtype S hL) (galUnits.{u} F (maxUnramifiedOutside F Ω S)) ≅
-    Rep.res (gsBaseChange S hL).toMulEquiv.toMonoidHom
-      (galUnits.{u} L (maxUnramifiedOutside L Ω (placesOver S))) :=
-  galUnitsResIso (restrictScalars_maxUnramifiedOutside_eq S hL)
-
 def gsRootsOfUnityIso (n : ℕ) :
     Rep.res (gsSubtype S hL) (galRootsOfUnity.{u} F (maxUnramifiedOutside F Ω S) n) ≅
       Rep.res (gsBaseChange S hL).toMulEquiv.toMonoidHom
@@ -158,11 +146,6 @@ instance isDiscreteRep_res_gsSubtype_galSUnitsMax :
   IsDiscreteRep.res continuous_subtype_val _
 
 variable [IsGalois L Ω]
-
-def gsUnitsCohomologyIso (n : ℕ) :
-    cohomology (galUnits.{u} L (maxUnramifiedOutside L Ω (placesOver S))) n ≅
-      cohomology (Rep.res (gsSubtype S hL) (galUnits.{u} F (maxUnramifiedOutside F Ω S))) n :=
-  cohomologyIsoOfContinuousMulEquiv (gsBaseChange S hL) (gsUnitsIso S hL).symm n
 
 def gsRootsOfUnityCohomologyIso (m n : ℕ) :
     cohomology (galRootsOfUnity.{u} L (maxUnramifiedOutside L Ω (placesOver S)) m) n ≅

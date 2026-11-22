@@ -45,9 +45,6 @@ variable {N : Type*} [AddCommGroup N]
 def dualMonoid (σ : PointedCone ℝ (ℝ ⊗[ℤ] N)) : AddSubmonoid (Dual ℤ N) :=
   latticePoints (toRealDual N) (dual (Dual.eval ℝ (ℝ ⊗[ℤ] N)) (σ : Set (ℝ ⊗[ℤ] N)))
 
-theorem mem_dualMonoid {σ : PointedCone ℝ (ℝ ⊗[ℤ] N)} {m : Dual ℤ N} :
-    m ∈ dualMonoid σ ↔ ∀ x ∈ σ, 0 ≤ toRealDual N m x := Iff.rfl
-
 variable [Module.Free ℤ N] [Module.Finite ℤ N]
 
 end Gordan

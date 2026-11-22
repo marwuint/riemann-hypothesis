@@ -76,8 +76,6 @@ abbrev Arith.QS {B N : ℕ} (_ : Arith B N) : ℕ := 16
 def Arith.ax {B N : ℕ} (A : Arith B N) : Formalism.HC.HostAx (Formalism.HC.cyclicFrame 2) :=
   Formalism.HC.D7.hostAx (Formalism.HC.cyclicFrame 2) frame2_inj A.hyp le_rfl A.layer
 
-theorem Arith.ax_QS {B N : ℕ} (A : Arith B N) : A.ax.QS = A.QS := rfl
-
 private theorem coprime_sixteen_of_mod {g q d : ℕ} (h : g ≡ 1 [MOD 16 * q * d]) : Nat.Coprime g 16 := by
   have h1 : g ≡ 1 [MOD 16] := (h.of_mul_right _).of_mul_right _
   rw [Nat.Coprime, h1.gcd_eq, Nat.gcd_one_left]
@@ -165,9 +163,6 @@ def hostOf (u0 : (Rt s).A) (T Lw : ℕ) : Host (Rt s) where
     simp at h₁ h₂
     exact absurd (h₁.trans h₂.symm) h12
   CT2 := 0
-
-theorem hostOf_levelPrimes (u0 : (Rt s).A) (T Lw : ℕ) : (hostOf A u0 T Lw).levelPrimes =
-    {31, 61, A.g0, A.g1} ∪ ({T} : Finset ℕ).filter (fun p => Nat.Coprime p 16) := rfl
 
 end Formalism.MainNotions.Inhab
 

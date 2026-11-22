@@ -127,8 +127,6 @@ def omegaCmp : omega P.G ≃ₗ[O] omega P.Gt where
   left_inv f := Subtype.ext (funext fun x => congrArg f.1 (P.lieCmp.apply_symm_apply x))
   right_inv f := Subtype.ext (funext fun x => congrArg f.1 (P.lieCmp.symm_apply_apply x))
 
-theorem omegaCmp_apply (f : omega P.G) (x : LieG P.Gt) : (P.omegaCmp f).1 x = f.1 (P.lieCmp x) := rfl
-
 end Point
 
 end GlobalTheory.HTLat

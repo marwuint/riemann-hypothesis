@@ -41,9 +41,6 @@ theorem galT_ext {g : GQ l} {x z : OCb l}
   have : y₁ = y₂ := Subtype.ext (h₁.trans h₂.symm)
   exact e₁.trans (this ▸ e₂.symm)
 
-theorem εO_coeff (n : ℕ) :
-    PreTilt.coeff n (εO l) = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (ζO l n) := rfl
-
 theorem ιCD_aB (a : Ainf l) :
     ιCD l (Per6.aB l a) = algebraMap (Per6.BdRp l) (Per6.BdR l) (Per6.aD l a) := by
   rw [frob_aB_apply, ιCD_cB, cD_apply, ACris.iota_algebraMap]

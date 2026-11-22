@@ -12,10 +12,6 @@ def pg {X : Scheme.{0}} [IsIntegral X] (ι : X ⟶ PN k N) (U : (PN k N).Opens)
     (hU : genericPoint X ∈ ι ⁻¹ᵁ U) : Γ(PN k N, U) →+* X.functionField :=
   (ι.app U ≫ X.presheaf.germ _ (genericPoint X) hU).hom
 
-theorem pg_apply {X : Scheme.{0}} [IsIntegral X] (ι : X ⟶ PN k N) (U : (PN k N).Opens)
-    (hU : genericPoint X ∈ ι ⁻¹ᵁ U) (s : Γ(PN k N, U)) :
-    pg ι U hU s = X.presheaf.germ _ (genericPoint X) hU (ι.app U s) := rfl
-
 theorem pg_res {X : Scheme.{0}} [IsIntegral X] (ι : X ⟶ PN k N) {U V : (PN k N).Opens} (hVU : V ≤ U)
     (hV : genericPoint X ∈ ι ⁻¹ᵁ V) (hU : genericPoint X ∈ ι ⁻¹ᵁ U) (s : Γ(PN k N, U)) :
     pg ι V hV ((PN k N).presheaf.map (homOfLE hVU).op s) = pg ι U hU s := by

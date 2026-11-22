@@ -99,9 +99,6 @@ def qbU : Subgroup (GL (Fin n) Kv) where
     rintro a ⟨ha1, ha2, g, hg, ka⟩
     exact ⟨ha2, by rw [inv_inv]; exact ha1, g⁻¹, Θ.H.inv_mem hg, qbU_inv_wit P φ cm (qbIota_int P φ hint hPv) (qbIota_int_inv P φ hint hPv) ka⟩
 
-theorem mem_qbU {k : GL (Fin n) Kv} : k ∈ qbU P φ hint hPv Θ cm ↔ qbInt (k : Matrix (Fin n) (Fin n) Kv) ∧
-    qbInt ((k⁻¹ : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv) ∧ ∃ g : ↥(GLint E n P), g ∈ Θ.H ∧ (qbIota P φ g)⁻¹ * k ∈ qbK cm := Iff.rfl
-
 variable {N : ℕ} (d : E) (hd : d ≠ 0) (hdN : P.valuation E d ≤ WithZero.exp (-(N : ℤ)))
 
 include hint hPv hd hdN in

@@ -324,9 +324,6 @@ def levelLin (h : HeckeAlgebraLevel μ K hKc hKo) : fixedVectors ρ K →ₗ[ℂ
     simp only [RingHom.id_apply, HeckeAlgebraLevel.coe_smul_fixedVectors, Submodule.coe_smul]
     exact heckeAct_smul_right (h : HeckeAlgebra μ).mem c (smooth_of_mem_fixedVectors hKo v.2))
 
-theorem levelLin_apply {ρ : Representation ℂ G V} (h : HeckeAlgebraLevel μ K hKc hKo)
-    (v : fixedVectors ρ K) : levelLin hKc hKo ρ h v = h • v := rfl
-
 theorem levelLin_one (ρ : Representation ℂ G V) :
     levelLin hKc hKo ρ (1 : HeckeAlgebraLevel μ K hKc hKo) = LinearMap.id :=
   LinearMap.ext fun v => one_smul _ v

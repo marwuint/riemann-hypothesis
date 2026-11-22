@@ -45,10 +45,6 @@ def TransGauss : Prop :=
     IsTransSys W π G →
     ∀ (t : T) (N : ℕ), ‖(N : K)‖ = 1 → N • π t = 0 → GaussOne (G t)
 
-def ParSum : Prop :=
-  ∀ (A : Type) [AddCommGroup A] [Finite A] (M : A → ℝ),
-    (∀ P Q : A, Q ≠ 0 → M (P + Q) + M (P - Q) - 2 * M P = 2 * M Q) → ∀ Q : A, Q ≠ 0 → M Q = 0
-
 def ParSumTwo : Prop :=
   ∀ (A : Type) [AddCommGroup A] [Finite A] (M₀ m : A → ℝ),
     (∀ P Q : A, Q ≠ 0 → M₀ (P + Q) + M₀ (P - Q) - 2 * M₀ P = 2 * m Q) →

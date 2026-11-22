@@ -174,11 +174,6 @@ def BridgeRel : Prop :=
     GlRel (EV k r i D E) ∧ IsVec (EV k r i D E) (yV k r z i D E) ∧ IsCov (EV k r i D E) (etaV k r z i D E) ∧
       Commute2 (yV k r z i D E) (etaV k r z i D E)
 
-def BridgeMinor : Prop :=
-  ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (k r : ℕ) (i : Fin (r + 1)) (D : Set (Mx k r)), IsOpen D →
-    ∀ (t : ℕ) (a b : Fin t → Fin (mdim k r i)) (u : ℂ) (φ : SV k r i D E), ∀ g ∈ Glev k r i ∩ D,
-      (qminor (EV k r i D E) a b u φ).1 g = qminorOp (EH k r) (posL k r i ∘ a) (posL k r i ∘ b) u φ.1 g
-
 def tV (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (r + 1)) (D : Set (Mx k r)) (E : Type) [NormedAddCommGroup E]
     [NormedSpace ℂ E] (Y : ℂ) : Fin 2 → Fin 2 → Module.End ℂ (SV k r i D E) :=
   fun p q =>

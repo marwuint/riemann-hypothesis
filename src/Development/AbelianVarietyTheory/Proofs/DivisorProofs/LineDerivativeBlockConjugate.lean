@@ -20,11 +20,6 @@ def placeToAdeles (w : InfinitePlace F) : w.Completion ⊗[F] E →ₙ+* AE F E 
   (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (R' := AF F) (LinearMap.inl F (Ainf F) (Af F)) (fun _ _ => Prod.ext rfl (mul_zero _).symm)).comp
     (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (GlobalTheory.AutFunCompare.sgW w) (GlobalTheory.AutFunCompare.sgW_mul w))
 
-theorem placeToAdeles_apply (x : w.Completion ⊗[F] E) :
-    placeToAdeles F E w x = GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (R' := AF F) (LinearMap.inl F (Ainf F) (Af F))
-      (fun _ _ => Prod.ext rfl (mul_zero _).symm)
-      (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (GlobalTheory.AutFunCompare.sgW w) (GlobalTheory.AutFunCompare.sgW_mul w) x) := rfl
-
 end Adelic
 
 end GlobalTheory.LeviHC.BlockTriLine

@@ -57,10 +57,6 @@ theorem coindRes_apply_mul (f : coindRes H M) {h : G} (hh : h ∈ (H : Subgroup 
     f.1 (h * x) = M.ρ h (f.1 x) :=
   f.2 ⟨h, hh⟩ x
 
-theorem coindRes_ρ_apply (g : G) (f : coindRes H M) (x : G) :
-    ((coindRes H M).ρ g f).1 x = f.1 (x * g) :=
-  rfl
-
 noncomputable def coindShift (s : G) : coindRes H M →ₗ[k] coindRes H M where
   toFun f := ⟨fun x => M.ρ (x * s⁻¹ * x⁻¹) (f.1 (x * s)), by
     intro h x

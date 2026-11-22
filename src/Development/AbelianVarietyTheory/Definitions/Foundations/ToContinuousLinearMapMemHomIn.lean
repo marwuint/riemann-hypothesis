@@ -24,10 +24,6 @@ section Two
 variable {G G₁ G₂ H H₁ H₂ : Type} [Group G] [Group G₁] [Group G₂] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂]
 
-def IsTensorMap (p₁ : G →* G₁) (p₂ : G →* G₂) (π₁ : G₁ →* (H₁ →L[ℂ] H₁)) (π₂ : G₂ →* (H₂ →L[ℂ] H₂))
-    (π : G →* (H →L[ℂ] H)) (J : H₁ ⊗[ℂ] H₂ →ₗᵢ[ℂ] H) : Prop :=
-  DenseRange J ∧ ∀ g x y, π g (J (x ⊗ₜ y)) = J (π₁ (p₁ g) x ⊗ₜ π₂ (p₂ g) y)
-
 variable {p₁ : G →* G₁} {p₂ : G →* G₂} {π₁ : G₁ →* (H₁ →L[ℂ] H₁)} {π₂ : G₂ →* (H₂ →L[ℂ] H₂)} {π : G →* (H →L[ℂ] H)}
   {J : H₁ ⊗[ℂ] H₂ →ₗᵢ[ℂ] H}
 
@@ -63,27 +59,6 @@ theorem restr_self {M : ι → Type} (ξ : ∀ i, M i) : Restr ξ ξ := by simp 
 
 variable {p : ∀ i, G →* Γ i} {δ : ∀ i, Γ i →* (Hs i →L[ℂ] Hs i)} {ξ y y' : ∀ i, Hs i} {π : G →* (H →L[ℂ] H)}
   {B : (∀ i, Hs i) → H}
-
-def restrRep (p : ∀ i, G →* Γ i) (σ : ∀ i, Representation ℂ (Γ i) (N i)) (s : ∀ i, N i)
-    (h : ∀ g, ∀ᶠ i in cofinite, σ i (p i g) (s i) = s i) : Representation ℂ G (RTens s) :=
-  let a : G → AdmFun s → AdmFun s := fun g l => ⟨fun i => l.1 i ∘ₗ σ i (p i g),
-    (Set.Finite.union l.2 (h g)).subset fun i hi => by
-      by_contra hn
-      simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_compl_iff, not_or, not_not] at hn
-      exact hi ((congrArg (l.1 i) hn.2).trans hn.1)⟩
-  { toFun := fun g => (LinearMap.funLeft ℂ ℂ (a g)).restrict (p := RTens s) (q := RTens s) fun _ hz =>
-      (Submodule.span_le (p := (RTens s).comap (LinearMap.funLeft ℂ ℂ (a g)))).2 (by
-        rintro _ ⟨y, hy, rfl⟩
-        exact Submodule.subset_span ⟨_, restr_map (f := fun i => σ i (p i g)) (h g) hy, rfl⟩) hz
-    map_one' := LinearMap.ext fun z => Subtype.ext (funext fun l => congrArg z.1 (Subtype.ext (funext fun i => by
-      simp only [a, map_one]; rfl)))
-    map_mul' := fun g g' => LinearMap.ext fun z => Subtype.ext (funext fun l => congrArg z.1 (Subtype.ext
-      (funext fun i => by simp only [a, map_mul]; rfl))) }
-
-def IsRestrTensorAlg (p : ∀ i, G →* Γ i) (σ : ∀ i, Representation ℂ (Γ i) (N i)) (s : ∀ i, N i)
-    (ρ : Representation ℂ G W) : Prop :=
-  (∀ᶠ i in cofinite, s i ≠ 0) ∧
-    ∃ h : ∀ g, ∀ᶠ i in cofinite, σ i (p i g) (s i) = s i, Nonempty (ρ.Equiv (restrRep p σ s h))
 
 end Many
 

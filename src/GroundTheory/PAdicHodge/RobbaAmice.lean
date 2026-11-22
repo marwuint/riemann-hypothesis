@@ -89,11 +89,6 @@ theorem gaussNorm_mul_alt {f g : Robba K} (hf : f ∈ bounded K) (hg : g ∈ bou
   filter_upwards [hI] with ρ hρ
   exact (gaussNorm_cmul (hr0.trans hρ.1) (hc ρ hρ.1.le hρ.2).1 (hc ρ hρ.1.le hρ.2).2 hf0 hg0).symm
 
-theorem gaussNorm_add_le_max_alt {f g : Robba K} (hf : f ∈ bounded K) (hg : g ∈ bounded K) :
-    norm1 (f + g) ≤ max (norm1 f) (norm1 g) :=
-  ciSup_le fun n => (IsUltrametricDist.norm_add_le_max _ _).trans
-    (max_le_max (norm_coeff_le_norm1 hf n) (norm_coeff_le_norm1 hg n))
-
 theorem gaussNorm_eq_zero_iff_alt {f : Robba K} (hf : f ∈ bounded K) : norm1 f = 0 ↔ f = 0 := by
   constructor
   · intro h

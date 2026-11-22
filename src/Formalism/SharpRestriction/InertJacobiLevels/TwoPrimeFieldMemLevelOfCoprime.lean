@@ -44,12 +44,6 @@ theorem primesOver_ncard (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p.
 
 end General
 
-theorem form_mod {T M d : ℕ} {u v : ℤ} (hT : (T : ℤ) = (1 + M * u) ^ 2 + d * (M * v) ^ 2) : T ≡ 1 [MOD M] := by
-  rw [← Int.natCast_modEq_iff]
-  apply Int.ModEq.symm
-  rw [Int.modEq_iff_dvd]
-  exact ⟨2 * u + M * u ^ 2 + d * M * v ^ 2, by rw [hT]; push_cast; ring⟩
-
 def Yof (R : Ranks) (x eps : ℝ) : ℝ := ((R.k : ℝ) * Real.exp (x ^ eps)) ^ 8
 
 structure Fld (R : Ranks) (x eps : ℝ) extends Formalism.HC.HostAx R.toFrame where
@@ -110,83 +104,7 @@ theorem bb_ex : ∃ 𝔟 : Ideal (𝓞 B.E),
     ∀ σ : B.E ≃ₐ[ℚ] B.E, B.gal σ ∈ R.Psi → σ • 𝔟 = 𝔟 :=
   B.der.principal
 
-theorem coprime_QS_of_mod {p : ℕ} (h : p ≡ 1 [MOD B.QS * B.q * B.d]) : Nat.Coprime p B.QS := by
-  have h1 : p ≡ 1 [MOD B.QS] := h.of_dvd ⟨B.q * B.d, by ring⟩
-  rw [Nat.Coprime, h1.gcd_eq, Nat.gcd_one_left]
-
 end Base
-
-def host2 (u0 : R.A) (ex : Finset ℕ) : Host R where
-  toHostAx := B.toHostAx
-  flPS := B.flPS
-  sqq := B.sqq
-  sqq_sq := B.sqq_sq
-  gal_sqq := B.gal_sqq
-  QS_exact := B.QS_exact
-  QS_le := B.QS_le
-  o_pow := B.o_pow
-  small_le := B.small_le
-  q_ne_three := by
-    have h := B.q_big
-    have ht : 1 ≤ R.t := by have := R.rank_add_five_le; omega
-    have hr : 1 ≤ R.r := by have := R.two_le_m; unfold Ranks.r; omega
-    have h1 : 1 ≤ R.t * R.r := Nat.mul_pos ht hr
-    have e : 4 * R.t * R.r = 4 * (R.t * R.r) := by ring
-    omega
-  qd_big := ⟨B.q_big, B.d_big⟩
-  splitBound := ⌊x ^ (eps / 5)⌋₊
-  split_small := fun p hp h2 hB => B.good.split p hp h2 (by
-    rcases Nat.eq_zero_or_pos ⌊x ^ (eps / 5)⌋₊ with h0 | h0
-    · rw [h0] at hB; exact absurd hp.pos (by omega)
-    · exact (Nat.cast_le.2 hB).trans (Nat.floor_le (Nat.pos_of_floor_pos h0).le))
-  φ₀ := B.cm_nonempty.some
-  φ₀_mem := B.cm_nonempty.some_mem
-  𝔟 := B.bb_ex.choose
-  𝔟_spec := ⟨B.bb_ex.choose_spec.1, B.bb_ex.choose_spec.2.1⟩
-  𝔟_stable := B.bb_ex.choose_spec.2.2
-  levelPrimes := {B.g0, B.g1, B.pde, B.pde'} ∪ ex.filter (fun p => Nat.Coprime p B.QS)
-  g := ![B.g0, B.g1]
-  g_prime := by intro i; fin_cases i; exacts [B.first_prime_isPrime, B.second_prime_isPrime]
-  g_ne := by simpa using B.g_ne
-  g_level := by intro i; fin_cases i <;> simp
-  pde := B.pde
-  pde' := B.pde'
-  pde_prime := B.pde_prime
-  pde'_prime := B.pde'_prime
-  pde_ne := B.pde_ne
-  pde_level := by simp
-  pde_mod := ⟨B.pde_mod.of_mul_right _, B.pde'_mod.of_mul_right _⟩
-  pde_ne_g := by
-    obtain ⟨h1, h2, h3, h4⟩ := B.pde_ne_g
-    intro i; fin_cases i
-    · exact ⟨h1, h3⟩
-    · exact ⟨h2, h4⟩
-  ccK := ⊤
-  ccK_ne_bot := top_ne_bot
-  ccK_primitive := fun m hm => top_primitive m hm
-  ccK_split := fun P hP hle => absurd (top_le_iff.1 hle) hP.ne_top
-  ccK_coprime := fun p _ => by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left p
-  ccK_coprimeS := by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left _
-  level_coprimeS := by
-    intro p hp
-    simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton, Finset.mem_filter] at hp
-    rcases hp with (rfl | rfl | rfl | rfl) | h
-    · obtain ⟨u, v, h⟩ := B.first_prime_norm_form; exact B.coprime_QS_of_mod (form_mod h)
-    · obtain ⟨u, v, h⟩ := B.second_prime_norm_form; exact B.coprime_QS_of_mod (form_mod h)
-    · exact B.coprime_QS_of_mod (B.pde_mod.of_mul_left _)
-    · exact B.coprime_QS_of_mod (B.pde'_mod.of_mul_left _)
-    · exact h.2
-  TT := B.TT
-  T2 := B.T2
-  u0 := u0
-  Lw := B.Lw
-  two_le_Lw := B.two_le_Lw
-  second_set_range := B.second_set_range
-  second_set_no_relation := B.second_set_no_relation
-  CT2 := CT
-
-theorem twoPrimeField_levelPrimes (u0 : R.A) (ex : Finset ℕ) : (host2 B u0 ex).levelPrimes =
-    {B.g0, B.g1, B.pde, B.pde'} ∪ ex.filter (fun p => Nat.Coprime p B.QS) := rfl
 
 end Formalism.MainNotions.Inhab
 

@@ -28,16 +28,6 @@ variable {F : Type*} {E : Type} [Field F] [Field E] [NumberField F] [NumberField
 variable {W : Type*} [AddCommGroup W] [Module E W] {N : ℕ}
 variable (h : HermitianForm F E W) (v : Basis (Fin N) E W)
 
-def vecStabEquiv (L : Submodule (𝓞 E) (Fin N → E)) (x₀ : W) :
-    vecStabGroup h v (latOf v L) x₀ ≃*
-      IndefiniteRowSideFullHecke.FiniteCovolume.gammaVecInf (divisionPairOfAdelicFormsFaceColumnsData h v) L (v.equivFun x₀) :=
-  ((realEquiv h v).subgroupMap _).trans (MulEquiv.subgroupCongr (vecStabGroup.equiv L x₀))
-
-theorem vecStabEquiv_coe (L : Submodule (𝓞 E) (Fin N → E)) (x₀ : W)
-    (γ : vecStabGroup h v (latOf v L) x₀) :
-    ((vecStabEquiv h v L x₀ γ : IndefiniteRowSideFullHecke.FiniteCovolume.gammaVecInf (divisionPairOfAdelicFormsFaceColumnsData h v) L (v.equivFun x₀)) :
-      IndefiniteRowSideFullHecke.FiniteCovolume.RealPts (divisionPairOfAdelicFormsFaceColumnsData h v)) = realEquiv h v γ := rfl
-
 end IndefiniteRowSideFullHecke
 
 universe u w x

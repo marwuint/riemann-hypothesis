@@ -70,8 +70,6 @@ def EigOff (i : Fin D.R.m) (p : A3.fam3.base3.Ix) (v : InfinitePlace D.what₂.L
 
 variable {R}
 
-theorem toCx3_updS (kap lam) : (R.updS kap lam).toCx3 F = reScal (R.toCx3 F) (fun _ => kap) lam := rfl
-
 theorem base_eigenvalue_unique {i t p} (l l' : ℝ) (h : R.Eig0 i t p l) (h' : R.Eig0 i t p l') : l = l' := by
   obtain ⟨hb, hl⟩ := h
   obtain ⟨-, hl'⟩ := h'

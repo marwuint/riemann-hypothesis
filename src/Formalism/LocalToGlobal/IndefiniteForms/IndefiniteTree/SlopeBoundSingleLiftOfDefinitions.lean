@@ -215,9 +215,6 @@ def main : ℝ := ∑ σ, F.pq * F.w0 σ * P.logOm
 
 end SlopeBoundLiftData
 
-def LeafDiff (P : SlopeBoundParameters) : Prop :=
-  P.logOmK = P.A1
-
 section Leaves
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {P : SlopeBoundParameters}

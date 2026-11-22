@@ -317,9 +317,6 @@ theorem cechModulesFunctor_shortExact_of_acyclic :
 def cechδ (n : ℕ) : cechH R S.X₃ V U n →ₗ[R] cechH R S.X₁ V U (n + 1) :=
   ((cechModulesFunctor_shortExact_of_acyclic R hS h₁).δ n (n + 1) rfl).hom
 
-theorem cechδ_def (h : (S.map (cechModulesFunctor R V U)).ShortExact) (n : ℕ) :
-    cechδ R hS h₁ n = (h.δ n (n + 1) rfl).hom := rfl
-
 theorem cechAbHEquiv_δ (n : ℕ) (x : cechAbH S.X₃.presheaf V U n) :
     cechAbHEquiv R S.X₁ V U (n + 1) (cechAbδ (T := X.toPresheafedSpace.carrier)
         (shortExact_toAbSheaf hS) (cechAcyclicMod_iff.1 h₁) n x) =

@@ -18,9 +18,6 @@ variable {V : HSp D}
 
 abbrev cG (D : D7) (n : ℕ) : GL (Fin n) (AE D) →* GL (Fin n) (AE D) := Matrix.GeneralLinearGroup.map (cA D)
 
-theorem matHom_aut (s : ConjIsom V) (g : GA D V) :
-    matHom V (s.aut g) = s.PA * cG D _ (matHom V g) * s.PA⁻¹ := rfl
-
 variable {X : ThetaX D} {T : ThetaTied D X} {Wl : WeilTied D X T}
 
 variable (K : KfinTied Wl) (L : Formalism.MainNotions.KudlaSiegelWeil.LocW D X) (eG : ∀ V, L.G V ≃* GA D V)

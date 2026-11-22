@@ -39,10 +39,6 @@ theorem isOpen_degreeLevel (m : ℕ+) : IsOpen (degreeLevel m : Set Gal(ℚ̄/�
 def layerGroup (L : FiniteSubfield) (m : ℕ+) : OpenSubgroup Gal(ℚ̄/ℚ) :=
   ⟨L.1.fixingSubgroup ⊓ degreeLevel m, L.1.fixingSubgroup_isOpen.inter (isOpen_degreeLevel m)⟩
 
-theorem mem_layerGroup {L : FiniteSubfield} {m : ℕ+} {τ : Gal(ℚ̄/ℚ)} :
-    τ ∈ (layerGroup L m : Subgroup Gal(ℚ̄/ℚ)) ↔ τ ∈ L.1.fixingSubgroup ∧ τ ∈ degreeLevel m :=
-  Iff.rfl
-
 def layerField (L : FiniteSubfield) (m : ℕ+) : FiniteSubfield :=
   ofOpenSubgroup (layerGroup L m)
 

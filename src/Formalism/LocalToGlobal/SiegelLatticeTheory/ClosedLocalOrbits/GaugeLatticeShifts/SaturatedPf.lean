@@ -113,8 +113,6 @@ theorem Xflag_mapL (F : LFlag S r T) (j : ℕ) :
 
 theorem zt_mapL (F : LFlag S r T) : (mapL β hβ F).zt = β F.zt := rfl
 theorem z_mapL (F : LFlag S r T) : (mapL β hβ F).fl.z = β F.fl.z := rfl
-theorem e_mapL (F : LFlag S r T) (a : Fin r) : (mapL β hβ F).fl.e a = β (F.fl.e a) := rfl
-
 theorem XLam_mapL (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) :
     XLam (Formalism.HermitianLatticesTheory.gmap β Λ) (mapL β hβ F) = Formalism.HermitianLatticesTheory.gmap β (XLam Λ F) := by
   rw [XLam, XLam, gmap_inf', gmap_toO, Xsp_mapL]
@@ -1082,12 +1080,6 @@ def bEquiv (hee : ∀ a b, S.hT (e a) (e b) = 0) (hff : ∀ a b, S.hT (f a) (f b
       rw [LinearEquiv.symm_symm] at this
       simpa using this)
     (LinearMap.ext fun v => by simpa using bmap_inv hee hff hef δ hδ hX' v)
-
-theorem bEquiv_apply (hee hff hef) (δ : S.V ≃ₗ[E] S.V) (hδ hX hX') (v : S.V) :
-    bEquiv (e := e) (f := f) hee hff hef δ hδ hX hX' v = bmap e f δ v := rfl
-
-theorem bEquiv_symm_apply (hee hff hef) (δ : S.V ≃ₗ[E] S.V) (hδ hX hX') (v : S.V) :
-    (bEquiv (e := e) (f := f) hee hff hef δ hδ hX hX').symm v = bmap e f δ.symm v := rfl
 
 end SplitEquiv
 

@@ -158,9 +158,6 @@ def symB (X : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (b : BForm D n) :
       have h2 : ((c' • y : X) : Fin n → D.host.E) = (c' : D.host.E) • (y : Fin n → D.host.E) := rfl
       rw [h1, h2, h, Bv_bal]⟩
 
-theorem symB_apply (X : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (b : BForm D n) (x y : X) :
-    (symB D X b : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) x y = Bv D b x y := rfl
-
 def phiC (X : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (b : BForm D n) : ℝ :=
   ModuliIntegralCharts.phiC (fun x : D.host.E => D.host.conj x) (symB D X b)
 
@@ -345,18 +342,6 @@ section FamilyK
 
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ProvF Fm)
 
-def GrowthBoundFamilyGivenPolynomial (CG AG : ℝ) : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, adm2 (Fm.L x i) (XF x hx i) CG AG
-
-def AdmFK (CG AG : ℝ) : Prop :=
-  familyUnitInput Fm XF ∧ GrowthBoundFamilyGivenPolynomial Fm XF CG AG ∧ FamilyAdmittedLemmaThree Fm XF ∧ TransferenceTheoremCond ∧ ChowlaSelbergFamily Fm
-
-def MeanLogSupLowerBoundFamilyGivenPolynomial (C A : ℝ) : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, Conclusion1 (Fm.L x i) (XF x hx i) C A
-
-def QBoundFamilyGivenPolynomials (CR Ck Ch Ah Cc Ac : ℝ) : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, PointsLemma (Fm.L x i) (XF x hx i) CR Ck Ch Ah Cc Ac
-
 end FamilyK
 
 theorem one_le_zBase {D : D7} (L : SizeData₂ D) : 1 ≤ zBase L := by
@@ -379,17 +364,6 @@ theorem one_le_zBase {D : D7} (L : SizeData₂ D) : 1 ≤ zBase L := by
     exact_mod_cast h
   calc (1 : ℝ) = 1 * 1 * 1 := by norm_num
     _ ≤ (D.R.f : ℝ) * (D.R.r : ℝ) * L.sc.L := by gcongr
-
-def PolynomialFamilyAtObjects (CG AG C A CR Ck Ch Ah Cc Ac : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ProvF Fm) : Prop :=
-  AdmFK Fm XF CG AG → MeanLogSupLowerBoundFamilyGivenPolynomial Fm XF C A ∧ Conclusion2Family Fm XF CR ∧ QBoundFamilyGivenPolynomials Fm XF CR Ck Ch Ah Cc Ac
-
-def PacketAlongFamilyInClass (𝒪 : ObjClass) (CG AG C A CR Ck Ch Ah Cc Ac : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (_CH : ℝ) : Prop :=
-  ∀ XF : ProvF Fm, (∀ x hx i, 𝒪 (Fm.L x i) (XF x hx i)) → AdmFK Fm XF CG AG →
-    MeanLogSupLowerBoundFamilyGivenPolynomial Fm XF C A ∧ Conclusion2Family Fm XF CR ∧ QBoundFamilyGivenPolynomials Fm XF CR Ck Ch Ah Cc Ac
-
-theorem polynomial_family_iff_objects {𝒪 : ObjClass} {CG AG C A CR Ck Ch Ah Cc Ac : ℝ} {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {CH : ℝ} :
-    PacketAlongFamilyInClass 𝒪 CG AG C A CR Ck Ch Ah Cc Ac Fm CH ↔
-      ∀ XF : ProvF Fm, (∀ x hx i, 𝒪 (Fm.L x i) (XF x hx i)) → PolynomialFamilyAtObjects CG AG C A CR Ck Ch Ah Cc Ac Fm XF := Iff.rfl
 
 structure Sel where
   C : ℝ → ℝ → ℝ

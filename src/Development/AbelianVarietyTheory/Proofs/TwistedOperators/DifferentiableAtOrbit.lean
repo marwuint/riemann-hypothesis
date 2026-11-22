@@ -292,10 +292,6 @@ def gAct (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGK
   map_add' Y Z := LinearMap.ext fun v => Subtype.ext (dsigC_add hρ (hV.smooth v v.2) Y Z)
   map_smul' c Y := LinearMap.ext fun v => Subtype.ext (dsigC_smul hρ (hV.smooth v v.2) c Y)
 
-theorem gAct_coe (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
-    (Y : Matrix (Fin n) (Fin n) ℂ) (v : kFinVec ε ρ) :
-    ((gAct hρ hV Y v : kFinVec ε ρ) : H) = PI.DSInfCharCap.dsigC ε ρ Y v := rfl
-
 end Act
 
 end GlobalTheory.GKLie

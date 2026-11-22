@@ -112,12 +112,6 @@ theorem exists_det_ne {m : ℕ} (M : Submodule (𝓞 K) (Fin m → K))
     Matrix.linearIndependent_rows_iff_isUnit.1 hli'
   exact ((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero
 
-theorem deg_detLine {m : ℕ} (L : MLat K m) : L.detLine.deg =
-    -Real.log ((FractionalIdeal.absNorm L.detIdeal : ℚ) : ℝ) - ∑ σ, Real.log (Real.sqrt (L.H σ).det.re) := rfl
-
-end A2
-
-namespace A2
 end A2
 
 namespace A2
@@ -235,8 +229,5 @@ theorem hadamardInequality : HadamardPD := by
   calc (∏ i, ev i) * ∏ i, (A i i).re ≤ 1 * ∏ i, (A i i).re :=
         mul_le_mul_of_nonneg_right hprod (Finset.prod_nonneg fun i _ => (hdpos i).le)
     _ = _ := one_mul _
-
-namespace A2
-end A2
 
 end Formalism.L2.LamCM

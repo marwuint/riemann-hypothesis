@@ -213,58 +213,6 @@ namespace GlobalTheory.UnipCocptForm
 open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
-theorem isHermND_smul' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hskew : ∀ i j, σ (J j i) = -J i j)
-    (hJ : J.det ≠ 0) (hσ : ∀ x, σ (σ x) = x) (c : E) (hc : c ≠ 0) (hcs : σ c = -c) : IsHermND σ (c • J.map σ) := by
-  refine ⟨fun i j => ?_, ?_⟩
-  · have h1 : σ (J i j) = -J j i := hskew j i
-    simp only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hcs, hσ, h1]
-    ring
-  · have e : (J.map σ).det = (σ : E →+* E) J.det := by rw [RingHom.map_det]; rfl
-    rw [Matrix.det_smul, e]
-    exact mul_ne_zero (pow_ne_zero _ hc) ((map_ne_zero _).2 hJ)
-
-theorem isIsoCols_smul_map_of_isotropic_pair (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E)
-    (hxx : form σ J x x = 0) (hxy : form σ J x y = 1) (hσ : ∀ x, σ (σ x) = x) (c : E) :
-    IsIsoCols σ (c • J.map σ) (Matrix.of fun i (_ : Fin 1) => x i) := by
-  refine ⟨?_, ?_⟩
-  · refine linearIndependent_unique_iff.2 fun h => ?_
-    have h0 : x = 0 := funext fun i => congrFun h i
-    rw [h0] at hxy
-    simp [form] at hxy
-  · ext i j
-    have h2 : c * σ (form σ J x x) = 0 := by rw [hxx, map_zero, mul_zero]
-    rw [Matrix.zero_apply, ← h2]
-    simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply,
-      Matrix.map_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Matrix.zero_apply, Finset.mul_sum, Finset.sum_mul]
-    rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
-    simp only [AlgHom.coe_toRingHom]
-    ring
-
-theorem cocompact_of_mem (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {n n₁ : ℕ} (Y : Spc F E n) (H : Plane E n n₁)
-    (c : E) (hc : c ≠ 0)
-    (hN : IsHermND σ (c • Y.J.map σ)) (hI : IsIsoCols σ (c • Y.J.map σ) (Matrix.of fun i (_ : Fin 1) => H.x i))
-    (hmem : ∀ g : UA σ Y.J, g ∈ unip σ Y H ↔
-      toGAd (sigma_sigma hcm) Y.J hc g ∈ unipRad σ (c • Y.J.map σ) (Matrix.of fun i (_ : Fin 1) => H.x i)) :
-    ∃ K : Set (unip σ Y H), IsCompact K ∧ ∀ u : unip σ Y H, ∃ γ ∈ (ratU σ Y.J).subgroupOf (unip σ Y H), γ * u ∈ K := by
-  set C : Matrix (Fin n) (Fin 1) E := Matrix.of fun i (_ : Fin 1) => H.x i with hCdef
-  let e := toGAd (sigma_sigma hcm) Y.J hc
-  have hes : Continuous e.symm := by
-    apply Continuous.subtype_mk
-    exact continuous_subtype_val
-  obtain ⟨K, hK, hs⟩ := cocompact_unipRad hcm hN hI
-  let φ : unipRad σ (c • Y.J.map σ) C → unip σ Y H := fun u =>
-    ⟨e.symm u.1, (hmem _).2 (by rw [e.apply_symm_apply]; exact u.2)⟩
-  have hφ : Continuous φ := (hes.comp continuous_subtype_val).subtype_mk _
-  refine ⟨φ '' K, hK.image hφ, fun u => ?_⟩
-  obtain ⟨γ, hγ, hk⟩ := hs ⟨e u.1, (hmem u.1).1 u.2⟩
-  refine ⟨φ γ, ?_, ⟨_, hk, ?_⟩⟩
-  · obtain ⟨v, -, hv2⟩ := Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 (Subgroup.mem_subgroupOf.1 hγ))
-    exact Subgroup.mem_subgroupOf.2 (Subgroup.mem_subgroupOf.2 ⟨v, hv2⟩)
-  · apply Subtype.ext
-    show e.symm (γ.1 * e u.1) = e.symm γ.1 * u.1
-    rw [map_mul, e.symm_apply_apply]
-
 end GlobalTheory.UnipCocptForm
 
 namespace GlobalTheory.UnipCocptForm
@@ -295,18 +243,5 @@ theorem mem_unip_iff (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n n₁ :
     rwa [Subgroup.mem_map_equiv, MulEquiv.symm_apply_apply] at this
 
 end GlobalTheory.UnipCocptForm
-
-theorem GlobalTheory.UnipCocptForm.cocompact_unip_form : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n n₁ : ℕ} (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁), IsCMExt F E σ →
-    (∀ i j, σ (Y.J j i) = -Y.J i j) → n = n₁ + 2 → form σ Y.J H.x H.x = 0 → form σ Y.J H.y H.y = 0 → form σ Y.J H.x H.y = 1 →
-    (∀ u, form σ Y.J (H.ι *ᵥ u) H.x = 0 ∧ form σ Y.J (H.ι *ᵥ u) H.y = 0) → H.ιᵀ * Y.J * H.ι.map σ = Y₁.J → Y.J.det ≠ 0 →
-    Y₁.J.det ≠ 0 →
-    ∃ K : Set (unip σ Y H), IsCompact K ∧ ∀ u : unip σ Y H, ∃ γ ∈ (ratU σ Y.J).subgroupOf (unip σ Y H), γ * u ∈ K := by
-  intro F E _ _ _ _ _ σ n n₁ Y Y₁ H hcm hskew hn hxx hyy hxy horth hg hJ hJ₁
-  obtain ⟨c, hc, hcs⟩ := GlobalTheory.CMImag.exists_imag_ne_zero F E σ hcm
-  have hσ := GlobalTheory.SiegelSet.sigma_sigma hcm
-  exact GlobalTheory.UnipCocptForm.cocompact_of_mem σ hcm Y H c hc
-    (GlobalTheory.UnipCocptForm.isHermND_smul' σ Y.J hskew hJ hσ c hc hcs)
-    (GlobalTheory.UnipCocptForm.isIsoCols_smul_map_of_isotropic_pair σ Y.J H.x H.y hxx hxy hσ c)
-    (GlobalTheory.UnipCocptForm.mem_unip_iff σ hσ Y Y₁.J H hskew hn hxx hyy hxy horth hg hJ₁ c hc)
 
 end

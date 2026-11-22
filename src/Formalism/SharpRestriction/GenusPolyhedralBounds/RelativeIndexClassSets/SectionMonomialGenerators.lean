@@ -29,8 +29,6 @@ def jW : ↥(T0.WL X ka la) →ₗ[X.Kl la] ↥(Vw X la N ka) :=
   ((bcV X la N).toLinearMap.domRestrict (T0.WL X ka la)).codRestrict ((Vw X la N ka).restrictScalars (X.Kl la))
     fun x => bcV_mem_Vw X la N ka x.2
 
-theorem coe_jW (x : ↥(T0.WL X ka la)) : (jW X la N ka x : Rp X la N) = bcV X la N (x : X.Vl la) := rfl
-
 def M1 : Submodule (Op X la N) ↥(Vw X la N ka) :=
   Submodule.span (Op X la N) (jW X la N ka '' (T0.MW X ka la : Set ↥(T0.WL X ka la)))
 

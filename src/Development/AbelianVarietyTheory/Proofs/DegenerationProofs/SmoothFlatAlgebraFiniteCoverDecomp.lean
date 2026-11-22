@@ -186,9 +186,6 @@ def vanish (π : R) (E : Pts R B) : Ideal B where
   zero_mem' R' _ _ a _ := by rw [map_zero]; exact dvd_zero _
   smul_mem' c x hx R' _ _ a ha := by rw [smul_eq_mul, map_mul]; exact (hx R' a ha).mul_left _
 
-theorem mem_vanish {π : R} {E : Pts R B} {b : B} : b ∈ vanish π E ↔
-    ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), E R' a → algebraMap R R' π ∣ a b := Iff.rfl
-
 theorem unit_or_dvd {π : R} {R' : Type} [CommRing R'] [Algebra R R'] (h : Unr π R') (x : R') :
     IsUnit x ∨ algebraMap R R' π ∣ x := by
   obtain ⟨_, _, h⟩ := h

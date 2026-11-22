@@ -19,8 +19,6 @@ def shiftW {N : ℕ} (lam : DomWeight N) (c : ℤ) : DomWeight N where
   w := fun i => lam.w i + c
   anti := fun i j h => by have := lam.anti h; simp only; omega
 
-theorem shiftW_w {N : ℕ} (lam : DomWeight N) (c : ℤ) : (shiftW lam c).w = fun i => lam.w i + c := rfl
-
 end Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 
 end

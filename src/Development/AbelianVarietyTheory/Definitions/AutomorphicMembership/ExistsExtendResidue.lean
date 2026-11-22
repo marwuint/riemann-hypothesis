@@ -140,23 +140,6 @@ section Point
 
 variable {Z : ct.Mdl} (y : ct.Pt Z)
 
-def lieStep (σ : D.host.E →+* ℂ) (r : ℕ) :
-    letI : Fact p.Prime := ⟨ct.hp⟩; letI := A.H.starRing; Submodule ↥y.C.S (ct.htPt y).V :=
-  letI : Fact p.Prime := ⟨ct.hp⟩
-  letI := A.H.starRing
-  Submodule.span ↥y.C.S {w | ∃ (x : LieG (ct.htPt y).Gt) (u : Vecs S.Dw (ct.Y Z.i).t ↥y.C.S) (i : Fin (S.Dw.mult σ)),
-    Z.FlagAt y.gen u ∧ (i : ℕ) < r ∧
-    u σ i = spMap (dualMap (intO ↥y.C.S).subtype) ≫ ((ct.htPt y).lieCmp x).1.left ≫ htToModel (ct.dat y) ∧
-    w = (ct.htPt y).bLie x}
-
-def htStep (τ : PsiT D) (i : ℕ) :
-    letI : Fact p.Prime := ⟨ct.hp⟩; letI := A.H.starRing; Submodule ↥y.C.S (ct.htPt y).V :=
-  letI : Fact p.Prime := ⟨ct.hp⟩
-  letI := A.H.starRing
-  if i ≤ j then ct.lieStep y (embOf D τ) i
-  else (ct.htPt y).eigV (embInt y.P (embOf D τ)) ⊓
-    (ct.htPt y).pairV.orthogonal (ct.lieStep y (conjEmb (embOf D τ)) (N - i))
-
 def LevelMatch (t : (htpTrue ct).Tp y) (a : S.Dw.La) : Prop :=
   letI : Fact p.Prime := ⟨ct.hp⟩
   (Tate.lev t 1).left ≫ abVarι y.P = y.P.y ≫ ((ct.Y Z.i).oF.etaA a ^ (Z.i.l.A / p)).left
@@ -173,15 +156,6 @@ end Point
 def SpPt (Z : ct.Mdl) : Type :=
   {x : Sp ct.kbar ⟶ Z.X // x ≫ Z.s ≫ spMap Z.inclV = spMap ct.ρ₀}
 
-def IsRedFlag {Z : ct.Mdl} (x : ct.SpPt Z) (F : ct.FlP) : Prop :=
-  p ∣ Z.i.l.A ∧ ∃ (y : ct.Pt Z) (ρ : ↥(intO ↥y.C.S) →+* ct.kbar), spMap ρ ≫ y.z = x.1 ∧
-    ∀ τ i, F.sub τ i = ct.redSub y ρ (ct.htStep y τ i)
-
-open Classical in
-
-def redFlag {Z : ct.Mdl} (x : ct.SpPt Z) : ct.FlP :=
-  if h : ∃ F, ct.IsRedFlag x F then h.choose else Classical.arbitrary _
-
 instance nonempty_spPt (Z : ct.Mdl) : Nonempty (ct.SpPt Z) := by
   have := Z.i.c.fin
   have : NumberField Z.i.c.F := NumberField.mk
@@ -191,14 +165,6 @@ instance nonempty_spPt (Z : ct.Mdl) : Nonempty (ct.SpPt Z) := by
   obtain ⟨φ, hφ⟩ := exists_extend_residue Z.inclV (algebraMap _ ct.kbar)
   obtain ⟨x, hx⟩ := Z.exists_point (one_le_two.trans (S.two_le.trans S.rank_eq.ge)) φ
   exact ⟨x, by rw [reassoc_of% hx, spMap_comp_spMap, hφ, ρ₀]⟩
-
-open Classical in
-
-def diffExpo (_ct : At S κ p) (l : PsiT D → ℕ → ℤ) (σ : D.host.E →+* ℂ) : ℤ :=
-  ∑ t : D.what₂.Tau, if σ = DV.tauEmb D t then ∑ i ∈ Finset.Icc (j + 1) N, l (D.eTau t) i else 0
-
-def degLatPiece {Z B : ct.Mdl} (L : Lat B) {k : Type} [Field k] (c : Curve k Z.X) (τ : PsiT D) (i : ℕ) : ℤ :=
-  c.degLat L (-ct.expo (indWt τ i))
 
 instance nonempty_curve (Z : ct.Mdl) : Nonempty (Curve ct.Fbar Z.X) := by
   have := Fact.mk ct.hp
@@ -216,27 +182,5 @@ instance nonempty_curve (Z : ct.Mdl) : Nonempty (Curve ct.Fbar Z.X) := by
   exact Curve.nonempty_of_point x
 
 end At
-
-def crhOf (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) (hf : ∀ Z, FlagFam P Z) : CrHSt ct (flgOf ct P) where
-  nefHT Z l := ∀ c : Curve ct.Fbar (ct.flagCl Z (hf Z).1).X,
-    0 ≤ -∑ᶠ τ, ∑ i ∈ Finset.Icc 1 N, l τ i * (ct.degLatPiece (hf Z).lat c τ i : ℝ)
-  descK Z l := Descends (ct.flagCl Z (hf Z).1) (hf Z).lat κ.l (ct.expo l) (ct.diffExpo l)
-  bdryLoci Z := ∃ s : Set ct.Sum1, s.Finite ∧
-    (∀ x : ct.SpPt (ct.flagCl Z (hf Z).1), (∃ z, ¬ Mdl.abP _ (x.1 z)) → ∃ l ∈ s, ct.redFlag x ∈ ct.locus l) ∧
-    ∀ l ∈ s, dim (ct.locus l) + D.R.f * (N - 1) = D.R.f * (N * (N - 1) / 2)
-  htFlags := hf
-  YsP Z := ct.SpPt (ct.flagCl Z (hf Z).1)
-  ysBd x := ∃ z, ¬ Mdl.abP _ (x.1 z)
-  FlP := ct.FlP
-  hFl x := ct.redFlag x
-  FlCl := Closeds ct.FlP
-  flMem F s := F ∈ s
-  flDim := dim
-  Sum1 := ct.Sum1
-  locus := ct.locus
-  bdryLoci_def _ := Iff.rfl
-  CrvS Z := Curve ct.Fbar (ct.flagCl Z (hf Z).1).X
-  degGr c := ct.degLatPiece (hf _).lat c
-  nefHT_def _ _ := Iff.rfl
 
 end GlobalTheory.LocM

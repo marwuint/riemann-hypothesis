@@ -59,14 +59,6 @@ def restrict (X : Scheme.{0}) : Shv R ⥤ Sheaf (Scheme.ProEt.topology X) Ab.{1}
     (Over.forget X).sheafPushforwardContinuous Ab.{1} (Scheme.proetaleTopology.over X) Scheme.proetaleTopology ⋙
     (Scheme.ProEt.forget X).sheafPushforwardContinuous Ab.{1} (Scheme.ProEt.topology X) (Scheme.proetaleTopology.over X)
 
-def freeOnEquiv (X : Scheme.{0}) (F : Shv R) : ((freeOn R).obj X ⟶ F) ≃ F.obj.obj (op X) :=
-  ((sheafificationAdjunction _ _).homEquiv _ F).trans
-    (((((ModuleCat.adj (ULift.{1} R)).whiskerRight Scheme.{0}ᵒᵖ)).homEquiv (uliftYoneda.{1}.obj X) F.obj).trans
-      uliftYonedaEquiv)
-
-theorem freeOnEquiv_comp (X : Scheme.{0}) {F G : Shv R} (g : (freeOn R).obj X ⟶ F) (f : F ⟶ G) :
-    freeOnEquiv R X G (g ≫ f) = f.hom.app (op X) (freeOnEquiv R X F g) := rfl
-
 variable [TopologicalSpace R] [IsTopologicalRing R]
 
 end GlobalTheory.Et.Small

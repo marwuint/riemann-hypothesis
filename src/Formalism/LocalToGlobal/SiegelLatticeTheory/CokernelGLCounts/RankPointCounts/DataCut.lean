@@ -20,12 +20,6 @@ open NumberField Formalism.MainNotions.S Formalism.MainNotions.S.LocalSplitGroup
 open Classical ValuativeRel
 open scoped ComplexOrder
 
-def PtUnitAE (D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
-    (∀ p, Agree δ M p) → ∀ (T T' n : ℕ) (w : Point D.host.E n), n ≤ D.R.rS + 1 →
-    {p : PlF D | ¬ ((M p).split = none ∧ (∀ x ∈ (M p).R, (M p).psiR x = 1) ∧
-      ∃ a, modPt δ T T' p w = some a ∧ (M p).InGLR a)}.Finite
-
 def qP {D : Formalism.BasicNotions.D7} (p : PlF D) : ℝ :=
   (Nat.card (IsLocalRing.ResidueField 𝒪[(D.s.atP p).Fp]) : ℝ)
 
@@ -72,23 +66,6 @@ def RowsFinAt (D : Formalism.BasicNotions.D7) : Prop :=
       IsRowReps D F0 what₂ →
     ∀ (nc : ℝ) (κ : TermDef.Term D u u' F0 what₂ → ℕ), RowLabel κ → ∀ x : TB.Pt D.host.E,
       {ρ : ℕ | rowVec (PairVal.vRdef D u u' F0 what₂ δ M) κ nc ρ x ≠ 0}.Finite
-
-def RowsDomAt (D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (Wp Wq : InfinitePlace D.host.E → Type) [∀ x, NormedAddCommGroup (Wp x)]
-    [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting D.host.E Wp Wq) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
-    (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep), (∀ p, Agree δ M p) →
-    ∀ (L : CntLocal.LocSp D M) (u u' : D.what₂.Word),
-    (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Formalism.MainNotions.S.Lat.gS D) ^ 2] → Compat S u u' →
-    ∀ (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)),
-      IsRowReps D F0 what₂ →
-    ∀ ϖ : ∀ p : PlF D, 𝒪[(D.s.atP p).Fp], (∀ p, Irreducible (ϖ p)) →
-    ∀ nc : ℝ, CntLocal.Formula δ L u u' F0 what₂ nc → ∀ α : ℝ, 0 < α →
-    BddAbove (densSet L δ ϖ u u' F0 what₂) →
-    ∀ κ : TermDef.Term D u u' F0 what₂ → ℕ, RowLabel κ →
-    ∀ Y : Finset (TB.Pt D.host.E), (∀ p ∈ Y, TB.IsPt p ((dOf S δ M u u').r + 1)) →
-      TB.PSDOn Y (fun p q => ((supDens L δ ϖ u u' F0 what₂ / α : ℝ) : ℂ) *
-          (dOf S δ M u u').Kr ((dOf S δ M u u').r + 1) p q -
-        rowKer (PairVal.vRdef D u u' F0 what₂ δ M) κ (nc * α) p q)
 
 def ClK {E W : Type} [Field E] (Dt : TB.Data E W) : Prop :=
   ∀ (i : ℕ) (Y : Finset (TB.Pt E)),

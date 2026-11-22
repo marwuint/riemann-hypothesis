@@ -70,11 +70,6 @@ def tensorCoord (hE : HermitianMetric K E) (hF : HermitianMetric K F) (σ : K �
     ((equivOfCompatibleSMul ℂ (ComplexAt σ) ℂ (Fibre σ E) (Fibre σ F)).trans
       (TensorProduct.congr (FibreSpace.equiv hE σ) (FibreSpace.equiv hF σ)))
 
-theorem tensorCoord_tmul (hE : HermitianMetric K E) (hF : HermitianMetric K F) (σ : K →+* ℂ)
-    (z : ComplexAt σ) (e : E) (f : F) :
-    tensorCoord hE hF σ (z ⊗ₜ (e ⊗ₜ f)) =
-      FibreSpace.equiv hE σ (z ⊗ₜ e) ⊗ₜ FibreSpace.equiv hF σ (1 ⊗ₜ f) := rfl
-
 variable (hE : HermitianMetric K E) (hF : HermitianMetric K F)
 
 end

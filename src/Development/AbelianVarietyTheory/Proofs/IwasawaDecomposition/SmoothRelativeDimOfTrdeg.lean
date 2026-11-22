@@ -6,78 +6,9 @@ open AlgebraicGeometry CategoryTheory Limits
 
 namespace GlobalTheory.RelDimFibCrit
 
-theorem trdeg_residueField_of_minimal_in_fibre {R B : Type} [CommRing R] [CommRing B] (φ : R →+* B) (r : ℕ)
-    (hφ : φ.IsStandardSmoothOfRelativeDimension r) (P : Ideal B) [P.IsPrime]
-    (hP : ∀ P' : Ideal B, P'.IsPrime → P' ≤ P → P'.comap φ = P.comap φ → P' = P) :
-    @Algebra.trdeg (P.comap φ).ResidueField P.ResidueField _ _
-      (Ideal.ResidueField.map (P.comap φ) P φ rfl).toAlgebra = r := by
-  obtain ⟨g, rfl, hg⟩ := hφ.exists_etale_mvPolynomial
-  have hQ : ∀ Q' : Ideal (MvPolynomial (Fin r) R), Q'.IsPrime → Q' ≤ P.comap g →
-      Q'.comap (MvPolynomial.C : R →+* _) = (P.comap g).comap MvPolynomial.C → Q' = P.comap g := by
-    intro Q' hQ' hle hc
-    letI := g.toAlgebra
-    haveI : Algebra.Etale (MvPolynomial (Fin r) R) B := hg
-    haveI : Module.Flat (MvPolynomial (Fin r) R) B := inferInstance
-    haveI : P.LiesOver (P.comap g) := ⟨rfl⟩
-    obtain ⟨P', hP'le, hP'prime, hP'over⟩ := Ideal.exists_ideal_le_liesOver_of_le (p := Q') P hle
-    have hP'Q : P'.comap g = Q' := hP'over.over.symm
-    have := hP P' hP'prime hP'le (by rw [← Ideal.comap_comap, hP'Q, hc, Ideal.comap_comap])
-    rw [← hP'Q, this]
-  have h1 := GlobalTheory.FibreMinimalPrime.trdeg_residueField_eq r (P.comap g) hQ
-  have h2 := GlobalTheory.residueField_isAlgebraic_of_etale g hg P
-  letI i12 := (Ideal.ResidueField.map ((P.comap g).comap MvPolynomial.C) (P.comap g)
-    (MvPolynomial.C : R →+* _) rfl).toAlgebra
-  letI i23 := (Ideal.ResidueField.map (P.comap g) P g rfl).toAlgebra
-  letI i13 := (Ideal.ResidueField.map ((P.comap g).comap (MvPolynomial.C : R →+* _)) P
-    (g.comp MvPolynomial.C) rfl).toAlgebra
-  haveI : IsScalarTower ((P.comap g).comap (MvPolynomial.C : R →+* _)).ResidueField
-      (P.comap g).ResidueField P.ResidueField := by
-    refine IsScalarTower.of_algebraMap_eq' ?_
-    ext x
-    simp only [RingHom.algebraMap_toAlgebra, RingHom.comp_apply]
-    rw [Ideal.ResidueField.map_algebraMap _ (P.comap g) (MvPolynomial.C : R →+* _) rfl x,
-      Ideal.ResidueField.map_algebraMap (P.comap g) P g rfl]
-    exact Ideal.ResidueField.map_algebraMap ((P.comap g).comap (MvPolynomial.C : R →+* _)) P
-      (g.comp MvPolynomial.C) rfl x
-  have := trdeg_add_eq ((P.comap g).comap (MvPolynomial.C : R →+* _)).ResidueField
-    (P.comap g).ResidueField (A := P.ResidueField)
-  rw [h1, trdeg_eq_zero, add_zero] at this
-  exact this.symm
-
 end GlobalTheory.RelDimFibCrit
 
 namespace GlobalTheory.RelDimFibCrit
-
-theorem exists_minimal_in_fibre {R B : Type} [CommRing R] [CommRing B] (φ : R →+* B)
-    (P : Ideal B) (hP : P.IsPrime) :
-    ∃ P₀ : Ideal B, P₀.IsPrime ∧ P₀ ≤ P ∧ P₀.comap φ = P.comap φ ∧
-      ∀ P' : Ideal B, P'.IsPrime → P' ≤ P₀ → P'.comap φ = P.comap φ → P' = P₀ := by
-  let s : Set (Ideal B)ᵒᵈ := {Q | (OrderDual.ofDual Q).IsPrime ∧ OrderDual.ofDual Q ≤ P ∧
-    (OrderDual.ofDual Q).comap φ = P.comap φ}
-  obtain ⟨m, -, hm⟩ := zorn_le_nonempty₀ s (fun c hcs hc y hy => by
-    have hyc : OrderDual.ofDual y ∈ OrderDual.ofDual '' c := Set.mem_image_of_mem _ hy
-    refine ⟨OrderDual.toDual (sInf (OrderDual.ofDual '' c)), ⟨?_, ?_, ?_⟩, fun z hz => ?_⟩
-    · refine Ideal.sInf_isPrime_of_isChain (s := OrderDual.ofDual '' c) ⟨_, hyc⟩ ?_ ?_
-      · rintro _ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩ hab
-        rcases hc ha hb (fun h => hab (congrArg _ h)) with h | h
-        · exact Or.inr h
-        · exact Or.inl h
-      · rintro _ ⟨a, ha, rfl⟩
-        exact (hcs ha).1
-    · exact (sInf_le hyc).trans (hcs hy).2.1
-    · apply le_antisymm
-      · exact (Ideal.comap_mono (sInf_le hyc)).trans (hcs hy).2.2.le
-      · intro a ha
-        change φ a ∈ sInf (OrderDual.ofDual '' c)
-        rw [Submodule.mem_sInf]
-        rintro _ ⟨z, hz, rfl⟩
-        rw [← Ideal.mem_comap, (hcs hz).2.2]
-        exact ha
-    · exact (sInf_le (Set.mem_image_of_mem OrderDual.ofDual hz) :
-        sInf (OrderDual.ofDual '' c) ≤ OrderDual.ofDual z)) (OrderDual.toDual P) ⟨hP, le_rfl, rfl⟩
-  refine ⟨OrderDual.ofDual m, hm.prop.1, hm.prop.2.1, hm.prop.2.2, fun P' h1 h2 h3 => ?_⟩
-  have := hm.eq_of_ge (y := OrderDual.toDual P') ⟨h1, h2.trans hm.prop.2.1, h3⟩ h2
-  exact congrArg OrderDual.ofDual this
 
 open AlgebraicGeometry CategoryTheory Limits in
 private lemma specMap_residueFieldMap_conj_eq_ofHom_map {R S : CommRingCat.{0}} (φ : R ⟶ S)
@@ -166,43 +97,5 @@ theorem _root_.GlobalTheory.RelDimFibCrit.trdeg_affine {X Y : Scheme.{0}} (f : X
   refine @trdeg_eq_of_ringEquiv _ _ _ _ _ _ _ _ (RingHom.toAlgebra _) (RingHom.toAlgebra _) eK eL ?_
   ext a
   exact congr((CommRingCat.Hom.hom $hsq) a)
-
-theorem smoothOfRelativeDimension_of_trdeg : ∀ {X S : Scheme.{0}} (f : X ⟶ S) (n : ℕ), Smooth f →
-    (∀ x : X, (∀ x' : X, f x' = f x → x' ⤳ x → x' = x) →
-      @Algebra.trdeg (S.residueField (f x)) (X.residueField x) _ _ (f.residueFieldMap x).hom.toAlgebra = n) →
-    SmoothOfRelativeDimension n f := by
-  intro X S f n hf H
-  refine ⟨fun x => ?_⟩
-  obtain ⟨U, hU, V, hV, hx, e, hs⟩ := Smooth.exists_isStandardSmooth f x
-  obtain ⟨r, hr⟩ : ∃ r, (f.appLE U V e).hom.IsStandardSmoothOfRelativeDimension r := by
-    obtain ⟨_, _, _, _, ⟨P⟩⟩ := hs
-    letI := (f.appLE U V e).hom.toAlgebra
-    exact ⟨_, ⟨_, _, _, ‹_›, P, rfl⟩⟩
-  refine ⟨U, hU, V, hV, hx, e, ?_⟩
-  obtain ⟨P₀, hP₀, -, hcomap, hmin⟩ :=
-    exists_minimal_in_fibre (f.appLE U V e).hom (hV.primeIdealOf ⟨x, hx⟩).asIdeal inferInstance
-  let p₀ : PrimeSpectrum Γ(X, V) := ⟨P₀, hP₀⟩
-  have key := trdeg_residueField_of_minimal_in_fibre (f.appLE U V e).hom r hr P₀ (fun P' h1 h2 h3 => hmin P' h1 h2 (h3.trans hcomap))
-  have h3 := trdeg_affine f U hU V hV e p₀
-  have hm : ∀ x' : X, f x' = f (hV.fromSpec p₀) → x' ⤳ hV.fromSpec p₀ → x' = hV.fromSpec p₀ := by
-    intro x' hfx hsp
-    have hx'V : x' ∈ Set.range hV.fromSpec :=
-      hV.range_fromSpec ▸ hsp.mem_open V.isOpen (hV.range_fromSpec ▸ ⟨p₀, rfl⟩)
-    obtain ⟨p', rfl⟩ := hx'V
-    have hle : p'.asIdeal ≤ P₀ := (PrimeSpectrum.le_iff_specializes p' p₀).2
-      (hV.fromSpec.isOpenEmbedding.toIsInducing.specializes_iff.1 hsp)
-    have h1 : ∀ q : PrimeSpectrum Γ(X, V),
-        hU.fromSpec (Spec.map (f.appLE U V e) q) = f (hV.fromSpec q) := fun q => by
-      show (Spec.map (f.appLE U V e) ≫ hU.fromSpec) q = (hV.fromSpec ≫ f) q
-      rw [IsAffineOpen.SpecMap_appLE_fromSpec]
-    have h2 := hU.fromSpec.isOpenEmbedding.injective ((h1 p').trans (hfx.trans (h1 p₀).symm))
-    have hc : p'.asIdeal.comap (f.appLE U V e).hom = P₀.comap (f.appLE U V e).hom :=
-      congrArg PrimeSpectrum.asIdeal h2
-    have := hmin p'.asIdeal p'.isPrime hle (hc.trans hcomap)
-    exact congrArg hV.fromSpec (PrimeSpectrum.ext this)
-  have hn := H _ hm
-  have : (r : Cardinal) = n := key.symm.trans (h3.symm.trans hn)
-  obtain rfl : r = n := by exact_mod_cast this
-  exact hr
 
 end GlobalTheory.RelDimFibCrit

@@ -47,9 +47,6 @@ def linOm (e : (β → A) ≃ₗ[k] (κ → k)) : UG c JB →* Module.End ℂ ((
   map_one' := LinearMap.ext fun φ => funext fun x => by simp [LinearMap.funLeft, actC_one]
   map_mul' h h' := LinearMap.ext fun φ => funext fun x => by simp [LinearMap.funLeft, actC_actC]
 
-theorem linOm_apply (e : (β → A) ≃ₗ[k] (κ → k)) (h : UG c JB) (φ : (κ → k) → ℂ) (x : κ → k) :
-    linOm c JB e h φ x = φ (actC e (h : GL β A)⁻¹ x) := rfl
-
 end Alg
 
 open scoped TensorProduct

@@ -327,8 +327,6 @@ def wOrbInt (T : Subgroup H) (dt : Measure T) (dh : Measure H) (γ : H) (b f : H
 
 variable {dh : Measure H} {γ : H} {dt : Measure (cent γ)} {f f' : H → ℂ} {c c' : ℂ}
 
-theorem orbInt_def : orbInt dh γ dt f = ∫ q, f (q.out⁻¹ * γ * q.out) ∂quotMeas (cent γ) dt dh := rfl
-
 theorem HasOrbInt.orbInt_eq (h : HasOrbInt dh γ dt f c) : orbInt dh γ dt f = c := h.2
 
 theorem HasOrbInt.add (h : HasOrbInt dh γ dt f c) (h' : HasOrbInt dh γ dt f' c') :

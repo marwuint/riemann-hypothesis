@@ -203,9 +203,6 @@ section Over
 
 variable {u : Pr.Word} (n : ℕ) {j : ℕ} (h : j = R.m) (p : ChPt (R := R) sel mu u (n + 1))
 
-theorem xiOver_rfl (Y : Set (Sp X.E (R.N (n + 1)))) (p' : ChPt (R := R) sel mu u R.m) :
-    xiOver Ch sel mu cst n rfl p Y p' = TopStep.XiTop Ch sel mu cst n p Y p' := rfl
-
 end Over
 
 section Unfold

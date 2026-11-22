@@ -85,9 +85,6 @@ def glAction : (Y ≃ₗ[ℤ] Y) →* (Bil Y A ≃ₗ[S] Bil Y A) where
 @[simp] theorem glAction_apply (g : Y ≃ₗ[ℤ] Y) (b : Bil Y A) (y y' : Y) :
     glAction S Y A g b y y' = b (g.symm y) (g.symm y') := rfl
 
-theorem glAction_eq_pullback (g : Y ≃ₗ[ℤ] Y) (b : Bil Y A) :
-    glAction S Y A g b = pullback S A g.symm.toLinearMap b := rfl
-
 def restrictAction {Γ : Type*} [Group Γ] (ρ : Γ →* (Y ≃ₗ[ℤ] Y)) (L : Submodule S (Bil Y A))
     (hL : ∀ γ, ∀ b ∈ L, glAction S Y A (ρ γ) b ∈ L) : Γ →* (L ≃ₗ[S] L) where
   toFun γ :=
@@ -244,9 +241,6 @@ noncomputable def dualEquiv [Module.Finite ℤ Y] [Module.Free ℤ Y] :
 @[simp] theorem dualEquiv_apply [Module.Finite ℤ Y] [Module.Free ℤ Y] (x : SymSq Y)
     (b : SymLattice Y) : dualEquiv Y x b = lift ℤ Y ℤ b x := rfl
 
-theorem dualEquiv_mk [Module.Finite ℤ Y] [Module.Free ℤ Y] (y y' : Y) (b : SymLattice Y) :
-    dualEquiv Y (mk y y') b = (b : Bil Y ℤ) y y' := rfl
-
 variable (Y) in
 
 noncomputable def equivSymmetricPower : SymSq Y ≃+ Sym[ℤ]^2 Y :=
@@ -352,9 +346,6 @@ theorem IsBalanced.smul_mem_ker {b : Bil Y A} (hb : IsBalanced O b) (a : O) {y :
 def IsBalanced.radical {b : Bil Y A} (hb : IsBalanced O b) : Submodule O Y where
   __ := (LinearMap.ker b).toAddSubmonoid
   smul_mem' a _ hy := hb.smul_mem_ker a hy
-
-theorem IsBalanced.mem_radical {b : Bil Y A} (hb : IsBalanced O b) {y : Y} :
-    y ∈ hb.radical ↔ b y = 0 := Iff.rfl
 
 variable [Module S A]
 
@@ -463,10 +454,6 @@ def autAction : (Y ≃ₗ[O] Y) →* (balForms S O Y A ≃ₗ[S] balForms S O Y 
 @[simp] theorem autAction_apply (g : Y ≃ₗ[O] Y) (b : balForms S O Y A) (y y' : Y) :
     (autAction S O Y A g b : Bil Y A) y y' = (b : Bil Y A) (g.symm y) (g.symm y') := rfl
 
-theorem balInclusion_autAction (g : Y ≃ₗ[O] Y) (b : BalLattice O Y) :
-    balInclusion O Y (autAction ℤ O Y ℤ g b) =
-      symAction ℤ Y ℤ (autToGL O Y g) (balInclusion O Y b) := rfl
-
 variable (O Y) in
 
 def balRel : Submodule ℤ (SymSq Y) :=
@@ -538,12 +525,6 @@ noncomputable def dualEquiv [Module.Finite ℤ Y] :
 
 @[simp] theorem dualEquiv_apply [Module.Finite ℤ Y] (x : BalSq O Y) (b : BalLattice O Y) :
     dualEquiv O Y x b = lift ℤ O Y ℤ b x := rfl
-
-theorem dualEquiv_mk [Module.Finite ℤ Y] (y y' : Y) (b : BalLattice O Y) :
-    dualEquiv O Y (mk O y y') b = (b : Bil Y ℤ) y y' := rfl
-
-theorem dualEquiv_mkQ [Module.Finite ℤ Y] [Module.Free ℤ Y] (x : SymSq Y) :
-    dualEquiv O Y ((balRel O Y).mkQ x) = (balInclusion O Y).dualMap (SymSq.dualEquiv Y x) := rfl
 
 end BalSq
 

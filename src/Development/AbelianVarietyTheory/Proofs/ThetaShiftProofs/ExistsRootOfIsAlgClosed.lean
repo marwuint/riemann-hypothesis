@@ -116,69 +116,9 @@ section ThetaShiftProofs
 variable {l : Level H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {O' : Type} [CommRing O'] [IsDomain O']
   {b : O →+* O'} (a : ArcIn D l β O' b)
 
-def fracPow {X : Type} (ρ : X → X → O'ˣ) (n : ℕ) (y x : X) : (FractionRing O')ˣ :=
-  Units.map (algebraMap O' (FractionRing O')).toMonoidHom (ρ y x ^ n)
-
 variable {ρ : a.D₀.X → a.D₀.X → O'ˣ}
 
-theorem isScalarForm_fracPow (hρ : letI := H.starRing; IsScalarForm (𝓞 E) ρ) (n : ℕ) :
-    letI := H.starRing; IsScalarForm (𝓞 E) (fracPow ρ n) :=
-  letI := H.starRing
-  (hρ.pow n).map _
-
-theorem isRootForm_fracPow (hρ : letI := H.starRing; IsScalarForm (𝓞 E) ρ) {n N : ℕ} (h : n ∣ N) :
-    letI := H.starRing; IsRootForm (𝓞 E) n (fracPow ρ N) (fracPow ρ (N / n)) :=
-  letI := H.starRing
-  ⟨isScalarForm_fracPow a hρ _, fun y x => by
-    rw [fracPow, ← map_pow, ← pow_mul, Nat.div_mul_cancel h]
-    exact Units.ext rfl⟩
-
-def arcTwist (hρ : letI := H.starRing; IsScalarForm (𝓞 E) ρ) : ArcIn D l β O' b :=
-  letI := H.starRing
-  have hw := halfUnit_add_star H
-  have ht := isScalarForm_fracPow a hρ l.M'
-  have hq := psiRel_rescale a.D₀ fun y => fracPow ρ l.M' y (H.w0 • y)
-  have hM := isRootForm_fracPow a hρ (Nat.dvd_lcm_left l.M l.A)
-  have hA := isRootForm_fracPow a hρ (Nat.dvd_lcm_right l.M l.A)
-  { D₀ := twist a.D₀ H.w0 (fracPow ρ l.M')
-    mod := a.mod
-    oa := twistAct hw ht a.oa
-    nontriv := a.nontriv
-    even := psiEven_twist ht _ a.even
-    bimult := tauBimult_twist hw ht a.bimult
-    gen := fun y => psiUnitOn_twist H.w0 (fun y x => ρ y x ^ l.M') (a.gen y)
-    w0 := psi_weight_zero_twist hw ht a.w0
-    be := a.be
-    be_symm := a.be_symm
-    be_pos := a.be_pos
-    be_adj := a.be_adj
-    be_dvd := a.be_dvd
-    eta := fun v => qkScale hw ht hq hM _ (a.eta v)
-    etaA := fun v => qkScale hw ht hq hA _ (a.etaA v)
-    geom := fun F _ _ _ r z hr hz f hf => by
-      obtain ⟨h₁, I, h₂, h₃, h₄⟩ := a.geom F r z hr hz f hf
-      obtain ⟨s, I', s₁, -, s₃, s₄, s₅⟩ := exists_tateIsoQ_twist a.bimult hw ht a.oa l.M'
-        (fun y x => Units.map (algebraMap (FractionRing O') F).toMonoidHom (fracPow ρ 1 y x))
-        ⟨(isScalarForm_fracPow a hρ 1).map _, fun y x => by
-          rw [← map_pow, fracPow, ← map_pow, pow_one]; rfl⟩ I
-      have lev : ∀ {k : ℕ} (hk : 0 < k) (hd : k ∣ l.M') (p : QkPt a.D₀ (FractionRing O') k) (v : D.La),
-          (∀ q, QkExt (algebraMap _ F) p q → QkPt.Equiv a.D₀ F q (I.ev k v)) → ∀ q',
-          QkExt (algebraMap _ F) (qkScale hw ht hq (isRootForm_fracPow a hρ hd) _ p) q' →
-          QkPt.Equiv (twist a.D₀ H.w0 (fracPow ρ l.M')) F q' (I'.ev k v) := by
-        intro k hk hd p v he q' hq'
-        obtain ⟨q, rfl⟩ := (qkScaleEquiv hw ht hq (s₁ k hk) _).surjective q'
-        have e := qkRel_qkScaleEquiv (D := a.D₀) (hψ := (twist a.D₀ H.w0 (fracPow ρ l.M')).psi_gen)
-          hw ht hq (s₁ k hk) q
-        refine e.equiv hw ht hq (s₁ k hk) (s₅ k hk v) (he q (QkRel.qkExt_of (fun y x => ?_)
-          (qkRel_qkScale hw ht hq (isRootForm_fracPow a hρ hd) p) e hq'))
-        rw [s₃ k hk hd, ← map_pow, fracPow, ← map_pow, pow_one]
-        rfl
-      exact ⟨h₁, I', by rw [s₄]; exact h₂, fun v => lev l.A_pos (Nat.dvd_lcm_right l.M l.A) _ v (h₃ v),
-        fun v hv => lev (lt_of_lt_of_le (by decide) l.three_le) (Nat.dvd_lcm_left l.M l.A) _ v (h₄ v hv)⟩ }
-
 variable (hρ : letI := H.starRing; IsScalarForm (𝓞 E) ρ)
-
-theorem arcTwist_D₀ : (arcTwist a hρ).D₀ = twist a.D₀ H.w0 (fracPow ρ l.M') := rfl
 
 end ThetaShiftProofs
 

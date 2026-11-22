@@ -158,8 +158,6 @@ variable (ψ : AddChar (AF D.host.F) ℂ) {V V₀ A L : HSp D} {ρ : ℕ} (d : H
 def besselAuxiliaryVectors (z : Fin V₀.rank → D.host.E) (i : ℕ) : Fin V.rank → D.host.E :=
   if i < ρ then colN d.e i else if i = ρ then d.i₀ *ᵥ z else colN d.e' (2 * ρ - i)
 
-def fourierJacobiVectors (i : ℕ) : Fin V.rank → D.host.E := if i < ρ then colN d.e i else colN d.e' (2 * ρ - 1 - i)
-
 variable (ψv : AddChar (Fv D.host.F v) Circle) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
   {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (β : LatFrame (Fv D.host.F v) (n ⊕ Fin c) (Fin V.rank))
 

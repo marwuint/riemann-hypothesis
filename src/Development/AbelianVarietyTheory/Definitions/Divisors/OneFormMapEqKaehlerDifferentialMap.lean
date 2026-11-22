@@ -292,8 +292,6 @@ def dTwo : Om R B 2 →ₗ[R] Om R B 3 := dOm R B 2
 
 @[simp] theorem coe_dTwo (x : Om R B 2) : (dTwo R B x : DR R B) = dDR R B x := rfl
 
-theorem dOne_eq_dOm (ω : Ω[B⁄R]) : dOne R B ω = dOm R B 1 ⟨ι1 ω, ι_mem ω⟩ := rfl
-
 variable (R B) in
 
 def wedge : Ω[B⁄R] →ₗ[B] Ω[B⁄R] →ₗ[B] Om R B 2 :=

@@ -73,15 +73,6 @@ theorem mti_map_mem_VV (lam : ι → DomWeight n) {F : Pol K ι n} (hF : F ∈ V
     rw [smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]
     exact Submodule.smul_mem _ _ hx
 
-def mtiMapVV (lam : ι → DomWeight n) : VV K lam →ₛₗ[s] VV K' lam where
-  toFun F := ⟨map s F.1, mti_map_mem_VV s lam F.2⟩
-  map_add' F G := Subtype.ext (map_add _ _ _)
-  map_smul' a F := Subtype.ext (by
-    show map s (a • F.1) = s a • map s F.1
-    rw [smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul])
-
-theorem mtiMapVV_coe (lam : ι → DomWeight n) (F : VV K lam) : ((mtiMapVV s lam F : VV K' lam) : Pol K' ι n) = map s F.1 := rfl
-
 end VVMap
 
 end Formalism.L2.Col

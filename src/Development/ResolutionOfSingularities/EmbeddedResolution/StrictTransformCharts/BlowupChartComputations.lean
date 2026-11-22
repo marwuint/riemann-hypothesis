@@ -232,10 +232,6 @@ def coordEvalHom (B : BlowupChart π c S s) :
   MvPolynomial.eval₂Hom (π.appLE U B.domain B.domain_le).hom
     (fun i : ULift.{u} (Fin m) => B.chart.coord i.down)
 
-theorem coordEvalHom_def (B : BlowupChart π c S s) :
-    B.coordEvalHom = MvPolynomial.eval₂Hom (π.appLE U B.domain B.domain_le).hom
-      (fun i : ULift.{u} (Fin m) => B.chart.coord i.down) := rfl
-
 theorem coordEvalHom_C (B : BlowupChart π c S s) (a : Γ(X, U)) :
     B.coordEvalHom (MvPolynomial.C a) = (π.appLE U B.domain B.domain_le).hom a := by
   simp [coordEvalHom]

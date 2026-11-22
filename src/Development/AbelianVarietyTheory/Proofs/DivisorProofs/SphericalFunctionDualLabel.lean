@@ -34,9 +34,6 @@ def theta : GL (Fin n) R →* GL (Fin n) R where
     apply Units.ext
     simp only [mul_inv_rev, Units.val_mul, flipM_mul]
 
-theorem coe_theta (g : GL (Fin n) R) :
-    (theta g : Matrix (Fin n) (Fin n) R) = flipM ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) := rfl
-
 end Ring
 
 end GlobalTheory.InvTranspose

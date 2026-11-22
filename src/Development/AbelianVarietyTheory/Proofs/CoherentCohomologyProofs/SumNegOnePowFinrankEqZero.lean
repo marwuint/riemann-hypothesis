@@ -120,9 +120,6 @@ lemma toH'_δ (x : cohOn S.X₃ U n) :
     toH' S.X₁ U (n + 1) (δ R hS U n x) =
       SheafLES.δ.{u} (shortExact_toAbSheaf hS) n U (toH' S.X₃ U n x) := rfl
 
-lemma δ_eq_δ (R' : Type t) [CommRing R'] [Algebra R' Γ(X, ⊤)] (x : cohOn S.X₃ U n) :
-    δ R hS U n x = δ R' hS U n x := rfl
-
 include hS in
 
 theorem exact₂ : Function.Exact (map R S.f U n) (map R S.g U n) :=

@@ -11,8 +11,6 @@ open Formalism.DivisionValues
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K)
 
-theorem mem_Forms (f : S.Cl → S.V) : f ∈ S.Forms ↔ ∀ c (γ : S.Gam c), S.ρ c γ (f c) = f c := Iff.rfl
-
 theorem I_apply (x : Fin S.dim → K) : S.I x = ((S.basis.equivFun.symm x : S.Forms) : S.Cl → S.V) := rfl
 
 theorem I_injective : Function.Injective S.I := by

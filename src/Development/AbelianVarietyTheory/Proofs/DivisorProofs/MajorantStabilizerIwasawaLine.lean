@@ -115,17 +115,4 @@ theorem mulVec_mem_latHat {n : ℕ} (σ : E →ₐ[F] E) (X : Spc F E n) (hfg : 
     rw [e]
     exact ((mem_levelOpen_iff_latHat σ X.Jᵀ hfg k).1 hk _).1 hf
 
-theorem ofGAd_mem_stabK : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (X : Spc F E n), X.L.IsLattice E → ∀ g : GAd σ X.Jᵀ,
-    (∀ w, Commute ((matHom w.Completion σ X.Jᵀ (projArch σ X.Jᵀ w g)).1.map (infEmb (B.emb w))) (X.θ w)) →
-    (∀ v, proj σ X.Jᵀ v g ∈ stabLoc σ X.Jᵀ X.L v) → GlobalTheory.IwLine.ofGAd σ X.J g ∈ GlobalTheory.StabHaar.stabK (σ := σ) B X := by
-  intro F E _ _ _ _ _ σ B n X hL g h1 h2
-  have hfg : X.L.FG := hL.fg
-  have hg : g ∈ levelOpen σ X.Jᵀ X.L := mem_levelOpen.2 h2
-  refine ⟨fun w => h1 w, fun z hz => ⟨?_, ?_⟩⟩
-  · rw [GlobalTheory.IwLine.mat_ofGAd]
-    exact mulVec_mem_latHat σ X hfg hg hz
-  · rw [← map_inv, GlobalTheory.IwLine.mat_ofGAd]
-    exact mulVec_mem_latHat σ X hfg (inv_mem hg) hz
-
 end GlobalTheory.KBridge

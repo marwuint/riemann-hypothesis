@@ -27,11 +27,6 @@ def coprimeIdeals : Subgroup (FractionalIdeal (𝓞 K)⁰ K)ˣ where
   inv_mem' {I} hI v hv := by
     rw [Units.val_inv_eq_inv_val, count_inv, hI v hv, neg_zero]
 
-theorem mem_coprimeIdeals {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} :
-    I ∈ 𝔪.coprimeIdeals ↔ ∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔪.ideal →
-      count K v (I : FractionalIdeal (𝓞 K)⁰ K) = 0 :=
-  Iff.rfl
-
 theorem ord_eq_zero_of_mem_idelesOneMod {x : IdeleGroup K} (hx : x ∈ 𝔪.idelesOneMod)
     {v : HeightOneSpectrum (𝓞 K)} (hv : v.asIdeal ∣ 𝔪.ideal) : ord v x = 0 := by
   have h := ((𝔪.mem_idelesOneMod.1 hx).1 v hv).1

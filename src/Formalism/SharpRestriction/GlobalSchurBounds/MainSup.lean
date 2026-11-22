@@ -62,11 +62,6 @@ theorem pair_and_box_hypothesis_of_congruence_data_and_boxes {eps : ℝ} (Fm : F
   obtain ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, -⟩ := hQ
   exact ⟨⟨Y, hY, hY2, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10⟩, ⟨Y', hY', hY2', hE⟩, hlog⟩
 
-theorem primesAsPropTwoFive_iff_pair_box_and_chQD (D : D7) (x eps C : ℝ) :
-    ShortIntervalPrimes.PrimesAsPropTwoFive D x eps C ↔ (∃ Y : ℝ, 1 < Y ∧ Y ≤ x ∧ ShortIntervalPrimes.PairAt Y eps D.host.q D.host.d) ∧ ShortIntervalPrimes.PropTwoSixBoxHypothesis D x eps ∧
-      ChQD_at D x eps C :=
-  Iff.rfl
-
 def LitThin : Prop :=
   (∃ C1 c : ℝ, 0 < C1 ∧ 0 < c ∧ ∀ D : D7, ShortIntervalPrimes.adm6 D C1 c) ∧ (∃ C : ℝ, 0 < C ∧ ∀ D : D7, ShortIntervalPrimes.adm7 D C) ∧
     ∃ C : ℝ, 0 < C ∧ ∀ D : D7, ShortIntervalPrimes.adm11 D C
@@ -90,9 +85,6 @@ theorem chosenThin_closed (𝒞 : FamClass) (hL : LitThin) :
     Closed 𝒞 (fun Fm _ => BoxesF Fm → QDRowsF Fm → (∃ C5 : ℝ, 0 < C5 ∧ ChosenQD Fm C5) →
       ∃ c6 : ℝ, 0 < c6 ∧ ChosenThin Fm c6) :=
   Closed.of_all fun Fm _ hB hR _ => chosenThin_of_boxesN Fm hL hB hR
-
-theorem besselId_iff (D : D7) : BesselId D ↔ D.BuRational ∧ TR_at D :=
-  Iff.rfl
 
 section Proviso
 

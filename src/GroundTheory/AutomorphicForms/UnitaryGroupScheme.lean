@@ -105,12 +105,6 @@ noncomputable def unitaryPoints : Subgroup (GL ι (R ⊗[F] E)) :=
 
 variable {F E H R S T}
 
-theorem mem_unitaryPoints {g : GL ι (R ⊗[F] E)} :
-    g ∈ unitaryPoints F E H R ↔
-      ((g : Matrix ι ι (R ⊗[F] E)).map (conjBase F E R))ᵀ *
-        H.map (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E) * g =
-      H.map (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E) := Iff.rfl
-
 omit [Algebra.IsQuadraticExtension F E] [Fintype ι] [DecidableEq ι] in
 theorem map_includeRight_tensorMap (f : R →ₐ[F] S) :
     (H.map (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E)).map
@@ -128,10 +122,6 @@ noncomputable def unitaryMap (f : R →ₐ[F] S) : unitaryPoints F E H R →* un
       ((tensorMap E f : R ⊗[F] E →ₐ[F] S ⊗[F] E) : R ⊗[F] E →+* S ⊗[F] E)).comp
     (unitaryPoints F E H R).subtype).codRestrict _ fun g =>
     map_mem_unitaryGroupMatrix _ (tensorMap_conjBase f) (map_includeRight_tensorMap f) g.2
-
-theorem unitaryMap_apply (f : R →ₐ[F] S) (g : unitaryPoints F E H R) :
-    ((unitaryMap F E H f g : GL ι (S ⊗[F] E)) : Matrix ι ι (S ⊗[F] E)) =
-      ((g : GL ι (R ⊗[F] E)) : Matrix ι ι (R ⊗[F] E)).map (tensorMap E f) := rfl
 
 end Points
 

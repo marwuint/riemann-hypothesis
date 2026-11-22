@@ -134,12 +134,6 @@ section Extension
 variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [Algebra ℚ_[p] K] [ValuativeExtension ℚ_[p] K] [FiniteDimensional ℚ_[p] K]
 
-def stdCharOf : AddChar K Circle := traceChar K (stdChar p)
-
-omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-  [ValuativeExtension ℚ_[p] K] [FiniteDimensional ℚ_[p] K] in
-theorem stdCharOf_apply (x : K) : stdCharOf p K x = stdChar p (Algebra.trace ℚ_[p] K x) := rfl
-
 variable [MeasurableSpace K] [BorelSpace K]
 
 end Extension

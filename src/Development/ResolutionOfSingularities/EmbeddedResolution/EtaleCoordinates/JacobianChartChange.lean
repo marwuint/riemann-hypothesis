@@ -353,18 +353,6 @@ def chartPartialDeriv (hV : IsAffineOpen V) (c : EtaleChart p V n) (j : Fin n)
     c.algebra_formallyEtale hV
   EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) f
 
-omit [AlgebraicGeometry.Smooth p] in
-theorem chartPartialDeriv_eq (hV : IsAffineOpen V) (c : EtaleChart p V n) (j : Fin n)
-    (f : Γ(X, V)) :
-    letI : Algebra k Γ(X, V) := sectionsAlgebra k p V
-    letI : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V) := c.algebra
-    haveI : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V) := c.isScalarTower
-    haveI : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V) :=
-      c.algebra_formallyEtale hV
-    chartPartialDeriv hV c j f =
-      EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) f :=
-  rfl
-
 private theorem derivation_sum_apply {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
     {ι : Type*} [DecidableEq ι] (s : Finset ι) (D : ι → Derivation R A A) (a : A) :
     (∑ i ∈ s, D i) a = ∑ i ∈ s, D i a := by

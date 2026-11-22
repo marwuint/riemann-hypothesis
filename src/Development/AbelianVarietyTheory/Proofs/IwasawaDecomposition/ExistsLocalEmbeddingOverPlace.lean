@@ -44,9 +44,6 @@ def intValRing (w : HeightOneSpectrum (𝓞 E)) : ValuationSubring (GlobalTheory
   toSubring := (integralClosure (w.adicCompletionIntegers E) (GlobalTheory.LocDict.Kbar w)).toSubring
   mem_or_inv_mem' x := isIntegral_or_isIntegral_inv w x
 
-theorem mem_intValRing {w : HeightOneSpectrum (𝓞 E)} (x : GlobalTheory.LocDict.Kbar w) :
-    x ∈ intValRing w ↔ IsIntegral (w.adicCompletionIntegers E) x := Iff.rfl
-
 theorem isIntegral_algebraMap_iff (w : HeightOneSpectrum (𝓞 E)) (e : E) :
     IsIntegral (w.adicCompletionIntegers E) (algebraMap E (GlobalTheory.LocDict.Kbar w) e) ↔
       w.valuation E e ≤ 1 := by

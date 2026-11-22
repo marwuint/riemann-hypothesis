@@ -126,19 +126,6 @@ def extSub (R : RealDat D A Ks) (F : Face D A) (Zs : DefSub (useFam R).fam.amb) 
   Z t := if h : InUse R t then Zs.Z ⟨t, h⟩ else (R.toCx F).zs.Z t
   Zl i t := if h : InUse R t then Zs.Zl i ⟨t, h⟩ else (R.toCx F).zs.Zl i t
 
-def useFace (R : RealDat D A Ks) (F : Face D A) : Face D (useFam R) where
-  P0 := F.P0
-  ψ0 := F.ψ0
-  P1 := F.P1
-  ψ1 := F.ψ1
-  Dc Zs := ⟨(F.Dc (extSub R F Zs)).Mem, (F.Dc (extSub R F Zs)).a, (F.Dc (extSub R F Zs)).Xc,
-    fun u t => (F.Dc (extSub R F Zs)).Pt u t.1⟩
-  Sp Zs := ⟨(F.Sp (extSub R F Zs)).HH, (F.Sp (extSub R F Zs)).nHH, (F.Sp (extSub R F Zs)).iHH, (F.Sp (extSub R F Zs)).Pu,
-    (F.Sp (extSub R F Zs)).Rw⟩
-  Zsc Zs :=
-    let Z := F.Zsc (extSub R F Zs)
-    ⟨Z.F0, fun t => Z.J0 t.1, Z.E1u, Z.l3m, Z.l3u, Z.l6m, Z.l6u, Z.x, Z.b, Z.la, Z.de⟩
-
 structure IsTupAll (R : RealDat D A Ks) (F : Face D A) : Prop where
   tw : R.tup_tw F
   mu_off : R.tup_mu_off
@@ -158,49 +145,6 @@ structure CharAll (R : RealDat D A Ks) (F : Face D A) : Prop where
   tup : IsTupAll R F
 
 variable {R : RealDat D A Ks} {F : Face D A}
-
-set_option maxHeartbeats 2000000 in
-
-def useSide {tup : T → D.what₂.Tup} {b : Bool} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE]
-    [FiniteDimensional ℂ EE] {S : RowSide D EE} (Y : SideTie R F tup b S) :
-    SideTie (useReal R) (useFace R F) (fun t => tup t.1) b S where
-  eE := Y.eE
-  eE_range := Y.eE_range
-  eE_norm := Y.eE_norm
-  eA t := Y.eA t.1
-  eA_range t := Y.eA_range t.1
-  eA_norm t := Y.eA_norm t.1
-  eOp_tie t := Y.eOp_tie t.1
-  iota_tie t := Y.iota_tie t.1
-  lat_tie t := Y.lat_tie t.1
-
-set_option maxHeartbeats 2000000 in
-
-def useTie {X0 : BaseLevelRowSide D} (Y : RowsTie R F X0) : RowsTie (useReal R) (useFace R F) X0 where
-  tup t := Y.tup t.1
-  tup_inj _ _ e := Subtype.ext (Y.tup_inj e)
-  tup_zero := Y.tup_zero
-  muAt_tie := Y.muAt_tie
-  sharp := useSide Y.sharp
-  base := useSide Y.base
-  ty := Y.ty
-  ty_inj := Y.ty_inj
-  ft_tie := Y.ft_tie
-  framedRowBaseTie := Y.framedRowBaseTie
-  eV i t := Y.eV i t.1
-  eV_range i t := Y.eV_range i t.1
-  eV_norm i t := Y.eV_norm i t.1
-  eV_rat i t := Y.eV_rat i t.1
-  eV_lat i t := Y.eV_lat i t.1
-  eMt_tie i t := Y.eMt_tie i t.1
-  eW := Y.eW
-  eW_range := Y.eW_range
-  eW_norm := Y.eW_norm
-  eW_lat := Y.eW_lat
-  theta_tie i t := Y.theta_tie i t.1
-  isot_tie := Y.isot_tie
-  lam_tie i t := Y.lam_tie i t.1
-  etaJ_tie := Y.etaJ_tie
 
 end Sub
 
@@ -354,17 +298,6 @@ include r in
 
 theorem trueColumnChoices_heckeChar_reference_eq_one : xi D.what₂.mu0 = 1 := by
   rw [← r.tie.tup_zero, ← r.xi_eq]; exact r.char.lev.xi_base
-
-theorem nonempty_QPl_iff (μ : D.what₂.Tup) : Nonempty (r.X.QPl μ) ↔ ∃ v, ¬ (xi μ).UnrAt v := by
-  obtain ⟨t, rfl⟩ := r.tup_onto μ
-  rw [(r.eQ t).nonempty_congr, ← r.xi_eq]
-  constructor
-  · rintro ⟨P⟩
-    exact ⟨P.1, (r.char.lev.Q_ram t P.1).2 (Or.inl P.2)⟩
-  · rintro ⟨v, hv⟩
-    rcases (r.char.lev.Q_ram t v).1 hv with h | ⟨P, h, -⟩
-    · exact ⟨⟨v, h⟩⟩
-    · exact ⟨⟨P, h⟩⟩
 
 end RowT
 

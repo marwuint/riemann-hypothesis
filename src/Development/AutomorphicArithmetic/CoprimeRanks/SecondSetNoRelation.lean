@@ -80,10 +80,6 @@ def HostNF.ofHost {R : Ranks} (H : Formalism.BasicNotions.Host R) : HostNF R :=
     qd_big := H.qd_big, sqq := H.sqq, sqq_sq := H.sqq_sq, gal_sqq := H.gal_sqq, φ₀ := H.φ₀, φ₀_mem := H.φ₀_mem
     𝔟 := H.𝔟, 𝔟_spec := H.𝔟_spec, 𝔟_stable := H.𝔟_stable, ch := { H with } }
 
-theorem HostNF.toHost_ofHost {R : Ranks} (H : Formalism.BasicNotions.Host R) : (HostNF.ofHost H).toHost = H := rfl
-
-theorem HostNF.ofHost_toHost {R : Ranks} (N : HostNF R) : HostNF.ofHost N.toHost = N := rfl
-
 theorem exists_cmType {φ : Frame} (H : HostAx φ) : ∃ ψ : H.E →+* ℂ, ψ ∈ H.toHostRaw.cmType := by
   have h := H.der.cmType.2.1
   have := φ.ord_pos

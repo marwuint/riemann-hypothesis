@@ -213,9 +213,6 @@ def pairSpace {m r : ℕ} (D : ModPG R n (Vc k m)) (Dt : TopData n r) (N : Lats 
       simp only [Prod.smul_snd, Pi.smul_apply, map_smul]
       rwa [← smul_sub, ← smul_sub]
 
-theorem mem_pairSpace {m r : ℕ} {D : ModPG R n (Vc k m)} {Dt : TopData n r} {N : Lats k n m}
-    {b g : ZMod n → Vc k m} : (b, g) ∈ pairSpace D Dt N ↔ InZZ D Dt N b g := Iff.rfl
-
 def herrD {m : ℕ} (D : ModPG R n (Vc k m)) :
     (ZMod n → Vc k m) →ₗ[k] ((ZMod n → Vc k m) × (ZMod n → Vc k m)) :=
   LinearMap.prod
@@ -296,8 +293,5 @@ end Law
   χ_lat e h1 h2 := (h.2.2.2.2.2.2.2.1 e h1 h2).2
   χ_model := h.2.2.2.2.2.2.2.2.1
   χ_zero := h.2.2.2.2.2.2.2.2.2
-
-theorem ModTh.data_ofLaws {F : DFun R n G} {r : ℕ} {Dt : TopData n r} (Y : ModData k G n) (h : Law.All F Dt Y) :
-    (ModTh.ofLaws Y h).data = Y := rfl
 
 end GlobalTheory.Models

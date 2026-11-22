@@ -484,10 +484,6 @@ namespace FamIn
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
   {Pl0 T : Type} {m : ℕ} (A : FamIn K G Pl0 T m)
 
-theorem side_WF {s : ℕ} (h : A.fam.Ok s) (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub A.fam.amb)
-    (hst : Zs.Stable) (hin : Zs.InBlock) (hsep : A.fam.TypesSep) : (A.side P ψ Zs).WF :=
-  A.fam.side_WF h P ψ Zs hst hin hsep
-
 end FamIn
 
 open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.L2.Indef
@@ -719,10 +715,6 @@ namespace Formalism.L2.DIV.LiftTest
 end Formalism.L2.DIV.LiftTest
 
 namespace Formalism.L2.DIV
-
-namespace BlockDat
-
-end BlockDat
 
 end Formalism.L2.DIV
 

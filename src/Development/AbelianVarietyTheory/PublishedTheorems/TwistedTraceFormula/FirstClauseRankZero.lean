@@ -52,8 +52,6 @@ theorem bddAbove_witt {E : Type} [Field E] [NumberField E] [StarRing E] (B : HSp
 
 abbrev pos (D : D7) (n : ℕ) : HSp D := Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral n
 
-theorem swSection_eq (A B : HSp D) (ν 𝓖 ω f) : swSection A B ν 𝓖 ω f = GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.swSec A B ω ν 𝓖 f := rfl
-
 end GlobalTheory.SiegelFormula.Model
 
 end

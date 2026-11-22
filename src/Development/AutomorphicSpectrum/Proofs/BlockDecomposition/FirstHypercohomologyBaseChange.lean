@@ -80,9 +80,6 @@ variable [Algebra R R'] {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {φ : X' ⟶ X}
 def clG (s : X ⟶ Sp R) (hcl : ClosedForm s = ⊤) : GlobForm s →ₗ[R] HH1 s :=
   clForm s ∘ₗ (LinearEquiv.ofTop _ hcl).symm.toLinearMap
 
-theorem clG_apply (s : X ⟶ Sp R) (hcl : ClosedForm s = ⊤) (ω : GlobForm s) :
-    clG s hcl ω = clForm s ⟨ω, hcl ▸ trivial⟩ := rfl
-
 theorem clG_injective (s : X ⟶ Sp R) (hcl : ClosedForm s = ⊤) (hi : Function.Injective (clForm s)) :
     Function.Injective (clG s hcl) :=
   hi.comp (LinearEquiv.ofTop _ hcl).symm.injective

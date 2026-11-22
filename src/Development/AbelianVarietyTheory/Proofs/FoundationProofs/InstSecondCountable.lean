@@ -77,10 +77,6 @@ theorem InU.mul {x y : Mat p q} (hx : InU x) (hy : InU y) : InU (x * y) := by
   calc _ = yᴴ * (xᴴ * Jm p q * x) * y := by simp only [Matrix.mul_assoc]
     _ = _ := by rw [hx, hy]
 
-theorem col₁₂ (Z : Fin p × Fin q → ℂ) : (col Z).toBlocks₁₂ = Matrix.of fun i j => Z (i, j) := rfl
-
-theorem col₂₂ (Z : Fin p × Fin q → ℂ) : (col Z).toBlocks₂₂ = 1 := rfl
-
 instance t2Space_cuspAdeles (T : GrpData p q) : T2Space T.G := T.emb.t2Space
 
 instance instSecondCountable (T : GrpData p q) : SecondCountableTopology T.G := by

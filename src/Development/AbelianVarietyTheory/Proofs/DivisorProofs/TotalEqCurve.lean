@@ -81,8 +81,6 @@ def emb {m : ℕ} (i : Fin m) : Fin i ⊕ Fin 1 → Fin m := Sum.elim (Fin.castL
 
 variable {m : ℕ}
 
-def jacDens (G : Matrix (Fin m) (Fin m) ℂ) (n : Low m → ℂ) : ℝ := dens Gᵀ n * G.det.re ^ (m - 1)
-
 variable {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} (π : Y ⟶ B) (w : π ≫ q = p)
 
 end Cell

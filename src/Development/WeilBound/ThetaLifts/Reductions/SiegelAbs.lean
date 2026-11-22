@@ -28,9 +28,6 @@ def rIdU [IsTotallyReal F] (c : ℝ) : (AF F ⊗[F] E)ˣ where
 theorem val_rIdU [IsTotallyReal F] (c : ℝ) :
     (rIdU F E c : AF F ⊗[F] E) = algebraMap (AF F) (AF F ⊗[F] E) (rId F c) := rfl
 
-theorem inv_rIdU [IsTotallyReal F] (c : ℝ) :
-    (↑(rIdU F E c)⁻¹ : AF F ⊗[F] E) = algebraMap (AF F) (AF F ⊗[F] E) (rId F (-c)) := rfl
-
 theorem card_infinitePlace [IsTotallyReal F] : Fintype.card (InfinitePlace F) = Module.finrank ℚ F := by
   have h1 := InfinitePlace.card_add_two_mul_card_eq_rank F
   have h2 := IsTotallyReal.nrComplexPlaces_eq_zero (K := F)

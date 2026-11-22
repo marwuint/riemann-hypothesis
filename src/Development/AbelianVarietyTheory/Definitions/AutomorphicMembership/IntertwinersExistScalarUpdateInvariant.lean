@@ -117,30 +117,7 @@ theorem pins_resK (z : Dat X I hX T Wt) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt')
     (μ := mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt'))) (R := z.R) (P0 := lev0 I) (ψ0 := chr0 I) (P1 := lev1 I) (ψ1 := chr1 I)
     (mu := z.resMu h) (tw := z.resTw Wt') (inclU_injective (usedOf_mono I T h)) (cG := z.cG) hp e (z.newTup h hc)
 
-set_option maxHeartbeats 4000000 in
-
-def restrictEx (z : Dat X I hX T Wt) (e : z.R.toRealDat.ExAt) (Wt' : Set X.B.places.Pl) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') :
-    Dat X I hX T Wt' where
-  Xg := z.Xg
-  tr := z.tr
-  core := z.core
-  alg := z.alg
-  alg_eq := z.alg_eq
-  R := (z.resR h).updS (kapOf (z.resR h)) (z.resR h).lam3
-  cG := z.cG
-  geo := (GlobalTheory.RealGeo.geoHalf_upd X.toD7 _ _ _ _ z.core (z.resR h).toRealDat (fun _ => 1) (kapOf (z.resR h)) (z.resR h).lam
-    (z.resR h).err0 (z.resGeo h)).choose
-  pins := pins_resK z h hc e
-  lev := z.levOf_resR h
-  idG := z.idG
-  good := z.good
-  mu := z.muOf_res h
-  fieldValues_mem_fixedField := z.fieldValues_mem_fixedField
-  Ks_le := z.Ks_le
-
 variable (z : Dat X I hX T Wt) (e : z.R.toRealDat.ExAt) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt')
-
-theorem restrictEx_core : (restrictEx z e Wt' h hc).core = z.core := rfl
 
 end Record
 
@@ -159,12 +136,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {X : Stages} {px : PreX X.B.toPre} {I : ColIn X.B px} {hX : X.B.fields.Ok} {T : Top.TwDat X.B}
   {Wt Wt' Wt'' : Set X.B.places.Pl} (z : Dat X I hX T Wt)
-
-set_option maxHeartbeats 400000 in
-
-theorem realData_restrict_id {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type}
-    {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {μ : T0}
-    (R : RealDat3 D (A3.comap id (id μ)) Ks) : Res.dat3 id μ R R.mu R.twPl = R := rfl
 
 end GlobalTheory.Mem.R3.ResTest
 

@@ -54,10 +54,6 @@ theorem coe_embeddingOfRestrictScalarsEq (x : L) :
     ((embeddingOfRestrictScalarsEq h x : E) : Ω) = algebraMap L Ω x :=
   rfl
 
-theorem fieldEquivOfRestrictScalarsEq_embedding (x : L) :
-    fieldEquivOfRestrictScalarsEq h (embeddingOfRestrictScalarsEq h x) = algebraMap L E' x :=
-  rfl
-
 def fixingOfRestrictScalarsEq : Subgroup Gal(E/F) :=
   (embeddingOfRestrictScalarsEq h).fieldRange.fixingSubgroup
 
@@ -102,11 +98,6 @@ def fixingMulEquivOfRestrictScalarsEq : fixingOfRestrictScalarsEq h ≃* Gal(E'/
 theorem coe_fixingMulEquivOfRestrictScalarsEq_apply (σ : fixingOfRestrictScalarsEq h) (x : E') :
     ((fixingMulEquivOfRestrictScalarsEq h σ x : E') : Ω) =
       ((σ : Gal(E/F)) ((fieldEquivOfRestrictScalarsEq h).symm x) : Ω) :=
-  rfl
-
-theorem fieldEquivOfRestrictScalarsEq_apply_apply (σ : fixingOfRestrictScalarsEq h) (x : E) :
-    fieldEquivOfRestrictScalarsEq h ((σ : Gal(E/F)) x) =
-      fixingMulEquivOfRestrictScalarsEq h σ (fieldEquivOfRestrictScalarsEq h x) :=
   rfl
 
 theorem coe_fixingMulEquivOfRestrictScalarsEq_symm_apply (τ : Gal(E'/L)) (x : E) :
@@ -307,10 +298,6 @@ def gsBaseChange : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)
   { fixingMulEquivOfRestrictScalarsEq (restrictScalars_maxUnramifiedOutside_eq S hL) with
     continuous_toFun := e.symm.continuous
     continuous_invFun := hc }
-
-theorem gsBaseChange_toMulEquiv : (gsBaseChange S hL).toMulEquiv =
-    fixingMulEquivOfRestrictScalarsEq (restrictScalars_maxUnramifiedOutside_eq S hL) :=
-  rfl
 
 variable {S}
 

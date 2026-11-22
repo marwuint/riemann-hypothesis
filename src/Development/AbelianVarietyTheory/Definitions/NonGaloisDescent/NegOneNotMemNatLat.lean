@@ -41,7 +41,4 @@ theorem detPow_ratGL (x : ℝ) (γ : GL (Fin a) E) : detPow E a x (ratGL E a γ)
   unfold detPow chiDet
   rw [MonoidHom.comp_apply, h, h2]; simp
 
-omit [IsTotallyComplex E] in
-theorem pFin_eq : GlobalTheory.RSJ.pFin E = GlobalTheory.CuspRep.pFin E := rfl
-
 end GlobalTheory.RSJ.Model

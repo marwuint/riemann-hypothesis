@@ -18,13 +18,6 @@ def pairL (x : Fin r → k) : (Fin r → k) →+ k where
 
 lemma pairL_apply (x f : Fin r → k) : pairL x f = pair f x := rfl
 
-def pairTwoLinear (x y : Fin r → k) : (Fin r → k) →+ k × k where
-  toFun f := (pair f x, pair f y)
-  map_zero' := by simp [pair]
-  map_add' f g := by simp [pair_add_left]
-
-lemma pairTwoLinear_apply (x y f : Fin r → k) : pairTwoLinear x y f = (pair f x, pair f y) := rfl
-
 end SlopeTestRemainingChoices
 
 end Formalism.LogVandermondeBounds.product_first_zeroth_parts

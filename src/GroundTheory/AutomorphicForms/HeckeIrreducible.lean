@@ -120,10 +120,6 @@ def cornerₗ : HeckeAlgebra μ →ₗ[ℂ] HeckeAlgebraLevel μ K hKc hKo where
   map_smul' c a := ext hKc hKo (by
     simp only [val_corner, val_smul, RingHom.id_apply, mul_smul_comm, smul_mul_assoc])
 
-theorem val_cornerₗ (f : HeckeAlgebra μ) :
-    ((cornerₗ hKc hKo f : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ) =
-      idem μ hKc hKo * f * idem μ hKc hKo := rfl
-
 end HeckeAlgebraLevel
 
 open HeckeAlgebraLevel
@@ -158,27 +154,6 @@ theorem quotRep_mkQ (g : G) (φ : HeckeAlgebra μ) :
 def quotMap : Representation.IntertwiningMap (leftReg μ) (quotRep hKc hKo I) where
   toLinearMap := (heckeKernel hKc hKo I).mkQ
   isIntertwining' g := LinearMap.ext fun φ => (quotRep_mkQ hKc hKo I g φ).symm
-
-theorem heckeAct_quotRep (f φ : HeckeAlgebra μ) :
-    heckeAct μ (quotRep hKc hKo I) f ((heckeKernel hKc hKo I).mkQ φ) =
-      (heckeKernel hKc hKo I).mkQ (f * φ) := by
-  have := map_heckeAct (μ := μ) (quotMap hKc hKo I) f.mem (isSmooth_leftReg φ)
-  rw [heckeAct_leftReg] at this
-  exact this.symm
-
-def toFixedQuot :
-    HeckeAlgebraLevel μ K hKc hKo →ₗ[HeckeAlgebraLevel μ K hKc hKo] fixedVectors (quotRep hKc hKo I) K where
-  toFun h := ⟨(heckeKernel hKc hKo I).mkQ (h : HeckeAlgebra μ), fun k hk => by
-    rw [quotRep_mkQ, mem_fixedVectors_leftReg.2 (fun k' hk' x => apply_mul_left hKc hKo h hk' x) k hk]⟩
-  map_add' a b := Subtype.ext (by simp only [val_add, map_add, Submodule.coe_add])
-  map_smul' a h := Subtype.ext (by
-    simp only [RingHom.id_apply, coe_smul_fixedVectors]
-    rw [heckeAct_quotRep]
-    rfl)
-
-theorem toFixedQuot_apply (h : HeckeAlgebraLevel μ K hKc hKo) :
-    ((toFixedQuot hKc hKo I h : fixedVectors (quotRep hKc hKo I) K) :
-      HeckeAlgebra μ ⧸ heckeKernel hKc hKo I) = (heckeKernel hKc hKo I).mkQ (h : HeckeAlgebra μ) := rfl
 
 end Construction
 

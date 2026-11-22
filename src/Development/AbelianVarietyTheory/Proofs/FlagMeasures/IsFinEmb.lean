@@ -107,6 +107,4 @@ def stabF (I : AutInst) (x : Fin I.n → I.E) : Set I.GA :=
 def Ksub (I : AutInst) : Subgroup I.Gf :=
   (Formalism.UG.stabGL I.Lf).comap (Formalism.UG.UPts I.cm.sig I.J (Af I.F)).subtype
 
-theorem coe_Ksub (I : AutInst) : (Ksub I : Set I.Gf) = I.Kset := rfl
-
 end GlobalTheory.StabUnfold

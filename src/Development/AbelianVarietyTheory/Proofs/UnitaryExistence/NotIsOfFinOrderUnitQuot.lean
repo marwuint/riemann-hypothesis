@@ -32,10 +32,6 @@ def toRat (g : Matrix (Fin n) (Fin n) E) (hg : g.conjTranspose * g = 1) : ratPts
       rw [← map_conjTranspose, ← Matrix.map_mul, hg, Matrix.map_one _ (map_zero _) (map_one _)])⟩,
     fun a b => ⟨g a b, rfl⟩, fun a b => ⟨_, (star_diagE (g b a)).symm⟩⟩
 
-def adTrace : AdE E →+ AdF E :=
-  ((TensorProduct.rid (maximalRealSubfield E) (AdF E)).toLinearMap ∘ₗ
-    LinearMap.lTensor (AdF E) (Algebra.trace (maximalRealSubfield E) E)).toAddMonoidHom
-
 end Adelic
 
 section Conj

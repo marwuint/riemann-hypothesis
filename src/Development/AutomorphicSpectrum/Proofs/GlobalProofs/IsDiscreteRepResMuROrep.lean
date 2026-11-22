@@ -98,10 +98,6 @@ instance isDiscreteRep_descend (M : Rep ℤ K.1.fixingSubgroup) [IsDiscreteRep M
 def descendMap {M M' : Rep ℤ K.1.fixingSubgroup} (f : M ⟶ M') : descend K S M ⟶ descend K S M' :=
   (Rep.resFunctor (liftE K S)).map ((Rep.quotientToInvariantsFunctor ℤ (resG K S).ker).map f)
 
-theorem descendVal_descendMap {M M' : Rep ℤ K.1.fixingSubgroup} (f : M ⟶ M') (x : descend K S M) :
-    descendVal K S M' ((descendMap K S f).hom x) = f.hom (descendVal K S M x) :=
-  rfl
-
 abbrev UsR : Rep ℤ (Gs K S) := descend K S (unitsLimitRep K)
 
 abbrev JsR : Rep ℤ (Gs K S) := descend K S (limitRep K)

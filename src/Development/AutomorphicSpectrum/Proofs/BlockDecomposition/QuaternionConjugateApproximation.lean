@@ -13,7 +13,4 @@ namespace GlobalTheory.CompanionTheory.PlaneSA.KeyApprox
 
 variable {F : Type} [Field F] [NumberField F]
 
-theorem rat_re {d β : F} {R : Type} [CommRing R] [Algebra F R] (x : Q d β F) :
-    (rat x : Q d β R).re = algebraMap F R x.re := rfl
-
 end GlobalTheory.CompanionTheory.PlaneSA.KeyApprox

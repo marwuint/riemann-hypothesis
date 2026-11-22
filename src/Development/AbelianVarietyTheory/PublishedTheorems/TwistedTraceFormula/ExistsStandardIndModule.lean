@@ -131,9 +131,6 @@ def groupRep {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h : Formalis
   map_one' := h.1
   map_mul' g g' := h.2 _ g.2 _ g'.2
 
-theorem groupRep_eq_ujRep {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h : IsURepOn (UJset ε) π) :
-    groupRep ε h.1 = GlobalTheory.Orb.ujRep h := rfl
-
 def IsFactor (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Z Y : Submodule ℂ H)
     (π : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')) : Prop :=
   IsGKSub ε ρ Z ∧ IsGKSub ε ρ Y ∧ Z ≤ Y ∧ ∃ T : H →ₗ[ℂ] H', Y.map T = kFinVec ε π ∧ (∀ w ∈ Y, T w = 0 ↔ w ∈ Z) ∧

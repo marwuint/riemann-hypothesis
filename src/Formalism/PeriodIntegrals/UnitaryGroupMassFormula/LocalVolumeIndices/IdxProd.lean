@@ -41,9 +41,6 @@ theorem index_pi₂ {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G 
 def KsetSub (I : AutInst) : Subgroup I.Gf :=
   (Formalism.UG.stabGL I.Lf).comap (Formalism.UG.UPts I.cm.sig I.J (Af I.F)).subtype
 
-theorem mem_KsetSub (I : AutInst) (x : I.Gf) : x ∈ KsetSub I ↔ x ∈ I.Kset := by
-  exact Iff.rfl
-
 variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I)
 
 def levelSubgroupOfCharacter (hK : X.LevelSubgroupCharacter) : Subgroup X.B.I.Gf where

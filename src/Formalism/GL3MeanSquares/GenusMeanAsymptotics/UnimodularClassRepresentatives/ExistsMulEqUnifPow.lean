@@ -15,8 +15,6 @@ namespace NO
 abbrev zR (𝔭 : Ideal (𝓞 F)) (z : K) : AddSubgroup K :=
   (pK K 𝔭 0).toAddSubgroup.map (AddMonoidHom.mulLeft z)
 
-theorem mem_zR {𝔭 : Ideal (𝓞 F)} {z a : K} : a ∈ zR 𝔭 z ↔ ∃ b ∈ pK K 𝔭 0, z * b = a := Iff.rfl
-
 theorem mul_mem₀ {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {k : ℕ} {a b : K} (ha : a ∈ pK K 𝔭 k)
     (hb : b ∈ pK K 𝔭 0) : a * b ∈ pK K 𝔭 k := by
   have h := mul_mem_pK h𝔭 ha hb

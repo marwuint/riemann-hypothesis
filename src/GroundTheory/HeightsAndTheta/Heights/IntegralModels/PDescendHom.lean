@@ -69,10 +69,6 @@ def restrictHom : F.restrict ι ⟶ G.restrict ι :=
         exact t_res ι g' φ hinj t ht (ι.image_le_opensRange _) (ι.image_mono (leOfHom i.unop)) s }
     (fun U r s => t_smul ι g' φ hinj t ht _ ((ι.appIso U.unop).inv r) s)
 
-lemma restrictHom_app (U : Z.Opens) (s : Γ(F, ι ''ᵁ U)) :
-    (restrictHom ι g' φ hinj t ht).app U s = t (ι ''ᵁ U) (ι.image_le_opensRange _) s :=
-  rfl
-
 end Descend
 
 end DescendHom

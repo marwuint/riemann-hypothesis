@@ -79,18 +79,6 @@ def STrue.bare (S : STrue D F₀) : STrue0 D F₀ where
   locTied := S.locTied
   pin := S.pin
 
-def STrue0.withFin (S : STrue0 D F₀) (hF : FinX S.Y) : STrue D F₀ where
-  toSTies := S.toSTies
-  hF := hF
-  tr := S.tr
-  into := S.into
-  bij := S.bij
-  lev := S.lev
-  colPin := S.colPin hF
-  inst := S.inst
-  locTied := S.locTied
-  pin := S.pin
-
 end Bare
 
 section Built
@@ -130,8 +118,6 @@ section Maps
 variable {B : Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)}
 
 def World.bare (w : World I l Z) : World0 I l Z := ⟨w.ok, w.pins, w.C, w.std, w.S.bare⟩
-
-def World0.withFin (w : World0 I l Z) (hF : FinX w.S.Y) : World I l Z := ⟨w.ok, w.pins, w.C, w.std, w.S.withFin hF⟩
 
 end Maps
 

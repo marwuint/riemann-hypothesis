@@ -33,8 +33,6 @@ def lauSub : Subalgebra C (AddMonoidAlgebra K ℤ) where
       exact Submodule.smul_mem _ _ (SetLike.one_mem_graded P)
     · exact zero_mem _
 
-theorem mem_lauSub {p : AddMonoidAlgebra K ℤ} : p ∈ lauSub P ↔ ∀ j, p.coeff j ∈ P j := Iff.rfl
-
 theorem single_mem_lauSub {j : ℤ} {x : K} (hx : x ∈ P j) : AddMonoidAlgebra.single j x ∈ lauSub P := by
   classical
   intro i

@@ -92,10 +92,6 @@ def s (u0 : U0) : ℝ := wmean (D.d u0) (fun u => D.muN u0 u - D.h u0 u)
 def uF (u0 : U0) : ℝ :=
   (Finset.univ.sup' Finset.univ_nonempty (fun u : W u0 => D.muMaxN u0 u - D.h u0 u)) - D.s u0
 
-def Tterm (u0 : U0) (u : W u0) : ℝ :=
-  (4 * (f : ℝ) / D.T u0 u) *
-    (|D.Ga u0| + D.Ta u0 + D.muMaxM u0 u - D.muM u0 u + 2 * (f : ℝ) * Real.log (D.T u0 u))
-
 def LoP : ℝ := C.cLoss * D.nT * (m : ℝ) * D.b * D.x ^ (C.eLoss * D.ε)
 
 def Main (u0 : U0) : ℝ :=

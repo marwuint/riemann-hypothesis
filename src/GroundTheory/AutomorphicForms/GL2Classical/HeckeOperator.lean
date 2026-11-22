@@ -380,17 +380,6 @@ def heckeSlash (N p : ℕ) [NeZero N] [NeZero p] [Fact p.Prime] (k : ℤ) :
 @[simp] theorem coe_heckeSlash (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     (heckeSlash N p k f : ℍ → ℂ) = heckeOp N p k f := rfl
 
-theorem heckeSum_liftEquiv (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
-    heckeSum N p (liftEquiv N k f : AdelicGL ℚ 2 → ℂ) =
-      heckeConst p k • (liftEquiv N k (heckeSlash N p k f) : AdelicGL ℚ 2 → ℂ) := by
-  have hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f :=
-    fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ
-  have hW := (isWeightLevel_adelicLift hf).heckeSum N p
-  rw [liftEquiv_apply, liftEquiv_apply, ← adelicLift_descend hW, descend_heckeSum_adelicLift N p hf]
-  funext g
-  simp only [adelicLift, Pi.smul_apply, smul_eq_mul, coe_heckeSlash]
-  exact archLift_smul k _ _ _
-
 section Forms
 
 open scoped Manifold
@@ -499,12 +488,6 @@ variable {k}
 
 @[simp] theorem coe_heckeCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     (heckeCusp N p k f : ℍ → ℂ) = heckeOp N p k f := rfl
-
-theorem heckeModular_toSlashInvariantForm (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
-    (heckeModular N p k f).toSlashInvariantForm = heckeSlash N p k f.toSlashInvariantForm := rfl
-
-theorem heckeCusp_toSlashInvariantForm (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
-    (heckeCusp N p k f).toSlashInvariantForm = heckeSlash N p k f.toSlashInvariantForm := rfl
 
 end Forms
 

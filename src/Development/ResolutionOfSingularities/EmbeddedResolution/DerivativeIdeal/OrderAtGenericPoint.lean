@@ -116,14 +116,6 @@ theorem notMem_support_of_mem_opens_of_restrictIdeal_eq_top {X : Scheme.{u}} (Z 
   rw [h', Scheme.IdealSheafData.support_top] at h4
   exact h4
 
-def orderAtGenericPoint {X : Scheme.{u}} (I : X.IdealSheafData) {C : Set X}
-    (hC : IsIrreducible C) : ℕ∞ :=
-  orderAt I hC.genericPoint
-
-theorem orderAtGenericPoint_eq_orderAt {X : Scheme.{u}} (I : X.IdealSheafData) {C : Set X}
-    (hC : IsIrreducible C) :
-    orderAtGenericPoint I hC = orderAt I hC.genericPoint := rfl
-
 theorem isClosed_of_maximal_irreducible_subset_support {X : Scheme.{u}} (D : X.IdealSheafData)
     {C : Set X} (hC : IsIrreducible C) (hCsub : C ⊆ (D.support : Set X))
     (hCmax : ∀ C' : Set X, IsIrreducible C' → C ⊆ C' → C' ⊆ (D.support : Set X) → C' = C) :

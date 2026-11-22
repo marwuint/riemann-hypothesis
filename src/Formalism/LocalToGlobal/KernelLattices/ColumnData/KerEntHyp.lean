@@ -22,10 +22,6 @@ section Obj
 
 variable {D : D7} (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u μ)) (B : PlaceMatrixFamily D)
 
-def IsBasC (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (c : (D.chTw u μ).cls i) (τ : D.what₂.Tau)
-    (M : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) (Cw D w)) : Prop :=
-  GL3Columns.BasR D (P.lam w) τ ((O u μ).lat i c).1 M ∧ ∀ a b, ∃ x : D.what₂.LL, M a b = P.iL w x
-
 def BasOk : Prop :=
   ∀ u μ (w : D.what₂.places.Pl) i, i ≤ D.R.m → ∀ (c : (D.chTw u μ).cls i) τ, GL3Columns.BasR D (P.lam w) τ ((O u μ).lat i c).1 (B u μ w i c τ)
 

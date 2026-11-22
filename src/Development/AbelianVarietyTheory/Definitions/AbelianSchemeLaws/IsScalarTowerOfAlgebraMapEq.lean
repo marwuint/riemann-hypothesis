@@ -23,8 +23,6 @@ variable (M V) in
 
 def equivFamilies : SecOn M V ≃ Geo.Tor.secOn M V := secOnEquiv M V
 
-theorem equivFamilies_val (s : SecOn M V) : (equivFamilies M V s).1 = coord s := rfl
-
 theorem compat (s : SecOn M V) (i j : M.ι) {O : X.Opens} (hi : O ≤ V ⊓ M.U i) (hj : O ≤ V ⊓ M.U j)
     (hij : O ≤ M.U i ⊓ M.U j) :
     rs X hi (coord s i) = rs X hij (M.g i j).val * rs X hj (coord s j) :=
@@ -538,9 +536,6 @@ def secCube : GlobalTheory.Cube.{0} κ R :=
     (fun h => SecOnR.restrict f M (iInf_le_iInf_of_subset D h))
     (fun _ x => SecOnR.restrict_self f _ x) (fun _ _ x => SecOnR.restrict_restrict f _ _ x)
 
-theorem secCube_obj (s : Finset κ) :
-    (secCube f M D).obj s = ModuleCat.of R (SecOnR f M (⨅ i ∈ s, D i)) := rfl
-
 theorem res_secCube {s t : Finset κ} (h : s ⊆ t) :
     GlobalTheory.Cube.res (secCube f M D) h = SecOnR.restrict f M (iInf_le_iInf_of_subset D h) := rfl
 
@@ -587,9 +582,6 @@ variable (M) in
 def secCubeMul {H : LB X} (t : ℤ) (s : LB.Sec H) :
     secCube f (tw M H t) D ⟶ secCube f (tw M H (t + 1)) D :=
   secCubeMap f D (SecOn.mulSec M t s) (SecOn.mulSec_restrict s)
-
-theorem secCubeMul_app {H : LB X} (t : ℤ) (s : LB.Sec H) (I : Finset κ) :
-    ((secCubeMul f M D t s).app I).hom = SecOnR.mulSec f M t s (⨅ i ∈ I, D i) := rfl
 
 theorem preimage_biInf (π : X' ⟶ X) (s : Finset κ) :
     π ⁻¹ᵁ (⨅ i ∈ s, D i) = ⨅ i ∈ s, π ⁻¹ᵁ D i := by

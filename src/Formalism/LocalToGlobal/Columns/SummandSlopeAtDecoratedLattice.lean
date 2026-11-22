@@ -22,9 +22,6 @@ def formAt {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] (b : Basis �
     (v : InfinitePlace K) (x y : V) : ℂ :=
   ∑ i, ∑ j, starRingEnd ℂ (v.embedding (b.repr x i)) * v.embedding (P (b i) (b j)) * v.embedding (b.repr y j)
 
-theorem GSD.pairAt_eq_formAt (S : GSD K) (v : InfinitePlace K) (x y : S.V) :
-    S.pairAt v x y = formAt S.bV S.pair v x y := rfl
-
 end Forms
 
 section Std

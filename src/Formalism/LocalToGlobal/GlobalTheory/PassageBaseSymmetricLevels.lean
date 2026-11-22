@@ -17,13 +17,6 @@ section TP
 
 variable {K : Type} [Field K] {Γ : Type} [Group Γ] [Finite Γ] {n : ℕ}
 
-def tsumP (ρ : Γ →* Matrix (Fin n) (Fin n) K) (H : Subgroup Γ) (χ : H →* Kˣ) : Matrix (Fin n) (Fin n) K :=
-  haveI : Fintype H := Fintype.ofFinite H
-  ∑ h : H, (((χ h)⁻¹ : Kˣ) : K) • ρ (h : Γ)
-
-theorem typeProj_eq (ρ : Γ →* Matrix (Fin n) (Fin n) K) (H : Subgroup Γ) (χ : H →* Kˣ) :
-    typeProj ρ H χ = ((Nat.card H : K)⁻¹) • tsumP ρ H χ := rfl
-
 variable [NumberField K]
 
 end TP

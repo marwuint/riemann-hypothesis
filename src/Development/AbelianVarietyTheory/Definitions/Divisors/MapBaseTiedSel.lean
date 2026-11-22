@@ -47,8 +47,6 @@ theorem Bundle.Comparison₂.recPins {b : Bundle D O c} (t : b.Comparison₂) : 
   muDef := t.pins3.muDef
   recPins := t.recPins
 
-theorem zsc_eq_ind (P : RowSideFamily O.ex) (Del h0 : ℕ) (c : ℝ) : Ind.zsc P Del h0 c = zsc P Del h0 c := rfl
-
 end Point
 
 abbrev TiedBundle : BdT := fun D O c => Σ b : Bundle D O c, b.Comparison₂
@@ -60,21 +58,6 @@ abbrev TiedBundle.part : ∀ D O c, TiedBundle D O c → Ind.Part D O c := fun _
 section Sel
 
 variable {𝒜 : FamClass}
-
-abbrev TieSel (σ : RawSel Bundle 𝒜) : Type 1 :=
-  ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), (σ Fm hc x hx i).Comparison₂
-
-def compatibleSelection (σ : RawSel Bundle 𝒜) (τ : TieSel σ) : RawSel TiedBundle 𝒜 :=
-  fun Fm hc x hx i => ⟨σ Fm hc x hx i, τ Fm hc x hx i⟩
-
-def partSel (σ : RawSel Bundle 𝒜) (τ : TieSel σ) : RawSel Ind.Part 𝒜 :=
-  fun Fm hc x hx i => (σ Fm hc x hx i).part (τ Fm hc x hx i)
-
-theorem map_base_tiedSel (σ : RawSel Bundle 𝒜) (τ : TieSel σ) :
-    (RawSel.map TiedBundle.base (compatibleSelection σ τ) : RawSel Bundle 𝒜) = @σ := rfl
-
-theorem map_part_tiedSel (σ : RawSel Bundle 𝒜) (τ : TieSel σ) :
-    (RawSel.map TiedBundle.part (compatibleSelection σ τ) : RawSel Ind.Part 𝒜) = @partSel 𝒜 σ τ := rfl
 
 end Sel
 

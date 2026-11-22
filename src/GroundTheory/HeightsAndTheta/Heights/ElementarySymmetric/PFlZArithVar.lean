@@ -77,21 +77,6 @@ end Rename
 
 variable (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ)
 
-def setIncrEquiv (q : FlBlock Ψ N) : IndefiniteRowSideFullHecke.LowerBoundFree.Nine.FlZBlk Ψ N q ≃ FlIdx Ψ N q where
-  toFun S := ⟨S.1.orderEmbOfFin S.2, (S.1.orderEmbOfFin S.2).strictMono⟩
-  invFun A := ⟨Finset.univ.image A.1, by rw [Finset.card_image_of_injective _ A.2.injective, Finset.card_fin]⟩
-  left_inv S := by
-    apply Subtype.ext
-    simp only
-    exact Finset.image_orderEmbOfFin_univ S.1 S.2
-  right_inv A := by
-    apply Subtype.ext
-    exact (Finset.orderEmbOfFin_unique _ (fun x => Finset.mem_image_of_mem _ (Finset.mem_univ x)) A.2).symm
-
-omit [Fintype Ψ] [DecidableEq Ψ] in
-
-theorem flZIncr_eq : flZIncr Ψ N = Equiv.sigmaCongrRight (setIncrEquiv Ψ N) := rfl
-
 end FlZArithVar
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree

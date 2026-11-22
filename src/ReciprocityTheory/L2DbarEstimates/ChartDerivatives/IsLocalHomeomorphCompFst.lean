@@ -23,10 +23,6 @@ def chartSlice {M : Type*} [TopologicalSpace M] {n : ℕ} (e : OpenPartialHomeom
   continuousOn_toFun := e.continuousOn.comp continuousOn_fst (fun _q hq => hq.1)
   continuousOn_invFun := e.continuousOn_symm.prodMk continuousOn_const
 
-theorem chartSlice_symm_apply {M : Type*} [TopologicalSpace M] {n : ℕ}
-    (e : OpenPartialHomeomorph M (V n)) {p : ℕ} (i : Fin p) (y : V n) :
-    (chartSlice e i).symm y = (e.symm y, i) := rfl
-
 theorem isChart_chartSlice {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (p : ℕ) (i : Fin p) :
     IsChart n (fun q : M × Fin p => z q.1) (chartSlice e i) := by
@@ -160,10 +156,6 @@ def EtaleStein.prodFin {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCount
       ext q; simp
     rw [h]
     exact (X.isCompact_le a).prod isCompact_univ
-
-theorem EtaleStein.prodFin_proj {M : Type*} [TopologicalSpace M] [T2Space M]
-    [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (X : EtaleStein n M)
-    (p : ℕ) : (EtaleStein.prodFin n X p).z = fun q => X.z q.1 := rfl
 
 end
 

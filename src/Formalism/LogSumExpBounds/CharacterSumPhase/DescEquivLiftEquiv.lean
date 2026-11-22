@@ -91,10 +91,6 @@ noncomputable def descMap (S : M₁ →ₗ[RR] M₂) (hS : S P₁.p = P₂.p) : 
     exact descend_wd P₁ P₂ S hS (by
       rw [map_smul, Function.surjInv_eq P₁.surj, Function.surjInv_eq P₁.surj])
 
-theorem descMap_π (S : M₁ →ₗ[RR] M₂) (hS : S P₁.p = P₂.p) (x : M₁) :
-    descMap P₁ P₂ S hS (P₁.π x) = P₂.π (S x) :=
-  descend_wd P₁ P₂ S hS (Function.surjInv_eq P₁.surj _)
-
 noncomputable def liftEquiv (hinj : Function.Injective (algebraMap RR K)) (θ : A₁ ≃ₗ[RR] A₂)
     (hθ : P₂.ℓ.comp θ.toLinearMap = P₁.ℓ) : M₁ ≃ₗ[RR] M₂ :=
   have hT : ∀ a, P₂.ℓ (θ.toLinearMap a) = P₁.ℓ a := fun a => LinearMap.congr_fun hθ a
@@ -124,38 +120,6 @@ theorem liftEquiv_spec (hinj : Function.Injective (algebraMap RR K)) (θ : A₁ 
     P₂.π (liftEquiv P₁ P₂ hinj θ hθ x) = θ (P₁.π x) ∧
       P₂.g (liftEquiv P₁ P₂ hinj θ hθ x) = P₁.g x :=
   liftMap_spec P₁ P₂ hinj θ.toLinearMap _ x
-
-noncomputable def descEquiv (φ : M₁ ≃ₗ[RR] M₂) (hφ : φ P₁.p = P₂.p) : A₁ ≃ₗ[RR] A₂ :=
-  have hφ' : φ.symm.toLinearMap P₂.p = P₁.p := by
-    rw [LinearEquiv.coe_coe, ← hφ, LinearEquiv.symm_apply_apply]
-  LinearEquiv.ofLinearMap (descMap P₁ P₂ φ.toLinearMap hφ) (descMap P₂ P₁ φ.symm.toLinearMap hφ')
-    (LinearMap.ext fun a => by
-      obtain ⟨y, rfl⟩ := P₂.surj a
-      rw [LinearMap.comp_apply, LinearMap.id_apply, descMap_π, descMap_π]
-      simp)
-    (LinearMap.ext fun a => by
-      obtain ⟨y, rfl⟩ := P₁.surj a
-      rw [LinearMap.comp_apply, LinearMap.id_apply, descMap_π, descMap_π]
-      simp)
-
-theorem descEquiv_π (φ : M₁ ≃ₗ[RR] M₂) (hφ : φ P₁.p = P₂.p) (x : M₁) :
-    descEquiv P₁ P₂ φ hφ (P₁.π x) = P₂.π (φ x) :=
-  descMap_π P₁ P₂ φ.toLinearMap hφ x
-
-theorem liftEquiv_descEquiv (hinj : Function.Injective (algebraMap RR K)) (φ : M₁ ≃ₗ[RR] M₂)
-    (hφ : φ P₁.p = P₂.p) (hθ : P₂.ℓ.comp (descEquiv P₁ P₂ φ hφ).toLinearMap = P₁.ℓ)
-    (hg : P₂.g.comp φ.toLinearMap = P₁.g) :
-    liftEquiv P₁ P₂ hinj (descEquiv P₁ P₂ φ hφ) hθ = φ :=
-  LinearEquiv.ext fun x => P₂.uniq hinj
-    ((liftEquiv_spec P₁ P₂ hinj _ hθ x).1.trans (descEquiv_π P₁ P₂ φ hφ x))
-    ((liftEquiv_spec P₁ P₂ hinj _ hθ x).2.trans (LinearMap.congr_fun hg x).symm)
-
-theorem descEquiv_liftEquiv (hinj : Function.Injective (algebraMap RR K)) (θ : A₁ ≃ₗ[RR] A₂)
-    (hθ : P₂.ℓ.comp θ.toLinearMap = P₁.ℓ) (hφ : liftEquiv P₁ P₂ hinj θ hθ P₁.p = P₂.p) :
-    descEquiv P₁ P₂ (liftEquiv P₁ P₂ hinj θ hθ) hφ = θ :=
-  LinearEquiv.ext fun a => by
-    obtain ⟨x, rfl⟩ := P₁.surj a
-    exact (descEquiv_π P₁ P₂ _ hφ x).trans (liftEquiv_spec P₁ P₂ hinj θ hθ x).1
 
 end Pres
 

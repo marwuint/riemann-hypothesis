@@ -137,10 +137,6 @@ def Clause (LL O : Type) [Field LL] [Algebra ℚ_[l] LL] [CommRing O] [Algebra O
     L1.T = LinearMap.range (Algebra.linearMap O LL) →
       Nonempty (ReciprocityTheory.Def.H2 (repD L1) ⊤ ≃ₗ[O] (LL ⧸ L1.T))
 
-theorem tate_h2_iff_clause : LocalTateTopDegree (P.PD K) ↔
-    ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O]
-      [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → Clause P K LL O := Iff.rfl
-
 end Compare
 
 end GlobalTheory.TateTopCompare

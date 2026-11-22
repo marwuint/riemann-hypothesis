@@ -54,20 +54,9 @@ variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) {q 
   (lam : Qbar →+* ℂ_[q]) (Ω : ℂ_[q]) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (μ : Meas q r)
   (G : VC D N N' → ℂ)
 
-def FirstMomentVectorLaw : Prop :=
-  ∀ (n : ℕ) (ε : 𝓞 D.host.K), IsIdem D lam (2 * n + 2) ε → ∀ yt : Fin r → Fin (q ^ n),
-    ∀ (m : ℕ) (y : Fin m → Matrix (Fin N') (Fin N) D.host.E) (g : C(Fin r → ℤ_[q], ℂ_[q])),
-      (∀ a, g a = lamC lam (kap D B.tor (vecZ D B.tor δ q n b a) (liftY D B.tor δ q n ε b yt)) *
-        ∏ j, pairN D lam Ω b (y j) a) →
-      jet D lam y (pSer D lam (Wop D B.tor q (liftY D B.tor δ q n ε b yt) G)) = μ g
-
 end Merged
 
 variable (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : IdE D → ℂ) (q : ℕ) [Fact q.Prime]
   (lam : Qbar →+* ℂ_[q]) (Ω : ℂ_[q])
-
-theorem firstMomentVectorLaw_iff {N N' r : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
-    (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (μ : Meas q r) :
-    FirstMomentVectorLaw B lam Ω b μ (B.eNat χ N N' L L') ↔ TranslateJetMomentLaw B χ lam Ω L L' b μ := Iff.rfl
 
 end Formalism.L2.Ker.I3.JetMomEq

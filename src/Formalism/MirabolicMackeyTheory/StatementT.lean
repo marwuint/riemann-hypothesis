@@ -46,10 +46,6 @@ def ShareNum : Prop :=
     0 ≤ del → del ≤ 1 / 4 → (1 - ep) * dK ≤ U * d0 → (1 - y) * U ≤ δq → (1 - del) * d0 ≤ d →
       dK / δq ≤ 2 * d
 
-def UnipNum : Prop :=
-  ∀ (f r d dK δq : ℝ), 0 ≤ f → 1 ≤ r → 0 ≤ d → dK / δq ≤ 3 * d →
-    f * r * (r - 1) / 2 * (d + dK / δq) ≤ 2 * f * r ^ 2 * d
-
 def BudgetNum : Prop :=
   ∀ (dK δq D B : ℝ), 0 < δq → 0 < D → 0 ≤ B → dK / δq ≤ 3 * D →
     2 * (2 * (dK * B)) / (δq * D) ≤ 12 * B

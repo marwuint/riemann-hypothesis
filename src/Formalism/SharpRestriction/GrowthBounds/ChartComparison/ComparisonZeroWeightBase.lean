@@ -47,8 +47,6 @@ theorem cmpZeroMu_int : Submodule.span (D.gat u w h).O
     (cmpZeroMu c Tw u μ w h '' (((Tw.fm u μ).lat 0).L : Set _)) = (D.gat u w h).M := by
   rw [cmpZeroMu_image, c.cmp_M]
 
-theorem cmpZeroMu_muAt : cmpZeroMu c Tw u (D.what₂.muAt w) w h = cmpZero c Tw u w h := rfl
-
 end Zero
 
 section KL
@@ -63,8 +61,6 @@ variable {Tw u μ}
 theorem KLxMu_eq (j : ℕ) (x : ((Tw.fm u μ).lat j).V) (y : ((Tw.fm u μ).lat (j + 1)).V)
     (hxy : (Tw.fm u μ).emb (j + 1) y = (D.chTw u μ).K j ((Tw.fm u μ).emb j x)) : KLxMu Tw u μ j x = y :=
   ratMap_eq _ _ _ _ x y hxy
-
-theorem KLxMu_muAt (w : D.what₂.places.Pl) (j : ℕ) : KLxMu Tw u (D.what₂.muAt w) j = KLx Tw u w j := rfl
 
 end KL
 
@@ -149,8 +145,6 @@ structure StepsMu where
 variable {c Tw u μ w h Lv}
 
 def StepsMu.up (X : StepsMu c Tw u μ w h Lv) : CmpUpMu c Tw u μ w h Lv := CmpUpMu.ofRat X.cmpS X.injS X.ratS
-
-theorem StepsMu.up_cmp_succ (X : StepsMu c Tw u μ w h Lv) (j : ℕ) : X.up.cmp (j + 1) = X.cmpS j := rfl
 
 theorem StepsMu.intS (X : StepsMu c Tw u μ w h Lv) (hd : DescUp c u w h Lv) (j : ℕ) (hj : j + 1 ≤ D.R.m) :
     Submodule.span (D.gat u w h).O

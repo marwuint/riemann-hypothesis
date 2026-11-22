@@ -36,14 +36,6 @@ def bb (D₁ D₂ : Submodule 𝕜 W) (φ₁ : D₁ →ₗᵢ[𝕜] W') (φ₂ :
 
 end Place
 
-def BBBound : Prop :=
-  ∀ (𝕜 : Type) [RCLike 𝕜] (W W' : Type) [NormedAddCommGroup W] [InnerProductSpace 𝕜 W]
-    [FiniteDimensional 𝕜 W] [NormedAddCommGroup W'] [InnerProductSpace 𝕜 W']
-    (D₁ D₂ : Submodule 𝕜 W) (φ₁ : D₁ →ₗᵢ[𝕜] W') (φ₂ : D₂ →ₗᵢ[𝕜] W') (x₁ : D₁) (x₂ : D₂),
-    ‖bb D₁ D₂ φ₁ φ₂ x₁ x₂‖ ≤
-      2 * ‖(Ph D₁ D₂ φ₁ φ₂)ᗮ.starProjection (x₁ : W)‖ *
-        ‖(Ph D₁ D₂ φ₁ φ₂)ᗮ.starProjection (x₂ : W)‖
-
 def SesqDet : Prop :=
   ∀ (V₁ V₂ : Type) [NormedAddCommGroup V₁] [InnerProductSpace ℂ V₁]
     [NormedAddCommGroup V₂] [InnerProductSpace ℂ V₂]

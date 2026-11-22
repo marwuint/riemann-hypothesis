@@ -102,10 +102,6 @@ noncomputable def polyToV (p : MvPolynomial (TVar d.D d.N) (∀ c, A c)) : d.Vam
   ∑ β ∈ p.support,
     d.tv (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (MvPolynomial.monomial β 1)) (p.coeff β)
 
-noncomputable abbrev modOpV (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
-    Module (Op d.D d.N la) d.Vamb :=
-  Module.compHom _ (OpToKT d.D d.N la)
-
 noncomputable def genZV : {α : Fin d.D → Fin (d.T + 1) // d.absα α = d.a0} × Fin d.n0 → d.Vamb :=
   fun p => d.polyToV (d.genZ p.1.1 p.2)
 

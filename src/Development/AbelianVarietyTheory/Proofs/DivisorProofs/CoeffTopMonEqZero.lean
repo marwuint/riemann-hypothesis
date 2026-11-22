@@ -44,10 +44,6 @@ theorem eps_mul_self {k : ℕ} (a : Fin k) : eps R a * eps R a = 0 := by
   rw [eps, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, ← sq]
   exact Ideal.subset_span ⟨a, rfl⟩
 
-def epsIncl {k : ℕ} (a : Fin k) : DualNumber R →ₐ[R] EpsAlg R k :=
-  DualNumber.lift ⟨(Algebra.ofId R (EpsAlg R k), eps R a), eps_mul_self R a,
-    fun _ => Commute.all _ _⟩
-
 end Alg
 
 end GlobalTheory.SecJet
@@ -65,10 +61,6 @@ theorem spMap_comp_eq {A B : Type} [CommRing A] [CommRing B] [Algebra R A] [Alge
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
   congr 2
   exact f.comp_algebraMap
-
-def epsIn {k : ℕ} (a : Fin k) : epsT R k ⟶ epsR R :=
-  Over.homMk (spMap ((epsIncl R a : DualNumber R →ₐ[R] EpsAlg R k) : DualNumber R →+* EpsAlg R k))
-    (spMap_comp_eq R (epsIncl R a))
 
 def epsScaleA (c : R) : DualNumber R →ₐ[R] DualNumber R :=
   { epsScaleR c with commutes' := fun r => by simp [epsScaleR] }

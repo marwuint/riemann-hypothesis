@@ -20,33 +20,6 @@ variable {Fl : Fields} {Pr : Primes Fl} {Rk : Ranks} (W : Wts Fl Pr.Word Rk) (Ch
   (sel : HeightOneSpectrum (𝓞 Fl.F) → HeightOneSpectrum (𝓞 Fl.E)) {Sg : Set ℕ}
   {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
 
-def faceCol (hX : Fl.Ok) (A : FamIn Fl.K G Pl0 T m) (P1 : Subgroup G) (ψ1 : P1 →* Fl.Kˣ)
-    {P : LevFam Fl.E Fl.K Rk.r Pr.vGs} (Xg : Finset (G0 Fl.E Pr.vGs Rk.r → Fl.K)) {m2 : ℕ} {Gc : ChGlob Fl Rk.m}
-    (mu : A.fam.base.Tup → Tup Fl.F Fl.E Fl.K Sg) (cst : ∀ t, LocCst Fl (rowSG Pr sel (mu t)))
-    (L : ∀ t, ChIdx Fl Pr Rk (QE sel (mu t : Chr Fl.F Fl.E Fl.K))) (hL : ∀ t, (L t).Ok Ch sel (mu t) (cst t) Gc m2)
-    (hP : ∀ t, (mtildeGSD W Ch sel (mu t) P).Ok) (Mem : Type) (wd : Mem → Pr.Word) (b : ∀ t, Mem → (L t).β (m2 + 1))
-    (hY : ∀ t x, YbHyp (R := Rk) sel (mu t) (cst t) (L t) (wd x) m2 (b t x)) (Am : Formalism.L2.Ker.Amb Fl)
-    (hK : ∀ t x, Formalism.L2.Ker.KerEquivC W Ch sel (mu t) (cst t) (L t) Am (wd x) m2 (b t x) (hY t x) P)
-    (hF : ∀ t x j, (chF W sel (mu t) (L t) (wd x) j).Ok)
-    (ev : ∀ (Zs : DefSub A.fam.amb) t, (Fin ((A.side P1 ψ1 Zs).nV t) → Fl.K) →ₗ[Fl.K] V0X W Ch sel (mu t) Xg P) :
-    ∀ Zs : DefSub A.fam.amb, DefCols (A.side P1 ψ1 Zs) := fun Zs =>
-  colFace hX (A.side P1 ψ1 Zs) Xg mu cst L hL hP Mem wd b hY
-    (fun t x => Formalism.L2.Ker.chKerC W Ch sel (mu t) (cst t) (L t) Am (wd x) m2 (b t x) (hY t x) P (hK t x)) hF (ev Zs)
-
-theorem faceCol_Pt (hX : Fl.Ok) (A : FamIn Fl.K G Pl0 T m) (P1 : Subgroup G) (ψ1 : P1 →* Fl.Kˣ)
-    {P : LevFam Fl.E Fl.K Rk.r Pr.vGs} (Xg : Finset (G0 Fl.E Pr.vGs Rk.r → Fl.K)) {m2 : ℕ} {Gc : ChGlob Fl Rk.m}
-    (mu : A.fam.base.Tup → Tup Fl.F Fl.E Fl.K Sg) (cst : ∀ t, LocCst Fl (rowSG Pr sel (mu t)))
-    (L : ∀ t, ChIdx Fl Pr Rk (QE sel (mu t : Chr Fl.F Fl.E Fl.K))) (hL : ∀ t, (L t).Ok Ch sel (mu t) (cst t) Gc m2)
-    (hP : ∀ t, (mtildeGSD W Ch sel (mu t) P).Ok) (Mem : Type) (wd : Mem → Pr.Word) (b : ∀ t, Mem → (L t).β (m2 + 1))
-    (hY : ∀ t x, YbHyp (R := Rk) sel (mu t) (cst t) (L t) (wd x) m2 (b t x)) (Am : Formalism.L2.Ker.Amb Fl)
-    (hK : ∀ t x, Formalism.L2.Ker.KerEquivC W Ch sel (mu t) (cst t) (L t) Am (wd x) m2 (b t x) (hY t x) P)
-    (hF : ∀ t x j, (chF W sel (mu t) (L t) (wd x) j).Ok)
-    (ev : ∀ (Zs : DefSub A.fam.amb) t, (Fin ((A.side P1 ψ1 Zs).nV t) → Fl.K) →ₗ[Fl.K] V0X W Ch sel (mu t) Xg P)
-    (Zs : DefSub A.fam.amb) (x : Mem) (t : A.fam.base.Tup) :
-    (faceCol W Ch sel hX A P1 ψ1 Xg mu cst L hL hP Mem wd b hY Am hK hF ev Zs).Pt x t =
-      colPer hX (hP t) Xg (Formalism.L2.Ker.chKerC W Ch sel (mu t) (cst t) (L t) Am (wd x) m2 (b t x) (hY t x) P (hK t x))
-        (hF t x) (hL t) (ev Zs t) := rfl
-
 end Face
 
 section Sp
@@ -99,9 +72,6 @@ variable (s : Bool) {Bs : DefBase D.what₂.LL} {Df : DefSide Bs} (Dc : DefCols 
 
 theorem spOf_Pu (x : Dc.Mem) (φ : Fin (Dc.a x) → ℂ) :
     Tw.out (s := s) ((spOf s Dc hK G wdD pw bR).Pu x φ) = (pw x).op (ramCrd (bR x) (cjVec s _ φ)) := rfl
-
-theorem mem_spOf_Rw (y : Tw s (HHX X)) :
-    y ∈ (spOf s Dc hK G wdD pw bR).Rw ↔ ((Tw.out (s := s) y : HHX X) : L2X X) ∈ goodSub X G := Iff.rfl
 
 end Facts
 

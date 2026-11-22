@@ -127,9 +127,6 @@ def unipEquiv : unipRad R e ≃ (Idx e → R) where
   left_inv u := Subtype.ext (Units.ext (eq_one_add_mat e u.2).symm)
   right_inv x := (ent_one_add e _).trans (ent_mat e x)
 
-theorem val_unipEquiv_symm (x : Idx e → R) :
-    ((((unipEquiv e).symm x : unipRad R e) : GL n R) : Matrix n n R) = 1 + mat e x := rfl
-
 omit [LinearOrder α] [∀ a, DecidableEq (m a)] [DecidableEq n] in
 theorem card_blk (p : α → Prop) [DecidablePred p] :
     Fintype.card {j : n // p (blk e j)} = ∑ b with p b, Fintype.card (m b) := by

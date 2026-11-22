@@ -79,8 +79,6 @@ instance QG_disc [CompactSpace G] (M : TRep R G) [DiscreteTopology M.V] : Discre
 
 def pLin (M : TRep R G) : (CG M).V →ₗ[R] (QG M).V := (LinearMap.range (iCG M)).mkQ
 
-theorem pLin_equiv (M : TRep R G) (g : G) (c : (CG M).V) : pLin M ((CG M).rho g c) = (QG M).rho g (pLin M c) := rfl
-
 end InflationIsomorphism
 
 end

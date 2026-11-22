@@ -29,17 +29,6 @@ attribute [instance] LocSp.acg LocSp.mod
 
 variable {D}
 
-def LocSp.ofTermLoc {Y : TermTie D} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
-    {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {u u' : D.what₂.Word}
-    (X : TermLoc D Y δ M u u') : LocSp D M where
-  V := X.V
-  H := X.H
-  rank := X.rank
-  bc := X.bc
-  bc_smul := X.bc_smul
-  bc_span := X.bc_span
-  bc_form := X.bc_form
-
 abbrev Tn (u : D.what₂.Word) : D.host.E := (((D.mem u).A.T : ℕ) : D.host.E)
 
 abbrev MatZ (D : Formalism.BasicNotions.D7) : Type := Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E

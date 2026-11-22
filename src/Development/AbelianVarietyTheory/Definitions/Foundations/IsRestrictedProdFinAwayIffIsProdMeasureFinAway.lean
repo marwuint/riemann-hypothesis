@@ -27,9 +27,6 @@ def archFinEquiv : GAd σ J ≃ₜ* (∀ w, GArch σ J w) × GFin σ J where
   continuous_invFun := ((continuous_ofInf σ J).comp ((continuous_embArchPi σ J).comp continuous_fst)).mul
     ((continuous_ofFin σ J).comp continuous_snd)
 
-theorem archFinEquiv_apply (g : GAd σ J) :
-    archFinEquiv σ J g = (fun w => projArch σ J w g, projFin σ J g) := rfl
-
 theorem archFinEquiv_symm_apply (p : (∀ w, GArch σ J w) × GFin σ J) :
     (archFinEquiv σ J).symm p = ofInf σ J (embArchPi σ J p.1) * ofFin σ J p.2 := rfl
 

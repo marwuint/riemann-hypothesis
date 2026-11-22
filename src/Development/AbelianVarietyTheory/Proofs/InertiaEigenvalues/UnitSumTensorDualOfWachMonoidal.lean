@@ -136,9 +136,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
-theorem isSumLat_iff {T T' T'' : LocLat G Qp LL O} (i : LatHom T.L T''.L) (i' : LatHom T'.L T''.L) :
-    UnitDualParts.IsSumLat i i' ↔ TensorLatticeUnitPart.IsSumLat i i' := Iff.rfl
-
 theorem isCrys_of_isSumLat {T T' T'' : LocLat G Qp LL O} (i : LatHom T.L T''.L)
     (i' : LatHom T'.L T''.L) (h : IsCrys PD T.ρ) (h' : IsCrys PD T'.ρ) (hs : TensorLatticeUnitPart.IsSumLat i i') :
     IsCrys PD T''.ρ :=
@@ -155,7 +152,5 @@ end Generic
 
 variable (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (H : LocHW l P)
   (F : LocFon l P AI H)
-
-theorem unitPart_iff : UnitDualParts.UnitPart l P AI H F ↔ TensorLatticeUnitPart.UnitPart l P AI H F := Iff.rfl
 
 end GlobalTheory.Cmp.WachMonoidal

@@ -4,12 +4,6 @@ namespace Formalism.FourierDecayAlt.E
 
 open Real Polynomial MeasureTheory
 
-def MiddleThird : Prop :=
-  ∀ (n : ℕ) (lam : Fin n → ℝ) (α β Y : ℝ), 12 ≤ β - α → (∀ s, -lam s ∉ Set.Ioo α β) →
-    α + (β - α) / 3 ≤ Y → Y ≤ β - (β - α) / 3 →
-    |(∏ s, (Y + 1 + lam s)) / ∏ s, (Y + lam s)| ≤ Real.exp (3 * n / (β - α)) ∧
-    |(∏ s, (Y + lam s)) / ∏ s, (Y + 1 + lam s)| ≤ Real.exp (4 * n / (β - α))
-
 def CauchyTheta : Prop :=
   ∀ (σ ε : ℝ), 4 ≤ σ → 0 < ε → ∀ (p : ℕ) (u : ℝ),
     |iteratedDeriv p (fun v : ℝ => (1 + ε * Real.exp (-v)) ^ (-σ)) u| ≤

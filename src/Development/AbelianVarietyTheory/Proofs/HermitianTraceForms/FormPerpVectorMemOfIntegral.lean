@@ -128,16 +128,9 @@ variable {R M ι : Type*} [CommRing R] [AddCommGroup M] [Module R M] [Fintype ι
 def formPairMatrix (h : M →ₗ[R] M →ₛₗ[σ] R) (e e' : ι → M) : Matrix ι ι R :=
   pairingMatrix (fun a => h.flip (e a)) e'
 
-def formPerpVector (h : M →ₗ[R] M →ₛₗ[σ] R) (e e' : ι → M) (g : M) : M :=
-  perpVector (fun a => h.flip (e a)) e' g
-
 omit [Fintype ι] [DecidableEq ι] in
 @[simp] theorem formPairMatrix_apply (h : M →ₗ[R] M →ₛₗ[σ] R) (e e' : ι → M) (a' a : ι) :
     formPairMatrix h e e' a' a = h (e' a') (e a) := rfl
-
-theorem formPerpVector_eq (h : M →ₗ[R] M →ₛₗ[σ] R) (e e' : ι → M) (g : M) :
-    formPerpVector h e e' g = (formPairMatrix h e e').det • g
-      - ∑ a, ∑ a', ((formPairMatrix h e e').adjugate a a' * h g (e a)) • e' a' := rfl
 
 end Form
 

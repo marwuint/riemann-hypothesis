@@ -44,23 +44,6 @@ open Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br
 
 variable {D : D7}
 
-theorem eig_isCompl (i : D.nd.Loc) (S : Finset (D.nd.X i)) :
-    IsCompl (D.nd.eigSum i ↑S) (D.nd.eigSum i (↑S)ᶜ) := by
-  refine ⟨(heckeEig_indep (D.nd.T i) (D.nd.act i) (D.nd.T_sep i)).disjoint_biSup_biSup
-    disjoint_compl_right, codisjoint_iff.2 ?_⟩
-  rw [eq_top_iff, ← EigSpan_holds D.nd i]
-  refine iSup_le fun x => ?_
-  by_cases hx : x ∈ (S : Set (D.nd.X i))
-  · exact le_sup_of_le_left (le_biSup (heckeEig (D.nd.T i) (D.nd.act i)) hx)
-  · exact le_sup_of_le_right
-      (le_biSup (heckeEig (D.nd.T i) (D.nd.act i)) (show x ∈ (S : Set (D.nd.X i))ᶜ from hx))
-
-def prGood (i : D.nd.Loc) :
-    Module.End (FractionRing (D.nd.O i))
-      (TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i)) :=
-  (D.nd.eigSum i ↑(D.nd.Zgood i)).projection (D.nd.eigSum i (↑(D.nd.Zgood i))ᶜ)
-    (eig_isCompl i (D.nd.Zgood i))
-
 end Record
 
 section Reduce

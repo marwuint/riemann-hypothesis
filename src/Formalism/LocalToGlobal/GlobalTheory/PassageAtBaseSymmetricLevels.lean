@@ -14,11 +14,6 @@ section Proj
 
 variable {K : Type} [Field K] {Γ : Type} [Group Γ]
 
-def typeProj [Finite Γ] {n : ℕ} (ρ : Γ →* Matrix (Fin n) (Fin n) K) (H : Subgroup Γ) (χ : H →* Kˣ) :
-    Matrix (Fin n) (Fin n) K :=
-  haveI : Fintype H := Fintype.ofFinite H
-  ((Nat.card H : K)⁻¹) • ∑ h : H, (((χ h)⁻¹ : Kˣ) : K) • ρ (h : Γ)
-
 end Proj
 
 structure RepDat (K : Type) [Field K] [NumberField K] [StarRing K] (Γ : Type) [Group Γ] [Fintype Γ] (D0 D1 : ℕ) where
@@ -48,9 +43,5 @@ structure RepDat (K : Type) [Field K] [NumberField K] [StarRing K] (Γ : Type) [
   ι1 : Matrix (Fin Dg) (Fin D1) K
 
 attribute [instance] RepDat.fS
-
-namespace RepDat
-
-end RepDat
 
 end Formalism.L2.GlobalTheoryTheory.DivPassage2

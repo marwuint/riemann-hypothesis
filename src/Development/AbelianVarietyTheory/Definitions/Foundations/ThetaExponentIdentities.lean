@@ -50,16 +50,6 @@ def pageOf : SlopeBoundParameters where
   Nr := D.R.r
   g12 := (D.host.g 0 : ℝ) * D.host.g 1
 
-theorem pageOf_L : (pageOf Q).L = L.sc.L := rfl
-
-theorem pageOf_b : (pageOf Q).b = L.sc.b := rfl
-
-theorem pageOf_lrd : (pageOf Q).lrd = lrd D := rfl
-
-theorem log_derivative_at_zero : (pageOf Q).L0 = dlogL D 0 := rfl
-
-theorem leafDiff_pageOf : LeafDiff (pageOf Q) := rfl
-
 section Weights
 
 variable (D) in

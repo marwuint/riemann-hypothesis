@@ -26,11 +26,6 @@ noncomputable def integralClosureToPadicAlgClIntegers
     (mem_padicAlgCl_valuationSubring_iff_norm_le_one _).mpr
       ((mem_integralClosure_padicInt_iff K _).mp x.2)
 
-theorem coe_integralClosureToPadicAlgClIntegers (K : IntermediateField ℚ_[p] (PadicAlgCl p))
-    (x : integralClosure ℤ_[p] K) :
-    ((integralClosureToPadicAlgClIntegers K x : OO p) : PadicAlgCl p) =
-      ((x : K) : PadicAlgCl p) := rfl
-
 theorem isLocalHom_integralClosureToPadicAlgClIntegers
     (K : IntermediateField ℚ_[p] (PadicAlgCl p)) :
     IsLocalHom (integralClosureToPadicAlgClIntegers K) := by

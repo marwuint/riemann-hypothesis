@@ -29,9 +29,6 @@ def Clauses : Prop :=
       π.IsUnitary → IsNormalised π → IsSpehOf V π d → ∀ w σ σ', π.IsLocComp w σ → IsLocCompGL V w σ' →
         GlobalTheory.LocGL.IsSpeh (GlobalTheory.LocGL.IrrGL.of σ.ρ σ.smooth σ.irred) d σ'.ρ
 
-theorem byClass_iff : GlobalTheory.Published.ResidualSpectrumByClass ↔
-    ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ), 1 ≤ N → Clauses E N := Iff.rfl
-
 end GlobalTheory.DiscSpec.ByClassModel
 
 end

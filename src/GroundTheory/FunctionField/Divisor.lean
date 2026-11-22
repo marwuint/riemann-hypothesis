@@ -88,9 +88,6 @@ noncomputable def divisorHom : Additive Kˣ →+ Divisor k K where
     simp only [toMul_add, Units.val_mul]
     exact divisor_mul (Additive.toMul x).ne_zero (Additive.toMul y).ne_zero
 
-theorem divisorHom_apply (x : Kˣ) : divisorHom (Additive.ofMul x) = (divisor (x : K) : Divisor k K) :=
-  rfl
-
 variable (k K) in
 
 noncomputable def principalDivisors : AddSubgroup (Divisor k K) := (divisorHom (k := k)).range

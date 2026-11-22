@@ -104,8 +104,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {K : Type*} [Field K
 noncomputable abbrev ccHom (E : Type) [Field E] [NumberField E] [IsCMField E] : E →+* E :=
   (IsCMField.complexConj E : E ≃ₐ[_] E)
 
-theorem ccHom_apply (x : E) : ccHom E x = cc x := rfl
-
 theorem herm_one_eq_sum (x y : Fin n → E) : herm 1 x y = ∑ k, x k * cc (y k) := by
   simp [herm, Matrix.one_apply]
 
@@ -123,8 +121,6 @@ noncomputable def Ha (τ : T → E →+* K) (c : T → Fin p → ℕ) (c' : T �
 
 variable (τ : T → E →+* K) {c : T → Fin p → ℕ} {c' : T → Fin q → ℕ}
   {Λ Λ' : Submodule (𝓞 E) (Fin n → E)} {P : Poly K T p q (Fin n)}
-
-theorem mem_Ha : P ∈ Ha τ c c' Λ ↔ P ∈ rowHighest K c c' ∧ P ∈ symO p q τ Λ := Iff.rfl
 
 variable [NumberField K]
 

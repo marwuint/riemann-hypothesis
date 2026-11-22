@@ -145,55 +145,6 @@ def DualGeomDegPos.Statement : Prop :=
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))), 1 ≤ i →
     0 < geomDeg (dualIdeal b) (dualLine F b hb) (i - 1)
 
-theorem one_mem_dualLattice_standard :
-    (fun _ : Fin 1 => (1 : ℚ)) ∈ dualLattice (HermLattice.standard ℚ 1) := by
-  intro x hx
-  refine Submodule.span_induction (p := fun x _ => (fun _ : Fin 1 => (1 : ℚ)) ⬝ᵥ x ∈
-    (algebraMap (𝓞 ℚ) ℚ).range) ?_ ?_ ?_ ?_ hx
-  · rintro _ ⟨j, rfl⟩
-    exact ⟨1, by fin_cases j; simp [dotProduct]⟩
-  · exact ⟨0, by simp⟩
-  · rintro x y _ _ ⟨a, ha⟩ ⟨c, hc⟩
-    exact ⟨a + c, by rw [dotProduct_add, map_add, ha, hc]⟩
-  · rintro r x _ ⟨a, ha⟩
-    refine ⟨r * a, ?_⟩
-    rw [dotProduct_smul, map_mul, ha]
-    rfl
-
-def oneDual : dualLattice (HermLattice.standard ℚ 1) := ⟨fun _ => 1, one_mem_dualLattice_standard⟩
-
-theorem oneDual_ne_zero : oneDual ≠ 0 := by
-  intro h
-  have h1 : ((oneDual : dualLattice (HermLattice.standard ℚ 1)) : Fin 1 → ℚ) 0 = 0 := by
-    rw [h]; rfl
-  exact one_ne_zero h1
-
-theorem oneDual_linearIndependent : LinearIndependent ℤ (fun _ : Unit => oneDual) :=
-  linearIndependent_unique_iff.mpr oneDual_ne_zero
-
-theorem oneDual_span : ⊤ ≤ Submodule.span ℤ (Set.range fun _ : Unit => oneDual) := by
-  rintro ⟨φ, hφ⟩ -
-  have hx : (fun j : Fin 1 => if j = 0 then (1 : ℚ) else 0) ∈ (HermLattice.standard ℚ 1).lattice := by
-    apply Submodule.subset_span
-    refine ⟨0, ?_⟩
-    funext j
-    fin_cases j
-    rfl
-  obtain ⟨a, ha⟩ := hφ _ hx
-  have h0 : φ 0 = algebraMap (𝓞 ℚ) ℚ a := by
-    rw [ha]
-    simp [dotProduct]
-  rw [Set.range_const]
-  refine Submodule.mem_span_singleton.mpr ⟨Rat.ringOfIntegersEquiv a, ?_⟩
-  apply Subtype.ext
-  funext j
-  fin_cases j
-  show ((Rat.ringOfIntegersEquiv a : ℤ) : ℚ) * 1 = φ 0
-  rw [mul_one, Rat.ringOfIntegersEquiv_apply_coe, h0]
-
-def dualBasisStandard : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)) :=
-  Module.Basis.mk oneDual_linearIndependent oneDual_span
-
 end
 
 end GroundTheory.Heights₂.Heights

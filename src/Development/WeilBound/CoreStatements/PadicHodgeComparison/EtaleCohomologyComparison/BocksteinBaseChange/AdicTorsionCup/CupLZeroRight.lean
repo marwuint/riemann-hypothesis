@@ -12,9 +12,6 @@ namespace CrystallineSemistableComparison.AdicCoh
 
 variable (l : ℕ) [Fact l.Prime]
 
-theorem castH_apply {q : ℕ} {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') (x : Ht q E n i) :
-    castH h1 h2 x = x.cast h1 h2 := rfl
-
 section Cup
 variable {E : Spc} {n m i j n' i' : ℤ} (hI : ZIn) (h1 : n + m = n') (h2 : i + j = i')
 

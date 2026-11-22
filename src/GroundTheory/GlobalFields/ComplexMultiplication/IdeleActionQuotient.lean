@@ -121,10 +121,6 @@ def quotientToLocalQuotients {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) 
     rintro r ⟨a⟩
     exact map_smul (toLocalQuotients hI) r a
 
-theorem quotientToLocalQuotients_mk {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) (x : K) :
-    quotientToLocalQuotients hI (Submodule.Quotient.mk x) = toLocalQuotients hI x :=
-  rfl
-
 def quotientEquivLocalQuotients {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) :
     (K ⧸ (I : Submodule (𝓞 K) K)) ≃ₗ[𝓞 K] DirectSum (HeightOneSpectrum (𝓞 K)) (LocalQuotient I) :=
   LinearEquiv.ofBijective (quotientToLocalQuotients hI) ⟨by

@@ -19,8 +19,6 @@ section Series
 def eisTerm (τ : ℍ) (s : ℝ) (p : ℤ × ℤ) : ℝ :=
   if p = 0 then 0 else τ.im ^ s / ‖(p.1 : ℂ) * τ + p.2‖ ^ (2 * s)
 
-theorem realEisenstein_eq_tsum (τ : ℍ) (s : ℝ) : realEisenstein τ s = ∑' p, eisTerm τ s p := rfl
-
 end Series
 
 end projectiveLineClassData

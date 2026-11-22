@@ -27,9 +27,6 @@ def rangeSub : Submodule Γ(X, c.U.1) c.S where
   add_mem' := by rintro _ _ ⟨a, rfl⟩ ⟨b, rfl⟩; exact ⟨a + b, map_add _ a b⟩
   smul_mem' := by rintro r _ ⟨a, rfl⟩; exact ⟨r * a, by rw [map_mul, Algebra.smul_def]⟩
 
-theorem mem_rangeSub {x : c.S} : x ∈ rangeSub c ↔ x ∈ Set.range (algebraMap Γ(X, c.U.1) c.S) := Iff.rfl
-
 end API
 
 end GlobalTheory.CanExtM
-

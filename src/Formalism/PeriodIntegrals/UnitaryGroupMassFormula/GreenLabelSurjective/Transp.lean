@@ -12,9 +12,6 @@ variable {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq 
 theorem glEquiv_val (e : ι ≃ κ) (g : GL ι K) :
     ((glEquiv K e g : GL κ K) : Matrix κ κ K) = Matrix.reindex e e (g : Matrix ι ι K) := rfl
 
-theorem glEquiv_symm_val (e : ι ≃ κ) (g : GL κ K) :
-    (((glEquiv K e).symm g : GL ι K) : Matrix ι ι K) = Matrix.reindex e.symm e.symm (g : Matrix κ κ K) := rfl
-
 theorem transp_ρ (e : ι ≃ κ) (τ : FDRep ℂ (GL ι K)) (g : GL κ K) :
     (transp e τ).ρ g = τ.ρ ((glEquiv K e).symm g) := rfl
 

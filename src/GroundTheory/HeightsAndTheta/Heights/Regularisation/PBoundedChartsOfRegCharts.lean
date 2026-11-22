@@ -16,9 +16,6 @@ noncomputable section
 def scaleHom (D : ℕ) {c : ℝ} (hc : 0 < c) : (Fin D → ℂ) ≃ₜ (Fin D → ℂ) :=
   Homeomorph.smulOfNeZero (c : ℂ) (by exact_mod_cast hc.ne')
 
-theorem scaleHom_apply (D : ℕ) {c : ℝ} (hc : 0 < c) (z : Fin D → ℂ) :
-    scaleHom D hc z = (c : ℂ) • z := rfl
-
 theorem isCompatChart_scale {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X}
     {ψ : OpenPartialHomeomorph X (Fin D → ℂ)} (hψ : IsCompatChart A ψ) {c : ℝ} (hc : 0 < c) :
     IsCompatChart A (ψ.transHomeomorph (scaleHom D hc).symm) := by
@@ -89,13 +86,7 @@ def scaled (R : RegCharts A) (M : Fin R.n → ℝ) (hM0 : ∀ j, 0 < M j)
 variable (R : RegCharts A) (M : Fin R.n → ℝ) (hM0 : ∀ j, 0 < M j)
   (hM : ∀ j, closure (R.W' j) ⊆ ball 0 (M j))
 
-theorem scaled_θ : (R.scaled M hM0 hM).θ = R.θ := rfl
-
 end RegCharts
-
-namespace BoundedThPsh
-
-end BoundedThPsh
 
 end
 

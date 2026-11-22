@@ -14,35 +14,6 @@ def gridBudgetIdx {Sq : Type} (m N : ℕ) (B BN0 Bδ : ℝ) (S0 : Finset Sq) (ee
   (m : ℝ) ^ 2 * (2 * (2 + 8 * N) * B + 10 * N * BN0 + 2 * N + 6 * Bδ +
     4 * m * ∑ s ∈ S0, (ee s : ℝ) * Real.log (qq s))
 
-def SquareAtPlaceIndexed : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (w : Pl K)
-    (a a' d h p q e : ℕ), a + a' = d → a = a' + 2 * e → d = 2 * h →
-    2 * (p + q) + 1 < e → 2 * (p + q) + 1 < a' →
-    ∀ (x xd y E : ℤ → K) (g : ℤ → ℤ) (S Se : Finset ℕ) (N0 : ℤ → ℕ → ℝ) (δ σ : ℝ),
-    (∀ s : ℤ, 1 ≤ s → s ≤ h → ∀ l ∈ S, 0 ≤ N0 s l) →
-    (∀ s, x s ≠ 0 ∧ xd s ≠ 0 ∧ y s ≠ 0 ∧ E s ≠ 0) →
-
-    (∀ s : ℤ, 1 ≤ s → s ≤ h → - wt S (N0 s) w ≤ ((vw w (y s) + g s : ℤ) : ℝ) ∧
-      ((vw w (y s) + g s : ℤ) : ℝ) ≤
-        ((vw w (xd s) + g s : ℤ) : ℝ) + wt Se (fun l => 1 / (l : ℝ) ^ 2) w) →
-
-    (∀ s : ℤ, 1 - ((e : ℤ) + q - p) ≤ s → s ≤ 0 → vw w (E s) = 0) →
-
-    ∀ (c0 c00 A A0 A0' : K), c0 ≠ 0 → c00 ≠ 0 → A ≠ 0 → A0 ≠ 0 → A0' ≠ 0 →
-    (vw w c0 : ℝ) ≤ (vw w A : ℝ) + 3 * δ → -(vw w c00 : ℝ) ≤ (vw w A0' : ℝ) + 3 * δ →
-    A / A0 = ∏ s ∈ Icc (1 - ((e : ℤ) + q - p)) ((h : ℤ) - (p + q)), rhoAt x y E s →
-
-    ∀ (ub ua : ℕ → K), (∀ j, ub j ≠ 0 ∧ ua j ≠ 0) →
-    (∀ j, j < q → (vw w (ub j) : ℝ) ≤ σ) → (∀ i, i < p → (vw w (ua i) : ℝ) ≤ σ) →
-    ∀ r : K, r = ((∏ j ∈ range q, ub j) * ∏ i ∈ range p, ua i) * (c0 / c00) *
-        (∏ k ∈ Icc 1 p, rhoAt x y E ((e : ℤ) + q - k + 1)) *
-        (∏ k ∈ Icc 1 q, rhoAt x y E ((e : ℤ) + k))⁻¹ →
-    (vw w r : ℝ) ≤ |(vw w A0 : ℝ)| + |(vw w A0' : ℝ)| +
-      4 * (∑ s ∈ Icc (1 : ℤ) h,
-        (|((vw w (x s) + g s : ℤ) : ℝ)| + |((vw w (xd s) + g s : ℤ) : ℝ)|)) +
-      5 * (∑ s ∈ Icc (1 : ℤ) h, wt S (N0 s) w) + d * wt Se (fun l => 1 / (l : ℝ) ^ 2) w +
-      6 * δ + (p + q : ℕ) * σ
-
 def GridHeightBoundIndexed : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
       (Sq : Type) (m N : ℕ) (dl : Pl K → ℝ) (S Se : Finset ℕ) (N0 : Fin m × Fin m → ℤ → ℕ → ℝ)

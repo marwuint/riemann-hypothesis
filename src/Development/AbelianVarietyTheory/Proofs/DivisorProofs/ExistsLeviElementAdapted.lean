@@ -44,18 +44,6 @@ theorem fm_sub_left (J : Matrix (Fin n) (Fin n) R) (u u' v : Fin n → R) : fm c
 theorem fm_smul_left (J : Matrix (Fin n) (Fin n) R) (a : R) (u v : Fin n → R) : fm c J (a • u) v = a * fm c J u v := by
   simp [fm, smul_dotProduct]
 
-theorem fm_add_right (J : Matrix (Fin n) (Fin n) R) (u v v' : Fin n → R) : fm c J u (v + v') = fm c J u v + fm c J u v' := by
-  have : (fun i => c ((v + v') i)) = (fun i => c (v i)) + fun i => c (v' i) := by ext i; simp
-  simp only [fm, this, Matrix.mulVec_add, dotProduct_add]
-
-theorem fm_sub_right (J : Matrix (Fin n) (Fin n) R) (u v v' : Fin n → R) : fm c J u (v - v') = fm c J u v - fm c J u v' := by
-  have : (fun i => c ((v - v') i)) = (fun i => c (v i)) - fun i => c (v' i) := by ext i; simp
-  simp only [fm, this, Matrix.mulVec_sub, dotProduct_sub]
-
-theorem fm_smul_right (J : Matrix (Fin n) (Fin n) R) (a : R) (u v : Fin n → R) : fm c J u (a • v) = c a * fm c J u v := by
-  have : (fun i => c ((a • v) i)) = c a • fun i => c (v i) := by ext i; simp
-  simp only [fm, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
-
 theorem entry (J M : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     (Mᵀ * J * M.map c) i j = fm c J (M *ᵥ Pi.single i 1) (M *ᵥ Pi.single j 1) := by
   rw [Matrix.mulVec_single_one, Matrix.mulVec_single_one]
@@ -92,45 +80,11 @@ theorem lev_mul (s r s' r' : R) : lev c J X Y s r * lev c J X Y s' r' = lev c J 
 
 theorem lev_one : lev c J X Y 1 1 = 1 := by simp [lev]
 
-theorem lev_unitary (s r : R) (hsr : s * c r = 1) :
-    (lev c J X Y s r)ᵀ * J * (lev c J X Y s r).map c = J := by
-  have hyx := fm_yx hc hJ hxx hyy hxy
-  have hrs : r * c s = 1 := by
-    have := congrArg c hsr; rw [map_mul, hc, map_one] at this; rw [mul_comm]; exact this
-  have key : ∀ u v, fm c J (lev c J X Y s r *ᵥ u) (lev c J X Y s r *ᵥ v) = fm c J u v := by
-    intro u v
-    rw [lev_mulVec, lev_mulVec]
-    simp only [fm_add_left, fm_sub_left, fm_smul_left, fm_add_right, fm_sub_right, fm_smul_right, hxx, hyy, hxy, hyx]
-    rw [fm_skew c hc J hJ X v, fm_skew c hc J hJ Y v]
-    simp only [map_mul, map_sub, map_one, map_neg]
-    linear_combination (-(fm c J u Y * c (fm c J v X))) * hsr + (fm c J u X * c (fm c J v Y)) * hrs
-  ext i j
-  rw [entry, key]
-  have h1 := entry (c := c) J 1 i j
-  simp only [Matrix.transpose_one, Matrix.one_mul, Matrix.map_one _ (map_zero c) (map_one c), Matrix.mul_one,
-    Matrix.one_mulVec] at h1
-  exact h1.symm
-
 end Plane
 
 theorem lev_X {J : Matrix (Fin n) (Fin n) R} {X Y : Fin n → R} (hxx : fm c J X X = 0) (hxy : fm c J X Y = 1) (s r : R) :
     lev c J X Y s r *ᵥ X = s • X := by
   rw [lev_mulVec, hxx, hxy]; ext i; simp; ring
-
-theorem lev_Y (hc : ∀ x, c (c x) = x) {J : Matrix (Fin n) (Fin n) R} (hJ : ∀ i j, c (J j i) = -J i j) {X Y : Fin n → R}
-    (hxx : fm c J X X = 0) (hyy : fm c J Y Y = 0) (hxy : fm c J X Y = 1) (s r : R) :
-    lev c J X Y s r *ᵥ Y = r • Y := by
-  rw [lev_mulVec, hyy, fm_yx hc hJ hxx hyy hxy]; ext i; simp; ring
-
-theorem lev_mul_ι {J : Matrix (Fin n) (Fin n) R} {X Y : Fin n → R} {k : ℕ} (ι : Matrix (Fin n) (Fin k) R)
-    (hι : ∀ j, fm c J (fun i => ι i j) X = 0 ∧ fm c J (fun i => ι i j) Y = 0) (s r : R) :
-    lev c J X Y s r * ι = ι := by
-  ext i j
-  have h := congrFun (lev_mulVec c J X Y s r (fun i => ι i j)) i
-  rw [(hι j).1, (hι j).2] at h
-  simp only [mul_zero, zero_smul, add_zero, sub_zero] at h
-  rw [Matrix.mul_apply]
-  simpa [Matrix.mulVec, dotProduct] using h
 
 end GlobalTheory.LeviPlane
 
@@ -153,13 +107,4 @@ theorem cA_invol {σ : E →ₐ[F] E} (h : ∀ x, σ (σ x) = x) (x : AE F E) : 
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR, Algebra.TensorProduct.map_tmul]
 
-theorem cAr_inclR (σ : E →ₐ[F] E) (e : E) :
-    (cA σ).toRingHom (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := cA_inclR σ e
-
-theorem fm_inc (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
-    fm (cA σ).toRingHom (incM F J) (incV F x) (incV F y) = inclR (F := F) (AF F) (form σ J x y) := by
-  simp only [fm, form, incV, incM, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul,
-    AlgHom.coe_toRingHom, cAr_inclR, cA_inclR]
-
 end GlobalTheory.LeviPlane
-

@@ -17,10 +17,6 @@ def gaussBinom (q : ℕ) : ℕ → ℕ → ℕ
   | 0, _ + 1 => 0
   | n + 1, k + 1 => gaussBinom q n k + q ^ (k + 1) * gaussBinom q n (k + 1)
 
-def countAbove {F W : Type} [Field F] [AddCommGroup W] [Module F W] [Finite W]
-    (A : Submodule F W) (j : ℕ) : ℕ :=
-  Nat.card {U : Submodule F W // A ≤ U ∧ Module.finrank F U = j}
-
 def countBelow {F W : Type} [Field F] [AddCommGroup W] [Module F W] [Finite W]
     (A : Submodule F W) (j : ℕ) : ℕ :=
   Nat.card {U : Submodule F W // U ≤ A ∧ Module.finrank F U = j}
@@ -28,16 +24,6 @@ def countBelow {F W : Type} [Field F] [AddCommGroup W] [Module F W] [Finite W]
 def SubspaceCount : Prop :=
   ∀ {F W : Type} [Field F] [Fintype F] [AddCommGroup W] [Module F W] [Finite W] (k : ℕ),
     countBelow (⊤ : Submodule F W) k = gaussBinom (Fintype.card F) (Module.finrank F W) k
-
-def TypeIIUp : Prop :=
-  ∀ {F P Q : Type} [Field F] [Fintype F] [AddCommGroup P] [Module F P] [Finite P]
-    [AddCommGroup Q] [Module F Q] [Finite Q] (f : P →ₗ[F] Q) (N g j : ℕ),
-    Module.finrank F P = N → Module.finrank F Q = N + g →
-    (countAbove (LinearMap.range f) j : ℤ) =
-      ∑ l ∈ Finset.range (j + 1),
-        (Fintype.card F : ℤ) ^ (l * (N + l - j)) * gaussBinom (Fintype.card F) g l *
-          Nat.card {U : Submodule F P // U ≤ LinearMap.ker f ∧
-            Module.finrank F U + (j - l) = N}
 
 def TypeIIDown : Prop :=
   ∀ {F P Q : Type} [Field F] [Fintype F] [AddCommGroup P] [Module F P] [Finite P]

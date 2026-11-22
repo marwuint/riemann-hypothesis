@@ -94,11 +94,6 @@ def toDoubleContragredient (hρ : IsSmooth ρ) :
     change (x : Module.Dual ℂ V) (ρ g v) = (x : Module.Dual ℂ V) (ρ g⁻¹⁻¹ v)
     rw [inv_inv]
 
-theorem toDoubleContragredient_apply_apply (hρ : IsSmooth ρ) (v : V)
-    (x : smoothVectors (Representation.dual ρ)) :
-    ((toDoubleContragredient hρ v : smoothVectors (Representation.dual (contragredient ρ))) :
-      Module.Dual ℂ (smoothVectors (Representation.dual ρ))) x = (x : Module.Dual ℂ V) v := rfl
-
 end General
 
 section LocallyProfinite

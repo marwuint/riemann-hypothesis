@@ -415,9 +415,6 @@ section Shape
 
 variable {B : Base E} {r : ℕ} {C : Ctx B r} {SS : Fin B.k0 → (Fin (r + 1) → ℂ) → E →L[ℂ] E} {b : Bool}
 
-theorem fblk_sub {n : ℕ} (K K' : Fin 2 → Fin 2 → C.FM n) :
-    C.fblk K - C.fblk K' = C.fblk (fun i j => K i j - K' i j) := rfl
-
 end Shape
 
 end Ctx

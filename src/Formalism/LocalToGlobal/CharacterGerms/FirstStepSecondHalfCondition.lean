@@ -23,19 +23,6 @@ def cobd {dd : ℕ} (F : Fin dd → PS C 2 dd) (b : PS C 1 dd) : PS C 2 dd :=
 
 end Defs
 
-def FirstStepFirstHalfCondition : Prop :=
-  ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ)
-    (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (p : PairData Y d I),
-    (Y.raw p).RankHyp → ∀ Hc : ∀ g, (Y.raw p).CartHyp V g, (Y.raw p).AltC →
-    ∀ (g : Fin 2) (a : ZMod d), (Y.raw p).big g a →
-    ∀ (w : I g → C) (x : ℕ → I g ⊕ JJ I g → C), (RawChart.cart (Hc g)).Good a w x →
-    (∀ q, V.MM ((RawChart.cart (Hc g)).c0' x q)) →
-    ∀ (γ : Fin dd → PowerSeries C) (lam : JJ I g → PowerSeries C), (Y.raw p).TyWit V g x γ lam →
-      ∃ A : PS C 1 dd, IntS V A ∧
-        (∀ j : Fin dd, V.MM (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) A)) ∧
-        ∀ μ, V.MM (MvPowerSeries.coeff μ
-          (cobd Y.B.G.F A - frobTw V.l (Y.chartLinearTerm (fun i => PowerSeries.coeff 1 (γ i)))))
-
 def FirstStepSecondHalfCondition : Prop :=
   ∀ (C : Type) [Field C] [CharZero C] (V : VF C), IsAlgClosed C →
     ∀ (dd : ℕ) (G : FGLaw C dd), (∀ i, IntS V (G.F i)) →

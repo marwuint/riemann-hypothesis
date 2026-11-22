@@ -24,8 +24,6 @@ def intA : AddSubgroup (FiniteAdeleRing (𝓞 F) F) where
   add_mem' := fun ha hb v => add_mem (ha v) (hb v)
   neg_mem' := fun ha v => neg_mem (ha v)
 
-theorem evalV_eq (v : Pl F) (a : FiniteAdeleRing (𝓞 F) F) : evalV F v a = a v := rfl
-
 theorem intA_eq_range : ((intA F : AddSubgroup _) : Set (FiniteAdeleRing (𝓞 F) F)) =
     Set.range (RestrictedProduct.structureMap (fun v : Pl F => v.adicCompletion F)
       (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite) := by

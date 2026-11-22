@@ -67,14 +67,6 @@ def rightRegular : G →* (Lp ℂ 2 (quotientMeasure Γ μ) ≃ₗᵢ[ℂ] Lp �
 theorem rightRegular_apply (g : G) : rightRegular Γ μ g = rightTranslate Γ μ g :=
   rfl
 
-def rightRegularUnitary :
-    G →* unitary (Lp ℂ 2 (quotientMeasure Γ μ) →L[ℂ] Lp ℂ 2 (quotientMeasure Γ μ)) :=
-  (Unitary.linearIsometryEquiv (𝕜 := ℂ)).symm.toMonoidHom.comp (rightRegular Γ μ)
-
-theorem rightRegularUnitary_apply (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
-    (rightRegularUnitary Γ μ g : Lp ℂ 2 (quotientMeasure Γ μ) →L[ℂ] _) φ = rightRegular Γ μ g φ :=
-  rfl
-
 section Continuity
 
 variable [IsFiniteMeasureOnCompacts μ]

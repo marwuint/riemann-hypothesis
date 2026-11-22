@@ -145,14 +145,6 @@ theorem zariskiDense_iff_orbitIdeal (P : ArithVariety n) (S : Set (Cone n (Algeb
 
 namespace HermLine
 
-omit [DecidableEq ι] in
-theorem ofGeo_deg (B : Geo.HermLine (blockIdx n)) (hB : Geo.IsSmoothHerm B) :
-    (ofGeo B hB).deg = B.a := rfl
-
-omit [DecidableEq ι] in
-theorem ofGeo_metric (B : Geo.HermLine (blockIdx n)) (hB : Geo.IsSmoothHerm B) (z : Cone n ℂ) :
-    (ofGeo B hB).metric z = B.h (flatCone z) := rfl
-
 end HermLine
 
 section Curves
@@ -196,10 +188,6 @@ theorem recR_congr (I : Ideal (Geo.MRing κ) → (m : ℕ) → (Fin m → Geo.He
   rw [arInt_congr P s L hh]
 
 end Curves
-
-namespace IntegralSection
-
-end IntegralSection
 
 end
 

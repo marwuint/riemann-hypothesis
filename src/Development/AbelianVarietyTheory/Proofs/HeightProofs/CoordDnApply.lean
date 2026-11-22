@@ -14,9 +14,6 @@ variable {D : D7}
 section Gen
 variable {R : Type} [CommRing R] {a b : ℕ}
 
-theorem leftMul_apply (J Ji : Matrix (Fin a) (Fin a) R) (h1 : Ji * J = 1) (x : Matrix (Fin a) (Fin b) R) :
-    leftMul J Ji h1 x = Jiᵀ * x := rfl
-
 end Gen
 
 open GlobalTheory.IndefiniteRowSideFullHecke

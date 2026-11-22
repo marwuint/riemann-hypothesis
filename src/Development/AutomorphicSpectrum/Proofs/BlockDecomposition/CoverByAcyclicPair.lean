@@ -21,15 +21,6 @@ variable {n : ℕ}
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
-theorem annR_apply (i : Ix n) (x : Cr n V) (A : Finset (Ix n)) :
-    annR i x A = if i ∈ A then 0 else sgR i A • x (insert i A) := rfl
-
-theorem creR_apply (i : Ix n) (x : Cr n V) (A : Finset (Ix n)) :
-    creR i x A = if i ∈ A then sgR i A • x (A.erase i) else 0 := rfl
-
-theorem liftR_apply {V' : Type} [AddCommGroup V'] [Module ℂ V'] (T : V →ₗ[ℂ] V') (x : Cr n V) (A : Finset (Ix n)) :
-    liftR n T x A = T (x A) := rfl
-
 structure FiltR (R a d : Ix n → Module.End ℂ V) (Fil : ℕ → Submodule ℂ V) : Prop where
   a_comm : ∀ i j, Commute (a i) (a j)
   d_comm : ∀ i j, Commute (d i) (d j)

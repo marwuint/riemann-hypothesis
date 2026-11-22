@@ -33,9 +33,6 @@ def unitsModRep {c : ℕ} (t : unitsModFiltration K c) : Kˣ :=
 def unitsModCoset {c : ℕ} (t : unitsModFiltration K c) : Set Kˣ :=
   (fun x => (unitsModRep t)⁻¹ * x) ⁻¹' (unitFiltrationUnits K c : Set Kˣ)
 
-theorem mem_unitsModCoset {c : ℕ} {t : unitsModFiltration K c} {x : Kˣ} :
-    x ∈ unitsModCoset t ↔ (unitsModRep t)⁻¹ * x ∈ unitFiltrationUnits K c := Iff.rfl
-
 end Quotient
 
 variable [MeasurableSpace K] [BorelSpace K]

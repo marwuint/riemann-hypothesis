@@ -12,7 +12,4 @@ def gv {T : Type} {N N' : ℕ} (s : T → ℂ) (y' : T → Matrix (Fin N') (Fin 
   ∑ b : Fin N', C (s k.1 * (if h : (k.2.2 : ℕ) < N' then y' k.1 b ⟨k.2.2, h⟩ else 0)) *
     X ((k.1, b, k.2.1) : Idx T N N')
 
-theorem polD_eq {T : Type} {N N' : ℕ} (s : T → ℂ) (Q : MvPolynomial (FrV T N) ℂ)
-    (y' : T → Matrix (Fin N') (Fin N') ℂ) : polD s Q y' = aeval (gv s y') Q := rfl
-
 end PI.UnitaryGroupMassFormula.ScalDeg

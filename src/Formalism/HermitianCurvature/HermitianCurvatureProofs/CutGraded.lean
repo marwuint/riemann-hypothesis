@@ -14,14 +14,6 @@ variable {r : ℕ} {TT : ℝ}
 
 def smM (m : ℕ∞) : WithTop ℕ∞ := ((m : ℕ∞) : WithTop ℕ∞)
 
-def smSubM (r : ℕ) (TT : ℝ) (m : ℕ∞) : Subalgebra ℂ (MA.Qp r TT → ℂ) where
-  carrier := {f | ContDiffOn ℝ (smM m) (MA.ext f) (MA.Qset r TT)}
-  mul_mem' {f g} hf hg := (hf.mul hg).congr fun x hx => by simp [MA.ext, hx]
-  add_mem' {f g} hf hg := (hf.add hg).congr fun x hx => by simp [MA.ext, hx]
-  algebraMap_mem' z := (contDiffOn_const (c := z)).congr fun x hx => by simp [MA.ext, hx]
-
-theorem smSubM_top : smSubM r TT ⊤ = MA.smSub r TT := rfl
-
 end cls
 
 section ord
@@ -48,10 +40,6 @@ def FFlM {Wp Wq : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAdd
     Q.LeftEq k r z i Dm J ∧ Q.RightEq k r z' i Dm J ∧
     ∀ g ∈ Q.Glev k r i ∩ Dm, ∀ h ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ h' ∈ Formalism.QuantumDeterminants.UWset k r z',
       J (h * g * h') = (π h).comp ((J g).comp (π' h'))}
-
-theorem fflM_top {Wp Wq : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq] [NormedSpace ℂ Wq]
-    (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (π : Q.Mx k r → (Wp →L[ℂ] Wp)) (π' : Q.Mx k r → (Wq →L[ℂ] Wq))
-    (i : Fin (r + 1)) (Dm : Set (Q.Mx k r)) : FFlM ⊤ k r z z' π π' i Dm = Q.FFl k r z z' π π' i Dm := rfl
 
 end
 

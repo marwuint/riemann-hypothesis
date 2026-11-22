@@ -12,8 +12,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable (D : D7)
 
-def Gbd (b C β : ℝ) (Z : GramM D) : ℝ := (2 * β ^ 2 * (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2) ^ D.R.f * sizeZ D b C Z ^ 2
-
 theorem embS_star (τ : D.what₂.Tau) (x : D.host.E) : embS D τ (star x) = starRingEnd ℂ (embS D τ x) := by
   unfold embS
   first

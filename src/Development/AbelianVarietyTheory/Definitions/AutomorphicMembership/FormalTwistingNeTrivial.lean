@@ -167,8 +167,6 @@ def ofPull (L : LB Y) (hL : L.IsLB) : FLB i :=
         (Eq.trans ?_ (gm_pull_g L (q (e + 1)) (i e) x a b ((hU e a).le hx.1) ((hU e b).le hx.2)).symm)
       rw [Category.id_comp, hq] }
 
-theorem ofPull_lb (L : LB Y) (hL : L.IsLB) (e : ℕ) : (ofPull q hq L hL).lb e = L.pull (q e) := rfl
-
 end FLB
 
 variable (i) in

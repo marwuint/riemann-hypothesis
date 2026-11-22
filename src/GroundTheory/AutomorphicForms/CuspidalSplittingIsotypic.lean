@@ -24,10 +24,6 @@ def subrepIncl (Y : Subrepresentation ρ) :
   toLinearMap := Y.toSubmodule.subtype
   isIntertwining' _ := rfl
 
-omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
-theorem subrepIncl_apply (Y : Subrepresentation ρ) (y : Y.toSubmodule) :
-    subrepIncl Y y = (y : U) := rfl
-
 theorem isSmooth_toRepresentation (hρ : IsSmooth ρ) (Y : Subrepresentation ρ) :
     IsSmooth Y.toRepresentation := by
   intro y
@@ -88,12 +84,6 @@ variable (π) in
 def piProj (m : ℕ) (i : Fin m) : Representation.IntertwiningMap (piRep π m) π where
   toLinearMap := LinearMap.proj i
   isIntertwining' _ := rfl
-
-omit [ValuativeRel F] [IsNonarchimedeanLocalField F] [TopologicalSpace F] in
-theorem piIncl_apply (m : ℕ) (i : Fin m) (x : V) : piIncl π m i x = Pi.single i x := rfl
-
-omit [ValuativeRel F] [IsNonarchimedeanLocalField F] [TopologicalSpace F] in
-theorem piProj_apply (m : ℕ) (i : Fin m) (x : Fin m → V) : piProj π m i x = x i := rfl
 
 end Constructions
 

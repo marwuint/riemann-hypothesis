@@ -215,8 +215,6 @@ def Conclusion1 : Prop := (∀ d i, (X.gx d i).INT) ∧ ∀ N i, (X.cmx N i).INT
 
 def Conclusion2 : Prop := (∀ d (i : Fin 2), LiftErrorLocal.HTb (X.P6.loc d (D.host.g i))) ∧ ∀ N i, LiftErrorLocal.HTb (X.cm N i)
 
-def CoveringRadiusFunction (CRd : ℝ) : Prop := ∀ d (i : Fin 2), LiftErrorLocal.PhiB (X.P6.loc d (D.host.g i)) CRd
-
 def Conclusion5 (C : NChoice D) : Prop := ∀ i0 w, LiftErrorLocal.Over D i0 w → ∀ j ∈ LiftErrorLocal.lifts D, ∀ b : Bool,
   ∀ B1 B2 : Submodule (D.ntw.O (C.twI w)) (D.nexp.Fm (C.twI w) j b),
     B1.FG → B2 ≤ B1 → LiftErrorLocal.spK B2 = LiftErrorLocal.spK B1 → LiftErrorLocal.GStab B1 → LiftErrorLocal.GStab B2 →
@@ -229,11 +227,6 @@ def Conclusion6 (C : NChoice D) : Prop := ∀ i0 w, LiftErrorLocal.Over D i0 w �
     Module.finrank (FractionRing (D.ntw.O (C.twI w))) (IntegralHeckeForms.V0 D.nexp (C.twI w) j b) = D.what₂.D0 ∧
     (Module.finrank (FractionRing (D.ntw.O (C.twI w))) (IntegralHeckeForms.Fm0 D.nexp (C.twI w) j b) : ℝ) ≤ 2 * D.what₂.D0 ∧
     (D.nexp.Bsup (C.twI w) j b).map (IntegralHeckeForms.AO D.nexp (C.twI w) j b) ≤ D.nexp.Bsup (C.twI w) j b
-
-def ShareLatticeRanks (C : NChoice D) : Prop := ∀ i0 w, LiftErrorLocal.Over D i0 w → ∀ j ∈ LiftErrorLocal.lifts D, ∀ b : Bool,
-  LiftErrorLocal.rkK (IntegralHeckeForms.Mall D.nexp (C.twI w) j b) =
-                 Module.finrank (FractionRing (D.ntw.O (C.twI w))) (IntegralHeckeForms.Fm0 D.nexp (C.twI w) j b) ∧
-    LiftErrorLocal.rkK (LiftErrorLocal.Mj D (C.twI w) j b) = D.what₂.D0
 
 def LinkConditions : Prop :=
   (∀ i0 w, LiftErrorLocal.Over D i0 w → ∀ j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m),
@@ -266,16 +259,6 @@ section Joint
 
 variable (D : D7) (L : SizeData₂ D) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch)
 
-theorem joint1 : Conclusion1 D X = LiftErrorLocal.adm1 D X := rfl
-theorem joint2 : Conclusion2 D X = LiftErrorLocal.adm2 D X := rfl
-theorem joint3b (CRd : ℝ) : CoveringRadiusFunction D X CRd = LiftErrorLocal.adm3b D X CRd := rfl
-theorem joint5 : Conclusion5 D nch = LiftErrorLocal.adm5 D nch := rfl
-theorem joint6 : Conclusion6 D nch = LiftErrorLocal.adm6 D nch := rfl
-theorem joint6b : ShareLatticeRanks D nch = LiftErrorLocal.TorsionSectionsReflex D nch := rfl
-theorem linkConditions_eq : LinkConditions D X = LiftErrorLocal.adm10 D X := rfl
-theorem runConditions_eq (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) :
-    RunConditions D L X H C2 A2 CR CT CRd = LiftErrorLocal.adm11 D L X H C2 A2 CR CT CRd := rfl
-
 end Joint
 
 theorem vAdd_nonneg_int {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) :
@@ -293,11 +276,6 @@ section Fam
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
   (XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), LiftErrorLocal.Loc (Fm.D x i) (Fm.ex x hx i).nch)
   (ZF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc8 (XF x hx i))
-
-def FamilyConclusionLA : Prop :=
-  ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, Conclusion1 (Fm.D x i) (XF x hx i) ∧ Conclusion2 (Fm.D x i) (XF x hx i)
-
-theorem jointLAF : FamilyConclusionLA Fm XF = LiftErrorLocal.AdmLAF Fm XF := rfl
 
 end Fam
 

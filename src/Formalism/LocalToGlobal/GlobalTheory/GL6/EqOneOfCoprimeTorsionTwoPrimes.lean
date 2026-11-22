@@ -14,12 +14,6 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {gp : Fin 2 → ℕ}
 
-private theorem mem_stabFun_lemma {A : Type} [CommRing A] {R : Type} [CommRing R] [Algebra R A] {M : Type}
-    [AddCommGroup M] [Module R M] {m : ℕ} (Λ : Submodule R (Fin m → A)) (g' : Λ →ₗ[R] M) (g : GL (Fin m) A) :
-    g ∈ stabFun Λ g' ↔ ∃ hg : g ∈ stabGL Λ,
-      ∀ x : Λ, g' ⟨(g : Matrix (Fin m) (Fin m) A) *ᵥ (x : Fin m → A), (hg x).1 x.2⟩ = g' x :=
-  Iff.rfl
-
 end Loc
 
 variable {D : D7} {u : D.what₂.Word}

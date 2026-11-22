@@ -26,10 +26,6 @@ structure IsPos (H : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) (N : Submodule ℂ M) :
 
 end Abs
 
-theorem gd_eq_gdR {P M : Type} [AddCommGroup P] [Module ℝ P] [AddCommGroup M] [Module ℂ M] [Module ℝ M]
-    [IsScalarTower ℝ ℂ M] (L : P →ₗ[ℝ] Module.End ℂ M) {q : ℕ} (f : P [⋀^Fin q]→ₗ[ℝ] M) :
-    GlobalTheory.BorelCoh.gd L f = gdR L f := rfl
-
 section Unitary
 
 variable {T : Type} [Fintype T] [DecidableEq T] {n : ℕ}
@@ -53,25 +49,6 @@ def trOp {ε : T → Fin n → Bool} (E : T → Fin n → Fin n → Module.End �
   E x.1.1 x.1.2.2 x.1.2.1
 
 variable {M : Type} [AddCommGroup M] [Module ℂ M] {d : ℕ}
-
-def onEach (d : ℕ) (A : Module.End ℂ M) : Module.End ℂ (Fin d → M) := A.compLeft (Fin d)
-
-def onIdx (M : Type) [AddCommGroup M] [Module ℂ M] (x : Matrix (Fin d) (Fin d) ℂ) : Module.End ℂ (Fin d → M) :=
-  LinearMap.pi fun i => ∑ j, x i j • LinearMap.proj j
-
-def famA (d : ℕ) (E : T → Fin n → Fin n → Module.End ℂ M) : T → Fin n → Fin n → Module.End ℂ (Fin d → M) :=
-  fun τ a b => onEach d (E τ a b)
-
-def famB (M : Type) [AddCommGroup M] [Module ℂ M] (ξ : T → Fin n → Fin n → Matrix (Fin d) (Fin d) ℂ) :
-    T → Fin n → Fin n → Module.End ℂ (Fin d → M) := fun τ a b => onIdx M (ξ τ a b)
-
-def codOp {ε : T → Fin n → Bool} (E : T → Fin n → Fin n → Module.End ℂ M)
-    (ξ : T → Fin n → Fin n → Matrix (Fin d) (Fin d) ℂ) (x : NC ε) : Module.End ℂ (Fin d → M) :=
-  trOp (famB M ξ) x - trOp (famA d E) x
-
-theorem codOp_eq {ε : T → Fin n → Bool} (E : T → Fin n → Fin n → Module.End ℂ M)
-    (ξ : T → Fin n → Fin n → Matrix (Fin d) (Fin d) ℂ) :
-    codOp (ε := ε) E ξ = fun x => trOp (famB M ξ) x - trOp (famA d E) x := rfl
 
 theorem trOp_apply {ε : T → Fin n → Bool} (E : T → Fin n → Fin n → Module.End ℂ M) (x : NC ε) :
     trOp E x = E x.1.1 x.1.2.2 x.1.2.1 := rfl

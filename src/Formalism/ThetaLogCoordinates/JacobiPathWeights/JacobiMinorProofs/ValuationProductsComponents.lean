@@ -22,9 +22,6 @@ def trInv {R : Type*} [CommRing R] {n : ℕ} (m : (Matrix (Fin n) (Fin n) R)ˣ) 
 theorem trInv_val {R : Type*} [CommRing R] {n : ℕ} (m : (Matrix (Fin n) (Fin n) R)ˣ) :
     (↑(trInv m) : Matrix (Fin n) (Fin n) R) = (↑m⁻¹ : Matrix (Fin n) (Fin n) R).transpose := rfl
 
-theorem trInv_inv {R : Type*} [CommRing R] {n : ℕ} (m : (Matrix (Fin n) (Fin n) R)ˣ) :
-    (↑(trInv m)⁻¹ : Matrix (Fin n) (Fin n) R) = (↑m : Matrix (Fin n) (Fin n) R).transpose := rfl
-
 end A0
 
 namespace A0
@@ -74,10 +71,6 @@ theorem trunc (R : Type*) [CommRing R] (n i : ℕ) (isVec : ℕ → Bool) (μ : 
           rw [Finset.sum_comm]
           refine Finset.sum_congr rfl fun I' _ => Finset.sum_congr rfl fun m _ => ?_
           ring
-
-end A0
-
-namespace A0
 
 end A0
 
@@ -156,9 +149,6 @@ def gam (n : ℕ) (τ : Type) : (Matrix (Fin n) (Fin n) (MvPolynomial τ (GenFie
 
 theorem gam_val (n : ℕ) (τ : Type) :
     (↑(gam k n τ) : Matrix (Fin n) (Fin n) (MvPolynomial τ (GenField k n))) = (genMat k n)⁻¹.map C := rfl
-
-theorem gam_inv (n : ℕ) (τ : Type) :
-    (↑(gam k n τ)⁻¹ : Matrix (Fin n) (Fin n) (MvPolynomial τ (GenField k n))) = (genMat k n).map C := rfl
 
 variable {k isVec S}
 

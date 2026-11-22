@@ -147,8 +147,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X₀ :
 
 variable {S : Type} [CommRing S] (x : Sp S ⟶ X₀) {d : ℕ}
 
-theorem funOn_eq {B : Type} [CommRing B] (b : B) : funOn b = toΓ B b := rfl
-
 theorem algMap_eq {B B' : Type} [CommRing B] [Algebra S B] [CommRing B'] [Algebra S B'] (f : B →ₐ[S] B') :
     algMap x f = homAt x f := rfl
 

@@ -75,8 +75,6 @@ structure RigSymForm (K : Type) [Field K] [Algebra K ℂ] where
   rig : ℂˣ
   rig_mem : ∀ n, ∀ f ∈ S n, ∃ c : K, (rig : ℂ) ^ n * f 0 = algebraMap K ℂ c
 
-lemma intVec_one (v : Fin 1 → ℤ) : intVec v 0 = (v 0 : ℂ) := rfl
-
 end
 
 end GroundTheory.Heights₂.Heights.KeyFormula

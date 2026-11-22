@@ -59,8 +59,6 @@ def latEquiv (Λ : ℝ) : LogarithmicDifferentialCharacter.LatData hP Λ ≃
   left_inv _ := rfl
   right_inv _ := rfl
 
-theorem latEquiv_D₁ {Λ : ℝ} (X : LogarithmicDifferentialCharacter.LatData hP Λ) : (latEquiv hP Λ X).1.D₁ = X.A := rfl
-
 end Lattice
 
 variable {K : Type} [Field K] [NumberField K]

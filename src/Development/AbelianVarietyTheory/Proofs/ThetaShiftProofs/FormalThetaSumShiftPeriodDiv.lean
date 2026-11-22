@@ -106,15 +106,6 @@ theorem perFactor_eq_exp (w : ℂ) (la : A.La) (v : A.V) : A.perFactor w la v = 
 
 @[simp] theorem perFactor_zero (w : ℂ) (v : A.V) : A.perFactor w 0 v = 1 := by simp [perFactor, ah]
 
-theorem perFactor_of_y_eq_zero (w : ℂ) {la : A.La} (h : la.y = 0) (v : A.V) : A.perFactor w la v = A.ah la.l v.2 := by
-  simp [perFactor, h]
-
-theorem term_add_P0 {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) {la : A.La}
-    (hy : la.y = 0) (μ : A.X) (v : A.V) :
-    A.term j α th μ (v + A.P0 la) = A.ah la.l v.2 ^ j * A.term j α th μ v := by
-  have := A.term_add_period h 0 la μ v
-  simpa [Pw_zero, hy, A.perFactor_of_y_eq_zero 0 hy] using this
-
 theorem term_add (j : ℕ) (α : A.X) (th th' : (Fin A.gB → ℂ) → ℂ) (μ : A.X) (v : A.V) :
     A.term j α (th + th') μ v = A.term j α th μ v + A.term j α th' μ v := by
   simp only [term, Pi.add_apply]; ring

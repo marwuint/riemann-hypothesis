@@ -10,10 +10,6 @@ def fT (L : PeriodPair) (t z : ℂ) : ℂ := opU L t (sgStar L) z / sgStar L z
 def thetaZeroCharacter (L : PeriodPair) (ω₀ ω : ℂ) : ℂ :=
   semiChar L ω * Complex.exp ((Real.pi : ℂ) * Complex.I * (altE L ω ω₀ : ℂ))
 
-def FtQuasi : Prop :=
-  ∀ (L : PeriodPair) (t ω z : ℂ), ω ∈ L.lattice →
-    fT L t (z + ω) = Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE L ω t : ℂ)) * fT L t z
-
 def OpUTh0 : Prop :=
   ∀ (L : PeriodPair) (t x z : ℂ),
     opU L x (th0 L t) z

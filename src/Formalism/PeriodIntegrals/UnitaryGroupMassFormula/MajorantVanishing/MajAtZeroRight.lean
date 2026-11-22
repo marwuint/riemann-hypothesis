@@ -27,8 +27,6 @@ section Zl
 variable {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V] [NormedAddCommGroup E]
   [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
-theorem mem_zl (ρ : V →+ E) (N : Submodule R V) (u : E) : u ∈ zl ρ N ↔ ∃ z ∈ N, ρ z = u := Iff.rfl
-
 end Zl
 
 end PI.Dv.ProjBW

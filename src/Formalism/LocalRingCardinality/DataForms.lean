@@ -266,11 +266,6 @@ def SgInterlace : Prop := ∀ τ (i : Fin (R.N R.m - 1)),
   (M.sg τ).w i ≤ (M.lam R.m τ).w ⟨i.1, by omega⟩ ∧
   (M.lam R.m τ).w ⟨i.1 + 1, by omega⟩ ≤ (M.sg τ).w i
 
-def DnUp : Prop := ∀ i, i ≤ R.m → ∀ v c (x : M.lv i v c), M.fv i v c x = 1 →
-  ∃ e : M.lk i v (M.up i v c x) ≃ₗ[A.Fv v] M.lv i v c,
-    e (M.te i v (M.up i v c x)) = x ∧
-      M.dn i v (M.up i v c x) ((M.fv i v c).comp e.toLinearMap) = c
-
 def DnFv : Prop := ∀ i, i ≤ R.m → ∀ v c (g : Module.Dual (A.Fv v) (M.lk i v c)), g ≠ 0 →
   ∃ e : M.lv i v (M.dn i v c g) ≃ₗ[A.Fv v] M.lk i v c,
     M.fv i v (M.dn i v c g) = g.comp e.toLinearMap ∧

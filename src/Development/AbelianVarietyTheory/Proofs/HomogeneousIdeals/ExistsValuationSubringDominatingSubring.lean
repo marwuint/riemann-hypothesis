@@ -219,28 +219,6 @@ theorem dominatesStalk_iff_exists_isLocalHom : DominatesStalk W x ↔
     rw [← hψ, W.coe_mem_nonunits_iff]
     exact map_nonunit ψ a ha
 
-theorem dominatesStalk_iff_range_le : DominatesStalk W x ↔
-    LocalSubring.range (algebraMap (X.presheaf.stalk x) X.functionField) ≤ W.toLocalSubring := by
-  have hs : IsLocalHom (algebraMap (X.presheaf.stalk x) X.functionField).rangeRestrict :=
-    .of_surjective _ (RingHom.rangeRestrict_surjective _)
-  constructor
-  · rintro ⟨h₁, h₂⟩
-    refine ⟨by rintro _ ⟨a, rfl⟩; exact h₁ a, ⟨?_⟩⟩
-    rintro ⟨_, a, rfl⟩ ha
-    have hu : IsUnit a := by
-      by_contra hu
-      exact (W.coe_mem_nonunits_iff (a := ⟨_, h₁ a⟩)).mp (h₂ a hu) ha
-    exact hu.map (algebraMap (X.presheaf.stalk x) X.functionField).rangeRestrict
-  · intro h
-    exact dominatesStalk_iff_exists_isLocalHom.mpr
-      ⟨_, @RingHom.isLocalHom_comp _ _ _ _ _ _ _ _ h.2 hs, fun _ ↦ rfl⟩
-
-theorem exists_dominatesStalk (x : X) :
-    ∃ W : ValuationSubring X.functionField, DominatesStalk W x := by
-  obtain ⟨W, hW⟩ := (LocalSubring.range
-    (algebraMap (X.presheaf.stalk x) X.functionField)).exists_le_valuationSubring
-  exact ⟨W, dominatesStalk_iff_range_le.mpr hW⟩
-
 theorem dominatesStalk_iff_exists_hom : DominatesStalk W x ↔
     ∃ l : Spec (.of W) ⟶ X, specAlgebraMap W X.functionField ≫ l = genericFieldPoint X ∧
       l (closedPoint W) = x := by
@@ -356,12 +334,6 @@ theorem genericFieldPoint_over (p : X ⟶ Spec (.of O)) :
     Category.assoc, ← Scheme.toSpecΓ_naturality_assoc]
   simp
 
-theorem DominatesStalk.toFunctionField_mem (h : DominatesStalk W x) (p : X ⟶ Spec (.of O))
-    (a : O) : toFunctionField p a ∈ W := by
-  have := h.1 (X.presheaf.germ ⊤ x trivial (p.appTop ((Scheme.ΓSpecIso (.of O)).inv a)))
-  have _ : Nonempty (⊤ : X.Opens) := ⟨⟨x, trivial⟩⟩
-  exact (Scheme.algebraMap_germ_eq_germToFunctionField X (U := ⊤) (x := x) trivial _) ▸ this
-
 variable (p : X ⟶ Spec (.of O)) [UniversallyClosed p] [IsSeparated p]
   (W : ValuationSubring X.functionField) (hW : ∀ a : O, toFunctionField p a ∈ W)
 
@@ -384,10 +356,6 @@ def centre : X := centreHom p W hW (closedPoint W)
 
 theorem dominatesStalk_centre : DominatesStalk W (centre p W hW) :=
   dominatesStalk_iff_exists_hom.mpr ⟨_, specAlgebraMap_centreHom p W hW, rfl⟩
-
-theorem centre_eq_iff (x : X) : centre p W hW = x ↔ DominatesStalk W x := by
-  have : X.IsSeparated := ⟨by rw [← terminal.comp_from p]; infer_instance⟩
-  exact ⟨fun e ↦ e ▸ dominatesStalk_centre p W hW, (dominatesStalk_centre p W hW).unique⟩
 
 end Centre
 

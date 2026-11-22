@@ -54,9 +54,6 @@ def apW (D : D7) (j l g n : ℕ) (hn : Even n) : WeightFamilies.Wt D j where
 
 variable {D : D7}
 
-theorem apW_aP (j l g n : ℕ) (hn : Even n) (τ : D.what₂.Tau) (i : Fin (D.R.sigW j).1) :
-    (apW D j l g n hn).aP τ i = l + ((D.R.sigW j).1 - 1 - i.1) * g := rfl
-
 theorem apW_aM (j l g n : ℕ) (hn : Even n) (τ : D.what₂.Tau) (i : Fin (D.R.sigW j).2) :
     (apW D j l g n hn).aM τ i = 0 := rfl
 
@@ -174,12 +171,6 @@ theorem kl_cast : (X.kl : ℝ) = ((Dm D : ℝ) + 2) * X.nW + 2 * D.R.r + (X.Tq :
   unfold kl
   push_cast
   ring
-
-theorem ka_n : X.ka.n = D.R.nV := rfl
-
-theorem wL_n : X.wL.n = X.nW := rfl
-
-theorem wF_n : X.wF.n = X.nP := rfl
 
 theorem gk_cast : ((X.Tq * X.Q - 2 : ℕ) : ℝ) = (X.Tq : ℝ) * X.Q - 2 := by
   rw [Nat.cast_sub X.two_le_TqQ]

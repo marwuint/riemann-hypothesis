@@ -146,12 +146,6 @@ theorem gaussNorm_toB_pow {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) {b : T.B}
     gaussNorm (T.coeffB (F.toB b)) (σ ^ p ^ F.a) = gaussNorm (T.coeffB b) σ ^ p ^ F.a :=
   F.gaussNorm_coeffB_toB hσ0 hσ1 hb
 
-def econFrob (σ : Set.Ioo (0 : ℝ) 1) : T.Econ σ →+* T.Econ (F.powRadius σ) :=
-  ((F.toB : T.B →+* T.B).comp (T.Econ σ).subtype).codRestrict _ fun b => F.toB_mem_Econ_iff.2 b.2
-
-theorem coe_econFrob (σ : Set.Ioo (0 : ℝ) 1) (b : T.Econ σ) :
-    (F.econFrob σ b : T.B) = F.toB b := rfl
-
 def econFrobSymm (τ : Set.Ioo (0 : ℝ) 1) : T.Econ τ →+* T.Econ (F.rootRadius τ) :=
   ((F.toB.symm : T.B →+* T.B).comp (T.Econ τ).subtype).codRestrict _ fun b =>
     F.toB_mem_Econ_iff.1 (by rw [F.powRadius_rootRadius]; simpa using b.2)

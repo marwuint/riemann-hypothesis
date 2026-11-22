@@ -11,8 +11,6 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
-theorem hwfin_rhoC_eq (ε : Fin n → Bool) : Formalism.REAL.rhoC ε = rhoC ε := rfl
-
 theorem hwfin_weyl {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) :
     (Module.finrank ℂ T.V : ℝ) =
       (∏ a : Fin n, ∏ b ∈ Finset.univ.filter (fun b => a < b ∧ ε a = ε b),

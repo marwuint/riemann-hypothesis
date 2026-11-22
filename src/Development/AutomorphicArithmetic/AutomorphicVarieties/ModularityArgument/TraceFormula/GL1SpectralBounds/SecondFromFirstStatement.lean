@@ -10,9 +10,6 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DiscSpec Positivit
 
 namespace UpperTheory.V.Z.Tf.GOne
 
-def Temp {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (π : CG E n) : Prop :=
-  ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ B, π.HasSat w B ∧ ∀ z ∈ B, ‖(z : ℂ)‖ = 1
-
 def UnitOf : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), 1 ≤ n → ∀ π : CuspSub E n,
   GlobalTheory.ContraPair.DualIsConj π → (CG.mk π).IsUnitary
 

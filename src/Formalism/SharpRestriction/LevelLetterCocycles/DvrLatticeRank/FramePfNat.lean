@@ -71,9 +71,6 @@ def framepf_Lmap : LcQ W T₁ π' c →ₗ[O] LcQ W T₂ π' c :=
       fun _ hx => framepf_map_NcS f hfN (c - 1) hx)
     fun _ hx => framepf_map_PiNS f hfN π' 1 hx
 
-theorem framepf_Lmap_mkL (z : W.DD T₁) (h₁ : z ∈ NcS W T₁ (c - 1)) (h₂ : W.map f z ∈ NcS W T₂ (c - 1)) :
-    framepf_Lmap f hfN π' c (mkL W T₁ π' c z h₁) = mkL W T₂ π' c (W.map f z) h₂ := rfl
-
 theorem framepf_LAover {x₁ : LA W T₁ π' c} {x₂ : LA W T₂ π' c} (h : LAover W f π' c x₁ x₂) :
     x₂ = (framepf_Lmap f hfN π' c).lTensor W.EE x₁ := by
   obtain ⟨m, e, y, h₁, h₂, rfl, rfl⟩ := h

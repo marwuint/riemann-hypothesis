@@ -52,8 +52,6 @@ section Subquot
 
 variable {Φ : M →ₛₗ[φ] M} {N N' : Submodule R M}
 
-abbrev inSub (N N' : Submodule R M) : Submodule R N' := N.comap N'.subtype
-
 end Subquot
 
 end PhiModule

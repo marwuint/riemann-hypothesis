@@ -60,19 +60,6 @@ def ExPhiMinus : Prop :=
       LinearMap.range (twMap τ₁ τ₂ (MirUin k (n + 1)) (mirChar k ψ n) f hf) =
         LinearMap.ker (twMap τ₂ τ₃ (MirUin k (n + 1)) (mirChar k ψ n) g hg)
 
-def BetaInd : Prop :=
-  ∀ (ψ : AddChar k Circle) (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (Mir k (n + 1)) V)
-    (v : V), betaFun ψ τ v ∈ indSpace (Q k n) (qRep k ψ (phiMinus k ψ τ))
-
-def BetaSmooth : Prop :=
-  ∀ (ψ : AddChar k Circle) (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (Mir k (n + 1)) V),
-    IsSmooth τ → ∀ v : V, IsOpen {g : Mir k (n + 1) | ∀ x, betaFun ψ τ v (x * g) = betaFun ψ τ v x}
-
-def BetaCompact : Prop :=
-  ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
-    (τ : Representation ℂ (Mir k (n + 1)) V), IsSmooth τ → ∀ v ∈ twKer τ (MirUin k (n + 1)) 1,
-      ∃ C : Set (Mir k (n + 1)), IsCompact C ∧ ∀ g, betaFun ψ τ v g ≠ 0 → ∃ h ∈ Q k n, ∃ c ∈ C, g = h * c
-
 end GlobalTheory.BZMir.Fun
 
 end

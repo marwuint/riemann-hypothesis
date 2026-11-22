@@ -38,14 +38,6 @@ def U (hP : ∀ a b c, P a b → P b c → False) (X : Matrix (Fin N) (Fin N) k)
   ⟨1 + maskM P X, 1 - maskM P X, by simp [add_mul, mul_sub, maskM_mul P hP],
     by simp [sub_mul, mul_add, maskM_mul P hP]⟩
 
-omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
-theorem U_val (hP : ∀ a b c, P a b → P b c → False) (X : Matrix (Fin N) (Fin N) k) :
-    ((U P hP X : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = 1 + maskM P X := rfl
-
-omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
-theorem U_inv_val (hP : ∀ a b c, P a b → P b c → False) (X : Matrix (Fin N) (Fin N) k) :
-    (((U P hP X)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = 1 - maskM P X := rfl
-
 end Mask
 
 section Parab

@@ -27,15 +27,7 @@ namespace Weight
 
 variable {L : HolLineBundle A}
 
-theorem lerp_φ (W₀ W₁ : Weight L) (t : ℝ) :
-    (W₀.lerp W₁ t).φ = IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.interp W₀.φ W₁.φ t :=
-  rfl
-
 end Weight
-
-namespace SmoothVolume
-
-end SmoothVolume
 
 variable {L : HolLineBundle A}
 

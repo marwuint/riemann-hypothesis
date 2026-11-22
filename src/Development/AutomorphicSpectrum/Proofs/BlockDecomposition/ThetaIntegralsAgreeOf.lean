@@ -19,20 +19,6 @@ namespace GlobalTheory.CompanionTheory.AgreeO
 
 variable {D : D7}
 
-def OneSystem : Prop :=
-  ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
-    ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
-    ∀ ν 𝓕 ν₁ 𝓕₁, IsHaarFD W ν 𝓕 → IsHaarFD W₁ ν₁ 𝓕₁ →
-    ∀ (ωA : WRep W X) (ωB : WRep W₁ X), IsWeil ψ true W X β (β / α) ωA → IsWeil ψ false W₁ X α (α / β) ωB →
-    ∃ (Pi : ModuleCat.{0} ℂ) (rf : GA D X → Module.End ℂ Pi)
-      (rl : D.what₂.Tau → Matrix (Fin X.rank) (Fin X.rank) ℂ → Module.End ℂ Pi)
-      (p : (WO W X → ℂ) →ₗ[ℂ] Pi) (p' : (WO W₁ X → ℂ) →ₗ[ℂ] Pi) (S : Submodule ℂ (WO W₁ X → ℂ)),
-      IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' ∧ S ≤ algF ψ θ false A₁ B ∧
-      (∀ Φ' ∈ algF ψ θ false A₁ B, ∃ Φ₀ ∈ S, Φ' - Φ₀ ∈ finRel ωB (algF ψ θ false A₁ B)) ∧
-      (∀ Φ₀ ∈ S, ModInt θ ωB ν₁ 𝓕₁ Φ₀) ∧
-      ∃ c : ℂ, c ≠ 0 ∧ ∀ Φ ∈ algF ψ θ true A B, ∀ Φ₀ ∈ S, p Φ = p' Φ₀ →
-        thetaInt ωA ν 𝓕 Φ = c • thetaInt ωB ν₁ 𝓕₁ Φ₀
-
 def skewJ (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) : Matrix (Fin d) (Fin d) D.host.E :=
   D.host.xi0 • reindex e e X.gramᵀ
 

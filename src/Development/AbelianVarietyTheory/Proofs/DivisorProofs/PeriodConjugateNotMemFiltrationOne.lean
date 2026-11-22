@@ -54,8 +54,6 @@ variable (T : LocTied l P AI) (K : FinExt l)
 
 def jB : Per.Acris l →+* P.R.B := T.eB.symm.toRingHom.comp (algebraMap (Per.Acris l) (Per.Bcris l))
 
-theorem uj_eq (j : ℕ) (a : Per.Acris l) : uj T j a = P.ιB (jB T ((phiA l ^ j) a)) := rfl
-
 end GlobalTheory.ConjDegree
 
 end

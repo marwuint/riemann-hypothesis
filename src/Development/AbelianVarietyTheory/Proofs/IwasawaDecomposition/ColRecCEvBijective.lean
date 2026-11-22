@@ -75,8 +75,6 @@ def colRecC : ColRec3 B.fields (famC I hX U Xg tr) (lev1 I) (chr1 I) where
   ev := evC (X := B.fields) (Pr := B.primes X) B.wts I.Ch I.sel hX (InfinitePlace.mk B.embLL) (tuOf I U) Xg ∅ (xiValOf I) tr
     (rPsymF (R := B.R) I.Ch)
 
-theorem fieldsLL_eq : fieldsLL (I.rec7 l Z) B.fields B.tauLL = B.fields := rfl
-
 end GlobalTheory.Mem.R3.SelC
 
 end

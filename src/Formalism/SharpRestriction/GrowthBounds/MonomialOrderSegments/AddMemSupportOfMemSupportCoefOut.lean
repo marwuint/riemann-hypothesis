@@ -365,22 +365,6 @@ theorem coefOut_add (μ : L × Fin r →₀ ℕ) (F G : MvPolynomial (L × Fin r
   · rw [coeff_add, map_add]
   · rw [add_zero]
 
-theorem coefOut_smul (μ : L × Fin r →₀ ℕ) (a : K) (F : MvPolynomial (L × Fin r) K) :
-    coefOut out μ (a • F) = a • coefOut out μ F := by
-  rw [coefOut_eq_sum out μ (a • F) F.support support_smul, coefOut, Finset.smul_sum]
-  refine Finset.sum_congr rfl fun α _ => ?_
-  split_ifs
-  · rw [coeff_smul, smul_monomial]
-  · rw [smul_zero]
-
-def coefOutL (μ : L × Fin r →₀ ℕ) : MvPolynomial (L × Fin r) K →ₗ[K] MvPolynomial (L × Fin r) K where
-  toFun := coefOut out μ
-  map_add' := coefOut_add out μ
-  map_smul' := coefOut_smul out μ
-
-theorem coefOutL_apply (μ : L × Fin r →₀ ℕ) (F : MvPolynomial (L × Fin r) K) :
-    coefOutL out μ F = coefOut out μ F := rfl
-
 theorem coefOut_monomial (μ α : L × Fin r →₀ ℕ) (c : K) :
     coefOut out μ (monomial α c) = if eOut out α = μ then monomial (eIn out α) c else 0 := by
   rw [coefOut_eq_sum out μ (monomial α c) {α} support_monomial_subset, Finset.sum_singleton,

@@ -8,8 +8,6 @@ namespace UpperTheory.Comparison₂
 
 open Formalism.HC Formalism.MainNotions Formalism.BasicNotions
 
-theorem arithOf_eq {φ : Frame} (H : HostRaw φ) : arithOf H = arith H := rfl
-
 theorem tiedCore_of_chainTied {eps : ℝ} (Fm : FamP eps) (eD eL K cHH eK CL x : ℝ) (h : ChainTied Fm eD eL K cHH eK CL x) :
     FamCoreConstantBounds Fm.toFamCore eD eL K cHH eK x := by
   obtain ⟨i0, m, f, pt, av, bv, Top, iT, Dd, C, Xpp, ell, N, TT, T2, a, w, eT, eP, η, X', θ,

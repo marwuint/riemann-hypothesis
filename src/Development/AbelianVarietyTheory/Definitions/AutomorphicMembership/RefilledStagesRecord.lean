@@ -36,8 +36,6 @@ def reS (D : D7) (Z : SNew D) : D7 :=
 
 def SNew.self (D : D7) : SNew D := ⟨D.s, D.s_HH, D.s_Cu, D.s_PlF, D.s_Cu_isom, D.sEE⟩
 
-theorem reS_self (D : D7) : reS D (SNew.self D) = D := rfl
-
 def reStage (X : Stages) (Z : SNew X.toD7) : SStage X.B X.C X.W where
   dsig := X.S.dsig
   dsig_pos := X.S.dsig_pos
@@ -49,20 +47,8 @@ def reStage (X : Stages) (Z : SNew X.toD7) : SStage X.B X.C X.W where
   s_Cu_isom := Z.s_Cu_isom
   sEE := Z.sEE
 
-def reStages (X : Stages) (Z : SNew X.toD7) : Stages := { X with S := reStage X Z }
-
-theorem refilledStages_record (X : Stages) (Z : SNew X.toD7) : (reStages X Z).toD7 = reS X.toD7 Z := rfl
-
 section
 variable (D : D7) (Z : SNew D)
-
-theorem reS_atP : (reS D Z).s.atP = D.s.atP := rfl
-theorem reS_Del : (reS D Z).s.Del = D.s.Del := rfl
-theorem reS_letter : (reS D Z).s.letter = D.s.letter := rfl
-theorem reS_cdScale : (reS D Z).s.cdScale = D.s.cdScale := rfl
-theorem reS_dsig : (reS D Z).dsig = D.dsig := rfl
-theorem reS_rows : (reS D Z).what₂ = D.what₂ := rfl
-theorem reS_HH : (reS D Z).s.HH = Z.s.HH := rfl
 
 end
 

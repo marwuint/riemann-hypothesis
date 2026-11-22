@@ -60,8 +60,6 @@ def phiL : EL ε →ₗ[ℝ] Formalism.BasicNotions.lieU P Q where
     apply Subtype.ext
     simp [Matrix.submatrix_smul]
 
-theorem phiL_coe (t : EL ε) : ((phiL ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) = (linT ε t).submatrix e e := rfl
-
 include h1 h2 in
 theorem inG_back (Y : Formalism.BasicNotions.lieU P Q) :
     Formalism.REAL.inG ε ((Y : Matrix ι ι ℂ).submatrix e.symm e.symm) := by
@@ -252,8 +250,6 @@ theorem gL_surj : Function.Surjective (gL ε e h1 h2) := by
 
 def gI : WithLp 2 (EL ε × EL ε) ≃ₗᵢ[ℝ] EuclideanSpace ℝ ((ι × ι) × Fin 2) :=
   LinearIsometryEquiv.ofSurjective { toLinearMap := gL ε e h1 h2, norm_map' := norm_gL ε e h1 h2 } (gL_surj ε e h1 h2)
-
-theorem gI_apply (w : WithLp 2 (EL ε × EL ε)) : gI ε e h1 h2 w = gL ε e h1 h2 w := rfl
 
 end Iso2
 

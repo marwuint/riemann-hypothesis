@@ -150,8 +150,6 @@ def rEta (T : (TS γ' q' l s' {⊤}).FullSubcategory) :
     (DPMorphism.id (redδ T.obj T.property.1 n)).isDPMorphism fun e => (spec_id _ e _).trans
       ((Category.assoc _ _ _).symm.trans (hpt _ ((redG q' s' d' {⊤}).obj T).y).symm)
 
-theorem rEta_φ (T : (TS γ' q' l s' {⊤}).FullSubcategory) : (rEta nm hm d d' hd mm hpt T).φ = RingHom.id (T.obj.B ⧸ lnT T.obj l n) := rfl
-
 def rNat : (nm.smor _ _ hm).G ⋙ redG q s d {⊤} ⟶ redG q' s' d' {⊤} ⋙ mm.functor where
   app := rEta nm hm d d' hd mm hpt
   naturality T T' f := hom_ext (show (RingHom.id (T'.obj.B ⧸ lnT T'.obj l n)).comp (lnMap f.hom.φ l le_rfl) =

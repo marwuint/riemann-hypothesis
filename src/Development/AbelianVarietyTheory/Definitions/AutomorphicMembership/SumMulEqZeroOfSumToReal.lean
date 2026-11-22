@@ -433,28 +433,6 @@ theorem IsPolFanOn.exists_nat (h : IsPolFanOn bar φ X) {β : LinearMap.BilinFor
   lift n to ℕ using by exact_mod_cast this
   exact ⟨n, by simpa using hn⟩
 
-theorem isPolFanOn_of_subsingleton [Subsingleton X] : IsPolFanOn bar φ X := by
-  have h0 : ∀ β : LinearMap.BilinForm ℤ X, β = 0 := fun β => Subsingleton.elim _ _
-  have hc : ∀ (m : ℕ) [IsEmpty (Fin m)] (γ : Fin m → LinearMap.BilinForm ℤ X), IsCone bar φ γ := fun m _ γ =>
-    ⟨isEmptyElim, isEmptyElim, ⟨0, Module.Basis.empty _, isEmptyElim⟩,
-      fun c _ => by simp [φ.eval_of_subsingleton],
-      ⟨1, 0, one_pos, isEmptyElim, fun β _ _ => by simp [InvFun.evalZ, φ.eval_of_subsingleton],
-        fun β _ _ _ => ⟨1, 0, one_pos, Subsingleton.elim _ _⟩⟩⟩
-  refine ⟨fun B _ t _ => by simp [evalR, φ.eval_of_subsingleton], fun B _ B' _ => by simp [evalR, φ.eval_of_subsingleton],
-    fun β _ _ => ⟨0, by simp [InvFun.evalZ, φ.eval_of_subsingleton]⟩, fun β _ _ h => (h (h0 β)).elim,
-    fun m m' γ s hγ => ?_, fun B _ => ⟨0, ![], ![], hc 0 _, isEmptyElim, Subsingleton.elim _ _⟩,
-    ⟨{0}, Set.finite_singleton _, fun m γ _ => ⟨LinearEquiv.refl _ _, fun i => h0 _⟩⟩⟩
-  have : IsEmpty (Fin m') := ⟨fun i => hγ.linearIndependent.ne_zero (s i) (h0 _)⟩
-  exact hc _ _
-
-theorem isPolFan_zero [IsDomain O] : IsPolFan bar 0 φ := fun X _ _ _ _ hX =>
-  haveI : Subsingleton X := Module.finrank_zero_iff.1 (Nat.le_zero.1 hX)
-  isPolFanOn_of_subsingleton
-
-theorem noSelfInt_zero [IsDomain O] : NoSelfInt bar 0 φ := fun X _ _ _ _ hX _ _ hγ _ i _ _ =>
-  haveI : Subsingleton X := Module.finrank_zero_iff.1 (Nat.le_zero.1 hX)
-  (hγ.linearIndependent.ne_zero i (Subsingleton.elim _ _)).elim
-
 end Fan
 
 section Fine

@@ -472,9 +472,6 @@ def piUe (w : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ Hinf X w) : X.Vpi w �
     norm_map' := (LinearMap.isometryOfInner (X.piU w s).toLinearMap
       (fun x y => (X.piU_rep w).2.2.1 s hsS x y)).norm_map }
 
-theorem piUe_apply (w : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ Hinf X w) (v : X.Vpi w) :
-    piUe w s hs v = X.piU w s v := rfl
-
 end HS
 
 section HSc

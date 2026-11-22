@@ -39,9 +39,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : Le
   Nab _ := (colVal W u j (Pr.vT u) Pr.vGs).Nab
   Del _ := (colVal W u j (Pr.vT u) Pr.vGs).Del
 
-theorem stepF_mem (u : Pr.Word) (j : ℕ) (b : Λ.β j) :
-    (stepF W Λ u j).mem b = formGSD (colVal W u j (Pr.vT u) Pr.vGs) (Λ.lev j b) := rfl
-
 theorem stepFOk (hX : X.Ok) (u : Pr.Word) (j : ℕ) : (stepF W Λ u j).Ok :=
   fun _ => formGSD_ok _ _ hX (colVal_eqv W hX u j _ _)
 

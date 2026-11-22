@@ -22,15 +22,6 @@ def ip1 : (Unit → ℂ) →ₗ⋆[ℂ] (Unit → ℂ) →ₗ[ℂ] ℂ :=
     (by intros; simp [add_mul]) (by intros; simp [mul_assoc]) (by intros; simp [mul_add])
     (by intros; simp; ring)
 
-theorem trivialInner_apply (f g : Unit → ℂ) : ip1 f g = starRingEnd ℂ (f ()) * g () := rfl
-
-def ipc : ℂ →ₗ⋆[ℂ] ℂ →ₗ[ℂ] ℂ :=
-  LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun z w => starRingEnd ℂ z * w)
-    (by intros; simp [add_mul]) (by intros; simp [mul_assoc]) (by intros; simp [mul_add])
-    (by intros; simp; ring)
-
-theorem ipc_apply (z w : ℂ) : ipc z w = starRingEnd ℂ z * w := rfl
-
 section Chi
 
 variable (T : ℕ) [hT : Fact T.Prime]
@@ -113,23 +104,5 @@ abbrev baseColumnsAt (Dst : ℝ) (hD : 0 < Dst) : ColumnsAtT R0 (chain1 Tau) :=
     Dstar_pos := hD
     GamP := 2
     one_lt_gammaP := one_lt_two }
-
-theorem trivialColumns_norm_zero (hT2 : T ≠ 2) (Dst : ℝ) (hD : 0 < Dst) (v : (baseColumnsAt Tau T Dst hD).vT) :
-    (baseColumnsAt Tau T Dst hD).Nm v = 0 := by
-  refine LinearMap.ext fun φ => ?_
-  show (∑ c : (ZMod T)ˣ, rho1 T c) φ = 0
-  rw [LinearMap.sum_apply]
-  simp only [first_order_lift_apply]
-  rw [← Finset.sum_smul, chiU_sum T hT2, zero_smul]
-
-theorem trivialColumns_ramified_top (hT2 : T ≠ 2) (Dst : ℝ) (hD : 0 < Dst) : (baseColumnsAt Tau T Dst hD).Mram = ⊤ := by
-  unfold ColumnsAtT.Mram
-  simp only [trivialColumns_norm_zero Tau T hT2, LinearMap.ker_zero, iInf_top, inf_top_eq]
-
-def eMu1 (hT2 : T ≠ 2) (Dst : ℝ) (hD : 0 < Dst) : ℂ ≃ₗ[ℂ] (baseColumnsAt Tau T Dst hD).Mram :=
-  cst.trans (LinearEquiv.ofTop _ (trivialColumns_ramified_top Tau T hT2 Dst hD)).symm
-
-theorem eMu1_coe (hT2 : T ≠ 2) (Dst : ℝ) (hD : 0 < Dst) (z : ℂ) :
-    ((eMu1 Tau T hT2 Dst hD z : (baseColumnsAt Tau T Dst hD).Mram) : FU) = fun _ _ => z := rfl
 
 end Formalism.BasicNotions.Examples₂.ND

@@ -13,8 +13,6 @@ namespace Formalism.MainNotions.N
 
 open Formalism.BasicNotions Formalism.MainNotions Filter Topology
 
-theorem etaSum_eq {D : D7} (L : SizeData₂ D) (j : ℕ) : Formalism.MainNotions.etaSum L j = Formalism.MainNotions.TwistedPlaces.etaSum L j := rfl
-
 theorem export_link_of_family {eps : ℝ} (Fm : FamP eps) (h : Formalism.MainNotions.TwistedPlaces.OrbitValuationBound Fm) : LinkN Fm := by
   obtain ⟨C, x0, hx⟩ := h
   refine ⟨C, x0, fun x hx0 i hsha j hj hS => ?_⟩
@@ -34,11 +32,6 @@ theorem eps_lt {eps : ℝ} (Fm : FamP eps) : eps < 1 / 52 := by
   obtain ⟨i⟩ := Fm.Ix_zero
   have h := (Fm.L 0 i).sc.eps_lt
   rwa [Fm.L_eps] at h
-
-def LocsCoverF {eps : ℝ} (Fm : FamP eps) : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Formalism.MainNotions.N.LocsCoverTw (Fm.D x i)
-
-theorem linkEta_iff {eps : ℝ} (Fm : FamP eps) : LinkEta Fm ↔ LocsCoverF Fm := Iff.rfl
 
 def LamPos (D : D7) (μ : D.what₂.Tup) (j : ℕ) : Prop :=
   ∀ σ : D.what₂.FT,

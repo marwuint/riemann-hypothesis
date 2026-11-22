@@ -6,14 +6,6 @@ noncomputable section
 
 namespace Formalism.ExtensionFiltration
 
-def SizesSZ : Prop :=
-  ∀ (kc m : ℕ) (c : Fin kc → ℝ) (y : Fin m → ℝ) (w S N t η : ℝ),
-    (∀ i, |c i| ≤ S + N + t + 1) → (∀ i, |y i + w| ≤ η + 1) →
-    0 ≤ S → 0 ≤ η → N + t + 1 ≤ S + η → η + 1 ≤ w →
-    (m : ℝ) * (w - η - 1) ≤ (∑ i, |c i|) + ∑ i, |y i| ∧
-    (∑ i, |c i|) + ∑ i, |y i| ≤ 2 * ((m : ℝ) * w + ((kc : ℝ) + 1) * S + ((kc : ℝ) + 1) * η) ∧
-    (2 * (η + 1) ≤ w → (m : ℝ) * w / 2 ≤ (∑ i, |c i|) + ∑ i, |y i|)
-
 def MeanHeights : Prop :=
   ∀ (ι : Type) [Fintype ι] [Nonempty ι] (h sl : ι → ℝ) (cs cc ρ X : ℝ),
     0 ≤ ρ → ρ ≤ 1 → 0 ≤ X →
@@ -21,15 +13,6 @@ def MeanHeights : Prop :=
     (∀ c, (1 - ρ) * max 0 (sl c + cs) ≤ h c + cs + cc) →
     -X ≤ (∑ c, sl c) / (Fintype.card ι : ℝ) →
     max 0 ((1 - ρ) * cs - X - cc) ≤ (∑ c, (h c + cs)) / (Fintype.card ι : ℝ)
-
-def ElemLogA : Prop :=
-  ∀ A t : ℝ, 0 < A → 0 ≤ t →
-    A * Real.log (2 + t) ≤ 2 * t + A * Real.log (max A 1) + 4
-
-def ElemLogB : Prop :=
-  ∀ T D A cs h : ℝ, 0 ≤ D → 0 ≤ cs → -cs ≤ h → 0 < A →
-    (T - 3 * D - 5) * (h + cs) - (T + 3 * D + 5) * cs - (A * Real.log (max A 1) + 4) ≤
-      T * h - 3 * (D + 1) * |h| - A * Real.log (2 + |h|)
 
 def SumComponents : Prop :=
   ∀ (ι : Type) [Fintype ι] [Nonempty ι] (T D A cs X cc z ρ R1 R2 Bn δ' : ℝ)

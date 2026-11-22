@@ -53,12 +53,6 @@ section One
 
 variable {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
-theorem abLocusSmooth_iff (Y : Model Xo c β) : UniformizationBase.AbLocusSmooth Y ↔ CoveringAbelianLocusSmooth.AbLocusSmooth Y := Iff.rfl
-
 end One
-
-theorem goodPrime_iff (l : Level H) (p : ℕ) : UniformizationBase.GoodPrime l p ↔ CoveringAbelianLocusSmooth.GoodPrime l p := Iff.rfl
-
-theorem smoothnessLemma_iff : UniformizationBase.SmoothnessLemma ↔ CoveringAbelianLocusSmooth.SmoothnessLemma := Iff.rfl
 
 end GlobalTheory.CoveringCompare

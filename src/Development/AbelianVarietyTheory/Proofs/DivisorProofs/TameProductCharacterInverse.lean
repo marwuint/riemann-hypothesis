@@ -16,9 +16,6 @@ variable {D : D7}
 abbrev cFin (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E →+* Af D.host.F ⊗[D.host.F] D.host.E :=
   sigR (Af D.host.F) D.sp.cm.sig
 
-theorem cFin_tmul (a : Af D.host.F) (e : D.host.E) :
-    cFin D (a ⊗ₜ e) = a ⊗ₜ IsCMField.complexConj D.host.E e := rfl
-
 end GlobalTheory.GeoActCompare.TameAB
 
 end

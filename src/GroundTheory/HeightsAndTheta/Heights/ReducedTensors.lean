@@ -60,8 +60,6 @@ instance (L : X.X.Modules) : Module (ringOn X.X ⊤) (X.H0 L) :=
 
 instance (L : X.X.Modules) : Module A (X.H0 L) := Module.compHom _ X.baseHom
 
-theorem smul_globalSections_def (L : X.X.Modules) (a : A) (s : X.H0 L) : a • s = X.baseHom a • s := rfl
-
 end ProjScheme
 
 namespace ProjScheme
@@ -136,9 +134,6 @@ def evalGlobalSection {ρ : A →+* ℂ} (x : X.complexPoints ρ) : X.H0 L →+ 
     unfold germM
     refine (congrArg (fibreMk L _ 1) (map_add _ _ _)).trans ?_
     exact TensorProduct.tmul_add _ _ _
-
-theorem evalGlobalSection_apply {ρ : A →+* ℂ} (x : X.complexPoints ρ) (s : X.H0 L) :
-    X.evalGlobalSection L x s = X.sectionValue x (show X.point x ∈ (⊤ : X.X.Opens) from trivial) s := rfl
 
 theorem evalGlobalSection_smul {ρ : A →+* ℂ} (x : X.complexPoints ρ) (a : A) (s : X.H0 L) :
     X.evalGlobalSection L x (a • s) = ρ a • X.evalGlobalSection L x s := by
@@ -295,19 +290,7 @@ def baseGlobalSectionsEquiv : (base A N).H0 (𝟙_ (base A N).X.Modules) ≃ₗ[
 def basePoint : CP N :=
   Projectivization.mk ℂ (Pi.single 0 1) (by simp [funext_iff, Pi.single_apply])
 
-theorem conj_basePoint : CP.conj (basePoint N) = basePoint N := by
-  rw [basePoint, CP.conj_mk]
-  congr 1
-  funext k
-  rw [CP.conjVec_apply]
-  by_cases hk : k = 0
-  · subst hk; simp
-  · simp [hk]
-
 variable {A N}
-
-theorem complexPoints_base' (ρ : A →+* ℂ) : (base A N).complexPoints ρ = {basePoint N} :=
-  complexPoints_base ρ
 
 variable (K : Type) [Field K] [NumberField K] (N)
 
@@ -323,21 +306,6 @@ instance : Module.Projective (𝓞 K) ((base (𝓞 K) N).H0 (baseBundle (𝓞 K)
 
 instance : Nontrivial ((base (𝓞 K) N).H0 (baseBundle (𝓞 K) N).L) :=
   (baseGlobalSectionsEquiv (𝓞 K) N).toEquiv.nontrivial
-
-def baseMeasures : (base (𝓞 K) N).PointMeasures where
-  μ _ := Measure.dirac (basePoint N)
-  isFinite _ := inferInstance
-  null_compl σ := by
-    rw [Measure.dirac_apply' _
-      ((base (𝓞 K) N).isClosed_complexPoints _).isOpen_compl.measurableSet, complexPoints_base']
-    simp
-  pos_of_isOpen σ U _ hU := by
-    obtain ⟨y, hyU, hy⟩ := hU
-    rw [complexPoints_base', Set.mem_singleton_iff] at hy
-    rw [Measure.dirac_apply_of_mem (hy ▸ hyU)]
-    exact one_pos
-  map_conj σ := by
-    rw [Measure.map_dirac' CP.continuous_conj.measurable, conj_basePoint]
 
 end ProjScheme
 

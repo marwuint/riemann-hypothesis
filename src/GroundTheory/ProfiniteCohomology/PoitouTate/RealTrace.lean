@@ -116,12 +116,6 @@ def gsSumInvReal [Fintype S] : ptTLocal (gsFinFamily S ιs) (gsRealFamily S ιr)
     simp only [map_add, Finset.sum_add_distrib]
     abel
 
-omit [NeZero N] in
-theorem gsSumInvReal_apply [Fintype S] (ξ : ptTLocal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2) :
-    gsSumInvReal S ιr ιs N ξ =
-      ∑ v, gsLocalInvRootsQZ S ιs N v (ξ.1 v) + ∑ w, gsRealInvRootsQZ S ιr N w (ξ.2 w) :=
-  rfl
-
 theorem gsSumInvReal_eq_zero_of [Fintype S] (ξ : ptTLocal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2)
     (hξ : (ptTLocalToCompact (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2).hom ξ = 0) :
     gsSumInvReal S ιr ιs N ξ = 0 := by

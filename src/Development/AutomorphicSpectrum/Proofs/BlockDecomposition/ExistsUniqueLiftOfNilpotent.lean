@@ -33,8 +33,6 @@ variable {B : Type} [CommRing B] (J : Ideal B)
 abbrev toBase (n : ℕ) : B ⧸ J ^ (n + 1) →+* B ⧸ J :=
   Ideal.Quotient.factor (Ideal.pow_le_self (Nat.succ_ne_zero n))
 
-theorem toBase_mk (n : ℕ) (x : B) : toBase J n (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk J x := rfl
-
 theorem isNilpotent_ker_toBase (n : ℕ) : IsNilpotent (RingHom.ker (toBase J n)) := by
   refine ⟨n + 1, ?_⟩
   have hk : RingHom.ker (toBase J n) = J.map (Ideal.Quotient.mk (J ^ (n + 1))) := by

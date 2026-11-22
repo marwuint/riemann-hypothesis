@@ -85,11 +85,6 @@ def cechAbPull (φ : F ⟶ (push f).obj G) :
         (homOfLE (cechOpen_anti V' U' h)).op) _))
     rfl
 
-theorem cechAbPull_app (φ : F ⟶ (push f).obj G) (s : Finset κ)
-    (x : F.obj.obj (op (cechOpen V U (s.image τ)))) :
-    (cechAbPull f τ hτ φ).app s x =
-      G.obj.map (homOfLE (hτ s)).op (φ.hom.app (op (cechOpen V U (s.image τ))) x) := rfl
-
 end Sheaf
 
 end GlobalTheory

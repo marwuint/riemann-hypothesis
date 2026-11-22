@@ -14,8 +14,6 @@ local notation "FI" => FractionalIdeal (nonZeroDivisors R) K
 
 abbrev mR (g : Matrix ι ι K) : (ι → K) →ₗ[R] (ι → K) := g.mulVecLin.restrictScalars R
 
-theorem mR_apply (g : Matrix ι ι K) (x : ι → K) : mR (R := R) g x = g.mulVec x := rfl
-
 variable (R) in
 
 def chi (P : HeightOneSpectrum R) (g : Matrix ι ι K) : ℤ :=

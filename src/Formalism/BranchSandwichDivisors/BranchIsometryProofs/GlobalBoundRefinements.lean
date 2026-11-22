@@ -29,8 +29,6 @@ def swapL : ℚ × ℚ →ₗ[ℚ] ℚ × ℚ := (LinearEquiv.prodComm ℚ ℚ �
 def Pc : Submodule ℚ (Fin 2 → ℚ × ℚ) :=
   LinearMap.eqLocus (LinearMap.proj 1) (swapL.comp (LinearMap.proj 0))
 
-theorem mem_Pc (φ : Fin 2 → ℚ × ℚ) : φ ∈ Pc ↔ φ 1 = (φ 0).swap := Iff.rfl
-
 end PlaceVacuity
 
 end Formalism.BranchingDeterminantCap

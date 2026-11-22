@@ -50,13 +50,6 @@ theorem cartierDual_ρ_apply (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) (σ : Gal(L/
       (galUnits.{u} K L).ρ σ (f (M.ρ σ⁻¹ m)) :=
   rfl
 
-theorem coe_cartierDual_ρ_apply (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) (σ : Gal(L/K))
-    (f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) (m : M) :
-    ((Additive.toMul (((cartierDual K L M).ρ σ f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) m) :
-      Lˣ) : L) =
-      σ ((Additive.toMul (f (M.ρ σ⁻¹ m)) : Lˣ) : L) :=
-  rfl
-
 def cartierDualMap {A B : Rep.{u} (ULift.{u} ℤ) Gal(L/K)} (φ : A ⟶ B) :
     cartierDual K L B ⟶ cartierDual K L A :=
   Rep.ofHom ⟨{ toFun := fun f => f ∘ₗ φ.hom.toLinearMap

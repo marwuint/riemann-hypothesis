@@ -32,11 +32,6 @@ def fibreMap (σ : K →+* ℂ) (f : E' →ₗ[𝓞 K] E) : Fibre σ E' →ₗ[�
   map_add' := map_add _
   map_smul' := lTensor_complex_smul σ f
 
-omit [NumberField K] [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 K) E]
-  [Module.Finite (𝓞 K) E'] [Module.Projective (𝓞 K) E'] in
-theorem fibreMap_tmul (σ : K →+* ℂ) (f : E' →ₗ[𝓞 K] E) (z : ComplexAt σ) (e : E') :
-    fibreMap σ f (z ⊗ₜ e) = z ⊗ₜ f e := rfl
-
 omit [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 K) E] [Module.Finite (𝓞 K) E']
   [Module.Projective (𝓞 K) E'] in
 

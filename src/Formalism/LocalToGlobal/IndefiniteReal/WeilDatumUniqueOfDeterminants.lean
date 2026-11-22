@@ -9,9 +9,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace Formalism.IndefR.flipTwoThree
 
-def DeterminantInUnitaryOne : Prop :=
-  ∀ (D : D7) (V : HSp D) (g : GA D V), (mt V g).det * cA D (mt V g).det = 1
-
 def SplitDetP : Prop :=
   ∀ (D : D7) (V : HSp D), 0 < V.rank → ∀ e, IsSplitIdem D e → ∀ x : (AE D)ˣ, (x : AE D) * cA D (x : AE D) = 1 →
     SuppAtU D e x → ∃ g : GA D V, SuppAt e V g ∧ (∃ x', IsDetAt e V g x') ∧ (mt V g).det = x

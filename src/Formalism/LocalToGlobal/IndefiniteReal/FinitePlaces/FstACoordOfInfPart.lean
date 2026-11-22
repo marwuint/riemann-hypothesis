@@ -35,10 +35,6 @@ theorem evalV_sglS (A : Finset (HeightOneSpectrum (𝓞 F))) (w : HeightOneSpect
 
 def idemS (A : Finset (HeightOneSpectrum (𝓞 F))) : AF F := pairA F 0 (sglS A)
 
-theorem fstA_idemS (A : Finset (HeightOneSpectrum (𝓞 F))) : fstA F (idemS A) = 0 := rfl
-
-theorem sndA_idemS (A : Finset (HeightOneSpectrum (𝓞 F))) : sndA F (idemS A) = sglS A := rfl
-
 theorem sglS_mul_self (A : Finset (HeightOneSpectrum (𝓞 F))) : sglS A * sglS A = sglS A := by
   apply af_ext; intro w
   rw [map_mul, evalV_sglS]

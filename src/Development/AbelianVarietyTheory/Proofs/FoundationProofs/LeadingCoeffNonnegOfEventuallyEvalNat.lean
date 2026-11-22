@@ -232,7 +232,4 @@ theorem finite_projComponents [Finite ι] (I : Ideal (MvPolynomial ι k)) :
 noncomputable def projSetDegree [Finite ι] (I : Ideal (MvPolynomial ι k)) : ℕ :=
   ∑ P ∈ (finite_projComponents I).toFinset, hilbertDegree P
 
-def IsProjPureDim (I : Ideal (MvPolynomial ι k)) (e : ℕ) : Prop :=
-  ∀ P ∈ projComponents I, ringKrullDim (MvPolynomial ι k ⧸ P) = (e + 1 : ℕ)
-
 end GlobalTheory

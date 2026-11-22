@@ -159,15 +159,6 @@ theorem mem_of_forall_mem_localize_of_not_isField (hO : ¬ IsField O) {L : Submo
   exact Submodule.span_le_restrictScalars
     ((⟨m, hm, hm0⟩ : HeightOneSpectrum O).valuationSubringAtPrime K) K _ (h ⟨m, hm, hm0⟩)
 
-theorem mem_iff_forall_mem_localize {L : Submodule O V} (hL : Submodule.span K (L : Set V) = ⊤)
-    (x : V) : x ∈ L ↔ ∀ v : HeightOneSpectrum O, x ∈ localize K v L :=
-  ⟨fun hx v => mem_localize_of_mem v hx, mem_of_forall_mem_localize (by rw [hL]; trivial)⟩
-
-theorem iInf_localize {L : Submodule O V} (hL : Submodule.span K (L : Set V) = ⊤) :
-    ⨅ v : HeightOneSpectrum O, (localize K v L).restrictScalars O = L := by
-  ext x
-  simp [mem_iff_forall_mem_localize hL x]
-
 theorem eventually_notMem {d : O} (hd : d ∈ O⁰) :
     ∀ᶠ v : HeightOneSpectrum O in Filter.cofinite, d ∉ v.asIdeal := by
   have := Ideal.finite_factors (I := Ideal.span {d}) (by simpa using nonZeroDivisors.ne_zero hd)
@@ -187,26 +178,6 @@ theorem exists_mem_submonoid_forall {ι : Type*} {T : Set ι} (hT : T.Finite) (S
     · exact hP _ _ _ h₂
     · rw [mul_comm]; exact hP _ _ _ (h₁ x hx)
 
-theorem exists_notMem_smul_mem {v w : HeightOneSpectrum O} (hvw : w ≠ v)
-    {M : Submodule (w.valuationSubringAtPrime K) V} {d : O} (hd : d ∈ O⁰) {x : V}
-    (hx : d • x ∈ M) : ∃ s ∉ v.asIdeal, s • x ∈ M := by
-  have hnle : ¬ w.asIdeal ≤ v.asIdeal := fun hle => hvw (HeightOneSpectrum.ext
-    (w.isMaximal.eq_of_le v.isPrime.ne_top hle))
-  obtain ⟨s, hsw, hsv⟩ := SetLike.not_le_iff_exists.1 hnle
-  have hd' : algebraMap O K d ≠ 0 := by simpa using nonZeroDivisors.ne_zero hd
-  have hvd : w.valuation K (algebraMap O K d) ≠ 0 := by simpa using hd'
-  have hs1 : w.valuation K (algebraMap O K s) < 1 := (w.valuation_lt_one_iff_mem s).2 hsw
-  obtain ⟨n, hn⟩ := exists_pow_lt₀ hs1 (Units.mk0 _ hvd)
-  have hmem : algebraMap O K s ^ n / algebraMap O K d ∈ w.valuationSubringAtPrime K := by
-    rw [mem_localRing_iff_valuation, map_div₀, map_pow, div_le_one₀ (zero_lt_iff.2 hvd)]
-    exact hn.le
-  refine ⟨s ^ n, fun h => hsv (v.isPrime.mem_of_pow_mem n h), ?_⟩
-  have : s ^ n • x = (⟨_, hmem⟩ : w.valuationSubringAtPrime K) • d • x := by
-    change _ = (algebraMap O K s ^ n / algebraMap O K d) • d • x
-    rw [← algebraMap_smul K d x, smul_smul, div_mul_cancel₀ _ hd', ← map_pow, algebraMap_smul]
-  rw [this]
-  exact M.smul_mem _ hx
-
 def glue (M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSubringAtPrime K) V) :
     Submodule O V :=
   ⨅ v, (M v).restrictScalars O
@@ -214,53 +185,6 @@ def glue (M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSubringAtPrime 
 theorem mem_glue {M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSubringAtPrime K) V}
     {x : V} : x ∈ glue M ↔ ∀ v, x ∈ M v := by
   simp [glue]
-
-theorem glue_localize {L : Submodule O V} (hL : Submodule.span K (L : Set V) = ⊤) :
-    glue (fun v => localize K v L) = L := iInf_localize hL
-
-theorem localize_glue {M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSubringAtPrime K) V}
-    (hM : Submodule.span K (glue M : Set V) = ⊤) (v : HeightOneSpectrum O) :
-    localize K v (glue M) = M v := by
-  refine le_antisymm (Submodule.span_le.2 fun x hx => mem_glue.1 hx v) fun x hx => ?_
-  obtain ⟨d, hd, hdx⟩ := exists_smul_mem (O := O) hM x
-  rw [mem_glue] at hdx
-  have hfin : {w : HeightOneSpectrum O | d ∈ w.asIdeal}.Finite := by
-    simpa [Filter.eventually_cofinite] using eventually_notMem hd
-  obtain ⟨s, hs, h⟩ := exists_mem_submonoid_forall hfin v.asIdeal.primeCompl
-    (fun w s => s • x ∈ M w)
-    (fun w s t h => by rw [mul_smul]; exact (M w).smul_of_tower_mem t h)
-    (fun w _ => by
-      by_cases hwv : w = v
-      · subst hwv; exact ⟨1, one_mem _, by simpa using hx⟩
-      · exact exists_notMem_smul_mem hwv hd (hdx w))
-  refine (mem_localize_iff v _ x).2 ⟨s, hs, mem_glue.2 fun w => ?_⟩
-  by_cases hw : d ∈ w.asIdeal
-  · exact h w hw
-  · exact (M w).smul_of_tower_mem s (mem_of_smul_mem w hw (hdx w))
-
-theorem isLattice_glue (L : Submodule O V) [hL : Submodule.IsLattice K L]
-    (M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSubringAtPrime K) V)
-    (hM : ∀ v, Submodule.IsLattice K (M v))
-    (hML : ∀ᶠ v in Filter.cofinite, M v = localize K v L) : Submodule.IsLattice K (glue M) := by
-  have hfin := Filter.eventually_cofinite.1 hML
-  constructor
-  · obtain ⟨d, hd, h⟩ := exists_mem_submonoid_forall hfin O⁰
-      (fun w s => ∀ x ∈ M w, s • x ∈ localize K w L)
-      (fun w s t h x hx => by rw [mul_smul]; exact Submodule.smul_of_tower_mem _ t (h x hx))
-      (fun w _ => exists_smul_le (hM w).fg (isLattice_localize w L).span_eq_top)
-    refine fg_of_smul_mem (K := K) hL.fg hd fun x hx => ?_
-    refine (mem_iff_forall_mem_localize hL.span_eq_top _).2 fun w => ?_
-    by_cases hw : M w = localize K w L
-    · rw [← hw]; exact Submodule.smul_of_tower_mem _ d (mem_glue.1 hx w)
-    · exact h w hw x (mem_glue.1 hx w)
-  · obtain ⟨d, hd, h⟩ := exists_mem_submonoid_forall hfin O⁰
-      (fun w s => ∀ x ∈ localize K w L, s • x ∈ M w)
-      (fun w s t h x hx => by rw [mul_smul]; exact Submodule.smul_of_tower_mem _ t (h x hx))
-      (fun w _ => exists_smul_le (isLattice_localize w L).fg (hM w).span_eq_top)
-    refine span_eq_top_of_smul_mem hL.span_eq_top hd fun x hx => mem_glue.2 fun w => ?_
-    by_cases hw : M w = localize K w L
-    · rw [hw]; exact Submodule.smul_of_tower_mem _ d (mem_localize_of_mem w hx)
-    · exact h w hw x (mem_localize_of_mem w hx)
 
 end Localize
 
@@ -353,12 +277,6 @@ theorem algebraMap_mem_adicCompletionIntegers_iff (x : K) :
   rw [mem_localRing_iff_valuation, mem_adicCompletionIntegers,
     ← valuedAdicCompletion_eq_valuation' v x]
   rfl
-
-theorem exists_sub_mem_adicCompletionIntegers (y : v.adicCompletion K) :
-    ∃ x : K, y - algebraMap K (v.adicCompletion K) x ∈ v.adicCompletionIntegers K := by
-  have ho : IsOpen {z : v.adicCompletion K | y - z ∈ v.adicCompletionIntegers K} :=
-    (Valued.isOpen_valuationSubring (v.adicCompletion K)).preimage (by fun_prop)
-  exact (denseRange_algebraMap K v).exists_mem_open ho ⟨y, by simp⟩
 
 def complete (M : Submodule (v.valuationSubringAtPrime K) (ι → K)) :
     Submodule (v.adicCompletionIntegers K) (ι → v.adicCompletion K) :=
@@ -478,49 +396,6 @@ instance isLattice_rationalPart
     refine span_eq_top_of_smul_mem hM.span_eq_top hd fun x hx => ?_
     rw [mem_rationalPart, LinearMap.map_smul_of_tower]
     exact h _ (Submodule.subset_span ⟨x, hx, rfl⟩)
-
-theorem complete_rationalPart_of_span_eq_top
-    {N : Submodule (v.adicCompletionIntegers K) (ι → v.adicCompletion K)}
-    (hN : Submodule.span (v.adicCompletion K) (N : Set (ι → v.adicCompletion K)) = ⊤) :
-    complete v (rationalPart v N) = N := by
-  refine le_antisymm ((complete_le_iff v).2 le_rfl) fun y hy => ?_
-  let M := frameLattice (v.valuationSubringAtPrime K) (1 : GL ι K)
-  have hM : Submodule.IsLattice K M := isLattice_frameLattice _
-  obtain ⟨d, hd, h⟩ := exists_smul_le_completion v (isLattice_complete v M).fg hN
-
-  have hstd : ∀ z ∈ complete v M, d • z ∈ complete v (rationalPart v N) := by
-    intro z hz
-    induction hz using Submodule.span_induction with
-    | mem z hz =>
-      obtain ⟨x, hx, rfl⟩ := hz
-      rw [← LinearMap.map_smul_of_tower]
-      refine Submodule.subset_span ⟨_, ?_, rfl⟩
-      rw [SetLike.mem_coe, mem_rationalPart, LinearMap.map_smul_of_tower]
-      exact h _ (Submodule.subset_span ⟨x, hx, rfl⟩)
-    | zero => simp
-    | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
-    | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ a hx
-  have hd' : algebraMap O K d ≠ 0 := by simpa using nonZeroDivisors.ne_zero hd
-  choose x hx using fun i => exists_sub_mem_adicCompletionIntegers v
-    (((algebraMap O K d)⁻¹ • y) i)
-  have hz : (algebraMap O K d)⁻¹ • y - toCompletion v x ∈ complete v M := by
-    rw [complete_frameLattice, mem_frameLattice_iff_inv]
-    intro i
-    simp only [map_one, inv_one, Units.val_one, Matrix.one_mulVec]
-    exact Submodule.mem_one.2 ⟨⟨_, hx i⟩, rfl⟩
-  have hy' : y = d • ((algebraMap O K d)⁻¹ • y - toCompletion v x) + toCompletion v (d • x) := by
-    rw [LinearMap.map_smul_of_tower, ← smul_add, sub_add_cancel, ← algebraMap_smul K d, smul_smul,
-      mul_inv_cancel₀ hd', one_smul]
-  have hxN : d • x ∈ rationalPart v N := by
-    rw [mem_rationalPart, ← sub_eq_iff_eq_add'.2 hy']
-    exact sub_mem hy (h _ hz)
-  rw [hy']
-  exact add_mem (hstd _ hz) (Submodule.subset_span ⟨_, hxN, rfl⟩)
-
-theorem complete_rationalPart
-    (N : Submodule (v.adicCompletionIntegers K) (ι → v.adicCompletion K))
-    [hN : Submodule.IsLattice (v.adicCompletion K) N] : complete v (rationalPart v N) = N :=
-  complete_rationalPart_of_span_eq_top v hN.span_eq_top
 
 variable {v}
 

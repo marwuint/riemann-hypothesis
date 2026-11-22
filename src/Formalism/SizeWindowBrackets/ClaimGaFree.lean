@@ -44,11 +44,6 @@ def ClaimDe (f : ℕ) (T dM du : ℝ) : Prop :=
   du = (1 - (1 - du / dM)) * dM ∧ 0 ≤ 1 - du / dM ∧ 1 - du / dM < 1 ∧
     1 - du / dM ≤ 2 * (f : ℝ) / T
 
-def ClaimT (WT : Finset ι) (l len : ι → ℝ) (dM du de lam T : ℝ) : Prop :=
-  (∀ w ∈ WT, 0 ≤ l w) → 0 < dM → 0 ≤ de → de ≤ 1 / 2 → du = (1 - de) * dM → 0 ≤ lam →
-  (∀ w ∈ WT, len w ≤ dM * lam) → ∑ w ∈ WT, l w = Real.log T →
-  ∑ w ∈ WT, 2 * l w * len w / du ≤ 4 * lam * Real.log T
-
 def HypLow (W WT : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain F E : κ → ι → ℝ)
     (tau io len sg' : ι → ℝ) (dM du de muMu muN PT Rd : ℝ) : Prop :=
   (∀ w ∈ W, 0 ≤ l w) ∧ 0 < dM ∧ 0 ≤ de ∧ de < 1 ∧ du = (1 - de) * dM ∧ WT ⊆ W ∧

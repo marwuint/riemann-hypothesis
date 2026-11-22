@@ -24,12 +24,6 @@ open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk IsArithVar IsHorizonta
 
 variable {n : ℕ}
 
-open Classical in
-
-theorem divCycle_apply (P : Ideal (MRing (PBlk n))) (s : MRing (PBlk n)) (W : Ideal (MRing (PBlk n))) :
-    ReciprocityTheory.ChartRestriction.G.Geo.divCycle P s W = if W ∈ divSupp P s then multAt (P ⊔ Ideal.span {s}) W else 0 :=
-  rfl
-
 end RecQOfRecursion
 
 end

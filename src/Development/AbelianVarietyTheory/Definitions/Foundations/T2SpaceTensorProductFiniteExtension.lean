@@ -125,11 +125,6 @@ theorem absEv_conjUnit (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x 
 theorem absEw_conjUnit (σ : E →ₐ[F] E) (w : InfinitePlace F) (x : (w.Completion ⊗[F] E)ˣ) :
     absEw F E w (conjUnit σ x) = absEw F E w x := congrArg (fun y => ‖y‖₊ ^ w.mult) (norm_sigR σ x.1)
 
-theorem absEv_algebraMap (v : HeightOneSpectrum (𝓞 F)) (a : (Fv F v)ˣ) :
-    absEv F E v (Units.map (algebraMap (Fv F v) (Fv F v ⊗[F] E)).toMonoidHom a) = ‖a.1‖₊ ^ Module.finrank F E := by
-  change ‖Algebra.norm (Fv F v) (algebraMap (Fv F v) (Fv F v ⊗[F] E) a.1)‖₊ = _
-  rw [Algebra.norm_algebraMap, Module.finrank_baseChange, nnnorm_pow]
-
 theorem algebraMap_norm_eq {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {R : Type} [CommRing R] [Algebra F R] (x : R ⊗[F] E) :
     algebraMap R (R ⊗[F] E) (Algebra.norm R x) = x * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ x := by
   classical

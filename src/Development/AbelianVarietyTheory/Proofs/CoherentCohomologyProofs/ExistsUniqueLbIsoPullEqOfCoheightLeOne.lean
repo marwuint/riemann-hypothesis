@@ -265,11 +265,6 @@ noncomputable def lbSecPull (L : LB X) (s : L.Sec) (f : Y ⟶ X) : (L.pull f).Se
     exact (appLE_res_apply f _ _ _).symm.trans
       (this.trans (congrArg (_ * ·) (appLE_res_apply f _ _ _)))
 
-theorem lbSecPull_f (L : LB X) (s : L.Sec) (f : Y ⟶ X) (j : PUnit.{u + 1} → L.ι) :
-    (lbSecPull L s f).f j =
-      (f.appLE (L.U (j PUnit.unit)) ((L.pull f).U j) (lb_pull_U L f j).le).hom
-        (s.f (j PUnit.unit)) := rfl
-
 theorem lbSec_ext {L : LB X} {s t : L.Sec} (h : ∀ i, s.f i = t.f i) : s = t := by
   cases s
   cases t
@@ -281,11 +276,6 @@ theorem lbGen_ext {L : LB X} {s t : L.Gen} (h : ∀ i, (s.s i).val = (t.s i).val
   cases t
   congr 1
   exact funext fun i ↦ Units.ext (h i)
-
-theorem genPull_s_val (L : LB X) (c : L.Gen) (f : Y ⟶ X) (j : PUnit.{u + 1} → L.ι) :
-    ((L.genPull c f).s j).val =
-      (f.appLE (L.U (j PUnit.unit)) ((L.pull f).U j) (lb_pull_U L f j).le).hom
-        (c.s (j PUnit.unit)).val := rfl
 
 theorem bijective_lbSecPull (f : Y ⟶ X) (hf : ∀ V, Function.Bijective (f.app V).hom) (L : LB X) :
     Function.Bijective fun s : L.Sec ↦ lbSecPull L s f := by

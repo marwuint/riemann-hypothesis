@@ -37,8 +37,6 @@ def infRep (π : UnitaryRep (G × Gf) H) : UnitaryRep G H where
   toHom := π.toHom.comp (MonoidHom.inl G Gf)
   continuous_orbit' v := (π.continuous_orbit v).comp (continuous_id.prodMk continuous_const)
 
-theorem infRep_apply (π : UnitaryRep (G × Gf) H) (g : G) (v : H) : infRep π g v = π (g, 1) v := rfl
-
 def fixSub (π : UnitaryRep (G × Gf) H) (Kf : Subgroup Gf) : Submodule ℂ H where
   carrier := {v | ∀ k ∈ Kf, π (1, k) v = v}
   add_mem' {a b} ha hb k hk := by simp only [Set.mem_setOf_eq, map_add, ha k hk, hb k hk]

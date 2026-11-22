@@ -406,8 +406,6 @@ theorem HasWt.wt {π : AU E n} {τ : E →+* ℂ} {lam : DomWeight n} (h : π.Ha
 
 def ofChar (n : ℕ) (χ : Formalism.L2.Host.HChar E) : AU E n := mk (AutSub.ofChar n χ)
 
-theorem ofChar_one : ofChar n (1 : Formalism.L2.Host.HChar E) = mk (AutSub.triv E n) := rfl
-
 end AU
 
 section Host
@@ -419,9 +417,6 @@ attribute [local instance] host_isCMField
 variable {R : Ranks} (H : Host R)
 
 variable {H} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
-
-theorem isSat_iff {n : ℕ} (π : AutSub H.E n) (w : PlE H) (α : Fin (n / 2) → ℂˣ) : π.IsSat w α ↔ IsSatAt π.V w α :=
-  Iff.rfl
 
 end Host
 

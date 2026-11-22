@@ -12,8 +12,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
-theorem star_eq_sig (e : D.host.E) : star e = D.sp.cm.sig e := rfl
-
 instance borelMx (m n : ℕ) : BorelSpace (Mx D m n) := ⟨rfl⟩
 
 instance tagMx (m n : ℕ) : IsTopologicalAddGroup (Mx D m n) :=

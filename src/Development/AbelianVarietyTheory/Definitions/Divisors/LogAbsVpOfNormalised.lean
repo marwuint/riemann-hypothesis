@@ -24,12 +24,6 @@ variable {ι : Type} [DecidableEq ι] {σ : ι → Λ →+* C} (h : IsSplitting 
 def eigQuotLat (i : ι) (X : Submodule O V) : Submodule O V :=
   X.map ((proj h ρ i).restrictScalars O)
 
-theorem mem_eigSubLat {χ : Λ →+* C} {X : Submodule O V} {x : V} :
-    x ∈ eigSubLat ρ χ X ↔ x ∈ X ∧ x ∈ eigenSub ρ χ := Iff.rfl
-
-theorem mem_eigQuotLat {i : ι} {X : Submodule O V} {x : V} :
-    x ∈ eigQuotLat ρ h i X ↔ ∃ y ∈ X, proj h ρ i y = x := Iff.rfl
-
 set_option autoImplicit false in
 open scoped TensorProduct NNReal NumberField Pointwise in
 variable {O C : Type} [CommRing O] [Field C] [Algebra O C]

@@ -57,8 +57,6 @@ theorem toEAf_conj (a : AE D) :
   | tmul x y => rfl
   | add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingHom.map_add, hx, hy]
 
-theorem toEAf_inc (e : D.host.E) : toEAf D (incA D e) = inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) e := rfl
-
 theorem finGL_mem (g : GA D V) :
     finGL V hn g ∈ UPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := by
   subst hn

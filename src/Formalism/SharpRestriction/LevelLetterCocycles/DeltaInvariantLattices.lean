@@ -98,32 +98,10 @@ def FreeA (T : LocLat G Qp LL O) (S : Submodule (LetA O n) (W.DD T)) : Prop :=
   ∃ (r : ℕ) (b : Fin r → W.DD T), (∀ j, b j ∈ S) ∧
     ∀ x ∈ S, ∃! a : Fin r → LetA O n, x = ∑ j, a j • b j
 
-def IsTensLat (T T' T'' : LocLat G Qp LL O) (b : T.V →ₗ[LL] T'.V →ₗ[LL] T''.V) : Prop :=
-  Function.Bijective (TensorProduct.lift b) ∧
-    (∀ g x y, T''.ρ g (b x y) = b (T.ρ g x) (T'.ρ g y)) ∧
-    T''.L.T = Submodule.span O {z | ∃ x ∈ T.L.T, ∃ y ∈ T'.L.T, z = b x y}
-
 def χL : G →* LLˣ := (Units.map (algebraMap Qp LL : Qp →* LL)).comp PD.χ
-
-def XjN (T : LocLat G Qp LL O) (j : ℤ) : Submodule (LetA O n) (W.DD T) :=
-  if 0 ≤ j then (invN W) T (W.X ^ j.toNat) else (aN W) T (W.X ^ (-j).toNat)
 
 def wachFree (T : LocLat G Qp LL O) : Prop :=
   W.N T = ⨆ i, W.Nl T i ∧ ∀ i, (FreeLetter W) T (W.Nl T i) i
-
-def wachDual (T T' : LocLat G Qp LL O) (P : T.V →ₗ[LL] T'.V →ₗ[LL] LL) : Prop :=
-  IsDualLat T.L T'.L P →
-    ∃ β : W.DD T →ₗ[W.EE] W.DD T' →ₗ[W.EE] W.EE, Function.Bijective β.flip ∧
-      (∀ x y, β (W.φD T x) (W.φD T' y) = W.φE (β x y)) ∧
-      (∀ g x y, β (W.γD T g x) (W.γD T' g y) = W.γE g (β x y)) ∧
-      ∀ y, y ∈ W.N T' ↔ ∀ x ∈ W.N T, β x y ∈ Set.range (algebraMap (LetA O n) W.EE)
-
-def wachTensor (T T' T'' : LocLat G Qp LL O) (b : T.V →ₗ[LL] T'.V →ₗ[LL] T''.V) : Prop :=
-  IsTensLat T T' T'' b →
-    ∃ β : W.DD T →ₗ[W.EE] W.DD T' →ₗ[W.EE] W.DD T'', Function.Bijective (TensorProduct.lift β) ∧
-      (∀ x y, β (W.φD T x) (W.φD T' y) = W.φD T'' (β x y)) ∧
-      (∀ g x y, β (W.γD T g x) (W.γD T' g y) = W.γD T'' g (β x y)) ∧
-      W.N T'' = Submodule.span (LetA O n) {w | ∃ x ∈ W.N T, ∃ y ∈ W.N T', w = β x y}
 
 def p2 (T : LocLat G Qp LL O) : Prop :=
   (∀ g, ∀ x ∈ W.N T, W.γD T g x ∈ W.N T) ∧
@@ -248,12 +226,6 @@ def p10 (T : LocLat G Qp LL O) : Prop :=
     (∀ y ∈ N₁, ∃ k : ℕ, W.Q ^ k • y ∈ (φspan W) T N₁) →
     N₁ = W.N T
 
-def wachTwistIso (T T' : LocLat G Qp LL O) (j : ℤ) : Prop :=
-  IsTwist (χL (PD := PD) ^ j) T.L T'.L →
-    ∃ ψ : W.DD T ≃ₗ[W.EE] W.DD T', (∀ x, ψ (W.φD T x) = W.φD T' (ψ x)) ∧
-      (∀ g x, W.γD T' g (ψ x) = (((W.χΓ g) ^ j : Oˣ) : O) • ψ (W.γD T g x)) ∧
-      ((XjN W) T j).map ((ψ : W.DD T →ₗ[W.EE] W.DD T').restrictScalars (LetA O n)) = W.N T'
-
 def uU : Oˣ := W.χΓ W.gam
 
 def Jumps (T : LocLat G Qp LL O) : Set ℤ := {a | ∃ τ : K →ₐ[Qp] LL, IsJumpV PD T.ρ τ a}
@@ -342,13 +314,6 @@ def wachLengthLatticeMap {T₁ T₂ : LocLat G Qp LL O} (π : LatHom T₁.L T₂
 
 variable (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop)
 
-def WachFreeDualTensor : Prop :=
-  (∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → wachFree W T) ∧
-  (∀ (T T' : LocLat G Qp LL O) (P : T.V →ₗ[LL] T'.V →ₗ[LL] LL), IsCrys PD T.ρ → IsCrys PD T'.ρ →
-    wachDual W T T' P) ∧
-  (∀ (T T' T'' : LocLat G Qp LL O) (b : T.V →ₗ[LL] T'.V →ₗ[LL] T''.V),
-    IsCrys PD T.ρ → IsCrys PD T'.ρ → IsCrys PD T''.ρ → wachTensor W T T' T'' b)
-
 def P2W : Prop := ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → p2 W T
 
 def P3W : Prop := ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → p3 W T
@@ -370,10 +335,6 @@ def WachMaxJumpBound : Prop :=
   ∀ (T : LocLat G Qp LL O) (M h : ZMod n → ℕ), IsCrys PD T.ρ → JumpsLet W T M h → p8 W T (mx M)
 
 def P9W : Prop := ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → p9 W T
-
-def WachTwistCharacterisation : Prop :=
-  (∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → p10 W T) ∧
-  (∀ (T T' : LocLat G Qp LL O) (j : ℤ), IsCrys PD T.ρ → IsCrys PD T'.ρ → wachTwistIso W T T' j)
 
 def ConsW : Prop := ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → consT W Pt T
 
@@ -488,11 +449,6 @@ def ptK (LT : LocTheory) (HW : HWOf LT) {l : ℕ} [Fact l.Prime] {K : FinExt l} 
     (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) : Prop :=
   ∃ τs : ↥(Ks K s) →ₐ[ℚ_[l]] ↥LL.1, (HW l).IsPt h i ζ τs ∧
     ∀ (x : ↥K.1) (y : ↥(Ks K s)), (y : Om l) = (x : Om l) → τ x = τs y
-
-def p1L (LT : LocTheory) (HW : HWOf LT) (AI : ∀ (l : ℕ) [Fact l.Prime], LocAinf l (LT l))
-    (_F : FonOf LT AI HW) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
-    WachFreeDualTensor ((HW l).W K s LL h)
 
 def p2L (LT : LocTheory) (HW : HWOf LT) (AI : ∀ (l : ℕ) [Fact l.Prime], LocAinf l (LT l))
     (_F : FonOf LT AI HW) : Prop :=

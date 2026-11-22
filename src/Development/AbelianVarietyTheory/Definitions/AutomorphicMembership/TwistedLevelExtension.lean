@@ -29,8 +29,6 @@ def trv {n : ℕ} {a b : Fin n} (h : a ≠ b) : Sp E n ≃ₗ[E] Sp E n where
   left_inv x := by simp [Pi.single_eq_of_ne h.symm]
   right_inv x := by simp [Pi.single_eq_of_ne h.symm]
 
-theorem trv_apply {n : ℕ} {a b : Fin n} (h : a ≠ b) (x : Sp E n) : trv h x = x + Pi.single a (x b) := rfl
-
 end
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)

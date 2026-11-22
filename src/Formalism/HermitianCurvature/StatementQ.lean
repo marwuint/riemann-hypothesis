@@ -777,18 +777,6 @@ def CkLev {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (k r : ℕ) (i 
 def OmPlus (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : Set (Mx k r) :=
   {g | (∀ l : Fin (r + 2), l.val ≤ r → Dmin k r z z' g l ≠ 0) ∧ 0 < Gf k r z z' g}
 
-def BesselCommutes : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (A : ℝ) (m : ℕ) (F : Mx k r → (Wq →L[ℂ] Wp)) (Y : ℂ),
-    2 * r + k + 1 ≤ m → ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < (A - 6 * r * m) / (9 * (r + 1)) → B.InCC A m F →
-    B.InCC A m (CV k r Y F) →
-    ∃ Jt : Mx k r → (Wq →L[ℂ] Wp), CkLev k r 0 (2 * r + k + 1) (OmPlus k r D.z D.z') Jt ∧
-      LeftEq k r D.z 0 (OmPlus k r D.z D.z') Jt ∧ RightEq k r D.z' 0 (OmPlus k r D.z D.z') Jt ∧
-      (∀ g ∈ Glev k r 0 ∩ OmPlus k r D.z D.z', ∀ h ∈ UWset k r D.z, ∀ h' ∈ UWset k r D.z',
-        Jt (h * g * h') = (D.π h).comp ((Jt g).comp (D.π' h'))) ∧
-      (∀ᵐ q ∂(volume.restrict (B.Qset D)), Jt (B.gq D q) = B.JF D F (B.gq D q)) ∧
-      ∀ᵐ q ∂(volume.restrict (B.Qset D)), CV k r Y Jt (B.gq D q) = B.JF D (CV k r Y F) (B.gq D q)
-
 def Pr (V : Type*) [AddCommGroup V] [Module ℂ V] : Type _ := Module.End ℂ V × (Module.End ℂ V)ᵐᵒᵖ
 
 section PairRing

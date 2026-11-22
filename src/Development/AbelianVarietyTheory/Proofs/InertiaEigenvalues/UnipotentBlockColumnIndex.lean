@@ -166,8 +166,6 @@ def colT (ψ : AddChar (Ad E) ℂ) (k : ℕ) (f : GA E a → ℂ) : GA E a → �
 def whit (ψ : AddChar (Ad E) ℂ) (m : ℕ) : (GA E a → ℂ) → GA E a → ℂ :=
   Nat.rec (fun f => f) (fun m ih f => ih (colT ψ (m + 1) f)) m
 
-theorem whit_zero (ψ : AddChar (Ad E) ℂ) (f : GA E a → ℂ) : whit ψ 0 f = f := rfl
-
 theorem whit_succ (ψ : AddChar (Ad E) ℂ) (m : ℕ) (f : GA E a → ℂ) : whit ψ (m + 1) f = whit ψ m (colT ψ (m + 1) f) := rfl
 
 def IsMir (m : ℕ) (γ : GL (Fin a) E) : Prop :=

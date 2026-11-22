@@ -228,30 +228,6 @@ theorem exists_forall_apply_eq_apply_smul (φ ψ : A →+* k)
     Finset.mem_univ, if_true] at this
   exact ha g this
 
-theorem exists_ringHom_extension_of_isIntegral {B A k : Type*} [CommRing B] [CommRing A] [Field k]
-    [IsAlgClosed k] [Algebra B A] [FaithfulSMul B A] [Algebra.IsIntegral B A] (φ : B →+* k) :
-    ∃ ψ : A →+* k, ψ.comp (algebraMap B A) = φ := by
-  have := RingHom.ker_isPrime φ
-  obtain ⟨⟨Q, hQ⟩, hQφ⟩ := Algebra.IsIntegral.comap_surjective B A ⟨RingHom.ker φ, ‹_›⟩
-  have : Q.LiesOver (RingHom.ker φ) := ⟨congr($(hQφ).asIdeal).symm⟩
-  let := (RingHom.kerLift φ).toAlgebra
-  have : FaithfulSMul (B ⧸ RingHom.ker φ) k :=
-    (faithfulSMul_iff_algebraMap_injective _ _).mpr (RingHom.kerLift_injective φ)
-  have : IsDomain (A ⧸ Q) := inferInstance
-  have : IsDomain (B ⧸ RingHom.ker φ) := inferInstance
-  have : Module.IsTorsionFree (B ⧸ RingHom.ker φ) (A ⧸ Q) :=
-    Module.isTorsionFree_iff_faithfulSMul.mpr inferInstance
-  have : Module.IsTorsionFree (B ⧸ RingHom.ker φ) k :=
-    Module.isTorsionFree_iff_faithfulSMul.mpr inferInstance
-  have : Algebra.IsIntegral (B ⧸ RingHom.ker φ) (A ⧸ Q) := ⟨fun x ↦ by
-    obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective x
-    exact ((Algebra.IsIntegral.isIntegral (R := B) a).map
-      (Ideal.Quotient.mkₐ B Q)).tower_top⟩
-  have : Algebra.IsAlgebraic (B ⧸ RingHom.ker φ) (A ⧸ Q) := Algebra.IsIntegral.isAlgebraic
-  let ψ : (A ⧸ Q) →ₐ[B ⧸ RingHom.ker φ] k := IsAlgClosed.lift
-  exact ⟨(ψ : A ⧸ Q →+* k).comp (Ideal.Quotient.mk Q),
-    RingHom.ext fun b ↦ ψ.commutes (Ideal.Quotient.mk _ b)⟩
-
 end Ring
 
 section Quotient
@@ -827,23 +803,6 @@ theorem comp_eq_comp_iff (x y : Spec (.of k) ⟶ X) :
   congr 2
   ext a
   exact (hg a).symm
-
-theorem exists_comp_eq_of_isAlgClosed [IsAlgClosed k] (y : Spec (.of k) ⟶ Y) :
-    ∃ x : Spec (.of k) ⟶ X, x ≫ π = y := by
-  have := h.isIntegralHom
-  obtain ⟨_, ⟨W, hW, rfl⟩, hy, -⟩ := Y.isBasis_affineOpens.exists_subset_of_mem_open
-    (Set.mem_univ (y default)) isOpen_univ
-  have hW : IsAffineOpen W := hW
-  have hV := hW.preimage π
-  obtain ⟨φ, rfl⟩ := exists_specMap_fromSpec_eq_of_mem y hW hy
-  let := (π.app W).hom.toAlgebra
-  have := (h.isInvariant W).2.1
-  have : Algebra.IsIntegral Γ(Y, W) Γ(X, π ⁻¹ᵁ W) := ⟨π.isIntegral_app W hW⟩
-  obtain ⟨ψ, hψ⟩ := exists_ringHom_extension_of_isIntegral (A := Γ(X, π ⁻¹ᵁ W)) φ.hom
-  refine ⟨Spec.map (CommRingCat.ofHom ψ) ≫ hV.fromSpec, ?_⟩
-  rw [Category.assoc, (isPullback_fromSpec_app π hW hV).w, ← Spec.map_comp_assoc]
-  congr 2
-  exact CommRingCat.hom_ext hψ
 
 end IsAffineQuotient
 

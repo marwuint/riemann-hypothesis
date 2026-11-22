@@ -38,8 +38,6 @@ def torsSub (n : ℕ) : Subgroup (Over.mk x ⟶ t.G) where
 
 def thSub (n : ℕ) : Subgroup (ThetaGrp t.G t.PP.L n (Over.mk x)) := (torsSub t x n).comap (ptHom (n : ℤ) (Over.mk x) t.PP)
 
-theorem mem_thSub {n : ℕ} (θ : ThetaGrp t.G t.PP.L n (Over.mk x)) : θ ∈ thSub t x n ↔ θ.pt ∈ torsSub t x n := Iff.rfl
-
 def Sec (k : ℤ) : Type := SecM t.G t.PP.L k (Over.mk x)
 
 instance (k : ℤ) : AddCommGroup (Sec t x k) := inferInstanceAs (AddCommGroup (SecM t.G t.PP.L k (Over.mk x)))
@@ -94,9 +92,5 @@ end Thg
 namespace At
 
 end At
-
-namespace Thg
-
-end Thg
 
 end GlobalTheory.LocM

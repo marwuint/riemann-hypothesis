@@ -69,10 +69,6 @@ def heckeCharacterOfChar : HeckeCharacter K where
   continuous_toFun :=
     (continuous_of_discreteTopology (f := toCircleHom (charBar χ))).comp continuous_reciprocityMap
 
-theorem heckeCharacterOfChar_apply (c : IdeleClassGroup K) :
-    (heckeCharacterOfChar χ c : ℂ) = charBar χ (reciprocityMap K (charField χ) c) :=
-  rfl
-
 end Hecke
 
 section Places

@@ -21,8 +21,6 @@ def DiscreteSeriesUpqExists : Prop :=
       ∀ (μ : Fin N → ℝ) (S : Submodule ℂ H), IsKTypeOf ε σ μ S →
         nsq (lam + rhoN ε - rhoC ε + (2 : ℝ) • rhoC ε) ≤ nsq (μ + (2 : ℝ) • rhoC ε)
 
-theorem discreteSeriesUpqExists_iff : DiscreteSeriesUpqExists ↔ GlobalTheory.Mem.Vol.DiscreteSeriesExist := Iff.rfl
-
 theorem discreteSeriesUpqExists_iff_dsExists : DiscreteSeriesUpqExists ↔ GlobalTheory.Dec.DSExists := Iff.rfl
 
 end GlobalTheory.Published

@@ -115,10 +115,6 @@ def blkE {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
       have h1 : (fun τ => (A τ)⁻¹ * A τ) = fun _ => 1 := funext fun τ => Matrix.nonsing_inv_mul _ (hA τ)
       simp only [LinearMap.comp_apply, blkL_comp, h1, blkL_one, LinearMap.id_apply])
 
-theorem blkE_apply {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
-    (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ) (hA : ∀ τ, IsUnit (A τ).det)
-    (z : Fin g → ℂ) : blkE e A hA z = blkL e A z := rfl
-
 end Lin
 
 section Der
@@ -198,10 +194,6 @@ theorem derivAt_exists {i : Fin F.n} {P : (F.Di i).La →+ (Fin g → ℂ)}
 def blkP {Di : Datum H} (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ) (hA : ∀ τ, IsUnit (A τ).det)
     (P : Di.La →+ (Fin g → ℂ)) : Di.La →+ (Fin g → ℂ) :=
   (blkE e A hA).toLinearMap.toAddMonoidHom.comp P
-
-theorem blockDiagonal_comp_apply {Di : Datum H} (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ)
-    (hA : ∀ τ, IsUnit (A τ).det) (P : Di.La →+ (Fin g → ℂ)) (a : Di.La) :
-    blkP (e := e) A hA P a = blkE e A hA (P a) := rfl
 
 end Fam
 

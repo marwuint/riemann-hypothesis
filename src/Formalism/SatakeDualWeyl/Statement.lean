@@ -242,13 +242,6 @@ def SplitIso : Prop :=
     IsUnit J₁.det →
     ∃ e : UJ (swapR R) (splitJ J₁) ≃* GL n R, ∀ g, e g = bc (RingHom.fst R R) (g : GL n (R × R))
 
-def AMFDecomp : Prop :=
-  ∀ (G : Type) [Group G] (Γ K : Subgroup G) (k : Type) [CommRing k] (W : Type) [AddCommGroup W]
-    [Module k W] (ρ : Representation k Γ W) (s : ClassSet Γ K → G),
-    (∀ c, DoubleCoset.mk Γ K (s c) = c) →
-    ∃ e : AMF k Γ K ρ ≃ₗ[k] ((c : ClassSet Γ K) → invSub ρ (stabAt Γ K (s c))),
-      ∀ f c, (e f c : W) = (f : G → W) (s c)
-
 def AMFKFinite : Prop :=
   ∀ (G : Type) [Group G] (Γ K : Subgroup G) (k : Type) [CommRing k] [IsNoetherianRing k]
     (W : Type) [AddCommGroup W] [Module k W] [Module.Finite k W] (ρK : Representation k K W),
@@ -349,11 +342,6 @@ def intAd (F : Type) [Field F] [NumberField F] : Subring (FiniteAdeleRing (𝓞 
     exact neg_mem (ha v)
 
 def intOE (E : Type) [Field E] [NumberField E] : Subring E := (algebraMap (𝓞 E) E).range
-
-def levelV [NumberField F] {E : Type} [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
-    (J : Matrix n n E) (v : HeightOneSpectrum (𝓞 F)) : Subgroup (GL n (E ⊗[F] v.adicCompletion F)) :=
-  level (sigR σ (v.adicCompletion F)) (J.map (inclE (F := F) (v.adicCompletion F)))
-    (stdLat (n := n) ↥(tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring))
 
 def levelAf [NumberField F] {E : Type} [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (J : Matrix n n E) : Subgroup (GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :=

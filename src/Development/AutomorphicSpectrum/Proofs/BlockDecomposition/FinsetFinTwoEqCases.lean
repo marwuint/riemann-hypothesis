@@ -217,10 +217,6 @@ def piG : stabG s J →* GL (Fin M) A :=
         exact blk_one })
     (fun g h => Units.ext (blk_mul_stabG g.2 h.2))
 
-theorem piG_val (g : stabG s J) :
-    ((piG s J g : GL (Fin M) A) : Matrix (Fin M) (Fin M) A) =
-      blk ((g : GL (Fin (M + 2)) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A) := rfl
-
 theorem piG_mem (g : stabG s J) : piG s J g ∈ UJ s J :=
   blk_unitary s J (stabG_unit g.2) (stabG_col g.2)
 
@@ -230,10 +226,6 @@ def dgHom : Matrix (Fin M) (Fin M) A →* Matrix (Fin (M + 2)) (Fin (M + 2)) A w
   map_mul' := dg_mul
 
 def dgGL : GL (Fin M) A →* GL (Fin (M + 2)) A := Units.map dgHom
-
-theorem dgGL_val (u : GL (Fin M) A) :
-    ((dgGL u : GL (Fin (M + 2)) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A) =
-      dg (u : Matrix (Fin M) (Fin M) A) := rfl
 
 theorem dgGL_mem {u : GL (Fin M) A} (hu : u ∈ UJ s J) : dgGL u ∈ stabG s J := by
   refine ⟨dg_unitary s J _ hu, fun i => ?_⟩
@@ -466,9 +458,6 @@ theorem JR_hypOne {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
 variable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 def mkH (g : GL (Fin M) (R ⊗[F] E)) (hg : g ∈ HR R σ J) : HA R σ J := (⟨g, hg⟩ : HR R σ J)
-
-theorem mat_mkH (g : GL (Fin M) (R ⊗[F] E)) (hg : g ∈ HR R σ J) :
-    HA.mat R σ J (mkH R σ J g hg) = g := rfl
 
 theorem mat_mem (h : HA R σ J) : HA.mat R σ J h ∈ HR R σ J :=
   Subtype.property (show HR R σ J from h)
@@ -734,10 +723,6 @@ def nP (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin 
 theorem toMatrix_unipotent (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin M → R ⊗[F] E)
     (z : R ⊗[F] E) (hz : z + sigR R σ z + hv (sigR R σ) (JR R J) w w = 0) :
     matP R σ J (nP hσ hJ w z hz) = nM (sigR R σ) (JR R J) w z := rfl
-
-theorem toMatrix_unipotent_inv (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin M → R ⊗[F] E)
-    (z : R ⊗[F] E) (hz : z + sigR R σ z + hv (sigR R σ) (JR R J) w w = 0) :
-    matP R σ J (nP hσ hJ w z hz)⁻¹ = nM (sigR R σ) (JR R J) (-w) (sigR R σ z) := rfl
 
 theorem nP_mem_ker (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin M → R ⊗[F] E)
     (z : R ⊗[F] E) (hz : z + sigR R σ z + hv (sigR R σ) (JR R J) w w = 0) :

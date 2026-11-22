@@ -123,11 +123,6 @@ noncomputable def coverMarkedBlowupData (T : MarkedIdealWithBoundary.{u}) (hv : 
       (coverTriple T hv).mult (coverTriple T hv).boundary :=
   MaxContactReduction.reduceAlongHypersurface hinv T rc (coverTriple T hv) (coverMaxContactIdeal T hv)
 
-theorem cover_eq_reduceAlongHypersurface (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (hinv : ComapIsoInvariance.{u})
-    (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) :
-    coverMarkedBlowupData T hv hinv rc =
-      MaxContactReduction.reduceAlongHypersurface hinv T rc (coverTriple T hv) (coverMaxContactIdeal T hv) := rfl
-
 theorem isStrictPullbackBlowupSeq_of_descendStrictPullback_eq_some {T S : MarkedIdealWithBoundary.{u}} (φ : S.scheme ⟶ T.scheme)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) {d : BlowupSequenceData T.scheme}
     (hd : MaxContactReduction.descendStrictPullback T S φ s = some d) :

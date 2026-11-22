@@ -206,8 +206,6 @@ instance : FiniteDimensional ℝ (A.X →+ ℂ) := Module.Finite.trans ℂ _
 
 instance : CompleteSpace (A.X →+ ℂ) := FiniteDimensional.complete ℂ _
 
-theorem norm_eq_coord (l : A.X →+ ℂ) : ‖l‖ = ‖A.coord l‖ := rfl
-
 theorem finrank_hom : Module.finrank ℂ (A.X →+ ℂ) = Module.finrank ℤ A.X := by
   rw [A.coord.finrank_eq, Module.finrank_fintype_fun_eq_card, Module.finrank_eq_card_chooseBasisIndex]
 
@@ -702,18 +700,6 @@ def tate (τ₀ : ℂ) : AnArc ℤ where
   be_adj a y x := by simp; ring
   be_even x := ⟨x * x, by simp only [beInt_apply]; ring⟩
 
-theorem tate_Pw (τ₀ w : ℂ) (y : ℤ) (n : ℤ →+ ℤ) :
-    ((tate τ₀).Pw w (La.mk (A := tate τ₀) y n 0)).1 (1 : ℤ) = n 1 + y * (τ₀ + 2 * w) := by
-  change TInt τ₀ y 1 + (n 1 : ℤ) - hermForm (0 : Matrix (Fin 0) (Fin 0) ℂ) 0 0 / (2 * Complex.I) +
-    w * (beInt y 1 : ℤ) = _
-  simp [hermForm]; ring
-
-theorem tate_one_mem_Theta (τ₀ : ℂ) (j : ℕ) (α : (tate τ₀).X) :
-    (1 : (Fin (tate τ₀).gB → ℂ) → ℂ) ∈ (tate τ₀).Theta j α :=
-  ⟨differentiable_const 1, fun l z => by
-    have hl : l = 0 := Subsingleton.elim (α := (⊥ : Submodule ℤ (Fin 0 → ℂ))) _ _
-    simp [hl, ah]⟩
-
 def gaussEmb : GaussianInt →ₗ[ℤ] (Fin 1 → ℂ) where
   toFun a _ := a
   map_add' a b := by ext; simp
@@ -845,67 +831,11 @@ def gaussInt (c τ₀ : ℂ) : AnArc ℤ where
   be_adj a y x := by simp; ring
   be_even x := ⟨x * x, by simp only [beInt_apply]; ring⟩
 
-def gaussProd : (ℤ × ℤ) ≃ₗ[ℤ] GaussianInt where
-  toFun p := ⟨p.1, p.2⟩
-  invFun a := (a.re, a.im)
-  map_add' _ _ := rfl
-  map_smul' _ _ := by ext <;> simp
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 def beGauss : LinearMap.BilinForm ℤ GaussianInt :=
   LinearMap.mk₂ ℤ (fun a b => 2 * (a.re * b.re + a.im * b.im)) (fun _ _ _ => by simp; ring)
     (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring)
 
 @[simp] theorem beGauss_apply (a b : GaussianInt) : beGauss a b = 2 * (a.re * b.re + a.im * b.im) := rfl
-
-def gaussCM (c τ₀ : ℂ) : AnArc GaussianInt where
-  gB := 1
-  abelian₂ := gaussLam
-  discrete := gaussLam_discrete
-  full := gaussLam_full
-  Hm := 1
-  Hm_herm := Matrix.isHermitian_one
-  Hm_pos := hermForm_one_pos
-  Ef := gaussEf
-  Ef_eq := gaussEf_eq
-  Ef_bij := gaussEf_bij
-  chi := gaussChi
-  chi_norm := gaussChi_norm
-  chi_add := gaussChi_add
-  chi_neg := gaussChi_neg
-  F := (algebraMap ℂ _).comp GaussianInt.toComplex
-  F_mem := by
-    rintro a _ ⟨b, rfl⟩
-    exact ⟨a * b, by ext; simp⟩
-  F_adj a z w := by simp [hermForm_one]; ring
-  X := GaussianInt
-  free := Module.Free.of_equiv gaussProd
-  fin := Module.Finite.equiv gaussProd
-  ct := AddMonoidHom.mk' (fun x _ => x * c) fun _ _ => by ext; simp; ring
-  ct_smul a x := by ext; simp; ring
-  T := AddMonoidHom.mk' (fun x => AddMonoidHom.mk' (fun y => τ₀ * beGauss x y) fun _ _ => by simp; ring)
-    fun _ _ => by ext; simp; ring
-  T_symm x y := by
-    show τ₀ * (beGauss x y : ℤ) = τ₀ * (beGauss y x : ℤ)
-    congr 2; simp only [beGauss_apply]; ring
-  T_adj a y x := by
-    show τ₀ * (beGauss (a • y) x : ℤ) = τ₀ * (beGauss y (star a • x) : ℤ)
-    congr 2; simp; ring
-  psi x := Units.mk0 (eTwoPi (τ₀ * (x.re ^ 2 + x.im ^ 2))) (e_ne_zero _)
-  psi_neg x := Units.ext (by simp)
-  psi_add x y := by
-    simp only [Units.val_mk0, ← e_add]
-    congr 1; simp; ring
-  be := beGauss
-  be_symm x y := by simp only [beGauss_apply]; ring
-  be_pos x hx := by
-    have := GaussianInt.norm_pos.2 hx
-    simp only [beGauss_apply]
-    rw [Zsqrtd.norm_def] at this
-    linarith
-  be_adj a y x := by simp; ring
-  be_even x := ⟨_, rfl⟩
 
 end AnArc
 

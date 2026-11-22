@@ -268,10 +268,6 @@ theorem gramDet_of_eq_sum {e f : ι → V} {g : Matrix ι ι K} (hf : ∀ i, f i
 theorem gramDet_of_isEmpty [IsEmpty ι] (e : ι → V) : h.gramDet σ e = 1 := by
   simp [gramDet]
 
-theorem gramDet_diag (d : (K →+* ℂ) → ι → ℝ) (hd : ∀ σ i, 0 < d σ i) :
-    (diag d hd).gramDet σ (Pi.basisFun K ι) = ∏ i, d σ i := by
-  rw [gramDet, gram_diag, Matrix.det_diagonal, ← Complex.ofReal_prod, Complex.ofReal_re]
-
 end GramDet
 
 theorem form_self_nonneg (σ : K →+* ℂ) (x : V) : 0 ≤ h.form σ x x := by
@@ -325,11 +321,6 @@ theorem comap_form (x y : V') : (h.comap f hf).form σ x y = h.form σ (f x) (f 
 @[simp]
 theorem comap_norm (x : V') : (h.comap f hf).norm σ x = h.norm σ (f x) := rfl
 
-theorem comap_gram {ι : Type*} (e : ι → V') : (h.comap f hf).gram σ e = h.gram σ (f ∘ e) := rfl
-
-theorem comap_gramDet {ι : Type*} [Fintype ι] [DecidableEq ι] (e : ι → V') :
-    (h.comap f hf).gramDet σ e = h.gramDet σ (f ∘ e) := rfl
-
 @[simp]
 theorem comap_id : h.comap LinearMap.id Function.injective_id = h := rfl
 
@@ -348,10 +339,6 @@ theorem restrict_form (W : Submodule K V) (σ : K →+* ℂ) (x y : W) :
 theorem restrict_norm (W : Submodule K V) (σ : K →+* ℂ) (x : W) :
     (h.restrict W).norm σ x = h.norm σ x := rfl
 
-theorem restrict_gramDet (W : Submodule K V) (σ : K →+* ℂ) {ι : Type*} [Fintype ι]
-    [DecidableEq ι] (e : ι → W) :
-    (h.restrict W).gramDet σ e = h.gramDet σ fun i => (e i : V) := rfl
-
 noncomputable def scale (c : (K →+* ℂ) → ℝ) (hc : ∀ σ, 0 < c σ) : ArchMetric K V where
   form σ := (c σ : ℂ) • h.form σ
   form_symm σ x y := by simp
@@ -364,13 +351,7 @@ variable (c : (K →+* ℂ) → ℝ) (hc : ∀ σ, 0 < c σ) (σ : K →+* ℂ)
 @[simp]
 theorem scale_form (x y : V) : (h.scale c hc).form σ x y = c σ * h.form σ x y := rfl
 
-theorem scale_gram {ι : Type*} (e : ι → V) :
-    (h.scale c hc).gram σ e = (c σ : ℂ) • h.gram σ e := rfl
-
 end Scale
-
-noncomputable def scaleNormExp (t : (K →+* ℂ) → ℝ) : ArchMetric K V :=
-  h.scale (fun σ => Real.exp (2 * t σ)) fun _ => Real.exp_pos _
 
 end Field
 
@@ -408,21 +389,6 @@ theorem finiteDimensional_span_of_fg {A : Submodule (𝓞 K) V} (hA : A.FG) :
   obtain ⟨s, rfl⟩ := hA
   rw [Submodule.span_span_of_tower]
   exact FiniteDimensional.span_finset K s
-
-theorem finrank_lattice_pos {A : Submodule (𝓞 K) V} (hA : A.FG) (h0 : A ≠ ⊥) :
-    0 < finrank (𝓞 K) A := by
-  haveI := finiteDimensional_span_of_fg hA
-  rw [finrank_lattice_eq_finrank_span]
-  refine Nat.pos_of_ne_zero fun h => h0 ?_
-  rw [Submodule.finrank_eq_zero, Submodule.span_eq_bot] at h
-  exact (Submodule.eq_bot_iff _).2 h
-
-theorem mem_span_of_le_of_finrank_eq {A B : Submodule (𝓞 K) V} (hA : A.FG) (hBA : B ≤ A)
-    (hr : finrank (𝓞 K) B = finrank (𝓞 K) A) : ∀ x ∈ A, x ∈ Submodule.span K (B : Set V) := by
-  haveI := finiteDimensional_span_of_fg hA
-  rw [finrank_lattice_eq_finrank_span, finrank_lattice_eq_finrank_span] at hr
-  rw [Submodule.eq_of_le_of_finrank_eq (Submodule.span_mono hBA) hr]
-  exact fun x hx => Submodule.subset_span hx
 
 theorem exists_smul_mem_of_mem_span_lattice {B : Submodule (𝓞 K) V} {x : V}
     (hx : x ∈ Submodule.span K (B : Set V)) : ∃ a : 𝓞 K, a ≠ 0 ∧ a • x ∈ B := by
@@ -682,48 +648,6 @@ theorem arDeg_bot : h.arDeg ⊥ = 0 := by
   have := h.arDeg_span (e := fun i : Empty => i.elim) linearIndependent_empty_type
   simpa [Set.range_eq_empty] using this
 
-theorem arDeg_span_singleton {x : V} (hx : x ≠ 0) :
-    h.arDeg (Submodule.span (𝓞 K) {x}) = -∑ σ : K →+* ℂ, Real.log (h.norm σ x) := by
-  have := h.arDeg_span (e := fun _ : Unit => x) (linearIndependent_unique_iff.2 hx)
-  rw [Set.range_const] at this
-  rw [this]
-  congr 1
-  refine Finset.sum_congr rfl fun σ _ => ?_
-  rw [gramDet_unique, Real.log_pow]
-  push_cast
-  ring
-
-theorem arDeg_eq_add_log_relIndex {B : Submodule (𝓞 K) V} (hA : A.FG) (hBA : B ≤ A)
-    (hAB : ∀ x ∈ A, x ∈ Submodule.span K (B : Set V)) :
-    h.arDeg A = h.arDeg B + Real.log (B.toAddSubgroup.relIndex A.toAddSubgroup) := by
-  have hB := hA.of_le hBA
-  obtain ⟨e, he⟩ := exists_isLatticeFrame hB
-  have hmul := AddSubgroup.relIndex_mul_relIndex
-    (Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup B.toAddSubgroup A.toAddSubgroup
-    he.span_le hBA
-  rw [arDeg_eq_frameDeg _ hA (he.of_le hBA hAB), arDeg_eq_frameDeg _ hB he, frameDeg_eq_relIndex,
-    frameDeg_eq_relIndex, ← hmul, Nat.cast_mul,
-    Real.log_mul (Nat.cast_ne_zero.2 (he.relIndex_ne_zero hB))
-      (Nat.cast_ne_zero.2 (relIndex_ne_zero_of_le_span hA hAB))]
-  ring
-
-theorem arDeg_le_of_finrank_eq {B : Submodule (𝓞 K) V} (hA : A.FG) (hBA : B ≤ A)
-    (hr : finrank (𝓞 K) B = finrank (𝓞 K) A) : h.arDeg B ≤ h.arDeg A := by
-  rw [h.arDeg_eq_add_log_relIndex hA hBA (mem_span_of_le_of_finrank_eq hA hBA hr)]
-  exact le_add_of_nonneg_right (Real.log_natCast_nonneg _)
-
-theorem arDeg_diag (d : (K →+* ℂ) → ι → ℝ) (hd : ∀ σ i, 0 < d σ i) :
-    (diag d hd).arDeg (Submodule.span (𝓞 K) (Set.range (Pi.basisFun K ι))) =
-      -∑ σ : K →+* ℂ, 1 / 2 * ∑ i, Real.log (d σ i) := by
-  rw [arDeg_span _ (Pi.basisFun K ι).linearIndependent]
-  simp only [gramDet_diag, Real.log_prod fun i _ => (hd _ i).ne']
-
-theorem arDeg_stdField_span_singleton {a : K} (ha : a ≠ 0) :
-    (stdField K).arDeg (Submodule.span (𝓞 K) {a}) = -Real.log |((Algebra.norm ℚ a : ℚ) : ℝ)| := by
-  rw [arDeg_span_singleton _ ha, abs_norm_eq_prod_complexEmbeddings,
-    Real.log_prod fun σ _ => by simpa using ha]
-  simp only [stdField_norm]
-
 end ArDeg
 
 noncomputable def degNorm (A : Submodule (𝓞 K) V) : ℝ := h.arDeg A / finrank ℚ K
@@ -747,40 +671,15 @@ variable {A B : Submodule (𝓞 K) V}
 @[simp]
 theorem degNorm_bot : h.degNorm ⊥ = 0 := by simp [degNorm]
 
-theorem slope_of_finrank_eq_one (h1 : finrank (𝓞 K) A = 1) : h.slope A = h.degNorm A := by
-  simp [slope, h1]
-
 @[simp]
 theorem quotSlope_bot (A : Submodule (𝓞 K) V) : h.quotSlope A ⊥ = h.slope A := by
   simp [quotSlope, slope]
-
-theorem slope_le_muMax (hBA : B ≤ A) (h0 : B ≠ ⊥) : (h.slope B : EReal) ≤ h.muMax A :=
-  le_iSup_of_le B (le_iSup_of_le hBA (le_iSup_of_le h0 le_rfl))
-
-theorem muMax_le_iff {c : EReal} : h.muMax A ≤ c ↔ ∀ B ≤ A, B ≠ ⊥ → (h.slope B : EReal) ≤ c := by
-  simp [muMax]
-
-theorem muMax_le_coe_iff {c : ℝ} : h.muMax A ≤ c ↔ ∀ B ≤ A, B ≠ ⊥ → h.slope B ≤ c := by
-  simp [muMax_le_iff]
 
 @[simp]
 theorem muMax_bot : h.muMax ⊥ = ⊥ := by simp [muMax]
 
 @[simp]
 theorem muMin_bot : h.muMin ⊥ = ⊤ := by simp [muMin]
-
-theorem muMax_of_finrank_eq_one (hA : A.FG) (h1 : finrank (𝓞 K) A = 1) :
-    h.muMax A = h.slope A := by
-  have h0 : A ≠ ⊥ := by
-    rintro rfl
-    simp at h1
-  refine le_antisymm (h.muMax_le_coe_iff.2 fun B hBA hB => ?_) (h.slope_le_muMax le_rfl h0)
-  haveI : Module.Finite (𝓞 K) A := Module.Finite.iff_fg.2 hA
-  have hr : finrank (𝓞 K) B = 1 :=
-    le_antisymm (h1 ▸ Submodule.finrank_mono hBA) (finrank_lattice_pos (hA.of_le hBA) hB)
-  rw [h.slope_of_finrank_eq_one hr, h.slope_of_finrank_eq_one h1]
-  exact div_le_div_of_nonneg_right (h.arDeg_le_of_finrank_eq hA hBA (hr.trans h1.symm))
-    (Nat.cast_nonneg _)
 
 end Slopes
 

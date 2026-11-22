@@ -175,43 +175,6 @@ theorem homN_eq (G : WTZ E) (f : Rul Xo c) (z : Σ k, Frame (U₁.X k).Ψ r) :
   show _ * (‖rdU U₁ f z.1 z.2‖ * (U₁.X z.1).nfac (modelWt U₁ G z.1) z.2) = _
   rw [normFac]; ring
 
-theorem normFac_pos (G : WTZ E) {z : Σ k, Frame (U₁.X k).Ψ r} (hz : z.2 ∈ (U₁.X z.1).dom) : 0 < normFac U₁ x G z := by
-  have hd : ∀ τ i, dmin (U₁.X z.1).Gm z.2 τ i ≠ 0 := fun τ i h0 => by
-    have := (hz τ).2 i
-    rw [h0] at this; simp at this
-  exact mul_pos (lieFacZ_pos _ _) (Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ =>
-    Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _)
-
-theorem normFac_add {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) {z : Σ k, Frame (U₁.X k).Ψ r}
-    (hz : z.2 ∈ (U₁.X z.1).dom) : normFac U₁ x (G + G') z = normFac U₁ x G z * normFac U₁ x G' z := by
-  have hd : ∀ τ i, dmin (U₁.X z.1).Gm z.2 τ i ≠ 0 := fun τ i h0 => by
-    have := (hz τ).2 i
-    rw [h0] at this; simp at this
-  have key : ∀ la la' : Wt (U₁.X z.1).Ψ r, (U₁.X z.1).nfac (la + la') z.2 =
-      (U₁.X z.1).nfac la z.2 * (U₁.X z.1).nfac la' z.2 := fun la la' => by
-    unfold Data.nfac
-    rw [← Finset.prod_mul_distrib]
-    refine Finset.prod_congr rfl fun τ _ => ?_
-    rw [← Finset.prod_mul_distrib]
-    refine Finset.prod_congr rfl fun i _ => ?_
-    rw [← Real.rpow_add (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _)))]
-    congr 1
-    simp only [Pi.add_apply]
-    push_cast
-    ring
-  rw [normFac, normFac, normFac, modelWt_add U₁ hG hG', key, lieFacZ_add]
-  ring
-
-theorem normFac_nsmul {G : WTZ E} (hG : Even G.2) {z : Σ k, Frame (U₁.X k).Ψ r} (hz : z.2 ∈ (U₁.X z.1).dom) (n : ℕ) :
-    normFac U₁ x (n • G) z = normFac U₁ x G z ^ n := by
-  induction n with
-  | zero =>
-    have h := normFac_add x U₁ (G := 0) (G' := 0) Even.zero Even.zero hz
-    rw [add_zero] at h
-    rw [zero_nsmul, pow_zero]
-    exact (mul_left_cancel₀ (normFac_pos x U₁ 0 hz).ne' (h.symm.trans (mul_one _).symm))
-  | succ n ih => rw [succ_nsmul, normFac_add x U₁ (even_nsmul hG n) hG hz, ih, pow_succ]
-
 end Fac
 
 end GlobalTheory.DegTop

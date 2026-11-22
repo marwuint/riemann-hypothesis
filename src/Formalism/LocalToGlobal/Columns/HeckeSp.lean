@@ -190,13 +190,7 @@ variable (L : Type) [Field L] [Algebra K L]
 
 def opL (op : I → End K V) (i : I) : End L (L ⊗[K] V) := (op i).baseChange L
 
-def eigSumOver (op : I → End K V) (C : (I → L) → Prop) : Submodule K V :=
-  ((eigSum (opL L op) C).restrictScalars K).comap (TensorProduct.mk K L V 1)
-
 variable {L} {op : I → End K V}
-
-theorem mem_eigSumOver {C : (I → L) → Prop} {v : V} :
-    v ∈ eigSumOver L op C ↔ (1 : L) ⊗ₜ[K] v ∈ eigSum (opL L op) C := Iff.rfl
 
 end BaseChange
 

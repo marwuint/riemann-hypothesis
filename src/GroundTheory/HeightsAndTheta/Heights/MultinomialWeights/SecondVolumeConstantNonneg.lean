@@ -139,16 +139,6 @@ structure VolumeSystem (T : Type) [Fintype T] [DecidableEq T] (N j : ℕ) (Comp 
   hFl_wall : ∀ lam, IsDominantWeight lam → (∃ τ, ncGap j lam τ = 0) → eval lam hFl = 0
   hFl_nonneg : ∀ lam, IsDominantWeight lam → 0 ≤ eval lam hFl
 
-namespace VolumeSystem
-
-end VolumeSystem
-
 set_option linter.dupNamespace false
-
-section Inhabitants
-
-theorem cons_three_two {α : Type} (a : α) (v : Fin 2 → α) : (Fin.cons a v : Fin 3 → α) 2 = v 1 := rfl
-
-end Inhabitants
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.TheoremB

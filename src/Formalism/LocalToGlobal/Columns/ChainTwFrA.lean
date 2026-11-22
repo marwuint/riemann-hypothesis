@@ -14,10 +14,6 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
-def tfaExt {N n : ℕ} (hN : N = n + 1) (f : Sp E n ≃ₗ[E] Sp E n) : Sp E N ≃ₗ[E] Sp E N := by
-  subst hN
-  exact extE f
-
 theorem tfa_std_iff {n : ℕ} (Q : HeightOneSpectrum (𝓞 E)) (x : Sp E (n + 1)) :
     x ∈ stdAt E (n + 1) Q ↔ initL E n x ∈ stdAt E n Q ∧ IntAt Q (x (Fin.last n)) := by
   rw [ciMem_stdAt, ciMem_stdAt]

@@ -63,10 +63,6 @@ section Tab
 
 variable {X : Fields} (A : Amb X) {a b : ℕ}
 
-def Amb.tabK (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) (cA cB : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
-    (Ξ : HomE X.E a b → X.K) (m : DVar X.Tau a b →₀ ℕ) : X.K :=
-  latSum (divLat cA (homAt Sall N N')) (mulLat cB (homAt Sall N N')) fun x => Ξ x * A.jetK Sall N N' cB x m
-
 def Amb.thDat (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) (cA cB : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
     (Ξ : HomE X.E a b → X.K) : VCx X.Tau a b → ℂ := fun z =>
   latSum (divLat cA (homAt Sall N N')) (mulLat cB (homAt Sall N N')) fun x => A.σ₀ (Ξ x) * A.thInd Sall N N' cB x z

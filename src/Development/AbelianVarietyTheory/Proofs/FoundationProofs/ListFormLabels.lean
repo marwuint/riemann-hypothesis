@@ -31,6 +31,4 @@ def ListFormAt (D : D7) (σ : D.what₂.FT) (k : Fin 2) (v : D.nd.PlG k) : Prop 
       ∃ φ : Formalism.MainNotions.N.GE D.nd,
         D.ntypes.rbar σ w (φ * D.ntypes.tg k v * φ⁻¹) = D.ntypes.rbar σ w (D.ntypes.tg k v) ^ D.host.g k)
 
-theorem listForm_iff_forall (D : D7) : Formalism.MainNotions.ArithmeticCylinders.ArchimedeanSignatureMatching D ↔ ∀ σ k v, ListFormAt D σ k v := Iff.rfl
-
 end GlobalTheory.Proof.ListFormLabels

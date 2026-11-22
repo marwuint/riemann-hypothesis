@@ -831,16 +831,6 @@ variable {X : Fields} {Pr : Primes X} (Ch : Chars X Pr Examples₂.R0.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ)
   {mq : ℕ → rowSG Pr sel (mu0 X.F X.E X.K S) → X.K}
 
-theorem ciNotQ (P : HeightOneSpectrum (𝓞 X.E)) : P ∉ QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) := by
-  rw [show ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1 from rfl, ciQE_one]
-  exact Finset.notMem_empty P
-
-theorem ciMemG (P : rowSG Pr sel (mu0 X.F X.E X.K S)) : P.1 ∈ Pr.vGs := by
-  classical
-  rcases Finset.mem_union.1 P.2 with h | h
-  · exact h
-  · exact absurd h (ciNotQ sel S P.1)
-
 end Inst
 
 section Tied

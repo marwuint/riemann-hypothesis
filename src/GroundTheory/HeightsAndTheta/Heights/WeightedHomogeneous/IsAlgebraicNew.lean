@@ -19,8 +19,6 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ} {P : ArithVa
 
 abbrev plusMap : MvPolynomial (Coord D.extSizes) ℤ →+* MvPolynomial (Option ι) P.FunField := D.extMap
 
-theorem ker_plusMap : RingHom.ker (plusMap D) = D.extIdeal := rfl
-
 end AddBlockDimension
 
 end

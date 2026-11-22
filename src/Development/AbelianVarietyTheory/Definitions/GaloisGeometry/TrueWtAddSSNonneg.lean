@@ -76,50 +76,6 @@ theorem map_jetMap {L : Type} [Field L] (s : K →+* L) (J : (DVar ι a b →₀
   refine Finset.sum_congr rfl fun μ hμ => ?_
   rw [jetLin_monomial, map_monomial, map_monomial, jetLin_monomial, smul_monomial, map_mul, h μ hμ, smul_eq_mul, mul_left_comm]
 
-def derPol (cD : ι → K) (Q : Formalism.L2.DIV.Pol K ι a) (y' : ι → Matrix (Fin b) (Fin b) K) : MvPolynomial (DVar ι a b) K :=
-  aeval (fun k : ι × Fin a × Fin a => ∑ β : Fin b,
-    C (cD k.1 * (if h : (k.2.2 : ℕ) < b then y' k.1 β ⟨k.2.2, h⟩ else 0)) * X ((k.1, β, k.2.1) : DVar ι a b)) Q
-
-theorem eval_jetMap (cD : ι → K) (T : (DVar ι a b →₀ ℕ) → K) (Q : Formalism.L2.DIV.Pol K ι a) (y' : ι → Matrix (Fin b) (Fin b) K) :
-    eval (fun v : ι × Fin b × Fin b => y' v.1 v.2.1 v.2.2) (jetMap (fun q => (q.prod fun k n => cD k.1 ^ n) * T q) 0 Q) =
-      ∑ q ∈ (derPol cD Q y').support, coeff q (derPol cD Q y') * T q := by
-  let φ : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K →ₐ[K] MvPolynomial (DVar ι a b) K :=
-    aeval (Sum.elim (fun v => C (y' v.1 v.2.1 v.2.2)) fun k => C (cD k.1) * X k)
-  let l : MvPolynomial (DVar ι a b) K →ₗ[K] K := (basisMonomials _ K).constr K T
-  have hl : ∀ q c, l (monomial q c) = c * T q := fun q c => by
-    have h : (monomial q c : MvPolynomial _ K) = c • basisMonomials _ K q := by
-      rw [coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]
-    rw [h, map_smul, Module.Basis.constr_basis, smul_eq_mul]
-  have h1 : φ (subD K ι a b Q) = derPol cD Q y' := by
-    rw [← AlgHom.comp_apply]
-    refine AlgHom.congr_fun (MvPolynomial.algHom_ext fun v => ?_) Q
-    simp only [subD, φ, AlgHom.comp_apply, aeval_X]
-    split_ifs
-    · simp only [map_sum, map_mul, aeval_X, Sum.elim_inl, Sum.elim_inr]
-      exact Finset.sum_congr rfl fun β _ => by ring
-    · simp
-  have h2 : ∀ S, eval (fun v : ι × Fin b × Fin b => y' v.1 v.2.1 v.2.2) (jetLin (fun q => (q.prod fun k n => cD k.1 ^ n) * T q) S) =
-      l (φ S) := fun S => by
-    induction S using MvPolynomial.induction_on' with
-    | add p q hp hq => simp only [map_add, hp, hq]
-    | monomial μ c =>
-      have e : φ (monomial μ c) = monomial (μ.comapDomain Sum.inr Sum.inr_injective.injOn)
-          (c * ((μ.comapDomain Sum.inl Sum.inl_injective.injOn).prod fun v n => y' v.1 v.2.1 v.2.2 ^ n) *
-            (μ.comapDomain Sum.inr Sum.inr_injective.injOn).prod fun k n => cD k.1 ^ n) := by
-        rw [aeval_monomial, monomial_eq, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp),
-          Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp), Fintype.prod_sum_type]
-        simp only [Sum.elim_inl, Sum.elim_inr, Finsupp.comapDomain_apply, map_mul, map_prod, map_pow, mul_pow,
-          Finset.prod_mul_distrib, algebraMap_eq]
-        ring
-      rw [e, hl, jetLin_monomial, eval_monomial]
-      ring
-  have e0 : jetMap (fun q => (q.prod fun k n => cD k.1 ^ n) * T q) 0 Q =
-      jetLin (fun q => (q.prod fun k n => cD k.1 ^ n) * T q) (subD K ι a b Q) := by simp [jetMap]
-  rw [e0, h2, h1]
-  conv_lhs => rw [(derPol cD Q y').as_sum]
-  rw [map_sum]
-  exact Finset.sum_congr rfl fun q _ => hl _ _
-
 end Jet
 
 structure ChSrc (X : Fields) (R : Ranks) where
@@ -363,90 +319,6 @@ structure Tied (hc : X.Tau → HCParam R) : Prop where
   Nab _ := nabAtr X.emb lam (stdLat X.E n)
   Del _ := delAtr X.emb lam (stdLat X.E n)
 
-theorem exampleDatum_isAdmissible (X : Fields) {n : ℕ} (lam : X.Tau → DomWeight n) : (exampleGSD X lam).Ok where
-  fin_orb := Quotient.finite _
-  fin_stab _ := inferInstance
-  nab_smul _ _ := (Submodule.map_id _).symm
-  del_smul _ _ := (Submodule.map_id _).symm
-  inv _ _ _ := rfl
-
-theorem card_stabilizer_units_int (d : Unit) : Nat.card (MulAction.stabilizer ℤˣ d) = 2 := by
-  have : MulAction.stabilizer ℤˣ d = ⊤ := by
-    ext g; simp only [Subgroup.mem_top, iff_true]; rfl
-  rw [this, Subgroup.card_top, Nat.card_eq_fintype_card]
-  simp
-
-theorem exists_linearForm_apply_eq_one (X : Fields) {n : ℕ} (lam : X.Tau → DomWeight n) : ∃ f : VV X.K lam →ₗ[X.K] X.K, f (extV X.K lam) = 1 := by
-  obtain ⟨f, hf⟩ := not_forall.mp (mt (Module.forall_dual_apply_eq_zero_iff X.K (extV X.K lam)).mp (extV_ne_zero lam))
-  exact ⟨(f (extV X.K lam))⁻¹ • f, by simp [inv_mul_cancel₀ hf]⟩
-
-def toyExample (hc : X.Tau → HCParam R) : ChSrc X R where
-  F i := (exampleGSD X (trueWt hc i)).toFam
-  ok i _ := exampleDatum_isAdmissible X (trueWt hc i)
-  lam := trueWt hc
-  eV _ := LinearEquiv.refl _ _
-  kk i _ _ :=
-    { k := fun _ _ => (exists_linearForm_apply_eq_one X (trueWt hc i)).choose.smulRight (extV X.K (trueWt hc (i + 1)))
-      equiv := fun _ _ _ _ => rfl }
-  rho _ _ := Complex.I
-  rho' _ _ := -1
-  rho_norm _ _ _ := by simp
-  rho'_norm _ _ _ := by simp
-  DG := 2
-  DG_pos := two_pos
-  dvd _ _ _ := (card_stabilizer_units_int _).dvd
-
-theorem exampleChain_compatible (hc : X.Tau → HCParam R) : (toyExample hc).Tied hc where
-  lam_eq _ _ := rfl
-  act i _ _ := ⟨1, 1, fun g x => by
-    rw [MonoidHom.one_apply, MonoidHom.one_apply, map_one, map_one, Units.val_one, one_smul]
-    rfl⟩
-
-def exampleExt (hc : X.Tau → HCParam R) (i : ℕ) : ((toyExample hc).F i).Forms := fun _ => ⟨fun _ => extV X.K (trueWt hc i), fun _ _ => rfl⟩
-
-theorem exampleChain_K_apply (hc : X.Tau → HCParam R) (i : ℕ) (hi : i < R.m) (a : ℂ) :
-    ((toyExample hc).chain σ hc).K i (a • (toyExample hc).emb σ i (exampleExt hc i)) = (a / 2) • (toyExample hc).emb σ (i + 1) (exampleExt hc (i + 1)) := by
-  funext c'
-  have hs : Subsingleton (((toyExample hc).chain σ hc).cls i) := ⟨by
-    rintro ⟨⟨⟩, p⟩ ⟨⟨⟩, q⟩
-    induction p using Quotient.inductionOn
-    induction q using Quotient.inductionOn
-    rfl⟩
-  let c₀ : ((toyExample hc).F i).Cl := ⟨(), Quotient.mk _ ()⟩
-  have hk : (toyExample hc).ker i c₀ c' (extV X.K (trueWt hc i)) = extV X.K (trueWt hc (i + 1)) := by
-    show (exists_linearForm_apply_eq_one X (trueWt hc i)).choose (extV X.K (trueWt hc i)) • extV X.K (trueWt hc (i + 1)) = _
-    rw [(exists_linearForm_apply_eq_one X (trueWt hc i)).choose_spec, one_smul]
-  have hw : ((toyExample hc).chain σ hc).wt i c₀ = 2⁻¹ :=
-    (congrArg (fun n : ℕ => (n : ℂ)⁻¹) (card_stabilizer_units_int _)).trans (by norm_num)
-  have hK := (toyExample hc).Kmap_ev σ hc i hi c₀ c' (extV X.K (trueWt hc i))
-  rw [hk] at hK
-  refine (Fintype.sum_subsingleton (fun c : ((toyExample hc).chain σ hc).cls i => ((toyExample hc).chain σ hc).wt i c •
-    ((toyExample hc).chain σ hc).Kmap i c c' (a • (toyExample hc).emb σ i (exampleExt hc i) c)) c₀).trans ?_
-  have hm := (((toyExample hc).chain σ hc).Kmap i c₀ c').map_smul a ((toyExample hc).ev σ i (extV X.K (trueWt hc i)))
-  rw [hK] at hm
-  rw [hw]
-  refine (congrArg (fun f : Fr X σ (R.N (i + 1)) → ℂ => (2⁻¹ : ℂ) • f) hm).trans ?_
-  exact (smul_smul _ _ _).trans (congrArg (fun z : ℂ => z • (toyExample hc).ev σ (i + 1) (extV X.K (trueWt hc (i + 1)))) (by ring))
-
-theorem exampleChain_col_apply (hc : X.Tau → HCParam R) :
-    ((toyExample hc).chain σ hc).col ((toyExample hc).emb σ 0 (exampleExt hc 0)) = ((1 / 2 : ℂ) ^ R.m) • (toyExample hc).emb σ R.m (exampleExt hc R.m) := by
-  have h : ∀ j, j ≤ R.m → Formalism.ThetaLiftIndependence.chainOpM ((toyExample hc).chain σ hc).wt ((toyExample hc).chain σ hc).Kmap j ((toyExample hc).emb σ 0 (exampleExt hc 0)) =
-      ((1 / 2 : ℂ) ^ j) • (toyExample hc).emb σ j (exampleExt hc j) := by
-    intro j hj
-    induction j with
-    | zero => rw [pow_zero, one_smul]; rfl
-    | succ j ih =>
-      have := exampleChain_K_apply σ hc j (by omega) ((1 / 2 : ℂ) ^ j)
-      rw [← ih (by omega), div_eq_mul_one_div, ← pow_succ] at this
-      exact this
-  exact h R.m le_rfl
-
-def exampleCpl (X : Fields) {n : ℕ} (lam : X.Tau → DomWeight n) : Cpl (exampleGSD X lam) where
-  Yb := ℤˣ
-  ys _ := Set.univ
-  fin _ := Set.finite_univ
-  equiv _ _ _ := Iff.rfl
-
 abbrev UnfFam : Type :=
   ∀ i, (A.F i).Cl → (A.F (i + 1)).Cl → ((Fr X σ (R.N i) → ℂ) →ₗ[ℂ] (Fr X σ (R.N (i + 1)) → ℂ))
 
@@ -455,10 +327,6 @@ def chainWith (hc : X.Tau → HCParam R) (U : A.UnfFam σ) : ColumnChain R X.Tau
 def Unfolds (hc : X.Tau → HCParam R) (U : A.UnfFam σ) : Prop :=
   ∀ i, i < R.m → ∀ c c' x (y : Fr X σ (R.N (i + 1))), U i c c' ((A.chain σ hc).sharp i (A.ev σ i x)) y =
     (A.rho i c * A.rho' i c')⁻¹ * ((∏ τ, deFr y τ ^ sD hc i τ) * A.ev σ (i + 1) (A.ker i c c' x) y)
-
-theorem chainWith_self (hc : X.Tau → HCParam R) : A.chainWith σ hc (A.chain σ hc).unf = A.chain σ hc := rfl
-
-theorem chainWith_unf (hc : X.Tau → HCParam R) (U : A.UnfFam σ) : (A.chainWith σ hc U).unf = U := rfl
 
 variable {A σ} in
 
@@ -515,18 +383,6 @@ abbrev JetFam : Type :=
   ∀ i, (A.F i).Cl → (A.F (i + 1)).Cl → (Formalism.L2.DIV.Pol ℂ X.Tau (R.N i) →ₗ[ℂ] Formalism.L2.DIV.Pol ℂ X.Tau (R.N (i + 1)))
 
 def unfJet (J : A.JetFam) : A.UnfFam σ := fun i c c' => polFn X σ (R.N (i + 1)) ∘ₗ J i c c' ∘ₗ fnPol X σ (R.N i)
-
-def chainJet (hc : X.Tau → HCParam R) (J : A.JetFam) : ColumnChain R X.Tau hc := A.chainWith σ hc (A.unfJet σ J)
-
-theorem chainJet_unf (hc : X.Tau → HCParam R) (J : A.JetFam) (i : ℕ) (c : (A.F i).Cl) (c' : (A.F (i + 1)).Cl)
-    (Q : Formalism.L2.DIV.Pol ℂ X.Tau (R.N i)) (y' : Fr X σ (R.N (i + 1))) :
-    (A.chainJet σ hc J).unf i c c' (fun y : Fr X σ (R.N i) => MvPolynomial.eval (fun v => y.1 v.1 v.2.1 v.2.2) Q) y' =
-      MvPolynomial.eval (fun v => y'.1 v.1 v.2.1 v.2.2) (J i c c' Q) := by
-  have e : (fun y : Fr X σ (R.N i) => MvPolynomial.eval (fun v => y.1 v.1 v.2.1 v.2.2) Q) = polFn X σ _ Q :=
-    funext fun y => (polFn_apply σ Q y).symm
-  rw [e, ← polFn_apply]
-  show polFn X σ _ (J i c c' (fnPol X σ _ (polFn X σ _ Q))) y' = _
-  rw [fnPol_polFn]
 
 def nuEnd (hc : X.Tau → HCParam R) (i : ℕ) (τ : X.Tau) : ℕ := ((trueWt hc i τ).detShift + sS hc i τ).toNat
 
@@ -621,16 +477,6 @@ theorem Tied.exists_jetTie {hc : X.Tau → HCParam R} (h : A.Tied hc) : ∃ J : 
   rw [e, map_smul, fnPol_polFn, smul_inv_smul₀ (mul_ne_zero h1 h2)]
 
 abbrev ThFam : Type := ∀ i, (A.F i).Cl → (A.F (i + 1)).Cl → Formalism.L2.Ker.VCx X.Tau (R.N i) (R.N (i + 1)) → ℂ
-
-def jetTh (cD : X.Tau → ℂ) (Th : A.ThFam) : A.JetFam := fun i c c' => Formalism.L2.Ker.jetMap (Formalism.L2.Ker.jetC cD (Th i c c')) 0
-
-def chainTh (hc : X.Tau → HCParam R) (cD : X.Tau → ℂ) (Th : A.ThFam) : ColumnChain R X.Tau hc := A.chainJet σ hc (A.jetTh cD Th)
-
-theorem chainTh_unf (hc : X.Tau → HCParam R) (cD : X.Tau → ℂ) (Th : A.ThFam) (i : ℕ) (c : (A.F i).Cl) (c' : (A.F (i + 1)).Cl)
-    (Q : Formalism.L2.DIV.Pol ℂ X.Tau (R.N i)) (y' : Fr X σ (R.N (i + 1))) :
-    (A.chainTh σ hc cD Th).unf i c c' (fun y : Fr X σ (R.N i) => MvPolynomial.eval (fun v => y.1 v.1 v.2.1 v.2.2) Q) y' =
-      ∑ q ∈ (derPol cD Q y'.1).support, MvPolynomial.coeff q (derPol cD Q y'.1) * Formalism.L2.Ker.derivAt0 (Th i c c') q :=
-  (A.chainJet_unf σ hc _ i c c' Q y').trans (eval_jetMap cD _ Q y'.1)
 
 end ChSrc
 

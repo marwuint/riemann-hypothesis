@@ -40,11 +40,6 @@ def stdLat (g : ℕ) : Submodule ℤ (Fl g) :=
 def IsLat {g : ℕ} (M : Submodule ℤ (Fl g)) : Prop :=
   ∃ _ : DiscreteTopology M, IsZLattice ℝ M
 
-def wedgePow {T : Type*} [NormedAddCommGroup T] [NormedSpace ℝ T]
-    (α : T [⋀^Fin 2]→L[ℝ] ℝ) (k : ℕ) (v : Fin k × Fin 2 → T) : ℝ :=
-  (1 / 2 ^ k) * ∑ σ : Equiv.Perm (Fin k × Fin 2),
-    ((Equiv.Perm.sign σ : ℤ) : ℝ) * ∏ i, α ![v (σ (i, 0)), v (σ (i, 1))]
-
 def herm {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (v w : Fin g → ℂ) : ℂ :=
   (v ᵥ* ((τ.map Complex.im)⁻¹).map (fun t : ℝ => (t : ℂ))) ⬝ᵥ star w
 

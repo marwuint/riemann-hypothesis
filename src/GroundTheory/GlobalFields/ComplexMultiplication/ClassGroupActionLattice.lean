@@ -42,9 +42,6 @@ def cmRingEquiv : 𝓞 K ≃+* cmRing σ :=
     ⟨fun a b h ↦ (FaithfulSMul.algebraMap_injective (𝓞 K) K) (σ.injective (congrArg Subtype.val h)),
       (σ.comp (algebraMap (𝓞 K) K)).rangeRestrict_surjective⟩
 
-theorem cmRingEquiv_apply (a : 𝓞 K) : (cmRingEquiv σ a : ℂ) = σ (algebraMap (𝓞 K) K a) :=
-  rfl
-
 section Quadratic
 
 variable (hK : finrank ℚ K = 2) [IsTotallyComplex K]

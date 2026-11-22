@@ -32,46 +32,6 @@ theorem idem_mul_idem (T : Finset (Pl F)) : idem T * idem T = idem T := by
   refine Finset.sum_congr rfl fun v hv => ?_
   rw [GlobalTheory.ThK.LocalOps.liftV_one_mul, ← idem, evFin_idem, if_pos hv]
 
-def truncMat {n : ℕ} (e : AF F) (A : Matrix (Fin n) (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E) := 1 + e • (A - 1)
-
-theorem truncMat_mul {n : ℕ} {e : AF F} (he : e * e = e) {A B : Matrix (Fin n) (Fin n) (AE F E)} (h : A * B = 1) :
-    truncMat e A * truncMat e B = 1 := by
-  simp only [truncMat, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul,
-    smul_smul, he, Matrix.sub_mul, Matrix.mul_sub, h]
-  have he2 : e ^ 2 = e := by rw [sq, he]
-  match_scalars <;> ring_nf <;> simp only [he2] <;> ring
-
-theorem truncMat_transpose {n : ℕ} (e : AF F) (A : Matrix (Fin n) (Fin n) (AE F E)) :
-    (truncMat e A)ᵀ = truncMat e Aᵀ := by
-  simp [truncMat, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_sub]
-
-theorem truncMat_map (σ : E →ₐ[F] E) {n : ℕ} (e : AF F) (A : Matrix (Fin n) (Fin n) (AE F E)) :
-    (truncMat e A).map (cA σ) = truncMat e (A.map (cA σ)) := by
-  ext i j
-  by_cases h : i = j <;> simp [truncMat, Matrix.one_apply, h]
-
-theorem truncMat_unitary {n : ℕ} {e : AF F} (he : e * e = e) {A Ab J : Matrix (Fin n) (Fin n) (AE F E)}
-    (h : Aᵀ * J * Ab = J) : (truncMat e A)ᵀ * J * truncMat e Ab = J := by
-  have h' : Aᵀ * (J * Ab) = J := by rw [← Matrix.mul_assoc, h]
-  rw [truncMat_transpose]
-  simp only [truncMat, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul,
-    smul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, h']
-  have he2 : e ^ 2 = e := by rw [sq, he]
-  match_scalars <;> ring_nf <;> simp only [he2] <;> ring
-
 variable {σ : E →ₐ[F] E}
-
-def truncU (T : Finset (Pl F)) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J) : UA σ J :=
-  ⟨⟨truncMat (idem T) k.1.1, truncMat (idem T) k.1.inv, truncMat_mul (idem_mul_idem T) k.1.val_inv,
-    truncMat_mul (idem_mul_idem T) k.1.inv_val⟩, by
-    show (truncMat (idem T) k.1.1)ᵀ * incM F J * (truncMat (idem T) k.1.1).map (cA σ) = incM F J
-    rw [truncMat_map]
-    exact truncMat_unitary (idem_mul_idem T) k.2⟩
-
-theorem mat_truncU (T : Finset (Pl F)) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J) :
-    mat (truncU T k) = truncMat (idem T) (mat k) := rfl
-
-theorem mat_truncU_inv (T : Finset (Pl F)) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J) :
-    mat (truncU T k)⁻¹ = truncMat (idem T) (mat k⁻¹) := rfl
 
 end GlobalTheory.TruncFix

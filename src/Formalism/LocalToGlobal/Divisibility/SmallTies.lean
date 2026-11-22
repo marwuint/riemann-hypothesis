@@ -68,9 +68,6 @@ variable {D : D7} {Bs : DefBase D.what₂.LL} {Df0 Df1 : DefSide Bs} {Dc : DefCo
 def FTie (L : SizeData₂ D) (N : IndefNum Bs) (eJ : Bs.J ≃ Fin D.R.m) : Prop :=
   ∀ y j, N.F0 y j = L.F ((eJ j).1 + 1) (D.plEq.symm y)
 
-theorem fTie_num_iff (L : SizeData₂ D) (Z : IndefScale Bs) (C CH : ℝ) (eJ : Bs.J ≃ Fin D.R.m) :
-    FTie L (Z.num C CH) eJ ↔ ∀ y j, Z.F0 y j = L.F ((eJ j).1 + 1) (D.plEq.symm y) := Iff.rfl
-
 theorem sum_lifts_eJ (eJ : Bs.J ≃ Fin D.R.m) (f : ℕ → ℝ) :
     ∑ j ∈ SizeData₂.lifts D, f j = ∑ j : Bs.J, f ((eJ j).1 + 1) := by
   rw [Equiv.sum_comp eJ (fun i : Fin D.R.m => f (i.1 + 1)), Fin.sum_univ_eq_sum_range (fun i => f (i + 1)),

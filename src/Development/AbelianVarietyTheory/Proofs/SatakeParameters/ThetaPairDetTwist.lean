@@ -322,12 +322,6 @@ def famF (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (w :
       refine Subtype.ext (funext fun x => Subtype.ext ?_)
       exact rawF_translate hσ hs hp hu hI Φ x g w hg)⟩
 
-theorem famF_apply (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (w : V)
-    (h : GL (Fin (r + t)) k) (x : V ⊗[ℂ] ℂ) :
-    ((famF hσ hs hp hu hI hμ Φ w).1.1 h).1 x =
-      gjInt m μ σ Bf Φ.1 h (TensorProduct.rid ℂ V x) w := rfl
-
 end Family
 
 end GlobalTheory.GodementJacquet
-

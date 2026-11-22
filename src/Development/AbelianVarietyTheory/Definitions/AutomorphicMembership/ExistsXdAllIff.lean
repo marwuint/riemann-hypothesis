@@ -15,8 +15,6 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL}
 theorem used_loc {D : D7} (i : D.nd.Loc) : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i) :=
   Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩
 
-theorem isot_withLoc {D : D7} (L : LocAll (lay0 D)) : Rows.IsotInternal (withLoc L).what₂ ↔ Rows.IsotInternal D.what₂ := Iff.rfl
-
 end GlobalTheory.HeightCounting.Up.Model
 
 end

@@ -48,9 +48,6 @@ def absFrob (X : Scheme.{0}) (p r : ℕ) (hp : p.Prime) (h : (p : Γ(X, ⊤)) = 
     rw [e2] at ha'
     exact (isUnit_pow_iff (pow_ne_zero _ hp.ne_zero)).1 ha'⟩⟩⟩
 
-theorem absFrob_preimage (X : Scheme.{0}) (p r : ℕ) (hp : p.Prime) (h : (p : Γ(X, ⊤)) = 0) (U : X.Opens) :
-    absFrob X p r hp h ⁻¹ᵁ U = U := rfl
-
 theorem absFrob_appLE (X : Scheme.{0}) (p r : ℕ) (hp : p.Prime) (h : (p : Γ(X, ⊤)) = 0) (U : X.Opens)
     (e : U ≤ absFrob X p r hp h ⁻¹ᵁ U) (f : Γ(X, U)) :
     ((absFrob X p r hp h).appLE U U e).hom f = f ^ p ^ r := by

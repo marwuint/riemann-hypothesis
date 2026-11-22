@@ -28,9 +28,6 @@ def rIdU [IsTotallyReal F] (c : ℝ) : (AF F ⊗[F] E)ˣ where
 theorem val_rIdU [IsTotallyReal F] (c : ℝ) :
     (rIdU F E c : AF F ⊗[F] E) = algebraMap (AF F) (AF F ⊗[F] E) (rId F c) := rfl
 
-theorem inv_rIdU [IsTotallyReal F] (c : ℝ) :
-    (↑(rIdU F E c)⁻¹ : AF F ⊗[F] E) = algebraMap (AF F) (AF F ⊗[F] E) (rId F (-c)) := rfl
-
 variable (σ) in
 theorem sigRA_sigRA (h : IsCMExt F E σ) (x : AF F ⊗[F] E) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ x) = x := by
   induction x using TensorProduct.induction_on with

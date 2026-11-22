@@ -8,9 +8,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
-theorem psiUnitOn_iff_interior (D : Out.DegPre R) (χ : D.X) (U : Set (Sp R)) :
-    PsiUnitOn D χ U ↔ PsiUnitOn D χ (interior U) :=
-  ⟨fun h j V hV hU => h j V hV (hU.trans interior_subset),
-   fun h j V hV hU => h j V hV (interior_maximal hU V.isOpen)⟩
-
 end GlobalTheory.DegActCheck

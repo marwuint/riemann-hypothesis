@@ -98,17 +98,6 @@ theorem isHaarOn_iff {U : Set (Mat k r)} (hU : IsClosedSubgroup U) (μ : Measure
   rw [e, Measure.smul_apply, smul_eq_mul]
   exact ENNReal.mul_lt_top c1.lt_top (hν.2.2.1 C hC hCU)
 
-theorem isQuotRep_iff (G : Set (Mat k r)) (μG μS ν : Measure (Mt k r)) :
-    GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.IsQuotRep G μG μS ν ↔
-      ν {x | Matrix.of x ∉ G} = 0 ∧ PI.BesselPeriodGGP.IsQuotMeas μG μS ν := Iff.rfl
-
-theorem psiGen_eq : @PI.BesselPeriodGGP.psiGen = @PI.BesselMapUniq.psiGen := rfl
-
-theorem equivariant_iff {Wp : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
-    (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (φ : Mat k r → Wp) :
-    PI.BesselPeriodGGP.IsSPsiEquiv z (PI.BesselPeriodGGP.psiGen k r z c) π φ ↔
-      GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.IsEquivariant k r z c π φ := Iff.rfl
-
 theorem symmetricMeasure_l2Norm_eq_resolutionL2 {Wp : Type*} [NormedAddCommGroup Wp]
     (ν : Measure (Mt k r)) (φ : Mat k r → Wp) :
     PI.BesselPeriodGGP.l2SG ν φ = GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.sectionL2NormSq ν φ := rfl

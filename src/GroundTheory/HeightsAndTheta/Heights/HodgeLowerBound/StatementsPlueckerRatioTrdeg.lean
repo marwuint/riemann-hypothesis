@@ -10,9 +10,4 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
-theorem PlueckerData.yY_inl {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {K : Type} [Fintype K]
-    {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)]
-    [∀ τ, Module Ω (E τ)] {D : ComponentData II Ψ K ι Ω E} (Pl : PlueckerData D) (k : K) (t : ι k) :
-    Pl.yY ⟨Sum.inl k, t⟩ = Pl.ofΩ (D.y ⟨k, t⟩) := rfl
-
 end GroundTheory.Heights₂.Heights.LowerBoundFree

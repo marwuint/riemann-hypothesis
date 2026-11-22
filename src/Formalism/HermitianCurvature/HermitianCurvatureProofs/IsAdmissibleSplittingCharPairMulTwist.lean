@@ -303,7 +303,6 @@ theorem sum_iota {N : ℕ} (F : Ix (Fin N) → M.Ty P → ℂ) :
 
 def fstP : (DQ P).Pr →+* (DQ P).Op := RingHom.fst (DQ P).Op (DQ P).Opᵐᵒᵖ
 
-theorem firstProjection_apply₂ (x : (DQ P).Pr) : fstP P x = x.1 := rfl
 theorem pfst_add (x y : (DQ P).Pr) : (x + y).1 = x.1 + y.1 := rfl
 theorem pfst_sub (x y : (DQ P).Pr) : (x - y).1 = x.1 - y.1 := rfl
 theorem pfst_mul (x y : (DQ P).Pr) : (x * y).1 = x.1 * y.1 := rfl
@@ -1478,8 +1477,6 @@ def embR (A : Type) [Ring A] (N : ℕ) : SlopeTestRemainingChoices (Fin N) A →
   map_mul' := embM_mul
   map_zero' := embM_zero
   map_add' := embM_add
-
-theorem embR_apply (M : SlopeTestRemainingChoices (Fin N) A) : embR A N M = embM M := rfl
 
 theorem embM_sum {ι : Type*} (s : Finset ι) (f : ι → SlopeTestRemainingChoices (Fin N) A) : embM (∑ i ∈ s, f i) = ∑ i ∈ s, embM (f i) :=
   map_sum (embR A N) f s
@@ -3863,9 +3860,6 @@ theorem coordinate_real (P : M.Par) (l : ℕ) (π : M.Ty P) (Y : ℝ) : M.x0 P l
 theorem qC_real (P : M.Par) (Y : ℝ) : M.qC P (Y : ℂ) = ((qp P Y : ℝ) : ℂ) := by
   simp [M.qC, qp, I.qpoly]
 
-theorem ixOf_snd (P : M.Par) (N : ℕ) (b : Bool) (i : Iota P N) :
-    (ixOf P (N + 1) (b, i)).2 = (ixOf P N i).2 := rfl
-
 theorem dw_true (P : M.Par) (l : ℕ) (w : List ℝ) (Y : ℝ) (q : Qp P.r P.TT) (i : Iota P w.length) :
     dwW P l (Y :: w) q (true, i) = Wq P q ^ (w.length + 1) *
       (cs (M.x0 P l (ixOf P w.length i).2) (M.qC P) (tl w) (ixOf P (w.length + 1) (true, i)).1 *
@@ -5219,8 +5213,6 @@ theorem evalOne_algebraMap_mul (z : ℂ) (x : (DQ P).Pr) (q) : ev1 P (algebraMap
   rw [← Algebra.smul_def, evalOne_smul]
 theorem evalOne_mul_algebraMap (z : ℂ) (x : (DQ P).Pr) (q) : ev1 P (x * algebraMap ℂ (DQ P).Pr z) q = z * ev1 P x q := by
   rw [← Algebra.commutes, evalOne_algebraMap_mul]
-theorem evalOne_function_mul (f fb : SmQ P.r P.TT) (x : (DQ P).Pr) (q) :
-    ev1 P ((DQ P).fnP f fb * x) q = evQ P f q * ev1 P x q := rfl
 theorem evalOne_sum {ι : Type} (s : Finset ι) (x : ι → (DQ P).Pr) (q) :
     ev1 P (∑ i ∈ s, x i) q = ∑ i ∈ s, ev1 P (x i) q := by
   classical
@@ -11421,8 +11413,6 @@ theorem Gs_conj_entry (x : A P (DQ P)) (s : ℝ) (π π' : M.Ty P) :
       (DQ P).fnP (G.GpD P (-s)) (G.GpD P (-s)) * x π π' * (DQ P).fnP (G.GpD P s) (G.GpD P s) := by
   simp only [G.Gs, sc, Matrix.scalar_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]
 
-theorem multiplierPair_fst_apply (f g h : SmQ P.r P.TT) : ((DQ P).fnP f g).1 h = f * h := rfl
-
 theorem act_leibniz (x : A P (DQ P)) (hx : x ∈ MAx2.Jet.TS P) (d : ℕ) (c : ℕ → A P (DQ P))
     (hconj : ∀ s : ℝ, G.Gs P (-s) * x * G.Gs P s = ∑ k ∈ Finset.range (d + 1), ((s : ℂ) ^ k) • c k)
     (f : M.Ty P → SmQ P.r P.TT) (φ : ℝ → ℝ) (hφ : LE.SmoothLog φ) (π : M.Ty P) :
@@ -12454,8 +12444,6 @@ def asS (f : (DQ P).R) : SmQ P.r P.TT := f
 
 theorem isJ_const_mul (p : ℕ) (f : SmQ P.r P.TT) : IsJ P (fun ψ => Phi P ψ p * f) :=
   ⟨1, fun _ => p, fun _ => f, fun φ hφ => by simp⟩
-
-theorem Phi0_rpow (s : ℝ) : Phi P (fun x : ℝ => x ^ s) 0 = G.Gpow P s := rfl
 
 theorem real_pow_conj (σ s : ℝ) (k : ℕ) : starRingEnd ℂ (((σ * s : ℝ) : ℂ) ^ k) = ((σ * s : ℝ) : ℂ) ^ k := by
   rw [map_pow, Complex.conj_ofReal]

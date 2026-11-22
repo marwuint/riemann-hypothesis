@@ -28,12 +28,6 @@ private def wOp (E : Fin 2 → Fin 2 → Module.End ℂ M) : Module.End ℂ M :=
 private noncomputable def xOp (E : Fin 2 → Fin 2 → Module.End ℂ M) (s : ℤˣ) : Module.End ℂ M :=
   E 0 0 - E 1 1 + (((s : ℤ) : ℂ) * Complex.I) • (E 0 1 + E 1 0)
 
-private theorem wOp_apply (E : Fin 2 → Fin 2 → Module.End ℂ M) (x : M) : wOp E x = E 0 1 x - E 1 0 x := rfl
-
-private theorem xOp_apply (E : Fin 2 → Fin 2 → Module.End ℂ M) (s : ℤˣ) (x : M) :
-    xOp E s x = E 0 0 x - E 1 1 x + (((s : ℤ) : ℂ) * Complex.I) • (E 0 1 x + E 1 0 x) := rfl
-
 end Units
 
 end UpperTheory.V.Lit.JL.DiscreteSeriesWeights
-

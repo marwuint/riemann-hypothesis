@@ -13,19 +13,8 @@ noncomputable section
 
 variable {n d : ℕ}
 
-theorem zeroLocus_eq (J : Ideal (MvPolynomial (Fin n) ℂ)) :
-    GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.zeroLocus J =
-      GroundTheory.Heights₂.Heights.ComplexSets.zeroSet J := rfl
-
 theorem linVal_eq (u x : Fin n → ℂ) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.linVal u x = GroundTheory.Heights₂.Heights.linEval u x := rfl
-
-theorem smoothNear_iff (S : Set (Fin n → ℂ)) (f : (Fin n → ℂ) → ℝ) :
-    GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SmoothNear S f ↔ GroundTheory.Heights₂.Heights.SmoothNear S f :=
-  Iff.rfl
-
-theorem withFirst_eq {e : ℕ} (f : (Fin n → ℂ) → ℝ) (ψ : Fin e → (Fin n → ℂ) → ℝ) :
-    GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.withFirst f ψ = Matrix.vecCons f ψ := rfl
 
 theorem fibre_eq (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     (w : Fin d → ℂ) :

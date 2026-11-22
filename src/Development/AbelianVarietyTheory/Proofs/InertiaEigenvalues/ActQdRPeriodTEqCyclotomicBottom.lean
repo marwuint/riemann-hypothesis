@@ -221,16 +221,11 @@ theorem _root_.GlobalTheory.DeRhamCompare.mem_DdRK (y : BdR ⊗[Qp] V) :
     y ∈ _root_.GlobalTheory.DeRhamCompare.DdRK PD ρ ↔ (TensorProduct.comm Qp V BdR).symm y ∈ _root_.Formalism.WeaklyAdmissibleFiltrations.DdR PD ρ :=
   Iff.rfl
 
-theorem mem_DcrisK (y : B ⊗[Qp] V) :
-    y ∈ DcrisK PD ρ ↔ (TensorProduct.comm Qp V B).symm y ∈ Dcris PD ρ := Iff.rfl
-
 def toK (x : V ⊗[Qp] BdR) (hx : x ∈ DdR PD ρ) : DdRK PD ρ :=
   ⟨TensorProduct.comm Qp V BdR x, by rw [mem_DdRK, LinearEquiv.symm_apply_apply]; exact hx⟩
 
 def mulβ : BdR →ₗ[K] DdRK PD ρ →ₗ[K] BdR ⊗[Qp] V :=
   (Algebra.lsmul K K (BdR ⊗[Qp] V) (A := BdR)).toLinearMap.compl₂ (DdRK PD ρ).subtype
-
-theorem mulβ_apply (b : BdR) (y : DdRK PD ρ) : mulβ PD ρ b y = b • (y : BdR ⊗[Qp] V) := rfl
 
 end Comparison
 

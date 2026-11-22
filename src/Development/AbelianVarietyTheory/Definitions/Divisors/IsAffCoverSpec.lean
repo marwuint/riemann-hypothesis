@@ -93,29 +93,9 @@ theorem mem_smCx_C_nat {p k : ℕ} {α : smForms A} : α ∈ (smCx A p).C k ↔ 
   simp only [mem_filAt_nat]
   exact forall_and
 
-theorem smCx_C_neg {p : ℕ} {m : ℤ} (hm : m < 0) : (smCx A p).C m = ⊥ := by
-  refine eq_bot_iff.2 fun α hα => Subtype.ext (funext fun x => (bas n).ext_elem fun T => ?_)
-  by_contra h
-  have := (mem_filAt_iff.1 (mem_smCx_C.1 hα x) T (by simpa using h)).1
-  omega
-
 theorem mem_smCx_Z_nat {p k : ℕ} {α : smForms A} : α ∈ (smCx A p).Z k ↔ α.1 ∈ A.closedForms k ∧ A.TypeGe p α := by
   rw [Cx.Z, Submodule.mem_inf, mem_smCx_C_nat, LinearMap.mem_ker, HolAtlas.mem_closedForms, Subtype.ext_iff]
   exact ⟨fun h => ⟨⟨α.2, h.1.1, h.2⟩, h.1.2⟩, fun h => ⟨⟨h.1.2.1, h.2⟩, h.1.2.2⟩⟩
-
-theorem mem_smCx_B_nat {k : ℕ} {α : smForms A} : α ∈ (smCx A 0).B k ↔ α.1 ∈ A.exactForms k := by
-  rw [Cx.B]
-  cases k with
-  | zero =>
-    rw [smCx_C_neg (by norm_num), Submodule.map_bot, HolAtlas.exactForms_zero, Submodule.mem_bot, Submodule.mem_bot]
-    exact Subtype.ext_iff
-  | succ k =>
-    rw [show ((k + 1 : ℕ) : ℤ) - 1 = k by push_cast; ring, HolAtlas.mem_exactForms_succ, Submodule.mem_map]
-    constructor
-    · rintro ⟨η, hη, rfl⟩
-      exact ⟨η, η.2, (mem_smCx_C_nat.1 hη).1, rfl⟩
-    · rintro ⟨η, hη, hk, e⟩
-      exact ⟨⟨η, hη⟩, mem_smCx_C_nat.2 ⟨hk, fun _ _ _ => Nat.zero_le _⟩, Subtype.ext e.symm⟩
 
 variable (A)
 
@@ -128,15 +108,6 @@ def zEquiv (k : ℕ) : (smCx A 0).Z k ≃ₗ[ℂ] A.closedForms k where
   right_inv _ := rfl
 
 @[simp] theorem coe_zEquiv (k : ℕ) (α : (smCx A 0).Z k) : (zEquiv A k α : A.Fld) = α.1.1 := rfl
-
-def hsmEquiv (k : ℕ) : HSm A k ≃ₗ[ℂ] A.HSm k :=
-  Submodule.Quotient.equiv _ _ (zEquiv A k) (by
-    ext β
-    rw [Submodule.mem_map_equiv]
-    exact mem_smCx_B_nat)
-
-theorem hsmEquiv_mk (k : ℕ) (α : (smCx A 0).Z k) :
-    hsmEquiv A k (Submodule.Quotient.mk α) = HolAtlas.HSm.mk A k (zEquiv A k α) := rfl
 
 end Compare
 

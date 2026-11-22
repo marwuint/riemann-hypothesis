@@ -176,18 +176,6 @@ structure AmpIn (large₂ : SizeData₂ D) (C1 Ca : ℝ) (u u' : D.what₂.Word)
       ENNReal.ofReal (K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)) *
         Formalism.MainNotions.S.Bridge.orbSqO (toBessel D τ u u' θ (W τ) (lamD D τ) (A τ) (hW τ) (hA τ) hT hT') (f τ) p
 
-def JointAmplitudeFactorization {τ₀ Rw I₀ H H₁ : Type} [Fintype I₀] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : Formalism.FourierDecayAlt.PB.Terms τ₀ Rw I₀ H H₁)
-    {Cl Nu : Type} (N : Formalism.FourierDecayAlt.PN.NGData τ₀ D.host.E D.R.rS Cl Nu) (large₂ : SizeData₂ D) (C1 : ℝ)
-    (W : D.what₂.Tau → LocW D.R.k D.R.rS) (A : ∀ τ, LocS (W τ)) (T T' : ℕ) (Cfac : ℝ) : Prop :=
-  ∀ γ (w : Point D.host.E (D.R.rS + 1)), Formalism.FourierDecayAlt.PN.IsPt X N γ → Formalism.L2.SG.RowsConc.toPts w = γ →
-    Formalism.L2.SG.ThmBUse.IsRowPt D T T' w → 0 < N.jacobianSquareBound γ →
-    ∃ (g : D.what₂.Tau → MatKR D.R.k D.R.rS) (p : D.what₂.Tau → Point ℂ (D.R.rS + 1)) (θ' : D.what₂.Tau → ℝ)
-      (νR : D.what₂.Tau → Measure (Mt D.R.k D.R.rS)),
-      (∀ τ, RelPt D (W τ).z (W τ).z' (g τ) (p τ) ∧ normWin D large₂ C1 (θ' τ) ∧ RMeas D (W τ) (g τ) (θ' τ) (νR τ) ∧
-        Formalism.MainNotions.S.Pv.Frames.turnPt (p τ) = ptLoc D τ w) ∧
-      ENNReal.ofReal (N.jacobianSquareBound γ) ≤ ENNReal.ofReal Cfac * ∏ τ, ENNReal.ofReal (hsNormSq ((A τ).J (νR τ) (g τ)))
-
 theorem jSqG_le_MM {large₂ : SizeData₂ D} {C1 Ca Ch Cg b : ℝ} {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < Tr D u}
     {hT' : 0 < Tr D u'} (I : AmpIn large₂ C1 Ca u u' θ hT hT')
     (hok : ∀ τ, LocOk D Ch Cg (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) b (kaRe D)) :
@@ -222,18 +210,6 @@ abbrev AX {D : D7} {X : HidaSetting D} {θ : ℝ} {C : Choice X θ} (hB : WuBess
     ∀ τ, LocS (WX C u u' τ) :=
   fun τ => locS hB u u' τ
 
-def RowBData {D : D7} (large₂ : SizeData₂ D) {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
-    (νB : X.B.I.Ginf → Measure X.B.I.Ginf) (C1 Cn Ire : ℝ) : Prop :=
-  0 ≤ Ire ∧ ∃ (θ : ℝ) (C : Choice X θ) (hB : WuBessel C), 0 < θ ∧ normWin D large₂ C1 θ ∧
-    (∀ τ, ColsTypeTr C u τ ∧ ColsTypeTr C u' τ ∧ ZTr C u τ ∧ ZTr C u' τ ∧ HaarTr C τ ∧ GoodSRest hB u u' τ) ∧
-    ∃ Cfac : ℝ, 0 ≤ Cfac ∧
-      (∀ (νL : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS → ℝ),
-        JointAmplitudeFactorization (Y.tO u u') (NOf2 Y u u' νL νB ng) large₂ C1 (WX C u u') (AX hB u u') (D.mem u).A.T (D.mem u').A.T Cfac) ∧
-      ∀ sec : D.what₂.Tau → ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ,
-        (∀ τ, IsSection D.R.k D.R.rS (WX C u u' τ).z (WX C u u' τ).z' (sec τ)) →
-        ENNReal.ofReal Cfac * ∏ τ, MMv D u u' (AX hB u u' τ) (sec τ) ≤
-          ENNReal.ofReal (large₂.sc.b ^ (Cn * (D.R.m : ℝ) ^ 2 * D.R.f) * Ire)
-
 def AmpUnif : Prop :=
   ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ Ca : ℝ, 0 ≤ Ca ∧ ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
     ∀ (D : D7) (large₂ : SizeData₂ D), Formalism.MainNotions.S.Bridge.AmpIsBessel D large₂ C' Cl Cg cb Cu cT CT C0 0 C1 Ca
@@ -242,19 +218,6 @@ def PtUnif : Prop :=
   ∀ Cg cb Cw cT CT C0 : ℝ, ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
     ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
       Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' → PtFacts Y u u'
-
-def RowBDataUnif : Prop :=
-  ∀ Cg cb Cw cT CT C0 : ℝ, ∃ C1 Cn : ℝ, ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
-      Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' →
-      ∀ (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)
-        (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ), MassDataTie X hb X0 ψ →
-      ∀ (sd C Th : ℝ) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
-        (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
-        (vR : Formalism.L2.SG.TermDef.Term D u u' F0 what₂ → ℝ) (Q : Formalism.L2.SG.PairVal.PairSys D u u' F0 what₂)
-        (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (Irat Ire : ℝ),
-        MassDataAdmissible X Y u u' (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq) Irat Ire →
-      ∀ ν, Pinned X u u' ν → RowBData large₂ Y u u' ν C1 Cn Ire
 
 end Conc
 

@@ -36,10 +36,6 @@ theorem strictTransformι_eq_ι_comp_subschemeι {X X₁ : Scheme.{u}} (π : X�
     strictTransformι π Z D =
       Scheme.Opens.ι (strictTransformOpens π Z D) ≫ (D.comap π).subschemeι := rfl
 
-theorem strictTransformImmersion_eq_strictTransformι {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
-    (Z D : X.IdealSheafData) :
-    Blowup.strictTransformImmersion π Z D = strictTransformι π Z D := rfl
-
 theorem strictTransform_eq_ker_strictTransformι {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
     Blowup.strictTransform π Z D = (strictTransformι π Z D).ker := rfl

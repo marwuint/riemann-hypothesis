@@ -40,9 +40,6 @@ noncomputable def charOfValues {ι : Type} [Fintype ι] (b : Basis ι ℤ X) (u 
   map_one' := by simp
   map_mul' x y := by simp [zpow_add, Finset.prod_mul_distrib]
 
-theorem charOfValues_apply {ι : Type} [Fintype ι] (b : Basis ι ℤ X) (u : ι → Kˣ) (x : X) :
-    charOfValues b u (Multiplicative.ofAdd x) = ∏ i, u i ^ (b.repr x i) := rfl
-
 open Module in
 variable {K X : Type} [Field K] [AddCommGroup X] in
 theorem _root_.GlobalTheory.TorsionFourier.charOfValues_basis {ι : Type} [Fintype ι] (b : Basis ι ℤ X) (u : ι → Kˣ)

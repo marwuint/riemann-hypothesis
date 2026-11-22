@@ -481,12 +481,6 @@ def qSub : (Fin 2 → Ω) →ₗ[Ω] (Fin 1 → Ω) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
-theorem iSub_apply (v : Fin 1 → Ω) (j : Fin 2) : iSub v j = if j = 0 then v 0 else 0 :=
-  rfl
-
-theorem qSub_apply (v : Fin 2 → Ω) (j : Fin 1) : qSub v j = v 1 :=
-  rfl
-
 end SubQuot
 
 section Gaussian

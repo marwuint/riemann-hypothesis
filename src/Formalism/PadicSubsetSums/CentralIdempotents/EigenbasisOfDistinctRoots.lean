@@ -16,22 +16,6 @@ def PrimeToPartEndo : Prop :=
     primeToPart l (x * y) = primeToPart l x * primeToPart l y ∧
       φ (primeToPart l x) = primeToPart l (φ x)
 
-def PowPolyExists : Prop :=
-  ∀ (K L : Type) [Field K] [Fintype K] [Field L] [Algebra K L] [IsAlgClosed L] (f : K[X])
-    (a : ℕ), f.Monic →
-    ∃ f' : K[X], f'.Monic ∧ f'.aroots L = (f.aroots L).map (fun x => x ^ a)
-
-def ExcludedSimplify : Prop :=
-  ∀ (N : ℕ) (Y : ℝ), 1 ≤ N → 1 ≤ Y →
-    (3 * N + 1 : ℝ) * (1 + 2 * (N : ℝ) ^ 2 * (Y ^ ((3 : ℝ) / 4) + 1)) ≤
-      20 * (N : ℝ) ^ 3 * Y ^ ((3 : ℝ) / 4)
-
-def AdmissibleCount : Prop :=
-  ∀ (c₀ c X B h P A : ℝ), 0 < c₀ → (2 : ℝ) ^ 14 / c₀ ≤ c → 1 < X → Real.log X ≤ c →
-    0 < B → B ≤ 4 * c ^ 3 → 0 < h → h ≤ c ^ 3 →
-    c₀ * B ^ (-5 : ℤ) * X / (h * Real.log X) ≤ P → P ≤ 2 * A →
-    8 * c ^ (-20 : ℤ) * X ≤ A
-
 open Classical in
 
 def LemmaPSubSum : Prop :=

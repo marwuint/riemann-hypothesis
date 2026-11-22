@@ -145,13 +145,6 @@ abbrev TunedMarkedBlowupSeq (S : MarkedIdealWithBoundary.{u})
   MarkedSequenceOfBlowups (s.proj s.length ≫ S.structMap) (tunedIdealAtLength S s hft) (tuningExponent S.mult)
     (extra ++ (s.boundary s.length).drop ndrop)
 
-private theorem tunedMarkedBlowupSeq_eq_derivedTriple_seq (S : MarkedIdealWithBoundary.{u})
-    (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
-    (hft : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap))
-    (extra : List (s.obj s.length).IdealSheafData) (ndrop : ℕ) :
-    TunedMarkedBlowupSeq S s hft extra ndrop = (MaxContactCoverData.derivedTriple S s hft extra ndrop).SequenceOfBlowups :=
-  rfl
-
 theorem structureMorphism_derivedTriple (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
     (hft : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap))

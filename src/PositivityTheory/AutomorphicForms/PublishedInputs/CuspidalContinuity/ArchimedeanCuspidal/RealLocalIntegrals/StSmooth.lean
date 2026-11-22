@@ -33,7 +33,4 @@ def sec (k : ℕ) (Φ : Sw) (g : GL (Fin 3) ℝ) : ℂ :=
 def StInt : Prop := ∀ k : ℕ, 3 ≤ k → ∀ (Φ : Sw) (s : ℂ), 1 / 4 < s.re →
   Integrable (fun a => sec k Φ (dg a 1 1) * chR false (s - 1) a) mulR
 
-def StInt' : Prop := ∀ k : ℕ, 3 ≤ k → ∀ (Φ : Sw) (s : ℂ), s.re < 3 / 4 →
-  Integrable (fun p : ℝˣ × ℝ => sec k Φ (mm p.1 p.2) * chR false s p.1) (mulR.prod volume)
-
 end Ad3.LR

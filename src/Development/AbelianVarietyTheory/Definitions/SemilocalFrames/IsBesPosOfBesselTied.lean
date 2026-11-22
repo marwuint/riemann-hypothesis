@@ -65,17 +65,9 @@ structure FJDat (L A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) where
   c : D.host.E
   c_ne : c ≠ 0
 
-namespace FJDat
-
-end FJDat
-
 def coefH (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (m : Measure (WA V W) × Set (WA V W)) (f : WA V W → ℂ)
     (u : WA V W) : ℂ :=
   ∫ w in m.2, Heisenberg₂ ψ V W u f w * star (f w) ∂m.1
-
-namespace FJDat
-
-end FJDat
 
 section Comparison₂
 
@@ -98,9 +90,6 @@ theorem isAniso_of_posDef {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) : IsAniso
   have h4 := congrArg (fun a => (D.host.φ₀ a).re) ((BesselCompare.hT_co V v v).symm.trans hv)
   simp only [map_sum, map_mul, h3, map_zero, Complex.zero_re] at h4
   exact h2.ne' h4
-
-theorem coefH_eq_thCoef (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (m : Measure (WA V W) × Set (WA V W)) (f : WA V W → ℂ)
-    (u : WA V W) : coefH ψ V W m f u = GlobalTheory.Mem.Th.thCoef ψ V W m.1 m.2 f u := rfl
 
 end Comparison₂
 

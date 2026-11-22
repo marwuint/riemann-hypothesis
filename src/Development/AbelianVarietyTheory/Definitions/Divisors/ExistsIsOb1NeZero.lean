@@ -13,9 +13,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Obs.Model
 
-theorem one_hom_eq {R₀ : Type} [CommRing R₀] (A : Over (Sp R₀)) [GrpObj A] :
-    lift (𝟙 A) (1 : A ⟶ A) = lift (𝟙 A) (toUnit A ≫ η[A]) := rfl
-
 section General
 
 variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+* R₀}

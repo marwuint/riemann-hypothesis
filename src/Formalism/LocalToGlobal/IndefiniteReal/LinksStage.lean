@@ -136,27 +136,6 @@ variable (D A Ks)
 
 def SeedFacts (F : Face D A) : Prop := ∀ R : RealDat D A Ks, R.Pre0 F → R.SplitAt ∧ R.IdemAt
 
-def ItExists (F : Face D A) : Prop :=
-  ∀ R : RealDat D A Ks, R.Pre1 F → R.KerY →
-    (∀ k, k + 1 < D.R.m → ∃ It, ∀ t, IsItW R.θ (R.MY k) (R.MY (k + 1)) (R.ωY t k) (R.ptY t k) It) ∧
-      ∃ It, ∀ t, IsItW R.θ (R.MY (D.R.m - 1)) R.MX (R.ωX t) (R.ptX t) It
-
-def IoChainExists (F : Face D A) : Prop :=
-  ∀ R : RealDat D A Ks, R.Pre1 F → R.KerY → R.chain_ItY → R.chain_ItX → ∀ t,
-    (∀ k, k + 1 < D.R.m → Lift.IoExists (R.νY t (k + 1)) (R.fdY t (k + 1)) (thetaKO (R.ωY t k)) (R.ptY t k) (R.ItY k)
-      (R.CC t (k + 1)) (R.CC t k)) ∧
-    Lift.IoExists (R.νX t) (R.fdX t) (thetaKO (R.ωX t)) (R.ptX t) R.ItX
-      (LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX t).e)) (R.CC t (D.R.m - 1))
-
-def GoodLands (F : Face D A) : Prop :=
-  ∀ R : RealDat D A Ks, R.Pre1 F →
-    (∀ t, ∀ u ∈ R.CC t 0, postOn (R.MY 0) R.e0 (PiTensorProduct.lift.symm u) ∈ R.EEat R.triv) ∧
-      ∀ i, ∀ u ∈ R.Wall i (sg0 D A), postOn _ (R.eWf i (sg0 D A)) u ∈ R.Wall i (sg0 D A)
-
-def IoWExists (F : Face D A) : Prop :=
-  ∀ R : RealDat D A Ks, R.Pre1 F → R.KerP → ∀ i, ∃ io, ∀ t,
-    IsIoW R.θ (R.MW i (sg0 D A)) (R.cV i) (R.ωP i t) (R.ptP i t) (RealDat.Delta i) io
-
 variable {D A Ks}
 
 theorem exists_factor {X Y Z : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] [AddCommGroup Z] [Module ℂ Z]

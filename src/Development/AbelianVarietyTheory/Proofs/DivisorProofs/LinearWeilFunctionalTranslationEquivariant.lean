@@ -28,16 +28,6 @@ namespace GlobalTheory.LocalUnitSubgroupClosure
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
-noncomputable section
-
-def cmpGL {n : ℕ} {Y : Spc F E n} {v : Pl F} (t : E →ₐ[F] Fv F v) (h : UA σ Y.J) : GL (Fin n) (Fv F v) :=
-  Units.map (piW t).mapMatrix.toMonoidHom h.1
-
-theorem cmpGL_val {n : ℕ} {Y : Spc F E n} {v : Pl F} (t : E →ₐ[F] Fv F v) (h : UA σ Y.J) :
-    (cmpGL t h).1 = (mat h).map (piW t) := rfl
-
-end
-
 end GlobalTheory.LocalUnitSubgroupClosure
 
 namespace GlobalTheory.LocalUnitSubgroupClosure

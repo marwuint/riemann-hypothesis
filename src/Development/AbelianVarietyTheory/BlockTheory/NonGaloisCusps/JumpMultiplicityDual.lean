@@ -47,11 +47,6 @@ variable [TopologicalSpace G] (LL O : Type) [Field LL] [Algebra Qp LL] [CommRing
 def CrysDeRhamCore : Prop :=
   ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → IsDR PD T.ρ
 
-def SpanCore : Prop :=
-  ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ →
-    DdR PD T.ρ = ⨆ c : K, ((Dcris PD T.ρ).map (ιV PD (LL := LL) (V := T.V))).map
-      (mulVdR (Qp := Qp) (LL := LL) (V := T.V) (BdR := BdR) c)
-
 def StrictCore : Prop :=
   ∀ (T₀ T₁ T₂ : LocLat G Qp LL O) (f : T₀.V →ₗ[LL] T₁.V) (g : T₁.V →ₗ[LL] T₂.V),
     (∀ s x, f (T₀.ρ s x) = T₁.ρ s (f x)) → (∀ s x, g (T₁.ρ s x) = T₂.ρ s (g x)) →

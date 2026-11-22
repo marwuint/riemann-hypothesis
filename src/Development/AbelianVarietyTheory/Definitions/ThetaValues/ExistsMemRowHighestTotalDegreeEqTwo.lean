@@ -28,12 +28,6 @@ open Classical in
 noncomputable def rowAddY (t : T) (a b : Fin q) (s : R) : Poly R T p q κ →ₐ[R] Poly R T p q κ :=
   bind₁ fun v => X v + ∑ k : κ, if v = yVar t b k then C s * X (yVar t a k) else 0
 
-theorem rowAddX_eq_rowAdd (t : T) (a b : Fin p) (s : R) :
-    (rowAddX t a b s : Poly R T p q κ →ₐ[R] _) = rowAdd t (Sum.inl a) (Sum.inl b) s := rfl
-
-theorem rowAddY_eq_rowAdd (t : T) (a b : Fin q) (s : R) :
-    (rowAddY t a b s : Poly R T p q κ →ₐ[R] _) = rowAdd t (Sum.inr a) (Sum.inr b) s := rfl
-
 theorem rowAdd_eq_bind₁ [DecidableEq (Var T p q κ)] (t : T) (r r' : Fin p ⊕ Fin q) (s : R) :
     (rowAdd t r r' s : Poly R T p q κ →ₐ[R] _) =
       bind₁ fun v => X v + ∑ k : κ, if v = (t, r', k) then C s * X (t, r, k) else 0 := by

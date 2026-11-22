@@ -88,8 +88,6 @@ def swapU (J : Matrix m' m' A) : UG c (WeilM.dbl (blkMat e J (-J))) :=
     rw [submatrix_submatrix]
     exact dbl_submatrix_midSwap e J⟩
 
-theorem val_swapU (J : Matrix m' m' A) : ((swapU c e J : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) = swapMat e := rfl
-
 variable {c} in
 
 def leftU {J : Matrix β β A} (g : UG c J) : UG c (WeilM.dbl J) :=

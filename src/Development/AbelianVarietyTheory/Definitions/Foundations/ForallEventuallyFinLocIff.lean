@@ -141,8 +141,6 @@ def finLoc (v : HeightOneSpectrum (𝓞 D.host.F)) : GfC V →* Gv V v := (proj 
 def archInf (w : InfinitePlace D.host.F) : Gw V w →* GinfC V :=
   (embW V w).codRestrict _ fun x => mem_infPts.2 (projFin_embArch _ _ w x)
 
-def infArch (w : InfinitePlace D.host.F) : GinfC V →* Gw V w := (projArch D.sp.cm.sig V.gram w).comp (GinfC V).subtype
-
 def toFin : GA D V →* GfC V :=
   ((ofFin D.sp.cm.sig V.gram).comp (projFin _ _)).codRestrict _ fun _ => mem_finPts.2 (projInf_ofFin _ _ _)
 
@@ -190,19 +188,12 @@ def HasArchComp (w : InfinitePlace D.host.F) (δ : Gw V w →* (X →L[ℂ] X)) 
 def FinHasLocComp {Y : Type} [AddCommGroup Y] [Module ℂ Y] (v : HeightOneSpectrum (𝓞 D.host.F))
     (σv : Representation ℂ (Gv V v) Y) (σ : Representation ℂ (GfC V) W) : Prop := IsIsotypicAlg σv (σ.comp (locFin V v))
 
-abbrev IsFinFactorisation {N : HeightOneSpectrum (𝓞 D.host.F) → Type} [∀ v, AddCommGroup (N v)] [∀ v, Module ℂ (N v)]
-    (σs : ∀ v, Representation ℂ (Gv V v) (N v)) (s : ∀ v, N v) (σ : Representation ℂ (GfC V) W) : Prop :=
-  IsRestrTensorAlg (finLoc V) σs s σ
-
 variable {V}
 
 theorem isIrrUnitary_dsRep (M : DSModel V S) (τ : D.what₂.Tau) : IsIrrUnitary (dsRep M τ) :=
   ⟨(M.ds τ).1, Orb.isUnitaryRep_dsRep M τ, Orb.isTopIrreducible_dsRep M τ⟩
 
 def HasDSComp (M : DSModel V S) (π : GA D V →* (H →L[ℂ] H)) : Prop := ∀ τ, HasArchComp V (placeOf D τ) (dsRep M τ) π
-
-def IsDSTensor (M : DSModel V S) (δ : GinfC V →* (X →L[ℂ] X)) : Prop :=
-  ∃ B, IsRestrTensor (fun τ => infArch V (placeOf D τ)) (dsRep M) 0 δ B
 
 open Classical in
 
@@ -238,9 +229,6 @@ def finPart (δ : GinfC V →* (X →L[ℂ] X)) (hU : IsSubrep ρ U) :
     Representation ℂ (GfC V) (homIn δ (ρ.comp (GinfC V).subtype) U) :=
   PRep.sub (postRep X (ρ.comp (GfC V).subtype)) _ fun g T hT => ⟨fun x => hU.2 g _ (hT.1 x), fun k x =>
     (congrArg (ρ g) (hT.2 k x)).trans (DFunLike.congr_fun (((commute_inf_fin k g).map ρ).eq.symm) (T x))⟩
-
-abbrev finPartSm (δ : GinfC V →* (X →L[ℂ] X)) (hU : IsSubrep ρ U) :
-    Representation ℂ (GfC V) (smoothPart (finPart δ hU)) := smoothRep (finPart δ hU)
 
 def finPartDS (M : DSModel V S) (hU : IsSubrep ρ U) : Representation ℂ (GfC V) (homDS M ρ U) :=
   PRep.sub (postRepPi M.H (ρ.comp (GfC V).subtype)) _ fun g T hT => ⟨fun x => hU.2 g _ (hT.1 x), fun τ k x =>

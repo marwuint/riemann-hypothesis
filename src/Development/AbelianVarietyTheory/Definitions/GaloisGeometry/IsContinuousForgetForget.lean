@@ -42,10 +42,6 @@ set_option backward.isDefEq.respectTransparency.types false in
 def bc : X.Etale ⥤ Y.Etale := MorphismProperty.Over.pullback @Etale ⊤ f
 
 set_option backward.isDefEq.respectTransparency.types false in
-
-theorem bc_forget : bc f ⋙ Scheme.Etale.forget Y = Scheme.Etale.forget X ⋙ Over.pullback f := rfl
-
-set_option backward.isDefEq.respectTransparency.types false in
 instance : PreservesFiniteLimits (bc f) :=
   inferInstanceAs (PreservesFiniteLimits (MorphismProperty.Over.pullback @Etale ⊤ f))
 
@@ -121,9 +117,6 @@ instance : (pushO R f).Additive where
 instance : (pull R f).Additive := (adj f).left_adjoint_additive
 
 def resInj (F : ShvS R Y) : CochainComplex (ShvS R Y) ℤ := (injectiveResolution F).cochainComplex
-
-def RpushC (F : ShvS R Y) : CochainComplex (ShvS R X) ℤ :=
-  ((push R f).mapHomologicalComplex _).obj (resInj F)
 
 variable (R) in
 

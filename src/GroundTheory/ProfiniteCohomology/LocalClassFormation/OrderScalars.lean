@@ -11,14 +11,6 @@ section General
 
 variable {G M : Type} [Group G] [CommGroup M] (φ : G →* Monoid.End M)
 
-theorem d₁₂_intRepOfMonoidEnd (f : G → Additive M) :
-    (d₁₂ (Rep.of (intRepOfMonoidEnd.{0} φ))).hom f = (d₁₂ (Rep.of (zRepOfMonoidEnd φ))).hom f :=
-  rfl
-
-theorem d₂₃_intRepOfMonoidEnd (f : G × G → Additive M) :
-    (d₂₃ (Rep.of (intRepOfMonoidEnd.{0} φ))).hom f = (d₂₃ (Rep.of (zRepOfMonoidEnd φ))).hom f :=
-  rfl
-
 def cocycles₂IntRepAddEquiv :
     cocycles₂ (Rep.of (intRepOfMonoidEnd.{0} φ)) ≃+ cocycles₂ (Rep.of (zRepOfMonoidEnd φ)) where
   toFun x := ⟨x.1, x.2⟩
@@ -26,11 +18,6 @@ def cocycles₂IntRepAddEquiv :
   left_inv _ := rfl
   right_inv _ := rfl
   map_add' _ _ := rfl
-
-theorem mem_coboundaries₂_intRepOfMonoidEnd_iff (f : G × G → Additive M) :
-    f ∈ coboundaries₂ (Rep.of (intRepOfMonoidEnd.{0} φ)) ↔
-      f ∈ coboundaries₂ (Rep.of (zRepOfMonoidEnd φ)) :=
-  Iff.rfl
 
 theorem h2π_intRepOfMonoidEnd_surjective :
     Function.Surjective (H2π (Rep.of (intRepOfMonoidEnd.{0} φ))).hom :=

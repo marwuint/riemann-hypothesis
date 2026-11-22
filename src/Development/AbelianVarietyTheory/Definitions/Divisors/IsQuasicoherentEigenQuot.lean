@@ -175,18 +175,6 @@ theorem IsSplitBy.injective (h : IsSplitBy σ) : Function.Injective σ := fun i 
   obtain ⟨x, hx⟩ := h.2 (Pi.single i 1)
   simpa [hx, Pi.single_apply, Ne.symm hij] using key x
 
-theorem isSplitBy_of_injective [Fintype ι] [Module.Free ℤ O] [Module.Finite ℤ O]
-    (hσ : Function.Injective σ) (hn : Module.finrank ℤ O = Fintype.card ι) : IsSplitBy σ := by
-  have hs : Function.Surjective (splitMap σ).toLinearMap := by
-    have hl : LinearIndependent k fun j => (σ j : O → k) :=
-      (linearIndependent_monoidHom O k).comp (fun j => (σ j : O →* k))
-        fun i j e => hσ (RingHom.ext fun a => DFunLike.congr_fun (F := O →* k) e a)
-    rw [← LinearMap.range_eq_top, eq_top_iff, ← span_flip_eq_top_iff_linearIndependent.2 hl,
-      Submodule.span_le]
-    rintro _ ⟨a, rfl⟩
-    exact ⟨1 ⊗ₜ a, funext fun j => one_mul _⟩
-  exact ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [hn])).2 hs, hs⟩
-
 variable [Algebra k Γ(X, ⊤)] (ρ : O →+* End F)
 
 variable (k) in

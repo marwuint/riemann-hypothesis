@@ -26,24 +26,6 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelSp
 variable {Y : Type*} [AddCommGroup Y] [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y]
   [IsTopologicalAddGroup Y] [LocallyCompactSpace Y]
 
-theorem mulEquivHaarChar_eq_of_chart (μ : Measure G) [IsHaarMeasure μ] [Regular μ] (ν : Measure Y)
-    [IsAddHaarMeasure ν] [Regular ν] (χ : G → Y) (hχm : Measurable χ) (hχ : μ.map χ = ν) (φ : G ≃ₜ* G)
-    (L : Y ≃ₜ+ Y) (h : ∀ x, χ (φ x) = L (χ x)) : mulEquivHaarChar φ = addEquivAddHaarChar L := by
-  have hφ : Measurable φ := (map_continuous φ).measurable
-  have hL : Measurable L := (map_continuous L).measurable
-  have hcomp : χ ∘ φ = L ∘ χ := funext h
-  have h1 : mulEquivHaarChar φ • map L ν = ν := by
-    have e := congrArg (Measure.map χ) (mulEquivHaarChar_smul_map μ φ)
-    rw [Measure.map_smul, Measure.map_map hχm hφ, hcomp, ← Measure.map_map hL hχm, hχ] at e
-    exact e
-  have h2 : addEquivAddHaarChar L • map L ν = ν := addEquivAddHaarChar_smul_map ν L
-  have h3 : addEquivAddHaarChar L • ν = mulEquivHaarChar φ • ν := by
-    calc addEquivAddHaarChar L • ν = addEquivAddHaarChar L • (mulEquivHaarChar φ • map L ν) := by rw [h1]
-      _ = mulEquivHaarChar φ • (addEquivAddHaarChar L • map L ν) := by
-        rw [smul_smul, smul_smul, mul_comm]
-      _ = mulEquivHaarChar φ • ν := by rw [h2]
-  exact (smul_cancel ν h3).symm
-
 theorem shear_map {A B : Type*} [MeasurableSpace A] [AddGroup B] [MeasurableSpace B] [MeasurableAdd₂ B]
     [MeasurableAdd B] (μ : Measure A) (ν : Measure B) [SFinite μ] [SFinite ν] [ν.IsAddRightInvariant]
     (f : A → B) (hf : Measurable f) :

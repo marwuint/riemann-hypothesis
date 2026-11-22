@@ -14,6 +14,4 @@ open scoped TensorProduct nonZeroDivisors
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
-theorem star_diag (x : E) : star (diagE E x) = diagE E (IsCMField.complexConj E x) := rfl
-
 end GlobalTheory.ClassSumCompare

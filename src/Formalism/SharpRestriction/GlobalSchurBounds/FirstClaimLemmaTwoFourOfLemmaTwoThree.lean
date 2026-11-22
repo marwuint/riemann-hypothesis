@@ -266,14 +266,6 @@ def MassRatio₂ (x eps C : ℝ) : Prop :=
       (∃ S : ℂ, TailSum χ (zz x) S ∧ ‖(x : ℂ) * S‖ ≤ x ^ eps) ∧
       ‖logDerivativeAtOne χ‖ ≤ C * Real.log x
 
-theorem lemma_two_two_iff_both_claims (D : D7) (x eps C : ℝ) : Conclusion2 D x eps C ↔ projection_sandwich_lattice C ∧ MassRatio₂ x eps C := Iff.rfl
-
-open Classical in
-
-def badZero (Q : ℝ) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : ℂ :=
-  if h : ∃ s : ℂ, 1 - 1 / 400 < s.re ∧ |s.im| ≤ Q ∧ DirichletCharacter.LFunction χ s = 0
-  then h.choose else 0
-
 theorem not_primitive_two (χ : DirichletCharacter ℂ 2) : ¬ χ.IsPrimitive := by
   intro hp
   have h1 : χ = 1 := by
@@ -347,8 +339,6 @@ section ShortIntervalLowerBound
 variable (K0 : Type) [Field K0] [NumberField K0]
 
 variable {K0}
-
-lemma Emain_eq (θ : ℤ) (β X : ℝ) : Formalism.HermitianLattices.GL2PrimeSums.Emain θ β X = Li X - (θ : ℝ) * Li (X ^ β) := rfl
 
 end ShortIntervalLowerBound
 
@@ -1178,4 +1168,3 @@ end Formalism.MainNotions.ShortIntervalPrimes
 namespace Formalism.MainNotions.ShortIntervalPrimes
 
 end Formalism.MainNotions.ShortIntervalPrimes
-

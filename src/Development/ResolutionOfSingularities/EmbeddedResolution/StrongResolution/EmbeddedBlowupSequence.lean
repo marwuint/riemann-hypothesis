@@ -287,8 +287,6 @@ theorem totalSpaceZeroIso_spec :
 def totalTower : ℕᵒᵖ ⥤ Scheme.{u} :=
   (Functor.ofSequence (fun i => (T.totalTransition i).op)).leftOp
 
-theorem totalTower_obj (i : ℕ) : T.totalTower.obj (Opposite.op i) = T.totalSpace i := rfl
-
 theorem totalTower_map_succ (i : ℕ) :
     T.totalTower.map (homOfLE (Nat.le_succ i)).op = T.totalTransition i := by
   show ((Functor.ofSequence (fun j => (T.totalTransition j).op)).map
@@ -309,8 +307,6 @@ def inducedBlowups (h : T.TransitionsAreBlowups) : SequenceOfBlowups Y where
 @[simp] theorem inducedBlowups_length (h : T.TransitionsAreBlowups) : (T.inducedBlowups h).length = T.length := rfl
 
 @[simp] theorem inducedBlowups_tower (h : T.TransitionsAreBlowups) : (T.inducedBlowups h).tower = T.totalTower := rfl
-
-theorem inducedBlowups_isoObjZero (h : T.TransitionsAreBlowups) : (T.inducedBlowups h).isoZero = T.totalSpaceZeroIso := rfl
 
 @[simp] theorem inducedBlowups_center (h : T.TransitionsAreBlowups) (i : ℕ) :
     (T.inducedBlowups h).center i = T.totalCenter i := rfl
@@ -346,20 +342,8 @@ def toEmbeddedBlowupSequence (S : AffineSpacePrincipalizationData k Y pY) : Embe
   emb_comp := S.emb_comp
   ambientSeq := S.ambientBlowups
 
-theorem toEmbeddedBlowupSequence_ambient (S : AffineSpacePrincipalizationData k Y pY) :
-    S.toEmbeddedBlowupSequence.ambient = S.ambient := rfl
-
-theorem toEmbeddedBlowupSequence_emb (S : AffineSpacePrincipalizationData k Y pY) :
-    S.toEmbeddedBlowupSequence.emb = S.emb := rfl
-
-theorem embeddedAmbientBlowups_eq (S : AffineSpacePrincipalizationData k Y pY) :
-    S.toEmbeddedBlowupSequence.ambientSeq = S.ambientBlowups := rfl
-
 theorem toEmbeddedBlowupSequence_schemeAt (S : AffineSpacePrincipalizationData k Y pY) (i : ℕ) :
     S.toEmbeddedBlowupSequence.schemeAt i = S.ambientLevel i := rfl
-
-theorem toEmbeddedBlowupSequence_strictTransformIdeal (S : AffineSpacePrincipalizationData k Y pY) (i : ℕ) :
-    S.toEmbeddedBlowupSequence.strictTransformIdeal i = S.strictTransformIdeal i := rfl
 
 theorem toEmbeddedBlowupSequence_transitionsAreBlowups_iff (S : AffineSpacePrincipalizationData k Y pY) :
     S.toEmbeddedBlowupSequence.TransitionsAreBlowups ↔ S.TransitionsAreBlowups := Iff.rfl
@@ -393,12 +377,6 @@ def toEmbeddedBlowupSequence (D : EmbeddingDatum k Y pY) (A : PrincipalizationAl
   ambientSeq :=
     (A k D.ambient D.ambientStruct (Scheme.Hom.ker D.emb) D.nonzeroOnComponents_ker
       ([] : List D.ambient.IdealSheafData) D.sncEmpty).toSequenceOfBlowups
-
-theorem toEmbeddedBlowupSequence_ambient (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u}) :
-    (D.toEmbeddedBlowupSequence A).ambient = D.ambient := rfl
-
-theorem toEmbeddedBlowupSequence_emb (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u}) :
-    (D.toEmbeddedBlowupSequence A).emb = D.emb := rfl
 
 theorem ambientBlowups_eq_toSequenceOfBlowups (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u}) :
     (D.toEmbeddedBlowupSequence A).ambientSeq =

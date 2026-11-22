@@ -50,10 +50,6 @@ end IdIso
 variable {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G]
   [IsCommMonObj G] (m : CubeMap G' G)
 
-theorem rigPull_eq (L : LB G.left) (r : LB.Gen (L.pull (eSec G))) :
-    m.rigPull L r = GeneratorPullback.pullAlong L m.F m.e (fun _ : PUnit => eSec G) (fun _ => 1)
-      (fun _ => eSec G') (fun _ => m.e_comm) r := rfl
-
 theorem thetaPull_eq (L : LB G.left) (t : LB.Gen (Theta G L)) :
     m.thetaPull L t = GeneratorPullback.pullAlong L m.F m.F3 (thφ G (x3 G)) thε (thφ G' (x3 G'))
       (fun I => m.psum_comm I.down) t := rfl

@@ -33,8 +33,6 @@ variable (T : Thick (nlFun γ p X q κ)) {B : Type} [CommRing B] (f : T.B →+* 
 
 def homOf : T ⟶ ofMap T f J δ hJ hdp adm := mkH f (fun _ => rfl) hdp hJ rfl
 
-theorem homOf_φ : (homOf T f J δ hJ hdp adm).φ = f := rfl
-
 variable {T f J δ hJ hdp adm}
 
 def descOf {T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (g : B →+* T'.B) (hg : g.comp f = φ.φ)
@@ -50,10 +48,6 @@ def descOf {T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (g : B →+* T'.B) (
         rfl
       rw [← φ.pt, ← e, Functor.map_comp]
       rfl)
-
-theorem descOf_φ {T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (g : B →+* T'.B) (hg : g.comp f = φ.φ)
-    (hdp' : IsDPMorphism δ T'.δ g) (hle : J ≤ T'.J.comap g) :
-    (descOf (hJ := hJ) (hdp := hdp) (adm := adm) φ g hg hdp' hle).φ = g := rfl
 
 end OfMap
 

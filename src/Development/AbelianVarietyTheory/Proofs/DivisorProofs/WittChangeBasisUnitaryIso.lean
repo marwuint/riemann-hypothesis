@@ -16,9 +16,6 @@ open GlobalTheory.SWLink
 
 namespace GlobalTheory.SWLinkChart
 
-theorem mem_HR_iff {D : D7} {k : ℕ} (J : Matrix (Fin k) (Fin k) D.host.E) (g : GL (Fin k) (AE D)) :
-    g ∈ HR (AF D.host.F) D.sp.cm.sig J ↔ adj (g.1 : Mx D k k) * rat J * g.1 = rat J := Iff.rfl
-
 end GlobalTheory.SWLinkChart
 
 end

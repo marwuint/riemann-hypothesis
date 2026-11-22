@@ -204,10 +204,6 @@ theorem restrictIdeal_iInfImageIdeal_summandOpen (D : FiniteOpenCoverWithIdeals 
       (D.localIdeal i).comap (D.summandIso i).inv := by
   rw [restrictIdeal_summandOpen D i D.iInfImageIdeal, comap_iInfImageIdeal_summandι D i]
 
-theorem iInfImageIdeal_eq_iInf (D : FiniteOpenCoverWithIdeals T) :
-    D.iInfImageIdeal = ⨅ i : D.idx, imageIdealSheaf (D.summandι i) (D.localIdeal i) :=
-  rfl
-
 theorem restrictIdeal_comap_disjointUnionMap_summandOpen (D : FiniteOpenCoverWithIdeals T) (i : D.idx)
     (J : T.scheme.IdealSheafData) :
     restrictIdeal (J.comap D.disjointUnionMap) (D.summandOpen i) =

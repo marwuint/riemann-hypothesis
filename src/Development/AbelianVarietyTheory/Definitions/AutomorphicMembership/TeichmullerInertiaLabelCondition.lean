@@ -86,11 +86,6 @@ theorem conj_mem_Wild {φ σ : G E Ω} (hφ : φ ∈ Dec (F := E) A) (hσ : σ �
   rw [← valuation_apply_lt_one_iff hφ, map_sub, map_div₀, mul_inv_apply, map_one] at h
   exact h
 
-theorem tameGenAt_iff {γ : G E Ω} : TameGenAt A γ ↔ γ ∈ Ine (F := E) A ∧
-    ((Ine (F := E) A : Subgroup (G E Ω)) : Set (G E Ω)) ⊆
-      closure ((Subgroup.closure (insert γ (Wild E A : Set (G E Ω))) : Subgroup (G E Ω)) :
-        Set (G E Ω)) := Iff.rfl
-
 variable [IsAlgClosure E Ω]
 
 theorem tame_relation {γ φ : G E Ω} {q : ℕ} (hγ : γ ∈ Ine (F := E) A) (hφ : IsFrob A q φ) :

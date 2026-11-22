@@ -5,16 +5,6 @@ noncomputable section
 namespace GlobalTheory.LvT.LevModel
 open Formalism.BasicNotions Classical
 
-def ratInt (q : ℕ) [Fact q.Prime] : Subring ℚ := (PadicInt.subring q).comap (Rat.castHom ℚ_[q])
-
-lemma mem_ratInt {q : ℕ} [Fact q.Prime] (x : ℚ) : x ∈ ratInt q ↔ ‖(x : ℚ_[q])‖ ≤ 1 := by
-  exact Iff.rfl
-
-def toZp (q : ℕ) [Fact q.Prime] : ratInt q →+* ℤ_[q] :=
-  ((Rat.castHom ℚ_[q]).comp (ratInt q).subtype).codRestrict (PadicInt.subring q) (fun x => x.2)
-
-lemma toZp_coe {q : ℕ} [Fact q.Prime] (x : ratInt q) : ((toZp q x : ℤ_[q]) : ℚ_[q]) = ((x : ℚ) : ℚ_[q]) := rfl
-
 section Pairs
 
 variable {q : ℕ} {F : Type} [Field F] {Lc : LocF q F} {n : ℕ}

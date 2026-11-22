@@ -534,11 +534,6 @@ theorem app_surjective_of_epi_of_isAffineOpen (φ : F ⟶ F') [Epi φ] [F.IsQuas
 
 variable (f : X ⟶ Y)
 
-theorem exact_map_pullback {S : ShortComplex Y.Modules} (hS : S.Exact) [Epi S.g] :
-    (S.map (Scheme.Modules.pullback f)).Exact ∧ Epi (S.map (Scheme.Modules.pullback f)).g :=
-  ⟨hS.map_of_epi_of_preservesCokernel _ inferInstance inferInstance,
-    inferInstanceAs (Epi ((Scheme.Modules.pullback f).map S.g))⟩
-
 theorem injective_of_isBaseChange_of_flat {A B M M' N N' : Type*} [CommRing A] [CommRing B]
     [Algebra A B] [Module.Flat A B] [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module A M']
     [AddCommGroup N] [Module A N] [Module B N] [IsScalarTower A B N] [AddCommGroup N']

@@ -58,10 +58,6 @@ def HasHTAt (r : G F Ω →* GL (Fin n) (Qbar l)) (HT : (F →+* Qbar l) → Mul
       ∀ (τ : F →+* Qbar l) (LL' : FinExt l) (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1), IsInduced Bw τ τ' →
         IsJumpsAt (Loc.PP l) Bw (r.comp (Dec (F := F) A).subtype) τ (HT τ)
 
-omit [IsAlgClosure F Ω] in
-theorem hasHT_iff {r : G F Ω →* GL (Fin n) (Qbar l)} {HT : (F →+* Qbar l) → Multiset ℤ} :
-    HasHT r HT ↔ ∀ w, HasHTAt r HT w := Iff.rfl
-
 def CompatT : Prop :=
   ∀ (F Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime]
     (ι : Qbar l ≃+* ℂ) (n : ℕ), 1 ≤ n → ∀ (r : G F Ω →* GL (Fin n) (Qbar l)) (π : CuspSub F n), Continuous r →

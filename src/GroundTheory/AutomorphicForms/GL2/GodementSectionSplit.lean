@@ -19,12 +19,6 @@ def infChar (χ : HeckeCharacter K) : (InfiniteAdeleRing K)ˣ →* Circle :=
 def infMod (a : (InfiniteAdeleRing K)ˣ) : ℝ :=
   ∏ w : InfinitePlace K, ‖(a : InfiniteAdeleRing K) w‖ ^ w.mult
 
-def finMod (b : (FiniteAdeleRing (𝓞 K) K)ˣ) : ℝ :=
-  ∏ᶠ v : HeightOneSpectrum (𝓞 K), ‖(b : FiniteAdeleRing (𝓞 K) K) v‖
-
-theorem ideleModule_eq_infMod_mul_finMod (x : IdeleGroup K) :
-    (ideleModule K x : ℝ) = infMod (toInfinite K x) * finMod (toFinite K x) := rfl
-
 def infVec (y : Fin 2 → InfiniteAdeleRing K) : Fin 2 → mixedSpace K :=
   fun i ↦ homeomorphMixedSpace K (y i)
 

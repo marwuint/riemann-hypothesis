@@ -66,12 +66,6 @@ noncomputable def coconeLeftμ {r s n : ℕ} (h : r + s = n) :
       rw [map_smul, map_smul]
       rfl))
 
-theorem coconeLeftμ_apply {r s n : ℕ} (h : r + s = n) (x : K.X r) (y : shiftNegOneX L r)
-    (z : N.X s) :
-    coconeLeftμ μL ρ μK (f := f) (f' := f') h ((x, y) : K.X r × shiftNegOneX L r) z =
-      ((μK.μ h x z, μL.shiftLeft r s n h y ((ρ.f s).hom z)) : K'.X n × shiftNegOneX L' n) :=
-  rfl
-
 noncomputable def coconeLeft (hc : ∀ {r s n : ℕ} (h : r + s = n) (x : K.X r) (z : N.X s),
     (f'.f n).hom (μK.μ h x z) = μL.μ h ((f.f r).hom x) ((ρ.f s).hom z)) :
     LeibnizPairing (mappingCoconeNat f) N (mappingCoconeNat f') where
@@ -200,13 +194,6 @@ noncomputable def coconeRightμ {r s n : ℕ} (h : r + s = n) :
       change (-1 : k) ^ r • μR.shiftRight r s n h ((ρ.f r).hom x) (c • p.2) = _
       rw [map_smul, smul_comm]
       rfl))
-
-theorem coconeRightμ_apply {r s n : ℕ} (h : r + s = n) (x : M.X r) (y : K.X s)
-    (c : shiftNegOneX L s) :
-    coconeRightμ μR ρ μK (f := f) (f' := f') h x ((y, c) : K.X s × shiftNegOneX L s) =
-      ((μK.μ h x y, (-1 : k) ^ r • μR.shiftRight r s n h ((ρ.f r).hom x) c) :
-        K'.X n × shiftNegOneX L' n) :=
-  rfl
 
 noncomputable def coconeRight (hc : ∀ {r s n : ℕ} (h : r + s = n) (x : M.X r) (y : K.X s),
     (f'.f n).hom (μK.μ h x y) = μR.μ h ((ρ.f r).hom x) ((f.f s).hom y)) :

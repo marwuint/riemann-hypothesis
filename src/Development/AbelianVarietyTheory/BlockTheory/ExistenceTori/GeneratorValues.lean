@@ -97,9 +97,6 @@ structure LatticeVal (R : Type) [CommRing R] [IsDomain R] (Γ : Type) [AddCommGr
   map_mul : ∀ x y, toFun (x * y) = toFun x + toFun y
   map_unit : ∀ u : Rˣ, toFun (Units.map (algebraMap R (FractionRing R)).toMonoidHom u) = 0
 
-def psiOrd [IsLocalRing R] (D : DegData R (maximalIdeal R)) (χ : D.toPre.X) : ℕ∞ :=
-  ⨆ (n : ℕ) (_ : D.toPre.PsiIn χ (maximalIdeal R ^ n)), (n : ℕ∞)
-
 section DVR
 
 variable (R) [IsDiscreteValuationRing R]

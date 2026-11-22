@@ -85,9 +85,6 @@ theorem partialDerivIdealIterate_succ (h : ι) (l : ℕ) (J : Ideal S) :
     partialDerivIdealIterate k ι S h (l + 1) J =
       partialDerivIdeal k ι S h (partialDerivIdealIterate k ι S h l J) := rfl
 
-theorem partialDerivIdealIterate_one (h : ι) (J : Ideal S) :
-    partialDerivIdealIterate k ι S h 1 J = partialDerivIdeal k ι S h J := rfl
-
 private def evalDerivationAddHom (g : S) : Derivation k S S →+ S where
   toFun D := D g
   map_zero' := rfl

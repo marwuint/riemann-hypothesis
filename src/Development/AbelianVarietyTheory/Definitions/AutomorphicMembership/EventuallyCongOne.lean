@@ -124,12 +124,6 @@ variable (S emb σ lam) in
 def prFi : (S.Cl → Fr emb σ n → ℂ) →ₗ[ℂ] S.Fi emb σ lam :=
   (LinearMap.exists_leftInverse_of_injective (S.Fi emb σ lam).subtype (Submodule.ker_subtype _)).choose
 
-omit [StarRing E] [NumberField K] [StarRing K] in
-
-theorem prFi_of_mem (hφ : φ ∈ S.Fi emb σ lam) : prFi S emb σ lam φ = ⟨φ, hφ⟩ :=
-  LinearMap.congr_fun (LinearMap.exists_leftInverse_of_injective (S.Fi emb σ lam).subtype (Submodule.ker_subtype _)).choose_spec
-    ⟨φ, hφ⟩
-
 end Val
 
 section Comp

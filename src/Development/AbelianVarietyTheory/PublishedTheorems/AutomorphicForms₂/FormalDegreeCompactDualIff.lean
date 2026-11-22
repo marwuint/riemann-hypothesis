@@ -21,6 +21,4 @@ def FormalDegreeCompactDual : Prop :=
             ∏ a : Fin N, ∏ b ∈ Finset.univ.filter (fun b : Fin N => a < b),
               (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))
 
-theorem formalDegreeCompactDual_iff : FormalDegreeCompactDual ↔ GlobalTheory.Mem.Vol.FormalDegreeFormula₂ := Iff.rfl
-
 end GlobalTheory.Published

@@ -145,10 +145,6 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {W W' : Type*} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
   [AddCommGroup W'] [Module ℂ W'] [FiniteDimensional ℂ W']
 
-def IsFSS (ρ : Representation ℂ ↥(Weil h) W) (N : End ℂ W) (a : WDRep h W) : Prop :=
-  ∃ u : (End ℂ W)ˣ, a.N = N ∧ IsNilpotent ((u : End ℂ W) - 1) ∧ Commute (u : End ℂ W) N ∧
-    (∀ σ, Commute (u : End ℂ W) (ρ σ)) ∧ ∀ σ, ρ σ = a.ρ σ * ((u ^ deg σ : (End ℂ W)ˣ) : End ℂ W)
-
 end FSS
 
 section WDRes
@@ -304,58 +300,7 @@ def wdRes : WDSpace P ι ρ ≃ₗ[ℂ] WDSpace P ι (resTo ρ hc.Kw_le) :=
     (wdRes P ι Bw Bw' hc ρ).symm (wdMk P ι (resTo ρ hc.Kw_le) x) =
       wdMk P ι ρ ((dpstRes P Bw Bw' hc ρ).symm x) := rfl
 
-include hc in
-
-theorem weilToGK_res (σ : ↥(Weil h')) :
-    ((weilToGK Bw' h' σ : ↥(GK Bw'.Kw)) : GQ l) = ((weilToGK Bw h (resW h h' σ) : ↥(GK Bw.Kw)) : GQ l) := by
-  have e : resDec E A (Subgroup.inclusion (Weil_le_Dec h') σ) = Subgroup.inclusion (Weil_le_Dec h) (resW h h' σ) :=
-    rfl
-  show ((Bw'.e _ : ↥(GK Bw'.Kw)) : GQ l) = ((Bw.e _ : ↥(GK Bw.Kw)) : GQ l)
-  rw [hc, e]
-
-include hj in
-
-theorem alpha_resW (σ : ↥(Weil h')) : alpha l (resW h h' σ) = alpha l σ := by
-  have hl : 1 < l := (Fact.out : l.Prime).one_lt
-  have e : resDeg l w' = resDeg l w * resF h h' := by
-    rw [resDeg, normV_eq_pow_resF h h', normV_eq_pow (hj.mem_placesOver h), ← pow_mul, Nat.log_pow hl]
-  rw [alpha, alpha, deg_resW, e]
-  push_cast; ring
-
 variable [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P (resTo ρ hc.Kw_le))]
-
-theorem phiU_zpow_res (n : ℤ) (x : ↥(Dpst P ρ)) :
-    ((phiU P (resTo ρ hc.Kw_le) ^ n : (End ↥LL.1 ↥(Dpst P (resTo ρ hc.Kw_le)))ˣ) :
-        End ↥LL.1 ↥(Dpst P (resTo ρ hc.Kw_le))) (dpstRes P Bw Bw' hc ρ x) =
-      dpstRes P Bw Bw' hc ρ (((phiU P ρ ^ n : (End ↥LL.1 ↥(Dpst P ρ))ˣ) : End ↥LL.1 ↥(Dpst P ρ)) x) :=
-  zpow_intertwine (dpstRes P Bw Bw' hc ρ).toLinearMap (phiU P ρ) (phiU P (resTo ρ hc.Kw_le))
-    (fun _ => Subtype.ext rfl) n x
-
-include hj in
-
-theorem weilD_res (σ : ↥(Weil h')) (x : ↥(Dpst P ρ)) :
-    weilD Bw' h' P (resTo ρ hc.Kw_le) σ (dpstRes P Bw Bw' hc ρ x) =
-      dpstRes P Bw Bw' hc ρ (weilD Bw h P ρ (resW h h' σ) x) := by
-  apply Subtype.ext
-  have e2 := congrArg Subtype.val (phiU_zpow_res P Bw Bw' hc ρ (-alpha l σ) x)
-  have e3 := alpha_resW Bw h h' hj σ
-  have e : Subgroup.inclusion (GK_le hc.Kw_le) (weilToGK Bw' h' σ) = weilToGK Bw h (resW h h' σ) :=
-    Subtype.ext (weilToGK_res Bw Bw' h h' hc σ)
-  calc ((weilD Bw' h' P (resTo ρ hc.Kw_le) σ (dpstRes P Bw Bw' hc ρ x) : ↥(Dpst P (resTo ρ hc.Kw_le))) :
-        V ⊗[ℚ_[l]] Bst P)
-      = stRep P (resTo ρ hc.Kw_le) (weilToGK Bw' h' σ)
-          ((((phiU P (resTo ρ hc.Kw_le) ^ (-alpha l σ) : (End ↥LL.1 ↥(Dpst P (resTo ρ hc.Kw_le)))ˣ) :
-            End ↥LL.1 ↥(Dpst P (resTo ρ hc.Kw_le))) (dpstRes P Bw Bw' hc ρ x) :
-              ↥(Dpst P (resTo ρ hc.Kw_le))) : V ⊗[ℚ_[l]] Bst P) := rfl
-    _ = stRep P ρ (Subgroup.inclusion (GK_le hc.Kw_le) (weilToGK Bw' h' σ))
-          ((((phiU P ρ ^ (-alpha l σ) : (End ↥LL.1 ↥(Dpst P ρ))ˣ) : End ↥LL.1 ↥(Dpst P ρ)) x :
-            ↥(Dpst P ρ)) : V ⊗[ℚ_[l]] Bst P) := by
-        rw [e2]; rfl
-    _ = stRep P ρ (weilToGK Bw h (resW h h' σ))
-          ((((phiU P ρ ^ (-alpha l (resW h h' σ)) : (End ↥LL.1 ↥(Dpst P ρ))ˣ) : End ↥LL.1 ↥(Dpst P ρ)) x :
-            ↥(Dpst P ρ)) : V ⊗[ℚ_[l]] Bst P) := by
-        rw [e, e3]
-    _ = _ := rfl
 
 end Res
 

@@ -98,9 +98,6 @@ abbrev IsCoaction.dualModule {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ) :
     Module (CartierDual R C) M :=
   Module.compHom M h.dualAction.toRingHom
 
-theorem IsCoaction.dualModule_smul {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ)
-    (w : CartierDual R C) (m : M) : letI := h.dualModule; w • m = dualContraction ρ w m := rfl
-
 variable (R C M) in
 
 def coactionEquivDualAction [Module.Finite R C] [Module.Projective R C] :
@@ -123,9 +120,6 @@ section Invariants
 
 variable {R H M : Type*} [CommRing R] [Semiring H] [Bialgebra R H] [Module.Finite R H]
   [Module.Projective R H] [AddCommGroup M] [Module R M]
-
-theorem counitAlgHom_cartierDual_apply (w : CartierDual R H) :
-    counitAlgHom R (CartierDual R H) w = w 1 := rfl
 
 end Invariants
 

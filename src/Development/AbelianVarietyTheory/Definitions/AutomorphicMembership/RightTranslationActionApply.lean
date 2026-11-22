@@ -132,13 +132,7 @@ def MtP : Submodule ℂ (RowPt Pr R sel mu → Pol ℂ X.Tau (R.N R.m - 1)) := c
 
 def toMtP : MtildeV W Ch sel mu P →ₛₗ[σ] MtP W Ch sel mu P σ := toCForm σ W.sgTrue _ _
 
-theorem toMtilde_apply (φ : MtildeV W Ch sel mu P) (d : RowPt Pr R sel mu) :
-    (toMtP W Ch sel mu P σ φ).1 d = MvPolynomial.map σ (φ.1 d).1 := rfl
-
 theorem toMtilde_injective : Function.Injective (toMtP W Ch sel mu P σ) := toCForm_injective σ W.sgTrue _ _
-
-def rowKH : Subgroup (FrmG (rowTyG Ch P) (levQX R sel mu)) :=
-  (rowTyK Ch).grp.comap ((rowTyG Ch P).grp.subtype.comp ((MonoidHom.fst _ _).comp (MonoidHom.snd _ _)))
 
 end Rows
 
@@ -227,9 +221,6 @@ variable (hd : Disjoint Pr.vGs (QE sel (mu : Chr X.F X.E X.K)))
 
 def mtEquiv : MtP W Ch sel mu P σ ≃ₗ[ℂ] (perAt W Ch sel mu cst L P u rho rho' cD Th).Mt X.emb σ :=
   mtEquivH W Ch sel mu cst L P u rho rho' cD Th σ (isSubLev_top _ _) hd
-
-theorem mtEquiv_apply (F : MtP W Ch sel mu P σ) (p : (stepX Ch sel mu P).D ()) :
-    (mtEquiv W Ch sel mu cst L P u rho rho' cD Th σ hd F).1 () p = F.1 (toRow sel mu p.1.1) := rfl
 
 end Per
 

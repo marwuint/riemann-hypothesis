@@ -52,8 +52,6 @@ open GlobalTheory.Mass Formalism.IndefR.Lev Formalism.L2.DIV
 
 def finP (V : HSp D) : GA D V →* UA D.sp.cm V.gram := (finE V).codRestrict _ (GlobalTheory.LevSplit.finE_mem_UA V)
 
-theorem coe_finP (V : HSp D) (h : GA D V) : (finP V h : GL (Fin V.rank) (EAf D)) = finE V h := rfl
-
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
   {σ : c.F →+* ℂ} {V : HSp D} {r : ℕ}
 

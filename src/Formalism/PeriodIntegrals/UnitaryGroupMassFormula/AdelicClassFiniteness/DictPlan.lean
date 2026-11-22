@@ -7,10 +7,6 @@ namespace PIW.AdelClassFin
 open Formalism.MainNotions.S PI.AdelClassFin NumberField
 open scoped TensorProduct Matrix
 
-def DInj : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],
-    Function.Injective (Formalism.UG.inclE (F := F) (E := E) (Af F))
-
 def DInter : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (e : E),
     Formalism.UG.inclE (F := F) (Af F) e ∈ IntAf F E → e ∈ (algebraMap (𝓞 E) E).range

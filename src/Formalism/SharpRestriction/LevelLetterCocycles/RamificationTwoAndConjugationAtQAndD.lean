@@ -45,10 +45,6 @@ def dualS (P : V →ₗ[LL] V' →ₗ[LL] LL) (T : Submodule O V) : Submodule O 
     refine ⟨c * a, ?_⟩
     rw [← algebraMap_smul LL c y, map_smul, ha, map_mul, smul_eq_mul]
 
-theorem mem_dualS (P : V →ₗ[LL] V' →ₗ[LL] LL) (T : Submodule O V) (y : V') :
-    y ∈ dualS P T ↔ ∀ x ∈ T, ∃ a : O, P x y = algebraMap O LL a := by
-  exact Iff.rfl
-
 def shear (Y : Submodule O V) (T : Submodule O W) (ψ : V →ₗ[LL] W) : Submodule O (V × W) where
   carrier := {p | p.1 ∈ Y ∧ p.2 - ψ p.1 ∈ T}
   add_mem' := by
@@ -602,11 +598,6 @@ def torsionPairing {LA : Lattice (O := O) A.ρ} {LA' : Lattice (O := O) A'.ρ}
     show (Submodule.Quotient.mk (P (t : A.V) v) : LL ⧸ L1.T) = 0
     rw [Submodule.Quotient.mk_eq_zero, hL1, ha]
     exact ⟨a, rfl⟩)
-
-theorem torsionPairing_mk {LA : Lattice (O := O) A.ρ} {LA' : Lattice (O := O) A'.ρ}
-    {P : A.V →ₗ[LL] A'.V →ₗ[LL] LL} (hd : IsDualLat1 PD LA LA' P)
-    (L1 : Lattice (O := O) (charRep (cycLL PD LL))) (hL1 : L1.T = OL O LL) (v : A'.V) (t : ↥LA.T) :
-    torsionPairing PD hd L1 hL1 (Submodule.Quotient.mk v) t = Submodule.Quotient.mk (P (t : A.V) v) := rfl
 
 theorem torsionPairing_equivariant {LA : Lattice (O := O) A.ρ} {LA' : Lattice (O := O) A'.ρ}
     {P : A.V →ₗ[LL] A'.V →ₗ[LL] LL} (hd : IsDualLat1 PD LA LA' P)

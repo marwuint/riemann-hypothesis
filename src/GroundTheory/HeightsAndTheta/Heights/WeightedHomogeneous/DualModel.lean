@@ -30,14 +30,6 @@ structure IsDualBasis {m N : ℕ} (L : Submodule (𝓞 K) (Fin m → K)) (φ : F
 
 def latticeForm {m : ℕ} (φ : Fin m → K) : MvPolynomial (Fin m) K := ∑ j, C (φ j) * X j
 
-def latticeMap {m N : ℕ} (φ : Fin (N + 1) → Fin m → K) :
-    MvPolynomial (Coord (fun _ : Unit ↦ N)) ℤ →+* MvPolynomial (Fin m) K :=
-  eval₂Hom (Int.castRingHom _) fun v ↦ latticeForm (φ v.2)
-
-def latticeIdeal {m N : ℕ} (φ : Fin (N + 1) → Fin m → K) :
-    Ideal (MvPolynomial (Coord (fun _ : Unit ↦ N)) ℤ) :=
-  RingHom.ker (latticeMap φ)
-
 end
 
 end GroundTheory.Heights₂.Heights

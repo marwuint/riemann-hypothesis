@@ -19,11 +19,6 @@ open Classical GlobalTheory.FlagPoly GlobalTheory.FlagAr
 section One
 variable {D : D7} (Y : ShimX D.what₂.Tau)
 
-def IsSlope (B : ℝ) (u : D.what₂.Tau → Fin Y.N → ℝ) (c : Y.Comp) (a : ℝ) : Prop :=
-  (∀ᶠ s : ℚ in 𝓝[>] 0, 0 < Y.geoC (Y.Mbar B u s) c) ∧
-    Tendsto (fun s : ℚ => Y.arSelfC (Y.Mbar B u s) c /
-      (((dimY Y : ℝ) + 1) * Y.geoC (Y.Mbar B u s) c)) (𝓝[>] 0) (𝓝 a)
-
 end One
 
 end GlobalTheory.IndefiniteRowSideFullHecke.EqualVolumeMeanCorrection

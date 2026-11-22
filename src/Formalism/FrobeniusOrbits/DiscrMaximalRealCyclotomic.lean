@@ -8,13 +8,6 @@ namespace Formalism.FrobeniusOrbits
 
 open Formalism.TwoAdicCyclotomicDecomposition
 
-def HostOrdersFrob : Prop :=
-  ∀ e : ℕ, ∀ g : GG e,
-    orderOf g.2 ∣ orderOf g ∧ orderOf g ∣ 2 * orderOf g.2 ∧
-    ∀ (j : ℕ) (l : ℤ) (u : (ZMod (2 ^ (e + 2)))ˣ), ((u : ZMod (2 ^ (e + 2))) = (l : ZMod _)) →
-      g.2 = hcl e u → orderOf g ≤ 2 ^ j →
-      ((l : ZMod (2 ^ (e + 2 - j))) = 1 ∨ (l : ZMod (2 ^ (e + 2 - j))) = -1)
-
 def DiscrMaximalRealCyclotomic : Prop :=
   ∀ (e : ℕ) (L : Type) [Field L] [NumberField L] (ζ : L), IsPrimitiveRoot ζ (2 ^ (e + 2)) →
     discr (F1 ζ) = 2 ^ (2 ^ e * (e + 1) - 1)

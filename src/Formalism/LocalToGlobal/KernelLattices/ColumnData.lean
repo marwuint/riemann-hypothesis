@@ -696,10 +696,6 @@ def EqP (χ : TaylorLogMetric.IdE D → ℂ) : Prop := TaylorLogMetric.eq22 D B.
 
 def IntP (χ : TaylorLogMetric.IdE D → ℂ) : Prop := TaylorLogMetric.int22 D B.tor (B.eNat χ)
 
-def MomP (χ : TaylorLogMetric.IdE D → ℂ) : Prop := TaylorLogMetric.mom22 D cc δ (B.eNat χ) ∧ TaylorLogMetric.LargerSupportMomentCondition D cc δ (B.eNat χ)
-
-def StrP (χ : TaylorLogMetric.IdE D → ℂ) : Prop := TaylorLogMetric.str22 D B.tor (B.eNat χ)
-
 end Base
 
 end Fam
@@ -718,8 +714,6 @@ def EmbOnK : Prop :=
   ∀ (τ : D.what₂.Tau) (k : D.host.K), TaylorLogMetric.embT D τ (algebraMap D.host.K D.host.E k) = D.host.φ₀ (k : D.host.E)
 
 def PhiNonReal : Prop := ∃ k : D.host.K, (D.host.φ₀ (k : D.host.E)).im ≠ 0
-
-def MMSelfDual : Prop := PI.KerIso.SelfDualI D.host.K D.host.conj D.host.AA0
 
 def PeriodExists : Prop :=
   ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), cc ≠ ⊥ → δ ≠ 0 → ∃ L : PeriodPair, L.lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ

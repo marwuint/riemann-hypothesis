@@ -136,9 +136,6 @@ def bcT (φ : R →+* S) (h : spMap φ ≫ x = x') : TanM x t.G →ₛₗ[φ] Ta
   map_add' m m' := tv_injective (MonObj.comp_mul (dl φ h) (tv m) (tv m'))
   map_smul' a m := tv_injective (dl_smT φ h a (tv m))
 
-theorem lf_bcT (φ : R →+* S) (h : spMap φ ≫ x = x') (m : TanM x t.G) :
-    lf (bcT t φ h m) = spMap (dualMap φ) ≫ lf m := rfl
-
 variable {Dw : Datum H} {l : Level H} {c : Coeff l}
 
 end Geo

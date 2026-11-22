@@ -33,12 +33,6 @@ def mhlKv (v : HeightOneSpectrum (𝓞 F)) : Subgroup (UAd hc n) where
 
 variable {hc n}
 
-theorem mem_mhlKv_iff {v : HeightOneSpectrum (𝓞 F)} {η : UAd hc n} :
-    η ∈ mhlKv hc n v ↔ (∀ w : HeightOneSpectrum (𝓞 F), w ≠ v →
-      bc (prV (E := E) w) (η : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = 1) ∧
-    bc (prV (E := E) v) (η : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) ∈ stabGL (Formalism.L2.Herm.locL v (stdLat E n)) :=
-  Iff.rfl
-
 theorem mhl_eq_put {v : HeightOneSpectrum (𝓞 F)} {η : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hη : η ∈ UAd hc n)
     (h : ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → bc (prV (E := E) w) η = 1) :
     η = rll_put n v (bc (prV (E := E) v) η) := by

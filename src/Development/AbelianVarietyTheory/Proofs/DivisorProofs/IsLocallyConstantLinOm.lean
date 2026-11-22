@@ -24,9 +24,6 @@ def slU (x y z t : E) (hx : c x = x) (hy : c y = y) (hz : c z = z) (ht : c t = t
     fin_cases i <;> fin_cases j <;> simp [mul_apply, Fin.sum_univ_two, hx, hy, hz, ht, vecMul, dotProduct] <;>
       first | ring1 | linear_combination h | linear_combination -h⟩
 
-theorem slU_val (x y z t : E) (hx : c x = x) (hy : c y = y) (hz : c z = z) (ht : c t = t) (h : x * t - y * z = 1) :
-    ((slU x y z t hx hy hz ht h : GL (Fin 2) E) : Matrix (Fin 2) (Fin 2) E) = !![x, y; z, t] := rfl
-
 end Char
 
 section Schr
@@ -41,12 +38,6 @@ theorem schr_mem (hψ : Continuous ψ) (w : (κ → k) × (κ → k)) {φ : (κ 
       ((continuous_id.dotProduct continuous_const).add continuous_const)).mul
     (hφ.1.comp_continuous (continuous_id.add continuous_const)),
     (hφ.2.comp_homeomorph (Homeomorph.addRight w.1)).mul_left⟩
-
-def schrS (hψ : Continuous ψ) (w : (κ → k) × (κ → k)) : Module.End ℂ (SB (κ → k)) :=
-  (GlobalTheory.VacLoc.schrL ψ w).restrict fun _ hφ => schr_mem hψ w hφ
-
-theorem schrS_coe (hψ : Continuous ψ) (w : (κ → k) × (κ → k)) (φ : SB (κ → k)) :
-    (schrS hψ w φ : (κ → k) → ℂ) = schr ψ w φ := rfl
 
 end Schr
 
@@ -79,9 +70,6 @@ def linOm (e : (Fin 2 → E) ≃ₗ[k] (Fin 4 → k)) (J : Matrix (Fin 2) (Fin 2
   toFun h := LinearMap.funLeft ℂ ℂ (actC e (h : GL (Fin 2) E)⁻¹)
   map_one' := LinearMap.ext fun φ => funext fun x => by simp [LinearMap.funLeft, actC_one]
   map_mul' h h' := LinearMap.ext fun φ => funext fun x => by simp [LinearMap.funLeft, actC_actC]
-
-theorem linOm_apply (e : (Fin 2 → E) ≃ₗ[k] (Fin 4 → k)) (J : Matrix (Fin 2) (Fin 2) E) (h : UG c J) (φ : (Fin 4 → k) → ℂ)
-    (x : Fin 4 → k) : linOm e J h φ x = φ (actC e (h : GL (Fin 2) E)⁻¹ x) := rfl
 
 end Lin
 

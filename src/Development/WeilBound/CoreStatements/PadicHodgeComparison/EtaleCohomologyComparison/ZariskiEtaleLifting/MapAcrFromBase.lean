@@ -88,8 +88,6 @@ def Fn.pt : PAlg l ⥤ Type where
       F.Pt.map (CommRingCat.ofHom (mapU g)) (F.Pt.map (CommRingCat.ofHom (mapU f)) y.1)
     rw [mapU_comp, CommRingCat.ofHom_comp, F.Pt.map_comp]; rfl
 
-theorem schFn_pt {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) : (schFn q).pt κ = PX q κ := rfl
-
 abbrev Lc (k : Bool) (n : ℕ) : (bs l k n).Fun := F.cr (bs l k n) rfl (κb κ k n)
 
 abbrev OcA (k : Bool) (n : ℕ) : Thick (Lc F κ k n) ⥤ CommAlgCat.{0} (Acris l) := OA (Lc F κ k n) ((base l).cris n)
@@ -166,8 +164,6 @@ def idLin {Λ B : Type} [CommRing Λ] [CommRing B] (f g : Λ →+* B) (h : ∀ a
   @LinearMap.mk Λ Λ _ _ (RingHom.id Λ) B B _ _ (@Algebra.toModule _ _ _ _ f.toAlgebra) (@Algebra.toModule _ _ _ _ g.toAlgebra)
     ⟨fun z => z, fun _ _ => rfl⟩ fun a z => congrArg (· * z) (h a)
 
-theorem idLin_apply {Λ B : Type} [CommRing Λ] [CommRing B] (f g : Λ →+* B) (h : ∀ a, f a = g a) (z : B) : idLin f g h z = z := rfl
-
 def βMor (k : Bool) (n : ℕ) : CH.Mor (Oc F κ k n) (CH.modF (AcrEl (F.pt κ) n)) (RingHom.id _) where
   G := gT F κ k n
   τ T := idLin ((mapAcr T.1.obj.fromBase n).comp ((base l).cris n)) (T.1.obj.cris n) (mapAcr_cris T.1.obj.fromBase n)
@@ -204,8 +200,5 @@ def Fn.Map.pt (u : Fn.Map F F') : F.pt κ ⟶ F'.pt κ where
     ext y
     have h := ConcreteCategory.congr_hom (u.u.naturality (CommRingCat.ofHom (mapU f))) y.1
     exact Subtype.ext h
-
-theorem schMap_pt {X Y : Scheme.{0}} {p : X ⟶ Spec (CommRingCat.of O)} {q : Y ⟶ Spec (CommRingCat.of O)} (u : X ⟶ Y)
-    (hu : u ≫ q = p) : (schMap u hu).pt κ = pxMap κ u hu := rfl
 
 end CrystallineSemistableComparison.B

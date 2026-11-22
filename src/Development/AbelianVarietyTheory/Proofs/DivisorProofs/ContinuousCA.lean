@@ -40,8 +40,6 @@ theorem cA_cA (hσ : ∀ a, σ (σ a) = a) (z : AE F E) : cA σ (cA σ z) = z :=
     show Algebra.TensorProduct.map _ _ (Algebra.TensorProduct.map _ _ (a ⊗ₜ[F] x)) = a ⊗ₜ[F] x
     simp [hσ]
 
-theorem mem_imA {z : AE F E} : z ∈ imA σ ↔ cA σ z = -z := Iff.rfl
-
 variable (F E) in
 
 theorem topAE : IsTopologicalRing (AE F E) ∧ LocallyCompactSpace (AE F E) ∧ SecondCountableTopology (AE F E) ∧
@@ -59,11 +57,6 @@ theorem continuous_cA : Continuous (cA σ) := by
   haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
   haveI := (topAE F E).1
   exact IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap
-
-theorem isClosed_imA : IsClosed (imA σ : Set (AE F E)) := by
-  obtain ⟨h1, -, -, h4⟩ := topAE F E
-  haveI := h1
-  exact isClosed_eq (continuous_cA σ) continuous_neg
 
 theorem topUA {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     IsTopologicalGroup (UA σ J) ∧ LocallyCompactSpace (UA σ J) ∧ SecondCountableTopology (UA σ J) ∧
@@ -98,10 +91,6 @@ def conjOn {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G] (N : Subg
   map_mul' u v := Subtype.ext (by simp [mul_assoc])
   continuous_toFun := by fun_prop
   continuous_invFun := by fun_prop
-
-theorem conjOn_apply {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G] (N : Subgroup G) (g : G)
-    (h₁ : ∀ u ∈ N, g * u * g⁻¹ ∈ N) (h₂ : ∀ u ∈ N, g⁻¹ * u * g ∈ N) (u : N) :
-    ((conjOn N g h₁ h₂ u : N) : G) = g * u * g⁻¹ := rfl
 
 end GlobalTheory.LeviModulus
 

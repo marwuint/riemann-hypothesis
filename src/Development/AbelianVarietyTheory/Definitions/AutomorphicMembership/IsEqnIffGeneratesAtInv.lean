@@ -320,8 +320,6 @@ def principal (g : X.functionFieldˣ) : CartierDiv X :=
 
 theorem isEqn_principal (g : X.functionFieldˣ) (x : X) : (principal g).IsEqn x g := rfl
 
-theorem principal_one : principal (1 : X.functionFieldˣ) = 0 := rfl
-
 theorem principal_mul (g g' : X.functionFieldˣ) :
     principal (g * g') = principal g + principal g' := rfl
 

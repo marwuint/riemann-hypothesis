@@ -45,10 +45,6 @@ def locMeet {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Mo
     obtain ⟨a, ha, hax⟩ := hx w
     exact ⟨a, ha, by rw [smul_comm]; exact (S w).smul_mem c hax⟩
 
-theorem mem_locMeet {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module (𝓞 K) V] {ι : Type}
-    (P : ι → HeightOneSpectrum (𝓞 K)) (S : ι → Submodule (𝓞 K) V) (x : V) :
-    x ∈ locMeet P S ↔ ∀ w, ∃ d : 𝓞 K, d ∉ (P w).asIdeal ∧ d • x ∈ S w := Iff.rfl
-
 theorem majAt_cast {K : Type} [Field K] [NumberField K] [StarRing K] {a b : ℕ} (h : a = b)
     (M : InfinitePlace K → Matrix (Fin b) (Fin b) ℂ) (M' : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ) (v : InfinitePlace K)
     (hM : M' v = (M v).submatrix (Fin.cast h) (Fin.cast h)) (x y : Fin b → K) :

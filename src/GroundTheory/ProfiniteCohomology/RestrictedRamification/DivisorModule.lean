@@ -24,8 +24,6 @@ variable (G : Type) [Group G] (A : Type) [AddCommGroup A]
 
 abbrev trivRep : Rep.{0} (ULift.{0} ℤ) G := Rep.of (intRep.{0} (1 : G →* AddMonoid.End A))
 
-theorem trivRep_ρ_apply (g : G) (a : A) : (trivRep G A).ρ g a = a := rfl
-
 instance isDiscreteRep_trivRep [TopologicalSpace G] [IsTopologicalGroup G] :
     IsDiscreteRep (trivRep G A) :=
   ⟨fun a => by
@@ -157,9 +155,6 @@ def divFunMap {B : Type} [AddCommGroup B] (g : A →+ B) : divFunRep φ A ⟶ di
       map_zero' := Subtype.ext (funext fun _ => funext fun _ => map_zero g)
       map_add' := fun f₁ f₂ => Subtype.ext (funext fun _ => funext fun _ => map_add g _ _) },
     fun _ => LinearMap.ext fun _ => rfl⟩
-
-theorem coe_divFunMap_hom_apply {B : Type} [AddCommGroup B] (g : A →+ B) (f : divFun φ A) :
-    (((divFunMap φ A g).hom f : divFun φ B) : I → G → B) = fun i x => g ((f : I → G → A) i x) := rfl
 
 abbrev ratToQZ : ℚ →+ QZ := QuotientAddGroup.mk' (AddSubgroup.zmultiples (1 : ℚ))
 

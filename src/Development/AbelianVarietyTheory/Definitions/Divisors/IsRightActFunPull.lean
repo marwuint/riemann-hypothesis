@@ -29,15 +29,11 @@ theorem IsRightAct.equiv_apply {st : G → R →ₐ[K] R} (hs : IsRightAct st) (
 
 def groupMat (u : R) : Matrix G G R := Matrix.of fun h g => st (h * g) u
 
-theorem groupMat_apply (u : R) (h g : G) : groupMat st u h g = st (h * g) u := rfl
-
 def eigen (χ : G →* Kˣ) : Submodule K R where
   carrier := {F | ∀ h, st h F = ((χ h : Kˣ) : K) • F}
   zero_mem' := fun h => by simp
   add_mem' := fun {a b} ha hb h => by rw [map_add, ha h, hb h, smul_add]
   smul_mem' := fun c a ha h => by rw [map_smul, ha h, smul_comm]
-
-theorem mem_eigen {χ : G →* Kˣ} {F : R} : F ∈ eigen st χ ↔ ∀ h, st h F = ((χ h : Kˣ) : K) • F := Iff.rfl
 
 def IsRightAct.leftRep {st : G → R →ₐ[K] R} (hs : IsRightAct st) : Representation K G R where
   toFun g := (st g⁻¹).toLinearMap
@@ -87,26 +83,12 @@ variable {G K R O : Type} [Group G] [Field K] [CommRing R] [Algebra K R] [CommRi
 def latCap (L : Submodule O C) (W : Submodule K R) : Submodule O C :=
   L ⊓ (W.comap C.subtype).restrictScalars O
 
-theorem mem_latCap {L : Submodule O C} {W : Submodule K R} {F : C} : F ∈ latCap L W ↔ F ∈ L ∧ (F : R) ∈ W := Iff.rfl
-
 def spanQ (N : Submodule O C) : Submodule K R := (Submodule.span K (N : Set C)).map C.subtype
-
-omit [Algebra O K] [IsScalarTower O K C] in
-
-theorem mem_spanQ {N : Submodule O C} {F : C} (hF : F ∈ N) : (F : R) ∈ spanQ N :=
-  ⟨F, Submodule.subset_span hF, rfl⟩
 
 def cutLat (N : Submodule O C) (T : Module.End K R) : Submodule O C := latCap N ((spanQ N).map T)
 
 theorem mem_cutLat {N : Submodule O C} {T : Module.End K R} {F : C} :
     F ∈ cutLat N T ↔ F ∈ N ∧ ∃ x ∈ spanQ N, T x = F := Iff.rfl
-
-theorem mem_cutLat_iff {N : Submodule O C} {T : Module.End K R} (hT : IsIdempotentElem T) {F : C} :
-    F ∈ cutLat N T ↔ F ∈ N ∧ T F = F :=
-  and_congr_right fun hF => ⟨fun ⟨x, _, e⟩ => by
-      have e' : T x = F := e
-      rw [← e']; exact congrArg (fun S : Module.End K R => S x) hT,
-    fun e => ⟨F, mem_spanQ hF, e⟩⟩
 
 end Lat
 
@@ -253,8 +235,6 @@ def crtAut : QAut N I ≃* ∀ i, QAut N (Js i) :=
     rw [autRed_qProj, ← crt_apply hle hc hI, LinearEquiv.trans_apply, LinearEquiv.trans_apply,
       LinearEquiv.apply_symm_apply]
     rfl⟩
-
-theorem crtAut_apply (γ : QAut N I) (i : ι) : crtAut hle hc hI γ i = autRed (hle i) γ := rfl
 
 end CRT
 

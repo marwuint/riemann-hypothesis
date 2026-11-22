@@ -22,10 +22,6 @@ noncomputable def degZeroMap {E E' : ModuleCat.{u} k} (f : E ⟶ E') :
   CochainComplex.ofHom (degZeroMapF f) fun n => by
     rw [degZeroComplex_d, degZeroComplex_d, comp_zero, zero_comp]
 
-theorem degZeroMap_f_zero_apply {E E' : ModuleCat.{u} k} (f : E ⟶ E') (e : (degZeroComplex E).X 0) :
-    ((degZeroMap f).f 0).hom e = f.hom e :=
-  rfl
-
 theorem degZeroMap_comp {E E' E'' : ModuleCat.{u} k} (f : E ⟶ E') (f' : E' ⟶ E'') :
     degZeroMap (f ≫ f') = degZeroMap f ≫ degZeroMap f' := by
   ext n : 1
@@ -88,10 +84,6 @@ variable {k : Type u} [CommRing k] {κ : Type u} {F : κ → Type u} [∀ w, Gro
 noncomputable def piRepHom {Aᵣ Bᵣ : ∀ w, Rep.{u} k (F w)} (g : ∀ w, Aᵣ w ⟶ Bᵣ w) :
     ModuleCat.of k (∀ w, Aᵣ w) ⟶ ModuleCat.of k (∀ w, Bᵣ w) :=
   ModuleCat.ofHom (LinearMap.pi fun w => (g w).hom.toLinearMap.comp (LinearMap.proj w))
-
-theorem piRepHom_apply {Aᵣ Bᵣ : ∀ w, Rep.{u} k (F w)} (g : ∀ w, Aᵣ w ⟶ Bᵣ w)
-    (e : ∀ w, Aᵣ w) (w : κ) : (piRepHom g).hom e w = (g w).hom (e w) :=
-  rfl
 
 noncomputable def piRepShortComplex (S : ∀ w, ShortComplex (Rep.{u} k (F w))) :
     ShortComplex (ModuleCat.{u} k) :=

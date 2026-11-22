@@ -131,21 +131,6 @@ theorem isomorphic_embeddedResolutionRule_enlargeAmbient [AlgebraicGeometry.IsAf
       (isPushforwardBlowupSeq_ambientBlowups_enlargeAmbient G Alg hAlg A' q τ hτ hker hsnc c hc hcodim)
   exact P.inducedBlowupsWithoutIso_isomorphic (hw k Y p G) (hw k Y p (G.enlargeAmbient A' q τ hτ hker hsnc))
 
-private theorem emb_comp_ambientMap_eq_enlargeAmbient_emb [AlgebraicGeometry.IsAffine Y]
-    [AlgebraicGeometry.LocallyOfFiniteType p]
-    (G : EmbeddingDatum k Y p) (Alg : PrincipalizationAlgorithm.{u})
-    (A' : Scheme.{u}) [AlgebraicGeometry.IsAffine A']
-    (q : A' ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth q]
-    [AlgebraicGeometry.LocallyOfFiniteType q] [AlgebraicGeometry.QuasiCompact q]
-    (τ : G.ambient ⟶ A') [AlgebraicGeometry.IsClosedImmersion τ]
-    (hτ : τ ≫ q = G.ambientStruct)
-    (hker : NonzeroOnComponents (G.emb ≫ τ).ker)
-    (hsnc : InStrictNormalCrossingPosition q ([] : List A'.IdealSheafData)) :
-    (G.toEmbeddedBlowupSequence Alg).emb ≫
-        (show (G.toEmbeddedBlowupSequence Alg).ambient ⟶
-            ((G.enlargeAmbient A' q τ hτ hker hsnc).toEmbeddedBlowupSequence Alg).ambient from τ) =
-      ((G.enlargeAmbient A' q τ hτ hker hsnc).toEmbeddedBlowupSequence Alg).emb := rfl
-
 end EmbeddingDatum
 
 end FunctorialResolution.EmbeddedResolution

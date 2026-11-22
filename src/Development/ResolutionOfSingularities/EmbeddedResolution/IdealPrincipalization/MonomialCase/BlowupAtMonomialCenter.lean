@@ -46,17 +46,9 @@ def blowupTriple (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' �
   mult := T.mult
   boundary := transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary
 
-theorem blowupTriple_baseField (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' ⟶ T.scheme)
-    (q : X' ⟶ Spec (CommRingCat.of T.base)) (I' : X'.IdealSheafData) :
-    (blowupTriple T π q I').base = T.base := rfl
-
 @[simp] theorem blowupTriple_scheme (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' ⟶ T.scheme)
     (q : X' ⟶ Spec (CommRingCat.of T.base)) (I' : X'.IdealSheafData) :
     (blowupTriple T π q I').scheme = X' := rfl
-
-theorem blowupTriple_structureMorphism (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' ⟶ T.scheme)
-    (q : X' ⟶ Spec (CommRingCat.of T.base)) (I' : X'.IdealSheafData) :
-    (blowupTriple T π q I').structMap = q := rfl
 
 @[simp] theorem blowupTriple_ideal (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' ⟶ T.scheme)
     (q : X' ⟶ Spec (CommRingCat.of T.base)) (I' : X'.IdealSheafData) :

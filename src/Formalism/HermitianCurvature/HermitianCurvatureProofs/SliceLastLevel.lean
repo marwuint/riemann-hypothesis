@@ -47,14 +47,6 @@ variable (k r : ℕ)
 
 def szX (a : Fin r) : Fin (2 * r + k + 1) := ⟨a.val, by omega⟩
 
-def szW (w : Fin (k + 1)) : Fin (2 * r + k + 1) := ⟨r + w.val, by omega⟩
-
-def szS (a : Fin r) : Fin (2 * r + k + 1) := ⟨2 * r + k - a.val, by omega⟩
-
-lemma szX_val (a : Fin r) : (szX k r a).val = a.val := rfl
-lemma szW_val (w : Fin (k + 1)) : (szW k r w).val = r + w.val := rfl
-lemma szS_val (a : Fin r) : (szS k r a).val = 2 * r + k - a.val := rfl
-
 variable {k r}
 
 end szIndex
@@ -62,8 +54,6 @@ end szIndex
 section szBlocks
 
 variable {k r : ℕ}
-
-lemma sz_eI (b : Fin r) : szX k r b = eI k r b := rfl
 
 end szBlocks
 
@@ -92,45 +82,6 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
-
-lemma tr_castW_add (a b : B.Mat k 0) : castW (a + b) = castW a + castW b := by
-  ext i j
-  simp [castW]
-
-lemma levelEmbed_eq_conj_cast (Y : B.Mat k 0) : emb0 k r Y = P.B2x3.Em k r * castW Y * (P.B2x3.Em k r)ᵀ := by
-  ext i j
-  by_cases hj : P.TwoByOneBlock.mid k r j
-  · rw [P.B2x3.mul_EmT_mid _ j i hj]
-    by_cases hi : P.TwoByOneBlock.mid k r i
-    · rw [P.B2x3.Em_mul_mid _ i _ hi]
-      unfold emb0
-      rw [dif_pos ⟨hi, hj⟩]
-      simp only [castW, Matrix.reindex_apply, Matrix.submatrix_apply]
-      congr 1
-    · rw [P.B2x3.Em_mul_out _ i _ hi]
-      unfold emb0
-      rw [dif_neg (fun h => hi h.1)]
-  · rw [P.B2x3.mul_EmT_out _ j i hj]
-    unfold emb0
-    rw [dif_neg (fun h => hj h.2)]
-
-lemma tr_castW_smul (c : ℂ) (a : B.Mat k 0) : castW (c • a) = c • castW a := by
-  ext i j
-  simp [castW]
-
-lemma levelEmbed_add (a b : B.Mat k 0) : emb0 k r (a + b) = emb0 k r a + emb0 k r b := by
-  rw [levelEmbed_eq_conj_cast, levelEmbed_eq_conj_cast, levelEmbed_eq_conj_cast, tr_castW_add, Matrix.mul_add, Matrix.add_mul]
-
-lemma levelEmbed_smul (c : ℂ) (a : B.Mat k 0) : emb0 k r (c • a) = c • emb0 k r a := by
-  rw [levelEmbed_eq_conj_cast, levelEmbed_eq_conj_cast, tr_castW_smul, Matrix.mul_smul, Matrix.smul_mul]
-
-def tr_emb0L (k r : ℕ) : B.Mat k 0 →L[ℂ] B.Mat k r :=
-  LinearMap.toContinuousLinearMap
-    { toFun := emb0 k r
-      map_add' := levelEmbed_add
-      map_smul' := levelEmbed_smul }
-
-lemma tr_emb0L_apply (a : B.Mat k 0) : tr_emb0L k r a = emb0 k r a := rfl
 
 lemma tr_gN_nonneg (g : B.Mat k r) : 0 ≤ B.gN g := Real.sqrt_nonneg _
 
@@ -371,4 +322,3 @@ end PartM
 namespace Formalism.FourierDecayAlt.P.SliceLastLevel
 
 end Formalism.FourierDecayAlt.P.SliceLastLevel
-

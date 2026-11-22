@@ -42,8 +42,6 @@ section Curve
 
 variable {R R' : Type} [CommRing R] [CommRing R'] {ω : R} {ω' : R'}
 
-theorem isPrincipalAt_iff (C : Ell H R ω) (s : R →+* ℂ) : C.IsPrincipalAt s ↔ EllipticFibrePrincipalData.IsPrincipalAt C s := Iff.rfl
-
 variable {M : Type} [Field M] [NumberField M] {w : 𝓞 M}
 
 end Curve

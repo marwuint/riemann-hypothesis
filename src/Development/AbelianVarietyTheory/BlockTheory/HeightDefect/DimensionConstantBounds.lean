@@ -33,17 +33,7 @@ def n0 (D : D7) (j : ℕ) : ℕ := D.R.r + 2 * g0 D * (dimX D j + 1)
 def PO {D : D7} (L : SizeData₂ D) : ℝ :=
   19 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L.sc.L + 198 * (D.R.f : ℝ) ^ 2 * L.sc.L
 
-def fieldSize (K : Type) [Field K] [NumberField K] : ℝ :=
-  Real.log (Module.finrank ℚ K : ℝ) +
-    Real.log (|((discr K : ℤ) : ℝ)| ^ ((1 : ℝ) / (Module.finrank ℚ K : ℝ)))
-
 theorem Z_eq {D : D7} (L : SizeData₂ D) : Z L = zBase L := rfl
-
-theorem fieldSize_O {D : D7} (X : Prov D) :
-    fieldSize X.KO = Real.log (degO X) + Real.log (rdO X) := rfl
-
-theorem fieldSize_E (D : D7) :
-    fieldSize D.host.E = Real.log (Module.finrank ℚ D.host.E : ℝ) + lrd D := rfl
 
 end GlobalTheory.IndefiniteRowSideFullHecke.DimensionConstantBounds
 

@@ -12,20 +12,6 @@ section Alg
 
 variable {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W]
 
-def sympGroup (ω : LinearMap.BilinForm R W) : Subgroup (W ≃ₗ[R] W) where
-  carrier := {g | ∀ w w', ω (g w) (g w') = ω w w'}
-  one_mem' := fun _ _ => rfl
-  mul_mem' {a b} ha hb w w' := by
-    change ω (a (b w)) (a (b w')) = _
-    rw [ha, hb]
-  inv_mem' {a} ha w w' := by
-    change ω (a.symm w) (a.symm w') = _
-    conv_rhs => rw [← a.apply_symm_apply w, ← a.apply_symm_apply w']
-    rw [ha]
-
-theorem mem_sympGroup {ω : LinearMap.BilinForm R W} {g : W ≃ₗ[R] W} :
-    g ∈ sympGroup ω ↔ ∀ w w', ω (g w) (g w') = ω w w' := Iff.rfl
-
 @[ext]
 structure Heis (ω : LinearMap.BilinForm R W) where
 
@@ -81,13 +67,6 @@ namespace SympPolarization
 
 variable {ω : LinearMap.BilinForm R W}
 
-def leviX (P : SympPolarization ω X Y) (g : W ≃ₗ[R] W) : X →ₗ[R] X :=
-  LinearMap.fst R X Y ∘ₗ P.e.toLinearMap ∘ₗ g.toLinearMap ∘ₗ P.e.symm.toLinearMap ∘ₗ
-    LinearMap.inl R X Y
-
-theorem leviX_apply (P : SympPolarization ω X Y) (g : W ≃ₗ[R] W) (x : X) :
-    P.leviX g x = (P.e (g (P.e.symm (x, 0)))).1 := rfl
-
 end SympPolarization
 
 variable {P₁ P₂ Q₁ Q₂ : Type*} [AddCommGroup P₁] [Module R P₁] [AddCommGroup P₂] [Module R P₂]
@@ -105,10 +84,6 @@ structure FourPieces (ω : LinearMap.BilinForm R W) (P₁ P₂ Q₁ Q₂ : Type*
 
   form : ∀ w w', ω w w' = a₁ (e w).1.1 (e w').2.1 + a₂ (e w).1.2 (e w').2.2
     - a₁ (e w').1.1 (e w).2.1 - a₂ (e w').1.2 (e w).2.2
-
-namespace FourPieces
-
-end FourPieces
 
 section Std
 

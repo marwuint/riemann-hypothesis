@@ -27,9 +27,6 @@ def latB (B : GL (Fin n) E) : Submodule (𝓞 E) (Fin n → E) where
     rw [Matrix.mulVec_smul, Pi.smul_apply, Algebra.smul_def]
     exact mul_mem ⟨c, rfl⟩ (hx a)
 
-theorem mem_latB (B : GL (Fin n) E) (x : Fin n → E) :
-    x ∈ latB B ↔ ∀ a, (((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ x) a ∈ (algebraMap (𝓞 E) E).range := Iff.rfl
-
 theorem single_int (j a : Fin n) : (Pi.single j 1 : Fin n → E) a ∈ (algebraMap (𝓞 E) E).range := by
   by_cases h : a = j
   · subst h; rw [Pi.single_eq_same]; exact one_mem _

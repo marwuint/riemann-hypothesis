@@ -476,8 +476,6 @@ def spacesExample : Spaces R0 F E where
   Vneg := fun _ => false
   V_std := fun _ _ _ => standardLattice_orthogonal
 
-theorem spacesToy_T : (spacesExample hstar cm T hT pz hpz hy).T = T := rfl
-
 theorem spacesExample_Ysig : ∀ j, j ≤ R0.m → ∀ τ : E →+* ℂ,
     ((spacesExample hstar cm T hT pz hpz hy).Y j).sig τ = sigYD R0 j := by
   intro j hj τ

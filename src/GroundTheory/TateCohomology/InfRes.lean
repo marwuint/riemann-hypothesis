@@ -59,8 +59,6 @@ lemma invariants_map_surjective {X : ShortComplex (Rep k G)} (hX : X.ShortExact)
 noncomputable def toCoindOne : A ⟶ coindOne k G A :=
   ofHom ⟨LinearMap.pi fun x => A.ρ x, fun g => by ext a x; simp⟩
 
-lemma toCoindOne_hom_apply (a : A) (x : G) : (toCoindOne A).hom a x = A.ρ x a := rfl
-
 lemma toCoindOne_injective : Function.Injective (toCoindOne A).hom := fun a b h => by
   have h' : A.ρ 1 a = A.ρ 1 b := congrFun h 1
   simpa using h'

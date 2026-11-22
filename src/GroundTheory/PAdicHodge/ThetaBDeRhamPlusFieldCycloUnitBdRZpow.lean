@@ -35,9 +35,6 @@ variable {L : IntermediateField ℚ_[p] (PadicAlgCl p)}
 def cycloUnitBdR (σ : Gal(PadicAlgCl p/L)) : 𝔹ˣ :=
   Units.map ((algebraMap ℚ_[p] 𝔹).toMonoidHom.comp PadicInt.Coe.ringHom.toMonoidHom) (cycloChar L σ)
 
-theorem coe_cycloUnitBdR (σ : Gal(PadicAlgCl p/L)) :
-    (cycloUnitBdR σ : 𝔹) = algebraMap ℚ_[p] 𝔹 ((cycloChar L σ : ℤ_[p]) : ℚ_[p]) := rfl
-
 theorem thetaBDeRhamPlusField_cycloUnitBdR_zpow (σ : Gal(PadicAlgCl p/L)) (i : ℤ) :
     IsPerfectoidField.thetaBDeRhamPlusField p ((cycloUnitBdR σ ^ i : 𝔹ˣ) : 𝔹) = twistScalar L i σ := by
   rw [cycloUnitBdR, ← map_zpow, Units.coe_map]

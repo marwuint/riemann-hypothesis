@@ -7,8 +7,6 @@ namespace Formalism.L2.GlobalTheoryTheory
 
 open Formalism.BasicNotions Formalism.MainNotions NumberField
 
-theorem hermitian_form_H1_eq (Λ : AddSubgroup ℂ) (z w : ℂ) : GL3Theta.hf1 Λ z w = H1 Λ z w := rfl
-
 theorem lattice_character_eq (d : ℕ) (Λ : AddSubgroup ℂ) (x : ℂ) : GL3Theta.al1 d Λ x = al1 d Λ x := rfl
 
 theorem taylorLogMetric_U1_eq_U1 (Λ : AddSubgroup ℂ) (x : ℂ) (G : ℂ → ℂ) : TaylorLogMetric.U1 Λ x G = U1 Λ x G := by
@@ -28,8 +26,6 @@ theorem is_theta_zero_iff (d : ℕ) (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) : G
     refine ⟨h1, fun x hx z => ?_, h3⟩
     rw [lattice_character_eq, congrFun (taylorLogMetric_U1_eq_U1 Λ x G) z]
     exact h2 x hx z
-
-theorem normSq_lattice_function_eq (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) : GL3Theta.normSq1 Λ G = normSq1 Λ G := rfl
 
 end Formalism.L2.GlobalTheoryTheory
 

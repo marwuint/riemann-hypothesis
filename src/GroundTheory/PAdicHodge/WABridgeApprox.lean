@@ -23,9 +23,6 @@ variable (p) in
 
 def radTwo : Set.Ioo (0 : ℝ) 1 := (frob ℂ_[p] p).rootRadius (rhoMid p)
 
-theorem inv_p_lt_radTwo : (p : ℝ)⁻¹ < radTwo p :=
-  inv_p_lt_rhoMid.trans_le (le_rootRadius (rhoMid p))
-
 end WABridge
 
 end GroundTheory.PAdicHodge

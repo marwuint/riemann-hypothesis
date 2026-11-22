@@ -168,8 +168,4 @@ theorem exists_coord (l : Level H) (V : HSp D) {r : ℕ} (hr : V.rank = r) (β :
 
 end Dict
 
-theorem readAd_eq (T : CoreJ D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (c : (T.U j σ).Comp → ℂ) (a : (D.host.E →+* ℂ) × ℕ → ℕ)
-    (f : T.R j) (h : GA D (T.V j σ)) :
-    LatticeBasisLifts.readAd T.toCore j σ c a f h = (lieFac (T.Q.Dw j) (xiR D) a : ℂ) * LevelLiftConditions.adFn T j σ c f h := rfl
-
 end GlobalTheory.GeoActCompare

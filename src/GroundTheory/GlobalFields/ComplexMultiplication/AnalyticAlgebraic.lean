@@ -46,19 +46,5 @@ theorem homConst_latticeEndEquiv (α : latticeEnd L) :
 
 variable {L}
 
-def mulLattice (α : latticeHom L₁ L₂) : AddSubgroup L₂.lattice where
-  carrier := {w | ∃ l ∈ L₁.lattice, (w : ℂ) = α * l}
-  add_mem' := by
-    rintro a b ⟨l, hl, ha⟩ ⟨l', hl', hb⟩
-    exact ⟨l + l', add_mem hl hl', by rw [Submodule.coe_add, ha, hb, mul_add]⟩
-  zero_mem' := ⟨0, zero_mem _, by simp⟩
-  neg_mem' := by
-    rintro a ⟨l, hl, ha⟩
-    exact ⟨-l, neg_mem hl, by rw [Submodule.coe_neg, ha, mul_neg]⟩
-
-theorem mem_mulLattice {α : latticeHom L₁ L₂} {w : L₂.lattice} :
-    w ∈ mulLattice α ↔ ∃ l ∈ L₁.lattice, (w : ℂ) = α * l :=
-  Iff.rfl
-
 end Elliptic
 end GroundTheory.Global

@@ -52,9 +52,6 @@ def chartAct (Z : Matrix ι (Fin p) (R ⊗[K] E)) (S : HermSp K E R p) (X : Fram
 
 variable {Z : Matrix ι (Fin p) (R ⊗[K] E)}
 
-theorem toM_chartAct (S : HermSp K E R p) (X : FrameSp K E R ι p) :
-    toM (chartAct H Z S X) = toM X + Z ⬝ toM (chartShift H Z S X) := rfl
-
 variable (hRu : IsOpen {r : R | IsUnit r}) (hRi : ∀ r : R, IsUnit r → ContinuousAt Ring.inverse r)
 
 end

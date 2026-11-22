@@ -23,9 +23,6 @@ def schwartzBruhat2 : Submodule ℂ ((Fin 2 → F) → ℂ) where
   zero_mem' := ⟨IsLocallyConstant.const 0, HasCompactSupport.zero⟩
   smul_mem' c _ hf := ⟨hf.1.comp (c • ·), hf.2.smul_left (f := fun _ ↦ c)⟩
 
-theorem mem_schwartzBruhat2 {Φ : (Fin 2 → F) → ℂ} :
-    Φ ∈ schwartzBruhat2 F ↔ IsLocallyConstant Φ ∧ HasCompactSupport Φ := Iff.rfl
-
 def slice (Φ : (Fin 2 → F) → ℂ) (g : GL (Fin 2) F) : F → ℂ :=
   fun t ↦ Φ (![0, t] ᵥ* (g : Matrix (Fin 2) (Fin 2) F))
 
@@ -42,25 +39,6 @@ theorem modPow_mul (x y : F) (s : ℂ) : modPow (x * y) s = modPow x s * modPow 
 
 theorem modPow_add {x : F} (hx : x ≠ 0) (s t : ℂ) : modPow x (s + t) = modPow x s * modPow x t :=
   Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 (by exact_mod_cast modulus_ne_zero hx))
-
-def borelElt (a d : Fˣ) (x : F) : GL (Fin 2) F where
-  val := !![(a : F), x; 0, (d : F)]
-  inv := !![((a⁻¹ : Fˣ) : F), -(x * ((a⁻¹ : Fˣ) : F) * ((d⁻¹ : Fˣ) : F)); 0, ((d⁻¹ : Fˣ) : F)]
-  val_inv := by
-    ext i j
-    fin_cases i <;> fin_cases j <;>
-      simp [Matrix.mul_apply, Fin.sum_univ_two, Units.val_inv_eq_inv_val]
-    all_goals field_simp
-    all_goals ring
-  inv_val := by
-    ext i j
-    fin_cases i <;> fin_cases j <;>
-      simp [Matrix.mul_apply, Fin.sum_univ_two, Units.val_inv_eq_inv_val]
-    all_goals field_simp
-    all_goals ring
-
-theorem borelElt_val (a d : Fˣ) (x : F) :
-    (borelElt a d x : Matrix (Fin 2) (Fin 2) F) = !![(a : F), x; 0, (d : F)] := rfl
 
 abbrev detU (g : GL (Fin 2) F) : Fˣ := Matrix.GeneralLinearGroup.det g
 

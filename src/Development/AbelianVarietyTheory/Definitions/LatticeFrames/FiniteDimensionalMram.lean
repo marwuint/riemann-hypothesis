@@ -42,8 +42,6 @@ noncomputable def colTo (j : ℕ) : (C.cls 0 → C.Y 0 → ℂ) →ₗ[ℂ] (C.c
   Nat.rec (motive := fun j => (C.cls 0 → C.Y 0 → ℂ) →ₗ[ℂ] (C.cls j → C.Y j → ℂ)) LinearMap.id
     (fun i f => (C.Klin i).comp f) j
 
-theorem colTo_succ (j : ℕ) : colTo C (j + 1) = (C.Klin j).comp (colTo C j) := rfl
-
 variable (A : ColumnsAtT R C) (P : PeriodMap R C)
 
 def PsiC : A.Mram →ₗ[ℂ] P.Wrow := P.lowerMap ∘ₗ P.evz ∘ₗ colTo C R.m ∘ₗ A.Mram.subtype
@@ -62,8 +60,6 @@ def dualH {K : Type} [Field K] [NumberField K] [StarRing K] (A : HLat K) : HLat 
   b := A.dualB
   X := A.dualX
   L := A.dualL
-
-theorem dualH_muMax {K : Type} [Field K] [NumberField K] [StarRing K] (A : HLat K) : (dualH A).muMax = A.muMaxDual := rfl
 
 variable (D : D7) (Am : AmbForm D (RowSide.sharp D)) (u : D.what₂.Word)
 

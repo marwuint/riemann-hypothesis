@@ -27,9 +27,6 @@ def liftZ (p n : ℕ) (ε : 𝓞 D.host.K) {r : ℕ} (v : Fin r → VC D N N') :
   AddMonoidHom.mk' (fun z => (D.host.φ₀ ((ε : D.host.K) : D.host.E) / (p : ℂ) ^ n) • ∑ i, z i • v i) fun z z' => by
     simp only [Pi.add_apply, add_smul, Finset.sum_add_distrib, smul_add]
 
-theorem liftZ_apply (p n : ℕ) (ε : 𝓞 D.host.K) {r : ℕ} (v : Fin r → VC D N N') (z : Fin r → ℤ) :
-    liftZ p n ε v z = (D.host.φ₀ ((ε : D.host.K) : D.host.E) / (p : ℂ) ^ n) • ∑ i, z i • v i := rfl
-
 theorem chi_mem {χ : IdE D → ℂ} (hχ : IsChi D χ) {𝔞 : IdE D} (ha : N1 D 𝔞) : χ 𝔞 ∈ Qbar := by
   let _ := D.host.cmStar
   obtain ⟨k, hk, z, hz, hspan⟩ := CU.pow_unitary D ha

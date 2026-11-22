@@ -14,9 +14,6 @@ section Core
 
 variable {X : Type} [MeasurableSpace X] {ν : Measure X}
 
-def HasRows (B : Lp ℂ 2 ν →L[ℂ] Lp ℂ 2 ν) (β : X → Lp ℂ 2 ν) : Prop :=
-  ∀ φ : Lp ℂ 2 ν, B φ =ᵐ[ν] fun x => ⟪β x, φ⟫_ℂ
-
 def TraceIsDiagonal (T : Lp ℂ 2 ν →L[ℂ] Lp ℂ 2 ν) (K : X → X → ℂ) : Prop :=
   IsTraceClass T ∧ Integrable (fun x => K x x) ν ∧ trace T = ∫ x, K x x ∂ν
 
@@ -25,13 +22,6 @@ end Core
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
-
-def IsCcInf (θ : InfF D) (V : HSp D) (f : GA D V → ℂ) : Prop :=
-  Continuous f ∧ HasCompactSupport f ∧
-    (∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧ ∀ k ∈ U, k ∈ GfC V → ∀ g, f (g * k) = f g) ∧
-    ∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ),
-      (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g,
-        ContDiff ℝ ∞ fun t : Fin k → ℝ => f (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)
 
 def MapsIntoCusp (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (f : GA D V → ℂ) : Prop :=
   ∀ F : DividedPowerChartLift V μ, RopG V μ f F ∈ L2cusp V μ

@@ -131,18 +131,6 @@ def ExhaustS (ε : Fin n → Bool) (F : Fam n) : Prop :=
 
 def ClassS (ε : Fin n → Bool) : Prop := ∃ F : Fam n, ParamS ε F ∧ ExhaustS ε F
 
-def ClassU (n : ℕ) : Prop :=
-  ∃ (H : (Fin n → Bool) → (Fin n → ℝ) → Type) (_ : ∀ ε lam, NormedAddCommGroup (H ε lam))
-    (_ : ∀ ε lam, InnerProductSpace ℂ (H ε lam)) (π : ∀ ε lam, Matrix (Fin n) (Fin n) ℂ → (H ε lam →L[ℂ] H ε lam)),
-    (∀ ε lam, IsHCParam lam → IsHCDS ε lam (π ε lam)) ∧
-    ∀ (ε : Fin n → Bool) (H' : Type) [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] (σ' : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')), IsSqIntIrr ε σ' →
-      ∃ (s : Equiv.Perm (Fin n)) (mu : Fin n → ℝ), IsHCParam mu ∧ (∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) ∧
-        UEquiv (ε ∘ s) (fun g => σ' (g.submatrix s.symm s.symm)) (π (ε ∘ s) mu)
-
-theorem dsClass_iff : DSClass ↔ ∀ n, ClassU n := Iff.rfl
-
-theorem SUJ_eq (ε : Fin n → Bool) : SUJ ε = Formalism.MainNotions.BridgeLocGrowth.SUJ ε := rfl
-
 end GlobalTheory.DSSU
 
 end

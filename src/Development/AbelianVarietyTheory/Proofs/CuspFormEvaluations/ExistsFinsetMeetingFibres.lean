@@ -337,12 +337,6 @@ def shortFrames (v : Fin r → Fin r → E) (B : ℝ) : Set (Frame X.Ψ r) :=
       Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) ∧
     ∀ i, ∑ τ : X.Ψ, X.maj x τ (Data.emb τ.1 (v i)) ≤ B}
 
-theorem mem_shortFrames {v : Fin r → Fin r → E} {B : ℝ} {x : Frame X.Ψ r} :
-    x ∈ shortFrames X v B ↔ (∀ τ : X.Ψ, gram τ.1 X.Gm (mat x τ) =
-      Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) ∧
-    ∀ i, ∑ τ : X.Ψ, X.maj x τ (Data.emb τ.1 (v i)) ≤ B := by
-  exact Iff.rfl
-
 theorem shortFrames_subset_dom (v : Fin r → Fin r → E) (B : ℝ) : shortFrames X v B ⊆ X.dom := by
   intro x hx
   have ho : X.IsOrtho x := hx.1

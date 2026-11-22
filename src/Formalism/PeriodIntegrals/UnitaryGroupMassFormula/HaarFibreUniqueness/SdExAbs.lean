@@ -38,10 +38,6 @@ def M0 (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
     rw [← neg_one_smul (Fv F v) a, hBs]
     exact mul_mem (neg_mem (one_mem _)) (ha j)
 
-theorem mem_dual_integral_module (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
-    (hBs : ∀ (c : Fv F v) x y, B (c • x) y = c * B x y) {ι : Type} (β' : ι → V) (x : V) :
-    x ∈ M0 v B hBa hBs β' ↔ ∀ j, B x (β' j) ∈ v.adicCompletionIntegers F := Iff.rfl
-
 theorem haar_smul_preimage (μ0 : Measure V) [μ0.IsAddHaarMeasure] (a : Fv F v) (ha : a ≠ 0) :
     ∃ c : ℝ≥0∞, ∀ S, MeasurableSet S → μ0 ((fun y : V => a • y) ⁻¹' S) = c * μ0 S := by
   let e : V ≃+ V := (LinearEquiv.smulOfNeZero (Fv F v) V a ha).toAddEquiv

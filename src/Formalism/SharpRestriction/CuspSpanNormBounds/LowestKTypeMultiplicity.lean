@@ -1131,10 +1131,6 @@ def rhoS (P : Mx k r) (σ : Mx k r → (H →L[ℂ] H)) (S : Submodule ℂ H) [F
     (hst : IsKStableOn ε (fun g => σ (P⁻¹ * g * P)) S) (κ : Formalism.REAL.KG ε) : S →L[ℂ] S :=
   LinearMap.toContinuousLinearMap ((σ (kp P κ)).toLinearMap.restrict (fun v hv => hst _ κ.2 v hv))
 
-theorem rhoS_coe (S : Submodule ℂ H) [FiniteDimensional ℂ S]
-    (hst : IsKStableOn ε (fun g => σ (P⁻¹ * g * P)) S) (κ : Formalism.REAL.KG ε) (u : S) :
-    ((rhoS P σ S hst κ u : S) : H) = σ (kp P κ) u := rfl
-
 end KInv
 
 end Formalism.MainNotions.LowestKTypeMultiplicity
@@ -1282,4 +1278,3 @@ end Formalism.MainNotions.LowestKTypeMultiplicity
 namespace Formalism.MainNotions.LowestKTypeMultiplicity
 
 end Formalism.MainNotions.LowestKTypeMultiplicity
-

@@ -34,19 +34,9 @@ variable {D : D7}
 
 variable {V W : HSp D}
 
-theorem actHom_add (g : GA D V) (h : GA D W) (x y : WA V W) :
-    actHom V W g h (x + y) = actHom V W g h x + actHom V W g h y := by
-  unfold actHom
-  split_ifs <;> rw [Matrix.mul_add, Matrix.add_mul]
-
 variable (D) in
 
 def iE : AE D := mkAE (fun _ => Complex.I) 0
-
-def fockJ (s : GA D V) (t : GA D W) : WA V W →+ WA V W :=
-  AddMonoidHom.mk' (fun x => iE D • actHom V W s t x) fun x y => by rw [actHom_add, smul_add]
-
-theorem fockJ_apply (s : GA D V) (t : GA D W) (x : WA V W) : fockJ s t x = iE D • actHom V W s t x := rfl
 
 end Formalism.L2.Fam.ThC
 

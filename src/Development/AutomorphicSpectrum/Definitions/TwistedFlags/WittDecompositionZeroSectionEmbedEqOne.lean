@@ -220,18 +220,6 @@ theorem witt_decomposition_zero_section_embed_eq_one : d.j0 ⬝ d.p0 = 1 := by
   have h := d.sum_eq_one
   rwa [matrix_mul_empty_inner, matrix_mul_empty_inner d.jY, zero_add, add_zero] at h
 
-def emb0Equiv : GA D S₀ ≃* GA D S where
-  toFun := d.emb0
-  invFun g := ofMat S₀ (d.p0 ⬝ (mt S g ⬝ d.j0)) (by
-    have h := d.gA_eq
-    rw [matrix_mul_empty_inner (adj d.pY), matrix_mul_empty_inner (adj d.pX), zero_add, add_zero] at h
-    rw [adj_mul, adj_mul, Matrix.mul_assoc, Matrix.mul_assoc, cancel₃ h.symm, cancel₃ (mt_unitary S g), d.gram_00])
-  left_inv g := mt_injective S₀ (by rw [mt_ofMat, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, cancel₂ d.p0_j0, Matrix.one_mul])
-  right_inv g := mt_injective S (by
-    rw [← Matrix.mul_one (mt S (d.emb0 _)), ← witt_decomposition_zero_section_embed_eq_one d, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, mt_ofMat, cancel₂ (witt_decomposition_zero_section_embed_eq_one d),
-      Matrix.one_mul, Matrix.mul_assoc, witt_decomposition_zero_section_embed_eq_one, Matrix.mul_one])
-  map_mul' := map_mul d.emb0
-
 end Zero
 
 def IsUPair (r : ℕ) (μ : Measure (SUp D r)) (𝓕 : Set (SUp D r)) : Prop :=
@@ -412,14 +400,6 @@ theorem frameMat_iXY (j : ℕ) : frameMat (D.sp.Y j) (D.sp.X j) (D.sp.iXY j) =
 def besDat {j : ℕ} (hj : j < D.R.m) (he : Even j) : BesDat (D.sp.X j) (D.sp.Y j) (D.sp.iXY j) :=
   toBesDat (F.hypEven hj he rfl) (orthogonalDecompLineSum D j) (isLineVec_lineT true) one_ne_zero (D.sp.iXY j) (F.frameMat_iXY j)
 
-theorem besDat_rho {j : ℕ} (hj : j < D.R.m) (he : Even j) : (F.besDat hj he).ρ = rho D j := rfl
-
-theorem besDat_e {j : ℕ} (hj : j < D.R.m) (he : Even j) : (F.besDat hj he).e = F.colMat j (rho D j) := rfl
-
-theorem besDat_c {j : ℕ} (hj : j < D.R.m) (he : Even j) (i) : (F.besDat hj he).c i = 1 := rfl
-
-theorem besDat_y {j : ℕ} (hj : j < D.R.m) (he : Even j) : ((F.besDat hj he).y : GA D (D.sp.Y j)) = 1 := rfl
-
 def emb (j : ℕ) : GA D (D.sp.X j) →* GA D (D.sp.Y j) :=
   if hj : j < D.R.m then
     (if he : Even j then embA (F.hypEven hj he rfl) (orthogonalDecompLineSum D j) else (F.hypOdd hj he rfl).emb0)
@@ -465,10 +445,6 @@ structure Meas (F : Frames D) where
   unitM : ∀ a b, IsCovolOne (Formalism.IndefR.Eqv.ratMx D a b) (μM a b) (fdM a b)
   tieLast : ∀ j, j + 1 = D.R.m → μY j = (μX j).map (F.emb j)
   tieTop : μY D.R.m = μX'.map (Frames.embYm D)
-
-namespace Meas
-
-end Meas
 
 end GlobalTheory.CompanionTheory.Chain
 

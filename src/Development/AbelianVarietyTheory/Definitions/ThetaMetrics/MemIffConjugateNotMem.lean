@@ -41,9 +41,6 @@ def conjugate (Φ : CMType E) : CMType E where
   carrier := {τ | ComplexEmbedding.conjugate τ ∈ Φ}
   mem_iff_conjugate_notMem' _ := Φ.mem_iff_conjugate_notMem _
 
-theorem mem_conjugate (Φ : CMType E) (τ : E →+* ℂ) :
-    τ ∈ Φ.conjugate ↔ ComplexEmbedding.conjugate τ ∈ Φ := Iff.rfl
-
 noncomputable def sumEquiv (Φ : CMType E) : Φ ⊕ Φ ≃ (E →+* ℂ) :=
   Equiv.ofBijective (Sum.elim (fun τ => τ.1) (fun τ => ComplexEmbedding.conjugate τ.1)) <| by
     have hinv : Function.Involutive (ComplexEmbedding.conjugate (K := E)) := star_involutive

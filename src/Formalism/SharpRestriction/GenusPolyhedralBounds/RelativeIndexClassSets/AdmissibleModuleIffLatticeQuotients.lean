@@ -59,22 +59,12 @@ theorem hypC_iff (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 C
   ⟨fun ⟨a, b, c, d, e, f, g, h⟩ => ⟨⟨a, b, f, ((fourthHypothesis_iff_sizes_and_index ..).1 g).1, h⟩, c, d, e, ((fourthHypothesis_iff_sizes_and_index ..).1 g).2⟩,
     fun ⟨⟨a, b, f, g, h⟩, c, d, e, i⟩ => ⟨a, b, c, d, e, f, (fourthHypothesis_iff_sizes_and_index ..).2 ⟨g, i⟩, h⟩⟩
 
-theorem deepIn_iff (X : PJ D B P j) (ka : WeightFamilies.Wt D j) (large₂ : SizeData₂ D) (CG AG Pd : ℝ) :
-    Formalism.MainNotions.Gaps.EtaleWeightGaps.DeepIn X ka large₂ CG AG Pd ↔ Formalism.MainNotions.Gaps.EtaleWeightGaps.DeepHerm X ka ∧ Formalism.MainNotions.Gaps.EtaleWeightGaps.DeepSubMul X ∧
-      Formalism.MainNotions.Gaps.EtaleWeightGaps.DeepLogD X ka Pd ∧ Formalism.MainNotions.Gaps.EtaleWeightGaps.PageGd X ka large₂ CG AG Pd := Iff.rfl
-
 def refill {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G₀ : Formalism.MainNotions.Gaps.EtaleWeightGaps.GlobalFamilyData X ka wL wF)
     (del : ℕ) (th' : Fin del → B.Cusp j wF) (rz : ℕ) (alz : Fin rz → Fin (WeightFamilies.dimY D j) → ℕ)
     (th0 : Fin rz → B.Cusp j (X.wF0 wL wF)) (zc : Fin rz → ((Fin (WeightFamilies.dimY D j + 1) × Fin G₀.N) →₀ ℕ) →₀ B.Cusp j ka)
     (rq : ℕ) (th : Fin rq → B.Mlat j ka) (iet : ℕ) (et : B.Cusp j (Formalism.MainNotions.Gaps.EtaleWeightGaps.etWt D j iet)) :
     Formalism.MainNotions.Gaps.EtaleWeightGaps.GlobalFamilyData X ka wL wF :=
   ⟨G₀.N, G₀.w, del, th', rz, alz, th0, zc, rq, th, iet, et, G₀.mx⟩
-
-theorem tiedW_refill {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G₀ : Formalism.MainNotions.Gaps.EtaleWeightGaps.GlobalFamilyData X ka wL wF) (S : Scal B) (Gc Prw : ℝ)
-    (del : ℕ) (th' : Fin del → B.Cusp j wF) (rz : ℕ) (alz : Fin rz → Fin (WeightFamilies.dimY D j) → ℕ)
-    (th0 : Fin rz → B.Cusp j (X.wF0 wL wF)) (zc : Fin rz → ((Fin (WeightFamilies.dimY D j + 1) × Fin G₀.N) →₀ ℕ) →₀ B.Cusp j ka)
-    (rq : ℕ) (th : Fin rq → B.Mlat j ka) (iet : ℕ) (et : B.Cusp j (Formalism.MainNotions.Gaps.EtaleWeightGaps.etWt D j iet)) :
-    (refill G₀ del th' rz alz th0 zc rq th iet et).TiedW S Gc Prw ↔ G₀.TiedW S Gc Prw := Iff.rfl
 
 end Split
 
@@ -91,35 +81,11 @@ def AdmissibilitySecond (large₂ : SizeData₂ D) (CA C1 A1 CG AG : ℝ) : Prop
 
 def WSt (large₂ : SizeData₂ D) (CA C1 A1 CW AW : ℝ) : Prop := WeightAlgebra.ArchimedeanSignatureMatching large₂ (toWeightAlgebra F I dat hI iW hiW) CA C1 A1 CW AW
 
-def TiedWSt (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT Gc Prw : ℝ) : Prop :=
-  ∀ j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (ka wL wF : WeightFamilies.Wt D j) (T nP nW : ℕ) (h0 : ℝ),
-    HypPage large₂ (toWeightAlgebra F I dat hI iW hiW j h1 h2) H C2 A2 CR CT ka wL wF T nP nW h0 →
-    SupBoundPageRows D large₂ ka →
-    ∃ G : Formalism.MainNotions.Gaps.EtaleWeightGaps.GlobalFamilyData (toWeightAlgebra F I dat hI iW hiW j h1 h2) ka wL wF,
-      G.TiedW (Formalism.MainNotions.DIV.Cons.scalOf (toWeightFamilies F) hinj EX ka wL wF T) Gc Prw
-
 theorem admissibleModule_iff_lattice_quotients (large₂ : SizeData₂ D) (K : KAdm) (H : KHyp) (Ch Ah Cq Aq : ℝ) :
     WeightAlgebra.admitted large₂ (toWeightAlgebra F I dat hI iW hiW) K H Ch Ah Cq Aq ↔
       MSt F ∧ AdmissibilitySecond F I dat hI iW hiW large₂ H.CA H.C1 H.A1 K.CG K.AG ∧ WeightAlgebra.adm3 large₂ (toWeightAlgebra F I dat hI iW hiW) H.CA K.Cf K.Af ∧
         WSt F I dat hI iW hiW large₂ H.CA H.C1 H.A1 K.CW K.AW ∧ WeightAlgebra.adm5 large₂ (toWeightFamilies F) K.CL K.AL ∧ WeightAlgebra.adm6 (toWeightFamilies F) K.CRm ∧
         WeightAlgebra.adm7 large₂ (toWeightFamilies F) K.CRm H.CK Ch Ah Cq Aq := Iff.rfl
-
-theorem sW_scalOfP (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) {j : ℕ}
-    (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) :
-    (Formalism.MainNotions.DIV.Cons.scalOfP B hinj EX p ka wL wF T).sW = (Formalism.MainNotions.DIV.Cons.scalOf B hinj EX ka wL wF T).sW := rfl
-
-def TiedWStP (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT Gc Prw : ℝ) : Prop :=
-  ∀ j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (ka wL wF : WeightFamilies.Wt D j) (T nP nW : ℕ) (h0 : ℝ),
-    HypPage large₂ (toWeightAlgebra F I dat hI iW hiW j h1 h2) H C2 A2 CR CT ka wL wF T nP nW h0 →
-    SupBoundPageRows D large₂ ka →
-    ∃ G : Formalism.MainNotions.Gaps.EtaleWeightGaps.GlobalFamilyData (toWeightAlgebra F I dat hI iW hiW j h1 h2) ka wL wF,
-      G.TiedW (Formalism.MainNotions.DIV.Cons.scalOfP (toWeightFamilies F) hinj EX p ka wL wF T) Gc Prw
-
-theorem tiedWStP_iff {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} (p : ℕ) {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc Prw : ℝ} :
-    TiedWStP F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT Gc Prw ↔ TiedWSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT Gc Prw := Iff.rfl
-
-theorem weightCondition_iff_at_prime {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc Prw : ℝ} :
-    TiedWSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT Gc Prw ↔ TiedWStP F I dat hI iW hiW hinj EX (Formalism.MainNotions.DIV.Cons.po D) large₂ H C2 A2 CR CT Gc Prw := Iff.rfl
 
 end Views
 

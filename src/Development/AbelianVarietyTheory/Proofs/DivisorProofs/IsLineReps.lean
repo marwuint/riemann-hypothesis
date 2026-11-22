@@ -18,8 +18,6 @@ variable (F) in
 
 def adVec (z : Fin n → E) : Fin n → AF F ⊗[F] E := fun i => inclR (F := F) (AF F) (z i)
 
-def firstColumn {r : ℕ} (X : Matrix (Fin n) (Fin (r + 1)) E) : Fin n → E := fun i => X i 0
-
 variable (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
 
 end GlobalTheory.EisMidHt

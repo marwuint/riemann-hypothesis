@@ -141,9 +141,6 @@ section Concl
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
 
-theorem spherical_iff (B : NBC A) (j : ℕ) (π : B.AU j) :
-    BaseChangeInertUnramified.SphericalAtInert B j π ↔ DefiniteFormInstances.SphericalInert B j π := Iff.rfl
-
 end Concl
 
 end GlobalTheory.BaseChangeExistsCompare

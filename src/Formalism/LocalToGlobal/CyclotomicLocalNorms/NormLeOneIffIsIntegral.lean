@@ -85,8 +85,6 @@ def vΩ : AddValuation (Om l) (WithTop ℚ) :=
       rw [vfun_of_ne hx, vfun_of_ne hy, vfun_of_ne (mul_ne_zero hx hy), vq_mul hx hy]
       rfl)
 
-theorem vΩ_apply (x : Om l) : vΩ l x = vfun x := rfl
-
 variable (l) in
 
 def v (LL : FinExt l) : AddValuation ↥LL.1 (WithTop ℚ) := (vΩ l).comap (algebraMap ↥LL.1 (Om l))

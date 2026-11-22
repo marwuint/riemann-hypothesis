@@ -152,9 +152,6 @@ variable (ρ e) in
 
 def winOps : Set (End ℂ (LinearMap.range e)) := range (winOp ρ e)
 
-theorem winOp_apply (m : M) (x : LinearMap.range e) : (winOp ρ e m x : V) = e (ρ m x) :=
-  rfl
-
 theorem isSimpleUnder_winOps [ρ.IsIrreducible] (he : IsWinProj ρ e)
     (hne : LinearMap.range e ≠ ⊥) : IsSimpleUnder (winOps ρ e) := by
   refine ⟨Submodule.nontrivial_iff_ne_bot.2 hne, fun p hp => ?_⟩

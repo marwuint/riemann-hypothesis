@@ -42,12 +42,6 @@ variable {c : R →+* R} {J : Matrix (Fin n) (Fin n) R} {X Y : Fin n → R}
   (hXY : X ⬝ᵥ J *ᵥ (fun i => c (Y i)) = 1)
 include hc hJ hXY
 
-theorem dot_yx : Y ⬝ᵥ J *ᵥ (fun i => c (X i)) = -1 := by
-  rw [dotProduct_mulVec]
-  have h := conj_mulVec c J hJ Y hc
-  rw [show Y ᵥ* J = -(fun i => c ((J *ᵥ fun k => c (Y k)) i)) by rw [h, neg_neg]]
-  rw [neg_dotProduct, ← conj_dot, dotProduct_comm (J *ᵥ _) X, hXY, map_one]
-
 end Props
 
 end GlobalTheory.LeviTorus
@@ -76,13 +70,4 @@ theorem form_incl (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) 
     incV F x ⬝ᵥ incM F J *ᵥ (fun i => cA σ (incV F y i)) = inclR (F := F) (AF F) (form σ J x y) := by
   simp [form, incV, incM, cA_incl, dotProduct, mulVec, map_sum, map_mul]
 
-theorem vecMul_incM (σ : E →ₐ[F] E) {n k : ℕ} (J : Matrix (Fin n) (Fin n) E) (A : Matrix (Fin n) (Fin k) E) (y : Fin n → E) :
-    (incM F J *ᵥ fun i => cA σ (incV F y i)) ᵥ* incM F A =
-      fun j => inclR (F := F) (AF F) (form σ J (A *ᵥ Pi.single j 1) y) := by
-  funext j
-  rw [← form_incl]
-  simp only [vecMul, dotProduct, incV, incM, Matrix.map_apply, mulVec_single_one]
-  exact Finset.sum_congr rfl fun k _ => by rw [mul_comm]; rfl
-
 end GlobalTheory.LeviTorus
-

@@ -56,9 +56,6 @@ def detRep (k r : ℕ) (μ : Fin (2 * r + k + 1) → ℝ) : HRep k r where
   H := ℂ
   σ := fun g => (g.det ^ ⌊μ 0⌋₊) • ContinuousLinearMap.id ℂ ℂ
 
-theorem detRep_apply (μ : Fin (2 * r + k + 1) → ℝ) (g : Mat k r) (v : ℂ) :
-    (detRep k r μ).σ g v = g.det ^ ⌊μ 0⌋₊ * v := rfl
-
 theorem subsingleton_idx_top : Subsingleton (Idx k r (2 * r + k + 1)) :=
   ⟨fun I J => Subtype.ext (by
     rw [(Finset.card_eq_iff_eq_univ I.1).1 (by simpa using I.2),

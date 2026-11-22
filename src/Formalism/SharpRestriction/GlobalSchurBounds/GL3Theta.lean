@@ -238,13 +238,6 @@ def BasisP (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) {κ ι :
     (Y : Set (κ → ℂ_[p] × ℂ_[p])) (b : ι → κ → ℂ_[p] × ℂ_[p]) : Prop :=
   (∀ e, b e ∈ Y) ∧ ∀ y ∈ Y, ∃! c : ι → ℂ_[p] × ℂ_[p], InOKp D lam c ∧ y = fun k => ∑ e, c e * b e k
 
-def G1.ePhI {p : ℕ} [Fact p.Prime] (g : G1 p) (ι : Type) [Fintype ι] : MvPowerSeries ι ℂ_[p] :=
-  if p = 2 then 1 else
-    ∏ i : ι, (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries ι ℂ_[p]) (ePhi1 g.lam g.abelian₂ g.C g.wq))⁻¹
-
-theorem G1.ePhI_fin {p : ℕ} [Fact p.Prime] (g : G1 p) (r : ℕ) :
-    g.ePhI (Fin r) = ePh g.lam g.abelian₂ g.C g.wq r := rfl
-
 def phW (D : D7) : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : G1 p), At D cc δ g →
     5 ≤ p → InertK D p → ModelOverW g.lam g.abelian₂ g.C → CoefWf g.ph
@@ -384,13 +377,6 @@ structure LiftObj (D : D7) {u : D.what₂.Word} (C : ColumnChain D.R D.what₂.T
     ellT D M τ = Submodule.span (𝓞 M) {s}
   S : Finset ℕ
   Th : ∀ i, C.cls i → C.cls (i + 1) → VC D (D.R.N i) (D.R.N (i + 1)) → ℂ
-
-def liftTie (D : D7) (T : Tor D) (e : FamE D) {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)}
-    (O : LiftObj D C) (i : ℕ) : Prop :=
-  (∀ c c', IsKer D T e O.S (O.lat i c).1 (O.lat (i + 1) c').1 (O.Th i c c')) ∧
-  ∀ c c' (Q : MvPolynomial (FrV D (D.R.N i)) ℂ) (y' : C.Y (i + 1)),
-    C.unf i c c' (fun y => evFr D Q (O.frm i y)) y' =
-      applyAt0 D (polD D O.dgen Q (O.frm (i + 1) y')) (O.Th i c c')
 
 def LiftObj.IsMem {D : D7} {u : D.what₂.Word} (O : LiftObj D (D.mem u).C) : Prop :=
   letI := D.host.cmStar

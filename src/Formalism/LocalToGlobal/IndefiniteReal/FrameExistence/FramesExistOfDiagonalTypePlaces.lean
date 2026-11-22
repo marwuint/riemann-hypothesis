@@ -70,27 +70,6 @@ def IsG2 (D : D7) : Prop :=
     (hlam : lam + star lam = 1),
     D.sp = spL D.R hstar cm T hT pz hpz hy lam hlam
 
-def AdaptedVectorsExistOverSpaces (R : Ranks) (host : Host R) (sp : @Spaces R host.F host.E _ _ _ _ host.cmStar _) : Prop :=
-  ∃ (e ev : ∀ j : ℕ, ℕ → Fin (sp.Y j).rank → host.E) (z : ∀ j : ℕ, Fin (sp.Y j).rank → host.E),
-    ∀ j, 1 ≤ j → j < R.m →
-      (∀ i < (R.m - 1 - j) / 2, ∀ l < (R.m - 1 - j) / 2,
-        (sp.Y j).hT ((sp.Y j).frame.equivFun.symm (e j i)) ((sp.Y j).frame.equivFun.symm (ev j l)) =
-            (if i = l then 1 else 0) ∧
-          (sp.Y j).hT ((sp.Y j).frame.equivFun.symm (e j i)) ((sp.Y j).frame.equivFun.symm (e j l)) = 0 ∧
-          (sp.Y j).hT ((sp.Y j).frame.equivFun.symm (ev j i)) ((sp.Y j).frame.equivFun.symm (ev j l)) = 0) ∧
-      ((R.m - 1 - j) % 2 = 1 →
-        (sp.Y j).hT ((sp.Y j).frame.equivFun.symm (z j)) ((sp.Y j).frame.equivFun.symm (z j)) = -(sp.T : host.E) ∧
-        ∀ i < (R.m - 1 - j) / 2,
-          (sp.Y j).hT ((sp.Y j).frame.equivFun.symm (z j)) ((sp.Y j).frame.equivFun.symm (e j i)) = 0 ∧
-            (sp.Y j).hT ((sp.Y j).frame.equivFun.symm (z j)) ((sp.Y j).frame.equivFun.symm (ev j i)) = 0) ∧
-      ∀ x : (sp.X j).V, ∀ i' < R.m - 1 - j,
-        (sp.Y j).hT (sp.iXY j x) ((sp.Y j).frame.equivFun.symm
-          (if i' < (R.m - 1 - j) / 2 then e j i'
-            else if (R.m - 1 - j) % 2 = 1 ∧ i' = (R.m - 1 - j) / 2 then z j
-            else ev j (R.m - 1 - j - 1 - i'))) = 0
-
-theorem adapted_vectors_exist_iff (D : D7) : Seed.Frm.AdaptedVectorsExist D ↔ AdaptedVectorsExistOverSpaces D.R D.host D.sp := Iff.rfl
-
 def StdLat {D : D7} (V : HSp D) : Prop :=
   ∀ x : Fin V.rank → D.host.E, x ∈ Formalism.MainNotions.StandardLattice.L0c D V ↔ ∀ i, IsIntegral ℤ (x i)
 

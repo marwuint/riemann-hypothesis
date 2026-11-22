@@ -138,9 +138,6 @@ variable {n : ℕ}
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
-theorem liftR_apply {V' : Type} [AddCommGroup V'] [Module ℂ V'] (T : V →ₗ[ℂ] V') (x : Cr n V)
-    (A : Finset (Ix n)) : liftR n T x A = T (x A) := rfl
-
 end Car
 
 end GlobalTheory.CompanionTheory.RealMult.TorC

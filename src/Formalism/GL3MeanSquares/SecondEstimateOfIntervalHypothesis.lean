@@ -69,40 +69,9 @@ def BoxCountHyp (C : ℝ) : Prop :=
     (∀ q ∈ S, ∃ _ : Fact q.Prime, q % 4 = 3 ∧ q.Coprime t ∧ ((t * q : ℕ) : ℝ) ≤ Q ∧ ¬ ZeroFreeBox Q (tw θ q)) →
     (S.card : ℝ) ≤ C * Q ^ (1 / 4 : ℝ)
 
-def BoxTailHyp (ε C x₀ : ℝ) : Prop :=
-  ∀ (x Q : ℝ) (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), x₀ ≤ x → x ^ (ε / 6) ≤ Real.log Q →
-    Real.log Q ≤ x ^ (ε / 4) → χ ≠ 1 → GoodFor Q χ →
-    ‖(x : ℂ) * tailL χ (x ^ 400)‖ ≤ x ^ ε ∧ ‖logDerivLAtOne χ‖ ≤ C * Real.log x
-
-def MeanSquareHyp (ε C x₀ : ℝ) : Prop :=
-  ∀ (x X : ℝ) (m₀ a₀ : ℕ) (κ : ℕ → ℂ), x₀ ≤ x → 8 ∣ m₀ →
-    (∀ p : ℕ, p.Prime → p ∣ m₀ → (p : ℝ) ≤ x ^ (ε / 5) ∨ x ^ 400 < (p : ℝ)) → a₀.Coprime m₀ → a₀ % 4 = 3 →
-    (1 / 4) * Real.log x ^ 2 * Real.log m₀ ≤ Real.log X → x ^ (ε / 6) ≤ Real.log X →
-    (∀ n, ‖κ n‖ ≤ 1) → (∀ a b, κ (a * b) = κ a * κ b) →
-    X ^ (9 / 10 : ℝ) ≤ ((PPset m₀ a₀ X).card : ℝ) ∧
-    (∑ q ∈ PPset m₀ a₀ X,
-        ‖∑ n ∈ Icc 1 ⌊x ^ 400⌋₊, ((cN x n : ℝ) : ℂ) * κ n * ((jacobiSym (n : ℤ) q : ℤ) : ℂ)‖ ^ 2) ≤
-      C * x * Real.log x * ((PPset m₀ a₀ X).card : ℝ)
-
-def IntervalHyp (C₀ c Cρ c₃ : ℝ) : Prop :=
-  ∀ (d N : ℕ) (X h : ℝ), d.Prime → d % 4 = 3 → 1 ≤ N → (4 * (d : ℝ) * (N : ℝ) ^ 2) ^ C₀ ≤ X →
-    rho c Cρ (4 * (d : ℝ) * (N : ℝ) ^ 2) X ≤ h / 100 → 0 < h → h ≤ 1 →
-    (4 * (d : ℝ) * (N : ℝ) ^ 2) ^ 7 ≤ h * X ^ (1 / 3 : ℝ) →
-    c₃ * h * (4 * (d : ℝ) * (N : ℝ) ^ 2) ^ (-6 : ℝ) * X / Real.log X ≤ ((normPrimes d N X (X * (1 + h))).card : ℝ)
-
 def GFiniteSplit : Prop :=
   ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (x z : ℝ), 0 < x → x ≤ z →
     Gchi χ x = - Sz χ x z - (x : ℂ) * tailL χ z
-
-def UnitModulusIncrementConditions : Prop :=
-  ∀ ε C : ℝ, 0 < ε → ε ≤ 1 → 0 < C → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x →
-    x ^ 400 < X1 ε x ^ (1 / 2 : ℝ) ∧ 2 ≤ x ^ (ε / 5) ∧
-    (1 / 4) * Real.log x ^ 2 * Real.log 8 ≤ Real.log (X1 ε x) ∧
-    Real.log x ^ 2 * Real.log (8 * (x ^ 400) ^ 2) ≤ Real.log (X1 ε x) ∧
-    x ^ (ε / 6) ≤ Real.log (X1 ε x) ∧
-    x ^ (ε / 6) ≤ Real.log (8 * X1 ε x) ∧ Real.log (8 * X1 ε x) ≤ x ^ (ε / 4) ∧
-    C * x * Real.log x / (x ^ (1 / 2 + ε) / 2) ^ 2 ≤ x ^ (-ε) ∧ x ^ (-ε) ≤ 1 / 8 ∧
-    2 * (C * (8 * X1 ε x) ^ (1 / 4 : ℝ)) ≤ X1 ε x ^ (9 / 10 : ℝ) / 2
 
 def TwEval : Prop :=
   ∀ (t : ℕ) (θ : DirichletCharacter ℂ t) (q : ℕ) [Fact q.Prime] (n : ℕ),
@@ -112,25 +81,6 @@ def TwPrimitive : Prop :=
   (chi8.IsPrimitive ∧ chi8 ^ 2 = 1) ∧
   ∀ (t : ℕ) (θ : DirichletCharacter ℂ t) (q : ℕ) [Fact q.Prime], θ.IsPrimitive → q ≠ 2 → q.Coprime t →
     (tw θ q).IsPrimitive ∧ tw θ q ≠ 1 ∧ (θ ^ 2 = 1 → tw θ q ^ 2 = 1)
-
-def ExistsSplitGoodPrimePair (ε C x : ℝ) : Prop :=
-  ∃ (q₁ d : ℕ) (_ : Fact q₁.Prime) (_ : Fact d.Prime),
-    q₁ % 8 = 3 ∧ d % 16 = 7 ∧
-    X1 ε x ^ (1 / 2 : ℝ) < (q₁ : ℝ) ∧ (q₁ : ℝ) ≤ X1 ε x ∧ X2 ε x ^ (1 / 2 : ℝ) < (d : ℝ) ∧ (d : ℝ) ≤ X2 ε x ∧
-    SplitsIn d q₁ ∧ (∀ p : ℕ, p.Prime → (p : ℝ) ≤ x ^ (ε / 5) → SplitsIn d p) ∧
-    GoodFor (8 * X1 ε x) (tw one1 q₁) ∧ GoodFor (8 * X1 ε x) (tw chi8 q₁) ∧
-    GoodFor (8 * X1 ε x * X2 ε x) (tw one1 d) ∧ GoodFor (8 * X1 ε x * X2 ε x) (tw chi8 d) ∧
-    GoodFor (8 * X1 ε x * X2 ε x) (tw (tw one1 q₁) d) ∧ GoodFor (8 * X1 ε x * X2 ε x) (tw (tw chi8 q₁) d) ∧
-    (‖Gchi (tw one1 q₁) x‖ ≤ x ^ (1 / 2 + ε) ∧ ‖logDerivLAtOne (tw one1 q₁)‖ ≤ C * Real.log x) ∧
-    (‖Gchi (tw one1 d) x‖ ≤ x ^ (1 / 2 + ε) ∧ ‖logDerivLAtOne (tw one1 d)‖ ≤ C * Real.log x) ∧
-    (‖Gchi (tw (tw one1 q₁) d) x‖ ≤ x ^ (1 / 2 + ε) ∧ ‖logDerivLAtOne (tw (tw one1 q₁) d)‖ ≤ C * Real.log x)
-
-def LogNE : Prop :=
-  ∀ ε A : ℝ, 0 < ε → 0 < A → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ n q₁ d : ℕ, 1 ≤ n → (n : ℝ) ≤ x ^ A →
-    X1 ε x ^ (1 / 2 : ℝ) < (q₁ : ℝ) → (q₁ : ℝ) ≤ X1 ε x → X2 ε x ^ (1 / 2 : ℝ) < (d : ℝ) → (d : ℝ) ≤ X2 ε x →
-    x ^ (ε / 5) / 2 < Real.log q₁ ∧ Real.log q₁ ≤ x ^ (ε / 5) ∧
-    x ^ (ε / 5) * Real.log x ^ 2 / 2 < Real.log d ∧ Real.log d ≤ x ^ (ε / 5) * Real.log x ^ 2 ∧
-    Real.log ((4 * n * q₁ * d : ℕ) : ℝ) ≤ 2 * x ^ (ε / 5) * Real.log x ^ 2
 
 def SmoothingSizeBounds : Prop :=
   ∀ ε : ℝ, 0 < ε → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ y lam : ℝ, Real.exp (x ^ (ε / 3)) / 3 ≤ y → 0 < lam →

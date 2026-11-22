@@ -23,9 +23,6 @@ def GQ (S : HSpace E) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] (e :
 def GR (S : HSpace E) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] (e : Basis ι ℤ L) : Matrix ι ι ℝ :=
   (GQ S L e).map (Rat.castHom ℝ)
 
-theorem GR_apply (S : HSpace E) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] (e : Basis ι ℤ L) (i j : ι) :
-    GR S L e i j = (GQ S L e i j : ℝ) := rfl
-
 end Basis
 
 end Formalism.L2.GlobalTheoryTheory.TraceIntegrality.LT

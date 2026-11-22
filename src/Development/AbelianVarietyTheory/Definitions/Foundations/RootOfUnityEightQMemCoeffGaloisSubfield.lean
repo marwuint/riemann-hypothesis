@@ -256,8 +256,6 @@ def embKs : B.host.E →+* B.Ks := B.embE.codRestrict B.Ks B.E_le_Ks
 
 def intE : 𝓞 B.host.E →+* B.O := RingOfIntegers.mapRingHom B.embKs
 
-theorem OtoLL_intE (x : 𝓞 B.host.E) : B.OtoLL (B.intE x) = B.embE (x : B.host.E) := rfl
-
 end Base
 
 end GlobalTheory.Mem

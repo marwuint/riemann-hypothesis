@@ -340,8 +340,6 @@ abbrev LL₀ (e : Ix Dw → ℤ) : LB (Y₀ X Z) := (X.LL e).pull (inc₀ X Z)
 
 abbrev L₀ (la : AllWt.Weight Dw) : LB (Y₀ X Z) := LL₀ X Z (exOf Dw la 0)
 
-theorem L₀_eq (la : AllWt.Weight Dw) : L₀ X Z la = (X.Llam la).pull (inc₀ X Z) := rfl
-
 theorem exOf_add_zero (a b : AllWt.Weight Dw) : exOf Dw (a + b) 0 = exOf Dw a 0 + exOf Dw b 0 :=
   AllWt.exOf_add a b 0 0
 

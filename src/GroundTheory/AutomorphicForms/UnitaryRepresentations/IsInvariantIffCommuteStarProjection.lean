@@ -154,9 +154,6 @@ def intertwiners (σ : UnitaryRep G K) : Submodule ℂ (H →L[ℂ] K) where
 
 variable {σ : UnitaryRep G K} {τ : UnitaryRep G L}
 
-lemma mem_intertwiners {T : H →L[ℂ] K} :
-    T ∈ π.intertwiners σ ↔ ∀ (g : G) (v : H), T (π g v) = σ g (T v) := Iff.rfl
-
 lemma commute_of_mem_intertwiners {T : H →L[ℂ] H} (hT : T ∈ π.intertwiners π) (g : G) :
     Commute T (π g) := by
   ext v; exact hT g v

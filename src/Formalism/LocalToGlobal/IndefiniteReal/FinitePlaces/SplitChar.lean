@@ -79,10 +79,6 @@ def secG (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
   flipTwoThree.mkGA V (secM V u ainv ((x : (AE D)ˣ) : AE D)) (secM_unitary V u ainv ha hainv _ (unitary_one_conj_mul_self x))
     (by rw [secM_det V u ainv ha]; exact (x : (AE D)ˣ).isUnit)
 
-theorem mt_secG (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
-    (ha : ainv * hsq (flipTwoThree.sigE D) V.gram u = 1) (hainv : flipTwoThree.sigE D ainv = ainv) (x : FirstPropositionFrame D) :
-    mt V (secG V u ainv ha hainv x) = secM V u ainv ((x : (AE D)ˣ) : AE D) := rfl
-
 end SplitChar
 
 end Formalism.IndefR.Fin

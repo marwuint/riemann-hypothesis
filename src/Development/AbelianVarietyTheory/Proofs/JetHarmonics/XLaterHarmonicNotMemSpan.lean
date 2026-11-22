@@ -90,8 +90,6 @@ def UniqueOn (Q : ∀ n : ℕ, MvPolynomial (LtN Dw n) c.F → Prop) : Prop :=
       (F : Fin n → SecAt Xo c y k) (P : MvPolynomial (LtN Dw n) c.F), Q n P →
         sysVal Xo c nab y k F P = sysVal Xo c nab' y k F P
 
-theorem nabUnique_iff : NabUnique Xo c ↔ UniqueOn Xo c fun _ P => IsHarmonic c P := Iff.rfl
-
 theorem UniqueOn.mono {Q Q' : ∀ n : ℕ, MvPolynomial (LtN Dw n) c.F → Prop} (h : UniqueOn Xo c Q)
     (hQ : ∀ n P, Q' n P → Q n P) : UniqueOn Xo c Q' :=
   fun nab nab' h1 h2 S _ _ y k n F P hP => h nab nab' h1 h2 S y k n F P (hQ n P hP)

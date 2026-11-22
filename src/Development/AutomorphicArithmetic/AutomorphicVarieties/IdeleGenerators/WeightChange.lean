@@ -136,17 +136,6 @@ def HolRep : Prop :=
       ∀ w, c w = 0 → ∃ B, π.HasSat w B ∧ ((algSat 2 (normV w) B).map fun b => X - C b).prod =
         X ^ 2 - C (lam w) * X + C ((ω.val w : ℂˣ) * (normV w : ℂ) ^ (k - 1))
 
-def PropM : Prop :=
-  ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 →
-    ∀ (ι : Qbar l ≃+* ℂ) (ξ : G F Ω →* (Qbar l)ˣ), IsOpen (ξ.ker : Set (G F Ω)) → (∀ c, IsConjEl c → ξ c = -1) →
-    (∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → Ine (F := F) A ≤ ξ.ker) → (∃ A : ValuationSubring Ω, ¬ Ine (F := F) A ≤ ξ.ker) →
-    ∀ P : Set (Pl F),
-    (∃ w ∈ P, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal ∧ ∃ A, IsPlaceOver A w ∧ ∃ σ ∈ Dec (F := F) A, ¬ Cong (ξ σ) 1) →
-    (∃ w ∉ P, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal ∧ ∃ A, IsPlaceOver A w ∧ ∃ σ ∈ Dec (F := F) A, ¬ Cong (ξ σ) 1) →
-    ∀ B : ℕ, ∃ k ≥ B, l - 1 ∣ k ∧ ∃ c a π r, OrdForm ι ξ (-(k : ℤ)) c (fun _ => ![0, -(k : ℤ)]) a π r ∧ ResSum r ![1, ξ] ∧
-      ∀ (w : Pl F), ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → ∀ A, IsPlaceOver A w → ∀ σ : G F Ω, IsFrob A (normV w) σ →
-        (w ∈ P → a w = (ξ σ⁻¹ : (Qbar l)ˣ)) ∧ (w ∉ P → a w = 1)
-
 def SplitL (F : Type) [Field F] [NumberField F] (l : ℕ) : Prop :=
   ∀ w : Pl F, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → Ideal.absNorm w.asIdeal = l ∧ ((l : ℕ) : 𝓞 F) ∉ w.asIdeal ^ 2
 

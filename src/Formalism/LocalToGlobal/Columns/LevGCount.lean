@@ -46,10 +46,6 @@ theorem lamGen_nil (ψ : AddChar κ K) (χ : ℕ → κˣ →* Kˣ) (n a : ℕ) 
   unfold lamGen detChar
   simp
 
-theorem HX_zero (k t : ℕ) : HX κ k k t 0 = HU κ k := rfl
-
-theorem HX_top (n k t j : ℕ) : HX κ n k t j = HJ κ n (k + j) t j := rfl
-
 theorem diagEmb_mem_fixCol {s : ℕ} (h : s ≤ n) {c : ℕ} (hc : s ≤ c) (g : GL (Fin s) κ) : diagEmb κ h g ∈ fixCol n κ c := by
   show ∀ i j : Fin n, j.val = c → ((diagEmb κ h g : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) i j = (1 : Matrix (Fin n) (Fin n) κ) i j
   intro i j hj
@@ -138,9 +134,6 @@ def uGL {P : Fin n → Fin n → Prop} [∀ i j, Decidable (P i j)] (hP : ∀ i 
     (f : {p : Fin n × Fin n // P p.1 p.2} → κ) : GL (Fin n) κ :=
   Matrix.GeneralLinearGroup.mk'' (uMat P f) (by rw [uMat_det hP]; exact isUnit_one)
 
-theorem uGL_val {P : Fin n → Fin n → Prop} [∀ i j, Decidable (P i j)] (hP : ∀ i j, P i j → i < j)
-    (f : {p : Fin n × Fin n // P p.1 p.2} → κ) : (uGL hP f : Matrix (Fin n) (Fin n) κ) = uMat P f := rfl
-
 def uSet (κ : Type) [CommRing κ] (P : Fin n → Fin n → Prop) : Set (GL (Fin n) κ) :=
   {M | (∀ i, (M : Matrix (Fin n) (Fin n) κ) i i = 1) ∧ ∀ i j, i ≠ j → ¬ P i j → (M : Matrix (Fin n) (Fin n) κ) i j = 0}
 
@@ -211,9 +204,6 @@ variable {n : ℕ} {κ : Type} [CommRing κ] {K : Type} [Field K]
 
 def dGL (i₀ : Fin n) (u : κˣ) : GL (Fin n) κ :=
   Units.map (Matrix.diagonalRingHom (Fin n) κ).toMonoidHom (MulEquiv.piUnits.symm (Function.update 1 i₀ u))
-
-theorem dGL_val (i₀ : Fin n) (u : κˣ) :
-    (dGL i₀ u : Matrix (Fin n) (Fin n) κ) = Matrix.diagonal fun i => ((Function.update (1 : Fin n → κˣ) i₀ u i : κˣ) : κ) := rfl
 
 theorem HK_conj_diagEmb {r : ℕ} (h : r ≤ n) {bl : List ℕ} (g : GL (Fin r) κ) {M : GL (Fin n) κ} (hM : M ∈ HK n κ r bl) :
     diagEmb κ h g * M * (diagEmb κ h g)⁻¹ ∈ HK n κ r bl := by

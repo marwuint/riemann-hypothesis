@@ -41,8 +41,6 @@ theorem isProjOver_powObj {R : Type} [CommRing R] (A : Over (Sp R)) (h : IsProjO
 
 end Model
 
-theorem topAmpExists_iff_topAmpSt : TopAmpExists ↔ GlobalTheory.LN.TopAmpSt := Iff.rfl
-
 end GlobalTheory.Models.FamInh
 
 end

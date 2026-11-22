@@ -51,9 +51,6 @@ def SignFrame.toDiag (F : SignFrame ε P Q) (g : UpqT P Q) : UJ ε :=
   let g' : Formalism.UG.Upq P Q := g
   ⟨F.unitsMap g'.1, (F.inUJ_reindex _).2 g'.2⟩
 
-theorem SignFrame.umat_toDiag (F : SignFrame ε P Q) (g : UpqT P Q) :
-    umat (F.toDiag g) = Matrix.reindex F.e F.e (UpqT.mat g) := rfl
-
 def cdMeasure (c : CDHaar) (F : SignFrame ε P Q) : Measure (UJ ε) :=
   Measure.map F.toDiag (c.cd P Q)
 

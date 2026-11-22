@@ -238,11 +238,6 @@ section OfPkg
 variable {Comp : Type} {jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)} {ng : NgPkg}
   (P : PadPkg D N j Comp jC ng)
 
-def LocSt.ofPkg : LocSt D N j ng := ⟨P.loc, P.ex, P.locB, P.pbKF⟩
-
-def GlobSt.ofPkg : GlobSt fun p => (P.loc p).Mdl :=
-  ⟨P.Xg, P.bc, P.DivG, P.effD, P.noVertD, P.posBdD, P.ampleOnAbelianBase, P.Met, P.nefFibM, P.ampleGen, P.limRA⟩
-
 end OfPkg
 
 def padOf {jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)} {ng : NgPkg} (L : LocSt D N j ng)
@@ -270,10 +265,6 @@ section Unfold
 
 variable {jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)} {ng : NgPkg} (L : LocSt D N j ng)
   (G : GlobSt fun p => (L.loc p).Mdl) (M : AdmSt D N j jC) (F : FlatSt s) (I : ArIn D.what₂.Tau N (D.R.f * N) s.Comp)
-
-theorem locSt_padOf : LocSt.ofPkg (padOf s L G M F I) = L := rfl
-
-theorem globSt_padOf : GlobSt.ofPkg (padOf s L G M F I) = G := rfl
 
 end Unfold
 

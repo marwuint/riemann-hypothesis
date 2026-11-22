@@ -295,13 +295,6 @@ def Hecke₃ (P : RowPsi V n) (R : Finset (GA D V)) :
 
 variable {Sp : D.what₂.Tau → SPar} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
 
-def RowRepExists (P : RowPsi V n) (M : Mult.DSModel V Sp) (J : Set (GA D V)) (χ : GA D V → ℂ)
-    (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) : Prop :=
-  ∃ rep : Mult.IxFull θ M J χ Sb e → Formalism.L2.NG.FinTyp D.host.E n,
-    (∀ c c', (rep c).Iso (rep c') → c = c') ∧
-    ∀ c, ∃ x ∈ (rep c).S, x ≠ 0 ∧ IsTypeVec (P.ψ ⁻¹' J) (fun κ => χ (P.ψ κ)) x ∧
-      ∀ Pr d R, Mult.Hecke₂ V J χ Sb Pr d R → Hecke₃ P R x = c.1 Pr d • x
-
 end Conc
 
 section ConcProofs

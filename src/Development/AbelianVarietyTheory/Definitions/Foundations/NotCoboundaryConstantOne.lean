@@ -68,9 +68,6 @@ def Cong (k : ℕ) (x y : Ω) : Prop := ∃ z : Ω, IsInt p z ∧ x - y = (p : �
 def IsKum (T : Tower p Ω) (n : ℕ) (H : Subgroup (Gal p Ω)) (r : Ω) (a : Gal p Ω → ZMod (p ^ n)) : Prop :=
   ∀ g ∈ H, g r = T.ζ n ^ (a g).val * r
 
-def Gms (T : Tower p Ω) (m s : ℕ) : Subgroup (Gal p Ω) :=
-  MulAction.stabilizer (Gal p Ω) (T.ζ m) ⊓ MulAction.stabilizer (Gal p Ω) (T.qq s)
-
 variable (p) in
 
 def IsAlgZp (x : Ω) : Prop :=
@@ -339,11 +336,6 @@ theorem exists_isEmb (T : Tower p Ω) (n : ℕ) : ∃ ι : On p n →ₐ[O0 p] �
     simp
   · show aevalTower (aeval (T.ζ n) : (O0 p)[X] →ₐ[O0 p] Ω) (T.qq n) X = _
     simp
-
-theorem gms_self (T : Tower p Ω) (n : ℕ) : Gms T n n = Gn T n := rfl
-
-theorem mem_gms (T : Tower p Ω) (m s : ℕ) (g : Gal p Ω) :
-    g ∈ Gms T m s ↔ g (T.ζ m) = T.ζ m ∧ g (T.qq s) = T.qq s := Iff.rfl
 
 theorem mem_gn (T : Tower p Ω) (n : ℕ) (g : Gal p Ω) :
     g ∈ Gn T n ↔ g (T.ζ n) = T.ζ n ∧ g (T.qq n) = T.qq n := Iff.rfl

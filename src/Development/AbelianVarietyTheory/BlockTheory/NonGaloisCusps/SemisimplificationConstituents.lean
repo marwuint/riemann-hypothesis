@@ -28,13 +28,6 @@ variable (D : D7) (i : D.nd.Loc)
 
 abbrev RepFam : Type := D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))
 
-def matAlong {a : ℕ} {L : Type} [Field L] (f : D.nd.O i →+* L) (ρ : GE D.nd →* GL (Fin a) (D.nd.O i)) :
-    GE D.nd →* Matrix (Fin a) (Fin a) L :=
-  mapM f ((Units.coeHom _).comp ρ)
-
-theorem repK_eq (r : RepFam D i) (x : D.nd.X i) :
-    repK D.nd i r x = matRep (matAlong D i (toK D.nd i) (r x)) := rfl
-
 end Loc
 
 end GlobalTheory.IndefiniteRowSideFullHecke.SemisimplificationConstituents

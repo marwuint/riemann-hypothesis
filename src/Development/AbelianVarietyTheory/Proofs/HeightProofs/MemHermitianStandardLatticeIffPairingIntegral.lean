@@ -49,9 +49,6 @@ def idemOff : Af F :=
     · simp only [h, if_true]; exact zero_mem _
     · simp only [h, if_false]; exact one_mem _⟩
 
-open Classical in
-theorem evalV_idemOff (v : HeightOneSpectrum (𝓞 F)) : evalV F v (idemOff F S) = if v ∈ S then 0 else 1 := rfl
-
 variable {F} in
 theorem intAf_mul {a b : Af F} (ha : a ∈ intAf F) (hb : b ∈ intAf F) : a * b ∈ intAf F := fun v => by
   rw [map_mul]; exact mul_mem (ha v) (hb v)
@@ -59,13 +56,8 @@ theorem intAf_mul {a b : Af F} (ha : a ∈ intAf F) (hb : b ∈ intAf F) : a * b
 def liftOff : Af F →ₗ[F] AF F :=
   (LinearMap.inr F (Ainf F) (Af F)) ∘ₗ LinearMap.mulLeft F (idemOff F S)
 
-theorem liftOff_apply (α : Af F) : liftOff F S α = pairA F 0 (idemOff F S * α) := rfl
-
 def liftMul {E : Type} [Field E] [Algebra F E] (c : E) : Af F ⊗[F] E →+ AF F ⊗[F] E :=
   ((liftOff F S).rTensor E).toAddMonoidHom.comp (AddMonoidHom.mulLeft ((1 : Af F) ⊗ₜ[F] c))
-
-theorem liftMul_apply {E : Type} [Field E] [Algebra F E] (c : E) (z : Af F ⊗[F] E) :
-    liftMul F S c z = (liftOff F S).rTensor E (((1 : Af F) ⊗ₜ[F] c) * z) := rfl
 
 end Adeles
 

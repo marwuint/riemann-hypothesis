@@ -34,67 +34,6 @@ def mulU (u : (AEf I)ˣ) : AEf I ≃ₜ+ AEf I where
   continuous_toFun := continuous_const.mul continuous_id
   continuous_invFun := continuous_const.mul continuous_id
 
-theorem mulU_apply (u : (AEf I)ˣ) (x : AEf I) : mulU I u x = (u : AEf I) * x := rfl
-
-theorem addHaar_map_mulU (u : (AEf I)ˣ) (hu : (u : AEf I) ∈ IntAf I.F I.E) :
-    (addHaar : Measure (AEf I)).map (mulU I u) = ENNReal.ofReal (nrmF I u)⁻¹ • addHaar := by
-  set φ := mulU I u
-  set O := oH I
-  set V : AddSubgroup (AEf I) := O.comap φ.toAddEquiv.toAddMonoidHom with hV
-  have hOV : O ≤ V := fun x hx => (IntAf I.F I.E).mul_mem hu hx
-  have hOo : IsOpen (O : Set (AEf I)) := isOpen_IntAf I
-  have hOc : IsCompact (O : Set (AEf I)) := isCompact_IntAf I
-  have hcomap : (uH I (u : AEf I)).comap φ.toAddEquiv.toAddMonoidHom = O := by
-    ext x
-    show (u : AEf I) * x ∈ uH I (u : AEf I) ↔ x ∈ IntAf I.F I.E
-    rw [mem_uH_iff, ← mul_assoc, Units.inv_mul, one_mul]
-  have hmap : V.map φ.toAddEquiv.toAddMonoidHom = O :=
-    AddSubgroup.map_comap_eq_self_of_surjective φ.surjective O
-  have hidx : O.relIndex V = (uH I (u : AEf I)).relIndex O := by
-    calc O.relIndex V = ((uH I (u : AEf I)).comap φ.toAddEquiv.toAddMonoidHom).relIndex V := by rw [hcomap]
-      _ = (uH I (u : AEf I)).relIndex (V.map φ.toAddEquiv.toAddMonoidHom) :=
-        AddSubgroup.relIndex_comap _ φ.toAddEquiv.toAddMonoidHom V
-      _ = (uH I (u : AEf I)).relIndex O := by rw [hmap]
-  have hR := relIndex_uH I u hu
-  have hpos : 0 < nrmF I u := nrmF_pos I u
-  have hW : O ⊓ V = O := inf_eq_left.2 hOV
-  have hne : O.relIndex V ≠ 0 := by
-    intro h0
-    rw [hidx] at h0
-    rw [h0, Nat.cast_zero] at hR
-    exact (inv_ne_zero hpos.ne') hR.symm
-  have h1 : (O ⊓ V).relIndex O ≠ 0 := by rw [hW, AddSubgroup.relIndex_self]; exact one_ne_zero
-  have h2 : (O ⊓ V).relIndex V ≠ 0 := by rw [hW]; exact hne
-  have hs := PI.IwaMeasEx.MF.addHaar_map_eq_addRelIndex φ O hOo hOc h1 h2
-  rw [hs, hW, AddSubgroup.relIndex_self, hidx, hR]
-  simp
-
-theorem char_mulU_of_int (u : (AEf I)ˣ) (hu : (u : AEf I) ∈ IntAf I.F I.E) :
-    (addEquivAddHaarChar (mulU I u) : ℝ) = nrmF I u := by
-  have hc := addEquivAddHaarChar_smul_map (addHaar : Measure (AEf I)) (mulU I u)
-  rw [addHaar_map_mulU I u hu, ENNReal.smul_def, smul_smul] at hc
-  obtain ⟨K, hK, hK0⟩ := exists_compact_mem_nhds (0 : AEf I)
-  have h1 : (addHaar : Measure (AEf I)) K ≠ 0 :=
-    ((addHaar : Measure (AEf I)).measure_pos_of_mem_nhds hK0).ne'
-  have h2 : (addHaar : Measure (AEf I)) K ≠ ⊤ := hK.measure_lt_top.ne
-  have h3 := congrArg (fun ν : Measure (AEf I) => ν K) hc
-  simp only [Measure.smul_apply, smul_eq_mul] at h3
-  have h5 := congrArg ENNReal.toReal h3
-  rw [ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.coe_toReal, ENNReal.toReal_ofReal'] at h5
-  have hm : 0 < ((addHaar : Measure (AEf I)) K).toReal := ENNReal.toReal_pos h1 h2
-  have h6 : (addEquivAddHaarChar (mulU I u) : ℝ) * max (nrmF I u)⁻¹ 0 = 1 :=
-    mul_right_cancel₀ hm.ne' (h5.trans (one_mul _).symm)
-  rcases le_or_gt (nrmF I u)⁻¹ 0 with h | h
-  · rw [max_eq_right h, mul_zero] at h6
-    exact absurd h6 zero_ne_one
-  · rw [max_eq_left h.le] at h6
-    have hn : nrmF I u ≠ 0 := by
-      intro h0
-      rw [h0, inv_zero] at h
-      exact lt_irrefl _ h
-    field_simp at h6
-    linarith
-
 end
 
 end PI.IwaMeasEx.MFI

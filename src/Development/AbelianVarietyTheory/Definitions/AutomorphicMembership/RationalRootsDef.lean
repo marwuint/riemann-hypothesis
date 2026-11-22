@@ -65,10 +65,6 @@ structure KsCond (KP : ∀ B : Base, Fr B.toPre → Prop) : Prop where
     ∃ (B : Base) (f : Fr B.toPre), B.toPre = B₀.toPre ∧ HEq f f₀ ∧ KP B f ∧ Has₂ B (S₁ B.KsC) (S₂ B.KsC B.fixedCoefficientFieldInComplex)
   enl : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre), Enl B B' → HEq f' f → KP B f → KP B' f'
 
-def FromCore (Q : Slot) (D : D7) (Y : Lay D) : Prop :=
-  ∃ (K : Ctx) (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (c : Core K X f T), Q K X f T c ∧
-    (⟨D, layObj Y⟩ : Σ D : D7, Obj2 D) = ⟨X.toD7, c.O⟩
-
 end GlobalTheory.Mem.Top.V4
 
 end

@@ -47,8 +47,6 @@ theorem det_change_of_basis_mem_locRing (w : HeightOneSpectrum (𝓞 K)) {M : Su
     ((B'⁻¹ * B : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).det ∈ locRing w :=
   det_mem_subring_of_entries_mem _ _ fun a b => (mem_locRing w _).2 (lc_entries_same w hB hB' a b)
 
-theorem standard_basis_at_place (w : HeightOneSpectrum (𝓞 K)) : IsBasisAt w (colLat (1 : GL (Fin n) K)) 1 := rfl
-
 theorem det_bound_common_denominator (w : HeightOneSpectrum (𝓞 K)) {M : Submodule (𝓞 K) (Fin n → K)} {B : GL (Fin n) K} (hB : IsBasisAt w M B) (d : 𝓞 K)
     (h1 : ∀ x ∈ M, d • x ∈ colLat (1 : GL (Fin n) K)) (h2 : ∀ x ∈ colLat (1 : GL (Fin n) K), d • x ∈ M) :
     algebraMap (𝓞 K) K (d ^ n) * (B : Matrix (Fin n) (Fin n) K).det ∈ locRing w ∧

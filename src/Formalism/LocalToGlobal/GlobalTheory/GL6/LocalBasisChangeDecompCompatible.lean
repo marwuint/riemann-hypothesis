@@ -86,18 +86,6 @@ def mvPolynomialRowLinearEquiv (g g' : Matrix (Fin r) (Fin r) ℂ) (h1 : g * g' 
 theorem row_action_equiv_coe (g g' : Matrix (Fin r) (Fin r) ℂ) (h1 : g * g' = 1) (h2 : g' * g = 1) :
     ((mvPolynomialRowLinearEquiv (O := O) (n := n) g g' h1 h2 : _ ≃ₗ[O] _) : MvPolynomial (Fin r × Fin n) ℂ →ₗ[O] _) = mvPolynomialRowLinearMap O g := rfl
 
-def mvPolynomialScalingEquiv (c : ℂ) (hc : c ≠ 0) : MvPolynomial (Fin r × Fin n) ℂ ≃ₗ[O] MvPolynomial (Fin r × Fin n) ℂ :=
-  LinearEquiv.ofLinear (mvPolynomialScalingMap O c) (mvPolynomialScalingMap O c⁻¹)
-    (LinearMap.ext fun f => by
-      show c • (c⁻¹ • f) = f
-      rw [smul_smul, mul_inv_cancel₀ hc, one_smul])
-    (LinearMap.ext fun f => by
-      show c⁻¹ • (c • f) = f
-      rw [smul_smul, inv_mul_cancel₀ hc, one_smul])
-
-theorem scalar_equiv_coe (c : ℂ) (hc : c ≠ 0) :
-    ((mvPolynomialScalingEquiv (O := O) (r := r) (n := n) c hc : _ ≃ₗ[O] _) : MvPolynomial (Fin r × Fin n) ℂ →ₗ[O] _) = mvPolynomialScalingMap O c := rfl
-
 theorem weyl_span_map_elementary (K K' : Matrix (Fin r) (Fin r) ℂ) (hK : K ∈ bwA_EO O r) (hK' : K' ∈ bwA_EO O r)
     (h2 : K' * K = 1) : (bwA_span O hn ν).map (mvPolynomialRowLinearMap O K) = bwA_span O hn ν := by
   apply le_antisymm

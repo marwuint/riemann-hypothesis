@@ -15,10 +15,6 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂}
 
 namespace Idx
 
-end Idx
-
-namespace Idx
-
 open Formalism.IrreducibleCountingLemmas.TW (relLen)
 open Formalism.MainNotions.IntegralHeckeForms (IsLatIn lenR)
 open scoped TensorProduct
@@ -47,14 +43,6 @@ end BaseChange
 
 end Idx
 
-namespace Idx
-
-end Idx
-
-namespace Idx
-
-end Idx
-
 instance neZero_g (k : Fin 2) : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩
 
 instance finite_levelGroup (N : NData D.R D.host D.what₂) : Finite (G0g N) := by
@@ -66,8 +54,6 @@ def repG (i : X.Tw) (j : ℕ) (b : Bool) : Representation (FractionRing (X.O i))
 
 theorem repG_apply (i : X.Tw) (j : ℕ) (b : Bool) (g : G0g N) (x : Y.Fm i j b) :
     repG Y i j b g x = Y.actG i j b g x := rfl
-
-theorem eG_eq (i : X.Tw) (j : ℕ) (b : Bool) : eG Y i j b = (repG Y i j b).asAlgebraHom (Y.eAlg i b) := rfl
 
 theorem mem_typeSubspace_iff_unipotent_character {i : X.Tw} {j : ℕ} {b : Bool} (x : Y.Fm i j b) :
     x ∈ Fm0 Y i j b ↔ ∀ u : Y.U, Y.actG i j b u x =

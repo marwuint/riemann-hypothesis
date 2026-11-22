@@ -25,13 +25,8 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
   Nab := (colValF W sel mu u R.m).Nab
   Del := (colValF W sel mu u R.m).Del
 
-theorem frmMem_gsd : (frmMem W sel mu L u Λ Θ).gsd = frmGSD (colValF W sel mu u R.m) Λ Θ := rfl
-
 @[reducible] def cplMem : MemOn (chF W sel mu L u (m2 + 1)) :=
   MemOn.pairs (chF W sel mu L u (m2 + 1)) b (ybCpl W sel mu cst L u m2 b hY)
-
-theorem cplMem_gsd : (cplMem W sel mu cst L u m2 b hY).gsd =
-    cplGSD (midGSD W sel mu L u m2 b) (ybCpl W sel mu cst L u m2 b hY) := rfl
 
 @[reducible] def levFam : ℕ → GFam X.K :=
   spFam (chF W sel mu L u) m2 R.m (cplMem W sel mu cst L u m2 b hY) (frmMem W sel mu L u Λ Θ)

@@ -203,18 +203,6 @@ theorem mat_normR_sim (g : G.GR) (v : InfinitePlace G.F) :
   congr 1
   exact_mod_cast hs'
 
-def realPointsToUnitaryGroup : G.GR →* UJpm (eps G) :=
-  ((Units.map (mat G).toMonoidHom).comp (normR G)).codRestrict _ fun g =>
-    ⟨SignType.sign (((g : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).2 : ℝˣ) : ℝ), by
-      rcases lt_or_gt_of_ne (((g : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).2 : ℝˣ).ne_zero) with h | h
-      · right; rw [sign_neg h]; rfl
-      · left; rw [sign_pos h]; rfl,
-     fun v => mat_normR_sim G g v⟩
-
-theorem realPointsToUnitaryGroup_val (g : G.GR) (v : InfinitePlace G.F) :
-    ((realPointsToUnitaryGroup G g : (MatT (InfinitePlace G.F) G.n)ˣ) : MatT (InfinitePlace G.F) G.n) v =
-      mat G (normR G g : ℝ ⊗[ℚ] G.C) v := rfl
-
 def PosSim : Prop := ∀ g : G.GR, 0 < (((g : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).2 : ℝˣ) : ℝ)
 
 def toUJ (h : PosSim G) : G.GR →* UJfam (eps G) :=
@@ -222,9 +210,6 @@ def toUJ (h : PosSim G) : G.GR →* UJfam (eps G) :=
     have := mat_normR_sim G g v
     rw [sign_pos (h g)] at this
     simpa using this
-
-theorem coe_toUJ (h : PosSim G) (g : G.GR) :
-    ((toUJ G h g : UJfam (eps G)) : (MatT (InfinitePlace G.F) G.n)ˣ) = realPointsToUnitaryGroup G g := rfl
 
 end Norm
 

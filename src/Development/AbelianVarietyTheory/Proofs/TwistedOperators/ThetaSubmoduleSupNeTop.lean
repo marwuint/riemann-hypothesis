@@ -51,11 +51,6 @@ def rhoQ (M : Submodule ℂ (Matrix (Fin n) (Fin m) k → ℂ))
     simp only [LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, map_mul, Module.End.mul_apply]
     rfl
 
-theorem rhoQ_mk (M : Submodule ℂ (Matrix (Fin n) (Fin m) k → ℂ))
-    (hM : ∀ g : GL (Fin m) k, ∀ Φ ∈ M, om 1 g (1 : GL (Fin n) k) Φ ∈ M) (g : GL (Fin m) k)
-    (Φ : SB (Matrix (Fin n) (Fin m) k)) :
-    rhoQ M hM g ((res M).mkQ Φ) = (res M).mkQ (rhoS k n m g Φ) := rfl
-
 variable {χ : GL (Fin n) k →* ℂˣ}
 
 def tmap (M : Submodule ℂ (Matrix (Fin n) (Fin m) k → ℂ)) {V : Type} [AddCommGroup V] [Module ℂ V]

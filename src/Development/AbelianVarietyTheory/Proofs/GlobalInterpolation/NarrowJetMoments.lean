@@ -20,10 +20,6 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
 
 variable {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))}
 
-theorem suppBar_eq (d : Deco E a ST SG) (d' : Deco E b ST SG') : JetSumTable.suppBar d d' = StandardKernelAtTorus.suppPts d d' := rfl
-
-theorem stdAtT_iff {n : ℕ} (d : Deco E n ST SG) : JetSumTable.StdAtT d ↔ StandardKernelAtTorus.StdAtT d := Iff.rfl
-
 end Notions
 
 section Datum
@@ -32,12 +28,6 @@ variable {X : Fields} {a b : ℕ} {SB Sall : Finset (HeightOneSpectrum (𝓞 X.E
   {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)} {w : HeightOneSpectrum (𝓞 X.K)}
 
 variable (A : Amb X)
-
-theorem jetSum_eq (cB : ℕ) (Ξ : HomE X.E a b → X.K) :
-    JetSumTable.jetSum A Sall cA cB N N' Ξ = StandardKernelAtTorus.kerTable A Sall cA cB N N' Ξ := rfl
-
-theorem ratIdx_eq (cB : ℕ) (Ξ : HomE X.E a b → X.K) :
-    JetSumTable.RatIdx A Sall cA cB N N' Ξ = {m | StandardKernelAtTorus.RatAt A Sall cA cB N N' Ξ m} := rfl
 
 end Datum
 

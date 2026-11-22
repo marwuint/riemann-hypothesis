@@ -26,8 +26,6 @@ variable {D : D7}
 def diagSp (D : D7) (P q : ℕ) : HSp D :=
   Examples₂.stdSpace (E := D.host.E) Examples₂.star_isIntegral (P + q) (fun i => decide (P ≤ (i : ℕ))) P q
 
-theorem diagSp_rank (P q : ℕ) : (diagSp D P q).rank = P + q := rfl
-
 theorem exists_isWeil (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (ε : Bool) (M X : HSp D) {χ χ' : (AE D)ˣ →* Circle} (h1 : IsHeckeChar D χ) (h2 : IsHeckeChar D χ') (r1 : ResEta D χ M.rank)
     (r2 : ResEta D χ' X.rank) : ∃ ω, IsWeil ψ ε M X χ χ' ω := by

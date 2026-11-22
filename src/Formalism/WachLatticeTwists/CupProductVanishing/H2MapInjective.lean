@@ -10,12 +10,6 @@ noncomputable section
 
 namespace Formalism.RepresentationBoundsCohomology.T2
 
-def StatNatInvFG : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
-    (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O],
-    FiniteDimensional ℚ_[p] K → PadicCoeff p O → ∀ ε : GK p K →* Oˣ, IsCyc p K ε →
-    Nonempty (NatInv ε (fun M _ _ _ => IsFGTop O M))
-
 def H2MapInjective : Prop :=
   ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]
     (Γ : Type) [Group Γ] [TopologicalSpace Γ] (ε : Γ →* Oˣ),

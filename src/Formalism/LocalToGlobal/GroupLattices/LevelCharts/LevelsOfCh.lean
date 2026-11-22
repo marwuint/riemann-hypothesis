@@ -59,19 +59,6 @@ abbrev levStep (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ) {m' : ℕ} 
     χ := St.ψ.comp (gamToUp sp.cm.sig St.J St.Up (St.rep i : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))) *
       St.eps.comp (gamC sp.cm.sig St.J St.Up (St.rep i : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))).subtype }
 
-abbrev levelsOf (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
-    (lam0 : Fin nV → Fin n' → Fin (m + 1) → ℤ) (dom : ∀ v, IsDominant (lam0 v)) (hk : m + 1 = R.k)
-    (I : LocId L p nV W Qq) (ψ : Formalism.L2.Herm.awayFrom₂ L p →* Oˣ)
-    (y : compL L p → UPts sp.cm.sig sp.gram0 (Formalism.L2.Herm.Af F)) [Finite (compL L p)] (e : ℕ)
-    (Fl : Fills (gatOfLevel L hS nV r lam0 dom hk I ψ y e)) (M : ℕ) (Nj : ℕ → ℕ)
-    (hN : ∀ i, i < M → m + (i + 1) * (Fl.t + 1) + 1 = Nj i) (St : ∀ i, i < M → StepAt I O (Nj i)) : Levels Fl where
-  compS := fun i => (h : i < M) ×' (St i h).comp
-  finS := fun i => by
-    haveI : ∀ h : i < M, Finite (St i h).comp := fun h => (St i h).fin
-    exact Fintype.ofFinite _
-  levS := fun i c => levStep hS r (fun v s => liftWt Fl.t m (lam0 v s) (fun a => Fl.w v a s) (i + 1)) (Fl.domJ (i + 1))
-    (hN i c.1) (St i c.1) c.2
-
 abbrev levelsOfCh (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
     (lam0 : Fin nV → Fin n' → Fin (m + 1) → ℤ) (dom : ∀ v, IsDominant (lam0 v)) (hk : m + 1 = R.k)
     (I : LocId L p nV W Qq) (ψ : Formalism.L2.Herm.awayFrom₂ L p →* Oˣ)

@@ -44,7 +44,6 @@ def pv (v : HeightOneSpectrum (𝓞 F)) : A F →+* v.adicCompletion F :=
   (RestrictedProduct.evalRingHom (fun u : HeightOneSpectrum (𝓞 F) => u.adicCompletion F) v).comp (RingHom.snd _ _)
 theorem adeleInfiniteComponent_apply (x : A F) : p1 F x = x.1 := rfl
 theorem adele_ext_components (x : A F) : p2 F x = x.2 := rfl
-theorem pv_apply (v : HeightOneSpectrum (𝓞 F)) (x : A F) : pv v x = x.2 v := rfl
 theorem isUnit_adele_iff (x : A F) :
     IsUnit x ↔ (∀ w, x.1 w ≠ 0) ∧ (∀ v, x.2 v ≠ 0) ∧ ∀ᶠ v in cofinite, Valued.v (x.2 v) = 1 := by
   rw [← FiniteAdeleRing.isUnit_iff]

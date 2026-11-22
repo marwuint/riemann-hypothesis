@@ -167,9 +167,6 @@ def KsIso.ofFormsIso {A : Arith.FormsL LL Ks WL W G} {A' : Arith.FormsL LL Ks' W
     rw [← f.rho, f.e.injective.eq_iff]
   chi g := congrArg Units.val (f.chi g)
 
-theorem KsIso.ofFormsIso_apply {A : Arith.FormsL LL Ks WL W G} {A' : Arith.FormsL LL Ks' WL' W' G'} (f : NX.FormsIso A A')
-    (x : A.WK) : ((KsIso.ofFormsIso f).φ x : WL') = f.e x := rfl
-
 end OfIso
 
 section BC
@@ -231,11 +228,6 @@ def fmOf (s : Scal ι e i i' b κ) (q : KsIso ι eK γ (S.A j) (S'.A j')) : NX.F
     (fun c a => (map_mul (fracEquiv κ) (NX.ιK S i b c) a).trans (congrArg (· * _) (s.place q c))) q.smul
 
 variable (s : Scal ι e i i' b κ) (q : KsIso ι eK γ (S.A j) (S'.A j'))
-
-theorem fmOf_tmul (a : NX.KB S i b) (x : NX.FmK S j) :
-    fmOf s q (a ⊗ₜ[S.Ks] x : NX.KB S i b ⊗[S.Ks] NX.FmK S j) =
-      ((show NX.KB S' i' b from fracEquiv κ a) ⊗ₜ[S'.Ks] (show NX.FmK S' j' from q.φ x) :
-        NX.KB S' i' b ⊗[S'.Ks] NX.FmK S' j') := rfl
 
 theorem fmOf_smul (c : FractionRing (tw.O i)) (x : NX.Fm S i j b) : fmOf s q (c • x) = fracEquiv κ c • fmOf s q x :=
   DFunLike.congr_fun (tens_ext (R := S.Ks) (K := NX.KB S i b) (M := NX.FmK S j)
@@ -308,53 +300,7 @@ theorem fmOf_restrict (u : Module.End what₂.LL (S.WL j)) (u' : Module.End rows
 
 variable (tw' S ι e)
 
-abbrev algKsBC : Algebra S.Ks rows'.LL := (ι.comp (algebraMap S.Ks what₂.LL)).toAlgebra
-
-theorem towKsBC : letI := ι.toAlgebra
-    letI := algKsBC S ι
-    IsScalarTower S.Ks what₂.LL rows'.LL :=
-  letI := ι.toAlgebra
-  letI := algKsBC S ι
-  IsScalarTower.of_algebraMap_eq fun _ => rfl
-
-def ratDatBC (he : ∀ x : ↥LL0', ι (e x : what₂.LL) = (x : rows'.LL)) (c : G0g N ≃* G0g N') :
-    NX.RatDat tw' :=
-  letI := ι.toAlgebra
-  letI := algKsBC S ι
-  haveI := towKsBC S ι
-  { Ks := S.Ks
-    WL := fun j => NX.BC.BCW S.Ks what₂.LL rows'.LL (S.WL j)
-    modWL := fun j => NX.BC.modL S.Ks what₂.LL rows'.LL (S.WL j)
-    modKsWL := fun j => NX.BC.modKs S.Ks what₂.LL rows'.LL (S.WL j)
-    towWL := fun j => NX.BC.towKsL S.Ks what₂.LL rows'.LL (S.WL j)
-    modOLLWL := fun _ => NX.BC.modOL rows'.LL
-    towOLLWL := fun _ => NX.BC.towOL rows'.LL
-    modOKsWL := fun _ => NX.BC.modOKs rows'.LL
-    towOKsWL := fun _ => NX.BC.towOKs rows'.LL
-    W := fun j => NX.BC.Wbc what₂.LL rows'.LL (S.W j)
-    G := S.G
-    eG := S.eG.trans c
-    A := fun j => NX.BC.bc rows'.LL (S.A j)
-    kKs := e.symm.toRingHom.comp S.kKs
-    kKs_spec := fun x => by
-      have h := he (e.symm (S.kKs x))
-      rw [e.apply_symm_apply, S.kKs_spec] at h
-      exact h.symm }
-
 variable (he : ∀ x : ↥LL0', ι (e x : what₂.LL) = (x : rows'.LL)) (c : G0g N ≃* G0g N')
-
-theorem ratDatBC_Ks : (ratDatBC tw' S ι e he c).Ks = S.Ks := rfl
-
-theorem ratDatBC_G : (ratDatBC tw' S ι e he c).G = S.G := rfl
-
-theorem ratDatBC_eG (g : S.G) : (ratDatBC tw' S ι e he c).eG g = c (S.eG g) := rfl
-
-theorem ratDatBC_kKs (x : S.Ks) : (ratDatBC tw' S ι e he c).kKs x = e.symm (S.kKs x) := rfl
-
-theorem ratDatBC_A (j : ℕ) : letI := ι.toAlgebra
-    letI := algKsBC S ι
-    haveI := towKsBC S ι
-    (ratDatBC tw' S ι e he c).A j = NX.BC.bc rows'.LL (S.A j) := rfl
 
 end Fm
 

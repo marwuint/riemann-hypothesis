@@ -57,9 +57,6 @@ def tenExt : C ⥤ CommAlgCat.{0} R where
     congr 2
     exact LinearMap.ext fun x ↦ mp_comp F φ ψ x))
 
-theorem mp_tenExt {T T' : C} (φ : T ⟶ T') (c : (tenExt N F).obj T) :
-    mp (tenExt N F) φ c = tenMap N F φ c := rfl
-
 theorem isUnit_mp_tenExt_iff {T S : C} (u : T ⟶ S) (c : (tenExt N F).obj T) :
     IsUnit (mp (tenExt N F) u c) ↔ IsUnit (mp F u c.fst) :=
   TrivSqZeroExt.isUnit_iff_isUnit_fst.trans (iff_of_eq (congrArg IsUnit (fst_tenMap N F u c)))

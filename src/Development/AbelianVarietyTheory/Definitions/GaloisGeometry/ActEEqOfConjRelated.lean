@@ -62,9 +62,6 @@ def shift (A : Agree X M rep) (g : Fin D.R.m → ReciprocityTheory.Aut.GQ D.host
         (congrArg (fun z => A.eW μ hμ j (X.fn hμ j x ((A.PV j).ψ z))) (inv_aux _ _ _))))
   rep_iso := A.rep_iso
 
-theorem shift_a (A : Agree X M rep) (g : Fin D.R.m → ReciprocityTheory.Aut.GQ D.host.E D.R.nV) (j) :
-    (shift A g).a j = g j * A.a j := rfl
-
 end GlobalTheory.NJoin.Model
 
 end

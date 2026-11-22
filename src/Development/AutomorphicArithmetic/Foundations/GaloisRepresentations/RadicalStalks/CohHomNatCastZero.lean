@@ -119,8 +119,6 @@ private noncomputable def cohHom (o : Obj b N t) : 𝓞 D.F →+* Module.End k (
   map_add' x y := LinearMap.ext fun v ↦ sep o fun h ↦ by
     rw [← hom_apply, hom_add, LinearMap.add_apply, LinearMap.add_apply, LinearMap.add_apply, map_add]; rfl
 
-private theorem cohHom_apply (o : Obj b N t) (c : 𝓞 D.F) : cohHom o c = coh o c := rfl
-
 private theorem hom_eq (o : Obj b N t) (c : 𝓞 D.F) : hom o c = (cohHom o c).dualMap := rfl
 
 private theorem cohHom_natCast_zero (hk : (p : k) = 0) (o : Obj b N t) : cohHom o (p : 𝓞 D.F) = 0 := by

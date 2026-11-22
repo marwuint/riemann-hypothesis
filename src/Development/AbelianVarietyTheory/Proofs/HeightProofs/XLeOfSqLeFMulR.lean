@@ -27,15 +27,9 @@ theorem g0_eq (D : D7) : WeightAlgebra.g0 D = DimensionConstantBounds.g0 D := rf
 
 theorem degF_eq {j : ℕ} (w : WeightFamilies.Wt D j) : WeightAlgebra.DF w = DimensionConstantBounds.degF w := rfl
 
-theorem lamStar_eq (D : D7) : WeightAlgebra.lamStar D = DimensionConstantBounds.LamStar D := rfl
-
-theorem PN_eq (L : SizeData₂ D) : WeightAlgebra.PN D L = DimensionConstantBounds.PN L := rfl
-
 theorem normShift_eq (D : D7) (j : ℕ) : WeightAlgebra.n0 D j = DimensionConstantBounds.n0 D j := rfl
 
 theorem Z_eq (L : SizeData₂ D) : WeightAlgebra.Zb D L = DimensionConstantBounds.Z L := rfl
-
-theorem PO_eq (L : SizeData₂ D) : WeightAlgebra.PO D L = DimensionConstantBounds.PO L := rfl
 
 end GlobalTheory.ConstCompare
 

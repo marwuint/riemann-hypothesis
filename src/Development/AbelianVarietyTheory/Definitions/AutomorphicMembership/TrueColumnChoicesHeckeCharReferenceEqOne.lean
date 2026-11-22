@@ -240,15 +240,7 @@ structure Ok : Prop where
 
   duStar : ∀ u, (B.duStar u : ℝ) = duStarOf B.host (B.hcW u)
 
-theorem glob_σ₀ : I.glob.σ₀ = B.embLL := rfl
-
-theorem globalXi_reference : I.glob.xi0 = B.host.xi0 := rfl
-
-theorem globalCharacters_reference : I.glob.mu0 = I.C.mu0 := rfl
-
 theorem A_σ₀ : I.A.σ₀ = B.embLL := rfl
-
-theorem A_δ : I.A.δ = I.J.δ := rfl
 
 theorem A_cD : I.A.cD = I.J.cD := rfl
 
@@ -341,8 +333,6 @@ theorem AmbIn.amb_eq_ambOf (J : AmbIn B.host) (χ : Submodule (𝓞 B.host.E) B.
 theorem AmbIn.ok_iff (J : AmbIn B.host) :
     J.Ok ↔ TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice (assemble B C W V S N G) ⊤ J.δ ∧ IsDgen (assemble B C W V S N G) J.cD :=
   ⟨fun h => ⟨h.delta, h.dgen⟩, fun h => ⟨h.1, h.2⟩⟩
-
-theorem duStarOf_eq (u : B.Word) : duStarOf B.host (B.hcW u) = StandardLattice.duStarU (assemble B C W V S N G) u := rfl
 
 end Record
 

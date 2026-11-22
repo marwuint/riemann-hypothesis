@@ -18,11 +18,6 @@ section Alg
 
 variable {S : Type} [CommRing S] (d : ℕ)
 
-abbrev swJ (m : ℕ) : Jet S (Fin 2 × Fin d) m →ₐ[S] Jet S (Fin 2 × Fin d) m :=
-  jetSubstP m fun p : Fin 2 × Fin d =>
-    (![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)] : Fin 2 → Fin d → MvPolynomial (Fin 2 × Fin d) S)
-      p.1 p.2
-
 private theorem jetSubstP_apply_mk {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' S)
     (p : MvPolynomial κ S) :
     jetSubstP m φ (Ideal.Quotient.mk (orig S κ ^ (m + 1)) p) =

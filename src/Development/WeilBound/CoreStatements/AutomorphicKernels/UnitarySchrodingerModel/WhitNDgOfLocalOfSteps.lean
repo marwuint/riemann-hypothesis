@@ -15,12 +15,6 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 
 variable {D : D7} {n : ℕ}
 
-def whitAt (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (μ : Measure (Mx D V.rank n)) (lam : Measure (hermA D n))
-    (nb : hermA D n → G D n) (w : G D n) (H : G D n → ℝ≥0) (φ : Mx D V.rank n → ℂ) (β : HermE D n) (g : G D n) :
-    ℂ → ℂ :=
-  fun z => ∫ b, npow (H (w * nb b * g)) (z - s0 V n) * Jt ψ V μ φ b *
-    ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n))) ∂lam
-
 def HeightKInv : Prop :=
   ∀ (D : D7) (n : ℕ) (H : G D n → ℝ≥0), IsHeight H → ∀ x : G D n, ∀ k ∈ K D n, H (x * k) = H x
 

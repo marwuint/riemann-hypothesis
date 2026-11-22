@@ -510,17 +510,6 @@ variable (dr : Set ℕ) (len : D.what₂.Word → D.what₂.places.Pl → ℚ) (
     (hg : ∀ i, ¬ (G.IsResidueClassZero D (D.host.g i) ∨ G.IsSg D (D.host.g i)))
     (hu : ∀ w, D.what₂.muAt w = D.what₂.mu0 → ∀ j, 1 ≤ j → j ≤ D.R.m → Fval L0 j w = 0)
 
-def tieInst : G.Inst D (tieWeightData L0 X0 K dr len hw hg hu) where
-  bs := X0.bs
-  bs_orb := X0.bs_orb
-  bs_step := X0.bs_step
-  off := X0.off
-  off_top := X0.off_top
-  off_thin := X0.off_thin
-  off_thick := X0.off_thick
-  kapI := X0.kapI
-  ep := X0.ep
-
 end Comparison₂
 
 end Formalism.MainNotions.Inhab

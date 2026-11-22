@@ -247,9 +247,6 @@ theorem act_mem_Dpcris (ρ : Representation LL G V) (g : G) (x : V ⊗[Qp] B) (h
   congr 2
   group
 
-theorem Eig_eq (ρ : Representation LL G V) (a : PC.Iner →* LLˣ) :
-    PC.Eig ρ PC.Iner a = PC.Dpcris ρ ⊓ eig (fun g : PC.Iner => actVB PC.PD ρ g) a := rfl
-
 variable [IsDomain B] [FiniteDimensional Qp LL]
 
 theorem inertia_of_pair [FiniteDimensional LL V] [FiniteDimensional LL U] [FiniteDimensional LL W]

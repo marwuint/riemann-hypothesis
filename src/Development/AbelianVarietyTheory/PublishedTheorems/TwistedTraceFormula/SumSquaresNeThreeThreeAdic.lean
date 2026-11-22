@@ -11,13 +11,6 @@ namespace GlobalTheory.HermLocal.Model
 section Quad
 variable {K : Type} [Field K] (d : K) [Fact (∀ r : K, r ^ 2 ≠ d + 0 * r)]
 
-noncomputable def conjSqrt : QuadraticAlgebra K d 0 ≃ₐ[K] QuadraticAlgebra K d 0 :=
-  AlgEquiv.ofRingEquiv (f := starRingAut) fun x => by
-    change star _ = _
-    ext <;> simp
-
-theorem conjSqrt_apply (z : QuadraticAlgebra K d 0) : conjSqrt d z = star z := rfl
-
 end Quad
 
 instance two_not_sq : Fact (∀ r : ℚ_[2], r ^ 2 ≠ 2 + 0 * r) := ⟨fun r h => by

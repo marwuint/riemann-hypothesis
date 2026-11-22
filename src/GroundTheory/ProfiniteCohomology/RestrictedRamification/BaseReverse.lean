@@ -447,24 +447,6 @@ theorem d_coconeMkZero (x : K.X 0) :
   change (f.f 0).hom x + 0 = (f.f 0).hom x
   exact add_zero _
 
-theorem coconeLeft_μ_coconeMkSucc {K' L' N N' : CochainComplex (ModuleCat.{u} k) ℕ} {f' : K' ⟶ L'}
-    (μL : LeibnizPairing L N' L') (ρ : N ⟶ N') (μK : LeibnizPairing K N K')
-    (hc : ∀ {r s n : ℕ} (h : r + s = n) (x : K.X r) (z : N.X s),
-      (f'.f n).hom (μK.μ h x z) = μL.μ h ((f.f r).hom x) ((ρ.f s).hom z))
-    {r s m : ℕ} (h : r + 1 + s = m + 1) (h0 : r + s = m) (x : K.X (r + 1)) (y : L.X r) (z : N.X s) :
-    (LeibnizPairing.coconeLeft μL ρ μK hc).μ h (coconeMkSucc f x y) z =
-      coconeMkSucc f' (μK.μ h x z) (μL.μ h0 y ((ρ.f s).hom z)) :=
-  rfl
-
-theorem coconeRight_μ_coconeMkSucc {K' L' M M' : CochainComplex (ModuleCat.{u} k) ℕ} {f' : K' ⟶ L'}
-    (μR : LeibnizPairing M' L L') (ρ : M ⟶ M') (μK : LeibnizPairing M K K')
-    (hc : ∀ {r s n : ℕ} (h : r + s = n) (x : M.X r) (y : K.X s),
-      (f'.f n).hom (μK.μ h x y) = μR.μ h ((ρ.f r).hom x) ((f.f s).hom y))
-    {r s m : ℕ} (h : s + (r + 1) = m + 1) (h0 : s + r = m) (z : M.X s) (x : K.X (r + 1)) (y : L.X r) :
-    (LeibnizPairing.coconeRight μR ρ μK hc).μ h z (coconeMkSucc f x y) =
-      coconeMkSucc f' (μK.μ h z x) ((-1 : k) ^ s • μR.μ h0 ((ρ.f s).hom z) y) :=
-  rfl
-
 end ConeElements
 
 section ConeIdentity

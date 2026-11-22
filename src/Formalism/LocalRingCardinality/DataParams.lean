@@ -12,8 +12,6 @@ def jG : ℕ := 5
 
 def hExp (s : Scale) : ℝ := ((jG : ℝ) - 1) / 2 + 8 * s.eps
 
-def Av5 (s : Scale) : ℝ := max 26 (4 * hExp s + 9)
-
 variable {D : D7} (L : SizeData₂ D)
 
 def Nstar : ℝ := 2 * (D.R.n : ℝ) * L.sc.delta1

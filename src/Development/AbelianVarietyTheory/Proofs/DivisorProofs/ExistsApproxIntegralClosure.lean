@@ -38,10 +38,6 @@ def satIdeal (q : Ideal B) [q.IsPrime] (J : Ideal (decompFixed A G q)) :
     rw [this]
     exact J.mul_mem_left _ hby
 
-theorem mem_satIdeal {q : Ideal B} [q.IsPrime] {J : Ideal (decompFixed A G q)}
-    {y : decompFixed A G q} :
-    y ∈ satIdeal A G q J ↔ ∃ b : decompFixed A G q, (b : B) ∉ q ∧ b * y ∈ J := Iff.rfl
-
 end GlobalTheory.DecompFixed
 
 namespace GlobalTheory.DecompFixed

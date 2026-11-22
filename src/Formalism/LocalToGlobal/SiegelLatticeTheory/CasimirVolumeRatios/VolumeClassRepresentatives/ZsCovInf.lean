@@ -28,9 +28,6 @@ theorem det_ne_of_inUJ {C : Matrix (Fin n) (Fin n) ℂ} (h : Cᴴ * Formalism.RE
 def ofInUJ {C : Matrix (Fin n) (Fin n) ℂ} (h : Cᴴ * Formalism.REAL.Jm ε * C = Formalism.REAL.Jm ε) : Formalism.REAL.UJ ε :=
   ⟨Matrix.nonsingInvUnit C (Ne.isUnit (det_ne_of_inUJ ε h)), h⟩
 
-theorem umat_ofInUJ {C : Matrix (Fin n) (Fin n) ℂ} (h : Cᴴ * Formalism.REAL.Jm ε * C = Formalism.REAL.Jm ε) :
-    PI.CdHaarScale.umat (ofInUJ ε h) = C := rfl
-
 theorem umat_mul (g h : Formalism.REAL.UJ ε) :
     PI.CdHaarScale.umat (g * h) = PI.CdHaarScale.umat g * PI.CdHaarScale.umat h := rfl
 

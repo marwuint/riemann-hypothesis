@@ -33,18 +33,6 @@ def LevelAgree {D : Datum H} {l : Level H} {c : Coeff l} {k : Type} [Field k] {b
         (∀ z, GenRel w₂ (q₂.g.s (e₂ z)) (q₀.g.s z) (uF ^ (a.be q₀.y z / n))) →
         QkPt.Equiv P.toPre F q₁ q₂
 
-theorem dataRigidSt_iff : DataRigidSt ↔
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (c : Coeff l)
-      (k : Type) [Field k] (bF : c.F →+* k) (a : ArcIn D l (RingHom.id c.F) k bF)
-      (P : DegData (PowerSeries k) (Ideal.span {PowerSeries.X})) [Module (𝓞 E) P.toPre.X]
-      (oP : letI := H.starRing; P.toPre.OAct (𝓞 E)) (φ₁ φ₂ : P.toPre.P.A.left ⟶ a.D₀.P.A.left)
-      (he₁ : eSec P.toPre.P.A ≫ φ₁ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A)
-      (he₂ : eSec P.toPre.P.A ≫ φ₂ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A)
-      (w₁ : LB.Iso P.toPre.P.L (a.D₀.P.L.pull φ₁)) (w₂ : LB.Iso P.toPre.P.L (a.D₀.P.L.pull φ₂))
-      (e₁ e₂ : a.D₀.X ≃ₗ[𝓞 E] P.toPre.X),
-      WitData a P oP φ₁ he₁ w₁ e₁ → WitData a P oP φ₂ he₂ w₂ e₂ → LevelAgree a P w₁ w₂ e₁ e₂ →
-      φ₁ = φ₂ ∧ e₁ = e₂ ∧ HEq w₁ w₂ := Iff.rfl
-
 variable {l : Level H} (c : Coeff l) (k : Type) [Field k] (bF : c.F →+* k)
 
 def witP : DegData (PowerSeries k) (Ideal.span {PowerSeries.X}) :=

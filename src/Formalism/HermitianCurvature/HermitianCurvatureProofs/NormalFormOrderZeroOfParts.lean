@@ -1053,8 +1053,6 @@ def fstA (V : Type) [AddCommGroup V] [Module ℂ V] : Q.Pr V →ₐ[ℂ] Module.
   map_add' _ _ := rfl
   commutes' _ := rfl
 
-theorem fstA_apply (a : Q.Pr V) : fstA V a = a.1 := rfl
-
 theorem fst_mul (a b : Q.Pr V) : (a * b).1 = a.1 * b.1 := rfl
 theorem fst_add (a b : Q.Pr V) : (a + b).1 = a.1 + b.1 := rfl
 theorem fst_sub (a b : Q.Pr V) : (a - b).1 = a.1 - b.1 := rfl
@@ -2019,8 +2017,6 @@ noncomputable section
 variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A]
 
 theorem off_congr {δ δ' : ℕ → ℤ} {ρ σ : M.Ty P} (h : Off δ ρ σ) (e : δ = δ') : Off δ' ρ σ := e ▸ h
-
-theorem ee_val (l m : ℕ) : ee l m = if m = l then 1 else 0 := rfl
 
 variable {d : Q.NFData P A} (hd : Hyp d)
 include hd

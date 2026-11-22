@@ -9,11 +9,6 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 
 namespace UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
-def QuadDisj : Prop :=
-  ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (T : Set (HeightOneSpectrum (𝓞 F)))
-    (N : Subgroup (G F Ω)), (∀ u ∉ T, ∀ A : ValuationSubring Ω, IsPlaceOver A u → Ine (F := F) A ≤ N) →
-    ∀ Q : QCM F Ω, RamOff T Q → GlobalTheory.AboveL.SolvDisj ↥Q.K N
-
 def AllUnr : Prop :=
   ∀ (Y Ω : Type) [Field Y] [NumberField Y] [Field Ω] [Algebra Y Ω] [IsAlgClosure Y Ω] (T : Set (HeightOneSpectrum (𝓞 Y)))
     (Q : QCM Y Ω), Step1 T Q → ∀ w : HeightOneSpectrum (𝓞 ↥Q.K),

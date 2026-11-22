@@ -194,46 +194,6 @@ theorem isIntegralLat_adjoin_iff' (hs : h.IsSymm) (h1 : h S.x₀ S.x₀ = 1) (L'
     obtain ⟨u, hu⟩ := Submodule.mem_one.mp (star_alg_mem_one r)
     exact Submodule.mem_one.mpr ⟨u * r', by rw [map_mul, hu]⟩
 
-theorem isOrthoLattice_adjoin' (hs : h.IsSymm) (h1 : h S.x₀ S.x₀ = 1)
-    {I' : Submodule (𝓞 K) V'} {n : ℕ} (hI' : Formalism.HermitianLatticesTheory.IsOrthoLattice h' I' n) :
-    Formalism.HermitianLatticesTheory.IsOrthoLattice h (S.adjoin I') (n + 1) := by
-  obtain ⟨e', hli, hspan, hI'eq, horth⟩ := hI'
-  refine ⟨Fin.cons S.x₀ (fun j => S.ι (e' j)), ?_, ?_, ?_, ?_⟩
-  · rw [linearIndependent_fin_cons]
-    refine ⟨hli.map' S.ι (LinearMap.ker_eq_bot.mpr S.inj), fun hmem => ?_⟩
-    have hle : Submodule.span K (Set.range (fun j => S.ι (e' j))) ≤ LinearMap.range S.ι := by
-      rw [Submodule.span_le]
-      rintro _ ⟨j, rfl⟩
-      exact ⟨e' j, rfl⟩
-    obtain ⟨a, ha⟩ := hle hmem
-    exact S.x₀_not_mem_range a ha
-  · rw [eq_top_iff]
-    intro v _
-    obtain ⟨c, a, rfl⟩ := S.cover v
-    rw [Fin.range_cons]
-    have ha : a ∈ Submodule.span K (Set.range e') := by
-      rw [hspan]
-      exact Submodule.mem_top
-    refine Submodule.add_mem _ (Submodule.smul_mem _ c (Submodule.subset_span (Set.mem_insert _ _))) ?_
-    have hm : S.ι a ∈ (Submodule.span K (Set.range e')).map S.ι := Submodule.mem_map_of_mem ha
-    rw [Submodule.map_span] at hm
-    refine Submodule.span_mono ?_ hm
-    rintro _ ⟨_, ⟨j, rfl⟩, rfl⟩
-    exact Set.mem_insert_of_mem _ ⟨j, rfl⟩
-  · rw [Fin.range_cons, Submodule.span_insert, hI'eq]
-    unfold VecSplit.adjoin
-    congr 1
-    rw [Submodule.map_span]
-    congr 1
-    ext v
-    simp
-  · intro i j
-    cases i using Fin.cases <;> cases j using Fin.cases
-    · simp [h1]
-    · simp [S.orth, (Fin.succ_ne_zero _).symm]
-    · simp [S.orth' hs, Fin.succ_ne_zero]
-    · simp [S.isom, horth]
-
 end VecSplit
 
 namespace VecSplit

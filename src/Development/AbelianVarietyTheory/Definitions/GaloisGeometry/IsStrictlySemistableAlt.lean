@@ -12,11 +12,6 @@ section Transfer
 
 variable (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
 
-def alongS (F : Shv R) (n : ℕ) {Z X : Scheme.{0}} (t : (freeOn R).obj X ⟶ (freeOn R).obj Z) : HS R F n Z →+ HS R F n X where
-  toFun x := (Abelian.Ext.mk₀ t).comp x (zero_add n)
-  map_zero' := Abelian.Ext.comp_zero _ _ _ _ _
-  map_add' _ _ := Abelian.Ext.comp_add _ _ _ _
-
 def push (n : ℕ) {Z X : Scheme.{0}} (t : (freeOn R).obj X ⟶ (freeOn R).obj Z) : H R n Z →ₗ[R] H R n X where
   toFun x := (Abelian.Ext.mk₀ t).comp (x : HS R (coef R) n Z) (zero_add n)
   map_add' _ _ := Abelian.Ext.comp_add _ _ _ _

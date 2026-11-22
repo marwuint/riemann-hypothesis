@@ -15,10 +15,6 @@ section Gen
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
-theorem tensor_conjugation_tmul (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] (e : E) (r : R) :
-    sigR σ R (e ⊗ₜ[F] r) = σ e ⊗ₜ[F] r := by
-  rfl
-
 end Gen
 
 theorem unitary_det_norm_one {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (hJ : IsUnit J.det)
@@ -60,8 +56,6 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 
-theorem conjugation_tmul (σ : E →ₐ[F] E) (e : E) (a : 𝔸) : sigR σ 𝔸 (e ⊗ₜ[F] a) = σ e ⊗ₜ[F] a := rfl
-
 end A2
 
 section C
@@ -69,24 +63,6 @@ section C
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 local notation "ιE" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
-
-def c_lat (x : (AfE F E)ˣ) : Submodule (𝓞 E) E where
-  carrier := {e | ((x⁻¹ : (AfE F E)ˣ) : AfE F E) * ιE e ∈ RInt F E}
-  add_mem' := by
-    intro a b ha hb
-    simp only [Set.mem_ofPred_eq, map_add, mul_add] at *
-    exact add_mem ha hb
-  zero_mem' := by
-    simp only [Set.mem_ofPred_eq, map_zero, mul_zero]
-    exact zero_mem _
-  smul_mem' := by
-    intro c a ha
-    simp only [Set.mem_ofPred_eq] at *
-    rw [Algebra.smul_def, map_mul, mul_left_comm]
-    exact mul_mem (Formalism.UG.CS.incl_int c) ha
-
-theorem c_mem_lat (x : (AfE F E)ˣ) (e : E) :
-    e ∈ c_lat x ↔ ((x⁻¹ : (AfE F E)ˣ) : AfE F E) * ιE e ∈ RInt F E := Iff.rfl
 
 end C
 

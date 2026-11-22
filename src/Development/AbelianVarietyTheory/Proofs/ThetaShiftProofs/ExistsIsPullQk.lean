@@ -149,8 +149,6 @@ def pullArc : ArcIn D l β O'' (f.comp b) :=
       · rw [(({ hD.xe with map_smul' := hx } : D'.X ≃ₗ[𝓞 E] a.D₀.X)).finrank_eq]
         exact hn' }
 
-theorem pullArc_D₀ : (pullArc hG hf a hD).D₀ = D' := rfl
-
 theorem isBC_pullArc : IsBC f a (pullArc hG hf a hD) hD :=
   letI := H.starRing
   letI := pullModule a hD

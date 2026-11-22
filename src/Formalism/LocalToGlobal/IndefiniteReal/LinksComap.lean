@@ -12,18 +12,6 @@ namespace Formalism.L2.DIV
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
 
-theorem FamIn.comap_fam_R {T T' : Type} {m : ℕ} (A : FamIn K G Pl0 T' m) (f : T → T') (t0 : T) (t : T) :
-    (A.comap f t0).fam.R t = A.fam.R (f t) := rfl
-
-theorem FamIn.comap_fam_L {T T' : Type} {m : ℕ} (A : FamIn K G Pl0 T' m) (f : T → T') (t0 : T) (j : Fin m) (t : T) :
-    (A.comap f t0).fam.L j t = A.fam.L j (f t) := rfl
-
-theorem FamIn3.comap_rowI {I0 Ty T T' : Type} {m : ℕ} (A3 : FamIn3 K G Pl0 I0 Ty T' m) (f : T → T') (t0 : T) (t : T) :
-    (A3.comap f t0).rowI t = A3.rowI (f t) := rfl
-
-theorem FamIn3.comap_liftI {I0 Ty T T' : Type} {m : ℕ} (A3 : FamIn3 K G Pl0 I0 Ty T' m) (f : T → T') (t0 : T) (j : Fin m)
-    (t : T) : (A3.comap f t0).liftI j t = A3.liftI j (f t) := rfl
-
 end Formalism.L2.DIV
 
 namespace Formalism.IndefR.Bridge
@@ -209,11 +197,6 @@ section ColComap
 
 variable {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.Wts X Pr.Word R) (Ch : Col.Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (hX : X.Ok)
-
-def tupFIncl {TU TU' : Finset (Tup X.F X.E X.K S)} (hs : TU ⊆ TU') (τ : TupF TU) : TupF TU' :=
-  ⟨τ.1, τ.2.imp id fun h => hs h⟩
-
-theorem tupFIncl_mu0F {TU TU' : Finset (Tup X.F X.E X.K S)} (hs : TU ⊆ TU') : tupFIncl hs (mu0F TU) = mu0F TU' := rfl
 
 end ColComap
 

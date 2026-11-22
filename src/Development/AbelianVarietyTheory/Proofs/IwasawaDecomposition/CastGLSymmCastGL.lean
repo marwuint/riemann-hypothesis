@@ -34,9 +34,6 @@ def conjBack (J : Subgroup G) (k : G) : J.map (MulAut.conj k).toMonoidHom ≃* J
   right_inv j := Subtype.ext (by show k⁻¹ * (k * (j : G) * k⁻¹) * k = j; group)
   map_mul' x y := Subtype.ext (by show k⁻¹ * ((x : G) * y) * k = (k⁻¹ * x * k) * (k⁻¹ * y * k); group)
 
-theorem conjBack_spec (J : Subgroup G) (k : G) (x : J.map (MulAut.conj k).toMonoidHom) :
-    ((conjBack J k x : J) : G) = k⁻¹ * x * k := rfl
-
 end Shift
 
 section Read

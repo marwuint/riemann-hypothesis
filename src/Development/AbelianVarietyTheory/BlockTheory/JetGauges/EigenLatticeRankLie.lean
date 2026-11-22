@@ -17,9 +17,6 @@ section Extend
 
 variable {R : Type} [CommRing R] (S : Type) [CommRing S] [Algebra R S]
 
-abbrev fstOver (R S : Type) [CommRing R] [CommRing S] [Algebra R S] : DualNumber S →ₐ[R] S :=
-  (Chart.fstD S).restrictScalars R
-
 variable {S}
 
 abbrev scaleOver (R : Type) [CommRing R] [Algebra R S] (s : S) : DualNumber S →ₐ[R] DualNumber S :=

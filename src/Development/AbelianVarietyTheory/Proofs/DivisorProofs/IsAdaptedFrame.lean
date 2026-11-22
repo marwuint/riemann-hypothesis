@@ -22,8 +22,6 @@ def negT : Mat r s →ₗ[ℂ] Mat r s where
   map_add' Y Z := by rw [Matrix.transpose_add, neg_add]
   map_smul' c Y := by rw [Matrix.transpose_smul, RingHom.id_apply, smul_neg]
 
-theorem negT_apply (Y : Mat r s) : negT r s Y = -Yᵀ := rfl
-
 end Fock
 
 end GlobalTheory.FockBridge

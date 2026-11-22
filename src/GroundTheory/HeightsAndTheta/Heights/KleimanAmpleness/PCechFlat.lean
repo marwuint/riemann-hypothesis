@@ -68,11 +68,6 @@ def kerEquiv (b : X →ₗ[S] Y) (b' : X' →ₗ[S'] Y') (eX : S' ⊗[S] X ≃�
     simp only [Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply, LinearMap.mem_ker, hc,
       LinearEquiv.map_eq_zero_iff]))
 
-theorem kerEquiv_one_tmul (b : X →ₗ[S] Y) (b' : X' →ₗ[S'] Y') (eX : S' ⊗[S] X ≃ₗ[S'] X')
-    (eY : S' ⊗[S] Y ≃ₗ[S'] Y') (h : ∀ x, b' (eX (1 ⊗ₜ x)) = eY (1 ⊗ₜ b x)) (x : LinearMap.ker b) :
-    (kerEquiv b b' eX eY h (1 ⊗ₜ x) : X') = eX (1 ⊗ₜ (x : X)) :=
-  rfl
-
 def subEquiv (E : S' ⊗[S] X ≃ₗ[S'] X') (D : Submodule S X) (D' : Submodule S' X')
     (h₁ : ∀ x ∈ D, E (1 ⊗ₜ x) ∈ D')
     (h₂ : D' ≤ Submodule.span S' ((fun x => E (1 ⊗ₜ x)) '' (D : Set X))) :
@@ -97,12 +92,6 @@ def subEquiv (E : S' ⊗[S] X ≃ₗ[S'] X') (D : Submodule S X) (D' : Submodule
       (h₂.trans (Submodule.span_le.mpr (by
         rintro _ ⟨x, hx, rfl⟩
         exact ⟨1 ⊗ₜ ⟨x, hx⟩, by simp⟩)))))
-
-theorem subEquiv_one_tmul (E : S' ⊗[S] X ≃ₗ[S'] X') (D : Submodule S X) (D' : Submodule S' X')
-    (h₁ : ∀ x ∈ D, E (1 ⊗ₜ x) ∈ D')
-    (h₂ : D' ≤ Submodule.span S' ((fun x => E (1 ⊗ₜ x)) '' (D : Set X))) (x : D) :
-    (subEquiv E D D' h₁ h₂ (1 ⊗ₜ x) : X') = E (1 ⊗ₜ (x : X)) :=
-  rfl
 
 end FlatBC
 
@@ -138,27 +127,6 @@ theorem exists_of_mem_monos {I : Finset (Fin (N + 1))} {s : Poly S' N} (hs : s �
     ∃ t ∈ monos (S := S) I, pmap S S' N t = s := by
   rw [← map_monos (S := S)] at hs
   exact Submonoid.mem_map.mp hs
-
-theorem monos_eq_monomial {R : Type u} [CommRing R] {I : Finset (Fin (N + 1))} {s : Poly R N}
-    (hs : s ∈ monos I) : ∃ α, s = monomial α 1 := by
-  induction hs using Submonoid.closure_induction with
-  | mem x hx =>
-    obtain ⟨i, -, rfl⟩ := hx
-    exact ⟨Finsupp.single i 1, rfl⟩
-  | one => exact ⟨0, by simp⟩
-  | mul x y _ _ hx hy =>
-    obtain ⟨a, rfl⟩ := hx
-    obtain ⟨b, rfl⟩ := hy
-    exact ⟨a + b, by rw [monomial_mul, one_mul]⟩
-
-theorem deg_eq_of_monos [Nontrivial S'] {I : Finset (Fin (N + 1))} {t : Poly S N} (ht : t ∈ monos I)
-    {e₀ e : ℕ} (h₀ : t.IsHomogeneous e₀) (h : (pmap S S' N t).IsHomogeneous e) : e₀ = e := by
-  obtain ⟨α, hα⟩ := monos_eq_monomial (pmap_mem_monos (S' := S') ht)
-  refine (h₀.map (algebraMap S S')).inj_right h ?_
-  change pmap S S' N t ≠ 0
-  rw [hα]
-  intro h0
-  exact one_ne_zero (monomial_eq_zero.mp h0)
 
 end Poly
 
@@ -395,14 +363,6 @@ def locBC (hf : IsBaseChange S' f) (I : Finset (Fin (N + 1))) :
   LinearEquiv.ofBijective (LinearMap.liftBaseChange S' g)
     (bij_of_tmul f hX hf I (LinearMap.liftBaseChange S' g).toAddMonoidHom (fun _ _ => rfl))
 
-theorem locBC_tmul (hf : IsBaseChange S' f) (I : Finset (Fin (N + 1))) (a : S')
-    (x : LocMod S N M I) : locBC f hX hf I (a ⊗ₜ x) = a • gLoc f hX I x :=
-  rfl
-
-theorem locBC_one_tmul (hf : IsBaseChange S' f) (I : Finset (Fin (N + 1))) (x : LocMod S N M I) :
-    locBC f hX hf I (1 ⊗ₜ x) = gLoc f hX I x := by
-  rw [locBC_tmul, one_smul]
-
 end Loc
 
 end FlatBC
@@ -421,104 +381,6 @@ variable {S : Type u} [CommRing S] {N : ℕ}
   (hf : IsBaseChange S' f) (𝓜 : GradedPMod S N M) (𝓜' : GradedPMod S' N M')
   (hdeg : ∀ (c : ℤ) (m : M), m ∈ 𝓜.piece c → f m ∈ 𝓜'.piece c)
 
-omit [IsScalarTower S (Poly S N) M] [IsScalarTower S' (Poly S' N) M'] in
-include hf hdeg in
-
-theorem piece_le_span (a : ℤ) : 𝓜'.piece a ≤ Submodule.span S' (f '' (𝓜.piece a : Set M)) := by
-  classical
-  let W : ℤ → Submodule S' M' := fun b => Submodule.span S' (f '' (𝓜.piece b : Set M))
-  have hWle : ∀ b, W b ≤ 𝓜'.piece b := fun b => Submodule.span_le.mpr (by
-    rintro _ ⟨m, hm, rfl⟩
-    exact hdeg b m hm)
-  have htop : ⨆ b, W b = ⊤ := by
-    rw [eq_top_iff]
-    rintro y -
-    obtain ⟨z, rfl⟩ := hf.equiv.surjective y
-    induction z using TensorProduct.induction_on with
-    | zero => simp
-    | tmul s m =>
-      rw [IsBaseChange.equiv_tmul]
-      refine Submodule.smul_mem _ s ?_
-      have h1 : (⨆ b, 𝓜.piece b).map f ≤ (⨆ b, W b).restrictScalars S := by
-        rw [Submodule.map_iSup]
-        refine iSup_le fun b => ?_
-        rw [Submodule.map_le_iff_le_comap]
-        intro m hm
-        exact (Submodule.mem_iSup_of_mem b (Submodule.subset_span ⟨m, hm, rfl⟩) :
-          f m ∈ ⨆ b, W b)
-      exact h1 ⟨m, by rw [𝓜.isInternal.submodule_iSup_eq_top]; trivial, rfl⟩
-    | add z₁ z₂ h₁ h₂ => rw [map_add]; exact Submodule.add_mem _ h₁ h₂
-  intro y hy
-  have hy' : y ∈ W a ⊔ ⨆ b, ⨆ (_ : b ≠ a), W b := by
-    rw [← iSup_split_single, htop]; trivial
-  obtain ⟨w, hw, w', hw', rfl⟩ := Submodule.mem_sup.mp hy'
-  have hind := 𝓜'.isInternal.submodule_iSupIndep a
-  have hw'0 : w' = 0 := by
-    have h1 : w' ∈ 𝓜'.piece a := by
-      have := Submodule.sub_mem _ hy (hWle a hw)
-      simpa using this
-    have h2 : w' ∈ ⨆ b, ⨆ (_ : b ≠ a), 𝓜'.piece b :=
-      (iSup_mono fun b => iSup_mono fun _ => hWle b) hw'
-    exact (Submodule.disjoint_def.mp hind) w' h1 h2
-  rw [hw'0, add_zero]
-  exact hw
-
-include hdeg in
-theorem gLoc_mem_degLoc (c : ℤ) (I : StdCell N) (x : LocMod S N M I.1) (hx : x ∈ degLoc 𝓜 c I) :
-    gLoc f hX I.1 x ∈ degLoc 𝓜' c I := by
-  refine Submodule.span_induction (p := fun x _ => gLoc f hX I.1 x ∈ degLoc 𝓜' c I)
-    ?_ ?_ ?_ ?_ hx
-  · rintro _ ⟨m, s, a, e, hm, hs, hae, rfl⟩
-    show gLoc f hX I.1 (lmk I.1 m s) ∈ _
-    rw [gLoc_mk]
-    exact Submodule.subset_span ⟨f m, ⟨pmap S S' N s, pmap_mem_monos s.2⟩, a, e, hdeg a m hm,
-      hs.map _, hae, rfl⟩
-  · rw [map_zero]; exact Submodule.zero_mem _
-  · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
-  · intro r x _ hx; rw [gLoc_smul]; exact Submodule.smul_mem _ _ hx
-
-include hf hdeg in
-theorem degLoc_le_span (c : ℤ) (I : StdCell N) :
-    degLoc 𝓜' c I ≤ Submodule.span S'
-      ((fun x => gLoc f hX I.1 x) '' (degLoc 𝓜 c I : Set (LocMod S N M I.1))) := by
-  rcases subsingleton_or_nontrivial S' with hS | hS
-  · intro z _
-    have : Subsingleton (LocMod S' N M' I.1) := Module.subsingleton S' _
-    rw [Subsingleton.elim z 0]
-    exact Submodule.zero_mem _
-  rw [degLoc, Submodule.span_le]
-  rintro _ ⟨m', s', a, e, hm', hs', hae, rfl⟩
-  obtain ⟨t, ht, hts⟩ := exists_of_mem_monos (S := S) s'.2
-  obtain ⟨e₀, he₀⟩ := monos_isHomogeneous ht
-  have hee : e₀ = e := deg_eq_of_monos ht he₀ (by rw [hts]; exact hs')
-  subst hee
-  change lmk (S := S') I.1 m' s' ∈ _
-  refine Submodule.span_induction
-    (p := fun y _ => lmk (S := S') I.1 y s' ∈ Submodule.span S'
-      ((fun x => gLoc f hX I.1 x) '' (degLoc 𝓜 c I : Set (LocMod S N M I.1))))
-    ?_ ?_ ?_ ?_ (piece_le_span f hf 𝓜 𝓜' hdeg a hm')
-  · rintro _ ⟨m, hm, rfl⟩
-    refine Submodule.subset_span ⟨lmk I.1 m ⟨t, ht⟩,
-      Submodule.subset_span ⟨m, ⟨t, ht⟩, a, e₀, hm, he₀, hae, rfl⟩, ?_⟩
-    show gLoc f hX I.1 (lmk I.1 m ⟨t, ht⟩) = _
-    rw [gLoc_mk]
-    congr 1
-    exact Subtype.ext hts
-  · rw [lmk_zero]; exact Submodule.zero_mem _
-  · intro y₁ y₂ _ _ h₁ h₂; rw [← lmk_add]; exact Submodule.add_mem _ h₁ h₂
-  · intro r y _ h; rw [← lmk_smul]; exact Submodule.smul_mem _ r h
-
-def cochBC (i : ℕ) :
-    S' ⊗[S] Cech.Cochain (locSys S N M) i ≃ₗ[S'] Cech.Cochain (locSys S' N M') i :=
-  (TensorProduct.piRight S S' S' (fun I : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i =>
-      LocMod S N M I.1.1)).trans
-    (LinearEquiv.piCongrRight fun I => locBC f hX hf I.1.1)
-
-theorem cochBC_one_tmul (i : ℕ) (x : Cech.Cochain (locSys S N M) i)
-    (I : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i) :
-    cochBC f hX hf i (1 ⊗ₜ x) I = gLoc f hX I.1.1 (x I) := by
-  simp [cochBC, locBC_one_tmul]
-
 end Grade
 
 end FlatBC
@@ -536,51 +398,6 @@ variable {S : Type u} [CommRing S] {N : ℕ}
   (hX : ∀ (i : Fin (N + 1)) (m : M), f ((X i : Poly S N) • m) = (X i : Poly S' N) • f m)
   (hf : IsBaseChange S' f) (𝓜 : GradedPMod S N M) (𝓜' : GradedPMod S' N M')
   (hdeg : ∀ (c : ℤ) (m : M), m ∈ 𝓜.piece c → f m ∈ 𝓜'.piece c) (c : ℤ)
-
-def cdegBC (i : ℕ) :
-    S' ⊗[S] Cech.Cdeg (locSys S N M) (degLoc 𝓜 c) i ≃ₗ[S']
-      Cech.Cdeg (locSys S' N M') (degLoc 𝓜' c) i :=
-  subEquiv (cochBC f hX hf i) _ _
-    (fun x hx => by
-      rw [Cech.Cdeg, Submodule.mem_pi] at hx ⊢
-      intro I _
-      rw [cochBC_one_tmul]
-      exact gLoc_mem_degLoc f hX 𝓜 𝓜' hdeg c I.1 _ (hx I (Set.mem_univ _)))
-    (by
-      classical
-      intro y hy
-      rw [← Finset.univ_sum_single y]
-      refine Submodule.sum_mem _ fun I _ => ?_
-      have hyI : y I ∈ degLoc 𝓜' c I.1 := (Submodule.mem_pi.mp hy) I (Set.mem_univ _)
-      have hmap : (Submodule.span S' ((fun x => gLoc f hX I.1.1 x) ''
-          (degLoc 𝓜 c I.1 : Set (LocMod S N M I.1.1)))).map
-          (LinearMap.single S' (fun J : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i =>
-            LocMod S' N M' J.1.1) I) ≤
-          Submodule.span S' ((fun x => cochBC f hX hf i (1 ⊗ₜ x)) ''
-            (Cech.Cdeg (locSys S N M) (degLoc 𝓜 c) i : Set (Cech.Cochain (locSys S N M) i))) := by
-        rw [Submodule.map_span_le]
-        rintro _ ⟨z, hz, rfl⟩
-        refine Submodule.subset_span ⟨Pi.single I z, ?_, ?_⟩
-        · rw [SetLike.mem_coe, Cech.Cdeg, Submodule.mem_pi]
-          intro J _
-          by_cases h : J = I
-          · subst h
-            simpa using hz
-          · rw [Pi.single_eq_of_ne h]
-            exact Submodule.zero_mem _
-        · funext J
-          dsimp only
-          rw [cochBC_one_tmul, LinearMap.single_apply]
-          by_cases h : J = I
-          · subst h
-            simp
-          · rw [Pi.single_eq_of_ne h, map_zero, Pi.single_eq_of_ne h]
-      exact hmap ⟨y I, degLoc_le_span f hX hf 𝓜 𝓜' hdeg c I.1 hyI, rfl⟩)
-
-theorem cdegBC_one_tmul (i : ℕ) (x : Cech.Cdeg (locSys S N M) (degLoc 𝓜 c) i) :
-    (cdegBC f hX hf 𝓜 𝓜' hdeg c i (1 ⊗ₜ x) : Cech.Cochain (locSys S' N M') i) =
-      cochBC f hX hf i (1 ⊗ₜ (x : Cech.Cochain (locSys S N M) i)) :=
-  rfl
 
 end Final
 

@@ -330,10 +330,6 @@ theorem jacquetStagesMap_mk_mk (h : Refines β γ) (v : V) :
     jacquetStagesMap π h (Representation.Coinvariants.mk _ (Representation.Coinvariants.mk _ v)) =
       Representation.Coinvariants.mk _ v := rfl
 
-theorem jacquetStagesInv_mk (h : Refines β γ) (v : V) :
-    jacquetStagesInv π h (Representation.Coinvariants.mk _ v) =
-      Representation.Coinvariants.mk _ (Representation.Coinvariants.mk _ v) := rfl
-
 def jacquetStagesLinearEquiv (h : Refines β γ) :
     LeviJacquetModule β γ (jacquetRep F n β π) ≃ₗ[ℂ] JacquetModule F n γ π :=
   LinearEquiv.ofLinearMap (f := jacquetStagesMap π h) (g := jacquetStagesInv π h)
@@ -356,10 +352,6 @@ def jacquetStages (h : Refines β γ) :
     congr 1
     rw [mul_comm]
     exact key.symm
-
-theorem jacquetStages_mk (h : Refines β γ) (v : V) :
-    jacquetStages π h (Representation.Coinvariants.mk _ (Representation.Coinvariants.mk _ v)) =
-      Representation.Coinvariants.mk _ v := rfl
 
 end Stages
 

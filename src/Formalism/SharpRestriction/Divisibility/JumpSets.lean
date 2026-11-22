@@ -414,8 +414,6 @@ theorem S2.mono {L : SizeData₂ D} {A0 A0' : ℝ} (hA : A0 ≤ A0') {h : ℕ} {
 
 def a0Of (l : List ℝ) : ℝ := max (l.getD 0 0 + 1) 6
 
-theorem initial_exponent_of_output {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : a0Of Fm.cOut = max (Fm.Ct + 1) 6 := rfl
-
 end Formalism.MainNotions.JumpSetsAlt
 
 end

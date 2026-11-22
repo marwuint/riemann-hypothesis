@@ -19,9 +19,6 @@ def orthIn (U : Submodule ℂ V) : Submodule ℂ V where
 
 variable {ι}
 
-theorem mem_orthIn {U : Submodule ℂ V} {v : V} :
-    v ∈ orthIn ι U ↔ ∀ u ∈ U, inner ℂ (ι u) (ι v) = 0 := Iff.rfl
-
 theorem aeval_mem {T : Module.End ℂ V} {Z : Submodule ℂ V} (hZ : ∀ z ∈ Z, T z ∈ Z) (q : ℂ[X]) :
     ∀ z ∈ Z, aeval T q z ∈ Z := by
   induction q using Polynomial.induction_on with

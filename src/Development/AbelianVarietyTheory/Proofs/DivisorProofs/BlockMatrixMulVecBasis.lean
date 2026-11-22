@@ -82,8 +82,6 @@ def SmG : Submodule ℂ (GAd σ J → ℂ) where
   zero_mem' := fun _ _ _ _ => contDiff_const
   smul_mem' := fun a _ h => isSm_smul a h
 
-theorem mem_SmG {f : GAd σ J → ℂ} : f ∈ SmG σ J ↔ IsSm σ J f := Iff.rfl
-
 variable (σ J) in
 
 def IsLineOf {w : InfinitePlace F} (τ : EmbOver E w) (Z : Matrix (Fin n) (Fin n) ℂ) (γ : ℝ → GAd σ J) : Prop :=

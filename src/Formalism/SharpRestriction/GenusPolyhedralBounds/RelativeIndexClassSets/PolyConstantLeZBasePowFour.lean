@@ -525,49 +525,6 @@ theorem log_two_f_le (L : SizeData₂ D) : Real.log (2 * (D.R.f : ℝ)) ≤ zBas
   show Real.log (2 * (D.R.f : ℝ)) ≤ (D.R.f : ℝ) * D.R.r * L.sc.L
   linarith
 
-theorem opo_of (P : ParameterChoice' D L) (e : 𝓞 D.host.E ≃+* D.what₂.O) (Sg : ∀ j, WeightFamilies.Wt D j → Prop) :
-    OPO L (Inh.provS D D.host.E e Sg) := by
-  have hL := one_le_L L
-  have hf := two_le_f D
-  have hr := six_le_r D
-  have hPO : zBase L ≤ PO D L := by
-    unfold PO zBase
-    have a1 : (D.R.f : ℝ) * D.R.r * L.sc.L ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L.sc.L := by
-      have : (D.R.r : ℝ) ≤ (D.R.r : ℝ) ^ 2 := by nlinarith
-      exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left this (by linarith)) (by linarith)
-    have a2 : 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L.sc.L := by positivity
-    have a3 : 0 ≤ 198 * (D.R.f : ℝ) ^ 2 * L.sc.L := by positivity
-    have e1 : 19 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L.sc.L = 19 * ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L.sc.L) := by ring
-    rw [e1]
-    linarith
-  constructor
-  · show Real.log (Module.finrank ℚ D.host.E : ℝ) ≤ _
-    rw [finrank_E]
-    exact (log_two_f_le L).trans hPO
-  · show Real.log |((NumberField.discr D.host.E : ℤ) : ℝ)| / (Module.finrank ℚ D.host.E : ℝ) ≤ _
-    rw [finrank_E]
-    have h := lrd_eq D
-    unfold lrd at h
-    rw [h]
-    exact (log_rdE_le_scL P).trans ((L_le_Z L).trans hPO)
-
-theorem Z_le_rpow_two (L : SizeData₂ D) : zBase L ≤ WeightFamilies.PPv D L 1 2 := by
-  have h := one_le_Z L
-  simp only [WeightFamilies.PPv, one_mul]
-  rw [Real.rpow_two]
-  nlinarith
-
-theorem obound_of (P : ParameterChoice' D L) (e : 𝓞 D.host.E ≃+* D.what₂.O) (Sg : ∀ j, WeightFamilies.Wt D j → Prop) :
-    WeightFamilies.Obound (Inh.provS D D.host.E e Sg) L 1 2 := by
-  constructor
-  · show Real.log (Module.finrank ℚ D.host.E : ℝ) ≤ _
-    rw [finrank_E]
-    exact (log_two_f_le L).trans (Z_le_rpow_two L)
-  · show Real.log (|((NumberField.discr D.host.E : ℤ) : ℝ)| ^ (1 / (Module.finrank ℚ D.host.E : ℝ))) ≤ _
-    have : |((NumberField.discr D.host.E : ℤ) : ℝ)| ^ (1 / (Module.finrank ℚ D.host.E : ℝ)) = D.host.rdE := rfl
-    rw [this]
-    exact (log_rdE_le_scL P).trans ((L_le_Z L).trans (Z_le_rpow_two L))
-
 theorem growthZero_le_thirty_zBase (P : ParameterChoice' D L) : WeightFamilies.PP0v D L 1 1 ≤ 30 * zBase L := by
   have hL := one_le_L L
   have hr := six_le_r D

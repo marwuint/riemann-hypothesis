@@ -84,10 +84,6 @@ noncomputable def pi : LeibnizPairing (piComplex K) (piComplex N) (piComplex P) 
     rw [piComplex_d_hom_apply, piComplex_d_hom_apply]
     exact (μs v).leibniz h (x v) (y v)
 
-theorem pi_μ_apply {r s n : ℕ} (h : r + s = n) (x : (piComplex K).X r) (y : (piComplex N).X s)
-    (v : ι) : (pi μs).μ h x y v = (μs v).μ h (x v) (y v) :=
-  rfl
-
 theorem piHomologyIso_hom_pi_homology {r s n : ℕ} (h : r + s = n)
     (x : (piComplex K).homology r) (y : (piComplex N).homology s) (v : ι) :
     (piHomologyIso P n).hom.hom ((pi μs).homology h x y) v =

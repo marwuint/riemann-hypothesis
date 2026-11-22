@@ -170,12 +170,6 @@ def locN (T : Thick (nlFun γ p X q κ)) (a : T.B) : Thick (nlFun γ p X q κ) :
 def locNHom (T : Thick (nlFun γ p X q κ)) (a : T.B) : T ⟶ locN T a :=
   GlobalTheory.CompanionTheory.ThickZar.locHom (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) T a
 
-theorem locNHom_φ (T : Thick (nlFun γ p X q κ)) (a : T.B) :
-    (locNHom T a).φ = algebraMap T.B (Localization.Away a) := rfl
-
-theorem locN_i (T : Thick (nlFun γ p X q κ)) (a : T.B) :
-    (locN T a).i = (algebraMap T.B (Localization.Away a)).comp T.i := rfl
-
 theorem locN_univ (T : Thick (nlFun γ p X q κ)) (a : T.B) {T'' : Thick (nlFun γ p X q κ)} (ψ : T ⟶ T'')
     (hu : IsUnit (ψ.φ a)) : ∃! χ : locN T a ⟶ T'', locNHom T a ≫ χ = ψ :=
   GlobalTheory.CompanionTheory.ThickZar.locT_univ (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) T a ψ hu

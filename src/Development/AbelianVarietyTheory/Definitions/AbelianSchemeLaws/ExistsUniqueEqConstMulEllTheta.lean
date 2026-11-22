@@ -75,21 +75,11 @@ def ellPolAV : Out.PolAV (Spec (CommRingCat.of R)) where
   ample := relAmple_originLB W
   ktriv := kTriv_originLB W
 
-theorem ellPolAV_A : (ellPolAV W).A = schemeOver W := rfl
-
-theorem ellPolAV_hom : (ellPolAV W).A.hom = toSpec W := rfl
-
-theorem ellPolAV_grp : (ellPolAV W).grp = grpObj W := rfl
-
 @[simp] theorem ellPolAV_g : (ellPolAV W).g = 1 := rfl
-
-theorem ellPolAV_L : (ellPolAV W).L = originLB W := rfl
 
 theorem eSec_ellPolAV : eSec (ellPolAV W).A = zero W := one_left W
 
 def ellTheta : (ellPolAV W).L.Sec := originSec W
-
-theorem ellTheta_eq : ellTheta W = originSec W := rfl
 
 theorem exists_isLieBasis_ellPolAV : ∃ v : epsR R ⟶ (ellPolAV W).A,
     (∃ h : IsUnimodularSol (W.map (algebraMap R (DualNumber R))) ![DualNumber.eps, -1, 0],

@@ -114,14 +114,6 @@ theorem iCycles_dataCycle (x : (cochainsComplex U).X 1) (y : ∀ v, Ωᵥ v)
     ((compactCochains φ U Ωᵥ _).iCycles 1).hom (dataCycle φ j Ωᵥ l x y hx hy) = dataCochain φ j Ωᵥ l x y :=
   (compactCochains φ U Ωᵥ _).i_cyclesMk _ _ _ _
 
-theorem dataCochain_fst (x : (cochainsComplex U).X 1) (y : ∀ v, Ωᵥ v) :
-    (dataCochain φ j Ωᵥ l x y).1 = x :=
-  rfl
-
-theorem dataCochain_snd (x : (cochainsComplex U).X 1) (y : ∀ v, Ωᵥ v) :
-    (dataCochain φ j Ωᵥ l x y).2 = piConst Ωᵥ y :=
-  rfl
-
 theorem dataCochain_add (x x' : (cochainsComplex U).X 1) (y y' : ∀ v, Ωᵥ v) :
     dataCochain φ j Ωᵥ l (x + x') (y + y') = dataCochain φ j Ωᵥ l x y + dataCochain φ j Ωᵥ l x' y' :=
   rfl
@@ -288,10 +280,6 @@ def sInvCochain (t : sInvariantSubgroup (F := K.1) ℚ̄ S) : (cochainsComplex (
   mkCochain _ (fun σ : Fin 1 → galUnramifiedOutside K.1 ℚ̄ S => sInvRatio S t (σ 0))
     ((isLocallyConstant_sInvRatio S t).comp_continuous (continuous_apply 0))
 
-theorem cochainOf_sInvCochain (t : sInvariantSubgroup (F := K.1) ℚ̄ S) (σ : Fin 1 → galUnramifiedOutside K.1 ℚ̄ S) :
-    cochainOf _ (sInvCochain S t) σ = sInvRatio S t (σ 0) :=
-  rfl
-
 theorem sInvCochain_mul (t t' : sInvariantSubgroup (F := K.1) ℚ̄ S) :
     sInvCochain S (t * t') = sInvCochain S t + sInvCochain S t' :=
   cochainOf_injective (funext fun σ => sInvRatio_mul S t t' (σ 0))
@@ -386,29 +374,12 @@ def dataLocalHom :
   AddMonoidHom.pi fun v => (localUnitsAlgHom S v).comp ((Pi.evalAddMonoidHom _ v).comp (AddMonoidHom.snd _ _)) +
     (sInvLocalHom S ιs v).comp (AddMonoidHom.fst _ _)
 
-theorem dataLocalHom_apply (d : GsUnitsDatum S) (v : S) :
-    dataLocalHom S ιs d v = dataLocalUnit S ιs (Additive.toMul d.1) v (d.2 v) :=
-  rfl
-
 def gsUnitsData : GsUnitsDatum S →+ gsUnitsCompact S ιs 1 :=
   dataHom (gsFinFamily S ιs) (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S))
     (fun v : S => galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)
       (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) (gsUnitsLocalMor.{0} S ιs)
     ((sInvCochainHom S).comp (AddMonoidHom.fst _ _)) (dataLocalHom S ιs)
     (fun _ => d_sInvCochain S _) (fun d v σ => dataLocalUnit_compat S ιs (Additive.toMul d.1) d.2 v σ)
-
-theorem gsUnitsData_eq (d : GsUnitsDatum S) :
-    gsUnitsData S ιs d = ((compactCochains (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S)
-      (fun v : S => galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)
-        (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)))
-      (fun v => (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) ≫
-        gsUnitsLocalMor.{0} S ιs v)).homologyπ 1).hom
-      (dataCycle (gsFinFamily S ιs) (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S))
-        (fun v : S => galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)
-          (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) (gsUnitsLocalMor.{0} S ιs)
-        (sInvCochain S (Additive.toMul d.1)) (fun v => dataLocalUnit S ιs (Additive.toMul d.1) v (d.2 v))
-        (d_sInvCochain S _) (fun v σ => dataLocalUnit_compat S ιs (Additive.toMul d.1) d.2 v σ)) :=
-  rfl
 
 theorem gsUnitsData_zero_local (a : ∀ v : S, Additive ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)ˣ) :
     gsUnitsData S ιs (0, a) =

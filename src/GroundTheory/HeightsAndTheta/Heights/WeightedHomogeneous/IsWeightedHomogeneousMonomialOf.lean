@@ -14,13 +14,6 @@ noncomputable section
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
-namespace MonomialMap
-
-theorem toFun_cast {P : ArithVariety n} {a b : ι → ℤ} (h : a = b) (s : IntegralSection P a) :
-    (s.cast h).toFun = s.toFun := rfl
-
-end MonomialMap
-
 end
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close

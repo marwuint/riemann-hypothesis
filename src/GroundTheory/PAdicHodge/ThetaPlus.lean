@@ -364,22 +364,6 @@ theorem maximalIdeal_bDeRhamPlus_eq_span {ξ : 𝕎R♭}
     maximalIdeal (BDeRhamPlus R p) = span {wittToBDeRhamPlus R p ξ} :=
   (maximalIdeal_bDeRhamPlus hξ hF hK).trans (ker_thetaBDeRhamPlus hξ)
 
-def residueFieldBDeRhamPlusEquiv {ξ : 𝕎R♭} (hξ : RingHom.ker (fontaineTheta R p) = span {ξ})
-    (hF : Function.Surjective (frobenius (ModP R p) p)) (hK : IsField (Localization.Away (p : R))) :
-    haveI := isLocalRing_bDeRhamPlus hξ hF hK
-    ResidueField (BDeRhamPlus R p) ≃+* Localization.Away (p : R) :=
-  haveI := isLocalRing_bDeRhamPlus hξ hF hK
-  (Ideal.quotEquivOfEq (maximalIdeal_bDeRhamPlus hξ hF hK)).trans
-    (RingHom.quotientKerEquivOfSurjective (surjective_thetaBDeRhamPlus R p hF))
-
-theorem residueFieldBDeRhamPlusEquiv_residue {ξ : 𝕎R♭}
-    (hξ : RingHom.ker (fontaineTheta R p) = span {ξ})
-    (hF : Function.Surjective (frobenius (ModP R p) p)) (hK : IsField (Localization.Away (p : R)))
-    (x : BDeRhamPlus R p) :
-    haveI := isLocalRing_bDeRhamPlus hξ hF hK
-    residueFieldBDeRhamPlusEquiv hξ hF hK (residue (BDeRhamPlus R p) x) = thetaBDeRhamPlus R p x :=
-  rfl
-
 end DVR
 
 namespace IsPerfectoidField
@@ -493,14 +477,6 @@ theorem irreducible_wittToBDeRhamPlus {ξ : 𝕎𝒪♭} (hξ : RingHom.ker θ =
 theorem isAdicComplete_maximalIdeal_bDeRhamPlus : IsAdicComplete (maximalIdeal 𝔹) 𝔹 := by
   rw [maximalIdeal_bDeRhamPlus_eq_span (ker_fontaineTheta_eq_span_kerThetaGenerator K p)]
   exact isAdicComplete_bDeRhamPlus (ker_fontaineTheta_eq_span_kerThetaGenerator K p)
-
-def residueFieldBDeRhamPlusEquiv : ResidueField 𝔹 ≃+* K :=
-  (Ideal.quotEquivOfEq (maximalIdeal_bDeRhamPlus (K := K) (p := p))).trans
-    (RingHom.quotientKerEquivOfSurjective (surjective_thetaBDeRhamPlusField (K := K) p))
-
-theorem residueFieldBDeRhamPlusEquiv_residue (x : 𝔹) :
-    residueFieldBDeRhamPlusEquiv (residue 𝔹 x) = thetaBDeRhamPlusField p x :=
-  rfl
 
 end IsPerfectoidField
 

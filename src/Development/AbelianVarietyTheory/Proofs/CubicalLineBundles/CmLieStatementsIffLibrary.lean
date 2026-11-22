@@ -71,10 +71,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] 
   Tl := o.Tl
   LamL := o.LamL
 
-theorem LamObj.ofFrozen_toFrozen (o : LamObj c nΨ n') : LamObj.ofFrozen o.toFrozen = o := rfl
-
-theorem LamObj.toFrozen_ofFrozen (o : Formalism.L2.Pj.abelian₂.LamObj c nΨ n') : (LamObj.ofFrozen o).toFrozen = o := rfl
-
 theorem rosatiConj_iff_frozen {K : Type} [Field K] [NumberField K] (A : PolAV (Sp (𝓞 K))) (oa : A.OAct (𝓞 E)) :
     RosatiConj A oa ↔ Formalism.L2.Pj.abelian₂.RosatiConj A oa := by
   simp only [RosatiConj, Formalism.L2.Pj.abelian₂.RosatiConj, pnsmulPt_eq_frozen]

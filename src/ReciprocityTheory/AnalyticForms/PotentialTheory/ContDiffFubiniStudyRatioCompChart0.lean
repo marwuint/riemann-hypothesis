@@ -92,11 +92,6 @@ def projectiveLineChartAtInfinity : OpenPartialHomeomorph (OnePoint ℂ) (Fin 1 
 theorem projLineChart0_apply (x : OnePoint ℂ) : projectiveLineChartAtZero x = fun _ => crd0 x := rfl
 theorem projLineChart1_apply (x : OnePoint ℂ) : projectiveLineChartAtInfinity x = fun _ => crd1 x := rfl
 theorem projLineChart0_symm_apply (w : Fin 1 → ℂ) : projectiveLineChartAtZero.symm w = ((w 0 : ℂ) : OnePoint ℂ) := rfl
-theorem projLineChart0_source : projectiveLineChartAtZero.source = Set.range ((↑) : ℂ → OnePoint ℂ) := rfl
-theorem projLineChart1_source : projectiveLineChartAtInfinity.source = {x | x ≠ ((0 : ℂ) : OnePoint ℂ)} := rfl
-theorem projLineChart0_target : projectiveLineChartAtZero.target = Set.univ := rfl
-theorem projLineChart1_target : projectiveLineChartAtInfinity.target = Set.univ := rfl
-
 private theorem projLineChart1_symm_of_eq_zero {w : Fin 1 → ℂ} (h : w 0 = 0) : projectiveLineChartAtInfinity.symm w = ∞ := by
   show projectiveLineChartAtInfinity.invFun w = ∞
   dsimp only [projectiveLineChartAtInfinity]
@@ -164,7 +159,6 @@ def p1 : FinHolAtlas 1 (OnePoint ℂ) where
       rw [e]
       exact fun w _ => projLine_analyticAt_const_apply_zero w
 
-theorem projLineAtlas_n : p1.n = 2 := rfl
 theorem projLineAtlas_chart0 : p1.chart (0 : Fin 2) = projectiveLineChartAtZero := rfl
 theorem projLineAtlas_chart1 : p1.chart (1 : Fin 2) = projectiveLineChartAtInfinity := rfl
 
@@ -191,17 +185,6 @@ theorem fsPot_U_coe (z : ℂ) : fsPot.U (z : OnePoint ℂ) = projectiveLineChart
 theorem fsPot_φ_infty : fsPot.φ ∞ = fun y => (1 / 2) * Real.log (1 + ‖crd1 y‖ ^ 2) := by simp [fsPot]
 theorem fsPot_φ_coe (z : ℂ) :
     fsPot.φ (z : OnePoint ℂ) = fun y => (1 / 2) * Real.log (1 + ‖crd0 y‖ ^ 2) := by simp [fsPot]
-
-open scoped Classical in
-
-def projectiveLinePairSection (x y : OnePoint ℂ) : ℂ := if x = ∞ then crd1 y else 1
-
-theorem projLineSection_infty : projectiveLinePairSection ∞ = crd1 := by
-  funext y
-  simp [projectiveLinePairSection]
-theorem projLineSection_coe (z : ℂ) : projectiveLinePairSection (z : OnePoint ℂ) = fun _ => 1 := by
-  funext y
-  simp [projectiveLinePairSection]
 
 theorem fsPot_chart (x : OnePoint ℂ) : ∀ j : Fin 2,
     (fsPot.φ x ∘ (p1.chart j).symm = fun w => fubiniStudyProfile (fsQ w)) ∨
@@ -412,258 +395,9 @@ theorem projLine_isPlurisubharmonic : IsPsh p1 fsPot := by
 
 def fsH (x : OnePoint ℂ) : ℝ := x.elim 1 (fun z => ‖z‖ ^ 2 / (1 + ‖z‖ ^ 2))
 
-theorem fsH_chart0 : fsH ∘ projectiveLineChartAtZero.symm = fun w => fsQ w / (1 + fsQ w) := rfl
-
-theorem fsH_chart1 : fsH ∘ projectiveLineChartAtInfinity.symm = fun w => 1 / (1 + fsQ w) := by
-  funext w
-  simp only [Function.comp_apply]
-  by_cases h : w 0 = 0
-  · rw [projLineChart1_symm_of_eq_zero h]
-    show (1 : ℝ) = 1 / (1 + ‖w 0‖ ^ 2)
-    rw [h]
-    simp
-  · rw [projLineChart1_symm_of_ne_zero h]
-    have hn : ‖w 0‖ ≠ 0 := norm_ne_zero_iff.2 h
-    show ‖(w 0)⁻¹‖ ^ 2 / (1 + ‖(w 0)⁻¹‖ ^ 2) = 1 / (1 + ‖w 0‖ ^ 2)
-    rw [norm_inv, inv_pow]
-    field_simp
-    ring
-
-theorem projLine_smooth_of_charts {f : OnePoint ℂ → ℝ}
-    (h0 : ContDiff ℝ (⊤ : ℕ∞) (f ∘ projectiveLineChartAtZero.symm)) (h1 : ContDiff ℝ (⊤ : ℕ∞) (f ∘ projectiveLineChartAtInfinity.symm)) :
-    p1.Smooth f := by
-  refine Fin.forall_fin_two.2 ⟨?_, ?_⟩
-  · exact h0.contDiffOn
-  · exact h1.contDiffOn
-
-private theorem contDiff_fsQ' : ContDiff ℝ (⊤ : ℕ∞) fsQ :=
-  (contDiff_norm_sq ℂ).comp (contDiff_apply ℝ ℂ (0 : Fin 1))
-
-theorem contDiff_fubiniStudyRatio_comp_chart0 : ContDiff ℝ (⊤ : ℕ∞) (fsH ∘ projectiveLineChartAtZero.symm) := by
-  rw [fsH_chart0]
-  exact contDiff_fsQ'.div (contDiff_const.add contDiff_fsQ') fun w => by
-    simp only [fsQ]
-    positivity
-
-theorem contDiff_fubiniStudyRatio_comp_chart1 : ContDiff ℝ (⊤ : ℕ∞) (fsH ∘ projectiveLineChartAtInfinity.symm) := by
-  rw [fsH_chart1]
-  exact contDiff_const.div (contDiff_const.add contDiff_fsQ') fun w => by
-    simp only [fsQ]
-    positivity
-
-def fsχ1 (x : OnePoint ℂ) : ℝ := Real.smoothTransition (4 * fsH x - 1)
-
-theorem smooth_fsχ1 : p1.Smooth fsχ1 := by
-  refine projLine_smooth_of_charts ?_ ?_
-  · have h := Real.smoothTransition.contDiff.comp (((contDiff_const (c := (4 : ℝ))).mul contDiff_fubiniStudyRatio_comp_chart0).sub
-      (contDiff_const : ContDiff ℝ (⊤ : ℕ∞) fun _ : Fin 1 → ℂ => (1 : ℝ)))
-    exact h
-  · have h := Real.smoothTransition.contDiff.comp (((contDiff_const (c := (4 : ℝ))).mul contDiff_fubiniStudyRatio_comp_chart1).sub
-      (contDiff_const : ContDiff ℝ (⊤ : ℕ∞) fun _ : Fin 1 → ℂ => (1 : ℝ)))
-    exact h
-
-theorem smooth_one_sub_fsχ1 : p1.Smooth (fun x => 1 - fsχ1 x) := by
-  intro j
-  have h := (contDiffOn_const (c := (1 : ℝ))).sub (smooth_fsχ1 j)
-  exact h
-
-private theorem fsH_eq_one_div_one_add_norm_sq_of_ne_zero {x : OnePoint ℂ} (hx : x ≠ ((0 : ℂ) : OnePoint ℂ)) :
-    fsH x = 1 / (1 + ‖crd1 x‖ ^ 2) := by
-  induction x with
-  | infty =>
-    show (1 : ℝ) = 1 / (1 + ‖crd1 ∞‖ ^ 2)
-    simp
-  | coe z =>
-    have hz : z ≠ 0 := fun h => hx (by rw [h])
-    have hn : ‖z‖ ≠ 0 := norm_ne_zero_iff.2 hz
-    show ‖z‖ ^ 2 / (1 + ‖z‖ ^ 2) = 1 / (1 + ‖z⁻¹‖ ^ 2)
-    rw [norm_inv, inv_pow]
-    field_simp
-    ring
-
-theorem continuous_fsH : Continuous fsH := by
-  refine continuous_iff_continuousAt.2 fun x => ?_
-  induction x with
-  | infty =>
-    have hU : {x : OnePoint ℂ | x ≠ ((0 : ℂ) : OnePoint ℂ)} ∈ 𝓝 (∞ : OnePoint ℂ) :=
-      isOpen_compl_singleton.mem_nhds (OnePoint.infty_ne_coe 0)
-    have hc : ContinuousAt crd1 ∞ :=
-      (continuousOn_infiniteCoord ∞ (OnePoint.infty_ne_coe 0)).continuousAt hU
-    refine ContinuousAt.congr (f := fun x => 1 / (1 + ‖crd1 x‖ ^ 2)) ?_ ?_
-    · exact continuousAt_const.div (continuousAt_const.add (hc.norm.pow 2)) (by positivity)
-    · filter_upwards [hU] with x hx using (fsH_eq_one_div_one_add_norm_sq_of_ne_zero hx).symm
-  | coe z =>
-    have hU : Set.range ((↑) : ℂ → OnePoint ℂ) ∈ 𝓝 (z : OnePoint ℂ) :=
-      OnePoint.isOpen_range_coe.mem_nhds ⟨z, rfl⟩
-    have hc : ContinuousAt crd0 z := (continuousOn_finiteCoord _ ⟨z, rfl⟩).continuousAt hU
-    refine ContinuousAt.congr (f := fun x => ‖crd0 x‖ ^ 2 / (1 + ‖crd0 x‖ ^ 2)) ?_ ?_
-    · exact (hc.norm.pow 2).div (continuousAt_const.add (hc.norm.pow 2)) (by positivity)
-    · filter_upwards [hU] with x hx
-      obtain ⟨w, rfl⟩ := hx
-      rfl
-
-def projLinePartition : ChartPartition p1 where
-  χ := ![fun x => 1 - fsχ1 x, fsχ1]
-  smooth := by
-    refine Fin.forall_fin_two.2 ⟨?_, ?_⟩
-    · exact smooth_one_sub_fsχ1
-    · exact smooth_fsχ1
-  nonneg := by
-    refine Fin.forall_fin_two.2 ⟨?_, ?_⟩
-    · intro x
-      show 0 ≤ 1 - fsχ1 x
-      exact sub_nonneg.2 (Real.smoothTransition.le_one _)
-    · intro x
-      exact Real.smoothTransition.nonneg _
-  tsupport_subset := by
-    refine Fin.forall_fin_two.2 ⟨?_, ?_⟩
-    · show tsupport (fun x => 1 - fsχ1 x) ⊆ projectiveLineChartAtZero.source
-      have hsub : tsupport (fun x => 1 - fsχ1 x) ⊆ {x | fsH x ≤ 1 / 2} := by
-        refine closure_minimal ?_ (isClosed_le continuous_fsH continuous_const)
-        intro x hx
-        by_contra hc
-        apply hx
-        simp only [Set.mem_setOf_eq, not_le] at hc
-        show 1 - Real.smoothTransition (4 * fsH x - 1) = 0
-        rw [Real.smoothTransition.one_of_one_le (by linarith)]
-        ring
-      intro x hx
-      have := hsub hx
-      induction x with
-      | infty =>
-        simp only [Set.mem_setOf_eq] at this
-        norm_num [fsH] at this
-      | coe z => exact ⟨z, rfl⟩
-    · show tsupport fsχ1 ⊆ projectiveLineChartAtInfinity.source
-      have hsub : tsupport fsχ1 ⊆ {x | 1 / 4 ≤ fsH x} := by
-        refine closure_minimal ?_ (isClosed_le continuous_const continuous_fsH)
-        intro x hx
-        by_contra hc
-        apply hx
-        simp only [Set.mem_setOf_eq, not_le] at hc
-        exact Real.smoothTransition.zero_of_nonpos (by linarith)
-      intro x hx h0
-      have := hsub hx
-      rw [h0] at this
-      norm_num [fsH] at this
-  sum_eq_one := by
-    intro x
-    show ∑ j : Fin 2, ![fun x => 1 - fsχ1 x, fsχ1] j x = 1
-    simp [Fin.sum_univ_two]
-
-theorem projLine_partition : Nonempty (ChartPartition p1) := ⟨projLinePartition⟩
-
-private theorem norm_inv_mul_exp_half_log_eq_of_ne_zero {ζ : ℂ} (h : ζ ≠ 0) :
-    ‖ζ⁻¹‖ * Real.exp (-((1 / 2) * Real.log (1 + ‖ζ⁻¹‖ ^ 2))) =
-      ‖(1 : ℂ)‖ * Real.exp (-((1 / 2) * Real.log (1 + ‖ζ‖ ^ 2))) := by
-  have hn : ‖ζ‖ ≠ 0 := norm_ne_zero_iff.2 h
-  have e := half_log_one_add_inv_sq_sub_eq_neg_log h
-  have e2 : -((1 / 2) * Real.log (1 + ‖ζ⁻¹‖ ^ 2)) =
-      -((1 / 2) * Real.log (1 + ‖ζ‖ ^ 2)) + Real.log ‖ζ‖ := by linarith
-  rw [e2, Real.exp_add, Real.exp_log (norm_pos_iff.2 h), norm_inv, norm_one,
-    mul_comm (Real.exp _) ‖ζ‖, ← mul_assoc, inv_mul_cancel₀ hn]
-
-theorem projLine_isHolomorphicSection : IsSection p1 fsPot projectiveLinePairSection := by
-  refine ⟨fun x => ?_, ?_⟩
-  · induction x with
-    | infty =>
-      rw [projLineSection_infty, fsPot_U_infty]
-      exact holomorphicOn_infiniteCoord
-    | coe z =>
-      rw [projLineSection_coe, fsPot_U_coe]
-      exact holoOn_const _ 1
-  · intro x x' y hy
-    induction x with
-    | infty =>
-      induction x' with
-      | infty => rfl
-      | coe z' =>
-        obtain ⟨hy1, hy2⟩ := hy
-        rw [fsPot_U_infty] at hy1
-        rw [fsPot_U_coe] at hy2
-        obtain ⟨ζ, rfl⟩ := hy2
-        have hζ : ζ ≠ 0 := fun h => hy1 (by rw [h])
-        rw [projLineSection_infty, projLineSection_coe, fsPot_φ_infty, fsPot_φ_coe]
-        exact norm_inv_mul_exp_half_log_eq_of_ne_zero hζ
-    | coe z =>
-      induction x' with
-      | infty =>
-        obtain ⟨hy1, hy2⟩ := hy
-        rw [fsPot_U_coe] at hy1
-        rw [fsPot_U_infty] at hy2
-        obtain ⟨ζ, rfl⟩ := hy1
-        have hζ : ζ ≠ 0 := fun h => hy2 (by rw [h])
-        rw [projLineSection_infty, projLineSection_coe, fsPot_φ_infty, fsPot_φ_coe]
-        exact (norm_inv_mul_exp_half_log_eq_of_ne_zero hζ).symm
-      | coe z'' =>
-        rw [projLineSection_coe, projLineSection_coe, fsPot_φ_coe, fsPot_φ_coe]
-
 theorem projLine_isCompatibleChart (k : Fin 2) : IsCompatChart p1 (p1.chart k) := by
   intro j
   exact ⟨p1.holo j k, p1.holo k j⟩
-
-theorem projLine_isSimpleNormalCrossing : IsSNC p1 fsPot projectiveLinePairSection ![1] ![{∞}] := by
-  intro x
-  induction x with
-  | infty =>
-    refine ⟨projectiveLineChartAtInfinity, projLine_isCompatibleChart 1, OnePoint.infty_ne_coe 0, fun y hy => by rw [fsPot_U_infty]; exact hy,
-      fun _ => Option.some 0, ?_, ?_, fun _ => 1, holoOn_const _ 1, fun _ _ => one_ne_zero, ?_⟩
-    · intro k k' i _ _
-      exact Subsingleton.elim k k'
-    · intro k
-      obtain rfl : k = 0 := Subsingleton.elim _ _
-      ext y
-      constructor
-      · rintro ⟨hy1, hy2⟩
-        have hy : y = ∞ := hy1
-        subst hy
-        exact ⟨hy2, 0, rfl, rfl⟩
-      · rintro ⟨hy1, i, _, hi⟩
-        refine ⟨?_, hy1⟩
-        induction y with
-        | infty => exact Set.mem_singleton _
-        | coe z =>
-          have hz : z⁻¹ = 0 := hi
-          exact absurd (show (z : OnePoint ℂ) = ((0 : ℂ) : OnePoint ℂ) by rw [inv_eq_zero.1 hz]) hy1
-    · intro y _
-      rw [projLineSection_infty, Fin.prod_univ_one]
-      show crd1 y = 1 * crd1 y ^ 1
-      ring
-  | coe z =>
-    refine ⟨projectiveLineChartAtZero, projLine_isCompatibleChart 0, ⟨z, rfl⟩, fun y hy => by rw [fsPot_U_coe]; exact hy,
-      fun _ => Option.none, ?_, ?_, fun _ => 1, holoOn_const _ 1, fun _ _ => one_ne_zero, ?_⟩
-    · intro k k' i hk _
-      cases hk
-    · intro k
-      obtain rfl : k = 0 := Subsingleton.elim _ _
-      ext y
-      constructor
-      · rintro ⟨hy1, ⟨w, rfl⟩⟩
-        exact absurd (hy1 : (w : OnePoint ℂ) = ∞) (OnePoint.coe_ne_infty w)
-      · rintro ⟨_, i, hi, _⟩
-        cases hi
-    · intro y _
-      rw [projLineSection_coe, Fin.prod_univ_one]
-      show (1 : ℂ) = 1 * 1
-      ring
-
-def ptAtlas (Y : Type*) [TopologicalSpace Y] [Unique Y] : FinHolAtlas 0 Y where
-  n := 1
-  chart _ :=
-    { toFun := fun _ => 0
-      invFun := fun _ => default
-      source := Set.univ
-      target := Set.univ
-      map_source' := by intro x _; exact Set.mem_univ _
-      map_target' := by intro x _; exact Set.mem_univ _
-      left_inv' := by intro x _; exact Subsingleton.elim _ _
-      right_inv' := by intro x _; exact Subsingleton.elim _ _
-      open_source := isOpen_univ
-      open_target := isOpen_univ
-      continuousOn_toFun := continuousOn_const
-      continuousOn_invFun := continuousOn_const }
-  cover := fun _ => ⟨0, Set.mem_univ _⟩
-  holo := fun _ _ _ _ => analyticAt_const
 
 end
 

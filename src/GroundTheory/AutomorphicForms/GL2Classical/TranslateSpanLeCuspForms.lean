@@ -21,13 +21,6 @@ open AdelicGLn AutomorphicForm Spherical
 
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
-theorem translateSpan_le_cuspForms (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
-    translateSpan (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ) ≤ cuspForms ℚ 2 := by
-  rw [translateSpan, Submodule.span_le]
-  rintro _ ⟨g, rfl⟩
-  have h := mem_cuspForms.1 (liftEquiv_mem_cuspForms f)
-  exact ⟨h.1.rightTranslate_finEmb g, h.2.translate _⟩
-
 end GL2Classical
 
 end

@@ -34,33 +34,4 @@ theorem dim_add_le_of_le_coheight {S W : Type*} [TopologicalSpace S] [Topologica
 
 end
 
-theorem dim_compl_add_one_le (X : Scheme.{0}) (U : X.Opens) (d : ℕ)
-    (hX : topologicalKrullDim X = ((d + 1 : ℕ) : WithBot ℕ∞))
-    (hU : ∀ y : X, ringKrullDim (X.presheaf.stalk y) ≤ 1 → y ∈ U) :
-    topologicalKrullDim ((U : Set X)ᶜ : Set X) + 1 ≤ (d : WithBot ℕ∞) := by
-  have hc : IsClosed ((U : Set X)ᶜ) := U.isOpen.isClosed_compl
-  have : QuasiSober ((U : Set X)ᶜ : Set X) := hc.isClosedEmbedding_subtypeVal.quasiSober
-  have key : topologicalKrullDim ((U : Set X)ᶜ : Set X) + ((2 : ℕ∞) : WithBot ℕ∞) ≤
-      topologicalKrullDim X := by
-    apply dim_add_le_of_le_coheight continuous_subtype_val Subtype.val_injective
-    intro w
-    have hlt : 1 < ringKrullDim (X.presheaf.stalk w.1) :=
-      lt_of_not_ge fun h => w.2 (hU _ h)
-    rw [AlgebraicGeometry.ringKrullDim_stalk_eq_coheight] at hlt
-    have h1 : (1 : ℕ∞) < Order.coheight w.1 := by exact_mod_cast hlt
-    have := Order.add_one_le_of_lt h1
-    exact le_trans (by norm_num) this
-  rw [hX] at key
-  generalize topologicalKrullDim ((U : Set X)ᶜ : Set X) = D at key ⊢
-  induction D using WithBot.recBotCoe with
-  | bot => simp
-  | coe m =>
-    rw [← WithBot.coe_natCast, ← WithBot.coe_add, WithBot.coe_le_coe] at key
-    rw [← WithBot.coe_natCast, ← WithBot.coe_one, ← WithBot.coe_add, WithBot.coe_le_coe]
-    induction m using ENat.recTopCoe with
-    | top => exfalso; simp at key
-    | coe n =>
-      norm_cast at key ⊢
-      omega
-
 end GlobalTheory.DimCodim

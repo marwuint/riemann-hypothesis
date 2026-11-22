@@ -314,11 +314,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.L2.SG.TermDef Formalism.L2.SG.Corank
 
-def IotaLift (D : D7) (u u' : D.what₂.Word) : Prop :=
-  ∀ (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V),
-    IsRowLat D F0 Λ → ∀ x : Carrier (PD D Λ (lf D F0) u'), ∀ x' ∈ Lrep Λ x.1,
-      ∃ l ∈ Lrep Λ (lf D F0), l - x' ∈ NgX Λ (gS D) (lf D F0) x.1
-
 def PosW (D : D7) : Prop :=
   ∀ T' : ℕ, 0 < T' → ∀ F' : FlagG (VS D) D.R.rS (T' : D.host.E), ∀ v ∈ orth (VS D) F'.Xplus, v ∉ F'.X →
     0 < Algebra.trace ℚ D.host.E ((VS D).hT v v)

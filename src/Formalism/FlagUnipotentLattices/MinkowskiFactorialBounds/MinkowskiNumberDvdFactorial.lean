@@ -58,12 +58,6 @@ lemma sublatticeCount_of (hS : Formalism.SLP.SubmoduleIndexCountO) (hC : Formali
 theorem sublattice_count_alt : Formalism.HermitianLatticeCounting.S6.SublatticeCount :=
   sublatticeCount_of Formalism.SLP.Final.submoduleIndexCountO coefficient_field_bound
 
-theorem exponential_identity : Formalism.HermitianLatticeCounting.S6.ExpIdentity := by
-  intro k j D hD
-  rw [← Real.rpow_add hD]
-  congr 1
-  ring
-
 lemma prod_primepow_dvd (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime) (e : ℕ → ℕ) (n : ℕ)
     (h : ∀ p ∈ s, p ^ e p ∣ n) : ∏ p ∈ s, p ^ e p ∣ n := by
   classical

@@ -45,12 +45,6 @@ variable (D : D7) (u : D.what₂.Word) (h : D.R.MA)
 def gatRec_pos : (Σ v : Fin (gatRec D u h hS r L I ψ y e).P.nV, Fin ((gatRec D u h hS r L I ψ y e).P.n' v)) ≃ D.what₂.Tau :=
   (posG (zPsi D.R.toFrame h)).trans D.eTau.symm
 
-theorem gatRec_lam (v : Fin (gatRec D u h hS r L I ψ y e).P.nV) (s : Fin ((gatRec D u h hS r L I ψ y e).P.n' v))
-    (i : Fin ((gatRec D u h hS r L I ψ y e).P.m + 1)) :
-    (gatRec D u h hS r L I ψ y e).P.lam0 v s i =
-      ((D.fm u).lam 0 (gatRec_pos D u h hS r L I ψ y e ⟨v, s⟩)).w
-        ⟨i.1, by have h1 := k_pred D.R; have h2 : i.1 < D.R.k - 1 + 1 := i.2; simp only [Ranks.N]; omega⟩ := rfl
-
 def gatRec_lev (hy : ∀ i, (Quotient.mk'' (y i) : compL L p) = i)
     (hyp : ∀ i (w' : HeightOneSpectrum (𝓞 D.host.F)), ((p : ℕ) : 𝓞 D.host.F) ∈ w'.asIdeal →
       bc (prV (E := D.host.E) w') (y i : GL (Fin D.R.k) (D.host.E ⊗[D.host.F] Formalism.L2.Herm.Af D.host.F)) = 1) :

@@ -81,9 +81,6 @@ theorem bot_map [IsDomain R] [IsDomain S] {φ : R →+* S} (hφ : Function.Injec
 
 end BaseChange
 
-theorem coe_valued (p : ℕ) [Fact p.Prime] (x : ℂ_[p]) : ((Valued.v x : ℝ≥0) : ℝ) = ‖x‖ := by
-  rw [PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]
-
 end GlobalTheory.FlatModel
 
 end

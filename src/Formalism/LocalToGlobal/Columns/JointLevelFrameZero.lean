@@ -63,9 +63,4 @@ def levelZeroCompatibility (L0 : LevelZeroConditions a hS hH hP hK S hI O) :
     fMe := (L0 u).fMe
     fv0 := (L0 u).fv0 }
 
-theorem th_joint_sp (hCh : d.Ch.Ok) (u : d.what₂.Word) : (recGLoc a S hCh).sp = ((hermCols a hS hP hK S hI).lev0 u).splitG := rfl
-
-theorem th_joint_piG (hCh : d.Ch.Ok) (L0 : LevelZeroConditions a hS hH hP hK S hI O) (u : d.what₂.Word) :
-    (recGLoc a S hCh).piG = (levelZeroCompatibility a hS hH hP hK S hI O L0 u).piG := rfl
-
 end Formalism.L2.Col

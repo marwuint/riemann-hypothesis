@@ -19,18 +19,6 @@ open scoped ZeroObject ComplexOrder
 
 namespace GlobalTheory.TautFlag
 
-def flagOfShortExact {X : Scheme.{0}} (S : ShortComplex X.Modules) (hS : S.ShortExact) (h₁ : IsVB S.X₁ 1)
-    (h₂ : IsVB S.X₂ 2) (h₃ : IsVB S.X₃ 1) : Vert.Flag S.X₂ 2 :=
-  have := hS.mono_f
-  { F := ![0, S.X₁, S.X₂]
-    ι := Fin.cons 0 (Fin.cons S.f (Fin.cons (𝟙 _) finZeroElim))
-    isSubbundle := Fin.cons ⟨(isZero_zero _).mono _, 2, h₂.of_iso cokernelZeroIsoTarget.symm⟩
-      (Fin.cons (isSubbundle_of_shortExact hS h₃) (Fin.cons (isSubbundle_of_isIso (𝟙 _)) finZeroElim))
-    isVB := Fin.cons (isVB_zero_iff.2 (isZero_zero _)) (Fin.cons h₁ (Fin.cons h₂ finZeroElim))
-    step := Fin.cons 0 (Fin.cons S.f finZeroElim)
-    step_ι := Fin.cons zero_comp (Fin.cons (Category.comp_id _) finZeroElim)
-    isIso_last := IsIso.id _ }
-
 abbrev Q : (PSpace ℤ 1).Modules := toMod (O1 ℤ 1)
 
 abbrev E : (PSpace ℤ 1).Modules := freeModule (PSpace ℤ 1) (Fin 2)

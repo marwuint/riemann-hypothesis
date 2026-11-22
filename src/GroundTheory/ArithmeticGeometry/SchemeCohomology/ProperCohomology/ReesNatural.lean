@@ -127,11 +127,6 @@ variable {I X}
 
 attribute [local instance] algebraOfOver in
 
-lemma reesInr_eq_resO_algebraMap (V : X.Opens) (r : reesAlgebra I) :
-    reesInr I V r = resO (le_top : reesPr I X ⁻¹ᵁ V ≤ ⊤)
-      (algebraMap (reesAlgebra I) Γ(reesScheme I X, ⊤) r) :=
-  rfl
-
 end Base
 
 end GroundTheory.Arith.SchemeCoh

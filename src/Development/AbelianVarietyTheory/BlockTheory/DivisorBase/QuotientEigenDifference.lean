@@ -106,10 +106,6 @@ def resPair (a : Bool → w.valuationSubring) (r : ℕ) :
       rw [smul_eq_mul, Finset.mul_sum]
       exact Finset.sum_congr rfl fun i _ => by simp only [Pi.smul_apply, smul_eq_mul]; ring)
 
-theorem resPair_apply (a : Bool → w.valuationSubring) (r : ℕ) (x y : Bool → Fin r → C) :
-    resPair a r x y =
-      ∑ i, (x true i * y true i - x false i * y false i) / ((a true : C) - a false) := rfl
-
 end Example
 
 end GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference

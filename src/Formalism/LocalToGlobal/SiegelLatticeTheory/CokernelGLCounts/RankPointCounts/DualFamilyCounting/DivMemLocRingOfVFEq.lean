@@ -24,8 +24,6 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 local notation "κ" => algebraMap (𝓞 K) K
 
-theorem κι_eq (t : 𝓞 F) : κ (ι t) = algebraMap F K (t : F) := rfl
-
 theorem κι_ne_zero {a : 𝓞 F} (ha : a ≠ 0) : κ (ι a) ≠ 0 := by
   intro h
   apply ha

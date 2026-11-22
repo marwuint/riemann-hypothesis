@@ -23,9 +23,4 @@ theorem det_rowMat (i j : ℕ) (c : F) :
 def rowRep (i j : ℕ) (c : Fin j → 𝓀[F]) : GL (Fin 2) F :=
   Matrix.GeneralLinearGroup.mkOfDetNeZero _ (det_rowMat i j (digitSum F j c))
 
-theorem coe_rowRep (i j : ℕ) (c : Fin j → 𝓀[F]) :
-    (rowRep i j c : Matrix (Fin 2) (Fin 2) F) =
-      !![(GLnLocal.uniformizer F : F) ^ i, digitSum F j c; 0, (GLnLocal.uniformizer F : F) ^ j] :=
-  rfl
-
 end GlobalTheory.CompanionTheory.LFUDom

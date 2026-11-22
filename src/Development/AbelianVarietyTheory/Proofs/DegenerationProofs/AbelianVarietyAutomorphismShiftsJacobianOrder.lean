@@ -158,8 +158,6 @@ variable [IsIso g.left]
 def appE (V : A'.left.Opens) : Γ(A'.left, V) ≃+* Γ(A.left, g.left ⁻¹ᵁ V) :=
   (asIso (g.left.app V)).commRingCatIsoToRingEquiv
 
-theorem appE_apply (V : A'.left.Opens) (a : Γ(A'.left, V)) : appE g V a = (g.left.app V).hom a := rfl
-
 theorem app_symm (V : A'.left.Opens) (a : Γ(A.left, g.left ⁻¹ᵁ V)) :
     (g.left.app V).hom ((appE g V).symm a) = a := (appE g V).apply_symm_apply a
 

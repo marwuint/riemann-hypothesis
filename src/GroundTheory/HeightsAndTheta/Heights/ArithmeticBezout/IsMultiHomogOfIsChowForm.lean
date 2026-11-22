@@ -31,12 +31,6 @@ theorem map_specFirst {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {
     refine Fin.cases ?_ (fun i => ?_) i <;> simp [specFirstVar]
   rw [← specFirst_eq, ← specFirst_eq, specFirst, specFirst, map_bind₁, h]
 
-theorem isChowFormCycle_iff {F : Type*} [Field F] {k : ℕ} (Z : ProjCycle F n)
-    (f : MvPolynomial (Fin k × Fin n) F) :
-    IsChowFormCycle Z k f ↔ ∃ c : F, c ≠ 0 ∧ ∃ g : Ideal (MvPolynomial (Fin n) F) → MvPolynomial (Fin k × Fin n) F,
-      (∀ W ∈ Z.support, IsChowForm W k (g W)) ∧ f = C c * IndefiniteRowSideFullHecke.ArithBezout.cycleChowForm Z g :=
-  Iff.rfl
-
 end ObjectsChow
 
 end GroundTheory.Heights₂.Heights

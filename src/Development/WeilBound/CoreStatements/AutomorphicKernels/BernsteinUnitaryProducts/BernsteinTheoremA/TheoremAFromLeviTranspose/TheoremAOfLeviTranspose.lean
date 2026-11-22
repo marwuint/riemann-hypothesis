@@ -26,8 +26,6 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def conjHomeo {m : ℕ} (g : GL (Fin m) k) : GL (Fin m) k ≃ₜ GL (Fin m) k :=
   (Homeomorph.mulLeft g).trans (Homeomorph.mulRight g⁻¹)
 
-theorem conjHomeo_apply {m : ℕ} (g x : GL (Fin m) k) : conjHomeo g x = g * x * g⁻¹ := rfl
-
 end Dist
 
 end PositivityTheory.PfBern.ThmA

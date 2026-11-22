@@ -18,17 +18,7 @@ theorem hypC_xplus (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR Bx CT : ℝ) 
     HypC large₂ (xplus X E hM) H C2 A2 CR Bx CT S ka wL wF T nP nW h0 nus ↔
       HypC large₂ X H C2 A2 CR Bx CT S ka wL wF T nP nW h0 nus := Iff.rfl
 
-theorem deepSubMul_xplus : DeepSubMul (xplus X E hM) ↔ DeepSubMul X := Iff.rfl
-
 variable {X} (G : GlobalFamilyData X ka wL wF)
-
-theorem tiedW_up (S : Scal B) (Gc Prw : ℝ) : (gd2Xplus G E hM).TiedW S Gc Prw ↔ G.TiedW S Gc Prw := Iff.rfl
-
-theorem tiedTh_up (S : Scal B) (Gc : ℝ) : (gd2Xplus G E hM).TiedTh S Gc ↔ G.TiedTh S Gc := Iff.rfl
-
-theorem tiedEt_up (large₂ : SizeData₂ D) (Cf Af : ℝ) : (gd2Xplus G E hM).TiedEt large₂ Cf Af ↔ G.TiedEt large₂ Cf Af := Iff.rfl
-
-theorem inBasis_up (la : HeightOneSpectrum (𝓞 B.KO)) : InBasis (gd2Xplus G E hM) la ↔ InBasis G la := Iff.rfl
 
 end Up
 

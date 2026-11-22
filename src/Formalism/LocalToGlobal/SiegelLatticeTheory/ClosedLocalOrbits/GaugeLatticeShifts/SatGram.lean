@@ -1020,38 +1020,6 @@ theorem tt_eq' (hS : SplitPrimeLoc) (hRC : RedCore) (TR : TypedRed X) :
       (1 + 3 / (D.host.g 0 : ℝ)) ^ Module.finrank ℚ X.B.I.F * (1 + 3 / (D.host.g 1 : ℝ)) ^ Module.finrank ℚ X.B.I.F :=
   tt_eq (redExists_of hRC (gUnif_of hS)) (gUnif_of hS) (gResCard_of hS) (gCount_of hS) TR
 
-theorem gamma_one_typed_places_of_local (hS : SplitPrimeLoc) (hRC : RedCore) (TR : TypedRed X) :
-    Gam1 TR = ∏ p : Formalism.L2.SG.TypedSets.TypP X.B.I.F (D.host.g 0) (D.host.g 1),
-      (Formalism.L2.SG.TypedSets.glkC D.R.k (Formalism.L2.SG.TypedSets.gOf p) : ℝ) /
-        (Formalism.L2.SG.TypedSets.ukC D.R.k (Formalism.L2.SG.TypedSets.gOf p) : ℝ) :=
-  gamma_one_eq_prod_typed_places (redExists_of hRC (gUnif_of hS)) (gUnif_of hS) (gResCard_of hS) (gCount_of hS) TR
-
-def LeftActC : Prop :=
-  ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
-    ∀ S ∈ ({(Y.tO u u').genSet, (Y.tO u u').ngSet, (Y.tO u u').degSet} :
-      Set (Set (GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')))),
-    LeftAct (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') S (Aset Y.TR (Y.cs u))
-
-def RightActC : Prop :=
-  ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
-    ∀ S ∈ ({(Y.tO u u').genSet, (Y.tO u u').ngSet, (Y.tO u u').degSet} :
-      Set (Set (GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')))),
-    RightAct (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') S (Aset Y.TR (Y.cs u'))
-
-theorem satGramC_of (hL : LeftActC) (hR : RightActC) (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) :
-    SatGram (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') (Y.tO u u').genSet
-        (Aset Y.TR (Y.cs u)) (Aset Y.TR (Y.cs u')) ∧
-      SatGram (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') (Y.tO u u').ngSet
-        (Aset Y.TR (Y.cs u)) (Aset Y.TR (Y.cs u')) ∧
-      SatGram (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') (Y.tO u u').degSet
-        (Aset Y.TR (Y.cs u)) (Aset Y.TR (Y.cs u')) :=
-  ⟨satGram_of Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') _ _ _ (hL D X Y u u' _ (by simp))
-      (hR D X Y u u' _ (by simp)),
-    satGram_of Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') _ _ _ (hL D X Y u u' _ (by simp))
-      (hR D X Y u u' _ (by simp)),
-    satGram_of Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') _ _ _ (hL D X Y u u' _ (by simp))
-      (hR D X Y u u' _ (by simp))⟩
-
 end Closed
 
 section Closed2

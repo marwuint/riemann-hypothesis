@@ -16,9 +16,6 @@ section Std
 
 variable (K : Type) [Field K] [NumberField K] [StarRing K]
 
-theorem stdForm_apply' (n : ℕ) (x y : Fin n → K) :
-    stdForm K n x y = ∑ i, star (x i) * y i := rfl
-
 variable (hc : ∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ a))
 
 end Std

@@ -69,10 +69,6 @@ def leviConj (w : Equiv.Perm (Fin n)) (h : ∀ a b, δ a = δ b ↔ β (w a) = �
   continuous_invFun := ((continuous_const.mul continuous_subtype_val).mul
     continuous_const).subtype_mk _
 
-theorem coe_leviConj (h : ∀ a b, δ a = δ b ↔ β (w a) = β (w b)) (m : levi F n δ) :
-    ((leviConj w h m : levi F n β) : GL (Fin n) F) = permGL F w * m * (permGL F w)⁻¹ :=
-  rfl
-
 end Conj
 
 section Matching

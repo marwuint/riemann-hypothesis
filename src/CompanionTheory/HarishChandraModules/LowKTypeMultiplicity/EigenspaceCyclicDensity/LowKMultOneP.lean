@@ -176,11 +176,6 @@ def WtMajor : Prop :=
         (∀ c d, c < d → ε c = ε d → ν d ≤ ν c) ∧
         ∀ w : Equiv.Perm (Fin n), (∀ c, ε (w c) = ε c) → CDom ε (μ ∘ w) ν
 
-def SignIneq : Prop :=
-  ∀ (n : ℕ) (lam : Fin n → ℝ), StrictAnti lam → ∀ D : Finset (Pos n), D.Nonempty →
-    nsq ((fun c => lam c + (((n : ℝ) - 1) / 2 - ((c : ℕ) : ℝ))) - wt D) <
-      nsq fun c => lam c + (((n : ℝ) - 1) / 2 - ((c : ℕ) : ℝ))
-
 def NumK : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool) (lam ν : Fin n → ℝ) (B C : Finset (Pos n)), StrictAnti lam → B.Nonempty →
     (∀ i ∈ B, ¬cpt ε i) → (∀ i ∈ C, cpt ε i) → (∀ c d, c < d → ε c = ε d → ν d ≤ ν c) →

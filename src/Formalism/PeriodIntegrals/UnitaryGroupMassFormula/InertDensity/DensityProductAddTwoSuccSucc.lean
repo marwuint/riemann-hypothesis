@@ -11,9 +11,6 @@ namespace DensInertW
 
 def arF (q i : ℕ) : ℝ := 1 - (-1 : ℝ) ^ i * ((q : ℝ) ^ i)⁻¹
 
-theorem ar_densProd_eq (q n m c : ℕ) :
-    Formalism.L2.SG.DensExact.densProd q (-1) n m c = ∏ i ∈ Icc (n + 1 - (m + c)) n, arF q i := rfl
-
 theorem ar_valN (q n : ℕ) (hq : 0 < q) :
     ((valN q (n + 1) : ℤ) : ℝ) = (q : ℝ) ^ (2 * n + 1) * arF q (n + 1) := by
   have hq' : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hq.ne'

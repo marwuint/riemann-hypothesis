@@ -109,11 +109,6 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {k : ℕ} (P : Par F E k)
 
-theorem m_U_eq (S : P.Splits) : P.U S = adG P.σ P.J (P.Uloc S) := rfl
-
-theorem m_iwPre_eq (v : HeightOneSpectrum (𝓞 F)) (s : SplitCore P.σ v) :
-    P.iwPre v s.φ = congU P.σ P.J v s (Subgroup.closure (upperUni k _)) := rfl
-
 variable {P} {f : ℕ}
 
 end Asm

@@ -27,9 +27,6 @@ def redH : HahnSeries ℚ V →+* HahnSeries ℚ (IsLocalRing.ResidueField V) wh
 
 lemma incH_coeff (x : HahnSeries ℚ V) (r : ℚ) : (incH V x).coeff r = (x.coeff r : Ω) := rfl
 
-lemma redH_coeff (x : HahnSeries ℚ V) (r : ℚ) :
-    (redH V x).coeff r = IsLocalRing.residue V (x.coeff r) := rfl
-
 lemma incH_injective : Function.Injective (incH V) := by
   intro x y h
   ext r

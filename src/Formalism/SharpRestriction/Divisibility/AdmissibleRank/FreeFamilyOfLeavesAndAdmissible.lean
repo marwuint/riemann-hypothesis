@@ -41,9 +41,6 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH MeasureTheory
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem archimedean_statement_iff_local (D : D7) (X : Formalism.MainNotions.SchurIrreducible.Prov D) :
-    Formalism.MainNotions.SchurIrreducible.Stmt D X ↔ Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisLocal D X := Iff.rfl
-
 def Qof (D : D7) (μ : D.what₂.Tup) (ι : D.what₂.Amb μ →ₗ[ℂ] D.what₂.EE) : Submodule ℂ (D.what₂.Amb μ) :=
   D.what₂.V0 μ ⊓ (D.what₂.V0 μ ⊓ LinearMap.ker ι)ᗮ
 
@@ -57,4 +54,3 @@ end
 namespace Formalism.MainNotions.DIV
 
 end Formalism.MainNotions.DIV
-

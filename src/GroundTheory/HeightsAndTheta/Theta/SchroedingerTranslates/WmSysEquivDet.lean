@@ -51,8 +51,6 @@ def glChar : GL ι F →* ℝ≥0 where
   map_one' := by rw [map_one, piChar_one]
   map_mul' g g' := by rw [map_mul, piChar_mul]
 
-theorem glChar_apply (g : GL ι F) : glChar g = piChar (glEquiv F ι g) := rfl
-
 end Pi
 
 end WmSysEquiv

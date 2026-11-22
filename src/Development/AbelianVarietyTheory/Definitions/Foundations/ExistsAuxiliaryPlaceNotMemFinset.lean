@@ -594,9 +594,6 @@ theorem frameMat_mem (ρ : D.what₂.Tau) (g : GArch D.sp.cm.sig V.gram (placeOf
 def dsRep (ρ : D.what₂.Tau) : GArch D.sp.cm.sig V.gram (placeOf D ρ) →* (M.H ρ →L[ℂ] M.H ρ) :=
   repVia (M.ds ρ).2.2.1 (frameMat M ρ) (frameMat_mem M ρ)
 
-theorem dsRep_apply (ρ : D.what₂.Tau) (g : GArch D.sp.cm.sig V.gram (placeOf D ρ)) :
-    dsRep M ρ g = M.rep ρ (matAt V ρ g) := rfl
-
 theorem isUnitaryRep_dsRep (ρ : D.what₂.Tau) : IsUnitaryRep (dsRep M ρ) :=
   isUnitaryRep_repVia _ _ ((continuous_const.mul (continuous_archMat _ _ _)).mul continuous_const)
 

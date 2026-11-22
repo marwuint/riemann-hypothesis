@@ -389,8 +389,6 @@ noncomputable def localExp : OpenPartialHomeomorph V A :=
 theorem localExp_apply (v : V) :
     h.localExp v = φ.symm (h.isLocalCommGroupLaw.logChart.symm v) := rfl
 
-theorem localExp_symm_apply (a : A) : h.localExp.symm a = h.log (φ a) := rfl
-
 theorem zero_mem_localExp_source : (0 : V) ∈ h.localExp.source :=
   ⟨h.isLocalCommGroupLaw.zero_mem_logChart_target, by simpa using h.zero_mem_target⟩
 

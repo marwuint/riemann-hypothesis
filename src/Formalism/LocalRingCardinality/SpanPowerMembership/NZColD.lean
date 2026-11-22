@@ -25,8 +25,6 @@ def locS (w : HeightOneSpectrum (𝓞 K)) (B : Submodule (𝓞 K) V) : Submodule
     rintro r a ⟨s, hs, h1⟩
     exact ⟨s, hs, by rw [smul_comm]; exact B.smul_mem r h1⟩
 
-theorem mem_locS (w : HeightOneSpectrum (𝓞 K)) (B : Submodule (𝓞 K) V) (x : V) : x ∈ locS w B ↔ InLoc w B x := Iff.rfl
-
 variable [Module K V] [IsScalarTower (𝓞 K) K V]
 
 end Gen

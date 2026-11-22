@@ -27,8 +27,4 @@ instance unitaryGroup_secondCountable (m : ℕ) :
 def tr (m : ℕ) : Matrix.unitaryGroup (Fin m) ℂ → Matrix.unitaryGroup (Fin m) ℂ :=
   Matrix.UnitaryGroup.transpose
 
-lemma tr_val (m : ℕ) (g : Matrix.unitaryGroup (Fin m) ℂ) :
-    ((tr m g : Matrix.unitaryGroup (Fin m) ℂ) : Matrix (Fin m) (Fin m) ℂ) =
-      (g : Matrix (Fin m) (Fin m) ℂ)ᵀ := rfl
-
 end PI.UMultOne.UnitaryGroupMassFormula

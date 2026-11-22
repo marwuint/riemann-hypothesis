@@ -22,7 +22,4 @@ def tChart (I : ManIs M Y) {a : Fin (M.n + 1)} (c : AlgChart Y.str (I.ε a) e) :
     OpenPartialHomeomorph (M.X a) (ReciprocityTheory.L2DbarEstimates.V e) :=
   (I.pt a).transOpenPartialHomeomorph c.e
 
-theorem tChart_apply (I : ManIs M Y) {a : Fin (M.n + 1)} (c : AlgChart Y.str (I.ε a) e) (x : M.X a) :
-    tChart I c x = c.e (I.pt a x) := rfl
-
 end GlobalTheory.Mean4O.CoverInt

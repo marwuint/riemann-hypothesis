@@ -43,14 +43,6 @@ def flagNormalisation (f N : ℕ) : ℚ :=
 
 def intFl : XPoly d →ₗ[ℚ] ℚ := flagNormalisation d.f d.N • flagIntegralLin d.f d.N
 
-def shiftFl (τ : Fin d.f) (F : XPoly d) : ℚ :=
-  intFl d (∑ i ∈ univ.filter (fun i : Fin d.N => i.val < d.j), pderiv (τ, i) F)
-
-def totalFl (τ : Fin d.f) (F : XPoly d) : ℚ :=
-  intFl d (∑ i : Fin d.N, pderiv (τ, i) F)
-
 abbrev d1 : IndexData := ⟨1, 2, 1, le_rfl, le_rfl, by norm_num⟩
-
-theorem rankTwo_D : d1.D = 1 := rfl
 
 end GroundTheory.Heights₂.Heights.TheoremB

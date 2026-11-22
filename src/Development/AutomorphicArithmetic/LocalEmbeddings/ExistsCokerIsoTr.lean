@@ -170,8 +170,6 @@ def fct : Scheme.{0}ᵒᵖ ⥤ Type where
     ext x
     exact map_eq_iff.2 ((R_map _ x).comp (R_map _ _))
 
-theorem fct_map (a : Z' ⟶ Z) (x : Pt E m r Z) : (fct E m r).map a.op x = x.map a := rfl
-
 def qs (y : Pt E m r Z) {U : B.Opens} (s : Γ(E, U)) {V : Z.Opens} (h : V ≤ y.g ⁻¹ᵁ U) : Γ(cokernel y.N.incl, V) :=
   (cokernel.π y.N.incl).app V (pullbackSections y.g E h s)
 

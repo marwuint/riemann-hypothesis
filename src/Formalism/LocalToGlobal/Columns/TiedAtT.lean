@@ -37,8 +37,6 @@ def tieEV : {P // P ∈ Pr.vT u} ≃ {v : HeightOneSpectrum (𝓞 X.F) // (Pr.T 
 
 theorem tieEV_over (P : {P // P ∈ Pr.vT u}) : IsOver (tieEV hc hX hPr u P).1 P.1 := rfl
 
-theorem tieEV_val (P : {P // P ∈ Pr.vT u}) : (tieEV hc hX hPr u P).1 = underPl X.F P.1 := rfl
-
 end Gen
 
 section Val

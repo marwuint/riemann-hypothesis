@@ -21,12 +21,7 @@ def Hw (w : List (Bool × Fin n × Fin n)) (K : Mat n × Mat n → V) : Mat n ×
 
 @[simp] theorem Hw_nil (K : Mat n × Mat n → V) : Hw [] K = K := rfl
 
-theorem Hw_cons (p : Bool × Fin n × Fin n) (w : List (Bool × Fin n × Fin n)) (K : Mat n × Mat n → V) :
-    Hw (p :: w) K = Ldp (bs p) (Hw w K) := rfl
-
 def fld (X : Mat n) : (Mat n × Mat n) →L[ℝ] (Mat n × Mat n) :=
   (ContinuousLinearMap.inr ℝ (Mat n) (Mat n)).comp ((GlobalTheory.CompanionTheory.RCalc.mulL X).comp (ContinuousLinearMap.snd ℝ (Mat n) (Mat n)))
-
-theorem fld_apply (X : Mat n) (p : Mat n × Mat n) : fld X p = (0, X * p.2) := rfl
 
 end GlobalTheory.CompanionTheory.WaveCp.Rep.Mol

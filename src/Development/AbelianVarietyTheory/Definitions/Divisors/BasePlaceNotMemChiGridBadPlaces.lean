@@ -316,8 +316,6 @@ abbrev modul : Ideal (𝓞 D.host.E) := G.pl.modul sc
 
 theorem node_zero_zero : G.node (.grid 0 0) = ⟨Yc D 0, L.ΛY 0⟩ := rfl
 
-theorem node_top_zero : G.node (.top 0) = G.node (.core D.R.m) := rfl
-
 theorem isV {X : Node} (h : X.InRange D.R.m) (h0 : ∀ j, X ≠ .grid 0 j) : (G.node X).IsV (X.rank D) (X.neg D.R.m) := by
   rcases X with ⟨_ | i, j⟩ | i | _ | j
   · exact absurd rfl (h0 j)
@@ -498,9 +496,6 @@ def kerA : ∀ a : Arrow T, (WO (G.pS a.pair) (G.pT a.pair) → ℂ) → GA D (G
   | .coreUp i, f, g, h => star (W.ker (.core i) f g h)
   | .coreDown i, f, g, h => W.ker (.core i) f h g
   | .col t j, f, g, h => W.ker (.top t j) f g h
-
-theorem kerA_coreUp (i : ℕ) (f : WO (G.pS (.core i)) (G.pT (.core i)) → ℂ) (g : GA D (G.V (.core i)))
-    (h : GA D (G.V (.core (i + 1)))) : W.kerA (.coreUp i) f g h = star (W.kerA (.coreDown i) f h g) := rfl
 
 def IsVac (p : Pair T) (f : WO (G.pS p) (G.pT p) → ℂ) : Prop :=
   IsVacO W.ψ W.θ _ _ (G.cartS W.cart p) (G.onT W.cart p) (G.latS p : Set _) (G.latT p : Set _) f

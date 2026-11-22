@@ -419,77 +419,6 @@ theorem exists_vE_of_fix {φ : B.S.Forms} (h : B.S.gaOp B.r (goodAt ℓ.X ℓ.P 
   rw [show (B.vE ℓ).mulVec u = B.S.basis.equivFun φ from hu]
   exact B.S.basis.equivFun.symm_apply_apply φ
 
-theorem sameTypes_self {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (h : B.Ok s)
-    (hX : ∀ χ ∈ ℓ.X, IsAbsIrrChar χ) :
-    B.invariantGoodPart ℓ ≤ B.inV0 ℓ (Col.eigSum B.op fun x => ∃ Sg ∈ B.ixFin ℓ.X, B.HasRes Sg x) := by
-  classical
-  intro u hu
-  rw [mem_goodPart_iff]
-  set φ := B.S.basis.equivFun.symm ((B.vE ℓ).mulVec u) with hφ
-  have hφZ : φ ∈ B.ZH := (B.mem_goodPart_iff ℓ _ _).1 hu
-  set a := goodAt ℓ.X ℓ.P ℓ.ψ with ha
-  set a0 := goodAt ℓ.X (⊥ : Subgroup G) 1 with ha0
-  have hidem : a * a = a := (good_at_spec K v0 hv0 G ℓ.X hX ℓ.P ℓ.ψ).idem
-  have ha0a : a0 * a = a := by
-    rw [ha0, ha, goodAt, goodAt, level_idempotent_bot K G 1, mul_one, ← mul_assoc, idemOf_mul_self ℓ.X hX]
-  have hAφ : B.S.gaOp B.r a φ = φ := B.gaOp_fix ℓ hidem u
-  have hA0φ : B.S.gaOp B.r a0 φ = φ := by
-    conv_lhs => rw [← hAφ]
-    rw [← gaOp_mul, ha0a, hAφ]
-  have hcomm : ∀ k, Commute (B.op k) (B.S.gaOp B.r a0) := by
-    intro k
-    unfold CSD.gaOp
-    exact Commute.sum_right _ _ _ fun t _ => (h.opG k t).smul_right _
-  obtain ⟨F, hF⟩ := Col.exists_finset_occurs h.comm
-  let HB : (B.Pl × ℕ → K) → Prop := Col.HasBlocks B.n B.q B.t B.bl
-  let ι := {x // x ∈ F.filter HB}
-  let C : ι → (B.Pl × ℕ → K) → Prop := fun i x => x = i.1
-  have hex : ∀ i j : ι, i ≠ j → ∀ x, C i x → ¬ C j x :=
-    fun i j hij x hx hx' => hij (Subtype.ext (hx.symm.trans hx'))
-  have h1 : φ ∈ Col.eigSum B.op fun x => ∃ i, C i x := by
-    have e : Col.eigSum B.op HB = Col.eigSum B.op fun x => ∃ i, C i x :=
-      Col.eigSum_congr fun x hx => ⟨fun hb => ⟨⟨x, Finset.mem_filter.2 ⟨(hF x).1 hx, hb⟩⟩, rfl⟩,
-        fun ⟨i, hi⟩ => hi ▸ (Finset.mem_filter.1 i.2).2⟩
-    rw [← e]; exact hφZ
-  rw [← sum_eigProj h.comm h.split C hex h1]
-  refine Submodule.sum_mem _ fun i _ => ?_
-  set ψ' := Col.eigProj h.comm h.split (C i) φ with hψ'
-  by_cases h0 : ψ' = 0
-  · rw [h0]; exact Submodule.zero_mem _
-  have hmem : ψ' ∈ Col.eigAt B.op i.1 := by
-    have h2 : Col.eigSum B.op (C i) ≤ Col.eigAt B.op i.1 := iSup₂_le fun x hx => by rw [hx]
-    exact h2 (Col.eigProj_apply_mem h.comm h.split _ φ)
-  have hψA : B.S.gaOp B.r a0 ψ' = ψ' := by
-    have h2 := congrArg (fun f : Module.End K B.S.Forms => f φ)
-      (Col.commute_eigProj h.comm h.split (C i) hcomm).eq
-    simp only [Module.End.mul_apply] at h2
-    rw [hψ', ← h2, hA0φ]
-  have hb : HB i.1 := (Finset.mem_filter.1 i.2).2
-  choose c hc using hb
-  let Sg : Pl0 → K[X] := fun P0 => if hP : ∃ P, B.pl P = P0 then c hP.choose else 1
-  have hSg : ∀ P, Sg (B.pl P) = c P := by
-    intro P
-    have hP : ∃ P', B.pl P' = B.pl P := ⟨P, rfl⟩
-    simp only [Sg, dif_pos hP]
-    rw [h.pl_inj hP.choose_spec]
-  have hres : B.HasRes Sg i.1 := by
-    intro P
-    rw [hSg P, mul_comm]
-    exact hc P
-  refine Col.eigAt_le_eigSum (C := fun x => ∃ Sg ∈ B.ixFin ℓ.X, B.HasRes Sg x) ⟨Sg, ?_, hres⟩ hmem
-  rw [B.mem_ixFin h.comm]
-  refine ⟨fun P0 hP0 => ?_, ?_⟩
-  · have hP : ¬ ∃ P, B.pl P = P0 := fun ⟨P, hP⟩ => hP0 ⟨P, hP⟩
-    simp only [Sg, dif_neg hP]
-  · obtain ⟨u0, hu0⟩ := B.exists_vE_of_fix (Lvl.full ℓ.X) hψA
-    intro hbot
-    have hu0mem : u0 ∈ B.inV0 (Lvl.full ℓ.X) (B.partF Sg) := by
-      rw [mem_goodPart_iff, hu0]
-      exact Col.eigAt_le_eigSum (C := B.HasRes Sg) hres hmem
-    rw [hbot, Submodule.mem_bot] at hu0mem
-    apply h0
-    rw [← hu0, hu0mem, Matrix.mulVec_zero, map_zero]
-
 end BlockDat
 
 namespace BlockDat
@@ -582,15 +511,7 @@ namespace DefFam
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
   {Pl0 T J : Type} [Fintype J] (F : DefFam K G Pl0 T J)
 
-theorem isType_iff (B : BlockDat K G Pl0) (f : (Pl0 → K[X]) → Pl0 → K[X]) (x : B.Pl × ℕ → K) :
-    F.IsType B f x ↔ ∃ p : ↥((F.R F.μ0).ixFin F.X), B.HasRes (f p.1) x := by
-  unfold IsType
-  exact ⟨fun ⟨Sg, hS, h⟩ => ⟨⟨Sg, hS⟩, h⟩, fun ⟨p, h⟩ => ⟨p.1, p.2, h⟩⟩
-
 variable {F}
-
-theorem stable_rows {Zs : DefSub F.amb} (hst : Zs.Stable) (t : T) (i : (F.R t).Pl × ℕ) :
-    Zs.Z t ≤ (Zs.Z t).comap ((F.R t).op i) := Submodule.map_le_iff_le_comap.mp (hst.1 t (Sum.inl i))
 
 theorem stable_lifts {Zs : DefSub F.amb} (hst : Zs.Stable) (j : J) (t : T) (i : (F.L j t).Pl × ℕ) :
     Zs.Zl j t ≤ (Zs.Zl j t).comap ((F.L j t).op i) := Submodule.map_le_iff_le_comap.mp (hst.2 j t (Sum.inl i))
@@ -602,34 +523,6 @@ theorem inBlock_lifts {Zs : DefSub F.amb} (hin : Zs.InBlock) (j : J) (t : T) : Z
   exact (hin.2 j t).trans inf_le_left
 
 variable (F)
-
-theorem sameTypes_base {s : ℕ} (h : F.Ok s) (P : Subgroup G) (ψ : P →* Kˣ) {Zs : DefSub F.amb}
-    (hin : Zs.InBlock) :
-    (F.R F.μ0).Z0 (F.lvl P ψ) (Zs.Z F.μ0) ≤
-      (F.R F.μ0).inV0 (F.lvl P ψ) (Col.eigSum (F.R F.μ0).op (F.IsType (F.R F.μ0) id)) :=
-  ((F.R F.μ0).good_part_coordinates_mono _ (inBlock_rows hin F.μ0)).trans
-    ((F.R F.μ0).sameTypes_self (F.lvl P ψ) h.conj (h.what₂ F.μ0) h.irr)
-
-theorem side_WF {s : ℕ} (h : F.Ok s) (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub F.amb) (hst : Zs.Stable)
-    (hin : Zs.InBlock) (hsep : F.TypesSep) : (F.side P ψ Zs).WF where
-  cm := isCMSub_cmMax' K
-  conj := h.conj
-  HV_rat t := BlockDat.HV_rat (ℓ := F.lvl P ψ) h.conj (h.what₂ t) h.irr
-  HV_pos t := BlockDat.HV_pos (ℓ := F.lvl P ψ) h.conj (h.what₂ t) h.irr
-  Mt_lat t := BlockDat.Mt_lat (ℓ := F.lvl P ψ) h.conj (h.what₂ t) h.irr
-  Pq_surj t := BlockDat.Pq_surj (ℓ := F.lvl P ψ) (Z := Zs.Z t) h.conj (h.what₂ t) h.irr
-  XQ_quot t := BlockDat.XQ_quot (ℓ := F.lvl P ψ) (Z := Zs.Z t) h.conj (h.what₂ t) h.irr
-  Lam_lat t := BlockDat.Lam_lat (ℓ := F.lvl P ψ) (Z := Zs.Z t) h.conj (h.what₂ t) h.irr
-  Qp_indep := (F.R F.μ0).part_indep (F.lvl P ψ) (Zs.Z F.μ0) (h.what₂ F.μ0).comm (fun p : F.base.Ix => p.1)
-    fun p p' hpp => (F.R F.μ0).sep_of_mem_ixFin p.2 p'.2 fun e => hpp (Subtype.ext e)
-  Qp_top := (F.R F.μ0).part_top (F.lvl P ψ) (Zs.Z F.μ0) h.conj (h.what₂ F.μ0) h.irr (stable_rows hst F.μ0)
-    (fun p : F.base.Ix => p.1) (fun p p' hpp => (F.R F.μ0).sep_of_mem_ixFin p.2 p'.2 fun e => hpp (Subtype.ext e))
-    ((F.sameTypes_base h P ψ hin).trans ((F.R F.μ0).good_part_coordinates_mono _
-      (Col.eigSum_mono fun x hx => (F.isType_iff _ id x).1 hx)))
-  XT_herm j t := BlockDat.XQ_herm (ℓ := F.lvlA P ψ) (Z := Zs.Zl j t) h.conj (h.lifts j t) h.irr
-  Tl_lat j t := BlockDat.Tl_lat (ℓ := F.lvlA P ψ) (Z := Zs.Zl j t) h.conj (h.lifts j t) h.irr
-  Zp_indep j := (F.L j F.μ0).part_indep (F.lvlA P ψ) (Zs.Zl j F.μ0) (h.lifts j F.μ0).comm
-    (fun p : F.base.Ix => F.tr j p.1) fun p p' hpp => hsep p.1 p.2 p'.1 p'.2 (fun e => hpp (Subtype.ext e)) j
 
 end DefFam
 

@@ -101,8 +101,6 @@ section Form
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
-theorem tauIn_coe {l : Level H} (c : Coeff l) (τ : E →+* ℂ) (a : 𝓞 E) : ((tauIn c τ a : c.F) : ℂ) = τ a := rfl
-
 theorem trace_basis_mul_sesq (D : Datum H) (x y : D.La) (j) :
     Algebra.trace ℚ E ((RingOfIntegers.basis E j : E) * sesq D x y) = D.EF (RingOfIntegers.basis E j • x) y := by
   classical

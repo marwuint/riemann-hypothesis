@@ -25,9 +25,6 @@ def coneForm {n e : ℕ} (Ψ : (((k : Unit) → PBlk n k) → ℂ) →ₗ[ℂ] (
     MvPolynomial (Fin n) ℂ :=
   rename (fun p : Σ k : Unit, PBlk n k => p.2) (psiPoly Ψ j)
 
-theorem coneForm_zero {n e : ℕ} (Ψ : (((k : Unit) → PBlk n k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) :
-    coneForm Ψ 0 = coneFirstForm Ψ := rfl
-
 end ConeProjHyperplaneDim
 
 end GroundTheory.Heights₂.Heights

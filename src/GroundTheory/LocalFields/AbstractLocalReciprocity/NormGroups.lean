@@ -210,11 +210,6 @@ theorem normGroup_le_normGroup_iff (hL : IsAbelianExtension K L) (hL' : IsAbelia
   exact (D.mem_normGroup_iff_of_reciprocity hax hL' h2).1
     (h ((D.mem_normGroup_iff_of_reciprocity hax hL h1).2 hg))
 
-theorem normGroup_eq_normGroup_iff (hL : IsAbelianExtension K L) (hL' : IsAbelianExtension K L') :
-    normGroup A K L = normGroup A K L' ↔ L = L' := by
-  rw [le_antisymm_iff, le_antisymm_iff, D.normGroup_le_normGroup_iff hax hL hL',
-    D.normGroup_le_normGroup_iff hax hL' hL]
-
 theorem exists_normGroup_eq_of_le_of_isAbelianExtension (hL : IsAbelianExtension K L)
     {B : Subgroup (fixedModule A (K : Subgroup G))} (hB : normGroup A K L ≤ B) :
     ∃ H : OpenSubgroup G, IsAbelianExtension K H ∧ L ≤ H ∧ normGroup A K H = B := by

@@ -188,9 +188,6 @@ def unitaryGroup (h : HermForm R M) : Subgroup (M ≃ₗ[R] M) where
 theorem mem_unitaryGroup {g : M ≃ₗ[R] M} :
     g ∈ h.unitaryGroup ↔ ∀ x y, h (g x) (g y) = h x y := Iff.rfl
 
-theorem mem_unitaryGroup_iff_isIsometry {g : M ≃ₗ[R] M} :
-    g ∈ h.unitaryGroup ↔ h.IsIsometry h g.toLinearMap := Iff.rfl
-
 namespace unitaryGroup
 
 theorem smul_def (g : h.unitaryGroup) (x : M) : g • x = (g : M ≃ₗ[R] M) x := rfl
@@ -573,8 +570,6 @@ section CM
 
 variable (E : Type*) [Field E] [NumberField E] [IsCMField E]
 
-theorem star_eq_complexConj (x : E) : star x = IsCMField.complexConj E x := rfl
-
 instance : IsStarFixed (maximalRealSubfield E) E := ⟨(IsCMField.complexConj E).commutes⟩
 
 variable {E}
@@ -587,8 +582,6 @@ noncomputable instance : StarRing (𝓞 E) where
   star_involutive x := RingOfIntegers.ext (star_star (x : E))
   star_mul x y := by rw [map_mul, mul_comm]
   star_add x y := map_add _ x y
-
-theorem ringOfIntegers_star_def (x : 𝓞 E) : star x = IsCMField.ringOfIntegersComplexConj E x := rfl
 
 @[simp] theorem ringOfIntegers_coe_star (x : 𝓞 E) :
     algebraMap (𝓞 E) E (star x) = star (algebraMap (𝓞 E) E x) := rfl

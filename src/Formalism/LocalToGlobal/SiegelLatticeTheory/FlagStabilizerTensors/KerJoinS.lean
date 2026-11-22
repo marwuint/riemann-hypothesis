@@ -36,9 +36,6 @@ section Unfold
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter)
 
-def perU (Fs : Set X.B.I.GA) (f : X.B.I.L2 X.B.μf X.B.fund) (T : Cu X u hK) : ℂ :=
-  ∫ g in Fs, X.B.I.ext f g * Ph X u hK T g ∂(X.B.I.muA X.B.μf)
-
 end Unfold
 
 section Ker

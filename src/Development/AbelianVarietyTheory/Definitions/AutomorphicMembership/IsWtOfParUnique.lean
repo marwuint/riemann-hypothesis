@@ -19,8 +19,6 @@ section Rec
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem labLL_eq (X : Stages) : labLL X.toD7 = X.B.fields.emb := rfl
-
 theorem gram_V (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hI : I.Ok) (i : Fin X.toD7.R.m) : (Vc X.toD7 i).gram = 1 := by
   obtain ⟨hs, -, -, -, -, hV⟩ := hI.spaces
   have h1 := hV ((i : ℕ) + 1)

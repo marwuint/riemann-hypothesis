@@ -89,11 +89,6 @@ section Flag
 
 variable {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁} {pl : ∀ j : ℕ, Plane E (d₁ - 2 * j) (d₁ - 2 * (j + 1))} {i : ℕ}
 
-theorem mem_unipPar {u : UA σ W.J} : u ∈ unipPar σ W H' pl i ↔
-    mat u * incM F (flagX H' pl (i + 1)) = incM F (flagX H' pl (i + 1)) ∧ ∀ z, ∃ a : Fin (i + 1) → AE F E,
-      mat u *ᵥ (incM F (chainEmb H' pl i) *ᵥ z) = incM F (chainEmb H' pl i) *ᵥ z + incM F (flagX H' pl (i + 1)) *ᵥ a :=
-  Iff.rfl
-
 end Flag
 
 end GlobalTheory.ThK.FlagPar

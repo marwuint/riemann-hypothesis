@@ -94,9 +94,6 @@ def yg (L' L'' : Submodule (𝓞 E) (Fin N → E)) (n : 𝓞 E) : AddSubgroup (F
     rintro _ ⟨m, h, h', rfl⟩
     exact ⟨-m, L'.neg_mem h, L''.neg_mem h', (smul_neg _ _).symm⟩
 
-theorem mem_yg {L' L'' : Submodule (𝓞 E) (Fin N → E)} {n : 𝓞 E} {x : Fin N → E} :
-    x ∈ yg L' L'' n ↔ ∃ m, m ∈ L' ∧ m ∈ L'' ∧ x = (n : E) • m := Iff.rfl
-
 theorem mem_of_local {V : Type*} [AddCommGroup V] (Y : AddSubgroup V) (x : V)
     (h : ∀ p : ℕ, p.Prime → ∃ t : ℤ, ¬ (p : ℤ) ∣ t ∧ t • x ∈ Y) : x ∈ Y := by
   classical

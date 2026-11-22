@@ -138,9 +138,6 @@ def repL' (ε : Γ →* Oˣ) (M : Γ →* Matrix n n O) : Representation O Γ (n
       Matrix.mulVecLin_apply, Module.End.mul_apply, Matrix.mulVec_smul, smul_smul]
     rw [_root_.mul_inv_rev, map_mul, Matrix.transpose_mul, ← Matrix.mulVec_mulVec]
 
-theorem repL'_apply (ε : Γ →* Oˣ) (M : Γ →* Matrix n n O) (g : Γ) (v : n → O) :
-    repL' ε M g v = ((ε g : Oˣ) : O) • ((M g⁻¹)ᵀ *ᵥ v) := rfl
-
 def pairStd : (n → FractionRing O) →ₗ[O] (n → FractionRing O) →ₗ[O] FractionRing O :=
   LinearMap.mk₂ O (fun x y => x ⬝ᵥ y) (fun x x' y => add_dotProduct x x' y)
     (fun c x y => smul_dotProduct c x y) (fun x y y' => dotProduct_add x y y')
@@ -536,8 +533,6 @@ def uHom : (Ω ≃ₐ[Ek] Ω) →* R' where
 def M0 : (Ω ≃ₐ[Ek] Ω) →* Matrix {a // bl a = 0} {a // bl a = 0} O :=
   (ρk 0).toRingHom.toMonoidHom.comp (uHom r χ)
 
-theorem block_zero_apply (g : Ω ≃ₐ[Ek] Ω) : M0 r χ bl ρk g = ρk 0 (uElt r χ g) := rfl
-
 def Mw (w : ℕ) : decs Ek Aw w →* Matrix {a // bl a = 0} {a // bl a = 0} O :=
   (M0 r χ bl ρk).comp (decs Ek Aw w).subtype
 
@@ -578,8 +573,6 @@ def gam : ({a // bl a = 0} → O) →ₗ[O] blockRestrictedRepresentationType bl
 
 theorem gam_apply (y : {a // bl a = 0} → O) (m : blockRestrictedRepresentationType bl ρk 0) :
     gam bl ρk y m = ∑ a, y a • blkEquiv bl ρk m a := rfl
-
-theorem dat_eps (w : ℕ) (g : decs Ek Aw w) : (Dat r χ bl ρk ε Aw hK hε hM w).ε g = ε g := rfl
 
 theorem vD_equiv (w : ℕ) (g : decs Ek Aw w) (y : {a // bl a = 0} → O) :
     vD r χ bl ρk ε Aw hK hε hM w (rho2 r χ bl ρk ε g y) =

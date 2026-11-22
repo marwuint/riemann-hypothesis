@@ -108,8 +108,6 @@ instance Rp.torsionFreeOp : Module.IsTorsionFree (Op X la N) (Rp X la N) where
 def bcV : X.Vl la →ₐ[X.Kl la] Rp X la N :=
   (Algebra.TensorProduct.includeRight : X.Vl la →ₐ[X.Kl la] Kp X la N ⊗[X.Kl la] X.Vl la)
 
-theorem bcV_apply (v : X.Vl la) : bcV X la N v = ((1 : Kp X la N) ⊗ₜ[X.Kl la] v : Kp X la N ⊗[X.Kl la] X.Vl la) := rfl
-
 theorem bcV_isBaseChange : IsBaseChange (Kp X la N) (bcV X la N).toLinearMap :=
   TensorProduct.isBaseChange (X.Kl la) (X.Vl la) (Kp X la N)
 

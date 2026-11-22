@@ -161,10 +161,6 @@ def EpS (r : ℕ) (S : SegData s) : MvPolynomial (BVar (2 * s + 1) r S.t) (KK O)
   X (scalZ (2 * s + 1) r S.t (Fin.last S.t)) * X (scalS (2 * s + 1) r S.t (Fin.last S.t)) +
     ∑ c, X (Sum.inl (Fin.castSucc (⟨2 * s, by omega⟩ : Fin (2 * s + 1)), c)) * X (xiVar (2 * s + 1) r S.t c)
 
-theorem Ehat_rfl (l : Fin S.t) : (blockData p S aTop aPlus mu b').Ehat O (r := r) l = EhS O r S l := rfl
-
-theorem Eplus_rfl : (blockData p S aTop aPlus mu b').Eplus O (r := r) = EpS O r S := rfl
-
 theorem EhS_eq (l : Fin S.t) :
     EhS O r S l =
       X (scalZ (2 * s + 1) r S.t (Fin.castSucc l)) * X (scalS (2 * s + 1) r S.t (Fin.castSucc l)) +

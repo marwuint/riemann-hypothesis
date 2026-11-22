@@ -41,10 +41,6 @@ abbrev RunData.full {J : CoreJ D} (r : RunData J) : Full D :=
 
 def RunData.ofFull (T : Full D) : RunData T.J := ⟨T.G, T.nab, T.dδ, T.xi, T.half₂⟩
 
-theorem RunData.full_ofFull (T : Full D) : (RunData.ofFull T).full = T := rfl
-
-theorem RunData.full_J {J : CoreJ D} (r : RunData J) : r.full.J = J := rfl
-
 section Cusp
 
 variable (B : WeightFamilies.Prov D) {j : ℕ} {w : WeightFamilies.Wt D j} {K : Type} [Field K] [NumberField K] [Algebra B.KO K] {n : ℕ}

@@ -167,9 +167,6 @@ noncomputable def resOp (A : Matrix ι ι Γ) (e : ℕ) : (ι → L) →+ (ι �
     funext i
     simp [add_pow_char_pow]
 
-theorem resOp_apply (A : Matrix ι ι Γ) (x : ι → L) :
-    resOp T A e x = A.map T.red *ᵥ (fun i => x i ^ p ^ e) := rfl
-
 variable [IsAlgClosed L]
 
 end Matrix

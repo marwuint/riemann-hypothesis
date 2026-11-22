@@ -353,23 +353,6 @@ theorem TateModule.map_apply (f : A →+ A) (t : TateModule ℓ A) (k : ℕ) :
     ((TateModule.map f t : TateModule ℓ A) : ℕ → A) k = f ((t : ℕ → A) k) :=
   rfl
 
-noncomputable def tateRep {G : Type*} [Monoid G] (φ : G →* AddMonoid.End A) :
-    Representation ℤ_[ℓ] G (TateModule ℓ A) where
-  toFun g := TateModule.map (φ g)
-  map_one' := LinearMap.ext fun t => Subtype.ext <| funext fun k => by
-    show φ 1 ((t : ℕ → A) k) = (t : ℕ → A) k
-    rw [map_one]
-    rfl
-  map_mul' g h := LinearMap.ext fun t => Subtype.ext <| funext fun k => by
-    show φ (g * h) ((t : ℕ → A) k) = φ g (φ h ((t : ℕ → A) k))
-    rw [map_mul]
-    rfl
-
-theorem tateRep_apply {G : Type*} [Monoid G] (φ : G →* AddMonoid.End A) (g : G)
-    (t : TateModule ℓ A) (k : ℕ) :
-    ((tateRep φ g t : TateModule ℓ A) : ℕ → A) k = φ g ((t : ℕ → A) k) :=
-  rfl
-
 end Action
 
 end GroundTheory.Arith.Abelian

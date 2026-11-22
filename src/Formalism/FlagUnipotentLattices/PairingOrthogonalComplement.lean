@@ -13,13 +13,6 @@ def ValuationProductBound : Prop :=
     ∏ b, q ^ (2 * (s b : ℝ) * vh b) ≤ (q ^ A) ^ (2 * ((r : ℝ) + 1)) ∧
     ∏ b, q ^ (vt b * ((s b : ℝ) * ((s b : ℝ) - 1) / 2)) ≤ (q ^ A) ^ (((r : ℝ) + 1) / 2)
 
-def LocalDensityShareBound : Prop :=
-  ∀ (Ov : Type) [Fintype Ov] (dens dl : Ov → ℝ) (κ be disc tot : ℝ) (k r : ℕ),
-    1 ≤ k → 0 ≤ κ → 1 ≤ be → (Fintype.card Ov : ℝ) ≤ disc ^ (2 * r + 2) →
-    (∀ M, dens M = κ * ((be ^ (k + 2 * r + 1))⁻¹ / (be ^ (2 * r + 2))⁻¹) * dl M) →
-    (∀ M, dl M ≤ 2) → κ / 2 ≤ tot →
-    ∑ M, dens M ≤ 4 * disc ^ (2 * r + 2) * (be ^ (k - 1))⁻¹ * tot
-
 structure Unram (o O : Type*) [CommRing o] [CommRing O] [StarRing O] [Algebra o O] : Prop where
   star_o : ∀ c : o, star (algebraMap o O c) = algebraMap o O c
   free : Module.Free o O

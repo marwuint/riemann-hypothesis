@@ -78,9 +78,6 @@ def leftOp (e : c ⊕ d ≃ a) (s : Set ℕ) (ψ : GL b k →* ℂˣ) (h : GL b 
     rw [LinearMap.comp_apply, LinearMap.comp_apply, leftRep_apply, levRep_apply, levRep_apply, leftRep_apply, this,
       mul_left_comm])
 
-theorem leftOp_apply (e : c ⊕ d ≃ a) (s : Set ℕ) (ψ : GL b k →* ℂˣ) (h : GL b k) (Φ : SB (ColZero k b e s))
-    (y : ColZero k b e s) : (leftOp e s ψ h Φ).1 y = (ψ h : ℂ) * Φ.1 (colL e s y h) := rfl
-
 end Strata
 
 end GlobalTheory.ThetaGLCover

@@ -26,8 +26,6 @@ theorem isUnit_root (hP : IsPPol c r P) : IsUnit (AdjoinRoot.root P) := by
 
 def alpha (hP : IsPPol c r P) : (AdjoinRoot P)ˣ := (isUnit_root hP).unit
 
-theorem alpha_val (hP : IsPPol c r P) : (alpha hP : AdjoinRoot P) = AdjoinRoot.root P := rfl
-
 variable (k : Type) [Field k] [Algebra F k]
 
 @[reducible] def algLk (P : E[X]) : Algebra (E ⊗[F] k) (AdjoinRoot P ⊗[F] k) :=

@@ -268,12 +268,6 @@ theorem coe_invariantsToMaxUnitsFun (hE : ∀ x ∈ E.1, x ∈ maxUnramifiedOuts
       maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) = (((Additive.toMul (a : Additive ℚ̄ˣ)) : ℚ̄ˣ) : ℚ̄) :=
   rfl
 
-theorem coe_quotientToInvariants_mk (σ : K.1.fixingSubgroup) (a : unitsInvariantsOf K E) :
-    (((Additive.toMul ((((unitsLimitRep K).ρ.quotientToInvariants (fixingSubgroupOf K E))
-      (QuotientGroup.mk σ) a : unitsInvariantsOf K E) : Additive ℚ̄ˣ)) : ℚ̄ˣ) : ℚ̄) =
-      (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (((Additive.toMul (a : Additive ℚ̄ˣ)) : ℚ̄ˣ) : ℚ̄) :=
-  rfl
-
 theorem invariantsToMaxUnitsFun_smul (hE : ∀ x ∈ E.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S)
     (τ : galUnramifiedOutside K.1 ℚ̄ S) (a : unitsInvariantsOf K E) :
     invariantsToMaxUnitsFun K S hE

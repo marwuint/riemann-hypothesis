@@ -53,8 +53,6 @@ section Thick
 
 variable {b b' : Base} {L : b.Fun} {L' : b'.Fun} {σ : b.R →+* b'.R}
 
-theorem pdPow_obj (m : GlobalTheory.LogCris.Mor L L' σ) (T : Thick L') (r : ℕ) : (m.obj T).pdPow r = T.pdPow r := rfl
-
 variable {Λ Λ' : Type} [CommRing Λ] [CommRing Λ'] {c : Λ →+* b.R} {c' : Λ' →+* b'.R}
 
 theorem omMor_img (m : GlobalTheory.LogCris.Mor L L' σ) (σ₀ : Λ →+* Λ') (h : ∀ a, σ (c a) = c' (σ₀ a)) (r j : ℕ)

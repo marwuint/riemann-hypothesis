@@ -45,14 +45,6 @@ variable (Xo : Moduli Dw l) (c : Coeff l)
 def IsBeta (Dw : Datum H) {l : Level H} (c : Coeff l) {n : ℕ} (Λ : GenLat E n) (β : c.F) : Prop :=
   β ≠ 0 ∧ BetaIs (Dw := Dw) c Λ β ∧ BetaAbs (Dw := Dw) c Λ β
 
-def FreeOfLevel (nab : NabV Xo c) (bad : ℕ) : Prop :=
-  ∀ (n : ℕ) (Λ : GenLat E n), LatAdm l bad Λ →
-    ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ harmL c Λ a →
-    ∀ (w : (Fin n → LevQ Dw l) → c.F) (β : c.F), β ≠ 0 →
-    ∀ (N N' : ℕ), Λ.LevOK N l.M → Λ.LevOK N' l.M →
-    ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (v v' : S),
-      ShortValAt Xo c nab w Λ β N P y v → (ShortValAt Xo c nab w Λ β N' P y v' ↔ v' = v)
-
 def BlockProduct (nab : NabV Xo c) (bad : ℕ) : Prop :=
   ∀ (n₁ n₂ : ℕ) (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂), LatAdm l bad Λ₁ → LatAdm l bad Λ₂ →
     ∀ N : ℕ, Λ₁.LevOK N l.M → Λ₂.LevOK N l.M →

@@ -89,10 +89,6 @@ def CoreId : Prop := ForLift fun _ E _ _ _ _ _ n v w σw N τ τ' =>
 
 def LiftExp : Prop := ForLift fun _ _ _ _ _ _ _ n _ _ _ N τ τ' => ∀ μ, IsExp τ.ρ μ → IsExp τ'.ρ (μ.comp (nT n N))
 
-def DescExp : Prop := ForLift fun _ E _ _ _ _ _ n _ w σw N τ τ' =>
-  ∀ ω' : Fin n → (w.1.adicCompletion E)ˣ →* ℂˣ, (∀ i, IsSmoothChar (ω' i)) → (∀ i, Inv σw (ω' i)) →
-    IsSubquotient τ'.ρ (prinSeries ω') → ∀ μ', IsExp τ'.ρ μ' → ∃ μ, IsExp τ.ρ μ ∧ μ.comp (nT n N) = μ'
-
 def LiftGood : Prop := ForLift fun F _ _ _ _ _ _ n v _ _ N τ τ' =>
   ∀ ω : Fin n → (v.adicCompletion F)ˣ →* ℂˣ, (∀ i, IsSmoothChar (ω i)) → IsSubquotient τ.ρ (prinSeries ω) →
     IsSubquotient τ'.ρ (prinSeries fun i => (ω i).comp N)

@@ -17,8 +17,6 @@ def dlogQ (d : ℕ) (hd : d.Prime) : ℝ :=
     DirichletCharacter.LFunction
       ((quadraticChar (ZMod d)).ringHomComp (Int.castRingHom ℂ) : DirichletCharacter ℂ d) 1).re
 
-theorem dlogL_one (D : D7) : dlogL D 1 = dlogQ D.host.d D.host.hyp.2.1 := rfl
-
 structure QDGood (x eps : ℝ) (q d : ℕ) : Prop where
   hyp : HostHyp q d
   q_lo : Real.exp (x ^ (eps / 5) / 2) < q

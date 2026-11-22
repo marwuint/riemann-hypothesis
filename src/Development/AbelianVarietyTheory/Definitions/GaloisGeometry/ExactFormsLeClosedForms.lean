@@ -36,16 +36,6 @@ variable {A}
 
 theorem mem_closedForms {k : ℕ} {α : A.Fld} : α ∈ A.closedForms k ↔ A.IsForm α ∧ A.IsDeg k α ∧ A.dExt α = 0 := Iff.rfl
 
-theorem mem_exactForms {k : ℕ} {α : A.Fld} : α ∈ A.exactForms k ↔ A.IsDeg k α ∧ ∃ η, A.IsForm η ∧ α = A.dExt η := Iff.rfl
-
-theorem mem_exactForms_succ {k : ℕ} {α : A.Fld} :
-    α ∈ A.exactForms (k + 1) ↔ ∃ η, A.IsForm η ∧ A.IsDeg k η ∧ α = A.dExt η := by
-  constructor
-  · rintro ⟨h, η, hη, rfl⟩
-    exact ⟨A.degFld k η, hη.degFld k, isDeg_degFld k η, (h.degFld_eq.symm.trans (degFld_dExt hη k).1)⟩
-  · rintro ⟨η, hη, hk, rfl⟩
-    exact ⟨hk.dExt, η, hη, rfl⟩
-
 variable (A) in
 
 theorem exactForms_zero : A.exactForms 0 = ⊥ := by
@@ -153,71 +143,7 @@ namespace GlobalTheory.CxForm.HolAtlas
 
 open GlobalTheory.GoodMetric (coordVec)
 
-theorem hasDeg_zero_dim (α : Alt 0) : HasDeg 0 α := fun S _ =>
-  Finset.card_eq_zero.2 (Finset.eq_empty_of_forall_notMem fun a _ => absurd a.2 (by simp))
-
 def pt₀ : (std 0).Pt := ⟨((), 0), Set.mem_univ _⟩
-
-theorem eq_pt₀ (x : (std 0).Pt) : x = pt₀ := Subtype.ext (Prod.ext rfl (Subsingleton.elim _ _))
-
-theorem isForm_std₀ (α : (std 0).Fld) : (std 0).IsForm α := by
-  refine ⟨fun i S => contDiffOn_const.congr fun v _ => congrArg (fun w => (bas 0).repr ((std 0).loc α i w) S)
-    (Subsingleton.elim v 0), fun x x' _ => ?_⟩
-  rw [eq_pt₀ x', eq_pt₀ x, (hasDeg_zero_dim (α pt₀)).eq_algebraMap, AlgHom.commutes]
-
-theorem dExt_std₀ (α : (std 0).Fld) : (std 0).dExt α = 0 :=
-  funext fun x => by simp [dExt_apply, opAt]
-
-theorem mem_closedForms_std₀ (α : (std 0).Fld) : α ∈ (std 0).closedForms 0 :=
-  ⟨isForm_std₀ α, fun x => hasDeg_zero_dim _, dExt_std₀ α⟩
-
-def evStd₀ : (std 0).closedForms 0 →ₗ[ℂ] ℂ :=
-  (bas 0).coord ∅ ∘ₗ LinearMap.proj pt₀ ∘ₗ ((std 0).closedForms 0).subtype
-
-def HSm.std₀Equiv : (std 0).HSm 0 ≃ₗ[ℂ] ℂ := by
-  refine LinearEquiv.ofBijective (Submodule.liftQ _ evStd₀ fun α hα => ?_) ⟨?_, fun z => ?_⟩
-  · have h : (α : (std 0).Fld) ∈ (std 0).exactForms 0 := hα
-    rw [exactForms_zero, Submodule.mem_bot] at h
-    simp [evStd₀, h]
-  · refine (injective_iff_map_eq_zero _).2 fun c hc => ?_
-    induction c using HSm.induction_on with
-    | h α =>
-      have e : (α : (std 0).Fld) = 0 := funext fun x => by
-        rw [eq_pt₀ x, (hasDeg_zero_dim (α.1 pt₀)).eq_algebraMap]
-        have : (bas 0).repr (α.1 pt₀) ∅ = 0 := hc
-        rw [this, map_zero]; rfl
-      rw [show α = 0 from Subtype.ext e]
-      exact map_zero _
-  · refine ⟨HSm.mk _ 0 ⟨z • 1, mem_closedForms_std₀ _⟩, ?_⟩
-    change (bas 0).repr ((z • (1 : (std 0).Fld)) pt₀) ∅ = z
-    rw [Pi.smul_apply, Pi.one_apply, ← bas_empty, map_smul, Module.Basis.repr_self]
-    simp
-
-theorem HSm.finrank_std₀ : Module.finrank ℂ ((std 0).HSm 0) = 1 :=
-  (HSm.std₀Equiv.finrank_eq).trans (Module.finrank_self ℂ)
-
-def zFld : (std 1).Fld := fun x => algebraMap ℂ (Alt 1) (x.crd 0)
-
-theorem dExt_zFld (x : (std 1).Pt) : (std 1).dExt zFld x = dz 0 := by
-  have hl : (std 1).loc zFld x.1.1 = fun v => (EuclideanSpace.proj (0 : Fin 1) : V 1 →L[ℂ] ℂ) v • bas 1 ∅ := funext fun v => by
-    rw [loc, dif_pos (show v ∈ ((std 1).e x.1.1).target from Set.mem_univ v)]
-    unfold zFld
-    rw [Algebra.algebraMap_eq_smul_one, bas_empty]
-    rfl
-  have hd : DifferentiableAt ℂ (EuclideanSpace.proj (0 : Fin 1) : V 1 →L[ℂ] ℂ) x.crd :=
-    (EuclideanSpace.proj (0 : Fin 1) : V 1 →L[ℂ] ℂ).differentiableAt
-  rw [dExt_apply, hl, opAt, opAt, Fin.sum_univ_one, Fin.sum_univ_one,
-    coefwise_smul (T := fun f => dirD (Sum.inl 0) f x.crd) (dirD_zero _) (fun v => (EuclideanSpace.proj (0 : Fin 1) : V 1 →L[ℂ] ℂ) v) ∅,
-    coefwise_smul (T := fun f => dirD (Sum.inr 0) f x.crd) (dirD_zero _) (fun v => (EuclideanSpace.proj (0 : Fin 1) : V 1 →L[ℂ] ℂ) v) ∅]
-  simp only [Fin.sum_univ_one, dirD, del_eq_fderiv hd, dbar_eq_zero hd, ContinuousLinearMap.fderiv, zero_smul,
-    ContinuousLinearMap.zero_apply, mul_zero, add_zero, bas_empty, coordVec]
-  simp [dz]
-
-theorem dExt_zFld_ne_zero : (std 1).dExt zFld ≠ 0 := fun h => by
-  let x₀ : (std 1).Pt := ⟨(((std 1).cover 0).choose, 0), ((std 1).cover 0).choose_spec⟩
-  have e : (0 : Alt 1) = dz 0 := by rw [← dExt_zFld x₀, h]; rfl
-  rw [dz, ← bas_singleton] at e
-  exact (bas 1).ne_zero _ e.symm
 
 end GlobalTheory.CxForm.HolAtlas
 

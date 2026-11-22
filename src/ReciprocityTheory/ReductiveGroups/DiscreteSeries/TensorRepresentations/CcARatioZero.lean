@@ -21,8 +21,6 @@ section SlopeTestRemainingChoices
 variable {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
-theorem ccA_sigLam_eq : sigLam ε Ψ v₀ = closRep (rreg ε) (closGen (smE ε (rreg ε)) (datumV ε Ψ v₀)) := rfl
-
 theorem ccA_sqInt (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     Formalism.MainNotions.S.IsSqIntOn ε (closRep (rreg ε) (closGen (smE ε (rreg ε)) (datumV ε Ψ v₀))) :=
   (isDS_sigLam hgap hP hv₀).2.2.2.2.1

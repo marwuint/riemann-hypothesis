@@ -383,10 +383,6 @@ def HermitianMetric.scale (h : HermitianMetric K E) (c : ℝ) (hc : 0 < c) : Her
   form_conj σ x y := by
     rw [coreScale_inner, coreScale_inner, h.form_conj, map_mul, Complex.conj_ofReal]
 
-theorem HermitianMetric.scale_inner (h : HermitianMetric K E) (c : ℝ) (hc : 0 < c)
-    (σ : K →+* ℂ) (x y : Fibre σ E) :
-    ((h.scale c hc).form σ).inner x y = ((c ^ 2 : ℝ) : ℂ) * (h.form σ).inner x y := rfl
-
 end
 
 end GroundTheory.Heights₂.Heights

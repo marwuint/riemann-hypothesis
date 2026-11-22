@@ -104,8 +104,6 @@ theorem nz_posXf_inj : Function.Injective (posXf R) := by
 def posX : Equiv.Perm (Fin (R.N R.m - 1)) :=
   Equiv.ofBijective (posXf R) (Finite.injective_iff_bijective.mp (nz_posXf_inj R))
 
-theorem nz_posX_val (i : Fin (R.N R.m - 1)) : (posX R i).1 = posXn R i.1 := rfl
-
 variable {R}
 
 end PosX
@@ -142,8 +140,6 @@ theorem nz_posVf_inj : Function.Injective (posVf R j) := by
 
 def posV : Equiv.Perm (Fin R.nV) :=
   Equiv.ofBijective (posVf R j) (Finite.injective_iff_bijective.mp (nz_posVf_inj R j))
-
-theorem nz_posV_val (i : Fin R.nV) : (posV R j i).1 = posVn R j i.1 := rfl
 
 variable {R j}
 

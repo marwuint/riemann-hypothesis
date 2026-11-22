@@ -37,18 +37,6 @@ variable (D1 : D7) (W : TwGap D1) (large₂ : LevGapD D1) (h0 : ∀ u, Module.fi
 
 def recX : D7 := withGatCB (large₂.withTw W).recS h0 rOf eOf B
 
-theorem recX_e (u w h) : ((recX D1 W large₂ h0 rOf eOf B).gat u w h).e = eOf (D1.what₂.places.resChar w) := rfl
-
-def recX_X (S : Shape0 D1) : DivX (recX D1 W large₂ h0 rOf eOf B) := divXExample _ S.drows S.mj
-
-theorem recX_kapR (S : Shape0 D1) (e) : (recX_X D1 W large₂ h0 rOf eOf B S).kapR e = 1 := rfl
-
-theorem recX_h (u) : (recX D1 W large₂ h0 rOf eOf B).div.h u = D1.div.h u := rfl
-
-set_option maxHeartbeats 2000000 in
-theorem recX_hVal (sc : Scale) (aT : D1.host.TT → ℤ) (η Sc dl C : ℝ) (u) :
-    hVal (recX D1 W large₂ h0 rOf eOf B) sc aT η Sc dl C u = hVal D1 sc aT η Sc dl C u := rfl
-
 end Rec
 
 end Formalism.MainNotions.Inhab

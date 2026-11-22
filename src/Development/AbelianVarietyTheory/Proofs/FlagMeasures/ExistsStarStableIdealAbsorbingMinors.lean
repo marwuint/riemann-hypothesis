@@ -42,10 +42,6 @@ variable [StarRing K]
 
 def sig (K : Type) [Field K] [StarRing K] : 𝓞 K ≃+* 𝓞 K := RingOfIntegers.mapRingEquiv (starRingAut : K ≃+* K)
 
-omit [NumberField K] in
-
-theorem coe_sig (x : 𝓞 K) : ((sig K x : 𝓞 K) : K) = star (x : K) := rfl
-
 end Ideals
 
 section Flags

@@ -24,8 +24,6 @@ abbrev WC : Type _ := WittVector p (Cb p)
 
 instance : IsAlgClosed (Cb p) := isAlgClosed_tilt
 
-def toWC : AInf ℂ_[p] p →+* WC p := WittVector.map (algebraMap (Ob p) (Cb p))
-
 variable {p} {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 theorem preTiltMap_congr {f g : ℂ_[p] →+* ℂ_[p]} (hf : ∀ x, ‖f x‖ = ‖x‖) (hg : ∀ x, ‖g x‖ = ‖x‖)

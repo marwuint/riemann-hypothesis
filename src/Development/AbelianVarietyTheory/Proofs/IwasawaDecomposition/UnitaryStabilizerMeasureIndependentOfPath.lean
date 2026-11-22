@@ -213,10 +213,6 @@ theorem ratTup_lrAct {M n : ℕ} (γ : Matrix (Fin n) (Fin n) E) (X : Fin n → 
   funext a i
   simp [ratTup, lrAct]
 
-theorem ratTup_zero {M N : ℕ} (x : Fin 1 → Fin M → E) (B : Matrix (Fin M) (Fin N) E)
-    (y : Fin 1 → Fin N → E) :
-    ratTup (F := F) R ![x 0, B *ᵥ y 0] 0 = ratTup (F := F) R x 0 := rfl
-
 theorem ratTup_one {M N : ℕ} (x : Fin 1 → Fin M → E) (B : Matrix (Fin M) (Fin N) E)
     (y : Fin 1 → Fin N → E) :
     ratTup (F := F) R ![x 0, B *ᵥ y 0] 1 = B.map (inclR (F := F) R) *ᵥ ratTup (F := F) R y 0 := by

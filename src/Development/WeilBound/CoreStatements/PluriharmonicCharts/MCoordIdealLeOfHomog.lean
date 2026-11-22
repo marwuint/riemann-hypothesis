@@ -207,8 +207,6 @@ def regO (y : (Σ k, ι k) → Φ) (z : (Σ k, ι k) → L) : Subring Φ where
   zero_mem' := ⟨_, hasVal_zero⟩
   neg_mem' := fun ⟨_, h⟩ => ⟨_, h.neg⟩
 
-theorem mem_regO {s : Φ} : s ∈ regO y z ↔ ∃ v, HasVal y z s v := Iff.rfl
-
 def valO (hz : IsPt y z) : regO y z →+* L where
   toFun s := s.2.choose
   map_one' := (Exists.choose_spec (1 : regO y z).2).unique hz hasVal_one

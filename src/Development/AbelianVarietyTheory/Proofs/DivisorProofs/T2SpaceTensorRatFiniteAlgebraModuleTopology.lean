@@ -70,28 +70,6 @@ section Tensor
 variable (R : Type) [CommRing R] [Algebra ℚ R] [TopologicalSpace R] [IsTopologicalRing R]
   (F : Type) [Field F] [NumberField F]
 
-def tensorInt (O : Subring R) : Subring (R ⊗[ℚ] F) where
-  carrier := {x | ∀ i j, Algebra.leftMulMatrix (Algebra.TensorProduct.basis R (Module.finBasis ℚ F)) x i j ∈ O}
-  mul_mem' := by
-    intro x y hx hy i j
-    simp only [Set.mem_setOf_eq, map_mul, Matrix.mul_apply]
-    exact sum_mem fun k _ ↦ mul_mem (hx i k) (hy k j)
-  one_mem' := by
-    intro i j
-    simp only [Set.mem_setOf_eq, map_one, Matrix.one_apply]
-    split_ifs
-    · exact O.one_mem
-    · exact O.zero_mem
-  add_mem' := by
-    intro x y hx hy i j
-    simp only [Set.mem_setOf_eq, map_add, Matrix.add_apply]
-    exact add_mem (hx i j) (hy i j)
-  zero_mem' := by intro i j; simp
-  neg_mem' := by
-    intro x hx i j
-    simp only [Set.mem_setOf_eq, map_neg, Matrix.neg_apply]
-    exact neg_mem (hx i j)
-
 def mulMatAlg (A : Type) [Ring A] [Algebra ℚ A] [Module.Finite ℚ A] :
     R ⊗[ℚ] A →ₐ[R] Matrix (Fin (Module.finrank ℚ A)) (Fin (Module.finrank ℚ A)) R :=
   (LinearMap.toMatrixAlgEquiv (Algebra.TensorProduct.basis R (Module.finBasis ℚ A))).toAlgHom.comp

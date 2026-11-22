@@ -380,26 +380,8 @@ variable (XF : BaseObjectsAlongFamily Fm) (YF : ProvF Fm XF)
 
 def AdmFx : Prop := ∀ x hx (i : Fm.Ix x), admitted (Fm.D x i) (XF x hx i) (YF x hx i)
 
-def familyPoincareExtensionAndPointBounds (ka : ℝ) : Prop :=
-  ∀ x hx (i : Fm.Ix x),
-    Conclusion1 (Fm.D x i) (XF x hx i) (YF x hx i) ∧ Conclusion2 (Fm.D x i) (XF x hx i) (YF x hx i) ∧
-    PointsLemma (Fm.D x i) (XF x hx i) ka ∧ Conclusion4 (Fm.D x i) (XF x hx i) (YF x hx i) ∧
-    Conclusion5 (Fm.D x i) (XF x hx i) ∧ Conclusion6 (Fm.D x i) (XF x hx i)
-
-def FamilyPacketImplication (ka : ℝ) : Prop := AdmFx Fm XF YF → familyPoincareExtensionAndPointBounds Fm XF YF ka
-
 def InClass (𝒪 : ObjClass) : Prop := ∀ x hx (i : Fm.Ix x), 𝒪 (YF x hx i)
 
 end Family
-
-def ClosedAbsoluteShare (𝒞 : Formalism.MainNotions.FamClass) (𝒪 : ObjClass) (ka : ℝ) : Prop :=
-  Formalism.MainNotions.Closed 𝒞 (fun Fm _ =>
-    ∀ (XF : BaseObjectsAlongFamily Fm) (YF : ProvF Fm XF), InClass Fm XF YF 𝒪 → FamilyPacketImplication Fm XF YF ka)
-
-def PacketAlongFamilyInClass (𝒪 : ObjClass) (ka : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
-  ∀ (XF : BaseObjectsAlongFamily Fm) (YF : ProvF Fm XF), InClass Fm XF YF 𝒪 → FamilyPacketImplication Fm XF YF ka
-
-theorem closedPacket_iff_alongFamily (𝒞 : Formalism.MainNotions.FamClass) (𝒪 : ObjClass) (ka : ℝ) :
-    ClosedAbsoluteShare 𝒞 𝒪 ka ↔ Formalism.MainNotions.Closed 𝒞 (fun Fm _ => PacketAlongFamilyInClass 𝒪 ka Fm) := Iff.rfl
 
 end Formalism.MainNotions.BoundaryLocalData

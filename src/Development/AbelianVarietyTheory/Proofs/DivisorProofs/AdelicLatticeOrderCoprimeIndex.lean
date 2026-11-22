@@ -12,7 +12,4 @@ namespace GlobalTheory.CMVal.LatLoc
 
 variable {E : Type} [Field E] [NumberField E]
 
-theorem natCast_coord (n : ℕ) (w : HeightOneSpectrum (𝓞 E)) : (n : Af E) w = (n : w.adicCompletion E) := by
-  rfl
-
 end GlobalTheory.CMVal.LatLoc

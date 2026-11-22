@@ -35,10 +35,6 @@ def indFun (φ : H →* G) : (H → ℂ) →ₗ[ℂ] (G → ℂ) where
     refine Finset.sum_congr rfl fun h _ ↦ ?_
     split_ifs <;> simp
 
-open Classical in
-theorem indFun_apply (φ : H →* G) (ψ : H → ℂ) (s : G) :
-    indFun φ ψ s = (Nat.card H : ℂ)⁻¹ * ∑ t : G, ∑ h : H, if φ h = t⁻¹ * s * t then ψ h else 0 := rfl
-
 omit [Fintype G] [Fintype H] in
 
 theorem IsClassFun.comp {χ : G → ℂ} (hχ : IsClassFun χ) (φ : H →* G) : IsClassFun (χ ∘ φ) := by

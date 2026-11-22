@@ -256,8 +256,6 @@ def subThick : Thick (V.fn.cr b ht κ) ⥤ Thick (F.cr b ht κ) where
 
 variable {Λ : Type} [CommRing Λ] (c : Λ →+* b.R)
 
-theorem subThick_OM : subThick V b ht κ ⋙ OM _ c = OM _ c := rfl
-
 theorem subThick_rees (ρ : ℕ → ℕ) (hρ : Slow ρ) (μ : Λ) (hμ : c μ ∈ b.I) :
     subThick V b ht κ ⋙ (pdFlt _ c ρ hρ μ hμ).rees = (pdFlt _ c ρ hρ μ hμ).rees := rfl
 

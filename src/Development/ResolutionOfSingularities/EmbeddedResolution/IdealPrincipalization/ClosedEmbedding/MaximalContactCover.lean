@@ -179,16 +179,6 @@ def coverHypersurfaceIdeal {X X' : Scheme.{u}} {k : Type u} [Field k]
   | Sum.inl a => (A a).chart.coordIdeal {(A a).coord}
   | Sum.inr _ => ⊤
 
-theorem coverHypersurfaceIdeal_inl {X X' : Scheme.{u}} {k : Type u} [Field k]
-    {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
-    (A : α → AdaptedEtaleChart p τ c) (B : β → DisjointEtaleChart p τ) (a : α) :
-    coverHypersurfaceIdeal A B (Sum.inl a) = (A a).chart.coordIdeal {(A a).coord} := rfl
-
-theorem coverHypersurfaceIdeal_inr {X X' : Scheme.{u}} {k : Type u} [Field k]
-    {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
-    (A : α → AdaptedEtaleChart p τ c) (B : β → DisjointEtaleChart p τ) (b : β) :
-    coverHypersurfaceIdeal A B (Sum.inr b) = ⊤ := rfl
-
 structure MaximalContactCover {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) (τ : X ⟶ X') (I : X.IdealSheafData) (c : ℕ) :
     Type (u + 1) where

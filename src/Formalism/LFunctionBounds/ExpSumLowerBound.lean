@@ -8,13 +8,6 @@ namespace Formalism.FX
 
 open Classical
 
-def TripleAverageIdentity : Prop :=
-  ∀ (l : ℕ) [NeZero l], l.Prime → l ≠ 2 → ∀ ν : ℕ × ℕ × ℕ → ℝ, IsProb l ν → ∀ x : ℝ, 1 ≤ x →
-    ∑ S ∈ triples l, ν S * (AS l S x + 2 * Al l x - tripleMainTerm l S x) =
-      famComb (fun _ : oddChars l => l) (fun χ => (χ : DirichletCharacter ℂ l)⁻¹)
-          (fun χ => cW l ν χ) x
-        - (x * Real.log l / ((l : ℝ) - 1) - Al l x)
-
 def rectInt (g : ℂ → ℂ) (x0 x1 y0 y1 : ℝ) : ℂ :=
   (∫ x in x0..x1, g (x + y0 * I)) - (∫ x in x0..x1, g (x + y1 * I)) +
     I * (∫ y in y0..y1, g (x1 + y * I)) - I * (∫ y in y0..y1, g (x0 + y * I))

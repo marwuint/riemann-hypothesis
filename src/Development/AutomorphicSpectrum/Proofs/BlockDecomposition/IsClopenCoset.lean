@@ -21,8 +21,6 @@ variable (k d) in
 def gHom (g : GL (Fin d) k) : (Fin d → k) →+ (Fin d → k) :=
   (Matrix.mulVecLin (g : Matrix (Fin d) (Fin d) k)).toAddMonoidHom
 
-theorem gHom_apply (g : GL (Fin d) k) (y : Fin d → k) : gHom g y = (g : Matrix (Fin d) (Fin d) k).mulVec y := rfl
-
 def COSub.act (L : COSub k d) (g : GL (Fin d) k) : COSub k d where
   sub := L.sub.comap (gHom g⁻¹)
   isOpen := L.isOpen.preimage (glHomeo g).symm.continuous

@@ -22,8 +22,6 @@ variable {O A AA : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing AA] [
 def fA (hm : WachCohomologyFacts.Hom W₁ W₂) : (ZMod n → V₁) →ₗ[A] (ZMod n → V₂) :=
   LinearMap.pi (fun j => (hm.f.restrictScalars A).comp (LinearMap.proj j))
 
-theorem fA_apply (hm : WachCohomologyFacts.Hom W₁ W₂) (x : ZMod n → V₁) : fA hm x = hm.fD x := rfl
-
 end HomPart
 
 end GammaInvariantLatticeLift

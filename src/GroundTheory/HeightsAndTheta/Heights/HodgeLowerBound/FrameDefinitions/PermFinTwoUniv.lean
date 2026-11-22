@@ -51,10 +51,4 @@ end Roots
 
 def abelian₂ (B rd Lval : ℝ) : ℝ := Real.log (B * rd) + |Lval|
 
-section Line
-
-theorem dimN_line : dimN Unit 2 1 = 1 := rfl
-
-end Line
-
 end GroundTheory.Heights₂.Heights.LowerBoundFree

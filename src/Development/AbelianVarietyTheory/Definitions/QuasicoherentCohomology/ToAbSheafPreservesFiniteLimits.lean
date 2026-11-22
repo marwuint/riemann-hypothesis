@@ -185,9 +185,6 @@ def linearEquiv (f : M ≃+ N) (h : ∀ a x, f (ρ a x) = σ a (f x)) :
   map_add' := f.map_add
   map_smul' _ x := h _ x
 
-lemma toBase_linearEquiv (f : M ≃+ N) (h : ∀ a x, f (ρ a x) = σ a (f x)) (x : WithAction ρ) :
-    toBase σ (linearEquiv ρ σ R f h x) = f (toBase ρ x) := rfl
-
 end WithAction
 
 @[simps] def functorEndRingHom {C D : Type*} [Category C] [Category D] [Preadditive C]

@@ -8,9 +8,6 @@ open GlobalTheory.CompanionTheory.Ar
 
 variable {O : Type} [CommRing O] (s : O ≃+* O) (L : Type) [AddCommGroup L] [Module O L]
 
-theorem twMod_smul (c : O) (x : L) :
-    (c • (show TwMod s L from x) : TwMod s L) = (show TwMod s L from s c • x) := rfl
-
 def twOut {n : ℕ} (f : (Fin n → O) →ₗ[O] L) : (Fin n → O) →ₗ[O] TwMod s L where
   toFun v := (show TwMod s L from f (fun i => s (v i)))
   map_add' v w := by

@@ -31,8 +31,6 @@ def halfSub (e : AE D) : AddSubgroup (WO S T) where
   zero_mem' := fun i j => by rw [Matrix.zero_apply, mul_zero]
   neg_mem' {a} ha := fun i j => by rw [Matrix.neg_apply, mul_neg, ha i j]
 
-theorem mem_halfSub {e : AE D} {u : WO S T} : u ∈ halfSub S T e ↔ IsHalf e u := Iff.rfl
-
 theorem heisO_heisO (w w' : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T w (heisO ψ S T w' f) = ψ (symplOH S T w w') • heisO ψ S T (w + w') f := by
   funext x

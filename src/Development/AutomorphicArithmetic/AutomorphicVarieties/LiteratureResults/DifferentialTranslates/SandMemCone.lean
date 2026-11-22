@@ -26,9 +26,6 @@ def hv : Herm E a ≃ₗ[ℝ] HV E a where
   left_inv _ := rfl
   right_inv _ := rfl
 
-omit [NumberField E] in
-theorem hv_val (X : Herm E a) : Matrix.of (hv X).1 = X.1 := rfl
-
 variable (E a) in
 
 def hOne : HV E a := hv ⟨1, IsSelfAdjoint.one _⟩
@@ -89,8 +86,6 @@ def geo (ho : IsOpen (cone E a)) (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep
 section
 
 variable (ho : IsOpen (cone E a)) (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a)
-
-theorem geo_Y : (geo ho U Ξ).Y = cone E a := rfl
 
 theorem geo_ρ (γ : (⊤ : Subgroup (GL (Fin a) E))) :
     (geo ho U Ξ).ρ γ = sand (GeneralLinearGroup.map (pInf E) (ratGL E a γ.1)) := rfl

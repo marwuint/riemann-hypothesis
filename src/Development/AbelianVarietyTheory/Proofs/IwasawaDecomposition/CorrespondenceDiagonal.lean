@@ -26,11 +26,6 @@ theorem frame_at (Z : Mdl Y i₀) {R : Type} [CommRing R] (a : Fin Z.m) (φ : Γ
     GlobalTheory.LocM.IsFrame (Y Z.i).t (φ.comp (Z.alg a)) (spMap φ ≫ Z.chart a ≫ Z.π) ((Z.fr a).bc φ) :=
   GlobalTheory.LocM.isFrame_bc E H Dw _ _ _ _ _ _ _ φ _ _ (Z.frame a)
 
-theorem flagAt_chart (Z : Mdl Y i₀) {k : Type} [Field k] (a : Fin Z.m) (φ : Γ(Z.X, (Z.U a).1) →+* k) :
-    Z.FlagAt (spMap φ ≫ Z.chart a) ((Z.fr a).bc φ) :=
-  ⟨a, φ, rfl, by rw [Category.assoc]; exact frame_at Z a φ,
-    SameFlag.refl fun τ i => by rw [Category.assoc]; exact ((frame_at Z a φ).1 τ i).1⟩
-
 variable {Z₁ Z₂ : Mdl Y i₀} {τ : (Y Z₁.i).X ⟶ (Y Z₂.i).X} (mu : SABMap (Y Z₁.i).t (Y Z₂.i).t τ)
 
 variable (hc : GlobalTheory.LocM.Corr Z₁ Z₂) {b : Z₂.i.c.V W →+* Z₁.i.c.V W} (hb : IsIncl b)

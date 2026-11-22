@@ -130,9 +130,6 @@ variable {N N' : ℕ} {s : D.host.E} (hs : s * D.host.conj s = 1) (cc : Ideal (�
 
 theorem sc_apply (z : VC D N N') (τ i j) : sc N N' s hs z τ i j = embT D τ s * z τ i j := rfl
 
-theorem sc_symm_apply (z : VC D N N') (τ i j) :
-    (sc N N' s hs).symm z τ i j = starRingEnd ℂ (embT D τ s) * z τ i j := rfl
-
 theorem closure_iff {V : Type} [AddCommGroup V] (φ : V ≃+ V) {S S' : Set V}
     (h1 : ∀ x ∈ S, φ x ∈ AddSubgroup.closure S') (h2 : ∀ y ∈ S', φ.symm y ∈ AddSubgroup.closure S) (x : V) :
     φ x ∈ AddSubgroup.closure S' ↔ x ∈ AddSubgroup.closure S := by

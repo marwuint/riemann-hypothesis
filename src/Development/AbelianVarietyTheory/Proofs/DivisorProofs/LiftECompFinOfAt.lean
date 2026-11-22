@@ -46,12 +46,6 @@ theorem one_add_liftE_mul (v : Pl F) (x y : Fv F v ⊗[F] E) :
   rw [this, map_add, map_add, liftE_mul]
   ring
 
-theorem one_add_liftV_mul (v : Pl F) (x y : Fv F v) :
-    (1 + GlobalTheory.LatVac.liftV v (x - 1)) * (1 + GlobalTheory.LatVac.liftV v (y - 1)) = 1 + GlobalTheory.LatVac.liftV v (x * y - 1) := by
-  have : x * y - 1 = (x - 1) + (y - 1) + (x - 1) * (y - 1) := by ring
-  rw [this, map_add, map_add, liftV_mul]
-  ring
-
 def liftU (v : Pl F) : (Fv F v ⊗[F] E)ˣ →* (AE F E)ˣ where
   toFun z := ⟨1 + liftE v ((z : Fv F v ⊗[F] E) - 1), 1 + liftE v (((z⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) - 1),
     by rw [one_add_liftE_mul, Units.mul_inv, sub_self, map_zero, add_zero],
@@ -59,18 +53,8 @@ def liftU (v : Pl F) : (Fv F v ⊗[F] E)ˣ →* (AE F E)ˣ where
   map_one' := by ext; simp
   map_mul' z w := by ext; simp only [Units.val_mul, Units.val_mk]; rw [one_add_liftE_mul]
 
-def liftUF (v : Pl F) : (Fv F v)ˣ →* (AF F)ˣ where
-  toFun a := ⟨1 + GlobalTheory.LatVac.liftV v ((a : Fv F v) - 1), 1 + GlobalTheory.LatVac.liftV v (((a⁻¹ : (Fv F v)ˣ) : Fv F v) - 1),
-    by rw [one_add_liftV_mul, Units.mul_inv, sub_self, map_zero, add_zero],
-    by rw [one_add_liftV_mul, Units.inv_mul, sub_self, map_zero, add_zero]⟩
-  map_one' := by ext; simp
-  map_mul' z w := by ext; simp only [Units.val_mul, Units.val_mk]; rw [one_add_liftV_mul]
-
 theorem liftU_val (v : Pl F) (z : (Fv F v ⊗[F] E)ˣ) :
     ((liftU v z : (AE F E)ˣ) : AE F E) = 1 + liftE v ((z : Fv F v ⊗[F] E) - 1) := rfl
-
-theorem liftUF_val (v : Pl F) (a : (Fv F v)ˣ) :
-    ((liftUF v a : (AF F)ˣ) : AF F) = 1 + GlobalTheory.LatVac.liftV v ((a : Fv F v) - 1) := rfl
 
 end GlobalTheory.HoweLocal
 

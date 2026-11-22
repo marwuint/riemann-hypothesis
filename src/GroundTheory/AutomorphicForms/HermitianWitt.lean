@@ -40,9 +40,6 @@ theorem bijective_of_injective_sesq [FiniteDimensional E V]
 
 namespace HermitianForm
 
-def quasiReflection (h : HermitianForm F E V) (w : V) (c : E) : V →ₗ[E] V :=
-  LinearMap.id - (c • h.toSesq w).smulRight w
-
 def equivOfIsometry [FiniteDimensional E V] (h : HermitianForm F E V) (f : V →ₗ[E] V)
     (hf : ∀ x y, h.toSesq (f x) (f y) = h.toSesq x y) : V ≃ₗ[E] V :=
   LinearEquiv.ofInjectiveEndo f (by

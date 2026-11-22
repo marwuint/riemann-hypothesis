@@ -83,9 +83,6 @@ theorem autGL_mem (g : GL (Fin V.rank) (AE D)) (hg : g ∈ HR (AF D.host.F) D.sp
 def aut : GA D V →* GA D V :=
   (s.autGL.comp (matHom V)).codRestrict (HR (AF D.host.F) D.sp.cm.sig V.gram) fun g => s.autGL_mem _ g.2
 
-theorem mt_aut (g : GA D V) : mt V (s.aut g) =
-    s.PA.val * cM (mt V g) * (s.PA⁻¹).val := rfl
-
 end ConjIsom
 
 theorem gram_herm (V : HSp D) : Formalism.UG.cT (cE D) V.gram = V.gram := by

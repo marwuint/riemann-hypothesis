@@ -83,21 +83,6 @@ def tensHerm (hA : HermL F E A) (hB : HermL F E B) :
 
 variable [Module F A] [IsScalarTower F E A]
 
-def weilForm (ξ : E) (hA : HermL F E A) (hB : HermL F E B) : LinearMap.BilinForm F (A ⊗[E] B) :=
-  LinearMap.mk₂ F (fun w w' => Algebra.trace F E (ξ * tensHerm hA hB w w'))
-    (fun _ _ _ => by rw [map_add, LinearMap.add_apply, mul_add, map_add])
-    (fun c w w' => by
-      rw [← algebraMap_smul E c w, map_smul, LinearMap.smul_apply, smul_eq_mul, mul_left_comm,
-        ← Algebra.smul_def, map_smul, smul_eq_mul])
-    (fun _ _ _ => by rw [map_add, mul_add, map_add])
-    (fun c w w' => by
-      rw [← algebraMap_smul E c w', LinearMap.map_smulₛₗ, smul_eq_mul]
-      change Algebra.trace F E (ξ * (conj F E (algebraMap F E c) * _)) = _
-      rw [conj_algebraMap, mul_left_comm, ← Algebra.smul_def, map_smul, smul_eq_mul])
-
-theorem weilForm_apply (ξ : E) (hA : HermL F E A) (hB : HermL F E B) (w w' : A ⊗[E] B) :
-    weilForm ξ hA hB w w' = Algebra.trace F E (ξ * tensHerm hA hB w w') := rfl
-
 end Tensor
 
 section Heisenberg
@@ -114,9 +99,6 @@ def Sp (ω : LinearMap.BilinForm R W) : Subgroup (W ≃ₗ[R] W) where
     change ω (a.symm w) (a.symm w') = _
     conv_rhs => rw [← a.apply_symm_apply w, ← a.apply_symm_apply w']
     rw [ha]
-
-theorem mem_Sp {ω : LinearMap.BilinForm R W} {g : W ≃ₗ[R] W} :
-    g ∈ Sp ω ↔ ∀ w w', ω (g w) (g w') = ω w w' := Iff.rfl
 
 @[ext]
 structure Heis (ω : LinearMap.BilinForm R W) where
@@ -170,27 +152,11 @@ structure Polarization (ω : LinearMap.BilinForm R W) (X Y : Type*) [AddCommGrou
 
   isotropic_Y : ∀ y y' : Y, ω (e (0, y)) (e (0, y')) = 0
 
-namespace Polarization
-
-end Polarization
-
 variable {X Y : Type*} [AddCommGroup X] [Module R X] [AddCommGroup Y] [Module R Y]
 
 end Heisenberg
 
 section Examples
-
-def gaussFormL : GaussQ →ₗ[GaussQ] GaussQ →ₛₗ[conjHom ℚ GaussQ] GaussQ :=
-  LinearMap.mk₂'ₛₗ (RingHom.id GaussQ) (conjHom ℚ GaussQ) (fun x y => x * conj ℚ GaussQ y)
-    (fun _ _ _ => add_mul _ _ _)
-    (fun c x y => by rw [smul_eq_mul, smul_eq_mul, RingHom.id_apply, mul_assoc])
-    (fun x y y' => by rw [map_add, mul_add])
-    (fun c x y => by
-      show x * conj ℚ GaussQ (c * y) = conj ℚ GaussQ c * (x * conj ℚ GaussQ y)
-      rw [map_mul]
-      ring)
-
-theorem gaussFormL_apply (x y : GaussQ) : gaussFormL x y = x * conj ℚ GaussQ y := rfl
 
 def stdSymp (R : Type*) [CommRing R] : LinearMap.BilinForm R (R × R) :=
   LinearMap.mk₂ R (fun u v => u.1 * v.2 - u.2 * v.1)
@@ -198,9 +164,6 @@ def stdSymp (R : Type*) [CommRing R] : LinearMap.BilinForm R (R × R) :=
     (fun _ _ _ => by simp only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul]; ring)
     (fun _ _ _ => by simp only [Prod.fst_add, Prod.snd_add]; ring)
     (fun _ _ _ => by simp only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul]; ring)
-
-theorem stdSymp_apply (R : Type*) [CommRing R] (u v : R × R) :
-    stdSymp R u v = u.1 * v.2 - u.2 * v.1 := rfl
 
 end Examples
 

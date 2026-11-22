@@ -26,8 +26,6 @@ def biInt : Subring K where
     rintro a ⟨a1, a2⟩
     exact ⟨by simpa using a1, by simpa using a2⟩
 
-theorem mem_biInt {k : K} : k ∈ biInt v ↔ v k ≤ 1 ∧ v (star k) ≤ 1 := Iff.rfl
-
 theorem bound_of_span (h : V →ₗ⋆[K] V →ₗ[K] K) (T : Set V) (m : Γ)
     (hT : ∀ x ∈ T, ∀ y ∈ T, v (h x y) ≤ m) :
     ∀ x ∈ Submodule.span (biInt v) T, ∀ y ∈ Submodule.span (biInt v) T, v (h x y) ≤ m := by

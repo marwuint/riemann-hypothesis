@@ -28,9 +28,6 @@ def pushT (X : Tower Ω ε) (l N M : ℕ) [Fact l.Prime] [NeZero M] (b : X.Fn l)
   ∑ r₀ : (ZMod l)ˣ, ∑ γ ∈ gamMod N l M,
     X.act l ((GlobalTheory.ZetaB.gR l N (r₀ : ZMod l) * liftSL M γ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) b
 
-def clsZT (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n r N : ℕ) [NeZero N] (x : ZMod N) (c d k : ℕ) (σ : Ω ≃ₐ[ℚ] Ω) : X.Fn l :=
-  pushT X l N (topM l n r N) (secT X l (k - 2) (wkTop X l n r N x c d σ))
-
 def crtF (m N : ℕ) : ℤ := (m : ℤ) * (((m : ZMod N)⁻¹).val : ℤ)
 
 def sigN (m N : ℕ) : SL(2, ℤ) :=
@@ -41,28 +38,8 @@ def wMat (l N : ℕ) : Matrix (Fin 2) (Fin 2) ℤ := (sigN l N : Matrix (Fin 2) 
 
 def wB (X : Tower Ω ε) (l N : ℕ) [Fact l.Prime] : X.Fn l →ₗ[ℤ_[l]] X.Fn l := X.act l (wMat l N)
 
-def clsBT (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n r N : ℕ) [NeZero N] (x : ZMod N) (c d k : ℕ) (σ : Ω ≃ₐ[ℚ] Ω) : X.Fn l :=
-  wB X l N (clsZT X l n r N x c d k σ)
-
 def shArg (M : ℕ) (s : Ω ≃ₐ[ℚ] Ω) (y : (ZMod M)ˣ) : Ω ≃ₐ[ℚ] Ω :=
   (repM M y)⁻¹ * s * repM M (y * (cycM M s)⁻¹)
-
-def YBc (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n r N : ℕ) [NeZero N] (x : ZMod N) (c d k : ℕ) (s : Ω ≃ₐ[ℚ] Ω)
-    (y : (ZMod (topM l n r N))ˣ) : X.Fn l :=
-  X.galB l (repM (topM l n r N) y)
-    (clsBT X l n r N x c d k ((repM (topM l n r N) y)⁻¹ * s * repM (topM l n r N) (y * (cycM (topM l n r N) s)⁻¹)))
-
-def YBr (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n r N : ℕ) [NeZero N] (x : ZMod N) (c d k : ℕ) :
-    (Ω ≃ₐ[ℚ] Ω) → (ZMod (l ^ r))ˣ → X.Fn l :=
-  GlobalTheory.KA.push (redM l n r N) (YBc X l n r N x c d k)
-
-def IsZetaB (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (pr : X.Fn l → Fin 2 → Qbar l) (ρ : R2 Ω l)
-    (N : ℕ) [NeZero N] (x : ZMod N) (c d k : ℕ) (cf : Coef l)
-    (Y : ∀ r : ℕ, (Ω ≃ₐ[ℚ] Ω) → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l) : Prop :=
-  ∀ r n : ℕ, ∃ β : (Ω ≃ₐ[ℚ] Ω) → (ZMod (l ^ r))ˣ → X.Fn l, (∀ s y, β s y ∈ X.B N l (k - 2)) ∧
-    (∀ s y u, (β s y - YBr X l n r N x c d k s y) u ∈ (idl l) ^ n • (⊤ : Submodule ℤ_[l] (X.Khat l))) ∧
-    ∃ b : (ZMod (l ^ r))ˣ → Fin 2 → Qbar l, (∀ y i, b y i ∈ cf.O) ∧ ∀ s y,
-      Cv n (Y r s y) (pr (β s y) + (mat ρ s *ᵥ b (y * (cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹) - b y))
 
 def lnFn (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) : Submodule ℤ_[l] (X.Fn l) :=
   Submodule.pi Set.univ fun _ => (idl l) ^ n • (⊤ : Submodule ℤ_[l] (X.Khat l))

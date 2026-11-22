@@ -46,13 +46,6 @@ def autMk (V : HSpace E r) (g : GA F V) : AutQ F V := Quotient.mk _ g
 
 instance (V : HSpace E r) : MeasurableSpace (AutQ F V) := (@borel _ (topG F V)).map (autMk F V)
 
-def autRt (V : HSpace E r) (h : GA F V) : AutQ F V → AutQ F V :=
-  Quotient.map' (· * h) fun a b hab => by
-    rw [QuotientGroup.rightRel_apply] at hab ⊢
-    simpa [mul_assoc] using hab
-
-theorem autRt_mk (V : HSpace E r) (h g : GA F V) : autRt F V h (autMk F V g) = autMk F V (g * h) := rfl
-
 end Quot
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]

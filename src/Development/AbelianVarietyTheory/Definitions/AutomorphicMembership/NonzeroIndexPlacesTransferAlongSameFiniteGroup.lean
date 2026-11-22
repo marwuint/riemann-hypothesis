@@ -91,9 +91,6 @@ theorem tr_z_eq_transfer : (r.tr c).z = r.z.transfer c.same := rfl
 
 end RowsAre
 
-theorem Refill.ofDiv_D (L : ∀ u, Submodule (𝓞 B.LL) (a.V.div.Nu u).V) (h : B.Word → ℝ) :
-    (Refill.ofDiv a L h).to.D = GlobalTheory.EX.OB.setDiv a.D L h := rfl
-
 end Rows
 
 end GlobalTheory.Mem.R3

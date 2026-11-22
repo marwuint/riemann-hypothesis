@@ -139,11 +139,6 @@ def WordSpec : Prop :=
   ∀ (k V P R : Type) [CommRing k] [AddCommGroup V] [Module k V] [DecidableEq P] [DecidableEq R]
     (S : HidaSetting k V P R) (n : ℕ) (g : Fin n → R × P), S.Fs (cont g) = S.Fw g ∧ S.Es (cont g) = S.Ew g
 
-def AARankTwo : Prop :=
-  ∀ (k M : Type) [CommRing k] [AddCommGroup M] [Module k M] (n : ℕ) (y t : k),
-    (AA k (fun _ _ : Unit => y • (1 : Module.End k M)) n t : Module.End k (Tens Unit Unit M n)) =
-      (∏ j ∈ Finset.range n, (t - y - (j : k))) • 1
-
 def OneStep : Prop :=
   ∀ (k V P R : Type) [CommRing k] [AddCommGroup V] [Module k V] [DecidableEq P] [DecidableEq R] [Fintype P] [Fintype R]
     (S : HidaSetting k V P R) (n : ℕ) (v : R × P) (z : Tens R P S.W (n + 1)),

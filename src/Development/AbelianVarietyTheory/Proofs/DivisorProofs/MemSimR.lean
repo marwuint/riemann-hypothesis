@@ -9,29 +9,6 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CentTorus
 
-def simR (R : Type) [CommRing R] {A : Type} [CommRing A] [Algebra R A] (c : A →ₐ[R] A) : Subgroup Aˣ where
-  carrier := {x | ∃ t : Rˣ, (x : A) * c x = algebraMap R A t}
-  one_mem' := ⟨1, by simp⟩
-  mul_mem' := by
-    rintro x y ⟨s, hs⟩ ⟨t, ht⟩
-    refine ⟨s * t, ?_⟩
-    simp only [Units.val_mul, map_mul]
-    rw [show (x : A) * y * (c x * c y) = (x * c x) * (y * c y) by ring, hs, ht]
-  inv_mem' := by
-    rintro x ⟨s, hs⟩
-    refine ⟨s⁻¹, ?_⟩
-    have h1 : ((x⁻¹ : Aˣ) : A) * c ((x⁻¹ : Aˣ) : A) * algebraMap R A s = 1 := by
-      rw [← hs, show ((x⁻¹ : Aˣ) : A) * c ((x⁻¹ : Aˣ) : A) * ((x : A) * c x)
-          = (((x⁻¹ : Aˣ) : A) * x) * c (((x⁻¹ : Aˣ) : A) * x) by rw [map_mul]; ring]
-      simp
-    calc ((x⁻¹ : Aˣ) : A) * c ((x⁻¹ : Aˣ) : A)
-        = ((x⁻¹ : Aˣ) : A) * c ((x⁻¹ : Aˣ) : A) * (algebraMap R A s * algebraMap R A ((s⁻¹ : Rˣ) : R)) := by
-          rw [← map_mul, Units.mul_inv, map_one, mul_one]
-      _ = algebraMap R A ((s⁻¹ : Rˣ) : R) := by rw [← mul_assoc, h1, one_mul]
-
-theorem mem_simR {R : Type} [CommRing R] {A : Type} [CommRing A] [Algebra R A] {c : A →ₐ[R] A} {x : Aˣ} :
-    x ∈ simR R c ↔ ∃ t : Rˣ, (x : A) * c x = algebraMap R A t := Iff.rfl
-
 variable {p : ℕ} [Fact p.Prime]
 
 abbrev algF {G : HTGroup p} (P : Pair G) : Subalgebra G.F G.C := Algebra.adjoin G.F {(P.γ : G.C)}

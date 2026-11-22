@@ -130,14 +130,6 @@ section PerPlace
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
 
-def psiUPl (N : NData R H what₂) {K : Type} [Field K]
-    (ψ : ∀ kv : (Σ k : Fin 2, N.PlG k), Multiplicative (ZMod (H.g kv.1)) →* Kˣ) : U N →* Kˣ :=
-  psiStd (fun kv : (Σ k : Fin 2, N.PlG k) => H.g kv.1) R.r ψ
-
-theorem psiUOf_eq_psiUPl (N : NData R H what₂) {K : Type} [Field K] (ξ : ∀ kv : (Σ k : Fin 2, N.PlG k), ZMod (H.g kv.1))
-    (θ : ∀ k : Fin 2, Multiplicative (ZMod (H.g k)) →* Kˣ) :
-    psiUOf N ξ θ = psiUPl N (thXi (fun kv : (Σ k : Fin 2, N.PlG k) => H.g kv.1) ξ (fun kv => θ kv.1)) := rfl
-
 end PerPlace
 
 end Formalism.IndefR.NX

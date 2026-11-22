@@ -33,16 +33,4 @@ def PeriodPoint.proj (y : PeriodPoint p q H) (x : Fin (p + q) → ℂ) : Fin (p 
 
 end Period
 
-section Examples
-
-theorem FlatDegreeBound.hypotheses_example :
-    let c : ℝ := -((((2 : ℕ) : ℝ) - ((1 : ℕ) : ℝ)) / 2 * 1 +
-        ((1 : ℕ) : ℝ) * (2 * Real.log (rootDiscr ℚ) -
-          Real.log (rootDiscr (CyclotomicField 4 ℚ))))
-    c = -((((2 : ℕ) : ℝ) - ((1 : ℕ) : ℝ)) / 2 * 1 +
-        ((1 : ℕ) : ℝ) * (2 * Real.log (rootDiscr ℚ) -
-          Real.log (rootDiscr (CyclotomicField 4 ℚ)))) := rfl
-
-end Examples
-
 end GroundTheory.Heights₂.Heights.FlatTheorem

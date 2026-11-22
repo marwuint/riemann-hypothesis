@@ -28,10 +28,6 @@ def rm (f : C ⥤ AffOp X) (g : D ⥤ AffOp X) (σ : D ⥤ C)
     exact h1.symm.trans h2
   smul T r b := map_smul (Sec.res s (h T)) r b
 
-theorem rm_pull (f : C ⥤ AffOp X) (g : D ⥤ AffOp X) (σ : D ⥤ C) (h) (i : ℕ) (z : Cn (f ⋙ OAff s) i)
-    (c : Fin (i + 1) ⥤ D) :
-    pulln (rm s f g σ h) i z c = Sec.res s (h (c.obj (Fin.last i))) (z (c ⋙ σ)) := rfl
-
 theorem pull_rm_rm (f : C ⥤ AffOp X) (g : D ⥤ AffOp X) (k : E ⥤ AffOp X) (σ : D ⥤ C) (τ : E ⥤ D) (h h')
     (h'' : ∀ T, (k.obj T).unop.1 ≤ (f.obj ((τ ⋙ σ).obj T)).unop.1) (i : ℕ) (z : Cn (f ⋙ OAff s) i) :
     pulln (rm s g k τ h') i (pulln (rm s f g σ h) i z) = pulln (rm s f k (τ ⋙ σ) h'') i z := by

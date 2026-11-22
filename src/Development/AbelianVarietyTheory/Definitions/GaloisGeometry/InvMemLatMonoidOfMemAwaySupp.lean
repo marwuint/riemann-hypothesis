@@ -73,22 +73,7 @@ section Wit
 
 variable {G₀ : GDatum} {R : Type} [CommRing R] [Algebra ℚ R]
 
-abbrev GTIsoAt {gb : GBase G₀ R} {S : Scheme.{0}} {s : S ⟶ Sp R} {N : ℕ} (o : GObj gb N s) {k : Type} [Field k]
-    (t : Sp k ⟶ S) : Type :=
-  GTateIso G₀ k (Over.mk t ⟶ o.A) (fun c g => g ≫ o.act.act c)
-    (fun n g g' z => Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) n g g' (unitOn z))
-
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) {gb : GBase D.toG R}
-
-def GActsAt {S : Scheme.{0}} {s : S ⟶ Sp R} {N N' : ℕ} {o' : GObj gb N' s} {o'' : GObj gb N s} {k : Type} [Field k]
-    {t : Sp k ⟶ S} (I' : GTIsoAt o' t) (I'' : GTIsoAt o'' t) (ψ : o'.A ⟶ o''.A) (m : ℤ) (h : G.GAf) : Prop :=
-  ∀ n : ℕ, 0 < n → n.Coprime p → ∀ x y : D.La,
-    I'.ev n x ≫ ψ = I''.ev n y ↔ ∃ v ∈ LaHat D, m • L.actG h (inAf D x) = inAf D y + n • v
-
-def latMonoid : Submonoid G.GAf where
-  carrier := {h | ∀ v ∈ LaHat D, L.actG h v ∈ LaHat D}
-  one_mem' := fun v hv => by rw [map_one]; exact hv
-  mul_mem' := fun {a b} ha hb v hv => by rw [map_mul, Module.End.mul_apply]; exact ha _ (hb v hv)
 
 theorem smul_mem_laHat {a : AfP p} (ha : IsIntAf a) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) : a • v ∈ LaHat D := by
   induction hv using AddSubgroup.closure_induction with
@@ -153,26 +138,7 @@ section Away
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p}
 
-def awayGrp (G : HTGroup p) (S : Finset ℕ) : Subgroup G.GAf :=
-  ⨅ (v : AwayP p) (_ : ∃ q ∈ S, q.Prime ∧ (q : ℤ) ∈ v.1.asIdeal), (ubcMap (AfP.eval v)).ker
-
 variable (L : Link D G)
-
-def awaySupp (N : ℕ) (S : Finset ℕ) : Set G.GAf :=
-  {g | ∃ h ∈ awayGrp G S, h ∈ latMonoid L ∧ g ∈ DoubleCoset.doubleCoset h⁻¹ (L.KN N : Set G.GAf) (L.KN N)}
-
-def heckeAway (N : ℕ) (S : Finset ℕ) : Submodule ℂ (G.GAf → ℂ) :=
-  Formalism.UG.Hecke ℂ (L.KN N) ⊓
-    { carrier := {f | ∀ g, f g ≠ 0 → g ∈ awaySupp L N S}
-      zero_mem' := fun _ h => (h rfl).elim
-      add_mem' := fun {f f'} hf hf' g hg => by
-        by_cases h : f g = 0
-        · exact hf' g fun h' => hg (by simp [h, h'])
-        · exact hf g h
-      smul_mem' := fun c f hf g hg => hf g fun h => hg (by simp [h]) }
-
-theorem mem_heckeAway {N : ℕ} {S : Finset ℕ} {f : G.GAf → ℂ} :
-    f ∈ heckeAway L N S ↔ f ∈ Formalism.UG.Hecke ℂ (L.KN N) ∧ ∀ g, f g ≠ 0 → g ∈ awaySupp L N S := Iff.rfl
 
 end Away
 

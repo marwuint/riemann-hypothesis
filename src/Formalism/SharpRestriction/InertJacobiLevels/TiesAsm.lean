@@ -43,8 +43,6 @@ variable {D : D7} {gatT : GatTies D} {L0 : SizeData₂ D} {kapI : KapI} {ep : �
 
 def L : SizeData₂ D := tieL L0 (instW L0 kapI ep) K Cr Λ.len H.hw H.hg H.hu
 
-theorem lenMN_eq : (H.L K Cr Λ).lenMN = Λ.len := rfl
-
 end TieHyp
 
 end Formalism.MainNotions.Inhab

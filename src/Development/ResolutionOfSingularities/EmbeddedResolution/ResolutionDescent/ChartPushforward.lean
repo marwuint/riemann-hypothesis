@@ -117,10 +117,6 @@ def ofIsPushforwardSeq (hemb : S.emb ≫ f = S'.emb)
   ambientCenter_eq := fun i hi => ambientCenter_eq_imageIdealSheaf_of_isPushforwardBlowupSeq S S' f h i hi
   ker_levelMap_succ := fun i hi => ker_succ_eq_strictTransform_of_isPushforwardBlowupSeq S S' f h i hi
 
-theorem ofIsPushforwardSeq_ambientMap (hemb : S.emb ≫ f = S'.emb)
-    (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) :
-    (ofIsPushforwardSeq S S' f hemb h).ambientMap = f := rfl
-
 end
 
 section

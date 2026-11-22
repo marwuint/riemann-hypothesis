@@ -20,10 +20,6 @@ section OfStandard
 
 variable {K : Type} [Field K] [NumberField K]
 
-omit [NumberField K] in
-theorem evalCone_eq {N : ℕ} (z : Cone (fun _ : Unit ↦ N) ℂ) (f : MvPolynomial (Coord (fun _ : Unit ↦ N)) ℤ) :
-    evalCone z f = eval₂Hom (Int.castRingHom ℂ) (fun v ↦ z v.1 v.2) f := rfl
-
 end OfStandard
 
 end OneBlockPoints

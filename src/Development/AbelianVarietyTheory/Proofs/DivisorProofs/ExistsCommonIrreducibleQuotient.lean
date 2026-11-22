@@ -165,9 +165,6 @@ section Max
 def qmap (X : GKMod p q) (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ U, X.act Z y ∈ U) :
     X.V →ₗ[ℂ] (quotMod X U hU).V := U.mkQ
 
-theorem qmap_act (X : GKMod p q) (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ U, X.act Z y ∈ U)
-    (Z : Mat p q) (x : X.V) : qmap X U hU (X.act Z x) = (quotMod X U hU).act Z (qmap X U hU x) := rfl
-
 end Max
 
 section Main
@@ -182,11 +179,6 @@ theorem incl_act (X : GKMod p q) (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ 
 def sndP (M M' : GKMod p q) : (prodMod M M').V →ₗ[ℂ] M'.V := LinearMap.snd ℂ M.V M'.V
 
 def pairP (M M' : GKMod p q) (x : M.V) (x' : M'.V) : (prodMod M M').V := (x, x')
-
-theorem snd_act₂ (M M' : GKMod p q) (Z : Mat p q) (x : (prodMod M M').V) :
-    sndP M M' ((prodMod M M').act Z x) = M'.act Z (sndP M M' x) := rfl
-
-theorem snd_pair₂ (M M' : GKMod p q) (x : M.V) (x' : M'.V) : sndP M M' (pairP M M' x x') = x' := rfl
 
 end Main
 

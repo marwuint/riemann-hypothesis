@@ -64,8 +64,6 @@ abbrev G (r : ℤ) : C ⥤ ModuleCat.{0} R := Cut.Pσ Q σ ⋙ Cut.U E ⋙ gr Fi
 
 def jW (r : ℤ) : gr Fil r ⟶ G Q E σ Fil r := Functor.whiskerRight (Cut.jσ Q σ) (gr Fil r)
 
-theorem jW_eq (r : ℤ) : CH.Mor.ofNatTrans (jW Q E σ Fil r) = CH.Mor.ofNatTrans (Functor.whiskerRight (Cut.jσ Q σ) (gr Fil r)) := rfl
-
 theorem ses (hF : IsFil Φ Fil) (r : ℤ) (h0 : Q.Crit Fil (r - 1)) (h1 : Q.Crit Fil r) (h2 : Q.Crit Fil (r + 1)) :
     ∃ β : G Q E σ Fil r ⟶ G Q E σ Fil (r - 1),
       (∀ T, Function.Injective ((jW Q E σ Fil r).app T).hom) ∧

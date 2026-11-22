@@ -16,11 +16,6 @@ local notation "Ser" => MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]
 def Dl (l : List (Matrix (Fin N') (Fin N) D.host.E)) (F : Ser) : Ser :=
   l.foldr (fun y' G => der D lam y' G) F
 
-theorem Dl_nil (F : Ser) : Dl lam [] F = F := rfl
-
-theorem Dl_cons (a : Matrix (Fin N') (Fin N) D.host.E) (l : List (Matrix (Fin N') (Fin N) D.host.E)) (F : Ser) :
-    Dl lam (a :: l) F = der D lam a (Dl lam l F) := rfl
-
 variable {lam}
 
 theorem isPadicIntegral_add {x y : ℂ_[p]} (hx : IsIntP x) (hy : IsIntP y) : IsIntP (x + y) :=

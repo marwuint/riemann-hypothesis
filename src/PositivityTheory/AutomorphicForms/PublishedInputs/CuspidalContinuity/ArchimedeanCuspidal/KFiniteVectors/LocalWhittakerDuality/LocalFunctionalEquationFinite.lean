@@ -30,15 +30,9 @@ def w3 : GL (Fin 3) F :=
     by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three],
     by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three]⟩
 
-def dW3 (W : GL (Fin 3) F → ℂ) (g : GL (Fin 3) F) : ℂ := W (w3 * tinv g)
-def dW2 (W : GL (Fin 2) F → ℂ) (h : GL (Fin 2) F) : ℂ := W (w2 * tinv h)
-
 variable (F) in
 
 def K2 : Set (GL (Fin 2) F) := (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))
-
-def mIw (ψ : AddChar F Circle) : Measure (Fˣ × Fˣ × GL (Fin 2) F) :=
-  (multHaar F).prod ((multHaar F).prod ((LFS.hG ψ).restrict (K2 F)))
 
 def iw (W : GL (Fin 3) F → ℂ) (W' : GL (Fin 2) F → ℂ) (s : ℂ) (p : Fˣ × Fˣ × GL (Fin 2) F) : ℂ :=
   W (em (dg2 (p.1 * p.2.1) p.2.1 * p.2.2)) * W' (dg2 (p.1 * p.2.1) p.2.1 * p.2.2) * mp p.1 (s - 3 / 2) * mp p.2.1 (2 * s - 1)

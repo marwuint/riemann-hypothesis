@@ -64,13 +64,6 @@ open scoped TensorProduct
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂}
   {X : NTw D.R D.host D.what₂ D.LL0 N} {Y : NExp D.R D.host D.what₂ D.LL0 N X}
 
-theorem specU_eq (i : X.Tw) (j : ℕ) (b : Bool) (Q : Finset (PlE D.host)) (M k : ℕ)
-    (χ : Multiplicative (DelQM D.host (X.l i) Q M) →* (X.Ok i k)ˣ)
-    (w : Y.Fm i j b ⊗[X.O i] LamO X i Q M) :
-    specU Y i j b Q M k χ w =
-      (TensorProduct.comm (X.O i) (Y.Fm i j b) (X.Ok i k))
-        ((evA i Q M k χ).toLinearMap.lTensor (Y.Fm i j b) w) := rfl
-
 end Asm0
 
 section CrdAll

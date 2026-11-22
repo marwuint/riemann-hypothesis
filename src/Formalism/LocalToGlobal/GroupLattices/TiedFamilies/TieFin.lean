@@ -29,11 +29,6 @@ def idStd : ∀ u (w : D.what₂.places.Pl), GIdx D.host (D.mem u).A.T (D.what�
     (Classical.choose (companion_of_baseTied D H.base.toHermCols H.atT H.baseL u))
     (Classical.choose_spec (companion_of_baseTied D H.base.toHermCols H.atT H.baseL u))
 
-theorem idStd_fr (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
-    (w' : HeightOneSpectrum (𝓞 D.host.F)) (h : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∈ w'.asIdeal) :
-    (idStd D H I0 B hBs u w hg).fr w' h = bc (((RingHom.fst _ _).comp ((idStd D H I0 B hBs u w hg).spl w' h).toRingHom).comp
-      (inclE (F := D.host.F) (w'.adicCompletion D.host.F))) B := rfl
-
 variable (sc : Scale) (Ce : ℝ) (T : ∀ u : D.what₂.Word, Forms0 D u)
   (ψ : ∀ u (w : D.what₂.places.Pl), GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w) →
     Formalism.L2.Herm.awayFrom₂ (H.base.lev0 u) (D.what₂.places.resChar w) →* (ORec D w (nFr D (D.what₂.places.resChar w)))ˣ)

@@ -42,18 +42,6 @@ theorem coe_restr (hZ : IsClosed Z) (f : SC X) :
     ((restr hZ f : SC Z) : Z → ℂ) = fun z : Z => (f : X → ℂ) z :=
   rfl
 
-def extendDistr (hZ : IsClosed Z) (D' : Distr Z) : Distr X :=
-  D'.comp (restr hZ)
-
-theorem extendDistr_apply (hZ : IsClosed Z) (D' : Distr Z) (f : SC X) :
-    extendDistr hZ D' f = D' (restr hZ f) :=
-  rfl
-
-theorem restr_compHomeoL (hZ : IsClosed Z) (e : X ≃ₜ X) (heZ : ∀ x, x ∈ Z ↔ e x ∈ Z)
-    (f : SC X) :
-    restr hZ (compHomeoL e f) = compHomeoL (e.subtype heZ) (restr hZ f) :=
-  rfl
-
 variable [T2Space X] [LocallyCompactSpace X] [TotallyDisconnectedSpace X]
 
 theorem restr_surjective (hZ : IsClosed Z) : Function.Surjective (restr hZ) := by

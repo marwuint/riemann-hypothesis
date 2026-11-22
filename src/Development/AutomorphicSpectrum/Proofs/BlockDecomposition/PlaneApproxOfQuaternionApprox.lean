@@ -101,10 +101,6 @@ def toHA (σ : E →ₐ[F] E) {ξ : E} (hξ : ξ ^ 2 = algebraMap F E d) (hσ : 
     rw [hermitian_plane_matrix]
     exact th_unitary (xh_sq hξ) _ (sig_alg σ) (sig_xh hσ) hx⟩ : HR R σ (J2 E β))
 
-theorem toHA_mat (σ : E →ₐ[F] E) {ξ : E} (hξ : ξ ^ 2 = algebraMap F E d) (hσ : σ ξ = -ξ) (x : Q d β R)
-    (hx : qn x = 1) :
-    ((HA.mat R σ (J2 E β) (toHA σ hξ hσ x hx)).1 : Matrix (Fin 2) (Fin 2) (R ⊗[F] E)) = thR R E ξ x := rfl
-
 end Tens
 
 end GlobalTheory.CompanionTheory.PlaneSA.TwoQ

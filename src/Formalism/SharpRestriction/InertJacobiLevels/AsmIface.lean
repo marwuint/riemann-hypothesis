@@ -172,13 +172,6 @@ def Boxq (x eps : ℝ) (q d : ℕ) : Prop :=
   GoodAllFor (8 * GlobalTheoryTheory.X1 x eps * GlobalTheoryTheory.X2 x eps)
     (fun a => GlobalTheoryTheory.chi8 a * GlobalTheoryTheory.chDir d a * GlobalTheoryTheory.psDir q a) (8 * q * d)
 
-def Rowq (x eps : ℝ) (n q d : ℕ) : Prop :=
-  q.Prime ∧ q % 8 = 3 ∧ Real.sqrt (GlobalTheoryTheory.X1 x eps) < q ∧ (q : ℝ) ≤ GlobalTheoryTheory.X1 x eps ∧
-  d.Prime ∧ d % 16 = 7 ∧ Real.sqrt (GlobalTheoryTheory.X2 x eps) < d ∧ (d : ℝ) ≤ GlobalTheoryTheory.X2 x eps ∧
-  GlobalTheoryTheory.kronSym (-(d : ℤ)) q = 1 ∧
-  (∀ p : ℕ, p.Prime → (p : ℝ) ≤ x ^ (eps / 5) → GlobalTheoryTheory.kronSym (-(d : ℤ)) p = 1) ∧
-  Real.log (4 * n * q * d) ≤ 2 * x ^ (eps / 5) * Real.log x ^ 2
-
 def Win (sc : Scale) (k : ℕ) (TTn : Finset ℕ) (bTop : ℝ) (a b : ℕ → ℤ) : Prop :=
   ∀ t ∈ TTn, (sc.a ≤ (a t : ℝ) ∧ (a t : ℝ) ≤ sc.a + sc.a / ((k : ℝ) * sc.x ^ (Scale.A / 2))) ∧
     sc.b' ≤ (b t : ℝ) ∧ (b t : ℝ) ≤ bTop

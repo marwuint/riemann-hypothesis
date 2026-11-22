@@ -140,9 +140,6 @@ theorem exists_up {x : Sp S ⟶ X} {u : Vecs Dw t S} (h : ∀ σ i, IsTanAtG t x
 theorem up_injective {x : Sp S ⟶ X} {u u' : TVecs Dw t x} (h : up u = up u') : u = u' :=
   funext fun σ => funext fun i => tan_ext (congrFun (congrFun h σ) i)
 
-theorem up_tanPull (φ : S →+* S') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X} (e : spMap φ ≫ x = x') (u : TVecs Dw t x) :
-    up (Dw := Dw) (fun σ i => tanPull φ e (u σ i)) = (up u).bc φ := rfl
-
 theorem sameFlag_up_iff {ty : (E →+* ℂ) → Finset ℕ} {x : Sp S ⟶ X} (u u' : TVecs Dw t x) :
     SameFlag ty t x (up u) (up u') ↔ ∀ σ, ∀ k ∈ ty σ, initSpan S (u' σ) k ≤ initSpan S (u σ) k := by
   refine forall_congr' fun σ => forall_congr' fun k => forall_congr' fun _ => ⟨fun h => Submodule.span_le.2 ?_, fun h i hi => ?_⟩
@@ -309,10 +306,6 @@ theorem FlagAt.initSpan_eq {A : Atlas M π ty} {w : Sp K ⟶ X} {u u' : TVecs Dw
 
 end Atlas
 
-namespace Atlas
-
-end Atlas
-
 def IntOn (A : Atlas M π ty) (σ : E →+* ℂ) (k : ℕ) {U : X.Opens} (hU : IsAffineOpen U) {m : ℕ}
     (b : Module.Basis (Fin k ⊕ Fin m) Γ(X, U) (TanM (tau hU ≫ π) M.t.G)) : Prop :=
   ∀ (K : Type) [Field K] (w : Sp K ⟶ X) (hw : ⊤ ≤ w ⁻¹ᵁ U) (u : TVecs Dw M.t (w ≫ π)), A.FlagAt w (up u) →
@@ -350,9 +343,6 @@ def atlasOf (Z : Mdl Y i₀) : Atlas (Y Z.i) Z.π Z.ty where
   glue := Z.glue
   bij := Z.bij
 
-theorem atlasOf_flagAt (Z : Mdl Y i₀) {k : Type} [Field k] (w : Sp k ⟶ Z.X) (u : Vecs Dw (Y Z.i).t k) :
-    (atlasOf Z).FlagAt w u ↔ Z.FlagAt w u := Iff.rfl
-
 variable {i : Idx H p} {X : Scheme.{0}} {π : X ⟶ (Y i).X} {ty : (E →+* ℂ) → Finset ℕ}
 
 def NatTo (Z : Mdl Y i₀) (A : Atlas (Y i) π ty) {k : Type} [Field k] (w₁ : Sp k ⟶ Z.X) (w₂ : Sp k ⟶ X) : Prop :=
@@ -361,9 +351,6 @@ def NatTo (Z : Mdl Y i₀) (A : Atlas (Y i) π ty) {k : Type} [Field k] (w₁ : 
 
 def MapsTo (Z : Mdl Y i₀) (A : Atlas (Y i) π ty) (g : Z.X ⟶ X) : Prop :=
   ∀ (k : Type) [Field k] (w : Sp k ⟶ Z.X), Set.range w ⊆ Z.opn → NatTo Z A w (w ≫ g)
-
-theorem isMap_iff (Z₁ Z₂ : Mdl Y i₀) (g : Z₁.X ⟶ Z₂.X) : IsMap Z₁ Z₂ g ↔ LocM.Corr Z₁ Z₂ ∧ MapsTo Z₁ (atlasOf Z₂) g :=
-  Iff.rfl
 
 end Maps
 

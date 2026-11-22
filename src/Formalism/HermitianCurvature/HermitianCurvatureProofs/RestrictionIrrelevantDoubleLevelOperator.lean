@@ -1717,13 +1717,6 @@ theorem GoodOp.toEnd_apply (C : FamCtx k r z z' i Dc) {A : Fn k r (Wq →L[ℂ] 
     (h : GoodOp k r z z' π π' i Dc A) (Ψ : FamV k r z z' π π' i Dc) {x : XX k r} (hx : x ∈ levelPointsWithGroupElement i Dc) :
     (h.toEnd C Ψ : Fn k r (Wq →L[ℂ] Wp)) x.1 x.2 = A Ψ x.1 x.2 := cutF_apply C _ (h.fam _ Ψ.2.1) hx
 
-theorem GoodOp.toEnd_mul_apply (C : FamCtx k r z z' i Dc) {A B : Fn k r (Wq →L[ℂ] Wp) → Fn k r (Wq →L[ℂ] Wp)}
-    (hA : GoodOp k r z z' π π' i Dc A) (hB : GoodOp k r z z' π π' i Dc B) (Ψ : FamV k r z z' π π' i Dc)
-    {x : XX k r} (hx : x ∈ levelPointsWithGroupElement i Dc) :
-    ((hA.toEnd C * hB.toEnd C) Ψ : Fn k r (Wq →L[ℂ] Wp)) x.1 x.2 = A (B Ψ) x.1 x.2 := by
-  rw [Module.End.mul_apply, hA.toEnd_apply C _ hx]
-  exact hA.loc _ _ (hB.toEnd C Ψ).2.1 (hB.fam _ Ψ.2.1) (fun y hy => hB.toEnd_apply C Ψ hy) x hx
-
 variable (k r z z' π π' i Dc) in
 
 def Rep (A : Fn k r (Wq →L[ℂ] Wp) → Fn k r (Wq →L[ℂ] Wp)) (a : Module.End ℂ (FamV k r z z' π π' i Dc)) : Prop :=

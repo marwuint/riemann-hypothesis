@@ -65,10 +65,6 @@ def indicatorHecke (U : Set (GL (Fin n) F)) (hc : IsCompact U) (ho : IsOpen U)
         · rw [Set.indicator_of_mem h, Set.indicator_of_mem ((hU k hk x).2.2 h)]
         · rw [Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((hU k hk x).2.1 h'))]
 
-theorem indicatorHecke_apply (U : Set (GL (Fin n) F)) (hc : IsCompact U) (ho : IsOpen U) (hU)
-    (g : GL (Fin n) F) :
-    (indicatorHecke μ U hc ho hU : HeckeAlgebra μ) g = U.indicator (fun _ => (1 : ℂ)) g := rfl
-
 variable (μ) in
 
 def minusculeHecke (k : ℕ) : SphericalHecke μ (F := F) (n := n) :=

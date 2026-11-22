@@ -16,12 +16,6 @@ def Herm {V : Type} [AddCommGroup V] [Module K V] (h : V →ₛₗ[σ] V →ₗ[
 section A1
 variable {V : Type} [AddCommGroup V] [Module K V]
 
-def restrictFormAlt (h : V →ₛₗ[σ] V →ₗ[K] K) (W : Submodule K V) : W →ₛₗ[σ] W →ₗ[K] K :=
-  h.domRestrict₁₂ W W
-
-lemma restrict_form_apply (h : V →ₛₗ[σ] V →ₗ[K] K) (W : Submodule K V) (u v : W) :
-    restrictFormAlt h W u v = h u v := rfl
-
 end A1
 
 end Formalism.FourierDecayAlt.P.S3x6

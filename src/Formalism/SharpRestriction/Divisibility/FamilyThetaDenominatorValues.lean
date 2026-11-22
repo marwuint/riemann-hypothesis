@@ -84,14 +84,6 @@ def wJ (j : ℕ) : ℝ := ∑ ρ : D.what₂.Tau, DV.wSz D j ρ
 
 def wMax : ℝ := (SizeData₂.lifts D).fold max 0 (wJ D)
 
-def onBound (L : SizeData₂ D) (C : ℝ) : ℝ :=
-  C * (D.R.m : ℝ) * (L.sc.L * Real.log (D.R.k : ℝ) * (D.R.m : ℝ) * wMax D +
-    (D.R.f : ℝ) * (D.R.m : ℝ) * L.sc.b * Real.log L.sc.x)
-
-def onBoundJ (L : SizeData₂ D) (C : ℝ) : ℝ :=
-  C * (L.sc.L * Real.log (D.R.k : ℝ) * (D.R.m : ℝ) * wMax D +
-    (D.R.f : ℝ) * (D.R.m : ℝ) * L.sc.b * Real.log L.sc.x)
-
 structure ThetaDenominatorData where
 
   dat : ∀ i j b, Set (D.nexp.Dat i j b)
@@ -115,9 +107,6 @@ structure ONObj (CH : NChoice D) (Xd : DivX D) where
   c6 : CartierLocalBounds.Loc D Xd X.P6
   c6' : CartierLocalBounds.Loc D Xd X'.P6
   T : ThetaDenominatorData D
-
-abbrev ONObjF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Type 1 :=
-  ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ONObj (Fm.D x i) (Fm.ex x hx i).nch (Fm.X x i)
 
 end Formalism.MainNotions.PDVN
 

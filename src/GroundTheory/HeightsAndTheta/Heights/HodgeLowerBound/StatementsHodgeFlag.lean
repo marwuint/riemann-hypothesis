@@ -97,8 +97,6 @@ def HodgeFlagArith.Statement : Prop :=
 
 namespace Line
 
-theorem flagDim0_line : lineDataZero.flagDim0 = 0 := rfl
-
 end Line
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree

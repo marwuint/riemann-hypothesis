@@ -165,13 +165,6 @@ theorem smul_periodMap_of_orthogonal_ker {v : A.La} (h : ∀ v' : A.La, v'.y = 0
   obtain ⟨n, rfl⟩ := (A.orth_ker_iff_exists v).1 h
   exact ⟨by simp, A.smul_periodMap_mk_zero_fst_eq_neg_form s n⟩
 
-theorem nilTo_ne_zero {a : A.La} (ha : a.y ≠ 0) :
-    KerPerp.nilTo A.EF_smul A.EF_bijective A.yLin_surjective A.be_adj a ≠ 0 := fun h => by
-  have h1 := KerPerp.neg_apply_nilTo A.EF_smul A.EF_bijective A.yLin_surjective A.be_adj a a
-  rw [h] at h1
-  have h2 : (0 : ℤ) = A.be a.y a.y := by simpa using h1
-  exact (A.be_pos _ ha).ne h2
-
 end AnArc
 
 end GlobalTheory

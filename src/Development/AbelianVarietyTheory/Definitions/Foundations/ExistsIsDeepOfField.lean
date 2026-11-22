@@ -155,9 +155,4 @@ def facOf : SlopeBoundLiftData Y.c.F (pageOf Q) :=
   facWith Q Y.U Y.dict h (inR_succ i) CI C2 (mixVals Y.Xo Y.c (bZero Q ((i : ℕ) + 1))) Y.Hb Y.NN Y.Ph Y.eGood
     (Nat.card (LevelGroup D.host))
 
-theorem facOf_eq : facOf Q h Y CI C2 = facWith Q Y.U Y.dict h (inR_succ i) CI C2
-    (mixVals Y.Xo Y.c (bZero Q ((i : ℕ) + 1))) Y.Hb Y.NN Y.Ph Y.eGood (Nat.card (LevelGroup D.host)) := rfl
-
-theorem facOf_q : (facOf Q h Y CI C2).q' = D.R.m - ((i : ℕ) + 1) := rfl
-
 end GlobalTheory.SlopeRec

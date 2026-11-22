@@ -166,12 +166,6 @@ def OrBucket : Prop :=
       2 * C * lx * a * ((La / k + 1 / K₀) * (Real.log X' + Real.log 4) +
         2 * (Real.log ((p₀ : ℝ) - 1) + 1) / ((p₀ : ℝ) - 1))
 
-def OrdersBucket : Prop :=
-  ∃ C : ℝ, ∀ (e J : ℕ) (Y mTa : ℝ) (s : Finset ℕ), 1 ≤ e → 1 ≤ J → 1 ≤ Y → 0 ≤ mTa →
-    (∀ l ∈ s, l.Prime ∧ l ≠ 2 ∧ (l : ℝ) ≤ Y ∧
-      ∃ hl : Nat.Coprime l (4 * 2 ^ e), orderOf (Formalism.RankGapBounds.LocalQuadraticParts.hOf e l hl) ≤ J) →
-    ∑ l ∈ s, 4 * mTa * (Real.log l / l) ≤ 4 * mTa * (C * J * Real.log (2 ^ e * Y) ^ 2 / (2 : ℝ) ^ e)
-
 def FirstKindBucket : Prop :=
   ∃ C : ℝ, ∀ (e J I : ℕ) (Y X' c p₀ : ℝ) (P : ℕ → ℝ) (s : Finset ℕ), 1 ≤ e → 1 ≤ J → 1 ≤ Y →
     0 ≤ c → c ≤ 1 / 2 → 1 ≤ p₀ → (∀ i < I, 1 ≤ P i ∧ P i ≤ X') →

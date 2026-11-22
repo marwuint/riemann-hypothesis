@@ -331,30 +331,6 @@ def RealInputsConcreteOfParts : Prop :=
   GramPSDOfParts → WordsPosOfParts → EstWaveOfParts → PoissonInputOfParts → EstLiftOfParts →
   EstBlockOfParts → EstEOfParts → CutoffOfParts → RealInputsConcrete
 
-def TheoremAConcrete : Prop :=
-  ∀ C₁ C₄ : ℝ, 1 ≤ C₁ → 1 ≤ C₄ → ∃ C C' : ℝ,
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wq x)]
-    (S : HidaSetting E Wp Wq) (jv cE : Fin S.f → ℝ) (Kr : ℕ → TB.Pt E → TB.Pt E → ℂ) (hK0 : Kr 0 [] [] = 1)
-    (Th : ℕ → ℕ → E → TB.Pt E → TB.Pt E → ℂ) (e : ℕ → ℝ) (Θ : ℝ)
-    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (Vt : TB.Pt E → H)
-    (c : ℕ → TB.Pt E → ℂ),
-    1 ≤ S.f → 0 < S.G.g1 → 0 < S.G.g2 → 0 < Θ → C' ≤ Θ → ((S.G.r : ℝ) + 1) * (C / Θ) ^ S.f ≤ 1 →
-    (S.mkData Kr hK0 Th e).SizesBelow Θ →
-    ThmPPos S → GridsOK S → ThmPInt S → PlaneWaveBoundAllPlaces S → OffDiagonalLiftBound S → CorollaryT S C₄ → LemmaE S jv →
-    EnergyLinkC S jv cE → PropGram S Vt →
-    TC.KrPSD (S.mkData Kr hK0 Th e) → (S.mkData Kr hK0 Th e).KernelSupport → TC.EBounds (S.mkData Kr hK0 Th e) →
-    TC.DomAfter (S.mkData Kr hK0 Th e) →
-    (S.mkData Kr hK0 Th e).LatticeSums ((C₁ * Θ ^ (-((Kst : ℝ) - 5 / 2))) ^ S.f) →
-    (S.mkData Kr hK0 Th e).LeadingDomination Vt c →
-    ∀ R : Finset ℕ, ∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2 ≤
-      (1 + C * ((S.G.r : ℝ) + 1) * (C / Θ) ^ S.f) * (∏ i ∈ Icc 1 (S.G.r + 1), (1 + e i)) * ∏ v, jv v
-
-def TheoremAConcreteOfParts : Prop :=
-  TC.TheoremAAfter → F7.PoissonStepText → J.PoissonJoint → J.PoissonStepJoint → RealInputsConcrete →
-  TheoremAConcrete
-
 end
 
 end Formalism.FourierDecayAlt.C

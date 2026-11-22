@@ -146,14 +146,6 @@ def KillsAll : Prop :=
     ∀ L : List (ℕ × ℕ), (∀ p ∈ L, 0 < p.1 ∧ Reg (Nat.card F) p.1 p.2) → ∀ n, n = deg L →
     Kills (shLift s (J (pullθ ι θ) L n)) (J θ (liftAll (Nat.card F) (Module.finrank F F') L) n)
 
-def LblBC : Prop :=
-  ∀ (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] (n : ℕ), 0 < n → ∀ X Y : Pt E Ω n, Lifts X Y →
-    ∀ (A : ValuationSubring Ω) (Θ : IsLocalRing.ResidueField A →* ℂ), Inj Θ →
-    (∀ t ∈ Ine (F := X.K) A, UpperTheory.Gal.UnramifiedFromSplittingCriterion.Fixes Y.K t) →
-    ∀ (v : HeightOneSpectrum (𝓞 X.K)) (w : HeightOneSpectrum (𝓞 Y.K)), IsPlaceOver A v → IsPlaceOver A w →
-    ∀ e e', ResEmb A v e → ResEmb A w e' → ∀ τ τ', X.π.IsLocComp v τ → Y.π.IsLocComp w τ' →
-    ∀ a : Lbl, HasLbl (Θ.comp e.toMonoidHom) τ.ρ a → ∃ b, a.Le b ∧ HasLbl (Θ.comp e'.toMonoidHom) τ'.ρ b
-
 def ToralOver {E M Ω : Type} [Field E] [NumberField E] [Field M] [NumberField M] [Field Ω] [Algebra E M] [Algebra E Ω] [Algebra M Ω]
     [IsScalarTower E M Ω] [IsAlgClosure E Ω] [IsAlgClosure M Ω] {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 E)}
     {w : HeightOneSpectrum (𝓞 M)} (h : IsPlaceOver A v) (h' : IsPlaceOver A w) {n : ℕ}

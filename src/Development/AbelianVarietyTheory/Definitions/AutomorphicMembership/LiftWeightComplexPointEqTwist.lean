@@ -453,8 +453,6 @@ def onOf (c : OnConst) (a : ChainArgs D.what₂.LL (Fin D.R.m) R.nW) : OnObj ((R
 
 variable (c : OnConst) (a : ChainArgs D.what₂.LL (Fin D.R.m) R.nW)
 
-theorem ofObj_onOf : ChainArgs.ofObj (onOf R F c a) = a := rfl
-
 theorem tieU : TieU (onOf R F c a) fun v => uniSub (Res R v) (rankPred D.R) := rfl
 
 theorem tiePsi : TiePsi (onOf R F c a) (levelChar R F) := rfl

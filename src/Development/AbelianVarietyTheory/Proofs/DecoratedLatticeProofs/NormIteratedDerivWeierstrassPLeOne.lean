@@ -23,6 +23,4 @@ def intAt (ι : ℂ ≃+* ℂ_[p]) : Subring ℂ where
   zero_mem' := by simp
   neg_mem' := fun {a} ha => by simpa using ha
 
-theorem mem_intAt (ι : ℂ ≃+* ℂ_[p]) (c : ℂ) : c ∈ intAt ι ↔ ‖ι c‖ ≤ 1 := Iff.rfl
-
 end GlobalTheory.Klein

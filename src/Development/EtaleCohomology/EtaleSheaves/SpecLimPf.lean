@@ -31,14 +31,6 @@ theorem gam_comp {T : Scheme.{0}} {R S : Type} [CommRing R] [CommRing S] (f : R 
   erw [this]
   rfl
 
-theorem cone_app_none {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B] (φ : A →+* A') (χ : A →+* B) {ι : Type}
-    (l : ι → (A' →+* B)) (hl : ∀ i, (l i).comp φ = χ) (T : Scheme.{0}) (x : T ⟶ Spec (CommRingCat.of B)) :
-    ((coneOf φ χ l hl).π.app none).app (op T) x = x ≫ Spec.map (CommRingCat.ofHom χ) := rfl
-
-theorem cone_app_some {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B] (φ : A →+* A') (χ : A →+* B) {ι : Type}
-    (l : ι → (A' →+* B)) (hl : ∀ i, (l i).comp φ = χ) (T : Scheme.{0}) (x : T ⟶ Spec (CommRingCat.of B)) (i : ι) :
-    ((coneOf φ χ l hl).π.app (some i)).app (op T) x = x ≫ Spec.map (CommRingCat.ofHom (l i)) := rfl
-
 theorem SpecLim_of : SpecLim := by
   intro A A' B _ _ _ φ χ n l hl hcop
   refine ⟨evaluationJointlyReflectsLimits _ fun k => ?_⟩

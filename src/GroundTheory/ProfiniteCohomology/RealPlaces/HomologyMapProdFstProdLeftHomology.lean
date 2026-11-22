@@ -52,13 +52,6 @@ noncomputable def tateExtraPairing :
     (fun _ _ _ => funext fun w => map_add (tateExtraPairingAt ψ μᵣ w _) _ _)
     (fun _ _ _ => funext fun w => map_smul (tateExtraPairingAt ψ μᵣ w _) _ _)
 
-omit [∀ w, IsTopologicalGroup (F w)] [∀ w, Fintype (F w)] [∀ w, IsDiscreteRep (Aᵣ w)]
-  [∀ w, IsDiscreteRep (Cᵣ w)] in
-theorem tateExtraPairing_apply (e : ∀ w, Aᵣ w) (z : (cochainsComplex B).X 0) (w : κ) :
-    tateExtraPairing ψ μᵣ e z w = (μᵣ w).hom ((e w ⊗ₜ[k] cochainOf B z (fun i => i.elim0) :
-      (Aᵣ w ⊗ Rep.res (ψ w).toMonoidHom B : Rep k (F w)))) :=
-  rfl
-
 noncomputable def tateGlobalCup :
     LeibnizPairing (tateGlobalComplex A Aᵣ) (cochainsComplex B) (tateGlobalComplex C Cᵣ) :=
   LeibnizPairing.prodLeft (cupLeibniz μ) (LeibnizPairing.degZero (tateExtraPairing ψ μᵣ))

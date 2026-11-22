@@ -27,12 +27,6 @@ theorem σ_one (hm : ∀ x y, σ (x * y) = σ y * σ x) (hi : ∀ x, σ (σ x) =
 def σU (hm : ∀ x y, σ (x * y) = σ y * σ x) (hi : ∀ x, σ (σ x) = x) (u : Rˣ) : Rˣ :=
   ⟨σ u, σ ↑u⁻¹, by rw [← hm, Units.inv_mul, σ_one σ hm hi], by rw [← hm, Units.mul_inv, σ_one σ hm hi]⟩
 
-theorem σU_val (hm : ∀ x y, σ (x * y) = σ y * σ x) (hi : ∀ x, σ (σ x) = x) (u : Rˣ) :
-    σ (u : R) = (σU σ hm hi u : R) := rfl
-
-theorem σU_inv_val (hm : ∀ x y, σ (x * y) = σ y * σ x) (hi : ∀ x, σ (σ x) = x) (u : Rˣ) :
-    σ (↑u⁻¹ : R) = ↑(σU σ hm hi u)⁻¹ := rfl
-
 end Alg
 
 end GlobalTheory.UStab
@@ -47,8 +41,6 @@ variable {C : Type} [Ring C] (s : C →+ C) (hm : ∀ x y, s (x * y) = s y * s x
 
 def uK (x : Cˣ) : (K ⊗[ℤ] C)ˣ :=
   Units.map (Algebra.TensorProduct.includeRight : C →ₐ[ℤ] K ⊗[ℤ] C).toMonoidHom x
-
-theorem uK_val (x : Cˣ) : ((uK K x : (K ⊗[ℤ] C)ˣ) : K ⊗[ℤ] C) = (1 : K) ⊗ₜ (x : C) := rfl
 
 include hm hi
 

@@ -253,10 +253,6 @@ def gammaTeichFrob : TeichLift.TeichFrob (gammaTeichLift p ι hϖ hι) where
 
 @[simp] theorem gammaTeichFrob_a : (gammaTeichFrob p σ hσn a hσr hϖ ι hι).a = a := rfl
 
-theorem gammaTeichFrob_φ (x : Gamma p ι) :
-    (gammaTeichFrob p σ hσn a hσr hϖ ι hι).φ x =
-      gammaPhi p ι a (intFrob σ hσn) (residue_intFrob p σ hσn a hσr) x := rfl
-
 end Frob
 
 end ExtRobba

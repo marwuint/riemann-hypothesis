@@ -33,9 +33,6 @@ namespace GlobalTheory.CompanionTheory.SegZRep
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-theorem term_segLow (Δ : Segment k) (a : ℕ) (h0 : 0 < a) (i : Fin (segLow Δ a h0).len) :
-    (segLow Δ a h0).term i = Δ.first.nu (((i : ℕ) : ℕ) : ℂ) := rfl
-
 end GlobalTheory.CompanionTheory.SegZRep
 
 end

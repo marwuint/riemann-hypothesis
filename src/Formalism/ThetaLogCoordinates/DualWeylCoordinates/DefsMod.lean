@@ -76,14 +76,6 @@ def torusPt (n : ℕ) : GL (Fin n) (AddMonoidAlgebra ℤ (Fin n → ℤ)) where
     rw [Matrix.diagonal_mul_diagonal]; convert Matrix.diagonal_one using 2
     funext a; rw [AddMonoidAlgebra.single_mul_single, ← Pi.single_add]; simp [AddMonoidAlgebra.one_def]
 
-def prMu {n : ℕ} (M : GLMod n) (mu : Fin n → ℤ) : Matrix M.ι M.ι ℤ :=
-  fun i j => (evGL (torusPt n) (M.A i j)).coeff mu
-
-def IsHighest {n : ℕ} (M : GLMod n) (R : Type) [CommRing R] (mu : Fin n → ℤ) (x : M.ι → R) : Prop :=
-  Matrix.mulVec ((prMu M mu).map (Int.castRingHom R)) x = x ∧
-  ∀ (R' : Type) [CommRing R'] [Algebra R R'] (u : GL (Fin n) R'), (∀ a, u.val a a = 1) →
-    (∀ a b, b < a → u.val a b = 0) → Matrix.mulVec (M.A.map (evGL u)) (fun i => algebraMap R R' (x i)) = fun i => algebraMap R R' (x i)
-
 structure ColFam {n : ℕ} [NeZero n] (M : GLMod n) where
   J : Type
   [fJ : Fintype J]
@@ -104,19 +96,6 @@ def ColFam.vec {n : ℕ} [NeZero n] {M : GLMod n} (CF : ColFam M) (j : CF.J) (I 
   fun i => CF.ph j i I
 
 abbrev SymIdx (n b : ℕ) := {α : Fin n → Fin (b + 1) // ∑ a, (α a : ℕ) = b}
-
-def symMono {n b : ℕ} (α : SymIdx n b) : Fin n →₀ ℕ := Finsupp.equivFunOnFinite.symm fun a => (α.1 a : ℕ)
-
-def SymMat (n b : ℕ) : Matrix (SymIdx n b) (SymIdx n b) (GLCoord ℤ n) :=
-  fun α β => MvPolynomial.coeff (symMono α)
-    (∏ m : Fin n, (∑ a : Fin n, MvPolynomial.C (algebraMap _ (GLCoord ℤ n) (genMat ℤ n a m)) * X a) ^ (β.1 m : ℕ))
-
-def ginvC (n : ℕ) (a b : Fin n) : GLCoord ℤ n :=
-  (((detU n)⁻¹ : (GLCoord ℤ n)ˣ) : GLCoord ℤ n) * algebraMap _ (GLCoord ℤ n) ((genMat ℤ n).adjugate a b)
-
-def SymDMat (n b : ℕ) : Matrix (SymIdx n b) (SymIdx n b) (GLCoord ℤ n) :=
-  fun α β => MvPolynomial.coeff (symMono α)
-    (∏ m : Fin n, (∑ a : Fin n, MvPolynomial.C (ginvC n m a) * X a) ^ (β.1 m : ℕ))
 
 lemma genMat_map_evalR {n : ℕ} {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     (g : Matrix (Fin n) (Fin n) R') :

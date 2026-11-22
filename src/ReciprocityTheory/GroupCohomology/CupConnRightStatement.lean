@@ -38,13 +38,6 @@ def GroupSectionStatement : Prop := ∀ (G : Type u) [Group G] [TopologicalSpace
 def InnerStatement : Prop := ∀ (R : Type u) [CommRing R] (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (M : TRep R G) (P : Pair M M) (s : G),
   (∀ g, P.φ g = s⁻¹ * g * s) → (∀ m, P.u m = M.rho s m) → ∀ n, P.hom.H n = LinearMap.id
 
-def InfResStatement : Prop := ∀ (R : Type u) [CommRing R] (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (M : TRep R G) (N : Subgroup G) [N.Normal]
-  (Q : TRep R (G ⧸ N)) (P : Pair Q M), IsInvRep M N Q P →
-  Injective (P.hom.H 1) ∧ Exact (P.hom.H 1) ((Pair.res M N.subtype continuous_subtype_val).hom.H 1) ∧
-  ∀ (s : G) (c : Pair (M.resSub N) (M.resSub N)), (∀ g, (c.φ g : G) = s⁻¹ * g * s) → (∀ m, c.u m = M.rho s m) →
-    ∀ n x, c.hom.H n ((Pair.res M N.subtype continuous_subtype_val).hom.H n x) =
-      (Pair.res M N.subtype continuous_subtype_val).hom.H n x
-
 def FiveTermStatement : Prop := ∀ (R : Type u) [CommRing R] (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
   (M : TRep R G) [DiscreteTopology M.V] (N : Subgroup G) [N.Normal], IsClosed (N : Set G) →
   ∀ (Q : TRep R (G ⧸ N)) (P : Pair Q M), IsInvRep M N Q P → ∀ I : Submodule R ((M.resSub N).H 1),
@@ -56,12 +49,6 @@ def FiveTermStatement : Prop := ∀ (R : Type u) [CommRing R] (G : Type u) [Grou
 def CorStatement : Prop := ∀ (R : Type u) [CommRing R] (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (M : TRep R G) (U : Subgroup G) [U.FiniteIndex], IsOpen (U : Set G) →
   ∃ cor, IsCor M U cor ∧ ∀ n x,
     cor.H n ((Pair.res M U.subtype continuous_subtype_val).hom.H n x) = U.index • x
-
-def CupStatement : Prop := ∀ (R : Type u) [CommRing R] (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (M N P : TRep R G) (b : Pairing M N P),
-  (∀ p q f f' (g : Fin (p + q + 1) → G), dn P.rho (p + q) (cupFun b p q f f') g =
-    cupFun b (p + 1) q (dn M.rho p f) f' (fun i => g (i.cast (by omega))) +
-      (-1 : R) ^ p • cupFun b p (q + 1) f (dn N.rho q f') g) ∧
-  (∃ cup, IsCup b cup) ∧ ∀ cup cup', IsCup b cup → IsCup b cup' → cup = cup'
 
 def CupCorStatement : Prop := ∀ (R : Type u) [CommRing R] (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (M N P : TRep R G) (U : Subgroup G) [U.FiniteIndex] (b : Pairing M N P)
   (bU : Pairing (M.resSub U) (N.resSub U) (P.resSub U)) cup cupU corM corP, IsOpen (U : Set G) →

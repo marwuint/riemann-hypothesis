@@ -126,10 +126,6 @@ theorem mem_Equi {k : Type} [Field k] {W : Type} [AddCommGroup W] [Module k W]
 
 theorem stabTriv_mono {K K0 : Subgroup Gf} (h : K ≤ K0) (hs : StabTriv ιf K0) : StabTriv ιf K := fun x γ hx => hs x γ (h hx)
 
-theorem equi_subtype {k : Type} [Field k] {W : Type} [AddCommGroup W] [Module k W]
-    (Γ' : Subgroup Gf) (ρ : Representation k Γ' W) (χ : K →* kˣ) :
-    Equi k Γ'.subtype K ρ χ = Formalism.L2.SG.ClassAct.AMFChi k Γ' K ρ χ := rfl
-
 theorem exists_dec (s : Classes ιf K → Gf) (hs : ∀ c, DoubleCoset.mk ιf.range K (s c) = c)
     (g : Gf) : ∃ p : Γ × K, g = ιf p.1 * s (DoubleCoset.mk ιf.range K g) * (p.2 : Gf) := by
   obtain ⟨h, hh, κ, hκ, e⟩ := (DoubleCoset.eq _ _ _ _).1 (hs (DoubleCoset.mk ιf.range K g))

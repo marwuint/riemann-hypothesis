@@ -25,12 +25,6 @@ attribute [local instance] SplitExt.free SplitExt.finite
 noncomputable section
 namespace GlobalTheory.ZH
 
-theorem valR_eq_valF {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U : X.Opens) (f : Γ(X, U)) :
-    GlobalTheory.ZH.valR x U f = valF x U f := rfl
-
-namespace TorusFibre
-end TorusFibre
-
 namespace AbelianFibre
 variable {k : Type} [Field k]
 
@@ -54,9 +48,6 @@ theorem lbIso_of_gens {X : Scheme.{0}} {A B : LB X} (s : A.Gen) (hs : s.IsGen) (
   exact mul_mul_mul_comm _ _ _ _
 
 end AbelianFibre
-
-namespace MonomialImmersion
-end MonomialImmersion
 
 end GlobalTheory.ZH
 end

@@ -433,12 +433,6 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 def Dom (L : Lev) : Set (Fin (L.r + 1) → ℂ) := {p | 0 < L.GGx p ∧ zOf p ≠ 0}
 
-def IsDiffZ (L : Lev) (O : L.POp) : Prop :=
-  ∃ (N : ℕ) (a : Fin N → Fin N → (Fin (L.r + 1) → ℂ) → (L.Hom →L[ℂ] L.Hom)),
-    (∀ i j, ContDiffOn ℝ ∞ (a i j) L.Dom) ∧
-    ∀ φ : L.PF, ∀ p ∈ L.Dom, O φ p =
-      ∑ i : Fin N, ∑ j : Fin N, a i j p ((wirt (Fin.last L.r))^[i] ((wirtBar (Fin.last L.r))^[j] φ) p)
-
 def dw (L : Lev) {n : ℕ} (N : ℕ) (c : AuxiliarySlotStates n → (Fin L.k0 → ℝ) → ℝ) (α : AuxiliarySlotStates n)
     (p : Fin (L.r + 1) → ℂ) (A : L.Hom) : L.Hom :=
   ((Complex.normSq (zOf p) / L.GGx p) ^ N : ℝ) • ∑ᶠ ρ : Fin L.k0 → ℝ, ((c α ρ : ℝ) : ℂ) • L.lineP (L.pt p) ρ A
@@ -568,12 +562,6 @@ def LemmaBInt (CB : ℝ) : Prop :=
     ∀ h : L.Haar, h.Ok → ∀ F F' : L.GF, L.CC A mm F → L.CC A mm F' →
       MeasureTheory.Integrable (fun x : Fin (L.r + 1) → ℂ => (((∏ a : Fin L.r, Complex.normSq (cOf x a))⁻¹ : ℝ) : ℂ) *
         Formalism.MainNotions.S.hsInner (L.B (lJ L h F) x) (L.B (lJ L h F') x))
-
-theorem lbeta_eq_integral (L : Lev) (h : L.Haar) (F F' : L.GF) :
-    lbeta L h F F' = ∫ x : Fin (L.r + 1) → ℂ, (((∏ a : Fin L.r, Complex.normSq (cOf x a))⁻¹ : ℝ) : ℂ) *
-      Formalism.MainNotions.S.hsInner (L.B (lJ L h F) x) (L.B (lJ L h F') x) := rfl
-
-def LemmaBThreeClauses (CB : ℝ) : Prop := LemmaBCont CB ∧ LemmaBAdj CB ∧ LemmaBRad CB
 
 def LemmaB (CB : ℝ) : Prop := LemmaBCont CB ∧ LemmaBAdj CB ∧ LemmaBRad CB ∧ LemmaBInt CB
 

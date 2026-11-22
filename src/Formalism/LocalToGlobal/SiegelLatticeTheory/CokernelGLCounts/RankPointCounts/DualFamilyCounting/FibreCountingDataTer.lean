@@ -29,10 +29,6 @@ def endoOf (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (𝔭 :
     (hB : ∀ x ∈ locF 𝔭 L, g x ∈ locF 𝔭 L) : Module.End (𝓞 K) (DiscMod h ⊤ L 𝔭) :=
   Submodule.mapQ _ _ (g.restrict hA) (fun _ hx => hB _ hx)
 
-theorem endoOf_mk (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F))
-    (g : V →ₗ[𝓞 K] V) (hA hB) (y : ↥(locF 𝔭 (dualIn h ⊤ L))) :
-    endoOf h L 𝔭 g hA hB (Submodule.Quotient.mk y) = Submodule.Quotient.mk ⟨g y, hA y y.2⟩ := rfl
-
 section
 
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {m : ℕ}

@@ -199,10 +199,6 @@ variable (X)
 def v0 (i : X.Tw) (j : ℕ) (b : Bool) : ℝ≥0∞ :=
   lenN (X.O i) (X.l i) (X.B i j b ⧸ X.Theta i j b)
 
-def lenPsi (i : X.Tw) (j : ℕ) (b : Bool) (k : ℕ) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E)))
-    (ψ : GE N →* (X.Ok i k)ˣ) : ℝ≥0∞ :=
-  lenN (X.Ok i k) (X.l i) (TensorProduct (X.O i) (X.Ok i k) (X.B i j b) ⧸ X.ThetaPsi i j b k Q ψ)
-
 def kMap (i : X.Tw) (k : ℕ) : FractionRing (X.O i) →+* FractionRing (X.Ok i k) :=
   IsFractionRing.lift (g := (algebraMap (X.Ok i k) (FractionRing (X.Ok i k))).comp
     (algebraMap (X.O i) (X.Ok i k)))

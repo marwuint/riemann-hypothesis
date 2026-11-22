@@ -282,10 +282,6 @@ def leviEquiv (e : (Σ a, Fin (d a)) ≃ Fin N) : levi k (blockOf e) ≃* ∀ a,
       rw [e.symm_apply_apply, e.symm_apply_apply, Matrix.blockDiagonal'_apply_eq]
       rfl)
 
-theorem leviEquiv_apply (e : (Σ a, Fin (d a)) ≃ Fin N) (g : levi k (blockOf e)) (a : Fin h) (i j : Fin (d a)) :
-    ((leviEquiv e g a : GL (Fin (d a)) k) : Matrix (Fin (d a)) (Fin (d a)) k) i j =
-      ((g : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (e ⟨a, i⟩) (e ⟨a, j⟩) := rfl
-
 def IsTwoBlock (r : ℕ) (b : Fin N → ℕ) : Prop := ∀ i j, b i = b j ↔ ((i : ℕ) < r ↔ (j : ℕ) < r)
 
 variable {r t : ℕ}
@@ -368,39 +364,6 @@ theorem mem_fixed {ρ : Representation ℂ G V} {U : Subgroup G} {v : V} : v ∈
   · intro h u
     simpa using h u u.2
 
-theorem bijective_fixed_mkQ (ρ : Representation ℂ G V) (U : Subgroup G) [Finite U] :
-    Function.Bijective ((twKer ρ U 1).mkQ ∘ₗ (fixed ρ U).subtype) := by
-  classical
-  letI := Fintype.ofFinite U
-  have hc : (Fintype.card U : ℂ) ≠ 0 := Nat.cast_ne_zero.2 Fintype.card_ne_zero
-  let S : V →ₗ[ℂ] V := ∑ u : U, ρ u
-  have hS : ∀ v, S v = ∑ u : U, ρ u v := fun v => LinearMap.sum_apply _ _ _
-  have hker : twKer ρ U 1 ≤ LinearMap.ker S := by
-    refine Submodule.span_le.2 ?_
-    rintro _ ⟨n, v, rfl⟩
-    simp only [MonoidHom.one_apply, Units.val_one, one_smul, SetLike.mem_coe, LinearMap.mem_ker]
-    rw [map_sub, hS, hS, sub_eq_zero]
-    exact Fintype.sum_equiv (Equiv.mulRight n) _ _ fun u => by simp
-  constructor
-  · rw [injective_iff_map_eq_zero]
-    intro v hv
-    have h1 : S v = 0 := hker ((Submodule.Quotient.mk_eq_zero _).1 hv)
-    rw [hS, Finset.sum_congr rfl fun (u : U) _ => mem_fixed.1 v.2 u u.2, Finset.sum_const, Finset.card_univ,
-      ← Nat.cast_smul_eq_nsmul ℂ] at h1
-    exact Subtype.ext ((smul_eq_zero.1 h1).resolve_left hc)
-  · intro q
-    obtain ⟨v, rfl⟩ := Submodule.mkQ_surjective _ q
-    have hf : (Fintype.card U : ℂ)⁻¹ • S v ∈ fixed ρ U := by
-      refine Submodule.smul_mem _ _ (mem_fixed.2 fun n hn => ?_)
-      rw [hS, map_sum]
-      exact Fintype.sum_equiv (Equiv.mulLeft (⟨n, hn⟩ : U)) _ _ fun u => by simp
-    refine ⟨⟨_, hf⟩, ?_⟩
-    show (twKer ρ U 1).mkQ ((Fintype.card U : ℂ)⁻¹ • S v) = _
-    have h2 : ∀ u : U, (twKer ρ U 1).mkQ (ρ u v) = (twKer ρ U 1).mkQ v := fun u =>
-      (Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨u, v, by simp⟩)
-    rw [map_smul, hS, map_sum, Finset.sum_congr rfl fun u _ => h2 u, Finset.sum_const, Finset.card_univ,
-      ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]
-
 def Embeds (ρ : Representation ℂ G V) (σ : Representation ℂ G W) : Prop :=
   ∃ f : ρ.IntertwiningMap σ, Function.Injective f
 
@@ -446,14 +409,6 @@ def hcRes (b : Fin N → ℕ) (ρ : Representation ℂ (GL (Fin N) k) V) :
 
 @[simp] theorem hcRes_apply (b : Fin N → ℕ) (ρ : Representation ℂ (GL (Fin N) k) V) (m : levi k b)
     (v : fixed ρ (unipRadical k b)) : (hcRes b ρ m v : V) = ρ m v := rfl
-
-def hcCoinv (b : Fin N → ℕ) (ρ : Representation ℂ (GL (Fin N) k) V) :
-    Representation ℂ (levi k b) (Jacquet ρ (unipRadical k b)) :=
-  jacquet ρ (unipRadical k b) (levi k b).subtype fun m => blockTri_le_normalizer b (levi_le_blockTri b m.2)
-
-def hcResEquivCoinv [Finite k] (b : Fin N → ℕ) (ρ : Representation ℂ (GL (Fin N) k) V) :
-    (hcRes b ρ).Equiv (hcCoinv b ρ) :=
-  Representation.Equiv.mk (LinearEquiv.ofBijective _ (bijective_fixed_mkQ ρ (unipRadical k b))) fun _ => rfl
 
 def inflate (b : Fin N → ℕ) (σ : Representation ℂ (levi k b) W) : Representation ℂ (blockTri (κ := k) b) W :=
   σ.comp (leviProj b)

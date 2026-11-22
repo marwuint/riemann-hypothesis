@@ -10,6 +10,4 @@ namespace GlobalTheory.CompanionTheory.IdxAd
 
 def swapC (k : Type) [CommRing k] : (k × k) →ₐ[k] k × k := (GlobalTheory.CompanionTheory.SplitIdx.swapAlg k).toAlgHom
 
-theorem swapC_apply {k : Type} [CommRing k] (z : k × k) : swapC k z = z.swap := rfl
-
 end GlobalTheory.CompanionTheory.IdxAd

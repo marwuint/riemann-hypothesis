@@ -1597,15 +1597,7 @@ theorem linj_map_zero (W : LocWach PD LL O v n) (E : EtTie W RA RW inclR φR gR 
   rw [E.jD_map, E.jD_map, linj_tmap, h0, TensorProduct.map_zero_right, map_zero]
   rfl
 
-def linj_HMid (W : LocWach PD LL O v n) : Prop :=
-  ∀ (T₀ T₁ T₂ : LocLat G Qp LL O) (ι : LatHom T₀.L T₁.L) (π : LatHom T₁.L T₂.L),
-    IsSESLat (Qp := Qp) ι π → ∀ x : W.DD T₁, W.map π x = 0 → ∃ x₀, W.map ι x₀ = x
-
 end LiftInj
-
-def linjMidOpen (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
-    linj_HMid ((HW l).W K s LL h)
 
 end Formalism.MainNotions.LiftingTheory
 
@@ -2141,9 +2133,6 @@ def lker_rep {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) :
     ext x
     simp
 
-theorem lker_rep_coe {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (g : G)
-    (x : ↥(LinearMap.ker F.f)) : ((lker_rep F g x : ↥(LinearMap.ker F.f)) : T₁.V) = T₁.ρ g x := rfl
-
 theorem lker_splitV {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (hOnto : F.Onto) :
     ∃ (r : T₁.V →ₗ[LL] ↥(LinearMap.ker F.f)) (s : T₂.V →ₗ[LL] T₁.V),
       r ∘ₗ (LinearMap.ker F.f).subtype = LinearMap.id ∧
@@ -2548,9 +2537,6 @@ def gradedIdeal (ϖ : O) (k : ℕ) : Ideal (PowerSeries O) where
       have := Finset.HasAntidiagonal.mem_antidiagonal.1 hp
       omega
     exact Ideal.mul_mem_left _ _ (Ideal.pow_le_pow_right (by omega) (hf p.2))
-
-theorem mem_gradedIdeal_iff (ϖ : O) (k : ℕ) (f : PowerSeries O) :
-    f ∈ gradedIdeal ϖ k ↔ ∀ j, coeff j f ∈ Ideal.span {ϖ} ^ (k - j) := Iff.rfl
 
 theorem C_mul_mem_graded_ideal (ϖ : O) (k : ℕ) (f : PowerSeries O) (hf : f ∈ gradedIdeal ϖ k) :
     C ϖ * f ∈ gradedIdeal ϖ (k + 1) := by

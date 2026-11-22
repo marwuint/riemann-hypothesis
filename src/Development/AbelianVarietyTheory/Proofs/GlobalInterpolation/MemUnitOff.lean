@@ -18,9 +18,6 @@ instance mulActPP {q : ℕ} {F : Type} [Field F] (Lc : LocF q F) (n : ℕ) : Mul
     have h2 := LevModel.isAct_actPP h p x
     exact ⟨h1.1.trans h2.1, h1.2.trans h2.2⟩)
 
-theorem smul_PP {q : ℕ} {F : Type} [Field F] {Lc : LocF q F} {n : ℕ} (g : GL (Fin n) Lc.K) (p : LocF.PP Lc n) :
-    g • p = LevModel.actPP g p := rfl
-
 def IntGL {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (O : Subring K) (g : GL ι K) : Prop :=
   ∀ a b, (g : Matrix ι ι K) a b ∈ O ∧ ((g⁻¹ : GL ι K) : Matrix ι ι K) a b ∈ O
 
@@ -55,19 +52,11 @@ def latB {K ι : Type} [Field K] [NumberField K] [Fintype ι] [DecidableEq ι]
     rw [← algebraMap_smul K r x, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]
     exact (valO Q).mul_mem (Q.valuation_le_one r) (hx Q a)
 
-theorem mem_latB {K ι : Type} [Field K] [NumberField K] [Fintype ι] [DecidableEq ι]
-    (B : HeightOneSpectrum (𝓞 K) → GL ι K) (x : ι → K) :
-    x ∈ latB B ↔ ∀ Q a, ((((B Q)⁻¹ : GL ι K) : Matrix ι ι K) *ᵥ x) a ∈ valO Q :=
-  Iff.rfl
-
 def spanO {K ι : Type} [Field K] [Fintype ι] (σ : K →+* ℂ) (O : Subring K) {n : ℕ} (lam : ι → DomWeight n) :
     AddSubgroup (MvPolynomial (ι × Fin n × Fin n) ℂ) :=
   AddSubgroup.closure {p | ∃ (r : K) (f : ι → MvPolynomial (Fin n × Fin n) ℤ),
     r ∈ O ∧ (∀ τ, f τ ∈ delSq ℤ n (lam τ)) ∧
     p = σ r • ten (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ))}
-
-theorem intSpan_eq (D : D7) (w : D.what₂.places.Pl) {n : ℕ} (lam : D.what₂.Tau → DomWeight n) :
-    IntSpan D w lam = spanO D.what₂.embLL (Ow D w) lam := rfl
 
 def movC {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (c : ℤ) (g : ι → GL (Fin n) ℂ) :
     MvPolynomial (ι × Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (ι × Fin n × Fin n) ℂ :=

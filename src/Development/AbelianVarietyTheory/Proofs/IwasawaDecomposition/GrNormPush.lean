@@ -151,20 +151,6 @@ theorem Tri.grNorm_eq (hu : Ind t x u) (hu' : Ind t x u') (h : Tri t x u u') (Λ
     rw [k3, eq_inv_of_mul_eq_one_right e1]
     simp [mul_comm]
 
-theorem grNorm_push {X' : Scheme.{0}} {t' : SAB H X'} {f : X' ⟶ X} (mu : SABMap t' t f) {x' : Sp C ⟶ X'}
-    (hx : x' ≫ f = x) {Λ' : Set (Sp (DualNumber C) ⟶ t'.G.left)} {Λ : Set (Sp (DualNumber C) ⟶ t.G.left)}
-    (hΛ : ∀ v, IsTanAtG t' x' v → (v ∈ Λ' ↔ v ≫ mu.φ ∈ Λ)) {v : Fin m → (Sp (DualNumber C) ⟶ t'.G.left)}
-    (hv : ∀ i, IsTanAtG t' x' (v i)) (j : Fin m) :
-    grNorm t' x' Λ' v j = grNorm t x Λ (fun i => v i ≫ mu.φ) j := by
-  obtain ⟨U, rfl⟩ := exists_tan hv
-  have e : ∀ c : Fin m → C, (∃ w ∈ Λ', IsCombAtG t' x' (fun i => (tv (U i)).left) c w) ↔
-      ∃ w ∈ Λ, IsCombAtG t x (fun i => (tv (pushL mu x' hx (U i))).left) c w := fun c => by
-    simp only [comb_iff, exists_eq_right]
-    rw [hΛ _ (isTan_tv _), ← left_pushL mu x' hx, map_sum]
-    simp only [map_smul]
-  simp only [grNorm, e]
-  rfl
-
 end Norm
 
 end GlobalTheory.ShFam.Pad.Pull

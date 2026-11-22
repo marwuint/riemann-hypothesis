@@ -699,11 +699,6 @@ theorem transferS_holds : TransferS (K := K) (G := G) (Pl0 := Pl0) := by
 theorem invS_holds : InvS (K := K) (G := G) (Pl0 := Pl0) := by
   exact fun B v0 hv0 s h X hX Z hZ g ρ hρ v x y => BlockMetrics.quot_invariant' B hv0 h X hX Z hZ g ρ hρ v x y
 
-theorem side_g : lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false = I.A.side ⊥ 1 I.X.zs := rfl
-
-theorem toR_cg (t : I.A.fam.base.Tup) :
-    I.cg.toR I.X.zs false t = (I.A.fam.R t).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z t) := rfl
-
 theorem Jm_eq (b : Bool) : I.Jm b = I.Jt b I.A.fam.base.μ0 := rfl
 
 theorem iC_cpt {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool)

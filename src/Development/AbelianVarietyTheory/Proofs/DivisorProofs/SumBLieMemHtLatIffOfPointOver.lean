@@ -38,9 +38,6 @@ def tateIso {A B : Out.PolAV (Sp C)} (α : A.A ≅ B.A) [IsMonHom α.hom] : Tate
       change (t.lev n ≫ α.hom) ≫ α.inv = t.lev n
       simp)
 
-theorem lev_tateIso {A B : Out.PolAV (Sp C)} (α : A.A ≅ B.A) [IsMonHom α.hom] (t : TateA A p) (n : ℕ) :
-    (tateIso p α t).lev n = t.lev n ≫ α.hom := rfl
-
 variable [IsAlgClosed C] [CharZero C]
 
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O]

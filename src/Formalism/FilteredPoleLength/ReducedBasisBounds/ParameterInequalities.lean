@@ -7,13 +7,6 @@ namespace Formalism.LatticeBaseChangeAlt
 open Finset Matrix
 open scoped RealInnerProductSpace BigOperators
 
-def CompletingSquare : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℝ V] (B : LinearMap.BilinForm ℝ V),
-    (∀ x y, B x y = B y x) → (∀ x, 0 ≤ B x x) →
-    ∀ (q : ℝ), 0 < q → ∀ χ : V,
-      (∀ u : V, -(B χ χ / 2) / q ≤ B χ u + q * (B u u / 2)) ∧
-      B χ ((-(1 / q)) • χ) + q * (B ((-(1 / q)) • χ) ((-(1 / q)) • χ) / 2) = -(B χ χ / 2) / q
-
 def PackingCount : Prop :=
   ∀ (n : ℕ) (P : Finset (EuclideanSpace ℝ (Fin n))) (δ R : ℝ), 0 < δ → δ ≤ R →
     (∀ x ∈ P, ‖x‖ ≤ R) → (∀ x ∈ P, ∀ y ∈ P, x ≠ y → δ ≤ dist x y) →

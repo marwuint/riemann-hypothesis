@@ -16,8 +16,6 @@ def ChebotarevOpenNormal : Prop :=
         ∃ B : ValuationSubring Ω, IsPlaceOver B v ∧ Ine (F := F) B ≤ U ∧
           ∃ σ : G F Ω, IsFrob B (normV v) σ ∧ σ * g⁻¹ ∈ U
 
-theorem chebotarevOpenNormal_iff_cheb : ChebotarevOpenNormal ↔ GlobalTheory.TwSys.Cheb := Iff.rfl
-
 end GlobalTheory.Published
 
 end

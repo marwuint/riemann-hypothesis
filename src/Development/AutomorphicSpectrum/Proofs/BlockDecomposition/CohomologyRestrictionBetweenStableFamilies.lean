@@ -54,9 +54,6 @@ theorem span_lift (T : Thick (nlFun γ p X q κ)) {m : ℕ} (f : Fin m → T.B) 
     simpa using this
   exact Ideal.eq_top_of_isUnit_mem _ ha hu
 
-theorem locH_φ (T : Thick (nlFun γ p X q κ)) (a : T.B) :
-    (locH T a).φ = algebraMap T.B (Localization.Away a) := rfl
-
 theorem comp_φ {T T' T'' : Thick (nlFun γ p X q κ)} (f : T ⟶ T') (g : T' ⟶ T'') : (f ≫ g).φ = g.φ.comp f.φ := rfl
 
 theorem locT_univ (T : Thick (nlFun γ p X q κ)) (a : T.B) {T'' : Thick (nlFun γ p X q κ)} (ψ : T ⟶ T'')

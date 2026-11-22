@@ -115,11 +115,7 @@ def finChart : OpenPartialHomeomorph (CxPts p σ) (Fin D → ℂ) :=
 
 @[simp] theorem finChart_source : c.finChart.source = c.e.source := rfl
 
-theorem finChart_target : c.finChart.target = toV D ⁻¹' c.e.target := rfl
-
 @[simp] theorem finChart_apply (y : CxPts p σ) (a : Fin D) : c.finChart y a = c.e y a := rfl
-
-theorem toV_finChart (y : CxPts p σ) : toV D (c.finChart y) = c.e y := rfl
 
 theorem finChart_symm_apply (z : Fin D → ℂ) : c.finChart.symm z = c.e.symm (toV D z) := rfl
 
@@ -193,9 +189,6 @@ def finAtlasOf (s : Finset R.ι) (hs : ∀ y, ∃ i ∈ s, y ∈ (R.chart i).e.s
 
 def finAtlas [CompactSpace (CxPts p σ)] : FinHolAtlas D (CxPts p σ) :=
   R.finAtlasOf R.exists_finite.choose R.exists_finite.choose_spec
-
-theorem finAtlasOf_chart (s : Finset R.ι) (hs) (j : Fin s.card) :
-    (R.finAtlasOf s hs).chart j = (R.chart (s.equivFin.symm j)).finChart := rfl
 
 theorem isAlgAtlas_finAtlasOf (s : Finset R.ι) (hs) : IsAlgAtlas (R.finAtlasOf s hs) :=
   fun _ => ⟨_, rfl⟩
@@ -283,8 +276,6 @@ def locSec (φ : Weight p σ B) (s : B.ι → CxPts p σ → ℂ) : CxPts p σ �
   fun x => s (pick φ.isLB x)
 
 variable {φ : Weight p σ B}
-
-theorem locPot_U (x : CxPts p σ) : φ.locPot.U x = ptsIn p σ (B.U (pick φ.isLB x)) := rfl
 
 theorem locPot_φ (x y : CxPts p σ) : φ.locPot.φ x y = φ.φ (pick φ.isLB x) y / 2 := rfl
 

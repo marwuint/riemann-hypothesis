@@ -22,19 +22,6 @@ abbrev Tup (k r a : ℕ) : Type := Fin (2 * r + k + 1) → Fin a → ℂ
 def gramC {k r a : ℕ} (X : Tup k r a) : Matrix (Fin a) (Fin a) ℂ :=
   (Matrix.of X)ᴴ * Hpk k r * Matrix.of X
 
-def DefPerp {k r a : ℕ} (X : Tup k r a) : Prop :=
-  (gramC X).det ≠ 0 ∧ PosOnPerp (Hpk k r) (Matrix.of X)
-
-def DefGram (k r a : ℕ) : Set (HCo a) := {t | ∃ X : Tup k r a, gramC X = hOf t ∧ DefPerp X}
-
-def IsGramConst (k r a : ℕ) (μ : Measure (Mt k r)) (C : ℝ) : Prop :=
-  0 < C ∧ ∀ Φ : Tup k r a → ℝ≥0∞, Measurable Φ → ∀ s : HCo a → Tup k r a,
-    (∀ t ∈ DefGram k r a, gramC (s t) = hOf t) →
-    (2 : ℝ≥0∞) ^ ((2 * r + k + 1) * a) * ∫⁻ X in {X | DefPerp X}, Φ X =
-      (2 : ℝ≥0∞) ^ (a * (a - 1) / 2) * ∫⁻ t in DefGram k r a,
-        ENNReal.ofReal (C * ‖(hOf t).det‖ ^ (2 * r + k + 1 - a)) *
-          ∫⁻ g, Φ (Matrix.of.symm (Matrix.of g * Matrix.of (s t))) ∂μ
-
 section Glob
 
 variable {E : Type} [Field E] [NumberField E]
@@ -44,10 +31,6 @@ def tupLat {n a : ℕ} (𝔞 : Fin a → FractionalIdeal (𝓞 E)⁰ E) (P : Mat
   Submodule.span (𝓞 E) {v | ∃ (b : Fin a) (x : E), x ∈ 𝔞 b ∧ v = x • fun i => P i b}
 
 variable {F : Type} [Field F] [NumberField F] [Algebra F E]
-
-def difAt (v : HeightOneSpectrum (𝓞 F)) : ℝ :=
-  (Ideal.absNorm v.asIdeal : ℝ) ^
-    (FractionalIdeal.count F v ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F))
 
 def StdAt (v : HeightOneSpectrum (𝓞 F)) (ψ : Fv F v → ℂ) : Prop :=
   ∀ x : Fv F v, (∀ y ∈ v.adicCompletionIntegers F, ψ (x * y) = 1) ↔

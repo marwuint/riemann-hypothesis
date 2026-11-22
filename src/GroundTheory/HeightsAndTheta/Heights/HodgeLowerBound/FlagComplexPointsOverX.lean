@@ -35,8 +35,6 @@ section FlZ
 
 variable (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ)
 
-abbrev FlZBlk : Ψ × Fin (N - 1) → Type := fun q => PluckerBlocks N N q.2
-
 variable {Ψ N}
 
 end FlZ

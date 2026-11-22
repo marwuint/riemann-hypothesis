@@ -16,8 +16,6 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestA
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker Classical Formalism.MainNotions
 open Formalism.L2.Th1 (F2.IsLat F2.HasCM)
 
-theorem first_integral_eq (Λ : AddSubgroup ℂ) (ω : ℂ) (G : ℂ → ℂ) : PI.U1 Λ ω G = Formalism.MainNotions.TaylorLogMetric.U1 Λ ω G := rfl
-
 theorem sgStar_spec (L : PeriodPair) :
     Differentiable ℂ (Formalism.L2.Th1.F.sgStar L) ∧ deriv (Formalism.L2.Th1.F.sgStar L) 0 = 1 ∧
       (∀ z, Formalism.L2.Th1.F.sgStar L (-z) = -Formalism.L2.Th1.F.sgStar L z) ∧

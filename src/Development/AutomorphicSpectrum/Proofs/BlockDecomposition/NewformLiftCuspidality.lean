@@ -44,8 +44,6 @@ theorem hT_symm (T : 𝔸[ℚ] ≃ₜ 𝔸[ℚ]) (σ : ℚ ≃ ℚ)
 
 def scaleH (α : ℚˣ) : 𝔸[ℚ] ≃ₜ 𝔸[ℚ] := Homeomorph.smul (pri α)
 
-theorem scaleH_apply (α : ℚˣ) (x : 𝔸[ℚ]) : scaleH α x = algebraMap ℚ 𝔸[ℚ] α * x := rfl
-
 def Cq : Type := Multiplicative (AdeleQuotient ℚ)
 
 instance : CommGroup Cq := inferInstanceAs (CommGroup (Multiplicative (AdeleQuotient ℚ)))

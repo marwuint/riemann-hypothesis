@@ -44,10 +44,6 @@ lemma algF_ne_zero {u : 𝓞 F} (hu : u ∉ v.asIdeal) : algebraMap F E (u : F) 
     rw [this]; exact zero_mem _
   exact (map_ne_zero_iff _ (algebraMap F E).injective).2 hu0
 
-lemma mem_Sp' (c : E) : c ∈ Sp (E := E) v ↔
-    ∃ (a : 𝓞 E) (s : 𝓞 E) (_ : s ∈ Sv (E := E) v),
-      c = algebraMap (𝓞 E) E a * (algebraMap (𝓞 E) E s)⁻¹ := Iff.rfl
-
 end PI.SelfDualLoc.W.LB
 
 namespace PI.SelfDualLoc.W

@@ -55,14 +55,4 @@ theorem j_gen_specializes (V : Cover Y) : V.j (genericPoint V.G) ⤳ genericPoin
   obtain ⟨y, hy⟩ := mem_range_j V h0
   exact hy ▸ (genericPoint_specializes y).map V.j.continuous
 
-theorem cxPts_from_generic_fibre (V : Cover Y) (τ : 𝓞 F →+* ℂ) (y' : CxPts V.p τ) :
-    ∃ σ : F →+* ℂ, σ.comp (algebraMap (𝓞 F) F) = τ ∧ ∃ z : CxPts (V.π ≫ Y.str) σ, y'.1 = z.1 ≫ V.j := by
-  have hτ := ringOfIntegers_hom_complex_injective F τ
-  obtain ⟨σ, hσ⟩ : ∃ σ : F →+* ℂ, σ.comp (algebraMap (𝓞 F) F) = τ :=
-    ⟨IsFractionRing.lift (K := F) hτ, RingHom.ext fun x => IsFractionRing.lift_algebraMap (K := F) hτ x⟩
-  refine ⟨σ, hσ, ?_⟩
-  have hw : y'.1 ≫ V.p = spMap σ ≫ spMap (algebraMap (𝓞 F) F) :=
-    y'.2.trans ((congrArg spMap hσ.symm).trans (spMap_comp _ _))
-  exact ⟨⟨V.pb.lift y'.1 _ hw, V.pb.lift_snd _ _ _⟩, (V.pb.lift_fst _ _ _).symm⟩
-
 end GlobalTheory.CoverNorm.Isom

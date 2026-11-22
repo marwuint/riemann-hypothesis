@@ -249,10 +249,6 @@ def quotientRangeNormUnitsEquiv :
   (QuotientGroup.quotientMulEquivOfEq ker_ordModFinrank.symm).trans
     (QuotientGroup.quotientKerEquivOfSurjective _ ordModFinrank_surjective)
 
-theorem quotientRangeNormUnitsEquiv_mk (x : Kˣ) :
-    quotientRangeNormUnitsEquiv K L (QuotientGroup.mk x) = ordModFinrank K L x :=
-  rfl
-
 end NormGroup
 
 end GroundTheory.LocalField

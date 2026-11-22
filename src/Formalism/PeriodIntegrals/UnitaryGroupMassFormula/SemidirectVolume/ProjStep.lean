@@ -73,9 +73,6 @@ def piHom : S0 R σ J P →* Hsub R σ J P where
   map_one' := Subtype.ext (piG_one hσσ hJ hP)
   map_mul' s s' := Subtype.ext (piG_mul hσσ hJ hP s.2 s'.2)
 
-theorem piHom_coe (s : S0 R σ J P) :
-    ((piHom hσσ hJ hP s : Hsub R σ J P) : HA R σ J) = piG hσσ hJ hP s s.2 := rfl
-
 end R
 
 end PI.VolSemiDirect.W

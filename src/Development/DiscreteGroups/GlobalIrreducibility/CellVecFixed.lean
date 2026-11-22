@@ -22,6 +22,4 @@ def cellVec (hS1 : KOne k (Fin m) ≤ S)
 variable (hS1 : KOne k (Fin m) ≤ S)
   (hS4 : ∀ y ∈ S, ∀ a, valuation k (((y : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) a a) = 1)
 
-theorem cellVec_apply (g : GL (Fin m) k) : (cellVec hS1 hS4).1.1 g = cellFun S g := rfl
-
 end DiscreteGroups.sglob.DzType

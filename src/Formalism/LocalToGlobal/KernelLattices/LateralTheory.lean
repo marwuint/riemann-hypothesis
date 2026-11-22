@@ -216,10 +216,6 @@ def EqP (χ : TaylorLogMetric.IdE D → ℂ) : Prop := TaylorLogMetric.eq22 D B.
 
 def IntP (χ : TaylorLogMetric.IdE D → ℂ) : Prop := TaylorLogMetric.int22 D B.tor (B.eNat χ)
 
-def MomP (χ : TaylorLogMetric.IdE D → ℂ) : Prop := TaylorLogMetric.mom22 D cc δ (B.eNat χ) ∧ TaylorLogMetric.LargerSupportMomentCondition D cc δ (B.eNat χ)
-
-def StrP (χ : TaylorLogMetric.IdE D → ℂ) : Prop := TaylorLogMetric.str22 D B.tor (B.eNat χ)
-
 end Base
 
 end Fam

@@ -70,8 +70,6 @@ def XiAt (J : CoreJ D) (j : ℕ) {n : ℕ} (d : DeltaDat (J.Q.Xo j) J.Q.c n) (xi
     CXiVal (J.V j J.σ₀) hr J.σ₀ (Tup := Unit) (fun _ => d) U₂ dict₂
       (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ J.iota j) (J.x₀ j J.σ₀) fun _ => xi
 
-theorem xiVal_iff_xiAt (T : Full D) (j n : ℕ) : T.XiVal j n ↔ XiAt T.J j (T.dδ j n) T.xi := Iff.rfl
-
 def ChiOK (D : D7) (chi₀ : ℕ → (AE D)ˣ →* Circle) : Prop :=
   ∀ j, InR D j → IsHeckeChar D (chi₀ j) ∧ (∀ a, chi₀ j (idF D a) = 1) ∧
     ∀ x, FinUnit x → ((chi₀ j x : Circle) : ℂ) ∈ FO D

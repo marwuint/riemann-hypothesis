@@ -133,19 +133,6 @@ def FrameDeviationFinEquiv : Prop :=
     [∀ i, DecidableEq (ι i)] (B : ∀ i, Matrix α (ι i) ℂ) (ga : I → ℝ) (e : ℝ), (∀ i, 0 ≤ ga i) →
     (HilbertSchmidtNormSquare.F2 (toFin B) ga e ↔ FrameDeviationLinear B ga e)
 
-def BridgeConcl : Prop :=
-  ∀ s mu logI δ u HH η e : ℝ,
-    (s - logI - (1 - δ)⁻¹ * (4 * u * Real.log (1 + HH / u) + (η + 4 * Real.sqrt e) * HH) ≤ mu) ↔
-      PhiMonotonicityLemmas.ConclF s mu logI δ u HH η e
-
-def CorLin : Prop :=
-  ∀ (I α : Type) [Fintype I] [Fintype α] (ι : I → Type) [∀ i, Fintype (ι i)]
-    [∀ i, DecidableEq (ι i)] (B : ∀ i, Matrix α (ι i) ℂ) (ga : I → ℝ) (Dstar sg η0 η1 e0 : ℝ),
-    (∀ i, 0 ≤ ga i) → 0 < Dstar → 0 < sg → sg ≤ 1 / 4 → Dstar / sg ≤ RsG ι →
-    -1 ≤ η0 → η0 ≤ sg / 2 → η1 ≤ sg / 2 → 0 ≤ e0 → Real.sqrt e0 ≤ sg / 2 →
-    InputSG B ga Dstar η0 η1 e0 →
-    FrameTraceRatioLinear B ga (5 * sg) ∧ FrameDeviationLinear B ga e0 ∧ e0 ≤ 1 / 4 ∧ 0 < ∑ i, Fintype.card (ι i)
-
 def RamLin : Prop :=
   ∀ (I α : Type) [Fintype I] [Fintype α] (ιf ι : I → Type) [∀ i, Fintype (ιf i)]
     [∀ i, DecidableEq (ιf i)] [∀ i, Fintype (ι i)] [∀ i, DecidableEq (ι i)]

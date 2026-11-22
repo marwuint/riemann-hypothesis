@@ -65,27 +65,6 @@ theorem support_finite (hϖ : IsUnif ϖ) (hram : ¬ IsUnram ν) (hcond : CondLE 
       shell (haarVol (KO k (Fin a))) ϖ ν w φ m.1).Finite :=
   (finite_shells hϖ hram hcond hφ).subset fun m hm => ⟨w, hm⟩
 
-theorem integral_eq_shellSum (hϖ : IsUnif ϖ) (hram : ¬ IsUnram ν) (hcond : CondLE ϖ e ν) {a : ℕ}
-    {φ : Matrix (Fin a) (Fin a) k → ℂ} (hφ : φ ∈ SB (Matrix (Fin a) (Fin a) k)) {w : ℂ}
-    (hint : Integrable (fun g : GL (Fin a) k => φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) w)
-      (haarVol (KO k (Fin a)))) :
-    ∫ g, φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) w ∂(haarVol (KO k (Fin a))) =
-      shellSum (haarVol (KO k (Fin a))) ϖ ν w φ := by
-  set S : {m : Fin a → ℤ // Antitone m} → Set (GL (Fin a) k) := fun m => shellSet ϖ m.1 with hS
-  have hU : ⋃ m, S m = Set.univ :=
-    Set.eq_univ_of_forall fun g => Set.mem_iUnion.2 (exists_unique_shell hϖ g).exists
-  have hd : Pairwise (Function.onFun Disjoint S) := fun m m' hne =>
-    Set.disjoint_left.2 fun g h1 h2 => hne ((exists_unique_shell hϖ g).unique h1 h2)
-  haveI : BorelSpace (GL (Fin a) k) := borel_GL
-  have hm : ∀ m, MeasurableSet (S m) := fun m => (isOpen_shellSet ϖ m.1).measurableSet
-  calc _ = ∫ g in ⋃ m, S m, φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) w ∂(haarVol (KO k (Fin a))) := by
-        rw [hU, Measure.restrict_univ]
-    _ = ∑' m, ∫ g in S m, φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) w ∂(haarVol (KO k (Fin a))) :=
-        integral_iUnion hm hd hint.integrableOn
-    _ = ∑ᶠ m, ∫ g in S m, φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) w ∂(haarVol (KO k (Fin a))) :=
-        tsum_eq_finsum (support_finite hϖ hram hcond hφ w)
-    _ = _ := rfl
-
 end Shells
 
 end GlobalTheory.ShellSumEqv

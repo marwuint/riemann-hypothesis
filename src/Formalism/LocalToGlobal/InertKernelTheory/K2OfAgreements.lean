@@ -51,14 +51,6 @@ attribute [instance] RecSide.fieldKr RecSide.acgΨ RecSide.modΨ RecSide.finCl
 
 variable {X : Sys p} {Y : Pend X}
 
-def TieChain (R : RecSide X Y) : Prop :=
-  ∀ j < X.mm, ∀ x : R.Φ j, X.Kz j (R.cmp j x) = R.cmp (j + 1) (R.KL j x)
-
-def TieDel (R : RecSide X Y) : Prop :=
-  ∀ j < X.mm, ∃ cK : Y.Kc, cK ∈ Y.Oc ∧ cK⁻¹ ∈ Y.Oc ∧ cK ≠ 0 ∧
-    ∀ (La : ↥(Y.Rep j)), ∀ x ∈ R.Sh j, ∀ (c' : X.Lv.comp (j + 1)) (L' : (X.Pj (j + 1)).Tup), (X.Pj (j + 1)).IsLatTup L' →
-      R.Rd j c' L' (R.E j (R.e j La) x) = cK • Y.DelF j (R.cmp j x La.1.1 La.1.2) (R.Sr j La.1 (c', L'))
-
 def KerOfSmul : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (X : Sys p) (Y : Pend X) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1))
     (f : MvPowerSeries (X.ZA j) Y.Kc),

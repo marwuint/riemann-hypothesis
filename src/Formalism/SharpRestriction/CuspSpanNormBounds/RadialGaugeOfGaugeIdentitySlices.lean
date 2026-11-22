@@ -125,9 +125,6 @@ section WdAbstract
 
 variable {m : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
 
-def wdCol (D : Set (Fin m → ℂ)) (O : Op m E) {n : ℕ} (M : Mod m E n) (Y : ℂ) : Prop :=
-  ∀ (γ : AuxiliarySlotStates n) (f : (Fin m → ℂ) → E), ∀ x ∈ D, M.TT Y (0, γ) (0, e1s n) f x = if γ = e1s n then O f x else 0
-
 end WdAbstract
 
 end Formalism.MainNotions.BridgeLemma₅
@@ -216,22 +213,6 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Base E} {r :
 
 variable (C : Ctx B r) (Γ : GCtx E r)
 
-def frLev0Open (h : (Fin (r + 1) → ℂ) → E →L[ℂ] E) (SS : Fin B.k0 → (Fin (r + 1) → ℂ) → E →L[ℂ] E) : Prop :=
-  (∀ n (hn : n ≤ r), ∀ Y : ℂ,
-    let u := Y + ((Γ.nV : ℂ) - 1) / 2
-    Γ.cminor n hn u ∈ Γ.PolyInv ∧ Γ.Rad (Γ.cminor n hn u) (DnVn n hn Y 0) ∧
-    (∀ hn1 : n + 1 ≤ r, Γ.Rad (Γ.cminor n hn u) (DnVn (n + 1) hn1 Y 1))) ∧
-  (∀ Y : ℂ, ∃ Θ ∈ Γ.PolyInv, Γ.Rad Θ (Rhat r C.Q Y)) ∧
-  (∀ l, SSnat (SS l) ∈ C.AA) ∧ (∀ Y : ℂ, R0 r B.T B.T' h Y ∈ C.AA) ∧
-  (∀ Y : ℂ, NoPoleRho B Y →
-    C.OpEq (R0 r B.T B.T' h Y)
-      (mulE (xInvFib B.rhoP C.P Y) ∘ Rhat r C.Q Y -
-        ∑ l, mulE (shInv B.rhoP C.P l Y) ∘ SSnat (SS l) ∘ Ahat r Y)) ∧
-  (∀ Y : ℂ, NoPoleRho B Y →
-    C.OpEq (mulE (xInvFib B.rhoP C.P Y) ∘ C.RhatV Y)
-      (weightedMirrorLevelOperator r B.T B.T' (C.fstar h) Y +
-        ∑ l, mulE (shInv B.rhoP C.P l Y) ∘ (mulF (fun x => Dr x / star (Dr x)) ∘ mulE (C.fstar (SS l))) ∘ AhatV r Y))
-
 end Level
 
 end Formalism.MainNotions.BridgeLemma₅
@@ -255,18 +236,6 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Base E} {r :
 variable {C}
 
 variable (C)
-
-def frResOpen (C1 C2 : ℝ) (SS : Fin B.k0 → (Fin (r + 1) → ℂ) → E →L[ℂ] E) : Prop :=
-  ∀ w : List (Bool × ℝ), Admissible B.I w → Ctx.IsPlus w → (∀ a ∈ w, a.2 ∈ mid3 B) →
-    (6 ≤ lenI B → (w.length : ℝ) ≤ lenI B →
-      (∀ i : Fin w.length, (∑ j : Fin w.length, if j = i then 0 else 1 / |(w.get i).2 - (w.get j).2|) ≤ C1) →
-      ∀ Y Y' : ℝ, Y ∈ mid3 B → Y' ∈ mid3 B → (∀ a ∈ w, 2 < |Y - a.2| ∧ 2 < |Y' - a.2|) →
-      (w.map fun a => 1 / |Y - a.2|).sum ≤ C1 → (w.map fun a => 1 / |Y' - a.2|).sum ≤ C1 →
-      ∀ x ∈ C.Dom, ∀ v : (Fin w.length → Fin 2) → E,
-        wnormSq C (fun s ρ => C.cw w s ρ * C.xw w Y s ρ) x
-            (fun s => ∑ t, (C.ee SS w Y s t x - C.ee SS w Y' s t x) (v t)) ≤
-          (C2 * |Y - Y'| * ((B.k0 + 1 : ℝ) / lenI B + (w.map fun a => 1 / (|Y - a.2| * |Y' - a.2|)).sum)) ^ 2 *
-            wnormSq C (fun s ρ => C.cw w s ρ * C.qw w Y / C.xw w ((Y : ℂ) + 1) s ρ) x v)
 
 end Res
 
@@ -372,23 +341,6 @@ open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.
 
 attribute [local instance] Classical.propDecidable
 
-def ThmAHyp (D : D7) (C : ℝ) (Kst : ℕ) (δ : D.host.E) (T T' : ℝ) (x : D.what₂.Tau → LocalDataRealPlace D) (L : LatticeDataWithDual D) (Kd : KernelData D)
-    (B : D.what₂.Tau → LocBessel D.R.k D.R.rS)
-    (f : ∀ v, Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ → ((B v).Wq →L[ℂ] (B v).Wp))
-    (μsec : D.what₂.Tau → ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ) : Prop :=
-  4 ≤ Kst ∧ 1 ≤ D.host.v ∧ PsiAx D δ ∧ LatAx D δ L ∧ FrameAx D δ L B ∧ ArithAxF D L Kd ∧
-    (∀ v, LocMatch D T T' (x v) (B v) ∧ IsKFinCoefH (B v).σ (f v) ∧
-      IsSection D.R.k D.R.rS (B v).z (B v).z' (μsec v)) ∧
-    (∀ v, InterlaceS (k_le_nS D) (x v).u (x v).lam ∧ InterlaceS (k_le_nS D) (x v).u' (x v).lam) ∧
-    (∀ v, (x v).u ≠ (x v).u') ∧
-    (∀ v, GapAtLeast (epsSH D.R) (x v).lam
-      (C * (D.R.m : ℝ) ^ ((9 : ℝ) / 2) * (Nlet D Kst * (D.R.r : ℝ) ^ 2 + (D.R.r : ℝ) ^ 3))) ∧
-    (∀ v, IsCutS (x v).u (x v).u' (Set.Icc (x v).a (x v).b)) ∧
-    (∀ v, (x v).a ≤ (x v).a1 ∧ (x v).a1 ≤ (x v).b1 ∧ (x v).b1 ≤ (x v).b ∧
-      Nlet D Kst ^ 3 / 2 ≤ (x v).b1 - (x v).a1) ∧
-    (∀ v, C * ((D.R.k : ℝ) * Nlet D Kst * ((D.R.rS : ℝ) + 1) ^ 2 +
-        Nlet D Kst ^ 2 * ((D.R.rS : ℝ) + 1) ^ 2 + Nlet D Kst ^ 3) ≤ (x v).b - (x v).a)
-
 end Formalism.MainNotions.BridgeLemma₅
 
 end
@@ -408,4 +360,3 @@ end PartTaAll
 namespace Formalism.MainNotions.BridgeLemma₅
 
 end Formalism.MainNotions.BridgeLemma₅
-

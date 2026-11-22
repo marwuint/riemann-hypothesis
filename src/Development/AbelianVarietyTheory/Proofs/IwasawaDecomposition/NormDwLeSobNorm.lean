@@ -102,11 +102,7 @@ variable {ε : Fin n → Bool} {σ : Mx n → (H →L[ℂ] H)}
 
 theorem isUnit_Jm (ε : Fin n → Bool) : IsUnit (Jm ε) := IsUnit.of_mul_eq_one _ (Jm_mul_self ε)
 
-theorem lieSet_eq (ε : Fin n → Bool) : lieSet ε = lieOf (Jm ε) := rfl
-
 theorem lieSet_eq_lie (ε : Fin n → Bool) : lieSet ε = (lie (Jm ε) : Set (Mx n)) := rfl
-
-theorem UJset_eq (ε : Fin n → Bool) : UJset ε = Formalism.QuantumDeterminants.UH (Jm ε) := rfl
 
 theorem sm_iff {w : H} : Sm ε σ w ↔ w ∈ smooth (Jm ε) σ := Iff.rfl
 

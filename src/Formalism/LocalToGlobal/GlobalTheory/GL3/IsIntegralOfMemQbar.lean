@@ -18,9 +18,6 @@ section Coef
 
 variable {D : D7} {N N' : ℕ}
 
-theorem algCoef_iff (G : VC D N N' → ℂ) :
-    AlgCoef D G ↔ ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ CoefIn D G M := Iff.rfl
-
 theorem taylor_lin {ι : Type*} [Fintype ι] (r : ι → ℂ) (F : ι → VC D N N' → ℂ)
     (hF : ∀ k (m : ℕ), ContDiff ℂ m (F k)) (α : Mono D N N') :
     taylor D (fun z => ∑ k, r k * F k z) α = ∑ k, r k * taylor D (F k) α := by

@@ -176,7 +176,6 @@ def lmk (a : A) (h : a ∈ Submodule.span A ({x} : Set A)) : LeftId O x := ⟨a,
 theorem lv_lmk (a : A) (h : a ∈ Submodule.span A ({x} : Set A)) : lv O x (lmk O x a h) = a := rfl
 theorem lv_add (p q : LeftId O x) : lv O x (p + q) = lv O x p + lv O x q := rfl
 theorem lv_smul (c : O) (p : LeftId O x) : lv O x (c • p) = c • lv O x p := rfl
-theorem lv_smulA (a : A) (p : LeftId O x) : lv O x (a • p) = a * lv O x p := rfl
 theorem lv_mem (p : LeftId O x) : lv O x p ∈ Submodule.span A ({x} : Set A) := p.2
 
 instance : SMulCommClass A O (LeftId O x) :=
@@ -301,9 +300,6 @@ def gamM (ρ : A →ₐ[O] Matrix n n O) : (n → O) →ₗ[O] LatQ O n ρ.toRin
       show ∑ a, t a • (c • (m a : KO O)) = c • ∑ a, t a • (m a : KO O)
       rw [Finset.smul_sum]
       exact Finset.sum_congr rfl fun a _ => smul_comm _ _ _)
-
-theorem gamM_apply (ρ : A →ₐ[O] Matrix n n O) (t : n → O) (m : LatQ O n ρ.toRingHom) :
-    gamM ρ t m = ∑ a, t a • (m a : KO O) := rfl
 
 def lamM (ρ : A →ₐ[O] Matrix n n O) (w : n → O) : LatQ O n ρ.toRingHom →ₗ[O] KO O := gamM ρ w
 

@@ -43,7 +43,4 @@ def chartMap (M : Scheme.{0}) {W W' : M.Opens} (hle : W' ≤ W) (R₀ : Type) [C
     Γ(M, W) →+* R₀ ⊗[ℤ] Γ(M, W') :=
   (Algebra.TensorProduct.includeRight : Γ(M, W') →ₐ[ℤ] R₀ ⊗[ℤ] Γ(M, W')).toRingHom.comp (res M hle)
 
-theorem chartMap_apply (M : Scheme.{0}) {W W' : M.Opens} (hle : W' ≤ W) (R₀ : Type) [CommRing R₀] (a : Γ(M, W)) :
-    chartMap M hle R₀ a = 1 ⊗ₜ res M hle a := rfl
-
 end GlobalTheory.RealMult.ChartFun

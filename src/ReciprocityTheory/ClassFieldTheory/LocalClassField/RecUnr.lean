@@ -45,8 +45,6 @@ variable (p K) in
 noncomputable def urOfK (a : Kˣ) : (urT p K).V :=
   toLayer p ⟨ofK p K (Additive.ofMul a), le_Kur (K := K) (ofK_mem p K _)⟩
 
-theorem urOfK_val (a : Kˣ) : (urOfK p K a).1 = ofK p K (Additive.ofMul a) := rfl
-
 theorem exists_ur_cocycle (a : Kˣ) (χ : charGrp (GK p K)) (hχ : TrivOn p K (MaximalUnramifiedExtension p K) χ) :
     ∃ (t : GalLK p K (MaximalUnramifiedExtension p K) → ℚ) (m : (Fin 2 → GalLK p K (MaximalUnramifiedExtension p K)) → ℤ) (z : (urT p K).coch.X 2)
       (hz : (urT p K).coch.d 2 z = 0), IsLocallyConstant t ∧

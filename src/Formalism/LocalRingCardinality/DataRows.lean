@@ -182,8 +182,6 @@ noncomputable def iota (μ : D.Tup) : D.Amb μ →ₗ[ℂ] D.EE :=
   (D.multZero μ).toLinearEquiv.toLinearMap ∘ₗ D.downTo μ R.m ∘ₗ
     (D.multTop μ).symm.toLinearEquiv.toLinearMap
 
-noncomputable def thetaUp (μ : D.Tup) : D.EE →ₗ[ℂ] D.Amb μ := LinearMap.adjoint (D.iota μ)
-
 def V0 (μ : D.Tup) : Submodule ℂ (D.Amb μ) := LinearMap.range (D.eOp μ)
 
 noncomputable def Usp (μ : D.Tup) : Submodule ℂ (D.Amb μ) := D.V0 μ ⊓ LinearMap.ker (D.iota μ)

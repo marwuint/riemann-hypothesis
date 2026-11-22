@@ -21,9 +21,6 @@ def aL : ∀ {p : ℕ}, (Fin (p + 1) → Co A 1) → Co A p := fun {p} =>
   Nat.rec (motive := fun p => (Fin (p + 1) → Co A 1) → Co A p) (fun _ => one0 A)
     (fun p ih β => (CH.mulP A).cupC (by omega : 1 + p = p + 1) (β 0 - β 1) (ih fun i => β i.succ)) p
 
-theorem aL_succ {p : ℕ} (β : Fin (p + 2) → Co A 1) :
-    aL A β = (CH.mulP A).cupC (by omega : 1 + p = p + 1) (β 0 - β 1) (aL A fun i => β i.succ) := rfl
-
 theorem cech_d_one_zero : CH.d (CH.modF A) 0 (one0 A) = 0 := by
   funext s
   change ∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (A.map (GlobalTheory.CatH.toLast i s)).hom 1 = (0 : A.obj _)

@@ -38,7 +38,4 @@ def SplitOver {O F : Type} [CommRing O] [Field F] {X : Scheme.{0}} (s : X ⟶ Sp
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
-theorem splitComps_iff {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) :
-    SplitComps Y ↔ SplitOver Y.s β := Iff.rfl
-
 end GlobalTheory.CompanionTheory.Ar.TowerOfTest

@@ -75,9 +75,6 @@ variable {ν : Fin k → ℤ} (R : HWRep k ν)
 def πR (B : Fin k → Fin (2 * r + k + 1) → ℂ) (g : Mx k r) : EuclideanSpace ℂ R.I →L[ℂ] EuclideanSpace ℂ R.I :=
   Matrix.toEuclideanCLM (n := R.I) (𝕜 := ℂ) (R.ρ (fm B g))
 
-theorem πR_apply (g : Mx k r) (v : EuclideanSpace ℂ R.I) :
-    πR R B g v = WithLp.toLp 2 (R.ρ (fm B g) *ᵥ v.ofLp) := rfl
-
 theorem πR_isRepW (hz : inWb k r z) (hT : 0 < Tz k r z) (hB : IsFrameOf k r [z] B) : IsRepW k r z (πR R B) := by
   refine ⟨⟨?_, fun a _ b hb => ?_⟩, ?_⟩
   · rw [πR, fm_one hB, R.map_one, map_one]

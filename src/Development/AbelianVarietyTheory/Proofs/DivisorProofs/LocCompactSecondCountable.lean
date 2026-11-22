@@ -135,6 +135,4 @@ variable {θ d : L} (hθ : θ + σ θ = 1) (hd : σ d = -d) (hd0 : d ≠ 0)
 
 def skewPart (z : L) : fixK σ := (basisEquiv hσ hc hθ hd hd0).symm z 1
 
-theorem skewPart_coe (z : L) : (skewPart hσ hc hθ hd hd0 z : L) = d⁻¹ * (z - θ * (z + σ z)) := rfl
-
 end GlobalTheory.LineUMod

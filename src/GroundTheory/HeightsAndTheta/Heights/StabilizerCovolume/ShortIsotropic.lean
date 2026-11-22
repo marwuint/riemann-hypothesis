@@ -19,14 +19,7 @@ section Herm
 
 variable {Em : Type} [Field Em] [NumberField Em] [IsCMField Em] {Ψ : Type} [Fintype Ψ] {N j : ℕ}
 
-omit [NumberField Em] [IsCMField Em] in
-theorem oSmul_eq (c : 𝓞 Em) (x : Fin N → Em) : c • x = (c : Em) • x := rfl
-
 end Herm
-
-end ShortIsotropic
-
-namespace ShortIsotropic
 
 end ShortIsotropic
 

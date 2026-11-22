@@ -264,8 +264,6 @@ theorem norm_lamF_sub {K : Type} [NormedField K] [IsUltrametricDist K] {p : ℕ}
 def altR (R : Type) [CommRing R] (p : ℕ) : PowerSeries R :=
   PowerSeries.mk fun n => ∑ l ∈ range (n + 1), if n = (p ^ 2) ^ l then (-1 : R) ^ l else 0
 
-theorem altF_eq_altR (K : Type) [Field K] (p : ℕ) : altF K p = altR K p := rfl
-
 theorem map_altR {R S : Type} [CommRing R] [CommRing S] (h : R →+* S) (p : ℕ) :
     PowerSeries.map h (altR R p) = altR S p := by
   ext n

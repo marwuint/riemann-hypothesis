@@ -26,10 +26,6 @@ def mapOfLe {H₁ H₂ : Subgroup G} (h : H₁ ≤ H₂) : RightCosetSpace H₁ 
 def centralizerLattice (Γ : Subgroup G) (γ : G) : Subgroup (Subgroup.centralizer {γ}) :=
   Γ.comap (Subgroup.centralizer {γ}).subtype
 
-theorem mem_centralizerLattice {Γ : Subgroup G} {γ : G} {h : Subgroup.centralizer {γ}} :
-    h ∈ centralizerLattice Γ γ ↔ (h : G) ∈ Γ :=
-  Iff.rfl
-
 end Maps
 
 section Topology

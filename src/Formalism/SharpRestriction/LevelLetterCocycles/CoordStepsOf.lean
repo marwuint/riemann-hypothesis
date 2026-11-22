@@ -110,9 +110,6 @@ def coordOf : Coord W (baseIdOf hR) T where
     change lc (b i) (fun j => D.κ i ((a • c) j)) = (baseIdOf hR).d a • lc (b i) (fun j => D.κ i (c j))
     simp only [lc, Pi.smul_apply, D.semi, Finset.smul_sum, mul_smul, algebraMap_smul]
 
-theorem coordOf_t_apply_eq_sum_kappa_smul (i : ZMod n) (c : ι → D.M) :
-    (coordOf D b hb).t i c = ∑ j, D.κ i (c j) • b i j := rfl
-
 end Build
 
 theorem coordSteps_of (hR : Ring9 W) (e : W.DD W.one) (hK : CoeffStep hR) (hS : SplitStep W)

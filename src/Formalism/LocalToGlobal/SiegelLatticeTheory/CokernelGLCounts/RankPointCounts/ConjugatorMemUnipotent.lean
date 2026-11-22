@@ -25,10 +25,6 @@ theorem H_le_UP (X : MP p) : KP M p ⊓ StabX p X ≤ UP p := fun h hh =>
 theorem XP_eq (hA : Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U) :
     XP M δ u u' w L U = g0 M δ hA L U hL hU • Y0 M δ u u' w p := rfl
 
-theorem mem_KU_of (x : UP p) : x ∈ KU M p ↔ (x : GG p) ∈ KP M p := Iff.rfl
-
-theorem stabX_iff (X : MP p) (x : GG p) : x ∈ StabX p X ↔ x • X = X := Iff.rfl
-
 theorem mem_Ag_iff (x : GG p) : x ∈ Ag M δ u u' (p := p) w ↔ x ∈ StP M δ u u' w p ∧ x ∈ KP M p := by
   constructor
   · rintro ⟨y, hy, rfl⟩

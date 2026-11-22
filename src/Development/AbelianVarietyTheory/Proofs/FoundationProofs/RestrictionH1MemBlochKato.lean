@@ -82,8 +82,6 @@ section Main
 
 variable (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ)
 
-theorem latT_eq : latT D i s = Gen.Tgl i s := rfl
-
 variable (ψ : GE D →* (D.ntw.Ok i k)ˣ) (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw.l i))
   (hψ : ∀ σ ∈ decAt D v, ψ σ = 1)
 

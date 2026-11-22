@@ -21,9 +21,6 @@ def pairBar (v ξ : Fin n → ℂ) : ℂ := ∑ k, v k * (starRingEnd ℂ) (ξ k
 def coNormSq (H : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) : ℝ :=
   (∑ j, ∑ k, H⁻¹ j k * v j * (starRingEnd ℂ) (v k)).re
 
-theorem coNormSq_eq_herm (H : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
-    coNormSq H v = herm H⁻¹ v := rfl
-
 section Atlas
 
 variable {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
@@ -77,12 +74,6 @@ def dbar (A : WeightedAtlas n Y ι La) (u : ι → Y → ℂ) : ι → Y → Fin
 def formNsq (A : WeightedAtlas n Y ι La) (H : ι → Y → Matrix (Fin n) (Fin n) ℂ) (la : La)
     (v : ι → Y → Fin n → ℂ) (y : Y) : ℝ :=
   coNormSq (H (A.pick y) y) (v (A.pick y) y) * Real.exp (-A.ph (A.kap + la) (A.pick y) y)
-
-theorem pairBar_dbar (A : WeightedAtlas n Y ι La) (u : ι → Y → ℂ) (i : ι) (y : Y)
-    (ξ : Fin n → ℂ) : pairBar (dbar A u i y) ξ = A.dbarAt i u y ξ := rfl
-
-theorem herm_hessAt (A : WeightedAtlas n Y ι La) (i : ι) (f : Y → ℝ) (y : Y) (ξ : Fin n → ℂ) :
-    herm (A.hessAt i f y) ξ = A.leviAt i f y ξ := rfl
 
 end Atlas
 

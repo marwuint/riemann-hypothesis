@@ -46,13 +46,6 @@ structure TwMap (σ : 𝓞 E ≃+* 𝓞 E) {S' S : Scheme.{0}} (t' : SAB H S') (
 
   lin : cm.IsPullCubical t'.cub t.cub
 
-def TwMap.reflEquiv {S' S : Scheme.{0}} (t' : SAB H S') (t : SAB H S) (f : S' ⟶ S) :
-    TwMap (RingEquiv.refl (𝓞 E)) t' t f ≃ SABMap t' t f where
-  toFun m := ⟨m.cm, m.cart, m.base, m.act, m.lin⟩
-  invFun m := ⟨m.cm, m.cart, m.base, m.act, m.lin⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 section OneLevel
 
 variable {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
@@ -187,8 +180,6 @@ structure Amb (D : D7) : Type where
 
   cmHost_rootComplex_eq_pm_sqrt : H.rt0 = D.host.φ₀ D.host.sqrtMinusD
 
-def ambD (D : D7) : Amb D := ⟨hostOfRecord D, rfl, rfl, rfl⟩
-
 variable {D : D7}
 
 theorem Amb.cm (A : Amb D) (t : D.what₂.Tau) : DV.tauEmb D t (A.H.rt : D.host.E) = A.H.rt0 := by
@@ -289,13 +280,6 @@ theorem trans {κ₂ : Lv A} (s₂ : FinalTheorems S κ₂) (h : κ.l.Dvd κ₂.
   S.tor.trans _ _ _ _ _ _ b h hb
 
 end FinalTheorems
-
-def IsDatOf {A : Amb D} (S : letI := D.host.cmStar; HSpace D.host.E) (Dw : Datum A.H) : Prop :=
-  letI := D.host.cmStar
-  ∃ φ : Dw.La →ₗ[𝓞 D.host.E] S.V, Function.Injective φ ∧
-    LinearMap.range φ = Submodule.span (𝓞 D.host.E)
-      {v | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ x ∈ S.L0, v = a • x} ∧
-    ∀ x y, ((Dw.EF x y : ℤ) : ℚ) = -Algebra.trace ℚ D.host.E (D.host.xi0 * S.hD (φ x) (φ y))
 
 open Formalism.L2.Geo (datW datW_N datW_j) in
 

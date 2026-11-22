@@ -603,118 +603,6 @@ variable (F) in
 
 def spreadSeq (f : ℤ → K) (m : ℤ) : K := ∑' n, F.σ (f n) * (Pi.single ((F.q : ℤ) * n) (1 : K) : ℤ → K) m
 
-theorem q_mul_injective : Function.Injective fun n : ℤ => (F.q : ℤ) * n := fun a b h => by
-  have : (F.q : ℤ) ≠ 0 := by exact_mod_cast F.q_pos.ne'
-  exact mul_left_cancel₀ this h
-
-theorem spreadSeq_q_mul (f : ℤ → K) (n : ℤ) : F.spreadSeq f ((F.q : ℤ) * n) = F.σ (f n) := by
-  unfold spreadSeq
-  rw [tsum_eq_single n fun n' hn' => by
-    have : (F.q : ℤ) * n ≠ (F.q : ℤ) * n' := fun h => hn' (q_mul_injective h).symm
-    simp [this]]
-  simp
-
-theorem spreadSeq_of_forall_ne (f : ℤ → K) {m : ℤ} (hm : ∀ n, m ≠ (F.q : ℤ) * n) :
-    F.spreadSeq f m = 0 := by
-  unfold spreadSeq
-  simp [hm]
-
-theorem phiSeq_sub_spreadSeq_le (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
-    (hf : ConvergesAt f (ρ ^ F.q)) (m : ℤ) :
-    ‖F.phiSeq f m - F.spreadSeq f m‖ * ρ ^ m ≤ F.δ ρ * gaussNorm f (ρ ^ F.q) := by
-  have hρ : 0 < ρ := F.r₀_pos.trans_le h1
-  have hρm : 0 < ρ ^ m := zpow_pos hρ m
-  have hs2 : Summable fun n => F.σ (f n) * (Pi.single ((F.q : ℤ) * n) (1 : K) : ℤ → K) m := by
-    refine summable_of_hasFiniteSupport ((Set.finite_singleton (m / F.q)).subset fun n hn => ?_)
-    by_contra hne
-    apply hn
-    have : m ≠ (F.q : ℤ) * n := by
-      rintro rfl
-      apply hne
-      simp [Int.mul_ediv_cancel_left _ (show (F.q : ℤ) ≠ 0 by exact_mod_cast F.q_pos.ne')]
-    simp [this]
-  unfold phiSeq spreadSeq
-  rw [← (summable_phi_term h1 h2 hf m).tsum_sub hs2, ← le_div_iff₀ hρm]
-  refine IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg
-    (div_nonneg (mul_nonneg (δ_nonneg hρ) (gaussNorm_nonneg (by positivity))) hρm.le) fun n => ?_
-  rw [le_div_iff₀ hρm, ← mul_sub, norm_mul, F.norm_σ, mul_assoc]
-  have hd := (U_spec h1 h2 n).2
-  have hdc : ConvergesAt (F.U n - Pi.single ((F.q : ℤ) * n) 1) ρ :=
-    (convergesAt_U h1 h2 n).sub hρ (convergesAt_single _ _ _)
-  calc ‖f n‖ * (‖F.U n m - (Pi.single ((F.q : ℤ) * n) (1 : K) : ℤ → K) m‖ * ρ ^ m)
-      ≤ ‖f n‖ * (F.δ ρ * (ρ ^ F.q) ^ n) :=
-        mul_le_mul_of_nonneg_left ((hdc.le_gaussNorm m).trans hd) (norm_nonneg _)
-    _ = F.δ ρ * (‖f n‖ * (ρ ^ F.q) ^ n) := by ring
-    _ ≤ F.δ ρ * gaussNorm f (ρ ^ F.q) :=
-        mul_le_mul_of_nonneg_left (hf.le_gaussNorm n) (δ_nonneg hρ)
-
-theorem weight_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
-    (hf : ConvergesAt f (ρ ^ F.q)) (hf0 : f ≠ 0) (m : ℤ) :
-    (‖F.phiSeq f m‖ * ρ ^ m = gaussNorm f (ρ ^ F.q) ↔
-      ∃ n, ‖f n‖ * (ρ ^ F.q) ^ n = gaussNorm f (ρ ^ F.q) ∧ m = (F.q : ℤ) * n) ∧
-    ‖F.phiSeq f m‖ * ρ ^ m ≤ gaussNorm f (ρ ^ F.q) := by
-  have hρ : 0 < ρ := F.r₀_pos.trans_le h1
-  have hρm : 0 < ρ ^ m := zpow_pos hρ m
-  set G := gaussNorm f (ρ ^ F.q)
-  have hG : 0 < G := gaussNorm_pos (by positivity) hf hf0
-  have hδ := δ_lt_one h1 h2
-  have hsub := phiSeq_sub_spreadSeq_le h1 h2 hf m
-  have hsmall : ‖F.phiSeq f m - F.spreadSeq f m‖ * ρ ^ m < G := by nlinarith [δ_nonneg (F := F) hρ]
-  refine ⟨⟨fun h => ?_, ?_⟩, phiSeq_weight_le h1 h2 hf m⟩
-  ·
-    by_contra hne
-    push Not at hne
-    by_cases hm : ∃ n, m = (F.q : ℤ) * n
-    · obtain ⟨n, rfl⟩ := hm
-      have hlt : ‖f n‖ * (ρ ^ F.q) ^ n < G := lt_of_le_of_ne (hf.le_gaussNorm n) fun h' => hne n h' rfl
-      have e : (ρ ^ F.q) ^ n = ρ ^ ((F.q : ℤ) * n) := by rw [zpow_mul, zpow_natCast]
-      rw [spreadSeq_q_mul] at hsmall
-      have : ‖F.phiSeq f ((F.q : ℤ) * n)‖ * ρ ^ ((F.q : ℤ) * n) < G := by
-        have h3 := IsUltrametricDist.norm_add_le_max (F.phiSeq f ((F.q : ℤ) * n) - F.σ (f n))
-          (F.σ (f n))
-        rw [sub_add_cancel, F.norm_σ] at h3
-        calc ‖F.phiSeq f ((F.q : ℤ) * n)‖ * ρ ^ ((F.q : ℤ) * n)
-            ≤ max ‖F.phiSeq f ((F.q : ℤ) * n) - F.σ (f n)‖ ‖f n‖ * ρ ^ ((F.q : ℤ) * n) :=
-              mul_le_mul_of_nonneg_right h3 (by positivity)
-          _ = max (‖F.phiSeq f ((F.q : ℤ) * n) - F.σ (f n)‖ * ρ ^ ((F.q : ℤ) * n))
-                (‖f n‖ * ρ ^ ((F.q : ℤ) * n)) := max_mul_of_nonneg _ _ (by positivity)
-          _ < G := max_lt hsmall (by rw [← e]; exact hlt)
-      linarith
-    · push Not at hm
-      rw [spreadSeq_of_forall_ne f hm, sub_zero] at hsmall
-      linarith
-  · rintro ⟨n, hn, rfl⟩
-    have e : (ρ ^ F.q) ^ n = ρ ^ ((F.q : ℤ) * n) := by rw [zpow_mul, zpow_natCast]
-    rw [spreadSeq_q_mul] at hsmall
-    have hsn : ‖F.σ (f n)‖ * ρ ^ ((F.q : ℤ) * n) = G := by rw [F.norm_σ, ← e, hn]
-    have hlt : ‖F.phiSeq f ((F.q : ℤ) * n) - F.σ (f n)‖ < ‖F.σ (f n)‖ := by
-      rw [← mul_lt_mul_iff_of_pos_right (zpow_pos hρ ((F.q : ℤ) * n)), hsn]; exact hsmall
-    have := IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne
-    rw [sub_add_cancel, max_eq_right hlt.le] at this
-    rw [this, hsn]
-
-theorem gaussNorm_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
-    (hf : ConvergesAt f (ρ ^ F.q)) : gaussNorm (F.phiSeq f) ρ = gaussNorm f (ρ ^ F.q) := by
-  have hρ : 0 < ρ := F.r₀_pos.trans_le h1
-  by_cases hf0 : f = 0
-  · subst hf0
-    have : F.phiSeq 0 = 0 := by funext m; simp [phiSeq]
-    rw [this, gaussNorm_zero, gaussNorm_zero]
-  refine le_antisymm (gaussNorm_le (phiSeq_weight_le h1 h2 hf)) ?_
-  obtain ⟨n, hn⟩ := hf.exists_eq_gaussNorm (by positivity) hf0
-  have := ((weight_phiSeq h1 h2 hf hf0 ((F.q : ℤ) * n)).1).2 ⟨n, hn, rfl⟩
-  rw [← this]
-  exact le_ciSup ⟨_, Set.forall_mem_range.2 (phiSeq_weight_le h1 h2 hf)⟩ _
-
-theorem eventually_phi (f : Robba K) : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), F.r₀ ≤ ρ ∧ ρ < 1 ∧
-    ConvergesAt f.coeff (ρ ^ F.q) ∧ ConvergesAt (F.phi f).coeff ρ :=
-  eventually_r₀_le.and ((eventually_mem_nhdsWithin (s := Set.Iio 1)).and
-    ((eventually_convergesAt_pow f).and (F.phi f).eventually_convergesAt))
-
-theorem eventually_gaussNorm_phi (f : Robba K) :
-    ∀ᶠ ρ in 𝓝[<] (1 : ℝ), gaussNorm (F.phi f).coeff ρ = gaussNorm f.coeff (ρ ^ F.q) :=
-  (eventually_phi f).mono fun _ h => gaussNorm_phiSeq h.1 h.2.1 h.2.2.1
-
 theorem norm_U_le_one (n m : ℤ) : ‖F.U n m‖ ≤ 1 := by
   have hc : ContinuousAt (fun ρ : ℝ => (ρ ^ F.q) ^ n * ρ ^ (-m)) 1 :=
     ((continuousAt_id.pow F.q).zpow₀ n (Or.inl (by simp))).mul
@@ -734,12 +622,6 @@ theorem phi_mem_bounded {f : Robba K} (hf : f ∈ Robba.bounded K) : F.phi f ∈
         mul_le_mul (Robba.norm_coeff_le_norm1 hf n) (norm_U_le_one n m) (norm_nonneg _)
           (Robba.gaussNorm_nonneg_alt f)
     _ = _ := mul_one _
-
-theorem gaussNorm_phi {f : Robba K} (hf : f ∈ Robba.bounded K) :
-    Robba.norm1 (F.phi f) = Robba.norm1 f := by
-  have h1 := Robba.tendsto_gaussNorm_norm1 (phi_mem_bounded (F := F) hf)
-  have h2 := (Robba.tendsto_gaussNorm_norm1 hf).comp (tendsto_pow_q (F := F))
-  exact tendsto_nhds_unique h1 (h2.congr' ((eventually_gaussNorm_phi f).mono fun _ h => h.symm))
 
 variable (F) in
 

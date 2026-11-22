@@ -175,19 +175,6 @@ theorem beta_alpha_apply (B : FB R d O) (p : ℕ) (u : Fin d → R) :
   simp only [Matrix.sub_mul, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]
   abel
 
-def pairHL (B : FB R d O) : ((Fin d → R) × (Fin d → R)) →ₗ[R] ((Fin d → R) × (Fin d → R)) →ₗ[R] R :=
-  LinearMap.mk₂ R (pairH B)
-    (fun a b c => by simp only [pairH, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]; ring)
-    (fun r a b => by
-      simp only [pairH, Prod.smul_fst, Prod.smul_snd, smul_dotProduct, dotProduct_smul, smul_eq_mul]; ring)
-    (fun a b c => by
-      simp only [pairH, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add, Matrix.mulVec_add]; ring)
-    (fun r a b => by
-      simp only [pairH, Prod.smul_fst, Prod.smul_snd, smul_dotProduct, dotProduct_smul, smul_eq_mul,
-        Matrix.mulVec_smul]; ring)
-
-theorem pairHL_apply (B : FB R d O) (y y' : (Fin d → R) × (Fin d → R)) : pairHL B y y' = pairH B y y' := rfl
-
 theorem bil_one_eq_zero {m : ℕ} (hm : m ≠ 0) (n : ℕ) : bil (1 : PS R 2 d) m n = 0 := by
   ext i j
   simp only [bil, MvPowerSeries.coeff_one, Matrix.zero_apply]

@@ -115,8 +115,5 @@ def TBase.complex (k : ℕ) (hk : k ≠ 0) : TBase ℂ k where
   unit := (Nat.cast_ne_zero.2 hk : (k : ℂ) ≠ 0).isUnit
   prim := fun _ _ β => (Complex.isPrimitiveRoot_exp k hk).map_of_injective β.injective
 
-theorem TBase.complex_ζ (k : ℕ) (hk : k ≠ 0) :
-    ((TBase.complex k hk).ζ : ℂ) = Complex.exp (2 * Real.pi * Complex.I / k) := rfl
-
 end GlobalTheory.ZM
 end

@@ -86,8 +86,6 @@ def adjE (S : HSp D) (ρ : ℕ) : Mx D ρ S.rank ≃+ Mx D S.rank ρ where
 
 theorem adjE_apply (S : HSp D) (ρ : ℕ) (ξ : Mx D ρ S.rank) : adjE S ρ ξ = giA S ⬝ adj ξ := rfl
 
-theorem adjE_symm_apply (S : HSp D) (ρ : ℕ) (a : Mx D S.rank ρ) : (adjE S ρ).symm a = adj (gA S ⬝ a) := rfl
-
 theorem continuous_adjE (S : HSp D) (ρ : ℕ) : Continuous (adjE S ρ) :=
   continuous_const.matrix_mul continuous_adj
 

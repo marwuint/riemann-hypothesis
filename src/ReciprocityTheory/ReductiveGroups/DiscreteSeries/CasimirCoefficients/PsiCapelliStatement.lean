@@ -20,9 +20,6 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 def negL (a b : Fin n) (F : Matrix (Fin n) (Fin n) ℂ → E) : Matrix (Fin n) (Fin n) ℂ → E :=
   fun z => -Lhol (Matrix.single a b 1) F z
 
-theorem real_EabV (ε : Fin n → Bool) (a b : Fin n) (f : Matrix (Fin n) (Fin n) ℂ → E) :
-    Formalism.REAL.EabV ε a b f = EabV ε a b f := rfl
-
 def PsiCapelliStatement (n : ℕ) : Prop :=
   ∀ (ε : Fin n → Bool) (lam : Fin n → ℝ) (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ), IsMu lam μ →
     ∀ (Y : ℂ) (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g →

@@ -227,11 +227,6 @@ def cupN (X : Scheme.{0}) (i j n : ℕ) (h : i + j = n) : H R i X →ₗ[R] H R 
 
 def cup (X : Scheme.{0}) (i j : ℕ) : H R i X →ₗ[R] H R j X →ₗ[R] H R (i + j) X := cupN R X i j (i + j) rfl
 
-theorem cupN_apply (X : Scheme.{0}) (i j n : ℕ) (h : i + j = n) (a : H R i X) (b : H R j X) :
-    cupN R X i j n h a b = cupExt R X h a b := rfl
-
-theorem cup_eq_cupN (X : Scheme.{0}) (i j : ℕ) : cup R X i j = cupN R X i j (i + j) rfl := rfl
-
 end Cup
 
 end GlobalTheory.Et

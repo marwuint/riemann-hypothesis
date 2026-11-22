@@ -13,8 +13,5 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def topC {n d : ℕ} (u : Matrix (Fin n) (Fin (d + d)) (AE F E)) : Matrix (Fin n) (Fin d) (AE F E) :=
   u.submatrix id (finSumFinEquiv ∘ Sum.inl)
 
-def botC {n d : ℕ} (u : Matrix (Fin n) (Fin (d + d)) (AE F E)) : Matrix (Fin n) (Fin d) (AE F E) :=
-  u.submatrix id (finSumFinEquiv ∘ Sum.inr)
-
 end GlobalTheory.DblDatum
 end

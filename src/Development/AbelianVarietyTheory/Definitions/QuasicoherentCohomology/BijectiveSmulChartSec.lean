@@ -339,9 +339,6 @@ def globalEquivSecM : Γ(toMod (LPow A L₀ a T), ⊤) ≃+ SecM A L₀ a T wher
   right_inv f := congrArg (SecM.ofSec A) ((globalEquiv _).apply_symm_apply (SecM.toSec A f))
   map_add' s t := congrArg (SecM.ofSec A) (map_add (globalEquiv _) s t)
 
-theorem globalEquivSecM_apply (s : Γ(toMod (LPow A L₀ a T), ⊤)) :
-    globalEquivSecM A L₀ a T s = SecM.ofSec A (globalEquiv _ s) := rfl
-
 theorem globalEquivSecM_smul (r : Γ(T.left, ⊤)) (s : Γ(toMod (LPow A L₀ a T), ⊤)) :
     globalEquivSecM A L₀ a T ((show Γ((T ⊗ A).left, ⊤) from (fst T A).left.appTop r) • s) =
       r • globalEquivSecM A L₀ a T s :=
@@ -608,9 +605,6 @@ def unitHom (σ : LB.Sec L) : unitMod X ⟶ toMod L :=
       change resG X h a • ofSec σ W = (toMod L).presheaf.map (homOfLE h).op (a • ofSec σ V)
       rw [Scheme.Modules.map_smul, map_ofSec]
 
-theorem unitHom_app (σ : LB.Sec L) (V : X.Opens) (a : Γ(X, V)) :
-    (unitHom σ).app V a = a • ofSec σ V := rfl
-
 theorem bijective_smul_genSec (hL : ⨆ i, L.U i = ⊤) {t : LB.Gen L} (ht : t.IsGen) (V : X.Opens) :
     Function.Bijective fun a : Γ(X, V) => a • ofSec (DVR.genSec t ht) V := by
   constructor
@@ -639,9 +633,6 @@ def unitIso (hL : L.IsLB) (t : LB.Gen L) (ht : t.IsGen) : unitMod X ≅ toMod L 
     Scheme.Modules.Hom.isIso_iff_isIso_app.2 fun V =>
       (ConcreteCategory.isIso_iff_bijective _).2 (bijective_smul_genSec hL.cover ht V)
   asIso (unitHom (DVR.genSec t ht))
-
-theorem unitIso_hom_app (hL : L.IsLB) (t : LB.Gen L) (ht : t.IsGen) (V : X.Opens) (a : Γ(X, V)) :
-    (unitIso hL t ht).hom.app V a = a • ofSec (DVR.genSec t ht) V := rfl
 
 section Pull
 

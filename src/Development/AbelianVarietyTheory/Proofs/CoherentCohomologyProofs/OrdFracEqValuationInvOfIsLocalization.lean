@@ -142,13 +142,6 @@ theorem not_isField_of_finite : ¬ IsField S := by
   rw [← Algebra.IsIntegral.isField_iff_isField (FaithfulSMul.algebraMap_injective R S)]
   exact not_isField R
 
-include R in
-
-theorem finite_heightOneSpectrum : Finite (HeightOneSpectrum S) := by
-  have := finite_maximalSpectrum_of_finite R S
-  exact Finite.of_injective (fun P : HeightOneSpectrum S => (⟨P.asIdeal, P.isMaximal⟩ :
-    MaximalSpectrum S)) fun P Q h => HeightOneSpectrum.ext (congrArg MaximalSpectrum.asIdeal h)
-
 include R S in
 
 theorem finrank_field_pos : 0 < finrank K L := by

@@ -80,14 +80,6 @@ variable (D) in
 
 def afC (V : HSp D) : Submodule ℂ (GA D V → ℂ) := Submodule.span ℂ {φ | IsAutFunSm (th0 D) V φ}
 
-theorem mem_afC (h : SmAdd D) {V : HSp D} {φ : GA D V → ℂ} : φ ∈ afC D V ↔ IsAutFunSm (th0 D) V φ := by
-  refine ⟨fun hφ => ?_, fun hφ => Submodule.subset_span hφ⟩
-  induction hφ using Submodule.span_induction with
-  | mem x hx => exact hx
-  | zero => exact isAutFunSm_const _ V 0
-  | add x y _ _ hx hy => exact h V x y hx hy
-  | smul c x _ hx => exact sm_smul _ V c x hx
-
 def rTrL (V : HSp D) (k : GA D V) : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ) := LinearMap.funLeft ℂ ℂ (fun g => g * k)
 
 theorem rTrL_mem (h : SmRight D) {V : HSp D} {k : GA D V} (hk : k ∈ GfC V ∨ k ∈ GinfC V) :
@@ -115,24 +107,6 @@ theorem actC_apply (h : SmRight D) (V : HSp D) (k : GA D V) (hk : k ∈ GfC V �
 variable (D) in
 
 def cuspC (V : HSp D) : Submodule ℂ (afC D V) := Submodule.span ℂ {F | IsCuspFun V F.1}
-
-theorem mem_cuspC (hA : SmAdd D) (hI : CuspInt D) {V : HSp D} {F : afC D V} : F ∈ cuspC D V ↔ IsCuspFun V F.1 := by
-  refine ⟨fun hF => ?_, fun hF => Submodule.subset_span hF⟩
-  induction hF using Submodule.span_induction with
-  | mem x hx => exact hx
-  | zero => intro r C _ μ 𝓕 _ _ g; simp
-  | add x y _ _ hx hy =>
-    intro r C hC μ 𝓕 h1 h2 g
-    have a := hI V x.1 ((mem_afC hA).1 x.2).toIsAutFun r C hC μ 𝓕 h1 h2 g
-    have b := hI V y.1 ((mem_afC hA).1 y.2).toIsAutFun r C hC μ 𝓕 h1 h2 g
-    have e := integral_add a b
-    rw [hx r C hC μ 𝓕 h1 h2 g, hy r C hC μ 𝓕 h1 h2 g, add_zero] at e
-    exact e
-  | smul c x _ hx =>
-    intro r C hC μ 𝓕 h1 h2 g
-    have e := hx r C hC μ 𝓕 h1 h2 g
-    show ∫ n in 𝓕, c * x.1 ((n : GA D V) * g) ∂μ = 0
-    rw [integral_const_mul, e, mul_zero]
 
 theorem emb_star (τ : D.host.E →+* ℂ) (x : D.host.E) : τ (star x) = starRingEnd ℂ (τ x) := by
   exact @NumberField.IsCMField.complexEmbedding_complexConj D.host.E _ _ D.host.isCMField_hostE _ τ x
@@ -170,25 +144,7 @@ theorem fixSig_ok (V : HSp D) : (fixSig V).SigOK := by
 def GoodPair (V : HSp D) (p : Measure (GA D V) × Set (GA D V)) : Prop :=
   p.1.IsHaarMeasure ∧ IsFundamentalDomain (GQ V) p.2 p.1 ∧ (V.SigOK → IsVolPair D V p.1 p.2)
 
-theorem goodPair_iff (V : HSp D) (p : Measure (GA D V) × Set (GA D V)) :
-    GoodPair V p ↔ GoodPairR D.sp.cm (tauE D) D.cd V p :=
-  ⟨fun h => ⟨h.1, h.2.1, fun a => (h.2.2 a).1⟩, fun h => ⟨h.1, h.2.1, fun a => ⟨h.2.2 a, h.2.1⟩⟩⟩
-
-theorem goodPair_ex (h : VolEx D) (V : HSp D) : ∃ p, GoodPair V p := by
-  by_cases hV : V.SigOK
-  · obtain ⟨μ, 𝓕, e⟩ := h V hV
-    exact ⟨(μ, 𝓕), e.1.1, e.2, fun _ => e⟩
-  · obtain ⟨μ, 𝓕, e⟩ := h (fixSig V) (fixSig_ok V)
-    exact ⟨(μ, 𝓕), e.1.1, e.2, fun a => absurd a hV⟩
-
 def pairC (V : HSp D) : Measure (GA D V) × Set (GA D V) := pairR D.sp.cm (tauE D) D.cd V
-
-theorem pairC_spec (h : VolEx D) (V : HSp D) : GoodPair V (pairC V) := by
-  have e : ∃ p, GoodPairR D.sp.cm (tauE D) D.cd V p := (goodPair_ex h V).imp fun p hp => (goodPair_iff V p).1 hp
-  rw [goodPair_iff]
-  unfold pairC pairR
-  rw [dif_pos e]
-  exact e.choose_spec
 
 def intC (V : HSp D) (f : GA D V → ℂ) : ℂ := ∫ h in (pairC V).2, f h ∂(pairC V).1
 

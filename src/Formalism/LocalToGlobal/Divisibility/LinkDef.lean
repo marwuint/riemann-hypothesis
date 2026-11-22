@@ -106,16 +106,6 @@ theorem lift_exponent_of_least (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok
   · exact (exponent_weight_spectral K _ y ((A.fam.L j (μ y)).cutZ (A.fam.lvlA P0 ψ0) (Zs.Zl j (μ y)))
       ((A.fam.L j (μ y)).delZ (A.fam.lvlA P0 ψ0) (Zs.Zl j (μ y))) hlat.2.1 hlat.2.2.1).1
 
-theorem bi_def [IsTotallyComplex K] (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (P0 : Subgroup G)
-    (ψ0 : P0 →* Kˣ) (Zs : DefSub A.fam.amb) (S : IndefRows (A.side P0 ψ0 Zs)) (y : HeightOneSpectrum (𝓞 K)) :
-    (vw y ((A.side P0 ψ0 Zs).Gm (ebOf (A.side P0 ψ0 Zs)) (S.μ y) y) : ℝ) ≤
-      (S.D : ℝ) * (vw y ((Fintype.card G * s : ℕ) : K) : ℝ) := by
-  have h : vw y (GmOf (A.side P0 ψ0 Zs) (S.μ y) y) ≤
-      (((A.side P0 ψ0 Zs).dQ (S.μ y) : ℕ) : ℤ) * vw y ((Fintype.card G * s : ℕ) : K) :=
-    A.fam.GmOf_le hOk P0 ψ0 Zs (S.μ y) y
-  rw [S.dQ_eq] at h
-  exact_mod_cast h
-
 theorem bLG_def {J Pl : Type} [Fintype J] [Fintype Pl] [DecidableEq Pl] (R : RecNums J Pl) {s : ℕ} (hs : 0 < s)
     (hG0 : Real.log (Fintype.card G) ≤ R.lam0) (S : Finset (HeightOneSpectrum (𝓞 K))) :
     ∑ y ∈ S, lw y * (vw y ((Fintype.card G * s : ℕ) : K) : ℝ) ≤ lgDef R s := by
@@ -124,70 +114,6 @@ theorem bLG_def {J Pl : Type} [Fintype J] [Fintype Pl] [DecidableEq Pl] (R : Rec
   have h2 : Real.log (((Fintype.card G * s : ℕ)) : ℝ) = Real.log (Fintype.card G : ℝ) + Real.log (s : ℝ) := by
     rw [Nat.cast_mul, Real.log_mul (by exact_mod_cast Fintype.card_ne_zero) (by exact_mod_cast hs.ne')]
   unfold lgDef
-  linarith
-
-theorem biv_def (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (P0 : Subgroup G)
-    (ψ0 : P0 →* Kˣ) (Zs : DefSub A.fam.amb) (hst : Zs.Stable) (hin : Zs.InBlock) (S : IndefRows (A.side P0 ψ0 Zs))
-    (J0 : T → HeightOneSpectrum (𝓞 K) → Fin m → ℝ) (h11 : LiftExponentAtTwisted A P0 ψ0 Zs S.μ S.Tw J0)
-    (y : HeightOneSpectrum (𝓞 K)) (hy : y ∈ S.Tw) (j : Fin m) :
-    (jw ((A.side P0 ψ0 Zs).HT j (S.μ y)) y ((A.side P0 ψ0 Zs).Tl j (S.μ y)) : ℝ) ≤
-      ((ramw y : ℝ) * J0 (S.μ y) y j) * (S.D : ℝ) + etaYOf A P0 ψ0 Zs s S.μ S.D y j := by
-  obtain ⟨Jn, hJn, hinc⟩ := h11 y hy j
-  have wf := A.side_WF hOk P0 ψ0 Zs hst hin hsep
-  have hD : (A.side P0 ψ0 Zs).dZ j (S.μ y) = S.D := S.rankZ wf j (S.μ y)
-  have hlat := lift_lattices K G Pl0 (A.fam.L j (S.μ y)) (A.fam.lvlA P0 ψ0) (Zs.Zl j (S.μ y)) A.fam.v0 s
-    (A.fam.blockHyp_lift hOk P0 ψ0 j (S.μ y))
-  have hJ : A.fam.JJW P0 ψ0 Zs j (S.μ y) y ≤ Jn :=
-    (exponent_weight_spectral K _ y ((A.fam.L j (S.μ y)).cutZ (A.fam.lvlA P0 ψ0) (Zs.Zl j (S.μ y)))
-      ((A.fam.L j (S.μ y)).delZ (A.fam.lvlA P0 ψ0) (Zs.Zl j (S.μ y))) hlat.2.1 hlat.2.2.1).2 Jn hinc
-  have h1 : jw ((A.side P0 ψ0 Zs).HT j (S.μ y)) y ((A.side P0 ψ0 Zs).Tl j (S.μ y)) ≤
-      (A.fam.etaJW P0 ψ0 Zs j (S.μ y) y : ℤ) + ((A.side P0 ψ0 Zs).dZ j (S.μ y) : ℤ) *
-        ((A.fam.JJW P0 ψ0 Zs j (S.μ y) y : ℤ) + vw y (((A.fam.L j (S.μ y)).DG (A.fam.lvlA P0 ψ0) : ℕ) : K) +
-          vw y (s : K)) :=
-    A.fam.jw_le hOk P0 ψ0 Zs j (S.μ y) y
-  have h2 : (jw ((A.side P0 ψ0 Zs).HT j (S.μ y)) y ((A.side P0 ψ0 Zs).Tl j (S.μ y)) : ℝ) ≤
-      (A.fam.etaJW P0 ψ0 Zs j (S.μ y) y : ℝ) + (((A.side P0 ψ0 Zs).dZ j (S.μ y) : ℕ) : ℝ) *
-        ((A.fam.JJW P0 ψ0 Zs j (S.μ y) y : ℝ) + (vw y (((A.fam.L j (S.μ y)).DG (A.fam.lvlA P0 ψ0) : ℕ) : K) : ℝ) +
-          (vw y (s : K) : ℝ)) := by
-    exact_mod_cast h1
-  have hDr : (((A.side P0 ψ0 Zs).dZ j (S.μ y) : ℕ) : ℝ) = (S.D : ℝ) := by exact_mod_cast hD
-  rw [hDr] at h2
-  have h3 : (A.fam.JJW P0 ψ0 Zs j (S.μ y) y : ℝ) ≤ (ramw y : ℝ) * J0 (S.μ y) y j :=
-    le_trans (by exact_mod_cast hJ) hJn
-  have hD0 : (0 : ℝ) ≤ S.D := Nat.cast_nonneg _
-  have h4 := mul_le_mul_of_nonneg_left h3 hD0
-  unfold etaYOf
-  nlinarith
-
-theorem twisted_place_eta_sum_le (A : FamIn K G Pl0 T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (Zs : DefSub A.fam.amb) {s : ℕ}
-    (hs : 0 < s) (S : IndefRows (A.side P0 ψ0 Zs)) (bd : Fin m → ℝ) (hN : InEta A.fam P0 ψ0 Zs S.μ S.Tw bd)
-    (dg : ℕ) (hdg : 0 < dg) (hdvd : ∀ j t, (A.fam.L j t).DG (A.fam.lvlA P0 ψ0) ∣ dg) (j : Fin m) :
-    ∑ y ∈ S.Tw, lw y * etaYOf A P0 ψ0 Zs s S.μ S.D y j / (S.D : ℝ) ≤ etaSumBound bd dg s j := by
-  have hDpos : (0 : ℝ) < S.D := by exact_mod_cast S.D_pos
-  have e : (A.fam.R A.fam.μ0).dZ (A.fam.lvl P0 ψ0) (Zs.Z A.fam.μ0) = S.D := S.dQ_eq A.fam.base.μ0
-  have hN' : ∑ y ∈ S.Tw, lw y * (A.fam.etaJW P0 ψ0 Zs j (S.μ y) y : ℝ) ≤ bd j * (S.D : ℝ) := by
-    have h := hN j
-    rw [e] at h
-    exact h
-  have hsplit : ∑ y ∈ S.Tw, lw y * etaYOf A P0 ψ0 Zs s S.μ S.D y j / (S.D : ℝ) =
-      (∑ y ∈ S.Tw, lw y * (A.fam.etaJW P0 ψ0 Zs j (S.μ y) y : ℝ)) / (S.D : ℝ) +
-        ((∑ y ∈ S.Tw, lw y * (vw y (((A.fam.L j (S.μ y)).DG (A.fam.lvlA P0 ψ0) : ℕ) : K) : ℝ)) +
-          (∑ y ∈ S.Tw, lw y * (vw y (s : K) : ℝ))) := by
-    rw [Finset.sum_div, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl fun y _ => ?_
-    unfold etaYOf
-    field_simp
-  have hA : (∑ y ∈ S.Tw, lw y * (A.fam.etaJW P0 ψ0 Zs j (S.μ y) y : ℝ)) / (S.D : ℝ) ≤ bd j := by
-    rw [div_le_iff₀ hDpos]
-    exact hN'
-  have hB : ∑ y ∈ S.Tw, lw y * (vw y (((A.fam.L j (S.μ y)).DG (A.fam.lvlA P0 ψ0) : ℕ) : K) : ℝ) ≤
-      Real.log (dg : ℝ) := by
-    refine le_trans (Finset.sum_le_sum fun y _ => mul_le_mul_of_nonneg_left ?_ (W5.lw_nonneg y))
-      ((place_sum_natural K dg hdg).2.2 S.Tw)
-    exact_mod_cast vw_nat_le_of_dvd y hdg (hdvd j (S.μ y))
-  have hC := (place_sum_natural K s hs).2.2 S.Tw
-  rw [hsplit]
-  unfold etaSumBound
   linarith
 
 end Concrete
@@ -270,50 +196,6 @@ variable [IsTotallyComplex K] {A : FamIn K G Pl0 T m} {s : ℕ} {P0 : Subgroup G
   {Zsc : DefSub A.fam.amb → IndefScale A.fam.base} {C CH : ℝ} {Pk : IndefPkg A.fam.amb (faceOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) C CH}
   {Pl : Type} [Fintype Pl] [DecidableEq Pl] {R : RecNums A.fam.base.J Pl} {u : (Dc Pk.Zs).Mem}
   {Nu : Submodule (𝓞 K) (Fin ((Dc Pk.Zs).a u) → K)} {sg : HeightOneSpectrum (𝓞 K) → ℝ}
-
-def DivInputsDef.toDivInputs0 (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
-    (I : DivInputsDef A s P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R u Nu sg) : DivInputs0 Pk.core R u Nu sg where
-  Nu_lat := I.Nu_lat
-  sg_fin := I.sg_fin
-  Xc_unit := I.Xc_unit
-  a_pos := I.a_pos
-  X0 := I.X0
-  base_matrix_det_unit := I.base_matrix_det_unit
-  ch := I.ch
-  hn := I.hn
-  nP := I.nP
-  cb := I.cb
-  nKcb := I.nKcb
-  eig6 := I.eig6
-  eb := ebOf (A.side P0 ψ0 Pk.Zs)
-  heb := ebOf_spec (A.side_WF hOk P0 ψ0 Pk.Zs Pk.stable Pk.inBlock hsep)
-  Sy := SyOf (A.side P0 ψ0 Pk.Zs) Pk.core.base.toIndefData
-  Sy_tw := tw_sub_SyOf _ _
-  G0 := gram_det_unit_outside (A.side_WF hOk P0 ψ0 Pk.Zs Pk.stable Pk.inBlock hsep) Pk.core.base.toIndefData Pk.core.base.h0
-  LG := lgDef R s
-  E3 := 1
-  E2 := etaSumBound I.bd I.dg s
-  gy := fun y => (vw y ((Fintype.card G * s : ℕ) : K) : ℝ)
-  ηy := etaYOf A P0 ψ0 Pk.Zs s Pk.core.base.μ Pk.core.base.D
-  bi := fun y _ => bi_def A hOk P0 ψ0 Pk.Zs Pk.core.base.toIndefRows y
-  bLG := bLG_def R (hOk.what₂ A.fam.μ0).good.s_pos I.hG0 _
-  biv := fun y hy j => biv_def A hOk hsep P0 ψ0 Pk.Zs Pk.stable Pk.inBlock Pk.core.base.toIndefRows _ I.h11 y hy j
-  borderedMinorImage := twisted_place_eta_sum_le A P0 ψ0 Pk.Zs (hOk.what₂ A.fam.μ0).good.s_pos Pk.core.base.toIndefRows I.bd I.hN I.dg I.dg_pos I.dg_dvd
-  twisted_third_sum_le := Formalism.DivisorInequality.places_ell_weighted_sum_le_one K _
-  El3 := I.El3
-  L3main := I.L3main
-  errB := I.errB
-  Q := I.Q
-  de0 := I.de0
-  deQ := I.deQ
-  Q1 := I.Q1
-  Qb := I.Qb
-  la_le := I.la_le
-  constant_ge_twenty_eight := I.constant_ge_twenty_eight
-
-theorem DivInputsDef.eb_eq (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
-    (I : DivInputsDef A s P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R u Nu sg) :
-    (I.toDivInputs0 hOk hsep).eb = ebOf (A.side P0 ψ0 Pk.Zs) := rfl
 
 end Inputs
 

@@ -40,10 +40,6 @@ def scalar (D : Datum F) (m : ℕ) (hm : m.Coprime p) : IntSim D p :=
   ofLinear (D := D) (m • LinearMap.id) (m ^ 2) m (Nat.Coprime.pow_left 2 hm) hm
     (fun x y => by simp [LinearMap.map_smul_of_tower]; ring) (fun x => ⟨x, by simp⟩)
 
-theorem scalar_k (D : Datum F) (m : ℕ) (hm : m.Coprime p) : (scalar D m hm).k = m := rfl
-
-theorem scalar_c (D : Datum F) (m : ℕ) (hm : m.Coprime p) : (scalar D m hm).c = m ^ 2 := rfl
-
 end IntSim
 
 variable {S : Scheme.{0}}

@@ -44,17 +44,6 @@ section Quot
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
-def secsIncl (F : SubSystem S x Ω) (I : Chart x) : F.secs →ₗ[S] F.sub I where
-  toFun z := ⟨z, CechZerothCohomologySections.mem_sub_of_mem_secs F z.2 I⟩
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-
-def quotPi (F G : SubSystem S x Ω) (I : Chart x) : F.secs →ₗ[S] F.sub I ⧸ SubSystem.quotSub F G I :=
-  (SubSystem.quotSub F G I).mkQ.comp (secsIncl F I)
-
-theorem quotPi_res (F G : SubSystem S x Ω) (I J : Chart x) (h : I.1 ⊆ J.1) (z : F.secs) :
-    SubSystem.quotRes F G I J h (quotPi F G I z) = quotPi F G J z := rfl
-
 end Quot
 
 end CycleSplit.Curve.Restr

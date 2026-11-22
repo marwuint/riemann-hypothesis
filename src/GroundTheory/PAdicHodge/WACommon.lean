@@ -65,9 +65,6 @@ def frob : (teichLift K p).TeichFrob where
     rintro _ ⟨y, rfl⟩
     exact ⟨_, incl_frobeniusEquiv_symm y⟩
 
-theorem frob_φ_apply (x : WittVector p K♭) :
-    (frob K p).φ x = WittVector.frobeniusEquiv p K♭ x := rfl
-
 @[simp] theorem frob_a : (frob K p).a = 1 := rfl
 
 @[simp] theorem frob_u : (frob K p).u = 1 := rfl
@@ -119,10 +116,6 @@ def galIso (σ : Gal(PadicAlgCl p/K)) : (teichLift ℂ_[p] p).TeichIso where
   red_ψ x := galW_coeff σ x 0
   ψ_π := gal_smul_natCast σ p
   norm_g c := norm_galTilt σ c
-
-theorem galIso_ψ (σ : Gal(PadicAlgCl p/K)) (x : WC p) : (galIso σ).ψ x = σ • x := rfl
-
-theorem galIso_g (σ : Gal(PadicAlgCl p/K)) (c : Cb p) : (galIso σ).g c = σ • c := rfl
 
 end Galois
 
@@ -244,9 +237,6 @@ def wittFpbarToEdag : WFrac p →+* (𝓣).Edag :=
 variable (p) in
 
 def wittFpbarToTilde : WFrac p →+* (𝓣).RobbaTilde := (𝓣).edagToTilde.comp (wittFpbarToEdag p)
-
-theorem wittFpbarToTilde_apply (x : WFrac p) :
-    wittFpbarToTilde p x = (𝓣).edagToTilde ⟨wittFpbarToB p x, wittFpbarToB_mem_Edag x⟩ := rfl
 
 end Tilde
 

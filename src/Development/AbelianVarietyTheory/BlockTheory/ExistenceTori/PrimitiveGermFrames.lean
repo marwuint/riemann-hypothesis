@@ -13,8 +13,6 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 variable {X₀ : Scheme.{0}} {S : Type} [CommRing S]
 
-def funOn {B : Type} [CommRing B] (b : B) : Γ(Sp B, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom b
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 abbrev PrimIso (t : SAB H X₀) : Type :=

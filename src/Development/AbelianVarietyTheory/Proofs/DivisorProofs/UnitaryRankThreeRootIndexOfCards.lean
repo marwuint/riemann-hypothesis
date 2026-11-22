@@ -116,9 +116,6 @@ theorem heis_01 (x y : L) : Heisenberg₂ σ x y 0 1 = x := rfl
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 theorem heis_02 (x y : L) : Heisenberg₂ σ x y 0 2 = y := rfl
 
-theorem mem_tz (y : L) : y ∈ (intL L).toAddSubgroup ⊓ (σ.toAddMonoidHom + AddMonoidHom.id L).ker ↔
-    y ∈ intL L ∧ σ y + y = 0 := Iff.rfl
-
 theorem exists_snd {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {x : L} (hx : x ∈ intL L) :
     ∃ y ∈ intL L, y + σ y + x * σ x = 0 := by
   obtain ⟨hσ, hv, -, -, ⟨a, ha, ha1⟩, -⟩ := hU

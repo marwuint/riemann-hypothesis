@@ -17,8 +17,6 @@ def cechOpen (V : Opens T) (U : ι → Opens T) (s : Finset ι) : Opens T := V �
 
 variable (V : Opens T) (U : ι → Opens T)
 
-theorem cechOpen_def (s : Finset ι) : cechOpen V U s = V ⊓ ⨅ i ∈ s, U i := rfl
-
 theorem cechOpen_eq_inf (s : Finset ι) : cechOpen V U s = V ⊓ s.inf U := by
   rw [cechOpen, Finset.inf_eq_iInf]
 
@@ -154,12 +152,6 @@ variable (V : Opens T) (U : ι → Opens T)
 
 def presheafCube : Cube.{v} ι R := cechOpenFunctor V U ⋙ P
 
-theorem presheafCube_obj (s : Finset ι) :
-    (presheafCube P V U).obj s = P.obj (op (cechOpen V U s)) := rfl
-
-theorem res_presheafCube {s t : Finset ι} (h : s ⊆ t) :
-    Cube.res (presheafCube P V U) h = presheafRes P (cechOpen_anti V U h) := rfl
-
 variable {P} in
 
 def presheafCubeMap (φ : P ⟶ Q) : presheafCube P V U ⟶ presheafCube Q V U :=
@@ -209,9 +201,6 @@ end Restrict
 def presheafCubeEmptyEquiv : P.obj (op V) ≃ₗ[R] (presheafCube P V U).obj ∅ :=
   presheafCongr P (cechOpen_empty V U).symm
 
-theorem presheafCubeEmptyEquiv_apply (x : P.obj (op V)) :
-    presheafCubeEmptyEquiv P V U x = presheafRes P (cechOpen_le V U ∅) x := rfl
-
 variable [LinearOrder ι]
 
 section Faces
@@ -229,14 +218,6 @@ def presheafCubeUpperFaceIso :
   Cube.isoMk (fun s => presheafCongr P (cechOpen_insert_map V U e.toEmbedding i s)) fun hst x =>
     (presheafRes_presheafRes P _ _ x).trans
       (presheafRes_presheafRes P _ (cechOpen_anti (V ⊓ U i) _ hst) x).symm
-
-theorem presheafCubeLowerFaceIso_hom_app (s : Finset κ) :
-    ((presheafCubeLowerFaceIso P V U e).hom.app s).hom =
-      presheafRes P (cechOpen_map V U e.toEmbedding s).ge := rfl
-
-theorem presheafCubeUpperFaceIso_hom_app (s : Finset κ) :
-    ((presheafCubeUpperFaceIso P V U e i).hom.app s).hom =
-      presheafRes P (cechOpen_insert_map V U e.toEmbedding i s).ge := rfl
 
 end Faces
 
@@ -394,12 +375,6 @@ variable {T : Type w} [TopologicalSpace T] {ι : Type}
 
 def cechAbCube : Cube.{v} ι ℤ := presheafCube (P ⋙ abToIntModule) V U
 
-theorem cechAbCube_obj (s : Finset ι) :
-    (cechAbCube P V U).obj s = ModuleCat.of ℤ (P.obj (op (cechOpen V U s))) := rfl
-
-theorem res_cechAbCube {s t : Finset ι} (h : s ⊆ t) (x : P.obj (op (cechOpen V U s))) :
-    Cube.res (cechAbCube P V U) h x = P.map (homOfLE (cechOpen_anti V U h)).op x := rfl
-
 variable {P} in
 
 def cechAbCubeMap (φ : P ⟶ Q) : cechAbCube P V U ⟶ cechAbCube Q V U :=
@@ -426,9 +401,6 @@ variable [LinearOrder ι]
 def cechAb : CochainComplex (ModuleCat.{v} ℤ) ℕ := cechComplex (cechAbCube P V U)
 
 def cechAbH (n : ℕ) : ModuleCat.{v} ℤ := (cechAb P V U).homology n
-
-theorem cechAb_X (p : ℕ) : (cechAb P V U).X p =
-    ModuleCat.of ℤ (∀ s : {s : Finset ι // s.card = p + 1}, P.obj (op (cechOpen V U s.1))) := rfl
 
 variable {P} in
 

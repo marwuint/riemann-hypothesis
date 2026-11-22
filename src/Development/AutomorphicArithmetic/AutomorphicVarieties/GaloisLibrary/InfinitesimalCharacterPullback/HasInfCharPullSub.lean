@@ -102,8 +102,6 @@ def adm : Ad E →+* Ad F :=
 
 theorem pInf_adm (x : Ad E) : pInf F (adm j x) = cinf j (pInf E x) := (infEq F).symm_apply_apply _
 
-theorem pFin_adm (x : Ad E) : pFin F (adm j x) = finMap j (pFin E x) := rfl
-
 omit [IsTotallyComplex E] [IsTotallyComplex F] in
 theorem finMap_algebraMap (k : E) : finMap j (algebraMap E (Af E) k) = algebraMap F (Af F) (j k) :=
   FiniteAdeleRing.ext _ fun v => by

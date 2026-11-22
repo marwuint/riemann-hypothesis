@@ -1229,9 +1229,6 @@ def cpI (l : O) (m : ℕ) : Ideal (PowerSeries O) where
       omega
     exact Dvd.dvd.mul_left ((pow_dvd_pow l (by omega)).trans (hf p.2 (by omega))) _
 
-theorem cp_mem_cpI {l : O} {m : ℕ} {f : PowerSeries O} :
-    f ∈ cpI l m ↔ ∀ k, k < m → l ^ (m - k) ∣ coeff k f := Iff.rfl
-
 theorem cp_C_mul {l : O} {m : ℕ} {s : PowerSeries O} (hs : s ∈ cpI l m) :
     C l * s ∈ cpI l (m + 1) := by
   intro k hk

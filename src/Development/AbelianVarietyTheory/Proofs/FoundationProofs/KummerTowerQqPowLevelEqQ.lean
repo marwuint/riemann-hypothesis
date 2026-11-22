@@ -40,9 +40,6 @@ def DualData (B C : Subalgebra (O0 p) Ω) {ι : Type} [Fintype ι] (u v : ι →
   (∀ y ∈ C, ∑ k, u k * tr (v k * y) = p * y) ∧ (∀ y ∈ C, ∑ k, v k * tr (u k * y) = p * y) ∧
   ∑ k, u k * v k = p
 
-theorem mem_FixI {G : Subgroup (Gal p Ω)} {x : Ω} :
-    x ∈ FixI G ↔ IsInt p x ∧ ∀ g ∈ G, g x = x := Iff.rfl
-
 theorem mem_Gn {T : Tower p Ω} {n : ℕ} {g : Gal p Ω} :
     g ∈ Gn T n ↔ g (T.ζ n) = T.ζ n ∧ g (T.qq n) = T.qq n := Iff.rfl
 

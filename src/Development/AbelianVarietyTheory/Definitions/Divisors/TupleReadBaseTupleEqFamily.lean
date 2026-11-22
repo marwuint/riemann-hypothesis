@@ -408,19 +408,7 @@ variable {P : IndefiniteRowSideFullHecke ex} {Del h0 : ℕ} {hDel : D.s.Del = (D
   {Rc : RecT ex} {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} {B : RealTB Rc P.toRowSideFamily Dcf Spf (P.zsc Del h0 Csz) S}
   {Qp : RealPins B.Q} {Qr : RealRec B.Q}
 
-theorem ofReal_S (b : Bool) :
-    (ofReal P Del h0 hDel hh0 Dcf Spf gamDvd B Qp Qr).S b = (B.Q.Rl.toCx3 B.Q.F).data B.Q.F.cr b := rfl
-
-theorem ofReal_N (C CH : ℝ) : (ofReal P Del h0 hDel hh0 Dcf Spf gamDvd B Qp Qr).N C CH = B.Q.Rl.num B.Q.F C CH := rfl
-
-theorem exportRow_ofReal : (ofReal P Del h0 hDel hh0 Dcf Spf gamDvd B Qp Qr).ExportRow ↔
-    Formalism.IndefR.NX.NMjT B.Q B.Q.cG B.Q.Sx B.Q.nexp ex.nch := Iff.rfl
-
 end OfReal
-
-namespace Realised
-
-end Realised
 
 theorem Ties.small {p : PtAt ex Csz} (h : p.Ties) : GlobalTheory.FinalJoin2.FieldSmall D L := h.core.small
 

@@ -64,9 +64,6 @@ def ptAct {S : Scheme.{0}} (X : Obj F 𝔠 S) (T : Over S) (a : 𝓞 F) : (T ⟶
     haveI := X.rm.hom a
     exact MonObj.mul_comp x y _
 
-theorem ptAct_apply {S : Scheme.{0}} (X : Obj F 𝔠 S) (T : Over S) (a : 𝓞 F) (x : T ⟶ X.A) :
-    ptAct X T a x = x ≫ X.rm.act a := rfl
-
 end LevFlat
 
 end GlobalTheory.RealMult

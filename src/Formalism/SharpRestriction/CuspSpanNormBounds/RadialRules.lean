@@ -67,10 +67,4 @@ def aux₃ (_D : Formalism.BasicNotions.D7) (C Cv C1 C2 : ℝ) : Prop := S.Unita
 def admitted (D : Formalism.BasicNotions.D7) (CB Ca : ℝ) : Prop :=
   adm1 D CB ∧ adm2 D CB ∧ adm3 D ∧ ArchimedeanSignatureMatching D ∧ adm5 D ∧ adm6 D ∧ adm7 D Ca ∧ adm8 D ∧ adm9 D Ca ∧ adm10 D CB
 
-theorem lemma_B_three_iff (D : Formalism.BasicNotions.D7) (CB : ℝ) : (adm1 D CB ∧ adm2 D CB ∧ adm10 D CB) ↔ LemmaBThreeClauses CB := Iff.rfl
-
-theorem radial_statement_indep_datum (D D' : Formalism.BasicNotions.D7) (C Cv C1 C2 : ℝ) : aux₃ D C Cv C1 C2 ↔ aux₃ D' C Cv C1 C2 := Iff.rfl
-
-theorem Adm_indep (D D' : Formalism.BasicNotions.D7) (CB Ca : ℝ) : admitted D CB Ca ↔ admitted D' CB Ca := Iff.rfl
-
 end Formalism.MainNotions.RadialRules

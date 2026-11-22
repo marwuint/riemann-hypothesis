@@ -123,13 +123,6 @@ def appLinearEquiv (φ : F ≅ G) (V : X.Opens) : Γ(F, V) ≃ₗ[Γ(X, V)] Γ(G
 @[simp] theorem appLinearEquiv_apply (φ : F ≅ G) (V : X.Opens) (s : Γ(F, V)) :
     appLinearEquiv φ V s = φ.hom.app V s := rfl
 
-theorem mod_ext_of_cover {ι : Type*} (W : ι → X.Opens) (hW : ∀ k, W k ≤ V)
-    (hc : V ≤ iSup W) {s t : Γ(F, V)}
-    (h : ∀ k, F.presheaf.map (homOfLE (hW k)).op s = F.presheaf.map (homOfLE (hW k)).op t) :
-    s = t :=
-  TopCat.Sheaf.eq_of_locally_eq' (⟨F.presheaf, F.isSheaf⟩ : TopCat.Sheaf Ab X) W V
-    (fun k => homOfLE (hW k)) hc s t h
-
 theorem exists_mod_of_cover {ι : Type*} (W : ι → X.Opens) (hW : ∀ k, W k ≤ V)
     (hc : V ≤ iSup W) (s : ∀ k, Γ(F, W k))
     (h : ∀ k l, F.presheaf.map (homOfLE (inf_le_left : W k ⊓ W l ≤ W k)).op (s k) =
@@ -171,11 +164,6 @@ theorem repr_eq (he : IsFrame e) (h : V ≤ U) {s : Γ(F, V)} {a : Γ(X, V)}
   rw [← ha]
   exact (he.repr h).apply_symm_apply a
 
-theorem resG_repr (he : IsFrame e) (h : V ≤ U) (h' : W ≤ V) (s : Γ(F, V)) :
-    resG X h' (he.repr h s) = he.repr (h'.trans h) (F.presheaf.map (homOfLE h').op s) := by
-  refine (he.repr_eq _ ?_).symm
-  rw [← QCoh.res_res F h h', ← map_smul_resG, repr_smul]
-
 theorem repr_change (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V ≤ U') (s : Γ(F, V)) :
     he.repr h s = he.repr h (F.presheaf.map (homOfLE h').op e') * he'.repr h' s := by
   conv_lhs => rw [← he'.repr_smul h' s]
@@ -193,11 +181,6 @@ def unit (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V ≤ U') : Γ(
 theorem val_unit (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V ≤ U') :
     (he.unit he' h h' : Γ(X, V)) = he.repr h (F.presheaf.map (homOfLE h').op e') := rfl
 
-theorem resG_unit (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V ≤ U') (h'' : W ≤ V) :
-    resG X h'' (he.unit he' h h' : Γ(X, V)) =
-      he.repr (h''.trans h) (F.presheaf.map (homOfLE (h''.trans h')).op e') := by
-  rw [val_unit, resG_repr, QCoh.res_res]
-
 end IsFrame
 
 end Frames
@@ -210,63 +193,6 @@ abbrev ofFrames (he : ∀ i, IsFrame (e i)) : LB X where
   ι := ι
   U := U
   g i j := (he i).unit (he j) inf_le_left inf_le_right
-
-theorem resG_ofFrames_g (he : ∀ i, IsFrame (e i)) (i j : ι) {W : X.Opens} (h : W ≤ U i ⊓ U j) :
-    resG X h ((ofFrames he).g i j : Γ(X, U i ⊓ U j)) =
-      (he i).repr (h.trans inf_le_left)
-        (F.presheaf.map (homOfLE (h.trans inf_le_right)).op (e j)) :=
-  (he i).resG_unit (he j) _ _ h
-
-def toFramesLinear (he : ∀ i, IsFrame (e i)) (V : X.Opens) :
-    Γ(F, V) →ₗ[Γ(X, V)] Γ(toMod (ofFrames he), V) where
-  toFun s := mkSec (L := ofFrames he) (fun i => (he i).repr (inf_le_right : V ⊓ U i ≤ U i)
-      (F.presheaf.map (homOfLE inf_le_left).op s)) fun i j => by
-    rw [resG_ofFrames_g, IsFrame.resG_repr, IsFrame.resG_repr, QCoh.res_res, QCoh.res_res]
-    exact (he i).repr_change (he j) _ _ _
-  map_add' s t := sec_ext fun i => by
-    simp only [coord_add, map_add]
-    rfl
-  map_smul' a s := sec_ext fun i => by
-    simp only [coord_smul, map_smul_resG, map_smul, smul_eq_mul, RingHom.id_apply]
-    rfl
-
-theorem coord_toFramesLinear (he : ∀ i, IsFrame (e i)) (V : X.Opens) (s : Γ(F, V)) (i : ι) :
-    coord (toFramesLinear he V s) i = (he i).repr (inf_le_right : V ⊓ U i ≤ U i)
-      (F.presheaf.map (homOfLE inf_le_left).op s) := rfl
-
-theorem bijective_toFramesLinear (he : ∀ i, IsFrame (e i)) (hU : ⨆ i, U i = ⊤) (V : X.Opens) :
-    Function.Bijective (toFramesLinear he V) := by
-  constructor
-  · intro s t h
-    refine mod_ext_of_cover (fun i => V ⊓ U i) (fun _ => inf_le_left) (le_iSup_inf hU V)
-      fun i => ((he i).repr inf_le_right).injective ?_
-    exact congrArg (fun s => coord s i) h
-  · intro t
-    obtain ⟨s, hs⟩ := exists_mod_of_cover (F := F) (fun i => V ⊓ U i) (fun _ => inf_le_left)
-      (le_iSup_inf hU V)
-      (fun i => coord t i •
-        F.presheaf.map (homOfLE inf_le_right).op (e i)) fun i j => by
-        have hij : V ⊓ U i ⊓ (V ⊓ U j) ≤ U i ⊓ U j := inf_le_inf inf_le_right inf_le_right
-        have h₁ := coord_rel t i j inf_le_left inf_le_right hij
-        rw [resG_ofFrames_g] at h₁
-        rw [map_smul_resG, map_smul_resG, QCoh.res_res, QCoh.res_res]
-        rw [h₁]
-        rw [mul_comm, mul_smul, IsFrame.repr_smul]
-    refine ⟨s, sec_ext fun i => ?_⟩
-    rw [coord_toFramesLinear, hs]
-    exact (he i).repr_eq _ rfl
-
-def ofFramesIso (he : ∀ i, IsFrame (e i)) (hU : ⨆ i, U i = ⊤) : F ≅ toMod (ofFrames he) :=
-  isoOfLinear (fun V => LinearEquiv.ofBijective _ (bijective_toFramesLinear he hU V))
-    fun {V W} h s => sec_ext fun i => by
-      rw [coord_map, LinearEquiv.ofBijective_apply, LinearEquiv.ofBijective_apply,
-        coord_toFramesLinear, coord_toFramesLinear, IsFrame.resG_repr, QCoh.res_res,
-        QCoh.res_res]
-
-theorem coord_ofFramesIso_hom_app (he : ∀ i, IsFrame (e i)) (hU : ⨆ i, U i = ⊤) (V : X.Opens)
-    (s : Γ(F, V)) (i : ι) :
-    coord ((ofFramesIso he hU).hom.app V s) i = (he i).repr (inf_le_right : V ⊓ U i ≤ U i)
-      (F.presheaf.map (homOfLE inf_le_left).op s) := rfl
 
 end OfFrames
 
@@ -344,31 +270,9 @@ def homEquiv (hL : L.IsLB) (hM : M.IsLB) : LB.Sec (LB.div M L) ≃ (toMod L ⟶ 
   left_inv := secOfHom_homOfSec hL hM
   right_inv := homOfSec_secOfHom hL hM
 
-theorem genSec_injective {t t' : LB.Gen L} (ht : t.IsGen) (ht' : t'.IsGen)
-    (h : DVR.genSec t ht = DVR.genSec t' ht') : t = t' := by
-  obtain ⟨s⟩ := t
-  obtain ⟨s'⟩ := t'
-  congr 1
-  exact funext fun i => Units.ext (congrFun (congrArg LB.Sec.f h) i)
-
 theorem exists_genSec_eq (σ : LB.Sec L) (h : ∀ i, IsUnit (σ.f i)) :
     ∃ (t : LB.Gen L) (ht : t.IsGen), DVR.genSec t ht = σ :=
   ⟨⟨fun i => (h i).unit⟩, fun i j => Units.ext (σ.compat i j), rfl⟩
-
-theorem isUnit_homFun (hL : L.IsLB) (hM : M.IsLB) (φ : toMod L ≅ toMod M) (p : M.ι) (q : L.ι) :
-    IsUnit (homFun hL hM φ.hom p q) :=
-  ⟨(isFrame_chartSec hM p).unit ((isFrame_chartSec hL q).app φ) inf_le_left inf_le_right,
-    repr_chartSec hM p _ _⟩
-
-theorem existsUnique_gen_of_iso (hL : L.IsLB) (hM : M.IsLB) (φ : toMod L ≅ toMod M) :
-    ∃! w : LB.Gen (LB.div M L), ∃ hw : w.IsGen, isoOfGen hL hM w hw = φ := by
-  obtain ⟨w, hw, e⟩ := exists_genSec_eq (secOfHom hL hM φ.hom)
-    fun p => isUnit_homFun hL hM φ p.1 p.2
-  refine ⟨w, ⟨hw, Iso.ext ?_⟩, ?_⟩
-  · change homOfSec hL hM (DVR.genSec w hw) = _
-    rw [e, homOfSec_secOfHom]
-  · rintro w' ⟨hw', rfl⟩
-    exact genSec_injective hw' hw ((secOfHom_homOfSec hL hM _).symm.trans e.symm)
 
 theorem isFrame_ofSec_iff (hL : L.IsLB) (σ : LB.Sec L) :
     IsFrame (ofSec σ ⊤) ↔ ∃ (t : LB.Gen L) (ht : t.IsGen), DVR.genSec t ht = σ := by
@@ -385,18 +289,6 @@ theorem exists_isGen_iff_isFrame (hL : L.IsLB) :
   obtain ⟨σ, rfl⟩ := (globalEquiv L).symm.surjective e
   obtain ⟨t, ht, -⟩ := (isFrame_ofSec_iff hL σ).1 he
   exact ⟨t, ht⟩
-
-theorem exists_isGen_iff_nonempty_iso (hL : L.IsLB) :
-    (∃ t : LB.Gen L, t.IsGen) ↔ Nonempty (unitMod X ≅ toMod L) := by
-  refine ⟨fun ⟨t, ht⟩ => ⟨unitIso hL t ht⟩, fun ⟨φ⟩ => (exists_isGen_iff_isFrame hL).2 ?_⟩
-  have h : IsFrame (F := unitMod X) (U := ⊤) (1 : Γ(X, ⊤)) := fun V h => by
-    have : (fun a : Γ(X, V) => a • (unitMod X).presheaf.map (homOfLE h).op (1 : Γ(X, ⊤))) =
-        fun a : Γ(X, V) => a := funext fun a => by
-      change a * resG X h 1 = a
-      rw [map_one, mul_one]
-    rw [this]
-    exact Function.bijective_id
-  exact ⟨_, h.app φ⟩
 
 end Hom
 
@@ -476,17 +368,8 @@ variable (R) in
 def globalRingEquiv : R ≃+* Γ(Sp R, ⊤) :=
   (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv
 
-theorem globalRingEquiv_apply (r : R) :
-    globalRingEquiv R r = (Scheme.ΓSpecIso (CommRingCat.of R)).inv r := rfl
-
 instance secModuleSp : Module R (LB.Sec L) :=
   Module.compHom (LB.Sec L) (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
-
-theorem sp_smul_def (r : R) (σ : LB.Sec L) :
-    r • σ = (show Γ(Sp R, ⊤) from (Scheme.ΓSpecIso (CommRingCat.of R)).inv r) • σ := rfl
-
-theorem sp_smul_f (r : R) (σ : LB.Sec L) (i : L.ι) :
-    (r • σ).f i = resG (Sp R) le_top ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r) * σ.f i := rfl
 
 theorem invertible_sec (hL : L.IsLB) : Module.Invertible R (LB.Sec L) :=
   have := invertible_sec_top hL

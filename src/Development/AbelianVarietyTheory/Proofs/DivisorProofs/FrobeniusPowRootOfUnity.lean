@@ -37,10 +37,4 @@ def eMap {f : ℕ} (hq : qK p K = p ^ f) (r : ℕ) :
     KQ p K r →ₐ[ℚ_[p]] (Fin (Nat.gcd f r) → Kn p K (r / Nat.gcd f r)) :=
   Pi.algHom _ _ fun i => comp p K hq r i
 
-theorem eMap_apply {f : ℕ} (hq : qK p K = p ^ f) (r : ℕ) (x : KQ p K r) (i : Fin (Nat.gcd f r)) :
-    eMap p K hq r x i = comp p K hq r i x := rfl
-
-theorem coe_frobQ (r : ℕ) (b : Qr p r) :
-    ((frobQ p r b : Qr p r) : PadicAlgCl p) = frobK p (Q0 p) (b : PadicAlgCl p) := rfl
-
 end GlobalTheory.LKRes.ResSplit

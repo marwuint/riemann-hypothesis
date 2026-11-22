@@ -347,11 +347,6 @@ def contraMap {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Mod
     show (l : Module.Dual ℂ Y) (τ g⁻¹ (f x)) = (l : Module.Dual ℂ Y) (f (σ g⁻¹ x))
     rw [f.isIntertwining]
 
-theorem contraMap_apply {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
-    {σ : Representation ℂ G X} {τ : Representation ℂ G Y} (f : σ.IntertwiningMap τ)
-    (l : smoothPart τ.dual) (x : X) :
-    (contraMap f l : Module.Dual ℂ X) x = (l : Module.Dual ℂ Y) (f x) := rfl
-
 def contraEquiv {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     {σ : Representation ℂ G X} {τ : Representation ℂ G Y} (e : σ.Equiv τ) :
     (contra τ).Equiv (contra σ) :=

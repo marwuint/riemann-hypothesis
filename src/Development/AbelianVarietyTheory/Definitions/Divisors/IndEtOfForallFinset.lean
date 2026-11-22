@@ -108,13 +108,6 @@ def EtFF : MorphismProperty CommRingCat.{0} := fun _ _ g => g.hom.Etale ∧ g.ho
 def IndEt (A O : Type) [CommRing A] [CommRing O] [Algebra A O] : Prop :=
   GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap A O)
 
-def IndFEt (A O : Type) [CommRing A] [CommRing O] [Algebra A O] : Prop :=
-  MorphismProperty.ind.{0} (RingHom.toMorphismProperty fun f => f.Etale ∧ f.Finite) (CommRingCat.ofHom (algebraMap A O))
-
-theorem IndFEt.indEt {A O : Type} [CommRing A] [CommRing O] [Algebra A O] (h : IndFEt A O) : IndEt A O := by
-  obtain ⟨J, _, _, D, t, s, hs, hj⟩ := h
-  exact ⟨J, inferInstance, inferInstance, D, t, s, hs, fun j => ⟨(hj j).1.1, (hj j).2⟩⟩
-
 theorem indEt_of_etale (A O : Type) [CommRing A] [CommRing O] [Algebra A O] [Algebra.Etale A O] : IndEt A O :=
   MorphismProperty.le_ind _ _ (RingHom.etale_algebraMap.2 inferInstance)
 

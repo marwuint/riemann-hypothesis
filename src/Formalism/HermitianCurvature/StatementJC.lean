@@ -178,17 +178,6 @@ def CCCoef {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace
     Prop :=
   B.CkOn ⊤ (B.GV k r) F ∧ B.InCC A mm F ∧ ∀ g ∈ B.GV k r, F g ≠ 0 → ε ≤ Formalism.QuantumDeterminants.Gf k r Bs.z Bs.z' g
 
-def FormLevSesqCC : Prop :=
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)
-    (T : D.LevTower P0.k P0.r Wp Wq) (s : ℂ) (j : Fin (P0.r + 1)) (w : List C.Letter) (A : ℝ) (mm : ℕ) (ε : ℝ),
-    0 < ε → P5.Auser P0 w.length + 1 ≤ A → P5.mmUser P0 w.length ≤ mm →
-    ∀ (x x' y : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ),
-      (∀ a, CCCoef (T.bs j) A mm ε (x a)) → (∀ a, CCCoef (T.bs j) A mm ε (x' a)) →
-      (∀ a, CCCoef (T.bs j) A mm ε (y a)) →
-      D.formLev T s j w (x + c • x') y = D.formLev T s j w x y + c * D.formLev T s j w x' y ∧
-        D.formLev T s j w y (x + c • x') = D.formLev T s j w y x + starRingEnd ℂ c * D.formLev T s j w y x'
-
 def CCCoefM {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (A : ℝ) (mm : ℕ) (ε : ℝ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) :
     Prop :=

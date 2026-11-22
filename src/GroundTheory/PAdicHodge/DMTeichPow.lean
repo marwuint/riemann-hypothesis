@@ -47,10 +47,6 @@ def comp (F G : T.TeichFrob) : T.TeichFrob where
 
 variable (F G : T.TeichFrob)
 
-theorem comp_φ_apply (x : Γ) : (F.comp G).φ x = F.φ (G.φ x) := rfl
-
-theorem comp_a : (F.comp G).a = F.a + G.a := rfl
-
 def pow : ℕ → T.TeichFrob
   | 0 => id T
   | d + 1 => F.comp (pow d)

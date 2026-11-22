@@ -48,10 +48,6 @@ def op {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B'
     (n : ℤ) : Module.End E (HE l E (ksBC A m p b) n) :=
   ε.sum fun M c => c • pullE l E (matBC act p b M) n
 
-def Hxi {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B) (ε : Matrix (Fin m) (Fin m) O →₀ E)
-    (k : ℕ) (i : ℤ) : Submodule E (HE l E (ksBC A m p b) (i + k)) :=
-  LinearMap.range (op l act p b ε (i + k))
-
 def galE (E : Type) [CommRing E] [Algebra ℚ_[l] E] {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {Y : Scheme.{0}}
     (q : Y ⟶ Spec (CommRingCat.of k)) (n : ℤ) (σ : Ω ≃ₐ[k] Ω) : Module.End E (HE l E (GlobalTheory.Et.geom Ω q) n) :=
   pullE l E (GlobalTheory.Et.galMap Ω q σ) n
@@ -69,26 +65,8 @@ def opT {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B
     (n t : ℤ) : Module.End E (HEt l E (ksBC A m p b) n t) :=
   ε.sum fun M c => c • pullEt l E (matBC act p b M) n t
 
-def HxiT {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B) (ε : Matrix (Fin m) (Fin m) O →₀ E)
-    (k : ℕ) (t i : ℤ) : Submodule E (HEt l E (ksBC A m p b) (i + k) t) :=
-  LinearMap.range (opT l act p b ε (i + k) t)
-
-def galEt (E : Type) [CommRing E] [Algebra ℚ_[l] E] {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {Y : Scheme.{0}}
-    (q : Y ⟶ Spec (CommRingCat.of k)) (n t : ℤ) (σ : Ω ≃ₐ[k] Ω) : Module.End E (HEt l E (GlobalTheory.Et.geom Ω q) n t) :=
-  pullEt l E (GlobalTheory.Et.galMap Ω q σ) n t
-
 variable (E) in
 theorem pullEt_zero {Y Y' : Scheme.{0}} (u : Y ⟶ Y') (n : ℤ) : pullEt l E u n 0 = pullE l E u n := rfl
-
-theorem opT_zero {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B)
-    (ε : Matrix (Fin m) (Fin m) O →₀ E) (n : ℤ) : opT l act p b ε n 0 = op l act p b ε n := rfl
-
-theorem HxiT_zero {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B)
-    (ε : Matrix (Fin m) (Fin m) O →₀ E) (k : ℕ) (i : ℤ) : HxiT l act p b ε k 0 i = Hxi l act p b ε k i := rfl
-
-theorem galEt_zero (E : Type) [CommRing E] [Algebra ℚ_[l] E] {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω]
-    {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of k)) (n : ℤ) (σ : Ω ≃ₐ[k] Ω) :
-    galEt l E Ω q n 0 σ = galE l E Ω q n σ := rfl
 
 @[simp] theorem opT_zero_comb {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B) (n t : ℤ) :
     opT l act p b (0 : Matrix (Fin m) (Fin m) O →₀ E) n t = 0 := by

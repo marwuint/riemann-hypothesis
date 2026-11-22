@@ -13,8 +13,6 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDime
 def cc (a : V) : EuclideanSpace ℂ (Fin (Module.finrank ℂ V)) :=
   WithLp.toLp 2 fun i => star ((stdOrthonormalBasis ℂ V).repr a i)
 
-theorem cc_apply (a : V) (i) : cc a i = star ((stdOrthonormalBasis ℂ V).repr a i) := rfl
-
 variable {k : ℕ}
 
 theorem lowK_allPos (lam : Fin k → ℝ) (a : Fin k) :

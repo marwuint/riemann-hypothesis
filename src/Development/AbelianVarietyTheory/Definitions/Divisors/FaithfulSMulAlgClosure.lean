@@ -149,15 +149,6 @@ def Intertwines (f : A ⟶ A) (g : G ⟶ G) : Prop :=
   ∀ (n : ℕ) (B : Type) [CommRing B] [Algebra O B] (z z' : Tors A (p ^ n) B), z'.1 = z.1 ≫ f →
     θ.pt n B z' = (θ.pt n B z).comp (g.app n : G.A n →ₐ[O] G.A n)
 
-def ofTower (t : G.TorsionTower A) : TorsionMap A G where
-  pt n B _ _ z := t.lift n z.1 z.2
-  nat n B C _ _ _ _ φ z z' h := t.inj n C _ _ (by rw [t.lift_y, ← spOver_comp, Category.assoc, t.lift_y, h])
-  mul n B _ _ x y z h := t.pts_injective n B (by rw [map_mul]; simp only [TorsionTower.pts_apply, t.lift_y, h])
-  res n B _ _ z z' h := t.inj (n + 1) B _ _ (by rw [t.lift_y, ← spOver_comp, Category.assoc, t.res, t.lift_y, h])
-
-theorem ofTower_tanTors (t : G.TorsionTower A) (n : ℕ) (x : Pdiv.LieG A) :
-    (ofTower t).pt n _ (tanTors p n x) = t.tanPt (isTangent_lieG x) n := rfl
-
 end TorsionMap
 
 end TorsionMap
@@ -205,20 +196,10 @@ variable {Dw}
 
 def dualVec {J : Type} (b : Module.Basis J ℤ Dw.La) (j : J) : Dw.La := -(Dw.unimod.2 (b.coord j)).choose
 
-theorem EF_dualVec {J : Type} (b : Module.Basis J ℤ Dw.La) (x : Dw.La) (j : J) : Dw.EF x (dualVec b j) = b.repr x j := by
-  rw [dualVec, map_neg, LinearMap.IsAlt.neg Dw.alt, (Dw.unimod.2 (b.coord j)).choose_spec, Module.Basis.coord_apply]
-
 namespace IsPropG
 
 variable {t : SAB H (Sp R)} {GG : PDivGroup p R} {act : Action (𝓞 E) GG} {pol : GG ≅ GG.dual} {θ : TorsionMap t.G GG}
   {ε : (PDivGroup.mu p R).Tate} {τ : Dw.La →+ GG.Tate} (h : IsPropG Dw t GG act pol θ ε τ)
-
-def constTate (b : Module.Basis (Fin GG.height) ℤ Dw.La) : ConstTate ε GG where
-  t i := τ (b i)
-  t' j := tateMap GG GG.dual R pol.hom (τ (dualVec b j))
-  pair i j := by
-    rw [h.pair, EF_dualVec, Module.Basis.repr_self, Finsupp.single_apply]
-    split_ifs <;> simp
 
 end IsPropG
 

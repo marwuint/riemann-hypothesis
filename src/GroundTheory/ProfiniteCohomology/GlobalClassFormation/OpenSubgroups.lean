@@ -21,11 +21,6 @@ def openSubgroupMap (U : OpenSubgroup K.1.fixingSubgroup) : OpenSubgroup (ℚ̄ 
     ext x
     simp⟩
 
-theorem coe_openSubgroupMap (U : OpenSubgroup K.1.fixingSubgroup) :
-    (openSubgroupMap U : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) =
-      (U : Subgroup K.1.fixingSubgroup).map K.1.fixingSubgroup.subtype :=
-  rfl
-
 def fieldOf (U : OpenSubgroup K.1.fixingSubgroup) : FiniteSubfield :=
   ofOpenSubgroup (openSubgroupMap U)
 

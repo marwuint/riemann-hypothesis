@@ -14,7 +14,4 @@ variable {D : D7} {N N' : ℕ}
 def vecHom (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : Matrix (Fin N') (Fin N) D.host.E →+ VC D N N' :=
   AddMonoidHom.mk' (vecOf D cc δ) (GlobalTheory.PlaceComponents.vecOf_add D cc δ)
 
-theorem vecHom_apply (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (A : Matrix (Fin N') (Fin N) D.host.E) :
-    vecHom cc δ A = vecOf D cc δ A := rfl
-
 end GlobalTheory.CommutatorCharacter

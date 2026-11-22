@@ -21,9 +21,6 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 def phiMatrix (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) : Matrix ι ι R :=
   Matrix.of fun i j => b.repr (Φ (b j)) i
 
-theorem phiMatrix_apply (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (i j : ι) :
-    phiMatrix b Φ i j = b.repr (Φ (b j)) i := rfl
-
 theorem phi_basis (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (j : ι) :
     Φ (b j) = ∑ i, phiMatrix b Φ i j • b i := by
   conv_lhs => rw [← b.sum_repr (Φ (b j))]
@@ -111,8 +108,6 @@ def iterate (Φ : M →ₛₗ[φ] M) (d : ℕ) : M →ₛₗ[φ ^ d] M where
     | succ d ih =>
       simp only [Function.iterate_succ_apply', ih, LinearMap.map_smulₛₗ,
         pow_succ', RingHom.mul_def, RingHom.comp_apply]
-
-theorem iterate_apply (Φ : M →ₛₗ[φ] M) (d : ℕ) (x : M) : iterate Φ d x = Φ^[d] x := rfl
 
 end PhiModule
 

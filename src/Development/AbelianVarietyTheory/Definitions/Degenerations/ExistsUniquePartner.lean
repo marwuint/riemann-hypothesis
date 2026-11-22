@@ -60,8 +60,6 @@ def Under {D₀ : DegData R I} (U : PreU I D₀.toPre A G) (U₀ : UnifPre I D�
 abbrev withPsi (D : DegPre R) (psi : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => ptK (D.c χ)) (fun _ => -1)))
     (h : ∀ χ, (psi χ).IsGen) : DegPre R := setPsi D psi h
 
-theorem withPsi_eq (D : DegPre R) (psi) (h) : withPsi D psi h = setPsi D psi h := rfl
-
 namespace Cmp
 
 omit [IsDomain R] in

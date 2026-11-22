@@ -97,10 +97,6 @@ abbrev detNorm (T : V ≃ₗ[𝕜] W) : ℝ := (T : V →ₗ[𝕜] W).normDet
 
 variable [FiniteDimensional 𝕜 W]
 
-def invAdjoint (T : V ≃ₗ[𝕜] W) : V ≃ₗ[𝕜] W :=
-  LinearEquiv.ofLinearMap (LinearMap.adjoint (T.symm : W →ₗ[𝕜] V)) (LinearMap.adjoint (T : V →ₗ[𝕜] W))
-    (by rw [← LinearMap.adjoint_comp]; simp) (by rw [← LinearMap.adjoint_comp]; simp)
-
 end NormDet
 
 section Dual

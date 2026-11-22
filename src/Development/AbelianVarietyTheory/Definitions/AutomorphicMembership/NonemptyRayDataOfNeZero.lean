@@ -239,29 +239,6 @@ theorem cls_span {a : 𝓞 K} (ha : a ≠ 0) (h : a - 1 ∈ Ideal.span {(M : �
     ⟨1, a, one_ne_zero, ha, by simp, h, ?_⟩
   rw [Ideal.span_singleton_one, Ideal.top_mul]
 
-def clsHom : RayCl.primeTo K M →* D.G where
-  toFun I := D.cls I.1
-  map_one' := D.cls_one
-  map_mul' I J := D.cls_mul I.1 J.1 I.2.1 J.2.1 I.2.2 J.2.2
-
-theorem clsHom_surjective : Function.Surjective D.clsHom := by
-  intro c
-  obtain ⟨I, hI, hI', rfl⟩ := D.cls_surj c
-  exact ⟨⟨I, hI, hI'⟩, rfl⟩
-
-theorem ker_clsHom : Con.ker D.clsHom = RayCl.rayCon K M := by
-  ext I J
-  rw [Con.ker_rel]
-  exact D.cls_eq I.1 J.1 I.2.1 J.2.1 I.2.2 J.2.2
-
-def equivRayGroup : RayGroup K M ≃* D.G :=
-  MulEquiv.ofBijective ((RayCl.rayCon K M).lift D.clsHom D.ker_clsHom.ge)
-    ⟨fun x y h => by
-      obtain ⟨I, rfl⟩ := (RayCl.rayCon K M).mk'_surjective x
-      obtain ⟨J, rfl⟩ := (RayCl.rayCon K M).mk'_surjective y
-      exact (Con.eq _).2 (D.ker_clsHom.le (show Con.ker D.clsHom I J from h)),
-     Con.lift_surjective_of_surjective _ D.clsHom_surjective⟩
-
 end RayData
 
 end GlobalTheory.Mem

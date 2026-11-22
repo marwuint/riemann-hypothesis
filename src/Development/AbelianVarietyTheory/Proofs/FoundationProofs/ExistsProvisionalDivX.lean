@@ -25,8 +25,6 @@ def formMap : (Fin n → K) →ₛₗ[e] W where
   map_add' x y := by simp [add_smul, Finset.sum_add_distrib]
   map_smul' a x := by simp [Finset.smul_sum, mul_smul]
 
-theorem formMap_apply (x : Fin n → K) : formMap e c x = ∑ i, e (x i) • c i := rfl
-
 end Form
 
 structure MjForm (D : D7) (j : ℕ) where

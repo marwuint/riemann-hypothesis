@@ -406,10 +406,6 @@ theorem extTensor_obj (A : Cube.{v} ι K) (B : Cube.{v} κ K) (w : Finset (ι �
     (extTensor A B).obj w =
       ModuleCat.of K (A.obj (part (inlEmb ι κ) w) ⊗[K] B.obj (part (inrEmb ι κ) w)) := rfl
 
-theorem res_extTensor (A : Cube.{v} ι K) (B : Cube.{v} κ K) {w w' : Finset (ι ⊕ₗ κ)}
-    (h : w ⊆ w') : res (extTensor A B) h =
-      TensorProduct.map (res A (monotone_part _ h)) (res B (monotone_part _ h)) := rfl
-
 theorem sum_parts {M : Type*} [AddCommMonoid M] (w : Finset (ι ⊕ₗ κ)) (F : ι ⊕ₗ κ → M) :
     ∑ j ∈ w, F j = ∑ i ∈ part (inlEmb ι κ) w, F (inlEmb ι κ i) +
       ∑ k ∈ part (inrEmb ι κ) w, F (inrEmb ι κ k) := by

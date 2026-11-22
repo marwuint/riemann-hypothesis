@@ -57,13 +57,6 @@ def RowJ (R : RealDat D A Ks) (eE : D.what₂.EE →ₗ[ℂ] R.HE.H) (X : HidaSe
   ∃ v₀ : (MP R).Vec, (∀ τ, ‖(v₀ τ : (MP R).H τ)‖ = 1) ∧ ∃ a : ℝ, 0 < a ∧ ∀ x : D.what₂.EE,
     ((j x : EEC X G) : L2X X) =ᵐ[muX X] fun g => (a : ℂ) * ev (MP R) v₀ (R.HE.e (eE x)) ((iotaX X h).symm g * t)
 
-theorem mem_conjRows_iff (X : HidaSetting D) (f : L2X X) : f ∈ conjRows X ↔ conjL (muX X) f ∈ HHX X := Iff.rfl
-
-theorem evalTieT_iff_evalOn (R : RealDat D A Ks) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (G : GoodOp X)
-    (t : GA D (D.sp.Y 0)) (c : ℝ) (E : Submodule ℂ (MMap (MP R))) :
-    EvalTieT (MP R) R.ν0 R.fd0 E X G (iotaX X h).toMulEquiv t c ↔
-      ∃ v₀ : (MP R).Vec, (∀ τ, ‖(v₀ τ : (MP R).H τ)‖ = 1) ∧ EvalOn R X h t v₀ c E (EEC X G) := Iff.rfl
-
 theorem SeeAt.levelMatchA {R : RealDat D A Ks} {F : Face D A} {X : HidaSetting D}
     {h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D} {t : GA D (D.sp.Y 0)} (hs : SeeAt R F X h t) : LevelMatchA R F X h t := by
   intro k hk

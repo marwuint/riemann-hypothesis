@@ -120,9 +120,6 @@ theorem galCp_coe (σ : Gal(PadicAlgCl p/K)) (y : PadicAlgCl p) :
     galCp σ (y : ℂ_[p]) = ((σ y : PadicAlgCl p) : ℂ_[p]) :=
   gal_smul_coe σ y
 
-theorem galCp_symm_apply (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) :
-    (galCp σ).symm x = σ⁻¹ • x := rfl
-
 theorem norm_galCp (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) : ‖galCp σ x‖ = ‖x‖ :=
   norm_smul_gal σ x
 
@@ -139,8 +136,6 @@ theorem eq_galCp_of_continuous (σ : Gal(PadicAlgCl p/K)) (f : ℂ_[p] → ℂ_[
 
 def galCpHom : Gal(PadicAlgCl p/K) →* RingAut ℂ_[p] :=
   MulSemiringAction.toRingAut _ ℂ_[p]
-
-theorem galCpHom_apply (σ : Gal(PadicAlgCl p/K)) : galCpHom σ = galCp σ := rfl
 
 theorem galCp_mul (σ τ : Gal(PadicAlgCl p/K)) : galCp (σ * τ) = (galCp τ).trans (galCp σ) :=
   map_mul galCpHom σ τ

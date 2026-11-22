@@ -81,12 +81,6 @@ theorem toySData_HH (Del : ℚ) (hDel hgap hlet) (loc : ∀ p, Formalism.MainNot
   show Module.finrank ℂ (EuclideanSpace ℂ (Fin 0)) = 0
   simp
 
-theorem toySData_atP (Del : ℚ) (hDel hgap hlet) (loc : ∀ p, Formalism.MainNotions.S.Loc.LocAt F E sig p) (p) :
-    (toySData sig hc Del hDel hgap hlet loc).atP p = loc p := rfl
-
-theorem toySData_Del (Del : ℚ) (hDel hgap hlet) (loc : ∀ p, Formalism.MainNotions.S.Loc.LocAt F E sig p) :
-    (toySData sig hc Del hDel hgap hlet loc).Del = Del := rfl
-
 def toySData_Cu (Del : ℚ) (hDel hgap hlet) (loc : ∀ p, Formalism.MainNotions.S.Loc.LocAt F E sig p) (u : Word)
     {V : Type} [AddCommGroup V] [Module ℂ V] (M : Submodule ℂ V) (hM : M = ⊥) :
     (toySData sig hc Del hDel hgap hlet loc).Cu u ≃ₗ[ℂ] M := by

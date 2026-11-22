@@ -311,12 +311,6 @@ def cechLBBaseChange [LinearOrder κ] (w : π ≫ f = f' ≫ Spec.map (CommRingC
   cechComparison (ModuleCat.extendScalars g) (secCube f M D) ≫
     cechComplexMap (secCubeExtendScalars M D w)
 
-open ChangeOfRings in
-
-theorem cechLBBaseChange_f_tmul [LinearOrder κ] (w : π ≫ f = f' ≫ Spec.map (CommRingCat.ofHom g))
-    (p : ℕ) (c : R') (x : (cechLB f M D).X p) (s : {s : Finset κ // s.card = p + 1}) :
-    ((cechLBBaseChange M D w).f p).hom (c ⊗ₜ[R,g] x) s = c • secCubePull M D w s.1 (x s) := rfl
-
 variable {M D}
 
 theorem isIso_cechLBBaseChange [LinearOrder κ] [Finite κ] (hM : M.IsLB)

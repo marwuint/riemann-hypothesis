@@ -266,13 +266,9 @@ end Ids
 
 namespace DatApi
 
-theorem sepWith_trI : SepWith A3 A3.trI ↔ A3.fam3.TrISep := Iff.rfl
-
 theorem swapCast_one_tmul {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield E} (h : F1 = F2) (x : E) :
     swapCast h (1 ⊗ₜ[F1] x) = x ⊗ₜ[F2] 1 := by
   subst h; rfl
-
-theorem toCx3_reFace (R : RealDat3 D A3 Ks) (F : Face3 D A3) (Dc Sp Zsc) : R.toCx3 (reFace F Dc Sp Zsc) = R.toCx3 F := rfl
 
 theorem rowForm_add (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (t : T) (x y) :
     rowForm A P ψ t (x + y) = rowForm A P ψ t x + rowForm A P ψ t y := by

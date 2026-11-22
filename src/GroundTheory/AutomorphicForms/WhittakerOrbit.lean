@@ -78,12 +78,6 @@ def orbitPiece (L : Subgroup H) (y : X) : Set X := (fun l : H => l • y) '' (L 
 omit [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnectedSpace X]
   [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [T2Space H]
   [TotallyDisconnectedSpace H] [SigmaCompactSpace H] [ContinuousSMul H X] in
-theorem mem_orbitPiece {L : Subgroup H} {y x : X} : x ∈ orbitPiece L y ↔ ∃ l ∈ L, l • y = x :=
-  Iff.rfl
-
-omit [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnectedSpace X]
-  [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [T2Space H]
-  [TotallyDisconnectedSpace H] [SigmaCompactSpace H] [ContinuousSMul H X] in
 theorem self_mem_orbitPiece (L : Subgroup H) (y : X) : y ∈ orbitPiece L y :=
   ⟨1, L.one_mem, one_smul _ _⟩
 

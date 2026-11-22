@@ -32,14 +32,9 @@ def Law (al : X → ℂ) (Γ : AddSubgroup X) (φ : M) : Prop := ∀ γ ∈ Γ, 
 
 def Cyclic (φ : M) : Prop := Submodule.span ℂ (Set.range fun x => S.rho x φ) = ⊤
 
-def UnitVac (al : X → ℂ) (Γ : AddSubgroup X) (φ : M) : Prop := Law S al Γ φ ∧ S.B φ φ = 1
-
 def ip : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ := S.B.flip
 
 @[simp] theorem ip_apply (u v : M) : ip S u v = S.B v u := rfl
-
-theorem unitVac_iff_ip (al : X → ℂ) (Γ : AddSubgroup X) (φ : M) :
-    UnitVac S al Γ φ ↔ Law S al Γ φ ∧ ip S φ φ = 1 := Iff.rfl
 
 namespace Sys
 
@@ -56,23 +51,11 @@ theorem IsSemi.inv_eq {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ)
     (al x)⁻¹ = al x := by
   rcases h.1 x hx with e | e <;> rw [e] <;> norm_num
 
-theorem IsSemi.op_op {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ) {x y : X} (hx : x ∈ Γ) (hy : y ∈ Γ)
-    (v : M) : al x • S.rho x (al y • S.rho y v) = al (x + y) • S.rho (x + y) v := by
-  rw [map_smul, S.rho_rho, h.2 x hx y hy]
-  simp only [smul_smul, mul_assoc]
-
 namespace Inh
 
 def e (n : ZMod 4) : ℂ := Complex.I ^ n.val
 
 def dbl (t : ZMod 2) : ZMod 4 := 2 * (t.val : ZMod 4)
-
-def BEx : (ZMod 2 → ℂ) →ₗ⋆[ℂ] (ZMod 2 → ℂ) →ₗ[ℂ] ℂ :=
-  LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun f g => (starRingEnd ℂ) (f 0) * g 0 + (starRingEnd ℂ) (f 1) * g 1)
-    (by intro f f' g; simp; ring) (by intro a f g; simp; ring) (by intro f g g'; simp; ring) (by intro a f g; simp; ring)
-
-theorem BEx_apply (f g : ZMod 2 → ℂ) :
-    BEx f g = (starRingEnd ℂ) (f 0) * g 0 + (starRingEnd ℂ) (f 1) * g 1 := rfl
 
 def G₁ : AddSubgroup (ZMod 4 × ZMod 4) where
   carrier := {x | 2 * x.2 = 0}
@@ -85,10 +68,6 @@ def G₂ : AddSubgroup (ZMod 4 × ZMod 4) where
   add_mem' := by intro x y hx hy; simp only [Set.mem_setOf_eq, Prod.fst_add] at *; rw [mul_add, hx, hy, add_zero]
   zero_mem' := by simp
   neg_mem' := by intro x hx; simp only [Set.mem_setOf_eq, Prod.fst_neg] at *; rw [mul_neg, hx, neg_zero]
-
-theorem mem_G₁ (x : ZMod 4 × ZMod 4) : x ∈ G₁ ↔ 2 * x.2 = 0 := Iff.rfl
-
-theorem mem_G₂ (x : ZMod 4 × ZMod 4) : x ∈ G₂ ↔ 2 * x.1 = 0 := Iff.rfl
 
 def vac : ZMod 2 → ℂ := fun t => if t = 0 then 1 else 0
 

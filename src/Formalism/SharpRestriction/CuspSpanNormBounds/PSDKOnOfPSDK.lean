@@ -33,35 +33,6 @@ def InProd (Sg : ℕ → ℕ → Finset D.host.E) : ℕ → List (D.host.E × �
   | _, [] => True
   | a, (t, s) :: bs => t ∈ Sg (a + 1) s ∧ InProd Sg (a + s) bs
 
-def headsOf (Sg : ℕ → ℕ → Finset D.host.E) (j : ℕ) : Set (Point D.host.E j) := {h | InProd D Sg 0 h.1}
-
-def PSDKOn {α : Type*} (S : Set α) (K : α → α → ℂ) : Prop :=
-  ∀ (X : Finset α) (a : α → ℂ), (∀ p ∈ X, p ∈ S) → 0 ≤ ∑ p ∈ X, ∑ q ∈ X, star (a p) * K p q * a q
-
-def KLEOn {α : Type*} (S : Set α) (K L : α → α → ℂ) : Prop := PSDKOn S (fun p q => L p q - K p q)
-
-def ArithAxF (L : LatticeDataWithDual D) (Kd : KernelData D) : Prop :=
-  (∀ p q, Kd.K 0 p q = 1) ∧
-  (∀ i, i ≤ D.R.rS + 1 → PSDK (Kd.K i)) ∧
-  (∀ i, 1 ≤ i → i ≤ D.R.rS + 1 → 0 ≤ Kd.e i ∧ Kd.e i ≤ 1) ∧
-
-  (∀ (j s : ℕ) (hs : 1 ≤ s), j + s ≤ D.R.rS + 1 → ∀ (h h' : Point D.host.E j) (t t' : D.host.E)
-      (ht : t ≠ 0) (ht' : t' ≠ 0),
-      Kd.K (j + s) (ptSnoc D h t ht s hs) (ptSnoc D h' t' ht' s hs) ≠ 0 →
-        (if j + s = D.R.rS + 1 ∧ s = 1 then t = t' else t⁻¹ - t'⁻¹ ∈ L.La' (j + 1) s)) ∧
-
-  ∀ Sg : ℕ → ℕ → Finset D.host.E,
-    ∃ Th : (j s : ℕ) → D.host.E → Point D.host.E j → Point D.host.E j → ℂ,
-    ∀ (j s : ℕ) (hs : 1 ≤ s), j + s ≤ D.R.rS + 1 →
-      (∀ (t : D.host.E) (ht : t ≠ 0), t ∈ Sg (j + 1) s →
-        KLEOn (headsOf D Sg j)
-          (fun h h' : Point D.host.E j => Kd.K (j + s) (ptSnoc D h t ht s hs) (ptSnoc D h' t ht s hs)) (Th j s t)) ∧
-      (∀ t, ∀ l ∈ L.La (j + 1) s, ∀ h ∈ headsOf D Sg j, ∀ h' ∈ headsOf D Sg j, Th j s (t + l) h h' = Th j s t h h') ∧
-      (∀ t, PSDKOn (headsOf D Sg j) (Th j s t)) ∧
-      (∀ X : Finset D.host.E, (∀ t ∈ X, ∀ t' ∈ X, t - t' ∈ L.La (j + 1) s → t = t') →
-        KLEOn (headsOf D Sg j) (fun h h' => ∑ t ∈ X, Th j s t h h')
-          (fun h h' => (1 + (Kd.e (j + s) : ℂ)) * Kd.K j h h'))
-
 variable {D}
 
 end Arith

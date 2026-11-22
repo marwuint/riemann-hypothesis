@@ -34,16 +34,6 @@ theorem curve_instances :
 
 end Instances
 
-section Degree
-
-noncomputable def sheafDegree (hX : topologicalKrullDim X = 1) {L : X.Modules}
-    (hL : IsInvertibleSheaf L) : ℤ :=
-  haveI := (curve_instances (k := k) hX).1
-  haveI := (curve_instances (k := k) hX).2.1
-  invertibleDegree (k := k) hL
-
-end Degree
-
 section Canonical
 
 noncomputable def omega (hX : topologicalKrullDim X = 1) : X.Modules :=

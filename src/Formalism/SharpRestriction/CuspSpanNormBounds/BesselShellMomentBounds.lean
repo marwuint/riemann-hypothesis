@@ -903,15 +903,6 @@ def CloudNodeShape (D : D7) (Ch Cg : ℝ) (L : LocBessel D.R.k D.R.rS) (lam0 : F
 def la (D : D7) (L : LocBessel D.R.k D.R.rS) (a : Fin (D.R.rS + 1)) (g : Mx D.R.k D.R.rS) : ℝ :=
   lA D.R.k D.R.rS L.z g a
 
-def ShellCommonHypotheses (D : D7) (Ch Cg : ℝ) (L : LocBessel D.R.k D.R.rS) (lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ)
-    (ka b bv : ℝ) (Bf : L.Hs → L.Wp) (μG μS νq : Measure (Mt D.R.k D.R.rS)) (P : Mx D.R.k D.R.rS) : Prop :=
-  LocOk0 D Ch Cg L lam0 ka b ka ∧
-    Cg * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 7 ≤ bv ∧ ShapeS L.u lam0 bv ∧
-    IsBesselMapSm L.z (psi D.R.k D.R.rS L.z L.c) L.σ L.π Bf ∧
-    IsHaarOn (UH (Hpk D.R.k D.R.rS)) μG ∧ IsHaarOn (Sset D.R.k D.R.rS L.z) μS ∧ IsQuotMeas μG μS νq ∧
-    (∀ v ∈ smoothVecs (k := D.R.k) (r := D.R.rS) L.σ, l2SG νq (fun g => Bf (L.σ g v)) = (‖v‖₊ : ENNReal) ^ 2) ∧
-    IsCayleyU D.R.k D.R.rS L.ε P
-
 section Geometry
 
 variable {k r : ℕ}
@@ -944,4 +935,3 @@ end PieceM93
 namespace Formalism.MainNotions.BesselShellMomentBounds
 
 end Formalism.MainNotions.BesselShellMomentBounds
-

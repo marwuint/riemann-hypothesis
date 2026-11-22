@@ -26,12 +26,6 @@ def toEuclidSplitConj : ((ι ⊕ κ) → mixedSpace K) ≃L[ℝ] (ι → mixedSp
   (LinearEquiv.sumArrowLequivProdArrow ι κ ℝ (mixedSpace K)).toContinuousLinearEquiv.trans
     ((ContinuousLinearEquiv.refl ℝ (ι → mixedSpace K)).prodCongr (toEuclidPiConj K))
 
-theorem toEuclidSplitConj_apply (x : (ι ⊕ κ) → mixedSpace K) :
-    toEuclidSplitConj K ι κ x = (fun i ↦ x (.inl i), toEuclidPiConj K fun k ↦ x (.inr k)) := rfl
-
-theorem toEuclidSplit_symm_apply (a : ι → mixedSpace K) (v : EuclidPi K κ) :
-    (toEuclidSplit K ι κ).symm (a, v) = Sum.elim a ((toEuclidPi K).symm v) := rfl
-
 def mixedPartialFourier (φ : ((ι ⊕ κ) → mixedSpace K) → ℂ) (x : (ι ⊕ κ) → mixedSpace K) : ℂ :=
   mixedFourierPi K (fun u : κ → mixedSpace K ↦ φ (Sum.elim (fun i ↦ x (.inl i)) u))
     (fun k ↦ x (.inr k))

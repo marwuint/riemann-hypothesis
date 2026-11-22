@@ -99,11 +99,6 @@ def unitOfMem {N : FiniteSubfield} (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)
     y.ne_zero (Subtype.ext (congrArg Subtype.val h : ((y : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) =
       ((0 : N.1) : ℚ̄)))
 
-theorem coe_unitOfMem {N : FiniteSubfield} (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)
-    (hy : ((y : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) ∈ N.1) :
-    (((unitOfMem S y hy : N.1ˣ) : N.1) : ℚ̄) = ((y : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) :=
-  rfl
-
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 

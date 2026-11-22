@@ -26,12 +26,6 @@ def lineMap {k : ℕ} (c : Fin k → R) : EpsAlg R k →ₐ[R] DualNumber R :=
       simp [RingHom.mem_ker, sq, TrivSqZeroExt.inr_mul_inr]
     exact this hp)
 
-theorem lineMap_mk {k : ℕ} (c : Fin k → R) (p : MvPolynomial (Fin k) R) :
-    lineMap c (Ideal.Quotient.mk _ p) = aeval (fun b => (TrivSqZeroExt.inr (c b) : DualNumber R)) p := rfl
-
-theorem topCoeff_mk {k : ℕ} (p : MvPolynomial (Fin k) R) :
-    topCoeff R k (Ideal.Quotient.mk _ p) = coeff (topMon k) p := rfl
-
 end Alg
 
 section Val

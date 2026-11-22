@@ -17,12 +17,6 @@ variable {X : Fields} (A : Amb X) (a b : ℕ)
 def Amb.ek (γ : UF X.E a) (γ' : UF X.E b) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) : ℂ :=
   A.chiF a b (gmap γ.1 N) (gmap γ'.1 N') * (A.chiF a b N N')⁻¹
 
-def Amb.ThDatEq (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) : Prop :=
-  ∀ (γ : UF X.E a) (γ' : UF X.E b) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (cA cB : ℕ) (Ξ : HomE X.E a b → X.K),
-    IsSdLat N → IsSdLat N' → 0 < cA → 0 < cB → (∀ x, ∀ y ∈ mulLat cB (homAt Sall N N'), Ξ (x + y) = Ξ x) →
-    ∀ z, A.thDat Sall cA cB (gmap γ.1 N) (gmap γ'.1 N') (fun x => Ξ (γ'.1.symm.toLinearMap ∘ₗ x ∘ₗ γ.1.toLinearMap)) z =
-      A.thDat Sall cA cB N N' Ξ (A.pullV a b γ.1 γ'.1 z)
-
 def Amb.ThCEq (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) : Prop :=
   ∀ (γ : UF X.E a) (γ' : UF X.E b) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (cA cB : ℕ) (Ξ : HomE X.E a b → X.K),
     IsSdLat N → IsSdLat N' → 0 < cA → 0 < cB → (∀ x, ∀ y ∈ mulLat cB (homAt Sall N N'), Ξ (x + y) = Ξ x) →

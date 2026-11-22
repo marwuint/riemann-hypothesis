@@ -10,9 +10,6 @@ noncomputable section
 
 namespace GlobalTheory.ThetaDecay
 
-def archAt (F : Type) [Field F] [NumberField F] (w : InfinitePlace F) : AF F →+* ℂ :=
-  (InfinitePlace.Completion.extensionEmbedding w).comp (evInf F w).toRingHom
-
 end GlobalTheory.ThetaDecay
 
 end

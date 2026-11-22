@@ -28,8 +28,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
-theorem barF_tmul (a : Af D.host.F) (x : D.host.E) : barF D (a ⊗ₜ x) = a ⊗ₜ star x := rfl
-
 theorem integral_of_mem_intAE {x : D.host.E} (hx : (1 : Af D.host.F) ⊗ₜ[D.host.F] x ∈ intAE D) :
     ∃ y : 𝓞 D.host.E, (y : D.host.E) = x := by
   have h : intAE D ≤ GlobalTheory.AdLat.hat1 D.host.F

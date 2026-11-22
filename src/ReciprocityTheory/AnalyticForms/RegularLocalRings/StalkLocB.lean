@@ -45,9 +45,6 @@ theorem phiH_bijective : Function.Bijective (phiH V K iso) := by
 def phiE : (MvPolynomial (Fin n) ℂ ⧸ K) ≃+* Γ(W, V) :=
   RingEquiv.ofBijective _ (phiH_bijective V K iso)
 
-theorem phiE_mk (f : MvPolynomial (Fin n) ℂ) :
-    phiE V K iso (Ideal.Quotient.mk K f) = secH V K iso f := rfl
-
 theorem isUnit_germ_secH_iff (v : V) (f : MvPolynomial (Fin n) ℂ) :
     IsUnit (W.presheaf.germ V v.1 v.2 (secH V K iso f)) ↔
       Ideal.Quotient.mk K f ∉ (iso.hom.base v).asIdeal := by

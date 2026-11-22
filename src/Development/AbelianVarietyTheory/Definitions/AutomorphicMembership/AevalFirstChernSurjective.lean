@@ -38,8 +38,6 @@ theorem cls_eq_iff {L M : FinLB X} : L.cls = M.cls ↔ LBIso L.lb M.lb := CechPi
 
 def dual (L : FinLB X) : FinLB X := ⟨L.n, L.U, fun i j => (L.g i j)⁻¹, isLB_dual L.isLB⟩
 
-theorem lb_dual (L : FinLB X) : L.dual.lb = CechPic.dual L.lb := rfl
-
 variable (X) in
 
 def triv : FinLB X := ofFintype (LB.triv X) (LB.isLB_triv X)

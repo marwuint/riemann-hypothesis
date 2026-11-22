@@ -17,8 +17,4 @@ structure Herm0 (D : D7) where
 
 def FullTied.to0 {D : D7} (X : FullTied D) : Herm0 D := ⟨X.base.lev0, X.g⟩
 
-theorem FullTied.base_model_level_eq {D : D7} (X : FullTied D) : X.to0.lev0 = X.base.lev0 := rfl
-
-theorem FullTied.base_model_g_eq {D : D7} (X : FullTied D) : X.to0.g = X.g := rfl
-
 end Formalism.L2.Herm

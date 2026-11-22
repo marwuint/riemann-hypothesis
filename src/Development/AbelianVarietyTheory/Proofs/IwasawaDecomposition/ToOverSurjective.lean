@@ -83,14 +83,7 @@ section Transfer
 variable {X : Scheme.{0}} {O : Type} [CommRing O] {z : Sp O ⟶ X} {G : Over (Sp O)} [GrpObj G]
   {G' : Over X} [GrpObj G'] {φ : G.left ⟶ G'.left} (hφ : IsGrpPullback G G' z φ)
 
-def toOver (R : Type) [CommRing R] [Algebra O R] (y : specO O R ⟶ G) : overAt z R ⟶ G' :=
-  Over.homMk (y.left ≫ φ) (by
-    rw [Category.assoc, hφ.1.w, ← Category.assoc, Over.w y]
-    rfl)
-
 variable (R : Type) [CommRing R] [Algebra O R]
-
-theorem toOver_left (y : specO O R ⟶ G) : (toOver hφ R y).left = y.left ≫ φ := rfl
 
 end Transfer
 

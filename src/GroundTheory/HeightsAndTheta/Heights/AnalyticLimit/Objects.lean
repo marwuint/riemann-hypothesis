@@ -19,8 +19,6 @@ variable {D : ℕ} {X : Type*} [TopologicalSpace X]
 
 theorem locPot_add_φ (P Q : LocPot X) (x y : X) : (P + Q).φ x y = P.φ x y + Q.φ x y := rfl
 
-theorem locPot_add_U (P Q : LocPot X) (x : X) : (P + Q).U x = P.U x ∩ Q.U x := rfl
-
 def FormNonneg (A : FinHolAtlas D X) (V : Set X) (P : LocPot X) : Prop :=
   ∀ x k, ∀ y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (V ∩ P.U x), ∀ w : Fin D → ℂ,
     0 ≤ levi (P.φ x ∘ (A.chart k).symm) y w
@@ -95,10 +93,6 @@ structure System {A : FinHolAtlas D X} (R : RegChartData A) where
         (fun y => fderiv ℝ (fun y' => R.φ ((A.chart k).symm y')) y) (𝓝[>] 0) K ∧
       TendstoUniformlyOn (fun t y => fderiv ℝ (fderiv ℝ fun y' => ph t ((A.chart k).symm y')) y)
         (fun y => fderiv ℝ (fderiv ℝ fun y' => R.φ ((A.chart k).symm y')) y) (𝓝[>] 0) K
-
-namespace System
-
-end System
 
 section Inhabitants
 

@@ -39,9 +39,6 @@ def patGrp (A : ι → ι → Prop) (hi : ∀ r, ¬ A r r) (ht : ∀ r l s, A r 
         rw [inv_eq_iff_mul_eq_one, ← pow_succ', Nat.sub_add_cancel h0, pow_orderOf_eq_one]
       rw [e]; exact M.pow_mem hg _ }
 
-theorem mem_patGrp {A : ι → ι → Prop} {hi ht} {g : GL ι F} :
-    g ∈ patGrp F A hi ht ↔ ∀ r s, ¬ A r s → g.val r s = (1 : Matrix ι ι F) r s := Iff.rfl
-
 end Pattern
 
 end GlobalTheory.IndefiniteRowSideFullHecke.SymmetricPatternGroup

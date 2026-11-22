@@ -22,9 +22,6 @@ def InInd (h : ∑ i, n i = N) (V : ∀ i, Submodule ℂ (Sm E (n i))) (φ : Sm 
     ∀ (k : Kinf E N) (g : GL (Fin N) (Af E)),
       (fun m => φ.1 (leviEmb (Ad E) (stdBlocks n h) m * (infGL E N (Unitary.toUnits k) * finGL E N g))) ∈ tensorSp V
 
-theorem inInd_iff (h : ∑ i, n i = N) (π : ∀ i, CuspSub E (n i)) (φ : Sm E N) :
-    InInd h (fun i => (π i).V) φ ↔ φ ∈ indForms h π := Iff.rfl
-
 end Linear
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}

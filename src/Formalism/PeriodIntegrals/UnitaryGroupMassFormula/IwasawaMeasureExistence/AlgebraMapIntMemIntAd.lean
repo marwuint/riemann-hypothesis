@@ -13,67 +13,8 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
-theorem intAd_approx (N : ℕ) (hN : 1 ≤ N) (y : Af F) (hy : y ∈ Formalism.UG.intAd F) :
-    ∃ a : 𝓞 F, ∃ z ∈ Formalism.UG.intAd F, y = algebraMap F (Af F) (algebraMap (𝓞 F) F a) + (N : Af F) * z := by
-  have hN0 : ((N : ℕ) : 𝓞 F) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  have hNF : (N : F) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  obtain ⟨a, ha⟩ := Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.AdeleIntA.exists_approx (R := 𝓞 F) (K := F) y (fun v => hy v)
-    (N : 𝓞 F) hN0
-  refine ⟨a, algebraMap F (Af F) ((N : F)⁻¹) * (y - algebraMap F (Af F) (algebraMap (𝓞 F) F a)), fun v => ?_, ?_⟩
-  · show algebraMap F (v.adicCompletion F) ((N : F)⁻¹) *
-      (y v - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a)) ∈ v.adicCompletionIntegers F
-    have e1 : ((N : F))⁻¹ = (algebraMap (𝓞 F) F (N : 𝓞 F))⁻¹ := by rw [map_natCast]
-    rw [e1, HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul, map_inv₀, map_inv₀,
-      Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.AdeleIntA.val_R]
-    have hv0 : v.intValuation (N : 𝓞 F) ≠ 0 := v.intValuation_ne_zero _ hN0
-    calc (v.intValuation (N : 𝓞 F))⁻¹ * Valued.v (y v - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a))
-        ≤ (v.intValuation (N : 𝓞 F))⁻¹ * v.intValuation (N : 𝓞 F) := mul_le_mul' le_rfl (ha v)
-      _ = 1 := inv_mul_cancel₀ hv0
-  · have h1 : (N : Af F) * algebraMap F (Af F) ((N : F)⁻¹) = 1 := by
-      rw [← map_natCast (algebraMap F (Af F)), ← map_mul, mul_inv_cancel₀ hNF, map_one]
-    rw [← mul_assoc, h1, one_mul]
-    ring
-
 theorem inclE_mem {a : E} (ha : a ∈ Formalism.UG.intOE E) : Formalism.UG.inclE (F := F) (Af F) a ∈ IntAf F E :=
   Subring.subset_closure (Or.inl ⟨⟨a, ha⟩, rfl⟩)
-
-theorem intOE_of_int (a : 𝓞 F) : algebraMap F E (algebraMap (𝓞 F) F a) ∈ Formalism.UG.intOE E := by
-  have h : IsIntegral ℤ (algebraMap F E (algebraMap (𝓞 F) F a)) :=
-    (RingOfIntegers.isIntegral_coe a).map (algebraMap F E).toIntAlgHom
-  obtain ⟨y, hy⟩ := IsIntegralClosure.isIntegral_iff (A := 𝓞 E) |>.1 h
-  exact ⟨y, hy⟩
-
-theorem IntAf_approx (N : ℕ) (hN : 1 ≤ N) (x : E ⊗[F] Af F) (hx : x ∈ IntAf F E) :
-    ∃ a ∈ Formalism.UG.intOE E, ∃ z ∈ IntAf F E,
-      x = Formalism.UG.inclE (F := F) (Af F) a + (N : E ⊗[F] Af F) * z := by
-  unfold IntAf Formalism.UG.tensInt at hx
-  induction hx using Subring.closure_induction with
-  | mem x hx =>
-    rcases hx with ⟨⟨e, he⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩
-    · exact ⟨e, he, 0, zero_mem _, by rw [mul_zero, add_zero]; rfl⟩
-    · obtain ⟨a, z, hz, rfl⟩ := intAd_approx N hN y hy
-      refine ⟨algebraMap F E (algebraMap (𝓞 F) F a), intOE_of_int a, (1 : E) ⊗ₜ[F] z,
-        Subring.subset_closure (Or.inr ⟨⟨z, hz⟩, rfl⟩), ?_⟩
-      show (1 : E) ⊗ₜ[F] (algebraMap F (Af F) (algebraMap (𝓞 F) F a) + (N : Af F) * z) =
-        algebraMap F E (algebraMap (𝓞 F) F a) ⊗ₜ[F] (1 : Af F) + (N : E ⊗[F] Af F) * ((1 : E) ⊗ₜ[F] z)
-      rw [TensorProduct.tmul_add, Algebra.TensorProduct.natCast_def', Algebra.TensorProduct.tmul_mul_tmul, one_mul,
-        Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one (A := E), TensorProduct.smul_tmul]
-  | zero => exact ⟨0, zero_mem _, 0, zero_mem _, by simp⟩
-  | one => exact ⟨1, one_mem _, 0, zero_mem _, by simp⟩
-  | add x y _ _ hx hy =>
-    obtain ⟨a, ha, z, hz, rfl⟩ := hx
-    obtain ⟨b, hb, w, hw, rfl⟩ := hy
-    exact ⟨a + b, add_mem ha hb, z + w, add_mem hz hw, by rw [map_add]; ring⟩
-  | neg x _ hx =>
-    obtain ⟨a, ha, z, hz, rfl⟩ := hx
-    exact ⟨-a, neg_mem ha, -z, neg_mem hz, by rw [map_neg]; ring⟩
-  | mul x y _ _ hx hy =>
-    obtain ⟨a, ha, z, hz, rfl⟩ := hx
-    obtain ⟨b, hb, w, hw, rfl⟩ := hy
-    refine ⟨a * b, mul_mem ha hb,
-      Formalism.UG.inclE (F := F) (Af F) a * w + z * Formalism.UG.inclE (F := F) (Af F) b + (N : E ⊗[F] Af F) * z * w,
-      add_mem (add_mem (mul_mem (inclE_mem ha) hw) (mul_mem hz (inclE_mem hb)))
-        (mul_mem (mul_mem (natCast_mem _ N) hz) hw), by rw [map_mul]; ring⟩
 
 variable (F E) in
 
@@ -191,9 +132,6 @@ def cid (u : (AEf I)ˣ) : Submodule (𝓞 I.E) I.E where
     rw [Algebra.smul_def, map_mul, mul_left_comm]
     exact mul_mem (inclE_mem (RingHom.mem_range_self _ r)) he
 
-theorem mem_cid {u : (AEf I)ˣ} {e : I.E} : e ∈ cid I u ↔ ((u⁻¹ : (AEf I)ˣ) : AEf I) * iE I e ∈ IntAf I.F I.E :=
-  Iff.rfl
-
 theorem idl_eq (u : (AEf I)ˣ) : idl I u = cid I u :=
   Submodule.span_eq (cid I u)
 
@@ -206,37 +144,6 @@ theorem exists_nat_two (u : (AEf I)ˣ) : ∃ N : ℕ, 1 ≤ N ∧ (N : AEf I) * 
     exact mul_mem (natCast_mem _ _) hua
   · rw [Nat.cast_mul, mul_assoc]
     exact mul_mem (natCast_mem _ _) hub
-
-theorem mem_uO (u : (AEf I)ˣ) : ∃ N : ℕ, 1 ≤ N ∧ (N : I.E) ∈ cid I u ∧ ∀ x : AEf I,
-    ((u⁻¹ : (AEf I)ˣ) : AEf I) * x ∈ IntAf I.F I.E →
-    ∃ b ∈ cid I u, ∃ z ∈ IntAf I.F I.E, x = iE I b + iE I N * z := by
-  obtain ⟨N, hN, hu, hui⟩ := exists_nat_two I u
-  refine ⟨N, hN, ?_, fun x hx => ?_⟩
-  · show ((u⁻¹ : (AEf I)ˣ) : AEf I) * iE I N ∈ IntAf I.F I.E
-    rw [map_natCast, mul_comm]
-    exact hui
-  · have hNx : (N : AEf I) * x ∈ IntAf I.F I.E := by
-      have e : (N : AEf I) * x = ((N : AEf I) * u) * (((u⁻¹ : (AEf I)ˣ) : AEf I) * x) := by
-        rw [mul_assoc, ← mul_assoc (u : AEf I), Units.mul_inv, one_mul]
-      rw [e]
-      exact mul_mem hu hx
-    obtain ⟨a, -, z, hz, he⟩ := IntAf_approx (N * N) (Nat.mul_pos hN hN) _ hNx
-    have hNE : (N : I.E) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-    have hNA : IsUnit (N : AEf I) := AfT.isUnit_natCast I N hN
-    have h1 : (N : AEf I) * iE I (a / N) = iE I a := by
-      have : (N : I.E) * (a / N) = a := by field_simp
-      rw [← map_natCast (iE I) N, ← map_mul, this]
-    have hx' : x = iE I (a / N) + (N : AEf I) * z := by
-      apply hNA.mul_left_cancel
-      rw [he, mul_add, h1, Nat.cast_mul]
-      ring
-    refine ⟨a / N, ?_, z, hz, by rw [map_natCast]; exact hx'⟩
-    show ((u⁻¹ : (AEf I)ˣ) : AEf I) * iE I (a / N) ∈ IntAf I.F I.E
-    have e : ((u⁻¹ : (AEf I)ˣ) : AEf I) * iE I (a / N) =
-        ((u⁻¹ : (AEf I)ˣ) : AEf I) * x - ((N : AEf I) * ((u⁻¹ : (AEf I)ˣ) : AEf I)) * z := by
-      rw [hx']; ring
-    rw [e]
-    exact sub_mem hx (mul_mem hui hz)
 
 theorem isFractional_cid (u : (AEf I)ˣ) : IsFractional (𝓞 I.E)⁰ (cid I u) := by
   obtain ⟨N, hN, hu, -⟩ := exists_nat_two I u
@@ -253,31 +160,6 @@ theorem isFractional_cid (u : (AEf I)ˣ) : IsFractional (𝓞 I.E)⁰ (cid I u) 
   exact hy
 
 def FI (u : (AEf I)ˣ) : FractionalIdeal (𝓞 I.E)⁰ I.E := ⟨cid I u, isFractional_cid I u⟩
-
-theorem coe_FI (u : (AEf I)ˣ) : (FI I u : Submodule (𝓞 I.E) I.E) = cid I u := rfl
-
-theorem FI_ne_zero (u : (AEf I)ˣ) : FI I u ≠ 0 := by
-  obtain ⟨N, hN, hNm, -⟩ := mem_uO I u
-  intro h
-  have hm : (N : I.E) ∈ (FI I u : Submodule (𝓞 I.E) I.E) := hNm
-  rw [h, FractionalIdeal.coe_zero, Submodule.mem_bot] at hm
-  exact (Nat.cast_ne_zero.mpr (by omega) : (N : I.E) ≠ 0) hm
-
-theorem nrmF_eq (u : (AEf I)ˣ) : nrmF I u = ((FractionalIdeal.absNorm (FI I u) : ℚ) : ℝ)⁻¹ := by
-  have h := idl_eq I u
-  have hf : IsFractional (𝓞 I.E)⁰ (idl I u) := h ▸ isFractional_cid I u
-  have e : (⟨idl I u, hf⟩ : FractionalIdeal (𝓞 I.E)⁰ I.E) = FI I u := Subtype.ext h
-  unfold nrmF
-  rw [dif_pos hf, e]
-
-theorem nrmF_pos (u : (AEf I)ˣ) : 0 < nrmF I u := by
-  rw [nrmF_eq]
-  have h0 : FractionalIdeal.absNorm (FI I u) ≠ 0 := by
-    rw [Ne, FractionalIdeal.absNorm_eq_zero_iff]
-    exact FI_ne_zero I u
-  have h1 : (0 : ℚ) < FractionalIdeal.absNorm (FI I u) :=
-    lt_of_le_of_ne (FractionalIdeal.absNorm_nonneg _) (Ne.symm h0)
-  positivity
 
 end Unit
 

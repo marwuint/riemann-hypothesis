@@ -21,8 +21,4 @@ def ConeAt (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Fin
     ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified ∧ P.TorsionIso ∧
     Cn P.D.toPre.X m γ ∧ InCone P.D.toPre γ
 
-theorem hasCones_iff (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ),
-      (Fin m → LinearMap.BilinForm ℤ X) → Prop) (Z : Model Xo c β) : HasCones Cn Z ↔ ∀ z, ConeAt Cn Z z :=
-  Iff.rfl
-
 end GlobalTheory.GenFan

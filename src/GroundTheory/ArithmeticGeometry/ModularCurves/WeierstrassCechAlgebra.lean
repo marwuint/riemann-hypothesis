@@ -17,8 +17,6 @@ noncomputable instance invertibleY :
     Invertible (algebraMap W.toAffine.CoordinateRing (Overlap W) (yC W)) :=
   ⟨yInv W, by rw [mul_comm]; exact yC_mul_yInv W, yC_mul_yInv W⟩
 
-theorem invOf_yC : ⅟(algebraMap W.toAffine.CoordinateRing (Overlap W) (yC W)) = yInv W := rfl
-
 variable [Nontrivial R]
 
 end Overlap

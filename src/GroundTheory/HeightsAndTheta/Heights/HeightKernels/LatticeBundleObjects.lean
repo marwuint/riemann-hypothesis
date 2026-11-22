@@ -73,52 +73,6 @@ instance projective_of_finite {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [
     Module.Projective (𝓞 K) M :=
   projective_of_isTorsionFree M
 
-def latticeCoord (σ : K →+* ℂ) {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M] :
-    Fibre σ M →ₗ[ℂ] (Fin N → ℂ) :=
-  (σ (denom M : K))⁻¹ • ((WithLp.linearEquiv 2 ℂ (Fin N → ℂ)).toLinearMap ∘ₗ
-    (standardCoord K σ (Fin N)).toLinearMap ∘ₗ fibreMap σ (scaleMap M))
-
-theorem latticeCoord_tmul (σ : K →+* ℂ) {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K))
-    [Module.Finite (𝓞 K) M] (z : ComplexAt σ) (v : M) (i : Fin N) :
-    latticeCoord σ M (z ⊗ₜ v) i = σ ((v : Fin N → K) i) * (ofComplex σ).symm z := by
-  have hc : σ (denom M : K) ≠ 0 := by
-    rw [map_ne_zero]
-    exact_mod_cast denom_ne_zero M
-  simp only [latticeCoord, LinearMap.smul_apply, LinearMap.coe_comp, Function.comp_apply,
-    fibreMap_tmul, LinearEquiv.coe_coe, Pi.smul_apply, smul_eq_mul]
-  change (σ (denom M : K))⁻¹ * standardCoord K σ (Fin N) (z ⊗ₜ scaleMap M v) i = _
-  rw [standardCoord_tmul, scaleMap_apply, map_mul]
-  field_simp
-
-theorem latticeCoord_injective (σ : K →+* ℂ) {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K))
-    [Module.Finite (𝓞 K) M] : Function.Injective (latticeCoord σ M) := by
-  have hc : σ (denom M : K) ≠ 0 := by
-    rw [map_ne_zero]
-    exact_mod_cast denom_ne_zero M
-  have hs : Function.Injective (scaleMap M) := by
-    intro v w h
-    have := congrArg (intIncl K N) h
-    rw [intIncl_scaleMap, intIncl_scaleMap] at this
-    exact Subtype.ext (smul_right_injective (Fin N → K) (denom_ne_zero M) this)
-  intro x y h
-  simp only [latticeCoord, LinearMap.smul_apply] at h
-  have h' := smul_right_injective _ (inv_ne_zero hc) h
-  simp only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe,
-    EmbeddingLike.apply_eq_iff_eq] at h'
-  exact fibreMap_injective σ hs h'
-
-theorem latticeCoord_conjMap (σ : K →+* ℂ) {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K))
-    [Module.Finite (𝓞 K) M] (x : Fibre σ M) :
-    latticeCoord (conjugate σ) M (conjMap σ M x) = star (latticeCoord σ M x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul z v =>
-    funext i
-    rw [conjMap_tmul, latticeCoord_tmul, Pi.star_apply, latticeCoord_tmul, conjugate_coe_eq]
-    change _ * starRingEnd ℂ ((ofComplex σ).symm z) = _
-    simp
-  | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, star_add]
-
 @[instance_reducible]
 def matrixCore {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*} [Fintype ι]
     (Ψ : V →ₗ[ℂ] (ι → ℂ)) (hΨ : Function.Injective Ψ) (H : Matrix ι ι ℂ) (hH : H.PosDef) :
@@ -142,25 +96,6 @@ def matrixCore {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*} [Fintype
     by_contra hx
     have hx' : Ψ x ≠ 0 := fun h0 => hx (hΨ (h0.trans (map_zero Ψ).symm))
     exact (hH.dotProduct_mulVec_pos hx').ne' h
-
-theorem matrixCore_inner {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*} [Fintype ι]
-    (Ψ : V →ₗ[ℂ] (ι → ℂ)) (hΨ : Function.Injective Ψ) (H : Matrix ι ι ℂ) (hH : H.PosDef)
-    (x y : V) : (matrixCore Ψ hΨ H hH).inner x y = star (Ψ x) ⬝ᵥ (H *ᵥ Ψ y) := rfl
-
-def matrixMetric {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M]
-    (H : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ) (hH : ∀ σ, (H σ).PosDef)
-    (hconj : ∀ σ, H (conjugate σ) = (H σ).map (starRingEnd ℂ)) : HermitianMetric K M where
-  form σ := matrixCore (latticeCoord σ M) (latticeCoord_injective σ M) (H σ) (hH σ)
-  form_conj σ x y := by
-    rw [matrixCore_inner, matrixCore_inner, latticeCoord_conjMap, latticeCoord_conjMap, hconj]
-    simp only [dotProduct, mulVec, Pi.star_apply, map_sum, map_mul, Matrix.map_apply,
-      RCLike.star_def, Complex.conj_conj]
-
-theorem matrixMetric_inner {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M]
-    (H : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ) (hH : ∀ σ, (H σ).PosDef)
-    (hconj : ∀ σ, H (conjugate σ) = (H σ).map (starRingEnd ℂ)) (σ : K →+* ℂ) (x y : Fibre σ M) :
-    ((matrixMetric M H hH hconj).form σ).inner x y =
-      star (latticeCoord σ M x) ⬝ᵥ (H σ *ᵥ latticeCoord σ M y) := rfl
 
 instance idealLattice_finite {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) :
     Module.Finite (𝓞 K) (idealLattice a) :=

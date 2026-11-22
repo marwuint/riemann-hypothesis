@@ -131,8 +131,6 @@ omit [StarRing K] in
 
 theorem mem_imLat (s : V ≃ₗ[K] V) (M : Submodule R V) (x : V) : x ∈ imLat s M ↔ ∃ y ∈ M, s y = x := Iff.rfl
 
-theorem mem_latX (F : FlagD H r) (Λ : Submodule R V) (x : V) : x ∈ latX F Λ ↔ x ∈ Λ ∧ x ∈ F.X := Iff.rfl
-
 theorem mem_redLat (F : FlagD H r) (Λ : Submodule R V) (x : V) :
     x ∈ redLat F Λ ↔ x ∈ perp H F.X ∧ ∃ a ∈ F.X, x + a ∈ Λ := by
   constructor
@@ -152,9 +150,6 @@ theorem wSp_comm (F F' : FlagD H r) : wSp F' F = wSp F F' := by rw [wSp, wSp, jo
 
 theorem wSp_eq (F F' : FlagD H r) : wSp F F' = perp H (xPlus F) ⊓ perp H (xPlus F') := by
   rw [wSp, ← xPlus_sup, perp_sup]
-
-theorem mem_norLift (F F' : FlagD H r) (y : V) :
-    y ∈ norLift F F' ↔ y ∈ V0 F F' ∧ y ∈ perp H (xPlus F) := Iff.rfl
 
 theorem norLift_inf (F F' : FlagD H r) : norLift F F' ⊓ norLift F' F = V0 F F' ⊓ wSp F F' := by
   rw [norLift, norLift, wSp_eq, jointSpan_comm F F', inf_inf_inf_comm, inf_idem]

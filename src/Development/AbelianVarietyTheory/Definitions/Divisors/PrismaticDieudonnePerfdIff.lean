@@ -146,10 +146,6 @@ theorem muRoot_pairing_bc (t : G.Tate) (χ : G.dual.Tate) (n : ℕ) :
     muRoot (pairing _ O' (bcTate O' t) (bcChar O' χ)) n = algebraMap O O' (muRoot (pairing G O t χ) n) := by
   rw [muRoot_pairing, muRoot_pairing, charElem_bcChar, bcTate_pt, one_mul]
 
-theorem tateMap_bcTate {H : PDivGroup p O} (f : G ⟶ H) (t : G.Tate) :
-    tateMap _ _ O' (baseChangeMap O' f) (bcTate O' t) = bcTate O' (tateMap G H O f t) :=
-  TateOver.ext (funext fun _ => Algebra.TensorProduct.ext (Subsingleton.elim _ _) (AlgHom.ext fun _ => rfl))
-
 def dualBaseChange (G : PDivGroup p O) : (G.baseChange O').dual ≅ G.dual.baseChange O' where
   hom := ⟨fun n => CartierDual.baseChangeHom O O' (G.A n), fun n => BialgHom.ext fun x => by
     change CartierDual.map ((G.baseChange O').mulP n) _ = _
@@ -225,9 +221,6 @@ def alDual : G.Lie →ₗ[O] (Fin G.height → O) := LinearMap.pi fun j => Modul
 
 def W : Submodule O (Fin G.height → O) := LinearMap.ker c.al
 
-theorem al_apply (x : Fin G.height → O) : c.al x = ∑ i, x i • hodgeTate G (c.t i) :=
-  Fintype.linearCombination_apply ..
-
 @[simp] theorem alDual_apply (x : G.Lie) (j : Fin G.height) : c.alDual x j = x (dlog G (c.t' j)) := rfl
 
 theorem mem_W (x : Fin G.height → O) : x ∈ c.W ↔ c.al x = 0 := Iff.rfl
@@ -276,27 +269,7 @@ def eps : (PDivGroup.mu p S.R).Tate := muTate S.R (zeta S.ε) S.zeta_zero (zeta_
 
 @[simp] theorem muRoot_eps (n : ℕ) : muRoot (eps S) n = zeta S.ε n := muRoot_muTate ..
 
-theorem constHom_eps : constHom _ (eps S) = epsHom (zeta S.ε) S.zeta_zero (zeta_succ_pow S.ε) := rfl
-
 def xiN (n : ℕ) : Ainf p S.R := xi (root^[n] S.ε)
-
-theorem zeta_one_sub_one_dvd : zeta S.ε 1 - 1 ∣ (p : S.R) := by
-  have h : fontaineTheta S.R p (xi S.ε) = 0 := by
-    rw [← RingHom.mem_ker, S.ker_eq]; exact mem_span_singleton_self _
-  have h1 : ∑ i ∈ Finset.range p, zeta S.ε 1 ^ i = 0 := by
-    simpa [xi, fontaineTheta_teichmuller, zeta] using h
-  have h2 : (p : S.R) = -∑ i ∈ Finset.range p, (zeta S.ε 1 ^ i - 1) := by simp [h1]
-  rw [h2, dvd_neg]
-  exact Finset.dvd_sum fun i _ => sub_one_dvd_pow_sub_one _ i
-
-theorem zeta_sub_one_dvd (n : ℕ) : zeta S.ε (n + 1) - 1 ∣ zeta S.ε 1 - 1 := by
-  induction n with
-  | zero => exact dvd_rfl
-  | succ n ih => exact (zeta_succ_pow S.ε (n + 1) ▸ sub_one_dvd_pow_sub_one _ p).trans ih
-
-theorem isSMulRegular_zeta_sub_one (n : ℕ) : IsSMulRegular S.R (zeta S.ε (n + 1) - 1) := by
-  obtain ⟨a, ha⟩ := (zeta_sub_one_dvd S n).trans (zeta_one_sub_one_dvd S)
-  exact IsSMulRegular.of_mul (a := a) (by rw [mul_comm, ← ha]; exact S.reg)
 
 def base (h : ℕ) : Submodule S.R (Fin h → S.R) := (zeta S.ε 1 - 1) • ⊤
 
@@ -331,16 +304,7 @@ def K (n : ℕ) : Submodule (Ainf p S.R) (Fin G.height → Ainf p S.R) :=
 
 theorem K_zero : K D c 0 = LinearMap.range (coord D c) := rfl
 
-theorem K_succ (n : ℕ) : K D c (n + 1) = (K D c n).comap (piMap frobenius _) := rfl
-
-theorem mem_K_zero (x : Fin G.height → Ainf p S.R) : x ∈ K D c 0 ↔ ∃ m, coord D c m = x := Iff.rfl
-
-theorem mem_K_succ (n : ℕ) (x : Fin G.height → Ainf p S.R) :
-    x ∈ K D c (n + 1) ↔ piMap frobenius _ x ∈ K D c n := Iff.rfl
-
 def b : D.Cov G →ₛₗ[fontaineTheta S.R p] (Fin G.height → S.R) := (piMap (fontaineTheta S.R p) _).comp (coord D c)
-
-theorem b_apply (m : D.Cov G) (j : Fin G.height) : b D c m j = fontaineTheta S.R p (coord D c m j) := rfl
 
 def thetaK (n : ℕ) : Submodule S.R (Fin G.height → S.R) := (K D c n).map (piMap (fontaineTheta S.R p) _)
 

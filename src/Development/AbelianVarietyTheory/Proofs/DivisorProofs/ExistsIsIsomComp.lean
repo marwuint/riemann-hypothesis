@@ -16,11 +16,6 @@ noncomputable def stdInt (p : ℕ) [Fact p.Prime] : ℤ_[p] →+* 𝓞_ℂ_[p] :
         IsScalarTower.algebraMap_apply ℤ_[p] ℚ_[p] (PadicAlgCl p), norm_algebraMap']
       exact x.norm_le_one)
 
-theorem coe_stdInt (p : ℕ) [Fact p.Prime] (a : ℤ_[p]) :
-    ((stdInt p a : 𝓞_ℂ_[p]) : ℂ_[p]) =
-      algebraMap (PadicAlgCl p) ℂ_[p] (algebraMap ℤ_[p] (PadicAlgCl p) a) :=
-  rfl
-
 variable {p : ℕ} [Fact p.Prime]
 
 theorem injective_of_comp {Λ : Type} [CommRing Λ] [IsDomain Λ] [Algebra ℤ_[p] Λ]

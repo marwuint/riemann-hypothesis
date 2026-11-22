@@ -28,10 +28,6 @@ def coindSingleFun (a : V) : Rep.coind W.subtype (Rep.trivial k W V) :=
     · rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem]
       exact fun h => hx ((Subgroup.mul_mem_cancel_left W w.2).1 h)⟩
 
-theorem coindSingleFun_apply (a : V) (x : Γ) :
-    (coindSingleFun (k := k) W V a).1 x = (W : Set Γ).indicator (fun _ => a) x :=
-  rfl
-
 def coindSingle : Rep.trivial k W V ⟶ Rep.res W.subtype (Rep.coind W.subtype (Rep.trivial k W V)) :=
   Rep.ofHom ⟨{ toFun := coindSingleFun W V
                map_add' := fun a b => Subtype.ext (funext fun x => by
@@ -48,10 +44,6 @@ def coindSingle : Rep.trivial k W V ⟶ Rep.res W.subtype (Rep.coind W.subtype (
     · rw [Set.indicator_of_mem hx, Set.indicator_of_mem (W.mul_mem hx w.2)]
     · rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem]
       exact fun h => hx ((Subgroup.mul_mem_cancel_right W w.2).1 h)⟩
-
-theorem coindSingle_hom_apply (a : V) (x : Γ) :
-    ((coindSingle (k := k) W V).hom a).1 x = (W : Set Γ).indicator (fun _ => a) x :=
-  rfl
 
 variable (D : Rep.{u} k Γ)
 
@@ -76,11 +68,6 @@ def coindDualPairing :
       (fun _ _ _ => Subtype.ext (funext fun _ => rfl))
       (fun _ _ _ => Subtype.ext (funext fun _ => rfl)))
     fun _ _ _ => Subtype.ext (funext fun _ => rfl)
-
-theorem coindDualPairing_tmul (f : Rep.coind W.subtype (Rep.trivial k W V))
-    (μ : Rep.coind W.subtype (dualRep (Rep.res W.subtype D) (Rep.trivial k W V))) (x : Γ) :
-    ((coindDualPairing W V D).hom (f ⊗ₜ[k] μ)).1 x = (μ.1 x : V →ₗ[k] D) (f.1 x) :=
-  rfl
 
 theorem res_coindDualPairing_comp_coindEvalOne :
     (Rep.resFunctor W.subtype).map (coindDualPairing W V D) ≫
@@ -108,22 +95,10 @@ def coindDualRestrict :
     rw [Rep.hom_comm_apply]
     rfl⟩
 
-theorem coindDualRestrict_hom_apply
-    (l : Rep.coind W.subtype (Rep.trivial k W V) →ₗ[k] D) (a : V) :
-    ((coindDualRestrict W V D).hom l : V →ₗ[k] D) a = l ((coindSingle (k := k) W V).hom a) :=
-  rfl
-
 def coindDualInv :
     dualRep D (Rep.coind W.subtype (Rep.trivial k W V)) ⟶
       Rep.coind W.subtype (dualRep (Rep.res W.subtype D) (Rep.trivial k W V)) :=
   Rep.resCoindToHom W.subtype _ _ (coindDualRestrict W V D)
-
-theorem coindDualInv_hom_apply (l : Rep.coind W.subtype (Rep.trivial k W V) →ₗ[k] D) (x : Γ)
-    (a : V) :
-    (((coindDualInv W V D).hom l).1 x : V →ₗ[k] D) a =
-      D.ρ x (l ((Rep.coind W.subtype (Rep.trivial k W V)).ρ x⁻¹
-        ((coindSingle (k := k) W V).hom a))) :=
-  rfl
 
 section Sum
 
@@ -173,13 +148,6 @@ def coindDualHom :
     Rep.coind W.subtype (dualRep (Rep.res W.subtype D) (Rep.trivial k W V)) ⟶
       dualRep D (Rep.coind W.subtype (Rep.trivial k W V)) :=
   Rep.tensorHomEquiv _ _ _ (coindDualPairing W V D ≫ coindTrace W D)
-
-theorem coindDualHom_hom_apply
-    (μ : Rep.coind W.subtype (dualRep (Rep.res W.subtype D) (Rep.trivial k W V)))
-    (f : Rep.coind W.subtype (Rep.trivial k W V)) :
-    ((coindDualHom W V D).hom μ : Rep.coind W.subtype (Rep.trivial k W V) →ₗ[k] D) f =
-      (coindTrace W D).hom ((coindDualPairing W V D).hom (f ⊗ₜ[k] μ)) :=
-  rfl
 
 theorem tensorHom_coindDualHom_evalPairing :
     (𝟙 _ ⊗ₘ coindDualHom W V D) ≫ evalPairing D (Rep.coind W.subtype (Rep.trivial k W V)) =

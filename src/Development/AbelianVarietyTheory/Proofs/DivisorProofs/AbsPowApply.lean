@@ -32,9 +32,6 @@ def stabAt (X : Spc F E n) (ev : AF F → R) (x : Fin n → E) : Subgroup (UAtSu
     conv_lhs => rw [← hg]
     rw [Matrix.mulVec_mulVec, ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec]
 
-theorem mem_stabAt {X : Spc F E n} {ev : AF F → R} {x : Fin n → E} {g : UAtSub σ X ev} :
-    g ∈ stabAt σ X ev x ↔ mat g.1 *ᵥ incV F x = incV F x := Iff.rfl
-
 def kIncl {X : Spc F E n} (K : Subgroup (UA σ X.J)) (ev : AF F → R) : KAt K ev →* UAtSub σ X ev :=
   Subgroup.inclusion inf_le_right
 

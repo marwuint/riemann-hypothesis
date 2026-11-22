@@ -79,8 +79,6 @@ def baseChange : Tuple E where
   j₀ := T.j₀
   th := GlobalTheory.chartSec (chartPullZPow (GlobalTheory.chartPullPull T.L (T.bcFst E)) T.j₀) T.th
 
-theorem U_baseChange : (T.baseChange E).U = T.bcFst E ⁻¹ᵁ T.U := rfl
-
 variable {T} in
 
 theorem IsGeometric.baseChange (h : T.IsGeometric) : (T.baseChange E).IsGeometric := by

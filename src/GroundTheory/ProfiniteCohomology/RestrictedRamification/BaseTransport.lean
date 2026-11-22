@@ -34,12 +34,6 @@ def transportLocalMor (i : ι) :
     rw [← hcomm]
     exact Rep.hom_comm_apply f (φ i h) a⟩
 
-omit [IsTopologicalGroup G] [IsTopologicalGroup G'] [∀ i, IsTopologicalGroup (H i)]
-  [∀ j, IsTopologicalGroup (H' j)] [IsDiscreteRep A'] [IsDiscreteRep A] in
-theorem transportLocalMor_hom_apply (i : ι) (a : A') :
-    (transportLocalMor φ φ' θ e ψ hcomm f i).hom a = f.hom a :=
-  rfl
-
 abbrev transportGlobal : cochainsComplex A' ⟶ cochainsComplex A :=
   cochainsMapAlong θ.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom θ) f
 

@@ -82,11 +82,6 @@ def IsOpIntG {G : Type*} [Group G] [MeasurableSpace G] (μ : Measure G) {Hp : Ty
     [InnerProductSpace ℂ Hp] (π : G →* (Hp →L[ℂ] Hp)) (φ : G → ℂ) (P : Hp →L[ℂ] Hp) : Prop :=
   Integrable φ μ ∧ ∀ x y : Hp, ⟪x, P y⟫_ℂ = ∫ g, φ g * ⟪x, π g y⟫_ℂ ∂μ
 
-theorem isOpIntG_iff_isOpOf {G H : Type} [Group G] [MeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    (μ : Measure G) (π : G →* (H →L[ℂ] H)) (φ : G → ℂ) (P : H →L[ℂ] H) :
-    IsOpIntG μ π φ P ↔ IsOpOf μ π φ P := by
-  exact Iff.rfl
-
 theorem IsURep.integrable_coef {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     [OpensMeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : G → (H →L[ℂ] H)} (hπ : IsURep π)
     {μ : Measure G} {φ : G → ℂ} (hφ : Integrable φ μ) (x y : H) :
@@ -267,9 +262,5 @@ theorem Eword_congr {n : ℕ} (ε : Fin n → Bool) {f f' : Matrix (Fin n) (Fin 
     have hm := complex_parts_mem_lie_algebra_holds n ε (Matrix.single p.1 p.2 1)
     simp only [Eword, Eab, Ec, Rd]
     rw [hcurve _ hm.1, hcurve _ hm.2.1]
-
-namespace ProjEx
-
-end ProjEx
 
 end GlobalTheory.Dec

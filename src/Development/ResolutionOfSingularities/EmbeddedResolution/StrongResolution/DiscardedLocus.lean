@@ -194,10 +194,6 @@ theorem noetherianSpace_strictTransform_of_ambientLevel (j : ℕ)
 def discardedLocusOpens (i : ℕ) (h : IsOpen (S.discardedLocus i)) : (S.strictTransform i).Opens :=
   ⟨S.discardedLocus i, h⟩
 
-theorem coe_discardedLocusOpens (i : ℕ) (h : IsOpen (S.discardedLocus i)) :
-    ((S.discardedLocusOpens i h : (S.strictTransform i).Opens) : Set ↥(S.strictTransform i)) =
-      S.discardedLocus i := rfl
-
 theorem image_discardedLocus_subset_support (i : ℕ) :
     ⇑(S.strictTransformι i).base '' (S.discardedLocus i) ⊆
       ((S.ambientCenter i).support : Set ↥(S.ambientLevel i)) := by

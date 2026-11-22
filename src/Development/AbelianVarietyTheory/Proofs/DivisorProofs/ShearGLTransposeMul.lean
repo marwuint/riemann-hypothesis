@@ -20,11 +20,6 @@ def dil (t : k) (Y : Matrix (R ⊕ T) D k) : Matrix (R ⊕ T) D k := fromRows Y.
 
 def stack (Y₁ : Matrix R D k) (C : Matrix T R k) : Matrix (R ⊕ T) D k := fromRows Y₁ (C * Y₁)
 
-def dilGL (t : kˣ) : GL (R ⊕ T) k :=
-  ⟨diagonal (Sum.elim 1 fun _ => (t : k)), diagonal (Sum.elim 1 fun _ => ((t⁻¹ : kˣ) : k)), by
-    rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; rcases i with i | i <;> simp, by
-    rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; rcases i with i | i <;> simp⟩
-
 @[simp] theorem toRows₁_shear (c : Matrix T R k) (Y : Matrix (R ⊕ T) D k) : (shear c Y).toRows₁ = Y.toRows₁ := by
   simp [shear]
 
@@ -33,9 +28,6 @@ def dilGL (t : kˣ) : GL (R ⊕ T) k :=
 
 @[simp] theorem toRows₁_stack (Y₁ : Matrix R D k) (C : Matrix T R k) : (stack Y₁ C).toRows₁ = Y₁ := by
   simp [stack]
-
-theorem submatrix_inl_eq (Y : Matrix (R ⊕ T) D k) (τ : R → D) :
-    Y.submatrix Sum.inl τ = Y.toRows₁.submatrix id τ := rfl
 
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 

@@ -75,8 +75,4 @@ def liftU (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fin n) (Fi
   map_one' := Subtype.ext (Units.ext (map_one (liftN h τ J hJ)))
   map_mul' g g' := Subtype.ext (Units.ext (map_mul (liftN h τ J hJ) g g'))
 
-theorem mat_liftU (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fin n) (Fin n) E) (ε : F)
-    (herm : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (hJ : IsUnit (J.map τ).det) (g : GL (Fin n) (Fv F v)) :
-    mat (liftU h τ J ε herm hJ g) = 1 + liftMat h τ (pairHom (J.map τ) hJ g - 1) := rfl
-
 end GlobalTheory.SplitUnitLift

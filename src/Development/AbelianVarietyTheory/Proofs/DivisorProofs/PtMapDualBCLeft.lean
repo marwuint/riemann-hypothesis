@@ -65,9 +65,6 @@ variable {G' : Over (Sp O)} {π : G'.left ⟶ t.G.left}
 def aH (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) : Hs P' x0 hu ⟶ G' :=
   Over.homMk (hπ.lift _ _ (sq P' x0 hu)) (hπ.lift_snd _ _ _)
 
-theorem aH_left_π (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) :
-    (aH P' x0 hu hπ).left ≫ π = spMap (inB P' x0 hu) ≫ P'.u.left := hπ.lift_fst _ _ _
-
 def liftB {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D) (hβ : β.comp P'.str = (algebraMap O D).comp x0) :
     Bt P' x0 hu →ₐ[O] D :=
   letI : Algebra (Localization.Away P'.f) D := ((algebraMap O D).comp (lo P' x0 hu)).toAlgebra
@@ -87,22 +84,9 @@ def liftB {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D) (hβ : β.co
       rw [Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.lift_tmul, map_one, _root_.mul_one]
       rfl }
 
-theorem liftB_inB {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D)
-    (hβ : β.comp P'.str = (algebraMap O D).comp x0) (z : P'.B) : liftB P' x0 hu β hβ (inB P' x0 hu z) = β z := by
-  simp [liftB, inB]
-
 def ptOf {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D) (hβ : β.comp P'.str = (algebraMap O D).comp x0) :
     specO O D ⟶ Hs P' x0 hu :=
   ptMap (liftB P' x0 hu β hβ)
-
-theorem ptOf_aH_π {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D)
-    (hβ : β.comp P'.str = (algebraMap O D).comp x0) (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) :
-    (ptOf P' x0 hu β hβ ≫ aH P' x0 hu hπ).left ≫ π = spMap β ≫ P'.u.left := by
-  rw [Over.comp_left, Category.assoc, aH_left_π, ← Category.assoc]
-  change spMap (liftB P' x0 hu β hβ).toRingHom ≫ spMap (inB P' x0 hu) ≫ P'.u.left = _
-  rw [GlobalTheory.HTMap.spc_assoc]
-  congr 2
-  exact RingHom.ext fun z => liftB_inB P' x0 hu β hβ z
 
 end GlobalTheory.FinPartAt
 

@@ -11,9 +11,6 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r d : ℕ}
 
-def IsIsoFam (G : Matrix (Fin r) (Fin r) E) (u : Fin d → Fin r → E) : Prop :=
-  (∀ i k, herm G (u i) (u k) = 0) ∧ LinearIndependent E u
-
 def IsHerm {ι : Type} (b : ι → Fin d → Fin d → ℂ) : Prop := ∀ τ i k, b τ k i = conj (b τ i k)
 
 variable (X : Data E r)
@@ -57,18 +54,6 @@ def fz (u : Fin d → Fin r → E) (g : ℕ) (χ : X.Ψ → Fin d → Fin d → 
 
 def chiAt (χ : X.Ψ → Fin d → Fin d → ℂ) (a : X.Ψ → Fin d → ℂ) (τ : X.Ψ) : ℂ :=
   ∑ i, ∑ k, χ τ i k * a τ i * conj (a τ k)
-
-section Two
-
-theorem isIsoFam_two (G : Matrix (Fin r) (Fin r) E) (u : Fin 2 → Fin r → E) :
-    IsIsoFam G u ↔ IsIsoPair G u := Iff.rfl
-theorem Zb_two (u : Fin 2 → Fin r → E) : Zb X u = X.Zb u := rfl
-theorem LZ_two (g : ℕ) : LZ X 2 g = X.LZ g := rfl
-theorem isFreqZ_two (g : ℕ) : IsFreqZ (d := 2) X g = X.IsFreqZ g := rfl
-theorem fz_two (u : Fin 2 → Fin r → E) (g : ℕ) : fz X u g = X.fz u g := rfl
-theorem chiAt_two : chiAt (d := 2) X = X.chiAt := rfl
-
-end Two
 
 theorem mat_Zb (u : Fin d → Fin r → E) (b : X.Ψ → Fin d → Fin d → ℂ) (x : Frame X.Ψ r) (τ : X.Ψ) :
     mat (Zb X u b x) τ = zmat X u b τ * mat x τ := rfl

@@ -102,18 +102,11 @@ theorem range_diagonal_le_ker_ideleSymbol :
 abbrev classSymbol : IdeleClassGroup K.1 →* (L.1 ≃ₐ[K.1] L.1) :=
   CyclotomicSymbol.ideleClassSymbol L.1 (range_diagonal_le_ker_ideleSymbol K L)
 
-theorem classSymbol_mk (x : IdeleGroup K.1) :
-    classSymbol K L (IdeleClassGroup.mk K.1 x) = ideleSymbol K.1 L.1 x :=
-  rfl
-
 theorem abstractSymbol_eq_classSymbol :
     abstractSymbol K L = Abelianization.of.comp (classSymbol K L) := by
   refine MonoidHom.ext fun c ↦ ?_
   obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective K.1 c
   exact abstractSymbol_mk K L x
-
-theorem classSymbol_surjective : Function.Surjective (classSymbol K L) :=
-  CyclotomicSymbol.ideleClassSymbol_surjective _
 
 theorem ker_abstractSymbol :
     (abstractSymbol K L).ker = (FiniteSubfield.ideleClassNorm hKL.out).range := by
@@ -142,15 +135,6 @@ theorem ker_classSymbol :
   rw [← ker_abstractSymbol K L, MonoidHom.mem_ker, MonoidHom.mem_ker, abstractSymbol_eq_classSymbol K L,
     MonoidHom.comp_apply, ← map_one Abelianization.of,
     Abelianization.of_injective_of_isMulCommutative.eq_iff]
-
-def classSymbolEquiv :
-    IdeleClassGroup K.1 ⧸ (FiniteSubfield.ideleClassNorm hKL.out).range ≃* (L.1 ≃ₐ[K.1] L.1) :=
-  (QuotientGroup.quotientMulEquivOfEq (ker_classSymbol K L).symm).trans
-    (QuotientGroup.quotientKerEquivOfSurjective _ (classSymbol_surjective K L))
-
-theorem classSymbolEquiv_mk (x : IdeleGroup K.1) :
-    classSymbolEquiv K L (QuotientGroup.mk (IdeleClassGroup.mk K.1 x)) = ideleSymbol K.1 L.1 x :=
-  rfl
 
 theorem ker_ideleSymbol :
     (ideleSymbol K.1 L.1).ker = (diagonal K.1).range ⊔ (ideleNorm K.1 L.1).range := by

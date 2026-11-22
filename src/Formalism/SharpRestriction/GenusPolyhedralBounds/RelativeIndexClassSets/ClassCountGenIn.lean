@@ -33,14 +33,6 @@ section WaNt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
-def wacF (E : Type) [Field E] [NumberField E] [Algebra F E] :
-    v.adicCompletionIntegers F →+* E ⊗[F] v.adicCompletion F :=
-  (Algebra.TensorProduct.includeRight : v.adicCompletion F →ₐ[F] E ⊗[F] v.adicCompletion F).toRingHom.comp
-    (v.adicCompletionIntegers F).subtype
-
-theorem wacF_apply (y : v.adicCompletionIntegers F) :
-    wacF v E y = (1 : E) ⊗ₜ[F] (y : v.adicCompletion F) := rfl
-
 end WaNt
 
 end Formalism.MainNotions.Gaps.CC.WA
@@ -54,4 +46,3 @@ end Formalism.MainNotions.Gaps.CC.WA
 namespace Formalism.MainNotions.Gaps.CC.WA
 
 end Formalism.MainNotions.Gaps.CC.WA
-

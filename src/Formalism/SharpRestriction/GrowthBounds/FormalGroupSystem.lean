@@ -725,20 +725,6 @@ theorem lowAt_max (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : 
   · rw [max_eq_left h0] at hg
     exact Pend.LowAt.mono Y hg (hU v j hj)
 
-def NumCmp (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) : Prop :=
-  ∀ hT : GatTies D, LatTied hT X Y → ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl)
-    (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
-    ∀ t0 ∈ reps X (D.what₂.places.resChar w), ∀ j ∈ SizeData₂.lifts D,
-      Formalism.MainNotions.G.gU X K (aL L) (bL L) (D.what₂.places.resChar w) j t0 ≤
-        Formalism.MainNotions.FormalGroupSystem.gB (D.what₂.places.resChar w) (Y.Fl u w hg).t ((Y.Fl u w hg).TT (Y.vOf u w hg t0))
-          ((D.gat u w hg).P.lam0 (Y.vOf u w hg t0)) ((Y.Fl u w hg).w (Y.vOf u w hg t0)) j ∧
-      Formalism.MainNotions.G.g0 X K (aL L) (bL L) (D.what₂.places.resChar w) j t0 ≤
-        Formalism.MainNotions.FormalGroupSystem.gA (D.what₂.places.resChar w) (Y.Fl u w hg).t ((Y.Fl u w hg).TT (Y.vOf u w hg t0))
-          ((D.gat u w hg).P.lam0 (Y.vOf u w hg t0)) ((Y.Fl u w hg).w (Y.vOf u w hg t0)) j ∧
-      Formalism.MainNotions.FormalGroupSystem.Pr (Y.Fl u w hg).t (D.gat u w hg).P.r ((D.gat u w hg).P.lam0 (Y.vOf u w hg t0))
-                ((Y.Fl u w hg).w (Y.vOf u w hg t0)) j ≤
-        Formalism.MainNotions.G.Pr X K (bL L) (D.what₂.places.resChar w) j t0
-
 def SmallResidueCharComparison (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) : Prop :=
   ∀ hT : GatTies D, LatTied hT X Y → ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),

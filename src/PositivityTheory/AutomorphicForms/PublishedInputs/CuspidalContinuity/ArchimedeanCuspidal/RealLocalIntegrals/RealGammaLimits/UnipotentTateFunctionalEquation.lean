@@ -18,10 +18,6 @@ def Pu (k : ℕ) (Φ : Sw) (δ : Bool) (s : ℂ) (u : ℝ) : ℂ := ∫ p, pI k 
 
 def ge (ε u : ℝ) : ℝ := Real.exp (-Real.pi * ε ^ 2 * u ^ 2)
 
-def GaussLim : Prop := ∀ k : ℕ, 3 ≤ k → ∀ (Φ : Sw) (δ : Bool) (s : ℂ), 1 / 4 < s.re → s.re < 3 / 4 →
-  StInt' → Tendsto (fun ε : ℝ => ∫ u : ℝ, (ge ε u : ℂ) * ∫ t, sec k Φ (mm t u) * chR δ s t ∂mulR) (𝓝[>] 0)
-    (𝓝 (∫ p : ℝˣ × ℝ, sec k Φ (mm p.1 p.2) * chR δ s p.1 ∂(mulR.prod volume)))
-
 def Dual : Prop := ∀ k : ℕ, 3 ≤ k → ∀ (Φ : Sw) (δ : Bool) (s : ℂ), 1 / 4 < s.re → s.re < 3 / 4 →
   ∫ p : ℝˣ × ℝ, sec k Φ (mm p.1 p.2) * chR δ s p.1 ∂(mulR.prod volume) =
     gT (!δ) s * ∫ h : M22, inn Φ 1 (Matrix.of h) * sg (Matrix.of h).det *

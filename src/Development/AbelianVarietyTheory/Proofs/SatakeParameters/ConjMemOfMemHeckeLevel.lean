@@ -4,16 +4,6 @@ namespace GlobalTheory.HeckeCorr
 
 variable {Gf : Type*} [Group Gf]
 
-def cosetTr (U' U : Subgroup Gf) (g : Gf) (h : ∀ u ∈ U', g⁻¹ * u * g ∈ U) : Gf ⧸ U' → Gf ⧸ U :=
-  Quotient.map' (· * g) fun a b hab => by
-    rw [QuotientGroup.leftRel_apply] at hab ⊢
-    have := h _ hab
-    convert this using 1
-    group
-
-theorem cosetTr_mk (U' U : Subgroup Gf) (g : Gf) (h : ∀ u ∈ U', g⁻¹ * u * g ∈ U) (x : Gf) :
-    cosetTr U' U g h (x : Gf ⧸ U') = ((x * g : Gf) : Gf ⧸ U) := rfl
-
 def heckeLevel (U : Subgroup Gf) (g : Gf) : Subgroup Gf := U ⊓ U.map (MulAut.conj g).toMonoidHom
 
 theorem heckeLevel_le (U : Subgroup Gf) (g : Gf) : heckeLevel U g ≤ U := inf_le_left

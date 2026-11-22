@@ -65,9 +65,6 @@ theorem smul_val (f : T') (a : spanSub T' rK) (y : X') :
   show ((scal T' rK f) * a).1 y = _
   rw [Subalgebra.coe_mul, Pi.mul_apply, scal_apply, smul_mul_assoc, one_mul]
 
-theorem act_ev (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) (x' : X') (a : R')
-    (v : EvalSp O d R' x') : a • v = fun i => ∑ j, a.1 x' i j • (v j : FractionRing O) := rfl
-
 theorem finrank_range_eq (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) (x' : X') (a : R') :
     Module.finrank (FractionRing O)
       (LinearMap.range (DistribSMul.toLinearMap (FractionRing O) (EvalSp O d R' x') a)) =

@@ -148,9 +148,6 @@ theorem isWeilSch_unique {μ : Measure (Mx D V.rank n)} {ω ω' : G D n →* Mod
   have hg : g ∈ ω.toHomUnits.eqLocus ω'.toHomUnits := this ▸ Subgroup.mem_top g
   exact congrArg Units.val hg
 
-theorem sect_eq (ω : GramMatrixBlocks.Rep θ n V.gram) (H : G D n → ℝ≥0) (Φ : schwartzA θ V.rank n) (z : ℂ) :
-    GramMatrixBlocks.sect H ω Φ z = sect (resG ω) H Φ z := rfl
-
 theorem summable_iff (ω : GramMatrixBlocks.Rep θ n V.gram) (H : G D n → ℝ≥0) (Φ : schwartzA θ V.rank n) (g : G D n) (z : ℂ) :
     (Summable fun γ => ‖GramMatrixBlocks.eisTerm H ω Φ g z γ‖) ↔ Eis.CosetConv (P D n) (GF D n) (sect (resG ω) H Φ z) g := by
   rw [← siegel_eq]

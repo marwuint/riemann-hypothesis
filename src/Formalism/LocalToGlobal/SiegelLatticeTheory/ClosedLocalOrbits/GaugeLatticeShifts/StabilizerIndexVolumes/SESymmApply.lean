@@ -80,12 +80,6 @@ def sE (g : ι → S.V) (hG : IsUnit (gramOf g).det) (X Y : Matrix ι ι E) (hXY
     (by ext v; simp only [LinearMap.comp_apply, LinearMap.id_apply]; rw [sL_comp g hG, hXY, sL_one])
     (by ext v; simp only [LinearMap.comp_apply, LinearMap.id_apply]; rw [sL_comp g hG, hYX, sL_one])
 
-theorem sE_apply (g : ι → S.V) (hG : IsUnit (gramOf g).det) (X Y : Matrix ι ι E) (hXY : X * Y = 1)
-    (hYX : Y * X = 1) (v : S.V) : sE g hG X Y hXY hYX v = sL g X v := rfl
-
-theorem sE_symm_apply (g : ι → S.V) (hG : IsUnit (gramOf g).det) (X Y : Matrix ι ι E) (hXY : X * Y = 1)
-    (hYX : Y * X = 1) (v : S.V) : (sE g hG X Y hXY hYX).symm v = sL g Y v := rfl
-
 theorem gram_herm (g : ι → S.V) (k l : ι) : star (gramOf g k l) = gramOf g l k := by
   have := S.herm.eq (g k) (g l)
   simpa [gramOf, starRingEnd_apply] using this

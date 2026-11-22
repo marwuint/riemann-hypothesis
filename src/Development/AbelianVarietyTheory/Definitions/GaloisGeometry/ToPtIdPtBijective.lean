@@ -21,9 +21,6 @@ def resAlg (σ : k →+* k') (B : CommAlgCat.{0} k') : CommAlgCat.{0} k :=
   letI : Algebra k B := Algebra.compHom B σ
   CommAlgCat.of k B
 
-theorem algebraMap_resAlg (σ : k →+* k') (B : CommAlgCat.{0} k') :
-    algebraMap k (resAlg σ B) = (algebraMap k' B).comp σ := rfl
-
 def resHom (σ : k →+* k') {B B' : CommAlgCat.{0} k'} (f : B ⟶ B') : resAlg σ B ⟶ resAlg σ B' :=
   letI : Algebra k B := Algebra.compHom B σ
   letI : Algebra k B' := Algebra.compHom B' σ
@@ -126,9 +123,6 @@ theorem over_id {s' : X' ⟶ Sp k} {f : X' ⟶ X} (hf : f ≫ s = s') : f ≫ s 
 
 def HdR.pull {s' : X' ⟶ Sp k} {f : X' ⟶ X} (hf : f ≫ s = s') (n : ℕ) : HdR s n →ₗ[k] HdR s' n :=
   HdR.pullSemi (over_id hf) n
-
-theorem ptCoef_self : ptCoef (s := s) (F := OPt s) (σ := RingHom.id k) (fun T ↦ T.x) (fun T ↦ T.w)
-    (fun _ _ a ↦ a.2) = CoefMap.id (OPt s) := rfl
 
 theorem ptCoef_comp {φ : X' ⟶ X} {ψ : X'' ⟶ X'} (h : φ ≫ s = s' ≫ spMap σ)
     (h' : ψ ≫ s' = s'' ≫ spMap τ) (hx : ∀ T : AffPt s'', ((T.x ≫ ψ) ≫ φ) ≫ s =

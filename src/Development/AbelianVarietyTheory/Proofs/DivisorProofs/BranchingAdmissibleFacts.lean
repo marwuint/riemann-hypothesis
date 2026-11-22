@@ -482,9 +482,6 @@ def PTildeAt (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) : Prop :
     ∀ (t : ι → K), (∀ τ, t τ ≠ 0) →
     ∀ x : VV K lam, x ∈ delK lam (fun τ => InterlacingNumerators.extLat (M τ) (t τ)) → InterlacingNumerators.pTilde lam sg t x ∈ delK sg M
 
-theorem pTildeIntegral_iff : InterlacingNumerators.PTildeIntegral ↔ ∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (n : ℕ)
-    (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n), PTildeAt K lam sg := Iff.rfl
-
 end Compare
 
 end GlobalTheory.BrCompare

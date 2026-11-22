@@ -38,22 +38,6 @@ def HYStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCo
       ∫⁻ y, ENNReal.ofReal (A.nsq (A.kap + la) (F0 - F) y * Real.exp (-ps y)) ∂A.mu ≤
         ∫⁻ y, h y * ENNReal.ofReal (Real.exp (-ps y)) ∂A.mu
 
-def AStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
-    [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] : Prop :=
-  ∀ (A : WeightedAtlas n Y ι La) (L la : La) (N : ℕ) (w : Fin N → ι → Y → ℂ)
-    (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (De : MvPolynomial (Fin n) ℂ)
-    (σ : ι → Y → ℂ) (ps1 : Y → ℝ) (η : ℝ) (c : Y → ℂ),
-    A.D0 L w w0 s → A.Flat w0 s De → A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ →
-    (∃ C : ℝ, ∀ y, A.sqn L w y ≤ C) → A.Pos L (fun _ => 0) → A.SmoothFn ps1 → 0 < η →
-    (∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ,
-      2 * η * A.leviAt i (A.ph L i) y ξ ≤ A.leviAt i (fun x => A.ph (la - n • L) i x + ps1 x) y ξ) →
-    (∃ U : Set Y, IsOpen U ∧ A.zeroSet s ⊆ U ∧ ∀ i y, y ∈ (A.chart i).source → y ∈ U →
-      ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < A.leviAt i (A.ph L i) y ξ) →
-    ∃ F : ι → Y → ℂ, A.IsSec (A.kap + la) F ∧
-      ∫⁻ y, ENNReal.ofReal (A.nsq (A.kap + la) F y * Real.exp (-ps1 y) *
-        A.sqn L w y ^ (-η)) ∂A.mu < ⊤ ∧
-      ∀ P ∈ A.zeroSet s, F (A.pick P) P = c P
-
 def BStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
     [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] : Prop :=
   ∀ (A : WeightedAtlas n Y ι La) (L mu0 : La) (N : ℕ) (w : Fin N → ι → Y → ℂ)

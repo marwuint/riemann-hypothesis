@@ -107,8 +107,6 @@ variable (G : Over S) [GrpObj G]
 
 abbrev unitSec : S ⟶ G.left := sec η[G]
 
-theorem unitSec_eq_eSec : unitSec G = eSec G := rfl
-
 def omega : S.Modules := conormal (unitSec G)
 
 abbrev Lie : S.Modules := dual (omega G)
@@ -295,16 +293,9 @@ def omegaAct : O →+* End (omega G) :=
       have : IsMonHom (i.act a * i.act b) := i.add a b ▸ i.hom _
       exact (@omegaMap_congr _ _ _ _ _ _ _ (i.hom _) _ (i.add a b)).trans (omegaMap_mul _ _)
 
-theorem act_omegaAct (a : O) : act (omegaAct i) a = @omegaMap _ _ _ _ _ (i.act a) (i.hom a) := rfl
-
 def lieAct : O →+* End (Lie G) := dualAct (omegaAct i)
 
-theorem act_lieAct (a : O) : act (lieAct i) a = @lieMap _ _ _ _ _ (i.act a) (i.hom a) := rfl
-
 def omegaConjAct (c : O →+* O) : O →+* End (omega G) := (omegaAct i).comp c
-
-theorem act_omegaConjAct (c : O →+* O) (a : O) :
-    act (omegaConjAct i c) a = @omegaMap _ _ _ _ _ (i.act (c a)) (i.hom _) := rfl
 
 abbrev lieSub : S.Modules := eigen (lieAct i) σ
 
@@ -435,10 +426,6 @@ theorem epsZero_comp (x : LieG G) : epsZero O ≫ x.1 = η := by
 def tangent (x : LieG G) : Γ(Lie G, ⊤) :=
   (homGlobalEquiv _ _).symm (cotMap x.1 (epsZero_comp x) ≫ (epsIso O).hom)
 
-theorem dualApp_tangent (x : LieG G) {V : (Sp O).Opens} (w : Γ(omega G, V)) :
-    dualApp (tangent x) le_top w = (epsIso O).hom.app V ((cotMap x.1 (epsZero_comp x)).app V w) :=
-  rfl
-
 theorem dualApp_tangent_dUnit (x : LieG G) {V : (Sp O).Opens} {W : G.left.Opens}
     (h : V ≤ unitSec G ⁻¹ᵁ W) (f : Γ(G.left, W)) {T : (specO O (DualNumber O)).left.Opens}
     (hV : V ≤ sec (epsZero O) ⁻¹ᵁ T) (hT : T ≤ (specO O (DualNumber O)).hom ⁻¹ᵁ V)
@@ -498,8 +485,6 @@ def dlogChar : X →+ Γ(omega (splitTorus S X), ⊤) :=
         (MonObj.one_eq_one (splitTorus S X) ▸ SplitTorus.val_one c))
     rw [← SplitTorus.val_id, SplitTorus.val_add, SplitTorus.val_id, SplitTorus.val_id, dUnit_mul,
       h, h, one_smul, one_smul, add_comm]
-
-theorem dlogChar_apply (a : X) : dlogChar S X a = dUnit _ (le_preimage_top _ _) (Rosenlicht.chi X a) := rfl
 
 variable {X} {κ : Type} [Fintype κ] (b : Module.Basis κ ℤ X)
 

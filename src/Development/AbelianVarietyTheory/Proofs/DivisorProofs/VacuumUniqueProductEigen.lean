@@ -12,7 +12,4 @@ namespace GlobalTheory.VacFactor
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
-theorem mem_SB_iff' {X : Type} [TopologicalSpace X] (f : X → ℂ) :
-    f ∈ SB X ↔ IsLocallyConstant f ∧ HasCompactSupport f := Iff.rfl
-
 end GlobalTheory.VacFactor

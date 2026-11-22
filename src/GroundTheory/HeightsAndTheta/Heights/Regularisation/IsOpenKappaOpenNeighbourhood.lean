@@ -140,58 +140,6 @@ structure PeriodPolydisc (n a g : ℕ) where
   period : ∀ i : Fin n, (i : ℕ) < a → ∀ w ∈ coverSet n a,
     τ (w + Pi.single i (2 * Real.pi * Complex.I)) = τ w + (B i).map (fun m : ℤ => (m : ℂ))
 
-namespace PeriodPolydisc
-
-end PeriodPolydisc
-
-theorem im_mul_inv_two_pi_I (x : ℝ) (w : ℂ) :
-    ((x : ℂ) * (2 * Real.pi * Complex.I)⁻¹ * w).im = -x * w.re / (2 * Real.pi) := by
-  have hπ : (Real.pi : ℝ) ≠ 0 := Real.pi_ne_zero
-  simp [Complex.mul_im, Complex.mul_re, Complex.inv_re, Complex.inv_im, Complex.normSq_apply]
-  field_simp
-
-def diagPeriod (g : ℕ) (d : Fin g → ℕ) : PeriodPolydisc 1 1 g where
-  le := le_rfl
-  τ w := diagonal (fun k => (d k : ℂ) * (2 * Real.pi * Complex.I)⁻¹ * w 0 + Complex.I)
-  holo p q := by
-    intro w _
-    by_cases hpq : p = q
-    · subst hpq
-      simp only [diagonal_apply_eq]
-      exact (analyticAt_const.mul (ReciprocityTheory.AnForm.M.projLine_analyticAt_apply_zero w)).add analyticAt_const
-    · simp only [diagonal_apply_ne _ hpq]
-      exact analyticAt_const
-  mem_siegel w hw := by
-    refine ⟨diagonal_transpose _, ?_⟩
-    rw [diagonal_map (by simp), posDef_diagonal_iff]
-    intro k
-    have hre : (w 0).re < 0 := ((hw 0).1 (by simp))
-    simp only [Complex.add_im, Complex.I_im]
-    have h1 := im_mul_inv_two_pi_I (d k : ℝ) (w 0)
-    push_cast at h1
-    rw [h1]
-    have : 0 ≤ (d k : ℝ) * (-(w 0).re) / (2 * Real.pi) :=
-      div_nonneg (mul_nonneg (Nat.cast_nonneg _) (by linarith)) (by positivity)
-    have e : -(d k : ℝ) * (w 0).re / (2 * Real.pi) = (d k : ℝ) * (-(w 0).re) / (2 * Real.pi) := by
-      ring
-    linarith
-  B _ := diagonal (fun k => (d k : ℤ))
-  B_symm _ := diagonal_transpose _
-  B_zero i hi := absurd i.isLt (by omega)
-  period i hi w _ := by
-    have hi0 : i = 0 := Subsingleton.elim _ _
-    subst hi0
-    rw [diagonal_map (by simp)]
-    ext p q
-    simp only [Matrix.add_apply, diagonal_apply, Pi.add_apply, Pi.single_eq_same]
-    split_ifs
-    · have hπ : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := by
-        simp [Real.pi_ne_zero, Complex.I_ne_zero]
-      rw [mul_add, mul_assoc (d p : ℂ) _ (2 * Real.pi * Complex.I : ℂ), inv_mul_cancel₀ hπ]
-      push_cast
-      ring
-    · simp
-
 section ProjectiveLine
 
 open ReciprocityTheory.AnForm.M

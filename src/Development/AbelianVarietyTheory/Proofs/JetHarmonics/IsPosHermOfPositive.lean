@@ -162,12 +162,4 @@ theorem exists_admissible (hS : IsBalancedSpace E S) :
 
 end Phi
 
-abbrev FormSpaces : Type 1 :=
-  ∀ (E : Type) [Field E] [NumberField E] (_ : E → E) (Y : Type) [AddCommGroup Y] [Module (𝓞 E) Y],
-    Submodule ℝ (Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ)
-
-abbrev FormValues (S : FormSpaces) : Type 1 :=
-  ∀ (E : Type) [Field E] [NumberField E] (cj : E → E) (Y : Type) [AddCommGroup Y] [Module (𝓞 E) Y],
-    S E cj Y → ℝ
-
 end GlobalTheory.PointStepCompare

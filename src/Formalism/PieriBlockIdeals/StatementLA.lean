@@ -29,12 +29,6 @@ def ExactExponentRankTwo : Prop :=
     Formalism.RankGapBounds.JumpSetsAlt.eExp (lamU 2 n ν) l =
       Formalism.RankGapBounds.JumpSetsAlt.maxVal l (rowNu (r := 2) ν 0 - rowNu (r := 2) ν 1)
 
-def binForm (R : Type) [CommRing R] (d : ℕ) :
-    (Fin (d + 1) → R) →ₗ[R] MvPolynomial (Fin 2 × Fin 1) R :=
-  ∑ i : Fin (d + 1), (LinearMap.proj i : (Fin (d + 1) → R) →ₗ[R] R).smulRight
-    ((X ((0 : Fin 2), (0 : Fin 1)) : MvPolynomial (Fin 2 × Fin 1) R) ^ (d - i.val) *
-      X ((1 : Fin 2), (0 : Fin 1)) ^ i.val)
-
 def LatticeInclusionTrivialWeight : Prop :=
   ∀ (r : ℕ) (hn : 0 ≤ r) (ν : Fin 0 → ℕ) (l : ℕ), l.Prime →
     InclZ r 0 hn ν l (Formalism.RankGapBounds.JumpSetsAlt.eExp (lamU r 0 ν) l)

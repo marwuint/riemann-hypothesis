@@ -19,17 +19,6 @@ namespace GlobalTheory.SUChar
 
 variable {n : ℕ}
 
-def suMat (ε : Fin n → Bool) : SUJ ε →* Matrix (Fin n) (Fin n) ℂ := (ujMat ε).comp (SUJ ε).subtype
-
-def suTorusPt (ε : Fin n → Bool) (θ : Fin n → ℝ) (hθ : ∑ a, θ a = 0) : SUJ ε :=
-  ⟨torusPt ε θ, by
-    change (ujMat ε (torusPt ε θ)).det = 1
-    rw [ujMat_torusPt, det_diagonal, ← Complex.exp_sum, ← Finset.sum_mul, ← Complex.ofReal_sum, hθ]
-    simp⟩
-
-theorem suMat_suTorusPt (ε : Fin n → Bool) (θ : Fin n → ℝ) (hθ : ∑ a, θ a = 0) :
-    suMat ε (suTorusPt ε θ hθ) = diagonal fun a => Complex.exp (θ a * Complex.I) := rfl
-
 end GlobalTheory.SUChar
 
 namespace GlobalTheory.Published

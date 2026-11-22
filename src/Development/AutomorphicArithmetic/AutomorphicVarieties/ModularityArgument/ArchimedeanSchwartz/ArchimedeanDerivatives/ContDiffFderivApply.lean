@@ -111,8 +111,6 @@ private def dirOp (w : Lie K n) : Module.End ℂ (Smth K n) where
 private def dOp (τ : K →+* ℂ) (a b : Fin n) : Module.End ℂ (Smth K n) :=
   (1 / 2 : ℂ) • (dirOp (eDir τ a b 1) - Complex.I • dirOp (eDir τ a b Complex.I))
 
-private theorem dOp_val (τ : K →+* ℂ) (a b : Fin n) (F : Smth K n) : (dOp τ a b F).1 = pd τ a b F.1 := rfl
-
 private theorem fderiv_fderiv_apply {F : Lie K n → ℂ} (hF : ContDiff ℝ ∞ F) (x u w : Lie K n) :
     fderiv ℝ (fun y => fderiv ℝ F y w) x u = fderiv ℝ (fderiv ℝ F) x u w := by
   have hd : DifferentiableAt ℝ (fderiv ℝ F) x :=

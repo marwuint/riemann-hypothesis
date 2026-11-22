@@ -28,8 +28,4 @@ noncomputable def logDer (D : Derivation K (AddMonoidAlgebra K (Fin d →₀ ℤ
     linear_combination (single (-n) (1 : K) * D (single n 1)) * hm +
       (single (-m) (1 : K) * D (single m 1)) * hn
 
-theorem logDer_apply (D : Derivation K (AddMonoidAlgebra K (Fin d →₀ ℤ))
-    (AddMonoidAlgebra K (Fin d →₀ ℤ))) (m : Fin d →₀ ℤ) :
-    logDer D m = single (-m) 1 * D (single m 1) := rfl
-
 end GlobalTheory.CompanionTheory.ConeRes

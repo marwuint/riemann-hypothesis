@@ -76,8 +76,6 @@ def fockLin {σ : Type} (G : MvPolynomial σ ℂ) : MvPolynomial σ ℂ →ₗ[�
   map_add' F F' := fockF_add_left_g_l4 F F' G
   map_smul' c F := by rw [fockF_smul_left', smul_eq_mul, RingHom.id_apply]
 
-theorem fockLin_apply {σ : Type} (G F : MvPolynomial σ ℂ) : fockLin G F = fockF F G := rfl
-
 def FockSp (σ : Type) : Type := MvPolynomial σ ℂ
 
 instance (σ : Type) : AddCommGroup (FockSp σ) := inferInstanceAs (AddCommGroup (MvPolynomial σ ℂ))
@@ -106,9 +104,6 @@ instance (σ : Type) : NormedAddCommGroup (FockSp σ) :=
   @InnerProductSpace.Core.toNormedAddCommGroup ℂ (FockSp σ) _ _ _ (fockCore σ)
 
 instance (σ : Type) : InnerProductSpace ℂ (FockSp σ) := InnerProductSpace.ofCore (fockCore σ).toCore
-
-theorem fockSp_inner {σ : Type} (f g : FockSp σ) :
-    (inner ℂ f g : ℂ) = fockF (show MvPolynomial σ ℂ from g) (show MvPolynomial σ ℂ from f) := rfl
 
 end Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 

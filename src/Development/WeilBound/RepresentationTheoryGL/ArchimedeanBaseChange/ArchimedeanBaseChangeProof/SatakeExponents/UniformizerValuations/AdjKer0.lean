@@ -13,9 +13,6 @@ namespace PositivityTheory.Rg.BcB.F
 
 attribute [local instance] borelG borelF borelH
 
-def OpNeOne : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (B : Block E), 1 ≤ B.a + B.b → Nontrivial B.Hb →
-  ∀ t : PT B, t.Ok → t.op ≠ 1
-
 def AdjKer0 : Prop := ∀ (n : ℕ) (μ : Measure (G n)), μ.IsHaarMeasure → ∀ (M : KMod n) (g : ℝ → ℝ) (T : ℝ)
   (k : Mat n → (M.V →L[ℂ] M.V)), IsBump g T → IsKer μ M [] g k →
     IsKer μ M [] g (haveI := FiniteDimensional.complete ℂ M.V; fun y => ContinuousLinearMap.adjoint (k y⁻¹))

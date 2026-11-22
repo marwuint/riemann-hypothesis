@@ -24,11 +24,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SideNormalisedGap (Mat decExp decCo
 
 theorem aOf_eq (r : ℕ) (h : ℝ) : ThreeDimData.aOf r h = decExp r h := rfl
 
-theorem AG_eq (k r : ℕ) : ThreeDimData.AG k r = thrG k r := rfl
-
 theorem dN_eq (k r : ℕ) : ThreeDimData.dN k r = dimN k r := rfl
-
-theorem Mexp_eq (r : ℕ) : ThreeDimData.Mexp r = propExp r := rfl
 
 theorem sigmaFinite_of_isQuotMeas {k r : ℕ} {μG μS ν : Measure (Mt k r)} [SigmaFinite μG] [SFinite μS]
     (hS : μS ≠ 0) (hq : IsQuotMeas μG μS ν) : SigmaFinite ν := by

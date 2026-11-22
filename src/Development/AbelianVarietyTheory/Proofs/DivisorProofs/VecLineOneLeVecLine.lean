@@ -37,12 +37,7 @@ def vecStab (z : Fin n → AF F ⊗[F] E) (H : Subgroup (AF F ⊗[F] E)ˣ) : Sub
     rw [e, Matrix.mulVec_smul] at h
     conv_rhs => rw [← h, smul_smul, Units.inv_mul, one_smul]
 
-def vecLineOne (z : Fin n → AF F ⊗[F] E) : Subgroup (GAd σ J) := vecStab σ J z (absE F E).ker
-
 variable {σ J}
-
-theorem mem_vecLineOne {z : Fin n → AF F ⊗[F] E} {p : GAd σ J} :
-    p ∈ vecLineOne σ J z ↔ ∃ l : (AF F ⊗[F] E)ˣ, absE F E l = 1 ∧ (matHom _ σ J p).1 *ᵥ z = l.1 • z := Iff.rfl
 
 end GlobalTheory.EisUnfold
 

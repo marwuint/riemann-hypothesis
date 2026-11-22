@@ -9,11 +9,6 @@ namespace PI.DCRelEquiv
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.L2.SG.TermDef
 
-def NLamGroup : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : HSpace E) (r : ℕ) (T : E)
-    (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (n m : S.V ≃ₗ[E] S.V),
-    n ∈ NLam Λ F → m ∈ NLam Λ F → n * m ∈ NLam Λ F ∧ n⁻¹ ∈ NLam Λ F
-
 def NLamConj : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : HSpace E) (r : ℕ) (T : E)
     (Λ : Submodule (𝓞 E) S.V) (F₁ F₂ : LFlag S r T) (g : S.V ≃ₗ[E] S.V),

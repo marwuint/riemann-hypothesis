@@ -15,8 +15,6 @@ def toG (g : Matrix (Fin n) (Fin n) ℂ) (hg : g ∈ UJset ε) : Formalism.REAL.
   ⟨⟨g, Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε, (Formalism.REAL.indefinite_unitary_inv_closed n ε g hg).1,
     (Formalism.REAL.indefinite_unitary_inv_closed n ε g hg).2⟩, hg⟩
 
-theorem umat_toG (g : Matrix (Fin n) (Fin n) ℂ) (hg : g ∈ UJset ε) : Formalism.MainNotions.S.umat (toG g hg) = g := rfl
-
 theorem umat_mul (a b : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.umat (a * b) = Formalism.MainNotions.S.umat a * Formalism.MainNotions.S.umat b := rfl
 

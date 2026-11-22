@@ -25,8 +25,6 @@ theorem mem_EQ (j : H.E →ₐ[ℚ] Qb) (x : H.E) : j x ∈ H.EQ :=
 def ActsAs (s : H.EQ →ₐ[ℚ] Qb) (g : φ.GG) : Prop :=
   ∀ (j : H.E →ₐ[ℚ] Qb) (x : H.E), s ⟨j x, H.mem_EQ j x⟩ = j (H.gal.symm g x)
 
-def CondEQ : Prop := IsCond H.EQ H.condN
-
 theorem nonempty_emb : Nonempty (H.E →ₐ[ℚ] Qb) := ⟨IsAlgClosed.lift⟩
 
 theorem exists_aut (j j' : H.E →ₐ[ℚ] Qb) : ∃ σ : H.E ≃ₐ[ℚ] H.E, ∀ x, j' x = j (σ x) := by
@@ -107,22 +105,6 @@ theorem actsAs_of_one {s : H.EQ →ₐ[ℚ] Qb} {g : φ.GG} (j : H.E →ₐ[ℚ]
 
 variable (H)
 
-theorem adjoin_cycZeta : IntermediateField.adjoin ℚ ({H.cycZeta} : Set (Cond.Cyc H.condN)) = ⊤ := by
-  rw [eq_top_iff]
-  intro x _
-  have h1 : x ∈ Algebra.adjoin ℚ ({H.cycZeta} : Set (Cond.Cyc H.condN)) := by
-    rw [IsCyclotomicExtension.adjoin_primitive_root_eq_top H.cycZeta_prim]; trivial
-  exact algebra_adjoin_le_adjoin ℚ _ h1
-
-theorem EQ_le_cycQ : H.EQ ≤ cycQ H.condN := by
-  let κ : Cond.Cyc H.condN →ₐ[ℚ] Qb := IsAlgClosed.lift
-  have hz : IsPrimitiveRoot (κ H.cycZeta) H.condN := H.cycZeta_prim.map_of_injective κ.toRingHom.injective
-  have hκ : κ.fieldRange = cycQ H.condN := by
-    rw [AlgHom.fieldRange_eq_map, ← H.adjoin_cycZeta, adjoin_map, Set.image_singleton, cycQ_eq hz]
-  rw [← H.range_eq (κ.comp H.cycEmb), ← hκ]
-  rintro _ ⟨x, rfl⟩
-  exact ⟨H.cycEmb x, rfl⟩
-
 theorem artin (s : Qb ≃ₐ[ℚ] Qb) (u : (ZMod H.condN)ˣ) (hs : ∀ z ∈ mus H.condN, s z = z ^ (u : ZMod H.condN).val) :
     H.ActsAs (restr H.EQ s) (H.art u) := by
   let κ : Cond.Cyc H.condN →ₐ[ℚ] Qb := IsAlgClosed.lift
@@ -141,9 +123,6 @@ theorem artin (s : Qb ≃ₐ[ℚ] Qb) (u : (ZMod H.condN)ˣ) (hs : ∀ z ∈ mus
   show s (κ (H.cycEmb x)) = κ (H.cycEmb (H.gal.symm (H.art u) x))
   rw [H.art_spec u τ hτz x]
   exact DFunLike.congr_fun hcomm (H.cycEmb x)
-
-theorem artin_apply (s : Qb ≃ₐ[ℚ] Qb) (u : (ZMod H.condN)ˣ) (hs : ∀ z ∈ mus H.condN, s z = z ^ (u : ZMod H.condN).val)
-    (j : H.E →ₐ[ℚ] Qb) (x : H.E) : s (j x) = j (H.gal.symm (H.art u) x) := H.artin s u hs j x
 
 end Formalism.HC.HostRaw
 

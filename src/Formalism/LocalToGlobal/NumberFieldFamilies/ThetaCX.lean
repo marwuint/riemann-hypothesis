@@ -97,15 +97,6 @@ section Dens
 
 variable {L : Type} [Field L] [NumberField L]
 
-def inl1 : ((w : InfinitePlace L) → w.Completion) →* AdeleRing (𝓞 L) L where
-  toFun y := ((y : InfiniteAdeleRing L), (1 : FiniteAdeleRing (𝓞 L) L))
-  map_one' := rfl
-  map_mul' _ _ := Prod.ext rfl (mul_one 1).symm
-
-theorem infinite_inclusion_single (w : InfinitePlace L) (u : w.Completionˣ) :
-    Units.map inl1 (Units.map (by classical exact MonoidHom.mulSingle (fun w : InfinitePlace L => w.Completion) w) u) =
-      infIdele L w u := rfl
-
 end Dens
 
 namespace AdBC

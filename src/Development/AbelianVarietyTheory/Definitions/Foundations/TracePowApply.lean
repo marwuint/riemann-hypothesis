@@ -108,9 +108,6 @@ theorem _root_.GlobalTheory.Mem.GelfCheck.rowE_eq_rowDiv (R : Type) [CommRing R]
   rw [_root_.GlobalTheory.Mem.GelfCheck.rowE_apply]
   exact ⟨by unfold _root_.Formalism.GradedWeylDivisibility.rowDiv; exact h1.symm, by unfold _root_.Formalism.GradedWeylDivisibility.rowDiv; exact h0⟩
 
-theorem glRel_iff {A : Type} [Ring A] {N : ℕ} (E : Matrix (Fin N) (Fin N) A) :
-    GlRel E ↔ Formalism.REAL.GlRel (fun a b => E a b) := Iff.rfl
-
 open MvPolynomial in
 theorem _root_.GlobalTheory.Mem.GelfCheck.gelfA_eq_Amat {N : ℕ} (μ : Fin N → ℂ) :
     _root_.GlobalTheory.Mem.Gelf.gelfA μ = _root_.Formalism.REAL.Amat (_root_.Formalism.REAL.lsh μ) := by

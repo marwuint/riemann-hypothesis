@@ -27,10 +27,6 @@ def ratA (sp : Spaces R F E) : UJ (sp.cm.sig : E →+* E) sp.gram0 →* GA sp :=
   ((bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F))).comp (UJ (sp.cm.sig : E →+* E) sp.gram0).subtype).codRestrict _
     (fun γ => Formalism.UG.P.rational_points_le_holds F E (Fin R.k) sp.cm.sig sp.gram0 (FiniteAdeleRing (𝓞 F) F) ⟨γ, γ.2, rfl⟩)
 
-theorem ratA_val (γ : UJ (sp.cm.sig : E →+* E) sp.gram0) :
-    (ratA sp γ : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) =
-      bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ : GL (Fin R.k) E) := rfl
-
 theorem ratA_mem (γ : UJ (sp.cm.sig : E →+* E) sp.gram0) : ratA sp γ ∈ HA sp :=
   Subgroup.mem_subgroupOf.2 ⟨γ, γ.2, rfl⟩
 

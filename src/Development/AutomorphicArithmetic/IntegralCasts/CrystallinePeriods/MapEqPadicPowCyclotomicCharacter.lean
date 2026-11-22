@@ -131,8 +131,6 @@ instance : CommGroup (tateModule p R) :=
       conv_lhs => rw [← padicPow_one η, ← padicPow_mul, ← padicPow_add]
       simp }
 
-theorem inv_eq_padicPow (η : tateModule p R) : η⁻¹ = padicPow η (-1) := rfl
-
 instance : Module ℤ_[p] (Additive (tateModule p R)) where
   smul a η := Additive.ofMul (padicPow η.toMul a)
   one_smul η := padicPow_one _
@@ -143,9 +141,6 @@ instance : Module ℤ_[p] (Additive (tateModule p R)) where
   smul_add a η η' := mul_padicPow _ _ a
   add_smul a b η := padicPow_add _ a b
   zero_smul η := padicPow_zero _
-
-theorem smul_ofMul (a : ℤ_[p]) (η : tateModule p R) :
-    a • Additive.ofMul η = Additive.ofMul (padicPow η a) := rfl
 
 theorem exists_padicPow_eq (η : tateModule p R) {a : ℤ_[p]} {m k : ℕ}
     (h : (p : ℤ_[p]) ^ k ∣ a - m) : ∃ η' : tateModule p R, padicPow η a = η ^ m * η' ^ p ^ k := by

@@ -26,8 +26,6 @@ def latEquiv : Lat E n ≃ {Λ : GenLat E n // IsLat Λ} where
 
 theorem stdLat_eq : stdLat E n = stdMod E n := rfl
 
-theorem toGen_std : toGen (Lat.std E n) = ⟨stdLat E n⟩ := rfl
-
 omit [NumberField E] in
 theorem span_smul_le_iff (k : ℕ) (A B : Submodule (𝓞 E) (Fin n → E)) :
     Ideal.span {(k : 𝓞 E)} • A ≤ B ↔ ∀ x ∈ A, k • x ∈ B := by

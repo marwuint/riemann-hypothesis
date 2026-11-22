@@ -60,22 +60,7 @@ def isoTransvectionHom (h : M →ₗ[R] M →ₗ⋆[R] R) (x : M) (hx : h x x = 
     (b : Multiplicative R) :
     isoTransvectionHom h x hx b = isoTransvection h x hx b.toAdd := rfl
 
-theorem isoTransvectionHom_ofAdd (h : M →ₗ[R] M →ₗ⋆[R] R) (x : M) (hx : h x x = 0) (b : R) :
-    isoTransvectionHom h x hx (Multiplicative.ofAdd b) = isoTransvection h x hx b := rfl
-
-namespace isoTransvection
-
-end isoTransvection
-
 end Defs
-
-namespace isoTransvection
-
-end isoTransvection
-
-namespace isoTransvection
-
-end isoTransvection
 
 section Example
 

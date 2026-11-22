@@ -240,8 +240,6 @@ def depDataOf (T : Core D) (EX : ErrX D) (Tn : ℕ+) (vd : ℕ → ℝ) (aL aF :
 
 variable (T : Core D) (EX : ErrX D) (Tn : ℕ+) (vd : ℕ → ℝ) (aL aF : ℕ → (D.host.E →+* ℂ) × ℕ → ℕ) (nW Dp Dm : ℕ → ℕ)
 
-theorem depDataOf_pi : (depDataOf T EX Tn vd aL aF nW Dp Dm).pi = piOf T EX := rfl
-
 theorem tPos_depDataOf : TPos (depDataOf T EX Tn vd aL aF nW Dp Dm) := by
   first
   | exact PNat.one_le Tn

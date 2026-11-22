@@ -19,9 +19,6 @@ def gD : FrV T N → MvPolynomial (Idx T N N') ℂ := fun k => ∑ b : Fin N',
     MvPolynomial.C (s k.1 * (if h : (k.2.2 : ℕ) < N' then y' k.1 b ⟨k.2.2, h⟩ else 0)) *
       MvPolynomial.X ((k.1, b, k.2.1) : Idx T N N')
 
-theorem polD_eq_aeval (Q : MvPolynomial (FrV T N) ℂ) :
-    polD s Q y' = MvPolynomial.aeval (gD s y') Q := rfl
-
 variable {Lt : Type} [Fintype Lt] [DecidableEq Lt] (tp : Lt → T) (nu : Lt → YoungDiagram)
 
 end expand

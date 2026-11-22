@@ -21,12 +21,6 @@ instance ptYInst (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) : MulActi
 theorem stepY_gam (b : β) (g : FrmG (Λ b) (Θ b)) (x : Sp X.E n) :
     ((stepY ST y β Λ Θ pref).gam b g : Matrix (Fin n) (Fin n) X.E) *ᵥ x = g.1.1 x := toGLm_mulVec g.1.1 x
 
-theorem stepY_deco (b : β) (g : (stepY ST y β Λ Θ pref).G b) (p : (stepY ST y β Λ Θ pref).D b) :
-    (g • p).1.1.deco = ((g.1, g.2.1.1) : UF X.E n × GLG X.E n SG) • p.1.1.deco := rfl
-
-theorem stepY_fr (b : β) (g : (stepY ST y β Λ Θ pref).G b) (p : (stepY ST y β Λ Θ pref).D b) (P : Q) :
-    (g • p).1.1.fr P = g.1.1 * p.1.1.fr P * ((g.2.2.1 P)⁻¹).1 := rfl
-
 theorem stepY_eq_one (b : β) (g : (stepY ST y β Λ Θ pref).G b) (p : (stepY ST y β Λ Θ pref).D b) (h : g • p = p)
     (h1 : g.1 = 1) : g = 1 := by
   have h2 : ((g.1, g.2.1.1) : UF X.E n × GLG X.E n SG) • p.1.1.deco = p.1.1.deco := congrArg (fun q => q.1.1.deco) h
@@ -496,10 +490,6 @@ variable {R : Ranks} {I : ChainIn E K ι R} (J : AtIn I) (emb : ι → E →+* K
 end Laws
 
 end Law
-
-namespace Princ
-
-end Princ
 
 end GlobalTheory.Mem.Col2
 

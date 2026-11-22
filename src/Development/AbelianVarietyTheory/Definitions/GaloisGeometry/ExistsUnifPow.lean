@@ -78,9 +78,6 @@ section Gen
 
 variable {L : Type} [Field L] [NumberField L]
 
-theorem ide_snd_mul (a b : Ideles L) (v : HeightOneSpectrum (𝓞 L)) :
-    ((a * b : Ideles L) : AdeleRing (𝓞 L) L).2 v = (a : AdeleRing (𝓞 L) L).2 v * (b : AdeleRing (𝓞 L) L).2 v := rfl
-
 end Gen
 
 variable {D : D7}

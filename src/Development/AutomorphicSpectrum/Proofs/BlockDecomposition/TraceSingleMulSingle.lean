@@ -64,6 +64,4 @@ def cjHom (U : Mat n) (hU : IsUnit U.det) : Mat n →+* Mat n where
   map_zero' := by simp
   map_add' X Y := by simp [Matrix.mul_add, Matrix.add_mul]
 
-theorem cjHom_apply (U : Mat n) (hU : IsUnit U.det) (X : Mat n) : cjHom U hU X = U⁻¹ * X * U := rfl
-
 end GlobalTheory.CompanionTheory.TopClass

@@ -30,9 +30,6 @@ variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ
 def IsAct (X₁ : Setup F W i) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) : Prop :=
   IsDiagEnd F W X₁.ρ.P X₁.u act
 
-theorem isAct_iff_isDiagEnd {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} :
-    IsAct X₁ act ↔ IsDiagEnd F W X₁.ρ.P X₁.u act := Iff.rfl
-
 theorem IsAct.isMonHom {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (h : IsAct X₁ act)
     (E : Matrix (Fin 8) (Fin 8) ℤ) : IsMonHom (act E) := by
   obtain ⟨c, -, pr, hpr, huniq, -, hε⟩ := h

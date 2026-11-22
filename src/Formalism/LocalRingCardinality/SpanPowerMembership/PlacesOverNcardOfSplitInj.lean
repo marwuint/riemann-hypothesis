@@ -146,9 +146,6 @@ def ndToy (what₂ : Rows.Data R) (h : NHyp H what₂) : NData R H what₂ where
   SQ_split i := i.elim
   restN_tameGenerator_generates i := i.elim
 
-theorem ndToy_chiT (what₂ : Rows.Data R) (h : NHyp H what₂) (k v) (j : Fin R.m) :
-    (ndToy H what₂ h).chiT k v j = genU H k ^ (2 * (j.1 + 1)) := rfl
-
 theorem conj_mem_algC {x : ℂ} (hx : x ∈ algebraicClosure ℚ ℂ) :
     starRingEnd ℂ x ∈ algebraicClosure ℚ ℂ :=
   mem_algebraicClosure_iff.2

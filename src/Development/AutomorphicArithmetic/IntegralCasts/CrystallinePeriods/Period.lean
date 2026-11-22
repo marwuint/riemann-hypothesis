@@ -83,11 +83,6 @@ def BcrisPlus.t : BcrisPlus p R := algebraMap (Acris p R) _ (Acris.t p R)
 
 def Bcris.t : Bcris p R := algebraMap (Acris p R) _ (Acris.t p R)
 
-theorem Bcris.t_eq_logTeich : Bcris.t p R = Bcris.logTeich (eps p R) := rfl
-
-theorem Bcris.algebraMap_alt : algebraMap (BcrisPlus p R) (Bcris p R) (BcrisPlus.t p R) =
-    Bcris.t p R := rfl
-
 instance Bcris.isLocalization_away_alt : IsLocalization.Away (BcrisPlus.t p R) (Bcris p R) :=
   (isPrimitive_eps p R).isLocalization_away
 
@@ -117,9 +112,6 @@ def polynomialEquiv (ϖ : PFlat p R) : (Bcris p R)[X] ≃ₐ[Bcris p R] Bst p R 
       change aeval (logFlat ϖ) (toPolynomial ϖ (logFlat ϖ')) = logFlat ϖ'
       rw [toPolynomial_logFlat, map_add, aeval_C, aeval_X, ← logFlat_twist, PFlat.twist_div])))
     (Polynomial.algHom_ext (by simp [toPolynomial_logFlat]))
-
-theorem polynomialEquiv_apply (ϖ : PFlat p R) (f : (Bcris p R)[X]) :
-    polynomialEquiv ϖ f = aeval (logFlat ϖ) f := rfl
 
 @[simp] theorem polynomialEquiv_X (ϖ : PFlat p R) : polynomialEquiv ϖ X = logFlat ϖ :=
   aeval_X _

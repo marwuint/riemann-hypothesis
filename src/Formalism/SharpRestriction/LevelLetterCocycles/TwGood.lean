@@ -136,8 +136,6 @@ def TwGoodE {eps : ℝ} (Fm : FamP eps) (E : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix 
 
 def twEOf {D : D7} (T : ThData D) : IntegralHeckeForms.XD D := ⟨T.xd0, T.thetaBase_invariant_action⟩
 
-theorem twist_data_zero_eq {D : D7} (T : ThData D) : (twEOf T).Dat0 = T.xd0 := rfl
-
 def twE {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : IntegralHeckeForms.XD (Fm.D x i) := twEOf (Fm.ex x hx i).xd
 
 def TwGood {eps : ℝ} (Fm : FamP eps) : Prop := TwGoodE Fm (twE Fm)

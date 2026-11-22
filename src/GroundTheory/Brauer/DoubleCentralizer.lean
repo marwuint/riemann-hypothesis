@@ -111,9 +111,6 @@ noncomputable def mulRight (c : Subalgebra.centralizer K (B : Set A)) :
       exact (Subalgebra.mem_centralizer_iff K).mp c.2 _ b.unop.2
     | add r s hr hs => simp only [map_add, LinearMap.add_apply, add_mul, hr, hs]
 
-theorem mulRight_val (c : Subalgebra.centralizer K (B : Set A)) (x : Twist B.val) :
-    (mulRight B c x).val = x.val * c := rfl
-
 noncomputable def endAlgEquiv :
     Module.End (A ⊗[K] Bᵐᵒᵖ) (Twist B.val) ≃ₐ[K] (Subalgebra.centralizer K (B : Set A))ᵐᵒᵖ where
   toFun φ := MulOpposite.op ⟨(φ (Twist.of _ 1)).val, by

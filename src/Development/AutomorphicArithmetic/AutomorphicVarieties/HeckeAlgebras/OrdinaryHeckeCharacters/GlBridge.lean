@@ -118,9 +118,6 @@ private theorem br_memNm {c : ℕ} {g : GL (Fin n) k} :
   refine (mem_unipB k).trans ?_
   exact ⟨fun h => ⟨fun i j hij => h.1 j i hij, h.2⟩, fun h => ⟨fun i j hij => h.1 j i hij, h.2⟩⟩
 
-private theorem br_memT {g : GL (Fin n) k} :
-    g ∈ (glIwa k n).T ↔ ∃ t ∈ torusO k (Fin n), diagT k (Fin n) t = g := Iff.rfl
-
 private theorem br_smooth {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V)
     (h : GlobalTheory.PRep.IsSmooth π) : (glIwa k n).Smooth π :=
   _root_.UpperTheory.Reformulated.B.BranchingSmooth.br_smooth π h

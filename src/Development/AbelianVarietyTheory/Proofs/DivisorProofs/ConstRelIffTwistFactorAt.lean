@@ -33,9 +33,6 @@ section Row
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
 
-theorem weilTwist_iff :
-    WeilTwistColumns.WeilTwist R i ↔ (R.toLevCh.Is A.μ0 → R.thP_ωP → ∀ t, FrameConstantVectors.WeilTwist R i t) := Iff.rfl
-
 variable {R i}
 
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
@@ -51,9 +48,6 @@ variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : 
   {U₂ : ∀ t, Unf (dδ t).Xo₂ (dδ t).c₂ (σ.comp ((dδ t).eF.symm : (dδ t).c₂.F →+* c.F)) D.R.r}
   {dict₂ : ∀ t, GA D (Wc D i) → Σ k, Frame ((U₂ t).X k).Ψ D.R.r}
   {xi : T0 → (Af D.host.F ⊗[D.host.F] D.host.E)ˣ →* ℂˣ}
-
-theorem cXi_eq (t : T0) :
-    WeilTwistColumns.cXi (dδ t) (U₂ t) (dict₂ t) = FrameConstantVectors.cXi (Wc D i) σ (dδ t) (U₂ t) (dict₂ t) := rfl
 
 end Row
 

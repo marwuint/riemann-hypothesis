@@ -133,9 +133,6 @@ def elt (h : Hyp σ W H') (b : Fin d₁ → AE F E) (c : AE F E)
     _root_.GlobalTheory.UnipMass.nmat_unitary F E σ h.σσ d W.J h.skew _ _ c h.xx (h.ιx b) hc⟩,
     mem_unip h _ b c rfl⟩
 
-theorem mat_elt (h : Hyp σ W H') (b : Fin d₁ → AE F E) (c : AE F E) (hc) :
-    mat ((elt h b c hc : unip σ W H') : UA σ W.J) = nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ b) c := rfl
-
 theorem unip_ext {g g' : unip σ W H'} (e : mat (g : UA σ W.J) = mat (g' : UA σ W.J)) : g = g' :=
   Subtype.ext (Subtype.ext (Units.ext e))
 
@@ -179,15 +176,6 @@ end GlobalTheory.UnipMass
 namespace GlobalTheory.UnipMass
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
-theorem hA_incM_incV (σ : E →ₐ[F] E) {n m : ℕ} (J : Matrix (Fin n) (Fin n) E) (A : Matrix (Fin n) (Fin m) E)
-    (z : Fin m → AE F E) (v : Fin n → E) :
-    hA σ J (incM F A *ᵥ z) (incV F v) = ∑ j, z j * inclR (F := F) (AF F) (form σ J (fun i => A i j) v) := by
-  simp only [hA, form, dotProduct, Matrix.mulVec, incM, incV, Matrix.map_apply, cA_inclR, map_sum, map_mul,
-    Finset.sum_mul, Finset.mul_sum]
-  conv_lhs => enter [2, i]; rw [Finset.sum_comm]
-  conv_lhs => rw [Finset.sum_comm]
-  exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-
 theorem topUA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     IsTopologicalGroup (UA σ J) ∧ LocallyCompactSpace (UA σ J) ∧ SecondCountableTopology (UA σ J) ∧
       T2Space (UA σ J) := by
@@ -220,18 +208,6 @@ theorem topUA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
   exact ⟨inferInstance, hc.isClosedEmbedding_subtypeVal.locallyCompactSpace,
     hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology,
     inferInstanceAs (T2Space (UG (cA σ) (incM F J)))⟩
-
-theorem countable_ratU' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (N : Subgroup (UA σ J)) :
-    Countable ((ratU σ J).subgroupOf N) := by
-  haveI : Countable E := Function.Injective.countable (Module.finBasis ℚ E).equivFun.injective
-  haveI : Countable (GL (Fin n) E) :=
-    Function.Injective.countable (f := fun (g : GL (Fin n) E) (i j : Fin n) => (g : Matrix (Fin n) (Fin n) E) i j)
-      fun _ _ h => Units.ext (Matrix.ext fun i j => congrFun (congrFun h i) j)
-  haveI := (Set.countable_range (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F)))).to_subtype
-  exact Function.Injective.countable
-    (f := fun γ : (ratU σ J).subgroupOf N => (⟨γ.1.1.1, Subgroup.mem_subgroupOf.1 (Subgroup.mem_subgroupOf.1 γ.2)⟩ :
-      Set.range (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F)))))
-    fun γ γ' h => Subtype.val_injective (Subtype.val_injective (Subtype.val_injective (congrArg Subtype.val h :)))
 
 theorem continuous_nmat (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → AE F E) {X : Type}
     [TopologicalSpace X] {u : X → Fin n → AE F E} {c : X → AE F E} (hu : Continuous u) (hc : Continuous c) :
@@ -346,59 +322,5 @@ theorem cocompact (h : Hyp σ W H') (hxx : form σ W.J H'.x H'.x = 0) (hyy : for
 end GlobalTheory.UnipMass
 
 namespace GlobalTheory.UnipMass
-
-theorem exists_haar_unip_mass_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
-    (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
-    ∀ X om om', IsTriple B G X om om' →
-      ∃ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure ∧
-        IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ ∧ μ 𝓕 = 1 := by
-  intro F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' hT
-  have hσ : ∀ a, σ (σ a) = a := cm_conj_conj hT.base.cm
-  have hW := hT.geo.hW
-  have hH := hC.hH'
-  have hspan : ∀ v : Fin (b + 2 + a') → E, ∃ (s t : E) (u : Fin (b + a') → E),
-      v = s • H'.x + H'.ι *ᵥ u + t • H'.y := by
-    intro v
-    have hv : v ∈ Submodule.span E (G.W.L : Set (Fin (b + 2 + a') → E)) := by
-      rw [hW.lat.span_eq_top]; trivial
-    induction hv using Submodule.span_induction with
-    | mem z hz =>
-      obtain ⟨s, t, u, -, -, -, hz⟩ := hH.split z hz
-      exact ⟨s, t, u, hz⟩
-    | zero => exact ⟨0, 0, 0, by simp⟩
-    | add y z _ _ hy hz =>
-      obtain ⟨s, t, u, rfl⟩ := hy
-      obtain ⟨s', t', u', rfl⟩ := hz
-      exact ⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add]; module⟩
-    | smul a y _ hy =>
-      obtain ⟨s, t, u, rfl⟩ := hy
-      exact ⟨a * s, a * t, a • u, by rw [Matrix.mulVec_smul]; module⟩
-  have horthA : ∀ z, hA σ G.W.J (incM F H'.ι *ᵥ z) (incV F H'.x) = 0 := by
-    intro z
-    rw [hA_incM_incV]
-    refine Finset.sum_eq_zero fun j _ => ?_
-    have h1 := (hH.orth (Pi.single j 1)).1
-    rw [Matrix.mulVec_single_one] at h1
-    rw [show (fun i => H'.ι i j) = H'.ι.col j from rfl, h1, map_zero, mul_zero]
-  have h : Hyp σ G.W H' := ⟨hσ, hW.skew, by rw [hA_incV, hH.xx, map_zero], horthA⟩
-  have hx0 : H'.x ≠ 0 := fun h0 => by
-    have h1 := hH.xy
-    rw [h0] at h1
-    simp [form] at h1
-  obtain ⟨hTG, hLC, hSC, hT2⟩ := topUA σ G.W.J
-  haveI := hTG
-  haveI := hLC
-  haveI := hSC
-  haveI := hT2
-  haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩
-  have hcl := GlobalTheory.T.unipotent_radical_closed_nonzero F E σ _ _ G.W H' hx0
-  haveI : LocallyCompactSpace (unip σ G.W H') := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace
-  haveI : SecondCountableTopology (unip σ G.W H') :=
-    hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology
-  haveI := countable_ratU' σ G.W.J (unip σ G.W H')
-  haveI := _root_.GlobalTheory.RatUDiscreteSub.discreteTopology_subgroupOf F E σ _ G.W.J (unip σ G.W H')
-  obtain ⟨K, hK, hcov⟩ := cocompact h hH.xx hH.yy hH.xy hH.orth hspan
-  exact _root_.GlobalTheory.HaarFundDom.exists_haar_fundDom_mass_one _ _ K hK hcov
 
 end GlobalTheory.UnipMass

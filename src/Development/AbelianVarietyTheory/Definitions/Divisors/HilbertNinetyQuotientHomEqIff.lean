@@ -14,8 +14,6 @@ def SB (X : Type) [TopologicalSpace X] : Submodule ℂ (X → ℂ) where
   add_mem' := fun hf hg => ⟨hf.1.add hg.1, hf.2.add hg.2⟩
   smul_mem' := fun c f hf => ⟨hf.1.comp (fun z => c • z), hf.2.comp_left (g := fun z => c • z) (smul_zero c)⟩
 
-theorem SB_eq (X : Type) [TopologicalSpace X] : SB X = GlobalTheory.SplitWeil.SB X := rfl
-
 structure TestClass (R : Type) [CommRing R] where
 
   sp : ∀ (κ : Type) [Fintype κ], Submodule ℂ ((κ → R) → ℂ)
@@ -31,11 +29,6 @@ def sbClass (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [
 
 def schFun (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] : Submodule ℂ (V → ℂ) :=
   Submodule.span ℂ (Set.range fun f : SchwartzMap V ℂ => (f : V → ℂ))
-
-def realClass : TestClass ℝ where
-  sp κ _ := schFun (κ → ℝ)
-  adm κ _ := {l | ∃ T : SchwartzMap (κ → ℝ) ℂ →L[ℂ] ℂ, ∀ f : SchwartzMap (κ → ℝ) ℂ, l (f : (κ → ℝ) → ℂ) = T f}
-  modu := distribHaarChar ℝ
 
 section Unitary
 

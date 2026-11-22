@@ -87,8 +87,6 @@ theorem mem_intG {D : D7} {N : ℕ} (k : GA D N) : k ∈ intG D N ↔ IntG D (k 
     · exact (hx i j).2
     · rw [Subgroup.coe_inv, inv_inv]; exact (hx i j).1
 
-theorem cls_eq_classSet (D : D7) (N : ℕ) (J : Subgroup (GA D N)) : Cls D N J = Formalism.UG.ClassSet (ratG D N) J := rfl
-
 abbrev Tup (D : D7) (a d : ℕ) (n : D.what₂.Tau → ℕ) : Type :=
   ∀ τ, Fin (n τ) → {s : Fin a → Fin d // StrictMono s}
 

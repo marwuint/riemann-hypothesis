@@ -247,14 +247,7 @@ def toRobba : AnnulusRing.halfOpen K r →ₐ[K] Robba K where
 
 @[simp] theorem coeff_toRobba (f : AnnulusRing.halfOpen K r) : (toRobba f).coeff = f.coeff := rfl
 
-theorem toRobba_restrict {s : ℝ} [Fact (s < 1)] (hrs : r ≤ s) (f : AnnulusRing.halfOpen K r) :
-    toRobba (restrict (J := Set.Ico s 1) (Set.Ico_subset_Ico_left hrs) f) = toRobba f := rfl
-
 end AnnulusRing
-
-namespace Robba
-
-end Robba
 
 namespace Laurent
 
@@ -310,9 +303,6 @@ def bounded (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [Compl
   neg_mem' {f} hf := by
     obtain ⟨A, hA⟩ := hf
     exact ⟨A, Set.forall_mem_range.2 fun n => by simpa using hA ⟨n, rfl⟩⟩
-
-theorem mem_bounded {f : Robba K} :
-    f ∈ bounded K ↔ BddAbove (Set.range fun n => ‖f.coeff n‖) := Iff.rfl
 
 theorem mem_bounded_of_mul_eq_one {f g : Robba K} (h : f * g = 1) : f ∈ bounded K := by
   obtain ⟨r, hr0, hr1, hc⟩ := exists_common f g

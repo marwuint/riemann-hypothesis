@@ -368,17 +368,6 @@ section Basis
 
 variable {R : Type*} [CommRing R] {ι : Type*} [Finite ι]
 
-noncomputable def quotSMulTopEquivQuot (I : Ideal R) :
-    (R ⧸ (I • ⊤ : Submodule R R)) ≃ₗ[R ⧸ I] R ⧸ I :=
-  LinearEquiv.extendScalarsOfSurjective Ideal.Quotient.mk_surjective <|
-    Submodule.quotEquivOfEq _ _ (by simp)
-
-noncomputable def IsQuasiRegularSeq.powGrBasis {f : ι → R} (h : IsQuasiRegularSeq R f) (a : ℕ) :
-    Module.Basis (MonoDeg ι a) (R ⧸ Ideal.span (Set.range f))
-      (powGr (Ideal.span (Set.range f)) R a) :=
-  Module.Basis.ofEquivFun <| (h.powGrEquiv a).symm ≪≫ₗ
-    LinearEquiv.piCongrRight fun _ => quotSMulTopEquivQuot _
-
 end Basis
 
 section Flat

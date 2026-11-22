@@ -20,8 +20,6 @@ section Lin
 
 variable {n k : ℕ} (ε : Fin n → Bool)
 
-theorem hJ_eq (x y : Fin n → ℂ) : hJ ε x y = star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) := rfl
-
 theorem hJ_symm (x y : Fin n → ℂ) : hJ ε x y = star (hJ ε y x) := by
   simp only [hJ, dotProduct, Formalism.REAL.Jm, mulVec_diagonal, Pi.star_apply, star_sum, star_mul', star_star]
   refine Finset.sum_congr rfl fun i _ => ?_
@@ -182,10 +180,6 @@ def sUg {n k : ℕ} (ε : Fin n → Bool) (wf : Fin k → Fin n → ℂ)
     mul_eq_one_comm.1 (smat_inv _ _ (Formalism.REAL.Jm_mul_self _) (Formalism.REAL.Jm_conjTranspose _) G hG hon),
     smat_inv _ _ (Formalism.REAL.Jm_mul_self _) (Formalism.REAL.Jm_conjTranspose _) G hG hon⟩,
     smat_unitary _ _ hon (Formalism.REAL.Jm_conjTranspose _) G hG⟩
-
-theorem uMat_sUg {n k : ℕ} (ε : Fin n → Bool) (wf : Fin k → Fin n → ℂ)
-    (hon : ∀ a b, hJ ε (wf a) (wf b) = if a = b then 1 else 0) (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ * G = 1) :
-    uMat (sUg ε wf hon G hG) = smat (Formalism.REAL.Jm ε) wf G := rfl
 
 theorem uMat_mul' {n : ℕ} {ε : Fin n → Bool} (a b : Formalism.REAL.UJ ε) : uMat (a * b) = uMat a * uMat b := by
   rfl

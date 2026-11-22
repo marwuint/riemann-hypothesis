@@ -44,9 +44,6 @@ def positionPerm {k : ℕ} (i : Fin k) (τ : Equiv.Perm (Fin n × Fin n)) :
   left_inv κ := by simp
   right_inv κ := by simp
 
-theorem positionPerm_apply {k : ℕ} (i : Fin k) (τ : Equiv.Perm (Fin n × Fin n)) (κ : Fin k → Fin n × Fin n) :
-    positionPerm i τ κ = Function.update κ i (τ (κ i)) := rfl
-
 theorem factorAd_mem_ncV {k : ℕ} (i : Fin k) {a b : Fin n} (hab : ε a = ε b) {F : Big n k M}
     (hF : F ∈ ncV ε V k) : factorAd k i a b F ∈ ncV ε V k := by
   rw [mem_ncV_iff] at hF ⊢

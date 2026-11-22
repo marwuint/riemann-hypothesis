@@ -26,20 +26,6 @@ namespace Par
 
 end Par
 
-def clsPkg (X : Type) [Finite X] (d : ℕ) (hd : 0 < d) : ClsPkg where
-  cls := fun i => match i with
-    | 0 => X
-    | _ + 1 => Empty
-  clsFin := fun i => match i with
-    | 0 => Fintype.ofFinite X
-    | _ + 1 => inferInstanceAs (Fintype Empty)
-  stab := fun _ _ => Unit
-  stabGrp := fun _ _ => inferInstance
-  stabFin := fun _ _ => inferInstance
-  DGam := d
-  DGam_pos := hd
-  dvd := fun _ _ => by simp
-
 end Formalism.MainNotions.Gaps.LG
 
 end

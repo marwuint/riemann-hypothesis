@@ -27,9 +27,6 @@ variable (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 variable {K}
 
-theorem coe_padicAlgCl_eq (x : PadicAlgCl p) :
-    ((x : PadicAlgCl p) : ℂ_[p]) = algebraMap (PadicAlgCl p) ℂ_[p] x := rfl
-
 end Span
 
 section Contradiction

@@ -28,8 +28,6 @@ theorem stdHLat_good : (stdHLat K ι).Good := by
   rw [show (stdHLat K ι).X _ = 1 from rfl, Matrix.det_one]
   exact isUnit_one
 
-theorem stdHLat_std : (stdHLat K ι).L = Submodule.span (𝓞 K) (Set.range (stdHLat K ι).b) := rfl
-
 variable {K ι} (σ : K →+* ℂ)
 
 abbrev FK (ι : Type) : Type := ι → Unit → ℂ
@@ -46,8 +44,6 @@ def slK : (ι → K) →ₛₗ[σ] FK ι where
   toFun x := fun c _ => σ (x c)
   map_add' x y := by funext _ _; simp
   map_smul' c x := by funext _ _; simp
-
-theorem slK_apply (x : ι → K) (c : ι) (y : Unit) : slK σ x c y = σ (x c) := rfl
 
 theorem slK_basis : LinearIndependent ℂ (fun i => slK σ ((stdHLat K ι).b i)) ∧
     Submodule.span ℂ (Set.range (fun i => slK σ ((stdHLat K ι).b i))) = ⊤ := by

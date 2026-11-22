@@ -616,9 +616,6 @@ def flagSets (F : ℤ → Submodule K V) (hF : Antitone F) (top : ℤ) (h0 : F t
     ⟨P.ind.extend hst, P.ind.linearIndepOn_extend hst, P.ind.extend_subset hst,
       P.ind.subset_span_extend hst⟩
 
-theorem flagSets_zero (F : ℤ → Submodule K V) (hF : Antitone F) (top : ℤ) (h0 : F top = ⊥) :
-    (flagSets F hF top h0 0).s = ∅ := rfl
-
 theorem flagSets_succ (F : ℤ → Submodule K V) (hF : Antitone F) (top : ℤ) (h0 : F top = ⊥) (k : ℕ) :
     (flagSets F hF top h0 k).s ⊆ (flagSets F hF top h0 (k + 1)).s :=
   (flagSets F hF top h0 k).ind.subset_extend

@@ -30,8 +30,6 @@ def ea_ball (K' : Type) [NormedField K'] [IsUltrametricDist K'] : Subring K' whe
     rw [norm_neg]
     exact ha
 
-theorem ea_mem_ball {K' : Type} [NormedField K'] [IsUltrametricDist K'] {x : K'} : x ∈ ea_ball K' ↔ ‖x‖ ≤ 1 := Iff.rfl
-
 variable {p : ℕ} [hp : Fact p.Prime] {X : Sys p}
 
 structure ea_NormExt (Y : Pend X) where

@@ -46,9 +46,6 @@ def LevIs {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} (S : StepLevel D.host.
     (J : Set (GA D D.sp.X')) (χ : GA D D.sp.X' → ℂ) : Prop :=
   (∀ h, h ∈ J ↔ ∃ κ : S.U, HasMat h κ.1) ∧ ∀ h (κ : S.U), HasMat h κ.1 → χ h = star ((S.chi κ : ℂˣ) : ℂ)
 
-theorem levIs_iff_topLev {u : D.what₂.Word} (K : ClsPTied u) (J : Set (GA D D.sp.X')) (χ : GA D D.sp.X' → ℂ) :
-    LevIs K.lev J χ ↔ TopLev K J χ := Iff.rfl
-
 section Real
 
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}

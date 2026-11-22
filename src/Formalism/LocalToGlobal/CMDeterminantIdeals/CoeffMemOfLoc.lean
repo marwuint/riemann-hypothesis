@@ -33,15 +33,6 @@ def LamNumber0 : Prop :=
     - ((pDeg logOm + (1 / 2) * Real.log La) * ((∑ v, (μ v : ℝ)) + (g : ℝ) * n)) - (∑ v, (μ v : ℝ)) * Real.log Rr ≤
       (∑ σ : K →+* ℂ, Real.log (S σ)) / (Module.finrank ℚ K : ℝ)
 
-def HadamardLoc : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (g : ℕ) (abelian₂ : MLine K) (ℓ : Fin g → MLine K) (u : Fin g → Fin g → K)
-    (B : HeightOneSpectrum (𝓞 K) → Matrix (Fin g) (Fin g) K) (H : (K →+* ℂ) → Matrix (Fin g) (Fin g) ℂ) (La : ℝ),
-    abelian₂.I ≠ 0 → (∀ j, (ℓ j).Good) → LinearIndependent K u → 0 < La → (∀ σ, (H σ).PosDef) →
-    (∀ σ, abelian₂.n σ = Real.sqrt (H σ).det.re) → (∀ p, IsLocGen p (B p).det abelian₂.I) →
-    (∀ p j, ∃ c : K, IsLocGen p c (ℓ j).I ∧ ∀ i, p.valuation K (((B p)⁻¹.mulVec (c • u j)) i) ≤ 1) →
-    (∀ σ j, ReciprocityTheory.MultiplicativeHeights.hq (H σ) (ReciprocityTheory.MultiplicativeHeights.embVec σ (u j)) ≤ (La * (ℓ j).n σ) ^ 2) →
-    ∑ j, (ℓ j).deg - (g : ℝ) * (Module.finrank ℚ K : ℝ) * Real.log La ≤ abelian₂.deg
-
 def CoeffMemOfLoc : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (g : ℕ) (ℓ : Fin g → MLine K) (de : MLine K) (V : Type) [Fintype V] (c : V → Fin g)
     (μ : V → ℕ) (n : ℕ) (cf : K), de.Good → (∀ j, (ℓ j).Good) →

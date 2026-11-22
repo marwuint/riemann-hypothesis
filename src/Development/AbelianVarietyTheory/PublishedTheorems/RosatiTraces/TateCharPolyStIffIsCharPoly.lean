@@ -14,8 +14,6 @@ namespace GlobalTheory.Published
 
 def TateCharPolySt : Prop := EndCharPolySt
 
-theorem tateCharPolySt_iff : TateCharPolySt ↔ EndCharPolySt := Iff.rfl
-
 end GlobalTheory.Published
 
 namespace GlobalTheory.TateCharPoly

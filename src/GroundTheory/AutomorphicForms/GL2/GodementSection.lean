@@ -28,24 +28,6 @@ theorem modPow_one (s : ℂ) : modPow (1 : IdeleGroup K) s = 1 := by
 theorem modPow_ne_zero (x : IdeleGroup K) (s : ℂ) : modPow x s ≠ 0 := by
   simp [modPow, (ideleModule K x).2.ne']
 
-def borelElt (a d : IdeleGroup K) (x : 𝔸[K]) : GL (Fin 2) 𝔸[K] where
-  val := !![(a : 𝔸[K]), x; 0, (d : 𝔸[K])]
-  inv := !![((a⁻¹ : IdeleGroup K) : 𝔸[K]), -(x * ((a⁻¹ : IdeleGroup K) : 𝔸[K]) *
-    ((d⁻¹ : IdeleGroup K) : 𝔸[K])); 0, ((d⁻¹ : IdeleGroup K) : 𝔸[K])]
-  val_inv := by
-    ext i j
-    fin_cases i <;> fin_cases j <;>
-      simp [Matrix.mul_apply, Fin.sum_univ_two]
-    all_goals first | ring1 | linear_combination (-(x * ((d⁻¹ : IdeleGroup K) : 𝔸[K]))) * Units.mul_inv a
-  inv_val := by
-    ext i j
-    fin_cases i <;> fin_cases j <;>
-      simp [Matrix.mul_apply, Fin.sum_univ_two]
-    all_goals ring
-
-theorem borelElt_val (a d : IdeleGroup K) (x : 𝔸[K]) :
-    (borelElt a d x : Matrix (Fin 2) (Fin 2) 𝔸[K]) = !![(a : 𝔸[K]), x; 0, (d : 𝔸[K])] := rfl
-
 abbrev detI (g : GL (Fin 2) 𝔸[K]) : IdeleGroup K := Matrix.GeneralLinearGroup.det g
 
 def rightReg (h : GL (Fin 2) 𝔸[K]) (f : GL (Fin 2) 𝔸[K] → ℂ) : GL (Fin 2) 𝔸[K] → ℂ :=
@@ -54,12 +36,6 @@ def rightReg (h : GL (Fin 2) 𝔸[K]) (f : GL (Fin 2) 𝔸[K] → ℂ) : GL (Fin
 def IsKFinite (f : GL (Fin 2) 𝔸[K] → ℂ) : Prop :=
   FiniteDimensional ℂ (Submodule.span ℂ {F | ∃ k ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K 2)),
     F = rightReg k f})
-
-theorem rightReg_add (h : GL (Fin 2) 𝔸[K]) (f₁ f₂ : GL (Fin 2) 𝔸[K] → ℂ) :
-    rightReg h (f₁ + f₂) = rightReg h f₁ + rightReg h f₂ := rfl
-
-theorem rightReg_smul (h : GL (Fin 2) 𝔸[K]) (c : ℂ) (f : GL (Fin 2) 𝔸[K] → ℂ) :
-    rightReg h (c • f) = c • rightReg h f := rfl
 
 theorem globalZeta_mul_right (F : 𝔸[K] → ℂ) (μ : HeckeCharacter K) (s : ℂ) (d : IdeleGroup K) :
     globalZeta (fun t ↦ F (t * (d : 𝔸[K]))) μ s =

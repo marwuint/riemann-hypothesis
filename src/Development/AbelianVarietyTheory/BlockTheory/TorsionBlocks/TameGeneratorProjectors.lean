@@ -20,16 +20,6 @@ def cEIdeal : Ideal (𝓞 D.host.K) := Ideal.span {((cE D : ℕ) : 𝓞 D.host.K
 def Admissible (g : ℕ) : Prop :=
   g.Prime ∧ ∃ π : 𝓞 D.host.K, π - 1 ∈ cEIdeal D ∧ Algebra.norm ℤ π = (g : ℤ)
 
-def AdmissiblePrimesWithConstant (c₁ : ℝ) : Prop :=
-  ∀ (N : ℕ) (X : ℝ), c₁ ≤ (cE D : ℝ) → c₁ ≤ (D.host.d : ℝ) → 21 ≤ N → 0 < X →
-    (N : ℝ) ^ 4 * (cE D : ℝ) ^ 500 ≤ (X / (cE D : ℝ) ^ 20) ^ ((1 : ℝ) / 4) →
-    Real.log X ≤ (cE D : ℝ) →
-    ∃ Y : ℝ, X / (cE D : ℝ) ^ 20 ≤ Y ∧ Y ≤ X / 2 ∧
-      (∃ g₁ g₂ : ℕ, g₁ ≠ g₂ ∧ Admissible D g₁ ∧ Admissible D g₂ ∧
-        Y ≤ g₁ ∧ (g₁ : ℝ) ≤ 2 * Y ∧ Y ≤ g₂ ∧ (g₂ : ℝ) ≤ 2 * Y ∧
-        Formalism.CyclotomicNorms.BB N g₁ ∩ Formalism.CyclotomicNorms.BB N g₂ = ∅) ∧
-      Y / (cE D : ℝ) ^ 20 ≤ (({g : ℕ | Admissible D g ∧ Y ≤ g ∧ (g : ℝ) ≤ 2 * Y}).ncard : ℝ)
-
 abbrev GalE : Type := G D.host.E D.nd.Om
 
 def OnW (σ : D.what₂.FT) : Prop := ∃ j, 1 ≤ j ∧ j ≤ D.R.m ∧ D.what₂.isot j σ ≠ ⊥

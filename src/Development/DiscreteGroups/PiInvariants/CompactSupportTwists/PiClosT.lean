@@ -29,8 +29,6 @@ def eH : GA E n ≃ₜ* H E n 0 where
   continuous_toFun := continuous_id.prodMk continuous_const
   continuous_invFun := continuous_fst
 
-theorem eH_symm_apply (x : H E n 0) : (eH (E := E) (n := n)).symm x = x.1 := rfl
-
 def muG (D : Dom E n 0) : Measure (GA E n) := D.μ.map (eH (E := E) (n := n)).symm
 
 theorem measurable_eH : Measurable (eH (E := E) (n := n)) := (eH (E := E) (n := n)).continuous.measurable

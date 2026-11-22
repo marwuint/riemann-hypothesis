@@ -57,15 +57,6 @@ theorem rhoReal_pos (i s : ℕ) : 0 < rhoReal D i s := zpow_pos (rdE_pos D) _
 def ptWeightG (ρ : ℕ → ℕ → ℝ) (T T' : ℝ) (bs : List (D.host.E × ℕ)) : ℝ :=
   ∏ v, ptWeightFrom D.R.k D.R.rS T T' 0 (locBlocks D ρ v bs)
 
-def ptSnoc {j : ℕ} (h : Point D.host.E j) (t : D.host.E) (ht : t ≠ 0) (s : ℕ) (hs : 1 ≤ s) :
-    Point D.host.E (j + s) :=
-  ⟨h.1 ++ [(t, s)], by
-    refine ⟨fun b hb => ?_, ?_⟩
-    · rcases List.mem_append.1 hb with hb | hb
-      · exact h.2.1 b hb
-      · rw [List.mem_singleton.1 hb]; exact ⟨ht, hs⟩
-    · simp [h.2.2]⟩
-
 def cPsi (δ : D.host.E) (v : D.what₂.Tau) : ℂ := 4 * (Real.pi : ℂ) / plEmb D v δ
 
 def kaV (δ : D.host.E) (v : D.what₂.Tau) : ℝ := 2 * Real.pi / ‖plEmb D v δ‖
@@ -76,23 +67,7 @@ def dualPsi (δ : D.host.E) (L : Submodule ℤ D.host.E) : Set D.host.E :=
 def FullLat (L : Submodule ℤ D.host.E) : Prop :=
   L.FG ∧ Submodule.span ℚ (L : Set D.host.E) = ⊤
 
-def embInfS (c : ℝ) : D.host.E →+ (D.what₂.Tau → ℂ) :=
-  { toFun := fun x v => ((c : ℝ) : ℂ) * plEmb D v x
-    map_zero' := by funext v; simp
-    map_add' := fun x y => by funext v; simp [mul_add] }
-
-def IsCovol (κ c : ℝ) (L : Submodule ℤ D.host.E) : Prop :=
-  ∃ F : Set (D.what₂.Tau → ℂ), MeasurableSet F ∧
-    IsAddFundamentalDomain (L.toAddSubgroup.map (embInfS D c)) F volume ∧ volume F = ENNReal.ofReal κ
-
 end S1bNum
-
-section Kernels
-
-def PSDK {α : Type*} (K : α → α → ℂ) : Prop :=
-  ∀ (X : Finset α) (a : α → ℂ), 0 ≤ ∑ p ∈ X, ∑ q ∈ X, star (a p) * K p q * a q
-
-end Kernels
 
 section S1bData
 
@@ -122,11 +97,6 @@ structure KernelData where
   e : ℕ → ℝ
 
 def IsBlockSL2Embedding (i s : ℕ) : Prop := 1 ≤ i ∧ 1 ≤ s ∧ i - 1 + s ≤ D.R.rS + 1
-
-def LatAx (δ : D.host.E) (L : LatticeDataWithDual D) : Prop :=
-  0 < L.κ ∧ ∀ i s, IsBlockSL2Embedding D i s →
-    0 < L.ρ i s ∧ FullLat D (L.La i s) ∧ FullLat D (L.La' i s) ∧ IsCovol D L.κ (L.ρ i s) (L.La i s) ∧
-    dualPsi D δ (L.La i s) ⊆ (L.aaV i s : Set D.host.E) ∧ (L.La' i s : Set D.host.E) ⊆ (L.aaP i s : Set D.host.E)
 
 def IsFrameScale (L : LatticeDataWithDual D) (ϱ : ℝ) : Prop :=
   0 < ϱ ∧ ∀ i s, IsBlockSL2Embedding D i s → L.ρ i s = ϱ ^ (-((((2 * D.R.rS + 3 : ℕ) : ℤ) - 2 * (i : ℤ) - (s : ℤ))))

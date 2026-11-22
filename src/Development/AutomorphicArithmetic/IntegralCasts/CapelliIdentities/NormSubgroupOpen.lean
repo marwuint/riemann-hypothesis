@@ -135,9 +135,6 @@ private def Nm (ρ : G →* R ≃+* R) (p m : ℕ) : Subgroup G where
       rw [← map_mul, inv_mul_cancel, map_one]; rfl
     rwa [ha y hy] at this
 
-private lemma mem_Nm (ρ : G →* R ≃+* R) (p m : ℕ) (g : G) :
-    g ∈ Nm ρ p m ↔ ∀ y : R, y ^ p ^ m = y → ρ g y = y := Iff.rfl
-
 private lemma per_mul {p m : ℕ} {y : R} (h : y ^ p ^ m = y) (k : ℕ) : y ^ p ^ (m * k) = y := by
   induction k with
   | zero => simp

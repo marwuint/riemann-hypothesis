@@ -89,13 +89,6 @@ abbrev OφX {T : Over (Spec (CommRingCat.of R))} (P x : T ⟶ D.toPre.P.A) :
     Fin 4 → (T.left ⟶ D.toPre.P.A.left) :=
   ![(padd D.toPre.P.A P x).left, x.left, P.left, (toUnit T ≫ η[D.toPre.P.A]).left]
 
-omit [Module O D.toPre.X] in
-lemma OφX_0 {T : Over (Spec (CommRingCat.of R))} (P x : T ⟶ D.toPre.P.A) :
-    OφX (D := D) P x 0 = (padd D.toPre.P.A P x).left := rfl
-omit [Module O D.toPre.X] in
-lemma OφX_1 {T : Over (Spec (CommRingCat.of R))} (P x : T ⟶ D.toPre.P.A) :
-    OφX (D := D) P x 1 = x.left := rfl
-
 lemma eAk (k : Fin 4) : D.toPre.Oφ (U.gt e).pG (star a • χ) k =
     OφX (D := D) (U.gt e).pG (xc e χ (G := G) ≫ ιD.onB.act (star a)) k := by
   rw [← c_star (G := G) ιD e a χ]

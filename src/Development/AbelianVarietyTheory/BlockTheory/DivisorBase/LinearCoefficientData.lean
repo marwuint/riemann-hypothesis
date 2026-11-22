@@ -124,22 +124,6 @@ def Wc (θ : InfFam D) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
 def IsFrameOf (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) : Prop :=
   ∃ (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), Lev.IsBaseFrame V β Λ N
 
-def DimPartsAt {Pg : Finset (Pl D.host.E)} (h : IsRecPlaces D Pg) (P : LevelP Pg D.R.r ℂ) : Prop :=
-  ∀ (θ : InfFam D), IsInfFam θ →
-  ∀ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
-    (M₀ : Mult.DSModel (D.sp.Y 0) (Mult.parB (Mult.tparRec D) 0))
-    (M₁ : Mult.DSModel (D.sp.W j) (Mult.parW (D.sp.W j) (Formalism.L2.NTheta.wtOf D (D.sp.W j))))
-    (β₀ : GL (Fin (D.sp.Y 0).rank) (Lev.EAf D)) (β₁ : GL (Fin (D.sp.W j).rank) (Lev.EAf D)),
-    IsFrameOf (D.sp.Y 0) β₀ → IsFrameOf (D.sp.W j) β₁ →
-  ∀ S : Finset (HeightOneSpectrum (𝓞 D.host.F)),
-    Mult.SphOff (Lev.levG (D.sp.Y 0) β₀ (datE D Pg P) : Set (GA D (D.sp.Y 0)))
-      (Lev.levChi (D.sp.Y 0) β₀ (datE D Pg P)) S →
-    Mult.SphOff (Lev.levG (D.sp.W j) β₁ (datWj D j h1 h2 Pg P) : Set (GA D (D.sp.W j)))
-      (Lev.levChi (D.sp.W j) β₁ (datWj D j h1 h2 Pg P)) S →
-  ∀ c : Eig D,
-    FiniteDimensional ℂ (EEc θ M₀ h β₀ P S c) ∧ FiniteDimensional ℂ (Wc θ j h1 h2 M₁ h β₁ P S c) ∧
-      Module.finrank ℂ (Wc θ j h1 h2 M₁ h β₁ P S c) = Module.finrank ℂ (EEc θ M₀ h β₀ P S c)
-
 end GlobalTheory.IndefiniteRowSideFullHecke.LinearCoefficientData
 
 end

@@ -19,8 +19,6 @@ def pB (P : PlaceMap F K) : AF F ⊗[F] E →ₐ[F] K ⊗[F] E :=
 
 theorem iB_tmul (P : PlaceMap F K) (a : K) (b : E) : iB P (a ⊗ₜ[F] b) = P.inj a ⊗ₜ[F] b := rfl
 
-theorem pB_tmul (P : PlaceMap F K) (a : AF F) (b : E) : pB P (a ⊗ₜ[F] b) = P.proj a ⊗ₜ[F] b := rfl
-
 end Tensor
 
 end GlobalTheory.CompanionTheory.SaGen.LiftSupp

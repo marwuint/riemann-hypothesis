@@ -59,8 +59,6 @@ theorem chrMap_mem_tupGrp {S : Set ℕ} {ξ : Chr F E K} (h : ξ ∈ tupGrp F E 
 def tupMap (S : Set ℕ) : Tup F E K S →* Tup F E L S :=
   ((chrMap ι).comp (tupGrp F E K S).subtype).codRestrict (tupGrp F E L S) fun x => chrMap_mem_tupGrp ι x.2
 
-theorem tupMap_coe {S : Set ℕ} (μ : Tup F E K S) : ((tupMap ι S μ : Tup F E L S) : Chr F E L) = chrMap ι μ := rfl
-
 theorem isResChar_chrMap {ξ : Chr F E K} {P : HeightOneSpectrum (𝓞 E)} {χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ}
     (h : IsResChar ξ P χ) : IsResChar (chrMap ι ξ) P ((Units.map ι.toMonoidHom).comp χ) := by
   unfold IsResChar at h ⊢
@@ -125,12 +123,6 @@ theorem LevFam.coefMap_inv {SG : Finset (HeightOneSpectrum (𝓞 E))} (Λ : LevF
     (Λ.coefMap ι).inv = Λ.inv.coefMap ι := by
   funext w
   exact Lev.coefMap_inv ι (Λ w)
-
-theorem LevFam.coefMap_reidx {SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (h : SG = SG') (Λ : LevFam E K n SG') :
-    (Λ.reidx h).coefMap ι = (Λ.coefMap ι).reidx h := rfl
-
-theorem LevFam.inv_reidx {SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (h : SG = SG') (Λ : LevFam E K n SG') :
-    (Λ.reidx h).inv = Λ.inv.reidx h := rfl
 
 theorem LevFam.glue_coefMap_reidx {SG Q₁ Q₂ : Finset (HeightOneSpectrum (𝓞 E))} (hQ : Q₁ = Q₂) (A : LevFam E K n SG)
     (A' : LevFam E L n SG) (B : LevFam E K n Q₂) (B' : LevFam E L n Q₁) (hA : A' = A.coefMap ι)

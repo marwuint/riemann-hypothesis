@@ -84,9 +84,6 @@ def e17 (hT : RestPathTo) (hF : RestPathFrom) (hS : RestStd) (n N : ℕ) (LL : L
     WIdx n N LL B ≃ Formalism.InvariantFactorPaths.GelfandTsetlinBases.PathIdx n N (isV LL) (Bn B) :=
   Equiv.ofBijective (f17 hT hS) (pathWordMap_bijective hT hF hS)
 
-theorem pathWordEquiv_fst_eq (hT : RestPathTo) (hF : RestPathFrom) (hS : RestStd) {n N : ℕ} {LL : Letters (Fin N)}
-    {B : Fin N → ℕ} (x : WIdx n N LL B) : (e17 hT hF hS n N LL B x).1 = (ext x.1.1.mu, x.1.2) := rfl
-
 theorem rename_Psi (hT : RestPathTo) (hF : RestPathFrom) (hS : RestStd) (hP : RestPsi) (R : Type) [CommRing R]
     {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} (x : WIdx n N LL B) :
     rename (iv N n) (Psi R x.1.1.mu x.1.2) =

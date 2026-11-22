@@ -29,17 +29,9 @@ def pullbackOverField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : T
   mult := T.mult
   boundary := T.boundary.map fun D => D.comap h
 
-theorem pullbackOverField_baseField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
-    (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
-    (T.pullbackOverField Y k' q h).base = k' := rfl
-
 @[simp] theorem pullbackOverField_scheme (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).scheme = Y := rfl
-
-theorem pullbackOverField_structureMorphism (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
-    (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
-    (T.pullbackOverField Y k' q h).structMap = q := rfl
 
 @[simp] theorem pullbackOverField_ideal (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :

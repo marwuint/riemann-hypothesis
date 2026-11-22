@@ -244,11 +244,6 @@ def actH (σ : E →+* Ω) (bar : 𝓞 E ≃+* 𝓞 E) : 𝓞 E →+* Module.End
   (LinearMap.prodMapRingHom Ω Ω (Module.Dual Ω Ω)).comp
     (RingHom.prod (scal Ω (chi σ)) (scal (Module.Dual Ω Ω) ((chi σ).comp bar.toRingHom)))
 
-omit [NumberField E] in
-
-theorem actH_apply (σ : E →+* Ω) (bar : 𝓞 E ≃+* 𝓞 E) (a : 𝓞 E) (y : Ω × Module.Dual Ω Ω) :
-    actH σ bar a y = (chi σ a * y.1, chi σ (bar a) • y.2) := rfl
-
 def latH (A : Subring Ω) (δ t : Ω) : Submodule A (Ω × Module.Dual Ω Ω) where
   carrier := {y | y.1 / t ∈ A ∧ y.1 / t / δ - t * y.2 1 ∈ A}
   zero_mem' := by simp [A.zero_mem]
@@ -262,9 +257,6 @@ def latH (A : Subring Ω) (δ t : Ω) : Submodule A (Ω × Module.Dual Ω Ω) wh
     convert A.mul_mem c.2 hy.2 using 1
     change (c : Ω) * y.1 / t / δ - t * ((c : Ω) * y.2 1) = _
     ring⟩
-
-theorem mem_latH {A : Subring Ω} {δ t : Ω} {y : Ω × Module.Dual Ω Ω} :
-    y ∈ latH A δ t ↔ y.1 / t ∈ A ∧ y.1 / t / δ - t * y.2 1 ∈ A := Iff.rfl
 
 variable (σ : E →+* Ω) (bar : 𝓞 E ≃+* 𝓞 E) (ω : 𝓞 E)
 

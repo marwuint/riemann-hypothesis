@@ -308,10 +308,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : TermTie D)
 
-def Ineq2a (D : D7) {u u' : D.what₂.Word} (Φ : Set (D.s.Term u u')) (c : ℝ) : Prop :=
-  Summable (fun p : pairsIn D.s Φ => ‖D.s.pval p.1‖) →
-    hsNormSq (KOf D.s u u' Φ) ≤ c * (∑' p : pairsIn D.s Φ, D.s.pval p.1).re
-
 end Rec
 
 end Formalism.MainNotions.KappaEndpoints
@@ -365,14 +361,6 @@ theorem two_pow_le_height_bound (b CH C : ℝ) (r m f : ℕ) (hb : 2 ≤ b) (hm 
     _ = 2 * (CH + 1) * (m : ℝ) ^ 2 * f := by ring
     _ ≤ C * (m : ℝ) ^ 2 * f := by
         apply mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hC (by positivity)) hf0
-
-def AmplitudeBoundWithoutNorms (large₂ : SizeData₂ D) (om : ∀ u : D.what₂.Word, D.s.Term u u → ℝ) (CH Cs C : ℝ) : Prop :=
-  ∀ u : D.what₂.Word, LatticeIndexAndWeightTheory.TieOK X u → ∀ t : D.s.Term u u, LatticeIndexAndWeightTheory.IsInertiaCyclotomicGeneratorElement t →
-    Real.sqrt (hsNormSq (X.Jt t)) ≤ Real.sqrt (Module.finrank ℂ (X.Hpi u) : ℝ) *
-      (om u t * (C / D.R.k) ^ ((LatticeIndexAndWeightTheory.jOf X t : ℝ) * ((D.R.k : ℝ) - 1 - LatticeIndexAndWeightTheory.jOf X t) * D.R.f) *
-        LatticeIndexAndWeightTheory.DelJ X t ^ (-(((D.R.k : ℝ) - 1 - LatticeIndexAndWeightTheory.jOf X t) / 2)) *
-        Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
-        ∏ τ, LatticeIndexAndWeightTheory.sg X t (large₂.sc.b ^ (CH * (D.R.m : ℝ))) τ ^ (-(Cs * D.R.k)))
 
 end Rec
 
@@ -519,8 +507,6 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
-theorem lattice_index_eq_relIndex (A B : Submodule (𝓞 E) S.V) : idx S A B = B.toAddSubgroup.relIndex A.toAddSubgroup := rfl
-
 variable (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) (F : LFlag S r T) (F' : LFlag S r T')
   (hz : F.zt = F.fl.z) (hz' : F'.zt = F'.fl.z)
 
@@ -547,12 +533,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Same
 
 variable (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ)
-
-theorem hypothesis_iff_K2_hypothesis : LatticeIndexAndWeightTheory.Hyp D large₂ C' Cl Cg cb Cu cT CT C0 ↔ NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cu cT CT C0 := Iff.rfl
-
-theorem fifth_first_iff_second : LatticeIndexAndWeightTheory.RelativePresentationLiterature D large₂ C' Cl Cg cb Cu cT CT C0 ↔ NonGenericAndKTwoTheorems.Conclusion2 D large₂ C' Cl Cg cb Cu cT CT C0 := Iff.rfl
-
-theorem fifth_second_iff_third : LatticeIndexAndWeightTheory.PairsWithFiniteGroup D large₂ C' Cl Cg cb Cu cT CT C0 ↔ NonGenericAndKTwoTheorems.PointsLemma D large₂ C' Cl Cg cb Cu cT CT C0 := Iff.rfl
 
 end Same
 
@@ -606,54 +586,11 @@ section Main
 
 variable {D : D7} {large₂ : SizeData₂ D} (X : TermTie D)
 
-def PairBoundOnFamily (D : D7) (u : D.what₂.Word) (Φ : Set (D.s.Term u u)) : Prop :=
-  Summable (fun p : pairsIn D.s Φ => ‖D.s.pval p.1‖) ∧
-    (∏ i : Fin 2, (1 + 3 / (D.host.g i : ℝ))) ^ D.R.f * gaG D * (∑' p : pairsIn D.s Φ, D.s.pval p.1).re ≤
-      (D.duS u : ℝ) * Real.exp (-((D.R.k : ℝ) * D.R.f * Real.log D.R.k))
-
-theorem pair_bound_on_all_iff (D : D7) (u : D.what₂.Word) : PairBoundOnFamily D u (NonGenericAndKTwoTheorems.TermsPP D u u) ↔ TheoremK2PairBound D u := Iff.rfl
-
 end Main
-
-section Abstract
-
-theorem label_real_inequality (k j : ℕ) (Q Del H S G1 G2 Cs Cp r3 : ℝ) (hQ : 0 ≤ Q) (hDel : 0 < Del) (hDH : Del ≤ H * S ^ 2)
-    (hH : 1 ≤ H) (hS : 1 ≤ S) (hG1 : 0 ≤ G1) (hG2 : 0 ≤ G2)
-    (hexp : ((j : ℝ) + 1) + Cp * k + r3 ≤ Cs * k) :
-    (Q * Del ^ (-(((k : ℝ) - 1 - j) / 2)) * G1 * S ^ (-(Cs * k))) * (Del ^ ((k : ℝ) / 2) * G2 * S ^ (Cp * k)) ≤
-      Q * G1 * G2 * H ^ (((j : ℝ) + 1) / 2) * S ^ (-r3) := by
-  have hS0 : 0 < S := by linarith
-  have hH0 : 0 < H := by linarith
-  have e1 := Formalism.HermitianLatticeCounting.Final.S6.expIdentity k j Del hDel
-  have e2 : Del ^ (((j : ℝ) + 1) / 2) ≤ H ^ (((j : ℝ) + 1) / 2) * S ^ ((j : ℝ) + 1) := by
-    calc Del ^ (((j : ℝ) + 1) / 2) ≤ (H * S ^ 2) ^ (((j : ℝ) + 1) / 2) :=
-          Real.rpow_le_rpow hDel.le hDH (by positivity)
-      _ = H ^ (((j : ℝ) + 1) / 2) * (S ^ 2) ^ (((j : ℝ) + 1) / 2) := Real.mul_rpow hH0.le (by positivity)
-      _ = H ^ (((j : ℝ) + 1) / 2) * S ^ ((j : ℝ) + 1) := by
-          congr 1
-          rw [← Real.rpow_natCast S 2, ← Real.rpow_mul hS0.le]
-          congr 1; push_cast; ring
-  have e3 : S ^ ((j : ℝ) + 1) * S ^ (-(Cs * k)) * S ^ (Cp * k) ≤ S ^ (-r3) := by
-    rw [← Real.rpow_add hS0, ← Real.rpow_add hS0]
-    exact Real.rpow_le_rpow_of_exponent_le hS (by linarith)
-  have hSa : 0 ≤ S ^ (-(Cs * k)) * S ^ (Cp * k) := by positivity
-  calc (Q * Del ^ (-(((k : ℝ) - 1 - j) / 2)) * G1 * S ^ (-(Cs * k))) * (Del ^ ((k : ℝ) / 2) * G2 * S ^ (Cp * k))
-      = Q * G1 * G2 * (Del ^ ((k : ℝ) / 2) * Del ^ (-(((k : ℝ) - 1 - j) / 2))) * (S ^ (-(Cs * k)) * S ^ (Cp * k)) := by ring
-    _ = Q * G1 * G2 * Del ^ (((j : ℝ) + 1) / 2) * (S ^ (-(Cs * k)) * S ^ (Cp * k)) := by rw [e1]
-    _ ≤ Q * G1 * G2 * (H ^ (((j : ℝ) + 1) / 2) * S ^ ((j : ℝ) + 1)) * (S ^ (-(Cs * k)) * S ^ (Cp * k)) :=
-        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left e2 (by positivity)) hSa
-    _ = Q * G1 * G2 * H ^ (((j : ℝ) + 1) / 2) * (S ^ ((j : ℝ) + 1) * S ^ (-(Cs * k)) * S ^ (Cp * k)) := by ring
-    _ ≤ Q * G1 * G2 * H ^ (((j : ℝ) + 1) / 2) * S ^ (-r3) :=
-        mul_le_mul_of_nonneg_left e3 (by positivity)
-
-end Abstract
 
 section Labels
 
 variable {D : D7} (X : TermTie D) {u : D.what₂.Word}
-
-def k2lab (t : D.s.Term u u) : ℕ → D.host.E :=
-  fun l => if l ≤ LatticeIndexAndWeightTheory.jOf X t then Dl (X.fl t).fl (X.fl' t).fl l else 0
 
 def k2ends (D : D7) (j : ℕ) (δ : ℕ → D.host.E) : Finset ℕ := by
   classical exact (Finset.Icc 1 j).filter (fun l => δ l ≠ 0)
@@ -664,33 +601,6 @@ def k2sg (D : D7) (H1 : ℝ) (j : ℕ) (δ : ℕ → D.host.E) (τ : D.what₂.T
   (k2ends D j δ).fold max 1 (fun l => absReal D.host.rdE (embS D τ) D.R.rS l (δ l) / (2 * H1) ^ (2 * D.R.rS))
 
 def k2S (D : D7) (H1 : ℝ) (j : ℕ) (δ : ℕ → D.host.E) : ℝ := ∏ τ, k2sg D H1 j δ τ
-
-theorem ends_eq_minor_ends (t : D.s.Term u u) : LatticeIndexAndWeightTheory.ends X t = k2ends D (LatticeIndexAndWeightTheory.jOf X t) (k2lab X t) := by
-  unfold LatticeIndexAndWeightTheory.ends blockEnds k2ends k2lab
-  ext l
-  simp only [Finset.mem_filter, Finset.mem_Icc]
-  constructor
-  · rintro ⟨h1, h2⟩
-    exact ⟨h1, by rw [if_pos h1.2]; exact h2⟩
-  · rintro ⟨h1, h2⟩
-    rw [if_pos h1.2] at h2
-    exact ⟨h1, h2⟩
-
-theorem sigma_eq_minor_sigma (t : D.s.Term u u) (H1 : ℝ) (τ : D.what₂.Tau) :
-    LatticeIndexAndWeightTheory.sg X t H1 τ = k2sg D H1 (LatticeIndexAndWeightTheory.jOf X t) (k2lab X t) τ := by
-  unfold LatticeIndexAndWeightTheory.sg k2sg
-  rw [ends_eq_minor_ends]
-  refine Finset.fold_congr fun l hl => ?_
-  have hl' : l ≤ LatticeIndexAndWeightTheory.jOf X t := by
-    classical
-    unfold k2ends at hl
-    exact (Finset.mem_Icc.1 (Finset.mem_filter.1 hl).1).2
-  unfold k2lab
-  rw [if_pos hl']
-
-theorem discriminant_eq_minor_norm (t : D.s.Term u u) : LatticeIndexAndWeightTheory.DelJ X t = k2Del D (LatticeIndexAndWeightTheory.jOf X t) (k2lab X t) := by
-  unfold LatticeIndexAndWeightTheory.DelJ LatticeIndexAndWeightTheory.NDl k2Del k2lab
-  rw [if_pos le_rfl]
 
 theorem one_le_minor_sigma (H1 : ℝ) (j : ℕ) (δ : ℕ → D.host.E) (τ : D.what₂.Tau) : 1 ≤ k2sg D H1 j δ τ := by
   unfold k2sg
@@ -720,12 +630,6 @@ def k2e (CH Ch Cp : ℝ) (j : ℕ) (δ : ℕ → D.host.E) : ℝ :=
   k2Del D j δ ^ ((D.R.k : ℝ) / 2) * Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4) *
     k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (Cp * D.R.k)
 
-def MinorCosetSum (u : D.what₂.Word) (CH Cc : ℝ) : Prop :=
-  ∀ j ∈ Finset.Icc 1 D.R.rS, ∀ T : Finset (ℕ → D.host.E),
-    (∀ δ ∈ T, ∃ t : D.s.Term u u, LatticeIndexAndWeightTheory.IsInertiaCyclotomicGeneratorElement t ∧ LatticeIndexAndWeightTheory.jOf X t = j ∧ k2lab X t = δ) →
-    ∑ δ ∈ T, k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (-(3 * (D.R.rS : ℝ))) ≤
-      Hb large₂.sc.b Cc D.R.m D.R.f ^ (Cc * (D.R.rS : ℝ))
-
 def k2A1 (C Ch Cc : ℝ) (j : ℕ) : ℝ :=
   (C / D.R.k) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) * Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
     Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4) * Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2) *
@@ -743,69 +647,6 @@ theorem amplitude_label_nonneg {CH Cs C : ℝ} (hC : 0 ≤ C) (j : ℕ) (δ : �
   have h4 : 0 ≤ k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ := by linarith [one_le_sigma_product (D := D) (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ]
   exact mul_nonneg (mul_nonneg (mul_nonneg (Real.rpow_nonneg h1 _) (Real.rpow_nonneg h2 _)) (Real.rpow_nonneg h3 _))
     (Real.rpow_nonneg h4 _)
-
-theorem minor_norm_le_height {om : ∀ u : D.what₂.Word, D.s.Term u u → ℝ} {CH Cs C : ℝ} (h2 : LatticeIndexAndWeightTheory.T2 D large₂ X om CH Cs C)
-    {u : D.what₂.Word} (hT : LatticeIndexAndWeightTheory.TieOK X u) (t : D.s.Term u u) (hG : LatticeIndexAndWeightTheory.IsInertiaCyclotomicGeneratorElement t) :
-    k2Del D (LatticeIndexAndWeightTheory.jOf X t) (k2lab X t) ≤
-      Hb large₂.sc.b C D.R.m D.R.f * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) (LatticeIndexAndWeightTheory.jOf X t) (k2lab X t) ^ 2 := by
-  have h := (h2 u hT t hG).2.1
-  rw [discriminant_eq_minor_norm] at h
-  simp only [sigma_eq_minor_sigma] at h
-  rw [Finset.prod_pow] at h
-  exact h
-
-theorem minor_norm_pos (h3 : LatticeIndexAndWeightTheory.LatticeIndicesFiniteBound D X) {u : D.what₂.Word} (hT : LatticeIndexAndWeightTheory.TieOK X u) (t : D.s.Term u u) (hG : LatticeIndexAndWeightTheory.IsInertiaCyclotomicGeneratorElement t) :
-    0 < k2Del D (LatticeIndexAndWeightTheory.jOf X t) (k2lab X t) := by
-  obtain ⟨hb, hg, hi, h⟩ := h3 u hT t hG
-  rw [discriminant_eq_minor_norm] at h
-  have hb' : (0 : ℝ) < (LatticeIndexAndWeightTheory.b1T X t : ℝ) ^ 2 := by positivity
-  have h1 : (0 : ℝ) < (LatticeIndexAndWeightTheory.gT X t : ℝ) * (LatticeIndexAndWeightTheory.iT X t : ℝ) ^ 2 := by positivity
-  have h2 := lt_of_lt_of_le h1 h
-  by_contra hn
-  have : k2Del D (LatticeIndexAndWeightTheory.jOf X t) (k2lab X t) / (LatticeIndexAndWeightTheory.b1T X t : ℝ) ^ 2 ≤ 0 :=
-    div_nonpos_of_nonpos_of_nonneg (not_lt.1 hn) hb'.le
-  linarith
-
-theorem label_sum_bound {om : ∀ u : D.what₂.Word, D.s.Term u u → ℝ} {CH Cs C Ch Cp Cc : ℝ} (hC : 0 ≤ C) (hCp : 0 ≤ Ch)
-    (hCs : Cp + 4 ≤ Cs) (h2 : LatticeIndexAndWeightTheory.T2 D large₂ X om CH Cs C) (h3 : LatticeIndexAndWeightTheory.LatticeIndicesFiniteBound D X) {u : D.what₂.Word} (hT : LatticeIndexAndWeightTheory.TieOK X u)
-    (hc : MinorCosetSum large₂ X u CH Cc) (j : ℕ) (hj : j ∈ Finset.Icc 1 D.R.rS) (T : Finset (ℕ → D.host.E))
-    (hTm : ∀ δ ∈ T, ∃ t : D.s.Term u u, LatticeIndexAndWeightTheory.IsInertiaCyclotomicGeneratorElement t ∧ LatticeIndexAndWeightTheory.jOf X t = j ∧ k2lab X t = δ) :
-    ∑ δ ∈ T, k2a large₂ CH Cs C j δ * k2e large₂ CH Ch Cp j δ ≤ k2A1 large₂ C Ch Cc j := by
-  set Q := (C / (D.R.k : ℝ)) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) with hQ
-  set G1 := Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) with hG1
-  set G2 := Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4) with hG2
-  have hQ0 : 0 ≤ Q := Real.rpow_nonneg (by positivity) _
-  have hH := one_le_height_bound large₂ hC (D := D)
-  have hHp := one_le_height_bound large₂ hCp (D := D)
-  have hG10 : 0 ≤ G1 := Real.rpow_nonneg (by linarith) _
-  have hG20 : 0 ≤ G2 := Real.rpow_nonneg (by linarith) _
-  have hjr : j ≤ D.R.rS := (Finset.mem_Icc.1 hj).2
-  have hrk : (D.R.rS : ℝ) + 1 ≤ D.R.k := by
-    have h1 := two_rank_add_two_eq_m D; have h2 := D.R.m_add_three_le_k
-    exact_mod_cast (by omega : D.R.rS + 1 ≤ D.R.k)
-  have hexp : ((j : ℝ) + 1) + Cp * D.R.k + 3 * (D.R.rS : ℝ) ≤ Cs * D.R.k := by
-    have hj' : (j : ℝ) ≤ D.R.rS := by exact_mod_cast hjr
-    have hk0 : (0 : ℝ) ≤ D.R.k := Nat.cast_nonneg _
-    have : (Cp + 4) * (D.R.k : ℝ) ≤ Cs * D.R.k := mul_le_mul_of_nonneg_right hCs hk0
-    have hr0 : (0 : ℝ) ≤ D.R.rS := Nat.cast_nonneg _
-    nlinarith
-  have each : ∀ δ ∈ T, k2a large₂ CH Cs C j δ * k2e large₂ CH Ch Cp j δ ≤
-      Q * G1 * G2 * Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2) *
-        k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (-(3 * (D.R.rS : ℝ))) := by
-    intro δ hδ
-    obtain ⟨t, hG, rfl, rfl⟩ := hTm δ hδ
-    exact label_real_inequality D.R.k (LatticeIndexAndWeightTheory.jOf X t) Q _ _ _ G1 G2 Cs Cp (3 * (D.R.rS : ℝ)) hQ0 (minor_norm_pos X h3 hT t hG)
-      (minor_norm_le_height large₂ X h2 hT t hG) hH (one_le_sigma_product _ _ _) hG10 hG20 hexp
-  calc ∑ δ ∈ T, k2a large₂ CH Cs C j δ * k2e large₂ CH Ch Cp j δ
-      ≤ ∑ δ ∈ T, Q * G1 * G2 * Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2) *
-        k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (-(3 * (D.R.rS : ℝ))) := Finset.sum_le_sum each
-    _ = Q * G1 * G2 * Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2) *
-        ∑ δ ∈ T, k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (-(3 * (D.R.rS : ℝ))) := by rw [Finset.mul_sum]
-    _ ≤ Q * G1 * G2 * Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2) *
-        Hb large₂.sc.b Cc D.R.m D.R.f ^ (Cc * (D.R.rS : ℝ)) :=
-        mul_le_mul_of_nonneg_left (hc j hj T hTm)
-          (mul_nonneg (mul_nonneg (mul_nonneg hQ0 hG10) hG20) (Real.rpow_nonneg (by linarith) _))
-    _ = k2A1 large₂ C Ch Cc j := rfl
 
 end Steps
 
@@ -884,8 +725,6 @@ end Assembly
 section Fam
 
 variable {eps : ℝ} (Fm : FamP eps) (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
-
-theorem fifth_family_iff_K2_family : LatticeIndexAndWeightTheory.SlopeLossFamily Fm ↔ NonGenericAndKTwoTheorems.FamilyNonIdentityTermSummability Fm := Iff.rfl
 
 end Fam
 
@@ -1805,32 +1644,6 @@ section Glue
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
-def ngsC (H : HermSp M V) (m : ι → V) (v : V) : ι → E := (H.gram m)⁻¹.mulVec (fun j => H.h v (m j))
-
-theorem ngsC_add (m : ι → V) (v w : V) : ngsC H m (v + w) = ngsC H m v + ngsC H m w := by
-  unfold ngsC
-  rw [← Matrix.mulVec_add]
-  congr 1
-  funext j
-  exact H.h_add_left _ _ _
-
-theorem ngsC_smul (m : ι → V) (c : E) (v : V) : ngsC H m (c • v) = c • ngsC H m v := by
-  unfold ngsC
-  rw [← Matrix.mulVec_smul]
-  congr 1
-  funext j
-  exact H.h_smul_left _ _ _
-
-def ngsT (H : HermSp M V) (m m' : ι → V) : V →ₗ[E] V where
-  toFun v := v - ∑ i, ngsC H m v i • m i + ∑ i, ngsC H m v i • m' i
-  map_add' v w := by
-    simp only [ngsC_add, Pi.add_apply, add_smul, Finset.sum_add_distrib]; abel
-  map_smul' c v := by
-    simp only [ngsC_smul, Pi.smul_apply, smul_eq_mul, mul_smul, RingHom.id_apply, ← Finset.smul_sum, smul_add, smul_sub]
-
-theorem ngsT_apply (m m' : ι → V) (v : V) :
-    ngsT H m m' v = v - ∑ i, ngsC H m v i • m i + ∑ i, ngsC H m v i • m' i := rfl
-
 end Glue
 
 variable {P : FPair H r}
@@ -1852,4 +1665,3 @@ end Formalism.MainNotions.KappaEndpoints
 namespace Formalism.MainNotions.KappaEndpoints
 
 end Formalism.MainNotions.KappaEndpoints
-

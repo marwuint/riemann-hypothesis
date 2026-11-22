@@ -63,9 +63,6 @@ def coreProd (hV : InnerProductSpace.Core ℂ V) (hW : InnerProductSpace.Core �
       linarith
     exact Prod.ext (core_eq_zero_of_re hV _ e1) (core_eq_zero_of_re hW _ e2)
 
-theorem coreProd_inner (hV : InnerProductSpace.Core ℂ V) (hW : InnerProductSpace.Core ℂ W)
-    (x y : V × W) : (coreProd hV hW).inner x y = hV.inner x.1 y.1 + hW.inner x.2 y.2 := rfl
-
 end Core
 
 variable {K : Type*} [Field K]

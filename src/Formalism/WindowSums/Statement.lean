@@ -59,12 +59,6 @@ def WindowSum : Prop :=
     S ⊆ Finset.Ico a (a + L) → 0 ∉ S → (∀ i ∈ S, |i| ≤ D) →
     ((∑ i ∈ S, padicValInt ℓ i : ℕ) : ℝ) ≤ (L : ℝ) / ((ℓ : ℝ) - 1) + Real.logb ℓ D
 
-def RSplit : Prop :=
-  ∀ (R : Type) [CommRing R] (P : Polynomial R), ∃ P₁ : Polynomial R,
-    P - Polynomial.C (P.eval 1) = (Polynomial.X - 1) * P₁ ∧
-    ∀ (V : Type) [AddCommGroup V] [Module R V] (T : Module.End R V) (w : V),
-      P.eval 1 • w = Polynomial.aeval T P w - (T (Polynomial.aeval T P₁ w) - Polynomial.aeval T P₁ w)
-
 def Lagrange : Prop :=
   ∀ (R : Type) [CommRing R] [IsDomain R] (V : Type) [AddCommGroup V] [Module R V]
     (T : Module.End R V) {ι : Type} [DecidableEq ι] (I S : Finset ι) (γ : ι → R) (d : R) (x : V),

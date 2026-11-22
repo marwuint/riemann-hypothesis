@@ -28,11 +28,6 @@ abbrev lat (E : ExpSet D) : AddSubgroup (WO E.V E.W) := latO E.V E.W E.ΛV E.ΛW
 
 def badN (D : D7) : ℕ := D.host.QS * D.host.q * Ideal.absNorm D.host.ccK
 
-def ChiGood (E : ExpSet D) : Prop :=
-  ∃ χ : Formalism.L2.Host.HChar D.host.E, ChrEq E.χW χ ∧
-    (∀ Q : HeightOneSpectrum (𝓞 D.host.E), ((modN E 1 : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal → χ.UnrAt Q) ∧
-    ∀ Q : HeightOneSpectrum (𝓞 D.host.E), GlobalTheory.IdemSupport.cP Q ≠ Q → ∀ k, χ.resFin (Q.under (𝓞 D.host.F)) k = 1
-
 section Core
 
 variable (T : CoreJ D) (j : ℕ) (E : ExpSet D) (hW : T.V j T.σ₀ = E.W) (hr : E.W.rank = D.R.r) (w : WeightFamilies.Wt D j)

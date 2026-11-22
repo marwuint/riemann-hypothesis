@@ -298,12 +298,6 @@ def cxOfModels : CxPkg Tau r j Comp where
   normDetInf := fun t z => onQuot
     (fun w => detNorm (hodgeC (Y z.1) (κ z.1)) ((s z.1 t : ℂ) / (mat (x0F (Y z.1)) (κ z.1 t)).det) w t) z.2
 
-def ptOfFrame (k : Comp) (x : (Y k).dom) : (cxOfModels hj Y hr hp κ B s).XC :=
-  ⟨k, Quot.mk _ ⟨domPt (Y k) hj (κ k) x, domPt_mem (Y k) hj (κ k) (hp k) x.2⟩⟩
-
-def invariantB (k : Comp) : BdData Tau j (r - j) (gammaU (Y k) hj (κ k)) :=
-  invariantData (gammaU_le (Y k) hj (κ k) (hp k)) (hodgeC (Y k) (κ k)) (hodgeC_pos _ _)
-
 end Models
 
 section Moduli

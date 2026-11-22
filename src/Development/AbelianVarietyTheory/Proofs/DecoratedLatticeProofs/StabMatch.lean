@@ -317,20 +317,6 @@ variable {u : D.what₂.Word} {d : GlobalTheory.SeeSaw.Dat D u} {k : Type} [Fiel
   [IsNonarchimedeanLocalField k] {ι : Type} (o : GlobalTheory.FinPl.OffDat d k ι) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d o.τ PP.1)
   (F : Formalism.L2.Forms.Forms0 D u)
 
-def ChainFacts (L : Lat (D.sp.Y 0)) (b : GlobalTheory.SeeSaw.BesAt (D.sp.Y 0) (D.sp.X 0) D.R.rS) : Prop :=
-  ∃ M : Lat b.V₀,
-    (∀ v, v ∉ d.c.S → IsSelfDualC b.V₀ M ∧ MonoAt b.d L M v ∧ PrimAt d.c.ψ b.d L v ∧ LastAt d.c.ψ b.d (vecB b.o b.ζ) L M v) ∧
-    (∀ v, v ∉ d.c.S → ¬ o.atT v → ∃ LL, IsSelfDualC b.L LL ∧ OrthAt b.o M (d.x 0).L LL v) ∧
-    (∀ i, ∃ β₀ : GlobalTheory.FinPl.Frame (o.p i) b.V₀ (Fin (D.sp.X 0).rank ⊕ Fin 1), IsSumFrame b.o b.ζ (o.β 0 i) β₀ ∧
-      β₀.IsLat M (GlobalTheory.LatPair.gluedS o.q 1 (o.Q 0 i).ker (o.Q 0 i).vec)) ∧
-    (∀ PP, valuation (G PP).k ((G PP).q.pr (incA D (star b.ζ ⬝ᵥ b.L.gram *ᵥ b.ζ))) = 1 ∧
-      WShape (G PP).q b.d b.o b.ζ L (fun i => ((((G PP).S.ϖ : (G PP).kˣ) : (G PP).k) ^ (i.1 + 1))⁻¹)
-        (fun i => ((((G PP).S.ϖ : (G PP).kˣ) : (G PP).k) ^ (2 * D.R.rS - i.1 + 1))⁻¹)
-        (((((G PP).S.ϖ : (G PP).kˣ) : (G PP).k) ^ (D.R.rS + 1))⁻¹) 1 (d.x 0).L) ∧
-    ∀ v, v ∉ d.c.S → ∀ a ∈ grpAt (D.sp.X 0) (· = v), ∀ y : Formalism.UG.UPts (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _))
-      (FiniteAdeleRing (𝓞 D.host.F) D.host.F), GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a = y.1.1 →
-      ((y : GL _ _) ∈ F.cls0.lev.U ↔ Moves (D.sp.Y 0) (embA b.d b.o a) L L (· = v))
-
 end Chain
 
 def toBes {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D} {u : D.what₂.Word}

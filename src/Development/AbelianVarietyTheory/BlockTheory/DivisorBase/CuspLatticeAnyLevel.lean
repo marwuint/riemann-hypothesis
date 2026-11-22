@@ -20,10 +20,6 @@ variable {WL : Type} [AddCommGroup WL] [Module LL WL] [Module Ks WL] [IsScalarTo
 variable {W : (LL →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (W σ)] [∀ σ, InnerProductSpace ℂ (W σ)]
 variable {G : Type} [Group G] [Fintype G]
 
-def IsGoodBasis (A : FormsL LL Ks WL W G) (J0 : Subgroup G) (lam0 : J0 →* LLˣ) (eC : G → LL) {d : ℕ}
-    (b : Fin d → WL) : Prop :=
-  LinearIndependent LL b ∧ Submodule.span LL (Set.range b) = A.Wgood J0 lam0 eC
-
 omit [NumberField LL] in
 
 def IsCentralIdem (eC : G → LL) : Prop :=

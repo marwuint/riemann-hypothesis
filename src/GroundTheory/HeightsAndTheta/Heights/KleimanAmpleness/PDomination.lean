@@ -21,10 +21,6 @@ abbrev pullPow (x : Fin (N + 1) → Ω) (x' : Fin (N' + 1) → Ω) (n : ℕ) (J 
     Submodule (chartRing S x' J) Ω :=
   ((pullSys (S := S) x x').pow n).sub J
 
-theorem pullPow_succ (n : ℕ) (J : Chart x') :
-    pullPow (S := S) x x' (n + 1) J = Submodule.span _ {z | ∃ q ∈ (pullSys (S := S) x x').sub J,
-      ∃ y ∈ pullPow (S := S) x x' n J, z = q • y} := rfl
-
 theorem chartRing_eq_ampleBase {i : Fin (N + 1)} (hi : x i ≠ 0) :
     chartRing S x (singleChart hi) = ampleBase (S := S) x i := by
   apply le_antisymm

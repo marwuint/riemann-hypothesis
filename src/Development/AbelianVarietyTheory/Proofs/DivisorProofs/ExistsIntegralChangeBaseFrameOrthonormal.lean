@@ -36,10 +36,6 @@ theorem ev_ext {z z' : 𝔸} (h : ∀ v, ev v z = ev v z') : z = z' :=
   (Algebra.TensorProduct.comm 𝔽 E (Formalism.L2.Herm.Af 𝔽)).injective
     (GlobalTheory.LatticeLocalGlobal.ext_components _ _ h)
 
-omit [IsCMField E] in
-theorem ev_inclE (v : HeightOneSpectrum (𝓞 𝔽)) (x : E) :
-    ev v (Formalism.UG.inclE (F := 𝔽) (Formalism.L2.Herm.Af 𝔽) x) = locEmb v x := rfl
-
 theorem ev_sigR (hc : CMData 𝔽 E) (v : HeightOneSpectrum (𝓞 𝔽)) (z : 𝔸) :
     ev v (Formalism.UG.sigR hc.sig (Formalism.L2.Herm.Af 𝔽) z) = locConj v (ev v z) := by
   induction z using TensorProduct.induction_on with

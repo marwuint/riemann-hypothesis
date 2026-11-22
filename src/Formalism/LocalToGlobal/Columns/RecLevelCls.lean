@@ -210,10 +210,6 @@ section Base
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E))
 
-theorem base_L : (Deco.base E n ST SG).L = baseLb E n ST := rfl
-
-theorem base_Lsh : (Deco.base E n ST SG).Lsh = baseSh E n ST := rfl
-
 theorem rlc_dualSet (L : Submodule (𝓞 E) (Fin n → E)) :
     Formalism.BasicNotions.dualSet (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) L =
       (Formalism.HermitianLatticesTheory.dual (hStd E n) L : Set (Fin n → E)) := by

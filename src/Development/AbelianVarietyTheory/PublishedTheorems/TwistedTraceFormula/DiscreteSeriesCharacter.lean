@@ -66,9 +66,6 @@ def torusPt (ε : Fin n → Bool) (θ : Fin n → ℝ) : UJ ε :=
       rw [mul_right_comm, Pi.star_apply, Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]
       simp⟩
 
-theorem ujMat_torusPt (ε : Fin n → Bool) (θ : Fin n → ℝ) :
-    ujMat ε (torusPt ε θ) = diagonal fun a => Complex.exp (θ a * Complex.I) := rfl
-
 def wtVal (μ θ : Fin n → ℝ) : ℂ := Complex.exp ((∑ a, μ a * θ a : ℝ) * Complex.I)
 
 def weylDenom (θ : Fin n → ℝ) : ℂ :=

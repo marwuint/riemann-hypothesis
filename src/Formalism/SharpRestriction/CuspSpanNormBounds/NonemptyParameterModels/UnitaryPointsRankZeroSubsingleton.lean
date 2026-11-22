@@ -109,13 +109,6 @@ theorem aut_rowsTie_iff (D : D7) (X : RowsAut) :
   · rintro ⟨⟨pl, T⟩, h3⟩
     exact ⟨⟨pl, T⟩, fun v => aut_isHCParam_of_autTie T v, h3⟩
 
-theorem aut_exists_emb (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
-    (cm : CMData F E) (v : InfinitePlace F) : ∃ φ : E →+* ℂ, ∀ a : F, φ (algebraMap F E a) = v.embedding a := by
-  letI : Algebra F ℂ := v.embedding.toAlgebra
-  haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [cm.deg2]; norm_num)
-  refine ⟨(IsAlgClosed.lift : E →ₐ[F] ℂ).toRingHom, fun a => ?_⟩
-  exact (IsAlgClosed.lift : E →ₐ[F] ℂ).commutes a
-
 theorem unitary_points_rank_zero_subsingleton {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (cm : CMData F E) (J : Matrix (Fin 0) (Fin 0) E) :
     Subsingleton (Formalism.UG.UPts cm.sig J (Af F)) := by
@@ -127,30 +120,6 @@ theorem unitary_points_rank_zero_subsingleton {F E : Type} [Field F] [NumberFiel
   exact i.elim0
 
 attribute [local instance] unitary_points_rank_zero_subsingleton
-
-def aut_inst0 (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
-    (cm : CMData F E) : AutInst :=
-  letI : TopologicalSpace (Formalism.UG.UPts cm.sig (0 : Matrix (Fin 0) (Fin 0) E) (Af F)) := ⊥
-  { F := F, E := E, cm := cm, n := 0, J := 0
-    J_herm := Subsingleton.elim _ _
-    J_det := by simp
-    L := ⊤
-    L_span := Subsingleton.elim _ _
-    L_fg := by rw [Subsingleton.elim (⊤ : Submodule (𝓞 E) (Fin 0 → E)) ⊥]; exact Submodule.fg_bot
-    L_dual := fun x => ⟨fun _ y _ => ⟨0, by simp [Formalism.UG.hform]⟩, fun _ => trivial⟩
-    ε := fun _ i => i.elim0
-    φ := fun v => (aut_exists_emb F E cm v).choose
-    φ_over := fun v => (aut_exists_emb F E cm v).choose_spec
-    P := fun _ => 1
-    P_unit := fun _ => isUnit_one
-    P_spec := fun _ => Subsingleton.elim _ _
-    topf := ⊥
-    topf_group := inferInstance
-    topf_open := fun _ _ => isOpen_discrete _
-    topf_basis := fun U hU => ⟨1, le_rfl, fun x _ => by rw [Subsingleton.elim x 1]; exact mem_of_mem_nhds hU⟩ }
-
-theorem aut_inst0_n (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
-    (cm : CMData F E) : (aut_inst0 F E cm).n = 0 := rfl
 
 theorem aut_Jm_allPos (n : ℕ) : Formalism.REAL.Jm (allPos n) = 1 := by
   unfold Formalism.REAL.Jm allPos

@@ -13,19 +13,6 @@ def SerLoc (D : D7) : Prop :=
     ∀ F ∈ D.ntypes.MtPar (D.nd.mu i) (D.nd.j i) σ',
       D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (atPlace D k v (D.ntypes.eSer k f)) F ≠ 0 → f = D.ntypes.labPar k σ' v
 
-def TameOcc (D : D7) : Prop :=
-  ∀ (σ : D.what₂.FT) (k : Fin 2) (v : D.nd.PlG k), D.ntypes.cuspidal σ →
-    Formalism.MainNotions.N.TameGen D.nd (D.nd.plOm.1 (D.naut.plGw k v)) (D.ntypes.tg k v) →
-    ∀ i : D.nd.Loc, D.nd.l i ≠ D.host.g k → D.what₂.isot (D.nd.j i) σ ≠ ⊥ → D.nd.goodRow σ →
-      haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
-      haveI : Fact (D.what₂.places.resChar (D.nd.w i)).Prime := ⟨D.what₂.places.resChar_prime (D.nd.w i)⟩
-      Matrix.charpoly ((D.ntypes.rbar σ (D.nd.w i) (D.ntypes.tg k v) : GL (Fin D.R.r) _) :
-          Matrix (Fin D.R.r) (Fin D.R.r) _) =
-        ((Formalism.CyclotomicNorms.rootsBar (D.nd.lab k σ v)).map fun x =>
-          X - C (D.ntypes.iota k v (D.nd.w i) (Formalism.CyclotomicNorms.primeToPart (D.what₂.places.resChar (D.nd.w i)) x))).prod ∧
-      ∃ φ : G D.host.E D.nd.Om,
-        D.ntypes.rbar σ (D.nd.w i) (φ * D.ntypes.tg k v * φ⁻¹) = D.ntypes.rbar σ (D.nd.w i) (D.ntypes.tg k v) ^ D.host.g k
-
 abbrev redF (D : D7) (i : D.nd.Loc) (ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i)) :
     G D.host.E D.nd.Om →* GL (Fin D.R.r) (Formalism.CyclotomicNorms.Fbar (D.nd.l i)) :=
   mapRep ((D.naut.kFbar i).comp (IsLocalRing.residue (D.nd.O i))) ρ

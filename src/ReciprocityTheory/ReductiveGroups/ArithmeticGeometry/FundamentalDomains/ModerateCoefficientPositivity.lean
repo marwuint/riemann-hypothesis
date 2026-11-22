@@ -81,13 +81,6 @@ def FourierJacobiExpansion : Prop :=
       HasSum (fun ν : X.Ψ → ℝ => X.fj la ξ ν P x * cexp (4 * Real.pi * I * ∑ τ, (ν τ : ℂ) * s τ))
         (P (X.flow ξ s x))
 
-def FlowMinimumLowerBound : Prop :=
-  ∀ (r : ℕ) (X : Data E r) (B : ℝ), 0 ≤ B → ∃ C : ℝ, 0 < C ∧
-    ∀ ξ : Fin r → E, X.IsIso ξ → ∀ x ∈ X.dom, (∀ τ, X.c τ * X.maj x τ (Data.emb τ.1 ξ) ≤ 1) → ∀ s : X.Ψ → ℂ,
-      (∀ τ, |(s τ).re| ≤ B) → X.flow ξ s x ∈ X.dom → ∀ μ : ℝ, 0 ≤ μ →
-      (∀ τ, μ ≤ min (1 + (s τ).im / X.tt ξ x τ) (1 + (s τ).im / X.tt ξ x τ)⁻¹) →
-      C⁻¹ * X.la1 x * Real.sqrt μ ≤ X.la1 (X.flow ξ s x)
-
 def ModerateCoefficientPositivity : Prop :=
   ∀ (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (C A : ℝ), X.IsSec la P →
     (∀ x ∈ X.dom, X.pnorm la P x ≤ C * X.la1 x ^ (-A)) →

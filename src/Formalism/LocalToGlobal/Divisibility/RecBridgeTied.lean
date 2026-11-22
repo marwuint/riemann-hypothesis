@@ -17,9 +17,6 @@ section FieldsLL
 abbrev fieldsLL (D : Formalism.BasicNotions.D7) (X : Formalism.L2.Col.Fields) (e : X.Tau → (X.E →+* D.what₂.LL)) : Formalism.L2.Col.Fields :=
   { X with K := D.what₂.LL, fieldK := inferInstance, nfK := inferInstance, starK := inferInstance, emb := e }
 
-theorem fieldsLL_K (D : Formalism.BasicNotions.D7) (X : Formalism.L2.Col.Fields) (e : X.Tau → (X.E →+* D.what₂.LL)) :
-    (fieldsLL D X e).K = D.what₂.LL := rfl
-
 end FieldsLL
 
 section ColRec
@@ -125,8 +122,6 @@ attribute [instance] DivisionRowsColumns.grp DivisionRowsColumns.fin
 abbrev DivisionRowsColumns.toF {L : SizeData₂ D} (R : DivisionRowsColumns L) : DivisionRowsFace L :=
   DivisionRowsFace.ofCol3 L R.X R.e R.A3 R.P0 R.ψ0 R.P1 R.ψ1 R.c R.Sp R.Zsc R.Zs R.stable R.inBlock R.hOk R.hsep R.what₂
 
-theorem DivisionRowsColumns.toF_Dc {L : SizeData₂ D} (R : DivisionRowsColumns L) (Zs : DefSub R.A3.fam3.amb3) : (R.toF.fc Zs).Dc = R.c.face Zs := rfl
-
 structure DivisionPackageColumns {L : SizeData₂ D} (Rt : DivisionRowsColumns L) (C Cabs : ℝ) extends DivisionPackageFace Rt.toF C Cabs where
   hQ : ∀ u, ChainTie (inp u).ch (Rt.c.memQ (wU u))
   h0 : ∀ u, FirstCols Rt.c.hE (hQ u)
@@ -206,10 +201,6 @@ def DivisionRowsColumns.split_model_to_place_model (P : RowSideFamily ex) (hr : 
   hOk := Classical.choose_spec hr.famOk
   hsep := hr.famSep
   what₂ := Classical.choose hr.rows0
-
-theorem DivisionRowsColumns.of_tied_subspaces_eq (P : RowSideFamily ex) (hr : RowsHold0_3 P) (X : Formalism.L2.Col.Fields) (e : X.Tau → (X.E →+* D.what₂.LL))
-    (c : ColRec3 (fieldsLL D X e) P.A3 P.Ps P.ψs) (Sp : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (c.face Zs))
-    (Zsc : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) : (DivisionRowsColumns.split_model_to_place_model (L := L) P hr X e c Sp Zsc).toF.Zs = P.Zs := rfl
 
 end IndefiniteRowSideFullHecke
 

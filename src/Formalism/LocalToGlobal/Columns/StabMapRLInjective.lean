@@ -48,10 +48,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : Le
   {SG' : Finset (HeightOneSpectrum (𝓞 X.E))} (hSG : Pr.vGs ⊆ SG')
   (ΛM : LevFam X.E X.K (R.N R.m - 1) SG')
 
-theorem stepF_mem_top (u : Pr.Word) : (stepF W Λ u R.m).mem bm = topGSD W (Λ.lev R.m bm) u := rfl
-
-def LevExtC : Prop := LevExtL (Λ.lev R.m bm) hSG ΛM
-
 variable {W Λ bm ΛM}
 
 variable (W Λ bm ΛM) in
@@ -70,9 +66,6 @@ def resTop (σ₀ : X.K →+* ℂ) (u : Pr.Word) :
     (StClC W Λ u R.m → FrS X σ₀ (R.N R.m) → ℂ) →ₗ[ℂ] ((topGSD W (Λ.lev R.m bm) u).Cl → FrS X σ₀ (R.N R.m) → ℂ) :=
   LinearMap.funLeft ℂ (FrS X σ₀ (R.N R.m) → ℂ) fun c₀ : (topGSD W (Λ.lev R.m bm) u).Cl => (⟨bm, c₀⟩ : StClC W Λ u R.m)
 
-theorem resTop_apply (σ₀ : X.K →+* ℂ) (u : Pr.Word) (F : StClC W Λ u R.m → FrS X σ₀ (R.N R.m) → ℂ)
-    (c₀ : (topGSD W (Λ.lev R.m bm) u).Cl) : resTop W Λ bm σ₀ u F c₀ = F ⟨bm, c₀⟩ := rfl
-
 variable (bm) in
 
 def recPerC (hX : X.Ok) (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) (u : Pr.Word)
@@ -84,31 +77,12 @@ def recPerC (hX : X.Ok) (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star 
   lowerMap := LinearMap.pi fun c => lowCC W Λ bm ΛM σ₀ hσ u ∘ₗ LinearMap.proj c
   period := periodC W ΛM hX σ₀ hσ hM
 
-theorem recPerC_evz (hX : X.Ok) (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) (u : Pr.Word)
-    (G : ChainGlob W σ₀) (A : ChainArgC W Λ G u) (hM : (rowGSD W ΛM).Ok) (F : StClC W Λ u R.m → FrS X σ₀ (R.N R.m) → ℂ)
-    (c : (ptGSD W ΛM).Cl) :
-    (recPerC bm hSG hX σ₀ hσ u G A hM).evz F c =
-      (topEv W (Λ.lev R.m bm) σ₀ hσ u).trPt (tilR hSG u ((ptGSD W ΛM).outSec.rep c)) (F (tilClC W Λ bm hSG ΛM u c)) := rfl
-
 end XpC
 
 section One
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ₀ : ∀ j, LevFam X.E X.K (R.N j) Pr.vGs)
   {SG' : Finset (HeightOneSpectrum (𝓞 X.E))} (hSG : Pr.vGs ⊆ SG') (ΛM : LevFam X.E X.K (R.N R.m - 1) SG')
-
-theorem LevExtC_one : LevExtC (LevCh.one Λ₀) () hSG ΛM ↔ LevExt Λ₀ hSG ΛM := Iff.rfl
-
-theorem tilClC_one (u : Pr.Word) (c : (ptGSD W ΛM).Cl) :
-    tilClC W (LevCh.one Λ₀) () hSG ΛM u c = ⟨(), tilCl W Λ₀ hSG ΛM u c⟩ := rfl
-
-theorem lowCC_one (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) (u : Pr.Word) :
-    lowCC W (LevCh.one Λ₀) () ΛM σ₀ hσ u = lowC W Λ₀ ΛM σ₀ hσ u := rfl
-
-theorem recPerC_evz_one (hX : X.Ok) (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) (u : Pr.Word)
-    (G : ChainGlob W σ₀) (A : ChainArgC W (LevCh.one Λ₀) G u) (A₀ : ChainArg W Λ₀ G u) (hM : (rowGSD W ΛM).Ok)
-    (F : StClC W (LevCh.one Λ₀) u R.m → FrS X σ₀ (R.N R.m) → ℂ) :
-    (recPerC () hSG hX σ₀ hσ u G A hM).evz F = (recPer hSG hX σ₀ hσ u G A₀ hM).evz fun c₀ : StCl W Λ₀ u R.m => F ⟨(), c₀⟩ := rfl
 
 end One
 

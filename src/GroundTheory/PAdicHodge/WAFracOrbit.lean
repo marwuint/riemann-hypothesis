@@ -41,8 +41,6 @@ theorem isPrimOne_frob {ξ : (𝓣).int} (hξ : (𝓣).IsPrimOne ξ) :
 def frobPt (P : (𝓣).Pt) : (𝓣).Pt :=
   ⟨⟨(frob ℂ_[p] p).φ P.1, (frob ℂ_[p] p).map_int _ P.1.2⟩, isPrimOne_frob P.2⟩
 
-theorem coe_frobPt (P : (𝓣).Pt) : ((frobPt P).1 : WC p) = (frob ℂ_[p] p).φ P.1 := rfl
-
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 end WAFrac
@@ -59,10 +57,6 @@ variable {p : ℕ} [hp : Fact p.Prime]
 
 local notation "𝓣" => teichLift ℂ_[p] p
 local notation "𝒪♭" => PreTilt (normInteger ℂ_[p]) p
-
-def ptSeq (P0 : (𝓣).Pt) (n : ℕ) : (𝓣).Pt := frobPt^[n] P0
-
-theorem ptSeq_zero (P0 : (𝓣).Pt) : ptSeq P0 0 = P0 := rfl
 
 variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
   (hζ : PreTilt.untilt ((_root_.frobeniusEquiv (PreTilt (normInteger ℂ_[p]) p) p).symm ε) ≠ 1)

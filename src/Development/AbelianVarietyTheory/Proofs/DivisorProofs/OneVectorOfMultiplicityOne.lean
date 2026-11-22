@@ -92,12 +92,6 @@ section Family
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
   {A : FamIn K G Pl0 T m}
 
-def ThetaEquivariant (X : CxData A.fam.amb) (ρ : Representation ℂ G X.EE) : Prop :=
-  ∃ ρF : ∀ t, Representation ℂ G (X.FC t),
-    (∀ t g x, X.jR t (A.leftGroupActionRight t g x) = ρF t g (X.jR t x)) ∧
-    (∀ t g x, X.Θ t (ρF t g x) = ρ g (X.Θ t x)) ∧
-    ∀ t g y, LinearMap.adjoint (X.Θ t) (ρ g y) = ρF t g (LinearMap.adjoint (X.Θ t) y)
-
 def OneVector (X : Finset (G → K)) (P : Subgroup G) (ψ : P →* Kˣ) : Prop :=
   ∀ χ ∈ X, typeSum P ψ χ = (Nat.card P : K)
 

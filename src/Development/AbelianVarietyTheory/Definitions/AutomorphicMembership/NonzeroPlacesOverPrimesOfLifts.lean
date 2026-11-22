@@ -17,38 +17,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.IndefR.p
 
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Wt : Set B.places.Pl}
 
-theorem realData_heq_self {C : Cols B} (a : Late B C) {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
-   {Ks : Type} [Field Ks] [NumberField Ks] [iK : Algebra Ks a.D.what₂.LL] {A : FamIn3 a.D.what₂.LL G Pl0 I0 (List ℕ) T a.D.R.m} (R : RealDat3 a.D A Ks) :
-   HEq R (real3 (a := a) a R) := by
-  have eY : R.ioY = ((by with_unfolding_all exact ((@RealDat.ioY a.D G _ _ Pl0 T (famM a A.A) Ks _ _ (alg a iK) (real a R.toRealDat)) :)) : type_of% R.ioY) :=
-    eq_of_heq ((by with_unfolding_all exact ((real_ioY (a := a) a R.toRealDat) :)))
-  have eX : R.ioX = ((by with_unfolding_all exact ((@RealDat.ioX a.D G _ _ Pl0 T (famM a A.A) Ks _ _ (alg a iK) (real a R.toRealDat)) :)) : type_of% R.ioX) :=
-    eq_of_heq ((by with_unfolding_all exact ((real_ioX (a := a) a R.toRealDat) :)))
-  exact (by with_unfolding_all exact ((heq_of_eq (congrArg₂ (fun (y : type_of% R.ioY) (x : type_of% R.ioX) =>
-    ({ R with toRealDat := { R.toRealDat with ioY := y, ioX := x } } : RealDat3 a.D A Ks)) eY eX)) :))
-
-theorem rowsSame_refl {Z : w.Lt} {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0) : RowsSame t t where
-  Xg := rfl
-  tr := rfl
-  core := (by with_unfolding_all exact ((HEq.refl t.r.z.core) :))
-  R := (by with_unfolding_all exact ((realData_heq_self Z (iK := t.r.z.alg) t.r.z.R) :))
-  cG := HEq.rfl
-  tup := HEq.rfl
-  tupT := HEq.rfl
-  PY := HEq.rfl
-  PW := HEq.rfl
-  rep := HEq.rfl
-  jE := HEq.rfl
-  heq_eigen_embedding_zero := HEq.rfl
-  eE := HEq.rfl
-  jA := HEq.rfl
-  jA0 := HEq.rfl
-  eMt := HEq.rfl
-  eW := HEq.rfl
-  jW := HEq.rfl
-  eRR := HEq.rfl
-  eRR0 := HEq.rfl
-
 def St.rowsAre {P : Pre2 K w} (x : St P) (h : ∀ j v, 1 ≤ j → j ≤ B.R.m → x.o.η j v = P.q.eta j v) :
     RowsAre (w.st x.o.Z) w.I P.hX T P.Wt (Equiv.refl _) x.s.p0 where
   z := x.m.z

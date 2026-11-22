@@ -24,9 +24,6 @@ lemma point_self {ρ : A →+* ℂ} (x : (self A N).complexPoints ρ) :
     (self A N).point x = projPoint ρ x.1 :=
   (self A N).ι_point x
 
-def selfPoint (ρ : A →+* ℂ) (v : CP N) : (self A N).complexPoints ρ :=
-  ⟨v, by rw [complexPoints_self]; trivial⟩
-
 lemma rep_chartIndex_ne_zero (v : CP N) : v.rep (CP.chartIndex v) ≠ 0 := by
   have h := CP.mk_mem_chartDomain (CP.chartIndex v) v.rep v.rep_nonzero
   rw [Projectivization.mk_rep] at h
@@ -45,9 +42,6 @@ variable (A N) in
 
 def twistN (n : ℕ) : (self A N).X.Modules :=
   twistingSheaf (ProjSpace.grading A N) (n : ℤ)
-
-theorem isInvertibleSheaf_twistN (n : ℕ) : IsInvertibleSheaf (twistN A N n) :=
-  ProjSpace.isInvertibleSheaf_twistingSheaf _
 
 variable (A) in
 
@@ -96,18 +90,6 @@ lemma isLocallyFraction_polyFun {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A}
 def polySection {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A} (hP : P ∈ ProjSpace.grading A N n) :
     (self A N).H0 (twistN A N n) :=
   ProjTwist.mkSection (polyFun P ⊤) (isLocallyFraction_polyFun hP ⊤)
-
-theorem polySection_ne_zero [IsDomain A] {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A}
-    (hP : P ∈ ProjSpace.grading A N n) (hP0 : P ≠ 0)
-    (x : ProjectiveSpectrum (ProjSpace.grading A N)) : polySection hP ≠ 0 := by
-  intro h
-  have h1 : (Localization.mk P 1 : ProjTwist.Loc (ProjSpace.grading A N) x) = 0 :=
-    congrArg (fun s : (self A N).H0 (twistN A N n) =>
-      (show Γ(twistingSheaf (ProjSpace.grading A N) (n : ℤ), ⊤) from s).1 ⟨x, trivial⟩) h
-  rw [Localization.mk_eq_mk', IsLocalization.mk'_eq_zero_iff] at h1
-  obtain ⟨⟨c, hc⟩, hcP⟩ := h1
-  have hc0 : c ≠ 0 := fun h0 => hc (h0 ▸ Ideal.zero_mem _)
-  exact hP0 ((mul_eq_zero.mp hcP).resolve_left hc0)
 
 end ProjScheme
 
@@ -158,19 +140,7 @@ def fsMetric (hf : FSContinuousFrame.Statement.{u}) (hc : FSNormConj.Statement.{
   continuous_frame ρ U e he := hf A N n ρ U e he
   norm_conj ρ U s x hx hx' := hc A N n ρ U s x hx hx'
 
-def fsBundle (hf : FSContinuousFrame.Statement.{u}) (hc : FSNormConj.Statement.{u}) (n : ℕ) :
-    (self A N).HermitianLineBundle :=
-  ⟨twistN A N n, isInvertibleSheaf_twistN n, fsMetric hf hc n⟩
-
 variable (K : Type) [Field K] [NumberField K]
-
-def fsPointMeasures (N : ℕ) (hs : FSFullSupport.Statement) (hc : FSConjInvariant.Statement) :
-    (self (𝓞 K) N).PointMeasures where
-  μ _ := CP.fsMeasure N
-  isFinite _ := inferInstance
-  null_compl σ := by rw [complexPoints_self, Set.compl_univ, measure_empty]
-  pos_of_isOpen σ U hU hne := hs N U hU (hne.mono Set.inter_subset_left)
-  map_conj σ := (hc N).symm
 
 variable {K}
 
@@ -183,17 +153,6 @@ end SectionsLatticeFS
 namespace ProjScheme
 
 open SectionsLatticeFS
-
-def pointQ : (self (𝓞 ℚ) 1).complexPoints (intEmb (Rat.castHom ℂ)) :=
-  selfPoint _ (basePoint 1)
-
-lemma pointQ_mem : (self (𝓞 ℚ) 1).point pointQ ∈ ProjSpace.stdOpen (𝓞 ℚ) 1 0 := by
-  refine point_mem_stdOpen pointQ ?_
-  obtain ⟨a, ha⟩ := Projectivization.exists_smul_eq_mk_rep ℂ (Pi.single (0 : Fin 2) (1 : ℂ) : Fin 2 → ℂ)
-    (by simp [funext_iff, Pi.single_apply])
-  change (basePoint 1).rep 0 ≠ 0
-  rw [basePoint, ← ha]
-  simp [Units.smul_def]
 
 end ProjScheme
 

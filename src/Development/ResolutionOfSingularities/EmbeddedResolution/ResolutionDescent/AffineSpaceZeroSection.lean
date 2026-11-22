@@ -147,14 +147,6 @@ private theorem pullbackCoord_comp_eq_appTop {k : Type u} [Field k] {T Y : Schem
 def uliftFinSumEquiv (c p : ℕ) : ULift.{u, 0} (Fin c ⊕ Fin p) ≃ ULift.{u, 0} (Fin (c + p)) :=
   Equiv.ulift.trans (finSumFinEquiv.trans Equiv.ulift.symm)
 
-theorem uliftFinSumEquiv_inl (c p : ℕ) (i : Fin c) :
-    uliftFinSumEquiv.{u} c p ⟨Sum.inl i⟩ = ⟨Fin.castAdd p i⟩ :=
-  rfl
-
-theorem uliftFinSumEquiv_inr (c p : ℕ) (j : Fin p) :
-    uliftFinSumEquiv.{u} c p ⟨Sum.inr j⟩ = ⟨Fin.natAdd c j⟩ :=
-  rfl
-
 private theorem pullbackCoord_affineSpaceIsoOfEquiv_hom (k : Type u) [Field k] {n m : Type u}
     (e : n ≃ m) (i : m) :
     pullbackCoord (affineSpaceIsoOfEquiv e (Spec (CommRingCat.of k))).hom i =

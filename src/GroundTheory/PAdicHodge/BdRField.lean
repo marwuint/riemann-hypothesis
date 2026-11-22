@@ -271,9 +271,6 @@ def grEquiv {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : ℤ) :
   (QuotientAddGroup.quotientAddEquivOfEq (ker_grMap hπ i).symm).trans
     (QuotientAddGroup.quotientKerEquivOfSurjective _ (grMap_surjective hπ i))
 
-theorem grEquiv_mk {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} (x : fil K p i) :
-    grEquiv hπ i (Submodule.Quotient.mk x) = grMap hπ i x := rfl
-
 end IsPerfectoidField
 
 section Galois

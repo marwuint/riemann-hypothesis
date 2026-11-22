@@ -35,13 +35,6 @@ end ClassSymbol
 
 universe u
 
-theorem ideleClassSymbol_surjective {K L : Type u} [Field K] [NumberField K] [Field L]
-    [NumberField L] [Algebra K L] [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)]
-    (h : (diagonal K).range ≤ (ideleSymbol K L).ker) :
-    Function.Surjective (ideleClassSymbol L h) := fun σ ↦
-  let ⟨x, hx⟩ := ideleSymbol_surjective (K := K) (L := L) σ
-  ⟨IdeleClassGroup.mk K x, hx⟩
-
 end CyclotomicSymbol
 
 end

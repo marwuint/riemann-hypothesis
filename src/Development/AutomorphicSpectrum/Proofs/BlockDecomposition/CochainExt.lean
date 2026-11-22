@@ -26,8 +26,4 @@ def glue (hc : ∀ {T T' : C}, (T ⟶ T') → c T = c T') {n : ℕ}
     (g : ∀ i, Cn ((ObjectProperty.ι (piece c i)) ⋙ F) n) : Cn F n :=
   fun s => g (c (s.obj 0)) (ObjectProperty.lift (piece c (c (s.obj 0))) s (chain_piece hc s))
 
-theorem glue_pullC (hc : ∀ {T T' : C}, (T ⟶ T') → c T = c T') {n : ℕ} (f : Cn F n) :
-    glue hc (fun i => (res F c i).pullC n f) = f := rfl
-
 end GlobalTheory.CompanionTheory.CatPieces
-

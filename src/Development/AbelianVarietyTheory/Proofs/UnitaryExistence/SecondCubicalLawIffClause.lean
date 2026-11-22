@@ -44,9 +44,6 @@ def frEquiv (j : JetPts t.G x0 d) : FrameFam t.G x0 t.PP.L j ≃ ∀ m, FrTyG t 
   left_inv := fun e => funext fun m => (castGen t (pair_eq t x0 j m)).symm_apply_apply (e m)
   right_inv := fun e => funext fun m => (castGen t (pair_eq t x0 j m)).apply_symm_apply (e m)
 
-theorem frEquiv_apply (j : JetPts t.G x0 d) (e : FrameFam t.G x0 t.PP.L j) (m : ℕ) :
-    frEquiv t x0 j e m = castGen t (pair_eq t x0 j m) (e m) := rfl
-
 variable {t x0} {j : JetPts t.G x0 d} (e : FrameFam t.G x0 t.PP.L j)
 
 end GlobalTheory.FrameCompare

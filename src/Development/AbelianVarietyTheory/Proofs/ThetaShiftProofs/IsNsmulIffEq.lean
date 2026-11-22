@@ -242,8 +242,6 @@ def gtProj (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] :
     GtPtF D F →+ Additive (TF (R := R) F ⟶ D.P.A) :=
   AddMonoidHom.mk' (fun g => Additive.ofMul g.b) fun g g' => congrArg Additive.ofMul (add_b g g')
 
-theorem gtProj_apply (g : GtPtF D F) : gtProj D F g = Additive.ofMul g.b := rfl
-
 theorem neg_b (g : GtPtF D F) : (-g).b = g.b⁻¹ := congrArg Additive.toMul (map_neg (gtProj D F) g)
 
 theorem nsmul_b (k : ℕ) (g : GtPtF D F) : (k • g).b = g.b ^ k := congrArg Additive.toMul (map_nsmul (gtProj D F) k g)

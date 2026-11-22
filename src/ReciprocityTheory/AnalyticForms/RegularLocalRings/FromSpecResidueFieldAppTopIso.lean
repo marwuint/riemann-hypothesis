@@ -14,8 +14,6 @@ def constSec (U : S.Opens) : ℂ →+* Γ(S, U) :=
 def constRes (x : S) : ℂ →+* S.residueField x :=
   (S.evaluation ⊤ x trivial).hom.comp (constSec s ⊤)
 
-def CPt (S : Scheme.{0}) : Type := {x : S // IsClosed ({x} : Set S)}
-
 open Classical in
 
 def valHom (x : S) : S.residueField x → ℂ :=

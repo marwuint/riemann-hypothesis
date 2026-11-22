@@ -133,9 +133,6 @@ theorem discr_smul (Λ Λ' : AddSubgroup ℂ) (δ : ℂ) (hδ : δ ≠ 0) (h : �
 noncomputable def embK (D : D7) : 𝓞 D.host.K →+* ℂ :=
   D.host.φ₀.comp ((D.host.K.val.toRingHom).comp (algebraMap (𝓞 D.host.K) D.host.K))
 
-theorem embK_apply (D : D7) (c : 𝓞 D.host.K) :
-    embK D c = D.host.φ₀ (((c : D.host.K) : D.host.E)) := rfl
-
 theorem embK_injective (D : D7) : Function.Injective (embK D) := fun _ _ h =>
   IsFractionRing.injective (𝓞 D.host.K) D.host.K
     (D.host.K.val.toRingHom.injective (D.host.φ₀.injective h))

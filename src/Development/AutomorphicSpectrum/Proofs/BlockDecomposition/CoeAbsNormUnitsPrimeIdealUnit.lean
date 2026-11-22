@@ -13,14 +13,6 @@ open scoped NumberField.AdeleRing ValuativeRel ENNReal ComplexConjugate Schwartz
 
 namespace GlobalTheory.CompanionTheory.RSFT
 
-def absNormUnits : (FractionalIdeal (𝓞 ℚ)⁰ ℚ)ˣ →* ℝˣ :=
-  Units.map (((Rat.castHom ℝ : ℚ →+* ℝ) : ℚ →* ℝ).comp
-    (FractionalIdeal.absNorm : FractionalIdeal (𝓞 ℚ)⁰ ℚ →*₀ ℚ).toMonoidHom)
-
-theorem coe_absNormUnits (I : (FractionalIdeal (𝓞 ℚ)⁰ ℚ)ˣ) :
-    ((absNormUnits I : ℝˣ) : ℝ) =
-      ((FractionalIdeal.absNorm (I : FractionalIdeal (𝓞 ℚ)⁰ ℚ) : ℚ) : ℝ) := rfl
-
 end GlobalTheory.CompanionTheory.RSFT
 
 end

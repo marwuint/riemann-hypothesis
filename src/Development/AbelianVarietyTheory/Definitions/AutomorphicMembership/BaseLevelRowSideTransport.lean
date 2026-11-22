@@ -36,11 +36,6 @@ abbrev Refill.to {a : Late B C} (c : Refill a) : Late B C :=
       div := { a.V.div with Nu := fun u => { a.V.div.Nu u with L := c.L u }, h := c.h, HH := c.HH, HH_ge := c.HH_ge, etaF := c.etaF } },
     c.S, a.N, c.G⟩
 
-abbrev Refill.ofSG (a : Late B C) (S : SStage B C a.W) (G : GJStage B C) : Refill a :=
-  ⟨S, G, fun u => (a.V.div.Nu u).L, a.V.div.h, a.V.div.HH, a.V.div.HH_ge, a.V.div.etaF⟩
-
-theorem Refill.ofSG_to (a : Late B C) (S : SStage B C a.W) (G : GJStage B C) : (Refill.ofSG a S G).to = ⟨a.W, a.V, S, a.N, G⟩ := rfl
-
 abbrev Refill.ofDiv (a : Late B C) (L : ∀ u, Submodule (𝓞 B.LL) (a.V.div.Nu u).V) (h : B.Word → ℝ) : Refill a :=
   ⟨a.S, a.G, L, h, max 1 (sFrame (fun u => { a.V.div.Nu u with L := L u }) h + a.V.div.RR.muMax), le_max_right _ _, a.V.div.etaF⟩
 

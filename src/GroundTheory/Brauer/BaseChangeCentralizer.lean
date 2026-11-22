@@ -46,15 +46,8 @@ variable (E) in
 def inclBase : E →ₐ[K] CrossedProduct hf :=
   (incl (hf := hf)).comp (IsScalarTower.toAlgHom K E L)
 
-theorem inclBase_apply (e : E) : inclBase E hf e = incl (algebraMap E L e) :=
-  rfl
-
 end Action
 
 end CrossedProduct
-
-namespace H2mul
-
-end H2mul
 
 end GroundTheory.Brauer

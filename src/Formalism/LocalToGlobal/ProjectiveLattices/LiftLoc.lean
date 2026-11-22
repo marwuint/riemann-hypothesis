@@ -22,8 +22,6 @@ variable (hs : ∀ ζ, SecPt ζ (y ζ))
 def liftC (ζ : PtsG G la) : Lc (xplus X E hM) la G.w →+* (hs ζ).T.Fr :=
   IsLocalization.Away.lift (sec (xplus X E hM) la G.w 0) (S := Lc (xplus X E hM) la G.w) (hs ζ).s0
 
-lemma liftC_eq (ζ : PtsG G la) (x : Lc (xplus X E hM) la G.w) : liftC hs ζ x = (hs ζ).lift x := rfl
-
 lemma liftC_alg (ζ : PtsG G la) (r : Rp (xplus X E hM) la G.N) :
     liftC hs ζ (algebraMap (Rp (xplus X E hM) la G.N) (Lc (xplus X E hM) la G.w) r) = (hs ζ).ev r :=
   IsLocalization.lift_eq _ r
@@ -70,8 +68,6 @@ lemma evL_ι (ζ : PtsG G la) (x : Lc (xplus X E hM) la G.w) : evL hs ζ (ιL hs
 def hdList : List (Idx D j G.N →₀ ℕ) → LamL hs → LamL hs
   | [] => id
   | β :: l => fun x => hdL hs β (hdList l x)
-
-lemma hdList_nil (x : LamL hs) : hdList hs [] x = x := rfl
 
 lemma hdList_cons (β : Idx D j G.N →₀ ℕ) (l : List (Idx D j G.N →₀ ℕ)) (x : LamL hs) :
     hdList hs (β :: l) x = hdL hs β (hdList hs l x) := rfl
@@ -156,8 +152,6 @@ def RGL : Subring (LamL hs) where
   add_mem' := fun {a b} ha hb l => by rw [hdList_add]; exact intAll_add hs (ha l) (hb l)
   neg_mem' := fun {a} ha l => by rw [hdList_neg]; exact intAll_neg hs (ha l)
   mul_mem' := fun {a b} ha hb l => intAll_of_mem_closure hs ha hb (hdList_mul_mem hs a b l)
-
-lemma mem_RGL {r : LamL hs} : r ∈ RGL hs ↔ ∀ l, IntAllL hs (hdList hs l r) := Iff.rfl
 
 lemma RGL_int {r : LamL hs} (hr : r ∈ RGL hs) (ζ : PtsG G la) : 0 ≤ nval (hs ζ).T.V 1 (evL hs ζ r) := hr [] ζ
 

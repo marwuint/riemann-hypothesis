@@ -259,10 +259,6 @@ def HasToricChart (Z : Model Xo c β) (x : gen Z) : Prop :=
     (P : PELUnif (maximalIdeal (ChartRing k m d)) t) (γ : Fin m → levelForms H l.M' P.D.toPre.X),
     ξ (closedPoint _) = x ∧ IsToricChart Z ξ P γ
 
-namespace IsToricChart
-
-end IsToricChart
-
 def IsArcBase (O' : Type) [CommRing O'] [IsDomain O'] (ϖ : O') : Prop :=
   (IsField O' ∧ ϖ = 1) ∨ (IsDiscreteValuationRing O' ∧ Irreducible ϖ ∧ IsAdicComplete (Ideal.span {ϖ}) O')
 
@@ -272,14 +268,6 @@ def IsArcChart (Y : Model Xo c β) {O' : Type} [CommRing O'] [IsDomain O'] {b : 
   (∀ x : Sp (PowerSeries O'), χ x ∈ abLocus Y.t.G ↔ PowerSeries.X ∉ x.asIdeal) ∧
   (∀ x : Sp (PowerSeries O'), PowerSeries.C ϖ * PowerSeries.X ∉ x.asIdeal → χ x ∈ Set.range Y.j) ∧
   Y.HasArcData a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := O')) PowerSeries.X χ
-
-theorem arcChart_iff (Y : Model Xo c β) : Y.N4 ↔
-    ∀ (O' : Type) [CommRing O'] [IsDomain O'] [CharZero O'] (b : O →+* O') (ϖ : O') (a : ArcIn D l β O' b),
-      IsArcBase O' ϖ → ∃ χ : Sp (PowerSeries O') ⟶ Y.X, (∀ χ', χ' = χ ↔ IsArcChart Y a ϖ χ') ∧
-        (Irreducible ϖ → ∀ (y' : Sp O' ⟶ Y.X) (ev : PowerSeries O' →+* O'), y' ≫ Y.s = spMap b →
-          Set.range (Out.jK O' ≫ y') ⊆ Set.range Y.j →
-          Y.HasArcData a (Ideal.span {ϖ}) (RingHom.id O') ϖ y' →
-          (∀ x, ev (PowerSeries.C x) = x) → ev PowerSeries.X = ϖ → spMap ev ≫ χ = y') := Iff.rfl
 
 end Charts
 

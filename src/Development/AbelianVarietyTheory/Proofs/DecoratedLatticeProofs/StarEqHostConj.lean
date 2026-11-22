@@ -23,8 +23,6 @@ theorem star_eq_hostConj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
 def negLine (D : D7) : HSp D :=
   Formalism.BasicNotions.Examples₂.stdSpace Formalism.BasicNotions.Examples₂.star_isIntegral 1 (fun _ => true) 0 1
 
-theorem negLine_rank (D : D7) : (negLine D).rank = 1 := rfl
-
 theorem negLine_gram (D : D7) : ∀ i j, (negLine D).gram i j = -1 := by
   show ∀ i j : Fin 1, (Formalism.BasicNotions.Examples₂.stdSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral 1
     (fun _ => true) 0 1).gram i j = -1

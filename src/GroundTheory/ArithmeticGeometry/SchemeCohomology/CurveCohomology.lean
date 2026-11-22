@@ -68,10 +68,6 @@ def globalL (D : WeilDivisor X) : Submodule k X.functionField where
           mul_le_mul' (Z.valuation_algebraMap_scalar_le_one c) (hf Z)
       _ = _ := one_mul _
 
-omit [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{u})] in
-lemma mem_globalL (D : WeilDivisor X) (f : X.functionField) :
-    f ∈ globalL k D ↔ ∀ Z : PrimeDivisor X, Z.valuation f ≤ WithZero.exp (D Z) := Iff.rfl
-
 end H0
 
 end GroundTheory.Arith.SchemeCoh

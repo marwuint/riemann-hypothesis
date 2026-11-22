@@ -53,10 +53,6 @@ def Lev.p0 {D : D7} (P : BaseLevelRowSide D) : Lev D := Lev.of P.s D.what₂.onb
 
 def Lev.kap {D : D7} (V : Lev D) : ℝ := V.S.kapOf V.ft
 
-theorem sharp_kap (D : D7) : (Lev.sharp D).kap = kapSharp D := rfl
-
-theorem chain_constant_at_small_level {D : D7} (P : BaseLevelRowSide D) : (Lev.p0 P).kap = P.kap0 := rfl
-
 theorem sharp_downTo (D : D7) (μ : D.what₂.Tup) :
     ∀ j, (RowSide.sharp D).downTo μ j = D.what₂.downTo μ j
   | 0 => rfl
@@ -272,10 +268,6 @@ structure LocV (D : D7) (V : Lev D) (A : AmbForm D V.S) where
 
 attribute [instance] LocV.finDat LocV.aPD LocV.mPD LocV.aMS LocV.mMS
 
-namespace LocV
-
-end LocV
-
 theorem auxiliary_prime_odd (D : D7) : q0 D % 2 = 1 := by
   have h2 : 2 ∣ D.host.QS := by
     have ht := D.host.tower_dvd
@@ -310,10 +302,5 @@ def RRDef (_X : LocV D V A) : Prop :=
   Set.range V.S.jEE = llSpan D.what₂.embLL (V.S.RRset D.what₂.mu0) ∧ V.S.RRDef
 
 end Stmt
-
-def cpOf (l : List ℝ) : ℝ := max (l.getD 0 0 + 1) (max (l.getD 6 0 + 1) (max (l.getD 7 0) (max (l.getD 8 0) 5)))
-
-theorem cpOf_cOut {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) :
-    cpOf Fm.cOut = max (Fm.Ct + 1) (max (Fm.CYL + 1) (max Fm.Cpde (max Fm.CccK 5))) := rfl
 
 end Formalism.MainNotions.AbsolutelyIrreducibleSpan

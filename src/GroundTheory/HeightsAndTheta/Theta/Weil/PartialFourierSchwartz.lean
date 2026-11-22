@@ -45,9 +45,6 @@ def schwartzSlice (F : 𝓢(V₁ × (EuclideanSpace ℝ ι), E)) (x : V₁) : �
           · exact norm_iteratedFDeriv_slice_le (F.smooth ⊤) x v n
       _ ≤ C := hC _
 
-theorem schwartzSlice_apply (F : 𝓢(V₁ × (EuclideanSpace ℝ ι), E)) (x : V₁) (v : (EuclideanSpace ℝ ι)) :
-    schwartzSlice F x v = F (x, v) := rfl
-
 theorem seminorm_smul_schwartzSlice_le (F : 𝓢(V₁ × (EuclideanSpace ℝ ι), E)) (x : V₁) (j k n : ℕ) :
     SchwartzMap.seminorm ℝ k n ((‖x‖ ^ j) • schwartzSlice F x) ≤
       SchwartzMap.seminorm ℝ (j + k) n F := by

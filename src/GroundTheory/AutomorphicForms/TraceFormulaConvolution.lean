@@ -98,10 +98,6 @@ section Operator
 variable (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [IsFiniteMeasureOnCompacts μ]
   [CompactSpace (RightCosetSpace Γ)]
 
-theorem kernelOperator_eq_contKernelOp (f : CompactlySupportedContinuousMap G ℂ) :
-    kernelOperator Γ μ f = contKernelOp (quotientMeasure Γ μ) (quotientKernelC Γ f) :=
-  rfl
-
 end Operator
 
 end RightCosetSpace
@@ -110,18 +106,6 @@ section TotallyDisconnected
 
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
   [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
-
-def indicatorOne (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) :
-    CompactlySupportedContinuousMap G ℂ where
-  toFun := (K : Set G).indicator 1
-  continuous_toFun := by
-    rw [← LocallyConstant.coe_charFn ℂ K.isClopen]
-    exact (LocallyConstant.charFn ℂ K.isClopen).continuous
-  hasCompactSupport' := HasCompactSupport.intro hK fun _ hx => indicator_of_notMem hx _
-
-theorem indicatorOne_apply (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) (x : G) :
-    indicatorOne K hK x = (K : Set G).indicator 1 x :=
-  rfl
 
 variable (μ : Measure G) [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ]
 

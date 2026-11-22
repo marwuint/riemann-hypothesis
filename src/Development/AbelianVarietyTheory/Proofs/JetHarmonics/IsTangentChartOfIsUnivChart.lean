@@ -24,23 +24,8 @@ section Rank
 
 def under {S X : Scheme.{0}} {G : Over S} {a : X ⟶ S} (y : Over.mk a ⟶ G) : X ⟶ G.left := y.left
 
-theorem under_comp {S X : Scheme.{0}} {G : Over S} {a : X ⟶ S} (y : Over.mk a ⟶ G) (f : G ⟶ G) :
-    under (y ≫ f) = under y ≫ f.left := rfl
-
-theorem isLieEigen_under {S : Scheme.{0}} {G : Over S} [GrpObj G] {k : Type} [Field k] {O : Type} [CommRing O]
-    (act : OAct O G) (t : Sp k ⟶ S) (τ : O →+* k) (v : epsPt t ⟶ G) :
-    IsLieEigen act t τ v ↔
-      Geo.Tor.spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ under v = under (1 : Over.mk t ⟶ G) ∧
-        ∀ a, under v ≫ (act.act a).left = Geo.Tor.spMap (epsScale (τ a)) ≫ under v := Iff.rfl
-
 variable {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {n : ℕ}
   {x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n) m) ⟶ G}
-
-theorem under_scale {k : Type} [Field k] [Algebra R k] (d : k) (w : sp (R₀ := R) (DualNumber k) ⟶ G) :
-    under (spMap (scaleOver R d) ≫ w) = Geo.Tor.spMap (epsScale d) ≫ under w := rfl
-
-theorem under_fst {k : Type} [Field k] [Algebra R k] (w : sp (R₀ := R) (DualNumber k) ⟶ G) :
-    under (spMap (fstOver R k) ≫ w) = Geo.Tor.spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ under w := rfl
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
 

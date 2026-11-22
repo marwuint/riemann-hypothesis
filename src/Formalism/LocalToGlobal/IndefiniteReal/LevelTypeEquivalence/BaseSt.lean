@@ -27,13 +27,6 @@ def AtTauUnitary : Prop :=
   ∀ θ : Datum.InfFam D, IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (h : GA D V),
     IsAtTau θ V τ g h → gᴴ * gramAt D V τ * g = gramAt D V τ
 
-def AtTauHom : Prop :=
-  ∀ θ : Datum.InfFam D, IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau),
-    atTau θ V τ 1 = 1 ∧
-    (∀ g g' : Matrix (Fin V.rank) (Fin V.rank) ℂ, gᴴ * gramAt D V τ * g = gramAt D V τ →
-      g'ᴴ * gramAt D V τ * g' = gramAt D V τ → atTau θ V τ (g * g') = atTau θ V τ g * atTau θ V τ g') ∧
-    ContinuousOn (atTau θ V τ) {g | gᴴ * gramAt D V τ * g = gramAt D V τ}
-
 def GQDiscrete : Prop :=
   ∀ V : HSp D, DiscreteTopology (GQ V)
 

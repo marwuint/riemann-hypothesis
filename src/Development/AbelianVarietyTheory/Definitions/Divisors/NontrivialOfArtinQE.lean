@@ -22,9 +22,6 @@ variable (l : ℕ) [Fact l.Prime] {E : Type} [CommRing E] [Algebra ℚ_[l] E]
 section Gal
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω]
 
-theorem galEt_eq {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of k)) (n t : ℤ) (σ : Ω ≃ₐ[k] Ω) :
-    galEt l E Ω q n t σ = (galHQ l Ω q n t σ).baseChange E := rfl
-
 end Gal
 
 theorem powMap_pr {S' : Scheme.{0}} {A' : Over S'} {A : Over S} (f : S' ⟶ S) (φ : A'.left ⟶ A.left)

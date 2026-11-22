@@ -252,16 +252,4 @@ open Formalism.MainNotions.G Formalism.FrobeniusOrbits NumberField LevelValuatio
 variable (D : D7) (h0 : ∀ u, Module.finrank ℂ (D.mem u).A.Mu0 = 0)
   (rOf : D.what₂.Word → ℕ → ℕ) (bs : D.what₂.Word → ℕ → Set ↥(D.R.Psi))
 
-def withGat : D7 :=
-  { D with
-    gat := fun u w h => gatOf (served_of h) (bs u (D.what₂.places.resChar w))
-      (rOf u (D.what₂.places.resChar w)) (fun ψ => (D.fm u).lam 0 (D.eTau.symm ψ))
-    gat_d := fun u _ h => (gatOf_d _ _ _ _).trans (h0 u).symm }
-
-theorem withGat_r (u w h) :
-    ((withGat D h0 rOf bs).gat u w h).P.r = rOf u (D.what₂.places.resChar w) := rfl
-
-theorem withGat_n' (u w h v) :
-    ((withGat D h0 rOf bs).gat u w h).P.n' v = orderOf (gPsi (H := D.host) (served_of h)) := rfl
-
 end Formalism.BasicNotions.Examples₂

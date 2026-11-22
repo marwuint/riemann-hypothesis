@@ -42,14 +42,6 @@ def thFOf (F : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (T × Fin ((X.Pj
     (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) : MvPowerSeries (X.ZA j) ℂ_[p] :=
   resV (kapOf X pos j) (F j La La')
 
-theorem thFOf_coeff
-    (F : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (T × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) ℂ_[p])
-    (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) (n : X.ZA j →₀ ℕ) :
-    (RingHom.id ℂ_[p]) (MvPowerSeries.coeff n (thFOf X pos F j La La')) =
-      MvPowerSeries.coeff (n.mapDomain fun z : X.ZA j =>
-        (pos ⟨z.1, z.2.1⟩, Fin.cast (rank_eq X (j + 1)).symm z.2.2.2, Fin.cast (rank_eq X j).symm z.2.2.1))
-        (F j La La') := rfl
-
 theorem kapOf_injective (j : ℕ) : Function.Injective (kapOf X pos j) := by
   rintro ⟨v, s, a, b⟩ ⟨v', s', a', b'⟩ h
   simp only [kapOf, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq, Fin.cast_inj] at h

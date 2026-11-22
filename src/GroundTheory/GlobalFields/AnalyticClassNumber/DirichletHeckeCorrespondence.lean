@@ -251,10 +251,6 @@ theorem bijective_toFiniteOrder : Function.Bijective toFiniteOrder := by
 def finiteOrderEquiv : PrimitiveDirichletCharacter ≃ {ω : HeckeCharacter ℚ // IsOfFinOrder ω} :=
   Equiv.ofBijective toFiniteOrder bijective_toFiniteOrder
 
-theorem coe_finiteOrderEquiv_apply (χ : PrimitiveDirichletCharacter) :
-    (finiteOrderEquiv χ : HeckeCharacter ℚ) = heckeCharacter χ.2.1 :=
-  rfl
-
 end DirichletHecke
 
 end

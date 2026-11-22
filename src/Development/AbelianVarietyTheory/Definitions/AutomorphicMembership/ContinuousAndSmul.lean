@@ -30,8 +30,6 @@ variable (b : V d → Matrix (Fin d) (Fin d) ℂ)
 
 theorem jet_zero : jet b 0 = Prod.fst := rfl
 
-theorem jet_succ (n : ℕ) (q : V d × V d) : jet b (n + 1) q = del (jet b n) q (q.2, -christoffel b q.1 q.2) := rfl
-
 def cutoff (t : ℝ) : ℝ := if t < 1 then ((1 - t) ^ 2)⁻¹ * Real.exp (t - 1)⁻¹ else 0
 
 def mean (q f : (Fin d → ℂ) → ℝ) : ℝ := (∫ ξ, f ξ * cutoff (q ξ)) / ∫ ξ, cutoff (q ξ)

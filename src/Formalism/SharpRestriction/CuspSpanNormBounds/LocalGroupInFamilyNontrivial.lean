@@ -94,13 +94,6 @@ def detNrmP (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) {n : ℕ} (h :
   | some a => (M p).detMod a
   | none => 0
 
-def ptApp {n : ℕ} (h : Point D.host.E n) (t : D.host.E) (ht : t ≠ 0) (s : ℕ) (hs : 1 ≤ s) :
-    Point D.host.E (n + s) :=
-  ⟨h.1 ++ [(t, s)], fun b hb => by
-    rcases List.mem_append.1 hb with hb | hb
-    · exact h.2.1 b hb
-    · simp at hb; subst hb; exact ⟨ht, hs⟩, by simp [h.2.2]⟩
-
 def Dmin {n : ℕ} (w : Point D.host.E n) (l : ℕ) : D.host.E :=
   if hl : l ≤ n then ((ptMat w).submatrix (Fin.castLE hl) (Fin.castLE hl)).det else 0
 
@@ -225,15 +218,6 @@ section Datum
 variable {Y : TermTie D} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {u u' : D.what₂.Word}
 
-def thCls (X : TermLoc D Y δ M u u') (γ : D.s.Term u u') (p : PlF D) : Option ((M p).Cls D.R.rS) :=
-  clsOf (M p) ((X.H p).ZZplus (X.loc γ p) + Matrix.of fun a b =>
-    if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then
-      cornerSh δ (D.mem u).A.T (D.mem u').A.T p (D.s.ptOf γ) else 0)
-
-def densT (X : TermLoc D Y δ M u u') (ϖ : ∀ p : PlF D, 𝒪[(D.s.atP p).Fp])
-    (γ : D.s.Term u u') : ℝ :=
-  ∏' p, (X.H p).dens (ϖ p) (X.loc γ p).abelian₂ ((X.H p).gram ((X.H p).MMfam (X.loc γ p)))
-
 end Datum
 
 def BBtop (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1))
@@ -258,10 +242,6 @@ def Agree (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p)
     | none, none => True
     | some g, some sg => g.e = sg.e ∧ g.q = sg.q
     | _, _ => False)
-
-abbrev TermLocs (D : Formalism.BasicNotions.D7) (Y : TermTie D) : Type 1 :=
-  ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
-    (∀ p, Agree δ M p) → ∀ u u' : D.what₂.Word, TermLoc D Y δ M u u'
 
 def Kglob (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (T T' : ℕ)
     (n : ℕ) (w w' : Point D.host.E n) : ℂ :=

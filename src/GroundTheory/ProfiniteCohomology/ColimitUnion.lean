@@ -56,23 +56,6 @@ noncomputable def subrepCochainsCocone : Cocone (subrepCochains A W hW hstable) 
         rw [subrepInclusion_comp_subtype]
         exact (Category.comp_id _).symm }
 
-noncomputable abbrev subrepCohomology (n : ℕ) : ι ⥤ ModuleCat k :=
-  subrepCochains A W hW hstable ⋙ HomologicalComplex.homologyFunctor (ModuleCat k) (ComplexShape.up ℕ) n
-
-noncomputable abbrev subrepCohomologyCocone (n : ℕ) : Cocone (subrepCohomology A W hW hstable n) :=
-  (HomologicalComplex.homologyFunctor (ModuleCat k) (ComplexShape.up ℕ) n).mapCocone
-    (subrepCochainsCocone A W hW hstable)
-
-theorem subrepCohomology_map (n : ℕ) {i j : ι} (h : i ⟶ j) :
-    (subrepCohomology A W hW hstable n).map h =
-      cohomologyMap (subrepInclusion A W hW hstable (leOfHom h)) n :=
-  rfl
-
-theorem subrepCohomologyCocone_ι_app (n : ℕ) (i : ι) :
-    (subrepCohomologyCocone A W hW hstable n).ι.app i =
-      cohomologyMap (Rep.subtype A (W i) (hstable i)) n :=
-  rfl
-
 theorem subrepCochainsCocone_inj (n : ℕ) (i : ι)
     (y : ((subrepCochains A W hW hstable).obj i).X n)
     (hy : (((subrepCochainsCocone A W hW hstable).ι.app i).f n).hom y = 0) :

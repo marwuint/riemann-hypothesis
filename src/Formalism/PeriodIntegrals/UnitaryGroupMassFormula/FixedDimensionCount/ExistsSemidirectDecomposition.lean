@@ -19,12 +19,4 @@ def dk {G : Type} [Group G] (K D : Subgroup G) (hN : Normalises D K) : Subgroup 
     rintro _ ⟨δ, hδ, κ, hκ, rfl⟩
     exact ⟨δ⁻¹, D.inv_mem hδ, δ * κ⁻¹ * δ⁻¹, hN δ hδ _ (K.inv_mem hκ), by group⟩
 
-theorem mem_dk {G : Type} [Group G] (K D : Subgroup G) (hN : Normalises D K) {g : G} :
-    g ∈ dk K D hN ↔ ∃ δ ∈ D, ∃ κ ∈ K, g = δ * κ := Iff.rfl
-
-theorem mem_AMFChi {G : Type} [Group G] (k : Type) [Field k] {W : Type} [AddCommGroup W]
-    [Module k W] (Γ K : Subgroup G) (ρ : Representation k Γ W) (χ : K →* kˣ) (f : G → W) :
-    f ∈ AMFChi k Γ K ρ χ ↔
-      ∀ γ : Γ, ∀ g : G, ∀ κ : K, f ((γ : G) * g * κ) = ((χ κ : kˣ) : k) • ρ γ (f g) := Iff.rfl
-
 end PI.UnitaryGroupMassFormula.DiaFixDim.Main

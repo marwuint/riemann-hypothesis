@@ -250,9 +250,6 @@ theorem Ea_apply (z : ↥(Z1 (twCoef W χ X) ⊤)) (g : G) (m : M ⊗[O] X) (y :
   rw [Ea, twistRep_apply, extRep_apply, ← twist_twCoef W χ X, twistRep_apply, Prod.smul_mk, smul_add, smul_smul]
   rfl
 
-theorem Ea_snd (z : ↥(Z1 (twCoef W χ X) ⊤)) (g : G) (x : (M ⊗[O] X) × (O ⧸ Ideal.span {c})) :
-    (Ea W χ hc z g x).2 = (χ g : O) • x.2 := rfl
-
 theorem Ea_equiv_of_class_eq {z z' : ↥(Z1 (twCoef W χ X) ⊤)}
     (h : (Submodule.Quotient.mk z : H1 (twCoef W χ X) ⊤) = Submodule.Quotient.mk z') :
     ∃ e : ((M ⊗[O] X) × (O ⧸ Ideal.span {c})) ≃ₗ[O] ((M ⊗[O] X) × (O ⧸ Ideal.span {c})),

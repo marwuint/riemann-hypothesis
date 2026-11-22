@@ -383,9 +383,6 @@ theorem germ_smul (x : X) (hx : x ∈ U) (r : Γ(X, U)) (s : Γ(F, U)) :
 instance stalkModuleSections (x : U) : Module Γ(X, U) (F.presheaf.stalk (x : X) :) :=
   Module.compHom _ (X.presheaf.germ U x x.2).hom
 
-theorem stalkModuleSections_smul (x : U) (r : Γ(X, U)) (t : (F.presheaf.stalk (x : X) :)) :
-    r • t = X.presheaf.germ U x x.2 r • t := rfl
-
 instance isScalarTower_stalk (x : U) :
     IsScalarTower Γ(X, U) (X.presheaf.stalk (x : X)) (F.presheaf.stalk (x : X) :) :=
   .of_algebraMap_smul fun _ _ ↦ rfl

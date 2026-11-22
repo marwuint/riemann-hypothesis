@@ -86,11 +86,6 @@ def fixingOfAlgHom : Subgroup Gal(AlgebraicClosure (v.adicCompletion F) / v.adic
     rw [AlgEquiv.aut_inv]
     exact σ.symm_apply_eq.2 (hσ l).symm
 
-omit [NumberField L] in
-theorem mem_fixingOfAlgHom_iff (σ : Gal(AlgebraicClosure (v.adicCompletion F) / v.adicCompletion F)) :
-    σ ∈ fixingOfAlgHom j ↔ ∀ l, σ (j l) = j l :=
-  Iff.rfl
-
 def fixingOfAlgHomToAut (σ : fixingOfAlgHom j) :
     Gal(AlgebraicClosure ((placeOfAlgHom j).1.adicCompletion L) / (placeOfAlgHom j).1.adicCompletion L) :=
   AlgEquiv.ofRingEquiv (f := ((closureEquivOfAlgHom j).symm.trans σ.1.toRingEquiv).trans
@@ -129,12 +124,6 @@ def fixingOfAlgHomMulEquiv : fixingOfAlgHom j ≃*
       closureEquivOfAlgHom j (σ.1 ((closureEquivOfAlgHom j).symm (closureEquivOfAlgHom j
         (τ.1 ((closureEquivOfAlgHom j).symm z)))))
     simp
-
-theorem fixingOfAlgHomMulEquiv_apply (σ : fixingOfAlgHom j)
-    (z : AlgebraicClosure ((placeOfAlgHom j).1.adicCompletion L)) :
-    fixingOfAlgHomMulEquiv j σ z =
-      closureEquivOfAlgHom j (σ.1 ((closureEquivOfAlgHom j).symm z)) :=
-  rfl
 
 theorem continuous_coe_fixingOfAlgHomMulEquiv_symm :
     Continuous fun τ : Gal(AlgebraicClosure ((placeOfAlgHom j).1.adicCompletion L) /
@@ -179,11 +168,6 @@ def fixingOfAlgHomEquiv : fixingOfAlgHom j ≃ₜ*
   { fixingOfAlgHomMulEquiv j with
     continuous_toFun := e.symm.continuous
     continuous_invFun := hc }
-
-theorem fixingOfAlgHomEquiv_apply (σ : fixingOfAlgHom j)
-    (z : AlgebraicClosure ((placeOfAlgHom j).1.adicCompletion L)) :
-    fixingOfAlgHomEquiv j σ z = closureEquivOfAlgHom j (σ.1 ((closureEquivOfAlgHom j).symm z)) :=
-  rfl
 
 end Fixing
 
@@ -340,10 +324,6 @@ variable (S) in
 def mackeyPlaceEquiv :
     MackeyIndex (gsOpenSubgroup S hL) (gsFinFamily S ιs) ≃ (placesOver S : Set (HeightOneSpectrum (𝓞 L))) :=
   Equiv.ofBijective (mackeyPlace S hL ιs) ⟨mackeyPlace_injective hL ιs, mackeyPlace_surjective hL ιs⟩
-
-theorem coe_mackeyPlaceEquiv (p : MackeyIndex (gsOpenSubgroup S hL) (gsFinFamily S ιs)) :
-    (mackeyPlaceEquiv S hL ιs p : HeightOneSpectrum (𝓞 L)) = (gsLocalPlace hL ιs p.1 p.2.out).1 :=
-  rfl
 
 omit [IsScalarTower F L Ω] in
 variable (S) in

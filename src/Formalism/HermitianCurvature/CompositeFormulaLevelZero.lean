@@ -301,25 +301,6 @@ def Auser (P : M.Par) (N : ℕ) : ℝ := 127 * ((P.r : ℝ) + 1) ^ 3 * ((N : ℝ
 
 def mmUser (P : M.Par) (N : ℕ) : ℕ := 5 + 3 * (P.r + 1) * (N + 2) * nV P + N * P.r
 
-def HerClasses : Prop :=
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (S : Type) [Fintype S] [DecidableEq S]
-    (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
-    (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
-    (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r) (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (l0 : ℕ)
-    (D : B.RealPlaceData P.k P.r Wp Wq) (A : ℝ) (mm : ℕ),
-    IsData P z z' π π' X μ L st l0 → 1 ≤ l0 → l0 ≤ P.k → D.z = z → D.z' = z' → D.π = π → D.π' = π' →
-    Auser P (Fintype.card S) ≤ A → mmUser P (Fintype.card S) ≤ mm →
-    ∃ K : Fin (P.r + 1) → Submodule ℂ (RadSp P.k P.r z z' π π'),
-      AdjTop (S := S) P z z' π π' μ L st K l0 ∧ TopDensNonneg (S := S) P z z' π π' L st K l0 ∧
-      TopTwist (S := S) P z z' π π' L st K l0 ∧ SliceIn (S := S) P z z' π π' L st K l0 ∧
-      StepDens (S := S) P z z' π π' μ L st K l0 ∧ WaveK (S := S) P z z' π π' st K l0 ∧
-      FormSesq (S := S) P z z' π π' μ L st K l0 ∧ CompositeFormulaLevelZero (S := S) P z z' π π' μ L st K l0 ∧
-      ∀ (F : Mx P.k P.r → (Wq →L[ℂ] Wp)) (ε : ℝ), 0 < ε → (∀ (A' : ℝ) (m' : ℕ), B.InCC A' m' F) →
-        (∀ g ∈ B.GV P.k P.r, F g ≠ 0 → ε ≤ Gf P.k P.r z z' g) →
-        ∃ Φ ∈ K 0, ∀ x ∈ DomR P.k P.r z z',
-          (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = resG P.k P.r (Fin.last P.r) (B.JF D F) x.1 x.2
-
 def WaveCommQQAll : Prop :=
   ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]

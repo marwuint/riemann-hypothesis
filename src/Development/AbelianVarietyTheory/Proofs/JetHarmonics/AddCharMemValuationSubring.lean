@@ -31,11 +31,6 @@ theorem card_addChar_le (A K : Type) [AddCommGroup A] [Fintype A] [Field K] :
   rw [Nat.card_eq_fintype_card]
   simpa using (linearIndependent_addChar A K).fintype_card_le_finrank
 
-theorem perfect_flip {e : A → B → Kˣ} (he : IsPerfectPairing e) :
-    IsPerfectPairing (fun t a => e a t) :=
-  ⟨fun t t' a => he.add_right a t t', fun t a a' => he.add_left a a' t, he.nondeg_right,
-    he.nondeg_left⟩
-
 theorem pairing_zero {e : A → B → Kˣ} (he : IsPerfectPairing e) (t : B) : e 0 t = 1 := by
   have h := he.add_left 0 0 t
   rw [add_zero] at h
@@ -59,29 +54,6 @@ theorem chr_injective {e : A → B → Kˣ} (he : IsPerfectPairing e) :
   exact right_eq_mul.mp h2
 
 variable [Fintype A] [Fintype B]
-
-theorem card_le_of_perfect {e : A → B → Kˣ} (he : IsPerfectPairing e) :
-    Fintype.card B ≤ Nat.card (AddChar A K) := by
-  haveI := finite_addChar A K
-  rw [← Nat.card_eq_fintype_card]
-  exact Nat.card_le_card_of_injective _ (chr_injective he)
-
-theorem card_eq_of_perfect {e : A → B → Kˣ} (he : IsPerfectPairing e) :
-    Fintype.card A = Fintype.card B :=
-  le_antisymm ((card_le_of_perfect (perfect_flip he)).trans (card_addChar_le B K))
-    ((card_le_of_perfect he).trans (card_addChar_le A K))
-
-theorem card_addChar_of_perfect {e : A → B → Kˣ} (he : IsPerfectPairing e) :
-    Nat.card (AddChar A K) = Fintype.card A :=
-  le_antisymm (card_addChar_le A K) ((card_eq_of_perfect he).le.trans (card_le_of_perfect he))
-
-def chrEquiv {e : A → B → Kˣ} (he : IsPerfectPairing e) : B ≃ AddChar A K :=
-  haveI := finite_addChar A K
-  Equiv.ofBijective (chr he) ((chr_injective he).bijective_of_nat_card_le (by
-    rw [card_addChar_of_perfect he, card_eq_of_perfect he, Nat.card_eq_fintype_card]))
-
-theorem chrEquiv_apply {e : A → B → Kˣ} (he : IsPerfectPairing e) (t : B) :
-    chrEquiv he t = chr he t := rfl
 
 end Duality
 

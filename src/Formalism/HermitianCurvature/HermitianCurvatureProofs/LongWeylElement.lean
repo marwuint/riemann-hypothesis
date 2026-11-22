@@ -322,8 +322,6 @@ lemma lev_col_iff (g : Mat k r') (t : Fin (2 * r' + k + 1)) :
       exact if_congr (levPos_inj k r').eq_iff.symm rfl rfl
     · exact lev_n k r' g p _ hp
 
-lemma eI_zero : eI k (1 + r') (a0 r') = iZ k r' := rfl
-
 lemma esI_zero : esI k (1 + r') (a0 r') = iL k r' := rfl
 
 lemma eI_succ (a : Fin r') : eI k (1 + r') (Fin.natAdd 1 a) = levPos k 1 r' (eI k r' a) := by

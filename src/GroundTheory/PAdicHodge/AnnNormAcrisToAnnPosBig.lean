@@ -22,10 +22,6 @@ section Pos
 
 variable (hσ : (p : ℝ)⁻¹ ≤ σ0)
 
-def radInvP : Set.Ioc (0 : ℝ) ρ0 := ⟨(p : ℝ)⁻¹, inv_pos.2 (Nat.cast_pos.2 hp.out.pos), hσ.trans σ0.2.2⟩
-
-theorem coe_radInvP : ((radInvP hσ : Set.Ioc (0 : ℝ) ρ0) : ℝ) = (p : ℝ)⁻¹ := rfl
-
 end Pos
 
 end WAFrac

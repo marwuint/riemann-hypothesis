@@ -59,10 +59,6 @@ def mono0Ine (x : WD h) (χ : Ine (F := E) A → ℂ) : Prop :=
     (a : WDRep h V) (χ : Ine (F := E) A → ℂ) : mono0Ine (mk a) χ ↔ a.Mono0Ine χ :=
   ⟨WDRep.Iso.mono0Ine (iso_std a).symm, WDRep.Iso.mono0Ine (iso_std a)⟩
 
-theorem mono0Ine_of_mono0 {x : WD h} (hx : mono0 x) (χ : Ine (F := E) A → ℂ) : mono0Ine x χ := by
-  induction x using ind with
-  | hP n a => exact (mono0Ine_mk a χ).2 (WDRep.Mono0.mono0Ine ((monodromyZero_ofWeilDeligneRepClass_iff a).1 hx) χ)
-
 @[simp] theorem mono0Ine_lpTw (x : WD h) (s : ℝ) (χ : Ine (F := E) A → ℂ) :
     mono0Ine (lpTw x s) χ ↔ mono0Ine x χ := by
   induction x using ind with

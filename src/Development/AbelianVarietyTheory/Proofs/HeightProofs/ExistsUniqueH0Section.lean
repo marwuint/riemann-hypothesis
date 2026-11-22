@@ -33,10 +33,6 @@ variable {A : Type} [CommRing A] [IsDomain A] {D₀ : Out.DegPre A}
 theorem comb_iff {m : ℕ} (cf : Fin m → A) (e : Fin m → Out.GtPt D₀ (epsR A)) (ν : Out.GtPt D₀ (epsR A)) :
     GtComb cf e ν ↔ IsCombGt e cf ν := Iff.rfl
 
-theorem thMul_iff (r : A) (th th' : D₀.P.L.Sec) : ThMul r th th' ↔ IsMulSec r th th' := Iff.rfl
-
-theorem thNZ_iff (th : D₀.P.L.Sec) : ThNZ th ↔ FibrewiseNe th := Iff.rfl
-
 variable {A' : Type} [CommRing A'] [IsDomain A'] {D₁ : Out.DegPre A'} {f : A →+* A'}
 
 end Gt

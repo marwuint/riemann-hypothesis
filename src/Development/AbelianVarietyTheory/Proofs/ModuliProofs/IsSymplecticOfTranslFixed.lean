@@ -320,45 +320,15 @@ section Clauses
 
 variable {h M : ℕ} (p : ℕ) {B : Type} [CommRing B] {X : Scheme.{0}} {s : X ⟶ Sp B}
 
-def PointsTriple (ζ : Bˣ) (s : X ⟶ Sp B) (A : Over X) [GrpObj A] (P : LB (A ⊗ A).left)
-    (lv : Std h M → (𝟙_ (Over X) ⟶ A)) : Prop :=
-  ∀ (C : Type) [NormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [CharZero C],
-    ‖(p : C)‖ < 1 →
-    ∀ (β : B →+* intRing C) (G : Over (Sp (intRing C))) [GrpObj G] (P' : LB (G ⊗ G).left)
-      (lv' : Std h M → (𝟙_ (Over (Sp (intRing C))) ⟶ G)),
-      IsSymmetricPair h G P' → IsLevel G lv' → IsSymplectic ζ (spMap β) G P' lv' →
-      IsPrincipalAlong G P' (spMap (intRing C).subtype) →
-      DiagAmpleAlong G P' (spMap (IsLocalRing.residue (intRing C))) →
-      ∃ y : Sp (intRing C) ⟶ X, y ≫ s = spMap β ∧ IsPullbackTriple G P' lv' A P lv y
-
-def UnramObj {ζ : B} (u : SiegPre h M ζ s) : Prop :=
-  ∀ (k : Type) [Field k] (x : Sp (DualNumber k) ⟶ X) (o : SiegPre h M ζ (x ≫ s)),
-    SiegPB o u x → SiegPB o u (constPt x) → x = constPt x
-
-def UnramTriple (A : Over X) [GrpObj A] (P : LB (A ⊗ A).left) (lv : Std h M → (𝟙_ (Over X) ⟶ A)) : Prop :=
-  ∀ (k : Type) [Field k] (x : Sp (DualNumber k) ⟶ X) (G : Over (Sp (DualNumber k))) [GrpObj G]
-    (P' : LB (G ⊗ G).left) (lv' : Std h M → (𝟙_ (Over (Sp (DualNumber k))) ⟶ G)),
-    P'.IsLB → IsPullbackTriple G P' lv' A P lv x → IsPullbackTriple G P' lv' A P lv (constPt x) → x = constPt x
-
 theorem spMap_comp {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₃] (f : R₁ →+* R₂) (g : R₂ →+* R₃) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
-
-def FamilyTriple (ζ : Bˣ) (s : X ⟶ Sp B) (A : Over X) [GrpObj A] (P : LB (A ⊗ A).left)
-    (lv : Std h M → (𝟙_ (Over X) ⟶ A)) : Prop :=
-  SmoothOfRelativeDimension (h * (h + 1) / 2) s ∧ LocallyOfFiniteType s ∧ QuasiCompact s ∧
-    IsSymmetricPair h A P ∧ IsPrincipal A P ∧ IsLevel A lv ∧ IsSymplectic ζ s A P lv ∧
-    PointsTriple p ζ s A P lv ∧ UnramTriple A P lv
 
 end Clauses
 
 section Main
 
 variable {h p M : ℕ}
-
-theorem isSiegelFamily_def (hM : M ≠ 0) (X : Scheme.{0}) (s : X ⟶ Sp (cycloLocal p M)) (A : Over X) [GrpObj A]
-    (P : LB (A ⊗ A).left) (lv : Std h M → (𝟙_ (Over X) ⟶ A)) :
-    IsSiegelFamily h p hM X s A P lv ↔ FamilyTriple p (zetaUnit p hM) s A P lv := Iff.rfl
 
 end Main
 

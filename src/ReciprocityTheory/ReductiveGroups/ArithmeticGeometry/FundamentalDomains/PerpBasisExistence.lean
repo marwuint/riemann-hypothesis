@@ -151,9 +151,6 @@ def LBsub {n : ℕ} (β : Fin n → Fin r → E) (ξ : Fin r → E) : Submodule 
     rw [h]
     exact X.L'.smul_mem a he
 
-lemma mem_LBsub {n : ℕ} (β : Fin n → Fin r → E) (ξ : Fin r → E) (c : Fin n → E) :
-    c ∈ LBsub X β ξ ↔ ∃ e : E, ∑ k, c k • β k + e • ξ ∈ X.L' := Iff.rfl
-
 end
 
 end ReciprocityTheory.ChartRestriction.G.FD.PerpBasisExistence

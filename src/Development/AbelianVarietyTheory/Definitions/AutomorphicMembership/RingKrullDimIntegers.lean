@@ -332,9 +332,6 @@ theorem valAt_stalk {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp
   rw [valAt, dif_pos h]
   exact congrArg _ (IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h.choose_spec)
 
-theorem isEqn_eqn {Z : Scheme.{0}} [IsIntegral Z] (Δ : CartierDiv Z) (x : Z) : Δ.IsEqn x (eqn Δ x) :=
-  (Δ.exists_isEqn x).choose_spec
-
 theorem valAt_zpow {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) {f : Z.functionField}
     (hf : UnitAt (below y) f) : valAt y f ≠ 0 ∧ ∀ m : ℤ, valAt y (f ^ m) = valAt y f ^ m := by
   obtain ⟨_, ⟨a, rfl⟩, rfl⟩ := hf
@@ -342,12 +339,6 @@ theorem valAt_zpow {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp 
   have e {S : Type} [Field S] (ψ : Z.presheaf.stalk (below y) →+* S) : ψ (a ^ m : _ˣ) = ψ a ^ m := by
     exact (congrArg Units.val (map_zpow (Units.map ψ.toMonoidHom) a m)).trans (Units.val_zpow_eq_zpow_val _ _)
   rw [← e, valAt_stalk, valAt_stalk, e]
-
-omit [NumberField F] in
-
-theorem ratVal_one {Y : Var F} {σ : F →+* ℂ} (y : Pts Y σ) : ratVal (1 : Y.Fn) y = 1 := by
-  have e := ratVal_fnOf (y := y) CxPts.mem_ptsIn_top trivial 1
-  rwa [map_one, CxPts.ev_one CxPts.mem_ptsIn_top] at e
 
 end Base
 

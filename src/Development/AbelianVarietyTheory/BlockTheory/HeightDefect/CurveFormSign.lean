@@ -17,8 +17,6 @@ section Maps
 
 variable {S X Y : Scheme.{0}} (C : Over S) (G : Over X) (f : Y ⟶ S) (x : Y ⟶ X)
 
-abbrev MapOver : Type := Over.mk (pullback.snd C.hom f ≫ x) ⟶ G
-
 variable {C G f x}
 
 end Maps

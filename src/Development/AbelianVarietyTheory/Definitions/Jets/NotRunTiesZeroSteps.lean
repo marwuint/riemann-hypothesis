@@ -53,10 +53,4 @@ theorem b_eq (h : RunTie T EX Tp hK O ι) : O.b = L.sc.b := by
 
 end General
 
-theorem numOf_aPlus (L : SizeData₂ D) (j : ℕ) (z : RPl D.R) (i : ℕ) :
-    (numOf D L).aPlus j z i = DV.aPlusQ D j (plOf D z) i := rfl
-
-theorem numOf_aMinus (L : SizeData₂ D) (j : ℕ) (z : RPl D.R) (i : ℕ) :
-    (numOf D L).aMinus j z i = DV.aMinusQ D j (plOf D z) i := rfl
-
 end GlobalTheory.RunDepth.Model

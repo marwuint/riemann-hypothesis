@@ -25,9 +25,6 @@ def detTw (d : ℕ) (s : ℂ) : (GL (Fin d) k → ℂ) →ₗ[ℂ] (GL (Fin d) k
   map_add' f g := by funext x; simp [mul_add]
   map_smul' c f := by funext x; simp; ring
 
-theorem detTw_apply (d : ℕ) (s : ℂ) (f : GL (Fin d) k → ℂ) (x : GL (Fin d) k) :
-    detTw d s f x = apow (gdet x) s * f x := rfl
-
 end GlobalTheory.FullRankCoinv.IndTwist
 
 namespace GlobalTheory.FullRankCoinv

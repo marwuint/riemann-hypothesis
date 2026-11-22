@@ -18,8 +18,6 @@ namespace GlobalTheory.FlagCell
 def uniR {R : Type*} [CommRing R] {m : ℕ} (n : Low m → R) : Matrix (Fin m) (Fin m) R :=
   Matrix.of fun a b => if h : b < a then n ⟨(a, b), h⟩ else if a = b then 1 else 0
 
-theorem uniR_eq_uni {m : ℕ} (n : Low m → ℂ) : uniR n = uni n := rfl
-
 theorem uniR_apply {R : Type*} [CommRing R] {m : ℕ} (n : Low m → R) (a b : Fin m) :
     uniR n a b = if h : b < a then n ⟨(a, b), h⟩ else if a = b then 1 else 0 := rfl
 

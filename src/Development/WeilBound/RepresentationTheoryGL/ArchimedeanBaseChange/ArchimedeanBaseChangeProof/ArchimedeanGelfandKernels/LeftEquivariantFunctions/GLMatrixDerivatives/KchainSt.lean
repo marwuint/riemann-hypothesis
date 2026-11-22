@@ -23,10 +23,6 @@ def KcSmooth : Prop :=
     (∀ v ∈ cone n, σ v * (σ v)ᴴ = hOf v) → ContDiffOn ℝ ∞ Fr (GLs n) → ContDiffOn ℝ ∞ k (GLs n) →
     ContDiffOn ℝ ∞ (Kc σ c Fr k Γ T d) (cone n ×ˢ cone n)
 
-def FrMul : Prop :=
-  ∀ (n : ℕ) (lam : Fin n → ℤ) E Fr ε ι S Γ T, CxData lam E Fr ε ι S Γ T → ∀ x ∈ GLs n, ∀ Y : Mat n,
-    fderiv ℝ Fr x (x * Y) = Fr x * fderiv ℝ Fr 1 Y
-
 def FrComm : Prop :=
   ∀ (n : ℕ) (lam : Fin n → ℤ) E Fr ε ι S Γ T, CxData lam E Fr ε ι S Γ T → ∀ X H : Mat n, X.IsHermitian → H.IsHermitian →
     fderiv ℝ Fr 1 X * ε H = ε H * fderiv ℝ Fr 1 X - ε (X * H + H * X) ∧ Γ * fderiv ℝ Fr 1 X = fderiv ℝ Fr 1 X * Γ

@@ -57,9 +57,6 @@ def RestSize (ε x : ℝ) (n nT nT2 m : ℕ) (b k aE : ℝ) : Prop :=
   x ^ ((1 : ℝ) / 2 - ε) ≤ m ∧
   k ≤ (n : ℝ) ^ 2 * x ^ ((1 : ℝ) / 2 - ε)
 
-def XLarge (K cHH eK Cd CL ε x : ℝ) : Prop :=
-  3 ≤ x ∧ 26 ≤ x ^ (3 * ε / 8) ∧ LargeX x ε K cHH eK ∧ moveCost x Cd CL ≤ x ^ ((1 : ℝ) / 2 + ε)
-
 def SizeWindowsSplit : Prop :=
   ∀ (C ε x : ℝ) (n nT nT2 m : ℕ) (b k aE Err : ℝ),
     SizeWindows C ε x n nT nT2 m b k aE Err ↔

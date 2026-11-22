@@ -36,13 +36,7 @@ def Lc : Fin 2 → MRing (GlobalTheory (Fin 2)) :=
 
 theorem Lc_zero : Lc 0 = X ⟨(), 0⟩ * X ⟨(), 1⟩ := rfl
 
-theorem Lc_one : Lc 1 = X ⟨(), 0⟩ ^ 2 + X ⟨(), 1⟩ ^ 2 := rfl
-
 end ProjLine
-
-namespace FibreNormCharpoly
-
-end FibreNormCharpoly
 
 end
 

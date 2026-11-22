@@ -13,9 +13,6 @@ open GlobalTheory.SWLit
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n m : ℕ}
 
-abbrev unipN (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E) : Subgroup (UA σ J₂) :=
-  unipOf finSumFinEquiv (UG (cA σ) (incM F J₂)).subtype
-
 variable {JV : Matrix (Fin m) (Fin m) E} {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E} {κ : Type}
 
 end GlobalTheory.SWWeil

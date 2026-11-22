@@ -58,9 +58,6 @@ theorem slv_nv (p : KB.Pl P Wp Wq) {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (hF
     (fun e ε ε' h h0 h' => nice_mono h h') h
   exact ⟨ε, hε, hall⟩
 
-theorem form_eq' (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter) :
-    p.form j hj w = D.formLev p.T (M.sgn P p.l0) ⟨j, by omega⟩ w := rfl
-
 theorem form_sl (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter) {ε : ℝ}
     (x₁ x₂ y : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
     (h₁ : NV (p.T.bs j) ε x₁) (h₂ : NV (p.T.bs j) ε x₂) (hy : NV (p.T.bs j) ε y) :

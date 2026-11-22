@@ -673,10 +673,6 @@ instance free_OL : Module.Free ℤ_[l] ↥(OL LL) := GlobalTheory.Decompl.free_O
 
 instance finite_OL : Module.Finite ℤ_[l] ↥(OL LL) := GlobalTheory.Decompl.finite_OL LL
 
-theorem inclO_eq : inclO l ↥(OL LL) = inclR LL := rfl
-
-theorem frobOW_eq : frobOW l ↥(OL LL) = φRW LL := rfl
-
 end FinExt
 
 end GlobalTheory.BKReal

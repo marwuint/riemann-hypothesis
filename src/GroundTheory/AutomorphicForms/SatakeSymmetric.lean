@@ -59,10 +59,6 @@ def symmetricLaurent : Subalgebra ℂ (LaurentRing n) where
     rw [map_add, ha σ, hb σ]
   algebraMap_mem' c σ := AlgHom.commutes _ c
 
-theorem mem_symmetricLaurent {p : LaurentRing n} :
-    p ∈ symmetricLaurent n ↔ ∀ σ, permAct σ p = p :=
-  Iff.rfl
-
 theorem monomial_const_mem (c : ℤ) : monomial (fun _ : Fin n => c) ∈ symmetricLaurent n := by
   intro σ
   rw [permAct_single]

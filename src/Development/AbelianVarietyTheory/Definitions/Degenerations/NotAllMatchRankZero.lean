@@ -229,9 +229,6 @@ def homOfIso {N N' : NumD O} (I : NumD.Iso N N') : NumD.Hom (RingHom.id O) N N' 
   c_eq := I.c_eq
   ψ_eq := I.ψ_eq
 
-theorem homOfIso_rel {N N' : NumD O} (I : NumD.Iso N N') (g : N.Gt) (g' : N'.Gt) :
-    (homOfIso I).Rel g g' ↔ I.Rel g g' := Iff.rfl
-
 open scoped BigOperators in
 variable {O : Type} [CommRing O] in
 

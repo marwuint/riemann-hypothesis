@@ -16,18 +16,6 @@ section Lim
 
 variable {R : Type} [CommRing R] {S₁ : Sys.{w₁} R} {S₂ : Sys.{w₂} R} {S₃ : Sys.{w₃} R}
 
-def limBil (b : ∀ m, S₁.M m →ₗ[R] S₂.M m →ₗ[R] S₃.M m)
-    (hb : ∀ m x y, S₃.r m (b (m + 1) x y) = b m (S₁.r m x) (S₂.r m y)) : S₁.lim →ₗ[R] S₂.lim →ₗ[R] S₃.lim :=
-  LinearMap.mk₂ R (fun x y => ⟨fun m => b m (x.1 m) (y.1 m), fun m => by rw [hb, x.2 m, y.2 m]⟩)
-    (fun x x' y => Subtype.ext (funext fun m => by simp))
-    (fun c x y => Subtype.ext (funext fun m => by simp))
-    (fun x y y' => Subtype.ext (funext fun m => by simp))
-    (fun c x y => Subtype.ext (funext fun m => by simp))
-
-theorem limBil_apply (b : ∀ m, S₁.M m →ₗ[R] S₂.M m →ₗ[R] S₃.M m)
-    (hb : ∀ m x y, S₃.r m (b (m + 1) x y) = b m (S₁.r m x) (S₂.r m y)) (x : S₁.lim) (y : S₂.lim) (m : ℕ) :
-    (limBil b hb x y).1 m = b m (x.1 m) (y.1 m) := rfl
-
 end Lim
 
 section One

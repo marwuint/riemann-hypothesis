@@ -48,8 +48,4 @@ def SplitsAt (K : Type) {E : Type} [Field K] [NumberField K] [Field E] [NumberFi
   ∃ P : Ideal (𝓞 K), P.IsPrime ∧ ((p : ℕ) : 𝓞 K) ∈ P ∧ ∃ a b : 𝓞 K,
     cj (algebraMap K E (a : K)) = algebraMap K E (b : K) ∧ a ∈ P ∧ b ∉ P
 
-def SelfDualI (K : Type) {E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E] (cj : E ≃ₐ[ℚ] E)
-    (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Prop :=
-  ∀ y : E, y ∈ I ↔ ∀ x ∈ I, Algebra.trace K E (x * cj y) ∈ (algebraMap (𝓞 K) K).range
-
 end PI.KerIso

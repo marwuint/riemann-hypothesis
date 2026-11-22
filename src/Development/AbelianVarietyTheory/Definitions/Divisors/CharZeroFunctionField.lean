@@ -115,15 +115,6 @@ theorem isRatSec_one : IsRatSec (LB.triv X) fun _ => 1 := by
 def pair : Pair (𝟙 (Sp ℤ)) :=
   ⟨ArithBase.trivShift 0, ArithBase.trivShift (Real.log 3), fun _ => 1, fun _ => 1, isRatSec_one, isRatSec_one⟩
 
-private theorem pair_L_phi_apply_eq_zero (σ : ℤ →+* ℂ) (i) (y : CxPts (𝟙 (Sp ℤ)) σ) :
-    (pair.L.φ σ).φ i y = 0 + 2 * 0 := rfl
-
-private theorem pair_A_phi_apply_eq_two_log_three (σ : ℤ →+* ℂ) (i) (y : CxPts (𝟙 (Sp ℤ)) σ) :
-    (pair.A.φ σ).φ i y = 0 + 2 * Real.log 3 := rfl
-
-private theorem trivShift_phi_apply_eq_two_mul (t : ℝ) (σ : ℤ →+* ℂ) (c) (y : CxPts (𝟙 (Sp ℤ)) σ) :
-    ((ArithBase.trivShift t).φ σ).φ c y = 0 + 2 * t := rfl
-
 end IntExample
 
 end GlobalTheory.VolBr

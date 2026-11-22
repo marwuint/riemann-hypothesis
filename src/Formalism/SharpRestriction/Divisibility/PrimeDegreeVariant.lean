@@ -245,10 +245,6 @@ structure GMap (K : Type) [Field K] (σ : K →+* ℂ) (G : Type) [Group G] [Fin
 
 attribute [instance] GMap.acgK GMap.modK GMap.fdK GMap.acgV GMap.modV
 
-namespace GMap
-
-end GMap
-
 end Lemma8
 
 namespace Ten
@@ -399,22 +395,6 @@ variable {D : D7} {X : BaseLevelRowSide D}
 def Conclusion0 (D : D7) : Prop :=
   ∀ Y : ℝ, (∀ i, (D.host.g i : ℝ) ≤ 2 * Y) → lam0 D ≤ 2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * Real.log (2 * Y)
 
-def ErrorFirstTermSize (D : D7) : Prop :=
-  (∀ μ j, 1 ≤ j → j ≤ D.R.m →
-    ∀ (σ' : D.ntypes.Par) (k : Fin 2) (v : D.nd.PlG k) (f : Polynomial (ZMod (D.host.g k))),
-    ∀ F ∈ D.ntypes.MtPar μ j σ',
-      D.ntypes.onMt μ j (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v (D.ntypes.eSer k f)) F ≠ 0 → f = D.ntypes.labPar k σ' v) ∧
-  (∀ μ (σ' : D.ntypes.Par) (k : Fin 2) (v : D.nd.PlG k) (f : Polynomial (ZMod (D.host.g k))),
-    ∀ F ∈ D.ntypes.AmbPar μ σ',
-      D.ntypes.onAmb μ (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v (D.ntypes.eSer k f)) F ≠ 0 →
-        f = Formalism.MainNotions.ArithmeticCylinders.dualLab D k (D.ntypes.labPar k σ' v))
-
-theorem secondSentence_iff (D : D7) : Formalism.MainNotions.ArithmeticCylinders.adm3 D ↔
-    (∀ (τ : ℂ ≃+* ℂ) (k : Fin 2) (f : Polynomial (ZMod (D.host.g k))), Formalism.MainNotions.ArithmeticCylinders.IsLabel D k f →
-      (D.ntypes.eSer k f).coeff.mapRange τ (map_zero τ) =
-        (D.ntypes.eSer k (Formalism.MainNotions.ArithmeticCylinders.labAct D τ k f)).coeff) ∧ ErrorFirstTermSize D := by
-  exact Iff.rfl
-
 section GoodType
 
 local instance factG (D : D7) (k : Fin 2) : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -472,8 +452,6 @@ theorem sharp_downTo (D : D7) (μ : D.what₂.Tup) (j : ℕ) :
     rw [ih]
     all_goals rfl
 
-def frg (D : D7) : ℝ := (D.R.f : ℝ) * D.R.r / (min (D.host.g 0) (D.host.g 1) : ℕ)
-
 def LabTie (Y : Prov D X) (lab : Y.T.S → ∀ k : Fin 2, D.nd.PlG k → Polynomial (ZMod (D.host.g k))) : Prop :=
   ∀ s (g : G0g D.nd), D.what₂.embLL ((eS Y.T s).coeff g) =
     ∏ kv : (Σ k : Fin 2, D.nd.PlG k), (D.ntypes.eSer kv.1 (lab s kv.1 kv.2)).coeff (g kv)
@@ -488,9 +466,6 @@ open NumberField IsDedekindDomain
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
 
-def StarIsConj (K : Type) [Field K] [StarRing K] : Prop :=
-  ∃ σ0 : K →+* ℂ, ∀ x, σ0 (star x) = star (σ0 x)
-
 def IsCM (z : K) : Prop := ∀ σ : K →+* ℂ, σ (star z) = star (σ z)
 
 def IsConjPlK (w w' : HeightOneSpectrum (𝓞 K)) : Prop := ∀ x : K, vAdd w' x = vAdd w (star x)
@@ -498,28 +473,10 @@ def IsConjPlK (w w' : HeightOneSpectrum (𝓞 K)) : Prop := ∀ x : K, vAdd w' x
 def IsHermE (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) : Prop :=
   (∀ x y, h y x = star (h x y)) ∧ (∀ x, (∀ y, h x y = 0) → x = 0) ∧ ∀ x y, h (e x) y = h x (e y)
 
-def DualInAt (A : HLat K) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (M : Submodule (𝓞 K) A.V)
-    (w : HeightOneSpectrum (𝓞 K)) : Prop :=
-  ∀ v : A.V, (∀ a ∈ M, h v a ∈ Set.range (algebraMap (𝓞 K) K)) → ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ s • v ∈ M
-
 def IsBasisAt (A : HLat K) {d : ℕ} (a : Fin d → A.V) (M : Submodule (𝓞 K) A.V)
     (w w' : HeightOneSpectrum (𝓞 K)) : Prop :=
   LinearIndependent K a ∧ ∀ u ∈ ({w, w'} : Set (HeightOneSpectrum (𝓞 K))),
     LocLe u 0 (Submodule.span (𝓞 K) (Set.range a)) M ∧ LocLe u 0 M (Submodule.span (𝓞 K) (Set.range a))
-
-def GramDetKernelValuation (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) : Prop :=
-  ∀ w w' : HeightOneSpectrum (𝓞 K), IsConjPlK w w' → DualInAt A h A.L w → DualInAt A h A.L w' →
-    ∀ (d : ℕ) (a : Fin d → A.V), IsBasisAt A a (cutE A e A.L) w w' →
-      vAdd w (Matrix.of fun i j => h (a i) (a j)).det ≤ 2 * (dimE A (1 - e) : ℤ) * vAdd w ((n : ℕ) : K)
-
-def gram_det_kernel_base_level : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K),
-    StarIsConj K → IsProj A e n → IsHermE A e h → GramDetKernelValuation A e n h
-
-def IsCMFormE (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) : Prop :=
-  (∀ i j, IsCM (h (A.b i) (A.b j))) ∧ (∀ i j, IsCM (A.b.repr (e (A.b j)) i)) ∧
-  ∀ (v : InfinitePlace K) i j, Formalism.HermitianLatticesTheory.majAt A.b A.X v (A.b i) (A.b j) = v.embedding (h (A.b i) (A.b j))
 
 def LamStar (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K)
     (U : Submodule K A.V) (y : A.V) : Prop :=
@@ -544,12 +501,6 @@ def L7 (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V �
         ∑ᶠ w, lw K w * (γ w : ℝ)) ∧
     (∀ φ ∈ A.dualL, (∀ u ∈ U, φ u = 0) →
       ∀ m ∈ cutE A e A.L, φ m ∈ Set.range (algebraMap (𝓞 K) K))
-
-def division_rows_base_level : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K] [IsGalois ℚ K]
-    (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K),
-    StarIsConj K → IsProj A e n → IsHermE A e h → IsCMFormE A e h →
-    (∀ w, DualInAt A h A.L w) → L7 A e n h
 
 end Herm
 

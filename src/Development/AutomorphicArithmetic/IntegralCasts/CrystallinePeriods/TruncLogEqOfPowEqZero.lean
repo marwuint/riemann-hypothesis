@@ -106,8 +106,6 @@ instance : IsScalarTower (Ainf p R) (AinfInv p R) (BdRPlus p R) :=
 instance : IsScalarTower ℚ_[p] (AinfInv p R) (BdRPlus p R) :=
   IsScalarTower.of_algebraMap_eq fun _ => rfl
 
-theorem eq_bDeRhamPlus : BdRPlus p R = BDeRhamPlus R p := rfl
-
 def eval (n : ℕ) : BdRPlus p R →+* AinfInv p R ⧸ AinfInv.kerTheta p R ^ n :=
   (AdicCompletion.evalₐ (AinfInv.kerTheta p R) n).toRingHom
 

@@ -110,12 +110,6 @@ variable {m n k : ℕ}
 def maxMinor (B : Matrix (Fin n) (Fin k) R) (s : KSubset n k) : R :=
   (B.submatrix s.emb id).det
 
-def compound (k : ℕ) (P : Matrix (Fin m) (Fin n) R) : Matrix (KSubset m k) (KSubset n k) R :=
-  Matrix.of fun s t => (P.submatrix s.emb t.emb).det
-
-theorem compound_apply (k : ℕ) (P : Matrix (Fin m) (Fin n) R) (s : KSubset m k)
-    (t : KSubset n k) : compound k P s t = (P.submatrix s.emb t.emb).det := rfl
-
 end Minors
 
 section Independence

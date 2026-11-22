@@ -94,9 +94,6 @@ lemma toH'_res (h : V ≤ U) (x : cohOn F U n) :
 lemma map_eq_map (S : Type t) [CommRing S] [Algebra S Γ(X, ⊤)] (φ : F ⟶ G) (x : cohOn F U n) :
     map R φ U n x = map S φ U n x := rfl
 
-lemma res_eq_res (S : Type t) [CommRing S] [Algebra S Γ(X, ⊤)] (h : V ≤ U) (x : cohOn F U n) :
-    res R F h n x = res S F h n x := rfl
-
 lemma smul_eq_map (r : R) (x : cohOn F U n) :
     r • x = map R (smulHom F (algebraMap R Γ(X, ⊤) r)) U n x := rfl
 
@@ -180,16 +177,6 @@ variable (F n) in
     (by rw [res_comp_res, res_refl]) (by rw [res_comp_res, res_refl])
 
 end Module
-
-abbrev moduleOfRingHom {R : Type v} [CommRing R] (f : R →+* Γ(X, ⊤)) (F : X.Modules)
-    (U : X.Opens) (n : ℕ) : Module R (cohOn F U n) :=
-  letI := f.toAlgebra
-  instModule R F U n
-
-lemma moduleOfRingHom_smul {R : Type v} [CommRing R] (f : R →+* Γ(X, ⊤)) {F : X.Modules}
-    {U : X.Opens} {n : ℕ} (r : R) (x : cohOn F U n) :
-    letI := moduleOfRingHom f F U n
-    r • x = f r • x := rfl
 
 lemma subsingleton_of_isZero {F : X.Modules} (h : IsZero F) (U : X.Opens) (n : ℕ) :
     Subsingleton (cohOn F U n) :=

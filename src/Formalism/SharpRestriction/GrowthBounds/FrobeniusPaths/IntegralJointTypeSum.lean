@@ -13,8 +13,6 @@ section Ops
 
 variable {F : Type*} [Field F] {N m k : ℕ} (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k)
 
-lemma glOps_eq_E (a b : Fin m) : glOps F m LL S a b = glOpsE F LL S (id : Fin m → Fin m) a b := rfl
-
 lemma glOpsE_mul (a b : Fin m) (f g : MvPolynomial (Fin N × Fin k) F) :
     glOpsE F LL S e a b (f * g) = f * glOpsE F LL S e a b g + g * glOpsE F LL S e a b f := by
   simp only [glOpsE, LinearMap.sum_apply]

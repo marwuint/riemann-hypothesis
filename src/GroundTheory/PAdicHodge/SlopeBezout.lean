@@ -184,8 +184,6 @@ def saturation (N : Submodule R M) : Submodule R M where
 
 variable {N N₁ N₂ : Submodule R M}
 
-theorem mem_saturation {x : M} : x ∈ saturation N ↔ ∃ r : R, r ≠ 0 ∧ r • x ∈ N := Iff.rfl
-
 variable (N) in
 
 theorem le_saturation : N ≤ saturation N := fun x hx => ⟨1, one_ne_zero, by simpa using hx⟩

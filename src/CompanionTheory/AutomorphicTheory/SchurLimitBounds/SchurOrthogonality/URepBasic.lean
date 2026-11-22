@@ -110,9 +110,6 @@ def intertwiners (σ : UnitaryRep G K) : Submodule ℂ (H →L[ℂ] K) where
 
 variable {σ : UnitaryRep G K} {τ : UnitaryRep G L}
 
-lemma mem_intertwiners {T : H →L[ℂ] K} :
-    T ∈ π.intertwiners σ ↔ ∀ (g : G) (v : H), T (π g v) = σ g (T v) := Iff.rfl
-
 lemma comp_mem_intertwiners {S : K →L[ℂ] L} {T : H →L[ℂ] K} (hS : S ∈ σ.intertwiners τ)
     (hT : T ∈ π.intertwiners σ) : S ∘L T ∈ π.intertwiners τ := fun g v => by
   simp [hT g v, hS g (T v)]

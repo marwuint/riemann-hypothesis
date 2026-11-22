@@ -45,9 +45,6 @@ def expTwoPiI (x : ℝ) : ℂ := cexp (2 * π * I * x)
 def rowSum (m : ℤ) (τ : ℍ) (s : ℂ) : ℂ :=
   ∑' n : ℤ, ((‖(m : ℂ) * (τ : ℂ) + n‖ : ℝ) : ℂ) ^ (-2 * s)
 
-def freqIntegral (k : ℤ) (Y : ℝ) (s : ℂ) : ℂ :=
-  ∫ t : ℝ, expTwoPiI (-(k * t)) * ((t ^ 2 + Y ^ 2 : ℝ) : ℂ) ^ (-s)
-
 section Hermitian
 
 @[instance_reducible]
@@ -72,10 +69,6 @@ def corePi {ι : Type*} [Fintype ι] {V : ι → Type*} [∀ c, AddCommGroup (V 
     refine core_eq_zero_of_re (h c) _ ?_
     exact (Finset.sum_eq_zero_iff_of_nonneg (fun c _ ↦ (h c).re_inner_nonneg (x c))).1 hre c
       (Finset.mem_univ c)
-
-theorem corePi_inner {ι : Type*} [Fintype ι] {V : ι → Type*} [∀ c, AddCommGroup (V c)]
-    [∀ c, Module ℂ (V c)] (h : ∀ c, InnerProductSpace.Core ℂ (V c)) (x y : ∀ c, V c) :
-    (corePi h).inner x y = ∑ c, (h c).inner (x c) (y c) := rfl
 
 variable {K' : Type*} [Field K']
 

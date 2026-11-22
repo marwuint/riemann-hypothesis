@@ -24,8 +24,6 @@ abbrev qPi (q : QLoc hc n Q Θ) (P : Q) : E ⊗[F] Formalism.L2.Herm.Af F →+* 
 theorem qdf_at_val (q : QLoc hc n Q Θ) (P : Q) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     ((q.at P x : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) = (x : Matrix (Fin n) (Fin n) _).map (qPi q P) := rfl
 
-theorem qdf_pi_iA (q : QLoc hc n Q Θ) (P : Q) (e : E) : qPi q P (iA F E e) = q.phi P e := rfl
-
 theorem qdf_phi_int (q : QLoc hc n Q Θ) (P : Q) (r : 𝓞 E) : q.phi P (r : E) ∈ (qv F P.1).adicCompletionIntegers F := by
   have h : Formalism.UG.inclE (F := F) ((qv F P.1).adicCompletion F) (r : E) ∈ Formalism.BasicNotions.intV E (qv F P.1) :=
     Subring.subset_closure (Or.inl ⟨⟨(r : E), r, rfl⟩, rfl⟩)

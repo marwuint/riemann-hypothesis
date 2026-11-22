@@ -34,9 +34,6 @@ variable {X : Scheme.{0}}
 def invOpen (f : X ⟶ SpecZ) (m : ℤ) : X.Opens :=
   f ⁻¹ᵁ PrimeSpectrum.basicOpen (m : CommRingCat.of ℤ)
 
-lemma mem_invOpen (f : X ⟶ SpecZ) (m : ℤ) (x : X) :
-    x ∈ invOpen f m ↔ (m : ℤ) ∉ (f.base x).asIdeal := Iff.rfl
-
 instance isPrime_span_prime (p : Nat.Primes) : (Ideal.span {((p : ℕ) : ℤ)}).IsPrime :=
   (Ideal.span_singleton_prime (by exact_mod_cast p.2.ne_zero)).2 (Nat.prime_iff_prime_int.mp p.2)
 

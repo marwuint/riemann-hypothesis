@@ -16,9 +16,6 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 theorem perp_eq (W : HSpace E) (x : W.V) : UnitVectorOrthogonal.perp W x = SelfDualLatticeComplements.perp W x := rfl
 
-theorem perpLat_eq (W : HSpace E) (L : Submodule (𝓞 E) W.V) (x : W.V) :
-    UnitVectorOrthogonal.perpLat W L x = L ⊓ (SelfDualLatticeComplements.perp W x).restrictScalars (𝓞 E) := rfl
-
 theorem selfDual_iff (W : HSpace E) (L : Submodule (𝓞 E) W.V) :
     UnitVectorOrthogonal.IsSelfDualLat W L ↔ SelfDualLatticeComplements.IsSelfDualLattice W L := Iff.rfl
 

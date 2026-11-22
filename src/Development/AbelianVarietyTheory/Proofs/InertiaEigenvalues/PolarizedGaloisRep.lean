@@ -320,15 +320,6 @@ section Construction
 
 variable (D : D7)
 
-def GaloisRepOfPolarized_at : Prop :=
-  ∀ (i : D.nd.Loc) (a : ℕ), 1 ≤ a → ∀ π : D.naut.CG a, D.naut.csd π → ∀ s : ℝ,
-    (∀ τ, (D.naut.infG π τ).Nodup ∧
-      ∀ z ∈ D.naut.infG π τ, ∃ m : ℤ, z + (s : ℂ) = (m : ℂ) + ((a : ℂ) - 1) / 2) →
-    ∃ r : GE D.nd →* GL (Fin a) (Qbar (D.nd.l i)),
-      Continuous (fun g => (r g : Matrix (Fin a) (Fin a) (Qbar (D.nd.l i)))) ∧ IsSSRep r ∧
-      ∀ w, w ∉ placesOver D.host.E (D.nd.l i) →
-        D.naut.wdOf i r w = D.naut.lpTw (D.naut.locG π w) (s + (1 - (a : ℝ)) / 2)
-
 variable (i : D.nd.Loc)
 
 def Realised (m : ℕ) (L : ∀ w, D.naut.LP w) : Prop :=

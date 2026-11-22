@@ -354,8 +354,6 @@ def host : HostRaw D.frame := (D.charData hH hc he hs).toHostRaw
 theorem host_q : (D.host hH hc he hs).q = q := rfl
 theorem host_d : (D.host hH hc he hs).d = d := rfl
 theorem host_QS : (D.host hH hc he hs).QS = D.m := rfl
-theorem host_art : (D.host hH hc he hs).art = D.art hH := rfl
-
 theorem psQ : (D.host hH hc he hs).PsQ := by
   intro u
   exact D.art_ps hH u

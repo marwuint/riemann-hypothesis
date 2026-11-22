@@ -36,10 +36,6 @@ def galOver (M : IntermediateField K (PadicAlgCl p)) (σ : Gal(PadicAlgCl p/K))
   { σ.toRingEquiv with
     commutes' := fun m => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ m m.2 }
 
-omit [FiniteDimensional ℚ_[p] K] in
-theorem galOver_apply (M : IntermediateField K (PadicAlgCl p)) (σ : Gal(PadicAlgCl p/K))
-    (hσ : σ ∈ M.fixingSubgroup) (y : PadicAlgCl p) : galOver M σ hσ y = σ y := rfl
-
 variable (M M' : IntermediateField K (PadicAlgCl p)) (hMM' : M ≤ M') [FiniteDimensional K M']
   {τ : Gal(PadicAlgCl p/K)} (hτM : τ ∈ M.fixingSubgroup)
   (hτp : τ ^ p ∈ M'.fixingSubgroup) (hτ1 : τ ∉ M'.fixingSubgroup)

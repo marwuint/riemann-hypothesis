@@ -46,9 +46,6 @@ def boundedRepartitions (D : WeilDivisor X) : Submodule k (repartitions k X) whe
     calc _ ≤ 1 * WithZero.exp (D Z) := mul_le_mul' (Z.valuation_algebraMap_scalar_le_one c) h
       _ = _ := one_mul _
 
-lemma mem_boundedRepartitions (D : WeilDivisor X) (a : repartitions k X) :
-    a ∈ boundedRepartitions k D ↔ ∀ Z : PrimeDivisor X, a.1 Z ∈ Z.divisorSubgroup D := Iff.rfl
-
 end Repartitions
 
 section Principal
@@ -112,9 +109,6 @@ noncomputable def repToQuot : repartitions k X →+ quotSections D ⊤ where
     · rfl
     · rw [add_zero]
 
-lemma repToQuot_apply (a : repartitions k X) (z : (⊤ : X.Opens)) :
-    (repToQuot k D a).1 z = QuotientAddGroup.mk (extendRep a.1 z.1) := rfl
-
 end Principal
 
 section H1
@@ -139,10 +133,6 @@ variable (k) in
 noncomputable def repartitionToH1 : repartitions k X →+ Sheaf.H.{w'} (modulesAb (divisorSheaf D)) 1 :=
   (quotDelta hX D).comp
     ((Sheaf.H.equiv₀ (quotSheaf D) isTerminalTop).symm.toAddMonoidHom.comp (repToQuotTop k D))
-
-lemma repartitionToH1_apply (a : repartitions k X) :
-    repartitionToH1 k hX D a = quotDelta hX D
-      ((Sheaf.H.equiv₀ (quotSheaf D) isTerminalTop).symm (repToQuotTop k D a)) := rfl
 
 end H1
 

@@ -199,9 +199,6 @@ def matrixCoordsHomeomorph : Matrix ι ι (R ⊗[K] E) ≃ₜ (ι × ι × κ �
     rw [this]
     exact (tensorCoordsHomeomorph R b).symm.continuous.comp (continuous_pi fun k => continuous_apply _)
 
-theorem matrixCoordsHomeomorph_apply (M : Matrix ι ι (R ⊗[K] E)) :
-    matrixCoordsHomeomorph R b M = matrixCoords b R M := rfl
-
 theorem continuous_conjBase : Continuous (conjBase K E R) :=
   IsModuleTopology.continuous_of_linearMap
     (show R ⊗[K] E →ₐ[R] R ⊗[K] E from

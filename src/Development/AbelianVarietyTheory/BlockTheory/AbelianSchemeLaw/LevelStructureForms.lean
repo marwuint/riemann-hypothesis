@@ -47,10 +47,6 @@ variable {P : PolAV S} {k : ℕ} {ζ : Γ(S, ⊤)ˣ}
 def pt (ℓ : Level P k ζ) (v : Fin P.g ⊕ Fin P.g → ZMod k) : 𝟙_ (Over S) ⟶ P.A :=
   ℓ.hom (Multiplicative.ofAdd v)
 
-def ptKer (ℓ : Level P k ζ) (v : Fin P.g ⊕ Fin P.g → ZMod k) :
-    𝟙_ (Over S) ⟶ pullback (mulBy P.A k) η[P.A] :=
-  Sigma.ι (fun _ : Fin P.g ⊕ Fin P.g → ZMod k => 𝟙_ (Over S)) v ≫ ℓ.isKer.isoPullback.hom
-
 end Level
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureForms

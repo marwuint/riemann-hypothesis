@@ -124,8 +124,6 @@ variable {E : Type} [Field E] [NumberField E] (φ : E →+* ℂ)
 
 def imField : IntermediateField ℚ ℂ := φ.toRatAlgHom.fieldRange
 
-theorem mem_imField {z : ℂ} : z ∈ imField φ ↔ ∃ x, φ x = z := Iff.rfl
-
 theorem imField_le_iff {M : IntermediateField ℚ ℂ} : imField φ ≤ M ↔ ∀ x, φ x ∈ M :=
   ⟨fun h x => h ⟨x, rfl⟩, fun h _ ⟨x, hx⟩ => hx ▸ h x⟩
 
@@ -491,10 +489,6 @@ theorem KsExact.lower (h : B.KsExact D C) :
     D.ray ≤ B.KsC ∧ B.CurveIn D ∧ charField C ≤ B.KsC ∧ B.KummerIn D := by
   obtain ⟨-, h1, h2, -, h3, h4⟩ := (listField_le_iff D C).1 h.ge
   exact ⟨h2, h1, h3, h4⟩
-
-namespace FieldsOK
-
-end FieldsOK
 
 end GlobalTheory.Mem.Base
 

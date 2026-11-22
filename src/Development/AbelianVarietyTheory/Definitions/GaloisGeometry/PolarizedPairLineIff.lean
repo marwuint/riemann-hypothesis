@@ -78,10 +78,6 @@ omit [NumberField E] [IsTotallyComplex E] in
 
 theorem toUnits_barK (k : Kinf E a) : Unitary.toUnits (barK k) = invT a (Cinf E) (Unitary.toUnits k) := Units.ext rfl
 
-omit [NumberField E] [IsTotallyComplex E] in
-
-theorem barK_apply (k : Kinf E a) (i j : Fin a) : (barK k).1 i j = star (k.1 i j) := rfl
-
 theorem det_invT {R : Type} [CommRing R] (g : GL (Fin a) R) :
     GeneralLinearGroup.det (invT a R g) = (GeneralLinearGroup.det g)⁻¹ := by
   rw [← map_inv]

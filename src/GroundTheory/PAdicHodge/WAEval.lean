@@ -113,9 +113,6 @@ theorem awayToExt_apply (ρ : Set.Ioo (0 : ℝ) 1) (a : 𝔸) :
     awayToExt p ρ a = ((⟨toB ℂ_[p] p a, convAll_toB a ρ ρ.2.1 ρ.2.2⟩ : (𝓣).Econ ρ) :
       (𝓣).RobbaExt ρ) := rfl
 
-theorem awayToExt_eq_ofAll (ρ : Set.Ioo (0 : ℝ) 1) (a : 𝔸) :
-    awayToExt p ρ a = (𝓣).ofAll (toB ℂ_[p] p a) (convAll_toB a) ρ := rfl
-
 theorem res_awayToExt {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) (a : 𝔸) :
     (𝓣).res h (awayToExt p ρ0 a) = awayToExt p ρ1 a := by
   rw [awayToExt_apply, res_coe]
@@ -402,8 +399,6 @@ variable (p) in
 
 def pUnit : 𝔸ˣ := (IsLocalization.Away.algebraMap_isUnit (p : AInf ℂ_[p] p)).unit
 
-theorem coe_pUnit : ((pUnit p : 𝔸ˣ) : 𝔸) = algebraMap _ 𝔸 (p : AInf ℂ_[p] p) := rfl
-
 def InDom (x : (𝓣).RobbaTilde) : Prop :=
   ∃ ρ : Set.Ioo (0 : ℝ) 1, (p : ℝ)⁻¹ < ρ ∧ ∃ y : (𝓣).RobbaExt ρ, (𝓣).ofRad ρ y = x
 
@@ -490,17 +485,6 @@ def iotaTilde : tildeDom p →+* 𝔹 where
   map_zero' := iotaTildeFun_zero
   map_add' x y := iotaTildeFun_add x.2 y.2
 
-theorem iotaTilde_apply (x : tildeDom p) : iotaTilde p x = iotaTildeFun p x := rfl
-
-theorem rootRadius_coe (τ : Set.Ioo (0 : ℝ) 1) :
-    ((frob ℂ_[p] p).rootRadius τ : ℝ) = (τ : ℝ) ^ ((p : ℝ)⁻¹) := by
-  show (τ : ℝ) ^ ((((p ^ (frob ℂ_[p] p).a : ℕ)) : ℝ)⁻¹) = _
-  rw [frob_a, pow_one]
-
-theorem le_rootRadius (τ : Set.Ioo (0 : ℝ) 1) : (τ : ℝ) ≤ (frob ℂ_[p] p).rootRadius τ := by
-  rw [rootRadius_coe]
-  exact Real.self_le_rpow_of_le_one τ.2.1.le τ.2.2.le inv_p_lt_one.le
-
 variable (p) in
 
 def phiNeg (n : ℕ) : (𝓣).RobbaTilde →+* (𝓣).RobbaTilde := (frob ℂ_[p] p).tildeFrobSymm ^ n
@@ -508,9 +492,6 @@ def phiNeg (n : ℕ) : (𝓣).RobbaTilde →+* (𝓣).RobbaTilde := (frob ℂ_[p
 variable (p) in
 
 def iotaN (n : ℕ) (x : (𝓣).RobbaTilde) : 𝔹 := iotaTildeFun p (phiNeg p n x)
-
-theorem iotaN_eq (n : ℕ) {x : (𝓣).RobbaTilde} (hx : phiNeg p n x ∈ tildeDom p) :
-    iotaN p n x = iotaTilde p ⟨phiNeg p n x, hx⟩ := rfl
 
 end WAEval
 

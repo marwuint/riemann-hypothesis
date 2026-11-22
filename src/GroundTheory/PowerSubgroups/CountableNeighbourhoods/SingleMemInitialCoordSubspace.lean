@@ -14,8 +14,4 @@ def initialCoordSubspace {K : Type*} [Field K] {n : ℕ} (k : ℕ) : Submodule K
     intro c a ha i hi
     simp [ha i hi]
 
-theorem mem_initialCoordSubspace {K : Type*} [Field K] {n k : ℕ} (v : Fin n → K) :
-    v ∈ (initialCoordSubspace k : Submodule K (Fin n → K)) ↔ ∀ i : Fin n, k ≤ (i : ℕ) → v i = 0 :=
-  Iff.rfl
-
 end GroundTheory.Variant₂.N1

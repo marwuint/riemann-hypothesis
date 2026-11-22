@@ -18,8 +18,4 @@ def tensAct (ρ : orderC c →+* Module.End O H) : orderC c ⊗[ℤ] O →ₗ[�
     (fun a x y => by simp [add_smul])
     (fun n a x => smul_assoc n x (ρ a)))
 
-theorem tensAct_tmul (ρ : orderC c →+* Module.End O H) (a : orderC c) (x : O) :
-    tensAct ρ (a ⊗ₜ x) = x • ρ a := by
-  rfl
-
 end GlobalTheory.EigenLattice

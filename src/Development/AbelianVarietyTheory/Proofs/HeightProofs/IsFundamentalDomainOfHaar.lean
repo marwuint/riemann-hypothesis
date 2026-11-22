@@ -43,8 +43,6 @@ theorem allSome_infFam_iff {D : D7} (Q : (D.what₂.Tau → (Ainf D.host.F ⊗[D
 
 theorem infPart_eq (D : D7) : infPart D = UnitaryVolumePairs.infPart D := rfl
 theorem finPart_eq (D : D7) : finPart D = UnitaryVolumePairs.finPart D := rfl
-theorem idF_eq (D : D7) : idF D = UnitaryVolumePairs.resF D := rfl
-
 theorem isHeckeChar_iff (D : D7) (χ : (AE D)ˣ →* Circle) : IsHeckeChar D χ ↔ χ ∈ UnitaryVolumePairs.HeckeChar D := Iff.rfl
 
 theorem exists_not_fixed (D : D7) : ∃ x, D.sp.cm.sig x ≠ x := by

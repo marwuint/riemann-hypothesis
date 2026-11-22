@@ -47,8 +47,6 @@ def stdLat (L : LocE F E) (n : ℕ) : Submodule L.O (Fin n → E) :=
 theorem nontrivial (L : LocE F E) : Nontrivial E := by
   exact Module.nontrivial_of_finrank_pos (R := F) (by rw [L.rank]; norm_num)
 
-theorem lead_last {N : ℕ} (Z : Matrix (Fin N) (Fin N) E) : lead Z (Fin.last N) = Z.det := rfl
-
 theorem isIntegral_iff (a : F) : IsIntegral 𝒪[F] a ↔ a ∈ 𝒪[F] := by
   constructor
   · intro h

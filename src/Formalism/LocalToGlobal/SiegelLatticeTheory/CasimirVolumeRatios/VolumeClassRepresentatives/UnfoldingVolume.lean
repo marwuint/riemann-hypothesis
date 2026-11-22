@@ -18,8 +18,6 @@ section Basic
 
 variable (I : AutInst)
 
-theorem muA_eq (μf : Measure I.Gf) [SigmaFinite μf] : I.muA μf = (muInf I).prod μf := rfl
-
 end Basic
 
 end Formalism.L2.S.S7.UnfoldingVolume

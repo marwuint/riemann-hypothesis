@@ -113,10 +113,6 @@ def realHomeomorph : InfiniteAdeleRing ℚ ≃ₜ ℝ where
   continuous_toFun := RationalIdeles.continuous_realEquiv
   continuous_invFun := RationalIdeles.continuous_realEquiv_symm
 
-theorem realHomeomorph_apply (x : InfiniteAdeleRing ℚ) :
-    realHomeomorph x = RationalIdeles.realEquiv x :=
-  rfl
-
 variable (N : ℕ) [NeZero N]
 
 def levelDomain : Set 𝔸[ℚ] :=
@@ -230,19 +226,9 @@ theorem map_infiniteAdeleMeasure :
       Measure.addHaarScalarFactor ((infiniteAdeleMeasure ℚ).map realHomeomorph) volume • volume :=
   Measure.isAddLeftInvariant_eq_smul _ _
 
-theorem addHaarScalarFactor_pos :
-    0 < Measure.addHaarScalarFactor ((infiniteAdeleMeasure ℚ).map realHomeomorph) volume :=
-  Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _
-
 def levelConstant : ℝ :=
   (finiteAdeleMeasure ℚ (levelIdeal N)).toReal *
     Measure.addHaarScalarFactor ((infiniteAdeleMeasure ℚ).map realHomeomorph) volume
-
-theorem levelConstant_pos : 0 < levelConstant N := by
-  refine mul_pos (ENNReal.toReal_pos ?_ ?_) (by exact_mod_cast addHaarScalarFactor_pos)
-  · exact ((isOpen_levelIdeal N).measure_pos _ ⟨0, zero_mem_levelIdeal N⟩).ne'
-  · exact (measure_mono (levelIdeal_subset N)).trans_lt
-      (isCompact_integralFiniteAdeles ℚ).measure_lt_top |>.ne
 
 variable {N} {k : ℤ}
 

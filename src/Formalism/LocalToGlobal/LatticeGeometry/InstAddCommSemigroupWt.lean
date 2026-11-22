@@ -30,8 +30,6 @@ instance instAddCommSemigroupWt : AddCommSemigroup (WeightFamilies.Wt D j) where
   add_comm _ _ := wt_ext (funext fun _ => funext fun _ => Nat.add_comm _ _)
     (funext fun _ => funext fun _ => Nat.add_comm _ _) (Nat.add_comm _ _)
 
-theorem wt_add_def (w w' : WeightFamilies.Wt D j) : w + w' = WeightAlgebra.wadd w w' := rfl
-
 end Weights
 
 section Val
@@ -250,9 +248,6 @@ def tup (j : ℕ) (w : WeightFamilies.Wt D j) : P.Cusp j w →ₗ[P.KO] P.Coef j
     change P.cmp j w c (a • F) = (a • (fun c => P.cmp j w c F : P.FnT j)) c
     rw [FnT_smul_apply, LinearMap.map_smulₛₗ])
 
-theorem tup_apply {j : ℕ} {w : WeightFamilies.Wt D j} (F : P.Cusp j w) :
-    P.tup j w F = (0, fun c => P.cmp j w c F) := rfl
-
 theorem tup_inj (j : ℕ) (w : WeightFamilies.Wt D j) : Function.Injective (P.tup j w) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro F hF
@@ -318,8 +313,6 @@ def FormsS (j : ℕ) : Subalgebra P.KO (P.Amb j) where
     split_ifs with h
     · subst h; exact ⟨a, rfl⟩
     · exact zero_mem _
-
-theorem mem_FormsS {j : ℕ} (x : P.Amb j) : x ∈ P.FormsS j ↔ ∀ m, x.coeff m ∈ P.Vm j m := Iff.rfl
 
 def cf (j : ℕ) (m : WithZero (WeightFamilies.Wt D j)) : P.FormsS j →ₗ[P.KO] P.Coef j where
   toFun x := (x : P.Amb j).coeff m
@@ -498,9 +491,6 @@ def inc (j : ℕ) (w : WeightFamilies.Wt D j) : P.Cusp j w →ₗ[P.KO] P.Forms 
   map_smul' a F := P.amb_injective (by
     change ((P.incS j w (a • F) : P.FormsS j) : P.Amb j) = a • (P.incS j w F : P.Amb j)
     rw [map_smul]; rfl)
-
-theorem amb_inc {w : WeightFamilies.Wt D j} (F : P.Cusp j w) :
-    P.amb (P.inc j w F) = AddMonoidAlgebra.single (w : WithZero (WeightFamilies.Wt D j)) (P.tup j w F) := rfl
 
 def cfF (j : ℕ) (m : WithZero (WeightFamilies.Wt D j)) : P.Forms j →ₗ[P.KO] P.Coef j where
   toFun x := (P.amb x).coeff m

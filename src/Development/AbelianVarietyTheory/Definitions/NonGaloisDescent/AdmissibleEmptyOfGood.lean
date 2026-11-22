@@ -172,9 +172,6 @@ def coefLat (h : Bridge.Gf S) : Submodule O (PolF D T.rank S.rank) :=
 
 def theta (ω : PairRep S T) (h : GA D S) : PolF D T.rank S.rank →ₗ[ℂ] (GA D T → ℂ) := series B.F ω B.vecBase h
 
-def thetaLat (ω : PairRep S T) {I : Type} (h : I → GA D S) : Submodule O (GA D T → ℂ) :=
-  Submodule.span O {s | ∃ i, ∃ P ∈ B.coefLat σ emb O (finPt S (h i)), s = B.theta ω (h i) P}
-
 def gen (ω : PairRep S T) (ψ : Twist D Circle) (h : GA D S) : PolF D T.rank S.rank →ₗ[ℂ] (GA D T → ℂ) :=
   twistBy T ψ.chi ∘ₗ series B.F ω (B.vecFlat ψ) h
 

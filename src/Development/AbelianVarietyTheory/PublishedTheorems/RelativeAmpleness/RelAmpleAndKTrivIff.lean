@@ -18,10 +18,6 @@ def MemKL (L : LB A.left) {T : Over S} (x : T ⟶ A) : Prop :=
   ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧
     ∃ c : LB.Gen ((Out.translDiff A L x).pull ((fst T A).left ⁻¹ᵁ V).ι), c.IsGen
 
-theorem kTriv_iff_memKL (L : LB A.left) : Out.KTriv A L ↔
-    ∀ (R : Type) [CommRing R] (t : Sp R ⟶ S) (x : Over.mk t ⟶ A), MemKL A L x → x = toUnit _ ≫ η[A] :=
-  Iff.rfl
-
 end
 
 section
@@ -200,10 +196,6 @@ theorem KernelFiniteFlatSt.kTriv_of_generic (hK : KernelFiniteFlatSt) {V K : Typ
   intro R _ s y hy
   obtain ⟨u, rfl⟩ := (hZ _ y).1 hy
   rw [hi, ← Category.assoc, comp_toUnit]
-
-namespace PolExtSt
-
-end PolExtSt
 
 end Published
 

@@ -271,17 +271,6 @@ def UnramAt : Prop :=
   ∀ P : Ideal (𝓞 E), P.IsPrime → P ≠ ⊥ → P.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal →
     Ideal.ramificationIdx P (𝓞 F) = 1
 
-def OrdLocAt {r : ℕ} (P P' : Frame E n r) (Λ : Set (Fin n → E)) : Prop :=
-  StdHyp σ J ψ → ∀ T T' : F, P.IsStd σ J T → P'.IsStd σ J T' → IsSDLoc σ J v Λ → UnramAt (E := E) v →
-    (∃ L : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E L ∧ (L : Set (Fin n → E)) = Λ) → ∀ μG : Measure (HA (Fv F v) σ J), μG.IsHaarMeasure →
-  ∀ μS : Measure (Ssub (Fv F v) σ J P), μS.IsHaarMeasure → LocTieW σ J ψ v P μG μS →
-  ∀ μS' : Measure (Ssub (Fv F v) σ J P'), μS'.IsHaarMeasure → LocTieW σ J ψ v P' μG μS' →
-  ∀ y y' : HA (Fv F v) σ J,
-  IsPrim v Λ (locF v (y • ratTup (Fv F v) (F0 P))) → IsPrim v Λ (locF v (y' • ratTup (Fv F v) (F0 P'))) →
-    Mv σ J ψ v (TFl σ J v P) (TFl σ J v P') (OmOrd v Λ r) / volU (E := E) ψ v (localVolumeOrdinary v r) =
-      (μG (Formalism.L2.SG.TypedSets.Kv σ J Λ v)).toReal ^ 2 /
-        ((μS (KSvT σ J v P Λ y)).toReal * (μS' (KSvT σ J v P' Λ y')).toReal)
-
 def TypLocAt {r : ℕ} (g : ℕ) (P P' : Frame E n r) (Λ : Set (Fin n → E)) : Prop :=
   StdHyp σ J ψ → ∀ T T' : F, P.IsStd σ J T → P'.IsStd σ J T' → IsSDLoc σ J v Λ → UnramAt (E := E) v →
     (∃ L : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E L ∧ (L : Set (Fin n → E)) = Λ) → g.Prime → (g : 𝓞 F) ∈ v.asIdeal → Ideal.absNorm v.asIdeal = g → etaV (E := E) v = 1 →

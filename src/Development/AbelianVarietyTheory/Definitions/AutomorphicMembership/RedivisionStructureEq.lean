@@ -35,23 +35,6 @@ def New.ofDiv (D : D7) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V)
 
 instance instInhabitedNew (D : D7) : Inhabited (New D) := ⟨New.self D⟩
 
-theorem reD_ofDiv (D : D7) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ) :
-    reD D (New.ofDiv D N h) = GlobalTheory.EX.OB.setDiv D N h := rfl
-
-theorem reD_rows : (reD D Z).what₂ = D.what₂ := rfl
-
-theorem reD_host : (reD D Z).host = D.host := rfl
-
-theorem redivision_structure_eq : (reD D Z).s = mix D.s Z.Z.s := rfl
-
-theorem reD_atP : (reD D Z).s.atP = D.s.atP := rfl
-
-theorem reD_HH : (reD D Z).s.HH = Z.Z.s.HH := rfl
-
-theorem reD_h : (reD D Z).div.h = Z.h := rfl
-
-theorem reD_L (u : D.what₂.Word) : ((reD D Z).div.Nu u).L = Z.N u := rfl
-
 set_option maxHeartbeats 4000000 in
 
 def reX (X : HidaSetting D) : HidaSetting (reD D Z) := { X with }

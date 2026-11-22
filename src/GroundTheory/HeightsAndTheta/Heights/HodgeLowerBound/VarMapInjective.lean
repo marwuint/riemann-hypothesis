@@ -38,8 +38,6 @@ section Inhabitant
 
 open Line
 
-abbrev linePlData : PlueckerData lineDataHodgeZero.toComponentData := linePl zeroSystem fun _ _ => le_rfl
-
 end Inhabitant
 
 end FlagModelAlt

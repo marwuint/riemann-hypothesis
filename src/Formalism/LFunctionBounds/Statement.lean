@@ -24,14 +24,7 @@ def Snu (l : ℕ) (ν : ℕ × ℕ × ℕ → ℝ) (χ : DirichletCharacter ℂ 
 def cW (l : ℕ) [NeZero l] (ν : ℕ × ℕ × ℕ → ℝ) (χ : DirichletCharacter ℂ l) : ℂ :=
   DirichletCharacter.LFunction χ 0 * Snu l ν χ / ((((l : ℝ) - 1) / 2 : ℝ) : ℂ)
 
-def oddChars (l : ℕ) [NeZero l] : Finset (DirichletCharacter ℂ l) :=
-  @Finset.filter _ (fun χ => χ.Odd) (Classical.decPred _) (@Finset.univ _ (Fintype.ofFinite _))
-
 def gam (s : ℝ) : ℝ := Real.Gamma s / Real.Gamma (1 - s)
-
-def logOm1 (l : ℕ) (S : ℕ × ℕ × ℕ) : ℝ :=
-  -Real.log l + (Real.log (gam ((S.1 : ℝ) / (l : ℝ))) + Real.log (gam ((S.2.1 : ℝ) / (l : ℝ))) +
-    Real.log (gam ((S.2.2 : ℝ) / (l : ℝ))))
 
 def inCM (l : ℕ) (S : ℕ × ℕ × ℕ) (n : ℕ) : Prop :=
   Int.fract ((n * S.1 : ℝ) / l) + Int.fract ((n * S.2.1 : ℝ) / l) < 1
@@ -44,10 +37,5 @@ def AS (l : ℕ) (S : ℕ × ℕ × ℕ) (y : ℝ) : ℝ :=
 
 def Al (l : ℕ) (y : ℝ) : ℝ :=
   ∑ i ∈ Finset.Icc 1 ⌊y⌋₊, Real.log l * max 0 (y / (l : ℝ) ^ i - 1)
-
-def logPiV (l : ℕ) : ℝ := Real.log (2 * Real.pi / l) + Real.log l / ((l : ℝ) - 1)
-
-def tripleMainTerm (l : ℕ) (S : ℕ × ℕ × ℕ) (y : ℝ) : ℝ :=
-  y * (Real.log y - 1 - logOm1 l S + logPiV l)
 
 end Formalism.FX

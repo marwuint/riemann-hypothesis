@@ -200,59 +200,6 @@ open GlobalTheory.LKTrip.Example GlobalTheory.LKMid.Example
 
 def H3 : Matrix (Fin 3) (Fin 3) QI := Matrix.diagonal ![1, -1, -1]
 
-theorem conj_diagHermitian : H3.map (IsCMField.complexConj QI : QI →+* QI) = H3 := by
-  ext i j; fin_cases i <;> fin_cases j <;> simp [H3]
-
-theorem isHermitian_diagHermitian : (H3.map (IsCMField.complexConj QI : QI →+* QI))ᵀ = H3 := by
-  rw [conj_diagHermitian, H3, Matrix.diagonal_transpose]
-
-theorem det_diagHermitian_ne_zero : H3.det ≠ 0 := by simp [H3, Fin.prod_univ_three]
-
-theorem gramMatrix_diagHermitian (τ : QI →+* ℂ) : gramAt H3 τ = Matrix.diagonal ![1, -1, -1] := by
-  ext i j; fin_cases i <;> fin_cases j <;> simp [gramAt, H3]
-
-theorem signature_diagHermitian (τ : QI →+* ℂ) : sigPos isHermitian_diagHermitian τ = 1 ∧ sigNeg isHermitian_diagHermitian τ = 2 := by
-  have hA := isHermitian_gramAt isHermitian_diagHermitian τ
-  have hsq : ∀ i, hA.eigenvalues i = 1 ∨ hA.eigenvalues i = -1 := by
-    intro i
-    have h := hA.eigenvalues_mem_spectrum_real i
-    rw [← spectrum.algebraMap_mem_iff ℂ] at h
-    have hsp : spectrum ℂ (gramAt H3 τ) = Set.range ![(1 : ℂ), -1, -1] := by
-      rw [gramMatrix_diagHermitian, spectrum_diagonal]
-    rw [hsp] at h
-    obtain ⟨j, hj⟩ := h
-    fin_cases j
-    · left; have : ((1 : ℝ) : ℂ) = (hA.eigenvalues i : ℂ) := by simpa using hj
-      exact_mod_cast this.symm
-    · right; have : ((-1 : ℝ) : ℂ) = (hA.eigenvalues i : ℂ) := by simpa using hj
-      exact_mod_cast this.symm
-    · right; have : ((-1 : ℝ) : ℂ) = (hA.eigenvalues i : ℂ) := by simpa using hj
-      exact_mod_cast this.symm
-  have ht := hA.trace_eq_sum_eigenvalues
-  have htr : (gramAt H3 τ).trace = -1 := by rw [gramMatrix_diagHermitian]; simp [Matrix.trace_fin_three, Fin.sum_univ_three]
-  rw [htr, Fin.sum_univ_three] at ht
-  have ht' : hA.eigenvalues 0 + hA.eigenvalues 1 + hA.eigenvalues 2 = -1 := by
-    have : (((-1 : ℝ)) : ℂ) = ((hA.eigenvalues 0 + hA.eigenvalues 1 + hA.eigenvalues 2 : ℝ) : ℂ) := by
-      push_cast; exact ht
-    exact_mod_cast this.symm
-  show Fintype.card {i : Fin 3 // 0 < hA.eigenvalues i} = 1 ∧ Fintype.card {i : Fin 3 // hA.eigenvalues i < 0} = 2
-  rw [Fintype.card_subtype, Fintype.card_subtype, Finset.card_filter, Finset.card_filter, Fin.sum_univ_three,
-    Fin.sum_univ_three]
-  rcases hsq 0 with h0 | h0 <;> rcases hsq 1 with h1 | h1 <;> rcases hsq 2 with h2 | h2 <;>
-    rw [h0, h1, h2] at ht' ⊢ <;> first | (exfalso; linarith) | norm_num
-
-def unitaryOneTwoGaussian : HTGroup 5 :=
-  ofHerm QI ⊤ hK_QI (gaussianToQFive.comp (⊤ : Subfield QI).subtype) 3 (by norm_num) H3 isHermitian_diagHermitian det_diagHermitian_ne_zero
-    (fun τ => Or.inl ⟨(signature_diagHermitian τ).1, (signature_diagHermitian τ).2⟩) 1 (fun _ => (algebraMap ℚ_[5] (PadicAlgCl 5)).comp gaussianToQFive)
-    (fun _ _ => rfl) (fun i j _ _ => Subsingleton.elim i j)
-    (fun τ hτ => ⟨0, AlgEquiv.refl, by ext x; exact hτ ⟨x, Subfield.mem_top x⟩⟩)
-    (haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ;
-      (IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] PadicAlgCl 5).toRingHom)
-    (haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ;
-      (IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] ℂ).toRingHom)
-
-theorem unitaryOneTwo_rank_eq_three : unitaryOneTwoGaussian.n = 3 := rfl
-
 end Example
 
 end GlobalTheory.LKDef

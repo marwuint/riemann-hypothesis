@@ -69,15 +69,6 @@ theorem phi_cont : Continuous (phi ε e h1 h2) := by
   rw [h]
   exact (mat_cont P Q).matrix_submatrix _ _
 
-theorem phi_symm_cont : Continuous (phi ε e h1 h2).symm := by
-  rw [(mat_inducing P Q).continuous_iff]
-  have h : UpqT.mat ∘ (phi ε e h1 h2).symm = fun a => (coeMatrixAlt ε a).submatrix e e := by
-    funext a
-    rw [Function.comp_apply]
-    exact mat_ofMatU _ (symm_mem ε e h1 h2 a)
-  rw [h]
-  exact (continuous_coeMatrix ε).matrix_submatrix _ _
-
 def TR (P Q : ℕ) (R : ℝ) : Set (UpqT P Q) := {g | ∑ i, ∑ j, ‖UpqT.mat g i j‖ ^ 2 ≤ R}
 
 theorem preimage_ball (R : ℝ) : (phi ε e h1 h2) ⁻¹' {a | hsG a ≤ R} = TR P Q R := by
@@ -94,88 +85,8 @@ end One
 
 def rad (n : ℕ) : ℝ := hs (1 : Matrix (Fin n) (Fin n) ℂ) + 1
 
-theorem hsG_cont {n : ℕ} (ε : Fin n → Bool) : Continuous (hsG : UJ ε → ℝ) := by
-  have h : (hsG : UJ ε → ℝ) = fun g => ∑ i, ∑ j, ‖coeMatrixAlt ε g i j‖ ^ 2 := rfl
-  rw [h]
-  refine continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_
-  exact (((continuous_apply j).comp ((continuous_apply i).comp (continuous_coeMatrix ε))).norm).pow 2
-
-theorem ball_meas {n : ℕ} (ε : Fin n → Bool) (R : ℝ) : MeasurableSet {a : UJ ε | hsG a ≤ R} :=
-  (isClosed_le (hsG_cont ε) continuous_const).measurableSet
-
-theorem ball_ne_zero {n : ℕ} (ε : Fin n → Bool) : muG ε {a | hsG a ≤ rad n} ≠ 0 := by
-  have hopen : IsOpen {a : UJ ε | hsG a < rad n} := isOpen_lt (hsG_cont ε) continuous_const
-  have hne : ({a : UJ ε | hsG a < rad n}).Nonempty := ⟨1, by
-    show hs (((1 : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) < rad n
-    simp [rad]⟩
-  have hpos : 0 < muG ε {a | hsG a < rad n} := by
-    unfold muG
-    exact hopen.measure_pos _ hne
-  exact (hpos.trans_le (measure_mono fun a (ha : hsG a < rad n) => ha.le)).ne'
-
-theorem ball_ne_top {n : ℕ} (ε : Fin n → Bool) : muG ε {a | hsG a ≤ rad n} ≠ ⊤ := by
-
-  have hemb : Topology.IsClosedEmbedding (coeMatrixAlt ε) :=
-    ⟨⟨isInducing_coeMatrix ε, injective_coeMatrix ε⟩, by rw [range_coeMatrix]; exact isClosed_pseudoUnitary ε⟩
-  set K : Set (Matrix (Fin n) (Fin n) ℂ) := {M | hs M ≤ rad n} with hK
-  have hKc : IsClosed K := by
-    refine isClosed_le ?_ continuous_const
-    refine continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_
-    exact (((continuous_apply j).comp (continuous_apply i)).norm).pow 2
-  have hKsub : K ⊆ Set.pi Set.univ fun _ => Set.pi Set.univ fun _ =>
-      Metric.closedBall (0 : ℂ) (Real.sqrt (rad n)) := by
-    intro M hM i _ j _
-    rw [Metric.mem_closedBall, dist_zero_right]
-    refine Real.le_sqrt_of_sq_le (le_trans ?_ hM)
-    calc ‖M i j‖ ^ 2 ≤ ∑ j', ‖M i j'‖ ^ 2 :=
-          Finset.single_le_sum (f := fun j' => ‖M i j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)
-      _ ≤ ∑ i', ∑ j', ‖M i' j'‖ ^ 2 :=
-          Finset.single_le_sum (f := fun i' => ∑ j', ‖M i' j'‖ ^ 2)
-            (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i)
-  have hKcomp : IsCompact K :=
-    (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _).of_isClosed_subset
-      hKc hKsub
-  have hball : {a : UJ ε | hsG a ≤ rad n} = coeMatrixAlt ε ⁻¹' K := rfl
-  rw [hball]
-  unfold muG
-  exact (hemb.isCompact_preimage hKcomp).measure_lt_top.ne
-
 def nT {n : ℕ} (ε : Fin n → Bool) : ℕ := Fintype.card {i // ε i = true}
 def nF {n : ℕ} (ε : Fin n → Bool) : ℕ := Fintype.card {i // ¬ ε i = true}
-
-theorem eq_nT {n P Q : ℕ} (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
-    (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false) : P = nT ε := by
-  have hc : Fintype.card (Fin P) = Fintype.card {i // ε i = true} := by
-    refine Fintype.card_congr (Equiv.ofBijective (fun i => ⟨e (Sum.inl i), h1 i⟩) ⟨?_, ?_⟩)
-    · intro a b hab
-      have := congrArg Subtype.val hab
-      simpa using this
-    · rintro ⟨i, hi⟩
-      cases hx : e.symm i with
-      | inl a => exact ⟨a, Subtype.ext (by simp [← hx])⟩
-      | inr b =>
-        exfalso
-        have h := h2 b
-        rw [← hx, e.apply_symm_apply] at h
-        simp [hi] at h
-  simpa [nT] using hc
-
-theorem eq_nF {n P Q : ℕ} (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
-    (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false) : Q = nF ε := by
-  have hc : Fintype.card (Fin Q) = Fintype.card {i // ¬ ε i = true} := by
-    refine Fintype.card_congr (Equiv.ofBijective (fun j => ⟨e (Sum.inr j), by simp [h2 j]⟩) ⟨?_, ?_⟩)
-    · intro a b hab
-      have := congrArg Subtype.val hab
-      simpa using this
-    · rintro ⟨i, hi⟩
-      cases hx : e.symm i with
-      | inl a =>
-        exfalso
-        have h := h1 a
-        rw [← hx, e.apply_symm_apply] at h
-        exact hi h
-      | inr b => exact ⟨b, Subtype.ext (by simp [← hx])⟩
-  simpa [nF] using hc
 
 def e0 {n : ℕ} (ε : Fin n → Bool) : Fin (nT ε) ⊕ Fin (nF ε) ≃ Fin n :=
   (Equiv.sumCongr (Fintype.equivFin {i // ε i = true}).symm
@@ -193,35 +104,5 @@ variable (C : CDHaar)
 
 def cdScaleOf (n : ℕ) (ε : Fin n → Bool) : ℝ≥0 :=
   (C.cd (nT ε) (nF ε) (TR (nT ε) (nF ε) (rad n)) / muG ε {a | hsG a ≤ rad n}).toNNReal
-
-theorem cdScaleOf_spec {n P Q : ℕ} (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
-    (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false) :
-    0 < cdScaleOf C n ε ∧ (C.cd P Q).map (phi ε e h1 h2) = cdScaleOf C n ε • muG ε := by
-  obtain rfl := eq_nT ε e h1 h2
-  obtain rfl := eq_nF ε e h1 h2
-  haveI := C.haar (nT ε) (nF ε)
-  haveI : (muG ε).IsHaarMeasure := by unfold muG; infer_instance
-  haveI : ((C.cd (nT ε) (nF ε)).map (phi ε e h1 h2)).IsHaarMeasure :=
-    (phi ε e h1 h2).isHaarMeasure_map (C.cd (nT ε) (nF ε)) (phi_cont ε e h1 h2)
-      (phi_symm_cont ε e h1 h2)
-  set ν := (C.cd (nT ε) (nF ε)).map (phi ε e h1 h2) with hν_def
-  have hν : ν = Measure.haarScalarFactor ν (muG ε) • muG ε :=
-    Measure.isMulLeftInvariant_eq_smul ν (muG ε)
-  have hB : ν {a | hsG a ≤ rad n} = C.cd (nT ε) (nF ε) (TR (nT ε) (nF ε) (rad n)) := by
-    rw [hν_def, Measure.map_apply (phi_cont ε e h1 h2).measurable (ball_meas ε _), preimage_ball]
-  have hscale : cdScaleOf C n ε = Measure.haarScalarFactor ν (muG ε) := by
-    unfold cdScaleOf
-    rw [← hB]
-    conv_lhs => rw [hν]
-    rw [Measure.coe_nnreal_smul_apply, ENNReal.mul_div_cancel_right (ball_ne_zero ε) (ball_ne_top ε),
-      ENNReal.toNNReal_coe]
-  refine ⟨?_, ?_⟩
-  · rw [hscale]
-    exact Measure.haarScalarFactor_pos_of_isHaarMeasure _ _
-  · rw [hscale]
-    exact hν
-
-theorem cdScaleOf_pos (n : ℕ) (ε : Fin n → Bool) : 0 < cdScaleOf C n ε :=
-  (cdScaleOf_spec C ε (e0 ε) (sign_split_equiv_inl ε) (sign_split_equiv_inr ε)).1
 
 end Formalism.BasicNotions.Examples₂.CD

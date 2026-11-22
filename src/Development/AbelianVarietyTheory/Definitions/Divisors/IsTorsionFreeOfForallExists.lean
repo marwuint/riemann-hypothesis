@@ -22,16 +22,6 @@ structure IsSubbundle (i : G ⟶ F) : Prop where
 
   isVB_cokernel : ∃ s, IsVB (cokernel i) s
 
-theorem isSubbundle_of_shortExact {S : ShortComplex X.Modules} (hS : S.ShortExact)
-    (h : IsVB S.X₃ s) : IsSubbundle S.f :=
-  ⟨hS.mono_f, s, h.of_iso (hS.gIsCokernel.coconePointUniqueUpToIso (colimit.isColimit _))⟩
-
-theorem isSubbundle_of_isIso (i : G ⟶ F) [IsIso i] : IsSubbundle i :=
-  ⟨inferInstance, 0, isVB_zero_iff.2 (isZero_cokernel_of_epi i)⟩
-
-theorem isSubbundle_inl (h : IsVB G s) : IsSubbundle (biprod.inl : F ⟶ F ⊞ G) :=
-  isSubbundle_of_shortExact (ShortComplex.Splitting.ofHasBinaryBiproduct F G).shortExact h
-
 theorem exists_app_eq_of_epi (φ : F ⟶ G) [Epi φ] (s : Γ(G, V)) {x : X} (hx : x ∈ V) :
     ∃ (W : X.Opens) (h : W ≤ V), x ∈ W ∧ ∃ t, φ.app W t = resM G h s := by
   obtain ⟨t, ht⟩ := QCoh.stalkLinear_surjective φ x (G.presheaf.germ V x hx s)
@@ -93,9 +83,6 @@ def Sub.ofGeneric (N : Submodule X.functionField (genStalk F)) : Sub F where
     obtain ⟨W, h, hxW, hs⟩ := H _ hx
     have := hs hxW
     rwa [germ_resM] at this
-
-theorem Sub.mem_ofGeneric {N : Submodule X.functionField (genStalk F)} {s : Γ(F, V)} :
-    s ∈ (Sub.ofGeneric N).sec V ↔ ∀ h : genericPoint X ∈ V, F.presheaf.germ V _ h s ∈ N := Iff.rfl
 
 instance Sub.isQuasicoherent_ofGeneric [F.IsQuasicoherent]
     (N : Submodule X.functionField (genStalk F)) : (Sub.ofGeneric N).toMod.IsQuasicoherent := by
@@ -220,10 +207,6 @@ theorem deg_congr (φ : F ≅ G) : deg k F = deg k G := by
 
 variable {k}
 
-namespace IsProjCurve
-
-end IsProjCurve
-
 variable (k) in
 
 def degLB (L : LB X) : ℤ := deg k (toMod L)
@@ -269,10 +252,6 @@ def IsProjCurve.degPic (hC : IsProjCurve k X) : CechPic.Pic X →+ ℤ :=
 
 @[simp] theorem IsProjCurve.degPic_cls (hC : IsProjCurve k X) (hL : L.IsLB) :
     hC.degPic (CechPic.cls L hL) = degLB k L := rfl
-
-namespace IsMaxSubDeg
-
-end IsMaxSubDeg
 
 end Degree
 

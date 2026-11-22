@@ -15,8 +15,6 @@ def ins {p m : ℕ} (y : Yp p m) (z : ℂ) : Xp (p + 1) m := (y.1, Fin.cons z y.
 def bS {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : ℂ :=
   ∑ j : Fin p, if l.val ≤ j.val then x.2.1 j * star (x.1 j) else 0
 
-lemma tailPt_eq {p m : ℕ} (y : Yp p m) : tailPt y = ins y 0 := rfl
-
 lemma Lsq_ins {p m : ℕ} (y : Yp p m) (z : ℂ) (l : Fin (p + 2)) :
     Lsq (ins y z) l = Lsq (tailPt y) l := rfl
 

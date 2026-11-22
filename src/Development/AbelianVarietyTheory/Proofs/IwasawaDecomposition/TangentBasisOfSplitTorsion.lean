@@ -40,37 +40,6 @@ theorem ext_uniq (hX : X.IsSeparated) (C : Type) [NontriviallyNormedField C] [Is
     (((RingHom.injective_iff_ker_eq_bot _).1 (intO C).subtype_injective).le.trans bot_le)⟩
   exact ext_of_isDominant _ h
 
-theorem mem_latDR_iff (hX : X.IsSeparated) {R : Type} [CommRing R] (x : Sp R ⟶ X) {g : ℕ}
-    {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (he : GlobalTheory.LineNorm.IsTanBasis t x e) (C : Type)
-    [NontriviallyNormedField C] [IsUltrametricDist C] (φ : R →+* ↥(intO C)) (cf : Fin g → C)
-    (w : Sp (DualNumber C) ⟶ t.G.left)
-    (hw : IsCombAtG t (spMap (intO C).subtype ≫ spMap φ ≫ x)
-      (fun i => spMap (dualMap ((intO C).subtype.comp φ)) ≫ e i) cf w) :
-    w ∈ latDR t (spMap (intO C).subtype ≫ spMap φ ≫ x) ↔ ∀ i, ‖cf i‖ ≤ 1 := by
-  have hb := isTanBasis_map t he φ
-  have hv : ∀ i, IsTanAtG t (spMap (intO C).subtype ≫ spMap φ ≫ x)
-      (spMap (dualMap ((intO C).subtype.comp φ)) ≫ e i) := fun i => by
-    rw [← bc_bc]; exact GlobalTheory.FactorDepth.isTanAtG_map t (intO C).subtype (hb.1 i)
-  have hxC : spMap (intO C).subtype ≫ spMap φ ≫ x = spMap ((intO C).subtype.comp φ) ≫ x := by
-    rw [← Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]
-  constructor
-  · rintro ⟨xO, hx, vO, hvO, rfl⟩ i
-    obtain rfl := ext_uniq hX C _ _ hx
-    obtain ⟨a, ha, -⟩ := he.2 (↥(intO C)) φ vO hvO
-    have hc := GlobalTheory.LatDRFree.comb_map t (intO C).subtype ha
-    simp only [bc_bc] at hc
-    have ht := GlobalTheory.FactorDepth.isTanAtG_map t (intO C).subtype hvO
-    rw [hxC] at ht hc hw
-    have e1 := (he.2 C _ _ ht).unique hw hc
-    rw [e1]
-    exact (a i).2
-  · intro hc
-    obtain ⟨wO, hwO, hcO⟩ := GlobalTheory.FlagEmb.exists_comb t hb.1 fun i => (⟨cf i, hc i⟩ : ↥(intO C))
-    refine ⟨_, rfl, wO, hwO, ?_⟩
-    have hb' := GlobalTheory.LatDRFree.comb_map t (intO C).subtype hcO
-    simp only [bc_bc] at hb'
-    exact GlobalTheory.FlagEmb.comb_unique t hv hb' hw
-
 end GlobalTheory.HTPres
 
 namespace GlobalTheory.HTPres

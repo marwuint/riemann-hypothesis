@@ -100,12 +100,6 @@ def facWith : SlopeBoundLiftData c.F (pageOf Q) where
 
 local notation "𝐅" => facWith Q U dict h hj CI C2 Vs Hb NN Ph e g
 
-theorem facWith_U : (𝐅).U = nU D j := rfl
-
-theorem facWith_main : (𝐅).main = ∑ τ, ((pp D j : ℝ) - qq D j) * wj D j τ * L.logOm := rfl
-
-theorem facWith_q : (𝐅).q' = D.R.m - j := rfl
-
 variable {U dict}
 
 end GlobalTheory.SlopeRec

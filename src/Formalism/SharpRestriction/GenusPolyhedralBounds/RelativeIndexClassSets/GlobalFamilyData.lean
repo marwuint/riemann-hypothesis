@@ -56,10 +56,6 @@ def Tied (large₂ : SizeData₂ D) (S : Scal B) (CRm : ℝ) (T : ℕ) (c Gc Prw
 
 end GlobalFamilyData
 
-def DeepIn (X : PJ D B P j) (ka : WeightFamilies.Wt D j) (large₂ : SizeData₂ D) (CG AG Pd : ℝ) : Prop :=
-  (∃ (dH : ℕ) (Hm : Formalism.MainNotions.Gaps.SizeBoundsAlt.Herm (fun σ => B.l2NormAlt j ka σ) dH), Hm.Conj) ∧ Formalism.MainNotions.Gaps.SizeBoundsAlt.SubMul X ∧
-  Real.log (finrank B.KO (B.Cusp j ka) : ℝ) ≤ Pd ∧ WeightFamilies.PPv D large₂ CG AG * (1 + Real.log ka.size) ≤ Pd
-
 def Shares (D : D7) {j : ℕ} (wL : WeightFamilies.Wt D j) (del rz rq d T : ℕ) (CRm c : ℝ) : Prop :=
   (Nat.choose (T - 1) (WeightFamilies.dimY D j) : ℝ) * del ≤ d ∧
   (rz : ℝ) ≤ 22 * (WeightFamilies.dimY D j : ℝ) ^ 2 * d / T ∧

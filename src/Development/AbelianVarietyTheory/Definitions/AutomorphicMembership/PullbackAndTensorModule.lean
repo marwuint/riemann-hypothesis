@@ -47,19 +47,6 @@ instance : Module.Projective (𝓞 E) Λ.L :=
   have : Module.FinitePresentation (𝓞 E) Λ.L := Module.finitePresentation_of_finite _ _
   Module.Flat.projective_of_finitePresentation
 
-theorem finrank_L : Module.finrank (𝓞 E) Λ.L = Λ.n := by
-  have : IsLocalizedModule (nonZeroDivisors (𝓞 E)) Λ.L.subtype := by
-    refine ⟨fun s => ?_, fun y => ?_, fun {a b} hab => ⟨1, by simpa using hab⟩⟩
-    · have := isLocalizedModule_id (nonZeroDivisors (𝓞 E)) (Fin Λ.n → E) E
-      exact IsLocalizedModule.map_units (S := nonZeroDivisors (𝓞 E))
-        (LinearMap.id : (Fin Λ.n → E) →ₗ[𝓞 E] (Fin Λ.n → E)) s
-    · have hy : y ∈ Submodule.span E (Λ.L : Set (Fin Λ.n → E)) := Λ.isLattice.span_eq_top ▸ Submodule.mem_top
-      obtain ⟨t, ht⟩ := multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 E)) E _ y hy
-      rw [Submodule.span_eq] at ht
-      exact ⟨(⟨_, ht⟩, t), rfl⟩
-  exact (IsLocalizedModule.finrank_eq (nonZeroDivisors (𝓞 E)) Λ.L.subtype le_rfl).symm.trans
-    ((IsFractionRing.finrank_right_eq (𝓞 E) E (Fin Λ.n → E)).symm.trans (Module.finrank_fin_fun E))
-
 theorem isIntegral_form (x y : Λ.L) : IsIntegral ℤ (Λ.form x y) := by
   obtain ⟨c, hc⟩ := (Λ.mem_iff x).1 x.2 y y.2
   exact hc ▸ c.isIntegral_coe
@@ -199,8 +186,6 @@ variable (t : SAB H X) (Λ : Unim E)
 
 def isTensor : IsTensor (tens t Λ).G (tens t Λ).act t.G t.act Λ.L := Λ.pres.isTensor t.act
 
-def poi : RigLB ((tens t Λ).G ⊗ (tens t Λ).G) := HermTensor.poi (isTensor t Λ) Λ.pres Λ.hInt t.PP
-
 theorem pp_eq : (tens t Λ).PP = Λ.thetaOn t.act H.w0 t.PP := rfl
 
 variable {t} {t' : SAB H X'} {f : X' ⟶ X} (m : SABMap t' t f)
@@ -223,10 +208,6 @@ section Record
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.ShFam
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ}
-
-def uniTrue (ct : At S κ p) : UniSt ct where
-  Unim := Unim D.host.E
-  latStd := Unim.std D.host.E
 
 end Record
 

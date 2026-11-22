@@ -194,8 +194,6 @@ def ValFam.patch (S : Set ℕ) (A B : ValFam Xo c) : ValFam Xo c :=
 def latVal (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) : Submodule (𝓞 c.F) (cuspOn U Z G) :=
   latOf (cuspOn U Z G) Vs.1 Vs.2
 
-theorem latVal_recVals (Z : Comp Xo c) (G : WTZ E) : latVal U (recVals Xo c) Z G = latOn U Z G := rfl
-
 def smallOn (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) (R : ℝ) : Set (cuspOn U Z G) :=
   {f | f ∈ latVal U Vs Z G ∧ ∀ σ, GoodEmb c σ → ∀ z ∈ framesOn (U σ) Z, homN (U σ) x G f z ≤ R}
 
@@ -209,9 +207,5 @@ theorem le_compVolSlope_iff (a : ℕ) (Vs : ValFam Xo c) {Z : Comp Xo c} {la : W
     (s : EReal) ≤ compVolSlope U x a Vs Z la ↔
       ∀ t : ℝ, ENNReal.ofReal (topDeg U Z la * (s + t)) ≤ compVol U x a Vs Z (wtOf Dw la 0) t :=
   le_volSlope_iff h _ s
-
-theorem isLimSlope_iff {D' : D7} (Y : Formalism.BasicNotions.DV.ShimX D'.what₂.Tau) (B : ℝ) (u : D'.what₂.Tau → Fin Y.N → ℝ) (k : Y.Comp)
-    (s : ℝ) : IsLimSlope (Formalism.MainNotions.WeightThresholdDefs.dimY Y) (fun t => Y.arSelfC (Y.Mbar B u t) k) (fun t => Y.geoC (Y.Mbar B u t) k) s ↔
-      IndefiniteRowSideFullHecke.EqualVolumeMeanCorrection.IsSlope Y B u k s := Iff.rfl
 
 end GlobalTheory.CompHt

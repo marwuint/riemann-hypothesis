@@ -15,6 +15,4 @@ def RdIndep (σ : c.F →+* ℂ) : Prop :=
   ∀ (a : (E →+* ℂ) × ℕ → ℕ) (k : ℕ), Dom a k → ∀ (n : ℕ) (b : Fin n → Rul Xo c), (∀ i, b i ∈ sec Xo c a k) →
     LinearIndependent c.F b → LinearIndependent ℂ (fun i => rdU (U σ) (b i))
 
-theorem goodEmb_val : GoodEmb c c.F.val.toRingHom := rfl
-
 end Formalism.L2.Pj

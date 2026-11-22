@@ -29,9 +29,6 @@ def tanPush (h : IsGrpPullback G' G π F) (x : Sp S ⟶ X') : TanM x G' →ₗ[S
   map_add' u v := tanM_ext (map_mul (pushHom h (overAt x (DualNumber S))) _ _)
   map_smul' a v := tanM_ext (Over.OverMorphism.ext (Category.assoc _ _ _))
 
-theorem tanPush_left (h : IsGrpPullback G' G π F) (x : Sp S ⟶ X') (v : TanM x G') :
-    (tv (tanPush h x v)).left = (tv v).left ≫ F := rfl
-
 theorem tanPush_bijective (h : IsGrpPullback G' G π F) (x : Sp S ⟶ X') : Function.Bijective (tanPush h x) := by
   have inj : Function.Injective (pushHom h (overAt x (DualNumber S))) := fun p q hpq =>
     Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun V => V.left) hpq) ((Over.w p).trans (Over.w q).symm))

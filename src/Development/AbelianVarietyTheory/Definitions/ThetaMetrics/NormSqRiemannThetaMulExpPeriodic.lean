@@ -12,12 +12,6 @@ namespace GlobalTheory.RiemannThetaModel
 
 variable {ι : Type*} [Fintype ι]
 
-theorem riemannThetaTerm_eq_thetaTerm (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
-    riemannThetaTerm a b Ω v n = ReciprocityTheory.PTheta.thetaTerm a b v Ω n := rfl
-
-theorem riemannTheta_eq_theta (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
-    riemannTheta a b Ω v = ReciprocityTheory.PTheta.theta a b v Ω := rfl
-
 theorem riemannTheta_eq_thetaChar {g : ℕ} (a b : Fin g → ℝ) (Ω : Matrix (Fin g) (Fin g) ℂ)
     (v : Fin g → ℂ) :
     riemannTheta a b Ω v = ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaChar Ω (fun i => a i) (fun i => b i) v := by

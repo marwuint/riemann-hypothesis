@@ -217,11 +217,6 @@ noncomputable def baseChangeMapAtLength
     t.obj t.length ⟶ s.obj s.length :=
   D.lastMap
 
-theorem baseChangeMapAtLength_eq_lastMap
-    (D : StrictPullbackBlowupSeq (pullback.fst S.structMap (specMapOfFieldHom S.base L f))
-      t.toMarkedSequenceOfBlowups.toSequenceOfBlowups s.toMarkedSequenceOfBlowups.toSequenceOfBlowups) :
-    baseChangeMapAtLength S L f s t D = D.lastMap := rfl
-
 @[reducible] noncomputable def comapBoundaryBaseChange
     (D : StrictPullbackBlowupSeq (pullback.fst S.structMap (specMapOfFieldHom S.base L f))
       t.toMarkedSequenceOfBlowups.toSequenceOfBlowups s.toMarkedSequenceOfBlowups.toSequenceOfBlowups)

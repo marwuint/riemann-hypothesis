@@ -10,13 +10,6 @@ theorem blk_last (l : List ℕ) : Formalism.DoubleCosetMeasures.blk (l ++ [1]) l
     rw [if_neg (by omega), Nat.add_sub_cancel_left, ih]
     omega
 
-theorem revIn_last (l : List ℕ) : Formalism.DoubleCosetMeasures.revIn (l ++ [1]) l.sum = l.sum := by
-  induction l with
-  | nil => simp [Formalism.DoubleCosetMeasures.revIn]
-  | cons a l ih =>
-    simp only [List.cons_append, List.sum_cons, Formalism.DoubleCosetMeasures.revIn]
-    rw [if_neg (by omega), Nat.add_sub_cancel_left, ih]
-
 end Formalism.FourierDecayAlt.P.LastBlockReversal
 
 namespace Formalism.FourierDecayAlt.P.LastBlockReversalIndices
@@ -76,4 +69,3 @@ theorem pt_mul {K : Type} [CommRing K] (s : List ℕ) (t : ℕ → Kˣ) :
   · simp
 
 end Formalism.FourierDecayAlt.P.ReversedIndexLastBlock
-

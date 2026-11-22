@@ -88,16 +88,6 @@ section Lagr
 variable {R A α β m κ : Type} [CommRing R] [CommRing A] [Algebra R A] [Fintype α] [DecidableEq α] [Fintype κ]
   {Bf : Matrix α β A → Matrix α β A → R} (co : Darboux Bf κ)
 
-def fstAct (x : Matrix α α A) : (κ → R) →ₗ[R] (κ → R) where
-  toFun z := (co.e (x * co.e.symm (z, 0))).1
-  map_add' z z' := by
-    rw [show ((z + z', 0) : (κ → R) × (κ → R)) = (z, 0) + (z', 0) by simp, map_add, Matrix.mul_add, map_add, Prod.fst_add]
-  map_smul' c z := by
-    rw [show ((c • z, 0) : (κ → R) × (κ → R)) = c • (z, 0) by simp, map_smul, Matrix.mul_smul, map_smul]
-    rfl
-
-theorem fstAct_apply (x : Matrix α α A) (z : κ → R) : fstAct co x z = (co.e (x * co.e.symm (z, 0))).1 := rfl
-
 end Lagr
 
 end GlobalTheory.DblUnitaryBox

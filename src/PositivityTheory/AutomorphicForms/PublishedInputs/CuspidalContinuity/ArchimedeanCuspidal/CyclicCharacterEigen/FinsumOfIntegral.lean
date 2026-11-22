@@ -38,8 +38,6 @@ def incl : V →ₗ[ℂ] archSmooth ℚ 3 where
 def DV (i j : Fin 3) : Module.End ℂ V :=
   LinearMap.codRestrict V ((archSmooth ℚ 3).subtype ∘ₗ Ad3.EA i j ∘ₗ incl hV) fun W => hV.lie _ W.2 i j
 
-theorem incl_DV (i j : Fin 3) (W : V) : incl hV (DV hV i j W) = Ad3.EA i j (incl hV W) := rfl
-
 end Bridge
 
 section Local

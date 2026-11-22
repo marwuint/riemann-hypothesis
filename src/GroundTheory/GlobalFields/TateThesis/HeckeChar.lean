@@ -102,12 +102,6 @@ theorem finiteEmbedding_mem_primeToLevel {𝔪 : Ideal (𝓞 K)} {v : HeightOneS
   rw [finiteProj_finiteEmbedding_of_ne hwv]
   exact one_mem _
 
-theorem toFractionalIdeal_mem_idealsPrimeTo {𝔪 : Ideal (𝓞 K)} {x : IdeleGroup K}
-    (hx : x ∈ primeToLevel 𝔪) : toFractionalIdeal x ∈ idealsPrimeTo 𝔪 := by
-  intro v hv
-  rw [count_toFractionalIdeal]
-  exact ord_eq_zero_of_mem_unitsLevel ((mem_primeToLevel.1 hx).2 v hv)
-
 theorem exists_mem_primeToLevel {𝔪 : Ideal (𝓞 K)} {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ}
     (hI : I ∈ idealsPrimeTo 𝔪) : ∃ x ∈ primeToLevel 𝔪, toFractionalIdeal x = I := by
   have key : ∀ v : HeightOneSpectrum (𝓞 K), primeIdealUnit v ^ count K v

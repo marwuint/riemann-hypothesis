@@ -66,12 +66,6 @@ theorem valL_near (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam) {x : GL (
 
 variable {V x₀}
 
-theorem adFun_eq (hG : V.gram = 1) (hx : x₀ ∈ UAd D.sp.cm n) (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam) {g : GA D V}
-    {p : DecoF D.host.E n ST SG Q} (h : Near c (finN V hn g * x₀) p) :
-    adFun θ V hn t emb σ S b pt c x₀ l φ g = l (lT (Gr emb σ n) (infN θ V hn t g) (valL S emb σ b (pt p) φ)) := by
-  rw [← valL_near hp hφ h (near_ptOf D.sp.cm c (mul_mem (finN_mem hn hG g) hx))]
-  rfl
-
 theorem isAutFunDef_adFun (hθ : IsInfFam θ) (hG : V.gram = 1) (he : ∀ τ, embAt σ emb τ = tauE D (t τ)) (hx : x₀ ∈ UAd D.sp.cm n)
     (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam) : IsAutFunDef V (adFun θ V hn t emb σ S b pt c x₀ l φ) := by
   haveI := valC_finiteDimensional emb σ lam
@@ -113,12 +107,6 @@ def adForm (hθ : IsInfFam θ) (hG : V.gram = 1) (hs : V.SigOK) (hd : V.IsDefini
     (hx : x₀ ∈ UAd D.sp.cm n) (hp : PtLaw S b pt c) : (S.Cl → Fr emb σ n → ℂ) →ₗ[ℂ] CuspS θ V :=
   LinearMap.codRestrict (CuspS θ V) (adFun θ V hn t emb σ S b pt c x₀ l ∘ₗ (S.Fi emb σ lam).subtype)
     (fun F => mem_cuspS θ hθ hG hs hd (isAutFunDef_adFun θ hn t l hθ hG he hx hp F.2)) ∘ₗ prFi S emb σ lam
-
-theorem adForm_val (hθ : IsInfFam θ) (hG : V.gram = 1) (hs : V.SigOK) (hd : V.IsDefinite) (he : ∀ τ, embAt σ emb τ = tauE D (t τ))
-    (hx : x₀ ∈ UAd D.sp.cm n) (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam) :
-    (adForm θ hn t emb σ l lam hθ hG hs hd he hx hp φ).1 = adFun θ V hn t emb σ S b pt c x₀ l φ := by
-  show adFun θ V hn t emb σ S b pt c x₀ l (prFi S emb σ lam φ).1 = _
-  rw [prFi_of_mem hφ]
 
 end Form
 
@@ -248,9 +236,6 @@ def infX {j : ℕ} (hj : j ≤ B.R.m) : Formalism.L2.Theta.GA (I.rec7 l Z) ((I.r
 def src (u : B.Word) : Z.W.Mu u →ₗ[ℂ] ((I.stp u I.mu0 0).Cl → Fr B.fields.emb B.embLL (B.R.N 0) → ℂ) :=
   ((I.cols l).mem u).A.Mram.subtype ∘ₗ (Z.W.eMu u).toLinearMap
 
-theorem src_mem (u : B.Word) (φ : Z.W.Mu u) :
-    src l Z u φ ∈ (I.stp u I.mu0 0).Fi B.fields.emb B.embLL (lamT (B.hcW u) 0) := (Z.W.eMu u φ).2.1
-
 def topF (u : B.Word) (a : I.ι) : Z.W.Mu u →ₗ[ℂ] ((I.stp u a B.R.m).Cl → Fr B.fields.emb B.embLL (B.R.N B.R.m) → ℂ) :=
   colLin (I.chain l u a) ∘ₗ ((I.cols l).e0Tw u a).toLinearMap ∘ₗ src l Z u
 
@@ -271,32 +256,6 @@ def colAFw (w : Pol ℂ (Tau B.R) (B.R.N B.R.m - 1)) (u : (I.rec7 l Z).what₂.W
 def colAF (u : (I.rec7 l Z).what₂.Word) (μ : (I.rec7 l Z).what₂.Tup) (j : ℕ) :
     (I.rec7 l Z).what₂.Mu u →ₗ[ℂ] CuspS θ ((I.rec7 l Z).sp.X j) :=
   colAFw h l Z hθ (topVec B.wts.sgTrue) u μ j
-
-theorem perIn_sgT (u : B.Word) (a : I.ι) : (I.perIn u a).sgT = B.wts.sgTrue := rfl
-
-theorem colZero_apply (u : B.Word) (φ : Z.W.Mu u) (g : Formalism.L2.Theta.GA (I.rec7 l Z) ((I.rec7 l Z).sp.X 0))
-    (p : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup I.mu0) u 0)
-    (hp : Near 0 (finX l Z (Nat.zero_le _) g) p) :
-    (colZero h l Z hθ u φ).1 g =
-      valL (I.stp u I.mu0 0) B.fields.emb B.embLL _ (I.ptAt u I.mu0 (zero_succ_ne B.R) (l.idx0 I.mu0).some p) (src l Z u φ)
-        (frL _ (infX l Z θ (Nat.zero_le _) g) (fr0 B.fields.emb B.embLL (B.R.N 0))) :=
-  (congrFun (adForm_val (D := I.rec7 l Z) θ _ _ _ hθ (h.gram_X 0) (B.sp.X_sig 0) (B.sp.X_def 0 (Nat.zero_le _)) (embAt_eq l Z) (one_mem _) (I.ptLaw_zero u _ 0)
-    (src_mem l Z u φ)) g).trans
-    (adFun_eq (D := I.rec7 l Z) θ _ _ _ (h.gram_X 0) (one_mem _) (I.ptLaw_zero u _ 0) (src_mem l Z u φ) ((mul_one (finX l Z (Nat.zero_le _) g)).symm ▸ hp :
-      Near 0 (finX l Z (Nat.zero_le _) g * 1) p))
-
-theorem colTop_apply (u : B.Word) (a : I.ι) (w) (φ : Z.W.Mu u)
-    (hφ : topF l Z u a φ ∈ (I.stp u a B.R.m).Fi B.fields.emb B.embLL (lamT (B.hcW u) B.R.m))
-    (g : Formalism.L2.Theta.GA (I.rec7 l Z) ((I.rec7 l Z).sp.X B.R.m))
-    {x₀ : GL (Fin (B.R.N B.R.m)) (AfE B.host.F B.host.E)} (hx : x₀ ∈ UAd B.sp.cm _)
-    (h₀ : Near (I.depTop a) x₀ (I.baseTop u a)) (p : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u B.R.m)
-    (hp : Near (I.depTop a) (finX l Z le_rfl g * x₀) p) :
-    (colTop h l Z hθ u a w φ).1 g = I.funTop u a w (lT _ (infX l Z θ le_rfl g)
-      (valL (I.stp u a B.R.m) B.fields.emb B.embLL (idxTop I.sel (I.tup a) (I.idx a)) (topPt I.sel (I.tup a) (I.cst a) u p) (topF l Z u a φ))) :=
-  (congrFun (adForm_val (D := I.rec7 l Z) θ _ _ _ hθ (h.gram_X _) (B.sp.X_sig _) (B.sp.X_def _ le_rfl) (embAt_eq l Z) (h.xTop_spec u a).uni (I.ptLaw_top u a)
-    hφ) g).trans
-    (adFun_eq (D := I.rec7 l Z) θ _ _ _ (h.gram_X _) (h.xTop_spec u a).uni (I.ptLaw_top u a) hφ
-      (Near.change B.sp.cm hx (h.xTop_spec u a).uni h₀ (near_of_isPtOf (h.xTop_spec u a) _) hp))
 
 include l in
 

@@ -10,15 +10,6 @@ abbrev Datum {X U Y : Scheme.{0}} (u : U ⟶ X) (p : Y ⟶ U) :=
 
 variable {X U Y X' : Scheme.{0}} (u : U ⟶ X) (p : Y ⟶ U) (j : X' ⟶ X)
 
-def bcDatum (θ : Datum u p) : Datum (pullback.snd u j) (pullback.snd p (pullback.fst u j)) :=
-  fun T a b h y ↦
-    ⟨pullback.lift (θ T (a ≫ pullback.fst u j) (b ≫ pullback.fst u j)
-        (by rw [Category.assoc, Category.assoc, pullback.condition, reassoc_of% h])
-        ⟨y.1 ≫ pullback.fst p (pullback.fst u j),
-          by rw [Category.assoc, pullback.condition, reassoc_of% y.2]⟩).1 b
-        (θ T _ _ _ _).2,
-      pullback.lift_snd _ _ _⟩
-
 end GlobalTheory.DescentLocal
 
 namespace GlobalTheory.DescentLocal

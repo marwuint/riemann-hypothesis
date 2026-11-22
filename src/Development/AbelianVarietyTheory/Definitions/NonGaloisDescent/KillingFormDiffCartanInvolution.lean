@@ -146,13 +146,6 @@ def AdLie (g : GR a b) : LieG a b →ₗ[ℝ] LieG a b := LinearMap.mulLeftRight
 
 theorem AdLie_apply (g : GR a b) (X : LieG a b) : AdLie g X = mat g * X * mat g⁻¹ := rfl
 
-def dth0 : LieG a b →ₗ[ℝ] LieG a b where
-  toFun X := -star X
-  map_add' X Y := by rw [star_add, neg_add]
-  map_smul' c X := by simp
-
-theorem diff_cartan_involution_apply (X : LieG a b) : dth0 X = -star X := rfl
-
 @[simp] theorem AdLie_one : AdLie (1 : GR a b) = LinearMap.id := by
   refine LinearMap.ext fun X => ?_
   simp [AdLie_apply]

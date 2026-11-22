@@ -57,22 +57,6 @@ variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [StarR
   (emb : ι → E →+* K) (lam : ι → DomWeight n) (R : ℝ) (J : Matrix (Fin n) (Fin n) E)
   (L : C → Submodule (𝓞 E) (Fin n → E)) (e : Fin N ≃ C × VVIdx lam) (X : InfinitePlace K → Matrix (Fin N) (Fin N) ℂ)
 
-def WeylClause : Prop :=
-  IsMetric ((sumGram lam e (gramK emb J))⁻¹)ᵀ X →
-    TestLatticeCondition N X (dualFr (sumLat lam e fun c => delAt emb lam (L c))) (bound (Fintype.card ι) n R)
-
-def WeylClauseDual : Prop :=
-  IsMetric ((sumGram lam e (gramKd emb J))⁻¹)ᵀ X →
-    TestLatticeCondition N X (dualFr (sumLat lam e fun c => delAtr emb lam (L c))) (bound (Fintype.card ι) n R)
-
-def NablaClause : Prop :=
-  IsMetric (sumGram lam e (gramK emb J)) X →
-    TestLatticeCondition N X (sumLat lam e fun c => nabAt emb lam (L c)) (bound (Fintype.card ι) n R)
-
-def NablaClauseDual : Prop :=
-  IsMetric (sumGram lam e (gramKd emb J)) X →
-    TestLatticeCondition N X (sumLat lam e fun c => nabAtr emb lam (L c)) (bound (Fintype.card ι) n R)
-
 end Clauses
 
 def Under (P : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [StarRing K] (_ : E →+* E)
@@ -88,9 +72,5 @@ def Under (P : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField
   ∀ (C : Type) [Nonempty C] (L : C → Submodule (𝓞 E) (Fin n → E)), (∀ c, IsSelfDualE cE J (L c)) →
   ∀ (N : ℕ) (e : Fin N ≃ C × VVIdx lam) (X : InfinitePlace K → Matrix (Fin N) (Fin N) ℂ),
     P E K cE ι emb n lam R J C L N e X
-
-theorem slopeE_eq : SlopeE = Under fun _ _ _ _ _ _ _ _ _ _ emb _ lam R J _ L _ e X =>
-    WeylClause emb lam R J L e X ∧ NablaClause emb lam R J L e X ∧
-      WeylClauseDual emb lam R J L e X ∧ NablaClauseDual emb lam R J L e X := rfl
 
 end GlobalTheory.TestLat.Compare

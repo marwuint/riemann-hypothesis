@@ -350,9 +350,4 @@ def perLat (ϖ : 𝒪[k]) (n' : Type) (c : ℕ) (L : Submodule 𝒪[k] (n → k)
     rw [← neg_one_smul k e, col_smul, neg_one_smul, Pi.neg_apply, smul_neg]
     exact neg_mem (he i)
 
-omit [MeasurableSpace k] [BorelSpace k] in
-theorem mem_perLat {ϖ : 𝒪[k]} {L : Submodule 𝒪[k] (n → k)}
-    {e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs} → k} :
-    e ∈ perLat ϖ n' c L ↔ ∀ i : Fin c, (ϖ : k) ^ (i.val + 1) • col e i ∈ chainLat ϖ c L := Iff.rfl
-
 end GlobalTheory.RootEx.UnfoldShape

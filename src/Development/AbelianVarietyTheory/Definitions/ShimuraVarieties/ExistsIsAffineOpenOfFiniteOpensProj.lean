@@ -244,9 +244,6 @@ noncomputable def quotientDiagram : StableAffineOpens ρ ⥤ Scheme.{u} where
     ext s
     exact (presheaf_map_map_apply _ _ _).symm
 
-theorem quotientDiagram_obj (U : StableAffineOpens ρ) :
-    (quotientDiagram ρ).obj U = Spec (.of (invariantSections ρ U.toOpens U.stable)) := rfl
-
 instance isAffine_quotientDiagram_obj (U : StableAffineOpens ρ) :
     IsAffine ((quotientDiagram ρ).obj U) :=
   inferInstanceAs (IsAffine (Spec _))

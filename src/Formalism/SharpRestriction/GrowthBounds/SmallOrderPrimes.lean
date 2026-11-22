@@ -214,9 +214,6 @@ def lowU (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) : ℝ :=
 def unitBoundAtTwistedPlaces (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) : Prop :=
   UnitBoundLowTerm D L X Y K (lowU D)
 
-def UnitBoundDifferenceTerm (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) : Prop :=
-  UnitBoundLowTerm D L X Y K (lowFE L)
-
 def admG1 (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) : Prop :=
   ∀ hT : GatTies D, LatTied hT X Y → ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),

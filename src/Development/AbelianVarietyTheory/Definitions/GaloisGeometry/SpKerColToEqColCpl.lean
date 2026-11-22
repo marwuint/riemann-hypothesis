@@ -96,12 +96,6 @@ variable (F : ℕ → GFam K) (n m : ℕ) (C : MemOn (F (n + 1))) (T : MemOn (F 
   Nab b := (spMem F n m C T i b).Nab
   Del b := (spMem F n m C T i b).Del
 
-theorem spFam_mem_mat (i : ℕ) (b : (F i).β) (h : i ≤ n) : (spFam F n m C T i).mem (.mat b h) = (F i).mem b := rfl
-
-theorem spFam_mem_cpl (h : n + 1 = n + 1) : (spFam F n m C T (n + 1)).mem (.cpl h) = C.gsd := rfl
-
-theorem spFam_mem_top (h : m = m) : (spFam F n m C T m).mem (.top h) = T.gsd := rfl
-
 variable {F n m C T}
 
 def spEntry (kk : KerFam F) (k1 : ∀ al : (F n).β, ClsKer ((F n).mem al) C.gsd) (k2 : ClsKer C.gsd T.gsd)
@@ -123,13 +117,6 @@ variable (kk : KerFam F) (k1 : ∀ al : (F n).β, ClsKer ((F n).mem al) C.gsd) (
 
 def spKer : KerFam (spFam F n m C T) := fun i b b' => spEntry kk k1 k2 i (i + 1) rfl b b'
 
-theorem spKer_mat (i : ℕ) (al : (F i).β) (be : (F (i + 1)).β) (h : i ≤ n) (h' : i + 1 ≤ n) :
-    spKer kk k1 k2 i (.mat al h) (.mat be h') = kk i al be := rfl
-
-theorem spKer_cpl (al : (F n).β) (h : n ≤ n) (h' : n + 1 = n + 1) : spKer kk k1 k2 n (.mat al h) (.cpl h') = k1 al := rfl
-
-theorem spEntry_top (e : m = n + 1 + 1) (h : n + 1 = n + 1) (h' : m = m) : spEntry kk k1 k2 (n + 1) m e (.cpl h) (.top h') = k2 := rfl
-
 variable (n m C T) in
 
 def spIn (i : ℕ) : (F i).Forms →ₗ[K] (spFam F n m C T i).Forms :=
@@ -137,8 +124,6 @@ def spIn (i : ℕ) : (F i).Forms →ₗ[K] (spFam F n m C T i).Forms :=
     | .mat al _ => LinearMap.proj al
     | .cpl _ => 0
     | .top _ => 0
-
-theorem spIn_mat (i : ℕ) (φ : (F i).Forms) (al : (F i).β) (h : i ≤ n) : spIn n m C T i φ (.mat al h) = φ al := rfl
 
 variable {hS : ∀ i, (spFam F n m C T i).Ok}
 

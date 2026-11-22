@@ -26,9 +26,6 @@ def extChart (t : ∀ k, ι k) : ∀ k : K ⊕ Unit, Sum.elim ι ptIdx k
   | .inl k => t k
   | .inr _ => (0 : Fin 1)
 
-theorem restrictChart_extChart (t : ∀ k, ι k) : restrictChart (extChart t) = t :=
-  rfl
-
 theorem mseg_join (y : (Σ k, ι k) → Ω) (s : ∀ k : K ⊕ Unit, Sum.elim ι ptIdx k) :
     mseg (joinCoord y (ptCoord (Ω := Ω))) s = mseg y (restrictChart s) := by
   simp only [mseg, Fintype.prod_sum_type]

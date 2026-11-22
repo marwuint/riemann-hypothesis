@@ -24,10 +24,6 @@ structure IsIo (ν : Measure H) (𝓕 : Set H) (th : G → H → S → ℂ) (pt 
   eq : ∀ F : CCs, ∀ φ v g,
     liftInt ν 𝓕 th (pt φ) ((F : Ds →ₗ[ℂ] (H → ℂ)) v) g = ((io F : CCt) : Dt →ₗ[ℂ] (G → ℂ)) (T φ v) g
 
-def IsTPlus (ipDs : Ds →ₗ[ℂ] Ds →ₗ⋆[ℂ] ℂ) (ipDt : Dt →ₗ[ℂ] Dt →ₗ⋆[ℂ] ℂ) (T : Sinf →ₗ[ℂ] Ds →ₗ[ℂ] Dt)
-    (Tp : Sinf →ₗ⋆[ℂ] Dt →ₗ[ℂ] Ds) : Prop :=
-  ∀ φ v' v, ipDt (T φ v') v = ipDs v' (Tp φ v)
-
 end Step
 
 section ThetaP

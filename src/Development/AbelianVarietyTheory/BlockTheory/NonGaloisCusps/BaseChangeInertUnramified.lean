@@ -14,9 +14,6 @@ section Objects
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
 
-def SphericalAtInert (B : NBC A) (j : ℕ) (π : B.AU j) : Prop :=
-  ∀ w : PlE H, ¬ IsSplitPl H w → B.sphAU j π w
-
 structure IsDiscreteSelfDualSum (A : NAut N) (P : List (Part A.CG)) : Prop where
 
   discrete : ∀ p ∈ P, 1 ≤ p.a ∧ 1 ≤ p.d

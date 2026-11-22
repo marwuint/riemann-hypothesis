@@ -36,7 +36,4 @@ def pass (t : E) (c : Ideal (OF E)) (y : (Af E)ˣ) : GlobalTheory.HilbFam.Lat (m
     show ptE t (a • x) ∈ lattice c y
     rw [ptE_smul]; exact mul_mem_lattice (algebraMap_mem_orderC c a) hx
 
-theorem mem_pass (t : E) (c : Ideal (OF E)) (y : (Af E)ˣ) (x : Fin 2 → maximalRealSubfield E) :
-    x ∈ pass t c y ↔ ptE t x ∈ lattice c y := Iff.rfl
-
 end GlobalTheory.RoadE

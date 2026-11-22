@@ -201,11 +201,6 @@ def adicCompletionRingEquiv (θ : R ≃+* R) : 𝔅 ≃+* 𝔅 :=
       rw [adicCompletionMap_comp]
       exact adicCompletionMap_eq_id _ (by ext; simp))
 
-theorem adicCompletionRingEquiv_apply (θ : R ≃+* R) (x : 𝔅) :
-    adicCompletionRingEquiv θ x =
-      adicCompletionMap (θ : R →+* R) (maximalIdeal_le_comap_ringEquiv θ) x :=
-  rfl
-
 variable {S : Type*} [CommRing S] [Algebra S R]
 
 def adicCompletionAlgEquiv : (R ≃ₐ[S] R) →* (𝔅 ≃ₐ[S] 𝔅) where

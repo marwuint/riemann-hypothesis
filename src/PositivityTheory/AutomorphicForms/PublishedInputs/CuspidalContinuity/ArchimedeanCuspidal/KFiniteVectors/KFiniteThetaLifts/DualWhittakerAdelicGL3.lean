@@ -30,5 +30,4 @@ structure IsBC (D : Dat) (DK : DatK K) : Prop where
 def cAt (c : HeckeCharacter K) (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] : (Qv v)ˣ →* ℂˣ :=
   (localChar c w).comp (Units.map (algebraMap (Qv v) (Kv K w)).toMonoidHom)
 
-def dualWhittakerAdelicGL3 (W : G3 → ℂ) (g : G3) : ℂ := W (w3 * ti g)
 end Ad3.K.QuadraticBaseChangeGL3

@@ -519,9 +519,6 @@ def endPointMap [F.IsComm] : Hom F F →+* AddMonoid.End (IdealPoint Ω F) where
   map_zero' := AddMonoidHom.ext fun x => Hom.pointMap_zero x
   map_add' f g := AddMonoidHom.ext fun x => Hom.pointMap_add f g x
 
-theorem endPointMap_apply [F.IsComm] (φ : Hom F F) (x : IdealPoint Ω F) :
-    endPointMap Ω F φ x = φ.pointMap x := rfl
-
 def Iso.pointEquiv (e : Iso F G) : IdealPoint Ω F ≃+ IdealPoint Ω G where
   toFun := e.hom.pointMap
   invFun := e.inv.pointMap
@@ -563,10 +560,6 @@ variable {π : 𝒪[K]} {hπ : Irreducible π} {f g : PowerSeries 𝒪[K]}
 noncomputable instance instModuleLubinTate {hf : IsLubinTateSeries π f} :
     Module 𝒪[K] (IdealPoint Ω (lubinTateFormalGroup hπ hf)) :=
   Module.compHom _ ((endPointMap Ω _).comp (lubinTateEndRingHom hπ hf))
-
-theorem lubinTate_smul_eq (hf : IsLubinTateSeries π f) (a : 𝒪[K])
-    (x : IdealPoint Ω (lubinTateFormalGroup hπ hf)) :
-    a • x = (lubinTateHom hπ hf hf a).pointMap x := rfl
 
 theorem lubinTate_smul_val (hf : IsLubinTateSeries π f) (a : 𝒪[K])
     (x : IdealPoint Ω (lubinTateFormalGroup hπ hf)) :

@@ -78,12 +78,6 @@ theorem logDerivIdealSheafIterate_succ (k : Type u) [CommRing k] [IsNoetherianRi
       logDerivIdealSheaf k p P (logDerivIdealSheafIterate k p P r I) :=
   rfl
 
-theorem logDerivIdealSheafIterate_one (k : Type u) [CommRing k] [IsNoetherianRing k]
-    {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
-    (P I : X.IdealSheafData) :
-    logDerivIdealSheafIterate k p P 1 I = logDerivIdealSheaf k p P I :=
-  rfl
-
 theorem logDerivIdealSheafIterate_add (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
     (P : X.IdealSheafData) (r s : ℕ) (I : X.IdealSheafData) :

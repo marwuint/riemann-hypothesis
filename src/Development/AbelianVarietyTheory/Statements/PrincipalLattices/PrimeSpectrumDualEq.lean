@@ -9,8 +9,6 @@ open scoped UpperHalfPlane
 
 namespace GlobalTheory.CMCurveTest
 
-theorem mul_eq_lift {S : Scheme.{0}} (P : Out.PolAV S) (a b : P.A ⟶ P.A) : a * b = lift a b ≫ μ[P.A] := rfl
-
 variable {R : Type} [CommRing R]
 
 def scaleVec {A : Over (Sp R)} (c : R) (v : epsR R ⟶ A) : epsR R ⟶ A :=

@@ -27,10 +27,6 @@ theorem isOpen_stabilizer_ringOfIntegers (b : 𝓞 ℚ̄) :
 noncomputable abbrev ringOfIntegersIncl (L : IntermediateField ℚ ℚ̄) : 𝓞 L →+* 𝓞 ℚ̄ :=
   RingOfIntegers.mapRingHom (algebraMap L ℚ̄)
 
-theorem coe_ringOfIntegersIncl (L : IntermediateField ℚ ℚ̄) (a : 𝓞 L) :
-    ((ringOfIntegersIncl L a : 𝓞 ℚ̄) : ℚ̄) = ((a : L) : ℚ̄) :=
-  rfl
-
 theorem exists_mem_stabilizer_of_comap_eq (L : IntermediateField ℚ ℚ̄) (P : Ideal (𝓞 ℚ̄))
     [P.IsPrime] (τ : Gal(ℚ̄/ℚ))
     (h : (τ⁻¹ • P).comap (ringOfIntegersIncl L) = P.comap (ringOfIntegersIncl L)) :
@@ -262,38 +258,6 @@ theorem isClosed_stabilizer (P : Ideal (𝓞 ℚ̄)) :
   · exact (isClosed_discrete (P : Set (𝓞 ℚ̄))).preimage (continuous_inv.smul continuous_const)
 
 variable (q : Nat.Primes) (P : Ideal (𝓞 ℚ̄))
-
-def decompositionComponentImage : AddSubgroup ℤ_[q] where
-  carrier := (fun σ => Multiplicative.toAdd (degreeComponent q σ)) ''
-    (MulAction.stabilizer Gal(ℚ̄/ℚ) P)
-  add_mem' := by
-    rintro _ _ ⟨σ, hσ, rfl⟩ ⟨τ, hτ, rfl⟩
-    exact ⟨σ * τ, mul_mem hσ hτ, by simp⟩
-  zero_mem' := ⟨1, one_mem _, by simp⟩
-  neg_mem' := by
-    rintro _ ⟨σ, hσ, rfl⟩
-    exact ⟨σ⁻¹, inv_mem hσ, by simp⟩
-
-theorem coe_decompositionComponentImage :
-    (decompositionComponentImage q P : Set ℤ_[q]) =
-      (fun σ => Multiplicative.toAdd (degreeComponent q σ)) ''
-        (MulAction.stabilizer Gal(ℚ̄/ℚ) P) :=
-  rfl
-
-def decompositionDegreeImage : AddSubgroup ℤ̂ where
-  carrier := (fun σ => Multiplicative.toAdd (degree σ)) '' (MulAction.stabilizer Gal(ℚ̄/ℚ) P)
-  add_mem' := by
-    rintro _ _ ⟨σ, hσ, rfl⟩ ⟨τ, hτ, rfl⟩
-    exact ⟨σ * τ, mul_mem hσ hτ, by simp⟩
-  zero_mem' := ⟨1, one_mem _, by simp⟩
-  neg_mem' := by
-    rintro _ ⟨σ, hσ, rfl⟩
-    exact ⟨σ⁻¹, inv_mem hσ, by simp⟩
-
-theorem coe_decompositionDegreeImage :
-    (decompositionDegreeImage P : Set ℤ̂) =
-      (fun σ => Multiplicative.toAdd (degree σ)) '' (MulAction.stabilizer Gal(ℚ̄/ℚ) P) :=
-  rfl
 
 end Image
 

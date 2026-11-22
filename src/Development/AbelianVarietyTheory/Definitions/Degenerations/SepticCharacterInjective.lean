@@ -189,8 +189,6 @@ theorem mul_s (g g' : N.Gt) (χ : N.X) : (g * g').s χ = g.s χ * g'.s χ / N.θ
 
 @[simp] theorem inv_b (g : N.Gt) : g⁻¹.b = g.b⁻¹ := rfl
 
-theorem generator_inv_apply (g : N.Gt) (χ : N.X) : g⁻¹.s χ = N.θ (N.c χ) g.b g.b⁻¹ / g.s χ := rfl
-
 @[simp] theorem s_zero (g : N.Gt) : g.s 0 = 1 := by
   have := g.mult 0 0
   rw [add_zero, N.c_zero, N.cub.face, mul_one] at this
@@ -453,21 +451,6 @@ def tate (q : Oˣ) : NumD O where
     simp only [mul_one, div_eq_mul_inv, ← zpow_neg, ← zpow_add]
     congr 1
     ring
-
-theorem tate_tors {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) : (tate q).toNumB.Tors n 0 where
-  div x := ⟨x, rfl⟩
-  str j := by
-    haveI : Unique (tate q).A := inferInstanceAs (Unique PUnit)
-    haveI : Unique (powMonoidHom (n ^ j) : (tate q).A →* (tate q).A).ker := ⟨⟨1⟩, fun _ => Subsingleton.elim _ _⟩
-    haveI : IsEmpty (Fin (2 * 0)) := inferInstanceAs (IsEmpty (Fin 0))
-    exact ⟨MulEquiv.ofUnique⟩
-  nondeg _ _ _ _ := rfl
-  good a := ⟨a, rfl, norm_one⟩
-  sep _ _ _ _ _ _ _ := rfl
-
-namespace Level3
-
-end Level3
 
 end GlobalTheory.Ex
 end

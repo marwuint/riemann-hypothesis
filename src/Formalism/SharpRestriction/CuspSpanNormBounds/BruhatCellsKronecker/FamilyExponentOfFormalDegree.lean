@@ -41,8 +41,6 @@ theorem cfg_aeff (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : (cfgOf D �
   · have ht : (cfgOf D τ).top = false := (cfg_top_false_iff D τ).2 h
     rw [if_neg (by simp [ht]), if_neg h]
 
-theorem cfg_prodb (D : D7) (τ : D.what₂.Tau) : (cfgOf D τ).prodb = ∏ j ∈ Finset.Icc 1 D.R.m, bOne D τ j := rfl
-
 theorem deOf_ne (D : D7) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (h5 : ∀ w : D.what₂.Word, ¬ IsTop D τ → uOne D w τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2)
     (l : ℕ) (h1 : 1 ≤ l) (h2 : l ≤ D.R.k - 2) (hne : uOne D u τ (l + 1) ≠ uOne D u' τ (l + 1)) :

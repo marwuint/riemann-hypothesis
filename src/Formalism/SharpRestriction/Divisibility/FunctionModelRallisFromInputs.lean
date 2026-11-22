@@ -26,9 +26,6 @@ variable {D : D7}
 
 def muOf (T : ThetaX D) (μ : D.what₂.Tup) : ℕ → T.Chr := fun s => T.chrOf μ s
 
-theorem car_muOf (T : ThetaX D) (μ : D.what₂.Tup) (s i : ℕ) : car T (muOf T μ) s i = T.carY μ s i := by
-  rfl
-
 end Instance
 
 structure Loc2 (D : D7) (X : ThetaX D) where

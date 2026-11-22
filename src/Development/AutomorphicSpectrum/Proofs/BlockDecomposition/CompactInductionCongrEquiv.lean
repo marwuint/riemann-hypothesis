@@ -33,10 +33,6 @@ def mapFun (H : Subgroup G) {σ : Representation ℂ H W} {σ' : Representation 
     rw [h0, map_zero]
   ⟨⟨⟨fun g => L (f.1.1.1 g), hind⟩, hsm⟩, hc⟩
 
-theorem mapFun_apply (H : Subgroup G) {σ : Representation ℂ H W} {σ' : Representation ℂ H W'}
-    (L : W ≃ₗ[ℂ] W') (hL : ∀ (h : H) (w : W), L (σ h w) = σ' h (L w))
-    (f : cIndSpace H σ) (g : G) : (mapFun H L hL f).1.1.1 g = L (f.1.1.1 g) := rfl
-
 theorem ext_fun {H : Subgroup G} {σ : Representation ℂ H W} {f f' : cIndSpace H σ}
     (h : ∀ g, f.1.1.1 g = f'.1.1.1 g) : f = f' :=
   Subtype.ext (Subtype.ext (Subtype.ext (funext h)))

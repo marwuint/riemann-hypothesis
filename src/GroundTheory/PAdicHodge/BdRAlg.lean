@@ -54,8 +54,6 @@ def padicToBDeRhamPlus : ℚ_[p] →+* 𝔹 :=
 
 instance algebraPadic : Algebra ℚ_[p] 𝔹 := (padicToBDeRhamPlus p).toAlgebra
 
-theorem algebraMap_padic_eq : algebraMap ℚ_[p] 𝔹 = padicToBDeRhamPlus p := rfl
-
 theorem algebraMap_padic_coe (x : ℤ_[p]) :
     algebraMap ℚ_[p] 𝔹 (x : ℚ_[p]) = wittToBDeRhamPlus 𝒪 p (padicIntToWitt p x) :=
   IsLocalization.lift_eq (M := nonZeroDivisors ℤ_[p]) (S := ℚ_[p]) _ x

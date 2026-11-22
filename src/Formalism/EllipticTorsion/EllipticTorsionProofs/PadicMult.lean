@@ -20,12 +20,6 @@ def mulN (F : FormalGroup R) : ℕ → PowerSeries R
   | m + 1 => MvPowerSeries.subst (![mulN F m, PowerSeries.X] : Fin 2 → MvPowerSeries Unit R)
       F.toPowerSeries
 
-theorem mulN_zero (F : FormalGroup R) : mulN F 0 = 0 := rfl
-
-theorem mulN_succ (F : FormalGroup R) (m : ℕ) :
-    mulN F (m + 1) = MvPowerSeries.subst
-      (![mulN F m, PowerSeries.X] : Fin 2 → MvPowerSeries Unit R) F.toPowerSeries := rfl
-
 end Ring
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]

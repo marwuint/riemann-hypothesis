@@ -23,7 +23,4 @@ instance borelSpace_adelicU (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (
 
 variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
-theorem incM_dblGram : incM F (dblGram finSumFinEquiv J) = dblGram finSumFinEquiv (incM F J) := by
-  rw [incM, dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _)]; rfl
-
 end GlobalTheory.DefDoubling

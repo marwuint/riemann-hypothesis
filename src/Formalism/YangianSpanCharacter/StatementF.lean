@@ -11,25 +11,6 @@ def blk {A : Type*} (M : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A) (i j : Fin 
 
 def sc {A : Type*} [Ring A] (x : A) : Matrix (Fin 2) (Fin 2) A := Matrix.diagonal fun _ => x
 
-def PlusFrame : Prop :=
-  ∀ (𝕜 A : Type) [Field 𝕜] [Ring A] [Algebra 𝕜 A] (t : 𝕜 → Matrix (Fin 2) (Fin 2) A)
-    (τinv : 𝕜 → A) (q : 𝕜 → 𝕜) (S : Set 𝕜), ModHyp t τinv q S →
-    ∀ Y Ya : 𝕜, Y ∈ S → Ya ∈ S → Y - Ya ≠ 0 → Y - Ya - 1 ≠ 0 →
-      let D := Y - Ya
-      let tn := E1 (t Y) * ((D - 1)⁻¹ • (D • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A) - Pf A))
-      let l := lf t τinv Y
-      let M : Matrix (Fin 2) (Fin 2) A := !![algebraMap 𝕜 A D, 0; -l, algebraMap 𝕜 A (D - 1)]
-      let N : Matrix (Fin 2) (Fin 2) A := !![(D - 1) • l, -1; 0, D • l]
-      let G : Matrix (Fin 2) (Fin 2) A := !![1, 0; lf t τinv Ya, 1]
-      let Ginv : Matrix (Fin 2) (Fin 2) A := !![1, 0; -lf t τinv Ya, 1]
-      blk tn 1 1 = (D - 1)⁻¹ • (sc (t Y 1 1) * M) ∧
-      blk tn 1 0 = (D - 1)⁻¹ • (sc (t Y 1 1) * N) ∧
-      G * Ginv = 1 ∧
-      G * (sc (t Y 1 1) * M) =
-        sc (t Y 1 1) * !![algebraMap 𝕜 A D, 0; 0, algebraMap 𝕜 A (D - 1)] * G ∧
-      N * Ginv = M * Ginv *
-        !![l - eta t τinv Y Ya, -algebraMap 𝕜 A D⁻¹; 0, l + eta t τinv Y Ya]
-
 def MinusFrame : Prop :=
   ∀ (𝕜 A : Type) [Field 𝕜] [Ring A] [Algebra 𝕜 A] (t : 𝕜 → Matrix (Fin 2) (Fin 2) A)
     (τinv : 𝕜 → A) (q : 𝕜 → 𝕜) (S : Set 𝕜), ModHyp t τinv q S →

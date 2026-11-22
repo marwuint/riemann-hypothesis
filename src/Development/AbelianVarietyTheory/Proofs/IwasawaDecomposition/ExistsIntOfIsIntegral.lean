@@ -46,8 +46,4 @@ def moveV (bV : 𝓞 c.F →+* c.V W) (hbV : ∀ x, ((bV x : c.V W) : c.F) = (x 
       exact a.geom F r z ((congrArg (fun y : c.F => (y : ℂ)) (hbV r)).symm.trans hr₁)
         ((congrArg (fun y : c.F => (y : ℂ)) (hbV z)).symm.trans hz₁) f hf }
 
-theorem moveV_D₀ (bV : 𝓞 c.F →+* c.V W) (hbV : ∀ x, ((bV x : c.V W) : c.F) = (x : c.F)) {O' : Type} [CommRing O']
-    [IsDomain O'] (b' : c.V W →+* O') (a : ArcIn D l (algebraMap (𝓞 c.F) c.F) O' (b'.comp bV)) :
-    (moveV bV hbV b' a).D₀ = a.D₀ := rfl
-
 end GlobalTheory.PolArc

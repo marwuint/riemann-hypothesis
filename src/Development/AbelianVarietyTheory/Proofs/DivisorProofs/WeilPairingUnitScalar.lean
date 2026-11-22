@@ -12,8 +12,4 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.TateUnitPair
 
-theorem lev_zsmul {p : ℕ} {M : Type} [CommGroup M] (t : Tate p M) (n : ℤ) (k : ℕ) :
-    (n • t).lev k = t.lev k ^ n := by
-  rfl
-
 end GlobalTheory.TateUnitPair

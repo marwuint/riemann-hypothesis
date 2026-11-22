@@ -156,8 +156,6 @@ def levF (σ : R ≃+* R) (p m : ℕ) : lev R p m ≃+* lev R p m :=
     (RingHom.ext fun x => by
       rw [RingHom.comp_apply, ← levMap_comp, RingEquiv.symm_comp, levMap_id]; rfl)
 
-theorem levF_ev (σ : R ≃+* R) (p m : ℕ) (h : PowerSeries R) : levF σ p m (ev R p m h) = ev R p m (smap σ h) := rfl
-
 section Act
 open Formalism.CohomologicalDescent.HeightDescentMinors (br act hasSubst_br_padic binomialSeriesSubOne_natCast binomialAction_comp_eq_mul binomialAction_binomialSeriesSubOne constantCoeff_binomialSeriesSubOne dvd_subst_self)
 

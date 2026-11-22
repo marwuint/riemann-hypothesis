@@ -47,14 +47,6 @@ def InCone (Dg : DegPre R) {m : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ Dg.
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l}
   {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
-def HasCones (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ),
-      (Fin m → LinearMap.BilinForm ℤ X) → Prop) (Z : Model Xo c β) : Prop :=
-  ∀ z : Z.X, ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsLocalRing R) (ξ : Sp R ⟶ Z.X) (t : SAB H (Sp R))
-    (_ : SABMap t Z.t ξ) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X),
-    IsCN R ∧ ξ (closedPoint R) = z ∧ IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom ∧
-    ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified ∧ P.TorsionIso ∧
-    Cn P.D.toPre.X m γ ∧ InCone P.D.toPre γ
-
 def Refines (H : Host E) (q : ℕ) (φs : InvFun ℤ) (𝒩 : Finset ℕ) (φ : InvFun (𝓞 E)) : Prop :=
   IsPolFan H.bar q φ ∧ NoSelfInt H.bar q φ ∧ IsTwInv H φ ∧ IsPosFn H φ ∧ IsTame φ ∧
     ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X],

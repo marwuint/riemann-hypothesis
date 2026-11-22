@@ -36,8 +36,6 @@ instance finite_H (i : ℕ) (Δ : Y.Dv) : FiniteDimensional F (Y.H i Δ) :=
 
 theorem hdim_def (i : ℕ) (Δ : Y.Dv) : Y.hdim i Δ = Module.finrank F (Y.H i Δ) := rfl
 
-theorem chi_eq_chiPic (Δ : Y.Dv) : Y.chi Δ = chiPic F (structureModule Y.X) (toPic Δ) := rfl
-
 def inter (Δ : Fin Y.dim → Y.Dv) : ℤ := interNum F (structureModule Y.X) fun i => Y.lb (Δ i)
 
 theorem inter_eq_multiDiff (Δ : Fin Y.dim → Y.Dv) : Y.inter Δ = multiDiff Δ Y.chi 0 := by
@@ -57,9 +55,6 @@ theorem inter_comp_perm (Δ : Fin Y.dim → Y.Dv) (σ : Equiv.Perm (Fin Y.dim)) 
   interNum_comp_perm F _ (L := fun i => Y.lb (Δ i)) (fun i => isLB_toLB (Δ i)) σ
 
 theorem inter_const (Δ : Y.Dv) : Y.inter (fun _ => Δ) = topSelfIntersection F (Y.lb Δ) Y.dim := rfl
-
-theorem del_linSys {Δ : Y.Dv} {n : ℕ} (b : Fin n → Y.H0 Δ) :
-    (Y.linSys b).del = Y.inter fun _ => Δ := rfl
 
 theorem diffVanish_chi : DiffVanish (Y.dim + 1) Y.chi :=
   (diffVanish_chiPic_of_isProjOver Y.algebraMap_Γ (structureModule Y.X) Y.isProjOver

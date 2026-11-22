@@ -3,7 +3,4 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurable
 
 namespace PositivityTheory.PfBern.Loc
 
-theorem sb_eq_SC (X : Type*) [TopologicalSpace X] : GlobalTheory.SplitWeil.SB X = SC X :=
-  rfl
-
 end PositivityTheory.PfBern.Loc

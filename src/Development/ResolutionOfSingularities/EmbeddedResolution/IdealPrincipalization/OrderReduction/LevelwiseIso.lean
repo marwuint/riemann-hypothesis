@@ -35,9 +35,6 @@ theorem BlowupSequenceData.iteratedStrictTransform_top {X : Scheme.{u}} (d : Blo
   | succ i ih =>
       rw [BlowupSequenceData.iteratedStrictTransform_succ, ih, strictTransform_top_eq_top]
 
-private theorem nontrivialPart_nil {X : Scheme.{u}} :
-    MarkedIdealWithBoundary.nontrivialPart ([] : List X.IdealSheafData) = [] := rfl
-
 end FunctorialResolution.EmbeddedResolution
 
 end

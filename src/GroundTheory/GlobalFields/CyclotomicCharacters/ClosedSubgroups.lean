@@ -39,12 +39,6 @@ theorem mul_mem_of_isClosed' (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set ℤ
       rw [← nsmul_eq_mul]
       exact H.nsmul_mem hx k
 
-def idealOfIsClosed (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set ℤ̂)) : Ideal ℤ̂ where
-  carrier := H
-  add_mem' := H.add_mem
-  zero_mem' := H.zero_mem
-  smul_mem' a _ hx := mul_mem_of_isClosed' H hH hx a
-
 noncomputable def primeIdempotent (q : Nat.Primes) : ℤ̂ :=
   ofPadics (Pi.single q 1)
 

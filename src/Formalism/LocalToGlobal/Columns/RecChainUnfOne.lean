@@ -23,14 +23,6 @@ def polFn (σ₀ : X.K →+* ℂ) (n : ℕ) : Pol ℂ X.Tau n →ₗ[ℂ] (FrS X
 theorem polFn_apply (σ₀ : X.K →+* ℂ) (n : ℕ) (Q : Pol ℂ X.Tau n) (y : FrS X σ₀ n) :
     polFn σ₀ n Q y = eval (fun x : X.Tau × Fin n × Fin n => y.1 x.1 x.2.1 x.2.2) Q := rfl
 
-def polInv (σ₀ : X.K →+* ℂ) (n : ℕ) : (FrS X σ₀ n → ℂ) →ₗ[ℂ] Pol ℂ X.Tau n := frInvG (frCo σ₀ n)
-
-def unfTh (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) {a b : ℕ} (Θ : VCx X.Tau a b → ℂ) : (FrS X σ₀ a → ℂ) →ₗ[ℂ] (FrS X σ₀ b → ℂ) :=
-  unfG (frCo σ₀ a) (frCo σ₀ b) cD Θ
-
-theorem unfTh_eq (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) {a b : ℕ} (Θ : VCx X.Tau a b → ℂ) :
-    unfTh σ₀ cD Θ = polFn σ₀ b ∘ₗ jetMap (ι := X.Tau) (jetC cD Θ) (fun _ => 0) ∘ₗ polInv σ₀ a := rfl
-
 end Unf
 
 section BaseChange
@@ -87,11 +79,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : �
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
-open Classical in
-
-def frsD {n : ℕ} {ST : Finset (HeightOneSpectrum (𝓞 X.E))} (p : DecoSet X.E n ST Pr.vGs) : Frs X.E n (rowSG Pr sel mu) := fun P =>
-  if h : P.1 ∈ Pr.vGs then p.1.liftFr ⟨P.1, h⟩ else 1
-
 variable {W Λ Ch sel mu cst}
 
 end Rho
@@ -106,14 +93,6 @@ abbrev XiFam (Pr : Primes X) (R : Ranks) (u : Pr.Word) : Type :=
   ∀ i, DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs → DecoSet X.E (R.N (i + 1)) (Pr.vT u) Pr.vGs → HomE X.E (R.N i) (R.N (i + 1)) → X.K
 
 variable (Ξ : XiFam Pr R u)
-
-def xiKer (i : ℕ) (p : DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs) (p' : DecoSet X.E (R.N (i + 1)) (Pr.vT u) Pr.vGs) :
-    (stepGSD W Λ u i).V →ₗ[X.K] (stepGSD W Λ u (i + 1)).V :=
-  kerOf (stepC W Ch sel mu cst Am u i (W.lamTrue u (i + 1))) (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u)
-    p.1.N (frsD sel mu p) p'.1.N (frsD sel mu p') (Ξ i p p')
-
-def XiEquiv : Prop :=
-  ∀ i, ClsEq (S := stepGSD W Λ u i) (S' := stepGSD W Λ u (i + 1)) (xiKer W Λ Ch sel mu cst Am u Ξ i)
 
 variable {W Λ Ch sel mu cst Am u Ξ}
 

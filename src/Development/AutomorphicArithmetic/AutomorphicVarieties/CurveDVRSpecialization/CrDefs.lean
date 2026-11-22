@@ -29,8 +29,6 @@ variable (Ω L) in
 def toUpl : G (W.Lp L) Ω →* upl Ω L :=
   (galEmb ℚ (W.Lp L) Ω).codRestrict _ fun g x hx => g.commutes ⟨x, hx⟩
 
-theorem toUpl_coe (g : G (W.Lp L) Ω) : (toUpl Ω L g).1 = galEmb ℚ (W.Lp L) Ω g := rfl
-
 theorem toUpl_surj : Function.Surjective (toUpl Ω L) := by
   rintro ⟨s, hs⟩
   refine ⟨AlgEquiv.ofRingEquiv (f := s.toRingEquiv) (fun x => hs x.1 x.2), ?_⟩

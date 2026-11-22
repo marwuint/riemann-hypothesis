@@ -9,7 +9,4 @@ namespace GlobalTheory.PolModLattice
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
-theorem coe_OF (a : OF E) : (((a : maximalRealSubfield E)) : E) = algebraMap (OF E) E a := rfl
-
 end GlobalTheory.PolModLattice
-

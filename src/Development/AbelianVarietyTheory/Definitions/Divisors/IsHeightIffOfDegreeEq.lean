@@ -173,9 +173,6 @@ def baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] : HermSys E wh
   A τ := T.A (τ.comp (algebraMap F E))
   abelian₂ := T.abelian₂
 
-theorem lattice_baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] :
-    (T.baseChange E).lattice = T.latticeOver E := rfl
-
 def ptHeight {Ω : Type} [Field Ω] [Algebra F Ω] [Algebra.IsAlgebraic F Ω] (x : T.Pt Ω) : ℝ :=
   vecHeight T.w T.A (T.coords x.1)
 
@@ -264,9 +261,5 @@ abbrev projTuple (M : ℕ) : Tuple ℚ where
   bd := (ProjSpace.chart ℚ M (Fin.last M)).compl
   j₀ := 1
   th := secToPow (ProjSpace.coord ℚ M (Fin.last M)) 1
-
-namespace projTuple
-
-end projTuple
 
 end GlobalTheory.Adelic

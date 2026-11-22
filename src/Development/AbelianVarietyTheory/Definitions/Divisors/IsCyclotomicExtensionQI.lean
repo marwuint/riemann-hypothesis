@@ -130,13 +130,6 @@ def bcMap {R R' : Type} [CommRing R] [Algebra ℚ R] [CommRing R'] [Algebra ℚ 
     (fun a => rfl)
     (by rw [Matrix.map_map]; congr 1; funext x; simp [Algebra.TensorProduct.map_tmul])
 
-def simQ : GQpts F H →* ℚˣ := (MonoidHom.snd _ _).comp (GQpts F H).subtype
-
-def simR (R : Type) [CommRing R] [Algebra ℚ R] : Gpts F H R →* Rˣ := (MonoidHom.snd _ _).comp (Gpts F H R).subtype
-
-theorem simR_bc (R : Type) [CommRing R] [Algebra ℚ R] (g : GQpts F H) :
-    ((simR R (bc R g) : Rˣ) : R) = algebraMap ℚ R (simQ g : ℚ) := rfl
-
 end Points
 
 section Topology
@@ -229,10 +222,6 @@ def sigPosH {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) : �
 
 def sigNegH {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) : ℕ :=
   Fintype.card {i : Fin n // hA.eigenvalues i < 0}
-
-theorem sigPos_eq_sigPosH {F : Type} [Field F] [NumberField F] [IsCMField F] {n : ℕ}
-    {H : Matrix (Fin n) (Fin n) F} (hH : (H.map (IsCMField.complexConj F : F →+* F))ᵀ = H) (τ : F →+* ℂ) :
-    sigPos hH τ = sigPosH (isHermitian_gramAt hH τ) := rfl
 
 end Sign
 
@@ -344,9 +333,6 @@ def uSimQ : UQpts star →* ℚˣ := (MonoidHom.snd _ _).comp (UQpts star).subty
 def uSimR (R : Type) [CommRing R] [Algebra ℚ R] : UPts star R →* Rˣ :=
   (MonoidHom.snd _ _).comp (UPts star R).subtype
 
-theorem uSimR_ubc (R : Type) [CommRing R] [Algebra ℚ R] (g : UQpts star) :
-    ((uSimR R (ubc R g) : Rˣ) : R) = algebraMap ℚ R (uSimQ g : ℚ) := rfl
-
 variable [Module.Finite ℚ C]
 
 instance UPts.instTop (R : Type) [CommRing R] [Algebra ℚ R] [TopologicalSpace R] :
@@ -455,8 +441,6 @@ abbrev GAf : Type := UPts G.star (AfP p)
 
 abbrev GQp : Type := UPts G.star ℚ_[p]
 
-abbrev GQbar : Type := UPts G.star (AlgebraicClosure ℚ)
-
 def toAf : G.GQ →* G.GAf := ubc (AfP p)
 
 def sim : G.GQ →* ℚˣ := uSimQ
@@ -485,15 +469,6 @@ def IsSS (γ : G.GQ) : Prop :=
 
 def psiR (v : InfinitePlace G.F) : ℝ ⊗[ℚ] G.C →ₐ[ℝ] Matrix (Fin G.n) (Fin G.n) ℂ :=
   Algebra.TensorProduct.lift (Algebra.ofId ℝ _) (G.psi v).toRatAlgHom (fun x _ => Algebra.commute_algebraMap_left x _)
-
-def IsEllR (γ : G.GR) : Prop :=
-  ∀ v : InfinitePlace G.F,
-    Module.End.IsSemisimple (Matrix.toLin' (G.psiR v (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C))) ∧
-    ∀ μ : ℂ, Module.End.HasEigenvalue
-      (Matrix.toLin' (G.psiR v (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C))) μ →
-      ‖μ‖ ^ 2 = (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).2 : ℝˣ) : ℝ)
-
-def StQ (γ γ' : G.GQ) : Prop := ∃ h : G.GQbar, h * ubc _ γ * h⁻¹ = ubc _ γ'
 
 def MuIdx : Type := {s : G.F →+* AlgebraicClosure ℚ // LiesOver G.Kq G.u (G.iotaP.comp s)}
 
@@ -685,26 +660,6 @@ instance isCyclotomicExtension_QI : IsCyclotomicExtension {4} ℚ QI := Cyclotom
 
 instance isCMField_QI : IsCMField QI := IsCyclotomicExtension.Rat.isCMField (S := {4}) QI ⟨4, rfl, by norm_num⟩
 
-theorem finrank_QI : Module.finrank ℚ QI = 2 := by
-  have := IsCyclotomicExtension.finrank (n := 4) QI (Polynomial.cyclotomic.irreducible_rat (by norm_num))
-  rw [this]; decide
-
-theorem zeta_sq : (IsCyclotomicExtension.zeta 4 ℚ QI) ^ 2 = -1 :=
-  ((IsCyclotomicExtension.zeta_spec 4 ℚ QI).pow (by norm_num) (show 4 = 2 * 2 by norm_num)).eq_neg_one_of_two_right
-
-theorem hK_QI : Module.finrank ℚ (⊤ : Subfield QI) = 2 ∧ ∀ τ : QI →+* ℂ, ∃ x ∈ (⊤ : Subfield QI), (τ x).im ≠ 0 := by
-  constructor
-  · rw [← finrank_QI]
-    exact LinearEquiv.finrank_eq
-      { toFun := fun x => (x : QI), invFun := fun x => ⟨x, Subfield.mem_top x⟩,
-        left_inv := fun _ => rfl, right_inv := fun _ => rfl,
-        map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }
-  · intro τ
-    refine ⟨IsCyclotomicExtension.zeta 4 ℚ QI, Subfield.mem_top _, fun h => ?_⟩
-    have h3 := congrArg (fun z => (τ z).re) zeta_sq
-    simp only [map_pow, map_neg, map_one, pow_two, map_mul, Complex.mul_re, h, Complex.neg_re, Complex.one_re] at h3
-    nlinarith [mul_self_nonneg (τ (IsCyclotomicExtension.zeta 4 ℚ QI)).re]
-
 instance fact_prime_five : Fact (Nat.Prime 5) := ⟨by norm_num⟩
 
 theorem exists_sqrt_neg_one : ∃ s : ℤ_[5], s * s = -1 := by
@@ -734,15 +689,6 @@ theorem sqrtNegOne_sq : sqrtNegOne ^ 2 + 1 = 0 := by
   have h' := congrArg (fun z : ℤ_[5] => (z : ℚ_[5])) h
   simp only [PadicInt.coe_mul, PadicInt.coe_neg, PadicInt.coe_one] at h'
   unfold sqrtNegOne; rw [pow_two, h']; ring
-
-def gaussianToQFive : QI →+* ℚ_[5] :=
-  ((IsCyclotomicExtension.zeta_spec 4 ℚ QI).powerBasis ℚ).lift sqrtNegOne (by
-    rw [IsPrimitiveRoot.powerBasis_gen, ← Polynomial.cyclotomic_eq_minpoly_rat
-      (IsCyclotomicExtension.zeta_spec 4 ℚ QI) (by norm_num)]
-    have : Polynomial.cyclotomic 4 ℚ = Polynomial.X ^ 2 + 1 := by
-      rw [show (4 : ℕ) = 2 ^ (1 + 1) by norm_num, Polynomial.cyclotomic_prime_pow_eq_geom_sum (R := ℚ) Nat.prime_two]
-      simp [Finset.sum_range_succ]; ring
-    rw [this]; simpa using sqrtNegOne_sq) |>.toRingHom
 
 end Example
 

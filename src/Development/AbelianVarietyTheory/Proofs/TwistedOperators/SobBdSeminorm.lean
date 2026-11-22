@@ -57,10 +57,6 @@ def sobBd (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ
     rw [LinearMap.smul_apply, map_smul_eq_mul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (h w hw) (norm_nonneg c)
 
-theorem mem_sobBd {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {p : ℕ → Seminorm ℂ E}
-    {L : H →ₗ[ℂ] E} : L ∈ sobBd ε σ p ↔ ∀ i, ∃ (S : List (List (Matrix (Fin n) (Fin n) ℂ))) (C : ℝ),
-      (∀ l ∈ S, ∀ X ∈ l, X ∈ lieSet ε) ∧ ∀ w, SmoothVec (lieSet ε) σ w → p i (L w) ≤ C * sobNorm σ S w := Iff.rfl
-
 theorem sobBd_congr {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {p : ℕ → Seminorm ℂ E}
     {L L' : H →ₗ[ℂ] E} (hL : L ∈ sobBd ε σ p) (h : ∀ w, SmoothVec (lieSet ε) σ w → L' w = L w) :
     L' ∈ sobBd ε σ p := fun i => by

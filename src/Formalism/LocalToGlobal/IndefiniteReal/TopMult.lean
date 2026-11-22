@@ -113,8 +113,6 @@ section GenAd
 variable {G Γ : Type} [Group G] [Group Γ] {ι : Γ →* G} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
   {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ} {F : G → W}
 
-theorem mem_adF_iff : F ∈ Bridge.AdForms ι ρ J χ ↔ ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h) := Iff.rfl
-
 end GenAd
 
 section Generic
@@ -136,13 +134,6 @@ variable {J' : Subgroup (Bridge.Gf V)} {χ' : J' →* ℂˣ} {F : Bridge.Gf V �
 
 theorem ratF_eq (γ : GA D V) (hγ : γ ∈ GQ V) : Bridge.ratF V ⟨γ, hγ⟩ = (finHom V).rangeRestrict γ := by
   rfl
-
-theorem coef_rho (γ : GA D V) (hγ : γ ∈ GQ V) (w : c.W) : c.coef.ρ ⟨γ, hγ⟩ w = c.ρ γ w := rfl
-
-theorem ratF_eq' (γ : GQ V) : Bridge.ratF V γ = (finHom V).rangeRestrict (γ : GA D V) := by
-  rfl
-
-theorem coef_rho' (γ : GQ V) (w : c.W) : c.coef.ρ γ w = c.ρ (γ : GA D V) w := rfl
 
 theorem exists_lift (y : Bridge.Gf V) : ∃ h, h ∈ GfC V ∧ (finHom V).rangeRestrict h = y := by
   obtain ⟨g, rfl⟩ := (finHom V).rangeRestrict_surjective y

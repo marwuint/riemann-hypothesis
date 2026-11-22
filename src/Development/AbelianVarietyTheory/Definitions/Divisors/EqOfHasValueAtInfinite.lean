@@ -78,9 +78,6 @@ theorem HasValueAt.pow {R : RatFunc ℂ} {x v : ℂ} (h : HasValueAt R x v) (m :
   | zero => simpa using hasValueAt_one x
   | succ m ih => simpa [pow_succ] using ih.mul h
 
-def IsLaurentPoly (R : RatFunc ℂ) : Prop :=
-  ∃ (m : ℕ) (p : ℂ[X]), R * RatFunc.X ^ m = algebraMap _ _ p
-
 def substRat (a : RatFunc ℂ) (ha : Transcendental ℂ a) : RatFunc ℂ →ₐ[ℂ] RatFunc ℂ :=
   RatFunc.liftAlgHom (aeval a) fun p hp =>
     mem_nonZeroDivisors_of_ne_zero fun e => nonZeroDivisors.ne_zero hp (transcendental_iff.1 ha p e)

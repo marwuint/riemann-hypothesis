@@ -103,10 +103,6 @@ def TauIn {V : Type} [CommRing V] [IsDomain V] (Q : DegPre V) (τ₀ : Gens Q) {
     (k : FractionRing V) = ∏ i, algebraMap V (FractionRing V) (s i) ^ ε i a b ∧ ∀ z J, Good Q.P.L z J →
       val (Q.tau a b) (𝟙 _) z J = gm (𝟙 (TK V).left) z ⊤ (unitOn k) * val (τ₀ a b) (toUnit (TK V)).left z J
 
-theorem tauIn_iff {V : Type} [CommRing V] [IsDomain V] (Q : DegPre V) (τ₀ : Gens Q) {N : ℕ} (s : Fin N → V)
-    (ε : Fin N → LinearMap.BilinForm ℤ Q.X) :
-    TauIn Q τ₀ s ε ↔ ∀ a b, GlobalTheory.RigChart.IsUnitTau Q s ε a b (τ₀ a b) := Iff.rfl
-
 def lamUnit {B B₀ B' Z : Scheme.{0}} {M : LB B} {M₀ : LB B₀} {π₁ : B' ⟶ B} {π₀ : B' ⟶ B₀}
     (w : LB.Iso (M.pull π₁) (M₀.pull π₀)) {X : Type} [AddCommGroup X] (x : X → (Z ⟶ B')) (a b : X) (z : Z)
     (J : (Z ⟶ B) → M.ι) (J₀ : (Z ⟶ B₀) → M₀.ι) : (Z.presheaf.stalk z)ˣ :=

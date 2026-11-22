@@ -261,9 +261,6 @@ def finMap (j : E ≃+* L) : FiniteAdeleRing (𝓞 E) E →+* FiniteAdeleRing (�
     (fun v : HeightOneSpectrum (𝓞 L) => v.adicCompletion L) (plMap j.symm) (plMap_injective j.symm).tendsto_cofinite
     (fun v => (compEquiv j.symm v).symm.toRingHom) (Filter.Eventually.of_forall fun v => mapsTo_integers j v)
 
-theorem finMap_apply (j : E ≃+* L) (a : FiniteAdeleRing (𝓞 E) E) (v : HeightOneSpectrum (𝓞 L)) :
-    finMap j a v = (compEquiv j.symm v).symm (a (plMap j.symm v)) := rfl
-
 theorem continuous_finMap (j : E ≃+* L) : Continuous (finMap j) :=
   RestrictedProduct.mapAlong_continuous (fun w : HeightOneSpectrum (𝓞 E) => w.adicCompletion E)
     (fun v : HeightOneSpectrum (𝓞 L) => v.adicCompletion L) (plMap j.symm) (plMap_injective j.symm).tendsto_cofinite

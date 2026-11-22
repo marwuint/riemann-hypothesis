@@ -270,14 +270,6 @@ theorem ambientBlowupSequence_length {S X : Scheme.{u}} (ι : S ⟶ X)
         ¬ T ⊆ ((s.center i).support : Set ↥(s.obj i))) :
     (ambientBlowupSequence ι s hres hno hcen).length = s.length := rfl
 
-theorem ambientBlowupSequence_schemeAt_zero {S X : Scheme.{u}} (ι : S ⟶ X)
-    [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
-    (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
-    (hno : BlowupPreservesNoetherian.{u})
-    (hcen : ∀ i, i < s.length → ∀ T ∈ irreducibleComponents ↥(s.obj i),
-        ¬ T ⊆ ((s.center i).support : Set ↥(s.obj i))) :
-    (ambientBlowupSequence ι s hres hno hcen).obj 0 = X := rfl
-
 theorem ambientBlowupSequence_isoObjZero {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})

@@ -126,10 +126,6 @@ def lS : gl2 := ⟨!![0, 1; 1, 0], Submodule.mem_top⟩
 
 @[simp] theorem coe_lS : ((lS : gl2) : Matrix (Fin 2) (Fin 2) ℝ) = !![0, 1; 1, 0] := rfl
 
-theorem coe_Ad_GL2 (g : FiltrationCocycleLiftCriterion) (X : gl2) : ((hGL2.Ad g X : gl2) : Matrix (Fin 2) (Fin 2) ℝ) =
-    ((g : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) * X *
-      (((g⁻¹ : FiltrationCocycleLiftCriterion) : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) := rfl
-
 end GroundTheory.Automorphic.ArchWhittaker
 
 namespace GroundTheory.Automorphic.ArchWhittaker

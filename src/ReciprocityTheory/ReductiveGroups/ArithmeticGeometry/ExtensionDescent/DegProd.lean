@@ -83,11 +83,6 @@ instance powPr.isMonHom (G : Over S) [GrpObj G] : ∀ {n : ℕ} (i : Fin n), IsM
     haveI := powPr.isMonHom G (n := n) ⟨i, Nat.lt_of_succ_lt_succ h⟩
     exact inferInstanceAs (IsMonHom (snd _ _ ≫ powPr G (n := n) ⟨i, Nat.lt_of_succ_lt_succ h⟩))
 
-theorem powPr_zero (G : Over S) (n : ℕ) : powPr G (n := n + 1) 0 = fst _ _ := rfl
-
-theorem powPr_succ (G : Over S) (n : ℕ) (i : Fin n) :
-    powPr G (n := n + 1) i.succ = snd _ _ ≫ powPr G i := rfl
-
 def powIsLimit (G : Over S) : ∀ n : ℕ, IsLimit (Fan.mk (powObj G n) (powPr G (n := n)))
   | 0 => mkFanLimit _ (fun s => toUnit s.pt) (fun _ i => i.elim0) (fun _ _ _ => toUnit_unique _ _)
   | n + 1 =>

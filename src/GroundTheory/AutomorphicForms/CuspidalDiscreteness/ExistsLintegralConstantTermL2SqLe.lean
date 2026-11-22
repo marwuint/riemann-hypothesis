@@ -255,9 +255,6 @@ def cuspidalL2 : Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ₁ μ)) where
     rw [h1, h2]
     simp
 
-theorem mem_cuspidalL2 {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} : φ ∈ cuspidalL2 μ ↔ IsCuspidalL2 μ φ :=
-  Iff.rfl
-
 theorem isClosed_cuspidalL2 : IsClosed (cuspidalL2 μ : Set (Lp ℂ 2 (quotientMeasure Γ₁ μ))) := by
   refine isClosed_of_closure_subset fun φ hφ r hr hrn => ?_
   refine ae_of_forall_isCompact μ fun S hS => ?_

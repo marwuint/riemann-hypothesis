@@ -42,8 +42,6 @@ theorem continuous_row : Continuous (row μ ψ) :=
 def convFun (f : Lp ℂ 2 μ) : C(C, ℂ) :=
   ⟨fun x => ⟪row μ ψ x, f⟫_ℂ, (continuous_row μ ψ).inner continuous_const⟩
 
-theorem convFun_def (f : Lp ℂ 2 μ) (x : C) : convFun μ ψ f x = ⟪row μ ψ x, f⟫_ℂ := rfl
-
 end Metrizable
 
 theorem exists_char_ne_one {g : C} (hg : g ≠ 1) : ∃ χ : C →ₜ* Circle, χ g ≠ 1 :=
@@ -98,9 +96,6 @@ def charAlgebra : StarSubalgebra ℂ C(C, ℂ) :=
       | zero => rw [star_zero]; exact Submodule.zero_mem _
       | add x y _ _ hx hy => rw [star_add]; exact Submodule.add_mem _ hx hy
       | smul c x _ hx => rw [star_smul]; exact Submodule.smul_mem _ _ hx }
-
-theorem mem_charAlgebra {f : C(C, ℂ)} :
-    f ∈ charAlgebra (C := C) ↔ f ∈ Submodule.span ℂ (Set.range (charCM (C := C))) := Iff.rfl
 
 theorem charAlgebra_separatesPoints : (charAlgebra (C := C)).SeparatesPoints := by
   intro x y hxy

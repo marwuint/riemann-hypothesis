@@ -22,9 +22,6 @@ def muQ {𝔭 : Ideal (𝓞 F)} {j : ℕ} (c : ℕ) {d : 𝓞 F} (hd : d ∈ �
     rw [Submodule.mem_comap, LinearMap.mulLeft_apply, pow_add]
     exact Ideal.mul_mem_mul ((mem_pow_iff 𝔭 j d).2 hd) ha)).toAddMonoidHom
 
-theorem muQ_mk {𝔭 : Ideal (𝓞 F)} {j : ℕ} (c : ℕ) {d : 𝓞 F} (hd : d ∈ 𝔭 ^ j) (a : 𝓞 K) :
-    muQ (K := K) c hd (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ (ι d * a) := rfl
-
 end Cell
 
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]

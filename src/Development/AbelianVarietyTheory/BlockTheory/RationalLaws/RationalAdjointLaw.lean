@@ -18,9 +18,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (i : Fin D.R.m)
 
-def latIota : (T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E) :=
-  LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast (rank_Wc i)) ∘ₗ T.iota ((i : ℕ) + 1)
-
 variable {c' : Coeff T.Q.l} (hle : T.Q.c.F ≤ c'.F)
 
 abbrev sigB : T.Q.c.F →+* ℂ := c'.F.val.toRingHom.comp (incF T.Q.c c' hle)

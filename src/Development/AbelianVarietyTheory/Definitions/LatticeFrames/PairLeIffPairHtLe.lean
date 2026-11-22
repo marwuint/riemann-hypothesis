@@ -35,8 +35,6 @@ def dot : (lat K n).V →ₗ[K] Module.Dual K (lat K n).V := dotProductBilin K K
 
 variable {K n}
 
-theorem dot_apply (x y : Fin n → K) : dot K n x y = ∑ i, x i * y i := rfl
-
 end Std
 
 end GlobalTheory.Core.Ht2

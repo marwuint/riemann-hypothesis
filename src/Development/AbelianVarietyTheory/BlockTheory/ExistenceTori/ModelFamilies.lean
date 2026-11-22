@@ -63,7 +63,4 @@ def pmOf (M : ModelsOf F r) (k : Fin F.n) (x : Frame (M.X k).Ψ r) : (F.Di k).La
     have h : M.vec k (a + b) = M.vec k a + M.vec k b := by simp [ModelsOf.vec]
     rw [h, perFr_add]; rfl)
 
-theorem pmOf_apply (M : ModelsOf F r) (k : Fin F.n) (x : Frame (M.X k).Ψ r) (a : (F.Di k).La) (j : Fin g) :
-    pmOf M k x a j = perFr (M.X k) x (M.φ k a : Fin r → E) (relab c σ (e j).1) (e j).2 := rfl
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ModelFamilies

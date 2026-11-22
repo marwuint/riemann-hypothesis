@@ -24,37 +24,12 @@ def upperFace (e : κ ↪o ι) (i : ι) (A : Cube.{v} ι R) : Cube.{v} κ R :=
 
 variable (e : κ ↪o ι) (i : ι)
 
-theorem lowerFace_obj (A : Cube.{v} ι R) (s : Finset κ) :
-    (lowerFace e A).obj s = A.obj (s.map e.toEmbedding) := rfl
-
-theorem upperFace_obj (A : Cube.{v} ι R) (s : Finset κ) :
-    (upperFace e i A).obj s = A.obj (insert i (s.map e.toEmbedding)) := rfl
-
-theorem res_lowerFace (A : Cube.{v} ι R) {s t : Finset κ} (h : s ⊆ t) :
-    res (lowerFace e A) h = res A (Finset.map_subset_map.2 h) := rfl
-
-theorem res_upperFace (A : Cube.{v} ι R) {s t : Finset κ} (h : s ⊆ t) :
-    res (upperFace e i A) h =
-      res A (Finset.insert_subset_insert i (Finset.map_subset_map.2 h)) := rfl
-
 def faceMap (A : Cube.{v} ι R) : lowerFace e A ⟶ upperFace e i A :=
   homMk (fun s => res A (Finset.subset_insert i (s.map e.toEmbedding)))
     fun _ _ => (res_res A _ _ _).trans (res_res A _ _ _).symm
 
-theorem faceMap_app (A : Cube.{v} ι R) (s : Finset κ) :
-    ((faceMap e i A).app s).hom = res A (Finset.subset_insert i (s.map e.toEmbedding)) := rfl
-
 def lowerFaceMap {A B : Cube.{v} ι R} (φ : A ⟶ B) : lowerFace e A ⟶ lowerFace e B :=
   homMk (fun s => (φ.app (s.map e.toEmbedding)).hom) fun _ _ => app_res φ _ _
-
-def upperFaceMap {A B : Cube.{v} ι R} (φ : A ⟶ B) : upperFace e i A ⟶ upperFace e i B :=
-  homMk (fun s => (φ.app (insert i (s.map e.toEmbedding))).hom) fun _ _ => app_res φ _ _
-
-theorem lowerFaceMap_app {A B : Cube.{v} ι R} (φ : A ⟶ B) (s : Finset κ) :
-    (lowerFaceMap e φ).app s = φ.app (s.map e.toEmbedding) := rfl
-
-theorem upperFaceMap_app {A B : Cube.{v} ι R} (φ : A ⟶ B) (s : Finset κ) :
-    (upperFaceMap e i φ).app s = φ.app (insert i (s.map e.toEmbedding)) := rfl
 
 theorem cubeSign_map (s : Finset κ) (k : κ) :
     cubeSign (s.map e.toEmbedding) (e k) = cubeSign s k := by
@@ -363,9 +338,6 @@ theorem d_termSec {p : ℕ} (y : Term (lowerFace e A) p) :
 
 variable {A} {B : Cube.{v} ι R} (φ : A ⟶ B)
 
-theorem termLower_termMap {p : ℕ} (x : Term A p) :
-    termLower e B p (termMap φ p x) = termMap (lowerFaceMap e φ) p (termLower e A p x) := rfl
-
 end Terms
 
 end Cube
@@ -419,9 +391,6 @@ def cubeLowerProj (A : Cube.{v} ι R) : cubeComplex A ⟶ cubeComplex (Cube.lowe
   CochainComplex.ofHom (fun p => ModuleCat.ofHom (Cube.termLower e A p)) fun p => by
     rw [cubeComplex_d, cubeComplex_d]
     exact ModuleCat.hom_ext (LinearMap.ext fun x => (Cube.termLower_d A x).symm)
-
-theorem cubeLowerProj_f (A : Cube.{v} ι R) (p : ℕ) :
-    (cubeLowerProj e A).f p = ModuleCat.ofHom (Cube.termLower e A p) := rfl
 
 @[reassoc]
 theorem cubeLowerProj_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) :

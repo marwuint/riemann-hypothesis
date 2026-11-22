@@ -30,16 +30,6 @@ def IsEigBasis {K : Type} [CommRing K] (φ : c.F →+* K) (x : Sp K ⟶ Z.X) (τ
     (u : Fin m → (Sp (DualNumber K) ⟶ Z.t.G.left)) : Prop :=
   (∀ i, IsEigTan Z φ x τ (u i)) ∧ ∀ w, IsEigTan Z φ x τ w → ∃! a : Fin m → K, IsCombAtG Z.t x u a w
 
-omit [NumberField E] [IsCMField E] in
-
-def trCo {X : Scheme.{0}} {M : X.Modules} {r : ℕ} {U U' : X.Opens} {f : Fin r → Γ(M, U)} (hf : VB.IsFrame f)
-    (f' : Fin r → Γ(M, U')) (b a : Fin r) : Γ(X, U ⊓ U') :=
-  (hf.basis inf_le_left).repr (Twist.resM M inf_le_right (f' a)) b
-
-abbrev FrAssign {X W : Scheme.{0}} (M : X.Modules) (r : ℕ) (jB : W ⟶ X) : Type 1 :=
-  ∀ (U : X.Opens) (f : Fin r → Γ(M, U)), VB.IsFrame f → ∀ (K : Type) [CommRing K] (x : Sp K ⟶ W),
-    ⊤ ≤ (x ≫ jB) ⁻¹ᵁ U → Fin r → (Sp (DualNumber K) ⟶ Z.t.G.left)
-
 end Free
 
 end GlobalTheory.ArLieBase

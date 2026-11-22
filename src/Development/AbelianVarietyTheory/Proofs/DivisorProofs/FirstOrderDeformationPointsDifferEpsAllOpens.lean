@@ -32,8 +32,6 @@ def FR (ε : B) : Subring (B × DualNumber (B ⧸ Ideal.span {ε})) :=
   RingHom.eqLocus ((mkE ε).comp (RingHom.fst _ _))
     ((TrivSqZeroExt.fstHom (B ⧸ Ideal.span {ε}) _ _).toRingHom.comp (RingHom.snd _ _))
 
-theorem mem_FR {ε : B} {r : B × DualNumber (B ⧸ Ideal.span {ε})} : r ∈ FR ε ↔ mkE ε r.1 = r.2.fst := Iff.rfl
-
 def p1 (ε : B) : FR ε →+* B := (RingHom.fst _ _).comp (FR ε).subtype
 
 def p2 (ε : B) : FR ε →+* DualNumber (B ⧸ Ideal.span {ε}) := (RingHom.snd _ _).comp (FR ε).subtype
@@ -45,12 +43,6 @@ theorem epsFibreProduct_quotient_fst_eq_dual_fst {ε : B} (r : FR ε) : mkE ε (
 
 def liftFR {ε : B} {C : Type} [CommRing C] (a : C →+* B) (b : C →+* DualNumber (B ⧸ Ideal.span {ε}))
     (h : ∀ c, mkE ε (a c) = (b c).fst) : C →+* FR ε := (a.prod b).codRestrict (FR ε) h
-
-theorem fst_comp_liftFR {ε : B} {C : Type} [CommRing C] (a : C →+* B) (b : C →+* DualNumber (B ⧸ Ideal.span {ε}))
-    (h : ∀ c, mkE ε (a c) = (b c).fst) : (p1 ε).comp (liftFR a b h) = a := rfl
-
-theorem snd_comp_liftFR {ε : B} {C : Type} [CommRing C] (a : C →+* B) (b : C →+* DualNumber (B ⧸ Ideal.span {ε}))
-    (h : ∀ c, mkE ε (a c) = (b c).fst) : (p2 ε).comp (liftFR a b h) = b := rfl
 
 theorem exists_liftFR {ε : B} {C : Type} [CommRing C] (a : C →+* B) (b : C →+* DualNumber (B ⧸ Ideal.span {ε}))
     (h : ∀ c, mkE ε (a c) = (b c).fst) : ∃ q : C →+* FR ε, (p1 ε).comp q = a ∧ (p2 ε).comp q = b :=

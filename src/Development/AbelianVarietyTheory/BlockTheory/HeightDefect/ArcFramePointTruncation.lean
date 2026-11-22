@@ -58,12 +58,6 @@ def IsEigBasisGt {O : Type} [CommRing O] [StarRing O] [Module O D₀.X] (oa : D�
   (∀ i, IsTanGt (ν i)) ∧ (∀ i, IsEigGt oa t (ν i)) ∧
     ∀ ω : EpsPt D₀, IsTanGt ω → IsEigGt oa t ω → ∃! r : Fin m → A, IsCombGt ν r ω
 
-def IsMulSec (r : A) (th th' : D₀.P.L.Sec) : Prop :=
-  ∀ j, th'.f j = constFn D₀.P.A.hom (D₀.P.L.U j) r * th.f j
-
-def FibrewiseNe (th : D₀.P.L.Sec) : Prop :=
-  ∀ s : Sp A, ∃ x : D₀.P.A.left, D₀.P.A.hom x = s ∧ x ∈ Out.nonzeroLocus th
-
 end Tangent
 
 section BaseChange

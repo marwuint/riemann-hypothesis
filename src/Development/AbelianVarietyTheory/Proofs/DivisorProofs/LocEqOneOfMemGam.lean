@@ -80,8 +80,4 @@ open GlobalTheory.EulerTw
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
-theorem pfU_val (u : Pl E) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
-    (pfU E n u g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) = prjG E n (orb E u) g := rfl
-
 end GlobalTheory.EulerTwRestr
-

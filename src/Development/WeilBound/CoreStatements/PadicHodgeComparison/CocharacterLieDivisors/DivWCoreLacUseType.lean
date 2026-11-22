@@ -5,13 +5,6 @@ open Polynomial
 
 namespace PositivityTheory.AutomorphicGaloisHodgeTate.Div
 
-def WGen {K : Type} [Field K] (n : ℕ) (P : K[X]) : Prop :=
-  P.Separable ∧
-  (∀ x ∈ P.roots, ∀ y ∈ P.roots, x ≠ y → ∀ c : ℕ, 0 < c → c ≤ n → (x / y) ^ c ≠ 1) ∧
-  (∀ x ∈ P.roots, ∀ y ∈ P.roots, ∀ z ∈ P.roots, x ≠ y → z ≠ y → x ≠ z → x * z ≠ y ^ 2) ∧
-  (∀ M : Multiset K, (∀ x ∈ M, x ∈ P.roots) → Multiset.card M = n → M ≠ P.roots →
-    M.prod ≠ P.roots.prod)
-
 def ProdGen {K : Type} [Field K] (n : ℕ) (P : K[X]) : Prop :=
   P.Separable ∧ ∀ M : Multiset K, (∀ x ∈ M, x ∈ P.roots) → Multiset.card M = n → M ≠ P.roots →
     M.prod ≠ P.roots.prod

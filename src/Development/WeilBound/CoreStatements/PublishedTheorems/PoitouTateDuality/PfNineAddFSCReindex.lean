@@ -67,8 +67,4 @@ def finsetCoeEquiv {α : Type} (S : Finset α) : S ≃ (S : Set α) where
   left_inv _ := rfl
   right_inv _ := rfl
 
-theorem ptRes_comp_reindex {κ : Type} (e : κ ≃ ι) (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M]
-    (k : κ) (r : ℕ) (x : cohomology M r) :
-    ptRes (fun k => φ (e k)) M k r x = ptRes φ M (e k) r x := rfl
-
 end PositivityTheory.Lit1.PTN

@@ -91,9 +91,6 @@ def laZ {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (a : ExZ E) (n : ℕ) (k : U.Co
       a (Function.invFun (relab c σ) τ.1, (j : ℕ) - (U.X k).p0) + ((n / 2 : ℕ) : ℤ)
     else -a (Function.invFun (relab c σ) (conjEmb τ.1), (U.X k).p0 - 1 - (j : ℕ)) - ((n / 2 : ℕ) : ℤ)
 
-theorem laZ_nat {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
-    laZ U (fun x => (a x : ℤ)) n = laU U a n := rfl
-
 variable (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
 
 def cuspZ (a : ExZ E) (n : ℕ) : Submodule c.F (Rul Xo c) :=

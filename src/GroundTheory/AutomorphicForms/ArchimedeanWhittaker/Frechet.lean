@@ -44,9 +44,6 @@ instance : IsTopologicalAddGroup (h.SmoothFrechet π) :=
 instance : ContinuousSMul ℂ (h.SmoothFrechet π) :=
   (h.withSeminorms_smoothFrechet π).continuousSMul
 
-def IsSmoothContinuous (l : h.smoothVectors π →ₗ[ℂ] ℂ) : Prop :=
-  ∃ (s : Finset (Σ k, Fin k → 𝔤)) (C : ℝ), ∀ v, ‖l v‖ ≤ C * ∑ Y ∈ s, ‖h.wordOp π Y.2 (v : E)‖
-
 end IsExpLieAlgebra
 
 end GroundTheory.Automorphic

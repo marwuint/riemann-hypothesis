@@ -29,9 +29,6 @@ def clAct {D : Type u} [Category.{v} D] (H : D ⥤ ModuleCat.{w} R) (ρ : ∀ X,
   map_zero' := LinearMap.ext fun f => funext fun s => by simp
   map_add' a b := LinearMap.ext fun f => funext fun s => by simp
 
-theorem clAct_apply {D : Type u} [Category.{v} D] (H : D ⥤ ModuleCat.{w} R) (ρ : ∀ X, A →+* Module.End R (H.obj X))
-    (p : ℕ) (a : A) (f : Cn H p) (s : ComposableArrows D p) : clAct H ρ p a f s = ρ _ a (f s) := rfl
-
 theorem clAct_d {D : Type u} [Category.{v} D] (H : D ⥤ ModuleCat.{w} R) (ρ : ∀ X, A →+* Module.End R (H.obj X))
     (hρ : ∀ {X Y : D} (h : X ⟶ Y) a x, (H.map h).hom (ρ X a x) = ρ Y a ((H.map h).hom x)) (p : ℕ) (a : A) (f : Cn H p) :
     d H p (clAct H ρ p a f) = clAct H ρ (p + 1) a (d H p f) := by
@@ -166,9 +163,6 @@ def clNat (k : Fin m) : G ⟶ clL k ⋙ clU k ⋙ G where
     exact congrArg G.map (Subsingleton.elim _ _)
 
 def clα (k : Fin m) (p : ℕ) : Cn G p →ₗ[R] Cn (clL k ⋙ clU k ⋙ G) p := (Mor.ofNatTrans (clNat G k)).hom.f p
-
-theorem clα_apply (k : Fin m) (p : ℕ) (z : Cn G p) (s : ComposableArrows (NE m) p) :
-    clα G k p z s = (G.map (leIns k _)).hom (z s) := rfl
 
 theorem clα_d (k : Fin m) (p : ℕ) (z : Cn G p) :
     d (clL k ⋙ clU k ⋙ G) p (clα G k p z) = clα G k (p + 1) (d G p z) :=

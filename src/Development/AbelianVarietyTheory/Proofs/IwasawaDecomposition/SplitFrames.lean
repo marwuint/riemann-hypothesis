@@ -88,9 +88,6 @@ def comp (V : HSp D) (v : Pl D) : GA D V →* GA D V :=
   ((cutGL (idem_mul_self v)).comp (matHom V)).codRestrict (HR (AF D.host.F) D.sp.cm.sig V.gram) fun g =>
     cutGL_mem (idem_mul_self v) (cA D) (cA_idem v) _ g.2
 
-theorem mt_comp (V : HSp D) (v : Pl D) (g : GA D V) :
-    mt V (comp V v g) = idem D v • mt V g + (1 - idem D v) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := rfl
-
 def GAt (V : HSp D) (v : Pl D) : Subgroup (GA D V) := (comp V v).range
 
 def Gk (θ : InfF D) (V : HSp D) (A : CptF V) : Subgroup (GA D V) :=

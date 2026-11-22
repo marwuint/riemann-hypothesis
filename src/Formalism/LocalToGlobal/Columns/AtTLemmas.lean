@@ -39,14 +39,6 @@ theorem diamond_action_apply (P : ST) (c : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) (φ : (
   unfold diamondOperatorOnForms'
   exact LocOp.ofMap_op_apply (S := formGSD C Λ) (S' := formGSD C Λ) _ _ _ _ _ φ d
 
-open Classical in
-theorem diamond_single_eq (P : ST) (c : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) : diamondOperatorOnForms' C Λ P c = diaG C Λ (Pi.mulSingle P c) := rfl
-
-theorem diaG_eq_dia (c : DiaG X.E ST) :
-    haveI : SMulCommClass (DiaG X.E ST) (formGSD C Λ).G (formGSD C Λ).D :=
-      ⟨fun c a d => DecoSet.dia_smul c (FormG.incl Λ a) d⟩
-    diaG C Λ c = (GSD.Slice.dia (formGSD C Λ) c).op := rfl
-
 end OpsL
 
 section ColsL
@@ -71,14 +63,6 @@ theorem pow_mem {M : Type*} [AddCommGroup M] [Module X.K M] (p : Submodule X.K M
     rw [pow_succ, Module.End.mul_apply]
     exact ih _ (h φ hφ)
 
-theorem mem_ramified_sublattice_iff (u : Pr.Word) (φ : MfV W Ch u) :
-    φ ∈ ramifiedSublattice W Ch u ↔ φ ∈ MfL W Ch u ∧ φ ∈ MramV W Ch u := Iff.rfl
-
-theorem mem_MramL (u : Pr.Word) (φ : MramV W Ch u) : φ ∈ MramL W Ch u ↔ ramIncl W Ch u φ ∈ MfL W Ch u := Iff.rfl
-
-theorem MramL_eq_comap (u : Pr.Word) :
-    MramL W Ch u = (MfL W Ch u).comap ((ramIncl W Ch u).restrictScalars (𝓞 X.K)) := rfl
-
 end ColsL
 
 section SeenL
@@ -87,8 +71,6 @@ variable {X : Fields} {Pr : Primes X}
 
 theorem mem_pullW (τ : X.Tau) (w : HeightOneSpectrum (𝓞 X.K)) (x : 𝓞 X.E) :
     x ∈ (pullW τ w).asIdeal ↔ X.embO τ x ∈ w.asIdeal := Iff.rfl
-
-theorem coe_embO (τ : X.Tau) (x : 𝓞 X.E) : ((X.embO τ x : 𝓞 X.K) : X.K) = X.emb τ (x : X.E) := rfl
 
 theorem pullW_mem_vT (hPr : Pr.Ok) (u : Pr.Word) (τ : X.Tau) (w : HeightOneSpectrum (𝓞 X.K)) :
     pullW τ w ∈ Pr.vT u ↔ X.embO τ (Pr.piT u) ∈ w.asIdeal :=

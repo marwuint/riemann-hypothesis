@@ -17,9 +17,6 @@ theorem Cj.continuous_mk : Continuous (Cj.mk : H → Cj H) := continuous_id
 
 variable {n : ℕ}
 
-theorem sigC_mk (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (g : Matrix (Fin n) (Fin n) ℂ) (x : H) :
-    sigC σ g (Cj.mk x) = Cj.mk (σ (revM g) x) := rfl
-
 end Conj
 
 end PI.ZuckTensorWork

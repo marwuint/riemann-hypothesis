@@ -56,8 +56,6 @@ variable {e : ℕ} {σ : Type} (S : AnSys e σ)
 
 def nComp : ℕ := Nat.card (ConnectedComponents S.X)
 
-theorem nComp_comap {σ' : Type} (f : σ' → σ) : (S.comap f).nComp = S.nComp := rfl
-
 end AnSys
 
 theorem formPoly_const_mul {σ : Type} [Fintype σ] (n : ℕ) (c : ℝ) (a : (Fin n → σ) → ℝ) :
@@ -105,11 +103,6 @@ def PB [Fintype σ] : MvPolynomial σ ℝ := formPoly (D + 1) (Re.limNum II)
 
 def de : ℕ := S.nComp * Re.deg
 
-def numDe (t : ℝ) (w : Fin (D + 1) → σ) : ℝ :=
-  II K ι P (D + 1) (fun j => Re.line (w j) t) / Re.de
-
-def limNumDe (w : Fin (D + 1) → σ) : ℝ := Re.limNum II w / S.nComp
-
 include Re in
 
 theorem nonempty_base : Nonempty S.X := by
@@ -135,14 +128,6 @@ def comap {σ' : Type} (f : σ' → σ) : Realis (S.comap f) P where
   line_deg a := Re.line_deg (f a)
   line_smooth a := Re.line_smooth (f a)
   line_eq a := Re.line_eq (f a)
-
-theorem de_comap {σ' : Type} (f : σ' → σ) : (Re.comap f).de = Re.de := rfl
-
-theorem numDe_comap {σ' : Type} (f : σ' → σ) (t : ℝ) (w : Fin (D + 1) → σ') :
-    (Re.comap f).numDe II t w = Re.numDe II t (f ∘ w) := rfl
-
-theorem limNumDe_comap {σ' : Type} (f : σ' → σ) (w : Fin (D + 1) → σ') :
-    (Re.comap f).limNumDe II w = Re.limNumDe II (f ∘ w) := rfl
 
 end Realis
 

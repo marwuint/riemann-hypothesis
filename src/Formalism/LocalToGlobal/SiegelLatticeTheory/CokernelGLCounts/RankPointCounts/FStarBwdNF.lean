@@ -70,8 +70,6 @@ variable {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
 theorem tf (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) (a : Fin (D.R.rS + 1)) :
     (tLoc Zd p γ).f a = (TermLoc.sgnP D p a * frFac Zd.δ p a) • baseChange₂ D p (frame (lf D F0) a) := rfl
 
-theorem tLam (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) : (tLoc Zd p γ).abelian₂ = lattice₂ D Zd.M p γ.lam := rfl
-
 theorem sgnP_last (p : PlF D) : TermLoc.sgnP D p (Fin.last D.R.rS) = 1 := by
   unfold TermLoc.sgnP
   split

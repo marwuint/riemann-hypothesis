@@ -43,9 +43,6 @@ def qN (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) : ↥(NDl W T i) →ₗ[O] ↥(NDl
   (Formalism.MainNotions.LiftingTheory.qp W • (NDl W T i).subtype).codRestrict (NDl W T i)
     (fun x => ndl_smul W T i (qp_mem W hπ) x.2)
 
-theorem qN_apply (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (x : ↥(NDl W T i)) :
-    ((qN W T hπ i x : ↥(NDl W T i)) : W.DD T) = Formalism.MainNotions.LiftingTheory.qp W • (x : W.DD T) := rfl
-
 private lemma exists_pow_eq_one_mul {Γ : Type} [CommGroup Γ] {a b : Γ} (ha : ∃ k : ℕ, 0 < k ∧ a ^ k = 1)
     (hb : ∃ k : ℕ, 0 < k ∧ b ^ k = 1) : ∃ k : ℕ, 0 < k ∧ (a * b) ^ k = 1 := by
   obtain ⟨k, hk, hak⟩ := ha

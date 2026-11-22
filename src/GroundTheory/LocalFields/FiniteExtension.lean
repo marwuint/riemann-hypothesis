@@ -21,9 +21,6 @@ def normedField : NontriviallyNormedField K :=
         MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }
   Valued.toNontriviallyNormedField K (ValueGroupWithZero K)
 
-theorem normedField_topology :
-    (normedField K).toUniformSpace.toTopologicalSpace = ‹TopologicalSpace K› := rfl
-
 theorem normedField_norm_le_norm_iff (x y : K) :
     letI := normedField K
     ‖x‖ ≤ ‖y‖ ↔ x ≤ᵥ y := by
@@ -72,11 +69,6 @@ def spectralNormedField : NontriviallyNormedField L :=
   haveI := normedField_completeSpace K
   spectralNorm.nontriviallyNormedField K L
 
-theorem spectralNormedField_norm (x : L) :
-    letI := normedField K
-    letI := spectralNormedField K L
-    ‖x‖ = spectralNorm K L x := rfl
-
 theorem spectralNormedField_isUltrametricDist :
     letI := spectralNormedField K L
     IsUltrametricDist L := by
@@ -112,10 +104,6 @@ theorem finiteExtensionStructure_vle_iff (x y : L) :
     letI := spectralNormedField K L
     letI := (finiteExtensionStructure K L).rel
     x ≤ᵥ y ↔ ‖x‖ ≤ ‖y‖ := Iff.rfl
-
-theorem finiteExtensionStructure_top :
-    (finiteExtensionStructure K L).top =
-      (spectralNormedField K L).toUniformSpace.toTopologicalSpace := rfl
 
 theorem finiteExtensionStructure_valuativeExtension :
     letI := (finiteExtensionStructure K L).rel

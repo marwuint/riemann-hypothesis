@@ -137,9 +137,6 @@ theorem lift_of_notMem (μf : Measure I.Gf) (a : MonoidAlgebra ℂ Q) {x : I.Gf}
 
 end Red
 
-theorem tensAlg_coeff {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, Finite (G i)]
-    (a : ∀ i, MonoidAlgebra ℂ (G i)) (h : ∀ i, G i) : (tensAlg a).coeff h = ∏ i, (a i).coeff (h i) := rfl
-
 namespace Inhab
 
 section Reduction
@@ -396,20 +393,6 @@ def negOne (I : AutInst) : I.Gf := ⟨-1, by
     exact congrArg Neg.neg (cT_one _)
   rw [Units.val_neg, Units.val_one, this]
   simp⟩
-
-theorem fmat_negOne (I : AutInst) : I.fmat (negOne I) = -1 := rfl
-
-theorem negOne_mem (I : AutInst) : negOne I ∈ I.Kset := fun y => by
-  show _ ↔ I.fmat (negOne I) *ᵥ y ∈ I.Lf
-  rw [fmat_negOne, Matrix.neg_mulVec, Matrix.one_mulVec, neg_mem_iff]
-
-theorem actsAs_negOne {I : AutInst} {N p : ℕ} {w : HeightOneSpectrum (𝓞 I.E)} (fr : PlFrame I N p w) :
-    fr.ActsAs (negOne I) (-1) := by
-  intro y hy
-  rw [Matrix.neg_mulVec, Matrix.one_mulVec, ← map_neg]
-  exact congrArg fr.c (Subtype.ext (by
-    show I.fmat (negOne I) *ᵥ (y : Fin I.n → _) = -(y : Fin I.n → _)
-    rw [fmat_negOne, Matrix.neg_mulVec, Matrix.one_mulVec]))
 
 end Inhab
 

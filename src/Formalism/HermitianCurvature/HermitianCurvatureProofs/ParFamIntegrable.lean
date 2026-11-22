@@ -178,9 +178,6 @@ def goodAlg : StarSubalgebra ℂ (Q.Pr (Q.RadSp k ρ z z' π π')) where
     rintro x ⟨hx1, hx2⟩
     exact ⟨hx2, hx1⟩
 
-theorem mem_goodAlg {x : Q.Pr (Q.RadSp k ρ z z' π π')} :
-    x ∈ goodAlg z z' π π' ↔ Good z z' π π' x.1 ∧ Good z z' π π' x.2.unop := Iff.rfl
-
 theorem good_mkP {X Xs : Module.End ℂ (Q.RadSp k ρ z z' π π')} (h1 : Good z z' π π' X) (h2 : Good z z' π π' Xs) :
     Q.mkP X Xs ∈ goodAlg z z' π π' := ⟨h1, h2⟩
 

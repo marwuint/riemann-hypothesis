@@ -40,21 +40,6 @@ def DUDeg : Prop :=
       p₁ - v₁ * PowerSeries.X ^ (ℓ ^ s₁) ∈ Ideal.span {PowerSeries.C ϖ} →
       w * p₀ ^ b₀ ∉ Ideal.span {PowerSeries.C ϖ, p₁ ^ b₁}
 
-def LemmaCVal : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ →
-    ∀ (ℓ : ℕ), 2 ≤ ℓ →
-    ∀ (E : ℕ → Polynomial O) (u : ℕ → PowerSeries O),
-      (∀ s, (E s).IsEisensteinAt (Ideal.span {ϖ})) → (∀ s, (E s).natDegree = ℓ ^ s) →
-      (∀ s, IsUnit (u s)) →
-      ∀ (ell g a b₀ b₁ s₀ s₁ k : ℕ), s₀ < s₁ →
-        2 * ((a : ℝ) + 2 * g * ell) < b₁ → 2 * b₀ ≤ ℓ * b₁ →
-        PowerSeries.C (ϖ ^ a) *
-            (∏ s ∈ Finset.range ell, (u s * (E s : PowerSeries O)) ^ g) ^ 2 *
-            (u s₀ * (E s₀ : PowerSeries O)) ^ b₀ ∈
-          Ideal.span {PowerSeries.C (ϖ ^ k), (u s₁ * (E s₁ : PowerSeries O)) ^ b₁} →
-        (k : ℝ) ≤ ((a : ℝ) + 2 * g * ell) * b₁ / (b₁ - b₀ / ℓ) ∧
-          (k : ℝ) ≤ 2 * ((a : ℝ) + 2 * g * ell)
-
 def KapBound : Prop :=
   ∀ (ℓ : ℕ) [Fact ℓ.Prime], ℓ ≠ 2 → ∀ (χ : ℤ_[ℓ]ˣ), PadicInt.valuation ((χ : ℤ_[ℓ]) - 1) = 1 →
     ∀ (ell g h : ℕ) (a : Fin 5 → ℤ) (JJ : Finset ℤ),

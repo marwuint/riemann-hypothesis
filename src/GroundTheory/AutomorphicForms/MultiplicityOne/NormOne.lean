@@ -33,9 +33,6 @@ theorem mul_centralSection_inv_mem (g : AdelicGLn.AdelicGL K n) :
 def retract (g : AdelicGLn.AdelicGL K n) : normOneGL K n :=
   ⟨g * (centralSection K n (detModule K n g))⁻¹, mul_centralSection_inv_mem g⟩
 
-theorem coe_retract (g : AdelicGLn.AdelicGL K n) :
-    (retract g : AdelicGLn.AdelicGL K n) = g * (centralSection K n (detModule K n g))⁻¹ := rfl
-
 def openSubgroupOf (U : Subgroup (AdelicGLn.integralFiniteGL K n))
     (hU : IsOpen (U : Set (AdelicGLn.integralFiniteGL K n))) :
     OpenSubgroup (AdelicGLn.FiniteAdelicGL K n) where

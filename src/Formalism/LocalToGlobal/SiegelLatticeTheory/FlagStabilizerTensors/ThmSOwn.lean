@@ -46,8 +46,6 @@ def ClDiag : Prop :=
   ∀ u, hsNormSq (Kmat D.s u u - AdmissibleBoundsFromSource.Kpp D u u - ContinuousLinearMap.id ℂ (D.s.Cu u)) ≤
     AdmissibleBoundsFromSource.Gam D * AdmissibleBoundsFromSource.du D u ^ 2 / AdmissibleBoundsFromSource.Dst D
 
-theorem Theorem_E_iff_lift : AdmissibleBoundsFromSource.Conclusion1 D large₂ ↔ ClKppOff D ∧ ClKppDiag D ∧ ClOff D large₂ ∧ ClDiag D := Iff.rfl
-
 end Record
 
 section Family
@@ -371,9 +369,6 @@ structure ConcK (D : D7) : Type 1 where
   hI : SIso D.s (sOf hF)
   tie : Formalism.L2.SG.RowsConc.ConcTie X Y
 
-def CSelF {eps : ℝ} (Fm : FamP eps) : Type 1 :=
-  Σ' x0 : ℝ, ∀ x (_ : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, ConcK (Fm.D x i)
-
 def KExpTied : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.L2.SG.RowsConc.ConcTie X Y →
     Formalism.L2.SG.TermOp.KExpansion (X.Fu u) (X.Fu u') (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') Y.hK (Y.Dt u) (Y.Dt u')
@@ -388,13 +383,6 @@ theorem kExpTied_of_full (hFo : Formalism.L2.SG.Full.FoldOKC) (hIn : Formalism.L
   have hOO := hO D X Y u u' f1 f2 hFE
   exact hK D X Y u u' f1 f2 (hIn D X Y u hT.2.2.2.2.2.1 f1) (hIn D X Y u' hT.2.2.2.2.2.1 f2) hFE hOO
     (hOF D X Y u u' hFE hOO) (hAW D X Y u u' hOO) (hA D X Y u u' f1 f2 hFE hOO)
-
-def TheoremSDifferentWords {eps : ℝ} (Fm : FamP eps) (C0 : ℝ) (c : CSelF Fm) : Prop :=
-  OwnEv Fm fun C' Cl x i =>
-    AdmissibleBoundsFromSource.hyp (Fm.D x i) (Fm.L x i) C0 C' Cl (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu →
-    ∀ (hx : Fm.x1 < x) (h0 : c.1 ≤ x) (u u' : (Fm.D x i).what₂.Word), u ≠ u' →
-      ‖((c.2 x hx h0 i).Y.tO u u').K0‖ ^ 2 ≤ (1 + ((Fm.L x i).sc.b ^ 6)⁻¹) *
-        (((Fm.D x i).duS u : ℝ) * ((Fm.D x i).duS u') / (Fm.D x i).what₂.Dstar)
 
 theorem closed_with {𝒞 : FamClass} {Q P : ∀ {eps : ℝ}, FamP eps → ℝ → Prop} (hQ : Closed 𝒞 Q) (thm th : List ℝ → ℝ)
     (h : ∀ {eps : ℝ} (Fm : FamP eps) (CH : ℝ), 𝒞 Fm → Q Fm CH → thm Fm.cOut ≤ Fm.CGam →
@@ -414,9 +402,6 @@ theorem closed_of_th {𝒞 : FamClass} {P : ∀ {eps : ℝ}, FamP eps → ℝ �
     (h : ∀ {eps : ℝ} (Fm : FamP eps) (CH : ℝ), 𝒞 Fm → thm Fm.cOut ≤ Fm.CGam →
       th (Fm.cOut ++ Fm.cMid CH) ≤ sC' Fm → th (Fm.cOut ++ Fm.cMid CH) ≤ sCl Fm → P Fm CH) : Closed 𝒞 P :=
   closed_with (closed_true 𝒞) thm th fun Fm CH hc _ => h Fm CH hc
-
-theorem cOut_CYL {eps : ℝ} (Fm : FamP eps) : Fm.cOut.getD 6 0 = Fm.CYL := rfl
-theorem cOut_CTu {eps : ℝ} (Fm : FamP eps) : Fm.cOut.getD 13 0 = Fm.CTu := rfl
 
 variable (C0 : ℝ)
 

@@ -40,20 +40,6 @@ def slc (θ : A →ₗ[k] B) : MvPolynomial σ A →ₗ[k] MvPolynomial σ B whe
 @[simp] theorem coeff_slc (θ : A →ₗ[k] B) (P : MvPolynomial σ A) (e : σ →₀ ℕ) :
     coeff e (slc θ P) = θ (coeff e P) := coeff_slcFun θ P e
 
-def slMap (P : MvPolynomial σ A) : (A →ₗ[k] k) →ₗ[k] MvPolynomial σ k where
-  toFun ℓ := slc ℓ P
-  map_add' ℓ ℓ' := by
-    ext e
-    simp
-  map_smul' c ℓ := by
-    ext e
-    simp
-
-def slSpace (P : MvPolynomial σ A) : Submodule k (MvPolynomial σ k) := LinearMap.range (slMap (k := k) P)
-
-theorem mem_slSpace {P : MvPolynomial σ A} {f : MvPolynomial σ k} :
-    f ∈ slSpace (k := k) P ↔ ∃ ℓ : A →ₗ[k] k, slc ℓ P = f := Iff.rfl
-
 end Slices
 
 section Universal

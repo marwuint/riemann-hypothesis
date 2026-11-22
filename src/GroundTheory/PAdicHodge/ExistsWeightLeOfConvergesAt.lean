@@ -30,9 +30,6 @@ theorem convAll_π_pow (c : ℕ) : T.ConvAll (algebraMap Γ T.B T.π ^ c) :=
 theorem convAll_zero : T.ConvAll (0 : T.B) := fun ρ _ _ => by
   rw [T.coeffB_zero_B]; exact convergesAt_zero
 
-def ofAll (b : T.B) (hb : T.ConvAll b) (σ : Set.Ioo (0 : ℝ) 1) : T.RobbaExt σ :=
-  ((⟨b, hb σ σ.2.1 σ.2.2⟩ : T.Econ σ) : T.RobbaExt σ)
-
 end TeichLift
 
 namespace TeichLift
@@ -40,10 +37,6 @@ namespace TeichLift
 end TeichLift
 
 namespace TeichLift
-
-namespace TeichFrob
-
-end TeichFrob
 
 end TeichLift
 
@@ -56,26 +49,15 @@ namespace TeichFrob
 
 variable (F : T.TeichFrob)
 
-theorem powRadius_le_self (σ : Set.Ioo (0 : ℝ) 1) : ((F.powRadius σ : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ σ :=
-  pow_le_of_le_one σ.2.1.le σ.2.2.le F.q_pos.ne'
-
 end TeichFrob
 
 end TeichLift
 
 namespace TeichLift
 
-namespace TeichFrob
-
-end TeichFrob
-
 end TeichLift
 
 namespace TeichLift
-
-namespace TeichFrob
-
-end TeichFrob
 
 end TeichLift
 
@@ -88,10 +70,6 @@ variable (T) in
 
 def πTilde : T.RobbaTilde := T.edagToTilde ⟨algebraMap Γ T.B T.π, T.Econ_le_Edag ⟨1 / 2, by norm_num, by norm_num⟩
   (T.algebraMap_π_mem_Econ _)⟩
-
-namespace TeichFrob
-
-end TeichFrob
 
 end TeichLift
 

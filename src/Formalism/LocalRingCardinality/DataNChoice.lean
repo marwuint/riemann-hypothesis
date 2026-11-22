@@ -74,9 +74,6 @@ def toFrac {L W : Type} [Field L] [AddCommGroup W] [Module L W] {σ : L →+* Fr
     W →ₛₗ[σ] FractionRing K ⊗[K] V :=
   (fracEquiv K V).symm.toLinearMap.comp f
 
-theorem toFrac_apply {L W : Type} [Field L] [AddCommGroup W] [Module L W] {σ : L →+* FractionRing K}
-    (f : W →ₛₗ[σ] V) (x : W) : toFrac f x = (fracEquiv K V).symm (f x) := rfl
-
 end OfOk
 
 end NChoice

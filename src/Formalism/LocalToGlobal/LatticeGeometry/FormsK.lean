@@ -14,86 +14,6 @@ variable {K : Type} [Field K] [NumberField K]
 
 def expV (b : ℝ) (e : EReal) : ℝ := if e = ⊤ then 0 else b ^ (-e.toReal)
 
-theorem expV_top (b : ℝ) : expV b ⊤ = 0 := by simp [expV]
-
-theorem expV_coe (b x : ℝ) : expV b (x : EReal) = b ^ (-x) := by simp [expV]
-
-theorem expV_nonneg {b : ℝ} (hb : 0 < b) (e : EReal) : 0 ≤ expV b e := by
-  unfold expV; split_ifs
-  · exact le_rfl
-  · exact (Real.rpow_pos_of_pos hb _).le
-
-theorem expV_eq_zero {b : ℝ} (hb : 0 < b) {e : EReal} : expV b e = 0 ↔ e = ⊤ := by
-  unfold expV; split_ifs with h
-  · simp [h]
-  · simp [h, (Real.rpow_pos_of_pos hb _).ne']
-
-theorem expV_anti {b : ℝ} (hb : 1 ≤ b) {e e' : EReal} (he : e ≠ ⊥) (h : e ≤ e') : expV b e' ≤ expV b e := by
-  induction e' using EReal.rec with
-  | bot => exact absurd (le_bot_iff.mp h) he
-  | top => rw [expV_top]; exact expV_nonneg (by linarith) e
-  | coe y =>
-    induction e using EReal.rec with
-    | bot => exact absurd rfl he
-    | top => exact absurd h (by simp)
-    | coe x =>
-      rw [expV_coe, expV_coe]
-      exact Real.rpow_le_rpow_of_exponent_le hb (by have := EReal.coe_le_coe_iff.mp h; linarith)
-
-theorem expV_add {b : ℝ} (hb : 0 < b) {e e' : EReal} (he : e ≠ ⊥) (he' : e' ≠ ⊥) :
-    expV b (e + e') = expV b e * expV b e' := by
-  induction e using EReal.rec with
-  | bot => exact absurd rfl he
-  | top => rw [EReal.top_add_of_ne_bot he', expV_top, zero_mul]
-  | coe x =>
-    induction e' using EReal.rec with
-    | bot => exact absurd rfl he'
-    | top => rw [EReal.coe_add_top, expV_top, mul_zero]
-    | coe y => rw [← EReal.coe_add, expV_coe, expV_coe, expV_coe, neg_add, Real.rpow_add hb]
-
-theorem expV_min {b : ℝ} (hb : 1 ≤ b) {e e' : EReal} (he : e ≠ ⊥) (he' : e' ≠ ⊥) :
-    expV b (min e e') = max (expV b e) (expV b e') := by
-  rcases le_total e e' with h | h
-  · rw [min_eq_left h, max_eq_left (expV_anti hb he h)]
-  · rw [min_eq_right h, max_eq_right (expV_anti hb he' h)]
-
-def nrmP (la : HeightOneSpectrum (𝓞 K)) : ℝ := (Ideal.absNorm la.asIdeal : ℝ)
-
-theorem one_lt_nrmP (la : HeightOneSpectrum (𝓞 K)) : 1 < nrmP la := by
-  unfold nrmP
-  have h1 : Ideal.absNorm la.asIdeal ≠ 0 := fun h => la.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)
-  have h2 : Ideal.absNorm la.asIdeal ≠ 1 := fun h => la.isPrime.ne_top (Ideal.absNorm_eq_one_iff.mp h)
-  exact_mod_cast (by omega : 1 < Ideal.absNorm la.asIdeal)
-
-theorem min_vEK_ne_bot (la : HeightOneSpectrum (𝓞 K)) (a b : K) : min (vEK la a) (vEK la b) ≠ ⊥ := by
-  rcases min_choice (vEK la a) (vEK la b) with h | h <;> rw [h] <;> exact vEK_ne_bot la _
-
-def avP (la : HeightOneSpectrum (𝓞 K)) : AbsoluteValue K ℝ where
-  toFun a := expV (nrmP la) (vEK la a)
-  map_mul' a b := by
-    by_cases ha : a = 0
-    · simp [ha, vEK_zero, expV_top]
-    show expV (nrmP la) (vEK la (a * b)) = expV (nrmP la) (vEK la a) * expV (nrmP la) (vEK la b)
-    rw [vEK_mul la ha, vEK_of_ne la ha,
-      expV_add (by linarith [one_lt_nrmP la]) (EReal.coe_ne_bot _) (vEK_ne_bot la b)]
-  nonneg' a := expV_nonneg (by linarith [one_lt_nrmP la]) _
-  eq_zero' a := by
-    show expV (nrmP la) (vEK la a) = 0 ↔ a = 0
-    rw [expV_eq_zero (by linarith [one_lt_nrmP la])]
-    constructor
-    · intro h; by_contra ha; rw [vEK_of_ne la ha] at h; exact EReal.coe_ne_top _ h
-    · rintro rfl; exact vEK_zero la
-  add_le' a b := by
-    show expV (nrmP la) (vEK la (a + b)) ≤ expV (nrmP la) (vEK la a) + expV (nrmP la) (vEK la b)
-    have hb := one_lt_nrmP la
-    calc expV (nrmP la) (vEK la (a + b)) ≤ expV (nrmP la) (min (vEK la a) (vEK la b)) :=
-          expV_anti hb.le (min_vEK_ne_bot la a b) (vEK_add la a b)
-      _ = max (expV (nrmP la) (vEK la a)) (expV (nrmP la) (vEK la b)) :=
-          expV_min hb.le (vEK_ne_bot la a) (vEK_ne_bot la b)
-      _ ≤ _ := max_le_add_of_nonneg (expV_nonneg (by linarith) _) (expV_nonneg (by linarith) _)
-
-theorem adicAbv_apply (la : HeightOneSpectrum (𝓞 K)) (a : K) : avP la a = expV (nrmP la) (vEK la a) := rfl
-
 end Abs
 
 namespace FormsPkg
@@ -109,14 +29,10 @@ def scalL (j : ℕ) : P.Forms j →ₗ[P.KO] P.KO where
 
 def cuspF (j : ℕ) : Submodule P.KO (P.Forms j) := LinearMap.ker (P.scalL j)
 
-theorem mem_cuspF {j : ℕ} (x : P.Forms j) : x ∈ P.cuspF j ↔ P.scal (x : P.FormsS j) = 0 := Iff.rfl
-
 theorem inc_mem_cuspF {j : ℕ} {w : WeightFamilies.Wt D j} (F : P.Cusp j w) : P.inc j w F ∈ P.cuspF j :=
   P.scal_incS F
 
 variable {j : ℕ}
-
-theorem amb_alg (a : P.KO) : P.amb (algebraMap P.KO (P.Forms j) a) = algebraMap P.KO (P.Amb j) a := rfl
 
 end FormsPkg
 
@@ -192,9 +108,5 @@ structure FormsKPkg (F : ShimFam D G Lev) : Type 1 where
     (Matrix.of fun a c => ip j σ (e a) (e c)).PosDef
 
 attribute [instance] FormsKPkg.grpHb FormsKPkg.act FormsKPkg.cmpKFin
-
-namespace FormsKPkg
-
-end FormsKPkg
 
 end Formalism.L2.Geo

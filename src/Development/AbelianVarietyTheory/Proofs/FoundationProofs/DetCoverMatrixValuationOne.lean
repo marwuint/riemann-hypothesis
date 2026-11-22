@@ -58,10 +58,6 @@ def ent (k : GLint (Fin n) (Formalism.UG.Ov F v)) : Matrix (Fin n) (Fin n) (v.ad
   Matrix.of fun i j => ⟨((k : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j,
     entry_mem k.2 i j⟩
 
-theorem coe_ent (k : GLint (Fin n) (Formalism.UG.Ov F v)) (i j : Fin n) :
-    ((ent k i j : v.adicCompletionIntegers F) : v.adicCompletion F) =
-      ((k : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j := rfl
-
 variable {ϖ : v.adicCompletion F} {a : Fin n → ℤ}
 
 end Count

@@ -18,9 +18,6 @@ def blockOf {m o : Type} (N : Matrix (m × o) (m × o) ℂ) (i : o) : Matrix m m
 theorem blockOf_add {m o : Type} (N N' : Matrix (m × o) (m × o) ℂ) (i : o) :
     blockOf (N + N') i = blockOf N i + blockOf N' i := rfl
 
-theorem blockOf_sub {m o : Type} (N N' : Matrix (m × o) (m × o) ℂ) (i : o) :
-    blockOf (N - N') i = blockOf N i - blockOf N' i := rfl
-
 theorem blockOf_smul {m o : Type} (c : ℂ) (N : Matrix (m × o) (m × o) ℂ) (i : o) :
     blockOf (c • N) i = c • blockOf N i := rfl
 

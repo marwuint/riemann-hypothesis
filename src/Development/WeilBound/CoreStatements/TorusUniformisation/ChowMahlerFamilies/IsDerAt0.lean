@@ -24,10 +24,6 @@ def toRC {O Ω C : Type} [CommRing O] [Field Ω] [Field C] [Algebra O Ω] [Algeb
     (R : Subalgebra O Ω) (RC : Subalgebra O C) (h : ∀ a ∈ R, algebraMap Ω C a ∈ RC) : R →+* RC :=
   ((algebraMap Ω C).comp (R.val : R →+* Ω)).codRestrict RC fun a => h a a.2
 
-theorem coe_toRC {O Ω C : Type} [CommRing O] [Field Ω] [Field C] [Algebra O Ω] [Algebra O C] [Algebra Ω C]
-    (R : Subalgebra O Ω) (RC : Subalgebra O C) (h : ∀ a ∈ R, algebraMap Ω C a ∈ RC) (a : R) :
-    ((toRC R RC h a : RC) : C) = algebraMap Ω C a := rfl
-
 def IsDerAt0 {C R W N : Type} [Field C] [CommRing R] [Algebra R C] [AddCommGroup W] [Module R W] [AddCommGroup N]
     (M : Submodule R (N → C)) (Dv : M →ₗ[R] W) : Prop :=
   ∀ (f g h : M) (a b : R), (h : N → C) = (f : N → C) * (g : N → C) → algebraMap R C a = (f : N → C) 0 →

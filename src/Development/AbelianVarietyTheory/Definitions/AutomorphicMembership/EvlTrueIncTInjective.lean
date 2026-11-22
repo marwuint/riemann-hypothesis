@@ -26,40 +26,11 @@ variable (D) in
 def sideEmb (σ : PsiT D × Bool) : D.host.E →+* ℂ :=
   if σ.2 then conjEmb (DV.tauEmb D (D.eTau.symm σ.1)) else DV.tauEmb D (D.eTau.symm σ.1)
 
-open Classical in
-
-def evlTrue (ct : At S κ p) : EvlSt ct :=
-  letI : Fintype (PsiT D) := Fintype.ofEquiv _ D.eTau
-  { LieGt := fun y σ => RayEv.LieGt (ct.dat y) (sideEmb D σ)
-    LieB := fun y σ => RayEv.LieB (ct.dat y) (sideEmb D σ)
-    LieT := fun y σ => RayEv.LieT (ct.dat y) (sideEmb D σ)
-    lgAdd := fun _ _ => inferInstance
-    lbAdd := fun _ _ => inferInstance
-    ltAdd := fun _ _ => inferInstance
-    resB := fun y σ => (RayEv.resB (ct.dat y) (sideEmb D σ)).toAddMonoidHom
-    incT := fun y σ => (RayEv.incT (ct.dat y) (sideEmb D σ)).toAddMonoidHom
-    kapGt := fun y σ => RayEv.kapGt (ct.dat y) (sideEmb D σ)
-    kapB := fun y σ => RayEv.kapB (ct.dat y) (sideEmb D σ)
-    Harm := fun y => RayEv.HarmAt (ct.dat y) (sideEmb D)
-    SecP := fun y => RayEv.SecAt (ct.dat y)
-    evA := fun _ Q s => Q.evA s
-    evGt := fun _ Q s => Q.evGt s }
-
 section Fields
 
 attribute [local irreducible] RayEv.kapGt RayEv.kapB RayEv.resB RayEv.incT RayEv.LieGt RayEv.LieB RayEv.LieT At.dat sideEmb
 
 variable (ct : At S κ p) (y : ct.Pt ct.Xm) (σ : PsiT D × Bool)
-
-theorem evlTrue_resB (u : RayEv.LieGt (ct.dat y) (sideEmb D σ)) :
-    (evlTrue ct).resB y σ u = RayEv.resB (ct.dat y) (sideEmb D σ) u := rfl
-
-theorem evlTrue_incT (u : RayEv.LieT (ct.dat y) (sideEmb D σ)) :
-    (evlTrue ct).incT y σ u = RayEv.incT (ct.dat y) (sideEmb D σ) u := rfl
-
-theorem evlTrue_kapGt : (evlTrue ct).kapGt y σ = RayEv.kapGt (ct.dat y) (sideEmb D σ) := rfl
-
-theorem evlTrue_kapB : (evlTrue ct).kapB y σ = RayEv.kapB (ct.dat y) (sideEmb D σ) := rfl
 
 end Fields
 

@@ -196,17 +196,8 @@ def SquareIntegrableColumnsCompatible.toK {T : TiedDataSK ex} {P : RowSideFamily
   muTie := K.muTie
   ok1 := K.ok1
 
-theorem SquareIntegrableColumnsCompatible.toK_c {T : TiedDataSK ex} {P : RowSideFamily ex} (K : SquareIntegrableColumnsCompatible T P) (hr : RowsHold0_3 P)
-    (Zsc : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) : (K.toK hr Zsc).c = K.c := rfl
-
 def DivisionRowsKernel.toT (R : DivisionRowsKernel ex) : DivisionRowsColumns L :=
   { DivisionRowsColumns.split_model_to_place_model (L := L) R.P R.hr R.X R.e R.c R.Sp R.Zsc with s := 1, hOk := R.ok1 }
-
-theorem DivisionRowsKernel.tied_rows_scale_eq_one (R : DivisionRowsKernel ex) : R.toT.s = 1 := rfl
-
-theorem DivisionRowsKernel.toT_c (R : DivisionRowsKernel ex) : R.toT.c = R.c := rfl
-
-theorem DivisionRowsKernel.toT_toF (R : DivisionRowsKernel ex) : R.toT.toF = (DivisionRowsColumns.split_model_to_place_model (L := L) R.P R.hr R.X R.e R.c R.Sp R.Zsc).toF := rfl
 
 end RowsK
 

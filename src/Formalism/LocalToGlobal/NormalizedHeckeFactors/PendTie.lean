@@ -20,14 +20,6 @@ def convOf (T : Formalism.L2.NormalizedTypesCompatibility D jE) (k : Fin 2) :
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
   Formalism.L2.NT.convC (D.ntypes.teichC k) (D.ntypes.teichC_inj k) (T.ζ k) (T.ζ_gen k)
 
-theorem convOf_ι (T : Formalism.L2.NormalizedTypesCompatibility D jE) (k : Fin 2) :
-    haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
-    (convOf T k).ι = D.ntypes.teichC k := rfl
-
-theorem convOf_gen (T : Formalism.L2.NormalizedTypesCompatibility D jE) (k : Fin 2) :
-    haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
-    (convOf T k).gen = T.ζ k := rfl
-
 end Conv
 
 end Formalism.L2.PT

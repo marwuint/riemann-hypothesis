@@ -94,6 +94,4 @@ def adjR : ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) →L[ℝ] ((Wq →L[�
       map_add' := adjH_add
       map_smul' := adjH_smul }
 
-lemma adjR_apply (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) : adjR T = adjH T := rfl
-
 end Formalism.FourierDecayAlt.P.HilbertSchmidtVectorization

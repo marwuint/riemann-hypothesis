@@ -28,8 +28,6 @@ variable {l : ℕ} [hl : Fact l.Prime] {F : Type} [Field F] (LL : FinExt l) (φ 
 
 def phiL : F →+* ↥LL.1 := φ.codRestrict LL.1.toSubfield hφ
 
-theorem phiL_coe (x : F) : ((phiL LL φ hφ x : ↥LL.1) : PadicAlgCl l) = φ x := rfl
-
 def embF : F →+* FractionRing ↥(OL LL) := (toFrac LL).comp (phiL LL φ hφ)
 
 end OneLL

@@ -75,12 +75,6 @@ abbrev CfT (w : WeightFamilies.Wt D j) : Type := KT T j N ⊗[T.Q.c.F] Cf T j w
 
 instance instModuleCfT (w : WeightFamilies.Wt D j) : Module (KT T j N) (CfT T j N w) := TensorProduct.leftModule
 
-def rdGen {σ' : KT T j N →+* ℂ} (hσ : IsExt σ') (w : WeightFamilies.Wt D j) : CfT T j N w →ₛₗ[σ'] FDSec (T.X₀ j) :=
-  bcMap hσ (rd T j w)
-
-theorem rdGen_tmul {σ' : KT T j N →+* ℂ} (hσ : IsExt σ') (w : WeightFamilies.Wt D j) (t : KT T j N) (F : Cf T j w) :
-    rdGen hσ w (t ⊗ₜ F) = σ' t • rd T j w F := rfl
-
 end Generic
 
 end GlobalTheory.IndefiniteRowSideFullHecke.BaseChangeTensorProduct

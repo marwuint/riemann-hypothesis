@@ -40,16 +40,6 @@ theorem jacobi_pred {p : ℕ} (hp4 : p % 4 = 3) : Nat.Coprime (p - 1) p ∧ jaco
       simp
     rw [jacobiSym.mod_left, hmod, ← jacobiSym.mod_left, jacobiSym.at_neg_one hodd, ZMod.χ₄_nat_three_mod_four hp4]
 
-theorem ordCompl_mul_prime {m l : ℕ} (hl : l.Prime) (hm : Nat.Coprime m l) : ordCompl[l] (m * l) = m := by
-  have hnd : ¬ l ∣ m := (Nat.Prime.coprime_iff_not_dvd hl).mp (Nat.Coprime.symm hm)
-  have hm0 : m ≠ 0 := by
-    rintro rfl
-    exact hnd (dvd_zero l)
-  have hf : (m * l).factorization l = 1 := by
-    rw [Nat.factorization_mul hm0 hl.ne_zero, Finsupp.add_apply, Nat.factorization_eq_zero_of_not_dvd hnd,
-      hl.factorization_self, zero_add]
-  rw [hf, pow_one, Nat.mul_div_cancel _ hl.pos]
-
 namespace HostRaw
 
 variable {φ : Frame} (H : HostRaw φ)
@@ -57,14 +47,6 @@ variable {φ : Frame} (H : HostRaw φ)
 theorem condN_eq_q : H.condN = H.QS * H.d * H.q := by
   rw [HostRaw.condN]
   ring
-
-theorem condN_div_q : H.condN / H.q = H.QS * H.d := by
-  obtain ⟨hq, -, -, -, -⟩ := H.hyp
-  rw [condN_eq_q, Nat.mul_div_cancel _ hq.pos]
-
-theorem condN_div_d : H.condN / H.d = H.QS * H.q := by
-  obtain ⟨-, hd, -, -, -⟩ := H.hyp
-  rw [HostRaw.condN, Nat.mul_div_cancel _ hd.pos]
 
 variable {H}
 
@@ -113,24 +95,6 @@ theorem exists_d : ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD H
     rw [h] at h3
     simp at h3
   · exact h
-
-theorem exact_all (hP : H.PsQ) (hE : H.Exact) (l : ℕ) (hl : l.Prime) (h : l ∣ H.condN) :
-    ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD H.condN / l] ∧ H.art u ≠ 1 := by
-  obtain ⟨hq, hd, -, -, -⟩ := H.hyp
-  rcases (Nat.Prime.dvd_mul hl).mp h with h' | h'
-  · rcases (Nat.Prime.dvd_mul hl).mp h' with h'' | h''
-    · exact hE l hl h''
-    · rw [(Nat.prime_dvd_prime_iff_eq hl hq).mp h'', HostRaw.condN_div_q]
-      obtain ⟨u, hu1, hu2⟩ := hP.exists_q
-      refine ⟨u, hu1, fun h1 => ?_⟩
-      have h3 := congrArg (fun x : ℤˣ => (x : ℤ)) hu2
-      rw [h1] at h3
-      simp at h3
-  · rw [(Nat.prime_dvd_prime_iff_eq hl hd).mp h', HostRaw.condN_div_d]
-    obtain ⟨u, hu1, hu2⟩ := exists_d H
-    refine ⟨u, hu1, fun h1 => ?_⟩
-    have h3 := congrArg (fun g : φ.GG => ((g.1.2 : ℤˣ) : ℤ)) (hu2.symm.trans h1)
-    simp [Frame.iod] at h3
 
 end HostAx
 

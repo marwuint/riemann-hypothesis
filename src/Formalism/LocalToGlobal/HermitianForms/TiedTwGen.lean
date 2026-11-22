@@ -65,8 +65,6 @@ variable {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A :
 def lamTG (i : ℕ) : D.what₂.Tau → DomWeight (D.R.N i) :=
   fun τ => shW (M.lam i τ) ((i * (D.R.t + 1) / 2 : ℕ) : ℤ)
 
-theorem lamTG_fm (u : D.what₂.Word) (i : ℕ) : lamTG (D.fm u) i = lamT u i := rfl
-
 set_option maxHeartbeats 1000000 in
 
 structure ValuationCompatibleChart {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} {i : ℕ} {hi : i ≤ D.R.m} (eY : C.Y i ≃ Fr D i hi)

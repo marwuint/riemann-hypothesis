@@ -16,13 +16,6 @@ variable {D : D7} (L0 : SizeData₂ D) (X0 : G.Inst D L0) (K : G.Consts) (Cr : �
 
 def tieL : SizeData₂ D := tieWeightData L0 X0 K {p | NoGain X0 K Cr p} len hw hg hu
 
-def tieX : G.Inst D (tieL L0 X0 K Cr len hw hg hu) := tieInst L0 X0 K {p | NoGain X0 K Cr p} len hw hg hu
-
-theorem tieL_drop_iff (p : ℕ) :
-    p ∈ (tieL L0 X0 K Cr len hw hg hu).drop ↔
-      NoGain (tieX L0 X0 K Cr len hw hg hu) K Cr p ∧ ∀ u, p ≠ (D.mem u).A.T :=
-  Iff.rfl
-
 end Drop
 
 structure FieldData where
@@ -42,13 +35,6 @@ def FieldData.hval (F : FieldData) (p : ℕ) : ℕ :=
   (F.φ.iotaInv (Classical.epsilon (fun g : F.φ.GG =>
     ∃ (P : Ideal (𝓞 F.E)) (_ : P.IsPrime) (_ : P.LiesOver (Ideal.span {(p : ℤ)}))
       (σ : F.E ≃ₐ[ℚ] F.E), IsArithFrobAt ℤ σ P ∧ F.gal σ = g)).2).val
-
-def fieldDataH (x : Σ R : Ranks, Host R) : FieldData :=
-  ⟨x.1.toFrame, x.2.E, x.2.gal, x.2.condN, x.2.cycZeta, x.2.sqq, x.2.sqd⟩
-
-def fieldData (D : D7) : FieldData := fieldDataH ⟨D.R, D.host⟩
-
-theorem hP_val (D : D7) (p : ℕ) : (G.hP D p).val = (fieldData D).hval p := rfl
 
 end Formalism.MainNotions.Inhab
 

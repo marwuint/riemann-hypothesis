@@ -471,56 +471,10 @@ variable {W Y}
 theorem rowLat_rec (hL : LatIso D) {u : D.what₂.Word} (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hm : Λ ∈ Y.what₂ u) :
     IsRowLat D (FlagOfWord W u) (Formalism.HermitianLatticesTheory.gmap (W.δ u) Λ) := rowLat_map hL (W.δ u) (W.isom u) (X.Fu u) Λ ((Y.rowsOK u).1 Λ hm)
 
-theorem eqIff_rec (hL : LatIso D) {u u' : D.what₂.Word} (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hm : Λ ∈ Y.what₂ u) :
-    TermDef.EqIff (Formalism.HermitianLatticesTheory.gmap (W.δ u) Λ) (lf D (FlagOfWord W u))
-      (TermDef.PD D (Formalism.HermitianLatticesTheory.gmap (W.δ u) Λ) (lf D (FlagOfWord W u)) u') := PI.DCRelEquiv.UnitaryGroupMassFormula.eqIffAll_holds _ _ _ _ _ _ _ _
-
 theorem eqIff_base {u u' : D.what₂.Word} (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hm : Λ ∈ Y.what₂ u) :
     TermDef.EqIff Λ (lf D (X.Fu u)) (TermDef.PD D Λ (lf D (X.Fu u)) u') := PI.DCRelEquiv.UnitaryGroupMassFormula.eqIffAll_holds _ _ _ _ _ _ _ _
 
-theorem mapL_mapL_inv {u : D.what₂.Word} {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
-    mapL (W.δ u) (W.isom u) (mapL (W.δ u)⁻¹ (Subgroup.inv_mem _ (W.isom u)) F) = F := by
-  obtain ⟨fl, zt⟩ := F
-  have h : ∀ x, W.δ u ((W.δ u)⁻¹ x) = x := fun x => (W.δ u).apply_symm_apply x
-  simp only [Formalism.L2.SG.Saturated.mapL, Formalism.L2.SG.Saturated.mapFlag, h]
-
 variable (W Y)
-
-theorem toRec_inj (hL : LatIso D) {u u' : D.what₂.Word} : Function.Injective (toRec W Y (u := u) (u' := u')) := by
-  intro t₁ t₂ h
-  obtain ⟨l₁, m₁, c₁⟩ := t₁
-  obtain ⟨l₂, m₂, c₂⟩ := t₂
-  have hl : l₁ = l₂ := PI.TermAttrConst.UnitaryGroupMassFormula.gmap_injective (W.δ u) (congrArg TermDef.Term.lam h)
-  subst hl
-  obtain ⟨x₁, rfl⟩ := Quot.exists_rep c₁
-  obtain ⟨x₂, rfl⟩ := Quot.exists_rep c₂
-  have hc : TermDef.mk (Formalism.HermitianLatticesTheory.gmap (W.δ u) l₁) (lf D (FlagOfWord W u)) _ (mvCar W l₁ x₁) =
-      TermDef.mk (Formalism.HermitianLatticesTheory.gmap (W.δ u) l₁) (lf D (FlagOfWord W u)) _ (mvCar W l₁ x₂) := by
-    injection h with h1 h2
-  have hr := (eqIff_rec (W := W) (u' := u') hL _ m₁ _ _).1 hc
-  have hd := (Formalism.L2.SG.Pf.double_coset_isomorphism _ _ (W.δ u) (W.isom u) _ (lf D (X.Fu u)) x₁.1 x₂.1).1 hr
-  exact congrArg (TermDef.Term.mk _ m₁) (Quot.sound hd)
-
-theorem toRec_surj {u u' : D.what₂.Word} : Function.Surjective (toRec W Y (u := u) (u' := u')) := by
-  intro s
-  obtain ⟨lam, mem, cls⟩ := s
-  obtain ⟨Λ, hΛ, rfl⟩ := Finset.mem_image.1 mem
-  obtain ⟨x, rfl⟩ := Quot.exists_rep cls
-  have hx : TermDef.PD D Λ (lf D (X.Fu u)) u' (mapL (W.δ u)⁻¹ (Subgroup.inv_mem _ (W.isom u)) x.1) := by
-    apply (Formalism.L2.SG.Pf.positive_definite_isomorphism D u' (W.δ u) (W.isom u) Λ (lf D (X.Fu u)) _).1
-    rw [mapL_mapL_inv]
-    exact x.2
-  refine ⟨⟨Λ, hΛ, TermDef.mk _ _ _ ⟨_, hx⟩⟩, ?_⟩
-  have hc : mvCar W Λ ⟨_, hx⟩ = x := Subtype.ext (mapL_mapL_inv _)
-  have hc' : mvCls W Λ (TermDef.mk _ _ _ ⟨_, hx⟩) = TermDef.mk _ _ _ x := congrArg (TermDef.mk _ _ _) hc
-  show TermDef.Term.mk (Formalism.HermitianLatticesTheory.gmap (W.δ u) Λ) _ (mvCls W Λ (TermDef.mk _ _ _ ⟨_, hx⟩)) = _
-  rw [hc']
-  rfl
-
-def termWitt (hL : LatIso D) (u u' : D.what₂.Word) : RT Y u u' ≃ RTrec W Y u u' :=
-  Equiv.ofBijective (toRec W Y) ⟨toRec_inj W Y hL, toRec_surj W Y⟩
-
-theorem termWitt_apply (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') : termWitt W Y hL u u' t = toRec W Y t := rfl
 
 variable {W Y}
 

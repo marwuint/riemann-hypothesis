@@ -94,12 +94,6 @@ def dualToCartierDual :
     Rep.res ψ.toMonoidHom (dualRep D M) ⟶ cartierDual F Fsep (Rep.res ψ.toMonoidHom M) :=
   resDualPost ψ.toMonoidHom D M _ ρ
 
-omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [IsSepClosure F Fsep]
-  [IsTopologicalGroup G] [IsDiscreteRep D] [IsDiscreteRep M] [Finite M] in
-theorem dualToCartierDual_hom_apply (f : M →ₗ[ULift.{0} ℤ] D) (m : M) :
-    ((dualToCartierDual ψ D ρ M).hom f : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Fsep) m = ρ.hom (f m) :=
-  rfl
-
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [IsTopologicalGroup G]
   [IsDiscreteRep D] [IsDiscreteRep M] in
 theorem bijective_dualToCartierDual {n : ℕ} [NeZero n] (hn : (n : F) ≠ 0)
@@ -200,14 +194,6 @@ def gsRootsToLocalUnits (v : S) :
         (Units.ext (gsFinFamily_apply S ιs v σ
           (((Additive.toMul ζ : rootsOfUnity n _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
             maxUnramifiedOutside K.1 ℚ̄ S)))⟩
-
-theorem gsRootsToLocalUnits_hom_apply (v : S)
-    (ζ : Additive (rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S))) :
-    ((Additive.toMul ((gsRootsToLocalUnits S ιs n v).hom ζ) :
-        (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))ˣ) :
-      AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) =
-      ιs v (((Additive.toMul ζ : rootsOfUnity n _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : ℚ̄) :=
-  rfl
 
 theorem gsRootsToLocalUnits_injective (v : S) :
     Function.Injective (gsRootsToLocalUnits S ιs n v).hom := by

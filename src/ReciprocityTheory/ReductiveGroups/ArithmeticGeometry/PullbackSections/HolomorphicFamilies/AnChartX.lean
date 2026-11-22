@@ -46,16 +46,8 @@ theorem anHol (F : FamilyUnif Xo σ' ty) (i : Fin F.n) (P : (F.Di i).La →+ (Fi
 
 variable [Algebra c.F ℂ]
 
-def anX (F : FamilyUnif Xo σ' ty) (i : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (F.Di i) ty P)
-    (y : FrPt Xo c ℂ) (hy : y.x = F.u i P) (m : ℕ) : jO y g m 1 ⟶ Xo.univ.t.G :=
-  Over.homMk (jetPt (anE F i P) (anHol F i P hP) m) (by
-    rw [jetPt_over (anE F i P) (anHol F i P hP) Xo.univ.t.G.hom (F.u i P) (fun z => Over.w (F.ex i P z)) m, ← hy]
-    rfl)
-
 variable (F : FamilyUnif Xo σ' ty) (i : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (F.Di i) ty P)
   (y : FrPt Xo c ℂ) (hy : y.x = F.u i P)
-
-theorem anX_left (m : ℕ) : (anX F i P hP y hy m).left = jetPt (anE F i P) (anHol F i P hP) m := rfl
 
 theorem basis_single (e' : Fin g ≃ Lt1 Dw) (v : Fin g → ℂ) :
     ∃! a : Lt1 Dw → ℂ, ∀ j, ∑ ℓ, a ℓ * (if j = e'.symm ℓ then (1 : ℂ) else 0) = v j := by

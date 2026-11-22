@@ -184,9 +184,6 @@ namespace NData
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)
 
-def ShaFin : Prop := ∀ (p : ℕ) [Fact p.Prime] (e : ℕ), 0 < e → e < R.t →
-  Formalism.GaloisCohomology.shaLen (N.ldat p) (e : ℤ) ≠ ⊤
-
 def EigSpan : Prop := ∀ i, ⨆ x, heckeEig (N.T i) (N.act i) x = ⊤
 
 def ZgoodSub : Prop := ∀ i, N.Zgood i ⊆ N.Z i
@@ -423,11 +420,6 @@ namespace NTw
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} [NumberField what₂.LL] [StarRing what₂.LL]
   {LL0 : IntermediateField ℚ what₂.LL} {N : NData R H what₂} (X : NTw R H what₂ LL0 N)
-
-def sig_eig : Prop := ∀ i s, ∃ x : TensorProduct (X.O i) (FractionRing (X.O i)) (X.B i (X.jS i s) (X.side i s)), x ≠ 0 ∧
-    ∀ k P, 1 ≤ k → k ≤ R.r → IsSplitPl H P → P ∉ X.S0 i →
-      ((X.hk i (X.jS i s) (X.side i s) k P).lTensor (FractionRing (X.O i))) x =
-      algebraMap (X.O i) (FractionRing (X.O i)) (X.hEig i s k P) • x
 
 def TwCover : Prop := ∀ p : ℕ, p.Prime → ∀ w : HeightOneSpectrum (𝓞 ↥LL0), ((p : ℕ) : 𝓞 ↥LL0) ∈ w.asIdeal →
   ∃ i, X.l i = p ∧ ∀ x : 𝓞 ↥LL0, x ∈ w.asIdeal ↔

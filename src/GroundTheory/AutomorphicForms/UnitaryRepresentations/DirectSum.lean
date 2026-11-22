@@ -82,9 +82,6 @@ noncomputable def singleL [DecidableEq ι] (i : ι) : E i →L[ℂ] lp E 2 :=
     rw [one_mul, lp.lsingle_apply]
     exact (lp.norm_single (by norm_num) i a).le
 
-omit [∀ i, CompleteSpace (E i)] in
-lemma singleL_apply [DecidableEq ι] (i : ι) (a : E i) : singleL i a = lp.single 2 i a := rfl
-
 end directSum
 
 end UnitaryRep

@@ -71,8 +71,6 @@ variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
 def fldHom : (A.Pt → Ev n) →ₐ[ℂ] A.Fld := AlgHom.compLeft (Subalgebra.center ℂ (Alt n)).val A.Pt
 
-theorem fldHom_apply (u : A.Pt → Ev n) : fldHom A u = fld A u := rfl
-
 def xi {ι : Type} (w : ι → A.Pt → Ev n) : MvPolynomial ι ℝ →+* A.Fld :=
   (fldHom A).toRingHom.comp ((aeval w).toRingHom.comp (MvPolynomial.map (algebraMap ℝ ℂ)))
 

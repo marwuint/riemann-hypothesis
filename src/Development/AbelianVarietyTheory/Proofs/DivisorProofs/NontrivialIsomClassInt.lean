@@ -265,10 +265,6 @@ theorem isometric_pull_tens (π : Y ⟶ X) (hπ : π ≫ p = q) :
     fun σ j y _ => (congrArg₂ (· + ·) ((L.φ σ).pull_φ π hπ _ y) ((M.φ σ).pull_φ π hπ _ y)).trans
       (((L.tens M).φ σ).pull_φ π hπ j y).symm
 
-theorem shift_eq_raise (t : (k →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) :
-    L.shift t ht = L.raise (fun σ _ => 2 * t σ) (fun _ => cInfAt_const _) fun σ _ _ _ _ h _ =>
-      congrArg (2 * ·) ((congrArg t (eq_conj_of_conj h)).trans (ht σ)) := rfl
-
 variable {L M N}
 
 theorem Isometric.tens (h : L.Isometric M) (h' : L'.Isometric M') : (L.tens L').Isometric (M.tens M') :=
@@ -308,8 +304,6 @@ instance : AddCommGroup (IsomClass p) where
 theorem icls_tens (L M : HermLB p) : (L.tens M).icls = L.icls + M.icls := rfl
 
 theorem icls_dual (L : HermLB p) : L.dual.icls = -L.icls := rfl
-
-theorem icls_triv : (triv p).icls = 0 := rfl
 
 theorem icls_pow (L : HermLB p) (m : ℕ) : (L.pow m).icls = m • L.icls := by
   induction m with

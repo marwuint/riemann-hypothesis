@@ -283,8 +283,6 @@ theorem splitEquiv_apply (g : GLoc σ J v) : splitEquiv h hJ τ g = splitHom σ 
 
 theorem splitEquiv_val (g : GLoc σ J v) : (splitEquiv h hJ τ g).1 = (matHom _ σ J g).1.map (splitProj τ) := rfl
 
-theorem splitEquiv_symm_apply (x : GL (Fin n) (Fv F v)) : (splitEquiv h hJ τ).symm x = splitLift h hJ τ x := rfl
-
 theorem splitEquiv_ratLoc (γ : GRat σ J) : (splitEquiv h hJ τ (ratLoc σ J v γ)).1 = γ.1.1.map τ :=
   Matrix.ext fun i j => splitProj_inclR τ (γ.1.1 i j)
 

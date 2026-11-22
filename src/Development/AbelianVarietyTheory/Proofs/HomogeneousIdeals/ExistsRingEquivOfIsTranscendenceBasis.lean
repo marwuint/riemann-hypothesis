@@ -51,19 +51,6 @@ theorem exists_algEquiv_extend {K F L : Type*} [Field K] [Field F] [Field L] [Al
   congr 1
   exact τ.commutes k
 
-theorem exists_algEquiv_apply_eq_add_one {K L : Type*} [Field K] [Field L] [Algebra K L]
-    [IsAlgClosed L] {x : L} (hx : Transcendental K x) : ∃ σ : L ≃ₐ[K] L, σ x = x + 1 := by
-  have h1 : AlgebraicIndepOn K id ({x} : Set L) :=
-    algebraicIndependent_unique_type_iff.2 hx
-  obtain ⟨s, hxs, hs⟩ := exists_isTranscendenceBasis_superset h1
-  let e : MvPolynomial s K ≃ₐ[K] MvPolynomial s K :=
-    AlgEquiv.ofAlgHom (aeval fun i => X i + 1) (aeval fun i => X i - 1)
-      (by ext i : 1; simp) (by ext i : 1; simp)
-  obtain ⟨σ, hσ⟩ := exists_ringEquiv_of_isTranscendenceBasis hs hs e.toRingEquiv
-  refine ⟨AlgEquiv.ofRingEquiv (f := σ) fun k => ?_, ?_⟩
-  · simpa [e] using hσ (C k)
-  · simpa [e] using hσ (X ⟨x, hxs rfl⟩)
-
 open MvPolynomial Cardinal in
 
 theorem _root_.GlobalTheory.GaloisDescent.mem_range_algebraMap_of_forall_algEquiv {K L : Type*} [Field K] [Field L] [Algebra K L]

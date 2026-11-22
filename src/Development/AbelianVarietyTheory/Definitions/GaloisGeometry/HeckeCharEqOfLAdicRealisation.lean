@@ -11,12 +11,6 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions.N 
 def epsQ (D : D7) (i : D.nd.Loc) (g : G D.host.E D.nd.Om) : Qbar (D.nd.l i) :=
   iotaOQ D.nd D.naut i ((Formalism.MainNotions.N.Glob.epsO D.nd i g : (D.nd.O i)ˣ) : D.nd.O i)
 
-def IsStringRep (D : D7) (i : D.nd.Loc) (p : Part D.naut.CG)
-    (R : G D.host.E D.nd.Om →* GL (Fin p.a) (Qbar (D.nd.l i))) : Prop :=
-  Continuous (fun g => ((R g : GL _ _) : Matrix (Fin p.a) (Fin p.a) (Qbar (D.nd.l i)))) ∧ IsSSRep R ∧
-    ∀ w, w ∉ placesOver D.host.E (D.nd.l i) →
-      D.naut.wdOf i R w = D.naut.lpTw (D.naut.locG p.π w) (((p.d : ℝ) - 1) / 2 + (1 - (D.R.nV : ℝ)) / 2)
-
 def SSList : Prop :=
   ∀ (k : Type) [Field k] (Γ : Type) [Group Γ] (n : ℕ) (ρ : Γ →* GL (Fin n) k),
     ∃ L : List (Σ m : ℕ, Γ →* GL (Fin m) k), (∀ p ∈ L, 1 ≤ p.1 ∧ IsIrrSub p.2 ⊤) ∧

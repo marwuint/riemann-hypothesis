@@ -197,9 +197,6 @@ def untiltGalEquiv : (Ω♭ ≃ₐ[K♭] Ω♭) ≃* (Ω ≃ₐ[K] Ω) where
   right_inv := untiltGalFun_tiltGalFun
   map_mul' := untiltGalFun_mul
 
-theorem untiltGalEquiv_apply (τ : Ω♭ ≃ₐ[K♭] Ω♭) : untiltGalEquiv K C p τ = untiltGalFun K C p τ :=
-  rfl
-
 end Equiv
 
 end GroundTheory.PAdicHodge

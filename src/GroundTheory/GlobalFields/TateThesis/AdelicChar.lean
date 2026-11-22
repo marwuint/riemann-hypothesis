@@ -101,11 +101,6 @@ def localInvDifferent (v : HeightOneSpectrum (𝓞 K)) : AddSubgroup (v.adicComp
     rw [neg_mul]
     exact neg_mem (ha y hy)
 
-theorem mem_localInvDifferent {v : HeightOneSpectrum (𝓞 K)} {x : v.adicCompletion K} :
-    x ∈ localInvDifferent v ↔ ∀ y ∈ differentIdeal ℤ (𝓞 K),
-      x * ((algebraMap (𝓞 K) K y : K) : v.adicCompletion K) ∈ v.adicCompletionIntegers K :=
-  Iff.rfl
-
 theorem coe_algebraMap_mem_adicCompletionIntegers (v : HeightOneSpectrum (𝓞 K)) (y : 𝓞 K) :
     ((algebraMap (𝓞 K) K y : K) : v.adicCompletion K) ∈ v.adicCompletionIntegers K := by
   rw [coe_mem_adicCompletionIntegers_iff, valuation_of_algebraMap]
@@ -262,8 +257,6 @@ def adelicChar : AddChar 𝔸[K] Circle where
     congr 1
     simp only [adeleRing_add_fst, map_add, map_sub]
     ring
-
-theorem adelicChar_apply (x : 𝔸[K]) : adelicChar K x = adelicCharFun K x := rfl
 
 theorem adelicChar_eq (x : 𝔸[K]) {k : K}
     (hk : x.2 - algebraMap K _ k ∈ finiteInvDifferent K) :

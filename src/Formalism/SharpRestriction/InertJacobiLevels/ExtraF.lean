@@ -31,15 +31,6 @@ variable {R : Ranks} (H : Host R) (hc : Tau2 R → HCParam R) (etaF : ℝ) (Dn :
   (tw : (@placesOf H.E _ _ H.cmStar).Pl → Bool)
   (htw : ∀ w, tw ((@placesOf H.E _ _ H.cmStar).conj w) = tw w)
 
-def d7F : D7 := twistRecord H hc (Dn : ℚ) hDel hgap hlet (CD.cdScaleOf CD.cdHaar) (CD.cdScaleOf_pos _) (fun τ => (hu τ).choose) (fun τ => (hu τ).choose_spec.1) etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw
-
-set_option maxHeartbeats 2000000 in
-theorem trivialFamily_heightValue_eq (hv' : ℝ) (sc : Scale) (aT : H.TT → ℤ) (η Sc dl C : ℝ) (u) :
-    hVal (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) sc aT η Sc dl C u = hVal (d7F H hc etaF Dn hDel hgap hlet hu hv' vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) sc aT η Sc dl C u := rfl
-
-theorem trivialFamily_logDerivative_eq (hv' : ℝ) (s : ℂ) :
-    dlogL (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) s = dlogL (d7F H hc etaF Dn hDel hgap hlet hu hv' vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) s := rfl
-
 end
 
 end Formalism.MainNotions.Inhab

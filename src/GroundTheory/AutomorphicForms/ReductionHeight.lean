@@ -184,12 +184,6 @@ theorem HasFiniteContent.vecMul {y : Fin n → 𝔸[K]} (hy : HasFiniteContent y
 
 def ratVec (x : Fin n → K) : Fin n → 𝔸[K] := fun i => algebraMap K 𝔸[K] (x i)
 
-theorem finComp_ratVec (v : HeightOneSpectrum (𝓞 K)) (x : Fin n → K) (i : Fin n) :
-    finComp v (ratVec x) i = (x i : v.adicCompletion K) := rfl
-
-theorem infComp_ratVec (w : InfinitePlace K) (x : Fin n → K) (i : Fin n) :
-    infComp w (ratVec x) i = (x i : w.Completion) := rfl
-
 theorem ratVec_smul (c : K) (x : Fin n → K) :
     ratVec (c • x) = algebraMap K 𝔸[K] c • ratVec x := by
   ext i

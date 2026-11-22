@@ -19,11 +19,6 @@ def HasCoverBy (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (Pr : Ω → Pro
   ∃ (m : ℕ) (f cc : Fin m → Ω), (∀ l, f l ∈ chartRing ℤ (segreCoord y) c) ∧
     (∀ l, cc l ∈ chartRing ℤ (segreCoord y) c) ∧ ∑ l, cc l * f l = 1 ∧ ∀ l, Pr (f l)
 
-omit [∀ k, Fintype (ι k)] in
-theorem hasCoverBy_one (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) {Pr : Ω → Prop} (h : Pr 1) :
-    HasCoverBy y c Pr :=
-  ⟨1, fun _ => 1, fun _ => 1, fun _ => one_mem _, fun _ => one_mem _, by simp, fun _ => h⟩
-
 def zMono (z : (Σ k, ι k) → ℂ) (c : (k : K) → ι k) (a : K → ℤ) : ℂ := ∏ k, z ⟨k, c k⟩ ^ a k
 
 end Cover

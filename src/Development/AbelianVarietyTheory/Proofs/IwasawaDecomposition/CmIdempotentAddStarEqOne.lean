@@ -157,8 +157,6 @@ def arc (hX : Nontrivial P.D.toPre.X) (hdiv : ∀ a a', (2 * l.M' : ℤ) ∣ beF
       obtain ⟨I, h₁, h₂, h₃⟩ := hTate F z hz
       exact ⟨hLie F r hr, I, h₁, h₂, h₃⟩ }
 
-theorem arc_D₀ (hX) (hdiv) (hL) (hLie) (hTate) : (arc P hϖ Y b y m hX hdiv hL hLie hTate).D₀ = D0 P hϖ := rfl
-
 end ThetaShiftProofs
 
 end GlobalTheory.ArcBuild

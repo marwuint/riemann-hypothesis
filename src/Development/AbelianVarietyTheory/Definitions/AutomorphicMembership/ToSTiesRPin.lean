@@ -31,8 +31,6 @@ def SRest.toSTiesR (Rc : Formalism.L2.RecT ex) {P : SPack D fun u => (Rc.T.cols.
 section
 variable (Rc : Formalism.L2.RecT ex) {P : SPack D fun u => (Rc.T.cols.forms u).to0} (S : SRest P)
 
-theorem SRest.toSTiesR_X : (S.toSTiesR Rc).X = P.X := rfl
-
 end
 
 end GlobalTheory.Mem.SRe

@@ -26,9 +26,6 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0}
 def mapT (α : P.A.A ⟶ P'.A.A) [IsMonHom α] : P.T →ₗ[ℤ_[p]] P'.T :=
   Tate.map p (IndepPoint.ptsHom α _)
 
-theorem lev_mapT (α : P.A.A ⟶ P'.A.A) [IsMonHom α] (t : P.T) (n : ℕ) :
-    (mapT P P' α t).lev n = t.lev n ≫ α := rfl
-
 variable [IsAlgClosed C] [CharZero C]
 
 def adjT (α : P.A.A ⟶ P'.A.A) [IsMonHom α] : P'.T →ₗ[ℤ_[p]] P.T :=
@@ -36,9 +33,6 @@ def adjT (α : P.A.A ⟶ P'.A.A) [IsMonHom α] : P'.T →ₗ[ℤ_[p]] P.T :=
 
 def adjV [Algebra ℤ_[p] C] (α : P.A.A ⟶ P'.A.A) [IsMonHom α] : P'.V →ₗ[C] P.V :=
   (adjT P P' α).baseChange C
-
-theorem adjV_tmul [Algebra ℤ_[p] C] (α : P.A.A ⟶ P'.A.A) [IsMonHom α] (c : C) (t : P'.T) :
-    adjV P P' α (c ⊗ₜ t) = c ⊗ₜ adjT P P' α t := rfl
 
 end General
 

@@ -11,20 +11,7 @@ open Classical
 
 def pr (y : ℝ) : Finset ℕ := (Finset.range (⌊y⌋₊ + 1)).filter Nat.Prime
 
-def ChebyshevThetaUpperBound : Prop := ∀ y : ℝ, 0 < y → ∑ p ∈ pr y, Real.log (p : ℝ) < 1.02 * y
-
-def MertensLogBound : Prop := ∀ y : ℝ, 1 < y → ∑ p ∈ pr y, Real.log (p : ℝ) / (p : ℝ) < Real.log y
-
-def MertensLogLowerBound : Prop := ∀ y : ℝ, 1 < y →
-  Real.log y - 1.34 - 1 / (2 * Real.log y) < ∑ p ∈ pr y, Real.log (p : ℝ) / (p : ℝ)
-
 def PrimeCountingBound : Prop := ∀ y : ℝ, 1 < y → ((pr y).card : ℝ) < 1.26 * y / Real.log y
-
-def MertensReciprocalBound : Prop := ∀ y : ℝ, 1 < y →
-  ∑ p ∈ pr y, 1 / (p : ℝ) < Real.log (Real.log y) + 0.27 + 1 / (Real.log y) ^ 2
-
-def RS2' : Prop := ∀ y : ℝ, 1 < y →
-  ∑ p ∈ pr y, Real.log (p : ℝ) / ((p : ℝ) - 1) < Real.log y + 0.76
 
 structure Par where
   k : ℕ
@@ -273,18 +260,6 @@ def totalBound (P : Par) (T : ℕ) (X : ℝ) : ℝ :=
   (T : ℝ) * (X + 2 * (P.k : ℝ) * (P.S + 1) * (P.L + 2))
     + 1.3 * (P.f : ℝ) * (P.Nr : ℝ) ^ 2 * P.b'
     + (P.S + P.η + (P.t : ℝ) + 2 * (P.kmax : ℝ) + 6) * (P.f : ℝ) * (P.Nr : ℝ) ^ 2 * P.L
-
-def TotalWeightBound : Prop :=
-  ChebyshevThetaUpperBound → MertensLogBound → RS2' → PrimeCountingBound → MertensReciprocalBound → ∀ P : Par, P.Hyp → P.Large →
-    ∀ (ι : Type) [Fintype ι] (D : SizeData₂ ι), D.Inputs P → D.NoWindow P →
-    ∀ Q : Finset ℕ, (∀ l ∈ Q, l.Prime) →
-      ∑ l ∈ Q, (D.J l : ℝ) * Real.log (l : ℝ) ≤ totalBound P D.T2.card (30 * (P.m : ℝ) * P.b * P.L ^ 2)
-
-def ShortPrimeSum : Prop :=
-  MertensLogBound → MertensLogLowerBound → ∀ P : Par, P.Hyp → P.Large → ∀ Q : Finset ℕ,
-    (∀ l ∈ Q, l.Prime ∧ P.lJ < (l : ℝ) ∧ (l : ℝ) ≤ P.h + (P.Nr : ℝ)) →
-    ∑ l ∈ Q, Real.log (l : ℝ) / (l : ℝ) ≤ Real.log ((P.h + (P.Nr : ℝ)) / P.lJ) + 2 ∧
-      Real.log ((P.h + (P.Nr : ℝ)) / P.lJ) ≤ Real.log (12 * (P.k : ℝ) * (P.t : ℝ))
 
 def ConvolutionKernelIntegrable : Prop := ∀ y : ℝ, 0 ≤ y → ∑ p ∈ pr y, Real.log (p : ℝ) ≤ Real.log 4 * y
 

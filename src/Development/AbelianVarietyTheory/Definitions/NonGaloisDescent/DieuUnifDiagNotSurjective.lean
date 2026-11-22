@@ -45,9 +45,6 @@ instance : Category (VarpiDivModule p O S) where
 @[simp] theorem comp_f {H H' H'' : VarpiDivModule p O S} (f : H ⟶ H') (g : H' ⟶ H'') :
     Hom.f (f ≫ g) = f.f ≫ g.f := rfl
 
-def HasOHeight [Algebra ℤ_[p] O] (H : VarpiDivModule p O S) (n : ℕ) : Prop :=
-  Module.Free ℤ_[p] O ∧ Module.Finite ℤ_[p] O ∧ H.G.height = n * Module.finrank ℤ_[p] O
-
 theorem padicAction_onLie [Algebra ℤ_[p] S] (G : PDivGroup p S) (a : ℤ_[p]) (x : G.Lie) :
     (PDivGroup.padicAction G).onLie a x = algebraMap ℤ_[p] S a • x := by
   rw [PDivGroup.Action.onLie_apply, PDivGroup.padicAction, Algebra.algebraMap_eq_smul_one,

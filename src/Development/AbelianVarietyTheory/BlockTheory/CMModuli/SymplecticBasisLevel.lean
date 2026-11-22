@@ -17,10 +17,6 @@ section Fibre
 
 variable {D : Datum H} {l : Level H} (Xo : Moduli D l) {g : ℕ} (ty : Fin g → (E →+* ℂ))
 
-abbrev univG : Over Xo.X := Xo.univ.t.G
-
 end Fibre
-
-theorem incl_over (l : Level H) : (KA l).val.toRingHom (baseKA l).ρ = H.rt0 := rfl
 
 end GlobalTheory.IndefiniteRowSideFullHecke.SymplecticBasisLevel

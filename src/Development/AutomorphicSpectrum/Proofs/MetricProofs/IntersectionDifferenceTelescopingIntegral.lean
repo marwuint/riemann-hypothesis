@@ -48,8 +48,6 @@ theorem ratioWt_smooth {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothH
 def wtLine {A B : HermLine ι} (hab : A.a = B.a) : HermLine ι :=
   HermLine.ofWeight (ratioWt A B) fun c z hc => ratioWt_smul hab c z hc
 
-theorem wtLine_a {A B : HermLine ι} (hab : A.a = B.a) : (wtLine hab).a = 0 := rfl
-
 theorem wtLine_h {A B : HermLine ι} (hab : A.a = B.a) (z : (Σ k, ι k) → ℂ) :
     (wtLine hab).h z = Real.exp (-ratioWt A B z) := rfl
 

@@ -86,8 +86,6 @@ variable (C : CharFrame D) (Rw : RowSide D) {X : NTw D.R D.host D.what₂ D.LL0 
 
 variable {C Rw Y} {i : X.Tw} {b : Bool}
 
-theorem liftIdx_jS (s : X.Sig i) : liftIdx (Finset.mem_Icc.2 (X.jS_range i s)) = jIdx s := rfl
-
 end Par
 
 section Res

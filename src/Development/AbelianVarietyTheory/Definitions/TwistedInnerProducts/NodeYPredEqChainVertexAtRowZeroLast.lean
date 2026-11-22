@@ -410,8 +410,6 @@ def RealVec.vec {G : GridPre R} (r : G.RealVec) (i : ℕ) : SmT (G.V i 0).M :=
 
 theorem RealVec.vec_zero {G : GridPre R} (r : G.RealVec) : r.vec 0 = PiTensorProduct.tprod ℂ r.w := rfl
 
-theorem RealVec.vec_succ {G : GridPre R} (r : G.RealVec) (i : ℕ) : r.vec (i + 1) = (G.X i 0).It (r.pol i) (r.vec i) := rfl
-
 end GridPre
 
 set_option genInjectivity false in
@@ -467,27 +465,8 @@ structure Is : Prop where
 def colLift (t : T) (j : ℕ) (f : ∀ i, WO (G.V (i + 1) j).V (G.V i j).V → ℂ) (n : ℕ) : G.CV 0 j →ₗ[ℂ] G.CV n j :=
   Nat.rec (motive := fun n => G.CV 0 j →ₗ[ℂ] G.CV n j) LinearMap.id (fun n L => G.ioX t n j (f n) ∘ₗ L) n
 
-theorem colLift_zero (t : T) (j : ℕ) (f : ∀ i, WO (G.V (i + 1) j).V (G.V i j).V → ℂ) : G.colLift t j f 0 = LinearMap.id := rfl
-
-theorem colLift_succ (t : T) (j : ℕ) (f : ∀ i, WO (G.V (i + 1) j).V (G.V i j).V → ℂ) (n : ℕ) :
-    G.colLift t j f (n + 1) = G.ioX t n j (f n) ∘ₗ G.colLift t j f n := rfl
-
 def rowLift (t : T) (i : ℕ) (f : ∀ j, WO (G.V i j).V (G.V i (j + 1)).V → ℂ) (n : ℕ) : G.CV i n →ₗ[ℂ] G.CV i 0 :=
   Nat.rec (motive := fun n => G.CV i n →ₗ[ℂ] G.CV i 0) LinearMap.id (fun n L => L ∘ₗ G.ioT t i n (f n)) n
-
-theorem rowLift_zero (t : T) (i : ℕ) (f : ∀ j, WO (G.V i j).V (G.V i (j + 1)).V → ℂ) : G.rowLift t i f 0 = LinearMap.id := rfl
-
-theorem rowLift_succ (t : T) (i : ℕ) (f : ∀ j, WO (G.V i j).V (G.V i (j + 1)).V → ℂ) (n : ℕ) :
-    G.rowLift t i f (n + 1) = G.rowLift t i f n ∘ₗ G.ioT t i n (f n) := rfl
-
-def chiLift (Φ : G.Data R) (n : ℕ) : G.CV 0 0 →ₗ[ℂ] G.CV n 0 :=
-  Nat.rec (motive := fun n => G.CV 0 0 →ₗ[ℂ] G.CV n 0) LinearMap.id (fun n L => G.gridInclusionColumnZero n (G.datum Φ n) ∘ₗ L) n
-
-theorem chiLift_zero (Φ : G.Data R) : G.chiLift Φ 0 = LinearMap.id := rfl
-
-theorem chiLift_succ (Φ : G.Data R) (n : ℕ) : G.chiLift Φ (n + 1) = G.gridInclusionColumnZero n (G.datum Φ n) ∘ₗ G.chiLift Φ n := rfl
-
-theorem chiLift_eq (t : T) (Φ : G.Data R) (n : ℕ) : G.chiLift Φ n = G.colLift t 0 (G.datum Φ) n := rfl
 
 end GridDat
 

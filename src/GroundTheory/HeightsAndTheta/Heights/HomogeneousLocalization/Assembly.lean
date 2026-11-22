@@ -42,12 +42,6 @@ namespace ProjScheme
 
 open SectionsLatticeFS
 
-def fsBundleFull {A : Type u} [CommRing A] {N : ℕ} (n : ℕ) : (self A N).HermitianLineBundle :=
-  fsBundle FSContinuousFrame.full FSNormConj.full n
-
-def fsPointMeasuresFull (K : Type) [Field K] [NumberField K] (N : ℕ) : (self (𝓞 K) N).PointMeasures :=
-  fsPointMeasures K N FSFullSupport.full FSConjInvariant.full
-
 end ProjScheme
 
 end

@@ -157,36 +157,8 @@ theorem hT_eq_sum (V : HSpace E) (x y : V.V) :
   simp only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
     RingHom.id_apply, HSpace.gram, starRingEnd_apply, mul_comm]
 
-theorem pairM_coMat (V : HSpace E) {a b : Type} (x : a → V.V) (y : b → V.V) (i : a) (j : b) :
-    pairM (starRingEnd E) V.gram (coMat V y) (coMat V x) i j = V.hD (y j) (x i) := by
-  rw [HSpace.hD, hT_eq_sum]; rfl
-
 def spFrame (S : Spaces R F E) (c : E) : Matrix (Fin (S.Y 0).rank) (Fin (R.rS + 1)) E :=
   coMat (S.Y 0) (Fin.snoc (α := fun _ => (S.Y 0).V) S.hypE (c • S.zm))
-
-theorem isFrame_spFrame (S : Spaces R F E) {c : E} (hc : c ≠ 0) :
-    IsFrame (starRingEnd E) (S.Y 0).gram (c * star c * S.T) (spFrame S c) := by
-  have hT : (S.T : E) ≠ 0 := Nat.cast_ne_zero.2 S.T_prime.ne_zero
-  have sw {x y : (S.Y 0).V} {a : E} (h : (S.Y 0).hT x y = a) : (S.Y 0).hT y x = star a := by
-    rw [← h]; exact ((S.Y 0).herm.eq x y).symm
-  refine ⟨⟨cT (starRingEnd E) (coMat (S.Y 0) (Fin.snoc (α := fun _ => (S.Y 0).V) S.hypF
-    ((-(star c * S.T)⁻¹) • S.zm))) * (S.Y 0).gram, ?_⟩, ?_⟩
-  · ext a b
-    refine (pairM_coMat _ _ _ a b).trans ?_
-    induction a using Fin.lastCases <;> induction b using Fin.lastCases
-    · simp [HSpace.hD, S.zm_norm, starRingEnd_apply]
-      field_simp
-    · simp [HSpace.hD, (S.hyp_orthz _).1, (Fin.castSucc_lt_last _).ne']
-    · simp [HSpace.hD, sw (S.hyp_orthz _).2, (Fin.castSucc_lt_last _).ne]
-    · simp [HSpace.hD, sw (S.hyp_ef _ _), Matrix.one_apply, eq_comm, apply_ite star]
-  · ext a b
-    refine (pairM_coMat _ _ _ a b).trans ?_
-    induction a using Fin.lastCases <;> induction b using Fin.lastCases
-    · simp [HSpace.hD, S.zm_norm, TF, starRingEnd_apply]
-      ring
-    · simp [HSpace.hD, (S.hyp_orthz _).1, TF, (Fin.castSucc_lt_last _).ne']
-    · simp [HSpace.hD, sw (S.hyp_orthz _).1, TF, (Fin.castSucc_lt_last _).ne]
-    · simp [HSpace.hD, S.hyp_ee, TF, Matrix.diagonal_apply, (Fin.castSucc_lt_last _).ne]
 
 end Spaces
 
@@ -204,19 +176,6 @@ def recFrame (u : D.what₂.Word) : Matrix (Fin (D.sp.Y 0).rank) (Fin (D.R.rS + 
 abbrev RecTerm (u u' : D.what₂.Word) : Type :=
   Term (starRingEnd D.host.E) (D.sp.Y 0).gram (((D.mem u').A.T : ℕ) : D.host.E) (D.host.g 0 * D.host.g 1)
     (recFrame D u)
-
-theorem recFrame_eq (u : D.what₂.Word) :
-    recFrame D u = coMat (D.sp.Y 0) (Fin.snoc (α := fun _ => (D.sp.Y 0).V) D.sp.hypE (D.zmOf u)) := rfl
-
-theorem isFrame_recFrame (u : D.what₂.Word) :
-    IsFrame (starRingEnd D.host.E) (D.sp.Y 0).gram (((D.mem u).A.T : ℕ) : D.host.E) (recFrame D u) := by
-  have h := isFrame_spFrame D.sp (inv_ne_zero (D.cOf_ne u))
-  have hc := D.cOf_ne u
-  have hs : star (D.cOf u) ≠ 0 := star_ne_zero.2 hc
-  have e : D.cOf u * star (D.cOf u) * ((D.mem u).A.T : D.host.E) = ((D.mem D.u₀).A.T : D.host.E) := by
-    rw [bridge_star_holds D.R D.host]; exact D.cOf_eq u
-  rwa [D.sp_T, ← e, star_inv₀, show (D.cOf u)⁻¹ * (star (D.cOf u))⁻¹ *
-    (D.cOf u * star (D.cOf u) * ((D.mem u).A.T : D.host.E)) = ((D.mem u).A.T : D.host.E) by field_simp] at h
 
 variable {D} {u u' : D.what₂.Word}
 

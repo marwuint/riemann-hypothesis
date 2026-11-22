@@ -163,9 +163,6 @@ noncomputable def toAway (X : PointedEtale R K) (s : X) (hs : IsUnit (X.pt s)) :
   ⟨(IsScalarTower.toAlgHom R X (Localization.Away s) : X →ₐ[R] Localization.Away s), by
     ext x; exact IsLocalization.Away.lift_eq s hs x⟩
 
-theorem toAway_alg_apply (X : PointedEtale R K) (s : X) (hs : IsUnit (X.pt s)) (x : X) :
-    (X.toAway s hs).alg x = algebraMap X (Localization.Away s) x := rfl
-
 theorem isUnit_toAway (X : PointedEtale R K) (s : X) (hs : IsUnit (X.pt s)) :
     IsUnit ((X.toAway s hs).alg s) :=
   IsLocalization.Away.algebraMap_isUnit s
@@ -318,8 +315,6 @@ theorem toK_of (X : PointedEtale R K) (x : X) : toK (of X x) = X.pt x :=
   congr($((etaleCoconeIsColimit R K).fac ptCocone X) x)
 
 noncomputable instance : Algebra R (etaleColimit R K) := (of (base : PointedEtale R K)).toAlgebra
-
-theorem algebraMap_eq_of_base : algebraMap R (etaleColimit R K) = of base := rfl
 
 @[simp]
 theorem toK_algebraMap (r : R) : toK (algebraMap R (etaleColimit R K) r) = algebraMap R K r :=

@@ -44,13 +44,6 @@ def slice (A : Over S) (P : LB (A ⊗ A).left) {T : Over S} (x : T ⟶ A) : LB (
 def IsPrincipal (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left) : Prop :=
   Out.RelAmple A (diagPull A P) ∧ ∀ (T : Over S) (x : T ⟶ A), IsTrivial (slice A P x) → x = 1
 
-def DiagAmpleAlong (A : Over S) (P : LB (A ⊗ A).left) {S' : Scheme.{0}} (t : S' ⟶ S) : Prop :=
-  Out.RelAmple ((Over.pullback t).obj A) ((diagPull A P).pull (pullback.fst A.hom t))
-
-def IsPrincipalAlong (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left) {S' : Scheme.{0}} (t : S' ⟶ S) : Prop :=
-  DiagAmpleAlong A P t ∧
-    ∀ (T : Scheme.{0}) (τ : T ⟶ S') (x : Over.mk (τ ≫ t) ⟶ A), IsTrivial (slice A P x) → x = 1
-
 abbrev Std (h M : ℕ) : Type := (Fin h → ZMod M) × (Fin h → ZMod M)
 
 def stdForm {h M : ℕ} (a b : Std h M) : ZMod M := ∑ i, (a.1 i * b.2 i - a.2 i * b.1 i)
@@ -76,27 +69,5 @@ def IsPullbackTriple {h M : ℕ} {S' : Scheme.{0}} (A' : Over S') [GrpObj A'] (P
     ∀ a, (lv' a).left ≫ φ = f ≫ (lv a).left
 
 end Triple
-
-def IsSiegelFamily (h p : ℕ) {M : ℕ} (hM : M ≠ 0) (X : Scheme.{0}) (s : X ⟶ Sp (cycloLocal p M))
-    (A : Over X) [GrpObj A] (P : LB (A ⊗ A).left) (lv : Std h M → (𝟙_ (Over X) ⟶ A)) : Prop :=
-
-  SmoothOfRelativeDimension (h * (h + 1) / 2) s ∧ LocallyOfFiniteType s ∧ QuasiCompact s ∧
-
-  IsSymmetricPair h A P ∧ IsPrincipal A P ∧ IsLevel A lv ∧ IsSymplectic (zetaUnit p hM) s A P lv ∧
-
-  (∀ (C : Type) [NormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [CharZero C],
-    ‖(p : C)‖ < 1 →
-    ∀ (β : cycloLocal p M →+* intRing C)
-      (B : Over (Sp (intRing C))) [GrpObj B] (P' : LB (B ⊗ B).left)
-      (lv' : Std h M → (𝟙_ (Over (Sp (intRing C))) ⟶ B)),
-      IsSymmetricPair h B P' → IsLevel B lv' → IsSymplectic (zetaUnit p hM) (spMap β) B P' lv' →
-      IsPrincipalAlong B P' (spMap (intRing C).subtype) →
-      DiagAmpleAlong B P' (spMap (IsLocalRing.residue (intRing C))) →
-      ∃ y : Sp (intRing C) ⟶ X, y ≫ s = spMap β ∧ IsPullbackTriple B P' lv' A P lv y) ∧
-
-  (∀ (k : Type) [Field k] (x : Sp (DualNumber k) ⟶ X)
-      (B : Over (Sp (DualNumber k))) [GrpObj B] (P' : LB (B ⊗ B).left)
-      (lv' : Std h M → (𝟙_ (Over (Sp (DualNumber k))) ⟶ B)),
-      P'.IsLB → IsPullbackTriple B P' lv' A P lv x → IsPullbackTriple B P' lv' A P lv (constPt x) → x = constPt x)
 
 end GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit

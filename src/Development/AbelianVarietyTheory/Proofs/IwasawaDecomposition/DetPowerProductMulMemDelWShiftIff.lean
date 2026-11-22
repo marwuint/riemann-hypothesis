@@ -236,9 +236,6 @@ theorem detMul_apply (K : Type) [CommRing K] {T : Type} [Fintype T] (N : ℕ) (k
     (F : (T → Matrix (Fin N) (Fin N) K) → K) (y : T → Matrix (Fin N) (Fin N) K) :
     detMul K N k F y = (∏ τ, (y τ).det ^ k τ) * F y := rfl
 
-theorem polFunAdd_apply (K : Type) [CommRing K] (T : Type) (N : ℕ) (P : MvPolynomial (T × Fin N × Fin N) K) :
-    polFunAdd K T N P = polFun P := rfl
-
 theorem delW_le_range (p : ℕ) [Fact p.Prime] (T : Type) [Fintype T] (N : ℕ) (ν : T → Fin N → ℕ) :
     DelW p T N ν ≤ (polFunAdd ℂ_[p] T N).range := by
   unfold DelW

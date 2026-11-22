@@ -191,8 +191,6 @@ variable {D : D7} {r : ℕ}
 def halfTrL (D : D7) : AE D →ₗ[AF D.host.F] AF D.host.F :=
   (algebraMap D.host.F (AF D.host.F) (1 / 2)) • Algebra.trace (AF D.host.F) (AE D)
 
-theorem halfTrL_apply (z : AE D) : halfTrL D z = halfTr z := rfl
-
 def uL (m : Matrix (Fin r) (Fin r) D.host.E) : Mx D r r →ₗ[AF D.host.F] AF D.host.F :=
   (halfTrL D) ∘ₗ (Matrix.traceLinearMap (Fin r) (AF D.host.F) (AE D)) ∘ₗ
     (LinearMap.mulLeft (AF D.host.F) (rat m : Mx D r r))

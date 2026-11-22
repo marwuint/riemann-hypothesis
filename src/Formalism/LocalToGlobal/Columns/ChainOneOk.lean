@@ -185,22 +185,7 @@ section Cst
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
 
-def ookCst (SB : Finset (HeightOneSpectrum (𝓞 X.E))) (mq : ℕ → SB → X.K) (A : ℕ) : LocCst X SB :=
-  { ciCst Ch SB mq with A := A, sharp := true }
-
 variable {Ch}
-
-theorem ookCst_ok (hPr : Pr.Ok) (hCh : Ch.Ok) {SB : Finset (HeightOneSpectrum (𝓞 X.E))} (hSB : ∀ P ∈ SB, P ∈ Pr.vGs)
-    (h4 : ∀ P ∈ SB, qOf P % 4 = 1) {mq : ℕ → SB → X.K} {A : ℕ} (hA : 1 ≤ A) : (ookCst Ch SB mq A).Ok where
-  psi_add := (ciCst_ok hPr hCh hSB h4 (mq := mq)).psi_add
-  psi_int := (ciCst_ok hPr hCh hSB h4 (mq := mq)).psi_int
-  psi_ne := (ciCst_ok hPr hCh hSB h4 (mq := mq)).psi_ne
-  D_pos _ := le_refl 1
-  sq_sq := (ciCst_ok hPr hCh hSB h4 (mq := mq)).sq_sq
-  M_pos := le_refl 1
-  M_le_A := hA
-  M_le_B := le_refl 1
-  B_pos := le_refl 1
 
 theorem ookXiUnit (hCh : Ch.Ok) {σ₀ : X.K →+* ℂ} {xi0 : X.E} (hW : Ch.WeilTied σ₀ xi0) (w : HeightOneSpectrum (𝓞 X.E))
     (hw : w ∈ Pr.vGs) : IntAt w xi0 ∧ redP w xi0 ≠ 0 := by
@@ -220,28 +205,7 @@ section Ok
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ)
 
-def ookCstR (G : ChGlob X R.m) : LocCst X (rowSG Pr sel (mu0 X.F X.E X.K S)) :=
-  ookCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) (ciMuq G ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K)) R.m
-
 variable {Ch}
-
-theorem referenceConstants_psi_depth_one (hPr : Pr.Ok) (G : ChGlob X R.m) (P : rowSG Pr sel (mu0 X.F X.E X.K S)) (a : X.E) (ha : IntAt P.1 a) :
-    (ookCstR Ch sel S G).psi P (a / (qOf P.1 : X.E)) = psi0P Ch P.1 (redP P.1 a) := by
-  show ciPsi Ch P _ = _
-  have hq0 : (qOf P.1 : X.E) ≠ 0 := by exact_mod_cast (ciQOf_prime hPr (ciMemG sel S P)).ne_zero
-  unfold ciPsi
-  rw [mul_div_cancel₀ _ hq0, if_pos ha]
-
-theorem ookCstR_base (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m) {m2 : ℕ}
-    (hm : R.m = m2 + 2) : OcbBase Ch sel (mu0 X.F X.E X.K S) (ookCstR Ch sel S G) m2 where
-  hX := hX
-  hPr := hPr
-  hCh := hCh
-  hm := hm
-  cst_ok := ookCst_ok hPr hCh (fun P hP => ciMemG sel S ⟨P, hP⟩) (fun P hP => h4 P (ciMemG sel S ⟨P, hP⟩)) (by have := R.two_le_m; omega)
-  sharp := rfl
-  psi0 P a _ ha := referenceConstants_psi_depth_one sel S hPr G P a ha
-  depthG _ _ := rfl
 
 end Ok
 

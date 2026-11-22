@@ -319,20 +319,6 @@ theorem fm_card_residue (v : HeightOneSpectrum (𝓞 F)) :
   rw [← hk]
   exact (Nat.card_congr (RingHom.quotientKerEquivOfSurjective hs).toEquiv).symm
 
-def fm_swap {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (s : SplitCore σ v) : SplitCore σ v where
-  φ := s.φ.trans RingEquiv.prodComm
-  sig x := by
-    show swapR _ (s.φ (sigR σ _ x)) = swapR _ (swapR _ (s.φ x))
-    rw [s.sig]
-  alg c := by
-    show Prod.swap (s.φ _) = _
-    rw [s.alg]; rfl
-  int x := by
-    rw [s.int x]; exact and_comm
-
-theorem fm_swap_apply {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (s : SplitCore σ v)
-    (x : E ⊗[F] v.adicCompletion F) : (fm_swap s).φ x = ((s.φ x).2, (s.φ x).1) := rfl
-
 theorem fm_incl_mem (v : HeightOneSpectrum (𝓞 F)) (c : 𝓞 E) :
     inclE (F := F) (v.adicCompletion F) (c : E) ∈ intV E v := sc_left_mem v c
 
@@ -380,25 +366,6 @@ theorem fm_mem_latS {n : Type} [Fintype n] [DecidableEq n] (v : HeightOneSpectru
     rw [this]
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _
       (Submodule.subset_span ⟨_, LevGap.single_mem_diagLat a i, rfl⟩)
-
-def fm_pr {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (s : SplitCore σ v) :
-    intV E v →+* v.adicCompletionIntegers F :=
-  { toFun := fun x => ⟨(s.φ x).1, ((s.int x).1 x.2).1⟩
-    map_one' := Subtype.ext (by
-      show (s.φ (1 : E ⊗[F] v.adicCompletion F)).1 = 1
-      rw [map_one]; rfl)
-    map_mul' := fun x y => Subtype.ext (by
-      show (s.φ ((x : E ⊗[F] v.adicCompletion F) * y)).1 = (s.φ x).1 * (s.φ y).1
-      rw [map_mul]; rfl)
-    map_zero' := Subtype.ext (by
-      show (s.φ (0 : E ⊗[F] v.adicCompletion F)).1 = 0
-      rw [map_zero]; rfl)
-    map_add' := fun x y => Subtype.ext (by
-      show (s.φ ((x : E ⊗[F] v.adicCompletion F) + y)).1 = (s.φ x).1 + (s.φ y).1
-      rw [map_add]; rfl) }
-
-theorem fm_pr_coe {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (s : SplitCore σ v) (x : intV E v) :
-    ((fm_pr s x : v.adicCompletionIntegers F) : v.adicCompletion F) = (s.φ x).1 := rfl
 
 variable {k : ℕ} (P : Par F E k)
 

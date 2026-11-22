@@ -42,9 +42,6 @@ variable {st : ((E →+* ℂ) × ℕ) ⊕ ℕ} {x : Letter Dw} (h : letterOf Dw 
 def genId : GenIso z.Z (z.line false st x h).L (z.line true st x h).L :=
   (exists_isGenId hp hW z.full (GenId.bdd_step hp st) _ _).choose
 
-theorem isGenId_genId : IsGenId (z.line false st x h) (z.line true st x h) (z.genId hp hW h) :=
-  (exists_isGenId hp hW z.full (GenId.bdd_step hp st) _ _).choose_spec
-
 end Step
 
 variable (d : ℕ) {r : ℕ} {st : Fin r → ((E →+* ℂ) × ℕ) ⊕ ℕ} {x : Fin r → Letter Dw}
@@ -135,9 +132,6 @@ def mdlOf : DV.Mdl D p N (DV.rkOf (DV.PsiOf D jc) N j) where
       (congrArg (fun σ => -(admitted.stepLB z false (.inl (σ, i.rev))).c1) (comp_cEmb jc τ).symm)⟩
   dim_eq := rfl
   omW_dual := ⟨Fin.revPerm, fun _ => FinLB.firstChern_dual _⟩
-
-theorem mdlOf_lie_Dv (τ : DV.Emb D p) (i) :
-    ((mdlOf z jc).lie τ).Dv i = vdiv hp hW _ _ _ (z.genId hp hW (letterOf_lie S jc τ i)) := rfl
 
 variable {jc} {t : D.what₂.Tau} {τ : DV.Emb D p} (ht : jc.comp τ = DV.tauEmb D t)
 

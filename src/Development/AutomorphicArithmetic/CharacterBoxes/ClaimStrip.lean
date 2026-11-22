@@ -99,6 +99,4 @@ theorem zeta (h : HalfPlane) : Zeta := by
       rw [riemannZeta_def_of_ne_zero h1s, completedRiemannZeta_one_sub, hc, zero_div]
     exact riemannZeta_ne_zero_of_one_le_re (by rw [Complex.sub_re, Complex.one_re]; linarith) hz'
 
-theorem zeta_iff : Zeta ↔ RiemannHypothesis := Iff.rfl
-
 end Claim

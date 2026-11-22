@@ -256,12 +256,6 @@ open Formalism.MainNotions.S.Cnt
 
 variable {eps : ℝ} (Fm : FamP eps)
 
-def TheoremK2PairBound (D : D7) (u : D.what₂.Word) : Prop :=
-  Summable (fun p : pairsIn D.s (NonGenericAndKTwoTheorems.TermsPP D u u) => ‖D.s.pval p.1‖) ∧
-    (∏ i : Fin 2, (1 + 3 / (D.host.g i : ℝ))) ^ D.R.f * gaG D *
-        (∑' p : pairsIn D.s (NonGenericAndKTwoTheorems.TermsPP D u u), D.s.pval p.1).re ≤
-      (D.duS u : ℝ) * Real.exp (-((D.R.k : ℝ) * D.R.f * Real.log D.R.k))
-
 end K2
 
 section BB

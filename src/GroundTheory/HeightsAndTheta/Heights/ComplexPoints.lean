@@ -93,11 +93,6 @@ def conjPoint (ρ : A →+* ℂ) (x : X.complexPoints ρ) :
     X.complexPoints ((starRingEnd ℂ).comp ρ) :=
   ⟨CP.conj x.1, X.conj_mem_complexPoints x.2⟩
 
-theorem complexPoints_self (ρ : A →+* ℂ) : (self A N).complexPoints ρ = Set.univ := by
-  ext v
-  simp only [complexPoints, Set.mem_ofPred_eq, Set.mem_univ, iff_true]
-  exact ⟨projPoint ρ v, rfl⟩
-
 end ProjScheme
 
 end

@@ -35,8 +35,6 @@ structure IsLevel (T : HSp D) (L : Submodule (NumberField.RingOfIntegers D.host.
   dual : ∀ v, AdelicU.IsSelfDualAt D.sp.cm.sig T.gram L v
   maj : AdelicU.IsMajorantFrame D.sp.cm.sig T.gram a
 
-theorem lev_frameLat (T : HSp D) (a : GL (Fin T.rank) (AE D)) : lev T (AdelicU.frameLat T) a = Kmax T a := rfl
-
 end GlobalTheory.EisCont
 
 end

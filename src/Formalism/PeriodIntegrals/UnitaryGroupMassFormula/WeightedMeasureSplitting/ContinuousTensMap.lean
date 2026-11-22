@@ -39,8 +39,6 @@ def crdH : R ⊗[F] E ≃ₜ (Fin d → R) where
 
 theorem crdH_apply (x : R ⊗[F] E) : crdH b R x = crd b R x := rfl
 
-theorem crdH_symm_apply (c : Fin d → R) : (crdH b R).symm c = (crd b R).symm c := rfl
-
 theorem continuous_tensMap {R' : Type} [CommRing R'] [Algebra F R'] [TopologicalSpace R']
     [IsTopologicalRing R'] (φ : R →ₐ[F] R') (hφ : Continuous φ) :
     Continuous (tensMap (E := E) φ) := by

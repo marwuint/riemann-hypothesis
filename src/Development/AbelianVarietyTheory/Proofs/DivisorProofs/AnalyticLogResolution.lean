@@ -10,10 +10,6 @@ noncomputable section
 
 variable {d n : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
-def chartSumInt (B : FinHolAtlas n Y) (Φ : LocPot Y) (U : Set Y) (f : Y → ℝ≥0∞) : ℝ≥0∞ :=
-  ∑ j, ∫⁻ w in (B.chart j).target ∩ (B.chart j).symm ⁻¹' U,
-    f ((B.chart j).symm w) * ‖locDens B (fun _ => Φ) j w‖ₑ
-
 def IsJointSNC (B : FinHolAtlas n Y) (μ : Y → X) {q r : ℕ} (L : Fin q → LocPot X)
     (t : Fin q → X → X → ℂ) (W : Fin r → Set Y) (e : Fin q → Fin r → ℕ) : Prop :=
   ∀ y, ∃ χ : OpenPartialHomeomorph Y (Fin n → ℂ), IsCompatChart B χ ∧ y ∈ χ.source ∧

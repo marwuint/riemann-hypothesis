@@ -244,14 +244,6 @@ noncomputable def _root_.GroundTheory.Arith.Abelian.Isogeny.ofMap (ψ : Isogeny 
     (isIsogeny_iff _).mpr ⟨transcendental_of_ffMap σ (hx ▸ ψ.transcendental_alt),
       respectsAdd_of_map σ ψ (by simp) hx hy⟩⟩
 
-theorem _root_.GroundTheory.Arith.Abelian.Isogeny.ofMap_alt (ψ : Isogeny (E.map σ) (E'.map σ))
-    (x y : E.toAffine.FunctionField) (hx : ffMap σ E x = ψ.x) (hy : ffMap σ E y = ψ.y) :
-    (Isogeny.ofMap σ ψ x y hx hy).x = x := rfl
-
-theorem _root_.GroundTheory.Arith.Abelian.Isogeny.ofMap_y (ψ : Isogeny (E.map σ) (E'.map σ))
-    (x y : E.toAffine.FunctionField) (hx : ffMap σ E x = ψ.x) (hy : ffMap σ E y = ψ.y) :
-    (Isogeny.ofMap σ ψ x y hx hy).y = y := rfl
-
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_ofMap (ψ : Isogeny (E.map σ) (E'.map σ))
     (x y : E.toAffine.FunctionField) (hx : ffMap σ E x = ψ.x) (hy : ffMap σ E y = ψ.y) :
     (Isogeny.ofMap σ ψ x y hx hy).map σ = ψ :=

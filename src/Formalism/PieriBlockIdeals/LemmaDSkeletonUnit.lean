@@ -44,13 +44,6 @@ def NablaL {O K V P R : Type*} [CommRing O] [Field K] [Algebra O K] [AddCommGrou
     (DelL : Submodule O S.W) : Submodule O S.W :=
   (B.restrict S.W).dualSubmodule DelL
 
-def NablaSpec : Prop :=
-  ∀ (O K V P R : Type) [CommRing O] [Field K] [Algebra O K] [AddCommGroup V] [Module K V] [Module O V]
-    [IsScalarTower O K V] [DecidableEq P] [DecidableEq R] [Fintype P] [Fintype R] (S : HidaSetting K V P R)
-    (B : LinearMap.BilinForm K V) (DelL : Submodule O S.W),
-    (∀ v : V, v ∈ B.dualSubmodule (DeltaAll S DelL) ↔ ∀ x ∈ DeltaAll S DelL, ∃ c : O, B v x = algebraMap O K c) ∧
-      ∀ u : S.W, u ∈ NablaL S B DelL ↔ ∀ x ∈ DelL, ∃ c : O, B (u : V) (x : V) = algebraMap O K c
-
 def ContraWord : Prop :=
   ∀ (k V P R : Type) [CommRing k] [AddCommGroup V] [Module k V] [DecidableEq P] [DecidableEq R]
     (S : HidaSetting k V P R) (B : LinearMap.BilinForm k V), Contra S B → ∀ (n : ℕ) (x y : V),

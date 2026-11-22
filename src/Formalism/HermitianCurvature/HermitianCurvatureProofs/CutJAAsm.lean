@@ -338,9 +338,6 @@ theorem van_mulG {φ : ℝ → ℝ} {ε : ℝ} (hφ : ∀ x, x ≤ ε → φ x =
   intro g hg
   simp [mulG, hφ _ hg.le]
 
-theorem applyL_cons (Θ : OpT S v) (l : List (OpT S v)) (J : GFn S v) :
-    applyL S v (Θ :: l) J = B.opApply Θ (applyL S v l J) := rfl
-
 theorem applyL_append (l₁ l₂ : List (OpT S v)) (J : GFn S v) :
     applyL S v (l₁ ++ l₂) J = applyL S v l₁ (applyL S v l₂ J) := by
   unfold applyL; rw [List.foldr_append]

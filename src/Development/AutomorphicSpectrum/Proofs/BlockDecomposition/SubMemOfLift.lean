@@ -82,8 +82,6 @@ def fHom : Γ(Y, W) →+* AddMonoid.End (HU (GF L r) Q r) :=
                 map_mul' := fun f g => AddMonoidHom.ext fun c => fAct_mul 𝔭 hF hQ r f g c }
     fun f g => AddMonoidHom.ext fun c => fAct_add 𝔭 hF hQ r f g c
 
-theorem fHom_apply (f : Γ(Y, W)) (c : HU (GF L r) Q r) : fHom 𝔭 hF hQ r f c = fAct 𝔭 hF hQ r f c := rfl
-
 theorem res_fAct {Q' : ObjectProperty (Thick L)} (hF' : IsFil (sP Q') (sFil Q')) {W' : Y.Opens}
     (hQ' : ∀ T, Q' T → InY 𝔭 W' T) (hW : W' ≤ W) (hle : Q' ≤ Q) (f : Γ(Y, W)) (c : HU (GF L r) Q r) :
     (resU (GF L r) hle).pull r (fAct 𝔭 hF hQ r f c) =

@@ -58,27 +58,7 @@ theorem T_modEq (D : D7) (u : D.what₂.Word) : (D.mem u).A.T ≡ 1 [MOD condE D
 def LeastPrimeCong (H : Host R) (q0 : ℕ) : Prop :=
   ∃ r' : ℕ, IsLeast {l : ℕ | l.Prime ∧ ¬ l ∣ condE H * (H.pde - 1) * (H.pde' - 1)} r' ∧ q0 ≡ 1 [MOD r' * condE H]
 
-theorem numWords_eq (C : FC) (s : Scale) (R : Ranks) :
-    numWords C s R = ⌈3 * Real.exp (C.CGam * (R.m : ℝ) ^ 5 * R.f * s.L) ^ 2 * s.x ^ C.P.CF⌉₊ := rfl
-
 def BsCanon {C : FC} (p : Pt C) : Prop := ∀ h t, p.ta.Gx.bs h t = Arith.bsH h t
-
-def OffCanon : PtProp := fun D L _ X _ _ _ _ _ =>
-  ∀ j, j ∉ SizeData₂.lifts D → ∀ t : G.HH D,
-    X.off j (false, t) = if t ∈ D.host.TT then L.sc.b' / L.sc.x else L.sc.w'' D.R.n
-
-theorem canonInst_iff {C : FC} (p : Pt C) : CanonInst p.ta.Gx ↔ BsCanon p ∧ p.Has OffCanon := Iff.rfl
-
-def ObjExNarrow (Q : PtProp) : Prop :=
-  ∃ ε0 : ℝ, 0 < ε0 ∧ ∀ eps C8 c6 Cb : ℝ, 0 < eps → eps ≤ ε0 → eps < 1 / 52 → 1 ≤ C8 → ∃ K0 : TransportedAlt,
-    ∀ C : FC, Std C → C.P.Cpde = C8 → C.Large K0 C.P.CF → ∃ c1 : ℝ, ∀ cD ≥ c1, ∃ c2 : ℝ, ∀ ch ≥ c2, ∃ Cdg x0 : ℝ,
-      ∀ (s : Scale) (R : Ranks) (H : Host R) (q0 : ℕ) (a b : R.A → ℤ) (M : ℕ)
-        (c : Fin M → Fin (R.k - 2) → Bool) (u0 : ℕ), s.eps = eps → x0 ≤ s.x → RankVal s R → H.CT2 = C.CT2 →
-        HostGood s C8 4 c6 Cb H q0 → LeastPrimeCong H q0 → WinOK s C.GK H a b →
-        M = ⌈3 * Real.exp (C.CGam * (R.m : ℝ) ^ 5 * R.f * s.L) ^ 2 * s.x ^ C.P.CF⌉₊ → Function.Injective c → u0 < R.n →
-        ∃ p : Pt C, p.L.sc = s ∧ Val C cD ch p.L ∧ HostArith p.D.host ∧ p.From H a b c u0 ∧ CanonInst p.ta.Gx ∧ p.Has Q ∧
-          ChProviso_at p.L 3 ∧ p.L.TuGe ∧ (∀ u, Real.log ((p.D.mem u).A.T : ℝ) ≤ C.CTu * p.D.R.m * p.L.sc.L) ∧
-          FactDGam p.D Cdg
 
 def Common (Q : PtProp) : Prop :=
   ∃ ε0 : ℝ, 0 < ε0 ∧ ∀ eps C8 c6 Cb : ℝ, 0 < eps → eps ≤ ε0 → eps < 1 / 52 → 1 ≤ C8 → ∃ K0 : TransportedAlt,

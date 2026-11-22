@@ -12,9 +12,6 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def cls {i : ℕ} (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (x : τ.V) : (phiN ψ τ).V :=
   (twKer τ.ρ (MirUin k (i + 1)) (mirChar k ψ i)).mkQ x
 
-theorem qO_tmul {i t : ℕ} (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (x : τ.V) (y : σ.V) :
-    qO τ σ ψ (x ⊗ₜ[ℂ] y) = cls ψ τ x ⊗ₜ[ℂ] y := rfl
-
 theorem phiN_cls {i : ℕ} (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (a : Mir k i) (x : τ.V) :
     (phiN ψ τ).ρ a (cls ψ τ x) = ((dpowM i (-1 / 2) a : ℂˣ) : ℂ) • cls ψ τ (τ.ρ (sEmb k i a) x) :=
   twist_apply _ _ _ _

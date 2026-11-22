@@ -66,10 +66,6 @@ def HfQ (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : StableSub L I) 
     Submodule O (G → ↥L.T ⧸ I) :=
   ((latticeFiniteCocycles PD L).comap (latticeCocycles L).subtype).map (redT L I) ⊔ BQ L I hI
 
-def quotientFiniteCohomology (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : StableSub L I) :
-    Submodule O (QuotientCohomology L I hI) :=
-  ((HfQ PD L I hI).comap (quotientCocycles L I hI).subtype).map (Submodule.mkQ _)
-
 end Tor
 
 section TorMore

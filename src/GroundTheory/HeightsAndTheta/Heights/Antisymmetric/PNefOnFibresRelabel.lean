@@ -171,15 +171,6 @@ set_option linter.unusedSectionVars false
 variable {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type}
   [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] (ε : K ≃ K') (h : ∀ k, ι k = ι' (ε k))
 
-def relabelRingEquiv : MRing ι ≃+* MRing ι' :=
-  (MvPolynomial.renameEquiv ℤ (relabelBlocks ε h)).toRingEquiv
-
-theorem relabelRingEquiv_apply (f : MRing ι) :
-    relabelRingEquiv ε h f = rename (relabelBlocks ε h) f := rfl
-
-theorem relabelRingEquiv_symm_apply (f : MRing ι') :
-    (relabelRingEquiv ε h).symm f = rename (relabelBlocks ε h).symm f := rfl
-
 end Relabel
 
 end GroundTheory.Heights₂.Heights

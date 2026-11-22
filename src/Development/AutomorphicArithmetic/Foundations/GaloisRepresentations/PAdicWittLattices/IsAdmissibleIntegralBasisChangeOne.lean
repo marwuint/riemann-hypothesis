@@ -92,9 +92,6 @@ def HodgeInj : Prop := ∀ (k : Type) [Field k] [CharZero k] (a b : ℕ) {Z W : 
 def EtTr : Prop := ∀ (l : ℕ) [Fact l.Prime] (B : Scheme.{0}), IsUnit (l : Γ(B, ⊤)) → ∀ (n i : ℤ) {Z Y : Scheme.{0}} (p : Z ⟶ B)
   (q : Y ⟶ B) (s : Y ⟶ Z) [IsFinite s] [Etale s], (etn l B n i).IsTr p q s (TranscendenceTraces.trHQ l s (TranscendenceTraces.Wt.const Y 1) n i)
 
-def EtInjFlat : Prop := ∀ (l : ℕ) [Fact l.Prime] (n i : ℤ) {W Z : Scheme.{0}} [CompactSpace Z] (c : W ⟶ Z) [IsFinite c] [Flat c]
-  [LocallyOfFinitePresentation c] [Surjective c], IsUnit (l : Γ(Z, ⊤)) → Function.Injective (pullHQ l (sch.map c) n i)
-
 def OpTr : Prop := ∀ {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R), T.Good → ∀ {Z Y Z' : Scheme.{0}} (p : Z ⟶ B)
   (q : Y ⟶ B) (p' : Z' ⟶ B) (s : Y ⟶ Z) (t : Y ⟶ Z') (_ : s ≫ p = q) (ht : t ≫ p' = q) (tr : T.H q →ₗ[R] T.H p),
   T.IsTr p q s tr → ∀ A, (T.IsOp p p' s t A → A = tr ∘ₗ T.pull t ht) ∧ (GalSplit s → A = tr ∘ₗ T.pull t ht → T.IsOp p p' s t A)

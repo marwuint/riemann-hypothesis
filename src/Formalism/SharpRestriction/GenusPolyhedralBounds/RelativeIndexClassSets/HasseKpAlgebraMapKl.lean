@@ -481,8 +481,6 @@ theorem pdOp_Tv (p q : Idx D j N) : pdOp X la N p (Tv X la N q) = if p = q then 
   · subst h; simp
   · rw [if_neg h, if_neg]; exact fun h' => h (Finsupp.single_left_injective one_ne_zero h')
 
-theorem hasseKp_single (p : Idx D j N) (x : Kp X la N) : hasseKp X la N (Finsupp.single p 1) x = pdKp X la N p x := rfl
-
 theorem hasseKp_algebraMap (β : Idx D j N →₀ ℕ) (x : Op X la N) :
     hasseKp X la N β (algebraMap (Op X la N) (Kp X la N) x) =
       algebraMap (Op X la N) (Kp X la N) (hasseOp X la N β x) := Tay.loc_co (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N) β x
@@ -617,15 +615,10 @@ def pdLc (p : Idx D j N) : Derivation (X.Kl la) (Lc X la w) (Lc X la w) :=
 def hasse (β : Idx D j N →₀ ℕ) : Lc X la w →ₗ[X.Kl la] Lc X la w :=
   Tay.hs (X.Kl la) (tayLc X la w) (tayLc_isCst X la w) β
 
-theorem hasse_single (p : Idx D j N) (x : Lc X la w) : hasse X la w (Finsupp.single p 1) x = pdLc X la w p x := rfl
-
 theorem hasse_zero (x : Lc X la w) : hasse X la w 0 x = x := Tay.co_zero (tayLc_isTay X la w) x
 
 theorem hasse_mul (β : Idx D j N →₀ ℕ) (x y : Lc X la w) : hasse X la w β (x * y) =
     ∑ q ∈ antidiagonal β, hasse X la w q.1 x * hasse X la w q.2 y := Tay.co_mul (tayLc X la w) β x y
-
-theorem pdLc_comm (p q : Idx D j N) (x : Lc X la w) :
-    pdLc X la w p (pdLc X la w q x) = pdLc X la w q (pdLc X la w p x) := Tay.dv_comm (tayLc_iterAt X la w) p q x
 
 theorem hasse_algebraMap (β : Idx D j N →₀ ℕ) (x : Rp X la N) :
     hasse X la w β (algebraMap (Rp X la N) (Lc X la w) x) = algebraMap (Rp X la N) (Lc X la w) (hasseRp X la N β x) := Tay.loc_co (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N) β x
@@ -658,23 +651,8 @@ theorem hasse_of_mul_eq (β : Idx D j N →₀ ℕ) {s x : Rp X la N} {y : Lc X 
 @[instance_reducible] def Lc.algVl : Algebra (X.Vl la) (Lc X la w) :=
   ((algebraMap (Rp X la N) (Lc X la w)).comp (bcV X la N).toRingHom).toAlgebra
 
-def hasseV (β : Idx D j N →₀ ℕ) :
-    letI := Lc.algVl X la w
-    Lc X la w →ₗ[X.Vl la] Lc X la w :=
-  letI := Lc.algVl X la w
-  Tay.hs (X.Vl la) (tayLc X la w) (tayLc_isCst_bcV X la w) β
-
-theorem hasseV_apply (β : Idx D j N →₀ ℕ) (x : Lc X la w) :
-    letI := Lc.algVl X la w
-    hasseV X la w β x = hasse X la w β x := rfl
-
 def iterPd (β : Idx D j N →₀ ℕ) : Module.End (X.Kl la) (Lc X la w) :=
   Tay.itD (X.Kl la) (tayLc_iterAt X la w) (tayLc_isCst X la w) Finset.univ β
-
-theorem iterPd_eq (β : Idx D j N →₀ ℕ) : iterPd X la w β =
-    Finset.univ.noncommProd (fun p => ((pdLc X la w p : Lc X la w →ₗ[X.Kl la] Lc X la w) :
-      Module.End (X.Kl la) (Lc X la w)) ^ β p)
-      (fun p _ q _ _ => Commute.pow_pow (LinearMap.ext fun x => pdLc_comm X la w p q x) _ _) := rfl
 
 theorem Kl_charZero : CharZero (X.Kl la) := by
   first

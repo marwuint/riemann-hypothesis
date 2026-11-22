@@ -14,19 +14,11 @@ namespace GlobalTheory.AinfK
 
 variable {l : ℕ} [hl : Fact l.Prime] (K : FinExt l)
 
-theorem phiA_coeff_pt (l : ℕ) [Fact l.Prime] (w : Per.Ainf l) (n : ℕ) :
-    (Per.φA l w).coeff n = w.coeff n ^ l := by
-  rw [GlobalTheory.RingBasics.φA_apply, WittVector.coeff_frobenius_charP]
-
 abbrev W0 : Type := Wq l (fK K)
 
 scoped instance algWA : Algebra (W0 K) (Ainf l) := (wA l (fK K)).toRingHom.toAlgebra
 
 scoped instance algWO : Algebra (W0 K) ↥(OL K) := (thetaW (fK K) K).toRingHom.toAlgebra
-
-theorem algebraMap_WA (w : W0 K) : algebraMap (W0 K) (Ainf l) w = wA l (fK K) w := rfl
-
-theorem algebraMap_WO (w : W0 K) : algebraMap (W0 K) ↥(OL K) w = thetaW (fK K) K w := rfl
 
 scoped instance towWO : IsScalarTower ℤ_[l] (W0 K) ↥(OL K) :=
   IsScalarTower.of_algebraMap_eq fun z => ((thetaW (fK K) K).commutes z).symm
@@ -113,40 +105,6 @@ variable {K} in
 theorem mapA_inA (s : Ainf l →+* Ainf l) (hs : ∀ w : W0 K, s (wA l (fK K) w) = wA l (fK K) w) (a : Ainf l) :
     mapA s hs (inA K a) = inA K (s a) :=
   lift_inA ((inA K).comp s) (inO K) (fun w => by rw [RingHom.comp_apply, hs, inA_wA]) a
-
-theorem coeff_iter (n : ℕ) (a : Ainf l) (i : ℕ) : ((⇑(Per.φA l))^[n] a).coeff i = a.coeff i ^ l ^ n := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    rw [Function.iterate_succ_apply', phiA_coeff_pt, ih, ← pow_mul, ← pow_succ]
-
-theorem iter_wA (w : W0 K) : (Per.φA l ^ fK K) (wA l (fK K) w) = wA l (fK K) w := by
-  refine WittVector.ext fun i => ?_
-  rw [RingHom.coe_pow, coeff_iter]
-  exact (w.coeff i).2
-
-def frobq : AK K →ₐ[↥(OL K)] AK K := mapA (Per.φA l ^ fK K) (iter_wA K)
-
-theorem frobq_bijective : Function.Bijective (frobq K) := by
-  have hb : Function.Bijective (Per.φA l ^ fK K : Ainf l →+* Ainf l) := by
-    rw [RingHom.coe_pow]
-    refine Function.Bijective.iterate ?_ _
-    rw [show ⇑(Per.φA l) = WittVector.frobenius from funext (GlobalTheory.RingBasics.φA_apply l)]
-    exact (WittVector.frobeniusEquiv l (OCb l)).bijective
-  let e := RingEquiv.ofBijective _ hb
-  have he : ∀ a, e a = (Per.φA l ^ fK K : Ainf l →+* Ainf l) a := fun _ => rfl
-  let ψ := mapA (K := K) e.symm.toRingHom fun w => e.injective (by
-    rw [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, e.apply_symm_apply, he, iter_wA])
-  have h1 : ψ.toRingHom.comp (frobq K).toRingHom = RingHom.id _ := ringHom_ext (fun a => by
-    change ψ (mapA _ (iter_wA K) _) = _
-    rw [mapA_inA, mapA_inA, ← he]
-    exact congrArg (inA K) (e.symm_apply_apply a)) fun c => by simp
-  have h2 : (frobq K).toRingHom.comp ψ.toRingHom = RingHom.id _ := ringHom_ext (fun a => by
-    change mapA _ (iter_wA K) (ψ _) = _
-    rw [mapA_inA, mapA_inA, ← he]
-    exact congrArg (inA K) (e.apply_symm_apply a)) fun c => by simp
-  exact ⟨Function.LeftInverse.injective (g := ψ) (RingHom.congr_fun h1),
-    Function.RightInverse.surjective (g := ψ) (RingHom.congr_fun h2)⟩
 
 variable {K}
 

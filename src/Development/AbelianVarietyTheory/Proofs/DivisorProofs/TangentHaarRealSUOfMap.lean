@@ -374,24 +374,6 @@ theorem herm_eq [NumberField E] [NumberField.IsCMField E] (x y : Fin r → E) :
     herm G x y = x ⬝ᵥ (G *ᵥ fun b => cc (y b)) := by
   simp [herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
-theorem skew_matrix [NumberField E] [NumberField.IsCMField E] {X : Matrix (Fin r) (Fin r) E}
-    (h : ∀ x y, herm G (X *ᵥ x) y + herm G x (X *ᵥ y) = 0) : Xᵀ * G + G * X.map cc = 0 := by
-  have hc : ∀ (P : Matrix (Fin r) (Fin r) E) (y : Fin r → E),
-      (fun b => cc ((P *ᵥ y) b)) = P.map cc *ᵥ fun b => cc (y b) := by
-    intro P y; ext a; simp [mulVec, dotProduct, cc, map_sum, map_mul]
-  have key : ∀ u w : Fin r → E, herm G (X *ᵥ u) w + herm G u (X *ᵥ w) =
-      u ⬝ᵥ ((Xᵀ * G + G * X.map cc) *ᵥ fun b => cc (w b)) := by
-    intro u w
-    rw [herm_eq, herm_eq, hc, add_mulVec, dotProduct_add, ← mulVec_mulVec, ← mulVec_mulVec,
-      dotProduct_mulVec u Xᵀ, vecMul_transpose]
-  ext a b
-  have h1 := h (Pi.single a 1) (Pi.single b 1)
-  rw [key] at h1
-  have e : (fun c => cc ((Pi.single b (1 : E) : Fin r → E) c)) = Pi.single b 1 := by
-    ext c; by_cases hcb : c = b <;> simp [hcb, cc]
-  rw [e] at h1
-  simpa [mulVec_single_one, Matrix.mul_assoc] using h1
-
 theorem map_skew [NumberField E] [NumberField.IsCMField E] {X : Matrix (Fin r) (Fin r) E}
     (h : Xᵀ * G + G * X.map cc = 0) (τ : E →+* ℂ) :
     (X.map τ)ᵀ * G.map τ + G.map τ * (X.map τ).map (starRingEnd ℂ) = 0 := by

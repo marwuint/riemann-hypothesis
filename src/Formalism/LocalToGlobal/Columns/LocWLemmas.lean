@@ -19,42 +19,6 @@ namespace Formalism.L2.Col
 
 variable {K : Type} [Field K] [NumberField K]
 
-theorem plEquiv_eq_plOf (w : HeightOneSpectrum (𝓞 K)) : plEquiv K w = Formalism.LFunctionChainParameters.LBrDiv.plOf w := rfl
-
-theorem prW_eq_prBelow (w : HeightOneSpectrum (𝓞 K)) :
-    prW w = Formalism.LFunctionChainParameters.LChain2.prBelow (plEquiv K w) := rfl
-
-theorem eW_eq_ramE (w : HeightOneSpectrum (𝓞 K)) :
-    (eW w : ℝ) = Formalism.LFunctionChainParameters.LChain2.ramE (plEquiv K w) := rfl
-
-theorem eW_eq_eWL (w : HeightOneSpectrum (𝓞 K)) : eW w = Formalism.BasicNotions.eWL K w := rfl
-
-theorem lW_eq_ell (w : HeightOneSpectrum (𝓞 K)) : lW w = Formalism.LFunctionChainParameters.slopeLatticeData.ell (plEquiv K w) := rfl
-
-theorem lW_eq_lw (w : HeightOneSpectrum (𝓞 K)) : lW w = Formalism.LFunctionChainParameters.LBrDiv.lw w := rfl
-
-theorem lW_mul_eW (w : HeightOneSpectrum (𝓞 K)) :
-    lW w * (eW w : ℝ) = Formalism.LFunctionChainParameters.LChain2.lE (plEquiv K w) := rfl
-
-theorem lW_eq_lw₂ (w : HeightOneSpectrum (𝓞 K)) : lW w = Formalism.BasicNotions.lw K w := rfl
-
-theorem plEquiv_symm_eq_hs (p : Formalism.LFunctionChainParameters.slopeLatticeData.FinPl K) :
-    (plEquiv K).symm p = Formalism.L2.GlobalTheoryTheory.Arith.hs p := rfl
-
-theorem hs_plEquiv (w : HeightOneSpectrum (𝓞 K)) : Formalism.L2.GlobalTheoryTheory.Arith.hs (plEquiv K w) = w := rfl
-
-theorem owToK_eq_rlocToK (w : HeightOneSpectrum (𝓞 K)) :
-    owToK w = Formalism.LFunctionChainParameters.LJC.rlocToK (plEquiv K w) := rfl
-
-theorem owAlgebra_eq_rlocAlgebra (w : HeightOneSpectrum (𝓞 K)) :
-    (owAlgebra w : Algebra (Ow w) K) = Formalism.LFunctionChainParameters.LJC.rlocAlgebra (plEquiv K w) := rfl
-
-theorem owModule_eq_rlocModule (w : HeightOneSpectrum (𝓞 K)) (V : Type) [AddCommGroup V] [Module K V] :
-    owModule w V = Formalism.LFunctionChainParameters.LJC.rlocModule (plEquiv K w) V := rfl
-
-theorem rlocModule_eq_rlocModule (p : Formalism.LFunctionChainParameters.slopeLatticeData.FinPl K) (V : Type) [AddCommGroup V] [Module K V] :
-    Formalism.L2.Col.rlocModule V p = Formalism.LFunctionChainParameters.LJC.rlocModule p V := rfl
-
 section Rec
 variable [StarRing K]
 

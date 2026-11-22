@@ -165,8 +165,6 @@ def piL (k : ι) : VV ι →ₗ[ℝ] ℂ where
 
 def piC (k : ι) : VV ι →L[ℝ] ℂ := LinearMap.toContinuousLinearMap (piL k)
 
-theorem piC_apply (k : ι) (y : VV ι) : piC k y = ⟨y (Sum.inl k), y (Sum.inr k)⟩ := rfl
-
 end Maps
 
 end Formalism.MainNotions.BlockEstimateWords
@@ -284,15 +282,6 @@ def l2Pl : D.what₂.Tau ≃ {w : InfinitePlace D.host.E // w.IsComplex} :=
 
 instance no_real_places : IsEmpty {w : InfinitePlace D.host.E // w.IsReal} :=
   ⟨fun w => (InfinitePlace.not_isReal_iff_isComplex.2 (NumberField.IsTotallyComplex.isComplex w.1)) w.2⟩
-
-def l2cj (v : D.what₂.Tau) : ℂ ≃ₗ[ℝ] ℂ :=
-  if (plOf D v).embedding = plEmb D v then LinearEquiv.refl ℝ ℂ else Complex.conjAe.toLinearEquiv
-
-def l2g0 : mixedEmbedding.mixedSpace D.host.E ≃ₗ[ℝ] (D.what₂.Tau → ℂ) :=
-  (LinearEquiv.uniqueProd).trans ((LinearEquiv.funCongrLeft ℝ ℂ (l2Pl D)).trans (LinearEquiv.piCongrRight (l2cj D)))
-
-theorem l2g0_apply (x : mixedEmbedding.mixedSpace D.host.E) (v : D.what₂.Tau) :
-    l2g0 D x v = l2cj D v (x.2 (l2Pl D v)) := rfl
 
 end Geo
 
@@ -427,4 +416,3 @@ end Formalism.MainNotions.BlockEstimateWords
 namespace Formalism.MainNotions.BlockEstimateWords
 
 end Formalism.MainNotions.BlockEstimateWords
-

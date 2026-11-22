@@ -177,8 +177,6 @@ def ofBasis (b : Basis (Fin n) R M) : FullFlag R M n where
 
 def IsAdapted (F : FullFlag R M n) (b : Basis (Fin n) R M) : Prop := b.flag = F.sub
 
-theorem isAdapted_ofBasis (b : Basis (Fin n) R M) : (ofBasis b).IsAdapted b := rfl
-
 theorem exists_retraction (F : FullFlag R M n) (k : Fin (n + 1)) :
     ∃ r : M →ₗ[R] M, (∀ x, r x ∈ F.sub k) ∧ ∀ x ∈ F.sub k, r x = x := by
   induction k using Fin.reverseInduction with

@@ -25,8 +25,6 @@ def splitIx (hr : r ≤ n) : Fin r ⊕ Fin (n - r) ≃ Fin n :=
 
 theorem splitIx_inl (hr : r ≤ n) (a : Fin r) : splitIx hr (Sum.inl a) = Fin.castLE hr a := Fin.ext rfl
 
-theorem splitIx_inr (hr : r ≤ n) (a : Fin (n - r)) : (splitIx hr (Sum.inr a)).val = r + a.val := rfl
-
 def diagMat (hr : r ≤ n) (M : Matrix (Fin r) (Fin r) κ) : Matrix (Fin n) (Fin n) κ :=
   (Matrix.fromBlocks M 0 0 1).submatrix (splitIx hr).symm (splitIx hr).symm
 

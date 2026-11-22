@@ -466,8 +466,6 @@ theorem isUnit_thRat (M M' : GChart Y) : IsUnit (thRat M M') := by
 
 def thUnit (M M' : GChart Y) : Γ(Y.X, M.U ⊓ M'.U)ˣ := (isUnit_thRat M M').unit
 
-theorem thUnit_val (M M' : GChart Y) : (thUnit M M').val = thRat M M' := rfl
-
 theorem ev_thRat_mul (M M' M'' : GChart Y) (x : Sp S ⟶ Y.X) (h₁ : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M'.U))
     (h₂ : ⊤ ≤ x ⁻¹ᵁ (M'.U ⊓ M''.U)) (h₃ : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M''.U)) :
     ev x _ h₁ (thRat M M') * ev x _ h₂ (thRat M' M'') = ev x _ h₃ (thRat M M'') := by

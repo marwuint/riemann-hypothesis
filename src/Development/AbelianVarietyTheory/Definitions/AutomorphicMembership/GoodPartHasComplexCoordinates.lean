@@ -187,24 +187,8 @@ section OfTie
 
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
 
-def castForms {a b : D.what₂.Tup} (h : a = b) : D.what₂.Amb a →ₗ[ℂ] D.what₂.Amb b := h ▸ LinearMap.id
-
 variable (F : Face D A) (X : CxData A.fam.amb) {S₀ : IndefData (A.side F.P0 F.ψ0 X.zs)} {X₀ : BaseLevelRowSide D}
   (I : DivisionCompatibilityData D A F.P0 F.ψ0 F.P1 F.ψ1 X.zs S₀ (X.data F.cr true) X₀ (F.Dc X.zs))
-
-def Read.ofTie (h : TupTie D A S₀ I.tup) : Read D X F.fc (twAt D.what₂.embLL A.v0) where
-  wU := I.wU
-  eNu := I.eNu
-  eRR := I.eRR
-  jV := (castForms h.mu0).comp ((I.jA A.μ0).comp (rV0 D A F.P1 F.ψ1 A.μ0).mulVecLin)
-  v0 := h.v0
-  twist a := by
-    have h1 := emb_eq D.what₂.embLL A.v0 a
-    rw [sgAt_mk _ h.v0] at h1
-    exact h1
-
-theorem Read.ofTie_jV (h : TupTie D A S₀ I.tup) (y : Fin ((A.fam.R A.μ0).nV (A.fam.lvl F.P1 F.ψ1)) → D.what₂.LL) :
-    (Read.ofTie F X I h).jV y = castForms h.mu0 (I.jA A.μ0 ((rV0 D A F.P1 F.ψ1 A.μ0).mulVec y)) := rfl
 
 variable {Sp : SPer (F.Dc X.zs)} {C : ColData (F.Dc X.zs) Sp (X.data F.cr true)}
   {NuC : ∀ u, Submodule (𝓞 D.what₂.LL) (Fin ((F.Dc X.zs).a u) → D.what₂.LL)}
@@ -217,14 +201,6 @@ section Block
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
   (B : BlockDat K G Pl0) (ℓ : Lvl K G)
-
-def placeGood : (Fin (B.nV ℓ) → K) →ₗ[K] B.S.Forms :=
-  (B.S.basis.equivFun.symm : (Fin B.S.dim → K) →ₗ[K] B.S.Forms) ∘ₗ (B.vE ℓ).mulVecLin
-
-theorem toF_eq_placeGood (Z : Submodule K B.S.Forms) (x : Fin (B.dZ ℓ Z) → K) :
-    B.toF ℓ Z x = placeGood B ℓ ((B.zE ℓ Z).mulVec x) := rfl
-
-theorem range_placeGood : LinearMap.range (placeGood B ℓ) = BlockGood.goodR B ℓ := rfl
 
 end Block
 

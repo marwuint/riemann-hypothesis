@@ -110,12 +110,6 @@ def galToOpenCompletion :
     change quotientMapOfLE h (artinCoord K Ω H σ) = artinCoord K Ω H' σ
     rw [hx, hx', quotientMapOfLE_mk]
 
-theorem galToOpenCompletion_apply (σ : maximalAbelianExtension K Ω ≃ₐ[K] maximalAbelianExtension K Ω)
-    (H : openFiniteIndex Kˣ) :
-    ((galToOpenCompletion K Ω σ : openCompletion Kˣ) : ∀ H : openFiniteIndex Kˣ, Kˣ ⧸ H.1) H =
-      artinCoord K Ω H σ :=
-  rfl
-
 end Completion
 
 end GroundTheory.LocalField

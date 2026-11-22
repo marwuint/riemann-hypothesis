@@ -13,10 +13,6 @@ open GlobalTheory.Doubling (absE)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
-def ctf {d d₁ : ℕ} {W : Spc F E d} (H' : Plane E d d₁) (μ : Measure (unip σ W H')) (𝓕 : Set (unip σ W H'))
-    (f : UA σ W.J → ℂ) (g : UA σ W.J) : ℂ :=
-  ∫ u in 𝓕, f (u.1 * g) ∂μ
-
 theorem absE_pos (t : (AE F E)ˣ) : 0 < (absE F E t : ℝ) := by
   have h : absE F E t * absE F E t⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
   have h0 : absE F E t ≠ 0 := left_ne_zero_of_mul_eq_one h

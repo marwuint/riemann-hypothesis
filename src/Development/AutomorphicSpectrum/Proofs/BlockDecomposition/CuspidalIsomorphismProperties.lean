@@ -30,12 +30,6 @@ theorem glReindex_symm_apply (e : α ≃ β) (g : GL β K) :
     glReindex K e (glReindex K e.symm g) = g := by
   rw [glReindex_glReindex, Equiv.symm_trans_self, glReindex_refl]
 
-omit [Fintype K] [DecidableEq K] in
-
-theorem reRep_ρ_apply (e : α ≃ β) (τ : FDRep ℂ (GL α K)) (g : GL β K) :
-    (reRep e τ).ρ g = τ.ρ ((glEquiv K e).symm g) := by
-  rfl
-
 theorem cuspIsoFacts : ReciprocityTheory.Ty.Fin.St.CuspIsoFacts := by
   intro K _ _ _ α β γ _ _ _ _ _ _ lam lam' mu nu e
   refine ⟨?_, ?_, ?_, ?_, fun g => glReindex_symm_apply e g⟩

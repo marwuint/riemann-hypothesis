@@ -25,9 +25,6 @@ def kHom (τ : Representation ℂ K W) (σ : Representation ℂ K V) : Submodule
     simp only [mem_setOf_eq] at *
     rw [LinearMap.smul_comp, LinearMap.comp_smul, hT k]
 
-theorem mem_kHom {τ : Representation ℂ K W} {σ : Representation ℂ K V} {T : W →ₗ[ℂ] V} :
-    T ∈ kHom τ σ ↔ ∀ k : K, T ∘ₗ τ k = σ k ∘ₗ T := Iff.rfl
-
 end KHom
 
 def Representation.HasContinuousCoeff {K : Type*} [Monoid K] [TopologicalSpace K]
@@ -194,9 +191,6 @@ theorem isKFinite_derivOp {v : E} (hv : h.IsSmoothVector π v) (hK : π.IsKFinit
   exact Submodule.finiteDimensional_of_le hle
 
 def gkVectors : Submodule ℂ E := h.smoothVectors π ⊓ π.kFiniteVectors K
-
-theorem mem_gkVectors {v : E} :
-    v ∈ h.gkVectors π K ↔ h.IsSmoothVector π v ∧ π.IsKFinite K v := Iff.rfl
 
 theorem map_mem_gkVectors {v : E} (hv : v ∈ h.gkVectors π K) (k : K) :
     π k v ∈ h.gkVectors π K :=

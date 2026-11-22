@@ -40,9 +40,6 @@ inductive HerGen : Fin (P.r + 1) → RadSp P.k P.r z z' π π' → Prop
       multiplicationOperator Wv' (fun _ g => fsv (-s) (zeta P.k P.r z z' g)) →
       HerGen (Fin.last P.r) Φ → HerGen (Fin.last P.r) ((Vw (mkP Wv Wv') s w a b).1 Φ)
 
-def herK (i : Fin (P.r + 1)) : Submodule ℂ (RadSp P.k P.r z z' π π') :=
-  Submodule.span ℂ {Φ | HerGen S P z z' π π' L st l0 D i Φ}
-
 variable (K : Fin (P.r + 1) → Submodule ℂ (RadSp P.k P.r z z' π π'))
 
 def TopTwistDens : Prop :=

@@ -361,9 +361,6 @@ theorem mem_degPSOf [TopologicalSpace G] {μ : Aˣ →* Circle} {s : ℂ} {Φ : 
       Φ (p * g) = μ (aOf e mat p) * npow (ν (aOf e mat p)) (s + (Fintype.card n : ℂ) / 2) * Φ g) ∧
       Continuous Φ ∧ IsKFinite K Φ := Iff.rfl
 
-theorem flatOf_apply (Φ : G → ℂ) (s₀ s : ℂ) (g : G) :
-    flatOf e mat ν K Φ s₀ s g = Φ g * npow (hgtOf e mat ν K g) (s - s₀) := rfl
-
 theorem hgtOf_pos (g : G) : 0 < hgtOf e mat ν K g := iwAbs_pos _ _ g
 
 theorem IwasawaOf.hgtOf_mul (h : IwasawaOf e mat ν K) (p : siegelOf e mat) {k : G} (hk : k ∈ K) :

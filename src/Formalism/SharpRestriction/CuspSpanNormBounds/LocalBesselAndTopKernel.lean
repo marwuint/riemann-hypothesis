@@ -21,32 +21,6 @@ namespace Formalism.MainNotions.LocalBesselAndTopKernel.TOP
 open ValuativeRel MeasureTheory ComplexConjugate ComplexOrder
 open Formalism.MainNotions.S.Loc
 
-def SelfDualLatticeNormCongruenceAt {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
-    {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
-    (M : Model F E) (r n : ℕ) : Prop :=
-  ∀ (g : SplitG M.L), M.split = some g →
-  ∀ (V : Type) [AddCommGroup V] [Module E V] (H : HermSp M V), Module.finrank E V = n →
-  ∀ (abelian₂ : Submodule M.L.O V), H.IsSelfDual abelian₂ →
-  ∀ (T T' : F), (∃ u v : (𝒪[F])ˣ, ((u : 𝒪[F]) : F) = T ∧ ((v : 𝒪[F]) : F) = T') →
-    (∃ c : 𝒪[F], T - T' = (g.q : F) ^ 2 * c) →
-  ∀ (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E), IsUnit Zh.det →
-    Zh.det * M.L.cj Zh.det - algebraMap F E (T * T') *
-      ((Zh.submatrix (Fin.castLE (Nat.le_succ r)) (Fin.castLE (Nat.le_succ r))).det *
-        M.L.cj (Zh.submatrix (Fin.castLE (Nat.le_succ r)) (Fin.castLE (Nat.le_succ r))).det) ≠ 0 →
-    ((∃ t : Term V M r, t.abelian₂ = abelian₂ ∧ t.T = T ∧ t.T' = T' ∧ H.IsTerm t ∧ H.Zhat t.f t.f' = Zh) ↔
-      ∀ a b, HermSp.ZZplusOf M Zh T T' a b ∈ M.R)
-
-def FamilyVolumeFourth {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
-    {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
-    (M : Model F E) (r k n : ℕ) (C : ℝ) : Prop :=
-  ∀ (ϖ : 𝒪[F]), Irreducible ϖ →
-  ∀ (V : Type) [AddCommGroup V] [Module E V] (H : HermSp M V), Module.finrank E V = n →
-  (∀ (t : Term V M r), H.IsGeneric t →
-    |H.dens ϖ t.abelian₂ (H.gram (H.MMfam t)) - 1| ≤
-      C * (2 * (r : ℝ) + 2) * (Nat.card 𝓀[F] : ℝ) ^ (-((k : ℤ) - 2 * r - 2))) ∧
-  (∀ (t₁ t₂ : Term V M r), H.IsGeneric t₁ → H.IsGeneric t₂ → H.IsScalarPair t₁ t₂ →
-    H.dens ϖ t₁.abelian₂ (H.gram (H.MMfam t₁)) = H.dens ϖ t₂.abelian₂ (H.gram (H.MMfam t₂)))
-
 end Formalism.MainNotions.LocalBesselAndTopKernel.TOP
 
 namespace Formalism.MainNotions.LocalBesselAndTopKernel.GLOB
@@ -58,21 +32,6 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : Formalism.BasicNotions.D7}
-
-def CNT {Y : TermTie D} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
-    {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {u u' : D.what₂.Word} (X : TermLoc D Y δ M u u') (c : ℝ) : Prop :=
-  0 < c ∧
-  ∀ w : Point D.host.E (D.R.rS + 1), Gpt (D.mem u).A.T (D.mem u').A.T w ≠ 0 →
-    {γ : D.s.Term u u' | D.s.generic γ ∧ D.s.ptOf γ = w}.Finite ∧
-    (¬ TotPos (Gpt (D.mem u).A.T (D.mem u').A.T w) → ∀ γ : D.s.Term u u', D.s.generic γ → D.s.ptOf γ ≠ w) ∧
-    ∀ _ : TotPos (Gpt (D.mem u).A.T (D.mem u').A.T w),
-    ∀ ϖ : ∀ p : PlF D, 𝒪[(D.s.atP p).Fp], (∀ p, Irreducible (ϖ p)) →
-    ∀ γ₀ : D.s.Term u u', D.s.generic γ₀ → Gpt (D.mem u).A.T (D.mem u').A.T (D.s.ptOf γ₀) ≠ 0 →
-      ∑' γ : {γ : D.s.Term u u' // D.s.generic γ ∧ D.s.ptOf γ = w ∧
-          kind (D.s.ptOf γ₀) = kind w ∧ ∀ p, thCls X γ p = thCls X γ₀ p},
-        (X.massT γ.1 : ℂ) * D.s.cTerm γ.1 =
-      (n0 c (D.mem u).A.T (D.mem u').A.T w : ℂ) * (densT X ϖ γ₀ : ℂ) *
-        BBG M δ (D.mem u).A.T (D.mem u').A.T w (kind (D.s.ptOf γ₀)) (thCls X γ₀) / autG M (thCls X γ₀)
 
 end Formalism.MainNotions.LocalBesselAndTopKernel.GLOB
 

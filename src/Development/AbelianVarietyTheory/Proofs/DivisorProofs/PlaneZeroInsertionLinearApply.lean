@@ -30,29 +30,12 @@ variable {R : Type} (hd : d = d₁ + 2)
     ins0 hd x ((idx hd).symm (Sum.inr p)) = 0 := by
   simp [ins0]
 
-theorem ins0_zero [Zero R] : ins0 hd (0 : Fin n × Fin d₁ → R) = 0 := by
-  funext k; simp only [ins0]; rcases idx hd k with p | p <;> rfl
-
 theorem ins0_add [AddZeroClass R] (x y : Fin n × Fin d₁ → R) : ins0 hd (x + y) = ins0 hd x + ins0 hd y := by
   funext k; simp only [ins0, Pi.add_apply]; rcases idx hd k with p | p <;> simp
 
 theorem ins0_smul {S : Type} [Zero R] [SMulZeroClass S R] (c : S) (x : Fin n × Fin d₁ → R) :
     ins0 hd (c • x) = c • ins0 hd x := by
   funext k; simp only [ins0, Pi.smul_apply]; rcases idx hd k with p | p <;> simp
-
-theorem ins0_map {R' : Type} [Zero R] [Zero R'] (g : R → R') (hg : g 0 = 0) (x : Fin n × Fin d₁ → R) :
-    (fun k => g (ins0 hd x k)) = ins0 hd (fun p => g (x p)) := by
-  funext k; simp only [ins0]; rcases idx hd k with p | p <;> simp [hg]
-
-theorem ins0_dotProduct [NonUnitalNonAssocSemiring R] (x : Fin n × Fin d₁ → R) (b : Fin n × Fin d → R) :
-    ins0 hd x ⬝ᵥ b = x ⬝ᵥ fun p => b ((idx hd).symm (Sum.inl p)) := by
-  simp only [dotProduct]
-  rw [← (idx hd).symm.sum_comp, Fintype.sum_sum_type]
-  simp
-
-theorem ins0_dotProduct_ins0 [NonUnitalNonAssocSemiring R] (x y : Fin n × Fin d₁ → R) :
-    ins0 hd x ⬝ᵥ ins0 hd y = x ⬝ᵥ y := by
-  rw [ins0_dotProduct]; simp
 
 end Ins
 
@@ -98,27 +81,5 @@ variable (F) in
 def evA (hd : d = d₁ + 2) : Fn F n d →ₗ[ℂ] Fn F n d₁ := LinearMap.funLeft ℂ ℂ (ins0 hd)
 
 @[simp] theorem evA_apply (hd : d = d₁ + 2) (Φ : Fn F n d) (x : Fin n × Fin d₁ → AF F) : evA F hd Φ x = Φ (ins0 hd x) := rfl
-
-theorem ei_ne_zero (hd : d = d₁ + 2) : ei (n := n) F hd ≠ 0 := by
-  classical
-  intro h
-  let b : ContDiffBump (0 : Fin n × Fin d → mixedEmbedding.mixedSpace F) := ⟨1, 2, one_pos, one_lt_two⟩
-  have hs : HasCompactSupport (fun x => ((b x : ℝ) : ℂ)) := b.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)
-  have hc : ContDiff ℝ (⊤ : ℕ∞) (fun x => ((b x : ℝ) : ℂ)) := Complex.ofRealCLM.contDiff.comp b.contDiff
-  have h1 := congrArg (fun T : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d₁) => T (hs.toSchwartzMap hc) 0) h
-  have h2 : b 0 = 1 := b.one_of_mem_closedBall (by simp [b])
-  simp [ins0_zero, h2] at h1
-
-theorem evA_pure (hd : d = d₁ + 2) (f : SInf F (Fin n × Fin d)) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) :
-    evA F hd (pure f φ) = pure (ei F hd f) fun v => ev hd v (φ v) := by
-  funext x
-  simp only [evA_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, ei_apply, ev_apply]
-  rw [ins0_map hd (evI F) (by
-    show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : AF F).1 = 0
-    rw [show (0 : AF F).1 = 0 from rfl, map_zero])]
-  congr 1
-  congr 1
-  funext v
-  rw [ins0_map hd (evFin F v) (map_zero _)]
 
 end GlobalTheory.ThK.PlaneEv

@@ -63,19 +63,11 @@ theorem pull_norm (c : E → E) (c' : E' → E') (h : ∀ x, e (c x) = c' (e x))
 def pushP (P : HeightOneSpectrum (𝓞 E)) : HeightOneSpectrum (𝓞 E') :=
   HeightOneSpectrum.comap (RingOfIntegers.mapRingEquiv e.symm : 𝓞 E' →+* 𝓞 E) (RingOfIntegers.mapRingEquiv e.symm).surjective P
 
-theorem mem_pushP (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E') :
-    r ∈ (pushP e P).asIdeal ↔ RingOfIntegers.mapRingEquiv e.symm r ∈ P.asIdeal := Iff.rfl
-
 end Pull
 
 section Vp
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
-
-omit [StarRing E] in
-
-theorem isFrames_iff {n : ℕ} {SB : Finset (HeightOneSpectrum (𝓞 E))} (N : Submodule (𝓞 E) (Sp E n)) (fr : Frs E n SB) :
-    CharacterValuation.IsFrames N fr ↔ ScalarCharacterTwist.FrOf N fr := Iff.rfl
 
 end Vp
 

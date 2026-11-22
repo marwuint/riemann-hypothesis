@@ -41,29 +41,9 @@ def toFS (S : StepG I N) {m : ℕ} (hk : m + 1 = N) (v : Fin nV) :
     GL (Fin (m + 1)) Qq ≃* GL (Fin N) ((I.plc v).adicCompletion F) :=
   ((castGL hk Qq).trans (bcE (I.eQ v))).trans (MulAut.conj (frVS S v))
 
-theorem toFS_symm (S : StepG I N) {m : ℕ} (hk : m + 1 = N) (v : Fin nV)
-    (X : GL (Fin N) ((I.plc v).adicCompletion F)) :
-    (toFS S hk v).symm X = (castGL hk Qq).symm ((bcE (I.eQ v)).symm ((frVS S v)⁻¹ * X * frVS S v)) := rfl
-
 abbrev GAS (S : StepG I N) : Type := UPts sp.cm.sig S.J (FiniteAdeleRing (𝓞 F) F)
-
-def prPS (S : StepG I N) {m : ℕ} (hk : m + 1 = N) : GAS S →* (Fin nV → GL (Fin (m + 1)) Qq) :=
-  MonoidHom.pi fun v => (toFS S hk v).symm.toMonoidHom.comp
-    ((bc (fstV I v)).comp ((bc (prV (E := E) (I.plc v))).comp (UPts sp.cm.sig S.J (FiniteAdeleRing (𝓞 F) F)).subtype))
-
-theorem prPS_apply (S : StepG I N) {m : ℕ} (hk : m + 1 = N) (x : GAS S) (v : Fin nV) :
-    prPS S hk x v = (toFS S hk v).symm (bc (fstV I v) (bc (prV (E := E) (I.plc v)) (x : GL (Fin N) _))) := rfl
 
 def jQS (S : StepG I N) {m : ℕ} (hk : m + 1 = N) : (Fin nV → GL (Fin (m + 1)) Qq) →* GAS S :=
   (jPS S).comp (MonoidHom.pi fun v => (toFS S hk v).toMonoidHom.comp (Pi.evalMonoidHom _ v))
-
-def HypAtPS (S : StepG I N) : Prop :=
-  ∀ (v : Fin nV) (x : GL (Fin N) (E ⊗[F] (I.plc v).adicCompletion F)),
-    x ∈ UPts sp.cm.sig S.J ((I.plc v).adicCompletion F) →
-    (x ∈ S.Uloc (I.plc v) ↔
-      (∀ a b, (((frVS S v)⁻¹ * bc (fstV I v) x * frVS S v : GL (Fin N) _) : Matrix (Fin N) (Fin N) _) a b ∈
-        (I.plc v).adicCompletionIntegers F) ∧
-      ∀ a b, ((((frVS S v)⁻¹ * bc (fstV I v) x * frVS S v)⁻¹ : GL (Fin N) _) : Matrix (Fin N) (Fin N) _) a b ∈
-        (I.plc v).adicCompletionIntegers F)
 
 end Formalism.L2.G

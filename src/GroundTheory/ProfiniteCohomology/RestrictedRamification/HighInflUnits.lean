@@ -41,10 +41,6 @@ def primaryComponentMap (ℓ : ℕ) (f : X →+ Y) :
     obtain ⟨k, hk⟩ := x.2
     exact ⟨k, (map_nsmul f _ _).symm.trans ((congrArg f hk).trans (map_zero f))⟩
 
-theorem coe_primaryComponentMap_apply (x : AddCommGroup.primaryComponent X ℓ) :
-    (primaryComponentMap ℓ f x : Y) = f x :=
-  rfl
-
 theorem IsIsoModCoprime.bijective_primaryComponentMap (h : IsIsoModCoprime ℓ f) (hℓ : ℓ.Prime)
     (hX : IsAddTorsion X) : Function.Bijective (primaryComponentMap ℓ f) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩
@@ -141,17 +137,6 @@ theorem isIsoModCoprime_gsUnitsInfl {r : ℕ} (hr : 1 ≤ r) : IsIsoModCoprime �
       (continuous_gsQuotientEquiv K S) (invariantsGsKernelMor K S) r).hom.toAddMonoidHom) (h.congr he) hsurj
   exact h'.comp (IsIsoModCoprime.of_bijective
     (cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r).bijective)
-
-noncomputable def gsUnitsInflPrimaryEquiv {r : ℕ} (hr : 1 ≤ r) :
-    AddCommGroup.primaryComponent (cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) ℓ ≃+
-      AddCommGroup.primaryComponent (cohomology (unitsLimitRep K) r) ℓ :=
-  AddEquiv.ofBijective (primaryComponentMap ℓ (gsUnitsInfl K S r))
-    ((isIsoModCoprime_gsUnitsInfl K S hℓ hS hr).bijective_primaryComponentMap hℓ (isTorsion_cohomology _ hr))
-
-theorem coe_gsUnitsInflPrimaryEquiv_apply {r : ℕ} (hr : 1 ≤ r)
-    (x : AddCommGroup.primaryComponent (cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) ℓ) :
-    (gsUnitsInflPrimaryEquiv K S hℓ hS hr x : cohomology (unitsLimitRep K) r) = gsUnitsInfl K S r x :=
-  rfl
 
 end
 

@@ -69,9 +69,6 @@ def galRes {L : IntermediateField ℚ_[p] (PadicAlgCl p)} (hKL : K ≤ L) :
 theorem galRes_apply {L : IntermediateField ℚ_[p] (PadicAlgCl p)} (hKL : K ≤ L)
     (σ : Gal(PadicAlgCl p/L)) (y : PadicAlgCl p) : galRes hKL σ y = σ y := rfl
 
-theorem galRes_smul {L : IntermediateField ℚ_[p] (PadicAlgCl p)} (hKL : K ≤ L)
-    (σ : Gal(PadicAlgCl p/L)) (x : ℂ_[p]) : galRes hKL σ • x = σ • x := rfl
-
 theorem exists_fixingSubgroup_of_finite_image (ψ : Gal(PadicAlgCl p/K) →* ℚ_[p]ˣ) (hψ : Continuous ψ)
     (S : Set Gal(PadicAlgCl p/K)) (hfin : (ψ '' S).Finite) :
     ∃ E : IntermediateField K (PadicAlgCl p), FiniteDimensional K E ∧

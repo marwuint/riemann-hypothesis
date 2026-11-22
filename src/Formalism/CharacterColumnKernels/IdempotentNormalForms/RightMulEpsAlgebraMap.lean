@@ -14,9 +14,6 @@ section Adj
 variable {O OO M Q : Type*} [CommRing O] [Ring OO] [Algebra O OO] [AddCommGroup M] [Module OO M]
     [Module O M] [IsScalarTower O OO M] [AddCommGroup Q] [Module O Q] (ε : OO)
 
-lemma dual_smul_apply (a : OO) (φ : EpsDual O OO Q ε) (x : epsIdeal O ε) :
-    (a • φ) x = φ (rightMulEps O ε a x) := rfl
-
 variable {ε}
 
 variable (ε) [SMulCommClass OO O (EpsDual O OO Q ε)]

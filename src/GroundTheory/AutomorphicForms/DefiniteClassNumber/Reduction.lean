@@ -24,9 +24,6 @@ def latticeDual (L : AddSubgroup X) : AddSubgroup X where
     obtain ⟨m, hm⟩ := ha x hx
     exact ⟨-m, by rw [inner_neg_left, hm]; push_cast; ring⟩
 
-theorem mem_latticeDual {L : AddSubgroup X} {y : X} :
-    y ∈ latticeDual L ↔ ∀ x ∈ L, ∃ n : ℤ, ⟪y, x⟫ = n := Iff.rfl
-
 end Dual
 
 end GroundTheory.Automorphic

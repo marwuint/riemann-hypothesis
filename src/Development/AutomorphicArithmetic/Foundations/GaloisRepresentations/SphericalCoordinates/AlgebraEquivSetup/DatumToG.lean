@@ -178,9 +178,6 @@ def datum {n : ℕ} (h : A.Facts n) (q : ℕ) [Fact q.Prime] (hs : A.SplitK q) (
     have ht : A.tau 0 = A.τ₀ := rfl
     simpa [ht] using this
 
-theorem datum_toG {n : ℕ} (h : A.Facts n) (q q' : ℕ) [Fact q.Prime] [Fact q'.Prime] (hs hp hs' hp') :
-    (A.datum h q hs hp).toG = (A.datum h q' hs' hp').toG := rfl
-
 theorem herm (n : ℕ) : ((A.H n).map (cj E))ᵀ = A.H n := by
   rw [H, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose]
   congr 1

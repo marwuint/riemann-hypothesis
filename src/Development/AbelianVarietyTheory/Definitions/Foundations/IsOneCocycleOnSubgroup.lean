@@ -7,10 +7,6 @@ namespace GlobalTheory.KCoh
 variable {R : Type*} [CommRing R] {G : Type*} [Group G]
 variable {M M' M'' : Type*} [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M'] [AddCommGroup M''] [Module R M'']
 
-def Eqv₂ (ρ : Representation R G M) (ρ' : Representation R G M') (ρ'' : Representation R G M'')
-    (β : M →ₗ[R] M' →ₗ[R] M'') : Prop :=
-  ∀ g m m', β (ρ g m) (ρ' g m') = ρ'' g (β m m')
-
 def tw (χ : G →* Rˣ) (ρ : Representation R G M) : Representation R G M where
   toFun g := (χ g : R) • ρ g
   map_one' := by simp

@@ -280,13 +280,6 @@ theorem normOne_detI {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N) : NormOn
 def lat1 (I : Submodule (𝓞 E) E) : Submodule (𝓞 E) (Sp E 1) :=
   I.comap ((LinearMap.proj (0 : Fin 1) : Sp E 1 →ₗ[E] E).restrictScalars (𝓞 E))
 
-omit [NumberField E] [StarRing E] in
-theorem mem_rank_one_lattice (I : Submodule (𝓞 E) E) (x : Sp E 1) : x ∈ lat1 I ↔ x 0 ∈ I := Iff.rfl
-
-omit [NumberField E] [StarRing E] in
-theorem mem_localization_rank_one_lattice (P : HeightOneSpectrum (𝓞 E)) (I : Submodule (𝓞 E) E) (x : Sp E 1) :
-    x ∈ localization₂ P.asIdeal (lat1 I) ↔ x 0 ∈ localization₂ P.asIdeal I := Iff.rfl
-
 theorem ordDet_eq {P : HeightOneSpectrum (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {f : Sp E n ≃ₗ[E] Sp E n} (hf : IsFr P N f) :
     ordDet P N = ordE P (dt f) := by
   unfold ordDet ordE

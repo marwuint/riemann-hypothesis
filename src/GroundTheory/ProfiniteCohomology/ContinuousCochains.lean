@@ -98,10 +98,6 @@ noncomputable def cochainsComplex (A : Rep.{u} k G) [IsDiscreteRep A] :
   CochainComplex.of (fun n => ModuleCat.of k (locallyConstantCochains A n))
     (fun n => dLocallyConstant A n) fun n => dLocallyConstant_comp A n
 
-theorem cochainsComplex_X (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ) :
-    (cochainsComplex A).X n = ModuleCat.of k (locallyConstantCochains A n) :=
-  rfl
-
 theorem cochainsComplex_d (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ) :
     (cochainsComplex A).d n (n + 1) = dLocallyConstant A n := by
   simp [cochainsComplex]
@@ -112,11 +108,6 @@ noncomputable def cochainsComplexι (A : Rep.{u} k G) [IsDiscreteRep A] :
     rw [cochainsComplex_d, inhomogeneousCochains.d_def]
     ext f : 2
     rfl
-
-theorem cochainsComplexι_f_hom_apply (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ)
-    (f : locallyConstantCochains A n) :
-    ((cochainsComplexι A).f n).hom f = (f : (Fin n → G) → A) :=
-  rfl
 
 instance (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ) : Mono ((cochainsComplexι A).f n) :=
   (ModuleCat.mono_iff_injective _).2 Subtype.val_injective

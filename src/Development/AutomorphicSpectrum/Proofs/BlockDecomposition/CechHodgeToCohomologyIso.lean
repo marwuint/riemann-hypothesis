@@ -68,11 +68,6 @@ def eTot (F : C ⥤ ModuleCat.{0} R) (U : ι → ObjectProperty C) (hU : ∀ α,
       obtain ⟨α, hα⟩ := hc T
       exact ⟨⟨α, hα⟩, rfl⟩) n))
 
-theorem eTot_apply (F : C ⥤ ModuleCat.{0} R) (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α))
-    (hc : ∀ T, ∃ α, U α T) (n : ℕ) (x : CH.H F n) :
-    eTot F U hU hc n x = (CH.cechAugRow (idxπ U hU) F).edge.mapH n
-      ((CH.Mor.restrict F (CategoryOfElements.π ((Functor.const C).obj PUnit.{1}))).hom.mapH n x) := rfl
-
 theorem col_sub (F : C ⥤ ModuleCat.{0} R) (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (a : ℕ)
     (hv : ∀ n (i : Fin (n + 1) → ι) r, r ≠ a → Subsingleton (HU F (capT U i) r)) (p q : ℕ) (hq : q ≠ a) :
     Subsingleton (((dbl U hU F).col p).H q) := by

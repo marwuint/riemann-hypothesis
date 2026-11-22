@@ -23,10 +23,6 @@ def twistRep (ψ : Γ →* Oˣ) (ρ : Γ →* GL (Fin n) O) : Γ →* GL (Fin n)
       map_one' := by simp
       map_mul' := fun g h => by simp [smul_smul, mul_comm] }
 
-theorem coe_twistRep (ψ : Γ →* Oˣ) (ρ : Γ →* GL (Fin n) O) (g : Γ) :
-    ((twistRep ψ ρ g : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) =
-      ((ψ g : Oˣ) : O) • ((ρ g : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) := rfl
-
 end Twist
 
 section Eig

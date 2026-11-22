@@ -13,9 +13,6 @@ section Pair
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
-theorem pairSpace_eq_tens2 (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule ℂ (Sm E b)) :
-    pairSpace U₁ U₂ = tens2 U₁ U₂ := rfl
-
 end Pair
 
 inductive Shape : ℕ → Type

@@ -10,15 +10,6 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 variable {D : D7} {T : Top D}
 
-def evCH (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (Z : Comp (T.Q.Xo j) T.Q.c) :
-    T.R j →+* Om Z where
-  toFun f := evC hG Z f
-  map_one' := evalAt_one (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) _
-    (h.allTest j hj (Om Z) _)
-  map_mul' f g := evalAt_mul (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) f g _
-  map_zero' := evalAt_zero (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) _
-  map_add' f g := evalAt_add (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) f g _
-
 theorem rdU_one_of (h : LawsP T) {j : ℕ} (hj : InR D j) (k : (T.U j T.σ₀).Comp)
     {y : Frame ((T.U j T.σ₀).X k).Ψ D.R.r} (hy : y ∈ ((T.U j T.σ₀).X k).dom) : rdU (T.U j T.σ₀) 1 k y = 1 := by
   haveI : IsReduced (CAt T.σ₀) := inferInstanceAs (IsReduced ℂ)
@@ -62,15 +53,6 @@ def thR (h : LawsP T) {j : ℕ} (hj : InR D j) {k : (T.U j T.σ₀).Comp} {x₀ 
     (hx0 : x₀ ∈ ((T.U j T.σ₀).X k).dom) :
     AddMonoidAlgebra (T.R j) (WTZ D.host.E) →+* (Frame ((T.U j T.σ₀).X k).Ψ D.R.r → ℂ) :=
   (augF k).comp (AddMonoidAlgebra.mapRingHom (WTZ D.host.E) (evFr h hj hx0))
-
-def PsiZ (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (Z : Comp (T.Q.Xo j) T.Q.c) :
-    AddMonoidAlgebra (T.R j) (WTZ D.host.E) →+* AC Z :=
-  AddMonoidAlgebra.mapRingHom (WTZ D.host.E) (evCH h hj hG Z)
-
-theorem coeff_PsiZ (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (Z : Comp (T.Q.Xo j) T.Q.c)
-    (b : AddMonoidAlgebra (T.R j) (WTZ D.host.E)) (G : WTZ D.host.E) :
-    (PsiZ h hj hG Z b).coeff G = evC hG Z (b.coeff G) := by
-  rfl
 
 def secZ (T : Top D) (j : ℕ) (G : WTZ D.host.E) : Submodule T.Q.c.F (T.R j) :=
   ⨆ u : {u : WeightFamilies.Wt D j // wtZ (wtA u) u.n = G}, sec (T.Q.Xo j) T.Q.c (wtA u.1) u.1.n

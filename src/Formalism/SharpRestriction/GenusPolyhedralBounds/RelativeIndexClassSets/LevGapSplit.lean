@@ -83,8 +83,6 @@ variable {E : Type} [Field E] [NumberField E] (F : Subfield E) [NumberField F]
 theorem coe_algebraMap_int (x : 𝓞 F) :
     ((algebraMap (𝓞 F) (𝓞 E) x : 𝓞 E) : E) = algebraMap F E (x : F) := rfl
 
-theorem coe_smul_int (σ : E ≃ₐ[ℚ] E) (x : 𝓞 E) : ((σ • x : 𝓞 E) : E) = σ (x : E) := rfl
-
 def underPl (w : HeightOneSpectrum (𝓞 E)) : HeightOneSpectrum (𝓞 F) where
   asIdeal := w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))
   isPrime := Ideal.comap_isPrime _ _
@@ -95,9 +93,6 @@ def underPl (w : HeightOneSpectrum (𝓞 E)) : HeightOneSpectrum (𝓞 F) where
       rw [Ideal.mem_comap, map_natCast]; exact hpw
     rw [h, Ideal.mem_bot] at h1
     exact hp.ne_zero (by exact_mod_cast h1)
-
-theorem mem_underPl (w : HeightOneSpectrum (𝓞 E)) (x : 𝓞 F) :
-    x ∈ (underPl F w).asIdeal ↔ algebraMap (𝓞 F) (𝓞 E) x ∈ w.asIdeal := Iff.rfl
 
 variable {F} (c : E ≃ₐ[ℚ] E) (hF : ∀ x : E, x ∈ F ↔ c x = x) (hc : ∀ x : E, c (c x) = x)
 

@@ -51,10 +51,6 @@ section Level
 
 variable {p : ℕ} {R K : Type} [CommRing R] [CommRing K] [Algebra R K] {Γ : PDivGroup p R} {𝒜 : PDivGroup p K}
 
-theorem comp_weilProj_app [Fact p.Prime] (κ : Γ.baseChange K ⟶ 𝒜) (w : 𝒜 ⟶ 𝒜.dual) (n : ℕ)
-    (x : K ⊗[R] CartierDual R (Γ.A n)) : (κ ≫ weilProj κ w).app n x =
-      κ.app n (w.app n (CartierDual.map (κ.app n) (CartierDual.baseChange R K (Γ.A n) x))) := rfl
-
 end Level
 
 end GlobalTheory.WeilIntegral

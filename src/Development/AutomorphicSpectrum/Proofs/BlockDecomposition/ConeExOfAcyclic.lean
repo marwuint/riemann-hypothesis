@@ -808,8 +808,6 @@ def modOf (F : C ⥤ CommAlgCat.{0} R) : C ⥤ ModuleCat.{0} R where
   map_id T := ModuleCat.hom_ext (LinearMap.ext fun b ↦ mp_id F T b)
   map_comp φ ψ := ModuleCat.hom_ext (LinearMap.ext fun b ↦ mp_comp F φ ψ b)
 
-theorem mdn_modOf (F : C ⥤ CommAlgCat.{0} R) (n : ℕ) (f : Cn F n) : mdn (modOf F) n f = dn F n f := rfl
-
 def trOf {F : C ⥤ CommAlgCat.{0} R} {G : C × D ⥤ CommAlgCat.{0} R} (m : Proj F G) : Tr R C D where
   F := modOf F
   G := modOf G

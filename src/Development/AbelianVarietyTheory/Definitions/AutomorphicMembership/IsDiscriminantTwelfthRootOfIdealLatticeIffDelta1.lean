@@ -146,21 +146,7 @@ section Record
 
 variable (D : D7)
 
-theorem lamOf_rec (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : lamOf D.host cc δ = TaylorLogMetric.lamOf D cc δ := rfl
-
 theorem isDiscriminantTwelfthRoot_host_iff (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : IsDiscriminantTwelfthRootOfIdealLattice D.host cc δ ↔ TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ := Iff.rfl
-
-theorem stdL_rec (N : ℕ) : stdL D.host N = StandardLatticesGL3.stdL D N := rfl
-
-theorem detId_rec {N : ℕ} (L L' : Lt D.host N) : detId D.host L L' = TaylorLogMetric.detId D L L' := rfl
-
-theorem La_rec (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (L : Lt D.host N) (L' : Lt D.host N') :
-    La D.host (TaylorLogMetric.embT D) (lamOf D.host cc δ) L L' = TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L L' := rfl
-
-theorem isDgen_rec (cD : D.what₂.Tau → ℂ) : IsDgen D.host (TaylorLogMetric.embT D) cD ↔ Formalism.L2.Ker.IsDgen D cD := Iff.rfl
-
-theorem chiFac_rec (χ : TaylorLogMetric.IdE D → ℂ) (N N' : ℕ) (L : Lt D.host N) (L' : Lt D.host N') :
-    chiFac D.host χ N N' L L' = Formalism.L2.Ker.Base.chiFac χ N N' L L' := rfl
 
 variable {D} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
@@ -175,14 +161,6 @@ def VacIn.toRec (V : VacIn D.host (TaylorLogMetric.embT D) cc δ) : Formalism.L2
 
 def VacIn.ofRec (B : Formalism.L2.Ker.Base D cc δ) : VacIn D.host (TaylorLogMetric.embT D) cc δ :=
   ⟨B.L, B.lat, B.ω₀, B.t0, B.γ₀, B.gC, B.gC_spec, KapIn.ofRec B.kc⟩
-
-theorem VacIn.toRec_ofRec (B : Formalism.L2.Ker.Base D cc δ) : (VacIn.ofRec B).toRec = B := rfl
-
-theorem VacIn.ofRec_toRec (V : VacIn D.host (TaylorLogMetric.embT D) cc δ) : VacIn.ofRec V.toRec = V := rfl
-
-theorem VacIn.thMM_rec (V : VacIn D.host (TaylorLogMetric.embT D) cc δ) : V.thMM = V.toRec.thMM := rfl
-
-theorem VacIn.eNat_rec (V : VacIn D.host (TaylorLogMetric.embT D) cc δ) (χ : TaylorLogMetric.IdE D → ℂ) : V.eNat χ = V.toRec.eNat χ := rfl
 
 end Record
 

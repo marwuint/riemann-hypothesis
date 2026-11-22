@@ -58,8 +58,6 @@ theorem loc_ind_pos {S : Set (HeightOneSpectrum (𝓞 F))} {w} (h : w ∈ S) :
 theorem isUnA_iff (c : E ≃ₐ[F] E) {n : ℕ} (G : Matrix (Fin n) (Fin n) E)
     (g : Matrix (Fin n) (Fin n) (RA F E)) : IsUnA c G g ↔ IsUnitaryA c G g := Iff.rfl
 
-theorem fm_eq_ratM {n : ℕ} (γ : Matrix (Fin n) (Fin n) E) : fm F γ = ratM F γ := rfl
-
 theorem isSplitPlace_of_splitPl (c : E ≃ₐ[F] E) {v : HeightOneSpectrum (𝓞 F)} (h : SplitPl c v) :
     IsSplitPlace E v := by
   obtain ⟨P, hP, hPv, a, ha, b, hb, hbP⟩ := h
@@ -151,8 +149,5 @@ theorem support_iff (p : HeightOneSpectrum (𝓞 F) → Prop) {n : ℕ} (h : Mat
       by_cases hv : v ∈ (T : Set (HeightOneSpectrum (𝓞 F)))
       · rw [loc_ind_pos hv, one_mul]
       · rw [(hone v).1 (hT v hv), mul_zero]
-
-theorem fm_eq_map {n : ℕ} (γ : Matrix (Fin n) (Fin n) E) : fm F γ =
-    γ.map (Algebra.TensorProduct.includeRight (R := F) (A := FiniteAdeleRing (𝓞 F) F) (B := E)).toRingHom := rfl
 
 end GlobalTheory.UnRep.Compare

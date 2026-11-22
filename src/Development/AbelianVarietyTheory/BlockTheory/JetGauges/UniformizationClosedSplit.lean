@@ -17,10 +17,6 @@ section General
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
-def ClosedSplit (T : CDVR) (G : SAB H (Sp T.V)) : Prop :=
-  ∃ S : SplitExt (Sp (IsLocalRing.ResidueField T.V)),
-    S.IsGt ((Over.pullback (spMap (IsLocalRing.residue T.V))).obj G.G)
-
 def HasUnif (T : CDVR) (G : SAB H (Sp T.V)) : Prop :=
   ∃ P : PELUnif (IsLocalRing.maximalIdeal T.V) G, P.TorsionIso
 

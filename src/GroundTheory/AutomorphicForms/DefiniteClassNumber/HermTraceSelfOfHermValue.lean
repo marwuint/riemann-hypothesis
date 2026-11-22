@@ -52,8 +52,6 @@ def hermTrace (x y : ι → R ⊗[K] E) : R := baseTrace K E R (hermPair K H R x
 
 variable {K H R}
 
-theorem hermPair_self (x : ι → R ⊗[K] E) : hermPair K H R x x = hermValue K H R x := rfl
-
 omit [Fintype ι] in
 theorem conjBase_vec_add (x x' : ι → R ⊗[K] E) :
     (fun i => conjBase K E R ((x + x') i)) =

@@ -18,12 +18,6 @@ set_option linter.unusedSectionVars false
 variable {K : Type*} [Field K] [NumberField K]
 variable {V : Type*} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
-def localScalar (v : HeightOneSpectrum (𝓞 K)) (b : 𝓞 K) : v.adicCompletion K :=
-  (algebraMap (𝓞 K) (v.adicCompletionIntegers K) b : v.adicCompletion K)
-
-theorem localScalar_eq (v : HeightOneSpectrum (𝓞 K)) (b : 𝓞 K) :
-    localScalar v b = FinitePlace.embedding v (b : K) := rfl
-
 end Scale
 
 end

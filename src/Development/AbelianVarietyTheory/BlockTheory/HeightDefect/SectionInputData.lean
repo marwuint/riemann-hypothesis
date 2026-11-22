@@ -15,9 +15,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 def valZ (h : GenFrEx Xo c) (G : WTZ E) (f : Rul Xo c) : ∀ Z : Comp Xo c, AC Z :=
   fun Z => AddMonoidAlgebra.single G (evC h Z f)
 
-theorem valZ_wtZ (h : GenFrEx Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c) :
-    valZ h (wtZ a n) f = valC h a n f := rfl
-
 def IsSecZ (G : WTZ E) (f : Rul Xo c) : Prop :=
   IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f ∧
     ∀ (p : TRing c.F) (t : Ix Dw → (p.R)ˣ) (y y' : FrPt Xo c p.R), FrBor t y y' →
@@ -168,10 +165,6 @@ variable [Fintype (Comp Xo c)] (I : Input Xo c) (h : GenFrEx Xo c)
     (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
     (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ)
     (yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P)))
-
-theorem toData_ka : (I.toData h δ fn yP).ka = I.wka := rfl
-theorem toData_F₀ : (I.toData h δ fn yP).F0 = I.wF₀ := rfl
-theorem toData_G₂ : (I.toData h δ fn yP).G2 = I.wG₂ := rfl
 
 end
 

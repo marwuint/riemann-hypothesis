@@ -19,10 +19,6 @@ variable (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 instance algebraMaxUnramified : Algebra (maxUnramified p K) K :=
   (IntermediateField.inclusion (inf_le_left : maxUnramified p K ≤ K)).toRingHom.toAlgebra
 
-theorem coe_algebraMap_maxUnramified (k : maxUnramified p K) :
-    ((algebraMap (maxUnramified p K) K k : K) : PadicAlgCl p) = k :=
-  rfl
-
 instance isScalarTower_maxUnramified_algCl :
     IsScalarTower (maxUnramified p K) K (PadicAlgCl p) :=
   IsScalarTower.of_algebraMap_eq fun _ => rfl
@@ -37,9 +33,6 @@ instance finiteDimensional_maxUnramified [FiniteDimensional ℚ_[p] K] :
 
 def unramifiedOver : IntermediateField (maxUnramified p K) (PadicAlgCl p) :=
   IntermediateField.extendScalars (inf_le_right : maxUnramified p K ≤ unramifiedClosure p)
-
-theorem mem_unramifiedOver {x : PadicAlgCl p} : x ∈ unramifiedOver K ↔ x ∈ unramifiedClosure p :=
-  Iff.rfl
 
 instance isAlgClosure_maxUnramified : IsAlgClosure (maxUnramified p K) (PadicAlgCl p) :=
   ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ_[p]) (maxUnramified p K)⟩

@@ -52,8 +52,6 @@ def T2 (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) :
 
 def WpK (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) := coefRep (Wp N i ρ) (FractionRing (N.O i))
 
-def WpKO (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) := coefRep (Wp N i ρ) (KmodO (N.O i))
-
 def KOtw (i : N.Loc) (e : ℤ) : Representation (N.O i) (G H.E N.Om) (KmodO (N.O i)) :=
   Formalism.GaloisCohomology.scalRep (KmodO (N.O i)) ((epsO N i) ^ (-e))
 
@@ -353,18 +351,6 @@ open Classical
 variable (i : N.Loc) (ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i)))
 
 def WKO (π : N.X i) : Representation (N.O i) (GE N) (KOr N i) := actRep (stdLat N i (WpO N i ρ π))
-
-def bkW (π : N.X i) (w : HeightOneSpectrum (𝓞 H.E))
-    {G : Type} [Group G] [TopologicalSpace G] {K₀ Kw B BdR : Type} [Field K₀] [Field Kw]
-    [Algebra ℚ_[N.l i] K₀] [Algebra ℚ_[N.l i] Kw] [Algebra K₀ Kw] [IsScalarTower ℚ_[N.l i] K₀ Kw]
-    [CommRing B] [CommRing BdR] [Algebra ℚ_[N.l i] B] [Algebra K₀ B] [IsScalarTower ℚ_[N.l i] K₀ B]
-    [Algebra ℚ_[N.l i] BdR] [Algebra K₀ BdR] [Algebra Kw BdR] [IsScalarTower ℚ_[N.l i] Kw BdR]
-    [IsScalarTower K₀ Kw BdR] [IsScalarTower ℚ_[N.l i] K₀ BdR]
-    (PD : PeriodData G ℚ_[N.l i] K₀ Kw B BdR) (ι : G →* Gw N w) :
-    Submodule (N.O i) (H1 ((WKO N i ρ π).comp (decS N w))) :=
-  ((Z1 ((WKO N i ρ π).comp (decS N w))).comap (Submodule.subtype _) ⊓
-    (HfD PD (stdLat N i (((WpO N i ρ π).comp (decS N w)).comp ι))).comap
-      ((LinearMap.funLeft (N.O i) (KOr N i) ι).comp (Submodule.subtype _))).map (Submodule.mkQ _)
 
 def jW (π : N.X i) (w : HeightOneSpectrum (𝓞 H.E))
     {G : Type} [Group G] [TopologicalSpace G] {K₀ Kw B BdR : Type} [Field K₀] [Field Kw]

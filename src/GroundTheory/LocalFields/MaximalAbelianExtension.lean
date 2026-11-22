@@ -178,11 +178,6 @@ variable (F Ω) in
 def finiteAbelianExtensions : Set (IntermediateField F Ω) :=
   {L | FiniteDimensional F L ∧ IsAbelianGalois F L}
 
-omit [IsGalois F Ω] in
-theorem mem_finiteAbelianExtensions {L : IntermediateField F Ω} :
-    L ∈ finiteAbelianExtensions F Ω ↔ FiniteDimensional F L ∧ IsAbelianGalois F L :=
-  Iff.rfl
-
 variable (F Ω) in
 
 noncomputable def restrictAbPi (σ : maximalAbelianExtension F Ω ≃ₐ[F] maximalAbelianExtension F Ω)

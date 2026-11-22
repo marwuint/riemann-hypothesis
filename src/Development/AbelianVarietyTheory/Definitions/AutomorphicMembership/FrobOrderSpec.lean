@@ -64,8 +64,6 @@ def pack : LocPack D u Lc (D.what₂.places.resChar w) where
   I := I
   ψ := ψ
 
-theorem pack_ψ : (pack D u Lc w h5 h2 he I ψ).ψ = ψ := rfl
-
 end Pack
 
 section Record

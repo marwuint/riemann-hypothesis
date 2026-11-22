@@ -44,9 +44,6 @@ def BranchMap : Prop :=
         io h = ((cCap (lamZ lam) (fun i => (sg i : ℤ)) : ℤ) : R) • xiB R lam sg) ∧
       (∀ f, ∀ m ∈ (io f).support, rowDeg m (Fin.last n) = ∑ i, (lam i - sg i))
 
-def zScale (n : ℕ) (t : ℝ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ :=
-  Matrix.diagonal fun a => if a = Fin.last n then (t : ℂ) else 1
-
 def XiNorm : Prop :=
   ∀ (n : ℕ) (lam sg : Fin n → ℕ), Interlace (lamZ lam) (fun i => (sg i : ℤ)) →
     (fockF (xiB ℂ lam sg) (xiB ℂ lam sg)).re ≤

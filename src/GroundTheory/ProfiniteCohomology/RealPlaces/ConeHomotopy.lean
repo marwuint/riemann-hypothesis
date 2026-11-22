@@ -30,11 +30,6 @@ noncomputable def prod (μ₁ : LeibnizPairing M₁ N₁ P₁) (μ₂ : LeibnizP
     rw [prodComplex_d_hom_apply, prodComplex_d_hom_apply, prodComplex_d_hom_apply]
     exact Prod.ext (μ₁.leibniz h x.1 y.1) (μ₂.leibniz h x.2 y.2)
 
-theorem prod_μ_apply (μ₁ : LeibnizPairing M₁ N₁ P₁) (μ₂ : LeibnizPairing M₂ N₂ P₂) {r s n : ℕ}
-    (h : r + s = n) (x : (prodComplex M₁ M₂).X r) (y : (prodComplex N₁ N₂).X s) :
-    (prod μ₁ μ₂).μ h x y = ((μ₁.μ h x.1 y.1, μ₂.μ h x.2 y.2) : P₁.X n × P₂.X n) :=
-  rfl
-
 noncomputable def prodLeft (μ₁ : LeibnizPairing M₁ N P₁) (μ₂ : LeibnizPairing M₂ N P₂) :
     LeibnizPairing (prodComplex M₁ M₂) N (prodComplex P₁ P₂) where
   μ {r s n} h := LinearMap.mk₂ k
@@ -47,11 +42,6 @@ noncomputable def prodLeft (μ₁ : LeibnizPairing M₁ N P₁) (μ₂ : Leibniz
   leibniz {r s n} h x y := by
     rw [prodComplex_d_hom_apply, prodComplex_d_hom_apply]
     exact Prod.ext (μ₁.leibniz h x.1 y) (μ₂.leibniz h x.2 y)
-
-theorem prodLeft_μ_apply (μ₁ : LeibnizPairing M₁ N P₁) (μ₂ : LeibnizPairing M₂ N P₂) {r s n : ℕ}
-    (h : r + s = n) (x : (prodComplex M₁ M₂).X r) (y : N.X s) :
-    (prodLeft μ₁ μ₂).μ h x y = ((μ₁.μ h x.1 y, μ₂.μ h x.2 y) : P₁.X n × P₂.X n) :=
-  rfl
 
 end Prod
 
@@ -112,13 +102,6 @@ noncomputable def coconeLeftHtpyμ {r s n : ℕ} (h : r + s = n) :
       rw [map_smul, map_smul, map_smul]
       change _ = c • (μL.shiftLeft r s n h p.2 ((ρ.f s).hom z) + η h p.1 z)
       rw [smul_add]))
-
-theorem coconeLeftHtpyμ_apply {r s n : ℕ} (h : r + s = n) (x : K.X r) (y : shiftNegOneX L r)
-    (z : N.X s) :
-    coconeLeftHtpyμ μL ρ μK η (f := f) (f' := f') h ((x, y) : K.X r × shiftNegOneX L r) z =
-      ((μK.μ h x z, μL.shiftLeft r s n h y ((ρ.f s).hom z) + η h x z) :
-        K'.X n × shiftNegOneX L' n) :=
-  rfl
 
 noncomputable def coconeLeftHtpy
     (hη : ∀ {r s n : ℕ} (h : r + s = n) (x : K.X r) (z : N.X s),

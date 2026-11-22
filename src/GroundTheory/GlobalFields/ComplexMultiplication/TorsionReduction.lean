@@ -133,17 +133,6 @@ theorem eq_of_reductionHom_eq_of_nsmul {n : ℕ} (hn : (n : ResidueField 𝒪) �
     (by rw [nsmul_sub, hP, hQ, sub_zero])
     (by rw [← reductionHom_apply, map_sub, h, sub_self]))
 
-def reductionTorsionHom (n : ℕ) :
-    AddSubgroup.torsionBy (curveK K W).Point n →+ AddSubgroup.torsionBy (curveRed W).Point n :=
-  ((reductionHom K W).comp (AddSubgroup.torsionBy (curveK K W).Point n).subtype).codRestrict _
-    fun P => by
-      rw [AddSubgroup.torsionBy.nsmul_iff, AddMonoidHom.comp_apply, ← map_nsmul,
-        AddSubgroup.subtype_apply, AddSubgroup.torsionBy.nsmul_iff.mp P.2, map_zero]
-
-theorem coe_reductionTorsionHom_apply (n : ℕ) (P : AddSubgroup.torsionBy (curveK K W).Point n) :
-    (reductionTorsionHom K W n P : (curveRed W).Point) = reductionHom K W P :=
-  rfl
-
 end Good
 
 section Localization

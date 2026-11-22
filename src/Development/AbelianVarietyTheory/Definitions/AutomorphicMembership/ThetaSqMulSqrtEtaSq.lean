@@ -105,10 +105,6 @@ structure IsKF (g c : ℕ) (κ : Rule) : Prop where
   unitSp : UnitSp κ
   off : ∀ (K : Type) [Field K] [CharZero K] (x : KeyIn K), x.P.g ≠ g → κ K x = 1
 
-namespace IsKF
-
-end IsKF
-
 structure KF (g c : ℕ) : Type where
 
   val : NgC g → ℂˣ
@@ -135,12 +131,6 @@ def ngTrue : Formalism.L2.Geo.NgPkg where
   NgC_ne _ := inferInstance
   KF := KF
   kfNorm kf z := kf.norm z
-
-theorem ngTrue_NgC (g : ℕ) : ngTrue.NgC g = NgC g := rfl
-
-theorem ngTrue_KF (g c : ℕ) : ngTrue.KF g c = KF g c := rfl
-
-theorem ngTrue_kfNorm {g c : ℕ} (kf : KF g c) (z : NgC g) : ngTrue.kfNorm (g := g) (c := c) kf z = kf.norm z := rfl
 
 end GlobalTheory.LocM
 end

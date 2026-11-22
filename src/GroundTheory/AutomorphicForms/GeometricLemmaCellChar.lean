@@ -218,9 +218,6 @@ def patLeftEquiv {k : GL (Fin n) F} (hk : k ∈ U) : (PatIdx T → F) ≃ₗ[F] 
     show patLeft T k (patLeft T k⁻¹ X) = X
     rw [← patLeft_mul hT hU hTt (U.inv_mem hk), mul_inv_cancel, patLeft_one hT hU]
 
-theorem coe_patLeftEquiv {k : GL (Fin n) F} (hk : k ∈ U) (X : PatIdx T → F) :
-    patLeftEquiv T hT hU hTt hk X = patLeft T k X := rfl
-
 theorem patCoord_mul {k u : GL (Fin n) F} (hu : u ∈ U) :
     patCoord T (k * u) = patCoord T k + patLeft T k (patCoord T u) := by
   funext p

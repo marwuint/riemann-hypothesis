@@ -33,11 +33,6 @@ theorem thl_majAt_coord (b : Basis (Fin n) K V) (X : InfinitePlace K → Matrix 
     majAt b X v x y = majAt (Pi.basisFun K (Fin n)) X v (b.equivFun x) (b.equivFun y) := by
   simp only [majAt, thl_fcoord_coord b X v]
 
-theorem thl_normAt_coord (b : Basis (Fin n) K V) (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)
-    (v : InfinitePlace K) (x : V) :
-    normAt b X v x = normAt (Pi.basisFun K (Fin n)) X v (b.equivFun x) := by
-  simp only [normAt, thl_fcoord_coord b X v]
-
 end Coord
 
 namespace GSD
@@ -101,14 +96,6 @@ theorem PosH.sub_norm {h : S.Ok} (hp : S.PosH h) (U : Submodule K S.EqFun) (v : 
     (hm.trans (key (Formalism.HermitianLatticesTheory.fcoord (S.hB h) (stdFrame (S.hGram h)) v (x : S.EqFun))).symm))
 
 variable (S)
-
-def isoHc (h : S.Ok) (L : Submodule (𝓞 K) S.EqFun) : Formalism.L2.GlobalTheoryTheory.HLatOps.Iso (S.toH h L) (S.toHc h L) where
-  e := S.hCoord h
-  map_L := rfl
-  norm := fun v x => by
-    show normAt (Pi.basisFun K (Fin (S.hDim h))) (stdFrame (S.hGram h)) v (S.hCoord h x) =
-      normAt (S.hB h) (stdFrame (S.hGram h)) v x
-    rw [thl_normAt_coord (S.hB h), hB_equivFun]
 
 theorem isLattice_of_map (h : S.Ok) (L : Submodule (𝓞 K) S.EqFun)
     (hL : Submodule.IsLattice K (L.map ((S.hCoord h).toLinearMap.restrictScalars (𝓞 K)))) :
@@ -376,10 +363,6 @@ theorem Rat.ipAt_indep (R : S.Rat) (h : S.Ok) (s : S.Sec) (v : InfinitePlace K) 
 
 end GSD
 
-namespace GSD
-
-end GSD
-
 section ColsRat
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
@@ -404,9 +387,6 @@ theorem ramInclH_norm (u : Pr.Word) (v : InfinitePlace X.K) (x : (MramH W Ch hX 
     normAt (MramH W Ch hX u).b (MramH W Ch hX u).X v x =
       normAt (Mu0H W Ch hX u).b (Mu0H W Ch hX u).X v (ramInclH W Ch hX u x) :=
   (colPosH W Ch hX u 0).sub_norm (MramV W Ch u) v x
-
-theorem MramH_L (u : Pr.Word) :
-    (MramH W Ch hX u).L = (Mu0H W Ch hX u).L.comap ((ramInclH W Ch hX u).restrictScalars (𝓞 X.K)) := rfl
 
 end Cols
 

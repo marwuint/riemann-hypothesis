@@ -13,9 +13,6 @@ open Pb HT
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
-def SqEx2 : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] (M : Model l K)
-  (d : ℕ), 1 ≤ d → M.Sm → SmoothOfRelativeDimension (d + 1) M.p → Nonempty (Sq M (d + 1))
-
 def DiagEt2 : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] (M : Model l K)
   (d : ℕ), 1 ≤ d → M.Sm → SmoothOfRelativeDimension (d + 1) M.p → ∀ (S : Sq M (d + 1)) (r : E.Roots l) (v : S.Y.T 2), IsEtaleFirstChernUntwisted r S.D v →
   ∃ (c : S.P.T (2 + 2 * d)) (w : S.Y.T (2 * d)) (z : S.Y.T (2 + 2 * d))

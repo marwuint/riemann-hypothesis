@@ -2462,9 +2462,6 @@ def upd (G : GAtP p) (L : G.P.Tup) (v : Fin G.P.nV) (A : Lat G v) : G.P.Tup :=
 def sysOf (G : GAtP p) (t : Fin G.P.nV → ℕ) (σ : Fin G.P.nV → Slot) : G.P.Tup → Submodule G.O G.P.Xsp :=
   G.P.sys fun v => piLattice₂ G v (t v) (σ v)
 
-theorem latSys_eq (G : GAtP p) (t : Fin G.P.nV → ℕ) (σ : Fin G.P.nV → Slot) :
-    latSys G t σ = G.funMod (sysOf G t σ) := rfl
-
 def EquivSys (G : GAtP p) (Hv : G.P.Tup → Submodule G.O G.P.Xsp) : Prop :=
   ∀ (i : G.comp) (γ : (G.lev i).Γ) (L : G.P.Tup), G.P.IsLatTup L → ∀ ξ ∈ Hv L,
     ((G.lev i).χ γ : G.O) • (G.lev i).actX γ ξ ∈ Hv ((G.lev i).smul γ L)

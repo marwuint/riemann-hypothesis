@@ -181,9 +181,6 @@ theorem finPart_mul_inf (χ : HChar E) (k : Eˣ) :
   · show _ * 1 = _
     rw [mul_one]; rfl
 
-theorem hasInf_iff_two_mul (χ : HChar E) (φ : I → E →+* ℂ) (m : I → ℤ) :
-    HasInf χ φ m ↔ χ.HasInf φ (fun i => 2 * m i) := Iff.rfl
-
 theorem hasInfRatio_iff (χ : HChar E) (φ : I → E →+* ℂ) (m : I → ℤ) :
     HasInfRatio χ φ m ↔
       ∀ k : Eˣ, ((χ.inf k : ℂˣ) : ℂ) = ∏ i, (φ i (k : E) / starRingEnd ℂ (φ i (k : E))) ^ m i := by

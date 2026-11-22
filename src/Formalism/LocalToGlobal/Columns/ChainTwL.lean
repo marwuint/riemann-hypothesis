@@ -123,8 +123,6 @@ theorem twNext_surj {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) 
 
 variable (Ch sel mu cst)
 
-theorem twSt_zero (m2 : ℕ) : twSt Ch sel mu cst m2 0 = twUnitSt _ 0 := rfl
-
 theorem twSt_succ_le {m2 i : ℕ} (h : i + 1 ≤ m2) : twSt Ch sel mu cst m2 (i + 1) = twNext Ch sel mu cst (twSt Ch sel mu cst m2 i) := by
   rw [twSt, if_pos h]
 

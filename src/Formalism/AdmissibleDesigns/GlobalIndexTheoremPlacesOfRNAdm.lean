@@ -77,10 +77,6 @@ def splitRep (ρ : Γ →* GL (Fin r) O) (χ : ℕ → Γ →* Oˣ) : Γ →* GL
     show splitMat _ _ = splitMat _ _ * splitMat _ _
     rw [splitMat_mul, ← chiVec_mul, map_mul, Units.val_mul]
 
-theorem splitRep_coe (ρ : Γ →* GL (Fin r) O) (χ : ℕ → Γ →* Oˣ) (g : Γ) :
-    ((splitRep (t := t) ρ χ g : GL _ _) : Matrix (Fin (r + t)) (Fin (r + t)) O) =
-      splitMat ((ρ g : GL _ _) : Matrix _ _ O) (chiVec t χ g) := rfl
-
 end Split
 
 section Rec

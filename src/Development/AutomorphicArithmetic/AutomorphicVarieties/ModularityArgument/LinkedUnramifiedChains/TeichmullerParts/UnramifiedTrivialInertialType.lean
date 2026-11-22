@@ -120,16 +120,6 @@ def Flath : Prop :=
     ∃ f : _ →ₗ[ℂ] (Ga l L n × GL' n V → Fin d → ℂ), Function.Injective f ∧ LinearMap.range f = VS V ι e ξ Q τ₀ σ ∧
       Intw (box C.repL C.repS) (actS n V d) f
 
-def YDim : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
-    (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n → ∀ (V : s.Lev), V.S' = s.S → ∀ (Q : QData V) (c : Coef l) (ι : Qbar l ≃+* ℂ) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
-    (lam : Wt L l n) (d : ℕ) (e : (Fin d → ℂ) ≃ₗ[ℂ] ⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res))
-    (ξ : GV n (fun v : V.frame.Vl => s.w v.1) →* GL (Fin d) ℂ), IsBasis ι e ξ → ∀ σ, IsAutRepU σ → (∀ w : Plc L, w.under (𝓞 (Lp L)) ∉ s.S → IsUnramU σ w) →
-    (∀ y : Emb l (fun v : V.frame.Vl => s.w v.1), HasWeightAt σ (ι.toRingHom.comp y.res) (lam y.res).dual) → ∀ (C : Comps V σ) (b : ℕ)
-    (φ : ∀ v : V.frame.Vl, Fin n → Uo ((s.w v.1).adicCompletion L) → ℂ) (μ : V.frame.Vl → Fin n → ℂ),
-    Module.rank ℂ ↥(YOf Q ι τ₀ e ξ σ ⊓ eigL (fun v : V.frame.Vl => s.w v.1) ((hset Q τ₀).X.rpF ℂ d m) b φ μ) =
-      Module.rank ℂ (eigL (fun v : V.frame.Vl => s.w v.1) C.repL b φ μ) * Module.rank ℂ (C.inv ι τ₀)
-
 def WtEx : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n → ∀ (V : s.Lev), V.S' = s.S → ∀ (ι : Qbar l ≃+* ℂ) (lam : Wt L l n), ∃ lam', WtLink V ι lam lam'
@@ -188,13 +178,6 @@ def PartRep : Prop :=
     (ψ : ∀ v, Fin n → Dec (F := L) (H.pl v) →* (H.TK θ a K)ˣ), H.IsUniv θ a K I D ψ → ∀ ρ : H.Gq →* GL (Fin n) (Qbar l), Continuous ρ →
     Af.IsIrr ρ → D.map z.toRingHom = W.GDet.ofRep (W.mat ρ) → ∀ Y : H.Part ι lam ξ,
     Y.Y ⊓ zPart H θ ι x.toRingHom lam ξ K c0 (fun i => ι (z (H.gen θ a K i))) ≠ ⊥ → ∃ g : GL (Fin n) (Qbar l), ∀ h, Y.r h = g * ρ h * g⁻¹
-
-def TypePS : Prop :=
-  GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (n : ℕ), 1 ≤ n →
-    ∀ (π : CuspSub L n) (w : Plc L) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (τ : SmIrr (GLw n w)), π.IsLocComp w τ →
-    ∀ χ : Fin n → Ine (F := L) A →* ℂˣ, (∀ rc, IsRec h rc → IsTypeWD h χ (rc (algNorm τ))) →
-    ∃ ω : Fin n → (w.adicCompletion L)ˣ →* ℂˣ, (∀ i, IsSmoothChar (ω i)) ∧ Nonempty (τ.ρ.Equiv (PS ω)) ∧
-      ∀ i (g : Ine (F := L) A), ω i (artOf h (ineIncl h g)) = χ i g
 
 def PsRes : Prop :=
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ), ∀ ω ω' : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ω i)) → (∀ i, IsSmoothChar (ω' i)) → (∀ i (y : Uo k), ω i y = ω' i y) →

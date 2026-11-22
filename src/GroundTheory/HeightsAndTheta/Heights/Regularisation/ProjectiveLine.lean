@@ -16,46 +16,6 @@ noncomputable section
 
 namespace ProjectiveLine
 
-def sChart (i : Fin 2) : OpenPartialHomeomorph (CP 1) (Fin 1 → ℂ) where
-  toFun x := (2 : ℂ)⁻¹ • CP.chartCoord i x
-  invFun y := CP.chartInv i ((2 : ℂ) • y)
-  source := CP.chartDomain i ∩ CP.chartCoord i ⁻¹' ball 0 2
-  target := ball 0 1
-  map_source' x hx := by
-    have h := hx.2
-    simp only [mem_preimage, mem_ball_zero_iff] at h ⊢
-    rw [norm_smul]
-    norm_num
-    linarith
-  map_target' y hy := by
-    refine ⟨CP.chartInv_mem i _, ?_⟩
-    simp only [mem_preimage, CP.chartCoord_chartInv, mem_ball_zero_iff] at hy ⊢
-    rw [norm_smul]
-    norm_num
-    linarith
-  left_inv' x hx := by
-    simp only [smul_smul]
-    norm_num
-    exact CP.chartInv_chartCoord i hx.1
-  right_inv' y _ := by
-    simp only [CP.chartCoord_chartInv, smul_smul]
-    norm_num
-  open_source := (CP.continuousOn_chartCoord i).isOpen_inter_preimage (CP.isOpen_chartDomain i)
-    isOpen_ball
-  open_target := isOpen_ball
-  continuousOn_toFun := ((CP.continuousOn_chartCoord i).mono inter_subset_left).const_smul ((2 : ℂ)⁻¹)
-  continuousOn_invFun := ((CP.continuous_chartInv i).comp (continuous_const_smul _)).continuousOn
-
-theorem sChart_apply (i : Fin 2) (x : CP 1) : sChart i x = (2 : ℂ)⁻¹ • CP.chartCoord i x := rfl
-
-theorem sChart_symm_apply (i : Fin 2) (y : Fin 1 → ℂ) :
-    (sChart i).symm y = CP.chartInv i ((2 : ℂ) • y) := rfl
-
-theorem sChart_source (i : Fin 2) :
-    (sChart i).source = CP.chartDomain i ∩ CP.chartCoord i ⁻¹' ball 0 2 := rfl
-
-theorem sChart_target (i : Fin 2) : (sChart i).target = ball 0 1 := rfl
-
 def ltSet (a b : Fin 2) : Set (CP 1) :=
   {x | Projectivization.lift (fun v : {v : Fin 2 → ℂ // v ≠ 0} => ‖v.1 a‖ < ‖v.1 b‖) (by
     rintro ⟨u, hu⟩ ⟨w, hw⟩ t rfl

@@ -32,13 +32,6 @@ def IsScaleAt {j : Fin D.R.m} (B : Base (Vc D j) (Wc D j)) (u : ∀ τ, lowT (Rl
     harmFn (Wc D j).rank B.w B.F.BS (Rl.ioP j (PiTensorProduct.tprod ℂ u) (c0 F)) =
       c • coefFn D.what₂.embLL (FWT.lamV D j) (F : Formalism.L2.DIV.Pol D.what₂.LL D.what₂.Tau (Vc D j).rank)
 
-theorem isScale_iff (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) {j : Fin D.R.m}
-    (B : Base (Vc D j) (Wc D j)) (c : ℂ) :
-    IsScale Rl v₀ B c ↔ ∃ gramR c0R c0L, Bridge.FamTie Rl.B Rl.pl (Rl.Sb : Set (Formalism.L2.DIV.Pl D.host.E)) Rl.Q (labLL D)
-      (fun τ => Bridge.lamRdef (Ptw D) τ) (fun j τ => Bridge.lamLdef (Vc D j).rank ((j : ℕ) + 1) τ) gramR c0R c0L ∧
-      ∃ u : ∀ τ, lowT (Rl.MW j (sg0 D A3.A)) τ, (∀ τ, (u τ : (Rl.MW j (sg0 D A3.A)).sm τ) = v₀ j _ τ) ∧
-        IsScaleAt Rl B u (c0L j) c := Iff.rfl
-
 variable {Rl}
 
 theorem IsScaleAt.ioP_eq {j : Fin D.R.m} {B : Base (Vc D j) (Wc D j)} {u : ∀ τ, lowT (Rl.MW j (sg0 D A3.A)) τ}
@@ -122,17 +115,6 @@ def IsRatScalar (ν : ℂ) : Prop :=
     ∃ u : ∀ τ, lowT (Rl.MW j (sg0 D A3.A)) τ, (∀ τ, (u τ : (Rl.MW j (sg0 D A3.A)).sm τ) = v₀ j _ τ) ∧
       ∃ c ph : ℂ, c ≠ 0 ∧ ‖ph‖ = 1 ∧ ν = ph * c ∧ IsScaleAt Rl B u (c0L j) c ∧
         IsRatPhase T Rl.toRealDat j hV (κ j) u (c0L j) ph
-
-theorem isRatScalar_iff (ν : ℂ) : IsRatScalar T Rl κ v₀ hV B ν ↔
-    ∃ gramR c0R c0L, Bridge.FamTie Rl.B Rl.pl (Rl.Sb : Set (Formalism.L2.DIV.Pl D.host.E)) Rl.Q (labLL D)
-      (fun τ => Bridge.lamRdef (Ptw D) τ) (fun j τ => Bridge.lamLdef (Vc D j).rank ((j : ℕ) + 1) τ) gramR c0R c0L ∧
-    ∃ u : ∀ τ, lowT (Rl.MW j (sg0 D A3.A)) τ, (∀ τ, (u τ : (Rl.MW j (sg0 D A3.A)).sm τ) = v₀ j _ τ) ∧
-      ∃ c ph : ℂ, c ≠ 0 ∧ ‖ph‖ = 1 ∧ ν = ph * c ∧
-        (∀ F : VV D.what₂.LL (FWT.lamV D j),
-          harmFn (Wc D j).rank B.w B.F.BS (Rl.ioP j (PiTensorProduct.tprod ℂ u) (c0L j F)) =
-            c • coefFn D.what₂.embLL (FWT.lamV D j) (F : Formalism.L2.DIV.Pol D.what₂.LL D.what₂.Tau (Vc D j).rank)) ∧
-        ∀ C : Cover T ((j : ℕ) + 1) T.σ₀, GoodCover T Rl.toRealDat j C (κ j).n →
-          (embLL0 D).fieldRange ≤ C.σ₂.fieldRange → SeriesRatOn T Rl.toRealDat j hV C (κ j) u (c0L j) ph := Iff.rfl
 
 variable {T Rl κ v₀ hV B}
 

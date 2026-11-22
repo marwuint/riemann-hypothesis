@@ -27,11 +27,6 @@ theorem homToSubrep_hom_apply (A : Rep.{u} k G) (W : Submodule k A)
     (b : B) : ((homToSubrep A W hW f hf).hom b : A) = f.hom b :=
   rfl
 
-theorem homToSubrep_comp_subtype (A : Rep.{u} k G) (W : Submodule k A)
-    (hW : ∀ g, W ≤ W.comap (A.ρ g)) {B : Rep.{u} k G} (f : B ⟶ A) (hf : ∀ b, f.hom b ∈ W) :
-    homToSubrep A W hW f hf ≫ Rep.subtype A W hW = f :=
-  rfl
-
 end Generic
 
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
@@ -57,19 +52,6 @@ noncomputable def sComp : SIndex K S → Rep ℤ Gal(L/K)
 def toSIdele (a : ↥(sIdelesSubmodule K L S)) :
     sIdeles (placesAbove L (S : Set (HeightOneSpectrum (𝓞 K)))) :=
   ⟨a.1.toMul, mem_sIdelesSubmodule.1 a.2⟩
-
-omit [NumberField K] in
-theorem toSIdele_add (a b : ↥(sIdelesSubmodule K L S)) : toSIdele S (a + b) = toSIdele S a * toSIdele S b :=
-  rfl
-
-omit [NumberField K] in
-theorem toSIdele_zero : toSIdele (L := L) S 0 = 1 :=
-  rfl
-
-omit [NumberField K] in
-theorem toSIdele_ρ (σ : Gal(L/K)) (a : ↥(sIdelesSubmodule K L S)) :
-    toSIdele S ((sIdeleRep K L S).ρ σ a) = σ • toSIdele S a :=
-  rfl
 
 omit [NumberField K] in
 theorem toSIdele_bijective : Function.Bijective (toSIdele (L := L) S) :=
@@ -182,14 +164,6 @@ theorem sEmbFin_comp_subtype (v : (S : Set (HeightOneSpectrum (𝓞 K)))) :
     sEmbFin (L := L) S v ≫ Rep.subtype _ _ _ = finiteEmbedAboveRep v.1 :=
   rfl
 
-theorem subtype_comp_infiniteProjAboveRep (v : InfinitePlace K) :
-    Rep.subtype _ _ _ ≫ infiniteProjAboveRep v = sProj (L := L) S (.inl v) :=
-  rfl
-
-theorem subtype_comp_finiteProjAboveRep (v : (S : Set (HeightOneSpectrum (𝓞 K)))) :
-    Rep.subtype _ _ _ ≫ finiteProjAboveRep v.1 = sProj (L := L) S (.inr (.inl v)) :=
-  rfl
-
 def productToFamily (p : SIdelesProduct L (S : Set (HeightOneSpectrum (𝓞 K)))) :
     ∀ i : SIndex K S, sComp L S i
   | .inl v => fun w => Additive.ofMul (p.1 v w)
@@ -254,10 +228,6 @@ instance mono_integerInclRep (v : HeightOneSpectrum (𝓞 K)) : Mono (integerInc
   have := integerUnitsAboveIncl_injective v h'
   funext w
   exact congrArg Additive.ofMul (congrFun this w)
-
-theorem integerEmbedAboveRep_eq (v : HeightOneSpectrum (𝓞 K)) :
-    integerEmbedAboveRep (L := L) v = integerInclRep v ≫ finiteEmbedAboveRep v :=
-  rfl
 
 theorem sIntegerProj_comp_integerInclRep (v : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ) :
     sIntegerProj (L := L) S v ≫ integerInclRep v.1 =

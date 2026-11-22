@@ -13,8 +13,6 @@ variable {D : D7}
 
 abbrev Place (D : D7) : Type := HeightOneSpectrum (𝓞 D.host.E)
 
-abbrev ModHost (D : D7) : Type := ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E
-
 def PrimeToAA (D : D7) (P : Place D) : Prop := FractionalIdeal.count D.host.E P D.host.AA = 0
 
 theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by

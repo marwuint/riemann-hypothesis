@@ -49,9 +49,6 @@ theorem isPreimmersion_fst {O K : Type} [CommRing O] [Field K] (β : O →+* K) 
 theorem genPt_comp {X X' : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Sp Ω ⟶ X) (π : X ⟶ X') :
     genPt (ξ ≫ π) = π (genPt ξ) := rfl
 
-theorem centre_comp {X X' : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRing R] (z : Sp R ⟶ X) (π : X ⟶ X') :
-    centre (z ≫ π) = π (centre z) := rfl
-
 end GlobalTheory.CompanionTheory.Ar.Flat.GenOnModel
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat

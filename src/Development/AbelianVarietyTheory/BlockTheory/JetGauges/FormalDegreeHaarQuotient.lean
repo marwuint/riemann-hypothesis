@@ -29,11 +29,6 @@ def IsHaarOn (U : Set (Mat k r)) (μ : Measure (Mt k r)) : Prop :=
   μ {x | Matrix.of x ∉ U} = 0 ∧ (∀ a ∈ U, μ.map (lmulM a) = μ) ∧
     (∀ C : Set (Mt k r), IsCompact C → (∀ x ∈ C, Matrix.of x ∈ U) → μ C < ⊤) ∧ μ ≠ 0
 
-def IsQuotRep (G : Set (Mat k r)) (μG μS ν : Measure (Mt k r)) : Prop :=
-  ν {x | Matrix.of x ∉ G} = 0 ∧
-    ∀ f : Mt k r → ℝ≥0∞, Measurable f →
-      ∫⁻ g, f g ∂μG = ∫⁻ g, (∫⁻ s, f (lmulM (Matrix.of s) g) ∂μS) ∂ν
-
 def leviW (k r : ℕ) (s : Mat k r) : Mat k r := fun i j =>
   if (r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k) then s i j
   else if i = j then 1 else 0

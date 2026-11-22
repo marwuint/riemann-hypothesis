@@ -132,10 +132,6 @@ def coeffRt : c.F := IntermediateField.inclusion c.le (baseKA l).ρ
 
 def coeffZeta : c.F := IntermediateField.inclusion c.le (baseKA l).ζ
 
-lemma coeffRt_val : ((coeffRt c : c.F) : ℂ) = H.rt0 := rfl
-
-lemma coeffZeta_val : ((coeffZeta c : c.F) : ℂ) = zeta l.A := rfl
-
 variable {c}
 
 def IsFracImage {O : Type} [CommRing O] (β : O →+* c.F) : Prop :=
@@ -180,14 +176,6 @@ namespace ArcInput
 
 variable {D : Datum H} {l : Level H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
-
-lemma gam_rt (x : ArcInput D c β O' b) (r : O) (hr : ((β r : c.F) : ℂ) = H.rt0) :
-    x.gam (coeffRt c) = algebraMap O' (FractionRing O') (b r) := by
-  rw [← x.gam_over]; congr 1; exact Subtype.ext hr.symm
-
-lemma gam_zeta (x : ArcInput D c β O' b) (z : O) (hz : ((β z : c.F) : ℂ) = zeta l.A) :
-    x.gam (coeffZeta c) = algebraMap O' (FractionRing O') (b z) := by
-  rw [← x.gam_over]; congr 1; exact Subtype.ext hz.symm
 
 lemma charZero (x : ArcInput D c β O' b) : CharZero (FractionRing O') :=
   x.gam.charZero_iff x.gam.injective |>.mp inferInstance

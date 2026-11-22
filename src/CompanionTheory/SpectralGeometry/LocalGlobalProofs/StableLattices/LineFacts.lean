@@ -145,8 +145,6 @@ def aLine (hG : IsGrad ε A) (t : ℝ) : Formalism.REAL.UJ ε :=
   ⟨⟨eT A t, eT A (-t), by rw [← eT_add, add_neg_cancel, eT_zero], by rw [← eT_add, neg_add_cancel, eT_zero]⟩,
     Formalism.REAL.exp_indefinite_unitary_holds n ε A hG.1 t⟩
 
-theorem uMat_aLine (hG : IsGrad ε A) (t : ℝ) : uMat (aLine hG t) = eT A t := rfl
-
 theorem continuous_aLine (hG : IsGrad ε A) : Continuous (aLine hG) := by
   refine continuous_induced_rng.2 (Units.continuous_iff.2 ⟨?_, ?_⟩)
   · exact continuous_eT

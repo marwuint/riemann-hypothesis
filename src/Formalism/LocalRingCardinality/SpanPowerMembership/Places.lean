@@ -229,10 +229,6 @@ def conjW (w : HeightOneSpectrum (𝓞 K)) : HeightOneSpectrum (𝓞 K) :=
   HeightOneSpectrum.equivOfRingEquiv (starO (K := K)) w
 
 omit [NumberField K] in
-theorem conjW_asIdeal (w : HeightOneSpectrum (𝓞 K)) :
-    (conjW w).asIdeal = w.asIdeal.comap ((starO (K := K)).symm : 𝓞 K →+* 𝓞 K) := rfl
-
-omit [NumberField K] in
 theorem conjW_asIdeal' (w : HeightOneSpectrum (𝓞 K)) :
     (conjW w).asIdeal = w.asIdeal.map (starO (K := K)) := by
   ext x

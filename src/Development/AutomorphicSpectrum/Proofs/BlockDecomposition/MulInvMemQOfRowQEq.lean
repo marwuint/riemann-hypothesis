@@ -52,9 +52,6 @@ def rowEl (n : ℕ) (r : Fin (n + 1) → k) (h : (rowMat n r).det ≠ 0) : Mir k
     funext j
     simp [eLast, one_apply, Pi.single_apply, eq_comm]⟩
 
-theorem rowEl_val (n : ℕ) (r : Fin (n + 1) → k) (h : (rowMat n r).det ≠ 0) :
-    (((rowEl n r h : Mir k (n + 1)) : GL (Fin (n + 2)) k) : Matrix (Fin (n + 2)) (Fin (n + 2)) k) = rowMat n r := rfl
-
 theorem rowQ_rowEl (n : ℕ) (r : Fin (n + 1) → k) (h : (rowMat n r).det ≠ 0) :
     rowQ k n (rowEl n r h) = r := by
   funext j

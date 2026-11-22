@@ -76,10 +76,6 @@ def liftC (hL : ∀ u, u ∈ Lat F N ↔ ∃ ξ, u = rat ξ) (f : (Fin N → AF 
     (hf : ∀ ξ u, f (rat ξ + u) = f u) (hc : Continuous f) : C(Q F N, ℂ) :=
   ⟨liftQ hL f hf, hc.quotient_lift _⟩
 
-theorem liftC_apply (hL : ∀ u, u ∈ Lat F N ↔ ∃ ξ, u = rat ξ) (f : (Fin N → AF F) → ℂ)
-    (hf : ∀ ξ u, f (rat ξ + u) = f u) (hc : Continuous f) (u : Fin N → AF F) :
-    liftC hL f hf hc (u : Q F N) = f u := rfl
-
 def chiC (a : Fin N → F) (hL : ∀ u, u ∈ Lat F N ↔ ∃ ξ, u = rat ξ) (hψ : IsCharAF F ψ) (ξ : Fin N → F) : C(Q F N, ℂ) :=
   liftC hL (chi ψ a ξ) (fun η u => chi_periodic hψ ξ η u) (hψ.1.comp (cont_Bd a _).neg)
 

@@ -29,17 +29,9 @@ def orderFamily (B : PrincipalizationRules.{u}) (D : ℕ → PrincipalizationAss
     PrincipalizationAssignment.{u} :=
   fun T => B.orderRed T (fun S _ j => D j S)
 
-theorem orderFamily_apply (B : PrincipalizationRules.{u}) (D : ℕ → PrincipalizationAssignment.{u})
-    (T : MarkedIdealWithBoundary.{u}) :
-    B.orderFamily D T = B.orderRed T (fun S _ j => D j S) := rfl
-
 def maxOrderFamily (B : PrincipalizationRules.{u}) (A : PrincipalizationAssignment.{u}) :
     PrincipalizationAssignment.{u} :=
   fun T => B.maxOrderRed T (fun S _ => A S)
-
-theorem maxOrderFamily_apply (B : PrincipalizationRules.{u}) (A : PrincipalizationAssignment.{u})
-    (T : MarkedIdealWithBoundary.{u}) :
-    B.maxOrderFamily A T = B.maxOrderRed T (fun S _ => A S) := rfl
 
 def nextLevel (B : PrincipalizationRules.{u}) (L : OrderReductionData.{u}) : OrderReductionData.{u} where
   maxOrderRed := B.maxOrderFamily (B.orderFamily (fun j => B.divisorFamily L.maxOrderRed j))
@@ -61,20 +53,8 @@ def outputLevelData (B : PrincipalizationRules.{u}) (n : ℕ) : OrderReductionDa
 @[simp] theorem inputLevelData_zero (B : PrincipalizationRules.{u}) :
     B.inputLevelData 0 = trivialOrderReductionData.{u} := rfl
 
-theorem outputLevelData_eq_nextLevel (B : PrincipalizationRules.{u}) (n : ℕ) :
-    B.outputLevelData n = B.nextLevel (B.inputLevelData n) := rfl
-
 @[simp] theorem inputLevelData_succ (B : PrincipalizationRules.{u}) (n : ℕ) :
     B.inputLevelData (n + 1) = B.outputLevelData n := rfl
-
-def levelDivisorFamily (B : PrincipalizationRules.{u}) (n : ℕ) (j : ℕ) : PrincipalizationAssignment.{u} :=
-  B.divisorFamily (B.inputLevelData n).maxOrderRed j
-
-theorem outputLevelData_orderReduction_eq_orderFamily (B : PrincipalizationRules.{u}) (n : ℕ) :
-    (B.outputLevelData n).orderRed = B.orderFamily (fun j => B.levelDivisorFamily n j) := rfl
-
-theorem outputLevelData_maxOrderReduction_eq (B : PrincipalizationRules.{u}) (n : ℕ) :
-    (B.outputLevelData n).maxOrderRed = B.maxOrderFamily (B.outputLevelData n).orderRed := rfl
 
 structure ReducesInductivelyOnDimension (B : PrincipalizationRules.{u}) : Prop where
   divisorSpec : ∀ (n : ℕ) (L O : PrincipalizationAssignment.{u}),

@@ -34,9 +34,6 @@ theorem Hf_herm (T : Tor D) (x y : VC D N N') :
     ring
   · simp
 
-theorem U_eq_heis (T : Tor D) (x : VC D N N') (G : VC D N N' → ℂ) :
-    U D T x G = Formalism.HermitianLattices.WeilRepresentation.Heisenberg₂ (Hf D T) x G := rfl
-
 def cf (T : Tor D) (x y : VC D N N') : ℂ :=
   Complex.exp (-((Real.pi : ℂ) * Complex.I * ((Hf D T x y).im : ℂ)))
 

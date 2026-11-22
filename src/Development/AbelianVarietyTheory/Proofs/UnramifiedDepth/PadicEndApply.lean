@@ -31,9 +31,6 @@ def padicEnd (p : ℕ) [Fact p.Prime] (M : Type) [AddCommGroup M] (hM : ∀ x : 
     change (PadicInt.toZMod (a + b)).val • x = (PadicInt.toZMod a).val • x + (PadicInt.toZMod b).val • x
     rw [map_add, ZMod.val_add, ← nsmul_eq_mod_nsmul _ (hM x), add_nsmul]
 
-lemma padicEnd_apply (p : ℕ) [Fact p.Prime] (M : Type) [AddCommGroup M] (hM : ∀ x : M, p • x = 0)
-    (c : ℤ_[p]) (x : M) : padicEnd p M hM c x = (PadicInt.toZMod c).val • x := rfl
-
 def liftInt {A B C : Type} [CommRing A] [CommRing B] [Ring C] (φ : A →+* C) (ψ : B →+* C)
     (h : ∀ a b, φ a * ψ b = ψ b * φ a) : A ⊗[ℤ] B →+* C :=
   (Algebra.TensorProduct.lift φ.toIntAlgHom ψ.toIntAlgHom h).toRingHom
@@ -51,9 +48,6 @@ def resEnd {B : BX R₀} {O : LAlg R₀} (e : OEnd B O) (p : ℕ) {S : LAlg R₀
     AddMonoid.End (torP B p S) :=
   ((e.f s).comp (torP B p S).subtype).codRestrict (torP B p S) fun x => by
     rw [mem_torP, ← map_nsmul, pTorsion_nsmul_eq_zero, map_zero]
-
-lemma resEnd_apply {B : BX R₀} {O : LAlg R₀} (e : OEnd B O) (p : ℕ) {S : LAlg R₀} (s : LHom O S)
-    (x : torP B p S) : (resEnd e p s x : B.G S) = e.f s x := rfl
 
 def ordEnd {B : BX R₀} {O : LAlg R₀} {O₀ : Type} [CommRing O₀] (f : O₀ → OEnd B O) (p : ℕ)
     {S : LAlg R₀} (s : LHom O S)

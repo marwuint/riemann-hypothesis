@@ -34,28 +34,6 @@ theorem isOpen_le_rank (κ : ℕ) : IsOpen {x : Matrix b a k | κ ≤ x.rank} :=
   obtain ⟨_, _⟩ := SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
   exact GlobalTheory.isOpen_setOf_le_rank k b a κ
 
-omit [DecidableEq a] [DecidableEq b] in
-
-theorem isClosed_rank_lt (κ : ℕ) : IsClosed {x : Matrix b a k | x.rank < κ} := by
-  have := (isOpen_le_rank (k := k) (a := a) (b := b) κ).isClosed_compl
-  simpa only [Set.compl_ofPred, not_le] using this
-
-def resFilt (μ : kˣ →* ℂˣ) {s : Set ℕ} {κ m n : ℕ} (hmn : m ≤ n) (hs : ∀ r, r ∈ s ↔ κ ≤ r ∧ r < m) :
-    (filt a b μ (Set.Iio n) κ).toRepresentation.IntertwiningMap (omegaOn a b μ s) where
-  toFun Φ := ⟨fun x => Φ.1.1 ⟨x.1, ((hs _).1 x.2).2.trans_le hmn⟩,
-    comp_mem_SB_of_isInducing
-      (i := fun x : RankIn k a b s => (⟨x.1, ((hs _).1 x.2).2.trans_le hmn⟩ : RankIn k a b (Set.Iio n)))
-      (IsInducing.subtypeVal.of_comp_iff.1 IsInducing.subtypeVal) Φ.1
-      ((isClosed_rank_lt m).preimage continuous_subtype_val) (fun y => ((hs _).1 y.2).2)
-      fun x hx h0 => ⟨⟨x.1, (hs _).2 ⟨not_lt.1 fun h => h0 (Φ.2 x h), hx⟩⟩, rfl⟩⟩
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-  isIntertwining' _ := rfl
-
-theorem resFilt_apply (μ : kˣ →* ℂˣ) {s : Set ℕ} {κ m n : ℕ} (hmn : m ≤ n) (hs : ∀ r, r ∈ s ↔ κ ≤ r ∧ r < m)
-    (Φ : (filt a b μ (Set.Iio n) κ).toSubmodule) (x : RankIn k a b s) :
-    (resFilt μ hmn hs Φ).1 x = Φ.1.1 ⟨x.1, ((hs _).1 x.2).2.trans_le hmn⟩ := rfl
-
 end
 
 end GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences

@@ -11,8 +11,6 @@ namespace Formalism.FrobeniusOrbits
 
 namespace Orbits
 
-lemma chD_apply (e : ℕ) (g : GG e) : chD e g = g.1.2 := rfl
-
 lemma prim_bound {E K : Type*} [Field E] [Field K] [Algebra ℚ E] [Algebra ℚ K] [Algebra E K]
     [IsScalarTower ℚ E K] [FiniteDimensional ℚ E] [FiniteDimensional E K] (g : ℕ) (hg : g.Prime)
     (μ : K) (hμ : IsPrimitiveRoot μ g) :

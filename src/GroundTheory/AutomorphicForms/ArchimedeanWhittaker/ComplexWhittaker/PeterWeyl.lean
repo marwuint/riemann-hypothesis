@@ -117,8 +117,6 @@ noncomputable def monoAlg : StarSubalgebra ℂ C(U2, ℂ) :=
       | add x y _ _ hx hy => rw [star_add]; exact Submodule.add_mem _ hx hy
       | smul c x _ hx => rw [star_smul]; exact Submodule.smul_mem _ _ hx }
 
-theorem mem_monoAlg_iff {f : C(U2, ℂ)} : f ∈ monoAlg ↔ f ∈ Submodule.span ℂ monoSet := Iff.rfl
-
 theorem eq_zero_of_forall_integral_coeff {g : U2 → ℂ} (hg : Continuous g)
     (h : ∀ (n : ℕ) (q : ℤ) (l₁ l₂ : U2), ∫ k, ((((l₁ * k * l₂ : U2) : Matrix (Fin 2) (Fin 2) ℂ) 0 0) ^ n *
       ((k : Matrix (Fin 2) (Fin 2) ℂ).det) ^ q * g k) ∂μK = 0) : g = 0 :=

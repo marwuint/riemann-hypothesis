@@ -14,14 +14,6 @@ variable (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
 
 def atP (c : D.host.K) : ℂ_[p] := lamC lam (D.host.φ₀ (c : D.host.E))
 
-def parPt (Lp : PeriodPair) (C : WeierstrassCurve.VariableChange ℂ_[p]) (z : ℂ) : ℂ_[p] :=
-  if z ∈ Lp.lattice then 0 else
-    let x₀ : ℂ_[p] := lamC lam (Lp.weierstrassP z)
-    let y₀ : ℂ_[p] := lamC lam (Lp.derivWeierstrassP z / 2)
-    let x : ℂ_[p] := (x₀ - C.r) / (C.u : ℂ_[p]) ^ 2
-    let y : ℂ_[p] := (y₀ - C.s * (x₀ - C.r) - C.t) / (C.u : ℂ_[p]) ^ 3
-    (-x) / y
-
 variable {D}
 
 end Curve
@@ -31,8 +23,6 @@ section Meas
 variable {p : ℕ} [Fact p.Prime]
 
 abbrev Meas (p r : ℕ) [Fact p.Prime] : Type := C(Fin r → ℤ_[p], ℂ_[p]) →L[ℂ_[p]] ℂ_[p]
-
-def IsRMeas {r : ℕ} (μ : Meas p r) : Prop := ‖μ‖ ≤ 1
 
 def wt {r : ℕ} (f : C(Fin r → ℤ_[p], ℂ_[p])) (μ : Meas p r) : Meas p r :=
   μ.comp (ContinuousLinearMap.mul ℂ_[p] C(Fin r → ℤ_[p], ℂ_[p]) f)

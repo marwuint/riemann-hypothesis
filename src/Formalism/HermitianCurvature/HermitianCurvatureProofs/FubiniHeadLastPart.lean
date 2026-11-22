@@ -506,10 +506,6 @@ def lwSplit : (U.LW (sigQ σh σb) → ℂ) ≃ᵐ ((U.LW σh → ℂ) × (Fin s
       (MeasurableEquiv.prodCongr (MeasurableEquiv.refl _) (MeasurableEquiv.curry (Fin s) (Fin p) ℂ)))
       (MeasurableEquiv.refl _)))
 
-theorem lwSplit_apply (v : U.LW (sigQ σh σb) → ℂ) :
-    lwSplit σh σb v = ((v1 σh σb v, Matrix.of.symm (Am σh σb v)), v2 σh σb v) := by
-  rfl
-
 theorem lwSplit_mp : MeasurePreserving (lwSplit σh σb) volume ((volume.prod volume).prod volume) := by
   have h1 := Dx2.SL.reindex_mp (X := ℂ) (lwEquiv σh σb).symm
   have h2 := measurePreserving_sumPiEquivProdPi
@@ -531,10 +527,6 @@ def utSplit : (G.UT (p + s) → ℂ) ≃ᵐ ((G.UT p → ℂ) × (Fin p → Fin 
     (MeasurableEquiv.prodCongr ((MeasurableEquiv.sumPiEquivProdPi (fun _ => ℂ)).trans
       (MeasurableEquiv.prodCongr (MeasurableEquiv.refl _) (MeasurableEquiv.curry (Fin p) (Fin s) ℂ)))
       (MeasurableEquiv.refl _)))
-
-theorem utSplit_apply (u : G.UT (p + s) → ℂ) :
-    utSplit p s u = ((u1 p s u, Matrix.of.symm (Bm p s u)), u2 p s u) := by
-  rfl
 
 theorem utSplit_mp : MeasurePreserving (utSplit p s) volume ((volume.prod volume).prod volume) := by
   have h1 := Dx2.SL.reindex_mp (X := ℂ) (utEquiv p s).symm

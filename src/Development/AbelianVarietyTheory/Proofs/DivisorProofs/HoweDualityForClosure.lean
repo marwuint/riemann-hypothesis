@@ -67,16 +67,4 @@ theorem symp_transpose {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c :
     symp c ξ JB JA xᵀ yᵀ = symp c ξ JA JB x y := by
   simp only [symp, hTens_transpose]
 
-def dTr {R E : Type} [CommRing R] [Invertible (2 : R)] [CommRing E] [Algebra R E] (c : E →ₐ[R] E) (ξ : E) {α β : Type}
-    [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] (JA : Matrix α α E) (JB : Matrix β β E) {κ : Type} [Fintype κ]
-    (co : Darboux (symp c ξ JA JB) κ) : Darboux (symp c ξ JB JA) κ where
-  e := (Matrix.transposeLinearEquiv β α R E).trans co.e
-  form w w' := by
-    rw [← symp_transpose c ξ JB JA w w', co.form]
-    rfl
-
-theorem dTr_e {R E : Type} [CommRing R] [Invertible (2 : R)] [CommRing E] [Algebra R E] (c : E →ₐ[R] E) (ξ : E) {α β : Type}
-    [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] (JA : Matrix α α E) (JB : Matrix β β E) {κ : Type} [Fintype κ]
-    (co : Darboux (symp c ξ JA JB) κ) (y : Matrix β α E) : (dTr c ξ JA JB co).e y = co.e yᵀ := rfl
-
 end GlobalTheory.HoweLocal

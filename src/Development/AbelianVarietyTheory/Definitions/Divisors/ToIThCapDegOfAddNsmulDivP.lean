@@ -48,33 +48,9 @@ theorem ramIdx_ne_zero : ramIdx O p ≠ 0 := fun h =>
 
 end Char
 
-theorem charP_residueField_padicInt (p : ℕ) [Fact p.Prime] : CharP (ResidueField ℤ_[p]) p :=
-  charP_of_injective_ringHom (f := PadicInt.residueField.symm.toRingHom)
-    PadicInt.residueField.symm.injective p
-
 namespace Model
 
 variable {O} (Z : Model O)
-
-theorem exists_isPullback_gen (K : Type) [Field K] [Algebra O K] [IsFractionRing O K] :
-    ∃ q : Z.gen.toScheme ⟶ Sp K, IsPullback Z.gen.ι q Z.str (spMap (algebraMap O K)) := by
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  have : IsLocalization.Away ϖ K := by
-    refine (IsLocalization.iff_of_le_of_exists_dvd (.powers ϖ) (nonZeroDivisors O)
-      (powers_le_nonZeroDivisors_of_noZeroDivisors hϖ.ne_zero) fun a ha => ?_).2 inferInstance
-    obtain ⟨n, hn⟩ := IsDiscreteValuationRing.associated_pow_irreducible
-      (nonZeroDivisors.ne_zero ha) hϖ
-    exact ⟨_, ⟨n, rfl⟩, hn.dvd⟩
-  have : IsOpenImmersion (spMap (algebraMap O K)) := .of_isLocalization ϖ
-  have h : Z.str ⁻¹ᵁ (spMap (algebraMap O K)).opensRange = Z.gen.ι.opensRange := by
-    rw [Scheme.Opens.opensRange_ι, Z.gen_eq_basicOpen hϖ.ne_zero hϖ.not_isUnit]
-    ext x
-    refine Iff.trans ?_ mem_basicOpen_const.symm
-    exact (Set.ext_iff.1 (PrimeSpectrum.localization_away_comap_range K ϖ) _)
-  have h' : Set.range (Z.gen.ι ≫ Z.str) ⊆ Set.range (spMap (algebraMap O K)) := by
-    rintro _ ⟨x, rfl⟩
-    exact h.ge ⟨x, rfl⟩
-  exact ⟨_, (IsOpenImmersion.isPullback _ _ _ _ (IsOpenImmersion.lift_fac _ _ h').symm h).flip⟩
 
 abbrev VDivQ : Type := ℚ ⊗[ℤ] Z.VDivZ
 
@@ -96,10 +72,6 @@ variable {Z}
 
 @[simp] theorem vDegQ_toQ (D : Z.VDivZ) : Z.vDegQ (toQ D) = Z.vDeg D := by
   simp [vDegQ, toQ]
-
-theorem capDeg_vp_toQ (p : ℕ) (D : Z.VDivZ) (Q : PicSym Z.X) :
-    Z.capDeg_vp p (toQ D) Q = Z.vDeg D Q / ramIdx O p := by
-  simp [capDeg_vp, div_eq_inv_mul]
 
 def vPullQ {Z₁ : Model O} {f : Z₁.X ⟶ Z.X} (hf : f ≫ Z.str = Z₁.str) : Z.VDivQ →ₗ[ℚ] Z₁.VDivQ :=
   (vPull hf).toIntLinearMap.baseChange ℚ
@@ -128,26 +100,7 @@ set_option linter.overlappingInstances false in
 
 variable {Z}
 
-theorem toITh_capDeg_eq_zero (D : Z.VDivQ) {n : ℕ} (hn : n ≠ Z.relDim) {x : PicSym Z.X}
-    (hx : x ∈ symDeg (SmallPic Z.X) n) : (Z.toITh p).capDeg D x = 0 := by
-  induction D using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a D => simp [capDeg_vp, vDegQ, vDeg_eq_zero D hn hx]
-  | add a b ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]
-
 variable {E E' : Z.X.Modules} {N : ℕ} {φ : Z.GenIso E E'}
-
-def FlagPair.toFPair (P : FlagPair φ N) : FPair (Z.toITh p) N where
-  x i := smallCls _ (P.fl.isLB_root i)
-  x' i := smallCls _ (P.fl'.isLB_root i)
-  Dv i := toQ (P.div i).cls
-  hx i := by
-    change firstChernPic (cls _ _) = firstChernPic (cls _ _) - Z.cDQ _
-    rw [P.cls_root', map_sub, cDQ_toQ]
-
-theorem FlagPair.toFPair_ofSMul_Dv (fl : Flag E N) (i : Fin N) :
-    ((FlagPair.ofSMul fl p (natCast_ne_zero O p)).toFPair p).Dv i = (Z.toITh p).divP :=
-  congrArg toQ (FlagPair.cls_div_ofSMul fl _ _ i)
 
 end Theory
 
@@ -262,16 +215,6 @@ theorem vDeg_div_projSpace {g : O} (hg : g ≠ 0) :
   · simp
 
 variable (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]
-
-theorem capDeg_divP_projSpace : ((projSpace O (N + 1)).toITh p).capDeg
-    ((projSpace O (N + 1)).toITh p).divP (c1 (formalTwistingSheaf O (N + 1)) (O1_isLB O _) ^ (N + 1)) = 1 := by
-  rw [capDeg_vp_toQ, divP, vDeg_div_projSpace]
-  exact div_self (Nat.cast_ne_zero.2 (ramIdx_ne_zero O p))
-
-theorem capDeg_divP_line : ((projSpace O 1).toITh p).capDeg ((projSpace O 1).toITh p).divP
-    (c1 (formalTwistingSheaf O 1) (O1_isLB O 1)) = 1 := by
-  rw [← pow_one (c1 _ _)]
-  exact capDeg_divP_projSpace O 0 p
 
 end Proj
 

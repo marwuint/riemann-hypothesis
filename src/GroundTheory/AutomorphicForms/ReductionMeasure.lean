@@ -84,12 +84,6 @@ def infFinEquiv {n : ℕ} : AdelicGLn.AdelicGL K n ≃ₜ*
       continuous_invFun :=
         ((AdelicGLn.infiniteEquiv K n).symm.continuous.comp continuous_fst).prodMk continuous_snd }
 
-theorem infFinEquiv_apply_fst {n : ℕ} (g : AdelicGLn.AdelicGL K n) (w : InfinitePlace K) :
-    (infFinEquiv g).1 w = infAt w g := rfl
-
-theorem infFinEquiv_apply_snd {n : ℕ} (g : AdelicGLn.AdelicGL K n) :
-    (infFinEquiv g).2 = (AdelicGLn.prodEquiv K n g).2 := rfl
-
 theorem measure_lt_top_of_forall_mem {n : ℕ} (μ : Measure (AdelicGLn.AdelicGL K n))
     [μ.IsHaarMeasure] {E : Set (AdelicGLn.AdelicGL K n)}
     (S : ∀ w : InfinitePlace K, Set (GL (Fin n) w.Completion))

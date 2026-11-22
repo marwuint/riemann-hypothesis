@@ -374,8 +374,6 @@ def lamMX : AddSubgroup (X.Tau → ℂ) := B.lamM.comap (LinearEquiv.funCongrLef
 
 def thMMX : (X.Tau → ℂ) → ℂ := fun z => B.thMM fun τ => z (s.iT.symm τ)
 
-theorem mem_lamMX (z : X.Tau → ℂ) : z ∈ lamMX s B ↔ (fun τ => z (s.iT.symm τ)) ∈ B.lamM := Iff.rfl
-
 theorem lamMX_eq : lamMX s B = imgLat (rx s.iT : (D.what₂.Tau → ℂ) →ₗ[ℂ] (X.Tau → ℂ)) B.lamM := by
   ext z
   rw [mem_imgLat]

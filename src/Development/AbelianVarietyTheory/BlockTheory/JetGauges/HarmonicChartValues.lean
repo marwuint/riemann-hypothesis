@@ -35,10 +35,4 @@ def IsHarmonic {n : ℕ} (P : MvPolynomial (LtN Dw n) c.F) : Prop :=
     ∑ b : Fin n, MvPolynomial.pderiv (⟨τ, i, b⟩ : LtN Dw n)
       (MvPolynomial.pderiv (⟨ComplexEmbedding.conjugate τ, i', b⟩ : LtN Dw n) P) = 0
 
-def NabUnique : Prop :=
-  ∀ [StarRing (𝓞 E)] (nab nab' : NabV Xo c), IsNab Xo c nab → IsNab Xo c nab' →
-    ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (k n : ℕ)
-      (F : Fin n → SecAt Xo c y k) (P : MvPolynomial (LtN Dw n) c.F), IsHarmonic c P →
-        sysVal Xo c nab y k F P = sysVal Xo c nab' y k F P
-
 end GlobalTheory.IndefiniteRowSideFullHecke.HarmonicSystemChartValues

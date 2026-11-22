@@ -19,10 +19,6 @@ def kerFil {C : Type} [Field C] {w : Valuation C ℝ≥0} {S W : Type} [AddCommG
     have e : (c • f) s = (c : C) • f s := rfl
     rw [e, map_smul, hf.2 s, smul_zero]⟩
 
-theorem mem_kerFil {C : Type} [Field C] {w : Valuation C ℝ≥0} {S W : Type} [AddCommGroup W] [Module C W]
-    {a : S → w.valuationSubring} {r : ℕ} {g : S → (Fin r → C) →ₗ[C] W} {f : S → Fin r → C} :
-    f ∈ kerFil a r g ↔ f ∈ freeLattice a r ∧ ∀ s, g s (f s) = 0 := Iff.rfl
-
 def eigCoord {E : Type} [Field E] [NumberField E] {C M : Type} [Field C] [AddCommGroup M] [Module C M]
     (ρ : 𝓞 E →+* Module.End C M) {N : ℕ} (t : Fin N → M) (s : E →+* C) : (Fin N → C) →ₗ[C] M :=
   Fintype.linearCombination C (fun j => HT.eigProj ρ s (t j))

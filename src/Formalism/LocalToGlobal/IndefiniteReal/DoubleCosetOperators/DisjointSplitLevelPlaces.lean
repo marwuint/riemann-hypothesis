@@ -328,10 +328,6 @@ variable (d : RawDat S C) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (eQ : Form
   (hvec : IsThetaAt S.ψ (symplO S.V S.W) (heisO S.ψ S.V S.W) (cA D (eTot S (d.P1 ∪ Q) (d.esR Q eQ)))
       (latO S.V S.W S.ΛV S.ΛW fun _ => True) 1 S.f₀ (PhiTot S (d.P1 ∪ Q) (d.esR Q eQ) (d.ΦlR Q ΦQ)) φ')
 
-theorem RawDat.repl_h : (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).h = d.h := rfl
-
-theorem RawDat.repl_P : (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).P = d.P := rfl
-
 end ReplLemmas
 
 def BaseVectorHasType (S : ExpSet D) : Prop := HasLevelType S S.φ0

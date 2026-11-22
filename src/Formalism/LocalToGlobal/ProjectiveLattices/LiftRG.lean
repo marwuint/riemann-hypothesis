@@ -12,8 +12,6 @@ variable {Λ : Type*} [CommRing Λ] {σ : Type*} [DecidableEq σ] (hd : (σ →�
 
 def iterHd (l : List (σ →₀ ℕ)) (x : Λ) : Λ := l.foldr (fun β y => hd β y) x
 
-theorem iterHd_nil (x : Λ) : iterHd hd [] x = x := rfl
-
 theorem iterHd_cons (β : σ →₀ ℕ) (l : List (σ →₀ ℕ)) (x : Λ) :
     iterHd hd (β :: l) x = hd β (iterHd hd l x) := rfl
 

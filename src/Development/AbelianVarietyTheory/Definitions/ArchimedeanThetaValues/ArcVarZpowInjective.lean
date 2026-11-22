@@ -256,8 +256,6 @@ section Examples
 
 def twoMul : LinearMap.BilinForm ℤ ℤ := (2 : ℤ) • LinearMap.mul ℤ ℤ
 
-theorem twoMul_apply (a b : ℤ) : twoMul a b = 2 * (a * b) := rfl
-
 end Examples
 
 end GlobalTheory.ToricData

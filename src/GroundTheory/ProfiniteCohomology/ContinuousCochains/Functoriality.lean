@@ -35,10 +35,6 @@ noncomputable def cochainsMap (f : A ⟶ B) : cochainsComplex A ⟶ cochainsComp
       f.hom ((inhomogeneousCochains.d A n).hom c.1 g)
     simp [inhomogeneousCochains.d_hom_apply, Rep.hom_comm_apply, map_add, map_sum, map_smul]
 
-theorem cochainsMap_f_hom_apply (f : A ⟶ B) (n : ℕ) (c : locallyConstantCochains A n) :
-    ((cochainsMap f).f n).hom c = cochainsMapLinear f n c :=
-  rfl
-
 @[simp]
 theorem cochainsMap_id : cochainsMap (𝟙 A) = 𝟙 (cochainsComplex A) := by
   ext n c : 3
@@ -96,17 +92,6 @@ noncomputable def cochainsFunctor : DiscreteRep.{u} k G ⥤ CochainComplex (Modu
   map f := cochainsMap f.hom
   map_id _ := cochainsMap_id
   map_comp f g := cochainsMap_comp f.hom g.hom
-
-noncomputable def cohomologyFunctor (n : ℕ) : DiscreteRep.{u} k G ⥤ ModuleCat k :=
-  cochainsFunctor k G ⋙ HomologicalComplex.homologyFunctor _ _ n
-
-theorem cohomologyFunctor_obj (n : ℕ) (A : DiscreteRep.{u} k G) :
-    (cohomologyFunctor k G n).obj A = cohomology A.obj n :=
-  rfl
-
-theorem cohomologyFunctor_map (n : ℕ) {A B : DiscreteRep.{u} k G} (f : A ⟶ B) :
-    (cohomologyFunctor k G n).map f = cohomologyMap f.hom n :=
-  rfl
 
 instance : (cochainsFunctor k G).Additive where
   map_add {_ _ f g} := by

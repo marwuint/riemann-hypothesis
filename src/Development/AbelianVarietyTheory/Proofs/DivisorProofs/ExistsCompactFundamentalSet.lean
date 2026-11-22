@@ -84,11 +84,6 @@ def stdK : Subgroup (UA σ J₂) where
     rw [hV, Matrix.mem_unitaryGroup_iff, star_star]
     exact Matrix.mem_unitaryGroup_iff'.1 hU
 
-theorem mem_stdK_iff (g : UA σ J₂) : g ∈ stdK σ T ↔
-    (∀ v i j, compFin F E v (inBasis σ T g i j) ∈ intLoc F E v ∧ compFin F E v (inBasis σ T g⁻¹ i j) ∈ intLoc F E v) ∧
-    ∀ (w : InfinitePlace F) (τ : EmbOver E w), (inBasis σ T g).map (piInf τ) ∈ Matrix.unitaryGroup (Fin (n + n)) ℂ :=
-  Iff.rfl
-
 omit [NumberField F] [NumberField E] in
 theorem bc_val {A B : Type} [CommRing A] [CommRing B] {m : Type} [Fintype m] [DecidableEq m] (f : A →+* B)
     (x : GL m A) : ((Formalism.UG.bc f x : GL m B) : Matrix m m B) = (x : Matrix m m A).map f := rfl

@@ -8,10 +8,6 @@ namespace ReciprocityTheory.ChartRestriction.DS.HW
 
 open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
 
-theorem pieriSt_isKHWVec_iff {W : Type*} [AddCommGroup W] [Module ℂ W] {n : ℕ} (ε : Fin n → Bool)
-    (E : Fin n → Fin n → Module.End ℂ W) (μ : Fin n → ℝ) (v : W) :
-    IsKHWVec ε E μ v ↔ Formalism.REAL.KHighest ε E μ v := Iff.rfl
-
 theorem pieriSt_kRel_stdM {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.KRel ε (stdM n) := by
   intro a b c d _ _
   simp only [stdM]

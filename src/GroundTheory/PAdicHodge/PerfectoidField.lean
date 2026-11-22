@@ -22,10 +22,6 @@ theorem mem_normInteger {x : K} : x ∈ normInteger K ↔ ‖x‖ ≤ 1 := by
 theorem normInteger_integers : (NormedField.valuation (K := K)).Integers (normInteger K) :=
   Valuation.integer.integers _
 
-open scoped NormedField in
-
-theorem normInteger_eq_valued_integer : normInteger K = Valued.integer K := rfl
-
 theorem mem_span_singleton_pow_iff {a x : normInteger K} (n : ℕ) :
     x ∈ Ideal.span {a} ^ n ↔ ‖(x : K)‖ ≤ ‖(a : K)‖ ^ n := by
   rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton']

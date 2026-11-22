@@ -79,9 +79,6 @@ theorem gammaOfInt_apply (o : normInteger K) : gammaOfInt p ι o = 1 ⊗ₜ o :=
 
 instance gammaAlgebraInt : Algebra (normInteger K) (Gamma p ι) := (gammaOfInt p ι).toAlgebra
 
-theorem algebraMap_gamma (o : normInteger K) : algebraMap (normInteger K) (Gamma p ι) o = 1 ⊗ₜ o :=
-  rfl
-
 def gammaPi (ϖ : normInteger K) : Gamma p ι := 1 ⊗ₜ ϖ
 
 abbrev redAlgebra : Algebra (WittVector p (ResidueField (normInteger K))) L :=

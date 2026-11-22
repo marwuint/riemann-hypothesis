@@ -78,20 +78,6 @@ def FrameParam : Prop :=
           ∀ e c, (P5.act (Fr.ofWord L st (D.positionted w)).F Ψi e :
               Q.Fn (JC.parLev P P.r).k (JC.parLev P P.r).r (Wq →L[ℂ] Wp)) c (Matrix.of y) = ∫ Z, Φf Z e y ∂ν
 
-def RadWord : Prop :=
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)
-    (X₀ : Q.ActualOps P.k P.r p.T.base.z p.T.base.z' p.T.base.π p.T.base.π') (μ₀ : Measure (Mt P.k P.r))
-    (L₀ : R.LevelData (Q.Pr (Q.RadSp P.k P.r p.T.base.z p.T.base.z' p.T.base.π p.T.base.π')) P.r)
-    (st₀ : Fr.Start (Q.Pr (Q.RadSp P.k P.r p.T.base.z p.T.base.z' p.T.base.π p.T.base.π'))),
-    P5.IsData P p.T.base.z p.T.base.z' p.T.base.π p.T.base.π' X₀ μ₀ L₀ st₀ p.l0 →
-    ∀ (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp)), KB.CptCoef p.T.base G →
-    ∀ (w : List C.Letter), KB.CutWord P p.l0 w →
-    ∀ Φ_G : Q.RadSp P.k P.r p.T.base.z p.T.base.z' p.T.base.π p.T.base.π', Top.IsRadOf P p.T.base Φ_G G →
-    ∀ e : Wd.Ix (Fin w.length),
-      Top.IsRadOf P p.T.base (P5.act (P5.bTall L₀ (D.positionted w)) (Top.firstStateVector Φ_G) e)
-        (D.uwG P.k P.r p.T.base.z p.T.base.z' G P.r le_rfl w e)
-
 def hcell {r : ℕ} (c : Fin r → ℂ) : C.LPt := List.ofFn fun j => (1, c j)
 
 theorem ptSize_hcell {r : ℕ} (c : Fin r → ℂ) : D.ptSize (hcell c) = r := by

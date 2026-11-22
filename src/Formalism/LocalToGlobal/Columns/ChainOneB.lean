@@ -129,12 +129,6 @@ def ocbInAt (i : ℕ) (P : HeightOneSpectrum (𝓞 X.E))
     Prop :=
   @ocbIn (𝓞 X.E ⧸ P.asIdeal) (resField P) R.k R.m R.t (cOf R (i + 1)) (R.N (i + 1)) hbar
 
-def NonvanishingGivesLatticeRepresentative (m2 : ℕ) : Prop :=
-  OcbBase Ch sel mu cst m2 → ∀ i, i < m2 → ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → ∀ h : AutY X R (i + 1),
-    FiniteSumNonzeroLargeDepth Ch sel mu cst i P 1 h →
-      ∃ ρ ∈ Loc.R1 X.E (R.N (i + 1)) (cOf R (i + 1)), ∃ h₀ ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) (i + 1) P.1),
-        h = ρ * h₀ ∧ FiniteSumNonzeroLargeDepth Ch sel mu cst i P 1 h₀
-
 def ReductionExistsInLatticeStabilizer (σ : X.K →+* ℂ) (m2 : ℕ) : Prop :=
   OcbBase Ch sel mu cst m2 → ∀ i, i < m2 → ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs →
     ∀ h₀ ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) (i + 1) P.1),

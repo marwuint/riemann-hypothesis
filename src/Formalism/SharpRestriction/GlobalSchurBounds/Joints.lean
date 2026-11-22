@@ -23,9 +23,6 @@ namespace Formalism.MainNotions.GlobalTheoryTheory
 open NumberField Formalism.FrobeniusOrbits Formalism.BasicNotions
 open scoped Pointwise
 
-theorem jnt_iner_eq (D : D7) : Formalism.MainNotions.ZetaZeroFreeRegion.iner D = (((1 : ℤˣ), (-1 : ℤˣ)), 1) := by
-  rfl
-
 open IsDedekindDomain TensorProduct Formalism.MainNotions.UnusedSlot33 in
 
 def StabLink (D : D7) (u : D.what₂.Word) : Prop :=
@@ -215,8 +212,6 @@ theorem log_deriv_L_one_eq_of_induces (D : D7) (N : ℕ) [NeZero N] (χ : Dirich
 
 end DlogL
 
-theorem log_deriv_L_one_theta_eq (D : D7) : TaylorLogMetric.logDerivativeAtOne D = dlogL D 1 := rfl
-
 theorem jnt_splitK (D : D7) (p : ℕ) (hp : p.Prime) (hd : p ∣ D.host.QS * D.host.q) :
     (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 D.host.K)).ncard = 2 :=
   D.host.splitK_of_dvd hp hd
@@ -265,17 +260,6 @@ theorem _root_.Formalism.MainNotions.TaylorLogMetric.first_hypothesis_of_lifting
   obtain ⟨-, -, -, -, hun, hsp, -⟩ := h
   exact ⟨hun, D.host.der.norm_mu, hsp, jnt_splitK D, fun 𝔭 h𝔭 _ hr => jnt_ramEK D 𝔭 h𝔭 hr,
     fun P hP hd σ => jnt_inertiaD D P hP hd σ⟩
-
-def Cl22 (D : D7) (C : ℝ) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (χ : Formalism.MainNotions.TaylorLogMetric.IdE D → ℂ)
-    (e : Formalism.MainNotions.TaylorLogMetric.FamE D) : Prop :=
-  Formalism.MainNotions.TaylorLogMetric.vec22 D (Formalism.MainNotions.TaylorLogMetric.tor0 D cc δ) e ∧ Formalism.MainNotions.TaylorLogMetric.th22 D (Formalism.MainNotions.TaylorLogMetric.tor0 D cc δ) C e ∧
-    Formalism.MainNotions.TaylorLogMetric.eq22 D (Formalism.MainNotions.TaylorLogMetric.tor0 D cc δ) χ e ∧ Formalism.MainNotions.TaylorLogMetric.int22 D (Formalism.MainNotions.TaylorLogMetric.tor0 D cc δ) e ∧
-    Formalism.MainNotions.TaylorLogMetric.mom22 D cc δ e ∧ Formalism.MainNotions.TaylorLogMetric.LargerSupportMomentCondition D cc δ e ∧ Formalism.MainNotions.TaylorLogMetric.str22 D (Formalism.MainNotions.TaylorLogMetric.tor0 D cc δ) e
-
-theorem theta_theorem_iff_clauses (D : D7) (C : ℝ) : Formalism.MainNotions.TaylorLogMetric.aux₃ D C ↔
-    ∀ cc : Ideal (𝓞 D.host.K), Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D cc → ∀ δ : ℂ, Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
-      Formalism.MainNotions.TaylorLogMetric.per22 D (Formalism.MainNotions.TaylorLogMetric.tor0 D cc δ) ∧ (∃ χ, Formalism.MainNotions.TaylorLogMetric.IsChi D χ) ∧
-      ∀ χ, Formalism.MainNotions.TaylorLogMetric.IsChi D χ → ∃ e, Cl22 D C cc δ χ e := Iff.rfl
 
 theorem jnt_ccK_curve (D : D7) : Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D D.host.ccK :=
   ⟨D.host.ccK_ne_bot, Nat.Coprime.mul_right (D.host.ccK_coprime 2 (by simp))
@@ -719,8 +703,6 @@ open scoped TensorProduct ENNReal
 section SW
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
-
-theorem sw1a1_iff_swa1 : StandardLattice.SW1a1 F E σ M J ↔ UnusedSlot34.SWa1 F E σ M J := Iff.rfl
 
 end SW
 

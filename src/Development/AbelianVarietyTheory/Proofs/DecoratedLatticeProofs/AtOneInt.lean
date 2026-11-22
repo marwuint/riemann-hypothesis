@@ -25,10 +25,6 @@ def Emb (q : ∀ i, SplitPt D (k i)) (V : HSp D) (F : ∀ i, GlobalTheory.LocMod
     (ι : (∀ i, GL (Y i) (k i)) → GA D V) : Prop :=
   ∀ x, ι x ∈ grpAt V (places q) ∧ ∀ i, (mt V (ι x)).map (q i).pr = (F i).β * (x i).val * (F i).γ
 
-def Vacs (q : ∀ i, SplitPt D (k i)) (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D}
-    (FS : ∀ i, GlobalTheory.LocMod.Frame (k i) S.rank (Y' i)) (FT : ∀ i, GlobalTheory.LocMod.Frame (k i) T.rank (Y i)) (f : WO S T → ℂ) : Prop :=
-  IsThetaFunO ψ S T f ∧ ∀ i, ∃ Tm, (ofSplit (q i)).IsModel ψ (FS i) (FT i) Tm ∧ ∀ O, IsOne O → Tm O = f
-
 end Many
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ}

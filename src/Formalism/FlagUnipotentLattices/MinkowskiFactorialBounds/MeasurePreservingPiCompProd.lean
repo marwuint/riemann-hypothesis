@@ -437,24 +437,6 @@ variable {F K : Type} [Field F] [CommRing K] [StarRing K] [Algebra F K]
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
-noncomputable def borderedHermitian (hF : ∀ c : F, star (algebraMap F K c) = algebraMap F K c) :
-    (hermSub F K n hF × (n → K) × F) →ₗ[F] Matrix (n ⊕ Unit) (n ⊕ Unit) K where
-  toFun x := fromBlocks (x.1 : Matrix n n K) (replicateCol Unit x.2.1)
-    (replicateRow Unit (star x.2.1)) (Matrix.of fun _ _ => algebraMap F K x.2.2)
-  map_add' x y := by
-    ext (i | i) (j | j) <;> simp
-  map_smul' c x := by
-    ext (i | i) (j | j)
-    · simp
-    · simp
-    · simp [Algebra.smul_def, hF]
-    · simp [Algebra.smul_def]
-
-lemma borderedHermitian_apply (hF : ∀ c : F, star (algebraMap F K c) = algebraMap F K c)
-    (x : hermSub F K n hF × (n → K) × F) :
-    borderedHermitian hF x = fromBlocks (x.1 : Matrix n n K) (replicateCol Unit x.2.1)
-    (replicateRow Unit (star x.2.1)) (Matrix.of fun _ _ => algebraMap F K x.2.2) := rfl
-
 end herm
 
 end hermConj

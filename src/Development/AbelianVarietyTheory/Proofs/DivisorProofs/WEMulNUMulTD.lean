@@ -84,6 +84,4 @@ def coordL (μ₁ μ₂ : kˣ →* ℂˣ) : PSp μ₁ μ₂ →ₗ[ℂ] (k → �
 
 def ball (c : k) (r : kˣ) : Set k := {z | valuation k (z - c) ≤ valuation k (r : k)}
 
-def elemDiff (c c' : k) (r : kˣ) : k → ℂ := (ball c r).indicator 1 - (ball c' r).indicator 1
-
 end GlobalTheory.PrinTwo

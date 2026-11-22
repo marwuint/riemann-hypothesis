@@ -15,10 +15,6 @@ variable {D : D7}
 abbrev LamHat (V : HSp D) : AddSubgroup (Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :=
   latHat D.host.F D.host.E (L0c D V)
 
-def KpC (V : HSp D) (N : ℕ) : Set (GA D V) :=
-  {h | h ∈ KsphC V ∅ ∧ ∀ y ∈ LamHat V, ∃ z ∈ LamHat V,
-    (finMat D.sp.cm.sig V.gram h - 1).mulVec y = N • z}
-
 def holEnt (p q : ℕ) (lam : Fin p ⊕ Fin q → ℤ) : Fin p ⊕ Fin q → ℚ :=
   Sum.elim (fun i => (lam (Sum.inl i) : ℚ) - (q : ℚ) / 2 + ((p : ℚ) - 1) / 2 - (i : ℚ))
     (fun i => (lam (Sum.inr i) : ℚ) + (p : ℚ) / 2 + ((q : ℚ) - 1) / 2 - (i : ℚ))

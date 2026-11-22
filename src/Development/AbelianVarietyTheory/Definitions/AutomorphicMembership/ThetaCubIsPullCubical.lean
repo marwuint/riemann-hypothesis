@@ -263,8 +263,6 @@ theorem biRig_isSymmetric {L : RigLB G} (c : CubicalStr G L) (hs : L.IsSymmetric
 
 end Rigid
 
-def poi (L : RigLB G) : RigLB (A ⊗ A) := biRig t P h (fst A A) (snd A A) L
-
 def theta (w : O) (L : RigLB G) : RigLB A := haveI := b.hom w; biRig t P h (𝟙 A) (b.act w) L
 
 def thetaCub (w : O) {L : RigLB G} (c : CubicalStr G L) : CubicalStr A (theta t P h w L) :=

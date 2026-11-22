@@ -144,17 +144,6 @@ theorem isHodgeFrame_cxFrame (hσ : Formalism.L2.PjFree.GoodEmb c σ) {k : (U σ
   ⟨_, σ, k, x, .inl rfl, rfl, hσ, hx, by rw [show spMap (RingHom.id ℂ) = 𝟙 _ from Spec.map_id _, Category.id_comp],
     fun _ _ => by rw [spMap_dualMap_id, Category.id_comp]⟩
 
-theorem liesIn_iff_of_comp {σ' : c.F →+* ℂ} {y' : CxPts (genStr Z) σ'} {ψ : ℂ →+* ℂ} (e : y'.1 = spMap ψ ≫ y.1)
-    (C : Closeds (gen Z)) : LiesIn y' C ↔ LiesIn y C := by
-  have : y'.1 (IsLocalRing.closedPoint ℂ) = y.1 (IsLocalRing.closedPoint ℂ) := by
-    rw [e]
-    exact (Scheme.Hom.comp_apply _ _ _).trans (congrArg _ (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _))
-  rw [LiesIn, LiesIn, this]
-
-theorem IsHodgeFrame.not_liesIn (h : IsHodgeFrame U y g) : ¬ LiesIn y (genBd Z) := fun hy => by
-  obtain ⟨ψ, σ', k, x, -, -, -, -, e, -⟩ := h
-  exact not_liesIn_cxPt _ ((liesIn_iff_of_comp e _).2 hy)
-
 theorem IsHodgeFrame.conj (h : IsHodgeFrame U y g) {σ₁ : c.F →+* ℂ} {y₁ : CxPts (genStr Z) σ₁}
     {g₁ : EigFrame Z σ₁ (y₁.1 ≫ genι Z)} (hσ : σ = (starRingEnd ℂ).comp σ₁) (e : y.1 = spMap (starRingEnd ℂ) ≫ y₁.1)
     (hg : g₁.IsMap (starRingEnd ℂ) g) : IsHodgeFrame U y₁ g₁ := by
@@ -167,48 +156,6 @@ theorem IsHodgeFrame.conj (h : IsHodgeFrame U y g) {σ₁ : c.F →+* ℂ} {y₁
 
 variable (hU : ∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ))
 include hU
-
-theorem exists_isHodgeFrame (hy : ¬ LiesIn y (genBd Z)) : ∃ g, IsHodgeFrame U y g := by
-  have good : ∀ {σ : c.F →+* ℂ} {y : CxPts (genStr Z) σ}, Formalism.L2.PjFree.GoodEmb c σ → ¬ LiesIn y (genBd Z) →
-      ∃ g, IsHodgeFrame U y g := fun {σ y} hσ hy => by
-    have hr : Set.range y.1 ⊆ Set.range Z.jQ := by
-      rintro _ ⟨p, rfl⟩
-      obtain rfl : p = IsLocalRing.closedPoint ℂ := Subsingleton.elim _ _
-      exact not_not.1 hy
-    have := Z.jQ_open
-    let xF := IsOpenImmersion.lift Z.jQ y.1 hr
-    have hxF : xF ≫ Z.jQ = y.1 := IsOpenImmersion.lift_fac _ _ _
-    have hs : xF ≫ pullback.snd _ _ = spMap (algebraMap c.F (CAt σ)) := by
-      have h2 := y.2
-      rw [← hxF, Category.assoc, Z.jQ_over] at h2
-      exact h2
-    have ho : (xF ≫ pullback.fst _ _) ≫ Xo.s = sOf c (CAt σ) := by
-      rw [Category.assoc, pullback.condition, ← Category.assoc, hs]
-      exact OpenReg.spMap_comp _ _
-    have : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)
-    obtain ⟨z, hz⟩ : ∃ z : FrPt Xo c (CAt σ), z.x = xF ≫ pullback.fst _ _ := GlobalTheory.FlagTan.exists_frPt _ ho
-    obtain ⟨k, f, t, hb⟩ := (hU σ hσ).2.2.1 z
-    obtain ⟨x, hx, b, hb', e⟩ := ortho_holds r _ f.1 f.2
-    obtain ⟨t', ht⟩ := ((hU σ hσ).2.2.2.1 k k ⟨x, KU.orth_dom _ hx⟩ f).2 ⟨1, one_mem _, b, hb', by rw [KU.lact_one, ← e]⟩
-    obtain rfl : cxPt Z ((U σ).un k ⟨x, KU.orth_dom _ hx⟩) = y := by
-      rw [cxPt_congr (ht.1.symm.trans hb.1.symm)]
-      exact Subtype.ext (Eq.trans (congrArg (· ≫ Z.jQ)
-        (pullback.hom_ext ((ptF_fst z).trans hz) ((ptF_snd z).trans hs.symm))) hxF)
-    exact ⟨_, isHodgeFrame_cxFrame hσ hx⟩
-  by_cases hσ : GoodEmb c σ
-  · exact good hσ hy
-  have h1 : GoodEmb c ((starRingEnd ℂ).comp σ) := by simpa only [goodOf, if_neg hσ] using goodEmb_goodOf c σ
-  have hc : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) = 𝟙 _ := by
-    rw [← Spec.map_comp, ← Spec.map_id]
-    exact congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext Complex.conj_conj))
-  let y' : CxPts (genStr Z) ((starRingEnd ℂ).comp σ) :=
-    ⟨spMap (starRingEnd ℂ) ≫ y.1, by rw [Category.assoc, y.2, ← Spec.map_comp]; rfl⟩
-  obtain ⟨g', hg'⟩ := good (y := y') h1 fun h => hy ((liesIn_iff_of_comp rfl _).1 h)
-  obtain ⟨g, hg⟩ := g'.exists_isMap (starRingEnd ℂ) (φ' := σ) (x' := y.1 ≫ genι Z)
-    (RingHom.ext fun _ => (Complex.conj_conj _).symm) (by simp only [y', ← Category.assoc, hc, Category.id_comp])
-  refine ⟨g, hg'.conj rfl rfl fun τ i => ?_⟩
-  rw [hg, GlobalTheory.GradedPieces.dual_comp, show (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ from
-    RingHom.ext Complex.conj_conj, spMap_dualMap_id, Category.id_comp]
 
 variable {a : ℝ} (ha0 : 0 < a) (ha : ∀ σ k (τ : ((U σ).X k).Ψ), (τ.1 (-((U σ).X k).ξ0)).im = a)
 include ha0 ha

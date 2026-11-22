@@ -825,9 +825,6 @@ theorem kr_evalG_algebraMap {n : ℕ} (g : Matrix (Fin n) (Fin n) A)
 
 variable {r : ℕ}
 
-def kr_cellW {n : ℕ} (g : Matrix (Fin (n + 1)) (Fin (n + 1)) A) (γ : Aˣ) : Fin n → A :=
-  fun j => ((γ⁻¹ : Aˣ) : A) * g 0 j.succ
-
 end Eval
 
 section Generic

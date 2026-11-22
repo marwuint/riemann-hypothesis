@@ -89,8 +89,6 @@ def idealSheaf [Fintype ι] : X.IdealSheafData where
       exact Ideal.subset_span (res_mem_gens (X.basicOpen_le f) hb)
     · exact Ideal.span_le.2 fun b hb => mem_map_of_mem_gens_basicOpen U.2 f hb
 
-theorem idealSheaf_ideal [Fintype ι] (U : X.affineOpens) : (idealSheaf w).ideal U = idealOn w U.1 := rfl
-
 theorem idealSheaf_ne_bot [Fintype ι] (i₀ : ι) (h1 : w i₀ = 1) : idealSheaf w ≠ ⊥ := by
   classical
   obtain ⟨_, ⟨W, hW, rfl⟩, hηW, -⟩ :=

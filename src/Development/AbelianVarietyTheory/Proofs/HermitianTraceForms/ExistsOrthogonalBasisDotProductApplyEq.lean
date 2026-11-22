@@ -243,9 +243,6 @@ theorem herm_eq_dotProduct (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     FD.herm G x y = x ⬝ᵥ G *ᵥ (FD.cc ∘ y) :=
   (dotProduct_mulVec_comp_eq_sum FD.cc G x y).symm
 
-theorem coe_complexConj_ringHom :
-    ⇑((IsCMField.complexConj E : E →+* E)) = FD.cc := rfl
-
 theorem exists_congr_diagonal_herm {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, FD.cc (G a b) = G b a) :
     ∃ (P : Matrix (Fin r) (Fin r) E) (d : Fin r → E), P.det ≠ 0 ∧

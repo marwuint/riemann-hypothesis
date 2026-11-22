@@ -47,10 +47,6 @@ theorem sheetDensity_eq_setSheetDensity (P : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) :
     sheetDensity P Ψ = setSheetDensity (mcPts P) Ψ := rfl
 
-theorem isGoodProj_eq_isSetGoodProj (P : Ideal (MRing ι))
-    (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) :
-    IsGoodProj P Ψ = IsSetGoodProj (mcPts P) Ψ := rfl
-
 end Integral
 
 theorem mcPts_eq_conePts {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) :

@@ -141,10 +141,6 @@ def tildeFam (M : FinGradedSub (S := S) (x := x) E) : SubFamily S x E where
       rw [hy]
       exact Submodule.smul_mem _ _ hJ
 
-omit [IsScalarTower S Ω E] in
-theorem tildeFam_toSubSystem (M : FinGradedSub (S := S) (x := x) E) :
-    (tildeFam M).toSubSystem = M.tildeSys 0 := rfl
-
 omit [Module S E] [IsScalarTower S Ω E] in
 
 theorem fg_of_single (F : SubFamily S x E) (I : Chart x) {i : Fin (N + 1)} (hi : i ∈ I.1) (hxi : x i ≠ 0)

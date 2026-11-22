@@ -85,11 +85,6 @@ def stabAt (h : V →ₗ⋆[K] V →ₗ[K] K) (M : Submodule (𝓞 K) V) (de : �
   {γ | γ ∈ Formalism.HermitianLatticesTheory.isom h ∧ ∀ P : HeightOneSpectrum (𝓞 K), ((de : 𝓞 K) ∈ P.asIdeal) →
     (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Formalism.HermitianLatticesTheory.gmap γ M) = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M)}
 
-def levelIdx (h : V →ₗ⋆[K] V →ₗ[K] K) (M : Submodule (𝓞 K) V) (de : ℕ) : ℕ :=
-  Nat.card (Quot (fun γ₁ γ₂ : stabAt h M de =>
-    ∀ x ∈ Formalism.HermitianLatticesTheory.dual h M, ∀ P : HeightOneSpectrum (𝓞 K), ((de : 𝓞 K) ∈ P.asIdeal) →
-      (haveI := P.isPrime; γ₁.1.symm (γ₂.1 x) - x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M)))
-
 end AnyLat
 
 section Local

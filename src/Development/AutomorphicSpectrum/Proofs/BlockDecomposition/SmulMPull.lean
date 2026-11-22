@@ -58,10 +58,6 @@ def gρ (h : OL l O) (Q : ObjectProperty (Thick (smFun X q))) (m : ℕ) (hQ : �
   { Ideal.Quotient.factor (lm_eq_span Q m T).le with
     commutes' := fun a => rfl }
 
-theorem gρ_mk (h : OL l O) (Q : ObjectProperty (Thick (smFun X q))) (m : ℕ) (hQ : ∀ T, Q T → Good (l := l) T m)
-    (P : ObjectProperty (Thick (Lm h q m))) (hP : ∀ T, P ((GF h Q m hQ).obj T)) (T : Q.FullSubcategory) (a : T.obj.B) :
-    gρ h Q m hQ P hP T (Ideal.Quotient.mk (lm (l := l) T.obj m) a) = Ideal.Quotient.mk _ a := rfl
-
 end G
 
 section Gen

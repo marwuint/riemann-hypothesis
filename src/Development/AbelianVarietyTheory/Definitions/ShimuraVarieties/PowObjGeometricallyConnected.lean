@@ -502,18 +502,6 @@ instance isMonHom_uniqueIso : IsMonHom (h.uniqueIso h').hom := (h.isLinearHom_un
 theorem tmul_uniqueIso_hom (m : M) : h.tmul m ≫ (h.uniqueIso h').hom = h'.tmul m :=
   h.tmul_mapLeft h' _ m
 
-theorem hom_equiv_comp_uniqueIso (z : M ⊗[O] Pts a T) :
-    (h.equiv T z).hom ≫ (h.uniqueIso h').hom = (h'.equiv T z).hom := by
-  refine (h.hom_equiv_comp_mapLeft h' _ z).trans ?_
-  simp
-
-theorem eq_uniqueIso (f : H ⟶ H')
-    (hf : ∀ (T : Over S) (z : M ⊗[O] Pts a T), (h.equiv T z).hom ≫ f = (h'.equiv T z).hom) :
-    f = (h.uniqueIso h').hom := by
-  have e := (hf H ((h.equiv H).symm (Pts.mk b (𝟙 H)))).trans
-    (h.hom_equiv_comp_uniqueIso h' _).symm
-  simpa using e
-
 end Unique
 
 section Transport

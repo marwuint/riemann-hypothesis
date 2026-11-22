@@ -64,8 +64,6 @@ def cjOp (T : H →L[ℂ] H) : Cj H →L[ℂ] Cj H :=
         exact map_smul T _ _ }
     ‖T‖ (fun x => T.le_opNorm (Cj.un x))
 
-theorem cjOp_apply (T : H →L[ℂ] H) (x : Cj H) : Cj.un (cjOp T x) = T (Cj.un x) := rfl
-
 variable {n : ℕ}
 
 def revM (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := g.submatrix Fin.rev Fin.rev

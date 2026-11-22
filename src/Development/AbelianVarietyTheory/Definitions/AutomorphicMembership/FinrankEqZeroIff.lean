@@ -9,12 +9,6 @@ open Formalism.MainNotions.DIV.Cons (SCF intO)
 
 namespace GlobalTheory.LocM.Cht
 
-def AbOfTrivSt : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
-    (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (p : ℕ) (C : SCF p)
-    (P : PointsOfFlagModel.PtC Y C) (A : DatAt Y P), p.Prime →
-    Subsingleton A.Ylat → P.yt (closedPoint ↥(intO ↥C.S)) ∈ abLocus Y.t.G
-
 def TrivOfAbSt : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (p : ℕ) (C : SCF p)
@@ -212,12 +206,6 @@ theorem chAt_imgM (χ : Chart Z y e) (h : chAt χ) : imgM χ = redK Z y := by
 theorem chAbExact_imgU (χ : Chart Z y e) (h : chAbExact χ) : ¬ ct.abP (imgU χ) :=
   fun h' => (h (primeU e)).1 h' (Ideal.mem_span_singleton_self _)
 
-theorem goodIff_of (h₁ : AbOfTrivSt) (h₂ : TrivOfAbSt) (ct : At S κ p) : GoodIff ct := fun Z x => by
-  have e : Z.π (x.z (closedPoint ↥(intO ↥x.C.S))) = x.P.yt (closedPoint _) :=
-    congrArg (fun f => f (closedPoint ↥(intO ↥x.C.S))) x.z_π
-  rw [Mdl.abP, e]
-  exact ⟨h₁ _ _ _ _ _ _ _ _ _ _ _ _ (ct.dat x) ct.hp, h₂ _ _ _ _ _ _ _ _ _ _ _ _ (ct.dat x) ct.hp⟩
-
 theorem genEx_of (h₁ : StalkSt) (h₂ : FieldSt) (h₃ : ExtendSt) (h₄ : FamSt) (ct : At S κ p) : GenEx ct := by
   intro Z η
   obtain ⟨_, _, _, _, hp, hgen⟩ := h₁ _ _ _ _ _ _ ct.Y _ ct.hp ct.hW Z η
@@ -264,38 +252,5 @@ theorem genEx_of (h₁ : StalkSt) (h₂ : FieldSt) (h₃ : ExtendSt) (h₄ : Fam
           ((specializes_closedPoint (q : PrimeSpectrum _)).map y.z.continuous).mem_open U.2 (hred ▸ hU)
         exact ⟨U, h, s, congrArg Subtype.val (key U hU h s).symm⟩
     exact ⟨this.le, RingHom.Finite.of_surjective _ fun x => ⟨⟨x.1, this ▸ x.2⟩, rfl⟩⟩
-
-def chtOf (ct : At S κ p) (hg : GoodIff ct) (hx : GenEx ct) : ChtSt ct where
-  DVP := DVP ct
-  dvRho := dvRho
-  Ext := Ext
-  Chart := Chart
-  chAt := chAt
-  chOpen := chOpen
-  chAbExact := chAbExact
-  chModU := chModU
-  chConst := chConst
-  pbPrinc := pbPrinc
-  redK := redK
-  dvRho_pos_iff := dvRho_pos_iff hg
-  genK η := (hx _ η).choose
-  redK_genK η := (hx _ η).choose_spec.1
-  imgM := imgM
-  imgU := imgU
-  img_spz := img_spz
-  imgU_inQ := imgU_inQ
-  chAt_imgM := chAt_imgM
-  chAbExact_imgU := chAbExact_imgU
-  RFam := RFam
-  chFam := chFam
-  ptK := ptK
-  ptK_good := ptK_good hg
-  vpi := vpi
-  vpi_pos := vpi_pos
-  ordGe := ordGe
-  yEta η := ptK _ (hx _ η).choose
-  yEta_good {Z} η := (hg Z _).trans (by
-    have h : redK Z (hx _ η).choose = η.1 := (hx _ η).choose_spec.1
-    exact iff_of_eq (congrArg Z.abP h))
 
 end GlobalTheory.LocM.Cht

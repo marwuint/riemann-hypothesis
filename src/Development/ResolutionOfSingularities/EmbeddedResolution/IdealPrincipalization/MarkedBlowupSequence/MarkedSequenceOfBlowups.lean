@@ -78,8 +78,6 @@ theorem MarkedIdealWithBoundary.mk_eq_mk {k : Type u} [instk : Field k] (X : Sch
 
 abbrev MarkedIdealWithBoundary.krullDimSucc (T : MarkedIdealWithBoundary.{u}) : ℕ := EmbeddedResolution.krullDimSucc T.scheme
 
-theorem MarkedIdealWithBoundary.krullDimSucc_eq_krullDimSucc_scheme (T : MarkedIdealWithBoundary.{u}) : T.krullDimSucc = EmbeddedResolution.krullDimSucc T.scheme := rfl
-
 structure MarkedIdealWithBoundary.IsAdmissible (T : MarkedIdealWithBoundary.{u}) : Prop where
   charZero : CharZero T.base
   locallyOfFiniteType : AlgebraicGeometry.LocallyOfFiniteType T.structMap
@@ -137,13 +135,6 @@ def lastIdeal (s : MarkedSequenceOfBlowups p I m E) :
 theorem lastIdeal_eq (s : MarkedSequenceOfBlowups p I m E) :
     s.lastIdeal = s.ideal s.toSequenceOfBlowups.length := rfl
 
-def lastBoundary (s : MarkedSequenceOfBlowups p I m E) :
-    List (s.toSequenceOfBlowups.schemeAt s.toSequenceOfBlowups.length).IdealSheafData :=
-  s.boundary s.toSequenceOfBlowups.length
-
-theorem lastBoundary_eq (s : MarkedSequenceOfBlowups p I m E) :
-    s.lastBoundary = s.boundary s.toSequenceOfBlowups.length := rfl
-
 def IsResolution (s : MarkedSequenceOfBlowups p I m E) : Prop :=
   orderAtLeastLocus s.lastIdeal m = ∅
 
@@ -158,8 +149,6 @@ def emptySequenceOfBlowups (X : Scheme.{u}) : SequenceOfBlowups X where
   isoZero := Iso.refl X
   center := fun _ => ⊥
   isBlowup := fun i hi => absurd hi (Nat.not_lt_zero i)
-
-theorem emptySequenceOfBlowups_length (X : Scheme.{u}) : (emptySequenceOfBlowups X).length = 0 := rfl
 
 def emptyMarkedSequenceOfBlowups {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)

@@ -42,10 +42,6 @@ section Subst
 
 variable {R : Type} [CommRing R] {a : ℕ} (ha : 1 ≤ a)
 
-def powPS : PowerSeries R →+* PowerSeries R := (PowerSeries.expand a (by omega)).toRingHom
-
-theorem powPS_apply (g : PowerSeries R) : powPS ha g = PowerSeries.expand a (by omega) g := rfl
-
 variable {K : Type} [Field K]
 
 end Subst

@@ -16,10 +16,4 @@ structure IsPerfectPairing {A B K : Type} [AddCommGroup A] [AddCommGroup B] [Fie
   nondeg_left : ∀ a, (∀ t, e a t = 1) → a = 0
   nondeg_right : ∀ t, (∀ a, e a t = 1) → t = 0
 
-def mulNat {R : Type} [CommRing R] {d : ℕ} (G : FGLaw R d) (n : ℕ) : Pt R 1 d :=
-  Nat.rec (motive := fun _ => Pt R 1 d) 0 (fun _ y => G.add y (pt R d 0)) n
-
-theorem mulNat_succ {R : Type} [CommRing R] {d : ℕ} (G : FGLaw R d) (n : ℕ) :
-    mulNat G (n + 1) = G.add (mulNat G n) (pt R d 0) := rfl
-
 end GlobalTheory.IndefiniteRowSideFullHecke.PerfectPairings

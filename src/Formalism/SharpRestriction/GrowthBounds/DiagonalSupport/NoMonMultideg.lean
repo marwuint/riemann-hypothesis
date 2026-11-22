@@ -181,12 +181,6 @@ theorem bigM_noMon (hp : 0 < p) (hinj : Function.Injective fun x : TL J nL r => 
   simp only [noMon, Finsupp.coe_equivFunOnFinite_symm]
   rw [bigM_no hinj, Nat.add_mul_div_left _ _ (lowP_pos hp x), Nat.div_eq_of_lt (hrho _ _), zero_add]
 
-theorem plMon_multideg (mo : TV n' (m + 1) →₀ ℕ) (x : TL J nL r) :
-    multideg (plMon Fr p hk nL mo) x = ∑ a : Fin r, mo (plVar Fr hk nL x a) / lowP Fr p x := rfl
-
-theorem noMon_multideg (mo : TV n' (m + 1) →₀ ℕ) (x : TL J nL r) :
-    multideg (noMon Fr p hk nL mo) x = ∑ b : Fin K, mo (noVar Fr hk nL x b) / lowP Fr p x := rfl
-
 theorem bigM_inBlock (hp : 0 < p) (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (rho : TL J nL r × Fin (r + K) → ℕ) (hrho : ∀ x c, rho (x, c) < lowP Fr p x)
     (bp : TL J nL r × Fin r →₀ ℕ) (bn : TL J nL r × Fin K →₀ ℕ) (dPl dNo : TL J nL r → ℕ)

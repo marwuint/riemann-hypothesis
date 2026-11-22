@@ -41,9 +41,6 @@ def IsHyperbolicFrameAt (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.h
     ∀ x : (D.sp.X j).V, ∀ i' < D.R.m - 1 - j,
       (D.sp.Y j).hT (D.sp.iXY j x) (vecY j (adaptedVector e ev z j i')) = 0
 
-theorem is_adapted_vector_system_iff (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E) :
-    IsAdaptedVectorSystem e ev z ↔ ∀ j < D.R.m, IsHyperbolicFrameAt e ev z j := Iff.rfl
-
 open Classical in
 
 def ColsAt (βY : ∀ j : ℕ, GL (Fin (D.sp.Y j).rank) (EAf D)) (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E)
@@ -55,14 +52,6 @@ def ColsAt (βY : ∀ j : ℕ, GL (Fin (D.sp.Y j).rank) (EAf D)) (e ev : ∀ j :
           (nfScal κ s j i * adaptedVector e ev z j i r)) ∧
     (∀ col : Fin (D.sp.Y j).rank, (col.val < D.R.k ∨ D.R.k + (D.R.m - 1 - j) ≤ col.val) →
       XSpanAt j (βY j).val ei col)
-
-theorem normalFrames_iff (βY : ∀ j : ℕ, GL (Fin (D.sp.Y j).rank) (EAf D))
-    (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E)
-    (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E) (S Pg : Finset (Pl D.host.E)) :
-    NormalFrames βY e ev z κ s S Pg ↔
-      IsAdaptedVectorSystem e ev z ∧ (∀ j i, κ j i ≠ 0) ∧ (∀ j, s j ≠ 0) ∧
-      (∀ PP ∈ Pg, ∀ j < D.R.m, ∀ i < D.R.m - 1 - j, PP.valuation D.host.E (nfScal κ s j i) = 1) ∧
-      ∀ PP ∈ S, ∀ ei : AE D, Formalism.L2.NTheta.IsIdemAt ei PP → ∀ j < D.R.m, ColsAt βY e ev z κ s Pg PP ei j := Iff.rfl
 
 theorem vecY_repr (j : ℕ) (v : (D.sp.Y j).V) : vecY (D := D) j ⇑((D.sp.Y j).frame.repr v) = v := by
   simp [vecY]

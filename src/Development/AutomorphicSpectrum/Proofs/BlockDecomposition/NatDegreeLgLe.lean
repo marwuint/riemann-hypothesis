@@ -174,8 +174,6 @@ def TX (T : Subring S) : Subring S[X] where
     rw [coeff_neg]
     exact T.neg_mem (hp n)
 
-theorem mem_TX {T : Subring S} {p : S[X]} : p ∈ TX T ↔ ∀ n, p.coeff n ∈ T := Iff.rfl
-
 theorem dv_CX (k : ℕ) (x : S) : dv k (C x * X : S[X]) = C (dv k x) * X ^ k := by
   unfold dv
   rw [mul_pow, ← C_pow, ← smul_C, smul_mul_assoc]

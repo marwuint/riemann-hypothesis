@@ -16,9 +16,6 @@ variable {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq
 def reGL (e : ι ≃ κ) : GL ι ℂ →* GL κ ℂ :=
   Units.map (Matrix.reindexRingEquiv ℂ e).toMonoidHom
 
-theorem coe_reGL (e : ι ≃ κ) (g : GL ι ℂ) :
-    ((reGL e g : GL κ ℂ) : Matrix κ κ ℂ) = reindex e e (g : Matrix ι ι ℂ) := rfl
-
 variable {F E : Type*} [Field F] [Field E] [Algebra F E] [Algebra.IsQuadraticExtension F E]
 variable {W : Type*} [AddCommGroup W] [Module E W]
 

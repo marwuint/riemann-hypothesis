@@ -145,9 +145,6 @@ section API
 
 variable {L : Type} [Field L] [NumberField L]
 
-theorem mem_unitIdl {a : Ideles L} :
-    a ∈ unitIdl L ↔ ∀ v, Valued.v ((a : AdeleRing (𝓞 L) L).2 v) = 1 := Iff.rfl
-
 theorem finPartI_fst (a : Ideles L) : (finPartI L a : AdeleRing (𝓞 L) L).1 = 1 := rfl
 
 theorem finPartI_snd (a : Ideles L) : (finPartI L a : AdeleRing (𝓞 L) L).2 = (a : AdeleRing (𝓞 L) L).2 := rfl

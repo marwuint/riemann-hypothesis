@@ -150,12 +150,6 @@ namespace GlobalTheory.Fc.R1
 
 open GlobalTheory.Fc GlobalTheory.Cp
 
-def P_hRB : BdP Bundle := fun D O _ b =>
-  Formalism.IndefR.RowsB b.B
-
-def P_hPA : BdP Bundle := fun D O _ b =>
-  Formalism.IndefR.Links.PrimRows3 b.B.Q.Rl b.B.Q.F ∧ b.P.A3.fam3.TypesSep3
-
 def OneMap {D : D7} {O : Obj D} {c : ℝ} (b : Bundle D O c) : Prop :=
   ∀ j, Formalism.IndefR.FWT.OneMapRowR b.B.T b.B.Q.Rl.toRealDat b.B.κ b.B.v₀ b.B.O (Formalism.IndefR.phEff b.B.Q.Rl) j
 

@@ -47,8 +47,6 @@ structure PDPoly.IsStd (Q : PDPoly B) (δ : DividedPowers J) (η : DividedPowers
   dp : IsDPMorphism δ η (algebraMap B Q.P)
   var : ∀ n, η.dpow n (Q.e 1) = Q.e n
 
-theorem fil_eq_dpFil (δ : DividedPowers J) (N : ℕ) : fil δ N = GlobalTheory.Cris.ExpBij.dpFil δ N := rfl
-
 set_option autoImplicit false in
 open DividedPowers in
 variable {B : Type} [CommRing B] {J : Ideal B} in

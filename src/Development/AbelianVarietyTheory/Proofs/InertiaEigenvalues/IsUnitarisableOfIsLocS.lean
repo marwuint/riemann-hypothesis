@@ -25,26 +25,6 @@ namespace GlobalTheory.RowSphSmall
 
 open GlobalTheory.CuspRep.ParLaws GlobalTheory.LocLanglands
 
-theorem locRec_unr_frobEig_le (hL : GlobalTheory.Published.LocalLanglandsGL) {E Ω : Type} [Field E] [NumberField E] [Field Ω]
-    [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : Formalism.ConjugateSelfDual.IsPlaceOver A w)
-    {n : ℕ} (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (w.adicCompletion E))) (hs : GlobalTheory.SmGL.IsSpherical σ.ρ)
-    (hu : GlobalTheory.SmGL.IsUnitarisable σ.ρ) :
-    (locRec hL h (cls σ)).unr ∧
-      ∀ α ∈ (locRec hL h (cls σ)).frobEig, ‖α‖ ≤ ((Formalism.ConjugateSelfDual.normV w : ℕ) : ℝ) ^ (((n : ℝ) - 1) / 2) := by
-  have H := isRec_locRec hL h
-  have hunr : (locRec hL h (cls σ)).unr := (unr_iff H σ).2 hs
-  refine ⟨hunr, ?_⟩
-  obtain ⟨α, hα⟩ := exists_hasSatake_of_unr H hunr
-  rw [rec_eq_diag H hα, GlobalTheory.WeilDeligne.WD.frobEig_diag]
-  have h1 := GlobalTheory.SatHecke.isUnitarySatakeAt_of_hasSatake E w n (GlobalTheory.SplitRead.Irr.ofIrrRep σ) α hα hu
-  have h2 : GlobalTheory.RowSatakeBound.IsUnitarySatakeAt w n
-      ((Finset.univ.val.map fun i => (α i : ℂ)).map (·⁻¹)) := by
-    have := GlobalTheory.RowSatakeBound.finite_residue w
-    exact GlobalTheory.SatakeInv.isUnitarySatake_map_inv _ _ _ _ h1
-  intro b hb
-  apply h2.norm_le
-  simpa [Multiset.map_map, Function.comp_def] using hb
-
 end GlobalTheory.RowSphSmall
 
 section FormSec

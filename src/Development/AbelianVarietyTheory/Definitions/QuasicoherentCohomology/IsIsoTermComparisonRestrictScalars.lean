@@ -369,9 +369,6 @@ def cubeComplex (A : Cube.{v} ι R) : CochainComplex (ModuleCat.{v} R) ℕ :=
   CochainComplex.of (fun p => ModuleCat.of R (Cube.Term A p)) (fun p => ModuleCat.ofHom (Cube.d A p))
     (fun p => ModuleCat.hom_ext (Cube.d_comp_d A p))
 
-theorem cubeComplex_X (A : Cube.{v} ι R) (p : ℕ) :
-    (cubeComplex A).X p = ModuleCat.of R (Cube.Term A p) := rfl
-
 theorem cubeComplex_d (A : Cube.{v} ι R) (p : ℕ) :
     (cubeComplex A).d p (p + 1) = ModuleCat.ofHom (Cube.d A p) :=
   CochainComplex.of_d (fun p => ModuleCat.of R (Cube.Term A p))
@@ -381,9 +378,6 @@ def cubeComplexMap {A B : Cube.{v} ι R} (φ : A ⟶ B) : cubeComplex A ⟶ cube
   CochainComplex.ofHom (fun p => ModuleCat.ofHom (Cube.termMap φ p)) fun p => by
     rw [cubeComplex_d, cubeComplex_d]
     exact ModuleCat.hom_ext (LinearMap.ext fun x => (Cube.termMap_d φ p x).symm)
-
-theorem cubeComplexMap_f {A B : Cube.{v} ι R} (φ : A ⟶ B) (p : ℕ) :
-    (cubeComplexMap φ).f p = ModuleCat.ofHom (Cube.termMap φ p) := rfl
 
 variable (ι R) in
 
@@ -400,18 +394,12 @@ instance cubeFunctor_additive : (cubeFunctor.{v} ι R).Additive where
 def cechComplex (A : Cube.{v} ι R) : CochainComplex (ModuleCat.{v} R) ℕ :=
   CochainComplex.truncate.obj (cubeComplex A)
 
-theorem cechComplex_X (A : Cube.{v} ι R) (p : ℕ) :
-    (cechComplex A).X p = ModuleCat.of R (Cube.Term A (p + 1)) := rfl
-
 theorem cechComplex_d (A : Cube.{v} ι R) (p : ℕ) :
     (cechComplex A).d p (p + 1) = ModuleCat.ofHom (Cube.d A (p + 1)) :=
   cubeComplex_d A (p + 1)
 
 def cechComplexMap {A B : Cube.{v} ι R} (φ : A ⟶ B) : cechComplex A ⟶ cechComplex B :=
   CochainComplex.truncate.map (cubeComplexMap φ)
-
-theorem cechComplexMap_f {A B : Cube.{v} ι R} (φ : A ⟶ B) (p : ℕ) :
-    (cechComplexMap φ).f p = ModuleCat.ofHom (Cube.termMap φ (p + 1)) := rfl
 
 variable (ι R) in
 
@@ -421,8 +409,6 @@ def cechFunctor : Cube.{v} ι R ⥤ CochainComplex (ModuleCat.{v} R) ℕ where
   map := cechComplexMap
   map_id _ := rfl
   map_comp _ _ := rfl
-
-theorem cechFunctor_eq : cechFunctor.{v} ι R = cubeFunctor ι R ⋙ CochainComplex.truncate := rfl
 
 instance cechFunctor_additive : (cechFunctor.{v} ι R).Additive where
   map_add := rfl
@@ -703,15 +689,9 @@ def cubeComparison (A : Cube.{v} ι R) :
     rw [Functor.mapHomologicalComplex_obj_d, cubeComplex_d, cubeComplex_d]
     exact (Cube.map_d_termComparison F A p).symm
 
-theorem cubeComparison_f (A : Cube.{v} ι R) (p : ℕ) :
-    (cubeComparison F A).f p = Cube.termComparison F A p := rfl
-
 def cechComparison (A : Cube.{v} ι R) :
     (F.mapHomologicalComplex _).obj (cechComplex A) ⟶ cechComplex (A ⋙ F) :=
   CochainComplex.truncate.map (cubeComparison F A)
-
-theorem cechComparison_f (A : Cube.{v} ι R) (p : ℕ) :
-    (cechComparison F A).f p = Cube.termComparison F A (p + 1) := rfl
 
 instance isIso_cubeComparison [Finite ι] (A : Cube.{v} ι R) : IsIso (cubeComparison F A) :=
   haveI : ∀ p, IsIso ((cubeComparison F A).f p) := Cube.isIso_termComparison F A
@@ -726,12 +706,6 @@ end ChangeOfRings
 section RestrictScalars
 
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] (f : R →+* S)
-
-omit [LinearOrder ι] in
-
-theorem Cube.termComparison_restrictScalars_apply (A : Cube.{v} ι S) (p : ℕ) (x : Cube.Term A p)
-    (s : {s : Finset ι // s.card = p}) :
-    (Cube.termComparison (ModuleCat.restrictScalars f) A p).hom x s = x s := rfl
 
 omit [LinearOrder ι] in
 
@@ -768,24 +742,11 @@ instance Cube.extendScalars_additive {S : Type u'} [CommRing S] (f : R →+* S) 
     letI := ((algebraMap S S).comp f).toAlgebra
     exact ModuleCat.hom_ext (LinearMap.baseChange_add g.hom h.hom)
 
-noncomputable def cubeExtendScalarsIso [LinearOrder ι] [Finite ι] {S : Type u'} [CommRing S]
-    (f : R →+* S) (A : Cube.{v} ι R) :
-    ((ModuleCat.extendScalars f).mapHomologicalComplex _).obj (cubeComplex A) ≅
-      cubeComplex (A ⋙ ModuleCat.extendScalars f) :=
-  asIso (cubeComparison _ A)
-
 noncomputable def cechExtendScalarsIso [LinearOrder ι] [Finite ι] {S : Type u'} [CommRing S]
     (f : R →+* S) (A : Cube.{v} ι R) :
     ((ModuleCat.extendScalars f).mapHomologicalComplex _).obj (cechComplex A) ≅
       cechComplex (A ⋙ ModuleCat.extendScalars f) :=
   asIso (cechComparison _ A)
-
-open ChangeOfRings in
-
-theorem Cube.termComparison_extendScalars_tmul {S : Type u'} [CommRing S] (f : R →+* S)
-    (A : Cube.{v} ι R) (p : ℕ) (c : S) (x : Cube.Term A p) (s : {s : Finset ι // s.card = p}) :
-    (Cube.termComparison (ModuleCat.extendScalars f) A p).hom (c ⊗ₜ[R,f] x) s =
-      c ⊗ₜ[R,f] x s := rfl
 
 variable (S : Type u') [CommRing S] [Algebra R S]
 
@@ -798,12 +759,6 @@ noncomputable def Cube.baseChange (A : Cube.{v} ι R) : Cube.{max u' v} ι S :=
       have : Cube.res A (h.trans h') = Cube.res A h' ∘ₗ Cube.res A h :=
         LinearMap.ext fun y => (Cube.res_res A h h' y).symm
       simp [this, LinearMap.baseChange_comp])
-
-theorem Cube.baseChange_obj (A : Cube.{v} ι R) (s : Finset ι) :
-    (Cube.baseChange S A).obj s = ModuleCat.of S (S ⊗[R] A.obj s) := rfl
-
-theorem Cube.res_baseChange (A : Cube.{v} ι R) {s t : Finset ι} (h : s ⊆ t) :
-    Cube.res (Cube.baseChange S A) h = (Cube.res A h).baseChange S := rfl
 
 noncomputable def Cube.termBaseChange (A : Cube.{v} ι R) (p : ℕ) :
     S ⊗[R] Cube.Term A p →ₗ[S] Cube.Term (Cube.baseChange S A) p :=
@@ -818,14 +773,6 @@ theorem Cube.termBaseChange_bijective [Finite ι] (A : Cube.{v} ι R) (p : ℕ) 
   classical
   have := Fintype.ofFinite {s : Finset ι // s.card = p}
   exact (TensorProduct.piRight R S S fun s : {s : Finset ι // s.card = p} => A.obj s.1).bijective
-
-noncomputable def Cube.termBaseChangeEquiv [Finite ι] (A : Cube.{v} ι R) (p : ℕ) :
-    S ⊗[R] Cube.Term A p ≃ₗ[S] Cube.Term (Cube.baseChange S A) p :=
-  LinearEquiv.ofBijective _ (Cube.termBaseChange_bijective S A p)
-
-theorem Cube.termBaseChangeEquiv_apply [Finite ι] (A : Cube.{v} ι R) (p : ℕ)
-    (x : S ⊗[R] Cube.Term A p) :
-    Cube.termBaseChangeEquiv S A p x = Cube.termBaseChange S A p x := rfl
 
 theorem Cube.d_termBaseChange [LinearOrder ι] (A : Cube.{v} ι R) (p : ℕ)
     (x : S ⊗[R] Cube.Term A p) :
@@ -911,16 +858,6 @@ noncomputable def Cube.directSum (A : κ → Cube.{v} ι R) : Cube.{v} ι R :=
     (fun s x => by ext k; simp)
     (fun h h' x => by ext k; simp)
 
-omit [DecidableEq κ] in
-
-theorem Cube.directSum_obj (A : κ → Cube.{v} ι R) (s : Finset ι) :
-    (Cube.directSum A).obj s = ModuleCat.of R (⨁ k, (A k).obj s) := rfl
-
-omit [DecidableEq κ] in
-
-theorem Cube.res_directSum (A : κ → Cube.{v} ι R) {s t : Finset ι} (h : s ⊆ t) :
-    Cube.res (Cube.directSum A) h = DirectSum.lmap fun k => Cube.res (A k) h := rfl
-
 noncomputable def Cube.directSumIncl (A : κ → Cube.{v} ι R) (k : κ) : A k ⟶ Cube.directSum A :=
   Cube.homMk (fun s => DirectSum.lof R κ (fun k => (A k).obj s) k)
     fun h x => (DirectSum.lmap_lof (fun k => Cube.res (A k) h) k x).symm
@@ -982,27 +919,6 @@ end DirectSum
 section TwoDirections
 
 variable {R : Type u} [Ring R]
-
-noncomputable def Cube.termOneFinTwo (A : Cube.{v} (Fin 2) R) :
-    Cube.Term A 1 ≃ₗ[R] A.obj {0} × A.obj {1} :=
-  (Cube.termOneEquiv A).symm ≪≫ₗ LinearEquiv.piFinTwo R fun i : Fin 2 => A.obj {i}
-
-theorem Cube.termOneFinTwo_apply (A : Cube.{v} (Fin 2) R) (x : Cube.Term A 1) :
-    Cube.termOneFinTwo A x = (x ⟨{0}, rfl⟩, x ⟨{1}, rfl⟩) := rfl
-
-def Cube.termTwoFinTwo (A : Cube.{v} (Fin 2) R) : Cube.Term A 2 ≃ₗ[R] A.obj {0, 1} where
-  toFun x := x ⟨{0, 1}, rfl⟩
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-  invFun a s := Cube.res A (by obtain ⟨s, hs⟩ := s; revert s; decide) a
-  left_inv x := by
-    ext ⟨s, hs⟩
-    obtain rfl : s = {0, 1} := by revert s; decide
-    simp
-  right_inv a := by simp
-
-theorem Cube.termTwoFinTwo_apply (A : Cube.{v} (Fin 2) R) (x : Cube.Term A 2) :
-    Cube.termTwoFinTwo A x = x ⟨{0, 1}, rfl⟩ := rfl
 
 end TwoDirections
 

@@ -52,8 +52,6 @@ def IsIsotypic (π : G →* (H →L[ℂ] H)) (ρ : G →* (K →L[ℂ] K)) : Pro
 variable {π : G →* (H →L[ℂ] H)} {π' : G →* (H' →L[ℂ] H')} {ρ : G →* (K →L[ℂ] K)} {ρ' : G →* (K' →L[ℂ] K')}
   {U U' W : Submodule ℂ K} {T T' : H →L[ℂ] K}
 
-theorem mem_homIn : T ∈ homIn π ρ U ↔ (∀ x, T x ∈ U) ∧ ∀ g x, T (π g x) = ρ g (T x) := Iff.rfl
-
 theorem mem_homIn_top : T ∈ homIn π ρ ⊤ ↔ ∀ g x, T (π g x) = ρ g (T x) := and_iff_right fun _ => trivial
 
 theorem multIn_eq_zero_iff : multIn π ρ U = 0 ↔ homIn π ρ U = ⊥ := Submodule.rank_eq_zero

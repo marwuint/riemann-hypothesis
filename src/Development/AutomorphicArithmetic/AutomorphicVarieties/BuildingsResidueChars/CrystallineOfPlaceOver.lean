@@ -88,9 +88,6 @@ private theorem coe_frobenius_restriction_pow_base (n : ℕ) (x : ↥(Dcris (P.P
 private noncomputable def crystallineToWeilDeligne (ι : Om l ≃+* ℂ) : ↥(Dcris (P.PD K) ρ) →+ WDSpace P ι ρ :=
   AddMonoidHom.mk' (fun x => wdMk P ι ρ (crystallineInclusion P ρ x)) fun x y => by rw [map_add, wdMk_add]
 
-private theorem crystalline_to_weil_deligne_apply (ι : Om l ≃+* ℂ) (x : ↥(Dcris (P.PD K) ρ)) :
-    crystallineToWeilDeligne P ρ ι x = wdMk P ι ρ (crystallineInclusion P ρ x) := rfl
-
 private theorem span_crystalline_weil_deligne_top [FiniteDimensional ↥LL.1 V] (ι : Om l ≃+* ℂ) (hV : IsPst P ρ) (hC : IsCrys (P.PD K) ρ) :
     Submodule.span ℂ (Set.range (crystallineToWeilDeligne P ρ ι)) = ⊤ := by
   rw [eq_top_iff, ← UpperTheory.weil_deligne_span_crystalline P ι ρ hV hC]

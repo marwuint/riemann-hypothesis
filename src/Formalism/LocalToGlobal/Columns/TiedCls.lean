@@ -75,9 +75,6 @@ def clsG (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u
   obtain ⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩ := Q
   exact clsG₁ hc hX hPr σ₀ u Λ c₀ s hS hs
 
-theorem clsG_std (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u) Pr.vGs Λ.grp (s c) = c) :
-    clsG hc hX hPr σ₀ u Λ c₀ s hS hs (StepCrd.std Pr σ₀ n _) = clsG₁ hc hX hPr σ₀ u Λ c₀ s hS hs := rfl
-
 end Gen
 
 section Rec

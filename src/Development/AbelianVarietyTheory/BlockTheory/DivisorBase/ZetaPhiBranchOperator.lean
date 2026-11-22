@@ -127,14 +127,6 @@ def extLat {K : Type} [Field K] [NumberField K] {n : ℕ} (M : Submodule (𝓞 K
   M.comap (LinearMap.funLeft (𝓞 K) K Fin.castSucc) ⊓
     (Submodule.span (𝓞 K) {t}).comap (LinearMap.proj (Fin.last n))
 
-def PTildeIntegral : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (n : ℕ)
-    (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n),
-    (∀ τ, Interlace (lam τ) (sg τ)) → (∀ τ, EqualLast (lam τ) (sg τ)) →
-    ∀ (M : ι → Submodule (𝓞 K) (Fin n → K)), (∀ τ, Submodule.IsLattice K (M τ)) →
-    ∀ (t : ι → K), (∀ τ, t τ ≠ 0) →
-    ∀ x : VV K lam, x ∈ delK lam (fun τ => extLat (M τ) (t τ)) → pTilde lam sg t x ∈ delK sg M
-
 end Statement
 
 end GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerators

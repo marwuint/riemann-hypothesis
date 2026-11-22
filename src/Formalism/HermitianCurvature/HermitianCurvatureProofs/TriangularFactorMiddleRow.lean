@@ -43,9 +43,6 @@ variable {k r : ℕ}
 
 theorem esI_val (b : Fin r) : (esI k r b).val = 2 * r + k - b.val := rfl
 
-theorem Ym_apply (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (a c : Fin j) :
-    Ym k r j hj y a c = y a (esI k r (Fin.castLE hj c)) := rfl
-
 end MajorantSquareBound
 
 end

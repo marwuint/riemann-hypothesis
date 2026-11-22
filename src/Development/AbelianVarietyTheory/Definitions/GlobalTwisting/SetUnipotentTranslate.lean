@@ -352,14 +352,6 @@ def Obj.ofPt {C : FC} (p : Pt C) : Obj p.D := ⟨p.L, p.gatT, p.ta.Gx, p.ta.Gy, 
 
 def ptO (QO : ∀ D : D7, Obj D → Prop) : PtProp := fun D L gatT Gx Gy K X cX ex => QO D ⟨L, gatT, Gx, Gy, K, X, cX, ex⟩
 
-def objO (Q : PtProp) : ∀ D : D7, Obj D → Prop := fun D O => Q D O.L O.gatT O.Gx O.Gy O.K O.X O.cX O.ex
-
-theorem ptO_objO (Q : PtProp) : ptO (objO Q) = Q := rfl
-
-theorem objO_ptO (QO : ∀ D : D7, Obj D → Prop) : objO (ptO QO) = QO := rfl
-
-theorem has_ptO {C : FC} (p : Pt C) (QO : ∀ D : D7, Obj D → Prop) : p.Has (ptO QO) ↔ QO p.D (Obj.ofPt p) := Iff.rfl
-
 def LedPart.extra {C : FC} {D : D7} {Y : Lay D} (p : LedPart C Y) : Extra D p.L Y.gatT p.ta.Gx Y.Gy C.GK Y.X C.cX :=
   { Y with
     lat := p.lat, ep_def := p.ep_def, ep_tie := p.ep_tie, kapI_def := p.kapI_def, nu_unserved := p.nu_unserved, err := p.err,
@@ -398,12 +390,6 @@ def pt : Pt C where
       h_eq := fun _ => rfl
       ex := extraTr (nPrime p.L) p.ht p.extra }
 
-theorem pt_D : p.pt.D = setDiv D (nPrime p.L) p.ht := rfl
-
-theorem pt_sc : p.pt.L.sc = p.L.sc := rfl
-
-theorem ofPt_pt : Obj.ofPt p.pt = (Y.obj p).tr (nPrime p.L) p.ht := rfl
-
 theorem pt_wtEq {φ : Formalism.HC.Frame} {a b : φ.A → ℤ} (H : WtEq p.L a b) : WtEq p.pt.L a b := H
 
 theorem pt_val {cD ch : ℝ} (H : Val C cD ch p.L) : Val C cD ch p.pt.L := { H with }
@@ -411,19 +397,6 @@ theorem pt_val {cD ch : ℝ} (H : Val C cD ch p.L) : Val C cD ch p.pt.L := { H w
 theorem pt_canon (H : CanonInst p.ta.Gx) : CanonInst p.pt.ta.Gx := H
 
 end LedPart
-
-def RecEx (QO : ∀ D : D7, Obj D → Prop) : Prop :=
-  ∃ ε0 : ℝ, 0 < ε0 ∧ ∀ eps C8 C5 c6 Cb : ℝ, 0 < eps → eps ≤ ε0 → eps < 1 / 52 → 1 ≤ C8 → ∃ K0 : TransportedAlt,
-    ∀ C : FC, Std C → C.P.Cpde = C8 → C.Large K0 C.P.CF → ∃ c1 : ℝ, ∀ cD ≥ c1, ∃ c2 : ℝ, ∀ ch ≥ c2, ∃ cs x0 : ℝ, 0 < cs ∧
-      ∀ (s : Scale) (P : PreCh) (a b : P.R.A → ℤ) (c : P.Word → Fin (P.R.k - 2) → Bool),
-        s.eps = eps → x0 ≤ s.x → ChGood s C C5 c6 Cb cD ch P a b c →
-        ∃ (du : P.Word → ℕ) (Ds : ℝ), (∀ u, 0 < du u) ∧ 0 < Ds ∧
-          (∀ u, cs * P.R.m * s.L ≤ Real.log ((Ds / du u) ^ ((1 : ℝ) / (P.R.f * P.R.k)) *
-            GamS C s P.R ^ (-(2 : ℝ) / (P.R.f * P.R.k)))) ∧
-          ∀ Lv : LevCh P, Lv.duStar = du → Lv.Dstar = Ds → Lv.GamP = GamS C s P.R →
-            ∃ (D : D7) (Y : Lay D), Over D P Lv ∧ RecOK s C cD D ∧ LedOK s C cD ch Y a b ∧ LocalQuadraticParts.TWAt D Y.nch Y.xd ∧
-              ∀ p : LedPart C Y, p.L.sc = s → WtEq p.L a b → Val C cD ch p.L → CanonInst p.ta.Gx →
-                QO p.pt.D (Obj.ofPt p.pt)
 
 def Lay.ofPt {C : FC} (p : Pt C) : Lay p.D :=
   { p.xa.ex with
@@ -433,8 +406,6 @@ def Lay.ofPt {C : FC} (p : Pt C) : Lay p.D :=
 
 def LedPart.ofPt {C : FC} (p : Pt C) : LedPart C (Lay.ofPt p) :=
   { p.xa.ex with L := p.L, ta := p.ta, Gy_eq := rfl, nuDef := p.xa.nuDef }
-
-theorem obj_ofPt {C : FC} (p : Pt C) : (Lay.ofPt p).obj (LedPart.ofPt p) = Obj.ofPt p := rfl
 
 theorem leastOff_eq_rPrH {R : Ranks} (H : Host R) (hc : H.ccK = ⊤) :
     leastOff (H.QS * H.q * H.d * (H.pde - 1) * (H.pde' - 1)) = DC.rPrH H := by

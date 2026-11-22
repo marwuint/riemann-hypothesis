@@ -1059,8 +1059,6 @@ def Lp (p : ℝ) : AddSubgroup ℂ where
     rintro x ⟨⟨m, hm⟩, n, hn⟩
     exact ⟨⟨-m, by rw [Complex.neg_re, hm]; push_cast; ring⟩, ⟨-n, by rw [Complex.neg_im, hn]; push_cast; ring⟩⟩
 
-theorem mem_Lp {p : ℝ} {z : ℂ} : z ∈ Lp p ↔ (∃ m : ℤ, z.re = p * m) ∧ ∃ n : ℤ, z.im = n / p := Iff.rfl
-
 end Test
 
 end Formalism.L2.Ker

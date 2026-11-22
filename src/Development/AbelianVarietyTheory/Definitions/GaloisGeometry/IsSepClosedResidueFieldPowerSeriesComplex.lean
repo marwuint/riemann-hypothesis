@@ -58,26 +58,6 @@ def gfibAut {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) (σ : K ≃ₐ[
     gfibAut K g σ ≫ pullback.snd _ _ = pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom (σ : K →+* K)) :=
   pullback.lift_snd _ _ _
 
-theorem gfibAut_one {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) : gfibAut K g 1 = 𝟙 _ := by
-  apply pullback.hom_ext
-  · rw [gfibAut_fst, Category.id_comp]
-  · have h : CommRingCat.ofHom ((1 : K ≃ₐ[O] K) : K →+* K) = 𝟙 _ := by ext a; rfl
-    rw [gfibAut_snd, h, Spec.map_id, Category.id_comp, Category.comp_id]
-
-theorem gfibAut_mul {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) (σ τ : K ≃ₐ[O] K) :
-    gfibAut K g (σ * τ) = gfibAut K g σ ≫ gfibAut K g τ := by
-  apply pullback.hom_ext
-  · rw [Category.assoc, gfibAut_fst, gfibAut_fst, gfibAut_fst]
-  · have h : CommRingCat.ofHom ((σ * τ : K ≃ₐ[O] K) : K →+* K) =
-        CommRingCat.ofHom (τ : K →+* K) ≫ CommRingCat.ofHom (σ : K →+* K) := by ext a; rfl
-    rw [Category.assoc, gfibAut_snd, gfibAut_snd, gfibAut_snd_assoc, h, Spec.map_comp]
-
-def gfibRep {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) (n : ℕ) :
-    Representation R (K ≃ₐ[O] K) (GlobalTheory.Et.H R n (gfib K g)) where
-  toFun σ := GlobalTheory.Et.pull R n (gfibAut K g σ)
-  map_one' := by rw [gfibAut_one, GlobalTheory.Et.pull_id]; rfl
-  map_mul' σ τ := by rw [gfibAut_mul, GlobalTheory.Et.pull_comp]; rfl
-
 def gfibMap {T T' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶ Spec (CommRingCat.of O)} (u : T ⟶ T')
     (hu : u ≫ g' = g) : gfib K g ⟶ gfib K g' :=
   pullback.lift (pullback.fst _ _ ≫ u) (pullback.snd _ _) (by rw [Category.assoc, hu, pullback.condition])
@@ -87,21 +67,6 @@ def gfibMap {T T' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶
 
 @[reassoc] theorem gfibMap_snd {T T' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶ Spec (CommRingCat.of O)}
     (u : T ⟶ T') (hu : u ≫ g' = g) : gfibMap K u hu ≫ pullback.snd _ _ = pullback.snd _ _ := pullback.lift_snd _ _ _
-
-theorem gfibMap_id {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) :
-    gfibMap K (𝟙 T) (Category.id_comp g) = 𝟙 _ := by
-  apply pullback.hom_ext <;> simp [gfibMap]
-
-theorem gfibMap_comp {T T' T'' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶ Spec (CommRingCat.of O)}
-    {g'' : T'' ⟶ Spec (CommRingCat.of O)} (u : T ⟶ T') (hu : u ≫ g' = g) (v : T' ⟶ T'') (hv : v ≫ g'' = g') :
-    gfibMap K (u ≫ v) (by rw [Category.assoc, hv, hu]) = gfibMap K u hu ≫ gfibMap K v hv := by
-  apply pullback.hom_ext
-  · rw [gfibMap_fst, Category.assoc, gfibMap_fst, gfibMap_fst_assoc]
-  · rw [gfibMap_snd, Category.assoc, gfibMap_snd, gfibMap_snd]
-
-def gfibPull {T T' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶ Spec (CommRingCat.of O)} (u : T ⟶ T')
-    (hu : u ≫ g' = g) (n : ℕ) : GlobalTheory.Et.H R n (gfib K g') →ₗ[R] GlobalTheory.Et.H R n (gfib K g) :=
-  GlobalTheory.Et.pull R n (gfibMap K u hu)
 
 end Milnor
 
@@ -141,53 +106,6 @@ instance {X' : Scheme.{0}} (π : X' ⟶ X) (n : ℕ) (x : SpecialPoint p) (L : S
 
 instance {X' : Scheme.{0}} (π : X' ⟶ X) (n : ℕ) (x : SpecialPoint p) (L : StrictLoc X x.1) :
     Module R (pushStalk R K p π n x L) := inferInstanceAs (Module R (GlobalTheory.Et.H R n (pushMilnor K p π L)))
-
-def pushInertia {X' : Scheme.{0}} (π : X' ⟶ X) (n : ℕ) (x : SpecialPoint p) (L : StrictLoc X x.1) :
-    Representation R (K ≃ₐ[O] K) (pushStalk R K p π n x L) :=
-  gfibRep R K (pullback.snd π L.toX ≫ L.toX ≫ p) n
-
-def pushAut {X' : Scheme.{0}} (π : X' ⟶ X) (g : X' ⟶ X') (hg : g ≫ π = π) (n : ℕ) (x : SpecialPoint p)
-    (L : StrictLoc X x.1) : pushStalk R K p π n x L →ₗ[R] pushStalk R K p π n x L :=
-  gfibPull R K (pullback.map π L.toX π L.toX g (𝟙 _) (𝟙 _) (by rw [Category.comp_id, hg]) (by simp))
-    (by rw [← Category.assoc, pullback.lift_snd, Category.comp_id]) n
-
-theorem pushAut_congr {X' : Scheme.{0}} (π : X' ⟶ X) {g g' : X' ⟶ X'} (e : g = g') (hg : g ≫ π = π) (hg' : g' ≫ π = π)
-    (n : ℕ) (x : SpecialPoint p) (L : StrictLoc X x.1) : pushAut R K p π g hg n x L = pushAut R K p π g' hg' n x L := by
-  subst e; rfl
-
-theorem pushAut_id {X' : Scheme.{0}} (π : X' ⟶ X) (n : ℕ) (x : SpecialPoint p) (L : StrictLoc X x.1) :
-    pushAut R K p π (𝟙 _) (Category.id_comp _) n x L = LinearMap.id := by
-  unfold pushAut gfibPull
-  erw [← GlobalTheory.Et.pull_id, ← gfibMap_id]
-  congr 2
-  apply pullback.hom_ext <;> simp only [pullback.map, pullback.lift_fst, pullback.lift_snd, Category.comp_id,
-    Category.id_comp]
-
-theorem pushAut_comp {X' : Scheme.{0}} (π : X' ⟶ X) (g g' : X' ⟶ X') (hg : g ≫ π = π) (hg' : g' ≫ π = π) (n : ℕ)
-    (x : SpecialPoint p) (L : StrictLoc X x.1) :
-    pushAut R K p π (g ≫ g') (by rw [Category.assoc, hg', hg]) n x L =
-      (pushAut R K p π g hg n x L).comp (pushAut R K p π g' hg' n x L) := by
-  unfold pushAut gfibPull
-  erw [← GlobalTheory.Et.pull_comp, ← gfibMap_comp]
-  congr 2
-  apply pullback.hom_ext <;> simp only [pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd,
-    pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id]
-
-def pushAct {X' : Scheme.{0}} (π : X' ⟶ X) {G : Type} [Group G] (ρ : G →* End X') (hρ : ∀ g, ρ g ≫ π = π) (n : ℕ)
-    (x : SpecialPoint p) (L : StrictLoc X x.1) : Representation R G (pushStalk R K p π n x L) where
-  toFun g := pushAut R K p π (ρ g⁻¹) (hρ _) n x L
-  map_one' := by
-    rw [pushAut_congr R K p π (show ρ 1⁻¹ = 𝟙 X' by rw [inv_one, map_one]; rfl) _ (Category.id_comp _),
-      pushAut_id]
-    rfl
-  map_mul' g h := by
-    rw [pushAut_congr R K p π (show ρ (g * h)⁻¹ = ρ g⁻¹ ≫ ρ h⁻¹ by rw [mul_inv_rev, map_mul]; rfl) _
-      (by rw [Category.assoc, hρ, hρ]), pushAut_comp]
-    rfl
-
-theorem pushAct_apply {X' : Scheme.{0}} (π : X' ⟶ X) {G : Type} [Group G] (ρ : G →* End X') (hρ : ∀ g, ρ g ≫ π = π)
-    (n : ℕ) (x : SpecialPoint p) (L : StrictLoc X x.1) (g : G) :
-    pushAct R K p π ρ hρ n x L g = pushAut R K p π (ρ g⁻¹) (hρ _) n x L := rfl
 
 end Stalk
 

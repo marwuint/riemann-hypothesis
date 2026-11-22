@@ -88,8 +88,6 @@ def moveLev : StepLevel F E σ J T f bad :=
 
 theorem mem_moveLev (x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : x ∈ (moveLev k).U ↔ k.1 * x * k.1⁻¹ ∈ S.U := Iff.rfl
 
-theorem moveLev_chi (x : (moveLev k).U) : (moveLev k).chi x = S.chi ⟨k.1 * x.1 * k.1⁻¹, x.2⟩ := rfl
-
 def toMoved (κ : S.U) : (moveLev k).U :=
   ⟨k.1⁻¹ * κ.1 * k.1, by
     have e : k.1 * (k.1⁻¹ * κ.1 * k.1) * k.1⁻¹ = κ.1 := by group

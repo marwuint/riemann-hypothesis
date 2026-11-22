@@ -61,18 +61,11 @@ end Free
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} (ct : At S κ p)
 
-def crhTrue : CrHSt ct (flgTrue ct) := crhOf ct (IsHTLatOf (htmTrue ct)) (HTm.htFam ct)
-
 namespace HTm
-
-abbrev flagMdl (Z : ct.Mdl) : ct.Mdl := ct.flagCl Z (htFam ct Z).1
 
 abbrev htLat (Z : ct.Mdl) : Lat Z := FlagFam.lat (htFam ct Z)
 
 variable {ct} {Z : ct.Mdl} {n : ℕ}
-
-theorem degGr_eq (c : Curve ct.Fbar (flagMdl ct Z).X) (τ : PsiT D) (i : ℕ) :
-    (crhTrue ct).degGr (Z := Z) c τ i = c.degLat (htLat ct Z) (-ct.expo (At.indWt τ i)) := rfl
 
 end HTm
 

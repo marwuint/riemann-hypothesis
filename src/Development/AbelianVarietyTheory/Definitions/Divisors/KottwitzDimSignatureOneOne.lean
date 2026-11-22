@@ -83,8 +83,6 @@ variable (k : Type) [Field k]
 
 def L₁ : Submodule k (k × k) := LinearMap.ker (LinearMap.snd k k k)
 
-theorem mem_L₁ (x : k × k) : x ∈ L₁ k ↔ x.2 = 0 := Iff.rfl
-
 def diag : (k × k) →+* Module.End k (k × k) := (Algebra.lmul k (k × k)).toRingHom
 
 def ω₄ : LinearMap.BilinForm k (Fin 4 → k) :=
@@ -92,8 +90,6 @@ def ω₄ : LinearMap.BilinForm k (Fin 4 → k) :=
     (by intros; simp; ring) (by intros; simp; ring) (by intros; simp; ring)
 
 def F₄ : Submodule k (Fin 4 → k) := LinearMap.ker (LinearMap.proj 1) ⊓ LinearMap.ker (LinearMap.proj 2)
-
-theorem mem_F₄ (x : Fin 4 → k) : x ∈ F₄ k ↔ x 1 = 0 ∧ x 2 = 0 := Iff.rfl
 
 end Examples
 

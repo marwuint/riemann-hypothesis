@@ -51,8 +51,6 @@ def spacesNorm : Spaces R F E :=
       exact_mod_cast hT.ne_zero
     z_orth := fun x => diag_ext_single _ _ (fun _ => false) x _ pz le_rfl }
 
-theorem spacesNorm_T : (spacesNorm R cm T hT pz hpz).T = T := rfl
-
 end Spaces
 
 theorem exists_finset_capitulation (E : Type) [Field E] [NumberField E] (τ : E →+* ℂ) :

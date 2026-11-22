@@ -1306,9 +1306,4 @@ def regAct : Representation K G (regCSD K G).Forms where
     apply LinearMap.ext; intro f; apply Subtype.ext; funext c
     exact congrArg f.1 (mul_assoc (c : G) s t).symm
 
-theorem regAct_apply (t : G) (f : (regCSD K G).Forms) (c : G) :
-    ((regAct K G t f).1 : G → K) c = (f.1 : G → K) (c * t) := rfl
-
-theorem reg_wt (c : G) : (regCSD K G).wt c = 1 := rfl
-
 end Formalism.L2.DIV.Test

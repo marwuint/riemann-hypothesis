@@ -101,11 +101,6 @@ def toF (j : ℕ) (x : ↥(S.A j).WK) : FmK S j := x
 
 def tm (i : D.ntw.Tw) (j : ℕ) (b : Bool) (x : ↥(S.A j).WK) : Fm S i j b := (1 : KB S i b) ⊗ₜ[S.Ks] toF S j x
 
-theorem hkFR_tm (i : D.ntw.Tw) (j : ℕ) (b : Bool) (hL : ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
-    (hs : HeckeStabR S j hL) (k : ℕ) (P : PlE D.host) (x : ↥(S.A j).WK) :
-    hkFR S i j b hL hs k P (tm S i j b x) = tm S i j b ⟨hL k P x.1, hs k P _ x.2⟩ := by
-  rfl
-
 theorem hkFR_bsup (i : D.ntw.Tw) (j : ℕ) (b : Bool) (hL : ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
     (hs : HeckeStabR S j hL) (k : ℕ) (P : PlE D.host)
     (h : ∀ x ∈ (S.A j).MK, ∃ s : S.Ks, (∃ u : (D.ntw.O i)ˣ, ιK S i b s = algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) u) ∧

@@ -272,20 +272,12 @@ def sQ (l : ℕ) [Fact l.Prime] (x : (ZMod l)ˣ) : ZMod 2 :=
 
 lemma zmod_two_eq_zero_or_eq_one (a : ZMod 2) : a = 0 ∨ a = 1 := by revert a; decide
 
-lemma recMap_apply (e q d : ℕ) [Fact q.Prime] [Fact d.Prime] (u : (ZMod (hostN e q d))ˣ) :
-    Multiplicative.toAdd (recMap e q d u)
-      = ((sQ d (ZMod.unitsMap (d_dvd_hostN e q d) u), sQ q (ZMod.unitsMap (q_dvd_hostN e q d) u)),
-        Additive.ofMul (hcl e (ZMod.unitsMap (two_dvd_hostN e q d) u))) := rfl
-
 section
 variable {e q d : ℕ} [Fact q.Prime] [Fact d.Prime]
 
 lemma hcl_one (e : ℕ) : Additive.ofMul (hcl e 1) = (0 : HA e) := rfl
 
 end
-
-lemma chC_val {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] (g : E0 × H) :
-    (chC : AddChar (E0 × H) ℂ) g = if g.1.1 = 0 then 1 else -1 := rfl
 
 section Field
 

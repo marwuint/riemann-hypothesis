@@ -95,12 +95,6 @@ def NormGeOneMaxBound : Prop :=
     ∏ v, max 1 (1 / G v) ^ A ≤ ∏ v, max 1 (G v) ^ A ∧
       ∏ v, max 1 (G v) ^ A ≤ ∏ v, (1 + ‖D v‖ ^ 2) ^ A
 
-def SesquilinearTriangleBound : Prop :=
-  ∀ (V ι : Type) [AddCommGroup V] [Module ℂ V] (B : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ) (s : Finset ι) (a : ι → ℂ)
-    (x : ι → V) (KK : ℝ), (∀ u v, B u v = star (B v u)) → (∀ u, 0 ≤ (B u u).re) →
-    (∀ i ∈ s, (B (x i) (x i)).re ≤ KK) →
-    (B (∑ i ∈ s, a i • x i) (∑ i ∈ s, a i • x i)).re ≤ (∑ i ∈ s, ‖a i‖) ^ 2 * KK
-
 def MomentUpwardHolder : Prop :=
   ∀ (Ω : Type) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ] (r q : ℕ)
     (l : Fin (r + 1) → Ω → ℝ) (H0 R : ℝ),
@@ -233,10 +227,6 @@ def SkewOperatorFrobeniusBound : Prop :=
   ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (θ : V →ₗ[ℂ] V), IsSelfAdjointInvolution θ →
     ∀ (n : ℕ) (bs : OrthonormalBasis (Fin n) ℂ V) (e v : V),
       ∑ a, ∑ b, ‖inner ℂ (bs a) (majorantHermitianForm θ (bs b) v • e - majorantHermitianForm θ (bs b) e • v)‖ ^ 2 ≤ 4 * ‖e‖ ^ 2 * ‖v‖ ^ 2
-
-def OffDiagonalOperatorBound : Prop :=
-  ∀ (n j b bs : ℝ), 1 ≤ n → 0 ≤ j → 0 ≤ bs → j + 2 ≤ b / (8704 * n) → 8704 * n ^ 3 ≤ b → bs ≤ 2.02 * b →
-    (n - 1) * (8 * (bs + j + 2) * (n ^ 2 + j + 2)) ≤ (b / 16) ^ 2
 
 end PartB
 

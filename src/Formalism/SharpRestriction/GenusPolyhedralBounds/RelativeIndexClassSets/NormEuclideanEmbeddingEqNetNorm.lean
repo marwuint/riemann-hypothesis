@@ -200,8 +200,6 @@ theorem Bp_L2N_run (hM : NetMax Nt) (hL : NetLeSup Nt) : (Nt.Bp hM hL).l2NormAlt
   funext σ F
   simp [Bp, Formalism.L2.Pj.withNormOnWeights, Formalism.L2.Pj.l2nOn, covRun, Nt.runN_run]
 
-theorem Bp_supN (hM : NetMax Nt) (hL : NetLeSup Nt) : (Nt.Bp hM hL).supN = B.supN := rfl
-
 end NetData
 
 def SupL2BoundFromNet : Prop :=

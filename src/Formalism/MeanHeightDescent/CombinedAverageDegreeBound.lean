@@ -7,18 +7,6 @@ noncomputable section
 
 namespace Formalism.ExtensionFiltration
 
-def HSRearranged : Prop :=
-  ∀ T D h J C0 lρ l0 lβ g lΛD lΛT zc z dc Bd degc : ℝ,
-    0 ≤ T → 0 ≤ D → 0 ≤ C0 → 0 ≤ zc → zc ≤ z → z ≤ 1 / 2 → 0 < dc → dc * (1 - zc) = Bd →
-    lρ ≤ l0 + C0 * Real.log (2 + |h|) →
-    0 ≤ T * (Real.log 2 + l0 + lβ / 2) + lΛD + lΛT →
-    (1 - zc) * (T * h - 3 * (D + 1) * |h| - J - C0 * D ^ 2 * (lρ + Real.log T) - (T + D + 1) * lβ
-        - (T + D ^ 2) * (g + 2))
-      - zc * (T * (Real.log 2 + lρ + lβ / 2) + lΛD + lΛT) ≤ degc / dc →
-    Bd * (T * h - 3 * (D + 1) * |h| - (C0 * (C0 * D ^ 2 + 2 * z * T)) * Real.log (2 + |h|)
-        - (J + C0 * D ^ 2 * (l0 + Real.log T) + (T + D + 1) * lβ + (T + D ^ 2) * (g + 2))
-        - 2 * z * (T * (Real.log 2 + l0 + lβ / 2) + lΛD + lΛT)) ≤ degc
-
 def CombinedAverageDegreeBound : Prop :=
   ∀ (ι : Type) [Fintype ι] [Nonempty ι] (T D A cs X cc z ρ R1 R2 Bn δ' : ℝ)
     (h sl δ dc degc : ι → ℝ) (LL0 U b Ca Cb PPf e1 e2 muU : ℝ),

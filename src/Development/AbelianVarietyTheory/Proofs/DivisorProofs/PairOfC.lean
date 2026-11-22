@@ -20,10 +20,4 @@ end GlobalTheory.LKCx
 namespace GlobalTheory.LKCx
 variable {p : ℕ} [Fact p.Prime]
 
-theorem pairOf_β {G : HTGroup p} (F : Form G) (r : grp G F.β) (h : RegEl G (r : G.Cˣ × ℚˣ).1) :
-    (pairOf F r h).β = F.β := rfl
-
-theorem pairOf_γ {G : HTGroup p} (F : Form G) (r : grp G F.β) (h : RegEl G (r : G.Cˣ × ℚˣ).1) :
-    (pairOf F r h).γ = (r : G.Cˣ × ℚˣ).1 := rfl
-
 end GlobalTheory.LKCx

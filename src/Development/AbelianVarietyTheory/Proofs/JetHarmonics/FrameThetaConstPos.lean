@@ -22,9 +22,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 theorem levi_eq (X : Data E r) (x0 : Frame X.Ψ r) (u : Frame X.Ψ r → ℝ) (z : V (nd X))
     (ξ : Fin (nd X) → ℂ) : levi X x0 u z ξ = leviM X u x0 z ξ := rfl
 
-theorem levi_rh (X : Data E r) (x0 : Frame X.Ψ r) (z : V (nd X)) (ξ : Fin (nd X) → ℂ) :
-    levi X x0 (rh X) z ξ = leviRh X x0 z ξ := rfl
-
 open NumberField Topology in
 open scoped ContDiff in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in

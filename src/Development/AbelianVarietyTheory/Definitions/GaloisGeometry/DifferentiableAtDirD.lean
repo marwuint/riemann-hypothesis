@@ -79,16 +79,6 @@ theorem hasDeg_bas (S : Finset (Fin (n + n))) : HasDeg S.card (bas n S) := fun T
   split_ifs at hT with h
   exacts [h ▸ rfl, (hT rfl).elim]
 
-theorem HasDeg.eq_algebraMap {α : Alt n} (h : HasDeg 0 α) : α = algebraMap ℂ _ ((bas n).repr α ∅) := by
-  rw [Algebra.algebraMap_eq_smul_one, ← bas_empty]
-  refine (bas n).ext_elem fun S => ?_
-  by_cases hS : ∅ = S
-  · subst hS; simp
-  · have : (bas n).repr α S = 0 := by
-      by_contra h'
-      exact hS (Finset.card_eq_zero.1 (h S h')).symm
-    simp [this, hS]
-
 theorem scale_ι (t : ℂ) (u : Fin n ⊕ Fin n → ℂ) :
     PullType.scale n t t (ExteriorAlgebra.ι ℂ u) = t • ExteriorAlgebra.ι ℂ u := by
   rw [← map_smul]
@@ -105,11 +95,6 @@ theorem repr_degPart (k : ℕ) (α : Alt n) (S : Finset (Fin (n + n))) :
   simp only [map_sum, map_smul, degPart, Module.Basis.constr_basis, Finsupp.finset_sum_apply, Finsupp.smul_apply]
   rw [Finset.sum_eq_single S (fun T _ h => by split_ifs <;> simp [h]) (by simp)]
   split_ifs <;> simp
-
-theorem hasDeg_degPart (k : ℕ) (α : Alt n) : HasDeg k (degPart n k α) := fun S hS => by
-  rw [repr_degPart] at hS
-  by_contra h
-  exact hS (if_neg h)
 
 theorem HasDeg.degPart_eq {j : ℕ} {α : Alt n} (h : HasDeg j α) (k : ℕ) : degPart n k α = if j = k then α else 0 := by
   refine (bas n).ext_elem fun S => ?_
@@ -362,13 +347,8 @@ theorem IsDeg.dExt {k : ℕ} {α : A.Fld} (hα : A.IsDeg k α) : A.IsDeg (k + 1)
 theorem IsDeg.mul {k l : ℕ} {α β : A.Fld} (hα : A.IsDeg k α) (hβ : A.IsDeg l β) : A.IsDeg (k + l) (α * β) :=
   fun x => (hα x).mul (hβ x)
 
-theorem isDeg_degFld (k : ℕ) (α : A.Fld) : A.IsDeg k (A.degFld k α) := fun x => hasDeg_degPart k (α x)
-
 theorem IsDeg.degFld_eq {k : ℕ} {α : A.Fld} (hα : A.IsDeg k α) : A.degFld k α = α :=
   funext fun x => ((hα x).degPart_eq k).trans (if_pos rfl)
-
-theorem IsDeg.parFld_eq {k : ℕ} {α : A.Fld} (hα : A.IsDeg k α) : A.parFld α = (-1 : ℂ) ^ k • α :=
-  funext fun x => (hα x).par_eq
 
 theorem typeGe_iff {p : ℕ} {α : A.Fld} : A.TypeGe p α ↔ ∀ x, α x ∈ holGe n p :=
   forall_congr' fun x => (mem_holGe_iff (α x)).symm

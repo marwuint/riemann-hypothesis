@@ -106,9 +106,6 @@ def clsEquiv (h : InModularGroup 𝔞 𝔟 a b c d) : Quotient (latRel 𝔞 𝔟
       exact ⟨ε, by linear_combination a * h1 - b * h2 + (((ε : 𝓞 F) : F) * p.1.1 - q.1.1) * hd,
         by linear_combination d * h2 - c * h1 + (((ε : 𝓞 F) : F) * p.1.2 - q.1.2) * hd⟩
 
-theorem clsEquiv_mk (h : InModularGroup 𝔞 𝔟 a b c d) (p : LatPair 𝔞 𝔟) :
-    clsEquiv h (Quotient.mk _ p) = Quotient.mk _ (latEquiv h p) := rfl
-
 end GlobalTheory.EisModular
 
 namespace GlobalTheory.EisModular

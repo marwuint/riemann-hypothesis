@@ -27,23 +27,6 @@ def graphMorphismToAffineSpace (k : Type u) [Field k] (M n q : ℕ)
         (fun j : Fin q => (ConcreteCategory.hom (Scheme.Hom.appTop D.ι)) (F j))
         i.down)
 
-theorem graphMorphismToAffineSpace_eq_homOfVector (k : Type u) [Field k] (M n q : ℕ)
-    (F : Fin q →
-      ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M ⊕ Fin n))).presheaf.obj (Opposite.op ⊤)))
-    (D : (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M ⊕ Fin n))).Opens) :
-    graphMorphismToAffineSpace k M n q F D =
-      AffineSpace.homOfVector
-        (D.ι ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin n)))
-        (fun i =>
-          Sum.elim
-            (fun a : Fin M =>
-              (ConcreteCategory.hom (Scheme.Hom.appTop D.ι))
-                (AffineSpace.coord (Spec (CommRingCat.of k))
-                  (ULift.up (Sum.inl a) : ULift.{u, 0} (Fin M ⊕ Fin n))))
-            (fun j : Fin q => (ConcreteCategory.hom (Scheme.Hom.appTop D.ι)) (F j))
-            i.down) :=
-  rfl
-
 theorem graphMorphismToAffineSpace_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
       ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M ⊕ Fin n))).presheaf.obj (Opposite.op ⊤)))

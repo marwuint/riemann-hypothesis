@@ -80,23 +80,6 @@ noncomputable abbrev galTorsionZ (n : ℕ) : Rep.{u} ℤ Gal(L/K) :=
     (torsionBy (W.baseChange L).toAffine.Point n)).toRingHom.toMonoidHom.comp
     (galTorsionHom K L W n))
 
-theorem galPoints_ρ_apply (σ : Gal(L/K)) (P : (W.baseChange L).toAffine.Point) :
-    (galPoints.{w} K L W).ρ σ P = galPointsHom K L W σ P :=
-  rfl
-
-theorem galPointsZ_ρ_apply (σ : Gal(L/K)) (P : (W.baseChange L).toAffine.Point) :
-    (galPointsZ K L W).ρ σ P = galPointsHom K L W σ P :=
-  rfl
-
-theorem galTorsion_ρ_apply (n : ℕ) (σ : Gal(L/K)) (P : torsionBy (W.baseChange L).toAffine.Point n) :
-    (galTorsion.{w} K L W n).ρ σ P = galTorsionHom K L W n σ P :=
-  rfl
-
-theorem galTorsionZ_ρ_apply (n : ℕ) (σ : Gal(L/K))
-    (P : torsionBy (W.baseChange L).toAffine.Point n) :
-    (galTorsionZ K L W n).ρ σ P = galTorsionHom K L W n σ P :=
-  rfl
-
 end Action
 
 section Discrete

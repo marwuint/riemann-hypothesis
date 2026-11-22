@@ -43,9 +43,6 @@ theorem archSmul_apply {h : HermitianForm F E W} {v : Basis ι E W} (g : archUni
     (y : InfinitePlace E → ι → ℂ) (w : InfinitePlace E) :
     (g • y) w = ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ y w := rfl
 
-theorem invApply_eq_smul {h : HermitianForm F E W} {v : Basis ι E W} (g : archUnitary h v)
-    (y : InfinitePlace E → ι → ℂ) : invApply g y = g⁻¹ • y := rfl
-
 theorem continuous_len_inv_smul {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v)
     (y : InfinitePlace E → ι → ℂ) : Continuous fun g : archUnitary h v => M.len (g⁻¹ • y) := by
   have hw : ∀ w, Continuous fun g : archUnitary h v => (g⁻¹ • y) w := fun w =>

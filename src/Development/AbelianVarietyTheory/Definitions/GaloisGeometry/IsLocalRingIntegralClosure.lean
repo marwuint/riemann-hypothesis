@@ -58,9 +58,6 @@ theorem galInt_one (x : integralClosure O Ω) : galInt O K (1 : Ω ≃ₐ[K] Ω)
 def galRes (σ : Ω ≃ₐ[K] Ω) : ResidueField (integralClosure O Ω) ≃+* ResidueField (integralClosure O Ω) :=
   ResidueField.mapEquiv (galInt O K σ)
 
-theorem galRes_residue (σ : Ω ≃ₐ[K] Ω) (x : integralClosure O Ω) :
-    galRes σ (residue _ x) = residue _ (galInt O K σ x) := rfl
-
 variable (O K Ω)
 
 def inertia : Subgroup (Ω ≃ₐ[K] Ω) where

@@ -22,12 +22,6 @@ def cwt (m : ℕ) (A c B : ℕ) (cl : Fin m → ℤ) : Fin (m + 2) → ℤ :=
 def LevelCount : Prop :=
   ∀ k' A B : ℕ, ∑ j ∈ range (min A B + 1), dimHar k' (A - j) (B - j) = dimPol k' A * dimPol k' B
 
-def LevelTailExp : Prop :=
-  ∀ (k' A B J : ℕ) (La b' : ℝ), 2 ≤ k' → 0 < b' → 0 ≤ La → La * b' / (k' + 1) ≤ J →
-    (B : ℝ) + k' + 1 ≤ 2 * b' →
-    ((∑ j ∈ Icc J (min A B), dimHar k' (A - j) (B - j) : ℕ) : ℝ) ≤
-      Real.exp (-La / 3) * ((dimPol k' A * dimPol k' B : ℕ) : ℝ)
-
 def BinomRatio : Prop :=
   ∀ k' al j : ℕ, 0 < al → 1 - (k' : ℝ) * j / al ≤ (dimPol k' al : ℝ) / dimPol k' (al + j)
 

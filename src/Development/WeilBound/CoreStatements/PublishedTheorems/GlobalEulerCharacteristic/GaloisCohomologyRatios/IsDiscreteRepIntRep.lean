@@ -18,8 +18,6 @@ noncomputable def intRep (M : Rep.{0} (ZMod ℓ) G) : Rep.{0} (ULift.{0} ℤ) G 
       map_one' := by ext m; simp
       map_mul' := fun g h => by ext m; simp [Module.End.mul_apply] }
 
-theorem intRep_ρ_apply (M : Rep.{0} (ZMod ℓ) G) (g : G) (m : M) : (intRep M).ρ g m = M.ρ g m := rfl
-
 def intRepEquiv (M : Rep.{0} (ZMod ℓ) G) : M ≃+ intRep M := AddEquiv.refl M
 
 variable [TopologicalSpace G] [IsTopologicalGroup G]

@@ -46,9 +46,6 @@ def Bi : Submodule ℚ (PS k 2 d) where
   smul_mem' := fun c f h => ⟨fun n x y v => by simp only [eval_two_smul, h.1, smul_add],
     fun n x y v => by simp only [eval_two_smul, h.2, smul_add]⟩
 
-theorem bi_ext {f g : Bi k d} (h : E2 f.1 (gen 0 : Q k d 2) (gen 1) = E2 g.1 (gen 0) (gen 1)) : f = g :=
-  Subtype.ext ((formalSeriesValueAtTwoPoints_genericPoints f.1).symm.trans (h.trans (formalSeriesValueAtTwoPoints_genericPoints g.1)))
-
 section Transfer
 
 omit [Algebra ℚ k]

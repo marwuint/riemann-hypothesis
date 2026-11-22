@@ -43,8 +43,6 @@ abbrev seq1 : ℕ → HLat ℚ := latSeq (m := 1) (d := fun _ => 1) (fun _ => tw
 abbrev map1 : ∀ j, (seq1 j).V →ₛₗ[algebraMap ℚ ℂ] ℂ :=
   mapSeq (m := 1) (d := fun _ => 1) (fun _ => twoLat) (fun _ => frame3) (fun _ => ℂ) (fun _ => third)
 
-theorem embedding_one_apply_div_three (x : Fin 1 → ℚ) : map1 1 x = (x 0 : ℂ) / 3 := rfl
-
 section Record
 
 open Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie

@@ -36,10 +36,6 @@ theorem isIntegral_omega (hd4 : d % 4 = 3) (hx : x ^ 2 = -(d : K)) :
 def omega (hd4 : d % 4 = 3) (hx : x ^ 2 = -(d : K)) : 𝓞 K :=
   ⟨(1 + x) / 2, isIntegral_omega hd4 hx⟩
 
-omit [Algebra.IsQuadraticExtension ℚ K] in
-theorem coe_omega (hd4 : d % 4 = 3) (hx : x ^ 2 = -(d : K)) :
-    ((omega hd4 hx : 𝓞 K) : K) = (1 + x) / 2 := rfl
-
 end Integers
 
 end QuadraticFieldArithmetic

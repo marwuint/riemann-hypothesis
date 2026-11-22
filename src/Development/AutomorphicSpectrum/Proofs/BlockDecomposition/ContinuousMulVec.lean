@@ -50,11 +50,6 @@ def actF (X : Representation ℂ (GL (Fin d) k) V) (g : GL (Fin d) k) : SchF k d
   map_add' f f' := Subtype.ext (funext fun y => map_add (X g) _ _)
   map_smul' c f := Subtype.ext (funext fun y => map_smul (X g) c _)
 
-theorem shiftF_apply (x y : Fin d → k) (f : SchF k d V) : (shiftF x f).1 y = f.1 (y + x) := rfl
-
-theorem actF_apply (X : Representation ℂ (GL (Fin d) k) V) (g : GL (Fin d) k) (f : SchF k d V) (y : Fin d → k) :
-    (actF X g f).1 y = X g (f.1 (((g⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y)) := rfl
-
 end GlobalTheory.CompanionTheory.BZShell
 
 end

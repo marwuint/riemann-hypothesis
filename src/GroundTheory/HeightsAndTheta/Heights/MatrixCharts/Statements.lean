@@ -17,9 +17,6 @@ def hermPair {ι : Type*} [Fintype ι] (A : Matrix ι ι ℝ) (v w : ι → ℂ)
 def hermValue {ι : Type*} [Fintype ι] (A : Matrix ι ι ℝ) (w : ι → ℂ) : ℝ :=
   hermPair A w w
 
-def metricLength {ι : Type*} [Fintype ι] [DecidableEq ι] (Y : Matrix ι ι ℝ) (w : ι → ℂ) : ℝ :=
-  Real.sqrt (hermValue Y⁻¹ w)
-
 def covolume {ι : Type*} [Fintype ι] [DecidableEq ι] (Y : Matrix ι ι ℝ) {k : ℕ}
     (v : Fin k → ι → ℂ) : ℝ :=
   Real.sqrt (Matrix.det (Matrix.of fun j l => hermPair Y⁻¹ (v j) (v l)))
@@ -85,8 +82,6 @@ structure PeriodChartData where
 namespace PeriodChartData
 
 variable (D : PeriodChartData)
-
-def Ustar : Set (Fin D.n → ℂ) := puncturedChart D.a_le D.U
 
 def Y (z : Fin D.n → ℂ) : Matrix (Fin D.g) (Fin D.g) ℝ := chartImag D.a_le D.τ0 D.B z
 

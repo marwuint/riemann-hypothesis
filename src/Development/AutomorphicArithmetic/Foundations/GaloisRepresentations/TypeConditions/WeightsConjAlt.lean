@@ -78,10 +78,6 @@ structure Props (π : CuspSub E a) (ι : Qbar l ≃+* ℂ)
       (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
       (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : Pst.Induces Bw), Above Rc π ι r HT P h Bw hj
 
-def TameN (π : CuspSub E a) (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL (Fin a) (Qbar l)) : Prop :=
-  ∀ (w : HeightOneSpectrum (𝓞 E)) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (A : ValuationSubring Ω) (h : IsPlaceOver A w)
-    (rc : IrrGL (w.adicCompletion E) → WD h), Rc h rc → ∀ σ, π.IsLocComp w σ → AwayN (wdOf h hl ι r) (rc (algNorm σ))
-
 def Row0 : Prop :=
   ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a →

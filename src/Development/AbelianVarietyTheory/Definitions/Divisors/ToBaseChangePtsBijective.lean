@@ -413,13 +413,6 @@ variable [Fact p.Prime]
     obtain ⟨⟨c, w⟩, rfl⟩ := Submodule.mkQ_surjective _ x
     exact congrArg G.rigMk (Prod.ext rfl (LinearMap.congr_fun (ofHom_omega f) w))
 
-theorem omega_naturality (s' : SemiHom σ H' H) (f : G ⟶ H) (f' : G' ⟶ H')
-    (h : ∀ n a, s.app n (f.app n a) = f'.app n (s'.app n a)) (w : H.omega) :
-    s.omega (omegaMap G H f w) = omegaMap G' H' f' (s'.omega w) := by
-  rw [← ofHom_omega, ← ofHom_omega]
-  exact ((ofHom f).omega_omega s (s.comp (ofHom f)) (fun _ _ => rfl) w).trans
-    (s'.omega_omega (ofHom f') _ h w).symm
-
 end SemiHom
 
 section BaseChange

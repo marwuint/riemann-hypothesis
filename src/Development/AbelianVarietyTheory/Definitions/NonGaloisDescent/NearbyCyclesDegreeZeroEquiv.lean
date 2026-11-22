@@ -15,12 +15,6 @@ section Formal
 
 variable (O : Type) [CommRing O] [Algebra O K]
 
-theorem coe_aut_one (A : Type) [CommRing A] [Algebra O A] :
-    ((1 : A ≃ₐ[O] A) : A →ₐ[O] A) = AlgHom.id O A := rfl
-
-theorem coe_aut_mul {A : Type} [CommRing A] [Algebra O A] (e e' : A ≃ₐ[O] A) :
-    ((e * e' : A ≃ₐ[O] A) : A →ₐ[O] A) = (e : A →ₐ[O] A).comp (e' : A →ₐ[O] A) := rfl
-
 end Formal
 
 end GlobalTheory.FNC

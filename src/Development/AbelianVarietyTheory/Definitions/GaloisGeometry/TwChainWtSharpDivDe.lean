@@ -121,12 +121,6 @@ def twThPt (i j : ℕ) (e : j = i + 1) (β : (twFam W Ch sel mu cst L u m2 b hY 
     VCx X.Tau (R.N i) (R.N j) → ℂ :=
   A.thDat (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) (levPt i β d).deco.1.N (levPt j β' d').deco.1.N (twXi i j e β β' d d')
 
-theorem twThPt_top (e : R.m = m2 + 1 + 1) (h : m2 + 1 = m2 + 1) (h' : R.m = R.m) (d : (ybCpl W sel mu cst L u m2 b hY).Pts)
-    (p' : TopPt R sel mu u) :
-    twThPt (Ch := Ch) (P := P) (c := c) A (m2 + 1) R.m e (.cpl h) (.top h') d p' =
-      A.thDat (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) d.1.1.deco.1.N p'.deco.1.N
-        (XiTop Ch sel mu cst m2 d.1.1 d.1.2 p') := rfl
-
 variable (W sel mu cst A u) in
 
 def TwJets : Prop :=

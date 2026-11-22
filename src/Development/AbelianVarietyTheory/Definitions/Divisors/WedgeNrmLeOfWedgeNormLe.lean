@@ -138,32 +138,11 @@ def abs : AbsoluteValue F.T.Fr ℝ where
     · exact (nrmOf_anti _ (nval_ne_bot _ _) h).trans (le_add_of_nonneg_right (nrmOf_nonneg _ _))
     · exact (nrmOf_anti _ (nval_ne_bot _ _) h).trans (le_add_of_nonneg_left (nrmOf_nonneg _ _))
 
-theorem abs_apply (a : F.T.Fr) : F.abs a = nrmOf v.maximalIdeal (nval F.T.V F.e a) := rfl
-
-theorem ofReal_abs (a : F.T.Fr) :
-    ENNReal.ofReal (F.abs a) = normOfOrd (Ideal.absNorm v.maximalIdeal.asIdeal) (nval F.T.V F.e a) := by
-  have h1 := one_lt_absNorm_real v.maximalIdeal
-  by_cases ha : a = 0
-  · rw [ha, map_zero, nval_zero, normOfOrd, EReal.top_mul_coe_of_pos (Real.log_pos h1)]
-    simp
-  rw [abs_apply, nval_of_ne ha, normOfOrd, ← EReal.coe_mul, ← EReal.coe_neg, EReal.exp_coe]
-  simp only [nrmOf, EReal.coe_ne_top, if_false, EReal.toReal_coe]
-  rw [Real.rpow_def_of_pos (by linarith)]
-  congr 2
-  ring
-
 variable {ι : Type} [Fintype ι]
-
-def wedgeNrm (s : ι → RulK Xo c K) : ℝ≥0∞ :=
-  normOfOrd (Ideal.absNorm v.maximalIdeal.asIdeal) (wedgeOrd (psiSet H) F.e F.φ F.pt s)
 
 end FinFr
 
 end Fin
-
-namespace FinFr
-
-end FinFr
 
 section Inf
 

@@ -42,7 +42,4 @@ def FamP.raise {eps : ℝ} (Fm : FamP eps) (y : ℝ) : FamP eps :=
 
 @[simp] theorem raise_lower_endpoint {eps : ℝ} (Fm : FamP eps) (y : ℝ) : (Fm.raise y).x1 = max Fm.x1 y := rfl
 
-theorem ownEv_raise {eps : ℝ} (Fm : FamP eps) (y : ℝ) {P : ℝ → ℝ → ∀ x, Fm.Ix x → Prop} :
-    Formalism.MainNotions.S.OwnEv (Fm.raise y) P ↔ Formalism.MainNotions.S.OwnEv Fm P := Iff.rfl
-
 end Formalism.MainNotions

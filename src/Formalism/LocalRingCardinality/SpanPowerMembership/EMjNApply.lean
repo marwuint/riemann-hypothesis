@@ -21,18 +21,6 @@ abbrev vE : (I.ix j → FractionRing (C.Ok (E.twI w) 1)) ≃ₗ[C.Ok (E.twI w) 1
 
 def crd (x : M.V) : I.ix j → FractionRing (C.Ok (E.twI w) 1) := fun a => E.embW w (M.b.repr x (eI a))
 
-def eMjN : M.V →+ (C.Ok (E.twI w) 1) ⊗[C.O (E.twI w)] (I.ix j → FractionRing (C.O (E.twI w))) where
-  toFun x := vE D C I E w j (crd D C I E M w j eI x)
-  map_zero' := by
-    have : crd D C I E M w j eI 0 = 0 := funext fun a => by simp [crd]
-    rw [this, map_zero]
-  map_add' x y := by
-    have : crd D C I E M w j eI (x + y) = crd D C I E M w j eI x + crd D C I E M w j eI y :=
-      funext fun a => by simp [crd]
-    rw [this, map_add]
-
-theorem eMjN_apply (x : M.V) : eMjN D C I E M w j eI x = vE D C I E w j (crd D C I E M w j eI x) := rfl
-
 variable (hb : Function.Bijective eI)
 
 end One

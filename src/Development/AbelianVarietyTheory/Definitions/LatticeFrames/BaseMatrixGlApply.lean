@@ -51,10 +51,6 @@ section AtLevel
 
 variable {ζ₀ : Fin a.Lz.rank → D.host.E} {PP : Formalism.L2.DIV.Pl D.host.E} (H : GX a ζ₀ PP)
 
-def GX.MatAt {ζ₀ : Fin a.Lz.rank → D.host.E} {PP : Formalism.L2.DIV.Pl D.host.E} (H : GX a ζ₀ PP) (κ : GA D (D.sp.X 0))
-    (g : GL (XIx (Fin D.R.k) (Fin D.R.t) 0) H.k) : Prop :=
-  (mt (D.sp.X 0) κ).map H.q.pr = (H.FX 0 (Nat.zero_le _)).β * g.val * (H.FX 0 (Nat.zero_le _)).γ
-
 abbrev GX.lev0 {ζ₀ : Fin a.Lz.rank → D.host.E} {PP : Formalism.L2.DIV.Pl D.host.E} (H : GX a ζ₀ PP) :=
   (H.S.T (Fin D.R.t)).lev 0 (H.s + 1) (Nat.zero_add _)
 

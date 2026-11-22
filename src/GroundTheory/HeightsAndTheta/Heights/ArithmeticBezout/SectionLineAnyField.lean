@@ -12,8 +12,6 @@ namespace SectionLine
 
 variable (F : Type) [Field F]
 
-def coeffX0Alt : Fin 2 → F := fun j => if j = 0 then 1 else 0
-
 def coeffX1 : Fin 2 → F := fun j => if j = 0 then 0 else 1
 
 theorem linearForm_coeffX1 : linForm (coeffX1 F) = (X 1 : MvPolynomial (Fin 2) F) := by

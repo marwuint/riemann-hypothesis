@@ -259,8 +259,6 @@ variable {R : Type} [CommRing R] {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
 
 def lieVec (c : X →+ R) : epsR R ⟶ splitTorus (Sp R) X := epsVec _ c
 
-theorem charVal_lieVec (c : X →+ R) (x : X) : charVal (lieVec c) x = 1 + inr (c x) := charVal_epsVec c x
-
 theorem isTangent_iff_charVal (w : epsR R ⟶ splitTorus (Sp R) X) :
     IsTangent w ↔ ∀ x, (charVal w x).fst = 1 := by
   unfold IsTangent
@@ -277,8 +275,6 @@ theorem isTangent_iff_exists (w : epsR R ⟶ splitTorus (Sp R) X) :
 theorem isTangent_lieVec (c : X →+ R) : IsTangent (lieVec c) := (isTangent_iff_exists _).2 ⟨c, rfl⟩
 
 theorem lieVec_injective : Function.Injective (lieVec : (X →+ R) → _) := epsVec_injective
-
-theorem lieVec_add (c d : X →+ R) : lieVec (c + d) = lieVec c * lieVec d := epsVec_add c d
 
 theorem left_eq_iff_lieVec_smul (a : R) (c : X →+ R) (u : epsR R ⟶ splitTorus (Sp R) X) :
     u.left = spMap (epsScaleR a) ≫ (lieVec c).left ↔ u = lieVec (a • c) := left_eq_epsScaleR_iff a (epsScaleR_base a) c u

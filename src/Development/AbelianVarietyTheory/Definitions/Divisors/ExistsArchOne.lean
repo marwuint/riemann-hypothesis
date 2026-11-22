@@ -62,10 +62,6 @@ theorem even_sOf (M : TwoLevels E r U C) : Even (sOf M) := ⟨r + 25 * (r ^ 2 * 
 
 theorem le_sOf (M : TwoLevels E r U C) : 2 * r + 50 * r ^ 2 * M.dimX + 1 ≤ sOf M := Nat.le_succ _
 
-theorem sOf_sub (M : TwoLevels E r U C) (H : Subgroup U) : sOf (sub M H) = sOf M := rfl
-
-theorem cusp_sub (M : TwoLevels E r U C) (H : Subgroup U) (la : Wt M.Ψ r) : (sub M H).cusp la = M.cusp la := rfl
-
 end Model
 
 section Point

@@ -363,8 +363,6 @@ instance : Module ↥(MaximalUnramifiedExtension l) (DpstUr P ρ) := Module.comp
 
 def toUr : ↥(Dpst P ρ) ≃+ DpstUr P ρ := AddEquiv.refl _
 
-theorem smul_toUr (c : ↥(MaximalUnramifiedExtension l)) (x : ↥(Dpst P ρ)) : c • toUr P ρ x = toUr P ρ (mulD P ρ c x) := rfl
-
 def urEnd (T : End LL ↥(Dpst P ρ)) (hT : ∀ c, T * mulD P ρ c = mulD P ρ c * T) :
     End ↥(MaximalUnramifiedExtension l) (DpstUr P ρ) where
   toFun x := toUr P ρ (T ((toUr P ρ).symm x))

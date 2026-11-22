@@ -7,13 +7,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formal
 
 namespace Formalism.L2.KerInert.SecondKernelStabilizers
 
-def StabEqAny : Prop :=
-  ∀ (D : D7) (c : LatCmp D) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl)
-    (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (Fl : Fills (D.gat u w h)) (Lv : Levels Fl)
-    (K : CmpJ.KerLabelsMu Tw u μ w h Lv) (I : CmpJ.CmpJIn Tw u μ w h Lv) (H : CmpJ.CmpJHyp c I) (hS : BlockRationalityField)
-    (Gt : GatTies D) (Ch : Chain Lv) (hCh : _),
-    StabEqRest (CmpJ.kerAtMu_any K H hS Gt Ch hCh)
-
 def TieStabAny : Prop :=
   ∀ (D : D7) (c : LatCmp D) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl)
     (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) [Fact (D.what₂.places.resChar w).Prime]

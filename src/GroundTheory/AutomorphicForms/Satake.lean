@@ -76,10 +76,6 @@ def satakeEquiv : SphericalHecke μ (F := F) (n := n) ≃ₐ[ℂ] symmetricLaure
   (AlgEquiv.ofInjective (satakeTransform μ) satakeTransform_injective).trans
     (Subalgebra.equivOfEq _ _ range_satakeTransform)
 
-theorem coe_satakeEquiv (h : SphericalHecke μ (F := F) (n := n)) :
-    (satakeEquiv μ h : LaurentRing n) = satakeTransform μ h :=
-  rfl
-
 theorem evalAt_comp_satakeTransform (z : Fin n → ℂˣ) (σ : Equiv.Perm (Fin n))
     (h : SphericalHecke μ (F := F) (n := n)) :
     evalAt (z ∘ σ) (satakeTransform μ h) = evalAt z (satakeTransform μ h) :=

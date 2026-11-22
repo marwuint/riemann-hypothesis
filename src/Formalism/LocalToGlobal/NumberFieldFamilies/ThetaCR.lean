@@ -49,42 +49,6 @@ theorem frame_rel {A B : HSp D} {ι : B.V →ₗ[D.host.E] A.V} (h : HSpace.IsIs
   rw [frameMat_eq, colM_gram, h]
   rfl
 
-def besselFlagHyperbolic (D : D7) (c : Fin D.R.rS → D.host.E) (hc : ∀ i, c i ≠ 0) (y : GfC (D.sp.Y 0)) :
-    BesDat (D.sp.X 0) (D.sp.Y 0) (D.sp.iXY 0) where
-  ρ := D.R.rS
-  codim := by
-    rw [D.sp.X_rank 0 (Nat.zero_le _), D.sp.Y_rank 0 (Nat.zero_le _)]
-    have := D.R.rS_two
-    show D.R.k + 0 * (D.R.t + 1) + 2 * D.R.rS + 1 = D.R.k + D.R.m - 1 + 0 * D.R.t
-    omega
-  e := colM (D.sp.Y 0) D.sp.hypE
-  e_iso := ⟨by
-    have h1 : LinearIndependent D.host.E D.sp.hypE := by
-      rw [Fintype.linearIndependent_iff]
-      intro g hg i
-      have e := congrArg (fun x => (D.sp.Y 0).hT (D.sp.hypF i) x) hg
-      have hfe : ∀ k, (D.sp.Y 0).hT (D.sp.hypF i) (D.sp.hypE k) = if k = i then 1 else 0 := fun k => by
-        rw [← (D.sp.Y 0).herm.eq, D.sp.hyp_ef]
-        split_ifs <;> simp
-      simpa [map_sum, hfe] using e
-    exact h1.map' (D.sp.Y 0).frame.equivFun.toLinearMap (LinearEquiv.ker _),
-    by ext a b; rw [colM_gram, D.sp.hyp_ee]; rfl⟩
-  e_perp := by ext a b; rw [frameMat_eq, colM_gram, (D.sp.hyp_orthX b _).1]; rfl
-  z := (D.sp.Y 0).frame.repr D.sp.zm
-  z_perpA := by funext a; rw [frameMat_eq, colM_vec, D.sp.zm_orth]; rfl
-  z_perpE := by
-    funext a
-    rw [colM_vec, ← (D.sp.Y 0).herm.eq, (D.sp.hyp_orthz a).1]
-    simp
-  z_ne := by
-    have e : Formalism.UG.hform (D.sp.cm.sig : D.host.E →+* D.host.E) (D.sp.Y 0).gram ((D.sp.Y 0).frame.repr D.sp.zm)
-      ((D.sp.Y 0).frame.repr D.sp.zm) = (D.sp.Y 0).hT D.sp.zm D.sp.zm := (gram_coord _ _ _).symm
-    rw [e, D.sp.zm_norm, neg_ne_zero]
-    exact Nat.cast_ne_zero.2 D.sp.T_prime.ne_zero
-  c := c
-  c_ne := hc
-  y := y
-
 variable {ψ : AddChar (AF D.host.F) ℂ}
 
 section Emb

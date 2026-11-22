@@ -37,10 +37,6 @@ def latLevel (W : Spc F E d) : Subgroup (UA σ W.J) where
     rw [inv_inv]
     exact (hx' w z hz).1
 
-theorem mem_latLevel {W : Spc F E d} {k : UA σ W.J} : k ∈ latLevel σ W ↔ k ∈ GlobalTheory.ThKAdm.FinPt σ W ∧
-    ∀ w : Pl F, ∀ z ∈ GlobalTheory.InertSph.latAt W w,
-      mat k *ᵥ z ∈ GlobalTheory.InertSph.latAt W w ∧ mat k⁻¹ *ᵥ z ∈ GlobalTheory.InertSph.latAt W w := Iff.rfl
-
 end GlobalTheory.ThKLevel
 
 end

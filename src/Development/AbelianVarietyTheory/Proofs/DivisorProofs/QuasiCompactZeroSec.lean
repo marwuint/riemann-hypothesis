@@ -167,11 +167,6 @@ variable (G) in
 def univ (n : ℕ) : G.A n →ₐ[O] TrivSqZeroExt O (Cot O (G.A n)) :=
   AugCot.toSqZero (Bialgebra.counitAlgHom O (G.A n)) LinearMap.id
 
-theorem fst_comp_univ (n : ℕ) :
-    (TrivSqZeroExt.fstHom O O (Cot O (G.A n))).comp (univ G n) =
-      Bialgebra.counitAlgHom O (G.A n) := by
-  ext a; simp [univ]
-
 end Tower
 
 end GlobalTheory.SqZeroPt

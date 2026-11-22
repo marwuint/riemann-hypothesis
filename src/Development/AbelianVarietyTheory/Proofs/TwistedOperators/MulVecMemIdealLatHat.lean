@@ -98,9 +98,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {V : HSp D}
 
-theorem halfVec_eq_smul (b : 𝓞 D.host.E) (z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
-    halfVec V b z = ((1 : Af D.host.F) ⊗ₜ[D.host.F] (b : D.host.E)) • z := rfl
-
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E}
 
 end Lifts

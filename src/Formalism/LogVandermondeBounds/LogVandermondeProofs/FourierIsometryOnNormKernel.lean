@@ -14,8 +14,6 @@ private def smulEquiv (c : kˣ) : (Fin r → k) ≃ (Fin r → k) where
   left_inv f := by simp [smul_smul]
   right_inv f := by simp [smul_smul]
 
-private lemma smulEquiv_apply (c : kˣ) (f : Fin r → k) : smulEquiv c f = (c : k) • f := rfl
-
 end Helpers
 
 end Formalism.LogVandermondeBounds.product_first_zeroth_parts

@@ -56,15 +56,8 @@ section Second
 
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Y : RowDat T G i) (R : RealDat D A Ks)
 
-def ClauseBig (cc : Y.U.Comp → ℂ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Prop :=
-  ∀ g : G, ∀ f ∈ cusp (T.Q.Xo ((i : ℕ) + 1)) Y.c' Y.U' a n, Y.act' g f ∈ cusp (T.Q.Xo ((i : ℕ) + 1)) Y.c' Y.U' a n ∧
-    ∀ κ, IsLift R i g κ → ∀ x, Y.phi cc (Y.act' g f) x = chiDetW R i g * Y.phi cc f (x * κ)
-
 def phiSmall (cc : Y.U.Comp → ℂ) (f : T.R ((i : ℕ) + 1)) : GA D (Wc D i) → ℂ :=
   adel (Wc D i) Y.dict (muPin (Wc D i) Y.dict Y.mu cc) (rdU Y.U f)
-
-theorem levelEquiv_iff_forall (cc : Y.U.Comp → ℂ) :
-    Y.LevelEquiv R cc ↔ ∀ a, Dom a (Vc D i).rank → ClauseBig Y R cc a (Vc D i).rank := Iff.rfl
 
 end Second
 

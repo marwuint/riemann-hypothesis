@@ -24,11 +24,6 @@ def gq (H : Sesq V) (Ae : V ≃ₗ[ℂ] V) (z : V) : ℂ := Complex.exp (-(Real.
 
 end Objects
 
-def DiagTerm : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V), IsHerm H → ∀ v z : V,
-    opU H v (kerK H z) z * (wt H z : ℂ)
-      = Complex.exp (-(Real.pi : ℂ) * H v v / 2) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (altE H v z : ℂ))
-
 def TermShift : Prop :=
   ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V), IsHerm H → ∀ (α : V → ℂ) (δ Ae : V ≃ₗ[ℂ] V),
     IsIsom H H (δ : V →ₗ[ℂ] V) → (∀ x, Ae x = x - δ.symm x) →

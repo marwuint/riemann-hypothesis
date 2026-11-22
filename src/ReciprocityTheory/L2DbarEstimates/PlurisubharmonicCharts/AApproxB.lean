@@ -39,10 +39,6 @@ theorem nsq_chart (la : La) (s : ι → Y → ℂ) (i : ι) {y : Y} (hy : y ∈ 
     div_eq_mul_inv]
   linear_combination (‖s i y‖ ^ 2 * (Real.exp (A.ph la i y))⁻¹) * hn
 
-theorem nsq_chart_of_isSec (la : La) (s : ι → Y → ℂ) (hs : A.IsSec la s) (i : ι) {y : Y}
-    (hy : y ∈ (A.chart i).source) : A.nsq la s y = ‖s i y‖ ^ 2 * Real.exp (-A.ph la i y) :=
-  A.nsq_chart la s i hy (hs.2 _ i y (Set.mem_univ _) (A.mem_pick y) hy)
-
 theorem aap_ph_zero (i : ι) {y : Y} (hy : y ∈ (A.chart i).source) : A.ph 0 i y = 0 := by
   have h := A.ph_add 0 0 i y hy
   rw [add_zero] at h

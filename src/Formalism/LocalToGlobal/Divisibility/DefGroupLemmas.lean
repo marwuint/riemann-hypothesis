@@ -1213,64 +1213,6 @@ section Emb
 
 variable {κ : Type} [CommRing κ] {r n : ℕ}
 
-def rh_mat (A : Matrix (Fin r) (Fin r) κ) : Matrix (Fin n) (Fin n) κ :=
-  fun i j => if h : i.val < r ∧ j.val < r then A ⟨i.val, h.1⟩ ⟨j.val, h.2⟩ else if i = j then 1 else 0
-
-theorem rh_mat_lt (A : Matrix (Fin r) (Fin r) κ) {i j : Fin n} (hi : i.val < r) (hj : j.val < r) :
-    rh_mat A i j = A ⟨i.val, hi⟩ ⟨j.val, hj⟩ := dif_pos ⟨hi, hj⟩
-
-theorem rh_mat_ge_left (A : Matrix (Fin r) (Fin r) κ) {i j : Fin n} (hi : ¬ i.val < r) :
-    rh_mat A i j = if i = j then 1 else 0 := dif_neg (fun h => hi h.1)
-
-theorem rh_mat_ge_right (A : Matrix (Fin r) (Fin r) κ) {i j : Fin n} (hj : ¬ j.val < r) :
-    rh_mat A i j = if i = j then 1 else 0 := dif_neg (fun h => hj h.2)
-
-theorem rh_mat_one : (rh_mat (1 : Matrix (Fin r) (Fin r) κ) : Matrix (Fin n) (Fin n) κ) = 1 := by
-  ext i j
-  by_cases hi : i.val < r
-  · by_cases hj : j.val < r
-    · rw [rh_mat_lt _ hi hj, Matrix.one_apply, Matrix.one_apply]
-      simp [Fin.ext_iff]
-    · rw [rh_mat_ge_right _ hj, Matrix.one_apply]
-  · rw [rh_mat_ge_left _ hi, Matrix.one_apply]
-
-theorem rh_mat_mul (hr : r ≤ n) (A B : Matrix (Fin r) (Fin r) κ) :
-    (rh_mat A : Matrix (Fin n) (Fin n) κ) * rh_mat B = rh_mat (A * B) := by
-  ext i j
-  rw [Matrix.mul_apply]
-  by_cases hi : i.val < r
-  · by_cases hj : j.val < r
-    · rw [rh_mat_lt _ hi hj, Matrix.mul_apply]
-      symm
-      refine Fintype.sum_of_injective (Fin.castLE hr) (Fin.castLE_injective hr) _ _ (fun l hl => ?_) (fun l => ?_)
-      · have hl' : ¬ l.val < r := fun h => hl ⟨⟨l.val, h⟩, by ext; rfl⟩
-        have hil : i ≠ l := fun e => hl' (by rw [← e]; exact hi)
-        rw [rh_mat_ge_right A hl', if_neg hil, zero_mul]
-      · have hl : (Fin.castLE hr l).val < r := l.2
-        exact (congrArg₂ (· * ·) (rh_mat_lt A hi hl) (rh_mat_lt B hl hj)).symm
-    · have hij : i ≠ j := fun e => hj (by rw [← e]; exact hi)
-      rw [rh_mat_ge_right _ hj, if_neg hij]
-      refine Finset.sum_eq_zero fun l _ => ?_
-      by_cases hl : l.val < r
-      · have hlj : l ≠ j := fun e => hj (by rw [← e]; exact hl)
-        rw [rh_mat_ge_right B hj, if_neg hlj, mul_zero]
-      · have hil : i ≠ l := fun e => hl (by rw [← e]; exact hi)
-        rw [rh_mat_ge_right A hl, if_neg hil, zero_mul]
-  · rw [rh_mat_ge_left _ hi, Finset.sum_eq_single i]
-    · rw [rh_mat_ge_left A hi, if_pos rfl, one_mul, rh_mat_ge_left B hi]
-    · intro l _ hl
-      rw [rh_mat_ge_left A hi, if_neg (Ne.symm hl), zero_mul]
-    · intro h; exact absurd (Finset.mem_univ i) h
-
-def rh_emb (hr : r ≤ n) : GL (Fin r) κ →* GL (Fin n) κ :=
-  Units.map
-    { toFun := fun A => (rh_mat A : Matrix (Fin n) (Fin n) κ)
-      map_one' := rh_mat_one
-      map_mul' := fun A B => (rh_mat_mul hr A B).symm }
-
-theorem rh_emb_val (hr : r ≤ n) (y : GL (Fin r) κ) :
-    ((rh_emb hr y : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) = rh_mat (y : Matrix (Fin r) (Fin r) κ) := rfl
-
 end Emb
 
 section FrAlg
@@ -1723,10 +1665,6 @@ theorem frame_exists_alt : FrameExists := by
     rw [e1]
     exact mul_mem (mul_mem (hmem hw') (Formalism.UG.P.levelafC_mem _)) (hd0 v hv i)
 
-theorem minkNum_eq_minkowskiM (N : ℕ) : minkNum N = Formalism.HermitianLatticeCounting.S6.minkowskiM N := rfl
-
-theorem minkNum_eq_minkM (N : ℕ) : minkNum N = Formalism.BasicNotions.minkM N := rfl
-
 section Lat
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
@@ -1791,11 +1729,6 @@ def mkAct (Λ : Submodule (𝓞 E) (Fin n → E)) :
         (((b : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ (x : Fin n → E))) _
     rw [Matrix.mulVec_mulVec]
     rfl
-
-theorem mkAct_apply (Λ : Submodule (𝓞 E) (Fin n → E)) (g : stabGL Λ)
-    (x : (Λ.restrictScalars ℤ : Submodule ℤ (Fin n → E))) :
-    ((mkAct Λ g x : (Λ.restrictScalars ℤ : Submodule ℤ (Fin n → E))) : Fin n → E) =
-      ((g : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ (x : Fin n → E) := rfl
 
 theorem mkAct_injective (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) :
     Function.Injective (mkAct Λ) := by
@@ -1907,31 +1840,6 @@ end LocalA
 section LocalB
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
-
-def lc_starO (E : Type) [Field E] [NumberField E] [StarRing E] : 𝓞 E ≃+* 𝓞 E :=
-  RingOfIntegers.mapRingEquiv (starRingAut : E ≃+* E)
-
-theorem lc_starO_coe (a : 𝓞 E) : ((lc_starO E a : 𝓞 E) : E) = star (a : E) := rfl
-
-theorem lc_starO_starO (a : 𝓞 E) : lc_starO E (lc_starO E a) = a := by
-  apply RingOfIntegers.ext
-  rw [lc_starO_coe, lc_starO_coe, star_star]
-
-def lc_conjPl (PP : Pl E) : Pl E where
-  asIdeal := PP.asIdeal.comap (lc_starO E : 𝓞 E →+* 𝓞 E)
-  isPrime := Ideal.comap_isPrime _ _
-  ne_bot := by
-    intro h
-    obtain ⟨a, ha, ha0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot PP.ne_bot
-    have h1 : lc_starO E a ∈ PP.asIdeal.comap (lc_starO E : 𝓞 E →+* 𝓞 E) := by
-      rw [Ideal.mem_comap]
-      show lc_starO E (lc_starO E a) ∈ PP.asIdeal
-      rw [lc_starO_starO]; exact ha
-    rw [h, Ideal.mem_bot] at h1
-    apply ha0
-    rw [← lc_starO_starO a, h1, map_zero]
-
-theorem lc_mem_conjPl (PP : Pl E) (a : 𝓞 E) : a ∈ (lc_conjPl PP).asIdeal ↔ lc_starO E a ∈ PP.asIdeal := Iff.rfl
 
 variable {gp : Fin 2 → ℕ} {pb : Fin 2 → 𝓞 E}
 

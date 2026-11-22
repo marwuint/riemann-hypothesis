@@ -32,9 +32,6 @@ def cen (j : ZMod n) : SUJ ε :=
     rw [h, Circle.coe_inv, inv_pow, toCircle_pow, inv_one, one_mul]
     exact Matrix.det_one⟩
 
-theorem suMat_cen (j : ZMod n) :
-    GlobalTheory.SUChar.suMat ε (cen ε j) = ((ZMod.toCircle j)⁻¹ : Circle) • (1 : Matrix (Fin n) (Fin n) ℂ) := rfl
-
 end GlobalTheory.ExtChar
 
 namespace GlobalTheory.ExtChar

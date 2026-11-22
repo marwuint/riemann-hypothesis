@@ -25,9 +25,6 @@ lemma prho_submatrix_mul {ι : Type*} [Fintype ι] (P : ι → Prop) [DecidableP
 def adFull (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n × Fin n) (Fin n × Fin n) ℂ :=
   g ⊗ₖ g.map (starRingEnd ℂ)
 
-def adDFull (X : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n × Fin n) (Fin n × Fin n) ℂ :=
-  X ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ) - (1 : Matrix (Fin n) (Fin n) ℂ) ⊗ₖ Xᵀ
-
 lemma adFull_mul (g h : Matrix (Fin n) (Fin n) ℂ) : adFull (g * h) = adFull g * adFull h := by
   unfold adFull
   rw [Matrix.map_mul, mul_kronecker_mul]
@@ -85,26 +82,5 @@ def pRho : KG ε →* unitary (Matrix (pIdx ε β) (pIdx ε β) ℂ) where
   toFun k := ⟨pRhoM ε β (toMK k), pRhoM_mem ε β k⟩
   map_one' := Subtype.ext (pRhoM_one ε β)
   map_mul' k l := Subtype.ext (pRhoM_mul ε β (k.2 : toMK k ∈ Kset ε).2 (toMK l))
-
-lemma pRho_apply (k : KG ε) (p q : pIdx ε β) :
-    ((pRho ε β k : unitary (Matrix (pIdx ε β) (pIdx ε β) ℂ)) : Matrix (pIdx ε β) (pIdx ε β) ℂ) p q =
-      toMK k p.1.1 q.1.1 * star (toMK k p.1.2 q.1.2) := rfl
-
-def pDRho : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix (pIdx ε β) (pIdx ε β) ℂ where
-  toFun X := (adDFull X).submatrix Subtype.val Subtype.val
-  map_add' X Y := by
-    ext p q
-    simp only [adDFull, Matrix.submatrix_apply, Matrix.sub_apply, Matrix.add_apply,
-      Matrix.kroneckerMap_apply, Matrix.transpose_apply]
-    ring
-  map_smul' c X := by
-    ext p q
-    simp only [adDFull, Matrix.submatrix_apply, Matrix.sub_apply, Matrix.smul_apply,
-      Matrix.kroneckerMap_apply, Matrix.transpose_apply, smul_eq_mul, RingHom.id_apply]
-    ring
-
-lemma pDRho_apply (X : Matrix (Fin n) (Fin n) ℂ) (p q : pIdx ε β) :
-    pDRho ε β X p q = X p.1.1 q.1.1 * (1 : Matrix (Fin n) (Fin n) ℂ) p.1.2 q.1.2 -
-      (1 : Matrix (Fin n) (Fin n) ℂ) p.1.1 q.1.1 * X q.1.2 p.1.2 := rfl
 
 end ReciprocityTheory.ChartRestriction.DS.HW

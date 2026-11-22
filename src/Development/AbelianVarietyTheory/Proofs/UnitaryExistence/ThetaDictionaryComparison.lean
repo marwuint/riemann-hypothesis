@@ -31,9 +31,6 @@ variable {r : ℕ}
 def toU {σ : c.F →+* ℂ} (U : Formalism.L2.PjFree.Unf Xo c σ r) : Formalism.L2.Pj.Unf Xo c σ r :=
   @Formalism.L2.Pj.Unf.mk _ _ _ _ _ _ _ Xo c σ r U.Comp U.fin U.X U.un
 
-theorem isUnf_toU {σ : c.F →+* ℂ} (U : Formalism.L2.PjFree.Unf Xo c σ r) :
-    Formalism.L2.Pj.IsUnf (toU U) ↔ Formalism.L2.PjFree.IsUnf U := Iff.rfl
-
 end Unif
 
 def SameVal (f f' : Rul Xo c) : Prop :=

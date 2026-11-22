@@ -135,21 +135,6 @@ structure FormGaps (D : D7) : Prop where
 
 variable {ψ : AddChar (AF D.host.F) ℂ}
 
-theorem lift_ok (G : FormGaps D) (Om : WeilC ψ) {V W : HSp D} {χ χ' : chrA D} (h : admitted V W χ χ') (Φ : schC ψ V W)
-    (F : cuspC D V) : (∀ x, IntegrableOn (fun g => kerC (Om.om V W χ χ') Φ g x * F.1.1 g) (pairC V).2 (pairC V).1) ∧
-      IsAutFunSm (th0 D) W fun x => intC V fun g => kerC (Om.om V W χ χ') Φ g x * F.1.1 g :=
-  Om.lift V W χ χ' h _ _ (pairC_spec G.volEx V).1 (pairC_spec G.volEx V).2.1 Φ _ ((mem_afC G.add).1 F.1.2)
-    ((mem_cuspC G.add G.cuspInt).1 F.2)
-
-def thFun (G : FormGaps D) (Om : WeilC ψ) (petF : HSp D → ℝ) {V W : HSp D} {χ χ' : chrA D} (h : admitted V W χ χ')
-    (Φ : schC ψ V W) (F : cuspC D V) : afC D W :=
-  (petCOf D petF (petRC D) V : ℂ) •
-    ⟨fun x => intC V fun g => kerC (Om.om V W χ χ') Φ g x * F.1.1 g, Submodule.subset_span (lift_ok G Om h Φ F).2⟩
-
-theorem thFun_apply (G : FormGaps D) (Om : WeilC ψ) (petF : HSp D → ℝ) {V W : HSp D} {χ χ' : chrA D} (h : admitted V W χ χ')
-    (Φ : schC ψ V W) (F : cuspC D V) (x : GA D W) : (thFun G Om petF h Φ F).1 x =
-      (petCOf D petF (petRC D) V : ℂ) * intC V fun g => kerC (Om.om V W χ χ') Φ g x * F.1.1 g := rfl
-
 open Classical in
 
 def cptC (V : HSp D) (τ : D.what₂.Tau) :

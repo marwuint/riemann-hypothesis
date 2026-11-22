@@ -11,10 +11,6 @@ namespace GroundTheory.PAdicHodge
 
 open GroundTheory.LocalField ValuativeRel Filter Topology IntermediateField IsLocalRing
 
-namespace NormTower
-
-end NormTower
-
 section FieldOfNorms
 
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
@@ -35,17 +31,6 @@ theorem mem_integer_iff (x : FieldOfNorms K Ω L) : x ∈ 𝒪[FieldOfNorms K Ω
 abbrev E₀ : FinSub K Ω L := (isTowerFor (L := L)).finSub 0
 
 def toL (x : FieldOfNorms K Ω L) : L := ⟨x.1 E₀, E₀.2.1 (x.2.1 E₀)⟩
-
-theorem nrm_toL (x : FieldOfNorms K Ω L) : nrm K ((toL x : L) : Ω) = ‖x‖ := rfl
-
-def toPlus (x : 𝒪[FieldOfNorms K Ω L]) : (tower K Ω L).Plus :=
-  ⟨(equivFam K Ω L x).1, NormTower.Fam.isIntFam_of_nrm_le (by
-    have := (mem_integer_iff _).mp x.2
-    rw [norm_def, NormTower.Fam.norm_def] at this
-    exact this)⟩
-
-theorem equivFam_eq_toPlus (x : 𝒪[FieldOfNorms K Ω L]) :
-    equivFam K Ω L (x : FieldOfNorms K Ω L) = (toPlus x).toFam := rfl
 
 end FieldOfNorms
 

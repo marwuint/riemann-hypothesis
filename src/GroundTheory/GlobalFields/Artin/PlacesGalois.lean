@@ -25,14 +25,4 @@ omit [IsGalois K L] in
 theorem fixedFieldMulEquiv_apply (h : H) (y : L) : fixedFieldMulEquiv H h y = (h : Gal(L/K)) y :=
   rfl
 
-omit [IsGalois K L] in
-theorem fixedFieldMulEquiv_smul_ringOfIntegers (h : H) (y : 𝓞 L) :
-    fixedFieldMulEquiv H h • y = h • y :=
-  rfl
-
-theorem isArithFrobAt_fixedFieldMulEquiv_iff (h : H) (P : Ideal (𝓞 L)) :
-    IsArithFrobAt (𝓞 (fixedField H)) (fixedFieldMulEquiv H h) P ↔
-      IsArithFrobAt (𝓞 (fixedField H)) h P :=
-  Iff.rfl
-
 end GroundTheory.Global.Artin

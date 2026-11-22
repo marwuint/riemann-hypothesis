@@ -32,8 +32,6 @@ variable {X}
 
 def ofMat (m : X.Ψ → Matrix (Fin N) (Fin N) ℂ) : Frame X.Ψ N := fun τ i j => m τ i j
 
-theorem mat_ofMat (m : X.Ψ → Matrix (Fin N) (Fin N) ℂ) (τ : X.Ψ) : mat (ofMat m) τ = m τ := rfl
-
 theorem mat_rmul (x b : Frame X.Ψ N) (τ : X.Ψ) : mat (rmul x b) τ = mat x τ * mat b τ := rfl
 
 end GlobalTheory.FrameLog

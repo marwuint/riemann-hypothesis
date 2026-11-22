@@ -49,7 +49,4 @@ def nEq (hinv : X0⁻¹ * X0 = 1) (hxs : ∀ b, InW X (xs b)) (hM : M + Mᴴ = -
     (VS D).V ≃ₗ[D.host.E] (VS D).V :=
   LinearEquiv.ofInjectiveEndo (nL X X0 xs M) (nL_inj X X0 xs M hinv hxs hM)
 
-theorem nEq_apply (hinv : X0⁻¹ * X0 = 1) (hxs : ∀ b, InW X (xs b)) (hM : M + Mᴴ = -Gp D X0 xs) (y : (VS D).V) :
-    nEq X X0 xs M hinv hxs hM y = nL X X0 xs M y := rfl
-
 end Formalism.L2.SG.Pf.NcReal.JX.NOf.Ex

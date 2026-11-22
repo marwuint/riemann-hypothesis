@@ -265,9 +265,6 @@ noncomputable instance : SMul ℤ (Hom F G) where
 theorem toPowerSeries_add (f g : Hom F G) :
     (f + g).toPowerSeries = subst ![f.toPowerSeries, g.toPowerSeries] G.toPowerSeries := rfl
 
-theorem toPowerSeries_neg (f : Hom F G) :
-    (-f).toPowerSeries = PowerSeries.subst f.toPowerSeries (inv G) := rfl
-
 theorem toPoint_add (f g : Hom F G) : (f + g).toPoint = f.toPoint + g.toPoint := rfl
 
 theorem toPoint_neg (f : Hom F G) : (-f).toPoint = -f.toPoint := rfl
@@ -399,9 +396,6 @@ noncomputable def linearCoeff [F.IsComm] : Hom F F →+* R where
   map_mul' g f := Hom.coeff_one_comp g f
   map_zero' := by simp [Hom.toPowerSeries_zero]
   map_add' f g := Hom.coeff_one_add f g
-
-theorem linearCoeff_apply [F.IsComm] (f : Hom F F) :
-    linearCoeff F f = PowerSeries.coeff 1 f.toPowerSeries := rfl
 
 variable (F G) in
 

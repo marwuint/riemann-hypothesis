@@ -121,9 +121,6 @@ def opOn (δ : S.D → S.D) : (S.Cl → E.Y → ℂ) →ₗ[ℂ] (S.Cl → E.Y �
   map_add' F G := by funext c; exact map_add (E.trPt _) _ _
   map_smul' a F := by funext c; exact map_smul (E.trPt _) _ _
 
-theorem opOn_apply (δ : S.D → S.D) (F : S.Cl → E.Y → ℂ) (c : S.Cl) :
-    E.opOn δ F c = E.trPt (δ (S.outSec.rep c)) (F (S.cls (δ (S.outSec.rep c)))) := rfl
-
 theorem opOn_emb (δ : S.D → S.D) (φ : S.EqFun) (c : S.Cl) :
     E.opOn δ (E.emb φ) c = E.ev ((φ : S.D → S.V) (δ (S.outSec.rep c))) := E.atPt_emb φ _
 
@@ -337,9 +334,6 @@ def frEquiv (σ₀ : X.K →+* ℂ) (γ : GL (Fin n) X.E) : FrS X σ₀ n ≃ Fr
 
 def frSub (σ₀ : X.K →+* ℂ) (γ : GL (Fin n) X.E) : (FrS X σ₀ n → ℂ) ≃ₗ[ℂ] (FrS X σ₀ n → ℂ) :=
   LinearEquiv.funCongrLeft ℂ ℂ (frEquiv σ₀ γ⁻¹)
-
-theorem frSub_apply (σ₀ : X.K →+* ℂ) (γ : GL (Fin n) X.E) (f : FrS X σ₀ n → ℂ) (y : FrS X σ₀ n) :
-    frSub σ₀ γ f y = f (frMul σ₀ γ⁻¹ y) := rfl
 
 variable {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
 
@@ -580,10 +574,6 @@ theorem modP.ext_funAt (P : HeightOneSpectrum (𝓞 E)) (M : Submodule (𝓞 E) 
     intro x hx
     unfold modP.ext
     rw [dif_neg fun h => hx ((mem_locP P M x).2 h)]
-
-namespace DecoSet
-
-end DecoSet
 
 end MoveLemmas
 
@@ -928,14 +918,6 @@ structure ChainArg {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) (u : Pr.Word)
         (stepEv W Λ σ₀ G.hσ u (i + 1)).ev
           ((kk i).k ((stepGSD W Λ u i).outSec.rep L) ((stepGSD W Λ u (i + 1)).outSec.rep L') x)
 
-def recUnf {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) (u : Pr.Word) (kk : ∀ i, ClsKer (stepGSD W Λ u i) (stepGSD W Λ u (i + 1))) (i : ℕ)
-    (L : StCl W Λ u i) (L' : StCl W Λ u (i + 1)) : (FrS X σ₀ (R.N i) → ℂ) →ₗ[ℂ] (FrS X σ₀ (R.N (i + 1)) → ℂ) :=
-  (σ₀ (rhoK W Λ G.chr u i L : X.K) * σ₀ (rhoK' W Λ G.chr u i L' : X.K))⁻¹ •
-    ((mulFun (dePow σ₀ (R.N (i + 1)) (sDivC W u i))).comp
-      (((stepEv W Λ σ₀ G.hσ u i).extend ((stepEv W Λ σ₀ G.hσ u (i + 1)).ev.comp
-        ((kk i).k ((stepGSD W Λ u i).outSec.rep L) ((stepGSD W Λ u (i + 1)).outSec.rep L')))).comp
-          (mulFun fun y => (dePow σ₀ (R.N i) (sSharpC W u i) y)⁻¹)))
-
 def recChain (hX : X.Ok) (σ₀ : X.K →+* ℂ) (G : ChainGlob W σ₀) (u : Pr.Word) (A : ChainArg W Λ G u) :
     ColumnChain R X.Tau (W.hc u) where
   cls := StCl W Λ u
@@ -976,9 +958,6 @@ def recChain (hX : X.Ok) (σ₀ : X.K →+* ℂ) (G : ChainGlob W σ₀) (u : Pr
     rw [e]
     simp only at ha
     rw [ha, Int.floor_intCast]
-
-theorem recChain_DGam_eq (hX : X.Ok) (σ₀ : X.K →+* ℂ) (G : ChainGlob W σ₀) (u u' : Pr.Word) (A : ChainArg W Λ G u) (A' : ChainArg W Λ G u') :
-    (recChain hX σ₀ G u A).DGam = (recChain hX σ₀ G u' A').DGam := rfl
 
 structure AtTNum where
   Dstar : ℝ

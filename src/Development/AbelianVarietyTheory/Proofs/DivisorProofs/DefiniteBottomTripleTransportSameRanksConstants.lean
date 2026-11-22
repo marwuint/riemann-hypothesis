@@ -208,8 +208,6 @@ def triTo {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) : TriM T A.gram A'.gr
 def triOf {T : Type} {A A' WW : HSp D} (X : TriM T A.gram A'.gram WW.gram) : Tri T A A' WW :=
   ⟨rigOf X.rA, rigOf X.rA', rigOf X.rW, X.om, X.om', X.vac, X.vac', X.e, X.c, X.f, X.f', X.m, X.fd, X.m', X.fd'⟩
 
-theorem triTo_triOf {T : Type} {A A' WW : HSp D} (X : TriM T A.gram A'.gram WW.gram) : triTo (triOf X) = X := rfl
-
 namespace TriM
 
 variable {T : Type} {a a' d : ℕ} {G : Gm D a} {G' : Gm D a'} {H : Gm D d} (X : TriM T G G' H)

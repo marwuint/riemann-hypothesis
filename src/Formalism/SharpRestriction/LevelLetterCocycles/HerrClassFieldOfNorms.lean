@@ -29,11 +29,7 @@ theorem herr_naturality_theorem_holds (D : D7) (HW : HWOf D.loc) (F : FonOf D.lo
   have h1 := (h l K s LL g).1 hg T
   exact (h1.2.2 T' f pr pr' hp).symm
 
-theorem herr_naturality_iff (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : HerrNaturality D HW F ↔ Formalism.MainNotions.HerrCohomologyExtensions.adm18 D HW F := Iff.rfl
-
 def HerrExtensionClass (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.RamifiedCoefficientChains.adm16 D HW F
-
-theorem herr_extension_iff (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : HerrExtensionClass D HW F ↔ Formalism.MainNotions.HerrCohomologyExtensions.adm16 D HW F := Iff.rfl
 
 def HerrExtensionUpToUnit (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),

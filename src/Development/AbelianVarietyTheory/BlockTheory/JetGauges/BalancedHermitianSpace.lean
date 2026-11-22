@@ -30,8 +30,6 @@ end Forms
 
 variable (E : Type) [Field E] [NumberField E] [IsCMField E]
 
-def HasTraceOne : Prop := ∃ w : 𝓞 E, w + ringOfIntegersComplexConj E w = 1
-
 variable {Y : Type} [AddCommGroup Y] [Module (𝓞 E) Y]
 
 def IsBalanced (β : Bil Y) : Prop :=

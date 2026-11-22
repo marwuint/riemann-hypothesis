@@ -43,10 +43,6 @@ section Readings
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
-def RdInvG (U : Unf Xo c σ r) : Prop :=
-  ∀ a n, Dom a n → ∀ f ∈ sec Xo c a n, ∀ k, ∀ γ ∈ (U.X k).Γ, ∀ x ∈ (U.X k).dom,
-    rdU U f k (lact γ x) = rdU U f k x
-
 def SecGen (U : Unf Xo c σ r) : Prop :=
   ∀ a n, Dom a n → ∀ k, ∃ b m, Dom b m ∧
     (∃ f ∈ sec Xo c b m, ∃ x ∈ (U.X k).dom, rdU U f k x ≠ 0) ∧

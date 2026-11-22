@@ -149,8 +149,6 @@ def oneChart (K : ClsTied u i hi) (β : Unit) :
   stabI_inj := fun c => K.stabI_inj c.1
   stabI_range := fun c => K.stabI_range c.1
 
-theorem oneChart_lev (K : ClsTied u i hi) (β : Unit) : (oneChart K β).lev = K.lev := rfl
-
 set_option maxHeartbeats 2000000 in
 
 theorem valTied_toG (V : ValTied u eV i hi K) :

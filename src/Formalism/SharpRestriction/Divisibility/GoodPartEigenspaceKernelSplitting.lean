@@ -66,8 +66,6 @@ structure CjDat (D : D7) (s : D.what₂.LL →+* ℂ) where
 
 attribute [instance] CjDat.iMt CjDat.iMti CjDat.iMtf CjDat.iMj CjDat.iMji CjDat.iMjf
 
-abbrev CjFam (D : D7) : Type 1 := ∀ s : D.what₂.LL →+* ℂ, SameK D s → CjDat D s
-
 section Rows
 
 variable (D : D7) (Z : DivX D) (E : EigIdx D Z) {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]

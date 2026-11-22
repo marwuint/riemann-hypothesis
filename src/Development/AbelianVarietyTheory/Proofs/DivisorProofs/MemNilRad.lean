@@ -38,9 +38,6 @@ def nilRad (J : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) : Submodule ℂ 
   smul_mem' := fun c Y h => ⟨by rw [smul_mulVec, h.1, smul_zero], by rw [vecMul_smul, h.2.1, smul_zero],
     fun v hv => let ⟨a, e⟩ := h.2.2 v hv; ⟨c * a, by rw [smul_mulVec, e, smul_smul]⟩⟩
 
-theorem mem_nilRad {J Y : Matrix (Fin n) (Fin n) ℂ} {x : Fin n → ℂ} : Y ∈ nilRad J x ↔
-    Y *ᵥ x = 0 ∧ (star x ᵥ* J) ᵥ* Y = 0 ∧ ∀ v, (star x ᵥ* J) ⬝ᵥ v = 0 → ∃ a : ℂ, Y *ᵥ v = a • x := Iff.rfl
-
 end GlobalTheory.TorFin
 
 end

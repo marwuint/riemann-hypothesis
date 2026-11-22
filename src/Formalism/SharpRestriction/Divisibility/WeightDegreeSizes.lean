@@ -443,18 +443,6 @@ section PartB
 open scoped BigOperators
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions.G Formalism.MainNotions.WeilJacquetShalikaLaw
 
-def PairAtT (D : D7) (Dx : DivX D) (T : TwForms D) : Prop :=
-  DGamDef D → (∀ u (w : D.what₂.places.Pl), D.what₂.places.resChar w = (D.mem u).A.T →
-    ∀ z ∈ locW D.what₂.places w ((D.fm u).lat D.R.m).L,
-    ∀ F ∈ (D.what₂.Mtilde D.what₂.mu0).carrier, F ∈ D.what₂.V0 D.what₂.mu0 →
-      ∃ y : D.what₂.LL, D.what₂.embLL y = (D.mem u).P.Ptil ((D.fm u).emb D.R.m z) ((D.eMt u).symm F) ∧
-        (y = 0 ∨ -ur D w (vDG D u w) ≤ (vAdd (D.plEq w) y : ℝ))) ∧
-  ∀ u μ, μ ≠ D.what₂.mu0 → ∀ w : D.what₂.places.Pl, D.what₂.places.resChar w = (D.mem u).A.T →
-    D.what₂.places.resChar w ∉ Dx.Qp μ → ∀ z ∈ locW D.what₂.places w ((T.fm u μ).lat D.R.m).L,
-    ∀ F ∈ (D.what₂.Mtilde μ).carrier, F ∈ D.what₂.V0 μ →
-      ∃ y : D.what₂.LL, D.what₂.embLL y = (D.PTw u μ).Ptil ((T.fm u μ).emb D.R.m z) ((D.eMtTw u μ).symm F) ∧
-        (y = 0 ∨ -ur D w (vDG D u w) ≤ (vAdd (D.plEq w) y : ℝ))
-
 def MemberChainIntegral (D : D7) : Prop := ∀ u, Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 D u
 
 def PeriodClassSumWeyl (D : D7) : Prop :=
@@ -701,13 +689,6 @@ section PartF
 open Formalism.BasicNotions Formalism.BasicNotions.DV
 
 variable (D : D7)
-
-def onCore (L : SizeData₂ D) : ℝ :=
-  L.sc.L * Real.log (D.R.k : ℝ) * (D.R.m : ℝ) * PDVN.wMax D + (D.R.f : ℝ) * (D.R.m : ℝ) * L.sc.b * Real.log L.sc.x
-
-theorem onBoundJ_eq (L : SizeData₂ D) (C : ℝ) : PDVN.onBoundJ D L C = C * onCore D L := rfl
-
-theorem onBound_eq (L : SizeData₂ D) (C : ℝ) : PDVN.onBound D L C = C * (D.R.m : ℝ) * onCore D L := rfl
 
 theorem B_zero_shape_eq_index (L : SizeData₂ D) : L.B0 = (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.x ^ L.sc.eps := rfl
 

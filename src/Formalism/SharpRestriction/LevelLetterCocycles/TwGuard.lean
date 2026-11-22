@@ -6,14 +6,6 @@ namespace Formalism.MainNotions
 
 open NumberField IsDedekindDomain Formalism.BasicNotions
 
-def PlaceLiesOver (D : D7) (w' : D.what₂.places.Pl) (v : HeightOneSpectrum (𝓞 D.LL0)) : Prop :=
-  ∀ x : 𝓞 D.LL0, 0 < D.what₂.places.val w' ((x : D.LL0) : D.what₂.LL) ↔ x ∈ v.asIdeal
-
-abbrev integersBaseMap (D : D7) : 𝓞 D.LL0 →+* 𝓞 D.what₂.LL := RingOfIntegers.mapRingHom D.LL0.val.toRingHom
-
-theorem integersBaseMap_coe (D : D7) (x : 𝓞 D.LL0) :
-    algebraMap (𝓞 D.what₂.LL) D.what₂.LL (integersBaseMap D x) = ((x : D.LL0) : D.what₂.LL) := rfl
-
 theorem vAdd_pos_iff_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {a : 𝓞 K}
     (ha : a ≠ 0) : 0 < vAdd la (a : K) ↔ a ∈ la.asIdeal := by
   have h0 : la.valuation K (a : K) ≠ 0 := by

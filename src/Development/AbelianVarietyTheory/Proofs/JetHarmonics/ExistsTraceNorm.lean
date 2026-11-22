@@ -17,10 +17,6 @@ def lamE (σ : D.host.E →+* ℂ) : D.host.E →+* ℂ_[p] := lam.comp (σ.codR
 
 def homP : D.host.K →+* ℂ_[p] := (lamE D lam D.host.φ₀).comp (algebraMap D.host.K D.host.E)
 
-def homPbar : D.host.K →+* ℂ_[p] := (homP D lam).comp (conjK D)
-
-theorem homP_conjK (c : D.host.K) : homP D lam (conjK D c) = homPbar D lam c := rfl
-
 def conjO (a : 𝓞 D.host.K) : 𝓞 D.host.K :=
   ⟨conjK D (a : D.host.K), (RingOfIntegers.isIntegral_coe a).map (conjK D).toIntAlgHom⟩
 

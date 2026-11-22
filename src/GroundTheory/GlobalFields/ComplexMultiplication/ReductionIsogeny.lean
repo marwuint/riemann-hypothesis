@@ -160,17 +160,6 @@ theorem respectsAdd_reduceFF
     RespectsAdd (W.map (residue 𝒪)) (W'.map (residue 𝒪)) (reduceFF K W W' Q) :=
   respectsAdd_of_univAdd _ (univAdd_reduceFF K W W' Q hQ)
 
-def reduceHom :
-    isogHom (W.baseChange K) (W'.baseChange K) →+ isogHom (W.map (residue 𝒪)) (W'.map (residue 𝒪))
-    where
-  toFun Q := ⟨reduceFF K W W' Q.1, respectsAdd_reduceFF K W W' Q.1 Q.2⟩
-  map_zero' := Subtype.ext (map_zero (reduceFF K W W'))
-  map_add' Q R := Subtype.ext (map_add (reduceFF K W W') Q.1 R.1)
-
-theorem reduceHom_val (Q : isogHom (W.baseChange K) (W'.baseChange K)) :
-    (reduceHom K W W' Q).1 = reduceFF K W W' Q.1 :=
-  rfl
-
 end Main
 
 end

@@ -91,12 +91,6 @@ namespace Formalism.L2
 
 variable {D : D7} {M : MtFam D}
 
-def PsiAct (T : NormalizedLocalCompatibility D M) : Prop :=
-  ∀ j w i (h : i ∈ D.nd.locs j w) (v : PlE D.host) (k : ℕ),
-    GenAt D (D.what₂.places.resChar w) (T.B.Qc j w) v k →
-    ∀ z, T.Psi j w i h (((D.nd.act i (D.nd.hT i v k)).baseChange (FractionRing (D.nd.O i))) z) =
-      T.B.hK j w v k (T.Psi j w i h z)
-
 theorem genAt_iff (T : NormalizedLocalCompatibility D M) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w)
     (v : PlE D.host) (k : ℕ) :
     (SplitOut D.nd i v ∧ 1 ≤ k ∧ k ≤ D.R.nV) ↔ GenAt D (D.what₂.places.resChar w) (T.B.Qc j w) v k := by

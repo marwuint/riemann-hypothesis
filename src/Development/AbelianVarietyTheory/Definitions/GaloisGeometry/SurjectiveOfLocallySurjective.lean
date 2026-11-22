@@ -95,9 +95,6 @@ def formLin (j : ℕ) : Om k B j →ₗ[B] Om k B' j where
   map_smul' b x := by
     rw [SemiHom.mOm_smul, RingHom.id_apply, algebraMap_smul]
 
-theorem formLin_apply {j : ℕ} (x : Om k B j) :
-    formLin k B B' j x = (semiHom_algebraMap k B B').mOm j x := rfl
-
 theorem isBaseChange_formLin [Algebra.FormallyEtale B B'] (j : ℕ) :
     IsBaseChange B' (formLin k B B' j) := by
   convert GlobalTheory.TopForm.isBaseChange_exteriorPower

@@ -83,9 +83,6 @@ noncomputable def tateTransport (n : ℤ) :
       resFunctor (e : H →* K) ⋙ tateCohomologyFunctor (R := k) (G := H) n :=
   Functor.whiskerRight (tateTransportComplexNatTrans e) (HomologicalComplex.homologyFunctor _ _ n)
 
-lemma tateTransport_app (n : ℤ) (B : Rep.{u} k K) :
-    (tateTransport e n).app B = HomologicalComplex.homologyMap (tateTransportComplex e B) n := rfl
-
 @[simps]
 noncomputable def tateTransportShortComplex (X : ShortComplex (Rep.{u} k K)) :
     X.map (tateComplexFunctor k K) ⟶

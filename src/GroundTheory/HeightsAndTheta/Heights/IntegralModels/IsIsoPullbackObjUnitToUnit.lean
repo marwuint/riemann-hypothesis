@@ -70,10 +70,6 @@ section Pullbacks
 
 variable {A B C D : Scheme.{u}}
 
-def pbSection (f : A ⟶ B) (M : B.Modules) (t : Γ(M, ⊤)) :
-    Γ((Scheme.Modules.pullback f).obj M, f ⁻¹ᵁ ⊤) :=
-  (((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app M).app ⊤) t
-
 end Pullbacks
 
 section Opens

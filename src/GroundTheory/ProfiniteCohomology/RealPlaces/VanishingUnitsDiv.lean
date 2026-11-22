@@ -96,11 +96,6 @@ theorem unitsLocalToCompact_two_unitsGlobalToLocal (g : cohomology (galSUnitsMax
     unitsLocalToCompact S ιr ιs 2 (unitsGlobalToLocal S ιr ιs 2 g) = 0 :=
   unitsLocalToCompact_unitsGlobalToLocal S ιr ιs 1 g
 
-theorem unitsGlobalToLocal_fst (n : ℕ) (g : cohomology (galSUnitsMax K.1 ℚ̄ S) n) :
-    (unitsGlobalToLocal S ιr ιs n g).1 =
-      (globalToLocal (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S) (finUnits S) (finUnitsMor S ιs) n).hom g :=
-  rfl
-
 theorem unitsGlobalToLocal_snd (n : ℕ) (g : cohomology (galSUnitsMax K.1 ℚ̄ S) n) (w) :
     (unitsGlobalToLocal S ιr ιs n g).2 w = (realUnitsRes S ιr n w).hom g :=
   rfl

@@ -52,13 +52,6 @@ def halfVec (b : 𝓞 E) (z : Fin n → Fin𝔸 F ⊗[F] E) : Fin n → Fin𝔸 
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
   {σ : c.F →+* ℂ}
 
-def flipForm (x y : W) : E := hT y x
-
-def IsRatPoints : Prop :=
-  (∀ γ ∈ GQ, ∃ γ₀, IsRatUnitary fr (flipForm hT) γ₀ ∧ finHom γ = ratTo F (Fin𝔸 F) γ₀ ∧ infHom γ = ratTo F (Inf𝔸 F) γ₀) ∧
-    ∀ γ₀, IsRatUnitary fr (flipForm hT) γ₀ →
-      ∃ γ ∈ GQ, finHom γ = ratTo F (Fin𝔸 F) γ₀ ∧ infHom γ = ratTo F (Inf𝔸 F) γ₀
-
 end First
 
 section Compare
@@ -71,12 +64,7 @@ variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [NumberField 
 
 def coord : W ≃ₗ[𝓞 E] (Fin n → E) := fr.equivFun.restrictScalars (𝓞 E)
 
-theorem finVec_coord (v : W) : finVec F (coord fr v) = toFin F fr v := rfl
-
 theorem latHat_eq : latHat F fr L0 = GlobalTheory.IndefiniteRowSideFullHecke.AdelicLatticeBase.latHat F fr L0 := rfl
-
-theorem orthogonal_frame_iff (X : Data E r) (x₀ : (E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ) : IsOrthogonalFrame X x₀ ↔ IsOrthoFrame X x₀ :=
-  Iff.rfl
 
 abbrev ad (F : Type) [Field F] [NumberField F] {E : Type} [Field E] [Algebra F E] (a : E) : Fin𝔸 F ⊗[F] E := 1 ⊗ₜ a
 

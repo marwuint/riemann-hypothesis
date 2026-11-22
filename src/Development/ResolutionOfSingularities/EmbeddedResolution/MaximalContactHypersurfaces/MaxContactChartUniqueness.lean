@@ -31,10 +31,6 @@ section
 variable {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (CommRingCat.of k)}
   {U : X.Opens} {m : ℕ}
 
-theorem coordTop_topIso_eq_coord (c : EtaleChart p U m) (j : Fin m) :
-    U.topIso.hom.hom (c.coordTop j) = c.coord j :=
-  rfl
-
 private theorem opensι_appLE_self_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Opens)
     (e : (⊤ : (V.toScheme).Opens) ≤ V.ι ⁻¹ᵁ V) :
     V.ι.appLE V ⊤ e = V.topIso.inv := by

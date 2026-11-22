@@ -118,8 +118,4 @@ def kummer (h : IsPlaceOver A w) (hw : normV w = g) {l : ℕ} (hl : l ∣ g - 1)
         show (σ : G E Ω) ((σ' : G E Ω) x) / x = _
         field_simp }
 
-theorem kummer_apply (h : IsPlaceOver A w) (hw : normV w = g) {l : ℕ} (hl : l ∣ g - 1)
-    (ι : Ω →+* ℂ) {x : Ω} (h0 : x ≠ 0) {a : E} (hx : x ^ l = algebraMap E Ω a) (σ : Weil h) :
-    (kummer h hw hl ι h0 hx σ : ℂ) = ι ((σ : G E Ω) x / x) := rfl
-
 end GlobalTheory.WeilDeligne.LabModel

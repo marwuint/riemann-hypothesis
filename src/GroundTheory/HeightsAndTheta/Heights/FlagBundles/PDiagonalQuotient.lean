@@ -19,9 +19,6 @@ noncomputable def diagToPoly : (MvPolynomial (Fin 2) R ⧸ diagonalIdeal R) →�
     obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 ha
     simp [diagEval])
 
-noncomputable def polyToDiag : Polynomial R →ₐ[R] (MvPolynomial (Fin 2) R ⧸ diagonalIdeal R) :=
-  Polynomial.aeval (Ideal.Quotient.mk (diagonalIdeal R) (X 0))
-
 @[simp] lemma diagToPoly_mk (p : MvPolynomial (Fin 2) R) :
     diagToPoly R (Ideal.Quotient.mk _ p) = diagEval R p := rfl
 

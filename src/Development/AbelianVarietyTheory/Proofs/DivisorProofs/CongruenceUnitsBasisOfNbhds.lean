@@ -25,10 +25,6 @@ def coordSub : AddSubgroup (AfE ℚ L) where
     rintro _ ⟨z, hz, rfl⟩
     exact ⟨-z, fun i => neg_mem (hz i), by simp [TensorProduct.tmul_neg]⟩
 
-theorem mem_coordSub {t : AfE ℚ L} :
-    t ∈ coordSub b ↔ ∃ z : Fin d → A, (∀ i, z i ∈ intAd ℚ) ∧ ∑ i, ((b i : 𝓞 L) : L) ⊗ₜ[ℚ] z i = t :=
-  Iff.rfl
-
 end GlobalTheory.CongOpen
 
 namespace GlobalTheory.CongOpen

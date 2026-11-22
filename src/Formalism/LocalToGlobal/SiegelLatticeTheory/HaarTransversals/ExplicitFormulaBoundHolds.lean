@@ -91,13 +91,6 @@ def toC (B : RowsAut) (b h : ℝ) : CData where
   Re := B.Re
   h := h
 
-theorem toC_Dc (B : RowsAut) (b h : ℝ) : (toC B b h).Dc = (B.D : ℝ) :=
-  rfl
-
-theorem toC_Ds (B : RowsAut) (b h : ℝ) :
-    (toC B b h).Ds = B.I.Dstar (fdegAll B.I B.σ B.w) B.μf B.fund B.e :=
-  rfl
-
 section Lat
 
 variable (I : AutInst)

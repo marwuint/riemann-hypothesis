@@ -13,13 +13,6 @@ open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.L2.Inde
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs}
   {fc : DefSub A → DefFace Bs}
 
-def retuple (X : CxData A) (μ : HeightOneSpectrum (𝓞 K) → Bs.Tup) (Tw : Finset (HeightOneSpectrum (𝓞 K))) : CxData A :=
-  { X with μ := μ, Tw := Tw }
-
-theorem W1_retuple (X : CxData A) (cr : Crd A fc) (N : IndefNum Bs) (μ : HeightOneSpectrum (𝓞 K) → Bs.Tup)
-    (Tw : Finset (HeightOneSpectrum (𝓞 K))) (w : HeightOneSpectrum (𝓞 K)) :
-    (retuple X μ Tw).W1 cr N w ↔ X.W1 cr N w := Iff.rfl
-
 namespace Examples₂
 
 variable (K) (v0 : InfinitePlace K)
@@ -71,8 +64,6 @@ def cx : CxData (amb K v0) where
   κ _ := 1
   lam _ _ _ _ := 1
   err0 _ _ := 0
-
-theorem exampleTwistChoice_w0C (j : Unit) : (cx K v0).w0C false j = lin (fun _ : Fin 1 => (1 : ℂ)) := rfl
 
 end Examples₂
 

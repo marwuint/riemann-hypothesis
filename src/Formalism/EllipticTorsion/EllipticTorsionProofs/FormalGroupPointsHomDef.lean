@@ -84,8 +84,6 @@ def IL (K : Type u) [NormedField K] [IsUltrametricDist K] : Subring (MvPowerSeri
   zero_mem' := fun d => by simp
   neg_mem' {F} hF := fun d => by rw [map_neg, norm_neg]; exact hF d
 
-theorem mem_IL {F : MvPowerSeries (Fin 2) K} : F ∈ IL K ↔ IntegralMv F := Iff.rfl
-
 theorem summable_prod_term {F G : MvPowerSeries (Fin 2) K} (hF : IntegralMv F)
     (hG : IntegralMv G) {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) :
     Summable fun x : (Fin 2 →₀ ℕ) × (Fin 2 →₀ ℕ) => term F a b x.1 * term G a b x.2 := by

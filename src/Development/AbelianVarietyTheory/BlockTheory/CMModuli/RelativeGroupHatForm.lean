@@ -116,13 +116,6 @@ def PullsBack (Xo : Moduli D l) (Xo₂ : Moduli D l₂) (π : Xo₂.X ⟶ Xo.X) 
     (∀ a, (Xo₂.univ.eta a ^ (l₂.M / l.M)).left ≫ m.φ = π ≫ (Xo.univ.eta a).left) ∧
     (∀ a, (Xo₂.univ.etaA a ^ (l₂.A / l.A)).left ≫ m.φ = π ≫ (Xo.univ.etaA a).left)
 
-def ChangesLevelBy (Xo : Moduli D l) (g : Lhat D ≃ₗ[Zhat] Lhat D) (r : Xo.X ⟶ Xo.X) : Prop :=
-  ∃ m : SABMap Xo.univ.t Xo.univ.t r,
-    (∀ a b : D.La, g (1 ⊗ₜ a) - 1 ⊗ₜ b ∈ hatSub D l.Mb →
-      (Xo.univ.eta b).left ≫ m.φ = r ≫ (Xo.univ.eta a).left) ∧
-    (∀ a b : D.La, g (1 ⊗ₜ a) - 1 ⊗ₜ b ∈ hatSub D (Ideal.span {(l.A : 𝓞 E)}) →
-      (Xo.univ.etaA b).left ≫ m.φ = r ≫ (Xo.univ.etaA a).left)
-
 theorem spMap_inclusion_comp {A B C : IntermediateField ℚ ℂ} (h₁ : A ≤ B) (h₂ : B ≤ C) :
     spMap (IntermediateField.inclusion h₂).toRingHom ≫ spMap (IntermediateField.inclusion h₁).toRingHom =
       spMap (IntermediateField.inclusion (h₁.trans h₂)).toRingHom := by
@@ -138,18 +131,5 @@ def levelMapF (h : l.Dvd l₂) {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {π : X
 
 def endF {Xo : Moduli D l} (r : Xo.X ⟶ Xo.X) (hr : r ≫ Xo.s = Xo.s) (c : Coeff l) : Xo.XF c ⟶ Xo.XF c :=
   pullback.lift (pullback.fst _ _ ≫ r) (pullback.snd _ _) (by rw [Category.assoc, hr, pullback.condition])
-
-def IsLevelCovering (h : l.Dvd l₂) {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {π : Xo₂.X ⟶ Xo.X}
-    (hπ : IsOver h Xo Xo₂ π) : Prop :=
-  ∃ (ρ : relGroup D l l₂ → (Xo₂.X ≅ Xo₂.X)) (hρ : ∀ g, (ρ g).hom ≫ Xo₂.s = Xo₂.s),
-    ρ 1 = Iso.refl _ ∧ (∀ g g', ρ (g * g') = ρ g ≪≫ ρ g') ∧
-    (∀ g, ChangesLevelBy Xo₂ g.1 (ρ g).hom) ∧
-    (∀ g, (ρ g).hom ≫ π = π) ∧
-    ∀ c : Coeff l₂,
-      IsFinite (levelMapF h hπ c) ∧ Etale (levelMapF h hπ c) ∧ Surjective (levelMapF h hπ c) ∧
-      ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Xo₂.XF c),
-        (∀ y : Sp k ⟶ Xo₂.XF c, y ≫ levelMapF h hπ c = x ≫ levelMapF h hπ c →
-          ∃ g, x ≫ endF (ρ g).hom (hρ g) c = y) ∧
-        ∀ g, x ≫ endF (ρ g).hom (hρ g) c = x ↔ g.1 ∈ trivAt D l₂
 
 end GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm

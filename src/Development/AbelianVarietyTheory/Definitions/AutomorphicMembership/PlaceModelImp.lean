@@ -20,8 +20,6 @@ abbrev Late.D {B : Base} {C : Cols B} (a : Late B C) : D7 := a.st.toD7
 
 abbrev Stages.toLate (X : Stages) : Late X.B X.C := ⟨X.W, X.V, X.S, X.N, X.G⟩
 
-theorem Stages.late_st (X : Stages) : X.toLate.st = X := rfl
-
 namespace R3.Tr
 
 scoped macro:max "kc% " e:term:max : term => `((by kexactB $e))

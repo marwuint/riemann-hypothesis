@@ -114,8 +114,6 @@ theorem energy_defs :
       (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).δ =
         C * ((D.R.rS : ℝ) + 1) * (C / Th) ^ (Fintype.card (NumberField.InfinitePlace X.B.I.F)) := ⟨rfl, rfl⟩
 
-theorem inJacMod_bC : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).InJacMod := rfl
-
 theorem scaled_volume_level_subgroup (hV : 0 < X.volK2) (A : AnIn) :
     (Real.sqrt (c0X X u FdN * c0X X u' FdN'))⁻¹ * X.volK2 =
       (Real.sqrt ((bOf X hb hK FdN FdN' u u' X0 L A).c0 * (bOf X hb hK FdN FdN' u u' X0 L A).c0'))⁻¹ := by
@@ -284,8 +282,6 @@ theorem inOrdinary_bCF (hP : ProdConv X u u' ψ) :
   unfold ProdConv at hP
   exact inOrdinary_bC X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) T sd C Th
     ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩ hP.2.2.2.2.1.ne'
-
-theorem inJacMod_bCF : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InJacMod := rfl
 
 def LevelOneLatticeAgreement : Prop := T.Gam1 = (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).Gam1
 

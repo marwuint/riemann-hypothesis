@@ -17,10 +17,6 @@ def QuotShape {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {
     (π : (Hc ⧸ F.comap Hc.subtype) →ₗ[O] Cy),
     Function.Injective ι ∧ Function.Exact ι π ∧ ∃ c0 : Cy, ∀ y : Cy, ∃ a : O, y = a • c0
 
-def HZeroHypotheses {ℓ : ℕ} [Fact ℓ.Prime] (D : InvariantsCohomologyData ℓ) (w : ℤ_[ℓ]ˣ) (m : ℕ) (U : Finset ℤ) : Prop :=
-  1 ≤ m ∧ (ℓ = 2 → 2 ≤ m) ∧ PadicInt.valuation ((w : ℤ_[ℓ]) - 1) = m ∧ 0 ∉ U ∧ U.Nonempty ∧
-  D.piece.Inputs w U 0 ∧ D.Union ∧ D.Flat ∧ D.LES ∧ D.Inv
-
 structure HZeroRowPlaceData (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (d : Type) (Mrow : Type) [AddCommGroup Mrow] [Module O Mrow] where
 
@@ -36,15 +32,6 @@ structure HZeroRowPlaceData (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O]
   inc : Mrow →ₗ[O] Cs
 
 attribute [instance] HZeroRowPlaceData.gCs HZeroRowPlaceData.mCs
-
-def HZeroTorsionLengthOnePlace : Prop :=
-  ∀ (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    (d : Type) [Fintype d] (Mrow : Type) [AddCommGroup Mrow] [Module O Mrow]
-    (B : HZeroRowPlaceData ℓ O d Mrow) (w : ℤ_[ℓ]ˣ) (m : ℕ) (U : Finset ℤ),
-    HZeroHypotheses B.D w m U → Function.Injective B.inc →
-    Submodule.torsion O B.Cs ≤ LinearMap.range B.con →
-    ∃ H : Submodule O (d → KO O), (∀ x ∈ H, ((ℓ : O) ^ c0 ℓ m U) • x = 0) ∧
-      Module.length O (Submodule.torsion O Mrow) ≤ Module.length O H
 
 def StatBKbConv : Prop :=
   ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

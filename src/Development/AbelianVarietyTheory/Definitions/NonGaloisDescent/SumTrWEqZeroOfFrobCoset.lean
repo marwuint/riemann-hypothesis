@@ -306,12 +306,6 @@ theorem absChar_apply (s : ℂ) (σ : Weil h) :
   rw [absChar, unrChar_apply, Units.val_zpow_eq_zpow_val, coe_qPowC, mul_comm,
     Complex.cpow_int_mul]
 
-theorem absChar_of_mem_frobCoset (s : ℂ) {r : ℕ} {τ : Weil h} (hτ : τ ∈ frobCoset h r) :
-    (absChar h s τ : ℂ) = ((normV w : ℕ) : ℂ) ^ (-(r * s)) := by
-  rw [absChar_apply, mem_frobCoset.1 hτ]
-  congr 1
-  push_cast; ring
-
 @[simp] theorem absChar_zero : absChar h 0 = 1 :=
   MonoidHom.ext fun σ => Units.ext (by simp [absChar_apply])
 
@@ -368,10 +362,6 @@ theorem tr_apply (τ : Weil h) (x : VR h) : tr τ x = ∑ z ∈ x.support, (x z 
 theorem dim_apply (x : VR h) : dim h x = ∑ z ∈ x.support, x z * (z.1.lpDim : ℚ) := by
   simp [dim, Finsupp.linearCombination_apply, Finsupp.sum]
 
-theorem irr_mem_posCone (z : IrrW h) : irr z ∈ posCone h := fun y => by
-  classical
-  rw [irr, Finsupp.single_apply]; split_ifs <;> norm_num
-
 theorem eq_sum_irr (x : VR h) : x = ∑ z ∈ x.support, x z • irr z := by
   conv_lhs => rw [← Finsupp.sum_single x]
   simp [Finsupp.sum, irr]
@@ -388,10 +378,6 @@ theorem tr_one (x : VR h) : tr 1 x = (dim h x : ℂ) := by
 theorem tr_tw (s : ℂ) (τ : Weil h) (x : VR h) :
     tr τ (tw s x) = ((normV w : ℕ) : ℂ) ^ (s * deg τ) * tr τ x := by
   rw [tw, tr_twist, absChar_apply]
-
-theorem tr_tw_of_mem_frobCoset (s : ℂ) {r : ℕ} {τ : Weil h} (hτ : τ ∈ frobCoset h r) (x : VR h) :
-    tr τ (tw s x) = ((normV w : ℕ) : ℂ) ^ (-(r * s)) * tr τ x := by
-  rw [tw, tr_twist, absChar_of_mem_frobCoset s hτ]
 
 theorem ext_tr {x y : VR h} (H : ∀ τ, tr τ x = tr τ y) : x = y := by
   rw [← sub_eq_zero]

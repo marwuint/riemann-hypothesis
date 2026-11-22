@@ -804,9 +804,6 @@ def Psi (h : GL (X s ⊕ Fin (0 + 1)) k) (x₀ : Matrix (X (s + 1)) (X s) k) (y 
 
 variable (A : RepFam k s X)
 
-def RepsMeet : Prop := ∀ j c h, ∀ g ∈ A j c h, ∀ y : X j → k,
-  Sum.elim y 0 ∈ latOf (g * T.bas j (c + 1) (by omega)) ↔ ∀ i, y i ∈ 𝒪[k]
-
 def RepsNormal (ϖ : kˣ) : Prop := ∀ j c h, ∀ g ∈ A j c h, ∃ (e : Fin (c + 1) → ℤ) (z : X j → k),
   (∀ i, -(j : ℤ) ≤ e i ∧ e i ≤ 0) ∧ (∀ i, z i ∈ 𝒪[k]) ∧
     latOf (g * T.bas j (c + 1) (by omega)) = latOf (normalBasis ϖ e z)
@@ -850,10 +847,6 @@ structure IsRepSystem : Prop where
   bij : ∀ j c (h : j + 1 + c = s),
     Set.BijOn (DoubleCoset.mk (R k (X (j + 1)) (c + 1) 1) (T.lev (j + 1) (c + 1) (by omega)).J) (A (j + 1) c h)
       (⋃ g ∈ A j (c + 1) (by omega), T.idx ψ ν j c h g)
-
-def someReps : RepFam k s X := fun j =>
-  Nat.rec (motive := fun j => ∀ c, j + c = s → Set (GL (X j ⊕ Fin (c + 1)) k)) (fun _ _ => {1})
-    (fun j B c h => Quotient.out '' ⋃ g ∈ B (c + 1) (by omega), T.idx ψ ν j c h g) j
 
 end Chain
 

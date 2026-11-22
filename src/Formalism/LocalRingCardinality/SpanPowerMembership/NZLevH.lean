@@ -60,8 +60,4 @@ def levB : Level P where
   act v := (Pi.evalMonoidHom (fun v => GL (Fin (P.m + 1)) (P.Qq v)) v).comp ((MonoidHom.fst _ _).comp (Γsub P hp).subtype)
   χ := (MonoidHom.snd _ _).comp (Γsub P hp).subtype
 
-theorem levB_actX (γ : ↥(Γsub P hp)) : (levB P hp).actX γ = P.natAct γ.1.1 := rfl
-
-theorem levB_chi (γ : ↥(Γsub P hp)) : ((levB P hp).χ γ : O) = (γ.1.2 : O) := rfl
-
 end Formalism.BasicNotions.Examples₂.NZ

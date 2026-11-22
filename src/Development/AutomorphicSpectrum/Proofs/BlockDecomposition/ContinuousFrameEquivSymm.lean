@@ -107,10 +107,6 @@ theorem frameEquiv_val (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
     (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (x : G2 σ Y) :
     (frameEquiv χ ε b hb x).1 = (bA b)⁻¹ * x.1 * bA b := rfl
 
-theorem frameEquiv_symm_val (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
-    (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (y : (adCM σ χ).U ε (Fin n)) :
-    ((frameEquiv χ ε b hb).symm y).1 = bA b * y.1 * (bA b)⁻¹ := rfl
-
 theorem continuous_frameEquiv (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
     (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :
     Continuous (frameEquiv χ ε b hb) := by

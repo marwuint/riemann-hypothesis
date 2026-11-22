@@ -14,9 +14,6 @@ variable {R : Ranks}
 
 def condE (H : Host R) : ℕ := H.QS * H.q * H.d
 
-def numWords (C : FC) (s : Scale) (R : Ranks) : ℕ :=
-  ⌈3 * Real.exp (C.CGam * (R.m : ℝ) ^ 5 * R.f * s.L) ^ 2 * s.x ^ C.P.CF⌉₊
-
 end GlobalTheory.IndefiniteRowSideFullHecke.FewBadPrimes
 
 end

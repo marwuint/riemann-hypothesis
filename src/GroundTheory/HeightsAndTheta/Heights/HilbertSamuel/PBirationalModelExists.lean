@@ -113,9 +113,6 @@ def birPoint (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P) (
       by rw [aeval_X]; exact coordClass_ne_zero (hc p.1),
       by rw [aeval_X, aeval_X, div_mul_cancel₀ _ (coordClass_ne_zero (hc p.1))]⟩⟩
 
-theorem coe_birPoint (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P) (p : Σ k, ι k) :
-    (birPoint c hc p : FractionRing (MRing ι ⧸ P)) = coordClass P p / coordClass P ⟨p.1, c p.1⟩ := rfl
-
 theorem coe_aeval_birPoint (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P) {g : MRing ι} {a : K → ℕ}
     (hg : IsMultiHomog g a) :
     ((aeval (birPoint c hc) g : fnField P) : FractionRing (MRing ι ⧸ P)) =

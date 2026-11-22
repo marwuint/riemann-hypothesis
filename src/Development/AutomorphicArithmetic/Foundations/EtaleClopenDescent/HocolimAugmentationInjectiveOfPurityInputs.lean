@@ -42,9 +42,6 @@ variable {J : Type} [Preorder J] (Z : J ⥤ PSh)
 abbrev ch {n : ℕ} {T : Scheme.{0}ᵒᵖ} (x : Sx (hoc Z) n T) : Fin (n+1) ⥤ (Z.flip.obj T).Elements :=
   chn (n := op (SimplexCategory.mk n)) x
 
-theorem ch_δ_obj {n : ℕ} {T : Scheme.{0}ᵒᵖ} (x : Sx (hoc Z) (n+1) T) (i : Fin (n+2)) (k : Fin (n+1)) :
-    (ch Z (((hoc Z).δ i).app T x)).obj k = (ch Z x).obj (i.succAbove k) := rfl
-
 instance {T : Scheme.{0}ᵒᵖ} : Quiver.IsThin (Z.flip.obj T).Elements := fun a b => by
   change Subsingleton {f : a.1 ⟶ b.1 // _}
   infer_instance

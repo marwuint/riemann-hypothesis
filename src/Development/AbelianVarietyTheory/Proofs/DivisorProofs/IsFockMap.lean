@@ -22,9 +22,6 @@ def lam (P Q R S : ℕ) (κ : ℤ) : Ix R S → ℚ
   | .inl i => if (i : ℕ) < P then (κ : ℚ) / 2 - cPair R S + cPair P Q else cPair P Q
   | .inr j => if (j : ℕ) < Q then (κ : ℚ) / 2 + cPair R S - cPair P Q else -cPair P Q
 
-def addRoot (μ : Ix R S → ℚ) (a b : Ix R S) : Ix R S → ℚ :=
-  fun c => μ c + (if c = a then 1 else 0) - (if c = b then 1 else 0)
-
 def GenBy (M : GKMod R S) (Λ : Ix R S → ℚ) : Prop := ∃ v, IsHW M.act Λ v ∧ genSub M.act {v} = ⊤
 
 def ScalarEnd (M : GKMod R S) : Prop :=
@@ -208,9 +205,6 @@ def Parity : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ w, Even (B.mα w - B.mβ w)
-
-theorem lines_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
-    (X : Spc F E n) : Lines σ X = RLines σ (incM F X.J) := rfl
 
 end GlobalTheory.RealLift
 

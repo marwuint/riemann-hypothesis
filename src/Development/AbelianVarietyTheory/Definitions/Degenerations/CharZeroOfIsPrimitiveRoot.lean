@@ -196,10 +196,6 @@ abbrev CDV (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] : Prop := Global
 abbrev SplitAt {W : Type} [CommRing W] [IsLocalRing W] (t : SAB H (Sp W)) : Prop :=
   GlobalTheory.LN.SplitOver t.G (IsLocalRing.maximalIdeal W)
 
-theorem splitAt_iff {W : Type} [CommRing W] [IsLocalRing W] (t : SAB H (Sp W)) : SplitAt t ↔
-    ∃ S : SplitExt (Sp (IsLocalRing.ResidueField W)),
-      S.IsGt ((Over.pullback (spMap (IsLocalRing.residue W))).obj t.G) := Iff.rfl
-
 theorem NumOf.pt_unique {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     {N : NumD F} (ν : NumOf D F N) {g : GtPtF D F} {v v' : N.Gt} (h : ν.Pt g v) (h' : ν.Pt g v') : v = v' :=
   NumD.Gt.ext (ν.eA.injective (h.1.trans h'.1.symm)) (funext fun χ => Units.ext ((h.2 χ).trans (h'.2 χ).symm))

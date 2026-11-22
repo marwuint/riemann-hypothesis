@@ -473,28 +473,6 @@ theorem toB_mem_Econ_iff {σ : Set.Ioo (0 : ℝ) 1} {b : T.B} :
     F.toB b ∈ T.Econ (F.powRadius σ) ↔ b ∈ T.Econ σ :=
   F.convergesAt_coeffB_toB_iff σ.2.1 σ.2.2 b
 
-theorem toB_mem_Edag_iff {b : T.B} : F.toB b ∈ T.Edag ↔ b ∈ T.Edag := by
-  constructor
-  · rintro ⟨τ, hτ⟩
-    let σ : Set.Ioo (0 : ℝ) 1 := ⟨(τ : ℝ) ^ (((p ^ F.a : ℕ) : ℝ)⁻¹), Real.rpow_pos_of_pos τ.2.1 _,
-      Real.rpow_lt_one τ.2.1.le τ.2.2 (inv_pos.2 (by exact_mod_cast F.q_pos))⟩
-    have hστ : F.powRadius σ = τ :=
-      Subtype.ext (Real.rpow_inv_natCast_pow τ.2.1.le F.q_pos.ne')
-    exact ⟨σ, F.toB_mem_Econ_iff.1 (hστ ▸ hτ)⟩
-  · rintro ⟨σ, hσ⟩
-    exact ⟨F.powRadius σ, F.toB_mem_Econ_iff.2 hσ⟩
-
-def edagEquiv : T.Edag ≃+* T.Edag where
-  toFun b := ⟨F.toB (b : T.B), F.toB_mem_Edag_iff.2 b.2⟩
-  invFun b := ⟨F.toB.symm (b : T.B),
-    F.toB_mem_Edag_iff.1 (by rw [RingEquiv.apply_symm_apply]; exact b.2)⟩
-  left_inv b := Subtype.ext (F.toB.symm_apply_apply (b : T.B))
-  right_inv b := Subtype.ext (F.toB.apply_symm_apply (b : T.B))
-  map_mul' b c := Subtype.ext (map_mul F.toB (b : T.B) c)
-  map_add' b c := Subtype.ext (map_add F.toB (b : T.B) c)
-
-theorem edagEquiv_apply (b : T.Edag) : (F.edagEquiv b : T.B) = F.toB (b : T.B) := rfl
-
 end TeichFrob
 
 end TeichLift

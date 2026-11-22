@@ -22,9 +22,6 @@ abbrev Val (i : ℕ) : Type := (D.mem u).C.Y i → ℂ
 def fnl {k M : Type} [Field k] [AddCommGroup M] [Module k M] {r : ℕ} (e : M ≃ₗ[k] (Fin r → k)) :
     (Fin r → k) ≃ₗ[k] Module.Dual k M := (dotProductEquiv k (Fin r)).trans e.dualMap
 
-lemma fnl_apply {k M : Type} [Field k] [AddCommGroup M] [Module k M] {r : ℕ} (e : M ≃ₗ[k] (Fin r → k))
-    (f : Fin r → k) (y : M) : fnl e f y = pair f (e y) := rfl
-
 structure Unf (i : ℕ) (v : (D.mem u).A.vT) where
   Lc : Type
   [LcFin : Fintype Lc]
@@ -88,8 +85,6 @@ def Q (Λ : H.Lc) (x : Fin (D.R.N i) → (D.mem u).A.Fv v) : Fn D u i →ₗ[ℂ
   (H.tx Λ x).toLinearMap ∘ₗ LinearMap.proj (H.cx Λ x)
 
 lemma P_apply (Λ f) (φ : Fn D u i) : H.P Λ f φ = H.tf Λ f (φ (H.cf Λ f)) := rfl
-lemma Q_apply (Λ x) (φ : Fn D u i) : H.Q Λ x φ = H.tx Λ x (φ (H.cx Λ x)) := rfl
-
 end Unf
 
 lemma dia_apply (i : ℕ) (v : (D.mem u).A.vT) (a) (φ : Fn D u i) (c) :
@@ -107,16 +102,6 @@ namespace Unf
 end Unf
 
 variable (D u)
-
-def FiSt : Prop :=
-  ∀ i, i ≤ D.R.m → ∀ v, ∀ φ ∈ (D.fm u).Fi i,
-    Uop D u i v φ ∈ (D.fm u).Fi i ∧ Dop D u i v φ ∈ (D.fm u).Fi i ∧ ∀ a, dia D u i v a φ ∈ (D.fm u).Fi i
-
-def CrossDia : Prop :=
-  ∀ i, i ≤ D.R.m → ∀ v v', v ≠ v' → ∀ φ ∈ (D.fm u).Fi i, ∀ a,
-    dia D u i v' a (Uop D u i v φ) = Uop D u i v (dia D u i v' a φ) ∧
-    dia D u i v' a (Dop D u i v φ) = Dop D u i v (dia D u i v' a φ) ∧
-    ∀ b, dia D u i v' a (dia D u i v b φ) = dia D u i v b (dia D u i v' a φ)
 
 def UnfAll : Prop := ∀ i, i ≤ D.R.m → ∀ v, Nonempty (Unf D u i v)
 

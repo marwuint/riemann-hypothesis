@@ -39,12 +39,6 @@ def EdgeGeo : Prop :=
       ∀ σ : Γ, (∀ h ∈ Δ, σ * h * σ⁻¹ ∈ Δ) → ∀ g ∈ Δ, ∀ h ∈ Δ,
         GlobalTheory.KEdge.edge x y η σ (g * h) = GlobalTheory.KEdge.edge x y η σ g + GlobalTheory.KEdge.edge x y η σ h
 
-def TopWEx : Prop :=
-  ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l n M : ℕ), l.Prime → 0 < M → l ^ n ∣ M → ∀ u v : X.K, IsU X u → IsU X v → u ∈ topF X M → v ∈ topF X M →
-    ∀ η, IsTopEta X M (topChar X M l n u) (topChar X M l n v) η → ∀ s ∈ fixMu Ω M,
-      IsTopW (K := topL X M) (topZeta X M l n) (topChar X M l n u) (topChar X M l n v) η (topLift X M s)⁻¹
-        (topW (K := topL X M) (topZeta X M l n) (topChar X M l n u) (topChar X M l n v) η (topLift X M s)⁻¹)
-
 def CjB : Prop :=
   ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (M : ℕ) (e : topBar X M ≃+* Kb X), IsIso X M e →
     (∀ σ, FixF X M σ → ∀ z, e (cj X M e σ z) = σ (e z)) ∧

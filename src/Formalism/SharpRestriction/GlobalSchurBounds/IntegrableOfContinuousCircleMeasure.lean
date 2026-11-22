@@ -92,12 +92,6 @@ end PC
 section PF
 open Formalism.BasicNotions NumberField Finset
 
-def Z1rhs (D : D7) (u : D.what₂.Word) (C2 L : ℝ) (i : ℕ) (s : D.what₂.LL →+* ℂ) : ℝ :=
-  (∑ τ, (Real.log (hook (nuLift D u τ i)) - (absQ (nuLift D u τ i) : ℝ) * Real.log (D.gx.Om τ s))) +
-    Real.log (thetaLocalFactorAtIndex D u i s ^ 2) +
-    C2 * D.R.f * (D.R.m : ℝ) ^ 2 * (D.R.N (i + 1) : ℝ) ^ 2 *
-      (L + Real.log (Tu D u) + Real.log ((D.host.g 0 : ℝ) * D.host.g 1))
-
 end PF
 
 section PH
@@ -543,11 +537,6 @@ end Z56
 
 section Ms
 open Formalism.BasicNotions NumberField
-
-def msBound (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (n : ℕ) : ℝ :=
-  (n : ℝ) ^ 2 * (2 * D.R.f * Real.log (C₀ * (C₀ * D.R.f * (n : ℝ) ^ 2 * D.host.v ^ 2 * (Tu D u : ℝ) ^ 2))) +
-    4 * D.R.f * n * ((n : ℝ) + 1) * (Real.log (C₀ * D.R.f * (n : ℝ) ^ 2 * D.host.v ^ 2 * (Tu D u : ℝ) ^ 2) / 2) +
-    2 * D.R.f * (n : ℝ) ^ 2 * (Real.log (Tu D u) + Real.log ((D.host.g 0 : ℝ) * D.host.g 1))
 
 end Ms
 

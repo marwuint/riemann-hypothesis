@@ -68,10 +68,6 @@ open GlobalTheory.K5
 
 variable {p : ℕ} [Fact p.Prime] {Ω : Type*} [Field Ω] [Algebra (O0 p) Ω]
 
-theorem coe_zS (T : Tower p Ω) (n : ℕ) : (zS T n : Ω) = T.ζ n := rfl
-
-theorem coe_qS (T : Tower p Ω) (n : ℕ) : (qS T n : Ω) = T.qq n := rfl
-
 end Tower
 
 end GlobalTheory.AlmostEt.Inhab

@@ -319,9 +319,6 @@ def eZ (A : Cx.{w} R) (n : ℕ) : (sh A).Z (n + 1) →ₗ[R] A.Z n :=
 def eH (A : Cx.{w} R) (n : ℕ) : (sh A).H (n + 1) →ₗ[R] A.H n :=
   Submodule.mapQ _ _ (eZ A n) fun z hz => mem_B_sh z.1 hz
 
-theorem eH_cls (n : ℕ) (x : (sh A).X (n + 1)) (hx : (sh A).d (n + 1) x = 0) :
-    eH A n ((sh A).cls x hx) = A.cls (show A.X n from x) (sh_cocycle x hx) := rfl
-
 theorem eH_shF (φ : Cx.Hom A A' (RingHom.id R)) (n : ℕ) (y : (sh A).H (n + 1)) :
     eH A' n ((shF φ).mapH (n + 1) y) = φ.mapH n (eH A n y) := by
   obtain ⟨x, hx, rfl⟩ := cls_surj _ _ y

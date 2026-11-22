@@ -142,17 +142,6 @@ def WBTail : Prop :=
 
 def h0c (ℓ m : ℕ) (U : Finset ℤ) : ℕ := ∑ a ∈ U, (m + padicValInt ℓ a)
 
-def lagrangeIdealLifts_fact_alt : Prop :=
-  ∀ (ℓ : ℕ) [Fact ℓ.Prime] (u : ℤ_[ℓ]ˣ) (m : ℕ), 1 ≤ m → (ℓ = 2 → 2 ≤ m) →
-    PadicInt.valuation ((u : ℤ_[ℓ]) - 1) = m →
-    ∀ (U : Finset ℤ), 0 ∉ U →
-    ∀ (V : Type) [AddCommGroup V] [Module ℤ_[ℓ] V] (g : V →ₗ[ℤ_[ℓ]] V),
-    Polynomial.aeval g (∏ a ∈ U, (Polynomial.X - Polynomial.C (((u ^ a : ℤ_[ℓ]ˣ) : ℤ_[ℓ])))) = 0 →
-    (∀ x : V, ∃ y : V, ((ℓ : ℤ_[ℓ]) ^ h0c ℓ m U) • x = g y - y) ∧
-    (∀ (r : ℕ) (x y : V), g x - x = ((ℓ : ℤ_[ℓ]) ^ r) • y →
-      ∃ z : V, ((ℓ : ℤ_[ℓ]) ^ h0c ℓ m U) • x = ((ℓ : ℤ_[ℓ]) ^ r) • z) ∧
-    ((∀ x : V, (ℓ : ℤ_[ℓ]) • x = 0 → x = 0) → ∀ x : V, g x = x → x = 0)
-
 def UGraded : Prop :=
   ∀ (ℓ : ℕ) [Fact ℓ.Prime] (A : Type) [CommRing A] [Algebra ℤ_[ℓ] A] (B : Base ℓ A) (M : ℕ)
     (D : Type) [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D] [IsScalarTower ℤ_[ℓ] A D]

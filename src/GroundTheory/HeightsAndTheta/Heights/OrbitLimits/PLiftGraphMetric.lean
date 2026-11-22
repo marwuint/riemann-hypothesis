@@ -54,8 +54,6 @@ theorem oldEmb_injective : Function.Injective (oldEmb (ι := ι) r) := by
 def oldCLM (r : ℕ) : ((Σ k, addIdx ι r k) → ℂ) →L[ℂ] ((Σ k, ι k) → ℂ) :=
   ContinuousLinearMap.pi fun p => ContinuousLinearMap.proj (oldEmb r p)
 
-theorem oldCLM_apply (z : (Σ k, addIdx ι r k) → ℂ) : oldCLM r z = basePart₂ z := rfl
-
 theorem isOpen_allNZ {κ : Type} [Fintype κ] {ρ : κ → Type} :
     IsOpen {z : (Σ k, ρ k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have : {z : (Σ k, ρ k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0} := by

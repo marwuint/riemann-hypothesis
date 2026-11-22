@@ -23,16 +23,6 @@ section Presheaf
 
 variable {X : Scheme.{u}} (F : X.Modules)
 
-noncomputable def qcohMap {U U' : X.Etale} (g : U ⟶ U') :
-    Γ((Scheme.Modules.pullback U'.hom).obj F, ⊤) →+ Γ((Scheme.Modules.pullback U.hom).obj F, ⊤) :=
-  ((compHom F g.left U'.hom U.hom (MorphismProperty.Over.w g)).app ⊤).hom.comp
-    (pullbackSection g.left _)
-
-lemma qcohMap_apply {U U' : X.Etale} (g : U ⟶ U') (s : Γ((Scheme.Modules.pullback U'.hom).obj F, ⊤)) :
-    qcohMap F g s =
-      (compHom F g.left U'.hom U.hom (MorphismProperty.Over.w g)).app ⊤
-        (pullbackSection g.left _ s) := rfl
-
 end Presheaf
 
 end GroundTheory.Arith.Etale

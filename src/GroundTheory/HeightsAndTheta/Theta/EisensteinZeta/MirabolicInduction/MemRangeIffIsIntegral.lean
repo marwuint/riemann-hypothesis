@@ -112,10 +112,6 @@ instance (τ : InfinitePlace E) : FiniteDimensional ℂ (S.FibSp τ) :=
 
 def pt (τ : InfinitePlace E) (v : S.V) : S.FibSp τ := (1 : CAt τ.embedding) ⊗ₜ[E] v
 
-theorem inner_at (τ : InfinitePlace E) (v w : S.V) :
-    inner ℂ (S.pt τ v) (S.pt τ w) =
-      (S.form τ).inner ((1 : CAt τ.embedding) ⊗ₜ[E] v) ((1 : CAt τ.embedding) ⊗ₜ[E] w) := rfl
-
 end MetSpace
 
 variable (E) in
@@ -144,10 +140,6 @@ def quotEquiv (W : Submodule E S.V) (τ : InfinitePlace E) :
     Fib τ.embedding (S.V ⧸ W) ≃ₗ[ℂ] S.FibSp τ ⧸ S.fibSub W τ :=
   ((TensorProduct.AlgebraTensorModule.tensorQuotientEquiv (CAt τ.embedding) E (CAt τ.embedding)
     W).restrictScalars ℂ).trans (Submodule.Quotient.restrictScalarsEquiv ℂ _).symm
-
-def restrictMap (W : Submodule E S.V) (τ : InfinitePlace E) :
-    Fib τ.embedding W →ₗ[ℂ] S.FibSp τ :=
-  (W.subtype.baseChange (CAt τ.embedding)).restrictScalars ℂ
 
 end MetSpace
 
@@ -198,23 +190,11 @@ structure SelfDualFrame (F E : Type) [Field F] [Field E] [NumberField E] [Algebr
   θ_isometry : ∀ τ u v, inner ℂ (θ τ u) (θ τ v) = inner ℂ u v
   majorant : ∀ τ (y y' : S.V), inner ℂ (θ τ (S.pt τ y)) (S.pt τ y') = τ.embedding (B.toSesq y y')
 
-namespace SelfDualFrame
-
-end SelfDualFrame
-
 section Standard
 
 variable (E) (n : ℕ)
 
-def stdCoord (σ : E →+* ℂ) : Fib σ (Fin n → E) ≃ₗ[ℂ] EuclideanSpace ℂ (Fin n) :=
-  ((piScalarRight E (CAt σ) (CAt σ) (Fin n)).restrictScalars ℂ).trans
-    ((LinearEquiv.piCongrRight fun _ ↦ (ofComplex σ).symm.toLinearEquiv).trans
-      (WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).symm)
-
 variable {E n}
-
-theorem stdCoord_tmul (σ : E →+* ℂ) (z : CAt σ) (v : Fin n → E) (i : Fin n) :
-    stdCoord E n σ (z ⊗ₜ v) i = σ (v i) * (ofComplex σ).symm z := rfl
 
 variable (E n)
 

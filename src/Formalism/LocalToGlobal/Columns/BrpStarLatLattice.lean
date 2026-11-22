@@ -75,11 +75,6 @@ section Dual
 
 variable (K : Type) [Field K] [NumberField K] [StarRing K] {n : ℕ}
 
-def brpDot : (Fin n → K) →ₗ[K] Module.Dual K (Fin n → K) :=
-  LinearMap.mk₂ K (fun (φ x : Fin n → K) => φ ⬝ᵥ x) add_dotProduct smul_dotProduct dotProduct_add dotProduct_smul
-
-theorem brpDot_apply (φ x : Fin n → K) : brpDot K φ x = φ ⬝ᵥ x := rfl
-
 end Dual
 
 section Star
@@ -87,8 +82,6 @@ section Star
 variable (K : Type) [Field K] [NumberField K] [StarRing K] {n : ℕ}
 
 def brpCO : 𝓞 K →+* 𝓞 K := RingOfIntegers.mapRingHom (starRingEnd K)
-
-theorem brpCO_coe (a : 𝓞 K) : ((brpCO K a : 𝓞 K) : K) = star (a : K) := rfl
 
 theorem brp_star_smul (c : 𝓞 K) (x : Fin n → K) : star (c • x) = brpCO K c • star x := by
   funext i

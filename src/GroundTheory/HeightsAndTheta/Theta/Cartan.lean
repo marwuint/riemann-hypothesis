@@ -115,10 +115,6 @@ def cartanPos (p q : ℕ) : Set (Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)
 def cartanMul (ks : maxCompact G × cartanPos p q) : G :=
   (ks.1 : G) * upqOfMatrix ks.2.1 ks.2.2.2
 
-theorem coe_cartanMul (ks : maxCompact G × cartanPos p q) :
-    ((cartanMul ks : GL (Fin p ⊕ Fin q) ℂ) : 𝔐) =
-      (((ks.1 : G) : GL (Fin p ⊕ Fin q) ℂ) : 𝔐) * ks.2.1 := rfl
-
 noncomputable def cartanSplit (g : G) : maxCompact G × cartanPos p q :=
   (⟨upqOfMatrix (polarUnitary (g : GL (Fin p ⊕ Fin q) ℂ)) (polarUnitary_preservesIndefJ g),
       polarUnitary_mem (g : GL (Fin p ⊕ Fin q) ℂ)⟩,
@@ -147,10 +143,6 @@ noncomputable def cartanHomeomorph : maxCompact G × cartanPos p q ≃ₜ G wher
     refine Continuous.prodMk ?_ (hP.subtype_mk _)
     exact (continuous_upqOfMatrix hU _).subtype_mk _
 
-theorem cartanHomeomorph_apply (ks : maxCompact G × cartanPos p q) :
-    ((cartanHomeomorph ks : GL (Fin p ⊕ Fin q) ℂ) : 𝔐) =
-      (((ks.1 : G) : GL (Fin p ⊕ Fin q) ℂ) : 𝔐) * ks.2.1 := rfl
-
 end Polar
 
 section MaxCompact
@@ -172,37 +164,6 @@ end MaxCompact
 section Blocks
 
 local notation "G" => indefiniteUnitaryGroup p q
-
-theorem indefJ_eq_fromBlocks : J = fromBlocks 1 0 0 (-1) := by
-  rw [indefJ, ← fromBlocks_diagonal, diagonal_one, ← diagonal_one, ← diagonal_neg]
-  rfl
-
-theorem fromBlocks_preservesIndefJ (a : unitaryGroup (Fin p) ℂ) (b : unitaryGroup (Fin q) ℂ) :
-    (fromBlocks (a : Matrix (Fin p) (Fin p) ℂ) 0 0 (b : Matrix (Fin q) (Fin q) ℂ))ᴴ * J *
-      fromBlocks (a : Matrix (Fin p) (Fin p) ℂ) 0 0 (b : Matrix (Fin q) (Fin q) ℂ) = J := by
-  have ha : (a : Matrix (Fin p) (Fin p) ℂ)ᴴ * a = 1 := by
-    rw [← star_eq_conjTranspose]; exact mem_unitaryGroup_iff'.1 a.2
-  have hb : (b : Matrix (Fin q) (Fin q) ℂ)ᴴ * b = 1 := by
-    rw [← star_eq_conjTranspose]; exact mem_unitaryGroup_iff'.1 b.2
-  rw [indefJ_eq_fromBlocks, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]
-  simp [ha, hb]
-
-theorem fromBlocks_mem_unitaryGroup (a : unitaryGroup (Fin p) ℂ) (b : unitaryGroup (Fin q) ℂ) :
-    fromBlocks (a : Matrix (Fin p) (Fin p) ℂ) 0 0 (b : Matrix (Fin q) (Fin q) ℂ) ∈
-      unitaryGroup (Fin p ⊕ Fin q) ℂ := by
-  rw [mem_unitaryGroup_iff', star_eq_conjTranspose, fromBlocks_conjTranspose, fromBlocks_multiply]
-  have ha : (a : Matrix (Fin p) (Fin p) ℂ)ᴴ * a = 1 := by
-    rw [← star_eq_conjTranspose]; exact mem_unitaryGroup_iff'.1 a.2
-  have hb : (b : Matrix (Fin q) (Fin q) ℂ)ᴴ * b = 1 := by
-    rw [← star_eq_conjTranspose]; exact mem_unitaryGroup_iff'.1 b.2
-  simp [ha, hb, fromBlocks_one]
-
-def blockDiagK (ab : unitaryGroup (Fin p) ℂ × unitaryGroup (Fin q) ℂ) : maxCompact G :=
-  ⟨upqOfMatrix _ (fromBlocks_preservesIndefJ ab.1 ab.2), fromBlocks_mem_unitaryGroup ab.1 ab.2⟩
-
-theorem coe_blockDiagK (ab : unitaryGroup (Fin p) ℂ × unitaryGroup (Fin q) ℂ) :
-    ((((blockDiagK ab : maxCompact G) : G) : GL (Fin p ⊕ Fin q) ℂ) : 𝔐) =
-      fromBlocks (ab.1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (ab.2 : Matrix (Fin q) (Fin q) ℂ) := rfl
 
 end Blocks
 

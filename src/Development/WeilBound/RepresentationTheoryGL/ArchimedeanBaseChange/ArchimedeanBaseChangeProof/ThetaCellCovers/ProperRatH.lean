@@ -44,11 +44,6 @@ def ctx (h : RatProper) (D : Dom E a b) : Ctx :=
     F := D.F
     fd := D.fd }
 
-theorem ctx_ker (h : RatProper) (D : Dom E a b) (φ : H E a b → ℂ) : ker (ctx h D).Γ φ = kerH φ := rfl
-
-theorem ctx_isOp (h : RatProper) (D : Dom E a b) {ι : Type} [Fintype ι] (Φ : Matrix ι ι (H E a b → ℂ))
-    (T : Hs (ι := ι) D →L[ℂ] Hs (ι := ι) D) : (ctx h D).IsOp Φ T ↔ IsROp D Φ T := Iff.rfl
-
 theorem wt_eq (x : H E a b) : wt x = 1 + red x.1 + red x.2 := rfl
 
 def th (x : H E a b) : H E a b := (thetaA E a x.1, thetaA E b x.2)

@@ -151,31 +151,4 @@ theorem exists_unit_ratio {R : Type} [CommRing R] [IsLocalRing R] {φ₁ φ₂ :
 
 end Frames
 
-theorem isLocalHom_of_algebraic {R F k : Type} [CommRing R] [IsLocalRing R] [Field F] [CharZero F] (φ : F →+* R)
-    [Field k] [CharZero k] [Algebra.IsAlgebraic ℚ k] (ψ : R →+* k) : IsLocalHom ψ := by
-  letI : Algebra ℚ R := (φ.comp (algebraMap ℚ F)).toAlgebra
-  let ψ' : R →ₐ[ℚ] k := { ψ with commutes' := fun q => by simp }
-  refine ⟨fun a ha => ?_⟩
-  have h0 : ψ a ≠ 0 := ha.ne_zero
-  have hi : IsIntegral ℚ (ψ a) := (Algebra.IsAlgebraic.isAlgebraic _).isIntegral
-  have hc := minpoly.coeff_zero_ne_zero hi h0
-  have h1 : ψ (Polynomial.aeval a (minpoly ℚ (ψ a))) = 0 :=
-    (Polynomial.aeval_algHom_apply ψ' a _).symm.trans (minpoly.aeval ℚ (ψ a))
-  have h2 : ¬ IsUnit (Polynomial.aeval a (minpoly ℚ (ψ a))) := fun h => (h.map ψ).ne_zero h1
-  by_contra hna
-  rw [← Polynomial.X_mul_divX_add (minpoly ℚ (ψ a)), map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C] at h2
-  have h3 : algebraMap ℚ R ((minpoly ℚ (ψ a)).coeff 0) ∈ IsLocalRing.maximalIdeal R := by
-    have := Ideal.sub_mem (IsLocalRing.maximalIdeal R) h2
-      (Ideal.mul_mem_right (Polynomial.aeval a (minpoly ℚ (ψ a)).divX) _ hna)
-    rwa [add_sub_cancel_left] at this
-  exact h3 (hc.isUnit.map _)
-
-theorem stalk_ext {X : Scheme.{0}} {k : Type} [Field k] {y y' : X} {ψ : X.presheaf.stalk y →+* k}
-    {ψ' : X.presheaf.stalk y' →+* k} (h : IsLocalHom ψ) (h' : IsLocalHom ψ')
-    (e : spMap ψ ≫ X.fromSpecStalk y = spMap ψ' ≫ X.fromSpecStalk y') : y = y' ∧ HEq ψ ψ' := by
-  have := (SpecToEquivOfLocalRing X (.of k)).symm.injective (a₁ := ⟨y, CommRingCat.ofHom ψ, h⟩)
-    (a₂ := ⟨y', CommRingCat.ofHom ψ', h'⟩) e
-  obtain ⟨rfl, e'⟩ := Sigma.mk.inj_iff.1 this
-  exact ⟨rfl, heq_of_eq (congrArg (fun f => f.1.hom) (eq_of_heq e'))⟩
-
 end GlobalTheory.ShFam.CoordUniq

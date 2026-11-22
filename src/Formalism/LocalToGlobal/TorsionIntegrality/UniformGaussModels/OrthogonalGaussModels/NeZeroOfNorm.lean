@@ -84,8 +84,6 @@ variable (dK : ℕ) (ι : ℂ ≃+* ℂ_[p])
 def em (mn : ℤ × ℤ) : ℂ_[p] × ℂ_[p] :=
   (ι ((mn.1 : ℂ) + (mn.2 : ℂ) * omegaK dK), ι ((mn.1 : ℂ) + (mn.2 : ℂ) * (1 - omegaK dK)))
 
-theorem pairsK_eq : pairsK dK p ι = closure (Set.range (em dK ι)) := rfl
-
 theorem em_add (a b : ℤ × ℤ) : em dK ι a + em dK ι b = em dK ι (a.1 + b.1, a.2 + b.2) := by
   refine Prod.ext ?_ ?_
   · show ι _ + ι _ = ι _

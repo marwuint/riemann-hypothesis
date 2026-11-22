@@ -24,10 +24,6 @@ def vanC (S : Set (Matrix ι ι ℂ)) : Ideal (MvPolynomial (ι × ι) ℂ) wher
     simp only [evC] at h1 ⊢
     rw [smul_eq_mul, map_mul, h1, mul_zero]
 
-omit [Fintype ι] [DecidableEq ι] in
-lemma mem_vanC {S : Set (Matrix ι ι ℂ)} {f : MvPolynomial (ι × ι) ℂ} :
-    f ∈ vanC S ↔ ∀ g ∈ S, evC f g = 0 := Iff.rfl
-
 omit [DecidableEq ι] in
 lemma evC_ltr (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) : evC (ltr g f) y = evC f (g * y) := by
   induction f using MvPolynomial.induction_on with

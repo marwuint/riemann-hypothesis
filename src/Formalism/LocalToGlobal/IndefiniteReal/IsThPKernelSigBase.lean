@@ -50,25 +50,9 @@ def LabExists : Prop := ∀ σ : D.what₂.LL →+* ℂ, ∃ A : ArchLab D, IsLa
 
 def rl (A : ArchLab D) {X : Type*} (S : D.what₂.Tau → X) : D.what₂.Tau → X := fun ρ => S (A.perm.symm ρ)
 
-theorem rl_base {X : Type*} (S : D.what₂.Tau → X) : rl (baseLab D) S = S := rfl
-
-theorem rl_flip (A : ArchLab D) {X : Type*} (S : D.what₂.Tau → X) : rl A.flip S = rl A S := rfl
-
 theorem rl_pos (A : ArchLab D) {X : Type*} (S : D.what₂.Tau → X) : rl A.pos S = rl A S := rfl
 
 def cv (σ : D.what₂.LL →+* ℂ) {X : Type*} (f : X → D.what₂.LL) : X → ℂ := fun x => σ (f x)
-
-theorem cv_base {X : Type*} (f : X → D.what₂.LL) : cv D.what₂.embLL f = fun x => D.what₂.embLL (f x) := rfl
-
-theorem cv_conj (σ : D.what₂.LL →+* ℂ) {X : Type*} (f : X → D.what₂.LL) :
-    cv ((starRingEnd ℂ).comp σ) f = fun x => starRingEnd ℂ (cv σ f x) := rfl
-
-def deltaSig (A : ArchLab D) {m n : ℕ} (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) :
-    MvPolynomial (Datum.FVar D m n) ℂ :=
-  Datum.delta p q (rl A ap) (rl A am)
-
-theorem deltaSig_base {m n : ℕ} (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) :
-    deltaSig (m := m) (n := n) (baseLab D) p q ap am = Datum.delta p q ap am := rfl
 
 end Formalism.IndefR.Conj
 

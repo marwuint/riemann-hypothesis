@@ -28,20 +28,6 @@ def fmap (σ : K →+* ℂ) {E E' : Type*} [AddCommGroup E] [Module (𝓞 K) E] 
   map_smul' := lTensor_complex_smul σ f
 
 omit [NumberField K] in
-theorem fmap_tmul (σ : K →+* ℂ) {E E' : Type*} [AddCommGroup E] [Module (𝓞 K) E]
-    [AddCommGroup E'] [Module (𝓞 K) E'] (f : E' →ₗ[𝓞 K] E) (z : ComplexAt σ) (e : E') :
-    fmap σ f (z ⊗ₜ e) = z ⊗ₜ f e := rfl
-
-omit [NumberField K] in
-theorem conjMap_fmap (σ : K →+* ℂ) {E E' : Type*} [AddCommGroup E] [Module (𝓞 K) E]
-    [AddCommGroup E'] [Module (𝓞 K) E'] (f : E' →ₗ[𝓞 K] E) (x : Fibre σ E') :
-    conjMap σ E (fmap σ f x) = fmap (conjugate σ) f (conjMap σ E' x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp only [map_zero]
-  | tmul z e => rfl
-  | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]
-
-omit [NumberField K] in
 
 theorem conjMap_surjective (σ : K →+* ℂ) (E : Type*) [AddCommGroup E] [Module (𝓞 K) E] :
     Function.Surjective (conjMap σ E) := by
@@ -63,15 +49,6 @@ section Sub
 
 variable {K : Type*} [Field K] [NumberField K]
 
-def restrictedMetric (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier) :
-    HermitianMetric K F :=
-  M.metric.comap F.subtype F.injective_subtype
-
-theorem restrictedMetric_inner (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier)
-    (σ : K →+* ℂ) (x y : Fibre σ F) :
-    ((restrictedMetric M F).form σ).inner x y =
-      (M.metric.form σ).inner (fmap σ F.subtype x) (fmap σ F.subtype y) := rfl
-
 end Sub
 
 section Quotient
@@ -88,11 +65,6 @@ theorem isTorsionFree_quotient {M : HermitianBundle K} {F : Submodule (𝓞 K) M
   rw [← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq,
     ← smul_sub] at hzw
   exact (Submodule.Quotient.eq F).mpr (hF a _ ha0 hzw)
-
-theorem projective_quotient {M : HermitianBundle K} {F : Submodule (𝓞 K) M.carrier}
-    (hF : M.Saturated F) : Module.Projective (𝓞 K) (M.carrier ⧸ F) :=
-  haveI := isTorsionFree_quotient hF
-  projective_of_isTorsionFree _
 
 variable (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier)
 
@@ -143,50 +115,6 @@ def perpEquiv (σ : K →+* ℂ) : (subImage M F σ)ᗮ ≃ₗ[ℂ] Fibre σ (M.
 theorem perpEquiv_apply (σ : K →+* ℂ) (x : (subImage M F σ)ᗮ) :
     perpEquiv M F σ x = quotMap M F σ x := rfl
 
-theorem conj_mem_perp (σ : K →+* ℂ) (x : (subImage M F σ)ᗮ) :
-    FibreSpace.equiv M.metric (conjugate σ)
-        (conjMap σ M.carrier ((FibreSpace.equiv M.metric σ).symm x)) ∈
-      (subImage M F (conjugate σ))ᗮ := by
-  rw [Submodule.mem_orthogonal]
-  rintro _ ⟨u, rfl⟩
-  obtain ⟨u', rfl⟩ := conjMap_surjective σ F u
-  change (M.metric.form (conjugate σ)).inner (fmap (conjugate σ) F.subtype (conjMap σ F u'))
-    (conjMap σ M.carrier ((FibreSpace.equiv M.metric σ).symm x)) = 0
-  rw [← conjMap_fmap, M.metric.form_conj]
-  have h0 : inner ℂ (FibreSpace.equiv M.metric σ (fmap σ F.subtype u'))
-      (x : FibreSpace M.metric σ) = 0 :=
-    Submodule.inner_right_of_mem_orthogonal
-      (LinearMap.mem_range.mpr ⟨u', rfl⟩ : _ ∈ subImage M F σ) x.2
-  change starRingEnd ℂ (inner ℂ (FibreSpace.equiv M.metric σ (fmap σ F.subtype u'))
-    (FibreSpace.equiv M.metric σ ((FibreSpace.equiv M.metric σ).symm x))) = 0
-  rw [LinearEquiv.apply_symm_apply, h0, map_zero]
-
-theorem perpEquiv_symm_conj (σ : K →+* ℂ) (ξ : Fibre σ (M.carrier ⧸ F)) :
-    (perpEquiv M F (conjugate σ)).symm (conjMap σ (M.carrier ⧸ F) ξ) =
-      ⟨_, conj_mem_perp M F σ ((perpEquiv M F σ).symm ξ)⟩ := by
-  apply (perpEquiv M F (conjugate σ)).injective
-  rw [LinearEquiv.apply_symm_apply, perpEquiv_apply]
-  change conjMap σ (M.carrier ⧸ F) ξ = fmap (conjugate σ) F.mkQ
-    (conjMap σ M.carrier ((FibreSpace.equiv M.metric σ).symm ((perpEquiv M F σ).symm ξ)))
-  rw [← conjMap_fmap]
-  congr 1
-  conv_lhs => rw [← LinearEquiv.apply_symm_apply (perpEquiv M F σ) ξ]
-  rfl
-
-def quotientMetric (hF : M.Saturated F) :
-    @HermitianMetric K _ _ (M.carrier ⧸ F) _ _ _ (projective_quotient hF) := by
-  haveI := projective_quotient hF
-  exact
-    { form := fun σ ↦
-        coreOfInjective (perpEquiv M F σ).symm.toLinearMap (perpEquiv M F σ).symm.injective
-      form_conj := fun σ ξ η ↦ by
-        simp only [coreOfInjective_inner, LinearEquiv.coe_coe, perpEquiv_symm_conj,
-          Submodule.coe_inner]
-        change (M.metric.form (conjugate σ)).inner (conjMap σ M.carrier _)
-          (conjMap σ M.carrier _) = _
-        rw [M.metric.form_conj]
-        rfl }
-
 end Quotient
 
 section BaseChange
@@ -212,10 +140,6 @@ def bcScalar (τ : E →+* ℂ) (z : ComplexAt τ) : 𝓞 E →ₗ[𝓞 K] Compl
     rw [Algebra.smul_def]
     change τ ((algebraMap (𝓞 K) (𝓞 E) a : E) * (b : E)) * _ = τ (algebraMap K E (a : K)) * (τ (b : E) * _)
     rw [coe_algebraMap_integers, map_mul, mul_assoc]
-
-omit [NumberField K] in
-theorem bcScalar_apply (τ : E →+* ℂ) (z : ComplexAt τ) (b : 𝓞 E) :
-    bcScalar K τ z b = ofComplex _ (τ (b : E) * (ofComplex τ).symm z) := rfl
 
 variable (M : HermitianBundle K)
 

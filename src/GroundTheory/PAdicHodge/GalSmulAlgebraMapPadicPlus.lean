@@ -18,11 +18,6 @@ variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
 
 section Algebra
 
-theorem algebraMap_padic_bCris (q : ℚ_[p]) :
-    algebraMap ℚ_[p] (BCris hε) q =
-      algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) (algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q) :=
-  rfl
-
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 include hζ in

@@ -67,9 +67,6 @@ def hermitianLevelZeroOfRecursion (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc
     Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd) :=
   { H0 with g := fun u w hg => levTieOf (hL u) (levTieG D sc Ce Lc (packC D Lc I ψ) hd u w hg) }
 
-theorem fullTiedC_base (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u) :
-    (hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL).lev0 = H0.lev0 := rfl
-
 theorem gatIs_recC (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (hH : ∀ u w h, Cmp.HypAtP (I u w h)) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :

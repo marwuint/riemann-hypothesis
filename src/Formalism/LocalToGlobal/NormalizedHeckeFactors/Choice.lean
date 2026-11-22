@@ -46,9 +46,6 @@ theorem avRec_subset_avD (D : D7) (Av : TwAv D) (i : D.ntw.Tw) : AvRec D ⊆ avD
   unfold avD
   exact Finset.mem_union_left _ hv
 
-def placesOverQ0 (D : D7) : Finset (PlE D.host) :=
-  (placesOver_finite_av D.host.E (AbsolutelyIrreducibleSpan.q0 D) (Host.leastSplitAuxiliaryPrimeThetaChain_spec D).1.ne_zero).toFinset
-
 def avOver (D : D7) (s : Finset ℕ) : Finset (PlE D.host) :=
   (Set.Finite.biUnion (s := ((s.filter (· ≠ 0) : Finset ℕ) : Set ℕ)) (t := fun p => placesOver D.host.E p)
     (Finset.finite_toSet _) fun p hp => placesOver_finite_av _ p (Finset.mem_filter.1 hp).2).toFinset
@@ -159,22 +156,6 @@ theorem emb0_mem_maximalIdeal_iff_val_pos_of_sidePl (D : D7) (w : D.what₂.plac
       add_pos_of_pos_of_nonneg hpos hinv
     rw [hsum] at this
     exact lt_irrefl _ this
-
-open Classical in
-
-def twInOf (D : D7) (E : IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → ℕ) : TwIn D where
-  E := E
-  N0 := N0
-  S i j b := if h : ∃ S, IntegralHeckeForms.BasisOf D.nexp i j b (IntegralHeckeForms.SgJ D.nexp E i j b) S then h.choose else ∅
-
-def twInRec (D : D7) (T : ThData D) (N0 : D.ntw.Tw → ℕ) : TwIn D := twInOf D (twEOf T) N0
-
-def twInAll (D : D7) (N0 : D.ntw.Tw → ℕ) : TwIn D := twInOf D (IntegralHeckeForms.ExpDat.all D.nexp) N0
-
-theorem twInAll_Sg (D : D7) (N0 : D.ntw.Tw → ℕ) (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
-    (twInAll D N0).Sg i j b = (twInAll D N0).E.Dat0 i j b := rfl
-
-theorem twInRec_E (D : D7) (T : ThData D) (N0 : D.ntw.Tw → ℕ) : (twInRec D T N0).E.Dat0 = T.xd0 := rfl
 
 end Formalism.L2
 

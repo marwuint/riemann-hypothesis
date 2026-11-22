@@ -210,10 +210,6 @@ def toProjIso : LB.Iso ((O1 R M).pull (toProj f s hs)) L where
   s p := (isUnit_resG_sec (s (p.2 ⟨⟩)) p.1
     (inf_le_right.trans (pullback_O1_toProj_chart f s hs p.2).le) inf_le_left).unit
 
-theorem val_toProjIso (k : L.ι) (i : PUnit → Fin (M + 1)) :
-    (@id (Γ(Y, L.U k ⊓ ((O1 R M).pull (toProj f s hs)).U i)ˣ) ((toProjIso f s hs).s (k, i))).val =
-      resG Y inf_le_left ((s (i ⟨⟩)).f k) := rfl
-
 theorem secMaps_toProjIso (j : Fin (M + 1)) :
     SecMaps (toProjIso f s hs) (secPull (coord R M j) (toProj f s hs)) (s j) := by
   rintro ⟨k, i⟩

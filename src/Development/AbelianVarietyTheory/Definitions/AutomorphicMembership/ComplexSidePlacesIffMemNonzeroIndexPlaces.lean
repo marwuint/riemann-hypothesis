@@ -47,13 +47,6 @@ def restrict (hH : Holds z.R z.F) (Wt' : Set X.B.places.Pl) (h : Wt' ⊆ Wt) (hc
   fieldValues_mem_fixedField := z.fieldValues_mem_fixedField
   Ks_le := z.Ks_le
 
-theorem restrict_R (hH : Holds z.R z.F) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') : (z.restrict hH Wt' h hc).R = z.resR h := rfl
-
-set_option maxHeartbeats 1000000 in
-
-theorem restrictRealData_lift_scalar (h : Wt' ⊆ Wt) (i : Fin X.toD7.R.m) (t : TupU I (usedOf I T Wt')) :
-    (z.resR h).lam3 i t = z.R.lam3 i (inclU I (usedOf_mono I T h) t) := rfl
-
 set_option maxHeartbeats 2000000 in
 
 theorem inGeo_resGeo_iff (h : Wt' ⊆ Wt) : GlobalTheory.RealGeo.InGeo (z.resGeo h) ↔ GlobalTheory.RealGeo.InGeo z.geo :=
@@ -105,30 +98,9 @@ theorem twisted_places_eq_complex_side_of_eq_nonzero_index (hW : z.W1 F0 = Wt) (
   obtain ⟨w, rfl⟩ := (plB X).surjective v
   exact (z.plB_mem_twPl w).trans ((Set.ext_iff.1 hW w).symm.trans (z.complex_side_face_numbers_iff_mem_nonzero_index_places F0 kap lam err Dc Sp Zsc C CH hZ w).symm)
 
-set_option maxHeartbeats 4000000 in
-
-def restrictE (e : z.R.toRealDat.ExAt) (Wt' : Set X.B.places.Pl) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') : Dat X I hX T Wt' where
-  Xg := z.Xg
-  tr := z.tr
-  core := z.core
-  alg := z.alg
-  alg_eq := z.alg_eq
-  R := z.resRE h
-  cG := z.cG
-  geo := z.resGeoE h
-  pins := z.pins_resRE h hc e
-  lev := z.levOf_resR h
-  idG := z.idG
-  good := z.good
-  mu := z.muOf_res h
-  fieldValues_mem_fixedField := z.fieldValues_mem_fixedField
-  Ks_le := z.Ks_le
-
 section Ex
 
 variable (e : z.R.toRealDat.ExAt) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt')
-
-theorem restrictE_R : (z.restrictE e Wt' h hc).R = (z.resR h).updS (Res.kapNew (z.resR h)) (z.resR h).lam3 := rfl
 
 end Ex
 

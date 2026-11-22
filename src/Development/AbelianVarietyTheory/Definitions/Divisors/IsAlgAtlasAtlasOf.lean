@@ -36,28 +36,12 @@ variable {σ : F →+* ℂ} {Δ : Y.Dv}
 
 abbrev genAt (Δ : Y.Dv) (x : Y.X) : Y.Fn := ((eqn Δ x)⁻¹ : Y.Fnˣ)
 
-omit [NumberField F] in
-
-theorem generatesAt_genAt (Δ : Y.Dv) (x : Y.X) : Δ.GeneratesAt x (genAt Δ x) := by
-  rw [genAt, Units.val_inv_eq_inv_val]
-  exact CartierDiv.isEqn_iff_generatesAt_inv.1 (Base.isEqn_eqn Δ x)
-
 def lnN (m : C.Met Y σ Δ) (f : Y.Fn) (y : Pts Y σ) : ℝ := Real.log (C.pn Y σ Δ m (C.cx Y σ f) y) / 2
 
 def lnRatio (m m' : C.Met Y σ Δ) (y : Pts Y σ) : ℝ :=
   lnN m (genAt Δ (under y)) y - lnN m' (genAt Δ (under y)) y
 
 def PosAt (m : C.Met Y σ Δ) (y : Pts Y σ) : Prop := 0 < C.pn Y σ Δ m (C.cx Y σ (genAt Δ (under y))) y
-
-theorem exists_pn_eq {f : Y.Fn} {y : Pts Y σ} (hf : Δ.GeneratesAt (under y) f) : ∃ a : ℝ, 0 < a ∧ ∀ m : C.Met Y σ Δ,
-    C.pn Y σ Δ m (C.cx Y σ f) y = a * C.pn Y σ Δ m (C.cx Y σ (genAt Δ (under y))) y := by
-  have he := Base.isEqn_eqn Δ (under y)
-  have hu := he.generatesAt_iff.1 hf
-  refine ⟨‖ratVal (f * (eqn Δ (under y) : Y.Fn)) y‖ ^ 2, ?_, fun m => ?_⟩
-  · exact pow_pos (norm_pos_iff.2 (ratVal_ne_zero hu)) 2
-  · rw [← C.pn_mul Y σ Δ m _ _ y hu.regAt (generatesAt_genAt Δ _).regularAt]
-    congr 2
-    simp [genAt]
 
 def IsPot {X : Type} [TopologicalSpace X] (h : X → Pts Y σ) (m : C.Met Y σ Δ) (P : LocPot X) : Prop :=
   ∀ x, ∃ f : Y.Fn, ∀ y ∈ P.U x, Δ.GeneratesAt (under (h y)) f ∧ PosAt m (h y) ∧ P.φ x y = -lnN m f (h y)
@@ -126,9 +110,6 @@ def ofModel (M : TrueGeo.Model Y) (h : ReciprocityTheory.ChartRestriction.G.Geo.
   pb := by simpa using M.pb
   φ := RingHom.id _
   φ_spec := (Category.comp_id _).trans ((congrArg (· ≫ _) (Spec.map_id _)).trans (Category.id_comp _)).symm
-
-theorem deg_ofModel (M : TrueGeo.Model Y) (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) : (ofModel M h).deg = 1 :=
-  Scheme.Hom.residueDegree_id _
 
 def Induces (A : Adl C Y) (L : HermLB V.p) (k : ℕ) : Prop :=
   ∃ r : (L.B.pull V.j).ι → V.G.functionFieldˣ, IsRatSec (L.B.pull V.j) r ∧

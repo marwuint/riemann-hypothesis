@@ -95,10 +95,6 @@ def pJ : Submodule ℝ (Matrix n n ℂ) where
   smul_mem' c X hX := ⟨Submodule.smul_mem _ c hX.1, by
     rw [Matrix.smul_mul, Matrix.mul_smul, hX.2, smul_neg]⟩
 
-theorem mem_kJ {X : Matrix n n ℂ} : X ∈ kJ J ↔ X ∈ lieJ J ∧ X * J = J * X := Iff.rfl
-
-theorem mem_pJ {X : Matrix n n ℂ} : X ∈ pJ J ↔ X ∈ lieJ J ∧ X * J = -(J * X) := Iff.rfl
-
 variable {J} (hJ : J * J = 1) (hJh : Jᴴ = J)
 include hJ
 

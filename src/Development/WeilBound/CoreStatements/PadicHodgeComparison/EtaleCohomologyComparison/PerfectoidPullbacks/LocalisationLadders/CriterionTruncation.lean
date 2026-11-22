@@ -46,8 +46,6 @@ def E1 : Frame (Φ1 E) d where
 
 @[simp] theorem frame_shift_domain : (E1 E).D = ⟨E.D, 𝟙 E.D⟩ := rfl
 
-theorem frame_shift_tau (i : Fin d) {Y : Cut E} (σ σ' : (E1 E).D ⟶ Y) : (E1 E).τ i σ σ' = E.τ i.succ σ.1 σ'.1 := rfl
-
 variable {E} (Q : Poly Φ)
 
 def Q1 : Poly (Φ1 E) where

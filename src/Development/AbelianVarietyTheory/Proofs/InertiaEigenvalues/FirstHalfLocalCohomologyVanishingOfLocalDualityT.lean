@@ -56,10 +56,6 @@ def subRep (rho : Representation R Γ M) (N : AddSubgroup M) (hN : ∀ g, ∀ m 
   map_one' := by ext m; simp
   map_mul' g h := by ext m; simp; rfl
 
-omit [TopologicalSpace Γ] [TopologicalSpace M] [DiscreteTopology M] in
-theorem subRep_coe (rho : Representation R Γ M) (N : AddSubgroup M) (hN : ∀ g, ∀ m ∈ N, rho g m ∈ N) (n : ℕ)
-    [Module (ZMod n) N] (g : Γ) (m : N) : (subRep rho N hN n g m : M) = rho g m := rfl
-
 omit [DiscreteTopology M] in
 theorem contAction_subRep (rho : Representation R Γ M) (hc : ContAction rho) (N : AddSubgroup M)
     (hN : ∀ g, ∀ m ∈ N, rho g m ∈ N) (n : ℕ) [Module (ZMod n) N] : ContAction (subRep rho N hN n) :=

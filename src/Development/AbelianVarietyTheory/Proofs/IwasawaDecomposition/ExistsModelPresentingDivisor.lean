@@ -151,53 +151,6 @@ def mixLog (ρ : Y.X ⟶ X) {m : ℕ}
           (fun l => spMap (dualMap ψ) ≫ f (below y.1) l) i)
     else 0
 
-theorem mixLog_eq {ρ : Y.X ⟶ X} {m : ℕ}
-    {f : ∀ y : Y.X, Fin m → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left)} {b : ℕ → Bool} {i : Fin m}
-    {v : HeightOneSpectrum (𝓞 F)} {ε : Ext v} {y : AlgPt Y} {q : ℕ} (h : decide (resP v = q) = b (resP v)) :
-    stepLog t ρ f q i v ε y = mixLog t ρ f b i v ε y := by
-  unfold stepLog mixLog
-  rw [← h]
-
-theorem good_mix {ρ : Y.X ⟶ X} {m : ℕ}
-    {f : ∀ y : Y.X, Fin m → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left)} {i : Fin m} {Δ : Y.Dv}
-    {d : Y.X → Y.Fnˣ} (h : ∀ q, Good Y Δ d (stepLog t ρ f q i)) {b : ℕ → Bool} (hb : {q | b q = true}.Finite) :
-    Good Y Δ d (mixLog t ρ f b i) := by
-  refine ((h 0).add (good_sum hb.toFinset fun q _ => (h q).add (h 0).neg)).congr (by simp) (by simp) fun v e y => ?_
-  obtain ⟨hp, -⟩ := GlobalTheory.ShFam.Pad.ioOf_spec F v e
-  have h0 : ∀ q, q ≠ resP v → stepLog t ρ f q i v e y = stepLog t ρ f 0 i v e y := fun q hq =>
-    (mixLog_eq (b := fun _ => false) (by simpa using hq.symm)).trans
-      (mixLog_eq (b := fun _ => false) (by simpa using hp.ne_zero)).symm
-  by_cases hv : b (resP v) = true
-  · rw [Finset.sum_eq_single (resP v) (fun q _ hq => by rw [h0 q hq, add_neg_cancel])
-      (fun hn => absurd (hb.mem_toFinset.2 hv) hn), ← mixLog_eq (q := resP v) (by simp [hv])]
-    ring
-  · rw [Finset.sum_eq_zero fun q hq => by
-      rw [h0 q (fun e => hv (e ▸ hb.mem_toFinset.1 hq)), add_neg_cancel], add_zero]
-    exact mixLog_eq (by simpa [hp.ne_zero] using hv)
-
-theorem good_diff (Y : Var F) (E : Type) [Field E] [NumberField E] {b : ℕ → Bool} (hb : {q | b q = true}.Finite) :
-    Good Y 0 (fun _ => 1) (fun v e _ => if b (resP v) = true then vDiff E (resP v) * Real.log (e.w (resP v)) else 0) := by
-  classical
-  refine (good_sum (hb.toFinset.filter Nat.Prime) fun q hq =>
-    good_const ((q : F) ^ padicValNat q (NumberField.discr E).natAbs) (Module.finrank ℚ E)
-      (pow_ne_zero _ (Nat.cast_ne_zero.2 (Finset.mem_filter.1 hq).2.ne_zero)) Module.finrank_pos.ne').congr
-    (by simp) (by simp) fun v e y => ?_
-  obtain ⟨hp, -, hw⟩ := GlobalTheory.ShFam.Pad.ioOf_spec F v e
-  have := Fact.mk hp
-  have h0 : ∀ q : ℕ, q.Prime → q ≠ resP v → Real.log (e.w (q : AlgebraicClosure F)) = 0 := fun q hq hne => by
-    have h1 : ‖(q : ℂ_[resP v])‖ = 1 := by
-      rw [← map_natCast (algebraMap ℚ_[resP v] ℂ_[resP v]), norm_algebraMap']
-      exact Padic.norm_natCast_eq_one_iff.2 ((Nat.coprime_primes hp hq).2 hne.symm)
-    rw [hw, map_natCast (ioOf (resP v) e), h1, Real.log_one, mul_zero]
-  simp only [map_pow, map_natCast, Real.log_pow]
-  split_ifs with hv
-  · rw [Finset.sum_eq_single (resP v) (fun q hq hne => by rw [h0 q (Finset.mem_filter.1 hq).2 hne]; simp)
-      (fun hn => absurd (Finset.mem_filter.2 ⟨hb.mem_toFinset.2 hv, hp⟩) hn), vDiff]
-    ring
-  · refine Finset.sum_eq_zero fun q hq => ?_
-    rw [h0 q (Finset.mem_filter.1 hq).2 (fun e => hv (e ▸ hb.mem_toFinset.1 (Finset.mem_filter.1 hq).1))]
-    simp
-
 end Steps
 
 section Flags
@@ -223,117 +176,6 @@ theorem isFrame_fr (y : C.Y.X) {k : Type} [CommRing k] (ψ : C.Y.X.presheaf.stal
 
 attribute [local instance] Over.cartesianMonoidalCategory in
 omit [NumberField F] in
-
-theorem isFlagFrame_eig (τ : E →+* ℂ) :
-    IsFlagFrame Z.t (C.π ≫ genι Z) (C.f0.v τ) (fun y => (fr C y).v τ) (fun y => dg C y τ) where
-  tan y := (fr C y).tan τ
-  tri y := (fr_spec C y).1.2.2 τ
-  indep y k _ ψ cf cf' w h h' := by
-    have hF := isFrame_fr C y ψ
-    have e₁ := (isCombAtG_iff Z.t _ (fun j => ovT (hF.1 τ j).1) cf w).1 h
-    have ht : IsTanAtG Z.t (spMap ψ ≫ stalkPt C.Y y ≫ C.π ≫ genι Z) w := by
-      rw [← e₁]
-      exact isTanAtG_of _ (combT_tan _ (fun j => ovT (hF.1 τ j).1) (fun j => smT_zero_ovT _) cf)
-    refine (hF.2 τ w ht fun a => ?_).unique h h'
-    have := Z.t.act.hom a
-    rw [← e₁]
-    exact congrArg (fun q => q.left) (combT_eig _ (fun j => ovT (hF.1 τ j).1) (Z.t.act.act a) _
-      (fun j => Over.OverMorphism.ext ((hF.1 τ j).2 a)) cf)
-
-omit [NumberField F] in
-
-theorem isFlagFrame_concat :
-    IsFlagFrame Z.t (C.π ≫ genι Z)
-      (fun i : Fin (letters Dw).length => C.f0.v ((letters Dw).get i).1 ((letters Dw).get i).2)
-      (fun y i => (fr C y).v ((letters Dw).get i).1 ((letters Dw).get i).2)
-      (fun y i => dg C y ((letters Dw).get i).1 ((letters Dw).get i).2) where
-  tan y i := (fr C y).tan _ _
-  tri y i := by
-    obtain ⟨hx, -, h⟩ := (fr_spec C y).1
-    obtain ⟨cf, h₁, h₂, h₃⟩ := h ((letters Dw).get i).1 ((letters Dw).get i).2
-    replace h₃ := (congrArg (fun x => IsCombAtG Z.t x _ cf _) hx).mp h₃
-    obtain ⟨cg, g₁, g₂, g₃⟩ := (GlobalTheory.Proof.frame_combination_coeff_unique.concat_frame E H Dw l c Z.X Z.t _ _ _ _
-      (isFrame_fr C y (algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField))).2 i cf _ h₂ h₃
-    exact ⟨cg, g₂.trans h₁, g₁, (congrArg (fun x => IsCombAtG Z.t x _ cg _) hx).mpr g₃⟩
-  indep y k _ ψ := (GlobalTheory.Proof.frame_combination_coeff_unique.concat_frame E H Dw l c Z.X Z.t _ _ _ _ (isFrame_fr C y ψ)).1
-
-open Classical in
-
-def symLog (b : ℕ → Bool) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) : PtFn C.Y := fun v ε y =>
-  if hp : (resP v).Prime then
-    haveI := Fact.mk hp
-    let ψ : C.Y.X.presheaf.stalk (below y.1) →+* ℂ_[resP v] := (ioOf (resP v) ε).comp (Scheme.stalkClosedPointTo y.1).hom
-    (-Real.log (ε.w (resP v)) / Real.log (resP v)) *
-      lnStep Z.t (spMap ψ ≫ stalkPt C.Y (below y.1) ≫ C.π ≫ genι Z)
-        (fun τ i => spMap (dualMap ψ) ≫ (C.gr_spec (below y.1)).choose_spec.choose.v τ i) (resP v) (b (resP v)) st
-  else 0
-
-theorem good_sym (hB : HTBoundSt) [IsLocallyNoetherian Z.X] (hX : Z.X.IsSeparated) (M : GlobalTheory.TrueGeo.Model C.Y)
-    (ρ' : M.X ⟶ Z.X) (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) (hρ : M.j ≫ ρ' = C.π ≫ genι Z)
-    {b : ℕ → Bool} (hb : {q | b q = true}.Finite) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) :
-    Good C.Y ((letterOf Dw st).elim 0 fun x => C.gr x.1 x.2)
-      (fun y => (letterOf Dw st).elim 1 fun x => dg C y x.1 x.2) (symLog C b st) := by
-  rcases st with ⟨τ, k⟩ | k
-  · by_cases h : k < Dw.mult τ
-    · have h₁ := good_mix (fun q => good_step hB hX M ρ' hM hρ (isFlagFrame_eig C τ)
-        (fun y i => (fr_spec C y).2 τ i) q ⟨k, h⟩) hb
-      by_cases hτ : τ (H.rt : E) = H.rt0
-      · refine (h₁.add (good_diff C.Y E hb)).congr (by simp [letterOf, h]) (by simp [letterOf, h]) fun v ε y => ?_
-        obtain ⟨hp, -⟩ := GlobalTheory.ShFam.Pad.ioOf_spec F v ε
-        have hl : Real.log (resP v) ≠ 0 := (Real.log_pos (by exact_mod_cast hp.one_lt)).ne'
-        simp only [symLog, mixLog, lnStep, dif_pos hp, dif_pos h, hτ, and_true]
-        split_ifs
-        · field_simp
-          ring
-        · simp
-      · refine h₁.congr (by simp [letterOf, h]) (by simp [letterOf, h]) fun v ε y => ?_
-        simp only [symLog, mixLog, lnStep, dif_pos h, hτ, and_false, if_false, sub_zero]
-    · exact good_zero.congr (by simp [letterOf, h]) (by simp [letterOf, h]) fun v ε y => by
-        simp [symLog, lnStep, h]
-  · by_cases h : k < (letters Dw).length
-    · have h₁ := good_mix (fun q => good_step hB hX M ρ' hM hρ (isFlagFrame_concat C)
-        (Δ := fun i => C.gr ((letters Dw).get i).1 ((letters Dw).get i).2)
-        (fun y i => (fr_spec C y).2 _ _) q ⟨k, h⟩) hb
-      refine h₁.congr (by simp [letterOf, h]) (by simp [letterOf, h]) fun v ε y => ?_
-      simp only [symLog, mixLog, lnStep, dif_pos h]
-    · exact good_zero.congr (by simp [letterOf, not_lt.1 h]) (by simp [letterOf, not_lt.1 h]) fun v ε y => by
-        simp [symLog, lnStep, h]
-
-open Classical in
-
-def lgCopy (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (y : AlgPt C.Y) : ℝ :=
-  if hp : (resP v).Prime then
-    haveI := Fact.mk hp
-    let f := (C.gr_spec (below y.1)).choose_spec.choose
-    let t := (C.gr_spec (below y.1)).choose_spec.choose_spec.choose
-    let ψ : C.Y.X.presheaf.stalk (below y.1) →+* ℂ_[resP v] := (ioOf (resP v) ε).comp (Scheme.stalkClosedPointTo y.1).hom
-    Real.log (ε.w (valAt y.1 (((∏ x : Letter Dw, t x.1 x.2 ^ expo Dw w x) *
-        (eqn (divOf C (expo Dw w)) (below y.1))⁻¹ : C.Y.Fnˣ) : C.Y.Fn))) +
-      (-Real.log (ε.w (resP v)) / Real.log (resP v)) *
-        w.sum fun a n => (n : ℝ) * lnStep Z.t (spMap ψ ≫ stalkPt C.Y (below y.1) ≫ C.π ≫ genι Z)
-          (fun τ i => spMap (dualMap ψ) ≫ f.v τ i) (resP v) (a.1 (resP v)) a.2.2
-  else 0
-
-theorem lgOf_eq_lgCopy : @lgOf = @lgCopy := rfl
-
-theorem mul_finsupp_sum {α : Type} (w : α →₀ ℤ) (c : ℝ) (g : α → ℝ) :
-    c * w.sum (fun a n => (n : ℝ) * g a) = ∑ a ∈ w.support, (w a : ℝ) * (c * g a) := by
-  simp only [Finsupp.sum, Finset.mul_sum]
-  exact Finset.sum_congr rfl fun a _ => mul_left_comm _ _ _
-
-theorem lgCopy_eq (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (y : AlgPt C.Y) :
-    lgCopy C w v ε y = Real.log (ε.w (valAt y.1 (((∏ x : Letter Dw, dg C (below y.1) x.1 x.2 ^ expo Dw w x) *
-      (eqn (divOf C (expo Dw w)) (below y.1))⁻¹ : C.Y.Fnˣ) : C.Y.Fn))) +
-      ∑ a ∈ w.support, (w a : ℝ) * symLog C a.1 a.2.2 v ε y := by
-  obtain ⟨hp, -⟩ := GlobalTheory.ShFam.Pad.ioOf_spec F v ε
-  simp only [lgCopy, symLog, dif_pos hp]
-  refine congrArg₂ (fun a b : ℝ => a + b) rfl ?_
-  refine (mul_finsupp_sum _ _ _).trans ?_
-  refine Finset.sum_congr rfl fun a _ => ?_
-  refine congrArg _ (congrArg _ ?_)
-  rfl
-
-omit [NumberField F] in
 theorem sum_expo {G : Type} [AddCommGroup G] (g : Letter Dw → G) (w : Sym E →₀ ℤ) :
     ∑ a ∈ w.support, w a • ((letterOf Dw a.2.2).elim 0 g) = ∑ x, expo Dw w x • g x := by
   classical
@@ -341,19 +183,6 @@ theorem sum_expo {G : Type} [AddCommGroup G] (g : Letter Dw → G) (w : Sym E �
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun a _ => ?_
   cases letterOf Dw a.2.2 <;> simp
-
-theorem fromModel_lgOf (hB : HTBoundSt) [IsLocallyNoetherian Z.X] (hX : Z.X.IsSeparated) (M : GlobalTheory.TrueGeo.Model C.Y)
-    (ρ' : M.X ⟶ Z.X) (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) (hρ : M.j ≫ ρ' = C.π ≫ genι Z)
-    (w : Sym E →₀ ℤ) (hw : ∀ a ∈ w.support, {q | a.1 q = true}.Finite) :
-    FromModel C.Y (divOf C (expo Dw w)) (eqn (divOf C (expo Dw w))) (lgOf C w) := by
-  have h₁ := good_sum w.support fun a ha => (good_sym C hB hX M ρ' hM hρ (hw a ha) a.2.2).zsmul (w a)
-  have h₂ : Good C.Y (divOf C (expo Dw w)) (fun y => ∏ x : Letter Dw, dg C y x.1 x.2 ^ expo Dw w x) _ :=
-    h₁.congr (sum_expo (fun x => C.gr x.1 x.2) w)
-      (fun y => sum_expo (G := Additive C.Y.Fnˣ) (fun x => Additive.ofMul (dg C y x.1 x.2)) w) (fun _ _ _ => rfl)
-  have h₃ := h₂.change (t' := eqn (divOf C (expo Dw w))) fun y => (CartierDiv.exists_isEqn _ y).choose_spec
-  have e₀ : lgCopy C w = _ := funext fun v => funext fun ε => funext fun y => lgCopy_eq C w v ε y
-  rw [lgOf_eq_lgCopy, e₀]
-  exact h₃
 
 end Flags
 

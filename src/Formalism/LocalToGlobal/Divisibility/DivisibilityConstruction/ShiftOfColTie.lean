@@ -9,8 +9,6 @@ namespace Formalism.L2.DIV.Cons
 
 variable {D : D7}
 
-theorem sgRec_eq_sgFl (L : SizeData₂ D) (u : D.what₂.Word) : sgRec L u = Formalism.L2.G.ServJoint.sgFl L u := rfl
-
 def nuOf (L : SizeData₂ D) (u : D.what₂.Word) {d : ℕ} (e : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) :
     Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL) :=
   (L.NuLat u).comap ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL))

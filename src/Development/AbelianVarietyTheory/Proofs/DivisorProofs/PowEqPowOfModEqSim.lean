@@ -88,88 +88,9 @@ theorem TateIsoO.ev_add_nsmul (I : TateIsoO D k Q act e) {n : ℕ} (hn : 0 < n) 
     I.ev n (x + n • z) = I.ev n x := by
   rw [I.add, I.ev_nsmul_self hn hc, _root_.mul_one]
 
-theorem pow_eq_pow_of_modEq_sim {M : Type} [Monoid M] {x : M} {n a b : ℕ} (h : x ^ n = 1) (hab : a ≡ b [MOD n]) :
-    x ^ a = x ^ b := by
-  rw [← Nat.mod_add_div a n, ← Nat.mod_add_div b n, pow_add, pow_add, pow_mul, pow_mul, h, one_pow, one_pow,
-    show a % n = b % n from hab]
-
-def TateIsoO.resim (I : TateIsoO D k Q act e) (t : SimSys D N K) : TateIsoO D k Q act e where
-  ζ n := I.ζ n ^ t.u n
-  ζ_prim n hn hc := (I.ζ_prim n hn hc).pow_of_coprime _ (t.u_cop n hn hc)
-  ζ_pow n m hn hm hc := by
-    have hnc : n.Coprime p := Nat.Coprime.coprime_dvd_left (dvd_mul_right n m) hc
-    rw [← pow_mul, mul_comm (t.u _) m, pow_mul, I.ζ_pow n m hn hm hc]
-    exact pow_eq_pow_of_modEq_sim ((I.ζ_prim n hn hnc).pow_eq_one) (t.u_tower n m hn hm hc)
-  ev n y := if 0 < n ∧ n.Coprime p then I.ev n (t.g n y) else I.ev n y
-  add n x y := by
-    split_ifs
-    · rw [map_add, I.add]
-    · exact I.add _ _ _
-  lin n c x := by
-    split_ifs with h
-    · obtain ⟨z, hz⟩ := t.lin n h.1 h.2 c x
-      rw [hz, I.ev_add_nsmul h.1 h.2, I.lin]
-    · exact I.lin _ _ _
-  ker n hn hc x := by
-    rw [if_pos ⟨hn, hc⟩, I.ker n hn hc]
-    constructor
-    · rintro ⟨y, hy⟩
-      exact t.inj n hn hc x y hy
-    · rintro ⟨w, rfl⟩
-      exact ⟨t.g n w, map_nsmul _ _ _⟩
-  onto n hn hc q := by
-    rw [I.onto n hn hc q]
-    simp only [if_pos (And.intro hn hc)]
-    constructor
-    · rintro ⟨x, hx⟩
-      obtain ⟨y, z, hy⟩ := t.surj n hn hc x
-      exact ⟨y, by rw [hy, I.ev_add_nsmul hn hc, hx]⟩
-    · rintro ⟨x, hx⟩
-      exact ⟨t.g n x, hx⟩
-  tower n m hn hm hc x := by
-    have hnc : n.Coprime p := Nat.Coprime.coprime_dvd_left (dvd_mul_right n m) hc
-    rw [if_pos ⟨Nat.mul_pos hn hm, hc⟩, if_pos ⟨hn, hnc⟩, I.tower n m hn hm hc]
-    obtain ⟨z, hz⟩ := t.tower n m hn hm hc x
-    rw [hz, I.ev_add_nsmul hn hnc]
-  isom n hn hc x y := by
-    rw [if_pos ⟨hn, hc⟩, if_pos ⟨hn, hc⟩]
-    have h := I.isom n hn hc (t.g n x) (t.g n y)
-    have h1 : (I.ζ n) ^ n = 1 := (I.ζ_prim n hn hc).pow_eq_one
-    have e' : (I.ζ n ^ t.u n) ^ (2 * D.EF x y) = I.ζ n ^ (2 * D.EF (t.g n x) (t.g n y)) := by
-      rw [← zpow_natCast, ← zpow_mul, zpow_eq_zpow_emod' _ h1, zpow_eq_zpow_emod' (2 * D.EF (t.g n x) (t.g n y)) h1]
-      congr 1
-      obtain ⟨c, hc'⟩ := t.sim n hn hc x y
-      refine Int.ModEq.eq (Int.modEq_of_dvd ⟨2 * c, ?_⟩)
-      linear_combination 2 * hc'
-    rw [e']
-    exact h
-
-theorem TateIsoO.resim_ev (I : TateIsoO D k Q act e) (t : SimSys D N K) {n : ℕ} (hn : 0 < n) (hc : n.Coprime p)
-    (y : D.La) : (I.resim t).ev n y = I.ev n (t.g n y) := if_pos ⟨hn, hc⟩
-
 end Tate
 
 variable {R : Type} [CommRing R]
-
-theorem Obj.eta_add_nsmul {b : Base D R} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b K s) (x z : D.La) :
-    o.eta (x + K • z) = o.eta x := by
-  rw [o.eta_add, o.eta_ker, _root_.mul_one]
-
-def Obj.resim {b : Base D R} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b K s) (hK : 0 < K) (hKp : K.Coprime p)
-    (t : SimSys D N K) : Obj b K s :=
-  { o with
-    eta := fun y => o.eta (t.g K y)
-    eta_add := fun x y => by rw [map_add]; exact o.eta_add _ _
-    eta_lin := fun c x => by
-      obtain ⟨z, hz⟩ := t.lin K hK hKp c x
-      rw [hz, o.eta_add_nsmul]; exact o.eta_lin _ _
-    eta_ker := fun x => by rw [map_nsmul]; exact o.eta_ker _
-    geom := fun k _ _ x β hx => by
-      obtain ⟨I, hI⟩ := o.geom k x β hx
-      exact ⟨I.resim t, fun y => by rw [I.resim_ev t hK hKp]; exact hI _⟩ }
-
-theorem Obj.resim_eta {b : Base D R} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b K s) (hK : 0 < K)
-    (hKp : K.Coprime p) (t : SimSys D N K) (y : D.La) : (o.resim hK hKp t).eta y = o.eta (t.g K y) := rfl
 
 variable (D K) in
 
@@ -206,8 +127,5 @@ def levelGrp : Subgroup (Equiv.Perm (LQ D K)) where
   inv_mem' := by
     rintro a ⟨h₁, h₂⟩
     exact ⟨h₂, by rw [inv_inv]; exact h₁⟩
-
-theorem mem_levelGrp {a : Equiv.Perm (LQ D K)} :
-    a ∈ levelGrp D N K ↔ (∃ t : SimSys D N K, t.Lifts a) ∧ ∃ t : SimSys D N K, t.Lifts a⁻¹ := Iff.rfl
 
 end GlobalTheory.UPel.HT

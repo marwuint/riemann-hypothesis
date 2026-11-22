@@ -44,8 +44,6 @@ def comp (X : DRChain.{u} C n) : ∀ i : Fin (n + 1), X.M 0 →ₗ[C] X.M i :=
 @[simp] theorem comp_succ (X : DRChain.{u} C n) (i : Fin n) :
     X.comp i.succ = X.f i ∘ₗ X.comp i.castSucc := rfl
 
-theorem comp_eq_chainComp (X : DRChain.{0} C n) : X.comp = chainComp X.f := rfl
-
 end DRChain
 
 end GlobalTheory.SSG
@@ -54,11 +52,6 @@ namespace GlobalTheory.DeRham
 
 variable {C : Type} [CommRing C] {O : Type} [Ring O]
   {B B' B'' : Over (Sp C)} [GrpObj B] [GrpObj B'] [GrpObj B'']
-
-theorem primPull_comp (f : B ⟶ B') (g : B' ⟶ B'') [IsMonHom f] [IsMonHom g] :
-    primPull (dp0 C) (𝟙 _) (f ≫ g) = primPull (dp0 C) (𝟙 _) f ∘ₗ primPull (dp0 C) (𝟙 _) g :=
-  LinearMap.ext fun c ↦ (GrpMor.pull_pull (homMor (dp0 C) (𝟙 _) g) (homMor (dp0 C) (𝟙 _) f)
-    (homMor (dp0 C) (𝟙 _) (f ≫ g)) (fun _ ↦ rfl) rfl c).symm
 
 theorem primPull_congr {f g : B ⟶ B'} [IsMonHom f] [IsMonHom g] (e : f = g) :
     primPull (dp0 C) (𝟙 _) f = primPull (dp0 C) (𝟙 _) g := by
@@ -107,46 +100,6 @@ def epsPart (ρ : RingAct B O) {K : Type} [CommRing K] [Algebra K O] (χ : K →
     Submodule C (primDR B) :=
   eigSub ρ χ ⊓ LinearMap.range (tensorPull ρ ε)
 
-theorem primPull_opPull {ρ : RingAct B O} {ρ' : RingAct B' O} {u : B' ⟶ B}
-    (hu : GlobalTheory.IwLevel.IsLin ρ' ρ u) (x : O) :
-    haveI := hu.hom
-    primPull (dp0 C) (𝟙 _) u ∘ₗ opPull ρ x = opPull ρ' x ∘ₗ primPull (dp0 C) (𝟙 _) u := by
-  haveI := hu.hom
-  haveI := ρ.hom
-  haveI := ρ'.hom
-  unfold opPull
-  rw [← primPull_comp, ← primPull_comp]
-  exact primPull_congr (hu.comm x).symm
-
-theorem primPull_tensorPull {ρ : RingAct B O} {ρ' : RingAct B' O} {u : B' ⟶ B}
-    (hu : GlobalTheory.IwLevel.IsLin ρ' ρ u) (z : C ⊗[ℤ] O) :
-    haveI := hu.hom
-    primPull (dp0 C) (𝟙 _) u ∘ₗ tensorPull ρ z = tensorPull ρ' z ∘ₗ primPull (dp0 C) (𝟙 _) u := by
-  haveI := hu.hom
-  induction z using TensorProduct.induction_on with
-  | zero => simp
-  | tmul c x => rw [tensorPull_tmul, tensorPull_tmul, LinearMap.comp_smul, LinearMap.smul_comp,
-      primPull_opPull hu]
-  | add z z' hz hz' => rw [map_add, map_add, LinearMap.comp_add, LinearMap.add_comp, hz, hz']
-
-def pullPart {ρ : RingAct B O} {ρ' : RingAct B' O} {K : Type} [CommRing K] [Algebra K O] (χ : K →+* C)
-    (ε : C ⊗[ℤ] O) (u : B' ⟶ B) (hu : GlobalTheory.IwLevel.IsLin ρ' ρ u) : epsPart ρ χ ε →ₗ[C] epsPart ρ' χ ε :=
-  haveI := hu.hom
-  (primPull (dp0 C) (𝟙 _) u).restrict fun h hh ↦ by
-    refine ⟨mem_eigSub.2 fun x ↦ ?_, ?_⟩
-    · have e := LinearMap.congr_fun (primPull_opPull hu (algebraMap K O x)) h
-      simp only [LinearMap.comp_apply] at e
-      rw [← e, mem_eigSub.1 hh.1 x, map_smul]
-    · obtain ⟨y, hy⟩ := hh.2
-      refine ⟨primPull (dp0 C) (𝟙 _) u y, ?_⟩
-      rw [← hy]
-      exact (LinearMap.congr_fun (primPull_tensorPull hu ε) y).symm
-
-theorem pullPart_apply {ρ : RingAct B O} {ρ' : RingAct B' O} {K : Type} [CommRing K] [Algebra K O]
-    (χ : K →+* C) (ε : C ⊗[ℤ] O) (u : B' ⟶ B) (hu : GlobalTheory.IwLevel.IsLin ρ' ρ u) (h : epsPart ρ χ ε) :
-    haveI := hu.hom
-    (pullPart χ ε u hu h : primDR B') = primPull (dp0 C) (𝟙 _) u h := rfl
-
 end GlobalTheory.DeRham
 
 namespace GlobalTheory.IwLevel
@@ -187,4 +140,3 @@ end GlobalTheory.IwLevel
 namespace GlobalTheory.UPel.HT
 
 end GlobalTheory.UPel.HT
-

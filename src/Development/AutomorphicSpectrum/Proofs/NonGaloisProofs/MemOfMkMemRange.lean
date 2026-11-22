@@ -270,9 +270,6 @@ def cupBil (ρ' : Representation LL G V') (P : V →ₗ[LL] V' →ₗ[LL] LL) :
     (fun a b b' => by ext x; simp [cupL])
     (fun r a b => by ext x; simp [cupL])
 
-theorem cupBil_apply (ρ' : Representation LL G V') (P : V →ₗ[LL] V' →ₗ[LL] LL) (a : G → V)
-    (b : G → V') : cupBil ρ' P a b = cupL ρ' P a b := rfl
-
 end Cup
 
 end GlobalTheory.CompanionTheory.LocDual.ExactAnn

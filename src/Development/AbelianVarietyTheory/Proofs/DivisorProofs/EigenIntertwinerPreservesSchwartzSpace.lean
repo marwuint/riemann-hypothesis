@@ -74,29 +74,6 @@ theorem adm_congr {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] 
     exact ⟨T, fun f => (h _ (Submodule.subset_span ⟨f, g, hg, rfl⟩)).symm.trans (hT f)⟩
   exact ⟨key h, key fun Φ hΦ => (h Φ hΦ).symm⟩
 
-theorem exists_isWeil_trans : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ M₁ : Model σ X W, M₁.IsGood B.ψ → ∀ e : Fn F n d →ₗ[ℂ] Fn F n d, IsEv B M M₁ 1 1 ∅ e → Set.BijOn e (schA F (Fin n × Fin d) : Set _) (schA F (Fin n × Fin d) : Set _) → ∃ om₁ : Rep σ X W, M₁.IsWeil B.ψ χX χW om₁ ∧ ∀ x, ∀ Φ ∈ schA F (Fin n × Fin d), e (om x Φ) = om₁ x (e Φ) := by
-  intro hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij
-  obtain ⟨T, hTe, hTs⟩ := extEquiv (schA F (Fin n × Fin d)) e hbij
-  have h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
-  have h1' : incM F (1 : Matrix (Fin d) (Fin d) E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
-  have hgood : IsGoodInt (adeleClass F) B.ψ M.co M₁.co T := by
-    refine ⟨hTs, fun w Φ hΦ => ?_, fun l => ?_, fun μ hμ => ?_⟩
-    · have hm : M.co.rho B.ψ w Φ ∈ schA F (Fin n × Fin d) :=
-        _root_.GlobalTheory.SchrKeepsSchA.schr_mem_schA F B.ψ hpair.base.std _ (M.co.e w) Φ hΦ
-      have := hev.Heisenberg₂ w Φ hΦ
-      rw [h1, h1', Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one] at this
-      rw [hTe _ hm, hTe _ hΦ, this]
-    · refine (_root_.GlobalTheory.ModelAdm.model_admissible_iff_evaluation hP F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij l).trans (adm_congr ?_)
-      intro Φ hΦ
-      simp [hTe Φ hΦ]
-    · obtain ⟨c, hc⟩ := _root_.GlobalTheory.ModelTrUnit.exists_const hP F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij μ hμ
-      exact ⟨c, fun Φ hΦ => by rw [hTe Φ hΦ]; exact hc Φ hΦ⟩
-  refine ⟨trRep T om, isUWeilPair_trRep hgood
-    (_root_.GlobalTheory.DblInt.main hP F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij T hTe)
-    (_root_.GlobalTheory.DblTr.hasDbl_transp hP F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij T hTe) hpair.weil, fun x Φ hΦ => ?_⟩
-  have hpres : om x Φ ∈ schA F (Fin n × Fin d) := hpair.weil.isUSplitting.pres x Φ hΦ
-  rw [trRep_apply, ← hTe Φ hΦ, LinearEquiv.symm_apply_apply, hTe _ hpres]
-
 end GlobalTheory.ModelTr
 
 end

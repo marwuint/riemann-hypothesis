@@ -265,16 +265,6 @@ noncomputable def cycTateZeroOrbitEquiv [Fintype G] (ρ : Representation k G (�
     (orbitZeroMap_surjective ρ hρ x₀ D hD ρ₀ hρ₀ σ hσ τ hτ)
     (orbitZeroMap_eq_zero_iff ρ hρ x₀ D hD ρ₀ hρ₀ σ hσ τ)
 
-theorem cycTateZeroOrbitEquiv_mk [Fintype G] (ρ : Representation k G (∀ x, M x))
-    (hρ : PermutesFactors ρ) (x₀ : X) (D : Subgroup G) [Fintype D]
-    (hD : ∀ g, g ∈ D ↔ g • x₀ = x₀) (ρ₀ : Representation k D (M x₀))
-    (hρ₀ : ∀ (d : D) (f : ∀ x, M x), ρ d f x₀ = ρ₀ d (f x₀)) (σ : G)
-    (hσ : ∀ g, g ∈ Subgroup.zpowers σ) (τ : D) (hτ : ∀ d, d ∈ Subgroup.zpowers τ)
-    (f : (cycSubOne ρ σ).ker) :
-    cycTateZeroOrbitEquiv ρ hρ x₀ D hD ρ₀ hρ₀ σ hσ τ hτ (QuotientAddGroup.mk f) =
-      QuotientAddGroup.mk ⟨(f : ∀ x, M x) x₀, base_mem_ker_cycSubOne hρ₀ hσ τ f⟩ :=
-  rfl
-
 theorem orbitCores_mem_ker_cycNorm [Fintype G] [Fintype X] {ρ : Representation k G (∀ x, M x)}
     {x₀ : X} {D : Subgroup G} [Fintype D] (hD : ∀ g, g ∈ D ↔ g • x₀ = x₀)
     {ρ₀ : Representation k D (M x₀)} (hρ₀ : ∀ (d : D) (f : ∀ x, M x), ρ d f x₀ = ρ₀ d (f x₀))

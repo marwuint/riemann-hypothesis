@@ -127,9 +127,6 @@ noncomputable def suppMap (φ : A ⟶ B) (hP : P.OrdConnected) (hP' : P'.OrdConn
       rw [Subsingleton.elim x 0]
       simp only [map_zero]
 
-theorem suppMap_app (φ : A ⟶ B) (h) (s : Finset ι) :
-    ((suppMap φ hP hP' h).app s).hom = suppMapApp φ hP hP' s := rfl
-
 theorem suppMapApp_bijective (φ : A ⟶ B) {s : Finset ι} (h : s ∈ P ↔ s ∈ P')
     (hφ : s ∈ P → Function.Bijective (φ.app s).hom) :
     Function.Bijective (suppMapApp φ hP hP' s) := by

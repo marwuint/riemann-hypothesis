@@ -66,9 +66,6 @@ structure Leaves (Tau : Type) where
 
 def cppDef (q : ℕ) : ℝ := if q = 2 then 1 else 1 / ((q : ℝ) - 1)
 
-def XWDef {Tau ι : Type} [Fintype Tau] [Fintype ι] (P : MeansPack Tau ι) : ℝ :=
-  66 * P.L + (P.nc : ℝ) * P.f * P.N * Real.log P.rd
-
 def kpDef {Tau ι : Type} [Fintype Tau] [Fintype ι] (P : MeansPack Tau ι) (q : ℕ) : ℝ :=
   (P.nc : ℝ) * P.f * P.N * P.vdd q / 2
 
@@ -76,28 +73,14 @@ namespace Leaves
 
 variable {Tau ι : Type} [Fintype Tau] [Fintype ι] (Lv : Leaves Tau) (P : MeansPack Tau ι)
 
-def SBDef : Finset ℕ := ((range (⌊P.B0⌋₊ + 1)).filter Nat.Prime) ∪ (2 * Lv.dE * Lv.level).primeFactors
-
-def PPeDef : ℝ :=
-  3 / 2 * (P.f : ℝ) * (P.N : ℝ) ^ 4 * P.L
-    + (((P.f : ℝ) * (P.N : ℝ) ^ 2 + 3) * P.f * P.N * Real.log P.rd + 3 * Real.log ((2 * Lv.q1 * Lv.d : ℕ) : ℝ))
-    + (3 * Real.log ((Lv.g1 * Lv.g2 : ℕ) : ℝ) + Real.log ((Lv.rr * Lv.rr' : ℕ) : ℝ))
-
 def Xde : ℝ := Lv.logmu + 3 * (P.D : ℝ) * P.L
 
 def Psup : ℝ := 1 / 2 * Real.log (Lv.r0 : ℝ) + Lv.P0 + 2 * (P.f : ℝ) * (P.N : ℝ) ^ 2
 
-def Ptau0 : ℝ := 1 / 2 * Real.log (Lv.r0 : ℝ) + Real.log (Real.exp (Lv.Xde P) + 1) + Lv.Psup P
-
 def PPA : ℝ := 3 * (P.D : ℝ) + 3 * Lv.cubicPeriodConstant
-
-def PinfDef : ℝ :=
-  2 * Lv.Ptau0 P + Lv.PPA P + 2 * (P.f : ℝ) * P.N * Lv.c1 + 7 * (P.f : ℝ) * (P.N : ℝ) ^ 2 + 2 * Real.log (Lv.Nc : ℝ)
 
 def rnd (q : ℕ) : ℝ :=
   (if q ∣ 2 * Lv.dE * Lv.level then 1 else 0) + (if q ∣ 2 * Lv.q1 * Lv.d then kpDef P q + 1 else 0)
-
-def eDef (q : ℕ) : ℝ := (Lv.eloc q).fold max 0 (fun x => x + Lv.rnd P q)
 
 end Leaves
 

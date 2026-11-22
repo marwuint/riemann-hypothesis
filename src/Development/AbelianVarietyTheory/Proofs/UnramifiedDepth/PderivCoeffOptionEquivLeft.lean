@@ -23,16 +23,6 @@ variable {C : Type} [Field C] {dd m : ℕ}
 def inT (σ : Type) (f : PowerSeries C) : MvPowerSeries (Option σ) C :=
   MvPowerSeries.subst (fun _ : Unit => (X none : MvPowerSeries (Option σ) C)) f
 
-def cvPt (γ : Fin dd → PowerSeries C) (m : ℕ) (p : Fin (m + 1) × Fin dd) :
-    MvPowerSeries (Option (Fin m × Fin dd)) C :=
-  Fin.cases (motive := fun _ => MvPowerSeries (Option (Fin m × Fin dd)) C) (inT _ (γ p.2))
-    (fun j => X (some (j, p.2))) p.1
-
-theorem cvPt_zero (γ : Fin dd → PowerSeries C) (i : Fin dd) : cvPt γ m (0, i) = inT _ (γ i) := rfl
-
-theorem cvPt_succ (γ : Fin dd → PowerSeries C) (j : Fin m) (i : Fin dd) :
-    cvPt γ m (j.succ, i) = X (some (j, i)) := rfl
-
 theorem inT_eq_rename (σ : Type) (f : PowerSeries C) :
     inT σ f = rename (fun _ : Unit => (none : Option σ)) f := by
   rw [inT, rename_eq_subst]

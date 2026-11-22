@@ -385,13 +385,9 @@ def cone : Poly S N →ₐ[S] Polynomial Ω := ReciprocityTheory.ChartRestrictio
 
 theorem cone_eq : cone (S := S) x = coneGen x := rfl
 
-def coordRing : Subalgebra S (Polynomial Ω) := ReciprocityTheory.ChartRestriction.G.Geo.coneRing S x
-
 def primeOf : Ideal (Poly S N) := ReciprocityTheory.ChartRestriction.G.Geo.coordIdeal S x
 
 theorem primeOf_eq : primeOf (S := S) x = RingHom.ker (cone (S := S) x) := rfl
-
-theorem coordRing_eq : coordRing (S := S) x = (cone (S := S) x).range := rfl
 
 instance : (primeOf (S := S) x).IsPrime := by rw [primeOf_eq]; exact RingHom.ker_isPrime _
 

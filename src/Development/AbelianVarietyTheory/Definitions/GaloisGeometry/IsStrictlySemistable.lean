@@ -131,52 +131,6 @@ namespace SSAtlas
 variable {ϖ : O} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {ι A : Type} [Fintype ι]
   (C : SSAtlas ϖ X q ι A) {k : Type} [CommRing k] (κ : O →+* k)
 
-open Classical in
-
-def logFun : LogFun k (κ ϖ) where
-  ι := ι
-  A := A
-  Pt := ptFun X q κ
-  str z := z.1.1
-  str_map _ _ := rfl
-  In α _ z := ⊤ ≤ z.1.2 ⁻¹ᵁ C.U α
-  in_map := @fun _ _ _ φ y h => le_preimage_map φ y.1.2 h
-  f α i B z := if h : ⊤ ≤ z.1.2 ⁻¹ᵁ C.U α then GlobalTheory.Cris.evalAt (B := B) z.1.2 (C.U α) h (C.F α i) else 0
-  f_map {α} i B B' φ y h := by
-    rw [dif_pos h, dif_pos (show ⊤ ≤ ((ptFun X q κ).map φ y).1.2 ⁻¹ᵁ C.U α from le_preimage_map φ y.1.2 h)]
-    exact evalAt_map φ y.1.2 h _ _
-  g α β i B z := if h : ⊤ ≤ z.1.2 ⁻¹ᵁ (C.U α ⊓ C.U β) then
-      Units.map (GlobalTheory.Cris.evalAt (B := B) z.1.2 (C.U α ⊓ C.U β) h : Γ(X, C.U α ⊓ C.U β) →* B) (C.G α β i) else 1
-  g_map {α β} i B B' φ y hα hβ := by
-    have h := le_preimage_inf y.1.2 hα hβ
-    rw [dif_pos h, dif_pos (show ⊤ ≤ ((ptFun X q κ).map φ y).1.2 ⁻¹ᵁ (C.U α ⊓ C.U β) from le_preimage_map φ y.1.2 h)]
-    ext
-    exact evalAt_map φ y.1.2 h _ _
-  f_eq {α β} i B y hα hβ := by
-    have h := le_preimage_inf y.1.2 hα hβ
-    rw [dif_pos hα, dif_pos hβ, dif_pos h, Units.coe_map, MonoidHom.coe_coe,
-      ← evalAt_res y.1.2 inf_le_left hα h, ← evalAt_res y.1.2 inf_le_right hβ h, ← map_mul, C.F_eq]
-  g_self {α} i B y hα := by
-    rw [dif_pos (le_preimage_inf y.1.2 hα hα), C.G_self, map_one]
-  g_comp {α β γ} i B y hα hβ hγ := by
-    have h12 := le_preimage_inf y.1.2 hα hβ
-    have h23 := le_preimage_inf y.1.2 hβ hγ
-    have h13 := le_preimage_inf y.1.2 hα hγ
-    have h123 := le_preimage_inf y.1.2 h12 hγ
-    rw [dif_pos h12, dif_pos h23, dif_pos h13]
-    ext
-    simp only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe]
-    rw [← evalAt_res y.1.2 inf_le_left h12 h123, ← evalAt_res y.1.2 (le_inf (inf_le_left.trans inf_le_right) inf_le_right) h23 h123,
-      ← evalAt_res y.1.2 (le_inf (inf_le_left.trans inf_le_left) inf_le_right) h13 h123,
-      ← map_mul, C.G_comp]
-  prod_f {α} B y hα := by
-    simp only [dif_pos hα]
-    rw [← map_prod, C.prod_F]
-    exact evalAt_base q κ y.1.1 y.1.2 y.2 hα ϖ
-  prod_g {α β} B y hα hβ := by
-    simp only [dif_pos (le_preimage_inf y.1.2 hα hβ)]
-    rw [← map_prod, C.prod_G, map_one]
-
 end SSAtlas
 
 namespace SSAtlas
@@ -184,33 +138,12 @@ namespace SSAtlas
 variable {ϖ : O} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {ι A : Type} [Fintype ι]
   {k : Type} [CommRing k] (κ : O →+* k)
 
-theorem isStrictlySemistable (C : SSAtlas ϖ X q ι A) : GlobalTheory.Et.IsStrictlySemistable ϖ q := by
-  intro x
-  have hx : x ∈ (⨆ α, C.U α) := C.cover ▸ trivial
-  obtain ⟨α, hα⟩ := TopologicalSpace.Opens.mem_iSup.1 hx
-  obtain ⟨V, hVa, hxV, -, m, r, h1, h2, -, ψ, het, hcomp, -, -⟩ := C.chart α x hα
-  exact ⟨V, hVa, hxV, m, r, h1, h2, ψ, het, hcomp⟩
-
-open Classical in
-
-theorem isSSFun_logFun (C : SSAtlas ϖ X q ι A) : IsSSFun ϖ X q κ (C.logFun κ) := by
-  refine ⟨C.isStrictlySemistable, fun B => Equiv.refl _, C.U, C.F, C.G, C.affine, C.cover, C.prod_F, C.F_eq, C.nzd,
-    C.chart, fun φ y => rfl, fun {B} y => ⟨rfl, fun α => ⟨Iff.rfl, fun h => ⟨fun i => dif_pos h, fun β h' i => ?_⟩⟩⟩⟩
-  change ((if h : ⊤ ≤ y.1.2 ⁻¹ᵁ (C.U α ⊓ C.U β) then
-      Units.map (GlobalTheory.Cris.evalAt (B := B) y.1.2 (C.U α ⊓ C.U β) h : Γ(X, C.U α ⊓ C.U β) →* B) (C.G α β i)
-      else 1 : Bˣ) : B) = _
-  rw [dif_pos (show ⊤ ≤ y.1.2 ⁻¹ᵁ (C.U α ⊓ C.U β) from h')]
-  rfl
-
 end SSAtlas
 
 namespace SSAtlas
 
 variable {ϖ : O} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {ι A : Type} [Fintype ι]
   {k : Type} [CommRing k] (κ : O →+* k)
-
-theorem logFun_In (C : SSAtlas ϖ X q ι A) (α : A) {B : CommRingCat.{0}} (y : (C.logFun κ).Pt.obj B) :
-    (C.logFun κ).In α y ↔ ⊤ ≤ (show PtOver X q κ B from y).1.2 ⁻¹ᵁ C.U α := Iff.rfl
 
 end SSAtlas
 

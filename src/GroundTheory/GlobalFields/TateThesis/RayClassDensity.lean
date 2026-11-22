@@ -39,10 +39,6 @@ def circleChar (φ : AddChar (Additive G) ℂ) : G →* Circle where
     change φ (Additive.ofMul (g * h)) = φ (Additive.ofMul g) * φ (Additive.ofMul h)
     rw [ofMul_mul, AddChar.map_add_eq_mul])
 
-theorem coe_circleChar (φ : AddChar (Additive G) ℂ) (g : G) :
-    (circleChar φ g : ℂ) = φ (Additive.ofMul g) :=
-  rfl
-
 end FiniteCharacters
 
 variable {K : Type*} [Field K] [NumberField K]
@@ -61,11 +57,6 @@ def ofHom (q : IdeleGroup K →* G) (hq : IsOpen (q.ker : Set (IdeleGroup K)))
     have hc : Continuous fun y : IdeleGroup K ⧸ q.ker ↦ ψ (QuotientGroup.kerLift q y) :=
       continuous_of_discreteTopology
     exact hc.comp (QuotientGroup.continuous_mk (N := q.ker))
-
-theorem ofHom_toIdele (q : IdeleGroup K →* G) (hq : IsOpen (q.ker : Set (IdeleGroup K)))
-    (hK : (IdeleGroup.diagonal K).range ≤ q.ker) (ψ : G →* Circle) (x : IdeleGroup K) :
-    (ofHom q hq hK ψ).toIdele x = ψ (q x) :=
-  rfl
 
 end HeckeCharacter
 

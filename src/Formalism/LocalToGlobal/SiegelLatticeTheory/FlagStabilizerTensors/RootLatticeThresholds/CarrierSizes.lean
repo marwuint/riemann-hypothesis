@@ -19,8 +19,6 @@ theorem unram_host (D : D7) :
 theorem g_pos (D : D7) : 0 < D.host.g 0 ∧ 0 < D.host.g 1 :=
   ⟨(D.host.g_prime 0).pos, (D.host.g_prime 1).pos⟩
 
-def ClCut (C₆ : ℝ) : ℝ := max 1 ((420 * C₆ + 48125) / 8)
-
 section Grids
 
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Sz

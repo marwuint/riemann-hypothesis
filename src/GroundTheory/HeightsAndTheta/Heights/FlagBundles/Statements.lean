@@ -27,12 +27,6 @@ def diagonalIdeal (R : Type*) [CommRing R] : Ideal (MvPolynomial (Fin 2) R) :=
 def mixedDiagonalIdeal (R : Type*) [CommRing R] : Ideal (MvPolynomial (Fin 2) R) :=
   Ideal.span {1 - X 0 * X 1}
 
-def pauli : Fin 3 → Matrix (Fin 2) (Fin 2) ℂ :=
-  ![!![0, 1; 1, 0], !![0, -Complex.I; Complex.I, 0], !![1, 0; 0, -1]]
-
-def blochVector (e : EuclideanSpace ℂ (Fin 2)) : EuclideanSpace ℝ (Fin 3) :=
-  WithLp.toLp 2 fun i => (star (WithLp.ofLp e) ⬝ᵥ (pauli i *ᵥ WithLp.ofLp e)).re
-
 def kernelL (s : ℝ) : ℝ := (1 / 2) * Real.log ((1 - s) / 2)
 
 def gKernel (R : Type*) [CommRing R] (k : ℕ) : MvPolynomial (Fin 2) R :=

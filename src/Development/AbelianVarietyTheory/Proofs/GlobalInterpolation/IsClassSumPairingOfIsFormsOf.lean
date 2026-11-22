@@ -87,10 +87,6 @@ theorem rowCl_injective : Function.Injective (rowCl W Ch sel mu P) := by
 def clEquiv : (stepX Ch sel mu P).Cl ≃ (mtildeGSD W Ch sel mu P).Cl :=
   Equiv.ofBijective _ ⟨rowCl_injective W Ch sel mu P hd, rowCl_surjective W Ch sel mu P⟩
 
-theorem clInv_cls {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (C C' : CoefPk X n (DecoSet X.E n ST SG))
-    (Λ : LevFam X.E X.K n SG) (d : DecoSet X.E n ST SG) :
-    clInv C C' Λ ((formGSD C' Λ.inv).cls d) = (formGSD C Λ).cls d := rfl
-
 include hd in
 
 theorem card_stab (c : (stepX Ch sel mu P).Cl) : Nat.card ((stepX Ch sel mu P).Stab c) =

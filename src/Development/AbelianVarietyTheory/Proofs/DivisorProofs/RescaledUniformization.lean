@@ -28,15 +28,8 @@ def scale (lam : Fin g → ℂ) (h : ∀ j, lam j ≠ 0) : (Fin g → ℂ) ≃L[
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {Lb : LB A.left}
 
-def latPull (u : HolUnif A Lb g) (lam : Fin g → ℂ) (h : ∀ j, lam j ≠ 0) : Submodule ℤ (Fin g → ℂ) :=
-  ZLattice.comap ℝ u.Λ ((scaleLin lam h).restrictScalars ℝ).toLinearMap
-
-lemma mem_latPull (u : HolUnif A Lb g) (lam : Fin g → ℂ) (h : ∀ j, lam j ≠ 0) (z : Fin g → ℂ) :
-    z ∈ latPull u lam h ↔ scale lam h z ∈ u.Λ := Iff.rfl
-
 end GlobalTheory.HolUnifScale
 
 namespace GlobalTheory.HolUnifScale
 
 end GlobalTheory.HolUnifScale
-

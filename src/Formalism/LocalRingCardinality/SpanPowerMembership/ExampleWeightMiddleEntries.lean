@@ -257,9 +257,6 @@ abbrev trivialPeriodMap : PeriodMap R0 (emptyColumnChain Tau) where
   lowerMap := 0
   period := 0
 
-theorem trivialPeriodMap_ptilCol (φ : (emptyColumnChain Tau).cls 0 → (emptyColumnChain Tau).Y 0 → ℂ) (F : Z0) :
-    (trivialPeriodMap Tau).PtilCol φ F = 0 := rfl
-
 abbrev trivialMember (Dst : ℝ) (hD : 0 < Dst) : Member R0 Tau (fun _ => hc0) :=
   ⟨emptyColumnChain Tau, atTExample Tau T Dst hD, trivialPeriodMap Tau⟩
 

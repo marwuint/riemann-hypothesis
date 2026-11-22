@@ -42,7 +42,4 @@ def eo {m j N o : ℕ} (h : m + j = N) (ho : o ≤ m) : Fin m ⊕ Fin j ≃ Fin 
     refine ⟨fun x y hxy => posFn_injective ho (congrArg Fin.val hxy), ?_⟩
     simp [h])
 
-theorem eo_val {m j N o : ℕ} (h : m + j = N) (ho : o ≤ m) (x : Fin m ⊕ Fin j) :
-    ((eo h ho x : Fin N) : ℕ) = posFn j o x := rfl
-
 end GlobalTheory.CompanionTheory.TyFinRow

@@ -79,9 +79,6 @@ def brpConst : GL (Fin n) K →* (Unit → GL (Fin n) K) := MonoidHom.pi fun _ =
 def chiW (lam : DomWeight n) : GL (Fin n) K →* K :=
   (LinearMap.det : Module.End K (VV K (oneW lam)) →* K).comp ((rhoK (oneW lam)).comp (brpConst K))
 
-theorem chiW_apply (lam : DomWeight n) (g : GL (Fin n) K) :
-    chiW K lam g = LinearMap.det (rhoK (oneW lam) (fun _ => g)) := rfl
-
 def wsum (lam : DomWeight n) : ℤ := ∑ i, lam.w i
 
 end Chi

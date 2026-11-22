@@ -14,7 +14,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.FrobPow
 
-theorem frobOver_left_apply {k : Type} [Field k] [Fintype k] (X : Over (Sp k)) (x : X.left) :
-    (GlobalTheory.SS.FrobModel.frobOver X).left x = x := rfl
-
 end GlobalTheory.AV.FrobPow

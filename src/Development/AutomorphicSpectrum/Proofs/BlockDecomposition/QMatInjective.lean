@@ -29,11 +29,6 @@ theorem jAdj_mul (ε : Fin n → Bool) (X Y : Matrix (Fin n) (Fin n) ℂ) :
   calc Jm ε * (Yᴴ * Xᴴ) * Jm ε = Jm ε * Yᴴ * 1 * Xᴴ * Jm ε := by simp only [Matrix.mul_assoc, Matrix.mul_one]
     _ = _ := by rw [← Jm_mul_self ε]; simp only [Matrix.mul_assoc]
 
-theorem jAdj_jAdj (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) : jAdj ε (jAdj ε Y) = Y := by
-  simp only [jAdj_apply, Matrix.conjTranspose_mul, Jm_conjTranspose, Matrix.conjTranspose_conjTranspose]
-  calc Jm ε * (Jm ε * (Y * Jm ε)) * Jm ε = (Jm ε * Jm ε) * Y * (Jm ε * Jm ε) := by simp only [Matrix.mul_assoc]
-    _ = Y := by rw [Jm_mul_self]; simp
-
 def qAlg (ε : Fin n → Bool) (W : Flag n a) : Subalgebra ℂ (Matrix (Fin n) (Fin n) ℂ) where
   carrier := {Y | ∀ i, ∀ y ∈ W i, Y *ᵥ y ∈ W i ∧ jAdj ε Y *ᵥ y ∈ W i}
   mul_mem' {X Y} hX hY i y hy := by
@@ -53,12 +48,6 @@ def qAlg (ε : Fin n → Bool) (W : Flag n a) : Subalgebra ℂ (Matrix (Fin n) (
           Matrix.mul_one, Jm_mul_self]
       rw [e, e2, Matrix.smul_mulVec, Matrix.one_mulVec]; exact (W i).smul_mem _ hy
 
-theorem mem_qAlg {ε : Fin n → Bool} {W : Flag n a} {Y : Matrix (Fin n) (Fin n) ℂ} :
-    Y ∈ qAlg ε W ↔ ∀ i, ∀ y ∈ W i, Y *ᵥ y ∈ W i ∧ jAdj ε Y *ᵥ y ∈ W i := Iff.rfl
-
-theorem jAdj_mem_qAlg {ε : Fin n → Bool} {W : Flag n a} {Y : Matrix (Fin n) (Fin n) ℂ} (h : Y ∈ qAlg ε W) :
-    jAdj ε Y ∈ qAlg ε W := fun i y hy => ⟨(h i y hy).2, by rw [jAdj_jAdj]; exact (h i y hy).1⟩
-
 instance (ε : Fin n → Bool) (W : Flag n a) : FiniteDimensional ℂ (qAlg ε W) :=
   inferInstanceAs (FiniteDimensional ℂ (Subalgebra.toSubmodule (qAlg ε W)))
 
@@ -69,19 +58,6 @@ abbrev QA (ε : Fin n → Bool) (W : Flag n a) : Type := RegNorm (qAlg ε W)
 
 def qMat {ε : Fin n → Bool} {W : Flag n a} (x : QA ε W) : Matrix (Fin n) (Fin n) ℂ :=
   ((RegNorm.toRegNorm (qAlg ε W)).symm x : qAlg ε W).1
-
-def qAdj (ε : Fin n → Bool) (W : Flag n a) : QA ε W →ₗ[ℝ] QA ε W where
-  toFun x := RegNorm.toRegNorm (qAlg ε W) ⟨jAdj ε (qMat x), jAdj_mem_qAlg ((RegNorm.toRegNorm (qAlg ε W)).symm x).2⟩
-  map_add' x y := by
-    apply (RegNorm.toRegNorm (qAlg ε W)).symm.injective
-    apply Subtype.ext
-    exact map_add (jAdj ε) (qMat x) (qMat y)
-  map_smul' r x := by
-    apply (RegNorm.toRegNorm (qAlg ε W)).symm.injective
-    apply Subtype.ext
-    exact map_smul (jAdj ε) r (qMat x)
-
-theorem qMat_qAdj (ε : Fin n → Bool) (W : Flag n a) (x : QA ε W) : qMat (qAdj ε W x) = jAdj ε (qMat x) := rfl
 
 theorem qMat_one {ε : Fin n → Bool} {W : Flag n a} : qMat (1 : QA ε W) = 1 := rfl
 

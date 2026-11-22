@@ -84,40 +84,7 @@ def trivLat {ι' : Type*} (x : ι' → Ω) (N : ℕ) (i : ι') : AddSubgroup (Fi
   zero_mem' _ := zero_mem _
   neg_mem' ha q := neg_mem (ha q)
 
-def trivBundle {ι' : Type*} (x : ι' → Ω) (N : ℕ) : ChartBundle o x N (Fin N → Ω) where
-  lat := trivLat o x N
-  stable i a ha e he q := by
-    show a * e q ∈ chartRing o x i
-    exact mul_mem ha (he q)
-  frame i _ := by
-    refine ⟨1, fun _ => 1, fun _ => 1, fun _ => one_mem _, fun _ => one_mem _, by simp, fun _ => ?_⟩
-    refine ⟨Pi.basisFun Ω (Fin N), (Pi.basisFun Ω (Fin N)).linearIndependent,
-      (Pi.basisFun Ω (Fin N)).span_eq, fun e => ?_⟩
-    simp only [one_pow, one_smul, one_mul, exists_const]
-    constructor
-    · intro he
-      exact ⟨e, he, by simpa using ((Pi.basisFun Ω (Fin N)).sum_repr e).symm⟩
-    · rintro ⟨a, ha, rfl⟩ q
-      have : (∑ q', a q' • (Pi.basisFun Ω (Fin N)) q') q = a q := by
-        simp [Finset.sum_apply, Pi.single_apply]
-      show (∑ q', a q' • (Pi.basisFun Ω (Fin N)) q') q ∈ chartRing o x i
-      rw [this]
-      exact ha q
-  overlap i j hi _ e he := by
-    choose m hm using fun q => exists_pow_mul_mem_chartRing x i j hi (he q)
-    refine ⟨∑ q, m q, fun q => ?_⟩
-    have hle : m q ≤ ∑ q, m q := Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ q)
-    have : ((x i / x j) ^ (∑ q, m q) • e) q =
-        (x i / x j) ^ (∑ q, m q - m q) * ((x i / x j) ^ m q * e q) := by
-      rw [Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]
-    rw [this]
-    exact mul_mem (pow_mem (div_mem_chartRing x j i) _) (hm q)
-
 variable {o}
-
-theorem mem_trivBundle {ι' : Type*} {x : ι' → Ω} {N : ℕ} {i : ι'} {e : Fin N → Ω} :
-    e ∈ (trivBundle o x N).lat i ↔ ∀ q, e q ∈ chartRing o x i :=
-  Iff.rfl
 
 end Inhabitants
 

@@ -66,10 +66,6 @@ def gT : ℕ := idx (hS D) (SublatticeInterSubspace X t) (LaP X t)
 
 def iT : ℕ := idx (hS D) (LaP X t) (ThP X t)
 
-def b1T : ℕ :=
-  idx (hS D) (XLam (X.abelian₂ t) (X.fl t))
-    ((X.abelian₂ t ⊓ toO (hS D) (Xflag (X.fl t) (jOf X t))) ⊔ (X.abelian₂ t ⊓ toO (hS D) (Iof X t)))
-
 def FrameHyp : Prop :=
   (X.fl t).fl.e = D.sp.hypE ∧ (X.fl t).fl.z = D.zmOf u ∧ IsRowLat D (X.fl t).fl (X.abelian₂ t) ∧
     FrameOK D (X.abelian₂ t) (X.fl' t)
@@ -143,29 +139,14 @@ def T2 (om : ∀ u : D.what₂.Word, D.s.Term u u → ℝ) (CH Cs C : ℝ) : Pro
     DelJ X t ≤ Hb large₂.sc.b C D.R.m D.R.f * ∏ τ, sg X t (large₂.sc.b ^ (CH * (D.R.m : ℝ))) τ ^ 2 ∧
     ∀ l ∈ ends X t, NDl X t l ≤ Hb large₂.sc.b C D.R.m D.R.f * ∏ τ, sg X t (large₂.sc.b ^ (CH * (D.R.m : ℝ))) τ ^ 2
 
-def LatticeIndicesFiniteBound : Prop :=
-  ∀ u : D.what₂.Word, TieOK X u → ∀ t : D.s.Term u u, IsInertiaCyclotomicGeneratorElement t →
-    0 < b1T X t ∧ 0 < gT X t ∧ 0 < iT X t ∧ (gT X t : ℝ) * (iT X t : ℝ) ^ 2 ≤ DelJ X t / (b1T X t : ℝ) ^ 2
-
 def RelativePresentationLiterature (C' Cl Cg cb Cu cT CT C0 : ℝ) : Prop :=
   UnitaryVolumeMass.stK2diag D large₂ C' Cl Cg cb Cu cT CT C0
-
-def PairsWithFiniteGroup (C' Cl Cg cb Cu cT CT C0 : ℝ) : Prop :=
-  UnitaryVolumeMass.stK2off D large₂ C' Cl Cg cb Cu cT CT C0
 
 end Targets
 
 section Family
 
 variable {eps : ℝ} (Fm : FamP eps) (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
-
-def FamilyKTwoFirstBound : Prop := ∀ Cg cb Cu cT CT C0 : ℝ,
-  OwnEv Fm fun C' Cl x i => RelativePresentationLiterature (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0
-
-def FamilyKTwoSecondBound : Prop := ∀ Cg cb Cu cT CT C0 : ℝ,
-  OwnEv Fm fun C' Cl x i => PairsWithFiniteGroup (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0
-
-def SlopeLossFamily : Prop := FamilyKTwoFirstBound Fm ∧ FamilyKTwoSecondBound Fm
 
 end Family
 

@@ -113,14 +113,8 @@ theorem glAct_setLast (o j : ℕ) (c d : Fin r) : glAct p (setLast LL o) j c d =
 theorem yCond_setLast [NeZero r] (o j : ℕ) (M : WithTop ℤ) :
     YCond p (r := r) (setLast LL o) j M = YCond p LL j M := rfl
 
-theorem wtSpC_setLast (o j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ) :
-    WtSpC p (setLast LL o) j Cs la = WtSpC p LL j Cs la := rfl
-
 theorem hWC_setLast (o j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ) :
     HWC p (setLast LL o) j Cs la = HWC p LL j Cs la := rfl
-
-theorem isoC_setLast (o j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ) :
-    IsoC p (setLast LL o) j Cs la = IsoC p LL j Cs la := rfl
 
 theorem wt_pow (hv : LL.vec (Fin.last K) = true) (ρ c : Fin r) (e : ℕ) (m : Fin (K + 1) × Fin r →₀ ℕ) :
     wt LL (K + 1) c (Finsupp.single (Fin.last K, ρ) e + m) = wt LL (K + 1) c m + (if ρ = c then (e : ℤ) else 0) := by

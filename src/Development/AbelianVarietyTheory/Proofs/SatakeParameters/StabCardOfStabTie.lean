@@ -131,8 +131,6 @@ section Top
 
 variable {E : Type} [Field E] {a n : ℕ}
 
-theorem cpy_apply (a b : ℕ) (x : Sp E a) (l : Fin b) : cpy E a b x l = atNL E a l.1 x := rfl
-
 def Ext (a : ℕ) (jx : Sp E n ≃ₗ[E] Sp E n) (j : Sp E (a + 0) ≃ₗ[E] Sp E (a + 0)) : Prop :=
   (∀ x, cpy E n (a + 0) (jx x) = j (cpy E n (a + 0) x)) ∧ ∀ x, atNL E n a (jx x) = atNL E n a x
 

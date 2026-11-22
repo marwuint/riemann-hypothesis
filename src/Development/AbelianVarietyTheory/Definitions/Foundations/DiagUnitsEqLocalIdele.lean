@@ -38,12 +38,6 @@ theorem infIdele_fst_ne (w u : InfinitePlace L) (h : u ≠ w) (x : (w.Completion
 theorem infIdele_snd (w : InfinitePlace L) (x : (w.Completion)ˣ) :
     ((infIdele L w x : Ideles L) : AdeleRing (𝓞 L) L).2 = 1 := rfl
 
-theorem diagUnits_snd (v : HeightOneSpectrum (𝓞 L)) (a : Lˣ) :
-    ((diagUnits L a : Ideles L) : AdeleRing (𝓞 L) L).2 v = algebraMap L (v.adicCompletion L) a := rfl
-
-theorem diagUnits_fst (w : InfinitePlace L) (a : Lˣ) :
-    ((diagUnits L a : Ideles L) : AdeleRing (𝓞 L) L).1 w = algebraMap L w.Completion a := rfl
-
 theorem finSingle_continuous (v : HeightOneSpectrum (𝓞 L)) : Continuous (finSingle L v) := by
   classical
   have hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 L))) := by

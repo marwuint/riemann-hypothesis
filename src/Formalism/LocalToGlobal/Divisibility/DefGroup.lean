@@ -523,12 +523,6 @@ abbrev UA (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) : Subgroup (GL (Fin n
 abbrev UQ (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) : Subgroup (UA hc J) :=
   (ratPts hc.sig J (Af F)).subgroupOf (UA hc J)
 
-theorem UA_gram (hc : CMData F E) (S : HSpace E) : UA hc S.gram = UAf hc S := rfl
-
-theorem UQ_gram (hc : CMData F E) (S : HSpace E) : UQ hc S.gram = UFin hc S := rfl
-
-theorem UR_gram (hc : CMData F E) (S : HSpace E) : UR hc S.gram = UF hc S := rfl
-
 end Spaces
 
 section G0
@@ -763,18 +757,6 @@ theorem Kg_le_lev {T : Finset (Pl E)} (hg : D.Pg ⊆ T) (hq : D.Q ⊆ T) : Kg hc
       rw [h3 PP.1 (hg PP.2)]; exact blockDiagonalExtendByOnePrimeField_one _ _
     show rTup β D x ∈ D.P.H
     rw [this]; exact Subgroup.one_mem _
-
-def datX (r t m : ℕ) (Pg Q : Finset (Pl E)) (P : LevelP Pg r LL) (χ : ℕ → ∀ PP : Pl E, (kP PP)ˣ →* LLˣ)
-    (ξ : ∀ PP : Pl E, (kP PP)ˣ →* LLˣ) : LevDat E LL (r + m * t) where
-  r := r
-  hr := Nat.le_add_right _ _
-  t := t
-  s := m
-  Pg := Pg
-  Q := Q
-  P := P
-  cg := χ
-  xq := fun PP => (ξ PP)⁻¹
 
 def datV (r t j : ℕ) (Pg Q : Finset (Pl E)) (P : LevelP Pg r LL) (χ : ℕ → ∀ PP : Pl E, (kP PP)ˣ →* LLˣ)
     (ξ : ∀ PP : Pl E, (kP PP)ˣ →* LLˣ) : LevDat E LL (r + t) where

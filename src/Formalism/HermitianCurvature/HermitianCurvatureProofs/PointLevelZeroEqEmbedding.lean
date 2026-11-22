@@ -153,28 +153,6 @@ section main
 
 open Formalism.FourierDecayAlt.P.LevelPointCoordinates Formalism.FourierDecayAlt.P.PBQ
 
-theorem jfZero {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)
-    (hj : 0 + 1 ≤ P.r) (γ : B.Mat P.k (P.r - (0 + 1))) (hγ : γ ∈ B.GV P.k (P.r - (0 + 1)))
-    (hΩ : γ ∈ Q.OmPlus P.k (P.r - (0 + 1)) (p.T.bs (0 + 1)).z (p.T.bs (0 + 1)).z') (τ : ℂ) (hτ : τ ≠ 0)
-    (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (hH : KB.CptCoef p.T.base H) (Z : Matrix (Fin 0) (Fin 0) ℂ) :
-    B.JF (p.T.bs 0) H (LevelPointCoordinates.mLev P 0 hj τ γ) =
-      PBQ.pbF (p.T.bs 0) p.T.base (by omega : 0 + (P.r - 0) = P.r) H (LevelPointCoordinates.x0 P.k P.r 0 hj Z τ γ) := by
-  have hg0 : LevelPointCoordinates.mLev P 0 hj τ γ ∈ JF.Om P.k (P.r - 0) (p.T.bs 0).z (p.T.bs 0).z' := by
-    have hm := Formalism.FourierDecayAlt.P.PBH.mcOm P.k (P.r - (0 + 1)) (p.T.bs (0 + 1)).z (p.T.bs (0 + 1)).z'
-      (p.T.bs (0 + 1)).z_mem (p.T.bs (0 + 1)).z'_mem τ hτ γ hγ hΩ
-    have hm2 := Formalism.FourierDecayAlt.P.PBH.om_cast (by omega : P.r - (0 + 1) + 1 = P.r - 0) _ _ _ hm
-    rw [Formalism.FourierDecayAlt.P.PBH.castM_castM', Formalism.FourierDecayAlt.P.PBH.asm_castV_castV, Formalism.FourierDecayAlt.P.PBH.asm_castV_castV,
-      ← Formalism.FourierDecayAlt.P.PBH.levTower_bs_z_eq_castV_liftVec p.T 0 hj, ← Formalism.FourierDecayAlt.P.PBH.levTower_bs_z'_eq_castV_liftVec p.T 0 hj] at hm2
-    exact hm2
-  have hCpt : KB.CptCoef (p.T.bs 0) H := hH
-  rw [jf_left (p.T.bs 0) H (Formalism.FourierDecayAlt.P.PBH.asm_contOn_of_ckOn hCpt.1) _ hg0.1
-    (Formalism.FourierDecayAlt.P.PBH.rhs_int (p.T.bs 0) H hCpt _ hg0), pbF_zero, point_level_zero_eq_embedding]
-  refine integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)
-  beta_reduce
-  rw [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]
-  rfl
-
 theorem side0Zero_of (hW : PartialBesselProperness.PbWords) (hPr : ProperLeftVariablesDomain) (hPts : CutHB.Pts) : CutHB.Side0Zero := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hj0 hF hw hγ hΩ e τ hτ
   subst hj0

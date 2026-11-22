@@ -48,10 +48,6 @@ open Classical in
 
 def towC (D : D7) (t : ℕ) : Tow D t := if h : t = D.R.t then h ▸ recTow D else sigTow D t
 
-def SpSig (D : D7) : Prop :=
-  ∀ j, j ≤ D.R.m → (D.sp.X j).IsPosDef ∧
-    ∀ τ, (D.sp.Y j).sig τ = (D.R.r + j * D.R.t - (D.R.m - j) / 2, (D.R.m - j) / 2)
-
 open Classical in
 
 def lowC (V : HSp D) (i : ℕ) : HSp D :=

@@ -19,8 +19,6 @@ variable {p : ℕ} {Y : Model Xo c β} {C : SCF p}
 def embHom (P : PtC Y C) (τ : E →+* ℂ) : 𝓞 E →+* ↥C.S :=
   P.fK.comp ((τ.comp (algebraMap (𝓞 E) E)).codRestrict c.F.toSubring (fun a => c.conj τ a))
 
-theorem embHom_apply (P : PtC Y C) (τ : E →+* ℂ) (a : 𝓞 E) : embHom P τ a = P.emb τ a := rfl
-
 theorem valuationRing_intO (K : Type) [NormedField K] [IsUltrametricDist K] : ValuationRing (intO K) := by
   refine @ValuationRing.mk _ _ _ ⟨fun a b => ?_⟩
   rcases le_total ‖(a : K)‖ ‖(b : K)‖ with h | h

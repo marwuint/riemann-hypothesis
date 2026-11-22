@@ -256,12 +256,6 @@ noncomputable def cohomologyTwoIntAddEquiv :
     cohomology (Rep.trivial ℤ G ℤ) 2 ≃+ (Additive G →ₜ+ QZ) :=
   (cohomologyTwoIntIso G).toLinearEquiv.toAddEquiv
 
-theorem cohomologyTwoIntAddEquiv_symm_apply (χ : Additive G →ₜ+ QZ) :
-    (cohomologyTwoIntAddEquiv G).symm χ =
-      (δ (GroundTheory.GroupCoh.ratSES_shortExact G) 1 2 rfl).hom
-        ((cohomologyOneRatModIntIso G).inv.hom χ) :=
-  rfl
-
 end Profinite
 
 end GroundTheory.ProfCoh

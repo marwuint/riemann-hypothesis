@@ -6,6 +6,4 @@ import Formalism.GL3MeanSquares.PrimePairOfPrimeNumberTheoremInProgressions
 
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
-theorem pnt_progressions_relative_iff : Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds.PNTAPRelW ↔ Formalism.HermitianLattices.PrimeNumberTheoremConsequences.PNTAPRelW := Iff.rfl
-
 end Formalism.HermitianLattices.Ext.PrimesInProgressions

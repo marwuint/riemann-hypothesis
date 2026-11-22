@@ -484,8 +484,6 @@ theorem twKer_zero (τ : MRep k 0) : twKer τ.ρ (MirUin k 0) 1 = ⊥ := by
 def eMk (τ : MRep k 0) : τ.V ≃ₗ[ℂ] (psiN τ).V :=
   (Submodule.quotEquivOfEqBot _ (twKer_zero τ)).symm
 
-theorem eMk_apply (τ : MRep k 0) (x : τ.V) : eMk τ x = Submodule.Quotient.mk x := rfl
-
 theorem smooth_mirabolic_zero {V : Type} [AddCommGroup V] [Module ℂ V] (a : Representation ℂ (Mir k 0) V) : IsSmooth a := by
   intro v
   have : {g : Mir k 0 | a g v = v} = Set.univ := by
@@ -630,8 +628,6 @@ theorem miso_of (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] [M
 theorem aux0 (ψ : AddChar k Circle) (hψ : Continuous ψ) (hσ : IsSmooth σ.ρ) :
     MIso (phiN (n := 0 + t) ψ (⟨_, cInd (HPG k 0 (t + 1)) (rho0 τ σ)⟩ : MRep k (0 + t + 1))) (prodGPn (psiN τ) (gres σ)) :=
   miso_of ψ _ _ (comb_lem τ σ ψ hψ hσ)
-
-theorem mcast_self {a : ℕ} (h : a = a) (X : MRep k a) : mcast h X = X := rfl
 
 theorem phiPG_zero (ψ : AddChar k Circle) (hψ : Continuous ψ) (hσ : IsSmooth σ.ρ) {n : ℕ} (hc : 0 + (t + 1) = n + 1) (hd : 0 + t = n) :
     MIso (phiN ψ (mcast hc (prodPGn τ σ))) (mcast hd (prodGPn (psiN τ) (gres σ))) := by

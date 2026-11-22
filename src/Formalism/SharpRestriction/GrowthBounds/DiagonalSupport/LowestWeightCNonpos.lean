@@ -163,11 +163,6 @@ def XG (j : G) : Submodule O (MvPolynomial (ι × Fin n) O) where
     · exact le_trans (a2 q hq) (valS_smul_geR LL q.1 c A)
     · exact le_trans (lowest_weight_smul_le LL q.1 c A) (a3 q hq)
 
-theorem mem_XG (j : G) (A : MvPolynomial (ι × Fin n) O) : A ∈ XG π LL Cv Cl F j ↔
-    (∀ mo ∈ A.support, mo ∈ F.support.image (partOf π j)) ∧
-    (∀ q ∈ Cv j, ((q.2 : ℤ) : WithTop ℤ) ≤ valS LL q.1 A) ∧ ∀ q ∈ Cl j, lam1S LL q.1 A ≤ ((q.2 : ℤ) : WithBot ℤ) := by
-  exact Iff.rfl
-
 theorem sum_of_span [Fintype G] [Nonempty G] {σ : Type} (X : G → Submodule O (MvPolynomial σ O)) (P : MvPolynomial σ O)
     (h : P ∈ Submodule.span O {y | ∃ x : G → MvPolynomial σ O, (∀ j, x j ∈ X j) ∧ y = ∏ j, x j}) :
     ∃ (N : ℕ) (A : Fin N → G → MvPolynomial σ O), (∀ i j, A i j ∈ X j) ∧ P = ∑ i, ∏ j, A i j := by

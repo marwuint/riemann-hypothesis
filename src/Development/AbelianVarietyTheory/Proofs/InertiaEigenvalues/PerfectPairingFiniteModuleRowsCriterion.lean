@@ -39,10 +39,6 @@ def charModule : Module A (A →+ ZMod n) where
     show φ (0 * b) = 0
     rw [zero_mul, map_zero]
 
-theorem charModule_smul_apply (a : A) (φ : A →+ ZMod n) (b : A) :
-    (@HSMul.hSMul A (A →+ ZMod n) (A →+ ZMod n)
-      (@instHSMul A (A →+ ZMod n) (charModule A n).toSMul) a φ) b = φ (a * b) := rfl
-
 end GlobalTheory.NewPrime.CharDual
 
 namespace GlobalTheory.NewPrime

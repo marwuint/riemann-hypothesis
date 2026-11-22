@@ -246,11 +246,6 @@ theorem divClausesR_of [IsTotallyComplex K] {Pl : Type} [Fintype Pl] [DecidableE
   ·
     exact ((shiftMu K (Dc.a u) (Dc.Xc u) I.Xc_unit Nu (shiftLat Nu sg) I.Nu_lat hsh.2.1 (shiftZ sg) hsh.1).2 I.a_pos).2
 
-theorem divClausesR_toR {Pl : Type} [Fintype Pl] [DecidableEq Pl] (P : IndefCore Df0 Df1 Dc Sp N) (R : RecNums Bs.J Pl)
-    (u : Dc.Mem) (Nu : Submodule (𝓞 K) (Fin (Dc.a u) → K)) (sg : HeightOneSpectrum (𝓞 K) → ℝ) :
-    DivClausesR P.toR R u Nu sg ↔ DivClauses P R u Nu sg :=
-  Iff.rfl
-
 end GenericR
 
 end Formalism.L2.DIV

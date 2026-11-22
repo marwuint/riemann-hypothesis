@@ -167,15 +167,6 @@ def sabM (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) {S S' : Sche
   have P := hC S S' t.G _ (cubeMapOf h) t.PP t.cub
   ⟨cubeMapOf h, h, rfl, fun a => pullback.lift_fst _ _ _, P.choose_spec.choose_spec.1.choose_spec⟩
 
-theorem sabT_L (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
-    (sabT hC f t).PP.L = t.PP.L.pull (pullback.fst t.G.hom f) := rfl
-
-theorem sabM_φ (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
-    (sabM hC f t).φ = pullback.fst t.G.hom f := rfl
-
-theorem sabT_hom (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
-    (sabT hC f t).G.hom = pullback.snd t.G.hom f := rfl
-
 end Sab
 
 end ReciprocityTheory.ChartRestriction.G.PullbackSections

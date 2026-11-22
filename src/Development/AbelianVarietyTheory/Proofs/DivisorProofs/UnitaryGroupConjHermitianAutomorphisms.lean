@@ -19,8 +19,6 @@ variable {D : D7}
 
 def cjG (D : D7) (k : ℕ) : GL (Fin k) (AE D) →* GL (Fin k) (AE D) := Matrix.GeneralLinearGroup.map (cA D)
 
-theorem cjG_val {k : ℕ} (g : GL (Fin k) (AE D)) : (cjG D k g).1 = cj g.1 := rfl
-
 theorem cjG_cjG {k : ℕ} (g : GL (Fin k) (AE D)) : cjG D k (cjG D k g) = g := Units.ext (cj_cj g.1)
 
 theorem continuous_cj {m n : ℕ} : Continuous (cj : Mx D m n → Mx D m n) :=
@@ -45,8 +43,6 @@ def conjEquiv (V : HSp D) : UD D (-V.gram) ≃ₜ* GA D V where
   map_mul' h h' := Subtype.ext (map_mul (cjG D V.rank) h.1 h'.1)
   continuous_toFun := ((continuous_cjG V.rank).comp continuous_subtype_val).subtype_mk _
   continuous_invFun := ((continuous_cjG V.rank).comp continuous_subtype_val).subtype_mk _
-
-theorem conjEquiv_symm_val (V : HSp D) (g : GA D V) : ((conjEquiv V).symm g).1 = cjG D V.rank (matHom V g) := rfl
 
 end GlobalTheory.SWLink.Conj
 

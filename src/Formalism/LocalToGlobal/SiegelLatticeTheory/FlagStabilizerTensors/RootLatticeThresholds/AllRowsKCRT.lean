@@ -67,9 +67,6 @@ def mkG (u : I.E ⊗[I.F] Af I.F) (hu : u * u = u) (hσ : Formalism.UG.sigR I.cm
     rw [cT_pm _ hσ]
     exact pm_form hu _ _ _ hx⟩
 
-theorem fmat_mkG (u : I.E ⊗[I.F] Af I.F) (hu : u * u = u) (hσ : Formalism.UG.sigR I.cm.sig (Af I.F) u = u) (x : I.Gf) :
-    I.fmat (mkG I u hu hσ x) = pm u (I.fmat x) := rfl
-
 end Inst
 
 end Formalism.L2.SG.Pf.AllRowsKCRT

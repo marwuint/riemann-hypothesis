@@ -57,8 +57,4 @@ theorem one_tmul_injective : Function.Injective fun x : E => (1 : FiniteAdeleRin
     exact (algebraMap F _).injective
   exact Algebra.TensorProduct.includeRight_injective hA
 
-theorem ratM_det (γ : Matrix (Fin n) (Fin n) E) :
-    (ratM F γ).det = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ γ.det :=
-  (AlgHom.map_det (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E) γ).symm
-
 end GlobalTheory.UCls.Model

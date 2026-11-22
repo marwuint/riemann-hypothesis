@@ -48,8 +48,6 @@ variable (hc R) in
 def Ag (g : HA R hc.sig V.gram) : Module.End (R ⊗[F] E) (Fin V.rank → R ⊗[F] E) :=
   (HA.mat R hc.sig V.gram g).1.mulVecLin
 
-theorem Ag_apply (g : HA R hc.sig V.gram) (y : Fin V.rank → R ⊗[F] E) : Ag hc R g y = act hc V g y := rfl
-
 end Levi
 
 end GlobalTheory.LeviSign

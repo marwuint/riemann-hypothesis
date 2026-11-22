@@ -47,16 +47,11 @@ def eigSub (τ : R →+* O) : Submodule O (Lie G) where
 def subEquiv (τ : R →+* O) : eigSub α τ ≃ LieEig α τ :=
   (lieEquiv G).subtypeEquiv fun x => forall_congr' fun a => by rw [lieEquiv_smul]
 
-theorem subEquiv_val (τ : R →+* O) (x : eigSub α τ) :
-    (subEquiv α τ x).1 = lieEquiv G x.1 := rfl
-
 end Local
 
 section Places
 
 variable {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [NumberField E]
-
-theorem toPadic_apply (a : 𝓞 E) : toPadic p E a = (1 : ℤ_[p]) ⊗ₜ[ℤ] a := rfl
 
 end Places
 

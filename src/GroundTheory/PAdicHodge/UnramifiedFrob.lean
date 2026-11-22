@@ -100,8 +100,6 @@ variable (K) in
 def maxUnramifiedValuation : AddValuation K₀ (WithTop ℤ) :=
   AddValuation.of maxUnramifiedValFun maxUnramifiedValFun_zero maxUnramifiedValFun_one maxUnramifiedValFun_add_le maxUnramifiedValFun_mul
 
-theorem maxUnramifiedValuation_apply (x : K₀) : maxUnramifiedValuation K x = maxUnramifiedValFun x := rfl
-
 end Valuation
 
 end ACris

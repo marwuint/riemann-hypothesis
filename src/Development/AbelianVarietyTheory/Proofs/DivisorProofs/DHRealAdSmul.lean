@@ -19,17 +19,6 @@ def wordH (ψ : AddChar (AF F) ℂ) (l : List ((κ → AF F) × (κ → AF F))) 
 
 @[simp] theorem wordH_nil (ψ : AddChar (AF F) ℂ) (Φ : (κ → AF F) → ℂ) : wordH ψ [] Φ = Φ := rfl
 
-theorem wordH_cons (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) (l : List ((κ → AF F) × (κ → AF F)))
-    (Φ : (κ → AF F) → ℂ) : wordH ψ (w :: l) Φ = dH ψ w (wordH ψ l Φ) := rfl
-
-theorem realAd_mul (a b : ℝ) : realAd F a * realAd F b = realAd F (a * b) := by
-  unfold realAd
-  simp only [LinearMap.inl_apply, map_mul]
-  refine Prod.ext ?_ ?_
-  · show _ * _ = _
-    rw [← map_mul]
-  · exact mul_zero _
-
 end GlobalTheory.ThetaDecay
 
 end

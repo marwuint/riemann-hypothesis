@@ -34,6 +34,4 @@ def valuationAgreementConcrete : CF.ValTied (D := d.colRec a) u (atTTied a hH u)
     (Val.dilT (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i (colDia (X := d.X) (Pr := d.Pr) d.R u i) (hP u i)
       (tieEV d.sp.cm d.hX d.hPr u) (tieEV_over d.sp.cm d.hX d.hPr u) (valCrd a hS hH u i hi))
 
-theorem stepValTied_eY : (valuationAgreementConcrete a hS hH hP u i hi).eY = valEY (Pr := d.Pr) d.W d.lev d.σ₀ u i (valCrd a hS hH u i hi) := rfl
-
 end Formalism.L2.Col

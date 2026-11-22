@@ -59,8 +59,6 @@ variable {A C : Type} [CommRing A] [CommRing C] {Y Y' : Scheme.{0}}
 noncomputable def scalRingHom (p : Y ⟶ Spec (CommRingCat.of A)) : A →+* Γ(Y, ⊤) :=
   ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ p.appTop).hom
 
-theorem scalRingHom_apply (p : Y ⟶ Spec (CommRingCat.of A)) (a : A) : scalRingHom p a = scal p a := rfl
-
 theorem scalRingHom_specMap (p : Y ⟶ Spec (CommRingCat.of C)) (φ : A →+* C) :
     scalRingHom (p ≫ Spec.map (CommRingCat.ofHom φ)) = (scalRingHom p).comp φ :=
   congrArg CommRingCat.Hom.hom (SplitTorusPoints.ΓSpecIso_inv_comp_specMap p (CommRingCat.ofHom φ))

@@ -65,9 +65,6 @@ def LevelFree (Dx : DivX D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.wha
   D.what₂.places.resChar w ≠ (D.mem u).A.T ∧ D.what₂.places.resChar w ∉ ({D.host.g 0, D.host.g 1} : Finset ℕ) ∧
     D.what₂.places.resChar w ∉ Dx.Qp μ
 
-theorem levelFree_iff (Dx : DivX D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) :
-    LevelFree Dx u μ w ↔ LevFree Dx u μ w := Iff.rfl
-
 def KForm (E : Ent D) (Dx : DivX D) (T : TwForms D) (sp : ℝ) : Prop :=
   DGamDef D → ∀ u μ (w : D.what₂.places.Pl), DV.Used D μ → LevelFree Dx u μ w → ∀ i < D.R.m, ∀ B : ℝ, EntGe E u μ w i B →
     KGe T u μ w i (B - (if i = 0 then 1 - sp else 1) * vDG D u w)
@@ -311,8 +308,6 @@ def Cor2 (Lo : product_zeroth_first_parts.Loc) (C6 Cd : ℝ) : Prop :=
           C6 * (∑ s, w s) / (Lo.l : ℝ) - product_zeroth_first_parts.gam Lo.l * (∑ s ∈ Lo.TT, (Lo.Wc s : ℝ)) -
           Cd * ((Lo.d : ℝ) * Lo.N0 * Lo.N1 * (Real.logb Lo.l a + 1)))
 
-theorem corollary_two_same_constant (Lo : product_zeroth_first_parts.Loc) (C : ℝ) : Cor2 Lo C C ↔ Lo.Cor C := Iff.rfl
-
 def OrbitLetterBoundsAll (C6 Cd : ℝ) : Prop :=
   (∀ Lo : product_zeroth_first_parts.Loc, Lo.AdmB → Lo.ThmA Cd ∧ Cor2 Lo C6 Cd) ∧ ∀ Lo : product_zeroth_first_parts.Loc1, Lo.AdmB → Lo.ThmOne Cd
 
@@ -436,17 +431,6 @@ def LiftIntegrality (D : D7) (Dx : DivX D) (T : TwForms D) (sp : ℝ) : Prop :=
     KGe0 D u w i (-((if i = 0 then 1 - sp else 1) * vDG D u w)) ∧
     ∀ μ, DV.Used D μ → μ ≠ D.what₂.mu0 → D.what₂.places.resChar w ∉ Dx.Qp μ →
       KGeTw T u μ w i (-((if i = 0 then 1 - sp else 1) * vDG D u w))
-
-theorem noOperatorOrbit_iff (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (T : TwForms D) (lev : LevelData D)
-    (Xe : ErrX D) (ce : ErrC) (sp : ℝ) : WeilJacquetShalikaLaw.OrbitsWithoutOperator D L X K Dx T lev Xe ce sp = NoOperatorOrbitBound D L X K Dx T lev Xe ce sp := rfl
-
-theorem orbitBoundAtC_iff (D : D7) (L : SizeData₂ D) (K : Consts) (Dx : DivX D) (T : TwForms D) (lev : LevelData D)
-    (Xe : ErrX D) (ce : ErrC) (sp : ℝ) : WeilJacquetShalikaLaw.MediumInertPrimeLengthBound D L K Dx T lev Xe ce sp = JetConsequence D L K Dx T lev Xe ce sp := rfl
-
-theorem valuationAtDiscriminant_iff (D : D7) (L : SizeData₂ D) (K : Consts) (Dx : DivX D) (T : TwForms D) (lev : LevelData D)
-    (Xe : ErrX D) (ce : ErrC) (sp : ℝ) : WeilJacquetShalikaLaw.LossAtDiscriminant D L K Dx T lev Xe ce sp = ValuationAtDiscriminant D L K Dx T lev Xe ce sp := rfl
-
-theorem liftIntegrality_iff (D : D7) (Dx : DivX D) (T : TwForms D) (sp : ℝ) : WeilJacquetShalikaLaw.IsotypicPartsInternalDirectSum D Dx T sp = LiftIntegrality D Dx T sp := rfl
 
 def AdmK (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (E : Ent D) (ce : ErrC) (C6 Cd : ℝ) : Prop :=
   OrbitParityCond D ∧ TypePrimeNotDiscriminant D ∧ EvenConditionsInert E Dx ∧ EvenConditionsAtC E Dx ∧ OrbitLetterBoundsAll C6 Cd ∧ OrbitBoundWithoutOperator E X K ∧ JetIntegralityBis E Dx ∧ ThetaKernelShapeAtD E Dx ∧

@@ -25,10 +25,6 @@ def thfPull (L : LB X) (F : X' ⟶ X) (s : LB.Sec L) : LB.Sec (L.pull F) where
         ((gs_unit _ y _ hy _).trans (congrArg Units.val (gm_pull_g L F (𝟙 _) y J J' hy.1 hy.2)))
         ((gs_res _ y _ hy _).trans (gs_appLE F _ _ _ (𝟙 _) y hy.2 _)))))))
 
-theorem thfPull_f (L : LB X) (F : X' ⟶ X) (s : LB.Sec L) (J : PUnit → L.ι) :
-    (thfPull L F s).f J =
-      (F.appLE (L.U (J PUnit.unit)) ((L.pull F).U J) (LB.wchart_le L _ J PUnit.unit)).hom (s.f (J PUnit.unit)) := rfl
-
 theorem chart_le_pullback_open (L : LB X) {F : X' ⟶ X} {φ : Y ⟶ X} (h : Y ⟶ X') (e : h ≫ F = φ) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => φ) j ≤ h ⁻¹ᵁ (L.pull F).U (fun _ => j 0) := by
   intro y hy

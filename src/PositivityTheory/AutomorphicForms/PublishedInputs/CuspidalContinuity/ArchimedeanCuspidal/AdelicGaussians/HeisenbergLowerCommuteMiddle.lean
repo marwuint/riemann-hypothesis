@@ -21,7 +21,4 @@ instance countable_NQ : Countable NQ := Quotient.countable
 theorem val_uni (x y z : 𝔸[ℚ]) :
     ((uni x y z : G3) : Matrix (Fin 3) (Fin 3) 𝔸[ℚ]) = !![1, x, y; 0, 1, z; 0, 0, 1] := rfl
 
-theorem val_lowM (c : 𝔸[ℚ]) :
-    ((lowM c : G3) : Matrix (Fin 3) (Fin 3) 𝔸[ℚ]) = !![1, 0, 0; c, 1, 0; 0, 0, 1] := rfl
-
 end Ad3.GA.unipotentTranslateContinuity

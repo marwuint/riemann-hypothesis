@@ -26,16 +26,6 @@ section Stages
 variable {B : Base} {C : Cols B} (W W' : RowsRest B C) (V : DivStage B C W) (V' : DivStage B C W') (S : SStage B C W)
   (S' : SStage B C W') (N : NStage B C W) (N' : NStage B C W') (G G' : GJStage B C)
 
-theorem hP_assemble_eq (p) : hP (assemble B C W V S N G) p = hP (assemble B C W' V' S' N' G') p := rfl
-
-theorem lamRec_stages (u g) : lamRec (assemble B C W V S N G) u g = lamRec (assemble B C W' V' S' N' G') u g := rfl
-
-theorem tauRec_stages (w : B.places.Pl) [h : Fact (B.places.resChar w).Prime] (n) :
-    @tauRec (assemble B C W V S N G) w h n = @tauRec (assemble B C W' V' S' N' G') w h n := rfl
-
-theorem omTied_stages (δ : ℂ) :
-    Formalism.L2.GlobalTheoryTheory.OmegaCompatible (assemble B C W V S N G) δ ↔ Formalism.L2.GlobalTheoryTheory.OmegaCompatible (assemble B C W' V' S' N' G) δ := Iff.rfl
-
 end Stages
 
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}

@@ -1532,8 +1532,6 @@ section FamilyMean
 
 variable {eps : ℝ} {Fm : FamP eps} {x : ℝ} {i0 : Fm.Ix x}
 
-theorem pf_winA_eq : Lnk.winAz Fm x i0 = G.winA (Fm.D x i0) (Fm.L x i0).sc := rfl
-
 end FamilyMean
 
 end Formalism.L2.GlobalTheoryTheory.Loss

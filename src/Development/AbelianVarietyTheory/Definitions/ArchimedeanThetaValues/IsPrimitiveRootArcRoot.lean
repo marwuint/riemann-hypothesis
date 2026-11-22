@@ -295,10 +295,6 @@ def arcIn : ArcIn (hypDatum H) l (RingHom.id c.F) k bF where
       exact equiv_refl_split k F _
     exact ⟨tateIsoQ H k ζ hp hc, hζ l.A l.A_pos z hz, key _, fun a _ => key _ a⟩
 
-theorem arcIn_D₀ : (arcIn c k bF).D₀ = toricPre k (𝓞 E) fun _ => 1 := rfl
-
-theorem arcIn_be_apply (y z : 𝓞 E) : (arcIn c k bF).be y z = 2 * l.M' * trForm H y z := rfl
-
 theorem arcIn_be_even (y : 𝓞 E) : (2 : ℤ) ∣ (arcIn c k bF).be y y :=
   (dvd_mul_right 2 _).trans ((arcIn c k bF).be_dvd y y)
 

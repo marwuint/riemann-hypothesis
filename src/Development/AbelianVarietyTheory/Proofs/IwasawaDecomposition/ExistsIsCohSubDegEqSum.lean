@@ -83,9 +83,6 @@ theorem lbIso_refine {M : LB C} (hM : M.IsLB) (idx : J → M.ι)
     (key.trans (congrArg₂ (· * ·) (GlobalTheory.LB.val_res _ _).symm (hv2 _ _ _).symm)))).trans
     (Units.val_mul _ _).symm
 
-private theorem coord_resM_eq_resG_coord {L : LB C} {V W : C.Opens} (h : W ≤ V) (s : Γ(toMod L, V)) (i : L.ι) :
-    LB.coord (resM (toMod L) h s) i = resG C (inf_le_inf_right _ h) (LB.coord s i) := by rfl
-
 end GlobalTheory.TriangularFrames
 
 namespace GlobalTheory.TriangularFrames

@@ -24,9 +24,6 @@ theorem IsSiegel.mem_siegelH [Fintype ι] {Ω : Matrix ι ι ℂ} (h : IsSiegel 
 
 def siegelUpperHalfSpace (ι : Type*) : Set (Matrix ι ι ℂ) := {Ω | IsSiegel Ω}
 
-theorem siegelUpperHalfSpace_eq_siegelH (ι : Type*) [Fintype ι] :
-    siegelUpperHalfSpace ι = ReciprocityTheory.PTheta.SiegelH ι := rfl
-
 @[simp] theorem mem_siegelUpperHalfSpace {Ω : Matrix ι ι ℂ} :
     Ω ∈ siegelUpperHalfSpace ι ↔ IsSiegel Ω := Iff.rfl
 
@@ -138,9 +135,6 @@ theorem IsSiegel.eventually_isSiegel {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) :
 def riemannThetaTerm (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) : ℂ :=
   ReciprocityTheory.PTheta.thetaTerm a b v Ω n
 
-theorem riemannThetaTerm_eq_thetaTerm (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
-    riemannThetaTerm a b Ω v n = ReciprocityTheory.PTheta.thetaTerm a b v Ω n := rfl
-
 theorem riemannThetaTerm_def (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
     riemannThetaTerm a b Ω v n =
       cexp (2 * π * I * (((fun i => (n i : ℂ) + a i) ⬝ᵥ (Ω *ᵥ fun i => (n i : ℂ) + a i)) / 2 +
@@ -150,9 +144,6 @@ attribute [eqns riemannThetaTerm_def] riemannThetaTerm
 
 def riemannTheta (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) : ℂ :=
   ReciprocityTheory.PTheta.theta a b v Ω
-
-theorem riemannTheta_eq_theta (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
-    riemannTheta a b Ω v = ReciprocityTheory.PTheta.theta a b v Ω := rfl
 
 theorem riemannTheta_def (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
     riemannTheta a b Ω v = ∑' n : ι → ℤ, riemannThetaTerm a b Ω v n := rfl

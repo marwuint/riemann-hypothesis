@@ -104,9 +104,6 @@ section Glue
 
 variable {S : Type} [CommRing S] {G : Over (Spec (CommRingCat.of S))} [GrpObj G]
 
-theorem dualMapS_ofId_toRingHom (s : S) :
-    (dualMapS (Algebra.ofId S (Localization.Away s)) : DualNumber S →+* DualNumber (Localization.Away s)) = dAway s := rfl
-
 set_option backward.isDefEq.respectTransparency false in
 
 theorem glue_tan {n : ℕ} (s : Fin n → S) (hs : Ideal.span (Set.range s) = ⊤)

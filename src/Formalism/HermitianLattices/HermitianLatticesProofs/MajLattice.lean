@@ -25,33 +25,6 @@ section MajLatticeMain
 variable {K V ι : Type*} [Field K] [NumberField K] [IsTotallyComplex K] [StarRing K] [AddCommGroup V]
   [Module K V] [Fintype ι] [DecidableEq ι]
 
-def majLattice_u (z : ι → mixedSpace K) (v : InfinitePlace K) : ι → ℂ :=
-  fun i => (z i).2 ⟨v, IsTotallyComplex.isComplex v⟩
-
-def majLattice_Traw (X : InfinitePlace K → Matrix ι ι ℂ) :
-    (ι → mixedSpace K) →ₗ[ℝ] (InfinitePlace K × ι × Fin 2 → ℝ) where
-  toFun z p := if p.2.2 = 0 then (((X p.1)⁻¹ *ᵥ majLattice_u z p.1) p.2.1).re
-    else (((X p.1)⁻¹ *ᵥ majLattice_u z p.1) p.2.1).im
-  map_add' z z' := by
-    funext p
-    have : majLattice_u (z + z') p.1 = majLattice_u z p.1 + majLattice_u z' p.1 := rfl
-    simp only [this, Matrix.mulVec_add, Pi.add_apply]
-    split_ifs <;> simp
-  map_smul' r z := by
-    funext p
-    have : majLattice_u (r • z) p.1 = r • majLattice_u z p.1 := rfl
-    simp only [this, Matrix.mulVec_smul, Pi.smul_apply, RingHom.id_apply]
-    split_ifs <;> simp
-
-def majLattice_alt (X : InfinitePlace K → Matrix ι ι ℂ) :
-    (ι → mixedSpace K) →ₗ[ℝ] EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2) :=
-  (WithLp.linearEquiv 2 ℝ (InfinitePlace K × ι × Fin 2 → ℝ)).symm.toLinearMap ∘ₗ
-    majLattice_Traw X
-
-theorem majLattice_realize_eq (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (x : V) :
-    realize b X x = majLattice_alt X (fun i => mixedEmbedding K (b.repr x i)) := by
-  rfl
-
 variable [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 theorem majLattice_exists_c (L : Submodule (𝓞 K) V)
@@ -81,10 +54,6 @@ theorem majLattice_exists_d (b : Basis ι K V) (L : Submodule (𝓞 K) V) (hfg :
       rw [← algebraMap_smul K r x, map_smul]; rfl
     rw [this, mul_left_comm]
     exact (RingOfIntegers.isIntegral_coe r).mul (hx i)
-
-theorem majLattice_mem_zmap (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
-    (L : Submodule (𝓞 K) V) (w : EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)) :
-    w ∈ zmap (realize b X) L ↔ ∃ x ∈ L, realize b X x = w := Iff.rfl
 
 end MajLatticeMain
 

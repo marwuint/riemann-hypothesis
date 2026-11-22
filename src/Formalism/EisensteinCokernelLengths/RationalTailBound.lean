@@ -9,14 +9,6 @@ open scoped ENNReal
 
 namespace Formalism.ZetaNonvanishing.EisensteinGaussValuationBounds
 
-def sigUp (ℓ E M j : ℕ) : ℕ :=
-  ⌈((E : ℝ) + (M : ℝ) / (ℓ : ℝ) ^ (j - 1)) * (ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2⌉₊ + 1
-
-def SigBoundUp : Prop :=
-  ∀ (ℓ : ℕ), 3 ≤ ℓ → ∀ (g h j : ℕ), 1 ≤ j →
-    (sigUp ℓ (3 * g) ((h + 2 * g) / (ℓ - 1) + 1) j : ℝ) ≤
-      3 / 2 * ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) ^ (j + 1) + 9 / 4 * g + 11 / 4
-
 def EisE {O : Type} [CommRing O] (ϖ : O) (e : ℕ) (E : Polynomial O) (N : ℕ) : Prop :=
   E.Monic ∧ E.natDegree = N ∧ (∀ i < N, E.coeff i ∈ Ideal.span {ϖ ^ e}) ∧ E.coeff 0 ∉ Ideal.span {ϖ ^ (e + 1)}
 

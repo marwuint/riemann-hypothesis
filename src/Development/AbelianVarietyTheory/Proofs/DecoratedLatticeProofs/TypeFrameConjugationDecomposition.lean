@@ -13,8 +13,6 @@ variable {k : Type} [Field k] {κ c : ℕ} (t : Type) [Fintype t] [DecidableEq t
 def ordZ (hc : 0 + c = c) : Fin κ ⊕ Fin c ≃ XIx (Fin κ) t 0 ⊕ Fin c :=
   (ixZero (Fin κ ⊕ Fin c) t).trans (stdOrd (Fin κ) t 0 c hc)
 
-theorem ordZ_inl (hc : 0 + c = c) (i : Fin κ) : ordZ t hc (Sum.inl i) = Sum.inl (Sum.inl (Sum.inl i)) := rfl
-
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 end Zero
@@ -22,4 +20,3 @@ end Zero
 end GlobalTheory.SymDec
 
 open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SymChain
-

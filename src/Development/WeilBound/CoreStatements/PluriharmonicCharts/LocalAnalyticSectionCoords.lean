@@ -31,8 +31,6 @@ def joinPt {R : Type} (k₀ : K) (z₀ z₁ : (Σ k, ι k) → R) : (Σ o : Opti
   | ⟨some k, m⟩ => z₀ ⟨k, m⟩
   | ⟨none, m⟩ => z₁ ⟨k₀, m⟩
 
-theorem join_v₀ {R : Type} (k₀ : K) (z₀ z₁ : (Σ k, ι k) → R) : joinPt k₀ z₀ z₁ ∘ v₀ k₀ = z₀ := rfl
-
 theorem join_v₁ {R : Type} {k₀ : K} {z₀ z₁ : (Σ k, ι k) → R} (h : ∀ k, k ≠ k₀ → ∀ m, z₀ ⟨k, m⟩ = z₁ ⟨k, m⟩) :
     joinPt k₀ z₀ z₁ ∘ v₁ k₀ = z₁ := by
   funext ⟨k, m⟩

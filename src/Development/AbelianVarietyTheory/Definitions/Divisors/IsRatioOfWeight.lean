@@ -134,8 +134,4 @@ omit [IsIntegral X] in
 
 def fib (X : Scheme.{0}) (ℓ : ℕ) : Set X := {x | ringChar (X.residueField x) = ℓ}
 
-private theorem wdb_eq_half_fderiv_add_I {n : ℕ} (j : Fin n) (g : ReciprocityTheory.L2DbarEstimates.V n → ℂ) :
-    ReciprocityTheory.L2DbarEstimates.wdb n j g = fun w => (fderiv ℝ g w (ReciprocityTheory.L2DbarEstimates.bas n j) +
-      Complex.I * fderiv ℝ g w (Complex.I • ReciprocityTheory.L2DbarEstimates.bas n j)) / 2 := rfl
-
 end GlobalTheory.HSAmp

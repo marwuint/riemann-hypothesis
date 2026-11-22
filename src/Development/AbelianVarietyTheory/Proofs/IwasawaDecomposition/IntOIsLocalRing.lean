@@ -50,34 +50,4 @@ theorem comb_map {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') {x :
   · rw [List.prod_ofFn, List.prod_ofFn, ← comp_prodT]
     rfl
 
-theorem latDR_free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (xO : Sp ↥(intO C) ⟶ X), (∀ xO' : Sp ↥(intO C) ⟶ X, spMap (intO C).subtype ≫ xO' = spMap (intO C).subtype ≫ xO → xO' = xO) → ∃ (g : ℕ) (v : Fin g → (Sp (DualNumber C) ⟶ t.G.left)), (∀ i, IsTanAtG t (spMap (intO C).subtype ≫ xO) (v i)) ∧ (∀ w, IsTanAtG t (spMap (intO C).subtype ≫ xO) w → ∃! cf : Fin g → C, IsCombAtG t (spMap (intO C).subtype ≫ xO) v cf w) ∧ ∀ (cf : Fin g → C) w, IsCombAtG t (spMap (intO C).subtype ≫ xO) v cf w → (w ∈ latDR t (spMap (intO C).subtype ≫ xO) ↔ ∀ i, ‖cf i‖ ≤ 1) := by
-  intro E _ _ _ H X t C _ _ xO huniq
-  have := intO_isLocalRing C
-  obtain ⟨n, D, hD, hDb⟩ := GlobalTheory.LieLocBasis.exists_lie_basis_stable E H X t (↥(intO C)) xO
-  have h1 : spMap (RingHom.id ↥(intO C)) = 𝟙 _ := Spec.map_id _
-  have h2 : dualMap (RingHom.id ↥(intO C)) = RingHom.id _ := by
-    refine RingHom.ext fun z => ?_
-    ext <;> simp [dualMap]
-  have h3 : spMap (dualMap (RingHom.id ↥(intO C))) = 𝟙 _ := by rw [h2]; exact Spec.map_id _
-  have hD0 : ∀ w, IsTanAtG t xO w → ∃! a : Fin n → ↥(intO C), IsCombAtG t xO D a w := by
-    have h := hDb _ (RingHom.id ↥(intO C))
-    simp only [h1, h3, Category.id_comp] at h
-    exact h
-  have hDk := fun j => isTanAtG_map t (intO C).subtype (hD j)
-  refine ⟨n, fun e => spMap (dualMap (intO C).subtype) ≫ D e, hDk, hDb C _, fun cf w hw => ⟨?_, fun hc => ?_⟩⟩
-  · rintro ⟨xO', hx, vO, hv, rfl⟩
-    obtain rfl := huniq xO' hx
-    obtain ⟨a, ha, -⟩ := hD0 vO hv
-    have e := (hDb C _ _ (isTanAtG_map t (intO C).subtype hv)).unique hw (comb_map t (intO C).subtype ha)
-    intro i
-    rw [e]
-    exact (a i).2
-  · let a : Fin n → ↥(intO C) := fun i => ⟨cf i, hc i⟩
-    have ha : IsCombAtG t xO D a (combT xO (fun j => ovT (hD j)) a).left :=
-      (isCombAtG_iff t xO (fun j => ovT (hD j)) a _).2 rfl
-    refine ⟨xO, rfl, _, isTanAtG_of _ (combT_tan _ (fun j => ovT (hD j)) (fun j => smT_zero_ovT _) a), ?_⟩
-    have hb := comb_map t (intO C).subtype ha
-    exact ((isCombAtG_iff t _ (fun j => ovT (hDk j)) _ _).1 hb).symm.trans
-      ((isCombAtG_iff t _ (fun j => ovT (hDk j)) _ _).1 hw)
-
 end GlobalTheory.LatDRFree

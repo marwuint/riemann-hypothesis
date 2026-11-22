@@ -29,9 +29,6 @@ def stdSum {δ : ℂ} {a d : ℕ} {e0 : VC D a d → ℂ} (W : WeilO D ⊤ δ a 
     (R : Finset (GA D a)) : VC D a d → ℂ :=
   ∑ r ∈ R, W.Om r 1 (cosetV D δ 𝔪 o a d e0)
 
-theorem cosetVec_eq {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (𝔪 : Ideal (𝓞 D.host.E)) (o : ℕ) :
-    cosetVec P 𝔪 o = cosetV D δ 𝔪 o P.a P.d P.e0 := rfl
-
 theorem congLev_le (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ) : congLev D 𝔪 N ≤ intG D N :=
   (Subgroup.closure_le _).2 fun _ h => h.1
 

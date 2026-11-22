@@ -41,12 +41,6 @@ theorem readsOnly_omegaFree (Q : Finset (Pl D.host.E)) (ξR : ∀ PP : Pl D.host
         H fun PP hp => (hq PP hp).symm ▸ H' PP hp
       rw [dif_neg H, dif_neg H']
 
-theorem phiOf_iff_phiIs (t : T0) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
-    (ι : La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)) (N : Submodule (𝓞 D.host.E) La)
-    (φ : (Fin (Vc D i).rank → La ⧸ N) → ℂ) :
-    PhiOf R i (R.Q t) (fun y => omegaK R.Pg y * omegaQ (R.Q t) (Wc D i).rank (R.xiR t) (-1) y) ι N φ ↔
-      PhiIs R i (RingHom.id ℂ) t ι N φ := Iff.rfl
-
 end GlobalTheory.OnCmp
 
 end

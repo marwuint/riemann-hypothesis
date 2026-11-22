@@ -48,9 +48,6 @@ section Mul
 
 variable {X : Type*} [MeasurableSpace X] {ν : Measure X} (c : X → ℝ)
 
-private noncomputable def mulFn (hc : Measurable c) (hb : ∀ x, |c x| ≤ 1) (f : Lp ℂ 2 ν) : Lp ℂ 2 ν :=
-  by apply _root_.UpperTheory.Reformulated.B.MultiplicationFunction.mulFn <;> assumption
-
 private noncomputable def mulL (hc : Measurable c) (hb : ∀ x, |c x| ≤ 1) : Lp ℂ 2 ν →L[ℂ] Lp ℂ 2 ν :=
   by apply _root_.UpperTheory.Reformulated.B.MultiplicationNormBound.mulL <;> assumption
 

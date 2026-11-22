@@ -9,11 +9,6 @@ namespace UpperTheory.Et
 
 variable {R : Type} [CommRing R]
 
-def prGen (R : Type) [CommRing R] (X : Scheme.{0}) : sec ((GlobalTheory.Et.freeOn R).obj X).obj X :=
-  ap (toSheafify Scheme.proetaleTopology
-    (((Functor.whiskeringRight _ _ _).obj (ModuleCat.free (ULift.{1} R))).obj (uliftYoneda.{1}.obj X)))
-    (ModuleCat.freeMk (ULift.up (𝟙 X)))
-
 section Cont
 variable (R) (T : Type) [AddCommGroup T] [Module R T] [TopologicalSpace T] [IsTopologicalAddGroup T] [ContinuousConstSMul R T]
 

@@ -502,17 +502,6 @@ abbrev QZ : Type := ℚ ⧸ (Int.castAddHom ℚ).range
 
 end Local
 
-def LocalCohomologyFinite : Prop := ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)),
-  FiniteDimensional ℚ_[p] K → ∀ (n : ℕ) [NeZero n] (M : Type) [AddCommGroup M]
-  [Module (ZMod n) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
-  (rho : Representation (ZMod n) (GK p K) M), ContAction rho →
-    Finite (H0 rho) ∧ Finite (H1 rho) ∧ Finite (H2 rho) ∧ ∀ i, 3 ≤ i → Subsingleton (Hn rho i)
-
-def LocalInvariantIsomorphism : Prop := ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)),
-  FiniteDimensional ℚ_[p] K →
-    Nonempty (H2 (kbarRep p K) ≃ₗ[ℤ] QZ) ∧
-    ∀ (n : ℕ) [NeZero n], Nonempty (H2 (charRep (cycK p K n)) ≃ₗ[ZMod n] ZMod n)
-
 section Global
 
 abbrev G (F Ω : Type*) [Field F] [Field Ω] [Algebra F Ω] := Ω ≃ₐ[F] Ω

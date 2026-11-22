@@ -336,15 +336,9 @@ noncomputable def lubinTateEndRingHom :
   map_zero' := lubinTateHom_zero hπ hf hf
   map_add' a b := lubinTateHom_add hπ hf hf a b
 
-theorem lubinTateEndRingHom_apply (a : A) : lubinTateEndRingHom hπ hf a = lubinTateHom hπ hf hf a :=
-  rfl
-
 noncomputable def lubinTateIso (u : Aˣ) :
     Iso (lubinTateFormalGroup hπ hg) (lubinTateFormalGroup hπ hf) :=
   Iso.ofIsUnit (lubinTateHom hπ hf hg u) (by rw [coeff_one_lubinTateHom]; exact u.isUnit)
-
-theorem lubinTateIso_hom (u : Aˣ) : (lubinTateIso hπ hf hg u).hom = lubinTateHom hπ hf hg u :=
-  rfl
 
 end LubinTateHom
 

@@ -152,9 +152,6 @@ variable {E : Type} [Field E] [NumberField E]
 
 variable (S : MetSpace E) (τ : InfinitePlace E)
 
-theorem fibMap_pt' (T : MetSpace E) (φ : S.V →ₗ[E] T.V) (v : S.V) :
-    S.fibMap T φ τ (S.pt τ v) = T.pt τ (φ v) := rfl
-
 end Fibres
 
 end DualHomPf

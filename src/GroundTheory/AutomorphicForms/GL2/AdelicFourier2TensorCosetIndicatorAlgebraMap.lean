@@ -24,8 +24,6 @@ def infPart (x : Fin 2 → 𝔸[K]) : Fin 2 → mixedSpace K :=
 def finPart (x : Fin 2 → 𝔸[K]) : Fin 2 → 𝔸ᶠ[K] :=
   fun i ↦ (x i).2
 
-theorem finPart_neg (x : Fin 2 → 𝔸[K]) : finPart (-x) = -finPart x := rfl
-
 theorem infPart_algebraMap (ξ : Fin 2 → K) :
     infPart (fun i ↦ algebraMap K 𝔸[K] (ξ i)) = emb2 K ξ := by
   funext i

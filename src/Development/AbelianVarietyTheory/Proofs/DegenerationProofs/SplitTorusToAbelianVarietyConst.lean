@@ -149,9 +149,6 @@ lemma comp_aevalTower {R A A' : Type} [CommRing R] [Algebra K R] [CommRing A] [A
     simp
   · simp
 
-lemma aevalTower_apply' {R A : Type} [CommRing R] [Algebra K R] [CommRing A] [Algebra K A]
-    (c : R →ₐ[K] A) (x : A) (a : R[X]) : aevalTower c x a = eval₂ (c : R →+* A) x a := rfl
-
 noncomputable def val {R A : Type} [CommRing R] [Algebra K R] [CommRing A] [Algebra K A]
     (F : sp K R[X] ⟶ B) (c : R →ₐ[K] A) (x : A) : sp K A ⟶ B :=
   spm (aevalTower c x) ≫ F

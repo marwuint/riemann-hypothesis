@@ -221,8 +221,6 @@ def T (k k' : F.J) : Ix Dw → Γ(Z, F.U k ⊓ F.U k')ˣ
       (thUnit (F.M k) (F.M k'))
   | some p => (F.isUnit_B_diag k k' p.1 p.2).unit
 
-theorem T_some (k k' : F.J) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) : (F.T k k' (some ⟨σ, i⟩)).val = F.B k k' σ i i := rfl
-
 theorem ev_T_none (k k' : F.J) (z : Sp S ⟶ Z) (h : ⊤ ≤ z ⁻¹ᵁ (F.U k ⊓ F.U k')) {x : Sp S ⟶ Y.X} (hx : z ≫ π = x)
     (hM : ⊤ ≤ x ⁻¹ᵁ ((F.M k).U ⊓ (F.M k').U)) :
     ev z _ h (F.T k k' none).val = ev x _ hM (thRat (F.M k) (F.M k')) := by

@@ -132,38 +132,9 @@ structure MuIs (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (xi : X.C.Tup →
   on : ∀ w, X.B.places.resChar w ∈ T.pl → X.W.muAt w = X.W.muTw w
   off : ∀ w, X.B.places.resChar w ∉ T.pl → X.W.muAt w = X.C.mu0
 
-def RecExL (QL : ∀ D : D7, Lay D → Prop) : Prop :=
-  ∃ ε0 : ℝ, 0 < ε0 ∧ ∀ eps C8 : ℝ, 0 < eps → eps ≤ ε0 → eps < 1 / 52 → 1 ≤ C8 → ∃ K0 : TransportedAlt,
-    ∀ C : FC, Std C → C.P.Cpde = C8 → C.Large K0 C.P.CF → ∃ c1 : ℝ, ∀ cD ≥ c1, ∃ c2 : ℝ, ∀ ch ≥ c2, ∃ cs x0 : ℝ, 0 < cs ∧
-      ∀ (s : Scale) (P : PreCh) (q1 : ℕ) (a b : P.R.A → ℤ) (c : P.Word → Fin (P.R.k - 2) → Bool),
-        s.eps = eps → x0 ≤ s.x → ChOK s C cD ch P q1 a b c →
-        ∃ (du : P.Word → ℕ) (Ds : ℝ), (∀ u, 0 < du u) ∧ 0 < Ds ∧
-          (∀ u, cs * P.R.m * s.L ≤ Real.log ((Ds / du u) ^ ((1 : ℝ) / (P.R.f * P.R.k)) *
-            GamS C s P.R ^ (-(2 : ℝ) / (P.R.f * P.R.k)))) ∧
-          ∀ Lv : LevCh P, Lv.duStar = du → Lv.Dstar = Ds → Lv.GamP = GamS C s P.R →
-            ∃ (D : D7) (Y : Lay D), Over D P Lv ∧ RecOK s C cD D ∧ LedOK s C cD ch Y a b ∧ LocalQuadraticParts.TWAt D Y.nch Y.xd ∧ QL D Y
-
-abbrev LayProp : Type 1 :=
-  ∀ (_ : Scale) (_ : FC) (_ _ : ℝ) (P : PreCh) (_ _ : P.R.A → ℤ) (D : D7), Lay D → Prop
-
-def RecExG (QL : LayProp) : Prop :=
-  ∃ ε0 : ℝ, 0 < ε0 ∧ ∀ eps C8 C5 c6 Cb : ℝ, 0 < eps → eps ≤ ε0 → eps < 1 / 52 → 1 ≤ C8 → ∃ K0 : TransportedAlt,
-    ∀ C : FC, Std C → C.P.Cpde = C8 → C.Large K0 C.P.CF → ∃ c1 : ℝ, ∀ cD ≥ c1, ∃ c2 : ℝ, ∀ ch ≥ c2, ∃ cs x0 : ℝ, 0 < cs ∧
-      ∀ (s : Scale) (P : PreCh) (a b : P.R.A → ℤ) (c : P.Word → Fin (P.R.k - 2) → Bool),
-        s.eps = eps → x0 ≤ s.x → ChGood s C C5 c6 Cb cD ch P a b c →
-        ∃ (du : P.Word → ℕ) (Ds : ℝ), (∀ u, 0 < du u) ∧ 0 < Ds ∧
-          (∀ u, cs * P.R.m * s.L ≤ Real.log ((Ds / du u) ^ ((1 : ℝ) / (P.R.f * P.R.k)) *
-            GamS C s P.R ^ (-(2 : ℝ) / (P.R.f * P.R.k)))) ∧
-          ∀ Lv : LevCh P, Lv.duStar = du → Lv.Dstar = Ds → Lv.GamP = GamS C s P.R →
-            ∃ (D : D7) (Y : Lay D), Over D P Lv ∧ RecOK s C cD D ∧ LedOK s C cD ch Y a b ∧ LocalQuadraticParts.TWAt D Y.nch Y.xd ∧
-              QL s C cD ch P a b D Y
-
 def RecAtG (QL : ∀ (_ : Ctx) (D : D7), Lay D → Prop) : Prop :=
   EvG fun K => ∃ (D : D7) (Y : Lay D), Over D K.P K.Lv ∧ RecOK K.s K.C K.cD D ∧ LedOK K.s K.C K.cD K.ch Y K.a K.b ∧
     LocalQuadraticParts.TWAt D Y.nch Y.xd ∧ QL K D Y
-
-def AtLed (QO : ∀ D : D7, Obj D → Prop) : LayProp := fun s C cD ch _ a b _ Y =>
-  ∀ p : LedPart C Y, p.L.sc = s → WtEq p.L a b → Val C cD ch p.L → CanonInst p.ta.Gx → QO p.pt.D (Obj.ofPt p.pt)
 
 theorem Enl.KsC_eq {B B' : Base} (h : Enl B B') : B'.KsC = B.KsC := SetLike.coe_injective h.2.1
 
@@ -235,8 +206,6 @@ theorem large₂.imp {p q : ∀ B : Base, Fr B.toPre → TwDat B → Prop} (hp :
 end Filter
 
 section Good
-
-theorem recEx_iff_recExG (QO : ∀ D : D7, Obj D → Prop) : RecEx QO ↔ RecExG (AtLed QO) := Iff.rfl
 
 theorem Ctx.Good.level {K : Ctx} {C5 c6 Cb : ℝ} (h : K.Good C5 c6 Cb) :
     K.P.H.levelPrimes = {K.P.H.g 0, K.P.H.g 1, K.P.H.pde, K.P.H.pde', DC.q0H K.P.H} := (ChGood.level h).1

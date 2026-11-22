@@ -29,8 +29,6 @@ def cjG (t : GL (n ⊕ Fin c) k) : GL (n ⊕ Fin c) k ≃ₜ* GL (n ⊕ Fin c) k
   continuous_toFun := (continuous_const.mul continuous_id).mul continuous_const
   continuous_invFun := (continuous_const.mul continuous_id).mul continuous_const
 
-theorem cjG_apply (t h : GL (n ⊕ Fin c) k) : cjG t h = t * h * t⁻¹ := rfl
-
 structure Adapted (t : GL (n ⊕ Fin c) k) : Prop where
   norm : t ∈ Subgroup.normalizer (N k n c 1 : Set (GL (n ⊕ Fin c) k))
   comm : ∀ g : GL n k, t * embX c g * t⁻¹ = embX c g

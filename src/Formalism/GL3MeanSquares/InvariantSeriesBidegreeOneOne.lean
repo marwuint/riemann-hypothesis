@@ -7,12 +7,6 @@ namespace Formalism.HermitianLattices.IntegralLatticeDensity
 
 open Finset
 
-def SeSign : Prop :=
-  ∀ (A : Type) [CommRing A] (q : ℕ) (ε η : A), Odd q → ε ^ q = η * ε → η * η = 1 →
-    ∀ (n : ℕ) (ζ : ZMod n → A) (e : ZMod n) (L : ℕ),
-      ∑ l ∈ range L, (-η) ^ l * (ε * ζ (e - 2 * (l : ZMod n))) ^ (q ^ l) =
-        ε * ∑ l ∈ range L, (-1) ^ l * ζ (e - 2 * (l : ZMod n)) ^ (q ^ l)
-
 def PowerCongruenceIffEqual : Prop :=
   ∀ (l d s s' : ℕ), 2 ≤ l → s < d → s' < d →
     ((l ^ d - 1 : ℕ) : ℤ) ∣ (l : ℤ) ^ s - (l : ℤ) ^ s' → s = s'

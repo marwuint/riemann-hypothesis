@@ -120,48 +120,6 @@ theorem exists_top {α : Type} {r : α → α → Prop} (ht : ∀ a b c, r a b �
     · exact ⟨a, mem_cons_self _ _, fun c hc => (mem_cons.1 hc).elim
         (·.symm ▸ or_self_iff.1 (h a (mem_cons_self _ _) a (mem_cons_self _ _))) fun hc => ht _ _ _ (hb' c hc) e⟩
 
-theorem IsPar.vec_notMem {P : Finset (SV k)} (h : IsPar P) {u : SV k} (hu : u ∈ P) : vec u ∉ aP (P.erase u) := by
-  obtain ⟨a, ha, hA⟩ := exists_top (r := Below) (fun a b c h h' i hi => (h' i (h i hi ▸ hi)).trans (h i hi))
-    (insert 0 ((P.erase u).filter (Below · u))) (insert_nonempty _ _) fun a ha b hb => by
-      rcases mem_insert.1 ha with rfl | ha
-      · exact .inl fun i hi => (hi rfl).elim
-      rcases mem_insert.1 hb with rfl | hb
-      · exact .inr fun i hi => (hi rfl).elim
-      exact h.2 a (mem_of_mem_erase (mem_filter.1 ha).1) b (mem_of_mem_erase (mem_filter.1 hb).1)
-  have key : ∀ a b : SV k, Below a b → a ≠ b → ∃ i, b i ≠ 0 ∧ a i = 0 := fun a b hab hne => by
-    by_contra! hn
-    exact hne (funext fun i => by
-      by_cases e : b i = 0
-      · by_contra e'; exact e' ((hab i (e ▸ e')).symm)
-      · exact (hab i (hn i e)).symm)
-  obtain ⟨i, hi, hai⟩ := key a u (by
-      rcases mem_insert.1 ha with rfl | ha
-      · exact fun i hi => (hi rfl).elim
-      · exact (mem_filter.1 ha).2) (by
-      rcases mem_insert.1 ha with rfl | ha
-      · exact fun e => h.1 (e ▸ hu)
-      · exact ne_of_mem_erase (mem_filter.1 ha).1)
-  have h1 : ∀ b ∈ P.erase u, Below b u → b i = 0 := fun b hb hbu => by
-    by_contra e; exact e ((hA b (mem_insert_of_mem (mem_filter.2 ⟨hb, hbu⟩)) i e).symm.trans hai)
-  have fin : ∀ φ : A0 k →ₗ[ℝ] ℝ, φ (vec u) ≠ 0 → (∀ b ∈ P.erase u, φ (vec b) = 0) → vec u ∉ aP (P.erase u) :=
-    fun φ h0 hb hm => h0 ((Submodule.span_le (p := LinearMap.ker φ)).2 (by rintro _ ⟨b, hb', rfl⟩; exact hb b hb') hm)
-  have sq : ∀ s : SignType, s ≠ 0 → (s : ℝ) * s = 1 := fun s hs => by cases s <;> simp_all
-  by_cases hB : ((P.erase u).filter (Below u ·)).Nonempty
-  · obtain ⟨b, hb, hB⟩ := exists_top (r := fun a b => Below b a)
-      (fun a b c h h' i hi => (h i (h' i hi ▸ hi)).trans (h' i hi)) _ hB fun a ha b hb =>
-        h.2 b (mem_of_mem_erase (mem_filter.1 hb).1) a (mem_of_mem_erase (mem_filter.1 ha).1)
-    obtain ⟨j, hj, huj⟩ := key u b (mem_filter.1 hb).2 (ne_of_mem_erase (mem_filter.1 hb).1).symm
-    refine fin ((u i : ℝ) • EuclideanSpace.projₗ i - (b j : ℝ) • EuclideanSpace.projₗ j) (by simp [vec, huj, sq _ hi])
-      fun c hc => ?_
-    rcases h.2 c (mem_of_mem_erase hc) u hu with e | e
-    · have : c j = 0 := by by_contra e'; exact e' ((e j e').symm.trans huj)
-      simp [vec, h1 c hc e, this]
-    · simp [vec, e i hi, hB c (mem_filter.2 ⟨hc, e⟩) j hj, sq _ hi, sq _ hj]
-  · refine fin (EuclideanSpace.projₗ i) (left_ne_zero_of_mul ((sq _ hi).trans_ne one_ne_zero)) fun c hc => ?_
-    rcases h.2 c (mem_of_mem_erase hc) u hu with e | e
-    · simp [vec, h1 c hc e]
-    · exact (hB ⟨c, mem_filter.2 ⟨hc, e⟩⟩).elim
-
 theorem IsOrth.mono {𝔞 𝔟 : Submodule ℝ (A0 k)} {X : Finset (SV k) → A0 k} (h : IsOrth 𝔞 X) (e : 𝔟 ≤ 𝔞) : IsOrth 𝔟 X :=
   fun P hP => h P (mem_parF.2 ⟨(mem_parF.1 hP).1, (mem_parF.1 hP).2.1.trans e, empty_subset _⟩)
 

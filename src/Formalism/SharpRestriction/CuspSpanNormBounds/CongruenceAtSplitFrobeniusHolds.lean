@@ -284,18 +284,6 @@ def stPT (C' Cl Cg cb Cu cT CT C0 Cn C1 C : ℝ) : Prop :=
           ENNReal.ofReal (large₂.sc.b ^ (C * (D.R.m : ℝ) ^ 4) *
             (max 1 (Gf D.R.k D.R.rS W.z W.z' γ)⁻¹) ^ (C * (D.R.m : ℝ) ^ 2)) * MMv D w w' A μsec
 
-def stPTsum (C' Cl Cg cb Cu cT CT C0 Cn C1 C : ℝ) : Prop :=
-  Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0 →
-  ∀ τ w w', HypTT D w w' → ∀ θ, normWin D large₂ C1 θ → ∀ W, GoodW D τ w w' θ W →
-    ∀ (ι : Type) [Fintype ι] (lams : ι → Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (As : ι → LocS W) (a : ι → ℂ),
-      (∀ i, l1dist (lams i) (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 ∧ GoodS D (lams i) (As i)) →
-      ∀ μsec, IsSection D.R.k D.R.rS W.z W.z' μsec →
-      ∀ γ p, RelPt D W.z W.z' γ p → ∀ θ', normWin D large₂ C1 θ' → ∀ νR, RMeas D W γ θ' νR →
-        ptWeight D.R.k D.R.rS (Tr D w) (Tr D w') p *
-            hsNormSq (∑ i, a i • jhUnit D w w' (As i) μsec νR γ) ≤
-          large₂.sc.b ^ (C * (D.R.m : ℝ) ^ 4) *
-            (max 1 (Gf D.R.k D.R.rS W.z W.z' γ)⁻¹) ^ (C * (D.R.m : ℝ) ^ 2) * (∑ i, ‖a i‖) ^ 2
-
 def stPTDl (C' Cl Cg cb Cu cT CT C0 Cn C1 C : ℝ) : Prop :=
   Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0 →
   ∀ τ w w', HypTT D w w' → ∀ θ, normWin D large₂ C1 θ → ∀ W, GoodW D τ w w' θ W →
@@ -442,21 +430,6 @@ def stX (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl Cg cb Cu cT CT
       XiS D u HH C s ≤ Hb large₂.sc.b C D.R.m D.R.f ^ C * C ^ (s * D.R.k * D.R.f) *
         (c / (D.R.k * D.host.v)) ^ (D.R.k * D.R.f)
 
-def stLem3 : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module D.host.E V] [FiniteDimensional D.host.E V]
-    [Module (𝓞 D.host.E) V] [IsScalarTower (𝓞 D.host.E) D.host.E V]
-    (h : V →ₗ⋆[D.host.E] V →ₗ[D.host.E] D.host.E), h.IsSymm → IsPosDef h →
-    ∀ M : Submodule (𝓞 D.host.E) V, Submodule.IsLattice D.host.E M → Formalism.HermitianLatticesTheory.IsIntegralLat h M →
-    ∀ de : ℕ, latDetH h M = de → ∀ e : ℕ, DiscGen h M e →
-      Formalism.HermitianLatticesTheory.mass h M * levelIdx h M de =
-        massU D.host.E (finrank D.host.E V) * (de : ℝ) ^ (finrank D.host.E V) *
-          ∏ᶠ p : PrimesOver D.host.F de,
-            thP (finrank D.host.E V) (eP h M p.1) (eta₃ D.host.F D.host.E p.1) (Ideal.absNorm p.1) ∧
-      (∀ p : Ideal (𝓞 D.host.F), p.IsMaximal →
-        thP (finrank D.host.E V) (eP h M p) (eta₃ D.host.F D.host.E p) (Ideal.absNorm p) ≤ (2 : ℝ) ^ e) ∧
-      Formalism.HermitianLatticesTheory.mass h M ≤ massU D.host.E (finrank D.host.E V) * (de : ℝ) ^ (finrank D.host.E V) *
-        (2 : ℝ) ^ (e * omegaF D.host.F de)
-
 def stLem3L0 (u : D.what₂.Word) : Prop :=
   (Tu D u).Prime → 3 ≤ Tu D u → SplitsCompletely (E := D.host.E) (Tu D u) →
   ∀ F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E), F0.e = D.sp.hypE → F0.z = D.zmOf u →
@@ -537,11 +510,6 @@ variable (D : D7)
 
 def f3 : ℝ := ∏ᶠ p ∈ typedPl D, (1 + 3 / (Ideal.absNorm p.asIdeal : ℝ))
 
-def c2aG : Prop :=
-  ∀ (u u' : D.what₂.Word) (Φ : Set (D.s.Term u u')), IsSat D Φ → (∀ t ∈ Φ, D.s.Gterm t ≠ 0) →
-    Summable (fun p : pairsIn D.s Φ => ‖D.s.pval p.1‖) →
-    hsNormSq (KOf D.s u u' Φ) ≤ f3 D * gaG D * (∑' p : pairsIn D.s Φ, D.s.pval p.1).re
-
 def TermsPP (u u' : D.what₂.Word) : Set (D.s.Term u u') := {t | D.s.Gterm t = 0 ∧ ¬ D.s.isId t}
 
 def Kpp (u u' : D.what₂.Word) : D.s.Cu u' →L[ℂ] D.s.Cu u := KOf D.s u u' {t | D.s.Gterm t = 0 ∧ ¬ D.s.isId t}
@@ -550,10 +518,6 @@ def cK2diag : Prop :=
   ∀ u : D.what₂.Word,
     Summable (fun t : TermsPP D u u => D.s.aTerm u u t.1) ∧
     hsNormSq (Kpp D u u) ≤ (D.duS u : ℝ) * Real.exp (-((D.R.k : ℝ) * D.R.f * Real.log D.R.k))
-
-def cK2off : Prop :=
-  ∀ u u' : D.what₂.Word, u ≠ u' →
-    ∀ t : D.s.Term u u', D.s.Gterm t = 0 → D.s.aTerm u u' t = 0
 
 def Kng (u u' : D.what₂.Word) : D.s.Cu u' →L[ℂ] D.s.Cu u := KOf D.s u u' (famNG D.s)
 
@@ -610,9 +574,6 @@ def KTwoHypotheses (C' Cl Cg cb Cu cT CT C0 : ℝ) : Prop :=
 
 def stK2diag (C' Cl Cg cb Cu cT CT C0 : ℝ) : Prop :=
   KTwoHypotheses D large₂ C' Cl Cg cb Cu cT CT C0 → cK2diag D
-
-def stK2off (C' Cl Cg cb Cu cT CT C0 : ℝ) : Prop :=
-  KTwoHypotheses D large₂ C' Cl Cg cb Cu cT CT C0 → cK2off D
 
 end K2
 

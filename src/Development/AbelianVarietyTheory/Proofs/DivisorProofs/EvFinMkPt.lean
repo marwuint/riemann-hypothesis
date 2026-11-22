@@ -14,9 +14,6 @@ variable {F : Type} [Field F] [NumberField F]
 def mkPt {κ : Type} (x : κ → mixedEmbedding.mixedSpace F) (y : κ → Af F) : κ → AF F :=
   fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), y i)
 
-theorem evFin_mkPt {κ : Type} (x : κ → mixedEmbedding.mixedSpace F) (y : κ → Af F) (i : κ) (v : Pl F) :
-    evFin F v (mkPt x y i) = evalV F v (y i) := rfl
-
 theorem at_latAtV {E : Type} [Field E] [NumberField E] [Algebra F E] {n d : ℕ} {X : Spc F E n}
     {W : Spc F E d} {v : Pl F} {γ : Matrix (Fin n) (Fin d) (AE F E)} (hγ : γ ∈ latAtV X W v) :
     At (evFin F v) γ := by

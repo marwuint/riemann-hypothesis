@@ -648,15 +648,6 @@ theorem detCoord_wedge (s : Fin r → Γ(F, V)) (c : Chart F r) :
     detCoord (wedge F V r s) c =
       (c.isFrame.basis (inf_le_right : V ⊓ c.U ≤ c.U)).det fun i => resM F inf_le_left (s i) := rfl
 
-theorem resM_wedge (h : W ≤ V) (s : Fin r → Γ(F, V)) :
-    resM _ h (wedge F V r s) = wedge F W r fun i => resM F h (s i) := by
-  refine det_sec_ext fun c => ?_
-  rw [detCoord_wedge (V := W)]
-  have e : detCoord (resM (toMod (det F r)) h (wedge F V r s)) c =
-      resG X (inf_le_inf_right c.U h) (detCoord (wedge F V r s) c) := rfl
-  rw [e, detCoord_wedge, IsFrame.resG_det]
-  simp only [resM_resM]
-
 theorem wedge_frame (h : IsVB F r) (c : Chart F r) :
     wedge F c.U r c.e = LB.chartSec h.isLB_det c := by
   refine det_sec_ext fun c' => ?_
@@ -726,44 +717,5 @@ theorem IsVB.lbIso_det_pullback (h : IsVB F r) (f : Y ⟶ X) :
   rw [hpg j j' hh,
     IsFrame.detUnit_res ((j PUnit.unit).isFrame.pullback f) ((j' PUnit.unit).isFrame.pullback f),
     IsFrame.val_detUnit_pullback (j PUnit.unit).isFrame (j' PUnit.unit).isFrame f inf_le_left inf_le_right hh]
-
-theorem lbIso_det_toMod {L : LB X} (hL : L.IsLB) : LBIso L (det (toMod L) 1) := by
-  refine (lbIso_det_of_frames hL (fun i _ => LB.chartSec hL i) (fun i => isFrame_chartSec hL i)
-    (fun i j => ?_)).2
-  have key : resM (toMod L) (inf_le_right : L.U i ⊓ L.U j ≤ L.U j) (LB.chartSec hL j) =
-      ((L.g i j : Γ(X, L.U i ⊓ L.U j)ˣ) : Γ(X, L.U i ⊓ L.U j)) •
-        resM (toMod L) (inf_le_left : L.U i ⊓ L.U j ≤ L.U i) (LB.chartSec hL i) := by
-    refine LB.sec_ext fun k => ?_
-    rw [LB.coord_smul]
-    change resG X _ (LB.coord (LB.chartSec hL j) k) =
-      resG X _ ((L.g i j : Γ(X, L.U i ⊓ L.U j)ˣ) : Γ(X, L.U i ⊓ L.U j)) * resG X _ (LB.coord (LB.chartSec hL i) k)
-    rw [LB.coord_chartSec, LB.coord_chartSec, resG_resG, resG_resG]
-    have c0 := congrArg Units.val (hL.3 k i j)
-    have c := congrArg (resG X (show (L.U i ⊓ L.U j) ⊓ L.U k ≤ _ by
-      intro x hx
-      simp only [TopologicalSpace.Opens.mem_inf] at hx ⊢
-      tauto)) c0
-    simp only [Units.val_mul, map_mul, val_res, resG_resG] at c
-    rw [mul_comm]
-    exact c.symm
-  refine Units.ext ?_
-  rw [IsFrame.val_detUnit]
-  simp only [Module.Basis.det_apply, Matrix.det_unique, Module.Basis.toMatrix_apply]
-  rw [key, map_smul, ← IsFrame.basis_apply (isFrame_chartSec hL i) inf_le_left (default : Fin 1),
-    Module.Basis.repr_self]
-  simp
-
-def IsVB.isoDet (h : IsVB F 1) : F ≅ toMod (det F 1) :=
-  let φ : F ⟶ toMod (det F 1) := homOfLinear
-    (fun V => (AlternatingMap.ofSubsingleton _ _ _ (0 : Fin 1)).symm (wedge F V 1))
-    fun hW s => (resM_wedge hW fun _ => s).symm
-  haveI : IsIso φ := isIso_of_frames _ fun x =>
-    have ⟨U, e, hx, he⟩ := h x
-    ⟨U, e, hx, he, by
-      have (i : Fin 1) : φ.app U (e i) = wedge F U 1 e :=
-        congrArg (wedge F U 1) (funext fun j => congrArg e (Subsingleton.elim _ _))
-      rw [funext this]
-      exact he.wedge h⟩
-  asIso φ
 
 end GlobalTheory.VB

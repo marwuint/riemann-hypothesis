@@ -208,31 +208,9 @@ variable {Z}
 
 @[simp] theorem cDQ_toQ (D : Z.VDivZ) : Z.cDQ (toQ D) = firstChernPic (Z.vCls D) := by simp [cDQ, toQ]
 
-theorem capDeg_vp_toQ (p d : ℕ) (D : Z.VDivZ) (Q : PicSym Z.X) :
-    Z.capDeg_vp p d (toQ D) Q = Z.vDeg d D Q / ramIdx O p := by
-  simp [capDeg_vp, toQ, div_eq_inv_mul]
-
 def vResQ (C : Z.Comp) : Z.VDivQ →ₗ[ℚ] (Z.comp C).VDivQ := (Z.vRes C).toIntLinearMap.baseChange ℚ
 
 @[simp] theorem vResQ_toQ (C : Z.Comp) (D : Z.VDivZ) : vResQ C (toQ D) = Model.toQ (Z.vRes C D) := rfl
-
-theorem capDeg_vp_eq_sum (p d : ℕ) (D : Z.VDivQ) (Q : PicSym Z.X) : Z.capDeg_vp p d D Q =
-    ∑ C ∈ Finset.univ.filter fun C : Z.Comp => (Z.comp C).relDim = d,
-      (Z.comp C).capDeg_vp p (vResQ C D) (picSymPull (Z.compι C) Q) := by
-  induction D using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a D =>
-    have : a ⊗ₜ[ℤ] D = a • toQ D := by simp [toQ, smul_tmul']
-    simp only [this, map_smul, LinearMap.smul_apply, capDeg_vp_toQ, vResQ_toQ, Model.capDeg_vp_toQ, vDeg_apply,
-      Finset.sum_div, Finset.smul_sum]
-  | add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb, Finset.sum_add_distrib]
-
-theorem capDeg_vp_eq_zero (p : ℕ) {d n : ℕ} (D : Z.VDivQ) (hn : n ≠ d) {x : PicSym Z.X}
-    (hx : x ∈ symDeg (SmallPic Z.X) n) : Z.capDeg_vp p d D x = 0 := by
-  induction D using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a D => simp [capDeg_vp, vDeg_eq_zero D hn hx]
-  | add a b ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]
 
 section Theory
 
@@ -263,21 +241,7 @@ theorem firstChern_eq_sub_divisor (L L' : FinLB Z.X) (u : Z.GenIso L.lb L'.lb) :
   rw [vdiv, cDQ_toQ, GenIso.vCls_div, map_sub]
   exact (sub_sub_cancel _ _).symm
 
-theorem vdiv_smul (L : FinLB Z.X) (g : O) (hg : g ≠ 0) : Z.vdiv L L (.smul L.isLB g hg) = toQ (Z.div g hg) :=
-  congrArg toQ (GenIso.div_smul L.isLB g hg)
-
 end NModel
-
-theorem chiLenPic_pushforward_of_isClosedImmersion {X Y : Scheme.{0}} (R : Type) [CommRing R] [Algebra R Γ(X, ⊤)]
-    [Algebra R Γ(Y, ⊤)] (i : Y ⟶ X) [IsClosedImmersion i]
-    (hi : ∀ r : R, i.appTop (algebraMap R Γ(X, ⊤) r) = algebraMap R Γ(Y, ⊤) r) (H : Y.Modules) :
-    chiLenPic R ((Scheme.Modules.pushforward i).obj H) = chiLenPic R H ∘ pull i := by
-  funext c
-  obtain ⟨M, hM, rfl⟩ := cls_surj c
-  refine (chiLen_congr R (Twist.projIso M i H)).symm.trans ?_
-  rw [chiLen_eq_of_linearEquiv R fun n => LinearEquiv.ofBijective _
-    (cohPushMap_bijective_of_isClosedImmersion R i hi _ ⊤ n)]
-  rfl
 
 section Iso
 
@@ -292,63 +256,11 @@ theorem relDim_eq_of_isIso : B'.relDim = B.relDim := by
   rw [← topologicalKrullDim_eq_of_isEmbedding f.isOpenEmbedding.isEmbedding f.surjective.range_eq,
     topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id]
 
-theorem vDeg_vPull_of_isIso (D : B.VDivZ) (x : PicSym B.X) :
-    B'.vDeg (Model.vPull hf D) (picSymPull f x) = B.vDeg D x := by
-  have key (I : B.effVert) : B'.vDeg (Model.vPull hf (Model.ofEff I)) (picSymPull f x) = B.vDeg (Model.ofEff I) x := by
-    let g := (I.1.comapIso f).hom ≫ pullback.snd _ _
-    have hg : (I.1.comap f).subschemeι ≫ f = g ≫ I.1.subschemeι := by
-      simp [g, ← pullback.condition]
-    have e : (Scheme.Modules.pushforward f).obj (divMod (I.1.comap f)) ≅ divMod I.1 :=
-      (Scheme.Modules.pushforwardComp _ _ ≪≫ Scheme.Modules.pushforwardCongr hg ≪≫
-        (Scheme.Modules.pushforwardComp _ _).symm).app _ ≪≫
-        ((Scheme.Modules.pushforward I.1.subschemeι).mapIso (asIso (unitToPush g))).symm
-    have h := (chiLenPic_congr O e).symm.trans
-      (chiLenPic_pushforward_of_isClosedImmersion O f (Model.appTop_const hf) _)
-    refine LinearMap.congr_fun (picSym_linearMap_ext
-      (l := B'.vDeg (Model.vPull hf (Model.ofEff I)) ∘ₗ (picSymPull f).toLinearMap) fun n c => ?_) x
-    simp only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_prod, picSymPull_c1Pic, Model.vPull_ofEff,
-      Model.vDeg_ofEff, Model.effDeg, Model.IsVertical.deg, picForm_prod, relDim_eq_of_isIso f]
-    rw [h, multiDiff_comap, Function.comp_apply, map_zero]
-    rfl
-  obtain ⟨I, J, rfl⟩ := Model.exists_eq_ofEff_sub D
-  simp only [map_sub, LinearMap.sub_apply, key]
-
 end Iso
 
 namespace NModel
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Z : NModel O}
-
-theorem vDeg_div_of_cover {ι : Type} [Fintype ι] {B : ι → Model O} (f : ∀ i, (B i).X ⟶ Z.X) [∀ i, IsOpenImmersion (f i)]
-    (hf : ∀ i, f i ≫ Z.str = (B i).str) (hc : ∀ x, ∃ i, x ∈ Set.range (f i))
-    (hd : ∀ i j, (Set.range (f i) ∩ Set.range (f j)).Nonempty → i = j) (d : ℕ) {g : O} (hg : g ≠ 0) (x : PicSym Z.X) :
-    Z.vDeg d (Z.div g hg) x = ∑ i ∈ Finset.univ.filter fun i => (B i).relDim = d,
-      (B i).vDeg ((B i).div g hg) (picSymPull (f i) x) := by
-  have hirr (i) : IsIrreducible (Set.range (f i)) := by
-    simpa using (IrreducibleSpace.isIrreducible_univ (B i).X).image _ (f i).continuous.continuousOn
-  have hmem (i) : Set.range (f i) ∈ irreducibleComponents Z.X := ⟨hirr i, fun T hT hle y hy => by
-    obtain ⟨j, hj⟩ := hc y
-    obtain ⟨z, -, hz⟩ := hT.2 _ _ (f i).isOpenEmbedding.isOpen_range (f j).isOpenEmbedding.isOpen_range
-      ((hirr i).1.mono fun _ h => ⟨hle h, h⟩) ⟨y, hy, hj⟩
-    exact hd i j ⟨z, hz⟩ ▸ hj⟩
-  let σ : ι → Z.Comp := fun i => ⟨_, hmem i⟩
-  have hσ : Function.Bijective σ := ⟨fun i j h => hd i j (by
-      rw [show Set.range (f j) = Set.range (f i) from (congrArg Subtype.val h).symm, Set.inter_self]
-      exact (hirr i).1), fun C => by
-    obtain ⟨y, hy⟩ := C.2.1.1
-    obtain ⟨i, hi⟩ := hc y
-    exact ⟨i, Subtype.ext (IsNormalScheme.eq_of_mem_irreducibleComponents (hmem i) C.2 hi hy)⟩⟩
-  let e (i) : (B i).X ≅ (Z.comp (σ i)).X :=
-    IsOpenImmersion.isoOfRangeEq (f i) (σ i).opens.ι (Scheme.Opens.range_ι (σ i).opens).symm
-  have he (i) : (e i).hom ≫ Z.compι (σ i) = f i := IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _
-  have he' (i) : (e i).hom ≫ (Z.comp (σ i)).str = (B i).str := by rw [← compι_str, ← Category.assoc, he, hf]
-  rw [vDeg_apply, Finset.sum_filter, Finset.sum_filter, ← hσ.sum_comp]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [relDim_eq_of_isIso (e i).hom, vRes_div, ← vDeg_vPull_of_isIso (he' i), Model.vPull_div, ← he]
-  refine if_congr Iff.rfl (congrArg _ ?_) rfl
-  refine LinearMap.congr_fun (picSym_linearMap_ext (l := (picSymPull _).toLinearMap ∘ₗ (picSymPull _).toLinearMap)
-    (l' := (picSymPull _).toLinearMap) fun n c => ?_) x
-  simp only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_prod, picSymPull_c1Pic, pull_comp]
 
 def sigma {ι : Type} [Finite ι] (B : ι → Model O) [∀ i, GlobalTheory.IsNormalScheme (B i).X] : NModel O where
   X := ∐ fun i => (B i).X
@@ -363,29 +275,6 @@ variable (O) (n N : ℕ) (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueFi
 def copies : NModel O :=
   haveI := Model.isNormalScheme_projSpace O N
   sigma fun _ : Fin n => Model.projSpace O N
-
-def twistingSheafOnCopies : FinLB (copies O n N).X :=
-  FinLB.pull ⟨N + 1, (ProjSpace.O1 O N).U, (ProjSpace.O1 O N).g, ProjSpace.O1_isLB O N⟩
-    (Sigma.desc fun _ : Fin n => 𝟙 (PSpace O N))
-
-theorem capDeg_divP_copies : ((copies O n (N + 1)).toITh p (N + 1)).capDeg ((copies O n (N + 1)).toITh p (N + 1)).divP
-    ((twistingSheafOnCopies O n (N + 1)).c1 ^ (N + 1)) = n := by
-  have h (i : Fin n) : picSymPull (Sigma.ι (fun _ : Fin n => (Model.projSpace O (N + 1)).X) i)
-      ((twistingSheafOnCopies O n (N + 1)).c1 ^ (N + 1)) = c1 (Model.formalTwistingSheaf O (N + 1)) (ProjSpace.O1_isLB O _) ^ (N + 1) := by
-    refine (map_pow _ _ _).trans (congrArg (· ^ (N + 1)) ((picSymPull_c1Pic _ _).trans (congrArg firstChernPic ?_)))
-    refine (congrArg _ (FinLB.cls_pull _ _)).trans ((pull_comp _ _ _).symm.trans ?_)
-    erw [Sigma.ι_desc, pull_id]
-    rfl
-  rw [capDeg_vp_toQ, divP, vDeg_div_of_cover (Z := copies O n (N + 1)) (B := fun _ : Fin n => Model.projSpace O (N + 1))
-    (fun i => Sigma.ι (fun _ : Fin n => (Model.projSpace O (N + 1)).X) i) (fun i => Sigma.ι_desc _ _)
-    (fun x => (sigmaOpenCover _).exists_eq x)
-    (fun i j ⟨x, hi, hj⟩ => by_contra fun hij => Set.disjoint_left.1
-      (Opens.coe_disjoint.2 (disjoint_opensRange_sigmaι _ i j hij)) hi hj)]
-  refine (congrArg (· / (ramIdx O p : ℚ)) (Finset.sum_congr rfl fun i _ =>
-    (congrArg _ (h i)).trans (Model.vDeg_div_projSpace N (natCast_ne_zero O p)))).trans ?_
-  simp only [Model.relDim_projSpace, Finset.filter_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-    nsmul_eq_mul]
-  exact mul_div_cancel_right₀ (n : ℚ) (b := ramIdx O p) (Nat.cast_ne_zero.2 (ramIdx_ne_zero O p))
 
 end Example
 
@@ -435,12 +324,6 @@ variable (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) (d : �
   haveI := charP_residueField_of_mem_nonunits Z.i.c hp hW
   (nmodel Z).toITh p d
 
-theorem dim_ithOf : (ithOf hp hW Z d).dim = d + 1 := rfl
-
-theorem LB_ithOf : (ithOf hp hW Z d).LB = FinLB Z.X := rfl
-
-theorem firstChern_lineBundleTheory (L : FinLB Z.X) : (ithOf hp hW Z d).c1 L = L.c1 := rfl
-
 variable {Z}
 
 def vdiv (L L' : FinLB Z.X) (u : GenIso Z L L') : (ithOf hp hW Z d).VDiv :=
@@ -479,10 +362,6 @@ theorem chart_le_gen (a : Fin Z.m) : (Z.U a).1 ≤ (nmodel Z).gen := by
   refine le_basicOpen_of_isUnit le_top ?_
   rw [map_natCast, ← map_natCast (Z.alg a)]
   exact (Ne.isUnit (Nat.cast_ne_zero.2 hp.ne_zero)).map _
-
-theorem opn_subset_gen : Z.opn ⊆ (nmodel Z).gen := by
-  rw [← Z.cover]
-  exact Set.iUnion_subset (chart_le_gen hp hW)
 
 end Mdl
 

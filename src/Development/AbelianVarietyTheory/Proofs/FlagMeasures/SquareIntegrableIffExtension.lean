@@ -89,8 +89,6 @@ def scalarMul : Circle × SUJ ε →* UJ ε where
       _ = unitScalar ε a * ((g : UJ ε) * unitScalar ε b) * (h : UJ ε) := by rw [unitScalar_comm ε b (g : UJ ε)]
       _ = unitScalar ε a * (g : UJ ε) * (unitScalar ε b * (h : UJ ε)) := by simp only [mul_assoc]
 
-theorem scalarMul_apply (z : Circle) (g : SUJ ε) : scalarMul ε (z, g) = unitScalar ε z * (g : UJ ε) := rfl
-
 def circleHaar : Measure Circle := Measure.haarMeasure ⊤
 
 theorem circleHaar_isHaar : circleHaar.IsHaarMeasure := by

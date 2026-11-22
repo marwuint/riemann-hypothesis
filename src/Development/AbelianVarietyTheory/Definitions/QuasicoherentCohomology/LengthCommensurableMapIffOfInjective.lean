@@ -156,11 +156,6 @@ theorem relLength_comap_of_le_range (f : V →ₛₗ[σ] V') {A' : Submodule S V
     relLength (A'.comap f) (B'.comap f) = relLength A' B' := by
   rw [relLength_comap_comap, inf_eq_right.mpr hA]
 
-theorem LengthCommensurable.signedLength_map_of_injective {A B : Submodule R V}
-    (_h : LengthCommensurable A B) (f : V →ₛₗ[σ] V') (hf : Function.Injective f) :
-    signedLength (A.map f) (B.map f) = signedLength A B := by
-  simp only [signedLength, relLength_map_of_injective f hf]
-
 end Map
 
 section Ambient
@@ -190,10 +185,6 @@ theorem lengthCommensurable_iff_of_ge (h : B ≤ A) :
 @[simp] theorem signedLength_self (A : Submodule R V) : signedLength A A = 0 := sub_self _
 
 namespace LengthCommensurable
-
-theorem signedLength_swap (_h : LengthCommensurable A B) :
-    signedLength B A = -signedLength A B := by
-  simp [signedLength]
 
 theorem signedLength_of_ge (_h : LengthCommensurable A B) (hBA : B ≤ A) :
     signedLength A B = (relLength A B).toNat := by

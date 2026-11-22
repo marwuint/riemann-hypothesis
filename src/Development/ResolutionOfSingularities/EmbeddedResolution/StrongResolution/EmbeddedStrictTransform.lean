@@ -274,8 +274,6 @@ def blowupSequence (h : S.TransitionsAreBlowups) : SequenceOfBlowups Y where
 
 @[simp] theorem blowupSequence_tower (h : S.TransitionsAreBlowups) : (S.blowupSequence h).tower = S.tower := rfl
 
-theorem blowupSequence_isoObjZero (h : S.TransitionsAreBlowups) : (S.blowupSequence h).isoZero = S.totalSpaceZeroIso := rfl
-
 @[simp] theorem blowupSequence_center (h : S.TransitionsAreBlowups) (i : ℕ) :
     (S.blowupSequence h).center i = S.centerOnTotalSpace i := rfl
 

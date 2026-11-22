@@ -78,18 +78,6 @@ def lat (Λ : Submodule (MaxOrd o E) V) : Submodule M.L.O S.V where
     change c.e.symm ((s : E) • a) ∈ Λ
     rw [map_smul]; exact this
 
-def unlat (Λ : Submodule M.L.O S.V) : Submodule (MaxOrd o E) V where
-  carrier := {y | c.e y ∈ Λ}
-  add_mem' := fun {a b} ha hb => by
-    simpa only [Set.mem_setOf_eq, map_add] using Λ.add_mem ha hb
-  zero_mem' := by simp
-  smul_mem' := fun s a ha => by
-    have := Λ.smul_mem ⟨s, (m.place.mem_O _).1 s.2⟩ ha
-    change c.e ((s : E) • a) ∈ Λ
-    rw [map_smul]; exact this
-
-theorem mem_unlat (Λ : Submodule M.L.O S.V) (v : V) : v ∈ m.unlat c Λ ↔ c.e v ∈ Λ := Iff.rfl
-
 include m
 
 end Match

@@ -47,14 +47,6 @@ def hyp (C0 C' Cl Cg cb Cu cT CT : ℝ) : Prop :=
 def DiagonalKernelBoundParameters (Cl Cg CT : ℝ) : Prop :=
   UnitaryVolumeMass.KTwoParameterConditions D large₂ Cl Cg CT
 
-def WordPairStandingData (u u' : D.what₂.Word) : Prop :=
-  1 ≤ D.R.rS ∧
-  (Lat.Tu D u).Prime ∧ (Lat.Tu D u').Prime ∧ 3 ≤ Lat.Tu D u ∧ 3 ≤ Lat.Tu D u' ∧
-  Lat.SplitsCompletely (E := D.host.E) (Lat.Tu D u) ∧ Lat.SplitsCompletely (E := D.host.E) (Lat.Tu D u') ∧
-  (D.host.g 0).Prime ∧ (D.host.g 1).Prime ∧ D.host.g 0 ≠ D.host.g 1 ∧
-  (∀ i, Lat.SplitsCompletely (E := D.host.E) (D.host.g i)) ∧
-  Nat.Coprime (Lat.gS D) (Lat.Tu D u * Lat.Tu D u') ∧ Lat.Tu D u ≡ Lat.Tu D u' [MOD Lat.gS D]
-
 def CountTheoremHypotheses (n0 : ℕ) (A C cb : ℝ) : Prop :=
   NumberField.discr D.host.E = NumberField.discr D.host.F ^ 2 ∧
   n0 ≤ D.R.r ∧ (D.R.rS + 1) ^ 2 ≤ D.R.r ∧

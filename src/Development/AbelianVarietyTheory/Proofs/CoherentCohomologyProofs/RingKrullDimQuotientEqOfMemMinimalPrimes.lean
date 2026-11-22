@@ -114,20 +114,6 @@ theorem map_maximalIdeal_eq_span_of_irreducible {ϖ : O} (hϖ : Irreducible ϖ) 
 
 variable [IsDomain A] [Algebra.FiniteType O A] [FaithfulSMul O A]
 
-theorem height_eq_one_of_mem_minimalPrimes_map_maximalIdeal {q : Ideal A}
-    (hq : q ∈ ((maximalIdeal O).map (algebraMap O A)).minimalPrimes) : q.height = 1 := by
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  have : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing O A
-  rw [map_maximalIdeal_eq_span_of_irreducible O hϖ] at hq
-  have := hq.1.1
-  refine le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ q hq) ?_
-  have hne : q ≠ ⊥ := by
-    rintro rfl
-    have : algebraMap O A ϖ ∈ (⊥ : Ideal A) := hq.1.2 (Ideal.mem_span_singleton_self _)
-    exact hϖ.ne_zero (by simpa using this)
-  have := Ideal.height_strict_mono_of_isPrime (I := ⊥) (J := q) (bot_lt_iff_ne_bot.mpr hne)
-  exact Order.one_le_iff_pos.mpr (lt_of_le_of_lt zero_le this)
-
 theorem trdeg_quotient_eq_of_mem_minimalPrimes (k : Type u) [Field k] [Algebra O k]
     (hk : Function.Surjective (algebraMap O k)) {q : Ideal A}
     (hq : q ∈ ((maximalIdeal O).map (algebraMap O A)).minimalPrimes)
@@ -380,106 +366,6 @@ theorem topologicalKrullDim_preimage_genericPoint_eq {d : ℕ}
 
 variable [IsDiscreteValuationRing O]
 
-omit [IsIntegral Y] [LocallyOfFiniteType f] [Flat f] in
-
-theorem mem_minimalPrimes_of_mem_irreducibleComponents {S : Type*} [TopologicalSpace S]
-    {i : S → Y} (hi : IsEmbedding i) (hr : Set.range i = f ⁻¹' {closedPoint O})
-    {Z : Set S} (hZ : Z ∈ irreducibleComponents S)
-    {A : Type u} [CommRing A] [Algebra O A] {j : Spec (.of A) ⟶ Y} [IsOpenImmersion j]
-    (hj : j ≫ f = Spec.map (CommRingCat.ofHom (algebraMap O A)))
-    {q : PrimeSpectrum A} (hq : IsGenericPoint (j q) (i '' Z)) :
-    q.asIdeal ∈ ((maximalIdeal O).map (algebraMap O A)).minimalPrimes := by
-  have key (p : PrimeSpectrum A) :
-      j p ∈ Set.range i ↔ (maximalIdeal O).map (algebraMap O A) ≤ p.asIdeal := by
-    rw [hr]
-    change (j ≫ f) p = _ ↔ _
-    rw [hj, Ideal.map_le_iff_le_comap]
-    change PrimeSpectrum.comap (algebraMap O A) p = _ ↔ _
-    rw [PrimeSpectrum.ext_iff]
-    exact ⟨fun h ↦ h.ge, fun h ↦ ((maximalIdeal.isMaximal O).eq_of_le
-      (Ideal.IsPrime.ne_top inferInstance) h).symm⟩
-  refine ⟨⟨q.2, (key q).mp (Set.image_subset_range _ _ hq.mem)⟩, fun p hp hpq ↦ ?_⟩
-  obtain ⟨s, hs⟩ := (key ⟨p, hp.1⟩).mpr hp.2
-  have h₁ : j (⟨p, hp.1⟩ : PrimeSpectrum A) ⤳ j q :=
-    ((PrimeSpectrum.le_iff_specializes ⟨p, hp.1⟩ q).mp hpq).map j.continuous
-  have h₂ : Z ⊆ closure {s} := fun z hz ↦ by
-    rw [← specializes_iff_mem_closure, ← hi.isInducing.specializes_iff, hs]
-    exact h₁.trans (hq.specializes ⟨z, hz, rfl⟩)
-  have h₃ : s ∈ Z := hZ.2 isIrreducible_singleton.closure h₂ (subset_closure rfl)
-  have h₄ : j q ⤳ j (⟨p, hp.1⟩ : PrimeSpectrum A) := hq.specializes ⟨s, h₃, hs⟩
-  exact (PrimeSpectrum.le_iff_specializes q ⟨p, hp.1⟩).mpr
-    (j.isOpenEmbedding.isInducing.specializes_iff.mp h₄)
-
-omit [IsIntegral Y] [LocallyOfFiniteType f] [Flat f] in
-
-theorem isClosed_image_of_mem_irreducibleComponents {S : Type*} [TopologicalSpace S]
-    {i : S → Y} (hi : IsEmbedding i) (hr : Set.range i = f ⁻¹' {closedPoint O})
-    {Z : Set S} (hZ : Z ∈ irreducibleComponents S) : IsClosed (i '' Z) := by
-  have : IsClosedEmbedding i := ⟨hi, hr ▸ (isClosed_singleton_closedPoint O).preimage f.continuous⟩
-  exact this.isClosedMap _ (isClosed_of_mem_irreducibleComponents Z hZ)
-
-theorem topologicalKrullDim_eq_of_mem_irreducibleComponents_of_trdeg_eq
-    {S : Type*} [TopologicalSpace S]
-    {i : S → Y} (hi : IsEmbedding i) (hr : Set.range i = f ⁻¹' {closedPoint O})
-    {Z : Set S} (hZ : Z ∈ irreducibleComponents S) {d : ℕ}
-    (hd : letI := (Spec.preimage (Y.fromSpecStalk (genericPoint Y) ≫ f)).hom.toAlgebra
-      Algebra.trdeg O Y.functionField = d) :
-    topologicalKrullDim Z = d := by
-  have hirr : IsIrreducible (i '' Z) := hZ.1.image i hi.continuous.continuousOn
-  have hη := hirr.isGenericPoint_genericPoint
-    (isClosed_image_of_mem_irreducibleComponents f hi hr hZ)
-  rw [← topologicalKrullDim_eq_of_isEmbedding (hi.comp (IsEmbedding.subtypeVal (p := (· ∈ Z))))
-    (Z := i '' Z) (by rw [Set.range_comp, Subtype.range_coe])]
-  refine topologicalKrullDim_eq_of_forall_exists_isOpen hirr.nonempty fun x hxZ ↦ ?_
-  obtain ⟨A, _, _, _, _, _, j, _, hx, hj, hA⟩ := exists_affine_chart_trdeg_eq f x
-  refine ⟨Set.range j, j.isOpenEmbedding.isOpen_range, hx, ?_⟩
-  obtain ⟨q, hq⟩ := (hη.specializes hxZ).mem_open j.isOpenEmbedding.isOpen_range hx
-  rw [← hq] at hη
-  have hmin := mem_minimalPrimes_of_mem_irreducibleComponents f hi hr hZ hj hη
-  rw [← ringKrullDim_quotient_eq_of_mem_minimalPrimes O hmin (hA.trans hd),
-    ← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim]
-  refine topologicalKrullDim_eq_of_isEmbedding (j.isOpenEmbedding.isEmbedding.comp
-    (PrimeSpectrum.isClosedEmbedding_comap_of_surjective _ (Ideal.Quotient.mk q.asIdeal)
-      Ideal.Quotient.mk_surjective).isEmbedding) ?_
-  refine (Set.range_comp _ _).trans
-    (.trans (congrArg (Set.image j) ?_) Set.image_preimage_eq_range_inter)
-  refine (range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective).trans ?_
-  rw [Ideal.mk_ker, ← hη.def, ← Set.image_singleton]
-  exact (PrimeSpectrum.closure_singleton q).symm.trans
-    (j.isOpenEmbedding.isInducing.closure_eq_preimage_closure_image _)
-
-theorem ringKrullDim_stalk_eq_one_of_mem_irreducibleComponents
-    {S : Type*} [TopologicalSpace S]
-    {i : S → Y} (hi : IsEmbedding i) (hr : Set.range i = f ⁻¹' {closedPoint O})
-    {Z : Set S} (hZ : Z ∈ irreducibleComponents S) {z : S} (hz : IsGenericPoint z Z) :
-    ringKrullDim (Y.presheaf.stalk (i z)) = 1 := by
-  have hη : IsGenericPoint (i z) (i '' Z) := by
-    have := hz.image hi.continuous
-    rwa [(isClosed_image_of_mem_irreducibleComponents f hi hr hZ).closure_eq] at this
-  obtain ⟨A, _, _, _, _, _, j, _, ⟨q, hq⟩, hj, -⟩ := exists_affine_chart_trdeg_eq f (i z)
-  rw [← hq] at hη ⊢
-  have hmin := mem_minimalPrimes_of_mem_irreducibleComponents f hi hr hZ hj hη
-  rw [ringKrullDim_eq_of_ringEquiv (asIso (j.stalkMap q)).commRingCatIsoToRingEquiv,
-    ringKrullDim_eq_of_ringEquiv (Spec.stalkIso (.of A) q).commRingCatIsoToRingEquiv]
-  have := q.isPrime
-  refine (IsLocalization.AtPrime.ringKrullDim_eq_height q.asIdeal _).trans ?_
-  rw [height_eq_one_of_mem_minimalPrimes_map_maximalIdeal O hmin]
-  rfl
-
-theorem exists_topologicalKrullDim_fibres_eq_of_isEmbedding
-    {S G : Type*} [TopologicalSpace S] [TopologicalSpace G]
-    {i : S → Y} (hi : IsEmbedding i) (hr : Set.range i = f ⁻¹' {closedPoint O})
-    {i' : G → Y} (hi' : IsEmbedding i')
-    (hr' : Set.range i' = f ⁻¹' {genericPoint (Spec (.of O))}) :
-    ∃ d : ℕ, topologicalKrullDim G = d ∧
-      ∀ Z ∈ irreducibleComponents S, topologicalKrullDim Z = d := by
-  obtain ⟨A, _, _, _, _, _, j, _, -, -, hA⟩ := exists_affine_chart_trdeg_eq f (genericPoint Y)
-  obtain ⟨d, hd⟩ := exists_trdeg_eq_natCast O (A := A)
-  rw [hA] at hd
-  exact ⟨d, (topologicalKrullDim_eq_of_isEmbedding hi' hr').symm.trans
-    (topologicalKrullDim_preimage_genericPoint_eq f hd),
-    fun Z hZ ↦ topologicalKrullDim_eq_of_mem_irreducibleComponents_of_trdeg_eq f hi hr hZ hd⟩
-
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsIntegral Y] [LocallyOfFiniteType f] [Flat f] in
 
 theorem isEmbedding_and_range_eq_of_isPullback {T P : Scheme.{u}} {g : T ⟶ Spec (.of O)}
@@ -489,44 +375,6 @@ theorem isEmbedding_and_range_eq_of_isPullback {T P : Scheme.{u}} {g : T ⟶ Spe
   refine ⟨i.isEmbedding, ?_⟩
   rw [← Scheme.Pullback.range_fst, ← h.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp,
     Set.range_comp, h.isoPullback.hom.surjective.range_eq, Set.image_univ]
-
-theorem exists_topologicalKrullDim_fibres_eq_of_isPullback
-    (K k : Type u) [Field K] [Algebra O K] [IsFractionRing O K]
-    [Field k] [Algebra O k] (hk : Function.Surjective (algebraMap O k))
-    {Y₀ Y₁ : Scheme.{u}} {i₀ : Y₀ ⟶ Y} {p₀ : Y₀ ⟶ Spec (.of k)} {i₁ : Y₁ ⟶ Y}
-    {p₁ : Y₁ ⟶ Spec (.of K)}
-    (h₀ : IsPullback i₀ p₀ f (Spec.map (CommRingCat.ofHom (algebraMap O k))))
-    (h₁ : IsPullback i₁ p₁ f (Spec.map (CommRingCat.ofHom (algebraMap O K)))) :
-    ∃ d : ℕ, topologicalKrullDim Y₁ = d ∧ ∀ Z ∈ irreducibleComponents Y₀,
-      topologicalKrullDim Z = d ∧
-        ∀ z, IsGenericPoint z Z → ringKrullDim (Y.presheaf.stalk (i₀ z)) = 1 := by
-  have := IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom (algebraMap O k)) hk
-  have := IsPreimmersion.of_isLocalization (R := O) (S := K) (nonZeroDivisors O)
-  obtain ⟨e₀, r₀⟩ := isEmbedding_and_range_eq_of_isPullback f h₀
-  obtain ⟨e₁, r₁⟩ := isEmbedding_and_range_eq_of_isPullback f h₁
-  have hr₀ : Set.range (Spec.map (CommRingCat.ofHom (algebraMap O k))) = {closedPoint O} := by
-    refine Set.eq_singleton_iff_nonempty_unique_mem.mpr ⟨Set.range_nonempty _, ?_⟩
-    rintro _ ⟨x, rfl⟩
-    refine PrimeSpectrum.ext ?_
-    change Ideal.comap (algebraMap O k) x.asIdeal = maximalIdeal O
-    have := x.isPrime
-    rw [Ideal.eq_bot_of_prime x.asIdeal]
-    exact eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ hk)
-  have hr₁ : Set.range (Spec.map (CommRingCat.ofHom (algebraMap O K))) =
-      {genericPoint (Spec (.of O))} := by
-    refine Set.eq_singleton_iff_nonempty_unique_mem.mpr ⟨Set.range_nonempty _, ?_⟩
-    rintro _ ⟨x, rfl⟩
-    rw [genericPoint_eq_bot_of_affine]
-    refine PrimeSpectrum.ext ?_
-    change Ideal.comap (algebraMap O K) x.asIdeal = ⊥
-    have := x.isPrime
-    rw [Ideal.eq_bot_of_prime x.asIdeal]
-    exact Ideal.comap_bot_of_injective _ (IsFractionRing.injective O K)
-  rw [hr₀] at r₀
-  rw [hr₁] at r₁
-  obtain ⟨d, hd₁, hd₀⟩ := exists_topologicalKrullDim_fibres_eq_of_isEmbedding f e₀ r₀ e₁ r₁
-  exact ⟨d, hd₁, fun Z hZ ↦ ⟨hd₀ Z hZ, fun z hz ↦
-    ringKrullDim_stalk_eq_one_of_mem_irreducibleComponents f e₀ r₀ hZ hz⟩⟩
 
 end Fibres
 

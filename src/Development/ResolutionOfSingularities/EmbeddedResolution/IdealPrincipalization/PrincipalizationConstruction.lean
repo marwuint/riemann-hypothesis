@@ -58,13 +58,6 @@ def markedTripleOrderOne (k : Type u) [Field k] (X : Scheme.{u})
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).krullDimSucc = krullDimSucc X := rfl
 
-theorem markedTripleOrderOne_pullbackAlong (k : Type u) [Field k] (X : Scheme.{u})
-    (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
-    (E : List X.IdealSheafData) (Y : Scheme.{u})
-    (q : Y ⟶ Spec (CommRingCat.of k)) (h : Y ⟶ X) :
-    (markedTripleOrderOne k X p I E).pullbackAlong Y q h
-      = markedTripleOrderOne k Y q (I.comap h) (E.map fun D => D.comap h) := rfl
-
 theorem markedTripleOrderOne_isAdmissible (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -92,12 +85,6 @@ def markedBlowupSeq (B : PrincipalizationRules.{u}) (k : Type u) [Field k] (X : 
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) : MarkedSequenceOfBlowups p I 1 E :=
   (B.outputLevelData (krullDimSucc X)).maxOrderRed (markedTripleOrderOne k X p I E)
-
-theorem sequence_eq_maxOrderReduction (B : PrincipalizationRules.{u}) (k : Type u) [Field k] (X : Scheme.{u})
-    (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
-    (E : List X.IdealSheafData) :
-    B.markedBlowupSeq k X p I E
-      = (B.outputLevelData (krullDimSucc X)).maxOrderRed (markedTripleOrderOne k X p I E) := rfl
 
 end PrincipalizationRules
 

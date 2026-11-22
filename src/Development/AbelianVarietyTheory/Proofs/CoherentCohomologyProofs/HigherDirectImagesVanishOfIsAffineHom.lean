@@ -204,9 +204,6 @@ def coh.pushforwardEquiv (n : ℕ) :
     coh ((Scheme.Modules.pushforward g).obj G) n ≃ₗ[R] coh G n :=
   cohOn.pushforwardEquiv R hg G ⊤ n
 
-theorem coh.pushforwardEquiv_def (n : ℕ) :
-    coh.pushforwardEquiv R hg G n = cohOn.pushforwardEquiv R hg G ⊤ n := rfl
-
 variable {G} in
 
 theorem coh.pushforwardEquiv_map {G' : Y.Modules} [G'.IsQuasicoherent] (s : G ⟶ G')

@@ -77,18 +77,6 @@ def frameOf {ι : Type} [Fintype ι] [DecidableEq ι] (G : Matrix ι ι ℂ) : M
 
 end Defs
 
-def IsoGroupoid : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (A B C : HLat K),
-    (∃ I : Iso A A, ∀ x, I.e x = x) ∧
-    (∀ I : Iso A B, ∃ J : Iso B A, ∀ x, J.e (I.e x) = x) ∧
-    (∀ (I : Iso A B) (J : Iso B C), ∃ M : Iso A C, ∀ x, M.e x = J.e (I.e x))
-
-def IsoWithL : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (A B : HLat K) (I : Iso A B)
-    (L' : Submodule (𝓞 K) A.V),
-    ∃ J : Iso (withL A L') (withL B (L'.map (I.e.toLinearMap.restrictScalars (𝓞 K)))),
-      ∀ x : A.V, (J.e x : B.V) = I.e x
-
 def FrameFree : Prop :=
   ∀ (K V ι κ : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι] [Fintype κ]

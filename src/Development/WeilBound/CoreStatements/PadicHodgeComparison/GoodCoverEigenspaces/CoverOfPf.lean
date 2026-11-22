@@ -95,9 +95,6 @@ def etEquiv {X Y : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : Y ⟶ Sp ↥K.1} (e :
     change etPull he n (etPull (f := e.inv) _ n x) = x
     rw [etPull_comp, etPull_congr _ (Category.id_comp q) e.hom_inv_id, etPull_id]
 
-theorem etEquiv_apply {X Y : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : Y ⟶ Sp ↥K.1} (e : X ≅ Y) (he : e.hom ≫ q' = q)
-    (n : ℕ) (x : EtV q' n) : etEquiv e he n x = etPull he n x := rfl
-
 theorem etEquiv_symm_apply {X Y : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : Y ⟶ Sp ↥K.1} (e : X ≅ Y)
     (he : e.hom ≫ q' = q) (n : ℕ) (x : EtV q n) :
     (etEquiv e he n).symm x = etPull (f := e.inv) (by rw [← he, ← Category.assoc, e.inv_hom_id, Category.id_comp]) n x :=

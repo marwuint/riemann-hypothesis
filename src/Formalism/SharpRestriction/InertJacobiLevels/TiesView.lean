@@ -26,20 +26,6 @@ section View
 
 variable {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (K : G.Consts) (a b : G.HH D → ℤ)
 
-theorem partner_view (p : ℕ) (t : G.HH D) (e : ℕ) : G.partner D p t e = GC.partner (viewD D) p t e := rfl
-
-theorem fill_view (j : ℕ) (z : Bool × G.HH D) : G.fill X b j z = GC.fill (viewX X) b j z := rfl
-
-theorem VV_view (p : ℕ) : G.VV X K a b p = GC.VV (viewX X) K a b p := rfl
-
-theorem TTP_view (p : ℕ) : G.TTP X K a b p = GC.TTP (viewX X) K a b p := rfl
-
-theorem tauP_view (p : ℕ) : G.tauP X K a b p = GC.tauP (viewX X) K a b p := rfl
-
-theorem ioP_viewX (p : ℕ) : G.ioP X K a b p = GC.ioP (viewX X) K a b p := rfl
-
-theorem gainP_eq_gainP_viewX (p j : ℕ) : G.gainP X K a b p j = GC.gainP (viewX X) K a b p j := rfl
-
 end View
 
 structure GAll where
@@ -48,10 +34,6 @@ structure GAll where
   X : GC.Inst D L
   a : GC.HH D → ℤ
   b : GC.HH D → ℤ
-
-namespace GAll
-
-end GAll
 
 def allOf {D : D7} {L : SizeData₂ D} (X : G.Inst D L) : GAll := ⟨viewD D, viewL L, viewX X, G.aL L, G.bL L⟩
 

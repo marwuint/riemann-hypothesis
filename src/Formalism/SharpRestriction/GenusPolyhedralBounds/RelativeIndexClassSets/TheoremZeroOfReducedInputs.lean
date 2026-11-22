@@ -52,17 +52,6 @@ theorem tr_InLiftC {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la
 theorem tr_CombBound (S : Scal B) (c : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (h : CombBound G S c nus) :
     CombBound (G.setZQ rz alz th0 zc rq th) S c nus := h
 
-theorem tr_TiedW (S : Scal B) (Gc Prw : ℝ) : (G.setZQ rz alz th0 zc rq th).TiedW S Gc Prw ↔ G.TiedW S Gc Prw := Iff.rfl
-
-theorem tr_TiedTh (S : Scal B) (Gc : ℝ) : (G.setZQ rz alz th0 zc rq th).TiedTh S Gc ↔ G.TiedTh S Gc := Iff.rfl
-
-theorem tr_TiedEt (large₂ : SizeData₂ D) (Cf Af : ℝ) : (G.setZQ rz alz th0 zc rq th).TiedEt large₂ Cf Af ↔ G.TiedEt large₂ Cf Af := Iff.rfl
-
-theorem tr_InContainMR (la : HeightOneSpectrum (𝓞 B.KO)) (S : Scal B) (CRm : ℝ) (T : ℕ) (c : ℝ) :
-    InContainMR (G.setZQ rz alz th0 zc rq th) la S CRm T c ↔ InContainMR G la S CRm T c := Iff.rfl
-
-theorem tr_ShareRhoR (S : Scal B) (T d : ℕ) : ShareRhoR (G.setZQ rz alz th0 zc rq th) S T d ↔ ShareRhoR G S T d := Iff.rfl
-
 end Tr
 
 theorem ShortG.mono {w : WeightFamilies.Wt D j} {N : Submodule (𝓞 B.KO) (B.Cusp j w)} {β β' : ℝ} (h : ShortG X w N β) (hb : β ≤ β') :

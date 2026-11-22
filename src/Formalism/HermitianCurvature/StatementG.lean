@@ -108,10 +108,6 @@ def GermRate : Prop :=
 def PsiChar : Prop :=
   ∀ β x y : ℂ, psi β (x + y) = psi β x * psi β y ∧ ‖psi β x‖ = 1 ∧ psi β 0 = 1
 
-def PsiNormalisations : Prop :=
-  ∀ w : ℂ, psi (4 * Real.pi) w = Complex.exp (2 * Real.pi * Complex.I * (w + (starRingEnd ℂ) w)) ∧
-    psi (-2 * Complex.I) w = Complex.exp (w - (starRingEnd ℂ) w)
-
 def SelfDual : Prop :=
   ∀ β : ℂ, β ≠ 0 → ∀ (f : SchwartzMap ℂ ℂ) (w : ℂ),
     ∫ ξ : ℂ, (∫ x : ℂ, f x * psi β (ξ * x) ∂(mu β)) * psi β (w * ξ) ∂(mu β) = f (-w)

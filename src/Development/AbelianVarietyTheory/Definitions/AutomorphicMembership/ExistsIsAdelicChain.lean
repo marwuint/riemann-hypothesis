@@ -53,9 +53,6 @@ def topLift (t : T) : (R.HX t).H →ₗ[ℂ] R.CC t (D.R.m - 1) := R.ioX t ∘�
 
 def botLift (t : T) : R.CC t 1 →ₗ[ℂ] MMap (R.MY 0) := postOn (R.MY 0) R.e0 ∘ₗ toMM R t 0 ∘ₗ R.ioY t 0
 
-theorem toMM_apply (t : T) (j : ℕ) (U : R.CC t j) (v : (R.MY j).Vec) :
-    toMM R t j U v = (U : SmT (R.MY j) →ₗ[ℂ] (GA D (Yc D j) → ℂ)) (PiTensorProduct.tprod ℂ v) := rfl
-
 theorem multAt_le (P : LevelP R.Pg D.R.r ℂ) (t : T) (j : ℕ) : multAt R P t j ≤ multAt R R.triv t j :=
   mult_anti _ _ (principal_le_level (R.βY j) (R.datYt t j R.triv) P)
 
@@ -72,9 +69,6 @@ theorem multAt_zero (P : LevelP R.Pg D.R.r ℂ) (t : T) :
 
 theorem EEat_le_triv (P : LevelP R.Pg D.R.r ℂ) : R.EEat P ≤ R.EEat R.triv :=
   inf_le_inf_right _ (mult_anti _ _ (principal_le_level (R.βY 0) (R.dat0 R.triv) P))
-
-theorem toMM_dnFrom_topLift (t : T) (y : (R.HX t).H) :
-    toMM R t 0 (Lift.dnFrom (R.CC t) (R.ioY t) (D.R.m - 1) (topLift R t y)) = PiTensorProduct.lift.symm (R.thDn t y) := rfl
 
 end Level
 
@@ -160,9 +154,6 @@ attribute [instance] HChain.nSp HChain.iSp HChain.fSp
     multTop := fun μ => (c μ).top
     io := fun μ => (c μ).io }
 
-theorem topEquiv_withChain (S : RowSide D EE) (c : ∀ μ, HChain D.R.m EE (S.Amb μ)) (μ : D.what₂.Tup)
-    (x : (c μ).Sp (D.R.m - 1 + 1)) : topEquiv (withChain S c) μ x = (c μ).top (famCast (c μ).Sp (pred_m_add_one D) x) := rfl
-
 end Inhabitant
 
 theorem isMultiplicityInner_mul_inner {V : HSp D} {Sp : D.what₂.Tau → SPar} {M : DSModel V Sp} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
@@ -192,14 +183,6 @@ theorem isMultiplicityInner_mul_inner {V : HSp D} {Sp : D.what₂.Tau → SPar} 
   refine ⟨(h₂ v v').1.sub (h₁ v v').1, ?_⟩
   rw [integral_sub (h₂ v v').1 (h₁ v v').1, (h₂ v v').2, (h₁ v v').2, inner_add_right]
   ring
-
-namespace MultTie
-
-end MultTie
-
-namespace MultTied
-
-end MultTied
 
 end GlobalTheory.Mem.Th
 

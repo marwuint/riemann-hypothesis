@@ -166,9 +166,6 @@ def Hfr (u : WeightFamilies.Wt D j) : Submodule (Kp X la N) (Lw X la w) :=
   Submodule.span (Kp X la N) {x | ∃ k : ℕ, ∃ g ∈ Vw X la N (addL u wL k),
     x = algebraMap (Rp X la N) (Lw X la w) g * w0inv X la w ^ k}
 
-theorem Hfr_eq_frSpan (u : WeightFamilies.Wt D j) :
-    Hfr X la w u = frSpan (sec X la w 0) (Lw X la w) fun k => Vw X la N (addL u wL k) := rfl
-
 theorem frac_mem_Hfr {u : WeightFamilies.Wt D j} {k : ℕ} {g : Rp X la N} (hg : g ∈ Vw X la N (addL u wL k)) :
     frac X la w k g ∈ Hfr X la w u :=
   Submodule.subset_span ⟨k, g, hg, rfl⟩
@@ -589,15 +586,6 @@ theorem WKoneEquiv_rhoW (u : WeightFamilies.Wt D j) (f : ↥(Vw X la N u)) :
 theorem restriction_eq_zero_iff_mem_vanishingFiltration (u : WeightFamilies.Wt D j) (f : ↥(Vw X la N u)) :
     rho0 X la w u f = 0 ↔ (f : Rp X la N) ∈ Fil X la w u 1 := by
   rw [← rhoW_eq_zero_iff, ← WKoneEquiv_rhoW, LinearEquiv.map_eq_zero_iff]
-
-def WKres (u : WeightFamilies.Wt D j) {a b : ℕ} (h : a ≤ b) : WK X la w u b →ₗ[↥(Frac0 X la w)] WK X la w u a :=
-  Submodule.factor (Submodule.smul_mono (Ideal.pow_le_pow_right h) le_rfl)
-
-theorem WKres_toWK (u : WeightFamilies.Wt D j) {a b : ℕ} (h : a ≤ b) (x : ↥(HK X la w u)) :
-    WKres X la w u h (toWK X la w u b x) = toWK X la w u a x := rfl
-
-theorem WKres_rhoK (u : WeightFamilies.Wt D j) {a b : ℕ} (h : a ≤ b) (T : ℕ) (f : ↥(Vw X la N (addL u wL T))) :
-    WKres X la w u h (rhoK X la w u b T f) = rhoK X la w u a T f := rfl
 
 end
 

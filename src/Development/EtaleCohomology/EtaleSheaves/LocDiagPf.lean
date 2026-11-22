@@ -89,8 +89,6 @@ def Cc : Cocone (Dg p) where
         rw [RingHom.comp_assoc, tr_comp, toLoc_comp, RingHom.comp_assoc, toLoc_comp]
         rfl }
 
-theorem Cc_ι (s : Finset p.asIdeal.primeCompl) : ((Cc p).ι.app s).hom = toLoc p s := rfl
-
 def phi (c : Cocone (Dg p)) : S →+* c.pt :=
   (c.ι.app ∅).hom.comp (algebraMap S (Localization.Away (g p ∅)))
 

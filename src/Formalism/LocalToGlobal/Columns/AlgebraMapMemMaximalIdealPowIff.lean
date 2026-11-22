@@ -82,9 +82,6 @@ variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarT
 def atW (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) V) : Submodule (Ow w) V :=
   Submodule.span (Ow w) (L : Set V)
 
-def scalW (w : HeightOneSpectrum (𝓞 K)) (c : K) (L : Submodule (𝓞 K) V) : Submodule (Ow w) V :=
-  (atW w L).map ((c • (LinearMap.id : V →ₗ[K] V)).restrictScalars (Ow w))
-
 def lenW (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K) V) : ℕ∞ :=
   Module.length (Ow w) (atW w A ⧸ (atW w B).comap (atW w A).subtype)
 
@@ -169,9 +166,6 @@ theorem atW_fg (w : HeightOneSpectrum (𝓞 K)) {L : Submodule (𝓞 K) V} (h : 
   refine ⟨s, ?_⟩
   unfold atW
   exact (Submodule.span_span_of_tower (𝓞 K) (Ow w) (s : Set V)).symm
-
-theorem mem_scalW_iff {w : HeightOneSpectrum (𝓞 K)} {c : K} {L : Submodule (𝓞 K) V} {x : V} :
-    x ∈ scalW w c L ↔ ∃ y ∈ atW w L, c • y = x := Iff.rfl
 
 @[reducible] def rlocModule (V : Type) [AddCommGroup V] [Module K V] (p : Formalism.LFunctionChainParameters.slopeLatticeData.FinPl K) :
     Module (Formalism.LFunctionChainParameters.slopeLatticeData.Rloc p) V := owModule ((plEquiv K).symm p) V

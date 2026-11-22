@@ -158,9 +158,6 @@ def swH : (Z1 (M := M) s t ⧸ B1 (M := M) s t) ≃ₗ[R] (Z1 (M := M) t s ⧸ B
       rw [swZ_coe, bd_coe, bd_coe]
       simp)
 
-theorem swH_mk (z : Z1 (M := M) s t) :
-    swH s t (Submodule.Quotient.mk z) = Submodule.Quotient.mk (swZ s t z) := rfl
-
 def qqHom : ((M ⧸ LinearMap.range (lsmul R M s)) ⧸
       LinearMap.range (lsmul R (M ⧸ LinearMap.range (lsmul R M s)) t)) →ₗ[R]
     ((M ⧸ LinearMap.range (lsmul R M t)) ⧸
@@ -179,10 +176,6 @@ def qqHom : ((M ⧸ LinearMap.range (lsmul R M s)) ⧸
       rw [Submodule.Quotient.mk_eq_zero]; exact ⟨x, rfl⟩
     rw [this]; rfl)
 
-theorem qqHom_mk (x : M) :
-    qqHom s t (Submodule.Quotient.mk (Submodule.Quotient.mk x)) =
-      Submodule.Quotient.mk (Submodule.Quotient.mk x) := rfl
-
 def qqEquiv : ((M ⧸ LinearMap.range (lsmul R M s)) ⧸
       LinearMap.range (lsmul R (M ⧸ LinearMap.range (lsmul R M s)) t)) ≃ₗ[R]
     ((M ⧸ LinearMap.range (lsmul R M t)) ⧸
@@ -199,9 +192,6 @@ def aaHom : LinearMap.ker (lsmul R (LinearMap.ker (lsmul R M s)) t) →ₗ[R]
       exact congrArg Subtype.val (LinearMap.mem_ker.1 x.2))) (fun x => by
     rw [LinearMap.mem_ker]
     exact Subtype.ext (LinearMap.mem_ker.1 x.1.2))
-
-theorem aaHom_coe (x : LinearMap.ker (lsmul R (LinearMap.ker (lsmul R M s)) t)) :
-    ((aaHom s t x).1.1 : M) = x.1.1 := rfl
 
 def aaEquiv : LinearMap.ker (lsmul R (LinearMap.ker (lsmul R M s)) t) ≃ₗ[R]
     LinearMap.ker (lsmul R (LinearMap.ker (lsmul R M t)) s) :=

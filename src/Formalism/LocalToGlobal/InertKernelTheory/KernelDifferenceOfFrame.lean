@@ -20,17 +20,6 @@ def entQ (t : KerEntTied ex) (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ)
         GL3Theta.applyAt0 D (GL3Theta.polD D (t.O u μ).dgen Q ((t.O u μ).frm (i + 1) y'))
           ((t.rd u μ).Th t.seam t.amb i c c'))
 
-def KernelDifferenceRationalAtLevel {p : ℕ} [Fact p.Prime] {X : Sys p} {Y : Pend X} (t : KerEntTied ex) (u : D.what₂.Word) (μ : D.what₂.Tup)
-    {σ : D.what₂.LL →+* X.G.Kf} (cls : ∀ j, X.Lv.comp j → (X.Pj j).Tup → (D.chTw u μ).cls j)
-    (cmp : ∀ j, ((ex.tw.fm u μ).lat j).V →ₛₗ[σ] X.Fm j) (ι : ℂ →+* Y.Kc)
-    (Rd : ∀ j, X.Lv.comp (j + 1) → (X.Pj (j + 1)).Tup →
-      ((D.chTw u μ).cls (j + 1) → (D.chTw u μ).Y (j + 1) → ℂ) →ₛₗ[ι] XspC (X.Pj (j + 1)) Y.Kc)
-    (Sr : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) Y.Kc) (j : ℕ) (cK : Y.Kc) : Prop :=
-  ∀ La ∈ Y.Rep j, ∀ (x : ((ex.tw.fm u μ).lat j).V) Q, SharpQ t ex.tw u μ j x Q →
-    ∀ (c' : X.Lv.comp (j + 1)) (L' : (X.Pj (j + 1)).Tup), (X.Pj (j + 1)).IsLatTup L' →
-      Rd j c' L' (entQ t u μ j (cls j La.1 La.2) (Q (cls j La.1 La.2))) =
-        cK • Y.DelF j (cmp j x La.1 La.2) (Sr j La (c', L'))
-
 section Frame
 
 open MvPolynomial

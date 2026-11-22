@@ -31,8 +31,6 @@ def conjK (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) : K ≃+* K where
   map_add' x y := (algebraMap K E).injective (by
     rw [conjFun_spec, map_add, map_add, map_add, conjFun_spec, conjFun_spec])
 
-theorem conjK_apply (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (k : K) : conjK cj hc k = conjFun cj hc k := rfl
-
 end Conj
 
 section Orth

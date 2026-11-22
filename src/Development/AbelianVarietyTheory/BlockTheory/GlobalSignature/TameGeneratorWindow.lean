@@ -16,13 +16,6 @@ section Point
 
 variable {D : D7}
 
-def FixedAt (L : SizeData₂ D) : Prop :=
-  L.Ct = 401 ∧
-  L.j0 = ⌈Real.logb 5 ((D.R.n : ℝ) * (D.R.N D.R.m : ℝ) / (D.R.m : ℝ))⌉₊ ∧
-  D.host.Lw = 10 * ⌈(L.Ct + 4) * Real.log L.sc.x⌉₊ + 2 * ⌈30 / L.sc.eps⌉₊ + 22 ∧
-  D.host.ccK = ⊤ ∧
-  ∀ τ τ' : D.what₂.Tau, (D.hc τ).v = (D.hc τ').v
-
 def RankWindowAt (L : SizeData₂ D) : Prop :=
   (L.sc.x ^ (2 + 8 * L.sc.eps) ≤ (D.R.n : ℝ) ∧ (D.R.n : ℝ) ≤ 2 * L.sc.x ^ (2 + 8 * L.sc.eps) ∧ 4 ≤ D.R.n) ∧
   ((L.sc.x * L.sc.delta1) ^ (1 / 2 : ℝ) ≤ (D.R.m : ℝ) ∧ (D.R.m : ℝ) ≤ 2 * (L.sc.x * L.sc.delta1) ^ (1 / 2 : ℝ)) ∧

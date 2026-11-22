@@ -20,8 +20,6 @@ variable {S : Scheme.{0}} {X T : Over S}
 
 def InOpen (U : X.left.Opens) (w : T ⟶ X) : Prop := w.left ⁻¹ᵁ U = ⊤
 
-theorem inOpen_top (w : T ⟶ X) : InOpen ⊤ w := rfl
-
 end Open
 
 end GlobalTheory.WeilIntegral

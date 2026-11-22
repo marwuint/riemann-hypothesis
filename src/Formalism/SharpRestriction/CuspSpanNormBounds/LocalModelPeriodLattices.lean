@@ -38,9 +38,6 @@ theorem gdd_eq_idl (D : Formalism.BasicNotions.D7) (a b : ℤ) :
   simp only [gdd, Formalism.FourierDecayAlt.S6.idl, Formalism.FourierDecayAlt.S6.dd, Formalism.BasicNotions.Host.ddE]
   rw [mul_comm]
 
-def PlacesTau (D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ l : D.host.E, ∏ τ : D.what₂.Tau, ‖D.host.emb (D.eTau τ) l‖ = ∏ w : InfinitePlace D.host.E, w l
-
 theorem rdE_pos (D : Formalism.BasicNotions.D7) : 0 < D.host.rdE := by
   unfold Formalism.BasicNotions.Host.rdE
   apply Real.rpow_pos_of_pos

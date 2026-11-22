@@ -85,9 +85,6 @@ def cmpL (hex : ValEx S emb embLL G A pos embV yc) (hu : ValUniq S emb embLL G A
       exact hu (a • x) i L _ _ hL (valC_spec hex _ i L hL) ((valC_spec hex x i L hL).smul a)
     · simp [hL]
 
-theorem cmpL_apply (hex : ValEx S emb embLL G A pos embV yc) (hu : ValUniq S emb embLL G A pos embV yc) (x : V) :
-    cmpL (e := e) hex hu x = cmpC S emb embLL G e A pos embV yc x := rfl
-
 def cmpC_tie (tE : Tau → E →+* LL) (hex : ValEx S emb embLL G A pos embV yc)
     (hpos : ∀ v (s : Fin (G.P.n' v)) (x : E),
       e (tE (pos ⟨v, s⟩) (if Even s.val then x else σ x)) = G.P.ι v ((G.P.σ v ^ s.val) (A.iw v x)))

@@ -63,8 +63,6 @@ def DivBy (g : Q.X → (FractionRing V)ˣ) (hD : IsPullDeg iw (mulDeg L.D l.M') 
     (letI := H.starRing; ∀ x : 𝓞 E, (oQ.onB.act x).left ≫ hD.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw) =
       hD.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw) ≫ (L.oa.onB.act x).left)
 
-theorem divFrom_iff : DivFrom L Q oQ iw s ε e ↔ ∃ g hD, DivBy L Q oQ iw s ε e g hD := Iff.rfl
-
 variable {Q} {g : Q.X → (FractionRing V)ˣ} (hD : IsPullDeg iw (mulDeg L.D l.M') (GlobalTheory.PolDeg.rescale Q g))
 
 def IsLevPt (a : D'.La) (p : QkPt Q (FractionRing V) l.M') : Prop :=

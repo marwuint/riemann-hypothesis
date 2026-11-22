@@ -14,9 +14,6 @@ theorem Kernel.hasCompactSupport (K : Kernel E μ) : HasCompactSupport K.toFun :
     by_contra h
     exact hx (ball_subset_closedBall (K.support_subset h))
 
-theorem moll_apply (K : Kernel E μ) (u : E → ℂ) (x : E) :
-    moll K u x = ∫ t, K.toFun t • u (x - t) ∂μ := rfl
-
 end
 
 theorem moll_smooth (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]

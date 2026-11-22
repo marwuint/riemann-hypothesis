@@ -13,6 +13,4 @@ variable {k r : ℕ}
 
 def dd (k : ℕ) (j : Fin (k + 1)) : ℂ := if j = Fin.last k then -1 else 1
 
-lemma Hb_eq : Hb k = diagonal (dd k) := rfl
-
 end PI.HermitianEmbeddingSlice

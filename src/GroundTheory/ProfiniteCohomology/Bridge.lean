@@ -43,16 +43,4 @@ variable {k G : Type u} [CommRing k] [TopologicalSpace k] [Group G] [Topological
 
 variable (X : TopRep.{u} k G) [DiscreteTopology X] [IsDiscreteRep (underlyingRep X)]
 
-def toInhomogeneous (n : ℕ) (σ : (resolutionX X (n + 1)).ρ.invariants) :
-    locallyConstantCochains (underlyingRep X) n :=
-  ⟨fun g => nestedHomeomorph X (n + 1) σ.1 (Fin.partialProd g),
-    (IsLocallyConstant.iff_continuous _).2
-      ((nestedHomeomorph X (n + 1) σ.1).continuous.comp (continuous_partialProd n))⟩
-
-omit [IsDiscreteRep (underlyingRep X)] in
-theorem toInhomogeneous_apply (n : ℕ) (σ : (resolutionX X (n + 1)).ρ.invariants) (g : Fin n → G) :
-    (toInhomogeneous X n σ : (Fin n → G) → underlyingRep X) g =
-      nestedHomeomorph X (n + 1) σ.1 (Fin.partialProd g) :=
-  rfl
-
 end GroundTheory.ProfCoh

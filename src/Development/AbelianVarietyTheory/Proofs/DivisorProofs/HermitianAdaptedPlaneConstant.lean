@@ -154,42 +154,4 @@ end GlobalTheory.MixEvAdm
 
 namespace GlobalTheory.MixEvAdm
 
-theorem pullback_adm : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
-    (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
-    ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),
-      H.IsAdapted σ B X X₁ j₀ j₁ → IsPair B M₁ χX χW om₁ r₁ s₁ r' s' →
-      ∀ e, IsEv B M M₁ H.ι 1 {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} e →
-      ∀ l ∈ (adeleClass F).adm (Fin n₁ × Fin d), l ∘ₗ e ∈ (adeleClass F).adm (Fin n × Fin d) := by
-  intro _ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ _ hP₁ e hE l hl
-  intro g hg
-  obtain ⟨m, c, φ, hφ, hstd, rfl⟩ := sb_decomp F (Fin n × Fin d) g hg
-  obtain ⟨ei, ev, -, hev, hloc⟩ := hE.loc
-  have hfam : ∀ j, ∀ᶠ v in Filter.cofinite, φ j v = M.vac v := fun j =>
-    ((hstd j).and hP.good.std).mono fun v hv => hv.1.trans hv.2.symm
-  have hψSB : ∀ j v, ev v (φ j v) ∈ SB (Fin n₁ × Fin d → Fv F v) := fun j v =>
-    (hev v).2 ▸ Submodule.mem_map_of_mem (hφ j v)
-  have hψstd : ∀ j, ∀ᶠ v in Filter.cofinite,
-      ev v (φ j v) = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 := fun j =>
-    ((hfam j).and hP₁.good.std).mono fun v hv => by rw [hv.1, (hev v).1, hv.2]
-  have hG : ∀ j, (fun y : Fin n₁ × Fin d → Af F => ∏ᶠ v, ev v (φ j v) fun i => evalV F v (y i)) ∈
-      SB (Fin n₁ × Fin d → Af F) := fun j =>
-    ⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV _ (hψSB j) (hψstd j),
-      GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod _ (hψSB j) (hψstd j)⟩
-  choose Tj hTj using fun j => hl _ (hG j)
-  refine ⟨∑ j, c j • (Tj j).comp ei, fun f => ?_⟩
-  have hsplit : pureA F (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ)
-      (∑ j, c j • fun y => ∏ᶠ v, φ j v fun i => evalV F v (y i)) =
-      ∑ j, c j • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (φ j) := by
-    funext x
-    simp only [pureA, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]
-    refine Finset.sum_congr rfl fun j _ => ?_
-    rw [mul_left_comm]
-    rfl
-  rw [LinearMap.comp_apply, hsplit, map_sum, map_sum]
-  simp only [map_smul, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply,
-    ContinuousLinearMap.coe_comp', Function.comp_apply]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [hloc f (φ j) (hφ j) (hfam j)]
-  exact congrArg (c j • ·) (hTj j (ei f))
-
 end GlobalTheory.MixEvAdm

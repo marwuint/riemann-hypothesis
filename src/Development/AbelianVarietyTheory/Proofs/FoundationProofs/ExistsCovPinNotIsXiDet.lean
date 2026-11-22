@@ -46,17 +46,4 @@ theorem eq_of_complex (σ : c.F →+* ℂ) {f f' : Rul Xo c} {a : (E →+* ℂ) 
   obtain ⟨z, hz⟩ := GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1.secBaseChange E H Dw l Xo c _ _ ψ y
   rw [← hψ, map_sub, ← GlobalTheory.ShortSpanCompare.evR_of_frMap hf ψ hz, ← GlobalTheory.ShortSpanCompare.evR_of_frMap hf' ψ hz, h, sub_self]
 
-def XiValues (d : DeltaDat Xo c n) (σ : c.F →+* ℂ) (𝔣 : Ideal (𝓞 E)) (xi : Ideal (𝓞 E) →*₀ c.F) : Prop :=
-  (∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H Dw.p Dw.q ty ∧
-    Nonempty (FamilyUnif d.Xo₂ ((embCov d σ).comp (IntermediateField.inclusion d.c₂.le).toRingHom) ty)) ∧
-  ∀ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H Dw.p Dw.q ty →
-    ∀ (U : FamilyUnif d.Xo₂ ((embCov d σ).comp (IntermediateField.inclusion d.c₂.le).toRingHom) ty) (i : Fin U.n),
-      (∃ 𝔠, DetIdeal Dw (U.Di i) d.l₂ (U.t i) 𝔣 𝔠) ∧
-      ∀ 𝔠, DetIdeal Dw (U.Di i) d.l₂ (U.t i) 𝔣 𝔠 →
-        ∀ P, IsPeriod (U.Di i) ty P → ∀ y : FrPt d.Xo₂ d.c₂ (CAt (embCov d σ)), y.x = U.u i P →
-          toC (evR d.Xo₂ d.c₂ d.cδ y) = σ (xi 𝔠)
-
-theorem isXiDet_iff (d : DeltaDat Xo c n) (σ : c.F →+* ℂ) (𝔣 : Ideal (𝓞 E)) (xi : Ideal (𝓞 E) →*₀ c.F) :
-    IsXiDet d σ 𝔣 xi ↔ d.cδ ∈ sec d.Xo₂ d.c₂ 0 0 ∧ XiValues d σ 𝔣 xi := Iff.rfl
-
 end GlobalTheory.CoverPinCompare

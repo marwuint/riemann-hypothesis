@@ -16,9 +16,6 @@ section AnySpace
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
   {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
 
-def NDLat (h : V →ₗ⋆[E] V →ₗ[E] E) (M : Submodule (𝓞 E) V) : Prop :=
-  M.FG ∧ ∀ x ∈ Submodule.span E (M : Set V), (∀ y ∈ M, h y x = 0) → x = 0
-
 def PosOn (h : V →ₗ⋆[E] V →ₗ[E] E) (U : Submodule E V) : Prop :=
   ∀ τ : E →+* ℂ, ∀ x ∈ U, x ≠ 0 → 0 < (τ (h x x)).re
 

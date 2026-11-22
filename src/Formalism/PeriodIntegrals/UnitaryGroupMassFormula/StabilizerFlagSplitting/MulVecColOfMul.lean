@@ -15,9 +15,6 @@ def Ym (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) :
 def Pm (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) : B.Mat k r :=
   Proj.prj (Hpk k r) (Ym k r z z' γ)
 
-lemma Ym_col (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) (j) :
-    (fun i => Ym k r z z' γ i j) = gramVec k r z z' γ j := rfl
-
 lemma Ym_mulVec (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) (c) :
     Ym k r z z' γ *ᵥ c = ∑ j, c j • gramVec k r z z' γ j := by
   ext i

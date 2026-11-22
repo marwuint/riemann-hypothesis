@@ -8,9 +8,6 @@ open scoped Laplacian
 
 noncomputable section
 
-def ddcDens (u : ℂ → ℝ) (z : ℂ) : ℝ :=
-  (1 / (2 * Real.pi)) * Δ u z
-
 def ddcCoordDens {n : ℕ} (j : Fin n) (u : (Fin n → ℂ) → ℝ) (z : Fin n → ℂ) : ℝ :=
   (2 / Real.pi) * ReciprocityTheory.AnForm.levi u z (Pi.single j 1)
 

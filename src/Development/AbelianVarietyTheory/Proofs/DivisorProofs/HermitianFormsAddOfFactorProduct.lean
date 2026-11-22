@@ -84,9 +84,6 @@ theorem lamUnif_fr [IsCommMonObj A] {L L₁ : LB A.left} (u₁ : HolUnif A L₁ 
 theorem lamUnif_ex [IsCommMonObj A] {L L₁ : LB A.left} (u₁ : HolUnif A L₁ g) (u : HolUnif A L g) (hex : u.ex = u₁.ex) :
     (lamUnif u₁ u hex).ex = (sqUnif A u₁).ex := rfl
 
-theorem lamUnif_Λ [IsCommMonObj A] {L L₁ : LB A.left} (u₁ : HolUnif A L₁ g) (u : HolUnif A L g) (hex : u.ex = u₁.ex) :
-    (lamUnif u₁ u hex).Λ = sqLat u₁.Λ := rfl
-
 open Classical in
 
 def ext (Λ : Submodule ℤ (Fin g → ℂ)) (χ : Λ → ℂ) (w : Fin g → ℂ) : ℂ := if h : w ∈ Λ then χ ⟨w, h⟩ else 0

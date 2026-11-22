@@ -83,34 +83,6 @@ def ofRegular [CompactSpace X] (R : RegChartDataA A) (om : LocPot X) (om_pot : I
 
 end RegChartData
 
-namespace BoundedThPsh
-
-def ofBoundedPsh [CompactSpace X] (P : BoundedPshData A) (om : LocPot X) (om_pot : IsPotential A om)
-    (om_pos : IsPosPot A om) :
-    BoundedThPsh (RegCharts.ofPotentialCharts P.toPotentialCharts om om_pot om_pos) where
-  φ := P.ph
-  bdd := P.bdd
-  psh := P.u_psh
-
-def toBoundedPsh [T2Space X] {R : RegCharts A} (P : BoundedThPsh R) (hW : ∀ j, R.W j ⊆ ball 0 1) :
-    BoundedPshData A where
-  toPotentialCharts := R.toPotentialCharts hW
-  ph := P.φ
-  bdd := P.bdd
-  u_psh j := by
-    have h := P.psh j
-    rw [← R.restrChart_target j] at h
-    exact h
-
-theorem ofBoundedPsh_φ [CompactSpace X] (P : BoundedPshData A) (om : LocPot X)
-    (om_pot : IsPotential A om) (om_pos : IsPosPot A om) :
-    (ofBoundedPsh P om om_pot om_pos).φ = P.ph := rfl
-
-theorem toBoundedPsh_ph [T2Space X] {R : RegCharts A} (P : BoundedThPsh R)
-    (hW : ∀ j, R.W j ⊆ ball 0 1) : (P.toBoundedPsh hW).ph = P.φ := rfl
-
-end BoundedThPsh
-
 end
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular

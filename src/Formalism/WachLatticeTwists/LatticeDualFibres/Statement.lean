@@ -47,10 +47,6 @@ structure DirectPush (O A HV : Type u) [CommRing O] [AddCommGroup A] [Module O A
 attribute [instance] DirectPush.gY DirectPush.mY DirectPush.gVY DirectPush.mVY DirectPush.gL
   DirectPush.mL DirectPush.gVL DirectPush.mVL
 
-namespace DirectPush
-
-end DirectPush
-
 structure DualPush (O A HT' : Type u) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [AddCommGroup A] [Module O A] [AddCommGroup HT'] [Module O HT']
     (pr : A →ₗ[O] HT' →ₗ[O] KO O) where
@@ -92,8 +88,6 @@ namespace DualPush
 variable {O A HT' : Type u} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [AddCommGroup A] [Module O A] [AddCommGroup HT'] [Module O HT']
     {pr : A →ₗ[O] HT' →ₗ[O] KO O} (Q : DualPush O A HT' pr)
-
-def HfY : Submodule O Q.HY := Q.HfVY.comap Q.jY
 
 end DualPush
 

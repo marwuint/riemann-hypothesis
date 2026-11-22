@@ -139,10 +139,6 @@ def leviAssemble (x : ∀ a : Set.range β, GL (Fiber β a) F) : levi F n β :=
         exact Units.inv_mul (x a)⟩,
     mem_levi.2 fun _ _ h => blockAssemble_apply_of_ne _ h⟩
 
-theorem coe_leviAssemble (x : ∀ a : Set.range β, GL (Fiber β a) F) :
-    (((leviAssemble F x : levi F n β) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) =
-      blockAssemble β F fun a => (x a : Matrix (Fiber β a) (Fiber β a) F) := rfl
-
 theorem continuous_blockAssemble_apply {X : Type*} [TopologicalSpace X]
     {f : X → ∀ a : Set.range β, Matrix (Fiber β a) (Fiber β a) F}
     (hf : ∀ a i j, Continuous fun x => f x a i j) :
@@ -182,10 +178,6 @@ def leviEquivBlocks : levi F n β ≃ₜ* (∀ a : Set.range β, GL (Fiber β a)
         (Units.continuous_val.matrix_elem i j).comp (continuous_apply a),
       continuous_blockAssemble_apply fun a i j =>
         (Units.continuous_coe_inv.matrix_elem i j).comp (continuous_apply a)⟩) _
-
-theorem leviEquivBlocks_apply (m : levi F n β) (a : Set.range β) :
-    ((leviEquivBlocks F β m a : GL (Fiber β a) F) : Matrix (Fiber β a) (Fiber β a) F) =
-      fun i j => (m : GL (Fin n) F) i.1 j.1 := rfl
 
 end Blocks
 

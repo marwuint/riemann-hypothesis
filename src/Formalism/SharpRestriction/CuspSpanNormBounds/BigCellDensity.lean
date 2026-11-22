@@ -22,17 +22,6 @@ open scoped InnerProductSpace
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
-def DensAt (CV : ℕ) : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq)
-    (A ε : ℝ) (mm : ℕ) (F' : Formalism.FourierDecayAlt.B.Mat k r → (Wq →L[ℂ] Wp)) (γ : Formalism.FourierDecayAlt.B.Mat k r)
-    (O : Formalism.FourierDecayAlt.C6.OrbData D γ),
-    1 ≤ r → 0 < ε → (r : ℝ) * Formalism.FourierDecayAlt.C6.AV CV r (2 * r + k + 1) ≤ A → Formalism.FourierDecayAlt.C6.mmV CV r ≤ mm →
-    Formalism.FourierDecayAlt.B.InCC A mm F' →
-    (∀ g ∈ Formalism.FourierDecayAlt.B.GV k r, F' g ≠ 0 → ε ≤ Gf k r D.z D.z' g) →
-    (∀ g ∈ Formalism.FourierDecayAlt.C6.bigPos D, Formalism.FourierDecayAlt.B.JF D F' g = 0) →
-    Formalism.FourierDecayAlt.C6.IsRelevant D γ → 0 < Gf k r D.z D.z' γ → O.J F' = 0
-
 def StandardBesselSetting : Prop :=
   ∀ (k0 r : ℕ) (L : LocBessel (k0 + 1) r) (μsec : GramWordSpace.Sec k0), L.c = cStd →
     IsSection (k0 + 1) r L.z L.z' μsec → L.κN ≠ 0 → L.κN ≠ ⊤ →
@@ -428,19 +417,6 @@ theorem integrand_eq {k0 r : ℕ} (L : LocBessel (k0 + 1) r) (D : Formalism.Four
 def c3 : ℝ := Classical.choose Formalism.FourierDecayAlt.P.orbital_integral_converges
 
 def A0 (k r : ℕ) : ℝ := c3 * ((r : ℝ) + 1) ^ 2 * ((r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) + 1)
-
-def TopLevelBesselStatement : Prop :=
-  ∀ (k0 r : ℕ) (L : LocBessel (k0 + 1) r) (Ds : Formalism.FourierDecayAlt.B.RealPlaceData (k0 + 1) r L.Wp L.Wq)
-    (ν' : Fin (2 * r + (k0 + 1) + 1) → ℂ) (m₀ : Formalism.FourierDecayAlt.B.Mat (k0 + 1) r),
-    L.c = cStd → 0 < L.κN → L.κN ≠ ⊤ → Ds.z = L.z → Ds.z' = L.z' → Ds.π = L.π → Ds.π' = L.π' →
-    Ds.μW = L.μW → Ds.μN = L.μN → Ds.μW' = L.μW' → Formalism.FourierDecayAlt.D.IsBaseFrame Ds ν' m₀ →
-    ∃ c : List ℕ → ℝ, (∀ s, 0 < c s) ∧
-      ∀ (F : ThB.Mx (k0 + 1) r → (L.Wq →L[ℂ] L.Wp)) (γ : Point ℂ (r + 1)), IsKFinCoefH L.σ F →
-        Formalism.FourierDecayAlt.B.InCC (A0 (k0 + 1) r) 1 F →
-        0 < ThB.Gpt (Tz (k0 + 1) r L.z) (Tz (k0 + 1) r L.z') γ → (∃ g, IsPtRep L γ g ∧ IsRelStab L g) →
-        ThB.orbSq L F γ = ENNReal.ofReal (c (γ.1.map Prod.snd) *
-          (Formalism.FourierDecayAlt.B.hsInner (Formalism.FourierDecayAlt.D.vecV Ds ν' m₀ F (γ.1.map Prod.swap))
-            (Formalism.FourierDecayAlt.D.vecV Ds ν' m₀ F (γ.1.map Prod.swap))).re)
 
 theorem ptEntry_swap (l : List (ℂ × ℕ)) (a b : ℕ) :
     Formalism.FourierDecayAlt.D.ptEntry (l.map Prod.swap) a b = ptEntry l a b := by
@@ -1252,8 +1228,6 @@ def hsE : (Wq →L[ℂ] Wp) ≃ₗ[ℂ] PiLp 2 (fun _ : Fin (Module.finrank ℂ 
   right_inv v := by
     ext i
     simp
-
-theorem hsInner_hsE (A B : Wq →L[ℂ] Wp) : Formalism.FourierDecayAlt.B.hsInner A B = ⟪hsE B, hsE A⟫_ℂ := rfl
 
 end HSadj
 

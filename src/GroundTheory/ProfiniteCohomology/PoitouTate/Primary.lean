@@ -29,10 +29,6 @@ variable (D Dq : Rep.{u} (ULift.{u} ℤ) G) (j : Dq ⟶ D) (M : Rep.{u} (ULift.{
 def dualRepPost : dualRep Dq M ⟶ dualRep D M :=
   (Rep.ihom M).map j
 
-theorem dualRepPost_hom_apply (f : M →ₗ[ULift.{u} ℤ] Dq) (m : M) :
-    ((dualRepPost D Dq j M).hom f : M →ₗ[ULift.{u} ℤ] D) m = j.hom (f m) :=
-  rfl
-
 theorem tensorHom_dualRepPost_dualEvalPairing :
     (dualRepPost D Dq j M ⊗ₘ 𝟙 M) ≫ dualEvalPairing D M =
       (𝟙 (dualRep Dq M) ⊗ₘ 𝟙 M) ≫ (dualEvalPairing Dq M ≫ j) := by

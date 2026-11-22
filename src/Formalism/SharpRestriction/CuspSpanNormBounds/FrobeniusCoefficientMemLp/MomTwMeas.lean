@@ -21,9 +21,6 @@ theorem cjX_smul (c : ℂ) (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1
 theorem cjX_add (X Y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : cjX (X + Y) = cjX (k := k) (r := r) X + cjX Y := by
   unfold cjX; rw [Matrix.mul_add, Matrix.add_mul]
 
-def cjXI (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ :=
-  twTi k r * X * twT k r
-
 theorem realifyFun_add (X Y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     realifyFun (X + Y) = realifyFun X + realifyFun Y := by
   funext p; rcases p with ⟨i, j, b⟩; cases b <;> simp [realifyFun]
@@ -43,15 +40,5 @@ def rotE (f : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → Matrix 
 
 def rotC (k r : ℕ) : EuclideanSpace ℝ (IxE k r) →ₗ[ℝ] EuclideanSpace ℝ (IxE k r) :=
   rotE (k := k) (r := r) cjX cjX_add cjX_smul
-
-def rotCI (k r : ℕ) : EuclideanSpace ℝ (IxE k r) →ₗ[ℝ] EuclideanSpace ℝ (IxE k r) :=
-  rotE (k := k) (r := r) cjXI
-    (fun X Y => by unfold cjXI; rw [Matrix.mul_add, Matrix.add_mul])
-    (fun c X => by unfold cjXI; rw [Matrix.mul_smul, Matrix.smul_mul])
-
-theorem rotC_apply (y : EuclideanSpace ℝ (IxE k r)) : rotC k r y = WithLp.toLp 2 (realifyFun (cjX (unrealify y))) := rfl
-
-theorem rotCI_apply (y : EuclideanSpace ℝ (IxE k r)) :
-    rotCI k r y = WithLp.toLp 2 (realifyFun (cjXI (unrealify y))) := rfl
 
 end Formalism.MainNotions.S.Pv.Mom

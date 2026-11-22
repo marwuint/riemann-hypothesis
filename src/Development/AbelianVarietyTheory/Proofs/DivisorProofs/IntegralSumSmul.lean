@@ -69,11 +69,6 @@ section Manifold
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
-def fldA : (A.Pt → Ev n) →ₐ[ℂ] A.Fld :=
-  AlgHom.pi fun x => (Subalgebra.center ℂ (Alt n)).val.comp (Pi.evalAlgHom ℂ (fun _ => Ev n) x)
-
-theorem fld_eq (w : A.Pt → Ev n) : fld A w = fldA A w := rfl
-
 end Manifold
 
 end GlobalTheory.LineForm.ChernFibre

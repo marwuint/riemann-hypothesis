@@ -53,17 +53,11 @@ variable (T : HostType)
 def SM (l : ℕ) : Prop :=
   l.Prime ∧ l ∣ 2 * T.P0 * ∏ᶠ (χ : PrimChar) (_ : χ ∈ T.kept), χ.1
 
-def TopSized : Prop :=
-  (∃ j : ℕ, T.J = j) ∧ ∀ X : ℝ, T.zp X = X ^ (T.eps / (5 * T.J)) * Real.log X ^ 2
-
 end HostType
 
 noncomputable def zR (T : HostType) (X : ℝ) : ℝ := X ^ (T.eps / (5 * T.J))
 
 noncomputable def zR' (T : HostType) (X : ℝ) : ℝ := T.zp X
-
-def IsRangeText (T : HostType) (x : ℝ) (e : ℕ) : Prop :=
-  x ^ (2 + 8 * T.eps) / 2 ≤ (2 ^ e : ℝ) ∧ (2 ^ e : ℝ) ≤ 2 * x ^ (2 + 8 * T.eps)
 
 def IsRangeN (T : HostType) (x : ℝ) (e : ℕ) : Prop :=
   2 ≤ e ∧ x ^ (2 + 8 * T.eps) / (2 * T.o) ≤ (2 ^ e : ℝ) ∧ (2 ^ e : ℝ) ≤ 2 * x ^ (2 + 8 * T.eps)

@@ -17,11 +17,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable (D : D7)
 
-def rhoIJ {j : ℕ} (I J : Fin j ↪o Fin (D.R.rS + 1)) : ℝ := ∏ a, (rhoF D (I a) * rhoF D (J a))
-
-theorem absMinor_eq {j : ℕ} (Z : GramM D) (I J : Fin j ↪o Fin (D.R.rS + 1)) (τ : D.what₂.Tau) :
-    Formalism.MainNotions.S.UnitaryVolumeMass.absMinor D Z I J τ = ‖embS D τ (Z.submatrix I J).det‖ * rhoIJ D I J := rfl
-
 end Formalism.MainNotions.S.Pv.HH
 
 end

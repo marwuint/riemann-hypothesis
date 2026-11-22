@@ -55,14 +55,6 @@ end GlobalTheory.UPel.HT
 namespace GlobalTheory.UPel.HT
 variable {p : ℕ} [Fact p.Prime] (D : Datum p)
 
-def Datum.zpL (τ : D.F →+* PadicAlgCl p) : ℤ_[p] →ₐ[ℤ] Module.End (GlobalTheory.LKTrip.FwOf τ) (D.VL τ) :=
-  ((algebraMap (GlobalTheory.LKTrip.FwOf τ) (Module.End (GlobalTheory.LKTrip.FwOf τ) (D.VL τ))).comp
-    ((algebraMap ℚ_[p] (GlobalTheory.LKTrip.FwOf τ)).comp (algebraMap ℤ_[p] ℚ_[p]))).toIntAlgHom
-
-theorem Datum.zpL_apply (τ : D.F →+* PadicAlgCl p) (s : ℤ_[p]) :
-    D.zpL τ s = algebraMap (GlobalTheory.LKTrip.FwOf τ) (Module.End (GlobalTheory.LKTrip.FwOf τ) (D.VL τ))
-      (algebraMap ℚ_[p] (GlobalTheory.LKTrip.FwOf τ) (algebraMap ℤ_[p] ℚ_[p] s)) := rfl
-
 theorem Datum.finrank_VF : Module.finrank D.F D.VF = D.m * D.n := by
   have h1 : Module.finrank ℚ D.VF = D.m * D.n * Module.finrank ℚ D.F := by
     haveI := D.freeLa; haveI := D.finLa
@@ -82,4 +74,3 @@ end GlobalTheory.UPel.HT
 namespace GlobalTheory.UPel.HT.MatUnit
 
 end GlobalTheory.UPel.HT.MatUnit
-

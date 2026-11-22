@@ -31,9 +31,6 @@ section Pair
 
 variable {R : Type} [CommRing R]
 
-omit [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] in
-theorem flat_transpose (σ : κ ≃ α × β) (X : Matrix α β R) : flat (σ.trans (Equiv.prodComm α β)) Xᵀ = flat σ X := rfl
-
 end Pair
 
 end GlobalTheory.WeilM

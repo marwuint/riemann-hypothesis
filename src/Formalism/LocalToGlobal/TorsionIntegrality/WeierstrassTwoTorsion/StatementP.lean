@@ -26,11 +26,6 @@ def PlusFlow : Prop :=
     IsFlow (curveS W) (D W) (xPlus W xP yP) (yPlus W xP yP) ∧
     constantCoeff (xPlus W xP yP) = xP ∧ constantCoeff (yPlus W xP yP) = yP
 
-def PlusLogDeriv : Prop :=
-  ∀ (R : Type u) [CommRing R] (W : WeierstrassCurve R) (xP yP : R), W.toAffine.Equation xP yP →
-    DL W (toL (tS W xP) * DL W (xL W))
-      = 2 * xL W - toL (xPlus W xP yP) - toL (xPlus W xP (W.toAffine.negY xP yP))
-
 def PlusMap : Prop :=
   ∀ (R : Type u) (S : Type v) [CommRing R] [CommRing S] (φ : R →+* S) (W : WeierstrassCurve R)
     (xP yP : R),

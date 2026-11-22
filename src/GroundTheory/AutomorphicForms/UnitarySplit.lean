@@ -200,11 +200,6 @@ noncomputable def unitaryPointsSplitEquiv (hH : IsHermitianFor (conjHom F (F × 
     (hdet : IsUnit H.det) : unitaryPoints F (F × F) H R ≃* GL ι R :=
   MulEquiv.ofBijective (splitHom R H) (splitHom_bijective H hH hdet)
 
-theorem unitaryPointsSplitEquiv_apply (hH : IsHermitianFor (conjHom F (F × F)) H)
-    (hdet : IsUnit H.det) (g : unitaryPoints F (F × F) H R) :
-    ((unitaryPointsSplitEquiv R H hH hdet g : GL ι R) : Matrix ι ι R) =
-      ((g : GL ι (R ⊗[F] (F × F))) : Matrix ι ι (R ⊗[F] (F × F))).map (splitFst F R) := rfl
-
 end Split
 
 end GroundTheory.Automorphic

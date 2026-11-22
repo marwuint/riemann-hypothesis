@@ -29,8 +29,6 @@ def degDvd (n : ℕ) : Subgroup (Weil h) where
     show (n : ℤ) ∣ deg a⁻¹
     rw [deg_inv]; exact (dvd_neg).mpr ha
 
-theorem mem_degDvd {n : ℕ} {σ : Weil h} : σ ∈ degDvd h n ↔ (n : ℤ) ∣ deg σ := Iff.rfl
-
 end W
 
 end DiscreteGroups.sglob.DzType

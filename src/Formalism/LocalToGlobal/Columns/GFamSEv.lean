@@ -49,7 +49,6 @@ variable {F : GFamS K} {σ : K →+* ℂ} (E : F.Ev σ)
 
 theorem mem_Y (b : F.β) : (E.mem b).Y = E.Y := rfl
 theorem mem_ev (b : F.β) : (E.mem b).ev = E.ev := rfl
-theorem mem_ip (b : F.β) : (E.mem b).ip = E.ip := rfl
 theorem mem_tr (b : F.β) : (E.mem b).tr = E.tr b := rfl
 
 @[reducible] def ofMem {b₀ : F.β} (E₀ : (F.mem b₀).Ev σ) (tr : ∀ b, F.G b →* ((E₀.Y → ℂ) ≃ₗ[ℂ] (E₀.Y → ℂ)))
@@ -70,8 +69,6 @@ def emb : F.Forms →ₛₗ[σ] (F.Cl → E.Y → ℂ) where
 theorem emb_apply (φ : F.Forms) (c : F.Cl) :
     E.emb φ c = E.ev (((φ c.1 : (F.mem c.1).EqFun) : F.D c.1 → F.V) ((F.sec c.1).rep c.2)) := rfl
 
-theorem emb_valAt (φ : F.Forms) (c : F.Cl) : E.emb φ c = E.ev (F.valAt φ c) := rfl
-
 def part (b : F.β) : (F.Cl → E.Y → ℂ) →ₗ[ℂ] ((F.mem b).Cl → E.Y → ℂ) :=
   LinearMap.pi fun c => LinearMap.proj (⟨b, c⟩ : F.Cl)
 
@@ -85,14 +82,6 @@ def opOn (δ : F.Pt → F.Pt) : (F.Cl → E.Y → ℂ) →ₗ[ℂ] (F.Cl → E.Y
   toFun Φ := fun c => E.atPt (δ (F.repPt c)) Φ
   map_add' Φ Ψ := by funext c; exact map_add (E.trPt _) _ _
   map_smul' a Φ := by funext c; exact map_smul (E.trPt _) _ _
-
-theorem opOn_apply (δ : F.Pt → F.Pt) (Φ : F.Cl → E.Y → ℂ) (c : F.Cl) :
-    E.opOn δ Φ c = E.trPt (δ (F.repPt c)) (Φ (F.cls (δ (F.repPt c)))) := rfl
-
-def opOnC (δ : ∀ b, F.D b → F.D b) : (F.Cl → E.Y → ℂ) →ₗ[ℂ] (F.Cl → E.Y → ℂ) := E.opOn fun p => ⟨p.1, δ p.1 p.2⟩
-
-theorem opOnC_apply (δ : ∀ b, F.D b → F.D b) (Φ : F.Cl → E.Y → ℂ) (c : F.Cl) :
-    E.opOnC δ Φ c = E.trPt ⟨c.1, δ c.1 (F.rep c)⟩ (Φ ⟨c.1, (F.mem c.1).cls (δ c.1 (F.rep c))⟩) := rfl
 
 def lin : (F.ιV → ℂ) →ₗ[ℂ] (E.Y → ℂ) := Fintype.linearCombination ℂ fun i => E.ev (F.bV i)
 
@@ -118,8 +107,6 @@ def sharp (ℓ : F.V →ₛₗ[σ] ℂ) : E.Y → ℂ :=
 
 theorem lin_mem (b : F.β) : (E.mem b).lin = E.lin := rfl
 theorem gram_mem (b : F.β) : (E.mem b).gram = E.gram := rfl
-theorem ipB_mem (b : F.β) : (E.mem b).ipB = E.ipB := rfl
-theorem co_mem (b : F.β) : (E.mem b).co = E.co := rfl
 theorem extend_mem (b : F.β) {M : Type} [AddCommGroup M] [Module ℂ M] (ℓ : F.V →ₛₗ[σ] M) :
     (E.mem b).extend ℓ = E.extend ℓ := rfl
 theorem sharp_mem (b : F.β) (ℓ : F.V →ₛₗ[σ] ℂ) : (E.mem b).sharp ℓ = E.sharp ℓ := rfl
@@ -146,11 +133,6 @@ def perCl (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (F.V →ₛ
       simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
       refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => ?_
       ring)
-
-theorem perCl_apply (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (F.V →ₛₗ[σ] ℂ)) (Φ : F.Cl → E.Y → ℂ) (z : ι → ℂ) :
-    E.perCl h ℓ Φ z = (letI := h.fintypeCl
-      ∑ c : F.Cl, ((Nat.card (MulAction.stabilizer (F.G c.1) (F.rep c)) : ℕ) : ℂ)⁻¹ *
-        ∑ a, z a * E.extend (ℓ c a) (Φ c)) := rfl
 
 end Ev
 

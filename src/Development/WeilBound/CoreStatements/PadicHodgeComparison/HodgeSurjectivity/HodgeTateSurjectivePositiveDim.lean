@@ -34,9 +34,6 @@ structure Sq (M : Model l K) (d : ℕ) where
   loc : sSup (𝒱D D) = ⊤
   blow : Nonempty (Blow P.q (Model.genMap Δ hΔ) (Model.genMap π hπ) (genD D) d)
 
-def SqEx : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] (M : Model l K)
-  (d : ℕ), M.Sm → SmoothOfRelativeDimension (d + 1) M.p → Nonempty (Sq M (d + 1))
-
 def castT {M : Model l K} {i j : ℕ} (h : i = j) (x : M.T i) : M.T j := h ▸ x
 
 def EtFin : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] (M : Model l K),

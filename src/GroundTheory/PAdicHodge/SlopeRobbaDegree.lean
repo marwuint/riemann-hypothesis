@@ -67,23 +67,6 @@ theorem zpow_dvUnif_injective : Function.Injective fun n : ℤ => ‖dvUnif K‖
 
 namespace Robba
 
-def intBounded (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K] :
-    Subring (Robba K) where
-  carrier := {f | f ∈ bounded K ∧ norm1 f ≤ 1}
-  mul_mem' {f g} hf hg := ⟨(bounded K).mul_mem hf.1 hg.1, by
-    rw [gaussNorm_mul_alt hf.1 hg.1]; nlinarith [gaussNorm_nonneg_alt f, gaussNorm_nonneg_alt g, hf.2, hg.2]⟩
-  one_mem' := ⟨(bounded K).one_mem, by
-    refine ciSup_le fun n => ?_
-    by_cases hn : n = 0
-    · subst hn; simp
-    · simp [hn]⟩
-  add_mem' {f g} hf hg := ⟨(bounded K).add_mem hf.1 hg.1,
-    (gaussNorm_add_le_max_alt hf.1 hg.1).trans (max_le hf.2 hg.2)⟩
-  zero_mem' := ⟨(bounded K).zero_mem, by simp [norm1]⟩
-  neg_mem' {f} hf := ⟨(bounded K).neg_mem hf.1, by simpa [norm1] using hf.2⟩
-
-theorem mem_intBounded {f : Robba K} : f ∈ intBounded K ↔ f ∈ bounded K ∧ norm1 f ≤ 1 := Iff.rfl
-
 theorem unit_mem_bounded (u : (Robba K)ˣ) : (u : Robba K) ∈ bounded K :=
   mem_bounded_of_mul_eq_one u.mul_inv
 
@@ -115,18 +98,6 @@ theorem ord_mul (u w : (Robba K)ˣ) : ord (u * w) = ord u + ord w := by
   apply ord_eq_of_norm1_eq
   rw [Units.val_mul, gaussNorm_mul_alt (unit_mem_bounded u) (unit_mem_bounded w), gaussNorm_eq_zpow_ord,
     gaussNorm_eq_zpow_ord, zpow_add₀ norm_dvUnif_pos.ne']
-
-def unitOrd (ψ : Robba K →+* Robba K)
-    (hψ : ∀ u : (Robba K)ˣ, norm1 (ψ u) = norm1 (u : Robba K)) : PhiModule.UnitOrd (Robba K) ψ where
-  ord := ord
-  map_mul := ord_mul
-  map_phi u := ord_eq_of_norm1_eq (by
-    change norm1 (ψ (u : Robba K)) = _
-    rw [hψ, gaussNorm_eq_zpow_ord])
-
-end Robba
-
-namespace Robba
 
 end Robba
 

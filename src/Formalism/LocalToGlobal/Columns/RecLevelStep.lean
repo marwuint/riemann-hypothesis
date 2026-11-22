@@ -74,9 +74,6 @@ def colStep (hc : Formalism.BasicNotions.CMData X.F X.E) (hX : X.Ok) (hPr : Pr.O
     (fun P hP => (hPr.vT_norm u P hP : Ideal.absNorm P.asIdeal = Pr.T u)) (rls_T_notUnder hPr u)
     (colBase_index hc (R.N j) hPr u) ((Units.map σ₀.toMonoidHom).comp (colLev Ch j).chr)
 
-theorem colStep_U (hc : Formalism.BasicNotions.CMData X.F X.E) (hX : X.Ok) (hPr : Pr.Ok) (Ch : Chars X Pr R.m) (σ₀ : X.K →+* ℂ) (u : Pr.Word) (j : ℕ) :
-    (colStep hc hX hPr Ch σ₀ u j).U = colU hc Ch u j := rfl
-
 end Col
 
 end Formalism.L2.Col

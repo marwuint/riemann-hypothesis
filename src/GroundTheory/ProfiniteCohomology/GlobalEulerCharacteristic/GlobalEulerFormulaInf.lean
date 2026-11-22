@@ -19,14 +19,6 @@ section Places
 
 variable (ι : ∀ v : InfinitePlace K.1, ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)
 
-def gsInfFamily (v : InfinitePlace K.1) :
-    Gal(AlgebraicClosure v.Completion / v.Completion) →ₜ* galUnramifiedOutside K.1 ℚ̄ S :=
-  ⟨decompHomS v.Completion S (ι v), continuous_decompHomS (Kv := v.Completion) S (ι v)⟩
-
-theorem gsInfFamily_real (v : {v : InfinitePlace K.1 // v.IsReal}) :
-    gsInfFamily S ι v.1 = gsRealFamily S (fun w => ι w.1) v :=
-  rfl
-
 end Places
 
 section Factor
@@ -37,10 +29,6 @@ def gsRealH0Card
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (v : {v : InfinitePlace K.1 // v.IsReal}) : ℕ :=
   Nat.card (cohomology (Rep.res (gsRealFamily S ιr v).toMonoidHom M) 0)
-
-def gsInfH0Card (ι : ∀ v : InfinitePlace K.1, ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)
-    (v : InfinitePlace K.1) : ℕ :=
-  Nat.card (cohomology (Rep.res (gsInfFamily S ι v).toMonoidHom M) 0)
 
 open scoped Classical in
 

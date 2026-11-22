@@ -110,49 +110,7 @@ variable {K W P₁ P₂ Q₁ Q₂ : Type*} [Field K] [AddCommGroup W] [Module K 
   [AddCommGroup Q₁] [Module K Q₁] [AddCommGroup Q₂] [Module K Q₂]
   {ω : LinearMap.BilinForm K W}
 
-theorem FourPieces.a₂_eq_zero_left (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) {p : P₂}
-    (h : ∀ q, F.a₂ p q = 0) : p = 0 := by
-  have hw : F.incP₂ p = 0 := hω.1 _ fun w' ↦ by
-    rw [F.form, FourPieces.incP₂_apply, LinearEquiv.apply_symm_apply]
-    simp [h]
-  have h2 := congrArg (fun w ↦ (F.e w).1.2) hw
-  simpa [FourPieces.incP₂_apply] using h2
-
-theorem FourPieces.a₂_eq_zero_right (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) {q : Q₂}
-    (h : ∀ p, F.a₂ p q = 0) : q = 0 := by
-  have hw : F.incQ₂ q = 0 := hω.2 _ fun w' ↦ by
-    rw [F.form, FourPieces.incQ₂_apply, LinearEquiv.apply_symm_apply]
-    simp [h]
-  have h2 := congrArg (fun w ↦ (F.e w).2.2) hw
-  simpa [FourPieces.incQ₂_apply] using h2
-
 variable [FiniteDimensional K P₂] [FiniteDimensional K Q₂]
-
-theorem FourPieces.finrank_P₂_eq_finrank_Q₂ (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) :
-    finrank K P₂ = finrank K Q₂ := by
-  have h1 : Function.Injective F.a₂ := (injective_iff_map_eq_zero _).mpr fun p hp ↦
-    FourPieces.a₂_eq_zero_left hω F fun q ↦ by rw [hp]; rfl
-  have h2 : Function.Injective F.a₂.flip := (injective_iff_map_eq_zero _).mpr fun q hq ↦
-    FourPieces.a₂_eq_zero_right hω F fun p ↦ by
-      have := LinearMap.congr_fun hq p
-      simpa using this
-  have i1 := LinearMap.finrank_le_finrank_of_injective h1
-  have i2 := LinearMap.finrank_le_finrank_of_injective h2
-  rw [Subspace.dual_finrank_eq] at i1 i2
-  omega
-
-def FourPieces.a₂DualEquiv (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) {ξ : K} (hξ : ξ ≠ 0) :
-    Q₂ ≃ₗ[K] Module.Dual K P₂ :=
-  LinearMap.linearEquivOfInjective (ξ • F.a₂.flip)
-    ((injective_iff_map_eq_zero _).mpr fun q hq ↦ FourPieces.a₂_eq_zero_right hω F fun p ↦ by
-      have := LinearMap.congr_fun hq p
-      simp only [LinearMap.smul_apply, LinearMap.flip_apply, smul_eq_mul, LinearMap.zero_apply,
-        mul_eq_zero, hξ, false_or] at this
-      exact this)
-    (by rw [Subspace.dual_finrank_eq, FourPieces.finrank_P₂_eq_finrank_Q₂ hω F])
-
-theorem FourPieces.a₂DualEquiv_apply (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) {ξ : K}
-    (hξ : ξ ≠ 0) (q : Q₂) (p : P₂) : FourPieces.a₂DualEquiv hω F hξ q p = ξ * F.a₂ p q := rfl
 
 end Pairing
 

@@ -14,11 +14,6 @@ open UpperTheory.Gal.CharacterCongruences (Ch PolyApproxAt)
 
 namespace UpperTheory.Gal.NearKilling
 
-def DenseFrob : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-    (S : Set (HeightOneSpectrum (𝓞 E))), S.Finite →
-    Dense {g : G E Ω | ∃ u, IsSplitAt u ∧ u ∉ S ∧ ∃ A : ValuationSubring Ω, IsPlaceOver A u ∧ IsFrob A (normV u) g⁻¹}
-
 def UnrField : Prop :=
   ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (w : HeightOneSpectrum (𝓞 E)), IsSplitAt w → ∀ f : ℕ, 0 < f → ∀ S : Set (HeightOneSpectrum (𝓞 E)), S.Finite →

@@ -151,9 +151,6 @@ variable {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))
 def ya (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (g : FrmG Λ Θ) (q : PtY ST SG Q y) : PtY ST SG Q y :=
   (ptYAct y Λ Θ).smul g q
 
-theorem ya_deco (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (g : FrmG Λ Θ) (q : PtY ST SG Q y) :
-    (ya Λ Θ g q).1.1.deco = ((g.1, g.2.1.1) : UF X.E n × GLG X.E n SG) • q.1.1.deco := rfl
-
 theorem bar_ya (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (g : FrmG Λ Θ) (q : PtY ST SG Q y) (w : SG) :
     bar (ya Λ Θ g q) w = (fun v => (g.2.1.1 w).1 *ᵥ v) '' bar q w := by
   have key : ∀ z, (ya Λ Θ g q).1.1.deco.1.be w ((Formalism.L2.Col.qOf w.1 : X.E) • g.1.1 z) =

@@ -42,15 +42,6 @@ theorem exists_gen (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] :
     exact IntermediateField.adjoin_simple_le_iff.2 ⟨x, hx⟩
   exact h1 (IntermediateField.mem_top (x := (⟨z, hz⟩ : M)))
 
-open Classical in
-
-def typePlaces (B : Pre) (X : PreX B) : Finset (HeightOneSpectrum (𝓞 B.host.E)) :=
-  letI := B.host.cmStar
-  divs (RingOfIntegers.mapRingHom (starRingEnd B.host.E) (X.piG 0)) ∪
-    divs (RingOfIntegers.mapRingHom (starRingEnd B.host.E) (X.piG 1))
-
-theorem vGs_eq (B : Base) (X : PreX B.toPre) : (B.primes X).vGs = typePlaces B.toPre X := rfl
-
 section PrimesOk
 
 variable {X : Fields} {Pr : Primes X}

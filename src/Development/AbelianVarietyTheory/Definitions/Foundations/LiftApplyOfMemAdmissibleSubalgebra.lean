@@ -23,9 +23,4 @@ def Tower.SSBB (X : Tower Ω ε) (N l w : ℕ) [Fact l.Prime] (E : Type) [Field 
   ∃ P ∈ admissibleLettersSubalgebra E N l, FreeAlgebra.lift E lam P = 1 ∧ ∀ x ∈ X.VB N l w E, ∀ T : Letter, admitted N l T →
     (X.opV N l E T - lam T • (1 : Module.End E (E ⊗[ℤ_[l]] X.Fn l))) (FreeAlgebra.lift E (X.opV N l E) P x) = 0
 
-theorem SSPotB_iff_SSPotA {N l w : ℕ} {lam : Letter → ℂ} : SSPotB N l w lam ↔ SSPotA N l w lam := Iff.rfl
-
-theorem Tower.SSBB_iff_SSBA (X : Tower Ω ε) {N l w : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra ℤ_[l] E]
-    {lam : Letter → E} : X.SSBB N l w E lam ↔ X.SSBA N l w E lam := Iff.rfl
-
 end GlobalTheory.KZ

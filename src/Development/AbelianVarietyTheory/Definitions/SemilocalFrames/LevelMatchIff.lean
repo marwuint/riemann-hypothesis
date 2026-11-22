@@ -52,10 +52,6 @@ def LevelKH (X : HidaSetting D) (u : D.what₂.Word) (F : Formalism.L2.Forms.For
         F.cls0.lev.U),
       ((psiK X u hK ⟨h, hk⟩ : ℂˣ) : ℂ) = ((F.cls0.lev.chi ⟨_, hy⟩ : ℂˣ) : ℂ)
 
-theorem levelMatch_iff (X : HidaSetting D) {u : D.what₂.Word} {F : Formalism.L2.Forms.Forms0 D u} (Tr : Transport X u F)
-    (hK : X.LevelSubgroupCharacter) :
-    LevelMatch X Tr hK ↔ LatMatchH X u F Tr.wt Tr.ιA Tr.h0 ∧ LevelKH X u F Tr.wt Tr.ιA Tr.h0 hK := Iff.rfl
-
 def JOK (X : HidaSetting D) (u : D.what₂.Word) (F : Formalism.L2.Forms.Forms0 D u) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (J : X.Vpi u →ₗ⋆[ℂ] (Formalism.L2.Forms.Fr D 0 (Nat.zero_le _) → ℂ)) : Prop :=
   (∀ s ∈ Hinf X u, ∀ (ξ : X.Vpi u) (y y' : Formalism.L2.Forms.Fr D 0 (Nat.zero_le _)),

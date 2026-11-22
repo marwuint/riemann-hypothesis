@@ -594,10 +594,6 @@ def CocharOf.sp (m₁ : SABMap t₁ t f₁) (m₀ : SABMap t₀ t f₀) (hb : Fu
     exact (sp_pull m₁.cart m₀.cart hb _).trans (((CocharOf.pull m₀).map_smul a l).trans
       (congrArg (fun z : CocharOf t₀ => a • z) (sp_pull m₁.cart m₀.cart hb l).symm))
 
-theorem CocharOf.sp_apply (m₁ : SABMap t₁ t f₁) (m₀ : SABMap t₀ t f₀)
-    (hb : Function.Bijective (CocharOf.pull m₁)) (l : CocharOf t₁) :
-    CocharOf.sp m₁ m₀ hb l = TorusPart.sp m₁.cart m₀.cart hb l := rfl
-
 def CharOf.res (m₁ : SABMap t₁ t f₁) (m₀ : SABMap t₀ t f₀) (hb : Function.Bijective (CocharOf.pull m₁)) :
     CharOf t₀ →ₗ[𝓞 E] CharOf t₁ where
   toFun χ := TorusPart.res m₁.cart m₀.cart hb χ

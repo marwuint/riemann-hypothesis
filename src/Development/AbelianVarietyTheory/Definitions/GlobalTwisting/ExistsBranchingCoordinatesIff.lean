@@ -61,14 +61,6 @@ def Pend.ofRecord (P : Formalism.MainNotions.product_first_zeroth_parts.Pend D u
   ⟨P.br, P.coM, P.coP, P.coM_mem, P.coM_inj, P.coP_mem, P.coP_inj, P.Pt_eq, P.lat_co, P.pt_co, P.gP, P.ipV_co,
     P.re_petersson_self_eq_sum_coord, P.beOn_eq, P.interlace⟩
 
-def Pend.toRecord (P : Pend (own D u)) : Formalism.MainNotions.product_first_zeroth_parts.Pend D u :=
-  ⟨P.br, P.coM, P.coP, P.coM_mem, P.coM_inj, P.coP_mem, P.coP_inj, P.Pt_eq, P.lat_co, P.pt_co, P.gP, P.ipV_co,
-    P.re_petersson_self_eq_sum_coord, P.beOn_eq, P.interlace⟩
-
-theorem branchingLaw_ofRecord_iff (P : Formalism.MainNotions.product_first_zeroth_parts.Pend D u) : ArchimedeanSignatureMatching (Pend.ofRecord P) ↔ Formalism.MainNotions.product_first_zeroth_parts.ArchimedeanSignatureMatching P := Iff.rfl
-
-theorem branchingCoordinates_iff (P : Pend (own D u)) : Formalism.MainNotions.product_first_zeroth_parts.ArchimedeanSignatureMatching P.toRecord ↔ ArchimedeanSignatureMatching P := Iff.rfl
-
 theorem fockF_self_eq {σ : Type} (f : MvPolynomial σ ℂ) : Formalism.REAL.fockF f f =
     ((∑ m ∈ f.support, Complex.normSq (f.coeff m) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℝ) : ℝ) : ℂ) := by
   unfold Formalism.REAL.fockF

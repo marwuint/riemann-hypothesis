@@ -69,8 +69,6 @@ def H (φ : Hom K L) (n : ℕ) : K.H n →ₗ[A] L.H n :=
 
 theorem H_cls (φ : Hom K L) {n : ℕ} (z : K.Z n) : φ.H n (K.cls z) = L.cls (φ.Z n z) := rfl
 
-theorem coe_Z (φ : Hom K L) {n : ℕ} (z : K.Z n) : (φ.Z n z).1 = φ.f n z.1 := rfl
-
 end Hom
 
 def prod (K L : Cx A) : Cx A where
@@ -136,13 +134,6 @@ end Cx
 section Cochains
 
 variable {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Module A M]
-
-def dInh (ρ : Representation A G M) (n : ℕ) : ((Fin n → G) → M) →ₗ[A] ((Fin (n + 1) → G) → M) :=
-  (inhomogeneousCochains.d (k := A) (G := G) (Rep.of ρ) n).hom
-
-theorem dInh_apply (ρ : Representation A G M) (n : ℕ) (f : (Fin n → G) → M) (g : Fin (n + 1) → G) :
-    dInh ρ n f g = ρ (g 0) (f fun i => g i.succ) +
-      ∑ j : Fin (n + 1), (-1 : A) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) g) := rfl
 
 variable [TopologicalSpace G] [TopologicalSpace M]
 

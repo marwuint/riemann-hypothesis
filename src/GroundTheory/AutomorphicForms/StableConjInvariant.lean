@@ -65,9 +65,6 @@ theorem torusNorm_apply (t : TorusE (γ : V ≃ₗ[E] V)) : h.torusNorm γ t = h
 noncomputable def selfAdjointTorus : Subgroup (TorusE (γ : V ≃ₗ[E] V)) :=
   MonoidHom.eqLocus (h.torusStar γ) (MonoidHom.id _)
 
-theorem mem_selfAdjointTorus {c : TorusE (γ : V ≃ₗ[E] V)} :
-    c ∈ h.selfAdjointTorus γ ↔ h.torusStar γ c = c := Iff.rfl
-
 noncomputable def normTorus : Subgroup (TorusE (γ : V ≃ₗ[E] V)) :=
   (h.torusNorm γ).range
 
@@ -118,9 +115,6 @@ def InKernel (x : h.centralizerTorusFirstCohomology γ) : Prop :=
     have hcc : (QuotientGroup.mk c : h.centralizerTorusFirstCohomology γ) = QuotientGroup.mk c' := Quotient.sound hr
     exact ⟨fun H => (h.twistOf_isometric_of_mk_eq γ hcc).symm.trans H,
       fun H => (h.twistOf_isometric_of_mk_eq γ hcc).trans H⟩)
-
-theorem inKernel_mk (c : h.selfAdjointTorus γ) :
-    h.InKernel γ (QuotientGroup.mk c) ↔ Isometric (h.twistOf γ c) h := Iff.rfl
 
 end HermitianForm
 

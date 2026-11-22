@@ -9,11 +9,6 @@ open AlgebraicGeometry CategoryTheory MeasureTheory NumberField ReciprocityTheor
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
-def archA {K₁ : Type} [Field K₁] [NumberField K₁] (n : ℕ) (nth : InfinitePlace K₁ → ℝ)
-    (lη : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → InfinitePlace K₁ → ℝ) (μ : ArcLt Dw →₀ ℕ)
-    (σ : InfinitePlace K₁) : ℝ :=
-  -((n : ℝ) / 2) * Real.log (nth σ) - ∑ x ∈ μ.support, (μ x : ℝ) * lη x.1 x.2.2 σ
-
 def IsThNormAt {K₁ : Type} [Field K₁] (P : ReciprocityTheory.ChartRestriction.G.Out.PolAV (Sp K₁))
     (rig : LB.Gen (P.L.pull (eSec P.A))) (th : P.L.Sec) (σ : K₁ →+* ℂ) (v : ℝ) : Prop :=
   ∃ (P' : ReciprocityTheory.ChartRestriction.G.Out.PolAV (Sp ℂ)) (rig' : LB.Gen (P'.L.pull (eSec P'.A))) (th' : P'.L.Sec)

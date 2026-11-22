@@ -53,20 +53,7 @@ def HasLabelO (O : LabelMap K C) {ι : Type} [Fintype ι] [DecidableEq ι] (τ :
     Function.Surjective b ∧ (∀ c, Simple (lam c) ∧ IsCuspidal K (lam c)) ∧
     IsConstituent τ (hcRep K b lam) ∧ f = ∏ c, labO O (lam c)
 
-def DisjointMultO (O : LabelMap K C) : Prop :=
-  ∀ (n : ℕ) (b : Fin n → Fin 2) (τ σ : ∀ c : Fin 2, FDRep ℂ (GL {i // b i = c} K)) (f f' : Fin 2 → K[X]),
-    Function.Surjective b →
-    (∀ c, Simple (τ c) ∧ Simple (σ c) ∧ HasLabelO O (τ c) (f c) ∧ HasLabelO O (σ c) (f' c)) →
-    IsCoprime (f 0) (f' 1) → IsCoprime (f 1) (f' 0) →
-    Module.finrank ℂ (Intw (hcRep K b τ) (hcRep K b σ)) =
-      Module.finrank ℂ (Intw (τ 0).ρ (σ 0).ρ) * Module.finrank ℂ (Intw (τ 1).ρ (σ 1).ρ)
-
 def twoBlock (n a : ℕ) : Fin n → Fin 2 := fun i => if (i : ℕ) < a then 0 else 1
-
-def ZIdemOccurs : Prop :=
-  ∀ (Γ : Type) [Group Γ] [Fintype Γ] (τ : FDRep ℂ Γ) (V : Type) [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] (ρ : Representation ℂ Γ V), Simple τ →
-    ((∃ v : V, ρ.asAlgebraHom (zIdem τ) v ≠ 0) ↔ IsConstituent τ ρ)
 
 end Formalism.IrreducibleCountingLemmas.TYPES
 

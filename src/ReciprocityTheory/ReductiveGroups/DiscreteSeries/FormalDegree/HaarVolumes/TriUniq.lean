@@ -116,8 +116,6 @@ scoped instance : Mul (TG N) := ⟨fun a b => ⟨triCoOf (upMat b.1 * upMat a.1)
 scoped instance : One (TG N) := ⟨⟨triCoOf 1, one_mem.2⟩⟩
 scoped instance : Inv (TG N) := ⟨fun a => ⟨triCoOf (upMat a.1)⁻¹, (upMat_inv_mem a.1 a.2).2⟩⟩
 
-theorem tg_mul_val (a b : TG N) : (a * b).1 = triCoOf (upMat b.1 * upMat a.1) := rfl
-
 theorem upMat_tg_mul (a b : TG N) : upMat (a * b).1 = upMat b.1 * upMat a.1 :=
   (upMat_mul_mem b.1 a.1 b.2 a.2).1
 

@@ -35,14 +35,6 @@ def finP : Ideles L →* FI L := Units.map (MonoidHom.snd (InfiniteAdeleRing L) 
 theorem cmp_val (P : HeightOneSpectrum (𝓞 L)) (u : FI L) :
     (cmp P u : P.adicCompletion L) = (u : FiniteAdeleRing (𝓞 L) L) P := rfl
 
-theorem incl_sing (P : HeightOneSpectrum (𝓞 L)) (x) : incl L (sing P x) = localIdele L P x := rfl
-
-theorem finitePart_incl (u : FI L) : finP L (incl L u) = u := rfl
-
-theorem finitePart_localIdele (P : HeightOneSpectrum (𝓞 L)) (x) : finP L (localIdele L P x) = sing P x := rfl
-
-theorem finitePart_infIdele (w : InfinitePlace L) (x) : finP L (infIdele L w x) = 1 := rfl
-
 open Classical in
 theorem cmp_sing_self (P : HeightOneSpectrum (𝓞 L)) (x) : cmp P (sing P x) = x := by
   apply Units.ext

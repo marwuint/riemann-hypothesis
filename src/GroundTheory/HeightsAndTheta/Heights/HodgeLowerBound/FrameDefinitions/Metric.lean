@@ -67,9 +67,6 @@ def IsUnitOn (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (f u : Ω) : Prop 
   u ≠ 0 ∧ (∃ n : ℕ, f ^ n * u ∈ chartRing ℤ (segreCoord y) c) ∧
     ∃ n : ℕ, f ^ n * u⁻¹ ∈ chartRing ℤ (segreCoord y) c
 
-theorem isUnitOn_one (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (f : Ω) : IsUnitOn y c f 1 :=
-  ⟨one_ne_zero, ⟨0, by simpa using one_mem _⟩, ⟨0, by simpa using one_mem _⟩⟩
-
 end Values
 
 section Orbits

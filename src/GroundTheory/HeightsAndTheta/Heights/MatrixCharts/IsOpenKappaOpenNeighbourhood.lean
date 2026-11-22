@@ -17,12 +17,6 @@ def cplx {ι κ : Type*} (M : Matrix ι κ ℝ) : Matrix ι κ ℂ :=
 def qf {ι : Type*} [Fintype ι] (Q : Matrix ι ι ℝ) (w : ι → ℂ) : ℝ :=
   (star w ⬝ᵥ (cplx Q *ᵥ w)).re
 
-def realIP {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (v w : Fin g → ℂ) : ℝ :=
-  (star v ⬝ᵥ (cplx Y⁻¹ *ᵥ w)).re
-
-def yNorm {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (w : Fin g → ℂ) : ℝ :=
-  Real.sqrt (qf Y⁻¹ w)
-
 def punctured {n a : ℕ} (ha : a ≤ n) (U : Set (Fin n → ℂ)) : Set (Fin n → ℂ) :=
   {z | z ∈ U ∧ ∀ i : Fin a, z (Fin.castLE ha i) ≠ 0}
 
@@ -64,8 +58,6 @@ structure PeriodChartData (n a g m k : ℕ) where
 namespace PeriodChartData
 
 variable {n a g m k : ℕ} (D : PeriodChartData n a g m k)
-
-def Ustar : Set (Fin n → ℂ) := punctured D.a_le D.U
 
 def Y (z : Fin n → ℂ) : Matrix (Fin g) (Fin g) ℝ := chartY D.a_le D.tau0 D.B z
 

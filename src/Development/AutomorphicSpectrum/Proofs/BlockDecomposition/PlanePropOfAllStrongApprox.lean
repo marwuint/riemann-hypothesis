@@ -31,9 +31,6 @@ theorem frameA (h : IsFrame (σ : E →+* E) J K a V P) :
 def iota (h : IsFrame (σ : E →+* E) J K a V P) : HA (AF F) σ K →* HA (AF F) σ J :=
   uHom (frameA h)
 
-theorem mt_iota (h : IsFrame (σ : E →+* E) J K a V P) (g : HA (AF F) σ K) :
-    mt (iota h g) = emb0 (V.map (inclR (F := F) (E := E) (AF F))) (P.map (inclR (F := F) (E := E) (AF F))) (mt g) := rfl
-
 end Adelic
 
 end GlobalTheory.CompanionTheory.PlaneSA.OfTwo

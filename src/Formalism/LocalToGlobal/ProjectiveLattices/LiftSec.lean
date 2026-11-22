@@ -13,8 +13,6 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
 
 def hasseW (β : Idx D j N →₀ ℕ) (x : Lw X la w) : Lw X la w := hasse X la w β x
 
-theorem hasseW_apply (β : Idx D j N →₀ ℕ) (x : Lw X la w) : hasseW X la w β x = hasse X la w β x := rfl
-
 theorem hasseW_of_mul_eq (β : Idx D j N →₀ ℕ) {s x : Rp X la N} {y : Lw X la w}
     (h : algebraMap (Rp X la N) (Lw X la w) s * y = algebraMap (Rp X la N) (Lw X la w) x) :
     ∑ q ∈ antidiagonal β, algebraMap (Rp X la N) (Lw X la w) (hasseRp X la N q.1 s) * hasseW X la w q.2 y =

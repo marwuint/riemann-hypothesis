@@ -70,25 +70,6 @@ theorem fsNorm_eq (x : CP N) (φ : O1 x) (v : Fin (N + 1) → ℂ) (hv : v ∈ t
   have ht' : 0 < ‖t‖ := norm_pos_iff.mpr ht
   field_simp
 
-lemma tautologicalDual_ext (x : CP N) {φ ψ : O1 x} (h : φ ⟨x.rep, rep_mem_tautLine x⟩ = ψ ⟨x.rep, rep_mem_tautLine x⟩) :
-    φ = ψ := by
-  ext ⟨w, hw⟩
-  have hw' := hw
-  rw [tautLine, Projectivization.submodule_eq, Submodule.mem_span_singleton] at hw'
-  obtain ⟨t, rfl⟩ := hw'
-  have : (⟨t • x.rep, hw⟩ : tautLine x) = t • ⟨x.rep, rep_mem_tautLine x⟩ := rfl
-  rw [this, map_smul, map_smul, h]
-
-theorem fsNorm_eq_zero_iff (x : CP N) (φ : O1 x) : fsNorm x φ = 0 ↔ φ = 0 := by
-  constructor
-  · intro h
-    have hn : 0 < norm2 x.rep := euclideanNorm_pos x.rep_nonzero
-    rw [fsNorm, div_eq_zero_iff, norm_eq_zero] at h
-    rcases h with h | h
-    · exact tautologicalDual_ext x (by simpa using h)
-    · exact absurd h hn.ne'
-  · rintro rfl; simp [fsNorm]
-
 def restrictForm (ℓ : (Fin (N + 1) → ℂ) →ₗ[ℂ] ℂ) (x : CP N) : O1 x := ℓ.domRestrict (tautLine x)
 
 theorem fsNorm_restrictForm_mk (ℓ : (Fin (N + 1) → ℂ) →ₗ[ℂ] ℂ) (v : Fin (N + 1) → ℂ) (hv : v ≠ 0) :
@@ -96,17 +77,6 @@ theorem fsNorm_restrictForm_mk (ℓ : (Fin (N + 1) → ℂ) →ₗ[ℂ] ℂ) (v 
   fsNorm_eq _ _ v (mem_tautLine_mk v hv) hv
 
 def coordForm (i : Fin (N + 1)) : (Fin (N + 1) → ℂ) →ₗ[ℂ] ℂ := LinearMap.proj i
-
-theorem restrictForm_coordForm_ne_zero (i : Fin (N + 1)) {x : CP N} (hx : x ∈ chartDomain i) :
-    restrictForm (coordForm i) x ≠ 0 := by
-  induction x using Projectivization.ind with
-  | h v hv =>
-    intro h
-    have := (fsNorm_eq_zero_iff _ _).mpr h
-    rw [fsNorm_restrictForm_mk, div_eq_zero_iff, norm_eq_zero] at this
-    rcases this with h1 | h1
-    · exact hx h1
-    · exact (euclideanNorm_pos hv).ne' h1
 
 theorem fsNorm_sq_chartInv (ℓ : (Fin (N + 1) → ℂ) →ₗ[ℂ] ℂ) (i : Fin (N + 1)) (z : Fin N → ℂ) :
     fsNorm (chartInv i z) (restrictForm ℓ _) ^ 2 = ‖ℓ (chartVec i z)‖ ^ 2 / (1 + ∑ j, ‖z j‖ ^ 2) := by

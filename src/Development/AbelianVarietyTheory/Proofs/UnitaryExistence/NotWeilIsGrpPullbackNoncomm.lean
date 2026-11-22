@@ -88,10 +88,6 @@ attribute [local instance] heisGrp
 def heisPt {S : Scheme.{0}} (T : Over S) : (T ⟶ heisScheme S) →* Heis Γ(T.left, ⊤) :=
   ((yonedaGrpObjIsoOfRepresentableBy _ _ (heisRepr S)).hom.app (Opposite.op T)).hom
 
-theorem heisPt_eq {S : Scheme.{0}} {T : Over S} (f : T ⟶ heisScheme S) :
-    heisPt T f = ⟨f.left.appTop (AffineSpace.coord S 0), f.left.appTop (AffineSpace.coord S 1),
-      f.left.appTop (AffineSpace.coord S 2)⟩ := rfl
-
 end WeilNoncomm
 
 end GlobalTheory

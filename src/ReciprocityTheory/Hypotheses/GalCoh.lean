@@ -161,17 +161,6 @@ def GlobalEulerCharAt (S : Finset (HeightOneSpectrum (𝓞 F)))
       Nat.card (H0 rhoS) * Nat.card (H2 rhoS) * Nat.card M ^ Module.finrank ℚ F =
         Nat.card (H1 rhoS) * archH0Card S rhoS c
 
-def ShaDualityAt (S : Finset (HeightOneSpectrum (𝓞 F)))
-    (rhoS : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M) : Prop :=
-  0 < r → l ≠ 2 → ContainsAbove S l → ContAction rhoS →
-    ∀ muS : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* (ZMod (l ^ r))ˣ,
-      muS.comp (toGS Ω _) = cycMod F Ω l r →
-    ∀ Av : S → ValuationSubring Ω, (∀ v, IsPlaceOver (Av v) v.1) →
-      Finite (Sha1 rhoS (locFam S Av) (continuous_locFam S Av)) ∧
-      Finite (Sha2 (twDual muS rhoS) (locFam S Av) (continuous_locFam S Av)) ∧
-      Nat.card (Sha1 rhoS (locFam S Av) (continuous_locFam S Av)) =
-        Nat.card (Sha2 (twDual muS rhoS) (locFam S Av) (continuous_locFam S Av))
-
 def GreenbergWilesAt (S : Finset (HeightOneSpectrum (𝓞 F)))
     (rhoS : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M) : Prop :=
   0 < r → l ≠ 2 → ContainsAbove S l → ∀ hrho : ContAction rhoS,

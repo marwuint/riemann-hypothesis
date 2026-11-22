@@ -8,11 +8,6 @@ namespace Formalism.FX
 
 open Classical
 
-def Lerch : Prop :=
-  ∀ a : ℝ, 0 < a → a ≤ 1 →
-    HasDerivAt (fun s : ℂ => HurwitzZeta.hurwitzZeta (a : UnitAddCircle) s)
-      (((Real.log (Real.Gamma a) - Real.log (2 * Real.pi) / 2 : ℝ)) : ℂ) 0
-
 def DivisorBound : Prop :=
   ∀ e : ℝ, 0 < e → ∃ C : ℝ, ∀ n : ℕ, 1 ≤ n → ((Nat.divisors n).card : ℝ) ≤ C * (n : ℝ) ^ e
 

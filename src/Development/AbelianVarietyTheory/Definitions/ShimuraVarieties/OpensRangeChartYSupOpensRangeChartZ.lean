@@ -115,10 +115,6 @@ def grading : ℕ → Submodule R (HomRing W) :=
 instance gradedAlgebra : GradedAlgebra (grading W) :=
   quotGradedAlgebra _ (isHomogeneous_cubicIdeal W)
 
-theorem mem_grading_iff {n : ℕ} {a : HomRing W} :
-    a ∈ grading W n ↔ ∃ p : MvPolynomial (Fin 3) R, p.IsHomogeneous n ∧
-      Ideal.Quotient.mk _ p = a := Iff.rfl
-
 def coord (i : Fin 3) : HomRing W := Ideal.Quotient.mk _ (MvPolynomial.X i)
 
 theorem coord_mem (i : Fin 3) : coord W i ∈ grading W 1 :=
@@ -221,8 +217,6 @@ def toSpec : scheme W ⟶ Spec (.of R) :=
   Proj.toSpecZero (grading W) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (grading W 0)))
 
 instance : (scheme W).Over (Spec (.of R)) := ⟨toSpec W⟩
-
-theorem over_eq_toSpec : scheme W ↘ Spec (.of R) = toSpec W := rfl
 
 abbrev schemeOver : Over (Spec (.of R)) := Over.mk (toSpec W)
 

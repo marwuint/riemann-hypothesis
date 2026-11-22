@@ -100,10 +100,6 @@ open scoped Classical
 
 variable (ι : ∀ v : InfinitePlace K.1, ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)
 
-theorem gsInfH0Card_real (v : {v : InfinitePlace K.1 // v.IsReal}) :
-    gsInfH0Card S M ι v.1 = gsRealH0Card S M (fun w => ι w.1) v :=
-  rfl
-
 end Infinite
 
 end

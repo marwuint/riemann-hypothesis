@@ -50,8 +50,6 @@ noncomputable def scalInv (V : Type*) [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 theorem scalInv_apply (c : ℝ) (hc : c ≠ 0) (x : V) : scalInv V c hc x = c⁻¹ • x := rfl
 
-theorem scalInv_symm_apply (c : ℝ) (hc : c ≠ 0) (x : V) : (scalInv V c hc).symm x = c • x := rfl
-
 theorem map_scal_eq_comap (c : ℝ) (hc : c ≠ 0) (L : Submodule ℤ V) :
     L.map (scal V c) = ZLattice.comap ℝ L (scalInv V c hc).toLinearMap := by
   ext x

@@ -28,8 +28,6 @@ theorem DecoF.mv_pos {p : DecoF E n ST SG Q} {d' : DecoSet E n ST SG} (h : DecoS
 theorem DecoF.mv_deco {p : DecoF E n ST SG Q} {d' : DecoSet E n ST SG} (h : DecoSet.SameOn Q p.deco d') : (p.mv d').deco = d' := by
   rw [DecoF.mv_pos h]; rfl
 
-theorem DecoF.smul_deco (g : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ST SG Q) : (g • p).deco = (g.1, g.2.1) • p.deco := rfl
-
 theorem DecoSet.sameOn_up {B : Finset (HeightOneSpectrum (𝓞 E))} (d : DecoSet E n ST SG) (P : ST) (hne : conjPrime₂ P.1 ≠ P.1)
     (hB : ∀ P' ∈ B, P' ≠ P.1 ∧ P' ≠ conjPrime₂ P.1) (q : 𝓞 E) {x : Sp E n} (hx : x ∈ d.1.N) : DecoSet.SameOn B d (d.up P q x) := by
   intro P' hP'
@@ -40,13 +38,6 @@ theorem DecoSet.sameOn_up {B : Finset (HeightOneSpectrum (𝓞 E))} (d : DecoSet
   · rfl
 
 def DecoF.dia1 (P : ST) (a : (𝓞 E ⧸ P.1.asIdeal)ˣ) (p : DecoF E n ST SG Q) : DecoF E n ST SG Q := ⟨(p.1.1.dia1 P a, p.1.2), p.2⟩
-
-theorem DecoF.decoratedFrame_diagonalTwist_decoration (P : ST) (a : (𝓞 E ⧸ P.1.asIdeal)ˣ) (p : DecoF E n ST SG Q) : (p.dia1 P a).deco = p.deco.dia1 P a := rfl
-
-theorem DecoF.decoratedFrame_diagonalTwist_frame (P : ST) (a : (𝓞 E ⧸ P.1.asIdeal)ˣ) (p : DecoF E n ST SG Q) (P' : Q) : (p.dia1 P a).fr P' = p.fr P' := rfl
-
-theorem DecoF.decoratedFrame_diagonalTwist_smul (P : ST) (a : (𝓞 E ⧸ P.1.asIdeal)ˣ) (g : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ST SG Q) :
-    (g • p).dia1 P a = g • p.dia1 P a := rfl
 
 end Fr
 

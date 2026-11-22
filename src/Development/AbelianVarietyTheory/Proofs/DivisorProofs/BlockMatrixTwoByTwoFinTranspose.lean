@@ -25,9 +25,6 @@ abbrev cAl (D : D7) : AE D →ₐ[AF D.host.F] AE D := GlobalTheory.IndefiniteRo
 
 abbrev UD (D : D7) {k : ℕ} (J : Matrix (Fin k) (Fin k) D.host.E) : Type := UA D.sp.cm.sig J
 
-abbrev uinc (D : D7) {k : ℕ} (J : Matrix (Fin k) (Fin k) D.host.E) : UD D J →* GL (Fin k) (AE D) :=
-  (UG (cAl D) (incM D.host.F J)).subtype
-
 def cat {R : Type} (p y : Matrix (Fin m) (Fin n) R) : Matrix (Fin m) (Fin (n + n)) R :=
   (Matrix.fromCols p y).submatrix id finSumFinEquiv.symm
 
@@ -75,8 +72,6 @@ variable {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E} {T : GL (Fin (n + 
 section Witt
 
 variable {J : Matrix (Fin n) (Fin n) D.host.E}
-
-theorem dblGram_eq (J : Matrix (Fin n) (Fin n) D.host.E) : dblGram finSumFinEquiv J = StdUnn.blk4 J 0 0 (-J) := rfl
 
 theorem trA_cA (z : AE D) : StdUnn.trA (cA D z) = StdUnn.trA z := by
   let e : AE D ≃ₐ[AF D.host.F] AE D := AlgEquiv.ofAlgHom (cAl D) (cAl D)

@@ -69,8 +69,6 @@ theorem le_of_fromSpec {V : X.Opens} (hV : IsAffineOpen V) {R : Type} [CommRing 
     {χ : Γ(X, V) →+* R} (h : spMap χ ≫ hV.fromSpec = w) : ⊤ ≤ w ⁻¹ᵁ V := fun q _ =>
   h ▸ hV.fromSpec_preimage_self.ge (Set.mem_univ (spMap χ q))
 
-theorem mono_fromSpec {V : X.Opens} (hV : IsAffineOpen V) : Mono hV.fromSpec := inferInstance
-
 end Val
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
@@ -82,16 +80,6 @@ variable {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {l l' : Level H} {c :
 theorem eig_iff {R : Type} [CommRing R] {x : Sp R ⟶ X} (v : TanM x t.G) (a : 𝓞 E) (s : R) :
     (tv v).left ≫ (t.act.act a).left = spMap (epsMul s) ≫ (tv v).left ↔ actR t.act a v = s • v :=
   ⟨fun h => tan_ext h, fun h => congrArg (fun z => (tv z).left) h⟩
-
-theorem frame_ind {k : Type} [Field k] {f : c.F →+* k} {x : Sp k ⟶ X} {u : Vecs Dw t k}
-    (h : GlobalTheory.LocM.IsFrame t f x u) (τ : E →+* ℂ) : Ind t x (u τ) := by
-  refine ⟨fun i => (h.1 τ i).1, fun cf cf' w h1 h2 => ?_⟩
-  obtain ⟨U, hU⟩ := exists_tan fun i => (h.1 τ i).1
-  have e := (comb_iff U cf w).1 (hU ▸ h1)
-  refine (h.2 τ w (e ▸ isTan_tv _) fun a => ?_).unique h1 h2
-  rw [e, eig_iff, map_sum, Finset.smul_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [map_smul, smul_comm, (eig_iff (U i) a _).1 (congrFun hU i ▸ (h.1 τ i).2 a)]
 
 variable {g : X' ⟶ X} (mu : SABMap t' t g) {R : Type} [CommRing R] {x' : Sp R ⟶ X'} {x : Sp R ⟶ X} (hx : x' ≫ g = x)
 
@@ -121,62 +109,11 @@ section Steps
 
 variable {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {l : Level H} {c : Coeff l} {p : ℕ}
 
-theorem lnStep_push {g : X' ⟶ X} (mu : SABMap t' t g) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
-    (b : Bool) (xO : Sp ↥(intO C) ⟶ X')
-    (hO : ∀ y : Sp ↥(intO C) ⟶ X, spMap (intO C).subtype ≫ y = spMap (intO C).subtype ≫ xO ≫ g → y = xO ≫ g)
-    {u : Vecs Dw t' C} (hu : ∀ τ i, IsTanAtG t' (spMap (intO C).subtype ≫ xO) (u τ i)) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) :
-    lnStep t' (spMap (intO C).subtype ≫ xO) u p b st =
-      lnStep (Dw := Dw) t (spMap (intO C).subtype ≫ xO ≫ g) (fun τ i => u τ i ≫ mu.φ) p b st := by
-  have key := fun {m : ℕ} {v : Fin m → (Sp (DualNumber C) ⟶ t'.G.left)} =>
-    grNorm_push (v := v) mu (Category.assoc _ _ _) (_root_.GlobalTheory.ShFam.LatPush.lat_push E H X X' t t' g mu C p b xO hO)
-  rcases st with ⟨τ, k⟩ | k
-  · simp only [lnStep, key (hu τ)]
-  · simp only [lnStep, key (v := fun i => u ((letters Dw).get i).1 ((letters Dw).get i).2) fun i => hu _ _]
-
-theorem lnStep_tri (hB : HTBoundSt) (hp : p.Prime) (C : Formalism.MainNotions.DIV.Cons.SCF p) (b : Bool) (xO : Sp ↥(intO ↥C.S) ⟶ X)
-    (hO : ∀ y : Sp ↥(intO ↥C.S) ⟶ X, spMap (intO ↥C.S).subtype ≫ y = spMap (intO ↥C.S).subtype ≫ xO → y = xO)
-    {f : c.F →+* ↥C.S} {u u' : Vecs Dw t ↥C.S} (hu : GlobalTheory.LocM.IsFrame t f (spMap (intO ↥C.S).subtype ≫ xO) u)
-    (hu' : GlobalTheory.LocM.IsFrame t f (spMap (intO ↥C.S).subtype ≫ xO) u')
-    (h : ∀ τ, Tri t (spMap (intO ↥C.S).subtype ≫ xO) (u τ) (u' τ)) {st : ((E →+* ℂ) × ℕ) ⊕ ℕ} {x : Letter Dw}
-    (hx : letterOf Dw st = some x) {cf : Fin (Dw.mult x.1) → ↥C.S}
-    (hc : IsCombAtG t (spMap (intO ↥C.S).subtype ≫ xO) (u x.1) cf (u' x.1 x.2)) :
-    lnStep t (spMap (intO ↥C.S).subtype ≫ xO) u' p b st =
-      Real.log ‖cf x.2‖ + lnStep t (spMap (intO ↥C.S).subtype ≫ xO) u p b st := by
-  obtain ⟨h0, h1⟩ := (h x.1).diag (frame_ind hu _) (frame_ind hu' _) hc
-  have pos := _root_.GlobalTheory.GrNormPos.grNorm_pos hB E H X t p C b xO hp hO
-  rcases st with ⟨τ, k⟩ | k
-  · by_cases hk : k < Dw.mult τ
-    · simp only [letterOf, dif_pos hk, Option.some.injEq] at hx
-      subst hx
-      simp only [lnStep, dif_pos hk]
-      rw [(h τ).grNorm_eq (frame_ind hu _) (frame_ind hu' _) _ hc, Real.log_mul (norm_ne_zero_iff.2 h0)
-        (pos _ _ (frame_ind hu τ).1 (frame_ind hu τ).2 _).ne', add_sub_assoc]
-    · simp [letterOf, hk] at hx
-  · obtain ⟨hk, rfl⟩ := List.getElem?_eq_some_iff.1 hx
-    obtain ⟨i1, c1⟩ := _root_.GlobalTheory.Proof.frame_combination_coeff_unique.concat_frame E H Dw l c X t _ f _ u hu
-    have I1 : Ind t _ _ := ⟨fun i => (hu.1 _ _).1, i1⟩
-    have I2 : Ind t _ _ := ⟨fun i => (hu'.1 _ _).1, (_root_.GlobalTheory.Proof.frame_combination_coeff_unique.concat_frame E H Dw l c X t _ f _ u' hu').1⟩
-    have T : Tri t _ (fun i : Fin (letters Dw).length => u ((letters Dw).get i).1 ((letters Dw).get i).2)
-        (fun i => u' ((letters Dw).get i).1 ((letters Dw).get i).2) := fun j => by
-      obtain ⟨d, d1, d2⟩ := h ((letters Dw).get j).1 ((letters Dw).get j).2
-      obtain ⟨e, e1, -, e2⟩ := c1 j d _ d1 d2
-      exact ⟨e, e1, e2⟩
-    obtain ⟨e, -, e1, e2⟩ := c1 ⟨k, hk⟩ cf _ h1 hc
-    simp only [lnStep, dif_pos hk]
-    rw [T.grNorm_eq I1 I2 _ e2, e1]
-    exact Real.log_mul (norm_ne_zero_iff.2 h0) (pos _ _ I1.1 I1.2 _).ne'
-
 end Steps
 
 section Models
 
 variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
-
-theorem chart_frame (Z : Mdl Y i₀) {a : Fin Z.m} {R : Type} [CommRing R] {φ : Γ(Z.X, (Z.U a).1) →+* R}
-    {w : Sp R ⟶ Z.X} (h : spMap φ ≫ Z.chart a = w) :
-    GlobalTheory.LocM.IsFrame (Y Z.i).t (φ.comp (Z.alg a)) (w ≫ Z.π) ((Z.fr a).bc φ) := by
-  rw [← h, Category.assoc]
-  exact _root_.GlobalTheory.ShFam.Pad.isFrame_baseChange E H Dw _ _ _ _ _ _ _ φ _ _ (Z.frame a)
 
 theorem affineOpenChart_comp_structure_eq_spMap (Z : Mdl Y i₀) {a : Fin Z.m} {R : Type} [CommRing R] {φ : Γ(Z.X, (Z.U a).1) →+* R}
     {w : Sp R ⟶ Z.X} (h : spMap φ ≫ Z.chart a = w) :
@@ -188,23 +125,6 @@ theorem range_opn (Z : Mdl Y i₀) {a : Fin Z.m} {R : Type} [CommRing R] {φ : �
   rintro _ ⟨q, rfl⟩
   rw [← Z.cover]
   exact Set.mem_iUnion.2 ⟨a, le_of_fromSpec (Z.U a).2 h (Set.mem_univ q)⟩
-
-theorem exists_open_lift (Z : Mdl Y i₀) {a : Fin Z.m} {R : Type} [CommRing R] {φ : Γ(Z.X, (Z.U a).1) →+* R}
-    {w : Sp R ⟶ Z.X} (h : spMap φ ≫ Z.chart a = w) :
-    ∃ y : Sp R ⟶ (Xo Z.i.l).XF Z.i.c, y ≫ (Y Z.i).j = w ≫ Z.π := by
-  have := (Y Z.i).jQ_open
-  let q : Sp R ⟶ pullback (Y Z.i).s (spMap (Z.i.c.V W).subtype) :=
-    pullback.lift (w ≫ Z.π) _ ((Category.assoc _ _ _).trans (affineOpenChart_comp_structure_eq_spMap Z h))
-  have hq : q ≫ pullback.fst _ _ = w ≫ Z.π := pullback.lift_fst _ _ _
-  have : IsPreimmersion (spMap (Z.i.c.V W).subtype) :=
-    IsPreimmersion.of_isLocalization (R := Z.i.c.V W) (S := Z.i.c.F) (nonZeroDivisors _)
-  have hr : Set.range q ⊆ Set.range (Y Z.i).jQ := by
-    rintro _ ⟨z, rfl⟩
-    obtain ⟨y, hy⟩ := range_opn Z h ⟨z, rfl⟩
-    refine ⟨y, (pullback.fst (Y Z.i).s (spMap (Z.i.c.V W).subtype)).isEmbedding.injective ?_⟩
-    rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hq, Scheme.Hom.comp_apply w]
-    exact hy
-  exact ⟨IsOpenImmersion.lift _ q hr, by rw [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j, IsOpenImmersion.lift_fac_assoc, hq]⟩
 
 theorem tri_of_sameFlag {X : Scheme.{0}} {t : SAB H X} {k : Type} [Field k] {x : Sp k ⟶ X} {u u' : Vecs Dw t k}
     {ty : (E →+* ℂ) → Finset ℕ} (hty : ∀ τ n, n ≤ Dw.mult τ → n ∈ ty τ) (h : SameFlag ty t x u u') (τ : E →+* ℂ) :

@@ -21,9 +21,6 @@ variable {k G : Type u} [CommRing k] [Group G]
 abbrev dualRep (D M : Rep.{u} k G) : Rep.{u} k G :=
   Rep.of (Representation.linHom M.ρ D.ρ)
 
-theorem dualRep_eq_ihom (D M : Rep.{u} k G) : dualRep D M = (Rep.ihom M).obj D :=
-  rfl
-
 theorem dualRep_ρ_apply (D M : Rep.{u} k G) (σ : G) (f : M →ₗ[k] D) (m : M) :
     ((dualRep D M).ρ σ f : M →ₗ[k] D) m = D.ρ σ (f (M.ρ σ⁻¹ m)) :=
   rfl

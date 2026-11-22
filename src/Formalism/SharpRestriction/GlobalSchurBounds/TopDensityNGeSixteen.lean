@@ -41,15 +41,6 @@ def GoodT (L : SizeData₂ D) (T : Finset (G.HH D)) (h t0 : G.HH D) : Prop :=
   G.IsGoodOrbit (addOrderOf h) (topsPosT D T h t0) (G.L2 D L.sc) (G.KG L.sc) (G.rG L.sc) L.sc.delta1
     (G.hG L.sc) L.sc.x
 
-def BadT (X : G.Inst D L) (h t : G.HH D) (T : Finset (G.HH D)) : Prop := ¬ GoodT L T h (X.bs h t)
-
-open Classical in
-
-def ServedOrbitsSecondMoment (X : G.Inst D L) (Cb : ℝ) : Prop :=
-  ∀ h : G.HH D, L.sc.x ^ (L.sc.eps / 4) ≤ (addOrderOf h : ℝ) → ∀ t : G.HH D,
-    (∑ T : Finset (G.HH D), if t ∈ T ∧ BadT X h t T then UnusedSlot33.bern L.sc.delta1 T else 0) ≤
-      (Cb * L.sc.x ^ (-2 : ℝ)) * L.sc.delta1
-
 end BernoulliSumsFrobeniusOrbits
 
 section Proviso
@@ -1666,10 +1657,6 @@ section Points
 
 variable (Fm : FamP eps) (x : ℝ) (i0 : Fm.Ix x)
 
-def winAz : Finset ℤ :=
-  Finset.Icc ⌈(Fm.L x i0).sc.a⌉ ⌊(Fm.L x i0).sc.a + (Fm.L x i0).sc.a /
-    (((Fm.D x i0).R.k : ℝ) * (Fm.L x i0).sc.x ^ (Scale.A / 2))⌋
-
 variable {Fm x i0}
 
 end Points
@@ -1681,4 +1668,3 @@ end
 namespace Formalism.MainNotions
 
 end Formalism.MainNotions
-

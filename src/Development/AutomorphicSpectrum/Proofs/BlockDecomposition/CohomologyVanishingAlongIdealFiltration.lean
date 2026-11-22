@@ -36,9 +36,6 @@ theorem Vals.dQ {a : IdF A} {j : ℕ} {x : Q A j} (hx : Vals a x) : Vals a (dQ A
 def cl (a b : IdF A) {j : ℕ} (x : Q A j) (hx : Vals a x) : CH.Cn (sq a b) j :=
   fun s => sqMk a b (val x s) (hx s)
 
-theorem cl_val (a b : IdF A) {j : ℕ} (x : Q A j) (hx : Vals a x) (s : ComposableArrows C j) :
-    (show sqM a b _ from cl a b x hx s).1 = Ideal.Quotient.mk _ (val x s) := rfl
-
 theorem cl_surj (a b : IdF A) {j : ℕ} (f : CH.Cn (sq a b) j) : ∃ (x : Q A j) (hx : Vals a x), cl a b x hx = f := by
   have h : ∀ s : ComposableArrows C j, ∃ x : A.obj (s.obj (Fin.last j)), ∃ hx : x ∈ a.S _, sqMk a b x hx = f s := by
     intro s

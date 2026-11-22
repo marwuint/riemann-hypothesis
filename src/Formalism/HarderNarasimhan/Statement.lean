@@ -137,10 +137,4 @@ def ShiftInvariance : Prop :=
     (∀ θ : ℝ, hnStep ρ₂ L (θ + c) = hnStep ρ L θ) ∧
     (∀ k : ℕ, hnPoly ρ₂ L k = hnPoly ρ L k + c * (min k (rk ρ L) : ℕ))
 
-def piReal {ι : Type*} [Fintype ι] {V : ι → Type*} [∀ i, AddCommGroup (V i)]
-    {E : ι → Type*} [∀ i, NormedAddCommGroup (E i)] [∀ i, InnerProductSpace ℝ (E i)]
-    (ρ : ∀ i, V i →+ E i) : (∀ i, V i) →+ PiLp 2 E :=
-  (WithLp.linearEquiv 2 ℝ (∀ i, E i)).symm.toLinearMap.toAddMonoidHom.comp
-    (AddMonoidHom.pi fun i => (ρ i).comp (Pi.evalAddMonoidHom V i))
-
 end Formalism.HN

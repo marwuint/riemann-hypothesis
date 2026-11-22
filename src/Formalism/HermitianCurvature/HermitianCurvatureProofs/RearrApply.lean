@@ -14,8 +14,6 @@ def inE : α × (β × γ) ≃ᵐ β × (α × γ) :=
   MeasurableEquiv.prodAssoc.symm.trans
     ((MeasurableEquiv.prodCongr MeasurableEquiv.prodComm (MeasurableEquiv.refl γ)).trans MeasurableEquiv.prodAssoc)
 
-theorem inE_apply (p : α × (β × γ)) : inE p = (p.2.1, (p.1, p.2.2)) := rfl
-
 theorem inE_mp (μa : Measure α) (μb : Measure β) (μc : Measure γ) [SFinite μa] [SFinite μb] [SFinite μc] :
     MeasurePreserving (inE : α × (β × γ) ≃ᵐ β × (α × γ)) (μa.prod (μb.prod μc)) (μb.prod (μa.prod μc)) := by
   have e1 := MeasurePreserving.symm _ (measurePreserving_prodAssoc μa μb μc)

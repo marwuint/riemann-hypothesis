@@ -70,10 +70,6 @@ variable (Lb : Lbl H) (hT2 : ∀ u, T u ≠ 2) (per : ∀ u : W, Bool → FK ((K
 
 local notation "DR" => (hostLevelRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 
-theorem row_Drows : (DR).what₂.Drows = d := rfl
-theorem rowRecord_baseDimension : (DR).what₂.D0 = d0 := rfl
-theorem row_Dall : (DR).what₂.Dall = Dall := rfl
-
 end Rec
 
 end Formalism.BasicNotions.Examples₂.NZ

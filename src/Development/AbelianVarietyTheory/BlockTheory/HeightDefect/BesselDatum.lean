@@ -134,9 +134,6 @@ def period (P : PosDatum A B ι) (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure 
     (ν : Measure P.bes.N) (𝓝 : Set P.bes.N) (s : GA D A → GA D B) (φ : GA D A → ℂ) (F : GA D B → ℂ) : ℂ :=
   P.move (P.bes.period ψ μ 𝓕 ν 𝓝 s φ) F
 
-theorem period_sym (d : BesselDatum A B ι) (ψ μ 𝓕 ν 𝓝 s φ F) :
-    (sym d).period ψ μ 𝓕 ν 𝓝 s φ F = d.period ψ μ 𝓕 ν 𝓝 s φ F := rfl
-
 end PosDatum
 
 theorem embedding_xi_zero_ne_zero (D : D7) : D.host.xi0 ≠ 0 := by

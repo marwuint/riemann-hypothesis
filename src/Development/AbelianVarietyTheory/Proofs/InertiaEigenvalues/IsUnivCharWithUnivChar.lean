@@ -39,22 +39,6 @@ def admitted (H : Subgroup (GE N)) (S : Finset (PlE D.host)) (P : PlE D.host) : 
 
 variable {i : X.Tw} {M : ℕ} (H : Subgroup (GE N)) (S : Finset (PlE D.host)) (d : Fam X i M)
 
-open Classical in
-
-def setChar (T : Set (PlE D.host)) : GE N →* Multiplicative (ZMod (X.l i ^ M)) :=
-  if h : ∃ v, v ∈ T ∧ admitted H S v then d h.choose else 1
-
-open Classical in
-
-def famCoord (Q : Finset (PlE D.host)) (P : PlE D.host) : GE N →* Multiplicative (ZMod (X.l i ^ M)) :=
-  if GalChar.pair D.host P ⊆ ↑Q then setChar H S d (GalChar.pair D.host P) else 1
-
-def famDel (Q : Finset (PlE D.host)) : GE N →* Multiplicative (DelQM D.host (X.l i) Q M) :=
-  delAll X i M fun P : ↥Q => famCoord H S d Q P.1
-
-theorem famDel_apply (Q : Finset (PlE D.host)) (σ : GE N) (P : ↥Q) :
-    Multiplicative.toAdd (famDel H S d Q σ) P = Multiplicative.toAdd (famCoord H S d Q P.1 σ) := rfl
-
 variable {H S d}
 
 end Family

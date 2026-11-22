@@ -21,28 +21,6 @@ section Theta
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ}
 
-def IsCanTheta {g : ℕ} {ty : Fin g → (E →+* ℂ)}
-    (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (k : Fin F.n)
-    (Pm : (F.Di k).La →+ (Fin g → ℂ)) (y : FrPt Xo c (CAt σ)) (Hm : Matrix (Fin g) (Fin g) ℂ)
-    (θ : (Fin g → ℂ) → ℂ) : Prop :=
-  Hm.IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧
-    (∀ a b, (hermForm Hm (Pm a) (Pm b)).im = (F.Di k).EF a b) ∧
-    ∃ (χl : (Fin g → ℂ) → ℂ) (fr : Xo.univ.t.PP.L.ι → (Fin g → ℂ) → ℂ),
-      (∀ j, DifferentiableOn ℂ (fr j) {z | ⊤ ≤ (F.ex k Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}) ∧
-      (∀ j z, ⊤ ≤ (F.ex k Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → fr j z ≠ 0) ∧
-      (∀ j j' z, ⊤ ≤ (F.ex k Pm z).left ⁻¹ᵁ (Xo.univ.t.PP.L.U j ⊓ Xo.univ.t.PP.L.U j') →
-        fr j z = valAt' (F.ex k Pm z).left (Xo.univ.t.PP.L.U j ⊓ Xo.univ.t.PP.L.U j')
-          (Xo.univ.t.PP.L.g j j').val * fr j' z) ∧
-      (∀ j, ⊤ ≤ (F.ex k Pm 0).left ⁻¹ᵁ Xo.univ.t.PP.L.U j →
-        fr j 0 = valAt' y.x ((Xo.univ.t.PP.L.pull (eSec Xo.univ.t.G)).U (fun _ => j))
-          (Xo.univ.t.PP.rig.s (fun _ => j)).val) ∧
-      (∀ a j z, ‖χl (Pm a)‖ = 1 ∧ (⊤ ≤ (F.ex k Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j →
-        fr j z = χl (Pm a) * Complex.exp (Real.pi * hermForm Hm z (Pm a) +
-          Real.pi / 2 * hermForm Hm (Pm a) (Pm a)) * fr j (z + Pm a))) ∧
-      ∀ j z (pt : Sp ℂ ⟶ Gx y.x), pt ≫ gxFst y.x = (F.ex k Pm z).left → pt ≫ gxSnd y.x = 𝟙 (Sp ℂ) →
-        ⊤ ≤ (F.ex k Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j →
-        valAt' pt ((PPx y.x).U (fun _ => j)) (y.s.f (fun _ => j)) = θ z * fr j z
-
 end Theta
 
 section Frame
@@ -72,9 +50,6 @@ section Row
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
-
-def chiDetW (R : RealDat D A Ks) (i : Fin D.R.m) (g : G) : ℂ :=
-  ∏ PP : R.Pg, ((R.chi ((i : ℕ) + 1) PP.1 (Matrix.GeneralLinearGroup.det (R.eG g PP)) : ℂˣ) : ℂ)
 
 def IsLift (R : RealDat D A Ks) (i : Fin D.R.m) (g : G) (κ : GA D (Wc D i)) : Prop :=
   Formalism.IndefR.Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) κ
@@ -111,9 +86,6 @@ def ι (_Y : RowDat T G i) : (T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (
 
 def act' (g : G) : Rul (T.Q.Xo ((i : ℕ) + 1)) Y.c' →ₗ[Y.c'.F] Rul (T.Q.Xo ((i : ℕ) + 1)) Y.c' := actLev Y.c' Y.lev g
 
-def cusp' (a : (D.host.E →+* ℂ) × ℕ → ℕ) : Submodule Y.c'.F (Rul (T.Q.Xo ((i : ℕ) + 1)) Y.c') :=
-  cusp (T.Q.Xo ((i : ℕ) + 1)) Y.c' Y.U' a (Vc D i).rank
-
 def phi (cc : Y.U.Comp → ℂ) (f : Rul (T.Q.Xo ((i : ℕ) + 1)) Y.c') : GA D (Wc D i) → ℂ :=
   adel (Wc D i) Y.dict' (muPin (Wc D i) Y.dict' Y.mu cc) (rdU (Y.U' Y.σ') f)
 
@@ -135,10 +107,6 @@ structure Ties (F : Face D A) : Prop where
   act' : ActLev (Xo := T.Q.Xo ((i : ℕ) + 1)) Y.c' Y.lev
   cuspBC : CuspBC Y.hle (T.U ((i : ℕ) + 1))
   actBC : ActBC (Xo := T.Q.Xo ((i : ℕ) + 1)) Y.hle (actLev T.Q.c Y.lev) (actLev Y.c' Y.lev)
-
-def LevelEquiv (cc : Y.U.Comp → ℂ) : Prop :=
-  ∀ a, Dom a (Vc D i).rank → ∀ g : G, ∀ f ∈ Y.cusp' a, Y.act' g f ∈ Y.cusp' a ∧
-    ∀ κ, IsLift R i g κ → ∀ x, Y.phi cc (Y.act' g f) x = chiDetW R i g * Y.phi cc f (x * κ)
 
 end RowDat
 

@@ -7,17 +7,4 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model
 
 open CategoryTheory Opposite AlgebraicGeometry Limits
 
-noncomputable section
-
-theorem isVectorBundle_iff_model {X : Scheme.{0}} (E : X.Modules) :
-    GroundTheory.Heights₂.Heights.Model.IsVectorBundle E ↔ IsVectorBundle E := Iff.rfl
-
-theorem genTo_eq_baseChangeMap (X : Scheme.{0}) :
-    genTo X = GroundTheory.Heights₂.Heights.Model.baseChangeMap (toSpecZ X) ℚ := rfl
-
-theorem pbSection_eq_pullSection {A B : Scheme.{0}} (f : A ⟶ B) (M : B.Modules) (t : Γ(M, ⊤)) :
-    pbSection f M t = GroundTheory.Heights₂.Heights.Model.pullSection f M t := rfl
-
-end
-
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model

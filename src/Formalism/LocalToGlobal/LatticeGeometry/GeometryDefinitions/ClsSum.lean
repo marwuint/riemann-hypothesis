@@ -32,12 +32,6 @@ abbrev GAf : Subgroup (GL (Fin (nW D)) (D.host.E ⊗[D.host.F] Formalism.L2.Herm
 def Kg : Subgroup (GL (Fin (nW D)) (D.host.E ⊗[D.host.F] Formalism.L2.Herm.Af D.host.F)) :=
   Subgroup.closure {x | x ∈ GAf D ∧ ∀ v, inLoc D v (bc (prV (E := D.host.E) v) x)}
 
-def KgU : Subgroup (GAf D) := (Kg D).subgroupOf (GAf D)
-
-abbrev GamF : Subgroup (GAf D) := Formalism.L2.Herm.UFin D.sp.cm (SW D)
-
-abbrev XDef : Type := ClassSet (GamF D) (KgU D)
-
 section Frames
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]

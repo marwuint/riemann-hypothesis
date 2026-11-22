@@ -69,9 +69,6 @@ def heisRep (S : Scheme.{0}) : (heisFunctor S ⋙ forget _).RepresentableBy (hei
 
 instance (S : Scheme.{0}) : GrpObj (heisObj S) := GrpObj.ofRepresentableBy _ _ (heisRep S)
 
-theorem heisEquiv_comp {S : Scheme.{0}} {T T' : Over S} (g : T' ⟶ T) (x : T ⟶ heisObj S) :
-    heisEquiv T' (g ≫ x) = Heis.map g.left.appTop.hom (heisEquiv T x) := rfl
-
 end GlobalTheory.WeilPullNoncomm
 
 namespace GlobalTheory

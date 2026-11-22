@@ -33,16 +33,12 @@ section Rec
 
 variable {D : D7}
 
-theorem massI_eq (M : ℕ) : massI D M = massH D.host M := rfl
-
 end Rec
 
 section Base
 
 variable {R : Ranks} (H : Host R) (T0 : ℕ) [hT0 : Fact T0.Prime] (pz0 : 𝓞 H.E)
   (hpz0 : (pz0 : H.E) * H.conj (pz0 : H.E) = (T0 : H.E))
-
-theorem card_clsPkg (X : Type) [Finite X] (d : ℕ) (hd : 0 < d) : Nat.card ((clsPkg X d hd).cls 0) = Nat.card X := rfl
 
 end Base
 

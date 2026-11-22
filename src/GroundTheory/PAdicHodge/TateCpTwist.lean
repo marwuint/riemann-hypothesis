@@ -91,12 +91,7 @@ noncomputable def cpTwistRep (j : ℤ) : ContRepresentation K Gal(PadicAlgCl p/K
         simp only [cpTwistMap_apply, twistScalar_mul, smul_mul', gal_smul_twistScalar, mul_smul]
         ring }
 
-noncomputable abbrev cpTwist (j : ℤ) : TopRep K Gal(PadicAlgCl p/K) := TopRep.of (cpTwistRep K j)
-
 theorem cpTwistRep_apply (j : ℤ) (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) :
     cpTwistRep K j σ x = twistScalar K j σ * (σ • x) := rfl
-
-theorem cpTwist_ρ_apply (j : ℤ) (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) :
-    (cpTwist K j).ρ σ x = twistScalar K j σ * (σ • x) := rfl
 
 end GroundTheory.PAdicHodge

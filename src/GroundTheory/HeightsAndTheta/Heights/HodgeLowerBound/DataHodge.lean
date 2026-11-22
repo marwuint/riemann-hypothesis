@@ -33,18 +33,6 @@ structure ComponentDataHodge (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] 
 
 namespace Line
 
-def lineDataHodge (II : IntersectionSystem)
-    (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2]) :
-    ComponentDataHodge II Unit Unit (PBlk 2) Ω (fun _ => Fin 2 → Ω) where
-  toComponentData := lineData II hII
-  F _ := Submodule.span Ω ((Pi.basisFun Ω (Fin 2)) '' {i | (i : ℕ) < 1})
-  hodge _ c hc := ⟨1, fun _ => 1, fun _ => 1, fun _ => one_mem _, fun _ => one_mem _, by simp,
-    fun _ _ => ⟨Pi.basisFun Ω (Fin 2), ⟨hc, one_mem _, one_ne_zero,
-      (Pi.basisFun Ω (Fin 2)).linearIndependent, trivial_frame_iff _ 2 c⟩, rfl⟩⟩
-
-def lineDataHodgeZero : ComponentDataHodge zeroSystem Unit Unit (PBlk 2) Ω (fun _ => Fin 2 → Ω) :=
-  lineDataHodge zeroSystem fun _ _ => le_rfl
-
 end Line
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree

@@ -20,9 +20,6 @@ def DualTopBasisChange.Statement : Prop :=
     II Unit (dualBlocks T₂) (dualIdeal b₂) i (fun _ => dualLine F b₂ hb₂) =
       II Unit (dualBlocks T) (dualIdeal b) i (fun _ => dualLine F b hb)
 
-def dualBasisStandardNeg : Module.Basis (Fin 1) ℤ (dualLattice (HermLattice.standard ℚ 1)) :=
-  (dualBasisStandard.map (LinearEquiv.neg ℤ)).reindex (Equiv.ofUnique Unit (Fin 1))
-
 end
 
 end GroundTheory.Heights₂.Heights

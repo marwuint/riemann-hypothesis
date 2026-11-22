@@ -30,9 +30,6 @@ def locInt (m n : ℕ) : AddSubgroup (Matrix (Fin m) (Fin n) (w.adicCompletion E
     intro X hX i j
     simpa using neg_mem (hX i j)
 
-theorem mem_locDiv {N m n : ℕ} {X : Matrix (Fin m) (Fin n) (w.adicCompletion E)} :
-    X ∈ locDiv w N m n ↔ ∀ i j, (N : w.adicCompletion E) * X i j ∈ w.adicCompletionIntegers E := Iff.rfl
-
 theorem mem_locInt {m n : ℕ} {X : Matrix (Fin m) (Fin n) (w.adicCompletion E)} :
     X ∈ locInt w m n ↔ ∀ i j, X i j ∈ w.adicCompletionIntegers E := Iff.rfl
 

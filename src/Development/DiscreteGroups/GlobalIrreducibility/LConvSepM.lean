@@ -52,8 +52,6 @@ def WT : Submodule ℂ (GL (Fin m) k → ℂ) where
     simp only [Pi.smul_apply, smul_eq_mul, h1 u hu g]
     ring
 
-theorem mem_WT {f : GL (Fin m) k → ℂ} : f ∈ WT ψ ↔ IsWhitTest ψ f := Iff.rfl
-
 def rhoW : Representation ℂ (GL (Fin m) k) (WT (m := m) ψ) where
   toFun x :=
     { toFun := fun f => ⟨fun g => (f : GL (Fin m) k → ℂ) (g * x), by

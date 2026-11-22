@@ -109,9 +109,6 @@ def restr {U U' : X.Opens} (hU : U' ≤ U) (φ : DualSec P U) : DualSec P U' :=
 @[simp] lemma restr_app {U U' : X.Opens} (hU : U' ≤ U) (φ : DualSec P U) (V : X.Opens)
     (h : V ≤ U') : (restr hU φ).app V h = φ.app V (h.trans hU) := rfl
 
-lemma restr_add {U U' : X.Opens} (hU : U' ≤ U) (φ ψ : DualSec P U) :
-    restr hU (φ + ψ) = restr hU φ + restr hU ψ := rfl
-
 lemma restr_smul {U U' : X.Opens} (hU : U' ≤ U) (r : ringOn X U) (φ : DualSec P U) :
     restr hU (r • φ) = resR hU r • restr hU φ := by
   ext V h m

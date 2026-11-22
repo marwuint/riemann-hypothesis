@@ -38,10 +38,6 @@ private theorem natCard_GG_eq_four_mul_ord : Nat.card φ.GG = 4 * φ.ord := by
 theorem card_GG [Fintype φ.GG] : Fintype.card φ.GG = 4 * φ.ord := by
   rw [← Nat.card_eq_fintype_card, natCard_GG_eq_four_mul_ord]
 
-theorem chD_apply (g : φ.GG) : φ.chD g = g.1.2 := rfl
-
-theorem chQ_apply (g : φ.GG) : φ.chQ g = g.1.1 := rfl
-
 theorem chC_apply (g : φ.GG) : ((φ.chC g : ℂˣ) : ℂ) = (((g.1.2 : ℤˣ) : ℤ) : ℂ) := rfl
 
 theorem index_Psi : φ.Psi.index = 2 := by
@@ -99,15 +95,9 @@ theorem iota_injective : Function.Injective φ.iota := fun _ _ h => Multiplicati
 
 theorem iotaInv_mul (a b : φ.MA) : φ.iotaInv (a * b) = φ.iotaInv a + φ.iotaInv b := rfl
 
-theorem iotaInv_one : φ.iotaInv 1 = 0 := rfl
-
-theorem iotaInv_inv (a : φ.MA) : φ.iotaInv a⁻¹ = -φ.iotaInv a := rfl
-
 theorem iotaInv_pow (a : φ.MA) (i : ℕ) : φ.iotaInv (a ^ i) = i • φ.iotaInv a := rfl
 
 theorem iota_neg (t : φ.A) : φ.iota (-t) = (φ.iota t)⁻¹ := rfl
-
-theorem iota_nsmul (i : ℕ) (t : φ.A) : φ.iota (i • t) = φ.iota t ^ i := rfl
 
 theorem iotaInv_eq_zero_iff (a : φ.MA) : φ.iotaInv a = 0 ↔ a = 1 := toAdd_eq_zero
 
@@ -154,8 +144,6 @@ theorem placeOf_snd (g : φ.GG) : (placeOf g).2 = g.2 := by
   split_ifs
   · rfl
   · exact one_mul g.2
-
-theorem hH_apply (a : φ.MA) : φ.hH a = (φ.h (φ.iotaInv a)).toMul := rfl
 
 theorem hH_iota (t : φ.A) : φ.hH (φ.iota t) = (φ.h t).toMul := rfl
 
@@ -337,14 +325,6 @@ theorem even_orderOf_of_hH_ne_one {a : φ.MA} (ha : φ.hH a ≠ 1) : Even (order
   rcases i with _ | i
   · exact absurd (orderOf_eq_one_iff.1 (by simpa using hi)) ha
   · exact even_iff_two_dvd.2 (dvd_trans (by rw [hi, pow_succ]; exact dvd_mul_left 2 _) h1)
-
-theorem hostOrders_of_le (a : φ.MA) (j : ℕ) (l : ℤ) (u : (ZMod (2 ^ (φ.e + 2)))ˣ)
-    (hu : (u : ZMod (2 ^ (φ.e + 2))) = (l : ZMod _)) (ha : φ.hH a = hcl φ.e u) (hj : orderOf a ≤ 2 ^ j) :
-    (l : ZMod (2 ^ (φ.e + 2 - j))) = 1 ∨ (l : ZMod (2 ^ (φ.e + 2 - j))) = -1 := by
-  have h1 : orderOf (φ.hH a) ≤ 2 ^ j :=
-    le_trans (Nat.le_of_dvd (orderOf_pos a) (φ.orderOf_hH_dvd a)) hj
-  rw [ha] at h1
-  exact ((Formalism.FrobeniusOrbits.hostOrders φ.e).1 j l u hu).1 h1
 
 private theorem cc_mul_mem_Psi_iff_not_mem (g : φ.GG) : φ.cc * g ∈ φ.Psi ↔ g ∉ φ.Psi := by
   rw [mem_Psi_iff, mem_Psi_iff]
@@ -537,22 +517,6 @@ theorem hostOrbitCount (g : φ.GG) (h0 : g.1 = c0) (τ : φ.GG) (hτ : τ ∈ φ
 
 def orbEmb (τ : φ.GG) (x : ℤˣ × φ.MA) : φ.GG :=
   ((if x.1 = 1 then 1 else φ.sg.1) * τ.1, x.2 * τ.2)
-
-theorem orbEmb_injective (τ : φ.GG) : Function.Injective (φ.orbEmb τ) := by
-  rintro ⟨s, a⟩ ⟨s', a'⟩ h
-  have h1 : (if s = 1 then (1 : G0) else φ.sg.1) * τ.1 = (if s' = 1 then 1 else φ.sg.1) * τ.1 :=
-    congrArg Prod.fst h
-  have h2 : a * τ.2 = a' * τ.2 := congrArg Prod.snd h
-  have h1' := mul_right_cancel h1
-  refine Prod.ext ?_ (mul_right_cancel h2)
-  have hsg : (φ.sg.1 : G0) ≠ 1 := fun h' => int_units_neg_one_ne_one (congrArg Prod.fst h')
-  rcases Int.units_eq_one_or s with rfl | rfl <;> rcases Int.units_eq_one_or s' with rfl | rfl
-  · rfl
-  · rw [if_pos rfl, if_neg int_units_neg_one_ne_one] at h1'
-    exact absurd h1'.symm hsg
-  · rw [if_neg int_units_neg_one_ne_one, if_pos rfl] at h1'
-    exact absurd h1' hsg
-  · rfl
 
 def InTranslate (T : Finset ℕ) (u₀ x : φ.A) : Prop := ∃ s ∈ T, x = φ.dig s + u₀
 

@@ -20,14 +20,6 @@ def gw {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (ψ : K → (Y ⟶ X
       LB.wchart L ψ j ⊓ LB.wchart L ψ j' ≤ ψ k ⁻¹ᵁ (L.U (j k) ⊓ L.U (j' k)))
     (pullU (ψ k) _ (L.g (j k) (j' k)))) ^ (ε k)
 
-def IsGenW {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (ψ : K → (Y ⟶ X)) (ε : K → ℤ)
-    (s : ∀ j : K → L.ι, Γ(Y, LB.wchart L ψ j)ˣ) : Prop :=
-  ∀ j j' : K → L.ι, res (inf_le_left : LB.wchart L ψ j ⊓ LB.wchart L ψ j' ≤ LB.wchart L ψ j) (s j) =
-    gw L ψ ε j j' * res (inf_le_right : LB.wchart L ψ j ⊓ LB.wchart L ψ j' ≤ LB.wchart L ψ j') (s j')
-
-lemma isGen_iff_isGenW {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (ψ : K → (Y ⟶ X)) (ε : K → ℤ)
-    (t : LB.Gen (LB.LinComb L ψ ε)) : t.IsGen ↔ IsGenW L ψ ε t.s := Iff.rfl
-
 lemma eq_top_of_closedPoint_mem {V : Type} [CommRing V] [IsLocalRing V] (U : (Spec (CommRingCat.of V)).Opens)
     (hU : (IsLocalRing.closedPoint V : Spec (CommRingCat.of V)) ∈ U) : U = ⊤ := by
   refine eq_top_iff.2 fun x _ => ?_

@@ -65,8 +65,6 @@ instance FinalTheorems.smooth (s : FinalTheorems S κ) : SmoothOfRelativeDimensi
 
 abbrev ToroidalCompactificationData (s : FinalTheorems S κ) : Type := OddPrimesWithRootsOfUnity s.T.Z
 
-theorem Lv.relab_σ₀ (κ : Lv A) (τ : D.host.E →+* ℂ) : Formalism.L2.PjFree.relab κ.c κ.σ₀ τ = τ := rfl
-
 theorem Sig.mult_psi (S : Sig A N j) (L : CmList A) (t : D.what₂.Tau) : S.Dw.mult (L.ψ t).1 = j :=
   (if_pos (L.ψ t).2).trans S.p_eq
 
@@ -103,25 +101,6 @@ def toCpt (z : Pt D.what₂.Tau j (N - j)) : CxPts (genStr s.T.Z) κ.σ₀ := s.
 
 theorem zOf_mem (f : (s.fd k).dom) : s.zOf L k f ∈ DomI D.what₂.Tau j (N - j) := domPt_mem _ _ _ (s.p0_eq k) f.2
 
-theorem zOf_frameOver {z : Pt D.what₂.Tau j (N - j)} (hz : z ∈ DomI D.what₂.Tau j (N - j)) :
-    s.zOf L k (s.frameOver L k z) = z := by
-  have h : ∃ f, s.zOf L k f = z := by
-    obtain ⟨f, hf, e⟩ := FrameOnto.frame_onto _ N j (s.fd k) s.j_le _ (s.lab L k) (s.p0_eq k) z hz
-    exact ⟨⟨f, hf⟩, e⟩
-  rw [frameOver, dif_pos h]
-  exact h.choose_spec
-
-theorem framePt_eq {f f' : (s.fd k).dom} {g : D.what₂.Tau → GL (Fin j ⊕ Fin (N - j)) ℂ}
-    (hg : g ∈ gammaU (s.fd k) s.j_le (s.lab L k))
-    (h : moebI g (s.zOf L k f) = s.zOf L k f') : s.framePt k f = s.framePt k f' :=
-  cxPt_congr (PointWell.pt_eq_of_ptOfFrame_eq _ _ _ _ _ _ _ N j _ s.isUnf S.p_eq _ (lt_of_lt_of_le two_pos S.two_le) L.ψ
-    (invariantB _ _ (first_index_eq_of_unfolded _ s.isUnf S.p_eq) _) (fun _ _ => 1) κ.good_σ₀ k k f f'
-    (congrArg (Sigma.mk k) (Quot.sound ⟨g, hg, h⟩)))
-
-theorem toCpt_zOf (f : (s.fd k).dom) : s.toCpt L k (s.zOf L k f) = s.framePt k f :=
-  s.framePt_eq L k (one_mem _)
-    ((funext fun _ => PointWell.moeb_one _).trans (s.zOf_frameOver L k (s.zOf_mem L k f)))
-
 end FinalTheorems
 
 variable {s : FinalTheorems S κ} (x : ToroidalCompactificationData s) (L : CmList A)
@@ -145,10 +124,6 @@ structure IsBdOf (B : s.Bd L) : Prop where
     coW (s.fd k) s.j_le f.1 (s.lab L k t) = x.gramW L k f t
   metOm : ∀ k f t, (coOm (s.fd k) s.j_le f.1 (s.lab L k t))ᴴ * (B k).metOm (s.zOf L k f) t *
     coOm (s.fd k) s.j_le f.1 (s.lab L k t) = x.gramOm L k f t
-
-namespace IsBdOf
-
-end IsBdOf
 
 end Domain
 

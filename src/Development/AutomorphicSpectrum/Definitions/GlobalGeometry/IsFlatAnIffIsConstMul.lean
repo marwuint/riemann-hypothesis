@@ -164,11 +164,6 @@ theorem CptOver.genPt_mem {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y
 def CptOver.IsGeom {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) : Prop :=
   ∀ x : Z.Ω, (∃ f : Polynomial c.F, f ≠ 0 ∧ f.eval₂ Z.inc x = 0) → x ∈ Set.range Z.inc
 
-theorem isFlatAn_iff_isConstMul (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c) {g : ℕ}
-    {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n)
-    (e : Fin D.p ⊕ Fin D.q → (FU.Di i).La) (ρ : ℂ) :
-    IsFlatAn U τ τ (algebraMap c.F ℂ) (φ ℂ) FU i e ρ ↔ IsConstMul U τ φ FU i e ρ := Iff.rfl
-
 theorem IsFlatAn.const_mul {U : Set (Xo.XF c)} {τ τ' : E →+* ℂ} {σ : c.F →+* ℂ} {Φ : CFn Xo c} {σK : KA l →+* ℂ}
     {g : ℕ} {ty : Fin g → (E →+* ℂ)} {FU : FamilyUnif Xo σK ty} {i : Fin FU.n}
     {e : Fin D.p ⊕ Fin D.q → (FU.Di i).La} {ρ : ℂ} (h : IsFlatAn U τ τ' σ Φ FU i e ρ) (k : ℂ) :

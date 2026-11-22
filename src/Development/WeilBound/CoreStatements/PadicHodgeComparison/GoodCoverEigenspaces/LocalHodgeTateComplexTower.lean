@@ -19,11 +19,6 @@ structure TowerBC {k k' : Type} [Field k] [Field k'] (φ : k →+* k') (H : HTow
   hs : ∀ j, IsPullback (y j) (H'.s (ι' j)) (H.s (ι j)) z
   ht : ∀ j, y j ≫ H.t (ι j) = H'.t (ι' j) ≫ z
 
-def HodgeOcc {k : Type} [Field k] (H : HTower k) {J : Type} (ι : J → H.Γ) [∀ j, IsFinite (H.s (ι j))]
-    [∀ j, Etale (H.s (ι j))] (θ : J → k) (a : ℕ) : Prop :=
-  ∃ b : ℕ, (⨅ j, Module.End.maxGenEigenspace
-    (hodgeTrace (s := H.q) (s' := H.s (ι j) ≫ H.q) rfl a b ∘ₗ hodgePull (s := H.q) (H.comm (ι j)) a b) (θ j)) ≠ ⊥
-
 variable {l : ℕ} [Fact l.Prime]
 
 def IsRepOf {k : Type} [Field k] (H : HTower k) (Ω : Type) [Field Ω] [Algebra k Ω] {J : Type} (ι : J → H.Γ)

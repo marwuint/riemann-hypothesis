@@ -71,17 +71,6 @@ theorem exists_lift_int {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   refine ⟨IsOpenImmersion.lift Y.jQ z' hr, ?_⟩
   rw [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, hz']
 
-theorem mono_j_int {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
-    {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l}
-    (Y : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) : Mono Y.j := by
-  have : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F)) :=
-    IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F)) (S := c.F)
-  have h1 : IsPreimmersion (pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F))) :=
-    MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip this
-  have := Y.jQ_open
-  rw [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j]
-  infer_instance
-
 end GlobalTheory.DetHT
 
 end

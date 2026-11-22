@@ -93,9 +93,6 @@ def jetA (κ : Type) [Fintype κ] [DecidableEq κ] (m : ℕ) : MvPowerSeries κ 
     rw [FBIdJet.psJet_one, _root_.mul_one] at this
     rw [Algebra.algebraMap_eq_smul_one, this]
 
-theorem jetA_apply (κ : Type) [Fintype κ] [DecidableEq κ] (m : ℕ) (f : MvPowerSeries κ V) :
-    jetA κ m f = psJet m f := rfl
-
 variable (V) in
 
 abbrev limO (d n : ℕ) : Over (Sp V) := overAt (𝟙 (Sp V)) (PS V n d)

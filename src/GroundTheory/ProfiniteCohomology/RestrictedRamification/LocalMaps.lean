@@ -103,12 +103,6 @@ noncomputable def conjResMor (A : Rep.{u} k G) {φ φ' : H →* G} (g : G)
     congr 2
     group⟩
 
-omit [TopologicalSpace G] [TopologicalSpace H] [IsTopologicalGroup G] [IsTopologicalGroup H]
-  [CompactSpace G] in
-theorem conjResMor_hom_apply (A : Rep.{u} k G) {φ φ' : H →* G} (g : G)
-    (h : ∀ x, φ' x = g⁻¹ * φ x * g) (a : A) : (conjResMor A g h).hom a = A.ρ g⁻¹ a :=
-  rfl
-
 theorem cohomologyMapAlong_conj (A : Rep.{u} k G) [IsDiscreteRep A] {φ φ' : H →* G}
     (hφ : Continuous φ) (hφ' : Continuous φ') (g : G) (h : ∀ x, φ' x = g⁻¹ * φ x * g)
     [IsDiscreteRep (Rep.res φ A)] [IsDiscreteRep (Rep.res φ' A)] (n : ℕ) :

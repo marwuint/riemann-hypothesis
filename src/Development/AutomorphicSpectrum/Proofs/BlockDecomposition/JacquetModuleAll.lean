@@ -27,8 +27,4 @@ def dGL (b : ι → Fin s) : (∀ c, GL {i // b i = c} K) →* GL ι K :=
   (Units.map (blockHom b)).comp
     (MulEquiv.piUnits (M := fun c => Matrix {i // b i = c} {i // b i = c} K)).symm.toMonoidHom
 
-theorem dGL_val (b : ι → Fin s) (g : ∀ c, GL {i // b i = c} K) :
-    ((dGL b g : GL ι K) : Matrix ι ι K) =
-      blockHom b (fun c => ((g c : GL {i // b i = c} K) : Matrix {i // b i = c} {i // b i = c} K)) := rfl
-
 end GlobalTheory.CompanionTheory.TyFinJacquet

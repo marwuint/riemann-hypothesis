@@ -27,13 +27,6 @@ theorem unitaryGroupMatrix_eq_unitaryOf {A : Type*} [CommRing A] {ι : Type*} [F
     have := congrArg Matrix.transpose hg
     simpa [Matrix.transpose_mul, Matrix.mul_assoc] using this
 
-def subgroupHomeo {G : Type*} [Group G] [TopologicalSpace G] {S T : Subgroup G} (e : S = T) :
-    S ≃ₜ T :=
-  Homeomorph.setCongr (congrArg SetLike.coe e)
-
-theorem subgroupHomeo_apply {G : Type*} [Group G] [TopologicalSpace G] {S T : Subgroup G}
-    (e : S = T) (x : S) : subgroupHomeo e x = MulEquiv.subgroupCongr e x := rfl
-
 section HidaSetting
 
 variable {F : Type*} {E : Type} [Field F] [Field E] [NumberField F] [NumberField E] [Algebra F E]

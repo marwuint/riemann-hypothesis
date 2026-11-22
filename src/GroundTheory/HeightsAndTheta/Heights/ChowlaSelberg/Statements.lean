@@ -12,16 +12,6 @@ open scoped nonZeroDivisors Real ModularForm UpperHalfPlane
 
 noncomputable section
 
-def eisensteinSum (Λ : Submodule ℤ ℂ) (n : ℕ) : ℂ := ∑' l : Λ, ((l : ℂ) ^ n)⁻¹
-
-def latticeG₂ (Λ : Submodule ℤ ℂ) : ℂ := 60 * eisensteinSum Λ 4
-
-def latticeG₃ (Λ : Submodule ℤ ℂ) : ℂ := 140 * eisensteinSum Λ 6
-
-def latticeDiscr (Λ : Submodule ℤ ℂ) : ℂ := latticeG₂ Λ ^ 3 - 27 * latticeG₃ Λ ^ 2
-
-theorem latticeDiscr_lattice (L : PeriodPair) : latticeDiscr L.lattice = discr L := rfl
-
 def scaleLattice (c : ℂ) (Λ : Submodule ℤ ℂ) : Submodule ℤ ℂ := Λ.map (LinearMap.mulLeft ℤ c)
 
 variable {K : Type} [Field K] [NumberField K]

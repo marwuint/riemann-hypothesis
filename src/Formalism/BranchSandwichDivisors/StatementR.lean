@@ -6,14 +6,6 @@ noncomputable section
 
 namespace Formalism.BranchingDeterminantCap
 
-def MultPlace : Prop :=
-  ∀ (q k r : ℕ) (Nn : ℕ → ℕ), 2 ≤ q → 1 ≤ k → k ≤ r → r ≤ q → Nn 0 = 1 →
-    (∀ j, Nn j ≤ r.choose j) →
-    ∀ gam : ℕ → ℝ, gam 0 = 1 → (∀ l, gam (l + 1) = (q : ℝ) ^ (l + 1) - (q : ℝ) ^ l) →
-      (q : ℝ) ^ k * (1 - 1 / (q : ℝ)) ≤ ∑ j ∈ range (k + 1), (Nn j : ℝ) * gam (k - j) ∧
-      ∑ j ∈ range (k + 1), (Nn j : ℝ) * gam (k - j) ≤
-        (q : ℝ) ^ k * (1 + (2 * (r : ℝ) - 1) / (q : ℝ))
-
 def MultProd : Prop :=
   ∀ (Pv : Type) [Fintype Pv] (q nn : Pv → ℝ) (k : ℕ) (f r g : ℝ),
     (Fintype.card Pv : ℝ) = 2 * f → 1 ≤ r → 0 < g → (∀ v, g ≤ q v) → 4 * f * r ≤ g →

@@ -125,9 +125,6 @@ theorem ipOf_indep (h : S.Ok) (s s' : S.Sec) (φ ψ : S.EqFun) : S.ipOf h s φ �
   obtain ⟨g, hg⟩ := Sec.exists_smul s s' c
   rw [← hg, φ.2, ψ.2, h.inv, card_stab_smul]
 
-def chgSec (h : S.Ok) (s s' : S.Sec) : (S.toCSDOf h s).Forms ≃ₗ[K] (S.toCSDOf h s').Forms :=
-  (S.resOf h s).symm.trans (S.resOf h s')
-
 end GSD
 
 namespace ClsKer
@@ -142,10 +139,6 @@ theorem term_smul (φ : S.EqFun) (g : S.G) (d : S.D) (d' : S'.D) :
   rw [one_smul, map_one] at h1
   rw [h1, φ.2]
   simp only [LinearMap.comp_apply, Module.End.one_apply, e1]
-
-theorem resOf_opOf (h : S.Ok) (h' : S'.Ok) (s : S.Sec) (s' : S'.Sec) (φ : S.EqFun) :
-    (S'.resOf h' s' (A.opOf h s φ)).1 = letI := h.fintypeCl
-      Formalism.ThetaLiftIndependence.kerOpM (fun c => (((S.toCSDOf h s).wt c : K))⁻¹) (A.atReps s s') (S.resOf h s φ).1 := rfl
 
 end ClsKer
 
@@ -166,9 +159,6 @@ theorem forms_eq_top (h : S.Ok) (s : S.Sec) (hf : S.Free) : (S.toCSDOf h s).Form
 def resFree (h : S.Ok) (s : S.Sec) (hf : S.Free) : S.EqFun ≃ₗ[K] (S.Cl → S.V) :=
   (S.resOf h s).trans (LinearEquiv.ofTop _ (S.forms_eq_top h s hf))
 
-theorem resFree_apply (h : S.Ok) (s : S.Sec) (hf : S.Free) (φ : S.EqFun) (c : S.Cl) :
-    S.resFree h s hf φ c = (φ : S.D → S.V) (s.rep c) := rfl
-
 end GSD
 
 namespace GSD.Iso
@@ -188,18 +178,6 @@ def stabEquiv (d : S.D) : MulAction.stabilizer S.G d ≃ MulAction.stabilizer S'
 theorem card_stab (d : S.D) :
     Nat.card (MulAction.stabilizer S'.G (e.eD d)) = Nat.card (MulAction.stabilizer S.G d) := by
   exact Nat.card_congr (e.stabEquiv d).symm
-
-theorem iso_integral_structure_equivariant (N : S.D → Submodule (𝓞 K) S.V) (N' : S'.D → Submodule (𝓞 K) S'.V)
-    (hN : ∀ (g : S.G) (d : S.D), N (g • d) = (N d).map ((S.ρ g).restrictScalars (𝓞 K)))
-    (hc : ∀ d : S.D, N' (e.eD d) = (N d).map ((e.eV : S.V →ₗ[K] S'.V).restrictScalars (𝓞 K)))
-    (g' : S'.G) (d' : S'.D) : N' (g' • d') = (N' d').map ((S'.ρ g').restrictScalars (𝓞 K)) := by
-  obtain ⟨d, rfl⟩ := e.eD.surjective d'
-  obtain ⟨g, rfl⟩ := e.eG.surjective g'
-  rw [← e.smul, hc, hc, hN, ← Submodule.map_comp, ← Submodule.map_comp]
-  congr 1
-  ext x
-  simp only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]
-  exact e.rho g x
 
 theorem iso_onForms_mem_integral_iff (N : S.D → Submodule (𝓞 K) S.V) (N' : S'.D → Submodule (𝓞 K) S'.V)
     (hc : ∀ d : S.D, N' (e.eD d) = (N d).map ((e.eV : S.V →ₗ[K] S'.V).restrictScalars (𝓞 K))) (φ : S.EqFun) :
@@ -343,10 +321,6 @@ def trans {S'' : GSD K} (e' : GSD.Iso S' S'') : GSD.Iso S S'' where
 
 end GSD.Iso
 
-namespace LocOp
-
-end LocOp
-
 namespace GSD
 
 variable (S : GSD K)
@@ -441,18 +415,6 @@ theorem split_apply (φ : S.EqFun) (b : A) (t : σ.T) :
 
 def dia (S : GSD K) {A : Type} [Group A] [MulAction A S.D] [SMulCommClass A S.G S.D] (b : A) : LocOp S S :=
   LocOp.ofMap (MonoidHom.id S.G) (fun d => b • d) LinearMap.id (fun g d => smul_comm b g d) (fun _ _ => rfl)
-
-theorem split_mem_intOf (N : S.D → Submodule (𝓞 K) S.V) (hN : ∀ (b : A) (d : S.D), N (b • d) = N d) (φ : S.EqFun) :
-    φ ∈ S.intOf N ↔ ∀ b, σ.split φ b ∈ (S.restr σ.T).intOf (fun t => N ((t : σ.T) : S.D)) := by
-  constructor
-  · intro hφ b t
-    show (φ : S.D → S.V) (b • (t : S.D)) ∈ N (t : S.D)
-    rw [← hN b]
-    exact hφ _
-  · intro H d
-    have h1 : (φ : S.D → S.V) ((σ.a d)⁻¹ • σ.a d • d) ∈ N (σ.a d • d) := H (σ.a d)⁻¹ ⟨σ.a d • d, σ.a_mem d⟩
-    rw [inv_smul_smul, hN] at h1
-    exact h1
 
 def clEquiv (sT : (S.restr σ.T).Sec) : A × (S.restr σ.T).Cl ≃ S.Cl :=
   Equiv.ofBijective (fun p => S.cls (p.1 • ((sT.rep p.2 : σ.T) : S.D))) (by
@@ -560,33 +522,11 @@ theorem fibre_card_stab (x : D₀) (y : fibre pr hpr x) :
 
 end Fib
 
-theorem ClsKer.opOf_mem_intOf {S S' : GSD K} (A : ClsKer S S') (h : S.Ok) (s : S.Sec)
-    (N : S.D → Submodule (𝓞 K) S.V) (N' : S'.D → Submodule (𝓞 K) S'.V)
-    (hk : ∀ d d', ∀ x ∈ N d, A.k d d' x ∈ N' d') (n : ℕ) (hn : ∀ c, (S.toCSDOf h s).wt c ∣ n) (φ : S.EqFun)
-    (hφ : φ ∈ S.intOf N) : (n : 𝓞 K) • A.opOf h s φ ∈ S'.intOf N' := by
-  intro d'
-  show (n : 𝓞 K) • A.appOf h s φ d' ∈ N' d'
-  unfold ClsKer.appOf
-  rw [Finset.smul_sum]
-  refine Submodule.sum_mem _ fun c _ => ?_
-  obtain ⟨m, hm⟩ := hn c
-  have hw : (((S.toCSDOf h s).wt c : ℕ) : K) ≠ 0 := Nat.cast_ne_zero.mpr (by unfold CSD.wt; exact @Fintype.card_ne_zero _ ((S.toCSDOf h s).finGam c) ⟨1⟩)
-  have e1 : ((n : 𝓞 K) • ((((S.toCSDOf h s).wt c : ℕ) : K))⁻¹) = ((m : ℕ) : K) := by
-    rw [Algebra.smul_def, map_natCast, hm, Nat.cast_mul, mul_comm, ← mul_assoc, inv_mul_cancel₀ hw, one_mul]
-  rw [← smul_assoc, e1, Nat.cast_smul_eq_nsmul]
-  exact (N' d').nsmul_mem (hk _ d' _ (hφ _)) m
-
 namespace GSD
 
 variable (S : GSD K)
 
-theorem ipOf_eq_csOf (h : S.Ok) (s : S.Sec) (φ ψ : S.D → S.V) :
-    S.ipOf h s φ ψ = S.csOf h s fun d => S.pair (φ d) (ψ d) := rfl
-
 end GSD
-
-theorem ClsKer.appOf_eq_csOf {S S' : GSD K} (A : ClsKer S S') (h : S.Ok) (s : S.Sec) (φ : S.D → S.V) (d' : S'.D) :
-    A.appOf h s φ d' = S.csOf h s fun d => A.k d d' (φ d) := rfl
 
 namespace BiPair
 
@@ -605,9 +545,5 @@ theorem wt_eq (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (c : F.Cl) :
     (F.toCSDOf h s).wt c = ((F.mem c.1).toCSDOf (h c.1) (s c.1)).wt c.2 := rfl
 
 end GFam
-
-namespace GSD
-
-end GSD
 
 end Formalism.L2.Col

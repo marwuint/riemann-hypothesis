@@ -16,8 +16,4 @@ instance : Algebra.IsQuadraticExtension ℚ GaussQ :=
 
 instance : NumberField GaussQ where
 
-theorem gauss_algebraMap_re (q : ℚ) : (algebraMap ℚ GaussQ q).re = q := rfl
-
-theorem gauss_algebraMap_im (q : ℚ) : (algebraMap ℚ GaussQ q).im = 0 := rfl
-
 end GroundTheory.Heights₂.Theta

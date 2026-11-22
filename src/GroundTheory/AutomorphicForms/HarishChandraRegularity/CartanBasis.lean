@@ -62,12 +62,6 @@ def hermPart : Submodule ℝ L where
 
 variable {L}
 
-theorem mem_skewPart {X : L} : X ∈ skewPart L ↔ (X : Matrix ι ι 𝕜)ᴴ = -(X : Matrix ι ι 𝕜) :=
-  Iff.rfl
-
-theorem mem_hermPart {X : L} : X ∈ hermPart L ↔ (X : Matrix ι ι 𝕜)ᴴ = (X : Matrix ι ι 𝕜) :=
-  Iff.rfl
-
 theorem exists_signed_basis {V : Type*} [AddCommGroup V] [Module ℝ V] [FiniteDimensional ℝ V]
     (B : LinearMap.BilinForm ℝ V) (hB : ∀ x y, B x y = B y x) {s : ℝ} (hs : s * s = 1)
     (hpos : ∀ v : V, v ≠ 0 → 0 < s * B v v) :

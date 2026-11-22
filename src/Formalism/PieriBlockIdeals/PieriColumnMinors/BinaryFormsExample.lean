@@ -659,56 +659,15 @@ theorem depth_skeleton_third_form_holds : LemmaDSkeleton3 := by
   exact depth_skeleton_literal_holds O K V P q S B n w lam2 DelL _ xi lam l e i' hl hO
     (inputs_from_pieri_holds O K V P q S B n w lam2 DelL xi lam (l : O) e i' H)
 
-def glOperatorOnSequences (K : Type) [Field K] (y d : ℕ) : Unit ⊕ Fin 1 → Unit ⊕ Fin 1 → Module.End K (ℕ → K)
-  | Sum.inl _, Sum.inl _ => LinearMap.pi fun j => (((y + d : ℕ) : K) - j) • LinearMap.proj j
-  | Sum.inl _, Sum.inr _ => LinearMap.pi fun j => ((j : K) + 1) • LinearMap.proj (j + 1)
-  | Sum.inr _, Sum.inl _ => LinearMap.pi fun j =>
-      match j with
-      | 0 => 0
-      | i + 1 => ((d : K) - i) • LinearMap.proj i
-  | Sum.inr _, Sum.inr _ => LinearMap.pi fun j => ((y : K) + j) • LinearMap.proj j
-
 section Inst
 
 variable (K : Type) [Field K] (y d : ℕ)
-
-theorem glOperator_diag_first_apply (a b : Unit) (x : ℕ → K) (j : ℕ) :
-    glOperatorOnSequences K y d (Sum.inl a) (Sum.inl b) x j = (((y + d : ℕ) : K) - j) * x j := rfl
-
-theorem glOperator_raising_apply (a : Unit) (b : Fin 1) (x : ℕ → K) (j : ℕ) :
-    glOperatorOnSequences K y d (Sum.inl a) (Sum.inr b) x j = ((j : K) + 1) * x (j + 1) := rfl
-
-theorem glOperator_lowering_zero (a : Fin 1) (b : Unit) (x : ℕ → K) : glOperatorOnSequences K y d (Sum.inr a) (Sum.inl b) x 0 = 0 := rfl
-
-theorem glOperator_lowering_apply (a : Fin 1) (b : Unit) (x : ℕ → K) (j : ℕ) :
-    glOperatorOnSequences K y d (Sum.inr a) (Sum.inl b) x (j + 1) = ((d : K) - j) * x j := rfl
-
-theorem glOperator_diag_second_apply (a b : Fin 1) (x : ℕ → K) (j : ℕ) :
-    glOperatorOnSequences K y d (Sum.inr a) (Sum.inr b) x j = ((y : K) + j) * x j := rfl
-
-def binaryFormCoords : Submodule K (ℕ → K) where
-  carrier := {x | ∀ j, d < j → x j = 0}
-  add_mem' := by
-    intro a b ha hb j hj
-    rw [Pi.add_apply, ha j hj, hb j hj, add_zero]
-  zero_mem' := fun _ _ => rfl
-  smul_mem' := by
-    intro c a ha j hj
-    rw [Pi.smul_apply, ha j hj, smul_zero]
 
 end Inst
 
 section Inst2
 
 variable (K : Type) [Field K] [CharZero K] (y d : ℕ)
-
-def binaryFormMonomial (j : ℕ) : binaryFormCoords K d :=
-  ⟨fun i => if i = j ∧ j ≤ d then 1 else 0, by
-    intro i hi
-    change (if i = j ∧ j ≤ d then (1 : K) else 0) = 0
-    rw [if_neg]; omega⟩
-
-theorem binaryFormMonomial_apply (j i : ℕ) : (binaryFormMonomial K d j).1 i = if i = j ∧ j ≤ d then 1 else 0 := rfl
 
 end Inst2
 

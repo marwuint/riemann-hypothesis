@@ -129,9 +129,6 @@ def padicToBCrisPlus : ℚ_[p] →+* BCrisPlus ℂ_[p] p :=
 
 instance algebraPadicBCrisPlus : Algebra ℚ_[p] (BCrisPlus ℂ_[p] p) := padicToBCrisPlus.toAlgebra
 
-theorem algebraMap_padic_bCrisPlus : algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) = padicToBCrisPlus :=
-  rfl
-
 theorem iotaPlus_algebraMap_padic (q : ℚ_[p]) :
     iotaPlus ℂ_[p] p (algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q) = algebraMap ℚ_[p] 𝔹 q := by
   have h : (iotaPlus ℂ_[p] p).comp padicToBCrisPlus = algebraMap ℚ_[p] 𝔹 := by

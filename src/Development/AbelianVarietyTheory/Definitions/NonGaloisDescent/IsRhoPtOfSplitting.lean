@@ -30,10 +30,6 @@ def chiE (χ : Formalism.MainNotions.N.GE D.nd →* (D.nd.O i)ˣ) : Br.G D.nbr i
 theorem locE_apply {k : ℕ} (M : Formalism.MainNotions.N.GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw)
     (a b : Fin k) : locE D i w hw L' h M g a b = inc D i w hw L' h (Br.loc D.nbr i w hw M g a b) := rfl
 
-theorem chiE_apply (χ : Formalism.MainNotions.N.GE D.nd →* (D.nd.O i)ˣ) (g : Br.G D.nbr i w hw) :
-    ((chiE D i w hw L' h χ g : (↥L'.1)ˣ) : ↥L'.1) =
-      inc D i w hw L' h ((Br.locChi D.nbr i w hw χ g : (Br.LL D.nbr i w hw)ˣ) : Br.LL D.nbr i w hw) := rfl
-
 include h in
 
 theorem nonempty_embE : Nonempty (Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥L'.1) :=

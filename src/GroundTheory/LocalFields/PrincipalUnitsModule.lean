@@ -288,9 +288,6 @@ section ModuleProps
 
 variable (p : ℕ) [hp : Fact p.Prime] [CharP 𝓀[K] p]
 
-theorem padicInt_smul_def (a : ℤ_[p]) (u : Additive (unitFiltrationUnits K 1)) :
-    a • u = padicIntSMul p a u := rfl
-
 theorem smul_sub_intCast_smul_mem {a : ℤ_[p]} {k : ℕ} {c : ℤ} (hc : (p : ℤ_[p]) ^ k ∣ a - c)
     (u : Additive (unitFiltrationUnits K 1)) : a • u - c • u ∈ principalFiltration K k :=
   padicIntSMul_spec p a u hc

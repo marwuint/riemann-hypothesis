@@ -107,9 +107,6 @@ def DivInputsDefN.toDef (I : DivInputsDefN A s P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R
     DivInputsDef A s P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R u Nu sg :=
   { I with bd := bd, hN := hN }
 
-theorem DivInputsDefN.toDef_bd (I : DivInputsDefN A s P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R u Nu sg bd)
-    (hN : InEta A.fam P0 ψ0 Pk.Zs Pk.core.base.μ Pk.core.base.Tw bd) : (I.toDef hN).bd = bd := rfl
-
 end Inputs
 
 end Formalism.L2.DIV

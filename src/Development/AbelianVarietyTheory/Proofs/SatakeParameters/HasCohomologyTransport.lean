@@ -87,10 +87,6 @@ theorem hasCohomology_transport {σ : Herm E a →ₗ[ℝ] Herm E a} {s : Kinf E
 
 end Transport
 
-def barG : GL (Fin a) (Cinf E) →* GL (Fin a) (Cinf E) := GeneralLinearGroup.map (starRingEnd (Cinf E))
-
-theorem barG_val (y : GL (Fin a) (Cinf E)) (i j : Fin a) : (barG y).val i j = star (y.val i j) := rfl
-
 variable [NumberField E] [IsTotallyComplex E]
 
 end GlobalTheory.ConjCoh

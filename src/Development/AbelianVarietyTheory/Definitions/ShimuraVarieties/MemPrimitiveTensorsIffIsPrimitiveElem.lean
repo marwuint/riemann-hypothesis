@@ -1275,17 +1275,6 @@ def IsPerfectBicharacter.toBialgEquiv (hu : IsPerfectBicharacter R u) : CartierD
 @[simp] theorem IsPerfectBicharacter.toBialgEquiv_apply (hu : IsPerfectBicharacter R u)
     (φ : CartierDual R H) : hu.toBialgEquiv φ = pairingMap R u φ := rfl
 
-theorem IsBicharacter.eq_one_of_isGroupLikeElem (hu : IsBicharacter R u)
-    (h : IsGroupLikeElem R u) : u = 1 := by
-  refine tensor_eq_of_forall_pair fun φ ψ => ?_
-  have h1 := ((isGroupLikeElem_iff_mul u).1 h).2 (toConv (pair R H K (φ ⊗ₜ 1)))
-    (toConv (pair R H K (1 ⊗ₜ ψ)))
-  rw [← pair_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, ofConv_toConv,
-    ofConv_toConv, ofConv_toConv, ← apply_tensorToHom u φ 1, ← apply_tensorToHom_comm u 1 ψ,
-    ((isGroupLikeElem_tensor_iff_mul _).1 hu.left).1,
-    ((isGroupLikeElem_tensor_iff_mul _).1 hu.right).1] at h1
-  rw [h1, Algebra.TensorProduct.one_def, pair_tmul_tmul]
-
 end Bicharacter
 
 namespace CartierDual

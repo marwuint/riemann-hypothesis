@@ -156,8 +156,6 @@ theorem isIntegral_of_mem_locOrder {z : LocAlg v} (hz : z ∈ locOrder v) :
 def locOrderConj : locOrder v →+* locOrder v :=
   (locConj v).restrict (locOrder v).toSubring (locOrder v).toSubring fun _ => locConj_mem v
 
-theorem coe_locOrderConj (z : locOrder v) : (locOrderConj v z : LocAlg v) = locConj v z := rfl
-
 theorem exists_of_mem_locOrder_of_locConj_eq {z : LocAlg v} (hz : z ∈ locOrder v)
     (hc : locConj v z = z) :
     ∃ a : v.adicCompletionIntegers (maximalRealSubfield E), algebraMap _ (LocAlg v) a = z := by

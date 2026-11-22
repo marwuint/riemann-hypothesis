@@ -126,8 +126,6 @@ variable (G) in
 def lieEquiv : Lie G ≃ LieG G :=
   Equiv.ofBijective toLieG ⟨toLieG_injective, toLieG_surjective⟩
 
-theorem lieEquiv_val (v : Lie G) : (lieEquiv G v).1 = tangentPt v := rfl
-
 theorem scale_tangentPt {R : Type} [CommRing R] [Algebra O R] (v : Cotangent G →ₗ[O] R) (a : R) :
     scale O a ≫ (tangentPt v : specO O (DualNumber R) ⟶ G) = tangentPt (a • v) := by
   rw [tangentPt_eq, tangentPt_eq, ← Category.assoc, scale, ptMap_comp_ptMap]

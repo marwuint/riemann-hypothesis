@@ -23,10 +23,6 @@ def HomW : Prop := ∀ (R : Type) [CommRing R] (k : ℕ) (ν : Fin k → ℕ) (f
 
 def LowMem : Prop := ∀ (R : Type) [CommRing R] (k : ℕ) (ν : Fin k → ℕ), low R ν ∈ weyl R k k (le_refl k) ν
 
-def JacId : Prop := ∀ (R : Type) [CommRing R] (k s : ℕ) (hs : s + 1 ≤ k), ∃ u : R, (u = 1 ∨ u = -1) ∧
-  dualSub R k (pMinor R 1 (s + 1) hs) =
-    C u * (genM R k).det ^ s * pMinor R Fin.revPerm (k - 1 - s) (by omega)
-
 def JacRev : Prop := ∀ (R : Type) [CommRing R] (k s : ℕ) (hs : s + 1 ≤ k), ∃ u : R, (u = 1 ∨ u = -1) ∧
   dualSub R k (pMinor R Fin.revPerm (s + 1) hs) =
     C u * (genM R k).det ^ s * pMinor R 1 (k - 1 - s) (by omega)

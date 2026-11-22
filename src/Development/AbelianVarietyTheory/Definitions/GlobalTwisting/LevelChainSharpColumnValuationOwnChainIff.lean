@@ -133,8 +133,6 @@ def KT (i : ℕ) : Fn X i →ₗ[ℂ] Fn X (i + 1) := X.C.Klin i
 
 def colT : Fn X 0 → Fn X D.R.m := X.C.col
 
-theorem KT_apply (i : ℕ) (φ : Fn X i) : KT X i φ = X.C.K i φ := rfl
-
 abbrev Wt (τ : D.what₂.Tau) : ℕ := TauWeight X τ
 
 def amax : ℤ := (tops D).fold max 0 X.fm.aTop
@@ -160,8 +158,6 @@ def Alcove : Prop :=
 def HidaSetting : Prop :=
   2 * D.R.f * D.R.N D.R.m + 1 < X.A.T ∧ (4 * amax X < (X.A.T : ℤ) ∧ Alcove X) ∧
     ∀ τ ∈ tops D, 0 ≤ X.fm.bTop τ
-
-def UpDownIncidenceInverse : Prop := X.fm.DnUp ∧ X.fm.DnFv
 
 def admS : Prop := X.C.StabZero
 
@@ -376,21 +372,6 @@ def TupleChainSharpColumnValuation (Tw : TwForms D) (u : D.what₂.Word) (μ : D
     ∀ x ∈ LT.Nlam D u w, ∃ y ∈ (Tw.fm u μ).S D.R.m w,
       (Tw.fm u μ).emb D.R.m y = D.what₂.embLL c • (D.chTw u μ).col (D.e0Tw u μ ((D.fm u).emb 0 x))
 
-def BaseDet (cl : letI := D.host.cmStar; ∀ i, X.C.cls i → Submodule (𝓞 D.host.E) (D.sp.X i).V)
-    (dt : ∀ i, X.C.cls i → D.Dt) : Prop :=
-  letI := D.host.cmStar
-  ∃ π : 𝓞 D.host.E, (π : D.host.E) ∈ D.host.K ∧
-    (π : D.host.E) * D.host.conj (π : D.host.E) = (X.A.T : D.host.E) ∧
-    (∀ w, OverT X w → (X.fm.seenP w = true ↔ 0 < D.what₂.places.val w (D.embE (π : D.host.E)))) ∧
-    ∀ i, i ≤ D.R.m →
-      ∃ (co : (D.sp.X i).V ≃ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)) (L0 : SDLat D.host.E (D.R.N i)),
-        (∀ x y, stdH D.host.E (D.R.N i) (co x) (co y) = (D.sp.X i).hT x y) ∧
-        (∀ y, co y ∈ L0.1 ↔ y ∈ (D.sp.X i).L0) ∧
-        ∀ c : X.C.cls i, ∃ Ln : SDLat D.host.E (D.R.N i),
-          (∀ y, co y ∈ Ln.1 ↔ ∃ a ∈ cl i c, ∃ b ∈ Formalism.HermitianLatticesTheory.dual (D.sp.X i).hT (cl i c),
-            y = a + D.host.conj (π : D.host.E) • b) ∧
-          (QuotientGroup.mk (dt i c) : D.Dt ⧸ D.UO) = D.relDet (D.R.N i) L0 Ln
-
 theorem emb_mem_Fi (i : ℕ) (x : Vl X i) : X.fm.emb i x ∈ X.fm.Fi i := by
   rw [← (X.fm.emb_basis i).2, ← (X.fm.lat i).b.sum_repr x, map_sum]
   refine Submodule.sum_mem _ fun a _ => ?_
@@ -416,87 +397,11 @@ structure SharedBy (X Y : Ch D u) (e : Fn X 0 ≃ₗ[ℂ] Fn Y 0) (eL : Vl X 0 �
   dia_eq : ∀ v (a : (X.A.Fv v)ˣ), ∀ φ ∈ X.fm.Fi 0,
     e (dia X 0 v a φ) = dia Y 0 (ev v) (Units.map (eF v : X.A.Fv v →* Y.A.Fv (ev v)) a) (e φ)
 
-namespace SharedBy
-
-end SharedBy
-
 section Reformulated
 
 variable (D u)
 
-theorem Alcove_own : Alcove (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.Alcove D u := Iff.rfl
-
-theorem levelSetting_chain_iff : HidaSetting (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u := Iff.rfl
-
-theorem upDownIncidence_chain_iff : UpDownIncidenceInverse (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.UpDownIncidenceInverse D u := Iff.rfl
-
-theorem stabilizersTrivial_chain_iff : admS (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.admS D u := Iff.rfl
-
-theorem RoundUp_own : RoundUp (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.RoundUp D u := Iff.rfl
-
-theorem RoundDn_own : RoundDn (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.RoundDn D u := Iff.rfl
-
-theorem TrIso_own : TrIso (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.TrIso D u := Iff.rfl
-
-theorem DiaMul_own : DiaMul (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.DiaMul D u := Iff.rfl
-
-theorem admissibleTorus_chain_iff : admT (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.admT D u := Iff.rfl
-
-theorem firstProperty_chain_iff : Conclusion1 (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion1 D u := Iff.rfl
-
-theorem secondProperty_chain_iff : Conclusion2 (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion2 D u := Iff.rfl
-
-theorem fourthPropertyExtended_chain_iff : LevelChainUOperatorCommutation (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.LevelChainUOperatorCommutation D u := Iff.rfl
-
 theorem levelChainSharpColumnValuation_ownChain_iff : Conclusion5Sharp (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion5Sharp D u := Iff.rfl
-
-theorem sixthProperty_chain_iff : Conclusion6 (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 D u := Iff.rfl
-
-theorem seventhProperty_chain_iff : division_rows_rational_lattice (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.division_rows_rational_lattice D u := Iff.rfl
-
-theorem thirdProperty_chain_iff (C : ℝ) : PointsLemma (own D u) C ↔ Formalism.MainNotions.product_first_zeroth_parts.PointsLemma D u C := Iff.rfl
-
-theorem fourthProperty_chain_iff (C : ℝ) : Conclusion4 (own D u) C ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion4 D u C := Iff.rfl
-
-theorem fifthProperty_chain_iff (C : ℝ) : Conclusion5 (own D u) C ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion5 D u C := Iff.rfl
-
-theorem weightBudget_chain_iff (L : SizeData₂ D) (C : ℝ) : WeightBudgetBound (own D u) L C ↔ Formalism.MainNotions.product_first_zeroth_parts.WeightBudgetBound D u L C := Iff.rfl
-
-theorem OverT_own (w) : OverT (own D u) w ↔ Formalism.MainNotions.product_first_zeroth_parts.OverT D u w := Iff.rfl
-
-theorem BaseDet_own : BaseDet (own D u) (D.clsLat u) (D.detCls u) ↔ Formalism.MainNotions.product_first_zeroth_parts.admB D u := Iff.rfl
-
-theorem Nlam_own (w) : Nlam (own D u) w = LT.Nlam D u w := rfl
-
-theorem Sram_own (w) : Sram (own D u) w = LT.Sram D u w := rfl
-
-theorem VVT_own (w) : VVT (own D u) w = LT.VVT D u w := rfl
-
-theorem expT_own (w) : expT (own D u) w = LT.expT D u w := rfl
-
-theorem ET_own (w) : ET (own D u) w = EatT D u w := rfl
-
-theorem Wt_own (τ) : Wt (own D u) τ = Wtau D u τ := rfl
-
-theorem Uop_own (i v) : Uop (own D u) i v = LT.Uop D u i v := rfl
-
-theorem Uprod_own (i w) : Uprod (own D u) i w = LT.Uprod D u i w := rfl
-
-theorem Dop_own (i v) : Dop (own D u) i v = Formalism.MainNotions.product_first_zeroth_parts.Dop D u i v := rfl
-
-theorem dia_own (i v a) : dia (own D u) i v a = Formalism.MainNotions.product_first_zeroth_parts.dia D u i v a := rfl
-
-theorem Nm_own (i v) : Nm (own D u) i v = Formalism.MainNotions.product_first_zeroth_parts.Nm D u i v := rfl
-
-theorem trp_own (i v) : trp (own D u) i v = Formalism.MainNotions.product_first_zeroth_parts.trp D u i v := rfl
-
-theorem FFop_own (i v) : FFop (own D u) i v = Formalism.MainNotions.product_first_zeroth_parts.FFop D u i v := rfl
-
-theorem Gs_own (i v) : Gs (own D u) i v = Formalism.MainNotions.product_first_zeroth_parts.Gs D u i v := rfl
-
-theorem GsD_own (i v) : GsD (own D u) i v = Formalism.MainNotions.product_first_zeroth_parts.GsD D u i v := rfl
-
-theorem MramI_own (i) : MramI (own D u) i = Formalism.MainNotions.product_first_zeroth_parts.MramI D u i := rfl
 
 end Reformulated
 

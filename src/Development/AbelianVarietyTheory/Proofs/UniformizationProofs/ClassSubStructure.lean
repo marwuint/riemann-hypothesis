@@ -59,9 +59,6 @@ def classSub (S : ∀ α, E →ₗ[F] W α) (N : ℕ) (α : X) : Submodule F E w
   zero_mem' := fun β _ => map_zero _
   smul_mem' := fun c v h β hβ => by rw [map_smul, h β hβ, smul_zero]
 
-theorem mem_classSub {S : ∀ α, E →ₗ[F] W α} {α : X} {v : E} :
-    v ∈ classSub S N α ↔ ∀ β, (¬ ∃ mu, β = α + N • mu) → S β v = 0 := Iff.rfl
-
 theorem exists_proj [Module.Finite ℤ X] [IsAlgClosed F] (hN : (N : F) ≠ 0) (S : ∀ α, E →ₗ[F] W α)
     (hc : (Nat.card (TorChar X F N) : F) ≠ 0) (l : TorChar X F N → E → E)
     (hl : ∀ τ v β, S β (l τ v) = (evalChar F N β τ : F) • S β v) (α : X) (v : E) :

@@ -223,11 +223,6 @@ def equivariantFunctionals (ρ : Representation ℂ G V) {H : Subgroup G} (χ : 
     rw [hℓ h v]
     ring
 
-theorem mem_equivariantFunctionals {ρ : Representation ℂ G V} {H : Subgroup G} {χ : H → ℂ}
-    {ℓ : Module.Dual ℂ V} :
-    ℓ ∈ equivariantFunctionals ρ χ ↔ ∀ h : H, ∀ v, ℓ (ρ h v) = χ h * ℓ v :=
-  Iff.rfl
-
 end Equivariant
 
 section Sigma
@@ -334,11 +329,6 @@ def annihilatorSubrep (W : Subrepresentation (contragredient ρ)) : Subrepresent
     intro ξ hξ
     have := hv _ (W.apply_mem_toSubmodule g⁻¹ hξ)
     rwa [contragredient_apply_apply, inv_inv] at this
-
-omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
-theorem mem_annihilatorSubrep {W : Subrepresentation (contragredient ρ)} {v : V} :
-    v ∈ annihilatorSubrep W ↔ ∀ ξ ∈ W, (ξ : Module.Dual ℂ V) v = 0 :=
-  Iff.rfl
 
 theorem exists_ne_zero_contragredient (h : IsAdmissible ρ) {v : V} (hv : v ≠ 0) :
     ∃ ξ : smoothVectors (Representation.dual ρ), (ξ : Module.Dual ℂ V) v ≠ 0 := by
@@ -530,12 +520,6 @@ def coeffKer (hρ : IsSmooth ρ) (ℓt : Module.Dual ℂ (smoothVectors (Represe
   zero_mem' ξ := by rw [map_zero, map_zero]
   smul_mem' c k hk ξ := by
     rw [map_smul, map_smul, hk ξ, smul_zero]
-
-theorem mem_coeffKer (hρ : IsSmooth ρ) {ℓt : Module.Dual ℂ (smoothVectors (Representation.dual ρ))}
-    {k : locallyConstantCompactSupport G ℂ ℂ} :
-    k ∈ coeffKer μ hρ ℓt ↔ ∀ ξ : smoothVectors (Representation.dual ρ),
-      ℓt (coeffL μ hρ (ξ : Module.Dual ℂ V) k) = 0 :=
-  Iff.rfl
 
 theorem ltransL_mem_coeffKer (hρ : IsSmooth ρ)
     {ℓt : Module.Dual ℂ (smoothVectors (Representation.dual ρ))} (a : G)

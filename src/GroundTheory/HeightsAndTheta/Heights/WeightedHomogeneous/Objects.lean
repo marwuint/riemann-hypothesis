@@ -13,13 +13,6 @@ noncomputable section
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
-def conePoints (I : Ideal (MvPolynomial (Coord n) ℤ)) (F : Type*) [CommRing F] : Set (Cone n F) :=
-  {z | BlockNonzero z ∧ ∀ f ∈ I, evalCone z f = 0}
-
-omit [Fintype ι] in
-theorem ArithVariety.points_eq_conePoints (P : ArithVariety n) (F : Type*) [CommRing F] :
-    P.points F = conePoints P.ideal F := rfl
-
 namespace ArithVariety
 
 variable (P : ArithVariety n)
@@ -149,27 +142,7 @@ end IntegralSection
 
 def blockIncl (k₀ : ι) : Coord (fun _ : Unit ↦ n k₀) → Coord n := fun v ↦ ⟨k₀, v.2⟩
 
-def projBlock {F : Type*} (k₀ : ι) (z : Cone n F) : Cone (fun _ : Unit ↦ n k₀) F := fun _ ↦ z k₀
-
-def oneBlockSize (e r : ℕ) : ℕ := e * (r + 1) + r
-
-abbrev oneBlockSizes (e r : ℕ) : Unit → ℕ := fun _ ↦ oneBlockSize e r
-
-def oneBlockIndex (e r : ℕ) : Fin (oneBlockSize e r + 1) ≃ Fin (e + 1) × Fin (r + 1) :=
-  (finCongr (by simp only [oneBlockSize]; ring)).trans finProdFinEquiv.symm
-
 variable {K : Type*} [Field K] [NumberField K] {e r : ℕ}
-
-def oneBlockPoint {F : Type*} [CommRing F] (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) (σ : K →+* F)
-    (w : Fin (r + 1) → F) : Cone (oneBlockSizes e r) F :=
-  fun _ p ↦ σ ((om (oneBlockIndex e r p).1 : 𝓞 K) : K) * w (oneBlockIndex e r p).2
-
-open Matrix in
-
-def OneBlockMetricAgrees (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) (F : HermLattice K (r + 1))
-    (A : HermLine (oneBlockSizes e r)) : Prop :=
-  ∀ (σ : K →+* ℂ) (w : Fin (r + 1) → ℂ), w ≠ 0 →
-    A.metric (oneBlockPoint om σ w) = Real.sqrt (star w ⬝ᵥ (F.metric σ *ᵥ w)).re
 
 end
 

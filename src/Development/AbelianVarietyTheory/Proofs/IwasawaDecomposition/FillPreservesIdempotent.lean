@@ -61,16 +61,6 @@ section Residual
 variable (A) (B₀ : what₂.places.Pl → ValuationSubring ℂ)
   (κ : ∀ w, B₀ w →+* Fb (what₂.places.resChar w) (what₂.places.resChar_prime w))
 
-def RedTie : Prop := ∀ i (x : N.O i), ∃ h : iotaO N A i x ∈ B₀ (N.w i), κ (N.w i) ⟨_, h⟩ = redAt A i rfl x
-
-def IsRbar (σ : what₂.FT) (w : what₂.places.Pl)
-    (r : G H.E N.Om →* GL (Fin R.r) (Fb (what₂.places.resChar w) (what₂.places.resChar_prime w))) : Prop :=
-  IsSSRep r ∧ IsOpen (r.ker : Set (G H.E N.Om)) ∧ ∃ i Sig, HasParamW N A i σ Sig ∧
-    ∀ᶠ v in cofinite, IsSplitPl H v → ∀ (B : ValuationSubring N.Om) (s : G H.E N.Om),
-      IsPlaceOver (F := H.E) B v → IsFrob (F := H.E) B (normV v) s →
-      ∃ p : (B₀ w)[X], p.map (B₀ w).subtype = galPol A (A.lpTw (isoLoc N A Sig v) ((1 - (R.r : ℝ)) / 2)) ∧
-        (r s : Matrix (Fin R.r) (Fin R.r) _).charpoly = p.map (κ w)
-
 variable {A B₀ κ}
 
 end Residual
@@ -234,9 +224,6 @@ def IsBC (n : ℕ) (P : S.I) (Pa : List (Formalism.BasicNotions.Part A.CG)) : Pr
   (∀ w, IsSplitPl H w → isoLoc N A Pa w = S.loc P w) ∧
   (∀ w, ¬ IsSplitPl H w → A.unr (isoLoc N A Pa w) ∧ A.frobEig (isoLoc N A Pa w) = ubc n (S.sat P w)) ∧
   ∀ τ, isoInf N A Pa τ = S.inf τ
-
-theorem isBC_ofLoc (i : N.Loc) (P : A.AV i) (Pa : List (Formalism.BasicNotions.Part A.CG)) :
-    (ofLoc A i).IsBC R.nV P Pa ↔ IsBCV N A i P Pa := Iff.rfl
 
 def Sub : Prop := S.inf = S'.inf ∧ ∀ P, ∃ Q, S.tp P = S'.tp Q ∧ S.loc P = S'.loc Q ∧ S.sat P = S'.sat Q
 

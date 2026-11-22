@@ -81,9 +81,6 @@ def tMapDL (σ : Mat k r → (H →L[ℂ] H)) (x₁ : Fin (2 * r + k + 1) → �
       RingHom.id_apply, smul_eq_mul, Finset.mul_sum]
     refine Finset.sum_congr rfl fun i _ => by ring
 
-theorem tMapDL_apply (σ : Mat k r → (H →L[ℂ] H)) (x₁ : Fin (2 * r + k + 1) → ℂ) (x₀ : Mat k r) (w : H)
-    (f : Fin (2 * r + k + 1) → D) : tMapDL σ x₁ x₀ w f = tMapD σ x₁ x₀ w (fun c => ((f c : D) : H)) := rfl
-
 end Lin
 
 section Line

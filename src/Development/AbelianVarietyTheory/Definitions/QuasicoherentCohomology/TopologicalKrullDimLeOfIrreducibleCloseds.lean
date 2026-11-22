@@ -786,14 +786,8 @@ section Fibre
 instance residueFieldAlgebra (x : X) : Algebra (X.presheaf.stalk x) (X.residueField x) :=
   inferInstanceAs (Algebra (X.presheaf.stalk x) (ResidueField (X.presheaf.stalk x)))
 
-theorem algebraMap_residueField (x : X) :
-    algebraMap (X.presheaf.stalk x) (X.residueField x) = (X.residue x).hom := rfl
-
 instance residueFieldAlgebraSections (x : U) : Algebra Γ(X, U) (X.residueField (x : X)) :=
   (X.evaluation U x x.2).hom.toAlgebra
-
-theorem algebraMap_sections_residueField (x : U) :
-    algebraMap Γ(X, U) (X.residueField (x : X)) = (X.evaluation U x x.2).hom := rfl
 
 instance isScalarTower_residueField (x : U) :
     IsScalarTower Γ(X, U) (X.presheaf.stalk (x : X)) (X.residueField (x : X)) :=
@@ -946,13 +940,6 @@ def sectionsBaseLinear (φ : F ⟶ G) (U : X.Opens) :
 @[simp]
 theorem sectionsBaseLinear_apply (φ : F ⟶ G) (s : Γ(F, U)) :
     sectionsBaseLinear ρ φ U s = φ.app U s := rfl
-
-theorem isFlatOver_structureModule_iff :
-    IsFlatOver (structureModule X) ρ ↔ ∀ U : X.Opens, IsAffineOpen U → (baseHom U ρ).Flat :=
-  Iff.rfl
-
-theorem baseHom_structureRingHom {R : CommRingCat.{u}} (f : X ⟶ Spec R) (U : X.Opens) :
-    baseHom U (structureRingHom f) = ((Scheme.ΓSpecIso R).inv ≫ f.appLE ⊤ U le_top).hom := rfl
 
 @[simp]
 theorem structureRingHom_id {R : CommRingCat.{u}} :

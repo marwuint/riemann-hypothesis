@@ -210,8 +210,6 @@ variable (d : ColDat)
 
 variable {d} (I : AmbIn d)
 
-theorem AmbIn.amb_σ₀ : I.amb.σ₀ = d.σ₀ := rfl
-
 end OverColDat
 
 end Formalism.L2.Ker

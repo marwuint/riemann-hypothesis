@@ -21,9 +21,6 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 def g₁ (J : Matrix ι ι (K × K)) : UG (sw K) J →* GL ι K :=
   (Matrix.GeneralLinearGroup.map (RingHom.fst K K)).comp (UG (sw K) J).subtype
 
-lemma g₁_val (J : Matrix ι ι (K × K)) (g : UG (sw K) J) :
-    ((g₁ J g : GL ι K) : Matrix ι ι K) = ((g : GL ι (K × K)) : Matrix ι ι (K × K)).map Prod.fst := rfl
-
 def om (lam : Kˣ →* ℂ) (J : Matrix ι ι (K × K)) : UG (sw K) J →* Module.End ℂ ((ι → K) → ℂ) where
   toFun g := lam (Matrix.GeneralLinearGroup.det (g₁ J g)) •
     LinearMap.funLeft ℂ ℂ (fun x : ι → K => (((g₁ J g)⁻¹ : GL ι K) : Matrix ι ι K) *ᵥ x)
@@ -89,10 +86,6 @@ def detOm (lam : Eˣ →* Circle) (J : Matrix β β E) (X : Type) : UG c J →* 
   (algebraMap ℂ (Module.End ℂ (X → ℂ)) : ℂ →* _).comp
     (Circle.coeHom.comp (lam.comp (GeneralLinearGroup.det.comp (UG c J).subtype)))
 
-omit [Invertible (2 : R)] in
-theorem detOm_apply (lam : Eˣ →* Circle) (J : Matrix β β E) (X : Type) (g : UG c J) (φ : X → ℂ) :
-    detOm lam J X g φ = (lam (GeneralLinearGroup.det (g : GL β E)) : ℂ) • φ := rfl
-
 variable [TopologicalSpace R] [TopologicalSpace E] [IsTopologicalRing E] [IsModuleTopology R E] {C : TestClass R}
 
 end RankZero
@@ -103,8 +96,6 @@ def argC : ℂˣ →* Circle where
   map_mul' z w := Circle.ext (by
     show ((z * w : ℂˣ) : ℂ) / ‖((z * w : ℂˣ) : ℂ)‖ = z / ‖(z : ℂ)‖ * (w / ‖(w : ℂ)‖)
     simp [mul_div_mul_comm])
-
-theorem argC_apply (z : ℂˣ) : (argC z : ℂ) = z / ‖(z : ℂ)‖ := rfl
 
 end GlobalTheory.WeilM.SiegelModel
 end

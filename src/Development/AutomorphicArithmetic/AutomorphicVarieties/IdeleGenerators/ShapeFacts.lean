@@ -8,14 +8,6 @@ open scoped Matrix
 
 namespace UpperTheory.V.Sd
 
-def EigAut : Prop :=
-  ∀ (k N : ℕ) [NeZero N], 2 ≤ k → ∀ χ : DirichletCharacter ℂ N, χ.IsPrimitive → ∀ (g : Eigenform k N χ) (l : ℕ) [Fact l.Prime]
-    (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (ρ : G ℚ Ω →* GL (Fin 2) (Qbar l)), Continuous ρ → IsIrr ρ →
-    (∀ᶠ w : HeightOneSpectrum (𝓞 ℚ) in Filter.cofinite, ∀ A : ValuationSubring Ω, IsPlaceOver A w →
-      (∀ s ∈ Ine (F := ℚ) A, ρ s = 1) ∧ ∀ σ : G ℚ Ω, IsFrob A (normV w) σ →
-        (ρ σ : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly.map ι.toRingHom =
-          X ^ 2 - C (g.a (normV w)) * X + C (χ (normV w : ZMod N) * (normV w : ℂ) ^ (k - 1))) → IsAutR ι ρ
-
 def DirOf : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (N : ℕ), 0 < N →
     ∀ φ : G ℚ Ω →* (Qbar l)ˣ, KillsMu N φ → ∃ (M : ℕ) (_ : NeZero M) (χ : DirichletCharacter ℂ M), M ∣ N ∧ χ.IsPrimitive ∧

@@ -61,10 +61,4 @@ theorem q_dvd_condN (e q d : ℕ) : q ∣ condN e q d := by
 theorem d_dvd_condN (e q d : ℕ) : d ∣ condN e q d := by
   unfold condN
   exact dvd_mul_left d _
-theorem two_pow_dvd_condN (e q d : ℕ) : 2 ^ (e + 2) ∣ condN e q d := by
-  unfold condN
-  exact dvd_mul_of_dvd_left (dvd_mul_right _ q) d
-
-def CondEQ (e q d : ℕ) : Prop := IsCond (EQ e q d) (condN e q d)
-
 end Formalism.L2.Host

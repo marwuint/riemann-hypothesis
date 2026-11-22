@@ -79,12 +79,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 def rootEx (τ : E →+* ℂ) (i : ℕ) : Letter Dw → ℤ := expo Dw (rootSym Dw (fun _ => false) none τ i)
 
-open Classical in
-
-theorem expo_single (a : Sym E) (n : ℤ) (x : Letter Dw) :
-    expo Dw (Finsupp.single a n) x = if letterOf Dw a.2.2 = some x then n else 0 :=
-  Finsupp.sum_single_index (by simp)
-
 def detOmSym (E : Type) [Field E] (g : ℕ) : Sym E →₀ ℤ := ∑ k : Fin g, wholeSym (fun _ => false) none (.inr k : Fin g ⊕ Fin g)
 
 end Roots
@@ -151,9 +145,6 @@ variable {D : D7} (O : Setup D)
 
 def pad : PadPkg D O.N O.j O.s.Comp O.jC O.ng :=
   padAt O.s O.loc O.glob O.adm (flatSt O.s O.Φ O.met.hm) (arIn O.s O.Φ O.met.hm)
-
-def kit (key : KeySec O.s.Xo O.κ.c) : Kit O.s O.L (cxSt D.what₂.LL) O.jC O.ng :=
-  ⟨O.Φ, O.dim_eq, key, O.B, O.fl, O.Mb, O.pad, fun _ => Iff.rfl⟩
 
 def Y : DV.ShimX D.what₂.Tau :=
   shimXOfPkg (O.s.cx O.L O.B O.fl) (O.s.alg O.L (cxSt D.what₂.LL) (cutSt _) (resSt _) O.Φ O.dim_eq O.Mb) O.pad O.indef

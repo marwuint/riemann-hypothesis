@@ -40,11 +40,6 @@ def inflate (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) : (L' ≃ₐ[K] L')
   fun p => Units.map (algebraMap L L' : L →* L')
     (f (AlgEquiv.restrictNormalHom L p.1, AlgEquiv.restrictNormalHom L p.2))
 
-theorem val_inflate (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) (p : (L' ≃ₐ[K] L') × (L' ≃ₐ[K] L')) :
-    ((inflate L' f p : L'ˣ) : L') =
-      algebraMap L L' (f (AlgEquiv.restrictNormalHom L p.1, AlgEquiv.restrictNormalHom L p.2)) :=
-  rfl
-
 variable (L') in
 
 theorem isMulCocycle₂_inflate {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ} (hf : IsMulCocycle₂ f) :
@@ -57,14 +52,6 @@ section Matrix
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι L L')
 variable {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ} (hf : IsMulCocycle₂ f)
 
-def inflateIncl : L' →ₐ[K] Matrix ι ι (CrossedProduct hf) :=
-  (incl : L →ₐ[K] CrossedProduct hf).mapMatrix.comp ((Algebra.leftMulMatrix b).restrictScalars K)
-
-omit [Normal K L] in
-theorem inflateIncl_apply (a : L') :
-    inflateIncl b hf a = (Algebra.leftMulMatrix b a).map incl :=
-  rfl
-
 variable [FiniteDimensional K L] [IsGalois K L] [FiniteDimensional K L'] [IsGalois K L']
   [Nonempty ι]
 
@@ -73,10 +60,6 @@ end Matrix
 end Inflate
 
 end CrossedProduct
-
-namespace BrauerGroup
-
-end BrauerGroup
 
 namespace H2mul
 
@@ -90,12 +73,6 @@ def inflation : H2mul (L ≃ₐ[K] L) Lˣ →* H2mul (L' ≃ₐ[K] L') L'ˣ :=
     CrossedProduct.unitsMap_smul
 
 variable {K L L'}
-
-theorem inflation_mk (c : mulCocycles₂ (L ≃ₐ[K] L) Lˣ) :
-    inflation K L L' (mk _ _ c) =
-      mk _ _ ⟨CrossedProduct.inflate L' (c : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ),
-        CrossedProduct.isMulCocycle₂_inflate L' c.2⟩ :=
-  rfl
 
 end Inflation
 

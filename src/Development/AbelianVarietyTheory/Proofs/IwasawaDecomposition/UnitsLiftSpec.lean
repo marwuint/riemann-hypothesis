@@ -38,23 +38,6 @@ def QOver (C : NChoice D) : Prop := ∀ w (v v' : PlE D.host), v ∈ C.Q w →
 
 def QConj (C : NChoice D) : Prop := ∀ w (v v' : PlE D.host), v' ∈ C.Q w → IsConjPl D.host v v' → v ∈ C.Q w
 
-def nbase (M : MtFam D) (C : NChoice D) (hR : HeckeLift0 (mt0 M) C.Q) (X : CoefIn D.what₂)
-    (hS : SplitK (mt0 M) C.Q hR X) (hO : QOver C) (hc : QConj C) : NLocBase D M where
-  Oc := OcC X
-  ec := ecC X
-  ec_w := ecC_w X
-  V := VC X
-  iV := iVC X
-  iV_basis := iVC_basis X
-  Qc _ w := C.Q w
-  hL := hLC (mt0 M) C.Q hR
-  hL_def j w h1 h2 v k s ϖ hg hcj hu x := hLC_spec (mt0 M) C.Q hR j w v k h1 h2 hg s ϖ hcj hu x
-  hK := hKC (mt0 M) C.Q hR X
-  hK_def := hKC_def (mt0 M) C.Q hR X
-  split j w v k hg := hS j w v k hg
-  Qc_over _ w := hO w
-  Qc_conj _ w := hc w
-
 abbrev base (M : MtFam D) (C : NChoice D) (hR : HeckeLift0 (mt0 M) C.Q) (X : CoefIn D.what₂)
     (hS : SplitK (mt0 M) C.Q hR X) : LocBase0 D.host D.what₂ :=
   baseC (mt0 M) C.Q hR X hS

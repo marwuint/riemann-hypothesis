@@ -64,14 +64,6 @@ def InClosure {L Γ : Type} [Field L] [LinearOrderedCommGroupWithZero Γ] (v : V
 
 end Lat
 
-def DetIndex : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (r : ℕ) (B B' : GL (Fin r) K)
-    (M' : Submodule (𝓞 K) (Fin r → K)) (i : Fin r) (q : K), q ≠ 0 →
-    localization₂ w.asIdeal M' = localization₂ w.asIdeal (Submodule.span (𝓞 K) (Set.range fun j : Fin r => fun α : Fin r =>
-      (if j = i then q else 1) * (B : Matrix (Fin r) (Fin r) K) α j)) →
-    IsBasisAt w M' B' →
-    w.valuation K (B' : Matrix (Fin r) (Fin r) K).det = w.valuation K (q * (B : Matrix (Fin r) (Fin r) K).det)
-
 def PointIntegral : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (ι : Type) [Fintype ι] (a b : ℕ) (hab : a < b)
     (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (s s' : ι → ℤ) (n : ι → ℕ),

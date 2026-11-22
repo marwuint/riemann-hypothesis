@@ -92,9 +92,6 @@ open NumberField IsDedekindDomain
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
 
-def StarIsConj (K : Type) [Field K] [StarRing K] : Prop :=
-  ∃ σ0 : K →+* ℂ, ∀ x, σ0 (star x) = star (σ0 x)
-
 def IsCM (z : K) : Prop := ∀ σ : K →+* ℂ, σ (star z) = star (σ z)
 
 def IsConjPlK (w w' : HeightOneSpectrum (𝓞 K)) : Prop := ∀ x : K, vAdd w' x = vAdd w (star x)
@@ -102,28 +99,10 @@ def IsConjPlK (w w' : HeightOneSpectrum (𝓞 K)) : Prop := ∀ x : K, vAdd w' x
 def IsHermE (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) : Prop :=
   (∀ x y, h y x = star (h x y)) ∧ (∀ x, (∀ y, h x y = 0) → x = 0) ∧ ∀ x y, h (e x) y = h x (e y)
 
-def DualInAt (A : HLat K) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (M : Submodule (𝓞 K) A.V)
-    (w : HeightOneSpectrum (𝓞 K)) : Prop :=
-  ∀ v : A.V, (∀ a ∈ M, h v a ∈ Set.range (algebraMap (𝓞 K) K)) → ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ s • v ∈ M
-
 def IsBasisAt (A : HLat K) {d : ℕ} (a : Fin d → A.V) (M : Submodule (𝓞 K) A.V)
     (w w' : HeightOneSpectrum (𝓞 K)) : Prop :=
   LinearIndependent K a ∧ ∀ u ∈ ({w, w'} : Set (HeightOneSpectrum (𝓞 K))),
     LocLe u 0 (Submodule.span (𝓞 K) (Set.range a)) M ∧ LocLe u 0 M (Submodule.span (𝓞 K) (Set.range a))
-
-def GramDetKernelValuation (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) : Prop :=
-  ∀ w w' : HeightOneSpectrum (𝓞 K), IsConjPlK w w' → DualInAt A h A.L w → DualInAt A h A.L w' →
-    ∀ (d : ℕ) (a : Fin d → A.V), IsBasisAt A a (cutE A e A.L) w w' →
-      vAdd w (Matrix.of fun i j => h (a i) (a j)).det ≤ 2 * (dimE A (1 - e) : ℤ) * vAdd w ((n : ℕ) : K)
-
-def gram_det_kernel_base_level : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K),
-    StarIsConj K → IsProj A e n → IsHermE A e h → GramDetKernelValuation A e n h
-
-def IsCMFormE (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) : Prop :=
-  (∀ i j, IsCM (h (A.b i) (A.b j))) ∧ (∀ i j, IsCM (A.b.repr (e (A.b j)) i)) ∧
-  ∀ (v : InfinitePlace K) i j, Formalism.HermitianLatticesTheory.majAt A.b A.X v (A.b i) (A.b j) = v.embedding (h (A.b i) (A.b j))
 
 def LamStar (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K)
     (U : Submodule K A.V) (y : A.V) : Prop :=
@@ -148,12 +127,6 @@ def L7 (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V �
         ∑ᶠ w, lw K w * (γ w : ℝ)) ∧
     (∀ φ ∈ A.dualL, (∀ u ∈ U, φ u = 0) →
       ∀ m ∈ cutE A e A.L, φ m ∈ Set.range (algebraMap (𝓞 K) K))
-
-def division_rows_base_level : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K] [IsGalois ℚ K]
-    (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K),
-    StarIsConj K → IsProj A e n → IsHermE A e h → IsCMFormE A e h →
-    (∀ w, DualInAt A h A.L w) → L7 A e n h
 
 end Herm
 

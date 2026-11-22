@@ -75,27 +75,6 @@ def cuspWeight (z : (Σ k, ι k) → ℂ) : ℝ :=
   max 0 (sSup {x | ∃ I : Submodule O abelian₂, I ≠ ⊥ ∧ IsSaturated I ∧ IsIsoSub C.form I ∧
     x = -Real.log (C.Nz z I)})
 
-theorem restrict_Nz (hT : T ⊆ S) : (C.restrict hT).Nz = C.Nz := rfl
-
-theorem restrict_cuspWeight (hT : T ⊆ S) : (C.restrict hT).cuspWeight = C.cuspWeight := rfl
-
-def toCuspData (C : CuspDataOn D D.Xo O abelian₂) : CuspData D O abelian₂ where
-  rank := C.rank
-  basis := C.basis
-  form := C.form
-  alt := C.alt
-  unimod := C.unimod
-  emb := C.emb
-  normSq := C.normSq
-  normSq_pos := C.normSq_pos
-  form_le := C.form_le
-  lie := C.lie
-  lie_add := C.lie_add
-  lie_smul := C.lie_smul
-  lie_le := C.lie_le
-  inj := C.inj
-  torus := C.torus
-
 end CuspDataOn
 
 def CuspDataOn.ofCuspData {D : ComponentData II Ψ K ι Ω E} {O abelian₂ : Type}
@@ -119,14 +98,6 @@ def CuspDataOn.ofCuspData {D : ComponentData II Ψ K ι Ω E} {O abelian₂ : Ty
 section Bridge
 
 variable {D : ComponentData II Ψ K ι Ω E} {O abelian₂ : Type} [CommRing O] [AddCommGroup abelian₂] [Module O abelian₂]
-
-theorem CuspDataOn.toCuspData_ofCuspData (Cd : CuspData D O abelian₂) : (CuspDataOn.ofCuspData Cd).toCuspData = Cd := rfl
-
-theorem CuspDataOn.ofCuspData_toCuspData (C : CuspDataOn D D.Xo O abelian₂) : CuspDataOn.ofCuspData C.toCuspData = C := rfl
-
-theorem CuspDataOn.ofCuspData_Nz (Cd : CuspData D O abelian₂) : (CuspDataOn.ofCuspData Cd).Nz = Cd.Nz := rfl
-
-theorem CuspDataOn.ofCuspData_cuspWeight (Cd : CuspData D O abelian₂) : (CuspDataOn.ofCuspData Cd).cuspWeight = Cd.cuspWeight := rfl
 
 end Bridge
 
@@ -182,12 +153,6 @@ def CuspFamily.const (Cd : CuspData D O abelian₂) (hXo : D.Xo.Nonempty) : Cusp
 
 variable (Cd : CuspData D O abelian₂) (hXo : D.Xo.Nonempty) (H : HodgeData D)
 
-theorem CuspFamily.const_Uat : (CuspFamily.const Cd hXo).Uat = Cd.cuspWeight := rfl
-
-theorem CuspFamily.const_meanU : (CuspFamily.const Cd hXo).meanU H = LowerBoundFree.meanU H Cd := rfl
-
-theorem CuspFamily.const_cuspCorr : (CuspFamily.const Cd hXo).cuspCorr H = LowerBoundFree.cuspCorr H Cd := rfl
-
 end Const
 
 structure ComponentFamilySetting (D : ComponentData II Ψ K ι Ω E) where
@@ -208,10 +173,6 @@ structure ComponentFamilySetting (D : ComponentData II Ψ K ι Ω E) where
 
   Lval : ℝ
 
-def CuspMeanFam {D : ComponentData II Ψ K ι Ω E} (Cu : ℝ) (X : ComponentFamilySetting D) : Prop :=
-  1 ≤ D.j' → 3 * D.j' + 1 ≤ D.N → ∀ B : ℕ, 4 * D.f * D.N ^ 2 ≤ B →
-    X.F.meanU X.H ≤ Cu * D.f * D.j' * abelian₂ B X.rd X.Lval
-
 def StokesLimitFam.Hyp {D : ComponentData II Ψ K ι Ω E} (X : ComponentFamilySetting D) (B : ℕ) (a : ℝ) : Prop :=
   ∀ p q : ℕ, 1 ≤ p → p ≤ q → ∃ t₀ : ℝ, 0 < t₀ ∧ ∀ t' : ℝ, 0 < t' → t' ≤ t₀ →
     ((D.n + 1 : ℕ) : ℝ) * (a - (p : ℝ) / q * D.KA) * geomDegMUc X.H X.S' B p q t' ≤
@@ -231,14 +192,6 @@ def ComponentFamilySetting.componentFamilySetting_ofSetting (X : ComponentSettin
   S'_tied := X.S'_tied
   rd := X.rd
   Lval := X.Lval
-
-omit [DecidableEq Ψ] in
-theorem CuspMean.iff_fam (Cu : ℝ) (X : ComponentSetting D O Lt) (hXo : D.Xo.Nonempty) :
-    CuspMean Cu X ↔ CuspMeanFam Cu (ComponentFamilySetting.componentFamilySetting_ofSetting X hXo) := Iff.rfl
-
-omit [DecidableEq Ψ] in
-theorem StokesLimit.hyp_iff_fam (X : ComponentSetting D O Lt) (hXo : D.Xo.Nonempty) (B : ℕ) (a : ℝ) :
-    StokesLimit.Hyp X B a ↔ StokesLimitFam.Hyp (ComponentFamilySetting.componentFamilySetting_ofSetting X hXo) B a := Iff.rfl
 
 end Bridge
 

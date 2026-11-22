@@ -95,9 +95,6 @@ variable (R : RegCharts A)
 def restrChart (j : Fin R.n) : OpenPartialHomeomorph X (Fin D → ℂ) :=
   ((R.ψ j).symm.restrOpen (R.W j) (R.isOpen_kappaOpenNeighbourhood j)).symm
 
-theorem restrChart_target (j : Fin R.n) : (R.restrChart j).target = R.W j :=
-  inter_eq_right.2 (R.W_subset j)
-
 def toPotentialCharts [T2Space X] (hW : ∀ j, R.W j ⊆ ball 0 1) : PotentialCharts A where
   N := R.n
   chart := R.restrChart

@@ -20,10 +20,6 @@ open GlobalTheory.Cartier GlobalTheory.CxPts ReciprocityTheory.ChartRestriction.
 
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F}
 
-theorem generatesAt_genAt_pow (D : Y.Dv) (k : ℕ) (x : Y.X) : (k • D).GeneratesAt x (genAt D x ^ k) := by
-  have := CartierDiv.isEqn_iff_generatesAt_inv.1 ((Base.isEqn_eqn D x).nsmul k)
-  rwa [Units.val_pow_eq_pow_val, ← inv_pow, ← Units.val_inv_eq_inv_val] at this
-
 end Induces
 
 end GlobalTheory.CoverNorm

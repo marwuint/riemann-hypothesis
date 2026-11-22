@@ -45,9 +45,6 @@ theorem inv_invariant_of_bi_invariant [μ.IsMulLeftInvariant] [μ.IsMulRightInva
 
 open Formalism.MainNotions.PlaceDegreeData (phA IsOpIntA)
 
-theorem spherical_function_apply (d : ℝ) (σ : G →* (H →L[ℂ] H)) (w : H) (g : G) :
-    phA d σ w g = (d : ℂ) * (starRingEnd ℂ) ⟪w, σ g w⟫_ℂ := rfl
-
 variable {Hp : Type} [NormedAddCommGroup Hp] [InnerProductSpace ℂ Hp] [CompleteSpace Hp]
 
 end Abs

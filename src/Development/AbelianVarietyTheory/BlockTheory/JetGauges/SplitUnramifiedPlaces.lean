@@ -67,11 +67,6 @@ def toOw (w : Place p OE) : OE →+* w.Ow :=
 
 def degree [Module.Finite ℤ OE] (w : Place p OE) : ℕ := Module.finrank ℤ_[p] w.Ow
 
-def IsDiffVal_vp [IsDedekindDomain OE] [CharZero OE] [Module.Finite ℤ OE] (w : Place p OE)
-    (vd : ℝ) : Prop :=
-  ∃ a b : ℕ, 0 < b ∧ vd * b = a ∧
-    (differentIdeal ℤ OE).map w.toOw ^ b = Ideal.span {(p : w.Ow) ^ a}
-
 end Place
 
 structure SplitPlace (p : ℕ) [Fact p.Prime] (OE : Type) [CommRing OE] [StarRing OE]

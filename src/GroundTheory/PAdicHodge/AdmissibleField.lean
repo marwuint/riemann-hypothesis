@@ -25,8 +25,6 @@ variable {G F K B ρ} in
 theorem mem_DBK {x : B ⊗[F] V} : x ∈ DBK G F K B ρ ↔ ∀ g : G, baseChangeRep B ρ g x = x :=
   Iff.rfl
 
-theorem coe_DBK : (DBK G F K B ρ : Set (B ⊗[F] V)) = DB B ρ := rfl
-
 def toInvariantRing : K →+* invariantRing G F B where
   toFun k := ⟨algebraMap K B k, fun g => smul_algebraMap g k⟩
   map_one' := Subtype.ext (map_one _)

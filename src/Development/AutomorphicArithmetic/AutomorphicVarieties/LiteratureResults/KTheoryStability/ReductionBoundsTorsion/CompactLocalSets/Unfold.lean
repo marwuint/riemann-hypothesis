@@ -17,10 +17,6 @@ theorem coe_ofS_inv (s : Sp L N) (w : InfinitePlace L) :
       (((s w)⁻¹ : SpecialLinearGroup (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) := by
   rw [ofS_apply, ← map_inv]; rfl
 
-theorem coe_ofS (s : Sp L N) (w : InfinitePlace L) :
-    ((ofS L N s w : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) =
-      ((s w : SpecialLinearGroup (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) := rfl
-
 theorem val_actL (g : Gp L N) (h : HS L N) : (actL g h : HS L N).1 = fun w =>
     (((g w)⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)ᴴ * mat h w * ((g w)⁻¹ : GL (Fin N) ℂ) := rfl
 

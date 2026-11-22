@@ -7,8 +7,6 @@ namespace ReciprocityTheory.ChartRestriction.G.AR.IntegralModuleBases
 open Module Matrix
 open scoped NumberField
 
-def gramConst (d : ℕ) : ℝ := 2 ^ (d * (d - 1))
-
 def RedGramStatement : Prop :=
   ∀ (d : ℕ) (A : Matrix (Fin d) (Fin d) ℝ) (m D : ℝ), A.PosDef → 0 < m →
     (∀ x : Fin d → ℤ, x ≠ 0 → m ≤ (fun i => (x i : ℝ)) ⬝ᵥ (A *ᵥ fun i => (x i : ℝ))) →

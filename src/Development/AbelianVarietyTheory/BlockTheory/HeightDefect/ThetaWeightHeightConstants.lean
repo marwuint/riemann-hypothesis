@@ -18,8 +18,6 @@ def qSig {R : Ranks} (j : Lift R) : ℕ := (R.sigW j.1).2
 
 def rho {R : Ranks} (j : Lift R) : ℕ := R.m - j.1
 
-theorem rho_eq_qSig {R : Ranks} (j : Lift R) : rho j = qSig j := rfl
-
 @[ext] structure ThetaWeight (D : D7) (j : Lift D.R) where
   plus : D.what₂.Tau → Fin (pSig j) → ℤ
   minus : D.what₂.Tau → Fin (qSig j) → ℤ

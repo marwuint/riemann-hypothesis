@@ -55,8 +55,6 @@ noncomputable section
 
 namespace Formalism.MainNotions.InterlacingSignCuts
 
-def vmC (n k : ℕ) : ℝ := ∏ j ∈ Finset.range k, (((n : ℝ) ^ 2 - (j : ℝ) ^ 2) / (2 * (j : ℝ) + 1))
-
 end Formalism.MainNotions.InterlacingSignCuts
 
 end
@@ -170,8 +168,6 @@ def latE : (Fin d → ℤ) ≃ stL d :=
      fun v => by
       obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℤ).1 v.2
       exact ⟨c, Subtype.ext (by simp only; rw [← stB_sum, hc])⟩⟩
-
-lemma latE_apply (m : Fin d → ℤ) : ((latE d m : stL d) : EuclideanSpace ℝ (Fin d)) = zp m := rfl
 
 end Std
 
@@ -304,10 +300,6 @@ theorem bigCell_D (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k 
   rw [herm_Hpk_wb k r _ z hz, wbPart_bigCell k r c μ z' hz', div_eq_iff hDr] at h
   rw [h, mul_comm]
 
-namespace IsPolyG
-
-end IsPolyG
-
 end Formalism.MainNotions.InterlacingSignCuts
 
 end PartAOm
@@ -373,11 +365,6 @@ namespace Formalism.MainNotions.InterlacingSignCuts.Gm
 open Formalism.MainNotions.S.UnitaryLevelOperators Formalism.FourierDecayAlt.G Formalism.FourierDecayAlt.P
 
 def toM {s : ℕ} (A : Matrix (Fin s) (Fin s) ℂ) : Msq s := fun i j => A i j
-
-theorem mm_toM {s : ℕ} (A B : Matrix (Fin s) (Fin s) ℂ) : mm (toM A) (toM B) = toM (A * B) := rfl
-theorem minv_toM {s : ℕ} (A : Matrix (Fin s) (Fin s) ℂ) : minv (toM A) = toM A⁻¹ := rfl
-theorem toM_of {s : ℕ} (a : Msq s) : toM (Matrix.of a) = a := rfl
-theorem of_toM {s : ℕ} (A : Matrix (Fin s) (Fin s) ℂ) : Matrix.of (toM A) = A := rfl
 
 def LUs (s : ℕ) : Set (Msq s × Msq s) := {p | IsLowerUni (Matrix.of p.1) ∧ IsUpperUni (Matrix.of p.2)}
 
@@ -465,9 +452,6 @@ def JIso {e : ι → Fin s × Fin s} (he : Function.Injective e) :
       rw [h]
       exact (EuclideanSpace.basisFun (Fin s × Fin s × Bool) ℝ).orthonormal.comp _ (phiR_injective he))
 
-theorem JIso_apply {e : ι → Fin s × Fin s} (he : Function.Injective e) (y : EuclideanSpace ℝ (ι ⊕ ι)) :
-    JIso he y = JLin e y := rfl
-
 def reals (v : ι → ℂ) : EuclideanSpace ℝ (ι ⊕ ι) :=
   WithLp.toLp 2 (Sum.elim (fun k => (v k).re) (fun k => (v k).im))
 
@@ -505,10 +489,6 @@ theorem lieE_eq_range {e : ι → Fin s × Fin s} (he : Function.Injective e) {S
 def lieIso {e : ι → Fin s × Fin s} (he : Function.Injective e) {S : Set (Matrix (Fin s) (Fin s) ℂ)}
     (hS : lieOf S = Set.range (emb e)) : EuclideanSpace ℝ (ι ⊕ ι) ≃ₗᵢ[ℝ] lieE S :=
   (JIso he).equivRange.trans (LinearIsometryEquiv.ofEq _ _ (lieE_eq_range he hS).symm)
-
-theorem lieIso_coe {e : ι → Fin s × Fin s} (he : Function.Injective e) {S : Set (Matrix (Fin s) (Fin s) ℂ)}
-    (hS : lieOf S = Set.range (emb e)) (y : EuclideanSpace ℝ (ι ⊕ ι)) :
-    ((lieIso he hS y : lieE S) : EuclideanSpace ℝ (Fin s × Fin s × Bool)) = JLin e y := rfl
 
 end Formalism.MainNotions.InterlacingSignCuts.Gm
 
@@ -700,4 +680,3 @@ end Formalism.MainNotions.InterlacingSignCuts
 namespace Formalism.MainNotions.InterlacingSignCuts
 
 end Formalism.MainNotions.InterlacingSignCuts
-

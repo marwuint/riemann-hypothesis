@@ -49,10 +49,6 @@ variable {L : SizeData₂ (I.rec7 l Z)}
   {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex)
 
-def ValEqv (c : Val B →ₛₗ[B.embLL] (pk W).cX.W) : Prop :=
-  ∀ (γ : GQ (I.rec7 l Z).sp.X') γE (g : GL (Fin (B.R.N B.R.m - 1)) B.fields.E), Bridge.IsRatMat (I.rec7 l Z).sp.X' γ γE →
-    GlobalTheory.Mem.R3.MatEq (A := B.fields.E) γE g → ∀ v, c (rhoV B.fields.emb B.wts.sgTrue g v) = (pk W).cX.ρ γ.1 (c v)
-
 def pkAt (t : W.P.T) (x : W.P.A3.A.fam.amb.FR t) (h : GA (I.rec7 l Z) (I.rec7 l Z).sp.X') : (pk W).cX.W :=
   ((pk W).HX t).e ((pk W).jX t x) ((finHom (I.rec7 l Z).sp.X').rangeRestrict h)
 

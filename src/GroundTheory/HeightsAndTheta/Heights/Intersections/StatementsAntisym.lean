@@ -81,8 +81,6 @@ namespace ProjectiveLineBundle
 
 variable {D : ℕ} (S : ProjectiveLineBundle D)
 
-abbrev YIdx : T.YBlk → Type := T.yyIdx S.ι S.ν S.κ
-
 end ProjectiveLineBundle
 
 section Powers
@@ -115,10 +113,6 @@ def intLat : AddSubgroup (Fin 2 → ℚ) where
     exact ⟨-n, by simp [hn]⟩
 
 theorem mem_intLat (v : Fin 2 → ℚ) : v ∈ intLat ↔ ∀ q, ∃ n : ℤ, (n : ℚ) = v q := Iff.rfl
-
-theorem card_blocks_projLine_example : Fintype.card T.WBlk = 4 := rfl
-
-theorem ex_card_Y : Fintype.card T.YBlk = 3 := rfl
 
 section Homog
 

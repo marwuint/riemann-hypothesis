@@ -87,9 +87,6 @@ def derL (X : skewSub J) : Module.End ℂ (smLoc J s) where
   map_smul' c φ := Subtype.ext (funext fun g =>
     deriv_const_smul c (Sm.differentiableAt ((mem_smLoc_iff hJ hu hs _).1 φ.2) g X))
 
-theorem derL_apply (X : skewSub J) (φ : smLoc J s) :
-    (derL hJ hu hs X φ).1 = Der (expMap (skewSub J).subtype s) X φ.1 := rfl
-
 end GlobalTheory.TorFin.RightRep
 
 namespace GlobalTheory.TorFin

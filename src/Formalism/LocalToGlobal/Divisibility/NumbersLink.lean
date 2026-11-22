@@ -761,10 +761,6 @@ def numBig : NumDatum where
   h0 := numEx.h0
   hc := fun z => if z = (false, 0) then hcTop else hc0
 
-theorem big_R : numBig.R = R0 := rfl
-theorem big_logOm : numBig.logOm = numEx.logOm := rfl
-theorem big_TT : numBig.TT = {0} := rfl
-
 end NumInst
 
 namespace NumInst
@@ -778,10 +774,6 @@ open Formalism.BasicNotions.Examples₂
 @[simp] theorem big_nV : numBig.R.nV = 24 := rfl
 @[simp] theorem big_Del : numBig.Del = 1 := rfl
 @[simp] theorem large_example_height : numBig.h0 = 18 := rfl
-
-end NumInst
-
-namespace NumInst
 
 end NumInst
 

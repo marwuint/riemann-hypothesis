@@ -115,9 +115,6 @@ def patSubgroup (h : IsPat Φ) : Subgroup (GL ι K) :=
       rw [this]
       exact M.pow_mem hu _ }
 
-theorem coe_patSubgroup (h : IsPat Φ) :
-    ((patSubgroup h : Subgroup (GL ι K)) : Set (GL ι K)) = patSet K Φ := rfl
-
 open Classical in
 
 def fill (Φ : ι → ι → Prop) (f : {p : ι × ι // Φ p.1 p.2} → K) : Matrix ι ι K :=

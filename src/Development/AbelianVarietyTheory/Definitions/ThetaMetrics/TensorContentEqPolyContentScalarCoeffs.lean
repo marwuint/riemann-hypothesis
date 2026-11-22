@@ -130,9 +130,6 @@ def gaussValAlg : Valuation (AddMonoidAlgebra R G) Γ₀ where
     exact (v.map_add _ _).trans
       (max_le_max (le_coeffSup v.map_zero _ _) (le_coeffSup v.map_zero _ _))
 
-theorem gaussValAlg_apply (f : AddMonoidAlgebra R G) :
-    gaussValAlg v f = f.coeff.support.sup fun m => v (f.coeff m) := rfl
-
 theorem gaussValAlg_le_iff {f : AddMonoidAlgebra R G} {γ : Γ₀} :
     gaussValAlg v f ≤ γ ↔ ∀ m, v (f.coeff m) ≤ γ := coeffSup_le_iff v.map_zero
 
@@ -153,9 +150,6 @@ variable {R S Γ₀ σ τ : Type*} [CommRing R] [CommRing S] [LinearOrderedCommM
   (v : Valuation R Γ₀)
 
 def gaussVal : Valuation (MvPolynomial σ R) Γ₀ := gaussValAlg v
-
-theorem gaussVal_apply (f : MvPolynomial σ R) :
-    gaussVal v f = f.support.sup fun m => v (coeff m f) := rfl
 
 theorem gaussVal_le_iff {f : MvPolynomial σ R} {γ : Γ₀} :
     gaussVal v f ≤ γ ↔ ∀ m, v (coeff m f) ≤ γ := gaussValAlg_le_iff v
@@ -407,9 +401,6 @@ theorem basisVal_smul (a : R) (x : M) : basisVal v b (a • x) = v a * basisVal 
 
 @[simp] theorem basisVal_neg (x : M) : basisVal v b (-x) = basisVal v b x := by
   rw [← neg_one_smul R x, basisVal_smul]; simp
-
-theorem basisVal_basisMonomials (f : MvPolynomial σ R) :
-    basisVal v (basisMonomials σ R) f = gaussVal v f := rfl
 
 end Content
 

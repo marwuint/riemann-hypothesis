@@ -433,10 +433,6 @@ def posSym (_ : RecFun D θ ψ) (u : D.what₂.Word) : BesDat (D.sp.X 0) (D.sp.Y
 
 def pos1 (_ : RecFun D θ ψ) (u : D.what₂.Word) : BesDat (D.sp.X 0) (D.sp.Y 0) (D.sp.iXY 0) := memberBes D u
 
-theorem firstPosition_translate_one (u) : ((Rc.pos1 u).y : GA D (D.sp.Y 0)) = 1 := rfl
-
-theorem posSym_y (u) : ((Rc.posSym u).y : GA D (D.sp.Y 0)) = 1 := rfl
-
 def petC (V : HSp D) : ℝ := petCOf D Rc.petF Rc.meas.petR V
 
 def carY (μ : D.what₂.Tup) (s i : ℕ) : IdC D := if Even i then Rc.chr μ s * Rc.eta⁻¹ else Rc.chr μ s
@@ -603,10 +599,6 @@ def WeilEx (D : D7) : Prop := ∀ ψ, IsStdChar D ψ (-1) → Nonempty (WeilFun 
 
 theorem weilEx_of (h : WeilCoreEx D) (hr : WeilRules D) : WeilEx D :=
   fun ψ hψ => (h ψ hψ).elim fun Wc => ⟨Wc.toFun (hr ψ hψ Wc)⟩
-
-namespace Realises
-
-end Realises
 
 end GlobalTheory.Mem.Th
 

@@ -89,10 +89,6 @@ def dblDatum (Φ₁ Φ₂ : Matrix b a k → ℂ) (y : Matrix b (a ⊕ a) k) : �
 def swSection (ν : Measure k) (μ : kˣ →* ℂˣ) (Φ₁ Φ₂ : Matrix b a k → ℂ) (h : GL (a ⊕ a) k) : ℂ :=
   ∫ x : Matrix b a k, om μ h (1 : GL b k) (dblDatum Φ₁ Φ₂) (fromCols x (-x)) ∂(volM ν b a)
 
-def flatSection (ν : Measure k) (μ : kˣ →* ℂˣ) (Φ₁ Φ₂ : Matrix b a k → ℂ) (s : ℂ) (h : GL (a ⊕ a) k) : ℂ :=
-  swSection ν μ Φ₁ Φ₂ h *
-    npow (iwAbs (absRatio k a) (KO k (a ⊕ a)) h) (s - ((Fintype.card b : ℂ) - (Fintype.card a : ℂ)) / 2)
-
 end Section
 
 abbrev Blocks (l t : ℕ) : Type := Σ _ : Fin l, Fin t

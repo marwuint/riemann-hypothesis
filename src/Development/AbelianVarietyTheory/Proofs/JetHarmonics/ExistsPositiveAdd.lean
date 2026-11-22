@@ -83,10 +83,6 @@ theorem _root_.GlobalTheory.LeastExponentCompare.conj_iff (E : Type) [Field E] [
 section Comparison₂
 variable {Y : Type} [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y]
 
-def IntegralAreSums (S : Submodule ℝ (Bil Y)) : Prop :=
-  ∀ l : S →ₗ[ℝ] ℝ, (∀ β : S, (∀ a c, ∃ z : ℤ, (β : Bil Y) a c = z) → ∃ z : ℤ, l β = z) →
-    ∃ (m : ℕ) (x x' : Fin m → Y), ∀ β : S, l β = ∑ i, (β : Bil Y) (x i) (x' i)
-
 end Comparison₂
 
 section Families

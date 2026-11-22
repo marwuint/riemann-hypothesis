@@ -35,9 +35,6 @@ theorem one_le_rdE : 1 ≤ D.host.rdE := by
   have h2 : ((1 : ℤ) : ℝ) ≤ ((|NumberField.discr D.host.E| : ℤ) : ℝ) := by exact_mod_cast h1
   simpa [Int.cast_abs] using h2
 
-theorem norm_embS_eq (τ : D.what₂.Tau) (x : D.host.E) :
-    ‖embS D τ x‖ = (Formalism.MainNotions.BesselShellMomentBounds.plOf D τ) x := rfl
-
 end Formalism.MainNotions.S.Pv.HH
 
 end

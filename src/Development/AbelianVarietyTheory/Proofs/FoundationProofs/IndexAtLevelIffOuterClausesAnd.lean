@@ -86,13 +86,6 @@ theorem mem_Nlam_iff (w : D.what₂.places.Pl) (g : (D.mem u).A.vT → Module.En
   · rintro ⟨x, rfl⟩
     exact ⟨x.1, x.2, key _⟩
 
-def IndexWith (bd : D.what₂.places.Pl → ℝ) : Prop :=
-  ∀ w : D.what₂.places.Pl, D.what₂.places.resChar w = (D.mem u).A.T →
-    LT.Nlam D u w ≤ LT.Sram D u w ∧
-    ∃ l : ℕ, lengthN_vw D u w = (l : ℕ∞) ∧ (l : ℝ) ≤ (D.what₂.places.ramIdx w : ℝ) * bd w
-
-theorem indexAtLevelQuoted_iff : IndexAtLevelKnown D u ↔ IndexWith D u (boundQuoted_vp D u) := Iff.rfl
-
 end GlobalTheory.LevelIndexCompare
 
 end

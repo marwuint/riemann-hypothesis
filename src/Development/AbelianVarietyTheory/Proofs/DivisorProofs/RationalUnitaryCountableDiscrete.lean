@@ -56,8 +56,4 @@ theorem discrete_ratU (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
   rw [← hγ, hγ1, map_one]
   rfl
 
-theorem countable_discrete_ratU : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), Countable (ratU σ J) ∧ DiscreteTopology (ratU σ J) :=
-  fun F E _ _ _ _ _ σ n J => ⟨countable_ratU F E σ n J, discrete_ratU F E σ n J⟩
-
 end GlobalTheory.RatUDisc

@@ -30,9 +30,6 @@ def rowSum (m : ℤ) (τ : ℍ) (s : ℂ) : ℂ :=
 def expTwoPiI (x : ℝ) : ℂ :=
   Complex.exp (2 * π * Complex.I * x)
 
-def freqIntegral (k : ℤ) (Y : ℝ) (s : ℂ) : ℂ :=
-  ∫ t : ℝ, expTwoPiI (-(k * t)) * (((t ^ 2 + Y ^ 2 : ℝ) : ℂ)) ^ (-s)
-
 section Core
 
 variable {ι : Type*} [Fintype ι] {V : ι → Type*} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
@@ -57,9 +54,6 @@ def corePi (h : ∀ i, InnerProductSpace.Core ℂ (V i)) : InnerProductSpace.Cor
     have hz := (Finset.sum_eq_zero_iff_of_nonneg fun i _ ↦ (h i).re_inner_nonneg (x i)).1 hre
     funext i
     exact core_eq_zero_of_re (h i) _ (hz i (Finset.mem_univ i))
-
-theorem corePi_inner (h : ∀ i, InnerProductSpace.Core ℂ (V i)) (x y : ∀ i, V i) :
-    (corePi h).inner x y = ∑ i, (h i).inner (x i) (y i) := rfl
 
 end Core
 

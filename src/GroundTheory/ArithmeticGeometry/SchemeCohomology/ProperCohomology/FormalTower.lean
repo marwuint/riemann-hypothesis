@@ -63,9 +63,6 @@ def formalι (n : ℕ) : (Sheaf.H.{u} (modulesAb F) q ⧸ formalK I F q n) →�
     Sheaf.H.{u} (modulesAb (quotPow I F n)) q :=
   (formalK I F q n).liftQ (formalβ I F q n) (ker_formalβ I F q n).ge
 
-lemma formalι_mk (n : ℕ) (h : Sheaf.H.{u} (modulesAb F) q) :
-    formalι I F q n (Submodule.Quotient.mk h) = formalβ I F q n h := rfl
-
 lemma formalι_injective (n : ℕ) : Function.Injective (formalι I F q n) := by
   rw [← LinearMap.ker_eq_bot, formalι, Submodule.ker_liftQ, ker_formalβ, Submodule.mkQ_map_self]
 

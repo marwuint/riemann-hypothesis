@@ -28,8 +28,6 @@ def lamExp : LamK → ℤ := fun I => (-1) ^ (2 - I.down.card)
 def lamAt (L : LB G.left) {T : Over S} (x z : T ⟶ G) : LB T.left :=
   LB.LinComb L (lamPt G x z) lamExp
 
-theorem lamAt_fst_snd (L : LB G.left) : lamAt G L (fst G G) (snd G G) = abelian₂ G L := rfl
-
 def adjPt (a b : G ⟶ G) : LamK ⊕ LamK → ((G ⊗ G).left ⟶ G.left) :=
   Sum.elim (lamPt G (fst G G) (snd G G ≫ b)) (lamPt G (fst G G ≫ a) (snd G G))
 

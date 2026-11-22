@@ -103,8 +103,6 @@ private def colsH : ((Fin 2 → Kv v) × (Fin 2 → Kv v)) ≃ₜ M2 v where
   continuous_invFun := by
     refine Continuous.prodMk ?_ ?_ <;> refine continuous_pi fun i => ?_ <;> fun_prop
 
-private theorem colsH_apply (p : (Fin 2 → Kv v) × (Fin 2 → Kv v)) : colsH p = cols p.1 p.2 := rfl
-
 private theorem cols_add (p q : (Fin 2 → Kv v) × (Fin 2 → Kv v)) :
     cols (p + q).1 (p + q).2 = cols p.1 p.2 + cols q.1 q.2 := by
   ext i j

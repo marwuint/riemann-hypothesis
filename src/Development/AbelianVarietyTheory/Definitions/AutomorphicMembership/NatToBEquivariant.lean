@@ -69,8 +69,6 @@ def NatLie (_hq : IsLinearHom a b q) : Submodule O (Lie a × HdR B) where
 
 def natToB : NatLie hq →ₗ[O] HdR B := LinearMap.snd O _ _ ∘ₗ (NatLie hq).subtype
 
-def natToLie : NatLie hq →ₗ[O] Lie a := LinearMap.fst O _ _ ∘ₗ (NatLie hq).subtype
-
 def natEnd (c : Λ) : Module.End O (NatLie hq) :=
   ((DistribSMul.toLinearMap O (Lie a) c).prodMap (DeRham.act (dp0 O) (𝟙 _) b c)).restrict fun z hz => by
     haveI := b.hom c
@@ -94,8 +92,6 @@ def natForm : LinearMap.BilinForm O (NatLie hq) := sp.ψ.compl₁₂ (natToB hq)
 
 def natLift (v : Lie a) : NatLie hq :=
   ⟨(v, sp.s (Lie.mapLinear hq v)), sp.lift (Lie.mapLinear hq v)⟩
-
-theorem natToLie_natLift (v : Lie a) : natToLie hq (natLift hq sp v) = v := rfl
 
 variable {C J : Type} [Field C] [Algebra O C] [DecidableEq J] {σ : J → Λ →+* C} (h : IsSplitting σ)
 

@@ -294,14 +294,6 @@ def EdgeFactors : Prop :=
       (c.a - c.v 1) ^ (c.k - 1) ≤ ∏ i ∈ Icc 2 c.k, (c.a - c.u de i) ∧
         ∏ i ∈ Icc 2 c.k, (c.a - c.u de i) ≤ (2 * (c.a - c.v 1)) ^ (c.k - 1))
 
-def EdgeRatios : Prop :=
-  ∀ (c : Cfg) (de de' : ℕ → ℝ), c.Ok → c.vth ≤ 1 / 10 → IsWord c.k de → IsWord c.k de' →
-    (Real.exp (-(1 / 3)) ≤ ∏ i ∈ Icc 2 (c.k - 1), ((c.a - c.u de i) / (c.a - c.u de' i)) ∧
-      ∏ i ∈ Icc 2 (c.k - 1), ((c.a - c.u de i) / (c.a - c.u de' i)) ≤ Real.exp (1 / 3)) ∧
-    (c.top = true →
-      Real.exp (-(c.vthp / 3)) ≤ ∏ i ∈ Icc 2 (c.k - 1), ((c.u de i + c.bp) / (c.u de' i + c.bp)) ∧
-        ∏ i ∈ Icc 2 (c.k - 1), ((c.u de i + c.bp) / (c.u de' i + c.bp)) ≤ Real.exp (c.vthp / 3))
-
 def VandWords : Prop :=
   ∀ (c : Cfg) (de de' : ℕ → ℝ), c.Ok → c.vth ≤ 1 / 10 → IsWord c.k de → IsWord c.k de' →
     0 < Vand c.k (c.u de) ∧ 0 < Vand c.k (c.u de') ∧

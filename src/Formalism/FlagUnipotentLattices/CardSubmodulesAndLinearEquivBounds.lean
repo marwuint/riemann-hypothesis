@@ -12,16 +12,6 @@ namespace Formalism.HermitianLatticeCounting.LatticeSumBounds
 def hs {m n : Type*} [Fintype m] [Fintype n] (A : Matrix m n ℂ) : ℝ :=
   Real.sqrt (∑ i, ∑ j, ‖A i j‖ ^ 2)
 
-def WeightedAMGM : Prop :=
-  ∀ a b La : ℝ, 0 < La → |a * b| ≤ (La * a ^ 2 + b ^ 2 / La) / 2
-
-def CommonLiftExpand : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (h : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (r : ℕ)
-    (e e' : Fin r → V) (l₁ l₂ : V) (α α' : Fin r → ℂ),
-    (∀ b, h l₁ (e' b) = 0) → (∀ a, h (e a) l₂ = 0) →
-    h (l₁ + ∑ a, α a • e a) (l₂ + ∑ b, α' b • e' b) =
-      h l₁ l₂ + ∑ a, ∑ b, α a * conj (α' b) * h (e a) (e' b)
-
 def AbsA : Prop :=
   ∀ (U₁ U₂ : Type) [NormedAddCommGroup U₁] [InnerProductSpace ℂ U₁]
     [NormedAddCommGroup U₂] [InnerProductSpace ℂ U₂] (r : ℕ) (u : Fin r → U₁) (u' : Fin r → U₂)

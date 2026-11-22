@@ -36,10 +36,4 @@ end Ambient
 
 variable {D : D7}
 
-def supLattice (T : Core D) (j : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Submodule (𝓞 T.Q.c.F) (T.R j) :=
-  supIn (T.cuspA j a n) (valSet (T.Q.Xo j) T.Q.c (algCls (T.Q.Xo j) T.Q.c)) fun la => isVal_valSet la
-
-def SupLatticeFullAt (T : Core D) (j : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Prop :=
-  (supLattice T j a n).FG ∧ Submodule.span T.Q.c.F (supLattice T j a n : Set (T.R j)) = T.cuspA j a n
-
 end GlobalTheory.IndefiniteRowSideFullHecke.SupremumLattice

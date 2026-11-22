@@ -112,46 +112,6 @@ def grSet (i : Fin m) : Set ℝ :=
 
 theorem grNorm_eq (i : Fin m) : grNorm t x Λ u i = sInf (grSet t x Λ u i) := rfl
 
-theorem grNorm_pos_of_basis {n : ℕ} {v : Fin n → (Sp (DualNumber C) ⟶ t.G.left)} (hv : ∀ k, IsTanAtG t x (v k))
-    (hb : ∀ w, IsTanAtG t x w → ∃! cf, IsCombAtG t x v cf w)
-    (h1 : ∀ cf w, IsCombAtG t x v cf w → (∀ j, ‖cf j‖ ≤ 1) → w ∈ Λ) {b : ℝ}
-    (h2 : ∀ cf w, IsCombAtG t x v cf w → w ∈ Λ → ∀ j, ‖cf j‖ ≤ b) (hu : ∀ k, IsTanAtG t x (u k)) (hi : Indep t x u)
-    (i : Fin m) : (grSet t x Λ u i).Nonempty ∧ 0 < grNorm t x Λ u i := by
-  choose a ha using fun i => (hb _ (hu i)).exists
-  let A : Matrix (Fin n) (Fin m) C := fun j i => a i j
-  obtain ⟨B, hB⟩ := exists_left_inv A ((indep_iff hv (indep_of_basis hv hb) A ha).1 hi)
-  have hne : (grSet t x Λ u i).Nonempty := by
-    have hs : 0 < 1 + ∑ j, ‖a i j‖ := by positivity
-    obtain ⟨c, hc0, hc⟩ := NormedField.exists_norm_lt C (inv_pos.2 hs)
-    obtain ⟨w, -, hw⟩ := exists_comb hu (Pi.single i c)
-    refine ⟨_, Pi.single i c, by simpa using norm_pos_iff.1 hc0, fun k hk => Pi.single_eq_of_ne hk.ne' _,
-      ⟨w, h1 _ w (tanLinG v hv u A _ w ha hw) fun j => ?_, hw⟩, rfl⟩
-    have h5 : ‖a i j‖ ≤ 1 + ∑ j, ‖a i j‖ :=
-      (Finset.single_le_sum (f := fun j => ‖a i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (by linarith)
-    have h6 : A.mulVec (Pi.single i c) j = a i j * c := by
-      rw [Matrix.mulVec_single]
-      rfl
-    rw [h6, norm_mul]
-    calc _ ≤ (1 + ∑ j, ‖a i j‖) * (1 + ∑ j, ‖a i j‖)⁻¹ := by gcongr
-      _ = 1 := mul_inv_cancel₀ hs.ne'
-  refine ⟨hne, ?_⟩
-  have hK : ∀ r ∈ grSet t x Λ u i, 0 < ∑ j, ‖B i j‖ * b ∧ (∑ j, ‖B i j‖ * b)⁻¹ ≤ r := by
-    rintro _ ⟨cf, h0, -, ⟨w, hw, hc⟩, rfl⟩
-    have h7 := h2 _ w (tanLinG v hv u A cf w ha hc) hw
-    have h8 : cf i = ∑ j, B i j * A.mulVec cf j := by
-      have := congrFun (Matrix.mulVec_mulVec cf B A) i
-      rw [hB, Matrix.one_mulVec] at this
-      exact this.symm
-    have h9 : ‖cf i‖ ≤ ∑ j, ‖B i j‖ * b := by
-      rw [h8]
-      refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)
-      rw [norm_mul]
-      exact mul_le_mul_of_nonneg_left (h7 j) (norm_nonneg _)
-    have h10 := norm_pos_iff.2 h0
-    exact ⟨h10.trans_le h9, inv_anti₀ h10 h9⟩
-  obtain ⟨r, hr⟩ := hne
-  exact (inv_pos.2 (hK r hr).1).trans_le (le_csInf ⟨r, hr⟩ fun r hr => (hK r hr).2)
-
 theorem tri_mulVec {K : Type} [Field K] {A : Matrix (Fin m) (Fin m) K} (hA : A.BlockTriangular id) {i : Fin m}
     {cf : Fin m → K} (h : ∀ k, i < k → cf k = 0) :
     (∀ k, i < k → A.mulVec cf k = 0) ∧ A.mulVec cf i = A i i * cf i := by
@@ -164,39 +124,6 @@ theorem tri_mulVec {K : Type} [Field K] {A : Matrix (Fin m) (Fin m) K} (hA : A.B
   · rcases lt_or_gt_of_ne hj with hj | hj
     · rw [hA (show id j < id i from hj), zero_mul]
     · rw [h j hj, mul_zero]
-
-open Pointwise in
-
-theorem grNorm_tri (hu : ∀ k, IsTanAtG t x (u k)) {d : Fin m → C} (hd : ∀ i, d i ≠ 0)
-    (h : ∀ i, ∃ cf : Fin m → C, cf i = d i ∧ (∀ k, i < k → cf k = 0) ∧ IsCombAtG t x u cf (u' i)) (i : Fin m) :
-    grNorm t x Λ u' i = ‖d i‖ * grNorm t x Λ u i := by
-  choose a h1 h2 h3 using h
-  let A : Matrix (Fin m) (Fin m) C := fun j i => a i j
-  have hA : A.BlockTriangular id := fun j k hk => h2 k j hk
-  have hdet : IsUnit A.det := by
-    rw [Matrix.det_of_upperTriangular hA]
-    exact (Finset.prod_ne_zero_iff.2 fun k _ => (h1 k).trans_ne (hd k)).isUnit
-  let _ := Matrix.invertibleOfIsUnitDet A hdet
-  have hn : ‖d i‖ ≠ 0 := norm_ne_zero_iff.2 (hd i)
-  have key : grSet t x Λ u' i = ‖d i‖ • grSet t x Λ u i := by
-    ext r
-    constructor
-    · rintro ⟨cf, h0, hz, ⟨w, hw, hc⟩, rfl⟩
-      obtain ⟨e1, e2⟩ := tri_mulVec hA hz
-      rw [show A i i = d i from h1 i] at e2
-      refine ⟨_, ⟨A.mulVec cf, e2 ▸ mul_ne_zero (hd i) h0, e1, ⟨w, hw, tanLinG u hu u' A cf w h3 hc⟩, rfl⟩, ?_⟩
-      simp only [e2, norm_mul, smul_eq_mul, mul_inv, mul_inv_cancel_left₀ hn]
-    · rintro ⟨_, ⟨cf, h0, hz, ⟨w, hw, hc⟩, rfl⟩, rfl⟩
-      obtain ⟨e1, -⟩ := tri_mulVec (Matrix.blockTriangular_inv_of_blockTriangular hA) hz
-      have e3 : A.mulVec (A⁻¹.mulVec cf) = cf := by
-        rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv A hdet, Matrix.one_mulVec]
-      have e2 := (tri_mulVec hA e1).2
-      rw [e3, show A i i = d i from h1 i] at e2
-      obtain ⟨w', -, hw'⟩ := exists_comb (fun k => comb_tan hu (h3 k)) (A⁻¹.mulVec cf)
-      have e4 : w' = w := comb_unique hu (e3 ▸ tanLinG u hu u' A _ w' h3 hw') hc
-      refine ⟨A⁻¹.mulVec cf, fun e => h0 (by rw [e2, e, mul_zero]), e1, ⟨w, hw, e4 ▸ hw'⟩, ?_⟩
-      simp only [e2, norm_mul, smul_eq_mul, mul_inv, mul_inv_cancel_left₀ hn]
-  rw [grNorm_eq, grNorm_eq, key, Real.sInf_smul_of_nonneg (norm_nonneg _), smul_eq_mul]
 
 end Norm
 
@@ -280,38 +207,6 @@ theorem existsUnique_ext (x : Sp C ⟶ Z.X) : ∃! xO : Sp ↥(intO C) ⟶ Z.X, 
   obtain ⟨⟨xO, h1, h2⟩⟩ := (hv S).exists_lift
   refine ⟨xO, h1, fun a ha => ?_⟩
   exact congrArg CommSq.LiftStruct.l ((IsSeparated.valuativeCriterion Z.s S).elim ⟨a, ha, hs a ha⟩ ⟨xO, h1, h2⟩)
-
-theorem grNorm_latDR_pos (x : Sp C ⟶ Z.X) {m : ℕ} {u : Fin m → (Sp (DualNumber C) ⟶ Z.t.G.left)}
-    (hu : ∀ k, IsTanAtG Z.t x (u k)) (hi : Indep Z.t x u) (i : Fin m) :
-    (grSet Z.t x (latDR Z.t x) u i).Nonempty ∧ 0 < grNorm Z.t x (latDR Z.t x) u i := by
-  obtain ⟨xO, rfl, hx⟩ := existsUnique_ext Z x
-  obtain ⟨g, v, hv, hb, hL⟩ := GlobalTheory.LatDRFree.latDR_free E H _ Z.t C xO hx
-  exact grNorm_pos_of_basis hv hb (fun cf w h => (hL cf w h).2) (fun cf w h => (hL cf w h).1) hu hi i
-
-theorem grNorm_latHT_pos (hB : HTBoundSt) (p : ℕ) [hp : Fact p.Prime] (x : Sp ℂ_[p] ⟶ Z.X) {m : ℕ}
-    {u : Fin m → (Sp (DualNumber ℂ_[p]) ⟶ Z.t.G.left)} (hu : ∀ k, IsTanAtG Z.t x (u k)) (hi : Indep Z.t x u)
-    (i : Fin m) : (grSet Z.t x (latHT Z.t p x) u i).Nonempty ∧ 0 < grNorm Z.t x (latHT Z.t p x) u i := by
-  obtain ⟨xO, rfl, hx⟩ := existsUnique_ext Z x
-  obtain ⟨g, v, hv, hb, hL⟩ := GlobalTheory.LatDRFree.latDR_free E H _ Z.t ℂ_[p] xO hx
-  have hn : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by simpa using PadicComplex.norm_extends' p (p : ℚ_[p])
-  obtain ⟨a, ha0, ha⟩ := NormedField.exists_norm_lt ℂ_[p]
-    (Real.rpow_pos_of_pos (Nat.cast_pos.2 hp.out.pos : (0 : ℝ) < p) (-(1 / ((p : ℝ) - 1))))
-  refine grNorm_pos_of_basis (b := ‖a‖⁻¹) hv hb
-    (fun cf w h h' => latDR_subset_latHT _ _ _ _ _ p _ ((hL cf w h).2 h')) (fun cf w h hw j => ?_) hu hi i
-  have h1 := (hL _ _ (comb_smul hv h a)).1 (hB E H _ Z.t p ℂ_[p] hn xO hx w hw a ha.le) j
-  rw [norm_mul] at h1
-  rw [← one_div, le_div_iff₀ ha0, mul_comm]
-  exact h1
-
-theorem grNorm_lat_pos {Ω : Type} [Field Ω] (y : FlagPt Z Ω) (p : ℕ) [Fact p.Prime] (io : Ω →+* ℂ_[p]) (b : Bool)
-    (hB : b = true → HTBoundSt) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
-    0 < grNorm Z.t (spMap io ≫ y.y ≫ genι Z) (lat Z.t p (spMap io ≫ y.y ≫ genι Z) b)
-      (fun k => spMap (dualMap io) ≫ y.u τ k) i := by
-  have hu := fun k => GlobalTheory.FactorDepth.isTanAtG_map _ io (y.tan τ k)
-  have hi := (indep_u y τ).map io (y.tan τ)
-  cases b
-  · exact (grNorm_latDR_pos Z _ hu hi i).2
-  · exact (grNorm_latHT_pos Z (hB rfl) p _ hu hi i).2
 
 variable {Z}
 

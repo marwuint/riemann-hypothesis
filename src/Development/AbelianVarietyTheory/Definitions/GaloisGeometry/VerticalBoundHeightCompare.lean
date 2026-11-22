@@ -44,9 +44,6 @@ def IsProdField.prodEquiv {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) (B 
     B ⊗[ℂ] B ≃ₐ[ℂ] prodRing i1 i2 B :=
   (AlgEquiv.ofInjective _ (hP.prodMap_injective B)).trans (Subalgebra.equivOfEq _ _ (range_prodMap i1 i2 B))
 
-theorem IsProdField.coe_prodEquiv {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) (B : Subalgebra ℂ K) (z : B ⊗[ℂ] B) :
-    (hP.prodEquiv B z : L) = prodMap i1 i2 B z := rfl
-
 def diagForm (i1 i2 : K →ₐ[ℂ] L) {d : ℕ} (t : Fin d → K) (a : ℕ) : DR ℂ L :=
   ∑ S ∈ Finset.univ.powersetCard a, (List.ofFn fun l : Fin d =>
     if l ∈ S then prDR i1 (ExteriorAlgebra.ι K (D ℂ K (t l))) else -prDR i2 (ExteriorAlgebra.ι K (D ℂ K (t l)))).prod

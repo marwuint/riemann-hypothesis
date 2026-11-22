@@ -121,9 +121,6 @@ theorem logDerivIdealIterate_zero (P J : Ideal S) : logDerivIdealIterate k P 0 J
 theorem logDerivIdealIterate_succ (P : Ideal S) (r : ℕ) (J : Ideal S) :
     logDerivIdealIterate k P (r + 1) J = logDerivIdeal k P (logDerivIdealIterate k P r J) := rfl
 
-theorem logDerivIdealIterate_one (P J : Ideal S) :
-    logDerivIdealIterate k P 1 J = logDerivIdeal k P J := rfl
-
 theorem logDerivIdealIterate_add (P : Ideal S) (r s : ℕ) (J : Ideal S) :
     logDerivIdealIterate k P (r + s) J =
       logDerivIdealIterate k P r (logDerivIdealIterate k P s J) := by

@@ -96,7 +96,4 @@ def FG (n : ℕ) (K : Type*) [Field K] (k : ℕ) : Subgroup (Matrix.GeneralLinea
     rw [e]; exact ((Bd.mul ha hb (by omega)).add ha).add hb
   inv_mem' := fun {a} ha => inv_sub_one_bd a k ha
 
-theorem mem_FG {k : ℕ} {a : Matrix.GeneralLinearGroup (Fin n) K} :
-    a ∈ FG n K k ↔ Bd (k + 1) ((a : Matrix (Fin n) (Fin n) K) - 1) := Iff.rfl
-
 end Formalism.L2.SG.Pf.RelativeIndexFlags.Filt

@@ -20,8 +20,6 @@ section Laws
 
 variable (W : Tower D)
 
-theorem cxp_triv : W.CXP W.triv = W.CX := rfl
-
 end Laws
 
 end GlobalTheory.Core.Rk.TowerModel

@@ -508,11 +508,6 @@ def kummerRep (a : Eˣ) : G E Ω →* GL (Fin 2) (Qbar l) :=
         simp [kummer_mul, add_comm]
         simp [Algebra.smul_def] }
 
-theorem coe_kummerRep (a : Eˣ) (σ : G E Ω) :
-    (kummerRep l a σ : Matrix (Fin 2) (Fin 2) (Qbar l)) =
-      !![algebraMap ℚ_[l] (Qbar l) ((cycZ E Ω l σ : ℤ_[l]ˣ) : ℤ_[l]),
-        algebraMap ℚ_[l] (Qbar l) (kummer l a σ); 0, 1] := rfl
-
 end Examples
 
 end GlobalTheory.WeilDeligne

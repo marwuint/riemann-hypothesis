@@ -113,12 +113,6 @@ def unitsInvariantOpen (W : Subgroup Gal(Ksep/K)) (a : (fixedField W)ˣ) :
       congrArg Additive.ofMul (Units.ext ((mem_fixedField_iff _ _).1 (a : fixedField W).2 σ σ.2))⟩
 
 omit [IsSepClosure K Ksep] in
-theorem coe_unitsInvariantOpen (W : Subgroup Gal(Ksep/K)) (a : (fixedField W)ˣ) :
-    ((unitsInvariantOpen W a : Rep.res W.subtype (galUnits.{0} K Ksep)) : Additive Ksepˣ) =
-      Additive.ofMul (Units.map (algebraMap (fixedField W) Ksep : fixedField W →* Ksep) a) :=
-  rfl
-
-omit [IsSepClosure K Ksep] in
 
 theorem exists_unitsInvariantOpen_eq (W : Subgroup Gal(Ksep/K))
     (v : (Rep.res W.subtype (galUnits.{0} K Ksep)).ρ.invariants) :

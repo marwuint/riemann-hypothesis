@@ -21,14 +21,6 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2
 
 variable {B : Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)}
 
-def World0.ofGap (w : World0 I l Z) (h : GapHyp (I.rec7 l Z)) : World I l Z := w.withFin (finX_of_gap _ w.S.toSTies h)
-
-theorem World0.ofGap_C (w : World0 I l Z) (h : GapHyp (I.rec7 l Z)) : (w.ofGap h).C = w.C := rfl
-
-theorem World0.ofGap_toSTies (w : World0 I l Z) (h : GapHyp (I.rec7 l Z)) : (w.ofGap h).S.toSTies = w.S.toSTies := rfl
-
-theorem World0.bare_ofGap (w : World0 I l Z) (h : GapHyp (I.rec7 l Z)) : (w.ofGap h).bare = w := rfl
-
 end Worlds
 
 end GlobalTheory.Core.Rk

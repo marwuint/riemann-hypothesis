@@ -39,9 +39,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 def scalSec {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a : S) (s : LB.Sec (PPx x)) : LB.Sec (PPx x) :=
   mulSec ((fst (Over.mk x) Xo.univ.t.G).left.appTop.hom (toΓ S a)) s
 
-theorem scalSec_f {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a : S) (s : LB.Sec (PPx x)) (i : (PPx x).ι) :
-    (scalSec x a s).f i = scal x a i * s.f i := rfl
-
 variable {T : CDVR} {x : Sp T.Fr ⟶ Xo.X} {G : SAB H (Sp T.V)}
 
 variable {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}

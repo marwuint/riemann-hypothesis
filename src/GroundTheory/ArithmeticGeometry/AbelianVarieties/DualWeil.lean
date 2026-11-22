@@ -39,19 +39,7 @@ theorem homPt_eq_of (Q : isogHom E E') {R : E.toAffine.Point} {c : E'.toAffine.P
   rw [map_translate_hom, add_right_inj] at h
   exact constMap_injective _ _ h
 
-theorem homPt_add (Q₁ Q₂ : isogHom E E') : homPt (Q₁ + Q₂) = homPt Q₁ + homPt Q₂ := by
-  ext R
-  apply homPt_eq_of
-  rw [AddSubgroup.coe_add, map_add, map_translate_hom, map_translate_hom, AddMonoidHom.add_apply,
-    map_add]
-  abel
-
 theorem homPt_zero : homPt (0 : isogHom E E') = 0 := by rw [homPt, dif_pos rfl]
-
-noncomputable def homPointHom : isogHom E E' →+ (E.toAffine.Point →+ E'.toAffine.Point) :=
-  AddMonoidHom.mk' homPt homPt_add
-
-theorem homPointHom_apply (Q : isogHom E E') : homPointHom Q = homPt Q := rfl
 
 theorem homPt_toHom (φ : Isogeny E E') : homPt φ.toHom = φ.pointHom := by
   ext R

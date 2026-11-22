@@ -34,12 +34,6 @@ structure FamReal3K {K : Type} [Field K] [NumberField K] [StarRing K] (σ : K �
 
   rankL : ∀ i : Fin m, (D.sp.V ((i : ℕ) + 1)).rank = A3.A.r + A3.A.t
 
-abbrev FamReal3 (A3 : FamIn3 D.what₂.LL G Pl0 I0 Ty T m) (tyOk : ℕ → Ty → Prop) (cR : CoefDat D D.sp.X')
-    (cL : ∀ i : Fin m, CoefDat D (D.sp.V ((i : ℕ) + 1)))
-    (lR : ∀ t, LevEnv D D.sp.X' ((A3.A.ok t × ℕ) ⊕ (A3.okI t × Ty)))
-    (lL : ∀ (i : Fin m) t, LevEnv D (D.sp.V ((i : ℕ) + 1)) ((A3.A.ok t × ℕ) ⊕ (A3.okI t × Ty))) :=
-  FamReal3K D D.what₂.embLL A3 tyOk cR cL lR lL
-
 variable {D} {A3 : FamIn3 D.what₂.LL G Pl0 I0 Ty T m} {tyOk : ℕ → Ty → Prop} {cR : CoefDat D D.sp.X'}
   {cL : ∀ i : Fin m, CoefDat D (D.sp.V ((i : ℕ) + 1))}
   {lR : ∀ t, LevEnv D D.sp.X' ((A3.A.ok t × ℕ) ⊕ (A3.okI t × Ty))}
