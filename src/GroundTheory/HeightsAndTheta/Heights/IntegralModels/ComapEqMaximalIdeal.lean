@@ -1,8 +1,0 @@
-import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.Statements
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.IsIsoPullbackObjUnitToUnit
-set_option maxSynthPendingDepth 1
-
-namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model
-
-end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model

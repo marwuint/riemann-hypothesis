@@ -2,7 +2,7 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.UIObjects
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegralIoiFsDensRadial
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PLCurveA
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StTailShift
 

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StalkGenerizationGermCompat
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasLinForms
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BlowPolSt
 
 open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj

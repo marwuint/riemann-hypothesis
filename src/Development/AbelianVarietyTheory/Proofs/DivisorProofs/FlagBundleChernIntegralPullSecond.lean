@@ -35,7 +35,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointsMapHolomorphi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankTwoGradedDeterminantIsometric
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernOneEqNegDdcLogDet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DensMulPullHeadL
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeadLastMeasMeasurePreserving
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernFormProperties
 
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory

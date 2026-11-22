@@ -1,6 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsHodgeFlag
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPlueckerRatioTrdeg
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsGrassHeight
 set_option maxSynthPendingDepth 1
 
 noncomputable section

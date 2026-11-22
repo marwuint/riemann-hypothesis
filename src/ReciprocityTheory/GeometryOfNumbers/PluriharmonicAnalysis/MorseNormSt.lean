@@ -1,7 +1,0 @@
-import ReciprocityTheory.GeometryOfNumbers.PluriharmonicAnalysis.PolydiscSt
-
-namespace ReciprocityTheory.GeometryOfNumbersTheory
-
-open MeasureTheory Filter Topology
-
-end ReciprocityTheory.GeometryOfNumbersTheory

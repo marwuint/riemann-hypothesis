@@ -1,7 +1,0 @@
-import Formalism.CharacterColumnKernels.Statement
-
-noncomputable section
-
-namespace Formalism.RepresentationBoundsCohomology
-
-end Formalism.RepresentationBoundsCohomology

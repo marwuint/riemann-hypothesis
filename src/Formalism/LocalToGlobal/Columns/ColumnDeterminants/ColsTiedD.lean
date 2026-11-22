@@ -1,8 +1,9 @@
 import Formalism.LocalToGlobal.Columns.TiedLv
-import Formalism.LocalToGlobal.Columns.TiedFv
 import Formalism.LocalToGlobal.Columns.TiedValAll
 import Formalism.LocalToGlobal.Columns.TiedUpDn
-import Formalism.LocalToGlobal.Columns.TiedGlRec
+import Formalism.LocalToGlobal.Columns.TiedXp
+import Formalism.LocalToGlobal.Columns.TiedGlPl
+import Formalism.LocalToGlobal.Columns.TiedGlMat
 import Formalism.LocalToGlobal.Columns.TiedGlSplit
 import Formalism.LocalToGlobal.Columns.TiedXpU
 import Formalism.LocalToGlobal.Columns.InputsGenus

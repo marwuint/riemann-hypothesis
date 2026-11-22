@@ -1,6 +1,0 @@
-import Development.WeilBound.CoreStatements.AutomorphicKernels.BernsteinUnitaryProducts.BernsteinTheoremA.FiberLocalization.EqZeroOfFiberEquivariant
-import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
-
-namespace PositivityTheory.PfBern.Loc
-
-end PositivityTheory.PfBern.Loc

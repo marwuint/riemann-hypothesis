@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasLinForms
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BlowPolSt
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsGoodIntegral
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ValuationFormPsiBalancedSymmetricPeriodForm
 

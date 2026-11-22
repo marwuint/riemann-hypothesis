@@ -1,5 +1,6 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Theta.Weil.PartialFourierTheta
+import GroundTheory.HeightsAndTheta.Theta.AdelicFourier
+import GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.WeilPolarization.WmSysObjects
 
 namespace GroundTheory.Heights₂.Theta
 

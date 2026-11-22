@@ -1,7 +1,0 @@
-import ReciprocityTheory.GeometryOfNumbers.PluriharmonicAnalysis.DiscSt
-
-namespace ReciprocityTheory.GeometryOfNumbersTheory
-
-open MeasureTheory
-
-end ReciprocityTheory.GeometryOfNumbersTheory

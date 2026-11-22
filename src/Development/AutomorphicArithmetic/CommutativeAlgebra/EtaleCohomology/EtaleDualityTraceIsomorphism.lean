@@ -38,10 +38,8 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.Slop
 import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.BothToSecondRelation
 import Development.AutomorphicArithmetic.CommutativeAlgebra.InclusionConnectedTwist
 import Development.AutomorphicArithmetic.CommutativeAlgebra.ConnectedOfUnimodularSub
-import Development.AutomorphicArithmetic.CommutativeAlgebra.RepresentedByUnits
 import Development.AutomorphicArithmetic.CommutativeAlgebra.NerveAffineRepresentable
 import Development.EtaleCohomology.EtaleSheaves.LeafExcRingPf
-import Development.EtaleCohomology.EtaleSheaves.LeafFreeLocPf
 
 namespace UpperTheory.Et
 

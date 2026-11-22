@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToGAdMat
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPurelyImaginaryElement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StdParEqFlag
 
 open scoped TensorProduct NNReal Matrix

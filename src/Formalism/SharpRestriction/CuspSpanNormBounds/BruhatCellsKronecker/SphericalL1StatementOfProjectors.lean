@@ -1,7 +1,7 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.FrobeniusBoundOfMulNearOne
 import Formalism.FlagUnipotentLattices.HalfDifferenceL1Bound
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.LeadingMinorEqDetSubmatrix
+import Formalism.RealPlaceAnalysis.LminorPos
 
 open MeasureTheory Matrix Topology Metric Kronecker
 

@@ -1,4 +1,4 @@
-import Formalism.WachLatticeTwists.StatementDual
+import Formalism.CharacterColumnKernels.Statement
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.SingleEqSmul
 

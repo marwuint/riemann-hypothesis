@@ -1,9 +1,0 @@
-import Mathlib
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TamagawaSpecialUnitary
-import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.ExistsMulMulConjTransposeEqOne
-open NumberField IsDedekindDomain GlobalTheory.SUVol
-open Matrix
-
-namespace GlobalTheory.SUVol
-
-end GlobalTheory.SUVol

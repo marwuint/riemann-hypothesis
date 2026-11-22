@@ -7,7 +7,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MiracleFlatness.MulXPro
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.TransferenceMinima
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.EagonNorthcottIntegral.YHom
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.EagonNorthcottIntegral.DivisionPartitionTotal
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.EagonNorthcottIntegral.BasisZeroEqSingle
 
 noncomputable section
 

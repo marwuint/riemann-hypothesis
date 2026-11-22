@@ -1,5 +1,5 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.Intersections.FlagDimSt
+import GroundTheory.HeightsAndTheta.Heights.Intersections.ProjLineRankTwoPushforwardHypotheses
 import GroundTheory.ArithmeticGeometry.AbelianVarieties.JacobianSmoothness.RingKrullDimLeRingKrullDimQuotientAddOne
 set_option maxSynthPendingDepth 1
 

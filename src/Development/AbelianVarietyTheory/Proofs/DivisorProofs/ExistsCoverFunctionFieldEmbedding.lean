@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HessRelFnB
+import Development.AbelianVarietyTheory.Definitions.Divisors.ReferenceMetricMulDualEqOne
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FromModelAdd
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KrullDimOneOfFiniteGeneric
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericPointMorphismFactorization
 open CategoryTheory AlgebraicGeometry Limits NumberField IsDedekindDomain TopologicalSpace

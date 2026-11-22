@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.GrowthBounds.StatementOfDegreeAndBound
 import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DefsMod
 import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.ABridge
-import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.QcColESymmVal
 import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.InducedSectionsSpanStatement
 import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.RationalBitableauLatticeStatement
 

@@ -13,7 +13,9 @@ import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.HeckeConvolutionMemHolds
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Ecompose
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FIwasawa
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Fcompose
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.LocalAlgebraInertPrime
+import Formalism.SatakeDualWeyl.StatementG
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Transport
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelvsplit
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Ipindep
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelv

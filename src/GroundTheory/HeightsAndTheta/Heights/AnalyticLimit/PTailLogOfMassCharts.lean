@@ -18,7 +18,7 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.Measure
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
 import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegralIoiFsDensRadial
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
 
 set_option maxSynthPendingDepth 1

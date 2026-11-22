@@ -1,6 +1,6 @@
 import Mathlib
 import GroundTheory.GlobalFields.AnalyticClassNumber.QuadraticLegendre
-import GroundTheory.GlobalFields.Artin.ConductorInduction
+import GroundTheory.GlobalFields.Artin.ConductorInflation
 import GroundTheory.GlobalFields.Artin.ConductorOneDim
 
 set_option maxSynthPendingDepth 1

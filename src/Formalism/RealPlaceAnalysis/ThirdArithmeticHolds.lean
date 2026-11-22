@@ -9,7 +9,7 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.TrPowSumFilterZero
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.QuantumDetHighestWeightHolds
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ShiftedGeneratorEqIteSmulAdd
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.GeneratorCommutatorQuantumDet
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CharId
+import Formalism.RealPlaceAnalysis.StatementC
 
 namespace Formalism.REAL
 

@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExpone
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTypesIdempotentCoefficients
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPrimeWindow
 import Formalism.LocalToGlobal.Columns.ToHLatLemmas
-import Formalism.LocalToGlobal.Columns.RowFormsNZs
+import Formalism.LocalToGlobal.Columns.RowFormsNZp
 import Formalism.LocalToGlobal.Columns.RowFormsNZw
 
 noncomputable section

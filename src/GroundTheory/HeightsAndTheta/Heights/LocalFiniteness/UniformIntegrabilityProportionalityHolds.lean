@@ -13,7 +13,7 @@ import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PMinimalPrimeComap
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PNormOfDividedFormSep
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PPiQuotCokerFiniteLength
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.HeightCoheightQuotient
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PRecQOfRecursion
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PObjectsDivCycleGeneric
 import GroundTheory.HeightsAndTheta.Heights.LocalDensities.Statements
 import GroundTheory.HeightsAndTheta.Heights.LocalDensities.PHermitianDetMono
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Stokes
@@ -49,7 +49,6 @@ import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PGenFibreModelTranspor
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PInvertibleIdealIndex
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLocallyPrincipalCoprime
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.POrderIdealIndexExtension
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.ProjProjApply
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.DoubleSumEqZero
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SetCApplyNotMem
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.CellDMulLeft

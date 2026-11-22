@@ -1,5 +1,6 @@
 import Mathlib
-import Formalism.SharpRestriction.InertJacobiLevels.ExtraF
+import Formalism.SharpRestriction.InertJacobiLevels.ExtraRec
+import Formalism.LocalRingCardinality.DataParams
 import Formalism.SharpRestriction.InertJacobiLevels.SecondTorsionCardPos
 import Formalism.SharpRestriction.InertJacobiLevels.AsmKap
 import Formalism.SharpRestriction.InertJacobiLevels.ExistsLatInst

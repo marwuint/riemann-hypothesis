@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSplitting
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjacentRefl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BcDensEqOfGram
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSectionOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DimensionOfDominantFlatCover

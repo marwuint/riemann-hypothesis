@@ -1,5 +1,9 @@
 import Mathlib
-import GroundTheory.PAdicHodge.ExtRobbaTrivialV
+import GroundTheory.PAdicHodge.SlopeRobbaPure
+import GroundTheory.PAdicHodge.ExtRobbaEigenStep
+import GroundTheory.PAdicHodge.ExtRobbaOrd
+import GroundTheory.PAdicHodge.DMTeichPow
+import GroundTheory.PAdicHodge.DMTeichBasic
 import GroundTheory.PAdicHodge.ExtRobbaBezout
 set_option maxSynthPendingDepth 1
 

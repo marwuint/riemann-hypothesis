@@ -1,5 +1,9 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.Counterexample.Objects
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.IsFrameOverLine
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.PermFinTwoUniv
+import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.IsSmoothHermConstLine
+import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.PCurveDivVertical
+import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsAntisym
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.PPtsIntegralPoints
 import GroundTheory.HeightsAndTheta.Heights.Intersections.ConservationDegreeFormOfExistence
 

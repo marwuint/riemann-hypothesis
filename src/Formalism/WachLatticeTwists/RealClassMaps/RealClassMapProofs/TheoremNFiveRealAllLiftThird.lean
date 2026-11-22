@@ -5,7 +5,6 @@ import Formalism.WachLatticeTwists.SandwichH1Classes.ComparisonMatrixIntertwines
 import Formalism.WachLatticeTwists.DenseTopActions.Statement
 import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapProofs.TheoremNFiveReal
 import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapProofs.InRowRealOf
-import Formalism.WachLatticeTwists.SandwichH1Classes.SandwichH1Proofs.GmIApply
 
 variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiffsZeroOfLev
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToGAdMat
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPurelyImaginaryElement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIdTorusEltOne
 import Formalism.PeriodIntegrals.CuspInfChar
 

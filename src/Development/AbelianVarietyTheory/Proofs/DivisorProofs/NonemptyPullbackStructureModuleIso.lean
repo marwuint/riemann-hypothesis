@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SupportPullbackEqPr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteSetDimDropClosed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModuleLengthDisjointSupport
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFlatQuasicoherentLocal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFlatAffineAvoiding
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMapClosedFibre
 
 set_option autoImplicit false

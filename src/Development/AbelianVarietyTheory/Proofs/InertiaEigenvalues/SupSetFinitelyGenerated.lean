@@ -13,7 +13,6 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CompactifiedModuliPa
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FullObjOfSecondTyping
 import Development.AbelianVarietyTheory.Counterexamples.ModuliSurvey.CubeMapTripleProductUnique
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsTopBaseModel
-import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.ExistsGeometricPoint
 
 set_option synthInstance.maxHeartbeats 400000
 

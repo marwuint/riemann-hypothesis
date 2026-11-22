@@ -12,7 +12,6 @@ import Formalism.HarderNarasimhan.HarderNarasimhanProofs.HNSlopes
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.ShiftInvariance
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Duality
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.HNExtreme
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PiSumForallInsertOnly
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DiscreteSpanOfLinIndep
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SizeMu
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PlaceSplit

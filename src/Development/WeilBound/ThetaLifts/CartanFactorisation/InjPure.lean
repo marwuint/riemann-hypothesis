@@ -6,7 +6,6 @@ import Development.WeilBound.ThetaLifts.CartanFactorisation.RealTrans
 import Development.WeilBound.ThetaLifts.CartanFactorisation.ArchimedeanEvaluationVector
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibRepApply
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLengthCoinvariantsExact
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTwistedRankQuotient
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OmegaEquivInducedFibre
 import GroundTheory.AutomorphicForms.FiniteLengthLattice

@@ -18,7 +18,6 @@ import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PBallVolume
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAdmissibleAE
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAdmissibleAENrm
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PSpecFirstHomog
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PCycleIntegralSection
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PChowFormAssoc
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PChowFormCycleAdd
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PChowFormCycleSmul

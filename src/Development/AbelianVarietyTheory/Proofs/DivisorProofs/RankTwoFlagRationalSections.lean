@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.RegularAlt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OfSwap2
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalEqOfNonneg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjacentRefl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopologicalKrullDimEqSucc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BcDensEqOfGram

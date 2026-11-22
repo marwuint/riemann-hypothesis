@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StepLatZero
+import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorusExt
 import Development.AbelianVarietyTheory.Counterexamples.JetSurvey.WitnessIsFormalParam
 
 set_option autoImplicit false

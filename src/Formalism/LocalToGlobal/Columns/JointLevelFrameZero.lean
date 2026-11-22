@@ -1,5 +1,6 @@
 import Formalism.LocalToGlobal.Columns.HermOwed
-import Formalism.LocalToGlobal.Columns.TiedGlRec
+import Formalism.LocalToGlobal.Columns.TiedXp
+import Formalism.LocalToGlobal.Columns.TiedGlMat
 
 open NumberField IsDedekindDomain Module Matrix
 open scoped TensorProduct

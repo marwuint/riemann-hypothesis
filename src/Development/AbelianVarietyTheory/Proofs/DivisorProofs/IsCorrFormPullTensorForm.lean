@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntEmbCoe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsTo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheafIffAlt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheafIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueTangentOfValues
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ConjugateFiltration
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing

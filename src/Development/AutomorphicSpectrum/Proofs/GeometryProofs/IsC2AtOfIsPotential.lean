@@ -21,7 +21,7 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.Measure
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
 import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegralIoiFsDensRadial
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHFlProdLinear
 
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.Cmp

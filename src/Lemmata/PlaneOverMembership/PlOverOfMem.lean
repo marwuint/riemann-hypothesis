@@ -17,7 +17,6 @@ import Mathlib.Tactic.Ring
 import Mathlib.Data.Fintype.BigOperators
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PolygonSlopeSum
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Duality
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PiSumForallInsertOnly
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.HtImage
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Rerealize
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.QuotRealize

@@ -11,7 +11,6 @@ import ReciprocityTheory.Chebotarev.EulerSum
 import ReciprocityTheory.Chebotarev.EulerLim
 import ReciprocityTheory.Chebotarev.Ucoord
 import ReciprocityTheory.Chebotarev.DiscreteTopologyLatOf
-import ReciprocityTheory.Chebotarev.CTrick
 import ReciprocityTheory.Chebotarev.SplitDef
 import Formalism.LocalRingCardinality.SpanPowerMembership.Adelic
 

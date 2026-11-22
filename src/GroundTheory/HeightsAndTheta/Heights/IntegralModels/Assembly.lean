@@ -14,11 +14,9 @@ import GroundTheory.HeightsAndTheta.Heights.IntegralModels.StatementsSpreadNbhd
 import GroundTheory.HeightsAndTheta.Heights.IntegralModels.StatementsSpreadHomNbhd
 import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PSumCp
 import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PTorsionFreeQuotientLength
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.ComapEqMaximalIdeal
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.IsVectorBundleIffModel
+import GroundTheory.HeightsAndTheta.Heights.IntegralModels.IsIsoPullbackObjUnitToUnit
 import GroundTheory.HeightsAndTheta.Heights.IntegralModels.Imports
 import GroundTheory.HeightsAndTheta.Heights.IntegralModels.FiniteTypeSectionsOfIsFiniteTypeOverZ
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.CpEqPrimeWeight
 
 set_option maxSynthPendingDepth 1
 

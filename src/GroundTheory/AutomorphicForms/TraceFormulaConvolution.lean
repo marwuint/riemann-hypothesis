@@ -1,6 +1,6 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.QuotientKernel
-import GroundTheory.AutomorphicForms.KernelTraceComp
+import GroundTheory.AutomorphicForms.KernelTrace
 import GroundTheory.AutomorphicForms.LocallyConstantCompact
 
 open MeasureTheory Topology Filter Set Function

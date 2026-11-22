@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingTrRep
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedPlanePairRestrictionFirst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDblCoordDblD
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialFourierPreservesSchwartzL2
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableThetaSumOfSchrodinger
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialRightPreservesL2Norm
 
 open scoped TensorProduct NNReal Matrix ENNReal

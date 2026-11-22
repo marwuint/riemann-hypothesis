@@ -1,6 +1,8 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.GL2Classical.HeckeCosets
-import GroundTheory.AutomorphicForms.GL2Classical.Automorphic
+import GroundTheory.AutomorphicForms.GL2Classical.ZFinite
+import GroundTheory.AutomorphicForms.GL2Classical.CuspConverse
+import GroundTheory.AutomorphicForms.GL2Classical.GrowthReduction
 import GroundTheory.AutomorphicForms.HeckeAlgebraLevel
 
 open NumberField IsDedekindDomain Matrix MeasureTheory CongruenceSubgroup

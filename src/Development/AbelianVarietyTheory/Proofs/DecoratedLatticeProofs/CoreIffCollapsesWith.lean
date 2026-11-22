@@ -8,7 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddCharConductor
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentHaarAndModulus
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralCompBlocks
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemNormalizerOfTri
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NabsDetEqOfActEq
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HalfPowerSpherical
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClopenIsCompactMapsPair
 
 open MeasureTheory ValuativeRel Matrix
 open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData

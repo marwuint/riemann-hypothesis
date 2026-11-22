@@ -1,4 +1,4 @@
-import Formalism.LocalToGlobal.GlobalTheory.GL4.PMsCount
+import Formalism.LocalToGlobal.GlobalTheory.GL4.PMsFrame
 
 noncomputable section
 

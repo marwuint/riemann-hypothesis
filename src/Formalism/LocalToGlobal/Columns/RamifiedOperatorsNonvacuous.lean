@@ -5,7 +5,6 @@ import Formalism.LocalToGlobal.Columns.AtTOwedV
 import Formalism.LocalToGlobal.Columns.AtTOwedC
 import Formalism.LocalToGlobal.Columns.ToHLatLemmas
 import Formalism.LocalToGlobal.Columns.Inputs
-import Formalism.GL3MeanSquares.HookFormulaTorsion.ConditionIffDualEqFunctional
 import Formalism.GL3MeanSquares.HookFormulaTorsion.LemmaCTwistRamified
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 

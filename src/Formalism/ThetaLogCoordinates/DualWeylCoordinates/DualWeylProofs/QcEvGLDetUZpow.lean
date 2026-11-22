@@ -1,9 +1,0 @@
-import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DefsMod
-
-noncomputable section
-
-open MvPolynomial Finset
-
-namespace Formalism.InvariantFactorPaths.ColumnFamilies
-
-end Formalism.InvariantFactorPaths.ColumnFamilies

@@ -1,4 +1,5 @@
-import Formalism.LocalToGlobal.Columns.RefXi1Above
+import Formalism.LocalToGlobal.Columns.RecChainUnfOne
+import Formalism.LocalToGlobal.Columns.XiRef
 import Formalism.LocalToGlobal.Columns.ChainOne
 
 open NumberField IsDedekindDomain Module Matrix

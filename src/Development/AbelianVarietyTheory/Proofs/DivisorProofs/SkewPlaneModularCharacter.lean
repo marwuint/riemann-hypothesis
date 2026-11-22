@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogAbsEEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentStabilizerLeviDecomposition
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoreConcl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviEmbeddingExistsDoublingConfiguration
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviSectionMultiplicative
 
 open scoped TensorProduct NNReal Matrix ComplexConjugate
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

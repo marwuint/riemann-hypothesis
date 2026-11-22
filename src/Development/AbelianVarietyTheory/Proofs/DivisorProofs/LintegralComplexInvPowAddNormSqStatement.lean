@@ -16,7 +16,7 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.Measure
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
 import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegralIoiFsDensRadial
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Set Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor

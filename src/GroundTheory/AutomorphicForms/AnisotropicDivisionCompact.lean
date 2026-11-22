@@ -1,5 +1,6 @@
 import Mathlib
-import GroundTheory.AutomorphicForms.AnisotropicDivision
+import GroundTheory.AutomorphicForms.AnisotropicRestrict
+import GroundTheory.AutomorphicForms.AnisotropicHeight
 set_option maxSynthPendingDepth 1
 
 open Module Matrix TensorProduct Topology NumberField IsDedekindDomain

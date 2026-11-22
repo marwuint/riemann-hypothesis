@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.ArithmeticGeometry.AbelianVarieties.FormalGroupReduction
-import GroundTheory.ArithmeticGeometry.AbelianVarieties.FormalGroupTorsion
 
 namespace GroundTheory.Arith.Abelian
 

@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsArith
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.FirstPointNeSecondPoint
-import GroundTheory.HeightsAndTheta.Heights.FubiniStudyInvariance.Statements
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.ProjectiveLine
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsChartLatRank
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PKodairaSection

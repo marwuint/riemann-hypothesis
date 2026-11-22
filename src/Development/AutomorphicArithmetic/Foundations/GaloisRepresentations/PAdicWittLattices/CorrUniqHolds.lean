@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackLAdicRationalCohomologyGaloisCoverInvariStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubsingletonSecOfSubsingleton
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.BocksteinReductionIsRed
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.VFinHolds
 import Development.EtaleCohomology.WeilConjectures.AbsContPf
 import Development.EtaleCohomology.WeilConjectures.ChevPf

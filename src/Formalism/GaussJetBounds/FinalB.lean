@@ -1,6 +1,5 @@
 import Formalism.GaussJetBounds.GaussJetProofs.ConstantCoeffQuadSer
 import Formalism.GaussJetBounds.GaussJetProofs.NormDetLeOneOfEntries
-import Formalism.GaussJetBounds.GaussJetProofs.FirstRowMinorDegreeLeOne
 import Formalism.GaussJetBounds.StatementQ
 import Formalism.GaussJetBounds.StatementP
 import Formalism.GaussJetBounds.GaussJetProofs.GField

@@ -1,8 +1,0 @@
-import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
-open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
-open scoped Matrix
-
-namespace GlobalTheory
-
-end GlobalTheory

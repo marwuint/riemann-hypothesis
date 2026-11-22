@@ -14,7 +14,7 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.Pullback
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Measure
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
 import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegralIoiFsDensRadial
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.RhGradFPfA
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Set Filter Topology MeasureTheory

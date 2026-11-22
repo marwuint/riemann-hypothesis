@@ -3,7 +3,7 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCEqZeroOfEventuallyEq
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.ConvergenceRate
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegralIoiFsDensRadial
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Telescoping
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.RegularizedMaxC2ExampleRealLine
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.NormIteratedFDerivCompLeOfIsOpen
@@ -26,7 +26,7 @@ import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitConjSum
 import GroundTheory.HeightsAndTheta.Heights.ChowlaSelberg.Statements
 import GroundTheory.HeightsAndTheta.Heights.EffectiveHilbertSamuel.Objects
 import GroundTheory.HeightsAndTheta.Heights.EffectiveHilbertSamuel.SymbolExtensionProperty
-import GroundTheory.HeightsAndTheta.Heights.EffectiveHilbertSamuel.MemSectionsOfHolLineBundleEquiv
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.HolLineBundleToAltTransition
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Assembly
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConeVarNumerator
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDegZeroLocLocal
@@ -77,7 +77,6 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PTwoBlockModuleCycle
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PTwoBlockModuleFinite
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PTwoBlockPieceCycle
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PTwoBlockPieceIndex
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ShortFamilyEquivSmallFamilyVec
 import GroundTheory.HeightsAndTheta.Heights.Intersections.Assembly
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PChartPrimElt
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PChartSpecCount
@@ -163,9 +162,8 @@ import GroundTheory.HeightsAndTheta.Heights.Regularisation.PPolyMaxLowerBound
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.PPuncturedExpOrder
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.PTruncPsh
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.PTruncTransfer
-import GroundTheory.HeightsAndTheta.Heights.ReducedTensors.StatementsInj
+import GroundTheory.HeightsAndTheta.Heights.ReducedTensors
 import GroundTheory.HeightsAndTheta.Heights.MultinomialWeights.Statements
-import GroundTheory.HeightsAndTheta.Heights.MultinomialWeights.StatementsEnd
 
 set_option maxSynthPendingDepth 1
 

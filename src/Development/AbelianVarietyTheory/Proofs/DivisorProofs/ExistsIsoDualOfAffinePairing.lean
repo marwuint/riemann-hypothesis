@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PoincareDe
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ZeroSectionBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheaf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheafIff
 
 set_option autoImplicit false
 

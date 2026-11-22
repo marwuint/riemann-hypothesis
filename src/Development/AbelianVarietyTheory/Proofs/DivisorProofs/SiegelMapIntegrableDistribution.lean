@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDiagInt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSchwartzNe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergInvariantAdmissibleFormEqMulDiagonalIn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinMApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackMemSB
 
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

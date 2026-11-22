@@ -1,8 +1,0 @@
-import ReciprocityTheory.GeometryOfNumbers.PluriharmonicAnalysis.MorseGenStB
-
-namespace ReciprocityTheory.GeometryOfNumbersTheory
-
-open MeasureTheory Complex Matrix
-open scoped ComplexOrder
-
-end ReciprocityTheory.GeometryOfNumbersTheory

@@ -1,5 +1,5 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL4.BranchingLinkFamilyNormalised
-import Formalism.LocalToGlobal.GlobalTheory.GL4.ColAddGenCastSuccRename
+import Formalism.BranchSandwichDivisors.StatementW
 import Formalism.BranchSandwichDivisors.BranchIsometryProofs.XiNorm
 import Formalism.BranchSandwichDivisors.BranchIsometryProofs.BranchMap
 import Formalism.BranchSandwichDivisors.BranchIsometryProofs.BranchScale

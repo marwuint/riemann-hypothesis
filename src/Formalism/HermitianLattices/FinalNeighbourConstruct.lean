@@ -2,7 +2,8 @@ import Mathlib
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.IsomAct
 import Formalism.HermitianLattices.HermitianLatticesProofs.LocBasic
-import Formalism.HermitianLattices.HermitianLatticesProofs.ThetaBasic
+import Formalism.AlphaUniqueness.Statement
+import Formalism.LatticeTheta.Statement
 import Formalism.LatticeTheta.ThetaShiftInversion
 import Formalism.HermitianLattices.HermitianLatticesProofs.ThetaSummable
 import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual

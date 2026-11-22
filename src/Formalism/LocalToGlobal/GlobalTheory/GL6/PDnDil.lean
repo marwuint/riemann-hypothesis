@@ -1,7 +1,7 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PSplitT
 import Formalism.LocalToGlobal.GlobalTheory.GL6.DiamondPreservesRationalFormZero
 import Formalism.LocalToGlobal.GlobalTheory.GL6.FrameTranslate
-import Formalism.LocalToGlobal.GlobalTheory.GL6.EqOneOfCoprimeTorsionTwoPrimes
+import Formalism.LocalToGlobal.GroupLattices.TrivialTransfer.OneAddPowOfSq
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PRLocV
 
 noncomputable section

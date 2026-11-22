@@ -11,7 +11,6 @@ import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCharacterAtIdentity
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCharacterBound
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvAboveTopGeneral
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvAboveTop
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvariantTopDegree
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvAtTop
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvIdealComponent
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvIdealRepresentation

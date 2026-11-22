@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsArea
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.RingKrullDimQuotBotOne
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.FrameProjEq
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets

@@ -3,7 +3,6 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Multipl
 import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.JacquetShalikaRigidity
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.CuspRapidDecayGL.CuspRapidDecaySiegelGL
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowMulIsUnitary
 
 namespace DiscreteGroups.T1.G
 

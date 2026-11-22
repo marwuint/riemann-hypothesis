@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulNonnegOfPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCentralIdempotentOfGoodSeriesIdempotent
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MLatAnyLevelOfFullLattice
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SupremumLattice
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LMLatOfLIntegral
 
 noncomputable section
 

@@ -1,7 +1,7 @@
 import Formalism.LocalToGlobal.Columns.AbelianHostFieldConditions
 import Formalism.LocalToGlobal.Divisibility.CoeffLemmas
 import Formalism.LocalToGlobal.UnitaryNorms.RealPl
-import Formalism.LocalToGlobal.UnitaryNorms.ExistsCycAct
+import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostRam
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 
 open NumberField IsDedekindDomain IntermediateField

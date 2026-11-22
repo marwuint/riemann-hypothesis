@@ -7,7 +7,6 @@ import GroundTheory.GlobalFields.Artin.InductionLocal
 import GroundTheory.LocalFields.BrauerInductionPrime
 import GroundTheory.LocalFields.BrauerInductionClifford
 import GroundTheory.GlobalFields.TateThesis.FiniteOrderParams
-import GroundTheory.GlobalFields.Artin.Regular
 import GroundTheory.LocalFields.DifferentGalois
 
 set_option maxSynthPendingDepth 1

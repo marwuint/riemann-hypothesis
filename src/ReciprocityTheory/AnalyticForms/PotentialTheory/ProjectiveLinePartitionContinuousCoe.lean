@@ -1,8 +1,0 @@
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
-import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegralIoiFsDensRadial
-
-namespace ReciprocityTheory.AnForm.M
-
-open MeasureTheory OnePoint Filter Topology Set
-
-end ReciprocityTheory.AnForm.M

@@ -2,7 +2,7 @@ import Formalism.PeriodIntegrals.LatCountG
 import Formalism.HarderNarasimhan.StatementPl
 import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CnDensNonneg
 import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CndTauSLeHalf
-import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CndHsLeDist
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.TraceConjMulEqHilbertSchmidt
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
 
 noncomputable section

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormsAtOfNorms
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpecializes
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FromModelNeg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProperToroidalModelStructureMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoverFunctionFieldMapEq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IoOfLeOneIff
 
 set_option autoImplicit false
 

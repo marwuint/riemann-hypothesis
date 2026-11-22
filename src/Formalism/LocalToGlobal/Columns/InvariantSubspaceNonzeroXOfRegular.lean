@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.InvariantSubspaceCoordsX
-import Formalism.LocalToGlobal.Columns.RowFormsNZs
+import Formalism.LocalToGlobal.Columns.RowFormsNZp
 import Formalism.LocalToGlobal.Columns.RowFormsNZw
 import Formalism.LocalToGlobal.GlobalTheory.GL4.PDetAll
 

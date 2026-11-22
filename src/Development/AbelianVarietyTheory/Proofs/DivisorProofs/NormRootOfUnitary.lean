@@ -1,7 +1,0 @@
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
-
-namespace GlobalTheory.UnitaryCharpolyRootNorm
-
-open Matrix NumberField
-
-end GlobalTheory.UnitaryCharpolyRootNorm

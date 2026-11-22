@@ -13,7 +13,7 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Pullback
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
 import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegralIoiFsDensRadial
 
 open CategoryTheory AlgebraicGeometry NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ArInt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.CxPts

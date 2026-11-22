@@ -1,5 +1,5 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.MirabolicInduction.RealEisensteinNonneg
+import GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.MirabolicInduction.QuadraticFieldSqrtNegSeven
 import GroundTheory.GlobalFields.TateThesis.PrimeZetaPole
 
 set_option maxSynthPendingDepth 1

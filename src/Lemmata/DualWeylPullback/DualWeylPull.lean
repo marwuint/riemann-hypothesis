@@ -50,7 +50,6 @@ import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PolygonSlopeSum
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.HNSlopes
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.ShiftInvariance
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Duality
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PiSumForallInsertOnly
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DiscreteSpanOfLinIndep
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SizeMu
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PlaceSplit
@@ -69,7 +68,10 @@ import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.HeckeAssoc
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.RationalPointsLeHolds
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Bridge
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.HeckeConvolutionMemHolds
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.LocalAlgebraInertPrime
+import Formalism.SatakeDualWeyl.StatementG
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Transport
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Stabstd
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelvsplit
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Heckebasic
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Ipindep
@@ -97,7 +99,6 @@ import Formalism.FormalDegreeBessel.StatementBF
 import Formalism.FormalDegreeBessel.StatementWR
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.LocBasic
-import Formalism.HermitianLattices.HermitianLatticesProofs.ThetaBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
 import Formalism.HermitianLattices.HermitianLatticesProofs.GenusBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice

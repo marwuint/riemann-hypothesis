@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.LevelRestrictionOfGroupLawHolds
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.BeConjOfNorm
 import Mathlib
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramDifferenceRenaming.RenGramRhs
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.BeConjNorm
 
 namespace Formalism.MainNotions.Ext.CutA

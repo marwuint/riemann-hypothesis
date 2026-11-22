@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsIsoGenResMapSmulHom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalEqOfNonneg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppInjectiveOfFrames
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagExtensionOfSubbundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueDegreeOfIsOpenImmersion
 
 set_option autoImplicit false
 

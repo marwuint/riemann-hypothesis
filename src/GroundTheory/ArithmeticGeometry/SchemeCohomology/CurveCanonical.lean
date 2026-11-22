@@ -3,7 +3,7 @@ import GroundTheory.ArithmeticGeometry.SchemeCohomology.CurveDivisors
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.CurveProper
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.WeilDivisorTensor
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.WeilDivisorInvertible
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.WeilDivisorPicard
+import GroundTheory.ArithmeticGeometry.SchemeCohomology.Picard
 import GroundTheory.FunctionField.DivisorDegree
 import GroundTheory.FunctionField.WeilDifferential
 

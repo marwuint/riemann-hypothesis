@@ -37,7 +37,6 @@ import ReciprocityTheory.L2DbarEstimates.LeviForms.ShellA
 import ReciprocityTheory.L2DbarEstimates.LeviForms.Vanish
 import ReciprocityTheory.L2DbarEstimates.LeviForms.FxExpNegWgtLeShell
 import ReciprocityTheory.L2DbarEstimates.LeviForms.DetMonoDetOneAdd
-import ReciprocityTheory.L2DbarEstimates.LeviForms.MacofFderivApplyContDiffOn
 import ReciprocityTheory.L2DbarEstimates.LeviForms.DetUpdateColEq
 import ReciprocityTheory.L2DbarEstimates.LeviForms.ImportsAlt
 

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemConeOfMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormsOfInduces
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HessRelFnB
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FromModelAdd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalfWeightLocPot
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PnPosOfGeneratesAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumLifts

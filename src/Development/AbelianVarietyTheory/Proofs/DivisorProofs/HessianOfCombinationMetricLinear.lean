@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HessRelFnB
+import Development.AbelianVarietyTheory.Definitions.Divisors.ReferenceMetricMulDualEqOne
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FromModelAdd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalfWeightLocPot
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PnPosOfGeneratesAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumLifts

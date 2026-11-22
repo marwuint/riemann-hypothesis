@@ -1,6 +1,6 @@
 import Mathlib
 import GroundTheory.GlobalFields.LocalFieldAtPlace
-import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsIndex
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.Statements
 
 set_option maxSynthPendingDepth 1
 

@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.SatakeDualWeyl.StatementC
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelProductIndex.ZeroMemLatSet
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelProductIndex.PrVTmulEqTmulApply
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelProductIndex.PrVMemTensInt
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelProductIndex.PrVSumTmul
 import Formalism.LocalToGlobal.GroupLattices.LevelCharts.FiniteClassSetOfFiniteIndex
 

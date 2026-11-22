@@ -25,7 +25,6 @@ import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Formalism.BehrendSets.BehrendVariance.MemWindowIff
 import Formalism.BehrendSets.BehrendVariance.ProdDimVNeZero
 import Formalism.GL3MeanSquares.HookFormulaTorsion.DifferentIdealConditions
-import Formalism.GL3MeanSquares.WeightedSumIntegralFormula
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.TailContour
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.TailDiff
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.TailMertens
